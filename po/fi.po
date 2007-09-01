@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ekiga\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-29 18:56+0300\n"
+"POT-Creation-Date: 2007-09-01 07:22+0300\n"
 "PO-Revision-Date: 2007-02-13 07:24+0300\n"
 "Last-Translator: Ilkka Tuohela <hile@iki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
@@ -639,19 +639,21 @@ msgid ""
 "peer endpoint that can adjust (if it supports it) its TX bitrate if it is "
 "above the signaled value"
 msgstr ""
+"Vastaanotettavan videon suurin bittinopeus kilobitteinä sekunnissa. Tämä arvo "
+"signaloidaan vastapäähän, jotta se voi yrittää säätää lähetysnopeuttaan "
+"hitaammaksi lähettäessään nopeammin kuin signaalissa kerrotulla nopeudella"
 
 #: ../ekiga.schemas.in.in.h:129
-#, fuzzy
 msgid ""
 "The maximum TX video bitrate in kbit/s. The video quality and the number of "
 "transmitted frames per second (depends on selected codec) will be "
 "dynamically adjusted above their minimum during calls to try to minimize the "
 "bandwidth to the given value"
 msgstr ""
-"Suurin videokaistanleveys kilobitteinä sekunnissa. Videon laatua ja "
-"sekunnissa lähetettävien kehyksien määrää kasvatetaan dynaamisesti "
-"pienimmästä mahdollisesta annettuun arvoon pyrittäessä soiton aikana "
-"minimoimaan käytetty siirtokaista."
+"Lähetettävän videon suurin bittinopeus kilobitteinä sekunnissa. Videon laatua "
+"ja lähetettävien ruutujen määrää sekunnissa (riippuen valitusta koodekista) "
+"säädetään dynaamisesti minimiarvojensa rajoissa siten, että pyritään "
+"pienentämään käytetty siirtokaista annettuun arvoon"
 
 #: ../ekiga.schemas.in.in.h:130
 msgid "The maximum jitter buffer size for audio reception (in ms)"
@@ -804,6 +806,8 @@ msgid ""
 "The transmitted frame rate in frames/s. Choose 25 for LAN and less for "
 "slower connections"
 msgstr ""
+"Lähetettävä ruutunopeus ruutuina/sekunti. Valitse 25 lähiverkolle ja "
+"pienemmän arvon hitaammille yhteyksille"
 
 #: ../ekiga.schemas.in.in.h:156
 msgid "The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)"
@@ -958,7 +962,7 @@ msgid "Video size"
 msgstr "Videon koko"
 
 #: ../lib/engine/addressbook/evolution/evolution-contact.cpp:168
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:292
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:293
 #: ../lib/engine/presence/local-roster/local-presentity.cpp:221
 msgid "_Remove"
 msgstr "_Poista"
@@ -1010,14 +1014,14 @@ msgid "_Pager:"
 msgstr "_Piippari:"
 
 #: ../lib/engine/addressbook/evolution/evolution-book.cpp:89
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:481
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:482
 msgid "user found"
 msgid_plural "users found"
 msgstr[0] "käyttäjä löytyi"
 msgstr[1] "käyttäjää löytyi"
 
 #: ../lib/engine/addressbook/evolution/evolution-book.cpp:257
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:289
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:290
 msgid "_Refresh"
 msgstr "_Päivitä"
 
@@ -1044,7 +1048,7 @@ msgid "Create LDAP directory"
 msgstr "Luo LDAP-hakemisto"
 
 #: ../lib/engine/addressbook/ldap/ldap-source.cpp:151
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:498
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:499
 msgid "Please edit the following fields"
 msgstr "Ole hyvä ja muokkaa seuraavia kenttiä"
 
@@ -1059,75 +1063,66 @@ msgstr "_Portti:"
 # Tämä on kai jotain LDAP-kamaa, anyone?
 #: ../lib/engine/addressbook/ldap/ldap-source.cpp:156
 msgid "_Base DN:"
-msgstr "_Perus-DN:"
+msgstr "_DN-pohja:"
 
 #: ../lib/engine/addressbook/ldap/ldap-source.cpp:160
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:515
 msgid "_Subtree"
 msgstr "_Alipuu"
 
 #: ../lib/engine/addressbook/ldap/ldap-source.cpp:161
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:516
 msgid "Single _Level"
 msgstr "Yksi _taso"
 
 #: ../lib/engine/addressbook/ldap/ldap-source.cpp:162
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:517
 msgid "_Scope"
 msgstr "_Hakualue"
 
 #: ../lib/engine/addressbook/ldap/ldap-source.cpp:165
 msgid "Call _Attribute:"
-msgstr ""
+msgstr "Puhelu_määre:"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:294
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:295
 msgid "_Properties"
 msgstr "_Ominaisuudet"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:356
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:371
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:357
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:372
 msgid "Could not contact server"
 msgstr "Palvelimeen ei saatu yhteyttä"
 
 #. patience == 0
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:410
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:452
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:411
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:453
 msgid "Could not search on"
-msgstr ""
+msgstr "Lähteestä ei voitu hakea"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:496
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:497
 msgid "Edit LDAP directory"
 msgstr "Muokkaa LDAP-hakemistoa"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:500
-msgid "Name"
-msgstr "Nimi"
-
 #: ../lib/engine/addressbook/ldap/ldap-book.cpp:501
-msgid "Hostname"
-msgstr "Verkkonimi"
+msgid "_Name"
+msgstr "_Nimi"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:507
-msgid "Port"
-msgstr "Portti"
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:502
+msgid "_Hostname"
+msgstr "_Verkkonimi"
+
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:508
+msgid "_Port"
+msgstr "_Portti"
 
 # Tämä on kai jotain LDAP-kamaa, anyone?
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:509
-msgid "Base DN"
-msgstr "Perus-DN"
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:510
+msgid "_Base DN"
+msgstr "_DN-pohja"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:514
-msgid "Subtree"
-msgstr "Alipuu"
-
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:515
-msgid "Single level"
-msgstr "Yksi taso"
-
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:516
-msgid "Scope"
-msgstr "Hakualue"
-
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:519
-msgid "Call attribute"
-msgstr ""
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:520
+msgid "Call _Attribute"
+msgstr "Puhelu_määre"
 
 #: ../lib/engine/addressbook/skel/contact-core.cpp:60
 msgid "_Find"
@@ -1176,6 +1171,8 @@ msgid ""
 "Please fill in this form to change an existing element of ekiga's internal "
 "roster"
 msgstr ""
+"Täytä tämä kaavake, jos haluat vaihtaa tietoja ekigan sisäisessä "
+"nimilistassa"
 
 #: ../lib/engine/presence/local-roster/local-presentity.cpp:256
 msgid "Choose groups:"
@@ -1194,6 +1191,8 @@ msgstr "Paikallinen nimilista"
 msgid ""
 "Please fill in this form to add a new contact to ekiga's internal roster"
 msgstr ""
+"Täytä tämä kaavake, jos haluat lisätä yhteystiedon ekigan sisäiseen "
+"nimilistaan"
 
 #: ../lib/engine/presence/local-roster/local-heap.cpp:197
 msgid "Address:"
@@ -1205,11 +1204,11 @@ msgstr "Lisää yhteystieto ryhmiin:"
 
 #: ../lib/engine/presence/local-roster/local-heap.cpp:308
 msgid "You supplied an unsupported address"
-msgstr ""
+msgstr "Antamasi osoitemuoto ei ole tuettu"
 
 #: ../lib/engine/presence/local-roster/local-heap.cpp:310
 msgid "You already have a contact with this address!"
-msgstr ""
+msgstr "Tälle osoitteelle on jo aikaisempi yhteystieto!"
 
 #: ../lib/engine/protocol/sip/sip-endpoint.cpp:175
 msgid "Offline"
@@ -1575,16 +1574,15 @@ msgid "Error while opening video device %s"
 msgstr "Virhe avattaessa videolaitetta %s"
 
 #: ../src/devices/videoinput.cpp:364
-#, fuzzy
 msgid ""
 "A moving logo will be transmitted during calls. Notice that you can always "
 "transmit a given image or the moving logo by choosing \"Picture\" as video "
 "plugin and \"Moving logo\" or \"Static picture\" as device."
 msgstr ""
-"Liikkuvaa kuvaketta näytetään soiton aikana. Huomaa, että voit milloin "
+"Liikkuvaa kuvaketta soiton aikana. Huomaa, että voit milloin "
 "tahansa lähettää valitun kuvan tai liikkuvan logon valitsemalla "
-"videoliitännäiseksi \"Kuva\"  ja laitteeksi \"MovingLogo\" tai "
-"\"StaticPicture\"."
+"videoliitännäiseksi \"Kuva\"  ja laitteeksi \"Liikkuva logo\" tai "
+"\"Kiinteä kuva\"."
 
 #: ../src/devices/videoinput.cpp:366
 msgid "Couldn't open the video device"
@@ -3473,17 +3471,16 @@ msgid "Maximum video _bitrate (in kbits/s):"
 msgstr "Suurin videon _bittinopeus (kbit/s):"
 
 #: ../src/gui/preferences.cpp:1052
-#, fuzzy
 msgid ""
 "The maximum video bitrate in kbits/s. The video quality and the number of "
 "transmitted frames per second (depends on codec) will be dynamically "
 "adjusted above their minimum during calls to try to minimize the bandwidth "
 "to the given value."
 msgstr ""
-"Suurin videokaistanleveys kilobitteinä sekunnissa. Videon laatua ja "
-"sekunnissa lähetettävien kehyksien määrää kasvatetaan dynaamisesti "
-"pienimmästä mahdollisesta annettuun arvoon, pyrkien toiston aikana "
-"minimoimaan käytetty siirtokaista."
+"Videon suurin bittinopeus kilobitteinä sekunnissa. Videon laatua "
+"ja lähetettävien ruutujen määrää sekunnissa (riippuen valitusta koodekista) "
+"säädetään dynaamisesti minimiarvojensa rajoissa siten, että pyritään "
+"pienentämään käytetty siirtokaista annettuun arvoon."
 
 #. Translators: the full sentence is Keep a minimum video quality of X %
 #: ../src/gui/preferences.cpp:1055
