@@ -188,7 +188,7 @@ confekiga:= $(confflags) --with-pwlib-dir=$(PWLIB_DIR) --with-opal-dir=$(OPAL_DI
 	    --with-directx-dir=$(DIRECTX_DIR) --prefix=$(EKIGA_PREFIX) \
 	    --bindir=$(EKIGA_PREFIX) --datadir=$(EKIGA_PREFIX) \
 	    --sysconfdir=$(EKIGA_PREFIX) --libdir=$(EKIGA_PREFIX) --disable-gnome \
-	    --disable-dbus --disable-avahi --disable-esd 
+	    --disable-dbus --disable-avahi --disable-esd --with-ldap-dir=$(OPENLDAP_DIR)
 
 confffmpeg:=--cross-prefix=i586-mingw32msvc- --enable-shared --enable-memalign-hack \
 	    --cross-compile --disable-ffserver --target-os=mingw32 \

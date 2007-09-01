@@ -1,5 +1,12 @@
 2007-09-01  Julien Puydt  <jpuydt@gnome.org>
 
+	* win32/Makefile:
+	* win32/diff/ptlib_configure.ac: Removed pwlib's hard dependency on
+	openLDAP, since ekiga now directly depends on it. Patch from Matthias
+	Schneider, who is still waiting for svn access.
+
+2007-09-01  Julien Puydt  <jpuydt@gnome.org>
+
 	* lib/engine/framework/toolbar-builder.h:
 	* lib/engine/framework/toolbar-builder.cpp: Removed.
 	* lib/engine/framework/toolbar-xml.h:

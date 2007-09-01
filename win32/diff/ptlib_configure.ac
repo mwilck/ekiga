@@ -151,7 +151,7 @@ dnl --enable-minsize
 dnl --enable-openh323
 dnl
 
-HAS_OPENLDAP=1
+HAS_OPENLDAP=0
 HAS_REGEX=1
 HAS_TTS=1
 HAS_ASN=1
@@ -177,7 +177,7 @@ HAS_VIDEO=1
 P_HTTP=1
 P_HTTPSVC=1
 P_CONFIG_FILE=1
-P_LDAP=1
+P_LDAP=0
 P_VIDEO=1
 P_WINEXPAT=1
 PHAS_TEMPLATES=1
@@ -193,7 +193,7 @@ AC_DEFINE([HAS_VIDEO], 1, [check if video support should be in])
 AC_DEFINE([P_HTTP], 1, [check if http support should be in])
 AC_DEFINE([P_HTTPSVC], 1, [check if http svc support should be in])
 AC_DEFINE([P_CONFIG_FILE], 1, [check if config file support should be in])
-AC_DEFINE([P_LDAP], 1, [check if ldap support is in])
+AC_DEFINE([P_LDAP], 0, [check if ldap support is in])
 AC_DEFINE([P_AUDIO], 1, [check if audio support is in])
 AC_DEFINE([P_VIDEO], 1, [check if video support is in])
 AC_DEFINE([P_WINEXPAT], 1, [check if expat support is in])
@@ -257,7 +257,7 @@ if test -d ${with_directx_dir}/include; then
     DIRECTX_LIBS="-ldsound -ldxerr9 -ldxguid -lstrmiids -lole32 -luuid -loleaut32 -lquartz"
 fi
 
-LIBS="-lldap_r -llber -lldap -lwinmm -lwsock32 -lsnmpapi -lmpr -lcomdlg32 -lgdi32 -lavicap32 -lregex -lexpat -ldnsapi ${DIRECTX_LIBS}"
+LIBS="-lwinmm -lwsock32 -lsnmpapi -lmpr -lcomdlg32 -lgdi32 -lavicap32 -lregex -lexpat -ldnsapi ${DIRECTX_LIBS}"
 
 
 AC_SUBST(LIBS)
