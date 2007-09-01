@@ -69,9 +69,9 @@ on_item_clicked (GtkToolButton *button,
 }
 
 void
-ToolbarBuilderGtk::add_item (const std::string label,
-			     const std::string icon,
-			     sigc::slot<void> callback)
+ToolbarBuilderGtk::add_action (const std::string icon,
+			       const std::string label,
+			       sigc::slot<void> callback)
 {
   Action *action = new Action (callback);
   GtkToolItem *item = NULL;
@@ -86,3 +86,11 @@ ToolbarBuilderGtk::add_item (const std::string label,
   gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
 }
 
+void
+ToolbarBuilderGtk::add_separator ()
+{
+  GtkToolItem *item = NULL;
+
+  item = gtk_separator_tool_item_new ();
+  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
+}

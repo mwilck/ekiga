@@ -1,5 +1,20 @@
 2007-09-01  Julien Puydt  <jpuydt@gnome.org>
 
+	* lib/engine/framework/toolbar-builder.h:
+	* lib/engine/framework/toolbar-builder.cpp: Removed.
+	* lib/engine/framework/toolbar-xml.h:
+	* lib/engine/framework/toolbar-xml.cpp: Renamed to menu-xml.h and
+	menu-xml.cpp.
+	* lib/engine/framework/menu-xml.h:
+	* lib/engine/framework/menu-xml.cpp: Made its populate_menu method
+	accept an Ekiga::MenuBuilder and added a separator feature.
+	* lib/engine/framework/Makefile.am: Made it cope with previous.
+	* lib/engine/gui/gtk-core/toolbar-builder-gtk.h:
+	* lib/engine/gui/gtk-core/toolbar-builder-gtk.cpp: Added an
+	add_separator method and made it an Ekiga::MenuBuilder.
+
+2007-09-01  Julien Puydt  <jpuydt@gnome.org>
+
 	* lib/engine/gui/gtk-frontend/addressbook-window.cpp:
 	* lib/engine/gui/gtk-frontend/gtk-frontend.cpp: Moved the setting of
 	"window_name" from the class init to actual invocation, so the object

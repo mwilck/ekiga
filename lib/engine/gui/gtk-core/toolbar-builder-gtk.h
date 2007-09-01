@@ -40,9 +40,9 @@
 
 #include <gtk/gtk.h>
 
-#include "toolbar-builder.h"
+#include "menu-builder.h"
 
-class ToolbarBuilderGtk: public Ekiga::ToolbarBuilder
+class ToolbarBuilderGtk: public Ekiga::MenuBuilder
 {
 public:
 
@@ -52,9 +52,11 @@ public:
   ~ToolbarBuilderGtk ()
   {/* notice we leak the toolbar if nobody took it */ }
 
-  void add_item (const std::string label,
-		 const std::string icon,
-		 sigc::slot<void> callback);
+  void add_action (const std::string icon,
+		   const std::string label,
+		   sigc::slot<void> callback);
+
+  void add_separator ();
 
   GtkWidget *toolbar;
 };

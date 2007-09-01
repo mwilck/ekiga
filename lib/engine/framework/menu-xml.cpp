@@ -25,11 +25,11 @@
 
 
 /*
- *                         toolbar-xml.cpp  -  description
+ *                         menu-xml.cpp  -  description
  *                         ------------------------------------------
  *   begin                : written in 2007 by Julien Puydt
  *   copyright            : (c) 2007 by Julien Puydt
- *   description          : implementation of an XML-based toolbar
+ *   description          : implementation of an XML-based menu
  *
  */
 
@@ -37,13 +37,13 @@
 
 #include <glib.h>
 
-#include "toolbar-xml.h"
+#include "menu-xml.h"
 #include "trigger.h"
 
 /* declaration of helpers */
 
 static void populate_item (Ekiga::ServiceCore &core,
-			   Ekiga::ToolbarBuilder &builder,
+			   Ekiga::MenuBuilder &builder,
 			   xmlNodePtr item,
 			   bool is_external);
 
@@ -59,13 +59,13 @@ static void pull_trigger (Ekiga::Trigger *trigger)
 
 /* implementation of the class */
 
-Ekiga::ToolbarXML::ToolbarXML (ServiceCore &_core,
-			       const std::string filename): core(_core)
+Ekiga::MenuXML::MenuXML (ServiceCore &_core,
+			 const std::string filename): core(_core)
 {
   doc = xmlReadFile (filename.c_str (), NULL, 0);
 }
 
-Ekiga::ToolbarXML::~ToolbarXML ()
+Ekiga::MenuXML::~MenuXML ()
 {
 #ifdef __GNUC__
   std::cout << __PRETTY_FUNCTION__ << std::endl;
@@ -73,7 +73,7 @@ Ekiga::ToolbarXML::~ToolbarXML ()
 }
 
 void
-Ekiga::ToolbarXML::populate (ToolbarBuilder &builder)
+Ekiga::MenuXML::populate (MenuBuilder &builder)
 {
 
   if (doc != NULL) {
@@ -89,17 +89,21 @@ Ekiga::ToolbarXML::populate (ToolbarBuilder &builder)
 	   child = child->next) {
 
 	if (child->type == XML_ELEMENT_NODE
-	    && child->name != NULL
-	    && xmlStrEqual (BAD_CAST "item", child->name)) {
+	    && child->name != NULL) {
 
-	  xmlChar *attr = xmlGetProp (child, BAD_CAST "type");
-	  if (attr != NULL) {
+	  if (xmlStrEqual (BAD_CAST "item", child->name)) {
 
-	    if (xmlStrEqual (BAD_CAST "external", attr))
-	      populate_item (core, builder, child, true);
-	    if (xmlStrEqual (BAD_CAST "internal", attr))
-	      populate_item (core, builder, child, false);
+	    xmlChar *attr = xmlGetProp (child, BAD_CAST "type");
+	    if (attr != NULL) {
+
+	      if (xmlStrEqual (BAD_CAST "external", attr))
+		populate_item (core, builder, child, true);
+	      if (xmlStrEqual (BAD_CAST "internal", attr))
+		populate_item (core, builder, child, false);
+	    }
 	  }
+	  if (xmlStrEqual (BAD_CAST "separator", child->name))
+	    builder.add_separator ();
 	}
       }
     }
@@ -110,7 +114,7 @@ Ekiga::ToolbarXML::populate (ToolbarBuilder &builder)
 
 static void
 populate_item (Ekiga::ServiceCore &core,
-	       Ekiga::ToolbarBuilder &builder,
+	       Ekiga::MenuBuilder &builder,
 	       xmlNodePtr item,
 	       bool is_external)
 {
@@ -168,17 +172,17 @@ populate_item (Ekiga::ServiceCore &core,
 
 	if (is_external) {
 
-	  builder.add_item (label, icon,
-			    sigc::bind (sigc::ptr_fun (run_command),
-					command));
+	  builder.add_action (icon, label,
+			      sigc::bind (sigc::ptr_fun (run_command),
+					  command));
 	} else {
 
 	  Ekiga::Trigger *trigger =
 	    dynamic_cast<Ekiga::Trigger *>(core.get (command));
 	  if (trigger != NULL)
-	    builder.add_item (label, icon,
-			      sigc::bind (sigc::ptr_fun (pull_trigger),
-					  trigger));
+	    builder.add_action (icon, label,
+				sigc::bind (sigc::ptr_fun (pull_trigger),
+					    trigger));
 	}
 	break;
       }

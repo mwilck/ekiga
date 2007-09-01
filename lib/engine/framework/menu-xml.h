@@ -25,25 +25,61 @@
 
 
 /*
- *                         toolbar-builder.cpp  -  description
+ *                         menu-xml.h  -  description
  *                         ------------------------------------------
  *   begin                : written in 2007 by Julien Puydt
  *   copyright            : (c) 2007 by Julien Puydt
- *   description          : implementation of the interface of a toolbar builder
+ *   description          : declaration of an XML-based menu
  *
  */
 
-#include "toolbar-builder.h"
+#ifndef __MENU_XML_H__
+#define __MENU_XML_H__
 
-Ekiga::ToolbarBuilder::~ToolbarBuilder ()
-{
-  // nothing
-}
+#include <libxml/tree.h>
 
-void
-Ekiga::ToolbarBuilder::add_item (const std::string /*label*/,
-				 const std::string /*icon*/,
-				 sigc::slot<void> /*callback*/)
+#include "services.h"
+#include "menu-builder.h"
+
+/** FIXME: write a proper XML schema
+ * Here is how what a toolbar description looks like :
+ * <toolbar>
+ *   <item type="...">...</item>
+ *   <separator/>
+ *   <item.../>
+ * </toolbar>
+ *
+ * where item generally looks like :
+ * <item type="...">
+ *  <label>Short description</label>
+ *  <icon>icon-id</icon>
+ *  <command>run_this</command>
+ * </item>
+ *
+ * and where the type can be :
+ * - 'external' : the command will be run as a shell command
+ * - 'internal' : the command will be interpreted as an Ekiga::Trigger to get
+ *                (if the trigger isn't available, the item will be dropped)
+ **/
+
+namespace Ekiga
 {
-  // nothing
-}
+  class MenuXML
+  {
+  public:
+
+    MenuXML (ServiceCore &core,
+		const std::string filename);
+
+    ~MenuXML ();
+
+    void populate (MenuBuilder &visitor);
+
+  private:
+
+    ServiceCore &core;
+    xmlDocPtr doc;
+  };
+};
+
+#endif
