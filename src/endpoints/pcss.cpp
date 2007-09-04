@@ -65,7 +65,7 @@ GMPCSSEndpoint::GMPCSSEndpoint (GMManager & ep)
   CallPendingTimer.SetNotifier (PCREATE_NOTIFIER (OnCallPending));
   OutgoingCallTimer.SetNotifier (PCREATE_NOTIFIER (OnOutgoingCall));
 
-  SetSoundChannelBufferDepth (10);
+  SetSoundChannelBufferDepth (20);
 }
 
 
