@@ -1,4 +1,4 @@
-# translation of ekiga.gnome-2-14.po to Macedonian
+# translation of ekiga.gnome-2-20.po to Macedonian
 # translation of gnomemeeting.HEAD.po to
 # translation of gnomemeeting.HEAD.po to
 # translation of gnomemeeting.HEAD.po to
@@ -15,10 +15,10 @@
 # Arangel Angov <arangel@linux.net.mk>, 2007.
 msgid ""
 msgstr ""
-"Project-Id-Version: ekiga.gnome-2-14\n"
+"Project-Id-Version: ekiga.gnome-2-20\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-17 22:49+0000\n"
-"PO-Revision-Date: 2007-03-23 14:14+0100\n"
+"POT-Creation-Date: 2007-08-16 03:35+0100\n"
+"PO-Revision-Date: 2007-09-04 11:45+0200\n"
 "Last-Translator: Arangel Angov <arangel@linux.net.mk>\n"
 "Language-Team: Macedonian <ossm-members@hedona.on.net.mk>\n"
 "MIME-Version: 1.0\n"
@@ -963,18 +963,26 @@ msgid "Contacts Near Me"
 msgstr "Контакти блиску мене"
 
 #. Init the address book
-#: ../lib/gmcontacts/gmcontacts-eds.cpp:304 ../src/endpoints/ekiga.cpp:501
+#: ../lib/gmcontacts/gmcontacts-eds.cpp:304 ../src/endpoints/ekiga.cpp:500
 msgid "On This Computer"
 msgstr "На овој компјутер"
 
-#: ../lib/gmcontacts/gmcontacts-eds.cpp:308 ../src/endpoints/ekiga.cpp:501
-#: ../src/gui/addressbook.cpp:3042
+#: ../lib/gmcontacts/gmcontacts-eds.cpp:308 ../src/endpoints/ekiga.cpp:500
+#: ../src/gui/addressbook.cpp:3041
 msgid "Personal"
 msgstr "Лични податоци"
 
 #: ../lib/gui/gmdialog.c:487
 msgid "Do not show this dialog again"
 msgstr "Не го прикажувај повторно овој диалог"
+
+#: ../lib/gui/gmtray/eggtrayicon.c:133
+msgid "Orientation"
+msgstr "Ориентација"
+
+#: ../lib/gui/gmtray/eggtrayicon.c:134
+msgid "The orientation of the tray."
+msgstr "Ориентацијата на просторот за известување."
 
 #: ../src/clients/ils.cpp:105 ../src/gui/tools.cpp:174
 msgid "Invalid parameters"
@@ -985,9 +993,8 @@ msgid ""
 "Please provide your first name and e-mail in the Personal Data section in "
 "order to be able to register to the users directory."
 msgstr ""
-"Ве молам пополнете го Вашето име и адресата за е-пошта во секцијата за "
-"лични податоци по тој редослед да може да се регистрираат во корисничкиот "
-"именик."
+"Ве молам пополнете го Вашето име и адресата за е-пошта во секцијата за лични "
+"податоци по тој редослед да може да се регистрираат во корисничкиот именик."
 
 #: ../src/clients/ils.cpp:145
 msgid "Invalid users directory"
@@ -1040,7 +1047,7 @@ msgid "Updated information on %s"
 msgstr "Ажурирани информации на %s"
 
 #: ../src/clients/ils.cpp:314 ../src/endpoints/accountshandler.cpp:332
-#: ../src/endpoints/sip.cpp:235
+#: ../src/endpoints/sip.cpp:236
 #, c-format
 msgid "Unregistered from %s"
 msgstr "Нерегистрирано од %s"
@@ -1290,8 +1297,8 @@ msgstr ""
 
 #: ../src/devices/audio.cpp:481 ../src/devices/audio.cpp:482
 #: ../src/devices/videoinput.cpp:310 ../src/devices/videoinput.cpp:585
-#: ../src/endpoints/ekiga.cpp:352 ../src/endpoints/ekiga.cpp:354
-#: ../src/endpoints/ekiga.cpp:356 ../src/endpoints/pcss.cpp:194
+#: ../src/endpoints/ekiga.cpp:351 ../src/endpoints/ekiga.cpp:353
+#: ../src/endpoints/ekiga.cpp:355 ../src/endpoints/pcss.cpp:194
 #: ../src/gui/druid.cpp:1780 ../src/gui/druid.cpp:1792
 #: ../src/gui/druid.cpp:1850
 msgid "No device found"
@@ -1435,8 +1442,8 @@ msgid "Registration of %s to %s failed"
 msgstr "Регистрирањето на %s во %s не успеа"
 
 #: ../src/endpoints/accountshandler.cpp:211
-#: ../src/endpoints/accountshandler.cpp:323 ../src/endpoints/sip.cpp:316
-#: ../src/endpoints/sip.cpp:328
+#: ../src/endpoints/accountshandler.cpp:323 ../src/endpoints/sip.cpp:317
+#: ../src/endpoints/sip.cpp:329
 msgid "Registration failed"
 msgstr "Регистрирањето не успеа"
 
@@ -1462,16 +1469,16 @@ msgstr "Регистрацијата на gatekeeper откажана: тран�
 msgid "Gatekeeper registration failed"
 msgstr "Регистрацијата на Gatekeeper е откажана"
 
-#: ../src/endpoints/accountshandler.cpp:312 ../src/endpoints/sip.cpp:224
+#: ../src/endpoints/accountshandler.cpp:312 ../src/endpoints/sip.cpp:225
 #, c-format
 msgid "Registered to %s"
 msgstr "Регистрирано на %s"
 
-#: ../src/endpoints/accountshandler.cpp:322 ../src/endpoints/sip.cpp:230
+#: ../src/endpoints/accountshandler.cpp:322 ../src/endpoints/sip.cpp:231
 msgid "Registered"
 msgstr "Регистрирано"
 
-#: ../src/endpoints/accountshandler.cpp:352 ../src/endpoints/sip.cpp:241
+#: ../src/endpoints/accountshandler.cpp:352 ../src/endpoints/sip.cpp:242
 msgid "Unregistered"
 msgstr "Нерегистрирано"
 
@@ -1479,7 +1486,7 @@ msgstr "Нерегистрирано"
 msgid "Answering incoming call"
 msgstr "Одговарање на пристигнатиот повик"
 
-#: ../src/endpoints/ekiga.cpp:530
+#: ../src/endpoints/ekiga.cpp:529
 #, c-format
 msgid "Started Ekiga %d.%d.%d for user %s"
 msgstr "Започната Ekiga %d.%d.%d за корисникот %s"
@@ -1710,65 +1717,65 @@ msgstr ""
 "Вашиот управувач подржува целосен-duplex.\n"
 "Аудио приемот беше оневозможен."
 
-#: ../src/endpoints/sip.cpp:287
+#: ../src/endpoints/sip.cpp:288
 msgid "Bad request"
 msgstr "Неточно побарување"
 
-#: ../src/endpoints/sip.cpp:291
+#: ../src/endpoints/sip.cpp:292
 msgid "Payment required"
 msgstr "Плаќање е потребно"
 
-#: ../src/endpoints/sip.cpp:296
+#: ../src/endpoints/sip.cpp:297
 msgid "Forbidden"
 msgstr "Забрането"
 
-#: ../src/endpoints/sip.cpp:300
+#: ../src/endpoints/sip.cpp:301
 msgid "Timeout"
 msgstr "Истече"
 
-#: ../src/endpoints/sip.cpp:304
+#: ../src/endpoints/sip.cpp:305
 msgid "Conflict"
 msgstr "Конфликт"
 
-#: ../src/endpoints/sip.cpp:308
+#: ../src/endpoints/sip.cpp:309
 msgid "Temporarily unavailable"
 msgstr "Привремено недостапно"
 
-#: ../src/endpoints/sip.cpp:312
+#: ../src/endpoints/sip.cpp:313
 msgid "Not Acceptable"
 msgstr "Неприфатливо"
 
-#: ../src/endpoints/sip.cpp:321
+#: ../src/endpoints/sip.cpp:322
 #, c-format
 msgid "Registration failed: %s"
 msgstr "Регистрирањето неуспеа: %s"
 
-#: ../src/endpoints/sip.cpp:333
+#: ../src/endpoints/sip.cpp:334
 #, c-format
 msgid "Unregistration failed: %s"
 msgstr "Де-регистрирањето не успеа: %s"
 
-#: ../src/endpoints/sip.cpp:340
+#: ../src/endpoints/sip.cpp:341
 msgid "Unregistration failed"
 msgstr "Де-регистрирањето не успеа"
 
-#: ../src/endpoints/sip.cpp:540
+#: ../src/endpoints/sip.cpp:542
 msgid "Error: User not found"
 msgstr "Грешка: Корисникот не е пронајден"
 
-#: ../src/endpoints/sip.cpp:544
+#: ../src/endpoints/sip.cpp:546
 msgid "Error: User offline"
 msgstr "Грешка: Корисникот е офлајн"
 
-#: ../src/endpoints/sip.cpp:549
+#: ../src/endpoints/sip.cpp:551
 msgid "Error: Forbidden"
 msgstr "Грешка: Забрането"
 
-#: ../src/endpoints/sip.cpp:553
+#: ../src/endpoints/sip.cpp:555
 msgid "Error: Timeout"
 msgstr "Грешка: Истече "
 
-#: ../src/endpoints/sip.cpp:557 ../src/gui/chat.cpp:1031
+#: ../src/endpoints/sip.cpp:559 ../src/gui/chat.cpp:1031
 msgid "Error: Failed to transmit message"
 msgstr "Грешка: Не успеа праќањето на пораката"
 
@@ -1798,111 +1805,111 @@ msgstr "Емитување на повик до %s"
 msgid "Failed to call user"
 msgstr "Не може да се повика корисникот"
 
-#: ../src/gui/accounts.cpp:408
+#: ../src/gui/accounts.cpp:410
 msgid "Edit the Account Information"
 msgstr "Уреди ги информациите за сметката"
 
 #. Account Name
-#: ../src/gui/accounts.cpp:432
+#: ../src/gui/accounts.cpp:434
 msgid "Account Name:"
 msgstr "Број на сметка:"
 
-#: ../src/gui/accounts.cpp:446
+#: ../src/gui/accounts.cpp:448
 msgid "Protocol:"
 msgstr "Протокол:"
 
-#: ../src/gui/accounts.cpp:470 ../src/gui/accounts.cpp:973
+#: ../src/gui/accounts.cpp:472 ../src/gui/accounts.cpp:993
 msgid "Registrar:"
 msgstr "Регистратор:"
 
-#: ../src/gui/accounts.cpp:472 ../src/gui/accounts.cpp:982
+#: ../src/gui/accounts.cpp:474 ../src/gui/accounts.cpp:1002
 msgid "Gatekeeper:"
 msgstr "Gatekeeper:"
 
 #. User
-#: ../src/gui/accounts.cpp:486
+#: ../src/gui/accounts.cpp:488
 msgid "User:"
 msgstr "Корисник:"
 
 #. Password
-#: ../src/gui/accounts.cpp:501
+#: ../src/gui/accounts.cpp:503
 msgid "Password:"
 msgstr "Лозинка:"
 
 #. Advanced Options
-#: ../src/gui/accounts.cpp:518
+#: ../src/gui/accounts.cpp:520
 msgid "More _Options"
 msgstr "Повеќе _Опции"
 
-#: ../src/gui/accounts.cpp:532
+#: ../src/gui/accounts.cpp:534
 msgid "Authentication Login:"
 msgstr "Логин за проверка на автентичноста"
 
-#: ../src/gui/accounts.cpp:554 ../src/gui/accounts.cpp:983
+#: ../src/gui/accounts.cpp:556 ../src/gui/accounts.cpp:1003
 msgid "Gatekeeper ID:"
 msgstr "Gatekeeper ID:"
 
 #. Timeout
-#: ../src/gui/accounts.cpp:578
+#: ../src/gui/accounts.cpp:580
 msgid "Registration Timeout:"
 msgstr "Истек на време на регистрирање:"
 
-#. SIP
-#. H323
-#: ../src/gui/accounts.cpp:684 ../src/gui/accounts.cpp:686
-#: ../src/gui/addressbook.cpp:3114 ../src/gui/addressbook.cpp:3593
+#. FIXME change strings after stringfreeze to something more useful - js
+#: ../src/gui/accounts.cpp:630 ../src/gui/accounts.cpp:637
+#: ../src/gui/accounts.cpp:649 ../src/gui/addressbook.cpp:3113
+#: ../src/gui/addressbook.cpp:3592
 msgid "Missing information"
 msgstr "Информации кои недостигаат:"
 
-#: ../src/gui/accounts.cpp:684
+#: ../src/gui/accounts.cpp:631 ../src/gui/accounts.cpp:638
 msgid "Please make sure to provide a valid account name, host name, and user name."
 msgstr ""
-"Ве молам осигурајте се дека го внесовте валидно име на сметка, име на "
-"сервер и корисничко име "
+"Ве молам осигурајте се дека го внесовте валидно име на сметка, име на сервер "
+"и корисничко име "
 
-#: ../src/gui/accounts.cpp:686
+#: ../src/gui/accounts.cpp:650
 msgid ""
 "Please make sure to provide a valid account name, host name and registration "
 "timeout."
 msgstr ""
-"Ве молам осигурајте се дека го внесовте валидно име на сметка, име на "
-"сервер и истек на време за регистрација  "
+"Ве молам осигурајте се дека го внесовте валидно име на сметка, име на сервер "
+"и истек на време за регистрација  "
 
-#: ../src/gui/accounts.cpp:716
+#: ../src/gui/accounts.cpp:736
 #, c-format
 msgid "Are you sure you want to delete account %s?"
 msgstr "Дали сте сигурни дека сакате да ја избришите сметката %s?"
 
-#: ../src/gui/accounts.cpp:974
+#: ../src/gui/accounts.cpp:994
 msgid "Realm/Domain:"
 msgstr "Област/домен:"
 
-#: ../src/gui/accounts.cpp:1497
+#: ../src/gui/accounts.cpp:1517
 msgid "Account Name"
 msgstr "Име на сметка"
 
-#: ../src/gui/accounts.cpp:1498
+#: ../src/gui/accounts.cpp:1518
 msgid "Protocol"
 msgstr "Протокол"
 
-#: ../src/gui/accounts.cpp:1507
+#: ../src/gui/accounts.cpp:1527
 msgid "Voice Mails"
 msgstr "Гласовни Пораки"
 
-#: ../src/gui/accounts.cpp:1508
+#: ../src/gui/accounts.cpp:1528
 msgid "Status"
 msgstr "Статус"
 
-#: ../src/gui/accounts.cpp:1519
+#: ../src/gui/accounts.cpp:1539
 msgid "Accounts"
 msgstr "Сметки"
 
-#: ../src/gui/accounts.cpp:1555 ../src/gui/preferences.cpp:474
+#: ../src/gui/accounts.cpp:1575 ../src/gui/preferences.cpp:474
 #: ../src/gui/preferences.cpp:817
 msgid "A"
 msgstr "A"
 
-#: ../src/gui/accounts.cpp:1655
+#: ../src/gui/accounts.cpp:1675
 msgid "_Default"
 msgstr "_Стандардно"
 
@@ -2005,46 +2012,46 @@ msgid "Location contains"
 msgstr "Локацијата содржи"
 
 #. call a contact, usage: general
-#: ../src/gui/addressbook.cpp:1552 ../src/gui/addressbook.cpp:2586
+#: ../src/gui/addressbook.cpp:1552 ../src/gui/addressbook.cpp:2585
 #: ../src/gui/callshistory.cpp:295 ../src/gui/chat.cpp:682
 msgid "C_all Contact"
 msgstr "С_сите Контакти"
 
 #. copy a contact's URL to clipboard, usage: general
-#: ../src/gui/addressbook.cpp:1559 ../src/gui/addressbook.cpp:2596
+#: ../src/gui/addressbook.cpp:1559 ../src/gui/addressbook.cpp:2595
 #: ../src/gui/chat.cpp:677 ../src/gui/chat.cpp:682
 msgid "_Copy URL to Clipboard"
 msgstr "_Копирај ја URL во таблата со исечоци"
 
-#: ../src/gui/addressbook.cpp:1565 ../src/gui/addressbook.cpp:2601
+#: ../src/gui/addressbook.cpp:1565 ../src/gui/addressbook.cpp:2600
 msgid "_Write e-Mail"
 msgstr "_Напиши пошта"
 
 #. add a contact to the local addressbook, usage: remote contacts only
-#: ../src/gui/addressbook.cpp:1572 ../src/gui/addressbook.cpp:2613
+#: ../src/gui/addressbook.cpp:1572 ../src/gui/addressbook.cpp:2612
 #: ../src/gui/callshistory.cpp:302 ../src/gui/chat.cpp:682
 msgid "Add Contact to _Address Book"
 msgstr "Додај контакт во _Именикот"
 
 #. send a contact a (SIP!) message, usage: SIP contacts only
-#: ../src/gui/addressbook.cpp:1579 ../src/gui/addressbook.cpp:2591
+#: ../src/gui/addressbook.cpp:1579 ../src/gui/addressbook.cpp:2590
 msgid "_Send Message"
 msgstr "_Прати ја порака"
 
 #. edit a local contact's addressbook entry, usage: local contacts
 #: ../src/gui/addressbook.cpp:1586 ../src/gui/addressbook.cpp:1723
-#: ../src/gui/addressbook.cpp:2572
+#: ../src/gui/addressbook.cpp:2571
 msgid "_Properties"
 msgstr "_Својства"
 
 #. delete a local contact entry, usage: local contacts
 #: ../src/gui/addressbook.cpp:1593 ../src/gui/addressbook.cpp:1730
-#: ../src/gui/addressbook.cpp:2567
+#: ../src/gui/addressbook.cpp:2566
 msgid "_Delete"
 msgstr "_Избриши"
 
 #. "new contact" dialog, usage: local context
-#: ../src/gui/addressbook.cpp:1600 ../src/gui/addressbook.cpp:2608
+#: ../src/gui/addressbook.cpp:1600 ../src/gui/addressbook.cpp:2607
 msgid "New _Contact"
 msgstr "Нов _Контакт"
 
@@ -2069,128 +2076,128 @@ msgstr[0] "Најдов %d корисник во %s од вкупно %d кор�
 msgstr[1] "Најдов %d корисници во %s од вкупно %d корисници"
 msgstr[2] "Најдов %d корисници во %s од вкупно %d корисници"
 
-#: ../src/gui/addressbook.cpp:2523
+#: ../src/gui/addressbook.cpp:2522
 msgid "Address Book"
 msgstr "Именик"
 
-#: ../src/gui/addressbook.cpp:2558
+#: ../src/gui/addressbook.cpp:2557
 msgid "_File"
 msgstr "_Датотека"
 
-#: ../src/gui/addressbook.cpp:2560
+#: ../src/gui/addressbook.cpp:2559
 msgid "New _Address Book"
 msgstr "Нов _Именик"
 
-#: ../src/gui/addressbook.cpp:2579 ../src/gui/main.cpp:975
+#: ../src/gui/addressbook.cpp:2578 ../src/gui/main.cpp:975
 msgid "_Close"
 msgstr "_Затвори"
 
-#: ../src/gui/addressbook.cpp:2584
+#: ../src/gui/addressbook.cpp:2583
 msgid "C_ontact"
 msgstr "К_онтакт"
 
-#: ../src/gui/addressbook.cpp:2686
+#: ../src/gui/addressbook.cpp:2685
 msgid "Remote Contacts"
 msgstr "Далечни контакти"
 
-#: ../src/gui/addressbook.cpp:2694
+#: ../src/gui/addressbook.cpp:2693
 msgid "Local Contacts"
 msgstr "Локални контакти"
 
-#: ../src/gui/addressbook.cpp:2817
+#: ../src/gui/addressbook.cpp:2816
 msgid "Edit the Contact Information"
 msgstr "Уреди ги информациите за контакт"
 
-#: ../src/gui/addressbook.cpp:2838 ../src/gui/addressbook.cpp:3308
+#: ../src/gui/addressbook.cpp:2837 ../src/gui/addressbook.cpp:3307
 msgid "Name:"
 msgstr "Име:"
 
-#: ../src/gui/addressbook.cpp:2858
+#: ../src/gui/addressbook.cpp:2857
 msgid "VoIP URL:"
 msgstr "VoIP URL:"
 
-#: ../src/gui/addressbook.cpp:2880
+#: ../src/gui/addressbook.cpp:2879
 msgid "Email:"
 msgstr "Епошта:"
 
-#: ../src/gui/addressbook.cpp:2901
+#: ../src/gui/addressbook.cpp:2900
 msgid "Speed Dial:"
 msgstr "Брзина на бирање:"
 
-#: ../src/gui/addressbook.cpp:2923
+#: ../src/gui/addressbook.cpp:2922
 msgid "Categories:"
 msgstr "Категории:"
 
-#: ../src/gui/addressbook.cpp:2948
+#: ../src/gui/addressbook.cpp:2947
 msgid "Local Addressbook:"
 msgstr "Локален Именик:"
 
-#: ../src/gui/addressbook.cpp:3114
+#: ../src/gui/addressbook.cpp:3113
 msgid "Please make sure to provide at least a full name or an URL for the contact."
 msgstr "Ве молам осигурај те се дека го внесовте целото име или URL за контактот."
 
-#: ../src/gui/addressbook.cpp:3161
+#: ../src/gui/addressbook.cpp:3160
 #, c-format
 msgid "Are you sure you want to delete %s from %s?"
 msgstr "Дали сте сигурни дека сакате да го избришите %s од %s ?"
 
-#: ../src/gui/addressbook.cpp:3287
+#: ../src/gui/addressbook.cpp:3286
 msgid "Edit an address book"
 msgstr "Уреди Именик"
 
-#: ../src/gui/addressbook.cpp:3288
+#: ../src/gui/addressbook.cpp:3287
 msgid "Add an address book"
 msgstr "Додај Именик"
 
-#: ../src/gui/addressbook.cpp:3333
+#: ../src/gui/addressbook.cpp:3332
 msgid "Type:"
 msgstr "Тип:"
 
-#: ../src/gui/addressbook.cpp:3339
+#: ../src/gui/addressbook.cpp:3338
 msgid "Local"
 msgstr "Локално"
 
-#: ../src/gui/addressbook.cpp:3340
+#: ../src/gui/addressbook.cpp:3339
 msgid "Remote LDAP"
 msgstr "Далечен LDAP"
 
-#: ../src/gui/addressbook.cpp:3341
+#: ../src/gui/addressbook.cpp:3340
 msgid "Remote ILS"
 msgstr "Далечен ILS"
 
-#: ../src/gui/addressbook.cpp:3372
+#: ../src/gui/addressbook.cpp:3371
 msgid "Hostname:"
 msgstr "Име на хостот:"
 
-#: ../src/gui/addressbook.cpp:3395
+#: ../src/gui/addressbook.cpp:3394
 msgid "Port:"
 msgstr "Порта:"
 
-#: ../src/gui/addressbook.cpp:3420
+#: ../src/gui/addressbook.cpp:3419
 msgid "Base DN:"
 msgstr "Основна DN:"
 
-#: ../src/gui/addressbook.cpp:3443
+#: ../src/gui/addressbook.cpp:3442
 msgid "Search Scope:"
 msgstr "Домет на пребарување:"
 
-#: ../src/gui/addressbook.cpp:3449
+#: ../src/gui/addressbook.cpp:3448
 msgid "Subtree"
 msgstr "Subtree"
 
-#: ../src/gui/addressbook.cpp:3450
+#: ../src/gui/addressbook.cpp:3449
 msgid "One Level"
 msgstr "Едно ниво"
 
-#: ../src/gui/addressbook.cpp:3480
+#: ../src/gui/addressbook.cpp:3479
 msgid "Search Attribute:"
 msgstr "Атрибути за пребарување:"
 
-#: ../src/gui/addressbook.cpp:3593
+#: ../src/gui/addressbook.cpp:3592
 msgid "Please make sure you fill in all required fields."
 msgstr "Ве молам пополнете ги сите полиња кои се бараат. "
 
-#: ../src/gui/addressbook.cpp:3639
+#: ../src/gui/addressbook.cpp:3638
 #, c-format
 msgid "Are you sure you want to delete %s and all its contacts?"
 msgstr "Дали сте сигурни дека сакате да го избришете %s и целата негова содржина?"
@@ -2239,8 +2246,7 @@ msgstr "Placed повици"
 msgid "Missed Calls"
 msgstr "Пропуштени повици"
 
-#: ../src/gui/callshistory.cpp:676 ../src/gui/main.cpp:1136
-#: ../src/gui/statusicon.cpp:144
+#: ../src/gui/callshistory.cpp:676 ../src/gui/statusicon.cpp:144
 msgid "Calls History"
 msgstr "Повици во историја"
 
@@ -2370,11 +2376,11 @@ msgid ""
 "Once you have completed these steps, you can always change them later by "
 "selecting Preferences in the Edit menu."
 msgstr ""
-"Ова е главниот асистент за конфигурирање на Ekiga. Следниве чекори ќе "
-"ја постават Ekiga преку поставување на неколку едноставни прашања.\n"
+"Ова е главниот асистент за конфигурирање на Ekiga. Следниве чекори ќе ја "
+"постават Ekiga преку поставување на неколку едноставни прашања.\n"
 "\n"
-"Откако ќе ги поминете овие чекори, можете да ги промените во секое време "
-"со избирање на Преференци од менито Уреди."
+"Откако ќе ги поминете овие чекори, можете да ги промените во секое време со "
+"избирање на Преференци од менито Уреди."
 
 #: ../src/gui/druid.cpp:622
 #, c-format
@@ -2532,8 +2538,8 @@ msgid ""
 "The audio input device is the device managed by the audio manager that will "
 "be used to record your voice."
 msgstr ""
-"Уредот за аудио влез е уред управуван од аудио драјверот што ќе се "
-"користат за снимање на Вашиот глас."
+"Уредот за аудио влез е уред управуван од аудио драјверот што ќе се користат "
+"за снимање на Вашиот глас."
 
 #: ../src/gui/druid.cpp:1070 ../src/gui/druid.cpp:1204
 msgid "Test Settings"
@@ -2554,8 +2560,8 @@ msgid ""
 "The video manager is the plugin that will manage your video devices, "
 "Video4Linux is the most common choice if you own a webcam."
 msgstr ""
-"Видео драјверот е додатокот кој ќе управува со Вашите видео уреди, Видео "
-"за Линукс е најчестиот избор доколку поседувате веб камера."
+"Видео драјверот е додатокот кој ќе управува со Вашите видео уреди, Видео за "
+"Линукс е најчестиот избор доколку поседувате веб камера."
 
 #: ../src/gui/druid.cpp:1172
 #, c-format
@@ -2637,7 +2643,7 @@ msgstr ""
 msgid "First Time Configuration Assistant"
 msgstr "Конфигурационен асистент за прво користење"
 
-#: ../src/gui/history.cpp:128 ../src/gui/main.cpp:1131
+#: ../src/gui/history.cpp:128
 msgid "General History"
 msgstr "Општа историја"
 
@@ -2732,8 +2738,8 @@ msgid "Forward calls"
 msgstr "Пренасочи ги повиците"
 
 #: ../src/gui/main.cpp:939
-msgid "Speed dials"
-msgstr "Брзина на бирање"
+msgid "Speed d_ials"
+msgstr "Брзо б_ирање"
 
 #: ../src/gui/main.cpp:943 ../src/gui/main.cpp:3148
 msgid "_Hold Call"
@@ -2792,8 +2798,8 @@ msgid "_Edit"
 msgstr "_Уреди"
 
 #: ../src/gui/main.cpp:988
-msgid "Configuration Druid"
-msgstr "Друид за конфигурирација"
+msgid "_Configuration Druid"
+msgstr "_Друид за конфигурирација"
 
 #: ../src/gui/main.cpp:989
 msgid "Run the configuration druid"
@@ -2848,8 +2854,8 @@ msgid "View all components"
 msgstr "Погледнете ги сите компоненти"
 
 #: ../src/gui/main.cpp:1033
-msgid "Control Panel"
-msgstr "Контролна табла"
+msgid "_Control Panel"
+msgstr "_Контролен панел"
 
 #: ../src/gui/main.cpp:1035
 msgid "_Dialpad"
@@ -2875,73 +2881,73 @@ msgstr "_Видео поставувања"
 msgid "View video settings"
 msgstr "Преглед на видео поставувањата"
 
-#: ../src/gui/main.cpp:1052 ../src/gui/main.cpp:1232
-msgid "Statistics"
-msgstr "Статистики"
+#: ../src/gui/main.cpp:1052
+msgid "_Statistics"
+msgstr "_Статистики"
 
 #: ../src/gui/main.cpp:1053
 msgid "View audio/video transmission and reception statistics"
 msgstr "Преглед на аудио/видео преносот и статистиките за прием"
 
-#: ../src/gui/main.cpp:1061 ../src/gui/main.cpp:4218
-msgid "Local Video"
-msgstr "Локално видео"
+#: ../src/gui/main.cpp:1061
+msgid "_Local Video"
+msgstr "_Локално видео"
 
 #: ../src/gui/main.cpp:1062
 msgid "Local video image"
 msgstr "Слика од локално видео"
 
-#: ../src/gui/main.cpp:1067 ../src/gui/main.cpp:4225
-msgid "Remote Video"
-msgstr "Далечно видео"
+#: ../src/gui/main.cpp:1067
+msgid "_Remote Video"
+msgstr "_Далечно видео"
 
 #: ../src/gui/main.cpp:1068
 msgid "Remote video image"
 msgstr "Слика од далечното видео"
 
 #: ../src/gui/main.cpp:1073
-msgid "Both (Picture-in-Picture)"
-msgstr "Двете (Слика во Слика)"
+msgid "Both (_Picture-in-Picture)"
+msgstr "_Двете (_Слика во слика)"
 
 #: ../src/gui/main.cpp:1074 ../src/gui/main.cpp:1080 ../src/gui/main.cpp:1087
 msgid "Both video images"
 msgstr "Двете видео слики"
 
 #: ../src/gui/main.cpp:1079
-msgid "Both (Side-by-Side)"
-msgstr "Двете (Страна-до-Страна)"
+msgid "Both (_Side-by-Side)"
+msgstr "Двете (_Страна-до-страна)"
 
 #: ../src/gui/main.cpp:1086
-msgid "Both (Both in New Windows)"
-msgstr "Двете (Двете во нов прозорец)"
+msgid "Both (_Both in New Windows)"
+msgstr "Двете (_Двете во нови прозорци)"
 
-#: ../src/gui/main.cpp:1095 ../src/gui/main.cpp:1573 ../src/gui/main.cpp:1598
-msgid "Zoom In"
-msgstr "Зумирај"
+#: ../src/gui/main.cpp:1095
+msgid "Zoom _In"
+msgstr "Прибли_жи"
 
 #: ../src/gui/main.cpp:1095 ../src/gui/main.cpp:1573 ../src/gui/main.cpp:1598
 msgid "Zoom in"
 msgstr "Приближи"
 
-#: ../src/gui/main.cpp:1099 ../src/gui/main.cpp:1577 ../src/gui/main.cpp:1602
-msgid "Zoom Out"
-msgstr "Одзумирај"
+#: ../src/gui/main.cpp:1099
+msgid "Zoom _Out"
+msgstr "Одале_чи"
 
 #: ../src/gui/main.cpp:1099 ../src/gui/main.cpp:1577 ../src/gui/main.cpp:1602
 msgid "Zoom out"
-msgstr "Оддалечи"
+msgstr "Одалечи"
 
-#: ../src/gui/main.cpp:1103 ../src/gui/main.cpp:1581 ../src/gui/main.cpp:1606
-msgid "Normal Size"
-msgstr "Нормална Големина"
+#: ../src/gui/main.cpp:1103
+msgid "_Normal Size"
+msgstr "_Нормална големина"
 
 #: ../src/gui/main.cpp:1103 ../src/gui/main.cpp:1581 ../src/gui/main.cpp:1606
 msgid "Normal size"
 msgstr "Нормална големина"
 
-#: ../src/gui/main.cpp:1109 ../src/gui/main.cpp:1587 ../src/gui/main.cpp:1612
-msgid "Fullscreen"
-msgstr "Цел Екран"
+#: ../src/gui/main.cpp:1109
+msgid "_Fullscreen"
+msgstr "_Цел екран"
 
 #: ../src/gui/main.cpp:1115
 msgid "_Tools"
@@ -2963,17 +2969,25 @@ msgstr "Прозорец за разговор"
 msgid "Open the chat window"
 msgstr "Отвори го прозорецот за разговор"
 
+#: ../src/gui/main.cpp:1131
+msgid "_General History"
+msgstr "_Општа историја"
+
 #: ../src/gui/main.cpp:1132
 msgid "View the operations history"
 msgstr "Преглед на операциите од историја"
+
+#: ../src/gui/main.cpp:1136
+msgid "_Calls History"
+msgstr "_Историја на повици"
 
 #: ../src/gui/main.cpp:1137 ../src/gui/statusicon.cpp:145
 msgid "View the calls history"
 msgstr "Преглед на повиците од историја"
 
 #: ../src/gui/main.cpp:1144
-msgid "PC-To-Phone Account"
-msgstr "PC-до телефон сметка"
+msgid "_PC-To-Phone Account"
+msgstr "_Сметка за PC-до телефон"
 
 #: ../src/gui/main.cpp:1145
 msgid "Manage your PC-To-Phone account"
@@ -3003,6 +3017,10 @@ msgstr "_За"
 msgid "View information about Ekiga"
 msgstr "Прегледај ги информациите за Ekiga"
 
+#: ../src/gui/main.cpp:1232
+msgid "Statistics"
+msgstr "Статистики"
+
 #: ../src/gui/main.cpp:1315
 msgid "Dialpad"
 msgstr "Перниче за бројчаник"
@@ -3030,6 +3048,22 @@ msgstr "Видео"
 #: ../src/gui/main.cpp:1524
 msgid "Audio"
 msgstr "Аудио"
+
+#: ../src/gui/main.cpp:1573 ../src/gui/main.cpp:1598
+msgid "Zoom In"
+msgstr "Зумирај"
+
+#: ../src/gui/main.cpp:1577 ../src/gui/main.cpp:1602
+msgid "Zoom Out"
+msgstr "Одзумирај"
+
+#: ../src/gui/main.cpp:1581 ../src/gui/main.cpp:1606
+msgid "Normal Size"
+msgstr "Нормална Големина"
+
+#: ../src/gui/main.cpp:1587 ../src/gui/main.cpp:1612
+msgid "Fullscreen"
+msgstr "Цел Екран"
 
 #: ../src/gui/main.cpp:1775
 msgid "Notification area not detected"
@@ -3110,6 +3144,14 @@ msgstr "Далечна апликација:"
 msgid "Ekiga"
 msgstr "Ekiga"
 
+#: ../src/gui/main.cpp:4218
+msgid "Local Video"
+msgstr "Локално видео"
+
+#: ../src/gui/main.cpp:4225
+msgid "Remote Video"
+msgstr "Далечно видео"
+
 #: ../src/gui/main.cpp:4476
 #, c-format
 msgid ""
@@ -3123,7 +3165,7 @@ msgstr ""
 "Изместени пакети: %1f %%\n"
 "Jitter buffer: %d ms"
 
-#: ../src/gui/main.cpp:4573
+#: ../src/gui/main.cpp:4574
 #, c-format
 msgid ""
 "Ekiga got an invalid value for the GConf key %s.\n"
@@ -3145,23 +3187,23 @@ msgstr ""
 "поштенски листи за повеќе информации (http://mail.gnome.org) за наведениот "
 "проблем."
 
-#: ../src/gui/main.cpp:4576
+#: ../src/gui/main.cpp:4577
 msgid "Gconf key error"
 msgstr "Грешка на копче во Gconf"
 
-#: ../src/gui/main.cpp:4606 ../src/gui/main.cpp:4625
+#: ../src/gui/main.cpp:4608 ../src/gui/main.cpp:4627
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "Печати пораки за чистење од бубачки во конзола (ниво помеѓу 1 и 6)"
 
-#: ../src/gui/main.cpp:4609 ../src/gui/main.cpp:4630
+#: ../src/gui/main.cpp:4611 ../src/gui/main.cpp:4632
 msgid "Makes Ekiga call the given URL"
 msgstr "Се обавува Ekiga повик до дадената URL"
 
-#: ../src/gui/main.cpp:4663
+#: ../src/gui/main.cpp:4665
 msgid "No usable audio plugin detected"
 msgstr "Нема откриено аудио додаток кој може да се користи"
 
-#: ../src/gui/main.cpp:4663
+#: ../src/gui/main.cpp:4665
 msgid ""
 "Ekiga didn't find any usable audio plugin. Make sure that your installation "
 "is correct."
