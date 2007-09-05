@@ -588,11 +588,6 @@ editable_set_add_value_clicked_cb (GtkWidget *button,
 }
 
 
-/** Disconnects the signals for the contact, emits the 'contact_removed' signal on the
- * Ekiga::Book and takes care of the release of that contact following the policy of
- * the ContactManagementTrait associated with the Ekiga::Book.
- * @param: The contact to remove.
- */
 static void
 multiple_choice_choice_toggled_cb (GtkCellRendererToggle *cell,
 				   gchar *path_str,
