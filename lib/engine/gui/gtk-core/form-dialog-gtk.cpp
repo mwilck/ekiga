@@ -319,9 +319,10 @@ public:
   { }
 
   enum {
-    SINGLE_CHOICE_COLUMN_VALUE,
-    SINGLE_CHOICE_COLUMN_NAME,
-    SINGLE_CHOICE_COLUMN_NUMBER
+
+    COLUMN_VALUE,
+    COLUMN_NAME,
+    COLUMN_NUMBER
   };
 
   void submit (Ekiga::FormBuilder &builder)
@@ -332,10 +333,12 @@ public:
 
     gtk_combo_box_get_active_iter (GTK_COMBO_BOX (combo), &iter);
 
-    gtk_tree_model_get (model, &iter, SINGLE_CHOICE_COLUMN_VALUE, &cvalue, -1);
+    gtk_tree_model_get (model, &iter, COLUMN_VALUE, &cvalue, -1);
 
     builder.single_choice (name, description,
 			   std::string (cvalue), choices);
+
+    g_free (cvalue);
   }
 
 private:
@@ -363,7 +366,12 @@ public:
   ~MultipleChoiceSubmitter ()
   { }
 
-  enum { MULTIPLE_CHOICE_COLUMN_ACTIVE, MULTIPLE_CHOICE_COLUMN_NAME, MULTIPLE_CHOICE_COLUMN_NUMBER };
+  enum {
+
+    COLUMN_ACTIVE,
+    COLUMN_NAME,
+    COLUMN_NUMBER
+  };
 
   void submit (Ekiga::FormBuilder &builder)
   {
@@ -376,15 +384,18 @@ public:
     model = gtk_tree_view_get_model (GTK_TREE_VIEW (tree_view));
 
     if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (model), &iter)) {
+
       do {
+
 	gchar *name = NULL;
 
         gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
-                            MULTIPLE_CHOICE_COLUMN_ACTIVE, &active,
-                            MULTIPLE_CHOICE_COLUMN_NAME, &name,
+                            COLUMN_ACTIVE, &active,
+                            COLUMN_NAME, &name,
                             -1);
 
         if (active && name) {
+
           values.insert (name);
 
           std::map <std::string, std::string>::const_iterator mit;
@@ -423,8 +434,11 @@ public:
   ~EditableSetSubmitter ()
   { }
 
-  enum { COLUMN_VALUE,
-	 COLUMN_NUMBER };
+  enum {
+
+    COLUMN_VALUE,
+    COLUMN_NUMBER
+  };
 
   void submit (Ekiga::FormBuilder &builder)
   {
@@ -488,9 +502,10 @@ multiple_choice_add_choice_activated_cb (GtkWidget *entry,
     do {
 
       gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
-                          MultipleChoiceSubmitter::MULTIPLE_CHOICE_COLUMN_NAME, &tree_group,
+                          MultipleChoiceSubmitter::COLUMN_NAME, &tree_group,
                           -1);
       if (tree_group && !strcmp (tree_group, group)) {
+
         g_free (tree_group);
         return;
       }
@@ -503,8 +518,8 @@ multiple_choice_add_choice_activated_cb (GtkWidget *entry,
 
   gtk_list_store_prepend (GTK_LIST_STORE (model), &iter);
   gtk_list_store_set (GTK_LIST_STORE (model), &iter,
-                      MultipleChoiceSubmitter::MULTIPLE_CHOICE_COLUMN_ACTIVE, TRUE,
-                      MultipleChoiceSubmitter::MULTIPLE_CHOICE_COLUMN_NAME, gtk_entry_get_text (GTK_ENTRY (entry)),
+                      MultipleChoiceSubmitter::COLUMN_ACTIVE, TRUE,
+                      MultipleChoiceSubmitter::COLUMN_NAME, gtk_entry_get_text (GTK_ENTRY (entry)),
                       -1);
 
   gtk_entry_set_text (GTK_ENTRY (entry), "");
@@ -594,9 +609,12 @@ multiple_choice_choice_toggled_cb (GtkCellRendererToggle *cell,
 
   /* Update the tree model */
   gtk_tree_model_get_iter (model, &iter, path);
-  gtk_tree_model_get (model, &iter, MultipleChoiceSubmitter::MULTIPLE_CHOICE_COLUMN_ACTIVE, &fixed, -1);
+  gtk_tree_model_get (model, &iter,
+		      MultipleChoiceSubmitter::COLUMN_ACTIVE, &fixed,
+		      -1);
   gtk_list_store_set (GTK_LIST_STORE (model), &iter,
-                      MultipleChoiceSubmitter::MULTIPLE_CHOICE_COLUMN_ACTIVE, fixed^1, -1);
+                      MultipleChoiceSubmitter::COLUMN_ACTIVE, fixed^1,
+		      -1);
   gtk_tree_path_free (path);
 }
 
@@ -903,13 +921,13 @@ FormDialog::single_choice (const std::string name,
   gtk_label_set_line_wrap_mode (GTK_LABEL (label), PANGO_WRAP_WORD);
 #endif
 
-  model = gtk_list_store_new (SingleChoiceSubmitter::SINGLE_CHOICE_COLUMN_NUMBER,
+  model = gtk_list_store_new (SingleChoiceSubmitter::COLUMN_NUMBER,
 			      G_TYPE_STRING, G_TYPE_STRING);
   widget = gtk_combo_box_new_with_model (GTK_TREE_MODEL (model));
   renderer = gtk_cell_renderer_text_new ();
   gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (widget), renderer, TRUE);
   gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (widget), renderer,
-				  "text", SingleChoiceSubmitter::SINGLE_CHOICE_COLUMN_NAME,
+				  "text", SingleChoiceSubmitter::COLUMN_NAME,
                                   NULL);
   for (std::map<std::string, std::string>::const_iterator map_iter
 	 = choices.begin ();
@@ -918,8 +936,8 @@ FormDialog::single_choice (const std::string name,
 
     gtk_list_store_append (model, &iter);
     gtk_list_store_set (model, &iter,
-			SingleChoiceSubmitter::SINGLE_CHOICE_COLUMN_VALUE, map_iter->first.c_str (),
-			SingleChoiceSubmitter::SINGLE_CHOICE_COLUMN_NAME, map_iter->second.c_str (),
+			SingleChoiceSubmitter::COLUMN_VALUE, map_iter->first.c_str (),
+			SingleChoiceSubmitter::COLUMN_NAME, map_iter->second.c_str (),
 			-1);
     if (map_iter->first == value)
       gtk_combo_box_set_active_iter (GTK_COMBO_BOX (widget), &iter);
@@ -978,7 +996,7 @@ FormDialog::multiple_choice (const std::string name,
 
   /* The GtkListStore containing the choices */
   tree_view = gtk_tree_view_new ();
-  list_store = gtk_list_store_new (MultipleChoiceSubmitter::MULTIPLE_CHOICE_COLUMN_NUMBER,
+  list_store = gtk_list_store_new (MultipleChoiceSubmitter::COLUMN_NUMBER,
                                    G_TYPE_BOOLEAN, G_TYPE_STRING);
   gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (tree_view), TRUE);
   gtk_tree_view_set_model (GTK_TREE_VIEW (tree_view), GTK_TREE_MODEL (list_store));
@@ -997,7 +1015,7 @@ FormDialog::multiple_choice (const std::string name,
   renderer = gtk_cell_renderer_toggle_new ();
   column =
     gtk_tree_view_column_new_with_attributes (NULL, renderer,
-                                              "active", MultipleChoiceSubmitter::MULTIPLE_CHOICE_COLUMN_ACTIVE,
+                                              "active", MultipleChoiceSubmitter::COLUMN_ACTIVE,
                                               NULL);
   gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
   g_signal_connect (G_OBJECT (renderer), "toggled",
@@ -1006,7 +1024,7 @@ FormDialog::multiple_choice (const std::string name,
   renderer = gtk_cell_renderer_text_new ();
   column =
     gtk_tree_view_column_new_with_attributes (NULL, renderer,
-                                              "text", MultipleChoiceSubmitter::MULTIPLE_CHOICE_COLUMN_NAME,
+                                              "text", MultipleChoiceSubmitter::COLUMN_NAME,
                                               NULL);
   gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
 
@@ -1020,8 +1038,8 @@ FormDialog::multiple_choice (const std::string name,
 
     gtk_list_store_append (GTK_LIST_STORE (list_store), &iter);
     gtk_list_store_set (GTK_LIST_STORE (list_store), &iter,
-                        MultipleChoiceSubmitter::MULTIPLE_CHOICE_COLUMN_ACTIVE, active,
-                        MultipleChoiceSubmitter::MULTIPLE_CHOICE_COLUMN_NAME, map_iter->second.c_str (),
+                        MultipleChoiceSubmitter::COLUMN_ACTIVE, active,
+                        MultipleChoiceSubmitter::COLUMN_NAME, map_iter->second.c_str (),
                         -1);
   }
 
