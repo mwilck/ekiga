@@ -152,3 +152,17 @@ Ekiga::FormDumper::multiple_choice (const std::string name,
       out << " (X)" << std::endl;
   }
 }
+
+void
+Ekiga::FormDumper::editable_set (const std::string name,
+				 const std::string description,
+				 const std::set<std::string> values)
+{
+  out << "Editable list " << name << ":" << std::endl
+      << description << std::endl
+      << "where current set is :" << std::endl;
+  for (std::set<std::string>::const_iterator iter = values.begin ();
+       iter != values.end ();
+       iter++)
+    out << *iter << std::endl;
+}

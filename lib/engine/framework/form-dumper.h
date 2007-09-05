@@ -86,6 +86,10 @@ namespace Ekiga
 			  const std::string description,
 			  const std::set<std::string> values,
 			  const std::map<std::string, std::string> choices);
+
+    void editable_set (const std::string name,
+		       const std::string description,
+		       const std::set<std::string> values);
   private:
 
     std::ostream &out;

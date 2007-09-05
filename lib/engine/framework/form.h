@@ -70,6 +70,8 @@ namespace Ekiga
     virtual const std::string single_choice (const std::string name) const = 0;
 
     virtual const std::set<std::string> multiple_choice (const std::string name) const = 0;
+
+    virtual const std::set<std::string> editable_set (const std::string name) const = 0;
   };
 };
 

@@ -50,6 +50,7 @@ Ekiga::FormBuilder::visit (Ekiga::FormVisitor &visitor) const
   std::list<struct MultiTextField>::const_iterator iter_multi_text = multi_texts.begin ();
   std::list<struct SingleChoiceField>::const_iterator iter_single_choice = single_choices.begin ();
   std::list<struct MultipleChoiceField>::const_iterator iter_multiple_choice = multiple_choices.begin ();
+  std::list<struct EditableSetField>::const_iterator iter_editable_set = editable_sets.begin ();
 
   visitor.title (my_title);
   visitor.instructions (my_instructions);
@@ -115,6 +116,13 @@ Ekiga::FormBuilder::visit (Ekiga::FormVisitor &visitor) const
 			       iter_multiple_choice->allow_new_values);
       iter_multiple_choice++;
       break;
+
+    case EDITABLE_SET:
+
+      visitor.editable_set (iter_editable_set->name,
+			    iter_editable_set->description,
+			    iter_editable_set->values);
+      iter_editable_set++;
     }
   }
 }
@@ -203,6 +211,18 @@ Ekiga::FormBuilder::multiple_choice (const std::string name) const
   throw Ekiga::Form::not_found ();
 }
 
+const std::set<std::string>
+Ekiga::FormBuilder::editable_set (const std::string name) const
+{
+  for (std::list<struct EditableSetField>::const_iterator iter = editable_sets.begin ();
+       iter != editable_sets.end ();
+       iter++)
+    if (iter->name == name)
+      return iter->values;
+
+  throw Ekiga::Form::not_found ();
+}
+
 void
 Ekiga::FormBuilder::title (const std::string _title)
 {
@@ -284,4 +304,13 @@ Ekiga::FormBuilder::multiple_choice (const std::string name,
 {
   multiple_choices.push_back (MultipleChoiceField (name, description, values, choices, allow_new_values));
   ordering.push_back (MULTIPLE_CHOICE);
+}
+
+void
+Ekiga::FormBuilder::editable_set (const std::string name,
+				  const std::string description,
+				  const std::set<std::string> values)
+{
+  editable_sets.push_back (EditableSetField (name, description, values));
+  ordering.push_back (EDITABLE_SET);
 }

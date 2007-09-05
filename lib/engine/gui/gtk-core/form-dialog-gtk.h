@@ -99,6 +99,10 @@ public:
 			const std::map<std::string, std::string> choices,
 			bool allow_new_values);
 
+  void editable_set (const std::string name,
+		     const std::string description,
+		     const std::set<std::string> values);
+
   /* those are public only to be called from C code */
 
   void cancel ();

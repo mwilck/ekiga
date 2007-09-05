@@ -66,6 +66,8 @@ namespace Ekiga
 
     const std::set<std::string> multiple_choice (const std::string name) const;
 
+    const std::set<std::string> editable_set (const std::string name) const;
+
     /* builder part */
 
     void title (const std::string title);
@@ -103,6 +105,10 @@ namespace Ekiga
 			  const std::set<std::string> values,
 			  const std::map<std::string, std::string> choices,
 			  bool allow_new_values);
+
+    void editable_set (const std::string name,
+		       const std::string description,
+		       const std::set<std::string> values);
   private:
 
     struct HiddenField
@@ -191,6 +197,19 @@ namespace Ekiga
       bool allow_new_values;
     };
 
+    struct EditableSetField
+    {
+      EditableSetField (const std::string _name,
+			const std::string _description,
+			const std::set<std::string> _values):
+	name(_name), description(_description), values(_values)
+      {}
+
+      const std::string name;
+      const std::string description;
+      const std::set<std::string> values;
+    };
+
     typedef enum {
 
       HIDDEN,
@@ -199,7 +218,8 @@ namespace Ekiga
       PRIVATE_TEXT,
       MULTI_TEXT,
       SINGLE_CHOICE,
-      MULTIPLE_CHOICE
+      MULTIPLE_CHOICE,
+      EDITABLE_SET
     } FieldType;
 
     std::string my_title;
@@ -213,6 +233,7 @@ namespace Ekiga
     std::list<struct MultiTextField> multi_texts;
     std::list<struct SingleChoiceField> single_choices;
     std::list<struct MultipleChoiceField> multiple_choices;
+    std::list<struct EditableSetField> editable_sets;
   };
 };
 #endif

@@ -1,3 +1,18 @@
+2007-09-05  Julien Puydt  <jpuydt@free.fr>
+
+	* lib/engine/framework/form.h: Added an editable set field type.
+	* lib/engine/framework/form-visitor.h: Made it visit editable set
+	fields to.
+	* lib/engine/framework/form-dumper.h:
+	* lib/engine/framework/form-dumper.cpp: Adapt to previous.
+	* lib/engine/framework/form-builder.h:
+	* lib/engine/framework/form-builder.cpp: Made it possible to add an
+	editable set field to the built forms.
+	* lib/engine/gui/gtk-core/form-dialog-gtk.h:
+	* lib/engine/gui/gtk-core/form-dialog-gtk.cpp: Added support for
+	editable set fields, based on Damien's code for editable multiple
+	choice.
+	
 2007-09-04  Damien Sandras  <dsandras@gnome.org>
 
 	* src/endpoints/pcss.cpp: Increased sound channel buffer depth
