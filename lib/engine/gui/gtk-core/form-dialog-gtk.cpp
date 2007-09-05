@@ -69,7 +69,6 @@ multiple_choice_add_choice_clicked_cb (GtkWidget *button,
 				       gpointer data);
 
 
-
 /** Called when a choice has been toggled in the
  * GtkListStore.
  *
@@ -112,6 +111,18 @@ editable_set_add_value_clicked_cb (GtkWidget *button,
 				   gpointer data);
 
 
+/** Called when a choice has been toggled in the
+ * GtkListStore.
+ *
+ * Toggle the choice.
+ *
+ * @param: data is a pointer to the GtkListStore representing
+ * the list of choices.
+ */
+static void
+editable_set_choice_toggled_cb (GtkCellRendererToggle *cell,
+				gchar *path_str,
+				gpointer data);
 
 
 /*
@@ -436,6 +447,7 @@ public:
 
   enum {
 
+    COLUMN_ACTIVE,
     COLUMN_VALUE,
     COLUMN_NUMBER
   };
@@ -445,27 +457,33 @@ public:
     GtkTreeModel *model = NULL;
     GtkTreeIter iter;
     std::set<std::string> values;
+    std::set<std::string> proposed_values;
 
     model = gtk_tree_view_get_model (GTK_TREE_VIEW (tree_view));
     if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (model), &iter)) {
 
       do {
 
+	gboolean active = FALSE;
 	gchar *value = NULL;
 
 	gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
+			    COLUMN_ACTIVE, &active,
 			    COLUMN_VALUE, &value,
 			    -1);
 
 	if (value) {
 
-	  values.insert (value);
+	  if (active)
+	    values.insert (value);
+	  else
+	    proposed_values.insert (value);
 	  g_free (value);
 	}
       } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (model), &iter));
     }
 
-    builder.editable_set (name, description, values);
+    builder.editable_set (name, description, values, proposed_values);
   }
 
 private:
@@ -572,6 +590,7 @@ editable_set_add_value_activated_cb (GtkWidget *entry,
 
   gtk_list_store_prepend (GTK_LIST_STORE (model), &iter);
   gtk_list_store_set (GTK_LIST_STORE (model), &iter,
+		      EditableSetSubmitter::COLUMN_ACTIVE, TRUE,
                       EditableSetSubmitter::COLUMN_VALUE, gtk_entry_get_text (GTK_ENTRY (entry)),
                       -1);
 
@@ -585,6 +604,32 @@ editable_set_add_value_clicked_cb (GtkWidget *button,
 {
   if (strcmp (gtk_entry_get_text (GTK_ENTRY (data)), ""))
     gtk_widget_activate (GTK_WIDGET (data));
+}
+
+
+static void
+editable_set_choice_toggled_cb (GtkCellRendererToggle *cell,
+				gchar *path_str,
+				gpointer data)
+{
+  GtkTreeModel *model = NULL;
+  GtkTreePath *path = NULL;
+
+  GtkTreeIter iter;
+  gboolean fixed = false;
+
+  model = GTK_TREE_MODEL (data);
+  path = gtk_tree_path_new_from_string (path_str);
+
+  /* Update the tree model */
+  gtk_tree_model_get_iter (model, &iter, path);
+  gtk_tree_model_get (model, &iter,
+		      EditableSetSubmitter::COLUMN_ACTIVE, &fixed,
+		      -1);
+  gtk_list_store_set (GTK_LIST_STORE (model), &iter,
+                      EditableSetSubmitter::COLUMN_ACTIVE, fixed^1,
+		      -1);
+  gtk_tree_path_free (path);
 }
 
 
@@ -1078,7 +1123,8 @@ FormDialog::multiple_choice (const std::string name,
 void
 FormDialog::editable_set (const std::string name,
 			  const std::string description,
-			  const std::set<std::string> values)
+			  const std::set<std::string> values,
+			  const std::set<std::string> proposed_values)
 {
   GtkWidget *label = NULL;
   GtkWidget *vbox = NULL;
@@ -1116,7 +1162,7 @@ FormDialog::editable_set (const std::string name,
 
   /* The GtkListStore containing the values */
   list_store = gtk_list_store_new (EditableSetSubmitter::COLUMN_NUMBER,
-				   G_TYPE_STRING);
+				   G_TYPE_BOOLEAN, G_TYPE_STRING);
   gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (tree_view), TRUE);
   tree_view = gtk_tree_view_new_with_model (GTK_TREE_MODEL (list_store));
   gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (tree_view), FALSE);
@@ -1131,6 +1177,15 @@ FormDialog::editable_set (const std::string name,
   gtk_container_add (GTK_CONTAINER (frame), scroll);
   gtk_container_add (GTK_CONTAINER (scroll), tree_view);
 
+  renderer = gtk_cell_renderer_toggle_new ();
+  column =
+    gtk_tree_view_column_new_with_attributes (NULL, renderer,
+                                              "active", EditableSetSubmitter::COLUMN_ACTIVE,
+                                              NULL);
+  gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
+  g_signal_connect (G_OBJECT (renderer), "toggled",
+                    G_CALLBACK (editable_set_choice_toggled_cb), list_store);
+
   renderer = gtk_cell_renderer_text_new ();
   column =
     gtk_tree_view_column_new_with_attributes (NULL, renderer,
@@ -1144,8 +1199,23 @@ FormDialog::editable_set (const std::string name,
 
     gtk_list_store_append (GTK_LIST_STORE (list_store), &iter);
     gtk_list_store_set (GTK_LIST_STORE (list_store), &iter,
+			EditableSetSubmitter::COLUMN_ACTIVE, TRUE,
                         EditableSetSubmitter::COLUMN_VALUE, set_iter->c_str (),
                         -1);
+  }
+  for (std::set<std::string>::const_iterator set_iter
+	 = proposed_values.begin ();
+       set_iter != proposed_values.end ();
+       set_iter++) {
+
+    if (values.find (*set_iter) == values.end ()) {
+
+      gtk_list_store_append (GTK_LIST_STORE (list_store), &iter);
+      gtk_list_store_set (GTK_LIST_STORE (list_store), &iter,
+			  EditableSetSubmitter::COLUMN_ACTIVE, FALSE,
+			  EditableSetSubmitter::COLUMN_VALUE, set_iter->c_str (),
+			  -1);
+    }
   }
 
   rows++;

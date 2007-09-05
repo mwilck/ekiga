@@ -121,7 +121,8 @@ Ekiga::FormBuilder::visit (Ekiga::FormVisitor &visitor) const
 
       visitor.editable_set (iter_editable_set->name,
 			    iter_editable_set->description,
-			    iter_editable_set->values);
+			    iter_editable_set->values,
+			    iter_editable_set->proposed_values);
       iter_editable_set++;
     }
   }
@@ -309,8 +310,10 @@ Ekiga::FormBuilder::multiple_choice (const std::string name,
 void
 Ekiga::FormBuilder::editable_set (const std::string name,
 				  const std::string description,
-				  const std::set<std::string> values)
+				  const std::set<std::string> values,
+				  const std::set<std::string> proposed_values)
 {
-  editable_sets.push_back (EditableSetField (name, description, values));
+  editable_sets.push_back (EditableSetField (name, description,
+					     values, proposed_values));
   ordering.push_back (EDITABLE_SET);
 }

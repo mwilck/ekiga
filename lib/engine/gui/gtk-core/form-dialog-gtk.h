@@ -101,7 +101,8 @@ public:
 
   void editable_set (const std::string name,
 		     const std::string description,
-		     const std::set<std::string> values);
+		     const std::set<std::string> values,
+		     const std::set<std::string> proposed_values);
 
   /* those are public only to be called from C code */
 

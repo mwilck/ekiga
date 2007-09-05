@@ -92,7 +92,8 @@ namespace Ekiga
 
     virtual void editable_set (const std::string name,
 			       const std::string description,
-			       const std::set<std::string> values) = 0;
+			       const std::set<std::string> values,
+			       const std::set<std::string> proposed_values) = 0;
   };
 };
 

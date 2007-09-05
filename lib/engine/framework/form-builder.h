@@ -108,7 +108,8 @@ namespace Ekiga
 
     void editable_set (const std::string name,
 		       const std::string description,
-		       const std::set<std::string> values);
+		       const std::set<std::string> values,
+		       const std::set<std::string> proposed_values);
   private:
 
     struct HiddenField
@@ -201,13 +202,16 @@ namespace Ekiga
     {
       EditableSetField (const std::string _name,
 			const std::string _description,
-			const std::set<std::string> _values):
-	name(_name), description(_description), values(_values)
+			const std::set<std::string> _values,
+			const std::set<std::string> _proposed_values):
+	name(_name), description(_description),
+	values(_values), proposed_values(_proposed_values)
       {}
 
       const std::string name;
       const std::string description;
       const std::set<std::string> values;
+      const std::set<std::string> proposed_values;
     };
 
     typedef enum {
