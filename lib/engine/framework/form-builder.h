@@ -103,8 +103,7 @@ namespace Ekiga
     void multiple_choice (const std::string name,
 			  const std::string description,
 			  const std::set<std::string> values,
-			  const std::map<std::string, std::string> choices,
-			  bool allow_new_values);
+			  const std::map<std::string, std::string> choices);
 
     void editable_set (const std::string name,
 		       const std::string description,
@@ -185,17 +184,15 @@ namespace Ekiga
       MultipleChoiceField (const std::string _name,
 			   const std::string _description,
 			   const std::set<std::string> _values,
-			   const std::map<std::string, std::string> _choices,
-			   bool _allow_new_values):
+			   const std::map<std::string, std::string> _choices):
 	name(_name), description(_description),
-	values(_values), choices(_choices), allow_new_values(_allow_new_values)
+	values(_values), choices(_choices)
       {}
 
       const std::string name;
       const std::string description;
       const std::set<std::string> values;
       const std::map<std::string, std::string> choices;
-      bool allow_new_values;
     };
 
     struct EditableSetField

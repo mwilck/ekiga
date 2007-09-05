@@ -41,34 +41,6 @@
  * Declarations : GTK+ Callbacks
  */
 
-/** Called when the GtkEntry aiming at adding a new
- * choice has been activated.
- * Checks if the proposed choice is not already in
- * the list, add it to the choices if it is not the
- * case.
- *
- * @param: data is a pointer to the GtkListStore presenting
- * the list of choices.
- */
-static void
-multiple_choice_add_choice_activated_cb (GtkWidget *entry,
-					 gpointer data);
-
-
-/** Called when the GtkButton to add a choice
- * has been clicked.
- *
- * Emit the 'activated' signal on the GtkEntry
- * to trigger multiple_choice_add_choice_activated_cb.
- *
- * @param: data is a pointer to the GtkEntry containing
- * the new choice.
- */
-static void
-multiple_choice_add_choice_clicked_cb (GtkWidget *button,
-				       gpointer data);
-
-
 /** Called when a choice has been toggled in the
  * GtkListStore.
  *
@@ -368,10 +340,9 @@ public:
   MultipleChoiceSubmitter (const std::string _name,
 			   const std::string _description,
 			   const std::map<std::string, std::string> _choices,
-			   const bool _allow_new_values,
 			   GtkWidget *_tree_view):
     name(_name), description(_description),
-    choices(_choices), tree_view (_tree_view), allow_new_values(_allow_new_values)
+    choices(_choices), tree_view (_tree_view)
   { }
 
   ~MultipleChoiceSubmitter ()
@@ -419,14 +390,13 @@ public:
       } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (model), &iter));
     }
 
-    builder.multiple_choice (name, description, values, choices, allow_new_values);
+    builder.multiple_choice (name, description, values, choices);
   }
 
 private:
 
   const std::string name;
   const std::string description;
-  const bool allow_new_values;
   std::map<std::string, std::string> choices;
   GtkWidget *tree_view;
 };
@@ -497,60 +467,6 @@ private:
 /*
  * GTK+ Callbacks
  */
-static void
-multiple_choice_add_choice_activated_cb (GtkWidget *entry,
-					 gpointer data)
-{
-  GtkWidget *button = NULL;
-  GtkTreeModel *model = NULL;
-
-  const char *group = NULL;
-  gchar *tree_group = NULL;
-
-  GtkTreeIter iter;
-
-  model = gtk_tree_view_get_model (GTK_TREE_VIEW (data));
-
-  group = gtk_entry_get_text (GTK_ENTRY (entry));
-  if (!strcmp (group, ""))
-    return;
-
-  if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (model), &iter)) {
-
-    do {
-
-      gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
-                          MultipleChoiceSubmitter::COLUMN_NAME, &tree_group,
-                          -1);
-      if (tree_group && !strcmp (tree_group, group)) {
-
-        g_free (tree_group);
-        return;
-      }
-      g_free (tree_group);
-
-    } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (model), &iter));
-  }
-
-  gtk_tree_model_get_iter_first (GTK_TREE_MODEL (model), &iter);
-
-  gtk_list_store_prepend (GTK_LIST_STORE (model), &iter);
-  gtk_list_store_set (GTK_LIST_STORE (model), &iter,
-                      MultipleChoiceSubmitter::COLUMN_ACTIVE, TRUE,
-                      MultipleChoiceSubmitter::COLUMN_NAME, gtk_entry_get_text (GTK_ENTRY (entry)),
-                      -1);
-
-  gtk_entry_set_text (GTK_ENTRY (entry), "");
-}
-
-
-static void
-multiple_choice_add_choice_clicked_cb (GtkWidget *button,
-				       gpointer data)
-{
-  if (strcmp (gtk_entry_get_text (GTK_ENTRY (data)), ""))
-    gtk_widget_activate (GTK_WIDGET (data));
-}
 
 static void
 editable_set_add_value_activated_cb (GtkWidget *entry,
@@ -997,8 +913,7 @@ void
 FormDialog::multiple_choice (const std::string name,
 			     const std::string description,
 			     const std::set<std::string> values,
-			     const std::map<std::string, std::string> choices,
-			     bool allow_new_values)
+			     const std::map<std::string, std::string> choices)
 {
   GtkWidget *label = NULL;
   GtkWidget *vbox = NULL;
@@ -1091,32 +1006,7 @@ FormDialog::multiple_choice (const std::string name,
                     (GtkAttachOptions) (GTK_FILL),
                     0, 0);
 
-  if (allow_new_values) {
-
-    hbox = gtk_hbox_new (FALSE, 2);
-    entry = gtk_entry_new ();
-    button = gtk_button_new_from_stock (GTK_STOCK_ADD);
-    gtk_box_pack_start (GTK_BOX (hbox), entry, TRUE, TRUE, 2);
-    gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 2);
-
-    g_signal_connect (G_OBJECT (entry), "activate",
-                      (GCallback) multiple_choice_add_choice_activated_cb,
-                      (gpointer) tree_view);
-
-    g_signal_connect (G_OBJECT (button), "clicked",
-                      (GCallback) multiple_choice_add_choice_clicked_cb,
-                      (gpointer) entry);
-
-    rows++;
-    gtk_table_resize (GTK_TABLE (fields), rows, 2);
-    gtk_table_attach (GTK_TABLE (fields), hbox,
-                      0, 2, rows - 1, rows,
-                      (GtkAttachOptions) (GTK_FILL),
-                      (GtkAttachOptions) (GTK_FILL),
-                      0, 0);
-  }
-
-  submitter = new MultipleChoiceSubmitter (name, description, choices, allow_new_values, tree_view);
+  submitter = new MultipleChoiceSubmitter (name, description, choices, tree_view);
   submitters.push_back (submitter);
 }
 

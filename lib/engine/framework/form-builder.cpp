@@ -112,8 +112,7 @@ Ekiga::FormBuilder::visit (Ekiga::FormVisitor &visitor) const
       visitor.multiple_choice (iter_multiple_choice->name,
 			       iter_multiple_choice->description,
 			       iter_multiple_choice->values,
-			       iter_multiple_choice->choices,
-			       iter_multiple_choice->allow_new_values);
+			       iter_multiple_choice->choices);
       iter_multiple_choice++;
       break;
 
@@ -300,10 +299,10 @@ void
 Ekiga::FormBuilder::multiple_choice (const std::string name,
 				     const std::string description,
 				     const std::set<std::string> values,
-				     const std::map<std::string, std::string> choices,
-				     bool allow_new_values)
+				     const std::map<std::string, std::string> choices)
 {
-  multiple_choices.push_back (MultipleChoiceField (name, description, values, choices, allow_new_values));
+  multiple_choices.push_back (MultipleChoiceField (name, description,
+						   values, choices));
   ordering.push_back (MULTIPLE_CHOICE);
 }
 

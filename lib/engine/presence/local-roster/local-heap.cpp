@@ -181,7 +181,6 @@ Local::Heap::new_presentity (const std::string name,
 
     Ekiga::FormRequestSimple request;
     std::set<std::string> groups = existing_groups ();
-    std::map<std::string, std::string> choices;
 
     request.title (_("Add to local roster"));
     request.instructions (_("Please fill in this form to add a new contact "
@@ -197,14 +196,9 @@ Local::Heap::new_presentity (const std::string name,
       request.text ("uri", _("Address:"), uri);
     }
 
-    for (std::set<std::string>::const_iterator iter = groups.begin ();
-	 iter != groups.end ();
-	 iter++)
-      choices[*iter] = *iter;
-
-    request.multiple_choice ("old_groups",
-			     _("Put contact in groups:"),
-			     std::set<std::string>(), choices, true);
+    request.editable_set ("groups",
+			  _("Put contact in groups:"),
+			  std::set<std::string>(), groups);
 
     request.submitted.connect (sigc::mem_fun (this, &Local::Heap::new_presentity_form_submitted));
 
@@ -281,12 +275,7 @@ Local::Heap::new_presentity_form_submitted (Ekiga::Form &result)
     const std::string name = result.text ("name");
     const std::string good_uri = result.hidden ("good-uri");
     std::string uri;
-    const std::set<std::string> old_groups = result.multiple_choice ("old_groups");
-    //const std::list<std::string> new_groups =  split_on_commas (result.text ("new_groups"));
-    std::set<std::string> groups;
-
-    groups.insert (old_groups.begin (), old_groups.end ());
-    //groups.insert (new_groups.begin (), new_groups.end ());
+    const std::set<std::string> groups = result.multiple_choice ("groups");
 
     if (good_uri == "yes")
       uri = result.hidden ("uri");

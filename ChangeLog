@@ -4,6 +4,18 @@
 	* lib/engine/framework/form-builder.h:
 	* lib/engine/framework/form-builder.cpp:
 	* lib/engine/gui/gtk-core/form-dialog-gtk.h:
+	* lib/engine/gui/gtk-core/form-dialog-gtk.cpp:
+	* lib/engine/presence/local-roster/local-heap.cpp:
+	* lib/engine/presence/local-roster/local-presentity.cpp: Removed
+	support for adding choices to a multiple choice, since that doesn't
+	really make sense.
+
+2007-09-05  Julien Puydt  <jpuydt@gnome.org>
+
+	* lib/engine/framework/form-visitor.h:
+	* lib/engine/framework/form-builder.h:
+	* lib/engine/framework/form-builder.cpp:
+	* lib/engine/gui/gtk-core/form-dialog-gtk.h:
 	* lib/engine/gui/gtk-core/form-dialog-gtk.cpp: Extended Ekiga::Form's
 	editable set field type to allow proposing a list of possible values to
 	the user.

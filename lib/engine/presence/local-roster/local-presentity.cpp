@@ -241,20 +241,14 @@ Local::Presentity::edit_presentity ()
   Cluster *cluster = dynamic_cast<Cluster*>(core.get ("local-cluster"));
   Ekiga::FormRequestSimple request;
   std::set<std::string> all_groups = cluster->existing_groups ();
-  std::map<std::string, std::string> choices;
 
   request.title (_("Edit roster element"));
   request.instructions (_("Please fill in this form to change an existing "
 			  "element of ekiga's internal roster"));
   request.text ("name", _("Name:"), name);
 
-  for (std::set<std::string>::const_iterator iter = all_groups.begin ();
-       iter != all_groups.end ();
-       iter++)
-    choices[*iter] = *iter;
-  request.multiple_choice ("old_groups",
-			   _("Choose groups:"),
-			   groups, choices, true);
+  request.editable_set ("groups", _("Choose groups:"),
+			groups, all_groups);
 
   request.submitted.connect (sigc::mem_fun (this, &Local::Presentity::edit_presentity_form_submitted));
   ui->run_form_request (request);
@@ -269,8 +263,7 @@ Local::Presentity::edit_presentity_form_submitted (Ekiga::Form &result)
     /* we first fetch all data before making any change, so if there's
      * a problem, we don't do anything */
     const std::string new_name = result.text ("name");
-    const std::set<std::string> old_groups = result.multiple_choice ("old_groups");
-    std::set<std::string> group_set;
+    const std::set<std::string> new_groups = result.editable_set ("groups");
     std::map<std::string, xmlNodePtr> future_group_nodes;
 
     name = new_name;
@@ -278,15 +271,13 @@ Local::Presentity::edit_presentity_form_submitted (Ekiga::Form &result)
 		       xmlEncodeSpecialChars(name_node->doc,
 					     BAD_CAST name.c_str ()));
 
-    group_set.insert (old_groups.begin (), old_groups.end ());
-
     // the first loop looks at groups we were in : are we still in ?
     for (std::map<std::string, xmlNodePtr>::const_iterator iter
 	   = group_nodes.begin ();
 	 iter != group_nodes.end () ;
 	 iter++) {
 
-      if (group_set.find (iter->first) == group_set.end ()) {
+      if (new_groups.find (iter->first) == new_groups.end ()) {
 
 	xmlUnlinkNode (iter->second);
 	xmlFreeNode (iter->second);
@@ -295,8 +286,8 @@ Local::Presentity::edit_presentity_form_submitted (Ekiga::Form &result)
     }
 
     // the second loop looking for groups we weren't in but are now
-    for (std::set<std::string>::const_iterator iter = group_set.begin ();
-	 iter != group_set.end ();
+    for (std::set<std::string>::const_iterator iter = new_groups.begin ();
+	 iter != new_groups.end ();
 	 iter++) {
 
       if (std::find (groups.begin (), groups.end (), *iter) == groups.end ())
@@ -307,12 +298,7 @@ Local::Presentity::edit_presentity_form_submitted (Ekiga::Form &result)
 
     // ok, now we know our groups
     group_nodes = future_group_nodes;
-    groups.clear ();
-    for (std::map<std::string, xmlNodePtr>::const_iterator iter
-	   = group_nodes.begin ();
-	 iter != group_nodes.end ();
-	 iter++)
-      groups.insert (iter->first);
+    groups = new_groups;
 
     updated.emit ();
     trigger_saving.emit ();
