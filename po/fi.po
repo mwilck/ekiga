@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ekiga\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-01 07:22+0300\n"
+"POT-Creation-Date: 2007-09-07 19:54+0300\n"
 "PO-Revision-Date: 2007-02-13 07:24+0300\n"
 "Last-Translator: Ilkka Tuohela <hile@iki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
@@ -639,8 +639,8 @@ msgid ""
 "peer endpoint that can adjust (if it supports it) its TX bitrate if it is "
 "above the signaled value"
 msgstr ""
-"Vastaanotettavan videon suurin bittinopeus kilobitteinä sekunnissa. Tämä arvo "
-"signaloidaan vastapäähän, jotta se voi yrittää säätää lähetysnopeuttaan "
+"Vastaanotettavan videon suurin bittinopeus kilobitteinä sekunnissa. Tämä "
+"arvo signaloidaan vastapäähän, jotta se voi yrittää säätää lähetysnopeuttaan "
 "hitaammaksi lähettäessään nopeammin kuin signaalissa kerrotulla nopeudella"
 
 #: ../ekiga.schemas.in.in.h:129
@@ -650,10 +650,10 @@ msgid ""
 "dynamically adjusted above their minimum during calls to try to minimize the "
 "bandwidth to the given value"
 msgstr ""
-"Lähetettävän videon suurin bittinopeus kilobitteinä sekunnissa. Videon laatua "
-"ja lähetettävien ruutujen määrää sekunnissa (riippuen valitusta koodekista) "
-"säädetään dynaamisesti minimiarvojensa rajoissa siten, että pyritään "
-"pienentämään käytetty siirtokaista annettuun arvoon"
+"Lähetettävän videon suurin bittinopeus kilobitteinä sekunnissa. Videon "
+"laatua ja lähetettävien ruutujen määrää sekunnissa (riippuen valitusta "
+"koodekista) säädetään dynaamisesti minimiarvojensa rajoissa siten, että "
+"pyritään pienentämään käytetty siirtokaista annettuun arvoon"
 
 #: ../ekiga.schemas.in.in.h:130
 msgid "The maximum jitter buffer size for audio reception (in ms)"
@@ -983,8 +983,8 @@ msgid "Please update the following fields:"
 msgstr "Ole hyvä ja päivitä seuraavat kentät:"
 
 #: ../lib/engine/addressbook/evolution/evolution-contact.cpp:204
-#: ../lib/engine/presence/local-roster/local-presentity.cpp:249
-#: ../lib/engine/presence/local-roster/local-heap.cpp:189
+#: ../lib/engine/presence/local-roster/local-presentity.cpp:248
+#: ../lib/engine/presence/local-roster/local-heap.cpp:188
 msgid "Name:"
 msgstr "Nimi:"
 
@@ -1162,24 +1162,23 @@ msgstr "_Hakusuodatin:"
 msgid "Unsorted"
 msgstr "Ei järjestetty"
 
-#: ../lib/engine/presence/local-roster/local-presentity.cpp:246
+#: ../lib/engine/presence/local-roster/local-presentity.cpp:245
 msgid "Edit roster element"
 msgstr "Muokkaa nimilistan kohtaa"
 
-#: ../lib/engine/presence/local-roster/local-presentity.cpp:247
+#: ../lib/engine/presence/local-roster/local-presentity.cpp:246
 msgid ""
 "Please fill in this form to change an existing element of ekiga's internal "
 "roster"
 msgstr ""
-"Täytä tämä kaavake, jos haluat vaihtaa tietoja ekigan sisäisessä "
-"nimilistassa"
+"Täytä tämä kaavake, jos haluat vaihtaa tietoja ekigan sisäisessä nimilistassa"
 
-#: ../lib/engine/presence/local-roster/local-presentity.cpp:256
+#: ../lib/engine/presence/local-roster/local-presentity.cpp:250
 msgid "Choose groups:"
 msgstr "Valitse ryhmät:"
 
 #: ../lib/engine/presence/local-roster/local-roster-bridge.cpp:100
-#: ../lib/engine/presence/local-roster/local-heap.cpp:186
+#: ../lib/engine/presence/local-roster/local-heap.cpp:185
 msgid "Add to local roster"
 msgstr "Lisää paikalliseen nimilistaan"
 
@@ -1187,26 +1186,26 @@ msgstr "Lisää paikalliseen nimilistaan"
 msgid "Local roster"
 msgstr "Paikallinen nimilista"
 
-#: ../lib/engine/presence/local-roster/local-heap.cpp:187
+#: ../lib/engine/presence/local-roster/local-heap.cpp:186
 msgid ""
 "Please fill in this form to add a new contact to ekiga's internal roster"
 msgstr ""
 "Täytä tämä kaavake, jos haluat lisätä yhteystiedon ekigan sisäiseen "
 "nimilistaan"
 
-#: ../lib/engine/presence/local-roster/local-heap.cpp:197
+#: ../lib/engine/presence/local-roster/local-heap.cpp:196
 msgid "Address:"
 msgstr "Osoite:"
 
-#: ../lib/engine/presence/local-roster/local-heap.cpp:206
+#: ../lib/engine/presence/local-roster/local-heap.cpp:200
 msgid "Put contact in groups:"
 msgstr "Lisää yhteystieto ryhmiin:"
 
-#: ../lib/engine/presence/local-roster/local-heap.cpp:308
+#: ../lib/engine/presence/local-roster/local-heap.cpp:297
 msgid "You supplied an unsupported address"
 msgstr "Antamasi osoitemuoto ei ole tuettu"
 
-#: ../lib/engine/presence/local-roster/local-heap.cpp:310
+#: ../lib/engine/presence/local-roster/local-heap.cpp:299
 msgid "You already have a contact with this address!"
 msgstr "Tälle osoitteelle on jo aikaisempi yhteystieto!"
 
@@ -1554,7 +1553,7 @@ msgid ""
 "Ekiga rocks!\" in your microphone. You should hear yourself from the "
 "speakers after a four-second delay."
 msgstr ""
-"Ekiga tallentaa nyt laitteesta %s ja soittaa äänet laitteeseen %s. Sano "
+"Ekiga nauhoittaa nyt laitteesta %s ja soittaa äänet laitteeseen %s. Sano "
 "\"yksi, kaksi, kolme\" mikrofoniisi ja sinun pitäisi kuulla oma äänesi "
 "kaiuttimista neljän sekunnin viiveellä."
 
@@ -1579,10 +1578,9 @@ msgid ""
 "transmit a given image or the moving logo by choosing \"Picture\" as video "
 "plugin and \"Moving logo\" or \"Static picture\" as device."
 msgstr ""
-"Liikkuvaa kuvaketta soiton aikana. Huomaa, että voit milloin "
-"tahansa lähettää valitun kuvan tai liikkuvan logon valitsemalla "
-"videoliitännäiseksi \"Kuva\"  ja laitteeksi \"Liikkuva logo\" tai "
-"\"Kiinteä kuva\"."
+"Liikkuvaa kuvaketta soiton aikana. Huomaa, että voit milloin tahansa "
+"lähettää valitun kuvan tai liikkuvan logon valitsemalla videoliitännäiseksi "
+"\"Kuva\"  ja laitteeksi \"Liikkuva logo\" tai \"Kiinteä kuva\"."
 
 #: ../src/devices/videoinput.cpp:366
 msgid "Couldn't open the video device"
@@ -2572,7 +2570,7 @@ msgstr ""
 "Yhteyden tyyppi: %s\n"
 "Äänenhallinta: %s\n"
 "Äänisoitin: %s\n"
-"Ääninauhoitin: %s\n"
+"Ääninauhuri: %s\n"
 "Videonhallinta: %s\n"
 "Videonkaappaus: %s\n"
 "SIP-URL: %s\n"
@@ -3477,8 +3475,8 @@ msgid ""
 "adjusted above their minimum during calls to try to minimize the bandwidth "
 "to the given value."
 msgstr ""
-"Videon suurin bittinopeus kilobitteinä sekunnissa. Videon laatua "
-"ja lähetettävien ruutujen määrää sekunnissa (riippuen valitusta koodekista) "
+"Videon suurin bittinopeus kilobitteinä sekunnissa. Videon laatua ja "
+"lähetettävien ruutujen määrää sekunnissa (riippuen valitusta koodekista) "
 "säädetään dynaamisesti minimiarvojensa rajoissa siten, että pyritään "
 "pienentämään käytetty siirtokaista annettuun arvoon."
 
@@ -3628,4 +3626,3 @@ msgstr "_Sisältö"
 #: ../src/gui/statusicon.cpp:187
 msgid "_About"
 msgstr "_Tietoja"
-
