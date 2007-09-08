@@ -136,7 +136,7 @@ Ekiga::FormBuilder::hidden (const std::string name) const
     if (iter->name == name)
       return iter->value;
 
-  throw Ekiga::Form::not_found ();
+  throw Ekiga::Form::not_found (name);
 }
 
 bool
@@ -148,7 +148,7 @@ Ekiga::FormBuilder::boolean (const std::string name) const
     if (iter->name == name)
       return iter->value;
 
-  throw Ekiga::Form::not_found ();
+  throw Ekiga::Form::not_found (name);
 }
 
 const std::string
@@ -160,7 +160,7 @@ Ekiga::FormBuilder::private_text (const std::string name) const
     if (iter->name == name)
       return iter->value;
 
-  throw Ekiga::Form::not_found ();
+  throw Ekiga::Form::not_found (name);
 }
 
 const std::string
@@ -172,7 +172,7 @@ Ekiga::FormBuilder::text (const std::string name) const
     if (iter->name == name)
       return iter->value;
 
-  throw Ekiga::Form::not_found ();
+  throw Ekiga::Form::not_found (name);
 }
 
 const std::string
@@ -184,7 +184,7 @@ Ekiga::FormBuilder::multi_text (const std::string name) const
     if (iter->name == name)
       return iter->value;
 
-  throw Ekiga::Form::not_found ();
+  throw Ekiga::Form::not_found (name);
 }
 
 const std::string
@@ -196,7 +196,7 @@ Ekiga::FormBuilder::single_choice (const std::string name) const
     if (iter->name == name)
       return iter->value;
 
-  throw Ekiga::Form::not_found ();
+  throw Ekiga::Form::not_found (name);
 }
 
 const std::set<std::string>
@@ -208,7 +208,7 @@ Ekiga::FormBuilder::multiple_choice (const std::string name) const
     if (iter->name == name)
       return iter->values;
 
-  throw Ekiga::Form::not_found ();
+  throw Ekiga::Form::not_found (name);
 }
 
 const std::set<std::string>
@@ -220,7 +220,7 @@ Ekiga::FormBuilder::editable_set (const std::string name) const
     if (iter->name == name)
       return iter->values;
 
-  throw Ekiga::Form::not_found ();
+  throw Ekiga::Form::not_found (name);
 }
 
 void

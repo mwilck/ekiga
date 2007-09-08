@@ -48,9 +48,16 @@ namespace Ekiga
     {
     public:
 
-      not_found () {}
+      not_found (const std::string _name): name(_name)
+      {}
+
+      ~not_found () throw ()
+      {}
 
       const char* what() const throw() { return "form field not found"; }
+
+      const std::string name;
+      
     };
 
     virtual ~Form () {}
