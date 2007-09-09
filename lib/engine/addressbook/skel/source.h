@@ -77,9 +77,24 @@ namespace Ekiga {
     sigc::signal<void, Book &> book_updated;
     
     
-    /** This signal is emitted when a Book has been removed from the Source.
+    /** This signal is emitted when a Book has been removed in the Source.
      */
     sigc::signal<void, Book &> book_removed;
+
+    /** This signal is emitted when a Contact has been added to a book in
+     *  this source.
+     */
+    sigc::signal<void, Book &, Contact &> contact_added;
+
+    /** This signal is emitted when a Contact has been removed from a book in
+     *  this source.
+     */
+    sigc::signal<void, Book &, Contact &> contact_removed;
+
+    /** This signal is emitted when a Contact has been updated in a book in
+     *  this source
+     */
+    sigc::signal<void, Book &, Contact &> contact_updated;
   };
 };
 

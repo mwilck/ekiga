@@ -1,3 +1,21 @@
+2007-09-09  Julien Puydt  <jpuydt@gnome.org>
+
+	* lib/engine/gui/gtk-frontend/addressbook-window.cpp: Removed the class
+	SignalCentralizer, since Ekiga::ContactCore now does its work!
+
+2007-09-08  Julien Puydt  <jpuydt@gnome.org>
+
+	* lib/engine/addressbook/skel/contact-core.h:
+	* lib/engine/addressbook/skel/contact-core.cpp: Made the contact core
+	do signal forwarding.
+	
+2007-09-08  Julien Puydt  <jpuydt@gnome.org>
+
+	* lib/engine/addressbook/skel/source.h: Added the contact_* signals,
+	so a source acts as a signal relayer for its books.
+	* lib/engine/addressbook/skel/source-impl.h: Made it emit the contact_*
+	signals.
+
 2007-09-07  Julien Puydt  <jpuydt@gnome.org>
 
 	* lib/engine/framework/form.h: Made the field name available in the

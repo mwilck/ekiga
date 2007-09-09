@@ -111,9 +111,47 @@ namespace Ekiga
      */
     sigc::signal<void, Source &> source_added;
 
+    /** This signal is emitted when a book has been added to one of
+     * the sources
+     */
+    sigc::signal<void, Source &, Book &> book_added;
+
+    /** This signal is emitted when a book has been removed from one of
+     * the sources
+     */
+    sigc::signal<void, Source &, Book &> book_removed;
+
+    /** This signal is emitted when a book has been updated in one of
+     * the sources
+     */
+    sigc::signal<void, Source &, Book &> book_updated;
+
+    /** This signal is emitted when a contact has been added to one of
+     * the book of one of the sources
+     */
+    sigc::signal<void, Source &, Book &, Contact &> contact_added;
+
+    /** This signal is emitted when a contact has been removed from one of
+     * the book of one of the sources
+     */
+    sigc::signal<void, Source &, Book &, Contact &> contact_removed;
+
+    /** This signal is emitted when a contact has been updated in one of
+     * the book of one of the sources
+     */
+    sigc::signal<void, Source &, Book &, Contact &> contact_updated;
+
   private:
 
     std::set<Source *> sources;
+
+    /* those functions are signal relayers */
+    void on_book_added (Book &book, Source *source);
+    void on_book_removed (Book &book, Source *source);
+    void on_book_updated (Book &book, Source *source);
+    void on_contact_added (Book &book, Contact &contact, Source *source);
+    void on_contact_removed (Book &book, Contact &contact, Source *source);
+    void on_contact_updated (Book &book, Contact &contact, Source *source);
 
     /*** Contact Helpers ***/
 

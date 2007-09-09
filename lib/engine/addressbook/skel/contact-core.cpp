@@ -77,6 +77,12 @@ Ekiga::ContactCore::add_source (Source &source)
 {
   sources.insert (&source);
   source_added.emit (source);
+  source.book_added.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::ContactCore::on_book_added), &source));
+  source.book_removed.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::ContactCore::on_book_removed), &source));
+  source.book_updated.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::ContactCore::on_book_updated), &source));
+  source.contact_added.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::ContactCore::on_contact_added), &source));
+  source.contact_removed.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::ContactCore::on_contact_removed), &source));
+  source.contact_updated.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::ContactCore::on_contact_updated), &source));
 }
 
 void
@@ -87,6 +93,58 @@ Ekiga::ContactCore::visit_sources (sigc::slot<void, Source &> visitor)
        iter++)
     visitor (*(*iter));
 }
+
+
+void
+Ekiga::ContactCore::on_book_added (Book &book,
+				   Source *source)
+{
+  book_added.emit (*source, book);
+}
+
+
+void
+Ekiga::ContactCore::on_book_removed (Book &book,
+				     Source *source)
+{
+  book_removed.emit (*source, book);
+}
+
+
+void
+Ekiga::ContactCore::on_book_updated (Book &book,
+				     Source *source)
+{
+  book_updated.emit (*source, book);
+}
+
+
+void
+Ekiga::ContactCore::on_contact_added (Book &book,
+				      Contact &contact,
+				      Source *source)
+{
+  contact_added.emit (*source, book, contact);
+}
+
+
+void
+Ekiga::ContactCore::on_contact_removed (Book &book,
+					Contact &contact,
+					Source *source)
+{
+  contact_removed.emit (*source, book, contact);
+}
+
+
+void
+Ekiga::ContactCore::on_contact_updated (Book &book,
+					Contact &contact,
+					Source *source)
+{
+  contact_updated.emit (*source, book, contact);
+}
+
 
 void
 Ekiga::ContactCore::add_contact_decorator (ContactDecorator &decorator)

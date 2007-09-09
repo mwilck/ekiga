@@ -34,71 +34,13 @@
 
 #include <iostream>
 #include <map>
+#include <vector>
 
 #include "gmstockicons.h"
 
 #include "addressbook-window.h"
 #include "book-view-gtk.h"
 #include "menu-builder-gtk.h"
-
-/* 
- * The signals centralizer relays signals from the Core and Book to
- * the GObject and dies with it.
- */
-class SignalCentralizer: public sigc::trackable
-{
-public:
-
-    /* Watch the ContactCore for changes, and
-     * watch the Source objects and their Books
-     */
-    void watch_core (Ekiga::ContactCore *core);
-
-    /* Signals emitted by this centralizer and interesting
-     * for our GObject 
-     */
-    sigc::signal<void> core_updated;
-    sigc::signal<void, Ekiga::Book &> book_added;
-    sigc::signal<void, Ekiga::Book &> book_removed;
-    sigc::signal<void, Ekiga::Book &> book_updated;
-
-private:
-
-    void on_source_added (Ekiga::Source &source);
-
-    void watch_source (Ekiga::Source &source);
-};
-
-
-void SignalCentralizer::watch_core (Ekiga::ContactCore *core)
-{
-  core->updated.connect (core_updated.make_slot ());
-
-  // Trigger on_source_added when a Source is added
-  core->source_added.connect (sigc::mem_fun (this, &SignalCentralizer::on_source_added));
-
-  // Trigger on_source_added for all Sources of the Ekiga::ContactCore
-  core->visit_sources (sigc::mem_fun (this, &SignalCentralizer::on_source_added));
-}
-
-
-void SignalCentralizer::on_source_added (Ekiga::Source &source)
-{
-  // Emit the book_added signal for all Books of the Ekiga::Source
-  source.visit_books (sigc::mem_fun (book_added, &sigc::signal<void, Ekiga::Book &>::emit));
-
-  // Connect all signals of the SignalCentralizer to the corresponding Ekiga::Source signals
-  watch_source (source);
-}
-
-
-void SignalCentralizer::watch_source (Ekiga::Source &source)
-{
-  source.book_added.connect (book_added.make_slot ());
-  source.book_updated.connect (book_updated.make_slot ());
-  source.book_removed.connect (book_removed.make_slot ());
-}
-
 
 /* 
  * The Search Window 
@@ -108,7 +50,7 @@ struct _AddressBookWindowPrivate
   _AddressBookWindowPrivate (Ekiga::ContactCore *_core):core (_core) { }
 
   Ekiga::ContactCore *core;
-  SignalCentralizer centralizer;
+  std::vector<sigc::connection> connections;
   GtkTreeStore *store;
   GtkWidget *notebook;
   GtkTreeSelection *selection;
@@ -153,7 +95,8 @@ static void on_core_updated (gpointer data);
  * BEHAVIOR     : Add a view of the Book in the AddressBookWindow.
  * PRE          : The given GtkWidget pointer must be an SearchBook GObject.
  */
-static void on_book_added (Ekiga::Book &book,
+static void on_book_added (Ekiga::Source &source,
+			   Ekiga::Book &book,
                            gpointer data);
 
 
@@ -162,7 +105,8 @@ static void on_book_added (Ekiga::Book &book,
  * BEHAVIOR     : Remove the view of the Book from the AddressBookWindow.
  * PRE          : The given GtkWidget pointer must be an SearchBook GObject.
  */
-static void on_book_removed (Ekiga::Book &book,
+static void on_book_removed (Ekiga::Source &source,
+			     Ekiga::Book &book,
                              gpointer data);
 
 
@@ -171,7 +115,8 @@ static void on_book_removed (Ekiga::Book &book,
  * BEHAVIOR     : Update the Book in the AddressBookWindow.
  * PRE          : The given GtkWidget pointer must be an SearchBook GObject.
  */
-static void on_book_updated (Ekiga::Book &book,
+static void on_book_updated (Ekiga::Source &source,
+			     Ekiga::Book &book,
                              gpointer data);
 
 
@@ -281,7 +226,8 @@ on_core_updated (gpointer data)
 
 
 static void
-on_book_added (Ekiga::Book &book,
+on_book_added (Ekiga::Source &/*source*/,
+	       Ekiga::Book &book,
                gpointer data)
 {
   addressbook_window_add_book (ADDRESSBOOK_WINDOW (data), book);
@@ -289,7 +235,8 @@ on_book_added (Ekiga::Book &book,
 
 
 static void
-on_book_removed (Ekiga::Book &book,
+on_book_removed (Ekiga::Source &/*source*/,
+		 Ekiga::Book &book,
                  gpointer data)
 {
   addressbook_window_remove_book (ADDRESSBOOK_WINDOW (data), book);
@@ -297,7 +244,8 @@ on_book_removed (Ekiga::Book &book,
 
 
 static void
-on_book_updated (Ekiga::Book &book,
+on_book_updated (Ekiga::Source &/*source*/,
+		 Ekiga::Book &book,
                  gpointer data)
 {
   addressbook_window_update_book (ADDRESSBOOK_WINDOW (data), book);
@@ -567,6 +515,12 @@ addressbook_window_finalize (GObject *obj)
 
   self = ADDRESSBOOK_WINDOW (obj);
 
+  for (std::vector<sigc::connection>::iterator iter
+	 = self->priv->connections.begin ();
+       iter != self->priv->connections.end ();
+       iter++)
+    iter->disconnect ();
+
   delete self->priv;
 }
 
@@ -622,6 +576,8 @@ addressbook_window_new (Ekiga::ContactCore *core,
 {
   AddressBookWindow *self = NULL;
 
+  sigc::connection conn;
+
   GtkWidget *menu_bar = NULL;
   GtkWidget *frame = NULL;
   GtkWidget *vbox = NULL;
@@ -650,7 +606,9 @@ addressbook_window_new (Ekiga::ContactCore *core,
   gtk_menu_shell_append (GTK_MENU_SHELL (menu_bar),
                          self->priv->menu_item_core);
   g_object_ref (self->priv->menu_item_core);
-  self->priv->centralizer.core_updated.connect (sigc::bind (sigc::ptr_fun (on_core_updated), (gpointer) self));
+  conn = core->updated.connect (sigc::bind (sigc::ptr_fun (on_core_updated),
+					    (gpointer) self));
+  self->priv->connections.push_back (conn);
   on_core_updated (self); // This will add static and dynamic actions
 
   self->priv->menu_item_view = gtk_menu_item_new_with_mnemonic (_("_Action"));
@@ -723,14 +681,17 @@ addressbook_window_new (Ekiga::ContactCore *core,
                     G_CALLBACK (on_notebook_realize), self);
   gtk_paned_add2 (GTK_PANED (hpaned), self->priv->notebook);
 
-  self->priv->centralizer.book_updated.connect (sigc::bind (sigc::ptr_fun (on_book_updated), 
-                                                            (gpointer) self));
-  self->priv->centralizer.book_added.connect (sigc::bind (sigc::ptr_fun (on_book_added), 
-                                                          (gpointer) self));
-  self->priv->centralizer.book_removed.connect (sigc::bind (sigc::ptr_fun (on_book_removed), 
-                                                            (gpointer) self));
-
-  self->priv->centralizer.watch_core (core);
+  conn =
+    core->book_updated.connect (sigc::bind (sigc::ptr_fun (on_book_updated),
+					    (gpointer) self));
+  self->priv->connections.push_back (conn);
+  conn = core->book_added.connect (sigc::bind (sigc::ptr_fun (on_book_added), 
+					       (gpointer) self));
+  self->priv->connections.push_back (conn);
+  conn =
+    core->book_removed.connect (sigc::bind (sigc::ptr_fun (on_book_removed), 
+					    (gpointer) self));
+  self->priv->connections.push_back (conn);
 
   return GTK_WIDGET (self);
 }
