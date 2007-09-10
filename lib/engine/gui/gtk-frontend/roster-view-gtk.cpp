@@ -37,6 +37,7 @@
 
 #include <algorithm>
 #include <iostream>
+#include <vector>
 
 #include "gm-cell-renderer-bitext.h"
 #include "gmcellrendererexpander.h"
@@ -48,128 +49,14 @@
 
 
 /*
- * The signals centralizer relays signals from the PresenceCore,
- * Heaps and Clusters of Heaps to the Gobject and dies with it.
- */
-class SignalCentralizer: public sigc::trackable
-{
-public:
-
-  SignalCentralizer (Ekiga::PresenceCore &_core);
-
-
-  /* Watch the PresenceCore for changes : when clusters
-   * are added. Connect callbacks to signals for Clusters present
-   * when being initialized.
-   */
-  void watch_core ();
-
-
-  /* Signals emitted by this centralizer and interesting
-   * for our GObject
-   */
-  sigc::signal<void, Ekiga::Heap &> heap_added;
-  sigc::signal<void, Ekiga::Heap &> heap_updated;
-  sigc::signal<void, Ekiga::Heap &> heap_removed;
-
-  sigc::signal<void, Ekiga::Heap &, Ekiga::Presentity &> presentity_added;
-  sigc::signal<void, Ekiga::Heap &, Ekiga::Presentity &> presentity_updated;
-  sigc::signal<void, Ekiga::Heap &, Ekiga::Presentity &> presentity_removed;
-
-
-private:
-
-  Ekiga::PresenceCore &core;
-
-  void on_cluster_added (Ekiga::Cluster &cluster);
-
-  void on_heap_added (Ekiga::Heap &heap);
-
-  void on_presentity_added (Ekiga::Presentity &presentity,
-                            Ekiga::Heap *heap);
-
-  void on_presentity_updated (Ekiga::Presentity &presentity,
-                              Ekiga::Heap *heap);
-
-  void on_presentity_removed (Ekiga::Presentity &presentity,
-                              Ekiga::Heap *heap);
-};
-
-
-SignalCentralizer::SignalCentralizer (Ekiga::PresenceCore &_core): core(_core)
-{
-}
-
-
-void SignalCentralizer::watch_core ()
-{
-  // Trigger on_cluster_added when a Cluster is added
-  core.cluster_added.connect (sigc::mem_fun (this, &SignalCentralizer::on_cluster_added));
-
-  // Trigger on_cluster_added for all Clusters of the Ekiga::PresenceCore
-  core.visit_clusters (sigc::mem_fun (this, &SignalCentralizer::on_cluster_added));
-}
-
-
-void SignalCentralizer::on_cluster_added (Ekiga::Cluster &cluster)
-{
-  cluster.heap_added.connect (sigc::mem_fun (this, &SignalCentralizer::on_heap_added));
-  cluster.heap_updated.connect (heap_updated.make_slot ());
-  cluster.heap_removed.connect (heap_removed.make_slot ());
-
-  cluster.visit_heaps (sigc::mem_fun (this, &SignalCentralizer::on_heap_added));
-}
-
-
-void SignalCentralizer::on_heap_added (Ekiga::Heap &heap)
-{
-  heap_added.emit (heap);
-
-  heap.presentity_added.connect (sigc::bind (sigc::mem_fun (this, 
-                                                            &SignalCentralizer::on_presentity_added), 
-                                             &heap));
-  heap.presentity_updated.connect (sigc::bind (sigc::mem_fun (this, 
-                                                              &SignalCentralizer::on_presentity_updated), 
-                                               &heap));
-  heap.presentity_removed.connect (sigc::bind (sigc::mem_fun (this, 
-                                                              &SignalCentralizer::on_presentity_removed), 
-                                               &heap));
-
-  heap.visit_presentities (sigc::bind (sigc::mem_fun (this, 
-                                                      &SignalCentralizer::on_presentity_added), 
-                                       &heap));
-}
-
-
-void SignalCentralizer::on_presentity_added (Ekiga::Presentity &presentity,
-                                             Ekiga::Heap *heap)
-{ 
-  presentity_added.emit (*heap, presentity); 
-}
-
-
-void SignalCentralizer::on_presentity_updated (Ekiga::Presentity &presentity,
-                                               Ekiga::Heap *heap)
-{ 
-  presentity_updated.emit (*heap, presentity); 
-}
-
-
-void SignalCentralizer::on_presentity_removed (Ekiga::Presentity &presentity,
-                                               Ekiga::Heap *heap)
-{ 
-  presentity_removed.emit (*heap, presentity); 
-}
-
-
-/*
  * The Roster
  */
 struct _RosterViewGtkPrivate
 {
-  _RosterViewGtkPrivate (Ekiga::PresenceCore &core):centralizer (core) { }
+  _RosterViewGtkPrivate (Ekiga::PresenceCore &core)
+  { }
 
-  SignalCentralizer centralizer;
+  std::vector<sigc::connection> connections;
   GtkTreeStore *store;
   GtkTreeView *tree_view;
   GtkWidget *vbox;
@@ -258,7 +145,8 @@ static void expand_cell_data_func (GtkTreeViewColumn *column,
  * BEHAVIOR     : Add or Update the Heap in the GtkTreeView. 
  * PRE          : /
  */
-static void on_heap_updated (Ekiga::Heap &heap,
+static void on_heap_updated (Ekiga::Cluster &cluster,
+			     Ekiga::Heap &heap,
 			     gpointer data);
 
 
@@ -269,7 +157,8 @@ static void on_heap_updated (Ekiga::Heap &heap,
  *                the view.
  * PRE          : /
  */
-static void on_heap_removed (Ekiga::Heap &heap,
+static void on_heap_removed (Ekiga::Cluster &cluster,
+			     Ekiga::Heap &heap,
 			     gpointer data);
 
 
@@ -279,7 +168,8 @@ static void on_heap_removed (Ekiga::Heap &heap,
  *                added.
  * PRE          : A valid Heap.
  */
-static void on_presentity_added (Ekiga::Heap &heap,
+static void on_presentity_added (Ekiga::Cluster &cluster,
+				 Ekiga::Heap &heap,
 				 Ekiga::Presentity &presentity,
 				 gpointer data);
 
@@ -289,7 +179,8 @@ static void on_presentity_added (Ekiga::Heap &heap,
  * BEHAVIOR     : Update the given Presentity into the Heap.
  * PRE          : A valid Heap.
  */
-static void on_presentity_updated (Ekiga::Heap &heap,
+static void on_presentity_updated (Ekiga::Cluster &cluster,
+				   Ekiga::Heap &heap,
 				   Ekiga::Presentity &presentity,
 				   gpointer data);
 
@@ -299,7 +190,8 @@ static void on_presentity_updated (Ekiga::Heap &heap,
  * BEHAVIOR     : Remove the given Presentity from the given Heap.
  * PRE          : A valid Heap.
  */
-static void on_presentity_removed (Ekiga::Heap &heap,
+static void on_presentity_removed (Ekiga::Cluster &cluster,
+				   Ekiga::Heap &heap,
 				   Ekiga::Presentity &presentity,
 				   gpointer data);
 
@@ -396,21 +288,21 @@ on_view_clicked (GtkWidget *tree_view,
           switch (column_type) {
 
           case TYPE_HEAP: 
-              {
-                MenuBuilderGtk builder;
-                heap->populate_menu (builder);
-                if (!builder.empty ()) {
+	    {
+	      MenuBuilderGtk builder;
+	      heap->populate_menu (builder);
+	      if (!builder.empty ()) {
 
-                  gtk_widget_show_all (builder.menu);
-                  gtk_menu_popup (GTK_MENU (builder.menu), NULL, NULL,
-                                  NULL, NULL, event->button, event->time);
-                  g_signal_connect (G_OBJECT (builder.menu), "hide",
-                                    GTK_SIGNAL_FUNC (g_object_unref),
-                                    (gpointer) builder.menu);
-                }
-                g_object_ref_sink (G_OBJECT (builder.menu));
-                break;
-              }
+		gtk_widget_show_all (builder.menu);
+		gtk_menu_popup (GTK_MENU (builder.menu), NULL, NULL,
+				NULL, NULL, event->button, event->time);
+		g_signal_connect (G_OBJECT (builder.menu), "hide",
+				  GTK_SIGNAL_FUNC (g_object_unref),
+				  (gpointer) builder.menu);
+	      }
+	      g_object_ref_sink (G_OBJECT (builder.menu));
+	      break;
+	    }
 
           case TYPE_GROUP:
 
@@ -426,21 +318,21 @@ on_view_clicked (GtkWidget *tree_view,
             break;
 
           case TYPE_PRESENTITY:
-              {
-                MenuBuilderGtk builder;
-                presentity->populate_menu (builder);
-                if (!builder.empty ()) {
+	    {
+	      MenuBuilderGtk builder;
+	      presentity->populate_menu (builder);
+	      if (!builder.empty ()) {
 
-                  gtk_widget_show_all (builder.menu);
-                  gtk_menu_popup (GTK_MENU (builder.menu), NULL, NULL,
-                                  NULL, NULL, event->button, event->time);
-                  g_signal_connect (G_OBJECT (builder.menu), "hide",
-                                    GTK_SIGNAL_FUNC (g_object_unref),
-                                    (gpointer) builder.menu);
-                }
-                g_object_ref_sink (G_OBJECT (builder.menu));
-                break;
-              }
+		gtk_widget_show_all (builder.menu);
+		gtk_menu_popup (GTK_MENU (builder.menu), NULL, NULL,
+				NULL, NULL, event->button, event->time);
+		g_signal_connect (G_OBJECT (builder.menu), "hide",
+				  GTK_SIGNAL_FUNC (g_object_unref),
+				  (gpointer) builder.menu);
+	      }
+	      g_object_ref_sink (G_OBJECT (builder.menu));
+	      break;
+	    }
 
           default:
             break; // shouldn't happen
@@ -542,7 +434,8 @@ expand_cell_data_func (GtkTreeViewColumn *column,
 
 
 static void
-on_heap_updated (Ekiga::Heap &heap,
+on_heap_updated (Ekiga::Cluster &/*cluster*/,
+		 Ekiga::Heap &heap,
 		 gpointer data)
 {
   RosterViewGtk *self = ROSTER_VIEW_GTK (data);
@@ -560,7 +453,8 @@ on_heap_updated (Ekiga::Heap &heap,
 
 
 static void
-on_heap_removed (Ekiga::Heap &heap,
+on_heap_removed (Ekiga::Cluster &/*cluster*/,
+		 Ekiga::Heap &heap,
 		 gpointer data)
 {
   RosterViewGtk *self = ROSTER_VIEW_GTK (data);
@@ -573,7 +467,8 @@ on_heap_removed (Ekiga::Heap &heap,
 
 
 static void
-on_presentity_added (Ekiga::Heap &heap,
+on_presentity_added (Ekiga::Cluster &/*cluster*/,
+		     Ekiga::Heap &heap,
 		     Ekiga::Presentity &presentity,
 		     gpointer data)
 {
@@ -619,11 +514,12 @@ on_presentity_added (Ekiga::Heap &heap,
 
 
 static void
-on_presentity_updated (Ekiga::Heap &heap,
+on_presentity_updated (Ekiga::Cluster &cluster,
+		       Ekiga::Heap &heap,
 		       Ekiga::Presentity &presentity,
 		       gpointer data)
 {
-  RosterViewGtk *self = ROSTER_VIEW_GTK (data);
+  RosterViewGtk *self = (RosterViewGtk *)data;
   GtkTreeModel *model;
   GtkTreeIter heap_iter;
   GtkTreeIter group_iter;
@@ -637,7 +533,7 @@ on_presentity_updated (Ekiga::Heap &heap,
     groups.insert (_("Unsorted"));
 
   // This makes sure we are in all groups where we should
-  on_presentity_added (heap, presentity, data);
+  on_presentity_added (cluster, heap, presentity, data);
 
   // Now let's remove from all the others
   roster_view_gtk_find_iter_for_heap (self, heap, &heap_iter);
@@ -666,7 +562,8 @@ on_presentity_updated (Ekiga::Heap &heap,
 
 
 static void
-on_presentity_removed (Ekiga::Heap &heap,
+on_presentity_removed (Ekiga::Cluster &/*cluster*/,
+		       Ekiga::Heap &heap,
 		       Ekiga::Presentity &presentity,
 		       gpointer data)
 {
@@ -889,6 +786,12 @@ roster_view_gtk_finalize (GObject *obj)
 
   view = (RosterViewGtk *)obj;
 
+  for (std::vector<sigc::connection>::iterator iter
+	 = view->priv->connections.begin ();
+       iter != view->priv->connections.end ();
+       iter++)
+    iter->disconnect ();
+
   delete view->priv;
 
   parent_class->finalize (obj);
@@ -945,6 +848,8 @@ GtkWidget *
 roster_view_gtk_new (Ekiga::PresenceCore &core)
 {
   RosterViewGtk *self = NULL;
+
+  sigc::connection conn;
 
   GtkTreeSelection *selection = NULL;
   GtkTreeViewColumn *col = NULL;
@@ -1044,21 +949,25 @@ roster_view_gtk_new (Ekiga::PresenceCore &core)
 
 
   /* Relay signals */
-  self->priv->centralizer.heap_added.connect (sigc::bind (sigc::ptr_fun (on_heap_updated), 
-                                                          (gpointer) self));
-  self->priv->centralizer.heap_updated.connect (sigc::bind (sigc::ptr_fun (on_heap_updated), 
-                                                            (gpointer) self));
-  self->priv->centralizer.heap_removed.connect (sigc::bind (sigc::ptr_fun (on_heap_removed), 
-                                                            (gpointer) self));
+  conn = core.heap_added.connect (sigc::bind (sigc::ptr_fun (on_heap_updated), 
+					      (gpointer) self));
+  self->priv->connections.push_back (conn);
+  conn = core.heap_updated.connect (sigc::bind (sigc::ptr_fun (on_heap_updated), 
+						(gpointer) self));
+  self->priv->connections.push_back (conn);
+  conn = core.heap_removed.connect (sigc::bind (sigc::ptr_fun (on_heap_removed), 
+						(gpointer) self));
   
-  self->priv->centralizer.presentity_added.connect (sigc::bind (sigc::ptr_fun (on_presentity_added), 
-                                                                (gpointer) self));
-  self->priv->centralizer.presentity_updated.connect (sigc::bind (sigc::ptr_fun (on_presentity_updated), 
-                                                                  (gpointer) self));
-  self->priv->centralizer.presentity_removed.connect (sigc::bind (sigc::ptr_fun (on_presentity_removed), 
-                                                                  (gpointer) self));
-
-  self->priv->centralizer.watch_core ();
+  self->priv->connections.push_back (conn);
+  conn = core.presentity_added.connect (sigc::bind (sigc::ptr_fun (on_presentity_added), 
+						    (gpointer) self));
+  self->priv->connections.push_back (conn);
+  conn = core.presentity_updated.connect (sigc::bind (sigc::ptr_fun (on_presentity_updated), 
+						      self));
+  self->priv->connections.push_back (conn);
+  conn = core.presentity_removed.connect (sigc::bind (sigc::ptr_fun (on_presentity_removed), 
+						      (gpointer) self));
+  self->priv->connections.push_back (conn);
 
   return (GtkWidget *) self;
 }

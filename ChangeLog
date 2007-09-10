@@ -1,5 +1,11 @@
 2007-09-10  Julien Puydt  <jpuydt@gnome.org>
 
+	* lib/engine/gui/gtk-frontend/roster-view-gtk.h:
+	* lib/engine/gui/gtk-frontend/roster-view-gtk.cpp: Removed the class
+	SignalCentralizer, since Ekiga::PresenceCore now does its work!
+
+2007-09-10  Julien Puydt  <jpuydt@gnome.org>
+
 	* lib/engine/presence/skel/presence-core.h:
 	* lib/engine/presence/skel/presence-core.cpp: Made the presence core do
 	signal forwarding.
