@@ -1,3 +1,10 @@
+2007-09-10  Julien Puydt  <jpuydt@gnome.org>
+
+	* lib/engine/presence/skel/cluster.h: Added the presentity_*
+	signals, so a cluster can relay signals.
+	* lib/engine/presence/skel/cluster-impl.h: Made it emit the relayed
+	signals.
+
 2007-09-09  Julien Puydt  <jpuydt@gnome.org>
 
 	* lib/engine/gui/gtk-frontend/addressbook-window.cpp: Removed the class

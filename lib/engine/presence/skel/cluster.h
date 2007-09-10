@@ -55,7 +55,9 @@ namespace Ekiga {
     sigc::signal<void, Heap &> heap_added;
     sigc::signal<void, Heap &> heap_updated;
     sigc::signal<void, Heap &> heap_removed;
-
+    sigc::signal<void, Heap &, Presentity &> presentity_added;
+    sigc::signal<void, Heap &, Presentity &> presentity_updated;
+    sigc::signal<void, Heap &, Presentity &> presentity_removed;
   };
 
 };

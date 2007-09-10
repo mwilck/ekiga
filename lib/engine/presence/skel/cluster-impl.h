@@ -36,6 +36,8 @@
 #ifndef __CLUSTER_IMPL_H__
 #define __CLUSTER_IMPL_H__
 
+#include <vector>
+
 #include "map-key-reference-iterator.h"
 #include "map-key-const-reference-iterator.h"
 #include "cluster.h"
@@ -60,8 +62,6 @@
  * - when the signal is received, then do a remove_heap followed by calling
  * the appropriate api function to delete the heap in your backend.
  */
-
-#define connection_pair std::pair<sigc::connection, sigc::connection>
 
 namespace Ekiga {
 
@@ -89,8 +89,8 @@ namespace Ekiga {
 
   public:
 
-    typedef MapKeyReferenceIterator<HeapType, connection_pair> iterator;
-    typedef MapKeyConstReferenceIterator<HeapType, connection_pair> const_iterator;
+    typedef MapKeyReferenceIterator<HeapType, std::vector<sigc::connection> > iterator;
+    typedef MapKeyConstReferenceIterator<HeapType, std::vector<sigc::connection> > const_iterator;
 
     virtual ~ClusterImpl ();
 
@@ -118,7 +118,13 @@ namespace Ekiga {
 
     void on_heap_removed (HeapType *heap);
 
-    std::map<HeapType *, connection_pair> connections;
+    void on_presentity_added (Presentity &presentity, HeapType *heap);
+
+    void on_presentity_updated (Presentity &presentity, HeapType *heap);
+
+    void on_presentity_removed (Presentity &presentity, HeapType *heap);
+
+    std::map<HeapType *, std::vector<sigc::connection> > connections;
   };
 
 };
@@ -206,10 +212,15 @@ template<typename HeapType, typename HeapManagementTrait>
 void
 Ekiga::ClusterImpl<HeapType, HeapManagementTrait>::add_heap (HeapType &heap)
 {
-  sigc::connection rem_conn = heap.removed.connect (sigc::bind (sigc::mem_fun (this, &ClusterImpl::on_heap_removed), &heap));
-  sigc::connection upd_conn = heap.updated.connect (sigc::bind (sigc::mem_fun (this, &ClusterImpl::on_heap_updated), &heap));
+  sigc::connection conn;
+  std::vector<sigc::connection> conns;
 
-  connections[&heap] = connection_pair (rem_conn, upd_conn);
+  conn = heap.removed.connect (sigc::bind (sigc::mem_fun (this, &ClusterImpl::on_heap_removed), &heap));
+  conns.push_back (conn);
+  conn = heap.updated.connect (sigc::bind (sigc::mem_fun (this, &ClusterImpl::on_heap_updated), &heap));
+  conns.push_back (conn);
+
+  connections[&heap] = conns;
   heap_added.emit (heap);
 }
 
@@ -225,9 +236,12 @@ template<typename HeapType, typename HeapManagementTrait>
 void
 Ekiga::ClusterImpl<HeapType, HeapManagementTrait>::common_removal_steps (HeapType &heap)
 {
-  connection_pair conns = connections[&heap];
-  conns.first.disconnect ();
-  conns.second.disconnect ();
+  std::vector<sigc::connection> conns = connections[&heap];
+
+  for (std::vector<sigc::connection>::iterator iter = conns.begin ();
+       iter != conns.end ();
+       iter++)
+    iter->disconnect ();
   connections.erase (&heap);
   heap_removed.emit (heap);
 }
@@ -245,6 +259,27 @@ Ekiga::ClusterImpl<HeapType, HeapManagementTrait>::on_heap_removed (HeapType *he
 {
   common_removal_steps (*heap);
   HeapManagementTrait::release (*heap);
+}
+
+template<typename HeapType, typename HeapManagementTrait>
+void
+Ekiga::ClusterImpl<HeapType, HeapManagementTrait>::on_presentity_added (Presentity &presentity, HeapType *heap)
+{
+  presentity_added.emit (*heap, presentity);
+}
+
+template<typename HeapType, typename HeapManagementTrait>
+void
+Ekiga::ClusterImpl<HeapType, HeapManagementTrait>::on_presentity_updated (Presentity &presentity, HeapType *heap)
+{
+  presentity_updated.emit (*heap, presentity);
+}
+
+template<typename HeapType, typename HeapManagementTrait>
+void
+Ekiga::ClusterImpl<HeapType, HeapManagementTrait>::on_presentity_removed (Presentity &presentity, HeapType *heap)
+{
+  presentity_removed.emit (*heap, presentity);
 }
 
 #endif
