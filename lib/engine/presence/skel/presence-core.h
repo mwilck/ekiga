@@ -97,10 +97,28 @@ namespace Ekiga
     void visit_clusters (sigc::slot<void, Cluster &> visitor);
 
     sigc::signal<void, Cluster &> cluster_added;
+    sigc::signal<void, Cluster &, Heap &> heap_added;
+    sigc::signal<void, Cluster &, Heap &> heap_updated;
+    sigc::signal<void, Cluster &, Heap &> heap_removed;
+    sigc::signal<void, Cluster &, Heap &, Presentity &> presentity_added;
+    sigc::signal<void, Cluster &, Heap &, Presentity &> presentity_updated;
+    sigc::signal<void, Cluster &, Heap &, Presentity &> presentity_removed;
 
   private:
 
     std::set<Cluster *> clusters;
+    void on_heap_added (Heap &heap, Cluster *cluster);
+    void on_heap_updated (Heap &heap, Cluster *cluster);
+    void on_heap_removed (Heap &heap, Cluster *cluster);
+    void on_presentity_added (Heap &heap,
+			      Presentity &presentity,
+			      Cluster *cluster);
+    void on_presentity_updated (Heap &heap,
+				Presentity &presentity,
+				Cluster *cluster);
+    void on_presentity_removed (Heap &heap,
+				Presentity &presentity,
+				Cluster *cluster);
 
     /* act on presentities */
   public:

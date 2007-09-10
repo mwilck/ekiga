@@ -50,6 +50,12 @@ Ekiga::PresenceCore::add_cluster (Cluster &cluster)
 {
   clusters.insert (&cluster);
   cluster_added.emit (cluster);
+  cluster.heap_added.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresenceCore::on_heap_added), &cluster));
+  cluster.heap_updated.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresenceCore::on_heap_updated), &cluster));
+  cluster.heap_removed.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresenceCore::on_heap_removed), &cluster));
+  cluster.presentity_added.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresenceCore::on_presentity_added), &cluster));
+  cluster.presentity_updated.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresenceCore::on_presentity_added), &cluster));
+  cluster.presentity_removed.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresenceCore::on_presentity_removed), &cluster));
 }
 
 void
@@ -66,6 +72,49 @@ Ekiga::PresenceCore::populate_menu (MenuBuilder &/*builder*/)
 {
   // FIXME: to implement
   return false;
+}
+
+void Ekiga::PresenceCore::on_heap_added (Heap &heap,
+					 Cluster *cluster)
+{
+  heap_added.emit (*cluster, heap);
+}
+
+void
+Ekiga::PresenceCore::on_heap_updated (Heap &heap,
+				      Cluster *cluster)
+{
+  heap_updated.emit (*cluster, heap);
+}
+
+void
+Ekiga::PresenceCore::on_heap_removed (Heap &heap, Cluster *cluster)
+{
+  heap_removed.emit (*cluster, heap);
+}
+
+void
+Ekiga::PresenceCore::on_presentity_added (Heap &heap,
+					       Presentity &presentity,
+					       Cluster *cluster)
+{
+  presentity_added.emit (*cluster, heap, presentity);
+}
+
+void
+Ekiga::PresenceCore::on_presentity_updated (Heap &heap,
+					    Presentity &presentity,
+					    Cluster *cluster)
+{
+  presentity_updated (*cluster, heap, presentity);
+}
+
+void
+Ekiga::PresenceCore::on_presentity_removed (Heap &heap,
+					    Presentity &presentity,
+					    Cluster *cluster)
+{
+  presentity_removed.emit (*cluster, heap, presentity);
 }
 
 void
