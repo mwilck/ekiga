@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: ekiga\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-09-07 17:44+0300\n"
-"PO-Revision-Date: 2007-09-07 12:33+0300\n"
+"PO-Revision-Date: 2007-09-10 12:33+0300\n"
 "Last-Translator: Maxim Dziumanenko <dziumanenko@gmail.com> \n"
 "Language-Team: Ukrainian <linux@linux.org.ua>\n"
 "MIME-Version: 1.0\n"
@@ -75,14 +75,12 @@ msgstr ""
 "відповіді протягом визначеного проміжку часу (у секундах)"
 
 #: ../ekiga.schemas.in.in.h:11
-#, fuzzy
 msgid "Calls history"
 msgstr "Історія викликів"
 
 #: ../ekiga.schemas.in.in.h:12
-#, fuzzy
 msgid "Change the main window panel section"
-msgstr "Змінити розділ панелі керування"
+msgstr "Змінити розділ панелі головного вікна"
 
 #: ../ekiga.schemas.in.in.h:13
 msgid "Clear inactive calls"
@@ -101,9 +99,8 @@ msgstr ""
 "тунелювання H.245 може призвести до збоїв деяких версій Netmeeting."
 
 #: ../ekiga.schemas.in.in.h:15
-#, fuzzy
 msgid "Contact status"
-msgstr "_Контакти"
+msgstr "Статус контакту"
 
 #: ../ekiga.schemas.in.in.h:16
 msgid "Country code"
@@ -114,9 +111,8 @@ msgid "DTMF sending"
 msgstr "Передавання DTMF"
 
 #: ../ekiga.schemas.in.in.h:18
-#, fuzzy
 msgid "Disable video hardware acceleration"
-msgstr "Вимкнено зниження відлуння"
+msgstr "Вимкнути апаратне прискорення відео"
 
 #: ../ekiga.schemas.in.in.h:19
 msgid "Display a popup window when receiving a call"
@@ -277,14 +273,12 @@ msgid "Local video window size"
 msgstr "Розмір вікна локального відеозображення"
 
 #: ../ekiga.schemas.in.in.h:51
-#, fuzzy
 msgid "Maximum RX video bitrate"
-msgstr "Максимальна смуга пропускання відео"
+msgstr "Максимальна смуга пропускання RX відео"
 
 #: ../ekiga.schemas.in.in.h:52
-#, fuzzy
 msgid "Maximum TX video bitrate"
-msgstr "Максимальна смуга пропускання відео"
+msgstr "Максимальна смуга пропускання TX відео"
 
 #: ../ekiga.schemas.in.in.h:53
 msgid "Maximum jitter buffer"
@@ -364,9 +358,8 @@ msgid "Position on the screen of the address book window"
 msgstr "Позиція вікна адресної книги на екрані"
 
 #: ../ekiga.schemas.in.in.h:72
-#, fuzzy
 msgid "Position on the screen of the audio settings window"
-msgstr "Позиція основного вікна на екрані"
+msgstr "Позиція вікна параметрів звуку на екрані"
 
 #: ../ekiga.schemas.in.in.h:73
 msgid "Position on the screen of the chat window"
@@ -389,9 +382,8 @@ msgid "Position on the screen of the preferences window"
 msgstr "Позиція вікна параметрів на екрані"
 
 #: ../ekiga.schemas.in.in.h:78
-#, fuzzy
 msgid "Position on the screen of the video settings window"
-msgstr "Позиція вікна журналу на екрані"
+msgstr "Позиція вікна параметрів відео на екрані"
 
 #: ../ekiga.schemas.in.in.h:79
 msgid "Public IP of the NAT/PAT router"
@@ -436,6 +428,8 @@ msgid ""
 "Select the contact status: 0 (Online), 1 (Offline), 2 (Unknown), 3 (Away), 4 "
 "(DND), 5 (Free For Chat), 6 (Invisible)"
 msgstr ""
+"Виберіть статус контакту: 0 (У мережі), 1 (Не у мережі), 2 (Невідомий), 3 (Відійшов), 4 "
+"(Не турбувати), 5 (Вільний для розмови), 6 (Невидимий)"
 
 #: ../ekiga.schemas.in.in.h:89 ../src/gui/preferences.cpp:694
 msgid ""
@@ -812,6 +806,8 @@ msgid ""
 "The transmitted frame rate in frames/s. Choose 25 for LAN and less for "
 "slower connections"
 msgstr ""
+"Щільність кадрів, що передаються у одиницях кадри/с. Виберіть 25 для локальної мережі та менше значення для "
+"повільніших з'єднань"
 
 #: ../ekiga.schemas.in.in.h:156
 msgid "The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)"
@@ -830,13 +826,13 @@ msgstr ""
 
 #: ../ekiga.schemas.in.in.h:159
 msgid "The video view before having switched to fullscreen"
-msgstr ""
+msgstr "Вигляд відео до перемикання у повноекранний режим"
 
 #: ../ekiga.schemas.in.in.h:160
 msgid ""
 "The video view before having switched to fullscreen (same values as "
 "video_view)"
-msgstr ""
+msgstr "Вигляд відео до перемикання у повноекранний режим (ті самі значення, що й у video_view)"
 
 #: ../ekiga.schemas.in.in.h:161
 msgid "The zoom value"
@@ -916,10 +912,11 @@ msgid ""
 "This key disables DirectX (on win32) and XVideo (on Linux) video hardware "
 "acceleration"
 msgstr ""
+"Цей ключ вимикає апаратне прискорення відео DirectX (на win32) та XVideo (на Linux)"
 
 #: ../ekiga.schemas.in.in.h:171
 msgid "Timeout after which the user is automatically set as away"
-msgstr ""
+msgstr "Час простою, після якого вважається, що користувач відійшов"
 
 #: ../ekiga.schemas.in.in.h:172
 msgid "UDP port range"
@@ -1163,13 +1160,14 @@ msgstr "Без сортування"
 
 #: ../lib/engine/presence/local-roster/local-presentity.cpp:245
 msgid "Edit roster element"
-msgstr ""
+msgstr "Редагувати елемент списку"
 
 #: ../lib/engine/presence/local-roster/local-presentity.cpp:246
 msgid ""
 "Please fill in this form to change an existing element of ekiga's internal "
 "roster"
 msgstr ""
+"Заповніть цю форму для зміни існуючого елементу внутрішнього списку ekiga"
 
 #: ../lib/engine/presence/local-roster/local-presentity.cpp:250
 msgid "Choose groups:"
@@ -1662,11 +1660,11 @@ msgstr "Помилка розміру кадру."
 
 #: ../src/devices/fakevideoinput.cpp:54
 msgid "Moving logo"
-msgstr ""
+msgstr "Рухома емблема"
 
 #: ../src/devices/fakevideoinput.cpp:55
 msgid "Static picture"
-msgstr ""
+msgstr "Статичне зображення"
 
 #: ../src/endpoints/accountshandler.cpp:271
 #: ../src/endpoints/accountshandler.cpp:356
@@ -1912,7 +1910,7 @@ msgstr "Зарито кодек %s, який був відкритий для п
 #: ../src/endpoints/manager.cpp:2162
 #, c-format
 msgid "A:%.1f/%.1f   V:%.1f/%.1f  FPS:%d/%d"
-msgstr ""
+msgstr "Ауд:%.1f/%.1f   Від:%.1f/%.1f  Кадр/с:%d/%d"
 
 #: ../src/endpoints/pcss.cpp:213
 #, c-format
@@ -2149,7 +2147,7 @@ msgstr "_Типово"
 
 #: ../src/gui/callbacks.cpp:132
 msgid "Disconnecting..."
-msgstr ""
+msgstr "Розрив з'єднання..."
 
 #: ../src/gui/callbacks.cpp:147
 msgid "Contributors:"
@@ -2599,7 +2597,7 @@ msgstr "Зробити новий виклик"
 
 #: ../src/gui/main.cpp:855 ../src/gui/statusicon.cpp:116
 msgid "_Hang up"
-msgstr "Відкл__ючити"
+msgstr "Відкл_ючити"
 
 #: ../src/gui/main.cpp:856 ../src/gui/statusicon.cpp:117
 msgid "Terminate the current call"
@@ -2987,12 +2985,10 @@ msgstr ""
 "програма встановлена коректно."
 
 #: ../src/gui/main.cpp:4016
-#, fuzzy
 msgid "No usable audio codecs detected"
 msgstr "Не вдалось знайти підтримуваний модуль звуку"
 
 #: ../src/gui/main.cpp:4017
-#, fuzzy
 msgid ""
 "Ekiga didn't find any usable audio codec. Make sure that your installation "
 "is correct."
@@ -3001,12 +2997,11 @@ msgstr ""
 "програма встановлена коректно."
 
 #: ../src/gui/main.cpp:4022
-#, fuzzy
 msgid "Configuration database corruption"
-msgstr "Помічник початкового налаштовування"
+msgstr "Пошкоджена база даних конфігурації"
 
 #: ../src/gui/main.cpp:4023
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Ekiga got an invalid value for the configuration key %s.\n"
 "\n"
@@ -3017,9 +3012,9 @@ msgid ""
 "the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list "
 "archives for more information (http://mail.gnome.org) about this problem."
 msgstr ""
-"Ekiga отримав неправильне значення для ключа GConf %s.\n"
+"Програма Ekiga отримала неправильне значення ключа конфігурації %s.\n"
 "\n"
-"Це може означати, що схеми GConf не були коректно встановлені або мають "
+"Це може означати, що схеми конфігурації не були коректно встановлені або мають "
 "неправильні права доступу.\n"
 "\n"
 "Ознайомтесь з FAQ (http://www.ekiga.org/), розділом \"Уникнення несправностей"
@@ -3238,9 +3233,8 @@ msgid "Default _gateway:"
 msgstr "Типовий _шлюз:"
 
 #: ../src/gui/preferences.cpp:724 ../src/gui/preferences.cpp:778
-#, fuzzy
 msgid "Forward _URI:"
-msgstr "_URL переадресації:"
+msgstr "_URI переадресації:"
 
 #: ../src/gui/preferences.cpp:733
 msgid "Advanced Settings"
@@ -3280,15 +3274,12 @@ msgid "_Send DTMF as:"
 msgstr "_Надсилати DTMF:"
 
 #: ../src/gui/preferences.cpp:748 ../src/gui/preferences.cpp:788
-#, fuzzy
 msgid "This allows you to set the mode for DTMFs sending."
-msgstr ""
-"Дозволяє встановлення режиму для надсилання DTMF. Можливі значення: лише "
-"\"RFC2833\" (0)"
+msgstr "Дозволяє встановлення режиму для надсилання DTMF."
 
 #: ../src/gui/preferences.cpp:764
 msgid "INFO"
-msgstr ""
+msgstr "INFO"
 
 #: ../src/gui/preferences.cpp:775
 msgid "_Outbound Proxy:"
@@ -3327,7 +3318,6 @@ msgid "_Detect devices"
 msgstr "_Пошук пристроїв"
 
 #: ../src/gui/preferences.cpp:838 ../src/gui/preferences.cpp:966
-#, fuzzy
 msgid "Click here to refresh the device list."
 msgstr "Натисніть, щоб оновити перелік пристроїв."
 
@@ -3369,9 +3359,8 @@ msgid "Size:"
 msgstr "Розмір:"
 
 #: ../src/gui/preferences.cpp:908
-#, fuzzy
 msgid "Select the transmitted video size"
-msgstr "Вкажіть пристрій для відтворення звуку"
+msgstr "Вкажіть розмір відео, що передається"
 
 #: ../src/gui/preferences.cpp:910
 msgid "Format:"
@@ -3443,14 +3432,12 @@ msgid "If enabled, use echo cancelation."
 msgstr "Якщо увімкнено, використовувати зниження відлуння."
 
 #: ../src/gui/preferences.cpp:1033
-#, fuzzy
 msgid "Available Video Codecs"
-msgstr "Доступні звукові кодеки"
+msgstr "Доступні відео кодеки"
 
 #: ../src/gui/preferences.cpp:1048
-#, fuzzy
 msgid "Video Codecs Settings"
-msgstr "Параметри звукових кодеків"
+msgstr "Параметри відео кодеків"
 
 #: ../src/gui/preferences.cpp:1050
 msgid "Enable _video support"
@@ -3461,19 +3448,17 @@ msgid "If enabled, allows video during calls."
 msgstr "Приймати відеозображення в процесі виклику."
 
 #: ../src/gui/preferences.cpp:1052
-#, fuzzy
 msgid "Maximum video _bitrate (in kbits/s):"
-msgstr "Максимальна _смуга пропускання відео (у кбайт/с):"
+msgstr "Максимальна _смуга пропускання відео (у кбіт/с):"
 
 #: ../src/gui/preferences.cpp:1052
-#, fuzzy
 msgid ""
 "The maximum video bitrate in kbits/s. The video quality and the number of "
 "transmitted frames per second (depends on codec) will be dynamically "
 "adjusted above their minimum during calls to try to minimize the bandwidth "
 "to the given value."
 msgstr ""
-"Максимальна смуга пропускання відео в кілобайтах на секунду. Якість передачі "
+"Максимальна смуга пропускання відео в кілобітах за секунду. Якість передачі "
 "відео і кількість кадрів на секунду буде автоматично регулюватися таким "
 "чином, щоб мінімізувати смугу пропускання до вказаного значення."
 
