@@ -1,5 +1,12 @@
 2007-09-10  Julien Puydt  <jpuydt@gnome.org>
 
+	* lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:
+	* lib/engine/gui/gtk-frontend/addressbook-window.cpp: Added back
+	initial populate, as it was done by the SignalCentralizers, which are
+	now gone.
+
+2007-09-10  Julien Puydt  <jpuydt@gnome.org>
+
 	* lib/engine/gui/gtk-frontend/roster-view-gtk.h:
 	* lib/engine/gui/gtk-frontend/roster-view-gtk.cpp: Removed the class
 	SignalCentralizer, since Ekiga::PresenceCore now does its work!

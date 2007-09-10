@@ -90,6 +90,23 @@ static GObjectClass *parent_class = NULL;
 static void on_core_updated (gpointer data);
 
 
+/* DESCRIPTION  : Called at startup to populate the window
+ * BEHAVIOR     : 
+ * PRE          : The given GtkWidget pointer must be an SearchBook GObject.
+ */
+static void on_source_added (Ekiga::Source &source,
+			     gpointer data);
+
+
+/* DESCRIPTION  : Called at startup to populate the window
+ * BEHAVIOR     : 
+ * PRE          : The given GtkWidget pointer must be an SearchBook GObject.
+ */
+static void visit_books (Ekiga::Book &book,
+			 Ekiga::Source *source,
+			 gpointer data);
+
+
 /* DESCRIPTION  : Called when a Book has been added to the ContactCore,
  *                ie the book_added signal has been emitted.
  * BEHAVIOR     : Add a view of the Book in the AddressBookWindow.
@@ -222,6 +239,23 @@ on_core_updated (gpointer data)
                              menu_builder.menu);
 
   gtk_widget_show_all (menu_builder.menu);
+}
+
+
+static void
+on_source_added (Ekiga::Source &source,
+		 gpointer data)
+{
+  source.visit_books (sigc::bind (sigc::ptr_fun (visit_books),
+				  &source, data));
+}
+
+
+static void visit_books (Ekiga::Book &book,
+			 Ekiga::Source *source,
+			 gpointer data)
+{
+  on_book_added (*source, book, data);
 }
 
 
@@ -692,6 +726,9 @@ addressbook_window_new (Ekiga::ContactCore *core,
     core->book_removed.connect (sigc::bind (sigc::ptr_fun (on_book_removed), 
 					    (gpointer) self));
   self->priv->connections.push_back (conn);
+
+  core->visit_sources (sigc::bind (sigc::ptr_fun (on_source_added),
+				   (gpointer)self));
 
   return GTK_WIDGET (self);
 }

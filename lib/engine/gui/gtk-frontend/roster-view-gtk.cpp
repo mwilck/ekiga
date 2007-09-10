@@ -100,12 +100,12 @@ enum {
   COLUMN_NUMBER
 };
 
-/* 
- * Callbacks 
+/*
+ * Callbacks
  */
 
 
-/* DESCRIPTION  : Called when the user right-clicks on a heap, group or 
+/* DESCRIPTION  : Called when the user right-clicks on a heap, group or
  *                presentity.
  * BEHAVIOR     : Update the menu and displays it as a popup.
  * PRE          : The gpointer must point to the RosterViewGtk GObject.
@@ -116,7 +116,7 @@ static gint on_view_clicked (GtkWidget *tree_view,
 
 
 /* DESCRIPTION  : Called for a given renderer in order to show or hide it.
- * BEHAVIOR     : Only show the renderer if current iter points to a line of 
+ * BEHAVIOR     : Only show the renderer if current iter points to a line of
  *                type GPOINTER_TO_INT (data).
  * PRE          : The gpointer must be TYPE_HEAP, TYPE_CLUSTER or TYPE_PRESENTITY
  *                once casted using GPOINTER_TO_INT.
@@ -129,7 +129,7 @@ static void show_cell_data_func (GtkTreeViewColumn *column,
 
 
 /* DESCRIPTION  : Called for a given renderer in order to modify properties.
- * BEHAVIOR     : Expand the expander renderer if required. Change the backgrounds to 
+ * BEHAVIOR     : Expand the expander renderer if required. Change the backgrounds to
  *                lightgray for Clusters, and hide the expander renderer for Presentity
  *                and Heap.
  * PRE          : /
@@ -140,9 +140,26 @@ static void expand_cell_data_func (GtkTreeViewColumn *column,
                                    GtkTreeIter *iter,
                                    gpointer data);
 
+
+/* DESCRIPTION  : Called when a new cluster has been added
+ * BEHAVIOR     : Visits the cluster's heaps, and add them to the view
+ * PRE          : /
+ */
+static void on_cluster_added (Ekiga::Cluster &cluster,
+			      gpointer data);
+
+
+/* DESCRIPTION  : Called when visiting a new cluster
+ * BEHAVIOR     : Adds in the cluster heaps
+ * PRE          : /
+ */
+static void visit_heaps (Ekiga::Heap &heap,
+			 Ekiga::Cluster *cluster,
+			 gpointer data);
+
 /* DESCRIPTION  : Called when the heap_updated or heap_added signals have been emitted
- *      ²         by the SignalCentralizer of the BookViewGtk.
- * BEHAVIOR     : Add or Update the Heap in the GtkTreeView. 
+ *                by the SignalCentralizer of the BookViewGtk.
+ * BEHAVIOR     : Add or Update the Heap in the GtkTreeView.
  * PRE          : /
  */
 static void on_heap_updated (Ekiga::Cluster &cluster,
@@ -164,7 +181,7 @@ static void on_heap_removed (Ekiga::Cluster &cluster,
 
 /* DESCRIPTION  : Called when the presentity_added signal has been emitted
  *                by the SignalCentralizer of the BookViewGtk.
- * BEHAVIOR     : Add the given Presentity into the Heap on which it was 
+ * BEHAVIOR     : Add the given Presentity into the Heap on which it was
  *                added.
  * PRE          : A valid Heap.
  */
@@ -196,14 +213,14 @@ static void on_presentity_removed (Ekiga::Cluster &cluster,
 				   gpointer data);
 
 
-/* 
+/*
  * Static helper functions
  */
 
 /* DESCRIPTION  : /
  * BEHAVIOR     : Update the iter parameter so that it points to
  *                the GtkTreeIter corresponding to the given Heap.
- * PRE          : / 
+ * PRE          : /
  */
 static void roster_view_gtk_find_iter_for_heap (RosterViewGtk *view,
                                                 Ekiga::Heap &heap,
@@ -252,7 +269,7 @@ on_view_clicked (GtkWidget *tree_view,
 		 gpointer data)
 {
   RosterViewGtk *self = NULL;
-  GtkTreeModel *model = NULL; 
+  GtkTreeModel *model = NULL;
 
   GtkTreePath *path = NULL;
   GtkTreeIter iter;
@@ -287,7 +304,7 @@ on_view_clicked (GtkWidget *tree_view,
 
           switch (column_type) {
 
-          case TYPE_HEAP: 
+          case TYPE_HEAP:
 	    {
 	      MenuBuilderGtk builder;
 	      heap->populate_menu (builder);
@@ -340,13 +357,13 @@ on_view_clicked (GtkWidget *tree_view,
         }
         else {
 
-          if (event->button == 1 
-              && name 
+          if (event->button == 1
+              && name
               && (column_type == TYPE_HEAP || column_type == TYPE_GROUP)) {
 
             row_expanded = gtk_tree_view_row_expanded (GTK_TREE_VIEW (tree_view), path);
-            existing_group = g_slist_find_custom (self->priv->folded_groups, 
-                                                  name, 
+            existing_group = g_slist_find_custom (self->priv->folded_groups,
+                                                  name,
                                                   (GCompareFunc) g_ascii_strcasecmp);
             if (!row_expanded) {
 
@@ -370,7 +387,7 @@ on_view_clicked (GtkWidget *tree_view,
                                    self->priv->folded_groups);
         }
       }
-    
+
       g_free (name);
     }
 
@@ -432,6 +449,21 @@ expand_cell_data_func (GtkTreeViewColumn *column,
                 NULL);
 }
 
+static void
+on_cluster_added (Ekiga::Cluster &cluster,
+		  gpointer data)
+{
+  cluster.visit_heaps (sigc::bind (sigc::ptr_fun (visit_heaps),
+				   &cluster, data));
+}
+
+static void
+visit_heaps (Ekiga::Heap &heap,
+	     Ekiga::Cluster *cluster,
+	     gpointer data)
+{
+  on_heap_updated (*cluster, heap, data);
+}
 
 static void
 on_heap_updated (Ekiga::Cluster &/*cluster*/,
@@ -505,7 +537,7 @@ on_presentity_added (Ekiga::Cluster &/*cluster*/,
 			COLUMN_PRESENTITY, &presentity,
 			COLUMN_NAME, presentity.get_name ().c_str (),
 			COLUMN_STATUS, presentity.get_status ().c_str (),
-			COLUMN_PRESENCE, presentity.get_presence ().c_str (), 
+			COLUMN_PRESENCE, presentity.get_presence ().c_str (),
 			-1);
   }
 
@@ -590,7 +622,7 @@ on_presentity_removed (Ekiga::Cluster &/*cluster*/,
 
 
 
-/* 
+/*
  * Implementation of the static helpers.
  */
 static void
@@ -709,8 +741,8 @@ roster_view_gtk_update_groups (RosterViewGtk *view,
         if (name) {
 
           if (view->priv->folded_groups)
-            existing_group = g_slist_find_custom (view->priv->folded_groups, 
-                                                  name, 
+            existing_group = g_slist_find_custom (view->priv->folded_groups,
+                                                  name,
                                                   (GCompareFunc) g_ascii_strcasecmp);
 
 
@@ -721,9 +753,9 @@ roster_view_gtk_update_groups (RosterViewGtk *view,
           path = gtk_tree_model_get_path (model, &iter);
           if (path) {
 
-            if (existing_group == NULL) 
+            if (existing_group == NULL)
               gtk_tree_view_expand_row (view->priv->tree_view, path, FALSE);
-            else 
+            else
               gtk_tree_view_collapse_row (view->priv->tree_view, path);
 
             gtk_tree_path_free (path);
@@ -742,7 +774,7 @@ roster_view_gtk_update_groups (RosterViewGtk *view,
 }
 
 
-/* 
+/*
  * GObject stuff
  */
 static void
@@ -841,7 +873,7 @@ roster_view_gtk_get_type ()
 }
 
 
-/* 
+/*
  * Public API
  */
 GtkWidget *
@@ -859,7 +891,7 @@ roster_view_gtk_new (Ekiga::PresenceCore &core)
 
   self->priv = new _RosterViewGtkPrivate (core);
 
-  self->priv->folded_groups = 
+  self->priv->folded_groups =
     gm_conf_get_string_list ("/apps/" PACKAGE_NAME "/contacts/roster_folded_groups");
 
   self->priv->vbox = gtk_vbox_new (FALSE, 0);
@@ -877,7 +909,7 @@ roster_view_gtk_new (Ekiga::PresenceCore &core)
                                           G_TYPE_STRING,        // name
                                           G_TYPE_STRING,        // status
                                           G_TYPE_STRING);       // presence
-  self->priv->tree_view = 
+  self->priv->tree_view =
     GTK_TREE_VIEW (gtk_tree_view_new_with_model (GTK_TREE_MODEL (self->priv->store)));
   gtk_tree_view_set_headers_visible (self->priv->tree_view, FALSE);
 
@@ -893,7 +925,7 @@ roster_view_gtk_new (Ekiga::PresenceCore &core)
   renderer = gtk_cell_renderer_pixbuf_new ();
   gtk_tree_view_column_set_spacing (col, 0);
   gtk_tree_view_column_pack_start (col, renderer, TRUE);
-  g_object_set (col, "visible", FALSE, NULL); 
+  g_object_set (col, "visible", FALSE, NULL);
   gtk_tree_view_append_column (self->priv->tree_view, col);
   gtk_tree_view_set_expander_column (self->priv->tree_view, col);
 
@@ -905,7 +937,7 @@ roster_view_gtk_new (Ekiga::PresenceCore &core)
   gtk_tree_view_column_set_alignment (col, 0.0);
   g_object_set (renderer, "weight", PANGO_WEIGHT_BOLD, NULL);
   g_object_set (renderer, "cell-background", "lightgray", NULL);
-  gtk_tree_view_column_set_cell_data_func (col, renderer, 
+  gtk_tree_view_column_set_cell_data_func (col, renderer,
                                            show_cell_data_func, GINT_TO_POINTER (TYPE_HEAP), NULL);
 
   renderer = gtk_cell_renderer_text_new ();
@@ -913,7 +945,7 @@ roster_view_gtk_new (Ekiga::PresenceCore &core)
   gtk_tree_view_column_add_attribute (col, renderer,
 				      "text", COLUMN_NAME);
   g_object_set (renderer, "weight", PANGO_WEIGHT_BOLD, NULL);
-  gtk_tree_view_column_set_cell_data_func (col, renderer, 
+  gtk_tree_view_column_set_cell_data_func (col, renderer,
                                            show_cell_data_func, GINT_TO_POINTER (TYPE_GROUP), NULL);
 
   renderer = gtk_cell_renderer_pixbuf_new ();
@@ -922,14 +954,14 @@ roster_view_gtk_new (Ekiga::PresenceCore &core)
   gtk_tree_view_column_add_attribute (col, renderer,
 				      "stock-id",
 				      COLUMN_PRESENCE);
-  gtk_tree_view_column_set_cell_data_func (col, renderer, 
-                                           show_cell_data_func, GINT_TO_POINTER (TYPE_PRESENTITY), NULL);  
+  gtk_tree_view_column_set_cell_data_func (col, renderer,
+                                           show_cell_data_func, GINT_TO_POINTER (TYPE_PRESENTITY), NULL);
 
   renderer = gm_cell_renderer_bitext_new ();
   gtk_tree_view_column_pack_start (col, renderer, FALSE);
   gtk_tree_view_column_add_attribute (col, renderer, "primary-text", COLUMN_NAME);
   gtk_tree_view_column_add_attribute (col, renderer, "secondary-text", COLUMN_STATUS);
-  gtk_tree_view_column_set_cell_data_func (col, renderer, 
+  gtk_tree_view_column_set_cell_data_func (col, renderer,
                                            show_cell_data_func, GINT_TO_POINTER (TYPE_PRESENTITY), NULL);
 
   renderer = gm_cell_renderer_expander_new ();
@@ -949,25 +981,28 @@ roster_view_gtk_new (Ekiga::PresenceCore &core)
 
 
   /* Relay signals */
-  conn = core.heap_added.connect (sigc::bind (sigc::ptr_fun (on_heap_updated), 
+  conn = core.heap_added.connect (sigc::bind (sigc::ptr_fun (on_heap_updated),
 					      (gpointer) self));
   self->priv->connections.push_back (conn);
-  conn = core.heap_updated.connect (sigc::bind (sigc::ptr_fun (on_heap_updated), 
+  conn = core.heap_updated.connect (sigc::bind (sigc::ptr_fun (on_heap_updated),
 						(gpointer) self));
   self->priv->connections.push_back (conn);
-  conn = core.heap_removed.connect (sigc::bind (sigc::ptr_fun (on_heap_removed), 
+  conn = core.heap_removed.connect (sigc::bind (sigc::ptr_fun (on_heap_removed),
 						(gpointer) self));
-  
+
   self->priv->connections.push_back (conn);
-  conn = core.presentity_added.connect (sigc::bind (sigc::ptr_fun (on_presentity_added), 
+  conn = core.presentity_added.connect (sigc::bind (sigc::ptr_fun (on_presentity_added),
 						    (gpointer) self));
   self->priv->connections.push_back (conn);
-  conn = core.presentity_updated.connect (sigc::bind (sigc::ptr_fun (on_presentity_updated), 
+  conn = core.presentity_updated.connect (sigc::bind (sigc::ptr_fun (on_presentity_updated),
 						      self));
   self->priv->connections.push_back (conn);
-  conn = core.presentity_removed.connect (sigc::bind (sigc::ptr_fun (on_presentity_removed), 
+  conn = core.presentity_removed.connect (sigc::bind (sigc::ptr_fun (on_presentity_removed),
 						      (gpointer) self));
   self->priv->connections.push_back (conn);
+
+  core.visit_clusters (sigc::bind (sigc::ptr_fun (on_cluster_added),
+				   (gpointer)self));
 
   return (GtkWidget *) self;
 }
