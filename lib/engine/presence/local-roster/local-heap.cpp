@@ -104,6 +104,7 @@ Local::Heap::Heap (Ekiga::ServiceCore &_core): core (_core), doc (NULL)
 
     doc = xmlNewDoc (BAD_CAST "1.0");
     root = xmlNewDocNode (doc, NULL, BAD_CAST "list", NULL);
+    xmlDocSetRootElement (doc, root);
   }
 }
 

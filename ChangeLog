@@ -1,3 +1,15 @@
+2007-09-13  Julien Puydt  <jpuydt@gnome.org>
+
+	* lib/engine/presence/local-roster/local-heap.cpp:
+	* lib/engine/presence/call-history/history-heap.cpp: Handle broken or
+	empty installations better.
+	* lib/engine/presence/skel/cluster-impl.h: Correctly forward the
+	presentity_* signals (!).
+	* lib/engine/gui/gtk-frontend/roster-view-gtk.cpp: Connected the view
+	to the cluster_added signal so we show something, and added the
+	visit_presentities method, so we actually list the presentity in such
+	a case.
+
 2007-09-10  Julien Puydt  <jpuydt@gnome.org>
 
 	* lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:

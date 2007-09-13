@@ -219,6 +219,12 @@ Ekiga::ClusterImpl<HeapType, HeapManagementTrait>::add_heap (HeapType &heap)
   conns.push_back (conn);
   conn = heap.updated.connect (sigc::bind (sigc::mem_fun (this, &ClusterImpl::on_heap_updated), &heap));
   conns.push_back (conn);
+  conn = heap.presentity_added.connect (sigc::bind (sigc::mem_fun (this, &ClusterImpl::on_presentity_added), &heap));
+  conns.push_back (conn);
+  conn = heap.presentity_updated.connect (sigc::bind (sigc::mem_fun (this, &ClusterImpl::on_presentity_updated), &heap));
+  conns.push_back (conn);
+  conn = heap.presentity_removed.connect (sigc::bind (sigc::mem_fun (this, &ClusterImpl::on_presentity_removed), &heap));
+  conns.push_back (conn);
 
   connections[&heap] = conns;
   heap_added.emit (heap);

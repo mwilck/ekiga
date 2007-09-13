@@ -75,8 +75,12 @@ History::Heap::Heap (Ekiga::ServiceCore &_core) :
 	  && child->name != NULL
 	  && xmlStrEqual (BAD_CAST ("entry"), child->name))
         add (child);
-  } else
+  } else {
+
     doc = xmlNewDoc (BAD_CAST "1.0");
+    root = xmlNewDocNode (doc, NULL, BAD_CAST "list", NULL);
+    xmlDocSetRootElement (doc, root);
+  }
 }
 
 History::Heap::~Heap ()
