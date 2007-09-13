@@ -54,7 +54,7 @@ Ekiga::PresenceCore::add_cluster (Cluster &cluster)
   cluster.heap_updated.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresenceCore::on_heap_updated), &cluster));
   cluster.heap_removed.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresenceCore::on_heap_removed), &cluster));
   cluster.presentity_added.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresenceCore::on_presentity_added), &cluster));
-  cluster.presentity_updated.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresenceCore::on_presentity_added), &cluster));
+  cluster.presentity_updated.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresenceCore::on_presentity_updated), &cluster));
   cluster.presentity_removed.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresenceCore::on_presentity_removed), &cluster));
 }
 
