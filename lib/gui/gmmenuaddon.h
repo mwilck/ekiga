@@ -63,10 +63,10 @@ typedef enum {
 /* The structure defining a Menu Entry */
 typedef struct _MenuEntry {
 
-  char *id;
-  char *name;
-  char *tooltip;
-  char *stock_id;
+  const char *id;
+  const char *name;
+  const char *tooltip;
+  const char *stock_id;
   gboolean stock_is_theme;
   guint accel;
   MenuEntryType type;

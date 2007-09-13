@@ -905,7 +905,7 @@ gm_pw_init_video_devices_page (GtkWidget *prefs_window,
   /* Video Channel */
   gnome_prefs_spin_new (subsection, _("Channel:"), VIDEO_DEVICES_KEY "channel", _("The video channel number to use (to select camera, tv or other sources)"), 0.0, 10.0, 1.0, 3, NULL, false);
 
-  gnome_prefs_int_option_menu_new (subsection, _("Size:"), (gchar**)video_size, VIDEO_DEVICES_KEY "size", _("Select the transmitted video size"), 1);
+  gnome_prefs_int_option_menu_new (subsection, _("Size:"), (const gchar**)video_size, VIDEO_DEVICES_KEY "size", _("Select the transmitted video size"), 1);
 
   gnome_prefs_int_option_menu_new (subsection, _("Format:"), video_format, VIDEO_DEVICES_KEY "format", _("Select the format for video cameras (does not apply to most USB cameras)"), 2);
 

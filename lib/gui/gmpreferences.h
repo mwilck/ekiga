@@ -179,7 +179,7 @@ void gnome_prefs_range_new (GtkWidget *,
  */
 GtkWidget *gnome_prefs_int_option_menu_new (GtkWidget *,
 					    gchar *,
-					    gchar **, 
+					    const gchar **, 
 					    gchar *,
 					    gchar *,
 					    int);

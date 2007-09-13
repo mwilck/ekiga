@@ -1,5 +1,12 @@
 2007-09-13  Julien Puydt  <jpuydt@gnome.org>
 
+	* lib/gui/gmmenuaddon.h:
+	* lib/gui/gmpreferences.h:
+	* lib/gui/gmpreferences.c: Added a few 'const' to please g++ 4.2.
+	* src/gui/preferences.cpp: Made a cast follow previous changes.
+
+2007-09-13  Julien Puydt  <jpuydt@gnome.org>
+
 	* src/gui/accounts.cpp:
 	* src/gui/main.cpp:
 	* src/gui/preferences.cpp: Fixed a few g++ 4.2 warnings (more to

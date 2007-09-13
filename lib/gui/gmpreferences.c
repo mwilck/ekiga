@@ -521,7 +521,7 @@ gnome_prefs_range_new (GtkWidget *table,
 GtkWidget *
 gnome_prefs_int_option_menu_new (GtkWidget *table,
 				 gchar *label_txt,
-				 gchar **options,
+				 const gchar **options,
 				 gchar *conf_key,
 				 gchar *tooltip,
 				 int row)
