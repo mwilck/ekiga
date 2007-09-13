@@ -275,7 +275,7 @@ Local::Heap::new_presentity_form_submitted (Ekiga::Form &result)
     const std::string name = result.text ("name");
     const std::string good_uri = result.hidden ("good-uri");
     std::string uri;
-    const std::set<std::string> groups = result.multiple_choice ("groups");
+    const std::set<std::string> groups = result.editable_set ("groups");
 
     if (good_uri == "yes")
       uri = result.hidden ("uri");
