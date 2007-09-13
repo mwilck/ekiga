@@ -660,7 +660,7 @@ gm_pw_init_network_page (GtkWidget *prefs_window,
 
   PStringArray ifaces;
   char **array = NULL;
-  gchar *nat_method [] = 
+  const gchar *nat_method [] = 
     {
       _("None"),
       _("STUN"),
@@ -706,7 +706,7 @@ gm_pw_init_h323_page (GtkWidget *prefs_window,
   GtkWidget *entry = NULL;
   GtkWidget *subsection = NULL;
 
-  gchar *capabilities [] = 
+  const gchar *capabilities [] = 
     {_("String"),
       _("Tone"),
       _("RFC2833"),
@@ -758,7 +758,7 @@ gm_pw_init_sip_page (GtkWidget *prefs_window,
   GtkWidget *entry = NULL;
   GtkWidget *subsection = NULL;
 
-  gchar *capabilities [] = 
+  const gchar *capabilities [] = 
     {
       _("RFC2833"),
       _("INFO"), 
@@ -869,7 +869,7 @@ gm_pw_init_video_devices_page (GtkWidget *prefs_window,
 
   video_size [NB_VIDEO_SIZES] = NULL;
 
-  gchar *video_format [] = 
+  const gchar *video_format [] = 
     {
       _("PAL (Europe)"), 
       _("NTSC (America)"), 

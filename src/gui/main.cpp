@@ -561,7 +561,7 @@ gm_mw_init_main_toolbar (GtkWidget *main_window)
   GdkPixbuf *status_icon = NULL;
   GtkTreeIter iter;
 
-  char * status [] = 
+  const char * status [] = 
     { 
       _("Online"), 
       _("Away"), 
@@ -572,7 +572,7 @@ gm_mw_init_main_toolbar (GtkWidget *main_window)
       NULL 
     };
 
-  char * stock_status [] = 
+  const char * stock_status [] = 
     { 
       GM_STOCK_STATUS_ONLINE,
       GM_STOCK_STATUS_AWAY,
@@ -1149,14 +1149,14 @@ gm_mw_init_dialpad (GtkWidget *main_window)
 
   int i = 0;
 
-  char *key_n [] = { "1", "2", "3", "4", "5", "6", "7", "8", "9",
+  const char *key_n [] = { "1", "2", "3", "4", "5", "6", "7", "8", "9",
 		     "*", "0", "#"};
   guint key_kp [] = { GDK_KP_1, GDK_KP_2, GDK_KP_3, GDK_KP_4, GDK_KP_5, 
     		      GDK_KP_6, GDK_KP_7, GDK_KP_8, GDK_KP_9, GDK_KP_Multiply,
 		      GDK_KP_0, GDK_numbersign};
 
-  char *key_a []= { "  ", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv",
-		   "wxyz", "  ", "  ", "  "};
+  const char *key_a []= { "  ", "abc", "def", "ghi", "jkl", "mno", "pqrs",
+			  "tuv", "wxyz", "  ", "  ", "  "};
 
   gchar *text_label = NULL;
   

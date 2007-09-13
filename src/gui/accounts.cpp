@@ -1483,7 +1483,7 @@ gm_accounts_window_new ()
 
   AtkObject *aobj;
 
-  gchar *column_names [] = {
+  const gchar *column_names [] = {
 
     "",
     "",

@@ -1053,8 +1053,8 @@ FormDialog::editable_set (const std::string name,
   /* The GtkListStore containing the values */
   list_store = gtk_list_store_new (EditableSetSubmitter::COLUMN_NUMBER,
 				   G_TYPE_BOOLEAN, G_TYPE_STRING);
-  gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (tree_view), TRUE);
   tree_view = gtk_tree_view_new_with_model (GTK_TREE_MODEL (list_store));
+  gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (tree_view), TRUE);
   gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (tree_view), FALSE);
 
   frame = gtk_frame_new (NULL);
