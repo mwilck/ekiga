@@ -319,6 +319,6 @@ Local::Presentity::remove ()
   xmlUnlinkNode (node);
   xmlFreeNode (node);
 
-  removed.emit ();
   trigger_saving.emit ();
+  removed.emit ();
 }

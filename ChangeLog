@@ -1,5 +1,11 @@
 2007-09-13  Julien Puydt  <jpuydt@gnome.org>
 
+	* lib/engine/presence/local-roster/local-presentity.cpp: Fixed a crash
+	due to the emission of the trigger_saving signal *after* the removed
+	signal!
+
+2007-09-13  Julien Puydt  <jpuydt@gnome.org>
+
 	* lib/engine/presence/skel/presence-core.cpp: Fixed wrong relay of an
 	update signal as an addition.
 
