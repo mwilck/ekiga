@@ -216,7 +216,7 @@ void gtk_toggle_menu_enable (GtkWidget *,
  * PRE          :  /
  */
 void gtk_radio_menu_select_with_id (GtkWidget *,
-				    gchar *,
+				    const gchar *,
 				    int i);
 
 

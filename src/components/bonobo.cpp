@@ -181,7 +181,7 @@ bonobo_component_init (int argc, char *argv[])
 
 
   listener = 
-    bonobo_activation_activate_from_id (ACT_IID, 
+    bonobo_activation_activate_from_id ((const Bonobo_ActivationID)ACT_IID, 
 					Bonobo_ACTIVATION_FLAG_EXISTING_ONLY, 
 					NULL, NULL);
   

@@ -159,7 +159,7 @@ static gboolean dbus_component_claim_ownership (DbusComponent *self);
 /* Declaration of helper functions */
 
 static guint endpoint_to_dbus_state (GMManager::CallingState hstate);
-static gchar *protocol_prefix_to_name (const PString prefix);
+static const gchar *protocol_prefix_to_name (const PString prefix);
 
 /* Implementation of the helper functions */
 
@@ -187,7 +187,7 @@ endpoint_to_dbus_state (GMManager::CallingState hstate)
   return result;
 }
 
-static char *
+static const gchar *
 protocol_prefix_to_name (const PString prefix)
 {
   if (prefix == "sip")
@@ -534,7 +534,7 @@ dbus_component_resignal_call_info (DbusComponent *self,
   gchar *name = NULL;
   gchar *client = NULL;
   gchar *url = NULL;
-  gchar *protocol = NULL;
+  const gchar *protocol = NULL;
 
   endpoint = GnomeMeeting::Process ()->GetManager ();
 

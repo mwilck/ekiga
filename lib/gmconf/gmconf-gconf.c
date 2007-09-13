@@ -244,7 +244,7 @@ gm_conf_get_string_list (const gchar *key)
 
 
 gchar *
-gm_conf_escape_key (gchar *key, 
+gm_conf_escape_key (const gchar *key, 
                     gint len)
 {
   return gconf_escape_key (key, len);
@@ -252,7 +252,7 @@ gm_conf_escape_key (gchar *key,
 
 
 gchar *
-gm_conf_unescape_key (gchar *key, 
+gm_conf_unescape_key (const gchar *key, 
                       gint len)
 {
   return gconf_unescape_key (key, len);
@@ -260,7 +260,7 @@ gm_conf_unescape_key (gchar *key,
 
 
 gboolean
-gm_conf_is_key_writable (gchar *key)
+gm_conf_is_key_writable (const gchar *key)
 {
   GConfClient *client = NULL;
 

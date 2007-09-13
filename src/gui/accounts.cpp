@@ -1312,7 +1312,7 @@ gnomemeeting_get_account (const char *domain)
 
 
 GmAccount *
-gnomemeeting_get_default_account (gchar *protocol)
+gnomemeeting_get_default_account (const gchar *protocol)
 {
   GmAccount *current_account = NULL;
 

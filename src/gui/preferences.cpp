@@ -645,7 +645,7 @@ gm_pw_init_sound_events_page (GtkWidget *prefs_window,
   devs = GnomeMeeting::Process ()->GetAudioOutpoutDevices ();
   array = devs.ToCharArray ();
   pw->sound_events_output =
-    gnome_prefs_string_option_menu_new (subsection, _("Alternative output device:"), array, SOUND_EVENTS_KEY "output_device", _("Select an alternative audio output device to use for sound events"), 0);
+    gnome_prefs_string_option_menu_new (subsection, _("Alternative output device:"), (const gchar **)array, SOUND_EVENTS_KEY "output_device", _("Select an alternative audio output device to use for sound events"), 0);
   free (array);
 }
 
@@ -682,7 +682,7 @@ gm_pw_init_network_page (GtkWidget *prefs_window,
   ifaces = GnomeMeeting::Process ()->GetInterfaces ();
   array = ifaces.ToCharArray ();
   pw->iface =
-    gnome_prefs_string_option_menu_new (subsection, _("Listen on:"), array, PROTOCOLS_KEY "interface", _("The network interface to listen on"), 0);
+    gnome_prefs_string_option_menu_new (subsection, _("Listen on:"), (const gchar **)array, PROTOCOLS_KEY "interface", _("The network interface to listen on"), 0);
   free (array);
 
 
@@ -810,7 +810,7 @@ gm_pw_init_audio_devices_page (GtkWidget *prefs_window,
   /* Add all the fields for the audio manager */
   devs = GnomeMeeting::Process ()->GetAudioPlugins ();
   array = devs.ToCharArray ();
-  gnome_prefs_string_option_menu_new (subsection, _("Audio plugin:"), array, AUDIO_DEVICES_KEY "plugin", _("The audio plugin that will be used to detect the devices and manage them."), 0);
+  gnome_prefs_string_option_menu_new (subsection, _("Audio plugin:"), (const gchar **)array, AUDIO_DEVICES_KEY "plugin", _("The audio plugin that will be used to detect the devices and manage them."), 0);
   free (array);
 
 
@@ -823,14 +823,14 @@ gm_pw_init_audio_devices_page (GtkWidget *prefs_window,
   devs = GnomeMeeting::Process ()->GetAudioOutpoutDevices ();
   array = devs.ToCharArray ();
   pw->audio_player =
-    gnome_prefs_string_option_menu_new (subsection, _("Output device:"), array, AUDIO_DEVICES_KEY "output_device", _("Select the audio output device to use"), 0);
+    gnome_prefs_string_option_menu_new (subsection, _("Output device:"), (const gchar **)array, AUDIO_DEVICES_KEY "output_device", _("Select the audio output device to use"), 0);
   free (array);
 
   /* The recorder */
   devs = GnomeMeeting::Process ()->GetAudioInputDevices ();
   array = devs.ToCharArray ();
   pw->audio_recorder =
-    gnome_prefs_string_option_menu_new (subsection, _("Input device:"), array, AUDIO_DEVICES_KEY "input_device", _("Select the audio input device to use"), 2);
+    gnome_prefs_string_option_menu_new (subsection, _("Input device:"), (const gchar **)array, AUDIO_DEVICES_KEY "input_device", _("Select the audio input device to use"), 2);
   free (array);
 
 
@@ -887,7 +887,7 @@ gm_pw_init_video_devices_page (GtkWidget *prefs_window,
 
   devs = GnomeMeeting::Process ()->GetVideoPlugins ();
   array = devs.ToCharArray ();
-  gnome_prefs_string_option_menu_new (subsection, _("Video plugin:"), array, VIDEO_DEVICES_KEY "plugin", _("The video plugin that will be used to detect the devices and manage them"), 0);
+  gnome_prefs_string_option_menu_new (subsection, _("Video plugin:"), (const gchar **)array, VIDEO_DEVICES_KEY "plugin", _("The video plugin that will be used to detect the devices and manage them"), 0);
   free (array);
 
 
@@ -899,7 +899,7 @@ gm_pw_init_video_devices_page (GtkWidget *prefs_window,
   devs = GnomeMeeting::Process ()->GetVideoInputDevices ();
   array = devs.ToCharArray ();
   pw->video_device =
-    gnome_prefs_string_option_menu_new (subsection, _("Input device:"), array, VIDEO_DEVICES_KEY "input_device", _("Select the video input device to use. If an error occurs when using this device a test picture will be transmitted."), 0);
+    gnome_prefs_string_option_menu_new (subsection, _("Input device:"), (const gchar **)array, VIDEO_DEVICES_KEY "input_device", _("Select the video input device to use. If an error occurs when using this device a test picture will be transmitted."), 0);
   free (array);
 
   /* Video Channel */
@@ -1375,7 +1375,7 @@ gm_prefs_window_update_interfaces_list (GtkWidget *prefs_window,
   /* The Video player */
   array = interfaces.ToCharArray ();
   gnome_prefs_string_option_menu_update (pw->iface,
-					 array,
+					 (const gchar **)array,
 					 PROTOCOLS_KEY "interface");
   free (array);
 }
@@ -1399,10 +1399,10 @@ gm_prefs_window_update_devices_list (GtkWidget *prefs_window,
   /* The player */
   array = audio_output_devices.ToCharArray ();
   gnome_prefs_string_option_menu_update (pw->audio_player,
-					 array,
+					 (const gchar **)array,
 					 AUDIO_DEVICES_KEY "output_device");
   gnome_prefs_string_option_menu_update (pw->sound_events_output,
-					 array,
+					 (const gchar **)array,
 					 SOUND_EVENTS_KEY "output_device");
   free (array);
 
@@ -1410,7 +1410,7 @@ gm_prefs_window_update_devices_list (GtkWidget *prefs_window,
   /* The recorder */
   array = audio_input_devices.ToCharArray ();
   gnome_prefs_string_option_menu_update (pw->audio_recorder,
-					 array,
+					 (const gchar **)array,
 					 AUDIO_DEVICES_KEY "input_device");
   free (array);
 
@@ -1418,7 +1418,7 @@ gm_prefs_window_update_devices_list (GtkWidget *prefs_window,
   /* The Video player */
   array = video_input_devices.ToCharArray ();
   gnome_prefs_string_option_menu_update (pw->video_device,
-					 array,
+					 (const gchar **)array,
 					 VIDEO_DEVICES_KEY "input_device");
   free (array);
 }

@@ -1,5 +1,25 @@
 2007-09-13  Julien Puydt  <jpuydt@gnome.org>
 
+	* lib/gui/gmpreferences.c:
+	* src/components/bonobo.cpp: Even more g++ 4.2 warning fixes. They're
+	almost gone!
+
+2007-09-13  Julien Puydt  <jpuydt@gnome.org>
+
+	* lib/gmconf/gmconf.h:
+	* lib/gmconf/gmconf-glib.c:
+	* lib/gmconf/gmconf-gconf.c:
+	* lib/gui/gmmenuaddon.h:
+	* lib/gui/gmmenuaddon.c:
+	* lib/gui/gmpreferences.h:
+	* lib/gui/gmpreferences.c:
+	* src/gui/accounts.h:
+	* src/gui/accounts.cpp:
+	* src/components/dbus.cpp:
+	* src/gui/preferences.cpp: More g++ 4.2 warning fixes.
+
+2007-09-13  Julien Puydt  <jpuydt@gnome.org>
+
 	* lib/gui/gmmenuaddon.h:
 	* lib/gui/gmpreferences.h:
 	* lib/gui/gmpreferences.c: Added a few 'const' to please g++ 4.2.

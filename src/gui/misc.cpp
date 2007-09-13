@@ -399,15 +399,15 @@ gnomemeeting_create_fullname (const gchar *firstname,
 
   if (firstname && lastname) {
 
-    gchar* seperator = NULL;
+    const gchar* separator = NULL;
 
     if (strcmp (firstname, "") && strcmp (lastname, ""))
-      seperator = " ";
+      separator = " ";
     else
-      seperator = "";
+      separator = "";
 
     if (strcmp (firstname, "") || strcmp (lastname, ""))
-      fullname = g_strconcat (firstname, seperator, lastname, NULL);
+      fullname = g_strconcat (firstname, separator, lastname, NULL);
 
   } 
   else {

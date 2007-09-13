@@ -67,9 +67,9 @@ G_BEGIN_DECLS
  * PRE          :  /
  */
 GtkWidget *gnome_prefs_entry_new (GtkWidget *,
-				  gchar *,
-				  gchar *,
-				  gchar *,
+				  const gchar *,
+				  const gchar *,
+				  const gchar *,
 				  int,
 				  gboolean);
 
@@ -84,9 +84,9 @@ GtkWidget *gnome_prefs_entry_new (GtkWidget *,
  * PRE          :  /
  */
 GtkWidget *gnome_prefs_toggle_new (GtkWidget *,
-				   gchar *,
-				   gchar *, 
-				   gchar *,
+				   const gchar *,
+				   const gchar *, 
+				   const gchar *,
 				   int);
 
 
@@ -101,10 +101,10 @@ GtkWidget *gnome_prefs_toggle_new (GtkWidget *,
  * PRE          :  /
  */
 GtkWidget *gnome_prefs_scale_new (GtkWidget *,       
-				  gchar *,
-				  gchar *,
-				  gchar *,       
-				  gchar *,
+				  const gchar *,
+				  const gchar *,
+				  const gchar *,       
+				  const gchar *,
 				  double,
 				  double,
 				  double,
@@ -125,14 +125,14 @@ GtkWidget *gnome_prefs_scale_new (GtkWidget *,
  * PRE          :  The gboolean must be TRUE if the rest of the label is given.
  */
 GtkWidget *gnome_prefs_spin_new (GtkWidget *,
-				 gchar *,
-				 gchar *,
-				 gchar *,
+				 const gchar *,
+				 const gchar *,
+				 const gchar *,
 				 double,
 				 double,
 				 double,
 				 int,
-				 gchar *,
+				 const gchar *,
 				 gboolean);
 
 
@@ -151,15 +151,15 @@ GtkWidget *gnome_prefs_spin_new (GtkWidget *,
  * PRE          :  /
  */
 void gnome_prefs_range_new (GtkWidget *,
-			    gchar *,
+			    const gchar *,
 			    GtkWidget **,
-			    gchar *,
+			    const gchar *,
 			    GtkWidget **,
-			    gchar *,
-			    gchar *,
-			    gchar *,
-			    gchar *,
-			    gchar *,
+			    const gchar *,
+			    const gchar *,
+			    const gchar *,
+			    const gchar *,
+			    const gchar *,
 			    double,
 			    double,
 			    double,
@@ -178,10 +178,10 @@ void gnome_prefs_range_new (GtkWidget *,
  * PRE          :  /
  */
 GtkWidget *gnome_prefs_int_option_menu_new (GtkWidget *,
-					    gchar *,
+					    const gchar *,
 					    const gchar **, 
-					    gchar *,
-					    gchar *,
+					    const gchar *,
+					    const gchar *,
 					    int);
 
 
@@ -195,10 +195,10 @@ GtkWidget *gnome_prefs_int_option_menu_new (GtkWidget *,
  * PRE          :  The array ends with NULL. 
  */
 GtkWidget *gnome_prefs_string_option_menu_new (GtkWidget *,
-					       gchar *,
-					       gchar **,
-					       gchar *,
-					       gchar *,
+					       const gchar *,
+					       const gchar **,
+					       const gchar *,
+					       const gchar *,
 					       int);
 
 
@@ -210,8 +210,8 @@ GtkWidget *gnome_prefs_string_option_menu_new (GtkWidget *,
  * PRE          :  The array ends with NULL.
  */
 void gnome_prefs_string_option_menu_update (GtkWidget *,
-					    gchar **,
-					    gchar *);
+					    const gchar **,
+					    const gchar *);
 
 
 /* DESCRIPTION  :  /
@@ -225,7 +225,7 @@ void gnome_prefs_string_option_menu_update (GtkWidget *,
  */
 GtkWidget *gnome_prefs_subsection_new (GtkWidget *,
 				       GtkWidget *,
-				       gchar *,
+				       const gchar *,
 				       int,
 				       int);
 
@@ -236,7 +236,7 @@ GtkWidget *gnome_prefs_subsection_new (GtkWidget *,
  *                 signals.
  * PRE          :  /
  */
-GtkWidget *gnome_prefs_window_new (gchar *);
+GtkWidget *gnome_prefs_window_new (const gchar *);
 
 
 /* DESCRIPTION  :  /
@@ -246,7 +246,7 @@ GtkWidget *gnome_prefs_window_new (gchar *);
  * PRE          :  /
  */
 void gnome_prefs_window_section_new (GtkWidget *,
-				     gchar *);
+				     const gchar *);
 
 
 /* DESCRIPTION  :  /
@@ -258,6 +258,6 @@ void gnome_prefs_window_section_new (GtkWidget *,
  * PRE          :  /
  */
 GtkWidget *gnome_prefs_window_subsection_new (GtkWidget *,
-					      gchar *);
+					      const gchar *);
 
 G_END_DECLS

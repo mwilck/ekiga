@@ -1475,7 +1475,7 @@ gm_conf_destroy (const gchar *namespac)
 }
 
 gboolean 
-gm_conf_is_key_writable (gchar *key)
+gm_conf_is_key_writable (const gchar *key)
 {
   g_return_val_if_fail (key != NULL, FALSE);
 
@@ -1483,13 +1483,13 @@ gm_conf_is_key_writable (gchar *key)
 }
 
 gchar *
-gm_conf_escape_key (gchar *key, gint len)
+gm_conf_escape_key (const gchar *key, gint len)
 {
   return g_strescape (key, NULL); /* we don't honor len */
 }
 
 gchar *
-gm_conf_unescape_key (gchar *key, gint len)
+gm_conf_unescape_key (const gchar *key, gint len)
 {
   return g_strcompress (key); /* we don't honor len */
 }
