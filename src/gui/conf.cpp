@@ -55,7 +55,6 @@
 #include "accounts.h"
 #include "main.h"
 #include "history.h"
-#include "statusicon.h"
 #include "misc.h"
 #include "tools.h"
 #include "urlhandler.h"
@@ -904,7 +903,6 @@ status_changed_nt (gpointer id,
                    gpointer data)
 {
   GtkWidget *main_window = NULL;
-  GtkWidget *statusicon = NULL;
   
   GMManager *ep = NULL;
 
@@ -912,7 +910,6 @@ status_changed_nt (gpointer id,
 
   ep = GnomeMeeting::Process ()->GetManager ();
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  statusicon = GnomeMeeting::Process ()->GetStatusicon ();
 
   if (gm_conf_entry_get_type (entry) == GM_CONF_INT) {
 
@@ -920,9 +917,6 @@ status_changed_nt (gpointer id,
     
     status = gm_conf_entry_get_int (entry);
     
-    /* Update the tray icon and its menu */
-    gm_statusicon_update_status (statusicon, status);
-
     /* Update the main window and its menu */
     gm_main_window_set_status (main_window, status);
     
@@ -1002,10 +996,8 @@ gnomemeeting_conf_init ()
 {
   GtkWidget *main_window = NULL;
   GtkWidget *prefs_window = NULL;
-  GtkWidget *statusicon = NULL;
   
   prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
-  statusicon = GnomeMeeting::Process ()->GetStatusicon ();
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
 
 

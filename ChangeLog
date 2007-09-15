@@ -1,5 +1,13 @@
 2007-09-15  Damien Sandras  <dsandras@gnome.org>
 
+	* src/gui/callbacks.cpp, src/gui/main.cpp,
+	src/gui/conf.cpp:
+	Use the new StatusIcon GObject. Remove it from various
+	places as it is able to react to signals and is thus
+	stand-alone.
+
+2007-09-15  Damien Sandras  <dsandras@gnome.org>
+
 	* src/gui/statusicon.cpp, src/gui/statusicon.h:
 	Completely new code with a mostly functional and new
 	GObject deriving from GtkStatusIcon and able to react
