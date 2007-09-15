@@ -452,11 +452,14 @@ gtk_build_popup_menu (GtkWidget *widget,
   gtk_build_menu (popup_menu_widget, menu, accel, NULL);
   gtk_widget_show_all (popup_menu_widget);
 
-  g_signal_connect (G_OBJECT (widget), "button_press_event",
-		    G_CALLBACK (popup_menu_callback), 
-		    (gpointer) popup_menu_widget);
+  if (widget) {
 
-  gtk_widget_add_events (widget, GDK_BUTTON_PRESS_MASK | GDK_KEY_PRESS_MASK);
+    g_signal_connect (G_OBJECT (widget), "button_press_event",
+                      G_CALLBACK (popup_menu_callback), 
+                      (gpointer) popup_menu_widget);
+
+    gtk_widget_add_events (widget, GDK_BUTTON_PRESS_MASK | GDK_KEY_PRESS_MASK);
+  }
 
   return popup_menu_widget;
 }
