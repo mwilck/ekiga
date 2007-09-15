@@ -1,3 +1,24 @@
+2007-09-15  Damien Sandras  <dsandras@gnome.org>
+
+	* endpoints/sip.h,
+	endpoints/urlhandler.cpp,
+	endpoints/pcss.cpp,
+	endpoints/manager.cpp,
+	endpoints/manager.h,
+	endpoints/ekiga.cpp,
+	endpoints/ekiga.h,
+	endpoints/sip.cpp:
+	Removed all occurences of the old GmStatusIcon from all endpoints.
+	Moved stuff from descendant endpoints to the manager in order
+	to relay signals.
+	Make the manager emit signals when there is call event (incoming,
+	outgoing, call established, released, ...) and when a message
+	has been received.
+
+	* endpoints/callinfo.cpp,
+	endpoints/callinfo.h: Added those classes to describe information
+	about a call (duration, remote party name, ...).
+
 2007-09-13  Julien Puydt  <jpuydt@gnome.org>
 
 	* lib/gui/gmpreferences.c:

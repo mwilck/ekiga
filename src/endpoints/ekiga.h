@@ -47,6 +47,8 @@
 #include "services.h"
 #include "runtime.h"
 
+#include "statusicon.h"
+
 #include <ptlib/ipsock.h>
 
 
@@ -54,7 +56,6 @@
  * COMMON NOTICE: The Application must be initialized with Init after its
  * creation.
  */
-
 class GnomeMeeting : public PProcess
 {
   PCLASSINFO(GnomeMeeting, PProcess);
@@ -200,7 +201,7 @@ class GnomeMeeting : public PProcess
    * BEHAVIOR     :  Returns a pointer to the tray.
    * PRE          :  /
    */
-  GtkWidget *GetStatusicon ();
+  StatusIcon *GetStatusicon ();
   
   
 #ifdef HAVE_DBUS
@@ -343,14 +344,14 @@ class GnomeMeeting : public PProcess
   GtkWidget *prefs_window;
   GtkWidget *pc2phone_window;
   GtkWidget *accounts_window;
-  GtkWidget *statusicon;
+  StatusIcon *statusicon;
 
   /* other things */
 #ifdef HAVE_DBUS
   GObject *dbus_component;
 #endif
 
-  static GnomeMeeting *GM;
+  static GnomeMeeting *GM; 
 };
 
 #endif

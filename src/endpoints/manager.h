@@ -54,6 +54,9 @@
 #include "stun.h"
 
 #include "accountshandler.h"
+#include "callinfo.h"
+
+#include <sigc++/sigc++.h>
 
 class GMLid;
 class GMH323Gatekeeper;
@@ -288,14 +291,14 @@ class GMManager : public OpalManager
   void OnHold (OpalConnection &);
   
   
-  /* DESCRIPTION  :  This callback is called when receiving an input string.
-   * BEHAVIOR     :  Updates the text chat, updates the tray icon in
+  /* DESCRIPTION  :  Called when a message has been received.
+   * BEHAVIOR     :  Updates the text chat window, updates the tray icon in
    * 		     flashing state if the text chat window is hidden.
    * PRE          :  /
    */
-  void OnUserInputString (OpalConnection &,
-			  const PString &);
-  
+  void OnMessageReceived (const SIPURL & from,
+			  const PString & body);
+
   
   /* DESCRIPTION  :  This callback is called when an input video device 
    *                 has to be opened.
@@ -709,6 +712,8 @@ class GMManager : public OpalManager
    */
   int GetMissedCallsNumber ();
   
+  sigc::signal<void, GMManager::CallingState, Ekiga::CallInfo &> call_event;
+  sigc::signal<void, int> message_event;
   
  protected:
   

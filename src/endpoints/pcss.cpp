@@ -54,7 +54,6 @@
 #include "audio.h"
 #include "main.h"
 #include "history.h"
-#include "statusicon.h"
 
 
 #define new PNEW
@@ -90,14 +89,11 @@ void GMPCSSEndpoint::AcceptCurrentIncomingCall ()
 
 BOOL GMPCSSEndpoint::OnShowIncoming (const OpalPCSSConnection & connection)
 {
-  GtkWidget *statusicon = NULL;
   guint interval = 2000;
   guint status = CONTACT_ONLINE;
 
   if (endpoint.GetCallingState() != GMManager::Called)
     return FALSE;
-
-  statusicon = GnomeMeeting::Process ()->GetStatusicon ();
 
   /* Check the config keys */
   gnomemeeting_threads_enter ();
@@ -117,10 +113,6 @@ BOOL GMPCSSEndpoint::OnShowIncoming (const OpalPCSSConnection & connection)
   /* The timers */
   CallPendingTimer.RunContinuous (interval);
   
-  gnomemeeting_threads_enter ();
-  gm_statusicon_ring (statusicon, interval);
-  gnomemeeting_threads_leave ();
-
   return TRUE;
 }
 
@@ -151,7 +143,6 @@ GMPCSSEndpoint::CreateSoundChannel (const OpalPCSSConnection & connection,
   PTRACE(3, "Ekiga\tCreating Sound Channel");
   GtkWidget *main_window = NULL;
   GtkWidget *history_window = NULL;
-  GtkWidget *statusicon = NULL;
 
   PSoundChannel *sound_channel = NULL;
 
@@ -163,16 +154,10 @@ GMPCSSEndpoint::CreateSoundChannel (const OpalPCSSConnection & connection,
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
-  statusicon = GnomeMeeting::Process ()->GetStatusicon ();
 
   /* Stop the Timers */
   CallPendingTimer.Stop ();
   OutgoingCallTimer.Stop ();
-
-  /* Update the GUI */
-  gnomemeeting_threads_enter ();
-  gm_statusicon_stop_ringing (statusicon);
-  gnomemeeting_threads_leave ();
 
   /* Suspend the daemons */
   gnomemeeting_sound_daemons_suspend ();
@@ -245,16 +230,8 @@ GMPCSSEndpoint::CreateSoundChannel (const OpalPCSSConnection & connection,
 void 
 GMPCSSEndpoint::OnEstablished (OpalConnection &connection)
 {
-  GtkWidget *statusicon = NULL;
-
-  statusicon = GnomeMeeting::Process ()->GetStatusicon ();
-
   CallPendingTimer.Stop ();
   OutgoingCallTimer.Stop ();
-
-  gnomemeeting_threads_enter ();
-  gm_statusicon_stop_ringing (statusicon);
-  gnomemeeting_threads_leave ();
 
   PTRACE (3, "GMPCSSEndpoint\t PCSS connection established");
   OpalPCSSEndPoint::OnEstablished (connection);
@@ -265,16 +242,9 @@ void
 GMPCSSEndpoint::OnReleased (OpalConnection &connection)
 {
   PTimeInterval t;
-  GtkWidget *statusicon = NULL;
-
-  statusicon = GnomeMeeting::Process ()->GetStatusicon ();
 
   CallPendingTimer.Stop ();
   OutgoingCallTimer.Stop ();
-
-  gnomemeeting_threads_enter ();
-  gm_statusicon_stop_ringing (statusicon);
-  gnomemeeting_threads_leave ();
 
   gnomemeeting_sound_daemons_resume ();
 

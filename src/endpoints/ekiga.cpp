@@ -189,10 +189,6 @@ GnomeMeeting::Exit ()
     gtk_widget_destroy (chat_window);
   chat_window = NULL;
   
-  if (statusicon)
-    gtk_widget_destroy (statusicon);
-  statusicon = NULL;
-  
 #ifdef HAVE_DBUS
   if (dbus_component)
     g_object_unref (dbus_component);
@@ -506,7 +502,7 @@ GnomeMeeting::GetAccountsWindow ()
 }
 
 
-GtkWidget *
+StatusIcon *
 GnomeMeeting::GetStatusicon ()
 {
   return statusicon;
@@ -543,7 +539,7 @@ void GnomeMeeting::BuildGUI ()
 #ifdef HAVE_DBUS
   dbus_component = gnomemeeting_dbus_component_new ();
 #endif
-  statusicon = gm_statusicon_new (); /* must come last (uses the windows) */
+  statusicon = statusicon_new (PERSONAL_DATA_KEY "status");
 
   /* GM is started */
   gm_history_window_insert (history_window,

@@ -625,43 +625,7 @@ GMSIPEndpoint::OnReceivedMESSAGE (OpalTransport & transport,
 
     val = new PString (pdu.GetMIME ().GetCallID ());
     msgData.SetAt (SIPURL (from).AsString (), val);
-    OnMessageReceived(from, pdu.GetEntityBody());
-  }
-}
-
-
-void 
-GMSIPEndpoint::OnMessageReceived (const SIPURL & from,
-				  const PString & body)
-{
-  GMManager *ep = NULL;
-  GMPCSSEndpoint *pcssEP = NULL;
-
-  GtkWidget *chat_window = NULL;
-  GtkWidget *statusicon = NULL;
-
-  gboolean chat_window_visible = FALSE;
-  
-  chat_window = GnomeMeeting::Process ()->GetChatWindow ();
-  statusicon = GnomeMeeting::Process ()->GetStatusicon ();
-
-  SIPEndPoint::OnMessageReceived (from, body);
-
-  gnomemeeting_threads_enter ();
-  gm_text_chat_window_insert (chat_window, from.AsString (), 
-			      from.GetDisplayName (), (const char *) body, 1);  
-  chat_window_visible = gnomemeeting_window_is_visible (chat_window);
-  gnomemeeting_threads_leave ();
-
-  if (!chat_window_visible) {
-   
-    gnomemeeting_threads_enter ();
-    gm_statusicon_signal_message (statusicon, TRUE);
-    gnomemeeting_threads_leave ();
-
-    ep = GnomeMeeting::Process ()->GetManager ();
-    pcssEP = ep->GetPCSSEndpoint ();
-    pcssEP->PlaySoundEvent ("new_message_sound");
+    endpoint.OnMessageReceived(from, pdu.GetEntityBody());
   }
 }
 

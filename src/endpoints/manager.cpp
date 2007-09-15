@@ -48,7 +48,6 @@
 
 #include "ekiga.h"
 #include "audio.h"
-#include "statusicon.h"
 #include "misc.h"
 #include "chat.h"
 #include "history.h"
@@ -825,7 +824,6 @@ GMManager::OnIncomingConnection (OpalConnection &connection,
   GtkWidget *main_window = NULL;
   GtkWidget *chat_window = NULL;
   GtkWidget *history_window = NULL;
-  GtkWidget *statusicon = NULL;
 #ifdef HAVE_DBUS
   GObject *dbus_component = NULL;
 #endif
@@ -842,7 +840,6 @@ GMManager::OnIncomingConnection (OpalConnection &connection,
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   chat_window = GnomeMeeting::Process ()->GetChatWindow ();
-  statusicon = GnomeMeeting::Process ()->GetStatusicon ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
 #ifdef HAVE_DBUS
   dbus_component = GnomeMeeting::Process ()->GetDbusComponent ();
@@ -909,7 +906,6 @@ GMManager::OnIncomingConnection (OpalConnection &connection,
 
     /* Update the UI */
     gnomemeeting_threads_enter ();
-    gm_statusicon_update_menu (statusicon, GMManager::Called);
     gm_main_window_update_calling_state (main_window, GMManager::Called);
     gm_chat_window_update_calling_state (chat_window, 
 					 NULL, 
@@ -938,6 +934,11 @@ GMManager::OnIncomingConnection (OpalConnection &connection,
   g_free (utf8_name);
   g_free (utf8_url);
 
+  /* Emit the signal */
+  Ekiga::Runtime *runtime = GnomeMeeting::Process ()->GetRuntime (); // FIXME
+  Ekiga::CallInfo info (connection);
+  runtime->run_back_in_main (sigc::bind (call_event.make_slot (), GMManager::Called, info));
+
   return res;
 }
 
@@ -947,7 +948,6 @@ GMManager::OnEstablishedCall (OpalCall &call)
 {
   GtkWidget *main_window = NULL;
   GtkWidget *chat_window = NULL;
-  GtkWidget *statusicon = NULL;
 #ifdef HAVE_DBUS
   GObject *dbus_component = NULL;
 #endif
@@ -957,7 +957,6 @@ GMManager::OnEstablishedCall (OpalCall &call)
   /* Get the widgets */
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   chat_window = GnomeMeeting::Process ()->GetChatWindow ();
-  statusicon = GnomeMeeting::Process ()->GetStatusicon ();
 #ifdef HAVE_DBUS
   dbus_component = GnomeMeeting::Process ()->GetDbusComponent ();
 #endif
@@ -980,7 +979,6 @@ GMManager::OnEstablishedCall (OpalCall &call)
   if (called_address.IsEmpty ()) 
     gm_main_window_set_call_url (main_window, GMURL ().GetDefaultURL ());
   gm_main_window_set_stay_on_top (main_window, stay_on_top);
-  gm_statusicon_update_menu (statusicon, GMManager::Connected);
 #ifdef HAVE_DBUS
   gnomemeeting_dbus_component_set_call_state (dbus_component,
 					      GetCurrentCallToken (),
@@ -1081,6 +1079,11 @@ GMManager::OnEstablished (OpalConnection &connection)
 
   PTRACE (3, "GMManager\t Will establish the connection");
   OpalManager::OnEstablished (connection);
+
+  /* Emit the signal */
+  Ekiga::Runtime *runtime = GnomeMeeting::Process ()->GetRuntime (); // FIXME
+  Ekiga::CallInfo info (connection);
+  runtime->run_back_in_main (sigc::bind (call_event.make_slot (), GMManager::Connected, info));
 }
 
 
@@ -1089,7 +1092,6 @@ GMManager::OnClearedCall (OpalCall & call)
 {
   GtkWidget *main_window = NULL;
   GtkWidget *chat_window = NULL;
-  GtkWidget *statusicon = NULL;
 #ifdef HAVE_DBUS
   GObject *dbus_component = NULL;
 #endif
@@ -1098,7 +1100,6 @@ GMManager::OnClearedCall (OpalCall & call)
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   chat_window = GnomeMeeting::Process ()->GetChatWindow ();
-  statusicon = GnomeMeeting::Process ()->GetStatusicon ();
 #ifdef HAVE_DBUS
   dbus_component = GnomeMeeting::Process ()->GetDbusComponent ();
 #endif
@@ -1133,7 +1134,6 @@ GMManager::OnClearedCall (OpalCall & call)
 				       NULL, 
 				       NULL, 
 				       GMManager::Standby);
-  gm_statusicon_update_menu (statusicon, GMManager::Standby);
   gm_main_window_set_status (main_window, _("Standby"));
   gm_main_window_set_call_duration (main_window, NULL);
   gm_main_window_set_call_info (main_window, NULL, NULL, NULL, NULL);
@@ -1329,6 +1329,12 @@ GMManager::OnReleased (OpalConnection & connection)
 
   PTRACE (3, "GMManager\t Will release the connection");
   OpalManager::OnReleased (connection);
+
+
+  /* Emit the signal */
+  Ekiga::Runtime *runtime = GnomeMeeting::Process ()->GetRuntime (); // FIXME
+  Ekiga::CallInfo info (connection);
+  runtime->run_back_in_main (sigc::bind (call_event.make_slot (), GMManager::Standby, info));
 }
 
 
@@ -1346,31 +1352,34 @@ GMManager::OnHold (OpalConnection & connection)
 }
 
 
-void
-GMManager::OnUserInputString (OpalConnection & connection,
-			       const PString & value)
+void 
+GMManager::OnMessageReceived (const SIPURL & from,
+                              const PString & body)
 {
+  GMManager *ep = NULL;
+  GMPCSSEndpoint *pcssEP = NULL;
+
   GtkWidget *chat_window = NULL;
-  GtkWidget *statusicon = NULL;
 
-  gchar *name = NULL;
-  gchar *url = NULL;
-  gchar *app = NULL;
-	
-  chat_window = GnomeMeeting::Process ()->GetChatWindow ();
-  statusicon = GnomeMeeting::Process ()->GetStatusicon ();
+  gboolean chat_window_visible = FALSE;
   
-  GetRemoteConnectionInfo (connection, name, app, url);
+  chat_window = GnomeMeeting::Process ()->GetChatWindow ();
 
-  if (value.Find ("MSG") != P_MAX_INDEX) {
+  gnomemeeting_threads_enter ();
+  gm_text_chat_window_insert (chat_window, from.AsString (), 
+			      from.GetDisplayName (), (const char *) body, 1);  
+  chat_window_visible = gnomemeeting_window_is_visible (chat_window);
+  gnomemeeting_threads_leave ();
 
-    gnomemeeting_threads_enter ();
-    gm_text_chat_window_insert (chat_window, url, name, 
-				(const char *) value.Mid (3), 1);  
-    if (!gnomemeeting_window_is_visible (chat_window))
-      gm_statusicon_signal_message (statusicon, TRUE);
-    gnomemeeting_threads_leave ();
+  if (!chat_window_visible) {
+   
+    ep = GnomeMeeting::Process ()->GetManager ();
+    pcssEP = ep->GetPCSSEndpoint ();
+    pcssEP->PlaySoundEvent ("new_message_sound");
   }
+
+  Ekiga::Runtime *runtime = GnomeMeeting::Process ()->GetRuntime (); // FIXME
+  runtime->run_back_in_main (sigc::bind (message_event.make_slot (), 0));
 }
 
 
