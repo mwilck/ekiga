@@ -1,5 +1,12 @@
 2007-09-15  Damien Sandras  <dsandras@gnome.org>
 
+	* lib/gui/gmtray/, configure.ac, 
+	lib/gui/Makefile.am:
+	Killed the old tray code. We know have a shiny new
+	GtkStatusIcon.
+
+2007-09-15  Damien Sandras  <dsandras@gnome.org>
+
 	* lib/gui/gmmenuaddon.c:
 	Do not enforce having a GtkWidget to which attach
 	a popup menu.
@@ -21,8 +28,8 @@
 	outgoing, call established, released, ...) and when a message
 	has been received.
 
-	* endpoints/callinfo.cpp,
-	endpoints/callinfo.h: Added those classes to describe information
+	* endpoints/callinfo.cpp, src/Makefile.am,
+	endpoints/callinfo.h: Added CallInfo classes to describe information
 	about a call (duration, remote party name, ...).
 
 2007-09-13  Julien Puydt  <jpuydt@gnome.org>
