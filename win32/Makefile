@@ -297,26 +297,25 @@ update-sources::
 	$(WGET) -P $(SRCDIR) $(OPENLDAP_URL)/$(OPENLDAP_ARCHIVE)
 
 $(OPENLDAP_DIR)/configure: $(LIBDIR)/libregex.a $(SRCDIR)/$(OPENLDAP_ARCHIVE)
-	rm -f $(LIBDIR)/libldap_r.dll
+	rm -f $(LIBDIR)/libldap.dll
 	tar xfz $(SRCDIR)/$(OPENLDAP_ARCHIVE) -C $(BUILDROOT)
 	sed -i -e 's#windres#$(WINDRES)#g' $(OPENLDAP_DIR)/libraries/liblutil/Makefile.in
 	touch $@
 
 $(OPENLDAP_DIR)/config.status: binaries $(OPENLDAP_DIR)/configure
 	#-$(MAKE) -C $(OPENLDAP_DIR) clean
-	rm -f $(LIBDIR)/libldap_r.dll
+	rm -f $(LIBDIR)/libldap.dll
 	ln -sf $(INCLUDEDIR)/regex.h $(OPENLDAP_DIR)/include/
 	cd $(OPENLDAP_DIR);./configure --with-cyrus-sasl=no --enable-bdb=no --enable-hdb=no $(confflags)
 	$(MAKE) $(MAKEOPTS) -C $(OPENLDAP_DIR) depend
 	touch $@
 
-$(LIBDIR)/libldap_r.dll: binaries $(OPENLDAP_DIR)/config.status
+$(LIBDIR)/libldap.dll: binaries $(OPENLDAP_DIR)/config.status
 	$(MAKE) $(MAKE_LIB_OPTS) -C $(OPENLDAP_DIR)/libraries/liblutil
 	$(CP) -f $(OPENLDAP_DIR)/libraries/liblutil/liblutil.a $(LIBDIR)
 	$(MAKE) $(MAKE_LIB_OPTS) -C $(OPENLDAP_DIR)/libraries/liblber all install 
 	$(MAKE) $(MAKE_LIB_OPTS) -C $(OPENLDAP_DIR)/include install
 	$(MAKE) $(MAKE_LIB_OPTS) -C $(OPENLDAP_DIR)/libraries/libldap MOD_LIBS="-llutil" all install
-	$(MAKE) $(MAKE_LIB_OPTS) -C $(OPENLDAP_DIR)/libraries/libldap_r MOD_LIBS="-llutil" all install
 	touch $@
 
 ### PWLib
@@ -325,7 +324,7 @@ update-sources::
 	$(WGET) -P src $(EKIGA_URL1)/$(PWLIB_ARCHIVE) || \
 	$(WGET) -P src $(EKIGA_URL2)/$(PWLIB_ARCHIVE)
 
-$(PWLIB_DIR)/configure: binaries $(LIBDIR)/libldap_r.dll $(INCLUDEDIR)/directx/dsound.h $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(SRCDIR)/$(PWLIB_ARCHIVE) $(EKIGA_WIN32_DIFF_DIR)/ptlib_Makefile.am $(LIBDIR)/libexpat.a $(EKIGA_WIN32_DIFF_DIR)/ptlib_configure.ac $(EKIGA_WIN32_DIFF_DIR)/ptlib_pwlib.pc.in $(EKIGA_WIN32_DIFF_DIR)/ptlib_vfw.patch 
+$(PWLIB_DIR)/configure: binaries $(LIBDIR)/libldap.dll $(INCLUDEDIR)/directx/dsound.h $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(SRCDIR)/$(PWLIB_ARCHIVE) $(EKIGA_WIN32_DIFF_DIR)/ptlib_Makefile.am $(LIBDIR)/libexpat.a $(EKIGA_WIN32_DIFF_DIR)/ptlib_configure.ac $(EKIGA_WIN32_DIFF_DIR)/ptlib_pwlib.pc.in $(EKIGA_WIN32_DIFF_DIR)/ptlib_vfw.patch 
 	rm -f $(LIBDIR)/libpt.a
 	rm -rf $(PWLIB_DIR)
 	tar xfz $(SRCDIR)/$(PWLIB_ARCHIVE) -C $(BUILDROOT)
@@ -647,7 +646,7 @@ $(TARGETDIR)/zips: binaries $(EKIGA_DIR)/src/ekiga.exe
 	        install -m 755 $$plugin $(EKIGA_PREFIX)/plugins ;\
 	done
 	install -m 755 $(OPAL_DIR)/libH264_pwplugin_helper.exe $(EKIGA_PREFIX)/plugins
-	for lib in libexpat-1.dll liblber.dll libldap_r.dll libxml2-2.dll libspeex-1.dll; do \
+	for lib in libexpat-1.dll liblber.dll libldap.dll libxml2-2.dll libspeex-1.dll; do \
 	        install -m 755 $(BINDIR)/$$lib $(EKIGA_PREFIX) ;\
 	done
 	install -m 755 $(LIBDIR)/avcodec.dll $(EKIGA_PREFIX)
