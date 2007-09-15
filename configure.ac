@@ -604,7 +604,6 @@ lib/Makefile
 lib/druid/Makefile
 lib/gmconf/Makefile
 lib/gui/Makefile
-lib/gui/gmtray/Makefile
 lib/toolbox/Makefile
 lib/platform/Makefile
 po/Makefile.in

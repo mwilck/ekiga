@@ -1,4 +1,4 @@
-SUBDIRS = gmtray
+SUBDIRS = 
 
 noinst_LTLIBRARIES = libgmwidgets.la
 
@@ -62,7 +62,7 @@ INCLUDES =						\
 
 AM_CXXFLAGS = $(GTK_CFLAGS) $(GLIB_CFLAGS) $(OPAL_CFLAGS) $(PWLIB_CFLAGS) $(XV_CFLAGS) $(DX_CFLAGS)
 AM_CFLAGS = $(GTK_CFLAGS) $(GLIB_CFLAGS) $(GNOME_CFLAGS)
-AM_LIBS = $(GTK_LIBS) $(GLIB_LIBS) $(OPAL_LIBS) $(PWLIB_LIBS) $(XV_LIBS) $(DX_LIBS) $(GNOME_LIBS)
+AM_LIBS = $(GTK_LIBS) $(GLIB_LIBS) $(OPAL_LIBS) $(PWLIB_LIBS) $(XV_LIBS) $(DX_LIBS) $(GNOME_LIBS) 
 
 libgmwidgets_la_LDFLAGS = -export-dynamic
-libgmwidgets_la_LIBADD = gmtray/libgmtray.la $(AM_LIBS)
+libgmwidgets_la_LIBADD = $(AM_LIBS)
