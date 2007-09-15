@@ -1,5 +1,12 @@
 2007-09-15  Damien Sandras  <dsandras@gnome.org>
 
+	* src/gui/statusicon.cpp, src/gui/statusicon.h:
+	Completely new code with a mostly functional and new
+	GObject deriving from GtkStatusIcon and able to react
+	to signals emitted by the manager.
+
+2007-09-15  Damien Sandras  <dsandras@gnome.org>
+
 	* lib/gui/gmtray/, configure.ac, 
 	lib/gui/Makefile.am:
 	Killed the old tray code. We know have a shiny new

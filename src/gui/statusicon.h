@@ -1,6 +1,6 @@
 
 /* Ekiga -- A VoIP and Video-Conferencing application
- * Copyright (C) 2000-2006 Damien Sandras
+ * Copyright (C) 2000-2007 Damien Sandras
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,9 +30,7 @@
  *                         statusicon.h  -  description
  *                         --------------------------
  *   begin                : Thu Jan 12 2006
- *   copyright            : (C) 2000-2006 by Damien Sandras
- *                          (C) 2002 by Miguel Rodriguez
- *                          (C) 2006 by Julien Puydt
+ *   copyright            : (C) 2000-2007 by Damien Sandras
  *   description          : High level tray api interface
  */
 
@@ -43,78 +41,50 @@
 #include "common.h"
 #include "manager.h"
 
+
 G_BEGIN_DECLS
+
+typedef struct _StatusIcon StatusIcon;
+typedef struct _StatusIconPrivate StatusIconPrivate;
+typedef struct _StatusIconClass StatusIconClass;
+
+
+/* GObject thingies */
+struct _StatusIcon
+{
+  GtkStatusIcon parent;
+  StatusIconPrivate *priv;
+};
+
+struct _StatusIconClass
+{
+  GtkStatusIconClass parent;
+};
+
+#define STATUSICON_TYPE (statusicon_get_type ())
+
+#define STATUSICON(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), STATUSICON_TYPE, StatusIcon))
+
+#define IS_STATUSICON(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), STATUSICON_TYPE))
+
+#define STATUSICON_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), STATUSICON_TYPE, StatusIconClass))
+
+#define IS_STATUSICON_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), STATUSICON_TYPE))
+
+#define STATUSICON_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), STATUSICON_TYPE, StatusIconClass))
+
+GType statusicon_get_type ();
+
+
+
+/* Public API */
 
 /* DESCRIPTION  : /
  * BEHAVIOR     : Returns a new statusicon, with the default icon and menu
- * PRE          : /
+ * PRE          : A valid gmconf key where to store the status
  */
-GtkWidget *gm_statusicon_new (void);
+StatusIcon *statusicon_new (const char *key);
 
-
-/* DESCRIPTION  : /
- * BEHAVIOR     : Updates the statusicon, according to the current given
- *                status.
- *                (updates both the icon and the menu)
- * PRE          : /
- */
-void gm_statusicon_update_status (GtkWidget *widget,
-                                  guint status);
-
-
-/* DESCRIPTION  : /
- * BEHAVIOR     : Updates the statusicon's menu, according to the current 
- *                calling state
- * PRE          : /
- */
-void gm_statusicon_update_menu (GtkWidget *widget,
-				GMManager::CallingState state);
-
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Update the status icon busy state. When the window is busy,
- *                 you can not exit. Similar to the main window function
- *                 of the same name.
- * PRE          :  The status icon GMObject.
- * 		   The first parameter is TRUE if we are busy.
- */
-void gm_statusicon_set_busy (GtkWidget *widget,
-			     BOOL busy);
-
-
-/* DESCRIPTION  : /
- * BEHAVIOR     : If has_message is TRUE, the statusicon will blink with the
- *                message icon, and a click on it will bring up the chat window
- *                If has_message is FALSE, the statusicon will resume normal
- *                behaviour
- * PRE          : /
- */
-void gm_statusicon_signal_message (GtkWidget *widget,
-				   gboolean has_message);
-
-
-/* DESCRIPTION  : /
- * BEHAVIOR     : Makes the statusicon blink with the ringing icon
- *                (interval gives the period the blink)
- * PRE          : /
- */
-void gm_statusicon_ring (GtkWidget *widget,
-			 guint interval);
-
-
-/* DESCRIPTION  : /
- * BEHAVIOR     : Makes the statusicon resume normal behaviour
- * PRE          : /
- */
-void gm_statusicon_stop_ringing (GtkWidget *widget);
-
-
-/* DESCRIPTION  : /
- * BEHAVIOR     : Returns TRUE if the statusicon is really embedded in an area
- * PRE          : /
- */
-gboolean gm_statusicon_is_embedded (GtkWidget *widget);
 
 G_END_DECLS
 

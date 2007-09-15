@@ -30,28 +30,25 @@
  *                         statusicon.cpp  -  description
  *                         --------------------------
  *   begin                : Thu Jan 12 2006
- *   copyright            : (C) 2000-2006 by Damien Sandras
- *                          (C) 2002 by Miguel Rodriguez
- *                          (C) 2006 by Julien Puydt
+ *   copyright            : (C) 2000-2007 by Damien Sandras
  *   description          : High level tray api implementation
  */
 
 
 #include <gdk/gdkkeysyms.h>
 
-#include "config.h"
-
 #include "statusicon.h"
 
 #include "gmstockicons.h"
 #include "gmmenuaddon.h"
-#include "misc.h"
-#include "gmtray/gmtray.h"
 
-#include "callbacks.h"
+#include "callbacks.h" // FIXME SHOULD GET RID OF THIS
 #include "ekiga.h"
 
 #include "gtk-frontend.h"
+
+#include <sigc++/sigc++.h>
+#include <vector>
 
 #ifdef HAVE_GNOME
 #undef _
@@ -59,41 +56,350 @@
 #include <gnome.h>
 #endif
 
+#include "callinfo.h"
 
-struct GmStatusicon {
-  GmTray *tray;
+// FIXME react to GmConf key changes
+
+
+/*
+ * The StatusIcon
+ */
+struct _StatusIconPrivate {
+
   GtkWidget *popup_menu;
   gboolean has_message;
+
+  std::vector<sigc::connection> connections;
+
+  gchar *key;
+  int blink_id;
+  int status;
+  bool blinking;
+
+  gchar *blink_image;
 };
+
+enum { STATUSICON_KEY = 1 };
+
+static GObjectClass *parent_class = NULL;
+
+
+/* 
+ * Declaration of Callbacks 
+ */
+static void
+show_popup_menu_cb (GtkStatusIcon *icon,
+                    guint button,
+                    guint activate_time,
+                    gpointer data);
+
+static gboolean
+statusicon_blink_cb (gpointer data);
+
+static void
+statusicon_key_updated_cb (gpointer id, 
+                           GmConfEntry *entry,
+                           gpointer data);
+
+static void
+on_call_event_cb (GMManager::CallingState i,
+                  Ekiga::CallInfo & info,
+                  gpointer data);
+
+static void
+on_message_event_cb (int messages,
+                     gpointer data);
+
+
+
+/*
+ * Declaration of local functions
+ */
+static GtkWidget *
+statusicon_build_menu ();
+
+static void
+statusicon_start_blinking (StatusIcon *icon,
+                           const char *stock_id);
+
+static void
+statusicon_stop_blinking (StatusIcon *icon);
+
+static void
+statusicon_set_status (StatusIcon *widget,
+                       guint status);
+
+
+/* 
+ * GObject stuff
+ */
+static void
+statusicon_dispose (GObject *obj)
+{
+  StatusIcon *icon = NULL;
+
+  icon = STATUSICON (obj);
+
+  icon->priv->blink_image = NULL;
+  icon->priv->key = NULL;
+
+  parent_class->dispose (obj);
+}
 
 
 static void
-free_statusicon (gpointer data)
+statusicon_finalize (GObject *obj)
 {
-  GmStatusicon *statusicon = (GmStatusicon *)data;
+  StatusIcon *self = NULL;
 
-  gmtray_delete (statusicon->tray);
-  gtk_widget_destroy (statusicon->popup_menu);
+  self = STATUSICON (obj);
 
-  g_free (statusicon);
+  if (self->priv->blink_image) 
+    g_free (self->priv->blink_image);
+
+  if (self->priv->key)
+    g_free (self->priv->key);
+
+  for (std::vector<sigc::connection>::iterator iter = self->priv->connections.begin () ;
+       iter != self->priv->connections.end ();
+       iter++)
+    iter->disconnect ();
+  
+  parent_class->finalize (obj);
 }
 
 
-static GmStatusicon *
-get_statusicon (GtkWidget *widget)
+static void
+statusicon_get_property (GObject *obj,
+                         guint prop_id,
+                         GValue *value,
+                         GParamSpec *spec)
 {
-  g_return_val_if_fail (widget != NULL, NULL);
+  StatusIcon *self = NULL;
 
-  return (GmStatusicon *)g_object_get_data (G_OBJECT (widget), "GMObject");
+  self = STATUSICON (self);
+
+  switch (prop_id) {
+
+  case STATUSICON_KEY:
+    g_value_set_string (value, self->priv->key);
+    break;
+
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID (obj, prop_id, spec);
+    break;
+  }
 }
 
 
+static void
+statusicon_set_property (GObject *obj,
+                         guint prop_id,
+                         const GValue *value,
+                         GParamSpec *spec)
+{
+  StatusIcon *self = NULL;
+  const gchar *str = NULL;
+
+  self = STATUSICON (obj);
+  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, STATUSICON_TYPE, StatusIconPrivate);
+
+  switch (prop_id) {
+
+  case STATUSICON_KEY:
+    g_free ((gchar *) self->priv->key);
+    str = g_value_get_string (value);
+    self->priv->key = g_strdup (str ? str : "");
+    if (str) {
+      gm_conf_notifier_add (str, statusicon_key_updated_cb, self);
+      statusicon_set_status (self, gm_conf_get_int (str));
+    }
+    break;
+
+  default:
+    G_OBJECT_WARN_INVALID_PROPERTY_ID (obj, prop_id, spec);
+    break;
+  }
+}
+
+
+static void
+statusicon_class_init (gpointer g_class,
+                       gpointer class_data)
+{
+  GObjectClass *gobject_class = NULL;
+  GParamSpec *spec = NULL;
+
+  parent_class = (GObjectClass *) g_type_class_peek_parent (g_class);
+  g_type_class_add_private (g_class, sizeof (StatusIconPrivate));
+
+  gobject_class = (GObjectClass *) g_class;
+  gobject_class->dispose = statusicon_dispose;
+  gobject_class->finalize = statusicon_finalize;
+  gobject_class->get_property = statusicon_get_property;
+  gobject_class->set_property = statusicon_set_property;
+
+  spec = g_param_spec_string ("key", "Key", "Key", 
+                              NULL, (GParamFlags) G_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, STATUSICON_KEY, spec); 
+}
+
+
+static void
+statusicon_init (GTypeInstance *instance,
+                 gpointer g_class)
+{
+  StatusIcon *self = NULL;
+  sigc::connection conn;
+
+  (void) g_class; /* -Wextra */
+
+
+  self = STATUSICON (instance);
+  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, STATUSICON_TYPE, StatusIconPrivate);
+
+  self->priv->popup_menu = statusicon_build_menu ();
+  self->priv->has_message = FALSE;
+  self->priv->blink_id = -1;
+  self->priv->blinking = false;
+  self->priv->blink_image = NULL;
+  self->priv->key = g_strdup ("");
+
+  // FIXME GnomeMeeting::Process should disappear
+  conn = GnomeMeeting::Process ()->GetManager ()->call_event.connect (sigc::bind (sigc::ptr_fun (on_call_event_cb), self));
+  self->priv->connections.push_back (conn);
+
+  conn = GnomeMeeting::Process ()->GetManager ()->message_event.connect (sigc::bind (sigc::ptr_fun (on_message_event_cb), self));
+  self->priv->connections.push_back (conn);
+
+  g_signal_connect (self, "popup-menu",
+                    G_CALLBACK (show_popup_menu_cb), self->priv->popup_menu);
+}
+
+
+GType
+statusicon_get_type ()
+{
+  static GType result = 0;
+
+  if (result == 0) {
+
+    static const GTypeInfo info = {
+      sizeof (StatusIconClass),
+      NULL,
+      NULL,
+      statusicon_class_init,
+      NULL,
+      NULL,
+      sizeof (StatusIcon),
+      0,
+      statusicon_init,
+      NULL
+    };
+
+    result = g_type_register_static (GTK_TYPE_STATUS_ICON,
+				     "StatusIconType",
+				     &info, (GTypeFlags) 0);
+  }
+
+  return result;
+}
+
+
+/*
+ * Our own stuff
+ */
+
+/*
+ * Callbacks
+ */
+static void
+show_popup_menu_cb (GtkStatusIcon *icon,
+                    guint button,
+                    guint activate_time,
+                    gpointer data)
+{
+  GtkWidget *popup = NULL;
+
+  popup = GTK_WIDGET (data);
+
+  gtk_menu_popup (GTK_MENU (popup),
+                  NULL, NULL, NULL, NULL,
+                  button, activate_time);
+}
+
+
+static gboolean
+statusicon_blink_cb (gpointer data)
+{
+  StatusIcon *statusicon = STATUSICON (data);
+
+  gdk_threads_enter ();
+  if (statusicon->priv->blinking) 
+    gtk_status_icon_set_from_stock (GTK_STATUS_ICON (statusicon), statusicon->priv->blink_image);
+  else  
+    statusicon_set_status (statusicon, statusicon->priv->status);
+  gdk_threads_leave ();
+
+  statusicon->priv->blinking = !statusicon->priv->blinking;
+
+  return true;
+}
+
+
+static void
+statusicon_key_updated_cb (gpointer id, 
+                           GmConfEntry *entry,
+                           gpointer data)
+{
+  guint status = CONTACT_ONLINE;
+
+  g_return_if_fail (data != NULL);
+
+  if (gm_conf_entry_get_type (entry) == GM_CONF_INT) {
+
+    gdk_threads_enter ();
+    status = gm_conf_entry_get_int (entry);
+    statusicon_set_status (STATUSICON (data), status);
+    gdk_threads_leave ();
+  }
+}
+
+
+static void
+on_call_event_cb (GMManager::CallingState i,
+                  Ekiga::CallInfo & info,
+                  gpointer data)
+{
+  StatusIcon *statusicon = STATUSICON (data);
+
+  if (i == GMManager::Called) 
+    statusicon_start_blinking (statusicon, GM_STOCK_STATUS_RINGING);
+  else 
+    statusicon_stop_blinking (statusicon);
+}
+
+
+static void
+on_message_event_cb (int messages,
+                     gpointer data)
+{
+  StatusIcon *statusicon = STATUSICON (data);
+
+  if (messages > 0)
+    statusicon_start_blinking (statusicon, GM_STOCK_MESSAGE);
+  else
+    statusicon_stop_blinking (statusicon);
+}
+
+
+/* 
+ * Local functions
+ */
 static GtkWidget *
-build_menu (GtkWidget *widget)
+statusicon_build_menu ()
 {
   GtkWidget *main_window = NULL;
-  GtkWidget *prefs_window = NULL;
-  GtkWidget *addressbook_window = NULL;
 
   Ekiga::ServiceCore *services = NULL;
   GtkFrontend *gtk_frontend = NULL;
@@ -102,24 +408,12 @@ build_menu (GtkWidget *widget)
 
   services = GnomeMeeting::Process ()->GetServiceCore ();
   gtk_frontend = dynamic_cast<GtkFrontend *>(services->get ("gtk-frontend"));
-  addressbook_window = GTK_WIDGET (gtk_frontend->get_addressbook_window ());
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
 
   status = gm_conf_get_int (PERSONAL_DATA_KEY "status");
 
   static MenuEntry menu [] =
     {
-      GTK_MENU_ENTRY("connect", _("Ca_ll"), _("Place a new call"), 
-		     GM_STOCK_PHONE_PICK_UP_16, 'o',
-		     GTK_SIGNAL_FUNC (connect_cb), main_window, TRUE),
-      GTK_MENU_ENTRY("disconnect", _("_Hang up"),
-		     _("Terminate the current call"), 
-		     GM_STOCK_PHONE_HANG_UP_16, 'd',
-		     GTK_SIGNAL_FUNC (disconnect_cb), NULL, FALSE),
-
-      GTK_MENU_SEPARATOR,
-
       GTK_MENU_RADIO_ENTRY("online", _("_Online"), NULL,
 			   NULL, 0,
 			   GTK_SIGNAL_FUNC (radio_menu_changed_cb),
@@ -152,23 +446,8 @@ build_menu (GtkWidget *widget)
 
       GTK_MENU_SEPARATOR,
 
-      GTK_MENU_THEME_ENTRY("address_book", _("_Find Contacts"),
-			   _("Find contacts"),
-			   GTK_STOCK_FIND, 0,
-			   GTK_SIGNAL_FUNC (show_window_cb),
-			   (gpointer) addressbook_window, TRUE),
-
-      GTK_MENU_SEPARATOR,
-
-      GTK_MENU_ENTRY("preferences", NULL, _("Change your preferences"),
-		     GTK_STOCK_PREFERENCES, 'P',
-		     GTK_SIGNAL_FUNC (show_window_cb),
-		     (gpointer) prefs_window, TRUE),
-
-      GTK_MENU_SEPARATOR,
-
 #ifdef HAVE_GNOME
-       GTK_MENU_ENTRY("help", NULL,
+      GTK_MENU_ENTRY("help", NULL,
                      _("Get help by reading the Ekiga manual"),
                      GTK_STOCK_HELP, GDK_F1,
                      GTK_SIGNAL_FUNC (help_cb), NULL, TRUE),
@@ -200,287 +479,91 @@ build_menu (GtkWidget *widget)
       GTK_MENU_END
     };
 
-  return GTK_WIDGET (gtk_build_popup_menu (widget, menu, NULL));
-}
-
-
-static GtkMenu *
-get_menu_callback (gpointer data)
-{
-  GmStatusicon *statusicon = NULL;
-
-  g_return_val_if_fail (GTK_IS_WIDGET (data), NULL);
-
-  statusicon = get_statusicon (GTK_WIDGET (data));
-
-  g_return_val_if_fail (statusicon != NULL, NULL);
-
-  return GTK_MENU (statusicon->popup_menu);
+  return GTK_WIDGET (gtk_build_popup_menu (NULL, menu, NULL));
 }
 
 
 static void
-left_clicked_callback (gpointer data)
+statusicon_start_blinking (StatusIcon *icon,
+                           const char *stock_id)
 {
-  GmStatusicon *statusicon = NULL;
-  GtkWidget *main_window = NULL;
-  GtkWidget *chat_window = NULL;
-  GtkWidget *window = NULL;
-
-  g_return_if_fail (GTK_IS_WIDGET (data));
-
-  statusicon = get_statusicon (GTK_WIDGET (data));
-
-  g_return_if_fail (statusicon != NULL);
-
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  chat_window = GnomeMeeting::Process ()->GetChatWindow ();
-
-  if (statusicon->has_message) {
-
-    if (!gnomemeeting_window_is_visible (chat_window)) {
-
-      window = chat_window;
-      gm_statusicon_signal_message (GTK_WIDGET (data), FALSE);
-    } else
-      window = main_window;
-  } else
-    window = main_window;
-
-  if (!gnomemeeting_window_is_visible (window))
-    gnomemeeting_window_show (window);
-  else
-    gnomemeeting_window_hide (window);
+  icon->priv->blink_image = g_strdup (stock_id);
+  if (icon->priv->blink_id == -1)
+    icon->priv->blink_id = g_timeout_add (1000, statusicon_blink_cb, icon);
 }
 
 
 static void
-middle_clicked_callback (gpointer data)
+statusicon_stop_blinking (StatusIcon *icon)
 {
-  Ekiga::ServiceCore *services = NULL;
-  GtkFrontend *gtk_frontend = NULL;
+  if (icon->priv->blink_image) {
 
-  GmStatusicon *statusicon = NULL;
-  GtkWidget *window = NULL;
+    g_free (icon->priv->blink_image);
+    icon->priv->blink_image = NULL;
+  }
 
-  g_return_if_fail (GTK_IS_WIDGET (data));
+  if (icon->priv->blink_id != -1) {
 
-  statusicon = get_statusicon (GTK_WIDGET (data));
-
-  g_return_if_fail (statusicon != NULL);
-
-  services = GnomeMeeting::Process ()->GetServiceCore ();
-  gtk_frontend = dynamic_cast<GtkFrontend *>(services->get ("gtk-frontend"));
-  window = GTK_WIDGET (gtk_frontend->get_addressbook_window ());
-
-  if (!gnomemeeting_window_is_visible (window))
-    gnomemeeting_window_show (window);
-  else
-    gnomemeeting_window_hide (window);
-}
-
-
-GtkWidget *
-gm_statusicon_new ()
-{
-  GtkWidget *widget = NULL;
-  GmStatusicon *statusicon = NULL;
-
-  guint state = CONTACT_ONLINE;
-
-  widget = gtk_label_new ("");
-
-  state = gm_conf_get_int (PERSONAL_DATA_KEY "status");
-
-  statusicon = g_new0 (struct GmStatusicon, 1);
-
-  statusicon->tray = gmtray_new (GM_STOCK_STATUS_ONLINE);
-  gmtray_set_left_clicked_callback (statusicon->tray,
-				    left_clicked_callback, (gpointer)widget);
-  gmtray_set_middle_clicked_callback (statusicon->tray,
-				      middle_clicked_callback,
-				      (gpointer)widget);
-  gmtray_set_menu_callback (statusicon->tray,
-			    get_menu_callback, (gpointer)widget);
-
-  statusicon->popup_menu = build_menu (widget);
-
-  statusicon->has_message = FALSE;
-
-  g_object_set_data_full (G_OBJECT (widget), "GMObject",
-			  (gpointer)statusicon,
-			  (GDestroyNotify)free_statusicon);
-
-  gm_statusicon_update_status (widget, state);
-
-  return widget;
+    g_source_remove (icon->priv->blink_id);
+    icon->priv->blink_id = -1;
+    icon->priv->blinking = false;
+  }
 }
 
 
 void
-gm_statusicon_update_status (GtkWidget *widget,
-                             guint status)
+statusicon_set_status (StatusIcon *statusicon,
+                       guint status)
 {
-  GmStatusicon *statusicon = NULL;
   GtkWidget *menu = NULL;
-
-  g_return_if_fail (widget != NULL);
-
-  statusicon = get_statusicon (widget);
 
   g_return_if_fail (statusicon != NULL);
 
   /* Update the menu */
-  menu = gtk_menu_get_widget (statusicon->popup_menu, "online");
+  menu = gtk_menu_get_widget (statusicon->priv->popup_menu, "online");
   gtk_radio_menu_select_with_widget (GTK_WIDGET (menu), status);
 
   /* Update the status icon */
   switch (status) {
 
   case CONTACT_ONLINE:
-    gmtray_set_image (statusicon->tray, GM_STOCK_STATUS_ONLINE);
+    gtk_status_icon_set_from_stock (GTK_STATUS_ICON (statusicon), GM_STOCK_STATUS_ONLINE);
     break;
 
   case (CONTACT_AWAY):
-    gmtray_set_image (statusicon->tray, GM_STOCK_STATUS_AWAY);
+    gtk_status_icon_set_from_stock (GTK_STATUS_ICON (statusicon), GM_STOCK_STATUS_AWAY);
     break;
 
   case (CONTACT_DND):
-    gmtray_set_image (statusicon->tray, GM_STOCK_STATUS_DND);
+    gtk_status_icon_set_from_stock (GTK_STATUS_ICON (statusicon), GM_STOCK_STATUS_DND);
     break;
 
   case (CONTACT_FREEFORCHAT):
-    gmtray_set_image (statusicon->tray, GM_STOCK_STATUS_FREEFORCHAT);
+    gtk_status_icon_set_from_stock (GTK_STATUS_ICON (statusicon), GM_STOCK_STATUS_FREEFORCHAT);
     break;
 
   case (CONTACT_INVISIBLE):
-    gmtray_set_image (statusicon->tray, GM_STOCK_STATUS_OFFLINE);
+    gtk_status_icon_set_from_stock (GTK_STATUS_ICON (statusicon), GM_STOCK_STATUS_OFFLINE);
     break;
 
   default:
     break;
   }
+
+  statusicon->priv->status = status;
 }
 
 
-void
-gm_statusicon_update_menu (GtkWidget *widget,
-			   GMManager::CallingState state)
+/*
+ * Public API
+ */
+StatusIcon *
+statusicon_new (const char *key)
 {
-  GmStatusicon *statusicon = NULL;
+  StatusIcon *icon = NULL;
 
-  g_return_if_fail (widget != NULL);
+  icon = STATUSICON (g_object_new (STATUSICON_TYPE, NULL));
+  g_object_set (icon, "key", key, NULL);
 
-  statusicon = get_statusicon (widget);
-
-  g_return_if_fail (statusicon != NULL);
-
-  switch (state) {
-
-  case GMManager::Standby:
-    gtk_menu_set_sensitive (statusicon->popup_menu, "connect", TRUE);
-    gtk_menu_set_sensitive (statusicon->popup_menu, "disconnect", FALSE);
-    break;
-
-  case GMManager::Calling:
-    gtk_menu_set_sensitive (statusicon->popup_menu, "connect", FALSE);
-    gtk_menu_set_sensitive (statusicon->popup_menu, "disconnect", TRUE);
-    break;
-
-  case GMManager::Connected:
-    gtk_menu_set_sensitive (statusicon->popup_menu, "connect", FALSE);
-    gtk_menu_set_sensitive (statusicon->popup_menu, "disconnect", TRUE);
-    break;
-
-  case GMManager::Called:
-    gtk_menu_set_sensitive (statusicon->popup_menu, "disconnect", TRUE);
-    break;
-  }
-
-}
-
-
-void 
-gm_statusicon_set_busy (GtkWidget *widget,
-			BOOL busy)
-{
-  GmStatusicon *statusicon = NULL;
-
-  g_return_if_fail (widget != NULL);
-
-  statusicon = get_statusicon (widget);
-
-  g_return_if_fail (statusicon != NULL);
-
-  gtk_menu_set_sensitive (statusicon->popup_menu, "quit", !busy);
-}
-
-
-void
-gm_statusicon_signal_message (GtkWidget *widget,
-			      gboolean has_message)
-{
-  GmStatusicon *statusicon = NULL;
-
-  g_return_if_fail (widget != NULL);
-
-  statusicon = get_statusicon (widget);
-
-  g_return_if_fail (statusicon != NULL);
-
-  statusicon->has_message = has_message;
-
-  if (has_message) {
-    
-    if (!gmtray_is_blinking (statusicon->tray))
-      gmtray_blink (statusicon->tray, GM_STOCK_MESSAGE, 1000);
-  }
-  else
-    gmtray_stop_blink (statusicon->tray);
-}
-
-
-void
-gm_statusicon_ring (GtkWidget *widget,
-		    guint interval)
-{
-  GmStatusicon *statusicon = NULL;
-
-  g_return_if_fail (widget != NULL);
-
-  statusicon = get_statusicon (widget);
-
-  g_return_if_fail (statusicon != NULL);
-
-  gmtray_blink (statusicon->tray, GM_STOCK_STATUS_RINGING, interval);
-}
-
-
-void
-gm_statusicon_stop_ringing (GtkWidget *widget)
-{
-  GmStatusicon *statusicon = NULL;
-
-  g_return_if_fail (widget != NULL);
-
-  statusicon = get_statusicon (widget);
-
-  g_return_if_fail (statusicon != NULL);
-
-  gmtray_stop_blink (statusicon->tray);
-}
-
-
-gboolean
-gm_statusicon_is_embedded (GtkWidget *widget)
-{
-  GmStatusicon *statusicon = NULL;
-
-  g_return_val_if_fail (widget != NULL, FALSE);
-
-  statusicon = get_statusicon (widget);
-
-  g_return_val_if_fail (statusicon != NULL, FALSE);
-
-  return gmtray_is_embedded (statusicon->tray);
+  return icon;
 }
