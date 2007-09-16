@@ -136,7 +136,7 @@ libH261_pwplugin_la_SOURCES = \
 
 libH264_pwplugin_la_LDFLAGS = -module -avoid-version -no-undefined
 
-libH264_pwplugin_la_CXXFLAGS = -I$(OPAL_PLUGIN_DIR)/video/H.264/shared -I$(OPAL_PLUGIN_DIR)/video/common -DPLUGIN_CODEC_DLL_EXPORTS -DLICENCE_MPL
+libH264_pwplugin_la_CXXFLAGS = -I$(OPAL_PLUGIN_DIR)/video/H.264/shared -I$(OPAL_PLUGIN_DIR)/video/common -DPLUGIN_CODEC_DLL_EXPORTS -DLICENCE_MPL -DWITH_STACKALIGN_HACK
 
 libH264_pwplugin_la_SOURCES = \
 	$(OPAL_PLUGIN_DIR)/video/H.264/shared/h264frame.cxx \
@@ -160,7 +160,7 @@ libH264_pwplugin_helper_SOURCES = \
 
 libH263_1998_pwplugin_la_LDFLAGS = -module -avoid-version -no-undefined
 
-libH263_1998_pwplugin_la_CXXFLAGS = -I$(OPAL_PLUGIN_DIR)/video/H.263-1998 -I$(OPAL_PLUGIN_DIR)/video/common -DPLUGIN_CODEC_DLL_EXPORTS
+libH263_1998_pwplugin_la_CXXFLAGS = -I$(OPAL_PLUGIN_DIR)/video/H.263-1998 -I$(OPAL_PLUGIN_DIR)/video/common -DPLUGIN_CODEC_DLL_EXPORTS -DWITH_STACKALIGN_HACK
 
 libH263_1998_pwplugin_la_SOURCES = \
 	$(OPAL_PLUGIN_DIR)/video/H.263-1998/h263pframe.cxx \
@@ -170,14 +170,14 @@ libH263_1998_pwplugin_la_SOURCES = \
 
 libMPEG4_pwplugin_la_LDFLAGS = -module -avoid-version -no-undefined
 
-libMPEG4_pwplugin_la_CXXFLAGS = -I$(FFMPEG_INCLUDES) -I$(FFMPEG_INCLUDES)/libavcodec -I$(FFMPEG_INCLUDES)/libavutil -I$(OPAL_PLUGIN_DIR)/video/common -DPLUGIN_CODEC_DLL_EXPORTS
+libMPEG4_pwplugin_la_CXXFLAGS = -I$(FFMPEG_INCLUDES) -I$(FFMPEG_INCLUDES)/libavcodec -I$(FFMPEG_INCLUDES)/libavutil -I$(OPAL_PLUGIN_DIR)/video/common -DPLUGIN_CODEC_DLL_EXPORTS -DWITH_STACKALIGN_HACK
 
 libMPEG4_pwplugin_la_SOURCES = \
 	$(OPAL_PLUGIN_DIR)/video/MPEG4-ffmpeg/mpeg4.cxx \
 	$(OPAL_PLUGIN_DIR)/video/common/trace.cxx \
 	$(OPAL_PLUGIN_DIR)/video/common/dyna.cxx
 
-libTHEORA_pwplugin_la_LDFLAGS = -module -avoid-version -no-undefined -ltheora
+libTHEORA_pwplugin_la_LDFLAGS = -module -avoid-version -no-undefined -ltheora -logg -Wl,-static
 
 libTHEORA_pwplugin_la_CXXFLAGS = -I$(OPAL_PLUGIN_DIR)/video/THEORA -I$(OPAL_PLUGIN_DIR)/video/common -DPLUGIN_CODEC_DLL_EXPORTS
 

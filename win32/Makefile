@@ -149,14 +149,17 @@ DIRECTX_URL := http://www.colombus.org/ekiga
 DIRECTX_DIR := $(BUILDROOT)/directx-dev
 DIRECTX_ARCHIVE := directx-dev.tar.gz
 
-FFMPEG_URL := http://ffmpeg.mplayerhq.hu/
+FFMPEG_VER := HEAD
+FFMPEG_URL := svn://svn.mplayerhq.hu/ffmpeg/trunk
 FFMPEG_DIR := $(BUILDROOT)/ffmpeg
-FFMPEG_ARCHIVE := ffmpeg-export-snapshot.tar.bz2
+FFMPEG_ARCHIVE := ffmpeg
 
+X264_VER := 676
 X264_URL := svn://svn.videolan.org/x264/trunk
 X264_DIR := $(BUILDROOT)/x264
 X264_ARCHIVE := x264
 
+THEORA_VER := 13809
 THEORA_URL := http://svn.xiph.org/trunk/theora
 THEORA_DIR := $(BUILDROOT)/theora
 THEORA_ARCHIVE := theora
@@ -195,9 +198,10 @@ confffmpeg:=--cross-prefix=i586-mingw32msvc- --enable-shared --enable-memalign-h
 	    --enable-w32threads --arch=i686  \
 	    --disable-parsers --enable-parser=h264 --enable-parser=mpeg4video --enable-parser=h263 \
 	    --disable-decoders --enable-decoder=h264 --enable-decoder=mpeg4  --enable-decoder=h263 \
-	    --disable-muxers --enable-muxer=h264 --enable-muxer=mpeg4 \
-	    --disable-encoders --enable-encoder=mpeg4 \
-	    --disable-protocols --disable-bsfs --disable-ffplay --prefix=$(BUILDROOT)
+	    --disable-muxers --enable-muxer=h264 --enable-muxer=mpeg4 --enable-muxer=h263 \
+	    --disable-encoders --enable-encoder=mpeg4 --enable-encoder=h263 \
+	    --disable-protocols --disable-bsfs --disable-ffplay --prefix=$(BUILDROOT) \
+            --libdir=$(EKIGA_PREFIX) --extra-ldflags=-Wl,-static
 #	    --disable-network
 
 confx264:=  --disable-avis-input --prefix=$(BUILDROOT) --host=$(DEB_HOST_GNU_TYPE)
@@ -388,18 +392,20 @@ $(LIBDIR)/libspeex.a: binaries $(SPEEX_DIR)/config.status
 ### ffmpeg
 update-sources::
 	echo --- Getting FFMPEG ---
-	$(WGET) -P $(SRCDIR) $(FFMPEG_URL)/$(FFMPEG_ARCHIVE)
+ifneq ("$(shell $(SVN) status $(SRCDIR)/$(FFMPEG_ARCHIVE) -u -q | head -n1 | cut -c1-6)", "Status")
+	$(SVN) co $(FFMPEG_URL) $(SRCDIR)/$(FFMPEG_ARCHIVE) -r $(FFMPEG_VER)
+	touch $(SRCDIR)/$(FFMPEG_ARCHIVE)
+endif  
 
 $(FFMPEG_DIR)/config.status: $(SRCDIR)/$(FFMPEG_ARCHIVE)
 	rm -rf $(FFMPEG_DIR)
-	tar xvfj $(SRCDIR)/$(FFMPEG_ARCHIVE) -C $(BUILDROOT)
-	mv $(BUILDROOT)/ffmpeg-export-* $(FFMPEG_DIR)
+	cp -r $(SRCDIR)/$(FFMPEG_ARCHIVE) $(FFMPEG_DIR)
 	(cd $(FFMPEG_DIR)/; \
 	./configure $(confffmpeg) \
 	)
 	touch $@
 
-$(LIBDIR)/avcodec.dll: $(FFMPEG_DIR)/config.status
+$(BINDIR)/avcodec.dll: $(FFMPEG_DIR)/config.status
 	$(MAKE) $(MAKE_LIB_OPTS) -C $(FFMPEG_DIR)
 	$(MAKE) -C $(FFMPEG_DIR) install
 	$(CP) $(FFMPEG_DIR)/libavutil/intreadwrite.h $(INCLUDEDIR)/ffmpeg
@@ -407,14 +413,13 @@ $(LIBDIR)/avcodec.dll: $(FFMPEG_DIR)/config.status
 	for i in  mpegvideo.h bitstream.h  dsputil.h eval.h parser.h ratecontrol.h rl.h;do \
 	$(CP) $(FFMPEG_DIR)/libavcodec/$$i $(INCLUDEDIR)/ffmpeg ;\
 	done
-	$(CP) -L $(FFMPEG_DIR)/libavcodec/avcodec-51.dll $(LIBDIR)/avcodec.dll  
 	touch $@
 
 ### x264
 update-sources:: 
 	echo --- Getting x264 ---
 ifneq ("$(shell $(SVN) status $(SRCDIR)/$(X264_ARCHIVE) -u -q | head -n1 | cut -c1-6)", "Status")
-	$(SVN) co $(X264_URL) $(SRCDIR)/$(X264_ARCHIVE)
+	$(SVN) co $(X264_URL) $(SRCDIR)/$(X264_ARCHIVE) -r $(X264_VER)
 	touch $(SRCDIR)/$(X264_ARCHIVE)
 endif  
 
@@ -439,7 +444,7 @@ $(LIBDIR)/libx264.a: $(X264_DIR)/config.status
 update-sources:: 
 	echo --- Getting theora ---
 ifneq ("$(shell $(SVN) status $(SRCDIR)/$(THEORA_ARCHIVE) -u -q | head -n1 | cut -c1-6)", "Status")
-	$(SVN) co $(THEORA_URL) $(SRCDIR)/$(THEORA_ARCHIVE)
+	$(SVN) co $(THEORA_URL) $(SRCDIR)/$(THEORA_ARCHIVE) -r $(THEORA_VER)
 	touch $(SRCDIR)/$(THEORA_ARCHIVE)
 endif  
 
@@ -453,6 +458,7 @@ $(THEORA_DIR)/config.status: $(SRCDIR)/$(THEORA_ARCHIVE)
 $(LIBDIR)/libtheora.a: $(THEORA_DIR)/config.status
 	$(MAKE) $(MAKE_LIB_OPTS) -C $(THEORA_DIR)
 	$(MAKE) -C $(THEORA_DIR) install
+	sed -i -e "s#library_names=''#library_names='libtheora\.a'#g" $(LIBDIR)/libtheora.la
 	touch $@
 
 ### OPAL
@@ -461,7 +467,7 @@ update-sources::
 	$(WGET) -P src $(EKIGA_URL1)/$(OPAL_ARCHIVE) || \
 	$(WGET) -P src $(EKIGA_URL2)/$(OPAL_ARCHIVE)
 
-$(OPAL_DIR)/configure: binaries $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(LIBDIR)/libpt.a $(SRCDIR)/$(OPAL_ARCHIVE) $(EKIGA_WIN32_DIFF_DIR)/opal_configure.ac $(EKIGA_WIN32_DIFF_DIR)/opal_Makefile.am $(EKIGA_WIN32_DIFF_DIR)/opal_opal.pc.in $(LIBDIR)/avcodec.dll $(LIBDIR)/libx264.a $(LIBDIR)/libtheora.a
+$(OPAL_DIR)/configure: binaries $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(LIBDIR)/libpt.a $(SRCDIR)/$(OPAL_ARCHIVE) $(EKIGA_WIN32_DIFF_DIR)/opal_configure.ac $(EKIGA_WIN32_DIFF_DIR)/opal_Makefile.am $(EKIGA_WIN32_DIFF_DIR)/opal_opal.pc.in $(BINDIR)/avcodec.dll $(LIBDIR)/libx264.a $(LIBDIR)/libtheora.a
 	rm -rf $(OPAL_DIR) $(LIBDIR)/libopal.a
 	tar xfz $(SRCDIR)/$(OPAL_ARCHIVE) -C $(BUILDROOT)
 	$(RM) -f $(OPAL_DIR)/configure.exe $(OPAL_DIR)/configure $(OPAL_DIR)/configure.ac $(OPAL_DIR)/Makefile.in
@@ -649,7 +655,8 @@ $(TARGETDIR)/zips: binaries $(EKIGA_DIR)/src/ekiga.exe
 	for lib in libexpat-1.dll liblber.dll libldap.dll libxml2-2.dll libspeex-1.dll; do \
 	        install -m 755 $(BINDIR)/$$lib $(EKIGA_PREFIX) ;\
 	done
-	install -m 755 $(LIBDIR)/avcodec.dll $(EKIGA_PREFIX)
+	install -m 755 $(BINDIR)/avcodec.dll $(EKIGA_PREFIX)
+	install -m 755 $(BINDIR)/libogg-0.dll $(EKIGA_PREFIX)
 	install -m 755  $(SIGC_DIR)/sigc++/.libs/libsigc-2.0-0.dll $(EKIGA_PREFIX)
 ifeq ($(DEBUG),0) 	 
 	$(STRIP) $(EKIGA_PREFIX)/*.dll
