@@ -3943,11 +3943,11 @@ main (int argc,
 #endif
 
   /* Ekiga initialisation */
+  static GnomeMeeting instance;
   if (debug_level != 0)
     PTrace::Initialise (PMAX (PMIN (4, debug_level), 0), NULL,
 			PTrace::Timestamp | PTrace::Thread
 			| PTrace::Blocks | PTrace::DateAndTime);
-  static GnomeMeeting instance;
   if (!GnomeMeeting::Process ()->DetectDevices ()) 
     error = 1;
   GnomeMeeting::Process ()->InitEngine ();
