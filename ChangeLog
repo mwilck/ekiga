@@ -1,3 +1,18 @@
+2007-09-16  Julien Puydt  <jpuydt@gnome.org>
+
+	* lib/engine/framework/runtime.h:
+	* lib/engine/framework/runtime-glib.h:
+	* lib/engine/framework/runtime-glib.cpp: Split the runtime into an
+	abstract class and a concrete implementation, with a new and better
+	scheme, but fusioned the run_in_* methods in one.
+	* src/endpoints/ekiga.h:
+	* src/endpoints/ekiga.cpp: Made it instantiate the new implementation.
+	* lib/engine/framework/Makefile.am: Adapt.
+	* lib/engine/addressbook/ldap/ldap-book.cpp:
+	* lib/engine/protocol/sip/sip-endpoint.cpp:
+	* src/endpoints/manager.cpp: Cope with the fact that the method names
+	changed.
+	
 2007-09-16  Matthias Schneider  <ma30002000@yahoo.de>
 
 	* win32/diff/opal_Makefile.am, win32/Makefile:

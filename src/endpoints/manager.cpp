@@ -937,7 +937,7 @@ GMManager::OnIncomingConnection (OpalConnection &connection,
   /* Emit the signal */
   Ekiga::Runtime *runtime = GnomeMeeting::Process ()->GetRuntime (); // FIXME
   Ekiga::CallInfo info (connection);
-  runtime->run_back_in_main (sigc::bind (call_event.make_slot (), GMManager::Called, info));
+  runtime->run_in_main (sigc::bind (call_event.make_slot (), GMManager::Called, info));
 
   return res;
 }
@@ -1083,7 +1083,7 @@ GMManager::OnEstablished (OpalConnection &connection)
   /* Emit the signal */
   Ekiga::Runtime *runtime = GnomeMeeting::Process ()->GetRuntime (); // FIXME
   Ekiga::CallInfo info (connection);
-  runtime->run_back_in_main (sigc::bind (call_event.make_slot (), GMManager::Connected, info));
+  runtime->run_in_main (sigc::bind (call_event.make_slot (), GMManager::Connected, info));
 }
 
 
@@ -1334,7 +1334,7 @@ GMManager::OnReleased (OpalConnection & connection)
   /* Emit the signal */
   Ekiga::Runtime *runtime = GnomeMeeting::Process ()->GetRuntime (); // FIXME
   Ekiga::CallInfo info (connection);
-  runtime->run_back_in_main (sigc::bind (call_event.make_slot (), GMManager::Standby, info));
+  runtime->run_in_main (sigc::bind (call_event.make_slot (), GMManager::Standby, info));
 }
 
 
@@ -1379,7 +1379,7 @@ GMManager::OnMessageReceived (const SIPURL & from,
   }
 
   Ekiga::Runtime *runtime = GnomeMeeting::Process ()->GetRuntime (); // FIXME
-  runtime->run_back_in_main (sigc::bind (message_event.make_slot (), 0));
+  runtime->run_in_main (sigc::bind (message_event.make_slot (), 0));
 }
 
 

@@ -34,7 +34,6 @@
  */
 
 #include <sigc++/sigc++.h>
-#include <glib.h>
 
 #ifndef __RUNTIME_H__
 #define __RUNTIME_H__
@@ -45,19 +44,18 @@ namespace Ekiga {
   {
   public:
 
-    Runtime ();
+    Runtime ()
+    {}
 
-    ~Runtime ();
+    virtual ~Runtime ()
+    {}
 
-    void run ();
+    virtual void run () = 0;
 
-    void quit ();
+    virtual void quit () = 0;
 
-    void run_later (sigc::slot<void> action, unsigned int seconds);
-
-    void run_in_thread (sigc::slot<void> action);
-
-    void run_back_in_main (sigc::slot<void> action);
+    virtual void run_in_main (sigc::slot<void> action,
+			      unsigned int seconds = 0) = 0;
   };
 };
 

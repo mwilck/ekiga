@@ -201,7 +201,7 @@ SIP::EndPoint::OnPresenceInfoReceived (const PString & user,
 
   if (runtime) {
    
-    runtime->run_back_in_main (sigc::bind (presence_core->presence_received.make_slot (), uri, presence));
-    runtime->run_back_in_main (sigc::bind (presence_core->status_received.make_slot (), uri, status));
+    runtime->run_in_main (sigc::bind (presence_core->presence_received.make_slot (), uri, presence));
+    runtime->run_in_main (sigc::bind (presence_core->status_received.make_slot (), uri, status));
   }
 }

@@ -45,7 +45,7 @@
 #include "manager.h"
 
 #include "services.h"
-#include "runtime.h"
+#include "runtime-glib.h"
 
 #include "statusicon.h"
 

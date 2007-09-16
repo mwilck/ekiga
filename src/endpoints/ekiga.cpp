@@ -59,7 +59,7 @@
 #include "gmstockicons.h"
 #include "gmconf.h"
 
-#include <engine.h>
+#include "engine.h"
 
 #define new PNEW
 
@@ -663,5 +663,5 @@ GnomeMeeting::InitEngine ()
   if (!service_core)
     std::cout << "engine couldn't init!" << std::endl;
 
-  runtime = new Ekiga::Runtime;
+  runtime = new Ekiga::GlibRuntime;
 }

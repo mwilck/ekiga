@@ -25,82 +25,42 @@
 
 
 /*
- *                         runtime.cpp  -  description
+ *                         runtime-glib.h  -  description
  *                         ------------------------------------------
  *   begin                : written in 2007 by Julien Puydt
  *   copyright            : (c) 2007 by Julien Puydt
- *   description          : declaration of a service object
+ *   description          : Threading helper functions -- glib version
  *
  */
 
+#include <glib.h>
+
 #include "runtime.h"
 
-struct thread_data
-{
-  thread_data (sigc::slot<void> _action): action(_action) {}
+#ifndef __RUNTIME_GLIB_H__
+#define __RUNTIME_GLIB_H__
 
-  sigc::slot<void> action;
+namespace Ekiga {
+
+  class GlibRuntime: public Runtime
+  {
+  public:
+
+    GlibRuntime ();
+
+    ~GlibRuntime ();
+
+    void run ();
+
+    void quit ();
+
+    void run_in_main (sigc::slot<void> action,
+		      unsigned int seconds);
+
+  private:
+
+    GAsyncQueue *queue;
+  };
 };
 
-static void
-common_helper (struct thread_data *data)
-{
-  data->action ();
-  delete data;
-}
-
-static gboolean
-run_later_or_back_in_main_helper (gpointer data)
-{
-  common_helper ((struct thread_data *)data);
-  return FALSE;
-}
-
-static gpointer
-run_in_thread_helper (gpointer data)
-{
-  common_helper ((struct thread_data *)data);
-  return NULL;
-}
-
-Ekiga::Runtime::Runtime ()
-{
-}
-
-Ekiga::Runtime::~Runtime ()
-{
-  quit ();
-}
-
-void
-Ekiga::Runtime::run ()
-{
-}
-
-void
-Ekiga::Runtime::quit ()
-{
-}
-
-void
-Ekiga::Runtime::run_later (sigc::slot<void> action,
-			   unsigned int seconds)
-{
-  g_timeout_add (1000*seconds, run_later_or_back_in_main_helper,
-		 (gpointer)(new struct thread_data (action)));
-}
-
-void
-Ekiga::Runtime::run_in_thread (sigc::slot<void> action)
-{
-  g_thread_create (run_in_thread_helper,
-		   (gpointer)(new struct thread_data (action)),
-		   FALSE, NULL);
-}
-
-void
-Ekiga::Runtime::run_back_in_main (sigc::slot<void> action)
-{
-  g_idle_add (run_later_or_back_in_main_helper,
-	      (gpointer)(new struct thread_data (action)));
-}
+#endif

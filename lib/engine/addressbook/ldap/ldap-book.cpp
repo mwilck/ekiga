@@ -417,7 +417,7 @@ OPENLDAP::Book::refresh_start ()
 
   patience = 3;
   //FIXME
-  GnomeMeeting::Process ()->GetRuntime ()->run_later (sigc::mem_fun (this, &OPENLDAP::Book::refresh_end), 3);
+  GnomeMeeting::Process ()->GetRuntime ()->run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_end), 3);
 }
 
 void
@@ -439,15 +439,15 @@ OPENLDAP::Book::refresh_end ()
     if (patience == 3) {
 
       patience--;
-      GnomeMeeting::Process ()->GetRuntime ()->run_later (sigc::mem_fun (this, &OPENLDAP::Book::refresh_end), 12);
+      GnomeMeeting::Process ()->GetRuntime ()->run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_end), 12);
     } else if (patience == 2) {
 
       patience--;
-      GnomeMeeting::Process ()->GetRuntime ()->run_later (sigc::mem_fun (this, &OPENLDAP::Book::refresh_end), 21);
+      GnomeMeeting::Process ()->GetRuntime ()->run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_end), 21);
     } else if (patience == 1) {
 
       patience--;
-      GnomeMeeting::Process ()->GetRuntime ()->run_later (sigc::mem_fun (this, &OPENLDAP::Book::refresh_end), 30);
+      GnomeMeeting::Process ()->GetRuntime ()->run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_end), 30);
     } else { // patience == 0
 
       status = std::string (_("Could not search on")) + " " + hostname;
