@@ -3870,7 +3870,6 @@ main (int argc,
 
   /* PWLIB initialization */
   PProcess::PreInitialise (argc, argv, envp);
-  static GnomeMeeting instance;
   
   /* GTK+ initialization */
   g_thread_init (NULL);
@@ -3948,7 +3947,7 @@ main (int argc,
     PTrace::Initialise (PMAX (PMIN (4, debug_level), 0), NULL,
 			PTrace::Timestamp | PTrace::Thread
 			| PTrace::Blocks | PTrace::DateAndTime);
-
+  static GnomeMeeting instance;
   if (!GnomeMeeting::Process ()->DetectDevices ()) 
     error = 1;
   GnomeMeeting::Process ()->InitEngine ();

@@ -10,6 +10,11 @@
 
 2007-09-16  Damien Sandras  <dsandras@gnome.org>
 
+	* src/gui/main.cpp: Moved down initialization of GnomeMeeting
+	to fix codecs initialization.
+
+2007-09-16  Damien Sandras  <dsandras@gnome.org>
+
 	* src/gui/main.cpp: Fixed deadlock when starting up the
 	application due to a crossed mutex between GDK and OPAL.
 
