@@ -6,10 +6,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: ekiga gnome-2-14\n"
+"Project-Id-Version: ekiga gnome-2-20\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-07 00:03+0900\n"
-"PO-Revision-Date: 2007-02-07 00:02+0900\n"
+"POT-Creation-Date: 2007-09-16 22:19+0900\n"
+"PO-Revision-Date: 2007-09-16 22:19+0900\n"
 "Last-Translator: Takeshi AIHANA <takeshi.aihana@gmail.com>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "MIME-Version: 1.0\n"
@@ -61,7 +61,7 @@ msgstr "音声のプラグイン"
 msgid "Automatic echo cancellation"
 msgstr "自動エコー・キャンセレーション"
 
-#: ../ekiga.schemas.in.in.h:9 ../src/gui/preferences.cpp:747
+#: ../ekiga.schemas.in.in.h:9 ../src/gui/preferences.cpp:740
 msgid ""
 "Automatically reject or forward incoming calls if no answer is given after "
 "the specified amount of time (in seconds)"
@@ -178,7 +178,7 @@ msgid ""
 "Enter the public IP of your NAT/PAT router if you want to use IP translation"
 msgstr "IP 転送する際に使用する、お使いの NAT/PAT ルータのパブリック IP です。"
 
-#: ../ekiga.schemas.in.in.h:31 ../src/gui/preferences.cpp:642
+#: ../ekiga.schemas.in.in.h:31 ../src/gui/preferences.cpp:635
 msgid "Enter your first name"
 msgstr "名前を入力して下さい"
 
@@ -206,7 +206,7 @@ msgstr "応答が無い時に指定したホストへ転送する"
 msgid "Gateway/proxy host"
 msgstr "ゲートウェイ/プロキシのホスト名"
 
-#: ../ekiga.schemas.in.in.h:38 ../src/gui/preferences.cpp:692
+#: ../ekiga.schemas.in.in.h:38 ../src/gui/preferences.cpp:685
 msgid ""
 "If enabled, Ekiga will start hidden provided that the notification area is "
 "present in the GNOME panel"
@@ -247,7 +247,7 @@ msgstr ""
 msgid "If enabled, allows video during calls"
 msgstr "TRUE にすると、着信中でも映像を受信できます。"
 
-#: ../ekiga.schemas.in.in.h:44 ../src/gui/preferences.cpp:745
+#: ../ekiga.schemas.in.in.h:44 ../src/gui/preferences.cpp:738
 msgid ""
 "If enabled, calls for which no audio and video has been received in the last "
 "30 seconds are automatically cleared"
@@ -335,7 +335,7 @@ msgstr "外向きのプロキシ"
 msgid "Output device type"
 msgstr "出力デバイスの種類"
 
-#: ../ekiga.schemas.in.in.h:65 ../src/gui/preferences.cpp:700
+#: ../ekiga.schemas.in.in.h:65 ../src/gui/preferences.cpp:693
 msgid "Place windows displaying video above other windows during calls"
 msgstr "着信中は他のウィンドウの上に映像を表示するウィンドウを配置します"
 
@@ -343,15 +343,15 @@ msgstr "着信中は他のウィンドウの上に映像を表示するウィン
 msgid "Placed calls history"
 msgstr "発信履歴"
 
-#: ../ekiga.schemas.in.in.h:67 ../src/gui/preferences.cpp:1907
+#: ../ekiga.schemas.in.in.h:67 ../src/gui/preferences.cpp:1898
 msgid "Play busy tone"
 msgstr "話中音を演奏する"
 
-#: ../ekiga.schemas.in.in.h:68 ../src/gui/preferences.cpp:1898
+#: ../ekiga.schemas.in.in.h:68 ../src/gui/preferences.cpp:1889
 msgid "Play ring tone"
 msgstr "着信音を演奏する"
 
-#: ../ekiga.schemas.in.in.h:69 ../src/gui/preferences.cpp:1889
+#: ../ekiga.schemas.in.in.h:69 ../src/gui/preferences.cpp:1880
 msgid "Play sound on incoming calls"
 msgstr "着信時にサウンドを演奏する"
 
@@ -427,20 +427,20 @@ msgstr "スキーマ・ファイルの版数"
 msgid "Select an alternative audio output device to use for sound events."
 msgstr "着信音のイベントで使用する音声出力デバイスを指定します。"
 
-#: ../ekiga.schemas.in.in.h:88 ../src/gui/preferences.cpp:1102
+#: ../ekiga.schemas.in.in.h:88 ../src/gui/preferences.cpp:1095
 msgid "Select the audio input device to use"
 msgstr "使用する音声入力デバイスを指定します"
 
-#: ../ekiga.schemas.in.in.h:89 ../src/gui/preferences.cpp:1095
+#: ../ekiga.schemas.in.in.h:89 ../src/gui/preferences.cpp:1088
 msgid "Select the audio output device to use"
 msgstr "使用する音声出力デバイスを指定します"
 
-#: ../ekiga.schemas.in.in.h:90 ../src/gui/preferences.cpp:966
+#: ../ekiga.schemas.in.in.h:90 ../src/gui/preferences.cpp:959
 msgid ""
 "Select the desired method for NAT traversal (STUN is strongly suggested)"
 msgstr "NAT 越えする際に使用するメソッドを指定します (STUN を強くお勧めします)"
 
-#: ../ekiga.schemas.in.in.h:91 ../src/gui/preferences.cpp:1185
+#: ../ekiga.schemas.in.in.h:91 ../src/gui/preferences.cpp:1178
 msgid ""
 "Select the format for video cameras (does not apply to most USB cameras)"
 msgstr ""
@@ -454,7 +454,7 @@ msgid ""
 msgstr ""
 "発信する映像のサイズです: Small (QCIF 176x144) または Large (CIF 352x288)"
 
-#: ../ekiga.schemas.in.in.h:93 ../src/gui/preferences.cpp:1175
+#: ../ekiga.schemas.in.in.h:93 ../src/gui/preferences.cpp:1168
 msgid ""
 "Select the video input device to use. If an error occurs when using this "
 "device a test picture will be transmitted."
@@ -517,7 +517,7 @@ msgstr ""
 "Compensation のいずれか) で、Automatic Gain Compensation を選択すると自動的に"
 "最適な品質の音量に調節します。"
 
-#: ../ekiga.schemas.in.in.h:106 ../src/gui/preferences.cpp:993
+#: ../ekiga.schemas.in.in.h:106 ../src/gui/preferences.cpp:986
 msgid ""
 "The Gateway host is the host to use to do H.323 calls through a gateway that "
 "will relay calls"
@@ -529,7 +529,7 @@ msgstr ""
 msgid "The NAT method"
 msgstr "NAT の種類"
 
-#: ../ekiga.schemas.in.in.h:108 ../src/gui/preferences.cpp:1044
+#: ../ekiga.schemas.in.in.h:108 ../src/gui/preferences.cpp:1037
 msgid "The SIP Outbound Proxy to use for outgoing calls"
 msgstr "発信する際に使用する外向きの SIP プロキシです"
 
@@ -619,8 +619,8 @@ msgstr "最近の発信履歴 (100回分) です。"
 msgid "The history of the last 100 received calls"
 msgstr "最近の受信履歴 (100回分) です。"
 
-#: ../ekiga.schemas.in.in.h:125 ../src/gui/preferences.cpp:996
-#: ../src/gui/preferences.cpp:1047
+#: ../ekiga.schemas.in.in.h:125 ../src/gui/preferences.cpp:989
+#: ../src/gui/preferences.cpp:1040
 msgid "The host where calls should be forwarded if call forwarding is enabled"
 msgstr "転送機能が有効な場合に、呼び出しを転送するホスト名です"
 
@@ -676,7 +676,7 @@ msgstr ""
 msgid "The network interface"
 msgstr "ネットワークのインタフェース"
 
-#: ../ekiga.schemas.in.in.h:136 ../src/gui/preferences.cpp:957
+#: ../ekiga.schemas.in.in.h:136 ../src/gui/preferences.cpp:950
 msgid "The network interface to listen on"
 msgstr "着信を監視するネットワークのインタフェースです"
 
@@ -813,12 +813,12 @@ msgstr ""
 msgid "The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)"
 msgstr "あなたの国を示す二文字のコードです (例: JP, BE, UK, FR, DE, ...)。"
 
-#: ../ekiga.schemas.in.in.h:159 ../src/gui/preferences.cpp:1179
+#: ../ekiga.schemas.in.in.h:159 ../src/gui/preferences.cpp:1172
 msgid "The video channel number to use (to select camera, tv or other sources)"
 msgstr ""
 "使用する映像チャンネルの番号 (カメラ、テレビ、またはその他のソース) です"
 
-#: ../ekiga.schemas.in.in.h:160 ../src/gui/preferences.cpp:1163
+#: ../ekiga.schemas.in.in.h:160 ../src/gui/preferences.cpp:1156
 msgid ""
 "The video plugin that will be used to detect the devices and manage them"
 msgstr "デバイスの検出と管理に使用する音声プラグインです"
@@ -860,7 +860,7 @@ msgstr ""
 "リモート側の映像ウィンドウに表示される映像に適用するズーム率です (指定可能な"
 "値は、0.50、1.00、または 2.00 のみ)。"
 
-#: ../ekiga.schemas.in.in.h:166 ../src/gui/preferences.cpp:1008
+#: ../ekiga.schemas.in.in.h:166 ../src/gui/preferences.cpp:1001
 msgid ""
 "This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages "
 "are encapsulated into the the H.225 channel (port 1720). This saves one TCP "
@@ -875,7 +875,7 @@ msgstr ""
 "H.245 トンネリングの両方を利用すると Netmeeting のいくつかのバージョンでク"
 "ラッシュすることがあります"
 
-#: ../ekiga.schemas.in.in.h:167 ../src/gui/preferences.cpp:1010
+#: ../ekiga.schemas.in.in.h:167 ../src/gui/preferences.cpp:1003
 msgid "This enables H.245 early in the setup"
 msgstr "H.245 トンネリングを有効にします"
 
@@ -944,48 +944,6 @@ msgstr "映像プレビュー"
 msgid "Video size"
 msgstr "映像のサイズ"
 
-#: ../lib/about/gnome-about.c:203
-msgid "Credits"
-msgstr "クレジット"
-
-#: ../lib/about/gnome-about.c:235
-msgid "Written by"
-msgstr "開発者:"
-
-#: ../lib/about/gnome-about.c:250
-msgid "Documented by"
-msgstr "ドキュメント作成:"
-
-#: ../lib/about/gnome-about.c:265
-msgid "Translated by"
-msgstr "翻訳者:"
-
-#. Add the credits button
-#: ../lib/about/gnome-about.c:326
-msgid "C_redits"
-msgstr "クレジット(_R)"
-
-#: ../lib/about/gnome-about.c:407
-msgid "Authors"
-msgstr "作者"
-
-#: ../lib/about/gnome-about.c:408
-msgid "List of authors of the programs"
-msgstr "プログラムの作者の一覧"
-
-#: ../lib/about/gnome-about.c:421
-msgid "Documenter entry"
-msgstr "ドキュメント作成者のエントリ"
-
-#: ../lib/about/gnome-about.c:422
-msgid "A single documenter entry"
-msgstr "ドキュメント作成者 (単独) のエントリ"
-
-#: ../lib/about/gnome-about.c:518
-#, c-format
-msgid "About %s"
-msgstr "%s について"
-
 #: ../lib/gmconf/gmconf-gconf.c:155
 msgid ""
 "An error has happened in the configuration backend.\n"
@@ -999,18 +957,26 @@ msgid "Contacts Near Me"
 msgstr "Contacts Near Me"
 
 #. Init the address book
-#: ../lib/gmcontacts/gmcontacts-eds.cpp:304 ../src/endpoints/ekiga.cpp:501
+#: ../lib/gmcontacts/gmcontacts-eds.cpp:304 ../src/endpoints/ekiga.cpp:500
 msgid "On This Computer"
 msgstr "このコンピュータ"
 
-#: ../lib/gmcontacts/gmcontacts-eds.cpp:308 ../src/endpoints/ekiga.cpp:501
-#: ../src/gui/addressbook.cpp:3042
+#: ../lib/gmcontacts/gmcontacts-eds.cpp:308 ../src/endpoints/ekiga.cpp:500
+#: ../src/gui/addressbook.cpp:3041
 msgid "Personal"
 msgstr "パーソナル"
 
 #: ../lib/gui/gmdialog.c:487
 msgid "Do not show this dialog again"
 msgstr "次回からこのダイアログを表示しない"
+
+#: ../lib/gui/gmtray/eggtrayicon.c:133
+msgid "Orientation"
+msgstr "向き"
+
+#: ../lib/gui/gmtray/eggtrayicon.c:134
+msgid "The orientation of the tray."
+msgstr "トレイの向きです"
 
 #: ../src/clients/ils.cpp:105 ../src/gui/tools.cpp:174
 msgid "Invalid parameters"
@@ -1073,7 +1039,7 @@ msgid "Updated information on %s"
 msgstr "%s にある情報を更新しました"
 
 #: ../src/clients/ils.cpp:314 ../src/endpoints/accountshandler.cpp:332
-#: ../src/endpoints/sip.cpp:235
+#: ../src/endpoints/sip.cpp:236
 #, c-format
 msgid "Unregistered from %s"
 msgstr "%s から登録を解除しました"
@@ -1119,6 +1085,7 @@ msgstr ""
 "使いのシステムには特別な設定は必要ありません。"
 
 #: ../src/clients/stun.cpp:153
+#, c-format
 msgid ""
 "Ekiga detected Symmetric NAT. The most appropriate method, if your router "
 "does not natively support SIP or H.323, is to forward the required ports to "
@@ -1242,6 +1209,7 @@ msgstr ""
 "ら、コマンドラインから `ekiga -c アドレス` を実行して下さい。"
 
 #: ../src/components/bonobo.cpp:170
+#, c-format
 msgid ""
 "It appears that you do not have ekiga.server installed in a valid location. "
 "Factory mode disabled.\n"
@@ -1250,6 +1218,7 @@ msgstr ""
 "を無効にします。\n"
 
 #: ../src/components/bonobo.cpp:174
+#, c-format
 msgid ""
 "Error registering Ekiga with the activation service; factory mode disabled.\n"
 msgstr ""
@@ -1257,6 +1226,7 @@ msgstr ""
 "モードを無効にします。\n"
 
 #: ../src/components/bonobo.cpp:214
+#, c-format
 msgid "Failed to retrieve Ekiga server from activation server\n"
 msgstr "活性化サービスから Ekiga サーバの取得に失敗しました。\n"
 
@@ -1323,10 +1293,10 @@ msgstr ""
 
 #: ../src/devices/audio.cpp:481 ../src/devices/audio.cpp:482
 #: ../src/devices/videoinput.cpp:310 ../src/devices/videoinput.cpp:585
-#: ../src/endpoints/ekiga.cpp:352 ../src/endpoints/ekiga.cpp:354
-#: ../src/endpoints/ekiga.cpp:356 ../src/endpoints/pcss.cpp:194
-#: ../src/gui/druid.cpp:1779 ../src/gui/druid.cpp:1793
-#: ../src/gui/druid.cpp:1853
+#: ../src/endpoints/ekiga.cpp:351 ../src/endpoints/ekiga.cpp:353
+#: ../src/endpoints/ekiga.cpp:355 ../src/endpoints/pcss.cpp:194
+#: ../src/gui/druid.cpp:1780 ../src/gui/druid.cpp:1792
+#: ../src/gui/druid.cpp:1850
 msgid "No device found"
 msgstr "デバイスが見つかりませんでした"
 
@@ -1380,6 +1350,7 @@ msgstr ""
 "るか確認して下さい。"
 
 #: ../src/devices/videoinput.cpp:372 ../src/devices/videoinput.cpp:686
+#, c-format
 msgid "Your video driver doesn't support the requested video format."
 msgstr ""
 "お使いのビデオ・ドライバは、要求された映像フォーマットをサポートしていませ"
@@ -1442,19 +1413,23 @@ msgid "Error while opening %s."
 msgstr "%s を開く際にエラーが発生しました。"
 
 #: ../src/devices/videoinput.cpp:690
+#, c-format
 msgid "Could not open the chosen channel with the chosen video format."
 msgstr "選択した映像フォーマットで指定したチャンネルを開けませんでした。"
 
 #: ../src/devices/videoinput.cpp:694
+#, c-format
 msgid "Your driver doesn't support any of the color formats tried by Ekiga"
 msgstr ""
 "お使いのドライバは Ekiga で利用できる色のフォーマットをサポートしていません。"
 
 #: ../src/devices/videoinput.cpp:698
+#, c-format
 msgid "Error with the frame rate."
 msgstr "フレーム・レートでエラーが発生しました"
 
 #: ../src/devices/videoinput.cpp:702
+#, c-format
 msgid "Error with the frame size."
 msgstr "フレーム・サイズでエラーが発生しました"
 
@@ -1469,8 +1444,8 @@ msgid "Registration of %s to %s failed"
 msgstr "%s を %s に登録できませんでした"
 
 #: ../src/endpoints/accountshandler.cpp:211
-#: ../src/endpoints/accountshandler.cpp:323 ../src/endpoints/sip.cpp:316
-#: ../src/endpoints/sip.cpp:328
+#: ../src/endpoints/accountshandler.cpp:323 ../src/endpoints/sip.cpp:317
+#: ../src/endpoints/sip.cpp:329
 msgid "Registration failed"
 msgstr "登録に失敗しました"
 
@@ -1496,16 +1471,16 @@ msgstr "ゲートキーパの登録に失敗しました: 転送エラーです"
 msgid "Gatekeeper registration failed"
 msgstr "ゲートキーパの登録に失敗しました"
 
-#: ../src/endpoints/accountshandler.cpp:312 ../src/endpoints/sip.cpp:224
+#: ../src/endpoints/accountshandler.cpp:312 ../src/endpoints/sip.cpp:225
 #, c-format
 msgid "Registered to %s"
 msgstr "%s へ登録を完了しました"
 
-#: ../src/endpoints/accountshandler.cpp:322 ../src/endpoints/sip.cpp:230
+#: ../src/endpoints/accountshandler.cpp:322 ../src/endpoints/sip.cpp:231
 msgid "Registered"
 msgstr "登録しました"
 
-#: ../src/endpoints/accountshandler.cpp:352 ../src/endpoints/sip.cpp:241
+#: ../src/endpoints/accountshandler.cpp:352 ../src/endpoints/sip.cpp:242
 msgid "Unregistered"
 msgstr "登録を解除しました"
 
@@ -1513,7 +1488,7 @@ msgstr "登録を解除しました"
 msgid "Answering incoming call"
 msgstr "着信に応答中です"
 
-#: ../src/endpoints/ekiga.cpp:530
+#: ../src/endpoints/ekiga.cpp:529
 #, c-format
 msgid "Started Ekiga %d.%d.%d for user %s"
 msgstr "Ekiga %d.%d.%d (ユーザ %s) を起動しました"
@@ -1742,65 +1717,65 @@ msgstr ""
 "全二重をサポートしているか確認して下さい。\n"
 "音声受信を無効にしました。"
 
-#: ../src/endpoints/sip.cpp:287
+#: ../src/endpoints/sip.cpp:288
 msgid "Bad request"
 msgstr "おかしな要求です"
 
-#: ../src/endpoints/sip.cpp:291
+#: ../src/endpoints/sip.cpp:292
 msgid "Payment required"
 msgstr "無料ではありません"
 
-#: ../src/endpoints/sip.cpp:296
+#: ../src/endpoints/sip.cpp:297
 msgid "Forbidden"
 msgstr "アクセスできません"
 
-#: ../src/endpoints/sip.cpp:300
+#: ../src/endpoints/sip.cpp:301
 msgid "Timeout"
 msgstr "タイムアウトしました"
 
-#: ../src/endpoints/sip.cpp:304
+#: ../src/endpoints/sip.cpp:305
 msgid "Conflict"
 msgstr "競合しています"
 
-#: ../src/endpoints/sip.cpp:308
+#: ../src/endpoints/sip.cpp:309
 msgid "Temporarily unavailable"
 msgstr "一時的な障害です"
 
-#: ../src/endpoints/sip.cpp:312
+#: ../src/endpoints/sip.cpp:313
 msgid "Not Acceptable"
 msgstr "受信できません"
 
-#: ../src/endpoints/sip.cpp:321
+#: ../src/endpoints/sip.cpp:322
 #, c-format
 msgid "Registration failed: %s"
 msgstr "登録に失敗しました: %s"
 
-#: ../src/endpoints/sip.cpp:333
+#: ../src/endpoints/sip.cpp:334
 #, c-format
 msgid "Unregistration failed: %s"
 msgstr "登録の解除に失敗しました: %s"
 
-#: ../src/endpoints/sip.cpp:340
+#: ../src/endpoints/sip.cpp:341
 msgid "Unregistration failed"
 msgstr "登録の解除に失敗しました"
 
-#: ../src/endpoints/sip.cpp:540
+#: ../src/endpoints/sip.cpp:542
 msgid "Error: User not found"
 msgstr "エラー: ユーザが見つかりません"
 
-#: ../src/endpoints/sip.cpp:544
+#: ../src/endpoints/sip.cpp:546
 msgid "Error: User offline"
 msgstr "エラー: ユーザはオフラインです"
 
-#: ../src/endpoints/sip.cpp:549
+#: ../src/endpoints/sip.cpp:551
 msgid "Error: Forbidden"
 msgstr "エラー: アクセスできません"
 
-#: ../src/endpoints/sip.cpp:553
+#: ../src/endpoints/sip.cpp:555
 msgid "Error: Timeout"
 msgstr "エラー: タイムアウトです"
 
-#: ../src/endpoints/sip.cpp:557 ../src/gui/chat.cpp:1031
+#: ../src/endpoints/sip.cpp:559 ../src/gui/chat.cpp:1031
 msgid "Error: Failed to transmit message"
 msgstr "エラー: メッセージの送信に失敗しました"
 
@@ -1830,69 +1805,69 @@ msgstr "着信を %s へ転送中です"
 msgid "Failed to call user"
 msgstr "ユーザの呼び出しに失敗しました"
 
-#: ../src/gui/accounts.cpp:408
+#: ../src/gui/accounts.cpp:410
 msgid "Edit the Account Information"
 msgstr "アカウント情報の編集"
 
 #. Account Name
-#: ../src/gui/accounts.cpp:432
+#: ../src/gui/accounts.cpp:434
 msgid "Account Name:"
 msgstr "アカウント名(_N):"
 
-#: ../src/gui/accounts.cpp:446
+#: ../src/gui/accounts.cpp:448
 msgid "Protocol:"
 msgstr "プロトコル:"
 
-#: ../src/gui/accounts.cpp:470 ../src/gui/accounts.cpp:973
+#: ../src/gui/accounts.cpp:472 ../src/gui/accounts.cpp:993
 msgid "Registrar:"
 msgstr "レジストラ:"
 
-#: ../src/gui/accounts.cpp:472 ../src/gui/accounts.cpp:982
+#: ../src/gui/accounts.cpp:474 ../src/gui/accounts.cpp:1002
 msgid "Gatekeeper:"
 msgstr "ゲートキーパ:"
 
 #. User
-#: ../src/gui/accounts.cpp:486
+#: ../src/gui/accounts.cpp:488
 msgid "User:"
 msgstr "名前:"
 
 #. Password
-#: ../src/gui/accounts.cpp:501
+#: ../src/gui/accounts.cpp:503
 msgid "Password:"
 msgstr "パスワード:"
 
 #. Advanced Options
-#: ../src/gui/accounts.cpp:518
+#: ../src/gui/accounts.cpp:520
 msgid "More _Options"
 msgstr "追加オプション(_O)"
 
-#: ../src/gui/accounts.cpp:532
+#: ../src/gui/accounts.cpp:534
 msgid "Authentication Login:"
 msgstr "認証付きログイン:"
 
-#: ../src/gui/accounts.cpp:554 ../src/gui/accounts.cpp:983
+#: ../src/gui/accounts.cpp:556 ../src/gui/accounts.cpp:1003
 msgid "Gatekeeper ID:"
 msgstr "ゲートキーパの ID:"
 
 #. Timeout
-#: ../src/gui/accounts.cpp:578
+#: ../src/gui/accounts.cpp:580
 msgid "Registration Timeout:"
 msgstr "登録時のタイムアウト:"
 
-#. SIP
-#. H323
-#: ../src/gui/accounts.cpp:684 ../src/gui/accounts.cpp:686
-#: ../src/gui/addressbook.cpp:3114 ../src/gui/addressbook.cpp:3593
+#. FIXME change strings after stringfreeze to something more useful - js
+#: ../src/gui/accounts.cpp:630 ../src/gui/accounts.cpp:637
+#: ../src/gui/accounts.cpp:649 ../src/gui/addressbook.cpp:3113
+#: ../src/gui/addressbook.cpp:3592
 msgid "Missing information"
 msgstr "情報が足りません"
 
-#: ../src/gui/accounts.cpp:684
+#: ../src/gui/accounts.cpp:631 ../src/gui/accounts.cpp:638
 msgid ""
 "Please make sure to provide a valid account name, host name, and user name."
 msgstr ""
 "アカウント名やホスト名、そしてユーザ名を正しく入力しているか確認して下さい。"
 
-#: ../src/gui/accounts.cpp:686
+#: ../src/gui/accounts.cpp:650
 msgid ""
 "Please make sure to provide a valid account name, host name and registration "
 "timeout."
@@ -1900,41 +1875,41 @@ msgstr ""
 "アカウント名やホスト名、そして登録時のタイムアウトを正しく入力しているか確認"
 "して下さい。"
 
-#: ../src/gui/accounts.cpp:716
+#: ../src/gui/accounts.cpp:736
 #, c-format
 msgid "Are you sure you want to delete account %s?"
 msgstr "本当に \"%s\" のアカウントを削除してもよろしいですか？"
 
-#: ../src/gui/accounts.cpp:974
+#: ../src/gui/accounts.cpp:994
 msgid "Realm/Domain:"
 msgstr "Realm/ドメイン:"
 
-#: ../src/gui/accounts.cpp:1497
+#: ../src/gui/accounts.cpp:1517
 msgid "Account Name"
 msgstr "アカウント名"
 
-#: ../src/gui/accounts.cpp:1498
+#: ../src/gui/accounts.cpp:1518
 msgid "Protocol"
 msgstr "プロトコル"
 
-#: ../src/gui/accounts.cpp:1507
+#: ../src/gui/accounts.cpp:1527
 msgid "Voice Mails"
 msgstr "ボイス・メール"
 
-#: ../src/gui/accounts.cpp:1508
+#: ../src/gui/accounts.cpp:1528
 msgid "Status"
 msgstr "状態"
 
-#: ../src/gui/accounts.cpp:1519
+#: ../src/gui/accounts.cpp:1539
 msgid "Accounts"
 msgstr "アカウント"
 
-#: ../src/gui/accounts.cpp:1555 ../src/gui/preferences.cpp:475
-#: ../src/gui/preferences.cpp:824
+#: ../src/gui/accounts.cpp:1575 ../src/gui/preferences.cpp:474
+#: ../src/gui/preferences.cpp:817
 msgid "A"
 msgstr "A"
 
-#: ../src/gui/accounts.cpp:1655
+#: ../src/gui/accounts.cpp:1675
 msgid "_Default"
 msgstr "デフォルト(_D)"
 
@@ -1959,7 +1934,7 @@ msgstr ""
 "<b>ショートカット・ダイアル</b>: %s\n"
 
 #: ../src/gui/addressbook.cpp:821 ../src/gui/addressbook.cpp:823
-#: ../src/gui/druid.cpp:1915 ../src/gui/preferences.cpp:937
+#: ../src/gui/druid.cpp:1912 ../src/gui/preferences.cpp:930
 msgid "None"
 msgstr "なし"
 
@@ -1988,7 +1963,7 @@ msgstr ""
 msgid "S"
 msgstr "状態"
 
-#: ../src/gui/addressbook.cpp:1002 ../src/gui/preferences.cpp:489
+#: ../src/gui/addressbook.cpp:1002 ../src/gui/preferences.cpp:488
 msgid "Name"
 msgstr "氏名"
 
@@ -2037,46 +2012,46 @@ msgid "Location contains"
 msgstr "所在地が次を含む"
 
 #. call a contact, usage: general
-#: ../src/gui/addressbook.cpp:1552 ../src/gui/addressbook.cpp:2586
+#: ../src/gui/addressbook.cpp:1552 ../src/gui/addressbook.cpp:2585
 #: ../src/gui/callshistory.cpp:295 ../src/gui/chat.cpp:682
 msgid "C_all Contact"
 msgstr "この連絡先を呼び出す(_A)"
 
 #. copy a contact's URL to clipboard, usage: general
-#: ../src/gui/addressbook.cpp:1559 ../src/gui/addressbook.cpp:2596
+#: ../src/gui/addressbook.cpp:1559 ../src/gui/addressbook.cpp:2595
 #: ../src/gui/chat.cpp:677 ../src/gui/chat.cpp:682
 msgid "_Copy URL to Clipboard"
 msgstr "URL のコピー(_C)"
 
-#: ../src/gui/addressbook.cpp:1565 ../src/gui/addressbook.cpp:2601
+#: ../src/gui/addressbook.cpp:1565 ../src/gui/addressbook.cpp:2600
 msgid "_Write e-Mail"
 msgstr "E-メールの送信(_W)"
 
 #. add a contact to the local addressbook, usage: remote contacts only
-#: ../src/gui/addressbook.cpp:1572 ../src/gui/addressbook.cpp:2613
+#: ../src/gui/addressbook.cpp:1572 ../src/gui/addressbook.cpp:2612
 #: ../src/gui/callshistory.cpp:302 ../src/gui/chat.cpp:682
 msgid "Add Contact to _Address Book"
 msgstr "アドレス帳へ追加する(_A)"
 
 #. send a contact a (SIP!) message, usage: SIP contacts only
-#: ../src/gui/addressbook.cpp:1579 ../src/gui/addressbook.cpp:2591
+#: ../src/gui/addressbook.cpp:1579 ../src/gui/addressbook.cpp:2590
 msgid "_Send Message"
 msgstr "メッセージの送信(_S)"
 
 #. edit a local contact's addressbook entry, usage: local contacts
 #: ../src/gui/addressbook.cpp:1586 ../src/gui/addressbook.cpp:1723
-#: ../src/gui/addressbook.cpp:2572
+#: ../src/gui/addressbook.cpp:2571
 msgid "_Properties"
 msgstr "プロパティ(_P)"
 
 #. delete a local contact entry, usage: local contacts
 #: ../src/gui/addressbook.cpp:1593 ../src/gui/addressbook.cpp:1730
-#: ../src/gui/addressbook.cpp:2567
+#: ../src/gui/addressbook.cpp:2566
 msgid "_Delete"
 msgstr "削除(_D)"
 
 #. "new contact" dialog, usage: local context
-#: ../src/gui/addressbook.cpp:1600 ../src/gui/addressbook.cpp:2608
+#: ../src/gui/addressbook.cpp:1600 ../src/gui/addressbook.cpp:2607
 msgid "New _Contact"
 msgstr "新しい連絡先(_C)"
 
@@ -2099,129 +2074,129 @@ msgid_plural "Found %d users in %s for a total of %d users"
 msgstr[0] "%2$s に %1$d人のユーザがいます (合計: %3$d人)"
 msgstr[1] "%2$s に %1$d人のユーザがいます (合計: %3$d人)"
 
-#: ../src/gui/addressbook.cpp:2523
+#: ../src/gui/addressbook.cpp:2522
 msgid "Address Book"
 msgstr "アドレス帳"
 
-#: ../src/gui/addressbook.cpp:2558
+#: ../src/gui/addressbook.cpp:2557
 msgid "_File"
 msgstr "ファイル(_F)"
 
-#: ../src/gui/addressbook.cpp:2560
+#: ../src/gui/addressbook.cpp:2559
 msgid "New _Address Book"
 msgstr "新しいアドレス帳(_A)"
 
-#: ../src/gui/addressbook.cpp:2579 ../src/gui/main.cpp:975
+#: ../src/gui/addressbook.cpp:2578 ../src/gui/main.cpp:975
 msgid "_Close"
 msgstr "閉じる(_C)"
 
-#: ../src/gui/addressbook.cpp:2584
+#: ../src/gui/addressbook.cpp:2583
 msgid "C_ontact"
 msgstr "連絡先(_O)"
 
-#: ../src/gui/addressbook.cpp:2686
+#: ../src/gui/addressbook.cpp:2685
 msgid "Remote Contacts"
 msgstr "リモートの連絡先"
 
-#: ../src/gui/addressbook.cpp:2694
+#: ../src/gui/addressbook.cpp:2693
 msgid "Local Contacts"
 msgstr "ローカルの連絡先"
 
-#: ../src/gui/addressbook.cpp:2817
+#: ../src/gui/addressbook.cpp:2816
 msgid "Edit the Contact Information"
 msgstr "連絡先の編集"
 
-#: ../src/gui/addressbook.cpp:2838 ../src/gui/addressbook.cpp:3308
+#: ../src/gui/addressbook.cpp:2837 ../src/gui/addressbook.cpp:3307
 msgid "Name:"
 msgstr "名前:"
 
-#: ../src/gui/addressbook.cpp:2858
+#: ../src/gui/addressbook.cpp:2857
 msgid "VoIP URL:"
 msgstr "VoIP URL:"
 
-#: ../src/gui/addressbook.cpp:2880
+#: ../src/gui/addressbook.cpp:2879
 msgid "Email:"
 msgstr "E-メール:"
 
-#: ../src/gui/addressbook.cpp:2901
+#: ../src/gui/addressbook.cpp:2900
 msgid "Speed Dial:"
 msgstr "ショートカット:"
 
-#: ../src/gui/addressbook.cpp:2923
+#: ../src/gui/addressbook.cpp:2922
 msgid "Categories:"
 msgstr "カテゴリ:"
 
-#: ../src/gui/addressbook.cpp:2948
+#: ../src/gui/addressbook.cpp:2947
 msgid "Local Addressbook:"
 msgstr "ローカルのアドレス帳:"
 
-#: ../src/gui/addressbook.cpp:3114
+#: ../src/gui/addressbook.cpp:3113
 msgid ""
 "Please make sure to provide at least a full name or an URL for the contact."
 msgstr "少なくとも氏名または連絡先の URL が入力されているか確認して下さい。"
 
-#: ../src/gui/addressbook.cpp:3161
+#: ../src/gui/addressbook.cpp:3160
 #, c-format
 msgid "Are you sure you want to delete %s from %s?"
 msgstr "本当に %2$s から %1$s を削除してもよろしいですか？"
 
-#: ../src/gui/addressbook.cpp:3287
+#: ../src/gui/addressbook.cpp:3286
 msgid "Edit an address book"
 msgstr "アドレス帳の編集"
 
-#: ../src/gui/addressbook.cpp:3288
+#: ../src/gui/addressbook.cpp:3287
 msgid "Add an address book"
 msgstr "アドレス帳の追加"
 
-#: ../src/gui/addressbook.cpp:3333
+#: ../src/gui/addressbook.cpp:3332
 msgid "Type:"
 msgstr "種類:"
 
-#: ../src/gui/addressbook.cpp:3339
+#: ../src/gui/addressbook.cpp:3338
 msgid "Local"
 msgstr "ローカル"
 
-#: ../src/gui/addressbook.cpp:3340
+#: ../src/gui/addressbook.cpp:3339
 msgid "Remote LDAP"
 msgstr "リモート LDAP"
 
-#: ../src/gui/addressbook.cpp:3341
+#: ../src/gui/addressbook.cpp:3340
 msgid "Remote ILS"
 msgstr "リモート ILS"
 
-#: ../src/gui/addressbook.cpp:3372
+#: ../src/gui/addressbook.cpp:3371
 msgid "Hostname:"
 msgstr "ホスト名:"
 
-#: ../src/gui/addressbook.cpp:3395
+#: ../src/gui/addressbook.cpp:3394
 msgid "Port:"
 msgstr "ポート番号:"
 
-#: ../src/gui/addressbook.cpp:3420
+#: ../src/gui/addressbook.cpp:3419
 msgid "Base DN:"
 msgstr "ベース DN:"
 
-#: ../src/gui/addressbook.cpp:3443
+#: ../src/gui/addressbook.cpp:3442
 msgid "Search Scope:"
 msgstr "検索範囲:"
 
-#: ../src/gui/addressbook.cpp:3449
+#: ../src/gui/addressbook.cpp:3448
 msgid "Subtree"
 msgstr "サブツリー"
 
-#: ../src/gui/addressbook.cpp:3450
+#: ../src/gui/addressbook.cpp:3449
 msgid "One Level"
 msgstr "レベル１"
 
-#: ../src/gui/addressbook.cpp:3480
+#: ../src/gui/addressbook.cpp:3479
 msgid "Search Attribute:"
 msgstr "検索属性:"
 
-#: ../src/gui/addressbook.cpp:3593
+#: ../src/gui/addressbook.cpp:3592
 msgid "Please make sure you fill in all required fields."
 msgstr "必要な情報が全て入力されているか確認して下さい。"
 
-#: ../src/gui/addressbook.cpp:3639
+#: ../src/gui/addressbook.cpp:3638
 #, c-format
 msgid "Are you sure you want to delete %s and all its contacts?"
 msgstr "%s と全ての連絡先を削除してもよろしいですか？"
@@ -2230,23 +2205,23 @@ msgstr "%s と全ての連絡先を削除してもよろしいですか？"
 msgid "Disconnecting..."
 msgstr "接続を切断中..."
 
-#: ../src/gui/callbacks.cpp:143
+#: ../src/gui/callbacks.cpp:139
 msgid "Contributors:"
 msgstr "貢献者:"
 
-#: ../src/gui/callbacks.cpp:150
+#: ../src/gui/callbacks.cpp:146
 msgid "Artwork:"
 msgstr "アートワーク:"
 
-#: ../src/gui/callbacks.cpp:156
+#: ../src/gui/callbacks.cpp:152
 msgid "See AUTHORS file for full credits"
 msgstr ""
 "全てのクレジットについては\n"
 "AUTHORS ファイルを参照下さい"
 
 #. Translators: Please write translator credits here, and
-#. * seperate names with \n
-#: ../src/gui/callbacks.cpp:173
+#. * separate names with \n
+#: ../src/gui/callbacks.cpp:190
 msgid "translator-credits"
 msgstr ""
 "相花 毅 <takeshi.aihana@gmail.com>\n"
@@ -2254,9 +2229,7 @@ msgstr ""
 "佐藤 暁 <ss@gnome.gr.jp>\n"
 "日本GNOMEユーザー会 http://www.gnome.gr.jp"
 
-#. Translators: Please test to see if your translation
-#. * looks OK and fits within the box
-#: ../src/gui/callbacks.cpp:184
+#: ../src/gui/callbacks.cpp:195
 msgid ""
 "Ekiga is full-featured SIP and H.323 compatible VoIP, IP-Telephony and "
 "Videoconferencing application that allows you to make audio and video calls "
@@ -2278,8 +2251,7 @@ msgstr "発信"
 msgid "Missed Calls"
 msgstr "未応答の着信"
 
-#: ../src/gui/callshistory.cpp:676 ../src/gui/main.cpp:1136
-#: ../src/gui/statusicon.cpp:144
+#: ../src/gui/callshistory.cpp:676 ../src/gui/statusicon.cpp:144
 msgid "Calls History"
 msgstr "着信履歴"
 
@@ -2512,8 +2484,7 @@ msgstr "NAT の種類を検出する"
 msgid ""
 "The NAT type detection will permit to assist you in configuring your NAT "
 "router to be able to do calls with Ekiga."
-msgstr ""
-"こもでは、NAT ルータを介して Ekiga を利用できるような設定を提示します。"
+msgstr "ここでは NAT ルータを介して Ekiga を利用できるような設定を提示します。"
 
 #: ../src/gui/druid.cpp:956
 #, c-format
@@ -2638,7 +2609,7 @@ msgstr "T1/LAN"
 msgid "Keep current settings"
 msgstr "現在の設定のまま"
 
-#: ../src/gui/druid.cpp:1915
+#: ../src/gui/druid.cpp:1912
 #, c-format
 msgid ""
 "You have now finished the Ekiga configuration. All the settings can be "
@@ -2672,11 +2643,11 @@ msgstr ""
 "映像の入力: %s\n"
 "SIP の URL: %s\n"
 
-#: ../src/gui/druid.cpp:1970
+#: ../src/gui/druid.cpp:1967
 msgid "First Time Configuration Assistant"
 msgstr "初めて起動した時の設定アシスタント"
 
-#: ../src/gui/history.cpp:128 ../src/gui/main.cpp:1131
+#: ../src/gui/history.cpp:128
 msgid "General History"
 msgstr "全般の履歴"
 
@@ -2771,8 +2742,8 @@ msgid "Forward calls"
 msgstr "着信を転送します"
 
 #: ../src/gui/main.cpp:939
-msgid "Speed dials"
-msgstr "ショートカット"
+msgid "Speed d_ials"
+msgstr "スピード・ダイアル(_I)"
 
 #: ../src/gui/main.cpp:943 ../src/gui/main.cpp:3148
 msgid "_Hold Call"
@@ -2831,8 +2802,8 @@ msgid "_Edit"
 msgstr "編集(_E)"
 
 #: ../src/gui/main.cpp:988
-msgid "Configuration Druid"
-msgstr "設定アシスタント"
+msgid "_Configuration Druid"
+msgstr "設定ドルイド(_C)"
 
 #: ../src/gui/main.cpp:989
 msgid "Run the configuration druid"
@@ -2887,8 +2858,8 @@ msgid "View all components"
 msgstr "全てのコンポーネントを表示します"
 
 #: ../src/gui/main.cpp:1033
-msgid "Control Panel"
-msgstr "コントロール・パネル"
+msgid "_Control Panel"
+msgstr "コントロール・パネル(_C)"
 
 #: ../src/gui/main.cpp:1035
 msgid "_Dialpad"
@@ -2914,73 +2885,73 @@ msgstr "映像の設定(_V)"
 msgid "View video settings"
 msgstr "映像を設定します"
 
-#: ../src/gui/main.cpp:1052 ../src/gui/main.cpp:1232
-msgid "Statistics"
-msgstr "統計情報"
+#: ../src/gui/main.cpp:1052
+msgid "_Statistics"
+msgstr "統計情報(_S)"
 
 #: ../src/gui/main.cpp:1053
 msgid "View audio/video transmission and reception statistics"
 msgstr "音声/映像の発信と着信に対する統計情報を表示します"
 
-#: ../src/gui/main.cpp:1061 ../src/gui/main.cpp:4218
-msgid "Local Video"
-msgstr "ローカルの映像"
+#: ../src/gui/main.cpp:1061
+msgid "_Local Video"
+msgstr "ローカルの映像(_L)"
 
 #: ../src/gui/main.cpp:1062
 msgid "Local video image"
 msgstr "ローカルの映像イメージ"
 
-#: ../src/gui/main.cpp:1067 ../src/gui/main.cpp:4225
-msgid "Remote Video"
-msgstr "リモートの映像"
+#: ../src/gui/main.cpp:1067
+msgid "_Remote Video"
+msgstr "リモートの映像(_R)"
 
 #: ../src/gui/main.cpp:1068
 msgid "Remote video image"
 msgstr "リモートの映像イメージ"
 
 #: ../src/gui/main.cpp:1073
-msgid "Both (Picture-in-Picture)"
-msgstr "両方 (画像の中に重ねる)"
+msgid "Both (_Picture-in-Picture)"
+msgstr "両方 (画像の中に重ねる)(_P)"
 
 #: ../src/gui/main.cpp:1074 ../src/gui/main.cpp:1080 ../src/gui/main.cpp:1087
 msgid "Both video images"
 msgstr "両方の映像イメージ"
 
 #: ../src/gui/main.cpp:1079
-msgid "Both (Side-by-Side)"
-msgstr "両方 (画像を並べる)"
+msgid "Both (_Side-by-Side)"
+msgstr "両方 (画像を並べる)(_S)"
 
 #: ../src/gui/main.cpp:1086
-msgid "Both (Both in New Windows)"
-msgstr "両方 (新しいウィンドウ)"
+msgid "Both (_Both in New Windows)"
+msgstr "両方 (新しいウィンドウ)(_B)"
 
-#: ../src/gui/main.cpp:1095 ../src/gui/main.cpp:1573 ../src/gui/main.cpp:1598
-msgid "Zoom In"
-msgstr "拡大"
+#: ../src/gui/main.cpp:1095
+msgid "Zoom _In"
+msgstr "拡大(_I)"
 
 #: ../src/gui/main.cpp:1095 ../src/gui/main.cpp:1573 ../src/gui/main.cpp:1598
 msgid "Zoom in"
 msgstr "映像を拡大します"
 
-#: ../src/gui/main.cpp:1099 ../src/gui/main.cpp:1577 ../src/gui/main.cpp:1602
-msgid "Zoom Out"
-msgstr "縮小"
+#: ../src/gui/main.cpp:1099
+msgid "Zoom _Out"
+msgstr "縮小(_O)"
 
 #: ../src/gui/main.cpp:1099 ../src/gui/main.cpp:1577 ../src/gui/main.cpp:1602
 msgid "Zoom out"
 msgstr "映像を縮小します"
 
-#: ../src/gui/main.cpp:1103 ../src/gui/main.cpp:1581 ../src/gui/main.cpp:1606
-msgid "Normal Size"
-msgstr "標準のサイズ"
+#: ../src/gui/main.cpp:1103
+msgid "_Normal Size"
+msgstr "標準のサイズ(_N)"
 
 #: ../src/gui/main.cpp:1103 ../src/gui/main.cpp:1581 ../src/gui/main.cpp:1606
 msgid "Normal size"
 msgstr "デフォルトの映像サイズにします"
 
-#: ../src/gui/main.cpp:1109 ../src/gui/main.cpp:1587 ../src/gui/main.cpp:1612
-msgid "Fullscreen"
-msgstr "フルスクリーン"
+#: ../src/gui/main.cpp:1109
+msgid "_Fullscreen"
+msgstr "フルスクリーン(_F)"
 
 #: ../src/gui/main.cpp:1115
 msgid "_Tools"
@@ -3002,17 +2973,25 @@ msgstr "チャット・ウィンドウ(_H)"
 msgid "Open the chat window"
 msgstr "チャット・ウィンドウを表示します"
 
+#: ../src/gui/main.cpp:1131
+msgid "_General History"
+msgstr "全般の履歴(_G)"
+
 #: ../src/gui/main.cpp:1132
 msgid "View the operations history"
 msgstr "操作に関連する履歴を表示します"
+
+#: ../src/gui/main.cpp:1136
+msgid "_Calls History"
+msgstr "着信履歴(_C)"
 
 #: ../src/gui/main.cpp:1137 ../src/gui/statusicon.cpp:145
 msgid "View the calls history"
 msgstr "着信履歴を表示します"
 
 #: ../src/gui/main.cpp:1144
-msgid "PC-To-Phone Account"
-msgstr "PC-To-Phone のアカウント"
+msgid "_PC-To-Phone Account"
+msgstr "PC-To-Phone のアカウント(_P)"
 
 #: ../src/gui/main.cpp:1145
 msgid "Manage your PC-To-Phone account"
@@ -3042,6 +3021,10 @@ msgstr "情報(_A)"
 msgid "View information about Ekiga"
 msgstr "Ekiga の情報を表示します"
 
+#: ../src/gui/main.cpp:1232
+msgid "Statistics"
+msgstr "統計情報"
+
 #: ../src/gui/main.cpp:1315
 msgid "Dialpad"
 msgstr "ダイアルパッド"
@@ -3069,6 +3052,22 @@ msgstr "映像"
 #: ../src/gui/main.cpp:1524
 msgid "Audio"
 msgstr "音声"
+
+#: ../src/gui/main.cpp:1573 ../src/gui/main.cpp:1598
+msgid "Zoom In"
+msgstr "拡大"
+
+#: ../src/gui/main.cpp:1577 ../src/gui/main.cpp:1602
+msgid "Zoom Out"
+msgstr "縮小"
+
+#: ../src/gui/main.cpp:1581 ../src/gui/main.cpp:1606
+msgid "Normal Size"
+msgstr "標準のサイズ"
+
+#: ../src/gui/main.cpp:1587 ../src/gui/main.cpp:1612
+msgid "Fullscreen"
+msgstr "フルスクリーン"
 
 #: ../src/gui/main.cpp:1775
 msgid "Notification area not detected"
@@ -3147,7 +3146,15 @@ msgstr "リモートのアプリ:"
 msgid "Ekiga"
 msgstr "Ekiga"
 
-#: ../src/gui/main.cpp:4473
+#: ../src/gui/main.cpp:4218
+msgid "Local Video"
+msgstr "ローカルの映像"
+
+#: ../src/gui/main.cpp:4225
+msgid "Remote Video"
+msgstr "リモートの映像"
+
+#: ../src/gui/main.cpp:4476
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -3160,7 +3167,7 @@ msgstr ""
 "順番違いのパッケット数: %.1f %%\n"
 "Jitter バッファ: %d ms"
 
-#: ../src/gui/main.cpp:4569
+#: ../src/gui/main.cpp:4574
 #, c-format
 msgid ""
 "Ekiga got an invalid value for the GConf key %s.\n"
@@ -3182,23 +3189,23 @@ msgstr ""
 "ティングをチェックするか、あるいはメーリング・リスト (http://mail.gnome.org) "
 "のアーカイブから問題に関連するような情報を確認して下さい。"
 
-#: ../src/gui/main.cpp:4572
+#: ../src/gui/main.cpp:4577
 msgid "Gconf key error"
 msgstr "Gconf キーのエラー"
 
-#: ../src/gui/main.cpp:4602 ../src/gui/main.cpp:4621
+#: ../src/gui/main.cpp:4608 ../src/gui/main.cpp:4627
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "端末にデバッグ・メッセージを表示する (レベル: 1〜6)"
 
-#: ../src/gui/main.cpp:4605 ../src/gui/main.cpp:4626
+#: ../src/gui/main.cpp:4611 ../src/gui/main.cpp:4632
 msgid "Makes Ekiga call the given URL"
 msgstr "Ekiga で指定した URL を呼び出す"
 
-#: ../src/gui/main.cpp:4661
+#: ../src/gui/main.cpp:4665
 msgid "No usable audio plugin detected"
 msgstr "利用可能な音声プラグインを検出できませんでした"
 
-#: ../src/gui/main.cpp:4661
+#: ../src/gui/main.cpp:4665
 msgid ""
 "Ekiga didn't find any usable audio plugin. Make sure that your installation "
 "is correct."
@@ -3210,60 +3217,60 @@ msgstr ""
 msgid "Error"
 msgstr "エラー"
 
-#: ../src/gui/preferences.cpp:500
+#: ../src/gui/preferences.cpp:497
 msgid "Bandwidth"
 msgstr "帯域幅"
 
-#: ../src/gui/preferences.cpp:510
+#: ../src/gui/preferences.cpp:505
 msgid "Clock Rate"
 msgstr "クロック"
 
-#: ../src/gui/preferences.cpp:637
+#: ../src/gui/preferences.cpp:630
 msgid "Personal Information"
 msgstr "個人の情報"
 
-#: ../src/gui/preferences.cpp:640
+#: ../src/gui/preferences.cpp:633
 msgid "_First name:"
 msgstr "名前(_F):"
 
-#: ../src/gui/preferences.cpp:647
+#: ../src/gui/preferences.cpp:640
 msgid "Sur_name:"
 msgstr "名字(_N):"
 
-#: ../src/gui/preferences.cpp:649
+#: ../src/gui/preferences.cpp:642
 msgid "Enter your surname"
 msgstr "名字を入力して下さい"
 
-#: ../src/gui/preferences.cpp:655
+#: ../src/gui/preferences.cpp:648
 msgid "E-_mail address:"
 msgstr "E-メール(_M):"
 
-#: ../src/gui/preferences.cpp:657
+#: ../src/gui/preferences.cpp:650
 msgid "Enter your e-mail address"
 msgstr "E-メール・アドレスを入力して下さい"
 
-#: ../src/gui/preferences.cpp:662
+#: ../src/gui/preferences.cpp:655
 msgid "_Comment:"
 msgstr "コメント(_C):"
 
-#: ../src/gui/preferences.cpp:664
+#: ../src/gui/preferences.cpp:657
 msgid "Enter a comment about yourself"
 msgstr "身元を記すコメントを入力して下さい"
 
-#: ../src/gui/preferences.cpp:669
+#: ../src/gui/preferences.cpp:662
 msgid "_Location:"
 msgstr "所在地(_L):"
 
-#: ../src/gui/preferences.cpp:671
+#: ../src/gui/preferences.cpp:664
 msgid "Enter your country or city"
 msgstr "お住まいの国または都市を入力して下さい"
 
 #. Add the update button
-#: ../src/gui/preferences.cpp:676 ../src/gui/preferences.cpp:970
+#: ../src/gui/preferences.cpp:669 ../src/gui/preferences.cpp:963
 msgid "_Apply"
 msgstr "適用する(_A)"
 
-#: ../src/gui/preferences.cpp:676
+#: ../src/gui/preferences.cpp:669
 msgid ""
 "Click here to update the users directory you are registered to with the new "
 "First Name, Last Name, E-Mail, Comment and Location"
@@ -3271,48 +3278,48 @@ msgstr ""
 "ここをクリックして、新しい名前、名字、E-メール、コメントと所在地で、登録した"
 "ユーザ・ディレクトリを更新して下さい"
 
-#: ../src/gui/preferences.cpp:690
+#: ../src/gui/preferences.cpp:683
 msgid "Ekiga GUI"
 msgstr "Ekiga のインタフェース"
 
-#: ../src/gui/preferences.cpp:692
+#: ../src/gui/preferences.cpp:685
 msgid "Start _hidden"
 msgstr "起動時に隠す(_H)"
 
-#: ../src/gui/preferences.cpp:698
+#: ../src/gui/preferences.cpp:691
 msgid "Video Display"
 msgstr "映像の表示"
 
-#: ../src/gui/preferences.cpp:700
+#: ../src/gui/preferences.cpp:693
 msgid "Place windows displaying video _above other windows"
 msgstr "他のウィンドウよりも前に映像ウィンドウを配置する(_A)"
 
-#: ../src/gui/preferences.cpp:713
+#: ../src/gui/preferences.cpp:706
 msgid "Users Directory"
 msgstr "ユーザ・ディレクトリ"
 
 #. Add all the fields
-#: ../src/gui/preferences.cpp:717
+#: ../src/gui/preferences.cpp:710
 msgid "Users directory:"
 msgstr "ユーザ・ディレクトリ:"
 
-#: ../src/gui/preferences.cpp:717
+#: ../src/gui/preferences.cpp:710
 msgid "The users directory server to register with"
 msgstr "登録するユーザ・ディレクトリのサーバです"
 
-#: ../src/gui/preferences.cpp:719
+#: ../src/gui/preferences.cpp:712
 msgid "Enable _registering"
 msgstr "登録する(_R)"
 
-#: ../src/gui/preferences.cpp:719
+#: ../src/gui/preferences.cpp:712
 msgid "If enabled, register with the selected users directory"
 msgstr "有効にすると、選択したユーザ・ディレクトリに登録します"
 
-#: ../src/gui/preferences.cpp:721
+#: ../src/gui/preferences.cpp:714
 msgid "_Publish my details in the users directory when registering"
 msgstr "登録時に個人の情報をユーザ・ディレクトリで公開する(_P)"
 
-#: ../src/gui/preferences.cpp:721
+#: ../src/gui/preferences.cpp:714
 msgid ""
 "If enabled, your details are shown to people browsing the users directory. "
 "If disabled, you are not visible to users browsing the users directory, but "
@@ -3322,26 +3329,26 @@ msgstr ""
 "公開されます。無効にすると、ユーザ・ディレクトリを他の人たちに公開しません"
 "が、あなたを呼び出すための 'callto URL' は公開されます"
 
-#: ../src/gui/preferences.cpp:732
+#: ../src/gui/preferences.cpp:725
 msgid "Call Forwarding"
 msgstr "着信の転送"
 
-#: ../src/gui/preferences.cpp:734
+#: ../src/gui/preferences.cpp:727
 msgid "_Always forward calls to the given host"
 msgstr "常に指定したホストへ転送する(_A)"
 
-#: ../src/gui/preferences.cpp:734
+#: ../src/gui/preferences.cpp:727
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the protocol settings"
 msgstr ""
 "有効にすると、[プロトコル] の設定で指定したホストへ全ての着信を転送します"
 
-#: ../src/gui/preferences.cpp:736
+#: ../src/gui/preferences.cpp:729
 msgid "Forward calls to the given host if _no answer"
 msgstr "応答しない着信を指定したホストへ転送する(_N)"
 
-#: ../src/gui/preferences.cpp:736
+#: ../src/gui/preferences.cpp:729
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the protocol settings if you do not answer the call"
@@ -3349,11 +3356,11 @@ msgstr ""
 "有効にすると、着信に応答しない場合、[プロトコル] の設定で指定したホストへ全て"
 "の着信を転送します"
 
-#: ../src/gui/preferences.cpp:738
+#: ../src/gui/preferences.cpp:731
 msgid "Forward calls to the given host if _busy"
 msgstr "多忙な場合は指定したホストへ転送する"
 
-#: ../src/gui/preferences.cpp:738
+#: ../src/gui/preferences.cpp:731
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the protocol settings if you already are in a call or if you "
@@ -3362,134 +3369,134 @@ msgstr ""
 "有効にすると、既に会話中または \"邪魔しないで下さい\" モードの場合、[プロトコ"
 "ル] の設定で指定したホストへ全ての着信を転送します"
 
-#: ../src/gui/preferences.cpp:742 ../src/gui/preferences.cpp:1986
+#: ../src/gui/preferences.cpp:735 ../src/gui/preferences.cpp:1977
 msgid "Call Options"
 msgstr "着信のオプション"
 
 #. Add all the fields
-#: ../src/gui/preferences.cpp:745
+#: ../src/gui/preferences.cpp:738
 msgid "Automatically _clear calls after 30 seconds of inactivity"
 msgstr "何もせずに 30秒経過したら着信を自動的にクリアする(_C)"
 
-#: ../src/gui/preferences.cpp:747
+#: ../src/gui/preferences.cpp:740
 msgid "Timeout to reject or forward unanswered incoming calls (in seconds):"
 msgstr "応答しない着信を拒否したり転送するまでの時間 (秒):"
 
-#: ../src/gui/preferences.cpp:787
+#: ../src/gui/preferences.cpp:780
 msgid "Ekiga Sound Events"
 msgstr "Ekiga の効果音"
 
-#: ../src/gui/preferences.cpp:836 ../src/gui/preferences.cpp:845
-#: ../src/gui/preferences.cpp:854
+#: ../src/gui/preferences.cpp:829 ../src/gui/preferences.cpp:838
+#: ../src/gui/preferences.cpp:847
 msgid "Event"
 msgstr "イベント"
 
-#: ../src/gui/preferences.cpp:866
+#: ../src/gui/preferences.cpp:859
 msgid "Choose a sound"
 msgstr "効果音の選択"
 
-#: ../src/gui/preferences.cpp:872
+#: ../src/gui/preferences.cpp:865
 msgid "Wavefiles"
 msgstr "WAVE ファイル"
 
-#: ../src/gui/preferences.cpp:881 ../src/gui/preferences.cpp:900
+#: ../src/gui/preferences.cpp:874 ../src/gui/preferences.cpp:893
 msgid "Play"
 msgstr "テスト"
 
-#: ../src/gui/preferences.cpp:914
+#: ../src/gui/preferences.cpp:907
 msgid "Alternative Output Device"
 msgstr "代替の出力デバイス"
 
-#: ../src/gui/preferences.cpp:920
+#: ../src/gui/preferences.cpp:913
 msgid "Alternative output device:"
 msgstr "代替の出力デバイス:"
 
-#: ../src/gui/preferences.cpp:920
+#: ../src/gui/preferences.cpp:913
 msgid "Select an alternative audio output device to use for sound events"
 msgstr "効果音を鳴らす際に使用する、別のオーディオ出力デバイスを選択して下さい"
 
-#: ../src/gui/preferences.cpp:938
+#: ../src/gui/preferences.cpp:931
 msgid "STUN"
 msgstr "STUN"
 
-#: ../src/gui/preferences.cpp:939
+#: ../src/gui/preferences.cpp:932
 msgid "IP Translation"
 msgstr "IP 転送"
 
-#: ../src/gui/preferences.cpp:952
+#: ../src/gui/preferences.cpp:945
 msgid "Network Interface"
 msgstr "ネットワークのインタフェース"
 
-#: ../src/gui/preferences.cpp:957
+#: ../src/gui/preferences.cpp:950
 msgid "Listen on:"
 msgstr "監視するインタフェース:"
 
-#: ../src/gui/preferences.cpp:964
+#: ../src/gui/preferences.cpp:957
 msgid "NAT Settings"
 msgstr "NAT の設定"
 
-#: ../src/gui/preferences.cpp:966
+#: ../src/gui/preferences.cpp:959
 msgid "NAT Traversal Method:"
 msgstr "NAT Traversal の種類:"
 
-#: ../src/gui/preferences.cpp:968
+#: ../src/gui/preferences.cpp:961
 msgid "STUN Se_rver:"
 msgstr "STUN サーバ(_R):"
 
-#: ../src/gui/preferences.cpp:968
+#: ../src/gui/preferences.cpp:961
 msgid "The STUN server to use for STUN Support."
 msgstr "STUN をサポートする STUN サーバを指定して下さい"
 
-#: ../src/gui/preferences.cpp:970
+#: ../src/gui/preferences.cpp:963
 msgid "Click here to update your NAT settings"
 msgstr "ここをクリックすると、お使いの NAT サーバの設定を更新します"
 
-#: ../src/gui/preferences.cpp:982
+#: ../src/gui/preferences.cpp:975
 msgid "String"
 msgstr "文字列"
 
-#: ../src/gui/preferences.cpp:983
+#: ../src/gui/preferences.cpp:976
 msgid "Tone"
 msgstr "トーン"
 
-#: ../src/gui/preferences.cpp:984 ../src/gui/preferences.cpp:1034
+#: ../src/gui/preferences.cpp:977 ../src/gui/preferences.cpp:1027
 msgid "RFC2833"
 msgstr "RFC2833"
 
-#: ../src/gui/preferences.cpp:985
+#: ../src/gui/preferences.cpp:978
 msgid "Q.931"
 msgstr "Q.931"
 
-#: ../src/gui/preferences.cpp:991 ../src/gui/preferences.cpp:1042
+#: ../src/gui/preferences.cpp:984 ../src/gui/preferences.cpp:1035
 msgid "Misc Settings"
 msgstr "その他の設定"
 
-#: ../src/gui/preferences.cpp:993
+#: ../src/gui/preferences.cpp:986
 msgid "Default _gateway:"
 msgstr "デフォルトのゲートウェイ(_G):"
 
-#: ../src/gui/preferences.cpp:996 ../src/gui/preferences.cpp:1047
+#: ../src/gui/preferences.cpp:989 ../src/gui/preferences.cpp:1040
 msgid "Forward _URL:"
 msgstr "転送先の URL(_U):"
 
-#: ../src/gui/preferences.cpp:1005
+#: ../src/gui/preferences.cpp:998
 msgid "Advanced Settings"
 msgstr "拡張設定"
 
 #. The toggles
-#: ../src/gui/preferences.cpp:1008
+#: ../src/gui/preferences.cpp:1001
 msgid "Enable H.245 _tunneling"
 msgstr "H.245 トンネリングを有効にする(_T)"
 
-#: ../src/gui/preferences.cpp:1010
+#: ../src/gui/preferences.cpp:1003
 msgid "Enable _early H.245"
 msgstr "初期の H.245 を有効にする(_E)"
 
-#: ../src/gui/preferences.cpp:1012
+#: ../src/gui/preferences.cpp:1005
 msgid "Enable fast _start procedure"
 msgstr "高速起動を有効にする(_S)"
 
-#: ../src/gui/preferences.cpp:1012
+#: ../src/gui/preferences.cpp:1005
 msgid ""
 "Connection will be established in Fast Start mode. Fast Start is a new way "
 "to start calls faster that was introduced in H.323v2. It is not supported by "
@@ -3501,15 +3508,15 @@ msgstr ""
 "ポートされておらず、高速起動と H.245 トンネリングの両方を利用すると "
 "Netmeeting のいくつかのバージョンでクラッシュすることがあります"
 
-#: ../src/gui/preferences.cpp:1018 ../src/gui/preferences.cpp:1055
+#: ../src/gui/preferences.cpp:1011 ../src/gui/preferences.cpp:1048
 msgid "DTMF Mode"
 msgstr "DTMF のモード"
 
-#: ../src/gui/preferences.cpp:1020 ../src/gui/preferences.cpp:1057
+#: ../src/gui/preferences.cpp:1013 ../src/gui/preferences.cpp:1050
 msgid "_Send DTMF as:"
 msgstr "DTMF の送信方式(_S):"
 
-#: ../src/gui/preferences.cpp:1020
+#: ../src/gui/preferences.cpp:1013
 msgid ""
 "This permits to set the mode for DTMFs sending. The values can be \"String"
 "\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (default is \"String"
@@ -3519,196 +3526,196 @@ msgstr ""
 "\"トーン\"、\"RFC2833\"、\"Q.931\" です (\"文字列\" がデフォルトで、それ以外"
 "の値を選択するとテキスト・チャットが無効になります)"
 
-#: ../src/gui/preferences.cpp:1044
+#: ../src/gui/preferences.cpp:1037
 msgid "_Outbound Proxy:"
 msgstr "外側のプロキシ(_O):"
 
-#: ../src/gui/preferences.cpp:1057
+#: ../src/gui/preferences.cpp:1050
 msgid ""
 "This permits to set the mode for DTMFs sending. The value can be \"RFC2833"
 "\" (0) only."
 msgstr "DTMF 送信のモードで指定可能な値は \"RFC2833\" だけです"
 
-#: ../src/gui/preferences.cpp:1077
+#: ../src/gui/preferences.cpp:1070
 msgid "Audio Plugin"
 msgstr "音声のプラグイン"
 
-#: ../src/gui/preferences.cpp:1082
+#: ../src/gui/preferences.cpp:1075
 msgid "Audio plugin:"
 msgstr "音声のプラグイン:"
 
-#: ../src/gui/preferences.cpp:1082
+#: ../src/gui/preferences.cpp:1075
 msgid ""
 "The audio plugin that will be used to detect the devices and manage them."
 msgstr "デバイスの検出と管理に使用するオーディオ・プラグインです"
 
-#: ../src/gui/preferences.cpp:1088 ../src/gui/preferences.cpp:2022
+#: ../src/gui/preferences.cpp:1081 ../src/gui/preferences.cpp:2013
 msgid "Audio Devices"
 msgstr "音声のデバイス"
 
-#: ../src/gui/preferences.cpp:1095
+#: ../src/gui/preferences.cpp:1088
 msgid "Output device:"
 msgstr "出力デバイス:"
 
-#: ../src/gui/preferences.cpp:1102 ../src/gui/preferences.cpp:1175
+#: ../src/gui/preferences.cpp:1095 ../src/gui/preferences.cpp:1168
 msgid "Input device:"
 msgstr "入力デバイス:"
 
 #. That button will refresh the devices list
-#: ../src/gui/preferences.cpp:1107 ../src/gui/preferences.cpp:1241
+#: ../src/gui/preferences.cpp:1100 ../src/gui/preferences.cpp:1234
 msgid "_Detect devices"
 msgstr "デバイスの検出(_D)"
 
-#: ../src/gui/preferences.cpp:1107
+#: ../src/gui/preferences.cpp:1100
 msgid "Click here to refresh the devices list"
 msgstr "ここをクリックすると、デバイス一覧を更新します"
 
-#: ../src/gui/preferences.cpp:1133
+#: ../src/gui/preferences.cpp:1126
 msgid "Normal"
 msgstr "標準"
 
-#: ../src/gui/preferences.cpp:1134
+#: ../src/gui/preferences.cpp:1127
 msgid "Large"
 msgstr "大"
 
-#: ../src/gui/preferences.cpp:1140
+#: ../src/gui/preferences.cpp:1133
 msgid "PAL (Europe)"
 msgstr "PAL (欧州)"
 
-#: ../src/gui/preferences.cpp:1141
+#: ../src/gui/preferences.cpp:1134
 msgid "NTSC (America)"
 msgstr "NTSC (北米)"
 
-#: ../src/gui/preferences.cpp:1142
+#: ../src/gui/preferences.cpp:1135
 msgid "SECAM (France)"
 msgstr "SECAM (フランス)"
 
-#: ../src/gui/preferences.cpp:1143
+#: ../src/gui/preferences.cpp:1136
 msgid "Auto"
 msgstr "自動"
 
-#: ../src/gui/preferences.cpp:1159
+#: ../src/gui/preferences.cpp:1152
 msgid "Video Plugin"
 msgstr "映像のプラグイン"
 
-#: ../src/gui/preferences.cpp:1163
+#: ../src/gui/preferences.cpp:1156
 msgid "Video plugin:"
 msgstr "映像のプラグイン:"
 
-#: ../src/gui/preferences.cpp:1169 ../src/gui/preferences.cpp:2026
+#: ../src/gui/preferences.cpp:1162 ../src/gui/preferences.cpp:2017
 msgid "Video Devices"
 msgstr "映像のデバイス"
 
 #. Video Channel
-#: ../src/gui/preferences.cpp:1179
+#: ../src/gui/preferences.cpp:1172
 msgid "Channel:"
 msgstr "チャンネル:"
 
-#: ../src/gui/preferences.cpp:1182
+#: ../src/gui/preferences.cpp:1175
 msgid "Size:"
 msgstr "サイズ:"
 
-#: ../src/gui/preferences.cpp:1182
+#: ../src/gui/preferences.cpp:1175
 msgid ""
 "Select the transmitted video size: Normal (QCIF 176x144) or Large (CIF "
 "352x288)"
 msgstr ""
 "発信する映像のサイズを指定します: 標準 (QCIF 176x144) または大 (CIF 352x288)"
 
-#: ../src/gui/preferences.cpp:1185
+#: ../src/gui/preferences.cpp:1178
 msgid "Format:"
 msgstr "形式:"
 
 #. The file selector button
-#: ../src/gui/preferences.cpp:1188
+#: ../src/gui/preferences.cpp:1181
 msgid "Image:"
 msgstr "画像:"
 
-#: ../src/gui/preferences.cpp:1191
+#: ../src/gui/preferences.cpp:1184
 msgid "Choose a Picture"
 msgstr "画像の選択"
 
-#: ../src/gui/preferences.cpp:1195
+#: ../src/gui/preferences.cpp:1188
 msgid "Preview"
 msgstr "プレビュー"
 
-#: ../src/gui/preferences.cpp:1205
+#: ../src/gui/preferences.cpp:1198
 msgid "Images"
 msgstr "画像"
 
-#: ../src/gui/preferences.cpp:1241
+#: ../src/gui/preferences.cpp:1234
 msgid "Click here to refresh the devices list."
 msgstr "ここをクリックすると、デバイス一覧を更新します"
 
-#: ../src/gui/preferences.cpp:1264
+#: ../src/gui/preferences.cpp:1257
 msgid "Available Audio Codecs"
 msgstr "利用可能な音声コーデック"
 
-#: ../src/gui/preferences.cpp:1279
+#: ../src/gui/preferences.cpp:1272
 msgid "Audio Codecs Settings"
 msgstr "音声コーデックの設定"
 
 #. Translators: the full sentence is Automatically adjust jitter buffer
 #. between X and Y ms
-#: ../src/gui/preferences.cpp:1283
+#: ../src/gui/preferences.cpp:1276
 msgid "Automatically adjust _jitter buffer between"
 msgstr "自動的に調整する Jitter バッファの間隔: "
 
-#: ../src/gui/preferences.cpp:1283
+#: ../src/gui/preferences.cpp:1276
 msgid "and"
 msgstr "〜"
 
-#: ../src/gui/preferences.cpp:1283
+#: ../src/gui/preferences.cpp:1276
 msgid "ms"
 msgstr "ミリ秒"
 
-#: ../src/gui/preferences.cpp:1283
+#: ../src/gui/preferences.cpp:1276
 msgid "The minimum jitter buffer size for audio reception (in ms)."
 msgstr "音声を受信するための Jitter バッファの最小値 (ミリ秒) です"
 
-#: ../src/gui/preferences.cpp:1283
+#: ../src/gui/preferences.cpp:1276
 msgid "The maximum jitter buffer size for audio reception (in ms)."
 msgstr "音声を受信するための Jitter バッファの最大値 (ミリ秒) です"
 
-#: ../src/gui/preferences.cpp:1285
+#: ../src/gui/preferences.cpp:1278
 msgid "Enable silence _detection"
 msgstr "サイレンス検出を有効にする(_D)"
 
-#: ../src/gui/preferences.cpp:1285
+#: ../src/gui/preferences.cpp:1278
 msgid "If enabled, use silence detection with the codecs supporting it."
 msgstr "有効にすると、コーディックがサポートしているサイレンス検出を使用します"
 
-#: ../src/gui/preferences.cpp:1287
+#: ../src/gui/preferences.cpp:1280
 msgid "Enable echo can_celation"
 msgstr "エコー・キャンセレーションを有効にする(_C)"
 
-#: ../src/gui/preferences.cpp:1287
+#: ../src/gui/preferences.cpp:1280
 msgid "If enabled, use echo cancelation."
 msgstr ""
 "有効にすると、ノイズ等を低減するエコー・ キャンセレーションの機能が有効になり"
 "ます"
 
-#: ../src/gui/preferences.cpp:1300 ../src/gui/preferences.cpp:1975
+#: ../src/gui/preferences.cpp:1293 ../src/gui/preferences.cpp:1966
 msgid "General Settings"
 msgstr "全般の設定"
 
-#: ../src/gui/preferences.cpp:1302
+#: ../src/gui/preferences.cpp:1295
 msgid "Enable _video support"
 msgstr "映像を受信する(_V)"
 
-#: ../src/gui/preferences.cpp:1302
+#: ../src/gui/preferences.cpp:1295
 msgid "If enabled, allows video during calls."
 msgstr "有効にすると、着信中も映像を受信できます"
 
-#: ../src/gui/preferences.cpp:1306
+#: ../src/gui/preferences.cpp:1299
 msgid "Bandwidth Control"
 msgstr "帯域幅のコントロール"
 
-#: ../src/gui/preferences.cpp:1308
+#: ../src/gui/preferences.cpp:1301
 msgid "Maximum video _bandwidth (in kB/s):"
 msgstr "映像の最大帯域幅 (Kバイト/秒): "
 
-#: ../src/gui/preferences.cpp:1308
+#: ../src/gui/preferences.cpp:1301
 msgid ""
 "The maximum video bandwidth in kbytes/s. The video quality and the number of "
 "transmitted frames per second will be dynamically adjusted above their "
@@ -3717,81 +3724,81 @@ msgstr ""
 "映像の最大帯域幅 (Kバイト/秒) で、指定した値の帯域幅を最小値として発信しなが"
 "ら、映像の品質と一秒間に転送するフレーム数を最小値の間で動的に調整します"
 
-#: ../src/gui/preferences.cpp:1313
+#: ../src/gui/preferences.cpp:1306
 msgid "Advanced Quality Settings"
 msgstr "拡張品質の設定"
 
 #. Translators: the full sentence is Keep a minimum video quality of X %
-#: ../src/gui/preferences.cpp:1316
+#: ../src/gui/preferences.cpp:1309
 msgid "Frame Rate"
 msgstr "フレーム・レート"
 
-#: ../src/gui/preferences.cpp:1316
+#: ../src/gui/preferences.cpp:1309
 msgid "Picture Quality"
 msgstr "画像の品質"
 
-#: ../src/gui/preferences.cpp:1316
+#: ../src/gui/preferences.cpp:1309
 msgid ""
 "Choose if you want to favour speed or quality for the transmitted video."
 msgstr "送信速度を優先するか、送信する映像の品質を優先するかを調整して下さい"
 
-#: ../src/gui/preferences.cpp:1916
+#: ../src/gui/preferences.cpp:1907
 msgid "Play sound for new voice mails"
 msgstr "新しいボイス・メールを受信したら演奏する"
 
-#: ../src/gui/preferences.cpp:1925
+#: ../src/gui/preferences.cpp:1916
 msgid "Play sound for new instant messages"
 msgstr "新しいインスタント・メッセージを受信したら演奏する"
 
-#: ../src/gui/preferences.cpp:1954
+#: ../src/gui/preferences.cpp:1945
 msgid "Ekiga Preferences"
 msgstr "Ekiga の設定"
 
-#: ../src/gui/preferences.cpp:1969
+#: ../src/gui/preferences.cpp:1960
 msgid "General"
 msgstr "全般"
 
-#: ../src/gui/preferences.cpp:1970
+#: ../src/gui/preferences.cpp:1961
 msgid "Personal Data"
 msgstr "個人の情報"
 
-#: ../src/gui/preferences.cpp:1981
+#: ../src/gui/preferences.cpp:1972
 msgid "Directory Settings"
 msgstr "ディレクトリの設定"
 
-#: ../src/gui/preferences.cpp:1991
+#: ../src/gui/preferences.cpp:1982
 msgid "Sound Events"
 msgstr "イベントの演奏"
 
-#: ../src/gui/preferences.cpp:1995
+#: ../src/gui/preferences.cpp:1986
 msgid "Protocols"
 msgstr "プロトコル"
 
-#: ../src/gui/preferences.cpp:1997
+#: ../src/gui/preferences.cpp:1988
 msgid "Network Settings"
 msgstr "ネットワークの設定"
 
-#: ../src/gui/preferences.cpp:2002
+#: ../src/gui/preferences.cpp:1993
 msgid "SIP Settings"
 msgstr "SIP の設定"
 
-#: ../src/gui/preferences.cpp:2007
+#: ../src/gui/preferences.cpp:1998
 msgid "H.323 Settings"
 msgstr "H.323 の設定"
 
-#: ../src/gui/preferences.cpp:2011
+#: ../src/gui/preferences.cpp:2002
 msgid "Codecs"
 msgstr "コーデック"
 
-#: ../src/gui/preferences.cpp:2013
+#: ../src/gui/preferences.cpp:2004
 msgid "Audio Codecs"
 msgstr "音声のコーデック"
 
-#: ../src/gui/preferences.cpp:2017
+#: ../src/gui/preferences.cpp:2008
 msgid "Video Codecs"
 msgstr "映像のコーデック"
 
-#: ../src/gui/preferences.cpp:2021
+#: ../src/gui/preferences.cpp:2012
 msgid "Devices"
 msgstr "デバイス"
 
