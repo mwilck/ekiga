@@ -3870,11 +3870,11 @@ main (int argc,
 
   /* PWLIB initialization */
   PProcess::PreInitialise (argc, argv, envp);
+  static GnomeMeeting instance;
   
   /* GTK+ initialization */
   g_thread_init (NULL);
   gdk_threads_init ();
-  gdk_threads_enter ();
 #ifndef WIN32
   signal (SIGPIPE, SIG_IGN);
 #endif
@@ -3944,7 +3944,6 @@ main (int argc,
 #endif
 
   /* Ekiga initialisation */
-  static GnomeMeeting instance;
   if (debug_level != 0)
     PTrace::Initialise (PMAX (PMIN (4, debug_level), 0), NULL,
 			PTrace::Timestamp | PTrace::Thread
@@ -4036,6 +4035,7 @@ main (int argc,
   }
 
   /* The GTK loop */
+  gdk_threads_enter ();
   gtk_main ();
   gdk_threads_leave ();
 

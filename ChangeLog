@@ -1,3 +1,8 @@
+2007-09-16  Damien Sandras  <dsandras@gnome.org>
+
+	* src/gui/main.cpp: Fixed deadlock when starting up the
+	application due to a crossed mutex between GDK and OPAL.
+
 2007-09-15  Damien Sandras  <dsandras@gnome.org>
 	
 	* win32/Makefile: Patch from Matthias Schneider
