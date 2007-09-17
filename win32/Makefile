@@ -149,7 +149,7 @@ DIRECTX_URL := http://www.colombus.org/ekiga
 DIRECTX_DIR := $(BUILDROOT)/directx-dev
 DIRECTX_ARCHIVE := directx-dev.tar.gz
 
-FFMPEG_VER := HEAD
+FFMPEG_VER := 10521
 FFMPEG_URL := svn://svn.mplayerhq.hu/ffmpeg/trunk
 FFMPEG_DIR := $(BUILDROOT)/ffmpeg
 FFMPEG_ARCHIVE := ffmpeg
