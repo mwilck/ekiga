@@ -351,10 +351,13 @@ OPENLDAP::Book::refresh_start ()
   attributes_vector.push_back ("givenname");
   attributes_vector.push_back (call_attribute);
 
+  status = std::string (_("Refreshing"));
+  updated.emit ();
+
   ldap_context = ldap_init (hostname.c_str (), port);
   if (ldap_context == NULL) {
 
-    status = std::string (_("Could not contact server")) + " " + hostname;
+    status = std::string (_("Could not contact server"));
     updated.emit ();
     return;
   }
@@ -369,13 +372,16 @@ OPENLDAP::Book::refresh_start ()
   result = ldap_bind_s (ldap_context, NULL, NULL, LDAP_AUTH_SIMPLE);
   if (result != LDAP_SUCCESS) {
 
-    status = std::string (_("Could not contact server")) + " " + hostname;
+    status = std::string (_("Could not contact server"));
     updated.emit ();
 
     ldap_unbind (ldap_context);
     ldap_context = NULL;
     return;
   }
+
+  status = std::string (_("Contacted server"));
+  updated.emit ();
 
   if (scope == "sub")
     iscope = LDAP_SCOPE_SUBTREE;
@@ -408,11 +414,16 @@ OPENLDAP::Book::refresh_start ()
 
   if (msgid == -1) {
 
-    status = std::string (_("Could not search on")) + " " + hostname;
+    status = std::string (_("Could not search"));
     updated.emit ();
 
     ldap_unbind (ldap_context);
     ldap_context = NULL;
+    return;
+  } else {
+
+    status = std::string (_("Waiting for search results"));
+    updated.emit ();
   }
 
   patience = 3;
@@ -450,7 +461,7 @@ OPENLDAP::Book::refresh_end ()
       GnomeMeeting::Process ()->GetRuntime ()->run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_end), 30);
     } else { // patience == 0
 
-      status = std::string (_("Could not search on")) + " " + hostname;
+      status = std::string (_("Could not search"));
       updated.emit ();
 
       ldap_unbind (ldap_context);
