@@ -1,4 +1,4 @@
-# translation of ekiga.gnome-2-14.tr.po to Turkish
+# translation of tr.po to Turkish
 # Görkem Çetin <gorkem@gelecek.com.tr>, 2001.
 # Özgür Aş <thelegbra@hotmail.com>, 2002.
 # Sedat Mavuzer <XXIIXV@gmx.net>, 2003.
@@ -10,14 +10,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-12 23:38+0200\n"
-"PO-Revision-Date: 2007-03-11 16:00+0200\n"
-"Last-Translator: Deniz Koçak <deniz@gaplan.org>\n"
+"POT-Creation-Date: 2007-09-17 21:35+0300\n"
+"PO-Revision-Date: 2007-09-16 15:26+0200\n"
+"Last-Translator: Deniz Koçak <deniz.kocak@linux.org.tr>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms:  nplurals=1; plural=0;\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: KBabel 1.11.4\n"
 
 #: ../ekiga.desktop.in.in.h:1
@@ -46,7 +46,7 @@ msgstr "Alternatif ses çıkış aygıtı"
 
 #: ../ekiga.schemas.in.in.h:4
 msgid "Always forward calls to the given host"
-msgstr "Aramaları herzaman verilen makineye yönlendir"
+msgstr "Aramaları her zaman verilen makineye yönlendir"
 
 #: ../ekiga.schemas.in.in.h:5
 msgid "Audio input device"
@@ -82,7 +82,7 @@ msgstr ""
 
 #: ../ekiga.schemas.in.in.h:11
 msgid "Change the control panel section"
-msgstr "Denetim paneli bölümünü değiştir"
+msgstr "Kontrol paneli bölümünü değiştir"
 
 #: ../ekiga.schemas.in.in.h:12
 msgid "Change the view mode of the UI"
@@ -301,7 +301,7 @@ msgstr "En büyük stres tamponu"
 
 #: ../ekiga.schemas.in.in.h:53
 msgid "Maximum video bandwidth"
-msgstr "En büyük video band genişliği"
+msgstr "En büyük video bant genişliği"
 
 #: ../ekiga.schemas.in.in.h:54
 msgid "Minimum jitter buffer"
@@ -309,11 +309,11 @@ msgstr "En düşük stres tamponu"
 
 #: ../ekiga.schemas.in.in.h:55
 msgid "Minimum transmitted video quality"
-msgstr "Aktarılan asgari video kalitesi"
+msgstr "En fazla iletilen video kalitesi"
 
 #: ../ekiga.schemas.in.in.h:56
 msgid "Missed calls history"
-msgstr "Cevapsız aramalar geçmişi"
+msgstr "Cevapsız çağrı geçmişi"
 
 #: ../ekiga.schemas.in.in.h:57
 msgid "NAT Binding Timeout"
@@ -355,7 +355,7 @@ msgstr ""
 
 #: ../ekiga.schemas.in.in.h:66
 msgid "Placed calls history"
-msgstr "Gerçekleşen çağrıların geçmişi"
+msgstr "Yapılan arama geçmişi"
 
 #: ../ekiga.schemas.in.in.h:67 ../src/gui/preferences.cpp:1898
 msgid "Play busy tone"
@@ -419,7 +419,7 @@ msgstr "NAT/PAT yönelticisinin genel IP'si"
 
 #: ../ekiga.schemas.in.in.h:82
 msgid "Received calls history"
-msgstr "Gelen arama geçmişi"
+msgstr "Gelen çağrı geçmişi"
 
 #: ../ekiga.schemas.in.in.h:83
 msgid "Registration timeout"
@@ -557,7 +557,7 @@ msgid ""
 "go through some types of NAT gateways"
 msgstr ""
 "STUN desteği için kullanılacak STUN sunucusu. STUN bazı tür NAT geçitleri "
-"üzerinden geçişi sağlayan bir tekniktir"
+"üzerinden geçişi sağlayan bir teknolojidir"
 
 #: ../ekiga.schemas.in.in.h:111
 msgid "The accounts list"
@@ -608,8 +608,8 @@ msgid ""
 "The default video view (0: Local, 1: Remote, 2: Both incrusted, 3: Both with "
 "local video in a separate window, 4: Both)"
 msgstr ""
-"Öntanımlı video görünümü (0: Yerel, 1: Uzaktan, 2: İkiside bağlı, 3: Ayrı "
-"bir pencerede yerel video ile ikisi, 4: İkisi)"
+"Öntanımlı video görünümü (0: Yerel, 1: Uzaktaki, 2: İkisi de katmanlı, 3: "
+"Ayrı bir pencerede yerel video ile ikisi de, 4: İkisi de)"
 
 #: ../ekiga.schemas.in.in.h:121
 msgid "The dial tone sound"
@@ -617,15 +617,15 @@ msgstr "Arama tonu sesi"
 
 #: ../ekiga.schemas.in.in.h:122
 msgid "The history of the last 100 missed calls"
-msgstr "Son 100 cevapsız çağrının geçmişi"
+msgstr "Son 100 cevapsız çağrı geçmişi"
 
 #: ../ekiga.schemas.in.in.h:123
 msgid "The history of the last 100 placed calls"
-msgstr "Geçekleşen son 100 çağrının geçmişi"
+msgstr "Son 100 yapılan arama geçmişi"
 
 #: ../ekiga.schemas.in.in.h:124
 msgid "The history of the last 100 received calls"
-msgstr "Gelen son 100 çağrının geçmişi"
+msgstr "Son 100 gelen çağrı geçmişi"
 
 #: ../ekiga.schemas.in.in.h:125 ../src/gui/preferences.cpp:989
 #: ../src/gui/preferences.cpp:1040
@@ -663,9 +663,9 @@ msgid ""
 "transmitted frames per second will be dynamically adjusted above their "
 "minimum during calls to try to minimize the bandwidth to the given value"
 msgstr ""
-"kbyte/s olarak en fazla video band genişliği. Video kalitesi ve saniyede "
-"iletilen çerçeve sayısı, aramalar süresince band genişliğini verilen değere "
-"azaltmak için aktif bir şekilde en düşüklerinin üstündekilere uygulanacak"
+"kbyte/s olarak en fazla video bant genişliği. Video kalitesi ve saniyede "
+"iletilen çerçeve sayısı, aramalar süresince bant genişliğini verilen değere "
+"getirmek için aktif bir şekilde en düşüklerinin üstündekilere uygulanacak."
 
 #: ../ekiga.schemas.in.in.h:132
 msgid "The minimum jitter buffer size for audio reception (in ms)"
@@ -902,7 +902,7 @@ msgid ""
 "\" (0) only"
 msgstr ""
 "DTMF gönderimi için kip seçimine izin verir. Değer olarak sadece \"RFC2833"
-"\" (0) alabilir "
+"\" (0) olabilir "
 
 #: ../ekiga.schemas.in.in.h:170
 msgid ""
@@ -968,18 +968,26 @@ msgid "Contacts Near Me"
 msgstr "Yakınımdaki Bağlantılar"
 
 #. Init the address book
-#: ../lib/gmcontacts/gmcontacts-eds.cpp:304 ../src/endpoints/ekiga.cpp:501
+#: ../lib/gmcontacts/gmcontacts-eds.cpp:304 ../src/endpoints/ekiga.cpp:500
 msgid "On This Computer"
 msgstr "Bu Bilgisayarda"
 
-#: ../lib/gmcontacts/gmcontacts-eds.cpp:308 ../src/endpoints/ekiga.cpp:501
-#: ../src/gui/addressbook.cpp:3042
+#: ../lib/gmcontacts/gmcontacts-eds.cpp:308 ../src/endpoints/ekiga.cpp:500
+#: ../src/gui/addressbook.cpp:3041
 msgid "Personal"
-msgstr "Kişisel"
+msgstr "Kişisel "
 
 #: ../lib/gui/gmdialog.c:487
 msgid "Do not show this dialog again"
 msgstr "Bu pencereyi bir daha gösterme"
+
+#: ../lib/gui/gmtray/eggtrayicon.c:133
+msgid "Orientation"
+msgstr "Yönelim"
+
+#: ../lib/gui/gmtray/eggtrayicon.c:134
+msgid "The orientation of the tray."
+msgstr "Sistem çekmecesinin yönelimi."
 
 #: ../src/clients/ils.cpp:105 ../src/gui/tools.cpp:174
 msgid "Invalid parameters"
@@ -990,8 +998,8 @@ msgid ""
 "Please provide your first name and e-mail in the Personal Data section in "
 "order to be able to register to the users directory."
 msgstr ""
-"Lütfen kullanıcı dizinine kaydolabilmek için Kişisel Bilgiler bölümüne "
-"adınızı ve e-posta adresinizi giriniz."
+"Kullanıcı dizinine kayıt olabilmeniz için lütfen Kişisel Bilgi kısmındaki "
+"adınızı ve e-posta adresinizi belirtiniz."
 
 #: ../src/clients/ils.cpp:145
 msgid "Invalid users directory"
@@ -1003,19 +1011,19 @@ msgstr "Hiçbir kullanıcı dizini belirtilmediğinden işlem imkansız."
 
 #: ../src/clients/ils.cpp:238
 msgid "Failed to parse XML file"
-msgstr "XML dosyası ayrıştırılamadı"
+msgstr "XML dosyası işleme başarısız"
 
 #: ../src/clients/ils.cpp:238
 msgid ""
 "There was an error while parsing the XML file. Please make sure that it is "
 "correctly installed in your system."
 msgstr ""
-"XML dosyası ayrıştırılırken bir hata oluştu. Lütfen bilgisayarınızda düzgün "
-"bir şekilde kurulduğundan emin olun."
+"XML dosyası işlenirken bir hata oluştu. Sisteminizde düzgün bir şekilde "
+"kurulu olduğunu kontrol edin."
 
 #: ../src/clients/ils.cpp:249
 msgid "Bad information"
-msgstr "Hatalı bilgi"
+msgstr "Geçersiz Bilgi"
 
 #: ../src/clients/ils.cpp:249
 #, c-format
@@ -1034,7 +1042,7 @@ msgstr "ILS kaydı başarısız: işlemlere zaman sınırı koyulamadı"
 #: ../src/clients/ils.cpp:282
 #, c-format
 msgid "ILS registration failed: failed to bind to %s"
-msgstr "ILS kaydı başarısız: %s konumuna bağlama başarısız"
+msgstr "ILS kaydı başarısız:  %s bağlanırken başarız oldu"
 
 #: ../src/clients/ils.cpp:310
 #, c-format
@@ -1042,10 +1050,10 @@ msgid "Updated information on %s"
 msgstr "%s üzerinde güncellenmiş bilgi"
 
 #: ../src/clients/ils.cpp:314 ../src/endpoints/accountshandler.cpp:332
-#: ../src/endpoints/sip.cpp:235
+#: ../src/endpoints/sip.cpp:236
 #, c-format
 msgid "Unregistered from %s"
-msgstr "%s konumundan kaydı siliniyor"
+msgstr "%s üzerinden kayıt silindi"
 
 #: ../src/clients/stun.cpp:104
 #, c-format
@@ -1294,8 +1302,8 @@ msgstr ""
 
 #: ../src/devices/audio.cpp:481 ../src/devices/audio.cpp:482
 #: ../src/devices/videoinput.cpp:310 ../src/devices/videoinput.cpp:585
-#: ../src/endpoints/ekiga.cpp:352 ../src/endpoints/ekiga.cpp:354
-#: ../src/endpoints/ekiga.cpp:356 ../src/endpoints/pcss.cpp:194
+#: ../src/endpoints/ekiga.cpp:351 ../src/endpoints/ekiga.cpp:353
+#: ../src/endpoints/ekiga.cpp:355 ../src/endpoints/pcss.cpp:194
 #: ../src/gui/druid.cpp:1780 ../src/gui/druid.cpp:1792
 #: ../src/gui/druid.cpp:1850
 msgid "No device found"
@@ -1310,7 +1318,7 @@ msgid ""
 msgstr ""
 "Ekiga şu anda %s aygıtından kaydediyor ve %s aygıtıyla çalıyor. Lütfen "
 "mikrofonunuza \"1 2 3 Ekiga çalışıyor!\" deyin. Kendi sesinizi "
-"hoparlörlerden 4 saniye gecikmeli olarak duymalısınız."
+"hoparlörlerden dört saniye gecikmeli olarak duymalısınız."
 
 #: ../src/devices/videoinput.cpp:319
 #, c-format
@@ -1334,10 +1342,9 @@ msgid ""
 "transmit a given image or the moving logo by choosing \"Picture\" as video "
 "plugin and \"MovingLogo\" or \"StaticPicture\" as device."
 msgstr ""
-"Hareket eden Ekiga logosu aramalar sırasında iletilecek. Her zaman "
-"belirtilen bir görüntüyü ya da Ekiga simgesini, görüntü eklentisi olarak "
-"\"Picture\"  ve  \"MovingLogo\"  veya  \"StaticPicture\" aygıtlarını seçerek "
-"iletebilirsiniz."
+"Hareketli bir Ekiga logosu aramalar sırasında iletilecek. Her zaman "
+"belirtilen bir görüntüyü ya da hareketli logoyu, aygıt olarak \"Picture\"  "
+"ve  \"MovingLogo\"  veya  \"StaticPicture\" seçerek iletebilirsiniz."
 
 #: ../src/devices/videoinput.cpp:364
 msgid "Couldn't open the video device"
@@ -1437,8 +1444,8 @@ msgid "Registration of %s to %s failed"
 msgstr "%s hesabının %s konumuna kaydı başarısız"
 
 #: ../src/endpoints/accountshandler.cpp:211
-#: ../src/endpoints/accountshandler.cpp:323 ../src/endpoints/sip.cpp:316
-#: ../src/endpoints/sip.cpp:328
+#: ../src/endpoints/accountshandler.cpp:323 ../src/endpoints/sip.cpp:317
+#: ../src/endpoints/sip.cpp:329
 msgid "Registration failed"
 msgstr "Kayıt başarısız"
 
@@ -1464,24 +1471,24 @@ msgstr "Geçit kaydı başarısız: taşıma hatası"
 msgid "Gatekeeper registration failed"
 msgstr "Geçit kaydı başarısız"
 
-#: ../src/endpoints/accountshandler.cpp:312 ../src/endpoints/sip.cpp:224
+#: ../src/endpoints/accountshandler.cpp:312 ../src/endpoints/sip.cpp:225
 #, c-format
 msgid "Registered to %s"
-msgstr "%s konumuna kaydolundu"
+msgstr "%s üzerine kayıtlı"
 
-#: ../src/endpoints/accountshandler.cpp:322 ../src/endpoints/sip.cpp:230
+#: ../src/endpoints/accountshandler.cpp:322 ../src/endpoints/sip.cpp:231
 msgid "Registered"
 msgstr "Kayıtlı"
 
-#: ../src/endpoints/accountshandler.cpp:352 ../src/endpoints/sip.cpp:241
+#: ../src/endpoints/accountshandler.cpp:352 ../src/endpoints/sip.cpp:242
 msgid "Unregistered"
 msgstr "Kayıt edilmemiş"
 
 #: ../src/endpoints/ekiga.cpp:105
 msgid "Answering incoming call"
-msgstr "Gelen aramaya cevap veriliyor"
+msgstr "Gelen arama cevaplanıyor"
 
-#: ../src/endpoints/ekiga.cpp:530
+#: ../src/endpoints/ekiga.cpp:529
 #, c-format
 msgid "Started Ekiga %d.%d.%d for user %s"
 msgstr "%4$s kullanıcısı için Ekiga %1$d.%2$d.%3$d başlatıldı"
@@ -1613,7 +1620,7 @@ msgstr "Uzaktaki makine bağlı değil"
 
 #: ../src/endpoints/manager.cpp:1251
 msgid "Remote user is unreachable"
-msgstr "Uzaktaki kullanıcıya ulaşılamıyor"
+msgstr "Uzaktaki kullanıcıya ulaşılamaz"
 
 #: ../src/endpoints/manager.cpp:1255
 msgid "Call completed"
@@ -1641,9 +1648,8 @@ msgid ""
 "You will not be able to receive incoming SIP calls. Please check that no "
 "other program is already running on the port used by Ekiga."
 msgstr ""
-"Gelen SIP aramalarını alamayabilirsiniz. Lütfen başka bir programın "
-"çalışmakta olan Ekiga tarafından kullanılan port ile aynı port üzerinde "
-"çalışıp çalışmadığını kontrol edin."
+"Gelen SIP aramalarını alamayabilirsiniz. Lütfen başka bir programın Ekiga "
+"tarafından kullanılan port ile aynı portu kullanmadığını kontrol edin."
 
 #: ../src/endpoints/manager.cpp:1873
 #, c-format
@@ -1694,7 +1700,7 @@ msgstr ""
 "Ses iletimi için ses kartı üzerinden ses kaydetmeye çalışırken bir hata "
 "oluştu. Lütfen ses kartınızın meşgul olmadığından ve sürücünüzün full-duplex "
 "destekli olduğundan emin olun.\n"
-"Ses iletimi iptal edildi."
+"Ses iletimi etkisizleştirildi."
 
 #: ../src/endpoints/pcss.cpp:239
 msgid "Could not open audio channel for audio reception"
@@ -1710,67 +1716,67 @@ msgstr ""
 "Ses alımı için ses kartı üzerinden ses çalmaya çalışırken bir hata oluştu. "
 "Lütfen ses kartınızın meşgul olmadığından ve sürücünüzün full-duplex "
 "destekli olduğundan emin olun.\n"
-"Ses alımı iptal edildi."
+"Ses alımı etkisizleştirildi."
 
-#: ../src/endpoints/sip.cpp:287
+#: ../src/endpoints/sip.cpp:288
 msgid "Bad request"
 msgstr "Geçersiz istek"
 
-#: ../src/endpoints/sip.cpp:291
+#: ../src/endpoints/sip.cpp:292
 msgid "Payment required"
 msgstr "Ödeme gerekli"
 
-#: ../src/endpoints/sip.cpp:296
+#: ../src/endpoints/sip.cpp:297
 msgid "Forbidden"
 msgstr "Yasaklanmış"
 
-#: ../src/endpoints/sip.cpp:300
+#: ../src/endpoints/sip.cpp:301
 msgid "Timeout"
 msgstr "Zaman Aşımı"
 
-#: ../src/endpoints/sip.cpp:304
+#: ../src/endpoints/sip.cpp:305
 msgid "Conflict"
 msgstr "Çakışma"
 
-#: ../src/endpoints/sip.cpp:308
+#: ../src/endpoints/sip.cpp:309
 msgid "Temporarily unavailable"
 msgstr "Geçici olarak kullanılamaz"
 
-#: ../src/endpoints/sip.cpp:312
+#: ../src/endpoints/sip.cpp:313
 msgid "Not Acceptable"
 msgstr "Kabul Edilemez"
 
-#: ../src/endpoints/sip.cpp:321
+#: ../src/endpoints/sip.cpp:322
 #, c-format
 msgid "Registration failed: %s"
-msgstr "Kaydolma başarısız: %s"
+msgstr "Kayıt başarısız: %s"
 
-#: ../src/endpoints/sip.cpp:333
+#: ../src/endpoints/sip.cpp:334
 #, c-format
 msgid "Unregistration failed: %s"
 msgstr "Kayıt silinmesi başarısız: %s"
 
-#: ../src/endpoints/sip.cpp:340
+#: ../src/endpoints/sip.cpp:341
 msgid "Unregistration failed"
 msgstr "Kayıt silinmesi başarısız"
 
-#: ../src/endpoints/sip.cpp:540
+#: ../src/endpoints/sip.cpp:542
 msgid "Error: User not found"
 msgstr "Hata: Kullanıcı bulunamadı"
 
-#: ../src/endpoints/sip.cpp:544
+#: ../src/endpoints/sip.cpp:546
 msgid "Error: User offline"
 msgstr "Hata: Kullanıcı çevrimdışı"
 
-#: ../src/endpoints/sip.cpp:549
+#: ../src/endpoints/sip.cpp:551
 msgid "Error: Forbidden"
 msgstr "Hata: Yasaklanmış"
 
-#: ../src/endpoints/sip.cpp:553
+#: ../src/endpoints/sip.cpp:555
 msgid "Error: Timeout"
 msgstr "Hata: Zaman Aşımı"
 
-#: ../src/endpoints/sip.cpp:557 ../src/gui/chat.cpp:1031
+#: ../src/endpoints/sip.cpp:559 ../src/gui/chat.cpp:1031
 msgid "Error: Failed to transmit message"
 msgstr "Hata: Mesaj iletimi başarısız"
 
@@ -1800,118 +1806,118 @@ msgstr "Arama %s konumuna aktarılıyor"
 msgid "Failed to call user"
 msgstr "Kullanıcı arama başarısız"
 
-#: ../src/gui/accounts.cpp:408
+#: ../src/gui/accounts.cpp:410
 msgid "Edit the Account Information"
 msgstr "Hesap Bilgilerini Düzenle"
 
 #. Account Name
-#: ../src/gui/accounts.cpp:432
+#: ../src/gui/accounts.cpp:434
 msgid "Account Name:"
 msgstr "Hesap Adı:"
 
-#: ../src/gui/accounts.cpp:446
+#: ../src/gui/accounts.cpp:448
 msgid "Protocol:"
 msgstr "İletişim kuralı:"
 
-#: ../src/gui/accounts.cpp:470 ../src/gui/accounts.cpp:973
+#: ../src/gui/accounts.cpp:472 ../src/gui/accounts.cpp:993
 msgid "Registrar:"
 msgstr "Kayıtçı:"
 
-#: ../src/gui/accounts.cpp:472 ../src/gui/accounts.cpp:982
+#: ../src/gui/accounts.cpp:474 ../src/gui/accounts.cpp:1002
 msgid "Gatekeeper:"
 msgstr "Geçit:"
 
 #. User
-#: ../src/gui/accounts.cpp:486
+#: ../src/gui/accounts.cpp:488
 msgid "User:"
 msgstr "Kullanıcı:"
 
 #. Password
-#: ../src/gui/accounts.cpp:501
+#: ../src/gui/accounts.cpp:503
 msgid "Password:"
 msgstr "Parola:"
 
 #. Advanced Options
-#: ../src/gui/accounts.cpp:518
+#: ../src/gui/accounts.cpp:520
 msgid "More _Options"
 msgstr "Daha Fazla _Seçenek"
 
-#: ../src/gui/accounts.cpp:532
+#: ../src/gui/accounts.cpp:534
 msgid "Authentication Login:"
 msgstr "Kimlik Doğrulama Girişi:"
 
-#: ../src/gui/accounts.cpp:554 ../src/gui/accounts.cpp:983
+#: ../src/gui/accounts.cpp:556 ../src/gui/accounts.cpp:1003
 msgid "Gatekeeper ID:"
 msgstr "Geçit ID:"
 
 #. Timeout
-#: ../src/gui/accounts.cpp:578
+#: ../src/gui/accounts.cpp:580
 msgid "Registration Timeout:"
 msgstr "Kayıt Zaman Aşımı:"
 
-#. SIP
-#. H323
-#: ../src/gui/accounts.cpp:684 ../src/gui/accounts.cpp:686
-#: ../src/gui/addressbook.cpp:3114 ../src/gui/addressbook.cpp:3593
+#. FIXME change strings after stringfreeze to something more useful - js
+#: ../src/gui/accounts.cpp:630 ../src/gui/accounts.cpp:637
+#: ../src/gui/accounts.cpp:649 ../src/gui/addressbook.cpp:3113
+#: ../src/gui/addressbook.cpp:3592
 msgid "Missing information"
 msgstr "Eksik bilgi"
 
-#: ../src/gui/accounts.cpp:684
+#: ../src/gui/accounts.cpp:631 ../src/gui/accounts.cpp:638
 msgid ""
 "Please make sure to provide a valid account name, host name, and user name."
 msgstr ""
-"Lütfen geçerli bir hesap adı, makine adı ve kullanıcı adı sağladığınızdan "
+"Lütfen geçerli bir hesap adı, makine adı ya da kullanıcı adı belirttiğinize "
 "emin olun."
 
-#: ../src/gui/accounts.cpp:686
+#: ../src/gui/accounts.cpp:650
 msgid ""
 "Please make sure to provide a valid account name, host name and registration "
 "timeout."
 msgstr ""
-"Lütfen geçerli bir hesap adı, makine adı ve kayıt zaman aşımı süresi "
-"belirttiğinizden emin olun."
+"Lütfen geçerli bir hesap adı, makine adı ya da kayıt zaman aşımı "
+"belirttiğinize emin olun."
 
-#: ../src/gui/accounts.cpp:716
+#: ../src/gui/accounts.cpp:736
 #, c-format
 msgid "Are you sure you want to delete account %s?"
 msgstr "%s hesabını silmek istediğinizden emin misiniz?"
 
-#: ../src/gui/accounts.cpp:974
+#: ../src/gui/accounts.cpp:994
 msgid "Realm/Domain:"
 msgstr "Bölge/Alan:"
 
-#: ../src/gui/accounts.cpp:1497
+#: ../src/gui/accounts.cpp:1517
 msgid "Account Name"
 msgstr "Hesap Adı"
 
-#: ../src/gui/accounts.cpp:1498
+#: ../src/gui/accounts.cpp:1518
 msgid "Protocol"
 msgstr "İletişim kuralı"
 
-#: ../src/gui/accounts.cpp:1507
+#: ../src/gui/accounts.cpp:1527
 msgid "Voice Mails"
 msgstr "Sesli Postalar"
 
-#: ../src/gui/accounts.cpp:1508
+#: ../src/gui/accounts.cpp:1528
 msgid "Status"
 msgstr "Durum"
 
-#: ../src/gui/accounts.cpp:1519
+#: ../src/gui/accounts.cpp:1539
 msgid "Accounts"
 msgstr "Hesaplar"
 
-#: ../src/gui/accounts.cpp:1555 ../src/gui/preferences.cpp:474
+#: ../src/gui/accounts.cpp:1575 ../src/gui/preferences.cpp:474
 #: ../src/gui/preferences.cpp:817
 msgid "A"
 msgstr "A"
 
-#: ../src/gui/accounts.cpp:1655
+#: ../src/gui/accounts.cpp:1675
 msgid "_Default"
 msgstr "Ö_ntanımlı"
 
 #: ../src/gui/addressbook.cpp:819
 msgid "Contact collision"
-msgstr "Bağlantı çakışması"
+msgstr "Bağlantı Çakışması"
 
 #: ../src/gui/addressbook.cpp:821
 #, c-format
@@ -1965,7 +1971,7 @@ msgstr "İsim"
 
 #: ../src/gui/addressbook.cpp:1017
 msgid "Comment"
-msgstr "Açıklama"
+msgstr "Yorum"
 
 #: ../src/gui/addressbook.cpp:1032 ../src/gui/callshistory.cpp:755
 msgid "Software"
@@ -1993,7 +1999,7 @@ msgstr "Hızlı Çevir"
 
 #: ../src/gui/addressbook.cpp:1132
 msgid "Name contains"
-msgstr "İsim içerir"
+msgstr "İsmin içerdiği"
 
 #: ../src/gui/addressbook.cpp:1133
 msgid "URL contains"
@@ -2005,56 +2011,56 @@ msgstr "Kategoriye ait"
 
 #: ../src/gui/addressbook.cpp:1137
 msgid "Location contains"
-msgstr "Konum içerir"
+msgstr "Konumun içerdiği"
 
 #. call a contact, usage: general
-#: ../src/gui/addressbook.cpp:1552 ../src/gui/addressbook.cpp:2586
+#: ../src/gui/addressbook.cpp:1552 ../src/gui/addressbook.cpp:2585
 #: ../src/gui/callshistory.cpp:295 ../src/gui/chat.cpp:682
 msgid "C_all Contact"
 msgstr "Bağlantıyı _Ara"
 
 #. copy a contact's URL to clipboard, usage: general
-#: ../src/gui/addressbook.cpp:1559 ../src/gui/addressbook.cpp:2596
+#: ../src/gui/addressbook.cpp:1559 ../src/gui/addressbook.cpp:2595
 #: ../src/gui/chat.cpp:677 ../src/gui/chat.cpp:682
 msgid "_Copy URL to Clipboard"
 msgstr "URL'yi Panoya _Kopyala"
 
-#: ../src/gui/addressbook.cpp:1565 ../src/gui/addressbook.cpp:2601
+#: ../src/gui/addressbook.cpp:1565 ../src/gui/addressbook.cpp:2600
 msgid "_Write e-Mail"
 msgstr "E-posta _Yaz"
 
 #. add a contact to the local addressbook, usage: remote contacts only
-#: ../src/gui/addressbook.cpp:1572 ../src/gui/addressbook.cpp:2613
+#: ../src/gui/addressbook.cpp:1572 ../src/gui/addressbook.cpp:2612
 #: ../src/gui/callshistory.cpp:302 ../src/gui/chat.cpp:682
 msgid "Add Contact to _Address Book"
-msgstr "_Adres Defterine Bağlantı Ekle"
+msgstr "Bağlantıyı _Adres Defterine ekle"
 
 #. send a contact a (SIP!) message, usage: SIP contacts only
-#: ../src/gui/addressbook.cpp:1579 ../src/gui/addressbook.cpp:2591
+#: ../src/gui/addressbook.cpp:1579 ../src/gui/addressbook.cpp:2590
 msgid "_Send Message"
 msgstr "İleti _Gönder"
 
 #. edit a local contact's addressbook entry, usage: local contacts
 #: ../src/gui/addressbook.cpp:1586 ../src/gui/addressbook.cpp:1723
-#: ../src/gui/addressbook.cpp:2572
+#: ../src/gui/addressbook.cpp:2571
 msgid "_Properties"
 msgstr "Ö_zellikler"
 
 #. delete a local contact entry, usage: local contacts
 #: ../src/gui/addressbook.cpp:1593 ../src/gui/addressbook.cpp:1730
-#: ../src/gui/addressbook.cpp:2567
+#: ../src/gui/addressbook.cpp:2566
 msgid "_Delete"
 msgstr "_Sil"
 
 #. "new contact" dialog, usage: local context
-#: ../src/gui/addressbook.cpp:1600 ../src/gui/addressbook.cpp:2608
+#: ../src/gui/addressbook.cpp:1600 ../src/gui/addressbook.cpp:2607
 msgid "New _Contact"
 msgstr "Yeni _Bağlantı"
 
 #: ../src/gui/addressbook.cpp:2027
 #, c-format
 msgid "Error while fetching users list from %s"
-msgstr "%s üzerinden kullanıcı listesi getirilirken hata"
+msgstr "%s üzerinden kullanıcı listesi alınırken hata"
 
 #: ../src/gui/addressbook.cpp:2031
 #, c-format
@@ -2070,134 +2076,134 @@ msgid_plural "Found %d users in %s for a total of %d users"
 msgstr[0] "%2$s içinde toplam %3$d kullanıcı içinden %1$d kullanıcı bulundu"
 msgstr[1] "%2$s içinde toplam %3$d kullanıcı içinden %1$d kullanıcı bulundu"
 
-#: ../src/gui/addressbook.cpp:2523
+#: ../src/gui/addressbook.cpp:2522
 msgid "Address Book"
 msgstr "Adres Defteri"
 
-#: ../src/gui/addressbook.cpp:2558
+#: ../src/gui/addressbook.cpp:2557
 msgid "_File"
 msgstr "_Dosya"
 
-#: ../src/gui/addressbook.cpp:2560
+#: ../src/gui/addressbook.cpp:2559
 msgid "New _Address Book"
 msgstr "Yeni _Adres Defteri"
 
-#: ../src/gui/addressbook.cpp:2579 ../src/gui/main.cpp:975
+#: ../src/gui/addressbook.cpp:2578 ../src/gui/main.cpp:975
 msgid "_Close"
 msgstr "_Kapat"
 
-#: ../src/gui/addressbook.cpp:2584
+#: ../src/gui/addressbook.cpp:2583
 msgid "C_ontact"
-msgstr "Bağla_ntı"
+msgstr "_Bağlantı"
 
-#: ../src/gui/addressbook.cpp:2686
+#: ../src/gui/addressbook.cpp:2685
 msgid "Remote Contacts"
 msgstr "Uzaktaki Bağlantılar"
 
-#: ../src/gui/addressbook.cpp:2694
+#: ../src/gui/addressbook.cpp:2693
 msgid "Local Contacts"
-msgstr "Yerel Bağlantılar"
+msgstr "Yerel bağlantılar"
 
-#: ../src/gui/addressbook.cpp:2817
+#: ../src/gui/addressbook.cpp:2816
 msgid "Edit the Contact Information"
-msgstr "İletişim Bilgisini Düzenle"
+msgstr "Bağlantı Bilgisi Düzenle"
 
-#: ../src/gui/addressbook.cpp:2838 ../src/gui/addressbook.cpp:3308
+#: ../src/gui/addressbook.cpp:2837 ../src/gui/addressbook.cpp:3307
 msgid "Name:"
-msgstr "İsim:"
+msgstr "Ad:"
 
-#: ../src/gui/addressbook.cpp:2858
+#: ../src/gui/addressbook.cpp:2857
 msgid "VoIP URL:"
 msgstr "VoIP URL:"
 
-#: ../src/gui/addressbook.cpp:2880
+#: ../src/gui/addressbook.cpp:2879
 msgid "Email:"
 msgstr "E-posta:"
 
-#: ../src/gui/addressbook.cpp:2901
+#: ../src/gui/addressbook.cpp:2900
 msgid "Speed Dial:"
 msgstr "Hızlı Çevir:"
 
-#: ../src/gui/addressbook.cpp:2923
+#: ../src/gui/addressbook.cpp:2922
 msgid "Categories:"
 msgstr "Kategoriler:"
 
-#: ../src/gui/addressbook.cpp:2948
+#: ../src/gui/addressbook.cpp:2947
 msgid "Local Addressbook:"
-msgstr "Yerel Adres Defteri:"
+msgstr "Yerel Adresdefteri:"
 
-#: ../src/gui/addressbook.cpp:3114
+#: ../src/gui/addressbook.cpp:3113
 msgid ""
 "Please make sure to provide at least a full name or an URL for the contact."
 msgstr ""
-"Lütfen bağlantı için en azından bir tam isim ya da bir URL belirttiğinizden "
-"emin olun."
+"Lütfen bağlantı için en azından bir tam isim ya da URL belirttiğinizden emin "
+"olun."
 
-#: ../src/gui/addressbook.cpp:3161
+#: ../src/gui/addressbook.cpp:3160
 #, c-format
 msgid "Are you sure you want to delete %s from %s?"
-msgstr "%2$s konumundan %1$s bağlantısını silmek istediğinizden emin misiniz?"
+msgstr "%s'i %s üzerinden silmek istediğinizden emin misiniz?"
+
+#: ../src/gui/addressbook.cpp:3286
+msgid "Edit an address book"
+msgstr "Bir adres defteri düzenle"
 
 #: ../src/gui/addressbook.cpp:3287
-msgid "Edit an address book"
-msgstr "Adres defteri düzenle"
-
-#: ../src/gui/addressbook.cpp:3288
 msgid "Add an address book"
-msgstr "Adres defteri ekle"
+msgstr "Bir adres defteri ekle"
 
-#: ../src/gui/addressbook.cpp:3333
+#: ../src/gui/addressbook.cpp:3332
 msgid "Type:"
 msgstr "Tür:"
 
-#: ../src/gui/addressbook.cpp:3339
+#: ../src/gui/addressbook.cpp:3338
 msgid "Local"
 msgstr "Yerel"
 
-#: ../src/gui/addressbook.cpp:3340
+#: ../src/gui/addressbook.cpp:3339
 msgid "Remote LDAP"
 msgstr "Uzaktaki LDAP"
 
-#: ../src/gui/addressbook.cpp:3341
+#: ../src/gui/addressbook.cpp:3340
 msgid "Remote ILS"
 msgstr "Uzaktaki ILS"
 
-#: ../src/gui/addressbook.cpp:3372
+#: ../src/gui/addressbook.cpp:3371
 msgid "Hostname:"
 msgstr "Makine adı:"
 
-#: ../src/gui/addressbook.cpp:3395
+#: ../src/gui/addressbook.cpp:3394
 msgid "Port:"
 msgstr "Port:"
 
-#: ../src/gui/addressbook.cpp:3420
+#: ../src/gui/addressbook.cpp:3419
 msgid "Base DN:"
 msgstr "Temel DN:"
 
-#: ../src/gui/addressbook.cpp:3443
+#: ../src/gui/addressbook.cpp:3442
 msgid "Search Scope:"
 msgstr "Arama Kapsamı:"
 
-#: ../src/gui/addressbook.cpp:3449
+#: ../src/gui/addressbook.cpp:3448
 msgid "Subtree"
 msgstr "Alt ağaç"
 
-#: ../src/gui/addressbook.cpp:3450
+#: ../src/gui/addressbook.cpp:3449
 msgid "One Level"
 msgstr "Tek Seviye"
 
-#: ../src/gui/addressbook.cpp:3480
+#: ../src/gui/addressbook.cpp:3479
 msgid "Search Attribute:"
 msgstr "Arama Özniteliği:"
 
-#: ../src/gui/addressbook.cpp:3593
+#: ../src/gui/addressbook.cpp:3592
 msgid "Please make sure you fill in all required fields."
 msgstr "Lütfen gerekli tüm alanların doldurulduğundan emin olun."
 
-#: ../src/gui/addressbook.cpp:3639
+#: ../src/gui/addressbook.cpp:3638
 #, c-format
 msgid "Are you sure you want to delete %s and all its contacts?"
-msgstr "%s ve tüm bağlantılarını silmek istediğinizden emin misiniz?"
+msgstr "%s hesabını ve tüm bağlantılarını silmek istediğinizden emin misiniz?"
 
 #: ../src/gui/callbacks.cpp:124
 msgid "Disconnecting..."
@@ -2237,14 +2243,13 @@ msgstr "Gelen Aramalar"
 
 #: ../src/gui/callshistory.cpp:664
 msgid "Placed Calls"
-msgstr "Gerçekleşen Aramalar"
+msgstr "Yapılan Aramalar"
 
 #: ../src/gui/callshistory.cpp:664
 msgid "Missed Calls"
 msgstr "Cevapsız Aramalar"
 
-#: ../src/gui/callshistory.cpp:676 ../src/gui/main.cpp:1136
-#: ../src/gui/statusicon.cpp:144
+#: ../src/gui/callshistory.cpp:676 ../src/gui/statusicon.cpp:144
 msgid "Calls History"
 msgstr "Arama Geçmişi"
 
@@ -2266,7 +2271,7 @@ msgstr "Arama Bitme Sebebi"
 
 #: ../src/gui/chat.cpp:625
 msgid "Hang _up"
-msgstr "A_skıya al"
+msgstr "Askıya _al"
 
 #: ../src/gui/chat.cpp:626 ../src/gui/statusicon.cpp:100
 msgid "_Call"
@@ -2632,15 +2637,15 @@ msgstr ""
 "Ses yöneticisi:  %s\n"
 "Ses çalıcısı:  %s\n"
 "Ses kaydedicisi:  %s\n"
-"Görüntü yöneticisi: %s\n"
-"Görüntü girişi: %s\n"
+"Video yöneticisi: %s\n"
+"Video girişi: %s\n"
 "SIP URL: %s\n"
 
 #: ../src/gui/druid.cpp:1967
 msgid "First Time Configuration Assistant"
 msgstr "İlk Çalıştırma Yapılandırma Sihirbazı"
 
-#: ../src/gui/history.cpp:128 ../src/gui/main.cpp:1131
+#: ../src/gui/history.cpp:128
 msgid "General History"
 msgstr "Genel Geçmiş"
 
@@ -2702,11 +2707,11 @@ msgstr "Mevcut aramayı bitir"
 
 #: ../src/gui/main.cpp:913 ../src/gui/statusicon.cpp:110
 msgid "_Available"
-msgstr "_Ulaşılabilir"
+msgstr "Ul_aşılabilir"
 
 #: ../src/gui/main.cpp:914 ../src/gui/statusicon.cpp:111
 msgid "Display a popup to accept the call"
-msgstr "Aramayı kabul etmek için kendiliğinden açılan bir pencere aç"
+msgstr "Aramayı kabul etmek için açılan bir pencere göster"
 
 #: ../src/gui/main.cpp:919 ../src/gui/statusicon.cpp:116
 msgid "Aut_o Answer"
@@ -2714,7 +2719,7 @@ msgstr "_Otomatik Cevapla"
 
 #: ../src/gui/main.cpp:920 ../src/gui/statusicon.cpp:117
 msgid "Auto answer calls"
-msgstr "Aramaları kendiliğinden yanıtla"
+msgstr "Aramaları otomatik cevapla"
 
 #: ../src/gui/main.cpp:925 ../src/gui/statusicon.cpp:122
 msgid "_Do Not Disturb"
@@ -2733,8 +2738,8 @@ msgid "Forward calls"
 msgstr "Aramaları yönlendir"
 
 #: ../src/gui/main.cpp:939
-msgid "Speed dials"
-msgstr "Hızlı çevir"
+msgid "Speed d_ials"
+msgstr "H_ızlı aramalar"
 
 #: ../src/gui/main.cpp:943 ../src/gui/main.cpp:3148
 msgid "_Hold Call"
@@ -2793,8 +2798,8 @@ msgid "_Edit"
 msgstr "_Düzenle"
 
 #: ../src/gui/main.cpp:988
-msgid "Configuration Druid"
-msgstr "Ayar Sihirbazı"
+msgid "_Configuration Druid"
+msgstr "_Yapılandırma Sihirbazı"
 
 #: ../src/gui/main.cpp:989
 msgid "Run the configuration druid"
@@ -2822,11 +2827,11 @@ msgstr "_Görünüm"
 
 #: ../src/gui/main.cpp:1010
 msgid "View _Mode"
-msgstr "Görünüm _Kipi"
+msgstr "Görüntü _Kipi"
 
 #: ../src/gui/main.cpp:1012
 msgid "Softp_hone"
-msgstr "Yazılımsal _Telefon"
+msgstr "Yazılımsa_l Telefon"
 
 #: ../src/gui/main.cpp:1013
 msgid "Show the softphone view"
@@ -2834,23 +2839,23 @@ msgstr "Yazılımsal telefon görünümünü göster"
 
 #: ../src/gui/main.cpp:1018
 msgid "_Videophone"
-msgstr "_Görüntülü Telefon"
+msgstr "Görüntülü _Telefon"
 
 #: ../src/gui/main.cpp:1019
 msgid "Show the videophone view"
-msgstr "Görüntülü telefon görünümü göster"
+msgstr "Görüntülü Telefon görünümünü göster"
 
 #: ../src/gui/main.cpp:1024
 msgid "_Full View"
-msgstr "_Tam Görünüm"
+msgstr "Ta_m Görünüm"
 
 #: ../src/gui/main.cpp:1025
 msgid "View all components"
-msgstr "Tüm bileşenleri göster"
+msgstr "Tüm bileşenleri Gör"
 
 #: ../src/gui/main.cpp:1033
-msgid "Control Panel"
-msgstr "Kontrol Paneli"
+msgid "_Control Panel"
+msgstr "_Kontrol Paneli"
 
 #: ../src/gui/main.cpp:1035
 msgid "_Dialpad"
@@ -2862,11 +2867,11 @@ msgstr "Tuş takımın göster"
 
 #: ../src/gui/main.cpp:1040
 msgid "_Audio Settings"
-msgstr "_Ses Ayarları"
+msgstr "Ses _Ayarları"
 
 #: ../src/gui/main.cpp:1041
 msgid "View audio settings"
-msgstr "Ses ayarlarını göster"
+msgstr "Ses ayarlarını gör"
 
 #: ../src/gui/main.cpp:1046
 msgid "_Video Settings"
@@ -2874,75 +2879,75 @@ msgstr "_Video Ayarları"
 
 #: ../src/gui/main.cpp:1047
 msgid "View video settings"
-msgstr "Video ayarlarını göster"
+msgstr "Video ayarlarını gör"
 
-#: ../src/gui/main.cpp:1052 ../src/gui/main.cpp:1232
-msgid "Statistics"
-msgstr "İstatistikler"
+#: ../src/gui/main.cpp:1052
+msgid "_Statistics"
+msgstr "İ_statistikler"
 
 #: ../src/gui/main.cpp:1053
 msgid "View audio/video transmission and reception statistics"
 msgstr "Ses/Video iletim ve alım istatistiklerini göster"
 
-#: ../src/gui/main.cpp:1061 ../src/gui/main.cpp:4218
-msgid "Local Video"
-msgstr "Yerel Video"
+#: ../src/gui/main.cpp:1061
+msgid "_Local Video"
+msgstr "Yere_l Video"
 
 #: ../src/gui/main.cpp:1062
 msgid "Local video image"
 msgstr "Yerel video görüntüsü"
 
-#: ../src/gui/main.cpp:1067 ../src/gui/main.cpp:4225
-msgid "Remote Video"
-msgstr "Uzaktaki Video"
+#: ../src/gui/main.cpp:1067
+msgid "_Remote Video"
+msgstr "_Uzaktaki Video"
 
 #: ../src/gui/main.cpp:1068
 msgid "Remote video image"
 msgstr "Uzaktaki video görüntüsü"
 
 #: ../src/gui/main.cpp:1073
-msgid "Both (Picture-in-Picture)"
-msgstr "Her İkisi (Resim-içinde-Resim)"
+msgid "Both (_Picture-in-Picture)"
+msgstr "Her ikisi (_Resim-içinde-Resim)"
 
 #: ../src/gui/main.cpp:1074 ../src/gui/main.cpp:1080 ../src/gui/main.cpp:1087
 msgid "Both video images"
 msgstr "Her iki video görüntüsü"
 
 #: ../src/gui/main.cpp:1079
-msgid "Both (Side-by-Side)"
-msgstr "Her İkisi (Yan Yana)"
+msgid "Both (_Side-by-Side)"
+msgstr "Her ikisi (_Yan Yana)"
 
 #: ../src/gui/main.cpp:1086
-msgid "Both (Both in New Windows)"
-msgstr "Her İkisi (Her İkisi de Yeni Pencerede)"
+msgid "Both (_Both in New Windows)"
+msgstr "Her ikisi (_Her İkisi de Yeni Pencerede)"
 
-#: ../src/gui/main.cpp:1095 ../src/gui/main.cpp:1573 ../src/gui/main.cpp:1598
-msgid "Zoom In"
-msgstr "Yakınlaştır"
+#: ../src/gui/main.cpp:1095
+msgid "Zoom _In"
+msgstr "Yakınlaşt_ır"
 
 #: ../src/gui/main.cpp:1095 ../src/gui/main.cpp:1573 ../src/gui/main.cpp:1598
 msgid "Zoom in"
 msgstr "Yakınlaştır"
 
-#: ../src/gui/main.cpp:1099 ../src/gui/main.cpp:1577 ../src/gui/main.cpp:1602
-msgid "Zoom Out"
-msgstr "Uzaklaştır"
+#: ../src/gui/main.cpp:1099
+msgid "Zoom _Out"
+msgstr "_Uzaklaştır"
 
 #: ../src/gui/main.cpp:1099 ../src/gui/main.cpp:1577 ../src/gui/main.cpp:1602
 msgid "Zoom out"
 msgstr "Uzaklaştır"
 
-#: ../src/gui/main.cpp:1103 ../src/gui/main.cpp:1581 ../src/gui/main.cpp:1606
-msgid "Normal Size"
-msgstr "Normal Boyut"
+#: ../src/gui/main.cpp:1103
+msgid "_Normal Size"
+msgstr "_Normal boyut"
 
 #: ../src/gui/main.cpp:1103 ../src/gui/main.cpp:1581 ../src/gui/main.cpp:1606
 msgid "Normal size"
 msgstr "Normal boyut"
 
-#: ../src/gui/main.cpp:1109 ../src/gui/main.cpp:1587 ../src/gui/main.cpp:1612
-msgid "Fullscreen"
-msgstr "Tam ekran"
+#: ../src/gui/main.cpp:1109
+msgid "_Fullscreen"
+msgstr "_Tam ekran"
 
 #: ../src/gui/main.cpp:1115
 msgid "_Tools"
@@ -2964,17 +2969,25 @@ msgstr "So_hbet Penceresi"
 msgid "Open the chat window"
 msgstr "Sohbet penceresini aç"
 
+#: ../src/gui/main.cpp:1131
+msgid "_General History"
+msgstr "_Genel Geçmiş"
+
 #: ../src/gui/main.cpp:1132
 msgid "View the operations history"
 msgstr "İşlem geçmişini göster"
+
+#: ../src/gui/main.cpp:1136
+msgid "_Calls History"
+msgstr "_Arama Geçmişi"
 
 #: ../src/gui/main.cpp:1137 ../src/gui/statusicon.cpp:145
 msgid "View the calls history"
 msgstr "Arama geçmişini göster"
 
 #: ../src/gui/main.cpp:1144
-msgid "PC-To-Phone Account"
-msgstr "PC-Den-Telefona Hesabı"
+msgid "_PC-To-Phone Account"
+msgstr "_PC-Den-Telefona Hesabı"
 
 #: ../src/gui/main.cpp:1145
 msgid "Manage your PC-To-Phone account"
@@ -3004,6 +3017,10 @@ msgstr "_Hakkında"
 msgid "View information about Ekiga"
 msgstr "Ekiga hakkında bilgi göster"
 
+#: ../src/gui/main.cpp:1232
+msgid "Statistics"
+msgstr "İstatistikler"
+
 #: ../src/gui/main.cpp:1315
 msgid "Dialpad"
 msgstr "Tuş Takımı"
@@ -3031,6 +3048,22 @@ msgstr "Video"
 #: ../src/gui/main.cpp:1524
 msgid "Audio"
 msgstr "Ses"
+
+#: ../src/gui/main.cpp:1573 ../src/gui/main.cpp:1598
+msgid "Zoom In"
+msgstr "Yakınlaştır"
+
+#: ../src/gui/main.cpp:1577 ../src/gui/main.cpp:1602
+msgid "Zoom Out"
+msgstr "Uzaklaştır"
+
+#: ../src/gui/main.cpp:1581 ../src/gui/main.cpp:1606
+msgid "Normal Size"
+msgstr "Normal Boyut"
+
+#: ../src/gui/main.cpp:1587 ../src/gui/main.cpp:1612
+msgid "Fullscreen"
+msgstr "Tam ekran"
 
 #: ../src/gui/main.cpp:1775
 msgid "Notification area not detected"
@@ -3111,6 +3144,14 @@ msgstr "Uzaktaki Uygulama:"
 msgid "Ekiga"
 msgstr "Ekiga"
 
+#: ../src/gui/main.cpp:4218
+msgid "Local Video"
+msgstr "Yerel Video"
+
+#: ../src/gui/main.cpp:4225
+msgid "Remote Video"
+msgstr "Uzaktaki Video"
+
 #: ../src/gui/main.cpp:4476
 #, c-format
 msgid ""
@@ -3124,7 +3165,7 @@ msgstr ""
 "Bozuk paketler: %.1f %%\n"
 "Stres tamponu: %d ms"
 
-#: ../src/gui/main.cpp:4573
+#: ../src/gui/main.cpp:4574
 #, c-format
 msgid ""
 "Ekiga got an invalid value for the GConf key %s.\n"
@@ -3136,7 +3177,7 @@ msgid ""
 "the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list "
 "archives for more information (http://mail.gnome.org) about this problem."
 msgstr ""
-"Ekiga GConf anahtarı %s için geçersiz bir değer aldı. \n"
+"Ekiga yapılandırma anahtarı %s için geçersiz bir değer aldı. \n"
 "\n"
 "Muhtemelen GConf şemalarınız düzgün kurulmamış veya izinler doğru değil. \n"
 "\n"
@@ -3145,23 +3186,23 @@ msgstr ""
 "projects/gconf/) veya posta listesi arşivine (http://mail.gnome.org) göz "
 "atın."
 
-#: ../src/gui/main.cpp:4576
+#: ../src/gui/main.cpp:4577
 msgid "Gconf key error"
 msgstr "Gconf anahtar hatası"
 
-#: ../src/gui/main.cpp:4606 ../src/gui/main.cpp:4625
+#: ../src/gui/main.cpp:4608 ../src/gui/main.cpp:4627
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "Konsolda hata ayıklama iletilerini yazdırır (1 ve 6 arasında seviye)"
 
-#: ../src/gui/main.cpp:4609 ../src/gui/main.cpp:4630
+#: ../src/gui/main.cpp:4611 ../src/gui/main.cpp:4632
 msgid "Makes Ekiga call the given URL"
 msgstr "Ekiga'nın belirtilen URL'yi aramasını sağlar"
 
-#: ../src/gui/main.cpp:4663
+#: ../src/gui/main.cpp:4665
 msgid "No usable audio plugin detected"
 msgstr "Kullanılabilir ses eklentisi algılanamadı"
 
-#: ../src/gui/main.cpp:4663
+#: ../src/gui/main.cpp:4665
 msgid ""
 "Ekiga didn't find any usable audio plugin. Make sure that your installation "
 "is correct."
@@ -3203,11 +3244,11 @@ msgstr "E-_posta adresi:"
 
 #: ../src/gui/preferences.cpp:650
 msgid "Enter your e-mail address"
-msgstr "E-posta adresinizi giriniz"
+msgstr "E-posta adresinizi girin"
 
 #: ../src/gui/preferences.cpp:655
 msgid "_Comment:"
-msgstr "Açı_klama:"
+msgstr "_Yorum:"
 
 #: ../src/gui/preferences.cpp:657
 msgid "Enter a comment about yourself"
@@ -3215,7 +3256,7 @@ msgstr "Kendinizle ilgili açıklama giriniz"
 
 #: ../src/gui/preferences.cpp:662
 msgid "_Location:"
-msgstr "Ko_num:"
+msgstr "_Konum:"
 
 #: ../src/gui/preferences.cpp:664
 msgid "Enter your country or city"
@@ -3265,7 +3306,7 @@ msgstr "Kayıt yapılacak olan kullanıcı dizini sunucusu"
 
 #: ../src/gui/preferences.cpp:712
 msgid "Enable _registering"
-msgstr "Kaydolmayı _etkinleştir"
+msgstr "Kaydı etkinleşti_r"
 
 #: ../src/gui/preferences.cpp:712
 msgid "If enabled, register with the selected users directory"
@@ -3438,7 +3479,7 @@ msgstr "Öntanımlı _geçit:"
 
 #: ../src/gui/preferences.cpp:989 ../src/gui/preferences.cpp:1040
 msgid "Forward _URL:"
-msgstr "_URL'yi yönlendir:"
+msgstr "_URL'yi Yönlendir:"
 
 #: ../src/gui/preferences.cpp:998
 msgid "Advanced Settings"
@@ -3483,9 +3524,10 @@ msgid ""
 "\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (default is \"String"
 "\"). Choosing other values than \"String\" disables the Text Chat."
 msgstr ""
-"DMTF gönderimi için kip belirtmenizi sağlar. The values can be \"Dizgi"
-"\" (0), \"Ton\" (1), \"RFC2833\" (2), \"Q.931\" (3) (öntanımlı \"Dizgi\"). "
-"\"Dizgi\" dışında bir değer seçilirse Metin tabanlı Sohbet devre dışı kalır."
+"DTMF gönderimi için kip belirtmenizi sağlar. Değerler \"String\" (0), \"Tone"
+"\" (1), \"RFC2833\" (2), \"Q.931\" (3) (öntanımlı \"String\") olabilir. "
+"\"String\" seçeneğinden başka değerler seçmek Metin tabanlı Sohbeti devre "
+"dışı bırakır"
 
 #: ../src/gui/preferences.cpp:1037
 msgid "_Outbound Proxy:"
@@ -3496,8 +3538,8 @@ msgid ""
 "This permits to set the mode for DTMFs sending. The value can be \"RFC2833"
 "\" (0) only."
 msgstr ""
-"Bu DTMF gönderim kipini belirlemenizi sağlar. Değer sadece  \"RFC2833\" (0) "
-"olabilir."
+"DTMF gönderimi için kip seçimine izin verir. Değer olarak sadece \"RFC2833"
+"\" (0) alabilir "
 
 #: ../src/gui/preferences.cpp:1070
 msgid "Audio Plugin"
@@ -3531,7 +3573,7 @@ msgstr "_Aygıtları algıla"
 
 #: ../src/gui/preferences.cpp:1100
 msgid "Click here to refresh the devices list"
-msgstr "Aygıt listesini tazelemek için buraya tıklayınız"
+msgstr "Aygıt listesini tazelemek için buraya tıklayınız."
 
 #: ../src/gui/preferences.cpp:1126
 msgid "Normal"
@@ -3583,7 +3625,7 @@ msgid ""
 "Select the transmitted video size: Normal (QCIF 176x144) or Large (CIF "
 "352x288)"
 msgstr ""
-"İletilen görüntü büyüklüğünü seçiniz: Normal (QCIF 176x144) ya da Büyük (CIF "
+"İletilen video büyüklüğünü seçiniz: Normal (QCIF 176x144) ya da Büyük (CIF "
 "352x288)"
 
 #: ../src/gui/preferences.cpp:1178
@@ -3677,7 +3719,7 @@ msgstr "Bant Genişliği Kontrolü"
 
 #: ../src/gui/preferences.cpp:1301
 msgid "Maximum video _bandwidth (in kB/s):"
-msgstr "Azami görüntü _bant genişliği (kB/s olarak):"
+msgstr "En fazla video _bant genişliği (kB/s olarak):"
 
 #: ../src/gui/preferences.cpp:1301
 msgid ""
@@ -3685,9 +3727,10 @@ msgid ""
 "transmitted frames per second will be dynamically adjusted above their "
 "minimum during calls to try to minimize the bandwidth to the given value."
 msgstr ""
-"kbayt/s olarak en fazla video band genişliği. Video kalitesi ve saniyede "
-"iletilen çerçeve sayısı, aramalar süresince band genişliğini verilen değere "
-"azaltmak için aktif bir şekilde en düşüklerinin üstündekilere uygulanacak."
+"kbyte/s olarak en fazla video bant genişliği. Video kalitesi ve saniyede "
+"iletilen çerçeve sayısı (kodeğe bağlı), aramalar süresince bant genişliğini "
+"verilen değere getirmek için aktif bir şekilde en düşüklerinin üstündekilere "
+"uygulanacak."
 
 #: ../src/gui/preferences.cpp:1306
 msgid "Advanced Quality Settings"
@@ -3837,32 +3880,347 @@ msgstr "Hesap geçmişine başvur"
 msgid "Consult the calls history"
 msgstr "Arama geçmişine başvur"
 
-#~ msgid "Credits"
-#~ msgstr "Yazanlar"
+#~ msgid "Auto Away Timeout"
+#~ msgstr "Otomatik Uzakta Zaman Aşımı"
 
-#~ msgid "Written by"
-#~ msgstr "Yazan"
+#~ msgid "Contact status"
+#~ msgstr "Bağlantı durumu"
 
-#~ msgid "Documented by"
-#~ msgstr "Belgeleyen"
+#~ msgid "Disable video hardware acceleration"
+#~ msgstr "Donanımsal video hızlandırmayı etkisizleştir"
 
-#~ msgid "Translated by"
-#~ msgstr "Çeviren"
+#~ msgid "Maximum TX video bitrate"
+#~ msgstr "En büyük TX video bit oranı"
 
-#~ msgid "C_redits"
-#~ msgstr "_Yazanlar"
+#~ msgid "Position on the screen of the audio settings window"
+#~ msgstr "Ses ayarları penceresinin ekrandaki konumu"
 
-#~ msgid "Authors"
-#~ msgstr "Yazanlar"
+#~ msgid "Position on the screen of the video settings window"
+#~ msgstr "Video ayarları penceresinin ekrandaki konumu"
 
-#~ msgid "List of authors of the programs"
-#~ msgstr "Programı yazanların listesi"
+#~ msgid "Roster view saving group status"
+#~ msgstr "Grup kaydedilmesi durumu liste görünümü"
 
-#~ msgid "Documenter entry"
-#~ msgstr "Belge girişi"
+#~ msgid ""
+#~ "Select the contact status: 0 (Online), 1 (Offline), 2 (Unknown), 3 "
+#~ "(Away), 4 (DND), 5 (Free For Chat), 6 (Invisible)"
+#~ msgstr ""
+#~ "Bağlantı durumunu seçin:  0 (Çevrimiçi), 1 (Çevrimdışı), 2 (Bilinmiyor), "
+#~ "3 (Uzakta), 4 (DND), 5 (Sohbet için uygun), 6 (Görünmez)"
 
-#~ msgid "A single documenter entry"
-#~ msgstr "Tek bir belge girişi"
+#~ msgid "Size of the audio settings window"
+#~ msgstr "Ses ayarları penceresinin boyutu"
 
-#~ msgid "About %s"
-#~ msgstr "%s hakkında"
+#~ msgid "Size of the video settings window"
+#~ msgstr "Video ayarları penceresinin boyutu"
+
+#~ msgid "The Video Codecs List"
+#~ msgstr "Video Kodekleri Listesi"
+
+#~ msgid ""
+#~ "The maximum RX video bitrate in kbit/s. This value will be signaled to "
+#~ "the peer endpoint that can adjust (if it supports it) its TX bitrate if "
+#~ "it is above the signaled value"
+#~ msgstr ""
+#~ "kbit/s olarak en fazla RX video bit oranı. Bu değer uçnoktadaki aboneye "
+#~ "(eğer destekliyorsa) TX bit oranı bu değerin üstündeyse ayarlama "
+#~ "yapabilmesi için gönderilr."
+
+#~ msgid ""
+#~ "The maximum TX video bitrate in kbit/s. The video quality and the number "
+#~ "of transmitted frames per second (depends on selected codec) will be "
+#~ "dynamically adjusted above their minimum during calls to try to minimize "
+#~ "the bandwidth to the given value"
+#~ msgstr ""
+#~ "kbit/s olarak en fazla TX video bit oranı. Video kalitesi ve saniyede "
+#~ "iletilen çerçeve sayısı (seçili kodeğe bağlı), aramalar süresince bant "
+#~ "genişliğini verilen değere getirmek için aktif bir şekilde en "
+#~ "düşüklerinin üstündekilere uygulanacak"
+
+#~ msgid ""
+#~ "The transmitted frame rate in frames/s. Choose 25 for LAN and less for "
+#~ "slower connections"
+#~ msgstr ""
+#~ "Çerçeve/s cinsinden İletilen çerçeve oranı. LAN için 25, daha yavaş "
+#~ "bağlantılar için daha az seçin"
+
+#~ msgid "The video view before having switched to fullscreen"
+#~ msgstr "Tam ekrana geçmeden önceki video görünümü"
+
+#~ msgid ""
+#~ "The video view before having switched to fullscreen (same values as "
+#~ "video_view)"
+#~ msgstr ""
+#~ "Tam ekrana geçmeden önceki video görünümü (video_view ile aynı değer)"
+
+#~ msgid ""
+#~ "This key disables DirectX (on win32) and XVideo (on Linux) video hardware "
+#~ "acceleration"
+#~ msgstr ""
+#~ "Bu anahtar DirectX (win32 üzerinde) ve XVideo (Linux üzerinde) donanımsal "
+#~ "video hızlandırmayı etkisizleştirir"
+
+#~ msgid "Timeout after which the user is automatically set as away"
+#~ msgstr ""
+#~ "Sonrasında kullanıcı otomatik olarak uzakta işaretlenecek zaman aşımı"
+
+#~ msgid "_Remove"
+#~ msgstr "Kaldı_r"
+
+#~ msgid "Edit contact"
+#~ msgstr "Bağlantıyı düzenle"
+
+#~ msgid "Please update the following fields:"
+#~ msgstr "Lütfen takip eden alanları güncelleyin:"
+
+#~ msgid "_Home phone:"
+#~ msgstr "_Ev telefonu:"
+
+#~ msgid "_Office phone:"
+#~ msgstr "_Ofis telefonu:"
+
+#~ msgid "_Cell phone:"
+#~ msgstr "_Cep telefonu:"
+
+#, fuzzy
+#~ msgid "_Pager:"
+#~ msgstr "Çağrı cihazı:"
+
+#~ msgid "user found"
+#~ msgid_plural "users found"
+#~ msgstr[0] "Kullanıcı bulundu"
+
+#~ msgid "_Refresh"
+#~ msgstr "_Tazele"
+
+#~ msgid "_Name:"
+#~ msgstr "A_d:"
+
+#~ msgid "Create LDAP directory"
+#~ msgstr "Bir LDAP dizini yarat"
+
+#~ msgid "Please edit the following fields"
+#~ msgstr "Lütfen takip eden alanları düzenleyin"
+
+#~ msgid "_Scope"
+#~ msgstr "Kap_sam"
+
+#~ msgid "Could not contact server"
+#~ msgstr "Sunucuya ulaşılamadı"
+
+#, fuzzy
+#~ msgid "Could not search on"
+#~ msgstr "Üzerinde aranamadı"
+
+#~ msgid "Edit LDAP directory"
+#~ msgstr "LDAP dizini düzenle"
+
+#~ msgid "_Name"
+#~ msgstr "_Ad"
+
+#~ msgid "_Hostname"
+#~ msgstr "Maki_ne adı:"
+
+#~ msgid "_Port"
+#~ msgstr "_Port:"
+
+#~ msgid "_Base DN"
+#~ msgstr "_Temel DN:"
+
+#~ msgid "Call _Attribute"
+#~ msgstr "_Arama Özniteliği:"
+
+#~ msgid "Address Books"
+#~ msgstr "Adres Defterleri"
+
+#~ msgid "Find Contact"
+#~ msgstr "Bağlantı Bul"
+
+#~ msgid "Full Name"
+#~ msgstr "Tam Adı"
+
+#~ msgid "Unsorted"
+#~ msgstr "Sıralanmamış"
+
+#~ msgid "Edit roster element"
+#~ msgstr "Liste elemanını düzenle"
+
+#~ msgid ""
+#~ "Please fill in this form to change an existing element of ekiga's "
+#~ "internal roster"
+#~ msgstr ""
+#~ "Ekiga'nın dahili listesindeki bir elemanı değiştirmek için lütfen bu "
+#~ "formu doldurun"
+
+#~ msgid "Choose groups:"
+#~ msgstr "Grupları seçin:"
+
+#~ msgid "Add to local roster"
+#~ msgstr "Yerel listeye ekle"
+
+#~ msgid "Local roster"
+#~ msgstr "Yerel liste"
+
+#~ msgid ""
+#~ "Please fill in this form to add a new contact to ekiga's internal roster"
+#~ msgstr ""
+#~ "Ekiga'nın dahili listesine yeni bir bağlantı eklemek için lütfen bu formu "
+#~ "doldurun"
+
+#~ msgid "Address:"
+#~ msgstr "Adres:"
+
+#~ msgid "Put contact in groups:"
+#~ msgstr "Bağlantıyı gruplara yerleştir:"
+
+#~ msgid "You supplied an unsupported address"
+#~ msgstr "Desteklenmeyen bir adres verdiniz"
+
+#~ msgid "You already have a contact with this address!"
+#~ msgstr "Zaten bu adrese sahip bir bağlantıya sahipsiniz!"
+
+#~ msgid "Offline"
+#~ msgstr "Çevrimdışı"
+
+#~ msgid "Online"
+#~ msgstr "Çevrimiçi"
+
+#~ msgid "Away"
+#~ msgstr "Uzakta"
+
+#~ msgid "Free For Chat"
+#~ msgstr "Sohbet İçin Uygun"
+
+#~ msgid "Group"
+#~ msgstr "Grup"
+
+#~ msgid "Rename"
+#~ msgstr "Yeniden Adlandır"
+
+#~ msgid "Delete group %s?"
+#~ msgstr "%s grubu silinsin mi?"
+
+#~ msgid "Group deleted."
+#~ msgstr "Grup silindi."
+
+#~ msgid "Could not delete group!"
+#~ msgstr "Grup silinemedi!"
+
+#~ msgid "Rename group"
+#~ msgstr "Grubu yeniden adlandır"
+
+#~ msgid "Group renamed."
+#~ msgstr "Grup yeniden adlandırıldı."
+
+#~ msgid "Could not rename group!"
+#~ msgstr "Grup yeniden adlandırılamadı!"
+
+#~ msgid "Moving logo"
+#~ msgstr "Hareketli logo"
+
+#~ msgid "Static picture"
+#~ msgstr "Sabit resim"
+
+#~ msgid "Remote user is not available at this time"
+#~ msgstr "Uzaktaki kullanıcıya şu an ulaşılamıyor"
+
+#~ msgid "Local user is not available at this time"
+#~ msgstr "Yerel kullanıcıya şu an ulaşılamıyor"
+
+#~ msgid "A:%.1f/%.1f   V:%.1f/%.1f  FPS:%d/%d"
+#~ msgstr "A:%.1f/%.1f   V:%.1f/%.1f  FPS:%d/%d"
+
+#~ msgid "Registration of %s failed: %s"
+#~ msgstr "%s için kayıt başarısız: %s"
+
+#~ msgid "_Copy URI to Clipboard"
+#~ msgstr "URI'yi Panoya _Kopyala"
+
+#~ msgid "Invisible"
+#~ msgstr "Görünmez"
+
+#~ msgid "Find Contacts"
+#~ msgstr "Bağlantıları Bul"
+
+#~ msgid "_Online"
+#~ msgstr "Çe_vrimiçi"
+
+#~ msgid "_Away"
+#~ msgstr "Uz_akta"
+
+#~ msgid "Do Not _Disturb"
+#~ msgstr "Rahatsız _Etmeyin"
+
+#~ msgid "_Free For Chat"
+#~ msgstr "_Sohbet İçin Uygun"
+
+#~ msgid "Panel"
+#~ msgstr "Panel"
+
+#~ msgid "Con_tacts"
+#~ msgstr "Bağla_ntılar"
+
+#~ msgid "View the contacts list"
+#~ msgstr "Bağlantılar listesini göster"
+
+#~ msgid "Calls _History"
+#~ msgstr "Arama _Geçmişi"
+
+#~ msgid "View the call information"
+#~ msgstr "Arama bilgisini göster"
+
+#~ msgid "Picture-in-Picture in Separate Window"
+#~ msgstr "Resim-içinde-Resim Ayrı Pencerede"
+
+#~ msgid "_Find Contacts"
+#~ msgstr "Bağlantıları _Bul"
+
+#~ msgid "Change the volume of your soundcard"
+#~ msgstr "Ses kartınızın ses seviyesini değiştirin"
+
+#~ msgid "Change the color settings of your video device"
+#~ msgstr "Video aygıtınızın renk ayarlarını değiştirin"
+
+#~ msgid "Call"
+#~ msgstr "Ara"
+
+#~ msgid "TX: %dx%d "
+#~ msgstr "TX: %dx%d "
+
+#~ msgid "RX: %dx%d "
+#~ msgstr "RX: %dx%d "
+
+#~ msgid "No usable audio codecs detected"
+#~ msgstr "Kullanılabilir ses kodeki algılanamadı"
+
+#~ msgid ""
+#~ "Ekiga didn't find any usable audio codec. Make sure that your "
+#~ "installation is correct."
+#~ msgstr ""
+#~ "Ekiga kullanılabilir bir ses kodeki bulamadı. Kurulumunuzun doğru "
+#~ "olduğundan emin olun."
+
+#~ msgid "Configuration database corruption"
+#~ msgstr "Yapılandırma veritabanı bozukluğu"
+
+#~ msgid "Timeout after which the user is automatically set as away:"
+#~ msgstr "Kullanıcı otomatik olarak uzakta işaretlenmeden önceki zaman aşımı:"
+
+#~ msgid ""
+#~ "Automatically set the user as away after the timeout has elapsed (in "
+#~ "minutes)"
+#~ msgstr ""
+#~ "Zaman aşımından sonra (dakika olarak) kullanıcıyı otomatik olarak uzakta "
+#~ "işaretle"
+
+#~ msgid "This allows you to set the mode for DTMFs sending."
+#~ msgstr "DTMF gönderimi için kip seçimine izin verir."
+
+#~ msgid "INFO"
+#~ msgstr "INFO"
+
+#~ msgid "Available Video Codecs"
+#~ msgstr "Kullanılabilir Video Kodekleri"
+
+#~ msgid "Video Codecs Settings"
+#~ msgstr "Video Kodek Ayarları"
