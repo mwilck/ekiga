@@ -413,11 +413,11 @@ GSList *
 gnomemeeting_local_addressbook_get_contacts (GmAddressbook *addbook,
 					     int & nbr,
 					     gboolean partial_match,
-					     gchar *fullname,
-					     gchar *url,
-					     gchar *categorie,
-					     gchar *location,
-					     gchar *speeddial)
+					     const gchar *fullname,
+					     const gchar *url,
+					     const gchar *categorie,
+					     const gchar *location,
+					     const gchar *speeddial)
 {
   EBook *ebook = NULL;
   EBookQuery *query = NULL;

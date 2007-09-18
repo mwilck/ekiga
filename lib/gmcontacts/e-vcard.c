@@ -1586,7 +1586,7 @@ _evc_base64_encode_simple (const char *data, size_t len)
 
 	out = g_malloc (len * 4 / 3 + 5);
 	outlen = _evc_base64_encode_close ((unsigned char *)data, len, FALSE,
-				      out, &state, &save);
+                                           (unsigned char *)out, (int *) &state, (int *) &save);
 	out[outlen] = '\0';
 	return (char *)out;
 }

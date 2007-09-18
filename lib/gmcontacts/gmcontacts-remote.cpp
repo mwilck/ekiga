@@ -80,11 +80,11 @@ GSList *
 gnomemeeting_remote_addressbook_get_contacts (GmAddressbook *addressbook,
 					      int &nbr,
 					      gboolean partial_match,
-					      gchar *fullname,
-					      gchar *url,
-					      gchar *categorie,
-					      gchar *location,
-					      gchar *speeddial)
+					      const gchar *fullname,
+					      const gchar *url,
+					      const gchar *categorie,
+					      const gchar *location,
+					      const gchar *speeddial)
 {
   if (addressbook && gnomemeeting_addressbook_is_ldap (addressbook)) 
     return gnomemeeting_ldap_addressbook_get_contacts (addressbook,

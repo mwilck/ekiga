@@ -124,9 +124,9 @@ GSList *gm_conf_get_string_list (const gchar *);
 void gm_conf_destroy (const gchar *namespac);
 
 /* utility functions */
-gboolean gm_conf_is_key_writable (gchar *key);
-gchar *gm_conf_escape_key (gchar *key, gint len);
-gchar *gm_conf_unescape_key (gchar *key, gint len);
+gboolean gm_conf_is_key_writable (const gchar *key);
+gchar *gm_conf_escape_key (const gchar *key, gint len);
+gchar *gm_conf_unescape_key (const gchar *key, gint len);
 
 G_END_DECLS
 

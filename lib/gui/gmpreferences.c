@@ -99,9 +99,9 @@ tree_selection_changed_cb (GtkTreeSelection *selection,
 /* The public functions */
 GtkWidget *
 gnome_prefs_entry_new (GtkWidget *table,
-		       gchar *label_txt,
-		       gchar *conf_key,
-		       gchar *tooltip,
+		       const gchar *label_txt,
+		       const gchar *conf_key,
+		       const gchar *tooltip,
 		       int row,
 		       gboolean box)
 {
@@ -165,10 +165,10 @@ gnome_prefs_entry_new (GtkWidget *table,
   g_free (conf_string);
 
   g_signal_connect_after (G_OBJECT (entry), "focus-out-event",
-			  G_CALLBACK (entry_focus_changed), conf_key);
+			  G_CALLBACK (entry_focus_changed), (gpointer) conf_key);
 
   g_signal_connect_after (G_OBJECT (entry), "activate",
-			  G_CALLBACK (entry_activate_changed), conf_key);
+			  G_CALLBACK (entry_activate_changed), (gpointer) conf_key);
 
   gm_conf_notifier_add (conf_key, entry_changed_nt, (gpointer) entry);
 
@@ -190,9 +190,9 @@ gnome_prefs_entry_new (GtkWidget *table,
                                                                                
 GtkWidget *
 gnome_prefs_toggle_new (GtkWidget *table,
-			gchar *label_txt,
-			gchar *conf_key,
-			gchar *tooltip,
+			const gchar *label_txt,
+			const gchar *conf_key,
+			const gchar *tooltip,
 			int row)
 {
   GnomePrefsWindow *gpw = NULL;
@@ -237,10 +237,10 @@ gnome_prefs_toggle_new (GtkWidget *table,
 
 GtkWidget *
 gnome_prefs_scale_new (GtkWidget *table,       
-		       gchar *down_label_txt,
-		       gchar *up_label_txt,
-		       gchar *conf_key,       
-		       gchar *tooltip,
+		       const gchar *down_label_txt,
+		       const gchar *up_label_txt,
+		       const gchar *conf_key,       
+		       const gchar *tooltip,
 		       double min,
 		       double max,
 		       double step,
@@ -316,14 +316,14 @@ gnome_prefs_scale_new (GtkWidget *table,
 
 GtkWidget *
 gnome_prefs_spin_new (GtkWidget *table,       
-		      gchar *label_txt,
-		      gchar *conf_key,       
-		      gchar *tooltip,
+		      const gchar *label_txt,
+		      const gchar *conf_key,       
+		      const gchar *tooltip,
 		      double min,
 		      double max,
 		      double step,
 		      int row,
-		      gchar *label_txt2,
+		      const gchar *label_txt2,
 		      gboolean box)
 {
   GnomePrefsWindow *gpw = NULL;
@@ -412,15 +412,15 @@ gnome_prefs_spin_new (GtkWidget *table,
 
 void
 gnome_prefs_range_new (GtkWidget *table,
-		       gchar *label1_txt,
+		       const gchar *label1_txt,
 		       GtkWidget **spin1,
-		       gchar *label2_txt,
+		       const gchar *label2_txt,
 		       GtkWidget **spin2,
-		       gchar *label3_txt,
-		       gchar *spin1_conf_key,
-		       gchar *spin2_conf_key,
-		       gchar *spin1_tooltip,
-		       gchar *spin2_tooltip,
+		       const gchar *label3_txt,
+		       const gchar *spin1_conf_key,
+		       const gchar *spin2_conf_key,
+		       const gchar *spin1_tooltip,
+		       const gchar *spin2_tooltip,
 		       double spin1_min,
 		       double spin2_min,
 		       double spin1_max,
@@ -514,10 +514,10 @@ gnome_prefs_range_new (GtkWidget *table,
 
 GtkWidget *
 gnome_prefs_int_option_menu_new (GtkWidget *table,
-				 gchar *label_txt,
-				 gchar **options,
-				 gchar *conf_key,
-				 gchar *tooltip,
+				 const gchar *label_txt,
+				 const gchar **options,
+				 const gchar *conf_key,
+				 const gchar *tooltip,
 				 int row)
 {
   GnomePrefsWindow *gpw = NULL;
@@ -586,10 +586,10 @@ gnome_prefs_int_option_menu_new (GtkWidget *table,
 
 GtkWidget *
 gnome_prefs_string_option_menu_new (GtkWidget *table,       
-				    gchar *label_txt, 
-				    gchar **options,
-				    gchar *conf_key,       
-				    gchar *tooltip,         
+				    const gchar *label_txt, 
+				    const gchar **options,
+				    const gchar *conf_key,       
+				    const gchar *tooltip,         
 				    int row)       
 {
   GnomePrefsWindow *gpw = NULL;
@@ -675,8 +675,8 @@ gnome_prefs_string_option_menu_new (GtkWidget *table,
 
 void
 gnome_prefs_string_option_menu_update (GtkWidget *option_menu,
-				       gchar **options,
-				       gchar *conf_key)
+				       const gchar **options,
+				       const gchar *conf_key)
 {
   GtkWidget *menu = NULL;
   GtkWidget *item = NULL;
@@ -735,7 +735,7 @@ gnome_prefs_string_option_menu_update (GtkWidget *option_menu,
 GtkWidget *
 gnome_prefs_subsection_new (GtkWidget *window,
 			    GtkWidget *container,
-			    gchar *frame_name,       
+			    const gchar *frame_name,       
 			    int rows,
 			    int cols)      
 {
@@ -793,7 +793,7 @@ gnome_prefs_subsection_new (GtkWidget *window,
 
 
 GtkWidget *
-gnome_prefs_window_new (gchar *logo_name)
+gnome_prefs_window_new (const gchar *logo_name)
 {
   GnomePrefsWindow *gpw = NULL;
   
@@ -933,7 +933,7 @@ gnome_prefs_window_new (gchar *logo_name)
 
 void
 gnome_prefs_window_section_new (GtkWidget *window,
-				gchar *section_name)
+				const gchar *section_name)
 {
   GnomePrefsWindow *gpw = NULL;
   GtkTreeModel *model = NULL;
@@ -957,7 +957,7 @@ gnome_prefs_window_section_new (GtkWidget *window,
 
 GtkWidget *
 gnome_prefs_window_subsection_new (GtkWidget *window,
-				   gchar *section_name)
+				   const gchar *section_name)
 {
   GnomePrefsWindow *gpw = NULL;
   GtkWidget *container = NULL;

@@ -56,11 +56,11 @@ G_BEGIN_DECLS
 GSList *gnomemeeting_local_addressbook_get_contacts (GmAddressbook *,
 						     int &,
 						     gboolean,
-						     gchar *,
-						     gchar *,
-						     gchar *,
-						     gchar *,
-						     gchar *);
+						     const gchar *,
+						     const gchar *,
+						     const gchar *,
+						     const gchar *,
+						     const gchar *);
 
 
 gboolean gnomemeeting_local_addressbook_add (GmAddressbook *);

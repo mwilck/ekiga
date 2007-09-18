@@ -499,7 +499,7 @@ gtk_toggle_menu_enable (GtkWidget *e,
 
 void
 gtk_radio_menu_select_with_id (GtkWidget *menu,
-			       gchar *id,
+			       const gchar *id,
 			       int active)
 {
   GtkWidget *widget = NULL;

@@ -1339,7 +1339,7 @@ gnomemeeting_get_account (const char *domain)
 
 
 GmAccount *
-gnomemeeting_get_default_account (gchar *protocol)
+gnomemeeting_get_default_account (const gchar *protocol)
 {
   GmAccount *current_account = NULL;
 
@@ -1508,7 +1508,7 @@ gm_accounts_window_new ()
   GtkListStore *list_store = NULL;
   GtkTreeViewColumn *column = NULL;
 
-  gchar *column_names [] = {
+  const gchar *column_names [] = {
 
     "",
     "",

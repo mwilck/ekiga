@@ -140,7 +140,7 @@ GmAccount *gnomemeeting_get_account (const char *);
  * BEHAVIOR     : Returns the default account for the given protocol (if any).
  * PRE          : /
  */
-GmAccount *gnomemeeting_get_default_account (gchar *protocol);
+GmAccount *gnomemeeting_get_default_account (const gchar *protocol);
 
 	
 /* DESCRIPTION  : /

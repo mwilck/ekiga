@@ -61,11 +61,11 @@ GSList *gnomemeeting_get_ldap_addressbooks ();
 GSList *gnomemeeting_ldap_addressbook_get_contacts (GmAddressbook *,
 						    int &,
 						    gboolean,
-						    gchar *,
-						    gchar *,
-						    gchar *,
-						    gchar *,
-						    gchar *);
+						    const gchar *,
+						    const gchar *,
+						    const gchar *,
+						    const gchar *,
+						    const gchar *);
 
 G_END_DECLS
 

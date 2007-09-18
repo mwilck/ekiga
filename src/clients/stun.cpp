@@ -256,7 +256,7 @@ GMStunClient::~GMStunClient ()
 
 PString GMStunClient::GetNatName (int nat_type)
 {
-  char *name [] = 
+  const char *name [] = 
     { 
       N_("Unknown NAT"), 
       N_("Open NAT"),

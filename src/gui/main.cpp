@@ -240,9 +240,9 @@ static void gm_mw_init_audio_settings (GtkWidget *);
  */
 GtkWidget *gm_mw_video_window_new (GtkWidget *,
 				   gboolean,
-				   gchar *,
+				   const gchar *,
 				   GtkWidget *&,
-				   gchar *);
+				   const gchar *);
 
 
 #ifdef HAS_SDL
@@ -1249,14 +1249,14 @@ gm_mw_init_dialpad (GtkWidget *main_window)
 
   int i = 0;
 
-  char *key_n [] = { "1", "2", "3", "4", "5", "6", "7", "8", "9",
-		     "*", "0", "#"};
+  const char *key_n [] = { "1", "2", "3", "4", "5", "6", "7", "8", "9",
+    "*", "0", "#"};
   guint key_kp [] = { GDK_KP_1, GDK_KP_2, GDK_KP_3, GDK_KP_4, GDK_KP_5, 
-    		      GDK_KP_6, GDK_KP_7, GDK_KP_8, GDK_KP_9, GDK_KP_Multiply,
-		      GDK_KP_0, GDK_numbersign};
+    GDK_KP_6, GDK_KP_7, GDK_KP_8, GDK_KP_9, GDK_KP_Multiply,
+    GDK_KP_0, GDK_numbersign};
 
-  char *key_a []= { "  ", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv",
-		   "wxyz", "  ", "  ", "  "};
+  const char *key_a []= { "  ", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv",
+    "wxyz", "  ", "  ", "  "};
 
   gchar *text_label = NULL;
   
@@ -1531,9 +1531,9 @@ gm_mw_init_audio_settings (GtkWidget *main_window)
 GtkWidget *
 gm_mw_video_window_new (GtkWidget *main_window,
 			gboolean is_local,
-			gchar *title, 
+			const gchar *title, 
 			GtkWidget *&image,
-			gchar *window_name)
+			const gchar *window_name)
 {
   GmWindow *mw = NULL;
   

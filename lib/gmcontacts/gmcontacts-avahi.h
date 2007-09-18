@@ -61,11 +61,11 @@ GSList *gnomemeeting_get_zero_addressbooks ();
 GSList *gnomemeeting_zero_addressbook_get_contacts (GmAddressbook *,
 						    int &,
 						    gboolean,
-						    gchar *,
-						    gchar *,
-						    gchar *,
-						    gchar *,
-						    gchar *);
+						    const gchar *,
+						    const gchar *,
+						    const gchar *,
+						    const gchar *,
+						    const gchar *);
 
 
 void gnomemeeting_zero_addressbook_init ();
