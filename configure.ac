@@ -138,12 +138,9 @@ IT_PROG_INTLTOOL([0.35.0])
 dnl ###############################
 dnl   Mandatory GTK support
 dnl ###############################
-PKG_CHECK_MODULES(GTK, gtk+-2.0 >= 2.6.0)
+PKG_CHECK_MODULES(GTK, gtk+-2.0 >= 2.10.0)
 AC_SUBST(GTK_CFLAGS)
 AC_SUBST(GTK_LIBS)
-
-PKG_CHECK_EXISTS([gtk+-2.0 >= 2.10],[have_gtk_2_10=yes],[have_gtk_2_10=no])
-AM_CONDITIONAL([HAVE_GTK_2_10],[test "x$have_gtk_2_10" = "xyes"])
 
 
 dnl ###############################
