@@ -161,7 +161,8 @@ struct RefreshData
 /* actual implementation */
 
 OPENLDAP::Book::Book (Ekiga::ServiceCore &_core,
-		      xmlNodePtr _node): core(_core), node(_node)
+		      xmlNodePtr _node):
+  core(_core), node(_node), ldap_context(NULL), patience(0)
 {
   xmlChar *xml_str;
 
