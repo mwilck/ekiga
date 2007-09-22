@@ -392,10 +392,12 @@ $(LIBDIR)/libspeex.a: binaries $(SPEEX_DIR)/config.status
 ### ffmpeg
 update-sources::
 	echo --- Getting FFMPEG ---
-ifneq ("$(shell $(SVN) status $(SRCDIR)/$(FFMPEG_ARCHIVE) -u -q | head -n1 | cut -c1-6)", "Status")
-	$(SVN) co $(FFMPEG_URL) $(SRCDIR)/$(FFMPEG_ARCHIVE) -r $(FFMPEG_VER)
+ifneq ("$(shell $(SVN) co $(FFMPEG_URL) $(SRCDIR)/$(FFMPEG_ARCHIVE) -r $(FFMPEG_VER) |  cut -c1-7 | head -n5 | tail -n1 )", "Checked")
+	echo "Updated to revision $(FFMPEG_VER)"
 	touch $(SRCDIR)/$(FFMPEG_ARCHIVE)
-endif  
+else
+	echo "Already at revision $(FFMPEG_VER)"
+endif
 
 $(FFMPEG_DIR)/config.status: $(SRCDIR)/$(FFMPEG_ARCHIVE)
 	rm -rf $(FFMPEG_DIR)
@@ -418,10 +420,12 @@ $(BINDIR)/avcodec.dll: $(FFMPEG_DIR)/config.status
 ### x264
 update-sources:: 
 	echo --- Getting x264 ---
-ifneq ("$(shell $(SVN) status $(SRCDIR)/$(X264_ARCHIVE) -u -q | head -n1 | cut -c1-6)", "Status")
-	$(SVN) co $(X264_URL) $(SRCDIR)/$(X264_ARCHIVE) -r $(X264_VER)
+ifneq ("$(shell $(SVN) co $(X264_URL) $(SRCDIR)/$(X264_ARCHIVE) -r $(X264_VER) | cut -c1-7 | head -n1 )", "Checked")
+	echo "Updated to revision $(X264_VER)"
 	touch $(SRCDIR)/$(X264_ARCHIVE)
-endif  
+else
+	echo "Already at revision $(X264_VER)"
+endif
 
 $(X264_DIR)/config.status: $(SRCDIR)/$(X264_ARCHIVE)
 	rm -rf $(X264_DIR)
@@ -443,10 +447,12 @@ $(LIBDIR)/libx264.a: $(X264_DIR)/config.status
 ### theora
 update-sources:: 
 	echo --- Getting theora ---
-ifneq ("$(shell $(SVN) status $(SRCDIR)/$(THEORA_ARCHIVE) -u -q | head -n1 | cut -c1-6)", "Status")
-	$(SVN) co $(THEORA_URL) $(SRCDIR)/$(THEORA_ARCHIVE) -r $(THEORA_VER)
+ifneq ("$(shell $(SVN) co $(THEORA_URL) $(SRCDIR)/$(THEORA_ARCHIVE) -r $(THEORA_VER) | cut -c1-7 | head -n1 )", "Checked")
+	echo "Updated to revision $(THEORA_VER)"
 	touch $(SRCDIR)/$(THEORA_ARCHIVE)
-endif  
+else
+	echo "Already at revision $(THEORA_VER)"
+endif
 
 $(THEORA_DIR)/config.status: $(SRCDIR)/$(THEORA_ARCHIVE)
 	rm -rf $(THEORA_DIR)
@@ -496,7 +502,6 @@ $(LIBDIR)/libopal.a: binaries $(OPAL_DIR)/config.status
 update-sources::
 	echo --- Getting GTK2+ ...
 	$(WGET) -P $(SRCDIR) $(GTK_URL)/$(GTK_ARCHIVE)
-	touch $@
 
 $(LIBDIR)/pkgconfig/gtk+-2.0.pc: $(SRCDIR)/$(GTK_ARCHIVE)
 	unzip -u $(SRCDIR)/$(GTK_ARCHIVE) -d $(BUILDROOT)
