@@ -1,5 +1,31 @@
 2007-09-22  Matthias Schneider  <ma30002000@yahoo.de>
 
+	* src/devices/videooutput_gdk.h:
+	* src/devices/videooutput_gdk.cpp:
+	* src/devices/videooutput_dx.h:
+	* src/devices/videooutput_dx.cpp:
+	* src/devices/videooutput_xv.cpp:
+	* src/devices/videooutput_xv.h:
+	* src/devices/videoinput.cpp:
+	* src/devices/videooutput.cpp:
+	* src/devices/videooutput.h:
+	* src/endpoints/manager.cpp:
+	* src/gui/main.cpp:
+	* src/Makefile.am:
+	* src/common.h:
+	Rewrite of video output routines. More code sharing between GDK,
+	XV and DX. Additional Thread for displaying the video frames,
+	triggered by the local and/or remote PVideoOutputDevice. 
+	Syncronize to higher framerate. Enable preview and receive-only
+	video on win32. 
+	* lib/gui/dxwindow.h:
+	* lib/gui/dxwindow.cpp:
+	* lib/gui/xvwindow.h:
+	* lib/gui/xvwindow.cpp:
+	Align naming of functions. Minor fixes fpr embedded window on win32.
+
+2007-09-22  Matthias Schneider  <ma30002000@yahoo.de>
+
 	* win32/Makefile: Fixed update of SVN sources
 
 2007-09-21  Julien Puydt  <jpuydt@gnome.org>

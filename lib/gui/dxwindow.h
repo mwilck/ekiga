@@ -184,7 +184,7 @@ public:
                     unsigned int *windowWidth, 
                     unsigned int *windowHeight);
 
-    bool IsFullscreen ()  const 
+    bool IsFullScreen ()  const 
       { 
         return _state.fullscreen; 
       }

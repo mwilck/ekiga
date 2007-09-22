@@ -63,6 +63,8 @@ ekiga_SOURCES +=			\
 	devices/fakevideoinput.cpp	\
 	devices/videoinput.h		\
 	devices/videoinput.cpp		\
+	devices/videooutput.h           \
+	devices/videooutput.cpp         \
 	devices/videooutput_gdk.h       \
 	devices/videooutput_gdk.cpp
 

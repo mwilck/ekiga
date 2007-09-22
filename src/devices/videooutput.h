@@ -1,0 +1,160 @@
+
+/* Ekiga -- A VoIP and Video-Conferencing application
+ * Copyright (C) 2000-2006 Damien Sandras
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software Foundation,
+ * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
+ *
+ *
+ * Ekiga is licensed under the GPL license and as a special exception,
+ * you have permission to link or otherwise combine this program with the
+ * programs OPAL, OpenH323 and PWLIB, and distribute the combination,
+ * without applying the requirements of the GNU GPL to the OPAL, OpenH323
+ * and PWLIB programs, as long as you do follow the requirements of the
+ * GNU GPL for all the rest of the software thus combined.
+ */
+
+
+/*
+ *                         videooutput.h  -  description
+ *                         ----------------------------
+ *   begin                : Sat Feb 17 2001
+ *   copyright            : (C) 2000-2007 by Damien Sandras
+ *   description          : PVideoOutputDevice class to permit to display via 
+ *                          GMVideoDisplay class
+ *
+ */
+
+
+#ifndef _EKIGAVIDEOIO_H_
+#define _EKIGAVIDEOIO_H_
+
+#include "common.h"
+#include "videooutput_gdk.h"
+
+#if defined HAVE_XV
+#include "videooutput_xv.h"
+#endif
+
+#if defined HAVE_DX
+#include "videooutput_dx.h"
+#endif
+
+class GMManager;
+
+class PVideoOutputDevice_EKIGA : public PVideoOutputDevice
+{
+  PCLASSINFO(PVideoOutputDevice_EKIGA, PVideoOutputDevice);
+
+  public:
+
+  /* DESCRIPTION  :  The constructor.
+   * BEHAVIOR     :  /
+   * PRE          :  /
+   */
+  PVideoOutputDevice_EKIGA ();
+
+
+  /* DESCRIPTION  :  The destructor.
+   * BEHAVIOR     :  /
+   * PRE          :  /
+   */
+  ~PVideoOutputDevice_EKIGA ();
+
+  
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Open the device given the device name.
+   * PRE          :  Device name to open, immediately start device.
+   */
+  virtual BOOL Open (const PString &name,
+                     BOOL unused);
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Return a list of all of the drivers available.
+   * PRE          :  /
+   */
+  virtual PStringList GetDeviceNames() const;
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Get the maximum frame size in bytes.
+   * PRE          :  /
+   */
+  virtual PINDEX GetMaxFrameBytes() { return 352 * 288 * 3 * 2; }
+
+  
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Returns TRUE if the output device is open.
+   * PRE          :  /
+   */
+  virtual BOOL IsOpen ();
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  If data for the end frame is received, then we convert
+   *                 it to the correct colour format and we display it.
+   * PRE          :  x and y positions in the picture (>=0),
+   *                 width and height (>=0),
+   *                 the data, and a boolean indicating if it is the end
+   *                 frame or not.
+   */
+  virtual BOOL SetFrameData (unsigned x,
+                             unsigned y,
+                             unsigned width,
+                             unsigned height,
+                             const BYTE *data,
+                             BOOL endFrame);
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Returns TRUE if the colour format is supported (ie RGB24).
+   * PRE          :  /
+   */
+  virtual BOOL SetColourFormat (const PString &colour_format);
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Start displaying.
+   * PRE          :  /
+   */
+  virtual BOOL Start () { return TRUE; };
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Stop displaying.
+   * PRE          :  /
+   */
+  virtual BOOL Stop () { return TRUE; };
+
+ protected:
+
+#if defined HAVE_XV
+  static GMVideoDisplay_XV* videoDisplay;
+#elif defined HAVE_DX
+  static GMVideoDisplay_DX* videoDisplay;
+#else
+  static GMVideoDisplay_GDK* videoDisplay;
+#endif
+
+  static int devices_nbr; /* The number of devices opened */
+  int device_id;          /* The current device : local or remote */
+
+  static PMutex videoDisplay_mutex;  
+
+  BOOL is_active;
+
+  enum {REMOTE, LOCAL};
+
+};
+#endif

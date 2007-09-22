@@ -98,6 +98,7 @@ GMVideoGrabber::~GMVideoGrabber ()
 
   /* Wait for the Main () method to be terminated */
   PWaitAndSignal m(quit_mutex);
+  PTRACE(4, "GMVidGra\tGMVideoGrabber::~GMVideoGrabber ()"); //FIXME: There seems to be a problem in win32 at this point since 2.0.x
 }
 
 
@@ -438,8 +439,8 @@ GMVideoGrabber::VGOpen (void)
 
     var_mutex.Wait ();
 
-    display = PVideoOutputDevice::CreateDevice (VIDEO_DISPLAY);
-    display->Open (VIDEO_DISPLAY "IN", FALSE);
+    display = PVideoOutputDevice::CreateDevice ("EKIGA");
+    display->Open ("EKIGAIN", FALSE);
     display->SetFrameSizeConverter (width, height, FALSE);
     display->SetColourFormatConverter ("YUV420P");
 

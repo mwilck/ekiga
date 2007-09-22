@@ -30,7 +30,7 @@
  *                         videooutput_xv.h -  description
  *                         ----------------------------------
  *   begin                : Sun Nov 17 2006
- *   copyright            : (C) 2006 by Matthias Schneider
+ *   copyright            : (C) 2006-2007 by Matthias Schneider
  *                          (C) 2000-2007 by Damien Sandras
  *   description          : Class to allow video output to a XVideo
  *                          accelerated window
@@ -48,33 +48,22 @@
 
 class GMManager;
 
-
-class PVideoOutputDevice_XV : public PVideoOutputDevice_GDK
+class GMVideoDisplay_XV : public GMVideoDisplay_GDK
 {
-  PCLASSINFO(PVideoOutputDevice_XV, PVideoOutputDevice_GDK);
-
 public:
 
   /* DESCRIPTION  :  The constructor.
    * BEHAVIOR     :  /
    * PRE          :  /
    */
-  PVideoOutputDevice_XV ();
+  GMVideoDisplay_XV ();
 
 
   /* DESCRIPTION  :  The destructor.
    * BEHAVIOR     :  /
    * PRE          :  /
    */
-  ~PVideoOutputDevice_XV ();
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Open the device given the device name.
-   * PRE          :  Device name to open, immediately start device.
-   */
-  virtual BOOL Open (const PString &name,
-                     BOOL unused);
+  virtual ~GMVideoDisplay_XV ();
 
 
   /* DESCRIPTION  :  /
@@ -89,7 +78,19 @@ public:
                                   guint rf_width, 
                                   guint rf_height, 
                                   double zoom);
-
+  
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Returns TRUE if the given settings require a
+   *                 reinitialization of the display, FALSE 
+   *                 otherwise.
+   * PRE          :  /
+   */
+  virtual BOOL FrameDisplayChangeNeeded (int display, 
+                                         guint lf_width, 
+                                         guint lf_height, 
+                                         guint rf_width, 
+                                         guint rf_height, 
+                                         double zoom);
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Closes the frame display and returns FALSE 
@@ -99,50 +100,32 @@ public:
   virtual BOOL CloseFrameDisplay ();
 
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  If data for the end frame is received, then we convert
-   *                 it to the correct colour format and we display it.
-   * PRE          :  x and y positions in the picture (>=0),
-   *                 width and height (>=0),
-   *                 the data, and a boolean indicating if it is the end
-   *                 frame or not.
+   * BEHAVIOR     :  Display the given frame on the correct display.
+   * PRE          :  The display needs to be initialized using 
+   *                 SetupFrameDisplay. 
    */
-  virtual BOOL SetFrameData (unsigned x,
-                             unsigned y,
-                             unsigned width,
-                             unsigned height,
-                             const BYTE *data,
-                             BOOL endFrame);
+  virtual void DisplayFrame (gpointer image,
+                             const guchar *frame,
+                             guint width,
+                             guint height,
+                             double zoom);
 
 
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Start displaying.
-   * PRE          :  /
+   * BEHAVIOR     :  Display the given frames as Picture in Picture.
+   * PRE          :  The display needs to be initialized using 
+   *                 SetupFrameDisplay. 
    */
-  virtual BOOL Start () { return TRUE; };
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Stop displaying.
-   * PRE          :  /
-   */
-  virtual BOOL Stop () { return TRUE; };
-
+  virtual void DisplayPiPFrames (gpointer image,
+                                 const guchar *lframe,
+                                 guint lwidth,
+                                 guint lheight,
+                                 const guchar *rframe,
+                                 guint rwidth,
+                                 guint rheight,
+                                 double zoom);
 
 protected:
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Redraw the frame given as parameter.
-   * PRE          :  /
-   */
-  virtual BOOL Redraw (int display, 
-                       double zoom);
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Updates Menu sensitvity and converts 1st frame
-   *                 to RGB when going into fallback
-   * PRE          :  /
-   */
-  virtual void doFallback ();
 
   XVWindow *lxvWindow;
   XVWindow *rxvWindow;
@@ -151,7 +134,5 @@ protected:
   Display *rDisplay;
 
   GdkGC *embGC;
-
-  static BOOL fallback;
 };
 #endif

@@ -103,7 +103,7 @@ public:
                   unsigned int *windowWidth, 
                   unsigned int *windowHeight);
 
-  bool isFullScreen () const { return _state.fullscreen; };
+  bool IsFullScreen () const { return _state.fullscreen; };
  
   bool HasDecoration () const { return _state.decoration; };
 

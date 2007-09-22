@@ -30,7 +30,7 @@
  *                         videooutput_xv.cpp -  description
  *                         ----------------------------------
  *   begin                : Sun Nov 19 2006
- *   copyright            : (C) 2006 by Matthias Schneider
+ *   copyright            : (C) 2006-2007 by Matthias Schneider
  *                          (C) 2000-2007 by Damien Sandras
  *   description          : Class to allow video output to a XVideo
  *                          accelerated window
@@ -56,36 +56,9 @@
 
 #include <gdk/gdkx.h>
 
-BOOL PVideoOutputDevice_XV::fallback = FALSE;
-
-/* Plugin definition */
-class PVideoOutputDevice_XV_PluginServiceDescriptor 
-: public PDevicePluginServiceDescriptor
-{
-  public:
-    virtual PObject *CreateInstance (int) const 
-      {
-	return new PVideoOutputDevice_XV (); 
-      }
-    
-    
-    virtual PStringList GetDeviceNames (int) const 
-      { 
-	return PStringList ("XV"); 
-      }
-    
-    virtual bool ValidateDeviceName (const PString & deviceName, 
-				     int) const 
-      { 
-	return deviceName.Find ("XV") == 0; 
-      }
-} PVideoOutputDevice_XV_descriptor;
-
-PCREATE_PLUGIN(XV, PVideoOutputDevice, &PVideoOutputDevice_XV_descriptor);
-
 
 /* The Methods */
-PVideoOutputDevice_XV::PVideoOutputDevice_XV ()
+GMVideoDisplay_XV::GMVideoDisplay_XV ()
 { 
   /* Internal stuff */
   lxvWindow = NULL;
@@ -96,39 +69,27 @@ PVideoOutputDevice_XV::PVideoOutputDevice_XV ()
   embGC = NULL;
 
   fallback = FALSE;
-
-  numberOfFrames = 0;
 }
 
 
-PVideoOutputDevice_XV::~PVideoOutputDevice_XV()
+GMVideoDisplay_XV::~GMVideoDisplay_XV()
 {
-
-  CloseFrameDisplay ();
+  stop = TRUE;
+  /* Wait for the Main () method to be terminated */
+  frame_available_sync_point.Signal();
+  PWaitAndSignal m(quit_mutex);
 
   if (embGC)
     gdk_gc_destroy(embGC);
-    
+
   if (lDisplay) 
     XCloseDisplay (lDisplay);
   if (rDisplay)
     XCloseDisplay (rDisplay);
 }
 
-
 BOOL 
-PVideoOutputDevice_XV::Open (const PString &name, 
-                             BOOL unused)
-{
-  if (name == "XVIN") 
-    device_id = 1; 
-
-  return TRUE; 
-}
-
-
-BOOL 
-PVideoOutputDevice_XV::SetupFrameDisplay (int display, 
+GMVideoDisplay_XV::SetupFrameDisplay (int display, 
                                           guint lf_width, 
                                           guint lf_height, 
                                           guint rf_width, 
@@ -142,7 +103,7 @@ PVideoOutputDevice_XV::SetupFrameDisplay (int display,
   BOOL stay_on_top = FALSE;
 
   if (fallback)
-    return PVideoOutputDevice_GDK::SetupFrameDisplay (display, lf_width, lf_height,
+    return GMVideoDisplay_GDK::SetupFrameDisplay (display, lf_width, lf_height,
                                                       rf_width, rf_height, zoom);
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
@@ -152,7 +113,7 @@ PVideoOutputDevice_XV::SetupFrameDisplay (int display,
 
   if (gm_conf_get_bool (VIDEO_DISPLAY_KEY "disable_hw_accel")) {
 
-    PTRACE (1, "PVideoOutputDevice_XV\tXVideo Hardware acceleration disabled by configuration - falling back to GDK rendering");
+    PTRACE (1, "GMVideoDisplay_XV\tXVideo Hardware acceleration disabled by configuration - falling back to GDK rendering");
     return FALSE;
   }
 
@@ -263,7 +224,7 @@ PVideoOutputDevice_XV::SetupFrameDisplay (int display,
       else {
         delete lxvWindow;
         lxvWindow = NULL;
-        PTRACE (1, "PVideoOutputDevice_XV\tPIP creation failed");
+        PTRACE (1, "GMVideoDisplay_XV\tPIP creation failed");
       }
     }
 
@@ -285,7 +246,7 @@ PVideoOutputDevice_XV::SetupFrameDisplay (int display,
     return FALSE;
     break;
   }
-  PTRACE (4, "PVideoOutputDevice_XV\tSetup display " << display << " with zoom value of " << zoom << " : " << (ret ? "Success" : "Failure"));
+  PTRACE (4, "GMVideoDisplay_XV\tSetup display " << display << " with zoom value of " << zoom << " : " << (ret ? "Success" : "Failure"));
 
   if (stay_on_top) {
 
@@ -303,10 +264,10 @@ PVideoOutputDevice_XV::SetupFrameDisplay (int display,
 
 
 BOOL 
-PVideoOutputDevice_XV::CloseFrameDisplay ()
+GMVideoDisplay_XV::CloseFrameDisplay ()
 {
   if (fallback)
-    return PVideoOutputDevice_GDK::CloseFrameDisplay ();
+    return GMVideoDisplay_GDK::CloseFrameDisplay ();
 
   if (rxvWindow) 
     rxvWindow->RegisterSlave (NULL);
@@ -326,140 +287,79 @@ PVideoOutputDevice_XV::CloseFrameDisplay ()
   return TRUE;
 }
 
-BOOL PVideoOutputDevice_XV::Redraw (int display,
-                                    double zoom)
+BOOL 
+GMVideoDisplay_XV::FrameDisplayChangeNeeded (int display, 
+                                                  guint lf_width, 
+                                                  guint lf_height, 
+                                                  guint rf_width, 
+                                                  guint rf_height, 
+                                                  double zoom)
 {
-  BOOL ret = TRUE; 
-  GtkWidget *main_window = NULL;
-
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-
-  if (fallback)
-    return PVideoOutputDevice_GDK::Redraw (display, zoom);
-
-  if (device_id == LOCAL) {
-
-    gnomemeeting_threads_enter ();
-    switch (display) 
-      {
-      case LOCAL_VIDEO:
-          if (FrameDisplayChangeNeeded (display, lf_width, lf_height, rf_width, rf_height, zoom) || !lxvWindow) 
-            ret = SetupFrameDisplay (display, lf_width, lf_height, rf_width, rf_height, zoom); 
-
-          if (ret && lxvWindow && (lframeStore.GetSize() > 0 ))
-            lxvWindow->PutFrame ((uint8_t *) lframeStore.GetPointer (), lf_width, lf_height);
-        break;
-
-      case REMOTE_VIDEO:
-          if (FrameDisplayChangeNeeded (display, lf_width, lf_height, rf_width, rf_height, zoom) || !rxvWindow) 
-            ret = SetupFrameDisplay (display, lf_width, lf_height, rf_width, rf_height, zoom);
-
-          if (ret && rxvWindow  && (rframeStore.GetSize () > 0))
-            rxvWindow->PutFrame ((uint8_t *) rframeStore.GetPointer (), rf_width, rf_height);
-        break;
-
-      case FULLSCREEN:
-      case PIP:
-      case PIP_WINDOW:
-          if (FrameDisplayChangeNeeded (display, lf_width, lf_height, rf_width, rf_height, zoom) 
-              || !rxvWindow || !lxvWindow)
-              ret = SetupFrameDisplay (display, lf_width, lf_height, rf_width, rf_height, zoom);
-
-          if (display == FULLSCREEN && rxvWindow && !rxvWindow->isFullScreen ()) {
-
-            gm_main_window_toggle_fullscreen(main_window);
-          }
-
-          if (ret && rxvWindow && (rframeStore.GetSize () > 0))
-            rxvWindow->PutFrame ((uint8_t *) rframeStore.GetPointer (), rf_width, rf_height);
-
-          if (ret && lxvWindow && (lframeStore.GetSize() > 0 ))
-            lxvWindow->PutFrame ((uint8_t *) lframeStore.GetPointer (), lf_width, lf_height);
-        break;
-      }
-    gnomemeeting_threads_leave ();
+  switch (display) 
+  {
+    case LOCAL_VIDEO:
+         if (!lxvWindow) 
+           return TRUE;
+         break;
+    case REMOTE_VIDEO:
+         if (!rxvWindow) 
+           return TRUE;
+         break;
+    case FULLSCREEN:
+    case PIP:
+    case PIP_WINDOW:
+         if (!rxvWindow || !lxvWindow)
+            return TRUE;
+         break;
   }
-
-  if (!ret) {
-
-    PTRACE (4, "PVideoOutputDevice_XV\tFalling back to GDK Rendering");
-    doFallback();
-    return PVideoOutputDevice_GDK::Redraw (display, zoom);
-  }
-
-  return TRUE;
+  return GMVideoDisplay_GDK::FrameDisplayChangeNeeded (display, lf_width, lf_height, rf_width, rf_height, zoom);
 }
 
-void
-PVideoOutputDevice_XV::doFallback ()
+void 
+GMVideoDisplay_XV::DisplayFrame (gpointer gtk_image,
+                                      const guchar *frame,
+                                      guint width,
+                                      guint height,
+                                      double zoom)
+{
+  if (fallback) {
+     GMVideoDisplay_GDK::DisplayFrame (image, frame, width, height, zoom);
+    return;
+  }
+
+  if  ((currentFrame.display == LOCAL_VIDEO) && (lxvWindow))
+    lxvWindow->PutFrame ((uint8_t *) frame, width, height);
+
+  if  ((currentFrame.display == REMOTE_VIDEO) && (rxvWindow))
+    rxvWindow->PutFrame ((uint8_t *) frame, width, height);
+}
+
+void 
+GMVideoDisplay_XV::DisplayPiPFrames (gpointer gtk_image,
+                                          const guchar *lframe,
+                                          guint lwidth,
+                                          guint lheight,
+                                          const guchar *rframe,
+                                          guint rwidth,
+                                          guint rheight,
+                                          double zoom)
 {
   GtkWidget *main_window = NULL;
-  PBYTEArray tempBuffer; // cannot do conversion in place
-
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
 
-  gnomemeeting_threads_enter ();
-  gm_main_window_fullscreen_menu_update_sensitivity (main_window, FALSE); 
-  gnomemeeting_threads_leave ();
-
-  fallback = TRUE;
-
-  if (device_id == LOCAL) {
-    tempBuffer.SetSize (lf_width * lf_height * 3);
-    memcpy (tempBuffer.GetPointer(), lframeStore.GetPointer(), (lf_width * lf_height * 3) >> 1); 
-    if (converter)
-      converter->Convert (tempBuffer.GetPointer(), lframeStore.GetPointer ());
+  if (fallback) {
+     GMVideoDisplay_GDK::DisplayPiPFrames (image, lframe, lwidth, rheight,
+                                               rframe, rwidth, rheight, zoom);
   }
-  else {
-    tempBuffer.SetSize (rf_width * rf_height * 3);
-    memcpy (tempBuffer.GetPointer(), rframeStore.GetPointer(), (rf_width * rf_height * 3) >> 1); 
-    if (converter)
-      converter->Convert (tempBuffer.GetPointer(), rframeStore.GetPointer ());
+
+  if (currentFrame.display == FULLSCREEN && rxvWindow && !rxvWindow->IsFullScreen ()) {
+
+    gm_main_window_toggle_fullscreen(main_window);
   }
+
+  if (rxvWindow )
+    rxvWindow->PutFrame ((uint8_t *) rframe, rwidth, rheight);
+
+  if (lxvWindow)
+    lxvWindow->PutFrame ((uint8_t *) lframe, lwidth, lheight);
 }
-
-
-BOOL PVideoOutputDevice_XV::SetFrameData (unsigned x,
-                                          unsigned y,
-                                          unsigned width,
-                                          unsigned height,
-                                          const BYTE * data,
-                                          BOOL endFrame)
-{
-  if (fallback)
-    return PVideoOutputDevice_GDK::SetFrameData (x, y, width, height, data, endFrame);
-
-  numberOfFrames++;
-
-  if (x > 0 || y > 0)
-    return FALSE;
-
-  if (width < 160 || width > 2048) 
-    return FALSE;
-  
-  if (height <120 || height > 2048) 
-    return FALSE;
-
-  if (!endFrame)
-    return FALSE;
-
-  if (device_id == LOCAL) {
-
-    lframeStore.SetSize (width * height * 3);
-    lf_width = width;
-    lf_height = height;
-
-    memcpy (lframeStore.GetPointer(), data, (width * height * 3) >> 1); 
-  }
-  else {
-
-    rframeStore.SetSize (width * height * 3);
-    rf_width = width;
-    rf_height = height;
-
-    memcpy (rframeStore.GetPointer(), data, (width * height * 3) >> 1); 
-  }
-  
-  return EndFrame ();
-}
-

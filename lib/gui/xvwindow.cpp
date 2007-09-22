@@ -369,11 +369,11 @@ XVWindow::PutFrame (uint8_t* frame,
             break;
           case 9:   
             if (_master) { 
-              if (_master->isFullScreen ()) 
+              if (_master->IsFullScreen ()) 
                 _master->ToggleFullscreen(); 
             } // esc
             else { 
-              if (isFullScreen ()) 
+              if (IsFullScreen ()) 
                 ToggleFullscreen(); 
             }
             break;

@@ -53,14 +53,6 @@
 #include <glib.h>
 #include <gtk/gtk.h>
 
-#ifdef HAVE_XV
-#define VIDEO_DISPLAY "XV"
-#elif defined HAVE_DX
-#define VIDEO_DISPLAY "DX"
-#else
-#define VIDEO_DISPLAY "GDK"
-#endif
-
 #define GENERAL_KEY         "/apps/" PACKAGE_NAME "/general/"
 #define USER_INTERFACE_KEY "/apps/" PACKAGE_NAME "/general/user_interface/"
 #define VIDEO_DISPLAY_KEY USER_INTERFACE_KEY "video_display/"

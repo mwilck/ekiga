@@ -150,7 +150,10 @@ DXWindow::Init (HWND rootWindow,
   DDSURFACEDESC ddSurfaceDesc;
 
   // the window always seems to be 4 pixels short, ugly hack
-  windowWidth += 4; windowHeight += 4;
+  if (!rootWindow) {
+    windowWidth += 4;
+    windowHeight += 4;
+  }
 
   char errormsg [1024];	
   memset (&errormsg, 0, sizeof (errormsg));
@@ -308,12 +311,13 @@ DXWindow::Init (HWND rootWindow,
   }
 
   PTRACE(4, "DirectX\tShowing Window");
-  ShowWindow (_DXWindow, SW_SHOW);
-
-  if (_embedded) 
+  if (_embedded) {
     SetWindow (x,y,windowWidth, windowHeight); 
-  else 
+  }
+  else {
+    ShowWindow (_DXWindow, SW_SHOW);
     SetOverlayToWindow ();
+  }
 
   PTRACE(4, "DirectX\tLeaving Init");
   return true;	

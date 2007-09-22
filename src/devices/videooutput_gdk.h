@@ -27,12 +27,12 @@
 
 
 /*
- *                         gdkvideoio.h  -  description
+ *                         videooutput_gdk.h  -  description
  *                         ----------------------------
  *   begin                : Sat Feb 17 2001
- *   copyright            : (C) 2000-2006 by Damien Sandras
- *   description          : Class to permit to display in GDK Drawing Area or
- *                          SDL.
+ *   copyright            : (C) 2000-2007 by Damien Sandras
+ *                          (C)      2007 by Matthias Schneider
+ *   description          : Class to permit to display in GDK Drawing Area
  *
  */
 
@@ -44,7 +44,7 @@
 
 class GMManager;
 
-typedef struct _LastFrame
+typedef struct _FrameInfo
 {
   int display;
   unsigned int remoteWidth;
@@ -57,56 +57,62 @@ typedef struct _LastFrame
 
   int embeddedX;
   int embeddedY;
-} LastFrame;
+} FrameInfo;
 
-
-class PVideoOutputDevice_GDK : public PVideoOutputDevice
+class GMVideoDisplay_GDK : public PThread
 {
-  PCLASSINFO(PVideoOutputDevice_GDK, PVideoOutputDevice);
+  PCLASSINFO(GMVideoDisplay_GDK, PThread);
 
-  public:
+ public:
 
   /* DESCRIPTION  :  The constructor.
-   * BEHAVIOR     :  /
-   * PRE          :  /
+   * BEHAVIOR     :  Initialises the VideoGrabber, the VideoGrabber is opened
+   *                 asynchronously given the config parameters. If the opening
+   *                 fails, an error popup is displayed.
+   * PRE          :  First parameter is TRUE if the VideoGrabber must grab
+   *                 once opened. The second one is TRUE if the VideoGrabber
+   *                 must be opened synchronously. The last one is a 
+   *                 reference to the GMManager.
    */
-  PVideoOutputDevice_GDK ();
+  GMVideoDisplay_GDK ();
 
 
   /* DESCRIPTION  :  The destructor.
    * BEHAVIOR     :  /
    * PRE          :  /
    */
-  ~PVideoOutputDevice_GDK ();
-
-  
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Open the device given the device name.
-   * PRE          :  Device name to open, immediately start device.
-   */
-  virtual BOOL Open (const PString &name,
-                     BOOL unused);
-
+  virtual ~GMVideoDisplay_GDK (void);
 
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Return a list of all of the drivers available.
-   * PRE          :  /
+   * BEHAVIOR     :  If data for the end frame is received, then we convert
+   *                 it to the correct colour format and we display it.
+   * PRE          :  x and y positions in the picture (>=0),
+   *                 width and height (>=0),
+   *                 the data, and a boolean indicating if it is the end
+   *                 frame or not.
    */
-  virtual PStringList GetDeviceNames() const;
-
+  virtual void SetFrameData (unsigned x,
+                             unsigned y,
+                             unsigned width,
+                             unsigned height,
+                             const BYTE *data,
+                             PColourConverter* setConverter,
+                             BOOL local,
+                             int display,
+                             double zoom);
 
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Get the maximum frame size in bytes.
-   * PRE          :  /
+   * BEHAVIOR     :  If data for the end frame is received, then we convert
+   *                 it to the correct colour format and we display it.
+   * PRE          :  x and y positions in the picture (>=0),
+   *                 width and height (>=0),
+   *                 the data, and a boolean indicating if it is the end
+   *                 frame or not.
    */
-  virtual PINDEX GetMaxFrameBytes() { return 352 * 288 * 3 * 2; }
+  virtual void SetFallback  (BOOL newFallback);
 
-  
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Returns TRUE if the output device is open.
-   * PRE          :  /
-   */
-  virtual BOOL IsOpen ();
+ protected:
+  void Main (void);
 
 
   /* DESCRIPTION  :  /
@@ -136,14 +142,12 @@ class PVideoOutputDevice_GDK : public PVideoOutputDevice
                                          guint rf_height, 
                                          double zoom);
 
-
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Closes the frame display and returns FALSE 
    *                 in case of failure.
    * PRE          :  /
    */
   virtual BOOL CloseFrameDisplay ();
-
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Display the given frame on the correct display.
@@ -171,83 +175,48 @@ class PVideoOutputDevice_GDK : public PVideoOutputDevice
                                  guint rheight,
                                  double zoom);
 
-
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  If data for the end frame is received, then we convert
-   *                 it to the correct colour format and we display it.
-   * PRE          :  x and y positions in the picture (>=0),
-   *                 width and height (>=0),
-   *                 the data, and a boolean indicating if it is the end
-   *                 frame or not.
-   */
-  virtual BOOL SetFrameData (unsigned x,
-                             unsigned y,
-                             unsigned width,
-                             unsigned height,
-                             const BYTE *data,
-                             BOOL endFrame);
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Returns TRUE if the colour format is supported (ie RGB24).
+   * BEHAVIOR     :  Redraw the frame.
    * PRE          :  /
    */
-  virtual BOOL SetColourFormat (const PString &colour_format);
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Displays the current frame.
-   * PRE          :  /
-   */
-  virtual BOOL EndFrame();
-
+  virtual void Redraw ();
 
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Start displaying.
+   * BEHAVIOR     :  Used by derived functions to convert current
+   *                 frame to RGB
    * PRE          :  /
    */
-  virtual BOOL Start () { return TRUE; };
+  virtual void doFallback ();
 
+  PBYTEArray lframeStore;
+  PBYTEArray rframeStore;
 
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Stop displaying.
-   * PRE          :  /
-   */
-  virtual BOOL Stop () { return TRUE; };
-
- protected:
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Redraw the frame given as parameter.
-   * PRE          :  /
-   */
-  virtual BOOL Redraw (int display, 
-                       double zoom);
-
-  static int devices_nbr; /* The number of devices opened */
-  int device_id;          /* The current device : encoding or not */
-  int display_config;     /* Current display : local or remote or both */
-
-  PMutex redraw_mutex;
-
-  static PBYTEArray lframeStore;
-  static PBYTEArray rframeStore;
-
-  static int lf_width;
-  static int lf_height;
-  static int rf_width;
-  static int rf_height;
-  
-  BOOL start_in_fullscreen;
-  BOOL is_open;
-  BOOL is_active;
+  PColourConverter* converter;
 
   GtkWidget *window;
   GtkWidget *image;
 
-  enum {REMOTE, LOCAL};
+  FrameInfo lastFrame;
+  FrameInfo currentFrame;
 
-  LastFrame lastFrame;
+  BOOL fallback;
+  BOOL stop;
+  BOOL first_frame_received;
+
+  PMutex var_mutex;      /* To protect variables that are read and written
+			    from various threads */
+  PMutex quit_mutex;     /* To exit */
+  PSyncPoint frame_available_sync_point;     /* To signal a new frame has to be displayed  */
+  PSyncPoint thread_sync_point;              /* To signal that the thread has been created */
+
+  /* For fps statistics */
+  PTime lastLocalIntervalTime;
+  PTime lastRemoteIntervalTime;
+  unsigned localInterval;
+  unsigned remoteInterval;
+  unsigned numberOfLocalFrames;
+  unsigned numberOfRemoteFrames;
 };
+
+
 #endif

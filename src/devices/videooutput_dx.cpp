@@ -30,7 +30,7 @@
  *                         videooutput_dx.cpp -  description
  *                         ----------------------------------
  *   begin                : Sun Nov 19 2006
- *   copyright            : (C) 2006 by Matthias Schneider
+ *   copyright            : (C) 2006-2007 by Matthias Schneider
  *                          (C) 2000-2007 by Damien Sandras
  *   description          : Class to allow video output to a DirectX
  *                          accelerated window
@@ -56,70 +56,28 @@
 
 #include <gtk-2.0/gdk/gdkwin32.h>
 
-BOOL PVideoOutputDevice_DX::fallback = FALSE;
-
-/* Plugin definition */
-class PVideoOutputDevice_DX_PluginServiceDescriptor 
-: public PDevicePluginServiceDescriptor
-{
-  public:
-    virtual PObject *CreateInstance (int) const 
-      {
-	return new PVideoOutputDevice_DX (); 
-      }
-    
-    
-    virtual PStringList GetDeviceNames (int) const 
-      { 
-	return PStringList ("DX"); 
-      }
-    
-    virtual bool ValidateDeviceName (const PString & deviceName, 
-				     int) const 
-      { 
-	return deviceName.Find ("DX") == 0; 
-      }
-} PVideoOutputDevice_DX_descriptor;
-
-PCREATE_PLUGIN(DX, PVideoOutputDevice, &PVideoOutputDevice_DX_descriptor);
-
 
 /* The Methods */
-PVideoOutputDevice_DX::PVideoOutputDevice_DX ()
+GMVideoDisplay_DX::GMVideoDisplay_DX ()
 { 
   /* Internal stuff */
   dxWindow = NULL;
 
   fallback = FALSE;
-
-  numberOfFrames = 0;
 }
 
 
-PVideoOutputDevice_DX::~PVideoOutputDevice_DX()
+GMVideoDisplay_DX::~GMVideoDisplay_DX()
 {
-  CloseFrameDisplay ();
 }
-
 
 BOOL 
-PVideoOutputDevice_DX::Open (const PString &name, 
-                             BOOL unused)
-{
-  if (name == "DXIN") 
-    device_id = 1; 
-
-  return TRUE; 
-}
-
-
-BOOL 
-PVideoOutputDevice_DX::SetupFrameDisplay (int display, 
-                                          guint lf_width, 
-                                          guint lf_height, 
-                                          guint rf_width, 
-                                          guint rf_height, 
-                                          double zoom)
+GMVideoDisplay_DX::SetupFrameDisplay (int display, 
+                                      guint lf_width, 
+                                      guint lf_height, 
+                                      guint rf_width, 
+                                      guint rf_height, 
+                                      double zoom)
 {
   GtkWidget *main_window = NULL;
   GtkWidget *image = NULL;
@@ -128,7 +86,7 @@ PVideoOutputDevice_DX::SetupFrameDisplay (int display,
   BOOL stay_on_top = FALSE;
 
   if (fallback)
-    return PVideoOutputDevice_GDK::SetupFrameDisplay (display, lf_width, lf_height,
+    return GMVideoDisplay_GDK::SetupFrameDisplay (display, lf_width, lf_height,
                                                       rf_width, rf_height, zoom);
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
@@ -140,7 +98,7 @@ PVideoOutputDevice_DX::SetupFrameDisplay (int display,
 
   if (gm_conf_get_bool (VIDEO_DISPLAY_KEY "disable_hw_accel")) {
 
-    PTRACE (1, "PVideoOutputDevice_DX\tDirectX Hardware acceleration disabled by configuration - falling back to GDK rendering");
+    PTRACE (1, "GMVideoDisplay_DX\tDirectX Hardware acceleration disabled by configuration - falling back to GDK rendering");
     return FALSE;
   }
 
@@ -234,7 +192,7 @@ PVideoOutputDevice_DX::SetupFrameDisplay (int display,
     return FALSE;
     break;
   }
-  PTRACE (4, "PVideoOutputDevice_DX\tSetup display " << display << " with zoom value of " << zoom << " : " << (ret ? "Success" : "Failure"));
+  PTRACE (4, "GMVideoDisplay_DX\tSetup display " << display << " with zoom value of " << zoom << " : " << (ret ? "Success" : "Failure"));
 
   if (stay_on_top) {
 
@@ -243,6 +201,7 @@ PVideoOutputDevice_DX::SetupFrameDisplay (int display,
   }
 
   if (!ret)
+
     CloseFrameDisplay ();
 
   return ret;
@@ -250,12 +209,14 @@ PVideoOutputDevice_DX::SetupFrameDisplay (int display,
 
 
 BOOL 
-PVideoOutputDevice_DX::CloseFrameDisplay ()
+GMVideoDisplay_DX::CloseFrameDisplay ()
 {
   if (fallback)
-    return PVideoOutputDevice_GDK::CloseFrameDisplay ();
+
+    return GMVideoDisplay_GDK::CloseFrameDisplay ();
 
   if (dxWindow) {
+
     delete dxWindow;
     dxWindow = NULL;
   }
@@ -263,136 +224,65 @@ PVideoOutputDevice_DX::CloseFrameDisplay ()
   return TRUE;
 }
 
-
 BOOL 
-PVideoOutputDevice_DX::Redraw (int display,
-                                    double zoom)
+GMVideoDisplay_DX::FrameDisplayChangeNeeded (int display, 
+                                             guint lf_width, 
+                                             guint lf_height, 
+                                             guint rf_width, 
+                                             guint rf_height, 
+                                             double zoom)
 {
-  BOOL ret = TRUE; 
-  GtkWidget *main_window = NULL;
+  if (!dxWindow) 
+    return TRUE;
 
-  if (fallback)
-    return PVideoOutputDevice_GDK::Redraw (display, zoom);
-
-  if (device_id == REMOTE) {
-
-    gnomemeeting_threads_enter ();
-    switch (display) 
-      {
-      case LOCAL_VIDEO:
-        if (FrameDisplayChangeNeeded (display, lf_width, lf_height, rf_width, rf_height, zoom) || !dxWindow) 
-          ret = SetupFrameDisplay (display, lf_width, lf_height, rf_width, rf_height, zoom); 
-
-        if (ret && dxWindow && (lframeStore.GetSize() > 0 ))
-          dxWindow->PutFrame ((uint8_t *) lframeStore.GetPointer (), lf_width, lf_height);
-        break;
-
-      case REMOTE_VIDEO:
-        if (FrameDisplayChangeNeeded (display, lf_width, lf_height, rf_width, rf_height, zoom) || !dxWindow) 
-          ret = SetupFrameDisplay (display, lf_width, lf_height, rf_width, rf_height, zoom);
-
-        if (ret && dxWindow && (rframeStore.GetSize () > 0))
-          dxWindow->PutFrame ((uint8_t *) rframeStore.GetPointer (), rf_width, rf_height);
-        break;
-
-      case FULLSCREEN:
-      case PIP:
-      case PIP_WINDOW:
-        if (FrameDisplayChangeNeeded (display, lf_width, lf_height, rf_width, rf_height, zoom) || !dxWindow ) 
-          ret = SetupFrameDisplay (display, lf_width, lf_height, rf_width, rf_height, zoom);
-
-        if (display == FULLSCREEN && dxWindow && !dxWindow->IsFullscreen ()) {
-
-              main_window = GnomeMeeting::Process ()->GetMainWindow ();
-              gm_main_window_toggle_fullscreen(main_window);
-            }
-
-        if (ret && dxWindow && (lframeStore.GetSize () > 0) && (rframeStore.GetSize () > 0))
-          dxWindow->PutFrame ((uint8_t *) rframeStore.GetPointer (), rf_width, rf_height, (uint8_t *) lframeStore.GetPointer (), lf_width, lf_height);
-        break;
-      }
-    gnomemeeting_threads_leave ();
-  }
-
-  if (!ret) {
-
-    PTRACE (4, "PVideoOutputDevice_DX\tFalling back to GDK Rendering");
-    doFallback();
-    return PVideoOutputDevice_GDK::Redraw (display, zoom);
-  }
-  return TRUE;
+  return GMVideoDisplay_GDK::FrameDisplayChangeNeeded (display, lf_width, lf_height, rf_width, rf_height, zoom);
 }
 
-void
-PVideoOutputDevice_DX::doFallback ()
+
+void 
+GMVideoDisplay_DX::DisplayFrame (gpointer gtk_image,
+                                      const guchar *frame,
+                                      guint width,
+                                      guint height,
+                                      double zoom)
+{
+  if (fallback) {
+
+     GMVideoDisplay_GDK::DisplayFrame (image, frame, width, height, zoom);
+    return;
+  }
+
+  if  (dxWindow)
+
+    dxWindow->PutFrame ((uint8_t *) frame, width, height);
+}
+
+void 
+GMVideoDisplay_DX::DisplayPiPFrames (gpointer gtk_image,
+                                          const guchar *lframe,
+                                          guint lwidth,
+                                          guint lheight,
+                                          const guchar *rframe,
+                                          guint rwidth,
+                                          guint rheight,
+                                          double zoom)
 {
   GtkWidget *main_window = NULL;
-  PBYTEArray tempBuffer; // cannot do conversion in place
-
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
 
-  gnomemeeting_threads_enter ();
-  gm_main_window_fullscreen_menu_update_sensitivity (main_window, FALSE); 
-  gnomemeeting_threads_leave ();
+  if (fallback) {
 
-  fallback = TRUE;
+     GMVideoDisplay_GDK::DisplayPiPFrames (image, lframe, lwidth, rheight,
+                                           rframe, rwidth, rheight, zoom);
+  }
 
-  if (device_id == LOCAL) {
-    tempBuffer.SetSize (lf_width * lf_height * 3);
-    memcpy (tempBuffer.GetPointer(), lframeStore.GetPointer(), (lf_width * lf_height * 3) >> 1); 
-    if (converter)
-      converter->Convert (tempBuffer.GetPointer(), lframeStore.GetPointer ());
+  if (currentFrame.display == FULLSCREEN && dxWindow && !dxWindow->IsFullScreen ()) {
+
+    gm_main_window_toggle_fullscreen(main_window);
   }
-  else {
-    tempBuffer.SetSize (rf_width * rf_height * 3);
-    memcpy (tempBuffer.GetPointer(), rframeStore.GetPointer(), (rf_width * rf_height * 3) >> 1); 
-    if (converter)
-      converter->Convert (tempBuffer.GetPointer(), rframeStore.GetPointer ());
-  }
+
+  if (dxWindow)
+
+    dxWindow->PutFrame ((uint8_t *) rframe, rwidth, rheight, 
+                        (uint8_t *) lframe, lwidth, lheight);
 }
-
-BOOL 
-PVideoOutputDevice_DX::SetFrameData (unsigned x,
-                                     unsigned y,
-                                     unsigned width,
-                                     unsigned height,
-                                     const BYTE *data,
-                                     BOOL endFrame)
-{
-  if (fallback)
-    return PVideoOutputDevice_GDK::SetFrameData (x, y, width, height, data, endFrame);
-
-  numberOfFrames++;
-
-  if (x > 0 || y > 0)
-    return FALSE;
-
-  if (width < 160 || width > 2048) 
-    return FALSE;
-  
-  if (height <120 || height > 2048) 
-    return FALSE;
-
-  if (!endFrame)
-    return FALSE;
-
-  if (device_id == LOCAL) {
-
-    lframeStore.SetSize (width * height * 3);
-    lf_width = width;
-    lf_height = height;
-
-    memcpy (lframeStore.GetPointer(), data, (lf_width * lf_height * 3) >> 1); 
-  }
-  else {
-
-    rframeStore.SetSize (width * height * 3);
-    rf_width = width;
-    rf_height = height;
-
-    memcpy (rframeStore.GetPointer(), data, (rf_width * rf_height * 3) >> 1); 
-  }
-  
-  return EndFrame ();
-}
-

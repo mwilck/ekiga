@@ -114,11 +114,11 @@ GMManager::GMManager ()
   pcssEP = NULL;
 
   PVideoDevice::OpenArgs video = GetVideoOutputDevice();
-  video.deviceName = VIDEO_DISPLAY "OUT";
+  video.deviceName = "EKIGAOUT";
   SetVideoOutputDevice (video);
   
   video = GetVideoOutputDevice();
-  video.deviceName = VIDEO_DISPLAY "IN";
+  video.deviceName = "EKIGAIN";
   SetVideoPreviewDevice (video);
   
   video = GetVideoInputDevice();
@@ -537,10 +537,12 @@ GMManager::RemoveVideoGrabber ()
 {
   PWaitAndSignal m(vg_access_mutex);
 
+  PTRACE(4, "GMManager\t Deleting grabber device");  //FIXME: There seems to be a problem in win32 since 2.0.x here
   if (video_grabber) {
 
     delete (video_grabber);
   }      
+  PTRACE(4, "GMManager\t Sucessfully deleted grabber device");  //FIXME: There seems to be a problem in win32 since 2.0.x here
   video_grabber = NULL;
 }
 

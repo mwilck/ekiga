@@ -90,6 +90,8 @@
 
 #include "gtk-frontend.h"
 
+#include "../devices/videooutput.h"
+
 #define GM_MAIN_WINDOW(x) (GmWindow *) (x)
 
 /* Declarations */
@@ -2644,17 +2646,16 @@ gm_main_window_update_sensitivity (GtkWidget *main_window,
   /* We are updating video related items */
   if (is_video) {
 
-    /* Receiving and sending => Everything sensitive in the section control */
-    if (is_receiving && is_transmitting) {
-      gm_main_window_fullscreen_menu_update_sensitivity (main_window, TRUE);
-      gtk_menu_section_set_sensitive (mw->main_menu,
-				      "local_video", TRUE);
-    }
-    else { /* Not receiving or not sending or both */
-
       /* Default to nothing being sensitive */
       gtk_menu_section_set_sensitive (mw->main_menu,
 				      "local_video", FALSE);
+      gtk_menu_section_set_sensitive (mw->main_menu,
+				      "remote_video", FALSE);
+      gtk_menu_section_set_sensitive (mw->main_menu,
+				      "both_incrusted", FALSE);
+      gtk_menu_section_set_sensitive (mw->main_menu,
+				      "both_incrusted_window", FALSE);
+
       
       /* We are sending video, but not receiving 
        * => local must be sensitive */
@@ -2665,12 +2666,25 @@ gm_main_window_update_sensitivity (GtkWidget *main_window,
       }
       /* We are receiving video, but not transmitting,
        * => remote must be sensitive */
-      else if (is_receiving) {
+      if (is_receiving) {
 
 	gtk_menu_set_sensitive (mw->main_menu,
 				"remote_video", TRUE);
       }
-      
+
+      if (is_receiving && is_transmitting) {
+	gtk_menu_set_sensitive (mw->main_menu,
+				"both_incrusted", TRUE);
+	gtk_menu_set_sensitive (mw->main_menu,
+				"both_incrusted_window", TRUE);
+        gm_main_window_fullscreen_menu_update_sensitivity (main_window, TRUE);
+
+      }
+      else {
+  
+        gm_main_window_fullscreen_menu_update_sensitivity (main_window, FALSE);
+      }
+
       /* We are not transmitting, and not receiving anything,
        * => Disable the zoom completely */
       if (!is_receiving && !is_transmitting) {
@@ -2679,20 +2693,21 @@ gm_main_window_update_sensitivity (GtkWidget *main_window,
 	 * all: zoom_{in,out},normal_size */
         gtk_menu_section_set_sensitive (mw->main_menu,
                                         "zoom_in", FALSE);
-        gm_main_window_fullscreen_menu_update_sensitivity (main_window, FALSE);
+        gtk_menu_section_set_sensitive (mw->main_menu,
+                                        "zoom_out", FALSE);
+        gtk_menu_section_set_sensitive (mw->main_menu,
+                                        "normal_size", FALSE);
 
 	gtk_menu_set_sensitive (mw->main_menu, "save_picture", FALSE);
       }
       else {
+
 	/* Or activate it as at least something is transmitted or 
 	 * received */
 	gm_mw_zooms_menu_update_sensitivity (main_window, zoom);
-        gm_main_window_fullscreen_menu_update_sensitivity (main_window, 
-                                                           is_receiving?TRUE:FALSE);
 	  
 	gtk_menu_set_sensitive (mw->main_menu, "save_picture", TRUE);
       }
-    }
   }
   
   if (is_transmitting) {
