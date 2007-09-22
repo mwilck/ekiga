@@ -306,7 +306,7 @@ GMManager::SetAudioMediaFormats (PStringArray *order)
   for (int i = 0 ; i < list.GetSize () ; i++)
     if (list [i].GetDefaultSessionID () == 1) {
 
-      if (list [i].GetPayloadType () != RTP_DataFrame::MaxPayloadType)
+      if (list [i].IsTransportable())
         mask += list [i];
       else
         *order += list [i];
@@ -397,7 +397,7 @@ GMManager::SetVideoMediaFormats (PStringArray *order)
     
     if (list [i].GetDefaultSessionID () == 2) {
 
-      if (list [i].GetPayloadType () != RTP_DataFrame::MaxPayloadType)
+      if (list [i].IsTransportable())
         mask += list [i];
       else 
         *order += list [i];

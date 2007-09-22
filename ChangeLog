@@ -1,5 +1,11 @@
 2007-09-22  Matthias Schneider  <ma30002000@yahoo.de>
 
+	* src/endpoints/manager.cpp:
+	AddedOpalMediaFormat::IsTransportable() function as better test than simply
+	checking the payload type, condition is more complex.
+	
+2007-09-22  Matthias Schneider  <ma30002000@yahoo.de>
+
 	* src/devices/videooutput_gdk.h:
 	* src/devices/videooutput_gdk.cpp:
 	* src/devices/videooutput_dx.h:
@@ -14,7 +20,7 @@
 	* src/Makefile.am:
 	* src/common.h:
 	Rewrite of video output routines. More code sharing between GDK,
-	XV and DX. Additional Thread for displaying the video frames,
+	XV and DX. Additional thread for displaying the video frames,
 	triggered by the local and/or remote PVideoOutputDevice. 
 	Syncronize to higher framerate. Enable preview and receive-only
 	video on win32. 
@@ -22,7 +28,7 @@
 	* lib/gui/dxwindow.cpp:
 	* lib/gui/xvwindow.h:
 	* lib/gui/xvwindow.cpp:
-	Align naming of functions. Minor fixes fpr embedded window on win32.
+	Align naming of functions. Minor fixes for embedded window on win32.
 
 2007-09-22  Matthias Schneider  <ma30002000@yahoo.de>
 
