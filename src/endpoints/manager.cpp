@@ -289,35 +289,37 @@ GMManager::SetAudioMediaFormats (PStringArray *order)
   PStringArray initial_mask;
 
   OpalMediaFormatList media_formats;
-  OpalMediaFormatList list;
+  OpalMediaFormatList media_formats_list;
 
   PStringArray mask;
+
+  if (order == NULL) 
+    return;
+
+  OpalMediaFormat::GetAllRegisteredMediaFormats(media_formats_list);
+
+  media_formats_list.Remove (*order);
+
+  // Configure Audio Codec Order
+  for (int i = 0 ; i < media_formats_list.GetSize () ; i++)
+    if (media_formats_list [i].GetDefaultSessionID () == OpalMediaFormat::DefaultAudioSessionID) {
+
+      if (media_formats_list [i].IsTransportable())
+        mask += media_formats_list [i];
+      else
+        *order += media_formats_list [i];
+    }
 
   initial_order = GetMediaFormatOrder ();
   initial_mask = GetMediaFormatMask ();
 
-  if (order == NULL) 
-    return;
-  
-  media_formats = pcssEP->GetMediaFormats ();
-  list += OpalTranscoder::GetPossibleFormats (media_formats);
-
-  list.Remove (*order);
-  for (int i = 0 ; i < list.GetSize () ; i++)
-    if (list [i].GetDefaultSessionID () == 1) {
-
-      if (list [i].IsTransportable())
-        mask += list [i];
-      else
-        *order += list [i];
-    }
-
+  // Skip Video MediaFormats
   for (int i = 0 ; i < initial_order.GetSize () ; i++)
-    if (OpalMediaFormat (initial_order [i]).GetDefaultSessionID () == 2)
+    if (OpalMediaFormat (initial_order [i]).GetDefaultSessionID () == OpalMediaFormat::DefaultVideoSessionID)
       *order += initial_order [i];
 
   for (int i = 0 ; i < initial_mask.GetSize () ; i++)
-    if (OpalMediaFormat (initial_mask [i]).GetDefaultSessionID () == 2)
+    if (OpalMediaFormat (initial_mask [i]).GetDefaultSessionID () == OpalMediaFormat::DefaultVideoSessionID)
       mask += initial_mask [i];
   
   SetMediaFormatMask (mask);
@@ -336,14 +338,10 @@ GMManager::SetVideoMediaFormats (PStringArray *order)
   PStringArray initial_order;
   PStringArray initial_mask;
 
-  OpalMediaFormatList media_formats;
-  OpalMediaFormatList list;
+  OpalMediaFormatList media_formats_list;
 
   PStringArray mask;
   PStringArray last_priority;
-
-  initial_order = GetMediaFormatOrder ();
-  initial_mask = GetMediaFormatMask ();
 
   if (order == NULL) 
     return;
@@ -358,49 +356,57 @@ GMManager::SetVideoMediaFormats (PStringArray *order)
   if (frame_rate <= 0)
     frame_rate = 15;
 
-  media_formats = pcssEP->GetMediaFormats ();
-  list += OpalTranscoder::GetPossibleFormats (media_formats);
+  OpalMediaFormat::GetAllRegisteredMediaFormats(media_formats_list);
 
-  for (int i = 0 ; i < list.GetSize () ; i++) {
+  //Configure all MediaOptions of all Video MediaFormats
+  for (int i = 0 ; i < media_formats_list.GetSize () ; i++) {
+    OpalMediaFormat media_format = media_formats_list[i];
+    if (media_format.GetDefaultSessionID () == OpalMediaFormat::DefaultVideoSessionID) {
 
-    if (list [i].GetDefaultSessionID () == 2) {
-      
-      list [i].SetOptionInteger (OpalVideoFormat::FrameWidthOption (), 
+      media_format.SetOptionInteger (OpalVideoFormat::FrameWidthOption (), 
                                  video_sizes[size].width);  
-      list [i].SetOptionInteger (OpalVideoFormat::FrameHeightOption (), 
+      media_format.SetOptionInteger (OpalVideoFormat::FrameHeightOption (), 
                                  video_sizes[size].height);  
-      list [i].SetOptionBoolean (OpalVideoFormat::DynamicVideoQualityOption (), 
+      media_format.SetOptionBoolean (OpalVideoFormat::DynamicVideoQualityOption (), 
                                  TRUE);  
-      list [i].SetOptionBoolean (OpalVideoFormat::AdaptivePacketDelayOption (), 
+      media_format.SetOptionBoolean (OpalVideoFormat::AdaptivePacketDelayOption (), 
                                  TRUE);
-      list [i].SetOptionInteger (OpalVideoFormat::FrameTimeOption (),
+      media_format.SetOptionInteger (OpalVideoFormat::FrameTimeOption (),
                                  (int)(90000 / frame_rate));
-      list [i].SetOptionInteger (OpalVideoFormat::MaxBitRateOption (), 
+      media_format.SetOptionInteger (OpalVideoFormat::MaxBitRateOption (), 
                                  max_rx_bitrate * 1024);
-      list [i].SetOptionInteger (OpalVideoFormat::TargetBitRateOption (), 
+      media_format.SetOptionInteger (OpalVideoFormat::TargetBitRateOption (), 
                                  max_tx_bitrate * 1024);
-      list [i].AddOption(new OpalMediaOptionUnsigned(OpalVideoFormat::MaxFrameSizeOption(), 
+      media_format.AddOption(new OpalMediaOptionUnsigned(OpalVideoFormat::MaxFrameSizeOption(), 
                                  true, OpalMediaOption::NoMerge, 1400));
+
+      OpalMediaFormat::SetRegisteredMediaFormat(media_format);
     }
   }
 
+  initial_order = GetMediaFormatOrder ();
+  initial_mask = GetMediaFormatMask ();
+
+  // Skip Audio MediaFormats
   for (int i = 0 ; i < initial_order.GetSize () ; i++)
-    if (OpalMediaFormat (initial_order [i]).GetDefaultSessionID () == 1)
+    if (OpalMediaFormat (initial_order [i]).GetDefaultSessionID () == OpalMediaFormat::DefaultAudioSessionID)
       *order += initial_order [i];
 
   for (int i = 0 ; i < initial_mask.GetSize () ; i++)
-    if (OpalMediaFormat (initial_mask [i]).GetDefaultSessionID () == 1)
+    if (OpalMediaFormat (initial_mask [i]).GetDefaultSessionID () == OpalMediaFormat::DefaultAudioSessionID)
       mask += initial_mask [i];
 
-  list.Remove (*order);
-  for (int i = 0 ; i < list.GetSize () ; i++) {
-    
-    if (list [i].GetDefaultSessionID () == 2) {
+  media_formats_list.Remove (*order);
 
-      if (list [i].IsTransportable())
-        mask += list [i];
+  // Configure Video Codec Order
+  for (int i = 0 ; i < media_formats_list.GetSize () ; i++) {
+
+    if (media_formats_list [i].GetDefaultSessionID () == OpalMediaFormat::DefaultVideoSessionID) {
+
+      if (media_formats_list [i].IsTransportable())
+        mask += media_formats_list [i];
       else 
-        *order += list [i];
+        *order += media_formats_list [i];
     }
   }
 
