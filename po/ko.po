@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: ekiga 2.0.2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-09-23 18:24+0900\n"
-"PO-Revision-Date: 2007-09-23 18:27+0900\n"
+"PO-Revision-Date: 2007-09-23 18:29+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: GNOME Korea <gnome-kr-hackers@lists.kldp.net>\n"
 "MIME-Version: 1.0\n"
@@ -1365,7 +1365,7 @@ msgstr "게이트키퍼 등록 실패: 별명이 사용중입니다"
 
 #: ../src/endpoints/accountshandler.cpp:298
 msgid "Gatekeeper registration failed: bad username/password"
-msgstr "게이트키퍼 등록 실패: 사용자이름/열쇠글이 잘못되었습니다"
+msgstr "게이트키퍼 등록 실패: 사용자 이름/암호가 잘못되었습니다"
 
 #: ../src/endpoints/accountshandler.cpp:301
 msgid "Gatekeeper registration failed: transport error"
@@ -1740,7 +1740,7 @@ msgstr "사용자:"
 #. Password
 #: ../src/gui/accounts.cpp:503
 msgid "Password:"
-msgstr "열쇠글:"
+msgstr "암호:"
 
 #. Advanced Options
 #: ../src/gui/accounts.cpp:520
@@ -1947,7 +1947,7 @@ msgstr "메세지 보내기(_S)"
 #: ../src/gui/addressbook.cpp:1586 ../src/gui/addressbook.cpp:1723
 #: ../src/gui/addressbook.cpp:2571
 msgid "_Properties"
-msgstr "등록 정보(_P)"
+msgstr "속성(_P)"
 
 #. delete a local contact entry, usage: local contacts
 #: ../src/gui/addressbook.cpp:1593 ../src/gui/addressbook.cpp:1730
@@ -2315,7 +2315,7 @@ msgstr "사용자 이름을 입력하십시오:"
 
 #: ../src/gui/druid.cpp:751
 msgid "Please enter your password:"
-msgstr "열쇠글을 입력하십시오:"
+msgstr "암호를 입력하십시오:"
 
 #: ../src/gui/druid.cpp:762
 msgid ""
@@ -2327,12 +2327,9 @@ msgid ""
 "You may skip this step if you use an alternative SIP service, or if you "
 "would prefer to specify the login details later."
 msgstr ""
-"사용자 이름과 열쇠글은 ekiga.net 무료 SIP 서비스의 계정에 로그인하는 데 사용"
-"합니다. ekiga.net SIP 주소가 아직 없으시다면, 아래에서 새로 계정을 만들 수 있"
-"습니다. 그러면 사람들이 사용자분께 전화할 수 있는 SIP 주소가 생깁니다.\n"
+"사용자 이름과 암호는 ekiga.net 무료 SIP 서비스의 계정에 로그인하는 데 사용합니다. ekiga.net SIP 주소가 아직 없으시다면, 아래에서 새로 계정을 만들 수 있습니다. 그러면 사람들이 사용자분께 전화할 수 있는 SIP 주소가 생깁니다.\n"
 "\n"
-"이 단계를 건너 뛰고 다른 SIP 서비스를 사용할 수도 있고, 아니면 나중에 로그인 "
-"정보를 지정할 수도 있습니다."
+"이 단계를 건너 뛰고 다른 SIP 서비스를 사용할 수도 있고, 아니면 나중에 로그인 정보를 지정할 수도 있습니다."
 
 #: ../src/gui/druid.cpp:772
 msgid "Get an ekiga.net SIP account"
@@ -3703,7 +3700,7 @@ msgstr "인자가 잘못되었습니다"
 msgid ""
 "Please provide your username and password in order to be able to use the PC-"
 "To-Phone service."
-msgstr "PC-To-Phone 서비스를 사용하려면 사용자 이름과 열쇠글을 입력하십시오."
+msgstr "PC-To-Phone 서비스를 사용하려면 사용자 이름과 암호를 입력하십시오."
 
 #: ../src/gui/tools.cpp:312 ../src/gui/tools.cpp:331
 msgid "PC-To-Phone Settings"
@@ -3720,13 +3717,9 @@ msgid ""
 "The service will work only if your account is created using the URL in this "
 "dialog."
 msgstr ""
-"에키가를 사용해 전세계의 일반 전화로 전화를 걸 수 있습니다. 이 기능을 사용하"
-"려면 세 가지를 해야 합니다. 먼저 아래의 URL에서 계정을 등록합니다. 그리고 계"
-"정 번호와 열쇠글을 입력합니다. 마지막으로 아래의 등록 절차를 활성화하십시"
-"오.\n"
+"에키가를 사용해 전세계의 일반 전화로 전화를 걸 수 있습니다. 이 기능을 사용하려면 세 가지를 해야 합니다. 먼저 아래의 URL에서 계정을 등록합니다. 그리고 계정 번호와 암호를 입력합니다. 마지막으로 아래의 등록 절차를 활성화하십시오.\n"
 "\n"
-"계정을 만들 때 반드시 아래의 URL을 사용하십시오. 그렇지 않으면 동작하지 않을 "
-"수도 있습니다."
+"계정을 만들 때 반드시 아래의 URL을 사용하십시오. 그렇지 않으면 동작하지 않을 수도 있습니다."
 
 #: ../src/gui/tools.cpp:333
 msgid "Account _number:"
@@ -3734,7 +3727,7 @@ msgstr "계정 번호(_N):"
 
 #: ../src/gui/tools.cpp:350
 msgid "_Password:"
-msgstr "열쇠글(_P):"
+msgstr "암호(_P):"
 
 #: ../src/gui/tools.cpp:369
 msgid "Use PC-To-Phone service"
@@ -3744,9 +3737,7 @@ msgstr "PC-To-Phone 서비스"
 msgid ""
 "Click on one of the following links to get more information about your "
 "existing Ekiga PC-To-Phone account, or to create a new account."
-msgstr ""
-"이미 만들어 놓은 에키가 PC-To-Phone 계정에 대한 정보를 얻거나, 새 계정을 만드"
-"려면 다음 바로가기 중에서 하나를 클릭하십시오."
+msgstr "이미 만들어 놓은 에키가 PC-To-Phone 계정에 대한 정보를 얻거나, 새 계정을 만드려면 다음 링크 중에서 하나를 클릭하십시오."
 
 #: ../src/gui/tools.cpp:389
 msgid "Get an Ekiga PC-To-Phone account"
