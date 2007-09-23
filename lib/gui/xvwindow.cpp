@@ -150,6 +150,7 @@ XVWindow::Init (Display* dp,
   unsigned int req = 0;
   unsigned int ev = 0;
   unsigned int err = 0;
+  int ret = 0;
   int i = 0;
 
   XSetWindowAttributes xswattributes;
@@ -172,6 +173,38 @@ XVWindow::Init (Display* dp,
   XA_NET_WM_STATE_BELOW = XInternAtom (_display, "_NET_WM_STATE_BELOW", False);
 
   XSync (_display, false);
+
+  // check if SHM XV window is possible
+  ret = XvQueryExtension (_display, &ver, &rel, &req, &ev, &err);
+  PTRACE(4, "XVideo\tXvQueryExtension: Version: " << ver << " Release: " << rel 
+         << " Request Base: " << req << " Event Base: " << ev << " Error Base: " << err  );
+
+  if (Success != ret) {
+    if (ret == XvBadExtension)
+      PTRACE(1, "XVideo\tXvQueryExtension failed - XvBadExtension");
+    else if (ret == XvBadAlloc)
+      PTRACE(1, "XVideo\tXvQueryExtension failed - XvBadAlloc");
+    else
+      PTRACE(1, "XVideo\tXQueryExtension failed");
+    XUnlockDisplay (_display);
+    return 0;
+  }
+  
+  if (!XShmQueryExtension (_display)) {
+    PTRACE(1, "XVideo\tXQueryShmExtension failed");
+    XUnlockDisplay (_display);
+    return 0;
+  }
+  
+  // Find XV port
+  _XVPort = FindXVPort ();
+  if (!_XVPort) {
+    PTRACE(1, "XVideo\tFindXVPort failed");
+    XUnlockDisplay(_display);
+    return 0;
+  } 
+
+  PTRACE(4, "XVideo\tUsing XVideo port: " << _XVPort);
 
   XGetWindowAttributes (_display, _rootWindow, &xwattributes);
   XMatchVisualInfo (_display, DefaultScreen (_display), xwattributes.depth, TrueColor, &xvinfo);
@@ -200,29 +233,6 @@ XVWindow::Init (Display* dp,
 
   XSetWMProtocols (_display, _XVWindow, &WM_DELETE_WINDOW, 1);
 
-  // check if SHM XV window is possible
-  if (Success != XvQueryExtension (_display, &ver, &rel, &req, &ev, &err)) {
-    PTRACE(1, "XVideo\tXQueryExtension failed");
-    XUnlockDisplay (_display);
-    return 0;
-  }
-  
-  if (!XShmQueryExtension (_display)) {
-    PTRACE(1, "XVideo\tXQueryShmExtension failed");
-    XUnlockDisplay (_display);
-    return 0;
-  }
-  
-  // Find XV  port
-  _XVPort = FindXVPort ();
-  if (!_XVPort) {
-    PTRACE(1, "XVideo\tFindXVPort failed");
-    XUnlockDisplay(_display);
-    return 0;
-  } 
-
-  PTRACE(4, "XVideo\tUsing XVideo port: " << _XVPort);
-  
   // Checking if we are going embedded or not
   if (gc) {
     _gc = gc; 
@@ -273,29 +283,43 @@ XVWindow::Init (Display* dp,
 
 XVWindow::~XVWindow()
 {
-  XLockDisplay (_display);
   if (_isInitialized && _XShmInfo.shmaddr) {
+
+    XLockDisplay (_display);
     XShmDetach (_display, &_XShmInfo);
     shmdt (_XShmInfo.shmaddr);
+    XUnlockDisplay (_display);
   }
   
-  if (_XVImage)
-    XFree (_XVImage);
-  
-  if (!_embedded && _gc) 
-      XFreeGC (_display, _gc);
+  if (_XVImage) {
 
-  if (_XVPort) 
+    XLockDisplay (_display);
+    XFree (_XVImage);
+    XUnlockDisplay (_display);
+  }
+
+  if (!_embedded && _gc) {
+  
+    XLockDisplay (_display);
+    XFreeGC (_display, _gc);
+    XUnlockDisplay (_display);
+  }
+
+  if (_XVPort) {
+  
+    XLockDisplay (_display);
     XvUngrabPort (_display, _XVPort, CurrentTime);
+    XUnlockDisplay (_display);
+  }
   
   if (_XVWindow) {
   
+    XLockDisplay (_display);
     XUnmapWindow (_display, _XVWindow);
     XDestroyWindow (_display, _XVWindow);
+    XFlush (_display);
+    XUnlockDisplay (_display);
   }
-  
-  XFlush (_display);
-  XUnlockDisplay (_display);
 }
 
 
