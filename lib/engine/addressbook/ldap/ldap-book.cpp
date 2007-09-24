@@ -252,9 +252,9 @@ OPENLDAP::Book::Book (Ekiga::ServiceCore &_core,
     std::string port_string;
     strm << port;
     strm >> port_string;
-    hostname_node = xmlNewChild (node, NULL,
-				 BAD_CAST "port",
-				 BAD_CAST port_string.c_str ());
+    port_node = xmlNewChild (node, NULL,
+			     BAD_CAST "port",
+			     BAD_CAST port_string.c_str ());
   }
 
   base_node = xmlNewChild (node, NULL,
