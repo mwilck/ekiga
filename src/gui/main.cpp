@@ -60,6 +60,7 @@
 #include "gmlevelmeter.h"
 #include "gmpowermeter.h"
 #include "gmconfwidgets.h"
+#include "trigger.h"
 
 #include "platform/gm-platform.h"
 
@@ -497,6 +498,14 @@ static gboolean delete_incoming_call_dialog_cb (GtkWidget *,
 						gpointer);
 
 
+/* DESCRIPTION  : Called when a button associated to an Ekiga::Trigger is
+ *                clicked
+ * PRE          : The pointer must be a valid pointer to a trigger object
+ */
+static void pull_trigger_cb (GtkWidget *w,
+			     gpointer data);
+
+
 /* DESCRIPTION  :  Called when the chat icon is clicked.
  * BEHAVIOR     :  Show the chat window or hide it.
  * 		   If the chat window is shown during a call, the corresponding
@@ -546,6 +555,7 @@ gm_mw_init_main_toolbar (GtkWidget *main_window)
 
   Ekiga::ServiceCore *services = NULL;
   GtkFrontend *gtk_frontend = NULL;
+  Ekiga::Trigger *trigger = NULL;
 
   GtkWidget *button = NULL;
   GtkToolItem *item = NULL;
@@ -622,6 +632,27 @@ gm_mw_init_main_toolbar (GtkWidget *main_window)
                             GTK_SIGNAL_FUNC (gtk_widget_show_all), 
                             (gpointer) gtk_frontend->get_addressbook_window ());
 
+  /* The add contact icon */
+  trigger = dynamic_cast<Ekiga::Trigger *>(services->get ("local-cluster"));
+  if (trigger != NULL) {
+
+    item = gtk_tool_item_new ();
+    button = gtk_button_new ();
+    gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
+    image = gtk_image_new_from_icon_name (GTK_STOCK_ADD,
+					  GTK_ICON_SIZE_LARGE_TOOLBAR);
+    gtk_container_add (GTK_CONTAINER (button), image);
+    gtk_container_add (GTK_CONTAINER (item), button);
+    gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
+  
+    gtk_widget_show (GTK_WIDGET (item));
+    gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
+    gtk_tool_item_set_tooltip (GTK_TOOL_ITEM (item), 
+			       mw->tips, _("Add contact to roster"), NULL);
+    g_signal_connect (G_OBJECT (button), "clicked",
+		      GTK_SIGNAL_FUNC (pull_trigger_cb),
+		      (gpointer)trigger);
+  }
 
   /* The text chat icon */
   item = gtk_tool_item_new ();
@@ -2302,6 +2333,19 @@ delete_incoming_call_dialog_cb (GtkWidget *w,
   GnomeMeeting::Process ()->Disconnect ();
 
   return FALSE;
+}
+
+
+static void
+pull_trigger_cb (GtkWidget *w,
+		 gpointer data)
+{
+  /* unfortunately, we can't use dynamic_cast<> here */
+  Ekiga::Trigger *trigger = (Ekiga::Trigger *)data;
+
+  g_return_if_fail (trigger != NULL);
+
+  trigger->pull ();
 }
 
 
