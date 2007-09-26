@@ -154,6 +154,9 @@ Evolution::Book::on_book_view_obtained (EBookStatus status,
 {
   if (status == E_BOOK_ERROR_OK) {
 
+    if (view != NULL)
+      g_object_unref (view);
+
     view = _view;
 
     /* no need for wrappers here : the view will only die with us */
@@ -207,7 +210,7 @@ Evolution::Book::on_book_opened (EBookStatus status)
 Evolution::Book::Book (Ekiga::ServiceCore &_services,
 		       EBook *_book,
 		       EBookQuery *_query)
-  : services(_services), book(_book), query(_query)
+  : services(_services), book(_book), query(_query), view(NULL)
 {
   self = new Wrapper (*this);
 
