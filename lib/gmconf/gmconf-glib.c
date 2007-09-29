@@ -1473,7 +1473,7 @@ gm_conf_destroy (const gchar *namespac)
 }
 
 gboolean 
-gm_conf_is_key_writable (gchar *key)
+gm_conf_is_key_writable (const gchar *key)
 {
   g_return_val_if_fail (key != NULL, FALSE);
 
