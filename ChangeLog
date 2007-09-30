@@ -1,5 +1,14 @@
 2007-09-30  Damien Sandras  <dsandras@gnome.org>
 
+	* src/gui/misc.cpp: 
+	Recent modifications in PWLIB do not set a name on the 
+	main thread anymore. That leads gnomemeeting_threads_enter
+	to take the GDK mutex when it is not supposed to be taken.
+	Added guard against that. This removes a few unexpected deadlocks
+	which magically appeared in the last weeks.
+
+2007-09-30  Damien Sandras  <dsandras@gnome.org>
+
 	* src/Makefile.am,
 	lib/engine/gui/gtk-frontend/Makefile.am:
 	Added build of new stuff, removed build of old stuff.
