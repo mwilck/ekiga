@@ -43,6 +43,7 @@
 #include "gmmenuaddon.h"
 
 #include "callbacks.h" // FIXME SHOULD GET RID OF THIS
+#include "misc.h" // FIXME same here
 #include "ekiga.h"
 
 #include "gtk-frontend.h"
@@ -90,6 +91,10 @@ show_popup_menu_cb (GtkStatusIcon *icon,
                     guint button,
                     guint activate_time,
                     gpointer data);
+
+static void
+statusicon_activated_cb (GtkStatusIcon *icon,
+                         gpointer data);
 
 static gboolean
 statusicon_blink_cb (gpointer data);
@@ -272,6 +277,9 @@ statusicon_init (GTypeInstance *instance,
 
   g_signal_connect (self, "popup-menu",
                     G_CALLBACK (show_popup_menu_cb), self->priv->popup_menu);
+
+  g_signal_connect (self, "activate",
+                    G_CALLBACK (statusicon_activated_cb), NULL);
 }
 
 
@@ -324,6 +332,19 @@ show_popup_menu_cb (GtkStatusIcon *icon,
   gtk_menu_popup (GTK_MENU (popup),
                   NULL, NULL, NULL, NULL,
                   button, activate_time);
+}
+
+
+static void
+statusicon_activated_cb (GtkStatusIcon *icon,
+                         gpointer data)
+{
+  GtkWidget *window = GnomeMeeting::Process ()->GetMainWindow (); //FIXME
+  // FIXME when the main window becomes a gobject
+  if (!gnomemeeting_window_is_visible (window))
+    gnomemeeting_window_show (window);
+  else
+    gnomemeeting_window_hide (window);
 }
 
 
