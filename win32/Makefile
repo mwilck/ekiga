@@ -328,7 +328,7 @@ update-sources::
 	$(WGET) -P src $(EKIGA_URL1)/$(PWLIB_ARCHIVE) || \
 	$(WGET) -P src $(EKIGA_URL2)/$(PWLIB_ARCHIVE)
 
-$(PWLIB_DIR)/configure: binaries $(LIBDIR)/libldap.dll $(INCLUDEDIR)/directx/dsound.h $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(SRCDIR)/$(PWLIB_ARCHIVE) $(EKIGA_WIN32_DIFF_DIR)/ptlib_Makefile.am $(LIBDIR)/libexpat.a $(EKIGA_WIN32_DIFF_DIR)/ptlib_configure.ac $(EKIGA_WIN32_DIFF_DIR)/ptlib_pwlib.pc.in $(EKIGA_WIN32_DIFF_DIR)/ptlib_vfw.patch 
+$(PWLIB_DIR)/configure: binaries $(LIBDIR)/libldap.dll $(INCLUDEDIR)/directx/dsound.h $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(SRCDIR)/$(PWLIB_ARCHIVE) $(EKIGA_WIN32_DIFF_DIR)/ptlib_Makefile.am $(LIBDIR)/libexpat.a $(EKIGA_WIN32_DIFF_DIR)/ptlib_configure.ac $(EKIGA_WIN32_DIFF_DIR)/ptlib_pwlib.pc.in
 	rm -f $(LIBDIR)/libpt.a
 	rm -rf $(PWLIB_DIR)
 	tar xfz $(SRCDIR)/$(PWLIB_ARCHIVE) -C $(BUILDROOT)
@@ -341,7 +341,6 @@ $(PWLIB_DIR)/configure: binaries $(LIBDIR)/libldap.dll $(INCLUDEDIR)/directx/dso
 	(cd $(PWLIB_DIR); \
 	sed -i "s#\$${buildroot}#${BUILDROOT}#" pwlib.pc.in; \
 	sed -i "s/\$${PWLIB_VER}/${PWLIB_VER}/" configure.ac; \
-	patch -p1 < $(EKIGA_WIN32_DIFF_DIR)/ptlib_vfw.patch ;\
 	aclocal-1.9; autoheader; libtoolize --force; \
 	touch NEWS README AUTHORS ChangeLog unused.h.in; \
 	automake-1.9 -a -c; autoconf; \
@@ -643,7 +642,7 @@ $(EKIGA_DIR)/config.status: binaries $(EKIGA_DIR)/autogen.sh $(LIBDIR)/libpt.a $
 	./autogen.sh $(confekiga) )
 
 $(EKIGA_DIR)/src/ekiga.exe: binaries $(EKIGA_DIR)/config.status
-	$(WINDRES) $(EKIGA_DIR)/ekiga.rc $(EKIGA_DIR)/ekiga_rc.o
+	$(WINDRES) $(EKIGA_DIR)/ekiga.rc $(EKIGA_DIR)/ekiga_rc.o -I $(INCLUDEDIR)
 	$(MAKE) $(MAKEOPTS) -C $(EKIGA_DIR)
 	$(MAKE) $(MAKEOPTS) -C $(EKIGA_DIR)/help
 
