@@ -36,8 +36,6 @@ ekiga_SOURCES +=			\
 	gui/accounts.cpp		\
 	gui/callbacks.h			\
 	gui/callbacks.cpp		\
-	gui/chat.h			\
-	gui/chat.cpp			\
 	gui/conf.h			\
 	gui/conf.cpp			\
 	gui/druid.h			\
