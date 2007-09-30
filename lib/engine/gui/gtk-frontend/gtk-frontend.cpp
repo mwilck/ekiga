@@ -41,31 +41,47 @@
 #include <gtk/gtk.h>
 
 #include "config.h"
+#include "ekiga.h" // FIXME 
 
 #include "gtk-frontend.h"
 
 #include "contact-core.h"
 #include "presence-core.h"
 #include "addressbook-window.h"
+#include "chat-window.h"
 #include "roster-view-gtk.h"
 
 #include "gmwindow.h"
 
+static void on_new_chat (std::string uri,
+                         GtkFrontend & frontend);
 
-GtkFrontend::GtkFrontend (Ekiga::ContactCore & _contact_core,
-                          Ekiga::PresenceCore & _presence_core) 
-: contact_core (_contact_core), presence_core (_presence_core)
+
+GtkFrontend::GtkFrontend (Ekiga::ServiceCore &core)
 { 
-  addressbook_window = addressbook_window_new (&contact_core,
-                                               _("Find Contact"));
+  sigc::connection conn;
 
-  g_object_set_data_full (G_OBJECT (addressbook_window), "window_name",
-			  g_strdup ("addressbook_window"), g_free);
+  Ekiga::PresenceCore *presence_core = NULL;
+  Ekiga::ContactCore *contact_core = NULL;
 
-  gm_window_set_key (GM_WINDOW (addressbook_window),
-                     "/apps/" PACKAGE_NAME "/general/user_interface/addressbook_window");
+  contact_core = dynamic_cast<Ekiga::ContactCore*>(core.get ("contact-core"));
+  presence_core = dynamic_cast<Ekiga::PresenceCore*>(core.get ("presence-core"));
 
-  roster_view = roster_view_gtk_new (presence_core);
+  roster_view = roster_view_gtk_new (*presence_core);
+  addressbook_window = addressbook_window_new_with_key (*contact_core, USER_INTERFACE_KEY "addressbook_window");
+  chat_window = chat_window_new_with_key (core, USER_INTERFACE_KEY "chat_window");
+
+  conn = GnomeMeeting::Process ()->GetManager ()->new_chat.connect (sigc::bind (sigc::ptr_fun (on_new_chat), *this));
+  connections.push_back (conn);
+}
+
+
+GtkFrontend::~GtkFrontend ()
+{
+  for (std::vector<sigc::connection>::iterator iter = connections.begin () ;
+       iter != connections.end ();
+       iter++)
+    iter->disconnect ();
 }
 
 
@@ -93,46 +109,31 @@ const GtkWidget *GtkFrontend::get_addressbook_window () const
 }
 
 
-static gboolean
-on_delete_event_addressbook_window (GtkWidget *widget,
-				    GdkEvent * /*event*/,
-				    gpointer /*data*/)
-{
-  gtk_widget_hide_all (widget);
-
-  return TRUE;
+const GtkWidget *GtkFrontend::get_chat_window () const
+{ 
+  return chat_window; 
 }
+
 
 static void
-on_quit ()
+on_new_chat (std::string uri,
+             GtkFrontend & frontend)
 {
-  /* FIXME: do something */
+  const GtkWidget *chat_window = frontend.get_chat_window ();
+
+  // FIXME, should not pass the uri but a contact
+  chat_window_add_page (CHAT_WINDOW (chat_window), "Remote contact", uri);
+  gtk_widget_show_all (GTK_WIDGET (chat_window));
 }
+
 
 bool
 gtk_frontend_init (Ekiga::ServiceCore &core,
 		   int * /*argc*/,
 		   char ** /*argv*/[])
 {
-  Ekiga::PresenceCore *presence_core = NULL;
-  Ekiga::ContactCore *contact_core = NULL;
-  GtkWidget *addressbook_window = NULL;
-  GtkWidget *main_window = NULL;
-  GtkWidget *vbox = NULL;
-  GtkWidget *roster_view = NULL;
+  GtkFrontend *gtk_frontend = new GtkFrontend (core);
+  core.add (*gtk_frontend);
 
-  contact_core = dynamic_cast<Ekiga::ContactCore*>(core.get ("contact-core"));
-  presence_core = dynamic_cast<Ekiga::PresenceCore*>(core.get ("presence-core"));
-
-  if (presence_core != NULL && contact_core != NULL) {
-
-    GtkFrontend *gtk_frontend = new GtkFrontend (*contact_core, 
-                                                 *presence_core);
-
-    core.add (*gtk_frontend);
-
-
-    return true;
-  } else
-    return false;
+  return true;
 }

@@ -40,6 +40,7 @@
 #define __GTK_FRONTEND_H__
 
 #include <gtk/gtk.h>
+#include <vector>
 
 #include "services.h"
 #include "contact-core.h"
@@ -50,8 +51,9 @@ class GtkFrontend: public Ekiga::Service
 {
 public:
 
-    GtkFrontend (Ekiga::ContactCore & _contact_core,
-                 Ekiga::PresenceCore & _presence_core); 
+    GtkFrontend (Ekiga::ServiceCore & _core);
+
+    ~GtkFrontend ();
 
     const std::string get_name () const;
 
@@ -61,12 +63,14 @@ public:
 
     const GtkWidget *get_addressbook_window () const;
 
-private :
-    Ekiga::ContactCore & contact_core;
-    Ekiga::PresenceCore & presence_core;
+    const GtkWidget *get_chat_window () const;
 
+private :
     GtkWidget *addressbook_window;
     GtkWidget *roster_view;
+    GtkWidget *chat_window;
+
+    std::vector<sigc::connection> connections;
 };
 
 
