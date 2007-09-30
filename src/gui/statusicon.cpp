@@ -58,8 +58,6 @@
 
 #include "callinfo.h"
 
-// FIXME react to GmConf key changes
-
 
 /*
  * The StatusIcon
@@ -269,8 +267,8 @@ statusicon_init (GTypeInstance *instance,
   conn = GnomeMeeting::Process ()->GetManager ()->call_event.connect (sigc::bind (sigc::ptr_fun (on_call_event_cb), self));
   self->priv->connections.push_back (conn);
 
-  conn = GnomeMeeting::Process ()->GetManager ()->message_event.connect (sigc::bind (sigc::ptr_fun (on_message_event_cb), self));
-  self->priv->connections.push_back (conn);
+  //conn = GnomeMeeting::Process ()->GetManager ()->message_event.connect (sigc::bind (sigc::ptr_fun (on_message_event_cb), self));
+  //self->priv->connections.push_back (conn);
 
   g_signal_connect (self, "popup-menu",
                     G_CALLBACK (show_popup_menu_cb), self->priv->popup_menu);
