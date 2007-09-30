@@ -47,9 +47,9 @@
  */
 struct _AddressBookWindowPrivate
 {
-  _AddressBookWindowPrivate (Ekiga::ContactCore *_core):core (_core) { }
+  _AddressBookWindowPrivate (Ekiga::ContactCore & _core):core (_core) { }
 
-  Ekiga::ContactCore *core;
+  Ekiga::ContactCore & core;
   std::vector<sigc::connection> connections;
   GtkTreeStore *store;
   GtkWidget *notebook;
@@ -223,7 +223,7 @@ on_core_updated (gpointer data)
 
   self = (AddressBookWindow *) data;
 
-  if (self->priv->core->populate_menu (menu_builder)) {
+  if (self->priv->core.populate_menu (menu_builder)) {
 
     item = gtk_separator_menu_item_new ();
     gtk_menu_shell_append (GTK_MENU_SHELL (menu_builder.menu), item);
@@ -325,7 +325,6 @@ on_book_selection_changed (GtkTreeSelection *selection,
   GtkWidget *view = NULL;
   gint page = -1;
   GtkWidget *menu = NULL;
-  GtkWidget *item = NULL;
 
   self = ADDRESSBOOK_WINDOW (data);
 
@@ -605,8 +604,7 @@ addressbook_window_get_type ()
  * Public API 
  */
 GtkWidget *
-addressbook_window_new (Ekiga::ContactCore *core,
-                        std::string title)
+addressbook_window_new (Ekiga::ContactCore &core)
 {
   AddressBookWindow *self = NULL;
 
@@ -617,7 +615,6 @@ addressbook_window_new (Ekiga::ContactCore *core,
   GtkWidget *vbox = NULL;
   GtkWidget *hpaned = NULL;
   GtkWidget *view = NULL;
-  GtkWidget *label = NULL;
 
   GtkCellRenderer *cell = NULL;
   GtkTreeViewColumn *column = NULL;
@@ -625,9 +622,11 @@ addressbook_window_new (Ekiga::ContactCore *core,
   self = (AddressBookWindow *) g_object_new (ADDRESSBOOK_WINDOW_TYPE, NULL);
   self->priv = new AddressBookWindowPrivate (core);
 
+  gtk_window_set_title (GTK_WINDOW (self), _("Address Book"));
+  gtk_window_set_position (GTK_WINDOW (self), GTK_WIN_POS_CENTER);
+
   /* Start building the window */
   vbox = gtk_vbox_new (FALSE, 2);
-  gtk_window_set_title (GTK_WINDOW (self), title.c_str ());
 
   /* The menu */
   menu_bar = gtk_menu_bar_new ();
@@ -640,8 +639,8 @@ addressbook_window_new (Ekiga::ContactCore *core,
   gtk_menu_shell_append (GTK_MENU_SHELL (menu_bar),
                          self->priv->menu_item_core);
   g_object_ref (self->priv->menu_item_core);
-  conn = core->updated.connect (sigc::bind (sigc::ptr_fun (on_core_updated),
-					    (gpointer) self));
+  conn = core.updated.connect (sigc::bind (sigc::ptr_fun (on_core_updated),
+                                           (gpointer) self));
   self->priv->connections.push_back (conn);
   on_core_updated (self); // This will add static and dynamic actions
 
@@ -715,20 +714,31 @@ addressbook_window_new (Ekiga::ContactCore *core,
                     G_CALLBACK (on_notebook_realize), self);
   gtk_paned_add2 (GTK_PANED (hpaned), self->priv->notebook);
 
-  conn =
-    core->book_updated.connect (sigc::bind (sigc::ptr_fun (on_book_updated),
-					    (gpointer) self));
+  conn = core.book_updated.connect (sigc::bind (sigc::ptr_fun (on_book_updated),
+                                                (gpointer) self));
   self->priv->connections.push_back (conn);
-  conn = core->book_added.connect (sigc::bind (sigc::ptr_fun (on_book_added), 
-					       (gpointer) self));
+  conn = core.book_added.connect (sigc::bind (sigc::ptr_fun (on_book_added), 
+                                              (gpointer) self));
   self->priv->connections.push_back (conn);
   conn =
-    core->book_removed.connect (sigc::bind (sigc::ptr_fun (on_book_removed), 
-					    (gpointer) self));
+    core.book_removed.connect (sigc::bind (sigc::ptr_fun (on_book_removed), 
+                                           (gpointer) self));
   self->priv->connections.push_back (conn);
 
-  core->visit_sources (sigc::bind (sigc::ptr_fun (on_source_added),
-				   (gpointer)self));
+  core.visit_sources (sigc::bind (sigc::ptr_fun (on_source_added),
+                                  (gpointer) self));
 
   return GTK_WIDGET (self);
 }
+
+
+GtkWidget *
+addressbook_window_new_with_key (Ekiga::ContactCore &_core,
+                                 const std::string _key)
+{
+  AddressBookWindow *self = ADDRESSBOOK_WINDOW (addressbook_window_new (_core));
+  g_object_set (self, "key", _key.c_str (), NULL);
+
+  return GTK_WIDGET (self);
+}
+
