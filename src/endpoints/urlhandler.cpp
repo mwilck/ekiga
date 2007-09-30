@@ -45,7 +45,6 @@
 #include "misc.h"
 #include "history.h"
 #include "main.h"
-#include "chat.h"
 
 #ifdef HAVE_DBUS
 #include "dbus.h"
@@ -374,7 +373,6 @@ GMURLHandler::~GMURLHandler ()
 void GMURLHandler::Main ()
 {
   GtkWidget *main_window = NULL;
-  GtkWidget *chat_window = NULL;
   GtkWidget *history_window = NULL;
 #ifdef HAVE_DBUS
   GObject *dbus_component = NULL;
@@ -400,7 +398,6 @@ void GMURLHandler::Main ()
   gnomemeeting_threads_leave ();
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  chat_window = GnomeMeeting::Process ()->GetChatWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
 #ifdef HAVE_DBUS
   dbus_component = GnomeMeeting::Process ()->GetDbusComponent ();
@@ -463,10 +460,6 @@ void GMURLHandler::Main ()
     /* Update the state to "calling" */
     gnomemeeting_threads_enter ();
     gm_main_window_update_calling_state (main_window, GMManager::Calling);
-    gm_chat_window_update_calling_state (chat_window, 
-					 NULL,
-					 call_address, 
-					 GMManager::Calling);
     gnomemeeting_threads_leave ();
 
     endpoint->SetCallingState (GMManager::Calling);
@@ -495,10 +488,6 @@ void GMURLHandler::Main ()
        * be done in OnConnectionEstablished if con exists.
        */
       gnomemeeting_threads_enter ();
-      gm_chat_window_update_calling_state (chat_window, 
-					   NULL, 
-					   NULL,
-					   GMManager::Standby);
       gm_main_window_update_calling_state (main_window, 
 					   GMManager::Standby);
       

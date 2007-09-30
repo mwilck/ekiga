@@ -49,14 +49,9 @@
 #include "ekiga.h"
 #include "audio.h"
 #include "misc.h"
-#include "chat.h"
 #include "history.h"
 #include "preferences.h"
 #include "main.h"
-
-#ifdef HAVE_DBUS
-#include "dbus.h"
-#endif
 
 #include "gmdialog.h"
 #include "gmconf.h"
@@ -573,12 +568,6 @@ GMManager::UpdatePublishers (void)
   if (zcp)  
     zcp->Publish ();
 #endif
-#if 0
-  gnomemeeting_threads_enter ();
-  ilsreg = gm_conf_get_bool (LDAP_KEY "enable_registering");
-  gnomemeeting_threads_leave ();
-  ILSTimer.RunContinuous (PTimeInterval (5));
-#endif
 }
 
 
@@ -706,13 +695,11 @@ GMManager::OnForwarded (OpalConnection &,
 			 const PString & forward_party)
 {
   GtkWidget *main_window = NULL;
-  GtkWidget *chat_window = NULL;
   GtkWidget *history_window = NULL;
 
   gchar *msg = NULL;
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  chat_window = GnomeMeeting::Process ()->GetChatWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
 
   gnomemeeting_threads_enter ();
@@ -830,11 +817,7 @@ GMManager::OnIncomingConnection (OpalConnection &connection,
   BOOL res = FALSE;
 
   GtkWidget *main_window = NULL;
-  GtkWidget *chat_window = NULL;
   GtkWidget *history_window = NULL;
-#ifdef HAVE_DBUS
-  GObject *dbus_component = NULL;
-#endif
 
   gchar *msg = NULL;
   gchar *short_reason = NULL;
@@ -847,17 +830,12 @@ GMManager::OnIncomingConnection (OpalConnection &connection,
   GetRemoteConnectionInfo (connection, utf8_name, utf8_app, utf8_url);
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  chat_window = GnomeMeeting::Process ()->GetChatWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
-#ifdef HAVE_DBUS
-  dbus_component = GnomeMeeting::Process ()->GetDbusComponent ();
-#endif
 
   /* Update the log and status bar */
   msg = g_strdup_printf (_("Call from %s"), (const char *) utf8_name);
   gnomemeeting_threads_enter ();
   gm_main_window_flash_message (main_window, "%s", msg);
-  gm_chat_window_push_info_message (chat_window, NULL, "%s", msg);
   gm_history_window_insert (history_window, "%s", msg);
   gnomemeeting_threads_leave ();
   g_free (msg);
@@ -915,26 +893,10 @@ GMManager::OnIncomingConnection (OpalConnection &connection,
     /* Update the UI */
     gnomemeeting_threads_enter ();
     gm_main_window_update_calling_state (main_window, GMManager::Called);
-    gm_chat_window_update_calling_state (chat_window, 
-					 NULL, 
-					 NULL, 
-					 GMManager::Called);
-
     gm_main_window_incoming_call_dialog_show (main_window,
 					      utf8_name, 
 					      utf8_app, 
 					      utf8_url);
-#ifdef HAVE_DBUS
-    gnomemeeting_dbus_component_set_call_state (dbus_component,
-						GetCurrentCallToken (),
-						GMManager::Called);
-    gnomemeeting_dbus_component_set_call_info (dbus_component,
-					       GetCurrentCallToken (),
-					       utf8_name,
-					       utf8_app,
-					       utf8_url,
-					       NULL);
-#endif
     gnomemeeting_threads_leave ();
   }
 
@@ -955,19 +917,11 @@ void
 GMManager::OnEstablishedCall (OpalCall &call)
 {
   GtkWidget *main_window = NULL;
-  GtkWidget *chat_window = NULL;
-#ifdef HAVE_DBUS
-  GObject *dbus_component = NULL;
-#endif
 
   BOOL stay_on_top = FALSE;
 
   /* Get the widgets */
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  chat_window = GnomeMeeting::Process ()->GetChatWindow ();
-#ifdef HAVE_DBUS
-  dbus_component = GnomeMeeting::Process ()->GetDbusComponent ();
-#endif
 
   /* Get the config settings */
   gnomemeeting_threads_enter ();
@@ -987,11 +941,6 @@ GMManager::OnEstablishedCall (OpalCall &call)
   if (called_address.IsEmpty ()) 
     gm_main_window_set_call_url (main_window, GMURL ().GetDefaultURL ());
   gm_main_window_set_stay_on_top (main_window, stay_on_top);
-#ifdef HAVE_DBUS
-  gnomemeeting_dbus_component_set_call_state (dbus_component,
-					      GetCurrentCallToken (),
-					      GMManager::Connected);
-#endif
   gnomemeeting_threads_leave ();
 }
 
@@ -1010,18 +959,10 @@ GMManager::OnEstablished (OpalConnection &connection)
 
   GtkWidget *history_window = NULL;
   GtkWidget *main_window = NULL;
-  GtkWidget *chat_window = NULL;
-#ifdef HAVE_DBUS
-  GObject *dbus_component = NULL;
-#endif
 
   /* Get the widgets */
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  chat_window = GnomeMeeting::Process ()->GetChatWindow ();
-#ifdef HAVE_DBUS
-  dbus_component = GnomeMeeting::Process ()->GetDbusComponent ();
-#endif
 
   /* Do nothing for the PCSS connection */
   if (PIsDescendant(&connection, OpalPCSSConnection)) {
@@ -1042,18 +983,7 @@ GMManager::OnEstablished (OpalConnection &connection)
   gm_main_window_set_status (main_window, utf8_name);
   gm_main_window_set_panel_section (main_window, CALL);
   gm_main_window_flash_message (main_window, "%s", msg);
-  gm_chat_window_push_info_message (chat_window, NULL, "%s", msg);
   gm_main_window_update_calling_state (main_window, GMManager::Connected);
-  gm_chat_window_update_calling_state (chat_window, 
-				       utf8_name,
-				       utf8_url, 
-				       GMManager::Connected);
-#ifdef HAVE_DBUS
-  gnomemeeting_dbus_component_set_call_info (dbus_component,
-					     connection.GetCall ().GetToken (),
-					     utf8_name, utf8_app, utf8_url,
-					     utf8_protocol_prefix);
-#endif
   gnomemeeting_threads_leave ();
   
   /* Asterisk sometimes forgets to send an INVITE, HACK */
@@ -1099,18 +1029,9 @@ void
 GMManager::OnClearedCall (OpalCall & call)
 {
   GtkWidget *main_window = NULL;
-  GtkWidget *chat_window = NULL;
-#ifdef HAVE_DBUS
-  GObject *dbus_component = NULL;
-#endif
-  
   BOOL reg = FALSE;
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  chat_window = GnomeMeeting::Process ()->GetChatWindow ();
-#ifdef HAVE_DBUS
-  dbus_component = GnomeMeeting::Process ()->GetDbusComponent ();
-#endif
   
   if (GetCurrentCallToken() != PString::Empty() 
       && GetCurrentCallToken () != call.GetToken())
@@ -1138,10 +1059,6 @@ GMManager::OnClearedCall (OpalCall & call)
   gnomemeeting_threads_enter ();
   gm_main_window_set_stay_on_top (main_window, FALSE);
   gm_main_window_update_calling_state (main_window, GMManager::Standby);
-  gm_chat_window_update_calling_state (chat_window, 
-				       NULL, 
-				       NULL, 
-				       GMManager::Standby);
   gm_main_window_set_status (main_window, _("Standby"));
   gm_main_window_set_call_duration (main_window, NULL);
   gm_main_window_set_call_info (main_window, NULL, NULL, NULL, NULL);
@@ -1151,11 +1068,6 @@ GMManager::OnClearedCall (OpalCall & call)
   gm_main_window_clear_stats (main_window);
   gm_main_window_update_logo (main_window);
   gm_main_window_clear_signal_levels (main_window);
-#ifdef HAVE_DBUS
-  gnomemeeting_dbus_component_set_call_state (dbus_component,
-					      GetCurrentCallToken (),
-					      GMManager::Standby);
-#endif
   gm_main_window_push_message (main_window, 
 			       GetMissedCallsNumber (), 
 			       GetMWI ());
@@ -1178,7 +1090,6 @@ void
 GMManager::OnReleased (OpalConnection & connection)
 { 
   GtkWidget *main_window = NULL;
-  GtkWidget *chat_window = NULL;
   GtkWidget *history_window = NULL;
   
   gchar *msg_reason = NULL;
@@ -1191,7 +1102,6 @@ GMManager::OnReleased (OpalConnection & connection)
 
   /* Get the widgets */
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  chat_window = GnomeMeeting::Process ()->GetChatWindow ();
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   
   /* Do nothing for the PCSS connection */
@@ -1327,7 +1237,6 @@ GMManager::OnReleased (OpalConnection & connection)
 
   gm_history_window_insert (history_window, "%s", msg_reason);
   gm_main_window_flash_message (main_window, "%s", msg_reason);
-  gm_chat_window_push_info_message (chat_window, NULL, "%s", "");
   gnomemeeting_threads_leave ();
 
   g_free (utf8_app);
@@ -1361,33 +1270,50 @@ GMManager::OnHold (OpalConnection & connection)
 
 
 void 
-GMManager::OnMessageReceived (const SIPURL & from,
-                              const PString & body)
+GMManager::OnMessageReceived (const SIPURL & _from,
+                              const PString & _body)
 {
+  SIPURL from = _from;
+  std::string display_name = (const char *) from.GetDisplayName ();
+  from.AdjustForRequestURI ();
+  std::string uri = (const char *) from.AsString ();
+  std::string message = (const char *) _body;
+
   GMManager *ep = NULL;
   GMPCSSEndpoint *pcssEP = NULL;
 
-  GtkWidget *chat_window = NULL;
-
-  gboolean chat_window_visible = FALSE;
-  
-  chat_window = GnomeMeeting::Process ()->GetChatWindow ();
-
-  gnomemeeting_threads_enter ();
-  gm_text_chat_window_insert (chat_window, from.AsString (), 
-			      from.GetDisplayName (), (const char *) body, 1);  
-  chat_window_visible = gnomemeeting_window_is_visible (chat_window);
-  gnomemeeting_threads_leave ();
-
-  if (!chat_window_visible) {
-   
-    ep = GnomeMeeting::Process ()->GetManager ();
-    pcssEP = ep->GetPCSSEndpoint ();
-    pcssEP->PlaySoundEvent ("new_message_sound");
-  }
+  ep = GnomeMeeting::Process ()->GetManager ();
+  pcssEP = ep->GetPCSSEndpoint ();
+  pcssEP->PlaySoundEvent ("new_message_sound"); // FIXME use signals here too
 
   Ekiga::Runtime *runtime = GnomeMeeting::Process ()->GetRuntime (); // FIXME
-  runtime->run_in_main (sigc::bind (message_event.make_slot (), 0));
+  runtime->run_in_main (sigc::bind (im_received.make_slot (), display_name, uri, message));
+}
+
+
+void 
+GMManager::OnMessageFailed (const SIPURL & _to,
+                            SIP_PDU::StatusCodes reason)
+{
+  SIPURL to = _to;
+  to.AdjustForRequestURI ();
+  std::string uri = (const char *) to.AsString ();
+  Ekiga::Runtime *runtime = GnomeMeeting::Process ()->GetRuntime (); // FIXME
+  runtime->run_in_main (sigc::bind (im_failed.make_slot (), uri, 
+                                    _("Could not send message")));
+}
+
+
+void 
+GMManager::OnMessageSent (const PString & _to,
+                          const PString & body)
+{
+  SIPURL to = _to;
+  to.AdjustForRequestURI ();
+  std::string uri = (const char *) to.AsString ();
+  std::string message = (const char *) body;
+  Ekiga::Runtime *runtime = GnomeMeeting::Process ()->GetRuntime (); // FIXME
+  runtime->run_in_main (sigc::bind (im_sent.make_slot (), uri, message));
 }
 
 
@@ -2369,44 +2295,6 @@ GMManager::CreateVideoOutputDevice(const OpalConnection & connection,
 
 
 BOOL
-GMManager::SendTextMessage (PString url,
-			     PString message)
-{
-  PSafePtr <OpalCall> call = NULL;
-  PSafePtr <OpalConnection> connection = NULL;
-
-  PString call_token;
-
-  call_token = GetCurrentCallToken ();
-
-  /* We need specific code as the system is different for H.323
-   * and SIP.
-   */
-  if (GMURL (url).GetType() == "h323") {
-
-    call = FindCallWithLock (call_token);
-
-    if (call != NULL) {
-
-      connection = GetConnection (call, TRUE);
-
-      if (connection != NULL) {
-
-	connection->SendUserInputString ("MSG"+message);
-	return TRUE;
-      }
-    }
-  }
-  else if (GMURL (url).GetType () == "sip") {
-
-    return sipEP->Message (url, message);
-  }
-
-  return FALSE;
-}
-
-
-BOOL
 GMManager::IsCallOnHold (PString callToken)
 {
   PSafePtr<OpalCall> call = FindCallWithLock (callToken);
@@ -2432,13 +2320,6 @@ GMManager::SetCallOnHold (PString callToken,
 {
   PSafePtr<OpalCall> call = FindCallWithLock (callToken);
   OpalConnection *connection = NULL;
-#ifdef HAVE_DBUS
-  GObject *dbus_component = NULL;
-#endif  
-
-#ifdef HAVE_DBUS
-  dbus_component = GnomeMeeting::Process ()->GetDbusComponent ();
-#endif
 
   if (call != NULL) {
 
@@ -2446,11 +2327,6 @@ GMManager::SetCallOnHold (PString callToken,
 
     if (connection != NULL) {
 
-#ifdef HAVE_DBUS
-      gnomemeeting_dbus_component_set_call_on_hold (dbus_component,
-						    callToken,
-						    state);
-#endif
       if (state) 
 	connection->HoldConnection ();
       else 

@@ -57,6 +57,7 @@
 #include "callinfo.h"
 
 #include <sigc++/sigc++.h>
+#include <string>
 
 class GMLid;
 class GMH323Gatekeeper;
@@ -299,7 +300,12 @@ class GMManager : public OpalManager
   void OnMessageReceived (const SIPURL & from,
 			  const PString & body);
 
-  
+  void OnMessageFailed (const SIPURL & messageUrl,
+                        SIP_PDU::StatusCodes reason);
+
+  void OnMessageSent (const PString & to,
+                      const PString & body);
+
   /* DESCRIPTION  :  This callback is called when an input video device 
    *                 has to be opened.
    * BEHAVIOR     :  Initialise the PVideoInputDevice.
@@ -602,13 +608,6 @@ class GMManager : public OpalManager
 
 
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Sends the given text to the other end
-   * PRE          :  /
-   */
-  BOOL SendTextMessage (PString callToken, PString message);
-
-
-  /* DESCRIPTION  :  /
    * BEHAVIOR     :  Checks if the call is on hold
    * PRE          :  /
    */
@@ -712,8 +711,14 @@ class GMManager : public OpalManager
    */
   int GetMissedCallsNumber ();
   
+  // FIXME : those signals should move to the brand new TextChatCore
+  sigc::signal<void, std::string, std::string> im_failed;
+  sigc::signal<void, std::string, std::string, std::string> im_received;
+  sigc::signal<void, std::string, std::string> im_sent;
+  sigc::signal<void, std::string> new_chat;
+  // Endof FIXME
+
   sigc::signal<void, GMManager::CallingState, Ekiga::CallInfo &> call_event;
-  sigc::signal<void, int> message_event;
   
  protected:
   

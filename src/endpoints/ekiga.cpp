@@ -43,7 +43,7 @@
 #include "audio.h"
 #include "urlhandler.h"
 #include "preferences.h"
-#include "chat.h"
+#include "chat-window.h"
 #include "druid.h"
 #include "tools.h"
 #include "statusicon.h"
@@ -184,10 +184,6 @@ GnomeMeeting::Exit ()
   if (accounts_window)
     gtk_widget_destroy (accounts_window);
   accounts_window = NULL;
-  
-  if (chat_window)
-    gtk_widget_destroy (chat_window);
-  chat_window = NULL;
   
 #ifdef HAVE_DBUS
   if (dbus_component)
@@ -468,13 +464,6 @@ GnomeMeeting::GetPrefsWindow ()
 
 
 GtkWidget *
-GnomeMeeting::GetChatWindow ()
-{
-  return chat_window;
-}
-
-
-GtkWidget *
 GnomeMeeting::GetDruidWindow ()
 {
   return druid_window;
@@ -531,7 +520,6 @@ void GnomeMeeting::BuildGUI ()
   pc2phone_window = gm_pc2phone_window_new ();  
   prefs_window = gm_prefs_window_new ();  
   history_window = gm_history_window_new ();
-  chat_window = gm_text_chat_window_new ();
   druid_window = gm_druid_window_new ();
   accounts_window = gm_accounts_window_new ();
 

@@ -44,7 +44,6 @@
 #include "urlhandler.h"
 
 #include "main.h"
-#include "chat.h"
 #include "preferences.h"
 #include "history.h"
 #include "statusicon.h"
@@ -634,42 +633,18 @@ void
 GMSIPEndpoint::OnMessageFailed (const SIPURL & messageUrl,
 				SIP_PDU::StatusCodes reason)
 {
-  GtkWidget *chat_window = NULL;
-  gchar *msg = NULL;
-
-  chat_window = GnomeMeeting::Process ()->GetChatWindow ();
-  
-  switch (reason) {
-
-  case SIP_PDU::Failure_NotFound:
-    msg = g_strdup (_("Error: User not found"));
-    break;
-
-  case SIP_PDU::Failure_TemporarilyUnavailable:
-    msg = g_strdup (_("Error: User offline"));
-    break;
-
-  case SIP_PDU::Failure_UnAuthorised:
-  case SIP_PDU::Failure_Forbidden:
-    msg = g_strdup (_("Error: Forbidden"));
-    break;
-
-  case SIP_PDU::Failure_RequestTimeout:
-    msg = g_strdup (_("Error: Timeout"));
-    break;
-
-  default:
-    msg = g_strdup (_("Error: Failed to transmit message"));
-  }
-
-  gnomemeeting_threads_enter ();
-  gm_text_chat_window_insert (chat_window, messageUrl.AsString (), 
-			      NULL, msg, 2);
-  gnomemeeting_threads_leave ();
-
-  g_free (msg);
+  endpoint.OnMessageFailed (messageUrl, reason);
 }
       
+
+void
+GMSIPEndpoint::Message (const PString & to,
+                        const PString & body)
+{
+  SIPEndPoint::Message (to, body);
+  endpoint.OnMessageSent (to, body);
+}
+
 
 int
 GMSIPEndpoint::GetRegisteredAccounts ()

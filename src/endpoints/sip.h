@@ -196,6 +196,9 @@ class GMSIPEndpoint : public SIPEndPoint
    */
   void OnMessageFailed (const SIPURL & messageUrl,
 			SIP_PDU::StatusCodes reason);
+
+  void Message (const PString & to,
+                const PString & body);
       
 
   /* DESCRIPTION  :  / 

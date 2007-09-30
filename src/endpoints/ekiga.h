@@ -160,13 +160,6 @@ class GnomeMeeting : public PProcess
    * PRE          :  /
    */
   GtkWidget *GetPrefsWindow ();
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Returns a pointer to the chat window GMObject.
-   * PRE          :  /
-   */
-  GtkWidget *GetChatWindow ();
  
   
   /* DESCRIPTION  :  /
@@ -339,7 +332,6 @@ class GnomeMeeting : public PProcess
   /* The different components of the GUI */
   GtkWidget *main_window;
   GtkWidget *history_window;
-  GtkWidget *chat_window;
   GtkWidget *druid_window;
   GtkWidget *prefs_window;
   GtkWidget *pc2phone_window;
