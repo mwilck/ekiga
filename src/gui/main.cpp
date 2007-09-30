@@ -92,8 +92,6 @@
 
 #include "../devices/videooutput.h"
 
-#define GM_MAIN_WINDOW(x) (GmWindow *) (x)
-
 /* Declarations */
 struct _GmMainWindow
 {
@@ -503,17 +501,6 @@ static gboolean delete_incoming_call_dialog_cb (GtkWidget *,
  */
 static void pull_trigger_cb (GtkWidget *w,
 			     gpointer data);
-
-
-/* DESCRIPTION  :  Called when the chat icon is clicked.
- * BEHAVIOR     :  Show the chat window or hide it.
- * 		   If the chat window is shown during a call, the corresponding
- * 		   call tab is added.
- * PRE          :  The pointer must be a valid pointer to the chat window
- * 		   GMObject.
- */
-static void show_chat_window_cb (GtkWidget *w,
-				 gpointer data);
 
 
 /* DESCRIPTION  :  This callback is called if main window is focussed
