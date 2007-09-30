@@ -42,7 +42,6 @@
 
 #include "pcss.h"
 #include "ekiga.h"
-#include "chat.h"
 #include "conf.h"
 #include "misc.h"
 #include "callbacks.h"
@@ -96,7 +95,7 @@
 #define GM_MAIN_WINDOW(x) (GmWindow *) (x)
 
 /* Declarations */
-struct _GmWindow
+struct _GmMainWindow
 {
   GtkWidget *input_signal;
   GtkWidget *output_signal;
@@ -145,7 +144,7 @@ struct _GmWindow
   GtkWidget *status_option_menu;
 };
 
-typedef struct _GmWindow GmWindow;
+typedef struct _GmMainWindow GmMainWindow;
 
 struct _GmIdleTime
 {
@@ -159,7 +158,7 @@ struct _GmIdleTime
 typedef struct _GmIdleTime GmIdleTime;
 
 
-#define GM_WINDOW(x) (GmWindow *) (x)
+#define GM_MAIN_WINDOW(x) (GmMainWindow *) (x)
 
 /* channel types */
 enum {
@@ -185,7 +184,7 @@ static void gm_mw_destroy (gpointer);
  * 		  used by the main book GMObject.
  * PRE          : The given GtkWidget pointer must be the main window GMObject. 
  */
-static GmWindow *gm_mw_get_mw (GtkWidget *);
+static GmMainWindow *gm_mw_get_mw (GtkWidget *);
 
 
 /* DESCRIPTION  :  /
@@ -530,15 +529,15 @@ static gboolean main_window_focus_event_cb (GtkWidget *,
 static void
 gm_mw_destroy (gpointer m)
 {
-  GmWindow *mw = GM_WINDOW (m);
+  GmMainWindow *mw = GM_MAIN_WINDOW (m);
   
   g_return_if_fail (mw != NULL);
 
-  delete ((GmWindow *) mw);
+  delete ((GmMainWindow *) mw);
 }
 
 
-static GmWindow *
+static GmMainWindow *
 gm_mw_get_mw (GtkWidget *main_window)
 {
   g_return_val_if_fail (main_window != NULL, NULL);
@@ -551,7 +550,7 @@ gm_mw_get_mw (GtkWidget *main_window)
 static GtkWidget *
 gm_mw_init_main_toolbar (GtkWidget *main_window)
 {
-  GmWindow *mw = NULL;
+  GmMainWindow *mw = NULL;
 
   Ekiga::ServiceCore *services = NULL;
   GtkFrontend *gtk_frontend = NULL;
@@ -564,8 +563,6 @@ gm_mw_init_main_toolbar (GtkWidget *main_window)
   GtkWidget *toolbar = NULL;
   
   GtkWidget *image = NULL;
-
-  GtkWidget *chat_window = NULL;
 
   GtkCellRenderer *renderer = NULL;
 
@@ -594,8 +591,6 @@ gm_mw_init_main_toolbar (GtkWidget *main_window)
       NULL 
     };
   
-  chat_window = GnomeMeeting::Process ()->GetChatWindow ();
-
   g_return_val_if_fail (main_window != NULL, NULL);
   mw = gm_mw_get_mw (main_window);
   g_return_val_if_fail (mw != NULL, NULL);
@@ -653,27 +648,6 @@ gm_mw_init_main_toolbar (GtkWidget *main_window)
 		      GTK_SIGNAL_FUNC (pull_trigger_cb),
 		      (gpointer)trigger);
   }
-
-  /* The text chat icon */
-  item = gtk_tool_item_new ();
-  button = gtk_button_new ();
-  gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
-  image = gtk_image_new_from_icon_name (GM_ICON_INTERNET_GROUP_CHAT, 
-                                        GTK_ICON_SIZE_LARGE_TOOLBAR);
-  gtk_container_add (GTK_CONTAINER (button), image);
-  gtk_container_add (GTK_CONTAINER (item), button);
-  gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
-  gtk_tool_item_set_tooltip (GTK_TOOL_ITEM (item), 
-			     mw->tips, _("Open text chat"), NULL);
-  
-  gtk_widget_show (button);
-  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), 
-		      GTK_TOOL_ITEM (item), -1);
-
-  g_signal_connect (G_OBJECT (button), "clicked",
-		    GTK_SIGNAL_FUNC (show_chat_window_cb),
-		    (gpointer) chat_window);
-  
 
   /* A separator */
   item = gtk_separator_tool_item_new ();
@@ -745,7 +719,7 @@ gm_mw_init_main_toolbar (GtkWidget *main_window)
 static GtkWidget *
 gm_mw_init_uri_toolbar (GtkWidget *main_window)
 {
-  GmWindow *mw = NULL;
+  GmMainWindow *mw = NULL;
 
   GtkToolItem *item = NULL;
 
@@ -839,13 +813,12 @@ gm_mw_init_uri_toolbar (GtkWidget *main_window)
 static void
 gm_mw_init_menu (GtkWidget *main_window)
 {
-  GmWindow *mw = NULL;
+  GmMainWindow *mw = NULL;
 
   Ekiga::ServiceCore *services = NULL;
   GtkFrontend *gtk_frontend = NULL;
   
   GtkWidget *addressbook_window = NULL;
-  GtkWidget *chat_window = NULL;
   GtkWidget *druid_window = NULL;
   GtkWidget *history_window = NULL;
   GtkWidget *prefs_window = NULL;
@@ -860,9 +833,8 @@ gm_mw_init_menu (GtkWidget *main_window)
 
   services = GnomeMeeting::Process ()->GetServiceCore ();
   gtk_frontend = dynamic_cast<GtkFrontend *>(services->get ("gtk-frontend"));
-  addressbook_window = GTK_WIDGET (gtk_frontend->get_addressbook_window ());
+  addressbook_window = GTK_WIDGET (gtk_frontend->get_addressbook_window ()); 
   history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
-  chat_window = GnomeMeeting::Process ()->GetChatWindow ();
   druid_window = GnomeMeeting::Process ()->GetDruidWindow ();
   prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
   accounts_window = GnomeMeeting::Process ()->GetAccountsWindow ();
@@ -1068,16 +1040,10 @@ gm_mw_init_menu (GtkWidget *main_window)
       GTK_MENU_THEME_ENTRY("address_book", _("_Find Contacts"),
 			   _("Find contacts"),
 			   GTK_STOCK_FIND, 0,
-			   GTK_SIGNAL_FUNC (show_window_cb),
+			   GTK_SIGNAL_FUNC (gtk_widget_show_all),
 			   (gpointer) addressbook_window, TRUE),
       
       GTK_MENU_SEPARATOR,
-
-      GTK_MENU_ENTRY("chat_window", _("C_hat Window"),
-		     _("Open the chat window"),
-		     NULL, 0,
-		     GTK_SIGNAL_FUNC (show_window_cb),
-		     (gpointer) chat_window, TRUE),
 
       GTK_MENU_ENTRY("log", _("General History"),
 		     _("View the operations history"),
@@ -1121,7 +1087,7 @@ gm_mw_init_menu (GtkWidget *main_window)
 static void 
 gm_mw_init_contacts_list (GtkWidget *main_window)
 {
-  GmWindow *mw = NULL;
+  GmMainWindow *mw = NULL;
 
   GtkWidget *label = NULL;
   GtkWidget *frame = NULL;
@@ -1152,7 +1118,7 @@ gm_mw_init_contacts_list (GtkWidget *main_window)
 static void 
 gm_mw_init_calls_history (GtkWidget *main_window)
 {
-  GmWindow *mw = NULL;
+  GmMainWindow *mw = NULL;
   
   GtkWidget *label = NULL;
 
@@ -1169,7 +1135,7 @@ gm_mw_init_calls_history (GtkWidget *main_window)
 static void 
 gm_mw_init_dialpad (GtkWidget *main_window)
 {
-  GmWindow *mw = NULL;
+  GmMainWindow *mw = NULL;
   
   GtkSizeGroup *size_group_alpha = NULL;
 
@@ -1254,7 +1220,7 @@ gm_mw_init_dialpad (GtkWidget *main_window)
 static GtkWidget * 
 gm_mw_video_settings_window_new (GtkWidget *main_window)
 {
-  GmWindow *mw = NULL;
+  GmMainWindow *mw = NULL;
   
   GtkWidget *hbox = NULL;
   GtkWidget *vbox = NULL;
@@ -1404,7 +1370,7 @@ gm_mw_video_settings_window_new (GtkWidget *main_window)
 static GtkWidget * 
 gm_mw_audio_settings_window_new (GtkWidget *main_window)
 {
-  GmWindow *mw = NULL;
+  GmMainWindow *mw = NULL;
   
   GtkWidget *hscale_play = NULL; 
   GtkWidget *hscale_rec = NULL;
@@ -1512,7 +1478,7 @@ gm_mw_audio_settings_window_new (GtkWidget *main_window)
 static void 
 gm_mw_init_call (GtkWidget *main_window)
 {
-  GmWindow *mw = NULL;
+  GmMainWindow *mw = NULL;
 
   GtkWidget *event_box = NULL;
   GtkWidget *table = NULL;
@@ -1711,7 +1677,7 @@ void
 gm_mw_zooms_menu_update_sensitivity (GtkWidget *main_window,
                                      double zoom)
 {
-  GmWindow *mw = NULL;
+  GmMainWindow *mw = NULL;
 
   mw = gm_mw_get_mw (main_window);
 
@@ -1755,7 +1721,7 @@ gnomemeeting_tray_hack_cb (gpointer data)
 static gboolean
 thread_safe_notebook_set_page (gpointer data)
 {
-  GmWindow *mw = NULL;
+  GmMainWindow *mw = NULL;
 
   GtkWidget *main_window = NULL;
   
@@ -1774,7 +1740,7 @@ thread_safe_notebook_set_page (gpointer data)
 static gboolean
 thread_safe_set_stats_tooltip (gpointer data)
 {
-  GmWindow *mw = NULL;
+  GmMainWindow *mw = NULL;
 
   GtkWidget *main_window = NULL;
   
@@ -2064,7 +2030,7 @@ panel_section_changed_cb (GtkNotebook *notebook,
                           gint page_num, 
                           gpointer data) 
 {
-  GmWindow *mw = NULL;
+  GmMainWindow *mw = NULL;
 
   gint current_page = 0;
 
@@ -2140,7 +2106,7 @@ window_closed_cb (GtkWidget *widget,
   GtkStatusIcon *statusicon = NULL;
   GtkWidget *main_window = NULL;
 
-  GmWindow *mw = NULL;
+  GmMainWindow *mw = NULL;
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   statusicon = GTK_STATUS_ICON (GnomeMeeting::Process ()->GetStatusicon ());
@@ -2239,7 +2205,7 @@ static void
 url_changed_cb (GtkEditable  *e, 
 		gpointer data)
 {
-  GmWindow *mw = NULL;
+  GmMainWindow *mw = NULL;
 
   const char *tip_text = NULL;
 
@@ -2320,7 +2286,7 @@ delete_incoming_call_dialog_cb (GtkWidget *w,
 				GdkEvent *ev,
 				gpointer data)
 {
-  GmWindow *mw = NULL;
+  GmMainWindow *mw = NULL;
 
   g_return_val_if_fail (data != NULL, TRUE);
 
@@ -2346,44 +2312,6 @@ pull_trigger_cb (GtkWidget *w,
   g_return_if_fail (trigger != NULL);
 
   trigger->pull ();
-}
-
-
-static void 
-show_chat_window_cb (GtkWidget *w,
-		     gpointer data)
-{
-  gchar *name = NULL;
-  gchar *url = NULL;
-
-  GMManager *ep = NULL;
-
-  ep = GnomeMeeting::Process ()->GetManager ();
-
-  if (!gnomemeeting_window_is_visible (GTK_WIDGET (data))) {
-
-    /* Check if there is an active call */
-    gdk_threads_leave ();
-    ep->GetCurrentConnectionInfo (name, url);
-    gdk_threads_enter ();
-
-    /* If we are in a call, add a tab with the given URL if there
-     * is none.
-     */
-    if (url && !gm_text_chat_window_has_tab (GTK_WIDGET (data), url)) {
-
-      gm_text_chat_window_add_tab (GTK_WIDGET (data), url, name);
-      if (url)
-	gm_chat_window_update_calling_state (GTK_WIDGET (data), 
-					     name,
-					     url, 
-					     GMManager::Connected);
-    }
-
-    gnomemeeting_window_show (GTK_WIDGET (data));
-  }
-  else
-    gnomemeeting_window_hide (GTK_WIDGET (data));
 }
 
 
@@ -2422,7 +2350,7 @@ gm_main_window_press_dialpad (GtkWidget *main_window,
 GtkWidget*
 gm_main_window_get_video_widget (GtkWidget *main_window)
 {
-  GmWindow *mw = NULL;
+  GmMainWindow *mw = NULL;
   
   g_return_val_if_fail (main_window != NULL, NULL);
   mw = gm_mw_get_mw (main_window);
@@ -2437,7 +2365,7 @@ gm_main_window_get_resized_video_widget (GtkWidget *main_window,
                                          int width,
                                          int height)
 {
-  GmWindow *mw = NULL;
+  GmMainWindow *mw = NULL;
   
   g_return_val_if_fail (main_window != NULL, NULL);
   mw = gm_mw_get_mw (main_window);
@@ -2452,7 +2380,7 @@ gm_main_window_get_resized_video_widget (GtkWidget *main_window,
 void 
 gm_main_window_update_logo (GtkWidget *main_window)
 {
-  GmWindow *mw = NULL;
+  GmMainWindow *mw = NULL;
 
   g_return_if_fail (main_window != NULL);
 
@@ -2472,7 +2400,7 @@ void
 gm_main_window_set_call_hold (GtkWidget *main_window,
 			      gboolean is_on_hold)
 {
-  GmWindow *mw = NULL;
+  GmMainWindow *mw = NULL;
   
   GtkWidget *child = NULL;
   
@@ -2528,7 +2456,7 @@ gm_main_window_set_channel_pause (GtkWidget *main_window,
 				  gboolean pause,
 				  gboolean is_video)
 {
-  GmWindow *mw = NULL;
+  GmMainWindow *mw = NULL;
   
   GtkWidget *child = NULL;
 
@@ -2575,7 +2503,7 @@ void
 gm_main_window_update_calling_state (GtkWidget *main_window,
 				     unsigned calling_state)
 {
-  GmWindow *mw = NULL;
+  GmMainWindow *mw = NULL;
   
   g_return_if_fail (main_window != NULL);
 
@@ -2676,7 +2604,7 @@ gm_main_window_update_sensitivity (GtkWidget *main_window,
 				   BOOL is_receiving,
 				   BOOL is_transmitting)
 {
-  GmWindow *mw = NULL;
+  GmMainWindow *mw = NULL;
   
   double zoom = 1.0;
 
@@ -2789,7 +2717,7 @@ void
 gm_main_window_fullscreen_menu_update_sensitivity (GtkWidget *main_window,
                                                    BOOL FSMenu)
 {
-  GmWindow *mw = NULL;
+  GmMainWindow *mw = NULL;
   
   mw = gm_mw_get_mw (main_window);
 
@@ -2820,7 +2748,7 @@ gm_main_window_toggle_fullscreen (GtkWidget *main_window)
 void
 gm_main_window_force_redraw (GtkWidget *main_window)
 {
-  GmWindow *mw = NULL;
+  GmMainWindow *mw = NULL;
 
   g_return_if_fail (main_window != NULL);
   mw = gm_mw_get_mw (main_window);
@@ -2837,7 +2765,7 @@ void
 gm_main_window_set_busy (GtkWidget *main_window,
 			 BOOL busy)
 {
-  GmWindow *mw = NULL;
+  GmMainWindow *mw = NULL;
   
   GdkCursor *cursor = NULL;
 
@@ -2863,7 +2791,7 @@ gm_main_window_set_volume_sliders_values (GtkWidget *main_window,
 					  int output_volume, 
 					  int input_volume)
 {
-  GmWindow *mw = NULL;
+  GmMainWindow *mw = NULL;
 
   g_return_if_fail (main_window != NULL);
 
@@ -2886,7 +2814,7 @@ gm_main_window_set_signal_levels (GtkWidget *main_window,
 				  float output, 
 				  float input)
 {
-  GmWindow *mw = NULL;
+  GmMainWindow *mw = NULL;
 
   g_return_if_fail (main_window != NULL);
 
@@ -2905,7 +2833,7 @@ gm_main_window_set_signal_levels (GtkWidget *main_window,
 void
 gm_main_window_clear_signal_levels (GtkWidget *main_window)
 {
-  GmWindow *mw = NULL;
+  GmMainWindow *mw = NULL;
 
   g_return_if_fail (main_window != NULL);
 
@@ -2923,7 +2851,7 @@ gm_main_window_get_volume_sliders_values (GtkWidget *main_window,
 					  int &output_volume, 
 					  int &input_volume)
 {
-  GmWindow *mw = NULL;
+  GmMainWindow *mw = NULL;
 
   g_return_if_fail (main_window != NULL);
 
@@ -2943,7 +2871,7 @@ gm_main_window_set_video_sliders_values (GtkWidget *main_window,
 					 int colour,
 					 int contrast)
 {
-  GmWindow *mw = NULL;
+  GmMainWindow *mw = NULL;
 
   g_return_if_fail (main_window != NULL);
 
@@ -2974,7 +2902,7 @@ gm_main_window_get_video_sliders_values (GtkWidget *main_window,
 					 int &colour,
 					 int &contrast)
 {
-  GmWindow *mw = NULL;
+  GmMainWindow *mw = NULL;
 
   g_return_if_fail (main_window != NULL);
 
@@ -2993,7 +2921,7 @@ void
 gm_main_window_set_panel_section (GtkWidget *main_window,
                                   int section)
 {
-  GmWindow *mw = NULL;
+  GmMainWindow *mw = NULL;
   
   GtkWidget *menu = NULL;
   
@@ -3019,7 +2947,7 @@ void
 gm_main_window_set_status (GtkWidget *main_window,
                            guint status)
 {
-  GmWindow *mw = NULL;
+  GmMainWindow *mw = NULL;
   
   GtkWidget *menu = NULL;
   
@@ -3039,7 +2967,7 @@ void
 gm_main_window_set_display_type (GtkWidget *main_window,
                                  int i)
 {
-  GmWindow *mw = NULL;
+  GmMainWindow *mw = NULL;
   
   g_return_if_fail (main_window != NULL);
   
@@ -3058,7 +2986,7 @@ gm_main_window_set_call_info (GtkWidget *main_window,
 			      const char *tr_video_codec,
 			      const char *re_video_codec)
 {
-  GmWindow *mw = NULL;
+  GmMainWindow *mw = NULL;
 
   GtkTextIter iter;
   GtkTextIter *end_iter = NULL;
@@ -3096,7 +3024,7 @@ void
 gm_main_window_set_account_info (GtkWidget *main_window,
 				 int registered_accounts)
 {
-  /*GmWindow *mw = NULL;
+  /*GmMainWindow *mw = NULL;
   
   GtkTextIter iter, end_iter;
   GtkTextBuffer *buffer = NULL;
@@ -3136,7 +3064,7 @@ void
 gm_main_window_set_status (GtkWidget *main_window,
 			   const char *status)
 {
-  GmWindow *mw = NULL;
+  GmMainWindow *mw = NULL;
 
   GtkTextIter iter;
   GtkTextIter* end_iter = NULL;
@@ -3168,7 +3096,7 @@ void
 gm_main_window_set_call_duration (GtkWidget *main_window,
                                   const char *duration)
 {
-  GmWindow *mw = NULL;
+  GmMainWindow *mw = NULL;
 
   GtkTextIter iter;
   GtkTextIter* end_iter = NULL;
@@ -3207,7 +3135,7 @@ gm_main_window_transfer_dialog_run (GtkWidget *main_window,
 				    const char *u)
 {
   GMManager *endpoint = NULL;
-  GmWindow *mw = NULL;
+  GmMainWindow *mw = NULL;
   
   GMURL url = GMURL (u);
  
@@ -3271,7 +3199,7 @@ gm_main_window_incoming_call_dialog_show (GtkWidget *main_window,
 					  gchar *utf8_app,
 					  gchar *utf8_url)
 {
-  GmWindow *mw = NULL;
+  GmMainWindow *mw = NULL;
   
   GtkWidget *label = NULL;
   GtkWidget *vbox = NULL;
@@ -3376,7 +3304,7 @@ gm_main_window_incoming_call_dialog_show (GtkWidget *main_window,
 GtkWidget *
 gm_main_window_new ()
 {
-  GmWindow *mw = NULL;
+  GmMainWindow *mw = NULL;
 
   GtkWidget *window = NULL;
   GtkWidget *table = NULL;
@@ -3407,7 +3335,7 @@ gm_main_window_new ()
 
 
   /* The GMObject data */
-  mw = new GmWindow ();
+  mw = new GmMainWindow ();
   mw->incoming_call_popup = mw->transfer_call_popup = NULL;
   g_object_set_data_full (G_OBJECT (window), "GMObject", 
 			  mw, (GDestroyNotify) gm_mw_destroy);
@@ -3589,7 +3517,7 @@ gm_main_window_flash_message (GtkWidget *main_window,
 			      const char *msg, 
 			      ...)
 {
-  GmWindow *mw = NULL;
+  GmMainWindow *mw = NULL;
 
   char buffer [1025];
 
@@ -3611,7 +3539,7 @@ gm_main_window_push_message (GtkWidget *main_window,
 			     int missed,
 			     const char *vm)
 {
-  GmWindow *mw = NULL;
+  GmMainWindow *mw = NULL;
 
   gchar *info = NULL;
   
@@ -3632,7 +3560,7 @@ gm_main_window_push_message (GtkWidget *main_window,
 			     const char *msg, 
 			     ...)
 {
-  GmWindow *mw = NULL;
+  GmMainWindow *mw = NULL;
 
   char buffer [1025];
 
@@ -3654,7 +3582,7 @@ gm_main_window_push_info_message (GtkWidget *main_window,
 				  const char *msg, 
 				  ...)
 {
-  GmWindow *mw = NULL;
+  GmMainWindow *mw = NULL;
   char *buffer;
   
   g_return_if_fail (main_window != NULL);
@@ -3675,7 +3603,7 @@ void
 gm_main_window_set_call_url (GtkWidget *main_window, 
 			     const char *url)
 {
-  GmWindow *mw = NULL;
+  GmMainWindow *mw = NULL;
 
   GtkWidget *entry = NULL;
   GtkEntryCompletion *completion = NULL;
@@ -3703,7 +3631,7 @@ void
 gm_main_window_append_call_url (GtkWidget *main_window, 
 				const char *url)
 {
-  GmWindow *mw = NULL;
+  GmMainWindow *mw = NULL;
   
   GtkWidget *entry = NULL;
   GtkEntryCompletion *completion = NULL;
@@ -3737,7 +3665,7 @@ gm_main_window_append_call_url (GtkWidget *main_window,
 const char *
 gm_main_window_get_call_url (GtkWidget *main_window)
 {
-  GmWindow *mw = NULL;
+  GmMainWindow *mw = NULL;
 
   g_return_val_if_fail (main_window != NULL, NULL);
 
@@ -3752,7 +3680,7 @@ gm_main_window_get_call_url (GtkWidget *main_window)
 void 
 gm_main_window_clear_stats (GtkWidget *main_window)
 {
-  GmWindow *mw = NULL;
+  GmMainWindow *mw = NULL;
 
   g_return_if_fail (main_window != NULL);
 
@@ -3781,7 +3709,7 @@ gm_main_window_update_stats (GtkWidget *main_window,
 			     unsigned int tr_width,
 			     unsigned int tr_height)
 {
-  GmWindow *mw = NULL;
+  GmMainWindow *mw = NULL;
   
   gchar *stats_msg = NULL;
   gchar *stats_msg_tr = NULL;
@@ -3861,7 +3789,7 @@ gm_main_window_update_stats (GtkWidget *main_window,
 GdkPixbuf *
 gm_main_window_get_current_picture (GtkWidget *main_window)
 {
-  GmWindow *mw = NULL;
+  GmMainWindow *mw = NULL;
   
   g_return_val_if_fail (main_window != NULL, NULL);
 
@@ -3877,7 +3805,7 @@ void
 gm_main_window_set_stay_on_top (GtkWidget *main_window,
 				gboolean stay_on_top)
 {
-  GmWindow *mw = NULL;
+  GmMainWindow *mw = NULL;
   
   GdkWindow *gm_window = NULL;
 
