@@ -4,8 +4,10 @@ sip_dir = $(top_srcdir)/lib/engine/protocol/sip
 
 AM_CPPFLAGS = $(SIGC_CFLAGS) $(OPAL_CFLAGS) $(PWLIB_CFLAGS)
 
+#### FIXME remove gtk-frontend
 INCLUDES = \
 	-I$(top_srcdir)/lib/engine/include 		\
+	-I$(top_srcdir)/lib/engine/gui/gtk-frontend	\
 	-I$(top_srcdir)/lib/engine/framework 		\
 	-I$(top_srcdir)/lib/engine/presence/skel 	\
 	-I$(top_srcdir)/lib/engine/addressbook/skel
@@ -28,6 +30,7 @@ libgmsip_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(OPAL_LIBS) $(
 
 #### FIXME should be removed at a later stage
 INCLUDES += \
+	-I$(top_srcdir)/lib/gui/	                \
 	-I$(top_srcdir)/src                             \
 	-I$(top_srcdir)/src/clients/                    \
 	-I$(top_srcdir)/src/components/                 \

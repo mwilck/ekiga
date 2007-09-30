@@ -37,6 +37,7 @@
 #include <iostream>
 
 #include "config.h"
+#include "ekiga.h" // FIXME
 
 #include "sip-basic.h"
 
@@ -94,7 +95,8 @@ SIP::Basic::on_call (std::string uri)
 void
 SIP::Basic::on_message (std::string uri)
 {
-  std::cout << "Ekiga should message " << uri << std::endl; 
+  Ekiga::Runtime *runtime = GnomeMeeting::Process ()->GetRuntime (); // FIXME
+  runtime->run_in_main (sigc::bind (GnomeMeeting::Process ()->GetManager ()->new_chat.make_slot (), uri));
 }
 
 bool

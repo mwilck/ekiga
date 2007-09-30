@@ -66,6 +66,19 @@ SIP::EndPoint::call (std::string uri)
     GnomeMeeting::Process ()->Connect (uri.c_str ()); // FIXME should disappear in the future
 }
 
+
+void 
+SIP::EndPoint::message (std::string uri,
+                        std::string message)
+{
+  // FIXME, this will be changed in the future
+  GMSIPEndpoint *sip_ep =
+    GnomeMeeting::Process ()->GetManager ()->GetSIPEndpoint ();
+
+  sip_ep->Message (uri, message);
+}
+
+
 void
 SIP::EndPoint::subscribe (std::string uri,
                           int expire)
@@ -205,3 +218,4 @@ SIP::EndPoint::OnPresenceInfoReceived (const PString & user,
     runtime->run_in_main (sigc::bind (presence_core->status_received.make_slot (), uri, status));
   }
 }
+

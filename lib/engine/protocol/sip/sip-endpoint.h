@@ -71,6 +71,9 @@ namespace SIP
 
     void call (std::string uri);
 
+    void message (std::string uri,
+                  std::string message);
+
     void subscribe (std::string uri,
                     int expire = 500);
 
