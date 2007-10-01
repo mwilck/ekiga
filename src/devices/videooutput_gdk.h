@@ -98,8 +98,7 @@ class GMVideoDisplay_GDK : public PThread
                              const BYTE *data,
                              PColourConverter* setConverter,
                              BOOL local,
-                             int display,
-                             double zoom);
+                             int devices_nbr);
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  If data for the end frame is received, then we convert

@@ -180,45 +180,14 @@ BOOL PVideoOutputDevice_EKIGA::SetFrameData (unsigned x,
   if (!endFrame)
     return FALSE;
 
-
-  GtkWidget *main_window = NULL;
-
-  int display = 0;
-  double zoom = 0.0;
-  
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-
-  gnomemeeting_threads_enter ();
-  display = gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view");
-  zoom = gm_conf_get_float (VIDEO_DISPLAY_KEY "zoom_factor");
-  gnomemeeting_threads_leave ();
-
-  /* Take the mutexes before the redraw */
-  //PWaitAndSignal m(redraw_mutex);
-
   /* Device is now open */
   if (!is_active) {
     is_active = TRUE;
     devices_nbr = PMIN (2, devices_nbr+1);
   }
 
-  if (zoom != 0.5 && zoom != 2.00 && zoom != 1.00)
-    zoom = 1.00;
+  videoDisplay->SetFrameData ( x, y, width, height, data, converter, (device_id == LOCAL), devices_nbr);
 
-  /* If there is only one device open, ignore the setting, and 
-   * display what we can actually display.
-   */
-  if (devices_nbr <= 1) {
-    if (device_id == REMOTE)
-      display = REMOTE_VIDEO;
-    else if (device_id == LOCAL)
-      display = LOCAL_VIDEO;
-  }
-
-  gnomemeeting_threads_enter ();
-  gm_main_window_set_display_type (main_window, display);
-  gnomemeeting_threads_leave ();
-  videoDisplay->SetFrameData ( x, y, width, height, data, converter, (device_id == LOCAL), display, zoom);
   return TRUE;
 }
 

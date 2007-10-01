@@ -136,11 +136,40 @@ void GMVideoDisplay_GDK::SetFrameData (unsigned x,
 				       const BYTE * data,
 				       PColourConverter* setConverter,
 				       BOOL local,
-				       int display, 
-				       double zoom
+				       int devices_nbr
 )
-{
+{ 
+  GtkWidget *main_window = NULL;
+
+  int display = 0;
+  double zoom = 0.0;
+
   var_mutex.Wait();
+
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
+
+  gnomemeeting_threads_enter ();
+  display = gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view");
+  zoom = gm_conf_get_float (VIDEO_DISPLAY_KEY "zoom_factor");
+  gnomemeeting_threads_leave ();
+
+  if (zoom != 0.5 && zoom != 2.00 && zoom != 1.00)
+    zoom = 1.00;
+
+  /* If there is only one device open, ignore the setting, and 
+   * display what we can actually display.
+   */
+  if (devices_nbr <= 1) {
+    if (!local)
+      display = REMOTE_VIDEO;
+    else 
+      display = LOCAL_VIDEO;
+  }
+
+  gnomemeeting_threads_enter ();
+  gm_main_window_set_display_type (main_window, display);
+  gnomemeeting_threads_leave ();
+
   converter = setConverter;
   currentFrame.display = display;
   currentFrame.zoom = zoom;
