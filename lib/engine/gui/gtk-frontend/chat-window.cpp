@@ -52,13 +52,6 @@
 
 #include <gdk/gdkkeysyms.h>
 
-
-#ifdef WIN32
-#include "platform/winpaths.h"
-#endif
-
-
-
 /*
  * The ChatWindow
  */
