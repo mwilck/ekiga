@@ -47,7 +47,6 @@
 #include <X11/extensions/XShm.h>
 #include <X11/extensions/Xvlib.h>
 
-
 /**
  * String: wrapper/helper.
  *
@@ -135,6 +134,9 @@ private:
   bool _isInitialized;
   bool _embedded;
 
+  bool _paintColorKey;
+  int _colorKey;
+
   typedef struct 
   {
     bool fullscreen;
@@ -164,6 +166,9 @@ private:
   Atom XA_NET_WM_STATE_STAYS_ON_TOP;
   Atom XA_NET_WM_STATE_BELOW;
   Atom WM_DELETE_WINDOW;
+  Atom XV_SYNC_TO_VBLANK;
+  Atom XV_COLORKEY;
+  Atom XV_AUTOPAINT_COLORKEY;
 
   /**
    * Sets the layer for the window.
@@ -210,6 +215,21 @@ private:
   unsigned int FindXVPort ();
 
   void DumpCapabilities (int port);
+
+  /**
+   * Check if an atom exists and return it
+   */
+  Atom GetXVAtom( char const * name );
+
+  /**
+   * Check and initialize colorkeying
+   */
+  bool InitColorkey();
+
+  /**
+   * Check if image size is supported by XV
+   */
+  bool checkMaxSize(unsigned int width, unsigned int height);
 };
 
 #endif //XVWINDOW_H

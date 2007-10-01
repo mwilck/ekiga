@@ -129,6 +129,7 @@ XVWindow::XVWindow()
   _isInitialized = false;
   _XVImage = NULL;
   _embedded = false;
+  _paintColorKey = false;
 }
 
 
@@ -171,6 +172,10 @@ XVWindow::Init (Display* dp,
   XA_NET_WM_STATE_ABOVE = XInternAtom (_display, "_NET_WM_STATE_ABOVE", False);
   XA_NET_WM_STATE_STAYS_ON_TOP = XInternAtom (_display, "_NET_WM_STATE_STAYS_ON_TOP", False);
   XA_NET_WM_STATE_BELOW = XInternAtom (_display, "_NET_WM_STATE_BELOW", False);
+  XV_SYNC_TO_VBLANK = None;
+  XV_COLORKEY = None;
+  XV_AUTOPAINT_COLORKEY = None;
+  
 
   XSync (_display, false);
 
@@ -206,13 +211,40 @@ XVWindow::Init (Display* dp,
 
   PTRACE(4, "XVideo\tUsing XVideo port: " << _XVPort);
 
+  XV_SYNC_TO_VBLANK = GetXVAtom("XV_SYNC_TO_VBLANK");
+  XV_COLORKEY = GetXVAtom( "XV_COLORKEY" );
+  XV_AUTOPAINT_COLORKEY = GetXVAtom( "XV_AUTOPAINT_COLORKEY" );    
+
+  if ( !InitColorkey() )
+  {
+    PTRACE(1, "XVideo\tColorkey initialization failed");
+    XUnlockDisplay(_display);
+    return 0; 
+  } 
+
+  if (XV_SYNC_TO_VBLANK != None)
+    if (XvSetPortAttribute(_display, _XVPort, XV_SYNC_TO_VBLANK, 1) == Success)
+      PTRACE(4, "XVideo\tVertical sync successfully activated" );
+     else
+      PTRACE(4, "XVideo\tFailure when trying to activate vertical sync" );
+  else
+    PTRACE(4, "XVideo\tVertical sync not supported");
+
+  if (!checkMaxSize (imageWidth, imageHeight)) {
+    PTRACE(1, "XVideo\tCheck of image size failed");
+    XUnlockDisplay(_display);
+    return 0; 
+  }
+
   XGetWindowAttributes (_display, _rootWindow, &xwattributes);
   XMatchVisualInfo (_display, DefaultScreen (_display), xwattributes.depth, TrueColor, &xvinfo);
 
   // define window properties and create the window
   xswattributes.colormap = XCreateColormap (_display, _rootWindow, xvinfo.visual, AllocNone);
   xswattributes.event_mask = StructureNotifyMask | ExposureMask;
+
   xswattributes.background_pixel = WhitePixel (_display, DefaultScreen (_display));
+
   xswattributes.border_pixel = WhitePixel (_display, DefaultScreen (_display));
 
   _XVWindow = XCreateWindow (_display, _rootWindow, x, y, windowWidth, windowHeight, 
@@ -311,7 +343,7 @@ XVWindow::~XVWindow()
     XvUngrabPort (_display, _XVPort, CurrentTime);
     XUnlockDisplay (_display);
   }
-  
+
   if (_XVWindow) {
   
     XLockDisplay (_display);
@@ -366,6 +398,17 @@ XVWindow::PutFrame (uint8_t* frame,
                              (int) (_slave->GetYUVHeight () * xce->width / ( _state.fullscreen ? PIP_RATIO_FS :  PIP_RATIO_WIN) / _slave->GetYUVWidth ()));
         
         CalculateSize (xce->width, xce->height, true);
+        if( _paintColorKey ) {
+
+          XSetForeground( _display, _gc, _colorKey );
+          XFillRectangle( _display, _XVWindow, _gc, _state.curX, _state.curY, _state.curWidth, _state.curHeight);
+        }
+      }
+
+      if ((event.type == Expose) && (_paintColorKey)) {
+
+        XSetForeground( _display, _gc, _colorKey );
+        XFillRectangle( _display, _XVWindow, _gc, _state.curX, _state.curY, _state.curWidth, _state.curHeight);
       }
 
       // a key is pressed
@@ -469,7 +512,7 @@ XVWindow::PutFrame (uint8_t* frame,
       srcU += width2;
     }
   }
-  
+
   XvShmPutImage (_display, _XVPort, _XVWindow, _gc, _XVImage, 
                  0, 0, _XVImage->width, _XVImage->height, 
                  _state.curX, _state.curY, _state.curWidth, _state.curHeight, true);
@@ -1121,4 +1164,101 @@ XVWindow::DumpCapabilities (int port)
 
   if (xviformats) 
     XFree (xviformats);
+}
+
+Atom XVWindow::GetXVAtom ( char const * name )
+{
+  XvAttribute * attributes;
+  int numAttributes = 0;
+  int i;
+  Atom atom = None;
+
+  attributes = XvQueryPortAttributes( _display, _XVPort, &numAttributes );
+  if( attributes != NULL ) {
+  
+    for ( i = 0; i < numAttributes; ++i ) {
+
+      if ( strcmp(attributes[i].name, name ) == 0 ) {
+
+        atom = XInternAtom( _display, name, False );
+        break; 
+      }
+    }
+    XFree( attributes );
+  }
+
+  return atom;
+}
+
+bool XVWindow::InitColorkey()
+{
+  if( XV_COLORKEY != None ) {
+
+    if ( XvGetPortAttribute(_display,_XVPort, XV_COLORKEY, &_colorKey) == Success )
+      PTRACE(4, "XVideo\tUsing colorkey " << _colorKey );
+    else {
+
+      PTRACE(1, "XVideo\tCould not get colorkey! Maybe the selected Xv port has no overlay." );
+      return false; 
+    }
+
+    if ( XV_AUTOPAINT_COLORKEY != None ) {
+
+      if ( XvSetPortAttribute( _display, _XVPort, XV_AUTOPAINT_COLORKEY, 1 ) == Success )
+        PTRACE(4, "XVideo\tColorkey method: AUTOPAINT");
+      else {
+
+        _paintColorKey = true;
+        PTRACE(4, "XVideo\tFailed to set XV_AUTOPAINT_COLORKEY");
+        PTRACE(4, "XVideo\tColorkey method: MANUAL");
+      }
+    }
+    else {
+
+      _paintColorKey = true;
+      PTRACE(4, "XVideo\tXV_AUTOPAINT_COLORKEY not supported");
+      PTRACE(4, "XVideo\tColorkey method: MANUAL");
+    }
+  }
+  else {
+
+    PTRACE(4, "XVideo\tColorkey method: NONE");
+  } 
+
+  return true; 
+}
+
+bool XVWindow::checkMaxSize(unsigned int width, unsigned int height)
+{
+  XvEncodingInfo * xveinfo;
+  unsigned int numXveinfo = 0;
+  unsigned int i;
+  bool ret = false;
+
+  if (XvQueryEncodings (_display, _XVPort, &numXveinfo, &xveinfo) != Success) {
+
+    PTRACE(4, "XVideo\tXvQueryEncodings failed\n");
+    return false;
+  }
+
+  for (i = 0 ; i < numXveinfo ; i++) {
+
+    if ( strcmp( xveinfo[i].name, "XV_IMAGE" ) == 0 ) {
+
+      if ( (width <= xveinfo[i].width  ) ||
+           (height <= xveinfo[i].height) )
+        ret = true;
+      else {
+
+        PTRACE(1, "XVideo\tRequested resolution " << width << "x" << height 
+	         << " higher than maximum supported resolution " 
+		 << xveinfo[i].width << "x" << xveinfo[i].height);
+        ret = false;
+      }
+      break;
+    }
+  }
+
+  XvFreeEncodingInfo(xveinfo);
+  return ret;
 }
