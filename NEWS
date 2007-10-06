@@ -1,3 +1,8 @@
+Fixes in OPAL/PWLIB/Ekiga since 2.0.11:
+- Fixed possible buffer overflow in PString sprintf appending to strings method. (Tomas Hoger, RedHat)
+- Fixed GNOME independant build. (Vincent Luba)
+- Fixed potential deadlock due to mutexes being crossed. (Damien Sandras, #433852)
+
 Fixes in OPAL/PWLIB/Ekiga since 2.0.9:
 - Fixed several interoperability issues due to bugs and limitations in CISCO Call Manager. (Damien Sandras, #429076)
 - Decreased the default NAT binding refresh timeout. (Damien Sandras)

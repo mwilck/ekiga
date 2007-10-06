@@ -1541,8 +1541,10 @@ finish_cb (GnomeDruidPage *p,
   }
     
   /* Register the current Endpoint to GnomeMeeting.NET */
+  gdk_threads_leave ();
   if (account->enabled)
     ep->Register (account);
+  gdk_threads_enter ();
 
   /* Set the right devices and managers */
   if (audio_manager)
@@ -1605,7 +1607,9 @@ finish_cb (GnomeDruidPage *p,
 
   /* Will be done through the config if the manager changes, but not
      if the manager doesn't change */
+  gdk_threads_leave ();
   GnomeMeeting::Process ()->DetectDevices ();  
+  gdk_threads_enter ();
   
 
   /* Update the version number */
