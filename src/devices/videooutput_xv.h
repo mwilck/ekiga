@@ -134,5 +134,7 @@ protected:
   Display *rDisplay;
 
   GdkGC *embGC;
+
+  BOOL pipWindowAvailable;
 };
 #endif

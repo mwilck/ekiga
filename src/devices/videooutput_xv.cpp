@@ -68,6 +68,7 @@ GMVideoDisplay_XV::GMVideoDisplay_XV ()
   lDisplay = XOpenDisplay (NULL);
   embGC = NULL;
 
+  pipWindowAvailable = TRUE;
   fallback = FALSE;
 }
 
@@ -224,6 +225,7 @@ GMVideoDisplay_XV::SetupFrameDisplay (int display,
       else {
         delete lxvWindow;
         lxvWindow = NULL;
+        pipWindowAvailable = FALSE;
         PTRACE (1, "GMVideoDisplay_XV\tPIP creation failed");
       }
     }
@@ -308,7 +310,7 @@ GMVideoDisplay_XV::FrameDisplayChangeNeeded (int display,
     case FULLSCREEN:
     case PIP:
     case PIP_WINDOW:
-         if (!rxvWindow || !lxvWindow)
+         if (!rxvWindow || (pipWindowAvailable && (!lxvWindow)) )
             return TRUE;
          break;
   }
