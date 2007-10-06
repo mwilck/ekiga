@@ -1,3 +1,8 @@
+2007-10-06  Damien Sandras  <dsandras@gnome.org>
+
+	* src/gui/druid.cpp: Fixed potential deadlock due to mutexes being
+	crossed. (#433852).
+
 2007-09-29  Damien Sandras  <dsandras@gnome.org>
 
 	* lib/gmconf/gmconf-glib.c: Fixed API change thanks to
