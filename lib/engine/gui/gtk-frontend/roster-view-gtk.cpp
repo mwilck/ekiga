@@ -157,8 +157,15 @@ static void visit_heaps (Ekiga::Heap &heap,
 			 Ekiga::Cluster *cluster,
 			 gpointer data);
 
-/* DESCRIPTION  : Called when the heap_updated or heap_added signals have been emitted
- *                by the SignalCentralizer of the BookViewGtk.
+/* DESCRIPTION  : Called when the or heap_added signal has been emitted
+ * BEHAVIOR     : Add or Update the Heap in the GtkTreeView.
+ * PRE          : /
+ */
+static void on_heap_added (Ekiga::Cluster &cluster,
+			   Ekiga::Heap &heap,
+			   gpointer data);
+
+/* DESCRIPTION  : Called when the heap_updated signal has been emitted
  * BEHAVIOR     : Add or Update the Heap in the GtkTreeView.
  * PRE          : /
  */
@@ -474,6 +481,15 @@ visit_heaps (Ekiga::Heap &heap,
 {
   on_heap_updated (*cluster, heap, data);
   heap.visit_presentities (sigc::bind (sigc::ptr_fun (visit_presentities), cluster, &heap, data));
+}
+
+static void
+on_heap_added (Ekiga::Cluster &cluster,
+	       Ekiga::Heap &heap,
+	       gpointer data)
+{
+  on_heap_updated (cluster, heap, data);
+  heap.visit_presentities (sigc::bind (sigc::ptr_fun (visit_presentities), &cluster, &heap, data));
 }
 
 static void
@@ -1004,7 +1020,7 @@ roster_view_gtk_new (Ekiga::PresenceCore &core)
   conn = core.cluster_added.connect (sigc::bind (sigc::ptr_fun (on_cluster_added),
 						 (gpointer) self));
   self->priv->connections.push_back (conn);
-  conn = core.heap_added.connect (sigc::bind (sigc::ptr_fun (on_heap_updated),
+  conn = core.heap_added.connect (sigc::bind (sigc::ptr_fun (on_heap_added),
 					      (gpointer) self));
   self->priv->connections.push_back (conn);
   conn = core.heap_updated.connect (sigc::bind (sigc::ptr_fun (on_heap_updated),
