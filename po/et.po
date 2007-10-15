@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ekiga GNOME 2.20\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-16 03:35+0100\n"
-"PO-Revision-Date: 2007-03-06 00:26+0200\n"
+"POT-Creation-Date: 2007-09-21 08:32+0100\n"
+"PO-Revision-Date: 2007-10-13 12:24+0300\n"
 "Last-Translator: Ivar Smolin <okul@linux.ee>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
 "MIME-Version: 1.0\n"
@@ -110,7 +110,7 @@ msgstr "Riigi kood"
 
 #: ../ekiga.schemas.in.in.h:17
 msgid "DTMF sending"
-msgstr ""
+msgstr "DTMF-i saatmine"
 
 #: ../ekiga.schemas.in.in.h:18
 msgid "Display a popup window when receiving a call"
@@ -295,7 +295,7 @@ msgstr ""
 
 #: ../ekiga.schemas.in.in.h:55
 msgid "Minimum transmitted video quality"
-msgstr ""
+msgstr "Madalaim ülekantava video kvaliteet"
 
 #: ../ekiga.schemas.in.in.h:56
 msgid "Missed calls history"
@@ -311,19 +311,19 @@ msgstr "Kõnele vastamata jätmise ajapiirang"
 
 #: ../ekiga.schemas.in.in.h:59
 msgid "Number of frames for G.711"
-msgstr ""
+msgstr "Kaadrite arv G.711 jaoks"
 
 #: ../ekiga.schemas.in.in.h:60
 msgid "Number of frames for GSM"
-msgstr ""
+msgstr "Kaadrite arv GSM-i jaoks"
 
 #: ../ekiga.schemas.in.in.h:61
 msgid "Number of frames transmitted in each packet for the G.711 codec"
-msgstr ""
+msgstr "G.711 koodeki korral iga paketiga ülekantavate kaadrite arv"
 
 #: ../ekiga.schemas.in.in.h:62
 msgid "Number of frames transmitted in each packet for the GSM codec"
-msgstr ""
+msgstr "GSM-koodeki korral iga paketiga ülekantavate kaadrite arv"
 
 #: ../ekiga.schemas.in.in.h:63
 msgid "Outbound Proxy"
@@ -920,76 +920,11 @@ msgstr "Seda dialoogi enam mitte näidata"
 
 #: ../lib/gui/gmtray/eggtrayicon.c:133
 msgid "Orientation"
-msgstr ""
+msgstr "Suund"
 
 #: ../lib/gui/gmtray/eggtrayicon.c:134
 msgid "The orientation of the tray."
-msgstr ""
-
-#: ../src/clients/ils.cpp:105 ../src/gui/tools.cpp:174
-msgid "Invalid parameters"
-msgstr "Vigased parameetrid"
-
-#: ../src/clients/ils.cpp:105
-msgid ""
-"Please provide your first name and e-mail in the Personal Data section in "
-"order to be able to register to the users directory."
-msgstr ""
-"Kasutajate kataloogis registreerumiseks sisesta palun isiklike andmete "
-"sektsiooni oma nimi ja e-posti aadress."
-
-#: ../src/clients/ils.cpp:145
-msgid "Invalid users directory"
-msgstr "Vigane kasutajate kataloog"
-
-#: ../src/clients/ils.cpp:145
-msgid "Operation impossible since there is no users directory specified."
-msgstr ""
-"Operatsiooni pole võimalik läbi viia kuni kasutajate kataloogi pole määratud."
-
-#: ../src/clients/ils.cpp:238
-msgid "Failed to parse XML file"
-msgstr "Tõrge XML-faili analüüsimisel"
-
-#: ../src/clients/ils.cpp:238
-msgid ""
-"There was an error while parsing the XML file. Please make sure that it is "
-"correctly installed in your system."
-msgstr ""
-
-#: ../src/clients/ils.cpp:249
-msgid "Bad information"
-msgstr "Vigased andmed"
-
-#: ../src/clients/ils.cpp:249
-#, c-format
-msgid "Bad LDAP information from XML file: %s."
-msgstr "Vigased LDAP andmed XML-failist: %s."
-
-#: ../src/clients/ils.cpp:257
-#, c-format
-msgid "ILS registration failed: unable to connect to %s"
-msgstr ""
-
-#: ../src/clients/ils.cpp:270
-msgid "ILS registration failed: unable to set time limit on operations"
-msgstr ""
-
-#: ../src/clients/ils.cpp:282
-#, c-format
-msgid "ILS registration failed: failed to bind to %s"
-msgstr ""
-
-#: ../src/clients/ils.cpp:310
-#, c-format
-msgid "Updated information on %s"
-msgstr ""
-
-#: ../src/clients/ils.cpp:314 ../src/endpoints/accountshandler.cpp:332
-#: ../src/endpoints/sip.cpp:236
-#, c-format
-msgid "Unregistered from %s"
-msgstr ""
+msgstr "Salve suund"
 
 #: ../src/clients/stun.cpp:104
 #, c-format
@@ -1182,7 +1117,7 @@ msgid ""
 "Impossible to open the selected audio device (%s) for playing. Please check "
 "your audio setup, the permissions and that the device is not busy."
 msgstr ""
-"Valitud audioseadet (%s) pole võimalik audioesitamiseks avada. Palun "
+"Valitud audioseadet (%s) pole võimalik audio esitamiseks avada. Palun "
 "kontrolli oma audiosätteid, pääsuõiguseid ja seda, kas seade pole mõne teise "
 "programmi poolt hõivatud."
 
@@ -1305,6 +1240,8 @@ msgid ""
 "Ekiga is now testing the %s video device. If you experience machine crashes, "
 "then report a bug to the video driver author."
 msgstr ""
+"Ekiga testib videoseadet %s. Kui selle tulemuseks on masina kokkujooksmine, "
+"siis palun teata sellest videodraiveri autorile."
 
 #: ../src/devices/videoinput.cpp:660
 #, c-format
@@ -1383,6 +1320,11 @@ msgstr "Registreeritud isikule %s"
 #: ../src/endpoints/accountshandler.cpp:322 ../src/endpoints/sip.cpp:231
 msgid "Registered"
 msgstr "Registreeritud"
+
+#: ../src/endpoints/accountshandler.cpp:332 ../src/endpoints/sip.cpp:236
+#, c-format
+msgid "Unregistered from %s"
+msgstr ""
 
 #: ../src/endpoints/accountshandler.cpp:352 ../src/endpoints/sip.cpp:242
 msgid "Unregistered"
@@ -2262,7 +2204,7 @@ msgid ""
 "selecting Preferences in the Edit menu."
 msgstr ""
 "See on Ekiga üldise seadistuse abiline. Ekiga esialgne sedistamine toimub "
-"sammhaaval, selleks esitatakse Teile mõnined lihtsad küsimused.\n"
+"sammhaaval ja selleks esitatakse Teile mõnined lihtsad küsimused.\n"
 "\n"
 "Hiljem on võimalik tehtud valikuid alati muuta valides Redaktorimenüü alt "
 "menüüpunkti Eelistused."
@@ -2313,13 +2255,13 @@ msgid ""
 "You may skip this step if you use an alternative SIP service, or if you "
 "would prefer to specify the login details later."
 msgstr ""
-"Kasutajanime ja parooli kasutatakse ekiga.net vabade SIP teenuste alt Sinu "
-"olemasoleva kontoga sisse logimiseks. Kui sul pole veel ekiga.net SIP "
-"aaddressi, siis on sul võimalik allpool omale konto luua. Selle abil luuakse "
-"aadress, mille abil inimesed saavad Sulle helistada.\n"
+"Kasutajanime ja parooli kasutatakse ekiga.net vabade SIP-teenuste alt Sinu "
+"olemasoleva kontoga sisselogimiseks. Kui sul pole veel ekiga.net SIP-"
+"aaddressi, siis on sul võimalik allpool omale konto luua. Sellega luuakse "
+"aadress, mille kaudu saavad inimesed Sulle helistada.\n"
 "\n"
 "Kui sa kasutad alternatiivset SIP-teenust või eelistad sisselogimisandmed "
-"hiljem sisestada, siis võid sa need sammud vahele jätta."
+"hiljem sisestada, siis võib need sammud vahele jätta."
 
 #: ../src/gui/druid.cpp:772
 msgid "Get an ekiga.net SIP account"
@@ -2617,9 +2559,8 @@ msgid "Forward calls"
 msgstr "Kõnede edastamine"
 
 #: ../src/gui/main.cpp:939
-#, fuzzy
 msgid "Speed d_ials"
-msgstr "Kiirvalimised"
+msgstr "_Kiirvalimised"
 
 #: ../src/gui/main.cpp:943 ../src/gui/main.cpp:3148
 msgid "_Hold Call"
@@ -2734,9 +2675,8 @@ msgid "View all components"
 msgstr "Kõikide komponentide näitamine"
 
 #: ../src/gui/main.cpp:1033
-#, fuzzy
 msgid "_Control Panel"
-msgstr "Juhtpaneel"
+msgstr "_Juhtpaneel"
 
 #: ../src/gui/main.cpp:1035
 msgid "_Dialpad"
@@ -2763,82 +2703,72 @@ msgid "View video settings"
 msgstr "Videosätete vaatamine"
 
 #: ../src/gui/main.cpp:1052
-#, fuzzy
 msgid "_Statistics"
-msgstr "Statistika"
+msgstr "_Statistika"
 
 #: ../src/gui/main.cpp:1053
 msgid "View audio/video transmission and reception statistics"
 msgstr ""
 
 #: ../src/gui/main.cpp:1061
-#, fuzzy
 msgid "_Local Video"
-msgstr "Kohalik video"
+msgstr "_Kohalik video"
 
 #: ../src/gui/main.cpp:1062
 msgid "Local video image"
 msgstr "Kohalik videopilt"
 
 #: ../src/gui/main.cpp:1067
-#, fuzzy
 msgid "_Remote Video"
-msgstr "Kaugvideo"
+msgstr "Kau_gvideo"
 
 #: ../src/gui/main.cpp:1068
 msgid "Remote video image"
 msgstr "Võrgust tulev videopilt"
 
 #: ../src/gui/main.cpp:1073
-#, fuzzy
 msgid "Both (_Picture-in-Picture)"
-msgstr "Mõlemad (pilt-pildis)"
+msgstr "Mõlemad (_pilt-pildis)"
 
 #: ../src/gui/main.cpp:1074 ../src/gui/main.cpp:1080 ../src/gui/main.cpp:1087
 msgid "Both video images"
 msgstr "Mõlemad videopildid"
 
 #: ../src/gui/main.cpp:1079
-#, fuzzy
 msgid "Both (_Side-by-Side)"
-msgstr "Mõlemad (külg-küljel)"
+msgstr "Mõlemad (_külg-küljel)"
 
 #: ../src/gui/main.cpp:1086
-#, fuzzy
 msgid "Both (_Both in New Windows)"
-msgstr "Mõlemad (mõlemad uues aknas)"
+msgstr "Mõlemad (mõlemad uues _aknas)"
 
 #: ../src/gui/main.cpp:1095
-#, fuzzy
 msgid "Zoom _In"
-msgstr "Suurenda"
+msgstr "_Suurenda"
 
 #: ../src/gui/main.cpp:1095 ../src/gui/main.cpp:1573 ../src/gui/main.cpp:1598
 msgid "Zoom in"
 msgstr "Suurendamine"
 
 #: ../src/gui/main.cpp:1099
-#, fuzzy
 msgid "Zoom _Out"
-msgstr "Vähenda"
+msgstr "_Vähenda"
 
 #: ../src/gui/main.cpp:1099 ../src/gui/main.cpp:1577 ../src/gui/main.cpp:1602
 msgid "Zoom out"
 msgstr "Vähendamine"
 
 #: ../src/gui/main.cpp:1103
-#, fuzzy
 msgid "_Normal Size"
-msgstr "Algsuurus"
+msgstr "Al_gsuurus"
 
 #: ../src/gui/main.cpp:1103 ../src/gui/main.cpp:1581 ../src/gui/main.cpp:1606
 msgid "Normal size"
 msgstr "Algsuurus"
 
 #: ../src/gui/main.cpp:1109
-#, fuzzy
 msgid "_Fullscreen"
-msgstr "Täisekraan"
+msgstr "_Täisekraan"
 
 #: ../src/gui/main.cpp:1115
 msgid "_Tools"
@@ -2861,27 +2791,24 @@ msgid "Open the chat window"
 msgstr "Tekstivestluse akna avamine"
 
 #: ../src/gui/main.cpp:1131
-#, fuzzy
 msgid "_General History"
-msgstr "Üldine ajalugu"
+msgstr "Ül_dine ajalugu"
 
 #: ../src/gui/main.cpp:1132
 msgid "View the operations history"
 msgstr ""
 
 #: ../src/gui/main.cpp:1136
-#, fuzzy
 msgid "_Calls History"
-msgstr "Kõnede ajalugu"
+msgstr "_Kõnede ajalugu"
 
 #: ../src/gui/main.cpp:1137 ../src/gui/statusicon.cpp:145
 msgid "View the calls history"
 msgstr "Kõnede ajaloo vaatamine"
 
 #: ../src/gui/main.cpp:1144
-#, fuzzy
 msgid "_PC-To-Phone Account"
-msgstr "Arvutis-Telefonile konto"
+msgstr "_Arvutist-Telefonile konto"
 
 #: ../src/gui/main.cpp:1145
 msgid "Manage your PC-To-Phone account"
@@ -2889,7 +2816,7 @@ msgstr "Sinu Arvutist-Telefonile konto haldamine"
 
 #: ../src/gui/main.cpp:1150
 msgid "_Help"
-msgstr "_Abi"
+msgstr "A_bi"
 
 #: ../src/gui/main.cpp:1152 ../src/gui/statusicon.cpp:161
 #: ../src/gui/statusicon.cpp:172
@@ -3667,10 +3594,16 @@ msgid "Devices"
 msgstr "Seadmed"
 
 #: ../src/gui/tools.cpp:174
+msgid "Invalid parameters"
+msgstr "Vigased parameetrid"
+
+#: ../src/gui/tools.cpp:174
 msgid ""
 "Please provide your username and password in order to be able to use the PC-"
 "To-Phone service."
 msgstr ""
+"Arvutist-telefonile teenuse kasutamiseks sisesta palun oma kasutajanimi ja "
+"parool."
 
 #: ../src/gui/tools.cpp:312 ../src/gui/tools.cpp:331
 msgid "PC-To-Phone Settings"
@@ -3698,7 +3631,7 @@ msgstr "_Parool:"
 
 #: ../src/gui/tools.cpp:369
 msgid "Use PC-To-Phone service"
-msgstr ""
+msgstr "Arvutile-telefonile teenuse kasutamine"
 
 #: ../src/gui/tools.cpp:381
 msgid ""
@@ -3721,6 +3654,30 @@ msgstr ""
 #: ../src/gui/tools.cpp:431
 msgid "Consult the calls history"
 msgstr ""
+
+#~ msgid ""
+#~ "Please provide your first name and e-mail in the Personal Data section in "
+#~ "order to be able to register to the users directory."
+#~ msgstr ""
+#~ "Kasutajate kataloogis registreerumiseks sisesta palun isiklike andmete "
+#~ "sektsiooni oma nimi ja e-posti aadress."
+
+#~ msgid "Invalid users directory"
+#~ msgstr "Vigane kasutajate kataloog"
+
+#~ msgid "Operation impossible since there is no users directory specified."
+#~ msgstr ""
+#~ "Operatsiooni pole võimalik läbi viia kuni kasutajate kataloogi pole "
+#~ "määratud."
+
+#~ msgid "Failed to parse XML file"
+#~ msgstr "Tõrge XML-faili analüüsimisel"
+
+#~ msgid "Bad information"
+#~ msgstr "Vigased andmed"
+
+#~ msgid "Bad LDAP information from XML file: %s."
+#~ msgstr "Vigased LDAP andmed XML-failist: %s."
 
 #~ msgid "Written by"
 #~ msgstr "Programmeerijad"
