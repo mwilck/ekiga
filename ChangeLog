@@ -1,3 +1,9 @@
+2007-10-18  Julien Puydt  <jpuydt@gnome.org>
+
+	* lib/engine/framework/runtime-glib.cpp: Removed use of g_idle_add.
+	* lib/engine/gui/gtk-frontend/Makefile.am: Variable initialization
+	order was problematic with newer automake.
+
 2007-10-17  Matthias Schneider  <ma30002000@yahoo.de>
 
 	* configure.ac:
