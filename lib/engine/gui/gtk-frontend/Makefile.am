@@ -13,6 +13,18 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/engine/gui/gtk-core \
 	-I$(top_srcdir)/lib/engine/protocol/sip
 
+
+#### FIXME should be removed at a later stage
+INCLUDES += \
+	-I$(top_srcdir)/src                             \
+	-I$(top_srcdir)/src/clients/                    \
+	-I$(top_srcdir)/src/components/                 \
+	-I$(top_srcdir)/src/devices/                    \
+	-I$(top_srcdir)/src/endpoints/                  \
+	-I$(top_srcdir)/src/gui/                  
+
+AM_CPPFLAGS += $(GTK_CFLAGS) $(GLIB_CFLAGS) $(OPAL_CFLAGS) $(PWLIB_CFLAGS)
+
 libgmgtk_frontend_la_SOURCES = \
 	$(gtk_frontend_dir)/addressbook-window.h \
 	$(gtk_frontend_dir)/addressbook-window.cpp \
@@ -34,18 +46,6 @@ libgmgtk_frontend_la_LIBADD = \
 	$(top_builddir)/lib/engine/gui/gtk-core/libgmgtk-core.la
 
 libgmgtk_frontend_la_LDFLAGS = -export-dynamic -no-undefined $(GTK_LIBS)
-
-
-#### FIXME should be removed at a later stage
-INCLUDES += \
-	-I$(top_srcdir)/src                             \
-	-I$(top_srcdir)/src/clients/                    \
-	-I$(top_srcdir)/src/components/                 \
-	-I$(top_srcdir)/src/devices/                    \
-	-I$(top_srcdir)/src/endpoints/                  \
-	-I$(top_srcdir)/src/gui/                  
-
-AM_CPPFLAGS += $(GTK_CFLAGS) $(GLIB_CFLAGS) $(OPAL_CFLAGS) $(PWLIB_CFLAGS)
 
 libgmgtk_frontend_la_LDFLAGS += $(GTK_LIBS) $(GLIB_LIBS) $(OPAL_LIBS) $(PWLIB_LIBS)
 #### end
