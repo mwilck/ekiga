@@ -83,34 +83,21 @@ typedef struct
   long state;
 } MotifWmHints;
 
-extern XvImage * XvShmCreateImage (Display *, 
-                                   XvPortID, 
-                                   int, 
-                                   char *, 
-                                   int, 
-                                   int, 
-                                   XShmSegmentInfo *);
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
 #include <unistd.h>
-#include <sys/ipc.h>
-#include <sys/shm.h>
 #include <sys/mman.h>
 #include <sys/ioctl.h>
 #include <sys/time.h>
 #include <sys/resource.h>
 #include <fcntl.h>
 
-#include <X11/Xlib.h>
-#include <X11/Xutil.h>
-#include <X11/Xatom.h>
-#include <X11/extensions/Xv.h>
-#include <X11/extensions/XShm.h>
-#include <X11/extensions/Xvlib.h>
-
+#ifdef HAVE_SHM
+#include <sys/shm.h>
+#include <sys/ipc.h>
+#endif
 
 XVWindow::XVWindow()
 {
@@ -124,12 +111,15 @@ XVWindow::XVWindow()
   _state.origLayer=0;
   _display = NULL;
   _XVWindow = 0;
-  _XShmInfo.shmaddr = NULL;
   _gc = NULL;
   _isInitialized = false;
   _XVImage = NULL;
   _embedded = false;
   _paintColorKey = false;
+  _useShm = false;
+#ifdef HAVE_SHM
+  _XShmInfo.shmaddr = NULL;
+#endif
 }
 
 
@@ -152,7 +142,7 @@ XVWindow::Init (Display* dp,
   unsigned int ev = 0;
   unsigned int err = 0;
   int ret = 0;
-  int i = 0;
+  int depth = 0;
 
   XSetWindowAttributes xswattributes;
   XWindowAttributes xwattributes;
@@ -195,12 +185,6 @@ XVWindow::Init (Display* dp,
     return 0;
   }
   
-  if (!XShmQueryExtension (_display)) {
-    PTRACE(1, "XVideo\tXQueryShmExtension failed");
-    XUnlockDisplay (_display);
-    return 0;
-  }
-  
   // Find XV port
   _XVPort = FindXVPort ();
   if (!_XVPort) {
@@ -237,7 +221,8 @@ XVWindow::Init (Display* dp,
   }
 
   XGetWindowAttributes (_display, _rootWindow, &xwattributes);
-  XMatchVisualInfo (_display, DefaultScreen (_display), xwattributes.depth, TrueColor, &xvinfo);
+  depth = checkDepth(xwattributes.depth);
+  XMatchVisualInfo (_display, DefaultScreen (_display), depth, TrueColor, &xvinfo);
 
   // define window properties and create the window
   xswattributes.colormap = XCreateColormap (_display, _rootWindow, xvinfo.visual, AllocNone);
@@ -274,35 +259,39 @@ XVWindow::Init (Display* dp,
     _gc = XCreateGC (_display, _XVWindow, 0, 0);
     _embedded = false;
   }
-  
-  // create the shared memory portion
-  _XVImage = XvShmCreateImage (_display, _XVPort, GUID_YV12_PLANAR, 0, imageWidth, imageHeight, &_XShmInfo);
-  _XShmInfo.shmid = shmget (IPC_PRIVATE, _XVImage->data_size, IPC_CREAT | 0777);
-  _XShmInfo.shmaddr = (char *) shmat (_XShmInfo.shmid, 0, 0);
-  _XVImage->data = _XShmInfo.shmaddr;
-  _XShmInfo.readOnly = False;
-  
-  PTRACE(4, "XVideo\tCreated XvImage (" << _XVImage->width << "x" << _XVImage->height 
-         << ", data size: " << _XVImage->data_size << ", num_planes: " << _XVImage->num_planes);
 
-  for (i = 0 ; i < _XVImage->num_planes ; i++) 
-    PTRACE(4, "XVideo\t  Plane " << i << ": pitch=" << _XVImage->pitches [i] << ", offset=" << _XVImage->offsets [i]);
+#ifdef HAVE_SHM
+   if (XShmQueryExtension (_display)) {
+     _useShm = true;
+     PTRACE(1, "XVideo\tXQueryShmExtension success");
+   }
+   else {
+     _useShm = false;
+     PTRACE(1, "XVideo\tXQueryShmExtension failed");
+   }
 
-  if (_XVImage->id != GUID_YV12_PLANAR) {
-    PTRACE(1, "XVideo\t  XvShmCreateImage returned a different colorspace than YV12");
-    XUnlockDisplay (_display);
-    return 0;
+  if (_useShm)
+    ShmAttach(imageWidth, imageHeight);
+
+  if (!_useShm) {
+#endif
+    _XVImage = (XvImage *) XvCreateImage( _display, _XVPort, GUID_YV12_PLANAR, 0, imageWidth, imageHeight);
+    if (!_XVImage) {
+      XUnlockDisplay (_display);
+      return 0;
+    }
+    _XVImage->data = (char*) malloc(_XVImage->data_size);
+    XSync(_display, False);
+    PTRACE(1, "XVideo\tNot using SHM extension");
+#ifdef HAVE_SHM
   }
-			
-  // Attaching the shared memory to the display
-  if (!XShmAttach (_display, &_XShmInfo)) {
-    PTRACE(1, "XVideo\t  XShmAttach failed");
-    XUnlockDisplay (_display);
-    return 0;
-  } 
-  else 
-    _isInitialized = true;
-  
+  else {
+      PTRACE(1, "XVideo\tUsing SHM extension");
+  }
+#endif
+
+
+  _isInitialized = true;
   XUnlockDisplay (_display);
 
   // detect the window manager type
@@ -315,13 +304,20 @@ XVWindow::Init (Display* dp,
 
 XVWindow::~XVWindow()
 {
-  if (_isInitialized && _XShmInfo.shmaddr) {
-
-    XLockDisplay (_display);
-    XShmDetach (_display, &_XShmInfo);
-    shmdt (_XShmInfo.shmaddr);
-    XUnlockDisplay (_display);
-  }
+#ifdef HAVE_SHM
+    if (_useShm) {
+      if (_isInitialized && _XShmInfo.shmaddr) {
+        XLockDisplay (_display);
+        XShmDetach (_display, &_XShmInfo);
+        shmdt (_XShmInfo.shmaddr);
+        XUnlockDisplay (_display);
+      }
+    } else
+#endif
+    {
+      if (_XVImage->data)
+        free (_XVImage->data);
+    }
   
   if (_XVImage) {
 
@@ -512,10 +508,19 @@ XVWindow::PutFrame (uint8_t* frame,
       srcU += width2;
     }
   }
-
-  XvShmPutImage (_display, _XVPort, _XVWindow, _gc, _XVImage, 
-                 0, 0, _XVImage->width, _XVImage->height, 
-                 _state.curX, _state.curY, _state.curWidth, _state.curHeight, true);
+#ifdef HAVE_SHM
+  if (_useShm) {
+    XvShmPutImage (_display, _XVPort, _XVWindow, _gc, _XVImage, 
+                  0, 0, _XVImage->width, _XVImage->height, 
+                  _state.curX, _state.curY, _state.curWidth, _state.curHeight, false);
+  }
+  else
+#endif
+  {
+    XvPutImage (_display, _XVPort, _XVWindow, _gc, _XVImage, 
+                  0, 0, _XVImage->width, _XVImage->height, 
+                  _state.curX, _state.curY, _state.curWidth, _state.curHeight);
+  }
 
   XSync (_display, false);
   XUnlockDisplay (_display);
@@ -1262,3 +1267,79 @@ bool XVWindow::checkMaxSize(unsigned int width, unsigned int height)
   XvFreeEncodingInfo(xveinfo);
   return ret;
 }
+
+int  XVWindow::checkDepth (int depth) {
+  if (depth != 15 && depth != 16 && depth != 24 && depth != 32)
+      return (24);
+  else 
+    return (depth);
+}
+
+#ifdef HAVE_SHM
+void XVWindow::ShmAttach(int imageWidth, int imageHeight)
+{
+  if (_useShm) {
+    // create the shared memory portion
+    _XVImage = XvShmCreateImage (_display, _XVPort, GUID_YV12_PLANAR, 0, imageWidth, imageHeight, &_XShmInfo);
+
+    if (_XVImage == NULL) {
+      PTRACE(1, "XVideo\tXShmCreateImage failed");
+      _useShm = false;
+    }
+
+    if ((_XVImage) && (_XVImage->id != GUID_YV12_PLANAR)) {
+      PTRACE(1, "XVideo\t  XvShmCreateImage returned a different colorspace than YV12");
+      XFree (_XVImage);
+      _useShm = false;
+    }
+  }
+
+  if ( (_useShm) && (PTrace::CanTrace (4)) ) {
+    int i = 0;
+    PTRACE(4, "XVideo\tCreated XvImage (" << _XVImage->width << "x" << _XVImage->height 
+          << ", data size: " << _XVImage->data_size << ", num_planes: " << _XVImage->num_planes);
+
+    for (i = 0 ; i < _XVImage->num_planes ; i++) 
+      PTRACE(4, "XVideo\t  Plane " << i << ": pitch=" << _XVImage->pitches [i] << ", offset=" << _XVImage->offsets [i]);
+  }
+
+  if (_useShm) {
+    _XShmInfo.shmid = shmget (IPC_PRIVATE, _XVImage->data_size, IPC_CREAT | 0777);
+    if (_XShmInfo.shmid < 0) {
+      XFree (_XVImage);
+      PTRACE(1, "XVideo\tshmget failed"); //strerror(errno)
+      _useShm = FALSE;
+    }
+  }
+
+  if (_useShm) {
+    _XShmInfo.shmaddr = (char *) shmat(_XShmInfo.shmid, 0, 0);
+    if (_XShmInfo.shmaddr == ((char *) -1)) {
+      XFree (_XVImage);
+      if (_XShmInfo.shmaddr != ((char *) -1))
+        shmdt(_XShmInfo.shmaddr);
+      PTRACE(1, "XVideo\tshmat failed"); //strerror(errno)
+      _useShm = FALSE;
+    }
+  }
+
+  if (_useShm) {
+    _XVImage->data = _XShmInfo.shmaddr;
+    _XShmInfo.readOnly = False;
+
+    // Attaching the shared memory to the display
+    if (!XShmAttach (_display, &_XShmInfo)) {
+      XFree (_XVImage);
+      if (_XShmInfo.shmaddr != ((char *) -1))
+        shmdt(_XShmInfo.shmaddr);
+      PTRACE(1, "XVideo\t  XShmAttach failed");
+      _useShm = false;
+    } 
+  } 
+
+  if (_useShm) {
+    XSync(_display, False);
+    shmctl(_XShmInfo.shmid, IPC_RMID, 0);
+  }
+}
+#endif

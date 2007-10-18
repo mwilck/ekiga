@@ -39,13 +39,17 @@
 #define XVWINDOW_H
 
 #include <stdint.h>
+#include "config.h"
 
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include <X11/Xatom.h>
-#include <X11/extensions/Xv.h>
+#ifdef HAVE_SHM
 #include <X11/extensions/XShm.h>
+#endif
+#include <X11/extensions/Xv.h>
 #include <X11/extensions/Xvlib.h>
+
 
 /**
  * String: wrapper/helper.
@@ -128,14 +132,18 @@ private:
   unsigned int _XVPort;
   GC _gc;
   XvImage * _XVImage;
+
+#ifdef HAVE_SHM
   XShmSegmentInfo _XShmInfo;
-  
+#endif
+
   int _wmType;
   bool _isInitialized;
   bool _embedded;
 
   bool _paintColorKey;
   int _colorKey;
+  bool _useShm;
 
   typedef struct 
   {
@@ -230,6 +238,18 @@ private:
    * Check if image size is supported by XV
    */
   bool checkMaxSize(unsigned int width, unsigned int height);
+
+  /**
+   * Verify pixel depth
+   */
+ int checkDepth (int depth);
+
+  /**
+   * Attach to Shared Memory
+   */
+#ifdef HAVE_SHM  
+  void ShmAttach(int imageWidth, int imageHeight);
+#endif
 };
 
 #endif //XVWINDOW_H

@@ -324,6 +324,20 @@ AM_CONDITIONAL(HAVE_ESD, test "x$found_esd" = "xyes")
 
 
 dnl ###############################
+dnl Checks for Shared Memory extension
+dnl ###############################
+SHM="disabled"
+
+if test "x${gm_platform}" = "xlinux" ; then
+  AC_CHECK_LIB(Xext, XShmAttach, with_shm="yes", with_shm="no")
+  if test "x${with_shm}" != "xno"; then
+  SHM="enabled"
+  AC_DEFINE(HAVE_SHM,1,[SHM Support])
+  fi
+fi
+AM_CONDITIONAL(HAVE_SHM, test "x$SHM" = "xenabled")
+
+dnl ###############################
 dnl Checks for Xv extension
 dnl ###############################
 XV="disabled"
@@ -332,7 +346,7 @@ if test "x${gm_platform}" = "xlinux" ; then
   AC_ARG_ENABLE(xv, [  --disable-xv			Disable XVideo hardware acceleration],,enable_xv=yes)
 
   if test "x${enable_xv}" = "xyes" ; then
-    AC_CHECK_LIB(Xv, XvShmCreateImage, xv_libs="yes", xv_libs="no")
+    AC_CHECK_LIB(Xv, XvPutImage, xv_libs="yes", xv_libs="no")
     if test "x${xv_libs}" != "xno"; then
       XV_LIBS="-lXv"
       AC_SUBST(XV_LIBS)
