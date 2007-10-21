@@ -171,39 +171,57 @@ static const struct _smiley table_smiley [] =
     {"0:-)", "face-angel"},
     {"O:)", "face-angel"},
     {"0:)", "face-angel"},
+
+    {"B-)", "face-cool"},
+    {"B)", "face-cool"},
+
     {":'(", "face-crying"},
-    {">:-)", "face-devil-grin"},
-    {">:)", "face-devil-grin"},
-    {"}:-)", "face-devil-grin"},
-    {"}:)", "face-devil-grin"},
-    {">:-(", "face-devil-sad"},
-    {">:(", "face-devil-sad"},
-    {"}:-(", "face-devil-sad"},
-    {"}:(", "face-devil-sad"},
-    {"B-)", "face-glasses"},
-    {"B)", "face-glasses"},
+    {":'-(", "face-crying"},
+
+    {":-[", "face-embarrassed"},
+    {":[", "face-embarrassed"},
+
+    {">:-)", "face-devilish"},
+    {">:)", "face-devilish"},
+    {"}:-)", "face-devilish"},
+    {"}:)", "face-devilish"},
+
     {":-*", "face-kiss"},
     {":*", "face-kiss"},
+
     {":-(|)", "face-monkey"},
     {":(|)", "face-monkey"},
+
     {":-|", "face-plain"},
     {":|", "face-plain"},
+
+    {":-P", "face-raspberry"},
+    {":P", "face-raspberry"},
+    {":-p", "face-raspberry"},
+    {":p", "face-raspberry"},
+
     {":-(", "face-sad"},
     {":(", "face-sad"},
+
     {":-)", "face-smile"},
     {":)", "face-smile"},
+
     {":-D", "face-smile-big"},
     {":D", "face-smile-big"},
+    
     {":-!", "face-smirk"},
     {":!", "face-smirk"},
+
     {":-O", "face-surprise"},
     {":O", "face-surprise"},
     {":-0", "face-surprise"},
     {":0", "face-surprise"},
     {":-o", "face-surprise"},
     {":o", "face-surprise"},
+    
     {";-)", "face-wink"},
     {";)", "face-wink"},
+    
     {NULL}
   };
 
