@@ -72,7 +72,8 @@ namespace SIP
 
     void on_call (std::string uri);
 
-    void on_message (std::string uri);
+    void on_message (std::string name,
+                     std::string uri);
 
     bool populate_for_precision_and_uri (const std::string precision,
                                          const std::string uri,

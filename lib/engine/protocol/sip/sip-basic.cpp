@@ -69,7 +69,7 @@ SIP::Basic::populate_menu (Ekiga::Contact &contact,
        iter != uris.end ();
        iter++) {
 
-    populated = populate_for_precision_and_uri (iter->first,
+    populated = populate_for_precision_and_uri (contact.get_name (),
 						iter->second, 
                                                 builder);
   }
@@ -93,10 +93,11 @@ SIP::Basic::on_call (std::string uri)
 }
 
 void
-SIP::Basic::on_message (std::string uri)
+SIP::Basic::on_message (std::string name,
+                        std::string uri)
 {
   Ekiga::Runtime *runtime = GnomeMeeting::Process ()->GetRuntime (); // FIXME
-  runtime->run_in_main (sigc::bind (GnomeMeeting::Process ()->GetManager ()->new_chat.make_slot (), uri));
+  runtime->run_in_main (sigc::bind (GnomeMeeting::Process ()->GetManager ()->new_chat.make_slot (), name, uri));
 }
 
 bool
@@ -109,7 +110,7 @@ SIP::Basic::populate_for_precision_and_uri (const std::string precision,
     builder.add_action ("call", _("_Call"),
 			sigc::bind (sigc::mem_fun (this, &SIP::Basic::on_call), uri));
     builder.add_action ("message", _("Send _Message"),
-			sigc::bind (sigc::mem_fun (this, &SIP::Basic::on_message), uri));
+			sigc::bind (sigc::mem_fun (this, &SIP::Basic::on_message), precision, uri));
 
     return true;
   } else
