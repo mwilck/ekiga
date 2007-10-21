@@ -715,7 +715,7 @@ class GMManager : public OpalManager
   sigc::signal<void, std::string, std::string> im_failed;
   sigc::signal<void, std::string, std::string, std::string> im_received;
   sigc::signal<void, std::string, std::string> im_sent;
-  sigc::signal<void, std::string> new_chat;
+  sigc::signal<void, std::string, std::string> new_chat;
   // Endof FIXME
 
   sigc::signal<void, GMManager::CallingState, Ekiga::CallInfo &> call_event;

@@ -53,7 +53,8 @@
 
 #include "gmwindow.h"
 
-static void on_new_chat (std::string uri,
+static void on_new_chat (std::string name,
+                         std::string uri,
                          GtkFrontend & frontend);
 
 
@@ -116,13 +117,13 @@ const GtkWidget *GtkFrontend::get_chat_window () const
 
 
 static void
-on_new_chat (std::string uri,
+on_new_chat (std::string name,
+             std::string uri,
              GtkFrontend & frontend)
 {
   const GtkWidget *chat_window = frontend.get_chat_window ();
 
-  // FIXME, should not pass the uri but a contact
-  chat_window_add_page (CHAT_WINDOW (chat_window), "Remote contact", uri);
+  chat_window_add_page (CHAT_WINDOW (chat_window), name, uri);
   gtk_widget_show_all (GTK_WIDGET (chat_window));
 }
 
