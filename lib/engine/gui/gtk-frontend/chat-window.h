@@ -1,6 +1,6 @@
 
 /* Ekiga -- A VoIP and Video-Conferencing application
- * Copyright (C) 2000-2006 Damien Sandras
+ * Copyright (C) 2000-2007 Damien Sandras
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,10 +30,9 @@
  *                         chat_window.h  -  description
  *                         -----------------------------
  *   begin                : Wed Jan 23 2002
- *   copyright            : (C) 2000-2006 by Damien Sandras
+ *   copyright            : (C) 2000-2007 by Damien Sandras
  *   description          : This file contains functions to build the chat
- *                          window. It uses DTMF tones.
- *   Additional code      : Kenneth Christiansen  <kenneth@gnu.org>
+ *                          window.
  *
  */
 
@@ -80,21 +79,53 @@ struct _ChatWindowClass
 GType chat_window_get_type ();
 
 
-
 /* Public API */
 
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Crate a new ChatWindow and listen for signals emitted
+ *                by the Ekiga::ServiceCore.
+ * PRE          : The Ekiga::ServiceCore as argument.
+ */
 GtkWidget *chat_window_new (Ekiga::ServiceCore & core);
 
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Crate a new ChatWindow and listen for signals emitted
+ *                by the Ekiga::ServiceCore. The difference with the previous
+ *                function is that it also restaures the position and size when
+ *                being shown/hidden.
+ * PRE          : The Ekiga::ServiceCore as argument, the key where to store
+ *                the position and size..
+ */
 GtkWidget *chat_window_new_with_key (Ekiga::ServiceCore & _core,
                                      const std::string _key);
 
-void chat_window_add_page (ChatWindow *chat_window,
-                           const std::string display_name,
-                           const std::string uri);
 
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Add and return a new page in the ChatWindow. That page 
+ *                concerns the given display_name and uri. If possible, 
+ *                the presence status of the Ekiga::Presentity is displayed.
+ * PRE          : A pointer to the ChatWindow. The Ekiga::ServiceCore as 
+ *                argument. A non-empty URI.
+ */
+GtkWidget *chat_window_add_page (ChatWindow *chat_window,
+                                 const std::string display_name,
+                                 const std::string uri);
+
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Remove the ChatWindowPage with the given URI from the 
+ *                ChatWindow.
+ * PRE          : A pointer to the ChatWindow. A non-empty URI.
+ */
 void chat_window_remove_page (ChatWindow *chat_window,
                               const std::string uri);
 
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Return the number of pages in the ChatWindow.
+ * PRE          : A pointer to the ChatWindow.
+ */
 int chat_window_get_n_pages (ChatWindow *chat_window);
 
 G_END_DECLS

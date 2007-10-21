@@ -1,3 +1,13 @@
+2007-10-21  Damien Sandras  <dsandras@gnome.org>
+
+	* lib/engine/gui/gtk-frontend/chat-window.cpp,
+	lib/engine/gui/gtk-frontend/chat-window.h:
+	Added support for new signal "message-event". Objects like the
+	StatusIcon can listen to that signal in order to know if there
+	are unread messages. The signal is emitted when there is a change
+	in the number of unread messages, like when a message is received
+	or the focus changes.
+
 2007-10-20  Damien Sandras  <dsandras@gnome.org>
 
 	* lib/engine/framework/runtime-glib.cpp:
