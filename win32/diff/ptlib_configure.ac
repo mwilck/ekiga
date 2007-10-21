@@ -177,6 +177,9 @@ HAS_VIDEO=1
 HAS_VIDEO_CAPTURE=1
 P_DIRECTSHOW=1
 P_VFW_CAPTURE=0
+HAS_DNS=1
+HAS_RESOLVER=1
+P_DNS=1
 
 P_LDAP=${HAS_OPENLDAP}
 P_SNMP=${HAS_SNMP}
@@ -201,6 +204,7 @@ AC_DEFINE([HAS_VIDEO_CAPTURE], 1, [check if video input support should be in])
 AC_DEFINE([P_DIRECTSHOW], 1, [check if directshow capture is to be compiled in])
 AC_DEFINE([P_AUDIO], 1, [check if audio support is in])
 AC_DEFINE([P_VIDEO], 1, [check if video support is in])
+AC_DEFINE([P_DNS], 1, [check if dns support is in])
 
 AM_CONDITIONAL(COMPILE_OPENLDAP, test "${HAS_OPENLDAP}" = "1")
 AM_CONDITIONAL(COMPILE_REGEX, test "${HAS_REGEX}" = "1")
@@ -225,6 +229,7 @@ AM_CONDITIONAL(COMPILE_AUDIO, test "${HAS_AUDIO}" = "1")
 AM_CONDITIONAL(COMPILE_VIDEO, test "${HAS_VIDEO}" = "1")
 AM_CONDITIONAL(COMPILE_DIRECTSHOW, test "${P_DIRECTSHOW}" = "1")
 AM_CONDITIONAL(COMPILE_VFW_CAPTURE, test "${P_VFW_CAPTURE}" = "1")
+AM_CONDITIONAL(COMPILE_DNS, test "${HAS_DNS}" = "1")
 
 AM_CONDITIONAL(COMPILE_SASL2, test "${HAS_SASL2}" = "1")
 AM_CONDITIONAL(COMPILE_OPENSSL, test "${HAS_OPENSSL}" = "1")
