@@ -60,6 +60,8 @@ namespace Ekiga
 
     virtual const std::set<std::string> get_groups () const = 0;
 
+    virtual const std::string get_uri () const = 0;
+
     virtual bool populate_menu (MenuBuilder &) = 0;
 
     sigc::signal<void> updated;
