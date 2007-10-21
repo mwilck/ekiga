@@ -40,6 +40,7 @@
 
 #include "common.h"
 #include "manager.h"
+#include "services.h"
 
 
 G_BEGIN_DECLS
@@ -83,7 +84,8 @@ GType statusicon_get_type ();
  * BEHAVIOR     : Returns a new statusicon, with the default icon and menu
  * PRE          : A valid gmconf key where to store the status
  */
-StatusIcon *statusicon_new (const char *key);
+StatusIcon *statusicon_new (Ekiga::ServiceCore & core,
+                            const char *key);
 
 
 G_END_DECLS

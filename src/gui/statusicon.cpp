@@ -58,12 +58,16 @@
 #endif
 
 #include "callinfo.h"
+#include "services.h"
+#include "gtk-frontend.h"
 
 
 /*
  * The StatusIcon
  */
-struct _StatusIconPrivate {
+struct _StatusIconPrivate 
+{
+  _StatusIconPrivate (Ekiga::ServiceCore & _core) : core (_core) { }
 
   GtkWidget *popup_menu;
   gboolean has_message;
@@ -73,9 +77,12 @@ struct _StatusIconPrivate {
   gchar *key;
   int blink_id;
   int status;
+  bool unread_messages;
   bool blinking;
 
   gchar *blink_image;
+
+  Ekiga::ServiceCore & core;
 };
 
 enum { STATUSICON_KEY = 1 };
@@ -96,6 +103,11 @@ static void
 statusicon_activated_cb (GtkStatusIcon *icon,
                          gpointer data);
 
+static void 
+message_event_cb (GtkWidget *widget,
+                  guint messages,
+                  gpointer data);
+
 static gboolean
 statusicon_blink_cb (gpointer data);
 
@@ -108,11 +120,6 @@ static void
 on_call_event_cb (GMManager::CallingState i,
                   Ekiga::CallInfo & info,
                   gpointer data);
-
-static void
-on_message_event_cb (int messages,
-                     gpointer data);
-
 
 
 /*
@@ -205,7 +212,6 @@ statusicon_set_property (GObject *obj,
   const gchar *str = NULL;
 
   self = STATUSICON (obj);
-  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, STATUSICON_TYPE, StatusIconPrivate);
 
   switch (prop_id) {
 
@@ -234,7 +240,6 @@ statusicon_class_init (gpointer g_class,
   GParamSpec *spec = NULL;
 
   parent_class = (GObjectClass *) g_type_class_peek_parent (g_class);
-  g_type_class_add_private (g_class, sizeof (StatusIconPrivate));
 
   gobject_class = (GObjectClass *) g_class;
   gobject_class->dispose = statusicon_dispose;
@@ -245,41 +250,6 @@ statusicon_class_init (gpointer g_class,
   spec = g_param_spec_string ("key", "Key", "Key", 
                               NULL, (GParamFlags) G_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, STATUSICON_KEY, spec); 
-}
-
-
-static void
-statusicon_init (GTypeInstance *instance,
-                 gpointer g_class)
-{
-  StatusIcon *self = NULL;
-  sigc::connection conn;
-
-  (void) g_class; /* -Wextra */
-
-
-  self = STATUSICON (instance);
-  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, STATUSICON_TYPE, StatusIconPrivate);
-
-  self->priv->popup_menu = statusicon_build_menu ();
-  self->priv->has_message = FALSE;
-  self->priv->blink_id = -1;
-  self->priv->blinking = false;
-  self->priv->blink_image = NULL;
-  self->priv->key = g_strdup ("");
-
-  // FIXME GnomeMeeting::Process should disappear
-  conn = GnomeMeeting::Process ()->GetManager ()->call_event.connect (sigc::bind (sigc::ptr_fun (on_call_event_cb), self));
-  self->priv->connections.push_back (conn);
-
-  //conn = GnomeMeeting::Process ()->GetManager ()->message_event.connect (sigc::bind (sigc::ptr_fun (on_message_event_cb), self));
-  //self->priv->connections.push_back (conn);
-
-  g_signal_connect (self, "popup-menu",
-                    G_CALLBACK (show_popup_menu_cb), self->priv->popup_menu);
-
-  g_signal_connect (self, "activate",
-                    G_CALLBACK (statusicon_activated_cb), NULL);
 }
 
 
@@ -299,7 +269,7 @@ statusicon_get_type ()
       NULL,
       sizeof (StatusIcon),
       0,
-      statusicon_init,
+      NULL,
       NULL
     };
 
@@ -339,12 +309,64 @@ static void
 statusicon_activated_cb (GtkStatusIcon *icon,
                          gpointer data)
 {
-  GtkWidget *window = GnomeMeeting::Process ()->GetMainWindow (); //FIXME
-  // FIXME when the main window becomes a gobject
-  if (!gnomemeeting_window_is_visible (window))
-    gnomemeeting_window_show (window);
-  else
-    gnomemeeting_window_hide (window);
+  StatusIcon *self = STATUSICON (data);
+
+  GtkWidget *window = NULL;
+  
+  if (!self->priv->unread_messages) {
+  
+    window = GnomeMeeting::Process ()->GetMainWindow (); //FIXME
+
+    // FIXME when the main window becomes a gobject
+    if (!gnomemeeting_window_is_visible (window))
+      gnomemeeting_window_show (window);
+    else
+      gnomemeeting_window_hide (window);
+  }
+  else {
+
+    GtkFrontend *frontend = dynamic_cast<GtkFrontend*>(self->priv->core.get ("gtk-frontend"));
+    GtkWidget *w = GTK_WIDGET (frontend->get_chat_window ());
+
+    gtk_widget_show (w);
+    gtk_window_present (GTK_WINDOW (w));
+  }
+}
+
+
+static void 
+message_event_cb (GtkWidget *widget,
+                  guint messages,
+                  gpointer data)
+{
+  StatusIcon *self = STATUSICON (data);
+
+  gchar *msg1 = NULL;
+  gchar *msg2 = NULL;
+  char *message = NULL;
+
+  if (messages > 0) 
+    statusicon_start_blinking (self, GM_STOCK_MESSAGE);
+  else 
+    statusicon_stop_blinking (self);
+
+  if (messages > 0) {
+
+    msg1 = g_strdup_printf (_("You have %d messages"), messages);
+    msg2 = g_strdup_printf (_("You have %d message"), messages);
+    message = ngettext (msg2, msg1, messages);
+    
+    gtk_status_icon_set_tooltip (GTK_STATUS_ICON (self), message);
+
+    g_free (msg1);
+    g_free (msg2);
+  }
+  else {
+
+    gtk_status_icon_set_tooltip (GTK_STATUS_ICON (self), NULL);
+  }
+
+  self->priv->unread_messages = (messages > 0);
 }
 
 
@@ -395,19 +417,6 @@ on_call_event_cb (GMManager::CallingState i,
   if (i == GMManager::Called) 
     statusicon_start_blinking (statusicon, GM_STOCK_STATUS_RINGING);
   else 
-    statusicon_stop_blinking (statusicon);
-}
-
-
-static void
-on_message_event_cb (int messages,
-                     gpointer data)
-{
-  StatusIcon *statusicon = STATUSICON (data);
-
-  if (messages > 0)
-    statusicon_start_blinking (statusicon, GM_STOCK_MESSAGE);
-  else
     statusicon_stop_blinking (statusicon);
 }
 
@@ -527,6 +536,9 @@ statusicon_stop_blinking (StatusIcon *icon)
     icon->priv->blink_id = -1;
     icon->priv->blinking = false;
   }
+
+  statusicon_set_status (STATUSICON (icon), 
+                         gm_conf_get_int (icon->priv->key));
 }
 
 
@@ -577,12 +589,40 @@ statusicon_set_status (StatusIcon *statusicon,
  * Public API
  */
 StatusIcon *
-statusicon_new (const char *key)
+statusicon_new (Ekiga::ServiceCore & core,
+                const char *key)
 {
-  StatusIcon *icon = NULL;
+  StatusIcon *self = NULL;
+  sigc::connection conn;
 
-  icon = STATUSICON (g_object_new (STATUSICON_TYPE, NULL));
-  g_object_set (icon, "key", key, NULL);
+  self = STATUSICON (g_object_new (STATUSICON_TYPE, NULL));
+  self->priv = new StatusIconPrivate (core);
 
-  return icon;
+  self->priv->popup_menu = statusicon_build_menu ();
+  self->priv->has_message = FALSE;
+  self->priv->blink_id = -1;
+  self->priv->blinking = false;
+  self->priv->blink_image = NULL;
+  self->priv->unread_messages = false;
+  self->priv->key = g_strdup ("");
+
+  g_object_set (self, "key", key, NULL);
+
+  // FIXME GnomeMeeting::Process should disappear
+  conn = GnomeMeeting::Process ()->GetManager ()->call_event.connect (sigc::bind (sigc::ptr_fun (on_call_event_cb), self));
+  self->priv->connections.push_back (conn);
+
+  GtkFrontend *frontend = dynamic_cast<GtkFrontend*>(core.get ("gtk-frontend"));
+  GtkWidget *chat_window = GTK_WIDGET (frontend->get_chat_window ());
+
+  g_signal_connect (self, "popup-menu",
+                    G_CALLBACK (show_popup_menu_cb), self->priv->popup_menu);
+
+  g_signal_connect (self, "activate",
+                    G_CALLBACK (statusicon_activated_cb), self);
+
+  g_signal_connect (chat_window, "message-event",
+                    G_CALLBACK (message_event_cb), self);
+
+  return self;
 }
