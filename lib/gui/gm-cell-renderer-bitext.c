@@ -84,7 +84,7 @@ gm_cell_renderer_bitext_update_text (GmCellRendererBitext *renderer,
   attr_list = pango_attr_list_new ();
 
   /* secondary text will be in italic */
-  attr_style = pango_attr_style_new (PANGO_STYLE_ITALIC);
+  attr_style = pango_attr_style_new (PANGO_STYLE_NORMAL);
   attr_style->start_index = strlen (renderer->priv->primary_text) + 1;
   attr_style->end_index = (guint) - 1;
   pango_attr_list_insert (attr_list, attr_style);
