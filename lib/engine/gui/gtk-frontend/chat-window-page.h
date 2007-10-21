@@ -78,24 +78,78 @@ GType chat_window_page_get_type ();
 
 /* Public API */
 
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Crate a new ChatWindowPage and listen for signals emitted
+ *                by the Ekiga::ServiceCore.
+ * PRE          : The Ekiga::ServiceCore as argument. The uri should not be
+ *                empty.
+ */
 GtkWidget *chat_window_page_new (Ekiga::ServiceCore & core,
                                  const std::string display_name,
                                  const std::string uri);
 
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Return the GtkWidget containing the label to add in 
+ *                GtkNotebook in which the ChatWindowPage will be added.
+ * PRE          : The ChatWindowPage as argument. 
+ */
 GtkWidget *chat_window_page_get_label (ChatWindowPage *page);
 
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Return the std::string uri associated with the
+ *                ChatWindowPage.
+ * PRE          : The ChatWindowPage as argument. 
+ */
 const std::string chat_window_page_get_uri (ChatWindowPage *page);
 
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Add the given message from the given uri into the
+ *                ChatWindowPage.
+ * PRE          : The ChatWindowPage as argument. 
+ */
 void chat_window_page_add_message (ChatWindowPage *page,
                                    const std::string display_name,
                                    const std::string uri,
                                    const std::string message,
                                    gboolean is_sent);
 
-void  chat_window_page_add_error (ChatWindowPage *page,
-                                  const std::string uri,
-                                  const std::string message);
 
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Add the given error message from the given uri into the
+ *                ChatWindowPage.
+ * PRE          : The ChatWindowPage as argument. 
+ */
+void chat_window_page_add_error (ChatWindowPage *page,
+                                 const std::string uri,
+                                 const std::string message);
+
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Update the number of current unread messages for the
+ *                given ChatWindowPage.
+ * PRE          : The ChatWindowPage as argument and the unread messages. 
+ */
+void chat_window_page_set_unread_messages (ChatWindowPage *page,
+                                           int messages);
+
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Return the number of current unread messages for the
+ *                given ChatWindowPage.
+ * PRE          : The ChatWindowPage as argument.
+ */
+int chat_window_page_get_unread_messages (ChatWindowPage *page);
+
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Grab the focus in the messages part of the 
+ *                given ChatWindowPage.
+ * PRE          : The ChatWindowPage as argument.
+ */
+void chat_window_page_grab_focus (ChatWindowPage *page);
 
 G_END_DECLS
 

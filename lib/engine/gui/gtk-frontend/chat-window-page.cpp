@@ -44,6 +44,7 @@
 #include "gmstockicons.h"
 
 #include "sip-endpoint.h"
+#include "presence-core.h"
 
 #include "ekiga.h"
 
@@ -54,9 +55,12 @@ struct _ChatWindowPagePrivate
 {
   _ChatWindowPagePrivate (Ekiga::ServiceCore & _core) : core (_core) { }
   GtkWidget *send_button;
+  GtkWidget *smiley_button;
   GtkWidget *conversation;
   GtkWidget *message;
-  GtkWidget *tab_label;
+  GtkWidget *tab_label_status;
+  GtkWidget *tab_label_name;
+  GtkWidget *tab_image;
   GtkWidget *tab;
 
   std::string uri;
@@ -65,20 +69,156 @@ struct _ChatWindowPagePrivate
 
   std::vector<sigc::connection> connections;
   Ekiga::ServiceCore & core;
+  int unread_messages;
 };
 
 static GObjectClass *parent_class = NULL;
 
 
+/*
+ * GTK+ Callbacks
+ */
+
+/* DESCRIPTION  : Called when the user clicks on the cross to close a 
+ *                ChatWindowPage.
+ * BEHAVIOR     : Emit the close-event signal. In general, the ChatWindow 
+ *                will listen to that signal in order to know when a 
+ *                ChatWindowPage needs to be removed from the ChatWindow.
+ * PRE          : The ChatWindowPage passed as second parameter.
+ */
 static void close_button_clicked_cb (GtkWidget *w,
                                      gpointer data);
 
+
+/* DESCRIPTION  : Called when the user hits the RETURN key in the
+ *                ChatWindowPage.
+ * BEHAVIOR     : Emulate a click on the "send" button.
+ * PRE          : The ChatWindowPage passed as second parameter.
+ */
 static gboolean chat_entry_activated_cb (GtkWidget *w,
                                          GdkEventKey *key,
                                          gpointer data);
 
+
+/* DESCRIPTION  : Called when the user hits the BACKSPACE key in the
+ *                ChatWindowPage.
+ * BEHAVIOR     : Delete the char on the left of the cursor. If it is a smiley,
+ *                then delete the smiley and the associated invisible
+ *                text. (Each smiley is preceeded by its textual representation
+ *                under an invisible form).
+ * PRE          : /
+ */
+static void chat_entry_backspace_cb (GtkTextView *text_view,
+                                     gpointer data);
+
+
+/* DESCRIPTION  : Called when the user hits the send button.
+ * BEHAVIOR     : Send the message (if not empty) to the remote peer using
+ *                the engine manager. Delete the sent message from the
+ *                ChatWindowPage.
+ * PRE          : The ChatWindowPage passed as second parameter.
+ */
 static void send_button_clicked_cb (GtkWidget *w,
                                     gpointer data);
+
+
+/* DESCRIPTION  : Called when the user hits the smiley button.
+ * BEHAVIOR     : Popup the menu allowing to insert a smiley in the
+ *                conversation.
+ * PRE          : The GtkMenu to popup passed as second parameter.
+ */
+static void smiley_button_clicked_cb (GtkButton *w,
+                                      gpointer data);
+
+
+/* DESCRIPTION  : Called when the user selects a smiley in the GtkMenu.
+ * BEHAVIOR     : Insert the smiley in the conversation, preceeded by
+ *                its textual representation, displayed as invisible text.
+ * PRE          : The ChatWindowPage passed as second parameter.
+ */
+static void smiley_activated_cb (GtkMenuItem *w,
+                                 gpointer data);
+
+/*
+ * Engine Callbacks
+ */
+
+/* DESCRIPTION  : Called when a Ekiga::Cluster is to the added to the
+ *                Ekiga::PresenceCore.
+ * BEHAVIOR     : Call the visit_heaps method on the Ekiga::Cluster
+ *                in order to trigger on_heap_visited for each visited
+ *                Ekiga::Heap.
+ * PRE          : The ChatWindowPage as second parameter.
+ */
+static void on_cluster_added (Ekiga::Cluster &cluster,
+			      gpointer data);
+
+
+/* DESCRIPTION  : Called when a Ekiga::Heap is visited.
+ * BEHAVIOR     : Call the on_heap_added callback in order to add
+ *                the monitored Ekiga::Heap to the list of active Heaps.
+ * PRE          : The ChatWindowPage as last parameter.
+ */
+static void on_heap_visited (Ekiga::Heap &heap,
+                             Ekiga::Cluster *cluster,
+                             gpointer data);
+
+
+/* DESCRIPTION  : Called when a Ekiga::Heap is added.
+ * BEHAVIOR     : Call the visit_presentities method on the Ekiga::Heap
+ *                in order to trigger on_presentity_visited for each visited
+ *                Ekiga::Presentity.
+ * PRE          : The ChatWindowPage as last parameter.
+ */
+static void on_heap_added (Ekiga::Cluster &cluster,
+                           Ekiga::Heap &heap,
+                           gpointer data);
+
+
+/* DESCRIPTION  : Called when a Ekiga::Presentity is visited.
+ * BEHAVIOR     : Call the on_presentity_added callback in order to add
+ *                the monitored Ekiga::Presentity to the list of active 
+ *                Presentities.
+ * PRE          : The ChatWindowPage as last parameter.
+ */
+static void on_presentity_visited (Ekiga::Presentity &presentity,
+                                   Ekiga::Cluster *cluster,
+                                   Ekiga::Heap *heap,
+                                   gpointer data);
+
+
+/* DESCRIPTION  : Called when a Ekiga::Presentity is added in a Heap.
+ * BEHAVIOR     : Call the on_presentity_updated callback.
+ * PRE          : The ChatWindowPage as last parameter.
+ */
+static void on_presentity_added (Ekiga::Cluster &cluster,
+				 Ekiga::Heap &heap,
+				 Ekiga::Presentity &presentity,
+				 gpointer data);
+
+
+/* DESCRIPTION  : Called when a Ekiga::Presentity is added in a Heap.
+ * BEHAVIOR     : If the Ekiga::Presentity is the one with who we are doing 
+ *                a conversation, then update its state representation in
+ *                the ChatWindowPage.
+ * PRE          : The ChatWindowPage as last parameter.
+ */
+static void on_presentity_updated (Ekiga::Cluster &cluster,
+				   Ekiga::Heap &heap,
+				   Ekiga::Presentity &presentity,
+				   gpointer data);
+
+
+/* DESCRIPTION  : Called when a Ekiga::Presentity is removed from a Heap.
+ * BEHAVIOR     : If the Ekiga::Presentity is the one with who we are doing 
+ *                a conversation, then update its state representation in
+ *                the ChatWindowPage to unknown.
+ * PRE          : The ChatWindowPage as last parameter.
+ */
+static void on_presentity_removed (Ekiga::Cluster &cluster,
+				   Ekiga::Heap &heap,
+				   Ekiga::Presentity &presentity,
+				   gpointer data);
 
 
 /* 
@@ -92,11 +232,15 @@ chat_window_page_dispose (GObject *obj)
   self = CHAT_WINDOW_PAGE (obj);
 
   self->priv->send_button = NULL;
+  self->priv->smiley_button = NULL;
   self->priv->conversation = NULL;
   self->priv->message = NULL;
-  self->priv->tab_label = NULL;
+  self->priv->tab_label_name = NULL;
+  self->priv->tab_label_status = NULL;
+  self->priv->tab_image = NULL;
   self->priv->tab = NULL;
-  self->priv->last_user = 0;
+  self->priv->last_user = -1;
+  self->priv->unread_messages = 0;
 
   parent_class->dispose (obj);
 }
@@ -108,6 +252,12 @@ chat_window_page_finalize (GObject *obj)
   ChatWindowPage *self = NULL;
 
   self = CHAT_WINDOW_PAGE (obj);
+
+  for (std::vector<sigc::connection>::iterator iter
+	 = self->priv->connections.begin ();
+       iter != self->priv->connections.end ();
+       iter++)
+    iter->disconnect ();
 
   delete self->priv;
   parent_class->finalize (obj);
@@ -166,10 +316,16 @@ chat_window_page_get_type ()
 /*
  * Our own stuff
  */
+
+/*
+ * GTK+ Callbacks
+ */
 static void 
 close_button_clicked_cb (GtkWidget *w,
                          gpointer data)
 {
+  g_return_if_fail (data != NULL);
+
   g_signal_emit_by_name (data, "close-event", NULL);
 }
 
@@ -189,6 +345,30 @@ chat_entry_activated_cb (GtkWidget *w,
   return false;
 }
 
+
+static void 
+chat_entry_backspace_cb (GtkTextView *text_view,
+                         gpointer data)
+{
+  GtkTextBuffer *buffer = gtk_text_view_get_buffer (text_view);
+  GtkTextIter *start_iter = NULL;
+  GtkTextIter end_iter;
+
+  gtk_text_buffer_get_iter_at_mark (buffer, &end_iter, 
+                                    gtk_text_buffer_get_insert (buffer));
+  start_iter = gtk_text_iter_copy (&end_iter);
+  gtk_text_iter_backward_visible_cursor_position (&end_iter);
+  if (gtk_text_iter_get_pixbuf (&end_iter)) {
+
+    gtk_text_iter_backward_search (&end_iter, " ", 
+                                   GTK_TEXT_SEARCH_TEXT_ONLY, 
+                                   start_iter, NULL, NULL); 
+    gtk_text_buffer_delete (buffer, start_iter, &end_iter);
+  }
+  gtk_text_iter_free (start_iter);
+}
+
+
 static void
 send_button_clicked_cb (GtkWidget *w,
                         gpointer data)
@@ -201,16 +381,18 @@ send_button_clicked_cb (GtkWidget *w,
   gchar *body = NULL;
   std::string message;
 
+  g_return_if_fail (data != NULL);
+
   buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (self->priv->message));
   gtk_text_buffer_get_start_iter (GTK_TEXT_BUFFER (buffer), &start_iter);
   gtk_text_buffer_get_end_iter (GTK_TEXT_BUFFER (buffer), &end_iter);
-  body = gtk_text_buffer_get_text (GTK_TEXT_BUFFER (buffer), &start_iter, &end_iter, FALSE);
+  body = gtk_text_buffer_get_text (GTK_TEXT_BUFFER (buffer), &start_iter, &end_iter, TRUE);
   gtk_text_buffer_delete (GTK_TEXT_BUFFER (buffer), &start_iter, &end_iter);
 
   message = body;
   g_free (body);
 
-  /* */ //FIXME protocl
+  /* */ //FIXME protocol, use manager instead.
   if (!message.empty ()) {
     SIP::EndPoint *endpoint =  dynamic_cast<SIP::EndPoint*>(self->priv->core.get ("sip-endpoint"));
     if (endpoint) {
@@ -220,12 +402,144 @@ send_button_clicked_cb (GtkWidget *w,
 }
 
 
+static void 
+smiley_button_clicked_cb (GtkButton *w,
+                          gpointer data)
+{
+  g_return_if_fail (data != NULL);
+  gtk_menu_popup (GTK_MENU (data), NULL, NULL, NULL, NULL, 0, 0);
+}
+
+
+static void
+smiley_activated_cb (GtkMenuItem *menu,
+                     gpointer data)
+{
+  GtkTextBuffer *buffer = NULL;
+
+  GtkTextIter iter;
+
+  const char *text = NULL;
+
+  ChatWindowPage *self = CHAT_WINDOW_PAGE (data);
+
+  g_return_if_fail (data != NULL);
+
+  text = gtk_label_get_text (GTK_LABEL (GTK_BIN (GTK_MENU_ITEM (menu))->child));
+
+  buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (self->priv->message));
+  gtk_text_buffer_get_iter_at_mark (buffer, &iter, 
+                                    gtk_text_buffer_get_insert (buffer));
+  gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, " ", -1, "invisible", NULL);
+  gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, text, -1, "invisible", NULL);
+  gtk_text_buffer_insert_with_regex (buffer, &iter, text);
+
+  gtk_widget_grab_focus (self->priv->message);
+}
+
+
+/*
+ * Engine Callbacks
+ */
+
+static void
+on_cluster_added (Ekiga::Cluster &cluster,
+		  gpointer data)
+{
+  cluster.visit_heaps (sigc::bind (sigc::ptr_fun (on_heap_visited), &cluster, data));
+}
+
+
+static void
+on_heap_visited (Ekiga::Heap &heap,
+                 Ekiga::Cluster *cluster,
+                 gpointer data)
+{
+  on_heap_added (*cluster, heap, data);
+}
+
+
+static void
+on_heap_added (Ekiga::Cluster &cluster,
+               Ekiga::Heap &heap,
+               gpointer data)
+{
+  heap.visit_presentities (sigc::bind (sigc::ptr_fun (on_presentity_visited), &cluster, &heap, data));
+}
+
+
+static void
+on_presentity_visited (Ekiga::Presentity &presentity,
+                       Ekiga::Cluster *cluster,
+                       Ekiga::Heap *heap,
+                       gpointer data)
+{
+  on_presentity_added (*cluster, *heap, presentity, data);
+}
+
+
+static void
+on_presentity_added (Ekiga::Cluster &cluster,
+		     Ekiga::Heap &heap,
+		     Ekiga::Presentity &presentity,
+		     gpointer data)
+{
+  on_presentity_updated (cluster, heap, presentity, data);
+}
+
+
+static void
+on_presentity_updated (Ekiga::Cluster &/*cluster*/,
+		       Ekiga::Heap &heap,
+		       Ekiga::Presentity &presentity,
+		       gpointer data)
+{
+  ChatWindowPage *self = CHAT_WINDOW_PAGE (data);
+
+  if (presentity.get_uri () == self->priv->uri) {
+
+    gtk_image_set_from_stock (GTK_IMAGE (self->priv->tab_image), 
+                              presentity.get_presence ().c_str (), 
+                              GTK_ICON_SIZE_MENU);
+    gtk_label_set_text (GTK_LABEL (self->priv->tab_label_name),
+                        presentity.get_name ().c_str ());
+    gtk_label_set_text (GTK_LABEL (self->priv->tab_label_status),
+                        presentity.get_status ().c_str ());
+  }
+}
+
+
+static void
+on_presentity_removed (Ekiga::Cluster &/*cluster*/,
+		       Ekiga::Heap &heap,
+		       Ekiga::Presentity &presentity,
+		       gpointer data)
+{
+  ChatWindowPage *self = CHAT_WINDOW_PAGE (data);
+
+  if (presentity.get_uri () == self->priv->uri) {
+
+    gtk_image_set_from_stock (GTK_IMAGE (self->priv->tab_image), 
+                              "presence-unknown",
+                              GTK_ICON_SIZE_MENU);
+    gtk_label_set_text (GTK_LABEL (self->priv->tab_label_name),
+                        presentity.get_name ().c_str ());
+  }
+}
+
+
+/*
+ * Public API
+ */
+
 GtkWidget *
 chat_window_page_new (Ekiga::ServiceCore & core,
                       const std::string display_name,
                       const std::string uri)
 {
   ChatWindowPage *self = NULL;
+
+  sigc::connection conn;
   
   GtkWidget *close_button = NULL;
   GtkWidget *close_image = NULL;
@@ -239,27 +553,85 @@ chat_window_page_new (Ekiga::ServiceCore & core,
   GtkWidget *frame = NULL;
   GtkWidget *vpane = NULL;
   GtkWidget *align = NULL;
+  GtkWidget *arrow = NULL;
+  GtkWidget *sep = NULL;
+
+  PangoAttrList *attr_lst = NULL;
+  PangoAttribute *attr = NULL;
 
   GtkTextIter iter;
   GtkTextBuffer *buffer = NULL;
   GtkTextMark *mark = NULL;
   GtkTextTag *regex_tag = NULL;
 
+  GdkColor color_fg;
+
+  Ekiga::PresenceCore *presence_core = NULL; 
+
+  const char *smileys [] = 
+    {
+      "face-angel",
+      "face-cool",
+      "face-crying",
+      "face-embarrassed",
+      "face-devilish",
+      "face-kiss",
+      "face-monkey",
+      "face-plain",
+      "face-raspberry",
+      "face-sad",
+      "face-smile",
+      "face-smile-big",
+      "face-smirk",
+      "face-surprise",
+      "face-wink"
+    };
+
+  const char *smiley_texts [] = 
+    {
+      "0:-)",
+      "B-)",
+      ":'-(",
+      ":-[",
+      ">:-)",
+      ":-*",
+      ":-(|)",
+      ":-[",
+      ":-P",
+      ":-(",
+      ":-)",
+      ":-D",
+      ":-!",
+      ":-O",
+      ";-)"
+    };
+
+  GtkIconTheme *theme = NULL;
+  GdkPixbuf *pixbuf = NULL;
+
+  GtkWidget *menu = NULL;
+  GtkWidget *menu_item = NULL;
+
+  /* Start building the page */
   self = CHAT_WINDOW_PAGE (g_object_new (CHAT_WINDOW_PAGE_TYPE, NULL));
   self->priv = new ChatWindowPagePrivate (core);
 
   self->priv->send_button = NULL;
+  self->priv->smiley_button = NULL;
   self->priv->conversation = NULL;
   self->priv->message = NULL;
-  self->priv->tab_label = NULL;
+  self->priv->tab_label_name = NULL;
+  self->priv->tab_label_status = NULL;
+  self->priv->tab_image = NULL;
   self->priv->tab = NULL;
-  self->priv->last_user = 0;
+  self->priv->last_user = -1;
+  self->priv->unread_messages = 0;
 
   /* Vertical pane to contain the chat and the message to send */
   vpane = gtk_vpaned_new ();
-  gtk_container_set_border_width (GTK_CONTAINER (vpane), 4);
+  gtk_container_set_border_width (GTK_CONTAINER (vpane), 12);
 
-  // Above part
+  /* Above part */
   vbox = gtk_vbox_new (FALSE, 4);
 
   self->priv->conversation = gtk_text_view_new_with_regex ();
@@ -297,27 +669,74 @@ chat_window_page_new (Ekiga::ServiceCore & core,
 
   gtk_paned_pack1 (GTK_PANED (vpane), vbox, TRUE, FALSE);
 
-  // Bottom part
+  /* Bottom part */
+  // The message part
   vbox = gtk_vbox_new (FALSE, 4);
-
-  self->priv->message = gtk_text_view_new ();
-  gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (self->priv->message), 
-                               GTK_WRAP_WORD_CHAR);
-  self->priv->last_user = -1;
   frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
+  gtk_container_add (GTK_CONTAINER (frame), vbox);
+
+  self->priv->message = gtk_text_view_new_with_regex ();
+  gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (self->priv->message), 
+                               GTK_WRAP_WORD_CHAR);
+  gtk_text_view_set_cursor_visible  (GTK_TEXT_VIEW (self->priv->message), true);
+  buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (self->priv->message));
+  gtk_text_buffer_create_tag (buffer, "invisible",
+                              "invisible", true, NULL);
+
   scr = gtk_scrolled_window_new (NULL, NULL);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scr),
                                   GTK_POLICY_AUTOMATIC,
                                   GTK_POLICY_AUTOMATIC);
   gtk_container_add (GTK_CONTAINER (scr), self->priv->message);
-  gtk_container_add (GTK_CONTAINER (frame), scr);
-  gtk_box_pack_start (GTK_BOX (vbox), frame, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox), scr, TRUE, TRUE, 0);
 
-  hbox = gtk_hbox_new (FALSE, 4);
+  // An horizontal separator
+  sep = gtk_hseparator_new ();
+  gtk_box_pack_start (GTK_BOX (vbox), sep, TRUE, TRUE, 0);
 
+  // The actions bar
+  hbox = gtk_hbox_new (FALSE, 0);
+
+  // The smiley button
+  theme = gtk_icon_theme_get_default();
+  menu = gtk_menu_new ();
+  for (int i = 0 ; i < 15 ; i++) {
+
+    menu_item = gtk_image_menu_item_new_with_label (smiley_texts [i]);
+    pixbuf = gtk_icon_theme_load_icon (theme, smileys [i], 
+                                       16, (GtkIconLookupFlags) 0, 
+                                       NULL);
+    image = gtk_image_new_from_pixbuf (pixbuf);
+    gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (menu_item), image);
+    gtk_widget_show_all (menu_item);
+    gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
+
+    g_signal_connect (GTK_OBJECT (menu_item), "activate",
+                      G_CALLBACK (smiley_activated_cb), self);
+
+  }
+  pixbuf = gtk_icon_theme_load_icon (theme, "face-smile",
+                                     16, (GtkIconLookupFlags) 0, 
+                                     NULL);
+  image = gtk_image_new_from_pixbuf (pixbuf);
+  align = gtk_alignment_new (0.0, 0.5, 0.0, 0.0);
+  self->priv->smiley_button = gtk_button_new ();
+  gtk_container_add (GTK_CONTAINER (align), self->priv->smiley_button);
+  gtk_button_set_relief (GTK_BUTTON (self->priv->smiley_button), GTK_RELIEF_NONE);
+  hbox2 = gtk_hbox_new (FALSE, 0);
+  gtk_container_add (GTK_CONTAINER (self->priv->smiley_button), hbox2);
+  gtk_box_pack_start (GTK_BOX (hbox2), image, FALSE, FALSE, 0);
+  arrow = gtk_arrow_new (GTK_ARROW_DOWN, GTK_SHADOW_NONE);
+  gtk_menu_attach_to_widget (GTK_MENU (menu), arrow, NULL);
+  gtk_box_pack_start (GTK_BOX (hbox2), GTK_WIDGET (arrow), FALSE, FALSE, 0);
+
+  gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (align), TRUE, TRUE, 0);
+
+  // The send message button
   align = gtk_alignment_new (1.0, 0.5, 0.0, 0.0);
   self->priv->send_button = gtk_button_new ();
+  gtk_button_set_relief (GTK_BUTTON (self->priv->send_button), GTK_RELIEF_NONE);
   image = gtk_image_new_from_stock (GTK_STOCK_JUMP_TO, 
                                     GTK_ICON_SIZE_MENU);
   hbox2 = gtk_hbox_new (FALSE, 0);
@@ -327,74 +746,123 @@ chat_window_page_new (Ekiga::ServiceCore & core,
   gtk_box_pack_start (GTK_BOX (hbox2), label, FALSE, FALSE, 6);
   gtk_container_add (GTK_CONTAINER (self->priv->send_button), hbox2);
   gtk_container_add (GTK_CONTAINER (align), self->priv->send_button);
-  gtk_box_pack_start (GTK_BOX (hbox), align, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (hbox), align, TRUE, TRUE, 0);
 
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
 
-  // Decent size for the pane
+  /* Decent size for the pane */
   gtk_widget_set_size_request (GTK_WIDGET (vbox), 150, -1);
-  gtk_paned_pack2 (GTK_PANED (vpane), vbox, FALSE, FALSE);
+  gtk_paned_pack2 (GTK_PANED (vpane), frame, FALSE, FALSE);
 
   gtk_container_add (GTK_CONTAINER (self), vpane);
   gtk_widget_show_all (GTK_WIDGET (self));
-  /* FIXME
-  regex_tag = gtk_text_buffer_create_tag (buffer, "uri-http", "foreground", "blue", "underline", PANGO_UNDERLINE_SINGLE,  NULL);
-  if (gtk_text_tag_set_regex (regex_tag, "\\<(http[s]?|[s]?ftp)://[^[:blank:]]+\\>")) 
-    gtk_text_tag_add_actions_to_regex (regex_tag, _("_Open URL"), gm_open_uri, _("_Copy URL to Clipboard"), copy_uri_cb, NULL);
 
-  regex_tag = gtk_text_buffer_create_tag (buffer, "uri-gm", "foreground", "blue", "underline", PANGO_UNDERLINE_SINGLE, NULL);
-  if (gtk_text_tag_set_regex (regex_tag, "\\<((h323|sip|callto):[^[:blank:]]+)\\>"))
-                                                                    gtk_text_tag_add_actions_to_regex (regex_tag, _("C_all Contact"), connect_uri_cb, _("_Copy URI to Clipboard"), copy_uri_cb, NULL);
-*/
-  regex_tag = gtk_text_buffer_create_tag (buffer, "smileys", "foreground", "grey", NULL);
-  if (gtk_text_tag_set_regex (regex_tag, gtk_text_buffer_get_smiley_regex ()))
-    gtk_text_tag_set_regex_display (regex_tag, gtk_text_buffer_insert_smiley);
+  /* Regex init */
+  for (int i = 0 ; i < 2 ; i++) {
 
-  regex_tag = gtk_text_buffer_create_tag (buffer, "bold", "weight", PANGO_WEIGHT_BOLD, NULL);
-  if (gtk_text_tag_set_regex (regex_tag, "(<b>.*</b>|<B>.*</B>)"))
-    gtk_text_tag_set_regex_display (regex_tag, gtk_text_buffer_insert_markup);
+    if (i == 0)
+      buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (self->priv->conversation));
+    else
+      buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (self->priv->message));
 
-  regex_tag = gtk_text_buffer_create_tag (buffer, "italic", "style", PANGO_STYLE_ITALIC, NULL);
-  if (gtk_text_tag_set_regex (regex_tag, "(<i>.*</i>|<I>.*</I>)"))
-    gtk_text_tag_set_regex_display (regex_tag, gtk_text_buffer_insert_markup);
+    // FIXME Add more regexes (call, http, ftp, ...)
+    regex_tag = gtk_text_buffer_create_tag (buffer, "smileys", "foreground", "grey", NULL);
+    if (gtk_text_tag_set_regex (regex_tag, gtk_text_buffer_get_smiley_regex ()))
+      gtk_text_tag_set_regex_display (regex_tag, gtk_text_buffer_insert_smiley);
 
-  regex_tag = gtk_text_buffer_create_tag (buffer, "underline", "underline", PANGO_UNDERLINE_SINGLE, NULL);
-  if (gtk_text_tag_set_regex (regex_tag, "(<u>.*</u>|<U>.*</U>)"))
-    gtk_text_tag_set_regex_display (regex_tag, gtk_text_buffer_insert_markup);
+    regex_tag = gtk_text_buffer_create_tag (buffer, "bold", "weight", PANGO_WEIGHT_BOLD, NULL);
+    if (gtk_text_tag_set_regex (regex_tag, "(<b>.*</b>|<B>.*</B>)"))
+      gtk_text_tag_set_regex_display (regex_tag, gtk_text_buffer_insert_markup);
 
-  /* FIXME
-  regex_tag = gtk_text_buffer_create_tag (buffer, "latex", "foreground", "grey",NULL);
-  if (gtk_text_tag_set_regex (regex_tag, "(\\$[^$]*\\$|\\$\\$[^$]*\\$\\$)"))
-    gtk_text_tag_add_actions_to_regex (regex_tag, _("_Copy Equation"), copy_uri_cb, NULL);
-*/
+    regex_tag = gtk_text_buffer_create_tag (buffer, "italic", "style", PANGO_STYLE_ITALIC, NULL);
+    if (gtk_text_tag_set_regex (regex_tag, "(<i>.*</i>|<I>.*</I>)"))
+      gtk_text_tag_set_regex_display (regex_tag, gtk_text_buffer_insert_markup);
 
-  g_signal_connect (GTK_OBJECT (self->priv->message), "key-press-event",
-                    G_CALLBACK (chat_entry_activated_cb), self);
-
-  g_signal_connect (GTK_OBJECT (self->priv->send_button), "clicked",
-                    G_CALLBACK (send_button_clicked_cb), self);
-
+    regex_tag = gtk_text_buffer_create_tag (buffer, "underline", "underline", PANGO_UNDERLINE_SINGLE, NULL);
+    if (gtk_text_tag_set_regex (regex_tag, "(<u>.*</u>|<U>.*</U>)"))
+      gtk_text_tag_set_regex_display (regex_tag, gtk_text_buffer_insert_markup);
+  }
 
   /* The GTK Notebook page label */
   self->priv->uri = uri;
-  self->priv->tab = gtk_hbox_new (FALSE, 0);	   
-  align = gtk_alignment_new (0.0, 0.5, 0.0, 0.0);
-  self->priv->tab_label = gtk_label_new (display_name.c_str ());
-  gtk_container_add (GTK_CONTAINER (align), self->priv->tab_label);
-  gtk_box_pack_start (GTK_BOX (self->priv->tab), align, TRUE, TRUE, 0);
+  self->priv->tab = gtk_hbox_new (FALSE, 6);
+  gtk_container_set_border_width (GTK_CONTAINER (self->priv->tab), 3);
+  vbox = gtk_vbox_new (FALSE, 0);
 
+  align = gtk_alignment_new (0.0, 0.5, 0.0, 0.0);
+  self->priv->tab_image = gtk_image_new ();
+  gtk_image_set_from_stock (GTK_IMAGE (self->priv->tab_image), "presence-unknown", GTK_ICON_SIZE_MENU);
+  gtk_container_add (GTK_CONTAINER (align), self->priv->tab_image);
+  gtk_box_pack_start (GTK_BOX (self->priv->tab), align, FALSE, FALSE, 0);
+
+  self->priv->tab_label_name = gtk_label_new (display_name.c_str ());
+  align = gtk_alignment_new (0.0, 0.0, 0.0, 0.0);
+  gtk_container_add (GTK_CONTAINER (align), self->priv->tab_label_name);
+  gtk_box_pack_start (GTK_BOX (vbox), align, FALSE, FALSE, 0);
+
+  self->priv->tab_label_status = gtk_label_new (NULL);
+  attr_lst = pango_attr_list_new ();
+  attr = pango_attr_scale_new (PANGO_SCALE_SMALL);   
+  pango_attr_list_insert (attr_lst, attr);
+  gdk_color_parse ("darkgray", &color_fg);
+  attr = pango_attr_foreground_new (color_fg.red, color_fg.green, color_fg.blue);   
+  pango_attr_list_insert (attr_lst, attr);
+  gtk_label_set_attributes (GTK_LABEL(self->priv->tab_label_status), attr_lst);
+  pango_attr_list_unref (attr_lst);
+  align = gtk_alignment_new (0.0, 0.0, 0.0, 0.0);
+  gtk_container_add (GTK_CONTAINER (align), self->priv->tab_label_status);
+  gtk_box_pack_start (GTK_BOX (vbox), align, FALSE, FALSE, 0);
+
+  align = gtk_alignment_new (0.0, 0.0, 0.0, 0.0);
+  gtk_container_add (GTK_CONTAINER (align), vbox);
+  gtk_box_pack_start (GTK_BOX (self->priv->tab), align, FALSE, FALSE, 0);
+
+  align = gtk_alignment_new (1.0, 0.5, 0.0, 0.0);
   close_button = gtk_button_new ();
   gtk_button_set_relief (GTK_BUTTON (close_button), GTK_RELIEF_NONE);
   close_image = gtk_image_new_from_stock (GTK_STOCK_CLOSE,
                                           GTK_ICON_SIZE_MENU); 
   gtk_container_add (GTK_CONTAINER (close_button), close_image);
-  gtk_widget_set_size_request (close_button, 17, 17);
-  gtk_box_pack_start (GTK_BOX (self->priv->tab), close_button, FALSE, FALSE, 0);
+  gtk_widget_set_size_request (close_button, 22, 22);
+  gtk_container_add (GTK_CONTAINER (align), close_button);
+  gtk_box_pack_start (GTK_BOX (self->priv->tab), align, TRUE, TRUE, 0);
   gtk_widget_show_all (self->priv->tab);
+
+  /* GTK+ signals callbacks */
+  g_signal_connect (G_OBJECT (self->priv->smiley_button), "clicked",
+                    G_CALLBACK (smiley_button_clicked_cb), menu);
+
+  g_signal_connect (GTK_OBJECT (self->priv->message), "key-press-event",
+                    G_CALLBACK (chat_entry_activated_cb), self);
+
+  g_signal_connect (GTK_OBJECT (self->priv->message), "backspace",
+                    G_CALLBACK (chat_entry_backspace_cb), NULL);
+
+  g_signal_connect (GTK_OBJECT (self->priv->send_button), "clicked",
+                    G_CALLBACK (send_button_clicked_cb), self);
 
   g_signal_connect (GTK_OBJECT (close_button), "clicked",
                     G_CALLBACK (close_button_clicked_cb), 
                     self);
+
+  /* Engine Signals callbacks */
+  presence_core = dynamic_cast<Ekiga::PresenceCore *>(core.get ("presence-core"));
+  conn = presence_core->cluster_added.connect (sigc::bind (sigc::ptr_fun (on_cluster_added), (gpointer) self));
+  self->priv->connections.push_back (conn);
+
+  conn = presence_core->heap_added.connect (sigc::bind (sigc::ptr_fun (on_heap_added), (gpointer) self));
+  self->priv->connections.push_back (conn);
+
+  conn = presence_core->presentity_added.connect (sigc::bind (sigc::ptr_fun (on_presentity_added), (gpointer) self));
+  self->priv->connections.push_back (conn);
+
+  conn = presence_core->presentity_updated.connect (sigc::bind (sigc::ptr_fun (on_presentity_updated), self));
+  self->priv->connections.push_back (conn);
+
+  conn = presence_core->presentity_removed.connect (sigc::bind (sigc::ptr_fun (on_presentity_removed), (gpointer) self));
+  self->priv->connections.push_back (conn);
+
+  presence_core->visit_clusters (sigc::bind (sigc::ptr_fun (on_cluster_added), (gpointer) self));
 
   return GTK_WIDGET (self);
 }
@@ -404,6 +872,8 @@ GtkWidget *
 chat_window_page_get_label (ChatWindowPage *page)
 {
   ChatWindowPage *self = NULL;
+
+  g_return_val_if_fail (page != NULL, NULL);
 
   self = CHAT_WINDOW_PAGE (page);
 
@@ -416,13 +886,15 @@ chat_window_page_get_uri (ChatWindowPage *page)
 {
   ChatWindowPage *self = NULL;
 
+  g_return_val_if_fail (page != NULL, "");
+
   self = CHAT_WINDOW_PAGE (page);
 
   return self->priv->uri;
 }
 
 
-void 
+void
 chat_window_page_add_message (ChatWindowPage *page,
                               const std::string display_name,
                               const std::string uri,
@@ -431,37 +903,46 @@ chat_window_page_add_message (ChatWindowPage *page,
 {
   ChatWindowPage *self = CHAT_WINDOW_PAGE (page);
 
-  GdkColor color;
-
   GtkTextIter iter;
   GtkTextBuffer *buffer = NULL;
   GtkTextMark *mark = NULL;
   
-  gboolean has_focus = false;
   gchar *msg = NULL;
+  gboolean same_user = false;
 
   GTimeVal timeval;
   GDate date;
   gchar time_buffer [20];
 
-  gdk_color_parse ("blue", &color);
+  g_return_if_fail (page != NULL);
 
   /* Get iter */
   buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (self->priv->conversation));
   gtk_text_buffer_get_end_iter (buffer, &iter);
 
-  /* Insert user name */
   if (is_sent) {
-    msg = g_strdup_printf (_("You say:\n"));
-    gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, msg, 
-					      -1, "local-user", NULL);
+    same_user = (self->priv->last_user == 0);
+    self->priv->last_user = 0;
   }
   else {
-    msg = g_strdup_printf ("%s %s\n", display_name.c_str (), _("says:"));
-    gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, msg, 
-					      -1, "remote-user", NULL);
+    same_user = (self->priv->last_user == 1);
+    self->priv->last_user = 1;
   }
-  g_free (msg);
+
+  /* Insert user name */
+  if (!same_user) {
+    if (is_sent) {
+      msg = g_strdup_printf (_("You say:\n"));
+      gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, msg, 
+                                                -1, "local-user", NULL);
+    }
+    else {
+      msg = g_strdup_printf ("%s %s\n", display_name.c_str (), _("says:"));
+      gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, msg, 
+                                                -1, "remote-user", NULL);
+    }
+    g_free (msg);
+  }
 
   /* Insert body */
   g_get_current_time (&timeval);
@@ -479,16 +960,10 @@ chat_window_page_add_message (ChatWindowPage *page,
   mark = gtk_text_buffer_get_mark (buffer, "current-position");
   gtk_text_view_scroll_to_mark (GTK_TEXT_VIEW (self->priv->conversation), mark, 
                                 0.0, FALSE, 0,0);
-
-  /* check if this page/tab is focused, 
-   * if not change the colour of tab name to red */
-  g_object_get (G_OBJECT (self->priv->message), "has-focus", &has_focus, NULL);
-  if (!has_focus)
-    gtk_widget_modify_fg (GTK_WIDGET(self->priv->tab_label), GTK_STATE_ACTIVE, &color);
 }
 
 
-void 
+void
 chat_window_page_add_error (ChatWindowPage *page,
                             const std::string uri,
                             const std::string message)
@@ -500,9 +975,9 @@ chat_window_page_add_error (ChatWindowPage *page,
   GtkTextIter iter;
   GtkTextBuffer *buffer = NULL;
   GtkTextMark *mark = NULL;
-  
-  gboolean has_focus = false;
 
+  g_return_if_fail (page != NULL);
+  
   gdk_color_parse ("red", &color);
 
   /* Get iter */
@@ -518,12 +993,61 @@ chat_window_page_add_error (ChatWindowPage *page,
   mark = gtk_text_buffer_get_mark (buffer, "current-position");
   gtk_text_view_scroll_to_mark (GTK_TEXT_VIEW (self->priv->conversation), mark, 
                                 0.0, FALSE, 0,0);
+}
 
-  /* check if this page/tab is focused, 
-   * if not change the colour of tab name to red */
-  g_object_get (G_OBJECT (self->priv->message), "has-focus", &has_focus, NULL);
-  if (!has_focus)
-    gtk_widget_modify_fg (GTK_WIDGET(self->priv->tab_label), GTK_STATE_ACTIVE, &color);
+
+void 
+chat_window_page_set_unread_messages (ChatWindowPage *page,
+                                      int messages)
+{
+  ChatWindowPage *self = CHAT_WINDOW_PAGE (page);
+
+  PangoFontDescription *description = NULL;
+  GdkColor color;
+
+  g_return_if_fail (page != NULL);
+
+  if (messages > 0) {
+
+    description = pango_font_description_new ();
+    pango_font_description_set_weight (description, PANGO_WEIGHT_BOLD);
+
+    gdk_color_parse ("blue", &color);
+
+    gtk_widget_modify_fg (GTK_WIDGET (self->priv->tab_label_name), GTK_STATE_ACTIVE, &color);
+    gtk_widget_modify_font (GTK_WIDGET (self->priv->tab_label_name), description);
+
+    pango_font_description_free (description);
+  }
+  else {
+
+    gtk_widget_modify_fg (GTK_WIDGET (self->priv->tab_label_name), GTK_STATE_ACTIVE, NULL);
+    gtk_widget_modify_font (GTK_WIDGET (self->priv->tab_label_name), NULL);
+  }
+
+  self->priv->unread_messages = messages;
+}
+
+
+int
+chat_window_page_get_unread_messages (ChatWindowPage *page)
+{
+  ChatWindowPage *self = CHAT_WINDOW_PAGE (page);
+
+  g_return_val_if_fail (page != NULL, -1);
+
+  return self->priv->unread_messages;
+}
+
+
+void
+chat_window_page_grab_focus (ChatWindowPage *page)
+{
+  ChatWindowPage *self = CHAT_WINDOW_PAGE (page);
+
+  g_return_if_fail (page != NULL);
+
+  gtk_widget_grab_focus (self->priv->message);
 }
 
 

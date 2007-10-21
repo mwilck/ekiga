@@ -1,5 +1,16 @@
 2007-10-21  Damien Sandras  <dsandras@gnome.org>
 
+	* lib/engine/gui/gtk-frontend/chat-window-page.cpp,
+	lib/engine/gui/gtk-frontend/chat-window-page.h:
+	Numerous changes. Display the display name and the status of 
+	the remote peer people are talking to in the ChatWindowPage.
+	Added documentation. Various UI enhancements in terms of focus.
+	Added the possibility to add a smiley directly in the message
+	composition area. Added functions to grab the focus, get/set the
+	number of unread messages.
+
+2007-10-21  Damien Sandras  <dsandras@gnome.org>
+
 	* lib/engine/gui/gtk-frontend/chat-window.cpp,
 	lib/engine/gui/gtk-frontend/chat-window.h:
 	Added support for new signal "message-event". Objects like the
