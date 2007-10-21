@@ -527,7 +527,8 @@ void GnomeMeeting::BuildGUI ()
 #ifdef HAVE_DBUS
   dbus_component = gnomemeeting_dbus_component_new ();
 #endif
-  statusicon = statusicon_new (PERSONAL_DATA_KEY "status");
+  statusicon = statusicon_new (*service_core,
+                               PERSONAL_DATA_KEY "status");
 
   /* GM is started */
   gm_history_window_insert (history_window,
