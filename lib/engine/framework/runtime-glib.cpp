@@ -101,6 +101,8 @@ dispatch (GSource *source,
   else
     g_timeout_add (1000*msg->seconds,
 		   run_later_or_back_in_main_helper, (gpointer)msg);
+
+  return TRUE;
 }
 
 static void
