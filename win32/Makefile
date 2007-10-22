@@ -73,9 +73,9 @@ OPAL_VER:= 2.3.2
 OPAL_DIR:= $(BUILDROOT)/opal
 OPAL_ARCHIVE := opal-cvs.tar.gz
 
-PWLIB_VER:= 1.11.3
-PWLIB_DIR:= $(BUILDROOT)/pwlib
-PWLIB_ARCHIVE := pwlib-cvs.tar.gz
+PTLIB_VER:= 1.11.3
+PTLIB_DIR:= $(BUILDROOT)/pwlib
+PTLIB_ARCHIVE := pwlib-cvs.tar.gz
 
 OPENLDAP_VER := 2.3.28
 OPENLDAP_DIR := $(BUILDROOT)/openldap-$(OPENLDAP_VER)
@@ -187,7 +187,7 @@ confpwlib:=--prefix=$(BUILDROOT) --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST
 	   --with-directx-dir=$(DIRECTX_DIR)
 confopal :=--prefix=$(BUILDROOT) --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE) \
 	   --with-ffmpeg-dir=$(FFMPEG_DIR)
-confekiga:= $(confflags) --with-pwlib-dir=$(PWLIB_DIR) --with-opal-dir=$(OPAL_DIR) \
+confekiga:= $(confflags) --with-pwlib-dir=$(PTLIB_DIR) --with-opal-dir=$(OPAL_DIR) \
 	    --with-directx-dir=$(DIRECTX_DIR) --prefix=$(EKIGA_PREFIX) \
 	    --bindir=$(EKIGA_PREFIX) --datadir=$(EKIGA_PREFIX) \
 	    --sysconfdir=$(EKIGA_PREFIX) --libdir=$(EKIGA_PREFIX) --disable-gnome \
@@ -324,36 +324,36 @@ $(LIBDIR)/libldap.dll: binaries $(OPENLDAP_DIR)/config.status
 
 ### PWLib
 update-sources:: 
-	echo --- Getting PWLib $(PWLIB_VER) ...
-	$(WGET) -P src $(EKIGA_URL1)/$(PWLIB_ARCHIVE) || \
-	$(WGET) -P src $(EKIGA_URL2)/$(PWLIB_ARCHIVE)
+	echo --- Getting PWLib $(PTLIB_VER) ...
+	$(WGET) -P src $(EKIGA_URL1)/$(PTLIB_ARCHIVE) || \
+	$(WGET) -P src $(EKIGA_URL2)/$(PTLIB_ARCHIVE)
 
-$(PWLIB_DIR)/configure: binaries $(LIBDIR)/libldap.dll $(INCLUDEDIR)/directx/dsound.h $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(SRCDIR)/$(PWLIB_ARCHIVE) $(EKIGA_WIN32_DIFF_DIR)/ptlib_Makefile.am $(LIBDIR)/libexpat.a $(EKIGA_WIN32_DIFF_DIR)/ptlib_configure.ac $(EKIGA_WIN32_DIFF_DIR)/ptlib_pwlib.pc.in
+$(PTLIB_DIR)/configure: binaries $(LIBDIR)/libldap.dll $(INCLUDEDIR)/directx/dsound.h $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(SRCDIR)/$(PTLIB_ARCHIVE) $(EKIGA_WIN32_DIFF_DIR)/ptlib_Makefile.am $(LIBDIR)/libexpat.a $(EKIGA_WIN32_DIFF_DIR)/ptlib_configure.ac $(EKIGA_WIN32_DIFF_DIR)/ptlib_pwlib.pc.in
 	rm -f $(LIBDIR)/libpt.a
-	rm -rf $(PWLIB_DIR)
-	tar xfz $(SRCDIR)/$(PWLIB_ARCHIVE) -C $(BUILDROOT)
-	$(RM) -f $(PWLIB_DIR)/configure.exe $(PWLIB_DIR)/configure $(PWLIB_DIR)/configure.ac $(PWLIB_DIR)/Makefile.in
-	$(CP) -fl $(EKIGA_WIN32_DIFF_DIR)/ptlib_configure.ac $(PWLIB_DIR)/configure.ac
-	$(CP) -fl $(EKIGA_WIN32_DIFF_DIR)/ptlib_Makefile.am $(PWLIB_DIR)/Makefile.am
-	$(CP) -fl $(EKIGA_WIN32_DIFF_DIR)/ptlib_pwlib.pc.in $(PWLIB_DIR)/pwlib.pc.in    
-	touch $(PWLIB_DIR)/make/ptlib-config
-	chmod 777 $(PWLIB_DIR)/make/ptlib-config
-	(cd $(PWLIB_DIR); \
+	rm -rf $(PTLIB_DIR)
+	tar xfz $(SRCDIR)/$(PTLIB_ARCHIVE) -C $(BUILDROOT)
+	$(RM) -f $(PTLIB_DIR)/configure.exe $(PTLIB_DIR)/configure $(PTLIB_DIR)/configure.ac $(PTLIB_DIR)/Makefile.in
+	$(CP) -fl $(EKIGA_WIN32_DIFF_DIR)/ptlib_configure.ac $(PTLIB_DIR)/configure.ac
+	$(CP) -fl $(EKIGA_WIN32_DIFF_DIR)/ptlib_Makefile.am $(PTLIB_DIR)/Makefile.am
+	$(CP) -fl $(EKIGA_WIN32_DIFF_DIR)/ptlib_pwlib.pc.in $(PTLIB_DIR)/pwlib.pc.in    
+	touch $(PTLIB_DIR)/make/ptlib-config
+	chmod 777 $(PTLIB_DIR)/make/ptlib-config
+	(cd $(PTLIB_DIR); \
 	sed -i "s#\$${buildroot}#${BUILDROOT}#" pwlib.pc.in; \
-	sed -i "s/\$${PWLIB_VER}/${PWLIB_VER}/" configure.ac; \
+	sed -i "s/\$${PTLIB_VER}/${PTLIB_VER}/" configure.ac; \
 	aclocal-1.9; autoheader; libtoolize --force; \
 	touch NEWS README AUTHORS ChangeLog unused.h.in; \
 	automake-1.9 -a -c; autoconf; \
 	)
 	
 
-$(PWLIB_DIR)/config.status: binaries $(PWLIB_DIR)/configure
+$(PTLIB_DIR)/config.status: binaries $(PTLIB_DIR)/configure
 	rm -f $(LIBDIR)/libpt.a
-	(cd $(PWLIB_DIR)/;./configure $(confpwlib) )
+	(cd $(PTLIB_DIR)/;./configure $(confpwlib) )
 
-$(LIBDIR)/libpt.a: binaries $(PWLIB_DIR)/config.status
-	$(MAKE) $(MAKEOPTS) -C $(PWLIB_DIR)
-	$(MAKE) -C $(PWLIB_DIR) install
+$(LIBDIR)/libpt.a: binaries $(PTLIB_DIR)/config.status
+	$(MAKE) $(MAKEOPTS) -C $(PTLIB_DIR)
+	$(MAKE) -C $(PTLIB_DIR) install
 	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' $(LIBDIR)/pkgconfig/pwlib.pc
 
 ### libogg
@@ -737,7 +737,7 @@ distclean:
 	-$(RM) -rf $(BUILDROOT)/manifest
 	-$(RM) -rf $(OPAL_DIR)
 	-$(RM) -rf $(EKIGA_DIR)
-	-$(RM) -rf $(PWLIB_DIR)
+	-$(RM) -rf $(PTLIB_DIR)
 	-$(RM) -rf $(REGEX_DIR)
 	-$(RM) -rf $(SIGC_DIR)
 	-$(RM) -rf $(SPEEX_DIR)

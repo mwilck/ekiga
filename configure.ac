@@ -20,7 +20,7 @@ BUILD_NUMBER=0
 
 SCHEMA_AGE=61
 
-PWLIB_REC_VERSION="2.1.0"
+PTLIB_REC_VERSION="2.1.0"
 OPAL_REC_VERSION="3.1.0"
 
 AC_DEFINE_UNQUOTED(MAJOR_VERSION, $MAJOR_VERSION,[fix])
@@ -83,14 +83,14 @@ win32=0
 case $target_os in
 
   solaris*)
-    ARCH_PWLIB_CFLAGS="-DPTRACING -DNDEBUG -DSOLARIS -g "
+    ARCH_PTLIB_CFLAGS="-DPTRACING -DNDEBUG -DSOLARIS -g "
     ARCH_OPAL_LIBS="-lpt -lopal -ldl -lpthread"
     AC_MSG_RESULT([yes])
     gm_platform="solaris"
     ;;
 
   linux-gnu | linux-gnueabi | linux | Linux)
-    ARCH_PWLIB_CFLAGS="-DPTRACING -DNDEBUG -Wall -Os -g -fno-exceptions -felide-constructors"
+    ARCH_PTLIB_CFLAGS="-DPTRACING -DNDEBUG -Wall -Os -g -fno-exceptions -felide-constructors"
     ARCH_OPAL_LIBS="-lpt -lopal -ldl -lpthread"
     AC_MSG_RESULT([yes])
     gm_platform="linux"
@@ -100,21 +100,21 @@ dnl -D_DEBUG -DPMEMORY_CHECK=1 -DPTRACING -g
     ;;
 
   FreeBSD* | freebsd* )
-    ARCH_PWLIB_CFLAGS="-DPTRACING -DNDEBUG -Wall -Os -g"
+    ARCH_PTLIB_CFLAGS="-DPTRACING -DNDEBUG -Wall -Os -g"
     ARCH_OPAL_LIBS="-lpt -lopal -lpthread"
     AC_MSG_RESULT([yes])
     gm_platform="freebsd"
     ;;
 
   darwin* )
-    ARCH_PWLIB_CFLAGS="-Os -Wall -DPTRACING -DNDEBUG -DNO_LONG_DOUBLE -DSTATIC_LIBS_USED"
+    ARCH_PTLIB_CFLAGS="-Os -Wall -DPTRACING -DNDEBUG -DNO_LONG_DOUBLE -DSTATIC_LIBS_USED"
     ARCH_OPAL_LIBS="-multiply_defined suppress -lh323_Darwin_ppc_r_s -lpt_Darwin_ppc_r_s -lssl -lcrypto -lX11 -framework AudioToolbox -framework CoreAudio -framework CoreServices"
     AC_MSG_RESULT([yes])
     gm_platform="macosx"
     ;;
 
   mingw* )
-    ARCH_PWLIB_CFLAGS="-Wall -mms-bitfields -DPTRACING -DSTATIC_LIBS_USED"
+    ARCH_PTLIB_CFLAGS="-Wall -mms-bitfields -DPTRACING -DSTATIC_LIBS_USED"
     ARCH_OPAL_LIBS="-mwindows -enable-auto-import -enable-runtime-pseudo-reloc -enable-stdcall-fixup -lpt -lopal -lwinmm -lwsock32 -lsnmpapi -lmpr -lcomdlg32"
     AC_MSG_RESULT([yes])
     gm_platform="mingw"
@@ -457,16 +457,16 @@ AM_CONDITIONAL(HAVE_GNOME_DOC_UTILS, test "x${enable_gdu}" = "xyes")
 dnl ###########################################################################
 dnl PWLib Headers and Libraries
 dnl ###########################################################################
-AC_ARG_WITH(pwlib-dir, [  --with-pwlib-dir=PFX			Location of PWLib], with_pwlib_dir="$withval", with_pwlib_dir="/usr")
+AC_ARG_WITH(ptlib-dir, [  --with-ptlib-dir=PFX			Location of PWLib], with_ptlib_dir="$withval", with_ptlib_dir="/usr")
 
 dnl Check for the includes presence
-AC_MSG_CHECKING(for PWLib includes in ${with_pwlib_dir}/include/)
+AC_MSG_CHECKING(for PWLib includes in ${with_ptlib_dir}/include/)
 AC_MSG_RESULT()
 
-if test -f ${with_pwlib_dir}/include/ptlib/pprocess.h; then
-	PWLIB_CFLAGS="-I${with_pwlib_dir}/include/ptlib -I${with_pwlib_dir}/include/ptclib"
-	if test "x${with_pwlib_dir}" != "x/usr"; then
-		PWLIB_CFLAGS="${PWLIB_CFLAGS} -I${with_pwlib_dir}/include"
+if test -f ${with_ptlib_dir}/include/ptlib/pprocess.h; then
+	PTLIB_CFLAGS="-I${with_ptlib_dir}/include/ptlib -I${with_ptlib_dir}/include/ptclib"
+	if test "x${with_ptlib_dir}" != "x/usr"; then
+		PTLIB_CFLAGS="${PTLIB_CFLAGS} -I${with_ptlib_dir}/include"
 	fi	
 else
 	AC_MSG_ERROR(You need the PWLib headers to compile Ekiga)
@@ -475,13 +475,13 @@ fi
 dnl Checking for the library presence
 LDFLAGS_save="$LDFLAGS"
 AC_LANG(C++)
-LDFLAGS="$LDFLAGS -L${with_pwlib_dir}/${libname}/"
-AC_CHECK_LIB(pt, read, pwlib_libs="yes", pwlib_libs="no")
+LDFLAGS="$LDFLAGS -L${with_ptlib_dir}/${libname}/"
+AC_CHECK_LIB(pt, read, ptlib_libs="yes", ptlib_libs="no")
 LDFLAGS="${LDFLAGS_save}"
 
-if test "x${pwlib_libs}" != "xno"; then
-	if test "x${with_pwlib_dir}" != "x/usr"; then
-		PWLIB_LIBS="-L${with_pwlib_dir}/${libname}"
+if test "x${ptlib_libs}" != "xno"; then
+	if test "x${with_ptlib_dir}" != "x/usr"; then
+		PTLIB_LIBS="-L${with_ptlib_dir}/${libname}"
 	fi
 else
 	AC_MSG_ERROR(You need the PWLib library to compile Ekiga)
@@ -489,29 +489,29 @@ fi
 
 dnl Checking for PWLib version
 CPPFLAGS_save="$CPPFLAGS"
-CPPFLAGS="$CPPFLAGS $PWLIB_CFLAGS"
+CPPFLAGS="$CPPFLAGS $PTLIB_CFLAGS"
 AC_MSG_CHECKING(for PWLib version);
-AC_EGREP_CPP(${PWLIB_REC_VERSION},
+AC_EGREP_CPP(${PTLIB_REC_VERSION},
 	     [#include <ptbuildopts.h>
-	      PWLIB_VERSION 
-	     ],AC_MSG_RESULT(${PWLIB_REC_VERSION}), AC_MSG_ERROR(Sorry but the recommended PWLib version is ${PWLIB_REC_VERSION}))
+	      PTLIB_VERSION 
+	     ],AC_MSG_RESULT(${PTLIB_REC_VERSION}), AC_MSG_ERROR(Sorry but the recommended PWLib version is ${PTLIB_REC_VERSION}))
 CPPFLAGS="$CPPFLAGS_save"
 
 AC_LANG(C)
-if test -f ${with_pwlib_dir}/make/ptlib-config; then
-    AC_PATH_PROG(PTLIB_CONFIG, ptlib-config, , ${with_pwlib_dir}/make/)
+if test -f ${with_ptlib_dir}/make/ptlib-config; then
+    AC_PATH_PROG(PTLIB_CONFIG, ptlib-config, , ${with_ptlib_dir}/make/)
 else
-    if test -f ${with_pwlib_dir}/bin/ptlib-config; then
-        AC_PATH_PROG(PTLIB_CONFIG, ptlib-config, , ${with_pwlib_dir}/bin/)
+    if test -f ${with_ptlib_dir}/bin/ptlib-config; then
+        AC_PATH_PROG(PTLIB_CONFIG, ptlib-config, , ${with_ptlib_dir}/bin/)
     else
         AC_MSG_ERROR([Sorry but ptlib-config can not be found, please check your installation]);
     fi
 fi
 
 dnl Substitute
-PWLIB_CFLAGS="$ARCH_PWLIB_CFLAGS $PWLIB_CFLAGS `$PTLIB_CONFIG --ccflags`"
-AC_SUBST(PWLIB_CFLAGS)
-AC_SUBST(PWLIB_LIBS)
+PTLIB_CFLAGS="$ARCH_PTLIB_CFLAGS $PTLIB_CFLAGS `$PTLIB_CONFIG --ccflags`"
+AC_SUBST(PTLIB_CFLAGS)
+AC_SUBST(PTLIB_LIBS)
                   
 
 dnl ###########################################################################
@@ -533,7 +533,7 @@ else
 fi
 dnl Checking for the library presence
 LIBS_save="$LIBS"
-LIBS="${LIBS} -L${with_opal_dir}/${libname}/ -L${with_pwlib_dir}/${libname}/ -lpt"
+LIBS="${LIBS} -L${with_opal_dir}/${libname}/ -L${with_ptlib_dir}/${libname}/ -lpt"
 AC_CHECK_LIB(opal, main, opal_libs="yes", opal_libs="yes")
 opal_libs="yes"
 LIBS="${LIBS_save}"
@@ -650,9 +650,9 @@ echo "          Installing into prefix  :  $prefix"
 echo ""
 echo "                 OPAL Version is  :  $OPAL_REC_VERSION"
 echo "               OPAL Directory is  :  $with_opal_dir"
-echo "                PWLIB Version is  :  $PWLIB_REC_VERSION"
-echo "              PWLIB Directory is  :  $with_pwlib_dir"
-echo "                 ptlib-config is  :  $with_pwlib_dir/bin/ptlib-config"
+echo "                PTLIB Version is  :  $PTLIB_REC_VERSION"
+echo "              PTLIB Directory is  :  $with_ptlib_dir"
+echo "                 ptlib-config is  :  $with_ptlib_dir/bin/ptlib-config"
 echo ""
 echo ""
 if test "x${gm_platform}" != "xmingw" ; then

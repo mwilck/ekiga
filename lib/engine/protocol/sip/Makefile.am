@@ -2,7 +2,7 @@ noinst_LTLIBRARIES = libgmsip.la
 
 sip_dir = $(top_srcdir)/lib/engine/protocol/sip
 
-AM_CPPFLAGS = $(SIGC_CFLAGS) $(OPAL_CFLAGS) $(PWLIB_CFLAGS)
+AM_CPPFLAGS = $(SIGC_CFLAGS) $(OPAL_CFLAGS) $(PTLIB_CFLAGS)
 
 #### FIXME remove gtk-frontend
 INCLUDES = \
@@ -26,7 +26,7 @@ libgmsip_la_LIBADD = \
 	$(top_srcdir)/lib/engine/presence/skel/libgmpresence.la \
 	$(top_srcdir)/lib/engine/addressbook/skel/libgmaddressbook.la
 
-libgmsip_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(OPAL_LIBS) $(PWLIB_LIBS)
+libgmsip_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(OPAL_LIBS) $(PTLIB_LIBS)
 
 #### FIXME should be removed at a later stage
 INCLUDES += \
@@ -38,8 +38,8 @@ INCLUDES += \
 	-I$(top_srcdir)/src/endpoints/                  \
 	-I$(top_srcdir)/src/gui/                        
 
-AM_CPPFLAGS += $(GTK_CFLAGS) $(GLIB_CFLAGS) $(OPAL_CFLAGS) $(PWLIB_CFLAGS)
+AM_CPPFLAGS += $(GTK_CFLAGS) $(GLIB_CFLAGS) $(OPAL_CFLAGS) $(PTLIB_CFLAGS)
 
-libgmsip_la_LDFLAGS += $(GTK_LIBS) $(GLIB_LIBS) $(OPAL_LIBS) $(PWLIB_LIBS)
+libgmsip_la_LDFLAGS += $(GTK_LIBS) $(GLIB_LIBS) $(OPAL_LIBS) $(PTLIB_LIBS)
 
 #### End
