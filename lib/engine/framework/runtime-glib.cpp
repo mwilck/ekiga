@@ -97,7 +97,7 @@ dispatch (GSource *source,
   msg = (struct message *)g_async_queue_pop (src->queue);
 
   if (msg->seconds == 0)
-    g_idle_add (run_later_or_back_in_main_helper, (gpointer)msg);
+    (void)run_later_or_back_in_main_helper ((gpointer)msg);
   else
     g_timeout_add (1000*msg->seconds,
 		   run_later_or_back_in_main_helper, (gpointer)msg);
