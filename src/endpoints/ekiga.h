@@ -170,13 +170,6 @@ class GnomeMeeting : public PProcess
 
   
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Returns a pointer to the history window.
-   * PRE          :  /
-   */
-  GtkWidget *GetHistoryWindow ();
-
-  
-  /* DESCRIPTION  :  /
    * BEHAVIOR     :  Returns a pointer to the PC-2-Phone window.
    * PRE          :  /
    */

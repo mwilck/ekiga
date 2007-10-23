@@ -45,7 +45,6 @@
 
 #include "main.h"
 #include "preferences.h"
-#include "history.h"
 #include "statusicon.h"
 #include "misc.h"
 #ifdef HAVE_DBUS
@@ -322,7 +321,6 @@ GMSIPEndpoint::OnRegistered (const PString & aor,
   SIP::EndPoint *sip_endpoint = NULL;
   
   GtkWidget *accounts_window = NULL;
-  GtkWidget *history_window = NULL;
   GtkWidget *main_window = NULL;
 #ifdef HAVE_DBUS
   GObject   *dbus_component = NULL;
@@ -334,7 +332,6 @@ GMSIPEndpoint::OnRegistered (const PString & aor,
   ep = GnomeMeeting::Process ()->GetManager ();
   accounts_window = GnomeMeeting::Process ()->GetAccountsWindow ();
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
 #ifdef HAVE_DBUS
   dbus_component = GnomeMeeting::Process ()->GetDbusComponent ();
 #endif
@@ -369,7 +366,6 @@ GMSIPEndpoint::OnRegistered (const PString & aor,
 // FIXME
 #endif
 
-  gm_history_window_insert (history_window, "%s", msg);
   gm_main_window_flash_message (main_window, "%s", msg);
   if (endpoint.GetCallingState() == GMManager::Standby)
     gm_main_window_set_account_info (main_window, 
@@ -409,7 +405,6 @@ GMSIPEndpoint::OnRegistrationFailed (const PString & aor,
 				     BOOL wasRegistering)
 {
   GtkWidget *accounts_window = NULL;
-  GtkWidget *history_window = NULL;
   GtkWidget *main_window = NULL;
 
   gchar *msg_reason = NULL;
@@ -417,7 +412,6 @@ GMSIPEndpoint::OnRegistrationFailed (const PString & aor,
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   accounts_window = GnomeMeeting::Process ()->GetAccountsWindow ();
-  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
 
   gnomemeeting_threads_enter ();
   /* Registering is ok */
@@ -479,7 +473,6 @@ GMSIPEndpoint::OnRegistrationFailed (const PString & aor,
 					     NULL);
   }
 
-  gm_history_window_insert (history_window, "%s", msg);
   gm_main_window_push_message (main_window, "%s", msg);
   gnomemeeting_threads_leave ();
 

@@ -42,7 +42,6 @@
 #include "videoinput.h"
 #include "ekiga.h"
 #include "misc.h"
-#include "history.h"
 #include "main.h"
 #include "druid.h"
 
@@ -263,7 +262,6 @@ GMVideoGrabber::Unlock ()
 void
 GMVideoGrabber::VGOpen (void)
 {
-  GtkWidget *history_window = NULL;
   GtkWidget *main_window = NULL;
 
   PString input_device;
@@ -283,7 +281,6 @@ GMVideoGrabber::VGOpen (void)
   
   PVideoDevice::VideoFormat format = PVideoDevice::PAL;
 
-  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   
   if (!is_opened) {
@@ -318,13 +315,6 @@ GMVideoGrabber::VGOpen (void)
     /* If there is no device, directly open the fake device */
     if (!no_device_found) {
  
-      gnomemeeting_threads_enter ();
-      gm_history_window_insert (history_window,
-				_("Opening video device %s with plugin %s"),
-				(const char *) input_device,
-				(const char *) plugin);
-      gnomemeeting_threads_leave ();
-
       var_mutex.Wait ();
       grabber = 
 	PVideoInputDevice::CreateOpenedDevice (plugin, input_device, FALSE);
@@ -343,17 +333,8 @@ GMVideoGrabber::VGOpen (void)
       var_mutex.Signal ();
     
 
-      /* If no error */
-      if (!error_code) {
-
-	gnomemeeting_threads_enter ();
-	gm_history_window_insert (history_window,
-				  _("Successfully opened video device %s, channel %d"),
-				  (const char *) input_device,
-				  channel);
-	gnomemeeting_threads_leave ();
-      }
-      else {
+      /* If error */
+      if (error_code) {
 	
 	/* If we want to open the fake device for a real error, and not because
 	   the user chose the Picture device */
@@ -363,8 +344,6 @@ GMVideoGrabber::VGOpen (void)
 			   (const char *) input_device);
 
 	tmp_msg = g_strdup (_("A moving logo will be transmitted during calls. Notice that you can always transmit a given image or the moving logo by choosing \"Picture\" as video plugin and \"Moving logo\" or \"Static picture\" as device."));
-	gm_history_window_insert (history_window, 
-				  _("Couldn't open the video device"));
 	switch (error_code) {
 	  
 	case 1:
@@ -425,11 +404,6 @@ GMVideoGrabber::VGOpen (void)
 	grabber->SetChannel (1);    
 	grabber->SetFrameRate (6);
 	grabber->SetFrameSizeConverter (width, height, FALSE);
-	
-	gnomemeeting_threads_enter ();
-	gm_history_window_insert (history_window,
-				  _("Opened the video device using the \"Picture\" video plugin"));
-	gnomemeeting_threads_leave ();
       }
       var_mutex.Signal ();
     }

@@ -40,8 +40,6 @@ ekiga_SOURCES +=			\
 	gui/conf.cpp			\
 	gui/druid.h			\
 	gui/druid.cpp			\
-	gui/history.h			\
-	gui/history.cpp			\
 	gui/main.h			\
 	gui/main.cpp			\
 	gui/misc.h			\

@@ -39,7 +39,6 @@
 
 #include "config.h"
 
-#include "history.h"
 #include "callbacks.h"
 #include "ekiga.h"
 #include "main.h"
@@ -276,15 +275,12 @@ quit_callback (GtkWidget *widget,
   GtkWidget *main_window = NULL;
   GtkWidget *prefs_window = NULL;
   GtkWidget *accounts_window = NULL;
-  GtkWidget *history_window = NULL;
   
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
   accounts_window = GnomeMeeting::Process ()->GetAccountsWindow ();
-  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   
   gnomemeeting_window_hide (main_window);
-  gnomemeeting_window_hide (history_window);
   gnomemeeting_window_hide (prefs_window);
   gnomemeeting_window_hide (accounts_window);
 

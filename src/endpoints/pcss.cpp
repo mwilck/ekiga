@@ -53,7 +53,6 @@
 #include "misc.h"
 #include "audio.h"
 #include "main.h"
-#include "history.h"
 
 
 #define new PNEW
@@ -142,7 +141,6 @@ GMPCSSEndpoint::CreateSoundChannel (const OpalPCSSConnection & connection,
 {
   PTRACE(3, "Ekiga\tCreating Sound Channel");
   GtkWidget *main_window = NULL;
-  GtkWidget *history_window = NULL;
 
   PSoundChannel *sound_channel = NULL;
 
@@ -153,7 +151,6 @@ GMPCSSEndpoint::CreateSoundChannel (const OpalPCSSConnection & connection,
   unsigned int record_vol = 0;
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
 
   /* Stop the Timers */
   CallPendingTimer.Stop ();
@@ -194,12 +191,6 @@ GMPCSSEndpoint::CreateSoundChannel (const OpalPCSSConnection & connection,
       /* Translators : the full sentence is "Opening %s for playing with
 	 plugin %s" or "Opening %s for recording with plugin" */
       gnomemeeting_threads_enter ();
-      gm_history_window_insert (history_window, is_source ?
-				_("Opened %s for recording with plugin %s")
-				: _("Opened %s for playing with plugin %s"),
-				(const char *) device, 
-				(const char *) plugin);
-      
       gm_main_window_set_volume_sliders_values (main_window, 
 						is_source?-1:(int) play_vol,
 						is_source?(int)record_vol:-1);

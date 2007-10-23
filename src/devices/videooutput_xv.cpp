@@ -47,8 +47,6 @@
 #include "ekiga.h"
 #include "misc.h"
 #include "main.h"
-#include "history.h"
-
 
 #include "gmconf.h"
 

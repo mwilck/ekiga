@@ -47,7 +47,6 @@
 #include "druid.h"
 #include "tools.h"
 #include "statusicon.h"
-#include "history.h"
 #include "main.h"
 #include "misc.h"
 
@@ -168,10 +167,6 @@ GnomeMeeting::Exit ()
   if (pc2phone_window)
     gtk_widget_destroy (pc2phone_window);
   pc2phone_window = NULL;
-  
-  if (history_window)
-    gtk_widget_destroy (history_window);
-  history_window = NULL;
   
   if (main_window)
     gtk_widget_destroy (main_window);
@@ -471,13 +466,6 @@ GnomeMeeting::GetDruidWindow ()
 
 
 GtkWidget *
-GnomeMeeting::GetHistoryWindow ()
-{
-  return history_window;
-}
-
-
-GtkWidget *
 GnomeMeeting::GetPC2PhoneWindow ()
 {
   return pc2phone_window;
@@ -519,11 +507,10 @@ void GnomeMeeting::BuildGUI ()
   gtk_window_set_default_icon_name (GM_ICON_LOGO);
   pc2phone_window = gm_pc2phone_window_new ();  
   prefs_window = gm_prefs_window_new ();  
-  history_window = gm_history_window_new ();
   druid_window = gm_druid_window_new ();
   accounts_window = gm_accounts_window_new ();
 
-  main_window = gm_main_window_new ();
+  main_window = gm_main_window_new (*service_core);
 #ifdef HAVE_DBUS
   dbus_component = gnomemeeting_dbus_component_new ();
 #endif
@@ -531,11 +518,6 @@ void GnomeMeeting::BuildGUI ()
                                PERSONAL_DATA_KEY "status");
 
   /* GM is started */
-  gm_history_window_insert (history_window,
-			    _("Started Ekiga %d.%d.%d for user %s"), 
-			    MAJOR_VERSION, MINOR_VERSION, BUILD_NUMBER,
-			    g_get_user_name ());
-
   PTRACE (1, "Ekiga version "
 	  << MAJOR_VERSION << "." << MINOR_VERSION << "." << BUILD_NUMBER);
   PTRACE (1, "OPAL version " << OPAL_VERSION);

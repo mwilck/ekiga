@@ -43,7 +43,6 @@
 #include "common.h"
 
 #include "main.h"
-#include "history.h"
 #include "statusicon.h"
 
 #include "manager.h"
@@ -238,7 +237,6 @@ void GMAccountsEndpoint::SIPRegister (GmAccount *a)
 {
   GtkWidget *accounts_window = NULL;
   GtkWidget *main_window = NULL;
-  GtkWidget *history_window = NULL;
 
   gchar *msg = NULL;
   gchar *aor = NULL;
@@ -248,7 +246,6 @@ void GMAccountsEndpoint::SIPRegister (GmAccount *a)
   GMSIPEndpoint *sipEP = NULL;
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   accounts_window = GnomeMeeting::Process ()->GetAccountsWindow ();
 
   sipEP = ep.GetSIPEndpoint ();
@@ -287,7 +284,6 @@ void GMAccountsEndpoint::SIPRegister (GmAccount *a)
 
       gnomemeeting_threads_enter ();
       gm_main_window_push_message (main_window, "%s", msg);
-      gm_history_window_insert (history_window, "%s", msg);
       gm_accounts_window_update_account_state (accounts_window,
 					       FALSE,
 					       aor,
@@ -322,7 +318,6 @@ void GMAccountsEndpoint::H323Register (GmAccount *a)
 {
   GtkWidget *accounts_window = NULL;
   GtkWidget *main_window = NULL;
-  GtkWidget *history_window = NULL;
 
   gchar *msg = NULL;
   gchar *aor = NULL;
@@ -333,7 +328,6 @@ void GMAccountsEndpoint::H323Register (GmAccount *a)
   H323Gatekeeper *gatekeeper = NULL;
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   accounts_window = GnomeMeeting::Process ()->GetAccountsWindow ();
 
   h323EP = ep.GetH323Endpoint ();
@@ -399,7 +393,6 @@ void GMAccountsEndpoint::H323Register (GmAccount *a)
 
     gnomemeeting_threads_enter ();
     gm_main_window_push_message (main_window, "%s", msg);
-    gm_history_window_insert (history_window, "%s", msg);
     gm_accounts_window_update_account_state (accounts_window,
 					     FALSE,
 					     aor,
@@ -428,7 +421,6 @@ void GMAccountsEndpoint::H323Register (GmAccount *a)
 
     gnomemeeting_threads_enter ();
     gm_main_window_push_message (main_window, "%s", msg);
-    gm_history_window_insert (history_window, "%s", msg);
     gm_accounts_window_update_account_state (accounts_window,
 					     FALSE,
                                              aor,

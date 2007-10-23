@@ -43,7 +43,6 @@
 #include "misc.h"
 #include "main.h"
 #include "preferences.h"
-#include "history.h"
 
 #include "manager.h"
 #include "sip.h"

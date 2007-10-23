@@ -41,7 +41,6 @@
 #include "stun.h"
 #include "ekiga.h"
 #include "manager.h"
-#include "history.h"
 #include "misc.h"
 
 #include "gmconf.h"
@@ -108,11 +107,7 @@ stun_dialog_response_cb (GtkDialog *dialog,
 {
   GMManager *ep = NULL;
 
-  GtkWidget *history_window = NULL;
-
-  
   ep = GnomeMeeting::Process ()->GetManager ();
-  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   
   switch (response) {
 
@@ -120,19 +115,11 @@ stun_dialog_response_cb (GtkDialog *dialog,
 
     gm_conf_set_string (NAT_KEY "stun_server", "stun.ekiga.net");
     gm_conf_set_int (NAT_KEY "method", 1);
-
-    gm_history_window_insert (history_window, 
-			      _("STUN server set to %s"), 
-			      "stun.ekiga.net");
-
     break;
 
   case GTK_RESPONSE_NO:
 
     ((OpalManager *) ep)->SetSTUNServer (PString ());
-
-    gm_history_window_insert (history_window, _("Removed STUN server"));
-
     break;
   }
   
@@ -277,7 +264,6 @@ GMStunClient::~GMStunClient ()
 
 void GMStunClient::Main ()
 {
-  GtkWidget *history_window = NULL;
   GtkWidget *main_window = NULL;
 
   PSTUNClient *stun = NULL;
@@ -293,7 +279,6 @@ void GMStunClient::Main ()
   int nat_type_index = 0;
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
 
   GtkWidget *progress_dialog = NULL;
   GtkWidget *dialog = NULL;
@@ -366,16 +351,6 @@ void GMStunClient::Main ()
 
   if (wait)
     sync.Signal ();
-
-  if (!display_config_dialog) {
-
-    gnomemeeting_threads_enter ();
-    if (has_nat)
-      gm_history_window_insert (history_window, _("Set STUN server to %s (%s)"), (const char *) stun_host, (const char *) nat_type);
-    else
-      gm_history_window_insert (history_window, _("Ignored STUN server (%s)"), (const char *) nat_type);
-    gnomemeeting_threads_leave ();
-  }
 
   /* Show the config dialog */
   gnomemeeting_threads_enter ();

@@ -43,7 +43,6 @@
 #include "urlhandler.h"
 #include "ekiga.h"
 #include "misc.h"
-#include "history.h"
 #include "main.h"
 
 #ifdef HAVE_DBUS
@@ -373,7 +372,6 @@ GMURLHandler::~GMURLHandler ()
 void GMURLHandler::Main ()
 {
   GtkWidget *main_window = NULL;
-  GtkWidget *history_window = NULL;
 #ifdef HAVE_DBUS
   GObject *dbus_component = NULL;
 #endif
@@ -398,7 +396,6 @@ void GMURLHandler::Main ()
   gnomemeeting_threads_leave ();
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
 #ifdef HAVE_DBUS
   dbus_component = GnomeMeeting::Process ()->GetDbusComponent ();
 #endif
@@ -437,7 +434,6 @@ void GMURLHandler::Main ()
   call_address = url.GetURL ();
 
 
-  /* Update the history */
   gnomemeeting_threads_enter ();
   if (!call_address.IsEmpty ()) {
 
@@ -447,7 +443,6 @@ void GMURLHandler::Main ()
     else
       msg = g_strdup_printf (_("Transferring call to %s"), 
 			     (const char *) call_address);
-    gm_history_window_insert (history_window, "%s", msg);
     gm_main_window_push_message (main_window, "%s", msg);
     g_free (msg);
   }

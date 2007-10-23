@@ -54,7 +54,6 @@
 #include "druid.h"
 #include "accounts.h"
 #include "main.h"
-#include "history.h"
 #include "misc.h"
 #include "tools.h"
 #include "urlhandler.h"
@@ -258,26 +257,15 @@ h245_tunneling_changed_nt (gpointer id,
 			   GmConfEntry *entry,
 			   gpointer data)
 {
-  GtkWidget *history_window = NULL;
-  
   GMManager *ep = NULL;
   GMH323Endpoint *h323EP = NULL;
-  
   
   if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
 
     ep = GnomeMeeting::Process ()->GetManager ();
-    history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
     h323EP = ep->GetH323Endpoint ();
     
     h323EP->DisableH245Tunneling (!gm_conf_entry_get_bool (entry));
-    
-    gdk_threads_enter ();
-    gm_history_window_insert (history_window,
-			      h323EP->IsH245TunnelingDisabled ()?
-			      _("H.245 Tunneling disabled"):
-			      _("H.245 Tunneling enabled"));
-    gdk_threads_leave ();
   }
 }
 
@@ -292,25 +280,15 @@ early_h245_changed_nt (gpointer id,
 		       GmConfEntry *entry,
 		       gpointer data)
 {
-  GtkWidget *history_window = NULL;
-  
   GMManager *ep = NULL;
   GMH323Endpoint *h323EP = NULL;  
   
   if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
 
     ep = GnomeMeeting::Process ()->GetManager ();
-    history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
     h323EP = ep->GetH323Endpoint ();
     
     h323EP->DisableH245inSetup (!gm_conf_entry_get_bool (entry));
-    
-    gdk_threads_enter ();
-    gm_history_window_insert (history_window,
-			      h323EP->IsH245inSetupDisabled ()?
-			      _("Early H.245 disabled"):
-			      _("Early H.245 enabled"));
-    gdk_threads_leave ();
   }
 }
 
@@ -325,8 +303,6 @@ fast_start_changed_nt (gpointer id,
 		       GmConfEntry *entry,
 		       gpointer data)
 {
-  GtkWidget *history_window = NULL;
-  
   GMManager *ep = NULL;
   GMH323Endpoint *h323EP = NULL;
   
@@ -335,16 +311,7 @@ fast_start_changed_nt (gpointer id,
 
     ep = GnomeMeeting::Process ()->GetManager ();
     h323EP = ep->GetH323Endpoint ();
-    history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
-    
     h323EP->DisableFastStart (!gm_conf_entry_get_bool (entry));
-    
-    gdk_threads_enter ();
-    gm_history_window_insert (history_window,
-			      h323EP->IsFastStartDisabled ()?
-			      _("Fast Start disabled"):
-			      _("Fast Start enabled"));
-    gdk_threads_leave ();
   }
 }
 
@@ -359,8 +326,6 @@ outbound_proxy_changed_nt (gpointer id,
 			   GmConfEntry *entry,
 			   gpointer data)
 {
-  GtkWidget *history_window = NULL;
-  
   GMManager *ep = NULL;
   GMSIPEndpoint *sipEP = NULL;
 
@@ -371,7 +336,6 @@ outbound_proxy_changed_nt (gpointer id,
 
     ep = GnomeMeeting::Process ()->GetManager ();
     sipEP = ep->GetSIPEndpoint ();
-    history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
     
     gdk_threads_enter ();
     outbound_proxy_host = gm_conf_get_string (SIP_KEY "outbound_proxy_host");
@@ -420,8 +384,6 @@ silence_detection_changed_nt (gpointer id,
   PSafePtr <OpalCall> call = NULL;
   PSafePtr <OpalConnection> connection = NULL;
   
-  GtkWidget *history_window = NULL;
-  
   OpalSilenceDetector *silence_detector = NULL;
   OpalSilenceDetector::Params sd;
   
@@ -429,7 +391,6 @@ silence_detection_changed_nt (gpointer id,
   
 
   ep = GnomeMeeting::Process ()->GetManager ();
-  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   
   if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
 
@@ -440,14 +401,10 @@ silence_detection_changed_nt (gpointer id,
     if (gm_conf_entry_get_bool (entry)) {
 
       sd.m_mode = OpalSilenceDetector::AdaptiveSilenceDetection;
-      gm_history_window_insert (history_window,
-				_("Enabled silence detection"));
     } 
     else {
 
       sd.m_mode = OpalSilenceDetector::NoSilenceDetection;
-      gm_history_window_insert (history_window,
-				_("Disabled silence detection"));
     }
     gdk_threads_leave ();  
     
@@ -485,16 +442,12 @@ echo_cancelation_changed_nt (gpointer id,
   PSafePtr <OpalCall> call = NULL;
   PSafePtr <OpalConnection> connection = NULL;
   
-  GtkWidget *history_window = NULL;
-  
   OpalEchoCanceler *echo_canceler = NULL;
   OpalEchoCanceler::Params ec;
   
   GMManager *ep = NULL;
   
-
   ep = GnomeMeeting::Process ()->GetManager ();
-  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   
   if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
 
@@ -505,14 +458,10 @@ echo_cancelation_changed_nt (gpointer id,
     if (gm_conf_entry_get_bool (entry)) {
 
       ec.m_mode = OpalEchoCanceler::Cancelation;
-      gm_history_window_insert (history_window,
-				_("Enabled echo cancelation"));
     } 
     else {
 
       ec.m_mode = OpalEchoCanceler::NoCancelation;
-      gm_history_window_insert (history_window,
-				_("Disabled echo cancelation"));
     }
     gdk_threads_leave ();  
     
