@@ -36,27 +36,42 @@
  *
  */
 
+#include "config.h"
+
 
 #include "callinfo.h"
 
-Ekiga::CallInfo::CallInfo ()
-{
-}
 
-
-Ekiga::CallInfo::CallInfo (OpalConnection &connection)
+std::string
+Ekiga::CallInfo::get_remote_party_name ()
 {
   char special_chars [] = "([@";
   int i = 0;
   std::string::size_type idx;
-  remote_party_name = (const char *) connection.GetRemotePartyName ();
-  remote_application = (const char *) connection.GetRemoteApplication (); 
+  std::string remote_party_name = (const char *) connection.GetRemotePartyName ();
 
   while (i < 3) {
 
     idx = remote_party_name.find_first_of (special_chars [i]);
     if (idx != std::string::npos)
       remote_party_name = remote_party_name.substr (0, idx);
+
+    i++;
+  }
+
+  return remote_party_name;
+}
+
+
+std::string
+Ekiga::CallInfo::get_remote_application ()
+{
+  char special_chars [] = "([@";
+  int i = 0;
+  std::string::size_type idx;
+  std::string remote_application = (const char *) connection.GetRemoteApplication (); 
+
+  while (i < 3) {
 
     idx = remote_application.find_first_of (special_chars [i]);
     if (idx != std::string::npos)
@@ -65,20 +80,6 @@ Ekiga::CallInfo::CallInfo (OpalConnection &connection)
     i++;
   }
 
-  remote_uri = (const char *) connection.GetRemotePartyCallbackURL ();
-}
-
-
-std::string
-Ekiga::CallInfo::get_remote_party_name ()
-{
-  return remote_party_name;
-}
-
-
-std::string
-Ekiga::CallInfo::get_remote_application ()
-{
   return remote_application;
 }
 
@@ -86,7 +87,98 @@ Ekiga::CallInfo::get_remote_application ()
 std::string
 Ekiga::CallInfo::get_remote_uri ()
 {
+  std::string remote_uri = (const char *) connection.GetRemotePartyCallbackURL ();
+
   return remote_uri;
+}
+
+
+std::string
+Ekiga::CallInfo::get_call_end_reason ()
+{
+  std::string call_end_reason;
+  gchar *end_reason = NULL;
+
+  if (connection.GetPhase () < OpalConnection::ReleasedPhase)
+    return call_end_reason;
+
+  switch (connection.GetCallEndReason ()) {
+
+  case OpalConnection::EndedByLocalUser :
+    end_reason = g_strdup (_("Local user cleared the call"));
+    break;
+  case OpalConnection::EndedByNoAccept :
+    end_reason = g_strdup (_("Local user rejected the call"));
+    break;
+  case OpalConnection::EndedByAnswerDenied :
+    end_reason = g_strdup (_("Local user rejected the call"));
+    break;
+  case OpalConnection::EndedByRemoteUser :
+    end_reason = g_strdup (_("Remote user cleared the call"));
+    break;
+  case OpalConnection::EndedByRefusal :
+    end_reason = g_strdup (_("Remote user rejected the call"));
+    break;
+  case OpalConnection::EndedByCallerAbort :
+    end_reason = g_strdup (_("Remote user has stopped calling"));
+    break;
+  case OpalConnection::EndedByTransportFail :
+    end_reason = g_strdup (_("Abnormal call termination"));
+    break;
+  case OpalConnection::EndedByConnectFail :
+    end_reason = g_strdup (_("Could not connect to remote host"));
+    break;
+  case OpalConnection::EndedByGatekeeper :
+    end_reason = g_strdup (_("The Gatekeeper cleared the call"));
+    break;
+  case OpalConnection::EndedByNoUser :
+    end_reason = g_strdup (_("User not found"));
+    break;
+  case OpalConnection::EndedByNoBandwidth :
+    end_reason = g_strdup (_("Insufficient bandwidth"));
+    break;
+  case OpalConnection::EndedByCapabilityExchange :
+    end_reason = g_strdup (_("No common codec"));
+    break;
+  case OpalConnection::EndedByCallForwarded :
+    end_reason = g_strdup (_("Call forwarded"));
+    break;
+  case OpalConnection::EndedBySecurityDenial :
+    end_reason = g_strdup (_("Security check failed"));
+    break;
+  case OpalConnection::EndedByLocalBusy :
+    end_reason = g_strdup (_("Local user is busy"));
+    break;
+  case OpalConnection::EndedByLocalCongestion :
+    end_reason = g_strdup (_("Congested link to remote party"));
+    break;
+  case OpalConnection::EndedByRemoteBusy :
+    end_reason = g_strdup (_("Remote user is busy"));
+    break;
+  case OpalConnection::EndedByRemoteCongestion :
+    end_reason = g_strdup (_("Congested link to remote party"));
+    break;
+  case OpalConnection::EndedByHostOffline :
+    end_reason = g_strdup (_("Remote host is offline"));
+    break;
+  case OpalConnection::EndedByTemporaryFailure :
+  case OpalConnection::EndedByUnreachable :
+  case OpalConnection::EndedByNoEndPoint :
+  case OpalConnection::EndedByNoAnswer :
+    if (connection.IsOriginating ())
+      end_reason = g_strdup (_("Remote user is not available at this time"));
+    else
+      end_reason = g_strdup (_("Local user is not available at this time"));
+    break;
+
+  default :
+    end_reason = g_strdup (_("Call completed"));
+  }
+
+  call_end_reason = end_reason;
+  g_free (end_reason);
+
+  return call_end_reason;
 }
 
 

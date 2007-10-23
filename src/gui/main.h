@@ -43,6 +43,8 @@
 
 #include "common.h"
 
+#include "services.h"
+
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Press the given dialpad key.
@@ -312,8 +314,8 @@ void gm_main_window_incoming_call_dialog_show (GtkWidget *main_window,
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Builds the main window and adds the popup to the image.
  * PRE          :  Accels.
- **/
-GtkWidget *gm_main_window_new ();
+ */
+GtkWidget *gm_main_window_new (Ekiga::ServiceCore & core);
 
 
 /* DESCRIPTION   :  /

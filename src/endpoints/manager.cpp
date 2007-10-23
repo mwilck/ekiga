@@ -49,7 +49,6 @@
 #include "ekiga.h"
 #include "audio.h"
 #include "misc.h"
-#include "history.h"
 #include "preferences.h"
 #include "main.h"
 
@@ -695,18 +694,15 @@ GMManager::OnForwarded (OpalConnection &,
 			 const PString & forward_party)
 {
   GtkWidget *main_window = NULL;
-  GtkWidget *history_window = NULL;
 
   gchar *msg = NULL;
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
 
   gnomemeeting_threads_enter ();
   msg = g_strdup_printf (_("Forwarding call to %s"),
 			 (const char*) forward_party);
   gm_main_window_flash_message (main_window, "%s", msg);
-  gm_history_window_insert (history_window, "%s", msg);
   gnomemeeting_threads_leave ();
   g_free (msg);
 
@@ -817,7 +813,6 @@ GMManager::OnIncomingConnection (OpalConnection &connection,
   BOOL res = FALSE;
 
   GtkWidget *main_window = NULL;
-  GtkWidget *history_window = NULL;
 
   gchar *msg = NULL;
   gchar *short_reason = NULL;
@@ -830,13 +825,11 @@ GMManager::OnIncomingConnection (OpalConnection &connection,
   GetRemoteConnectionInfo (connection, utf8_name, utf8_app, utf8_url);
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
 
   /* Update the log and status bar */
   msg = g_strdup_printf (_("Call from %s"), (const char *) utf8_name);
   gnomemeeting_threads_enter ();
   gm_main_window_flash_message (main_window, "%s", msg);
-  gm_history_window_insert (history_window, "%s", msg);
   gnomemeeting_threads_leave ();
   g_free (msg);
 
@@ -875,8 +868,6 @@ GMManager::OnIncomingConnection (OpalConnection &connection,
   gnomemeeting_threads_enter ();
   if (short_reason) 
     gm_main_window_flash_message (main_window, "%s", short_reason);
-  if (long_reason)
-    gm_history_window_insert (history_window, "%s", long_reason);
   gnomemeeting_threads_leave ();
   
   /* Update the current state if action is 0 or 4.
@@ -957,11 +948,9 @@ GMManager::OnEstablished (OpalConnection &connection)
   gchar *utf8_protocol_prefix = NULL;
   gchar *msg = NULL;
 
-  GtkWidget *history_window = NULL;
   GtkWidget *main_window = NULL;
 
   /* Get the widgets */
-  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
 
   /* Do nothing for the PCSS connection */
@@ -975,16 +964,6 @@ GMManager::OnEstablished (OpalConnection &connection)
   /* Update internal state */
   GetRemoteConnectionInfo (connection, utf8_name, utf8_app, utf8_url);
   utf8_protocol_prefix = gnomemeeting_get_utf8 (connection.GetEndPoint ().GetPrefixName ().Trim ());
-  gnomemeeting_threads_enter ();
-  if (GetCallingState () != GMManager::Connected)
-    gm_history_window_insert (history_window, _("Connected with %s using %s"), 
-			      utf8_name, utf8_app);
-  msg = g_strdup_printf (_("Connected with %s"), utf8_name);
-  gm_main_window_set_status (main_window, utf8_name);
-  gm_main_window_set_panel_section (main_window, CALL);
-  gm_main_window_flash_message (main_window, "%s", msg);
-  gm_main_window_update_calling_state (main_window, GMManager::Connected);
-  gnomemeeting_threads_leave ();
   
   /* Asterisk sometimes forgets to send an INVITE, HACK */
   audio_session = 
@@ -1090,9 +1069,6 @@ void
 GMManager::OnReleased (OpalConnection & connection)
 { 
   GtkWidget *main_window = NULL;
-  GtkWidget *history_window = NULL;
-  
-  gchar *msg_reason = NULL;
   
   gchar *utf8_url = NULL;
   gchar *utf8_name = NULL;
@@ -1102,7 +1078,6 @@ GMManager::OnReleased (OpalConnection & connection)
 
   /* Get the widgets */
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   
   /* Do nothing for the PCSS connection */
   if (PIsDescendant(&connection, OpalPCSSConnection)) {
@@ -1116,79 +1091,6 @@ GMManager::OnReleased (OpalConnection & connection)
   if (connection.GetConnectionStartTime ().IsValid ())
     t = PTime () - connection.GetConnectionStartTime();
   
-  switch (connection.GetCallEndReason ()) {
-
-  case OpalConnection::EndedByLocalUser :
-    msg_reason = g_strdup (_("Local user cleared the call"));
-    break;
-  case OpalConnection::EndedByNoAccept :
-    msg_reason = g_strdup (_("Local user rejected the call"));
-    break;
-  case OpalConnection::EndedByAnswerDenied :
-    msg_reason = g_strdup (_("Local user rejected the call"));
-    break;
-  case OpalConnection::EndedByRemoteUser :
-    msg_reason = g_strdup (_("Remote user cleared the call"));
-    break;
-  case OpalConnection::EndedByRefusal :
-    msg_reason = g_strdup (_("Remote user rejected the call"));
-    break;
-  case OpalConnection::EndedByCallerAbort :
-    msg_reason = g_strdup (_("Remote user has stopped calling"));
-    break;
-  case OpalConnection::EndedByTransportFail :
-    msg_reason = g_strdup (_("Abnormal call termination"));
-    break;
-  case OpalConnection::EndedByConnectFail :
-    msg_reason = g_strdup (_("Could not connect to remote host"));
-    break;
-  case OpalConnection::EndedByGatekeeper :
-    msg_reason = g_strdup (_("The Gatekeeper cleared the call"));
-    break;
-  case OpalConnection::EndedByNoUser :
-    msg_reason = g_strdup (_("User not found"));
-    break;
-  case OpalConnection::EndedByNoBandwidth :
-    msg_reason = g_strdup (_("Insufficient bandwidth"));
-    break;
-  case OpalConnection::EndedByCapabilityExchange :
-    msg_reason = g_strdup (_("No common codec"));
-    break;
-  case OpalConnection::EndedByCallForwarded :
-    msg_reason = g_strdup (_("Call forwarded"));
-    break;
-  case OpalConnection::EndedBySecurityDenial :
-    msg_reason = g_strdup (_("Security check failed"));
-    break;
-  case OpalConnection::EndedByLocalBusy :
-    msg_reason = g_strdup (_("Local user is busy"));
-    break;
-  case OpalConnection::EndedByLocalCongestion :
-    msg_reason = g_strdup (_("Congested link to remote party"));
-    break;
-  case OpalConnection::EndedByRemoteBusy :
-    msg_reason = g_strdup (_("Remote user is busy"));
-    break;
-  case OpalConnection::EndedByRemoteCongestion :
-    msg_reason = g_strdup (_("Congested link to remote party"));
-    break;
-  case OpalConnection::EndedByHostOffline :
-    msg_reason = g_strdup (_("Remote host is offline"));
-    break;
-  case OpalConnection::EndedByTemporaryFailure :
-  case OpalConnection::EndedByUnreachable :
-  case OpalConnection::EndedByNoEndPoint :
-  case OpalConnection::EndedByNoAnswer :
-    if (connection.IsOriginating ())
-      msg_reason = g_strdup (_("Remote user is not available at this time"));
-    else
-      msg_reason = g_strdup (_("Local user is not available at this time"));
-    break;
-
-  default :
-    msg_reason = g_strdup (_("Call completed"));
-  }
-
   
   /* Update the calls history */
   GetRemoteConnectionInfo (connection, utf8_name, utf8_app, utf8_url);
@@ -1235,18 +1137,14 @@ GMManager::OnReleased (OpalConnection & connection)
 //  gm_calls_history_add_call (call_history_item);
 //  gm_calls_history_item_free (call_history_item);
 
-  gm_history_window_insert (history_window, "%s", msg_reason);
-  gm_main_window_flash_message (main_window, "%s", msg_reason);
   gnomemeeting_threads_leave ();
 
   g_free (utf8_app);
   g_free (utf8_name);
   g_free (utf8_url);  
-  g_free (msg_reason);
 
   PTRACE (3, "GMManager\t Will release the connection");
   OpalManager::OnReleased (connection);
-
 
   /* Emit the signal */
   Ekiga::Runtime *runtime = GnomeMeeting::Process ()->GetRuntime (); // FIXME
@@ -1766,7 +1664,6 @@ BOOL
 GMManager::OnMediaStream (OpalMediaStream & stream,
 			   BOOL is_closing)
 {
-  GtkWidget *history_window = NULL;
   GtkWidget *main_window = NULL;
   
   PString codec_name;
@@ -1778,7 +1675,6 @@ GMManager::OnMediaStream (OpalMediaStream & stream,
 
 
   /* Get the data */
-  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
 
   
@@ -1858,7 +1754,6 @@ GMManager::OnMediaStream (OpalMediaStream & stream,
 
   /* Update the GUI and menus wrt opened channels */
   gnomemeeting_threads_enter ();
-  gm_history_window_insert (history_window, "%s", msg);
   gm_main_window_update_sensitivity (main_window, is_video, is_video?is_receiving_video:is_receiving_audio, is_video?is_transmitting_video:is_transmitting_audio);
   gm_main_window_set_channel_pause (main_window, FALSE, is_video);
   gm_main_window_set_call_info (main_window, 

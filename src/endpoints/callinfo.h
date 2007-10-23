@@ -52,20 +52,18 @@ namespace Ekiga {
   public:
 
       CallInfo ();
-      CallInfo (OpalConnection &connection);
+      CallInfo (OpalConnection &con) : connection (con) {};
 
       std::string get_remote_party_name ();
       std::string get_remote_application ();
       std::string get_remote_uri ();
+      std::string get_call_end_reason ();
       
       int get_call_duration ();
 
   private:
 
-      std::string remote_party_name;
-      std::string remote_application;
-      std::string remote_uri;
-      int duration;
+      OpalConnection & connection;
     };
 
 };

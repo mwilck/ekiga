@@ -89,12 +89,15 @@
 #include <libxml/parser.h>
 
 #include "gtk-frontend.h"
+#include "services.h"
 
 #include "../devices/videooutput.h"
 
 /* Declarations */
 struct _GmMainWindow
 {
+  _GmMainWindow (Ekiga::ServiceCore & _core) : core (_core) { }
+
   GtkWidget *input_signal;
   GtkWidget *output_signal;
   GtkObject *adj_input_volume;
@@ -140,6 +143,8 @@ struct _GmMainWindow
   GtkWidget *incoming_call_popup;
   GtkWidget *transfer_call_popup;
   GtkWidget *status_option_menu;
+
+  Ekiga::ServiceCore & core;
 };
 
 typedef struct _GmMainWindow GmMainWindow;
@@ -511,6 +516,34 @@ static gboolean main_window_focus_event_cb (GtkWidget *,
 					    GdkEventFocus *,
 					    gpointer);
 
+/* 
+ * Engine Callbacks 
+ */
+static void on_call_event_cb (GMManager::CallingState new_state, 
+                              Ekiga::CallInfo & info, 
+                              gpointer self)
+{
+  gchar *info_string = NULL;
+  std::string end_reason;
+
+  switch (new_state) 
+    {
+    case GMManager::Connected :
+      info_string = g_strdup_printf (_("Connected with %s"), info.get_remote_party_name ().c_str ());
+      gm_main_window_flash_message (GTK_WIDGET (self), "%s", info_string);
+      gm_main_window_update_calling_state (GTK_WIDGET (self), GMManager::Connected);
+      g_free (info_string);
+      break;
+
+    case GMManager::Standby :
+      end_reason = info.get_call_end_reason ();
+      if (!end_reason.empty ())
+        gm_main_window_flash_message (GTK_WIDGET (self), "%s", end_reason.c_str ());
+    default:
+      break;
+    }
+}
+
 
 /* Implementation */
 static void
@@ -807,7 +840,6 @@ gm_mw_init_menu (GtkWidget *main_window)
   
   GtkWidget *addressbook_window = NULL;
   GtkWidget *druid_window = NULL;
-  GtkWidget *history_window = NULL;
   GtkWidget *prefs_window = NULL;
   GtkWidget *accounts_window = NULL;
   GtkWidget *pc2phone_window = NULL;
@@ -821,7 +853,6 @@ gm_mw_init_menu (GtkWidget *main_window)
   services = GnomeMeeting::Process ()->GetServiceCore ();
   gtk_frontend = dynamic_cast<GtkFrontend *>(services->get ("gtk-frontend"));
   addressbook_window = GTK_WIDGET (gtk_frontend->get_addressbook_window ()); 
-  history_window = GnomeMeeting::Process ()->GetHistoryWindow ();
   druid_window = GnomeMeeting::Process ()->GetDruidWindow ();
   prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
   accounts_window = GnomeMeeting::Process ()->GetAccountsWindow ();
@@ -1030,14 +1061,6 @@ gm_mw_init_menu (GtkWidget *main_window)
 			   GTK_SIGNAL_FUNC (gtk_widget_show_all),
 			   (gpointer) addressbook_window, TRUE),
       
-      GTK_MENU_SEPARATOR,
-
-      GTK_MENU_ENTRY("log", _("General History"),
-		     _("View the operations history"),
-		     NULL, 0, 
-		     GTK_SIGNAL_FUNC (show_window_cb),
-		     (gpointer) history_window, TRUE),
-
       GTK_MENU_SEPARATOR,
 
       GTK_MENU_ENTRY("pc-to-phone", _("PC-To-Phone Account"),
@@ -3289,7 +3312,7 @@ gm_main_window_incoming_call_dialog_show (GtkWidget *main_window,
 
 
 GtkWidget *
-gm_main_window_new ()
+gm_main_window_new (Ekiga::ServiceCore & core)
 {
   GmMainWindow *mw = NULL;
 
@@ -3322,7 +3345,7 @@ gm_main_window_new ()
 
 
   /* The GMObject data */
-  mw = new GmMainWindow ();
+  mw = new GmMainWindow (core);
   mw->incoming_call_popup = mw->transfer_call_popup = NULL;
   g_object_set_data_full (G_OBJECT (window), "GMObject", 
 			  mw, (GDestroyNotify) gm_mw_destroy);
@@ -3494,6 +3517,11 @@ gm_main_window_new ()
                       motion_detection_cb, 
                       (gpointer) g_new0 (GmIdleTime, 1), 
                       (GDestroyNotify) g_free);
+
+  /* Engine Signals callbacks */
+  // FIXME sigc::connection conn;
+  GnomeMeeting::Process ()->GetManager ()->call_event.connect (sigc::bind (sigc::ptr_fun (on_call_event_cb), (gpointer) window));
+  // FIXME self->priv->connections.push_back (conn);
 
   return window;
 }
