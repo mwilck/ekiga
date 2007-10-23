@@ -315,7 +315,7 @@ XVWindow::~XVWindow()
     } else
 #endif
     {
-      if (_XVImage->data)
+      if ((_XVImage) && (_XVImage->data))
         free (_XVImage->data);
     }
   
