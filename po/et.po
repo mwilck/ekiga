@@ -9,10 +9,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: ekiga GNOME 2.20\n"
+"Project-Id-Version: ekiga HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-21 08:32+0100\n"
-"PO-Revision-Date: 2007-10-13 12:24+0300\n"
+"POT-Creation-Date: 2007-09-30 19:09+0100\n"
+"PO-Revision-Date: 2007-10-23 07:26+0300\n"
 "Last-Translator: Ivar Smolin <okul@linux.ee>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
 "MIME-Version: 1.0\n"
@@ -61,10 +61,14 @@ msgid "Audio plugin"
 msgstr "Audioplugin"
 
 #: ../ekiga.schemas.in.in.h:8
+msgid "Auto Away Timeout"
+msgstr ""
+
+#: ../ekiga.schemas.in.in.h:9
 msgid "Automatic echo cancellation"
 msgstr "Automaatne kaja eemaldamine"
 
-#: ../ekiga.schemas.in.in.h:9 ../src/gui/preferences.cpp:740
+#: ../ekiga.schemas.in.in.h:10 ../src/gui/preferences.cpp:481
 msgid ""
 "Automatically reject or forward incoming calls if no answer is given after "
 "the specified amount of time (in seconds)"
@@ -72,37 +76,30 @@ msgstr ""
 "Kui sisenevatele kõnedele pole määratud aja (sekundites) jooksul vastatud, "
 "siis suunatakse need edasi või lükatakse tagasi"
 
-#: ../ekiga.schemas.in.in.h:10
-msgid ""
-"Automatically switch to fullscreen for images displayed in the main GUI at "
-"the beginning of the call"
-msgstr ""
-
 #: ../ekiga.schemas.in.in.h:11
-msgid "Change the control panel section"
-msgstr ""
+msgid "Calls history"
+msgstr "Kõnede ajalugu"
 
 #: ../ekiga.schemas.in.in.h:12
-msgid "Change the view mode of the UI"
-msgstr "Kasutajaliidese vaaterežiimi muutmine"
+msgid "Change the main window panel section"
+msgstr ""
 
 #: ../ekiga.schemas.in.in.h:13
-msgid "Change the view mode of the UI (softphone, videophone, full view)"
-msgstr ""
-"Kasutajaliidese vaaterežiimi muutmine (tarkvaratelefon, videotelefon, "
-"täisvaade)"
-
-#: ../ekiga.schemas.in.in.h:14
 msgid "Clear inactive calls"
 msgstr "Passiivsete kõnede puhastamine"
 
-#: ../ekiga.schemas.in.in.h:15
+#: ../ekiga.schemas.in.in.h:14
 msgid ""
 "Connection will be established in Fast Start mode. Fast Start is a new way "
 "to start calls faster that was introduced in H.323v2. It is not supported by "
 "Netmeeting and using both Fast Start and H.245 Tunneling can crash some "
 "versions of Netmeeting"
 msgstr ""
+
+#: ../ekiga.schemas.in.in.h:15
+#, fuzzy
+msgid "Contact status"
+msgstr "K_ontakt"
 
 #: ../ekiga.schemas.in.in.h:16
 msgid "Country code"
@@ -113,24 +110,24 @@ msgid "DTMF sending"
 msgstr "DTMF-i saatmine"
 
 #: ../ekiga.schemas.in.in.h:18
+msgid "Disable video hardware acceleration"
+msgstr ""
+
+#: ../ekiga.schemas.in.in.h:19
 msgid "Display a popup window when receiving a call"
 msgstr "Siseneva kõne korral hüpikakna kuvamine"
 
-#: ../ekiga.schemas.in.in.h:19
+#: ../ekiga.schemas.in.in.h:20
 msgid "Enable 'Fast Start'"
 msgstr "Kiirkäivituse lubamine"
 
-#: ../ekiga.schemas.in.in.h:20
+#: ../ekiga.schemas.in.in.h:21
 msgid "Enable H.245 tunneling"
 msgstr "H.245 tunneldamine lubatud"
 
-#: ../ekiga.schemas.in.in.h:21
+#: ../ekiga.schemas.in.in.h:22
 msgid "Enable IP checking"
 msgstr "IP kontrolli lubamine"
-
-#: ../ekiga.schemas.in.in.h:22
-msgid "Enable bilinear filtering on displayed video"
-msgstr ""
 
 #: ../ekiga.schemas.in.in.h:23
 msgid "Enable early H.245"
@@ -141,67 +138,65 @@ msgid "Enable echo cancelation"
 msgstr "Kaja eemaldamine lubatud"
 
 #: ../ekiga.schemas.in.in.h:25
-msgid ""
-"Enable or disable bilinear interpolation when rendering video images (this "
-"has no effect in fullscreen mode)"
-msgstr ""
-
-#: ../ekiga.schemas.in.in.h:26
 msgid "Enable silence detection"
 msgstr "Vaikusetuvastus lubatud"
 
-#: ../ekiga.schemas.in.in.h:27
+#: ../ekiga.schemas.in.in.h:26
 msgid "Enable video support"
 msgstr "Video tugi lubatud"
 
-#: ../ekiga.schemas.in.in.h:28
+#: ../ekiga.schemas.in.in.h:27
 msgid ""
 "Enter a valid URL to connect to a web application that outputs the public IP "
 "of your host"
 msgstr ""
 
-#: ../ekiga.schemas.in.in.h:29
+#: ../ekiga.schemas.in.in.h:28
 msgid ""
 "Enter the number of seconds after which Ekiga should try refreshing the NAT "
 "binding when STUN is being used"
 msgstr ""
 
-#: ../ekiga.schemas.in.in.h:30
+#: ../ekiga.schemas.in.in.h:29
 msgid ""
 "Enter the public IP of your NAT/PAT router if you want to use IP translation"
 msgstr ""
 "Kui soovid IP-transleerimist kasutada, siis sisesta oma NAT/PAT marsruuteri "
 "IP-aadress"
 
-#: ../ekiga.schemas.in.in.h:31 ../src/gui/preferences.cpp:635
+#: ../ekiga.schemas.in.in.h:30 ../src/gui/preferences.cpp:414
 msgid "Enter your first name"
 msgstr "Sisesta siia oma eesnimi"
 
-#: ../ekiga.schemas.in.in.h:32
+#: ../ekiga.schemas.in.in.h:31
 msgid "Enter your last name"
 msgstr "Sisesta siia oma perekonnanimi"
 
-#: ../ekiga.schemas.in.in.h:33
+#: ../ekiga.schemas.in.in.h:32
 msgid "First name"
 msgstr "Eesnimi"
 
-#: ../ekiga.schemas.in.in.h:34
+#: ../ekiga.schemas.in.in.h:33
 msgid "Forward calls to host"
 msgstr ""
 
-#: ../ekiga.schemas.in.in.h:35
+#: ../ekiga.schemas.in.in.h:34
 msgid "Forward calls to the given host if busy"
 msgstr ""
 
-#: ../ekiga.schemas.in.in.h:36
+#: ../ekiga.schemas.in.in.h:35
 msgid "Forward calls to the given host if no answer"
 msgstr ""
+
+#: ../ekiga.schemas.in.in.h:36 ../src/gui/preferences.cpp:1055
+msgid "Frame Rate"
+msgstr "Kaadrisagedus"
 
 #: ../ekiga.schemas.in.in.h:37
 msgid "Gateway/proxy host"
 msgstr ""
 
-#: ../ekiga.schemas.in.in.h:38 ../src/gui/preferences.cpp:685
+#: ../ekiga.schemas.in.in.h:38 ../src/gui/preferences.cpp:441
 msgid ""
 "If enabled, Ekiga will start hidden provided that the notification area is "
 "present in the GNOME panel"
@@ -243,7 +238,7 @@ msgstr ""
 msgid "If enabled, allows video during calls"
 msgstr "Kõne käigus ka video vastuvõtmise lubamine"
 
-#: ../ekiga.schemas.in.in.h:44 ../src/gui/preferences.cpp:738
+#: ../ekiga.schemas.in.in.h:44 ../src/gui/preferences.cpp:479
 msgid ""
 "If enabled, calls for which no audio and video has been received in the last "
 "30 seconds are automatically cleared"
@@ -262,196 +257,196 @@ msgstr ""
 "korral"
 
 #: ../ekiga.schemas.in.in.h:47
-msgid "Incoming call mode"
-msgstr "Siseneva kõne režiim"
-
-#: ../ekiga.schemas.in.in.h:48
 msgid "Kind of network selected in the druid"
 msgstr ""
 
-#: ../ekiga.schemas.in.in.h:49
+#: ../ekiga.schemas.in.in.h:48
 msgid "Last name"
 msgstr "Perekonnanimi"
 
-#: ../ekiga.schemas.in.in.h:50
+#: ../ekiga.schemas.in.in.h:49
 msgid "Listen port"
 msgstr "Kuulatav port"
 
-#: ../ekiga.schemas.in.in.h:51
+#: ../ekiga.schemas.in.in.h:50
 msgid "Local video window size"
 msgstr "Kohalik videoakna suurus"
 
+#: ../ekiga.schemas.in.in.h:51
+#, fuzzy
+msgid "Maximum RX video bitrate"
+msgstr "Video suurim läbilaskevõime"
+
 #: ../ekiga.schemas.in.in.h:52
-msgid "Maximum jitter buffer"
-msgstr ""
+#, fuzzy
+msgid "Maximum TX video bitrate"
+msgstr "Video suurim läbilaskevõime"
 
 #: ../ekiga.schemas.in.in.h:53
-msgid "Maximum video bandwidth"
-msgstr "Video suurim läbilaskevõime"
+msgid "Maximum jitter buffer"
+msgstr ""
 
 #: ../ekiga.schemas.in.in.h:54
 msgid "Minimum jitter buffer"
 msgstr ""
 
 #: ../ekiga.schemas.in.in.h:55
-msgid "Minimum transmitted video quality"
-msgstr "Madalaim ülekantava video kvaliteet"
-
-#: ../ekiga.schemas.in.in.h:56
-msgid "Missed calls history"
-msgstr "Vastamata kõnede ajalugu"
-
-#: ../ekiga.schemas.in.in.h:57
 msgid "NAT Binding Timeout"
 msgstr ""
 
-#: ../ekiga.schemas.in.in.h:58
+#: ../ekiga.schemas.in.in.h:56
 msgid "No answer timeout"
 msgstr "Kõnele vastamata jätmise ajapiirang"
 
-#: ../ekiga.schemas.in.in.h:59
+#: ../ekiga.schemas.in.in.h:57
 msgid "Number of frames for G.711"
 msgstr "Kaadrite arv G.711 jaoks"
 
-#: ../ekiga.schemas.in.in.h:60
+#: ../ekiga.schemas.in.in.h:58
 msgid "Number of frames for GSM"
 msgstr "Kaadrite arv GSM-i jaoks"
 
-#: ../ekiga.schemas.in.in.h:61
+#: ../ekiga.schemas.in.in.h:59
 msgid "Number of frames transmitted in each packet for the G.711 codec"
 msgstr "G.711 koodeki korral iga paketiga ülekantavate kaadrite arv"
 
-#: ../ekiga.schemas.in.in.h:62
+#: ../ekiga.schemas.in.in.h:60
 msgid "Number of frames transmitted in each packet for the GSM codec"
 msgstr "GSM-koodeki korral iga paketiga ülekantavate kaadrite arv"
 
-#: ../ekiga.schemas.in.in.h:63
+#: ../ekiga.schemas.in.in.h:61
 msgid "Outbound Proxy"
 msgstr "Väljuva ühenduse proksi"
 
-#: ../ekiga.schemas.in.in.h:64
+#: ../ekiga.schemas.in.in.h:62
 msgid "Output device type"
 msgstr "Väljundseadme tüüp"
 
-#: ../ekiga.schemas.in.in.h:65 ../src/gui/preferences.cpp:693
+#: ../ekiga.schemas.in.in.h:63 ../src/gui/preferences.cpp:449
 msgid "Place windows displaying video above other windows during calls"
 msgstr "Kõne ajal videoakna asetamine teiste akende peale"
 
-#: ../ekiga.schemas.in.in.h:66
-msgid "Placed calls history"
-msgstr "Toimunud kõnede ajalugu"
-
-#: ../ekiga.schemas.in.in.h:67 ../src/gui/preferences.cpp:1898
+#: ../ekiga.schemas.in.in.h:64 ../src/gui/preferences.cpp:1492
 msgid "Play busy tone"
 msgstr "Kinnise tooni esitamine"
 
-#: ../ekiga.schemas.in.in.h:68 ../src/gui/preferences.cpp:1889
+#: ../ekiga.schemas.in.in.h:65 ../src/gui/preferences.cpp:1483
 msgid "Play ring tone"
 msgstr "Telefonihelina esitamine"
 
-#: ../ekiga.schemas.in.in.h:69 ../src/gui/preferences.cpp:1880
+#: ../ekiga.schemas.in.in.h:66 ../src/gui/preferences.cpp:1474
 msgid "Play sound on incoming calls"
 msgstr "Heli esitamine siseneva kõne korral"
 
-#: ../ekiga.schemas.in.in.h:70
+#: ../ekiga.schemas.in.in.h:67
 msgid "Play sound on new message"
 msgstr "Heli esitamine uue sõnumi korral"
 
-#: ../ekiga.schemas.in.in.h:71
+#: ../ekiga.schemas.in.in.h:68
 msgid "Play sound on new voice mail"
 msgstr "Heli esitamine kõneposti uue sõnumi korral"
 
-#: ../ekiga.schemas.in.in.h:72
+#: ../ekiga.schemas.in.in.h:69
 msgid "Position of the local video window"
 msgstr "Kohaliku videoakna asukoht"
 
-#: ../ekiga.schemas.in.in.h:73
+#: ../ekiga.schemas.in.in.h:70
 msgid "Position on the screen of the PC-To-Phone window"
 msgstr "Arvutist-Telefonile akna asukoht ekraanil"
 
-#: ../ekiga.schemas.in.in.h:74
+#: ../ekiga.schemas.in.in.h:71
 msgid "Position on the screen of the address book window"
 msgstr "Aadressiraamatu akna asukoht ekraanil"
 
-#: ../ekiga.schemas.in.in.h:75
-msgid "Position on the screen of the calls history window"
-msgstr "Kõnede ajaloo akna asukoht ekraanil"
+#: ../ekiga.schemas.in.in.h:72
+msgid "Position on the screen of the audio settings window"
+msgstr "Audiosätete akna asukoht ekraanil"
 
-#: ../ekiga.schemas.in.in.h:76
+#: ../ekiga.schemas.in.in.h:73
 msgid "Position on the screen of the chat window"
 msgstr "Vestlusakna asukoht ekraanil"
 
-#: ../ekiga.schemas.in.in.h:77
+#: ../ekiga.schemas.in.in.h:74
 msgid "Position on the screen of the druid window"
 msgstr ""
 
-#: ../ekiga.schemas.in.in.h:78
+#: ../ekiga.schemas.in.in.h:75
 msgid "Position on the screen of the log window"
 msgstr "Logiakna asukoht ekraanil"
 
-#: ../ekiga.schemas.in.in.h:79
+#: ../ekiga.schemas.in.in.h:76
 msgid "Position on the screen of the main window"
 msgstr "Peaakna asukoht ekraanil"
 
-#: ../ekiga.schemas.in.in.h:80
+#: ../ekiga.schemas.in.in.h:77
 msgid "Position on the screen of the preferences window"
 msgstr "Eelistuste akna asukoht ekraanil"
 
-#: ../ekiga.schemas.in.in.h:81
+#: ../ekiga.schemas.in.in.h:78
+msgid "Position on the screen of the video settings window"
+msgstr "Videosätete akna asukoht ekraanil"
+
+#: ../ekiga.schemas.in.in.h:79
 msgid "Public IP of the NAT/PAT router"
 msgstr "NAT/PAT marsruuteri avalik IP"
 
-#: ../ekiga.schemas.in.in.h:82
-msgid "Received calls history"
-msgstr "Vastuvõetud kõnede ajalugu"
-
-#: ../ekiga.schemas.in.in.h:83
+#: ../ekiga.schemas.in.in.h:80
 msgid "Registration timeout"
 msgstr "Registreerimise ajapiirang"
 
-#: ../ekiga.schemas.in.in.h:84
+#: ../ekiga.schemas.in.in.h:81
 msgid "Remote video window position"
 msgstr "Kaugvideo akna asukoht"
 
-#: ../ekiga.schemas.in.in.h:85
+#: ../ekiga.schemas.in.in.h:82
 msgid "Remote video window size"
 msgstr "Kaugvideo akna suurus"
 
-#: ../ekiga.schemas.in.in.h:86
+#: ../ekiga.schemas.in.in.h:83
 msgid "Revision of the schema file"
 msgstr "Skeemifaili versioon"
 
-#: ../ekiga.schemas.in.in.h:87
+#: ../ekiga.schemas.in.in.h:84
+msgid "Roster view saving group status"
+msgstr ""
+
+#: ../ekiga.schemas.in.in.h:85
 msgid "Select an alternative audio output device to use for sound events."
 msgstr "Helisündmuste jaoks alternatiivse audioväljundi seadme valimine."
 
-#: ../ekiga.schemas.in.in.h:88 ../src/gui/preferences.cpp:1095
+#: ../ekiga.schemas.in.in.h:86 ../src/gui/preferences.cpp:833
 msgid "Select the audio input device to use"
 msgstr "Kasutatava audiosisendi seadme valimine"
 
-#: ../ekiga.schemas.in.in.h:89 ../src/gui/preferences.cpp:1088
+#: ../ekiga.schemas.in.in.h:87 ../src/gui/preferences.cpp:826
 msgid "Select the audio output device to use"
 msgstr "Kasutatava audioväljundi seadme valimine"
 
-#: ../ekiga.schemas.in.in.h:90 ../src/gui/preferences.cpp:959
+#: ../ekiga.schemas.in.in.h:88
+msgid ""
+"Select the contact status: 0 (Online), 1 (Offline), 2 (Unknown), 3 (Away), 4 "
+"(DND), 5 (Free For Chat), 6 (Invisible)"
+msgstr ""
+
+#: ../ekiga.schemas.in.in.h:89 ../src/gui/preferences.cpp:694
 msgid ""
 "Select the desired method for NAT traversal (STUN is strongly suggested)"
 msgstr ""
 
-#: ../ekiga.schemas.in.in.h:91 ../src/gui/preferences.cpp:1178
+#: ../ekiga.schemas.in.in.h:90 ../src/gui/preferences.cpp:910
 msgid ""
 "Select the format for video cameras (does not apply to most USB cameras)"
 msgstr ""
 "Videokaamera poolt kasutatava vormingu valimine (ei kehti enamuse USB-"
 "kaamerate kohta)"
 
-#: ../ekiga.schemas.in.in.h:92
+#: ../ekiga.schemas.in.in.h:91
 msgid ""
 "Select the transmitted video size: Small (QCIF 176x144) or Large (CIF "
 "352x288)"
 msgstr ""
 
-#: ../ekiga.schemas.in.in.h:93 ../src/gui/preferences.cpp:1168
+#: ../ekiga.schemas.in.in.h:92 ../src/gui/preferences.cpp:902
 msgid ""
 "Select the video input device to use. If an error occurs when using this "
 "device a test picture will be transmitted."
@@ -459,83 +454,88 @@ msgstr ""
 "Video sisendseadme valimine. Kui selle seadme kasutamisel tekib viga, siis "
 "kantakse video asemel üle testpilti."
 
-#: ../ekiga.schemas.in.in.h:94
+#: ../ekiga.schemas.in.in.h:93
 msgid "Size of the PC-To-Phone window"
 msgstr "Arvutist-Telefonile akna suurus"
 
-#: ../ekiga.schemas.in.in.h:95
+#: ../ekiga.schemas.in.in.h:94
 msgid "Size of the address book window"
 msgstr "Aadressiraamatu akna suurus"
 
-#: ../ekiga.schemas.in.in.h:96
-msgid "Size of the calls history window"
-msgstr "Kõnede ajaloo akna suurus"
+#: ../ekiga.schemas.in.in.h:95
+msgid "Size of the audio settings window"
+msgstr "Audiosätete akna suurus"
 
-#: ../ekiga.schemas.in.in.h:97
+#: ../ekiga.schemas.in.in.h:96
 msgid "Size of the chat window"
 msgstr "Vestlusakna suurus"
 
-#: ../ekiga.schemas.in.in.h:98
+#: ../ekiga.schemas.in.in.h:97
 msgid "Size of the druid window"
 msgstr ""
 
-#: ../ekiga.schemas.in.in.h:99
+#: ../ekiga.schemas.in.in.h:98
 msgid "Size of the log window"
 msgstr "Logiakna suurus"
 
-#: ../ekiga.schemas.in.in.h:100
+#: ../ekiga.schemas.in.in.h:99
 msgid "Size of the preferences window"
 msgstr "Eelistuste akna suurus"
+
+#: ../ekiga.schemas.in.in.h:100
+msgid "Size of the video settings window"
+msgstr "Videosätete akna suurus"
 
 #: ../ekiga.schemas.in.in.h:101
 msgid "Start hidden"
 msgstr "Käivitatakse peidetuna"
 
-#: ../ekiga.schemas.in.in.h:102 ../src/gui/main.cpp:1109
-#: ../src/gui/main.cpp:1587 ../src/gui/main.cpp:1612
-msgid "Switch to fullscreen"
-msgstr "Lülitumine täisekraanile"
-
-#: ../ekiga.schemas.in.in.h:103
+#: ../ekiga.schemas.in.in.h:102
 msgid "TCP port range"
 msgstr "TCP-portide vahemik"
 
-#: ../ekiga.schemas.in.in.h:104
+#: ../ekiga.schemas.in.in.h:103
 msgid "The Audio Codecs List"
 msgstr "Audiokoodekite loend"
 
-#: ../ekiga.schemas.in.in.h:105
+#: ../ekiga.schemas.in.in.h:104
 msgid ""
 "The Automatic Echo Cancellation level: Off, Low, Medium, High, Automatic "
 "Gain Compensation. Choosing Automatic Gain Compensation modulates the volume "
 "for best quality."
 msgstr ""
 
-#: ../ekiga.schemas.in.in.h:106 ../src/gui/preferences.cpp:986
+#: ../ekiga.schemas.in.in.h:105 ../src/gui/preferences.cpp:721
 msgid ""
 "The Gateway host is the host to use to do H.323 calls through a gateway that "
 "will relay calls"
 msgstr ""
 
-#: ../ekiga.schemas.in.in.h:107
+#: ../ekiga.schemas.in.in.h:106
 msgid "The NAT method"
 msgstr "NAT meetod"
 
-#: ../ekiga.schemas.in.in.h:108 ../src/gui/preferences.cpp:1037
+#: ../ekiga.schemas.in.in.h:107 ../src/gui/preferences.cpp:775
 msgid "The SIP Outbound Proxy to use for outgoing calls"
 msgstr "SIP-proksi väljuvatele kõnedele"
 
-#: ../ekiga.schemas.in.in.h:109
+#: ../ekiga.schemas.in.in.h:108
 msgid "The STUN Server"
 msgstr "STUN server"
 
-#: ../ekiga.schemas.in.in.h:110
+#: ../ekiga.schemas.in.in.h:109
+#, fuzzy
 msgid ""
-"The STUN server to use for STUN Support. STUN is a technic that permits to "
-"go through some types of NAT gateways"
+"The STUN server to use for STUN Support. STUN is a technology that permits "
+"passage through some types of NAT gateway"
 msgstr ""
 "STUN-i toe jaoks kasutatav STUN-server. STUN on tehnoloogia, mis võimaldab "
 "kasutada ühendusi läbi mõnda liiki NAT-väravate"
+
+#: ../ekiga.schemas.in.in.h:110
+#, fuzzy
+msgid "The Video Codecs List"
+msgstr "Audiokoodekite loend"
 
 #: ../ekiga.schemas.in.in.h:111
 msgid "The accounts list"
@@ -581,7 +581,7 @@ msgstr "Vaikimisi videovaade"
 
 #: ../ekiga.schemas.in.in.h:120
 msgid ""
-"The default video view (0: Local, 1: Remote, 2: Both incrusted, 3: Both with "
+"The default video view (0: Local, 1: Remote, 2: Both layered, 3: Both with "
 "local video in a separate window, 4: Both)"
 msgstr ""
 
@@ -590,89 +590,83 @@ msgid "The dial tone sound"
 msgstr "Valimistooni heli"
 
 #: ../ekiga.schemas.in.in.h:122
-msgid "The history of the last 100 missed calls"
-msgstr "Viimase 100 vastamata kõne ajalugu"
-
-#: ../ekiga.schemas.in.in.h:123
-msgid "The history of the last 100 placed calls"
+#, fuzzy
+msgid "The history of the 100 last calls"
 msgstr "Viimase 100 toimunud kõne ajalugu"
 
-#: ../ekiga.schemas.in.in.h:124
-msgid "The history of the last 100 received calls"
-msgstr "Viimase 100 vastuvõetud kõne ajalugu"
-
-#: ../ekiga.schemas.in.in.h:125 ../src/gui/preferences.cpp:989
-#: ../src/gui/preferences.cpp:1040
+#: ../ekiga.schemas.in.in.h:123 ../src/gui/preferences.cpp:724
+#: ../src/gui/preferences.cpp:778
 msgid "The host where calls should be forwarded if call forwarding is enabled"
 msgstr "Host, kuhu kõnede ümbersuunamise lubamise korral kõned edastatakse"
 
-#: ../ekiga.schemas.in.in.h:126
+#: ../ekiga.schemas.in.in.h:124
 msgid ""
 "The image to transmit if \"Picture\" is selected as video plugin or if the "
 "opening of the device fails. Leave blank to use the default Ekiga logo."
 msgstr ""
 
-#: ../ekiga.schemas.in.in.h:127
+#: ../ekiga.schemas.in.in.h:125
 msgid "The incoming call sound"
 msgstr "Siseneva kõne heli"
 
-#: ../ekiga.schemas.in.in.h:128
+#: ../ekiga.schemas.in.in.h:126
 msgid "The list of accounts to which Ekiga should register"
 msgstr ""
 
-#: ../ekiga.schemas.in.in.h:129
+#: ../ekiga.schemas.in.in.h:127
 msgid "The local zoom value"
 msgstr "Kohalik suurendusaste"
+
+#: ../ekiga.schemas.in.in.h:128
+msgid ""
+"The maximum RX video bitrate in kbit/s. This value will be signaled to the "
+"peer endpoint that can adjust (if it supports it) its TX bitrate if it is "
+"above the signaled value"
+msgstr ""
+
+#: ../ekiga.schemas.in.in.h:129
+#, fuzzy
+msgid ""
+"The maximum TX video bitrate in kbit/s. The video quality and the number of "
+"transmitted frames per second (depends on selected codec) will be "
+"dynamically adjusted above their minimum during calls to try to minimize the "
+"bandwidth to the given value"
+msgstr ""
+"Video suurim läbilaskevõime ühikuga kilobaite sekundi kohta. Video kvaliteet "
+"ja sekundis ülekantavate kaadrite arvu reguleeritakse kõne ajal "
+"dünaamiliselt video vähima võimaliku ja siintoodud väärtuse vahel."
 
 #: ../ekiga.schemas.in.in.h:130
 msgid "The maximum jitter buffer size for audio reception (in ms)"
 msgstr ""
 
 #: ../ekiga.schemas.in.in.h:131
-msgid ""
-"The maximum video bandwidth in kbytes/s. The video quality and the number of "
-"transmitted frames per second will be dynamically adjusted above their "
-"minimum during calls to try to minimize the bandwidth to the given value"
-msgstr ""
-"Video suurim läbilaskevõime ühikuga kilobaite sekundi kohta. Video kvaliteet "
-"ja sekundis ülekantavate kaadrite arvu reguleeritakse kõne ajal "
-"dünaamiliselt video vähima võimaliku ja siintoodud väärtuse vahel."
-
-#: ../ekiga.schemas.in.in.h:132
 msgid "The minimum jitter buffer size for audio reception (in ms)"
 msgstr ""
 
-#: ../ekiga.schemas.in.in.h:134
-#, no-c-format
-msgid ""
-"The minimum transmitted video quality to keep when trying to minimize the "
-"used bandwidth: choose 100% on a LAN for the best quality, 1% being the "
-"worst quality"
-msgstr ""
-
-#: ../ekiga.schemas.in.in.h:135
+#: ../ekiga.schemas.in.in.h:132
 msgid "The network interface"
 msgstr "Võrguliides"
 
-#: ../ekiga.schemas.in.in.h:136 ../src/gui/preferences.cpp:950
+#: ../ekiga.schemas.in.in.h:133 ../src/gui/preferences.cpp:685
 msgid "The network interface to listen on"
 msgstr "Võrguliides, millel kuulatakse"
 
-#: ../ekiga.schemas.in.in.h:137
+#: ../ekiga.schemas.in.in.h:134
 msgid "The new instant message sound"
 msgstr "Uue välksõnumi heli"
 
-#: ../ekiga.schemas.in.in.h:138
+#: ../ekiga.schemas.in.in.h:135
 msgid "The new voice mail sound"
 msgstr "Kõneposti uue sõnumi heli"
 
-#: ../ekiga.schemas.in.in.h:139
+#: ../ekiga.schemas.in.in.h:136
 msgid ""
 "The output device type is the type of device connected to your Quicknet "
 "card. It can be either a POTS (Plain Old Telephone System) or a headset."
 msgstr ""
 
-#: ../ekiga.schemas.in.in.h:140
+#: ../ekiga.schemas.in.in.h:137
 msgid ""
 "The port to listen to for incoming connections. Ekiga needs to be restarted "
 "for the new value to take effect"
@@ -680,7 +674,7 @@ msgstr ""
 "Port, mida kuulatakse sisenevate ühenduste vastuvõtmiseks. Uue väärtuse "
 "rakendamiseks tuleb Ekiga taaskäivitada"
 
-#: ../ekiga.schemas.in.in.h:141
+#: ../ekiga.schemas.in.in.h:138
 msgid ""
 "The port to listen to for incoming connections. Ekiga needs to be restarted "
 "for the new value to take effect."
@@ -688,21 +682,21 @@ msgstr ""
 "Port, mida kuulatakse sisenevate ühenduste vastuvõtmiseks. Uue väärtuse "
 "rakendamiseks tuleb Ekiga taaskäivitada."
 
-#: ../ekiga.schemas.in.in.h:142
+#: ../ekiga.schemas.in.in.h:139
 msgid "The position of the local video window"
 msgstr "Kohaliku video akna asukoht"
 
-#: ../ekiga.schemas.in.in.h:143
+#: ../ekiga.schemas.in.in.h:140
 msgid "The position of the remote video window"
 msgstr "Kaugvideo akna asukoht"
 
-#: ../ekiga.schemas.in.in.h:144
+#: ../ekiga.schemas.in.in.h:141
 msgid ""
 "The prefix that will be used to save pictures of the conversation. That "
 "prefix is followed by the snapshot number."
 msgstr ""
 
-#: ../ekiga.schemas.in.in.h:145
+#: ../ekiga.schemas.in.in.h:142
 msgid ""
 "The range of TCP ports that Ekiga will use for the H.323 H.245 channel. "
 "Ekiga needs to be restarted for the new values to take effect. This port "
@@ -713,7 +707,7 @@ msgstr ""
 "väärtuste rakendamiseks tuleb Ekiga taaskäivitada. See pordivahemik ei mõju, "
 "kui mõlemad konverentsi osapooled kasutavad H.245 tunneldamist."
 
-#: ../ekiga.schemas.in.in.h:146
+#: ../ekiga.schemas.in.in.h:143
 msgid ""
 "The range of UDP ports that Ekiga will use for RTP (audio and video "
 "communication channels). Ekiga needs to be restarted for the new values to "
@@ -722,7 +716,7 @@ msgstr ""
 "UDP portide vahemik, mida Ekiga kasutab RTP (audio- ja videokommunikatsiooni "
 "kanalid) tarbeks. Uute väärtuste rakendamiseks tuleb Ekiga taaskäivitada."
 
-#: ../ekiga.schemas.in.in.h:147
+#: ../ekiga.schemas.in.in.h:144
 msgid ""
 "The range of UDP ports that Ekiga will use for SIP signaling and when "
 "registering to gatekeepers. Ekiga needs to be restarted for the new values "
@@ -732,95 +726,117 @@ msgstr ""
 "UDP-portide vahemik. Uute väärtuste rakendamiseks tuleb Ekiga uuesti "
 "käivitada."
 
-#: ../ekiga.schemas.in.in.h:148
+#: ../ekiga.schemas.in.in.h:145
 msgid "The remote zoom value"
 msgstr ""
 
-#: ../ekiga.schemas.in.in.h:149
+#: ../ekiga.schemas.in.in.h:146
 msgid "The save prefix"
 msgstr "Salvestamise eesliide"
 
-#: ../ekiga.schemas.in.in.h:150
+#: ../ekiga.schemas.in.in.h:147
 msgid "The size of the local video window"
 msgstr "Kohaliku videoakna suurus"
 
-#: ../ekiga.schemas.in.in.h:151
+#: ../ekiga.schemas.in.in.h:148
 msgid "The size of the remote video window"
 msgstr "Kaugvideo akna suurus"
 
-#: ../ekiga.schemas.in.in.h:152
+#: ../ekiga.schemas.in.in.h:149
 msgid ""
 "The sound that will be played at the end of calls or when calling somebody "
 "who is busy, if enabled"
 msgstr ""
 
-#: ../ekiga.schemas.in.in.h:153
+#: ../ekiga.schemas.in.in.h:150
 msgid "The sound that will be played on incoming calls, if enabled"
 msgstr "Sisenevate kõnede korral (kui on lubatud) esitatav heli"
 
-#: ../ekiga.schemas.in.in.h:154
+#: ../ekiga.schemas.in.in.h:151
 msgid "The sound that will be played when calling somebody, if enabled"
 msgstr "Väljuvate kõnede korral (kui on lubatud) esitatav heli"
 
-#: ../ekiga.schemas.in.in.h:155
+#: ../ekiga.schemas.in.in.h:152
 msgid ""
 "The sound that will be played when there is a new instant message, if enabled"
 msgstr "Uue välksõnumi saabumise korral (kui on lubatud) esitatav heli"
 
-#: ../ekiga.schemas.in.in.h:156
+#: ../ekiga.schemas.in.in.h:153
 msgid ""
 "The sound that will be played when there is a new voice mail, if enabled"
 msgstr "Uue kõnepostisõnumi korral (kui on lubatud) esitatav heli"
 
-#: ../ekiga.schemas.in.in.h:157
+#: ../ekiga.schemas.in.in.h:154
 msgid ""
 "The time after which Ekiga will renew its registration with the registrar"
 msgstr ""
 
-#: ../ekiga.schemas.in.in.h:158
+#: ../ekiga.schemas.in.in.h:155
+msgid ""
+"The transmitted frame rate in frames/s. Choose 25 for LAN and less for "
+"slower connections"
+msgstr ""
+
+#: ../ekiga.schemas.in.in.h:156
 msgid "The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)"
 msgstr ""
 "Kahekohaline riigikood sinu asukohariigi kohta (näiteks ET, UK, DE, FE, jne)"
 
-#: ../ekiga.schemas.in.in.h:159 ../src/gui/preferences.cpp:1172
+#: ../ekiga.schemas.in.in.h:157 ../src/gui/preferences.cpp:906
 msgid "The video channel number to use (to select camera, tv or other sources)"
 msgstr "Kasutatav videokanal (kaamera, tv või muude allikate valimiseks)"
 
-#: ../ekiga.schemas.in.in.h:160 ../src/gui/preferences.cpp:1156
+#: ../ekiga.schemas.in.in.h:158 ../src/gui/preferences.cpp:890
 msgid ""
 "The video plugin that will be used to detect the devices and manage them"
 msgstr "Videoseadmete tuvastamiseks ja haldamiseks kasutatav videoplugin"
 
-#: ../ekiga.schemas.in.in.h:161
-msgid ""
-"The way to react to incoming calls: 0 displays a popup, 1 automatically "
-"answers the call, 2 automatically rejects the call and 3 forwards the call "
-"to the given URL, if any"
+#: ../ekiga.schemas.in.in.h:159
+msgid "The video view before having switched to fullscreen"
 msgstr ""
 
-#: ../ekiga.schemas.in.in.h:162
+#: ../ekiga.schemas.in.in.h:160
+msgid ""
+"The video view before having switched to fullscreen (same values as "
+"video_view)"
+msgstr ""
+
+#: ../ekiga.schemas.in.in.h:161
 msgid "The zoom value"
 msgstr "Suurendustegur"
 
-#: ../ekiga.schemas.in.in.h:163
+#: ../ekiga.schemas.in.in.h:162
 msgid ""
 "The zoom value to apply to images displayed in the local video window (can "
 "be 0.50, 1.00, or 2.00)"
 msgstr ""
 
-#: ../ekiga.schemas.in.in.h:164
+#: ../ekiga.schemas.in.in.h:163
 msgid ""
 "The zoom value to apply to images displayed in the main GUI (can be 0.50, "
 "1.00, or 2.00)"
 msgstr ""
 
-#: ../ekiga.schemas.in.in.h:165
+#: ../ekiga.schemas.in.in.h:164
 msgid ""
 "The zoom value to apply to images displayed in the remote video window (can "
 "be 0.50, 1.00, or 2.00)"
 msgstr ""
 
-#: ../ekiga.schemas.in.in.h:166 ../src/gui/preferences.cpp:1001
+#: ../ekiga.schemas.in.in.h:165
+msgid ""
+"This allows you to set the mode for sending DTMFs. The values can be "
+"\"RFC2833\" (0), \"INFO\" (1)"
+msgstr ""
+
+#: ../ekiga.schemas.in.in.h:166
+msgid ""
+"This allows you to set the mode for sending DTMFs. The values can be \"String"
+"\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (default is \"String"
+"\"). Choosing other values than \"String\" disables the Text Chat"
+msgstr ""
+
+#: ../ekiga.schemas.in.in.h:167 ../src/gui/preferences.cpp:736
 msgid ""
 "This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages "
 "are encapsulated into the the H.225 channel (port 1720). This saves one TCP "
@@ -829,113 +845,455 @@ msgid ""
 "can crash some versions of Netmeeting."
 msgstr ""
 
-#: ../ekiga.schemas.in.in.h:167 ../src/gui/preferences.cpp:1003
+#: ../ekiga.schemas.in.in.h:168 ../src/gui/preferences.cpp:738
 msgid "This enables H.245 early in the setup"
 msgstr ""
 
-#: ../ekiga.schemas.in.in.h:168
+#: ../ekiga.schemas.in.in.h:169
 msgid ""
 "This enables IP checking from ekiga.com. The returned IP is only used when "
 "IP Translation is enabled."
 msgstr ""
 
-#: ../ekiga.schemas.in.in.h:169
-msgid ""
-"This permits to set the mode for DTMFs sending. The value can be \"RFC2833"
-"\" (0) only"
-msgstr ""
-
 #: ../ekiga.schemas.in.in.h:170
 msgid ""
-"This permits to set the mode for DTMFs sending. The values can be \"String"
-"\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (default is \"String"
-"\"). Choosing other values than \"String\" disables the Text Chat"
+"This key disables DirectX (on win32) and XVideo (on Linux) video hardware "
+"acceleration"
 msgstr ""
 
 #: ../ekiga.schemas.in.in.h:171
+msgid "Timeout after which the user is automatically set as away"
+msgstr ""
+
+#: ../ekiga.schemas.in.in.h:172
 msgid "UDP port range"
 msgstr "UDP-portide vahemik"
 
-#: ../ekiga.schemas.in.in.h:172
+#: ../ekiga.schemas.in.in.h:173
 msgid "User directory"
 msgstr "Kasutaja kataloog"
 
-#: ../ekiga.schemas.in.in.h:173
+#: ../ekiga.schemas.in.in.h:174
 msgid "Version"
 msgstr "Versioon"
 
-#: ../ekiga.schemas.in.in.h:174
+#: ../ekiga.schemas.in.in.h:175
 msgid "Video channel"
 msgstr "Videokanal"
 
-#: ../ekiga.schemas.in.in.h:175
+#: ../ekiga.schemas.in.in.h:176
 msgid "Video format"
 msgstr "Videovorming"
 
-#: ../ekiga.schemas.in.in.h:176
+#: ../ekiga.schemas.in.in.h:177
 msgid "Video image"
 msgstr "Videopilt"
 
-#: ../ekiga.schemas.in.in.h:177
+#: ../ekiga.schemas.in.in.h:178
 msgid "Video input device"
 msgstr "Videosisendi seade"
 
-#: ../ekiga.schemas.in.in.h:178
+#: ../ekiga.schemas.in.in.h:179
 msgid "Video plugin"
 msgstr "Videoplugin"
 
-#: ../ekiga.schemas.in.in.h:179
+#: ../ekiga.schemas.in.in.h:180
 msgid "Video preview"
 msgstr "Video eelvaade"
 
-#: ../ekiga.schemas.in.in.h:180
+#: ../ekiga.schemas.in.in.h:181
 msgid "Video size"
 msgstr "Video suurus"
 
-#: ../lib/gmconf/gmconf-gconf.c:155
-msgid ""
-"An error has happened in the configuration backend.\n"
-"Maybe some of your settings won't be saved."
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:168
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:294
+#: ../lib/engine/presence/local-roster/local-presentity.cpp:221
+msgid "_Remove"
 msgstr ""
-"Seadistamise taustaprogrammis tekkis viga.\n"
-"Võib-olla jäid mõned sätted salvestamata."
 
-#: ../lib/gmcontacts/gmcontacts-avahi.cpp:285
-msgid "Contacts Near Me"
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:170
+#: ../lib/engine/presence/local-roster/local-presentity.cpp:219
+#: ../src/gui/main.cpp:969
+msgid "_Edit"
+msgstr "_Redaktor"
+
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:200
+#, fuzzy
+msgid "Edit contact"
+msgstr "Kontrasti muutmine"
+
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:202
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:306
+msgid "Please update the following fields:"
+msgstr ""
+
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:204
+#: ../lib/engine/presence/local-roster/local-presentity.cpp:248
+#: ../lib/engine/presence/local-roster/local-heap.cpp:189
+msgid "Name:"
+msgstr "Nimi:"
+
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:230
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:310
+#, fuzzy
+msgid "VoIP _URI:"
+msgstr "VoIP URL:"
+
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:231
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:311
+#, fuzzy
+msgid "_Home phone:"
+msgstr "_Videtelefon"
+
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:232
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:312
+#, fuzzy
+msgid "_Office phone:"
+msgstr "_Videtelefon"
+
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:233
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:313
+#, fuzzy
+msgid "_Cell phone:"
+msgstr "_Videtelefon"
+
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:234
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:314
+#, fuzzy
+msgid "_Pager:"
+msgstr "Pilt:"
+
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:89
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:494
+#, fuzzy
+msgid "user found"
+msgid_plural "users found"
+msgstr[0] "Kasutajat ei leitud"
+msgstr[1] "Kasutajat ei leitud"
+
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:260
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:291
+msgid "_Refresh"
+msgstr ""
+
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:263
+msgid "New _Contact"
+msgstr "Uus _kontakt"
+
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:304
+#: ../lib/engine/presence/local-roster/local-heap.cpp:136
+msgid "New contact"
+msgstr "Uus kontakt"
+
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:308
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:153
+msgid "_Name:"
+msgstr "_Nimi:"
+
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:135
+msgid "Add an LDAP addressbook"
+msgstr "LDAP-aadressiraamatu lisamine"
+
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:149
+msgid "Create LDAP directory"
+msgstr "LDAP-aadressiraamatu loomine"
+
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:151
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:511
+msgid "Please edit the following fields"
+msgstr ""
+
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:154
+msgid "_Hostname:"
+msgstr "_Hostinimi:"
+
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:155
+msgid "_Port:"
+msgstr "_Port:"
+
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:156
+msgid "_Base DN:"
+msgstr "_Baas-DN:"
+
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:160
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:527
+msgid "_Subtree"
+msgstr "_Alampuu"
+
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:161
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:528
+msgid "Single _Level"
+msgstr "Üks _tase"
+
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:162
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:529
+msgid "_Scope"
+msgstr ""
+
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:165
+#, fuzzy
+msgid "Call _Attribute:"
+msgstr "Otsingurekvisiit:"
+
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:296
+msgid "_Properties"
+msgstr "_Omadused"
+
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:355
+msgid "Refreshing"
+msgstr "Värskendamine"
+
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:361
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:376
+msgid "Could not contact server"
+msgstr "Serveriga pole võimalik ühenduda"
+
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:384
+#, fuzzy
+msgid "Contacted server"
 msgstr "Kontaktid minu ligiduses"
 
-#. Init the address book
-#: ../lib/gmcontacts/gmcontacts-eds.cpp:304 ../src/endpoints/ekiga.cpp:500
-msgid "On This Computer"
-msgstr "Selles arvutis"
+#. patience == 0
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:418
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:465
+msgid "Could not search"
+msgstr ""
 
-#: ../lib/gmcontacts/gmcontacts-eds.cpp:308 ../src/endpoints/ekiga.cpp:500
-#: ../src/gui/addressbook.cpp:3041
-msgid "Personal"
-msgstr "Isiklik"
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:426
+msgid "Waiting for search results"
+msgstr "Otsingutulemuste ootamine"
 
-#: ../lib/gui/gmdialog.c:487
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:509
+msgid "Edit LDAP directory"
+msgstr "LDAP-kataloogi redigeerimine"
+
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:513
+msgid "_Name"
+msgstr "_Nimi"
+
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:514
+msgid "_Hostname"
+msgstr "_Hostinimi"
+
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:520
+msgid "_Port"
+msgstr "_Port"
+
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:522
+msgid "_Base DN"
+msgstr "_Baas-DN"
+
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:532
+#, fuzzy
+msgid "Call _Attribute"
+msgstr "Otsingurekvisiit:"
+
+#: ../lib/engine/addressbook/skel/contact-core.cpp:60
+msgid "_Find"
+msgstr ""
+
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:639
+msgid "Address _Book"
+msgstr "Aadressi_raamat"
+
+#. This will add static and dynamic actions
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:648
+msgid "_Action"
+msgstr ""
+
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:693
+msgid "Address Books"
+msgstr "Aadressiraamatud"
+
+#: ../lib/engine/gui/gtk-frontend/gtk-frontend.cpp:60
+#, fuzzy
+msgid "Find Contact"
+msgstr "Leia kontakt"
+
+#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:648
+msgid "Full Name"
+msgstr "Täisnimi"
+
+#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:658
+msgid "VoIP URI"
+msgstr "VoIP-i URL"
+
+#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:690
+msgid "_Search Filter:"
+msgstr "Otsingu_filter:"
+
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:553
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:585
+msgid "Unsorted"
+msgstr "Sortimata"
+
+#: ../lib/engine/presence/local-roster/local-presentity.cpp:245
+msgid "Edit roster element"
+msgstr ""
+
+#: ../lib/engine/presence/local-roster/local-presentity.cpp:246
+msgid ""
+"Please fill in this form to change an existing element of ekiga's internal "
+"roster"
+msgstr ""
+
+#: ../lib/engine/presence/local-roster/local-presentity.cpp:250
+#, fuzzy
+msgid "Choose groups:"
+msgstr "Heli valimine"
+
+#: ../lib/engine/presence/local-roster/local-roster-bridge.cpp:100
+#: ../lib/engine/presence/local-roster/local-heap.cpp:186
+#, fuzzy
+msgid "Add to local roster"
+msgstr "Tõrge kasutajale helistamisel"
+
+#: ../lib/engine/presence/local-roster/local-heap.cpp:125
+#, fuzzy
+msgid "Local roster"
+msgstr "Kohalikud kontaktid"
+
+#: ../lib/engine/presence/local-roster/local-heap.cpp:187
+msgid ""
+"Please fill in this form to add a new contact to ekiga's internal roster"
+msgstr ""
+
+#: ../lib/engine/presence/local-roster/local-heap.cpp:197
+msgid "Address:"
+msgstr "Aadress:"
+
+#: ../lib/engine/presence/local-roster/local-heap.cpp:201
+msgid "Put contact in groups:"
+msgstr ""
+
+#: ../lib/engine/presence/local-roster/local-heap.cpp:298
+msgid "You supplied an unsupported address"
+msgstr ""
+
+#: ../lib/engine/presence/local-roster/local-heap.cpp:300
+msgid "You already have a contact with this address!"
+msgstr ""
+
+#: ../lib/engine/protocol/sip/sip-endpoint.cpp:175
+msgid "Offline"
+msgstr ""
+
+#: ../lib/engine/protocol/sip/sip-endpoint.cpp:180 ../src/gui/main.cpp:577
+msgid "Online"
+msgstr ""
+
+#: ../lib/engine/protocol/sip/sip-endpoint.cpp:184 ../src/gui/main.cpp:578
+msgid "Away"
+msgstr "Eemal"
+
+#: ../lib/engine/protocol/sip/sip-endpoint.cpp:190 ../src/gui/main.cpp:579
+msgid "Do Not Disturb"
+msgstr "Mitte häirida"
+
+#: ../lib/engine/protocol/sip/sip-endpoint.cpp:194 ../src/gui/main.cpp:580
+msgid "Free For Chat"
+msgstr ""
+
+#: ../lib/engine/protocol/sip/sip-basic.cpp:107
+msgid "_Call"
+msgstr "_Helista"
+
+#: ../lib/engine/protocol/sip/sip-basic.cpp:109
+#, fuzzy
+msgid "Send _Message"
+msgstr "_Saada sõnum"
+
+#: ../lib/gui/gmdialog.c:474
 msgid "Do not show this dialog again"
 msgstr "Seda dialoogi enam mitte näidata"
 
-#: ../lib/gui/gmtray/eggtrayicon.c:133
-msgid "Orientation"
-msgstr "Suund"
+#: ../lib/gui/gmgroupseditor.c:799
+msgid "Group"
+msgstr ""
 
-#: ../lib/gui/gmtray/eggtrayicon.c:134
-msgid "The orientation of the tray."
-msgstr "Salve suund"
+#: ../lib/gui/gmgroupseditor.c:1174
+msgid "Rename"
+msgstr "Muuda nime"
 
-#: ../src/clients/stun.cpp:104
+#: ../lib/gui/gmgroupseditor.c:1183
+msgid "Delete"
+msgstr "Kustuta"
+
+#: ../lib/gui/gmgroupseditor.c:1247
+#, c-format
+msgid "Delete group %s?"
+msgstr "Kas kustutada grupp %s?"
+
+#: ../lib/gui/gmgroupseditor.c:1270
+msgid "Group deleted."
+msgstr "Grupp on kustutatud."
+
+#: ../lib/gui/gmgroupseditor.c:1275
+msgid "Could not delete group!"
+msgstr "Gruppi pole võimalik kustutada"
+
+#: ../lib/gui/gmgroupseditor.c:1320
+msgid "Rename group"
+msgstr "Grupi nime muutmine"
+
+#: ../lib/gui/gmgroupseditor.c:1376
+msgid "Group renamed."
+msgstr "Grupi nimi on muudetud."
+
+#: ../lib/gui/gmgroupseditor.c:1381
+msgid "Could not rename group!"
+msgstr "Grupi nime pole võimalik muuta!"
+
+#: ../src/clients/stun.cpp:88
+msgid "Unknown NAT"
+msgstr "Tundmatu NAT"
+
+#: ../src/clients/stun.cpp:89
+msgid "Open NAT"
+msgstr "Avatud NAT"
+
+#: ../src/clients/stun.cpp:90
+msgid "Cone NAT"
+msgstr ""
+
+#: ../src/clients/stun.cpp:91
+msgid "Restricted NAT"
+msgstr "Piirangutega NAT"
+
+#: ../src/clients/stun.cpp:92
+msgid "Port Restricted NAT"
+msgstr "Pordipiirangutega NAT"
+
+#: ../src/clients/stun.cpp:93
+msgid "Symmetric NAT"
+msgstr "Sümmeetriline NAT"
+
+#: ../src/clients/stun.cpp:94
+msgid "Symmetric Firewall"
+msgstr "Sümmeetriline tulemüür"
+
+#: ../src/clients/stun.cpp:95
+msgid "Blocked"
+msgstr "Blokitud"
+
+#: ../src/clients/stun.cpp:96
+msgid "Partially Blocked"
+msgstr "Osaliselt blokitud"
+
+#: ../src/clients/stun.cpp:97
+msgid "No NAT"
+msgstr "NAT-i pole"
+
+#: ../src/clients/stun.cpp:125
 #, c-format
 msgid "STUN server set to %s"
 msgstr "STUN-serveriks on määratud %s"
 
-#: ../src/clients/stun.cpp:113
+#: ../src/clients/stun.cpp:134
 msgid "Removed STUN server"
 msgstr ""
 
-#: ../src/clients/stun.cpp:142
+#: ../src/clients/stun.cpp:163
 #, c-format
 msgid ""
 "STUN test result: %s.\n"
@@ -947,7 +1305,7 @@ msgid ""
 "not running a local firewall."
 msgstr ""
 
-#: ../src/clients/stun.cpp:148
+#: ../src/clients/stun.cpp:169
 #, c-format
 msgid ""
 "STUN test result: %s.\n"
@@ -956,7 +1314,7 @@ msgid ""
 "have a local firewall blocking the ports required by Ekiga."
 msgstr ""
 
-#: ../src/clients/stun.cpp:153
+#: ../src/clients/stun.cpp:174
 msgid ""
 "Ekiga detected Symmetric NAT. The most appropriate method, if your router "
 "does not natively support SIP or H.323, is to forward the required ports to "
@@ -967,7 +1325,7 @@ msgid ""
 "problem in your forwarding rules."
 msgstr ""
 
-#: ../src/clients/stun.cpp:157
+#: ../src/clients/stun.cpp:178
 #, c-format
 msgid ""
 "STUN test result: %s.\n"
@@ -978,7 +1336,7 @@ msgstr ""
 "\n"
 "Paistab, et sa ei kasuta NAT-marsruuterit. STUN-i tugi pole tarvilik."
 
-#: ../src/clients/stun.cpp:162
+#: ../src/clients/stun.cpp:183
 #, c-format
 msgid ""
 "STUN test result: %s.\n"
@@ -995,53 +1353,13 @@ msgstr ""
 "\n"
 "Kas lubada STUN-i tugi?"
 
-#: ../src/clients/stun.cpp:170 ../src/clients/stun.cpp:183
+#: ../src/clients/stun.cpp:191 ../src/clients/stun.cpp:204
 msgid "NAT Detection Finished"
 msgstr "NAT-i tuvastamine on lõppenud"
 
-#: ../src/clients/stun.cpp:194
+#: ../src/clients/stun.cpp:215
 msgid "The detection of your NAT type is finished"
 msgstr "NAT-i liigi tuvastamine on lõppenud"
-
-#: ../src/clients/stun.cpp:261
-msgid "Unknown NAT"
-msgstr "Tundmatu NAT"
-
-#: ../src/clients/stun.cpp:262
-msgid "Open NAT"
-msgstr "Avatud NAT"
-
-#: ../src/clients/stun.cpp:263
-msgid "Cone NAT"
-msgstr ""
-
-#: ../src/clients/stun.cpp:264
-msgid "Restricted NAT"
-msgstr "Piirangutega NAT"
-
-#: ../src/clients/stun.cpp:265
-msgid "Port Restricted NAT"
-msgstr "Pordipiirangutega NAT"
-
-#: ../src/clients/stun.cpp:266
-msgid "Symmetric NAT"
-msgstr "Sümmeetriline NAT"
-
-#: ../src/clients/stun.cpp:267
-msgid "Symmetric Firewall"
-msgstr "Sümmeetriline tulemüür"
-
-#: ../src/clients/stun.cpp:268
-msgid "Blocked"
-msgstr "Blokitud"
-
-#: ../src/clients/stun.cpp:269
-msgid "Partially Blocked"
-msgstr "Osaliselt blokitud"
-
-#: ../src/clients/stun.cpp:270
-msgid "No NAT"
-msgstr "NAT-i pole"
 
 #: ../src/clients/stun.cpp:321
 msgid "Detection in progress"
@@ -1051,12 +1369,12 @@ msgstr "Tuvastamine on hetkel käimas"
 msgid "Please wait while your type of NAT is being detected."
 msgstr "Palun oota kuni Sinu NAT-i liiki tuvastatakse."
 
-#: ../src/clients/stun.cpp:373
+#: ../src/clients/stun.cpp:374
 #, c-format
 msgid "Set STUN server to %s (%s)"
 msgstr ""
 
-#: ../src/clients/stun.cpp:375
+#: ../src/clients/stun.cpp:376
 #, c-format
 msgid "Ignored STUN server (%s)"
 msgstr ""
@@ -1097,7 +1415,7 @@ msgid "Opening device for recording"
 msgstr "Seadme avamine salvestamiseks"
 
 #: ../src/devices/audio.cpp:298 ../src/devices/audio.cpp:300
-#: ../src/devices/videoinput.cpp:708
+#: ../src/devices/videoinput.cpp:706
 msgid "Failed to open the device"
 msgstr "Tõrge seadme avamisel"
 
@@ -1148,53 +1466,52 @@ msgid ""
 msgstr ""
 
 #: ../src/devices/audio.cpp:481 ../src/devices/audio.cpp:482
-#: ../src/devices/videoinput.cpp:310 ../src/devices/videoinput.cpp:585
-#: ../src/endpoints/ekiga.cpp:351 ../src/endpoints/ekiga.cpp:353
-#: ../src/endpoints/ekiga.cpp:355 ../src/endpoints/pcss.cpp:194
-#: ../src/gui/druid.cpp:1780 ../src/gui/druid.cpp:1792
-#: ../src/gui/druid.cpp:1850
+#: ../src/devices/videoinput.cpp:314 ../src/devices/videoinput.cpp:583
+#: ../src/endpoints/ekiga.cpp:346 ../src/endpoints/ekiga.cpp:348
+#: ../src/endpoints/ekiga.cpp:350 ../src/endpoints/pcss.cpp:174
+#: ../src/gui/druid.cpp:1869 ../src/gui/druid.cpp:1881
+#: ../src/gui/druid.cpp:1940
 msgid "No device found"
 msgstr "Seadet ei leitud"
 
 #: ../src/devices/audio.cpp:500
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "Ekiga is now recording from %s and playing back to %s. Please say \"1, 2, 3, "
-"Ekiga rocks!\" in your microphone. You should hear yourself back into the "
-"speakers with a four-second delay."
+"Ekiga rocks!\" in your microphone. You should hear yourself from the "
+"speakers after a four-second delay."
 msgstr ""
 "Ekiga salvestab hetkel %s seadmest ja taasesitab seda %s seadmega. Palun "
 "ütle oma mikrofoni \"1, 2, 3, Ekiga on lahe!\". Öeldu peaks olema nelja "
 "sekundi pärast olema kuuldav sinu kõlaritest."
 
-#: ../src/devices/videoinput.cpp:319
+#: ../src/devices/videoinput.cpp:323
 #, c-format
 msgid "Opening video device %s with plugin %s"
 msgstr "Videoseadme %s avamine %s pluginaga"
 
-#: ../src/devices/videoinput.cpp:347
+#: ../src/devices/videoinput.cpp:351
 #, c-format
 msgid "Successfully opened video device %s, channel %d"
 msgstr "Videoseade %s edukalt avatud, kanal %d"
 
-#: ../src/devices/videoinput.cpp:358
+#: ../src/devices/videoinput.cpp:362
 #, c-format
 msgid "Error while opening video device %s"
 msgstr "Viga videoseadme %s avamisel"
 
-#. Translators: Do not translate MovingLogo and Picture
-#: ../src/devices/videoinput.cpp:362
+#: ../src/devices/videoinput.cpp:365
 msgid ""
 "A moving logo will be transmitted during calls. Notice that you can always "
 "transmit a given image or the moving logo by choosing \"Picture\" as video "
-"plugin and \"MovingLogo\" or \"StaticPicture\" as device."
+"plugin and \"Moving logo\" or \"Static picture\" as device."
 msgstr ""
 
-#: ../src/devices/videoinput.cpp:364
+#: ../src/devices/videoinput.cpp:367
 msgid "Couldn't open the video device"
 msgstr "Videoseadet pole võimalik avada"
 
-#: ../src/devices/videoinput.cpp:368
+#: ../src/devices/videoinput.cpp:371
 msgid ""
 "There was an error while opening the device. Please check your permissions "
 "and make sure that the appropriate driver is loaded."
@@ -1202,15 +1519,15 @@ msgstr ""
 "Seadme avamisel tekkis viga. Palun kontrolli oma pääsuõigusi ja veendu, et "
 "seadmele on laaditud õige draiver."
 
-#: ../src/devices/videoinput.cpp:372 ../src/devices/videoinput.cpp:686
+#: ../src/devices/videoinput.cpp:375 ../src/devices/videoinput.cpp:684
 msgid "Your video driver doesn't support the requested video format."
 msgstr "Sinu videodraiver ei toeta küsitud videovormingut."
 
-#: ../src/devices/videoinput.cpp:376
+#: ../src/devices/videoinput.cpp:379
 msgid "Could not open the chosen channel."
 msgstr "Valitud kanalit pole võimalik avada."
 
-#: ../src/devices/videoinput.cpp:380
+#: ../src/devices/videoinput.cpp:383
 msgid ""
 "Your driver doesn't seem to support any of the color formats supported by "
 "Ekiga.\n"
@@ -1218,23 +1535,23 @@ msgid ""
 "Palette is supported."
 msgstr ""
 
-#: ../src/devices/videoinput.cpp:384
+#: ../src/devices/videoinput.cpp:387
 msgid "Error while setting the frame rate."
 msgstr "Viga kaadrisageduse määramisel."
 
-#: ../src/devices/videoinput.cpp:388
+#: ../src/devices/videoinput.cpp:391
 msgid "Error while setting the frame size."
 msgstr "Viga kaadrisuuruse määramisel."
 
-#: ../src/devices/videoinput.cpp:428
+#: ../src/devices/videoinput.cpp:431
 msgid "Opened the video device using the \"Picture\" video plugin"
 msgstr "Videoseade avatud plugina \"Pilt\" abil"
 
-#: ../src/devices/videoinput.cpp:586
+#: ../src/devices/videoinput.cpp:584
 msgid "Picture"
 msgstr "Pilt"
 
-#: ../src/devices/videoinput.cpp:598
+#: ../src/devices/videoinput.cpp:596
 #, c-format
 msgid ""
 "Ekiga is now testing the %s video device. If you experience machine crashes, "
@@ -1243,817 +1560,538 @@ msgstr ""
 "Ekiga testib videoseadet %s. Kui selle tulemuseks on masina kokkujooksmine, "
 "siis palun teata sellest videodraiveri autorile."
 
-#: ../src/devices/videoinput.cpp:660
+#: ../src/devices/videoinput.cpp:658
 #, c-format
 msgid "Test %d done"
 msgstr "Test %d valmis"
 
-#: ../src/devices/videoinput.cpp:662
+#: ../src/devices/videoinput.cpp:660
 #, c-format
 msgid "Test %d failed"
 msgstr "Test %d nurjus"
 
-#: ../src/devices/videoinput.cpp:681
+#: ../src/devices/videoinput.cpp:679
 #, c-format
 msgid "Error while opening %s."
 msgstr "Viga %s avamisel."
 
-#: ../src/devices/videoinput.cpp:690
+#: ../src/devices/videoinput.cpp:688
 msgid "Could not open the chosen channel with the chosen video format."
 msgstr "Valitud kanalit pole valitud videovorminguga võimalik avada."
 
-#: ../src/devices/videoinput.cpp:694
+#: ../src/devices/videoinput.cpp:692
 msgid "Your driver doesn't support any of the color formats tried by Ekiga"
 msgstr "Sinu draiver ei toeta ühtki Ekiga poolt proovitud värvivormingut"
 
-#: ../src/devices/videoinput.cpp:698
+#: ../src/devices/videoinput.cpp:696
 msgid "Error with the frame rate."
 msgstr ""
 
-#: ../src/devices/videoinput.cpp:702
+#: ../src/devices/videoinput.cpp:700
 msgid "Error with the frame size."
 msgstr ""
 
-#: ../src/endpoints/accountshandler.cpp:186
-#: ../src/endpoints/accountshandler.cpp:270
+#: ../src/devices/fakevideoinput.cpp:54
+msgid "Moving logo"
+msgstr ""
+
+#: ../src/devices/fakevideoinput.cpp:55
+msgid "Static picture"
+msgstr ""
+
+#: ../src/endpoints/accountshandler.cpp:271
+#: ../src/endpoints/accountshandler.cpp:356
 msgid "Registering"
 msgstr "Registreerumine"
 
-#: ../src/endpoints/accountshandler.cpp:200
+#: ../src/endpoints/accountshandler.cpp:284
 #, c-format
 msgid "Registration of %s to %s failed"
 msgstr ""
 
-#: ../src/endpoints/accountshandler.cpp:211
-#: ../src/endpoints/accountshandler.cpp:323 ../src/endpoints/sip.cpp:317
-#: ../src/endpoints/sip.cpp:329
+#: ../src/endpoints/accountshandler.cpp:294
+#: ../src/endpoints/accountshandler.cpp:408 ../src/endpoints/sip.cpp:457
+#: ../src/endpoints/sip.cpp:468
 msgid "Registration failed"
 msgstr "Tõrge registreerumisel"
 
-#: ../src/endpoints/accountshandler.cpp:225
-#: ../src/endpoints/accountshandler.cpp:338
+#: ../src/endpoints/accountshandler.cpp:309
+#: ../src/endpoints/accountshandler.cpp:422
 msgid "Unregistering"
 msgstr ""
 
-#: ../src/endpoints/accountshandler.cpp:294
+#: ../src/endpoints/accountshandler.cpp:380
 msgid "Gatekeeper registration failed: duplicate alias"
 msgstr "Tõrge väravavalvuri registreerimisel: alias on dubleeritud"
 
-#: ../src/endpoints/accountshandler.cpp:298
+#: ../src/endpoints/accountshandler.cpp:384
 msgid "Gatekeeper registration failed: bad username/password"
 msgstr "Tõrge väravavalvuri registreerimisel: halb kasutajanimi või parool"
 
-#: ../src/endpoints/accountshandler.cpp:301
+#: ../src/endpoints/accountshandler.cpp:387
 msgid "Gatekeeper registration failed: transport error"
 msgstr "Tõrge väravavalvuri registreerimisel: viga transpordil"
 
-#: ../src/endpoints/accountshandler.cpp:304
-#: ../src/endpoints/accountshandler.cpp:309
+#: ../src/endpoints/accountshandler.cpp:390
+#: ../src/endpoints/accountshandler.cpp:395
 msgid "Gatekeeper registration failed"
 msgstr "Tõrge väravavalvuri registreerimisel"
 
-#: ../src/endpoints/accountshandler.cpp:312 ../src/endpoints/sip.cpp:225
-#, c-format
-msgid "Registered to %s"
+#: ../src/endpoints/accountshandler.cpp:398 ../src/endpoints/sip.cpp:347
+#, fuzzy, c-format
+msgid "Registered %s"
 msgstr "Registreeritud isikule %s"
 
-#: ../src/endpoints/accountshandler.cpp:322 ../src/endpoints/sip.cpp:231
+#: ../src/endpoints/accountshandler.cpp:407 ../src/endpoints/sip.cpp:352
 msgid "Registered"
 msgstr "Registreeritud"
 
-#: ../src/endpoints/accountshandler.cpp:332 ../src/endpoints/sip.cpp:236
-#, c-format
-msgid "Unregistered from %s"
-msgstr ""
+#: ../src/endpoints/accountshandler.cpp:417 ../src/endpoints/sip.cpp:357
+#, fuzzy, c-format
+msgid "Unregistered %s"
+msgstr "Registreeritmata"
 
-#: ../src/endpoints/accountshandler.cpp:352 ../src/endpoints/sip.cpp:242
+#: ../src/endpoints/accountshandler.cpp:435 ../src/endpoints/sip.cpp:362
 msgid "Unregistered"
 msgstr "Registreeritmata"
 
-#: ../src/endpoints/ekiga.cpp:105
-msgid "Answering incoming call"
+#: ../src/endpoints/ekiga.cpp:101
+#, fuzzy
+msgid "Answering call..."
 msgstr "Sisenevale kõnele vastamine"
 
-#: ../src/endpoints/ekiga.cpp:529
+#: ../src/endpoints/ekiga.cpp:546
 #, c-format
 msgid "Started Ekiga %d.%d.%d for user %s"
 msgstr "Ekiga %d.%d.%d käivitati kasutajale %s"
 
-#: ../src/endpoints/manager.cpp:672
+#: ../src/endpoints/manager.cpp:719
 #, c-format
 msgid "Forwarding call to %s"
 msgstr "Kõne suunatakse edasi -> %s"
 
 #. Update the log and status bar
-#: ../src/endpoints/manager.cpp:826
+#: ../src/endpoints/manager.cpp:857
 #, c-format
 msgid "Call from %s"
 msgstr ""
 
-#: ../src/endpoints/manager.cpp:840
+#: ../src/endpoints/manager.cpp:871
 msgid "Rejecting incoming call"
 msgstr "Siseneva kõne tagasilükkamine"
 
-#: ../src/endpoints/manager.cpp:842
+#: ../src/endpoints/manager.cpp:873
 #, c-format
 msgid "Rejecting incoming call from %s"
 msgstr ""
 
-#: ../src/endpoints/manager.cpp:848
+#: ../src/endpoints/manager.cpp:879
 msgid "Forwarding incoming call"
 msgstr "Siseneva kõne edasisuunamine"
 
-#: ../src/endpoints/manager.cpp:850
+#: ../src/endpoints/manager.cpp:881
 #, c-format
 msgid "Forwarding incoming call from %s to %s"
 msgstr ""
 
-#: ../src/endpoints/manager.cpp:856
+#: ../src/endpoints/manager.cpp:887
 msgid "Auto-Answering incoming call"
 msgstr "Sisenevale kõnele automaatne vasamine"
 
-#: ../src/endpoints/manager.cpp:857
+#: ../src/endpoints/manager.cpp:888
 #, c-format
 msgid "Auto-Answering incoming call from %s"
 msgstr ""
 
-#: ../src/endpoints/manager.cpp:1012
+#: ../src/endpoints/manager.cpp:1039
 #, c-format
 msgid "Connected with %s using %s"
 msgstr ""
 
-#: ../src/endpoints/manager.cpp:1014
+#: ../src/endpoints/manager.cpp:1041
 #, c-format
 msgid "Connected with %s"
 msgstr "Ühendumine %s-ga"
 
-#: ../src/endpoints/manager.cpp:1124 ../src/gui/main.cpp:4156
+#: ../src/endpoints/manager.cpp:1145 ../src/gui/main.cpp:1595
 msgid "Standby"
 msgstr "Ooterežiim"
 
-#: ../src/endpoints/manager.cpp:1189
+#: ../src/endpoints/manager.cpp:1212
 msgid "Local user cleared the call"
 msgstr ""
 
-#: ../src/endpoints/manager.cpp:1192 ../src/endpoints/manager.cpp:1195
+#: ../src/endpoints/manager.cpp:1215 ../src/endpoints/manager.cpp:1218
 msgid "Local user rejected the call"
 msgstr "Kohalik kasutaja lükkas kõne tagasi"
 
-#: ../src/endpoints/manager.cpp:1198
+#: ../src/endpoints/manager.cpp:1221
 msgid "Remote user cleared the call"
 msgstr ""
 
-#: ../src/endpoints/manager.cpp:1201
+#: ../src/endpoints/manager.cpp:1224
 msgid "Remote user rejected the call"
 msgstr "Kaugkasutaja lükkas kõne tagasi"
 
-#: ../src/endpoints/manager.cpp:1204
-msgid "Call not answered in the required time"
-msgstr ""
-
-#: ../src/endpoints/manager.cpp:1207
+#: ../src/endpoints/manager.cpp:1227
 msgid "Remote user has stopped calling"
 msgstr "Teine pool lõpetas helistamise"
 
-#: ../src/endpoints/manager.cpp:1210
+#: ../src/endpoints/manager.cpp:1230
 msgid "Abnormal call termination"
 msgstr "Kõne ebanormaalne katkestamine"
 
-#: ../src/endpoints/manager.cpp:1213
+#: ../src/endpoints/manager.cpp:1233
 msgid "Could not connect to remote host"
 msgstr "Kaughostiga pole võimalik ühenduda"
 
-#: ../src/endpoints/manager.cpp:1216
+#: ../src/endpoints/manager.cpp:1236
 msgid "The Gatekeeper cleared the call"
 msgstr ""
 
-#: ../src/endpoints/manager.cpp:1219 ../src/endpoints/urlhandler.cpp:530
-#: ../src/endpoints/urlhandler.cpp:535
+#: ../src/endpoints/manager.cpp:1239
 msgid "User not found"
 msgstr "Kasutajat ei leitud"
 
-#: ../src/endpoints/manager.cpp:1222
+#: ../src/endpoints/manager.cpp:1242
 msgid "Insufficient bandwidth"
 msgstr "Läbilaskevõime pole piisav"
 
-#: ../src/endpoints/manager.cpp:1225
+#: ../src/endpoints/manager.cpp:1245
 msgid "No common codec"
 msgstr "Puudub üldine koodek"
 
-#: ../src/endpoints/manager.cpp:1228
+#: ../src/endpoints/manager.cpp:1248
 msgid "Call forwarded"
 msgstr "Kõne on edasi suunatud"
 
-#: ../src/endpoints/manager.cpp:1231
+#: ../src/endpoints/manager.cpp:1251
 msgid "Security check failed"
 msgstr "Tõrge turvakontrollil"
 
-#: ../src/endpoints/manager.cpp:1234
+#: ../src/endpoints/manager.cpp:1254
 msgid "Local user is busy"
 msgstr "Kohalik kasutaja on hõivatud"
 
-#: ../src/endpoints/manager.cpp:1237 ../src/endpoints/manager.cpp:1243
+#: ../src/endpoints/manager.cpp:1257 ../src/endpoints/manager.cpp:1263
 msgid "Congested link to remote party"
 msgstr ""
 
-#: ../src/endpoints/manager.cpp:1240
+#: ../src/endpoints/manager.cpp:1260
 msgid "Remote user is busy"
 msgstr "Kaugkasutaja on hõivatud"
 
-#: ../src/endpoints/manager.cpp:1246
+#: ../src/endpoints/manager.cpp:1266
 msgid "Remote host is offline"
 msgstr ""
 
-#: ../src/endpoints/manager.cpp:1251
-msgid "Remote user is unreachable"
+#: ../src/endpoints/manager.cpp:1273
+#, fuzzy
+msgid "Remote user is not available at this time"
+msgstr "Teine kasutaja pole võrku ühendatud"
+
+#: ../src/endpoints/manager.cpp:1275
+msgid "Local user is not available at this time"
 msgstr ""
 
-#: ../src/endpoints/manager.cpp:1255
+#: ../src/endpoints/manager.cpp:1279
 msgid "Call completed"
 msgstr "Kõne on lõpetatud"
 
-#: ../src/endpoints/manager.cpp:1609
+#: ../src/endpoints/manager.cpp:1660
 msgid "Error while starting the listener for the H.323 protocol"
 msgstr "Viga H.323 protokollile kuulaja käivitamisel"
 
-#: ../src/endpoints/manager.cpp:1609
+#: ../src/endpoints/manager.cpp:1660
 msgid ""
 "You will not be able to receive incoming H.323 calls. Please check that no "
 "other program is already running on the port used by Ekiga."
 msgstr ""
 
-#: ../src/endpoints/manager.cpp:1626
+#: ../src/endpoints/manager.cpp:1695
 msgid "Error while starting the listener for the SIP protocol"
 msgstr "Viga SIP protokollile kuulaja käivitamisel"
 
-#: ../src/endpoints/manager.cpp:1626
+#: ../src/endpoints/manager.cpp:1695
 msgid ""
 "You will not be able to receive incoming SIP calls. Please check that no "
-"other program is already running on the port used by Ekiga."
+"other program is already running on the ports used by Ekiga."
 msgstr ""
 
-#: ../src/endpoints/manager.cpp:1873
+#: ../src/endpoints/manager.cpp:1892
 #, c-format
 msgid "Opened codec %s for transmission"
 msgstr "Koodeki %s avamine ülekandeks"
 
-#: ../src/endpoints/manager.cpp:1884
+#: ../src/endpoints/manager.cpp:1903
 #, c-format
 msgid "Closed codec %s which was opened for transmission"
 msgstr ""
 
-#: ../src/endpoints/manager.cpp:1898
+#: ../src/endpoints/manager.cpp:1917
 #, c-format
 msgid "Opened codec %s for reception"
 msgstr ""
 
-#: ../src/endpoints/manager.cpp:1909
+#: ../src/endpoints/manager.cpp:1928
 #, c-format
 msgid "Closed codec %s which was opened for reception"
 msgstr ""
 
-#: ../src/endpoints/manager.cpp:2095
+#: ../src/endpoints/manager.cpp:2179
 #, c-format
-msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
+msgid "A:%.1f/%.1f   V:%.1f/%.1f  FPS:%d/%d"
 msgstr ""
 
-#: ../src/endpoints/pcss.cpp:218
+#: ../src/endpoints/pcss.cpp:198
 #, c-format
 msgid "Opened %s for recording with plugin %s"
 msgstr "%s avati salvestamiseks plugina %s abil"
 
-#: ../src/endpoints/pcss.cpp:219
+#: ../src/endpoints/pcss.cpp:199
 #, c-format
 msgid "Opened %s for playing with plugin %s"
 msgstr "%s avati esitamiseks plugina %s abil"
 
-#: ../src/endpoints/pcss.cpp:237
+#: ../src/endpoints/pcss.cpp:217
 msgid "Could not open audio channel for audio transmission"
 msgstr "Audiokanalit pole audioülekandeks võimalik avada"
 
-#: ../src/endpoints/pcss.cpp:237
+#: ../src/endpoints/pcss.cpp:217
 msgid ""
-"An error occured while trying to record from the soundcard for the audio "
+"An error occurred while trying to record from the soundcard for the audio "
 "transmission. Please check that your soundcard is not busy and that your "
 "driver supports full-duplex.\n"
 "The audio transmission has been disabled."
 msgstr ""
 
-#: ../src/endpoints/pcss.cpp:239
+#: ../src/endpoints/pcss.cpp:219
 msgid "Could not open audio channel for audio reception"
 msgstr ""
 
-#: ../src/endpoints/pcss.cpp:239
+#: ../src/endpoints/pcss.cpp:219
 msgid ""
-"An error occured while trying to play audio to the soundcard for the audio "
+"An error occurred while trying to play audio to the soundcard for the audio "
 "reception. Please check that your soundcard is not busy and that your driver "
 "supports full-duplex.\n"
 "The audio reception has been disabled."
 msgstr ""
 
-#: ../src/endpoints/sip.cpp:288
+#: ../src/endpoints/sip.cpp:428
 msgid "Bad request"
 msgstr ""
 
-#: ../src/endpoints/sip.cpp:292
+#: ../src/endpoints/sip.cpp:432
 msgid "Payment required"
 msgstr ""
 
-#: ../src/endpoints/sip.cpp:297
+#: ../src/endpoints/sip.cpp:437
 msgid "Forbidden"
 msgstr ""
 
-#: ../src/endpoints/sip.cpp:301
+#: ../src/endpoints/sip.cpp:441
 msgid "Timeout"
 msgstr "Ajapiirang"
 
-#: ../src/endpoints/sip.cpp:305
+#: ../src/endpoints/sip.cpp:445
 msgid "Conflict"
 msgstr "Vastuolu"
 
-#: ../src/endpoints/sip.cpp:309
+#: ../src/endpoints/sip.cpp:449
 msgid "Temporarily unavailable"
 msgstr "Ajutiselt pole saadaval"
 
-#: ../src/endpoints/sip.cpp:313
+#: ../src/endpoints/sip.cpp:453
 msgid "Not Acceptable"
 msgstr ""
 
-#: ../src/endpoints/sip.cpp:322
-#, c-format
-msgid "Registration failed: %s"
+#: ../src/endpoints/sip.cpp:462
+#, fuzzy, c-format
+msgid "Registration of %s failed: %s"
 msgstr "Tõrge registreerimisel: %s"
 
-#: ../src/endpoints/sip.cpp:334
-#, c-format
-msgid "Unregistration failed: %s"
-msgstr ""
+#: ../src/endpoints/sip.cpp:473
+#, fuzzy, c-format
+msgid "Unregistration of %s failed: %s"
+msgstr "Tõrge registreerimisel: %s"
 
-#: ../src/endpoints/sip.cpp:341
+#: ../src/endpoints/sip.cpp:479
 msgid "Unregistration failed"
 msgstr ""
 
-#: ../src/endpoints/sip.cpp:542
+#: ../src/endpoints/sip.cpp:645
 msgid "Error: User not found"
 msgstr "Viga: Kasutajat ei leitud"
 
-#: ../src/endpoints/sip.cpp:546
+#: ../src/endpoints/sip.cpp:649
 msgid "Error: User offline"
 msgstr "Viga: Kasutaja pole ühendatud"
 
-#: ../src/endpoints/sip.cpp:551
+#: ../src/endpoints/sip.cpp:654
 msgid "Error: Forbidden"
 msgstr ""
 
-#: ../src/endpoints/sip.cpp:555
+#: ../src/endpoints/sip.cpp:658
 msgid "Error: Timeout"
 msgstr "Viga: Ajapiirang ületatud"
 
-#: ../src/endpoints/sip.cpp:559 ../src/gui/chat.cpp:1031
+#: ../src/endpoints/sip.cpp:662 ../src/gui/chat.cpp:1015
 msgid "Error: Failed to transmit message"
 msgstr "Viga: Tõrge sõnumi ülekandmisel"
 
-#: ../src/endpoints/urlhandler.cpp:441
+#: ../src/endpoints/urlhandler.cpp:435
 msgid "Invalid URL handler"
 msgstr "Vigane URL-ikäsitleja"
 
-#: ../src/endpoints/urlhandler.cpp:441
+#: ../src/endpoints/urlhandler.cpp:435
 msgid ""
-"Please specify a valid URL handler. Currently both h323: and callto: are "
+"Please specify a valid URL handler. Currently h323:, callto: and sip: are "
 "supported."
 msgstr ""
 
-#: ../src/endpoints/urlhandler.cpp:469
+#: ../src/endpoints/urlhandler.cpp:448
 #, c-format
 msgid "Calling %s"
 msgstr "Helistamine: %s"
 
-#: ../src/endpoints/urlhandler.cpp:472
+#: ../src/endpoints/urlhandler.cpp:451
 #, c-format
 msgid "Transferring call to %s"
 msgstr "Kõne ümbersuunamine -> %s"
 
-#: ../src/endpoints/urlhandler.cpp:541 ../src/endpoints/urlhandler.cpp:546
+#.
+#. call_history_item = gm_calls_history_item_new ();
+#. call_history_item->type = PLACED_CALL;
+#. call_history_item->url = g_strdup (call_address);
+#. call_history_item->duration = g_strdup ("0.00");
+#. FIXME
+#: ../src/endpoints/urlhandler.cpp:512
 msgid "Failed to call user"
 msgstr "Tõrge kasutajale helistamisel"
 
-#: ../src/gui/accounts.cpp:410
+#: ../src/gui/accounts.cpp:401
 msgid "Edit the Account Information"
 msgstr "Kontaktandmete redigeerimine"
 
 #. Account Name
-#: ../src/gui/accounts.cpp:434
+#: ../src/gui/accounts.cpp:425
 msgid "Account Name:"
 msgstr "Konto nimi:"
 
-#: ../src/gui/accounts.cpp:448
+#: ../src/gui/accounts.cpp:439
 msgid "Protocol:"
 msgstr "Protokoll:"
 
-#: ../src/gui/accounts.cpp:472 ../src/gui/accounts.cpp:993
+#: ../src/gui/accounts.cpp:463 ../src/gui/accounts.cpp:966
 msgid "Registrar:"
 msgstr "Registreerija:"
 
-#: ../src/gui/accounts.cpp:474 ../src/gui/accounts.cpp:1002
+#: ../src/gui/accounts.cpp:465 ../src/gui/accounts.cpp:975
 msgid "Gatekeeper:"
 msgstr "Väravavalvur:"
 
 #. User
-#: ../src/gui/accounts.cpp:488
+#: ../src/gui/accounts.cpp:479
 msgid "User:"
 msgstr "Kasutaja:"
 
 #. Password
-#: ../src/gui/accounts.cpp:503
+#: ../src/gui/accounts.cpp:494
 msgid "Password:"
 msgstr "Parool:"
 
 #. Advanced Options
-#: ../src/gui/accounts.cpp:520
+#: ../src/gui/accounts.cpp:511
 msgid "More _Options"
 msgstr "R_ohkem valikud"
 
-#: ../src/gui/accounts.cpp:534
+#: ../src/gui/accounts.cpp:525
 msgid "Authentication Login:"
 msgstr ""
 
-#: ../src/gui/accounts.cpp:556 ../src/gui/accounts.cpp:1003
+#: ../src/gui/accounts.cpp:547 ../src/gui/accounts.cpp:976
 msgid "Gatekeeper ID:"
 msgstr "Väravavalvuri ID:"
 
 #. Timeout
-#: ../src/gui/accounts.cpp:580
+#: ../src/gui/accounts.cpp:571
 msgid "Registration Timeout:"
 msgstr "Registreerimise ajapiirang:"
 
-#. FIXME change strings after stringfreeze to something more useful - js
-#: ../src/gui/accounts.cpp:630 ../src/gui/accounts.cpp:637
-#: ../src/gui/accounts.cpp:649 ../src/gui/addressbook.cpp:3113
-#: ../src/gui/addressbook.cpp:3592
-msgid "Missing information"
+#. !valid
+#: ../src/gui/accounts.cpp:679
+#, fuzzy
+msgid "Missing or wrong information"
 msgstr "Andmeid on puudu"
 
-#: ../src/gui/accounts.cpp:631 ../src/gui/accounts.cpp:638
+#: ../src/gui/accounts.cpp:680
+#, fuzzy
 msgid ""
-"Please make sure to provide a valid account name, host name, and user name."
+"Please make sure to provide at least an <b>account name</b>, a <b>username</"
+"b> and a valid <b>timeout in seconds</b>."
 msgstr ""
 "Palun veendu, et sisestasid korrektsed konto-, hosti- ja kasutajanimed."
 
-#: ../src/gui/accounts.cpp:650
-msgid ""
-"Please make sure to provide a valid account name, host name and registration "
-"timeout."
-msgstr ""
-
-#: ../src/gui/accounts.cpp:736
+#: ../src/gui/accounts.cpp:709
 #, c-format
 msgid "Are you sure you want to delete account %s?"
 msgstr ""
 
-#: ../src/gui/accounts.cpp:994
+#: ../src/gui/accounts.cpp:967
 msgid "Realm/Domain:"
 msgstr ""
 
-#: ../src/gui/accounts.cpp:1517
+#: ../src/gui/accounts.cpp:1492
 msgid "Account Name"
 msgstr "Konto nimi"
 
-#: ../src/gui/accounts.cpp:1518
+#: ../src/gui/accounts.cpp:1493
 msgid "Protocol"
 msgstr "Protokoll"
 
-#: ../src/gui/accounts.cpp:1527
+#: ../src/gui/accounts.cpp:1502
 msgid "Voice Mails"
 msgstr "Kõneposti sõnumid"
 
-#: ../src/gui/accounts.cpp:1528
+#: ../src/gui/accounts.cpp:1503
 msgid "Status"
 msgstr "Olek"
 
-#: ../src/gui/accounts.cpp:1539
+#: ../src/gui/accounts.cpp:1514 ../src/gui/accounts.cpp:1550
 msgid "Accounts"
 msgstr "Kontod"
 
-#: ../src/gui/accounts.cpp:1575 ../src/gui/preferences.cpp:474
-#: ../src/gui/preferences.cpp:817
+#: ../src/gui/accounts.cpp:1553 ../src/gui/preferences.cpp:552
 msgid "A"
 msgstr ""
 
-#: ../src/gui/accounts.cpp:1675
+#: ../src/gui/accounts.cpp:1653
 msgid "_Default"
 msgstr "_Vaikimisi"
 
-#: ../src/gui/addressbook.cpp:819
-msgid "Contact collision"
-msgstr ""
-
-#: ../src/gui/addressbook.cpp:821
-#, c-format
-msgid ""
-"Another contact with the same speed dial already exists in your address "
-"book:\n"
-"\n"
-"<b>Name</b>: %s\n"
-"<b>URL</b>: %s\n"
-"<b>Speed Dial</b>: %s\n"
-msgstr ""
-"Selle kiirvalimise alla on sinu aadressiraamatus juba kontakt olemas:\n"
-"\n"
-"<b>Nimi</b>: %s\n"
-"<b>URL</b>: %s\n"
-"<b>Kiirvalimine</b>: %s\n"
-
-#: ../src/gui/addressbook.cpp:821 ../src/gui/addressbook.cpp:823
-#: ../src/gui/druid.cpp:1912 ../src/gui/preferences.cpp:930
-msgid "None"
-msgstr "Puudub"
-
-#: ../src/gui/addressbook.cpp:823
-#, c-format
-msgid ""
-"Another contact with similar information already exists in your address "
-"book:\n"
-"\n"
-"<b>Name</b>: %s\n"
-"<b>URL</b>: %s\n"
-"<b>Speed Dial</b>: %s\n"
-"\n"
-"Do you still want to add the contact?"
-msgstr ""
-"Sinu aadressiraamatus juba sarnaste andmetega kontakt olemas:\n"
-"\n"
-"<b>Nimi</b>: %s\n"
-"<b>URL</b>: %s\n"
-"<b>Kiirvalimine</b>: %s\n"
-"\n"
-"Soovid sa ikkagi seda kontakti lisada?"
-
-#. Translators: This is "S" as in "Status"
-#: ../src/gui/addressbook.cpp:991
-msgid "S"
-msgstr "O"
-
-#: ../src/gui/addressbook.cpp:1002 ../src/gui/preferences.cpp:488
-msgid "Name"
-msgstr "Nimi"
-
-#: ../src/gui/addressbook.cpp:1017
-msgid "Comment"
-msgstr "Kommentaar"
-
-#: ../src/gui/addressbook.cpp:1032 ../src/gui/callshistory.cpp:755
-msgid "Software"
-msgstr "Tarkvara"
-
-#: ../src/gui/addressbook.cpp:1046
-msgid "VoIP URL"
-msgstr "VoIP-i URL"
-
-#: ../src/gui/addressbook.cpp:1062
-msgid "E-Mail"
-msgstr "E-post"
-
-#: ../src/gui/addressbook.cpp:1076
-msgid "Location"
-msgstr "Asukoht"
-
-#: ../src/gui/addressbook.cpp:1090
-msgid "Categories"
-msgstr "Kategooriad"
-
-#: ../src/gui/addressbook.cpp:1103
-msgid "Speed Dial"
-msgstr "Kiirvalimine"
-
-#: ../src/gui/addressbook.cpp:1132
-msgid "Name contains"
-msgstr "Nimi sisaldab"
-
-#: ../src/gui/addressbook.cpp:1133
-msgid "URL contains"
-msgstr "URL sisaldab"
-
-#: ../src/gui/addressbook.cpp:1135
-msgid "Belongs to category"
-msgstr "Kuulub kategooriasse"
-
-#: ../src/gui/addressbook.cpp:1137
-msgid "Location contains"
-msgstr "Asukoht sisaldab"
-
-#. call a contact, usage: general
-#: ../src/gui/addressbook.cpp:1552 ../src/gui/addressbook.cpp:2585
-#: ../src/gui/callshistory.cpp:295 ../src/gui/chat.cpp:682
-msgid "C_all Contact"
-msgstr "_Helista kontaktile"
-
-#. copy a contact's URL to clipboard, usage: general
-#: ../src/gui/addressbook.cpp:1559 ../src/gui/addressbook.cpp:2595
-#: ../src/gui/chat.cpp:677 ../src/gui/chat.cpp:682
-msgid "_Copy URL to Clipboard"
-msgstr "Kopeeri URL _lõikelauale"
-
-#: ../src/gui/addressbook.cpp:1565 ../src/gui/addressbook.cpp:2600
-msgid "_Write e-Mail"
-msgstr "Kirjuta _e-sõnum"
-
-#. add a contact to the local addressbook, usage: remote contacts only
-#: ../src/gui/addressbook.cpp:1572 ../src/gui/addressbook.cpp:2612
-#: ../src/gui/callshistory.cpp:302 ../src/gui/chat.cpp:682
-msgid "Add Contact to _Address Book"
-msgstr "Lisa kontakt _aadressiraamatusse"
-
-#. send a contact a (SIP!) message, usage: SIP contacts only
-#: ../src/gui/addressbook.cpp:1579 ../src/gui/addressbook.cpp:2590
-msgid "_Send Message"
-msgstr "_Saada sõnum"
-
-#. edit a local contact's addressbook entry, usage: local contacts
-#: ../src/gui/addressbook.cpp:1586 ../src/gui/addressbook.cpp:1723
-#: ../src/gui/addressbook.cpp:2571
-msgid "_Properties"
-msgstr "_Omadused"
-
-#. delete a local contact entry, usage: local contacts
-#: ../src/gui/addressbook.cpp:1593 ../src/gui/addressbook.cpp:1730
-#: ../src/gui/addressbook.cpp:2566
-msgid "_Delete"
-msgstr "_Kustuta"
-
-#. "new contact" dialog, usage: local context
-#: ../src/gui/addressbook.cpp:1600 ../src/gui/addressbook.cpp:2607
-msgid "New _Contact"
-msgstr "Uus _kontakt"
-
-#: ../src/gui/addressbook.cpp:2027
-#, c-format
-msgid "Error while fetching users list from %s"
-msgstr "Viga kasutajate loendi vastuvõtmisel %s-st"
-
-#: ../src/gui/addressbook.cpp:2031
-#, c-format
-msgid "Found %d user in %s"
-msgid_plural "Found %d users in %s"
-msgstr[0] "Allikast '%2$s' leiti %1$d kasutaja"
-msgstr[1] "Allikast '%2$s' leiti %1$d kasutajat"
-
-#: ../src/gui/addressbook.cpp:2035
-#, c-format
-msgid "Found %d user in %s for a total of %d users"
-msgid_plural "Found %d users in %s for a total of %d users"
-msgstr[0] ""
-msgstr[1] ""
-
-#: ../src/gui/addressbook.cpp:2522
-msgid "Address Book"
-msgstr "Aadressiraamat"
-
-#: ../src/gui/addressbook.cpp:2557
-msgid "_File"
-msgstr "_Fail"
-
-#: ../src/gui/addressbook.cpp:2559
-msgid "New _Address Book"
-msgstr "Uus _aadressiraamat"
-
-#: ../src/gui/addressbook.cpp:2578 ../src/gui/main.cpp:975
-msgid "_Close"
-msgstr "_Sulge"
-
-#: ../src/gui/addressbook.cpp:2583
-msgid "C_ontact"
-msgstr "K_ontakt"
-
-#: ../src/gui/addressbook.cpp:2685
-msgid "Remote Contacts"
-msgstr "Kaugkontaktid"
-
-#: ../src/gui/addressbook.cpp:2693
-msgid "Local Contacts"
-msgstr "Kohalikud kontaktid"
-
-#: ../src/gui/addressbook.cpp:2816
-msgid "Edit the Contact Information"
-msgstr "Kontaktandmete redaktor"
-
-#: ../src/gui/addressbook.cpp:2837 ../src/gui/addressbook.cpp:3307
-msgid "Name:"
-msgstr "Nimi:"
-
-#: ../src/gui/addressbook.cpp:2857
-msgid "VoIP URL:"
-msgstr "VoIP URL:"
-
-#: ../src/gui/addressbook.cpp:2879
-msgid "Email:"
-msgstr "E-post:"
-
-#: ../src/gui/addressbook.cpp:2900
-msgid "Speed Dial:"
-msgstr "Kiirvalimine:"
-
-#: ../src/gui/addressbook.cpp:2922
-msgid "Categories:"
-msgstr "Kategooriad:"
-
-#: ../src/gui/addressbook.cpp:2947
-msgid "Local Addressbook:"
-msgstr "Kohalik aadressiraamat:"
-
-#: ../src/gui/addressbook.cpp:3113
-msgid ""
-"Please make sure to provide at least a full name or an URL for the contact."
-msgstr ""
-
-#: ../src/gui/addressbook.cpp:3160
-#, c-format
-msgid "Are you sure you want to delete %s from %s?"
-msgstr ""
-
-#: ../src/gui/addressbook.cpp:3286
-msgid "Edit an address book"
-msgstr "Aadressiraamatu redigeerimine"
-
-#: ../src/gui/addressbook.cpp:3287
-msgid "Add an address book"
-msgstr "Aadressiraamatu lisamine"
-
-#: ../src/gui/addressbook.cpp:3332
-msgid "Type:"
-msgstr "Liik:"
-
-#: ../src/gui/addressbook.cpp:3338
-msgid "Local"
-msgstr "Kohalik"
-
-#: ../src/gui/addressbook.cpp:3339
-msgid "Remote LDAP"
-msgstr "Võrgusolev LDAP"
-
-#: ../src/gui/addressbook.cpp:3340
-msgid "Remote ILS"
-msgstr "Võrgusolev ILS"
-
-#: ../src/gui/addressbook.cpp:3371
-msgid "Hostname:"
-msgstr "Hostinimi:"
-
-#: ../src/gui/addressbook.cpp:3394
-msgid "Port:"
-msgstr "Port:"
-
-#: ../src/gui/addressbook.cpp:3419
-msgid "Base DN:"
-msgstr "Baas-DN:"
-
-#: ../src/gui/addressbook.cpp:3442
-msgid "Search Scope:"
-msgstr "Otsinguskoop:"
-
-#: ../src/gui/addressbook.cpp:3448
-msgid "Subtree"
-msgstr "Alampuu"
-
-#: ../src/gui/addressbook.cpp:3449
-msgid "One Level"
-msgstr "Üks tase"
-
-#: ../src/gui/addressbook.cpp:3479
-msgid "Search Attribute:"
-msgstr "Otsingurekvisiit:"
-
-#: ../src/gui/addressbook.cpp:3592
-msgid "Please make sure you fill in all required fields."
-msgstr "Palun veendu, et sa täitsid kõik vajalikud väljad."
-
-#: ../src/gui/addressbook.cpp:3638
-#, c-format
-msgid "Are you sure you want to delete %s and all its contacts?"
-msgstr "Kas sa soovid kustutada %s ja kõik selle kontaktid?"
-
-#: ../src/gui/callbacks.cpp:124
+#: ../src/gui/callbacks.cpp:132
 msgid "Disconnecting..."
 msgstr ""
 
-#: ../src/gui/callbacks.cpp:139
+#: ../src/gui/callbacks.cpp:147
 msgid "Contributors:"
 msgstr "Kaastöötajad:"
 
-#: ../src/gui/callbacks.cpp:146
+#: ../src/gui/callbacks.cpp:156
 msgid "Artwork:"
 msgstr "Kunst:"
 
-#: ../src/gui/callbacks.cpp:152
+#: ../src/gui/callbacks.cpp:163
 msgid "See AUTHORS file for full credits"
 msgstr ""
 
 #. Translators: Please write translator credits here, and
 #. * separate names with \n
-#: ../src/gui/callbacks.cpp:190
+#: ../src/gui/callbacks.cpp:201
 msgid "translator-credits"
 msgstr "Ivar Smolin <okul@linux.ee>, 2005-2007."
 
-#: ../src/gui/callbacks.cpp:195
+#: ../src/gui/callbacks.cpp:206
 msgid ""
 "Ekiga is full-featured SIP and H.323 compatible VoIP, IP-Telephony and "
 "Videoconferencing application that allows you to make audio and video calls "
@@ -2064,138 +2102,111 @@ msgstr ""
 "videokõnesid kaugkasutajatele, kes pruugivad SIP ja H.323 riist- või "
 "tarkvara."
 
-#: ../src/gui/callshistory.cpp:664
-msgid "Received Calls"
-msgstr "Vastuvõetud kõned"
-
-#: ../src/gui/callshistory.cpp:664
-msgid "Placed Calls"
-msgstr "Valitud kõned"
-
-#: ../src/gui/callshistory.cpp:664
-msgid "Missed Calls"
-msgstr "Vastamata kõned"
-
-#: ../src/gui/callshistory.cpp:676 ../src/gui/statusicon.cpp:144
-msgid "Calls History"
-msgstr "Kõnede ajalugu"
-
-#: ../src/gui/callshistory.cpp:719
-msgid "Date"
-msgstr "Kuupäev"
-
-#: ../src/gui/callshistory.cpp:727
-msgid "Remote User"
-msgstr "Teine kasutaja"
-
-#: ../src/gui/callshistory.cpp:736
-msgid "Call Duration"
-msgstr "Kõne kestus"
-
-#: ../src/gui/callshistory.cpp:746
-msgid "Call End Reason"
-msgstr "Kõnelõpu põhjus"
-
-#: ../src/gui/chat.cpp:625
-msgid "Hang _up"
-msgstr "_Toru hargile"
-
-#: ../src/gui/chat.cpp:626 ../src/gui/statusicon.cpp:100
-msgid "_Call"
-msgstr "_Helista"
-
-#: ../src/gui/chat.cpp:627
+#: ../src/gui/chat.cpp:610
 msgid "Call this user"
 msgstr "Sellele kasutajale helistamine"
 
-#: ../src/gui/chat.cpp:635
+#: ../src/gui/chat.cpp:618
 msgid "_Send"
 msgstr "_Saada"
 
-#: ../src/gui/chat.cpp:640
+#: ../src/gui/chat.cpp:623
 msgid "Send message"
 msgstr "Sõnumi saatmine"
 
-#: ../src/gui/chat.cpp:677
+#: ../src/gui/chat.cpp:661
 msgid "_Open URL"
 msgstr "_Ava URL"
 
-#: ../src/gui/chat.cpp:705
+#: ../src/gui/chat.cpp:661
+msgid "_Copy URL to Clipboard"
+msgstr "Kopeeri URL _lõikelauale"
+
+#: ../src/gui/chat.cpp:666
+msgid "C_all Contact"
+msgstr "_Helista kontaktile"
+
+#: ../src/gui/chat.cpp:666
+#, fuzzy
+msgid "_Copy URI to Clipboard"
+msgstr "Kopeeri URL _lõikelauale"
+
+#: ../src/gui/chat.cpp:689
 msgid "_Copy Equation"
 msgstr ""
 
-#: ../src/gui/chat.cpp:1325
+#: ../src/gui/chat.cpp:1180
 msgid "Chat Window"
 msgstr "Vestlusaken"
 
-#: ../src/gui/chat.cpp:1450
+#: ../src/gui/chat.cpp:1299
 msgid "You"
 msgstr "Sa"
 
 #. Translators: "He says", "You say"
-#: ../src/gui/chat.cpp:1452
+#: ../src/gui/chat.cpp:1301
 msgid "says:"
 msgstr "ütles:"
 
-#: ../src/gui/chat.cpp:1452
+#: ../src/gui/chat.cpp:1301
 msgid "say:"
 msgstr "ütled:"
 
-#: ../src/gui/chat.cpp:1524
+#: ../src/gui/chat.cpp:1373
 msgid "New Remote User"
 msgstr "Uus kaugkasutaja"
 
-#: ../src/gui/config.cpp:236
+#: ../src/gui/conf.cpp:206
 msgid "Changing this setting will only affect new calls"
 msgstr ""
 
-#: ../src/gui/config.cpp:237
+#: ../src/gui/conf.cpp:207
 msgid ""
 "Ekiga cannot apply one or more changes to the current call. Your new "
 "settings will take effect for the next call."
 msgstr ""
 
-#: ../src/gui/config.cpp:331
+#: ../src/gui/conf.cpp:278
 msgid "H.245 Tunneling disabled"
 msgstr "H.245 tunneldamine keelatud"
 
-#: ../src/gui/config.cpp:332
+#: ../src/gui/conf.cpp:279
 msgid "H.245 Tunneling enabled"
 msgstr "H.245 tunneldamine lubatud"
 
-#: ../src/gui/config.cpp:364
+#: ../src/gui/conf.cpp:311
 msgid "Early H.245 disabled"
 msgstr "Varajane H.245 on keelatud"
 
-#: ../src/gui/config.cpp:365
+#: ../src/gui/conf.cpp:312
 msgid "Early H.245 enabled"
 msgstr "Varajane H.245 on lubatud"
 
-#: ../src/gui/config.cpp:398
+#: ../src/gui/conf.cpp:345
 msgid "Fast Start disabled"
 msgstr "Kiirkäivitus keelatud"
 
-#: ../src/gui/config.cpp:399
+#: ../src/gui/conf.cpp:346
 msgid "Fast Start enabled"
 msgstr "Kiirkäivitus lubatud"
 
-#: ../src/gui/config.cpp:506
+#: ../src/gui/conf.cpp:444
 msgid "Enabled silence detection"
 msgstr "Vaikuse tuvastamine lubatud"
 
-#: ../src/gui/config.cpp:512
+#: ../src/gui/conf.cpp:450
 msgid "Disabled silence detection"
 msgstr "Vaikuse tuvastamine keelatud"
 
-#: ../src/gui/config.cpp:571
+#: ../src/gui/conf.cpp:509
 msgid "Enabled echo cancelation"
 msgstr ""
 
-#: ../src/gui/config.cpp:577
+#: ../src/gui/conf.cpp:515
 msgid "Disabled echo cancelation"
 msgstr ""
 
-#: ../src/gui/druid.cpp:610
+#: ../src/gui/druid.cpp:638
 msgid ""
 "This is the Ekiga general configuration assistant. The following steps will "
 "set up Ekiga by asking a few simple questions.\n"
@@ -2209,22 +2220,22 @@ msgstr ""
 "Hiljem on võimalik tehtud valikuid alati muuta valides Redaktorimenüü alt "
 "menüüpunkti Eelistused."
 
-#: ../src/gui/druid.cpp:622
+#: ../src/gui/druid.cpp:650
 #, c-format
 msgid "Configuration Assistant - page 1/%d"
 msgstr "Seadistusabiline - 1. samm %d'st"
 
-#: ../src/gui/druid.cpp:664
+#: ../src/gui/druid.cpp:692
 #, c-format
 msgid "Personal Information - page %d/%d"
 msgstr "Isiklikud andmed - %d. samm %d'st"
 
 #. The user fields
-#: ../src/gui/druid.cpp:677
+#: ../src/gui/druid.cpp:705
 msgid "Please enter your first name and your surname:"
 msgstr "Palun sisesta oma eesnimi ja perekonnanimi:"
 
-#: ../src/gui/druid.cpp:686
+#: ../src/gui/druid.cpp:714
 msgid ""
 "Your first name and surname will be used when connecting to other VoIP and "
 "videoconferencing software."
@@ -2232,20 +2243,20 @@ msgstr ""
 "Sinu ees- ja perekonnanime kasutatakse ühendumisel teise VoIP ja "
 "videokonverentsi tarkvaraga."
 
-#: ../src/gui/druid.cpp:732
+#: ../src/gui/druid.cpp:760
 #, c-format
 msgid "ekiga.net Account - page %d/%d"
 msgstr "ekiga.net konto - %d. samm %d'st"
 
-#: ../src/gui/druid.cpp:743
+#: ../src/gui/druid.cpp:771
 msgid "Please enter your username:"
 msgstr "Palun sisesta oma kasutajanimi:"
 
-#: ../src/gui/druid.cpp:751
+#: ../src/gui/druid.cpp:779
 msgid "Please enter your password:"
 msgstr "Palun sisesta oma parool:"
 
-#: ../src/gui/druid.cpp:762
+#: ../src/gui/druid.cpp:790
 msgid ""
 "The username and password are used to login to your existing account at the "
 "ekiga.net free SIP service. If you do not have an ekiga.net SIP address yet, "
@@ -2263,25 +2274,25 @@ msgstr ""
 "Kui sa kasutad alternatiivset SIP-teenust või eelistad sisselogimisandmed "
 "hiljem sisestada, siis võib need sammud vahele jätta."
 
-#: ../src/gui/druid.cpp:772
+#: ../src/gui/druid.cpp:800
 msgid "Get an ekiga.net SIP account"
 msgstr "Hangi omale ekiga.net SIP-konto"
 
-#: ../src/gui/druid.cpp:782
+#: ../src/gui/druid.cpp:810
 msgid "I do not want to sign up for the ekiga.net free service"
 msgstr "Ma ei soovi registreeruda ekiga.net vaba teenuse kasutajaks"
 
-#: ../src/gui/druid.cpp:835
+#: ../src/gui/druid.cpp:866
 #, c-format
 msgid "Connection Type - page %d/%d"
 msgstr "Ühenduse liik - %d. samm %d'st"
 
 #. The connection type
-#: ../src/gui/druid.cpp:847
+#: ../src/gui/druid.cpp:878
 msgid "Please choose your connection type:"
 msgstr "Palun vali oma ühenduse liik:"
 
-#: ../src/gui/druid.cpp:855
+#: ../src/gui/druid.cpp:893
 msgid ""
 "The connection type will permit determining the best quality settings that "
 "Ekiga will use during calls. You can later change the settings individually "
@@ -2290,20 +2301,20 @@ msgstr ""
 "Ühenduse liigi abil saab Ekiga valida kõnedele parimad kvaliteedisätted. "
 "Hiljem saab sätteid ükshaaval muuta eelistuste aknas."
 
-#: ../src/gui/druid.cpp:893
+#: ../src/gui/druid.cpp:931
 #, c-format
 msgid "NAT Type - page %d/%d"
 msgstr "NAT liik - %d. samm %d'st"
 
-#: ../src/gui/druid.cpp:903
+#: ../src/gui/druid.cpp:941
 msgid "Click here to detect your NAT Type:"
 msgstr "Oma NAT-i liigi tuvastamiseks klõpsa siia:"
 
-#: ../src/gui/druid.cpp:907
+#: ../src/gui/druid.cpp:945
 msgid "Detect NAT Type"
 msgstr "Tuvasta NAT-i liik"
 
-#: ../src/gui/druid.cpp:911
+#: ../src/gui/druid.cpp:949
 msgid ""
 "The NAT type detection will permit to assist you in configuring your NAT "
 "router to be able to do calls with Ekiga."
@@ -2311,23 +2322,23 @@ msgstr ""
 "NAT-i liigi tuvastamine aitab sul sinu NAT-marsruuterit seadistada nii, et "
 "selle kaudu on võimalik Ekiga kõnesid võtta."
 
-#: ../src/gui/druid.cpp:956
+#: ../src/gui/druid.cpp:994
 #, c-format
 msgid "Audio Manager - page %d/%d"
 msgstr "Audiohaldur - %d. samm %d'st"
 
 #. The Audio devices
-#: ../src/gui/druid.cpp:968
+#: ../src/gui/druid.cpp:1006
 msgid "Please choose your audio manager:"
 msgstr "Palun vali oma audiohaldur:"
 
-#: ../src/gui/druid.cpp:977
+#: ../src/gui/druid.cpp:1015
 msgid ""
 "The audio manager is the plugin that will manage your audio devices. "
 "WindowsMultimedia is probably the best choice when available."
 msgstr ""
 
-#: ../src/gui/druid.cpp:979
+#: ../src/gui/druid.cpp:1017
 msgid ""
 "The audio manager is the plugin that will manage your audio devices. ALSA is "
 "probably the best choice when available."
@@ -2335,49 +2346,49 @@ msgstr ""
 "Audiohaldur on sinu audioseadmeid haldav plugin. Kui ALSA on kasutatav, siis "
 "on see arvatavasti parim valik."
 
-#: ../src/gui/druid.cpp:1019
+#: ../src/gui/druid.cpp:1057
 #, c-format
 msgid "Audio Devices - page %d/%d"
 msgstr "Audioseadmed - %d. samm %d'st"
 
 #. The Audio devices
-#: ../src/gui/druid.cpp:1031
+#: ../src/gui/druid.cpp:1069
 msgid "Please choose the audio output device:"
 msgstr "Palun vali audioväljundi seade:"
 
-#: ../src/gui/druid.cpp:1039
+#: ../src/gui/druid.cpp:1077
 msgid ""
 "The audio output device is the device managed by the audio manager that will "
 "be used to play audio."
 msgstr ""
 "Audio väljundseade on audiohalduri poolt hallatav helide esitamise seade."
 
-#: ../src/gui/druid.cpp:1049
+#: ../src/gui/druid.cpp:1087
 msgid "Please choose the audio input device:"
 msgstr "Palun vali audiosisendi seade:"
 
-#: ../src/gui/druid.cpp:1057
+#: ../src/gui/druid.cpp:1095
 msgid ""
 "The audio input device is the device managed by the audio manager that will "
 "be used to record your voice."
 msgstr ""
 "Audio väljundseade on audiohalduri poolt hallatav hääle salvestamise seade."
 
-#: ../src/gui/druid.cpp:1070 ../src/gui/druid.cpp:1204
+#: ../src/gui/druid.cpp:1108 ../src/gui/druid.cpp:1251
 msgid "Test Settings"
 msgstr "Sätete testimine"
 
-#: ../src/gui/druid.cpp:1114
+#: ../src/gui/druid.cpp:1152
 #, c-format
 msgid "Video Manager - page %d/%d"
 msgstr "Videohaldur - %d. samm %d'st"
 
 #. The Audio devices
-#: ../src/gui/druid.cpp:1126
+#: ../src/gui/druid.cpp:1164
 msgid "Please choose your video manager:"
 msgstr "Palun vali oma videohaldur:"
 
-#: ../src/gui/druid.cpp:1134
+#: ../src/gui/druid.cpp:1172
 msgid ""
 "The video manager is the plugin that will manage your video devices, "
 "Video4Linux is the most common choice if you own a webcam."
@@ -2385,17 +2396,17 @@ msgstr ""
 "Videohaldur on videoseadmete haldamise plugin. Kui sul on veebikaamera, siis "
 "on kõige üldisem valik Video4Linux."
 
-#: ../src/gui/druid.cpp:1172
+#: ../src/gui/druid.cpp:1212
 #, c-format
 msgid "Video Devices - page %d/%d"
 msgstr "Videoseadmed - %d. samm %d'st"
 
 #. The Video devices
-#: ../src/gui/druid.cpp:1184
+#: ../src/gui/druid.cpp:1224
 msgid "Please choose the video input device:"
 msgstr "Palun vali videosisendi seade:"
 
-#: ../src/gui/druid.cpp:1192
+#: ../src/gui/druid.cpp:1239
 msgid ""
 "The video input device is the device managed by the video manager that will "
 "be used to capture video."
@@ -2403,33 +2414,33 @@ msgstr ""
 "Video sisendseade on videohalduri poolt hallatav videopildi vastuvõtmise "
 "seade."
 
-#: ../src/gui/druid.cpp:1240
+#: ../src/gui/druid.cpp:1287
 #, c-format
 msgid "Configuration complete - page %d/%d"
 msgstr "Seadistused on valmis - %d. samm %d'st"
 
-#: ../src/gui/druid.cpp:1630
+#: ../src/gui/druid.cpp:1719
 msgid "56k Modem"
 msgstr "56k Modem"
 
-#: ../src/gui/druid.cpp:1631
+#: ../src/gui/druid.cpp:1726
 msgid "ISDN"
 msgstr "ISDN"
 
-#: ../src/gui/druid.cpp:1632
+#: ../src/gui/druid.cpp:1733
 msgid "xDSL/Cable"
 msgstr "xDSL/Kaabel"
 
-#: ../src/gui/druid.cpp:1633
+#: ../src/gui/druid.cpp:1740
 msgid "T1/LAN"
 msgstr "T1/LAN"
 
-#: ../src/gui/druid.cpp:1634
+#: ../src/gui/druid.cpp:1747
 msgid "Keep current settings"
 msgstr "Käesolevad sätted säilitatakse"
 
-#: ../src/gui/druid.cpp:1912
-#, c-format
+#: ../src/gui/druid.cpp:2010
+#, fuzzy, c-format
 msgid ""
 "You have now finished the Ekiga configuration. All the settings can be "
 "changed in the Ekiga preferences. Enjoy!\n"
@@ -2444,7 +2455,7 @@ msgid ""
 "Audio recorder: %s\n"
 "Video manager: %s\n"
 "Video input: %s\n"
-"SIP URL: %s\n"
+"SIP URI: %s\n"
 msgstr ""
 "Ekiga seadistamine on lõpusirgel. Kõiki sätteid on võimalik Ekiga eelistuste "
 "alt muuta.\n"
@@ -2461,556 +2472,429 @@ msgstr ""
 "Videosisend: %s\n"
 "SIP-i URL: %s\n"
 
-#: ../src/gui/druid.cpp:1967
+#: ../src/gui/druid.cpp:2010 ../src/gui/preferences.cpp:665
+msgid "None"
+msgstr "Puudub"
+
+#: ../src/gui/druid.cpp:2057
 msgid "First Time Configuration Assistant"
 msgstr "Esmakorde seadistamise abiline"
 
-#: ../src/gui/history.cpp:128
+#: ../src/gui/history.cpp:127 ../src/gui/main.cpp:1082
 msgid "General History"
 msgstr "Üldine ajalugu"
 
-#: ../src/gui/main.cpp:667
-msgid "Enter a URL on the left, and click this button to place a call"
+#: ../src/gui/main.cpp:581
+msgid "Invisible"
 msgstr ""
-"Sisesta vasakul asuvasse lahtrisse URL ja helistamiseks vajuta sellele nupule"
 
-#: ../src/gui/main.cpp:711
+#: ../src/gui/main.cpp:628
+#, fuzzy
+msgid "Find Contacts"
+msgstr "K_ontakt"
+
+#: ../src/gui/main.cpp:651
+#, fuzzy
+msgid "Add contact to roster"
+msgstr "Lisa kontakt _aadressiraamatusse"
+
+#: ../src/gui/main.cpp:667
 msgid "Open text chat"
 msgstr "Tekstivestluse avamine"
 
-#: ../src/gui/main.cpp:735
-msgid "Change the view mode"
-msgstr "Vaaterežiimi muutmine"
-
-#: ../src/gui/main.cpp:754
-msgid "Open address book"
-msgstr "Aadressiraamatu avamine"
-
-#: ../src/gui/main.cpp:775
-msgid "Display images from your camera device"
-msgstr "Kaameraseadmest tulevate piltide kuvamine"
-
-#: ../src/gui/main.cpp:798
-msgid ""
-"Audio transmission status. During a call, click here to suspend or resume "
-"the audio transmission."
+#: ../src/gui/main.cpp:825
+#, fuzzy
+msgid "Enter a URI on the left, and click this button to place a call"
 msgstr ""
-"Audio ülekandmise olek. Kõne ajal klõpsa audio ülekandmise peatamiseks või "
-"taastamiseks siia."
+"Sisesta vasakul asuvasse lahtrisse URL ja helistamiseks vajuta sellele nupule"
 
-#: ../src/gui/main.cpp:821
-msgid ""
-"Video transmission status. During a call, click here to suspend or resume "
-"the video transmission."
-msgstr ""
-"Video ülekandmise olek. Kõne ajal klõpsa video ülekandmise peatamiseks või "
-"taastamiseks siia."
-
-#: ../src/gui/main.cpp:901
+#: ../src/gui/main.cpp:882 ../src/gui/main.cpp:1011
 msgid "C_all"
 msgstr "_Helistamine"
 
-#: ../src/gui/main.cpp:903
+#: ../src/gui/main.cpp:884
 msgid "Ca_ll"
 msgstr "_Helista"
 
-#: ../src/gui/main.cpp:903 ../src/gui/statusicon.cpp:100
+#: ../src/gui/main.cpp:884
 msgid "Place a new call"
 msgstr "Helistamine"
 
-#: ../src/gui/main.cpp:906 ../src/gui/statusicon.cpp:103
+#: ../src/gui/main.cpp:887
 msgid "_Hang up"
 msgstr "_Katkesta"
 
-#: ../src/gui/main.cpp:907 ../src/gui/statusicon.cpp:104
+#: ../src/gui/main.cpp:888
 msgid "Terminate the current call"
 msgstr "Käimasoleva kõne katkestamine"
 
-#: ../src/gui/main.cpp:913 ../src/gui/statusicon.cpp:110
-msgid "_Available"
-msgstr "Saa_daval"
-
-#: ../src/gui/main.cpp:914 ../src/gui/statusicon.cpp:111
-msgid "Display a popup to accept the call"
+#: ../src/gui/main.cpp:894 ../src/gui/statusicon.cpp:417
+msgid "_Online"
 msgstr ""
 
-#: ../src/gui/main.cpp:919 ../src/gui/statusicon.cpp:116
-msgid "Aut_o Answer"
-msgstr "Aut_omaatvastamine"
-
-#: ../src/gui/main.cpp:920 ../src/gui/statusicon.cpp:117
-msgid "Auto answer calls"
+#: ../src/gui/main.cpp:900 ../src/gui/statusicon.cpp:423
+msgid "_Away"
 msgstr ""
 
-#: ../src/gui/main.cpp:925 ../src/gui/statusicon.cpp:122
-msgid "_Do Not Disturb"
+#: ../src/gui/main.cpp:906 ../src/gui/statusicon.cpp:429
+#, fuzzy
+msgid "Do Not _Disturb"
 msgstr "_Mitte häirida"
 
-#: ../src/gui/main.cpp:926 ../src/gui/statusicon.cpp:123
-msgid "Reject calls"
+#: ../src/gui/main.cpp:912 ../src/gui/statusicon.cpp:435
+msgid "_Free For Chat"
 msgstr ""
 
-#: ../src/gui/main.cpp:931 ../src/gui/statusicon.cpp:128
-msgid "_Forward"
-msgstr "Üm_bersuunamine"
+#: ../src/gui/main.cpp:918 ../src/gui/statusicon.cpp:441
+msgid "_Invisible"
+msgstr ""
 
-#: ../src/gui/main.cpp:931 ../src/gui/statusicon.cpp:128
-msgid "Forward calls"
-msgstr "Kõnede edastamine"
-
-#: ../src/gui/main.cpp:939
-msgid "Speed d_ials"
-msgstr "_Kiirvalimised"
-
-#: ../src/gui/main.cpp:943 ../src/gui/main.cpp:3148
+#: ../src/gui/main.cpp:926 ../src/gui/main.cpp:2506
 msgid "_Hold Call"
 msgstr ""
 
-#: ../src/gui/main.cpp:943
+#: ../src/gui/main.cpp:926 ../src/gui/main.cpp:1691
 msgid "Hold the current call"
 msgstr ""
 
-#: ../src/gui/main.cpp:947
+#: ../src/gui/main.cpp:930
 msgid "_Transfer Call"
 msgstr ""
 
-#: ../src/gui/main.cpp:948
+#: ../src/gui/main.cpp:931
 msgid "Transfer the current call"
 msgstr ""
 
-#: ../src/gui/main.cpp:955 ../src/gui/main.cpp:3182
+#: ../src/gui/main.cpp:938 ../src/gui/main.cpp:2545
 msgid "Suspend _Audio"
 msgstr "Peata _audio"
 
-#: ../src/gui/main.cpp:956
+#: ../src/gui/main.cpp:939
 msgid "Suspend or resume the audio transmission"
 msgstr "Audio ülekandmise peatamine või taastamine"
 
-#: ../src/gui/main.cpp:960 ../src/gui/main.cpp:3184
+#: ../src/gui/main.cpp:943 ../src/gui/main.cpp:2547
 msgid "Suspend _Video"
 msgstr "Peata _video"
 
-#: ../src/gui/main.cpp:961
+#: ../src/gui/main.cpp:944
 msgid "Suspend or resume the video transmission"
 msgstr "Video ülekandmise peatamine või taastamine"
 
-#: ../src/gui/main.cpp:968
-msgid "_Save Current Picture"
-msgstr "Salvesta käesolev _pilt"
-
-#: ../src/gui/main.cpp:969
+#: ../src/gui/main.cpp:952
 msgid "Save a snapshot of the current video"
 msgstr "Videost hetketõmmise salvestamine"
 
-#: ../src/gui/main.cpp:975
+#: ../src/gui/main.cpp:958
 msgid "Close the Ekiga window"
 msgstr "Ekiga akna sulgemine"
 
-#: ../src/gui/main.cpp:982 ../src/gui/statusicon.cpp:185
-msgid "_Quit"
+#: ../src/gui/main.cpp:965 ../src/gui/statusicon.cpp:474
+#, fuzzy
+msgid "Quit"
 msgstr "_Lõpeta"
 
-#: ../src/gui/main.cpp:982 ../src/gui/statusicon.cpp:186
-msgid "Quit Ekiga"
-msgstr "Ekiga lõpetamine"
-
-#: ../src/gui/main.cpp:986
-msgid "_Edit"
-msgstr "_Redaktor"
-
-#: ../src/gui/main.cpp:988
-msgid "_Configuration Druid"
+#: ../src/gui/main.cpp:971
+msgid "Configuration Druid"
 msgstr ""
 
-#: ../src/gui/main.cpp:989
+#: ../src/gui/main.cpp:972
 msgid "Run the configuration druid"
 msgstr ""
 
-#: ../src/gui/main.cpp:996
+#: ../src/gui/main.cpp:979
 msgid "_Accounts"
 msgstr "_Kontod"
 
-#: ../src/gui/main.cpp:997
+#: ../src/gui/main.cpp:980
 msgid "Edit your accounts"
 msgstr "Sinu kontode redigeerimine"
 
-#: ../src/gui/main.cpp:1002 ../src/gui/statusicon.cpp:152
-msgid "_Preferences"
-msgstr "_Eelistused"
-
-#: ../src/gui/main.cpp:1003 ../src/gui/statusicon.cpp:153
+#: ../src/gui/main.cpp:986
 msgid "Change your preferences"
 msgstr "Sinu eelistuste muutmine"
 
-#: ../src/gui/main.cpp:1008
+#: ../src/gui/main.cpp:991
 msgid "_View"
 msgstr "_Vaade"
 
-#: ../src/gui/main.cpp:1010
-msgid "View _Mode"
-msgstr "Vaate_režiim"
+#: ../src/gui/main.cpp:993
+msgid "Panel"
+msgstr "Paneel"
 
-#: ../src/gui/main.cpp:1012
-msgid "Softp_hone"
-msgstr "_Tarkvaraline telefon"
+#: ../src/gui/main.cpp:995
+msgid "Con_tacts"
+msgstr "K_ontaktid"
 
-#: ../src/gui/main.cpp:1013
-msgid "Show the softphone view"
-msgstr "Tarkvaratelefoni vaate näitamine"
+#: ../src/gui/main.cpp:995
+msgid "View the contacts list"
+msgstr "Kontaktide nimekirja vaatamine"
 
-#: ../src/gui/main.cpp:1018
-msgid "_Videophone"
-msgstr "_Videtelefon"
-
-#: ../src/gui/main.cpp:1019
-msgid "Show the videophone view"
-msgstr "Videotelefoni vaate näitamine"
-
-#: ../src/gui/main.cpp:1024
-msgid "_Full View"
-msgstr "Täi_svaade"
-
-#: ../src/gui/main.cpp:1025
-msgid "View all components"
-msgstr "Kõikide komponentide näitamine"
-
-#: ../src/gui/main.cpp:1033
-msgid "_Control Panel"
-msgstr "_Juhtpaneel"
-
-#: ../src/gui/main.cpp:1035
+#: ../src/gui/main.cpp:1000
 msgid "_Dialpad"
 msgstr "_Klahvistik"
 
-#: ../src/gui/main.cpp:1035
+#: ../src/gui/main.cpp:1000
 msgid "View the dialpad"
 msgstr "Numbriklahvistiku vaatamine"
 
-#: ../src/gui/main.cpp:1040
-msgid "_Audio Settings"
-msgstr "_Audiosätted"
+#: ../src/gui/main.cpp:1005
+#, fuzzy
+msgid "Calls _History"
+msgstr "Kõnede ajalugu"
 
-#: ../src/gui/main.cpp:1041
-msgid "View audio settings"
-msgstr "Audiosätete vaatamine"
-
-#: ../src/gui/main.cpp:1046
-msgid "_Video Settings"
-msgstr "_Videosätted"
-
-#: ../src/gui/main.cpp:1047
-msgid "View video settings"
-msgstr "Videosätete vaatamine"
-
-#: ../src/gui/main.cpp:1052
-msgid "_Statistics"
-msgstr "_Statistika"
-
-#: ../src/gui/main.cpp:1053
-msgid "View audio/video transmission and reception statistics"
-msgstr ""
-
-#: ../src/gui/main.cpp:1061
-msgid "_Local Video"
-msgstr "_Kohalik video"
-
-#: ../src/gui/main.cpp:1062
-msgid "Local video image"
-msgstr "Kohalik videopilt"
-
-#: ../src/gui/main.cpp:1067
-msgid "_Remote Video"
-msgstr "Kau_gvideo"
-
-#: ../src/gui/main.cpp:1068
-msgid "Remote video image"
-msgstr "Võrgust tulev videopilt"
-
-#: ../src/gui/main.cpp:1073
-msgid "Both (_Picture-in-Picture)"
-msgstr "Mõlemad (_pilt-pildis)"
-
-#: ../src/gui/main.cpp:1074 ../src/gui/main.cpp:1080 ../src/gui/main.cpp:1087
-msgid "Both video images"
-msgstr "Mõlemad videopildid"
-
-#: ../src/gui/main.cpp:1079
-msgid "Both (_Side-by-Side)"
-msgstr "Mõlemad (_külg-küljel)"
-
-#: ../src/gui/main.cpp:1086
-msgid "Both (_Both in New Windows)"
-msgstr "Mõlemad (mõlemad uues _aknas)"
-
-#: ../src/gui/main.cpp:1095
-msgid "Zoom _In"
-msgstr "_Suurenda"
-
-#: ../src/gui/main.cpp:1095 ../src/gui/main.cpp:1573 ../src/gui/main.cpp:1598
-msgid "Zoom in"
-msgstr "Suurendamine"
-
-#: ../src/gui/main.cpp:1099
-msgid "Zoom _Out"
-msgstr "_Vähenda"
-
-#: ../src/gui/main.cpp:1099 ../src/gui/main.cpp:1577 ../src/gui/main.cpp:1602
-msgid "Zoom out"
-msgstr "Vähendamine"
-
-#: ../src/gui/main.cpp:1103
-msgid "_Normal Size"
-msgstr "Al_gsuurus"
-
-#: ../src/gui/main.cpp:1103 ../src/gui/main.cpp:1581 ../src/gui/main.cpp:1606
-msgid "Normal size"
-msgstr "Algsuurus"
-
-#: ../src/gui/main.cpp:1109
-msgid "_Fullscreen"
-msgstr "_Täisekraan"
-
-#: ../src/gui/main.cpp:1115
-msgid "_Tools"
-msgstr "_Tööriistad"
-
-#: ../src/gui/main.cpp:1117 ../src/gui/statusicon.cpp:136
-msgid "Address _Book"
-msgstr "Aadressi_raamat"
-
-#: ../src/gui/main.cpp:1118 ../src/gui/statusicon.cpp:137
-msgid "Open the address book"
-msgstr "Aadressiraamatu avamine"
-
-#: ../src/gui/main.cpp:1125
-msgid "C_hat Window"
-msgstr "_Vestlusaken"
-
-#: ../src/gui/main.cpp:1126
-msgid "Open the chat window"
-msgstr "Tekstivestluse akna avamine"
-
-#: ../src/gui/main.cpp:1131
-msgid "_General History"
-msgstr "Ül_dine ajalugu"
-
-#: ../src/gui/main.cpp:1132
-msgid "View the operations history"
-msgstr ""
-
-#: ../src/gui/main.cpp:1136
-msgid "_Calls History"
-msgstr "_Kõnede ajalugu"
-
-#: ../src/gui/main.cpp:1137 ../src/gui/statusicon.cpp:145
+#: ../src/gui/main.cpp:1006
 msgid "View the calls history"
 msgstr "Kõnede ajaloo vaatamine"
 
-#: ../src/gui/main.cpp:1144
-msgid "_PC-To-Phone Account"
-msgstr "_Arvutist-Telefonile konto"
+#: ../src/gui/main.cpp:1012
+#, fuzzy
+msgid "View the call information"
+msgstr "Kõnede ajaloo vaatamine"
 
-#: ../src/gui/main.cpp:1145
-msgid "Manage your PC-To-Phone account"
-msgstr "Sinu Arvutist-Telefonile konto haldamine"
+#: ../src/gui/main.cpp:1020
+msgid "Local Video"
+msgstr "Kohalik video"
 
-#: ../src/gui/main.cpp:1150
-msgid "_Help"
-msgstr "A_bi"
+#: ../src/gui/main.cpp:1021
+msgid "Local video image"
+msgstr "Kohalik videopilt"
 
-#: ../src/gui/main.cpp:1152 ../src/gui/statusicon.cpp:161
-#: ../src/gui/statusicon.cpp:172
-msgid "_Contents"
-msgstr "_Sisukord"
+#: ../src/gui/main.cpp:1026
+msgid "Remote Video"
+msgstr "Kaugvideo"
 
-#: ../src/gui/main.cpp:1153 ../src/gui/statusicon.cpp:162
-#: ../src/gui/statusicon.cpp:173
-msgid "Get help by reading the Ekiga manual"
-msgstr "Abiteabe saamine Ekiga käsiraamatut lugedes"
+#: ../src/gui/main.cpp:1027
+msgid "Remote video image"
+msgstr "Võrgust tulev videopilt"
 
-#: ../src/gui/main.cpp:1157 ../src/gui/main.cpp:1163
-#: ../src/gui/statusicon.cpp:166 ../src/gui/statusicon.cpp:177
-msgid "_About"
-msgstr "_Programmist lähemalt"
+#: ../src/gui/main.cpp:1032
+msgid "Picture-in-Picture"
+msgstr "Pilt-pildis"
 
-#: ../src/gui/main.cpp:1158 ../src/gui/main.cpp:1164
-#: ../src/gui/statusicon.cpp:167 ../src/gui/statusicon.cpp:178
-msgid "View information about Ekiga"
-msgstr "Ekiga kohta lähema teabe vaatamine"
+#: ../src/gui/main.cpp:1033 ../src/gui/main.cpp:1039
+msgid "Both video images"
+msgstr "Mõlemad videopildid"
 
-#: ../src/gui/main.cpp:1232
-msgid "Statistics"
-msgstr "Statistika"
-
-#: ../src/gui/main.cpp:1315
-msgid "Dialpad"
-msgstr "Klahvid"
-
-#: ../src/gui/main.cpp:1368
-msgid "Adjust brightness"
-msgstr "Heleduse muutmine"
-
-#: ../src/gui/main.cpp:1390
-msgid "Adjust whiteness"
+#: ../src/gui/main.cpp:1038
+msgid "Picture-in-Picture in Separate Window"
 msgstr ""
 
-#: ../src/gui/main.cpp:1412
-msgid "Adjust color"
-msgstr ""
+#: ../src/gui/main.cpp:1046
+msgid "Zoom in"
+msgstr "Suurendamine"
 
-#: ../src/gui/main.cpp:1434
-msgid "Adjust contrast"
-msgstr "Kontrasti muutmine"
+#: ../src/gui/main.cpp:1050
+msgid "Zoom out"
+msgstr "Vähendamine"
 
-#: ../src/gui/main.cpp:1440
-msgid "Video"
-msgstr "Video"
-
-#: ../src/gui/main.cpp:1524
-msgid "Audio"
-msgstr "Audio"
-
-#: ../src/gui/main.cpp:1573 ../src/gui/main.cpp:1598
-msgid "Zoom In"
-msgstr "Suurenda"
-
-#: ../src/gui/main.cpp:1577 ../src/gui/main.cpp:1602
-msgid "Zoom Out"
-msgstr "Vähenda"
-
-#: ../src/gui/main.cpp:1581 ../src/gui/main.cpp:1606
-msgid "Normal Size"
+#: ../src/gui/main.cpp:1054
+msgid "Normal size"
 msgstr "Algsuurus"
 
-#: ../src/gui/main.cpp:1587 ../src/gui/main.cpp:1612
+#: ../src/gui/main.cpp:1060
 msgid "Fullscreen"
 msgstr "Täisekraan"
 
-#: ../src/gui/main.cpp:1775
-msgid "Notification area not detected"
-msgstr "Teateala ei leitud"
+#: ../src/gui/main.cpp:1060
+msgid "Switch to fullscreen"
+msgstr "Lülitumine täisekraanile"
 
-#: ../src/gui/main.cpp:1775
-msgid ""
-"The notification area is not present in your panel, so Ekiga cannot start "
-"hidden."
+#: ../src/gui/main.cpp:1066
+msgid "_Tools"
+msgstr "_Tööriistad"
+
+#: ../src/gui/main.cpp:1068
+#, fuzzy
+msgid "_Find Contacts"
+msgstr "_Helista kontaktile"
+
+#: ../src/gui/main.cpp:1069
+msgid "Find contacts"
 msgstr ""
-"Sinu paneelil pole teateala ja seetõttu ei saa Ekiga peidetuna käivituda."
 
-#: ../src/gui/main.cpp:2088
+#: ../src/gui/main.cpp:1076
+msgid "C_hat Window"
+msgstr "_Vestlusaken"
+
+#: ../src/gui/main.cpp:1077
+msgid "Open the chat window"
+msgstr "Tekstivestluse akna avamine"
+
+#: ../src/gui/main.cpp:1083
+msgid "View the operations history"
+msgstr ""
+
+#: ../src/gui/main.cpp:1090
+#, fuzzy
+msgid "PC-To-Phone Account"
+msgstr "_Arvutist-Telefonile konto"
+
+#: ../src/gui/main.cpp:1091
+msgid "Manage your PC-To-Phone account"
+msgstr "Sinu Arvutist-Telefonile konto haldamine"
+
+#: ../src/gui/main.cpp:1096
+msgid "_Help"
+msgstr "A_bi"
+
+#: ../src/gui/main.cpp:1099 ../src/gui/statusicon.cpp:451
+#: ../src/gui/statusicon.cpp:462
+msgid "Get help by reading the Ekiga manual"
+msgstr "Abiteabe saamine Ekiga käsiraamatut lugedes"
+
+#: ../src/gui/main.cpp:1103 ../src/gui/statusicon.cpp:456
+#: ../src/gui/statusicon.cpp:467
+msgid "View information about Ekiga"
+msgstr "Ekiga kohta lähema teabe vaatamine"
+
+#: ../src/gui/main.cpp:1146
+msgid "Contacts"
+msgstr "Kontaktid"
+
+#: ../src/gui/main.cpp:1162
+msgid "Calls History"
+msgstr "Kõnede ajalugu"
+
+#: ../src/gui/main.cpp:1247
+msgid "Dialpad"
+msgstr "Klahvid"
+
+#: ../src/gui/main.cpp:1284
+msgid "Video Settings"
+msgstr "Videosätted"
+
+#: ../src/gui/main.cpp:1312
+msgid "Adjust brightness"
+msgstr "Heleduse muutmine"
+
+#: ../src/gui/main.cpp:1334
+msgid "Adjust whiteness"
+msgstr ""
+
+#: ../src/gui/main.cpp:1356
+msgid "Adjust color"
+msgstr ""
+
+#: ../src/gui/main.cpp:1378
+msgid "Adjust contrast"
+msgstr "Kontrasti muutmine"
+
+#: ../src/gui/main.cpp:1431
+msgid "Audio Settings"
+msgstr "Audiosätted"
+
+#: ../src/gui/main.cpp:1626
+msgid "Change the volume of your soundcard"
+msgstr ""
+
+#: ../src/gui/main.cpp:1649
+msgid "Change the color settings of your video device"
+msgstr ""
+
+#: ../src/gui/main.cpp:1670
+msgid "Display images from your camera device"
+msgstr "Kaameraseadmest tulevate piltide kuvamine"
+
+#: ../src/gui/main.cpp:1703
+#, fuzzy
+msgid "Call"
+msgstr "_Helista"
+
+#: ../src/gui/main.cpp:2129
 #, c-format
 msgid "Sent DTMF %c"
 msgstr ""
 
-#: ../src/gui/main.cpp:2311 ../src/gui/main.cpp:4308
+#: ../src/gui/main.cpp:2307 ../src/gui/main.cpp:3623
 #, c-format
 msgid "Missed calls: %d - Voice Mails: %s"
 msgstr "Vastamata kõnesid: %d - Kõnepostiteateid: %s"
 
-#: ../src/gui/main.cpp:3132
+#: ../src/gui/main.cpp:2493
 msgid "_Retrieve Call"
 msgstr ""
 
-#: ../src/gui/main.cpp:3186
+#: ../src/gui/main.cpp:2549
 msgid "Resume _Audio"
 msgstr ""
 
-#: ../src/gui/main.cpp:3188
+#: ../src/gui/main.cpp:2551
 msgid "Resume _Video"
 msgstr ""
 
-#: ../src/gui/main.cpp:3730
-msgid "Out:"
-msgstr "Välja:"
+#: ../src/gui/main.cpp:3186
+#, fuzzy, c-format
+msgid "Call Duration: %s\n"
+msgstr "Kõne kestus"
 
-#: ../src/gui/main.cpp:3733
-msgid "In:"
-msgstr "Sisse:"
-
-#: ../src/gui/main.cpp:3757
-msgid "Registered accounts:"
-msgstr "Registreeritud kontosid:"
-
-#: ../src/gui/main.cpp:3882
+#: ../src/gui/main.cpp:3229
 msgid "Transfer call to:"
 msgstr ""
 
-#: ../src/gui/main.cpp:3883 ../src/gui/main.cpp:3948
+#: ../src/gui/main.cpp:3230 ../src/gui/main.cpp:3295
 msgid "Transfer"
 msgstr ""
 
-#: ../src/gui/main.cpp:3946
+#: ../src/gui/main.cpp:3293
 msgid "Reject"
 msgstr ""
 
-#: ../src/gui/main.cpp:3950
+#: ../src/gui/main.cpp:3297
 msgid "Accept"
 msgstr ""
 
-#: ../src/gui/main.cpp:3957
+#: ../src/gui/main.cpp:3304
 msgid "Incoming call from"
 msgstr ""
 
-#: ../src/gui/main.cpp:3970
-msgid "Remote URL:"
+#: ../src/gui/main.cpp:3317
+#, fuzzy
+msgid "Remote URI:"
 msgstr "Kaug-URL:"
 
-#: ../src/gui/main.cpp:3982
+#: ../src/gui/main.cpp:3329
 msgid "Remote Application:"
 msgstr "Kaugrakendus:"
 
-#. Add the window icon and title
-#: ../src/gui/main.cpp:4050 ../src/gui/main.cpp:4238
+#. Add title
+#: ../src/gui/main.cpp:3401 ../src/gui/main.cpp:3553
 msgid "Ekiga"
 msgstr "Ekiga"
 
-#: ../src/gui/main.cpp:4218
-msgid "Local Video"
-msgstr "Kohalik video"
+#: ../src/gui/main.cpp:3801
+#, c-format
+msgid "TX: %dx%d "
+msgstr ""
 
-#: ../src/gui/main.cpp:4225
-msgid "Remote Video"
-msgstr "Kaugvideo"
+#: ../src/gui/main.cpp:3804
+#, c-format
+msgid "RX: %dx%d "
+msgstr ""
 
-#: ../src/gui/main.cpp:4476
+#: ../src/gui/main.cpp:3806
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
 "Late packets: %.1f %%\n"
 "Out of order packets: %.1f %%\n"
-"Jitter buffer: %d ms"
+"Jitter buffer: %d ms%s%s%s"
 msgstr ""
 
-#: ../src/gui/main.cpp:4574
-#, c-format
-msgid ""
-"Ekiga got an invalid value for the GConf key %s.\n"
-"\n"
-"It probably means that your GConf schemas have not been correctly installed "
-"or the that permissions are not correct.\n"
-"\n"
-"Please check the FAQ (http://www.ekiga.org/), the troubleshooting section of "
-"the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list "
-"archives for more information (http://mail.gnome.org) about this problem."
-msgstr ""
-
-#: ../src/gui/main.cpp:4577
-msgid "Gconf key error"
-msgstr "Viga Gconfi võtmes"
-
-#: ../src/gui/main.cpp:4608 ../src/gui/main.cpp:4627
+#: ../src/gui/main.cpp:3957
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "Silumisteadete väljastamine konsoolile (tasemega 1-6)"
 
-#: ../src/gui/main.cpp:4611 ../src/gui/main.cpp:4632
-msgid "Makes Ekiga call the given URL"
+#: ../src/gui/main.cpp:3962
+#, fuzzy
+msgid "Makes Ekiga call the given URI"
 msgstr "Helistamine määratud URL-ile"
 
-#: ../src/gui/main.cpp:4665
+#: ../src/gui/main.cpp:4056
 msgid "No usable audio plugin detected"
 msgstr "Kasutuskõlbulikke audiopluginaid ei tuvastatud"
 
-#: ../src/gui/main.cpp:4665
+#: ../src/gui/main.cpp:4057
 msgid ""
 "Ekiga didn't find any usable audio plugin. Make sure that your installation "
 "is correct."
@@ -3018,126 +2902,106 @@ msgstr ""
 "Ekiga ei tuvastanud ühtegi kasutuskõlbulikku audiopluginat. Veendu, et "
 "programmi paigaldus on korrektne."
 
+#: ../src/gui/main.cpp:4060
+msgid "No usable audio codecs detected"
+msgstr "Kasutuskõlbulikke audiopluginaid ei tuvastatud"
+
+#: ../src/gui/main.cpp:4061
+#, fuzzy
+msgid ""
+"Ekiga didn't find any usable audio codec. Make sure that your installation "
+"is correct."
+msgstr ""
+"Ekiga ei tuvastanud ühtegi kasutuskõlbulikku audiopluginat. Veendu, et "
+"programmi paigaldus on korrektne."
+
+#: ../src/gui/main.cpp:4066
+msgid "Configuration database corruption"
+msgstr ""
+
+#: ../src/gui/main.cpp:4067
+#, c-format
+msgid ""
+"Ekiga got an invalid value for the configuration key %s.\n"
+"\n"
+"It probably means that your configuration schemas have not been correctly "
+"installed or the that the permissions are not correct.\n"
+"\n"
+"Please check the FAQ (http://www.ekiga.org/), the troubleshooting section of "
+"the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list "
+"archives for more information (http://mail.gnome.org) about this problem."
+msgstr ""
+
 #: ../src/gui/misc.cpp:115
 msgid "Error"
 msgstr "Viga"
 
-#: ../src/gui/preferences.cpp:497
-msgid "Bandwidth"
-msgstr "Läbilaskevõime"
-
-#: ../src/gui/preferences.cpp:505
-msgid "Clock Rate"
-msgstr ""
-
-#: ../src/gui/preferences.cpp:630
+#: ../src/gui/preferences.cpp:409
 msgid "Personal Information"
 msgstr "Isiklikud andmed"
 
-#: ../src/gui/preferences.cpp:633
+#: ../src/gui/preferences.cpp:412
 msgid "_First name:"
 msgstr "_Eesnimi:"
 
-#: ../src/gui/preferences.cpp:640
+#: ../src/gui/preferences.cpp:419
 msgid "Sur_name:"
 msgstr "_Perekonnanimi:"
 
-#: ../src/gui/preferences.cpp:642
+#: ../src/gui/preferences.cpp:421
 msgid "Enter your surname"
 msgstr "Sisesta siia oma perekonnanimi"
 
-#: ../src/gui/preferences.cpp:648
-msgid "E-_mail address:"
-msgstr "E-posti _aadress:"
-
-#: ../src/gui/preferences.cpp:650
-msgid "Enter your e-mail address"
-msgstr "Sisesta siia oma e-posti aadress"
-
-#: ../src/gui/preferences.cpp:655
-msgid "_Comment:"
-msgstr "_Kommentaar:"
-
-#: ../src/gui/preferences.cpp:657
-msgid "Enter a comment about yourself"
-msgstr "Sisesta enda kohta mõni kommentaar"
-
-#: ../src/gui/preferences.cpp:662
-msgid "_Location:"
-msgstr "Asu_koht:"
-
-#: ../src/gui/preferences.cpp:664
-msgid "Enter your country or city"
-msgstr "Sisesta siia oma riik või linn"
-
 #. Add the update button
-#: ../src/gui/preferences.cpp:669 ../src/gui/preferences.cpp:963
+#: ../src/gui/preferences.cpp:425 ../src/gui/preferences.cpp:698
 msgid "_Apply"
 msgstr "_Rakenda"
 
-#: ../src/gui/preferences.cpp:669
+#: ../src/gui/preferences.cpp:425
 msgid ""
 "Click here to update the users directory you are registered to with the new "
 "First Name, Last Name, E-Mail, Comment and Location"
 msgstr ""
 
-#: ../src/gui/preferences.cpp:683
+#: ../src/gui/preferences.cpp:439
 msgid "Ekiga GUI"
 msgstr "Ekiga kasutajaliides"
 
-#: ../src/gui/preferences.cpp:685
+#: ../src/gui/preferences.cpp:441
 msgid "Start _hidden"
 msgstr "Käivitatakse _peidetuna"
 
-#: ../src/gui/preferences.cpp:691
+#: ../src/gui/preferences.cpp:447
 msgid "Video Display"
 msgstr "Videokuva"
 
-#: ../src/gui/preferences.cpp:693
+#: ../src/gui/preferences.cpp:449
 msgid "Place windows displaying video _above other windows"
 msgstr "Videokuvamise _akent hoitakse kõigi teiste akende peal"
 
-#: ../src/gui/preferences.cpp:706
-msgid "Users Directory"
-msgstr "Kasutajate kataloog"
+#: ../src/gui/preferences.cpp:454
+#, fuzzy
+msgid "Auto Away"
+msgstr "Aut_omaatvastamine"
 
-#. Add all the fields
-#: ../src/gui/preferences.cpp:710
-msgid "Users directory:"
-msgstr "Kasutajate kataloog:"
-
-#: ../src/gui/preferences.cpp:710
-msgid "The users directory server to register with"
-msgstr "Millise kasutajate kataloogiserverisse registreerida"
-
-#: ../src/gui/preferences.cpp:712
-msgid "Enable _registering"
-msgstr "_Registreerimine lubatud"
-
-#: ../src/gui/preferences.cpp:712
-msgid "If enabled, register with the selected users directory"
-msgstr "Kui märgitud, siis registreeritakse valitud kasutajate kataloogi"
-
-#: ../src/gui/preferences.cpp:714
-msgid "_Publish my details in the users directory when registering"
+#: ../src/gui/preferences.cpp:456
+msgid "Timeout after which the user is automatically set as away:"
 msgstr ""
 
-#: ../src/gui/preferences.cpp:714
+#: ../src/gui/preferences.cpp:456
 msgid ""
-"If enabled, your details are shown to people browsing the users directory. "
-"If disabled, you are not visible to users browsing the users directory, but "
-"they can still use the callto URL to call you."
+"Automatically set the user as away after the timeout has elapsed (in minutes)"
 msgstr ""
 
-#: ../src/gui/preferences.cpp:725
+#: ../src/gui/preferences.cpp:466
 msgid "Call Forwarding"
 msgstr "Kõneedastus"
 
-#: ../src/gui/preferences.cpp:727
+#: ../src/gui/preferences.cpp:468
 msgid "_Always forward calls to the given host"
 msgstr "_Kõned edastatakse alati määratud hostile"
 
-#: ../src/gui/preferences.cpp:727
+#: ../src/gui/preferences.cpp:468
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the protocol settings"
@@ -3145,11 +3009,11 @@ msgstr ""
 "Kui märgitud, siis edastatakse kõik sisenevad kõned protokolli sätetes "
 "määratud hostile"
 
-#: ../src/gui/preferences.cpp:729
+#: ../src/gui/preferences.cpp:470
 msgid "Forward calls to the given host if _no answer"
 msgstr "Kõned edastatakse määratud hostile kui ei _vastata"
 
-#: ../src/gui/preferences.cpp:729
+#: ../src/gui/preferences.cpp:470
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the protocol settings if you do not answer the call"
@@ -3157,11 +3021,11 @@ msgstr ""
 "Kui märgitud, siis edastatakse sisenevad kõned vastamata jätmise korral "
 "protokolli sätetes määratud hostile"
 
-#: ../src/gui/preferences.cpp:731
+#: ../src/gui/preferences.cpp:472
 msgid "Forward calls to the given host if _busy"
 msgstr "Kõned edastatakse määratud hostile kui ollakse _hõivatud"
 
-#: ../src/gui/preferences.cpp:731
+#: ../src/gui/preferences.cpp:472
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the protocol settings if you already are in a call or if you "
@@ -3170,134 +3034,135 @@ msgstr ""
 "Kui märgitud, siis edastatakse sisenevad kõned mitte-häirida režiimi korral "
 "protokolli sätetes määratud hostile"
 
-#: ../src/gui/preferences.cpp:735 ../src/gui/preferences.cpp:1977
+#: ../src/gui/preferences.cpp:476 ../src/gui/preferences.cpp:1564
 msgid "Call Options"
 msgstr "Kõne valikud"
 
 #. Add all the fields
-#: ../src/gui/preferences.cpp:738
+#: ../src/gui/preferences.cpp:479
 msgid "Automatically _clear calls after 30 seconds of inactivity"
 msgstr "Kõnede automaatne _puhastamine pärast 30 passiivset sekundit"
 
-#: ../src/gui/preferences.cpp:740
+#: ../src/gui/preferences.cpp:481
 msgid "Timeout to reject or forward unanswered incoming calls (in seconds):"
 msgstr "Sisenevate vastamata kõnede tagasilükkamise ajapiirang (sekundites):"
 
-#: ../src/gui/preferences.cpp:780
+#: ../src/gui/preferences.cpp:515
 msgid "Ekiga Sound Events"
 msgstr "Ekiga helisündmused"
 
-#: ../src/gui/preferences.cpp:829 ../src/gui/preferences.cpp:838
-#: ../src/gui/preferences.cpp:847
+#: ../src/gui/preferences.cpp:564 ../src/gui/preferences.cpp:573
+#: ../src/gui/preferences.cpp:582
 msgid "Event"
 msgstr "Sündmus"
 
-#: ../src/gui/preferences.cpp:859
+#: ../src/gui/preferences.cpp:594
 msgid "Choose a sound"
 msgstr "Heli valimine"
 
-#: ../src/gui/preferences.cpp:865
+#: ../src/gui/preferences.cpp:600
 msgid "Wavefiles"
 msgstr "Wav-failid"
 
-#: ../src/gui/preferences.cpp:874 ../src/gui/preferences.cpp:893
+#: ../src/gui/preferences.cpp:609 ../src/gui/preferences.cpp:628
 msgid "Play"
 msgstr "Esita"
 
-#: ../src/gui/preferences.cpp:907
+#: ../src/gui/preferences.cpp:642
 msgid "Alternative Output Device"
 msgstr "Alternatiivne väljundseade"
 
-#: ../src/gui/preferences.cpp:913
+#: ../src/gui/preferences.cpp:648
 msgid "Alternative output device:"
 msgstr "Alternatiivne väljundseade:"
 
-#: ../src/gui/preferences.cpp:913
+#: ../src/gui/preferences.cpp:648
 msgid "Select an alternative audio output device to use for sound events"
 msgstr "Helisündmuste jaoks alternatiivse audioväljundi seadme valimine"
 
-#: ../src/gui/preferences.cpp:931
+#: ../src/gui/preferences.cpp:666
 msgid "STUN"
 msgstr "STUN"
 
-#: ../src/gui/preferences.cpp:932
+#: ../src/gui/preferences.cpp:667
 msgid "IP Translation"
 msgstr "IP-transleerimine"
 
-#: ../src/gui/preferences.cpp:945
+#: ../src/gui/preferences.cpp:680
 msgid "Network Interface"
 msgstr "Võrguliides"
 
-#: ../src/gui/preferences.cpp:950
+#: ../src/gui/preferences.cpp:685
 msgid "Listen on:"
 msgstr "Kuulatakse liidesel:"
 
-#: ../src/gui/preferences.cpp:957
+#: ../src/gui/preferences.cpp:692
 msgid "NAT Settings"
 msgstr "NAT-i sätted"
 
-#: ../src/gui/preferences.cpp:959
+#: ../src/gui/preferences.cpp:694
 msgid "NAT Traversal Method:"
 msgstr ""
 
-#: ../src/gui/preferences.cpp:961
+#: ../src/gui/preferences.cpp:696
 msgid "STUN Se_rver:"
 msgstr "STUN se_rver:"
 
-#: ../src/gui/preferences.cpp:961
+#: ../src/gui/preferences.cpp:696
 msgid "The STUN server to use for STUN Support."
 msgstr "STUN-i toe jaoks kasutatava STUN-serveri aadress."
 
-#: ../src/gui/preferences.cpp:963
+#: ../src/gui/preferences.cpp:698
 msgid "Click here to update your NAT settings"
 msgstr "Klõpsa siia oma NAT-sätete uuendamiseks"
 
-#: ../src/gui/preferences.cpp:975
+#: ../src/gui/preferences.cpp:710
 msgid "String"
 msgstr "String"
 
-#: ../src/gui/preferences.cpp:976
+#: ../src/gui/preferences.cpp:711
 msgid "Tone"
 msgstr "Toon"
 
-#: ../src/gui/preferences.cpp:977 ../src/gui/preferences.cpp:1027
+#: ../src/gui/preferences.cpp:712 ../src/gui/preferences.cpp:763
 msgid "RFC2833"
 msgstr "RFC2833"
 
-#: ../src/gui/preferences.cpp:978
+#: ../src/gui/preferences.cpp:713
 msgid "Q.931"
 msgstr "Q.931"
 
-#: ../src/gui/preferences.cpp:984 ../src/gui/preferences.cpp:1035
+#: ../src/gui/preferences.cpp:719 ../src/gui/preferences.cpp:773
 msgid "Misc Settings"
 msgstr "Muud sätted"
 
-#: ../src/gui/preferences.cpp:986
+#: ../src/gui/preferences.cpp:721
 msgid "Default _gateway:"
 msgstr "_Vaikimisi värav:"
 
-#: ../src/gui/preferences.cpp:989 ../src/gui/preferences.cpp:1040
-msgid "Forward _URL:"
+#: ../src/gui/preferences.cpp:724 ../src/gui/preferences.cpp:778
+#, fuzzy
+msgid "Forward _URI:"
 msgstr "Ümbersuunamise _URL:"
 
-#: ../src/gui/preferences.cpp:998
+#: ../src/gui/preferences.cpp:733
 msgid "Advanced Settings"
 msgstr "Laiendatud sätted"
 
 #. The toggles
-#: ../src/gui/preferences.cpp:1001
+#: ../src/gui/preferences.cpp:736
 msgid "Enable H.245 _tunneling"
 msgstr "H.245 _tunneldamine lubatud"
 
-#: ../src/gui/preferences.cpp:1003
+#: ../src/gui/preferences.cpp:738
 msgid "Enable _early H.245"
 msgstr "_Varajane H.245 lubatud"
 
-#: ../src/gui/preferences.cpp:1005
+#: ../src/gui/preferences.cpp:740
 msgid "Enable fast _start procedure"
 msgstr "Kiire käivitamise protseduur _lubatud"
 
-#: ../src/gui/preferences.cpp:1005
+#: ../src/gui/preferences.cpp:740
 msgid ""
 "Connection will be established in Fast Start mode. Fast Start is a new way "
 "to start calls faster that was introduced in H.323v2. It is not supported by "
@@ -3305,299 +3170,280 @@ msgid ""
 "versions of Netmeeting."
 msgstr ""
 
-#: ../src/gui/preferences.cpp:1011 ../src/gui/preferences.cpp:1048
+#: ../src/gui/preferences.cpp:746 ../src/gui/preferences.cpp:786
 msgid "DTMF Mode"
 msgstr "DTMF-režiim"
 
-#: ../src/gui/preferences.cpp:1013 ../src/gui/preferences.cpp:1050
+#: ../src/gui/preferences.cpp:748 ../src/gui/preferences.cpp:788
 msgid "_Send DTMF as:"
 msgstr "DTMF s_aadetakse kui:"
 
-#: ../src/gui/preferences.cpp:1013
-msgid ""
-"This permits to set the mode for DTMFs sending. The values can be \"String"
-"\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (default is \"String"
-"\"). Choosing other values than \"String\" disables the Text Chat."
+#: ../src/gui/preferences.cpp:748 ../src/gui/preferences.cpp:788
+msgid "This allows you to set the mode for DTMFs sending."
 msgstr ""
 
-#: ../src/gui/preferences.cpp:1037
+#: ../src/gui/preferences.cpp:764
+msgid "INFO"
+msgstr ""
+
+#: ../src/gui/preferences.cpp:775
 msgid "_Outbound Proxy:"
 msgstr "_Väljuvate kõnede proksi:"
 
-#: ../src/gui/preferences.cpp:1050
-msgid ""
-"This permits to set the mode for DTMFs sending. The value can be \"RFC2833"
-"\" (0) only."
-msgstr ""
-
-#: ../src/gui/preferences.cpp:1070
+#: ../src/gui/preferences.cpp:808
 msgid "Audio Plugin"
 msgstr "Audioplugin"
 
-#: ../src/gui/preferences.cpp:1075
+#: ../src/gui/preferences.cpp:813
 msgid "Audio plugin:"
 msgstr "Audioplugin:"
 
-#: ../src/gui/preferences.cpp:1075
+#: ../src/gui/preferences.cpp:813
 msgid ""
 "The audio plugin that will be used to detect the devices and manage them."
 msgstr "Audioplugin, mida kasutatakse seadmete tuvastamiseks ja haldamiseks."
 
-#: ../src/gui/preferences.cpp:1081 ../src/gui/preferences.cpp:2013
+#: ../src/gui/preferences.cpp:819 ../src/gui/preferences.cpp:1600
 msgid "Audio Devices"
 msgstr "Audioseadmed"
 
-#: ../src/gui/preferences.cpp:1088
+#: ../src/gui/preferences.cpp:826
 msgid "Output device:"
 msgstr "Väljundseade:"
 
-#: ../src/gui/preferences.cpp:1095 ../src/gui/preferences.cpp:1168
+#: ../src/gui/preferences.cpp:833 ../src/gui/preferences.cpp:902
 msgid "Input device:"
 msgstr "Sisendseade:"
 
-#. That button will refresh the devices list
-#: ../src/gui/preferences.cpp:1100 ../src/gui/preferences.cpp:1234
+#. That button will refresh the device list
+#: ../src/gui/preferences.cpp:838 ../src/gui/preferences.cpp:966
 msgid "_Detect devices"
 msgstr "_Tuvasta seadmed"
 
-#: ../src/gui/preferences.cpp:1100
-msgid "Click here to refresh the devices list"
-msgstr "Seadmete loetelu värskendamiseks klõpsa siia"
+#: ../src/gui/preferences.cpp:838 ../src/gui/preferences.cpp:966
+#, fuzzy
+msgid "Click here to refresh the device list."
+msgstr "Seadmete loendi uuendamiseks klõpsa siia."
 
-#: ../src/gui/preferences.cpp:1126
-msgid "Normal"
-msgstr "Tavaline"
-
-#: ../src/gui/preferences.cpp:1127
-msgid "Large"
-msgstr "Suur"
-
-#: ../src/gui/preferences.cpp:1133
+#: ../src/gui/preferences.cpp:874
 msgid "PAL (Europe)"
 msgstr "PAL (Euroopa)"
 
-#: ../src/gui/preferences.cpp:1134
+#: ../src/gui/preferences.cpp:875
 msgid "NTSC (America)"
 msgstr "NTSC (Ameerika)"
 
-#: ../src/gui/preferences.cpp:1135
+#: ../src/gui/preferences.cpp:876
 msgid "SECAM (France)"
 msgstr "SECAM (Prantsusmaa)"
 
-#: ../src/gui/preferences.cpp:1136
+#: ../src/gui/preferences.cpp:877
 msgid "Auto"
 msgstr "Automaatne"
 
-#: ../src/gui/preferences.cpp:1152
+#: ../src/gui/preferences.cpp:886
 msgid "Video Plugin"
 msgstr "Videoplugin"
 
-#: ../src/gui/preferences.cpp:1156
+#: ../src/gui/preferences.cpp:890
 msgid "Video plugin:"
 msgstr "Videoplugin:"
 
-#: ../src/gui/preferences.cpp:1162 ../src/gui/preferences.cpp:2017
+#: ../src/gui/preferences.cpp:896 ../src/gui/preferences.cpp:1604
 msgid "Video Devices"
 msgstr "Videoseadmed"
 
 #. Video Channel
-#: ../src/gui/preferences.cpp:1172
+#: ../src/gui/preferences.cpp:906
 msgid "Channel:"
 msgstr "Kanal:"
 
-#: ../src/gui/preferences.cpp:1175
+#: ../src/gui/preferences.cpp:908
 msgid "Size:"
 msgstr "Suurus:"
 
-#: ../src/gui/preferences.cpp:1175
-msgid ""
-"Select the transmitted video size: Normal (QCIF 176x144) or Large (CIF "
-"352x288)"
-msgstr ""
+#: ../src/gui/preferences.cpp:908
+#, fuzzy
+msgid "Select the transmitted video size"
+msgstr "Kasutatava audioväljundi seadme valimine"
 
-#: ../src/gui/preferences.cpp:1178
+#: ../src/gui/preferences.cpp:910
 msgid "Format:"
 msgstr "Vorming:"
 
 #. The file selector button
-#: ../src/gui/preferences.cpp:1181
+#: ../src/gui/preferences.cpp:913
 msgid "Image:"
 msgstr "Pilt:"
 
-#: ../src/gui/preferences.cpp:1184
+#: ../src/gui/preferences.cpp:916
 msgid "Choose a Picture"
 msgstr "Pildi valimine"
 
-#: ../src/gui/preferences.cpp:1188
+#: ../src/gui/preferences.cpp:920
 msgid "Preview"
 msgstr "Eelvaade"
 
-#: ../src/gui/preferences.cpp:1198
+#: ../src/gui/preferences.cpp:930
 msgid "Images"
 msgstr "Pildid"
 
-#: ../src/gui/preferences.cpp:1234
-msgid "Click here to refresh the devices list."
-msgstr "Seadmete loendi uuendamiseks klõpsa siia."
-
-#: ../src/gui/preferences.cpp:1257
+#: ../src/gui/preferences.cpp:992
 msgid "Available Audio Codecs"
 msgstr "Saadaolevad audiokoodekid"
 
-#: ../src/gui/preferences.cpp:1272
+#: ../src/gui/preferences.cpp:1008
 msgid "Audio Codecs Settings"
 msgstr "Audiokoodekite sätted"
 
 #. Translators: the full sentence is Automatically adjust jitter buffer
 #. between X and Y ms
-#: ../src/gui/preferences.cpp:1276
+#: ../src/gui/preferences.cpp:1012
 msgid "Automatically adjust _jitter buffer between"
 msgstr ""
 
-#: ../src/gui/preferences.cpp:1276
+#: ../src/gui/preferences.cpp:1012
 msgid "and"
 msgstr "ja"
 
-#: ../src/gui/preferences.cpp:1276
+#: ../src/gui/preferences.cpp:1012
 msgid "ms"
 msgstr "ms"
 
-#: ../src/gui/preferences.cpp:1276
+#: ../src/gui/preferences.cpp:1012
 msgid "The minimum jitter buffer size for audio reception (in ms)."
 msgstr ""
 
-#: ../src/gui/preferences.cpp:1276
+#: ../src/gui/preferences.cpp:1012
 msgid "The maximum jitter buffer size for audio reception (in ms)."
 msgstr ""
 
-#: ../src/gui/preferences.cpp:1278
+#: ../src/gui/preferences.cpp:1014
 msgid "Enable silence _detection"
 msgstr "_Vaikuse tuvastamine lubatud"
 
-#: ../src/gui/preferences.cpp:1278
+#: ../src/gui/preferences.cpp:1014
 msgid "If enabled, use silence detection with the codecs supporting it."
 msgstr ""
 "Kui märgitud, siis on vaikuse tuvastamine lubatud seda toetavate koodekite "
 "korral."
 
-#: ../src/gui/preferences.cpp:1280
+#: ../src/gui/preferences.cpp:1016
 msgid "Enable echo can_celation"
 msgstr "_Kaja eemaldamine lubatud"
 
-#: ../src/gui/preferences.cpp:1280
+#: ../src/gui/preferences.cpp:1016
 msgid "If enabled, use echo cancelation."
 msgstr "Kui märgitud, siis kasutatakse kaja eemaldamist."
 
-#: ../src/gui/preferences.cpp:1293 ../src/gui/preferences.cpp:1966
-msgid "General Settings"
-msgstr "Üldised sätted"
+#: ../src/gui/preferences.cpp:1033
+msgid "Available Video Codecs"
+msgstr "Saadaolevad videokoodekid"
 
-#: ../src/gui/preferences.cpp:1295
+#: ../src/gui/preferences.cpp:1048
+msgid "Video Codecs Settings"
+msgstr "Videokoodekite sätted"
+
+#: ../src/gui/preferences.cpp:1050
 msgid "Enable _video support"
 msgstr "V_ideo tugi lubatud"
 
-#: ../src/gui/preferences.cpp:1295
+#: ../src/gui/preferences.cpp:1050
 msgid "If enabled, allows video during calls."
 msgstr "Kõne käigus ka video vastuvõtmise lubamine."
 
-#: ../src/gui/preferences.cpp:1299
-msgid "Bandwidth Control"
-msgstr "Läbilaskevõime juhtimine"
-
-#: ../src/gui/preferences.cpp:1301
-msgid "Maximum video _bandwidth (in kB/s):"
+#: ../src/gui/preferences.cpp:1052
+#, fuzzy
+msgid "Maximum video _bitrate (in kbits/s):"
 msgstr "_Video suurim läbilaskevõime (kB/s):"
 
-#: ../src/gui/preferences.cpp:1301
+#: ../src/gui/preferences.cpp:1052
+#, fuzzy
 msgid ""
-"The maximum video bandwidth in kbytes/s. The video quality and the number of "
-"transmitted frames per second will be dynamically adjusted above their "
-"minimum during calls to try to minimize the bandwidth to the given value."
+"The maximum video bitrate in kbits/s. The video quality and the number of "
+"transmitted frames per second (depends on codec) will be dynamically "
+"adjusted above their minimum during calls to try to minimize the bandwidth "
+"to the given value."
 msgstr ""
-
-#: ../src/gui/preferences.cpp:1306
-msgid "Advanced Quality Settings"
-msgstr "Laiendatud kvaliteedisätted"
+"Video suurim läbilaskevõime ühikuga kilobaite sekundi kohta. Video kvaliteet "
+"ja sekundis ülekantavate kaadrite arvu reguleeritakse kõne ajal "
+"dünaamiliselt video vähima võimaliku ja siintoodud väärtuse vahel."
 
 #. Translators: the full sentence is Keep a minimum video quality of X %
-#: ../src/gui/preferences.cpp:1309
-msgid "Frame Rate"
-msgstr "Kaadrisagedus"
-
-#: ../src/gui/preferences.cpp:1309
+#: ../src/gui/preferences.cpp:1055
 msgid "Picture Quality"
 msgstr "Pildikvaliteet"
 
-#: ../src/gui/preferences.cpp:1309
+#: ../src/gui/preferences.cpp:1055
 msgid ""
 "Choose if you want to favour speed or quality for the transmitted video."
 msgstr "Video kvaliteedi ja ülekandekiiruse vahel valimine."
 
-#: ../src/gui/preferences.cpp:1907
+#: ../src/gui/preferences.cpp:1501
 msgid "Play sound for new voice mails"
 msgstr "Heli esitamine kõneposti uute sõnumite korral"
 
-#: ../src/gui/preferences.cpp:1916
+#: ../src/gui/preferences.cpp:1510
 msgid "Play sound for new instant messages"
 msgstr "Heli esitamine uute välksõnumite korral"
 
-#: ../src/gui/preferences.cpp:1945
+#: ../src/gui/preferences.cpp:1539
 msgid "Ekiga Preferences"
 msgstr "Ekiga eelistused"
 
-#: ../src/gui/preferences.cpp:1960
+#: ../src/gui/preferences.cpp:1554
 msgid "General"
 msgstr "Üldine"
 
-#: ../src/gui/preferences.cpp:1961
+#: ../src/gui/preferences.cpp:1555
 msgid "Personal Data"
 msgstr "Isiklikud andmed"
 
-#: ../src/gui/preferences.cpp:1972
-msgid "Directory Settings"
-msgstr "Kataloogisätted"
+#: ../src/gui/preferences.cpp:1560
+msgid "General Settings"
+msgstr "Üldised sätted"
 
-#: ../src/gui/preferences.cpp:1982
+#: ../src/gui/preferences.cpp:1569
 msgid "Sound Events"
 msgstr "Helisündmused"
 
-#: ../src/gui/preferences.cpp:1986
+#: ../src/gui/preferences.cpp:1573
 msgid "Protocols"
 msgstr "Protokollid"
 
-#: ../src/gui/preferences.cpp:1988
+#: ../src/gui/preferences.cpp:1575
 msgid "Network Settings"
 msgstr "Võrgusätted"
 
-#: ../src/gui/preferences.cpp:1993
+#: ../src/gui/preferences.cpp:1580
 msgid "SIP Settings"
 msgstr "SIP-sätted"
 
-#: ../src/gui/preferences.cpp:1998
+#: ../src/gui/preferences.cpp:1585
 msgid "H.323 Settings"
 msgstr "H.323-sätted"
 
-#: ../src/gui/preferences.cpp:2002
+#: ../src/gui/preferences.cpp:1589
 msgid "Codecs"
 msgstr "Koodekid"
 
-#: ../src/gui/preferences.cpp:2004
+#: ../src/gui/preferences.cpp:1591
 msgid "Audio Codecs"
 msgstr "Audiokoodekid"
 
-#: ../src/gui/preferences.cpp:2008
+#: ../src/gui/preferences.cpp:1595
 msgid "Video Codecs"
 msgstr "Videokoodekid"
 
-#: ../src/gui/preferences.cpp:2012
+#: ../src/gui/preferences.cpp:1599
 msgid "Devices"
 msgstr "Seadmed"
 
-#: ../src/gui/tools.cpp:174
+#: ../src/gui/tools.cpp:173
 msgid "Invalid parameters"
 msgstr "Vigased parameetrid"
 
-#: ../src/gui/tools.cpp:174
+#: ../src/gui/tools.cpp:173
 msgid ""
 "Please provide your username and password in order to be able to use the PC-"
 "To-Phone service."
@@ -3605,12 +3451,12 @@ msgstr ""
 "Arvutist-telefonile teenuse kasutamiseks sisesta palun oma kasutajanimi ja "
 "parool."
 
-#: ../src/gui/tools.cpp:312 ../src/gui/tools.cpp:331
+#: ../src/gui/tools.cpp:309 ../src/gui/tools.cpp:323
 msgid "PC-To-Phone Settings"
 msgstr "Arvutist-Telefonile sätted"
 
 #. Introduction label
-#: ../src/gui/tools.cpp:322
+#: ../src/gui/tools.cpp:314
 msgid ""
 "You can make calls to regular phones and cell numbers worldwide using Ekiga. "
 "To enable this, you need to do three things. First create an account at the "
@@ -3621,39 +3467,440 @@ msgid ""
 "dialog."
 msgstr ""
 
-#: ../src/gui/tools.cpp:333
+#: ../src/gui/tools.cpp:325
 msgid "Account _number:"
 msgstr "Konto _number:"
 
-#: ../src/gui/tools.cpp:350
+#: ../src/gui/tools.cpp:342
 msgid "_Password:"
 msgstr "_Parool:"
 
-#: ../src/gui/tools.cpp:369
+#: ../src/gui/tools.cpp:361
 msgid "Use PC-To-Phone service"
 msgstr "Arvutile-telefonile teenuse kasutamine"
 
-#: ../src/gui/tools.cpp:381
+#: ../src/gui/tools.cpp:373
 msgid ""
 "Click on one of the following links to get more information about your "
 "existing Ekiga PC-To-Phone account, or to create a new account."
 msgstr ""
 
-#: ../src/gui/tools.cpp:389
+#: ../src/gui/tools.cpp:381
 msgid "Get an Ekiga PC-To-Phone account"
 msgstr "Ekiga Arvutist-Telefonile konto hankimine"
 
-#: ../src/gui/tools.cpp:403
+#: ../src/gui/tools.cpp:395
 msgid "Recharge the account"
 msgstr "Kõneaja laadimine"
 
-#: ../src/gui/tools.cpp:417
+#: ../src/gui/tools.cpp:409
 msgid "Consult the balance history"
 msgstr ""
 
-#: ../src/gui/tools.cpp:431
+#: ../src/gui/tools.cpp:423
 msgid "Consult the calls history"
 msgstr ""
+
+#: ../src/gui/statusicon.cpp:461
+msgid "_Contents"
+msgstr "_Sisukord"
+
+#: ../src/gui/statusicon.cpp:466
+msgid "_About"
+msgstr "_Programmist lähemalt"
+
+#~ msgid "Change the view mode of the UI"
+#~ msgstr "Kasutajaliidese vaaterežiimi muutmine"
+
+#~ msgid "Change the view mode of the UI (softphone, videophone, full view)"
+#~ msgstr ""
+#~ "Kasutajaliidese vaaterežiimi muutmine (tarkvaratelefon, videotelefon, "
+#~ "täisvaade)"
+
+#~ msgid "Incoming call mode"
+#~ msgstr "Siseneva kõne režiim"
+
+#~ msgid "Minimum transmitted video quality"
+#~ msgstr "Madalaim ülekantava video kvaliteet"
+
+#~ msgid "Missed calls history"
+#~ msgstr "Vastamata kõnede ajalugu"
+
+#~ msgid "Placed calls history"
+#~ msgstr "Toimunud kõnede ajalugu"
+
+#~ msgid "Position on the screen of the calls history window"
+#~ msgstr "Kõnede ajaloo akna asukoht ekraanil"
+
+#~ msgid "Received calls history"
+#~ msgstr "Vastuvõetud kõnede ajalugu"
+
+#~ msgid "Size of the calls history window"
+#~ msgstr "Kõnede ajaloo akna suurus"
+
+#~ msgid "The history of the last 100 missed calls"
+#~ msgstr "Viimase 100 vastamata kõne ajalugu"
+
+#~ msgid "The history of the last 100 received calls"
+#~ msgstr "Viimase 100 vastuvõetud kõne ajalugu"
+
+#~ msgid ""
+#~ "An error has happened in the configuration backend.\n"
+#~ "Maybe some of your settings won't be saved."
+#~ msgstr ""
+#~ "Seadistamise taustaprogrammis tekkis viga.\n"
+#~ "Võib-olla jäid mõned sätted salvestamata."
+
+#~ msgid "On This Computer"
+#~ msgstr "Selles arvutis"
+
+#~ msgid "Personal"
+#~ msgstr "Isiklik"
+
+#~ msgid "Orientation"
+#~ msgstr "Suund"
+
+#~ msgid "The orientation of the tray."
+#~ msgstr "Salve suund"
+
+#~ msgid ""
+#~ "Another contact with the same speed dial already exists in your address "
+#~ "book:\n"
+#~ "\n"
+#~ "<b>Name</b>: %s\n"
+#~ "<b>URL</b>: %s\n"
+#~ "<b>Speed Dial</b>: %s\n"
+#~ msgstr ""
+#~ "Selle kiirvalimise alla on sinu aadressiraamatus juba kontakt olemas:\n"
+#~ "\n"
+#~ "<b>Nimi</b>: %s\n"
+#~ "<b>URL</b>: %s\n"
+#~ "<b>Kiirvalimine</b>: %s\n"
+
+#~ msgid ""
+#~ "Another contact with similar information already exists in your address "
+#~ "book:\n"
+#~ "\n"
+#~ "<b>Name</b>: %s\n"
+#~ "<b>URL</b>: %s\n"
+#~ "<b>Speed Dial</b>: %s\n"
+#~ "\n"
+#~ "Do you still want to add the contact?"
+#~ msgstr ""
+#~ "Sinu aadressiraamatus juba sarnaste andmetega kontakt olemas:\n"
+#~ "\n"
+#~ "<b>Nimi</b>: %s\n"
+#~ "<b>URL</b>: %s\n"
+#~ "<b>Kiirvalimine</b>: %s\n"
+#~ "\n"
+#~ "Soovid sa ikkagi seda kontakti lisada?"
+
+#~ msgid "S"
+#~ msgstr "O"
+
+#~ msgid "Comment"
+#~ msgstr "Kommentaar"
+
+#~ msgid "Software"
+#~ msgstr "Tarkvara"
+
+#~ msgid "E-Mail"
+#~ msgstr "E-post"
+
+#~ msgid "Location"
+#~ msgstr "Asukoht"
+
+#~ msgid "Categories"
+#~ msgstr "Kategooriad"
+
+#~ msgid "Speed Dial"
+#~ msgstr "Kiirvalimine"
+
+#~ msgid "Name contains"
+#~ msgstr "Nimi sisaldab"
+
+#~ msgid "URL contains"
+#~ msgstr "URL sisaldab"
+
+#~ msgid "Belongs to category"
+#~ msgstr "Kuulub kategooriasse"
+
+#~ msgid "Location contains"
+#~ msgstr "Asukoht sisaldab"
+
+#~ msgid "_Write e-Mail"
+#~ msgstr "Kirjuta _e-sõnum"
+
+#~ msgid "Error while fetching users list from %s"
+#~ msgstr "Viga kasutajate loendi vastuvõtmisel %s-st"
+
+#~ msgid "Found %d user in %s"
+#~ msgid_plural "Found %d users in %s"
+#~ msgstr[0] "Allikast '%2$s' leiti %1$d kasutaja"
+#~ msgstr[1] "Allikast '%2$s' leiti %1$d kasutajat"
+
+#~ msgid "_File"
+#~ msgstr "_Fail"
+
+#~ msgid "New _Address Book"
+#~ msgstr "Uus _aadressiraamat"
+
+#~ msgid "_Close"
+#~ msgstr "_Sulge"
+
+#~ msgid "Remote Contacts"
+#~ msgstr "Kaugkontaktid"
+
+#~ msgid "Edit the Contact Information"
+#~ msgstr "Kontaktandmete redaktor"
+
+#~ msgid "Email:"
+#~ msgstr "E-post:"
+
+#~ msgid "Speed Dial:"
+#~ msgstr "Kiirvalimine:"
+
+#~ msgid "Categories:"
+#~ msgstr "Kategooriad:"
+
+#~ msgid "Local Addressbook:"
+#~ msgstr "Kohalik aadressiraamat:"
+
+#~ msgid "Edit an address book"
+#~ msgstr "Aadressiraamatu redigeerimine"
+
+#~ msgid "Type:"
+#~ msgstr "Liik:"
+
+#~ msgid "Local"
+#~ msgstr "Kohalik"
+
+#~ msgid "Remote LDAP"
+#~ msgstr "Võrgusolev LDAP"
+
+#~ msgid "Remote ILS"
+#~ msgstr "Võrgusolev ILS"
+
+#~ msgid "Search Scope:"
+#~ msgstr "Otsinguskoop:"
+
+#~ msgid "Please make sure you fill in all required fields."
+#~ msgstr "Palun veendu, et sa täitsid kõik vajalikud väljad."
+
+#~ msgid "Are you sure you want to delete %s and all its contacts?"
+#~ msgstr "Kas sa soovid kustutada %s ja kõik selle kontaktid?"
+
+#~ msgid "Received Calls"
+#~ msgstr "Vastuvõetud kõned"
+
+#~ msgid "Placed Calls"
+#~ msgstr "Valitud kõned"
+
+#~ msgid "Missed Calls"
+#~ msgstr "Vastamata kõned"
+
+#~ msgid "Date"
+#~ msgstr "Kuupäev"
+
+#~ msgid "Remote User"
+#~ msgstr "Teine kasutaja"
+
+#~ msgid "Call End Reason"
+#~ msgstr "Kõnelõpu põhjus"
+
+#~ msgid "Hang _up"
+#~ msgstr "_Toru hargile"
+
+#~ msgid "Change the view mode"
+#~ msgstr "Vaaterežiimi muutmine"
+
+#~ msgid "Open address book"
+#~ msgstr "Aadressiraamatu avamine"
+
+#~ msgid ""
+#~ "Audio transmission status. During a call, click here to suspend or resume "
+#~ "the audio transmission."
+#~ msgstr ""
+#~ "Audio ülekandmise olek. Kõne ajal klõpsa audio ülekandmise peatamiseks "
+#~ "või taastamiseks siia."
+
+#~ msgid ""
+#~ "Video transmission status. During a call, click here to suspend or resume "
+#~ "the video transmission."
+#~ msgstr ""
+#~ "Video ülekandmise olek. Kõne ajal klõpsa video ülekandmise peatamiseks "
+#~ "või taastamiseks siia."
+
+#~ msgid "_Available"
+#~ msgstr "Saa_daval"
+
+#~ msgid "_Forward"
+#~ msgstr "Üm_bersuunamine"
+
+#~ msgid "Forward calls"
+#~ msgstr "Kõnede edastamine"
+
+#~ msgid "Speed d_ials"
+#~ msgstr "_Kiirvalimised"
+
+#~ msgid "_Save Current Picture"
+#~ msgstr "Salvesta käesolev _pilt"
+
+#~ msgid "Quit Ekiga"
+#~ msgstr "Ekiga lõpetamine"
+
+#~ msgid "_Preferences"
+#~ msgstr "_Eelistused"
+
+#~ msgid "View _Mode"
+#~ msgstr "Vaate_režiim"
+
+#~ msgid "Softp_hone"
+#~ msgstr "_Tarkvaraline telefon"
+
+#~ msgid "Show the softphone view"
+#~ msgstr "Tarkvaratelefoni vaate näitamine"
+
+#~ msgid "Show the videophone view"
+#~ msgstr "Videotelefoni vaate näitamine"
+
+#~ msgid "View all components"
+#~ msgstr "Kõikide komponentide näitamine"
+
+#~ msgid "_Control Panel"
+#~ msgstr "_Juhtpaneel"
+
+#~ msgid "View audio settings"
+#~ msgstr "Audiosätete vaatamine"
+
+#~ msgid "View video settings"
+#~ msgstr "Videosätete vaatamine"
+
+#~ msgid "_Statistics"
+#~ msgstr "_Statistika"
+
+#~ msgid "_Local Video"
+#~ msgstr "_Kohalik video"
+
+#~ msgid "_Remote Video"
+#~ msgstr "Kau_gvideo"
+
+#~ msgid "Both (_Side-by-Side)"
+#~ msgstr "Mõlemad (_külg-küljel)"
+
+#~ msgid "Both (_Both in New Windows)"
+#~ msgstr "Mõlemad (mõlemad uues _aknas)"
+
+#~ msgid "Zoom _In"
+#~ msgstr "_Suurenda"
+
+#~ msgid "Zoom _Out"
+#~ msgstr "_Vähenda"
+
+#~ msgid "_Normal Size"
+#~ msgstr "Al_gsuurus"
+
+#~ msgid "_Fullscreen"
+#~ msgstr "_Täisekraan"
+
+#~ msgid "Open the address book"
+#~ msgstr "Aadressiraamatu avamine"
+
+#~ msgid "_General History"
+#~ msgstr "Ül_dine ajalugu"
+
+#~ msgid "_Calls History"
+#~ msgstr "_Kõnede ajalugu"
+
+#~ msgid "Statistics"
+#~ msgstr "Statistika"
+
+#~ msgid "Video"
+#~ msgstr "Video"
+
+#~ msgid "Audio"
+#~ msgstr "Audio"
+
+#~ msgid "Zoom In"
+#~ msgstr "Suurenda"
+
+#~ msgid "Zoom Out"
+#~ msgstr "Vähenda"
+
+#~ msgid "Normal Size"
+#~ msgstr "Algsuurus"
+
+#~ msgid "Notification area not detected"
+#~ msgstr "Teateala ei leitud"
+
+#~ msgid ""
+#~ "The notification area is not present in your panel, so Ekiga cannot start "
+#~ "hidden."
+#~ msgstr ""
+#~ "Sinu paneelil pole teateala ja seetõttu ei saa Ekiga peidetuna käivituda."
+
+#~ msgid "Out:"
+#~ msgstr "Välja:"
+
+#~ msgid "In:"
+#~ msgstr "Sisse:"
+
+#~ msgid "Registered accounts:"
+#~ msgstr "Registreeritud kontosid:"
+
+#~ msgid "Gconf key error"
+#~ msgstr "Viga Gconfi võtmes"
+
+#~ msgid "Bandwidth"
+#~ msgstr "Läbilaskevõime"
+
+#~ msgid "E-_mail address:"
+#~ msgstr "E-posti _aadress:"
+
+#~ msgid "Enter your e-mail address"
+#~ msgstr "Sisesta siia oma e-posti aadress"
+
+#~ msgid "_Comment:"
+#~ msgstr "_Kommentaar:"
+
+#~ msgid "Enter a comment about yourself"
+#~ msgstr "Sisesta enda kohta mõni kommentaar"
+
+#~ msgid "Enter your country or city"
+#~ msgstr "Sisesta siia oma riik või linn"
+
+#~ msgid "Users Directory"
+#~ msgstr "Kasutajate kataloog"
+
+#~ msgid "Users directory:"
+#~ msgstr "Kasutajate kataloog:"
+
+#~ msgid "The users directory server to register with"
+#~ msgstr "Millise kasutajate kataloogiserverisse registreerida"
+
+#~ msgid "Enable _registering"
+#~ msgstr "_Registreerimine lubatud"
+
+#~ msgid "If enabled, register with the selected users directory"
+#~ msgstr "Kui märgitud, siis registreeritakse valitud kasutajate kataloogi"
+
+#~ msgid "Click here to refresh the devices list"
+#~ msgstr "Seadmete loetelu värskendamiseks klõpsa siia"
+
+#~ msgid "Normal"
+#~ msgstr "Tavaline"
+
+#~ msgid "Large"
+#~ msgstr "Suur"
+
+#~ msgid "Bandwidth Control"
+#~ msgstr "Läbilaskevõime juhtimine"
+
+#~ msgid "Advanced Quality Settings"
+#~ msgstr "Laiendatud kvaliteedisätted"
+
+#~ msgid "Directory Settings"
+#~ msgstr "Kataloogisätted"
 
 #~ msgid ""
 #~ "Please provide your first name and e-mail in the Personal Data section in "
@@ -3699,6 +3946,3 @@ msgstr ""
 
 #~ msgid "A single documenter entry"
 #~ msgstr "Üksik dokumenteerija kirje"
-
-#~ msgid "Remote user is offline"
-#~ msgstr "Teine kasutaja pole võrku ühendatud"
