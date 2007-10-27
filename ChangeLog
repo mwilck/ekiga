@@ -1,3 +1,10 @@
+2007-10-27  Julien Puydt  <jpuydt@gnome.org>
+
+	* configure.ac: Depend on glib-2.0 at least 2.8.0. Fixes #407058.
+	* lib/toolbox/toolbox.h, lib/toolbox/toolbox-common.c: Remove the
+	gm_mkdir_with_parents function, we have g_mkdir_with_parents.
+	* lib/gmconf/gmconf-glib.c: Don't use gm_mkdir_with_parents.
+
 2007-10-23  Matthias Schneider  <ma30002000@yahoo.de>
 
 	* lib/engine/framework/runtime-glib.cpp: 

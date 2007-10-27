@@ -45,15 +45,6 @@ G_BEGIN_DECLS
  */
 void gm_open_uri (const gchar *uri);
 
-/* DESCRIPTION  : safely create an unknown directory
- * BEHAVIOR     : creates a dir with all non-existing parents
- * PRE          : a non-NULL directory, and a mode specified
- *                (glib/POSIX S_I* values for filemodes)
- */
-
-gboolean gm_mkdir_with_parents (const gchar *pathname,
-			         int mode);
-
 
 /*!\fm gm_string_gslist_remove_dups (GSlist*)
  * \brief remove dups in a GSList of strings, return the new list start
