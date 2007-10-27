@@ -187,3 +187,9 @@ Ekiga::CallInfo::get_call_duration ()
 {
   return 3600;
 }
+
+Ekiga::CallInfo::CallType
+Ekiga::CallInfo::get_call_type ()
+{
+  return type;
+}

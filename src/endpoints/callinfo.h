@@ -50,20 +50,22 @@ namespace Ekiga {
     {
 
   public:
+      enum CallType { RINGING, ESTABLISHED, CLEARED };
 
-      CallInfo ();
-      CallInfo (OpalConnection &con) : connection (con) {};
+      CallInfo (OpalConnection &con, CallType t) : connection (con), type (t) {};
 
       std::string get_remote_party_name ();
       std::string get_remote_application ();
       std::string get_remote_uri ();
       std::string get_call_end_reason ();
       
+      CallInfo::CallType get_call_type ();
       int get_call_duration ();
 
   private:
 
       OpalConnection & connection;
+      CallType type;
     };
 
 };
