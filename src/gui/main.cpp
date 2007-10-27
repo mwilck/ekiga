@@ -3374,6 +3374,7 @@ gm_main_window_new (Ekiga::ServiceCore & core)
 #endif
   
   /* The main menu */
+  mw->statusbar = gm_statusbar_new ();
   gm_mw_init_menu (window); 
 #if defined HAVE_GNOME && defined HAVE_BONOBO
   gnome_app_set_menus (GNOME_APP (window), 
@@ -3469,7 +3470,6 @@ gm_main_window_new (Ekiga::ServiceCore & core)
 		      FALSE, FALSE, 2);
 
   mw->statusbar_ebox = gtk_event_box_new ();
-  mw->statusbar = gm_statusbar_new ();
   gtk_box_pack_start (GTK_BOX (hbox), mw->statusbar_ebox,
 		      TRUE, TRUE, 0);
   gtk_container_add (GTK_CONTAINER (mw->statusbar_ebox), mw->statusbar);
