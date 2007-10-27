@@ -4078,6 +4078,7 @@ gm_main_window_new ()
 #endif
   
   /* The main menu and the toolbars */
+  mw->statusbar = gm_statusbar_new ();
   gm_mw_init_menu (window); 
 #ifdef DISABLE_GNOME
   gtk_box_pack_start (GTK_BOX (mw->window_vbox), mw->main_menu,
@@ -4190,7 +4191,6 @@ gm_main_window_new ()
   
   /* The statusbar */
   mw->statusbar_ebox = gtk_event_box_new ();
-  mw->statusbar = gm_statusbar_new ();
   gtk_container_add (GTK_CONTAINER (mw->statusbar_ebox), mw->statusbar);
 
 #ifdef DISABLE_GNOME
