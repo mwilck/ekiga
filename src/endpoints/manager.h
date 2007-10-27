@@ -718,7 +718,7 @@ class GMManager : public OpalManager
   sigc::signal<void, std::string, std::string> new_chat;
   // Endof FIXME
 
-  sigc::signal<void, GMManager::CallingState, Ekiga::CallInfo &> call_event;
+  sigc::signal<void, Ekiga::CallInfo &> call_event;
   
  protected:
   
@@ -746,13 +746,6 @@ class GMManager : public OpalManager
   void UpdateRTPStats (PTime,
 		       RTP_Session *,
 		       RTP_Session *);
-
-  
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Returns the last called call token.
-   * PRE          :  /
-   */
-  PString GetLastCallAddress ();
 
   
   /* DESCRIPTION  :  /
@@ -806,7 +799,6 @@ class GMManager : public OpalManager
   GtkWidget *audio_transmission_popup;
   GtkWidget *audio_reception_popup;
   
-  PString called_address;
   PString current_call_token;
 
   CallingState calling_state; 
@@ -916,7 +908,6 @@ class GMManager : public OpalManager
   PMutex tct_access_mutex;
   PMutex lid_access_mutex;
   PMutex at_access_mutex;
-  PMutex lca_access_mutex;
   PMutex mc_access_mutex;
   PMutex mwi_access_mutex;
   PMutex rc_access_mutex;

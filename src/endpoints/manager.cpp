@@ -152,10 +152,6 @@ GMManager::SetUpCall (const PString & call_addr,
 {
   BOOL result = FALSE;
   
-  lca_access_mutex.Wait();
-  called_address = call_addr;
-  lca_access_mutex.Signal();
-  
   result = OpalManager::SetUpCall ("pc:*", call_addr, call_token, NULL);
 
   if (!result) 
@@ -812,63 +808,27 @@ GMManager::OnIncomingConnection (OpalConnection &connection,
 {
   BOOL res = FALSE;
 
-  GtkWidget *main_window = NULL;
-
-  gchar *msg = NULL;
-  gchar *short_reason = NULL;
-  gchar *long_reason = NULL;
-
-  gchar *utf8_name = NULL;
-  gchar *utf8_app = NULL;
-  gchar *utf8_url = NULL;
-
-  GetRemoteConnectionInfo (connection, utf8_name, utf8_app, utf8_url);
-
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-
-  /* Update the log and status bar */
-  msg = g_strdup_printf (_("Call from %s"), (const char *) utf8_name);
-  gnomemeeting_threads_enter ();
-  gm_main_window_flash_message (main_window, "%s", msg);
-  gnomemeeting_threads_leave ();
-  g_free (msg);
-
   /* Act on the connection */
   switch (reason) {
 
   case 1:
     connection.ClearCall (OpalConnection::EndedByLocalBusy);
     res = FALSE;
-    short_reason = g_strdup (_("Rejecting incoming call"));
-    long_reason = 
-      g_strdup_printf (_("Rejecting incoming call from %s"), utf8_name);
     break;
     
   case 2:
     connection.ForwardCall (extra);
     res = FALSE;
-    short_reason = g_strdup (_("Forwarding incoming call"));
-    long_reason = 
-      g_strdup_printf (_("Forwarding incoming call from %s to %s"), 
-		       utf8_name, (const char *) extra);
     break;
     
   case 4:
     res = TRUE;
-    short_reason = g_strdup (_("Auto-Answering incoming call"));
-    long_reason = g_strdup_printf (_("Auto-Answering incoming call from %s"),
-				   (const char *) utf8_name);
   default:
+
   case 0:
     res = OpalManager::OnIncomingConnection (connection, 0, NULL);
     break;
   }
-  
-  /* Display the action message */
-  gnomemeeting_threads_enter ();
-  if (short_reason) 
-    gm_main_window_flash_message (main_window, "%s", short_reason);
-  gnomemeeting_threads_leave ();
   
   /* Update the current state if action is 0 or 4.
    * Show popup if action is 1 (show popup)
@@ -881,24 +841,11 @@ GMManager::OnIncomingConnection (OpalConnection &connection,
 
   if (reason == 0) {
 
-    /* Update the UI */
-    gnomemeeting_threads_enter ();
-    gm_main_window_update_calling_state (main_window, GMManager::Called);
-    gm_main_window_incoming_call_dialog_show (main_window,
-					      utf8_name, 
-					      utf8_app, 
-					      utf8_url);
-    gnomemeeting_threads_leave ();
+    /* Emit the signal */
+    Ekiga::Runtime *runtime = GnomeMeeting::Process ()->GetRuntime (); // FIXME
+    Ekiga::CallInfo info (connection, Ekiga::CallInfo::RINGING);
+    runtime->run_in_main (sigc::bind (call_event.make_slot (), info));
   }
-
-  g_free (utf8_app);
-  g_free (utf8_name);
-  g_free (utf8_url);
-
-  /* Emit the signal */
-  Ekiga::Runtime *runtime = GnomeMeeting::Process ()->GetRuntime (); // FIXME
-  Ekiga::CallInfo info (connection);
-  runtime->run_in_main (sigc::bind (call_event.make_slot (), GMManager::Called, info));
 
   return res;
 }
@@ -907,18 +854,6 @@ GMManager::OnIncomingConnection (OpalConnection &connection,
 void 
 GMManager::OnEstablishedCall (OpalCall &call)
 {
-  GtkWidget *main_window = NULL;
-
-  BOOL stay_on_top = FALSE;
-
-  /* Get the widgets */
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-
-  /* Get the config settings */
-  gnomemeeting_threads_enter ();
-  stay_on_top = gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top");
-  gnomemeeting_threads_leave ();
-  
   /* Update the timers */
   RTPTimer.RunContinuous (PTimeInterval (1000));
   AvgSignalTimer.RunContinuous (PTimeInterval (50));
@@ -926,13 +861,6 @@ GMManager::OnEstablishedCall (OpalCall &call)
   /* Update internal state */
   SetCallingState (GMManager::Connected);
   SetCurrentCallToken (call.GetToken ());
- 
-  /* Update the GUI */
-  gnomemeeting_threads_enter ();
-  if (called_address.IsEmpty ()) 
-    gm_main_window_set_call_url (main_window, GMURL ().GetDefaultURL ());
-  gm_main_window_set_stay_on_top (main_window, stay_on_top);
-  gnomemeeting_threads_leave ();
 }
 
 
@@ -942,17 +870,6 @@ GMManager::OnEstablished (OpalConnection &connection)
   RTP_Session *audio_session = NULL;
   RTP_Session *video_session = NULL;
 
-  gchar *utf8_url = NULL;
-  gchar *utf8_app = NULL;
-  gchar *utf8_name = NULL;
-  gchar *utf8_protocol_prefix = NULL;
-  gchar *msg = NULL;
-
-  GtkWidget *main_window = NULL;
-
-  /* Get the widgets */
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-
   /* Do nothing for the PCSS connection */
   if (PIsDescendant(&connection, OpalPCSSConnection)) {
     
@@ -961,15 +878,9 @@ GMManager::OnEstablished (OpalConnection &connection)
     return;
   }
   
-  /* Update internal state */
-  GetRemoteConnectionInfo (connection, utf8_name, utf8_app, utf8_url);
-  utf8_protocol_prefix = gnomemeeting_get_utf8 (connection.GetEndPoint ().GetPrefixName ().Trim ());
-  
   /* Asterisk sometimes forgets to send an INVITE, HACK */
-  audio_session = 
-    connection.GetSession (OpalMediaFormat::DefaultAudioSessionID);
-  video_session = 
-    connection.GetSession (OpalMediaFormat::DefaultVideoSessionID);
+  audio_session = connection.GetSession (OpalMediaFormat::DefaultAudioSessionID);
+  video_session = connection.GetSession (OpalMediaFormat::DefaultVideoSessionID);
   if (audio_session) {
     audio_session->SetIgnoreOtherSources (TRUE);
     audio_session->SetIgnorePayloadTypeChanges (TRUE);
@@ -980,47 +891,22 @@ GMManager::OnEstablished (OpalConnection &connection)
     video_session->SetIgnorePayloadTypeChanges (TRUE);
   }
   
-  if (!connection.IsOriginating ()) {
-    
-    // FIXME
-    PWaitAndSignal m(lca_access_mutex);
-
-    called_address = PString ();
-  }
-
-  g_free (utf8_name);
-  g_free (utf8_app);
-  g_free (utf8_url);
-  g_free (utf8_protocol_prefix);
-  g_free (msg);
-
   PTRACE (3, "GMManager\t Will establish the connection");
   OpalManager::OnEstablished (connection);
 
   /* Emit the signal */
   Ekiga::Runtime *runtime = GnomeMeeting::Process ()->GetRuntime (); // FIXME
-  Ekiga::CallInfo info (connection);
-  runtime->run_in_main (sigc::bind (call_event.make_slot (), GMManager::Connected, info));
+  Ekiga::CallInfo info (connection, Ekiga::CallInfo::ESTABLISHED);
+  runtime->run_in_main (sigc::bind (call_event.make_slot (), info));
 }
 
 
 void 
 GMManager::OnClearedCall (OpalCall & call)
 {
-  GtkWidget *main_window = NULL;
-  BOOL reg = FALSE;
-
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  
   if (GetCurrentCallToken() != PString::Empty() 
       && GetCurrentCallToken () != call.GetToken())
     return;
-
-  
-  /* Get the config settings */
-  gnomemeeting_threads_enter ();
-  reg = gm_conf_get_bool (LDAP_KEY "enable_registering");
-  gnomemeeting_threads_leave ();
   
   /* Stop the Timers */
   NoIncomingMediaTimer.Stop ();
@@ -1033,24 +919,6 @@ GMManager::OnClearedCall (OpalCall & call)
   /* Play busy tone if we were connected */
   if (GetCallingState () == GMManager::Connected)
     pcssEP->PlaySoundEvent ("busy_tone_sound"); 
-
-  /* Update the various parts of the GUI */
-  gnomemeeting_threads_enter ();
-  gm_main_window_set_stay_on_top (main_window, FALSE);
-  gm_main_window_update_calling_state (main_window, GMManager::Standby);
-  gm_main_window_set_status (main_window, _("Standby"));
-  gm_main_window_set_call_duration (main_window, NULL);
-  gm_main_window_set_call_info (main_window, NULL, NULL, NULL, NULL);
-  gm_main_window_set_account_info (main_window, 
-				   GetRegisteredAccounts ()); 
-  gm_main_window_set_panel_section (main_window, CONTACTS);
-  gm_main_window_clear_stats (main_window);
-  gm_main_window_update_logo (main_window);
-  gm_main_window_clear_signal_levels (main_window);
-  gm_main_window_push_message (main_window, 
-			       GetMissedCallsNumber (), 
-			       GetMWI ());
-  gnomemeeting_threads_leave ();
 
   /* Update internal state */
   SetCallingState (GMManager::Standby);
@@ -1068,17 +936,8 @@ GMManager::OnClearedCall (OpalCall & call)
 void
 GMManager::OnReleased (OpalConnection & connection)
 { 
-  GtkWidget *main_window = NULL;
-  
-  gchar *utf8_url = NULL;
-  gchar *utf8_name = NULL;
-  gchar *utf8_app = NULL;
-
   PTimeInterval t;
 
-  /* Get the widgets */
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  
   /* Do nothing for the PCSS connection */
   if (PIsDescendant(&connection, OpalPCSSConnection)) {
     
@@ -1091,65 +950,25 @@ GMManager::OnReleased (OpalConnection & connection)
   if (connection.GetConnectionStartTime ().IsValid ())
     t = PTime () - connection.GetConnectionStartTime();
   
-  
-  /* Update the calls history */
-  GetRemoteConnectionInfo (connection, utf8_name, utf8_app, utf8_url);
-  /* FIXME 
-  call_history_item = gm_calls_history_item_new ();
-  call_history_item->date = 
-    g_strdup ((const char *) PTime ().AsString ("yyyy/MM/dd hh:mm:ss"));
-  call_history_item->name = g_strdup (utf8_name);
-  call_history_item->url = g_strdup (utf8_url);
-  call_history_item->end_reason = g_strdup (msg_reason);
-  call_history_item->software = g_strdup (utf8_app);
-  */
-  gnomemeeting_threads_enter ();
   if (t.GetSeconds () == 0 
       && !connection.IsOriginating ()
       && connection.GetCallEndReason ()!=OpalConnection::EndedByAnswerDenied) {
 
-    //FIXME call_history_item->type = MISSED_CALL;
-    //call_history_item->duration = g_strdup ("00:00:00");
-
-    mc_access_mutex.Wait ();
+    PWaitAndSignal m(mc_access_mutex);
     missed_calls++;
-    mc_access_mutex.Signal ();
   }
-  else {
-    
-    /*call_history_item->duration = 
-      g_strdup_printf ("%.2ld:%.2ld:%.2ld", 
-                       (long) t.GetHours (), 
-                       (long) (t.GetMinutes () % 60), 
-                       (long) (t.GetSeconds () % 60));
-
-    if (!connection.IsOriginating ()) {
-
-      call_history_item->type = RECEIVED_CALL;
-
-    } else {
-
-      call_history_item->type = PLACED_CALL;
-      g_free (call_history_item->url);
-      call_history_item->url = g_strdup (GetLastCallAddress ());
-    }*/
-  }
-//  gm_calls_history_add_call (call_history_item);
-//  gm_calls_history_item_free (call_history_item);
-
-  gnomemeeting_threads_leave ();
-
-  g_free (utf8_app);
-  g_free (utf8_name);
-  g_free (utf8_url);  
 
   PTRACE (3, "GMManager\t Will release the connection");
   OpalManager::OnReleased (connection);
 
+  if (GetCurrentCallToken() != PString::Empty() 
+      && GetCurrentCallToken () != connection.GetCall().GetToken())
+    return;
+
   /* Emit the signal */
   Ekiga::Runtime *runtime = GnomeMeeting::Process ()->GetRuntime (); // FIXME
-  Ekiga::CallInfo info (connection);
-  runtime->run_in_main (sigc::bind (call_event.make_slot (), GMManager::Standby, info));
+  Ekiga::CallInfo info (connection, Ekiga::CallInfo::CLEARED);
+  runtime->run_in_main (sigc::bind (call_event.make_slot (), info));
 }
 
 
@@ -2531,13 +2350,3 @@ GMManager::GetMissedCallsNumber ()
 
   return missed_calls;
 }
-
-
-PString
-GMManager::GetLastCallAddress ()
-{
-  PWaitAndSignal m(lca_access_mutex);
-
-  return called_address;
-}
-

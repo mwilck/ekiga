@@ -519,26 +519,50 @@ static gboolean main_window_focus_event_cb (GtkWidget *,
 /* 
  * Engine Callbacks 
  */
-static void on_call_event_cb (GMManager::CallingState new_state, 
-                              Ekiga::CallInfo & info, 
+static void on_call_event_cb (Ekiga::CallInfo & info, 
                               gpointer self)
 {
   gchar *info_string = NULL;
   std::string end_reason;
 
-  switch (new_state) 
+  switch (info.get_call_type ()) 
     {
-    case GMManager::Connected :
+    case Ekiga::CallInfo::ESTABLISHED :
       info_string = g_strdup_printf (_("Connected with %s"), info.get_remote_party_name ().c_str ());
+      gm_main_window_set_call_url (GTK_WIDGET (self), info.get_remote_uri ().c_str());
+      gm_main_window_set_stay_on_top (GTK_WIDGET (self), gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top"));
       gm_main_window_flash_message (GTK_WIDGET (self), "%s", info_string);
       gm_main_window_update_calling_state (GTK_WIDGET (self), GMManager::Connected);
       g_free (info_string);
       break;
 
-    case GMManager::Standby :
+    case Ekiga::CallInfo::CLEARED :
       end_reason = info.get_call_end_reason ();
       if (!end_reason.empty ())
         gm_main_window_flash_message (GTK_WIDGET (self), "%s", end_reason.c_str ());
+      gm_main_window_set_stay_on_top (GTK_WIDGET (self), FALSE);
+      gm_main_window_update_calling_state (GTK_WIDGET (self), GMManager::Standby);
+      gm_main_window_set_status (GTK_WIDGET (self), _("Standby"));
+      gm_main_window_set_call_duration (GTK_WIDGET (self), NULL);
+      gm_main_window_set_call_info (GTK_WIDGET (self), NULL, NULL, NULL, NULL);
+      gm_main_window_set_panel_section (GTK_WIDGET (self), CONTACTS);
+      gm_main_window_clear_stats (GTK_WIDGET (self));
+      gm_main_window_update_logo (GTK_WIDGET (self));
+      gm_main_window_clear_signal_levels (GTK_WIDGET (self));
+      gm_main_window_push_message (GTK_WIDGET (self), 
+                                   GnomeMeeting::Process ()->GetManager ()->GetMissedCallsNumber (), 
+                                   GnomeMeeting::Process ()->GetManager ()->GetMWI ());
+      break;
+
+    case Ekiga::CallInfo::RINGING:
+      info_string = g_strdup_printf (_("Call from %s"), info.get_remote_party_name ().c_str ());
+      gm_main_window_flash_message (GTK_WIDGET (self), "%s", info_string);
+      gm_main_window_update_calling_state (GTK_WIDGET (self), GMManager::Called);
+      gm_main_window_incoming_call_dialog_show (GTK_WIDGET (self),
+                                                (gchar *) info.get_remote_party_name ().c_str (),
+                                                (gchar *) info.get_remote_application ().c_str (),
+                                                (gchar *) info.get_remote_uri ().c_str ());
+      break;
     default:
       break;
     }
@@ -3520,7 +3544,8 @@ gm_main_window_new (Ekiga::ServiceCore & core)
 
   /* Engine Signals callbacks */
   // FIXME sigc::connection conn;
-  GnomeMeeting::Process ()->GetManager ()->call_event.connect (sigc::bind (sigc::ptr_fun (on_call_event_cb), (gpointer) window));
+  GnomeMeeting::Process ()->GetManager ()->call_event.connect (sigc::bind (sigc::ptr_fun (on_call_event_cb), 
+                                                                           (gpointer) window));
   // FIXME self->priv->connections.push_back (conn);
 
   return window;

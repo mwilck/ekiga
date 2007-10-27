@@ -117,8 +117,7 @@ statusicon_key_updated_cb (gpointer id,
                            gpointer data);
 
 static void
-on_call_event_cb (GMManager::CallingState i,
-                  Ekiga::CallInfo & info,
+on_call_event_cb (Ekiga::CallInfo & info,
                   gpointer data);
 
 
@@ -408,13 +407,12 @@ statusicon_key_updated_cb (gpointer id,
 
 
 static void
-on_call_event_cb (GMManager::CallingState i,
-                  Ekiga::CallInfo & info,
+on_call_event_cb (Ekiga::CallInfo & info,
                   gpointer data)
 {
   StatusIcon *statusicon = STATUSICON (data);
 
-  if (i == GMManager::Called) 
+  if (info.get_call_type () == Ekiga::CallInfo::RINGING)
     statusicon_start_blinking (statusicon, GM_STOCK_STATUS_RINGING);
   else 
     statusicon_stop_blinking (statusicon);
