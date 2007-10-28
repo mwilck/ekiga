@@ -569,6 +569,16 @@ static void on_call_event_cb (Ekiga::CallInfo & info,
       g_free (info_string);
       break;
 
+    case Ekiga::CallInfo::Held:
+      gm_main_window_set_call_hold (GTK_WIDGET (self), info.is_call_on_hold ());
+      if (info.is_call_on_hold ())
+        info_string = g_strdup (_("Call on hold"));
+      else
+        info_string = g_strdup (_("Call retrieved"));
+      gm_main_window_flash_message (GTK_WIDGET (self), "%s", info_string);
+      g_free (info_string);
+      break;
+
     case Ekiga::CallInfo::Forwarded:
       info_string = g_strdup_printf (_("Forwarded call from %s"), info.get_remote_party_name ().c_str ());
       gm_main_window_flash_message (GTK_WIDGET (self), "%s", info_string);
@@ -2479,7 +2489,7 @@ gm_main_window_update_logo (GtkWidget *main_window)
 
 void 
 gm_main_window_set_call_hold (GtkWidget *main_window,
-			      gboolean is_on_hold)
+                              bool is_on_hold)
 {
   GmMainWindow *mw = NULL;
   

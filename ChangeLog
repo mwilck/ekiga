@@ -1,6 +1,16 @@
 2007-10-28  Damien Sandras  <dsandras@gnome.org>
 
 	* src/endpoints/manager.cpp,
+	src/endpoints/callinfo.cpp,
+	src/endpoints/callinfo.h,
+	src/gui/main.cpp,
+	src/gui/main.h:
+	Moved the indication of held calls to a signal
+	based system.
+
+2007-10-28  Damien Sandras  <dsandras@gnome.org>
+
+	* src/endpoints/manager.cpp,
 	src/endpoints/callinfo.h,
 	src/gui/main.cpp:
 	Moved the indication of forwarded calls to a signal

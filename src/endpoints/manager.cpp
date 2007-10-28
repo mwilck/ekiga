@@ -963,14 +963,9 @@ GMManager::OnReleased (OpalConnection & connection)
 void 
 GMManager::OnHold (OpalConnection & connection)
 {
-  GtkWidget *main_window = NULL;
-  
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-
-  gnomemeeting_threads_enter ();
-  gm_main_window_set_call_hold (main_window,
-				connection.IsConnectionOnHold ());
-  gnomemeeting_threads_leave ();
+  Ekiga::Runtime *runtime = GnomeMeeting::Process ()->GetRuntime (); // FIXME
+  Ekiga::CallInfo info (connection, Ekiga::CallInfo::Held);
+  runtime->run_in_main (sigc::bind (call_event.make_slot (), info));
 }
 
 

@@ -50,7 +50,7 @@ namespace Ekiga {
     {
 
   public:
-      enum CallType { Incoming, Established, Cleared, Missed, Forwarded };
+      enum CallType { Incoming, Established, Cleared, Missed, Forwarded, Held };
 
       CallInfo (OpalConnection &con, CallType t) : connection (con), type (t) {};
 
@@ -61,6 +61,7 @@ namespace Ekiga {
       
       CallInfo::CallType get_call_type ();
       int get_call_duration ();
+      bool is_call_on_hold ();
 
   private:
 

@@ -83,7 +83,7 @@ void gm_main_window_update_logo (GtkWidget *main_window);
  * PRE          :  The main window GMObject.
  */
 void gm_main_window_set_call_hold (GtkWidget *main_window,
-				   gboolean is_on_hold);
+                                   bool is_on_hold);
 
 
 /* DESCRIPTION  :  /

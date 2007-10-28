@@ -193,3 +193,10 @@ Ekiga::CallInfo::get_call_type ()
 {
   return type;
 }
+
+
+bool
+Ekiga::CallInfo::is_call_on_hold ()
+{
+  return connection.IsConnectionOnHold ();
+}
