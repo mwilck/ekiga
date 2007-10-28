@@ -1563,7 +1563,6 @@ GMManager::UpdateRTPStats (PTime start_time,
 
     stats.last_tick = now;
     stats.start_time = start_time;
-
   }
 }
 
@@ -1572,18 +1571,15 @@ void
 GMManager::OnAvgSignalTimeout (PTimer &,
                                INT)
 {
-  GtkWidget *main_window = NULL;
-  
   PSafePtr <OpalCall> call = NULL;
   PSafePtr <OpalConnection> connection = NULL;
 
   OpalRawMediaStream *audio_stream = NULL;
+  Ekiga::Runtime *runtime = GnomeMeeting::Process ()->GetRuntime (); // FIXME
 
   float output = 0;
   float input = 0;
   
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-
   call = FindCallWithLock (GetCurrentCallToken ());
   if (call != NULL) {
 
@@ -1606,9 +1602,7 @@ GMManager::OnAvgSignalTimeout (PTimer &,
         input = (linear2ulaw (audio_stream->GetAverageSignalLevel ()) ^ 0xff) / 100.0;
     } 
 
-    gdk_threads_enter ();
-    gm_main_window_set_signal_levels (main_window, output, input);
-    gdk_threads_leave ();
+    runtime->run_in_main (sigc::bind (audio_signal_event.make_slot (), input, output));
   }
 }
 

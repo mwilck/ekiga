@@ -676,6 +676,14 @@ static void on_media_stream_event_cb (std::string name,
 }
 
 
+static void on_audio_signal_event_cb (float input,
+                                      float output,
+                                      gpointer self)
+{
+  gm_main_window_set_signal_levels (GTK_WIDGET (self), input, output);
+}
+
+
 /* Implementation */
 static void
 gm_mw_destroy (gpointer m)
@@ -3668,6 +3676,9 @@ gm_main_window_new (Ekiga::ServiceCore & core)
                                                                           (gpointer) window));
   // FIXME self->priv->connections.push_back (conn);
   GnomeMeeting::Process ()->GetManager ()->media_stream_event.connect (sigc::bind (sigc::ptr_fun (on_media_stream_event_cb), 
+                                                                                   (gpointer) window));
+  // FIXME self->priv->connections.push_back (conn);
+  GnomeMeeting::Process ()->GetManager ()->audio_signal_event.connect (sigc::bind (sigc::ptr_fun (on_audio_signal_event_cb), 
                                                                                    (gpointer) window));
   // FIXME self->priv->connections.push_back (conn);
 
