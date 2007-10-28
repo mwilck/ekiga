@@ -71,7 +71,7 @@ void
 save_callback (GtkWidget *widget,
 	       gpointer data)
 {
-  GnomeMeeting::Process ()->GetManager ()->SavePicture ();
+  std::cout << "Not implemented" << std::endl << std::flush; // FIXME Matthias ?
 }
 
 

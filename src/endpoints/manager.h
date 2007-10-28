@@ -370,13 +370,6 @@ class GMManager : public OpalManager
    */
   void SetUserInputMode ();
 
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Saves the currently displayed picture in a file.
-   * PRE          :  / 
-   */
-  void SavePicture (void);
-
   
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Set the current calling state :

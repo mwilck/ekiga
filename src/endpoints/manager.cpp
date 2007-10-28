@@ -1017,40 +1017,6 @@ GMManager::OnMessageSent (const PString & _to,
 }
 
 
-void 
-GMManager::SavePicture (void)
-{ 
-  PTime ts = PTime ();
-  
-  GtkWidget *main_window = NULL;
-  GdkPixbuf *pic = NULL;
-  
-  gchar *prefix = NULL;
-  gchar *dirname = NULL;
-  gchar *filename = NULL;
-
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-
-  prefix = gm_conf_get_string (GENERAL_KEY "save_prefix");
-  
-  dirname = (gchar *) g_get_home_dir ();
-  pic = gm_main_window_get_current_picture (main_window);
-
-  if (pic && prefix && dirname) {
-    
-    filename = g_strdup_printf ("%s/%s%.2d_%.2d_%.2d-%.2d%.2d%.2d.png",
-				dirname, prefix,
-				ts.GetYear(), ts.GetMonth(), ts.GetDay(),
-				ts.GetHour(), ts.GetMinute(), ts.GetSecond());
-	
-    gdk_pixbuf_save (pic, filename, "png", NULL, NULL);
-    g_free (filename);
-  }
-
-  g_free (prefix);
-}
-
-
 void
 GMManager::SetUserNameAndAlias ()
 {

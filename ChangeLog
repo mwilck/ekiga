@@ -1,6 +1,17 @@
 2007-10-28  Damien Sandras  <dsandras@gnome.org>
 
 	* src/endpoints/manager.cpp,
+	src/endpoints/manager.h,
+	src/gui/callbacks.cpp:
+	Removed SavePicture method from the Manager. It is not the right place
+	for a method allowing to save the current picture in a file. Moreover,
+	it was still based on the GDK display and thus broken when GDK
+	is not being used.
+	Probably some more work for Matthias.
+
+2007-10-28  Damien Sandras  <dsandras@gnome.org>
+
+	* src/endpoints/manager.cpp,
 	src/endpoints/callinfo.cpp,
 	src/endpoints/callinfo.h,
 	src/gui/main.cpp,
