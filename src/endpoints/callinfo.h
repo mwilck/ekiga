@@ -50,7 +50,7 @@ namespace Ekiga {
     {
 
   public:
-      enum CallType { Incoming, Established, Cleared, Missed };
+      enum CallType { Incoming, Established, Cleared, Missed, Forwarded };
 
       CallInfo (OpalConnection &con, CallType t) : connection (con), type (t) {};
 

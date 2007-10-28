@@ -684,21 +684,13 @@ GMManager::RemoveSTUNClient ()
 
 
 BOOL
-GMManager::OnForwarded (OpalConnection &,
-			 const PString & forward_party)
+GMManager::OnForwarded (OpalConnection &connection,
+                        const PString & forward_party)
 {
-  GtkWidget *main_window = NULL;
-
-  gchar *msg = NULL;
-
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-
-  gnomemeeting_threads_enter ();
-  msg = g_strdup_printf (_("Forwarding call to %s"),
-			 (const char*) forward_party);
-  gm_main_window_flash_message (main_window, "%s", msg);
-  gnomemeeting_threads_leave ();
-  g_free (msg);
+  /* Emit the signal */
+  Ekiga::Runtime *runtime = GnomeMeeting::Process ()->GetRuntime (); // FIXME
+  Ekiga::CallInfo info (connection, Ekiga::CallInfo::Forwarded);
+  runtime->run_in_main (sigc::bind (call_event.make_slot (), info));
 
   return TRUE;
 }

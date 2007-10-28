@@ -569,6 +569,12 @@ static void on_call_event_cb (Ekiga::CallInfo & info,
       g_free (info_string);
       break;
 
+    case Ekiga::CallInfo::Forwarded:
+      info_string = g_strdup_printf (_("Forwarded call from %s"), info.get_remote_party_name ().c_str ());
+      gm_main_window_flash_message (GTK_WIDGET (self), "%s", info_string);
+      g_free (info_string);
+      break;
+
     case Ekiga::CallInfo::Incoming:
       info_string = g_strdup_printf (_("Call from %s"), info.get_remote_party_name ().c_str ());
       gm_main_window_flash_message (GTK_WIDGET (self), "%s", info_string);
