@@ -412,7 +412,7 @@ on_call_event_cb (Ekiga::CallInfo & info,
 {
   StatusIcon *statusicon = STATUSICON (data);
 
-  if (info.get_call_type () == Ekiga::CallInfo::RINGING)
+  if (info.get_call_type () == Ekiga::CallInfo::Incoming)
     statusicon_start_blinking (statusicon, GM_STOCK_STATUS_RINGING);
   else 
     statusicon_stop_blinking (statusicon);

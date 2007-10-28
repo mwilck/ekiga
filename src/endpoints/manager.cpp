@@ -101,8 +101,6 @@ GMManager::GMManager ()
   IPChangedTimer.RunContinuous (120000);
   NoIncomingMediaTimer.SetNotifier (PCREATE_NOTIFIER (OnNoIncomingMediaTimeout));
 
-  missed_calls = 0;
-
   h323EP = NULL;
   sipEP = NULL;
   pcssEP = NULL;
@@ -843,7 +841,7 @@ GMManager::OnIncomingConnection (OpalConnection &connection,
 
     /* Emit the signal */
     Ekiga::Runtime *runtime = GnomeMeeting::Process ()->GetRuntime (); // FIXME
-    Ekiga::CallInfo info (connection, Ekiga::CallInfo::RINGING);
+    Ekiga::CallInfo info (connection, Ekiga::CallInfo::Incoming);
     runtime->run_in_main (sigc::bind (call_event.make_slot (), info));
   }
 
@@ -896,7 +894,7 @@ GMManager::OnEstablished (OpalConnection &connection)
 
   /* Emit the signal */
   Ekiga::Runtime *runtime = GnomeMeeting::Process ()->GetRuntime (); // FIXME
-  Ekiga::CallInfo info (connection, Ekiga::CallInfo::ESTABLISHED);
+  Ekiga::CallInfo info (connection, Ekiga::CallInfo::Established);
   runtime->run_in_main (sigc::bind (call_event.make_slot (), info));
 }
 
@@ -937,12 +935,13 @@ void
 GMManager::OnReleased (OpalConnection & connection)
 { 
   PTimeInterval t;
+  Ekiga::Runtime *runtime = GnomeMeeting::Process ()->GetRuntime (); // FIXME
+
+  PTRACE (3, "GMManager\t Will release the connection");
+  OpalManager::OnReleased (connection);
 
   /* Do nothing for the PCSS connection */
   if (PIsDescendant(&connection, OpalPCSSConnection)) {
-    
-    PTRACE (3, "GMManager\t Will release the connection");
-    OpalManager::OnReleased (connection);
     return;
   }
 
@@ -954,20 +953,17 @@ GMManager::OnReleased (OpalConnection & connection)
       && !connection.IsOriginating ()
       && connection.GetCallEndReason ()!=OpalConnection::EndedByAnswerDenied) {
 
-    PWaitAndSignal m(mc_access_mutex);
-    missed_calls++;
+    Ekiga::CallInfo info (connection, Ekiga::CallInfo::Missed);
+    runtime->run_in_main (sigc::bind (call_event.make_slot (), info));
   }
 
-  PTRACE (3, "GMManager\t Will release the connection");
-  OpalManager::OnReleased (connection);
-
+  /* The currently active call was cleared */
   if (GetCurrentCallToken() != PString::Empty() 
       && GetCurrentCallToken () != connection.GetCall().GetToken())
     return;
 
   /* Emit the signal */
-  Ekiga::Runtime *runtime = GnomeMeeting::Process ()->GetRuntime (); // FIXME
-  Ekiga::CallInfo info (connection, Ekiga::CallInfo::CLEARED);
+  Ekiga::CallInfo info (connection, Ekiga::CallInfo::Cleared);
   runtime->run_in_main (sigc::bind (call_event.make_slot (), info));
 }
 
@@ -2248,76 +2244,55 @@ GMManager::SetCallVideoPause (PString callToken,
 
 
 void
-GMManager::AddMWI (const PString & host,
-		    const PString & user,
-		    const PString & value)
+GMManager::OnMWIReceived (const PString & account,
+                          const PString & mwi)
 {
-  PString key;
-  PString * val = NULL;
-  
-  PWaitAndSignal m(mwi_access_mutex);
-
-  key = host + "-" + user;
-  val = new PString (value);
-
-  mwiData.SetAt (key, val);
-}
-
-
-PString 
-GMManager::GetMWI (const PString & host,
-		    const PString & user)
-{
-  PString key;
-  PString *value = NULL;
-  
-  PWaitAndSignal m(mwi_access_mutex);
-
-  key = host + "-" + user;
-  
-  value = mwiData.GetAt (key);
-
-  if (value)
-    return *value;
-
-  return "";
-}
-
-
-PString 
-GMManager::GetMWI ()
-{
+  Ekiga::Runtime *runtime = GnomeMeeting::Process ()->GetRuntime (); // FIXME
   PINDEX i = 0;
   PINDEX j = 0;
   int total = 0;
-  
+
   PString key;
   PString val;
   PString *value = NULL;
   
   PWaitAndSignal m(mwi_access_mutex);
 
-  while (i < mwiData.GetSize ()) {
-    
-    value = NULL;
-    key = mwiData.GetKeyAt (i);
-    value = mwiData.GetAt (key);
-    if (value) {
-    
-      val = *value;
-      j = val.Find ("/");
-      if (j != P_MAX_INDEX)
-	val = value->Left (j);
-      else 
-	val = *value;
-      
-      total += val.AsInteger ();
+  /* Add MWI information for given account */
+  value = mwiData.GetAt (key);
+
+  /* Something changed for that account */
+  if (value && *value != mwi) {
+    mwiData.SetAt (account, new PString (mwi));
+
+    /* Compute the total number of new voice mails */
+    while (i < mwiData.GetSize ()) {
+
+      value = NULL;
+      key = mwiData.GetKeyAt (i);
+      value = mwiData.GetAt (key);
+      if (value) {
+
+        val = *value;
+        j = val.Find ("/");
+        if (j != P_MAX_INDEX)
+          val = value->Left (j);
+        else 
+          val = *value;
+
+        total += val.AsInteger ();
+      }
+      i++;
     }
-    
-    i++;
+
+    runtime->run_in_main (sigc::bind (mwi_event.make_slot (), 
+                                      (const char *) account, 
+                                      (const char *) mwi,
+                                      total));
+
+    /* Sound event if new voice mail */
+    pcssEP->PlaySoundEvent ("new_voicemail_sound");
   }
-  
-  return total;
 }
 
 
@@ -2331,22 +2306,4 @@ GMManager::GetRegisteredAccounts ()
     number++;
 
   return number;
-}
-
-
-void
-GMManager::ResetMissedCallsNumber ()
-{
-  PWaitAndSignal m(mc_access_mutex);
-
-  missed_calls = 0;
-}
-
-
-int
-GMManager::GetMissedCallsNumber ()
-{
-  PWaitAndSignal m(mc_access_mutex);
-
-  return missed_calls;
 }

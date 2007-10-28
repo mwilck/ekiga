@@ -335,8 +335,8 @@ void gm_main_window_flash_message (GtkWidget *main_window,
  * 		   calls and the number of voice mails.
  */
 void gm_main_window_push_message (GtkWidget *main_window,
-				  int missed,
-				  const char *vm);
+				  unsigned int missed,
+				  unsigned int mwi);
 
 
 /* DESCRIPTION   :  /

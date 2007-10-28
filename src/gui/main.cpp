@@ -144,6 +144,9 @@ struct _GmMainWindow
   GtkWidget *transfer_call_popup;
   GtkWidget *status_option_menu;
 
+  unsigned int missed_calls;
+  unsigned int total_mwi;
+
   Ekiga::ServiceCore & core;
 };
 
@@ -524,10 +527,15 @@ static void on_call_event_cb (Ekiga::CallInfo & info,
 {
   gchar *info_string = NULL;
   std::string end_reason;
+  GmMainWindow *mw = NULL;
+
+  g_return_if_fail (GTK_WIDGET (self) != NULL);
+  mw = gm_mw_get_mw (GTK_WIDGET (self));
+  g_return_if_fail (mw != NULL);
 
   switch (info.get_call_type ()) 
     {
-    case Ekiga::CallInfo::ESTABLISHED :
+    case Ekiga::CallInfo::Established :
       info_string = g_strdup_printf (_("Connected with %s"), info.get_remote_party_name ().c_str ());
       gm_main_window_set_call_url (GTK_WIDGET (self), info.get_remote_uri ().c_str());
       gm_main_window_set_stay_on_top (GTK_WIDGET (self), gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top"));
@@ -536,7 +544,7 @@ static void on_call_event_cb (Ekiga::CallInfo & info,
       g_free (info_string);
       break;
 
-    case Ekiga::CallInfo::CLEARED :
+    case Ekiga::CallInfo::Cleared :
       end_reason = info.get_call_end_reason ();
       if (!end_reason.empty ())
         gm_main_window_flash_message (GTK_WIDGET (self), "%s", end_reason.c_str ());
@@ -550,11 +558,18 @@ static void on_call_event_cb (Ekiga::CallInfo & info,
       gm_main_window_update_logo (GTK_WIDGET (self));
       gm_main_window_clear_signal_levels (GTK_WIDGET (self));
       gm_main_window_push_message (GTK_WIDGET (self), 
-                                   GnomeMeeting::Process ()->GetManager ()->GetMissedCallsNumber (), 
-                                   GnomeMeeting::Process ()->GetManager ()->GetMWI ());
+                                   mw->missed_calls,
+                                   mw->total_mwi);
       break;
 
-    case Ekiga::CallInfo::RINGING:
+    case Ekiga::CallInfo::Missed:
+      mw->missed_calls++;
+      info_string = g_strdup_printf (_("Missed call from %s"), info.get_remote_party_name ().c_str ());
+      gm_main_window_flash_message (GTK_WIDGET (self), "%s", info_string);
+      g_free (info_string);
+      break;
+
+    case Ekiga::CallInfo::Incoming:
       info_string = g_strdup_printf (_("Call from %s"), info.get_remote_party_name ().c_str ());
       gm_main_window_flash_message (GTK_WIDGET (self), "%s", info_string);
       gm_main_window_update_calling_state (GTK_WIDGET (self), GMManager::Called);
@@ -566,6 +581,25 @@ static void on_call_event_cb (Ekiga::CallInfo & info,
     default:
       break;
     }
+}
+
+
+static void on_mwi_event_cb (std::string account,
+                             std::string mwi,
+                             unsigned int total,
+                             gpointer self)
+{
+  GmMainWindow *mw = NULL;
+
+  g_return_if_fail (GTK_WIDGET (self) != NULL);
+  mw = gm_mw_get_mw (GTK_WIDGET (self));
+  g_return_if_fail (mw != NULL);
+
+  mw->total_mwi = total;
+
+  gm_main_window_push_message (GTK_WIDGET (self),
+                               mw->missed_calls,
+                               mw->total_mwi);
 }
 
 
@@ -2300,14 +2334,21 @@ statusbar_clicked_cb (GtkWidget *widget,
   GMManager *ep = NULL;
   gchar *info = NULL;
 
+  GmMainWindow *mw = NULL;
+
+  g_return_val_if_fail (data != NULL, TRUE);
+
+  mw = gm_mw_get_mw (GTK_WIDGET (data));
+
+  g_return_val_if_fail (GTK_WIDGET (data), TRUE);
+
   ep = GnomeMeeting::Process ()->GetManager ();
 
-  ep->ResetMissedCallsNumber ();
+  mw->missed_calls = 0;
 
-  info = g_strdup_printf (_("Missed calls: %d - Voice Mails: %s"),
-			  ep->GetMissedCallsNumber (),
-			  (const char *) ep->GetMWI ());
-  gm_main_window_push_info_message (GTK_WIDGET (data), "%s", info);
+  gm_main_window_push_message (GTK_WIDGET (data), 
+                               mw->missed_calls, 
+                               mw->total_mwi);
   g_free (info);
 
 
@@ -3371,6 +3412,7 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   /* The GMObject data */
   mw = new GmMainWindow (core);
   mw->incoming_call_popup = mw->transfer_call_popup = NULL;
+  mw->missed_calls = mw->total_mwi = 0;
   g_object_set_data_full (G_OBJECT (window), "GMObject", 
 			  mw, (GDestroyNotify) gm_mw_destroy);
 
@@ -3547,6 +3589,9 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   GnomeMeeting::Process ()->GetManager ()->call_event.connect (sigc::bind (sigc::ptr_fun (on_call_event_cb), 
                                                                            (gpointer) window));
   // FIXME self->priv->connections.push_back (conn);
+  GnomeMeeting::Process ()->GetManager ()->mwi_event.connect (sigc::bind (sigc::ptr_fun (on_mwi_event_cb), 
+                                                                          (gpointer) window));
+  // FIXME self->priv->connections.push_back (conn);
 
   return window;
 }
@@ -3576,21 +3621,15 @@ gm_main_window_flash_message (GtkWidget *main_window,
 
 void 
 gm_main_window_push_message (GtkWidget *main_window, 
-			     int missed,
-			     const char *vm)
+			     unsigned int missed,
+			     unsigned int mwi)
 {
-  GmMainWindow *mw = NULL;
-
   gchar *info = NULL;
   
   g_return_if_fail (main_window != NULL);
-  g_return_if_fail (vm != NULL);
-
-  mw = gm_mw_get_mw (main_window);
   
-  info = g_strdup_printf (_("Missed calls: %d - Voice Mails: %s"), missed, vm);
+  info = g_strdup_printf (_("Missed calls: %d - Voice Mails: %d"), missed, mwi);
   gm_main_window_push_info_message (main_window, "%s", info);
-
   g_free (info);
 }
 

@@ -675,41 +675,11 @@ class GMManager : public OpalManager
 			  BOOL state);
 
 
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Returns the current MWI (new/old) for a specific account.
-   * PRE          :  host / user must be not be empty.
-   */
-  PString GetMWI (const PString &,
-		  const PString &);
-  
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Returns the current MWI (new messages only) for all 
-   * 		     accounts.
-   * PRE          :  /
-   */
-  PString GetMWI ();
-  
-  
   /* DESCRIPTION  :  / 
    * BEHAVIOR     :  Returns the number of registered accounts.
    * PRE          :  /
    */
   int GetRegisteredAccounts ();
-  
-  
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Reset the missed calls number.
-   * PRE          :  /
-   */
-  void ResetMissedCallsNumber ();
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Return the missed calls number.
-   * PRE          :  /
-   */
-  int GetMissedCallsNumber ();
   
   // FIXME : those signals should move to the brand new TextChatCore
   sigc::signal<void, std::string, std::string> im_failed;
@@ -719,17 +689,17 @@ class GMManager : public OpalManager
   // Endof FIXME
 
   sigc::signal<void, Ekiga::CallInfo &> call_event;
+  sigc::signal<void, std::string, std::string, unsigned int> mwi_event;
   
  protected:
   
   
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Add the current MWI to the given account.
-   * PRE          :  host / user / value must not be empty.
+   * PRE          :  account and mwi must not be empty.
    */
-  void AddMWI (const PString &, 
-	       const PString &, 
-	       const PString &);
+  void OnMWIReceived (const PString & account, 
+                      const PString & mwi);
 
   
   /* DESCRIPTION  :  /
@@ -812,11 +782,8 @@ class GMManager : public OpalManager
     
   BOOL ils_registered;
 
-
-  /* Missed calls number and MWI */
-  int missed_calls;
+  /* MWI */
   mwiDict mwiData;
-  
 
   /* Different channels */
   BOOL is_transmitting_video;
@@ -908,7 +875,6 @@ class GMManager : public OpalManager
   PMutex tct_access_mutex;
   PMutex lid_access_mutex;
   PMutex at_access_mutex;
-  PMutex mc_access_mutex;
   PMutex mwi_access_mutex;
   PMutex rc_access_mutex;
   PMutex manager_access_mutex;

@@ -554,45 +554,20 @@ GMSIPEndpoint::OnMWIReceived (const PString & to,
 			      SIPSubscribe::MWIType type,
 			      const PString & msgs)
 {
-  GMManager *ep = NULL;
-  GMPCSSEndpoint *pcssEP = NULL;
-  
-  GtkWidget *main_window = NULL;
   GtkWidget *accounts_window = NULL;
-  
-  PString user;
 
-  int total = 0;
-  
-  if (endpoint.GetMWI (to, user) != msgs) {
+  endpoint.OnMWIReceived (to, msgs);
 
-    total = endpoint.GetMWI ().AsInteger ();
+  accounts_window = GnomeMeeting::Process ()->GetAccountsWindow ();
 
-    /* Update UI */
-    endpoint.AddMWI (to, user, msgs);
-
-    main_window = GnomeMeeting::Process ()->GetMainWindow ();
-    accounts_window = GnomeMeeting::Process ()->GetAccountsWindow ();
-
-    gnomemeeting_threads_enter ();
-    gm_main_window_push_message (main_window, 
-				 endpoint.GetMissedCallsNumber (), 
-				 endpoint.GetMWI ());
-    gm_accounts_window_update_account_state (accounts_window,
-					     FALSE,
-                                             to,
-					     NULL,
-					     (const char *) msgs);
-    gnomemeeting_threads_leave ();
-
-    /* Sound event if new voice mail */
-    if (endpoint.GetMWI ().AsInteger () > total) {
-
-      ep = GnomeMeeting::Process ()->GetManager ();
-      pcssEP = ep->GetPCSSEndpoint ();
-      pcssEP->PlaySoundEvent ("new_voicemail_sound");
-    }
-  }
+  // FIXME when migrating the accounts window
+  gnomemeeting_threads_enter ();
+  gm_accounts_window_update_account_state (accounts_window,
+                                           FALSE,
+                                           to,
+                                           NULL,
+                                           (const char *) msgs);
+  gnomemeeting_threads_leave ();
 }
 
 
