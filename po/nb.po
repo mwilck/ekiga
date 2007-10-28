@@ -1,14 +1,14 @@
 # Norwegian Bokmål translation of gnomemeeting.
 # Copyright (C) 2001-2004 Free Software Foundation Inc.
 # This file is distributed under the same license as the gnomemeeting package.
-# Kjartan Maraas <kmaraas@gnome.org>, 2001-2006.
+# Kjartan Maraas <kmaraas@gnome.org>, 2001-2007.
 # Sigurd Gartmann <sigurd-translate@brogar.org>, 2004, 2005
 msgid ""
 msgstr ""
 "Project-Id-Version: GnomeMeeting HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-10-27 11:31+0200\n"
-"PO-Revision-Date: 2007-10-27 11:43+0200\n"
+"POT-Creation-Date: 2007-10-28 11:24+0100\n"
+"PO-Revision-Date: 2007-10-28 11:25+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian <i18n-nb@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -494,7 +494,7 @@ msgstr "Innstillingervinduets størrelse"
 msgid "Start hidden"
 msgstr "Start skjult"
 
-#: ../ekiga.schemas.in.in.h:102 ../src/gui/main.cpp:1050
+#: ../ekiga.schemas.in.in.h:102 ../src/gui/main.cpp:1074
 msgid "Switch to fullscreen"
 msgstr "Bytt til fullskjerm"
 
@@ -1253,7 +1253,10 @@ msgid ""
 "Ekiga is now recording from %s and playing back to %s. Please say \"1, 2, 3, "
 "Ekiga rocks!\" in your microphone. You should hear yourself from the "
 "speakers after a four-second delay."
-msgstr "Ekiga gjør nå opptak fra %s og spiller av til %s. Si «1 2 3, Ekiga rocker!» i mikrofonen. Du vil høre deg selv i høyttalerne etter en firesekunders pause."
+msgstr ""
+"Ekiga gjør nå opptak fra %s og spiller av til %s. Si «1 2 3, Ekiga rocker!» "
+"i mikrofonen. Du vil høre deg selv i høyttalerne etter en firesekunders "
+"pause."
 
 #: ../src/devices/videoinput.cpp:343
 #, c-format
@@ -1416,57 +1419,20 @@ msgstr "Registrering fjernet"
 msgid "Answering call..."
 msgstr "Besvarer samtale..."
 
-#: ../src/endpoints/manager.cpp:703
+#: ../src/endpoints/manager.cpp:699
 #, c-format
 msgid "Forwarding call to %s"
 msgstr "Videresender anrop til %s"
 
-#. Update the log and status bar
-#: ../src/endpoints/manager.cpp:830
-#, c-format
-msgid "Call from %s"
-msgstr "Anrop fra %s"
-
-#: ../src/endpoints/manager.cpp:842
-msgid "Rejecting incoming call"
-msgstr "Avviser innkommende anrop"
-
-#: ../src/endpoints/manager.cpp:844
-#, c-format
-msgid "Rejecting incoming call from %s"
-msgstr "Avviser innkommende anrop fra %s"
-
-#: ../src/endpoints/manager.cpp:850
-msgid "Forwarding incoming call"
-msgstr "Videresender innkommende anrop"
-
-#: ../src/endpoints/manager.cpp:852
-#, c-format
-msgid "Forwarding incoming call from %s to %s"
-msgstr "Videresender innkommende anrop fra %s til %s"
-
-#: ../src/endpoints/manager.cpp:858
-msgid "Auto-Answering incoming call"
-msgstr "Besvarer innkommende anrop automatisk"
-
-#: ../src/endpoints/manager.cpp:859
-#, c-format
-msgid "Auto-Answering incoming call from %s"
-msgstr "Besvarer innkommende anrop fra %s automatisk"
-
-#: ../src/endpoints/manager.cpp:1041 ../src/gui/main.cpp:1571
-msgid "Standby"
-msgstr "På vent"
-
-#: ../src/endpoints/manager.cpp:1201
+#: ../src/endpoints/manager.cpp:1020
 msgid "Could not send message"
 msgstr "Kunne ikke sende melding"
 
-#: ../src/endpoints/manager.cpp:1484
+#: ../src/endpoints/manager.cpp:1303
 msgid "Error while starting the listener for the H.323 protocol"
 msgstr "Feil under start av lytter for H.323-protokollen"
 
-#: ../src/endpoints/manager.cpp:1484
+#: ../src/endpoints/manager.cpp:1303
 msgid ""
 "You will not be able to receive incoming H.323 calls. Please check that no "
 "other program is already running on the port used by Ekiga."
@@ -1474,11 +1440,11 @@ msgstr ""
 "Du vil ikke være i stand til å motta innkommende H.323-anrop. Sjekk at ingen "
 "andre program bruker porten som Ekiga prøver å bruke."
 
-#: ../src/endpoints/manager.cpp:1519
+#: ../src/endpoints/manager.cpp:1338
 msgid "Error while starting the listener for the SIP protocol"
 msgstr "Feil under start av lytter for SIP-protokollen"
 
-#: ../src/endpoints/manager.cpp:1519
+#: ../src/endpoints/manager.cpp:1338
 #, fuzzy
 msgid ""
 "You will not be able to receive incoming SIP calls. Please check that no "
@@ -1487,27 +1453,27 @@ msgstr ""
 "Du vil ikke være i stand til å motta innkommende SIP-anrop. Sjekk at ingen "
 "andre program bruker porten som Ekiga prøver å bruke."
 
-#: ../src/endpoints/manager.cpp:1714
+#: ../src/endpoints/manager.cpp:1533
 #, c-format
 msgid "Opened codec %s for transmission"
 msgstr "Åpnet komprimering %s for overføring"
 
-#: ../src/endpoints/manager.cpp:1725
+#: ../src/endpoints/manager.cpp:1544
 #, c-format
 msgid "Closed codec %s which was opened for transmission"
 msgstr "Lukket komprimering %s som ble åpnet for overføring"
 
-#: ../src/endpoints/manager.cpp:1739
+#: ../src/endpoints/manager.cpp:1558
 #, c-format
 msgid "Opened codec %s for reception"
 msgstr "Åpnet komprimering %s for mottak"
 
-#: ../src/endpoints/manager.cpp:1750
+#: ../src/endpoints/manager.cpp:1569
 #, c-format
 msgid "Closed codec %s which was opened for reception"
 msgstr "Lukket komprimering %s som ble åpnet for mottak"
 
-#: ../src/endpoints/manager.cpp:2000
+#: ../src/endpoints/manager.cpp:1819
 #, c-format
 msgid "A:%.1f/%.1f   V:%.1f/%.1f  FPS:%d/%d"
 msgstr ""
@@ -1668,18 +1634,14 @@ msgstr "Tidsavbrudd for registrering:"
 
 #. !valid
 #: ../src/gui/accounts.cpp:678
-#, fuzzy
 msgid "Missing or wrong information"
-msgstr "Manglende informasjon"
+msgstr "Manglende eller feil informasjon"
 
 #: ../src/gui/accounts.cpp:679
-#, fuzzy
 msgid ""
 "Please make sure to provide at least an <b>account name</b>, a <b>username</"
 "b> and a valid <b>timeout in seconds</b>."
-msgstr ""
-"Sjekk at du oppgir et gyldig kontonavn, vertsnavn og tidsavbrudd for "
-"registrering."
+msgstr "Sjekk at du oppgir et gyldig <b>kontonavn</b>, <b>vertsnavn</b> og <b>tidsavbrudd i sekunder</b>."
 
 #: ../src/gui/accounts.cpp:708
 #, c-format
@@ -2031,393 +1993,402 @@ msgstr "Ingen"
 msgid "First Time Configuration Assistant"
 msgstr "Konfigurasjonsveiviser for ny bruker"
 
-#: ../src/gui/main.cpp:532
+#: ../src/gui/main.cpp:531
 #, c-format
 msgid "Connected with %s"
 msgstr "Koblet til med %s"
 
-#: ../src/gui/main.cpp:594 ../lib/engine/protocol/sip/sip-endpoint.cpp:193
+#: ../src/gui/main.cpp:545 ../src/gui/main.cpp:1595
+msgid "Standby"
+msgstr "På vent"
+
+#: ../src/gui/main.cpp:558
+#, c-format
+msgid "Call from %s"
+msgstr "Anrop fra %s"
+
+#: ../src/gui/main.cpp:618 ../lib/engine/protocol/sip/sip-endpoint.cpp:193
 msgid "Online"
 msgstr "Tilkoblet"
 
-#: ../src/gui/main.cpp:595 ../lib/engine/protocol/sip/sip-endpoint.cpp:197
+#: ../src/gui/main.cpp:619 ../lib/engine/protocol/sip/sip-endpoint.cpp:197
 msgid "Away"
 msgstr "Borte"
 
-#: ../src/gui/main.cpp:596 ../lib/engine/protocol/sip/sip-endpoint.cpp:203
+#: ../src/gui/main.cpp:620 ../lib/engine/protocol/sip/sip-endpoint.cpp:203
 msgid "Do Not Disturb"
 msgstr "Ikke forstyrr"
 
-#: ../src/gui/main.cpp:597 ../lib/engine/protocol/sip/sip-endpoint.cpp:207
+#: ../src/gui/main.cpp:621 ../lib/engine/protocol/sip/sip-endpoint.cpp:207
 msgid "Free For Chat"
 msgstr "Ledig for prat"
 
-#: ../src/gui/main.cpp:598
+#: ../src/gui/main.cpp:622
 msgid "Invisible"
 msgstr "Usynlig"
 
-#: ../src/gui/main.cpp:643
+#: ../src/gui/main.cpp:667
 msgid "Find Contacts"
 msgstr "Finn kontakter"
 
-#: ../src/gui/main.cpp:666
+#: ../src/gui/main.cpp:690
 msgid "Add contact to roster"
 msgstr "Legg til kontakt i adresseboka"
 
-#: ../src/gui/main.cpp:819
+#: ../src/gui/main.cpp:843
 #, fuzzy
 msgid "Enter a URI on the left, and click this button to place a call"
 msgstr ""
 "Oppgi en URL å anrope til venstre og klikk på denne knappen for å starte en "
 "samtale"
 
-#: ../src/gui/main.cpp:872 ../src/gui/main.cpp:1001
+#: ../src/gui/main.cpp:896 ../src/gui/main.cpp:1025
 msgid "C_all"
 msgstr "R_ing"
 
-#: ../src/gui/main.cpp:874
+#: ../src/gui/main.cpp:898
 msgid "Ca_ll"
 msgstr "R_ing"
 
-#: ../src/gui/main.cpp:874
+#: ../src/gui/main.cpp:898
 msgid "Place a new call"
 msgstr "Start en ny samtale"
 
-#: ../src/gui/main.cpp:877
+#: ../src/gui/main.cpp:901
 msgid "_Hang up"
 msgstr "_Legg på"
 
-#: ../src/gui/main.cpp:878
+#: ../src/gui/main.cpp:902
 msgid "Terminate the current call"
 msgstr "Avslutt denne samtalen"
 
-#: ../src/gui/main.cpp:884 ../src/gui/statusicon.cpp:445
+#: ../src/gui/main.cpp:908 ../src/gui/statusicon.cpp:443
 msgid "_Online"
 msgstr "Tilk_oblet"
 
-#: ../src/gui/main.cpp:890 ../src/gui/statusicon.cpp:451
+#: ../src/gui/main.cpp:914 ../src/gui/statusicon.cpp:449
 msgid "_Away"
 msgstr "_Borte"
 
-#: ../src/gui/main.cpp:896 ../src/gui/statusicon.cpp:457
+#: ../src/gui/main.cpp:920 ../src/gui/statusicon.cpp:455
 msgid "Do Not _Disturb"
 msgstr "Ikke _forstyrr"
 
-#: ../src/gui/main.cpp:902 ../src/gui/statusicon.cpp:463
+#: ../src/gui/main.cpp:926 ../src/gui/statusicon.cpp:461
 msgid "_Free For Chat"
 msgstr "_Ledig for prat"
 
-#: ../src/gui/main.cpp:908 ../src/gui/statusicon.cpp:469
+#: ../src/gui/main.cpp:932 ../src/gui/statusicon.cpp:467
 msgid "_Invisible"
 msgstr "_Usynlig"
 
-#: ../src/gui/main.cpp:916 ../src/gui/main.cpp:2444
+#: ../src/gui/main.cpp:940 ../src/gui/main.cpp:2468
 msgid "_Hold Call"
 msgstr "_Stopp anrop"
 
-#: ../src/gui/main.cpp:916 ../src/gui/main.cpp:1667
+#: ../src/gui/main.cpp:940 ../src/gui/main.cpp:1691
 msgid "Hold the current call"
 msgstr "Stopp aktiv samtale"
 
-#: ../src/gui/main.cpp:920
+#: ../src/gui/main.cpp:944
 msgid "_Transfer Call"
 msgstr "_Overfør samtale"
 
-#: ../src/gui/main.cpp:921
+#: ../src/gui/main.cpp:945
 msgid "Transfer the current call"
 msgstr "Overfør denne samtalen"
 
-#: ../src/gui/main.cpp:928 ../src/gui/main.cpp:2483
+#: ../src/gui/main.cpp:952 ../src/gui/main.cpp:2507
 msgid "Suspend _Audio"
 msgstr "Pause _lyd"
 
-#: ../src/gui/main.cpp:929
+#: ../src/gui/main.cpp:953
 msgid "Suspend or resume the audio transmission"
 msgstr "Slå av eller på lydoverføringen"
 
-#: ../src/gui/main.cpp:933 ../src/gui/main.cpp:2485
+#: ../src/gui/main.cpp:957 ../src/gui/main.cpp:2509
 msgid "Suspend _Video"
 msgstr "Stopp _bilde"
 
-#: ../src/gui/main.cpp:934
+#: ../src/gui/main.cpp:958
 msgid "Suspend or resume the video transmission"
 msgstr "Slå av eller på videooverføringen"
 
-#: ../src/gui/main.cpp:942
+#: ../src/gui/main.cpp:966
 msgid "Save a snapshot of the current video"
 msgstr "Lagre et bilde av aktiv video"
 
-#: ../src/gui/main.cpp:948
+#: ../src/gui/main.cpp:972
 msgid "Close the Ekiga window"
 msgstr "Lukk Ekiga-vinduet"
 
-#: ../src/gui/main.cpp:955 ../src/gui/statusicon.cpp:502
+#: ../src/gui/main.cpp:979 ../src/gui/statusicon.cpp:500
 msgid "Quit"
 msgstr "Avslutt"
 
-#: ../src/gui/main.cpp:959
+#: ../src/gui/main.cpp:983
 #: ../lib/engine/addressbook/evolution/evolution-contact.cpp:170
 #: ../lib/engine/presence/local-roster/local-presentity.cpp:219
 msgid "_Edit"
 msgstr "R_ediger"
 
-#: ../src/gui/main.cpp:961
+#: ../src/gui/main.cpp:985
 msgid "Configuration Druid"
 msgstr "Konfigurasjonsveiviser"
 
-#: ../src/gui/main.cpp:962
+#: ../src/gui/main.cpp:986
 msgid "Run the configuration druid"
 msgstr "Kjør konfigurasjonsveiviseren"
 
-#: ../src/gui/main.cpp:969
+#: ../src/gui/main.cpp:993
 msgid "_Accounts"
 msgstr "_Kontoer"
 
-#: ../src/gui/main.cpp:970
+#: ../src/gui/main.cpp:994
 msgid "Edit your accounts"
 msgstr "Rediger din konto"
 
-#: ../src/gui/main.cpp:976
+#: ../src/gui/main.cpp:1000
 msgid "Change your preferences"
 msgstr "Endre dine brukervalg"
 
-#: ../src/gui/main.cpp:981
+#: ../src/gui/main.cpp:1005
 msgid "_View"
 msgstr "_Vis"
 
-#: ../src/gui/main.cpp:983
+#: ../src/gui/main.cpp:1007
 msgid "Panel"
 msgstr "Panel"
 
-#: ../src/gui/main.cpp:985
+#: ../src/gui/main.cpp:1009
 msgid "Con_tacts"
 msgstr "Kon_takter"
 
-#: ../src/gui/main.cpp:985
+#: ../src/gui/main.cpp:1009
 msgid "View the contacts list"
 msgstr "Vis kontaktlisten"
 
-#: ../src/gui/main.cpp:990
+#: ../src/gui/main.cpp:1014
 msgid "_Dialpad"
 msgstr "_Nummertastatur"
 
-#: ../src/gui/main.cpp:990
+#: ../src/gui/main.cpp:1014
 msgid "View the dialpad"
 msgstr "Vis nummertastatur"
 
-#: ../src/gui/main.cpp:995
+#: ../src/gui/main.cpp:1019
 msgid "Calls _History"
 msgstr "Samtale_logg"
 
-#: ../src/gui/main.cpp:996
+#: ../src/gui/main.cpp:1020
 msgid "View the calls history"
 msgstr "Vis samtaleloggen"
 
-#: ../src/gui/main.cpp:1002
+#: ../src/gui/main.cpp:1026
 msgid "View the call information"
 msgstr "Vis samtaleloggen"
 
-#: ../src/gui/main.cpp:1010
+#: ../src/gui/main.cpp:1034
 msgid "Local Video"
 msgstr "Lokal video"
 
-#: ../src/gui/main.cpp:1011
+#: ../src/gui/main.cpp:1035
 msgid "Local video image"
 msgstr "Lokalt videobilde"
 
-#: ../src/gui/main.cpp:1016
+#: ../src/gui/main.cpp:1040
 msgid "Remote Video"
 msgstr "Ekstern video"
 
-#: ../src/gui/main.cpp:1017
+#: ../src/gui/main.cpp:1041
 msgid "Remote video image"
 msgstr "Eksternt videobilde"
 
-#: ../src/gui/main.cpp:1022
+#: ../src/gui/main.cpp:1046
 msgid "Picture-in-Picture"
 msgstr "Bilde i bilde"
 
-#: ../src/gui/main.cpp:1023 ../src/gui/main.cpp:1029
+#: ../src/gui/main.cpp:1047 ../src/gui/main.cpp:1053
 msgid "Both video images"
 msgstr "Begge videobildene"
 
-#: ../src/gui/main.cpp:1028
+#: ../src/gui/main.cpp:1052
 msgid "Picture-in-Picture in Separate Window"
 msgstr "Bilde i bilde i et eget vindu"
 
-#: ../src/gui/main.cpp:1036
+#: ../src/gui/main.cpp:1060
 msgid "Zoom in"
 msgstr "Zoom inn"
 
-#: ../src/gui/main.cpp:1040
+#: ../src/gui/main.cpp:1064
 msgid "Zoom out"
 msgstr "Zoom ut"
 
-#: ../src/gui/main.cpp:1044
+#: ../src/gui/main.cpp:1068
 msgid "Normal size"
 msgstr "Normal størrelse"
 
-#: ../src/gui/main.cpp:1050
+#: ../src/gui/main.cpp:1074
 msgid "Fullscreen"
 msgstr "Fullskjerm"
 
-#: ../src/gui/main.cpp:1056
+#: ../src/gui/main.cpp:1080
 msgid "_Tools"
 msgstr "_Verktøy"
 
-#: ../src/gui/main.cpp:1058
+#: ../src/gui/main.cpp:1082
 msgid "_Find Contacts"
 msgstr "_Finn kontakter"
 
-#: ../src/gui/main.cpp:1059
+#: ../src/gui/main.cpp:1083
 msgid "Find contacts"
 msgstr "Finn kontakter"
 
-#: ../src/gui/main.cpp:1066
+#: ../src/gui/main.cpp:1090
 msgid "PC-To-Phone Account"
 msgstr "PC-til-telefonkonto"
 
-#: ../src/gui/main.cpp:1067
+#: ../src/gui/main.cpp:1091
 msgid "Manage your PC-To-Phone account"
 msgstr "Rediger PC-til-telefonkonto"
 
-#: ../src/gui/main.cpp:1072
+#: ../src/gui/main.cpp:1096
 msgid "_Help"
 msgstr "_Hjelp"
 
-#: ../src/gui/main.cpp:1075 ../src/gui/statusicon.cpp:479
-#: ../src/gui/statusicon.cpp:490
+#: ../src/gui/main.cpp:1099 ../src/gui/statusicon.cpp:477
+#: ../src/gui/statusicon.cpp:488
 msgid "Get help by reading the Ekiga manual"
 msgstr "Få hjelp ved å lese hjelp for Ekiga"
 
-#: ../src/gui/main.cpp:1079 ../src/gui/statusicon.cpp:484
-#: ../src/gui/statusicon.cpp:495
+#: ../src/gui/main.cpp:1103 ../src/gui/statusicon.cpp:482
+#: ../src/gui/statusicon.cpp:493
 msgid "View information about Ekiga"
 msgstr "Vis informasjon om Ekiga"
 
-#: ../src/gui/main.cpp:1122
+#: ../src/gui/main.cpp:1146
 msgid "Contacts"
 msgstr "Kontakter"
 
-#: ../src/gui/main.cpp:1138
+#: ../src/gui/main.cpp:1162
 msgid "Calls History"
 msgstr "Samtalelogg"
 
-#: ../src/gui/main.cpp:1223
+#: ../src/gui/main.cpp:1247
 msgid "Dialpad"
 msgstr "Nummertastatur"
 
-#: ../src/gui/main.cpp:1260
+#: ../src/gui/main.cpp:1284
 msgid "Video Settings"
 msgstr "Videoinnstillinger"
 
-#: ../src/gui/main.cpp:1288
+#: ../src/gui/main.cpp:1312
 msgid "Adjust brightness"
 msgstr "Juster lysstyrke"
 
-#: ../src/gui/main.cpp:1310
+#: ../src/gui/main.cpp:1334
 msgid "Adjust whiteness"
 msgstr "Juster hvitfarge"
 
-#: ../src/gui/main.cpp:1332
+#: ../src/gui/main.cpp:1356
 msgid "Adjust color"
 msgstr "Juster farge"
 
-#: ../src/gui/main.cpp:1354
+#: ../src/gui/main.cpp:1378
 msgid "Adjust contrast"
 msgstr "Juster kontrast"
 
-#: ../src/gui/main.cpp:1407
+#: ../src/gui/main.cpp:1431
 msgid "Audio Settings"
 msgstr "Lydinnstillinger"
 
-#: ../src/gui/main.cpp:1602
+#: ../src/gui/main.cpp:1626
 msgid "Change the volume of your soundcard"
 msgstr "Endre volumet på lydkortet"
 
-#: ../src/gui/main.cpp:1625
+#: ../src/gui/main.cpp:1649
 msgid "Change the color settings of your video device"
 msgstr "Endre fargeinnstillingene for grafikkenheten"
 
-#: ../src/gui/main.cpp:1646
+#: ../src/gui/main.cpp:1670
 msgid "Display images from your camera device"
 msgstr "Vis bilder fra ditt kamera"
 
-#: ../src/gui/main.cpp:1679
+#: ../src/gui/main.cpp:1703
 msgid "Call"
 msgstr "Ring"
 
-#: ../src/gui/main.cpp:2105
+#: ../src/gui/main.cpp:2129
 #, c-format
 msgid "Sent DTMF %c"
 msgstr "Sendt DTMF %c"
 
-#: ../src/gui/main.cpp:2283 ../src/gui/main.cpp:3566
+#: ../src/gui/main.cpp:2307 ../src/gui/main.cpp:3591
 #, c-format
 msgid "Missed calls: %d - Voice Mails: %s"
 msgstr "Tapte anrop: %d - Talemeldinger: %s"
 
-#: ../src/gui/main.cpp:2431
+#: ../src/gui/main.cpp:2455
 msgid "_Retrieve Call"
 msgstr "_Hent anrop"
 
-#: ../src/gui/main.cpp:2487
+#: ../src/gui/main.cpp:2511
 msgid "Resume _Audio"
 msgstr "Gjenoppta _lyd"
 
-#: ../src/gui/main.cpp:2489
+#: ../src/gui/main.cpp:2513
 msgid "Resume _Video"
 msgstr "Gjenoppta _bilde"
 
-#: ../src/gui/main.cpp:3124
+#: ../src/gui/main.cpp:3148
 #, c-format
 msgid "Call Duration: %s\n"
 msgstr "Samtalevarighet: %s\n"
 
-#: ../src/gui/main.cpp:3167
+#: ../src/gui/main.cpp:3191
 msgid "Transfer call to:"
 msgstr "Overfør anrop til:"
 
-#: ../src/gui/main.cpp:3168 ../src/gui/main.cpp:3233
+#: ../src/gui/main.cpp:3192 ../src/gui/main.cpp:3257
 msgid "Transfer"
 msgstr "Overfør"
 
-#: ../src/gui/main.cpp:3231
+#: ../src/gui/main.cpp:3255
 msgid "Reject"
 msgstr "Avvis"
 
-#: ../src/gui/main.cpp:3235
+#: ../src/gui/main.cpp:3259
 msgid "Accept"
 msgstr "Godta"
 
-#: ../src/gui/main.cpp:3242
+#: ../src/gui/main.cpp:3266
 msgid "Incoming call from"
 msgstr "Innkommende anrop fra"
 
-#: ../src/gui/main.cpp:3255
+#: ../src/gui/main.cpp:3279
 msgid "Remote URI:"
 msgstr "Ekstern URI:"
 
-#: ../src/gui/main.cpp:3267
+#: ../src/gui/main.cpp:3291
 msgid "Remote Application:"
 msgstr "Eksternt program:"
 
 #. Add title
-#: ../src/gui/main.cpp:3339 ../src/gui/main.cpp:3491
+#: ../src/gui/main.cpp:3363 ../src/gui/main.cpp:3515
 msgid "Ekiga"
 msgstr "Ekiga"
 
-#: ../src/gui/main.cpp:3744
+#: ../src/gui/main.cpp:3769
 #, c-format
 msgid "TX: %dx%d "
 msgstr "TX: %dx%d "
 
-#: ../src/gui/main.cpp:3747
+#: ../src/gui/main.cpp:3772
 #, c-format
 msgid "RX: %dx%d "
 msgstr "RX: %dx%d "
 
-#: ../src/gui/main.cpp:3749
+#: ../src/gui/main.cpp:3774
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -2430,20 +2401,20 @@ msgstr ""
 "Pakker i feil rekkefølge: %.1f %%\n"
 "Jitterbuffer: %d ms%s%s%s"
 
-#: ../src/gui/main.cpp:3900
+#: ../src/gui/main.cpp:3925
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "Skriver feilsjekkingsmeldinger til konsollet (nivå fra 1 til 6)"
 
-#: ../src/gui/main.cpp:3905
+#: ../src/gui/main.cpp:3930
 #, fuzzy
 msgid "Makes Ekiga call the given URI"
 msgstr "Får Ekiga til å anrope gitt URL"
 
-#: ../src/gui/main.cpp:3999
+#: ../src/gui/main.cpp:4024
 msgid "No usable audio plugin detected"
 msgstr "Ingen brukbart lydtillegg funnet"
 
-#: ../src/gui/main.cpp:4000
+#: ../src/gui/main.cpp:4025
 msgid ""
 "Ekiga didn't find any usable audio plugin. Make sure that your installation "
 "is correct."
@@ -2451,12 +2422,12 @@ msgstr ""
 "Ekiga kunne ikke finne noe brukbart lydtillegg. Sjekk at installasjonen er "
 "korrekt."
 
-#: ../src/gui/main.cpp:4003
+#: ../src/gui/main.cpp:4028
 #, fuzzy
 msgid "No usable audio codecs detected"
 msgstr "Ingen brukbart lydtillegg funnet"
 
-#: ../src/gui/main.cpp:4004
+#: ../src/gui/main.cpp:4029
 #, fuzzy
 msgid ""
 "Ekiga didn't find any usable audio codec. Make sure that your installation "
@@ -2465,12 +2436,12 @@ msgstr ""
 "Ekiga kunne ikke finne noe brukbart lydtillegg. Sjekk at installasjonen er "
 "korrekt."
 
-#: ../src/gui/main.cpp:4009
+#: ../src/gui/main.cpp:4034
 #, fuzzy
 msgid "Configuration database corruption"
 msgstr "Konfigurasjonsveiviser"
 
-#: ../src/gui/main.cpp:4010
+#: ../src/gui/main.cpp:4035
 #, fuzzy, c-format
 msgid ""
 "Ekiga got an invalid value for the configuration key %s.\n"
@@ -3074,21 +3045,21 @@ msgstr "Vis balansehistorikken"
 msgid "Consult the calls history"
 msgstr "Vis samtalehistorikken"
 
-#: ../src/gui/statusicon.cpp:355
+#: ../src/gui/statusicon.cpp:354
 #, c-format
 msgid "You have %d messages"
 msgstr "Du har %d meldinger"
 
-#: ../src/gui/statusicon.cpp:356
+#: ../src/gui/statusicon.cpp:355
 #, c-format
 msgid "You have %d message"
 msgstr "Du har %d melding"
 
-#: ../src/gui/statusicon.cpp:489
+#: ../src/gui/statusicon.cpp:487
 msgid "_Contents"
 msgstr "_Innhold"
 
-#: ../src/gui/statusicon.cpp:494
+#: ../src/gui/statusicon.cpp:492
 msgid "_About"
 msgstr "_Om"
 
@@ -3516,3 +3487,21 @@ msgid ""
 msgstr ""
 "Ekiga kan ikke bruke en eller flere endringer på eksisterende samtale. De "
 "nye innstillingene tre i kraft for neste samtale."
+
+#~ msgid "Rejecting incoming call"
+#~ msgstr "Avviser innkommende anrop"
+
+#~ msgid "Rejecting incoming call from %s"
+#~ msgstr "Avviser innkommende anrop fra %s"
+
+#~ msgid "Forwarding incoming call"
+#~ msgstr "Videresender innkommende anrop"
+
+#~ msgid "Forwarding incoming call from %s to %s"
+#~ msgstr "Videresender innkommende anrop fra %s til %s"
+
+#~ msgid "Auto-Answering incoming call"
+#~ msgstr "Besvarer innkommende anrop automatisk"
+
+#~ msgid "Auto-Answering incoming call from %s"
+#~ msgstr "Besvarer innkommende anrop fra %s automatisk"
