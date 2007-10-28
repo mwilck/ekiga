@@ -683,6 +683,7 @@ class GMManager : public OpalManager
 
   sigc::signal<void, Ekiga::CallInfo &> call_event;
   sigc::signal<void, std::string, std::string, unsigned int> mwi_event;
+  sigc::signal<void, std::string, bool, bool, bool> media_stream_event;
   
  protected:
   

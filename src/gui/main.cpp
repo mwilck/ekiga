@@ -146,6 +146,14 @@ struct _GmMainWindow
 
   unsigned int missed_calls;
   unsigned int total_mwi;
+  bool audio_transmission_active;
+  bool audio_reception_active;
+  bool video_transmission_active;
+  bool video_reception_active;
+  std::string transmitted_video_codec;
+  std::string transmitted_audio_codec;
+  std::string received_video_codec;
+  std::string received_audio_codec;
 
   Ekiga::ServiceCore & core;
 };
@@ -616,6 +624,55 @@ static void on_mwi_event_cb (std::string account,
   gm_main_window_push_message (GTK_WIDGET (self),
                                mw->missed_calls,
                                mw->total_mwi);
+}
+
+
+
+static void on_media_stream_event_cb (std::string name,
+                                      bool is_video,
+                                      bool is_encoding,
+                                      bool is_closing,
+                                      gpointer self)
+{
+  GmMainWindow *mw = NULL;
+
+  g_return_if_fail (GTK_WIDGET (self) != NULL);
+  mw = gm_mw_get_mw (GTK_WIDGET (self));
+  g_return_if_fail (mw != NULL);
+
+  /* FIXME: This should not be needed anymore */
+  if (is_video) {
+    
+    is_closing ?
+      (is_encoding ? mw->video_transmission_active = false : mw->video_reception_active = false)
+      :(is_encoding ? mw->video_transmission_active = true : mw->video_reception_active = true);
+
+    if (is_encoding)
+      is_closing ? mw->transmitted_video_codec = "" : mw->transmitted_video_codec = name;
+    else
+      is_closing ? mw->received_video_codec = "" : mw->received_video_codec = name;
+  }
+  else {
+    
+    is_closing ?
+      (is_encoding ? mw->audio_transmission_active = false : mw->audio_reception_active = false)
+      :(is_encoding ? mw->audio_transmission_active = true : mw->audio_reception_active = true);
+
+    if (is_encoding)
+      is_closing ? mw->transmitted_audio_codec = "" : mw->transmitted_audio_codec = name;
+    else
+      is_closing ? mw->received_audio_codec = "" : mw->received_audio_codec = name;
+  }
+
+  gm_main_window_update_sensitivity (GTK_WIDGET (self),
+                                     is_video,
+                                     is_video ? mw->video_reception_active : mw->audio_reception_active,
+                                     is_video ? mw->video_transmission_active : mw->audio_transmission_active);
+  gm_main_window_set_call_info (GTK_WIDGET (self), 
+                                mw->transmitted_audio_codec.c_str (), 
+                                mw->received_audio_codec.c_str (),
+                                mw->transmitted_video_codec.c_str (), 
+                                mw->received_audio_codec.c_str ());
 }
 
 
@@ -3429,6 +3486,8 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   mw = new GmMainWindow (core);
   mw->incoming_call_popup = mw->transfer_call_popup = NULL;
   mw->missed_calls = mw->total_mwi = 0;
+  mw->audio_transmission_active = mw->audio_reception_active 
+    = mw->video_transmission_active = mw->video_reception_active = false;
   g_object_set_data_full (G_OBJECT (window), "GMObject", 
 			  mw, (GDestroyNotify) gm_mw_destroy);
 
@@ -3607,6 +3666,9 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   // FIXME self->priv->connections.push_back (conn);
   GnomeMeeting::Process ()->GetManager ()->mwi_event.connect (sigc::bind (sigc::ptr_fun (on_mwi_event_cb), 
                                                                           (gpointer) window));
+  // FIXME self->priv->connections.push_back (conn);
+  GnomeMeeting::Process ()->GetManager ()->media_stream_event.connect (sigc::bind (sigc::ptr_fun (on_media_stream_event_cb), 
+                                                                                   (gpointer) window));
   // FIXME self->priv->connections.push_back (conn);
 
   return window;

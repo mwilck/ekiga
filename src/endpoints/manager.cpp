@@ -1108,7 +1108,6 @@ GMManager::SetPorts ()
 void
 GMManager::Init ()
 {
-  GtkWidget *main_window = NULL;
   GtkWidget *prefs_window = NULL;
 
   OpalEchoCanceler::Params ec;
@@ -1124,7 +1123,6 @@ GMManager::Init ()
 
   gchar *ip = NULL;
   
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
   prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
 
   /* GmConf cache */
@@ -1410,16 +1408,8 @@ BOOL
 GMManager::OnOpenMediaStream (OpalConnection & connection,
 			       OpalMediaStream & stream)
 {
-  GtkWidget *main_window = NULL;
-  
   if (!OpalManager::OnOpenMediaStream (connection, stream))
     return FALSE;
-
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-
-  gnomemeeting_threads_enter ();
-  gm_main_window_update_calling_state (main_window, GMManager::Connected);
-  gnomemeeting_threads_leave ();
 
   if (pcssEP->GetMediaFormats ().FindFormat(stream.GetMediaFormat()) == P_MAX_INDEX)
     OnMediaStream (stream, FALSE);
@@ -1432,104 +1422,23 @@ BOOL
 GMManager::OnMediaStream (OpalMediaStream & stream,
 			   BOOL is_closing)
 {
-  GtkWidget *main_window = NULL;
-  
   PString codec_name;
   BOOL is_encoding = FALSE;
   BOOL is_video = FALSE;
-  BOOL preview = FALSE;
-  
-  gchar *msg = NULL;
-
-
-  /* Get the data */
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-
-  
+ 
   is_video = (stream.GetSessionID () == OpalMediaFormat::DefaultVideoSessionID);
   is_encoding = !stream.IsSource (); // If the codec is from a source media
   				     // stream, the sink will be PCM or YUV
 				     // and we are receiving.
   codec_name = stream.GetMediaFormat ().GetEncodingName ();
+  codec_name = codec_name.ToUpper ();
 
-  gnomemeeting_threads_enter ();
-  preview = gm_conf_get_bool (VIDEO_DEVICES_KEY "enable_preview");
-  gnomemeeting_threads_leave ();
-
-  if (is_video) {
-    
-    is_closing ?
-      (is_encoding ? is_transmitting_video = FALSE:is_receiving_video = FALSE)
-      :(is_encoding ? is_transmitting_video = TRUE:is_receiving_video = TRUE);
-  }
-  else {
-    
-    is_closing ?
-      (is_encoding ? is_transmitting_audio = FALSE:is_receiving_audio = FALSE)
-      :(is_encoding ? is_transmitting_audio = TRUE:is_receiving_audio = TRUE);
-  }
-
-  /* Do not optimize, easier for translators */
-  if (is_encoding) {
-    if (!is_closing) {
-      
-      if (!is_video)
-	tr_audio_codec = codec_name;
-      else
-	tr_video_codec = codec_name;
-      
-      msg = 
-	g_strdup_printf (_("Opened codec %s for transmission"),
-			 (const char *) codec_name);
-    }
-    else {
-      
-      if (!is_video) 
-	tr_audio_codec = "";
-      else 
-	tr_video_codec = "";
-
-      msg = 
-	g_strdup_printf (_("Closed codec %s which was opened for transmission"),
-			 (const char *) codec_name);
-    }
-  }
-  else {
-    
-    if (!is_closing) {
-     
-      if (!is_video)
-	re_audio_codec = codec_name;
-      else
-	re_video_codec = codec_name;
-
-      msg = 
-	g_strdup_printf (_("Opened codec %s for reception"),
-			 (const char *) codec_name);
-    }
-    else {
-      
-      if (!is_video) 
-	re_audio_codec = "";
-      else 
-	re_video_codec = "";
-      
-      msg = 
-	g_strdup_printf (_("Closed codec %s which was opened for reception"),
-			 (const char *) codec_name);
-    }
-  }
-
-  /* Update the GUI and menus wrt opened channels */
-  gnomemeeting_threads_enter ();
-  gm_main_window_update_sensitivity (main_window, is_video, is_video?is_receiving_video:is_receiving_audio, is_video?is_transmitting_video:is_transmitting_audio);
-  gm_main_window_set_channel_pause (main_window, FALSE, is_video);
-  gm_main_window_set_call_info (main_window, 
-				tr_audio_codec, re_audio_codec,
-				tr_video_codec, re_video_codec);
-  gnomemeeting_threads_leave ();
-  
-  g_free (msg);
+  Ekiga::Runtime *runtime = GnomeMeeting::Process ()->GetRuntime (); // FIXME
+  runtime->run_in_main (sigc::bind (media_stream_event.make_slot (), 
+                                    std::string ((const char *) codec_name),
+                                    is_video,
+                                    is_encoding,
+                                    is_closing));
     
   return TRUE;
 }
