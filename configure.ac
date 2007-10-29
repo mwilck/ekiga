@@ -46,6 +46,11 @@ AC_HEADER_STDC
 
 AC_CHECK_DECLS(strcasecmp)
 
+dnl Enable compiler warnings
+if test ".$ac_cv_c_compiler_gnu" = .yes; then
+   CFLAGS="$CFLAGS -Wall"
+fi
+
 dnl Check the library path
 case $host in
   
@@ -90,7 +95,7 @@ case $target_os in
     ;;
 
   linux-gnu | linux-gnueabi | linux | Linux)
-    ARCH_PTLIB_CFLAGS="-DPTRACING -DNDEBUG -Wall -Os -g -fno-exceptions -felide-constructors"
+    ARCH_PTLIB_CFLAGS="-DPTRACING -DNDEBUG -Os -g -fno-exceptions -felide-constructors"
     ARCH_OPAL_LIBS="-lpt -lopal -ldl -lpthread"
     AC_MSG_RESULT([yes])
     gm_platform="linux"
@@ -100,21 +105,21 @@ dnl -D_DEBUG -DPMEMORY_CHECK=1 -DPTRACING -g
     ;;
 
   FreeBSD* | freebsd* )
-    ARCH_PTLIB_CFLAGS="-DPTRACING -DNDEBUG -Wall -Os -g"
+    ARCH_PTLIB_CFLAGS="-DPTRACING -DNDEBUG -Os -g"
     ARCH_OPAL_LIBS="-lpt -lopal -lpthread"
     AC_MSG_RESULT([yes])
     gm_platform="freebsd"
     ;;
 
   darwin* )
-    ARCH_PTLIB_CFLAGS="-Os -Wall -DPTRACING -DNDEBUG -DNO_LONG_DOUBLE -DSTATIC_LIBS_USED"
+    ARCH_PTLIB_CFLAGS="-Os -DPTRACING -DNDEBUG -DNO_LONG_DOUBLE -DSTATIC_LIBS_USED"
     ARCH_OPAL_LIBS="-multiply_defined suppress -lh323_Darwin_ppc_r_s -lpt_Darwin_ppc_r_s -lssl -lcrypto -lX11 -framework AudioToolbox -framework CoreAudio -framework CoreServices"
     AC_MSG_RESULT([yes])
     gm_platform="macosx"
     ;;
 
   mingw* )
-    ARCH_PTLIB_CFLAGS="-Wall -mms-bitfields -DPTRACING -DSTATIC_LIBS_USED"
+    ARCH_PTLIB_CFLAGS="-mms-bitfields -DPTRACING -DSTATIC_LIBS_USED"
     ARCH_OPAL_LIBS="-mwindows -enable-auto-import -enable-runtime-pseudo-reloc -enable-stdcall-fixup -lpt -lopal -lwinmm -lwsock32 -lsnmpapi -lmpr -lcomdlg32"
     AC_MSG_RESULT([yes])
     gm_platform="mingw"

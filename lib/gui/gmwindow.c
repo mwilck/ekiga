@@ -41,7 +41,8 @@
 #include "gmconf.h"
 
 #include <gdk/gdkkeysyms.h>
-
+#include <string.h>
+#include <stdlib.h>
 
 
 /*
@@ -60,10 +61,6 @@ enum { GM_WINDOW_KEY = 1 };
 
 static GObjectClass *parent_class = NULL;
 
-
-
-static gboolean 
-gm_window_is_visible (GtkWidget *w);
 
 static void
 gm_window_show (GtkWidget *w,
@@ -244,12 +241,6 @@ gm_window_get_type ()
 /* 
  * Our own stuff
  */
-static gboolean 
-gm_window_is_visible (GtkWidget *w)
-{
-  return (GTK_WIDGET_VISIBLE (w) && !(gdk_window_get_state (GDK_WINDOW (w->window)) & GDK_WINDOW_STATE_ICONIFIED));
-}
-
 
 static void
 gm_window_show (GtkWidget *w,
@@ -260,7 +251,6 @@ gm_window_show (GtkWidget *w,
 
   GmWindow *self = NULL;
 
-  gchar *window_name = NULL;
   gchar *conf_key_size = NULL;
   gchar *conf_key_position = NULL;
   gchar *size = NULL;
@@ -326,10 +316,6 @@ gm_window_hide (GtkWidget *w,
 {
   GmWindow *self = NULL;
 
-  int x = 0;
-  int y = 0;
-
-  gchar *window_name = NULL;
   gchar *conf_key_size = NULL;
   gchar *conf_key_position = NULL;
   gchar *size = NULL;
@@ -391,7 +377,7 @@ gm_window_new_with_key (const char *key)
 {
   GtkWidget *window = NULL;
 
-  g_return_if_fail (key != NULL);
+  g_return_val_if_fail (key != NULL, NULL);
 
   window = gm_window_new ();
   gm_window_set_key (GM_WINDOW (window), key);
