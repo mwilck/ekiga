@@ -246,7 +246,7 @@ gm_cell_renderer_expander_new (void)
 
 static void
 gm_cell_renderer_expander_get_size (GtkCellRenderer *cell,
-                                    GtkWidget       *widget,
+                                    G_GNUC_UNUSED GtkWidget       *widget,
                                     GdkRectangle    *cell_area,
                                     gint            *x_offset,
                                     gint            *y_offset,
@@ -291,7 +291,7 @@ gm_cell_renderer_expander_render (GtkCellRenderer      *cell,
                                   GdkRectangle         *background_area,
                                   GdkRectangle         *cell_area,
                                   GdkRectangle         *expose_area,
-                                  GtkCellRendererState  flags)
+                                  G_GNUC_UNUSED GtkCellRendererState  flags)
 {
   GmCellRendererExpander     *expander;
   GmCellRendererExpanderPriv *priv;
@@ -407,7 +407,7 @@ gm_cell_renderer_expander_start_animation (GmCellRendererExpander *expander,
                                            GtkTreeView                *tree_view,
                                            GtkTreePath                *path,
                                            gboolean                    expanding,
-                                           GdkRectangle               *background_area)
+                                           G_GNUC_UNUSED GdkRectangle               *background_area)
 {
   GmCellRendererExpanderPriv *priv;
 
@@ -429,12 +429,12 @@ gm_cell_renderer_expander_start_animation (GmCellRendererExpander *expander,
 
 static gboolean
 gm_cell_renderer_expander_activate (GtkCellRenderer      *cell,
-                                    GdkEvent             *event,
+                                    G_GNUC_UNUSED GdkEvent             *event,
                                     GtkWidget            *widget,
                                     const gchar          *path_string,
                                     GdkRectangle         *background_area,
-                                    GdkRectangle         *cell_area,
-                                    GtkCellRendererState  flags)
+                                    G_GNUC_UNUSED GdkRectangle         *cell_area,
+                                    G_GNUC_UNUSED GtkCellRendererState  flags)
 {
   GmCellRendererExpander     *expander;
   GmCellRendererExpanderPriv *priv;

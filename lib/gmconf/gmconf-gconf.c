@@ -100,7 +100,7 @@ gconf_notifier_wrapper_destroy (gpointer wrapper)
  * expects a wrapped gm conf notifier in its user_data argument,
  * and calls it  */
 static void        
-gconf_notifier_wrapper_trigger (GConfClient *client,
+gconf_notifier_wrapper_trigger (G_GNUC_UNUSED GConfClient *client,
 				guint identifier,
 				GConfEntry *entry,
 				gpointer user_data)
@@ -307,6 +307,10 @@ gm_conf_entry_get_type (GmConfEntry *entry)
       return GM_CONF_STRING;
     case GCONF_VALUE_LIST:
       return GM_CONF_LIST;
+    case GCONF_VALUE_INVALID:
+    case GCONF_VALUE_FLOAT:
+    case GCONF_VALUE_SCHEMA:
+    case GCONF_VALUE_PAIR:
     default:
       return GM_CONF_OTHER;
     }

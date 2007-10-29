@@ -71,6 +71,7 @@ gm_powermeter_get_type (void)
 	  sizeof (GmPowermeter),
 	  0,
 	  (GInstanceInitFunc) gm_powermeter_init,
+	  NULL
 	};
       gm_powermeter_type =
 	g_type_register_static (GTK_TYPE_IMAGE,
@@ -82,7 +83,7 @@ gm_powermeter_get_type (void)
 
 
 static void
-gm_powermeter_class_init (GmPowermeterClass* klass)
+gm_powermeter_class_init (G_GNUC_UNUSED GmPowermeterClass* klass)
 {
 }
 
@@ -132,7 +133,7 @@ gm_powermeter_new (void)
 
 
 GtkWidget*
-gm_powermeter_new_with_icon_set (GmPowermeterIconset* iconset)
+gm_powermeter_new_with_icon_set (G_GNUC_UNUSED GmPowermeterIconset* iconset)
 {
   /* FIXME */
   return gm_powermeter_new ();

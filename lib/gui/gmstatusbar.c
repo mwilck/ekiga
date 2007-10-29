@@ -151,7 +151,8 @@ gm_statusbar_get_type (void)
       NULL,
       sizeof (GmStatusbar),
       0,
-      (GInstanceInitFunc) gm_statusbar_init
+      (GInstanceInitFunc) gm_statusbar_init,
+      NULL
     };
     
     gm_statusbar_type =

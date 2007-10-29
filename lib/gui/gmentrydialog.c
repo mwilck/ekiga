@@ -89,7 +89,8 @@ gm_entry_dialog_get_type (void)
       NULL,
       sizeof (GmEntryDialog),
       0,
-      (GInstanceInitFunc) gm_entry_dialog_init
+      (GInstanceInitFunc) gm_entry_dialog_init,
+      NULL
     };
     
     gm_entry_dialog_type =

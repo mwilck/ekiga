@@ -44,7 +44,8 @@
 /* this function highlights regex-enabled gtk text tag when the mouse hovers over them */
 static gboolean
 regex_highlightning_callback (GtkWidget *widget,
-			      GdkEventMotion *event, gpointer user_data)
+			      GdkEventMotion *event,
+			      G_GNUC_UNUSED gpointer user_data)
 {
   GSList *tag_list, *tmp_list;
   GtkTextIter iter;

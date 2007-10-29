@@ -44,8 +44,11 @@
  this is the function that prompts the popup menu when a regex-enabled gtk text tag is right-clicked
 */
 static gboolean
-regex_event (GtkTextTag *texttag, GObject *arg1, GdkEvent *event,
-	     GtkTextIter *iter, gpointer user_data)
+regex_event (GtkTextTag *texttag,
+	     G_GNUC_UNUSED GObject *arg1,
+	     GdkEvent *event,
+	     GtkTextIter *iter,
+	     gpointer user_data)
 {
   if (event->type == GDK_BUTTON_PRESS && event->button.button == 3) {
     gchar *txt;

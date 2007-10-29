@@ -222,14 +222,14 @@ static const struct _smiley table_smiley [] =
     {";-)", "face-wink"},
     {";)", "face-wink"},
     
-    {NULL}
+    {NULL, NULL}
   };
 
 
 void
 gtk_text_buffer_insert_smiley (GtkTextBuffer *buf,
 			       GtkTextIter *iter,
-			       GtkTextTag *tag,
+			       G_GNUC_UNUSED GtkTextTag *tag,
 			       const gchar *smile)
 {
   GtkIconTheme *theme = gtk_icon_theme_get_default();

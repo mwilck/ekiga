@@ -156,7 +156,7 @@ gm_window_set_property (GObject *obj,
 
 static void
 gm_window_class_init (gpointer g_class,
-                      gpointer class_data)
+                      G_GNUC_UNUSED gpointer class_data)
 {
   GObjectClass *gobject_class = NULL;
   GParamSpec *spec = NULL;
@@ -244,7 +244,7 @@ gm_window_get_type ()
 
 static void
 gm_window_show (GtkWidget *w,
-                gpointer data)
+                G_GNUC_UNUSED gpointer data)
 {
   int x = 0;
   int y = 0;
@@ -312,7 +312,7 @@ gm_window_show (GtkWidget *w,
 
 static void
 gm_window_hide (GtkWidget *w,
-                gpointer data)
+                G_GNUC_UNUSED gpointer data)
 {
   GmWindow *self = NULL;
 

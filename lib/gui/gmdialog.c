@@ -208,7 +208,7 @@ thread_safe_widget_destroy (gpointer data)
 
 
 static void
-progress_dialog_destroyed_cb (GtkWidget *w, 
+progress_dialog_destroyed_cb (G_GNUC_UNUSED GtkWidget *w, 
 			      gpointer data)
 {
   g_return_if_fail (data != NULL);
@@ -218,9 +218,9 @@ progress_dialog_destroyed_cb (GtkWidget *w,
 
 
 static gboolean
-progress_dialog_delete_event_cb (GtkWidget *widget,
-                                 GdkEvent *event,
-                                 gpointer data)
+progress_dialog_delete_event_cb (G_GNUC_UNUSED GtkWidget *widget,
+                                 G_GNUC_UNUSED GdkEvent *event,
+                                 G_GNUC_UNUSED gpointer data)
 {
   return TRUE;
 }
@@ -241,7 +241,7 @@ progress_dialog_pulse_cb (gpointer data)
 
 static void 
 warning_dialog_destroyed_cb (GtkWidget *w,
-			     gint i,
+			     G_GNUC_UNUSED gint i,
 			     gpointer data)
 {
   GList *children = NULL;

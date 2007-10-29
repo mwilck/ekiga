@@ -54,7 +54,7 @@ static GtkHBoxClass *parent_class = NULL;
 
 
 static void
-gm_connect_button_clicked_cb (GtkWidget *button,
+gm_connect_button_clicked_cb (G_GNUC_UNUSED GtkWidget *button,
                               gpointer data)
 {
   GmConnectButton *cb = NULL;
@@ -142,7 +142,8 @@ gm_connect_button_get_type (void)
       NULL,
       sizeof (GmConnectButton),
       0,
-      (GInstanceInitFunc) gm_connect_button_init
+      (GInstanceInitFunc) gm_connect_button_init,
+      NULL
     };
     
     gm_connect_button_type =

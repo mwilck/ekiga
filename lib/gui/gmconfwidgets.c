@@ -69,7 +69,7 @@ entry_activate_changed (GtkWidget *w,
  */
 gboolean
 entry_focus_changed (GtkWidget  *w,
-                     GdkEventFocus *ev,
+                     G_GNUC_UNUSED GdkEventFocus *ev,
                      gpointer data)
 {
   gchar *key = NULL;
@@ -97,7 +97,7 @@ entry_focus_changed (GtkWidget  *w,
  *                 should be of type string.
  */
 void
-entry_changed_nt (gpointer cid, 
+entry_changed_nt (G_GNUC_UNUSED gpointer cid, 
 		  GmConfEntry *entry,
 		  gpointer data)
 {
@@ -171,7 +171,7 @@ toggle_changed (GtkCheckButton *but,
  *"                should be of type boolean.
  */
 void
-toggle_changed_nt (gpointer cid, 
+toggle_changed_nt (G_GNUC_UNUSED gpointer cid, 
 		   GmConfEntry *entry,
 		   gpointer data)
 {
@@ -223,7 +223,7 @@ adjustment_changed (GtkAdjustment *adj,
 
 
 void
-adjustment_changed_nt (gpointer cid, 
+adjustment_changed_nt (G_GNUC_UNUSED gpointer cid, 
 		       GmConfEntry *entry,
 		       gpointer data)
 {
@@ -267,7 +267,7 @@ int_option_menu_changed (GtkWidget *menu,
 {
   gchar *key = NULL;
   GtkWidget *active_item = NULL;
-  guint item_index = -1;
+  gint item_index = -1;
   
   key = (gchar *) data;
   
@@ -289,7 +289,7 @@ int_option_menu_changed (GtkWidget *menu,
  *                 should be of type integer.
  */
 void
-int_option_menu_changed_nt (gpointer cid, 
+int_option_menu_changed_nt (G_GNUC_UNUSED gpointer cid, 
 			    GmConfEntry *entry,
 			    gpointer data)
 {
@@ -361,7 +361,7 @@ string_option_menu_changed (GtkWidget *option_menu,
  *                 should be of type string.
  */
 void
-string_option_menu_changed_nt (gpointer cid, 
+string_option_menu_changed_nt (G_GNUC_UNUSED gpointer cid, 
 			       GmConfEntry *entry,
 			       gpointer data)
 {

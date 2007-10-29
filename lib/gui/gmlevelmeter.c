@@ -92,7 +92,8 @@ gtk_levelmeter_get_type ()
 	  NULL, /* class_data */
 	  sizeof (GtkLevelMeter),
 	  0, /* n_preallocs */
-	  (GInstanceInitFunc) gtk_levelmeter_init
+	  (GInstanceInitFunc) gtk_levelmeter_init,
+	  NULL
 	};
 
       levelmeter_type =
@@ -157,7 +158,7 @@ gtk_levelmeter_new ()
 static void
 gtk_levelmeter_set_defaultcolors (GArray *colors)
 {
-  GtkLevelMeterColorEntry entry = { {0, 0, 65535, 30000}, 0.8 };
+  GtkLevelMeterColorEntry entry = { {0, 0, 65535, 30000}, 0.8, {0, 0, 0, 0}};
 
   g_array_append_val (colors, entry);
   entry.color.red = 65535; entry.stopvalue = .9;

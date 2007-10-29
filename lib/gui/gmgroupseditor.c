@@ -396,7 +396,7 @@ add_group_entry_activated_cb (GtkEntry *,
 /* Implementation */
 
 static void
-grouplist_toggled_cb (GtkCellRendererToggle *renderer,
+grouplist_toggled_cb (G_GNUC_UNUSED GtkCellRendererToggle *renderer,
                       gchar *path,
                       gpointer data)
 {
@@ -471,7 +471,7 @@ special_group_toggled_cb (GtkToggleButton *toggle_button,
 
 
 static void
-add_group_clicked_cb (GtkButton *button,
+add_group_clicked_cb (G_GNUC_UNUSED GtkButton *button,
 		      gpointer data)
 {
   GmGroupsEditor *groups_editor = NULL;
@@ -520,7 +520,7 @@ add_group_clicked_cb (GtkButton *button,
 
 
 static void
-add_group_entry_activated_cb (GtkEntry *entry,
+add_group_entry_activated_cb (G_GNUC_UNUSED GtkEntry *entry,
                               gpointer data)
 {
   GmGroupsEditor *groups_editor = NULL;
@@ -690,6 +690,7 @@ gm_groups_editor_get_type (void)
 	  sizeof (GmGroupsEditor),
 	  0,
 	  (GInstanceInitFunc) gm_groups_editor_init,
+	  NULL
 	};
       gm_groups_editor_type =
 	g_type_register_static (GTK_TYPE_EXPANDER,
@@ -1205,7 +1206,7 @@ gm_groups_editor_show_list_contextmenu (GmGroupsEditor *groups_editor)
 
 
 static void
-gm_groups_editor_list_menu_delete_cb (GtkMenuItem *menu_item,
+gm_groups_editor_list_menu_delete_cb (G_GNUC_UNUSED GtkMenuItem *menu_item,
 				      gpointer data)
 {
   GtkTreeSelection *selection;
@@ -1280,7 +1281,7 @@ gm_groups_editor_list_menu_delete_cb (GtkMenuItem *menu_item,
 
 
 static void
-gm_groups_editor_list_menu_rename_cb (GtkMenuItem *menu_item,
+gm_groups_editor_list_menu_rename_cb (G_GNUC_UNUSED GtkMenuItem *menu_item,
                                       gpointer data)
 {
   GtkTreeSelection *selection;

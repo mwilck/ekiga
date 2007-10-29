@@ -48,7 +48,7 @@ AC_CHECK_DECLS(strcasecmp)
 
 dnl Enable compiler warnings
 if test ".$ac_cv_c_compiler_gnu" = .yes; then
-   CFLAGS="$CFLAGS -Wall"
+   CFLAGS="$CFLAGS -Wall -Wextra -Winit-self -Wswitch-default -Wswitch-enum -Wstrict-aliasing=2 -Wfloat-equal -Wshadow"
 fi
 
 dnl Check the library path

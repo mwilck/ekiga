@@ -66,7 +66,7 @@ static void menu_widget_destroyed (GtkWidget *,
  * PRE          :  data = the GtkWidget for the menu.
  */
 static void
-menus_have_icons_changed_nt (gpointer cid,
+menus_have_icons_changed_nt (G_GNUC_UNUSED gpointer cid,
 			     GmConfEntry *entry,
 			     gpointer data)
 {
@@ -89,7 +89,7 @@ menus_have_icons_changed_nt (gpointer cid,
  * PRE          :  data != NULL.
  */
 static gint
-popup_menu_callback (GtkWidget *widget,
+popup_menu_callback (G_GNUC_UNUSED GtkWidget *widget,
 		     GdkEventButton *event,
 		     gpointer data)
 {
@@ -159,7 +159,8 @@ menu_item_selected (GtkWidget *w,
  * PRE          :  data = the notifier id.
  */
 static void
-menu_widget_destroyed (GtkWidget *w, gpointer data)
+menu_widget_destroyed (G_GNUC_UNUSED GtkWidget *w,
+		       gpointer data)
 {  
   gm_conf_notifier_remove (data);
 }
@@ -211,7 +212,7 @@ toggle_menu_changed_cb (GtkWidget *widget,
 
 
 void 
-menu_toggle_changed_nt (gpointer id, 
+menu_toggle_changed_nt (G_GNUC_UNUSED gpointer id, 
                         GmConfEntry *entry, 
                         gpointer data)
 {
@@ -237,7 +238,7 @@ menu_toggle_changed_nt (gpointer id,
 
 
 void
-radio_menu_changed_nt (gpointer id,
+radio_menu_changed_nt (G_GNUC_UNUSED gpointer id,
 		       GmConfEntry *entry,
 		       gpointer data)
 {
