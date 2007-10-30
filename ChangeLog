@@ -1,22 +1,33 @@
+2007-10-29  Damien Sandras  <dsandras@gnome.org>
+
+	* src/endpoints/callstats.h,
+	src/endpoints/manager.cpp,
+	src/endpoints/manager.h,
+	src/endpoints/callstats.cpp,
+	src/gui/main.cpp,
+	src/Makefile.am:
+	Moved remaining GTK code out of the OpalManager to the signal
+	based system.
+
 2007-10-29  Julien Puydt  <jpuydt@gnome.org>
 
-        * configure.ac: Made the compilation warn about more small issues.
-        * lib/gmconf/gmconf-gconf.c:
-        * lib/gui/gmcellrendererexpander.c:
-        * lib/gui/gmconfwidgets.c:
-        * lib/gui/gmconnectbutton.c:
-        * lib/gui/gmdialog.c:
-        * lib/gui/gmentrydialog.c:
-        * lib/gui/gmgroupseditor.c:
-        * lib/gui/gmlevelmeter.c:
-        * lib/gui/gmmenuaddon.c:
-        * lib/gui/gmpowermeter.c:
-        * lib/gui/gmpreferences.c:
-        * lib/gui/gmstatusbar.c:
-        * lib/gui/gmtextbufferaddon.c:
-        * lib/gui/gmtexttagaddon.c:
-        * lib/gui/gmtextviewaddon.c:
-        * lib/gui/gmwindow.c: Fixed most of introduced warnings.
+	* configure.ac: Made the compilation warn about more small issues.
+	* lib/gmconf/gmconf-gconf.c:
+	lib/gui/gmcellrendererexpander.c,
+	lib/gui/gmconfwidgets.c,
+	lib/gui/gmconnectbutton.c,
+	lib/gui/gmdialog.c,
+	lib/gui/gmentrydialog.c,
+	lib/gui/gmgroupseditor.c,
+	lib/gui/gmlevelmeter.c,
+	lib/gui/gmmenuaddon.c,
+	lib/gui/gmpowermeter.c,
+	lib/gui/gmpreferences.c,
+	lib/gui/gmstatusbar.c,
+	lib/gui/gmtextbufferaddon.c,
+	lib/gui/gmtexttagaddon.c,
+	lib/gui/gmtextviewaddon.c,
+	lib/gui/gmwindow.c: Fixed most of introduced warnings.
 
 2007-10-29  Julien Puydt  <jpuydt@gnome.org>
 

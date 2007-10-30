@@ -84,6 +84,8 @@ ekiga_SOURCES +=			\
 	endpoints/accountshandler.cpp	\
 	endpoints/callinfo.h		\
 	endpoints/callinfo.cpp		\
+	endpoints/callstats.h		\
+	endpoints/callstats.cpp		\
 	endpoints/ekiga.h		\
 	endpoints/ekiga.cpp		\
 	endpoints/manager.h		\

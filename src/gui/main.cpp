@@ -547,6 +547,7 @@ static void on_call_event_cb (Ekiga::CallInfo & info,
       info_string = g_strdup_printf (_("Connected with %s"), info.get_remote_party_name ().c_str ());
       gm_main_window_set_call_url (GTK_WIDGET (self), info.get_remote_uri ().c_str());
       gm_main_window_set_stay_on_top (GTK_WIDGET (self), gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top"));
+      gm_main_window_set_status (GTK_WIDGET (self), info_string);
       gm_main_window_flash_message (GTK_WIDGET (self), "%s", info_string);
       gm_main_window_update_calling_state (GTK_WIDGET (self), GMManager::Connected);
       g_free (info_string);
@@ -605,6 +606,44 @@ static void on_call_event_cb (Ekiga::CallInfo & info,
     default:
       break;
     }
+}
+
+
+static void on_call_stats_event_cb (Ekiga::CallStatistics & stats, 
+                                    gpointer self)
+{
+  PTimeInterval t;
+  gchar *msg = NULL;
+  msg = g_strdup_printf (_("A:%.1f/%.1f   V:%.1f/%.1f  FPS:%d/%d"), 
+                         stats.a_tr_bandwidth, stats.a_re_bandwidth, 
+                         stats.v_tr_bandwidth, stats.v_re_bandwidth,
+                         stats.v_tr_fps, stats.v_re_fps);
+  gm_main_window_push_info_message (GTK_WIDGET (self), msg);
+  g_free (msg);
+
+  if (stats.start_time.IsValid ())
+    t = PTime () - stats.start_time;
+
+  gm_main_window_update_stats (GTK_WIDGET (self),
+                               stats.lost_packets_per,
+                               stats.late_packets_per,
+                               stats.out_of_order_packets_per,
+                               (int) (stats.jitter_buffer_size),
+                               stats.v_re_bandwidth,
+                               stats.v_tr_bandwidth,
+                               stats.a_re_bandwidth,
+                               stats.a_tr_bandwidth,
+                               stats.re_width,
+                               stats.re_height,
+                               stats.tr_width,
+                               stats.tr_height);
+
+  msg = g_strdup_printf ("%.2ld:%.2ld:%.2ld", 
+                         (long) t.GetHours (), 
+                         (long) (t.GetMinutes () % 60), 
+                         (long) (t.GetSeconds () % 60));
+  gm_main_window_set_call_duration (GTK_WIDGET (self), msg);
+  g_free (msg);
 }
 
 
@@ -3670,6 +3709,9 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   /* Engine Signals callbacks */
   // FIXME sigc::connection conn;
   GnomeMeeting::Process ()->GetManager ()->call_event.connect (sigc::bind (sigc::ptr_fun (on_call_event_cb), 
+                                                                           (gpointer) window));
+  // FIXME self->priv->connections.push_back (conn);
+  GnomeMeeting::Process ()->GetManager ()->call_stats_event.connect (sigc::bind (sigc::ptr_fun (on_call_stats_event_cb), 
                                                                            (gpointer) window));
   // FIXME self->priv->connections.push_back (conn);
   GnomeMeeting::Process ()->GetManager ()->mwi_event.connect (sigc::bind (sigc::ptr_fun (on_mwi_event_cb), 

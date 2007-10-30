@@ -55,6 +55,7 @@
 
 #include "accountshandler.h"
 #include "callinfo.h"
+#include "callstats.h"
 
 #include <sigc++/sigc++.h>
 #include <string>
@@ -685,6 +686,7 @@ class GMManager : public OpalManager
   sigc::signal<void, std::string, std::string, unsigned int> mwi_event;
   sigc::signal<void, std::string, bool, bool, bool> media_stream_event;
   sigc::signal<void, float, float> audio_signal_event;
+  sigc::signal<void, Ekiga::CallStatistics &> call_stats_event;
   
  protected:
   
@@ -788,64 +790,7 @@ class GMManager : public OpalManager
 
 
   /* RTP tats */
-  struct RTP_SessionStats {
-    
-    void Reset () 
-      { 
-	re_a_bytes = 0; 
-	re_v_bytes = 0;
-	tr_a_bytes = 0;
-	tr_v_bytes = 0;
-
-        v_re_frames = 0;
-        v_tr_frames = 0;
-        v_tr_fps = 0;
-        v_re_fps = 0;
-
-	jitter_buffer_size = 0;
-	  
-	a_re_bandwidth = 0;
-	v_re_bandwidth = 0;
-	a_tr_bandwidth = 0;
-	v_tr_bandwidth = 0;
-	lost_packets = 0;
-	out_of_order_packets = 0;
-	late_packets = 0;
-	total_packets = 0; 
-      }
-
-    int re_a_bytes; 
-    int re_v_bytes;
-    int tr_a_bytes;
-    int tr_v_bytes;
-
-    int v_re_frames;
-    int v_tr_frames;
-    
-    float a_re_bandwidth;
-    float v_re_bandwidth;
-    float a_tr_bandwidth;
-    float v_tr_bandwidth;
-    
-    int v_tr_fps;
-    int v_re_fps;
-
-    unsigned int tr_width;
-    unsigned int tr_height;
-    unsigned int re_width;
-    unsigned int re_height;
-
-    float lost_packets;
-    float out_of_order_packets;
-    float late_packets;
-    float total_packets;
-
-    int jitter_buffer_size;
-
-    PTime last_tick;
-    PTime start_time;
-  };
-  RTP_SessionStats stats;
+  Ekiga::CallStatistics stats;
 
   
   /* The various related endpoints */

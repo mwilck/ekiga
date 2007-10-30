@@ -1108,8 +1108,6 @@ GMManager::SetPorts ()
 void
 GMManager::Init ()
 {
-  GtkWidget *prefs_window = NULL;
-
   OpalEchoCanceler::Params ec;
   OpalSilenceDetector::Params sd;
   OpalMediaFormatList list;
@@ -1123,8 +1121,6 @@ GMManager::Init ()
 
   gchar *ip = NULL;
   
-  prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
-
   /* GmConf cache */
   gnomemeeting_threads_enter ();
   min_jitter = gm_conf_get_int (AUDIO_CODECS_KEY "minimum_jitter_buffer");
@@ -1601,7 +1597,6 @@ GMManager::OnAvgSignalTimeout (PTimer &,
       if (audio_stream)
         input = (linear2ulaw (audio_stream->GetAverageSignalLevel ()) ^ 0xff) / 100.0;
     } 
-
     runtime->run_in_main (sigc::bind (audio_signal_event.make_slot (), input, output));
   }
 }
@@ -1611,16 +1606,10 @@ void
 GMManager::OnRTPTimeout (PTimer &, 
                          INT)
 {
-  GtkWidget *main_window = NULL;
-  
-  gchar *msg = NULL;
-  gchar *duration = NULL;
-	
   float lost_packets_per = 0;
   float late_packets_per = 0;
   float out_of_order_packets_per = 0;
 
-  
   PString remote_address;
   
   PSafePtr <OpalCall> call = NULL;
@@ -1638,10 +1627,6 @@ GMManager::OnRTPTimeout (PTimer &,
   }
   else
     NoIncomingMediaTimer.Stop ();
-
-  PTimeInterval t;
-
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
 
   /* Update the audio and video sessions statistics */
   {
@@ -1664,21 +1649,6 @@ GMManager::OnRTPTimeout (PTimer &,
     }
   }
 
-  if (stats.start_time.IsValid ())
-    t = PTime () - stats.start_time;
-
-  msg = 
-    g_strdup_printf (_("A:%.1f/%.1f   V:%.1f/%.1f  FPS:%d/%d"), 
-                     stats.a_tr_bandwidth, stats.a_re_bandwidth, 
-                     stats.v_tr_bandwidth, stats.v_re_bandwidth,
-                     stats.v_tr_fps, stats.v_re_fps);
-  duration = 
-    g_strdup_printf ("%.2ld:%.2ld:%.2ld", 
-                     (long) t.GetHours (), 
-                     (long) (t.GetMinutes () % 60), 
-                     (long) (t.GetSeconds () % 60));
-
-  
   if (stats.total_packets > 0) {
 
     lost_packets_per = ((float) stats.lost_packets * 100.0
@@ -1687,33 +1657,13 @@ GMManager::OnRTPTimeout (PTimer &,
 			/ (float) stats.total_packets);
     out_of_order_packets_per = ((float) stats.out_of_order_packets * 100.0
 				/ (float) stats.total_packets);
-    lost_packets_per = PMIN (100, PMAX (0, lost_packets_per));
-    late_packets_per = PMIN (100, PMAX (0, late_packets_per));
-    out_of_order_packets_per = PMIN (100, PMAX (0, out_of_order_packets_per));
+    stats.lost_packets_per = PMIN (100, PMAX (0, lost_packets_per));
+    stats.late_packets_per = PMIN (100, PMAX (0, late_packets_per));
+    stats.out_of_order_packets_per = PMIN (100, PMAX (0, out_of_order_packets_per));
   }
 
-
-  gdk_threads_enter ();
-  gm_main_window_push_info_message (main_window, "%s", msg);
-  gm_main_window_update_stats (main_window,
-			       lost_packets_per,
-			       late_packets_per,
-			       out_of_order_packets_per,
-			       (int) (stats.jitter_buffer_size),
-			       stats.v_re_bandwidth,
-			       stats.v_tr_bandwidth,
-			       stats.a_re_bandwidth,
-			       stats.a_tr_bandwidth,
-			       stats.re_width,
-			       stats.re_height,
-			       stats.tr_width,
-			       stats.tr_height);
-  gm_main_window_set_call_duration (main_window, duration);
-  gdk_threads_leave ();
-
-
-  g_free (duration);
-  g_free (msg);
+  Ekiga::Runtime *runtime = GnomeMeeting::Process ()->GetRuntime (); // FIXME
+  runtime->run_in_main (sigc::bind (call_stats_event.make_slot (), stats));
 }
 
 
