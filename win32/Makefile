@@ -22,7 +22,7 @@ HOST_TOOL_PREFIX:=i586-mingw32msvc
 
 REALCC:=$(HOST_TOOL_PREFIX)-gcc
 REALCXX:=$(HOST_TOOL_PREFIX)-g++
-CONCURRENCY:=4
+CONCURRENCY:=1
 
 MACH_FLAGS:=-march=pentium-mmx
 OPTI_FLAGS:=-O3 -fomit-frame-pointer
@@ -69,13 +69,13 @@ EKIGA_INSTALLER := ekiga-setup-${EKIGA_VER}.exe
 EKIGA_URL1 := http://snapshots.buildserver.net/cvs
 EKIGA_URL2 := http://snapshots.voxgratia.org/cvs
 
-OPAL_VER:= 2.3.2
+OPAL_VER:= 3.1.0
 OPAL_DIR:= $(BUILDROOT)/opal
-OPAL_ARCHIVE := opal-cvs.tar.gz
+OPAL_ARCHIVE := opal-snapshot.tar.gz
 
-PTLIB_VER:= 1.11.3
-PTLIB_DIR:= $(BUILDROOT)/pwlib
-PTLIB_ARCHIVE := pwlib-cvs.tar.gz
+PTLIB_VER:= 2.1.0
+PTLIB_DIR:= $(BUILDROOT)/ptlib
+PTLIB_ARCHIVE := ptlib-snapshot.tar.gz
 
 OPENLDAP_VER := 2.3.28
 OPENLDAP_DIR := $(BUILDROOT)/openldap-$(OPENLDAP_VER)
@@ -183,11 +183,11 @@ ifneq (,$(CONCURRENCY))
 endif
 
 confflags:=--prefix=$(BUILDROOT) --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE)
-confpwlib:=--prefix=$(BUILDROOT) --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE) \
+confptlib:=--prefix=$(BUILDROOT) --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE) \
 	   --with-directx-dir=$(DIRECTX_DIR)
 confopal :=--prefix=$(BUILDROOT) --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE) \
 	   --with-ffmpeg-dir=$(FFMPEG_DIR)
-confekiga:= $(confflags) --with-pwlib-dir=$(PTLIB_DIR) --with-opal-dir=$(OPAL_DIR) \
+confekiga:= $(confflags) --with-ptlib-dir=$(PTLIB_DIR) --with-opal-dir=$(OPAL_DIR) \
 	    --with-directx-dir=$(DIRECTX_DIR) --prefix=$(EKIGA_PREFIX) \
 	    --bindir=$(EKIGA_PREFIX) --datadir=$(EKIGA_PREFIX) \
 	    --sysconfdir=$(EKIGA_PREFIX) --libdir=$(EKIGA_PREFIX) --disable-gnome \
@@ -322,24 +322,24 @@ $(LIBDIR)/libldap.dll: binaries $(OPENLDAP_DIR)/config.status
 	$(MAKE) $(MAKE_LIB_OPTS) -C $(OPENLDAP_DIR)/libraries/libldap MOD_LIBS="-llutil" all install
 	touch $@
 
-### PWLib
+### PTLib
 update-sources:: 
-	echo --- Getting PWLib $(PTLIB_VER) ...
+	echo --- Getting PTLib $(PTLIB_VER) ...
 	$(WGET) -P src $(EKIGA_URL1)/$(PTLIB_ARCHIVE) || \
 	$(WGET) -P src $(EKIGA_URL2)/$(PTLIB_ARCHIVE)
 
-$(PTLIB_DIR)/configure: binaries $(LIBDIR)/libldap.dll $(INCLUDEDIR)/directx/dsound.h $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(SRCDIR)/$(PTLIB_ARCHIVE) $(EKIGA_WIN32_DIFF_DIR)/ptlib_Makefile.am $(LIBDIR)/libexpat.a $(EKIGA_WIN32_DIFF_DIR)/ptlib_configure.ac $(EKIGA_WIN32_DIFF_DIR)/ptlib_pwlib.pc.in
+$(PTLIB_DIR)/configure: binaries $(LIBDIR)/libldap.dll $(INCLUDEDIR)/directx/dsound.h $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(SRCDIR)/$(PTLIB_ARCHIVE) $(EKIGA_WIN32_DIFF_DIR)/ptlib_Makefile.am $(LIBDIR)/libexpat.a $(EKIGA_WIN32_DIFF_DIR)/ptlib_configure.ac $(EKIGA_WIN32_DIFF_DIR)/ptlib_ptlib.pc.in
 	rm -f $(LIBDIR)/libpt.a
 	rm -rf $(PTLIB_DIR)
 	tar xfz $(SRCDIR)/$(PTLIB_ARCHIVE) -C $(BUILDROOT)
 	$(RM) -f $(PTLIB_DIR)/configure.exe $(PTLIB_DIR)/configure $(PTLIB_DIR)/configure.ac $(PTLIB_DIR)/Makefile.in
 	$(CP) -fl $(EKIGA_WIN32_DIFF_DIR)/ptlib_configure.ac $(PTLIB_DIR)/configure.ac
 	$(CP) -fl $(EKIGA_WIN32_DIFF_DIR)/ptlib_Makefile.am $(PTLIB_DIR)/Makefile.am
-	$(CP) -fl $(EKIGA_WIN32_DIFF_DIR)/ptlib_pwlib.pc.in $(PTLIB_DIR)/pwlib.pc.in    
+	$(CP) -fl $(EKIGA_WIN32_DIFF_DIR)/ptlib_ptlib.pc.in $(PTLIB_DIR)/ptlib.pc.in    
 	touch $(PTLIB_DIR)/make/ptlib-config
 	chmod 777 $(PTLIB_DIR)/make/ptlib-config
 	(cd $(PTLIB_DIR); \
-	sed -i "s#\$${buildroot}#${BUILDROOT}#" pwlib.pc.in; \
+	sed -i "s#\$${buildroot}#${BUILDROOT}#" ptlib.pc.in; \
 	sed -i "s/\$${PTLIB_VER}/${PTLIB_VER}/" configure.ac; \
 	aclocal-1.9; autoheader; libtoolize --force; \
 	touch NEWS README AUTHORS ChangeLog unused.h.in; \
@@ -349,12 +349,12 @@ $(PTLIB_DIR)/configure: binaries $(LIBDIR)/libldap.dll $(INCLUDEDIR)/directx/dso
 
 $(PTLIB_DIR)/config.status: binaries $(PTLIB_DIR)/configure
 	rm -f $(LIBDIR)/libpt.a
-	(cd $(PTLIB_DIR)/;./configure $(confpwlib) )
+	(cd $(PTLIB_DIR)/;./configure $(confptlib) )
 
 $(LIBDIR)/libpt.a: binaries $(PTLIB_DIR)/config.status
 	$(MAKE) $(MAKEOPTS) -C $(PTLIB_DIR)
 	$(MAKE) -C $(PTLIB_DIR) install
-	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' $(LIBDIR)/pkgconfig/pwlib.pc
+	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' $(LIBDIR)/pkgconfig/ptlib.pc
 
 ### libogg
 update-sources::

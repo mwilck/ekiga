@@ -1,6 +1,6 @@
 AC_INIT(include/ptlib.h)
 AC_CANONICAL_TARGET
-AM_INIT_AUTOMAKE(libpt, ${PWLIB_VER})
+AM_INIT_AUTOMAKE(libpt, ${PTLIB_VER})
 
 AC_CONFIG_SUBDIRS(plugins)
 
@@ -94,7 +94,7 @@ dnl default_alsa
 dnl default_oss
 dnl default_ipv6
 dnl default_qos
-dnl ==> there's nice code about this in pwlib's configure.ac
+dnl ==> there's nice code about this in ptlib's configure.ac
 dnl P_HAS_RECVMSG
 dnl recvmsg
 dnl P_HAS_STL_STREAMS
@@ -105,14 +105,14 @@ dnl
 dnl =======================================================================
 dnl CATEGORY II
 dnl
-dnl PWLIBDIR
-dnl PWINSTDIR
+dnl PTLIBDIR
+dnl PTINSTDIR
 dnl INSTALLPREFIX
 dnl LIBDIR
 dnl MAJOR_VERSION
 dnl MINOR_VERSION
 dnl BUILD_NUMBER
-dnl PWLIB_VERSION
+dnl PTLIB_VERSION
 dnl STDCCFLAGS
 dnl SHAREDLIBEXT
 dnl ENDLDLIBS
@@ -243,7 +243,7 @@ AM_CONDITIONAL(COMPILE_RESOLVER, test "${HAS_RESOLVER}" = "1")
 AM_CONDITIONAL(COMPILE_REMCONN, test "${HAS_REMCONN}" = "1")
 
 dnl END unsorted junk
-AC_DEFINE_UNQUOTED([PWLIB_VERSION], "${VERSION}")
+AC_DEFINE_UNQUOTED([PTLIB_VERSION], "${VERSION}")
 
 
 
@@ -279,6 +279,6 @@ AC_SUBST(CXXFLAGS)
 
 AC_CONFIG_HEADERS(unused.h)
 AC_CONFIG_HEADERS(include/ptbuildopts.h)
-AC_OUTPUT(pwlib.pc)
+AC_OUTPUT(ptlib.pc)
 
 AC_OUTPUT(Makefile)
