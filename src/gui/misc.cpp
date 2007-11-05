@@ -120,9 +120,9 @@ assert_error_msg (gpointer data)
 
 
 void 
-PAssertFunc (const char *file, 
-	     int line, 
-	     const char *className, 
+PAssertFunc (G_GNUC_UNUSED const char *file,
+	     G_GNUC_UNUSED int line,
+	     G_GNUC_UNUSED const char *className,
 	     const char *msg)
 {
   g_idle_add_full (G_PRIORITY_HIGH, assert_error_msg, g_strdup (msg), g_free);

@@ -266,6 +266,8 @@ GMSIPEndpoint::SetUserInputMode ()
     case 1:
       SetSendUserInputMode (OpalConnection::SendUserInputAsInlineRFC2833);
       break;
+    default:
+      break;
     }
 }
 
@@ -304,6 +306,9 @@ GMSIPEndpoint::PublishPresence (const PString & to,
   case CONTACT_FREEFORCHAT:
     status = "Free For Chat";
     note = "open";
+    break;
+
+  default:
     break;
   }
 
@@ -446,6 +451,54 @@ GMSIPEndpoint::OnRegistrationFailed (const PString & aor,
     msg_reason = g_strdup (_("Not Acceptable"));
     break;
 
+  case SIP_PDU::IllegalStatusCode:
+  case SIP_PDU::Information_Trying:
+  case SIP_PDU::Information_Ringing:
+  case SIP_PDU::Information_CallForwarded:
+  case SIP_PDU::Information_Queued:
+  case SIP_PDU::Information_Session_Progress:
+  case SIP_PDU::Successful_OK:
+  case SIP_PDU::Successful_Accepted:
+  case SIP_PDU::Redirection_MultipleChoices:
+  case SIP_PDU::Redirection_MovedPermanently:
+  case SIP_PDU::Redirection_MovedTemporarily:
+  case SIP_PDU::Redirection_UseProxy:
+  case SIP_PDU::Redirection_AlternativeService:
+  case SIP_PDU::Failure_NotFound:
+  case SIP_PDU::Failure_MethodNotAllowed:
+  case SIP_PDU::Failure_ProxyAuthenticationRequired:
+  case SIP_PDU::Failure_Gone:
+  case SIP_PDU::Failure_LengthRequired:
+  case SIP_PDU::Failure_RequestEntityTooLarge:
+  case SIP_PDU::Failure_RequestURITooLong:
+  case SIP_PDU::Failure_UnsupportedMediaType:
+  case SIP_PDU::Failure_UnsupportedURIScheme:
+  case SIP_PDU::Failure_BadExtension:
+  case SIP_PDU::Failure_ExtensionRequired:
+  case SIP_PDU::Failure_IntervalTooBrief:
+  case SIP_PDU::Failure_TransactionDoesNotExist:
+  case SIP_PDU::Failure_LoopDetected:
+  case SIP_PDU::Failure_TooManyHops:
+  case SIP_PDU::Failure_AddressIncomplete:
+  case SIP_PDU::Failure_Ambiguous:
+  case SIP_PDU::Failure_BusyHere:
+  case SIP_PDU::Failure_RequestTerminated:
+  case SIP_PDU::Failure_NotAcceptableHere:
+  case SIP_PDU::Failure_BadEvent:
+  case SIP_PDU::Failure_RequestPending:
+  case SIP_PDU::Failure_Undecipherable:
+  case SIP_PDU::Failure_InternalServerError:
+  case SIP_PDU::Failure_NotImplemented:
+  case SIP_PDU::Failure_BadGateway:
+  case SIP_PDU::Failure_ServiceUnavailable:
+  case SIP_PDU::Failure_ServerTimeout:
+  case SIP_PDU::Failure_SIPVersionNotSupported:
+  case SIP_PDU::Failure_MessageTooLarge:
+  case SIP_PDU::GlobalFailure_BusyEverywhere:
+  case SIP_PDU::GlobalFailure_Decline:
+  case SIP_PDU::GlobalFailure_DoesNotExistAnywhere:
+  case SIP_PDU::GlobalFailure_NotAcceptable:
+  case SIP_PDU::MaxStatusCode:
   default:
     msg_reason = g_strdup (_("Registration failed"));
   }
@@ -486,8 +539,8 @@ GMSIPEndpoint::OnRegistrationFailed (const PString & aor,
 
 BOOL 
 GMSIPEndpoint::OnIncomingConnection (OpalConnection &connection,
-                                     unsigned options,
-                                     OpalConnection::StringOptions * stroptions)
+                                     G_GNUC_UNUSED unsigned options,
+                                     G_GNUC_UNUSED OpalConnection::StringOptions * stroptions)
 {
   PSafePtr<OpalConnection> con = NULL;
   PSafePtr<OpalCall> call = NULL;
@@ -551,7 +604,7 @@ GMSIPEndpoint::OnIncomingConnection (OpalConnection &connection,
 
 void 
 GMSIPEndpoint::OnMWIReceived (const PString & to,
-			      SIPSubscribe::MWIType type,
+			      G_GNUC_UNUSED SIPSubscribe::MWIType type,
 			      const PString & msgs)
 {
   GtkWidget *accounts_window = NULL;
@@ -572,7 +625,7 @@ GMSIPEndpoint::OnMWIReceived (const PString & to,
 
 
 void 
-GMSIPEndpoint::OnReceivedMESSAGE (OpalTransport & transport,
+GMSIPEndpoint::OnReceivedMESSAGE (G_GNUC_UNUSED OpalTransport & transport,
 				  SIP_PDU & pdu)
 {
   PString *last = NULL;

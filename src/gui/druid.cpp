@@ -1399,7 +1399,7 @@ video_test_button_clicked_cb (GtkWidget *w,
 
 
 static void 
-cancel_cb (GtkWidget *w, 
+cancel_cb (G_GNUC_UNUSED GtkWidget *w,
 	   gpointer data)
 {
   GtkWidget *main_window = NULL;
@@ -1420,8 +1420,8 @@ cancel_cb (GtkWidget *w,
 
 
 static void 
-finish_cb (GnomeDruidPage *p, 
-	   GtkWidget *w, 
+finish_cb (G_GNUC_UNUSED GnomeDruidPage *p,
+	   G_GNUC_UNUSED GtkWidget *w,
 	   gpointer data)
 {
   GmDruidWindow *dw = NULL;
@@ -1625,7 +1625,7 @@ finish_cb (GnomeDruidPage *p,
 
 static void 
 delete_event_cb (GtkWidget *w,
-		 GdkEventAny *ev,
+		 G_GNUC_UNUSED GdkEventAny *ev,
 		 gpointer data)
 {
   cancel_cb (w, data);
@@ -1633,7 +1633,7 @@ delete_event_cb (GtkWidget *w,
 
 
 static void
-name_changed_cb (GtkWidget *w, 
+name_changed_cb (G_GNUC_UNUSED GtkWidget *w,
 		 gpointer data)
 {
   g_return_if_fail (data != NULL);
@@ -1643,8 +1643,8 @@ name_changed_cb (GtkWidget *w,
 
 
 static void
-info_changed_cb (GtkWidget *w, 
-		  gpointer data)
+info_changed_cb (G_GNUC_UNUSED GtkWidget *w, 
+		 gpointer data)
 {
   g_return_if_fail (data != NULL);
 
@@ -1653,7 +1653,7 @@ info_changed_cb (GtkWidget *w,
 
 
 static void
-use_gnomemeeting_net_toggled_cb (GtkToggleButton *b, 
+use_gnomemeeting_net_toggled_cb (G_GNUC_UNUSED GtkToggleButton *b,
 				 gpointer data)
 {
   g_return_if_fail (data != NULL);
@@ -1663,9 +1663,9 @@ use_gnomemeeting_net_toggled_cb (GtkToggleButton *b,
 
 
 static void 
-prepare_welcome_page_cb (GnomeDruidPage *page,
-			 GnomeDruid *druid, 
-			 gpointer data)
+prepare_welcome_page_cb (G_GNUC_UNUSED GnomeDruidPage *page,
+			 GnomeDruid *druid,
+			 G_GNUC_UNUSED gpointer data)
 {
   gnome_druid_set_buttons_sensitive (druid, FALSE, TRUE, TRUE, FALSE);
 }
@@ -2020,7 +2020,7 @@ prepare_final_page_cb (GnomeDruidPage *page,
 
 
 static void
-nat_detect_button_clicked_cb (GtkWidget *button,
+nat_detect_button_clicked_cb (G_GNUC_UNUSED GtkWidget *button,
 			      gpointer data)
 {
   GMManager *ep  = NULL;
@@ -2038,8 +2038,8 @@ nat_detect_button_clicked_cb (GtkWidget *button,
 
 
 static void
-gnomemeeting_net_consult_cb (GtkWidget *button,
-			     gpointer data)
+gnomemeeting_net_consult_cb (G_GNUC_UNUSED GtkWidget *button,
+			     G_GNUC_UNUSED gpointer data)
 {
   gm_open_uri ("http://www.ekiga.net");
 }

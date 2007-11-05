@@ -647,8 +647,8 @@ static void on_call_stats_event_cb (Ekiga::CallStatistics & stats,
 }
 
 
-static void on_mwi_event_cb (std::string account,
-                             std::string mwi,
+static void on_mwi_event_cb (G_GNUC_UNUSED std::string account,
+                             G_GNUC_UNUSED std::string mwi,
                              unsigned int total,
                              gpointer self)
 {
@@ -1886,7 +1886,7 @@ gm_mw_zooms_menu_update_sensitivity (GtkWidget *main_window,
 
 /* GTK callbacks */
 static gint
-gnomemeeting_tray_hack_cb (gpointer data)
+gnomemeeting_tray_hack_cb (G_GNUC_UNUSED gpointer data)
 {
   GtkWidget *main_window = NULL;
   GtkStatusIcon *statusicon = NULL;
@@ -2007,7 +2007,7 @@ motion_detection_cb (gpointer data)
 
 static void
 status_menu_changed_cb (GtkWidget *widget,
-                        gpointer data)
+                        G_GNUC_UNUSED gpointer data)
 {
   gm_conf_set_int (PERSONAL_DATA_KEY "status", 
                    gtk_combo_box_get_active (GTK_COMBO_BOX (widget)));
@@ -2015,8 +2015,8 @@ status_menu_changed_cb (GtkWidget *widget,
 
 
 static void 
-hold_current_call_cb (GtkWidget *widget,
-		      gpointer data)
+hold_current_call_cb (G_GNUC_UNUSED GtkWidget *widget,
+		      G_GNUC_UNUSED gpointer data)
 {
   PString call_token;
   GMManager *endpoint = NULL;
@@ -2033,7 +2033,7 @@ hold_current_call_cb (GtkWidget *widget,
 
 
 static void
-pause_current_call_channel_cb (GtkWidget *widget,
+pause_current_call_channel_cb (G_GNUC_UNUSED GtkWidget *widget,
 			       gpointer data)
 {
   GMManager *endpoint = NULL;
@@ -2104,7 +2104,7 @@ pause_current_call_channel_cb (GtkWidget *widget,
 
 
 static void 
-transfer_current_call_cb (GtkWidget *widget,
+transfer_current_call_cb (G_GNUC_UNUSED GtkWidget *widget,
 			  gpointer data)
 {
   GtkWidget *main_window = NULL;
@@ -2118,8 +2118,8 @@ transfer_current_call_cb (GtkWidget *widget,
 
 
 static void
-video_window_shown_cb (GtkWidget *w, 
-		       gpointer data)
+video_window_shown_cb (GtkWidget *w,
+		       G_GNUC_UNUSED gpointer data)
 {
   GMManager *endpoint = NULL;
 
@@ -2133,7 +2133,7 @@ video_window_shown_cb (GtkWidget *w,
 
 
 static void 
-audio_volume_changed_cb (GtkAdjustment *adjustment, 
+audio_volume_changed_cb (G_GNUC_UNUSED GtkAdjustment *adjustment,
 			 gpointer data)
 {
   GMManager *ep = NULL;
@@ -2162,7 +2162,7 @@ audio_volume_changed_cb (GtkAdjustment *adjustment,
 
 
 static void 
-video_settings_changed_cb (GtkAdjustment *adjustment, 
+video_settings_changed_cb (G_GNUC_UNUSED GtkAdjustment *adjustment,
 			   gpointer data)
 { 
   GMManager *ep = NULL;
@@ -2213,9 +2213,9 @@ video_settings_changed_cb (GtkAdjustment *adjustment,
 
 
 static void 
-panel_section_changed_cb (GtkNotebook *notebook, 
-                          GtkNotebookPage *page,
-                          gint page_num, 
+panel_section_changed_cb (G_GNUC_UNUSED GtkNotebook *notebook,
+                          G_GNUC_UNUSED GtkNotebookPage *page,
+                          G_GNUC_UNUSED gint page_num,
                           gpointer data) 
 {
   GmMainWindow *mw = NULL;
@@ -2233,7 +2233,7 @@ panel_section_changed_cb (GtkNotebook *notebook,
 
 
 static void 
-dialpad_button_clicked_cb (GtkButton *button, 
+dialpad_button_clicked_cb (GtkButton *button,
 			   gpointer data)
 {
   GtkWidget *label = NULL;
@@ -2287,8 +2287,8 @@ dialpad_button_clicked_cb (GtkButton *button,
 
 
 static gint 
-window_closed_cb (GtkWidget *widget, 
-		  GdkEvent *event,
+window_closed_cb (G_GNUC_UNUSED GtkWidget *widget,
+		  G_GNUC_UNUSED GdkEvent *event,
 		  gpointer data)
 {
   GtkStatusIcon *statusicon = NULL;
@@ -2318,7 +2318,7 @@ window_closed_cb (widget, NULL, data);
 
 
 static void 
-zoom_in_changed_cb (GtkWidget *widget,
+zoom_in_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
 		    gpointer data)
 {
   GtkWidget *main_window = NULL;
@@ -2340,7 +2340,7 @@ zoom_in_changed_cb (GtkWidget *widget,
 
 
 static void 
-zoom_out_changed_cb (GtkWidget *widget,
+zoom_out_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
 		     gpointer data)
 {
   GtkWidget *main_window = NULL;
@@ -2362,7 +2362,7 @@ zoom_out_changed_cb (GtkWidget *widget,
 
 
 static void 
-zoom_normal_changed_cb (GtkWidget *widget,
+zoom_normal_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
 			gpointer data)
 {
   GtkWidget *main_window = NULL;
@@ -2381,7 +2381,7 @@ zoom_normal_changed_cb (GtkWidget *widget,
 
 #if defined HAVE_XV || defined HAVE_DX
 static void 
-fullscreen_changed_cb (GtkWidget *widget,
+fullscreen_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
 		       gpointer data)
 {
   gm_main_window_toggle_fullscreen (GTK_WIDGET (data));
@@ -2390,7 +2390,7 @@ fullscreen_changed_cb (GtkWidget *widget,
 
 
 static void
-url_changed_cb (GtkEditable  *e, 
+url_changed_cb (GtkEditable  *e,
 		gpointer data)
 {
   GmMainWindow *mw = NULL;
@@ -2407,10 +2407,10 @@ url_changed_cb (GtkEditable  *e,
 
 
 static gboolean
-completion_url_selected_cb (GtkEntryCompletion *completion,
+completion_url_selected_cb (G_GNUC_UNUSED GtkEntryCompletion *completion,
 			    GtkTreeModel *model,
 			    GtkTreeIter *iter,
-			    gpointer data)
+			    G_GNUC_UNUSED gpointer data)
 {
   gchar *url = NULL;
 
@@ -2426,7 +2426,7 @@ completion_url_selected_cb (GtkEntryCompletion *completion,
 
 static void 
 url_activated_cb (GtkWidget *w,
-		  gpointer data)
+		  G_GNUC_UNUSED gpointer data)
 {
   const char *url = NULL;
 
@@ -2437,7 +2437,7 @@ url_activated_cb (GtkWidget *w,
 
 
 static void 
-toolbar_toggle_button_changed_cb (GtkWidget *widget, 
+toolbar_toggle_button_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
 				  gpointer data)
 {
   bool shown = gm_conf_get_bool ((gchar *) data);
@@ -2447,8 +2447,8 @@ toolbar_toggle_button_changed_cb (GtkWidget *widget,
 
 
 static gboolean 
-statusbar_clicked_cb (GtkWidget *widget,
-		      GdkEventButton *event,
+statusbar_clicked_cb (G_GNUC_UNUSED GtkWidget *widget,
+		      G_GNUC_UNUSED GdkEventButton *event,
 		      gpointer data)
 {
   GMManager *ep = NULL;
@@ -2477,8 +2477,8 @@ statusbar_clicked_cb (GtkWidget *widget,
 
 
 static gboolean
-delete_incoming_call_dialog_cb (GtkWidget *w,
-				GdkEvent *ev,
+delete_incoming_call_dialog_cb (G_GNUC_UNUSED GtkWidget *w,
+				G_GNUC_UNUSED GdkEvent *ev,
 				gpointer data)
 {
   GmMainWindow *mw = NULL;
@@ -2498,7 +2498,7 @@ delete_incoming_call_dialog_cb (GtkWidget *w,
 
 
 static void
-pull_trigger_cb (GtkWidget *w,
+pull_trigger_cb (G_GNUC_UNUSED GtkWidget *w,
 		 gpointer data)
 {
   /* unfortunately, we can't use dynamic_cast<> here */
@@ -2512,8 +2512,8 @@ pull_trigger_cb (GtkWidget *w,
 
 static gboolean
 main_window_focus_event_cb (GtkWidget *main_window,
-			    GdkEventFocus *event,
-			    gpointer user_data) 
+			    G_GNUC_UNUSED GdkEventFocus *event,
+			    G_GNUC_UNUSED gpointer user_data)
 {
 #if GTK_MINOR_VERSION >= 8
   if (gtk_window_get_urgency_hint (GTK_WINDOW (main_window)))
@@ -2789,6 +2789,9 @@ gm_main_window_update_calling_state (GtkWidget *main_window,
 				       FALSE);
       
       break;
+
+    default:
+      break;
     }
 }
 
@@ -2909,7 +2912,7 @@ gm_main_window_update_sensitivity (GtkWidget *main_window,
 
 
 void 
-gm_main_window_fullscreen_menu_update_sensitivity (GtkWidget *main_window,
+gm_main_window_fullscreen_menu_update_sensitivity (G_GNUC_UNUSED GtkWidget *main_window,
                                                    BOOL FSMenu)
 {
   GmMainWindow *mw = NULL;
@@ -2924,7 +2927,7 @@ gm_main_window_fullscreen_menu_update_sensitivity (GtkWidget *main_window,
 
 #if defined HAVE_XV || defined HAVE_DX
 void
-gm_main_window_toggle_fullscreen (GtkWidget *main_window)
+gm_main_window_toggle_fullscreen (G_GNUC_UNUSED GtkWidget *main_window)
 {
   int display;
   if (gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view") == FULLSCREEN) {
@@ -2983,7 +2986,7 @@ gm_main_window_set_busy (GtkWidget *main_window,
 
 void
 gm_main_window_set_volume_sliders_values (GtkWidget *main_window,
-					  int output_volume, 
+					  int output_volume,
 					  int input_volume)
 {
   GmMainWindow *mw = NULL;
@@ -3006,7 +3009,7 @@ gm_main_window_set_volume_sliders_values (GtkWidget *main_window,
 
 void
 gm_main_window_set_signal_levels (GtkWidget *main_window,
-				  float output, 
+				  float output,
 				  float input)
 {
   GmMainWindow *mw = NULL;
@@ -3043,7 +3046,7 @@ gm_main_window_clear_signal_levels (GtkWidget *main_window)
 
 void
 gm_main_window_get_volume_sliders_values (GtkWidget *main_window,
-					  int &output_volume, 
+					  int &output_volume,
 					  int &input_volume)
 {
   GmMainWindow *mw = NULL;
@@ -3177,9 +3180,9 @@ gm_main_window_set_display_type (GtkWidget *main_window,
 void 
 gm_main_window_set_call_info (GtkWidget *main_window,
 			      const char *tr_audio_codec,
-			      const char *re_audio_codec,
+			      G_GNUC_UNUSED const char *re_audio_codec,
 			      const char *tr_video_codec,
-			      const char *re_video_codec)
+			      G_GNUC_UNUSED const char *re_video_codec)
 {
   GmMainWindow *mw = NULL;
 
@@ -3216,8 +3219,8 @@ gm_main_window_set_call_info (GtkWidget *main_window,
 
 
 void 
-gm_main_window_set_account_info (GtkWidget *main_window,
-				 int registered_accounts)
+gm_main_window_set_account_info (G_GNUC_UNUSED GtkWidget *main_window,
+				 G_GNUC_UNUSED int registered_accounts)
 {
   /*GmMainWindow *mw = NULL;
   
@@ -3910,10 +3913,10 @@ gm_main_window_update_stats (GtkWidget *main_window,
 			     float late,
 			     float out_of_order,
 			     int jitter,
-			     float new_video_octets_received,
-			     float new_video_octets_transmitted,
-			     float new_audio_octets_received,
-			     float new_audio_octets_transmitted,
+			     G_GNUC_UNUSED float new_video_octets_received,
+			     G_GNUC_UNUSED float new_video_octets_transmitted,
+			     G_GNUC_UNUSED float new_audio_octets_received,
+			     G_GNUC_UNUSED float new_audio_octets_transmitted,
 			     unsigned int re_width,
 			     unsigned int re_height,
 			     unsigned int tr_width,
@@ -4101,6 +4104,8 @@ main (int argc,
 	NULL
       },
       {
+	NULL, 0, 0, (GOptionArg)0, NULL,
+	NULL,
 	NULL
       }
     };
@@ -4200,12 +4205,16 @@ main (int argc,
       break;
 #ifdef HAVE_GCONF
     case 3:
-      gchar *key_name = g_strdup ("\"/apps/" PACKAGE_NAME "/general/gconf_test_age\"");
-      title = g_strdup (_("Configuration database corruption"));
-      msg = g_strdup_printf (_("Ekiga got an invalid value for the configuration key %s.\n\nIt probably means that your configuration schemas have not been correctly installed or the that the permissions are not correct.\n\nPlease check the FAQ (http://www.ekiga.org/), the troubleshooting section of the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list archives for more information (http://mail.gnome.org) about this problem."), key_name);
-      g_free (key_name);
+      {
+	gchar *key_name = g_strdup ("\"/apps/" PACKAGE_NAME "/general/gconf_test_age\"");
+	title = g_strdup (_("Configuration database corruption"));
+	msg = g_strdup_printf (_("Ekiga got an invalid value for the configuration key %s.\n\nIt probably means that your configuration schemas have not been correctly installed or the that the permissions are not correct.\n\nPlease check the FAQ (http://www.ekiga.org/), the troubleshooting section of the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list archives for more information (http://mail.gnome.org) about this problem."), key_name);
+	g_free (key_name);
+      }
       break;
 #endif
+    default:
+      break;
     }
 
     dialog = gtk_message_dialog_new (GTK_WINDOW (main_window), 

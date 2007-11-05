@@ -359,7 +359,7 @@ gm_aw_get_aw (GtkWidget *accounts_window)
 
 
 static void
-gm_aw_edit_account_dialog_run (GtkWidget *accounts_window,
+gm_aw_edit_account_dialog_run (G_GNUC_UNUSED GtkWidget *accounts_window,
 			       GmAccount *account,
 			       GtkWidget *parent_window)
 {
@@ -681,6 +681,7 @@ gm_aw_edit_account_dialog_run (GtkWidget *accounts_window,
 
     case GTK_RESPONSE_DELETE_EVENT:
     case GTK_RESPONSE_CANCEL:
+    default:
       valid = TRUE;
       break;
     }
@@ -694,7 +695,7 @@ gm_aw_edit_account_dialog_run (GtkWidget *accounts_window,
 static void 
 gm_aw_delete_account_dialog_run (GtkWidget *accounts_window,
 				 GmAccount *account,
-				 GtkWidget *parent_window)
+				 G_GNUC_UNUSED GtkWidget *parent_window)
 {
   GtkWidget *dialog = NULL;
 
@@ -726,6 +727,8 @@ gm_aw_delete_account_dialog_run (GtkWidget *accounts_window,
 
     /* The GUI will be updated throught the GmConf notifiers */
     gnomemeeting_account_delete (account);
+    break;
+  default:
     break;
   }
 
@@ -783,8 +786,8 @@ gm_aw_get_selected_account (GtkWidget *accounts_window)
 
 /* GTK+ Callbacks */
 static gint
-account_clicked_cb (GtkWidget *w,
-		    GdkEventButton *e,
+account_clicked_cb (G_GNUC_UNUSED GtkWidget *w,
+		    G_GNUC_UNUSED GdkEventButton *e,
 		    gpointer data)
 {
   GmAccount *account = NULL;
@@ -820,9 +823,9 @@ account_clicked_cb (GtkWidget *w,
 
 
 static void
-account_toggled_cb (GtkCellRendererToggle *cell,
+account_toggled_cb (G_GNUC_UNUSED GtkCellRendererToggle *cell,
 		    gchar *path_str,
-		    gpointer data)
+		    G_GNUC_UNUSED gpointer data)
 {
   GMManager *ep = NULL;
 
@@ -860,8 +863,8 @@ account_toggled_cb (GtkCellRendererToggle *cell,
 
 
 static void
-add_account_cb (GtkWidget *button, 
-		gpointer data)
+add_account_cb (G_GNUC_UNUSED GtkWidget *button, 
+		G_GNUC_UNUSED gpointer data)
 {
   GtkWidget *accounts_window = NULL;
 
@@ -874,8 +877,8 @@ add_account_cb (GtkWidget *button,
 
 
 static void
-edit_account1_cb (GtkWidget *button, 
-		 gpointer data)
+edit_account1_cb (G_GNUC_UNUSED GtkWidget *button, 
+		  gpointer data)
 {
   GmAccount *account = NULL;
   GtkWidget *accounts_window = NULL;
@@ -893,9 +896,9 @@ edit_account1_cb (GtkWidget *button,
 
 
 static void
-edit_account2_cb (GtkTreeView *tree_view,
-		  GtkTreePath *arg1,
-		  GtkTreeViewColumn *arg2,
+edit_account2_cb (G_GNUC_UNUSED GtkTreeView *tree_view,
+		  G_GNUC_UNUSED GtkTreePath *arg1,
+		  G_GNUC_UNUSED GtkTreeViewColumn *arg2,
 		  gpointer data)
 {
   g_return_if_fail (data != NULL);
@@ -906,8 +909,8 @@ edit_account2_cb (GtkTreeView *tree_view,
 
 
 static void
-set_account_as_default_cb (GtkWidget *button, 
-			   gpointer data)
+set_account_as_default_cb (G_GNUC_UNUSED GtkWidget *button, 
+			   G_GNUC_UNUSED gpointer data)
 {
   GMManager *ep = NULL;
 
@@ -932,8 +935,8 @@ set_account_as_default_cb (GtkWidget *button,
 
 
 static void
-delete_account_cb (GtkWidget *button, 
-		   gpointer data)
+delete_account_cb (G_GNUC_UNUSED GtkWidget *button, 
+		   G_GNUC_UNUSED gpointer data)
 {
   GmAccount *account = NULL;
   GtkWidget *accounts_window = NULL;
@@ -950,7 +953,7 @@ delete_account_cb (GtkWidget *button,
 
 
 static void
-account_dialog_protocol_changed_cb (GtkWidget *menu,
+account_dialog_protocol_changed_cb (G_GNUC_UNUSED GtkWidget *menu,
 				    gpointer data)
 {
   GmAccountsEditWindow *aew = NULL;
@@ -977,6 +980,8 @@ account_dialog_protocol_changed_cb (GtkWidget *menu,
       gtk_widget_hide (aew->auth_username_entry);
       gtk_widget_show (aew->domain_entry);
       gtk_widget_show (aew->domain_label);
+      break;
+    default:
       break;
     };
 }

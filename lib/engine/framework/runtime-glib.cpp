@@ -117,7 +117,9 @@ static GSourceFuncs source_funcs = {
   prepare,
   check,
   dispatch,
-  finalize
+  finalize,
+  NULL,
+  NULL
 };
 
 Ekiga::GlibRuntime::GlibRuntime ()

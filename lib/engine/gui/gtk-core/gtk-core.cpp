@@ -45,7 +45,6 @@ Gtk::UI::UI (Ekiga::ServiceCore &_core): core(_core)
   // set the basic known icons
   GtkIconFactory *factory = gtk_icon_factory_new ();
   GtkIconSet *icon_set = NULL;
-  GdkPixbuf *pixbuf = NULL;
 
   gnomemeeting_stock_icons_init ();
 

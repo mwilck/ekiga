@@ -96,7 +96,7 @@ GMVideoDisplay_XV::SetupFrameDisplay (int display,
                                           double zoom)
 {
   GtkWidget *main_window = NULL;
-  GtkWidget *image = NULL;
+  GtkWidget *_image = NULL;
 
   BOOL ret = FALSE;
   BOOL stay_on_top = FALSE;
@@ -118,9 +118,9 @@ GMVideoDisplay_XV::SetupFrameDisplay (int display,
 
   switch (display) {
   case LOCAL_VIDEO:
-    image = gm_main_window_get_resized_video_widget (main_window,
-                                                     (int) (lf_width * zoom),
-                                                     (int) (lf_height * zoom));
+    _image = gm_main_window_get_resized_video_widget (main_window,
+						      (int) (lf_width * zoom),
+						      (int) (lf_height * zoom));
     if (!GTK_WIDGET_REALIZED (image)) 
       return TRUE;
 
@@ -129,17 +129,17 @@ GMVideoDisplay_XV::SetupFrameDisplay (int display,
 
     lxvWindow = new XVWindow ();
     ret = lxvWindow->Init (GDK_DISPLAY (), 
-                           GDK_WINDOW_XWINDOW (image->window), 
+                           GDK_WINDOW_XWINDOW (_image->window), 
                            GDK_GC_XGC (embGC),
-                           image->allocation.x,
-                           image->allocation.y,
+                           _image->allocation.x,
+                           _image->allocation.y,
                            (int) (lf_width * zoom), 
                            (int) (lf_height * zoom),
                            lf_width, 
                            lf_height);
 
-    lastFrame.embeddedX = image->allocation.x;
-    lastFrame.embeddedY = image->allocation.y;
+    lastFrame.embeddedX = _image->allocation.x;
+    lastFrame.embeddedY = _image->allocation.y;
 
     lastFrame.display = LOCAL_VIDEO;
     lastFrame.localWidth = lf_width;
@@ -148,9 +148,9 @@ GMVideoDisplay_XV::SetupFrameDisplay (int display,
     break;
 
   case REMOTE_VIDEO:
-    image = gm_main_window_get_resized_video_widget (main_window,
-                                                     (int) (rf_width * zoom),
-                                                     (int) (rf_height * zoom));
+    _image = gm_main_window_get_resized_video_widget (main_window,
+						      (int) (rf_width * zoom),
+						      (int) (rf_height * zoom));
 
     if (!GTK_WIDGET_REALIZED (image))  
       return TRUE;
@@ -160,17 +160,17 @@ GMVideoDisplay_XV::SetupFrameDisplay (int display,
 
     rxvWindow = new XVWindow ();
     ret = rxvWindow->Init (GDK_DISPLAY (), 
-                           GDK_WINDOW_XWINDOW (image->window), 
+                           GDK_WINDOW_XWINDOW (_image->window), 
                            GDK_GC_XGC (embGC),
-                           image->allocation.x,
-                           image->allocation.y,
+                           _image->allocation.x,
+                           _image->allocation.y,
                            (int) (rf_width * zoom), 
                            (int) (rf_height * zoom),
                            rf_width, 
                            rf_height); 
 
-    lastFrame.embeddedX = image->allocation.x;
-    lastFrame.embeddedY = image->allocation.y;
+    lastFrame.embeddedX = _image->allocation.x;
+    lastFrame.embeddedY = _image->allocation.y;
 
     lastFrame.display = REMOTE_VIDEO;
     lastFrame.remoteWidth = rf_width;
@@ -181,21 +181,21 @@ GMVideoDisplay_XV::SetupFrameDisplay (int display,
   case FULLSCREEN:
   case PIP:
   case PIP_WINDOW:
-    image = gm_main_window_get_resized_video_widget (main_window,
-                                                     (int) (rf_width * zoom),
-                                                     (int) (rf_height * zoom));
-    if (!GTK_WIDGET_REALIZED (image))  
+    _image = gm_main_window_get_resized_video_widget (main_window,
+						      (int) (rf_width * zoom),
+						      (int) (rf_height * zoom));
+    if (!GTK_WIDGET_REALIZED (_image))
       return TRUE;
 
-    if (!embGC) 
-      embGC = gdk_gc_new (image->window);
+    if (!embGC)
+      embGC = gdk_gc_new (_image->window);
     
     rxvWindow = new XVWindow ();
     ret = rxvWindow->Init ((display == PIP) ? GDK_DISPLAY () : rDisplay, 
-                           (display == PIP) ? GDK_WINDOW_XWINDOW (image->window) : DefaultRootWindow (rDisplay), 
+                           (display == PIP) ? GDK_WINDOW_XWINDOW (_image->window) : DefaultRootWindow (rDisplay), 
                            (display == PIP) ? GDK_GC_XGC (embGC) : NULL,
-                           image->allocation.x,
-                           image->allocation.y,
+                           _image->allocation.x,
+                           _image->allocation.y,
                            (int) (rf_width * zoom), 
                            (int) (rf_height * zoom),
                            rf_width, 
@@ -231,8 +231,8 @@ GMVideoDisplay_XV::SetupFrameDisplay (int display,
     if (ret && rxvWindow && display == FULLSCREEN) 
       rxvWindow->ToggleFullscreen ();
     
-    lastFrame.embeddedX = image->allocation.x;
-    lastFrame.embeddedY = image->allocation.y;
+    lastFrame.embeddedX = _image->allocation.x;
+    lastFrame.embeddedY = _image->allocation.y;
 
     lastFrame.display = display;
     lastFrame.localWidth = lf_width;
@@ -308,6 +308,7 @@ GMVideoDisplay_XV::FrameDisplayChangeNeeded (int display,
     case FULLSCREEN:
     case PIP:
     case PIP_WINDOW:
+  default:
          if (!rxvWindow || (pipWindowAvailable && (!lxvWindow)) )
             return TRUE;
          break;
@@ -316,11 +317,11 @@ GMVideoDisplay_XV::FrameDisplayChangeNeeded (int display,
 }
 
 void 
-GMVideoDisplay_XV::DisplayFrame (gpointer gtk_image,
-                                      const guchar *frame,
-                                      guint width,
-                                      guint height,
-                                      double zoom)
+GMVideoDisplay_XV::DisplayFrame (G_GNUC_UNUSED gpointer gtk_image,
+				 const guchar *frame,
+				 guint width,
+				 guint height,
+				 double zoom)
 {
   if (fallback) {
      GMVideoDisplay_GDK::DisplayFrame (image, frame, width, height, zoom);
@@ -335,14 +336,14 @@ GMVideoDisplay_XV::DisplayFrame (gpointer gtk_image,
 }
 
 void 
-GMVideoDisplay_XV::DisplayPiPFrames (gpointer gtk_image,
-                                          const guchar *lframe,
-                                          guint lwidth,
-                                          guint lheight,
-                                          const guchar *rframe,
-                                          guint rwidth,
-                                          guint rheight,
-                                          double zoom)
+GMVideoDisplay_XV::DisplayPiPFrames (G_GNUC_UNUSED gpointer gtk_image,
+				     const guchar *lframe,
+				     guint lwidth,
+				     guint lheight,
+				     const guchar *rframe,
+				     guint rwidth,
+				     guint rheight,
+				     double zoom)
 {
   GtkWidget *main_window = NULL;
   main_window = GnomeMeeting::Process ()->GetMainWindow ();

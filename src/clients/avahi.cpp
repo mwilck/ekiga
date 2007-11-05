@@ -159,8 +159,8 @@ GMZeroconfPublisher::~GMZeroconfPublisher()
 
 
 void
-GMZeroconfPublisher::EntryGroupCallback (AvahiEntryGroup *group,
-					 AvahiEntryGroupState state, 
+GMZeroconfPublisher::EntryGroupCallback (AvahiEntryGroup *_group,
+					 AvahiEntryGroupState state,
 					 void *userdata) 
 {
   char *n = NULL;
@@ -174,7 +174,7 @@ GMZeroconfPublisher::EntryGroupCallback (AvahiEntryGroup *group,
     name = n;
 
     /* And recreate the services */
-    create_services (avahi_entry_group_get_client (group), userdata);
+    create_services (avahi_entry_group_get_client (_group), userdata);
   }
 }
 

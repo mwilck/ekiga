@@ -233,7 +233,7 @@ statusicon_set_property (GObject *obj,
 
 static void
 statusicon_class_init (gpointer g_class,
-                       gpointer class_data)
+                       G_GNUC_UNUSED gpointer class_data)
 {
   GObjectClass *gobject_class = NULL;
   GParamSpec *spec = NULL;
@@ -289,7 +289,7 @@ statusicon_get_type ()
  * Callbacks
  */
 static void
-show_popup_menu_cb (GtkStatusIcon *icon,
+show_popup_menu_cb (G_GNUC_UNUSED GtkStatusIcon *icon,
                     guint button,
                     guint activate_time,
                     gpointer data)
@@ -305,7 +305,7 @@ show_popup_menu_cb (GtkStatusIcon *icon,
 
 
 static void
-statusicon_activated_cb (GtkStatusIcon *icon,
+statusicon_activated_cb (G_GNUC_UNUSED GtkStatusIcon *icon,
                          gpointer data)
 {
   StatusIcon *self = STATUSICON (data);
@@ -334,7 +334,7 @@ statusicon_activated_cb (GtkStatusIcon *icon,
 
 
 static void 
-message_event_cb (GtkWidget *widget,
+message_event_cb (G_GNUC_UNUSED GtkWidget *widget,
                   guint messages,
                   gpointer data)
 {
@@ -388,7 +388,7 @@ statusicon_blink_cb (gpointer data)
 
 
 static void
-statusicon_key_updated_cb (gpointer id, 
+statusicon_key_updated_cb (G_GNUC_UNUSED gpointer id,
                            GmConfEntry *entry,
                            gpointer data)
 {

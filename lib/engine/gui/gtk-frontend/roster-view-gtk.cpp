@@ -53,7 +53,7 @@
  */
 struct _RosterViewGtkPrivate
 {
-  _RosterViewGtkPrivate (Ekiga::PresenceCore &core)
+  _RosterViewGtkPrivate (Ekiga::PresenceCore &)
   { }
 
   std::vector<sigc::connection> connections;
@@ -439,7 +439,7 @@ expand_cell_data_func (GtkTreeViewColumn *column,
                        GtkCellRenderer *renderer,
                        GtkTreeModel *model,
                        GtkTreeIter *iter,
-                       gpointer data)
+                       G_GNUC_UNUSED gpointer data)
 {
   GtkTreePath *path = NULL;
   gint column_type;

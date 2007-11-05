@@ -78,7 +78,7 @@ static void gm_codecs_box_destroy (GtkObject *);
 
 
 static void
-codec_toggled_cb (GtkCellRendererToggle *cell,
+codec_toggled_cb (G_GNUC_UNUSED GtkCellRendererToggle *cell,
 		  gchar *path_str,
 		  gpointer data)
 {
@@ -174,7 +174,7 @@ codec_moved_cb (GtkWidget *widget,
 
 
 static void
-codecs_box_changed_nt (gpointer id, 
+codecs_box_changed_nt (G_GNUC_UNUSED gpointer id, 
                        GmConfEntry *entry,
                        gpointer data)
 {
@@ -320,7 +320,8 @@ gm_codecs_box_get_type (void)
       NULL,
       sizeof (GmCodecsBox),
       0,
-      (GInstanceInitFunc) gm_codecs_box_init
+      (GInstanceInitFunc) gm_codecs_box_init,
+      NULL
     };
     
     gm_codecs_box_type =
@@ -490,8 +491,6 @@ gm_codecs_box_set_codecs (GmCodecsBox *cb,
   GSList *codecs_data = NULL;
   GSList *codecs_data_iter = NULL;
 
-  int i = 0;
-
   g_return_if_fail (cb != NULL);
 
 
@@ -573,7 +572,7 @@ gm_codecs_box_set_codecs (GmCodecsBox *cb,
   /* #INV: m contains the list of possible codecs from the prefs */
 
   /* Now we add the remaining codecs */
-  for (i = 0 ; i < k.GetSize () ; i++) {
+  for (int i = 0 ; i < k.GetSize () ; i++) {
 
     if (k [i].GetEncodingName () != NULL
         &&

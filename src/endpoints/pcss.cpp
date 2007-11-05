@@ -116,7 +116,7 @@ BOOL GMPCSSEndpoint::OnShowIncoming (const OpalPCSSConnection & connection)
 }
 
 
-BOOL GMPCSSEndpoint::OnShowOutgoing (const OpalPCSSConnection & connection)
+BOOL GMPCSSEndpoint::OnShowOutgoing (G_GNUC_UNUSED const OpalPCSSConnection & connection)
 {
   if (endpoint.GetCallingState () == GMManager::Calling)
     OutgoingCallTimer.RunContinuous (PTimeInterval (5));
@@ -135,7 +135,7 @@ GMPCSSEndpoint::PlaySoundEvent (PString ev)
 
 
 PSoundChannel * 
-GMPCSSEndpoint::CreateSoundChannel (const OpalPCSSConnection & connection,
+GMPCSSEndpoint::CreateSoundChannel (G_GNUC_UNUSED const OpalPCSSConnection & connection,
 				    const OpalMediaFormat & format,
 				    BOOL is_source)
 {
@@ -245,7 +245,7 @@ GMPCSSEndpoint::OnReleased (OpalConnection &connection)
 
 
 PString 
-GMPCSSEndpoint::OnGetDestination (const OpalPCSSConnection &connection)
+GMPCSSEndpoint::OnGetDestination (G_GNUC_UNUSED const OpalPCSSConnection &connection)
 {
   return PString ();
 }
@@ -305,8 +305,8 @@ GMPCSSEndpoint::SetDeviceVolume (unsigned int play_vol,
   OpalAudioMediaStream *stream = NULL;
   PSoundChannel *channel = NULL;
 
-  g_return_val_if_fail (play_vol >= 0 && play_vol <= 100, FALSE);
-  g_return_val_if_fail (record_vol >= 0 && record_vol <= 100, FALSE);
+  g_return_val_if_fail (play_vol <= 100, FALSE);
+  g_return_val_if_fail (record_vol <= 100, FALSE);
   
   call = endpoint.FindCallWithLock (endpoint.GetCurrentCallToken ());
   

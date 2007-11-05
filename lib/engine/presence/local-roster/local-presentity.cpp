@@ -44,31 +44,6 @@
 
 #include "local-presentity.h"
 
-/*
- * Helpers
- */
-static const std::set<std::string>
-split_on_commas (const std::string str)
-{
-  std::set<std::string> result;
-  std::string::size_type len = str.length ();
-  std::string::size_type start = str.find_first_not_of (',', 0);
-  std::string::size_type stop = str.find_first_of(',', start);
-
-  while (std::string::npos != start
-         || std::string::npos != stop) {
-
-    result.insert (str.substr (start, stop - start));
-    start = str.find_first_not_of (',', stop);
-    stop = str.find_first_of(',', start);
-  }
-
-  if (start < len)
-    result.insert (str.substr (start, len - start));
-
-  return result;
-}
-
 
 /*
  * Public API

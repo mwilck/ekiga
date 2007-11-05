@@ -181,7 +181,8 @@ endpoint_to_dbus_state (GMManager::CallingState hstate)
   case GMManager::Called :
     result = CALLED;
     break;
-    /* no default so the compiler warns when we lose sync */
+  default:
+    break;
   }
 
   return result;
@@ -202,7 +203,7 @@ protocol_prefix_to_name (const PString prefix)
 /* implementation of the GObject's methods */
 
 static void
-dbus_component_init (DbusComponent *self)
+dbus_component_init (G_GNUC_UNUSED DbusComponent *self)
 {
   /* nothing to do */
 }
@@ -289,9 +290,9 @@ dbus_component_class_init (DbusComponentClass *klass)
 }
 
 static gboolean
-dbus_component_get_accounts_list (DbusComponent *self,
+dbus_component_get_accounts_list (G_GNUC_UNUSED DbusComponent *self,
 				  char ***accounts,
-				  GError **error)
+				  G_GNUC_UNUSED GError **error)
 {
   GSList *gmaccounts = NULL;
   GSList *iter = NULL;
@@ -326,9 +327,9 @@ dbus_component_get_accounts_list (DbusComponent *self,
 }
 
 static gboolean
-dbus_component_register (DbusComponent *self,
+dbus_component_register (G_GNUC_UNUSED DbusComponent *self,
 			 const char *token,
-			 GError **error)
+			 G_GNUC_UNUSED GError **error)
 {
   GMManager *endpoint = NULL;
   GSList *gmaccounts = NULL;
@@ -358,9 +359,9 @@ dbus_component_register (DbusComponent *self,
 }
 
 static gboolean
-dbus_component_unregister (DbusComponent *self,
+dbus_component_unregister (G_GNUC_UNUSED DbusComponent *self,
 			   const char *token,
-			   GError **error)
+			   G_GNUC_UNUSED GError **error)
 {
   GMManager *endpoint = NULL;
   GSList *gmaccounts = NULL;
@@ -392,7 +393,7 @@ dbus_component_unregister (DbusComponent *self,
 static gboolean
 dbus_component_resignal_account_info (DbusComponent *self,
 				      const char *token,
-				      GError **error)
+				      G_GNUC_UNUSED GError **error)
 {
   GSList *gmaccounts = NULL;
   GSList *iter = NULL;
@@ -428,9 +429,9 @@ dbus_component_resignal_account_info (DbusComponent *self,
 }
 
 static gboolean
-dbus_component_get_calls_list (DbusComponent *self,
+dbus_component_get_calls_list (G_GNUC_UNUSED DbusComponent *self,
 			       char ***calls,
-			       GError **error)
+			       G_GNUC_UNUSED GError **error)
 {
   GMManager *endpoint = NULL;
   PString ptoken;
@@ -457,7 +458,7 @@ static gboolean
 dbus_component_connect (DbusComponent *self,
 			const char *url,
 			char **token,
-			GError **error)
+			G_GNUC_UNUSED GError **error)
 {
   GMManager *endpoint = NULL;
   PString ptoken;
@@ -485,9 +486,9 @@ dbus_component_connect (DbusComponent *self,
 }
 
 static gboolean
-dbus_component_disconnect (DbusComponent *self,
-			   const char *token,
-			   GError **error)
+dbus_component_disconnect (G_GNUC_UNUSED DbusComponent *self,
+			   G_GNUC_UNUSED const char *token,
+			   G_GNUC_UNUSED GError **error)
 {
   GnomeMeeting::Process ()->Disconnect ();
 
@@ -495,9 +496,9 @@ dbus_component_disconnect (DbusComponent *self,
 }
 
 static gboolean
-dbus_component_play_pause (DbusComponent *self,
+dbus_component_play_pause (G_GNUC_UNUSED DbusComponent *self,
 			   const char *token,
-			   GError **error)
+			   G_GNUC_UNUSED GError **error)
 {
   GMManager *endpoint = NULL;
   gboolean is_on_hold = FALSE;
@@ -512,10 +513,10 @@ dbus_component_play_pause (DbusComponent *self,
 }
 
 static gboolean
-dbus_component_transfer (DbusComponent *self,
-			 const char *token,
+dbus_component_transfer (G_GNUC_UNUSED DbusComponent *self,
+			 G_GNUC_UNUSED const char *token,
 			 const char *url,
-			 GError **error)
+			 G_GNUC_UNUSED GError **error)
 {
   new GMURLHandler (url, TRUE);
 
@@ -525,7 +526,7 @@ dbus_component_transfer (DbusComponent *self,
 static gboolean
 dbus_component_resignal_call_info (DbusComponent *self,
 				   const char *token,
-				   GError **error)
+				   G_GNUC_UNUSED GError **error)
 {
   GMManager *endpoint = NULL;
   PSafePtr<OpalCall> call = NULL;
@@ -578,8 +579,8 @@ dbus_component_resignal_call_info (DbusComponent *self,
 }
 
 static gboolean
-dbus_component_shutdown (DbusComponent *self,
-			 GError **error)
+dbus_component_shutdown (G_GNUC_UNUSED DbusComponent *self,
+			 G_GNUC_UNUSED GError **error)
 {
   quit_callback (NULL, NULL);
 
@@ -587,10 +588,10 @@ dbus_component_shutdown (DbusComponent *self,
 }
 
 static gboolean
-dbus_component_get_local_address (DbusComponent *self,
+dbus_component_get_local_address (G_GNUC_UNUSED DbusComponent *self,
 				  const char *protocol,
 				  char **url,
-				  GError **error)
+				  G_GNUC_UNUSED GError **error)
 {
   GMManager *endpoint = NULL;
 
@@ -604,9 +605,9 @@ dbus_component_get_local_address (DbusComponent *self,
 }
 
 static gboolean
-dbus_component_get_name (DbusComponent *self,
+dbus_component_get_name (G_GNUC_UNUSED DbusComponent *self,
 			 char **name,
-			 GError **error)
+			 G_GNUC_UNUSED GError **error)
 {
   gchar *firstname = NULL;
   gchar *lastname = NULL;
@@ -622,9 +623,9 @@ dbus_component_get_name (DbusComponent *self,
   return TRUE;
 }
 static gboolean
-dbus_component_get_location (DbusComponent *self,
+dbus_component_get_location (G_GNUC_UNUSED DbusComponent *self,
 			     char **location,
-			     GError **error)
+			     G_GNUC_UNUSED GError **error)
 {
   *location = gm_conf_get_string (PERSONAL_DATA_KEY "location");
 
@@ -632,9 +633,9 @@ dbus_component_get_location (DbusComponent *self,
 }
 
 static gboolean
-dbus_component_get_comment (DbusComponent *self,
+dbus_component_get_comment (G_GNUC_UNUSED DbusComponent *self,
 			    char **comment,
-			    GError **error)
+			    G_GNUC_UNUSED GError **error)
 {
   *comment = gm_conf_get_string (PERSONAL_DATA_KEY "comment");
 
@@ -745,7 +746,7 @@ gnomemeeting_dbus_component_set_call_info (GObject *obj,
 }
 
 void
-gnomemeeting_dbus_component_set_call_on_hold (GObject *obj,
+gnomemeeting_dbus_component_set_call_on_hold (G_GNUC_UNUSED GObject *obj,
 					      const gchar *token,
 					      gboolean is_on_hold)
 {
@@ -757,7 +758,7 @@ gnomemeeting_dbus_component_set_call_on_hold (GObject *obj,
 }
 
 void
-gnomemeeting_dbus_component_call (GObject *obj,
+gnomemeeting_dbus_component_call (G_GNUC_UNUSED GObject *obj,
 				  const gchar *uri)
 {
   DBusGConnection *bus = NULL;

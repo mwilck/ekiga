@@ -380,6 +380,14 @@ void GMAccountsEndpoint::H323Register (GmAccount *a)
 	case H323Gatekeeper::TransportError :
 	  msg = g_strdup (_("Gatekeeper registration failed: transport error"));
 	  break;
+	case H323Gatekeeper::RegistrationSuccessful:
+	  break;
+	case H323Gatekeeper::UnregisteredLocally:
+	case H323Gatekeeper::UnregisteredByGatekeeper:
+	case H323Gatekeeper::GatekeeperLostRegistration:
+	case H323Gatekeeper::InvalidListener:
+	case H323Gatekeeper::NumRegistrationFailReasons:
+	case H323Gatekeeper::RegistrationRejectReasonMask:
 	default :
 	  msg = g_strdup (_("Gatekeeper registration failed"));
 	  break;

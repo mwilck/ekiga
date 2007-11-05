@@ -123,6 +123,10 @@ Ekiga::FormBuilder::visit (Ekiga::FormVisitor &visitor) const
 			    iter_editable_set->values,
 			    iter_editable_set->proposed_values);
       iter_editable_set++;
+      break;
+
+    default:
+      break;
     }
   }
 }

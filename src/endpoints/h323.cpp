@@ -248,6 +248,8 @@ GMH323Endpoint::SetUserInputMode ()
     case 3:
       SetSendUserInputMode (OpalConnection::SendUserInputAsQ931);
       break;
+    default:
+      break;
     }
 }
 
@@ -289,8 +291,8 @@ GMH323Endpoint::IsRegisteredWithGatekeeper (const PString & address)
 
 BOOL 
 GMH323Endpoint::OnIncomingConnection (OpalConnection &connection,
-                                      unsigned options,
-                                      OpalConnection::StringOptions *str_options)
+                                      G_GNUC_UNUSED unsigned options,
+                                      G_GNUC_UNUSED OpalConnection::StringOptions *str_options)
 {
   PSafePtr<OpalConnection> con = NULL;
   PSafePtr<OpalCall> call = NULL;

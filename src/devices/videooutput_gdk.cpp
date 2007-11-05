@@ -129,8 +129,8 @@ GMVideoDisplay_GDK::Main ()
   var_mutex.Signal ();
 }
 
-void GMVideoDisplay_GDK::SetFrameData (unsigned x,
-				       unsigned y,
+void GMVideoDisplay_GDK::SetFrameData (G_GNUC_UNUSED unsigned x,
+				       G_GNUC_UNUSED unsigned y,
 				       unsigned width,
 				       unsigned height,
 				       const BYTE * data,
@@ -241,6 +241,7 @@ void GMVideoDisplay_GDK::SetFrameData (unsigned x,
   case PIP:
   case PIP_WINDOW:
   case FULLSCREEN:
+  default:
     if ((!local) && ((remoteInterval + 20) >= localInterval )) 
       return;
     if ((local) && ((remoteInterval + 20) < localInterval ))
@@ -259,40 +260,41 @@ void GMVideoDisplay_GDK::SetFallback (BOOL newFallback)
 }
 
 BOOL 
-GMVideoDisplay_GDK::FrameDisplayChangeNeeded (int display, 
-                                              guint lf_width, 
-                                              guint lf_height, 
-                                              guint rf_width, 
-                                              guint rf_height, 
+GMVideoDisplay_GDK::FrameDisplayChangeNeeded (int display,
+                                              guint lf_width,
+                                              guint lf_height,
+                                              guint rf_width,
+                                              guint rf_height,
                                               double zoom)
 {
   GtkWidget *main_window = NULL;
-  GtkWidget *image = NULL;
+  GtkWidget *_image = NULL;
 
   main_window = GnomeMeeting::Process()->GetMainWindow ();
-  image = gm_main_window_get_video_widget (main_window);
+  _image = gm_main_window_get_video_widget (main_window);
 
   switch (display) {
   case LOCAL_VIDEO:
     return (lastFrame.display != LOCAL_VIDEO 
             || lastFrame.zoom != zoom || lastFrame.localWidth != lf_width || lastFrame.localHeight != lf_height 
-            || image->allocation.x != lastFrame.embeddedX || image->allocation.y != lastFrame.embeddedY);
+            || _image->allocation.x != lastFrame.embeddedX || _image->allocation.y != lastFrame.embeddedY);
     break;
 
   case REMOTE_VIDEO:
     return (lastFrame.display != REMOTE_VIDEO
             || lastFrame.zoom != zoom || lastFrame.remoteWidth != rf_width || lastFrame.remoteHeight != rf_height
-            || image->allocation.x != lastFrame.embeddedX || image->allocation.y != lastFrame.embeddedY);
+            || _image->allocation.x != lastFrame.embeddedX || _image->allocation.y != lastFrame.embeddedY);
     break;
 
   case PIP:
     return (lastFrame.display != display || lastFrame.zoom != zoom 
             || lastFrame.remoteWidth != rf_width || lastFrame.remoteHeight != rf_height
             || lastFrame.localWidth != lf_width || lastFrame.localHeight != lf_height
-            || image->allocation.x != lastFrame.embeddedX || image->allocation.y != lastFrame.embeddedY);
+            || _image->allocation.x != lastFrame.embeddedX || _image->allocation.y != lastFrame.embeddedY);
     break;
   case PIP_WINDOW:
   case FULLSCREEN:
+  default:
     return (lastFrame.display != display || lastFrame.zoom != zoom 
             || lastFrame.remoteWidth != rf_width || lastFrame.remoteHeight != rf_height
             || lastFrame.localWidth != lf_width || lastFrame.localHeight != lf_height);
@@ -418,14 +420,13 @@ GMVideoDisplay_GDK::CloseFrameDisplay ()
 
 void 
 GMVideoDisplay_GDK::DisplayFrame (gpointer gtk_image,
-                                      const guchar *frame,
-                                      guint width,
-                                      guint height,
-                                      double zoom)
+				  const guchar *frame,
+				  guint width,
+				  guint height,
+				  double zoom)
 {
   GdkPixbuf *pic = NULL;
   GdkPixbuf *scaled_pic = NULL;
-  GtkWidget *image = GTK_WIDGET (gtk_image);
 
   if (!gtk_image)
     return;
@@ -444,7 +445,7 @@ GMVideoDisplay_GDK::DisplayFrame (gpointer gtk_image,
                                         (int) (width * zoom),
                                         (int) (height * zoom),
                                         GDK_INTERP_NEAREST);
-  gtk_image_set_from_pixbuf (GTK_IMAGE (image), 
+  gtk_image_set_from_pixbuf (GTK_IMAGE (gtk_image), 
                              GDK_PIXBUF (scaled_pic));
   g_object_unref (pic);
   g_object_unref (scaled_pic);
@@ -454,13 +455,13 @@ GMVideoDisplay_GDK::DisplayFrame (gpointer gtk_image,
 
 void 
 GMVideoDisplay_GDK::DisplayPiPFrames (gpointer gtk_image,
-                                          const guchar *lframe,
-                                          guint lwidth,
-                                          guint lheight,
-                                          const guchar *rframe,
-                                          guint rwidth,
-                                          guint rheight,
-                                          double zoom)
+				      const guchar *lframe,
+				      guint lwidth,
+				      guint lheight,
+				      const guchar *rframe,
+				      guint rwidth,
+				      guint rheight,
+				      double zoom)
 {
   GtkWidget *main_window = NULL;
 
@@ -471,8 +472,6 @@ GMVideoDisplay_GDK::DisplayPiPFrames (gpointer gtk_image,
 
   if (!gtk_image)
     return;
-
-  GtkWidget *image = GTK_WIDGET (gtk_image);
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
 
@@ -516,7 +515,7 @@ GMVideoDisplay_GDK::DisplayPiPFrames (gpointer gtk_image,
     scaled_pic = gdk_pixbuf_copy (pic);
   }
 
-  gtk_image_set_from_pixbuf (GTK_IMAGE (image), 
+  gtk_image_set_from_pixbuf (GTK_IMAGE (gtk_image), 
                              GDK_PIXBUF (scaled_pic));
   g_object_unref (pic);
   g_object_unref (scaled_pic);
@@ -549,6 +548,7 @@ void GMVideoDisplay_GDK::Redraw ()
       case FULLSCREEN:
       case PIP:
       case PIP_WINDOW:
+      default:
           if (ret && (lframeStore.GetSize() > 0) && (rframeStore.GetSize () > 0))
             DisplayPiPFrames (image, lframeStore.GetPointer (), currentFrame.localWidth, currentFrame.localHeight,
                                      rframeStore.GetPointer (), currentFrame.remoteWidth, currentFrame.remoteHeight, currentFrame.zoom);

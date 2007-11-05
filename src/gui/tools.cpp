@@ -223,7 +223,7 @@ pc2phone_window_response_cb (GtkWidget *widget,
 
 
 static void
-pc2phone_consult_cb (GtkWidget *widget,
+pc2phone_consult_cb (G_GNUC_UNUSED GtkWidget *widget,
 		     gpointer data)
 {
   GmPC2PhoneWindow *pcw = NULL;

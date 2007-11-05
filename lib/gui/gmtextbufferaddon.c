@@ -107,7 +107,7 @@ gtk_text_buffer_insert_with_regex (GtkTextBuffer *buf,
 
     /* if the match isn't at the beginning, we treat that beginning as simple text */
     if (match.start) {
-      g_assert (match.start <= strlen (text));
+      g_assert ((size_t)match.start <= strlen (text));
       gtk_text_buffer_insert (buf, bufiter, text, match.start);
     }/*  */
 

@@ -101,13 +101,13 @@ static gboolean hara_kiri (gpointer loop);
 
 /* implementations */
 static void
-helper_init (Helper *self)
+helper_init (G_GNUC_UNUSED Helper *self)
 {
   /* nothing to do */
 }
 
 static void
-helper_class_init (HelperClass *klass)
+helper_class_init (G_GNUC_UNUSED HelperClass *klass)
 {
   /* initializing as dbus object */
   dbus_g_object_type_install_info (HELPER_TYPE,
@@ -116,9 +116,9 @@ helper_class_init (HelperClass *klass)
 }
 
 static gboolean
-helper_get_version (Helper *self,
+helper_get_version (G_GNUC_UNUSED Helper *self,
 		    GArray **version,
-		    GError **error)
+		    G_GNUC_UNUSED GError **error)
 {
   guint val;
 
@@ -134,9 +134,9 @@ helper_get_version (Helper *self,
 }
 
 static gboolean
-helper_get_supported_protocols (Helper *self,
+helper_get_supported_protocols (G_GNUC_UNUSED Helper *self,
 				char ***protocols,
-				GError **error)
+				G_GNUC_UNUSED GError **error)
 {
   *protocols = g_new (char *, 3);
   (*protocols)[0] = g_strdup ("SIP");
@@ -157,7 +157,8 @@ hara_kiri (gpointer data)
 }
 
 int
-main (int argc, char *argv[])
+main (G_GNUC_UNUSED int argc,
+      G_GNUC_UNUSED char *argv[])
 {
   GMainLoop *mainloop = NULL;
   GObject *helper = NULL;

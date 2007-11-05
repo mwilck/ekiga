@@ -46,26 +46,26 @@ Ekiga::FormDumper::dump (const Ekiga::Form &form)
 }
 
 void
-Ekiga::FormDumper::title (const std::string title)
+Ekiga::FormDumper::title (const std::string _title)
 {
-  out << "Title: " << title << std::endl;
+  out << "Title: " << _title << std::endl;
 }
 
 void
-Ekiga::FormDumper::instructions (const std::string instructions)
+Ekiga::FormDumper::instructions (const std::string _instructions)
 {
-  out << "Instructions: " << std::endl << instructions << std::endl;
+  out << "Instructions: " << std::endl << _instructions << std::endl;
 }
 
 void
-Ekiga::FormDumper::error (const std::string error)
+Ekiga::FormDumper::error (const std::string _error)
 {
-  out << "Error: " << error << std::endl;
+  out << "Error: " << _error << std::endl;
 }
 
 void
 Ekiga::FormDumper::hidden (const std::string name,
-			 const std::string value)
+			   const std::string value)
 {
   out << "Hidden field " << name << ": " << value << std::endl;
 }

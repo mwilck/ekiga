@@ -128,7 +128,7 @@ PVideoOutputDevice_EKIGA::~PVideoOutputDevice_EKIGA()
 
 BOOL 
 PVideoOutputDevice_EKIGA::Open (const PString &name,
-			      BOOL unused)
+				G_GNUC_UNUSED BOOL unused)
 { 
   if (name == "EKIGAIN") 
     device_id = 1; 

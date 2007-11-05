@@ -369,24 +369,24 @@ public:
 
       do {
 
-	gchar *name = NULL;
+	gchar *gname = NULL;
 
         gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
                             COLUMN_ACTIVE, &active,
-                            COLUMN_NAME, &name,
+                            COLUMN_NAME, &gname,
                             -1);
 
-        if (active && name) {
+        if (active && gname) {
 
-          values.insert (name);
+          values.insert (gname);
 
           std::map <std::string, std::string>::const_iterator mit;
-          mit = choices.find (name);
+          mit = choices.find (gname);
           if (mit == choices.end ())
-            choices [name] = name;
+            choices [gname] = gname;
         }
 
-	g_free (name);
+	g_free (gname);
       } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (model), &iter));
     }
 
@@ -472,7 +472,6 @@ static void
 editable_set_add_value_activated_cb (GtkWidget *entry,
 				     gpointer data)
 {
-  GtkWidget *button = NULL;
   GtkTreeModel *model = NULL;
 
   const char *value = NULL;
@@ -515,7 +514,7 @@ editable_set_add_value_activated_cb (GtkWidget *entry,
 
 
 static void
-editable_set_add_value_clicked_cb (GtkWidget *button,
+editable_set_add_value_clicked_cb (G_GNUC_UNUSED GtkWidget *button,
 				   gpointer data)
 {
   if (strcmp (gtk_entry_get_text (GTK_ENTRY (data)), ""))
@@ -524,7 +523,7 @@ editable_set_add_value_clicked_cb (GtkWidget *button,
 
 
 static void
-editable_set_choice_toggled_cb (GtkCellRendererToggle *cell,
+editable_set_choice_toggled_cb (G_GNUC_UNUSED GtkCellRendererToggle *cell,
 				gchar *path_str,
 				gpointer data)
 {
@@ -550,7 +549,7 @@ editable_set_choice_toggled_cb (GtkCellRendererToggle *cell,
 
 
 static void
-multiple_choice_choice_toggled_cb (GtkCellRendererToggle *cell,
+multiple_choice_choice_toggled_cb (G_GNUC_UNUSED GtkCellRendererToggle *cell,
 				   gchar *path_str,
 				   gpointer data)
 {
@@ -577,8 +576,6 @@ multiple_choice_choice_toggled_cb (GtkCellRendererToggle *cell,
 FormDialog::FormDialog (Ekiga::FormRequest &_request): request(_request)
 {
   GtkWidget *vbox = NULL;
-  GtkWidget *buttons = NULL;
-  GtkWidget *button = NULL;
 
   rows = 0;
 
@@ -637,6 +634,7 @@ FormDialog::run ()
 
   case GTK_RESPONSE_CANCEL:
   case GTK_RESPONSE_DELETE_EVENT:
+  default:
     cancel();
     break;
   }
@@ -644,25 +642,25 @@ FormDialog::run ()
 
 
 void
-FormDialog::title (const std::string title)
+FormDialog::title (const std::string _title)
 {
   TitleSubmitter *submitter = NULL;
 
-  gtk_window_set_title (GTK_WINDOW (window), title.c_str ());
-  submitter = new TitleSubmitter (title);
+  gtk_window_set_title (GTK_WINDOW (window), _title.c_str ());
+  submitter = new TitleSubmitter (_title);
   submitters.push_back (submitter);
 }
 
 
 void
-FormDialog::instructions (const std::string instructions)
+FormDialog::instructions (const std::string _instructions)
 {
   GtkWidget *widget = NULL;
   InstructionsSubmitter *submitter = NULL;
   gchar * label_text = NULL;
 
   widget = gtk_label_new (NULL);
-  label_text = g_strdup_printf ("<i>%s</i>", instructions.c_str());
+  label_text = g_strdup_printf ("<i>%s</i>", _instructions.c_str());
   gtk_label_set_markup (GTK_LABEL (widget), label_text);
   g_free (label_text);
 
@@ -672,17 +670,17 @@ FormDialog::instructions (const std::string instructions)
 #endif
   gtk_container_add (GTK_CONTAINER (preamble), widget);
 
-  submitter = new InstructionsSubmitter (instructions);
+  submitter = new InstructionsSubmitter (_instructions);
   submitters.push_back (submitter);
 }
 
 
 void
-FormDialog::error (const std::string error)
+FormDialog::error (const std::string _error)
 {
   GtkWidget *widget = NULL;
 
-  if (!error.empty ()) {
+  if (!_error.empty ()) {
 
     widget = gtk_label_new (NULL);
     gtk_label_set_line_wrap (GTK_LABEL (widget), TRUE);
@@ -690,7 +688,7 @@ FormDialog::error (const std::string error)
     gtk_label_set_line_wrap_mode (GTK_LABEL (widget), PANGO_WRAP_WORD);
 #endif
     gtk_label_set_markup (GTK_LABEL (widget),
-			  ("<span foreground=\"red\">" + error + "</span>").c_str ());
+			  ("<span foreground=\"red\">" + _error + "</span>").c_str ());
     gtk_container_add (GTK_CONTAINER (preamble), widget);
   }
 }
@@ -916,13 +914,9 @@ FormDialog::multiple_choice (const std::string name,
 			     const std::map<std::string, std::string> choices)
 {
   GtkWidget *label = NULL;
-  GtkWidget *vbox = NULL;
   GtkWidget *scroll = NULL;
-  GtkWidget *button = NULL;
   GtkWidget *tree_view = NULL;
   GtkWidget *frame = NULL;
-  GtkWidget *hbox = NULL;
-  GtkWidget *entry = NULL;
 
   GtkListStore *list_store = NULL;
   GtkTreeViewColumn *column = NULL;
@@ -1017,7 +1011,6 @@ FormDialog::editable_set (const std::string name,
 			  const std::set<std::string> proposed_values)
 {
   GtkWidget *label = NULL;
-  GtkWidget *vbox = NULL;
   GtkWidget *scroll = NULL;
   GtkWidget *button = NULL;
   GtkWidget *tree_view = NULL;

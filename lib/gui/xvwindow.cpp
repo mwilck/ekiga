@@ -440,6 +440,8 @@ XVWindow::PutFrame (uint8_t* frame,
                 ToggleFullscreen(); 
             }
             break;
+	default:
+	  break;
         }
       }
 

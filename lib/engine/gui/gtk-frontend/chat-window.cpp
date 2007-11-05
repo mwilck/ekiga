@@ -225,7 +225,7 @@ chat_window_finalize (GObject *obj)
 
 static void
 chat_window_class_init (gpointer g_class,
-                       gpointer class_data)
+			G_GNUC_UNUSED gpointer class_data)
 {
   GObjectClass *gobject_class = NULL;
 
@@ -286,7 +286,7 @@ chat_window_get_type ()
  */
 
 static void
-close_event_cb (GtkWidget *widget,
+close_event_cb (G_GNUC_UNUSED GtkWidget *widget,
                 gpointer data)
 {
   ChatWindow *self = CHAT_WINDOW (data);
@@ -304,7 +304,7 @@ close_event_cb (GtkWidget *widget,
 
 
 static void
-hide_event_cb (GtkWidget *widget,
+hide_event_cb (G_GNUC_UNUSED GtkWidget *widget,
                gpointer data)
 {
   ChatWindow *self = CHAT_WINDOW (data);
@@ -320,8 +320,8 @@ hide_event_cb (GtkWidget *widget,
 
 
 static void
-focus_in_changed_cb (GtkWidget *window,
-                     GdkEventFocus *focus,
+focus_in_changed_cb (G_GNUC_UNUSED GtkWidget *window,
+                     G_GNUC_UNUSED GdkEventFocus *focus,
                      gpointer data)
 {
   ChatWindow *self = CHAT_WINDOW (data);
@@ -340,7 +340,7 @@ focus_in_changed_cb (GtkWidget *window,
 
 static void
 conversation_changed_cb (GtkNotebook *notebook,
-                         GtkNotebookPage *_page,
+                         G_GNUC_UNUSED GtkNotebookPage *_page,
                          gint n,
                          gpointer data)
 {

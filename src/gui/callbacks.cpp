@@ -68,8 +68,8 @@
 
 /* The callbacks */
 void
-save_callback (GtkWidget *widget,
-	       gpointer data)
+save_callback (G_GNUC_UNUSED GtkWidget *widget,
+	       G_GNUC_UNUSED gpointer data)
 {
   std::cout << "Not implemented" << std::endl << std::flush; // FIXME Matthias ?
 }
@@ -78,8 +78,8 @@ save_callback (GtkWidget *widget,
 
 gboolean
 delete_window_cb (GtkWidget *widget,
-                  GdkEvent *event,
-                  gpointer data)
+                  G_GNUC_UNUSED GdkEvent *event,
+                  G_GNUC_UNUSED gpointer data)
 {
   gnomemeeting_window_hide (GTK_WIDGET (widget));
 
@@ -88,7 +88,7 @@ delete_window_cb (GtkWidget *widget,
 
 
 void
-show_window_cb (GtkWidget *widget,
+show_window_cb (G_GNUC_UNUSED GtkWidget *widget,
 		gpointer data)
 {
   if (!gnomemeeting_window_is_visible (GTK_WIDGET (data)))
@@ -99,7 +99,7 @@ show_window_cb (GtkWidget *widget,
 
 
 void
-hide_window_cb (GtkWidget *widget,
+hide_window_cb (G_GNUC_UNUSED GtkWidget *widget,
 		gpointer data)
 {
   if (gnomemeeting_window_is_visible (GTK_WIDGET (data)))
@@ -108,7 +108,7 @@ hide_window_cb (GtkWidget *widget,
 
 
 void
-connect_cb (GtkWidget *widget,
+connect_cb (G_GNUC_UNUSED GtkWidget *widget,
 	    gpointer data)
 {	
   PString url;
@@ -122,8 +122,8 @@ connect_cb (GtkWidget *widget,
 
 
 void
-disconnect_cb (GtkWidget *widget,
-	       gpointer data)
+disconnect_cb (G_GNUC_UNUSED GtkWidget *widget,
+	       G_GNUC_UNUSED gpointer data)
 {	
   GtkWidget *main_window = NULL;
   
@@ -137,7 +137,7 @@ disconnect_cb (GtkWidget *widget,
 
 
 void
-about_callback (GtkWidget *widget, 
+about_callback (G_GNUC_UNUSED GtkWidget *widget, 
 		gpointer parent_window)
 {
   const gchar *authors [] = {
@@ -221,8 +221,8 @@ GNU GPL for all the rest of the software thus combined.";
 
 
 void
-help_cb (GtkWidget *widget,
-	 gpointer data)
+help_cb (G_GNUC_UNUSED GtkWidget *widget,
+	 G_GNUC_UNUSED gpointer data)
 {
 #ifdef HAVE_GNOME
   GError *err = NULL;
@@ -269,8 +269,8 @@ help_cb (GtkWidget *widget,
 
 
 void
-quit_callback (GtkWidget *widget, 
-	       gpointer data)
+quit_callback (G_GNUC_UNUSED GtkWidget *widget, 
+	       G_GNUC_UNUSED gpointer data)
 {
   GtkWidget *main_window = NULL;
   GtkWidget *prefs_window = NULL;
@@ -292,7 +292,7 @@ quit_callback (GtkWidget *widget,
 
 
 gboolean 
-entry_completion_url_match_cb (GtkEntryCompletion *completion,
+entry_completion_url_match_cb (G_GNUC_UNUSED GtkEntryCompletion *completion,
 			       const gchar *key,
 			       GtkTreeIter *iter,
 			       gpointer data)

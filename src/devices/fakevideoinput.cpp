@@ -50,7 +50,9 @@
 
 #define DEFAULT_ICON_SIZE 72
 
-static const char *translations[] = {
+/* this is here to make gettext know we want to translate it although it
+ * doesn't appear directly in this piece of code... */
+G_GNUC_UNUSED static const char *translations[] = {
   N_("Moving logo"),
   N_("Static picture")
 };
@@ -77,7 +79,7 @@ PVideoInputDevice_Picture::~PVideoInputDevice_Picture ()
 
 BOOL
 PVideoInputDevice_Picture::Open (const PString &name,
-				 BOOL start_immediate)
+				 G_GNUC_UNUSED BOOL start_immediate)
 {
   gchar *image_name = NULL;
   GdkPixbuf *icon = NULL;
@@ -228,7 +230,8 @@ PVideoInputDevice_Picture::SetFrameSize (unsigned int width,
 
 
 BOOL
-PVideoInputDevice_Picture::GetFrameData (BYTE *a, PINDEX *i)
+PVideoInputDevice_Picture::GetFrameData (BYTE *a,
+					 PINDEX *i)
 {
   WaitFinishPreviousFrame ();
 
@@ -240,11 +243,12 @@ PVideoInputDevice_Picture::GetFrameData (BYTE *a, PINDEX *i)
 }
 
 
-BOOL PVideoInputDevice_Picture::GetFrameDataNoDelay (BYTE *frame, PINDEX *i)
+BOOL PVideoInputDevice_Picture::GetFrameDataNoDelay (BYTE *frame,
+						     G_GNUC_UNUSED PINDEX *i)
 {
   GdkPixbuf *scaled_pix = NULL;
 
-  guchar *data = NULL;
+  guchar *_data = NULL;
 
   unsigned width = 0;
   unsigned height = 0;
@@ -339,10 +343,10 @@ BOOL PVideoInputDevice_Picture::GetFrameDataNoDelay (BYTE *frame, PINDEX *i)
       increment = +1;
   }
 
-  data = gdk_pixbuf_get_pixels (cached_pix);
+  _data = gdk_pixbuf_get_pixels (cached_pix);
 
   if (converter)
-    converter->Convert (data, frame);
+    converter->Convert (_data, frame);
 
   gnomemeeting_threads_leave ();
 
@@ -386,7 +390,7 @@ PVideoInputDevice_Picture::GetNumChannels()
 
 
 BOOL
-PVideoInputDevice_Picture::SetChannel (int newChannel)
+PVideoInputDevice_Picture::SetChannel (G_GNUC_UNUSED int newChannel)
 {
   return TRUE;
 }
@@ -403,7 +407,7 @@ PVideoInputDevice_Picture::SetColourFormat (const PString &newFormat)
 
 
 BOOL
-PVideoInputDevice_Picture::SetFrameRate (unsigned rate)
+PVideoInputDevice_Picture::SetFrameRate (G_GNUC_UNUSED unsigned rate)
 {
   if (moving)
     PVideoDevice::SetFrameRate (12);

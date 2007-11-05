@@ -69,13 +69,13 @@
 #endif
 
 static void dialog_response_cb (GtkWidget *widget,
-				gint unused,
+				G_GNUC_UNUSED gint unused,
 				gpointer data);
 
 
 /* The GTK callbacks */
 static void dialog_response_cb (GtkWidget *widget,
-				gint unused,
+				G_GNUC_UNUSED gint unused,
 				gpointer data)
 {
   g_return_if_fail (data);
@@ -431,8 +431,8 @@ GMAudioRP::GetAverageSignalLevel (const short *buffer, int size)
 
 /* The Audio tester class */
   GMAudioTester::GMAudioTester (gchar *manager,
-				gchar *player,
-				gchar *recorder,
+				gchar *_player,
+				gchar *_recorder,
 				GMManager & endpoint)
   :PThread (1000, NoAutoDeleteThread), ep (endpoint)
 {
@@ -443,10 +443,10 @@ GMAudioRP::GetAverageSignalLevel (const short *buffer, int size)
   
   if (manager)
     audio_manager = PString (manager);
-  if (player)
-    audio_player = PString (player);
-  if (recorder)
-    audio_recorder = PString (recorder);
+  if (_player)
+    audio_player = PString (_player);
+  if (_recorder)
+    audio_recorder = PString (_recorder);
   
   this->Resume ();
   thread_sync_point.Wait ();
@@ -464,8 +464,8 @@ void GMAudioTester::Main ()
 {
   GtkWidget *druid_window = NULL;
   
-  GMAudioRP *player = NULL;
-  GMAudioRP *recorder = NULL;
+  GMAudioRP *_player = NULL;
+  GMAudioRP *_recorder = NULL;
 
   gchar *msg = NULL;
 
@@ -526,17 +526,17 @@ void GMAudioTester::Main ()
   gtk_widget_show_all (GTK_DIALOG (test_dialog)->vbox);
   gdk_threads_leave ();
 
-  recorder = new GMAudioRP (TRUE, *this);
-  player = new GMAudioRP (FALSE, *this);
+  _recorder = new GMAudioRP (TRUE, *this);
+  _player = new GMAudioRP (FALSE, *this);
 
   
-  while (!stop && !player->IsTerminated () && !recorder->IsTerminated ()) {
+  while (!stop && !_player->IsTerminated () && !_recorder->IsTerminated ()) {
 
     PThread::Current ()->Sleep (100);
   }
 
-  delete (player);
-  delete (recorder);
+  delete (_player);
+  delete (_recorder);
 
   gdk_threads_enter ();
   if (test_dialog)

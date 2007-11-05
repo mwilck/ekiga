@@ -179,36 +179,36 @@ GMVideoGrabber::GetOutputDevice (void)
 
 
 BOOL
-GMVideoGrabber::SetColour (int colour)
+GMVideoGrabber::SetColour (int _colour)
 {
   PWaitAndSignal m(var_mutex);
 
   if (grabber)
-    return grabber->SetColour (colour);
+    return grabber->SetColour (_colour);
 
   return FALSE;
 }
 
 
 BOOL
-GMVideoGrabber::SetBrightness (int brightness)
+GMVideoGrabber::SetBrightness (int _brightness)
 {
   PWaitAndSignal m(var_mutex);
 
   if (grabber)
-    return grabber->SetBrightness (brightness);
+    return grabber->SetBrightness (_brightness);
 
   return FALSE;
 }
 
 
 BOOL
-GMVideoGrabber::SetWhiteness (int whiteness)
+GMVideoGrabber::SetWhiteness (int _whiteness)
 {
   PWaitAndSignal m(var_mutex);
 
   if (grabber)
-    return grabber->SetWhiteness (whiteness);
+    return grabber->SetWhiteness (_whiteness);
 
   return FALSE;
 }
@@ -227,21 +227,21 @@ GMVideoGrabber::SetContrast (int constrast)
 
 
 void
-GMVideoGrabber::GetParameters (int *whiteness,
-			       int *brightness, 
-			       int *colour,
-			       int *contrast)
+GMVideoGrabber::GetParameters (int *_whiteness,
+			       int *_brightness, 
+			       int *_colour,
+			       int *_contrast)
 {
   int hue = 0;
   
   PWaitAndSignal m(var_mutex);
   
-  grabber->GetParameters (whiteness, brightness, colour, contrast, &hue);
+  grabber->GetParameters (_whiteness, _brightness, _colour, _contrast, &hue);
 
-  *whiteness = (int) *whiteness / 256;
-  *brightness = (int) *brightness / 256;
-  *colour = (int) *colour / 256;
-  *contrast = (int) *contrast / 256;
+  *_whiteness = (int) *_whiteness / 256;
+  *_brightness = (int) *_brightness / 256;
+  *_colour = (int) *_colour / 256;
+  *_contrast = (int) *_contrast / 256;
 }
 
 
@@ -368,6 +368,9 @@ GMVideoGrabber::VGOpen (void)
 
 	case 6:
 	  dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Error while setting the frame size."), NULL);
+	  break;
+
+	default:
 	  break;
 	}
 
@@ -672,6 +675,9 @@ void GMVideoTester::Main ()
       
     case 5:
       dialog_msg = g_strdup_printf (_("Error with the frame size."));
+      break;
+
+    default:
       break;
     }
 

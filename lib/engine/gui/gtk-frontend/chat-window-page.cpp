@@ -266,7 +266,7 @@ chat_window_page_finalize (GObject *obj)
 
 static void
 chat_window_page_class_init (gpointer g_class,
-                             gpointer class_data)
+                             G_GNUC_UNUSED gpointer class_data)
 {
   GObjectClass *gobject_class = NULL;
 
@@ -321,7 +321,7 @@ chat_window_page_get_type ()
  * GTK+ Callbacks
  */
 static void 
-close_button_clicked_cb (GtkWidget *w,
+close_button_clicked_cb (G_GNUC_UNUSED GtkWidget *w,
                          gpointer data)
 {
   g_return_if_fail (data != NULL);
@@ -331,7 +331,7 @@ close_button_clicked_cb (GtkWidget *w,
 
 
 static gboolean 
-chat_entry_activated_cb (GtkWidget *w,
+chat_entry_activated_cb (G_GNUC_UNUSED GtkWidget *w,
                          GdkEventKey *key,
                          gpointer data)
 {
@@ -348,7 +348,7 @@ chat_entry_activated_cb (GtkWidget *w,
 
 static void 
 chat_entry_backspace_cb (GtkTextView *text_view,
-                         gpointer data)
+                         G_GNUC_UNUSED gpointer data)
 {
   GtkTextBuffer *buffer = gtk_text_view_get_buffer (text_view);
   GtkTextIter *start_iter = NULL;
@@ -370,7 +370,7 @@ chat_entry_backspace_cb (GtkTextView *text_view,
 
 
 static void
-send_button_clicked_cb (GtkWidget *w,
+send_button_clicked_cb (G_GNUC_UNUSED GtkWidget *w,
                         gpointer data)
 {
   ChatWindowPage *self = CHAT_WINDOW_PAGE (data);
@@ -403,7 +403,7 @@ send_button_clicked_cb (GtkWidget *w,
 
 
 static void 
-smiley_button_clicked_cb (GtkButton *w,
+smiley_button_clicked_cb (G_GNUC_UNUSED GtkButton *w,
                           gpointer data)
 {
   g_return_if_fail (data != NULL);
@@ -489,8 +489,8 @@ on_presentity_added (Ekiga::Cluster &cluster,
 
 
 static void
-on_presentity_updated (Ekiga::Cluster &/*cluster*/,
-		       Ekiga::Heap &heap,
+on_presentity_updated (G_GNUC_UNUSED Ekiga::Cluster &cluster,
+		       G_GNUC_UNUSED Ekiga::Heap &heap,
 		       Ekiga::Presentity &presentity,
 		       gpointer data)
 {
@@ -510,8 +510,8 @@ on_presentity_updated (Ekiga::Cluster &/*cluster*/,
 
 
 static void
-on_presentity_removed (Ekiga::Cluster &/*cluster*/,
-		       Ekiga::Heap &heap,
+on_presentity_removed (G_GNUC_UNUSED Ekiga::Cluster &cluster,
+		       G_GNUC_UNUSED Ekiga::Heap &heap,
 		       Ekiga::Presentity &presentity,
 		       gpointer data)
 {
@@ -897,7 +897,7 @@ chat_window_page_get_uri (ChatWindowPage *page)
 void
 chat_window_page_add_message (ChatWindowPage *page,
                               const std::string display_name,
-                              const std::string uri,
+                              G_GNUC_UNUSED const std::string uri,
                               const std::string message,
                               gboolean is_sent)
 {
@@ -965,7 +965,7 @@ chat_window_page_add_message (ChatWindowPage *page,
 
 void
 chat_window_page_add_error (ChatWindowPage *page,
-                            const std::string uri,
+                            G_GNUC_UNUSED const std::string uri,
                             const std::string message)
 {
   ChatWindowPage *self = CHAT_WINDOW_PAGE (page);

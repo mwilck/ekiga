@@ -685,7 +685,7 @@ GMManager::RemoveSTUNClient ()
 
 BOOL
 GMManager::OnForwarded (OpalConnection &connection,
-                        const PString & forward_party)
+                        G_GNUC_UNUSED const PString & forward_party)
 {
   /* Emit the signal */
   Ekiga::Runtime *runtime = GnomeMeeting::Process ()->GetRuntime (); // FIXME
@@ -979,11 +979,6 @@ GMManager::OnMessageReceived (const SIPURL & _from,
   std::string uri = (const char *) from.AsString ();
   std::string message = (const char *) _body;
 
-  GMManager *ep = NULL;
-  GMPCSSEndpoint *pcssEP = NULL;
-
-  ep = GnomeMeeting::Process ()->GetManager ();
-  pcssEP = ep->GetPCSSEndpoint ();
   pcssEP->PlaySoundEvent ("new_message_sound"); // FIXME use signals here too
 
   Ekiga::Runtime *runtime = GnomeMeeting::Process ()->GetRuntime (); // FIXME
@@ -993,7 +988,7 @@ GMManager::OnMessageReceived (const SIPURL & _from,
 
 void 
 GMManager::OnMessageFailed (const SIPURL & _to,
-                            SIP_PDU::StatusCodes reason)
+                            G_GNUC_UNUSED SIP_PDU::StatusCodes reason)
 {
   SIPURL to = _to;
   to.AdjustForRequestURI ();
@@ -1710,9 +1705,9 @@ GMManager::OnGatewayIPTimeout (PTimer &,
 
 BOOL 
 GMManager::DeviceVolume (PSoundChannel *sound_channel,
-			  BOOL is_encoding,
-			  BOOL set, 
-			  unsigned int &vol) 
+			 G_GNUC_UNUSED BOOL is_encoding,
+			 BOOL set,
+			 unsigned int &vol)
 {
   BOOL err = TRUE;
 
@@ -1738,10 +1733,10 @@ GMManager::DeviceVolume (PSoundChannel *sound_channel,
 
 
 BOOL
-GMManager::CreateVideoInputDevice (const OpalConnection &con,
-				    const OpalMediaFormat &format,
-				    PVideoInputDevice * & device,
-				    BOOL & auto_delete)
+GMManager::CreateVideoInputDevice (G_GNUC_UNUSED const OpalConnection &con,
+				   G_GNUC_UNUSED const OpalMediaFormat &format,
+				   PVideoInputDevice * & device,
+				   BOOL & auto_delete)
 {
   GMVideoGrabber *vg = NULL;
   auto_delete = FALSE;
@@ -1762,11 +1757,11 @@ GMManager::CreateVideoInputDevice (const OpalConnection &con,
 
 
 BOOL 
-GMManager::CreateVideoOutputDevice(const OpalConnection & connection,
-				    const OpalMediaFormat & format,
-				    BOOL preview,
-				    PVideoOutputDevice * & device,
-				    BOOL & auto_delete)
+GMManager::CreateVideoOutputDevice(G_GNUC_UNUSED const OpalConnection & connection,
+				   const OpalMediaFormat & format,
+				   BOOL preview,
+				   PVideoOutputDevice * & device,
+				   BOOL & auto_delete)
 {
   const PVideoDevice::OpenArgs & args = videoOutputDevice;
 

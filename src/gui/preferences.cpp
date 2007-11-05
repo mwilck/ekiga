@@ -359,14 +359,14 @@ gm_pw_get_pw (GtkWidget *preferences_window)
 
 
 static GtkWidget *
-gm_pw_add_update_button (GtkWidget *prefs_window,
+gm_pw_add_update_button (G_GNUC_UNUSED GtkWidget *prefs_window,
                          GtkWidget *box,
                          const char *stock_id,
                          const char *label,
                          GtkSignalFunc func,
-                         gchar *tooltip,
+                         G_GNUC_UNUSED gchar *tooltip,
                          gfloat valign,
-                         gpointer data)  
+                         gpointer data)
 {
   GtkWidget *alignment = NULL;
   GtkWidget *image = NULL;
@@ -1058,16 +1058,16 @@ gm_pw_init_video_codecs_page (GtkWidget *prefs_window,
 
 /* GTK Callbacks */
 static void
-refresh_devices_list_cb (GtkWidget *widget,
-			 gpointer data)
+refresh_devices_list_cb (G_GNUC_UNUSED GtkWidget *widget,
+			 G_GNUC_UNUSED gpointer data)
 {
   GnomeMeeting::Process ()->DetectDevices ();
 }
 
 
 static void 
-personal_data_update_cb (GtkWidget *widget, 
-			 gpointer data)
+personal_data_update_cb (G_GNUC_UNUSED GtkWidget *widget,
+			 G_GNUC_UNUSED gpointer data)
 {
   GMManager *endpoint = NULL;
 
@@ -1084,7 +1084,7 @@ personal_data_update_cb (GtkWidget *widget,
 
 
 static void 
-nat_method_update_cb (GtkWidget *widget, 
+nat_method_update_cb (G_GNUC_UNUSED GtkWidget *widget,
 		      gpointer data)
 {
   GMManager *ep = NULL;
@@ -1119,7 +1119,7 @@ nat_method_update_cb (GtkWidget *widget,
 
 
 static void
-image_filename_browse_cb (GtkWidget *b, 
+image_filename_browse_cb (GtkWidget *b,
 			  gpointer data)
 {
   char *filename = NULL;
@@ -1229,7 +1229,7 @@ sound_event_clicked_cb (GtkTreeSelection *selection,
 
 
 static void
-sound_event_play_cb (GtkWidget *widget,
+sound_event_play_cb (G_GNUC_UNUSED GtkWidget *widget,
 		     gpointer data)
 {
   PString event;
@@ -1244,7 +1244,7 @@ sound_event_play_cb (GtkWidget *widget,
 
 
 static void
-sound_event_toggled_cb (GtkCellRendererToggle *cell,
+sound_event_toggled_cb (G_GNUC_UNUSED GtkCellRendererToggle *cell,
 			gchar *path_str,
 			gpointer data)
 {
@@ -1311,7 +1311,7 @@ image_filename_browse_preview_cb (GtkWidget *selector,
 
 
 static void
-audioev_filename_browse_play_cb (GtkWidget *playbutton,
+audioev_filename_browse_play_cb (G_GNUC_UNUSED GtkWidget *playbutton,
 				 gpointer data)
 {
   char *filename = NULL;
@@ -1328,9 +1328,9 @@ audioev_filename_browse_play_cb (GtkWidget *playbutton,
 
 
 static void
-audio_codecs_list_changed_cb (GtkWidget *widget,
+audio_codecs_list_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
                               PStringArray *l,
-                              gpointer data)
+                              G_GNUC_UNUSED gpointer data)
 {
   GMManager *ep = NULL;
 
@@ -1344,9 +1344,9 @@ audio_codecs_list_changed_cb (GtkWidget *widget,
 
 
 static void
-video_codecs_list_changed_cb (GtkWidget *widget,
+video_codecs_list_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
                               PStringArray *l,
-                              gpointer data)
+                              G_GNUC_UNUSED gpointer data)
 {
   GMManager *ep = NULL;
 

@@ -182,7 +182,7 @@ static void network_settings_changed_nt (gpointer id,
  * PRE          :  A valid pointer to the preferences window GMObject.
  */
 static void
-applicability_check_nt (gpointer id, 
+applicability_check_nt (G_GNUC_UNUSED gpointer id,
 			GmConfEntry *entry,
 			gpointer data)
 {
@@ -211,7 +211,7 @@ applicability_check_nt (gpointer id,
 
 
 static void 
-panel_section_changed_nt (gpointer id, 
+panel_section_changed_nt (G_GNUC_UNUSED gpointer id, 
                           GmConfEntry *entry, 
                           gpointer data)
 {
@@ -231,9 +231,9 @@ panel_section_changed_nt (gpointer id,
 
 
 static void 
-fullname_changed_nt (gpointer id, 
+fullname_changed_nt (G_GNUC_UNUSED gpointer id,
 		     GmConfEntry *entry, 
-		     gpointer data)
+		     G_GNUC_UNUSED gpointer data)
 {
   GMManager *endpoint = NULL;
 
@@ -253,9 +253,9 @@ fullname_changed_nt (gpointer id,
  * PRE          :  /
  */
 static void
-h245_tunneling_changed_nt (gpointer id, 
+h245_tunneling_changed_nt (G_GNUC_UNUSED gpointer id,
 			   GmConfEntry *entry,
-			   gpointer data)
+			   G_GNUC_UNUSED gpointer data)
 {
   GMManager *ep = NULL;
   GMH323Endpoint *h323EP = NULL;
@@ -276,9 +276,9 @@ h245_tunneling_changed_nt (gpointer id,
  * PRE          :  /
  */
 static void
-early_h245_changed_nt (gpointer id, 
+early_h245_changed_nt (G_GNUC_UNUSED gpointer id,
 		       GmConfEntry *entry,
-		       gpointer data)
+		       G_GNUC_UNUSED gpointer data)
 {
   GMManager *ep = NULL;
   GMH323Endpoint *h323EP = NULL;  
@@ -299,9 +299,9 @@ early_h245_changed_nt (gpointer id,
  * PRE          :  /
  */
 static void
-fast_start_changed_nt (gpointer id, 
+fast_start_changed_nt (G_GNUC_UNUSED gpointer id,
 		       GmConfEntry *entry,
-		       gpointer data)
+		       G_GNUC_UNUSED gpointer data)
 {
   GMManager *ep = NULL;
   GMH323Endpoint *h323EP = NULL;
@@ -322,9 +322,9 @@ fast_start_changed_nt (gpointer id,
  * PRE          :  /
  */
 static void
-outbound_proxy_changed_nt (gpointer id, 
-			   GmConfEntry *entry,
-			   gpointer data)
+outbound_proxy_changed_nt (G_GNUC_UNUSED gpointer id,
+			   G_GNUC_UNUSED GmConfEntry *entry,
+			   G_GNUC_UNUSED gpointer data)
 {
   GMManager *ep = NULL;
   GMSIPEndpoint *sipEP = NULL;
@@ -354,9 +354,9 @@ outbound_proxy_changed_nt (gpointer id,
  * PRE          :  /
  */
 static void
-enable_video_changed_nt (gpointer id, 
+enable_video_changed_nt (G_GNUC_UNUSED gpointer id,
 			 GmConfEntry *entry,
-			 gpointer data)
+			 G_GNUC_UNUSED gpointer data)
 {
   PString name;
   GMManager *ep = NULL;
@@ -377,9 +377,9 @@ enable_video_changed_nt (gpointer id,
  * PRE          :  /
  */
 static void 
-silence_detection_changed_nt (gpointer id, 
+silence_detection_changed_nt (G_GNUC_UNUSED gpointer id,
                               GmConfEntry *entry, 
-                              gpointer data)
+                              G_GNUC_UNUSED gpointer data)
 {
   PSafePtr <OpalCall> call = NULL;
   PSafePtr <OpalConnection> connection = NULL;
@@ -435,9 +435,9 @@ silence_detection_changed_nt (gpointer id,
  * PRE          :  /
  */
 static void 
-echo_cancelation_changed_nt (gpointer id, 
+echo_cancelation_changed_nt (G_GNUC_UNUSED gpointer id,
 			     GmConfEntry *entry, 
-			     gpointer data)
+			     G_GNUC_UNUSED gpointer data)
 {
   PSafePtr <OpalCall> call = NULL;
   PSafePtr <OpalConnection> connection = NULL;
@@ -492,9 +492,9 @@ echo_cancelation_changed_nt (gpointer id,
  * PRE          :  /
  */
 static void
-dtmf_mode_changed_nt (gpointer id, 
+dtmf_mode_changed_nt (G_GNUC_UNUSED gpointer id,
                       GmConfEntry *entry,
-                      gpointer data)
+                      G_GNUC_UNUSED gpointer data)
 {
   GMManager *ep = NULL;
 
@@ -514,9 +514,9 @@ dtmf_mode_changed_nt (gpointer id,
  * PRE          :  /
  */
 static void 
-video_media_format_changed_nt (gpointer id, 
+video_media_format_changed_nt (G_GNUC_UNUSED gpointer id,
 			       GmConfEntry *entry, 
-			       gpointer data)
+			       G_GNUC_UNUSED gpointer data)
 {
   GMManager *ep = NULL;
   OpalMediaStream *stream = NULL;
@@ -580,9 +580,9 @@ video_media_format_changed_nt (gpointer id,
  * PRE          :  /
  */
 static void 
-jitter_buffer_changed_nt (gpointer id, 
+jitter_buffer_changed_nt (G_GNUC_UNUSED gpointer id,
                           GmConfEntry *entry, 
-                          gpointer data)
+                          G_GNUC_UNUSED gpointer data)
 {
   GMManager *ep = NULL;
   
@@ -634,9 +634,9 @@ jitter_buffer_changed_nt (gpointer id,
  * PRE          :  /
  */
 static void 
-accounts_list_changed_nt (gpointer id,
+accounts_list_changed_nt (G_GNUC_UNUSED gpointer id,
 			  GmConfEntry *entry, 
-			  gpointer data)
+			  G_GNUC_UNUSED gpointer data)
 {
   GtkWidget *accounts_window = NULL;
 
@@ -658,9 +658,9 @@ accounts_list_changed_nt (gpointer id,
  * PRE          :  /
  */
 static void 
-interface_changed_nt (gpointer id,
+interface_changed_nt (G_GNUC_UNUSED gpointer id,
 		      GmConfEntry *entry, 
-		      gpointer data)
+		      G_GNUC_UNUSED gpointer data)
 {
   GMManager *ep = GnomeMeeting::Process ()->GetManager ();
   
@@ -680,9 +680,9 @@ interface_changed_nt (gpointer id,
  * PRE          :  /
  */
 static void 
-public_ip_changed_nt (gpointer id,
+public_ip_changed_nt (G_GNUC_UNUSED gpointer id,
 		      GmConfEntry *entry, 
-		      gpointer data)
+		      G_GNUC_UNUSED gpointer data)
 {
   const char *public_ip = NULL;
   int nat_method = 0;
@@ -713,7 +713,7 @@ public_ip_changed_nt (gpointer id,
  * PRE          :  /
  */
 static void
-manager_changed_nt (gpointer id, 
+manager_changed_nt (G_GNUC_UNUSED gpointer id,
 		    GmConfEntry *entry,
 		    gpointer data)
 {
@@ -742,9 +742,9 @@ manager_changed_nt (gpointer id,
  * PRE          :  /
  */
 static void 
-video_device_changed_nt (gpointer id, 
+video_device_changed_nt (G_GNUC_UNUSED gpointer id,
 			 GmConfEntry *entry, 
-			 gpointer data)
+			 G_GNUC_UNUSED gpointer data)
 {
   GMManager *ep = NULL;
   
@@ -764,9 +764,9 @@ video_device_changed_nt (gpointer id,
  * PRE          :  /
  */
 static void 
-video_device_setting_changed_nt (gpointer id, 
+video_device_setting_changed_nt (G_GNUC_UNUSED gpointer id,
 				 GmConfEntry *entry, 
-				 gpointer data)
+				 G_GNUC_UNUSED gpointer data)
 {
   PString name;
 
@@ -797,9 +797,9 @@ video_device_setting_changed_nt (gpointer id,
  * BEHAVIOR     :  It starts or stops the preview.
  * PRE          :  /
  */
-static void video_preview_changed_nt (gpointer id, 
+static void video_preview_changed_nt (G_GNUC_UNUSED gpointer id,
 				      GmConfEntry *entry,
-				      gpointer data)
+				      G_GNUC_UNUSED gpointer data)
 {
   GMManager *ep = NULL;
   
@@ -825,7 +825,7 @@ static void video_preview_changed_nt (gpointer id,
  * PRE          :  A pointer to the prefs window GMObject.
  */
 static void
-sound_events_list_changed_nt (gpointer id, 
+sound_events_list_changed_nt (G_GNUC_UNUSED gpointer id,
 			      GmConfEntry *entry,
 			      gpointer data)
 { 
@@ -847,9 +847,9 @@ sound_events_list_changed_nt (gpointer id,
  * PRE          :  /
  */
 static void
-status_changed_nt (gpointer id, 
+status_changed_nt (G_GNUC_UNUSED gpointer id,
                    GmConfEntry *entry,
-                   gpointer data)
+                   G_GNUC_UNUSED gpointer data)
 {
   GtkWidget *main_window = NULL;
   
@@ -886,7 +886,7 @@ status_changed_nt (gpointer id,
  * PRE          :  /
  */
 static void 
-stay_on_top_changed_nt (gpointer id, 
+stay_on_top_changed_nt (G_GNUC_UNUSED gpointer id,
                         GmConfEntry *entry, 
                         gpointer data)
 {
@@ -914,7 +914,7 @@ stay_on_top_changed_nt (gpointer id,
  * PRE            : None
  */
 static void 
-network_settings_changed_nt (gpointer id, 
+network_settings_changed_nt (G_GNUC_UNUSED gpointer id,
                              GmConfEntry *, 
                              gpointer)
 {

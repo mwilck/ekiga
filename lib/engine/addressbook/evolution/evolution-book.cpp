@@ -149,10 +149,10 @@ on_book_view_obtained_c (EBook */*book*/,
 }
 
 void
-Evolution::Book::on_book_view_obtained (EBookStatus status,
+Evolution::Book::on_book_view_obtained (EBookStatus _status,
 					EBookView *_view)
 {
-  if (status == E_BOOK_ERROR_OK) {
+  if (_status == E_BOOK_ERROR_OK) {
 
     if (view != NULL)
       g_object_unref (view);
@@ -178,18 +178,18 @@ Evolution::Book::on_book_view_obtained (EBookStatus status,
 
 static void
 on_book_opened_c (EBook */*book*/,
-		  EBookStatus status,
+		  EBookStatus _status,
 		  gpointer data)
 {
-  ((Wrapper *)data)->book.on_book_opened (status);
+  ((Wrapper *)data)->book.on_book_opened (_status);
 }
 
 void
-Evolution::Book::on_book_opened (EBookStatus status)
+Evolution::Book::on_book_opened (EBookStatus _status)
 {
-  Wrapper *self = new Wrapper (*this);
+  self = new Wrapper (*this);
 
-  if (status == E_BOOK_ERROR_OK) {
+  if (_status == E_BOOK_ERROR_OK) {
 
     if (search_filter.empty ())
       query = e_book_query_field_exists (E_CONTACT_FULL_NAME);

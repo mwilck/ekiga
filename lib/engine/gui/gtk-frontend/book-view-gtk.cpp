@@ -322,7 +322,7 @@ on_entry_activated_cb (GtkWidget *entry,
 
 
 static void
-on_button_clicked_cb (GtkWidget *button,
+on_button_clicked_cb (G_GNUC_UNUSED GtkWidget *button,
                       gpointer data)
 {
   g_return_if_fail (data != NULL);
@@ -534,7 +534,6 @@ book_view_gtk_class_init (gpointer g_class,
 			  gpointer /*class_data*/)
 {
   GObjectClass *gobject_class = NULL;
-  GParamSpec *spec = NULL;
 
   parent_class = (GObjectClass *)g_type_class_peek_parent (g_class);
 

@@ -69,13 +69,13 @@ SIP::EndPoint::call (std::string uri)
 
 void 
 SIP::EndPoint::message (std::string uri,
-                        std::string message)
+                        std::string _message)
 {
   // FIXME, this will be changed in the future
   GMSIPEndpoint *sip_ep =
     GnomeMeeting::Process ()->GetManager ()->GetSIPEndpoint ();
 
-  sip_ep->Message (uri, message);
+  sip_ep->Message (uri, _message);
 }
 
 

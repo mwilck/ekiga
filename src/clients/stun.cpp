@@ -101,9 +101,9 @@ get_nat_name (int nat_type)
 }
 
 static void 
-stun_dialog_response_cb (GtkDialog *dialog, 
+stun_dialog_response_cb (GtkDialog *dialog,
 			 gint response,
-			 gpointer data)
+			 G_GNUC_UNUSED gpointer data)
 {
   GMManager *ep = NULL;
 
@@ -118,6 +118,7 @@ stun_dialog_response_cb (GtkDialog *dialog,
     break;
 
   case GTK_RESPONSE_NO:
+  default:
 
     ((OpalManager *) ep)->SetSTUNServer (PString ());
     break;

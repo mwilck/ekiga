@@ -72,11 +72,11 @@ static Bonobo_RegistrationResult bonobo_component_register_as_factory (void);
  * PRE          :  /
  */
 static void
-bonobo_component_handle_new_event (BonoboListener    *listener,
-				   const char        *event_name, 
-				   const CORBA_any   *any,
-				   CORBA_Environment *ev,
-				   gpointer           user_data)
+bonobo_component_handle_new_event (G_GNUC_UNUSED BonoboListener    *listener,
+				   const char                      *event_name,
+				   const CORBA_any                 *any,
+				   G_GNUC_UNUSED CORBA_Environment *ev,
+				   G_GNUC_UNUSED gpointer           user_data)
 {
   GtkWidget *main_window = NULL;
 
@@ -175,6 +175,7 @@ bonobo_component_init (int argc, char *argv[])
       return FALSE;
 
     case Bonobo_ACTIVATION_REG_ALREADY_ACTIVE:
+    default:
       /* lets use it then */
       break;
     }

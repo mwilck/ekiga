@@ -86,8 +86,8 @@ namespace Evolution
 
     Ekiga::ServiceCore &services;
     EBook *book;
-    EBookView *view;
     EBookQuery *query;
+    EBookView *view;
     Wrapper *self;
 
     std::string search_filter;
