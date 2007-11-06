@@ -1,4 +1,20 @@
 2007-11-06  Matthias Schneider  <ma30002000@yahoo.de>
+	* src/devices/videooutput_gdk.h:
+	* src/devices/videooutput_dx.cpp:
+	* src/devices/videooutput_xv.cpp:
+	* src/devices/videoinput.cpp:
+	* src/devices/videooutput_dx.h:
+	* src/devices/videooutput_xv.h:
+	* src/devices/videooutput_gdk.cpp:
+	* src/endpoints/ekiga.h:
+	* src/gui/main.cpp:
+	* src/gui/main.h:
+	No more *_threads_* in DX and XV output
+	All information needed for embedded windows is now
+	set via signals. All accesses to gmconf are moved to
+	the main thread.
+
+2007-11-06  Matthias Schneider  <ma30002000@yahoo.de>
 
 	* lib/engine/framework/runtime-glib.cpp:
 	Change glib dispatch timeout from inf to 100 ms.

@@ -62,20 +62,30 @@ GtkWidget *gm_main_window_get_video_widget (GtkWidget *main_window);
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Return the video widget in which we can display.
- * PRE          :  The main window GMObject, the size.
+ * BEHAVIOR     :  Set the size of the video video.
+ * PRE          :  Width and height of the widget.
  */
-GtkWidget *gm_main_window_get_resized_video_widget (GtkWidget *main_window,
-                                                    int width,
-                                                    int height);
-
+void gm_main_window_set_resized_video_widget (int width,
+                                              int height);
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Displays the gnomemeeting logo in the video window.
  * PRE          :  The main window GMObject.
  */
-void gm_main_window_update_logo (GtkWidget *main_window);
+void gm_main_window_update_logo_have_window (GtkWidget *main_window);
 
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Displays the gnomemeeting logo in the video window.
+ * PRE          :  /
+ */
+void gm_main_window_update_logo ();
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Updates the zoom and display variable of the outputdevice.
+ * PRE          :  /
+ */
+void gm_main_window_update_zoom_display ();
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Update the main window hold call menu and toolbar items
@@ -222,10 +232,9 @@ void gm_main_window_set_status (GtkWidget *main_window,
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Select the display type for the main window.
- * PRE          :  The main window GMObject and a valid display type.
+ * PRE          :  A valid display type.
  */
-void gm_main_window_set_display_type (GtkWidget *main_window,
-                                      int i);
+void gm_main_window_set_display_type (int display);
 
 
 /* DESCRIPTION  :  /
@@ -446,24 +455,20 @@ void gm_main_window_update_sensitivity (GtkWidget *main_window,
  * BEHAVIOR      : Updates the menu sensitivity
  * PRE           : The main window GMObject.
  */
-void gm_main_window_fullscreen_menu_update_sensitivity (GtkWidget *main_window,
-                                                        BOOL fullscreen);
+void gm_main_window_fullscreen_menu_update_sensitivity (BOOL fullscreen);
 
-
-#if defined HAVE_XV || defined HAVE_DX
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Toggles between fullscreen mode and the other settings
- * PRE          :  The main window GMObject.
+ * PRE          :  -1: toggle, 0: off, 1: on
  */
-void gm_main_window_toggle_fullscreen (GtkWidget *main_window);
-#endif
+void gm_main_window_toggle_fullscreen (int onOff);
 
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Forces a redraw of the entire ekiga window
- * PRE          :  The main window GMObject.
+ * PRE          :  /
  */
-void gm_main_window_force_redraw (GtkWidget *main_window);
+void gm_main_window_force_redraw ();
 
 
 /* DESCRIPTION   : /

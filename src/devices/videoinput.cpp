@@ -490,7 +490,7 @@ GMVideoGrabber::VGClose ()
 	&& !gm_conf_get_bool (VIDEO_DEVICES_KEY "enable_preview")) {
 
       gm_main_window_update_sensitivity (main_window, TRUE, FALSE, FALSE);
-      gm_main_window_update_logo (main_window);
+      gm_main_window_update_logo_have_window (main_window);
     }
     gnomemeeting_threads_leave ();
 

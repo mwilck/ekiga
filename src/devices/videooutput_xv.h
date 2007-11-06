@@ -104,8 +104,7 @@ public:
    * PRE          :  The display needs to be initialized using 
    *                 SetupFrameDisplay. 
    */
-  virtual void DisplayFrame (gpointer image,
-                             const guchar *frame,
+  virtual void DisplayFrame (const guchar *frame,
                              guint width,
                              guint height,
                              double zoom);
@@ -116,8 +115,7 @@ public:
    * PRE          :  The display needs to be initialized using 
    *                 SetupFrameDisplay. 
    */
-  virtual void DisplayPiPFrames (gpointer image,
-                                 const guchar *lframe,
+  virtual void DisplayPiPFrames (const guchar *lframe,
                                  guint lwidth,
                                  guint lheight,
                                  const guchar *rframe,

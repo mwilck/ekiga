@@ -41,6 +41,14 @@
 #define _GDKVIDEOIO_H_
 
 #include "common.h"
+#include "ekiga.h"
+#include <sigc++/sigc++.h>
+
+#ifdef WIN32
+#include <gdk/gdkwin32.h>
+#else
+#include <gdk/gdkx.h>
+#endif
 
 class GMManager;
 
@@ -58,6 +66,24 @@ typedef struct _FrameInfo
   int embeddedX;
   int embeddedY;
 } FrameInfo;
+
+typedef struct _WidgetInfo
+{
+  BOOL wasSet;
+  int x;
+  int y;
+  BOOL onTop;
+  BOOL disableHwAccel;
+
+#ifdef WIN32
+  HWND hwnd;
+#else
+  GC gc;
+  Window window;
+  Display* display;
+#endif
+
+} WidgetInfo;
 
 class GMVideoDisplay_GDK : public PThread
 {
@@ -110,6 +136,19 @@ class GMVideoDisplay_GDK : public PThread
    */
   virtual void SetFallback  (BOOL newFallback);
 
+  /* DESCRIPTION  :  Update all information about the video_image widget.
+   *                 Needed for embedded window 
+   * BEHAVIOR     :  Called when the video_image widget receives an expose event
+   * PRE          :  Pointer to the widget, and variables on_top and disable_hw_accel
+   */
+  virtual void SetWidget (GtkWidget* video_image, BOOL on_top, BOOL disable_hw_accel);
+
+  /* DESCRIPTION  :  Callback to update the display and zoom variables.
+   * BEHAVIOR     :  Called if the display variable or zoom level is changed.
+   * PRE          :  Display ID and zoom level.
+   */
+  virtual void SetDisplay (int display, double zoom);
+
  protected:
   void Main (void);
 
@@ -153,8 +192,7 @@ class GMVideoDisplay_GDK : public PThread
    * PRE          :  The display needs to be initialized using 
    *                 SetupFrameDisplay. 
    */
-  virtual void DisplayFrame (gpointer image,
-                             const guchar *frame,
+  virtual void DisplayFrame (const guchar *frame,
                              guint width,
                              guint height,
                              double zoom);
@@ -165,8 +203,7 @@ class GMVideoDisplay_GDK : public PThread
    * PRE          :  The display needs to be initialized using 
    *                 SetupFrameDisplay. 
    */
-  virtual void DisplayPiPFrames (gpointer image,
-                                 const guchar *lframe,
+  virtual void DisplayPiPFrames (const guchar *lframe,
                                  guint lwidth,
                                  guint lheight,
                                  const guchar *rframe,
@@ -192,11 +229,12 @@ class GMVideoDisplay_GDK : public PThread
 
   PColourConverter* converter;
 
-  GtkWidget *window;
-  GtkWidget *image;
-
   FrameInfo lastFrame;
   FrameInfo currentFrame;
+
+  /* Only for GDK output (depreciated) */
+  GtkWidget* window;
+  GtkWidget* image;
 
   BOOL fallback;
   BOOL stop;
@@ -205,6 +243,8 @@ class GMVideoDisplay_GDK : public PThread
   PMutex var_mutex;      /* To protect variables that are read and written
 			    from various threads */
   PMutex quit_mutex;     /* To exit */
+  PMutex widget_data_mutex;
+
   PSyncPoint frame_available_sync_point;     /* To signal a new frame has to be displayed  */
   PSyncPoint thread_sync_point;              /* To signal that the thread has been created */
 
@@ -215,7 +255,43 @@ class GMVideoDisplay_GDK : public PThread
   unsigned remoteInterval;
   unsigned numberOfLocalFrames;
   unsigned numberOfRemoteFrames;
-};
 
+  /* Callbacks for functions that have to be
+     executed in the main thread  */
+  sigc::signal<void,
+               int> set_display_type;                   /* gm_main_window_set_display_type */
+
+  sigc::signal<void,
+               int> fullscreen_menu_update_sensitivity; /* gm_main_window_fullscreen_menu_update_sensitivity */
+
+  sigc::signal<void,
+               int> toggle_fullscreen;                  /* gm_main_window_toggle_fullscreen */
+
+  sigc::signal<void,
+               int,
+               int> set_resized_video_widget;          /* gm_main_window_set_resized_video_widget */
+	       
+  sigc::signal<void> update_logo;                      /* gm_main_window_update_logo  */
+  sigc::signal<void> force_redraw;                     /* gm_main_window_force_redraw */
+  sigc::signal<void> update_zoom_display;              /* gm_main_window_update_zoom_display */
+
+  std::vector<sigc::connection> connections;
+
+#ifdef WIN32
+  virtual BOOL GetWidget(int* x, int* y, HWND* hwnd, BOOL* on_top, BOOL* disable_hw_accel);
+#else
+  virtual BOOL GetWidget(int* x, int* y, GC* gc, Window* window, Display** display, BOOL* on_top, BOOL* disable_hw_accel);
+#endif
+
+  void GetDisplay (int* display, double* zoom);
+  
+  /* These variables have to be protected by widget_data_mutex */
+  WidgetInfo videoWidgetInfo;
+  int displayInfo;
+  double zoomInfo;
+  
+  
+  Ekiga::Runtime* runtime;
+};
 
 #endif

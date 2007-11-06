@@ -349,8 +349,7 @@ static void transfer_current_call_cb (GtkWidget *,
  * PRE          :  /
  */
 static void video_window_shown_cb (GtkWidget *,
-				   gpointer);
-
+                                   gpointer);
 
 /* DESCRIPTION  :  This callback is called when the user changes the
  *                 audio settings sliders in the main notebook.
@@ -439,8 +438,10 @@ static void zoom_out_changed_cb (GtkWidget *,
 static void zoom_normal_changed_cb (GtkWidget *,
 				    gpointer);
 
+void 
+display_changed_cb (GtkWidget *widget,
+		    gpointer data);
 
-#if defined HAVE_XV || defined HAVE_DX
 /* DESCRIPTION  :  This callback is called when the user toggles fullscreen
  *                 factor in the popup menu.
  * BEHAVIOR     :  Toggles the fullscreen configuration key. 
@@ -448,8 +449,6 @@ static void zoom_normal_changed_cb (GtkWidget *,
  */
 static void fullscreen_changed_cb (GtkWidget *,
 				   gpointer);
-#endif
-
 
 /* DESCRIPTION  :  This callback is called when the user changes the URL
  * 		   in the URL bar.
@@ -564,7 +563,7 @@ static void on_call_event_cb (Ekiga::CallInfo & info,
       gm_main_window_set_call_info (GTK_WIDGET (self), NULL, NULL, NULL, NULL);
       gm_main_window_set_panel_section (GTK_WIDGET (self), CONTACTS);
       gm_main_window_clear_stats (GTK_WIDGET (self));
-      gm_main_window_update_logo (GTK_WIDGET (self));
+      gm_main_window_update_logo_have_window (GTK_WIDGET (self));
       gm_main_window_clear_signal_levels (GTK_WIDGET (self));
       gm_main_window_push_message (GTK_WIDGET (self), 
                                    mw->missed_calls,
@@ -1188,25 +1187,25 @@ gm_mw_init_menu (GtkWidget *main_window)
       GTK_MENU_RADIO_ENTRY("local_video", _("Local Video"),
 			   _("Local video image"),
 			   NULL, 0, 
-			   GTK_SIGNAL_FUNC (radio_menu_changed_cb),
+			   GTK_SIGNAL_FUNC (display_changed_cb),
 			   (gpointer) VIDEO_DISPLAY_KEY "video_view",
 			   TRUE, FALSE),
       GTK_MENU_RADIO_ENTRY("remote_video", _("Remote Video"),
 			   _("Remote video image"),
 			   NULL, 0, 
-			   GTK_SIGNAL_FUNC (radio_menu_changed_cb), 
+			   GTK_SIGNAL_FUNC (display_changed_cb), 
 			   (gpointer) VIDEO_DISPLAY_KEY "video_view",
 			   FALSE, FALSE),
       GTK_MENU_RADIO_ENTRY("both_incrusted", _("Picture-in-Picture"),
 			   _("Both video images"),
 			   NULL, 0, 
-			   GTK_SIGNAL_FUNC (radio_menu_changed_cb), 
+			   GTK_SIGNAL_FUNC (display_changed_cb), 
 			   (gpointer) VIDEO_DISPLAY_KEY "video_view",
 			   FALSE, FALSE),
       GTK_MENU_RADIO_ENTRY("both_incrusted_window", _("Picture-in-Picture in Separate Window"),
 			   _("Both video images"),
 			   NULL, 0, 
-			   GTK_SIGNAL_FUNC (radio_menu_changed_cb), 
+			   GTK_SIGNAL_FUNC (display_changed_cb), 
 			   (gpointer) VIDEO_DISPLAY_KEY "video_view",
 			   FALSE, FALSE),
       GTK_MENU_SEPARATOR,
@@ -1223,13 +1222,10 @@ gm_mw_init_menu (GtkWidget *main_window)
 		     GTK_STOCK_ZOOM_100, '=',
 		     GTK_SIGNAL_FUNC (zoom_normal_changed_cb),
 		     (gpointer) VIDEO_DISPLAY_KEY "zoom_factor", FALSE),
-
-#if defined HAVE_XV || defined HAVE_DX
       GTK_MENU_ENTRY("fullscreen", _("Fullscreen"), _("Switch to fullscreen"), 
 		     GTK_STOCK_ZOOM_IN, 'f', 
 		     GTK_SIGNAL_FUNC (fullscreen_changed_cb),
 		     (gpointer) main_window, FALSE),
-#endif
 
       GTK_MENU_NEW(_("_Tools")),
       
@@ -2116,6 +2112,30 @@ transfer_current_call_cb (G_GNUC_UNUSED GtkWidget *widget,
   gm_main_window_transfer_dialog_run (main_window, GTK_WIDGET (data), NULL);  
 }
 
+static gboolean 
+video_window_expose_cb (GtkWidget *main_window,
+                	GdkEventExpose *event,
+            		gpointer data)
+{
+  GmMainWindow *mw = NULL;
+  BOOL on_top = FALSE;
+  BOOL disable_hw_accel = FALSE;
+
+  if (!main_window) 
+    return FALSE;
+
+  mw = gm_mw_get_mw (main_window);
+
+  if (!mw)
+    return FALSE;
+
+  on_top = gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top");
+  disable_hw_accel = gm_conf_get_bool (VIDEO_DISPLAY_KEY "disable_hw_accel");
+      
+  GnomeMeeting::Process ()->set_video_window.emit (mw->main_video_image, on_top, disable_hw_accel);
+
+  return FALSE;
+}
 
 static void
 video_window_shown_cb (GtkWidget *w,
@@ -2336,6 +2356,8 @@ zoom_in_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
 
   gm_conf_set_float ((char *) data, zoom);
   gm_mw_zooms_menu_update_sensitivity (main_window, zoom);
+  
+  GnomeMeeting::Process ()->set_zoom_display.emit (-1, zoom);
 }
 
 
@@ -2358,6 +2380,8 @@ zoom_out_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
 
   gm_conf_set_float ((char *) data, zoom);
   gm_mw_zooms_menu_update_sensitivity (main_window, zoom);
+
+  GnomeMeeting::Process ()->set_zoom_display.emit (-1, zoom);
 }
 
 
@@ -2379,14 +2403,45 @@ zoom_normal_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
 }
 
 
-#if defined HAVE_XV || defined HAVE_DX
+void 
+display_changed_cb (GtkWidget *widget,
+		       gpointer data)
+{
+  GSList *group = NULL;
+
+  int group_last_pos = 0;
+  int active = 0;
+
+  g_return_if_fail (data != NULL);
+  
+  group = gtk_radio_menu_item_get_group (GTK_RADIO_MENU_ITEM (widget));
+  group_last_pos = g_slist_length (group) - 1; /* If length 1, last pos is 0 */
+
+  /* Only do something when a new CHECK_MENU_ITEM becomes active,
+     not when it becomes inactive */
+  if (GTK_CHECK_MENU_ITEM (widget)->active) {
+
+    while (group) {
+
+      if (group->data == widget) 
+	break;
+      
+      active++;
+      group = g_slist_next (group);
+    }
+
+    gm_conf_set_int ((gchar *) data, group_last_pos - active);
+    GnomeMeeting::Process ()->set_zoom_display.emit (group_last_pos - active, -1);
+  }
+}
+
+
 static void 
 fullscreen_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
 		       gpointer data)
 {
-  gm_main_window_toggle_fullscreen (GTK_WIDGET (data));
+  gm_main_window_toggle_fullscreen (-1);
 }
-#endif
 
 
 static void
@@ -2554,32 +2609,39 @@ gm_main_window_get_video_widget (GtkWidget *main_window)
   return mw->main_video_image;
 }
 
-
-GtkWidget*
-gm_main_window_get_resized_video_widget (GtkWidget *main_window,
-                                         int width,
+void
+gm_main_window_set_resized_video_widget (int width,
                                          int height)
 {
+  GtkWidget *main_window = NULL;
   GmMainWindow *mw = NULL;
-  
-  g_return_val_if_fail (main_window != NULL, NULL);
+ 
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
+  g_return_if_fail (main_window != NULL);
+    
   mw = gm_mw_get_mw (main_window);
-  g_return_val_if_fail (mw != NULL, NULL);
+  g_return_if_fail (mw != NULL);
 
   gtk_widget_set_size_request (mw->main_video_image, width, height);
 
-  return mw->main_video_image;
+  GdkRectangle rect;
+  rect.x = mw->main_video_image->allocation.x;
+  rect.y = mw->main_video_image->allocation.y;
+  rect.width = mw->main_video_image->allocation.width;
+  rect.height = mw->main_video_image->allocation.height;
+
+  gdk_window_invalidate_rect (GDK_WINDOW (main_window->window), &rect , TRUE);
 }
 
-
 void 
-gm_main_window_update_logo (GtkWidget *main_window)
+gm_main_window_update_logo_have_window (GtkWidget *main_window)
 {
   GmMainWindow *mw = NULL;
 
   g_return_if_fail (main_window != NULL);
 
   mw = gm_mw_get_mw (main_window);
+  g_return_if_fail (mw != NULL);
 
   g_object_set (G_OBJECT (mw->main_video_image),
 		"icon-name", GM_ICON_LOGO,
@@ -2588,8 +2650,39 @@ gm_main_window_update_logo (GtkWidget *main_window)
   
   gtk_widget_set_size_request (GTK_WIDGET (mw->main_video_image),
                                GM_QCIF_WIDTH, GM_QCIF_HEIGHT);
+
+  GdkRectangle rect;
+  rect.x = mw->main_video_image->allocation.x;
+  rect.y = mw->main_video_image->allocation.y;
+  rect.width = mw->main_video_image->allocation.width;
+  rect.height = mw->main_video_image->allocation.height;
+
+  gdk_window_invalidate_rect (GDK_WINDOW (main_window->window), &rect , TRUE);
 }
 
+void 
+gm_main_window_update_logo ()
+{
+  GtkWidget* main_window = NULL;
+  main_window = GnomeMeeting::Process()->GetMainWindow ();
+  gm_main_window_update_logo_have_window (main_window);
+}
+
+
+void 
+gm_main_window_update_zoom_display ()
+{
+  int display = -1;
+  double zoom = -1;
+  
+  display = gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view");
+  zoom = gm_conf_get_float (VIDEO_DISPLAY_KEY "zoom_factor");
+  
+  GnomeMeeting::Process ()->set_zoom_display.emit (display, zoom);
+
+  gm_main_window_set_resized_video_widget (176,144); //FIXME: is this necessary
+
+}
 
 void 
 gm_main_window_set_call_hold (GtkWidget *main_window,
@@ -2847,12 +2940,12 @@ gm_main_window_update_sensitivity (GtkWidget *main_window,
 				"both_incrusted", TRUE);
 	gtk_menu_set_sensitive (mw->main_menu,
 				"both_incrusted_window", TRUE);
-        gm_main_window_fullscreen_menu_update_sensitivity (main_window, TRUE);
+        gm_main_window_fullscreen_menu_update_sensitivity (TRUE);
 
       }
       else {
   
-        gm_main_window_fullscreen_menu_update_sensitivity (main_window, FALSE);
+        gm_main_window_fullscreen_menu_update_sensitivity (FALSE);
       }
 
       /* We are not transmitting, and not receiving anything,
@@ -2912,43 +3005,74 @@ gm_main_window_update_sensitivity (GtkWidget *main_window,
 
 
 void 
-gm_main_window_fullscreen_menu_update_sensitivity (G_GNUC_UNUSED GtkWidget *main_window,
-                                                   BOOL FSMenu)
+gm_main_window_fullscreen_menu_update_sensitivity (BOOL FSMenu)
 {
+  GtkWidget* main_window = NULL;
   GmMainWindow *mw = NULL;
-  
-  mw = gm_mw_get_mw (main_window);
 
+  main_window = GnomeMeeting::Process()->GetMainWindow ();
+  g_return_if_fail (main_window != NULL);
+
+  mw = gm_mw_get_mw (main_window);
   g_return_if_fail (mw != NULL);
 
   gtk_menu_section_set_sensitive (mw->main_menu, "fullscreen", FSMenu);
 }
 
 
-#if defined HAVE_XV || defined HAVE_DX
 void
-gm_main_window_toggle_fullscreen (G_GNUC_UNUSED GtkWidget *main_window)
+gm_main_window_toggle_fullscreen (int onOff)
 {
   int display;
-  if (gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view") == FULLSCREEN) {
-    display = gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view_before_fullscreen");
-    gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view", display);
-  }
-  else{
-    display = gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view");
-    gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view_before_fullscreen", display);
-    gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view", FULLSCREEN);
+  switch (onOff) {
+    case 0:
+      if (gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view") == FULLSCREEN) {
+
+        display = gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view_before_fullscreen");
+        gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view", display);
+        GnomeMeeting::Process ()->set_zoom_display.emit (display, -1);
+      }
+      break;
+
+    case 1:
+      if (gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view") != FULLSCREEN) {
+
+        display = gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view");
+        gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view_before_fullscreen", display);
+        gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view", FULLSCREEN);
+        GnomeMeeting::Process ()->set_zoom_display.emit (FULLSCREEN, -1);
+      }
+      break;
+
+    case -1:
+      if (gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view") == FULLSCREEN) {
+
+        display = gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view_before_fullscreen");
+        gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view", display);
+        GnomeMeeting::Process ()->set_zoom_display.emit (display, -1);
+      }
+      else {
+        display = gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view");
+
+        gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view_before_fullscreen", display);
+        gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view", FULLSCREEN);
+        GnomeMeeting::Process ()->set_zoom_display.emit (FULLSCREEN, -1);
+      }
+      break;
   }
 }
-#endif
+
 
 
 void
-gm_main_window_force_redraw (GtkWidget *main_window)
+gm_main_window_force_redraw ()
 {
+  GtkWidget* main_window = NULL;
   GmMainWindow *mw = NULL;
 
+  main_window = GnomeMeeting::Process()->GetMainWindow ();
   g_return_if_fail (main_window != NULL);
+
   mw = gm_mw_get_mw (main_window);
   g_return_if_fail (mw != NULL);
 
@@ -3150,9 +3274,9 @@ gm_main_window_set_status (GtkWidget *main_window,
   GtkWidget *menu = NULL;
   
   g_return_if_fail (main_window != NULL);
+
   mw = gm_mw_get_mw (main_window);
   g_return_if_fail (mw != NULL);
-
   
   menu = gtk_menu_get_widget (mw->main_menu, "online");
   gtk_radio_menu_select_with_widget (GTK_WIDGET (menu), status);
@@ -3162,18 +3286,19 @@ gm_main_window_set_status (GtkWidget *main_window,
 
 
 void 
-gm_main_window_set_display_type (GtkWidget *main_window,
-                                 int i)
+gm_main_window_set_display_type (int display)
 {
+  GtkWidget* main_window = NULL;
   GmMainWindow *mw = NULL;
-  
+
+  main_window = GnomeMeeting::Process()->GetMainWindow ();
   g_return_if_fail (main_window != NULL);
-  
+
   mw = gm_mw_get_mw (main_window);
 
   g_return_if_fail (mw != NULL);
 
-  gtk_radio_menu_select_with_id (mw->main_menu, "local_video", i);
+  gtk_radio_menu_select_with_id (mw->main_menu, "local_video", display);
 }
 
 
@@ -3690,7 +3815,7 @@ gm_main_window_new (Ekiga::ServiceCore & core)
 
   
   /* Display the logo */
-  gm_main_window_update_logo (window);
+  gm_main_window_update_logo_have_window (window);
 
   
   /* if the user tries to close the window : delete_event */
@@ -3701,6 +3826,8 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   g_signal_connect (G_OBJECT (window), "show", 
 		    GTK_SIGNAL_FUNC (video_window_shown_cb), NULL);
 
+  g_signal_connect (G_OBJECT (window), "expose-event", 
+		    GTK_SIGNAL_FUNC (video_window_expose_cb), NULL);
   
   /* Idle for motion notify events */
   g_timeout_add_full (G_PRIORITY_DEFAULT_IDLE,
@@ -4062,7 +4189,7 @@ main (int argc,
   setenv ("ESD_NO_SPAWN", "1", 1);
 #endif
 
-#ifdef HAVE_XV
+#ifndef WIN32
   if (!XInitThreads ())
     exit (1);
 #endif

@@ -76,24 +76,22 @@ GMVideoDisplay_DX::SetupFrameDisplay (int display,
                                       guint rf_height, 
                                       double zoom)
 {
-  GtkWidget *main_window = NULL;
-  GtkWidget *image = NULL;
-
   BOOL ret = FALSE;
-  BOOL stay_on_top = FALSE;
+
+  WidgetInfo currentWidgetInfo;
+  BOOL wasSet;
 
   if (fallback)
     return GMVideoDisplay_GDK::SetupFrameDisplay (display, lf_width, lf_height,
                                                       rf_width, rf_height, zoom);
 
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  stay_on_top = gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top");
-
   CloseFrameDisplay ();
 
-  gm_main_window_force_redraw(main_window);
+  runtime->run_in_main (force_redraw.make_slot ());
 
-  if (gm_conf_get_bool (VIDEO_DISPLAY_KEY "disable_hw_accel")) {
+  wasSet = GetWidget(&currentWidgetInfo.x, &currentWidgetInfo.y, &currentWidgetInfo.hwnd, &currentWidgetInfo.onTop, &currentWidgetInfo.disableHwAccel);
+
+  if (wasSet && currentWidgetInfo.disableHwAccel) {
 
     PTRACE (1, "GMVideoDisplay_DX\tDirectX Hardware acceleration disabled by configuration - falling back to GDK rendering");
     return FALSE;
@@ -101,23 +99,38 @@ GMVideoDisplay_DX::SetupFrameDisplay (int display,
 
   switch (display) {
   case LOCAL_VIDEO:
-    image = gm_main_window_get_resized_video_widget (main_window,
-                                                     (int) (lf_width * zoom),
-                                                     (int) (lf_height * zoom));
-    if (!GTK_WIDGET_REALIZED (image)) 
-      return TRUE;
+    runtime->run_in_main (sigc::bind (set_resized_video_widget.make_slot (), (int) (lf_width * zoom), (int) (lf_height * zoom)));
+    break;
+  case REMOTE_VIDEO:
+  case PIP:
+    runtime->run_in_main (sigc::bind (set_resized_video_widget.make_slot (), (int) (rf_width * zoom), (int) (rf_height * zoom)));
+    break;
+  case FULLSCREEN:
+  case PIP_WINDOW:
+    runtime->run_in_main (sigc::bind (set_resized_video_widget.make_slot (), (int) (GM_QCIF_WIDTH), (int) (GM_QCIF_HEIGHT)));
+    break;
+  }
 
+  if (!wasSet) {
+    PTRACE(4, "GMVideoDisplay_DX\tWidget not yet realized, not opening display");
+    return TRUE;
+  }
+
+  runtime->run_in_main (sigc::bind (set_display_type.make_slot (), display));
+
+  switch (display) {
+  case LOCAL_VIDEO:
     dxWindow = new DXWindow();
-    ret = dxWindow->Init ((HWND)GDK_WINDOW_HWND (image->window),
-                          image->allocation.x,
-                          image->allocation.y,
+    ret = dxWindow->Init (currentWidgetInfo.hwnd,
+                          currentWidgetInfo.x,
+                          currentWidgetInfo.y,
                           (int) (lf_width * zoom), 
                           (int) (lf_height * zoom),
                           lf_width, 
                           lf_height);
 
-    lastFrame.embeddedX = image->allocation.x;
-    lastFrame.embeddedY = image->allocation.y;
+    lastFrame.embeddedX = currentWidgetInfo.x;
+    lastFrame.embeddedY = currentWidgetInfo.y;
 
     lastFrame.display = LOCAL_VIDEO;
     lastFrame.localWidth = lf_width;
@@ -126,24 +139,17 @@ GMVideoDisplay_DX::SetupFrameDisplay (int display,
     break;
 
   case REMOTE_VIDEO:
-    image = gm_main_window_get_resized_video_widget (main_window,
-                                                     (int) (rf_width * zoom),
-                                                     (int) (rf_height * zoom));
-
-    if (!GTK_WIDGET_REALIZED (image))  
-      return TRUE;
-
     dxWindow = new DXWindow();
-    ret = dxWindow->Init ((HWND)GDK_WINDOW_HWND (image->window),
-                          image->allocation.x,
-                          image->allocation.y,
+    ret = dxWindow->Init (currentWidgetInfo.hwnd,
+                          currentWidgetInfo.x,
+                          currentWidgetInfo.y,
                           (int) (rf_width * zoom), 
                           (int) (rf_height * zoom),
                           rf_width, 
                           rf_height); 
 
-    lastFrame.embeddedX = image->allocation.x;
-    lastFrame.embeddedY = image->allocation.y;
+    lastFrame.embeddedX = currentWidgetInfo.x;
+    lastFrame.embeddedY = currentWidgetInfo.y;
 
     lastFrame.display = REMOTE_VIDEO;
     lastFrame.remoteWidth = rf_width;
@@ -154,16 +160,10 @@ GMVideoDisplay_DX::SetupFrameDisplay (int display,
   case FULLSCREEN:
   case PIP:
   case PIP_WINDOW:
-    image = gm_main_window_get_resized_video_widget (main_window,
-                                                     (int) (rf_width * zoom),
-                                                     (int) (rf_height * zoom));
-    if (!GTK_WIDGET_REALIZED (image))  
-      return TRUE;
-
     dxWindow = new DXWindow();
-    ret = dxWindow->Init ((display == PIP) ? (HWND)GDK_WINDOW_HWND (image->window) : NULL,
-                          (display == PIP) ? image->allocation.x : 0,
-                          (display == PIP) ? image->allocation.y : 0,
+    ret = dxWindow->Init ((display == PIP) ? currentWidgetInfo.hwnd : NULL,
+                          (display == PIP) ? currentWidgetInfo.x : 0,
+                          (display == PIP) ? currentWidgetInfo.y : 0,
                           (int) (rf_width * zoom), 
                           (int) (rf_height * zoom),
                           rf_width, 
@@ -174,8 +174,8 @@ GMVideoDisplay_DX::SetupFrameDisplay (int display,
     if (ret && dxWindow && display == FULLSCREEN) 
       dxWindow->ToggleFullscreen ();
 
-    lastFrame.embeddedX = image->allocation.x;
-    lastFrame.embeddedY = image->allocation.y;
+    lastFrame.embeddedX = currentWidgetInfo.x;
+    lastFrame.embeddedY = currentWidgetInfo.y;
 
     lastFrame.display = display;
     lastFrame.localWidth = lf_width;
@@ -191,7 +191,7 @@ GMVideoDisplay_DX::SetupFrameDisplay (int display,
   }
   PTRACE (4, "GMVideoDisplay_DX\tSetup display " << display << " with zoom value of " << zoom << " : " << (ret ? "Success" : "Failure"));
 
-  if (stay_on_top) {
+  if (currentWidgetInfo.onTop) {
 
     if (ret && dxWindow)
       dxWindow->ToggleOntop ();
@@ -229,7 +229,7 @@ GMVideoDisplay_DX::FrameDisplayChangeNeeded (int display,
                                              guint rf_height, 
                                              double zoom)
 {
-  if (!dxWindow) 
+  if ((!fallback) && (!dxWindow))
     return TRUE;
 
   return GMVideoDisplay_GDK::FrameDisplayChangeNeeded (display, lf_width, lf_height, rf_width, rf_height, zoom);
@@ -237,15 +237,14 @@ GMVideoDisplay_DX::FrameDisplayChangeNeeded (int display,
 
 
 void 
-GMVideoDisplay_DX::DisplayFrame (gpointer gtk_image,
-                                      const guchar *frame,
+GMVideoDisplay_DX::DisplayFrame (     const guchar *frame,
                                       guint width,
                                       guint height,
                                       double zoom)
 {
   if (fallback) {
 
-     GMVideoDisplay_GDK::DisplayFrame (image, frame, width, height, zoom);
+    GMVideoDisplay_GDK::DisplayFrame (frame, width, height, zoom);
     return;
   }
 
@@ -255,8 +254,7 @@ GMVideoDisplay_DX::DisplayFrame (gpointer gtk_image,
 }
 
 void 
-GMVideoDisplay_DX::DisplayPiPFrames (gpointer gtk_image,
-                                          const guchar *lframe,
+GMVideoDisplay_DX::DisplayPiPFrames (     const guchar *lframe,
                                           guint lwidth,
                                           guint lheight,
                                           const guchar *rframe,
@@ -264,18 +262,15 @@ GMVideoDisplay_DX::DisplayPiPFrames (gpointer gtk_image,
                                           guint rheight,
                                           double zoom)
 {
-  GtkWidget *main_window = NULL;
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-
   if (fallback) {
 
-     GMVideoDisplay_GDK::DisplayPiPFrames (image, lframe, lwidth, rheight,
+     GMVideoDisplay_GDK::DisplayPiPFrames (lframe, lwidth, lheight,
                                            rframe, rwidth, rheight, zoom);
+     return;
   }
 
   if (currentFrame.display == FULLSCREEN && dxWindow && !dxWindow->IsFullScreen ()) {
-
-    gm_main_window_toggle_fullscreen(main_window);
+    runtime->run_in_main (sigc::bind (toggle_fullscreen.make_slot (), 0));
   }
 
   if (dxWindow)
