@@ -81,7 +81,7 @@ static gboolean
 prepare (GSource *source,
 	 gint *timeout)
 {
-  *timeout = -1;
+  *timeout = 100;
 
   return check (source);
 }
