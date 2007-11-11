@@ -149,7 +149,7 @@ gtk_levelmeter_new ()
 {
   GtkLevelMeter *lm = NULL;
   
-  lm = gtk_type_new (gtk_levelmeter_get_type ());
+  lm = g_object_new (gtk_levelmeter_get_type (), NULL);
     
   return GTK_WIDGET (lm);
 }
