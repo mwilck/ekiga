@@ -79,6 +79,7 @@ class GMManager : public OpalManager
 {
   PCLASSINFO(GMManager, OpalManager);
 
+  friend class GMAccountsEndpoint;
   friend class GMPCSSEndpoint;
   friend class GMH323Endpoint;
   friend class GMSIPEndpoint;
@@ -683,6 +684,8 @@ class GMManager : public OpalManager
   // Endof FIXME
 
   sigc::signal<void, Ekiga::CallInfo &> call_event;
+  typedef enum { Processing, Registered, Unregistered, RegistrationFailed, UnregistrationFailed } RegistrationState;
+  sigc::signal<void, std::string, GMManager::RegistrationState, std::string> registration_event;
   sigc::signal<void, std::string, std::string, unsigned int> mwi_event;
   sigc::signal<void, std::string, bool, bool, bool> media_stream_event;
   sigc::signal<void, float, float> audio_signal_event;
@@ -691,36 +694,25 @@ class GMManager : public OpalManager
  protected:
   
   
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Add the current MWI to the given account.
-   * PRE          :  account and mwi must not be empty.
-   */
   void OnMWIReceived (const PString & account, 
                       const PString & mwi);
 
-  
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Updates the GUI. 
-   * PRE          :  /
-   */
+  void OnRegistering (const PString & aor,
+                      BOOL isRegistering);
+
+  void OnRegistered (const PString & aor,
+                     BOOL wasRegistering);
+
+  void OnRegistrationFailed (const PString & aor,
+                             BOOL wasRegistering,
+                             std::string info);
+
   BOOL OnMediaStream (OpalMediaStream &, BOOL);
 
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Updates the internal RTP statistics. 
-   * PRE          :  /
-   */
   void UpdateRTPStats (PTime,
 		       RTP_Session *,
 		       RTP_Session *);
 
-  
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Set (BOOL = TRUE) or get (BOOL = FALSE) the
-   *                 audio playing and recording volumes for the
-   *                 audio device.
-   * PRE          :  /
-   */
   BOOL DeviceVolume (PSoundChannel *, BOOL, BOOL, unsigned int &);
 
  public:

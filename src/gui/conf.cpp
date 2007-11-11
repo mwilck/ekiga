@@ -104,9 +104,6 @@ static void fast_start_changed_nt (gpointer id,
 				   GmConfEntry *enty,
 				   gpointer data);
 
-static void outbound_proxy_changed_nt (gpointer id,
-				       GmConfEntry *entry,
-				       gpointer data);
 
 static void enable_video_changed_nt (gpointer id,
 				     GmConfEntry *entry,
@@ -120,9 +117,6 @@ static void echo_cancelation_changed_nt (gpointer id,
 					 GmConfEntry *entry,
 					 gpointer data);
 
-static void dtmf_mode_changed_nt (gpointer id,
-                                  GmConfEntry *entry,
-                                  gpointer data);
 
 static void video_media_format_changed_nt (gpointer id,
 					   GmConfEntry *entry,
@@ -317,38 +311,6 @@ fast_start_changed_nt (G_GNUC_UNUSED gpointer id,
 
 
 /* DESCRIPTION  :  This notifier is called when the config database data
- *                 associated with the SIP Outbound Proxy changes.
- * BEHAVIOR     :  It updates the endpoint.
- * PRE          :  /
- */
-static void
-outbound_proxy_changed_nt (G_GNUC_UNUSED gpointer id,
-			   G_GNUC_UNUSED GmConfEntry *entry,
-			   G_GNUC_UNUSED gpointer data)
-{
-  GMManager *ep = NULL;
-  GMSIPEndpoint *sipEP = NULL;
-
-  gchar *outbound_proxy_host = NULL;
-  
-  
-  if (gm_conf_entry_get_type (entry) == GM_CONF_STRING) {
-
-    ep = GnomeMeeting::Process ()->GetManager ();
-    sipEP = ep->GetSIPEndpoint ();
-    
-    gdk_threads_enter ();
-    outbound_proxy_host = gm_conf_get_string (SIP_KEY "outbound_proxy_host");
-    gdk_threads_leave ();
-  
-    sipEP->SetProxy (outbound_proxy_host); 
-    
-    g_free (outbound_proxy_host);
-  }
-}
-
-
-/* DESCRIPTION  :  This notifier is called when the config database data
  *                 associated with the enable_video key changes.
  * BEHAVIOR     :  It updates the endpoint.
  * PRE          :  /
@@ -482,28 +444,6 @@ echo_cancelation_changed_nt (G_GNUC_UNUSED gpointer id,
 	  echo_canceler->SetParameters (ec);
       }
     }
-  }
-}
-
-
-/* DESCRIPTION  :  This callback is called to update capabilities when the
- *                 DTMF mode is changed.
- * BEHAVIOR     :  Updates them.
- * PRE          :  /
- */
-static void
-dtmf_mode_changed_nt (G_GNUC_UNUSED gpointer id,
-                      GmConfEntry *entry,
-                      G_GNUC_UNUSED gpointer data)
-{
-  GMManager *ep = NULL;
-
-  if (gm_conf_entry_get_type (entry) == GM_CONF_INT
-      || gm_conf_entry_get_type (entry) == GM_CONF_STRING) {
-   
-    ep = GnomeMeeting::Process ()->GetManager ();
-
-    ep->SetUserInputMode ();
   }
 }
 
@@ -999,48 +939,14 @@ gnomemeeting_conf_init ()
   gm_conf_notifier_add (H323_KEY "enable_fast_start",
 			fast_start_changed_nt, NULL);
 
-  gm_conf_notifier_add (H323_KEY "dtmf_mode",
-			dtmf_mode_changed_nt, NULL);
+  //FIXME gm_conf_notifier_add (H323_KEY "dtmf_mode",
+	//		dtmf_mode_changed_nt, NULL);
   gm_conf_notifier_add (H323_KEY "dtmf_mode",
 			applicability_check_nt, prefs_window);
   
   gm_conf_notifier_add (H323_KEY "default_gateway", 
 			applicability_check_nt, prefs_window);
   
-  
-  /* Notifiers related to the SIP_KEY */
-  gm_conf_notifier_add (SIP_KEY "outbound_proxy_host",
-			applicability_check_nt, prefs_window);
-  gm_conf_notifier_add (SIP_KEY "outbound_proxy_host",
-			outbound_proxy_changed_nt, NULL);
-  
-  gm_conf_notifier_add (SIP_KEY "outbound_proxy_login",
-			applicability_check_nt, prefs_window);
-  gm_conf_notifier_add (SIP_KEY "outbound_proxy_login",
-			outbound_proxy_changed_nt, NULL);
-			
-  gm_conf_notifier_add (SIP_KEY "outbound_proxy_password",
-			applicability_check_nt, prefs_window);
-  gm_conf_notifier_add (SIP_KEY "outbound_proxy_password",
-			outbound_proxy_changed_nt, NULL);
-  
-  gm_conf_notifier_add (SIP_KEY "default_proxy",
-			applicability_check_nt, prefs_window);
-
-  gm_conf_notifier_add (SIP_KEY "dtmf_mode",
-			dtmf_mode_changed_nt, NULL);
-  gm_conf_notifier_add (SIP_KEY "dtmf_mode",
-			applicability_check_nt, prefs_window);
-
-  
-#if 0 
-  /* Notifiers related the LDAP_KEY */
-  gm_conf_notifier_add (LDAP_KEY "enable_registering",
-			ils_option_changed_nt, NULL);
-
-  gm_conf_notifier_add (LDAP_KEY "show_details", ils_option_changed_nt, NULL);
-#endif
-
   
   /* Notifiers for the PROTOCOLS_KEY */
   gm_conf_notifier_add (PROTOCOLS_KEY "accounts_list",

@@ -64,11 +64,98 @@
 #define new PNEW
 
 
+
+/* DESCRIPTION  :  This notifier is called when the config database data
+ *                 associated with the SIP Outbound Proxy changes.
+ * BEHAVIOR     :  It updates the endpoint.
+ * PRE          :  data is a pointer to the GMSIPEndPoint.
+ */
+static void outbound_proxy_changed_nt (G_GNUC_UNUSED gpointer id,
+                                       GmConfEntry *entry,
+                                       gpointer data);
+
+
+/* DESCRIPTION  :  This callback is called to update capabilities when the
+ *                 DTMF mode is changed.
+ * BEHAVIOR     :  Updates them.
+ * PRE          :  data is a pointer to the GMSIPEndPoint.
+ */
+static void dtmf_mode_changed_nt (G_GNUC_UNUSED gpointer id,
+                                  GmConfEntry *entry,
+                                  gpointer data);
+
+
+/* DESCRIPTION  :  This callback is called to update capabilities when the
+ *                 NAT binding timeout is changed.
+ * BEHAVIOR     :  Update it.
+ * PRE          :  data is a pointer to the GMSIPEndPoint.
+ */
+static void dtmf_mode_changed_nt (G_GNUC_UNUSED gpointer id,
+                                  GmConfEntry *entry,
+                                  gpointer data);
+
+
+static void
+outbound_proxy_changed_nt (G_GNUC_UNUSED gpointer id,
+                           GmConfEntry *entry,
+                           gpointer data)
+{
+  gchar *outbound_proxy_host = NULL;
+
+  g_return_if_fail (data != NULL);
+
+  if (gm_conf_entry_get_type (entry) == GM_CONF_STRING) {
+
+    gdk_threads_enter ();
+    outbound_proxy_host = gm_conf_get_string (SIP_KEY "outbound_proxy_host");
+    gdk_threads_leave ();
+
+    ((GMSIPEndpoint *) data)->SetProxy (outbound_proxy_host); 
+    g_free (outbound_proxy_host);
+  }
+}
+
+
+static void
+dtmf_mode_changed_nt (G_GNUC_UNUSED gpointer id,
+                      GmConfEntry *entry,
+                      G_GNUC_UNUSED gpointer data)
+{
+  unsigned int mode = 0;
+
+  g_return_if_fail (data != NULL);
+
+  if (gm_conf_entry_get_type (entry) == GM_CONF_INT) {
+
+    mode = gm_conf_entry_get_int (entry);
+    ((GMSIPEndpoint *) data)->SetUserInputMode (mode);
+  }
+}
+
+
+static void
+nat_binding_timeout_changed_nt (G_GNUC_UNUSED gpointer id,
+                                GmConfEntry *entry,
+                                G_GNUC_UNUSED gpointer data)
+{
+  unsigned int binding_timeout = 0;
+
+  g_return_if_fail (data != NULL);
+
+  if (gm_conf_entry_get_type (entry) == GM_CONF_INT) {
+
+    binding_timeout = gm_conf_entry_get_int (entry);
+    ((GMSIPEndpoint *) data)->SetNATBindingTimeout (PTimeInterval (0, binding_timeout));
+  }
+}
+
+
 /* The class */
 GMSIPEndpoint::GMSIPEndpoint (GMManager & ep)
 : SIPEndPoint (ep), endpoint (ep)
 {
   NoAnswerTimer.SetNotifier (PCREATE_NOTIFIER (OnNoAnswerTimeout));
+  Init ();
 }
 
 
@@ -80,38 +167,44 @@ GMSIPEndpoint::~GMSIPEndpoint ()
 void 
 GMSIPEndpoint::Init ()
 {
-  GtkWidget *main_window = NULL;
-
   gchar *outbound_proxy_host = NULL;
   int binding_timeout = 60;
+  unsigned int mode = 0;
 
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-
+  /* Read configuration */
   gnomemeeting_threads_enter ();
   outbound_proxy_host = gm_conf_get_string (SIP_KEY "outbound_proxy_host");
   binding_timeout = gm_conf_get_int (NAT_KEY "binding_timeout");
+  mode = gm_conf_get_int (SIP_KEY "dtmf_mode");
   gnomemeeting_threads_leave ();
-
 
   /* Timeouts */
   SetAckTimeout (PTimeInterval (0, 32));
   SetPduCleanUpTimeout (PTimeInterval (0, 1));
   SetInviteTimeout (PTimeInterval (0, 6));
   SetNonInviteTimeout (PTimeInterval (0, 6));
-  SetNATBindingTimeout (PTimeInterval (0, 5));
+  SetNATBindingTimeout (PTimeInterval (0, binding_timeout));
   SetRetryTimeouts (500, 4000);
   SetMaxRetries (8);
 
+  /* Input mode */
+  SetUserInputMode (mode);
 
   /* Update the User Agent */
   SetUserAgent ("Ekiga/" PACKAGE_VERSION);
-  
 
   /* Initialise internal parameters */
   if (outbound_proxy_host && !PString (outbound_proxy_host).IsEmpty ())
     SetProxy (outbound_proxy_host);
   SetNATBindingRefreshMethod (SIPEndPoint::EmptyRequest);
 
+  /* Notifiers */
+  gm_conf_notifier_add (SIP_KEY "outbound_proxy_host",
+                        outbound_proxy_changed_nt, (gpointer) this);
+  gm_conf_notifier_add (SIP_KEY "dtmf_mode",
+                        dtmf_mode_changed_nt, (gpointer) this);
+  gm_conf_notifier_add (NAT_KEY "binding_timeout",
+                        nat_binding_timeout_changed_nt, (gpointer) this);
 
   g_free (outbound_proxy_host);
 }
@@ -119,14 +212,14 @@ GMSIPEndpoint::Init ()
 
 BOOL 
 GMSIPEndpoint::StartListener (PString iface, 
-			      WORD port)
+                              WORD port)
 {
   PString iface_noip;
   PString ip;
   PIPSocket::InterfaceTable ifaces;
   PINDEX i = 0;
   PINDEX pos = 0;
-  
+
   gboolean ok = FALSE;
   gboolean found = FALSE;
 
@@ -138,17 +231,17 @@ GMSIPEndpoint::StartListener (PString iface,
   PIPSocket::GetInterfaceTable (ifaces);
 
   while (i < ifaces.GetSize ()) {
-    
+
     ip = " [" + ifaces [i].GetAddress ().AsString () + "]";
-    
+
     if (ifaces [i].GetName () + ip == iface) {
       listen_to = 
-	g_strdup_printf ("udp$%s:%d", 
-			 (const char *) ifaces [i].GetAddress().AsString(),
-			 port);
+        g_strdup_printf ("udp$%s:%d", 
+                         (const char *) ifaces [i].GetAddress().AsString(),
+                         port);
       found = TRUE;
     }
-      
+
     i++;
   }
 
@@ -160,12 +253,12 @@ GMSIPEndpoint::StartListener (PString iface,
 
     if (ifaces [i].GetName () == iface_noip) {
       listen_to = 
-	g_strdup_printf ("udp$%s:%d", 
-			 (const char *) ifaces [i].GetAddress().AsString(),
-			 port);
+        g_strdup_printf ("udp$%s:%d", 
+                         (const char *) ifaces [i].GetAddress().AsString(),
+                         port);
       found = TRUE;
     }
-    
+
     i++;
   }
 
@@ -195,7 +288,7 @@ GMSIPEndpoint::GetAvailableAudioMediaFormats ()
   for (int i = 0 ; i < list.GetSize () ; i++) {
 
     if (list [i].GetDefaultSessionID () == 1) { 
-      
+
       if (PString (list [i].GetEncodingName ()).GetLength () > 0) {
 
         if (list [i].IsValidForProtocol ("SIP")
@@ -204,7 +297,7 @@ GMSIPEndpoint::GetAvailableAudioMediaFormats ()
       }
     }
   }
-  
+
   return sip_list;
 }
 
@@ -224,13 +317,13 @@ GMSIPEndpoint::GetAvailableVideoMediaFormats ()
   for (int i = 0 ; i < list.GetSize () ; i++) {
 
     if (list [i].GetDefaultSessionID () == 2) { 
-      
+
       if (list [i].IsValidForProtocol ("SIP")
           && list [i].GetPayloadType () != RTP_DataFrame::MaxPayloadType)
         sip_list += list [i];
     }
   }
-  
+
   return sip_list;
 }
 
@@ -250,14 +343,8 @@ GMSIPEndpoint::SetUserNameAndAlias ()
 
 
 void 
-GMSIPEndpoint::SetUserInputMode ()
+GMSIPEndpoint::SetUserInputMode (unsigned int mode)
 {
-  int mode = 0;
-
-  gnomemeeting_threads_enter ();
-  mode = gm_conf_get_int (SIP_KEY "dtmf_mode");
-  gnomemeeting_threads_leave ();
-
   switch (mode) 
     {
     case 0:
@@ -292,17 +379,17 @@ GMSIPEndpoint::PublishPresence (const PString & to,
     status = "Offline";
     note = "closed";
     break;
-  
+
   case CONTACT_DND:
     status = "Do Not Disturb";
     note = "open";
     break;
-  
+
   case CONTACT_AWAY:
     status = "Away";
     note = "open";
     break;
-    
+
   case CONTACT_FREEFORCHAT:
     status = "Free For Chat";
     note = "open";
@@ -319,67 +406,19 @@ GMSIPEndpoint::PublishPresence (const PString & to,
 
 void
 GMSIPEndpoint::OnRegistered (const PString & aor,
-			     BOOL wasRegistering)
+                             BOOL wasRegistering)
 {
-  GMManager *ep = NULL;
   Ekiga::ServiceCore *services = NULL;
   SIP::EndPoint *sip_endpoint = NULL;
-  
-  GtkWidget *accounts_window = NULL;
-  GtkWidget *main_window = NULL;
-#ifdef HAVE_DBUS
-  GObject   *dbus_component = NULL;
-#endif
 
-  gchar *msg = NULL;
   guint status = CONTACT_ONLINE;
 
-  ep = GnomeMeeting::Process ()->GetManager ();
-  accounts_window = GnomeMeeting::Process ()->GetAccountsWindow ();
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-#ifdef HAVE_DBUS
-  dbus_component = GnomeMeeting::Process ()->GetDbusComponent ();
-#endif
-
-  gnomemeeting_threads_enter ();
-  /* Registering is ok */
-  if (wasRegistering) {
-
-    msg = g_strdup_printf (_("Registered %s"), 
-			   (const char *) aor);
-    gm_accounts_window_update_account_state (accounts_window, 
-					     FALSE,
-					     (const char *) aor, 
-					     _("Registered"),
-					     NULL);
-  }
-  else {
-
-    msg = g_strdup_printf (_("Unregistered %s"),
-			   (const char *) aor); 
-    gm_accounts_window_update_account_state (accounts_window, 
-					     FALSE,
-					     (const char *) aor, 
-					     _("Unregistered"),
-					     NULL);
-  }
-
-#ifdef HAVE_DBUS
-//  gnomemeeting_dbus_component_account_registration (dbus_component,
-//						    username, domain,
-//wasRegistering);
-// FIXME
-#endif
-
-  gm_main_window_flash_message (main_window, "%s", msg);
-  if (endpoint.GetCallingState() == GMManager::Standby)
-    gm_main_window_set_account_info (main_window, 
-				     endpoint.GetRegisteredAccounts());
-  gnomemeeting_threads_leave ();
+  /* Signal the OpalManager */
+  endpoint.OnRegistered (aor, wasRegistering);
 
   /* Signal the SIPEndpoint */
   SIPEndPoint::OnRegistered (aor, wasRegistering);
-  
+
   /* Signal the SIP::EndPoint of our engine */
   services = GnomeMeeting::Process ()->GetServiceCore ();
   sip_endpoint = 
@@ -399,66 +438,48 @@ GMSIPEndpoint::OnRegistered (const PString & aor,
     SIPSubscribe::SubscribeType t = SIPSubscribe::MessageSummary;
     Subscribe (t, 3600, aor);
   }
-
-  g_free (msg);
 }
 
 
 void
 GMSIPEndpoint::OnRegistrationFailed (const PString & aor,
-				     SIP_PDU::StatusCodes r,
-				     BOOL wasRegistering)
+                                     SIP_PDU::StatusCodes r,
+                                     BOOL wasRegistering)
 {
-  GtkWidget *accounts_window = NULL;
-  GtkWidget *main_window = NULL;
+  std::string info;
 
-  gchar *msg_reason = NULL;
-  gchar *msg = NULL;
-
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  accounts_window = GnomeMeeting::Process ()->GetAccountsWindow ();
-
-  gnomemeeting_threads_enter ();
-  /* Registering is ok */
   switch (r) {
 
   case SIP_PDU::Failure_BadRequest:
-    msg_reason = g_strdup (_("Bad request"));
+    info = _("Bad request");
     break;
 
   case SIP_PDU::Failure_PaymentRequired:
-    msg_reason = g_strdup (_("Payment required"));
+    info = _("Payment required");
     break;
 
   case SIP_PDU::Failure_UnAuthorised:
   case SIP_PDU::Failure_Forbidden:
-    msg_reason = g_strdup (_("Forbidden"));
+    info = _("Forbidden");
     break;
 
   case SIP_PDU::Failure_RequestTimeout:
-    msg_reason = g_strdup (_("Timeout"));
+    info = _("Timeout");
     break;
 
   case SIP_PDU::Failure_Conflict:
-    msg_reason = g_strdup (_("Conflict"));
+    info = _("Conflict");
     break;
 
   case SIP_PDU::Failure_TemporarilyUnavailable:
-    msg_reason = g_strdup (_("Temporarily unavailable"));
+    info = _("Temporarily unavailable");
     break;
-    
+
   case SIP_PDU::Failure_NotAcceptable:
-    msg_reason = g_strdup (_("Not Acceptable"));
+    info = _("Not Acceptable");
     break;
 
   case SIP_PDU::IllegalStatusCode:
-  case SIP_PDU::Information_Trying:
-  case SIP_PDU::Information_Ringing:
-  case SIP_PDU::Information_CallForwarded:
-  case SIP_PDU::Information_Queued:
-  case SIP_PDU::Information_Session_Progress:
-  case SIP_PDU::Successful_OK:
-  case SIP_PDU::Successful_Accepted:
   case SIP_PDU::Redirection_MultipleChoices:
   case SIP_PDU::Redirection_MovedPermanently:
   case SIP_PDU::Redirection_MovedTemporarily:
@@ -500,40 +521,23 @@ GMSIPEndpoint::OnRegistrationFailed (const PString & aor,
   case SIP_PDU::GlobalFailure_NotAcceptable:
   case SIP_PDU::MaxStatusCode:
   default:
-    msg_reason = g_strdup (_("Registration failed"));
+    info = _("Failed");
+
+  case SIP_PDU::Information_Trying:
+  case SIP_PDU::Information_Ringing:
+  case SIP_PDU::Information_CallForwarded:
+  case SIP_PDU::Information_Queued:
+  case SIP_PDU::Information_Session_Progress:
+  case SIP_PDU::Successful_OK:
+  case SIP_PDU::Successful_Accepted:
+    break;
   }
 
-  if (wasRegistering) {
-
-    msg = g_strdup_printf (_("Registration of %s failed: %s"), 
-			   (const char *) aor, msg_reason);
-
-    gm_accounts_window_update_account_state (accounts_window, 
-					     FALSE,
-					     (const char *) aor, 
-					     _("Registration failed"),
-					     NULL);
-  }
-  else {
-
-    msg = g_strdup_printf (_("Unregistration of %s failed: %s"), 
-			   (const char *) aor, msg_reason);
-
-    gm_accounts_window_update_account_state (accounts_window, 
-					     FALSE,
-					     (const char *) aor, 
-					     _("Unregistration failed"),
-					     NULL);
-  }
-
-  gm_main_window_push_message (main_window, "%s", msg);
-  gnomemeeting_threads_leave ();
+  /* Signal the OpalManager */
+  endpoint.OnRegistrationFailed (aor, wasRegistering, info);
 
   /* Signal the SIP Endpoint */
   SIPEndPoint::OnRegistrationFailed (aor, r, wasRegistering);
-
-
-  g_free (msg);
 }
 
 
@@ -573,7 +577,7 @@ GMSIPEndpoint::OnIncomingConnection (OpalConnection &connection,
   if ((con && con->GetIdentifier () == connection.GetIdentifier())) {
     return TRUE;
   }
-  
+
   if (status == CONTACT_DND)
     reason = 1;
 
@@ -604,8 +608,8 @@ GMSIPEndpoint::OnIncomingConnection (OpalConnection &connection,
 
 void 
 GMSIPEndpoint::OnMWIReceived (const PString & to,
-			      G_GNUC_UNUSED SIPSubscribe::MWIType type,
-			      const PString & msgs)
+                              G_GNUC_UNUSED SIPSubscribe::MWIType type,
+                              const PString & msgs)
 {
   GtkWidget *accounts_window = NULL;
 
@@ -626,11 +630,11 @@ GMSIPEndpoint::OnMWIReceived (const PString & to,
 
 void 
 GMSIPEndpoint::OnReceivedMESSAGE (G_GNUC_UNUSED OpalTransport & transport,
-				  SIP_PDU & pdu)
+                                  SIP_PDU & pdu)
 {
   PString *last = NULL;
   PString *val = NULL;
-  
+
   PString from = pdu.GetMIME().GetFrom();   
   PINDEX j = from.Find (';');
   if (j != P_MAX_INDEX)
@@ -652,11 +656,11 @@ GMSIPEndpoint::OnReceivedMESSAGE (G_GNUC_UNUSED OpalTransport & transport,
 
 void 
 GMSIPEndpoint::OnMessageFailed (const SIPURL & messageUrl,
-				SIP_PDU::StatusCodes reason)
+                                SIP_PDU::StatusCodes reason)
 {
   endpoint.OnMessageFailed (messageUrl, reason);
 }
-      
+
 
 void
 GMSIPEndpoint::Message (const PString & to,

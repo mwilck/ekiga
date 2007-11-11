@@ -783,6 +783,47 @@ gm_aw_get_selected_account (GtkWidget *accounts_window)
   return account;
 }
 
+/* Engine callbacks */
+static void on_registration_event_cb (std::string aor,
+                                      GMManager::RegistrationState state,
+                                      std::string info,
+                                      gpointer window)
+{
+  bool is_processing = false;
+  std::string status;
+
+  switch (state) {
+  case GMManager::Registered:
+    status = _("Registered");
+    break;
+
+  case GMManager::Unregistered:
+    status = _("Unregistered");
+    break;
+
+  case GMManager::UnregistrationFailed:
+    status = _("Could not unregister");
+    if (!info.empty ())
+      status = status + "(" + info + ")";
+    break;
+
+  case GMManager::RegistrationFailed:
+    status = _("Could not register");
+    if (!info.empty ())
+      status = status + "(" + info + ")";
+    break;
+
+  case GMManager::Processing:
+    status = _("Processing...");
+    is_processing = true;
+  default:
+    break;
+  }
+
+  gm_accounts_window_update_account_state (GTK_WIDGET (window), is_processing, 
+                                           aor.c_str (), status.c_str (), NULL); 
+}
+
 
 /* GTK+ Callbacks */
 static gint
@@ -1679,6 +1720,11 @@ gm_accounts_window_new ()
   
   /* We update it the accounts list to make sure the cursor is updated */
   gm_accounts_window_update_accounts_list (window);
+
+  /* Engine Signals callbacks */
+  // FIXME sigc::connection conn;
+  GnomeMeeting::Process ()->GetManager ()->registration_event.connect (sigc::bind (sigc::ptr_fun (on_registration_event_cb), 
+                                                                                   (gpointer) window));
 
   
   return window;

@@ -722,6 +722,38 @@ static void on_audio_signal_event_cb (float input,
 }
 
 
+static void on_registration_event_cb (std::string aor,
+                                      GMManager::RegistrationState state,
+                                      G_GNUC_UNUSED std::string info,
+                                      gpointer window)
+{
+  gchar *msg = NULL;
+
+  switch (state) {
+  case GMManager::Registered:
+    msg = g_strdup_printf (_("Registered %s"), aor.c_str ());
+    break;
+
+  case GMManager::Unregistered:
+    msg = g_strdup_printf (_("Unregistered %s"), aor.c_str ());
+    break;
+
+  case GMManager::UnregistrationFailed:
+    msg = g_strdup_printf (_("Could not unregister %s"), aor.c_str ());
+    break;
+
+  case GMManager::RegistrationFailed:
+    msg = g_strdup_printf (_("Could not register %s"), aor.c_str ());
+    break;
+
+  default:
+    break;
+  }
+
+  gm_main_window_flash_message (GTK_WIDGET (window), "%s", msg);
+}
+
+
 /* Implementation */
 static void
 gm_mw_destroy (gpointer m)
@@ -2112,10 +2144,11 @@ transfer_current_call_cb (G_GNUC_UNUSED GtkWidget *widget,
   gm_main_window_transfer_dialog_run (main_window, GTK_WIDGET (data), NULL);  
 }
 
+
 static gboolean 
 video_window_expose_cb (GtkWidget *main_window,
-                	GdkEventExpose *event,
-            		gpointer data)
+                	G_GNUC_UNUSED GdkEventExpose *event,
+            		G_GNUC_UNUSED gpointer data)
 {
   GmMainWindow *mw = NULL;
   BOOL on_top = FALSE;
@@ -2438,7 +2471,7 @@ display_changed_cb (GtkWidget *widget,
 
 static void 
 fullscreen_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
-		       gpointer data)
+		       G_GNUC_UNUSED gpointer data)
 {
   gm_main_window_toggle_fullscreen (-1);
 }
@@ -3034,6 +3067,7 @@ gm_main_window_toggle_fullscreen (int onOff)
       }
       break;
 
+    default:
     case 1:
       if (gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view") != FULLSCREEN) {
 
@@ -3340,46 +3374,6 @@ gm_main_window_set_call_info (GtkWidget *main_window,
   gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, info, 
                                             -1, "codecs", NULL);
   g_free (info);
-}
-
-
-void 
-gm_main_window_set_account_info (G_GNUC_UNUSED GtkWidget *main_window,
-				 G_GNUC_UNUSED int registered_accounts)
-{
-  /*GmMainWindow *mw = NULL;
-  
-  GtkTextIter iter, end_iter;
-  GtkTextBuffer *buffer = NULL;
-  GtkTextMark *mark = NULL;
-
-  gchar *info = NULL;
-  
-  g_return_if_fail (main_window != NULL);
-  
-  mw = gm_mw_get_mw (main_window);
-
-  g_return_if_fail (mw != NULL);
-
-  info = g_strdup_printf ("%s %d",
-                          _("Registered accounts:"),
-                          registered_accounts);
-		   
-  buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (mw->info_text));
-  gtk_text_iter_forward_line (&iter);
-  gtk_text_buffer_get_iter_at_line (buffer, &iter, 1);
-  mark = gtk_text_buffer_get_mark (buffer, "account-info");
-  if (mark) {
-
-    gtk_text_buffer_get_iter_at_mark (buffer, &end_iter, mark);
-    gtk_text_buffer_delete (buffer, &iter, &end_iter);
-
-  }
-  gtk_text_buffer_insert_with_tags_by_name (buffer, &iter, info, 
-                                            -1, "status", NULL);
-  gtk_text_buffer_create_mark (buffer, "account-info", &iter, FALSE);
-  g_free (info);
-  */
 }
 
 
@@ -3851,6 +3845,9 @@ gm_main_window_new (Ekiga::ServiceCore & core)
                                                                                    (gpointer) window));
   // FIXME self->priv->connections.push_back (conn);
   GnomeMeeting::Process ()->GetManager ()->audio_signal_event.connect (sigc::bind (sigc::ptr_fun (on_audio_signal_event_cb), 
+                                                                                   (gpointer) window));
+  // FIXME self->priv->connections.push_back (conn);
+  GnomeMeeting::Process ()->GetManager ()->registration_event.connect (sigc::bind (sigc::ptr_fun (on_registration_event_cb), 
                                                                                    (gpointer) window));
   // FIXME self->priv->connections.push_back (conn);
 

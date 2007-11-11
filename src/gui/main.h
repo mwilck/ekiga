@@ -253,16 +253,6 @@ void gm_main_window_set_call_info (GtkWidget *main_window,
 				   const char *re_video_codec);
 
 
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Updates the information displayed in the info label
- * 		   of the main window.
- * PRE          :  The main window GMObject, 
- * 		   the number of "online" accounts.
- */
-void gm_main_window_set_account_info (GtkWidget *main_window,
-				      int registered_account);
-
-  
 /* DESCRIPTION   :  /
  * BEHAVIOR      : Sets the current call duration (as a string) in the GUI.
  * PRE           : The main window GMObject.

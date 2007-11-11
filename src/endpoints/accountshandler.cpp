@@ -235,82 +235,41 @@ void GMAccountsEndpoint::SIPPublishPresence (const PString & to,
 
 void GMAccountsEndpoint::SIPRegister (GmAccount *a)
 {
-  GtkWidget *accounts_window = NULL;
-  GtkWidget *main_window = NULL;
-
-  gchar *msg = NULL;
-  gchar *aor = NULL;
+  std::string aor;
 
   gboolean result = FALSE;
 
   GMSIPEndpoint *sipEP = NULL;
-
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  accounts_window = GnomeMeeting::Process ()->GetAccountsWindow ();
 
   sipEP = ep.GetSIPEndpoint ();
 
   if (!a)
     return;
 
-  if (PString (a->username).Find("@") != P_MAX_INDEX)
-    aor = g_strdup (a->username);
-  else
-    aor = g_strdup_printf ("%s@%s", a->username, a->host);
+  aor = a->username;
+  if (aor.find ("@") == string::npos)
+    aor = aor + "@" + a->host;
 
   /* Account is enabled, and we are not registered */
   if (a->enabled && !sipEP->IsRegistered (aor)) {
 
-    gnomemeeting_threads_enter ();
-    gm_accounts_window_update_account_state (accounts_window,
-					     TRUE,
-					     aor,
-					     _("Registering"),
-					     NULL);
-    gnomemeeting_threads_leave ();
+    /* Signal the OpalManager */
+    ep.OnRegistering (aor, true);
 
     result = sipEP->Register (a->host,
-                              aor,
+                              aor.c_str (),
 			      a->auth_username,
 			      a->password,
 			      PString::Empty(),
 			      a->timeout);
 
-    if (!result) {
-
-      msg = g_strdup_printf (_("Registration of %s to %s failed"), 
-			     a->username?a->username:"", 
-			     a->host?a->host:"");
-
-      gnomemeeting_threads_enter ();
-      gm_main_window_push_message (main_window, "%s", msg);
-      gm_accounts_window_update_account_state (accounts_window,
-					       FALSE,
-					       aor,
-					       _("Registration failed"),
-					       NULL);
-      gnomemeeting_threads_leave ();
-
-      g_free (msg);
-    }
+    if (!result) 
+      ep.OnRegistrationFailed (aor, true, _("Failed"));
   }
-  else if (!a->enabled) {
-    
-    if (sipEP->IsRegistered (aor)) {
-
-      gnomemeeting_threads_enter ();
-      gm_accounts_window_update_account_state (accounts_window,
-                                               TRUE,
-                                               aor,
-                                               _("Unregistering"),
-                                               NULL);
-      gnomemeeting_threads_leave ();
-    }
+  else if (!a->enabled && sipEP->IsRegistered (aor.c_str ())) {
 
     sipEP->Unregister (aor);
   }
-
-  g_free (aor);
 }
 
 
@@ -319,8 +278,8 @@ void GMAccountsEndpoint::H323Register (GmAccount *a)
   GtkWidget *accounts_window = NULL;
   GtkWidget *main_window = NULL;
 
-  gchar *msg = NULL;
-  gchar *aor = NULL;
+  std::string info;
+  std::string aor;
 
   gboolean result = FALSE;
 
@@ -335,7 +294,9 @@ void GMAccountsEndpoint::H323Register (GmAccount *a)
   if (!a)
     return;
 
-  aor = g_strdup_printf ("%s@%s", a->username, a->host);
+  aor = a->username;
+  aor += "@";
+  aor += a->host;
     
   /* Account is enabled, and we are not registered, only one
    * account can be enabled at a time */
@@ -343,13 +304,8 @@ void GMAccountsEndpoint::H323Register (GmAccount *a)
 
     h323EP->H323EndPoint::RemoveGatekeeper (0);
 
-    gnomemeeting_threads_enter ();
-    gm_accounts_window_update_account_state (accounts_window,
-					     TRUE,
-                                             aor,
-					     _("Registering"),
-					     NULL);
-    gnomemeeting_threads_leave ();
+    /* Signal the OpalManager */
+    ep.OnRegistering (aor, true);
 
     if (a->username && strcmp (a->username, "")) {
       h323EP->SetLocalUserName (a->username);
@@ -371,14 +327,13 @@ void GMAccountsEndpoint::H323Register (GmAccount *a)
 	switch (gatekeeper->GetRegistrationFailReason()) {
 
 	case H323Gatekeeper::DuplicateAlias :
-	  msg = g_strdup (_("Gatekeeper registration failed: duplicate alias"));
+	  info = _("Duplicate alias");
 	  break;
 	case H323Gatekeeper::SecurityDenied :
-	  msg = 
-	    g_strdup (_("Gatekeeper registration failed: bad username/password"));
+	  info = _("Bad username/password");
 	  break;
 	case H323Gatekeeper::TransportError :
-	  msg = g_strdup (_("Gatekeeper registration failed: transport error"));
+	  info = _("Transport error");
 	  break;
 	case H323Gatekeeper::RegistrationSuccessful:
 	  break;
@@ -389,57 +344,28 @@ void GMAccountsEndpoint::H323Register (GmAccount *a)
 	case H323Gatekeeper::NumRegistrationFailReasons:
 	case H323Gatekeeper::RegistrationRejectReasonMask:
 	default :
-	  msg = g_strdup (_("Gatekeeper registration failed"));
+	  info = _("Failed");
 	  break;
 	}
       }
       else
-	msg = g_strdup (_("Gatekeeper registration failed"));
-    }
-    else
-      msg = g_strdup_printf (_("Registered %s"), aor);
+	info = _("Failed");
 
-    gnomemeeting_threads_enter ();
-    gm_main_window_push_message (main_window, "%s", msg);
-    gm_accounts_window_update_account_state (accounts_window,
-					     FALSE,
-					     aor,
-					     result?
-					     _("Registered")
-					     :_("Registration failed"),
-					     NULL);
-    gm_main_window_set_account_info (main_window, 
-				     ep.GetRegisteredAccounts ());
-    gnomemeeting_threads_leave ();
-    g_free (msg);
+      /* Signal the OpalManager */
+      ep.OnRegistrationFailed (aor, true, info);
+    }
+    else {
+      /* Signal the OpalManager */
+      ep.OnRegistered (aor, true);
+    }
   }
   else if (!a->enabled && h323EP->IsRegisteredWithGatekeeper (a->host)) {
-
-    msg = g_strdup_printf (_("Unregistered %s"), aor);
-    gnomemeeting_threads_enter ();
-    gm_accounts_window_update_account_state (accounts_window,
-					     TRUE,
-					     aor,
-					     _("Unregistering"),
-					     NULL);
-    gnomemeeting_threads_leave ();
 
     h323EP->H323EndPoint::RemoveGatekeeper (0);
     h323EP->RemoveAliasName (a->username);
 
-    gnomemeeting_threads_enter ();
-    gm_main_window_push_message (main_window, "%s", msg);
-    gm_accounts_window_update_account_state (accounts_window,
-					     FALSE,
-                                             aor,
-					     _("Unregistered"),
-					     NULL);
-    gm_main_window_set_account_info (main_window, 
-				     ep.GetRegisteredAccounts ());
-    gnomemeeting_threads_leave ();
-    g_free (msg);
+    /* Signal the OpalManager */
+    ep.OnRegistered (aor, false);
   }
-  
-  g_free (aor);
 }
 

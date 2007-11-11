@@ -73,14 +73,6 @@ class GMSIPEndpoint : public SIPEndPoint
   
   
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Init the endpoint internal values and the various
-   *                 components.
-   * PRE          :  /
-   */
-  void Init ();
-  
-  
-  /* DESCRIPTION  :  /
    * BEHAVIOR     :  Starts the listener thread on the port choosen 
    *                 in the options after having removed old listeners.
    *                 returns TRUE if success and FALSE in case of error.
@@ -116,11 +108,10 @@ class GMSIPEndpoint : public SIPEndPoint
   
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Adds the User Input Mode following the
-   *                 configuration options. Only RFC2833 is supported
-   *                 for now.
+   *                 configuration options. 
    * PRE          :  /
    */
-  void SetUserInputMode ();
+  void SetUserInputMode (unsigned int mode);
 
   
   /* DESCRIPTION  :  /
@@ -240,6 +231,15 @@ class GMSIPEndpoint : public SIPEndPoint
    * PRE          :  /
    */
   PDECLARE_NOTIFIER(PTimer, GMSIPEndpoint, OnNoAnswerTimeout);
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Init the endpoint internal values and the various
+   *                 components.
+   * PRE          :  /
+   */
+  void Init ();
+
 
   PTimer NoAnswerTimer;
 

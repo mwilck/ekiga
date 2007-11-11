@@ -182,7 +182,7 @@ void GMManager::UpdateDevices ()
   preview = gm_conf_get_bool (VIDEO_DEVICES_KEY "enable_preview");
   device_name = gm_conf_get_string (VIDEO_DEVICES_KEY "input_device");
   gnomemeeting_threads_leave ();
-  
+
   /* Do not change these values during calls */
   if (GetCallingState () == GMManager::Standby) {
 
@@ -191,7 +191,7 @@ void GMManager::UpdateDevices ()
       CreateVideoGrabber (TRUE, TRUE);
     else 
       RemoveVideoGrabber ();
-      
+
     /* Update the video input device */
     PVideoDevice::OpenArgs video = GetVideoInputDevice();
     video.deviceName = device_name;
@@ -206,7 +206,7 @@ void
 GMManager::SetCallingState (CallingState i)
 {
   PWaitAndSignal m(cs_access_mutex);
-  
+
   calling_state = i;
 }
 
@@ -226,7 +226,7 @@ GMManager::GetAvailableAudioMediaFormats ()
   OpalMediaFormatList full_list;
   OpalMediaFormatList sip_list;
   OpalMediaFormatList h323_list;
- 
+
   sip_list = sipEP->GetAvailableAudioMediaFormats ();
   h323_list = h323EP->GetAvailableAudioMediaFormats ();
 
@@ -234,7 +234,7 @@ GMManager::GetAvailableAudioMediaFormats ()
   for (PINDEX i = 0 ; i < sip_list.GetSize () ; i++) {
 
     for (PINDEX j = 0 ; j < h323_list.GetSize () ; j++) {
-      
+
       if (sip_list [i].GetPayloadType () == h323_list [j].GetPayloadType ()
           && sip_list [i].GetBandwidth () == h323_list [j].GetBandwidth ()) {
 
@@ -254,7 +254,7 @@ GMManager::GetAvailableVideoMediaFormats ()
   OpalMediaFormatList full_list;
   OpalMediaFormatList sip_list;
   OpalMediaFormatList h323_list;
- 
+
   sip_list = sipEP->GetAvailableVideoMediaFormats ();
   h323_list = h323EP->GetAvailableVideoMediaFormats ();
 
@@ -309,7 +309,7 @@ GMManager::SetAudioMediaFormats (PStringArray *order)
   for (int i = 0 ; i < initial_mask.GetSize () ; i++)
     if (OpalMediaFormat (initial_mask [i]).GetDefaultSessionID () == OpalMediaFormat::DefaultVideoSessionID)
       mask += initial_mask [i];
-  
+
   SetMediaFormatMask (mask);
   SetMediaFormatOrder (*order);
 }
@@ -352,21 +352,21 @@ GMManager::SetVideoMediaFormats (PStringArray *order)
     if (media_format.GetDefaultSessionID () == OpalMediaFormat::DefaultVideoSessionID) {
 
       media_format.SetOptionInteger (OpalVideoFormat::FrameWidthOption (), 
-                                 video_sizes[size].width);  
+                                     video_sizes[size].width);  
       media_format.SetOptionInteger (OpalVideoFormat::FrameHeightOption (), 
-                                 video_sizes[size].height);  
+                                     video_sizes[size].height);  
       media_format.SetOptionBoolean (OpalVideoFormat::DynamicVideoQualityOption (), 
-                                 TRUE);  
+                                     TRUE);  
       media_format.SetOptionBoolean (OpalVideoFormat::AdaptivePacketDelayOption (), 
-                                 TRUE);
+                                     TRUE);
       media_format.SetOptionInteger (OpalVideoFormat::FrameTimeOption (),
-                                 (int)(90000 / frame_rate));
+                                     (int)(90000 / frame_rate));
       media_format.SetOptionInteger (OpalVideoFormat::MaxBitRateOption (), 
-                                 max_rx_bitrate * 1024);
+                                     max_rx_bitrate * 1024);
       media_format.SetOptionInteger (OpalVideoFormat::TargetBitRateOption (), 
-                                 max_tx_bitrate * 1024);
+                                     max_tx_bitrate * 1024);
       media_format.AddOption(new OpalMediaOptionUnsigned(OpalVideoFormat::MaxFrameSizeOption(), 
-                                 true, OpalMediaOption::NoMerge, 1400));
+                                                         true, OpalMediaOption::NoMerge, 1400));
 
       OpalMediaFormat::SetRegisteredMediaFormat(media_format);
     }
@@ -407,7 +407,6 @@ void
 GMManager::SetUserInputMode ()
 {
   h323EP->SetUserInputMode ();
-  sipEP->SetUserInputMode ();
 }
 
 
@@ -1145,7 +1144,6 @@ GMManager::Init ()
 	
   /* SIP Endpoint */
   sipEP = new GMSIPEndpoint (*this);
-  sipEP->Init ();
   AddRouteEntry("pc:.*             = sip:<da>");
   
   /* PC Sound System Endpoint */
@@ -1615,7 +1613,7 @@ GMManager::OnRTPTimeout (PTimer &,
  
   /* If we didn't receive any audio and video data this time,
     then we start the timer */
-  if (stats.a_re_bandwidth == 0 && stats.v_re_bandwidth == 0) {
+  if (stats.a_re_bandwidth == 0.0 && stats.v_re_bandwidth == 0.0) {
 
     if (!NoIncomingMediaTimer.IsRunning ()) 
       NoIncomingMediaTimer.SetInterval (0, 30);
@@ -2094,6 +2092,43 @@ GMManager::OnMWIReceived (const PString & account,
     /* Sound event if new voice mail */
     pcssEP->PlaySoundEvent ("new_voicemail_sound");
   }
+}
+
+
+void
+GMManager::OnRegistered (const PString & aor,
+                         BOOL wasRegistering)
+{
+  Ekiga::Runtime *runtime = GnomeMeeting::Process ()->GetRuntime (); // FIXME
+  runtime->run_in_main (sigc::bind (registration_event.make_slot (), 
+                                    std::string ((const char *) aor), 
+                                    wasRegistering ? Registered : Unregistered,
+                                    std::string ()));
+}
+
+
+void
+GMManager::OnRegistering (const PString & aor,
+                         BOOL isRegistering)
+{
+  Ekiga::Runtime *runtime = GnomeMeeting::Process ()->GetRuntime (); // FIXME
+  runtime->run_in_main (sigc::bind (registration_event.make_slot (), 
+                                    std::string ((const char *) aor), 
+                                    Processing,
+                                    std::string ()));
+}
+
+
+void
+GMManager::OnRegistrationFailed (const PString & aor,
+                                 BOOL wasRegistering,
+                                 std::string info)
+{
+  Ekiga::Runtime *runtime = GnomeMeeting::Process ()->GetRuntime (); // FIXME
+  runtime->run_in_main (sigc::bind (registration_event.make_slot (), 
+                                    std::string ((const char *) aor), 
+                                    wasRegistering ? RegistrationFailed : UnregistrationFailed,
+                                    info));
 }
 
 
