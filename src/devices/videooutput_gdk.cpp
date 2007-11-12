@@ -178,15 +178,14 @@ GMVideoDisplay_GDK::Main ()
   var_mutex.Signal ();
 }
 
-void GMVideoDisplay_GDK::SetFrameData (unsigned x,
+void GMVideoDisplay_GDK::SetFrameData (G_GNUC_UNUSED unsigned x,
 				       unsigned y,
 				       unsigned width,
 				       unsigned height,
 				       const BYTE * data,
 				       PColourConverter* setConverter,
 				       BOOL local,
-				       int devices_nbr
-)
+				       int devices_nbr)
 { 
   int display = 0;
   double zoom = 0.0;
@@ -278,6 +277,7 @@ void GMVideoDisplay_GDK::SetFrameData (unsigned x,
   var_mutex.Signal();
 
   switch (display) {
+  default:
   case LOCAL_VIDEO:
     if (!local)
       return;
@@ -329,6 +329,7 @@ GMVideoDisplay_GDK::FrameDisplayChangeNeeded (int display,
   }
 
   switch (display) {
+  default:
   case LOCAL_VIDEO:
     return (lastFrame.display != LOCAL_VIDEO 
             || lastFrame.zoom != zoom || lastFrame.localWidth != lf_width || lastFrame.localHeight != lf_height 
