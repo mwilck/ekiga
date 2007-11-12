@@ -187,12 +187,12 @@ SIP::EndPoint::OnPresenceInfoReceived (const PString & user,
     presence = "presence-offline";
     status = _("Offline");
   }
-  else if (s.Find ("Ready") != P_MAX_INDEX
-           || s.Find ("Online") != P_MAX_INDEX) {
+  else {
     presence = "presence-online";
     status = _("Online");
   }
-  else if (s.Find ("Away") != P_MAX_INDEX) {
+
+  if (s.Find ("Away") != P_MAX_INDEX) {
     presence = "presence-away";
     status = _("Away");
   }
