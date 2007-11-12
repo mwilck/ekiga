@@ -1,5 +1,16 @@
 2007-11-12  Damien Sandras  <dsandras@gnome.org>
 
+	* src/endpoints/sip.h,
+	src/endpoints/accountshandler.cpp,
+	src/endpoints/h323.cpp,
+	src/endpoints/h323.h,
+	src/endpoints/sip.cpp:
+	Moved more stuff from the GMAccountsEndpoint to the respective H.323
+	and SIP endpoints. It is where the intelligence should be. Removed
+	completely GTK code from the GMAccountsEndpoint.
+
+2007-11-12  Damien Sandras  <dsandras@gnome.org>
+
 	* lib/engine/protocol/sip/sip-endpoint.cpp: 
 	Added better default for unknown presence, but online being confirmed.
 
