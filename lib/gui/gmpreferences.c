@@ -112,7 +112,7 @@ gnome_prefs_entry_new (GtkWidget *table,
 		       gboolean box)
 {
   GnomePrefsWindow *gpw = NULL;
-  GValue value;
+  GValue value = { 0, {{0}, {0}}};
   int cols = 0;
   GtkWidget *entry = NULL;
   GtkWidget *label = NULL;
@@ -204,7 +204,7 @@ gnome_prefs_toggle_new (GtkWidget *table,
 			int row)
 {
   GnomePrefsWindow *gpw = NULL;
-  GValue value;
+  GValue value = { 0, {{0}, {0}}};
   GtkWidget *toggle = NULL;
   gboolean writable = FALSE;
   int cols = 0;
