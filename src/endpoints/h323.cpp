@@ -254,6 +254,97 @@ GMH323Endpoint::SetUserInputMode ()
 }
 
 
+void
+GMH323Endpoint::Register (const PString & aor,
+                          const PString & authUserName,
+                          const PString & password,
+                          const PString & gatekeeperID,
+                          unsigned int expires,
+                          bool unregister)
+{
+  PString info;
+  PString host;
+  PINDEX i = 0;
+
+  bool result = false;
+
+  i = aor.Find ("@");
+  if (i == P_MAX_INDEX)
+    return;
+
+  host = aor.Left (i);
+
+  std::cout << host << std::flush;
+
+  if (!unregister) {
+
+    H323EndPoint::RemoveGatekeeper (0);
+
+    /* Signal the OpalManager */
+    endpoint.OnRegistering (aor, true);
+
+    if (!authUserName.IsEmpty ()) {
+      SetLocalUserName (authUserName);
+      AddAliasName (endpoint.GetDefaultDisplayName ());
+    }
+      
+    SetGatekeeperPassword (password);
+    SetGatekeeperTimeToLive (expires * 1000);
+    result = UseGatekeeper (host, gatekeeperID);
+
+    /* There was an error (missing parameter or registration failed)
+       or the user chose to not register */
+    if (!result) {
+
+      /* Registering failed */
+      if (gatekeeper) {
+
+	switch (gatekeeper->GetRegistrationFailReason()) {
+
+	case H323Gatekeeper::DuplicateAlias :
+	  info = _("Duplicate alias");
+	  break;
+	case H323Gatekeeper::SecurityDenied :
+	  info = _("Bad username/password");
+	  break;
+	case H323Gatekeeper::TransportError :
+	  info = _("Transport error");
+	  break;
+	case H323Gatekeeper::RegistrationSuccessful:
+	  break;
+	case H323Gatekeeper::UnregisteredLocally:
+	case H323Gatekeeper::UnregisteredByGatekeeper:
+	case H323Gatekeeper::GatekeeperLostRegistration:
+	case H323Gatekeeper::InvalidListener:
+	case H323Gatekeeper::NumRegistrationFailReasons:
+	case H323Gatekeeper::RegistrationRejectReasonMask:
+	default :
+	  info = _("Failed");
+	  break;
+	}
+      }
+      else
+	info = _("Failed");
+
+      /* Signal the OpalManager */
+      endpoint.OnRegistrationFailed (aor, true, info);
+    }
+    else {
+      /* Signal the OpalManager */
+      endpoint.OnRegistered (aor, true);
+    }
+  }
+  else if (unregister && IsRegisteredWithGatekeeper (host)) {
+
+    H323EndPoint::RemoveGatekeeper (0);
+    RemoveAliasName (authUserName);
+
+    /* Signal the OpalManager */
+    endpoint.OnRegistered (aor, false);
+  }
+}
+
+
 BOOL 
 GMH323Endpoint::UseGatekeeper (const PString & address,
 			       const PString & domain,

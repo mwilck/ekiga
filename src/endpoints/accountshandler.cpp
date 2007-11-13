@@ -236,136 +236,29 @@ void GMAccountsEndpoint::SIPPublishPresence (const PString & to,
 void GMAccountsEndpoint::SIPRegister (GmAccount *a)
 {
   std::string aor;
-
-  gboolean result = FALSE;
-
   GMSIPEndpoint *sipEP = NULL;
 
   sipEP = ep.GetSIPEndpoint ();
-
-  if (!a)
-    return;
 
   aor = a->username;
   if (aor.find ("@") == string::npos)
     aor = aor + "@" + a->host;
 
-  /* Account is enabled, and we are not registered */
-  if (a->enabled && !sipEP->IsRegistered (aor)) {
-
-    /* Signal the OpalManager */
-    ep.OnRegistering (aor, true);
-
-    result = sipEP->Register (a->host,
-                              aor.c_str (),
-			      a->auth_username,
-			      a->password,
-			      PString::Empty(),
-			      a->timeout);
-
-    if (!result) 
-      ep.OnRegistrationFailed (aor, true, _("Failed"));
-  }
-  else if (!a->enabled && sipEP->IsRegistered (aor.c_str ())) {
-
-    sipEP->Unregister (aor);
-  }
+  sipEP->Register (aor.c_str (), a->auth_username, a->password, a->timeout, !a->enabled);
 }
 
 
 void GMAccountsEndpoint::H323Register (GmAccount *a)
 {
-  GtkWidget *accounts_window = NULL;
-  GtkWidget *main_window = NULL;
-
-  std::string info;
   std::string aor;
-
-  gboolean result = FALSE;
-
   GMH323Endpoint *h323EP = NULL;
-  H323Gatekeeper *gatekeeper = NULL;
-
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  accounts_window = GnomeMeeting::Process ()->GetAccountsWindow ();
 
   h323EP = ep.GetH323Endpoint ();
 
-  if (!a)
-    return;
-
   aor = a->username;
-  aor += "@";
-  aor += a->host;
-    
-  /* Account is enabled, and we are not registered, only one
-   * account can be enabled at a time */
-  if (a->enabled) {
+  if (aor.find ("@") == string::npos)
+    aor = aor + "@" + a->host;
 
-    h323EP->H323EndPoint::RemoveGatekeeper (0);
-
-    /* Signal the OpalManager */
-    ep.OnRegistering (aor, true);
-
-    if (a->username && strcmp (a->username, "")) {
-      h323EP->SetLocalUserName (a->username);
-      h323EP->AddAliasName (ep.GetDefaultDisplayName ());
-    }
-      
-    h323EP->SetGatekeeperPassword (a->password);
-    h323EP->SetGatekeeperTimeToLive (a->timeout * 1000);
-    result = h323EP->UseGatekeeper (a->host, a->domain);
-
-    /* There was an error (missing parameter or registration failed)
-       or the user chose to not register */
-    if (!result) {
-
-      /* Registering failed */
-      gatekeeper = h323EP->GetGatekeeper ();
-      if (gatekeeper) {
-
-	switch (gatekeeper->GetRegistrationFailReason()) {
-
-	case H323Gatekeeper::DuplicateAlias :
-	  info = _("Duplicate alias");
-	  break;
-	case H323Gatekeeper::SecurityDenied :
-	  info = _("Bad username/password");
-	  break;
-	case H323Gatekeeper::TransportError :
-	  info = _("Transport error");
-	  break;
-	case H323Gatekeeper::RegistrationSuccessful:
-	  break;
-	case H323Gatekeeper::UnregisteredLocally:
-	case H323Gatekeeper::UnregisteredByGatekeeper:
-	case H323Gatekeeper::GatekeeperLostRegistration:
-	case H323Gatekeeper::InvalidListener:
-	case H323Gatekeeper::NumRegistrationFailReasons:
-	case H323Gatekeeper::RegistrationRejectReasonMask:
-	default :
-	  info = _("Failed");
-	  break;
-	}
-      }
-      else
-	info = _("Failed");
-
-      /* Signal the OpalManager */
-      ep.OnRegistrationFailed (aor, true, info);
-    }
-    else {
-      /* Signal the OpalManager */
-      ep.OnRegistered (aor, true);
-    }
-  }
-  else if (!a->enabled && h323EP->IsRegisteredWithGatekeeper (a->host)) {
-
-    h323EP->H323EndPoint::RemoveGatekeeper (0);
-    h323EP->RemoveAliasName (a->username);
-
-    /* Signal the OpalManager */
-    ep.OnRegistered (aor, false);
-  }
+  h323EP->Register (aor.c_str (), a->auth_username, a->password, a->domain, a->timeout, !a->enabled);
 }
 

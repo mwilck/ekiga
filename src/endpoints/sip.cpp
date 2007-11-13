@@ -404,6 +404,34 @@ GMSIPEndpoint::PublishPresence (const PString & to,
 }
 
 
+void 
+GMSIPEndpoint::Register (const PString & aor,
+                         const PString & authUserName,
+                         const PString & password,
+                         unsigned int expires,
+                         bool unregister)
+{
+  bool result = false;
+
+  /* Account is enabled, and we are not registered */
+  if (!unregister && !IsRegistered (aor)) {
+
+    /* Signal the OpalManager */
+    endpoint.OnRegistering (aor, true);
+
+    /* Trigger registering */
+    result = SIPEndPoint::Register (PString::Empty (), aor, authUserName, password, PString::Empty (), expires);
+
+    if (!result) 
+      endpoint.OnRegistrationFailed (aor, true, _("Failed"));
+  }
+  else if (unregister && IsRegistered (aor)) {
+
+    SIPEndPoint::Unregister (aor);
+  }
+}
+
+
 void
 GMSIPEndpoint::OnRegistered (const PString & aor,
                              BOOL wasRegistering)

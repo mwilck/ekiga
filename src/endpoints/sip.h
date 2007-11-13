@@ -121,6 +121,17 @@ class GMSIPEndpoint : public SIPEndPoint
   void PublishPresence (const PString & to,
                         guint status);
   
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Register the SIP endpoint to the given SIP server. 
+   * PRE          :  Correct parameters.
+   */
+  void Register (const PString & aor,
+                 const PString & authUserName,
+                 const PString & password,
+                 unsigned int expires,
+                 bool unregister);
+
   
   /* DESCRIPTION  :  Called when the registration is successful. 
    * BEHAVIOR     :  Displays a message in the status bar and history. 

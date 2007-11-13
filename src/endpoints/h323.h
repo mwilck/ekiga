@@ -120,6 +120,18 @@ class GMH323Endpoint : public H323EndPoint
    */
   void SetUserInputMode ();
   
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Register the H323 endpoint to the given H323 server. 
+   * PRE          :  Correct parameters.
+   */
+  void Register (const PString & aor,
+                 const PString & authUserName,
+                 const PString & password,
+                 const PString & gatekeeperID,
+                 unsigned int expires,
+                 bool unregister);
+
   
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Use the given gatekeeper.
