@@ -25,7 +25,7 @@
 
 
 /*
- *                         history-presentity.cpp  -  description
+ *                         history-contact.cpp  -  description
  *                         ------------------------------------------
  *   begin                : written in 2007 by Julien Puydt
  *   copyright            : (c) 2007 by Julien Puydt
@@ -37,14 +37,14 @@
 
 #include "history-presentity.h"
 
-History::Presentity::Presentity (Ekiga::ServiceCore &_core,
-				 xmlNodePtr _node):
+History::Contact::Contact (Ekiga::ServiceCore &_core,
+			   xmlNodePtr _node):
   core(_core), node(_node)
 {
   xmlChar *xml_str;
 
-  presence_core
-    = dynamic_cast<Ekiga::PresenceCore*>(core.get ("presence-core"));
+  contact_core
+    = dynamic_cast<Ekiga::ContactCore*>(core.get ("contact-core"));
 
   xml_str = xmlGetProp (node, (const xmlChar *)"type");
   groups.insert ((const char *)xml_str);
@@ -78,15 +78,15 @@ History::Presentity::Presentity (Ekiga::ServiceCore &_core,
   }
 }
 
-History::Presentity::Presentity (Ekiga::ServiceCore &_core,
-				 const std::string _name,
-				 const std::string _uri,
-				 const std::string _status,
-				 call_type c_t):
+History::Contact::Contact (Ekiga::ServiceCore &_core,
+			   const std::string _name,
+			   const std::string _uri,
+			   const std::string _status,
+			   call_type c_t):
   core(_core), name(_name), uri(_uri), status(_status)
 {
-  presence_core
-    = dynamic_cast<Ekiga::PresenceCore*>(core.get ("presence-core"));
+  contact_core
+    = dynamic_cast<Ekiga::ContactCore*>(core.get ("contact-core"));
 
   node = xmlNewNode (NULL, BAD_CAST "entry");
 
@@ -111,10 +111,14 @@ History::Presentity::Presentity (Ekiga::ServiceCore &_core,
 
     groups.insert ("Missed");
     break;
+
+  default:
+
+    break;
   }
 }
 
-History::Presentity::~Presentity ()
+History::Contact::~Contact ()
 {
 #ifdef __GNUC__
   std::cout << __PRETTY_FUNCTION__ << std::endl;
@@ -122,56 +126,42 @@ History::Presentity::~Presentity ()
 }
 
 const std::string
-History::Presentity::get_name () const
+History::Contact::get_name () const
 {
   return name;
 }
 
-const std::string
-History::Presentity::get_presence () const
-{
-  return presence;
-}
-
-const std::string
-History::Presentity::get_status () const
-{
-  return status;
-}
-
-const std::string
-History::Presentity::get_avatar () const
-{
-  return "";
-}
-
 const std::set<std::string>
-History::Presentity::get_groups () const
+History::Contact::get_groups () const
 {
   return groups;
 }
 
 bool
-History::Presentity::populate_menu (Ekiga::MenuBuilder &builder)
+History::Contact::populate_menu (Ekiga::MenuBuilder &builder)
 {
-  return presence_core->populate_presentity_menu (uri, builder);
+  return contact_core->populate_contact_menu (*this, builder);
 }
 
 xmlNodePtr
-History::Presentity::get_node ()
+History::Contact::get_node ()
 {
   return node;
 }
 
-const std::string
-History::Presentity::get_uri () const
+const std::map<std::string,std::string>
+History::Contact::get_uris () const
 {
-  return uri;
+  std::map<std::string,std::string> result;
+
+  result[""] = uri;
+
+  return result;
 }
 
-void
-History::Presentity::set_presence (const std::string _presence)
+bool
+History::Contact::is_found (std::string /*test*/) const
 {
-  presence = _presence;
-  updated.emit ();
+  /* FIXME */
+  return true;
 }

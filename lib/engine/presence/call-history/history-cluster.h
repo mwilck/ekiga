@@ -25,31 +25,31 @@
 
 
 /*
- *                         history-cluster.h  -  description
+ *                         history-source.h  -  description
  *                         ------------------------------------------
  *   begin                : written in 2007 by Julien Puydt
  *   copyright            : (c) 2007 by Julien Puydt
- *   description          : declaration of the cluster for the call history
+ *   description          : declaration of the source for the call history
  *
  */
 
-#ifndef __HISTORY_CLUSTER_H__
-#define __HISTORY_CLUSTER_H__
+#ifndef __HISTORY_SOURCE_H__
+#define __HISTORY_SOURCE_H__
 
-#include "cluster-impl.h"
+#include "source-impl.h"
 #include "history-heap.h"
 
 namespace History
 {
-  class Cluster :
-    public Ekiga::ClusterImpl<Heap, Ekiga::delete_heap_management<Heap> >,
+  class Source :
+    public Ekiga::SourceImpl<Book, Ekiga::delete_book_management<Book> >,
     public Ekiga::Service
   {
   public:
 
-    Cluster (Ekiga::ServiceCore &_core);
+    Source (Ekiga::ServiceCore &_core);
 
-    ~Cluster ();
+    ~Source ();
 
     bool populate_menu (Ekiga::MenuBuilder &);
 
@@ -66,11 +66,9 @@ namespace History
   private:
 
     Ekiga::ServiceCore &core;
-    Ekiga::PresenceCore *presence_core;
-    Heap *heap;
+    Ekiga::ContactCore *contact_core;
+    Book *book;
 
-    void on_presence_received (std::string uri,
-			       std::string presence);
   };
 }
 

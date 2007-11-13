@@ -25,43 +25,43 @@
 
 
 /*
- *                         history-heap.h  -  description
+ *                         history-book.h  -  description
  *                         ------------------------------------------
  *   begin                : written in 2007 by Julien Puydt
  *   copyright            : (c) 2007 by Julien Puydt
- *   description          : declaration of the heap for the call history
+ *   description          : declaration of the book for the call history
  *
  */
 
-#ifndef __HISTORY_HEAP_H__
-#define __HISTORY_HEAP_H__
+#ifndef __HISTORY_BOOK_H__
+#define __HISTORY_BOOK_H__
 
 #include <libxml/tree.h>
 
 #include "ui.h"
-#include "heap-impl.h"
+#include "book-impl.h"
 #include "history-presentity.h"
 
 namespace History
 {
-  class Heap
-    : public Ekiga::HeapImpl<Presentity, Ekiga::delete_object_management <Presentity> >
+  class Book
+    : public Ekiga::BookImpl<Contact, Ekiga::delete_object_management <Contact> >
   {
   public:
 
     /* generic api */
     
-    Heap (Ekiga::ServiceCore &_core);
+    Book (Ekiga::ServiceCore &_core);
 
-    ~Heap ();
+    ~Book ();
 
     const std::string get_name () const;
 
     bool populate_menu (Ekiga::MenuBuilder &);
 
-    bool has_presentity_with_uri (const std::string uri) const;
-
     const std::set<std::string> existing_groups () const;
+
+    void set_search_filter (std::string);
 
     /* more specific api */
 
@@ -80,10 +80,10 @@ namespace History
 
     void add (xmlNodePtr node);
 
-    void common_add (Presentity &presentity);
+    void common_add (Contact &contact);
 
     Ekiga::ServiceCore &core;
-    Ekiga::PresenceCore *presence_core;
+    Ekiga::ContactCore *contact_core;
     xmlDocPtr doc;
   };
 };

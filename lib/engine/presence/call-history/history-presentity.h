@@ -25,7 +25,7 @@
 
 
 /*
- *                         history-presentity.h  -  description
+ *                         history-contact.h  -  description
  *                         ------------------------------------------
  *   begin                : written in 2007 by Julien Puydt
  *   copyright            : (c) 2007 by Julien Puydt
@@ -33,13 +33,13 @@
  *
  */
 
-#ifndef __HISTORY_PRESENTITY_H__
-#define __HISTORY_PRESENTITY_H__
+#ifndef __HISTORY_CONTACT_H__
+#define __HISTORY_CONTACT_H__
 
 #include <libxml/tree.h>
 
 #include "services.h"
-#include "presence-core.h"
+#include "contact-core.h"
 
 namespace History {
 
@@ -50,30 +50,24 @@ namespace History {
     MISSED
   } call_type;
 
-  class Presentity: public Ekiga::Presentity
+  class Contact: public Ekiga::Contact
   {
   public:
 
-    Presentity (Ekiga::ServiceCore &_core,
+    Contact (Ekiga::ServiceCore &_core,
 		xmlNodePtr _node);
 
-    Presentity (Ekiga::ServiceCore &_core,
-		const std::string _name,
-		const std::string _uri,
-		const std::string _status,
-		call_type c_t);
+    Contact (Ekiga::ServiceCore &_core,
+	     const std::string _name,
+	     const std::string _uri,
+	     const std::string _status,
+	     call_type c_t);
 
-    ~Presentity ();
+    ~Contact ();
 
     /* generic presentity api */
 
     const std::string get_name () const;
-
-    const std::string get_presence () const;
-
-    const std::string get_status () const;
-
-    const std::string get_avatar () const;
 
     const std::set<std::string> get_groups () const;
 
@@ -83,19 +77,18 @@ namespace History {
 
     xmlNodePtr get_node ();
 
-    const std::string get_uri () const;
+    const std::map<std::string,std::string> get_uris () const;
 
-    void set_presence (const std::string _presence);
+    bool is_found (std::string test) const;
 
   private:
 
     Ekiga::ServiceCore &core;
-    Ekiga::PresenceCore *presence_core;
+    Ekiga::ContactCore *contact_core;
 
     xmlNodePtr node;
     std::string name;
     std::string uri;
-    std::string presence;
     std::string status;
     std::set<std::string> groups;
   };

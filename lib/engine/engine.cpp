@@ -43,6 +43,7 @@
 
 #include "presence-core.h"
 #include "contact-core.h"
+#include "history-main.h"
 #include "local-roster-main.h"
 #include "local-roster-bridge.h"
 #include "gtk-core-main.h"
@@ -88,6 +89,12 @@ engine_init (int argc,
     return NULL;
   }
 #endif
+
+  if (!history_init (*core, &argc, &argv)) {
+
+    delete core;
+    return NULL;
+  }
 
   if (!gtk_core_init (*core, &argc, &argv)) {
     delete core;

@@ -637,6 +637,7 @@ lib/engine/addressbook/skel/Makefile
 lib/engine/framework/Makefile
 lib/engine/presence/Makefile
 lib/engine/presence/skel/Makefile
+lib/engine/presence/call-history/Makefile
 lib/engine/presence/local-roster/Makefile
 lib/engine/protocol/Makefile
 lib/engine/protocol/sip/Makefile

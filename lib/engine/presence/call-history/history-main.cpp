@@ -36,7 +36,7 @@
  */
 
 #include "history-main.h"
-#include "presence-core.h"
+#include "contact-core.h"
 #include "history-cluster.h"
 
 bool
@@ -45,17 +45,17 @@ history_init (Ekiga::ServiceCore &core,
 	      char **/*argv*/[])
 {
   bool result = false;
-  Ekiga::PresenceCore *presence_core = NULL;
-  History::Cluster *cluster = NULL;
+  Ekiga::ContactCore *contact_core = NULL;
+  History::Source *source = NULL;
 
-  presence_core
-    = dynamic_cast<Ekiga::PresenceCore*>(core.get ("presence-core"));
+  contact_core
+    = dynamic_cast<Ekiga::ContactCore*>(core.get ("contact-core"));
 
-  if (presence_core != NULL) {
+  if (contact_core != NULL) {
 
-    cluster = new History::Cluster (core);
-    core.add (*cluster);
-    presence_core->add_cluster (*cluster);
+    source = new History::Source (core);
+    core.add (*source);
+    contact_core->add_source (*source);
     result = true;
   }
 

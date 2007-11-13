@@ -25,11 +25,11 @@
 
 
 /*
- *                         history-cluster.cpp  -  description
+ *                         history-source.cpp  -  description
  *                         ------------------------------------------
  *   begin                : written in 2007 by Julien Puydt
  *   copyright            : (c) 2007 by Julien Puydt
- *   description          : implementation of the cluster for the call history
+ *   description          : implementation of the source for the call history
  *
  */
 
@@ -37,53 +37,34 @@
 
 #include "history-cluster.h"
 
-History::Cluster::Cluster (Ekiga::ServiceCore &_core): core(_core)
+History::Source::Source (Ekiga::ServiceCore &_core): core(_core)
 {
-  presence_core
-    = dynamic_cast<Ekiga::PresenceCore*>(core.get ("presence-core"));
+  contact_core
+    = dynamic_cast<Ekiga::ContactCore*>(core.get ("contact-core"));
 
-  heap = new Heap (core);
+  book = new Book (core);
 
-  presence_core->presence_received.connect (sigc::mem_fun (this, &History::Cluster::on_presence_received));
-
-  add_heap (*heap);
+  add_book (*book);
 }
 
-History::Cluster::~Cluster ()
+History::Source::~Source ()
 {
 #ifdef __GNUC__
   std::cout << __PRETTY_FUNCTION__ << std::endl;
 #endif
 }
 
-bool
-History::Cluster::is_supported_uri (const std::string uri) const
-{
-  return presence_core->is_supported_uri (uri);
-}
-
 const std::set<std::string>
-History::Cluster::existing_groups () const
+History::Source::existing_groups () const
 {
-  return heap->existing_groups ();
+  return book->existing_groups ();
 }
 
 bool
-History::Cluster::populate_menu (Ekiga::MenuBuilder &)
+History::Source::populate_menu (Ekiga::MenuBuilder &)
 {
   /* nothing
    * unless we want the "clear history" action in the addressbook window menu
    */
   return false;
-}
-
-void
-History::Cluster::on_presence_received (std::string uri,
-				       std::string presence)
-{
-  for (History::Heap::iterator iter = heap->begin ();
-       iter != heap->end ();
-       iter++)
-    if (uri == iter->get_uri ())
-      iter->set_presence (presence);
 }

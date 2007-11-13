@@ -12,6 +12,7 @@ INCLUDES = 								\
 	-I$(top_srcdir)/lib/engine/addressbook/evolution		\
 	-I$(top_srcdir)/lib/engine/addressbook/ldap			\
 	-I$(top_srcdir)/lib/engine/presence/skel			\
+	-I$(top_srcdir)/lib/engine/presence/call-history		\
 	-I$(top_srcdir)/lib/engine/presence/local-roster
 
 libekiga_engine_la_SOURCES = engine.h engine.cpp
@@ -27,6 +28,7 @@ libekiga_engine_la_LIBADD = \
 	$(top_builddir)/lib/engine/framework/libgmframework.la \
 	$(top_builddir)/lib/engine/addressbook/skel/libgmaddressbook.la \
 	$(top_builddir)/lib/engine/presence/skel/libgmpresence.la \
+	$(top_builddir)/lib/engine/presence/call-history/libcall-history.la \
 	$(top_builddir)/lib/engine/presence/local-roster/liblocal-roster.la \
 	$(AM_LIBS)
 

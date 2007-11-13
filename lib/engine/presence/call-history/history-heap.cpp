@@ -25,11 +25,11 @@
 
 
 /*
- *                         history-heap.cpp  -  description
+ *                         history-book.cpp  -  description
  *                         ------------------------------------------
  *   begin                : written in 2007 by Julien Puydt
  *   copyright            : (c) 2007 by Julien Puydt
- *   description          : implementation of the heap of the call history
+ *   description          : implementation of the book of the call history
  *
  */
 
@@ -44,13 +44,13 @@
 
 #define KEY "/apps/" PACKAGE_NAME "/contacts/call_history"
 
-History::Heap::Heap (Ekiga::ServiceCore &_core) :
+History::Book::Book (Ekiga::ServiceCore &_core) :
   core(_core), doc(NULL)
 {
   xmlNodePtr root;
 
-  presence_core
-    = dynamic_cast<Ekiga::PresenceCore*>(core.get ("presence-core"));
+  contact_core
+    = dynamic_cast<Ekiga::ContactCore*>(core.get ("contact-core"));
 
   const gchar *c_raw = gm_conf_get_string (KEY);
 
@@ -83,7 +83,7 @@ History::Heap::Heap (Ekiga::ServiceCore &_core) :
   }
 }
 
-History::Heap::~Heap ()
+History::Book::~Book ()
 {
 #ifdef __GNUC__
   std::cout << __PRETTY_FUNCTION__ << std::endl;
@@ -93,75 +93,66 @@ History::Heap::~Heap ()
 }
 
 const std::string
-History::Heap::get_name () const
+History::Book::get_name () const
 {
   return "Call history";
 }
 
 void
-History::Heap::add (xmlNodePtr node)
+History::Book::add (xmlNodePtr node)
 {
-  Presentity *presentity = NULL;
+  Contact *contact = NULL;
 
-  presentity = new Presentity (core, node);
-  common_add (*presentity);
+  contact = new Contact (core, node);
+  common_add (*contact);
 }
 
 void
-History::Heap::add (const std::string name,
+History::Book::add (const std::string name,
 		    const std::string uri,
-		    const std::string status,
+		    const std::string contact_status,
 		    call_type c_t)
 {
-  Presentity *presentity = NULL;
+  Contact *contact = NULL;
   xmlNodePtr root = NULL;
 
   root = xmlDocGetRootElement (doc);
-  presentity = new Presentity (core, name, uri, status, c_t);
+  contact = new Contact (core, name, uri, contact_status, c_t);
 
-  xmlAddChild (root, presentity->get_node ());
+  xmlAddChild (root, contact->get_node ());
 
-  common_add (*presentity);
+  common_add (*contact);
 }
 
 void
-History::Heap::common_add (Presentity &presentity)
+History::Book::common_add (Contact &contact)
 {
-  add_presentity (presentity);
-  presence_core->fetch_presence (presentity.get_uri ());
+  add_contact (contact);
 }
 
 bool
-History::Heap::populate_menu (Ekiga::MenuBuilder &builder)
+History::Book::populate_menu (Ekiga::MenuBuilder &builder)
 {
   builder.add_action ("clear",
 		      "Clear", sigc::mem_fun (this,
-					      &History::Heap::clear));
+					      &History::Book::clear));
   return true;
 }
 
-bool
-History::Heap::has_presentity_with_uri (const std::string uri) const
-{
-  bool result = false;
-
-  for (const_iterator iter = begin ();
-       iter != end () && result != true;
-       iter++)
-    result = (iter->get_uri () == uri);
-
-  return result;
-}
-
 const std::set<std::string>
-History::Heap::existing_groups () const
+History::Book::existing_groups () const
 {
   // here it's more logical to lie
   return std::set<std::string> ();
 }
 
 void
-History::Heap::save () const
+History::Book::set_search_filter (std::string /*filter*/)
+{
+}
+
+void
+History::Book::save () const
 {
   xmlChar *buffer = NULL;
   int size = 0;
@@ -174,13 +165,10 @@ History::Heap::save () const
 }
 
 void
-History::Heap::clear ()
+History::Book::clear ()
 {
 
-  while (begin () != end ()) {
-
-    presence_core->unfetch_presence (begin ()->get_uri ());
-    remove_presentity (*begin ());
-  }
+  while (begin () != end ())
+    remove_contact (*begin ());
   save ();
 }
