@@ -746,6 +746,7 @@ static void on_registration_event_cb (std::string aor,
     msg = g_strdup_printf (_("Could not register %s"), aor.c_str ());
     break;
 
+  case GMManager::Processing:
   default:
     break;
   }
@@ -4111,9 +4112,9 @@ gm_main_window_update_stats (GtkWidget *main_window,
 
   quality_level = (float) jitter_quality / 100;
 
-  if ((lost < 0.02 && lost != 0.0) ||
-      (late < 0.02 && late != 0.0) ||
-      (out_of_order < 0.02 && out_of_order != 0.0) &&
+  if ((lost < 0.02 && lost >= 0.0) ||
+      (late < 0.02 && late >= 0.0) ||
+      (out_of_order < 0.02 && out_of_order >= 0.0) &&
       quality_level > 0.2)
     quality_level = 0.2;
 
