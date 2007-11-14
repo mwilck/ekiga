@@ -1,1 +1,1 @@
-SUBDIRS = skel call-history local-roster
+SUBDIRS = skel local-roster

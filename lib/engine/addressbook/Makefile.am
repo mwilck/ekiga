@@ -8,5 +8,6 @@ endif
 
 SUBDIRS = 		\
 	skel 		\
+	call-history	\
 	$(EDS_DIR) 	\
 	$(LDAP_DIR)
