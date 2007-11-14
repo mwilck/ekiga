@@ -9,10 +9,10 @@ INCLUDES = 								\
 	-I$(top_srcdir)/lib/engine/framework/		 		\
 	-I$(top_srcdir)/lib/engine/protocol/sip				\
 	-I$(top_srcdir)/lib/engine/addressbook/skel			\
+	-I$(top_srcdir)/lib/engine/addressbook/call-history		\
 	-I$(top_srcdir)/lib/engine/addressbook/evolution		\
 	-I$(top_srcdir)/lib/engine/addressbook/ldap			\
 	-I$(top_srcdir)/lib/engine/presence/skel			\
-	-I$(top_srcdir)/lib/engine/presence/call-history		\
 	-I$(top_srcdir)/lib/engine/presence/local-roster
 
 libekiga_engine_la_SOURCES = engine.h engine.cpp
