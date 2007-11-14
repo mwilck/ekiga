@@ -37,7 +37,7 @@
 
 #include "history-main.h"
 #include "contact-core.h"
-#include "history-cluster.h"
+#include "history-source.h"
 
 bool
 history_init (Ekiga::ServiceCore &core,

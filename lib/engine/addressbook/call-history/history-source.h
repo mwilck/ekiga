@@ -37,7 +37,7 @@
 #define __HISTORY_SOURCE_H__
 
 #include "source-impl.h"
-#include "history-heap.h"
+#include "history-book.h"
 
 namespace History
 {

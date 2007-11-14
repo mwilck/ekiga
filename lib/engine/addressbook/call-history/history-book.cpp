@@ -40,7 +40,7 @@
 
 #include "gmconf.h"
 
-#include "history-heap.h"
+#include "history-book.h"
 
 #define KEY "/apps/" PACKAGE_NAME "/contacts/call_history"
 

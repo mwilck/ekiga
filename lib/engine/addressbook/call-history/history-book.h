@@ -40,7 +40,7 @@
 
 #include "ui.h"
 #include "book-impl.h"
-#include "history-presentity.h"
+#include "history-contact.h"
 
 namespace History
 {

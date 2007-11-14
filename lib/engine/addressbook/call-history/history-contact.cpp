@@ -35,7 +35,7 @@
 
 #include <iostream>
 
-#include "history-presentity.h"
+#include "history-contact.h"
 
 History::Contact::Contact (Ekiga::ServiceCore &_core,
 			   xmlNodePtr _node):
