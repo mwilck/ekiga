@@ -1,5 +1,18 @@
 2007-11-14  Julien Puydt  <jpuydt@gnome.org>
 
+	* lib/engine/Makefile.am: Link the lib from the correct directory!
+	* lib/engine/addressbook/call-history/history-presentity.h:
+	* lib/engine/addressbook/call-history/history-presentity.cpp:
+	* lib/engine/addressbook/call-history/history-heap.h:
+	* lib/engine/addressbook/call-history/history-heap.cpp:
+	* lib/engine/addressbook/call-history/history-cluster.h:
+	* lib/engine/addressbook/call-history/history-cluster.cpp: Renamed from
+	presentity/heap/cluster to contact/book/source.
+	* lib/engine/addressbook/call-history/Makefile.am: Cope with previous
+	renaming.
+	
+2007-11-14  Julien Puydt  <jpuydt@gnome.org>
+
 	* lib/engine/presence/call-history/: Moved to lib/engine/addressbook/.
 	* configure.ac:
 	* lib/engine/presence/Makefile.am:

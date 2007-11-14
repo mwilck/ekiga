@@ -27,8 +27,8 @@ libekiga_engine_la_LIBADD = \
 	$(top_builddir)/lib/engine/protocol/sip/libgmsip.la \
 	$(top_builddir)/lib/engine/framework/libgmframework.la \
 	$(top_builddir)/lib/engine/addressbook/skel/libgmaddressbook.la \
+	$(top_builddir)/lib/engine/addressbook/call-history/libcall-history.la \
 	$(top_builddir)/lib/engine/presence/skel/libgmpresence.la \
-	$(top_builddir)/lib/engine/presence/call-history/libcall-history.la \
 	$(top_builddir)/lib/engine/presence/local-roster/liblocal-roster.la \
 	$(AM_LIBS)
 
