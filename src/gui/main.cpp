@@ -751,7 +751,8 @@ static void on_registration_event_cb (std::string aor,
     break;
   }
 
-  gm_main_window_flash_message (GTK_WIDGET (window), "%s", msg);
+  if (msg)
+    gm_main_window_flash_message (GTK_WIDGET (window), "%s", msg);
 }
 
 
