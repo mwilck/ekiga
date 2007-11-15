@@ -755,9 +755,6 @@ class GMManager : public OpalManager
   PDECLARE_NOTIFIER(PTimer, GMManager, OnGatewayIPTimeout);  
 
 
-  GtkWidget *audio_transmission_popup;
-  GtkWidget *audio_reception_popup;
-  
   PString current_call_token;
 
   CallingState calling_state; 

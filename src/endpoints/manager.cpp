@@ -43,16 +43,11 @@
 #include "h323.h"
 #include "sip.h"
 
-#include "accounts.h"
-#include "urlhandler.h"
-
 #include "ekiga.h"
 #include "audio.h"
 #include "misc.h"
-#include "preferences.h"
 #include "main.h"
 
-#include "gmdialog.h"
 #include "gmconf.h"
 
 #include <opal/transcoders.h>
@@ -87,9 +82,6 @@ GMManager::GMManager ()
   
   audio_tester = NULL;
 
-  audio_reception_popup = NULL;
-  audio_transmission_popup = NULL;
-  
   manager = NULL;
 
   RTPTimer.SetNotifier (PCREATE_NOTIFIER (OnRTPTimeout));
@@ -1203,11 +1195,6 @@ GMManager::Init ()
 void
 GMManager::ResetListeners ()
 {
-  GtkWidget *main_window = NULL;
-  GtkWidget *druid = NULL;
-
-  GtkWidget *dialog = NULL;
-
   gchar *iface = NULL;
   gchar *ports = NULL;
   gchar **couple = NULL;
@@ -1217,9 +1204,6 @@ GMManager::ResetListeners ()
   WORD max_port = 5080;
 
   BOOL success = FALSE;
-
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  druid = GnomeMeeting::Process ()->GetDruidWindow ();
 
   gnomemeeting_threads_enter ();
   iface = gm_conf_get_string (PROTOCOLS_KEY "interface");
@@ -1233,14 +1217,8 @@ GMManager::ResetListeners ()
     gnomemeeting_threads_leave ();
     
     h323EP->RemoveListener (NULL);
-    if (!h323EP->StartListener (iface, port)) {
-
-      gnomemeeting_threads_enter ();
-      dialog = gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Error while starting the listener for the H.323 protocol"), _("You will not be able to receive incoming H.323 calls. Please check that no other program is already running on the port used by Ekiga."));
-      if (gtk_window_is_active (GTK_WINDOW (druid)))
-	gtk_widget_set_parent (dialog, druid);
-      gnomemeeting_threads_leave ();
-    }
+    if (!h323EP->StartListener (iface, port)) 
+      PTRACE (1, "Manager\tCould not start H.323 listener on " << iface << ":" << port);
   }
 
   if (sipEP) {
@@ -1268,14 +1246,8 @@ GMManager::ResetListeners ()
         port++;
       }
 
-      if (!success) {
-
-        gnomemeeting_threads_enter ();
-        dialog = gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Error while starting the listener for the SIP protocol"), _("You will not be able to receive incoming SIP calls. Please check that no other program is already running on the ports used by Ekiga."));
-        if (gtk_window_is_active (GTK_WINDOW (druid)))
-          gtk_widget_set_parent (dialog, druid);
-        gnomemeeting_threads_leave ();
-      }
+      if (!success) 
+        PTRACE (1, "Manager\tCould not start SIP listener on " << iface << ":" << min_port << "-" << max_port);
     }
 
     g_strfreev (couple);
@@ -1613,7 +1585,7 @@ GMManager::OnRTPTimeout (PTimer &,
  
   /* If we didn't receive any audio and video data this time,
     then we start the timer */
-  if (stats.a_re_bandwidth == 0.0 && stats.v_re_bandwidth == 0.0) {
+  if (stats.a_re_bandwidth <= 0.0 && stats.v_re_bandwidth <= 0.0) {
 
     if (!NoIncomingMediaTimer.IsRunning ()) 
       NoIncomingMediaTimer.SetInterval (0, 30);
@@ -2109,7 +2081,7 @@ GMManager::OnRegistered (const PString & aor,
 
 void
 GMManager::OnRegistering (const PString & aor,
-                         BOOL isRegistering)
+                         G_GNUC_UNUSED BOOL isRegistering)
 {
   Ekiga::Runtime *runtime = GnomeMeeting::Process ()->GetRuntime (); // FIXME
   runtime->run_in_main (sigc::bind (registration_event.make_slot (), 
