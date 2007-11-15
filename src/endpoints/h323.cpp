@@ -272,11 +272,9 @@ GMH323Endpoint::Register (const PString & aor,
   if (i == P_MAX_INDEX)
     return;
 
-  host = aor.Left (i);
+  host = aor.Mid (i+1);
 
-  std::cout << host << std::flush;
-
-  if (!unregister) {
+  if (!unregister && !IsRegisteredWithGatekeeper (host)) {
 
     H323EndPoint::RemoveGatekeeper (0);
 
@@ -376,7 +374,7 @@ GMH323Endpoint::IsRegisteredWithGatekeeper (const PString & address)
 {
   PWaitAndSignal m(gk_name_mutex);
   
-  return (gk_name *= address);
+  return ((gk_name *= address) && H323EndPoint::IsRegisteredWithGatekeeper ());
 }
 
 
