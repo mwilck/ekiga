@@ -4158,6 +4158,7 @@ gm_main_window_set_stay_on_top (GtkWidget *main_window,
   gdk_window_set_always_on_top (GDK_WINDOW (gm_window), stay_on_top);
 }
 
+#include <gconf/gconf-client.h>
 
 /* The main () */
 int 
@@ -4197,6 +4198,7 @@ main (int argc,
   PProcess::PreInitialise (argc, argv, envp);
   
   /* GTK+ initialization */
+  g_type_init ();
   g_thread_init (NULL);
   gdk_threads_init ();
 #ifndef WIN32
