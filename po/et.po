@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: ekiga 2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-10-15 05:57+0100\n"
-"PO-Revision-Date: 2007-10-13 12:24+0300\n"
+"PO-Revision-Date: 2007-11-19 08:33+0200\n"
 "Last-Translator: Ivar Smolin <okul@linux.ee>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
 "MIME-Version: 1.0\n"
@@ -283,7 +283,7 @@ msgstr "Kohalik videoakna suurus"
 
 #: ../ekiga.schemas.in.in.h:52
 msgid "Maximum jitter buffer"
-msgstr ""
+msgstr "Suurim värinapuhver"
 
 #: ../ekiga.schemas.in.in.h:53
 msgid "Maximum video bandwidth"
@@ -291,7 +291,7 @@ msgstr "Video suurim läbilaskevõime"
 
 #: ../ekiga.schemas.in.in.h:54
 msgid "Minimum jitter buffer"
-msgstr ""
+msgstr "Väikseim värinapuhver"
 
 #: ../ekiga.schemas.in.in.h:55
 msgid "Minimum transmitted video quality"
@@ -303,7 +303,7 @@ msgstr "Vastamata kõnede ajalugu"
 
 #: ../ekiga.schemas.in.in.h:57
 msgid "NAT Binding Timeout"
-msgstr ""
+msgstr "NAT-ühendumise ajapiirang"
 
 #: ../ekiga.schemas.in.in.h:58
 msgid "No answer timeout"
@@ -627,6 +627,7 @@ msgstr "Kohalik suurendusaste"
 #: ../ekiga.schemas.in.in.h:130
 msgid "The maximum jitter buffer size for audio reception (in ms)"
 msgstr ""
+"Audiovastuvõtul kasutatava värinapuhvri suurim suurus (millisekundites)"
 
 #: ../ekiga.schemas.in.in.h:131
 msgid ""
@@ -640,7 +641,7 @@ msgstr ""
 
 #: ../ekiga.schemas.in.in.h:132
 msgid "The minimum jitter buffer size for audio reception (in ms)"
-msgstr ""
+msgstr "Audiovastuvõtul kasutatava värinapuhvri vähim suurus (millisekundites)"
 
 #: ../ekiga.schemas.in.in.h:134
 #, no-c-format
@@ -2980,6 +2981,10 @@ msgid ""
 "Out of order packets: %.1f %%\n"
 "Jitter buffer: %d ms"
 msgstr ""
+"Kadunud pakette: %.1f %%\n"
+"Hilinenud pakette: %.1f %%\n"
+"Segamini järjekorraga pakette: %.1f %%\n"
+"Värinapuhver: %d ms"
 
 #: ../src/gui/main.cpp:4574
 #, c-format
@@ -3452,7 +3457,7 @@ msgstr "Audiokoodekite sätted"
 #. between X and Y ms
 #: ../src/gui/preferences.cpp:1276
 msgid "Automatically adjust _jitter buffer between"
-msgstr ""
+msgstr "Automaatne _värinapuhvri määramine vahemikus"
 
 #: ../src/gui/preferences.cpp:1276
 msgid "and"
@@ -3465,10 +3470,12 @@ msgstr "ms"
 #: ../src/gui/preferences.cpp:1276
 msgid "The minimum jitter buffer size for audio reception (in ms)."
 msgstr ""
+"Audiovastuvõtul kasutatava värinapuhvri vähim suurus (millisekundites)."
 
 #: ../src/gui/preferences.cpp:1276
 msgid "The maximum jitter buffer size for audio reception (in ms)."
 msgstr ""
+"Audiovastuvõtul kasutatava värinapuhvri suurim suurus (millisekundites)."
 
 #: ../src/gui/preferences.cpp:1278
 msgid "Enable silence _detection"
