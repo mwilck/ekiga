@@ -4556,6 +4556,7 @@ main (int argc,
 #endif
 
   /* Threads + Locale Init + config */
+  g_type_init ();
   g_thread_init (NULL);
   gdk_threads_init ();
   gdk_threads_enter ();
