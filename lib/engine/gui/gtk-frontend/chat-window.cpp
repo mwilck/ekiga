@@ -601,6 +601,8 @@ chat_window_add_page (ChatWindow *chat_window,
 
   chat_window_page_grab_focus (CHAT_WINDOW_PAGE (page));
 
+  gtk_widget_show_all (GTK_WIDGET (page));
+
   return page;
 }
 
