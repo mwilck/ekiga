@@ -127,8 +127,15 @@ gm_sb_push_message (GmStatusbar *sb,
     msg_id = gtk_statusbar_push (GTK_STATUSBAR (sb), id, buffer);
 
     if (flash_message)
-      g_timeout_add (15000, gm_statusbar_clear_msg_cb,
-		     GINT_TO_POINTER (msg_id));
+    {
+#if GLIB_CHECK_VERSION (2, 14, 0)
+      g_timeout_add_seconds (15, gm_statusbar_clear_msg_cb, 
+		       GINT_TO_POINTER (msg_id));
+#else
+      g_timeout_add (15000, gm_statusbar_clear_msg_cb, 
+		       GINT_TO_POINTER (msg_id));
+#endif
+    }
   }
 }
 

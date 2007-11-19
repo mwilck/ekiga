@@ -529,9 +529,8 @@ gnome_prefs_int_option_menu_new (GtkWidget *table,
 				 int row)
 {
   GnomePrefsWindow *gpw = NULL;
-  GtkWidget *item = NULL;
   GtkWidget *label = NULL;
-  GtkWidget *option_menu = NULL;
+  GtkWidget *combo_box = NULL;
   GtkWidget *menu = NULL;
 
   int cpt = 0;
@@ -552,43 +551,43 @@ gnome_prefs_int_option_menu_new (GtkWidget *table,
   gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
 
   menu = gtk_menu_new ();
-  option_menu = gtk_option_menu_new ();
+  g_debug (G_STRLOC);
+  combo_box = gtk_combo_box_new_text ();
   if (!writable)
-    gtk_widget_set_sensitive (GTK_WIDGET (option_menu), FALSE);
+    gtk_widget_set_sensitive (GTK_WIDGET (combo_box), FALSE);
   
-  gtk_label_set_mnemonic_widget (GTK_LABEL (label), option_menu);
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label), combo_box);
 
+    g_debug ("%s: label = %s", G_STRLOC, label_txt);
   while (options [cpt]) {
-
-    item = gtk_menu_item_new_with_label (options [cpt]);
-    gtk_widget_show (item);
-    gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+    g_debug ("%s: option = %s", G_STRLOC, options[cpt]);
+    gtk_combo_box_append_text (GTK_COMBO_BOX (combo_box), options [cpt]);
     cpt++;
   }
 
-  gtk_option_menu_set_menu (GTK_OPTION_MENU (option_menu), menu);
-  gtk_option_menu_set_history (GTK_OPTION_MENU (option_menu),
+  gtk_combo_box_set_active (GTK_COMBO_BOX (combo_box),
  			       gm_conf_get_int (conf_key));
 
-  gtk_table_attach (GTK_TABLE (table), option_menu, 1, 2, row, row+1,
+  gtk_table_attach (GTK_TABLE (table), combo_box, 1, 2, row, row+1,
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (GTK_FILL),
                     0, 0);
 
   gpw = (GnomePrefsWindow *) g_object_get_data (G_OBJECT (table), "gpw");
   if (gpw && tooltip)
-    gtk_tooltips_set_tip (gpw->tips, option_menu, tooltip, NULL);
+    gtk_tooltips_set_tip (gpw->tips, combo_box, tooltip, NULL);
 
-  
-  g_signal_connect (G_OBJECT (GTK_OPTION_MENU (option_menu)->menu),
+#if 0
+  g_signal_connect (G_OBJECT (GTK_COMBO_BOX (combo_box)->menu),
 		    "deactivate", G_CALLBACK (int_option_menu_changed),
   		    (gpointer) conf_key);
+#endif
   gm_conf_notifier_add (conf_key, int_option_menu_changed_nt,
-			(gpointer) option_menu);
+			(gpointer) combo_box);
 
   gtk_widget_show_all (table);
   
-  return option_menu;
+  return combo_box;
 }                                                                              
 
 
