@@ -531,7 +531,6 @@ gnome_prefs_int_option_menu_new (GtkWidget *table,
   GnomePrefsWindow *gpw = NULL;
   GtkWidget *label = NULL;
   GtkWidget *combo_box = NULL;
-  GtkWidget *menu = NULL;
 
   int cpt = 0;
   gboolean writable = FALSE;
@@ -550,17 +549,13 @@ gnome_prefs_int_option_menu_new (GtkWidget *table,
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
 
-  menu = gtk_menu_new ();
-  g_debug (G_STRLOC);
   combo_box = gtk_combo_box_new_text ();
   if (!writable)
     gtk_widget_set_sensitive (GTK_WIDGET (combo_box), FALSE);
   
   gtk_label_set_mnemonic_widget (GTK_LABEL (label), combo_box);
 
-    g_debug ("%s: label = %s", G_STRLOC, label_txt);
   while (options [cpt]) {
-    g_debug ("%s: option = %s", G_STRLOC, options[cpt]);
     gtk_combo_box_append_text (GTK_COMBO_BOX (combo_box), options [cpt]);
     cpt++;
   }
@@ -577,11 +572,10 @@ gnome_prefs_int_option_menu_new (GtkWidget *table,
   if (gpw && tooltip)
     gtk_tooltips_set_tip (gpw->tips, combo_box, tooltip, NULL);
 
-#if 0
-  g_signal_connect (G_OBJECT (GTK_COMBO_BOX (combo_box)->menu),
-		    "deactivate", G_CALLBACK (int_option_menu_changed),
-  		    (gpointer) conf_key);
-#endif
+  g_signal_connect (GTK_COMBO_BOX (combo_box), 
+		    "changed", G_CALLBACK (int_option_menu_changed),
+  		    (gpointer) conf_key);                                   
+
   gm_conf_notifier_add (conf_key, int_option_menu_changed_nt,
 			(gpointer) combo_box);
 

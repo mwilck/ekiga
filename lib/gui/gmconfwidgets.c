@@ -243,7 +243,8 @@ adjustment_changed_nt (G_GNUC_UNUSED gpointer cid,
 				     0, 0, NULL,
 				     (gpointer) adjustment_changed,
 				     NULL);
-    if (gtk_adjustment_get_value (GTK_ADJUSTMENT (s)) != current_value)
+    if (gtk_adjustment_get_value (GTK_ADJUSTMENT (s)) > current_value
+        || gtk_adjustment_get_value (GTK_ADJUSTMENT (s)) < current_value)
       gtk_adjustment_set_value (GTK_ADJUSTMENT (s), current_value);
     g_signal_handlers_unblock_matched (G_OBJECT (s),
 				       G_SIGNAL_MATCH_FUNC,
@@ -262,21 +263,20 @@ adjustment_changed_nt (G_GNUC_UNUSED gpointer cid,
  * PRE          :  Non-Null data corresponding to int the config key to modify.
  */
 void
-int_option_menu_changed (GtkWidget *menu,
+int_option_menu_changed (GtkWidget *option_menu,
 			 gpointer data)
 {
   gchar *key = NULL;
-  GtkWidget *active_item = NULL;
-  gint item_index = -1;
-  
-  key = (gchar *) data;
-  
-  active_item = gtk_menu_get_active (GTK_MENU (menu));
-  item_index = g_list_index (GTK_MENU_SHELL (GTK_MENU (menu))->children, 
-			     active_item);
+  unsigned int current_value = 0;
+  unsigned int i = 0;
 
-  if (gm_conf_get_int (key) != item_index)
-    gm_conf_set_int (key, item_index);
+  key = (gchar *) data;
+
+  i = gtk_combo_box_get_active (GTK_COMBO_BOX (option_menu));
+  current_value = gm_conf_get_int (key);
+
+  if (i != current_value)
+    gm_conf_set_int (key, i);
 }
 
 
@@ -308,8 +308,8 @@ int_option_menu_changed_nt (G_GNUC_UNUSED gpointer cid,
 				     0, 0, NULL,
 				     (gpointer) int_option_menu_changed,
 				     NULL);
-    if (current_value != gtk_option_menu_get_history (GTK_OPTION_MENU (e)))
-	gtk_option_menu_set_history (GTK_OPTION_MENU (e), current_value);
+    if (current_value != gtk_combo_box_get_active (GTK_COMBO_BOX (e)))
+	gtk_combo_box_set_active (GTK_COMBO_BOX (e), current_value);
     g_signal_handlers_block_matched (G_OBJECT (e),
 				     G_SIGNAL_MATCH_FUNC,
 				     0, 0, NULL,
@@ -318,6 +318,7 @@ int_option_menu_changed_nt (G_GNUC_UNUSED gpointer cid,
     gdk_threads_leave ();
   }
 }
+
 
 /* DESCRIPTION  :  This function is called when a string option menu changes.
  * BEHAVIOR     :  Updates the key given as parameter to the new value of the
