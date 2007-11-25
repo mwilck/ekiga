@@ -347,6 +347,10 @@ GMManager::SetVideoMediaFormats (PStringArray *order)
                                      video_sizes[size].width);  
       media_format.SetOptionInteger (OpalVideoFormat::FrameHeightOption (), 
                                      video_sizes[size].height);  
+      media_format.SetOptionInteger(OpalVideoFormat::MinRxFrameWidthOption(), 176);
+      media_format.SetOptionInteger(OpalVideoFormat::MinRxFrameHeightOption(), 144);
+      media_format.SetOptionInteger(OpalVideoFormat::MaxRxFrameWidthOption(), 704);
+      media_format.SetOptionInteger(OpalVideoFormat::MaxRxFrameHeightOption(), 576);
 //      media_format.SetOptionBoolean (OpalVideoFormat::DynamicVideoQualityOption (), 
 //                                     TRUE);  
 //      media_format.SetOptionBoolean (OpalVideoFormat::AdaptivePacketDelayOption (), 
