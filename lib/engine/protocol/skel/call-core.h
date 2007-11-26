@@ -25,7 +25,7 @@
 
 
 /*
- *                         callmanager.h  -  description
+ *                         callcore.h  -  description
  *                         ------------------------------------------
  *   begin                : written in 2007 by Damien Sandras 
  *   copyright            : (c) 2007 by Damien Sandras
@@ -40,14 +40,14 @@
 
 namespace Ekiga {
 
-  class CallManager
+  class CallCore
     {
 
   public:
 
       /* The destructor
        */
-      virtual ~CallManager () {}
+      virtual ~CallCore () {}
 
 
       /*                 
@@ -130,7 +130,7 @@ namespace Ekiga {
        *         state          : the current registration state
        *         error          : the associated error in case of failure 
        */
-      sigc::signal<void, std::string aor, CallManager::RegistrationState state, std::string error> registration_event;
+      sigc::signal<void, std::string aor, CallCore::RegistrationState state, std::string error> registration_event;
 
 
       /*
