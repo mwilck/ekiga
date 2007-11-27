@@ -1336,17 +1336,6 @@ gm_mw_init_contacts_list (GtkWidget *main_window)
 static void 
 gm_mw_init_calls_history (GtkWidget *main_window)
 {
-  GmMainWindow *mw = NULL;
-  
-  GtkWidget *label = NULL;
-
-  g_return_if_fail (main_window != NULL);
-  mw = gm_mw_get_mw (main_window);
-
-  label = gtk_label_new (_("Calls History"));
-
-  gtk_notebook_append_page (GTK_NOTEBOOK (mw->main_notebook),
-			    NULL, label);
 }
 
 
