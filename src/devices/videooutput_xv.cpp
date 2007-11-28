@@ -321,11 +321,17 @@ GMVideoDisplay_XV::DisplayFrame (     const guchar *frame,
     return;
   }
 
-  if  ((currentFrame.display == LOCAL_VIDEO) && (lxvWindow))
+  if  ((currentFrame.display == LOCAL_VIDEO) && (lxvWindow)) {
+    lxvWindow->ProcessEvents();
     lxvWindow->PutFrame ((uint8_t *) frame, width, height);
-
-  if  ((currentFrame.display == REMOTE_VIDEO) && (rxvWindow))
+    lxvWindow->Sync();
+  }
+ 
+  if  ((currentFrame.display == REMOTE_VIDEO) && (rxvWindow)) {
+    rxvWindow->ProcessEvents();
     rxvWindow->PutFrame ((uint8_t *) frame, width, height);
+    rxvWindow->Sync();
+  }
 }
 
 void 
@@ -346,9 +352,15 @@ GMVideoDisplay_XV::DisplayPiPFrames (     const guchar *lframe,
   if (currentFrame.display == FULLSCREEN && rxvWindow && !rxvWindow->IsFullScreen ()) {
     runtime->run_in_main (sigc::bind (toggle_fullscreen.make_slot (), 0));
   }
-  if (rxvWindow )
+  if (rxvWindow ) {
+    rxvWindow->ProcessEvents();
     rxvWindow->PutFrame ((uint8_t *) rframe, rwidth, rheight);
+    rxvWindow->Sync();
+  }
 
-  if (lxvWindow)
+  if (lxvWindow) {
+    lxvWindow->ProcessEvents();
     lxvWindow->PutFrame ((uint8_t *) lframe, lwidth, lheight);
+    lxvWindow->Sync();
+  }
 }

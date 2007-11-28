@@ -47,9 +47,11 @@
 #ifdef HAVE_SHM
 #include <X11/extensions/XShm.h>
 #endif
-#include <X11/extensions/Xv.h>
 #include <X11/extensions/Xvlib.h>
 
+#include "xwindow.h"
+
+#define NUM_BUFFERS 1
 
 /**
  * String: wrapper/helper.
@@ -68,15 +70,15 @@
  *
  * @author Matthias Schneider
  */
-class XVWindow
+class XVWindow : public XWindow
 {
 public:
 
   XVWindow();
 
-  ~XVWindow();
+  virtual ~XVWindow();
   
-  int Init (Display *dp, 
+  virtual int Init (Display *dp, 
             Window xvWindow, 
             GC gc, 
             int x, 
@@ -86,169 +88,60 @@ public:
             int imageWidth, 
             int imageHeight);
 
-  void PutFrame (uint8_t *frame, 
+  virtual void PutFrame (uint8_t *frame, 
                  uint16_t width, 
                  uint16_t height);
 
-  void ToggleFullscreen ();
- 
-  void ToggleOntop ();
-  
-  void ToggleDecoration ();
-
-  void SetWindow (int x, 
-                  int y, 
-                  unsigned int windowWidth, 
-                  unsigned int windowHeight);
-  
-  void GetWindow (int *x, 
-                  int *y, 
-                  unsigned int *windowWidth, 
-                  unsigned int *windowHeight);
-
-  bool IsFullScreen () const { return _state.fullscreen; };
- 
-  bool HasDecoration () const { return _state.decoration; };
-
-  bool IsOntop () const { return _state.ontop; };
-
-  Window GetWindowHandle () const { return _XVWindow; };
-
-  int GetYUVWidth () const { return _XVImage->width; };
-
-  int GetYUVHeight() const { return _XVImage->height; };
-
-  void RegisterMaster (XVWindow *master) { _master = master; };
-
-  void RegisterSlave (XVWindow *slave) { _slave = slave; };
+  virtual void Sync();
 
 private:
-
-  Display *_display;
-  
-  Window _rootWindow;
-  Window _XVWindow;
-  
   unsigned int _XVPort;
-  GC _gc;
-  XvImage * _XVImage;
-
+  XvImage * _XVImage[NUM_BUFFERS];
 #ifdef HAVE_SHM
-  XShmSegmentInfo _XShmInfo;
+  XShmSegmentInfo _XShmInfo[NUM_BUFFERS];
 #endif
+  unsigned int _curBuffer;
 
-  int _wmType;
-  bool _isInitialized;
-  bool _embedded;
-
-  bool _paintColorKey;
-  int _colorKey;
-  bool _useShm;
-
-  typedef struct 
-  {
-    bool fullscreen;
-    bool ontop;
-    bool decoration;
-    int oldx;
-    int oldy;
-    int oldWidth;
-    int oldHeight;
-    int curX;
-    int curY;
-    int curWidth;
-    int curHeight;
-    int origLayer;
-  } State;
-
-  State _state;
-  XVWindow * _master;
-  XVWindow * _slave;
-
-  Atom XA_NET_SUPPORTED;
-  Atom XA_WIN_PROTOCOLS;
-  Atom XA_WIN_LAYER;
-  Atom XA_NET_WM_STATE;
-  Atom XA_NET_WM_STATE_FULLSCREEN;
-  Atom XA_NET_WM_STATE_ABOVE;
-  Atom XA_NET_WM_STATE_STAYS_ON_TOP;
-  Atom XA_NET_WM_STATE_BELOW;
-  Atom WM_DELETE_WINDOW;
   Atom XV_SYNC_TO_VBLANK;
   Atom XV_COLORKEY;
   Atom XV_AUTOPAINT_COLORKEY;
 
-  /**
-   * Sets the layer for the window.
-   */
-  void SetLayer (int layer);
+  virtual void SetSizeHints (int x, //different
+                             int y, 
+                             int imageWidth, 
+                             int imageHeight, 
+                             int windowWidth, 
+                             int windowHeight);
 
-  /**
-   * Fullscreen for ewmh WMs.
-   */
-  void SetEWMHFullscreen (int action);
+  virtual unsigned int FindXVPort ();
 
-  void SetDecoration (bool d);
-  
-  void SetSizeHints (int x, 
-                     int y, 
-                     int imageWidth, 
-                     int imageHeight, 
-                     int windowWidth, 
-                     int windowHeight);
-
-  /**
-   * Detects window manager type.
-   */
-  int GetWMType ();
-
-  int GetGnomeLayer ();
-
-  /**
-   * Tests an atom.
-   */
-  int GetSupportedState (Atom atom);
-
-  /**
-   * Returns the root window's.
-   */
-  int GetWindowProperty (Atom type, 
-                         Atom **args, 
-                         unsigned long *nitems);
-
-  void CalculateSize (int width, 
-                      int height, 
-                      bool doAspectCorrection);
-
-  unsigned int FindXVPort ();
-
-  void DumpCapabilities (int port);
+  virtual void DumpCapabilities (int port);
 
   /**
    * Check if an atom exists and return it
    */
-  Atom GetXVAtom( char const * name );
+  virtual Atom GetXVAtom( char const * name );
 
   /**
    * Check and initialize colorkeying
    */
-  bool InitColorkey();
+  virtual bool InitColorkey();
 
   /**
    * Check if image size is supported by XV
    */
-  bool checkMaxSize(unsigned int width, unsigned int height);
+  virtual bool checkMaxSize(unsigned int width, unsigned int height);
 
   /**
    * Verify pixel depth
    */
- int checkDepth (int depth);
+  virtual bool checkDepth ();
 
   /**
    * Attach to Shared Memory
    */
 #ifdef HAVE_SHM  
-  void ShmAttach(int imageWidth, int imageHeight);
+  virtual void ShmAttach(int imageWidth, int imageHeight);
 #endif
 };
 

@@ -44,6 +44,7 @@
 #include "common.h"
 #include "videooutput_gdk.h"
 
+#include <xwindow.h>
 #include <xvwindow.h>
 
 class GMManager;

@@ -41,6 +41,12 @@ libgmwidgets_la_SOURCES =	\
 	gm-cell-renderer-bitext.h
 
 
+if !WIN32
+libgmwidgets_la_SOURCES +=	\
+	xwindow.cpp		\
+	xwindow.h
+endif
+
 if HAVE_XV
 libgmwidgets_la_SOURCES +=	\
 	xvwindow.cpp		\
@@ -59,6 +65,11 @@ INCLUDES =						\
 	-I$(top_srcdir)/lib				\
 	-I$(top_srcdir)					\
 	-I$(top_builddir)
+
+if !WIN32
+INCLUDES +=						\
+	-I$(top_srcdir)/lib/pixops
+endif
 
 AM_CXXFLAGS = $(GTK_CFLAGS) $(GLIB_CFLAGS) $(OPAL_CFLAGS) $(PTLIB_CFLAGS) $(XV_CFLAGS) $(DX_CFLAGS)
 AM_CFLAGS = $(GTK_CFLAGS) $(GLIB_CFLAGS) $(GNOME_CFLAGS)
