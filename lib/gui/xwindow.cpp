@@ -189,6 +189,9 @@ XWindow::Init (Display* dp,
 
   XLockDisplay (_display);
 
+  if (PTrace::CanTrace (4)) 
+    DumpVisuals();
+
   if (!CreateAtomsAndWindow(gc, x, y, windowWidth, windowHeight)) {
     XUnlockDisplay(_display);
     return 0;
@@ -1107,4 +1110,29 @@ void XWindow::CreateXImage(int width, int height)
          _XImage->data = _imageDataOrig + 16 - ((long)_imageDataOrig & 15);
          memset(_XImage->data, 0, width * 4 * height);
   }
+}
+
+
+void
+XWindow::DumpVisuals()
+{
+    XVisualInfo visualTemplate;
+    XVisualInfo *visuals;
+    int nbVisuals = 0;
+    int i = 0;
+
+    visualTemplate.screen = DefaultScreen(_display);
+    visuals = XGetVisualInfo(_display, VisualScreenMask , &visualTemplate, &nbVisuals);
+    if (visuals != NULL) {
+        for (i = 0; i < nbVisuals; i++) {
+            PTRACE(4, "X11\tVisual #"  << i << " ID: " << visuals[i].visualid
+                       << " Class: "   << visuals[i].c_class  
+                       << " BPRGB: "     << visuals[i].bits_per_rgb
+                       << " Depth: "   << visuals[i].depth << std::hex
+                       << " Red: 0x"   << visuals[i].red_mask 
+                       << " Green: 0x" << visuals[i].green_mask
+                       << " Blue 0x"   << visuals[i].blue_mask << std::dec);
+        }
+        XFree(visuals);
+    }
 }

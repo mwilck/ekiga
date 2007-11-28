@@ -258,6 +258,8 @@ private:
 #endif
 
   virtual void CreateXImage(int width, int height);
+
+  virtual void DumpVisuals();
 };
 
 #define wm_LAYER         1
