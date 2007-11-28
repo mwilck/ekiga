@@ -134,6 +134,25 @@ esac
 
 AM_CONDITIONAL(WIN32, test "x${win32}" = "x1")
 
+dnl Check the byte order 
+AC_MSG_CHECKING(Byte order)
+byte_order="unknown"
+AC_ARG_WITH([endianess], 
+            [  --with-endianess=big|little Endianess of target system],
+	    [byte_order="$withval endian"], 
+            [AC_C_BIGENDIAN([byte_order="big endian"], [byte_order="little endian"], [])])
+
+if test "x$byte_order" = "xbig endian"; then
+    AC_DEFINE(WORDS_BIGENDIAN,1,[Big Endian Architecture])
+else 
+    if test "x$byte_order" = "xlittle endian"; then
+	AC_DEFINE(WORDS_LITTLEENDIAN,1,[Little Endian Architecture])
+    else
+      AC_MSG_ERROR(Unable to detect endianess of target system - please specify)
+    fi
+fi
+
+AC_MSG_RESULT([$byte_order])
 
 dnl ###############################
 dnl   Mandatory intltool support
@@ -328,6 +347,46 @@ fi
 
 AM_CONDITIONAL(HAVE_ESD, test "x$found_esd" = "xyes")
 
+AM_PROG_AS
+
+dnl ###############################
+dnl Checks for MMX support
+dnl ###############################
+AC_MSG_CHECKING(for x86 platform)
+case $host_cpu in
+  i386|i486|i586|i686|i786|k6|k7)
+	use_x86_asm=yes
+        ;;
+   *)
+  	use_x86_asm=no
+esac
+AC_MSG_RESULT($use_x86_asm)
+
+use_mmx_asm=no
+if test $use_x86_asm = yes; then
+    save_ac_ext=$ac_ext
+    ac_ext=S
+    
+    AC_MSG_CHECKING(compiler support for MMX)
+    cp lib/pixops/scale_line_22_33_mmx.S conftest.S
+    if AC_TRY_EVAL(ac_compile); then
+        use_mmx_asm=yes
+    fi
+
+    rm -rf conftest*
+
+    ac_ext=$save_ac_ext
+    if test $use_mmx_asm = yes; then
+      AC_DEFINE([USE_MMX], 1, [MMX Support])
+      AC_MSG_RESULT(yes)
+    else
+      AC_MSG_RESULT(no)
+    fi
+fi
+
+AM_CONDITIONAL(USE_MMX, test x$use_mmx_asm = xyes)
+
+
 
 dnl ###############################
 dnl Checks for Shared Memory extension
@@ -371,22 +430,20 @@ dnl ###########################################################################
 DX="disabled"
 
 if test "x${gm_platform}" = "xmingw" ; then
-  AC_ARG_ENABLE(directx, [  --disable-directx		Disable DirectDraw hardware acceleration],,enable_directx=yes)
+  AC_ARG_WITH(directx-dir, [  --with-directx-dir=PFX		Location of DirectDraw], with_directx_dir="$withval", with_directx_dir=".")
 
-  if test "x${enable_directx}" = "xyes" ; then
-    AC_ARG_WITH(directx-dir, [  --with-directx-dir=PFX		Location of DirectDraw], with_directx_dir="$withval", with_directx_dir=".")
-
-    dnl Check for the includes presence
-    AC_MSG_CHECKING(for DirectX includes in ${with_directx_dir}/include)
-    AC_MSG_RESULT()
-    if test -d ${with_directx_dir}/include; then
-      DX_CFLAGS="-I${with_directx_dir}/include"
-      DX_LIBS="$EKIGA_LIBS -lddraw"
-      AC_SUBST(DX_LIBS)
-      AC_SUBST(DX_CFLAGS)
-      DX="enabled"
-      AC_DEFINE(HAVE_DX,1,[DirectDraw support])
-    fi
+  dnl Check for the includes presence
+  AC_MSG_CHECKING(for DirectX includes in ${with_directx_dir}/include)
+  AC_MSG_RESULT()
+  if test -d ${with_directx_dir}/include; then
+    DX_CFLAGS="-I${with_directx_dir}/include"
+    DX_LIBS="$EKIGA_LIBS -lddraw"
+    AC_SUBST(DX_LIBS)
+    AC_SUBST(DX_CFLAGS)
+    DX="enabled"
+    AC_DEFINE(HAVE_DX,1,[DirectDraw support])
+  else
+    AC_MSG_ERROR([Unable to locate DirectX header files; --with-directx-dir is obligatory])
   fi
 fi
 
@@ -621,6 +678,7 @@ lib/Makefile
 lib/druid/Makefile
 lib/gmconf/Makefile
 lib/gui/Makefile
+lib/pixops/Makefile
 lib/toolbox/Makefile
 lib/platform/Makefile
 po/Makefile.in
@@ -684,6 +742,7 @@ fi
 echo ""
 echo "                         OS Type  :  $target_os"
 echo "                    Machine Type  :  $target_cpu"
+echo "                      Byte Order  :  $byte_order"
 echo ""
 echo " If all settings are OK, type make and make install "
 echo "========================================================"

@@ -1,3 +1,25 @@
+2007-11-28  Matthias Schneider  <ma30002000@yahoo.de>
+	* lib/pixops/convert:
+	* lib/pixops/pixops-internal.h:
+	* lib/pixops/pixops.c:
+	* lib/pixops/pixbuf-transform-math.ltx:
+	* lib/pixops/composite_line_color_22_4a4_mmx.S:
+	* lib/pixops/have_mmx.S:
+	* lib/pixops/DETAILS:
+	* lib/pixops/composite_line_22_4a4_mmx.S:
+	* lib/pixops/timescale.c:
+	* lib/pixops/pixops.h:
+	* lib/pixops/scale_line_22_33_mmx.S:
+	* lib/pixops/Makefile.am:
+	* lib/pixops/README:
+	* lib/pixops/makefile.msc:
+	* configure.ac:
+	* lib/Makefile.am:
+	Added pixops lib for software scaling
+	check byte order in configure
+	check for mmx support in cofigure
+	make DirectX mandatory on windows
+	
 2007-11-27  Damien Sandras  <dsandras@gnome.org>
 
 	* src/gui/main.cpp: 

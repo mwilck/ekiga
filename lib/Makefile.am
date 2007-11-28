@@ -4,6 +4,11 @@ if !HAVE_GNOME
 SUBDIRS += druid
 endif
 
+if !WIN32
+SUBDIRS += pixops
+endif
+
+
 noinst_LTLIBRARIES = libekiga.la
 
 libekiga_la_SOURCES =			\
@@ -25,6 +30,10 @@ libekiga_la_LIBADD = gmconf/libgmconf.la \
 
 if !HAVE_GNOME
 libekiga_la_LIBADD += druid/libdruid.la
+endif
+
+if !WIN32
+libekiga_la_LIBADD += pixops/libpixops.la
 endif
 
 AM_CFLAGS = $(GLIB_CFLAGS) $(GTK_CFLAGS) $(DBUS_CFLAGS)

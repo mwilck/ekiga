@@ -1,0 +1,9 @@
+sed -i -e 's/_pixops/ pixops/g' pixops.c
+sed -i -e 's/_pixops/ pixops/g' pixops.h
+sed -i -e 's/_pixops/ pixops/g' pixops-internal.h
+sed -i -e 's/_pixops/ pixops/g' have_mmx.S
+sed -i -e 's/_pixops/ pixops/g' scale_line_22_33_mmx.S
+sed -i -e 's/_pixops/ pixops/g' composite_line_22_4a4_mmx.S
+sed -i -e 's/_pixops/ pixops/g' scale_line_22_33_mmx.S
+sed -i -e 's/_pixops/ pixops/g' composite_line_color_22_4a4_mmx.S
+sed -i -e 's/_pixops/ pixops/g' timescale.c
