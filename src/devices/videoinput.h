@@ -61,6 +61,9 @@ class GMVideoGrabber : public PThread
    */
   GMVideoGrabber (BOOL start_grabbing,
 		  BOOL sync,
+		  unsigned _width,
+		  unsigned _height,
+		  unsigned _rate,
 		  GMManager &endpoint);
 
 
@@ -168,8 +171,9 @@ class GMVideoGrabber : public PThread
   void VGOpen (void);
   void VGClose (void);
 
-  int height;
-  int width;
+  unsigned width;
+  unsigned height;
+  unsigned frame_rate;
   int whiteness;
   int brightness;
   int colour;

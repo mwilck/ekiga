@@ -711,6 +711,8 @@ video_device_setting_changed_nt (G_GNUC_UNUSED gpointer id,
   PString name;
 
   BOOL preview = FALSE;
+  unsigned size = 0;
+  unsigned rate = 15;
 
   GMManager *ep = NULL;
 
@@ -723,10 +725,12 @@ video_device_setting_changed_nt (G_GNUC_UNUSED gpointer id,
 
       gdk_threads_enter ();
       preview = gm_conf_get_bool (VIDEO_DEVICES_KEY "enable_preview");
+      size = gm_conf_get_int (VIDEO_DEVICES_KEY "size");
+      rate = gm_conf_get_int (VIDEO_CODECS_KEY "frame_rate");
       gdk_threads_leave ();
 
       if (preview)
-	ep->CreateVideoGrabber ();
+	ep->CreateVideoGrabber (TRUE, TRUE, video_sizes[size].width, video_sizes[size].height, rate);
     }
   }
 }
@@ -742,7 +746,9 @@ static void video_preview_changed_nt (G_GNUC_UNUSED gpointer id,
 				      G_GNUC_UNUSED gpointer data)
 {
   GMManager *ep = NULL;
-  
+  unsigned size = 0;
+  unsigned rate = 15;
+
   if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
    
     /* We reset the video device */
@@ -750,8 +756,13 @@ static void video_preview_changed_nt (G_GNUC_UNUSED gpointer id,
     
     if (ep && ep->GetCallingState () == GMManager::Standby) {
     
+      gdk_threads_enter ();
+      size = gm_conf_get_int (VIDEO_DEVICES_KEY "size");
+      rate = gm_conf_get_int (VIDEO_CODECS_KEY "frame_rate");
+      gdk_threads_leave ();
+
       if (gm_conf_entry_get_bool (entry)) 
-	ep->CreateVideoGrabber ();
+	ep->CreateVideoGrabber (TRUE, TRUE, video_sizes[size].width, video_sizes[size].height, rate);
       else 
 	ep->RemoveVideoGrabber ();
     }

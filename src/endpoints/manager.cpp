@@ -168,11 +168,15 @@ void GMManager::UpdateDevices ()
 {
   BOOL preview = FALSE;
   gchar *device_name = NULL;
+  unsigned size = 0;
+  unsigned rate = 15;
 
   /* Get the config settings */
   gnomemeeting_threads_enter ();
   preview = gm_conf_get_bool (VIDEO_DEVICES_KEY "enable_preview");
   device_name = gm_conf_get_string (VIDEO_DEVICES_KEY "input_device");
+  size = gm_conf_get_int (VIDEO_DEVICES_KEY "size");
+  rate = gm_conf_get_int (VIDEO_CODECS_KEY "frame_rate");
   gnomemeeting_threads_leave ();
 
   /* Do not change these values during calls */
@@ -180,7 +184,7 @@ void GMManager::UpdateDevices ()
 
     /* Video preview */
     if (preview) 
-      CreateVideoGrabber (TRUE, TRUE);
+      CreateVideoGrabber (TRUE, TRUE, video_sizes[size].width, video_sizes[size].height, rate);
     else 
       RemoveVideoGrabber ();
 
@@ -347,10 +351,6 @@ GMManager::SetVideoMediaFormats (PStringArray *order)
                                      video_sizes[size].width);  
       media_format.SetOptionInteger (OpalVideoFormat::FrameHeightOption (), 
                                      video_sizes[size].height);  
-      media_format.SetOptionInteger(OpalVideoFormat::MinRxFrameWidthOption(), 176);
-      media_format.SetOptionInteger(OpalVideoFormat::MinRxFrameHeightOption(), 144);
-      media_format.SetOptionInteger(OpalVideoFormat::MaxRxFrameWidthOption(), 704);
-      media_format.SetOptionInteger(OpalVideoFormat::MaxRxFrameHeightOption(), 576);
 //      media_format.SetOptionBoolean (OpalVideoFormat::DynamicVideoQualityOption (), 
 //                                     TRUE);  
 //      media_format.SetOptionBoolean (OpalVideoFormat::AdaptivePacketDelayOption (), 
@@ -508,14 +508,17 @@ GMManager::StopAudioTester ()
 
 GMVideoGrabber *
 GMManager::CreateVideoGrabber (BOOL start_grabbing,
-                               BOOL synchronous)
+                               BOOL synchronous,
+			       unsigned width,
+			       unsigned height,
+			       unsigned rate)
 {
   PWaitAndSignal m(vg_access_mutex);
 
   if (video_grabber)
     delete (video_grabber);
 
-  video_grabber = new GMVideoGrabber (start_grabbing, synchronous, *this);
+  video_grabber = new GMVideoGrabber (start_grabbing, synchronous, width, height, rate, *this);
 
   return video_grabber;
 }
@@ -1715,10 +1718,15 @@ GMManager::CreateVideoInputDevice (G_GNUC_UNUSED const OpalConnection &con,
   GMVideoGrabber *vg = NULL;
   auto_delete = FALSE;
 
+  unsigned width  = format.GetOptionInteger(OpalVideoFormat::FrameWidthOption (),  PVideoFrameInfo::QCIFWidth);
+  unsigned height = format.GetOptionInteger(OpalVideoFormat::FrameHeightOption (), PVideoFrameInfo::QCIFHeight);
+  unsigned rate   = format.GetClockRate() / format.GetFrameTime();
+
+
   vg = GetVideoGrabber ();
   if (!vg) {
 
-    CreateVideoGrabber (FALSE, TRUE);
+    CreateVideoGrabber (FALSE, TRUE, width, height, rate);
     vg = GetVideoGrabber ();
   }
 
@@ -1764,9 +1772,10 @@ GMManager::CreateVideoOutputDevice(G_GNUC_UNUSED const OpalConnection & connecti
     if (device != NULL) {
       
       videoOutputDevice.width = 
-	format.GetOptionInteger(OpalVideoFormat::FrameWidthOption (), 176);
+	format.GetOptionInteger(OpalVideoFormat::FrameWidthOption (),  PVideoFrameInfo::QCIFWidth);
       videoOutputDevice.height = 
-	format.GetOptionInteger(OpalVideoFormat::FrameHeightOption (), 144);
+	format.GetOptionInteger(OpalVideoFormat::FrameHeightOption (), PVideoFrameInfo::QCIFHeight);
+      videoOutputDevice.rate = format.GetClockRate() / format.GetFrameTime();
 
       if (device->OpenFull (args, FALSE))
 	return TRUE;

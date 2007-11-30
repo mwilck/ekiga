@@ -54,12 +54,16 @@
 /* The functions */
 GMVideoGrabber::GMVideoGrabber (BOOL start_grabbing,
 				BOOL sync,
+				unsigned _width,
+				unsigned _height,
+				unsigned _rate,
 				GMManager & endpoint)
   : PThread (1000, NoAutoDeleteThread), ep (endpoint)
 {
   /* Variables */
-  height = 0;
-  width = 0;
+  height = _height;
+  width = _width;
+  frame_rate = _rate;
 
   whiteness = 0;
   brightness = 0;
@@ -274,8 +278,6 @@ GMVideoGrabber::VGOpen (void)
   
   int error_code = 0;
   int channel = 0;
-  int size = 0;
-  int frame_rate = 0;
 
   BOOL no_device_found = FALSE;
   
@@ -298,15 +300,8 @@ GMVideoGrabber::VGOpen (void)
     
     channel = gm_conf_get_int (VIDEO_DEVICES_KEY "channel");
 
-    size = gm_conf_get_int (VIDEO_DEVICES_KEY "size");
-
-    frame_rate = gm_conf_get_int (VIDEO_CODECS_KEY "frame_rate");
-
     format =
       (PVideoDevice::VideoFormat) gm_conf_get_int (VIDEO_DEVICES_KEY "format");
-
-    height = video_sizes[size].height;
-    width = video_sizes[size].width;
 
     no_device_found = (input_device == _("No device found"));
     gnomemeeting_threads_leave ();

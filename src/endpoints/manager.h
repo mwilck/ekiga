@@ -167,8 +167,11 @@ class GMManager : public OpalManager
    *                 grabbing after its creation. If TRUE,
    *                 then the opening is done sync.
    */  
-  GMVideoGrabber *CreateVideoGrabber (BOOL = TRUE, 
-				      BOOL = FALSE);
+  GMVideoGrabber *CreateVideoGrabber (BOOL start_grabbing, 
+				      BOOL synchronous,
+				      unsigned width,
+				      unsigned height,
+				      unsigned rate);
 
 
   /* DESCRIPTION  :  /
