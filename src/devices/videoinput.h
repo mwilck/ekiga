@@ -165,6 +165,24 @@ class GMVideoGrabber : public PThread
    */
   void Unlock ();
 
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Return current width
+   * PRE          :  /
+   */
+  unsigned GetWidth () { return width; };
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Return current height
+   * PRE          :  /
+   */
+  unsigned GetHeight () { return height; };
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Return current frame rate
+   * PRE          :  /
+   */
+  unsigned GetFrameRate () { return frame_rate; };
+
   
  protected:
   void Main (void);

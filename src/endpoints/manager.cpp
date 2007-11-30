@@ -1711,7 +1711,7 @@ GMManager::DeviceVolume (PSoundChannel *sound_channel,
 
 BOOL
 GMManager::CreateVideoInputDevice (G_GNUC_UNUSED const OpalConnection &con,
-				   G_GNUC_UNUSED const OpalMediaFormat &format,
+				   const OpalMediaFormat &format,
 				   PVideoInputDevice * & device,
 				   BOOL & auto_delete)
 {
@@ -1722,12 +1722,21 @@ GMManager::CreateVideoInputDevice (G_GNUC_UNUSED const OpalConnection &con,
   unsigned height = format.GetOptionInteger(OpalVideoFormat::FrameHeightOption (), PVideoFrameInfo::QCIFHeight);
   unsigned rate   = format.GetClockRate() / format.GetFrameTime();
 
-
+  PTRACE(0, "Creating grabber with " << width << "x"<<height);
   vg = GetVideoGrabber ();
   if (!vg) {
-
     CreateVideoGrabber (FALSE, TRUE, width, height, rate);
     vg = GetVideoGrabber ();
+  } 
+  else {
+    if ((vg->GetWidth()     != width)  ||
+        (vg->GetHeight()    != height) ||
+        (vg->GetFrameRate() != rate)) {
+      // We have negotiated a different resolution than the 
+      // preview device was configure with
+      CreateVideoGrabber (FALSE, TRUE, width, height, rate);
+      vg = GetVideoGrabber ();
+    }
   }
 
   vg->StopGrabbing ();
