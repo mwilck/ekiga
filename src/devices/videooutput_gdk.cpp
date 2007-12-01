@@ -184,7 +184,7 @@ void GMVideoDisplay_GDK::SetFrameData (G_GNUC_UNUSED unsigned x,
 				       unsigned height,
 				       const BYTE * data,
 				       PColourConverter* setConverter,
-				       BOOL local,
+				       bool local,
 				       int devices_nbr)
 { 
   int display = 0;
@@ -299,14 +299,14 @@ void GMVideoDisplay_GDK::SetFrameData (G_GNUC_UNUSED unsigned x,
   frame_available_sync_point.Signal();
 }
 
-void GMVideoDisplay_GDK::SetFallback (BOOL newFallback)
+void GMVideoDisplay_GDK::SetFallback (bool newFallback)
 {
   PWaitAndSignal m(var_mutex);
 
   fallback = newFallback;
 }
 
-BOOL 
+bool 
 GMVideoDisplay_GDK::FrameDisplayChangeNeeded (int display, 
                                               guint lf_width, 
                                               guint lf_height, 
@@ -315,7 +315,7 @@ GMVideoDisplay_GDK::FrameDisplayChangeNeeded (int display,
                                               double zoom)
 {
   WidgetInfo currentWidgetInfo;
-  BOOL wasSet;
+  bool wasSet;
 
 #ifdef WIN32
   wasSet = GetWidget(&currentWidgetInfo.x, &currentWidgetInfo.y, &currentWidgetInfo.hwnd, &currentWidgetInfo.onTop, &currentWidgetInfo.disableHwAccel);
@@ -358,7 +358,7 @@ GMVideoDisplay_GDK::FrameDisplayChangeNeeded (int display,
   return FALSE;
 }
 
-BOOL 
+bool 
 GMVideoDisplay_GDK::SetupFrameDisplay (int display, 
                                            guint lf_width, 
                                            guint lf_height, 
@@ -367,7 +367,7 @@ GMVideoDisplay_GDK::SetupFrameDisplay (int display,
                                            double zoom)
 {
   WidgetInfo currentWidgetInfo;
-  BOOL wasSet;
+  bool wasSet;
 
   if (display != PIP_WINDOW) 
     CloseFrameDisplay ();
@@ -482,7 +482,7 @@ gnomemeeting_threads_leave();
   return TRUE;
 }
 
-BOOL 
+bool 
 GMVideoDisplay_GDK::CloseFrameDisplay ()
 {
   if (window != NULL) {
@@ -596,7 +596,7 @@ gnomemeeting_threads_leave();
 
 void GMVideoDisplay_GDK::Redraw ()
 {
-  BOOL ret = TRUE;
+  bool ret = TRUE;
     if (FrameDisplayChangeNeeded (currentFrame.display, currentFrame.localWidth, currentFrame.localHeight, 
                                   currentFrame.remoteWidth, currentFrame.remoteHeight, currentFrame.zoom)) 
       ret = SetupFrameDisplay (currentFrame.display, currentFrame.localWidth, currentFrame.localHeight, 
@@ -676,7 +676,7 @@ void GMVideoDisplay_GDK::GetDisplay (int* display, double* zoom)
   *zoom = zoomInfo;
 }
 
-void GMVideoDisplay_GDK::SetWidget (GtkWidget* video_image, BOOL on_top, BOOL disable_hw_accel) 
+void GMVideoDisplay_GDK::SetWidget (GtkWidget* video_image, bool on_top, bool disable_hw_accel) 
 {
   PWaitAndSignal m(widget_data_mutex);
 
@@ -702,7 +702,7 @@ void GMVideoDisplay_GDK::SetWidget (GtkWidget* video_image, BOOL on_top, BOOL di
 }
 
 #ifdef WIN32
-BOOL GMVideoDisplay_GDK::GetWidget(int* x, int* y, HWND* hwnd, BOOL* on_top, BOOL* disable_hw_accel)
+bool GMVideoDisplay_GDK::GetWidget(int* x, int* y, HWND* hwnd, bool* on_top, bool* disable_hw_accel)
 {
   PWaitAndSignal m(widget_data_mutex);
   *x = videoWidgetInfo.x;
@@ -713,7 +713,7 @@ BOOL GMVideoDisplay_GDK::GetWidget(int* x, int* y, HWND* hwnd, BOOL* on_top, BOO
   return videoWidgetInfo.wasSet;
 }
 #else
-BOOL GMVideoDisplay_GDK::GetWidget(int* x, int* y, GC* gc, Window* window, Display** display, BOOL* on_top, BOOL* disable_hw_accel)
+bool GMVideoDisplay_GDK::GetWidget(int* x, int* y, GC* gc, Window* window, Display** display, bool* on_top, bool* disable_hw_accel)
 {
   PWaitAndSignal m(widget_data_mutex);
   *x = videoWidgetInfo.x;

@@ -94,7 +94,7 @@ GMH323Endpoint::Init ()
 }
 
 
-BOOL 
+bool 
 GMH323Endpoint::StartListener (PString iface,
 			       WORD port)
 {
@@ -343,12 +343,12 @@ GMH323Endpoint::Register (const PString & aor,
 }
 
 
-BOOL 
+bool 
 GMH323Endpoint::UseGatekeeper (const PString & address,
 			       const PString & domain,
 			       const PString & iface)
 {
-  BOOL result = 
+  bool result = 
     H323EndPoint::UseGatekeeper (address, domain, iface);
 
   PWaitAndSignal m(gk_name_mutex);
@@ -359,7 +359,7 @@ GMH323Endpoint::UseGatekeeper (const PString & address,
 }
   
 
-BOOL 
+bool 
 GMH323Endpoint::RemoveGatekeeper (const PString & address)
 {
   if (IsRegisteredWithGatekeeper (address))
@@ -369,7 +369,7 @@ GMH323Endpoint::RemoveGatekeeper (const PString & address)
 }
   
   
-BOOL 
+bool 
 GMH323Endpoint::IsRegisteredWithGatekeeper (const PString & address)
 {
   PWaitAndSignal m(gk_name_mutex);
@@ -378,7 +378,7 @@ GMH323Endpoint::IsRegisteredWithGatekeeper (const PString & address)
 }
 
 
-BOOL 
+bool 
 GMH323Endpoint::OnIncomingConnection (OpalConnection &connection,
                                       G_GNUC_UNUSED unsigned options,
                                       G_GNUC_UNUSED OpalConnection::StringOptions *str_options)
@@ -390,7 +390,7 @@ GMH323Endpoint::OnIncomingConnection (OpalConnection &connection,
   gboolean busy_forward = FALSE;
   gboolean always_forward = FALSE;
 
-  BOOL res = FALSE;
+  bool res = FALSE;
 
   int no_answer_timeout = 0;
   unsigned reason = 0;

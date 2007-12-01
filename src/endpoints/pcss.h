@@ -55,7 +55,7 @@ public:
    * BEHAVIOR     :  Starts a call, play the dialtone.
    * PRE          :  /
    */
-  BOOL MakeConnection (OpalCall & call, 
+  bool MakeConnection (OpalCall & call, 
                        const PString & party,  
                        void * userData);
 
@@ -75,7 +75,7 @@ public:
    *		     Display a popup if required.
    * PRE          :  /
    */
-  virtual BOOL OnShowIncoming (const OpalPCSSConnection &connection);
+  virtual bool OnShowIncoming (const OpalPCSSConnection &connection);
 
 
   /* DESCRIPTION  :  This callback is called when there is an 
@@ -85,7 +85,7 @@ public:
    * 		     to generate a ring tone.
    * PRE          :  /
    */
-  virtual BOOL OnShowOutgoing (const OpalPCSSConnection &connection);
+  virtual bool OnShowOutgoing (const OpalPCSSConnection &connection);
   
   
   /* DESCRIPTION  :  /
@@ -103,7 +103,7 @@ public:
    */
   PSoundChannel *CreateSoundChannel (const OpalPCSSConnection &connection,
 				     const OpalMediaFormat &format,
-				     BOOL is_source);
+				     bool is_source);
 
   
   /* DESCRIPTION  :  This callback is called when the connection is 
@@ -139,7 +139,7 @@ public:
    *                 Returns FALSE if it fails.
    * PRE          :  /
    */
-  BOOL SetDeviceVolume (unsigned int play_vol,
+  bool SetDeviceVolume (unsigned int play_vol,
 			unsigned int record_vol);
 
 private:

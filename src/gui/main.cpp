@@ -2040,7 +2040,7 @@ hold_current_call_cb (G_GNUC_UNUSED GtkWidget *widget,
   PString call_token;
   GMManager *endpoint = NULL;
 
-  BOOL is_on_hold = FALSE;
+  bool is_on_hold = FALSE;
   
   endpoint = GnomeMeeting::Process ()->GetManager ();
 
@@ -2061,7 +2061,7 @@ pause_current_call_channel_cb (G_GNUC_UNUSED GtkWidget *widget,
   GtkWidget *main_window = NULL;
  
   PString current_call_token;
-  BOOL is_paused = FALSE;
+  bool is_paused = FALSE;
   gint channel_type = 0;
   
   endpoint = GnomeMeeting::Process ()->GetManager ();
@@ -2142,8 +2142,8 @@ video_window_expose_cb (GtkWidget *main_window,
             		G_GNUC_UNUSED gpointer data)
 {
   GmMainWindow *mw = NULL;
-  BOOL on_top = FALSE;
-  BOOL disable_hw_accel = FALSE;
+  bool on_top = FALSE;
+  bool disable_hw_accel = FALSE;
 
   if (!main_window) 
     return FALSE;
@@ -2183,7 +2183,7 @@ audio_volume_changed_cb (G_GNUC_UNUSED GtkAdjustment *adjustment,
   GMManager *ep = NULL;
   GMPCSSEndpoint *pcssEP = NULL;
 
-  BOOL success = FALSE;
+  bool success = FALSE;
 
   int play_vol = 0; 
   int rec_vol = 0;
@@ -2212,7 +2212,7 @@ video_settings_changed_cb (G_GNUC_UNUSED GtkAdjustment *adjustment,
   GMManager *ep = NULL;
   GMVideoGrabber *video_grabber = NULL;
 
-  BOOL success = FALSE;
+  bool success = FALSE;
 
   int brightness = -1;
   int whiteness = -1;
@@ -2283,7 +2283,7 @@ dialpad_button_clicked_cb (GtkButton *button,
   GtkWidget *label = NULL;
   const char *button_text = NULL;
 
-  BOOL sent = FALSE;
+  bool sent = FALSE;
   PString call_token;
   PString url;
 
@@ -2915,9 +2915,9 @@ gm_main_window_update_calling_state (GtkWidget *main_window,
 
 void
 gm_main_window_update_sensitivity (GtkWidget *main_window,
-				   BOOL is_video,
-				   BOOL is_receiving,
-				   BOOL is_transmitting)
+				   bool is_video,
+				   bool is_receiving,
+				   bool is_transmitting)
 {
   GmMainWindow *mw = NULL;
   
@@ -3029,7 +3029,7 @@ gm_main_window_update_sensitivity (GtkWidget *main_window,
 
 
 void 
-gm_main_window_fullscreen_menu_update_sensitivity (BOOL FSMenu)
+gm_main_window_fullscreen_menu_update_sensitivity (bool FSMenu)
 {
   GtkWidget* main_window = NULL;
   GmMainWindow *mw = NULL;
@@ -3110,7 +3110,7 @@ gm_main_window_force_redraw ()
 
 void
 gm_main_window_set_busy (GtkWidget *main_window,
-			 BOOL busy)
+			 bool busy)
 {
   GmMainWindow *mw = NULL;
   
@@ -3653,7 +3653,7 @@ gm_main_window_new (Ekiga::ServiceCore & core)
 
 #if defined HAVE_GNOME && defined HAVE_BONOBO
   int behavior = 0;
-  BOOL toolbar_detachable = TRUE;
+  bool toolbar_detachable = TRUE;
 
   toolbar_detachable = 
     gm_conf_get_bool ("/desktop/gnome/interface/toolbar_detachable");

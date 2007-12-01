@@ -136,7 +136,7 @@ void gm_main_window_update_calling_state (GtkWidget *main_window,
  * 		   The first parameter is TRUE if we are busy.
  */
 void gm_main_window_set_busy (GtkWidget *main_window,
-			      BOOL busy);
+			      bool busy);
 
 
 /* DESCRIPTION  :  /
@@ -436,16 +436,16 @@ void gm_main_window_set_stay_on_top (GtkWidget *main_window,
  *                 if we are receiving audio (or video).
  */
 void gm_main_window_update_sensitivity (GtkWidget *main_window,
-					BOOL is_video,
-					BOOL is_receiving,
-					BOOL is_transmitting);
+					bool is_video,
+					bool is_receiving,
+					bool is_transmitting);
 
 
 /* DESCRIPTION   :  /
  * BEHAVIOR      : Updates the menu sensitivity
  * PRE           : The main window GMObject.
  */
-void gm_main_window_fullscreen_menu_update_sensitivity (BOOL fullscreen);
+void gm_main_window_fullscreen_menu_update_sensitivity (bool fullscreen);
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Toggles between fullscreen mode and the other settings

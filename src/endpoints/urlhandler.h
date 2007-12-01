@@ -50,18 +50,18 @@ class GMURL
   GMURL ();
   GMURL (PString base);
   GMURL (const GMURL &u);
-  BOOL IsEmpty ();
-  BOOL IsSupported ();
-  BOOL Find (GMURL u);
+  bool IsEmpty ();
+  bool IsSupported ();
+  bool Find (GMURL u);
   PString GetType ();
-  PString GetFullURL (BOOL include_default_port = TRUE);
+  PString GetFullURL (bool include_default_port = TRUE);
   PString GetURL ();
   PString GetCanonicalURL ();
   PString GetCalltoServer ();
   PString GetCalltoEmail ();
   PString GetDefaultURL ();
-  BOOL operator == (GMURL other);
-  BOOL operator != (GMURL other);
+  bool operator == (GMURL other);
+  bool operator != (GMURL other);
   
  private:
   void Parse ();
@@ -69,7 +69,7 @@ class GMURL
   PString url;
   PString port;
   PString type;
-  BOOL is_supported;
+  bool is_supported;
 };
 
 
@@ -87,7 +87,7 @@ public:
    *                 call the url.
    */
   GMURLHandler (PString c,
-		BOOL transfer = FALSE);
+		bool transfer = FALSE);
 
   
   /* DESCRIPTION  :  The destructor.
@@ -108,8 +108,8 @@ public:
 protected:
 
   GMURL url;
-  BOOL answer_call;
-  BOOL transfer_call;
+  bool answer_call;
+  bool transfer_call;
   PMutex quit_mutex;
 };
 #endif

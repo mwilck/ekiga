@@ -71,7 +71,7 @@ GMPCSSEndpoint::GMPCSSEndpoint (GMManager & ep)
 }
 
 
-BOOL 
+bool 
 GMPCSSEndpoint::MakeConnection (OpalCall & call, 
                                 const PString & party,  
                                 void * userData)
@@ -90,7 +90,7 @@ void GMPCSSEndpoint::AcceptCurrentIncomingCall ()
 }
 
 
-BOOL GMPCSSEndpoint::OnShowIncoming (const OpalPCSSConnection & connection)
+bool GMPCSSEndpoint::OnShowIncoming (const OpalPCSSConnection & connection)
 {
   guint interval = 2000;
   guint status = CONTACT_ONLINE;
@@ -120,7 +120,7 @@ BOOL GMPCSSEndpoint::OnShowIncoming (const OpalPCSSConnection & connection)
 }
 
 
-BOOL GMPCSSEndpoint::OnShowOutgoing (G_GNUC_UNUSED const OpalPCSSConnection & connection)
+bool GMPCSSEndpoint::OnShowOutgoing (G_GNUC_UNUSED const OpalPCSSConnection & connection)
 {
   if (endpoint.GetCallingState () == GMManager::Calling)
     OutgoingCallTimer.RunContinuous (PTimeInterval (5));
@@ -141,7 +141,7 @@ GMPCSSEndpoint::PlaySoundEvent (PString ev)
 PSoundChannel * 
 GMPCSSEndpoint::CreateSoundChannel (G_GNUC_UNUSED const OpalPCSSConnection & connection,
 				    const OpalMediaFormat & format,
-				    BOOL is_source)
+				    bool is_source)
 {
   PTRACE(3, "Ekiga\tCreating Sound Channel");
   GtkWidget *main_window = NULL;
@@ -297,12 +297,12 @@ GMPCSSEndpoint::GetDeviceVolume (unsigned int &play_vol,
 }
 
 
-BOOL
+bool
 GMPCSSEndpoint::SetDeviceVolume (unsigned int play_vol,
 				 unsigned int record_vol)
 {
-  BOOL success1 = FALSE;
-  BOOL success2 = FALSE;
+  bool success1 = FALSE;
+  bool success2 = FALSE;
 
   PSafePtr<OpalCall> call = NULL;
   PSafePtr<OpalConnection> connection = NULL;

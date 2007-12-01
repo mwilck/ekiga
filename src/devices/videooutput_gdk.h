@@ -69,11 +69,11 @@ typedef struct _FrameInfo
 
 typedef struct _WidgetInfo
 {
-  BOOL wasSet;
+  bool wasSet;
   int x;
   int y;
-  BOOL onTop;
-  BOOL disableHwAccel;
+  bool onTop;
+  bool disableHwAccel;
 
 #ifdef WIN32
   HWND hwnd;
@@ -123,7 +123,7 @@ class GMVideoDisplay_GDK : public PThread
                              unsigned height,
                              const BYTE *data,
                              PColourConverter* setConverter,
-                             BOOL local,
+                             bool local,
                              int devices_nbr);
 
   /* DESCRIPTION  :  /
@@ -134,14 +134,14 @@ class GMVideoDisplay_GDK : public PThread
    *                 the data, and a boolean indicating if it is the end
    *                 frame or not.
    */
-  virtual void SetFallback  (BOOL newFallback);
+  virtual void SetFallback  (bool newFallback);
 
   /* DESCRIPTION  :  Update all information about the video_image widget.
    *                 Needed for embedded window 
    * BEHAVIOR     :  Called when the video_image widget receives an expose event
    * PRE          :  Pointer to the widget, and variables on_top and disable_hw_accel
    */
-  virtual void SetWidget (GtkWidget* video_image, BOOL on_top, BOOL disable_hw_accel);
+  virtual void SetWidget (GtkWidget* video_image, bool on_top, bool disable_hw_accel);
 
   /* DESCRIPTION  :  Callback to update the display and zoom variables.
    * BEHAVIOR     :  Called if the display variable or zoom level is changed.
@@ -159,7 +159,7 @@ class GMVideoDisplay_GDK : public PThread
    *                 Returns FALSE in case of failure.
    * PRE          :  /
    */
-  virtual BOOL SetupFrameDisplay (int display, 
+  virtual bool SetupFrameDisplay (int display, 
                                   guint lf_width, 
                                   guint lf_height, 
                                   guint rf_width, 
@@ -173,7 +173,7 @@ class GMVideoDisplay_GDK : public PThread
    *                 otherwise.
    * PRE          :  /
    */
-  virtual BOOL FrameDisplayChangeNeeded (int display, 
+  virtual bool FrameDisplayChangeNeeded (int display, 
                                          guint lf_width, 
                                          guint lf_height, 
                                          guint rf_width, 
@@ -185,7 +185,7 @@ class GMVideoDisplay_GDK : public PThread
    *                 in case of failure.
    * PRE          :  /
    */
-  virtual BOOL CloseFrameDisplay ();
+  virtual bool CloseFrameDisplay ();
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Display the given frame on the correct display.
@@ -236,9 +236,9 @@ class GMVideoDisplay_GDK : public PThread
   GtkWidget* window;
   GtkWidget* image;
 
-  BOOL fallback;
-  BOOL stop;
-  BOOL first_frame_received;
+  bool fallback;
+  bool stop;
+  bool first_frame_received;
 
   PMutex var_mutex;      /* To protect variables that are read and written
 			    from various threads */
@@ -278,9 +278,9 @@ class GMVideoDisplay_GDK : public PThread
   std::vector<sigc::connection> connections;
 
 #ifdef WIN32
-  virtual BOOL GetWidget(int* x, int* y, HWND* hwnd, BOOL* on_top, BOOL* disable_hw_accel);
+  virtual bool GetWidget(int* x, int* y, HWND* hwnd, bool* on_top, bool* disable_hw_accel);
 #else
-  virtual BOOL GetWidget(int* x, int* y, GC* gc, Window* window, Display** display, BOOL* on_top, BOOL* disable_hw_accel);
+  virtual bool GetWidget(int* x, int* y, GC* gc, Window* window, Display** display, bool* on_top, bool* disable_hw_accel);
 #endif
 
   void GetDisplay (int* display, double* zoom);

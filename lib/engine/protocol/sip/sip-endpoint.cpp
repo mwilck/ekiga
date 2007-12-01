@@ -122,7 +122,7 @@ SIP::EndPoint::unsubscribe (std::string uri)
 
 void
 SIP::EndPoint::OnRegistered (const PString & _aor,
-                             BOOL was_registering)
+                             bool was_registering)
 {
   // FIXME, this will be changed in the future
   GMSIPEndpoint *sip_ep =

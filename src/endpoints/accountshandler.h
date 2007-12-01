@@ -99,7 +99,7 @@ private:
 
   void SIPRegister (GmAccount *a);
   void SIPPresenceSubscribe (PString contact,
-                             BOOL unsubscribe);
+                             bool unsubscribe);
   void SIPPublishPresence (const PString & to,
                            guint status);
   void H323Register (GmAccount *a);
@@ -117,7 +117,7 @@ private:
   PStringList publishers_status;
   PMutex publishers_mutex;
 
-  BOOL active;
+  bool active;
 };
 
 #endif

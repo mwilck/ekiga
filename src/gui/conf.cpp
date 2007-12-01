@@ -704,7 +704,7 @@ video_device_setting_changed_nt (G_GNUC_UNUSED gpointer id,
 {
   PString name;
 
-  BOOL preview = FALSE;
+  bool preview = FALSE;
   unsigned size = 0;
   unsigned max_frame_rate = 15;
 

@@ -210,7 +210,7 @@ GMSIPEndpoint::Init ()
 }
 
 
-BOOL 
+bool 
 GMSIPEndpoint::StartListener (PString iface, 
                               WORD port)
 {
@@ -434,7 +434,7 @@ GMSIPEndpoint::Register (const PString & aor,
 
 void
 GMSIPEndpoint::OnRegistered (const PString & aor,
-                             BOOL wasRegistering)
+                             bool wasRegistering)
 {
   Ekiga::ServiceCore *services = NULL;
   SIP::EndPoint *sip_endpoint = NULL;
@@ -472,7 +472,7 @@ GMSIPEndpoint::OnRegistered (const PString & aor,
 void
 GMSIPEndpoint::OnRegistrationFailed (const PString & aor,
                                      SIP_PDU::StatusCodes r,
-                                     BOOL wasRegistering)
+                                     bool wasRegistering)
 {
   std::string info;
 
@@ -569,7 +569,7 @@ GMSIPEndpoint::OnRegistrationFailed (const PString & aor,
 }
 
 
-BOOL 
+bool 
 GMSIPEndpoint::OnIncomingConnection (OpalConnection &connection,
                                      G_GNUC_UNUSED unsigned options,
                                      G_GNUC_UNUSED OpalConnection::StringOptions * stroptions)
@@ -584,7 +584,7 @@ GMSIPEndpoint::OnIncomingConnection (OpalConnection &connection,
   gboolean always_forward = FALSE;
   int no_answer_timeout = FALSE;
 
-  BOOL res = FALSE;
+  bool res = FALSE;
 
   unsigned reason = 0;
 

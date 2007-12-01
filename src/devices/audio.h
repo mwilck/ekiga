@@ -124,7 +124,7 @@ public:
 
 protected:
 
-  BOOL stop;
+  bool stop;
 
   PMutex quit_mutex;
   PSyncPoint thread_sync_point;
@@ -157,7 +157,7 @@ class GMAudioRP : public PThread
 
  public:
 
-  GMAudioRP (BOOL enc, 
+  GMAudioRP (bool enc, 
 	     GMAudioTester &t);
   ~GMAudioRP ();
 
@@ -167,7 +167,7 @@ class GMAudioRP : public PThread
 
  private:
   
-  BOOL is_encoding;
+  bool is_encoding;
   
   PString driver_name;
   PString device_name;
@@ -175,7 +175,7 @@ class GMAudioRP : public PThread
   PMutex quit_mutex;
   PSyncPoint thread_sync_point;
   
-  BOOL stop;
+  bool stop;
   
   GMAudioTester & tester;
 };

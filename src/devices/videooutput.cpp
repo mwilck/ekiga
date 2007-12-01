@@ -126,9 +126,9 @@ PVideoOutputDevice_EKIGA::~PVideoOutputDevice_EKIGA()
 }
 
 
-BOOL 
+bool 
 PVideoOutputDevice_EKIGA::Open (const PString &name,
-				G_GNUC_UNUSED BOOL unused)
+				G_GNUC_UNUSED bool unused)
 { 
   if (name == "EKIGAIN") 
     device_id = 1; 
@@ -151,18 +151,18 @@ PStringList PVideoOutputDevice_EKIGA::GetDeviceNames() const
 }
 
 
-BOOL PVideoOutputDevice_EKIGA::IsOpen ()
+bool PVideoOutputDevice_EKIGA::IsOpen ()
 {
   return TRUE;
 }
 
 
-BOOL PVideoOutputDevice_EKIGA::SetFrameData (unsigned x,
+bool PVideoOutputDevice_EKIGA::SetFrameData (unsigned x,
 					   unsigned y,
 					   unsigned width,
 					   unsigned height,
 					   const BYTE * data,
-					   BOOL endFrame)
+					   bool endFrame)
 {
  PWaitAndSignal m(videoDisplay_mutex);
 
@@ -191,7 +191,7 @@ BOOL PVideoOutputDevice_EKIGA::SetFrameData (unsigned x,
   return TRUE;
 }
 
-BOOL PVideoOutputDevice_EKIGA::SetColourFormat (const PString & colour_format)
+bool PVideoOutputDevice_EKIGA::SetColourFormat (const PString & colour_format)
 {
   if (colour_format == "RGB24") {
     return PVideoOutputDevice::SetColourFormat (colour_format);

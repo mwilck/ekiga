@@ -1,5 +1,47 @@
 2007-12-01  Damien Sandras  <dsandras@gnome.org>
 
+	* src/clients/stun.h,
+	src/clients/avahi.cpp,
+	src/clients/stun.cpp,
+	src/devices/audio.cpp,
+	src/devices/videooutput_gdk.h,
+	src/devices/fakevideoinput.h,
+	src/devices/videooutput_xv.cpp,
+	src/devices/audio.h,
+	src/devices/videoinput.cpp,
+	src/devices/videooutput.cpp,
+	src/devices/videooutput_xv.h,
+	src/devices/videoinput.h,
+	src/devices/videooutput_gdk.cpp,
+	src/devices/videooutput.h,
+	src/devices/fakevideoinput.cpp,
+	src/endpoints/sip.h,
+	src/endpoints/urlhandler.cpp,
+	src/endpoints/urlhandler.h,
+	src/endpoints/pcss.cpp,
+	src/endpoints/manager.cpp,
+	src/endpoints/pcss.h,
+	src/endpoints/h323.cpp,
+	src/endpoints/manager.h,
+	src/endpoints/ekiga.cpp,
+	src/endpoints/accountshandler.h,
+	src/endpoints/h323.h,
+	src/endpoints/ekiga.h,
+	src/endpoints/sip.cpp,
+	src/gui/preferences.cpp,
+	src/gui/druid.cpp,
+	src/gui/callbacks.cpp,
+	src/gui/main.cpp,
+	src/gui/conf.cpp,
+	src/gui/main.h,
+	lib/engine/protocol/sip/sip-endpoint.h,
+	lib/engine/protocol/sip/sip-endpoint.cpp,
+	lib/engine/protocol/skel/call-core.h:
+	s/BOOL/bool for STL compliance. Change due to the recent PTLIB fix
+	deprecating the use of BOOL.
+
+2007-12-01  Damien Sandras  <dsandras@gnome.org>
+
 	* ChangeLog: Reindented Matthias entry so that it is only 80 chars
 	wide.
 

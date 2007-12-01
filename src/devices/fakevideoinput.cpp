@@ -77,9 +77,9 @@ PVideoInputDevice_Picture::~PVideoInputDevice_Picture ()
 }
 
 
-BOOL
+bool
 PVideoInputDevice_Picture::Open (const PString &name,
-				 G_GNUC_UNUSED BOOL start_immediate)
+				 G_GNUC_UNUSED bool start_immediate)
 {
   gchar *image_name = NULL;
   GdkPixbuf *icon = NULL;
@@ -150,7 +150,7 @@ PVideoInputDevice_Picture::Open (const PString &name,
 }
 
 
-BOOL
+bool
 PVideoInputDevice_Picture::IsOpen ()
 {
   if (orig_pix) 
@@ -160,7 +160,7 @@ PVideoInputDevice_Picture::IsOpen ()
 }
 
 
-BOOL
+bool
 PVideoInputDevice_Picture::Close ()
 {
   gnomemeeting_threads_enter ();
@@ -185,21 +185,21 @@ PVideoInputDevice_Picture::Close ()
 }
 
   
-BOOL
+bool
 PVideoInputDevice_Picture::Start ()
 {
   return TRUE;
 }
 
   
-BOOL
+bool
 PVideoInputDevice_Picture::Stop ()
 {
   return TRUE;
 }
 
 
-BOOL
+bool
 PVideoInputDevice_Picture::IsCapturing ()
 {
   return IsCapturing ();
@@ -218,7 +218,7 @@ PVideoInputDevice_Picture::GetInputDeviceNames ()
 }
 
 
-BOOL
+bool
 PVideoInputDevice_Picture::SetFrameSize (unsigned int width,
 					 unsigned int height)
 {
@@ -229,7 +229,7 @@ PVideoInputDevice_Picture::SetFrameSize (unsigned int width,
 }
 
 
-BOOL
+bool
 PVideoInputDevice_Picture::GetFrameData (BYTE *a,
 					 PINDEX *i)
 {
@@ -243,7 +243,7 @@ PVideoInputDevice_Picture::GetFrameData (BYTE *a,
 }
 
 
-BOOL PVideoInputDevice_Picture::GetFrameDataNoDelay (BYTE *frame,
+bool PVideoInputDevice_Picture::GetFrameDataNoDelay (BYTE *frame,
 						     G_GNUC_UNUSED PINDEX *i)
 {
   GdkPixbuf *scaled_pix = NULL;
@@ -354,7 +354,7 @@ BOOL PVideoInputDevice_Picture::GetFrameDataNoDelay (BYTE *frame,
 }
 
 
-BOOL
+bool
 PVideoInputDevice_Picture::TestAllFormats ()
 {
   return TRUE;
@@ -375,7 +375,7 @@ PVideoInputDevice_Picture::WaitFinishPreviousFrame ()
 }
 
 
-BOOL
+bool
 PVideoInputDevice_Picture::SetVideoFormat (VideoFormat newFormat)
 {
   return PVideoDevice::SetVideoFormat (newFormat);
@@ -389,14 +389,14 @@ PVideoInputDevice_Picture::GetNumChannels()
 }
 
 
-BOOL
+bool
 PVideoInputDevice_Picture::SetChannel (G_GNUC_UNUSED int newChannel)
 {
   return TRUE;
 }
 
 
-BOOL
+bool
 PVideoInputDevice_Picture::SetColourFormat (const PString &newFormat)
 {
   if (newFormat == "RGB32") 
@@ -406,7 +406,7 @@ PVideoInputDevice_Picture::SetColourFormat (const PString &newFormat)
 }
 
 
-BOOL
+bool
 PVideoInputDevice_Picture::SetFrameRate (G_GNUC_UNUSED unsigned rate)
 {
   if (moving)
@@ -418,7 +418,7 @@ PVideoInputDevice_Picture::SetFrameRate (G_GNUC_UNUSED unsigned rate)
 }
 
 
-BOOL
+bool
 PVideoInputDevice_Picture::GetFrameSizeLimits (unsigned & minWidth,
 					       unsigned & minHeight,
 					       unsigned & maxWidth,
@@ -433,7 +433,7 @@ PVideoInputDevice_Picture::GetFrameSizeLimits (unsigned & minWidth,
 }
 
 
-BOOL PVideoInputDevice_Picture::GetParameters (int *whiteness,
+bool PVideoInputDevice_Picture::GetParameters (int *whiteness,
 					       int *brightness,
 					       int *colour,
 					       int *contrast,

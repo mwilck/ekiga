@@ -519,7 +519,7 @@ gm_dw_check_gnomemeeting_net (GtkWidget *druid_window)
   const char *username = NULL;
   const char *password = NULL;
   
-  BOOL correct = FALSE;
+  bool correct = FALSE;
 
   g_return_if_fail (druid_window != NULL);
 
@@ -1438,7 +1438,7 @@ finish_cb (G_GNUC_UNUSED GnomeDruidPage *p,
   gint kind_of_net = NET_CUSTOM;
   int version = 0;
 
-  BOOL new_account = FALSE;
+  bool new_account = FALSE;
   
   gchar *name = NULL;
   gchar **couple = NULL;

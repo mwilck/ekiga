@@ -73,7 +73,7 @@ public:
    *                 Returns FALSE in case of failure.
    * PRE          :  /
    */
-  virtual BOOL SetupFrameDisplay (int display, 
+  virtual bool SetupFrameDisplay (int display, 
                                   guint lf_width, 
                                   guint lf_height, 
                                   guint rf_width, 
@@ -86,7 +86,7 @@ public:
    *                 otherwise.
    * PRE          :  /
    */
-  virtual BOOL FrameDisplayChangeNeeded (int display, 
+  virtual bool FrameDisplayChangeNeeded (int display, 
                                          guint lf_width, 
                                          guint lf_height, 
                                          guint rf_width, 
@@ -98,7 +98,7 @@ public:
    *                 in case of failure.
    * PRE          :  /
    */
-  virtual BOOL CloseFrameDisplay ();
+  virtual bool CloseFrameDisplay ();
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Display the given frame on the correct display.
@@ -134,6 +134,6 @@ protected:
 
   GdkGC *embGC;
 
-  BOOL pipWindowAvailable;
+  bool pipWindowAvailable;
 };
 #endif

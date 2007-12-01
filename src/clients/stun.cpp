@@ -225,9 +225,9 @@ gm_sw_stun_result_window_new (GtkWidget *parent,
 
 
 /* The class */
-GMStunClient::GMStunClient (BOOL display_progress_,
-			    BOOL display_config_dialog_,
-			    BOOL wait_,
+GMStunClient::GMStunClient (bool display_progress_,
+			    bool display_config_dialog_,
+			    bool wait_,
 			    GtkWidget *parent_window,
 			    GMManager & endpoint)
   :PThread (1000, NoAutoDeleteThread), 

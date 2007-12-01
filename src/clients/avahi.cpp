@@ -184,7 +184,7 @@ GMZeroconfPublisher::CreateServices (AvahiClient *c,
 				     void *userdata) 
 {
   int ret = 0;
-  BOOL failure = FALSE;
+  bool failure = FALSE;
 
   if (group == NULL) {
     

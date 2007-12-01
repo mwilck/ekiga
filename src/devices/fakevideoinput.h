@@ -72,33 +72,33 @@ class PVideoInputDevice_Picture : public PVideoInputDevice
   ~PVideoInputDevice_Picture ();
 
   
-  BOOL Open (const PString &name,
-	     BOOL start_immediate = TRUE);
+  bool Open (const PString &name,
+	     bool start_immediate = TRUE);
 
   
   /**Determine of the device is currently open.
    */
-  BOOL IsOpen() ;
+  bool IsOpen() ;
 
   
   /**Close the device.
    */
-  BOOL Close();
+  bool Close();
 
   
   /**Start the video device I/O.
    */
-  BOOL Start();
+  bool Start();
 
   
   /**Stop the video device I/O capture.
    */
-  BOOL Stop();
+  bool Stop();
 
 
   /**Determine if the video device I/O capture is in progress.
    */
-  BOOL IsCapturing();
+  bool IsCapturing();
 
   
   /**Get a list of all of the drivers available.
@@ -106,7 +106,7 @@ class PVideoInputDevice_Picture : public PVideoInputDevice
   static PStringList GetInputDeviceNames();
 
   
-  BOOL SetFrameSize (unsigned int width,
+  bool SetFrameSize (unsigned int width,
 		     unsigned int height);
   
   
@@ -114,17 +114,17 @@ class PVideoInputDevice_Picture : public PVideoInputDevice
    * BEHAVIOR     :  /
    * PRE          :  /
    */
-  BOOL GetFrameData (BYTE *a, PINDEX *i = NULL);
+  bool GetFrameData (BYTE *a, PINDEX *i = NULL);
 
 
   /* DESCRIPTION  :  The destructor
    * BEHAVIOR     :  /
    * PRE          :  /
    */
-  BOOL GetFrameDataNoDelay (BYTE *frame, PINDEX *i = NULL);
+  bool GetFrameDataNoDelay (BYTE *frame, PINDEX *i = NULL);
 
   
-  BOOL TestAllFormats ();
+  bool TestAllFormats ();
 
   
   /**Get the maximum frame size in bytes.
@@ -143,7 +143,7 @@ class PVideoInputDevice_Picture : public PVideoInputDevice
   Default behaviour sets the value of the videoFormat variable and then
   returns the IsOpen() status.
   */
-  BOOL SetVideoFormat (VideoFormat newFormat);
+  bool SetVideoFormat (VideoFormat newFormat);
 
   
   /**Get the number of video channels available on the device.
@@ -158,7 +158,7 @@ class PVideoInputDevice_Picture : public PVideoInputDevice
   Default behaviour sets the value of the channelNumber variable and then
   returns the IsOpen() status.
   */
-  BOOL SetChannel (int newChannel);
+  bool SetChannel (int newChannel);
 			
 
   /**Set the colour format to be used.
@@ -166,7 +166,7 @@ class PVideoInputDevice_Picture : public PVideoInputDevice
   Default behaviour sets the value of the colourFormat variable and then
   returns the IsOpen() status.
   */
-  BOOL SetColourFormat (const PString &newFormat);
+  bool SetColourFormat (const PString &newFormat);
 
   
   /**Set the video frame rate to be used on the device.
@@ -174,15 +174,15 @@ class PVideoInputDevice_Picture : public PVideoInputDevice
   Default behaviour sets the value of the frameRate variable and then
   return the IsOpen() status.
   */
-  BOOL SetFrameRate (unsigned rate);
+  bool SetFrameRate (unsigned rate);
 
   
-  BOOL GetFrameSizeLimits (unsigned &minWidth,
+  bool GetFrameSizeLimits (unsigned &minWidth,
 			   unsigned &minHeight,
 			   unsigned &maxWidth,
 			   unsigned &maxHeight);
   
-  BOOL GetParameters (int *whiteness,
+  bool GetParameters (int *whiteness,
 		      int *brightness,
 		      int *colour,
 		      int *contrast,

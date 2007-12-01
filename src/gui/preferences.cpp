@@ -1254,7 +1254,7 @@ sound_event_toggled_cb (G_GNUC_UNUSED GtkCellRendererToggle *cell,
 
   gchar *conf_key = NULL;
 
-  BOOL fixed = FALSE;
+  bool fixed = FALSE;
 
 
   model = (GtkTreeModel *) data;
@@ -1454,7 +1454,7 @@ gm_prefs_window_sound_events_list_build (GtkWidget *prefs_window)
   GtkTreeModel *model = NULL;
   GtkTreeIter iter, selected_iter;
 
-  BOOL enabled = FALSE;
+  bool enabled = FALSE;
 
   pw = gm_pw_get_pw (prefs_window);
 

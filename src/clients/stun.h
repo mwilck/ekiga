@@ -62,9 +62,9 @@ public:
    * 		     window must be provided if parameters 2 or 3 are TRUE.
    * 		     The last parameter is a reference to the GMManager.
    */
-  GMStunClient (BOOL display_progress_,
-		BOOL display_config_dialog_,
-		BOOL wait_,
+  GMStunClient (bool display_progress_,
+		bool display_config_dialog_,
+		bool wait_,
 		GtkWidget *parent_window,
 		GMManager &endpoint);
 
@@ -88,9 +88,9 @@ public:
 protected:
 
 
-  BOOL display_progress;
-  BOOL display_config_dialog;
-  BOOL wait;
+  bool display_progress;
+  bool display_config_dialog;
+  bool wait;
 
   PString stun_host;
   PString nat_type;

@@ -52,8 +52,8 @@
 
 
 /* The functions */
-GMVideoGrabber::GMVideoGrabber (BOOL start_grabbing,
-				BOOL sync,
+GMVideoGrabber::GMVideoGrabber (bool start_grabbing,
+				bool sync,
 				unsigned _width,
 				unsigned _height,
 				unsigned _rate,
@@ -155,7 +155,7 @@ GMVideoGrabber::StopGrabbing (void)
 }
 
 
-BOOL
+bool
 GMVideoGrabber::IsGrabbing (void)
 {
   PWaitAndSignal m(var_mutex);
@@ -182,7 +182,7 @@ GMVideoGrabber::GetOutputDevice (void)
 }
 
 
-BOOL
+bool
 GMVideoGrabber::SetColour (int _colour)
 {
   PWaitAndSignal m(var_mutex);
@@ -194,7 +194,7 @@ GMVideoGrabber::SetColour (int _colour)
 }
 
 
-BOOL
+bool
 GMVideoGrabber::SetBrightness (int _brightness)
 {
   PWaitAndSignal m(var_mutex);
@@ -206,7 +206,7 @@ GMVideoGrabber::SetBrightness (int _brightness)
 }
 
 
-BOOL
+bool
 GMVideoGrabber::SetWhiteness (int _whiteness)
 {
   PWaitAndSignal m(var_mutex);
@@ -218,7 +218,7 @@ GMVideoGrabber::SetWhiteness (int _whiteness)
 }
 
 
-BOOL
+bool
 GMVideoGrabber::SetContrast (int constrast)
 {
   PWaitAndSignal m(var_mutex);
@@ -279,7 +279,7 @@ GMVideoGrabber::VGOpen (void)
   int error_code = 0;
   int channel = 0;
 
-  BOOL no_device_found = FALSE;
+  bool no_device_found = FALSE;
   
   PVideoDevice::VideoFormat format = PVideoDevice::PAL;
 

@@ -136,7 +136,7 @@ class GMManager : public OpalManager
    *                 call taken. 
    * PRE          :  The called url, the call token.
    */
-  BOOL SetUpCall (const PString &,
+  bool SetUpCall (const PString &,
 		  PString &);
 
 
@@ -147,7 +147,7 @@ class GMManager : public OpalManager
    * 		     it is rejected.
    * PRE          :  /
    */
-  BOOL AcceptCurrentIncomingCall ();
+  bool AcceptCurrentIncomingCall ();
 
   
   /* DESCRIPTION  :  /
@@ -167,8 +167,8 @@ class GMManager : public OpalManager
    *                 grabbing after its creation. If TRUE,
    *                 then the opening is done sync.
    */  
-  GMVideoGrabber *CreateVideoGrabber (BOOL start_grabbing, 
-				      BOOL synchronous,
+  GMVideoGrabber *CreateVideoGrabber (bool start_grabbing, 
+				      bool synchronous,
 				      unsigned width,
 				      unsigned height,
 				      unsigned rate);
@@ -201,7 +201,7 @@ class GMManager : public OpalManager
    * BEHAVIOR     :  Outputs a message in the log and statusbar.
    * PRE          :  /
    */
-  virtual BOOL OnForwarded (OpalConnection &,
+  virtual bool OnForwarded (OpalConnection &,
 			    const PString &);
 
   
@@ -212,7 +212,7 @@ class GMManager : public OpalManager
    * PRE          :  /
    */
   PSafePtr<OpalConnection> GetConnection (PSafePtr<OpalCall>, 
-					  BOOL);
+					  bool);
 
 
   /* DESCRIPTION  :  /
@@ -249,7 +249,7 @@ class GMManager : public OpalManager
    * 		     OnShowIncoming will be called on the PCSS Endpoint.
    * PRE          :  /
    */
-  BOOL OnIncomingConnection (OpalConnection &,
+  bool OnIncomingConnection (OpalConnection &,
 			     unsigned,
 			     PString);
 
@@ -316,10 +316,10 @@ class GMManager : public OpalManager
    * BEHAVIOR     :  Initialise the PVideoInputDevice.
    * PRE          :  /
    */
-  BOOL CreateVideoInputDevice (const OpalConnection &,
+  bool CreateVideoInputDevice (const OpalConnection &,
 			       const OpalMediaFormat &,
 			       PVideoInputDevice * &,
-			       BOOL &);
+			       bool &);
 
   
   /* DESCRIPTION  :  This callback is called when an input video device 
@@ -327,11 +327,11 @@ class GMManager : public OpalManager
    * BEHAVIOR     :  Initialise the PVideoOutputDevice.
    * PRE          :  /
    */
-  BOOL CreateVideoOutputDevice(const OpalConnection &,
+  bool CreateVideoOutputDevice(const OpalConnection &,
 			       const OpalMediaFormat &,
-			       BOOL,
+			       bool,
 			       PVideoOutputDevice * &,
-			       BOOL &);
+			       bool &);
 
 
   /* DESCRIPTION  :  /
@@ -500,9 +500,9 @@ class GMManager : public OpalManager
    * 		     		       before returning.
    * 		     Fourth parameter: Parent window for the other dialogs.
    */
-  void CreateSTUNClient (BOOL,
-			 BOOL,
-			 BOOL,
+  void CreateSTUNClient (bool,
+			 bool,
+			 bool,
 			 GtkWidget *);
 
   
@@ -562,14 +562,14 @@ class GMManager : public OpalManager
    * BEHAVIOR     :  Update the audio device volume (playing then recording). 
    * PRE          :  /
    */
-  BOOL SetDeviceVolume (PSoundChannel *, BOOL, unsigned int);
+  bool SetDeviceVolume (PSoundChannel *, bool, unsigned int);
 
   
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Returns the audio device volume (playing then recording). 
    * PRE          :  /
    */
-  BOOL GetDeviceVolume (PSoundChannel *, BOOL, unsigned int &);
+  bool GetDeviceVolume (PSoundChannel *, bool, unsigned int &);
   
 
 
@@ -578,7 +578,7 @@ class GMManager : public OpalManager
    *                 when a call begins.
    * PRE          :  /
    */
-  void SetAutoStartTransmitVideo (BOOL a) {autoStartTransmitVideo = a;}
+  void SetAutoStartTransmitVideo (bool a) {autoStartTransmitVideo = a;}
 
 
   /* DESCRIPTION  :  /
@@ -586,7 +586,7 @@ class GMManager : public OpalManager
    *                 when a call begins.
    * PRE          :  /
    */
-  void SetAutoStartReceiveVideo (BOOL a) {autoStartReceiveVideo = a;}
+  void SetAutoStartReceiveVideo (bool a) {autoStartReceiveVideo = a;}
 
   
   /* DESCRIPTION  :  Callback called when OpenH323 opens a new logical channel
@@ -594,7 +594,7 @@ class GMManager : public OpalManager
    *                 FALSE if error, TRUE if OK
    * PRE          :  /
    */
-  virtual BOOL OnOpenMediaStream (OpalConnection &,
+  virtual bool OnOpenMediaStream (OpalConnection &,
 				  OpalMediaStream &);
 
 
@@ -609,7 +609,7 @@ class GMManager : public OpalManager
    * BEHAVIOR     :  Checks if the call is on hold
    * PRE          :  /
    */
-  BOOL IsCallOnHold (PString callToken);
+  bool IsCallOnHold (PString callToken);
 
 
   /* DESCRIPTION  :  /
@@ -617,7 +617,7 @@ class GMManager : public OpalManager
    * 		     FALSE if it fails, TRUE if it worked.
    * PRE          :  /
    */
-  BOOL SetCallOnHold (PString callToken, 
+  bool SetCallOnHold (PString callToken, 
 		      gboolean state);
 
 
@@ -661,16 +661,16 @@ class GMManager : public OpalManager
    * BEHAVIOR     :  Sets the call's audio channel on pause, or retrieve it
    * PRE          :  Non-empty call token.
    */
-  BOOL SetCallAudioPause (PString callToken, 
-			  BOOL state);
+  bool SetCallAudioPause (PString callToken, 
+			  bool state);
 
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Sets the call's video channel on pause, or retrieve it
    * PRE          :  Non-empty call token.
    */
-  BOOL SetCallVideoPause (PString callToken, 
-			  BOOL state);
+  bool SetCallVideoPause (PString callToken, 
+			  bool state);
 
 
   /* DESCRIPTION  :  / 
@@ -701,22 +701,22 @@ class GMManager : public OpalManager
                       const PString & mwi);
 
   void OnRegistering (const PString & aor,
-                      BOOL isRegistering);
+                      bool isRegistering);
 
   void OnRegistered (const PString & aor,
-                     BOOL wasRegistering);
+                     bool wasRegistering);
 
   void OnRegistrationFailed (const PString & aor,
-                             BOOL wasRegistering,
+                             bool wasRegistering,
                              std::string info);
 
-  BOOL OnMediaStream (OpalMediaStream &, BOOL);
+  bool OnMediaStream (OpalMediaStream &, bool);
 
   void UpdateRTPStats (PTime,
 		       RTP_Session *,
 		       RTP_Session *);
 
-  BOOL DeviceVolume (PSoundChannel *, BOOL, BOOL, unsigned int &);
+  bool DeviceVolume (PSoundChannel *, bool, bool, unsigned int &);
 
  public:
 
@@ -769,16 +769,16 @@ class GMManager : public OpalManager
   PTimer IPChangedTimer;
   PTimer NoIncomingMediaTimer;
     
-  BOOL ils_registered;
+  bool ils_registered;
 
   /* MWI */
   mwiDict mwiData;
 
   /* Different channels */
-  BOOL is_transmitting_video;
-  BOOL is_transmitting_audio;
-  BOOL is_receiving_video;
-  BOOL is_receiving_audio;  
+  bool is_transmitting_video;
+  bool is_transmitting_audio;
+  bool is_receiving_video;
+  bool is_receiving_audio;  
 
 
   /* RTP tats */

@@ -136,11 +136,11 @@ GMManager::Exit ()
 }
 
 
-BOOL
+bool
 GMManager::SetUpCall (const PString & call_addr,
 		       PString & call_token)
 {
-  BOOL result = FALSE;
+  bool result = FALSE;
   
   result = OpalManager::SetUpCall ("pc:*", call_addr, call_token, NULL);
 
@@ -151,7 +151,7 @@ GMManager::SetUpCall (const PString & call_addr,
 }
 
 
-BOOL
+bool
 GMManager::AcceptCurrentIncomingCall ()
 {
   if (pcssEP) {
@@ -166,7 +166,7 @@ GMManager::AcceptCurrentIncomingCall ()
 
 void GMManager::UpdateDevices ()
 {
-  BOOL preview = FALSE;
+  bool preview = FALSE;
   gchar *device_name = NULL;
   unsigned size = 0;
   unsigned max_frame_rate = 15;
@@ -508,8 +508,8 @@ GMManager::StopAudioTester ()
 
 
 GMVideoGrabber *
-GMManager::CreateVideoGrabber (BOOL start_grabbing,
-                               BOOL synchronous,
+GMManager::CreateVideoGrabber (bool start_grabbing,
+                               bool synchronous,
 			       unsigned width,
 			       unsigned height,
 			       unsigned rate)
@@ -645,9 +645,9 @@ GMManager::RemoveZeroconfClient ()
 
 			     
 void 
-GMManager::CreateSTUNClient (BOOL display_progress,
-			     BOOL display_config_dialog,
-			     BOOL wait,
+GMManager::CreateSTUNClient (bool display_progress,
+			     bool display_config_dialog,
+			     bool wait,
 			     GtkWidget *parent)
 {
   PWaitAndSignal m(sc_mutex);
@@ -682,7 +682,7 @@ GMManager::RemoveSTUNClient ()
 }
 
 
-BOOL
+bool
 GMManager::OnForwarded (OpalConnection &connection,
                         G_GNUC_UNUSED const PString & forward_party)
 {
@@ -697,7 +697,7 @@ GMManager::OnForwarded (OpalConnection &connection,
 
 
 PSafePtr<OpalConnection> GMManager::GetConnection (PSafePtr<OpalCall> call, 
-						    BOOL is_remote)
+						    bool is_remote)
 {
   PSafePtr<OpalConnection> connection = NULL;
 
@@ -790,12 +790,12 @@ GMManager::GetCurrentConnectionInfo (gchar *&name,
 }
 
 
-BOOL
+bool
 GMManager::OnIncomingConnection (OpalConnection &connection,
                                  unsigned reason,
                                  PString extra)
 {
-  BOOL res = FALSE;
+  bool res = FALSE;
 
   /* Act on the connection */
   switch (reason) {
@@ -1211,7 +1211,7 @@ GMManager::ResetListeners ()
   WORD min_port = 5060;
   WORD max_port = 5080;
 
-  BOOL success = FALSE;
+  bool success = FALSE;
 
   gnomemeeting_threads_enter ();
   iface = gm_conf_get_string (PROTOCOLS_KEY "interface");
@@ -1277,7 +1277,7 @@ GMManager::OnIPChanged (PTimer &,
   PString ip;
   PINDEX i = 0;
   
-  BOOL found_ip = FALSE;
+  bool found_ip = FALSE;
   
   gchar *iface = NULL;
 
@@ -1345,18 +1345,18 @@ GMManager::OnNoIncomingMediaTimeout (PTimer &,
     ClearAllCalls (H323Connection::EndedByTransportFail, FALSE);
 }
 
-BOOL
+bool
 GMManager::SetDeviceVolume (PSoundChannel *sound_channel,
-			     BOOL is_encoding,
+			     bool is_encoding,
 			     unsigned int vol)
 {
   return DeviceVolume (sound_channel, is_encoding, TRUE, vol);
 }
 
 
-BOOL
+bool
 GMManager::GetDeviceVolume (PSoundChannel *sound_channel,
-                                 BOOL is_encoding,
+                                 bool is_encoding,
                                  unsigned int &vol)
 {
   return DeviceVolume (sound_channel, is_encoding, FALSE, vol);
@@ -1373,7 +1373,7 @@ GMManager::OnClosedMediaStream (const OpalMediaStream & stream)
 }
 
 
-BOOL 
+bool 
 GMManager::OnOpenMediaStream (OpalConnection & connection,
 			       OpalMediaStream & stream)
 {
@@ -1387,13 +1387,13 @@ GMManager::OnOpenMediaStream (OpalConnection & connection,
 }
 
 
-BOOL 
+bool 
 GMManager::OnMediaStream (OpalMediaStream & stream,
-			   BOOL is_closing)
+			   bool is_closing)
 {
   PString codec_name;
-  BOOL is_encoding = FALSE;
-  BOOL is_video = FALSE;
+  bool is_encoding = FALSE;
+  bool is_video = FALSE;
  
   is_video = (stream.GetSessionID () == OpalMediaFormat::DefaultVideoSessionID);
   is_encoding = !stream.IsSource (); // If the codec is from a source media
@@ -1681,13 +1681,13 @@ GMManager::OnGatewayIPTimeout (PTimer &,
 }
 
 
-BOOL 
+bool 
 GMManager::DeviceVolume (PSoundChannel *sound_channel,
-			 G_GNUC_UNUSED BOOL is_encoding,
-			 BOOL set,
+			 G_GNUC_UNUSED bool is_encoding,
+			 bool set,
 			 unsigned int &vol)
 {
-  BOOL err = TRUE;
+  bool err = TRUE;
 
   if (sound_channel && GetCallingState () == GMManager::Connected) {
 
@@ -1710,11 +1710,11 @@ GMManager::DeviceVolume (PSoundChannel *sound_channel,
 }
 
 
-BOOL
+bool
 GMManager::CreateVideoInputDevice (G_GNUC_UNUSED const OpalConnection &con,
 				   const OpalMediaFormat &format,
 				   PVideoInputDevice * & device,
-				   BOOL & auto_delete)
+				   bool & auto_delete)
 {
   GMVideoGrabber *vg = NULL;
   auto_delete = FALSE;
@@ -1748,12 +1748,12 @@ GMManager::CreateVideoInputDevice (G_GNUC_UNUSED const OpalConnection &con,
 }
 
 
-BOOL 
+bool 
 GMManager::CreateVideoOutputDevice(G_GNUC_UNUSED const OpalConnection & connection,
 				   const OpalMediaFormat & format,
-				   BOOL preview,
+				   bool preview,
 				   PVideoOutputDevice * & device,
-				   BOOL & auto_delete)
+				   bool & auto_delete)
 {
   const PVideoDevice::OpenArgs & args = videoOutputDevice;
 
@@ -1798,7 +1798,7 @@ GMManager::CreateVideoOutputDevice(G_GNUC_UNUSED const OpalConnection & connecti
 }
 
 
-BOOL
+bool
 GMManager::IsCallOnHold (PString callToken)
 {
   PSafePtr<OpalCall> call = FindCallWithLock (callToken);
@@ -1818,7 +1818,7 @@ GMManager::IsCallOnHold (PString callToken)
 }
 
 
-BOOL
+bool
 GMManager::SetCallOnHold (PString callToken,
 			   gboolean state)
 {
@@ -1975,9 +1975,9 @@ GMManager::IsCallVideoPaused (PString callToken)
 }
 
 
-BOOL
+bool
 GMManager::SetCallAudioPause (PString callToken, 
-			       BOOL state)
+			       bool state)
 {
   OpalMediaStream *stream = NULL;
   PSafePtr<OpalCall> call = FindCallWithLock (callToken);
@@ -2006,9 +2006,9 @@ GMManager::SetCallAudioPause (PString callToken,
 }
 
 
-BOOL
+bool
 GMManager::SetCallVideoPause (PString callToken, 
-			       BOOL state)
+			       bool state)
 {
   OpalMediaStream *stream = NULL;
   PSafePtr<OpalCall> call = FindCallWithLock (callToken);
@@ -2092,7 +2092,7 @@ GMManager::OnMWIReceived (const PString & account,
 
 void
 GMManager::OnRegistered (const PString & aor,
-                         BOOL wasRegistering)
+                         bool wasRegistering)
 {
   Ekiga::Runtime *runtime = GnomeMeeting::Process ()->GetRuntime (); // FIXME
   runtime->run_in_main (sigc::bind (registration_event.make_slot (), 
@@ -2104,7 +2104,7 @@ GMManager::OnRegistered (const PString & aor,
 
 void
 GMManager::OnRegistering (const PString & aor,
-                         G_GNUC_UNUSED BOOL isRegistering)
+                         G_GNUC_UNUSED bool isRegistering)
 {
   Ekiga::Runtime *runtime = GnomeMeeting::Process ()->GetRuntime (); // FIXME
   runtime->run_in_main (sigc::bind (registration_event.make_slot (), 
@@ -2116,7 +2116,7 @@ GMManager::OnRegistering (const PString & aor,
 
 void
 GMManager::OnRegistrationFailed (const PString & aor,
-                                 BOOL wasRegistering,
+                                 bool wasRegistering,
                                  std::string info)
 {
   Ekiga::Runtime *runtime = GnomeMeeting::Process ()->GetRuntime (); // FIXME

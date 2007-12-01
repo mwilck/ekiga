@@ -59,8 +59,8 @@ class GMVideoGrabber : public PThread
    *                 must be opened synchronously. The last one is a 
    *                 reference to the GMManager.
    */
-  GMVideoGrabber (BOOL start_grabbing,
-		  BOOL sync,
+  GMVideoGrabber (bool start_grabbing,
+		  bool sync,
 		  unsigned _width,
 		  unsigned _height,
 		  unsigned _rate,
@@ -94,7 +94,7 @@ class GMVideoGrabber : public PThread
    * BEHAVIOR     :  Returns TRUE if we are grabbing.
    * PRE          :  /
    */
-  BOOL IsGrabbing (void);
+  bool IsGrabbing (void);
 
   
   /* DESCRIPTION  :  /
@@ -117,28 +117,28 @@ class GMVideoGrabber : public PThread
    * BEHAVIOR     :  Sets the colour for the specified device.
    * PRE          :  0 <= int <= 65535
    */
-  BOOL SetColour (int colour);
+  bool SetColour (int colour);
 
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Sets the brightness for the specified device.
    * PRE          :  0 <= int <= 65535
    */
-  BOOL SetBrightness (int brightness);
+  bool SetBrightness (int brightness);
 
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Sets the whiteness for the specified device.
    * PRE          :  0 <= int <= 65535
    */
-  BOOL SetWhiteness (int whiteness);
+  bool SetWhiteness (int whiteness);
 
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Sets the contrast for the specified device.
    * PRE          :  0 <= int <= 65535
    */
-  BOOL SetContrast (int contrast);
+  bool SetContrast (int contrast);
 
 
   /* DESCRIPTION  :  /
@@ -202,10 +202,10 @@ class GMVideoGrabber : public PThread
   PVideoInputDevice *grabber;
   PVideoOutputDevice *display;
 
-  BOOL stop;
-  BOOL is_grabbing;
-  BOOL synchronous;
-  BOOL is_opened;
+  bool stop;
+  bool is_grabbing;
+  bool synchronous;
+  bool is_opened;
 
   PMutex var_mutex;      /* To protect variables that are read and written
 			    from various threads */

@@ -192,7 +192,7 @@ GnomeMeeting::Exit ()
 }
 
 
-BOOL
+bool
 GnomeMeeting::DetectInterfaces ()
 {
   PString config_interface;
@@ -202,7 +202,7 @@ GnomeMeeting::DetectInterfaces ()
 
   PINDEX i = 0;
   PINDEX pos = 0;
-  BOOL res = FALSE;
+  bool res = FALSE;
 
   gchar *conf_interface = NULL;
 
@@ -274,7 +274,7 @@ GnomeMeeting::DetectInterfaces ()
 }
   
 
-BOOL
+bool
 GnomeMeeting::DetectDevices ()
 {
   gchar *audio_plugin = NULL;
@@ -376,7 +376,7 @@ GnomeMeeting::DetectDevices ()
 }
 
 
-BOOL
+bool
 GnomeMeeting::DetectCodecs ()
 {
   OpalMediaFormatList list;

@@ -310,7 +310,7 @@ entry_completion_url_match_cb (G_GNUC_UNUSED GtkEntryCompletion *completion,
   PCaselessString s;
 
   PINDEX j = 0;
-  BOOL found = FALSE;
+  bool found = FALSE;
   
   g_return_val_if_fail (data != NULL, FALSE);
   

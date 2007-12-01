@@ -83,7 +83,7 @@ class GMH323Endpoint : public H323EndPoint
    *                 returns TRUE if success and FALSE in case of error.
    * PRE          :  The interface.
    */
-  BOOL StartListener (PString iface, 
+  bool StartListener (PString iface, 
 		      WORD port);
 
 
@@ -137,7 +137,7 @@ class GMH323Endpoint : public H323EndPoint
    * BEHAVIOR     :  Use the given gatekeeper.
    * PRE          :  /
    */
-  BOOL UseGatekeeper (const PString & address = PString::Empty (),
+  bool UseGatekeeper (const PString & address = PString::Empty (),
 		      const PString & domain = PString::Empty (),
 		      const PString & iface = PString::Empty ());
   
@@ -147,7 +147,7 @@ class GMH323Endpoint : public H323EndPoint
    * 		     Returns TRUE if it worked.
    * PRE          :  Non-Empty address.
    */
-  BOOL RemoveGatekeeper (const PString & address);
+  bool RemoveGatekeeper (const PString & address);
   
   
   /* DESCRIPTION  :  /
@@ -155,7 +155,7 @@ class GMH323Endpoint : public H323EndPoint
    * 		     the given gatekeeper.
    * PRE          :  Non-Empty address.
    */
-  BOOL IsRegisteredWithGatekeeper (const PString & address);
+  bool IsRegisteredWithGatekeeper (const PString & address);
   
 
   /* DESCRIPTION  :  Called when there is an incoming SIP connection.
@@ -168,7 +168,7 @@ class GMH323Endpoint : public H323EndPoint
    * 		     updates of the GUI and internal timers.
    * PRE          :  /
    */
-  BOOL OnIncomingConnection (OpalConnection &connection,
+  bool OnIncomingConnection (OpalConnection &connection,
                              unsigned options,
                              OpalConnection::StringOptions *str_options);
 

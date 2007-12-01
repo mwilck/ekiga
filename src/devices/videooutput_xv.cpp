@@ -87,7 +87,7 @@ GMVideoDisplay_XV::~GMVideoDisplay_XV()
     XCloseDisplay (rDisplay);
 }
 
-BOOL 
+bool 
 GMVideoDisplay_XV::SetupFrameDisplay (int display, 
                                           guint lf_width, 
                                           guint lf_height, 
@@ -95,10 +95,10 @@ GMVideoDisplay_XV::SetupFrameDisplay (int display,
                                           guint rf_height, 
                                           double zoom)
 {
-  BOOL ret = FALSE;
+  bool ret = FALSE;
 
   WidgetInfo currentWidgetInfo;
-  BOOL wasSet;
+  bool wasSet;
 
   if (fallback)
     return GMVideoDisplay_GDK::SetupFrameDisplay (display, lf_width, lf_height,
@@ -256,7 +256,7 @@ GMVideoDisplay_XV::SetupFrameDisplay (int display,
 }
 
 
-BOOL 
+bool 
 GMVideoDisplay_XV::CloseFrameDisplay ()
 {
   if (fallback)
@@ -280,7 +280,7 @@ GMVideoDisplay_XV::CloseFrameDisplay ()
   return TRUE;
 }
 
-BOOL 
+bool 
 GMVideoDisplay_XV::FrameDisplayChangeNeeded (int display, 
                                                   guint lf_width, 
                                                   guint lf_height, 

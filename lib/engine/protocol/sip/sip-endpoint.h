@@ -80,7 +80,7 @@ namespace SIP
     void unsubscribe (std::string uri);
 
     void OnRegistered (const PString & aor,
-                       BOOL was_registering);
+                       bool was_registering);
 
     void OnPresenceInfoReceived (const PString & user,
                                  const PString & basic,

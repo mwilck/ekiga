@@ -55,9 +55,8 @@ namespace Ekiga {
        */               
 
       /** Create a call based on the remote uri given as parameter.
-       * @return A reference to he created Ekiga::Call is returned by the method.
        */
-      Ekiga::Call create_call (std::string uri); 
+      void create_call (std::string uri); 
 
       /** This signal is emitted when the call status changes.
        * There are different statuses described in the Ekiga::Call interface, but

@@ -222,7 +222,7 @@ void GMSoundEvent::Main ()
 }
 
 
-GMAudioRP::GMAudioRP (BOOL enc,
+GMAudioRP::GMAudioRP (bool enc,
 		      GMAudioTester &t)
   :PThread (1000, NoAutoDeleteThread), tester (t)
 {
@@ -253,7 +253,7 @@ void GMAudioRP::Main ()
   gchar *msg = NULL;
   char *buffer = NULL;
   
-  BOOL label_displayed = FALSE;
+  bool label_displayed = FALSE;
 
   int buffer_pos = 0;
   static int nbr_opened_channels = 0;

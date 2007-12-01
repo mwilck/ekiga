@@ -120,13 +120,13 @@ GMURL::GMURL (const GMURL & u)
 }
 
 
-BOOL GMURL::IsEmpty ()
+bool GMURL::IsEmpty ()
 {
   return url.IsEmpty ();
 }
 
 
-BOOL GMURL::IsSupported ()
+bool GMURL::IsSupported ()
 {
   return is_supported;
 }
@@ -155,37 +155,37 @@ void GMURL::Parse ()
   account = gnomemeeting_get_default_account ("sip");
   ekiga_account = gnomemeeting_get_account ("ekiga.net");
   phone_account = gnomemeeting_get_account ("eugw.ast.diamondcard.us");
-  
+
   if (!url.IsEmpty ()) {
 
     if (type == "sip") {
 
       if (account
-	  && account->host 
-	  && (url.Find ("@") == P_MAX_INDEX 
-	      && url.Find (".") == P_MAX_INDEX 
-	      && url.Find ("+") == P_MAX_INDEX)) {
+          && account->host 
+          && (url.Find ("@") == P_MAX_INDEX 
+              && url.Find (".") == P_MAX_INDEX 
+              && url.Find ("+") == P_MAX_INDEX)) {
 
-	// We add a dirty workaround for PC-To-Phone calls
-	// if the default account is ekiga.net and if it is
-	// enabled.
-	if (url.Find ("00") == 0 
-	    && ekiga_account 
-	    && ekiga_account->enabled && ekiga_account->default_account
-	    && phone_account
-	    && phone_account->enabled) {
+        // We add a dirty workaround for PC-To-Phone calls
+        // if the default account is ekiga.net and if it is
+        // enabled.
+        if (url.Find ("00") == 0 
+            && ekiga_account 
+            && ekiga_account->enabled && ekiga_account->default_account
+            && phone_account
+            && phone_account->enabled) {
 
-	    url = url.Mid (2) + "@" + phone_account->host;
-	}
-	else
-	  url = url + "@" + account->host;
+          url = url.Mid (2) + "@" + phone_account->host;
+        }
+        else
+          url = url + "@" + account->host;
       }
     }
     else if (type == "h323") {
 
       if (!default_h323_gateway.IsEmpty ()
-	  && url.Find (default_h323_gateway) == P_MAX_INDEX) 	
-	url = url + "@" + default_h323_gateway;
+          && url.Find (default_h323_gateway) == P_MAX_INDEX) 	
+        url = url + "@" + default_h323_gateway;
     }
   }
 
@@ -203,7 +203,7 @@ void GMURL::Parse ()
 }
 
 
-PString GMURL::GetFullURL (BOOL include_default_port)
+PString GMURL::GetFullURL (bool include_default_port)
 {
   PString full_url;
 
@@ -212,40 +212,40 @@ PString GMURL::GetFullURL (BOOL include_default_port)
 
   /* Compute the full URL */
   if (type == "shortcut") {
-    
+
     full_url = url.Left (url.GetLength () - 1);
   }
   else if (type == "callto"
-	   && url.Find ('/') != P_MAX_INDEX
-	   && url.Find ("type") == P_MAX_INDEX) {
-    
+           && url.Find ('/') != P_MAX_INDEX
+           && url.Find ("type") == P_MAX_INDEX) {
+
     full_url = "callto:" + url + "+type=directory";
   }
   else if (type == "sip") {
-    
+
     if (port.IsEmpty ())
       port = "5060";
-    
+
     if (include_default_port || port != "5060")
       full_url = type + ":" + url + ":" + port;
     else
       full_url = type + ":" + url;
   }
   else if (type == "h323") {
-    
+
     if (port.IsEmpty ())
       port = "1720";
-    
+
     if (include_default_port || port != "1720")
       full_url = type + ":" + url + ":" + port;
     else
       full_url = type + ":" + url;
   }
   else if (is_supported) {
-    
+
     full_url = type + ":" + url;
   }
-    
+
 
   return full_url;
 }
@@ -257,7 +257,7 @@ PString GMURL::GetCanonicalURL ()
 
   if (!canonical_url.IsEmpty () && !port.IsEmpty ())
     canonical_url = canonical_url + ":" + port;
-  
+
   return canonical_url; 
 }
 
@@ -274,7 +274,7 @@ PString GMURL::GetURL ()
 PString GMURL::GetCalltoServer ()
 {
   PINDEX i;
-  
+
   if (type == "callto") {
 
     if ((i = url.Find ('/')) != P_MAX_INDEX) {
@@ -300,7 +300,7 @@ PString GMURL::GetCalltoEmail ()
       return url.Mid (i+1);
     }
   }
-   
+
   return PString ();
 }
 
@@ -311,14 +311,14 @@ PString GMURL::GetDefaultURL ()
 }
 
 
-BOOL GMURL::Find (GMURL u)
+bool GMURL::Find (GMURL u)
 {
   /* 
    * We have a callto address with an email, match on the callto email
    * of the given url if any, or on its canonical part.
    */
   if (!this->GetCalltoEmail ().IsEmpty ()) {
-    
+
     if (!u.GetCalltoEmail ().IsEmpty ())
       return (this->GetCalltoEmail ().Find (u.GetCalltoEmail ()) == 0);
     else
@@ -335,13 +335,13 @@ BOOL GMURL::Find (GMURL u)
 }
 
 
-BOOL GMURL::operator == (GMURL u) 
+bool GMURL::operator == (GMURL u) 
 {
   return (this->GetFullURL () *= u.GetFullURL ());
 }
 
 
-BOOL GMURL::operator != (GMURL u) 
+bool GMURL::operator != (GMURL u) 
 {
   return !(this->GetFullURL () *= u.GetFullURL ());
 }
@@ -349,7 +349,7 @@ BOOL GMURL::operator != (GMURL u)
 
 /* The class */
 GMURLHandler::GMURLHandler (PString c, 
-			    BOOL transfer)
+                            bool transfer)
   :PThread (1000, AutoDeleteThread)
 {
   url = GMURL (c);

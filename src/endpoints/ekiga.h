@@ -124,7 +124,7 @@ class GnomeMeeting : public PProcess
    *                 Updates the preferences window.
    * PRE          :  /
    */
-  BOOL DetectInterfaces ();
+  bool DetectInterfaces ();
 
   
   /* DESCRIPTION  :  /
@@ -136,7 +136,7 @@ class GnomeMeeting : public PProcess
    *                 Updates the preferences window.
    * PRE          :  /
    */
-  BOOL DetectDevices ();
+  bool DetectDevices ();
   
   
   /* DESCRIPTION  :  /
@@ -145,7 +145,7 @@ class GnomeMeeting : public PProcess
    *                 Updates the preferences window.
    * PRE          :  /
    */
-  BOOL DetectCodecs ();
+  bool DetectCodecs ();
 
   
   /* DESCRIPTION  :  /
@@ -299,8 +299,8 @@ class GnomeMeeting : public PProcess
 
   sigc::signal<void,
                GtkWidget*,
-  	       BOOL,
-	       BOOL> set_video_window;
+  	       bool,
+	       bool> set_video_window;
 
   sigc::signal<void,
   	       int,

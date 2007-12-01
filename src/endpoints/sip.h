@@ -78,7 +78,7 @@ class GMSIPEndpoint : public SIPEndPoint
    *                 returns TRUE if success and FALSE in case of error.
    * PRE          :  The interface.
    */
-  BOOL StartListener (PString iface,
+  bool StartListener (PString iface,
 		      WORD port);
 
   
@@ -138,7 +138,7 @@ class GMSIPEndpoint : public SIPEndPoint
    * PRE          :  /
    */
   void OnRegistered (const PString & aor,
-		     BOOL wasRegistering);
+		     bool wasRegistering);
   
   
   /* DESCRIPTION  :  Called when the registration fails.
@@ -147,7 +147,7 @@ class GMSIPEndpoint : public SIPEndPoint
    */
   void OnRegistrationFailed (const PString & aor,
 			     SIP_PDU::StatusCodes reason,
-			     BOOL wasRegistering);
+			     bool wasRegistering);
   
   
   /* DESCRIPTION  :  Called when there is an incoming SIP connection.
@@ -160,7 +160,7 @@ class GMSIPEndpoint : public SIPEndPoint
    * 		     updates of the GUI and internal timers.
    * PRE          :  /
    */
-  BOOL OnIncomingConnection (OpalConnection &connection,
+  bool OnIncomingConnection (OpalConnection &connection,
                              unsigned options,
                              OpalConnection::StringOptions * stroptions);
 

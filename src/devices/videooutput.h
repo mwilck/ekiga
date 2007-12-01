@@ -77,8 +77,8 @@ class PVideoOutputDevice_EKIGA : public PVideoOutputDevice
    * BEHAVIOR     :  Open the device given the device name.
    * PRE          :  Device name to open, immediately start device.
    */
-  virtual BOOL Open (const PString &name,
-                     BOOL unused);
+  virtual bool Open (const PString &name,
+                     bool unused);
 
 
   /* DESCRIPTION  :  /
@@ -99,7 +99,7 @@ class PVideoOutputDevice_EKIGA : public PVideoOutputDevice
    * BEHAVIOR     :  Returns TRUE if the output device is open.
    * PRE          :  /
    */
-  virtual BOOL IsOpen ();
+  virtual bool IsOpen ();
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  If data for the end frame is received, then we convert
@@ -109,33 +109,33 @@ class PVideoOutputDevice_EKIGA : public PVideoOutputDevice
    *                 the data, and a boolean indicating if it is the end
    *                 frame or not.
    */
-  virtual BOOL SetFrameData (unsigned x,
+  virtual bool SetFrameData (unsigned x,
                              unsigned y,
                              unsigned width,
                              unsigned height,
                              const BYTE *data,
-                             BOOL endFrame);
+                             bool endFrame);
 
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Returns TRUE if the colour format is supported (ie RGB24).
    * PRE          :  /
    */
-  virtual BOOL SetColourFormat (const PString &colour_format);
+  virtual bool SetColourFormat (const PString &colour_format);
 
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Start displaying.
    * PRE          :  /
    */
-  virtual BOOL Start () { return TRUE; };
+  virtual bool Start () { return TRUE; };
 
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Stop displaying.
    * PRE          :  /
    */
-  virtual BOOL Stop () { return TRUE; };
+  virtual bool Stop () { return TRUE; };
 
  protected:
 
@@ -152,7 +152,7 @@ class PVideoOutputDevice_EKIGA : public PVideoOutputDevice
 
   static PMutex videoDisplay_mutex;  
 
-  BOOL is_active;
+  bool is_active;
 
   enum {REMOTE, LOCAL};
 
