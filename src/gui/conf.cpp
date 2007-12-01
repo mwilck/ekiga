@@ -463,8 +463,8 @@ video_media_format_changed_nt (G_GNUC_UNUSED gpointer id,
   PSafePtr<OpalCall> call = NULL;
   PSafePtr<OpalConnection> connection = NULL;
   
-  int vq = 1;
-  int bitrate = 2;
+  unsigned tsto = 1;
+  unsigned max_tx_bitrate = 16;
 
   if (gm_conf_entry_get_type (entry) == GM_CONF_INT) {
 
@@ -483,20 +483,14 @@ video_media_format_changed_nt (G_GNUC_UNUSED gpointer id,
 
 	if (stream != NULL) {
 	  
-
 	  gdk_threads_enter ();
-	  vq = 
-	    gm_conf_get_int (VIDEO_CODECS_KEY "transmitted_video_quality");
-	  bitrate = 
-	    gm_conf_get_int (VIDEO_CODECS_KEY "maximum_video_tx_bitrate");
+	  tsto = gm_conf_get_int (VIDEO_CODECS_KEY "temporal_spatial_tradeoff");
+	  max_tx_bitrate = gm_conf_get_int (VIDEO_CODECS_KEY "maximum_video_tx_bitrate");
 	  gdk_threads_leave ();
 	  
-	  vq = 25 - (int) ((double) (int) vq / 100 * 24);
 	  OpalMediaFormat mediaFormat = stream->GetMediaFormat ();
-//          mediaFormat.SetOptionInteger (OpalVideoFormat::EncodingQualityOption (),
-//                                        vq);  
-          mediaFormat.SetOptionInteger (OpalVideoFormat::TargetBitRateOption (), 
-                                        bitrate * 8 * 1024);
+          mediaFormat.SetOptionInteger (OpalVideoFormat::TemporalSpatialTradeOffOption() , tsto);  
+          mediaFormat.SetOptionInteger (OpalVideoFormat::TargetBitRateOption (), max_tx_bitrate * 1024);
 
 	  stream->UpdateMediaFormat (mediaFormat);
 	}
@@ -712,7 +706,7 @@ video_device_setting_changed_nt (G_GNUC_UNUSED gpointer id,
 
   BOOL preview = FALSE;
   unsigned size = 0;
-  unsigned rate = 15;
+  unsigned max_frame_rate = 15;
 
   GMManager *ep = NULL;
 
@@ -726,11 +720,11 @@ video_device_setting_changed_nt (G_GNUC_UNUSED gpointer id,
       gdk_threads_enter ();
       preview = gm_conf_get_bool (VIDEO_DEVICES_KEY "enable_preview");
       size = gm_conf_get_int (VIDEO_DEVICES_KEY "size");
-      rate = gm_conf_get_int (VIDEO_CODECS_KEY "frame_rate");
+      max_frame_rate = gm_conf_get_int (VIDEO_CODECS_KEY "max_frame_rate");
       gdk_threads_leave ();
 
       if (preview)
-	ep->CreateVideoGrabber (TRUE, TRUE, video_sizes[size].width, video_sizes[size].height, rate);
+	ep->CreateVideoGrabber (TRUE, TRUE, video_sizes[size].width, video_sizes[size].height, max_frame_rate);
     }
   }
 }
@@ -747,7 +741,7 @@ static void video_preview_changed_nt (G_GNUC_UNUSED gpointer id,
 {
   GMManager *ep = NULL;
   unsigned size = 0;
-  unsigned rate = 15;
+  unsigned max_frame_rate = 15;
 
   if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
    
@@ -758,11 +752,11 @@ static void video_preview_changed_nt (G_GNUC_UNUSED gpointer id,
     
       gdk_threads_enter ();
       size = gm_conf_get_int (VIDEO_DEVICES_KEY "size");
-      rate = gm_conf_get_int (VIDEO_CODECS_KEY "frame_rate");
+      max_frame_rate = gm_conf_get_int (VIDEO_CODECS_KEY "max_frame_rate");
       gdk_threads_leave ();
 
       if (gm_conf_entry_get_bool (entry)) 
-	ep->CreateVideoGrabber (TRUE, TRUE, video_sizes[size].width, video_sizes[size].height, rate);
+	ep->CreateVideoGrabber (TRUE, TRUE, video_sizes[size].width, video_sizes[size].height, max_frame_rate);
       else 
 	ep->RemoveVideoGrabber ();
     }
@@ -1082,9 +1076,9 @@ gnomemeeting_conf_init ()
   gm_conf_notifier_add (VIDEO_CODECS_KEY "maximum_video_tx_bitrate", 
 			network_settings_changed_nt, NULL);
 
-  gm_conf_notifier_add (VIDEO_CODECS_KEY "transmitted_video_quality",
+  gm_conf_notifier_add (VIDEO_CODECS_KEY "temporal_spatial_tradeoff",
 			video_media_format_changed_nt, NULL);
-  gm_conf_notifier_add (VIDEO_CODECS_KEY "transmitted_video_quality", 
+  gm_conf_notifier_add (VIDEO_CODECS_KEY "temporal_spatial_tradeoff", 
 			network_settings_changed_nt, NULL);
 }
 

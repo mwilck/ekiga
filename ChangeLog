@@ -1,3 +1,11 @@
+2007-12-01  Matthias Schneider  <ma30002000@yahoo.de>
+	* src/endpoints/manager.cpp:
+	* src/gui/preferences.cpp:
+	* src/gui/conf.cpp:
+	* ekiga.schemas.in.in:
+	Added temporal spatial tradeoff setting. Changed frame_rate to max_frame_rate.
+	Changed the data types of the variables used for some MediaOptions to unsigned.
+
 2007-11-30  Matthias Schneider  <ma30002000@yahoo.de>
 	* src/devices/videoinput.h:
 	* src/endpoints/manager.cpp:
@@ -11,13 +19,13 @@
 	* src/endpoints/manager.h:
 	* src/gui/conf.cpp:
         Be able to ajust to negotiated resolution and framerate
-	
+
 2007-11-28  Matthias Schneider  <ma30002000@yahoo.de>
 
         * lib/gui/xwindow.h:
 	* lib/gui/xvwindow.cpp:
 	Added debug function to dump all available visuals
-	
+
 2007-11-28  Matthias Schneider  <ma30002000@yahoo.de>
 
 	* src/devices/videooutput_xv.cpp:
@@ -51,7 +59,7 @@
 	check byte order in configure
 	check for mmx support in cofigure
 	make DirectX mandatory on windows
-	
+
 2007-11-27  Damien Sandras  <dsandras@gnome.org>
 
 	* src/gui/main.cpp: 
@@ -85,7 +93,7 @@
 
 	* lib/engine/gui/gtk-frontend/chat-window.cpp:
 	Show the page content after having built it. Fixed bug #498017.
-	
+
 2007-11-19  Damien Sandras  <dsandras@gnome.org>
 
 	* lib/gui/gmstatusbar.c, lib/gui/gmpreferences.c:

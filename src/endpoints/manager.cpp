@@ -169,14 +169,14 @@ void GMManager::UpdateDevices ()
   BOOL preview = FALSE;
   gchar *device_name = NULL;
   unsigned size = 0;
-  unsigned rate = 15;
+  unsigned max_frame_rate = 15;
 
   /* Get the config settings */
   gnomemeeting_threads_enter ();
   preview = gm_conf_get_bool (VIDEO_DEVICES_KEY "enable_preview");
   device_name = gm_conf_get_string (VIDEO_DEVICES_KEY "input_device");
   size = gm_conf_get_int (VIDEO_DEVICES_KEY "size");
-  rate = gm_conf_get_int (VIDEO_CODECS_KEY "frame_rate");
+  max_frame_rate = gm_conf_get_int (VIDEO_CODECS_KEY "max_frame_rate");
   gnomemeeting_threads_leave ();
 
   /* Do not change these values during calls */
@@ -184,7 +184,7 @@ void GMManager::UpdateDevices ()
 
     /* Video preview */
     if (preview) 
-      CreateVideoGrabber (TRUE, TRUE, video_sizes[size].width, video_sizes[size].height, rate);
+      CreateVideoGrabber (TRUE, TRUE, video_sizes[size].width, video_sizes[size].height, max_frame_rate);
     else 
       RemoveVideoGrabber ();
 
@@ -314,10 +314,12 @@ GMManager::SetAudioMediaFormats (PStringArray *order)
 void 
 GMManager::SetVideoMediaFormats (PStringArray *order)
 {
-  int size = 0;
-  int frame_rate = 0;
-  int max_rx_bitrate = 2;
-  int max_tx_bitrate = 2;
+  unsigned size = 0;
+  unsigned max_frame_rate = 15;
+  unsigned tsto = 0;
+  
+  unsigned max_rx_bitrate = 16;
+  unsigned max_tx_bitrate = 16;
 
   PStringArray initial_order;
   PStringArray initial_mask;
@@ -331,14 +333,15 @@ GMManager::SetVideoMediaFormats (PStringArray *order)
     return;
 
   gnomemeeting_threads_enter ();
-  frame_rate = gm_conf_get_int (VIDEO_CODECS_KEY "frame_rate");
+  max_frame_rate = gm_conf_get_int (VIDEO_CODECS_KEY "max_frame_rate");
+  tsto = gm_conf_get_int (VIDEO_CODECS_KEY "temporal_spatial_tradeoff");
   max_rx_bitrate = gm_conf_get_int (VIDEO_CODECS_KEY "maximum_video_rx_bitrate");
   max_tx_bitrate = gm_conf_get_int (VIDEO_CODECS_KEY "maximum_video_tx_bitrate");
   size = gm_conf_get_int (VIDEO_DEVICES_KEY "size");
   gnomemeeting_threads_leave ();
 
-  if (frame_rate <= 0)
-    frame_rate = 15;
+  if (max_frame_rate <= 0)
+    max_frame_rate = 15;
 
   OpalMediaFormat::GetAllRegisteredMediaFormats(media_formats_list);
 
@@ -351,16 +354,14 @@ GMManager::SetVideoMediaFormats (PStringArray *order)
                                      video_sizes[size].width);  
       media_format.SetOptionInteger (OpalVideoFormat::FrameHeightOption (), 
                                      video_sizes[size].height);  
-//      media_format.SetOptionBoolean (OpalVideoFormat::DynamicVideoQualityOption (), 
-//                                     TRUE);  
-//      media_format.SetOptionBoolean (OpalVideoFormat::AdaptivePacketDelayOption (), 
-//                                     TRUE);
       media_format.SetOptionInteger (OpalVideoFormat::FrameTimeOption (),
-                                     (int)(90000 / frame_rate));
+                                     (int)(90000 / max_frame_rate));
       media_format.SetOptionInteger (OpalVideoFormat::MaxBitRateOption (), 
                                      max_rx_bitrate * 1024);
       media_format.SetOptionInteger (OpalVideoFormat::TargetBitRateOption (), 
                                      max_tx_bitrate * 1024);
+      media_format.AddOption(new OpalMediaOptionUnsigned(OpalVideoFormat::TemporalSpatialTradeOffOption(), 
+                                                         true, OpalMediaOption::NoMerge, tsto));  
       media_format.AddOption(new OpalMediaOptionUnsigned(OpalVideoFormat::MaxFrameSizeOption(), 
                                                          true, OpalMediaOption::NoMerge, 1400));
 

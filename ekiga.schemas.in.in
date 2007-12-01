@@ -1130,14 +1130,25 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/codecs/video/frame_rate</key>
-      <applyto>/apps/@PACKAGE_NAME@/codecs/video/frame_rate</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/codecs/video/max_frame_rate</key>
+      <applyto>/apps/@PACKAGE_NAME@/codecs/video/max_frame_rate</applyto>
       <owner>Ekiga</owner>
       <type>int</type>
-      <default>15</default>
+      <default>30</default>
       <locale name="C">
 	<short>Frame Rate</short>
-	<long>The transmitted frame rate in frames/s. Choose 25 for LAN and less for slower connections</long>
+	<long>The maximum transmitted frame rate in frames/s. This rate may not be reached in case a minimum quality was configure via a TSTO value smaller than 31 and the bitrate selected is not sufficient to support this minimum quality</long>
+      </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/@PACKAGE_NAME@/codecs/video/temporal_spatial_tradeoff</key>
+      <applyto>/apps/@PACKAGE_NAME@/codecs/video/temporal_spatial_tradeoff</applyto>
+      <owner>Ekiga</owner>
+      <type>int</type>
+      <default>31</default>
+      <locale name="C">
+	<short>Temporal Spatial Trade Off</short>
+	<long>Whether to prefer to sustain the max. frame rate or lower it possibly in order to keep a minimum level of (spatial) quality for all frames. 0: Highest minimal quality, 31: lowest minimal quality</long>
       </locale>
     </schema>
     <schema>		
