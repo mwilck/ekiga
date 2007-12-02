@@ -21,7 +21,7 @@ BUILD_NUMBER=0
 SCHEMA_AGE=61
 
 PTLIB_REC_VERSION="2.1.2"
-OPAL_REC_VERSION="3.1.0"
+OPAL_REC_VERSION="3.1.2"
 
 AC_DEFINE_UNQUOTED(MAJOR_VERSION, $MAJOR_VERSION,[fix])
 AC_DEFINE_UNQUOTED(MINOR_VERSION, $MINOR_VERSION,[fix])
@@ -699,7 +699,7 @@ lib/engine/presence/skel/Makefile
 lib/engine/presence/local-roster/Makefile
 lib/engine/protocol/Makefile
 lib/engine/protocol/sip/Makefile
-lib/engine/protocol/skel/Makefile
+dnl lib/engine/protocol/skel/Makefile
 lib/engine/gui/Makefile
 lib/engine/gui/gtk-core/Makefile
 lib/engine/gui/gtk-frontend/Makefile
