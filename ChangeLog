@@ -1,3 +1,32 @@
+2007-12-04  Matthias Schneider  <ma30002000@yahoo.de>
+
+	* src/devices/videodisplay.h:
+	* src/devices/videooutput_xv.cpp:
+	* src/devices/videooutput_xv.h:
+	* src/devices/videooutput_gdk.cpp:
+	* src/devices/videooutput_gdk.h:
+	* src/devices/videooutput_dx.cpp:
+	* src/devices/videodisplay_x.cpp:
+	* src/devices/videooutput_dx.h:
+	* src/devices/videooutput.cpp:
+	* src/devices/videodisplay_dx.cpp:
+	* src/devices/videodisplay_x.h:
+	* src/devices/videooutput.h:
+	* src/devices/videodisplay.cpp:
+	* src/devices/videodisplay_dx.h:
+	* src/endpoints/ekiga.h:
+	* src/gui/main.cpp:
+	* src/gui/main.h:
+	* src/Makefile.am:
+	* src/common.h:
+	* ekiga.schemas.in.in:
+	Brand-new video output routines that do not depend 
+	on GTK/GDK anymore and can run peacefully in a thread
+	without gdk_threads_enter/gdk_threads_leave.
+	Local and remote window are now refreshed independently.
+	Also changed zoom to integer to get rid of some warnings.
+	Cleaned up some gconf-settings as well. 
+
 2007-12-03  Matthias Schneider  <ma30002000@yahoo.de>
 
 	* configure.ac:

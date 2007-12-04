@@ -61,21 +61,21 @@ ekiga_SOURCES +=			\
 	devices/videoinput.cpp		\
 	devices/videooutput.h           \
 	devices/videooutput.cpp         \
-	devices/videooutput_gdk.h       \
-	devices/videooutput_gdk.cpp
+	devices/videodisplay.h          \
+	devices/videodisplay.cpp
 
-# XVideo
-if HAVE_XV
+# XVideo/X
+if !WIN32
 ekiga_SOURCES +=                        \
-	devices/videooutput_xv.h        \
-	devices/videooutput_xv.cpp
+	devices/videodisplay_x.h        \
+	devices/videodisplay_x.cpp
 endif
 
 # DirectX
 if HAVE_DX
 ekiga_SOURCES +=                        \
-	devices/videooutput_dx.h        \
-	devices/videooutput_dx.cpp
+	devices/videodisplay_dx.h       \
+	devices/videodisplay_dx.cpp
 endif
 
 # Endpoints 

@@ -46,20 +46,9 @@
 #include "misc.h"
 #include "main.h"
 
-
-#include "gmconf.h"
-
-#include <ptlib/vconvert.h>
-
 int PVideoOutputDevice_EKIGA::devices_nbr = 0;
 
-#if defined HAVE_XV
-GMVideoDisplay_XV* PVideoOutputDevice_EKIGA::videoDisplay = NULL;
-#elif defined HAVE_DX
-GMVideoDisplay_DX* PVideoOutputDevice_EKIGA::videoDisplay = NULL;
-#else
-GMVideoDisplay_GDK* PVideoOutputDevice_EKIGA::videoDisplay = NULL;
-#endif
+GMVideoDisplay* PVideoOutputDevice_EKIGA::videoDisplay = NULL;
 
 PMutex PVideoOutputDevice_EKIGA::videoDisplay_mutex;
 /* Plugin definition */
@@ -102,12 +91,10 @@ PVideoOutputDevice_EKIGA::PVideoOutputDevice_EKIGA ()
   numberOfFrames = 0;
 
   if (!videoDisplay) 
-#if defined HAVE_XV
-     videoDisplay = new GMVideoDisplay_XV();
-#elif defined HAVE_DX
+#ifdef WIN32
      videoDisplay = new GMVideoDisplay_DX();
 #else
-     videoDisplay = new GMVideoDisplay_GDK();
+     videoDisplay = new GMVideoDisplay_X();
 #endif
 }
 
@@ -132,11 +119,6 @@ PVideoOutputDevice_EKIGA::Open (const PString &name,
 { 
   if (name == "EKIGAIN") 
     device_id = 1; 
-
-#if not defined HAVE_XV && not defined HAVE_DX
-  if (videoDisplay)
-    videoDisplay->SetFallback(TRUE);
-#endif
 
   return TRUE; 
 
@@ -186,14 +168,14 @@ bool PVideoOutputDevice_EKIGA::SetFrameData (unsigned x,
     devices_nbr = PMIN (2, devices_nbr+1);
   }
 
-  videoDisplay->SetFrameData ( x, y, width, height, data, converter, (device_id == LOCAL), devices_nbr);
+  videoDisplay->SetFrameData (width, height, data, (device_id == LOCAL), devices_nbr);
 
   return TRUE;
 }
 
 bool PVideoOutputDevice_EKIGA::SetColourFormat (const PString & colour_format)
 {
-  if (colour_format == "RGB24") {
+  if (colour_format == "YUV420P") {
     return PVideoOutputDevice::SetColourFormat (colour_format);
   }
 

@@ -144,6 +144,10 @@ struct _GmMainWindow
   GtkWidget *transfer_call_popup;
   GtkWidget *status_option_menu;
 
+#ifndef WIN32
+  GC videoWidgetGC;
+#endif
+
   unsigned int missed_calls;
   unsigned int total_mwi;
   bool audio_transmission_active;
@@ -277,7 +281,7 @@ static void gm_mw_init_call (GtkWidget *);
  * PRE          :  The main window GMObject.
  */
 static void gm_mw_zooms_menu_update_sensitivity (GtkWidget *,
-			      			 double);
+			      			 unsigned int);
 
 
 /* Callbacks */
@@ -1247,15 +1251,15 @@ gm_mw_init_menu (GtkWidget *main_window)
       GTK_MENU_ENTRY("zoom_in", NULL, _("Zoom in"), 
 		     GTK_STOCK_ZOOM_IN, '+', 
 		     GTK_SIGNAL_FUNC (zoom_in_changed_cb),
-		     (gpointer) VIDEO_DISPLAY_KEY "zoom_factor", FALSE),
+		     (gpointer) VIDEO_DISPLAY_KEY "zoom", FALSE),
       GTK_MENU_ENTRY("zoom_out", NULL, _("Zoom out"), 
 		     GTK_STOCK_ZOOM_OUT, '-', 
 		     GTK_SIGNAL_FUNC (zoom_out_changed_cb),
-		     (gpointer) VIDEO_DISPLAY_KEY "zoom_factor", FALSE),
+		     (gpointer) VIDEO_DISPLAY_KEY "zoom", FALSE),
       GTK_MENU_ENTRY("normal_size", NULL, _("Normal size"), 
 		     GTK_STOCK_ZOOM_100, '=',
 		     GTK_SIGNAL_FUNC (zoom_normal_changed_cb),
-		     (gpointer) VIDEO_DISPLAY_KEY "zoom_factor", FALSE),
+		     (gpointer) VIDEO_DISPLAY_KEY "zoom", FALSE),
       GTK_MENU_ENTRY("fullscreen", _("Fullscreen"), _("Switch to fullscreen"), 
 		     GTK_STOCK_ZOOM_IN, 'f', 
 		     GTK_SIGNAL_FUNC (fullscreen_changed_cb),
@@ -1882,7 +1886,7 @@ gm_mw_init_call (GtkWidget *main_window)
 
 void
 gm_mw_zooms_menu_update_sensitivity (GtkWidget *main_window,
-                                     double zoom)
+                                     unsigned int zoom)
 {
   GmMainWindow *mw = NULL;
 
@@ -1893,13 +1897,13 @@ gm_mw_zooms_menu_update_sensitivity (GtkWidget *main_window,
   /* between 0.5 and 2.0 zoom */
   /* like above, also update the popup menus of the separate video windows */
   gtk_menu_set_sensitive (mw->main_menu, "zoom_in",
-                          (zoom == 2.0)?FALSE:TRUE);
+                          (zoom == 200) ? FALSE : TRUE);
 
   gtk_menu_set_sensitive (mw->main_menu, "zoom_out",
-                          (zoom == 0.5)?FALSE:TRUE);
+                          (zoom == 50) ? FALSE : TRUE);
 
   gtk_menu_set_sensitive (mw->main_menu, "normal_size",
-                          (zoom == 1.0)?FALSE:TRUE);
+                          (zoom == 100) ? FALSE : TRUE);
 }
 
 
@@ -2142,21 +2146,34 @@ video_window_expose_cb (GtkWidget *main_window,
             		G_GNUC_UNUSED gpointer data)
 {
   GmMainWindow *mw = NULL;
-  bool on_top = FALSE;
-  bool disable_hw_accel = FALSE;
+  VideoInfo videoInfo;
 
   if (!main_window) 
     return FALSE;
 
   mw = gm_mw_get_mw (main_window);
-
   if (!mw)
     return FALSE;
 
-  on_top = gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top");
-  disable_hw_accel = gm_conf_get_bool (VIDEO_DISPLAY_KEY "disable_hw_accel");
-      
-  GnomeMeeting::Process ()->set_video_window.emit (mw->main_video_image, on_top, disable_hw_accel);
+  GtkWidget* videoWidget = mw->main_video_image;
+  if (!GTK_WIDGET_REALIZED(videoWidget))
+    return FALSE;
+
+  videoInfo.x = mw->main_video_image->allocation.x;
+  videoInfo.y = mw->main_video_image->allocation.y;
+#ifdef WIN32  
+  videoInfo.hwnd = ((HWND)GDK_WINDOW_HWND (mw->main_video_image->window));
+#else 
+  if (!mw->videoWidgetGC)
+    mw->videoWidgetGC = GDK_GC_XGC(gdk_gc_new(mw->main_video_image->window));
+
+  videoInfo.gc = mw->videoWidgetGC;
+  videoInfo.window = GDK_WINDOW_XWINDOW (mw->main_video_image->window);
+  videoInfo.xdisplay = GDK_DISPLAY ();
+#endif
+  videoInfo.widgetInfoSet = TRUE;
+
+  GnomeMeeting::Process ()->set_video_info.emit (&videoInfo);
 
   return FALSE;
 }
@@ -2366,22 +2383,22 @@ zoom_in_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
 		    gpointer data)
 {
   GtkWidget *main_window = NULL;
-  double zoom = 0.0;
+  VideoInfo videoInfo;
   
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
 
   g_return_if_fail (main_window != NULL);
   g_return_if_fail (data != NULL);
 
-  zoom = gm_conf_get_float ((char *) data);
+  videoInfo.zoom = gm_conf_get_int ((char *) data);
 
-  if (zoom < 2.00)
-    zoom = zoom * 2.0;
+  if (videoInfo.zoom < 200)
+    videoInfo.zoom = videoInfo.zoom * 2;
 
-  gm_conf_set_float ((char *) data, zoom);
-  gm_mw_zooms_menu_update_sensitivity (main_window, zoom);
-  
-  GnomeMeeting::Process ()->set_zoom_display.emit (-1, zoom);
+  gm_conf_set_int ((char *) data, videoInfo.zoom);
+  gm_mw_zooms_menu_update_sensitivity (main_window, videoInfo.zoom);
+
+  GnomeMeeting::Process ()->set_video_info.emit (&videoInfo);
 }
 
 
@@ -2390,22 +2407,22 @@ zoom_out_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
 		     gpointer data)
 {
   GtkWidget *main_window = NULL;
-  double zoom = 0.0;
+  VideoInfo videoInfo;
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
 
   g_return_if_fail (main_window != NULL);
   g_return_if_fail (data != NULL);
 
-  zoom = gm_conf_get_float ((char *) data);
+  videoInfo.zoom  = gm_conf_get_int ((char *) data);
 
-  if (zoom > 0.5)
-    zoom = zoom / 2.0;
+  if (videoInfo.zoom  > 50)
+    videoInfo.zoom  = (unsigned int) (videoInfo.zoom  / 2);
 
-  gm_conf_set_float ((char *) data, zoom);
-  gm_mw_zooms_menu_update_sensitivity (main_window, zoom);
+  gm_conf_set_int ((char *) data, videoInfo.zoom );
+  gm_mw_zooms_menu_update_sensitivity (main_window, videoInfo.zoom );
 
-  GnomeMeeting::Process ()->set_zoom_display.emit (-1, zoom);
+  GnomeMeeting::Process ()->set_video_info.emit (&videoInfo);
 }
 
 
@@ -2414,16 +2431,19 @@ zoom_normal_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
 			gpointer data)
 {
   GtkWidget *main_window = NULL;
-  double zoom = 1.0;
+  VideoInfo videoInfo;
+  videoInfo.zoom = 100;
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
 
   g_return_if_fail (main_window != NULL);
   g_return_if_fail (data != NULL);
 
-  gm_conf_set_float ((char *) data, zoom);
+  gm_conf_set_int ((char *) data, videoInfo.zoom);
 
-  gm_mw_zooms_menu_update_sensitivity (main_window, zoom);
+  gm_mw_zooms_menu_update_sensitivity (main_window, videoInfo.zoom);
+
+  GnomeMeeting::Process ()->set_video_info.emit (&videoInfo);
 }
 
 
@@ -2435,6 +2455,8 @@ display_changed_cb (GtkWidget *widget,
 
   int group_last_pos = 0;
   int active = 0;
+
+  VideoInfo videoInfo;
 
   g_return_if_fail (data != NULL);
   
@@ -2455,7 +2477,11 @@ display_changed_cb (GtkWidget *widget,
     }
 
     gm_conf_set_int ((gchar *) data, group_last_pos - active);
-    GnomeMeeting::Process ()->set_zoom_display.emit (group_last_pos - active, -1);
+
+    videoInfo.display = (VideoMode) (group_last_pos - active);
+
+    GnomeMeeting::Process ()->set_video_info.emit (&videoInfo);
+
   }
 }
 
@@ -2464,7 +2490,7 @@ static void
 fullscreen_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
 		       G_GNUC_UNUSED gpointer data)
 {
-  gm_main_window_toggle_fullscreen (-1);
+  gm_main_window_toggle_fullscreen (TOGGLE);
 }
 
 
@@ -2696,16 +2722,38 @@ gm_main_window_update_logo ()
 void 
 gm_main_window_update_zoom_display ()
 {
-  int display = -1;
-  double zoom = -1;
+  VideoInfo videoInfo;
+
+  if (( gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view") < 0) || ( gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view") > 4))
+    gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view", 0);
+
+  videoInfo.display = (VideoMode) gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view");
+
+  videoInfo.zoom = gm_conf_get_int (VIDEO_DISPLAY_KEY "zoom");
+  if ((videoInfo.zoom != 100) && (videoInfo.zoom != 50) && (videoInfo.zoom != 200)) {
+    videoInfo.zoom = 100;
+    gm_conf_set_int (VIDEO_DISPLAY_KEY "zoom", 100);
+  }
   
-  display = gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view");
-  zoom = gm_conf_get_float (VIDEO_DISPLAY_KEY "zoom_factor");
-  
-  GnomeMeeting::Process ()->set_zoom_display.emit (display, zoom);
+  videoInfo.onTop = gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top");
+  videoInfo.disableHwAccel = gm_conf_get_bool (VIDEO_DISPLAY_KEY "disable_hw_accel");
+  videoInfo.allowPipSwScaling = gm_conf_get_bool (VIDEO_DISPLAY_KEY "allow_pip_sw_scaling");
+  videoInfo.swScalingAlgorithm = gm_conf_get_int (VIDEO_DISPLAY_KEY "sw_scaling_algorithm");
+  if (videoInfo.swScalingAlgorithm > 3) {
+    videoInfo.swScalingAlgorithm = 0;
+    gm_conf_set_int (VIDEO_DISPLAY_KEY "sw_scaling_algorithm", 0);
+  }
+  videoInfo.gconfInfoSet = TRUE;
+
+  GnomeMeeting::Process ()->set_video_info.emit (&videoInfo);
 
   gm_main_window_set_resized_video_widget (176,144); //FIXME: is this necessary
 
+}
+
+void 
+gm_main_window_update_video_accel_status (VideoAccelStatus status) {
+  PTRACE(4, "MAIN: Update Accel status to " << status);
 }
 
 void 
@@ -2921,13 +2969,13 @@ gm_main_window_update_sensitivity (GtkWidget *main_window,
 {
   GmMainWindow *mw = NULL;
   
-  double zoom = 1.0;
+  unsigned int zoom = 100;
 
   mw = gm_mw_get_mw (main_window);
 
   g_return_if_fail (mw != NULL);
 
-  zoom = gm_conf_get_float (VIDEO_DISPLAY_KEY "zoom_factor");
+  zoom = gm_conf_get_int (VIDEO_DISPLAY_KEY "zoom");
 
   
   /* We are updating video related items */
@@ -3045,43 +3093,44 @@ gm_main_window_fullscreen_menu_update_sensitivity (bool FSMenu)
 
 
 void
-gm_main_window_toggle_fullscreen (int onOff)
+gm_main_window_toggle_fullscreen (FSToggle toggle)
 {
-  int display;
-  switch (onOff) {
-    case 0:
+  VideoInfo videoInfo;
+  switch (toggle) {
+    case OFF:
       if (gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view") == FULLSCREEN) {
 
-        display = gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view_before_fullscreen");
-        gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view", display);
-        GnomeMeeting::Process ()->set_zoom_display.emit (display, -1);
+        videoInfo.display = (VideoMode) gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view_before_fullscreen");
+        gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view", videoInfo.display);
+        GnomeMeeting::Process ()->set_video_info.emit (&videoInfo);
       }
       break;
-
-    default:
-    case 1:
+    case ON:
       if (gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view") != FULLSCREEN) {
 
-        display = gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view");
-        gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view_before_fullscreen", display);
+        videoInfo.display = (VideoMode) gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view");
+        gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view_before_fullscreen", videoInfo.display);
         gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view", FULLSCREEN);
-        GnomeMeeting::Process ()->set_zoom_display.emit (FULLSCREEN, -1);
+        videoInfo.display = FULLSCREEN;
+        GnomeMeeting::Process ()->set_video_info.emit (&videoInfo);
       }
       break;
 
-    case -1:
+    case TOGGLE:
+    default:
       if (gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view") == FULLSCREEN) {
 
-        display = gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view_before_fullscreen");
-        gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view", display);
-        GnomeMeeting::Process ()->set_zoom_display.emit (display, -1);
+        videoInfo.display = (VideoMode) gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view_before_fullscreen");
+        gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view", videoInfo.display);
+        GnomeMeeting::Process ()->set_video_info.emit (&videoInfo);
       }
       else {
-        display = gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view");
 
-        gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view_before_fullscreen", display);
+        videoInfo.display =  (VideoMode) gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view");
+        gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view_before_fullscreen", videoInfo.display);
         gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view", FULLSCREEN);
-        GnomeMeeting::Process ()->set_zoom_display.emit (FULLSCREEN, -1);
+        videoInfo.display = FULLSCREEN;
+        GnomeMeeting::Process ()->set_video_info.emit (&videoInfo);
       }
       break;
   }
@@ -3311,7 +3360,7 @@ gm_main_window_set_status (GtkWidget *main_window,
 
 
 void 
-gm_main_window_set_display_type (int display)
+gm_main_window_set_display_type (VideoMode display)
 {
   GtkWidget* main_window = NULL;
   GmMainWindow *mw = NULL;
@@ -3650,6 +3699,10 @@ gm_main_window_new (Ekiga::ServiceCore & core)
     = mw->video_transmission_active = mw->video_reception_active = false;
   g_object_set_data_full (G_OBJECT (window), "GMObject", 
 			  mw, (GDestroyNotify) gm_mw_destroy);
+
+#ifndef WIN32
+  mw->videoWidgetGC = NULL;
+#endif
 
 #if defined HAVE_GNOME && defined HAVE_BONOBO
   int behavior = 0;

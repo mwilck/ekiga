@@ -88,6 +88,12 @@ void gm_main_window_update_logo ();
 void gm_main_window_update_zoom_display ();
 
 /* DESCRIPTION  :  /
+ * BEHAVIOR     :  Updates the Video Acceleration status indicator.
+ * PRE          :  /
+ */
+void gm_main_window_update_video_accel_status (VideoAccelStatus status);
+
+/* DESCRIPTION  :  /
  * BEHAVIOR     :  Update the main window hold call menu and toolbar items
  * 		   following the call is on hold (TRUE) or not (FALSE).
  * PRE          :  The main window GMObject.
@@ -234,7 +240,7 @@ void gm_main_window_set_status (GtkWidget *main_window,
  * BEHAVIOR     :  Select the display type for the main window.
  * PRE          :  A valid display type.
  */
-void gm_main_window_set_display_type (int display);
+void gm_main_window_set_display_type (VideoMode display);
 
 
 /* DESCRIPTION  :  /
@@ -451,7 +457,7 @@ void gm_main_window_fullscreen_menu_update_sensitivity (bool fullscreen);
  * BEHAVIOR     :  Toggles between fullscreen mode and the other settings
  * PRE          :  -1: toggle, 0: off, 1: on
  */
-void gm_main_window_toggle_fullscreen (int onOff);
+void gm_main_window_toggle_fullscreen (FSToggle toggle);
 
 
 /* DESCRIPTION  :  /

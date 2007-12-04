@@ -298,13 +298,7 @@ class GnomeMeeting : public PProcess
   PStringArray GetVideoPlugins ();
 
   sigc::signal<void,
-               GtkWidget*,
-  	       bool,
-	       bool> set_video_window;
-
-  sigc::signal<void,
-  	       int,
-	       double> set_zoom_display;
+	       VideoInfo*> set_video_info;
 
  private:
   

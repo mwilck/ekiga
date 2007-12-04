@@ -942,17 +942,6 @@
       </locale>
     </schema>
     <schema>	
-      <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/video_display/local_zoom_factor</key>
-      <applyto>/apps/@PACKAGE_NAME@/general/user_interface/video_display/local_zoom_factor</applyto>
-      <owner>Ekiga</owner>
-      <type>float</type>
-      <default>1.0</default>
-      <locale name="C">
-	<short>The local zoom value</short>
-	<long>The zoom value to apply to images displayed in the local video window (can be 0.50, 1.00, or 2.00)</long>
-      </locale>
-    </schema>
-    <schema>	
       <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/video_display/disable_hw_accel</key>
       <applyto>/apps/@PACKAGE_NAME@/general/user_interface/video_display/disable_hw_accel</applyto>
       <owner>Ekiga</owner>
@@ -964,25 +953,36 @@
       </locale>
     </schema>
     <schema>	
-      <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/video_display/remote_zoom_factor</key>
-      <applyto>/apps/@PACKAGE_NAME@/general/user_interface/video_display/remote_zoom_factor</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/video_display/allow_pip_sw_scaling</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/user_interface/video_display/allow_pip_sw_scaling</applyto>
       <owner>Ekiga</owner>
-      <type>float</type>
-      <default>1.0</default>
+      <type>bool</type>
+      <default>true</default>
       <locale name="C">
-	<short>The remote zoom value</short>
-	<long>The zoom value to apply to images displayed in the remote video window (can be 0.50, 1.00, or 2.00)</long>
+	<short>Allow picture-in-picture software scaling</short>
+	<long>Allow Ekiga to fall back to software scaling the picture-in-picture if hardware support is not available. If this is set to false, Ekiga will not try to open the PIP if hardware support is not available.</long>
       </locale>
     </schema>
     <schema>	
-      <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/video_display/zoom_factor</key>
-      <applyto>/apps/@PACKAGE_NAME@/general/user_interface/video_display/zoom_factor</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/video_display/sw_scaling_algorithm</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/user_interface/video_display/sw_scaling_algorithm</applyto>
       <owner>Ekiga</owner>
-      <type>float</type>
-      <default>1.0</default>
+      <type>int</type>
+      <default>0</default>
+      <locale name="C">
+	<short>Specify the software scaling algorithm</short>
+	<long>Specify the software scaling algorithm: 0: nearest neighbor, 1: nearest neighbor with box filter, 2: bilinear filtering, 3: hyperbolic filtering. Does not apply on windows systems.</long>
+      </locale>
+    </schema>
+    <schema>	
+      <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/video_display/zoom</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/user_interface/video_display/zoom</applyto>
+      <owner>Ekiga</owner>
+      <type>int</type>
+      <default>100</default>
       <locale name="C">
 	<short>The zoom value</short>
-	<long>The zoom value to apply to images displayed in the main GUI (can be 0.50, 1.00, or 2.00)</long>
+	<long>The zoom value in percent to apply to images displayed in the main GUI (can be 50, 100, or 200)</long>
       </locale>
     </schema>
     <schema>	

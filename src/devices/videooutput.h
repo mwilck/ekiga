@@ -41,14 +41,12 @@
 #define _EKIGAVIDEOIO_H_
 
 #include "common.h"
-#include "videooutput_gdk.h"
+#include "videodisplay.h"
 
-#if defined HAVE_XV
-#include "videooutput_xv.h"
-#endif
-
-#if defined HAVE_DX
-#include "videooutput_dx.h"
+#ifdef WIN32
+#include "videodisplay_dx.h"
+#else
+#include "videodisplay_x.h"
 #endif
 
 class GMManager;
@@ -139,13 +137,7 @@ class PVideoOutputDevice_EKIGA : public PVideoOutputDevice
 
  protected:
 
-#if defined HAVE_XV
-  static GMVideoDisplay_XV* videoDisplay;
-#elif defined HAVE_DX
-  static GMVideoDisplay_DX* videoDisplay;
-#else
-  static GMVideoDisplay_GDK* videoDisplay;
-#endif
+  static GMVideoDisplay* videoDisplay;
 
   static int devices_nbr; /* The number of devices opened */
   int device_id;          /* The current device : local or remote */

@@ -43,13 +43,10 @@
 
 #define P_FORCE_STATIC_PLUGIN 
 
-#include "videooutput_dx.h"
+#include "videodisplay_dx.h"
 #include "ekiga.h"
 #include "misc.h"
 #include "main.h"
-#include "gmconf.h"
-
-#include <ptlib/vconvert.h>
 
 #include <gtk-2.0/gdk/gdkwin32.h>
 
@@ -59,78 +56,74 @@ GMVideoDisplay_DX::GMVideoDisplay_DX ()
 { 
   /* Internal stuff */
   dxWindow = NULL;
-
-  fallback = FALSE;
 }
 
 
 GMVideoDisplay_DX::~GMVideoDisplay_DX()
 {
+  stop = TRUE;
+  /* Wait for the Main () method to be terminated */
+  frame_available_sync_point.Signal();
+  PWaitAndSignal m(quit_mutex);
 }
 
-BOOL 
-GMVideoDisplay_DX::SetupFrameDisplay (int display, 
+void 
+GMVideoDisplay_DX::SetupFrameDisplay (VideoMode display, 
                                       guint lf_width, 
                                       guint lf_height, 
                                       guint rf_width, 
                                       guint rf_height, 
-                                      double zoom)
+                                      unsigned int zoom)
 {
-  BOOL ret = FALSE;
+  VideoInfo localVideoInfo;
+  VideoAccelStatus status = 0;
 
-  WidgetInfo currentWidgetInfo;
-  BOOL wasSet;
-
-  if (fallback)
-    return GMVideoDisplay_GDK::SetupFrameDisplay (display, lf_width, lf_height,
-                                                      rf_width, rf_height, zoom);
-
-  CloseFrameDisplay ();
+  GetVideoInfo(&localVideoInfo);
 
   runtime->run_in_main (force_redraw.make_slot ());
 
-  wasSet = GetWidget(&currentWidgetInfo.x, &currentWidgetInfo.y, &currentWidgetInfo.hwnd, &currentWidgetInfo.onTop, &currentWidgetInfo.disableHwAccel);
-
-  if (wasSet && currentWidgetInfo.disableHwAccel) {
-
-    PTRACE (1, "GMVideoDisplay_DX\tDirectX Hardware acceleration disabled by configuration - falling back to GDK rendering");
-    return FALSE;
-  }
-
   switch (display) {
   case LOCAL_VIDEO:
-    runtime->run_in_main (sigc::bind (set_resized_video_widget.make_slot (), (int) (lf_width * zoom), (int) (lf_height * zoom)));
+    runtime->run_in_main (sigc::bind (set_resized_video_widget.make_slot (), (int) (lf_width * zoom / 100), (int) (lf_height * zoom / 100)));
     break;
   case REMOTE_VIDEO:
   case PIP:
-    runtime->run_in_main (sigc::bind (set_resized_video_widget.make_slot (), (int) (rf_width * zoom), (int) (rf_height * zoom)));
+    runtime->run_in_main (sigc::bind (set_resized_video_widget.make_slot (), (int) (rf_width * zoom / 100), (int) (rf_height * zoom / 100)));
     break;
   case FULLSCREEN:
   case PIP_WINDOW:
     runtime->run_in_main (sigc::bind (set_resized_video_widget.make_slot (), (int) (GM_QCIF_WIDTH), (int) (GM_QCIF_HEIGHT)));
     break;
+  case UNSET:
+  default:
+    PTRACE (1, "GMVideoDisplay_X\tDisplay variable not set");
+    return;
+    break; 
   }
 
-  if (!wasSet) {
-    PTRACE(4, "GMVideoDisplay_DX\tWidget not yet realized, not opening display");
-    return TRUE;
+  if ((!localVideoInfo.widgetInfoSet) || (!localVideoInfo.gconfInfoSet)) 
+      (localVideoInfo.display == UNSET) || (localVideoInfo.zoom == 0)) {
+    PTRACE(4, "GMVideoDisplay_X\tWidget not yet realized or gconf info not yet set, not opening display");
+    return;
   }
+
+  CloseFrameDisplay ();
 
   runtime->run_in_main (sigc::bind (set_display_type.make_slot (), display));
 
   switch (display) {
   case LOCAL_VIDEO:
     dxWindow = new DXWindow();
-    ret = dxWindow->Init (currentWidgetInfo.hwnd,
-                          currentWidgetInfo.x,
-                          currentWidgetInfo.y,
-                          (int) (lf_width * zoom), 
-                          (int) (lf_height * zoom),
+    status = (VideoAccelStatus) dxWindow->Init (localVideoInfo.hwnd,
+                          localVideoInfo.x,
+                          localVideoInfo.y,
+                          (int) (lf_width * zoom / 100), 
+                          (int) (lf_height * zoom / 100),
                           lf_width, 
                           lf_height);
 
-    lastFrame.embeddedX = currentWidgetInfo.x;
-    lastFrame.embeddedY = currentWidgetInfo.y;
+    lastFrame.embeddedX = localVideoInfo.x;
+    lastFrame.embeddedY = localVideoInfo.y;
 
     lastFrame.display = LOCAL_VIDEO;
     lastFrame.localWidth = lf_width;
@@ -140,16 +133,16 @@ GMVideoDisplay_DX::SetupFrameDisplay (int display,
 
   case REMOTE_VIDEO:
     dxWindow = new DXWindow();
-    ret = dxWindow->Init (currentWidgetInfo.hwnd,
-                          currentWidgetInfo.x,
-                          currentWidgetInfo.y,
-                          (int) (rf_width * zoom), 
-                          (int) (rf_height * zoom),
+    status = (VideoAccelStatus) dxWindow->Init (localVideoInfo.hwnd,
+                          localVideoInfo.x,
+                          localVideoInfo.y,
+                          (int) (rf_width * zoom / 100), 
+                          (int) (rf_height * zoom / 100),
                           rf_width, 
                           rf_height); 
 
-    lastFrame.embeddedX = currentWidgetInfo.x;
-    lastFrame.embeddedY = currentWidgetInfo.y;
+    lastFrame.embeddedX = localVideoInfo.x;
+    lastFrame.embeddedY = localVideoInfo.y;
 
     lastFrame.display = REMOTE_VIDEO;
     lastFrame.remoteWidth = rf_width;
@@ -161,21 +154,21 @@ GMVideoDisplay_DX::SetupFrameDisplay (int display,
   case PIP:
   case PIP_WINDOW:
     dxWindow = new DXWindow();
-    ret = dxWindow->Init ((display == PIP) ? currentWidgetInfo.hwnd : NULL,
-                          (display == PIP) ? currentWidgetInfo.x : 0,
-                          (display == PIP) ? currentWidgetInfo.y : 0,
-                          (int) (rf_width * zoom), 
-                          (int) (rf_height * zoom),
+    status = (VideoAccelStatus) dxWindow->Init ((display == PIP) ? localVideoInfo.hwnd : NULL,
+                          (display == PIP) ? localVideoInfo.x : 0,
+                          (display == PIP) ? localVideoInfo.y : 0,
+                          (int) (rf_width * zoom / 100), 
+                          (int) (rf_height * zoom / 100),
                           rf_width, 
                           rf_height,
                           lf_width, 
                           lf_height); 
 
-    if (ret && dxWindow && display == FULLSCREEN) 
+    if (dxWindow && display == FULLSCREEN) 
       dxWindow->ToggleFullscreen ();
 
-    lastFrame.embeddedX = currentWidgetInfo.x;
-    lastFrame.embeddedY = currentWidgetInfo.y;
+    lastFrame.embeddedX = localVideoInfo.x;
+    lastFrame.embeddedY = localVideoInfo.y;
 
     lastFrame.display = display;
     lastFrame.localWidth = lf_width;
@@ -186,31 +179,30 @@ GMVideoDisplay_DX::SetupFrameDisplay (int display,
     break;
 
   default:
-    return FALSE;
+    return;
     break;
   }
-  PTRACE (4, "GMVideoDisplay_DX\tSetup display " << display << " with zoom value of " << zoom << " : " << (ret ? "Success" : "Failure"));
+  PTRACE (4, "GMVideoDisplay_DX\tSetup display " << display << " with zoom value of " << zoom );
 
-  if (currentWidgetInfo.onTop) {
+  if (localVideoInfo.onTop) {
 
-    if (ret && dxWindow)
+    if (dxWindow)
       dxWindow->ToggleOntop ();
   }
 
-  if (!ret)
+//   if (!status)
+// 
+//     CloseFrameDisplay ();
 
-    CloseFrameDisplay ();
+  runtime->run_in_main (sigc::bind (update_video_accel_status.make_slot (), status));
 
-  return ret;
 }
 
-
-BOOL 
+bool 
 GMVideoDisplay_DX::CloseFrameDisplay ()
 {
-  if (fallback)
-
-    return GMVideoDisplay_GDK::CloseFrameDisplay ();
+  if (runtime) //FIXME
+    runtime->run_in_main (sigc::bind (update_video_accel_status.make_slot (), NO_VIDEO));
 
   if (dxWindow) {
 
@@ -221,33 +213,26 @@ GMVideoDisplay_DX::CloseFrameDisplay ()
   return TRUE;
 }
 
-BOOL 
-GMVideoDisplay_DX::FrameDisplayChangeNeeded (int display, 
+bool 
+GMVideoDisplay_DX::FrameDisplayChangeNeeded (VideoMode display, 
                                              guint lf_width, 
                                              guint lf_height, 
                                              guint rf_width, 
                                              guint rf_height, 
-                                             double zoom)
+                                             unsigned int zoom)
 {
-  if ((!fallback) && (!dxWindow))
+  if (!dxWindow)
     return TRUE;
 
-  return GMVideoDisplay_GDK::FrameDisplayChangeNeeded (display, lf_width, lf_height, rf_width, rf_height, zoom);
+  return GMVideoDisplay_embedded::FrameDisplayChangeNeeded (display, lf_width, lf_height, rf_width, rf_height, zoom);
 }
 
 
 void 
 GMVideoDisplay_DX::DisplayFrame (     const guchar *frame,
                                       guint width,
-                                      guint height,
-                                      double zoom)
+                                      guint height)
 {
-  if (fallback) {
-
-    GMVideoDisplay_GDK::DisplayFrame (frame, width, height, zoom);
-    return;
-  }
-
   if  (dxWindow)
 
     dxWindow->PutFrame ((uint8_t *) frame, width, height);
@@ -259,22 +244,27 @@ GMVideoDisplay_DX::DisplayPiPFrames (     const guchar *lframe,
                                           guint lheight,
                                           const guchar *rframe,
                                           guint rwidth,
-                                          guint rheight,
-                                          double zoom)
+                                          guint rheight)
 {
-  if (fallback) {
-
-     GMVideoDisplay_GDK::DisplayPiPFrames (lframe, lwidth, lheight,
-                                           rframe, rwidth, rheight, zoom);
-     return;
-  }
-
   if (currentFrame.display == FULLSCREEN && dxWindow && !dxWindow->IsFullScreen ()) {
-    runtime->run_in_main (sigc::bind (toggle_fullscreen.make_slot (), 0));
+
+    runtime->run_in_main (sigc::bind (toggle_fullscreen.make_slot (), OFF));
   }
+
+/*
+  if (dxWindow) {  
+  if (rxWindow && (update_required.remote || (!update_required.remote && !update_required.local)))
+
+  }
+*/
 
   if (dxWindow)
 
     dxWindow->PutFrame ((uint8_t *) rframe, rwidth, rheight, 
                         (uint8_t *) lframe, lwidth, lheight);
+}
+
+void 
+GMVideoDisplay_DX::Sync(UpdateRequired sync_required)
+{
 }

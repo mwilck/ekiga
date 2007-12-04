@@ -27,29 +27,28 @@
 
 
 /*
- *                         videooutput_xv.h -  description
+ *                         videooutput_dx.h -  description
  *                         ----------------------------------
  *   begin                : Sun Nov 17 2006
  *   copyright            : (C) 2006-2007 by Matthias Schneider
  *                          (C) 2000-2007 by Damien Sandras
- *   description          : Class to allow video output to a XVideo
+ *   description          : Class to allow video output to a DirectX
  *                          accelerated window
  *
  */
 
 
-#ifndef _XVVIDEOIO_H_
-#define _XVVIDEOIO_H_
+#ifndef _DXVIDEOIO_H_
+#define _DXVIDEOIO_H_
 
 #include "common.h"
-#include "videooutput_gdk.h"
+#include "videodisplay.h"
 
-#include <xwindow.h>
-#include <xvwindow.h>
+#include <dxwindow.h>
 
 class GMManager;
 
-class GMVideoDisplay_XV : public GMVideoDisplay_GDK
+class GMVideoDisplay_DX : public GMVideoDisplay_embedded
 {
 public:
 
@@ -57,14 +56,14 @@ public:
    * BEHAVIOR     :  /
    * PRE          :  /
    */
-  GMVideoDisplay_XV ();
+  GMVideoDisplay_DX ();
 
 
   /* DESCRIPTION  :  The destructor.
    * BEHAVIOR     :  /
    * PRE          :  /
    */
-  virtual ~GMVideoDisplay_XV ();
+  virtual ~GMVideoDisplay_DX ();
 
 
   /* DESCRIPTION  :  /
@@ -73,12 +72,12 @@ public:
    *                 Returns FALSE in case of failure.
    * PRE          :  /
    */
-  virtual bool SetupFrameDisplay (int display, 
+  virtual void SetupFrameDisplay (VideoMode display, 
                                   guint lf_width, 
                                   guint lf_height, 
                                   guint rf_width, 
                                   guint rf_height, 
-                                  double zoom);
+                                  unsigned int zoom);
   
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Returns TRUE if the given settings require a
@@ -86,12 +85,12 @@ public:
    *                 otherwise.
    * PRE          :  /
    */
-  virtual bool FrameDisplayChangeNeeded (int display, 
+  virtual bool FrameDisplayChangeNeeded (VideoMode display, 
                                          guint lf_width, 
                                          guint lf_height, 
                                          guint rf_width, 
                                          guint rf_height, 
-                                         double zoom);
+                                         unsigned int zoom);
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Closes the frame display and returns FALSE 
@@ -107,8 +106,7 @@ public:
    */
   virtual void DisplayFrame (const guchar *frame,
                              guint width,
-                             guint height,
-                             double zoom);
+                             guint height);
 
 
   /* DESCRIPTION  :  /
@@ -121,19 +119,12 @@ public:
                                  guint lheight,
                                  const guchar *rframe,
                                  guint rwidth,
-                                 guint rheight,
-                                 double zoom);
+                                 guint rheight);
 
 protected:
 
-  XVWindow *lxvWindow;
-  XVWindow *rxvWindow;
+  DXWindow *dxWindow;
 
-  Display *lDisplay;
-  Display *rDisplay;
-
-  GdkGC *embGC;
-
-  bool pipWindowAvailable;
+  virtual void Sync(UpdateRequired sync_required);
 };
 #endif

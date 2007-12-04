@@ -53,6 +53,15 @@
 #include <glib.h>
 #include <gtk/gtk.h>
 
+#ifdef WIN32
+#include <gdk/gdkwin32.h>
+#else
+#include <gdk/gdkx.h>
+#ifdef BadRequest
+#undef BadRequest
+#endif /*BadRequest */
+#endif /* WIN32 */
+
 #define GENERAL_KEY         "/apps/" PACKAGE_NAME "/general/"
 #define USER_INTERFACE_KEY "/apps/" PACKAGE_NAME "/general/user_interface/"
 #define VIDEO_DISPLAY_KEY USER_INTERFACE_KEY "video_display/"
@@ -123,14 +132,32 @@ typedef enum {
 
 
 /* Video modes */
-enum {
+typedef enum {
 
   LOCAL_VIDEO, 
   REMOTE_VIDEO, 
   PIP,
   PIP_WINDOW,
-  FULLSCREEN
-};
+  FULLSCREEN,
+  UNSET
+} VideoMode;
+
+/* Toggle operations for Fullscreen */
+typedef enum {
+
+  ON,
+  OFF,
+  TOGGLE
+} FSToggle;
+
+/* Video Acceleration Status */
+typedef enum {
+
+  NONE,
+  REMOTE_ONLY,
+  ALL,
+  NO_VIDEO
+} VideoAccelStatus;
 
 #define NB_VIDEO_SIZES 5
 
@@ -144,6 +171,80 @@ const static struct {
     {  GM_4CIF_WIDTH,  GM_4CIF_HEIGHT },
     {  GM_SIF_WIDTH,   GM_SIF_HEIGHT  },
     {  GM_4SIF_WIDTH,  GM_4SIF_HEIGHT },
+};
+
+class VideoInfo
+{
+public:
+  VideoInfo() {
+    widgetInfoSet = FALSE;
+    x = 0;
+    y = 0;
+#ifdef WIN32
+    hwnd = 0;
+#else
+    gc = 0;
+    window = 0;
+    xdisplay = NULL;
+#endif
+
+    gconfInfoSet = FALSE;
+    onTop = FALSE;
+    disableHwAccel = FALSE;
+    allowPipSwScaling = TRUE;
+    swScalingAlgorithm = 0;
+
+    display = UNSET;
+    zoom = 0;
+  };
+  
+  void operator= ( const VideoInfo& rhs) {
+
+  if (rhs.widgetInfoSet) {
+      widgetInfoSet = rhs.widgetInfoSet;
+      x = rhs.x;
+      y = rhs.y;
+#ifdef WIN32
+      hwnd = rhs.hwnd;
+#else
+      gc = rhs.gc;
+      window = rhs.window;
+      xdisplay = rhs.xdisplay;
+#endif
+    }
+
+    if (rhs.gconfInfoSet) {
+      gconfInfoSet = rhs.gconfInfoSet;
+      onTop = rhs.onTop;
+      disableHwAccel = rhs.disableHwAccel;
+      allowPipSwScaling = rhs.allowPipSwScaling;
+      swScalingAlgorithm =  rhs.swScalingAlgorithm;
+    }
+    if (rhs.display != UNSET) display = rhs.display;
+    if (rhs.zoom != 0) zoom = rhs.zoom;
+  };
+
+  bool widgetInfoSet;
+  int x;
+  int y;
+	    
+#ifdef WIN32
+  HWND hwnd;
+#else
+  GC gc;
+  Window window;
+  Display* xdisplay;
+#endif
+
+  bool gconfInfoSet;
+  bool onTop;
+  bool disableHwAccel;
+  bool allowPipSwScaling;
+  unsigned int swScalingAlgorithm;
+
+  VideoMode display;
+  unsigned int zoom;
+  
 };
 
 #endif /* GM_COMMON_H */
