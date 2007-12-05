@@ -529,60 +529,79 @@ gnome_prefs_int_option_menu_new (GtkWidget *table,
 				 int row)
 {
   GnomePrefsWindow *gpw = NULL;
-  GtkWidget *label = NULL;
-  GtkWidget *combo_box = NULL;
-
-  int cpt = 0;
+  
+  GtkWidget *label = NULL;                                                     
+  GtkWidget *option_menu = NULL;
+  
+  GtkListStore *list_store = NULL;
+  GtkCellRenderer *renderer = NULL;
+  GtkTreeIter iter;
+  
   gboolean writable = FALSE;
-  
+
+  int history = -1;
+  int cpt = 0;
+
   writable = gm_conf_is_key_writable (conf_key);
-  
-  label = gtk_label_new_with_mnemonic (label_txt);
+
+  label = gtk_label_new (label_txt);                                           
   if (!writable)
     gtk_widget_set_sensitive (GTK_WIDGET (label), FALSE);
   
-  gtk_table_attach (GTK_TABLE (table), label, 0, 1, row, row+1,
+  gtk_table_attach (GTK_TABLE (table), label, 0, 1, row, row+1,                
                     (GtkAttachOptions) (GTK_FILL),
                     (GtkAttachOptions) (GTK_FILL),
                     0, 0);
-
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+                                                                               
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);                         
   gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
 
-  combo_box = gtk_combo_box_new_text ();
+  list_store = gtk_list_store_new (2, G_TYPE_STRING, G_TYPE_STRING);
+  option_menu = gtk_combo_box_new_with_model (GTK_TREE_MODEL (list_store));
   if (!writable)
-    gtk_widget_set_sensitive (GTK_WIDGET (combo_box), FALSE);
-  
-  gtk_label_set_mnemonic_widget (GTK_LABEL (label), combo_box);
+    gtk_widget_set_sensitive (GTK_WIDGET (option_menu), FALSE);
+  renderer = gtk_cell_renderer_text_new ();
+  gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (option_menu), renderer, FALSE);
+  gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (option_menu), renderer,
+                                  "text", COLUMN_STRING_TRANSLATED,
+                                  NULL);
+  g_object_set (G_OBJECT (renderer), 
+                "ellipsize-set", TRUE, 
+                "ellipsize", PANGO_ELLIPSIZE_END, 
+                "width-chars", 30, NULL);
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label), option_menu);
 
+  history = gm_conf_get_int (conf_key);
   while (options [cpt]) {
-    gtk_combo_box_append_text (GTK_COMBO_BOX (combo_box), options [cpt]);
+
+    gtk_list_store_append (GTK_LIST_STORE (list_store), &iter);
+    gtk_list_store_set (GTK_LIST_STORE (list_store), &iter,
+                        COLUMN_STRING_RAW, options [cpt],
+                        COLUMN_STRING_TRANSLATED, gettext (options [cpt]),
+                        -1);
     cpt++;
   }
 
-  gtk_combo_box_set_active (GTK_COMBO_BOX (combo_box),
- 			       gm_conf_get_int (conf_key));
-
-  gtk_table_attach (GTK_TABLE (table), combo_box, 1, 2, row, row+1,
-                    (GtkAttachOptions) (GTK_FILL),
-                    (GtkAttachOptions) (GTK_FILL),
-                    0, 0);
-
+  gtk_combo_box_set_active (GTK_COMBO_BOX (option_menu), history);
+  gtk_table_attach (GTK_TABLE (table), option_menu, 1, 2, row, row+1,
+                    (GtkAttachOptions) (GTK_FILL),                
+                    (GtkAttachOptions) (GTK_FILL),                
+                    0, 0);           
+                                                                               
   gpw = (GnomePrefsWindow *) g_object_get_data (G_OBJECT (table), "gpw");
   if (gpw && tooltip)
-    gtk_tooltips_set_tip (gpw->tips, combo_box, tooltip, NULL);
+    gtk_tooltips_set_tip (gpw->tips, option_menu, tooltip, NULL);
 
-  g_signal_connect (GTK_COMBO_BOX (combo_box), 
+  g_signal_connect (GTK_COMBO_BOX (option_menu), 
 		    "changed", G_CALLBACK (int_option_menu_changed),
   		    (gpointer) conf_key);                                   
-
   gm_conf_notifier_add (conf_key, int_option_menu_changed_nt,
-			(gpointer) combo_box);
-
+			(gpointer) option_menu);
+  
   gtk_widget_show_all (table);
   
-  return combo_box;
-}                                                                              
+  return option_menu;
+}
 
 
 GtkWidget *

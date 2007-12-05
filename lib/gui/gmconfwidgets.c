@@ -310,11 +310,11 @@ int_option_menu_changed_nt (G_GNUC_UNUSED gpointer cid,
 				     NULL);
     if (current_value != gtk_combo_box_get_active (GTK_COMBO_BOX (e)))
 	gtk_combo_box_set_active (GTK_COMBO_BOX (e), current_value);
-    g_signal_handlers_block_matched (G_OBJECT (e),
-				     G_SIGNAL_MATCH_FUNC,
-				     0, 0, NULL,
-				     (gpointer) int_option_menu_changed,
-				     NULL);
+    g_signal_handlers_unblock_matched (G_OBJECT (e),
+                                       G_SIGNAL_MATCH_FUNC,
+                                       0, 0, NULL,
+                                       (gpointer) int_option_menu_changed,
+                                       NULL);
     gdk_threads_leave ();
   }
 }
