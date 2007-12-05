@@ -184,6 +184,67 @@ with the available ekiga.
 <p>To be completed(FIXME)
 </p>
 
+<h1>Example Perl code</h1>
+
+<p>The following program waits on D-Bus and runs a command when the call
+is made (either outgoing or incoming), and another one when the call is
+finished. It can be used for example for temporarily suspending the
+PulseAudio server, when ekiga is configured to use the ALSA device directly
+(i.e. <code>hw:0,0</code>).</p>
+
+<pre>
+#!/usr/bin/perl -w
+#
+# A sample program for demonstrating the ekiga D-Bus interface.
+# This program suspends the PulseAudio server during ekiga calls.
+# Usable for example when ekiga is configured to use the hardware
+# ALSA devices (e.g. hw:0,0), i.e. at least until the following bugs
+# are fixed on your system:
+# http://www.pulseaudio.org/ticket/23 and
+# https://bugtrack.alsa-project.org/alsa-bug/view.php?id=2601
+#
+# This program is written by Jan "Yenya" Kasprzak, http://www.fi.muni.cz/~kas/
+# and it is distributable under the same terms as the Perl itself.
+#
+use strict;
+use Net::DBus;
+use Net::DBus::Reactor;
+
+my $bus = Net::DBus->session
+	or die "Can't connect to the session D-Bus";
+
+my $service = $bus->get_service("net.ekiga.instance")
+	or die "Can't find the Ekiga instance on the D-Bus\n"
+		. "(is ekiga running and has D-Bus support compiled in?)";
+
+my $object = Net::DBus::RemoteObject->new($service, '/net/ekiga/instance',
+	'net.ekiga.calls') or die "Can't get the ekiga instance";
+
+$object->connect_to_signal('StateChanged', sub {
+	my ($callid, $state) = @_;
+	open my $fh, '|-', 'pacmd >/dev/null 2>&1';
+	if (!defined $state || $state == 0 || $state == 1) {
+		print $fh "suspend 0\n";
+		print STDERR "Ekiga call finished, enabling PulseAudio\n"
+			if -t STDERR;
+		system 'notify-send', 'PulseAudio enabled',
+			'PulseAudio sound server enabled again.';
+	} elsif ($state == 2 || $state ==4) {
+		print $fh "suspend 1\n";
+		print STDERR "Ekiga call, suspending PulseAudio\n"
+			if -t STDERR;
+		system 'notify-send', 'PulseAudio suspended',
+			'PulseAudio sound server suspended during the VoIP call.';
+	}
+	close $fh;
+});
+
+my $reactor = Net::DBus::Reactor->main
+	or die "Can't get Net::DBus::Reactor";
+print STDERR "Waiting on D-Bus ...\n" if -t STDERR;
+$reactor->run();
+</pre>
+
 <h1>Example python code</h1>
 
 <p>The goal isn't to show off everything, but see how things work on some examples
