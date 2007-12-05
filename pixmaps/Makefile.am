@@ -1,4 +1,7 @@
 icondir = $(datadir)/icons/hicolor
+pixmapdir = $(datadir)/pixmaps/@PACKAGE_NAME@
+
+pixmap_DATA = @PACKAGE_NAME@-logo.png
 
 nobase_dist_icon_DATA = \
 	16x16/apps/@PACKAGE_NAME@.png \
