@@ -391,6 +391,13 @@ entry_completion_url_match_cb (G_GNUC_UNUSED GtkEntryCompletion *completion,
   return found;
 }
 
+gboolean 
+disconnect_idle_cb (G_GNUC_UNUSED gpointer data)
+{
+  //FIXME workaround
+  GnomeMeeting::Process ()->Disconnect ();
+  return FALSE;
+}
 
 void 
 connect_button_clicked_cb (GtkToggleButton *widget, 
@@ -416,9 +423,7 @@ connect_button_clicked_cb (GtkToggleButton *widget,
   else if (gm_connect_button_get_connected (GM_CONNECT_BUTTON (widget))
 	   && ep->GetCallingState () != GMManager::Standby) {
 
-    gdk_threads_leave();
-    GnomeMeeting::Process ()->Disconnect ();
-    gdk_threads_enter();
+    g_idle_add (disconnect_idle_cb, NULL);
   }
   else 
     gm_connect_button_set_connected (GM_CONNECT_BUTTON (widget), FALSE);
