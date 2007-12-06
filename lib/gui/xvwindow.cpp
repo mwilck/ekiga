@@ -129,6 +129,7 @@ XVWindow::Init (Display* dp,
   _imageWidth = imageWidth;
   _imageHeight = imageHeight;
 
+  PTRACE(4, "XVideo\tInitializing XV window with " << windowWidth << "x" << windowHeight << " at " << x << "," << y);
   XLockDisplay (_display);
 
 

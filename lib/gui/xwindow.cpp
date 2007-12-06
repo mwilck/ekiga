@@ -187,6 +187,7 @@ XWindow::Init (Display* dp,
   _imageWidth = imageWidth;
   _imageHeight = imageHeight;
 
+  PTRACE(4, "X11\tInitiasing new X11 window with " << windowWidth << "x" << windowHeight << " at " << x << "," << y);
   XLockDisplay (_display);
 
   if (PTrace::CanTrace (4)) 
@@ -338,14 +339,13 @@ XWindow::ProcessEvents()
   XEvent event;
   bool ret = false;
 
-  if (_embedded)
-    return false;
-
   XLockDisplay (_display);
 
-  while (XPending (_display)) {
-
-    XNextEvent (_display, &event);
+  while (XCheckWindowEvent (_display, _XWindow, StructureNotifyMask 
+                                              | SubstructureRedirectMask
+					      | ExposureMask
+					      | KeyPressMask
+					      | ButtonPressMask, &event) == True) {
 
     if (event.type == ClientMessage) {
       // If "closeWindow" is clicked do nothing right now 
@@ -553,6 +553,7 @@ XWindow::SetWindow (int x,
                     unsigned int windowWidth, 
                     unsigned int windowHeight)
 {
+  PTRACE(4, "X11\tSetWindow " << x << "," << y << " " << windowWidth << "x" << windowHeight);
   XLockDisplay (_display);
   XMoveResizeWindow (_display, _XWindow, x, y, windowWidth, windowHeight);
   XUnlockDisplay (_display);

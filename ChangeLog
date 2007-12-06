@@ -1,3 +1,11 @@
+2007-12-06  Matthias Schneider  <ma30002000@yahoo.de>
+
+        * lib/gui/xwindow.cpp:
+	* lib/gui/xvwindow.cpp:
+	Fixed X/XV window message handler that was taking events directed to 
+	other windows as own events. Fixes the frequent BadValue X errors. 
+	Also added some additional trances for the X/XV window.
+
 2007-12-05  Damien Sandras  <dsandras@gnome.org>
 
 	* src/gui/callbacks.cpp: 
