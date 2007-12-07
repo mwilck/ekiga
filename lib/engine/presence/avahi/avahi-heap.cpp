@@ -103,8 +103,7 @@ Avahi::Heap::Heap (Ekiga::PresenceCore &_core): core(_core)
   client = avahi_client_new (poll_api, (AvahiClientFlags)AVAHI_CLIENT_NO_FAIL,
 			     avahi_client_callback, this,
 			     &error);
-  if (client == NULL)
-    ; // FIXME: better error reporting?
+  /* if (client == NULL); FIXME: better error reporting? */
 }
 
 Avahi::Heap::~Heap ()
@@ -166,8 +165,7 @@ Avahi::Heap::ClientCallback (AvahiClient *_client,
 					 (AvahiLookupFlags)0,
 					 avahi_browser_callback,
 					 this);
-    if (browser == NULL)
-      ; // FIXME: better error reporting
+    /* if (browser == NULL) FIXME: better error reporting */
     break;
   case AVAHI_CLIENT_CONNECTING:
   case AVAHI_CLIENT_S_REGISTERING:
@@ -207,8 +205,7 @@ Avahi::Heap::BrowserCallback (AvahiServiceBrowser *_browser,
 					     AVAHI_PROTO_UNSPEC,
 					     (AvahiLookupFlags)0,
 					     avahi_resolver_callback, this);
-      if (resolver == NULL)
-	; // FIXME: better error reporting
+      /* if (resolver == NULL) FIXME: better error reporting */
       break;
 
     case AVAHI_BROWSER_REMOVE:

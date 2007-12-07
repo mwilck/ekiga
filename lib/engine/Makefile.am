@@ -13,6 +13,7 @@ INCLUDES = 								\
 	-I$(top_srcdir)/lib/engine/addressbook/evolution		\
 	-I$(top_srcdir)/lib/engine/addressbook/ldap			\
 	-I$(top_srcdir)/lib/engine/presence/skel			\
+	-I$(top_srcdir)/lib/engine/presence/avahi			\
 	-I$(top_srcdir)/lib/engine/presence/local-roster
 
 libekiga_engine_la_SOURCES = engine.h engine.cpp
@@ -31,6 +32,10 @@ libekiga_engine_la_LIBADD = \
 	$(top_builddir)/lib/engine/presence/skel/libgmpresence.la \
 	$(top_builddir)/lib/engine/presence/local-roster/liblocal-roster.la \
 	$(AM_LIBS)
+
+if HAVE_AVAHI
+libekiga_engine_la_LIBADD += presence/avahi/libgmavahi.la
+endif
 
 if HAVE_EDS
 libekiga_engine_la_LIBADD += addressbook/evolution/libgmevolution.la

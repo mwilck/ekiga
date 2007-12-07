@@ -66,6 +66,8 @@ namespace Avahi
 
     const std::set<std::string> get_groups () const;
 
+    const std::string get_uri () const;
+
     bool populate_menu (Ekiga::MenuBuilder &builder);
 
     void set_online (bool val);

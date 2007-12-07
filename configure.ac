@@ -695,8 +695,9 @@ lib/engine/addressbook/ldap/Makefile
 lib/engine/addressbook/skel/Makefile
 lib/engine/framework/Makefile
 lib/engine/presence/Makefile
-lib/engine/presence/skel/Makefile
+lib/engine/presence/avahi/Makefile
 lib/engine/presence/local-roster/Makefile
+lib/engine/presence/skel/Makefile
 lib/engine/protocol/Makefile
 lib/engine/protocol/sip/Makefile
 dnl lib/engine/protocol/skel/Makefile

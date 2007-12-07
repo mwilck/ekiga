@@ -51,6 +51,10 @@
 
 #include "sip-main.h"
 
+#ifdef HAVE_AVAHI
+#include "avahi-main.h"
+#endif
+
 #ifdef HAVE_EDS
 #include "evolution-main.h"
 #endif
@@ -75,6 +79,13 @@ engine_init (int argc,
     delete core;
     return NULL;
   }
+
+#ifdef HAVE_AVAHI
+  if (!avahi_init (*core, &argc, &argv)) {
+    delete core;
+    return NULL;
+  }
+#endif
 
 #ifdef HAVE_EDS
   if (!evolution_init (*core, &argc, &argv)) {

@@ -85,6 +85,12 @@ Avahi::Presentity::get_groups () const
   return std::set<std::string>();
 }
 
+const std::string
+Avahi::Presentity::get_uri () const
+{
+  return url;
+}
+
 bool
 Avahi::Presentity::populate_menu (Ekiga::MenuBuilder &builder)
 {
