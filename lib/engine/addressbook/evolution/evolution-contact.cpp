@@ -90,10 +90,10 @@ Evolution::Contact::is_found (const std::string /*test*/) const
 void
 Evolution::Contact::update_econtact (EContact *econtact)
 {
-  const gchar *number = NULL;
   gchar *categories = NULL;
   gchar **split = NULL;
   gchar **ptr = NULL;
+  GList *attributes = NULL;
 
   if (econtact == NULL)
     return;
@@ -115,30 +115,52 @@ Evolution::Contact::update_econtact (EContact *econtact)
   }
 
   uris.clear ();
-  number = (const gchar *)e_contact_get_const (econtact,
-					       E_CONTACT_PHONE_HOME);
-  if (number != NULL)
-    uris["home"] = number;
 
-  number = (const gchar *)e_contact_get_const (econtact,
-					       E_CONTACT_PHONE_MOBILE);
-  if (number != NULL)
-    uris["cell phone"] = number;
+  attributes = e_vcard_get_attributes (E_VCARD (econtact));
 
-  number = (const gchar *)e_contact_get_const (econtact,
-					       E_CONTACT_PHONE_BUSINESS);
-  if (number != NULL)
-    uris["work"] = number;
+  for (GList *attribute_ptr = attributes ;
+       attribute_ptr != NULL;
+       attribute_ptr = g_list_next (attribute_ptr)) {
 
-  number = (const gchar *)e_contact_get_const (econtact,
-					       E_CONTACT_PHONE_PAGER);
-  if (number != NULL)
-    uris["pager"] = number;
+    EVCardAttribute *attribute = (EVCardAttribute *)attribute_ptr->data;
+    std::string attr_name = e_vcard_attribute_get_name (attribute);
 
-  number = (const gchar *)e_contact_get_const (econtact,
-					       E_CONTACT_VIDEO_URL);
-  if (number != NULL)
-    uris["video"] = number;
+    if (attr_name == EVC_TEL || attr_name ==  EVC_X_VIDEO_URL) {
+
+      GList *params = e_vcard_attribute_get_params (attribute);
+
+      for (GList *param_ptr = params;
+	   param_ptr != NULL;
+	   param_ptr = g_list_next (param_ptr)) {
+
+	EVCardAttributeParam *param = (EVCardAttributeParam *)param_ptr->data;
+	std::string param_name = e_vcard_attribute_param_get_name (param);
+
+	if (param_name == "TYPE") {
+
+	  GList *types = e_vcard_attribute_param_get_values (param);
+
+	  for (GList *type_ptr = types ;
+	       type_ptr != NULL;
+	       type_ptr = g_list_next (type_ptr)) {
+
+	    std::string type_name = (const gchar *)type_ptr->data;
+	    GList *values = e_vcard_attribute_get_values_decoded (attribute);
+	    for (GList *value_ptr = values;
+		 value_ptr != NULL;
+		 value_ptr = g_list_next (value_ptr)) {
+
+	      std::string number = ((GString *)value_ptr->data)->str;
+	      std::cout << "uris[" << type_name
+			<< "]=" << number
+			<< std::endl;
+	      uris[type_name] = number;
+	    }
+	  }
+	}
+      }
+    }
+  }
 
   updated.emit ();
 }
