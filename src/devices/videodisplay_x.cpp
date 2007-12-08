@@ -123,7 +123,7 @@ GMVideoDisplay_X::SetupFrameDisplay (VideoMode display,
   }
 
   if ((!localVideoInfo.widgetInfoSet) || (!localVideoInfo.gconfInfoSet) ||
-      (localVideoInfo.display == UNSET) || (localVideoInfo.zoom == 0)) {
+      (localVideoInfo.display == UNSET) || (localVideoInfo.zoom == 0) || (zoom == 0)) {
     PTRACE(4, "GMVideoDisplay_X\tWidget not yet realized or gconf info not yet set, not opening display");
     return;
   }
@@ -137,6 +137,7 @@ GMVideoDisplay_X::SetupFrameDisplay (VideoMode display,
   switch (display) {
 // LOCAL_VIDEO ------------------------------------------------------------------
   case LOCAL_VIDEO:
+    PTRACE(4, "GMVideoDisplay_X\tOpening LOCAL_VIDEO display with image of " << lf_width << "x" << lf_height);
 #ifdef HAVE_XV
     if (!localVideoInfo.disableHwAccel) {
       lxWindow = new XVWindow ();
@@ -197,6 +198,7 @@ GMVideoDisplay_X::SetupFrameDisplay (VideoMode display,
 
 // REMOTE_VIDEO ----------------------------------------------------------------
   case REMOTE_VIDEO:
+    PTRACE(4, "GMVideoDisplay_X\tOpening REMOTE_VIDEO display with image of " << rf_width << "x" << rf_height);
 #ifdef HAVE_XV
     if (!localVideoInfo.disableHwAccel) {
       rxWindow = new XVWindow ();
@@ -260,6 +262,9 @@ GMVideoDisplay_X::SetupFrameDisplay (VideoMode display,
   case FULLSCREEN:
   case PIP:
   case PIP_WINDOW:
+    PTRACE(4, "GMVideoDisplay_X\tOpening display " << display << " with images of " 
+            << lf_width << "x" << lf_height << "(local) and " 
+	    << rf_width << "x" << rf_height << "(remote)");
 #ifdef HAVE_XV
     if (!localVideoInfo.disableHwAccel) {
       rxWindow = new XVWindow ();

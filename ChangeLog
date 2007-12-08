@@ -1,3 +1,11 @@
+2007-12-08  Matthias Schneider  <ma30002000@yahoo.de>
+
+	* src/devices/videodisplay_x.cpp:
+	* src/devices/videodisplay_dx.cpp:
+	Fixed BadValue error when trying to initialize a window with 0x0 
+	under certain timing conditions.
+	Also added additional debug trace output.
+
 2007-12-07  Julien Puydt  <jpuydt@gnome.org>
 
 	* lib/engine/addressbook/evolution/evolution-contact.cpp: Made it use

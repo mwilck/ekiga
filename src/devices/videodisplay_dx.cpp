@@ -102,7 +102,7 @@ GMVideoDisplay_DX::SetupFrameDisplay (VideoMode display,
   }
 
   if ((!localVideoInfo.widgetInfoSet) || (!localVideoInfo.gconfInfoSet)) 
-      (localVideoInfo.display == UNSET) || (localVideoInfo.zoom == 0)) {
+      (localVideoInfo.display == UNSET) || (localVideoInfo.zoom == 0) || (zoom == 0)) {
     PTRACE(4, "GMVideoDisplay_X\tWidget not yet realized or gconf info not yet set, not opening display");
     return;
   }
@@ -113,6 +113,7 @@ GMVideoDisplay_DX::SetupFrameDisplay (VideoMode display,
 
   switch (display) {
   case LOCAL_VIDEO:
+    PTRACE(4, "GMVideoDisplay_DX\tOpening LOCAL_VIDEO display with image of " << lf_width << "x" << lf_height);
     dxWindow = new DXWindow();
     status = (VideoAccelStatus) dxWindow->Init (localVideoInfo.hwnd,
                           localVideoInfo.x,
@@ -132,6 +133,7 @@ GMVideoDisplay_DX::SetupFrameDisplay (VideoMode display,
     break;
 
   case REMOTE_VIDEO:
+    PTRACE(4, "GMVideoDisplay_DX\tOpening REMOTE_VIDEO display with image of " << rf_width << "x" << rf_height);
     dxWindow = new DXWindow();
     status = (VideoAccelStatus) dxWindow->Init (localVideoInfo.hwnd,
                           localVideoInfo.x,
@@ -153,6 +155,9 @@ GMVideoDisplay_DX::SetupFrameDisplay (VideoMode display,
   case FULLSCREEN:
   case PIP:
   case PIP_WINDOW:
+    PTRACE(4, "GMVideoDisplay_DX\tOpening display " << display << " with images of " 
+           << lf_width << "x" << lf_height << "(local) and " 
+	   << rf_width << "x" << rf_height << "(remote)");
     dxWindow = new DXWindow();
     status = (VideoAccelStatus) dxWindow->Init ((display == PIP) ? localVideoInfo.hwnd : NULL,
                           (display == PIP) ? localVideoInfo.x : 0,
