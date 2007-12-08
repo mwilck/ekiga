@@ -151,9 +151,6 @@ Evolution::Contact::update_econtact (EContact *econtact)
 		 value_ptr = g_list_next (value_ptr)) {
 
 	      std::string number = ((GString *)value_ptr->data)->str;
-	      std::cout << "uris[" << type_name
-			<< "]=" << number
-			<< std::endl;
 	      uris[type_name] = number;
 	    }
 	  }
