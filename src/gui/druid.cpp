@@ -156,11 +156,11 @@ static void gm_dw_check_gnomemeeting_net (GtkWidget *druid_window);
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Updates the given GtkOptionMenu with the given array and
+ * BEHAVIOR     :  Updates the given GtkComboBox with the given array and
  * 		   sets the default value.
  * PRE          :  /
  */
-static void gm_dw_option_menu_update (GtkWidget *option_menu,
+static void gm_dw_combo_box_update (GtkWidget *combo_box,
 				      gchar **options,
 				      gchar *default_value);
 
@@ -542,7 +542,7 @@ gm_dw_check_gnomemeeting_net (GtkWidget *druid_window)
 
 
 static void
-gm_dw_option_menu_update (GtkWidget *option_menu,
+gm_dw_combo_box_update (GtkWidget *combo_box,
 			  gchar **options,
 			  gchar *default_value)
 {
@@ -553,7 +553,7 @@ gm_dw_option_menu_update (GtkWidget *option_menu,
 
   g_return_if_fail (options != NULL);
 
-  model = gtk_combo_box_get_model (GTK_COMBO_BOX (option_menu));
+  model = gtk_combo_box_get_model (GTK_COMBO_BOX (combo_box));
   gtk_list_store_clear (GTK_LIST_STORE (model));
   
   if (!options)
@@ -564,17 +564,17 @@ gm_dw_option_menu_update (GtkWidget *option_menu,
     if (default_value && !strcmp (options [cpt], default_value)) 
       history = cpt;
 
-    gtk_combo_box_append_text ( GTK_COMBO_BOX (option_menu), options [cpt]);
+    gtk_combo_box_append_text ( GTK_COMBO_BOX (combo_box), options [cpt]);
 
     cpt++;
   }
 
   if (history != -1)
-    gtk_combo_box_set_active( GTK_COMBO_BOX (option_menu), history);
+    gtk_combo_box_set_active( GTK_COMBO_BOX (combo_box), history);
   else
-    gtk_combo_box_set_active( GTK_COMBO_BOX (option_menu), 0);
+    gtk_combo_box_set_active( GTK_COMBO_BOX (combo_box), 0);
 
-  gtk_combo_box_set_focus_on_click (GTK_COMBO_BOX (option_menu), FALSE);
+  gtk_combo_box_set_focus_on_click (GTK_COMBO_BOX (combo_box), FALSE);
 }
 
 
@@ -1757,13 +1757,13 @@ prepare_personal_data_page_cb (GnomeDruidPage *page,
   devs = GnomeMeeting::Process ()->GetAudioPlugins ();
   array = devs.ToCharArray ();
   audio_manager = gm_conf_get_string (AUDIO_DEVICES_KEY "plugin");
-  gm_dw_option_menu_update (dw->audio_manager, array, audio_manager);
+  gm_dw_combo_box_update (dw->audio_manager, array, audio_manager);
   free (array);
   
   devs = GnomeMeeting::Process ()->GetVideoPlugins ();
   array = devs.ToCharArray ();
   video_manager = gm_conf_get_string (VIDEO_DEVICES_KEY "plugin");
-  gm_dw_option_menu_update (dw->video_manager, array, video_manager);
+  gm_dw_combo_box_update (dw->video_manager, array, video_manager);
   free (array);
   
   GTK_TOGGLE_BUTTON (dw->use_gnomemeeting_net)->active = FALSE;
@@ -1875,7 +1875,7 @@ prepare_audio_devices_page_cb (GnomeDruidPage *page,
   }
   
   array = devices.ToCharArray ();
-  gm_dw_option_menu_update (dw->audio_player, array, player);
+  gm_dw_combo_box_update (dw->audio_player, array, player);
   free (array);
 
   devices = PSoundChannel::GetDeviceNames (audio_manager,
@@ -1887,7 +1887,7 @@ prepare_audio_devices_page_cb (GnomeDruidPage *page,
   }
   
   array = devices.ToCharArray ();
-  gm_dw_option_menu_update (dw->audio_recorder, array, recorder);
+  gm_dw_combo_box_update (dw->audio_recorder, array, recorder);
   free (array);
   gnomemeeting_sound_daemons_resume ();
 
