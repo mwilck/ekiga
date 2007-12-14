@@ -738,6 +738,7 @@ echo "                 DirectX support  :  $DX"
 fi
 echo ""
 if test "x${gm_platform}" != "xmingw" ; then
+echo "                  Bonobo support  :  $BONOBO"
 echo "                    DBUS support  :  $DBUS"
 echo "             mDNS/DNS-SD support  :  $AVAHI"
 fi
