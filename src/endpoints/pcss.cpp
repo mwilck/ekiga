@@ -261,7 +261,7 @@ GMPCSSEndpoint::GetDeviceVolume (unsigned int &play_vol,
 {
   PSafePtr<OpalCall> call = NULL;
   PSafePtr<OpalConnection> connection = NULL;
-  OpalAudioMediaStream *stream = NULL;
+  PSafePtr<OpalMediaStream> stream = NULL;
   PSoundChannel *channel = NULL;
 
   call = endpoint.FindCallWithLock (endpoint.GetCurrentCallToken ());
@@ -272,24 +272,18 @@ GMPCSSEndpoint::GetDeviceVolume (unsigned int &play_vol,
 
     if (connection) {
 
-      stream = (OpalAudioMediaStream *) 
-	connection->GetMediaStream (OpalMediaFormat::DefaultAudioSessionID,
-				    FALSE);
-
+      stream = connection->GetMediaStream (OpalMediaFormat::DefaultAudioSessionID,
+					   FALSE);
       if (stream) {
-
-	channel = (PSoundChannel *) stream->GetChannel ();
+	channel = (PSoundChannel *) ((OpalRawMediaStream &) *stream).GetChannel ();
 	channel->GetVolume (play_vol);
       }
 
-      
-      stream = (OpalAudioMediaStream *) 
-	connection->GetMediaStream (OpalMediaFormat::DefaultAudioSessionID,
-				    TRUE);
+      stream = connection->GetMediaStream (OpalMediaFormat::DefaultAudioSessionID,
+					   TRUE);
 
       if (stream) {
-
-	channel = (PSoundChannel *) stream->GetChannel ();
+	channel = (PSoundChannel *) ((OpalRawMediaStream &) *stream).GetChannel ();
 	channel->GetVolume (record_vol);
       }
     }
@@ -306,7 +300,7 @@ GMPCSSEndpoint::SetDeviceVolume (unsigned int play_vol,
 
   PSafePtr<OpalCall> call = NULL;
   PSafePtr<OpalConnection> connection = NULL;
-  OpalAudioMediaStream *stream = NULL;
+  PSafePtr<OpalMediaStream> stream = NULL;
   PSoundChannel *channel = NULL;
 
   g_return_val_if_fail (play_vol <= 100, FALSE);
@@ -320,24 +314,20 @@ GMPCSSEndpoint::SetDeviceVolume (unsigned int play_vol,
 
     if (connection) {
 
-      stream = (OpalAudioMediaStream *) 
-	connection->GetMediaStream (OpalMediaFormat::DefaultAudioSessionID,
-				    FALSE);
+      stream = connection->GetMediaStream (OpalMediaFormat::DefaultAudioSessionID,
+					   FALSE);
 
       if (stream) {
-
-	channel = (PSoundChannel *) stream->GetChannel ();
+	channel = (PSoundChannel *) ((OpalRawMediaStream &) *stream).GetChannel ();
 	channel->SetVolume (play_vol);
 	success1 = TRUE;
       }
       
-      stream = (OpalAudioMediaStream *) 
-	connection->GetMediaStream (OpalMediaFormat::DefaultAudioSessionID,
-				    TRUE);
+      stream = connection->GetMediaStream (OpalMediaFormat::DefaultAudioSessionID,
+					   TRUE);
 
       if (stream) {
-
-	channel = (PSoundChannel *) stream->GetChannel ();
+	channel = (PSoundChannel *) ((OpalRawMediaStream &) *stream).GetChannel ();
 	channel->SetVolume (record_vol);
 	success2 = TRUE;
       }

@@ -1421,7 +1421,7 @@ GMManager::UpdateRTPStats (PTime start_time,
   PTimeInterval t;
   PTime now;
   
-  OpalVideoMediaStream *stream = NULL;
+  PSafePtr <OpalMediaStream> stream = NULL;
   PString call_token;
   PSafePtr <OpalCall> call = NULL;
   PSafePtr <OpalConnection> connection = NULL;
@@ -1492,11 +1492,11 @@ GMManager::UpdateRTPStats (PTime start_time,
       connection = GetConnection (call, FALSE);
       if (connection != NULL) {
 
-        stream = (OpalVideoMediaStream *)connection->GetMediaStream (OpalMediaFormat::DefaultVideoSessionID, FALSE);
+        stream = connection->GetMediaStream (OpalMediaFormat::DefaultVideoSessionID, FALSE);
         if (stream != NULL) {
 
           // Get and calculate statistics for the Output Device
-          device = stream->GetVideoOutputDevice ();
+          device = ((const OpalVideoMediaStream &) *stream).GetVideoOutputDevice ();
           if (device) {
 
             stats.v_re_fps = (int)((device->GetNumberOfFrames() - stats.v_re_frames) / elapsed_seconds);
@@ -1511,11 +1511,11 @@ GMManager::UpdateRTPStats (PTime start_time,
           } 
         }
 
-        stream = (OpalVideoMediaStream *)connection->GetMediaStream (OpalMediaFormat::DefaultVideoSessionID, TRUE);
+        stream = connection->GetMediaStream (OpalMediaFormat::DefaultVideoSessionID, TRUE);
         if (stream != NULL) {
 
           // Get and calculate statistics for the Preview Device
-          device = stream->GetVideoOutputDevice ();
+          device = ((const OpalVideoMediaStream &) *stream).GetVideoOutputDevice ();
           if (device) {
             stats.v_tr_fps = (int)((device->GetNumberOfFrames() - stats.v_tr_frames) / elapsed_seconds);
             stats.v_tr_frames = device->GetNumberOfFrames();
@@ -1543,7 +1543,7 @@ GMManager::OnAvgSignalTimeout (PTimer &,
   PSafePtr <OpalCall> call = NULL;
   PSafePtr <OpalConnection> connection = NULL;
 
-  OpalRawMediaStream *audio_stream = NULL;
+  PSafePtr<OpalMediaStream> stream = NULL;
   Ekiga::Runtime *runtime = GnomeMeeting::Process ()->GetRuntime (); // FIXME
 
   float output = 0;
@@ -1556,19 +1556,19 @@ GMManager::OnAvgSignalTimeout (PTimer &,
 
     if (connection != NULL) {
 
-      audio_stream = 
-        (OpalRawMediaStream *) 
-        connection->GetMediaStream (OpalMediaFormat::DefaultAudioSessionID, 
-                                    FALSE);
-      if (audio_stream)
-        output = (linear2ulaw (audio_stream->GetAverageSignalLevel ()) ^ 0xff) / 100.0;
+      stream = connection->GetMediaStream (OpalMediaFormat::DefaultAudioSessionID,
+                                           FALSE);
+      if (stream) {
+        OpalRawMediaStream & audio_stream = (OpalRawMediaStream &) (*stream);
+        output = (linear2ulaw (audio_stream.GetAverageSignalLevel ()) ^ 0xff) / 100.0;
+      }
 
-      audio_stream = 
-        (OpalRawMediaStream *) 
-        connection->GetMediaStream (OpalMediaFormat::DefaultAudioSessionID, 
-                                    TRUE);
-      if (audio_stream)
-        input = (linear2ulaw (audio_stream->GetAverageSignalLevel ()) ^ 0xff) / 100.0;
+      stream = connection->GetMediaStream (OpalMediaFormat::DefaultAudioSessionID,
+                                           TRUE);
+      if (stream) {
+        OpalRawMediaStream & audio_stream = (OpalRawMediaStream &) (*stream);
+	input = (linear2ulaw (audio_stream.GetAverageSignalLevel ()) ^ 0xff) / 100.0;
+      }
     } 
     runtime->run_in_main (sigc::bind (audio_signal_event.make_slot (), input, output));
   }
