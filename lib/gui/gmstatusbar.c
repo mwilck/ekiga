@@ -106,7 +106,8 @@ gm_sb_push_message (GmStatusbar *sb,
   gint msg_id = 0;
   int len = 0;
   int i = 0;
-  
+  static guint timer_source;
+
   g_return_if_fail (sb != NULL);
 
   len = g_slist_length ((GSList *) (GTK_STATUSBAR (sb)->messages));
@@ -128,11 +129,17 @@ gm_sb_push_message (GmStatusbar *sb,
 
     if (flash_message)
     {
+      if (timer_source != 0)
+      {
+        g_source_remove (timer_source);
+        timer_source = 0;
+      }
+
 #if GLIB_CHECK_VERSION (2, 14, 0)
-      g_timeout_add_seconds (15, gm_statusbar_clear_msg_cb, 
+      timer_source = g_timeout_add_seconds (15, gm_statusbar_clear_msg_cb, 
 		       GINT_TO_POINTER (msg_id));
 #else
-      g_timeout_add (15000, gm_statusbar_clear_msg_cb, 
+      timer_source = g_timeout_add (15000, gm_statusbar_clear_msg_cb, 
 		       GINT_TO_POINTER (msg_id));
 #endif
     }
