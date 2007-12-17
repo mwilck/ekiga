@@ -83,6 +83,7 @@ Ekiga::ContactCore::add_source (Source &source)
   source.contact_added.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::ContactCore::on_contact_added), &source));
   source.contact_removed.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::ContactCore::on_contact_removed), &source));
   source.contact_updated.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::ContactCore::on_contact_updated), &source));
+  source.questions.add_handler (questions.make_slot ());
 }
 
 void

@@ -41,6 +41,8 @@
 #include <map>
 #include <string>
 
+#include "chain-of-responsibility.h"
+#include "form-request.h"
 #include "menu-builder.h"
 
 namespace Ekiga
@@ -104,6 +106,10 @@ namespace Ekiga
     /** This signal is emitted when the Contact has been removed.
      */
     sigc::signal<void> removed;
+
+    /** This chain allows the Contact to present forms to the user
+     */
+    ChainOfResponsibility<FormRequest*> questions;
   };
 
 };

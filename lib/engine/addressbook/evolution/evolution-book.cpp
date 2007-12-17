@@ -41,7 +41,6 @@
 
 #include "config.h"
 
-#include "ui.h"
 #include "form-request-simple.h"
 
 #include "evolution-book.h"
@@ -253,19 +252,13 @@ Evolution::Book::get_ebook () const
 bool
 Evolution::Book::populate_menu (Ekiga::MenuBuilder &builder)
 {
-  Ekiga::UI *ui = dynamic_cast<Ekiga::UI *>(services.get ("ui"));
-
-  if (ui != NULL) {
-
-    builder.add_action ("refresh", _("_Refresh"),
-                        sigc::mem_fun (this, &Evolution::Book::refresh));
-    builder.add_separator ();
-    builder.add_action ("new", _("New _Contact"),
-			sigc::mem_fun (this,
-				       &Evolution::Book::new_contact_action));
-    return true;
-  } else
-    return false;
+  builder.add_action ("refresh", _("_Refresh"),
+		      sigc::mem_fun (this, &Evolution::Book::refresh));
+  builder.add_separator ();
+  builder.add_action ("new", _("New _Contact"),
+		      sigc::mem_fun (this,
+				     &Evolution::Book::new_contact_action));
+  return true;
 }
 
 void
@@ -298,7 +291,6 @@ Evolution::Book::refresh ()
 void
 Evolution::Book::new_contact_action ()
 {
-  Ekiga::UI *ui = dynamic_cast<Ekiga::UI *>(services.get ("ui"));
   Ekiga::FormRequestSimple request;
 
   request.title (_("New contact"));
@@ -316,8 +308,14 @@ Evolution::Book::new_contact_action ()
   request.submitted.connect (sigc::mem_fun (this,
 					    &Evolution::Book::on_new_contact_form_submitted));
 
-  ui->run_form_request (request);
+  if (!questions.handle_request (&request)) {
 
+    // FIXME: better error reporting
+#ifdef __GNUC__
+    std::cout << "Unhandled form request in "
+	      << __PRETTY_FUNCTION__ << std::endl;
+#endif
+  }
 }
 
 void

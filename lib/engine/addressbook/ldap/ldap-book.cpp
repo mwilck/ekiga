@@ -47,7 +47,6 @@
 
 #include "ldap-book.h"
 #include "ekiga.h"
-#include "ui.h"
 #include "form-request-simple.h"
 
 
@@ -284,18 +283,13 @@ OPENLDAP::Book::get_name () const
 bool
 OPENLDAP::Book::populate_menu (Ekiga::MenuBuilder &builder)
 {
-  Ekiga::UI *ui = dynamic_cast<Ekiga::UI *>(core.get ("ui"));
-
-  if (ui != NULL) {
-
-    builder.add_action ("refresh", _("_Refresh"),
+  builder.add_action ("refresh", _("_Refresh"),
 		      sigc::mem_fun (this, &OPENLDAP::Book::refresh));
-    builder.add_separator ();
-    builder.add_action ("remove", _("_Remove"),
-			sigc::mem_fun (this, &OPENLDAP::Book::remove));
-    builder.add_action ("properties", _("_Properties"),
-			sigc::mem_fun (this, &OPENLDAP::Book::edit));
-  }
+  builder.add_separator ();
+  builder.add_action ("remove", _("_Remove"),
+		      sigc::mem_fun (this, &OPENLDAP::Book::remove));
+  builder.add_action ("properties", _("_Properties"),
+		      sigc::mem_fun (this, &OPENLDAP::Book::edit));
 
   return true;
 }
@@ -504,7 +498,6 @@ void
 OPENLDAP::Book::edit ()
 {
   Ekiga::FormRequestSimple request;
-  Ekiga::UI *ui = dynamic_cast<Ekiga::UI *>(core.get("ui"));
 
   request.title (_("Edit LDAP directory"));
 
@@ -534,7 +527,14 @@ OPENLDAP::Book::edit ()
   request.submitted.connect (sigc::mem_fun (this,
 					    &OPENLDAP::Book::on_edit_form_submitted));
 
-  ui->run_form_request (request);
+  if (!questions.handle_request (&request)) {
+
+    // FIXME: better error reporting
+#ifdef __GNUC__
+    std::cout << "Unhandled form request in "
+	      << __PRETTY_FUNCTION__ << std::endl;
+#endif
+  }
 }
 
 void

@@ -36,31 +36,26 @@
 #ifndef __GTK_CORE_H__
 #define __GTK_CORE_H__
 
-#include "ui.h"
+#include "services.h"
 
 namespace Gtk
 {
-  class UI: public Ekiga::UI
+
+  class Core: public Ekiga::Service
   {
   public:
 
-    UI (Ekiga::ServiceCore &_core);
+    Core ();
 
-    ~UI ()
-    { /* nothing to be done... unfortunately */ }
+    ~Core ()
+    { }
+
+    const std::string get_name () const
+    { return "gtk-core"; }
 
     const std::string get_description () const
-    { return "\tGtk+ user interface"; }
+    { return "\tGtk+ base support"; }
 
-    void run_form_request (Ekiga::FormRequest &request);
-
-  private:
-
-    bool initialized;
-
-    Ekiga::ServiceCore &core;
-
-    void on_service_added (Ekiga::Service &service);
   };
 };
 

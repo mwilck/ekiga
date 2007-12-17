@@ -39,6 +39,8 @@
 #include <set>
 #include <string>
 
+#include "chain-of-responsibility.h"
+#include "form-request.h"
 #include "menu-builder.h"
 
 namespace Ekiga
@@ -66,6 +68,7 @@ namespace Ekiga
 
     sigc::signal<void> updated;
     sigc::signal<void> removed;
+    ChainOfResponsibility<FormRequest*> questions;
   };
 
 };

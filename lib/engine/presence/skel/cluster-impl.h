@@ -225,6 +225,8 @@ Ekiga::ClusterImpl<HeapType, HeapManagementTrait>::add_heap (HeapType &heap)
   conns.push_back (conn);
   conn = heap.presentity_removed.connect (sigc::bind (sigc::mem_fun (this, &ClusterImpl::on_presentity_removed), &heap));
   conns.push_back (conn);
+  conn = heap.questions.add_handler (questions.make_slot ());
+  conns.push_back (conn);
 
   connections[&heap] = conns;
   heap_added.emit (heap);

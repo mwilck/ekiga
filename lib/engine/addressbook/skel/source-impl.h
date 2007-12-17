@@ -336,6 +336,9 @@ Ekiga::SourceImpl<BookType, BookManagementTrait>::add_book (BookType &book)
   conn = book.contact_updated.connect (sigc::bind (sigc::mem_fun (this, &SourceImpl::on_contact_updated), &book));
   conns.push_back (conn);
 
+  conn = book.questions.add_handler (questions.make_slot ());
+  conns.push_back (conn);
+
   connections[&book] = conns;
   book_added.emit (book);
 }

@@ -173,25 +173,20 @@ bool
 Evolution::Contact::populate_menu (Ekiga::MenuBuilder &builder)
 {
   Ekiga::ContactCore *core = dynamic_cast<Ekiga::ContactCore *>(services.get ("contact-core"));
-  Ekiga::UI *ui = dynamic_cast<Ekiga::UI *>(services.get ("ui"));
   bool populated = false;
 
   if (core != NULL)
     populated = core->populate_contact_menu (*this, builder);
 
-  if (ui != NULL) {
+  if (populated)
+    builder.add_separator ();
 
-    if (populated)
-      builder.add_separator ();
+  builder.add_action ("remove", _("_Remove"),
+		      sigc::mem_fun (this, &Evolution::Contact::remove));
+  builder.add_action ("edit", _("_Edit"),
+		      sigc::mem_fun (this, &Evolution::Contact::edit_action));
 
-    builder.add_action ("remove", _("_Remove"),
-			sigc::mem_fun (this, &Evolution::Contact::remove));
-    builder.add_action ("edit", _("_Edit"),
-			sigc::bind (sigc::mem_fun (this, &Evolution::Contact::edit_action), ui));
-    populated = true;
-  }
-
-  return populated;
+  return true;
 }
 
 void
@@ -212,7 +207,7 @@ Evolution::Contact::commit (const std::map<EContactField, std::string> data)
 }
 
 void
-Evolution::Contact::edit_action (Ekiga::UI *ui)
+Evolution::Contact::edit_action ()
 {
   Ekiga::FormRequestSimple request;
 
@@ -256,7 +251,14 @@ Evolution::Contact::edit_action (Ekiga::UI *ui)
   request.submitted.connect (sigc::mem_fun (this,
 					    &Evolution::Contact::on_edit_form_submitted));
 
-  ui->run_form_request (request);
+  if (!questions.handle_request (&request)) {
+
+    // FIXME: better error reporting
+#ifdef __GNUC__
+    std::cout << "Unhandled form request in "
+	      << __PRETTY_FUNCTION__ << std::endl;
+#endif
+  }
 }
 
 void

@@ -185,6 +185,10 @@ namespace Ekiga
      */
     sigc::signal<void> updated;
 
+
+    /** This chain allows the ContactCore to present forms to the user
+     */
+    ChainOfResponsibility<FormRequest*> questions;
   };
 
 };

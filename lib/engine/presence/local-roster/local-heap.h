@@ -52,7 +52,6 @@
 
 #include <libxml/tree.h>
 
-#include "ui.h"
 #include "heap-impl.h"
 #include "local-presentity.h"
 

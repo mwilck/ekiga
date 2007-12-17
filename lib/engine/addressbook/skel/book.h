@@ -117,6 +117,11 @@ namespace Ekiga {
     /** This signal is emitted when a Contact has been updated in the Book.
      */
     sigc::signal<void, Contact &> contact_updated;
+
+
+    /** This chain allows the Book to present forms to the user
+     */
+    ChainOfResponsibility<FormRequest*> questions;
   };
 };
 

@@ -38,9 +38,8 @@
 #include "gmstockicons.h"
 
 #include "gtk-core.h"
-#include "form-dialog-gtk.h"
 
-Gtk::UI::UI (Ekiga::ServiceCore &_core): core(_core)
+Gtk::Core::Core ()
 {
   // set the basic known icons
   GtkIconFactory *factory = gtk_icon_factory_new ();
@@ -110,12 +109,4 @@ Gtk::UI::UI (Ekiga::ServiceCore &_core): core(_core)
 
   gtk_icon_factory_add_default (factory);
   g_object_unref (factory);
-}
-
-void
-Gtk::UI::run_form_request (Ekiga::FormRequest &request)
-{
-  FormDialog dialog (request);
-
-  dialog.run ();
 }

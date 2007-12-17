@@ -95,6 +95,10 @@ namespace Ekiga {
      *  this source
      */
     sigc::signal<void, Book &, Contact &> contact_updated;
+
+    /** This chain allows the Source to present forms to the user
+     */
+    ChainOfResponsibility<FormRequest*> questions;
   };
 };
 

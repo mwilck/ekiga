@@ -60,6 +60,7 @@ namespace Ekiga {
     sigc::signal<void, Presentity &> presentity_added;
     sigc::signal<void, Presentity &> presentity_updated;
     sigc::signal<void, Presentity &> presentity_removed;
+    ChainOfResponsibility<FormRequest*> questions;
   };
 
 };

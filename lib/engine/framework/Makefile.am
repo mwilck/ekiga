@@ -10,6 +10,7 @@ INCLUDES = \
 
 libgmframework_la_SOURCES = \
 			    $(framework_dir)/services.h \
+			    $(framework_dir)/chain-of-responsibility.h \
 			    $(framework_dir)/form-builder.h \
 			    $(framework_dir)/form-dumper.h \
 			    $(framework_dir)/form.h \
@@ -20,7 +21,6 @@ libgmframework_la_SOURCES = \
 			    $(framework_dir)/map-key-const-reference-iterator.h \
 			    $(framework_dir)/menu-builder.h \
 			    $(framework_dir)/runtime.h \
-			    $(framework_dir)/ui.h \
 			    $(framework_dir)/menu-builder.cpp \
 			    $(framework_dir)/form-builder.cpp \
 			    $(framework_dir)/form-dumper.cpp \

@@ -573,7 +573,8 @@ multiple_choice_choice_toggled_cb (G_GNUC_UNUSED GtkCellRendererToggle *cell,
   gtk_tree_path_free (path);
 }
 
-FormDialog::FormDialog (Ekiga::FormRequest &_request): request(_request)
+FormDialog::FormDialog (Ekiga::FormRequest &_request,
+			GtkWidget *parent): request(_request)
 {
   GtkWidget *vbox = NULL;
 
@@ -584,6 +585,8 @@ FormDialog::FormDialog (Ekiga::FormRequest &_request): request(_request)
                                         GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                                         GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
                                         NULL);
+  if (GDK_IS_WINDOW (parent))
+    gtk_widget_set_parent_window (GTK_WIDGET (window), GDK_WINDOW (parent));
   gtk_dialog_set_default_response (GTK_DIALOG (window),
                                    GTK_RESPONSE_ACCEPT);
   gtk_window_set_resizable (GTK_WINDOW (window), FALSE);

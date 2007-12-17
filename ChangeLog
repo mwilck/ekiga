@@ -1,5 +1,43 @@
 2007-12-17  Julien Puydt  <jpuydt@gnome.org>
 
+	* lib/engine/framework/chain-of-responsibility.h: Added.
+	* lib/engine/framework/ui.h: Removed.
+	* lib/engine/addressbook/call-history/history-book.h:
+	* lib/engine/addressbook/evolution/evolution-book.cpp:
+	* lib/engine/addressbook/evolution/evolution-contact.cpp:
+	* lib/engine/addressbook/evolution/evolution-contact.h:
+	* lib/engine/addressbook/ldap/ldap-book.cpp:
+	* lib/engine/addressbook/ldap/ldap-source.cpp:
+	* lib/engine/addressbook/skel/book-impl.h:
+	* lib/engine/addressbook/skel/book.h:
+	* lib/engine/addressbook/skel/contact-core.cpp:
+	* lib/engine/addressbook/skel/contact-core.h:
+	* lib/engine/addressbook/skel/contact.h:
+	* lib/engine/addressbook/skel/source-impl.h:
+	* lib/engine/addressbook/skel/source.h:
+	* lib/engine/framework/Makefile.am:
+	* lib/engine/gui/gtk-core/form-dialog-gtk.cpp:
+	* lib/engine/gui/gtk-core/form-dialog-gtk.h:
+	* lib/engine/gui/gtk-frontend/addressbook-window.cpp:
+	* lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:
+	* lib/engine/presence/local-roster/local-heap.cpp:
+	* lib/engine/presence/local-roster/local-heap.h:
+	* lib/engine/presence/local-roster/local-presentity.cpp:
+	* lib/engine/presence/skel/cluster-impl.h:
+	* lib/engine/presence/skel/cluster.h:
+	* lib/engine/presence/skel/heap-impl.h:
+	* lib/engine/presence/skel/heap.h:
+	* lib/engine/presence/skel/presence-core.cpp:
+	* lib/engine/presence/skel/presence-core.h:
+	* lib/engine/presence/skel/presentity.h: Adapted to use chains of
+	responsibility instead of Ekiga::UI.
+	* lib/engine/gui/gtk-core/gtk-core-main.cpp:
+	* lib/engine/gui/gtk-core/gtk-core.cpp:
+	* lib/engine/gui/gtk-core/gtk-core.h: Refactored to cope with the
+	disparition of Ekiga::UI.
+
+2007-12-17  Julien Puydt  <jpuydt@gnome.org>
+
 	* lib/gui/gmstatusbar.c: Applied patch from Patrick Hulin,
 	to fix bug #496085. Thanks!
 

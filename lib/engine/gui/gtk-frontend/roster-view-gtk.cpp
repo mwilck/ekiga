@@ -46,7 +46,7 @@
 
 #include "roster-view-gtk.h"
 #include "menu-builder-gtk.h"
-
+#include "form-dialog-gtk.h"
 
 /*
  * The Roster
@@ -228,6 +228,14 @@ static void on_presentity_removed (Ekiga::Cluster &cluster,
 				   Ekiga::Heap &heap,
 				   Ekiga::Presentity &presentity,
 				   gpointer data);
+
+
+/* DESCRIPTION  : Called when the PresenceCore has a form request to handle
+ * BEHAVIOR     : Runs the form request in gtk+
+ * PRE          : The given pointer is the roster view widget
+ */
+static bool on_handle_questions (Ekiga::FormRequest *request,
+				 gpointer data);
 
 
 /*
@@ -656,6 +664,17 @@ on_presentity_removed (Ekiga::Cluster &/*cluster*/,
   roster_view_gtk_update_groups (self, &heap_iter);
 }
 
+static bool
+on_handle_questions (Ekiga::FormRequest *request,
+		     gpointer data)
+{
+  GtkWidget *parent = gtk_widget_get_parent (GTK_WIDGET (data));
+  FormDialog dialog (*request, parent);
+
+  dialog.run ();
+
+  return true;
+}
 
 
 /*
@@ -1038,6 +1057,8 @@ roster_view_gtk_new (Ekiga::PresenceCore &core)
   self->priv->connections.push_back (conn);
   conn = core.presentity_removed.connect (sigc::bind (sigc::ptr_fun (on_presentity_removed),
 						      (gpointer) self));
+  self->priv->connections.push_back (conn);
+  conn = core.questions.add_handler (sigc::bind (sigc::ptr_fun (on_handle_questions), (gpointer) self));
   self->priv->connections.push_back (conn);
 
   core.visit_clusters (sigc::bind (sigc::ptr_fun (on_cluster_added),

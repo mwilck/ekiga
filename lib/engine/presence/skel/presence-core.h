@@ -103,6 +103,7 @@ namespace Ekiga
     sigc::signal<void, Cluster &, Heap &, Presentity &> presentity_added;
     sigc::signal<void, Cluster &, Heap &, Presentity &> presentity_updated;
     sigc::signal<void, Cluster &, Heap &, Presentity &> presentity_removed;
+    ChainOfResponsibility<FormRequest*> questions;
 
   private:
 

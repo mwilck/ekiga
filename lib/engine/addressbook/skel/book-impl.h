@@ -200,6 +200,7 @@ template<typename ContactType, typename ContactManagementTrait>
 void
 Ekiga::BookImpl<ContactType, ContactManagementTrait>::add_contact (ContactType &contact)
 {
+  contact.questions.add_handler (questions.make_slot ());
   add_object (contact);
 }
 

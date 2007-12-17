@@ -55,7 +55,8 @@ class FormDialog: public Ekiga::FormVisitor
 {
 public:
 
-  FormDialog (Ekiga::FormRequest &request);
+  FormDialog (Ekiga::FormRequest &request,
+	      GtkWidget *parent);
 
   ~FormDialog ();
 

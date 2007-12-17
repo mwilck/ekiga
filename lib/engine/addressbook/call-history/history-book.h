@@ -38,7 +38,6 @@
 
 #include <libxml/tree.h>
 
-#include "ui.h"
 #include "book-impl.h"
 #include "history-contact.h"
 

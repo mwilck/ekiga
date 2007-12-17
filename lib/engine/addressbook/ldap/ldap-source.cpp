@@ -41,7 +41,6 @@
 
 #include "gmconf.h"
 #include "form-request-simple.h"
-#include "ui.h"
 
 #include "ldap-source.h"
 
@@ -128,22 +127,15 @@ OPENLDAP::Source::~Source ()
 bool
 OPENLDAP::Source::populate_menu (Ekiga::MenuBuilder &builder)
 {
-  Ekiga::UI *ui = dynamic_cast<Ekiga::UI*>(core.get ("ui"));
-
-  if (ui != NULL) {
-
-    builder.add_action ("add", _("Add an LDAP addressbook"),
-			sigc::mem_fun (this,
-				       &OPENLDAP::Source::new_book));
-    return true;
-  } else
-    return false;
+  builder.add_action ("add", _("Add an LDAP addressbook"),
+		      sigc::mem_fun (this,
+				     &OPENLDAP::Source::new_book));
+  return true;
 }
 
 void
 OPENLDAP::Source::new_book ()
 {
-  Ekiga::UI *ui = dynamic_cast<Ekiga::UI*>(core.get ("ui"));
   Ekiga::FormRequestSimple request;
 
   request.title (_("Create LDAP directory"));
@@ -167,7 +159,14 @@ OPENLDAP::Source::new_book ()
   request.submitted.connect (sigc::mem_fun (this,
 					    &OPENLDAP::Source::on_new_book_form_submitted));
 
-  ui->run_form_request (request);
+  if (!questions.handle_request (&request)) {
+
+    // FIXME: better error reporting
+#ifdef __GNUC__
+    std::cout << "Unhandled form request in "
+	      << __PRETTY_FUNCTION__ << std::endl;
+#endif
+  }
 }
 
 void

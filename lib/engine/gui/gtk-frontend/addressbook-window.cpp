@@ -41,6 +41,7 @@
 #include "addressbook-window.h"
 #include "book-view-gtk.h"
 #include "menu-builder-gtk.h"
+#include "form-dialog-gtk.h"
 
 /* 
  * The Search Window 
@@ -136,6 +137,12 @@ static void on_book_updated (Ekiga::Source &source,
 			     Ekiga::Book &book,
                              gpointer data);
 
+/* DESCRIPTION  : Called when the ContactCore has a form request
+ * BEHAVIOR     : Runs the form request in gtk+
+ * PRE          : The given pointer is the parent window for the form.
+ */
+static bool on_handle_questions (Ekiga::FormRequest *request,
+				 gpointer data);
 
 /* DESCRIPTION  : Called when a view of a Book has been updated,
  *                ie the updated signal has been emitted by the GtkWidget.
@@ -285,6 +292,16 @@ on_book_updated (Ekiga::Source &/*source*/,
   addressbook_window_update_book (ADDRESSBOOK_WINDOW (data), book);
 }
 
+static bool
+on_handle_questions (Ekiga::FormRequest *request,
+		     gpointer data)
+{
+  FormDialog dialog (*request, GTK_WIDGET (data));
+
+  dialog.run ();
+
+  return true;
+}
 
 static void
 on_view_updated (BookViewGtk *view,
@@ -723,6 +740,9 @@ addressbook_window_new (Ekiga::ContactCore &core)
   conn =
     core.book_removed.connect (sigc::bind (sigc::ptr_fun (on_book_removed), 
                                            (gpointer) self));
+  self->priv->connections.push_back (conn);
+
+  conn = core.questions.connect (sigc::bind (sigc::ptr_fun (on_handle_questions), (gpointer) self));
   self->priv->connections.push_back (conn);
 
   core.visit_sources (sigc::bind (sigc::ptr_fun (on_source_added),

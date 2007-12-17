@@ -105,15 +105,9 @@ Local::Heap::get_name () const
 bool
 Local::Heap::populate_menu (Ekiga::MenuBuilder &builder)
 {
-  Ekiga::UI *ui = dynamic_cast<Ekiga::UI*>(core.get ("ui"));
-
-  if (ui != NULL) {
-
-    builder.add_action ("new", _("New contact"),
-			sigc::bind (sigc::mem_fun (this, &Local::Heap::new_presentity), "", ""));
-    return true;
-  } else
-    return false;
+  builder.add_action ("new", _("New contact"),
+		      sigc::bind (sigc::mem_fun (this, &Local::Heap::new_presentity), "", ""));
+  return true;
 }
 
 
@@ -152,9 +146,7 @@ void
 Local::Heap::new_presentity (const std::string name,
 			     const std::string uri)
 {
-  Ekiga::UI *ui = dynamic_cast<Ekiga::UI*>(core.get ("ui"));
-
-  if (ui != NULL && !has_presentity_with_uri (uri)) {
+  if (!has_presentity_with_uri (uri)) {
 
     Ekiga::FormRequestSimple request;
     std::set<std::string> groups = existing_groups ();
@@ -179,7 +171,14 @@ Local::Heap::new_presentity (const std::string name,
 
     request.submitted.connect (sigc::mem_fun (this, &Local::Heap::new_presentity_form_submitted));
 
-    ui->run_form_request (request);
+    if (!questions.handle_request (&request)) {
+
+    // FIXME: better error reporting
+#ifdef __GNUC__
+      std::cout << "Unhandled form request in "
+		<< __PRETTY_FUNCTION__ << std::endl;
+#endif
+    }
   }
 }
 
@@ -266,7 +265,6 @@ Local::Heap::new_presentity_form_submitted (Ekiga::Form &result)
       save ();
     } else {
 
-      Ekiga::UI *ui = dynamic_cast<Ekiga::UI*>(core.get ("ui"));
       Ekiga::FormRequestSimple request;
 
       result.visit (request);
@@ -275,7 +273,14 @@ Local::Heap::new_presentity_form_submitted (Ekiga::Form &result)
       else
 	request.error (_("You already have a contact with this address!"));
       request.submitted.connect (sigc::mem_fun (this, &Local::Heap::new_presentity_form_submitted));
-      ui->run_form_request (request);
+      if (!questions.handle_request (&request)) {
+
+	// FIXME: better error handling
+#ifdef __GNUC__
+	std::cout << "Unhandled form request in "
+		  << __PRETTY_FUNCTION__ << std::endl;
+#endif
+      }
     }
   } catch (Ekiga::Form::not_found) {
 

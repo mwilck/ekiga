@@ -41,24 +41,6 @@
 #include "gtk-core-main.h"
 #include "gtk-core.h"
 
-class GtkCore: public Ekiga::Service
-{
-public:
-
-  GtkCore ()
-  { }
-
-  ~GtkCore ()
-  { }
-
-  const std::string get_name () const
-  { return "gtk-core"; }
-
-  const std::string get_description () const
-  { return "\tGtk+ base support"; }
-
-};
-
 bool
 gtk_core_init (Ekiga::ServiceCore &core,
 	       int *argc,
@@ -66,11 +48,9 @@ gtk_core_init (Ekiga::ServiceCore &core,
 {
   if (gtk_init_check (argc, argv)) {
 
-    GtkCore *gtk = new GtkCore ();
-    Gtk::UI *ui = new Gtk::UI (core);
+    Gtk::Core *gtk = new Gtk::Core ();
 
     core.add (*gtk);
-    core.add (*ui);
 
     return true;
 

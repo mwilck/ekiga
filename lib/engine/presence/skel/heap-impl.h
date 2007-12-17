@@ -155,6 +155,7 @@ template<typename PresentityType, typename PresentityManagementTrait>
 void
 Ekiga::HeapImpl<PresentityType, PresentityManagementTrait>::add_presentity (PresentityType &presentity)
 {
+  presentity.questions.add_handler (questions.make_slot ());
   add_object (presentity);
 }
 

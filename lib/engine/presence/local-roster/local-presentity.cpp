@@ -38,7 +38,6 @@
 
 #include "config.h"
 
-#include "ui.h"
 #include "form-request-simple.h"
 #include "local-cluster.h"
 
@@ -182,23 +181,19 @@ Local::Presentity::set_status (const std::string _status)
 bool
 Local::Presentity::populate_menu (Ekiga::MenuBuilder &builder)
 {
-  Ekiga::UI *ui = dynamic_cast<Ekiga::UI*>(core.get ("ui"));
   bool populated = false;
 
   populated = presence_core->populate_presentity_menu (uri, builder);
 
-  if (ui != NULL) {
+  if (populated)
+    builder.add_separator ();
 
-    if (populated)
-      builder.add_separator ();
-    builder.add_action ("edit", _("_Edit"),
-			sigc::mem_fun (this, &Local::Presentity::edit_presentity));
-    builder.add_action ("remove", _("_Remove"),
-			sigc::mem_fun (this, &Local::Presentity::remove));
-    populated = true;
-  }
+  builder.add_action ("edit", _("_Edit"),
+		      sigc::mem_fun (this, &Local::Presentity::edit_presentity));
+  builder.add_action ("remove", _("_Remove"),
+		      sigc::mem_fun (this, &Local::Presentity::remove));
 
-  return populated;
+  return true;
 }
 
 
@@ -212,7 +207,6 @@ Local::Presentity::get_node () const
 void
 Local::Presentity::edit_presentity ()
 {
-  Ekiga::UI *ui = dynamic_cast<Ekiga::UI*>(core.get ("ui"));
   Cluster *cluster = dynamic_cast<Cluster*>(core.get ("local-cluster"));
   Ekiga::FormRequestSimple request;
   std::set<std::string> all_groups = cluster->existing_groups ();
@@ -226,7 +220,15 @@ Local::Presentity::edit_presentity ()
 			groups, all_groups);
 
   request.submitted.connect (sigc::mem_fun (this, &Local::Presentity::edit_presentity_form_submitted));
-  ui->run_form_request (request);
+
+  if (!questions.handle_request (&request)) {
+
+    // FIXME: better error reporting
+#ifdef __GNUC__
+    std::cout << "Unhandled form request in "
+	      << __PRETTY_FUNCTION__ << std::endl;
+#endif
+  }
 }
 
 

@@ -42,7 +42,6 @@
 
 #include <libebook/e-book.h>
 #include "contact-core.h"
-#include "ui.h"
 #include "form.h"
 
 namespace Evolution
@@ -85,7 +84,7 @@ namespace Evolution
 
     void commit (const std::map<EContactField, std::string> data);
 
-    void edit_action (Ekiga::UI *ui);
+    void edit_action ();
 
     void on_edit_form_submitted (Ekiga::Form &result);
   };
