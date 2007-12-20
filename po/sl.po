@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: ekiga\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-10-30 12:36+0000\n"
-"PO-Revision-Date: 2007-12-10 15:51+0100\n"
+"PO-Revision-Date: 2007-12-20 15:38+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -41,11 +41,11 @@ msgstr "Naslov javnega odkritelja IP"
 
 #: ../ekiga.schemas.in.in.h:3
 msgid "Allow Ekiga to fall back to software scaling the picture-in-picture if hardware support is not available. If this is set to false, Ekiga will not try to open the PIP if hardware support is not available."
-msgstr ""
+msgstr "Dovoli programu uporabo spreminjanja velikosti slike v sliki, kadar ni na voljo strojna podpora spreminjanja. V primeru, da možnosti ni omogočena, program ne bo poskušal samodejno odpreti slike v slike."
 
 #: ../ekiga.schemas.in.in.h:4
 msgid "Allow picture-in-picture software scaling"
-msgstr ""
+msgstr "Dovoli spreminjanje velikosti slike v sliki"
 
 #: ../ekiga.schemas.in.in.h:5
 msgid "Alternative audio output device"
@@ -451,11 +451,11 @@ msgstr "Velikost okna nastavitev slike"
 
 #: ../ekiga.schemas.in.in.h:102
 msgid "Specify the software scaling algorithm"
-msgstr ""
+msgstr "Določilo programskega algoritma spreminjanja velikosti"
 
 #: ../ekiga.schemas.in.in.h:103
 msgid "Specify the software scaling algorithm: 0: nearest neighbor, 1: nearest neighbor with box filter, 2: bilinear filtering, 3: hyperbolic filtering. Does not apply on windows systems."
-msgstr ""
+msgstr "Določilo programskega algoritma spreminjanja velikosti: 0: najbližji sosed, 1: najbližji sosed s filtriranjem okvirja, 2: bilinearno filtriranje, 3: hiperbolično filtriranje. Ni podprt v okolju oken."
 
 #: ../ekiga.schemas.in.in.h:104
 msgid "Start hidden"
@@ -467,7 +467,7 @@ msgstr "Obseg vrat TCP"
 
 #: ../ekiga.schemas.in.in.h:106
 msgid "Temporal Spatial Trade Off"
-msgstr ""
+msgstr "Začasna prostorska izmenjava"
 
 #: ../ekiga.schemas.in.in.h:107
 msgid "The Audio Codecs List"
@@ -583,7 +583,7 @@ msgstr "Največja velikost predpomnilnika trepetanja za sprejemanje zvoka (v ms)
 
 #: ../ekiga.schemas.in.in.h:134
 msgid "The maximum transmitted frame rate in frames/s. This rate may not be reached in case a minimum quality was configure via a TSTO value smaller than 31 and the bitrate selected is not sufficient to support this minimum quality"
-msgstr ""
+msgstr "Največja poslana hitrost v okvirjih na sekundo. Hitrosti morda ne bo mogoče doseči v primeru, da je določena najmanjša kakovost preko TSTO vrednosti manjše kot 31in je izbrana bitna hitrost prenizka za podporo kakovosti."
 
 #: ../ekiga.schemas.in.in.h:135
 msgid "The minimum jitter buffer size for audio reception (in ms)"
@@ -780,62 +780,62 @@ msgstr "Velikost videa"
 
 #: ../ekiga.schemas.in.in.h:182
 msgid "Whether to prefer to sustain the max. frame rate or lower it possibly in order to keep a minimum level of (spatial) quality for all frames. 0: Highest minimal quality, 31: lowest minimal quality"
-msgstr ""
+msgstr "Ali naj prednostno ohranja največjo hitrost ali naj jo zmanjša za ohranjevanje najmanjše ravno prostorske kakovosti za vse okvirje. 0: Največja minimalna kakovost, 31: najnižja minimalna kakovost."
 
-#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:187
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:294
-#: ../lib/engine/presence/local-roster/local-presentity.cpp:196
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:184
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:289
+#: ../lib/engine/presence/local-roster/local-presentity.cpp:193
 msgid "_Remove"
 msgstr "_Odstrani"
 
-#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:189
-#: ../lib/engine/presence/local-roster/local-presentity.cpp:194
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:186
+#: ../lib/engine/presence/local-roster/local-presentity.cpp:191
 #: ../src/gui/main.cpp:1174
 msgid "_Edit"
 msgstr "_Urejanje"
 
-#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:219
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:214
 msgid "Edit contact"
 msgstr "Uredi stik"
 
-#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:221
-#: ../lib/engine/addressbook/evolution/evolution-book.cpp:306
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:216
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:298
 msgid "Please update the following fields:"
 msgstr "Prosim, posodobite naslednja polja:"
 
-#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:223
-#: ../lib/engine/presence/local-roster/local-presentity.cpp:223
-#: ../lib/engine/presence/local-roster/local-heap.cpp:165
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:218
+#: ../lib/engine/presence/local-roster/local-presentity.cpp:217
+#: ../lib/engine/presence/local-roster/local-heap.cpp:157
 msgid "Name:"
 msgstr "Ime:"
 
-#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:249
-#: ../lib/engine/addressbook/evolution/evolution-book.cpp:310
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:244
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:302
 msgid "VoIP _URI:"
 msgstr "URL za VoIP:"
 
-#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:250
-#: ../lib/engine/addressbook/evolution/evolution-book.cpp:311
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:245
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:303
 msgid "_Home phone:"
 msgstr "_Domači telefon:"
 
-#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:251
-#: ../lib/engine/addressbook/evolution/evolution-book.cpp:312
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:246
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:304
 msgid "_Office phone:"
 msgstr "_Službeni telefon:"
 
-#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:252
-#: ../lib/engine/addressbook/evolution/evolution-book.cpp:313
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:247
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:305
 msgid "_Cell phone:"
 msgstr "_Mobilni telefon:"
 
-#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:253
-#: ../lib/engine/addressbook/evolution/evolution-book.cpp:314
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:248
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:306
 msgid "_Pager:"
 msgstr "_Pozivnik:"
 
-#: ../lib/engine/addressbook/evolution/evolution-book.cpp:89
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:494
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:88
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:488
 msgid "user found"
 msgid_plural "users found"
 msgstr[0] "najdenih uporabnikov"
@@ -843,117 +843,117 @@ msgstr[1] "najden uporabnik"
 msgstr[2] "najdena uporabnika"
 msgstr[3] "najdeni uporabniki"
 
-#: ../lib/engine/addressbook/evolution/evolution-book.cpp:260
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:291
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:255
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:286
 msgid "_Refresh"
 msgstr "_Osveži"
 
-#: ../lib/engine/addressbook/evolution/evolution-book.cpp:263
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:258
 msgid "New _Contact"
 msgstr "Nov _stik"
 
-#: ../lib/engine/addressbook/evolution/evolution-book.cpp:304
-#: ../lib/engine/presence/local-roster/local-heap.cpp:112
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:296
+#: ../lib/engine/presence/local-roster/local-heap.cpp:108
 msgid "New contact"
 msgstr "Nov stik"
 
-#: ../lib/engine/addressbook/evolution/evolution-book.cpp:308
-#: ../lib/engine/addressbook/ldap/ldap-source.cpp:153
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:300
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:145
 msgid "_Name:"
 msgstr "_Ime:"
 
-#: ../lib/engine/addressbook/ldap/ldap-source.cpp:135
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:130
 msgid "Add an LDAP addressbook"
 msgstr "Dodaj LDAP imenik"
 
-#: ../lib/engine/addressbook/ldap/ldap-source.cpp:149
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:141
 msgid "Create LDAP directory"
 msgstr "Ustvari LDAP imenik"
 
-#: ../lib/engine/addressbook/ldap/ldap-source.cpp:151
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:511
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:143
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:504
 msgid "Please edit the following fields"
 msgstr "Prosim uredite naslednja polja"
 
-#: ../lib/engine/addressbook/ldap/ldap-source.cpp:154
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:146
 msgid "_Hostname:"
 msgstr "_Ime gostitelja:"
 
-#: ../lib/engine/addressbook/ldap/ldap-source.cpp:155
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:147
 msgid "_Port:"
 msgstr "_Vrata:"
 
-#: ../lib/engine/addressbook/ldap/ldap-source.cpp:156
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:148
 msgid "_Base DN:"
 msgstr "_Osnovni DN:"
 
-#: ../lib/engine/addressbook/ldap/ldap-source.cpp:160
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:527
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:152
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:520
 msgid "_Subtree"
 msgstr "_Poddrevo"
 
-#: ../lib/engine/addressbook/ldap/ldap-source.cpp:161
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:528
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:153
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:521
 msgid "Single _Level"
 msgstr "_Ena raven"
 
-#: ../lib/engine/addressbook/ldap/ldap-source.cpp:162
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:529
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:154
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:522
 msgid "_Scope"
 msgstr "_Obseg"
 
-#: ../lib/engine/addressbook/ldap/ldap-source.cpp:165
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:157
 msgid "Call _Attribute:"
 msgstr "Klicni _atribut:"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:296
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:291
 msgid "_Properties"
 msgstr "_Lastnosti"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:355
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:349
 msgid "Refreshing"
 msgstr "Osveževanje"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:361
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:376
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:355
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:370
 msgid "Could not contact server"
 msgstr "Ni mogoče priti v stik s strežnikom"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:384
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:378
 msgid "Contacted server"
 msgstr "Povezan strežnik"
 
 #. patience == 0
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:418
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:465
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:412
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:459
 msgid "Could not search"
 msgstr "Ni mogoče iskati"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:426
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:420
 msgid "Waiting for search results"
 msgstr "Čakanje na rezultate iskanja"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:509
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:502
 msgid "Edit LDAP directory"
 msgstr "Uredi LDAP imenik"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:513
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:506
 msgid "_Name"
 msgstr "_Ime"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:514
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:507
 msgid "_Hostname"
 msgstr "_Ime gostitelja"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:520
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:513
 msgid "_Port"
 msgstr "_Vrata"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:522
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:515
 msgid "_Base DN"
 msgstr "_Osnovni DN"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:532
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:525
 msgid "Call _Attribute"
 msgstr "Klicni _atribut"
 
@@ -961,20 +961,20 @@ msgstr "Klicni _atribut"
 msgid "_Find"
 msgstr "_Poišči"
 
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:625
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:642
 msgid "Address Book"
 msgstr "Imenik"
 
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:638
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:655
 msgid "Address _Book"
 msgstr "Imenik"
 
 #. This will add static and dynamic actions
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:647
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:664
 msgid "_Action"
 msgstr "_Dejanje"
 
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:692
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:709
 msgid "Address Books"
 msgstr "Imeniki"
 
@@ -990,8 +990,8 @@ msgstr "URL za VoIP"
 msgid "_Search Filter:"
 msgstr "_Filter iskanja"
 
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:569
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:601
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:577
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:609
 msgid "Unsorted"
 msgstr "Nerazvrščeno"
 
@@ -1012,20 +1012,20 @@ msgstr "pravi:"
 msgid "Chat Window"
 msgstr "Klepetalno okno"
 
-#: ../lib/engine/presence/local-roster/local-presentity.cpp:220
+#: ../lib/engine/presence/local-roster/local-presentity.cpp:214
 msgid "Edit roster element"
 msgstr "Uredi element seznama stikov"
 
-#: ../lib/engine/presence/local-roster/local-presentity.cpp:221
+#: ../lib/engine/presence/local-roster/local-presentity.cpp:215
 msgid "Please fill in this form to change an existing element of ekiga's internal roster"
 msgstr "Prosim, izpolnite obrazec za spremembo obstoječega vnosa v seznam stikov"
 
-#: ../lib/engine/presence/local-roster/local-presentity.cpp:225
+#: ../lib/engine/presence/local-roster/local-presentity.cpp:219
 msgid "Choose groups:"
 msgstr "Izberi skupine:"
 
 #: ../lib/engine/presence/local-roster/local-roster-bridge.cpp:100
-#: ../lib/engine/presence/local-roster/local-heap.cpp:162
+#: ../lib/engine/presence/local-roster/local-heap.cpp:154
 msgid "Add to local roster"
 msgstr "Dodaj v lokalni seznam stikov"
 
@@ -1033,23 +1033,23 @@ msgstr "Dodaj v lokalni seznam stikov"
 msgid "Local roster"
 msgstr "Lokalni seznam stikov"
 
-#: ../lib/engine/presence/local-roster/local-heap.cpp:163
+#: ../lib/engine/presence/local-roster/local-heap.cpp:155
 msgid "Please fill in this form to add a new contact to ekiga's internal roster"
 msgstr "Prosim, izpolnite obrazec za dodajanje novega stika v seznam stikov"
 
-#: ../lib/engine/presence/local-roster/local-heap.cpp:173
+#: ../lib/engine/presence/local-roster/local-heap.cpp:165
 msgid "Address:"
 msgstr "Naslov:"
 
-#: ../lib/engine/presence/local-roster/local-heap.cpp:177
+#: ../lib/engine/presence/local-roster/local-heap.cpp:169
 msgid "Put contact in groups:"
 msgstr "Razvrstitev stikov v skupine:"
 
-#: ../lib/engine/presence/local-roster/local-heap.cpp:274
+#: ../lib/engine/presence/local-roster/local-heap.cpp:272
 msgid "You supplied an unsupported address"
 msgstr "Vnesli ste naslov, ki ga program ne podpira"
 
-#: ../lib/engine/presence/local-roster/local-heap.cpp:276
+#: ../lib/engine/presence/local-roster/local-heap.cpp:274
 msgid "You already have a contact with this address!"
 msgstr "Stik s tem naslovom že imate."
 
@@ -1495,7 +1495,7 @@ msgstr "Odgovarjanje na klic ..."
 
 #: ../src/endpoints/h323.cpp:303
 msgid "Duplicate alias"
-msgstr ""
+msgstr "Podvojevanje vzdevka"
 
 #: ../src/endpoints/h323.cpp:306
 msgid "Bad username/password"
