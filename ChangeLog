@@ -1,3 +1,12 @@
+2007-12-21  Julien Puydt  <jpuydt@gnome.org>
+
+	* lib/engine/addressbook/evolution/evolution-book.cpp:
+	* lib/engine/addressbook/evolution/evolution-book.h:
+	* lib/engine/addressbook/evolution/evolution-contact.cpp:
+	* lib/engine/addressbook/evolution/evolution-contact.h: Use the EContact
+	api less, and the EVCard api more, to avoid bugs and interoperate much
+	better with both evolution and contacts.
+
 2007-12-17  Julien Puydt  <jpuydt@gnome.org>
 
 	* lib/engine/framework/chain-of-responsibility.h: Added.

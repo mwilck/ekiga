@@ -298,11 +298,10 @@ Evolution::Book::new_contact_action ()
   request.instructions (_("Please update the following fields:"));
 
   request.text ("name", _("_Name:"), "");
-
   request.text ("video", _("VoIP _URI:"), "");
   request.text ("home", _("_Home phone:"), "");
   request.text ("work", _("_Office phone:"), "");
-  request.text ("cell phone", _("_Cell phone:"), "");
+  request.text ("cell", _("_Cell phone:"), "");
   request.text ("pager", _("_Pager:"), "");
 
   request.submitted.connect (sigc::mem_fun (this,
@@ -319,29 +318,49 @@ Evolution::Book::new_contact_action ()
 }
 
 void
+Evolution::Book::set_econtact_attribute_value (EContact *econtact,
+					       const std::string subtype,
+					       const std::string value) const
+{
+  EVCardAttribute *attribute = NULL;
+  EVCardAttributeParam *param = NULL;
+
+  attribute = e_vcard_attribute_new ("", EVC_TEL);
+  param = e_vcard_attribute_param_new (EVC_TYPE);
+  e_vcard_attribute_param_add_value (param, subtype.c_str ());
+  e_vcard_attribute_add_param (attribute, param);
+  e_vcard_attribute_add_value (attribute, value.c_str ());
+  e_vcard_add_attribute (E_VCARD (econtact), attribute);
+}
+
+void
 Evolution::Book::on_new_contact_form_submitted (Ekiga::Form &result)
 {
   try {
-
     EContact *econtact = NULL;
-    std::map<EContactField, std::string> data;
+
 
     /* first check we have everything before using */
-    data[E_CONTACT_FULL_NAME] = result.text ("name");
-    data[E_CONTACT_PHONE_HOME] = result.text ("home");
-    data[E_CONTACT_PHONE_MOBILE] = result.text ("cell phone");
-    data[E_CONTACT_PHONE_BUSINESS] = result.text ("work");
-    data[E_CONTACT_PHONE_PAGER] = result.text ("pager");
-    data[E_CONTACT_VIDEO_URL] = result.text ("video");
+    std::string name = result.text ("name");
+    std::string home = result.text ("home");
+    std::string cell = result.text ("cell");
+    std::string work = result.text ("work");
+    std::string pager = result.text ("pager");
+    std::string video = result.text ("video");
 
     econtact = e_contact_new ();
-    for (std::map<EContactField, std::string>::const_iterator iter
-	   = data.begin ();
-	 iter != data.end ();
-	 iter++)
-      if (!iter->second.empty ())
-	e_contact_set (econtact, iter->first,
-		       (void *)iter->second.c_str ()); // why is this cast there?
+    e_contact_set (econtact, E_CONTACT_FULL_NAME, (gpointer)name.c_str ());
+    if ( !home.empty ())
+      set_econtact_attribute_value (econtact, "HOME", home);
+    if ( !cell.empty ())
+      set_econtact_attribute_value (econtact, "CELL", cell);
+    if ( !work.empty ())
+      set_econtact_attribute_value (econtact, "WORK", work);
+    if ( !pager.empty ())
+      set_econtact_attribute_value (econtact, "PAGER", pager);
+    if ( !video.empty ())
+      set_econtact_attribute_value (econtact, "VIDEO", video);
+
     e_book_add_contact (book, econtact, NULL);
     g_object_unref (econtact);
 

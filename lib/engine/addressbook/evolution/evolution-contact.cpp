@@ -44,14 +44,24 @@
 
 Evolution::Contact::Contact (Ekiga::ServiceCore &_services,
 			     EBook *ebook,
-			     EContact *econtact) : services(_services),
-						   book(ebook)
+			     EContact *_econtact) : services(_services),
+						    book(ebook),
+						    econtact(NULL)
 {
-  update_econtact (econtact);
+  for (unsigned int ii = 0;
+       ii < ATTR_NUMBER;
+       ii++)
+    attributes[ii] = NULL;
+
+  if (E_IS_CONTACT (_econtact))
+    update_econtact (econtact);
 }
 
 Evolution::Contact::~Contact ()
 {
+  if (E_IS_CONTACT (econtact))
+    g_object_unref (econtact);
+
 #ifdef __GNUC__
   std::cout << __PRETTY_FUNCTION__ << std::endl;
 #endif
@@ -60,24 +70,55 @@ Evolution::Contact::~Contact ()
 const std::string
 Evolution::Contact::get_id () const
 {
+  std::string id;
+
+  id = (gchar *)e_contact_get_const (econtact, E_CONTACT_UID);
+
   return id;
 }
 
 const std::string
 Evolution::Contact::get_name () const
 {
+  std::string name;
+
+  name = (const gchar *)e_contact_get_const (econtact,
+					     E_CONTACT_FULL_NAME);
+
   return name;
 }
 
 const std::set<std::string>
 Evolution::Contact::get_groups () const
 {
+  std::set<std::string> groups;
+  gchar *categories = NULL;
+
+  categories = (gchar *)e_contact_get_const (econtact, E_CONTACT_CATEGORIES);
+
+  if (categories != NULL) {
+
+    gchar **split = g_strsplit (categories, ",", 0);
+    for (gchar **ptr = split; *ptr != NULL; ptr++)
+      groups.insert (*ptr);
+    g_strfreev (split);
+  }
+
   return groups;
 }
 
 const std::map<std::string, std::string>
 Evolution::Contact::get_uris () const
 {
+  std::map<std::string, std::string> uris;
+
+  for (unsigned int attr_type = 0; attr_type < ATTR_NUMBER; attr_type++) {
+
+    std::string attr_value = get_attribute_value (attr_type);
+    if ( !attr_value.empty ())
+      uris[get_attribute_name_from_type (attr_type)] = attr_value;
+  }
+
   return uris;
 }
 
@@ -88,85 +129,95 @@ Evolution::Contact::is_found (const std::string /*test*/) const
 }
 
 void
-Evolution::Contact::update_econtact (EContact *econtact)
+Evolution::Contact::update_econtact (EContact *_econtact)
 {
-  gchar *categories = NULL;
-  gchar **split = NULL;
-  gchar **ptr = NULL;
-  GList *attributes = NULL;
+  GList *attrs = NULL;
 
-  if (econtact == NULL)
-    return;
+  if (E_IS_CONTACT (econtact))
+    g_object_unref (econtact);
 
-  id = (const gchar *)e_contact_get_const (econtact, E_CONTACT_UID);
+  econtact = _econtact;
+  g_object_ref (econtact);
 
-  name = (const gchar *)e_contact_get_const (econtact,
-					     E_CONTACT_FULL_NAME);
+  for (unsigned int ii = 0;
+       ii < ATTR_NUMBER;
+       ii++)
+    attributes[ii] = NULL;
 
-  groups.clear ();
-  categories = (gchar *)e_contact_get_const (econtact, E_CONTACT_CATEGORIES);
+  attrs = e_vcard_get_attributes (E_VCARD (econtact));
 
-  if (categories != NULL) {
-
-    split = g_strsplit (categories, ",", 0);
-    for (ptr = split; *ptr != NULL; ptr++)
-      groups.insert (*ptr);
-    g_strfreev (split);
-  }
-
-  uris.clear ();
-
-  attributes = e_vcard_get_attributes (E_VCARD (econtact));
-
-  for (GList *attribute_ptr = attributes ;
+  for (GList *attribute_ptr = attrs ;
        attribute_ptr != NULL;
        attribute_ptr = g_list_next (attribute_ptr)) {
 
     EVCardAttribute *attribute = (EVCardAttribute *)attribute_ptr->data;
     std::string attr_name = e_vcard_attribute_get_name (attribute);
 
-    if (attr_name == EVC_TEL || attr_name ==  EVC_X_VIDEO_URL) {
+    if (attr_name == EVC_TEL) {
 
       GList *params = e_vcard_attribute_get_params (attribute);
-
       for (GList *param_ptr = params;
 	   param_ptr != NULL;
 	   param_ptr = g_list_next (param_ptr)) {
 
 	EVCardAttributeParam *param = (EVCardAttributeParam *)param_ptr->data;
-	std::string param_name = e_vcard_attribute_param_get_name (param);
+	const gchar *param_name_raw = NULL;
+	gchar *param_name_cased = NULL;
+	std::string param_name;
+
+	param_name_raw = e_vcard_attribute_param_get_name (param);
+	param_name_cased = g_utf8_strup (param_name_raw, -1);
+	param_name = param_name_cased;
+	g_free (param_name_cased);
 
 	if (param_name == "TYPE") {
 
-	  GList *types = e_vcard_attribute_param_get_values (param);
-
-	  for (GList *type_ptr = types ;
+	  for (GList *type_ptr = e_vcard_attribute_param_get_values (param);
 	       type_ptr != NULL;
 	       type_ptr = g_list_next (type_ptr)) {
 
-	    std::string type_name = (const gchar *)type_ptr->data;
-	    GList *values = e_vcard_attribute_get_values_decoded (attribute);
-	    for (GList *value_ptr = values;
-		 value_ptr != NULL;
-		 value_ptr = g_list_next (value_ptr)) {
+	    const gchar *type_name_raw = NULL;
+	    gchar *type_name_cased = NULL;
+	    std::string type_name;
 
-	      std::string number = ((GString *)value_ptr->data)->str;
-	      uris[type_name] = number;
+	    type_name_raw = (const gchar *)type_ptr->data;
+	    type_name_cased = g_utf8_strup (type_name_raw, -1);
+	    type_name = type_name_cased;
+	    g_free (type_name_cased);
+
+	    if (type_name == "HOME") {
+
+	      attributes[ATTR_HOME] = attribute;
+	      break;
+	    } else if (type_name == "CELL") {
+
+	      attributes[ATTR_CELL] = attribute;
+	      break;
+	    } else if (type_name == "WORK") {
+
+	      attributes[ATTR_WORK] = attribute;
+	      break;
+	    } else if (type_name == "PAGER") {
+
+	      attributes[ATTR_PAGER] = attribute;
+	      break;
+	    } else if (type_name == "VIDEO") {
+
+	      attributes[ATTR_VIDEO] = attribute;
+	      break;
 	    }
 	  }
 	}
       }
     }
   }
-
   updated.emit ();
 }
-
 
 void
 Evolution::Contact::remove ()
 {
-  e_book_remove_contact (book, id.c_str (), NULL);
+  e_book_remove_contact (book, get_id().c_str (), NULL);
 }
 
 bool
@@ -189,20 +240,80 @@ Evolution::Contact::populate_menu (Ekiga::MenuBuilder &builder)
   return true;
 }
 
-void
-Evolution::Contact::commit (const std::map<EContactField, std::string> data)
+
+std::string
+Evolution::Contact::get_attribute_name_from_type (unsigned int attribute_type) const
 {
-  EContact *econtact = NULL;
+  std::string result;
 
-  if (e_book_get_contact (book, id.c_str (), &econtact, NULL)) {
+  switch (attribute_type) {
 
-    for (std::map<EContactField, std::string>::const_iterator iter
-	   = data.begin ();
-	 iter != data.end ();
-	 iter++)
-      e_contact_set (econtact, iter->first,
-		     (void *)iter->second.c_str ()); // why is this cast there?
-    e_book_commit_contact (book, econtact, NULL);
+  case ATTR_HOME:
+    result = "HOME";
+    break;
+  case ATTR_CELL:
+    result = "CELL";
+    break;
+  case ATTR_WORK:
+    result = "WORK";
+    break;
+  case ATTR_PAGER:
+    result = "PAGER";
+    break;
+  case ATTR_VIDEO:
+    result = "VIDEO";
+    break;
+  default:
+    result = "";
+    break;
+  }
+
+  return result;
+}
+
+std::string
+Evolution::Contact::get_attribute_value (unsigned int attr_type) const
+{
+  EVCardAttribute *attribute = attributes[attr_type];
+
+  if (attribute != NULL) {
+
+    GList *values = e_vcard_attribute_get_values_decoded (attribute);
+    if (values != NULL)
+      return ((GString *)values->data)->str; // only the first
+    else
+      return "";
+  } else
+    return "";
+}
+
+void
+Evolution::Contact::set_attribute_value (unsigned int attr_type,
+					 const std::string value)
+{
+  EVCardAttribute *attribute = attributes[attr_type];
+
+  if ( !value.empty ()) {
+
+    if (attribute == NULL) {
+
+      EVCardAttributeParam *param = NULL;
+
+      attribute = e_vcard_attribute_new ("", EVC_TEL);
+      param = e_vcard_attribute_param_new (EVC_TYPE);
+      e_vcard_attribute_param_add_value (param,
+					 get_attribute_name_from_type (attr_type).c_str ());
+      e_vcard_attribute_add_param (attribute, param);
+      e_vcard_add_attribute (E_VCARD (econtact), attribute);
+
+      attributes[attr_type]=attribute;
+    }
+    e_vcard_attribute_remove_values (attribute);
+    e_vcard_attribute_add_value (attribute, value.c_str ());
+  } else { // empty valued : remove the attribute
+
+    e_vcard_remove_attribute (E_VCARD (econtact), attribute);
+    attributes[attr_type] = NULL;
   }
 }
 
@@ -218,33 +329,16 @@ Evolution::Contact::edit_action ()
   request.text ("name", _("Name:"), get_name ());
 
   {
-    std::string home_uri;
-    std::string cell_phone_uri;
-    std::string work_uri;
-    std::string pager_uri;
-    std::string video_uri;
-
-    for (std::map<std::string, std::string>::const_iterator iter
-	   = uris.begin ();
-	 iter != uris.end ();
-	 iter++) {
-
-      if (iter->first == "home")
-	home_uri = iter->second;
-      else if (iter->first == "cell phone")
-	cell_phone_uri = iter->second;
-      else if (iter->first == "work")
-	work_uri = iter->second;
-      else if (iter->first == "pager")
-	pager_uri = iter->second;
-      else if (iter->first == "video")
-	video_uri = iter->second;
-    }
+    std::string home_uri = get_attribute_value (ATTR_HOME);
+    std::string cell_phone_uri = get_attribute_value (ATTR_CELL);
+    std::string work_uri = get_attribute_value (ATTR_WORK);
+    std::string pager_uri = get_attribute_value (ATTR_PAGER);
+    std::string video_uri = get_attribute_value (ATTR_VIDEO);
 
     request.text ("video", _("VoIP _URI:"), video_uri);
     request.text ("home", _("_Home phone:"), home_uri);
     request.text ("work", _("_Office phone:"), work_uri);
-    request.text ("cell phone", _("_Cell phone:"), cell_phone_uri);
+    request.text ("cell", _("_Cell phone:"), cell_phone_uri);
     request.text ("pager", _("_Pager:"), pager_uri);
   }
 
@@ -266,16 +360,22 @@ Evolution::Contact::on_edit_form_submitted (Ekiga::Form &result)
 {
   try {
 
-    std::map<EContactField, std::string> data;
+    std::string name = result.text ("name");
+    std::string home = result.text ("home");
+    std::string cell = result.text ("cell");
+    std::string work = result.text ("work");
+    std::string pager = result.text ("pager");
+    std::string video = result.text ("video");
 
-    data[E_CONTACT_FULL_NAME] = result.text ("name");
-    data[E_CONTACT_PHONE_HOME] = result.text ("home");
-    data[E_CONTACT_PHONE_MOBILE] = result.text ("cell phone");
-    data[E_CONTACT_PHONE_BUSINESS] = result.text ("work");
-    data[E_CONTACT_PHONE_PAGER] = result.text ("pager");
-    data[E_CONTACT_VIDEO_URL] = result.text ("video");
+    set_attribute_value (ATTR_HOME, home);
+    set_attribute_value (ATTR_CELL, cell);
+    set_attribute_value (ATTR_WORK, work);
+    set_attribute_value (ATTR_PAGER, pager);
+    set_attribute_value (ATTR_VIDEO, video);
 
-    commit (data);
+    e_contact_set (econtact, E_CONTACT_FULL_NAME, (gpointer)name.c_str ());
+
+    e_book_commit_contact (book, econtact, NULL);
 
   } catch (Ekiga::Form::not_found) {
 

@@ -75,14 +75,28 @@ namespace Evolution
 
   private:
 
+    // attributes of interest to that code :
+    enum {
+
+      ATTR_HOME,
+      ATTR_CELL,
+      ATTR_WORK,
+      ATTR_PAGER,
+      ATTR_VIDEO,
+      ATTR_NUMBER
+    };
+
     Ekiga::ServiceCore &services;
     EBook *book;
-    std::string id;
-    std::string name;
-    std::set<std::string> groups;
-    std::map<std::string,std::string> uris;
+    EContact *econtact;
+    EVCardAttribute *attributes[ATTR_NUMBER];
 
-    void commit (const std::map<EContactField, std::string> data);
+    std::string get_attribute_name_from_type (unsigned int attribute_type) const;
+
+    std::string get_attribute_value (unsigned int attribute_type) const;
+
+    void set_attribute_value (unsigned int attribute_type,
+			      std::string value);
 
     void edit_action ();
 
