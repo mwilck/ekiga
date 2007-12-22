@@ -54,7 +54,7 @@ Evolution::Contact::Contact (Ekiga::ServiceCore &_services,
     attributes[ii] = NULL;
 
   if (E_IS_CONTACT (_econtact))
-    update_econtact (econtact);
+    update_econtact (_econtact);
 }
 
 Evolution::Contact::~Contact ()
