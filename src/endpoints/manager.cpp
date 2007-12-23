@@ -1721,9 +1721,9 @@ GMManager::CreateVideoInputDevice (G_GNUC_UNUSED const OpalConnection &con,
 
   unsigned width  = format.GetOptionInteger(OpalVideoFormat::FrameWidthOption (),  PVideoFrameInfo::QCIFWidth);
   unsigned height = format.GetOptionInteger(OpalVideoFormat::FrameHeightOption (), PVideoFrameInfo::QCIFHeight);
-  unsigned rate   = format.GetClockRate() / format.GetFrameTime();
+  unsigned rate   = round ((double)format.GetClockRate() / (double)format.GetFrameTime());
 
-  PTRACE(0, "Creating grabber with " << width << "x"<<height);
+  PTRACE(4, "GMManager\tCreating grabber with " << width << "x" << height << "/" << rate);
   vg = GetVideoGrabber ();
   if (!vg) {
     CreateVideoGrabber (FALSE, TRUE, width, height, rate);
