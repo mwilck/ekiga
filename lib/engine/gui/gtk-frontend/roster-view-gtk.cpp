@@ -668,7 +668,7 @@ static bool
 on_handle_questions (Ekiga::FormRequest *request,
 		     gpointer data)
 {
-  GtkWidget *parent = gtk_widget_get_parent (GTK_WIDGET (data));
+  GtkWidget *parent = gtk_widget_get_toplevel (GTK_WIDGET (data));
   FormDialog dialog (*request, parent);
 
   dialog.run ();

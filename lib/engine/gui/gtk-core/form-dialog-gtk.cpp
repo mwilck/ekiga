@@ -585,8 +585,9 @@ FormDialog::FormDialog (Ekiga::FormRequest &_request,
                                         GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                                         GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
                                         NULL);
-  if (GDK_IS_WINDOW (parent))
-    gtk_widget_set_parent_window (GTK_WIDGET (window), GDK_WINDOW (parent));
+  if (GTK_IS_WINDOW (parent))
+    gtk_window_set_transient_for (GTK_WINDOW (window), GTK_WINDOW (parent));
+
   gtk_dialog_set_default_response (GTK_DIALOG (window),
                                    GTK_RESPONSE_ACCEPT);
   gtk_window_set_resizable (GTK_WINDOW (window), FALSE);
