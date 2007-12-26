@@ -490,7 +490,7 @@ video_media_format_changed_nt (G_GNUC_UNUSED gpointer id,
 	  
 	  OpalMediaFormat mediaFormat = stream->GetMediaFormat ();
           mediaFormat.SetOptionInteger (OpalVideoFormat::TemporalSpatialTradeOffOption() , tsto);  
-          mediaFormat.SetOptionInteger (OpalVideoFormat::TargetBitRateOption (), max_tx_bitrate * 1024);
+          mediaFormat.SetOptionInteger (OpalVideoFormat::TargetBitRateOption (), max_tx_bitrate * 1000);
 
 	  stream->UpdateMediaFormat (mediaFormat);
 	}
