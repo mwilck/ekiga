@@ -357,9 +357,17 @@ GMManager::SetVideoMediaFormats (PStringArray *order)
       media_format.SetOptionInteger (OpalVideoFormat::FrameTimeOption (),
                                      (int)(90000 / max_frame_rate));
       media_format.SetOptionInteger (OpalVideoFormat::MaxBitRateOption (), 
-                                     max_rx_bitrate * 1024);
+                                     max_rx_bitrate * 1000);
       media_format.SetOptionInteger (OpalVideoFormat::TargetBitRateOption (), 
-                                     max_tx_bitrate * 1024);
+                                     max_tx_bitrate * 1000);
+      media_format.SetOptionInteger (OpalVideoFormat::MinRxFrameWidthOption(), 
+                                     160);
+      media_format.SetOptionInteger (OpalVideoFormat::MinRxFrameHeightOption(), 
+                                     120);
+      media_format.SetOptionInteger (OpalVideoFormat::MaxRxFrameWidthOption(), 
+                                     1920);
+      media_format.SetOptionInteger (OpalVideoFormat::MaxRxFrameHeightOption(), 
+                                     1088);
       media_format.AddOption(new OpalMediaOptionUnsigned(OpalVideoFormat::TemporalSpatialTradeOffOption(), 
                                                          true, OpalMediaOption::NoMerge, tsto));  
       media_format.AddOption(new OpalMediaOptionUnsigned(OpalVideoFormat::MaxFrameSizeOption(), 
