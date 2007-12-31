@@ -50,6 +50,8 @@
 #include "main.h"
 #include "misc.h"
 
+#include "audio.h"
+
 #ifdef HAVE_DBUS
 #include "dbus.h"
 #endif
@@ -70,18 +72,13 @@ GnomeMeeting::GnomeMeeting ()
   : PProcess("", "", MAJOR_VERSION, MINOR_VERSION, BUILD_TYPE, BUILD_NUMBER)
 
 {
-  /* no endpoint for the moment */
-  endpoint = NULL;
   url_handler = NULL;
 
   GM = this;
   
-  endpoint = new GMManager ();
-  
   call_number = 0;
 
   service_core = NULL;
-  runtime = NULL;
 }
 
 
@@ -91,74 +88,10 @@ GnomeMeeting::~GnomeMeeting()
 }
 
 
-void 
-GnomeMeeting::Connect (PString url)
-{
-  /* If incoming connection, then answer it */
-  if (endpoint->GetCallingState () == GMManager::Called) {
-
-    gm_main_window_push_message (main_window, _("Answering call..."));
-    url_handler = new GMURLHandler ("", FALSE);
-  }
-  else if (endpoint->GetCallingState () == GMManager::Standby
-	   && !GMURL (url).IsEmpty ()) {
-    
-    /* Update the GUI */
-    gm_main_window_set_call_url (main_window, url);
- 
-    /* if we call somebody, and if the URL is not empty */
-    url_handler = new GMURLHandler (url);
-  }
-}
-
-
-void
-GnomeMeeting::Disconnect (H323Connection::CallEndReason reason)
-{
-  PString call_token;
-  
-  call_token = endpoint->GetCurrentCallToken ();
-  
-  /* if we are trying to call somebody */
-  if (endpoint->GetCallingState () == GMManager::Calling) {
-
-    endpoint->ClearCall (call_token, reason);
-  }
-  else {
-
-    /* if we are in call with somebody */
-    if (endpoint->GetCallingState () == GMManager::Connected) {
-
-      endpoint->ClearAllCalls (OpalConnection::EndedByLocalUser, FALSE);
-    }
-    else if (endpoint->GetCallingState () == GMManager::Called) {
-
-      endpoint->ClearCall (call_token,
-			   OpalConnection::EndedByAnswerDenied);
-    }
-    else {
-
-      endpoint->ClearCall (call_token,
-			   OpalConnection::EndedByAnswerDenied);
-    }
-  }
-}
-
-
-void
-GnomeMeeting::Init ()
-{
-  /* Init the endpoint */
-  endpoint->Init ();
-}
-
-
 void
 GnomeMeeting::Exit ()
 {
   PWaitAndSignal m(ep_var_mutex);
-
-  RemoveManager ();
 
   if (prefs_window)
     gtk_widget_destroy (prefs_window);
@@ -382,6 +315,7 @@ GnomeMeeting::DetectCodecs ()
   OpalMediaFormatList list;
 
   /* Audio codecs */
+  /*
   list = endpoint->GetAvailableAudioMediaFormats ();
 
   PTRACE (1, "Detected audio codecs: " << setfill (',') << list
@@ -392,9 +326,10 @@ GnomeMeeting::DetectCodecs ()
 
   if (prefs_window)
     gm_prefs_window_update_codecs_list (prefs_window, list);
-  
+  */
 
   /* Video codecs */
+  /*
   list = endpoint->GetAvailableVideoMediaFormats ();
   
   PTRACE (1, "Detected video codecs: " << setfill (',') << list
@@ -402,20 +337,39 @@ GnomeMeeting::DetectCodecs ()
 
   if (prefs_window)
     gm_prefs_window_update_codecs_list (prefs_window, list);
+*/
 
   return TRUE;
 }
 
 
-GMManager *
-GnomeMeeting::GetManager ()
+void 
+GnomeMeeting::StartAudioTester (G_GNUC_UNUSED gchar *audio_manager,
+                                G_GNUC_UNUSED gchar *audio_player,
+                                G_GNUC_UNUSED gchar *audio_recorder)
 {
-  GMManager *ep = NULL;
-  PWaitAndSignal m(ep_var_mutex);
-
-  ep = endpoint;
+  /* FIXME
+  PWaitAndSignal m(at_access_mutex);
   
-  return ep;
+  if (audio_tester)     
+    delete (audio_tester);
+
+  audio_tester =
+    new GMAudioTester (audio_manager, audio_player, audio_recorder, *this);
+    */
+}
+
+
+void 
+GnomeMeeting::StopAudioTester ()
+{
+  PWaitAndSignal m(at_access_mutex);
+
+  if (audio_tester) {
+   
+    delete (audio_tester);
+    audio_tester = NULL;
+  }
 }
 
 
@@ -425,15 +379,6 @@ GnomeMeeting::GetServiceCore ()
   PWaitAndSignal m(ep_var_mutex);
   
   return service_core;
-}
-
-
-Ekiga::Runtime *
-GnomeMeeting::GetRuntime ()
-{
-  PWaitAndSignal m(ep_var_mutex);
-  
-  return runtime;
 }
 
 
@@ -505,10 +450,10 @@ void GnomeMeeting::BuildGUI ()
   
   /* Build the GUI */
   gtk_window_set_default_icon_name (GM_ICON_LOGO);
-  pc2phone_window = gm_pc2phone_window_new ();  
+  pc2phone_window = gm_pc2phone_window_new (*service_core);
   prefs_window = gm_prefs_window_new ();  
-  druid_window = gm_druid_window_new ();
-  accounts_window = gm_accounts_window_new ();
+  druid_window = gm_druid_window_new (*service_core);
+  accounts_window = gm_accounts_window_new (*service_core);
 
   main_window = gm_main_window_new (*service_core);
 #ifdef HAVE_DBUS
@@ -552,20 +497,6 @@ void GnomeMeeting::BuildGUI ()
 #else
   PTRACE (1, "ESound support disabled");
 #endif
-}
-
-
-void GnomeMeeting::RemoveManager ()
-{
-  PWaitAndSignal m(ep_var_mutex);
-
-  if (endpoint) {
-
-    endpoint->Exit ();
-    delete (endpoint);
-  }
-  
-  endpoint = NULL;
 }
 
 
@@ -629,10 +560,9 @@ GnomeMeeting::InitEngine ()
 {
   PWaitAndSignal m(ep_var_mutex);
 
-  service_core = engine_init (1, NULL);
+  Ekiga::Runtime *runtime = new Ekiga::GlibRuntime;
+  engine_init (1, NULL, runtime, service_core);
 
   if (!service_core)
     std::cout << "engine couldn't init!" << std::endl;
-
-  runtime = new Ekiga::GlibRuntime;
 }

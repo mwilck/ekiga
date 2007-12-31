@@ -1,5 +1,15 @@
 2007-12-31  Damien Sandras  <dsandras@gnome.org>
 
+	* src/endpoints/ekiga.cpp, src/endpoints/ekiga.h:
+	General actions are not triggered anymore through
+	GnomeMeeting::Process (). GUI elements use the Ekiga::ServiceCore to
+	implement them: pass a reference to the Ekiga::ServiceCore to all GUI
+	elements. Deprecated methods have been removed.
+	The GMManager (soon to be renamed Opal::CallManager) is created
+	by the engine, not by GnomeMeeting::Process() anymore.
+
+2007-12-31  Damien Sandras  <dsandras@gnome.org>
+
 	* src/endpoints/h323.cpp, src/endpoints/h323.h:
 	Purged unused functions.
 

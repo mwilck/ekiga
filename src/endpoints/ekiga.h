@@ -78,29 +78,6 @@ class GnomeMeeting : public PProcess
   ~GnomeMeeting ();
 
   
-  /* DESCRIPTION  :  To connect to a remote endpoint, or to answer a call.
-   * BEHAVIOR     :  Answer a call, or call the person with the given URL
-   * 		     and put the called URL in the history.
-   * PRE          :  /
-   */
-  void Connect (PString url = PString ());
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  To refuse a call, or interrupt the current call.
-   * PRE          :  The reason why the call was not disconnected.
-   */
-  void Disconnect (H323Connection::CallEndReason reason
-		   = H323Connection::EndedByLocalUser);
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Init the endpoint component of the application.
-   * PRE          :  /
-   */
-  void Init ();
-
-
   /* DESCRIPTION  : / 
    * BEHAVIOR     : Vroom.
    * PRE          : /
@@ -146,6 +123,26 @@ class GnomeMeeting : public PProcess
    * PRE          :  /
    */
   bool DetectCodecs ();
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Starts an audio tester that will play any recorded
+   *                 sound to the speakers in real time. Can be used to
+   *                 check if the audio volumes are correct before 
+   *                 a conference.
+   * PRE          :  /
+   */
+  void StartAudioTester (gchar *,
+			 gchar *,
+			 gchar *);
+
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Stops the current audio tester if any for the given
+   *                 audio manager, player and recorder.
+   * PRE          :  /
+   */
+  void StopAudioTester ();
 
   
   /* DESCRIPTION  :  /
@@ -204,31 +201,10 @@ class GnomeMeeting : public PProcess
 
 
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Removes the current endpoint.
-   * PRE          :  /
-   */  
-  void RemoveManager ();
-  
-  
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Returns the current endpoint.
-   * PRE          :  /
-   */
-  GMManager *GetManager ();
-
-
-  /* DESCRIPTION  :  /
    * BEHAVIOR     :  Return the ServiceCore.
    * PRE          :  /
    */
   Ekiga::ServiceCore *GetServiceCore ();
-  
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Return the Runtime.
-   * PRE          :  /
-   */
-  Ekiga::Runtime *GetRuntime ();
   
 
   static GnomeMeeting *Process ();
@@ -303,11 +279,11 @@ class GnomeMeeting : public PProcess
  private:
   
   Ekiga::ServiceCore *service_core;
-  Ekiga::Runtime *runtime;
 
-  GMManager *endpoint;
   PThread *url_handler;
-  
+  PThread *audio_tester;
+
+  PMutex at_access_mutex;
   PMutex ep_var_mutex;
   PMutex dev_access_mutex;
   PMutex iface_access_mutex;
