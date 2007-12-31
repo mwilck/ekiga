@@ -1,5 +1,17 @@
 2007-12-31  Damien Sandras  <dsandras@gnome.org>
 
+	* lib/engine/protcol/skel/call.h,
+	lib/engine/protcol/skel/call-core.cpp,
+	lib/engine/protcol/skel/call-core.h,
+	lib/engine/protcol/skel/call-manager.h,
+	lib/engine/protcol/skel/Makefile.am:
+	Added the definition and implementation of objects handling calls.
+	The Ekiga::CallCore manages Ekiga::CallManagers which handle
+	Ekiga::Calls. It allows a Call centric approach instead of an endpoint
+	centric approach.
+
+2007-12-31  Damien Sandras  <dsandras@gnome.org>
+
 	* src/endpoint/urlhandler.cpp: 
 	Simplified due to recent changes.
 

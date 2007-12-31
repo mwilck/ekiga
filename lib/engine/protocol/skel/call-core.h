@@ -25,143 +25,157 @@
 
 
 /*
- *                         callcore.h  -  description
+ *                         call-core.h  -  description
  *                         ------------------------------------------
  *   begin                : written in 2007 by Damien Sandras 
  *   copyright            : (c) 2007 by Damien Sandras
- *   description          : declaration of the interface of a call manager
- *                          implementation backend. A call manager handle calls,
- *                          sometimes simultaneously.
+ *   description          : declaration of the interface of a call core.
+ *                          A call core manages CallManagers.
  *
  */
 
-#ifndef __CALL_MANAGER_H__
-#define __CALL_MANAGER_H__
+#ifndef __CALL_CORE_H__
+#define __CALL_CORE_H__
+
+#include "services.h"
+#include "call.h"
+
+#include <sigc++/sigc++.h>
+#include <set>
+#include <map>
+
 
 namespace Ekiga {
 
+  /*** Codec description ***/
+  typedef struct {
+    std::string name;
+    unsigned bandwidth;
+    unsigned rate;
+    bool active;
+
+  } CodecDescription;
+
+  typedef std::list<CodecDescription> CodecList;
+
+  class CallManager;
+
+
   class CallCore
+    : public Service
     {
 
   public:
 
+      /* The constructor
+      */
+      CallCore () {}
+
       /* The destructor
+      */
+      ~CallCore () {}
+
+
+      /*** Service Implementation ***/
+
+      /** Returns the name of the service.
+       * @return The service name.
        */
-      virtual ~CallCore () {}
+      const std::string get_name () const
+        { return "call-core"; }
 
 
-      /*                 
-       * CALL MANAGEMENT 
-       */               
-
-      /** Create a call based on the remote uri given as parameter.
+      /** Returns the description of the service.
+       * @return The service description.
        */
-      void create_call (std::string uri); 
+      const std::string get_description () const
+        { return "\tCall Core managing Call Manager objects"; }
 
-      /** This signal is emitted when the call status changes.
-       * There are different statuses described in the Ekiga::Call interface, but
-       * we can summarize them :
-       *   - Outgoing     : an outgoing call is being initiated
-       *   - Incoming     : an incoming call is being initiated
-       *   - Established  : the call has been established
-       *   - Cleared      : the call is terminated
-       *   - Missed       : the call is terminated without having been established
-       *   - Forwarded    : the call is terminated because it has been forwarded
-       *   - Held         : the call is on hold
-       * @param: A reference to the Ekiga::Call on which the event occurs.
+
+      /** Adds a CallManager to the CallCore service.
+       * @param The manager to be added.
        */
-      sigc::signal<void, Ekiga::Call &> call_event;
+      void add_manager (CallManager &manager);
+
+      /** Triggers a callback for all Ekiga::CallManager sources of the
+       * CallCore service.
+       */
+      void visit_managers (sigc::slot<void, CallManager &> visitor);
+
+      /** This signal is emitted when a Ekiga::CallManager has been
+       * added to the CallCore Service.
+       */
+      sigc::signal<void, CallManager &> manager_added;
 
 
-      /*
-       * INSTANT MESSAGING 
+      /*** Call Management ***/                 
+
+      /** Create a call based on the remote uri given as parameter
+       * @param: an uri to call
+       * @return: true if a Ekiga::Call could be created
+       */
+      bool dial (const std::string uri); 
+
+      /*** Call Related Signals ***/
+
+      sigc::signal<void, CallManager &, Call &> setup_call;
+      sigc::signal<void, CallManager &, Call &> missed_call;
+      sigc::signal<void, CallManager &, Call &, std::string> cleared_call;
+      sigc::signal<void, CallManager &, Call &> established_call;
+      sigc::signal<void, CallManager &, Call &> held_call;
+      sigc::signal<void, CallManager &, Call &> retrieved_call;
+      sigc::signal<void, CallManager &, Call &, std::string, Call::StreamType, bool> stream_opened;
+      sigc::signal<void, CallManager &, Call &, std::string, Call::StreamType, bool> stream_closed;
+      sigc::signal<void, CallManager &, Call &, std::string, Call::StreamType> stream_paused;
+      sigc::signal<void, CallManager &, Call &, std::string, Call::StreamType> stream_resumed;
+
+
+      /*** Instant Messaging ***/ 
+
+      /**
+       * NOTICE 
+       *
+       * At some point, Instant Messaging and its signals should be moved out of 
+       * the CallCore and put into a shiny new object. Probably the Presence i
+       * one. But that's a TODO for later. Later we could also introduce the notion
+       * of Conversation.
        */
 
       /** Send a message to the given uri
-       * @param: uri    : where to send the message
-       *         message: what to send to the remote peer
+       * @param: uri where to send the message
+       *         message what to send to the remote peer
+       * @return: true if the operation could be handled 
+       *          (that does not mean the message got though)
        */
-      void send_message (std::string uri, 
-                         std::string message);
+      bool send_message (const std::string uri, 
+                         const std::string message);
 
-      /** This signal is emitted when the transmission of a message failed
-       * @param: uri    : where the message could not be sent
-       *         error  : a string describing the error that occured
-       */
-      sigc::signal<void, std::string uri, std::string error> im_failed;
-
-      /** This signal is emitted when a message has been received
-       * @param: display_name: the display name of the sender
-       *         uri         : the uri of the sender
-       *         message     : the message sent by the sender
-       */
-      sigc::signal<void, std::string display_name, std::string uri, std::string message> im_received;
-
-      /** This signal is emitted when a message has been sent
-       * @param: uri    : where the message has been sent
-       *         message: the message that was sent
-       */
-      sigc::signal<void, std::string uri, std::string message> im_sent;
-
-      /** This signal is emitted when a chat conversation should be initiated
-       * @param: uri            : the remote party
-       *         display_name   : the display name
-       */
-      sigc::signal<void, std::string uri, std::string display_name> new_chat;
+      sigc::signal<void, CallManager &, std::string, std::string> im_failed;
+      sigc::signal<void, CallManager &, std::string, std::string, std::string> im_received;
+      sigc::signal<void, CallManager &, std::string, std::string> im_sent;
 
 
-      /*          
-       * Accounts
-       */        
 
-      /** Register the provided account.
-       * @param: account : the account to register.
-       */
-      void register_account (Ekiga::Account & account);
+  private:
+      void on_new_call (Call *call, CallManager *manager);
+      void on_setup_call (Call *call, CallManager *manager);
+      void on_missed_call (Call *call, CallManager *manager);
+      void on_cleared_call (std::string, Call *call, CallManager *manager);
+      void on_established_call (Call *call, CallManager *manager);
+      void on_held_call (Call *call, CallManager *manager);
+      void on_retrieved_call (Call *call, CallManager *manager);
+      void on_stream_opened (std::string name, Call::StreamType type, bool is_transmitting, Call *call, CallManager *manager);
+      void on_stream_closed (std::string name, Call::StreamType type, bool is_transmitting, Call *call, CallManager *manager);
+      void on_stream_paused (std::string name, Call::StreamType type, Call *call, CallManager *manager);
+      void on_stream_resumed (std::string name, Call::StreamType type, Call *call, CallManager *manager);
 
-      /** Unregister the provided account.
-       * @param: account : the account to register.
-       */
-      void register_account (Ekiga::Account & account);
+      void on_im_failed (std::string, std::string, CallManager *manager);
+      void on_im_sent (std::string, std::string, CallManager *manager);
+      void on_im_received (std::string, std::string, std::string, CallManager *manager);
 
-      /** This signal is emitted when a registration status changes.
-       * @param: aor            : the registered account
-       *         state          : the current registration state
-       *         error          : the associated error in case of failure 
-       */
-      sigc::signal<void, std::string aor, CallCore::RegistrationState state, std::string error> registration_event;
-
-
-      /*
-       * MISC
-       */ 
-
-      /** This signal is emitted when a message waiting indication is received.
-       * @param: aor            : the account
-       *         mwi_string     : the received indication as a string
-       *         total          : the total number of unread messages for all accounts
-       */
-      sigc::signal<void, std::string aor, std::string mwi_string, unsigned int total> message_waiting_event;
-
-      /** This signal is emitted when a media stream is open or closed.
-       * @param: codec          : the codec name
-       *         video          : true if it is a video codec
-       *         transmitting   : true if the media stream is open for transmission
-       *         closing        : true of the media stream is closed
-       */
-      sigc::signal<void, std::string codec, bool video, bool transmitting, bool closing> media_stream_event;
-
-      /** This signal is emitted regularly to give the level of the input/output signals for the currently active call.
-       * @param: input          : the input level
-       *         output         : the output level 
-       */
-      sigc::signal<void, float, float> audio_signal_event;
-
-      /** This signal is emitted regularly to give statistics about the currently active call.
-       * @param: stats          : the statistics
-       */
-      sigc::signal<void, Ekiga::CallStatistics & stats> stats_event;
+      std::set<CallManager *> managers;
     };
 };
+
 
 #endif

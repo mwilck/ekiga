@@ -34,8 +34,12 @@
  *
  */
 
+
 #ifndef __CALL_H__
 #define __CALL_H__
+
+#include <sigc++/sigc++.h>
+
 
 namespace Ekiga {
 
@@ -48,10 +52,17 @@ namespace Ekiga {
 
   public:
 
-      /* The destructor
-       */
-      virtual ~Call () {}
+      Call () 
+        { 
+          outgoing = false; 
+          re_a_bw = tr_a_bw = re_v_bw = tr_v_bw = 0.0;
+          jitter = 0;
+          lost_packets = late_packets = out_of_order_packets = 0.0;
+        }
 
+      virtual ~Call () {};
+
+      enum StreamType { Audio, Video };
 
       /* 
        * Call Management
@@ -59,59 +70,188 @@ namespace Ekiga {
 
       /** Hangup the call
        */
-      void hangup (); 
+      virtual void hangup () = 0; 
+
+      /** Answer an incoming call
+       */
+      virtual void answer () = 0; 
 
       /** Transfer the call to the specified uri
        * @param: uri: where to transfer the call
        */
-      void transfer (std::string uri);
+      virtual void transfer (std::string /*uri*/) = 0;
 
-      /** Put the call on hold
+      /** Put the call on hold or retrieve it
        */
-      void hold ();
+      virtual void toggle_hold () = 0;
 
-      /** Retrieve the call if it is on hold
+      /** Toggle the stream transmission (if any)
+       * @param the stream type
        */
-      void retrieve ();
+      virtual void toggle_stream_pause (StreamType type) = 0;
 
-      /** Pause the audio stream (if any)
+      /** Send the given DTMF
+       * @param the dtmf (one char)
        */
-      void pause_audio ();
-
-      /** Pause the video stream (if any)
-       */
-      void pause_video ();
-
+      virtual void send_dtmf (const char dtmf) = 0;
 
       /* 
        * Call Information
        */
 
+      /** Return the call id
+       * @return: the call id 
+       */
+      virtual std::string get_id () = 0;
+
       /** Return the remote party name
        * @return: the remote party name
        */
-      std::string get_remote_party_name ();
+      virtual std::string get_remote_party_name () = 0;
 
       /** Return the remote application
        * @return: the remote application
        */
-      std::string get_remote_application ();
+      virtual std::string get_remote_application () = 0; 
 
       /** Return the remote callback uri
        * @return: the remote uri
        */
-      std::string get_remote_uri ();
-
-      /** Return a string describing the reason why the call was ended
-       * @return: a string describing the reason of the end of the call
-       *          provided the call is effectively over.
-       */
-      std::string get_call_end_reason ();
+      virtual std::string get_remote_uri () = 0;
 
       /** Return the call duration
-       * @return: the current call duration
+       * @return the current call duration
        */
-      std::string get_call_duration ();
+      virtual std::string get_call_duration () = 0;
+
+      /** Return information about call type
+       * @return true if it is an outgoing call
+       */
+      bool is_outgoing () { return outgoing; }
+
+      /** Return the received audio bandwidth
+       * @return the received audio bandwidth in kbytes/s
+       */
+      double get_received_audio_bandwidth () { return re_a_bw; }
+
+      /** Return the transmitted audio bandwidth
+       * @return the transmitted audio bandwidth in kbytes/s
+       */
+      double get_transmitted_audio_bandwidth () { return tr_a_bw; }
+      
+      /** Return the received video bandwidth
+       * @return the received video bandwidth in kbytes/s
+       */ 
+      double get_received_video_bandwidth () { return re_v_bw; }
+      
+      /** Return the transmitted video bandwidth
+       * @return the transmitted video bandwidth in kbytes/s
+       */
+      double get_transmitted_video_bandwidth () { return tr_v_bw; }
+
+      /** Return the jitter size
+       * @return the jitter size in ms
+       */
+      unsigned get_jitter_size () { return jitter; }
+
+      /** Return the lost packets information 
+       * @return the lost packets percentage
+       */
+      double get_lost_packets () { return lost_packets; }
+      
+      /** Return the late packets information 
+       * @return the late packets percentage
+       */
+      double get_late_packets () { return late_packets; }
+
+      /** Return the out of order packets information 
+       * @return the out of order packets percentage
+       */
+      double get_out_of_order_packets () { return out_of_order_packets; }
+
+
+
+      /*
+       * Signals
+       */
+      
+      /* Signal emitted when the call is established
+       */
+      sigc::signal<void> established;
+
+      /* Signal emitted when an established call is cleared
+       * @param: a string describing why the call was cleared
+       */
+      sigc::signal<void, std::string> cleared;
+
+      /* Signal emitted when the call is missed, ie cleared
+       * without having been established
+       */
+      sigc::signal<void> missed;
+
+      /* Signal emitted when the call is forwarded
+       */
+      sigc::signal<void> forwarded;
+
+      /* Signal emitted when the call is held
+       */
+      sigc::signal<void> held;
+       
+      /* Signal emitted when the call is retrieved
+       */
+      sigc::signal<void> retrieved;
+
+      /* Signal emitted when the call has been setup
+       */
+      sigc::signal<void> setup;
+
+      /* Signal emitted when a stream is opened
+       * @param the stream name
+       * @param the stream type
+       * @param transmission or reception
+       */
+      sigc::signal<void, std::string, StreamType, bool> stream_opened;
+
+      /* Signal emitted when a stream is closed
+       * @param the stream name
+       * @param the stream type
+       * @param transmission or reception
+       */
+      sigc::signal<void, std::string, StreamType, bool> stream_closed;
+
+      /* Signal emitted when a transmitted stream is paused
+       * @param the stream name
+       * @param the stream type
+       * @param transmission or reception
+       */
+      sigc::signal<void, std::string, StreamType> stream_paused;
+
+      /* Signal emitted when a transmitted stream is resumed
+       * @param the stream name
+       * @param the stream type
+       * @param transmission or reception
+       */
+      sigc::signal<void, std::string, StreamType> stream_resumed;
+
+
+  protected :
+      
+      std::string remote_party_name;
+      std::string remote_uri;
+      std::string remote_application;
+
+      bool outgoing;
+
+      double re_a_bw; 
+      double tr_a_bw; 
+      double re_v_bw; 
+      double tr_v_bw; 
+
+      unsigned jitter; 
+
+      double lost_packets; 
+      double late_packets; 
+      double out_of_order_packets; 
     };
 };
 
