@@ -115,9 +115,6 @@ Local::Presentity::Presentity (Ekiga::ServiceCore &_core,
 
 Local::Presentity::~Presentity ()
 {
-#ifdef __GNUC__
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
-#endif
 }
 
 
