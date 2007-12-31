@@ -56,6 +56,7 @@ void CallCore::add_manager (CallManager &manager)
   manager.im_failed.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_im_failed), &manager));
   manager.im_received.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_im_received), &manager));
   manager.im_sent.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_im_sent), &manager));
+  manager.new_chat.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_new_chat), &manager));
 }
 
 
@@ -187,3 +188,8 @@ void CallCore::on_im_received (std::string display_name, std::string uri, std::s
   im_received.emit (*manager, display_name, uri, message);
 }
 
+
+void CallCore::on_new_chat (std::string display_name, std::string uri, CallManager *manager)
+{
+  new_chat.emit (*manager, display_name, uri);
+}

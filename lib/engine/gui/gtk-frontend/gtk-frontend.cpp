@@ -41,10 +41,10 @@
 #include <gtk/gtk.h>
 
 #include "config.h"
-#include "ekiga.h" // FIXME 
 
 #include "gtk-frontend.h"
 
+#include "call-core.h"
 #include "contact-core.h"
 #include "presence-core.h"
 #include "addressbook-window.h"
@@ -53,10 +53,6 @@
 
 #include "gmwindow.h"
 
-static void on_new_chat (std::string name,
-                         std::string uri,
-                         GtkFrontend & frontend);
-
 
 GtkFrontend::GtkFrontend (Ekiga::ServiceCore &core)
 { 
@@ -64,17 +60,19 @@ GtkFrontend::GtkFrontend (Ekiga::ServiceCore &core)
 
   Ekiga::PresenceCore *presence_core = NULL;
   Ekiga::ContactCore *contact_core = NULL;
-  GMManager *manager = NULL;
+  Ekiga::CallCore *call_core = NULL;
 
-  contact_core = dynamic_cast<Ekiga::ContactCore*>(core.get ("contact-core"));
-  presence_core = dynamic_cast<Ekiga::PresenceCore*>(core.get ("presence-core"));
-  manager = dynamic_cast<GMManager *>(core.get ("opal-component"));
+  contact_core = dynamic_cast<Ekiga::ContactCore *>(core.get ("contact-core"));
+  presence_core = dynamic_cast<Ekiga::PresenceCore *>(core.get ("presence-core"));
+  call_core = dynamic_cast<Ekiga::CallCore *>(core.get ("call-core"));
 
   roster_view = roster_view_gtk_new (*presence_core);
-  addressbook_window = addressbook_window_new_with_key (*contact_core, USER_INTERFACE_KEY "addressbook_window");
-  chat_window = chat_window_new_with_key (core, USER_INTERFACE_KEY "chat_window");
+  addressbook_window = 
+    addressbook_window_new_with_key (*contact_core, "/apps/ekiga/general/user_interface/addressbook_window");
+  chat_window = 
+    chat_window_new_with_key (core, "/apps/ekiga/general/user_interface/chat_window");
 
-  conn = manager->new_chat.connect (sigc::bind (sigc::ptr_fun (on_new_chat), *this));
+  conn = call_core->new_chat.connect (sigc::mem_fun (this, &GtkFrontend::on_new_chat));
   connections.push_back (conn);
 }
 
@@ -118,13 +116,10 @@ const GtkWidget *GtkFrontend::get_chat_window () const
 }
 
 
-static void
-on_new_chat (std::string name,
-             std::string uri,
-             GtkFrontend & frontend)
+void GtkFrontend::on_new_chat (Ekiga::CallManager & /*manager*/,
+                               std::string name,
+                               std::string uri)
 {
-  const GtkWidget *chat_window = frontend.get_chat_window ();
-
   chat_window_add_page (CHAT_WINDOW (chat_window), name, uri);
   gtk_widget_show_all (GTK_WIDGET (chat_window));
 }

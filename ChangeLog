@@ -1,5 +1,15 @@
 2007-12-31  Damien Sandras  <dsandras@gnome.org>
 
+	* lib/engine/protocol/skel/call-core.cpp,
+	lib/engine/protocol/skel/call-core.h,
+	lib/engine/gui/gtk-frontend/chat-window-page.cpp,
+	lib/engine/gui/gtk-frontend/gtk-frontend.cpp,
+	lib/engine/gui/gtk-frontend/gtk-frontend.h,
+	lib/engine/gui/gtk-frontend/Makefile.am:
+	Removed OPAL dependancy, now depends on the CallCore.
+
+2007-12-31  Damien Sandras  <dsandras@gnome.org>
+
 	* src/endpoints/urlhandler.cpp,
 	src/components/dbus.h,
 	src/components/dbus.cpp:

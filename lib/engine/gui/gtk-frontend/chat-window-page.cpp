@@ -46,9 +46,8 @@
 #include "call-core.h"
 #include "presence-core.h"
 
-#include "ekiga.h"
-
 #include <gdk/gdkkeysyms.h>
+#include <vector>
 
 
 struct _ChatWindowPagePrivate

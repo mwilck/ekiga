@@ -117,7 +117,9 @@ namespace Ekiga {
       bool dial (const std::string uri); 
 
       /*** Call Related Signals ***/
-
+      
+      /** See call-manager.h for the API
+       */
       sigc::signal<void, CallManager &, Call &> setup_call;
       sigc::signal<void, CallManager &, Call &> missed_call;
       sigc::signal<void, CallManager &, Call &, std::string> cleared_call;
@@ -153,6 +155,7 @@ namespace Ekiga {
       sigc::signal<void, CallManager &, std::string, std::string> im_failed;
       sigc::signal<void, CallManager &, std::string, std::string, std::string> im_received;
       sigc::signal<void, CallManager &, std::string, std::string> im_sent;
+      sigc::signal<void, CallManager &, std::string, std::string> new_chat;
 
 
 
@@ -172,6 +175,7 @@ namespace Ekiga {
       void on_im_failed (std::string, std::string, CallManager *manager);
       void on_im_sent (std::string, std::string, CallManager *manager);
       void on_im_received (std::string, std::string, std::string, CallManager *manager);
+      void on_new_chat (std::string, std::string, CallManager *manager);
 
       std::set<CallManager *> managers;
     };
