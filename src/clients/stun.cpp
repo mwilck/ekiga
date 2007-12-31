@@ -101,10 +101,12 @@ get_nat_name (int nat_type)
 }
 
 static void 
-stun_dialog_response_cb (GtkDialog *dialog,
-			 gint response,
+stun_dialog_response_cb (G_GNUC_UNUSED GtkDialog *dialog,
+			 G_GNUC_UNUSED gint response,
 			 G_GNUC_UNUSED gpointer data)
 {
+  // FIXME
+  /*
   GMManager *ep = NULL;
 
   ep = GnomeMeeting::Process ()->GetManager ();
@@ -125,6 +127,7 @@ stun_dialog_response_cb (GtkDialog *dialog,
   }
   
   gtk_widget_destroy (GTK_WIDGET (dialog));
+  */
 }
 
 
