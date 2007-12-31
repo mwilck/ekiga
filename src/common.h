@@ -77,6 +77,7 @@
 #define PORTS_KEY "/apps/" PACKAGE_NAME "/protocols/ports/"
 #define CALL_FORWARDING_KEY "/apps/" PACKAGE_NAME "/protocols/call_forwarding/"
 #define LDAP_KEY "/apps/" PACKAGE_NAME "/protocols/ldap/"
+#define CODECS_KEY "/apps/" PACKAGE_NAME "/codecs/"
 #define AUDIO_CODECS_KEY "/apps/" PACKAGE_NAME "/codecs/audio/"
 #define VIDEO_CODECS_KEY  "/apps/" PACKAGE_NAME "/codecs/video/"
 
@@ -125,7 +126,6 @@ typedef enum {
 
   CONTACTS,
   DIALPAD,
-  CALLS_HISTORY,
   CALL,
   NUM_SECTIONS
 } PanelSection;
