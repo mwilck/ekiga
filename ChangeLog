@@ -1,8 +1,14 @@
+2007-12-31  Damien Sandras  <dsandras@gnome.org>
+
+	* src/devices/audio.cpp: Moved ifdef.
+
 2007-12-27  Matthias Schneider  <ma30002000@yahoo.de>
+
 	* src/endpoints/manager.cpp:
 	Set limits for desired receiving resolution.
 
 2007-12-26  Matthias Schneider  <ma30002000@yahoo.de>
+	
 	* src/endpoints/manager.cpp:
 	* src/gui/conf.cpp:
 	1kbit/s = 1000 bit/s
@@ -127,8 +133,7 @@
 
 2007-12-06  Matthias Schneider  <ma30002000@yahoo.de>
 
-        * lib/gui/xwindow.cpp:
-	* lib/gui/xvwindow.cpp:
+	* lib/gui/xwindow.cpp, lib/gui/xvwindow.cpp:
 	Fixed X/XV window message handler that was taking events directed to 
 	other windows as own events. Fixes the frequent BadValue X errors. 
 	Also added some additional trances for the X/XV window.
