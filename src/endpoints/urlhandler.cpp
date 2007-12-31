@@ -348,9 +348,11 @@ bool GMURL::operator != (GMURL u)
 
 
 /* The class */
-GMURLHandler::GMURLHandler (PString c, 
+GMURLHandler::GMURLHandler (Ekiga::ServiceCore & _core,
+                            PString c, 
                             bool transfer)
-  :PThread (1000, AutoDeleteThread)
+: PThread (1000, AutoDeleteThread), 
+    core (_core)
 {
   url = GMURL (c);
 
@@ -400,8 +402,7 @@ void GMURLHandler::Main ()
   dbus_component = GnomeMeeting::Process ()->GetDbusComponent ();
 #endif
 
-  endpoint = GnomeMeeting::Process ()->GetManager ();
-
+  endpoint = dynamic_cast<GMManager *> (core.get ("opal-component"));
   
   /* Answer the current call in a separate thread if we are called
    * and return 	 
@@ -459,7 +460,7 @@ void GMURLHandler::Main ()
 
     endpoint->SetCallingState (GMManager::Calling);
 
-    result = endpoint->SetUpCall (call_address, current_call_token);
+    result = endpoint->SetUpCall ("pc:*", call_address, current_call_token);
     
     /* If we have a valid URL, we a have a valid connection, if not
        we put things back in the initial state */
@@ -500,6 +501,7 @@ FIXME */
       //gm_calls_history_item_free (call_history_item);
 
       gnomemeeting_threads_leave ();
+      //FIXME pcssEP->PlaySoundEvent ("busy_tone_sound");
     }
   }
   else {
