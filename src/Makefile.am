@@ -12,6 +12,7 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/engine/gui/gtk-frontend	\
 	-I$(top_srcdir)/lib/engine/addressbook/skel	\
 	-I$(top_srcdir)/lib/engine/presence/skel	\
+	-I$(top_srcdir)/lib/engine/protocol/skel	\
 	-I$(top_srcdir)/lib/engine/protocol/sip		\
 	-I$(top_srcdir)/lib/engine/framework		\
 	-I$(top_builddir)				\
@@ -82,10 +83,6 @@ endif
 ekiga_SOURCES +=			\
 	endpoints/accountshandler.h	\
 	endpoints/accountshandler.cpp	\
-	endpoints/callinfo.h		\
-	endpoints/callinfo.cpp		\
-	endpoints/callstats.h		\
-	endpoints/callstats.cpp		\
 	endpoints/ekiga.h		\
 	endpoints/ekiga.cpp		\
 	endpoints/manager.h		\
@@ -96,6 +93,10 @@ ekiga_SOURCES +=			\
 	endpoints/pcss.cpp		\
 	endpoints/sip.h			\
 	endpoints/sip.cpp		\
+	endpoints/opal-call.h		\
+	endpoints/opal-call.cpp		\
+	endpoints/opal-main.h		\
+	endpoints/opal-main.cpp		\
 	endpoints/urlhandler.h		\
 	endpoints/urlhandler.cpp		
 
@@ -103,15 +104,6 @@ ekiga_SOURCES +=			\
 ekiga_SOURCES +=			\
 	clients/stun.h			\
 	clients/stun.cpp
-
-
-if HAVE_BONOBO
-ekiga_SOURCES += 		\
-	components/bonobo.h		\
-	components/bonobo.cpp 
-serverdir = $(libdir)/bonobo/servers
-server_DATA = components/@PACKAGE_NAME@.server
-endif
 
 if HAVE_DBUS 
 ekiga_SOURCES +=		\
