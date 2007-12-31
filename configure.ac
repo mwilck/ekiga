@@ -1,4 +1,4 @@
-AC_INIT(ekiga, 2.1.0, http://bugzilla.gnome.org/enter_bug.cgi?product=ekiga)
+AC_INIT(ekiga, 2.9.0, http://bugzilla.gnome.org/enter_bug.cgi?product=ekiga)
 AC_CANONICAL_TARGET
 AC_PREREQ(2.53)
 AC_CONFIG_SRCDIR(src/gui/main.cpp)
@@ -14,7 +14,7 @@ dnl   Definitions
 dnl ###########################################################################
 
 MAJOR_VERSION=2
-MINOR_VERSION=1
+MINOR_VERSION=9
 BUILD_TYPE=ReleaseCode
 BUILD_NUMBER=0
 
@@ -234,26 +234,6 @@ else
 fi
 
 AM_CONDITIONAL(HAVE_GCONF, test "x$found_gconf" = "xyes")
-
-
-dnl ###############################
-dnl   BONOBO support
-dnl ###############################
-BONOBO="disabled"
-
-if test "x${gm_platform}" != "xmingw" ; then
-  AC_ARG_ENABLE(bonobo, [  --disable-bonobo		Disable Bonobo support],,enable_bonobo=yes)
-  
-  if test "x$enable_bonobo" = "xyes"; then
-    PKG_CHECK_MODULES(BONOBO, libbonobo-2.0, found_bonobo=yes)
-    AC_SUBST(BONOBO_CFLAGS)
-    AC_SUBST(BONOBO_LIBS)
-    BONOBO="enabled"
-    AC_DEFINE(HAVE_BONOBO,1,[Bonobo support])
-  fi
-fi
-
-AM_CONDITIONAL(HAVE_BONOBO, test "x$found_bonobo" = "xyes")
 
 
 dnl ###############################
@@ -699,8 +679,7 @@ lib/engine/presence/avahi/Makefile
 lib/engine/presence/local-roster/Makefile
 lib/engine/presence/skel/Makefile
 lib/engine/protocol/Makefile
-lib/engine/protocol/sip/Makefile
-dnl lib/engine/protocol/skel/Makefile
+lib/engine/protocol/skel/Makefile
 lib/engine/gui/Makefile
 lib/engine/gui/gtk-core/Makefile
 lib/engine/gui/gtk-frontend/Makefile
@@ -738,7 +717,6 @@ echo "                 DirectX support  :  $DX"
 fi
 echo ""
 if test "x${gm_platform}" != "xmingw" ; then
-echo "                  Bonobo support  :  $BONOBO"
 echo "                    DBUS support  :  $DBUS"
 echo "             mDNS/DNS-SD support  :  $AVAHI"
 fi
