@@ -119,7 +119,7 @@ class GMVideoDisplay_embedded : public GMVideoDisplay
    * BEHAVIOR     :  Initialises the VideoDisplay_embedded.
    * PRE          :  /
    */
-  GMVideoDisplay_embedded ();
+  GMVideoDisplay_embedded (Ekiga::ServiceCore & core);
 
 
   /* DESCRIPTION  :  The destructor.
@@ -289,6 +289,7 @@ class GMVideoDisplay_embedded : public GMVideoDisplay
   VideoInfo videoInfo;
   
   Ekiga::Runtime* runtime;
+  Ekiga::ServiceCore & core;
 };
 
 #endif /* VIDEODISPLAY */

@@ -55,7 +55,8 @@
 #endif
 
 /* The Methods */
-GMVideoDisplay_X::GMVideoDisplay_X ()
+GMVideoDisplay_X::GMVideoDisplay_X (Ekiga::ServiceCore & _core)
+: GMVideoDisplay_embedded (_core)
 { 
   /* Internal stuff */
   lxWindow = NULL;
@@ -87,11 +88,11 @@ GMVideoDisplay_X::~GMVideoDisplay_X()
 
 void 
 GMVideoDisplay_X::SetupFrameDisplay (VideoMode display, 
-                                          guint lf_width, 
-                                          guint lf_height, 
-                                          guint rf_width, 
-                                          guint rf_height, 
-                                          unsigned int zoom)
+                                     guint lf_width, 
+                                     guint lf_height, 
+                                     guint rf_width, 
+                                     guint rf_height, 
+                                     unsigned int zoom)
 {
   VideoInfo localVideoInfo;
   VideoAccelStatus status = NONE;

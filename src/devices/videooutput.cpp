@@ -58,7 +58,7 @@ class PVideoOutputDevice_EKIGA_PluginServiceDescriptor
   public:
     virtual PObject *CreateInstance (int) const 
       {
-	return new PVideoOutputDevice_EKIGA (); 
+	return new PVideoOutputDevice_EKIGA (*(GnomeMeeting::Process ()->GetServiceCore ())); 
       }
     
     
@@ -78,7 +78,8 @@ PCREATE_PLUGIN(EKIGA, PVideoOutputDevice, &PVideoOutputDevice_EKIGA_descriptor);
 
 
 /* The Methods */
-PVideoOutputDevice_EKIGA::PVideoOutputDevice_EKIGA ()
+PVideoOutputDevice_EKIGA::PVideoOutputDevice_EKIGA (Ekiga::ServiceCore & _core)
+: core (_core)
 { 
  PWaitAndSignal m(videoDisplay_mutex);
 
@@ -92,9 +93,9 @@ PVideoOutputDevice_EKIGA::PVideoOutputDevice_EKIGA ()
 
   if (!videoDisplay) 
 #ifdef WIN32
-     videoDisplay = new GMVideoDisplay_DX();
+     videoDisplay = new GMVideoDisplay_DX(core);
 #else
-     videoDisplay = new GMVideoDisplay_X();
+     videoDisplay = new GMVideoDisplay_X(core);
 #endif
 }
 

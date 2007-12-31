@@ -61,7 +61,7 @@ class PVideoOutputDevice_EKIGA : public PVideoOutputDevice
    * BEHAVIOR     :  /
    * PRE          :  /
    */
-  PVideoOutputDevice_EKIGA ();
+  PVideoOutputDevice_EKIGA (Ekiga::ServiceCore & core);
 
 
   /* DESCRIPTION  :  The destructor.
@@ -148,5 +148,6 @@ class PVideoOutputDevice_EKIGA : public PVideoOutputDevice
 
   enum {REMOTE, LOCAL};
 
+  Ekiga::ServiceCore & core;
 };
 #endif

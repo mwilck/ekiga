@@ -56,7 +56,7 @@ public:
    * BEHAVIOR     :  /
    * PRE          :  /
    */
-  GMVideoDisplay_X ();
+  GMVideoDisplay_X (Ekiga::ServiceCore & core);
 
 
   /* DESCRIPTION  :  The destructor.

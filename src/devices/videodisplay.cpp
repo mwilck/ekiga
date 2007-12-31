@@ -64,7 +64,8 @@ GMVideoDisplay::~GMVideoDisplay ()
 }
 
 /* The functions */
-GMVideoDisplay_embedded::GMVideoDisplay_embedded ()
+GMVideoDisplay_embedded::GMVideoDisplay_embedded (Ekiga::ServiceCore & _core)
+: core (_core)
 {
   /* Variables */
 
@@ -90,7 +91,7 @@ GMVideoDisplay_embedded::GMVideoDisplay_embedded ()
   update_required.local = FALSE;
   update_required.remote = FALSE;
 
-  runtime = GnomeMeeting::Process ()->GetRuntime (); // FIXME
+  runtime = dynamic_cast<Ekiga::Runtime *> (core.get ("runtime")); 
   
   sigc::connection conn;
   conn = set_display_type.connect (sigc::ptr_fun (gm_main_window_set_display_type));
