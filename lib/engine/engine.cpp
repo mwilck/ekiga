@@ -43,13 +43,14 @@
 
 #include "presence-core.h"
 #include "contact-core.h"
+#include "call-core.h"
 #include "history-main.h"
 #include "local-roster-main.h"
 #include "local-roster-bridge.h"
 #include "gtk-core-main.h"
 #include "gtk-frontend.h"
 
-#include "sip-main.h"
+#include "opal-main.h"
 
 #ifdef HAVE_AVAHI
 #include "avahi-main.h"
@@ -64,68 +65,71 @@
 #endif
 
 
-Ekiga::ServiceCore *
+void
 engine_init (int argc,
-             char *argv [])
+             char *argv [],
+             Ekiga::Runtime *runtime,
+             Ekiga::ServiceCore * &core)
 {
-  Ekiga::ServiceCore *core = new Ekiga::ServiceCore; 
+  core = new Ekiga::ServiceCore; 
   Ekiga::PresenceCore *presence_core = new Ekiga::PresenceCore;
   Ekiga::ContactCore *contact_core = new Ekiga::ContactCore;
+  Ekiga::CallCore *call_core = new Ekiga::CallCore;
 
   core->add (*contact_core);
   core->add (*presence_core);
+  core->add (*call_core);
+  core->add (*runtime);
 
-  if (!sip_init (*core, &argc, &argv)) {
+  if (!opal_init (*core, &argc, &argv)) {
     delete core;
-    return NULL;
+    return;
   }
 
 #ifdef HAVE_AVAHI
   if (!avahi_init (*core, &argc, &argv)) {
     delete core;
-    return NULL;
+    return;
   }
 #endif
 
 #ifdef HAVE_EDS
   if (!evolution_init (*core, &argc, &argv)) {
     delete core;
-    return NULL;
+    return;
   }
 #endif
 
 #ifdef HAVE_LDAP
   if (!ldap_init (*core, &argc, &argv)) {
     delete core;
-    return NULL;
+    return;
   }
 #endif
 
   if (!history_init (*core, &argc, &argv)) {
 
     delete core;
-    return NULL;
+    return;
   }
 
   if (!gtk_core_init (*core, &argc, &argv)) {
     delete core;
-    return NULL;
+    return;
   }
 
   if (!gtk_frontend_init (*core, &argc, &argv)) {
     delete core;
-    return NULL;
+    return;
   }
 
   if (!local_roster_init (*core, &argc, &argv)) {
     delete core;
-    return NULL;
+    return;
   }
 
   if (!local_roster_bridge_init (*core, &argc, &argv)) {
     delete core;
-    return NULL;
+    return;
   }
-
-  return core;
 }

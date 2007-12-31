@@ -38,8 +38,12 @@
 #define __ENGINE_H__
 
 #include "services.h"
+#include "runtime.h"
 
-Ekiga::ServiceCore *engine_init (int argc,
-                                 char *argv[]);
+void
+engine_init (int argc,
+             char *argv[],
+             Ekiga::Runtime *runtime,
+             Ekiga::ServiceCore *& core);
 
 #endif
