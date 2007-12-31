@@ -1,9 +1,19 @@
 2007-12-31  Damien Sandras  <dsandras@gnome.org>
 
+	* src/endpoints/manager.h,
+	src/endpoints/manager.cpp:
+	Adapted the implementation so that it implements an Ekiga::CallManager 
+	object using OPAL. 
+	This class implements the interface defined in call-manager.h.
+	This class also implements a ContactDecorator and a PresentityDecorator
+	to add actions supported by the OPAL CallManager.
+
+2007-12-31  Damien Sandras  <dsandras@gnome.org>
+
 	* src/endpoints/opal-call.h,
 	src/endpoints/opal-call.cpp:
 	Added the implementation of an Ekiga::Call object through OPAL. This
-	object implements the interface defined in call.h.
+	class implements the interface defined in call.h.
 
 2007-12-31  Damien Sandras  <dsandras@gnome.org>
 

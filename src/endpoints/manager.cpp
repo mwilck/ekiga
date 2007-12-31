@@ -43,12 +43,16 @@
 #include "h323.h"
 #include "sip.h"
 
+#include "urlhandler.h"
+
 #include "ekiga.h"
-#include "audio.h"
 #include "misc.h"
 #include "main.h"
 
 #include "gmconf.h"
+
+#include "call-core.h"
+#include "opal-call.h"
 
 #include <opal/transcoders.h>
 #include <ptclib/http.h>
@@ -64,8 +68,371 @@ extern "C" {
 };
 
 
+
+/* DESCRIPTION  :  This notifier is called when the firstname or last name
+ *                 keys changes.
+ * BEHAVIOR     :  Updates the ZeroConf registrations and the internal i
+ *                 configuration. 
+ * PRE          :  data is a pointer to the GMManager.
+ */
+static void fullname_changed_nt (gpointer id,
+				 GmConfEntry *entry,
+				 gpointer data);
+
+
+/* DESCRIPTION  :  This notifier is called when the config database data
+ *                 associated with the enable_video key changes.
+ * BEHAVIOR     :  It updates the endpoint.
+ * PRE          :  data is a pointer to the GMManager.
+ */
+static void enable_video_changed_nt (G_GNUC_UNUSED gpointer id,
+                                     GmConfEntry *entry,
+                                     gpointer data);
+
+
+/* DESCRIPTION  :  This callback is called when a silence detection key of
+ *                 the config database associated with a toggle changes.
+ * BEHAVIOR     :  Update silence detection.
+ * PRE          :  data is a pointer to the GMManager.
+ */
+static void silence_detection_changed_nt (G_GNUC_UNUSED gpointer id,
+                                          GmConfEntry *entry, 
+                                          gpointer data);
+
+
+/* DESCRIPTION  :  This callback is called when the echo cancelation key of
+ *                 the config database associated with a toggle changes.
+ * BEHAVIOR     :  Update echo cancelation.
+ * PRE          :  data is a pointer to the GMManager.
+ */
+static void echo_cancelation_changed_nt (G_GNUC_UNUSED gpointer id,
+                                         GmConfEntry *entry, 
+                                         gpointer data);
+
+
+/* DESCRIPTION  :  This notifier is called when the config database data
+ *                 associated with the listening interface changes.
+ * BEHAVIOR     :  Updates the interface.
+ * PRE          :  data is a pointer to the GMManager.
+ */
+static void network_interface_changed_nt (G_GNUC_UNUSED gpointer id,
+                                          GmConfEntry *entry, 
+                                          gpointer data);
+
+
+/* DESCRIPTION  :  This notifier is called when the config database data
+ *                 associated with the public ip changes.
+ * BEHAVIOR     :  Updates the IP Translation address.
+ * PRE          :  data is a pointer to the GMManager.
+ */
+static void public_ip_changed_nt (G_GNUC_UNUSED gpointer id,
+                                  GmConfEntry *entry, 
+                                  gpointer data);
+
+
+/* DESCRIPTION  :  This callback is called when the jitter buffer needs to be 
+ *                 changed.
+ * BEHAVIOR     :  Update the jitter.
+ * PRE          :  data is a pointer to the GMManager.
+ */
+static void jitter_buffer_changed_nt (G_GNUC_UNUSED gpointer id,
+                                      GmConfEntry *entry, 
+                                      gpointer data);
+
+
+/* DESCRIPTION  :  This callback is called when the video device changes
+ *                 in the config database.
+ * BEHAVIOR     :  It creates a new video grabber if preview is active with
+ *                 the selected video device.
+ *                 If preview is not enabled, then the potentially existing
+ *                 video grabber is deleted provided we are not in
+ *                 a call.
+ *                 Notice that the video device can't be changed during calls,
+ *                 but its setting can be changed.
+ * PRE          :  data is a pointer to the GMManager.
+ */
+static void video_device_changed_nt (G_GNUC_UNUSED gpointer id,
+                                     GmConfEntry *entry, 
+                                     gpointer data);
+
+
+/* DESCRIPTION  :  This callback is called when one of the video media format
+ * 		   settings changes.
+ * BEHAVIOR     :  It updates the media format settings.
+ * PRE          :  data is a pointer to the GMManager.
+ */
+static void video_option_changed_nt (G_GNUC_UNUSED gpointer id,
+                                     GmConfEntry *entry, 
+                                     gpointer data);
+
+
+/* DESCRIPTION  :  This callback is called when the status config value changes.
+ * BEHAVIOR     :  Updates the presence for the endpoints.
+ * PRE          :  /
+ */
+static void status_changed_nt (G_GNUC_UNUSED gpointer id,
+                               GmConfEntry *entry,
+                               gpointer data);
+
+
+static  bool same_codec_desc (Ekiga::CodecDescription a, Ekiga::CodecDescription b)
+{ 
+  return (a.name == b.name && a.rate == b.rate); 
+}
+
+
+static void from_gslist_to_codec_list (const GSList *codecs_config, 
+                                       Ekiga::CodecList & config_codecs)
+{
+  GSList *codecs_config_it = NULL;
+  
+  codecs_config_it = (GSList *) codecs_config;
+  while (codecs_config_it) {
+
+    gchar **couple = NULL;
+
+    couple = g_strsplit ((char *) codecs_config_it->data, "=", 2);
+    if (couple [0] && couple [1]) {
+      
+      gchar **couple2 = NULL;
+      couple2 = g_strsplit (couple [0], "*", 3);
+
+      if (couple2 [0] && couple2 [1] && couple2 [2]) {
+
+        Ekiga::CodecDescription desc;
+        desc.name = std::string (couple2 [0]);
+        desc.bandwidth = atoi (couple2 [1]);
+        desc.rate = atoi (couple2 [2]);
+        desc.active = (atoi (couple [1]) == 1);
+        config_codecs.push_back (desc);
+
+        g_strfreev (couple2);
+      }
+
+      g_strfreev (couple);
+    }
+
+    codecs_config_it = g_slist_next (codecs_config_it);
+  }
+}
+
+
+static void from_media_formats_to_codec_list (OpalMediaFormatList & full_list, Ekiga::CodecList & codecs)
+{
+  for (PINDEX i = 0 ; i < full_list.GetSize () ; i++) {
+
+    if (full_list [i].IsTransportable ()) {
+
+      Ekiga::CodecDescription desc;
+      desc.name = (const char *) full_list [i].GetEncodingName ();
+      desc.rate = full_list [i].GetClockRate ();
+      desc.bandwidth = full_list [i].GetBandwidth ();
+      desc.active = false;
+
+      Ekiga::CodecList::iterator it = 
+        search_n (codecs.begin (), codecs.end (), 1, desc, same_codec_desc);
+      if (it == codecs.end ()) 
+        codecs.push_back (desc);
+    }
+  }
+}
+
+
+static void 
+fullname_changed_nt (G_GNUC_UNUSED gpointer id,
+		     GmConfEntry *entry, 
+		     gpointer data)
+{
+  GMManager *endpoint = (GMManager *) data;
+  
+  if (gm_conf_entry_get_type (entry) == GM_CONF_STRING) {
+
+    endpoint->SetUserNameAndAlias ();
+    endpoint->UpdatePublishers ();
+  }
+}
+
+
+static void
+enable_video_changed_nt (G_GNUC_UNUSED gpointer id,
+			 GmConfEntry *entry,
+			 gpointer data)
+{
+  PString name;
+  GMManager *ep = (GMManager *) data;
+
+  if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
+
+    ep->SetAutoStartTransmitVideo (gm_conf_entry_get_bool (entry));
+    ep->SetAutoStartReceiveVideo (gm_conf_entry_get_bool (entry));
+  }
+}
+
+
+static void 
+silence_detection_changed_nt (G_GNUC_UNUSED gpointer id,
+                              GmConfEntry *entry, 
+                              gpointer data)
+{
+  GMManager *ep = (GMManager *) data;
+
+  if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
+
+    ep->set_silence_detection (gm_conf_entry_get_bool (entry));
+  }
+}
+
+
+static void 
+echo_cancelation_changed_nt (G_GNUC_UNUSED gpointer id,
+			     GmConfEntry *entry, 
+			     gpointer data)
+{
+  GMManager *ep = (GMManager *) data;
+
+  if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
+
+    ep->set_echo_cancelation (gm_conf_entry_get_bool (entry));
+  }
+}
+
+
+static void 
+network_interface_changed_nt (G_GNUC_UNUSED gpointer id,
+                              GmConfEntry *entry, 
+                              gpointer data)
+{
+  GMManager *ep = (GMManager *) data;
+  
+  if (gm_conf_entry_get_type (entry) == GM_CONF_STRING) {
+
+    gdk_threads_enter ();
+    ep->ResetListeners ();
+    gdk_threads_leave ();
+  }
+}
+
+
+static void 
+public_ip_changed_nt (G_GNUC_UNUSED gpointer id,
+		      GmConfEntry *entry, 
+		      gpointer data)
+{
+  GMManager *ep = (GMManager *) data;
+
+  const char *public_ip = NULL;
+  int nat_method = 0;
+  
+  if (gm_conf_entry_get_type (entry) == GM_CONF_STRING) {
+    
+    gdk_threads_enter ();
+    public_ip = gm_conf_entry_get_string (entry);
+    nat_method = gm_conf_get_int (NAT_KEY "method");
+    gdk_threads_leave ();
+
+    if (nat_method == 2 && public_ip)
+      ep->SetTranslationAddress (PString (public_ip));
+    else
+      ep->SetTranslationAddress (PString ("0.0.0.0"));
+  }
+}
+
+
+static void 
+codecs_list_changed_nt (G_GNUC_UNUSED gpointer id,
+                        GmConfEntry *entry, 
+                        gpointer data)
+{
+  GMManager *ep = (GMManager *) data;
+  
+  if (gm_conf_entry_get_type (entry) == GM_CONF_LIST) {
+
+    Ekiga::CodecList list; 
+    GSList *codecs_config = gm_conf_entry_get_list (entry);
+
+    from_gslist_to_codec_list (codecs_config, list);
+    
+    ep->set_codecs (list);
+
+    g_slist_free (codecs_config);
+  }
+}
+
+
+static void 
+jitter_buffer_changed_nt (G_GNUC_UNUSED gpointer id,
+                          GmConfEntry *entry, 
+                          gpointer data)
+{
+  GMManager *ep = (GMManager *) data;
+  
+  if (gm_conf_entry_get_type (entry) == GM_CONF_INT) {
+
+    unsigned min_val, max_val = 0;
+    ep->get_jitter_buffer_size (min_val, max_val);
+    ep->set_jitter_buffer_size (min_val, max_val);
+  }
+}
+
+
+static void 
+video_device_changed_nt (G_GNUC_UNUSED gpointer id,
+			 GmConfEntry *entry, 
+			 gpointer data)
+{
+  GMManager *ep = (GMManager *) data;
+  
+  if ((gm_conf_entry_get_type (entry) == GM_CONF_BOOL) ||
+      (gm_conf_entry_get_type (entry) == GM_CONF_STRING) ||
+      (gm_conf_entry_get_type (entry) == GM_CONF_INT)) {
+
+    ep->UpdateDevices ();
+  }
+}
+
+// TODO use entry values in all notifiers
+static void 
+video_option_changed_nt (G_GNUC_UNUSED gpointer id,
+                         GmConfEntry *entry, 
+                         gpointer data)
+{
+  GMManager *ep = (GMManager *) data;
+
+  if (gm_conf_entry_get_type (entry) == GM_CONF_INT) {
+
+    unsigned a, b, c, d, e = 0;
+    ep->get_video_options (a, b, c, d, e);
+    ep->set_video_options (a, b, c, d, e);
+  }
+}
+
+
+/* DESCRIPTION  :  This callback is called when the status config value changes.
+ * BEHAVIOR     :  Updates the presence for the endpoints.
+ * PRE          :  /
+ */
+static void
+status_changed_nt (G_GNUC_UNUSED gpointer id,
+                   GmConfEntry *entry,
+                   gpointer data)
+{
+  GMManager *ep = (GMManager *) data;
+
+  guint status = CONTACT_ONLINE;
+
+  if (gm_conf_entry_get_type (entry) == GM_CONF_INT) {
+
+    status = gm_conf_entry_get_int (entry);
+    
+    ep->UpdatePublishers ();
+    ep->PublishPresence (status);
+  }
+}
+
+
 /* The class */
-GMManager::GMManager ()
+GMManager::GMManager (Ekiga::ServiceCore & _core)
+: core (_core), runtime (*(dynamic_cast<Ekiga::Runtime *> (core.get ("runtime"))))
 {
   /* Initialise the endpoint paramaters */
   video_grabber = NULL;
@@ -80,23 +447,19 @@ GMManager::GMManager ()
 
   PIPSocket::SetDefaultIpAddressFamilyV4();
   
-  audio_tester = NULL;
-
   manager = NULL;
 
-  RTPTimer.SetNotifier (PCREATE_NOTIFIER (OnRTPTimeout));
-  AvgSignalTimer.SetNotifier (PCREATE_NOTIFIER (OnAvgSignalTimeout));
   GatewayIPTimer.SetNotifier (PCREATE_NOTIFIER (OnGatewayIPTimeout));
   GatewayIPTimer.RunContinuous (PTimeInterval (5));
 
   IPChangedTimer.SetNotifier (PCREATE_NOTIFIER (OnIPChanged));
   IPChangedTimer.RunContinuous (120000);
-  NoIncomingMediaTimer.SetNotifier (PCREATE_NOTIFIER (OnNoIncomingMediaTimeout));
 
   h323EP = NULL;
   sipEP = NULL;
   pcssEP = NULL;
 
+  // Create video devices
   PVideoDevice::OpenArgs video = GetVideoOutputDevice();
   video.deviceName = "EKIGAOUT";
   SetVideoOutputDevice (video);
@@ -108,6 +471,64 @@ GMManager::GMManager ()
   video = GetVideoInputDevice();
   video.deviceName = "Moving logo";
   SetVideoInputDevice (video);
+
+  // Create endpoints
+  h323EP = new GMH323Endpoint (*this);
+  h323EP->Init ();
+  AddRouteEntry("pc:.* = h323:<da>");
+	
+  sipEP = new GMSIPEndpoint (*this, core);
+  AddRouteEntry("pc:.* = sip:<da>");
+  
+  pcssEP = new GMPCSSEndpoint (*this);
+  AddRouteEntry("h323:.* = pc:<da>");
+  AddRouteEntry("sip:.* = pc:<da>");
+  
+  autoStartTransmitVideo = autoStartReceiveVideo = true;
+
+  // Keep a pointer to the runtime
+
+  Init ();
+
+  // Set ports
+  unsigned a, b, c, d, e, f = 0;
+  get_port_ranges (a, b, c, d, e, f);
+  set_port_ranges (a, b, c, d, e, f);
+
+  // Video options
+  gm_conf_notifier_add (VIDEO_CODECS_KEY "maximum_video_tx_bitrate", 
+			video_option_changed_nt, this);
+  gm_conf_notifier_add (VIDEO_CODECS_KEY "temporal_spatial_tradeoff",
+			video_option_changed_nt, this);
+  gm_conf_notifier_add (VIDEO_DEVICES_KEY "size", 
+                        video_option_changed_nt, this);
+  gm_conf_notifier_add (VIDEO_CODECS_KEY "max_frame_rate",
+                        video_option_changed_nt, this);
+  gm_conf_notifier_add (VIDEO_CODECS_KEY "maximum_video_rx_bitrate",
+                        video_option_changed_nt, this);
+  gm_conf_notifier_trigger (VIDEO_CODECS_KEY "maximum_video_rx_bitrate");
+  
+  // Set Codecs from the Configuration
+  detect_codecs ();
+  gm_conf_notifier_add (CODECS_KEY "list",
+			codecs_list_changed_nt, this);
+  gm_conf_notifier_trigger (CODECS_KEY "list"); 
+
+  // The jitter
+  gm_conf_notifier_add (AUDIO_CODECS_KEY "minimum_jitter_buffer", 
+			jitter_buffer_changed_nt, this);
+  gm_conf_notifier_add (AUDIO_CODECS_KEY "maximum_jitter_buffer", 
+			jitter_buffer_changed_nt, this);
+  gm_conf_notifier_trigger (AUDIO_CODECS_KEY "maximum_jitter_buffer"); 
+
+  // Audio codecs settings
+  gm_conf_notifier_add (AUDIO_CODECS_KEY "enable_silence_detection", 
+			silence_detection_changed_nt, this);
+  gm_conf_notifier_trigger (AUDIO_CODECS_KEY "enable_silence_detection");
+
+  gm_conf_notifier_add (AUDIO_CODECS_KEY "enable_echo_cancelation", 
+			echo_cancelation_changed_nt, this);
+  gm_conf_notifier_trigger (AUDIO_CODECS_KEY "enable_silence_detection");
 }
 
 
@@ -117,12 +538,368 @@ GMManager::~GMManager ()
 }
 
 
+bool GMManager::dial (const std::string uri)
+{
+  if (uri.find ("sip:") == 0 || uri.find ("h323:") == 0 || uri.find (":") == string::npos) {
+
+    new GMURLHandler (core, uri.c_str ());
+    return true;
+  }
+
+  return false;
+}
+
+
+bool GMManager::send_message (const std::string uri, const std::string message)
+{
+  if (uri.find ("sip:") == 0 || uri.find (":") == string::npos) {
+
+    if (!uri.empty () && !message.empty ())
+      sipEP->Message (uri.c_str (), message.c_str ());
+
+    return true;
+  }
+
+  return false;
+}
+
+
+bool
+GMManager::populate_menu (Ekiga::Contact &contact,
+                          Ekiga::MenuBuilder &builder)
+{
+  std::string name = contact.get_name ();
+  std::map<std::string, std::string> uris = contact.get_uris ();
+
+  return menu_builder_add_actions (name, uris, builder);
+}
+
+
+bool 
+GMManager::populate_menu (const std::string uri,
+                          Ekiga::MenuBuilder & builder)
+{
+  std::map<std::string, std::string> uris; 
+  uris [""] = uri;
+
+  return menu_builder_add_actions ("", uris, builder);
+}
+
+
+bool 
+GMManager::menu_builder_add_actions (const std::string & fullname,
+                                     std::map<std::string,std::string> & uris,
+                                     Ekiga::MenuBuilder & builder)
+{
+  bool populated = false;
+
+  /* Add actions of type "call" for all uris */
+  for (std::map<std::string, std::string>::const_iterator iter = uris.begin ();
+       iter != uris.end ();
+       iter++) {
+
+    std::string action = _("Call");
+
+    if (!iter->first.empty ())
+      action = action + " [" + iter->first + "]";
+
+    builder.add_action ("call", action, sigc::bind (sigc::mem_fun (this, &GMManager::on_dial), iter->second));
+
+    populated = true;
+  }
+
+  /* Add actions of type "message" for all uris */
+  for (std::map<std::string, std::string>::const_iterator iter = uris.begin ();
+       iter != uris.end ();
+       iter++) {
+
+    std::string action = _("Message");
+
+    if (!iter->first.empty ())
+      action = action + " [" + iter->first + "]";
+
+    builder.add_action ("message", action, sigc::bind (sigc::mem_fun (this, &GMManager::on_message), fullname, iter->second));
+
+    populated = true;
+  }
+
+  return populated;
+}
+
+
+void GMManager::get_jitter_buffer_size (unsigned & min_val,
+                                        unsigned & max_val)
+{
+  min_val = gm_conf_get_int (AUDIO_CODECS_KEY "minimum_jitter_buffer");
+  max_val = gm_conf_get_int (AUDIO_CODECS_KEY "maximum_jitter_buffer");
+}
+
+
+void GMManager::set_jitter_buffer_size (unsigned min_val,
+                                        unsigned max_val)
+{
+  // Adjust general settings
+  SetAudioJitterDelay (PMAX (min_val, 20), PMIN (max_val, 1000));
+  
+  // Adjust setting for all sessions of all connections of all calls
+  for (PSafePtr<OpalCall> call = activeCalls;
+       call != NULL;
+       ++call) {
+
+    for (int i = 0; 
+         i < 2;
+         i++) {
+
+      PSafePtr<OpalConnection> connection = call->GetConnection (i);
+      if (connection) {
+
+        RTP_Session *session = 
+          connection->GetSession (OpalMediaFormat::DefaultAudioSessionID);
+
+        if (session != NULL) {
+
+          unsigned units = session->GetJitterTimeUnits ();
+          session->SetJitterBufferSize (min_val * units, 
+                                        max_val * units, 
+                                        units);
+        }
+      }
+    }
+  }
+}
+
+
+bool GMManager::get_echo_cancelation ()
+{
+  return gm_conf_get_bool (AUDIO_CODECS_KEY "enable_silence_detection");
+}
+
+
+void GMManager::set_echo_cancelation (bool enabled)
+{
+  OpalEchoCanceler::Params ec;
+  
+  // General settings
+  ec = GetEchoCancelParams ();
+  if (enabled)
+    ec.m_mode = OpalEchoCanceler::Cancelation;
+  else
+    ec.m_mode = OpalEchoCanceler::NoCancelation;
+  SetEchoCancelParams (ec);
+  
+  // Adjust setting for all connections of all calls
+  for (PSafePtr<OpalCall> call = activeCalls;
+       call != NULL;
+       ++call) {
+
+    for (int i = 0; 
+         i < 2;
+         i++) {
+
+      PSafePtr<OpalConnection> connection = call->GetConnection (i);
+      if (connection) {
+
+	OpalEchoCanceler *echo_canceler = connection->GetEchoCanceler ();
+
+	if (echo_canceler)
+	  echo_canceler->SetParameters (ec);
+      }
+    }
+  }
+}
+
+
+bool GMManager::get_silence_detection ()
+{
+  return gm_conf_get_bool (AUDIO_CODECS_KEY "enable_echo_cancelation");
+}
+
+
+void GMManager::set_silence_detection (bool enabled)
+{
+  OpalSilenceDetector::Params sd;
+  
+  // General settings
+  sd = GetSilenceDetectParams ();
+  if (enabled)
+    sd.m_mode = OpalSilenceDetector::AdaptiveSilenceDetection;
+  else
+    sd.m_mode = OpalSilenceDetector::NoSilenceDetection;
+  SetSilenceDetectParams (sd);
+  
+  // Adjust setting for all connections of all calls
+  for (PSafePtr<OpalCall> call = activeCalls;
+       call != NULL;
+       ++call) {
+
+    for (int i = 0; 
+         i < 2;
+         i++) {
+
+      PSafePtr<OpalConnection> connection = call->GetConnection (i);
+      if (connection) {
+
+	OpalSilenceDetector *silence_detector = connection->GetSilenceDetector ();
+
+	if (silence_detector)
+	  silence_detector->SetParameters (sd);
+      }
+    }
+  }
+}
+
+
+void GMManager::get_port_ranges (unsigned & min_udp_port, 
+                                 unsigned & max_udp_port,
+                                 unsigned & min_tcp_port, 
+                                 unsigned & max_tcp_port,
+                                 unsigned & min_rtp_port, 
+                                 unsigned & max_rtp_port)
+{
+  std::string key [3] = { 
+    PORTS_KEY "udp_port_range",
+    PORTS_KEY "rtp_port_range",
+    PORTS_KEY "tcp_port_range"
+  };
+
+  gchar *port_range = NULL;
+  gchar **couple = NULL;
+
+  for (int i = 0;
+       i < 3;
+       i++) {
+
+    port_range = gm_conf_get_string (key [i].c_str ());
+    if (port_range) {
+
+      couple = g_strsplit (port_range, ":", 2);
+
+      if (i == 0) {
+
+        min_udp_port = atoi (couple [0]);
+        max_udp_port = atoi (couple [1]);
+      }
+      else if (i == 1) {
+
+        min_tcp_port = atoi (couple [0]);
+        max_tcp_port = atoi (couple [1]);
+      }
+      else {
+
+        min_rtp_port = atoi (couple [0]);
+        max_rtp_port = atoi (couple [1]);
+      }
+    }
+
+    g_free (port_range);
+    g_strfreev (couple);
+    port_range = NULL;
+    couple = NULL;
+  }
+}
+
+
+void GMManager::set_port_ranges (unsigned min_udp_port, 
+                                 unsigned max_udp_port,
+                                 unsigned min_tcp_port, 
+                                 unsigned max_tcp_port,
+                                 unsigned min_rtp_port, 
+                                 unsigned max_rtp_port)
+{
+  SetTCPPorts (min_tcp_port, max_tcp_port);
+  SetRtpIpPorts (min_rtp_port, max_rtp_port);
+  SetUDPPorts (min_udp_port, max_udp_port);
+}
+
+
+void GMManager::set_video_options (unsigned size,
+                                   unsigned max_frame_rate,
+                                   unsigned temporal_spatial_tradeoff,
+                                   unsigned maximum_video_rx_bitrate,
+                                   unsigned maximum_video_tx_bitrate)
+{
+  OpalMediaFormatList media_formats_list;
+  OpalMediaFormat::GetAllRegisteredMediaFormats (media_formats_list);
+
+  // Configure all mediaOptions of all Video MediaFormats
+  for (int i = 0 ; i < media_formats_list.GetSize () ; i++) {
+
+    OpalMediaFormat media_format = media_formats_list [i];
+    if (media_format.GetDefaultSessionID () == OpalMediaFormat::DefaultVideoSessionID) {
+
+      media_format.SetOptionInteger (OpalVideoFormat::FrameWidthOption (), 
+                                     video_sizes [size].width);  
+      media_format.SetOptionInteger (OpalVideoFormat::FrameHeightOption (), 
+                                     video_sizes[ size].height);  
+      media_format.SetOptionInteger (OpalVideoFormat::FrameTimeOption (),
+                                     (int) (90000 / max_frame_rate));
+      media_format.SetOptionInteger (OpalVideoFormat::MaxBitRateOption (), 
+                                     maximum_video_rx_bitrate * 1000);
+      media_format.SetOptionInteger (OpalVideoFormat::TargetBitRateOption (), 
+                                     maximum_video_tx_bitrate * 1000);
+      media_format.SetOptionInteger (OpalVideoFormat::MinRxFrameWidthOption(), 
+                                     160);
+      media_format.SetOptionInteger (OpalVideoFormat::MinRxFrameHeightOption(), 
+                                     120);
+      media_format.SetOptionInteger (OpalVideoFormat::MaxRxFrameWidthOption(), 
+                                     1920);
+      media_format.SetOptionInteger (OpalVideoFormat::MaxRxFrameHeightOption(), 
+                                     1088);
+      media_format.AddOption(new OpalMediaOptionUnsigned (OpalVideoFormat::TemporalSpatialTradeOffOption (), 
+                                                          true, OpalMediaOption::NoMerge, temporal_spatial_tradeoff));  
+      media_format.AddOption(new OpalMediaOptionUnsigned (OpalVideoFormat::MaxFrameSizeOption (), 
+                                                          true, OpalMediaOption::NoMerge, 1400));
+
+      OpalMediaFormat::SetRegisteredMediaFormat(media_format);
+    }
+  }
+
+  // Adjust setting for all sessions of all connections of all calls
+  for (PSafePtr<OpalCall> call = activeCalls;
+       call != NULL;
+       ++call) {
+
+    for (int i = 0; 
+         i < 2;
+         i++) {
+
+      PSafePtr<OpalConnection> connection = call->GetConnection (i);
+      if (connection) {
+
+        OpalMediaStream *stream = 
+          connection->GetMediaStream (OpalMediaFormat::DefaultVideoSessionID, false); 
+
+        if (stream != NULL) {
+
+          OpalMediaFormat mediaFormat = stream->GetMediaFormat ();
+          mediaFormat.SetOptionInteger (OpalVideoFormat::TemporalSpatialTradeOffOption() , temporal_spatial_tradeoff);  
+          mediaFormat.SetOptionInteger (OpalVideoFormat::TargetBitRateOption (), maximum_video_tx_bitrate * 1000);
+          stream->UpdateMediaFormat (mediaFormat);
+        }
+      }
+    }
+  }
+}
+
+
+void GMManager::get_video_options (unsigned & size,
+                                   unsigned & max_frame_rate,
+                                   unsigned & temporal_spatial_tradeoff,
+                                   unsigned & maximum_video_rx_bitrate,
+                                   unsigned & maximum_video_tx_bitrate)
+{
+  max_frame_rate = gm_conf_get_int (VIDEO_CODECS_KEY "max_frame_rate");
+  temporal_spatial_tradeoff = gm_conf_get_int (VIDEO_CODECS_KEY "temporal_spatial_tradeoff");
+  maximum_video_rx_bitrate = gm_conf_get_int (VIDEO_CODECS_KEY "maximum_video_rx_bitrate");
+  maximum_video_tx_bitrate = gm_conf_get_int (VIDEO_CODECS_KEY "maximum_video_tx_bitrate");
+  size = gm_conf_get_int (VIDEO_DEVICES_KEY "size");
+}
+
+
 void
 GMManager::Exit ()
 {
   ClearAllCalls (OpalConnection::EndedByLocalUser, TRUE);
-
-  StopAudioTester ();
 
 #ifdef HAS_AVAHI
   RemoveZeroconfClient ();
@@ -133,21 +910,6 @@ GMManager::Exit ()
   RemoveVideoGrabber ();
 
   RemoveSTUNClient ();
-}
-
-
-bool
-GMManager::SetUpCall (const PString & call_addr,
-		       PString & call_token)
-{
-  bool result = FALSE;
-  
-  result = OpalManager::SetUpCall ("pc:*", call_addr, call_token, NULL);
-
-  if (!result) 
-    pcssEP->PlaySoundEvent ("busy_tone_sound");
-  
-  return result;
 }
 
 
@@ -216,195 +978,103 @@ GMManager::GetCallingState ()
 }
 
 
-OpalMediaFormatList
-GMManager::GetAvailableAudioMediaFormats ()
+Ekiga::CodecList GMManager::get_codecs ()
 {
+  GSList *codecs_config = NULL;
+
+  std::map<std::string, Ekiga::CodecDescription> codecs;
+  Ekiga::CodecList all_codecs;
+  Ekiga::CodecList config_codecs;
+
   OpalMediaFormatList full_list;
-  OpalMediaFormatList sip_list;
-  OpalMediaFormatList h323_list;
 
-  sip_list = sipEP->GetAvailableAudioMediaFormats ();
-  h323_list = h323EP->GetAvailableAudioMediaFormats ();
+  // Build the CodecList from the available OpalMediaFormats
+  GetAllowedFormats (full_list);
+  from_media_formats_to_codec_list (full_list, all_codecs);
 
-  /* Merge common codecs */
-  for (PINDEX i = 0 ; i < sip_list.GetSize () ; i++) {
+  // Build the CodecList from the configuration
+  codecs_config = gm_conf_get_string_list (CODECS_KEY "list");
+  from_gslist_to_codec_list (codecs_config, config_codecs);
+  g_slist_foreach (codecs_config, (GFunc) g_free, NULL);
+  g_slist_free (codecs_config);
 
-    for (PINDEX j = 0 ; j < h323_list.GetSize () ; j++) {
+  // Finally build the CodecList taken into account by the GMManager
+  // It contains codecs from the configuration and other disabled codecs
+  for (Ekiga::CodecList::iterator it = all_codecs.begin ();
+       it != all_codecs.end ();
+       it++) {
 
-      if (sip_list [i].GetPayloadType () == h323_list [j].GetPayloadType ()
-          && sip_list [i].GetBandwidth () == h323_list [j].GetBandwidth ()) {
+    Ekiga::CodecList::iterator i  = search_n (config_codecs.begin (), config_codecs.end (), 1, *it, same_codec_desc);
+    if (i == config_codecs.end ())
+      config_codecs.push_back (*it);
+  }
 
-        full_list += sip_list [i];
-        full_list += h323_list [j];
+  // Remove unsupported codecs
+  for (Ekiga::CodecList::iterator it = config_codecs.begin ();
+       it != config_codecs.end ();
+       it++) {
+
+    Ekiga::CodecList::iterator i  = search_n (all_codecs.begin (), all_codecs.end (), 1, *it, same_codec_desc);
+    if (i == config_codecs.end ())
+      config_codecs.erase (it);
+  }
+
+  return config_codecs;
+}
+
+
+void GMManager::set_codecs (Ekiga::CodecList codecs)
+{
+  PStringArray initial_order;
+  PStringArray initial_mask;
+
+  OpalMediaFormatList all_media_formats;
+  OpalMediaFormatList media_formats;
+
+  PStringArray order;
+  PStringArray mask;
+
+  GetAllowedFormats (all_media_formats);
+
+  // Build order
+  Ekiga::CodecList::iterator codecs_it;
+  for (codecs_it = codecs.begin () ;
+       codecs_it != codecs.end () ;
+       codecs_it++) {
+
+    bool active = (*codecs_it).active;
+    std::string name = (*codecs_it).name;
+    unsigned rate = (*codecs_it).rate;
+    int j = 0;
+
+    // Find the OpalMediaFormat corresponding to the Ekiga::CallCore::CodecDescription
+    if (active) {
+      for (j = 0 ; 
+           j < all_media_formats.GetSize () ;
+           j++) {
+
+        if (name == (const char *) all_media_formats [j].GetEncodingName ()
+            && rate == all_media_formats [j].GetClockRate ()) {
+          
+          // Found something
+          order += all_media_formats [j];
+        }
       }
     }
   }
 
-  return full_list;
-}
+  // Build the mask
+  all_media_formats = OpalTranscoder::GetPossibleFormats (pcssEP->GetMediaFormats ());
+  all_media_formats.Remove (order);
 
+  for (int i = 0 ; 
+       i < all_media_formats.GetSize () ; 
+       i++)
+    mask += all_media_formats [i];
 
-OpalMediaFormatList
-GMManager::GetAvailableVideoMediaFormats ()
-{
-  OpalMediaFormatList full_list;
-  OpalMediaFormatList sip_list;
-  OpalMediaFormatList h323_list;
-
-  sip_list = sipEP->GetAvailableVideoMediaFormats ();
-  h323_list = h323EP->GetAvailableVideoMediaFormats ();
-
-  /* Merge common codecs */
-  for (PINDEX i = 0 ; i < sip_list.GetSize () ; i++) {
-    full_list += sip_list [i];
-  }
-  for (PINDEX j = 0 ; j < h323_list.GetSize () ; j++) {
-    full_list += h323_list [j];
-  }
-
-  return full_list;
-}
-
-
-void 
-GMManager::SetAudioMediaFormats (PStringArray *order)
-{
-  PStringArray initial_order;
-  PStringArray initial_mask;
-
-  OpalMediaFormatList media_formats;
-  OpalMediaFormatList media_formats_list;
-
-  PStringArray mask;
-
-  if (order == NULL) 
-    return;
-
-  OpalMediaFormat::GetAllRegisteredMediaFormats(media_formats_list);
-
-  media_formats_list.Remove (*order);
-
-  // Configure Audio Codec Order
-  for (int i = 0 ; i < media_formats_list.GetSize () ; i++)
-    if (media_formats_list [i].GetDefaultSessionID () == OpalMediaFormat::DefaultAudioSessionID) {
-
-      if (media_formats_list [i].IsTransportable())
-        mask += media_formats_list [i];
-      else
-        *order += media_formats_list [i];
-    }
-
-  initial_order = GetMediaFormatOrder ();
-  initial_mask = GetMediaFormatMask ();
-
-  // Skip Video MediaFormats
-  for (int i = 0 ; i < initial_order.GetSize () ; i++)
-    if (OpalMediaFormat (initial_order [i]).GetDefaultSessionID () == OpalMediaFormat::DefaultVideoSessionID)
-      *order += initial_order [i];
-
-  for (int i = 0 ; i < initial_mask.GetSize () ; i++)
-    if (OpalMediaFormat (initial_mask [i]).GetDefaultSessionID () == OpalMediaFormat::DefaultVideoSessionID)
-      mask += initial_mask [i];
-
+  // Update the OpalManager
   SetMediaFormatMask (mask);
-  SetMediaFormatOrder (*order);
-}
-
-
-void 
-GMManager::SetVideoMediaFormats (PStringArray *order)
-{
-  unsigned size = 0;
-  unsigned max_frame_rate = 15;
-  unsigned tsto = 0;
-  
-  unsigned max_rx_bitrate = 16;
-  unsigned max_tx_bitrate = 16;
-
-  PStringArray initial_order;
-  PStringArray initial_mask;
-
-  OpalMediaFormatList media_formats_list;
-
-  PStringArray mask;
-  PStringArray last_priority;
-
-  if (order == NULL) 
-    return;
-
-  gnomemeeting_threads_enter ();
-  max_frame_rate = gm_conf_get_int (VIDEO_CODECS_KEY "max_frame_rate");
-  tsto = gm_conf_get_int (VIDEO_CODECS_KEY "temporal_spatial_tradeoff");
-  max_rx_bitrate = gm_conf_get_int (VIDEO_CODECS_KEY "maximum_video_rx_bitrate");
-  max_tx_bitrate = gm_conf_get_int (VIDEO_CODECS_KEY "maximum_video_tx_bitrate");
-  size = gm_conf_get_int (VIDEO_DEVICES_KEY "size");
-  gnomemeeting_threads_leave ();
-
-  if (max_frame_rate <= 0)
-    max_frame_rate = 15;
-
-  OpalMediaFormat::GetAllRegisteredMediaFormats(media_formats_list);
-
-  //Configure all MediaOptions of all Video MediaFormats
-  for (int i = 0 ; i < media_formats_list.GetSize () ; i++) {
-    OpalMediaFormat media_format = media_formats_list[i];
-    if (media_format.GetDefaultSessionID () == OpalMediaFormat::DefaultVideoSessionID) {
-
-      media_format.SetOptionInteger (OpalVideoFormat::FrameWidthOption (), 
-                                     video_sizes[size].width);  
-      media_format.SetOptionInteger (OpalVideoFormat::FrameHeightOption (), 
-                                     video_sizes[size].height);  
-      media_format.SetOptionInteger (OpalVideoFormat::FrameTimeOption (),
-                                     (int)(90000 / max_frame_rate));
-      media_format.SetOptionInteger (OpalVideoFormat::MaxBitRateOption (), 
-                                     max_rx_bitrate * 1000);
-      media_format.SetOptionInteger (OpalVideoFormat::TargetBitRateOption (), 
-                                     max_tx_bitrate * 1000);
-      media_format.SetOptionInteger (OpalVideoFormat::MinRxFrameWidthOption(), 
-                                     160);
-      media_format.SetOptionInteger (OpalVideoFormat::MinRxFrameHeightOption(), 
-                                     120);
-      media_format.SetOptionInteger (OpalVideoFormat::MaxRxFrameWidthOption(), 
-                                     1920);
-      media_format.SetOptionInteger (OpalVideoFormat::MaxRxFrameHeightOption(), 
-                                     1088);
-      media_format.AddOption(new OpalMediaOptionUnsigned(OpalVideoFormat::TemporalSpatialTradeOffOption(), 
-                                                         true, OpalMediaOption::NoMerge, tsto));  
-      media_format.AddOption(new OpalMediaOptionUnsigned(OpalVideoFormat::MaxFrameSizeOption(), 
-                                                         true, OpalMediaOption::NoMerge, 1400));
-
-      OpalMediaFormat::SetRegisteredMediaFormat(media_format);
-    }
-  }
-
-  initial_order = GetMediaFormatOrder ();
-  initial_mask = GetMediaFormatMask ();
-
-  // Skip Audio MediaFormats
-  for (int i = 0 ; i < initial_order.GetSize () ; i++)
-    if (OpalMediaFormat (initial_order [i]).GetDefaultSessionID () == OpalMediaFormat::DefaultAudioSessionID)
-      *order += initial_order [i];
-
-  for (int i = 0 ; i < initial_mask.GetSize () ; i++)
-    if (OpalMediaFormat (initial_mask [i]).GetDefaultSessionID () == OpalMediaFormat::DefaultAudioSessionID)
-      mask += initial_mask [i];
-
-  media_formats_list.Remove (*order);
-
-  // Configure Video Codec Order
-  for (int i = 0 ; i < media_formats_list.GetSize () ; i++) {
-
-    if (media_formats_list [i].GetDefaultSessionID () == OpalMediaFormat::DefaultVideoSessionID) {
-
-      if (media_formats_list [i].IsTransportable())
-        mask += media_formats_list [i];
-      else 
-        *order += media_formats_list [i];
-    }
-  }
-
-  SetMediaFormatMask (mask);
-  SetMediaFormatOrder (*order);
+  SetMediaFormatOrder (order);
 }
 
 
@@ -484,34 +1154,6 @@ GMManager::GetURL (PString protocol)
   g_free (account_url);
 
   return url;
-}
-
-
-void 
-GMManager::StartAudioTester (gchar *audio_manager,
-				  gchar *audio_player,
-				  gchar *audio_recorder)
-{
-  PWaitAndSignal m(at_access_mutex);
-  
-  if (audio_tester)     
-    delete (audio_tester);
-
-  audio_tester =
-    new GMAudioTester (audio_manager, audio_player, audio_recorder, *this);
-}
-
-
-void 
-GMManager::StopAudioTester ()
-{
-  PWaitAndSignal m(at_access_mutex);
-
-  if (audio_tester) {
-   
-    delete (audio_tester);
-    audio_tester = NULL;
-  }
 }
 
 
@@ -690,19 +1332,6 @@ GMManager::RemoveSTUNClient ()
 }
 
 
-bool
-GMManager::OnForwarded (OpalConnection &connection,
-                        G_GNUC_UNUSED const PString & forward_party)
-{
-  /* Emit the signal */
-  Ekiga::Runtime *runtime = GnomeMeeting::Process ()->GetRuntime (); // FIXME
-  Ekiga::CallInfo info (connection, Ekiga::CallInfo::Forwarded);
-  runtime->run_in_main (sigc::bind (call_event.make_slot (), info));
-
-  return TRUE;
-}
-
-
 
 PSafePtr<OpalConnection> GMManager::GetConnection (PSafePtr<OpalCall> call, 
 						    bool is_remote)
@@ -725,76 +1354,15 @@ PSafePtr<OpalConnection> GMManager::GetConnection (PSafePtr<OpalCall> call,
 }
 
 
-void GMManager::GetRemoteConnectionInfo (OpalConnection & connection,
-					  gchar * & utf8_name,
-					  gchar * & utf8_app,
-					  gchar * & utf8_url)
+OpalCall *GMManager::CreateCall ()
 {
-  PINDEX idx;
-  
-  PString remote_url;
-  PString remote_name;
-  PString remote_app;
-  PString remote_alias;
+  Ekiga::Call *call = NULL;
 
-  /* Get information about the remote user */
-  remote_name = connection.GetRemotePartyName ();
-  idx = remote_name.Find ("(");
-  if (idx != P_MAX_INDEX) {
-    
-    remote_alias = remote_name.Mid (idx + 1);
-    remote_alias =
-      remote_alias.Mid (0, (remote_alias.Find (",") != P_MAX_INDEX) ?
-			remote_alias.Find (",") : remote_alias.Find (")"));
-    remote_name = remote_name.Left (idx);
-  }
-  idx = remote_name.Find ("[");
-  if (idx != P_MAX_INDEX)
-    remote_name = remote_name.Left (idx);
-  idx = remote_name.Find ("@");
-  if (idx != P_MAX_INDEX)
-    remote_name = remote_name.Left (idx);
-  
-  /* The remote application */
-  remote_app = connection.GetRemoteApplication (); 
-  idx = remote_app.Find ("(");
-  if (idx != P_MAX_INDEX)
-    remote_app = remote_app.Left (idx);
-  idx = remote_app.Find ("[");
-  if (idx != P_MAX_INDEX)
-    remote_app = remote_app.Left (idx);
-  
-  /* The remote url */
-  remote_url = connection.GetRemotePartyCallbackURL ();
+  call = new Opal::Call (*this, core);
 
-  /* UTF-8 Conversion */
-  utf8_app = gnomemeeting_get_utf8 (remote_app.Trim ());
-  utf8_name = gnomemeeting_get_utf8 (remote_name.Trim ());
-  utf8_url = gnomemeeting_get_utf8 (remote_url);
-}
-  
+  runtime.run_in_main (sigc::bind (new_call, call));
 
-void 
-GMManager::GetCurrentConnectionInfo (gchar *&name, 
-				      gchar *&url)
-{
-  PString call_token;
-
-  PSafePtr <OpalCall> call = NULL;
-  PSafePtr <OpalConnection> connection = NULL;
-  
-  gchar *app = NULL;
-
-  call_token = GetCurrentCallToken ();
-  call = FindCallWithLock (call_token);
-
-  if (call != NULL) {
-
-    connection = GetConnection (call, TRUE);
-
-    if (connection != NULL) 
-      GetRemoteConnectionInfo (*connection, name, app, url);
-  }
+  return dynamic_cast<OpalCall *> (call);
 }
 
 
@@ -836,14 +1404,6 @@ GMManager::OnIncomingConnection (OpalConnection &connection,
     SetCurrentCallToken (connection.GetCall ().GetToken ());
   }
 
-  if (reason == 0) {
-
-    /* Emit the signal */
-    Ekiga::Runtime *runtime = GnomeMeeting::Process ()->GetRuntime (); // FIXME
-    Ekiga::CallInfo info (connection, Ekiga::CallInfo::Incoming);
-    runtime->run_in_main (sigc::bind (call_event.make_slot (), info));
-  }
-
   return res;
 }
 
@@ -851,10 +1411,6 @@ GMManager::OnIncomingConnection (OpalConnection &connection,
 void 
 GMManager::OnEstablishedCall (OpalCall &call)
 {
-  /* Update the timers */
-  RTPTimer.RunContinuous (PTimeInterval (1000));
-  AvgSignalTimer.RunContinuous (PTimeInterval (50));
-
   /* Update internal state */
   SetCallingState (GMManager::Connected);
   SetCurrentCallToken (call.GetToken ());
@@ -890,11 +1446,6 @@ GMManager::OnEstablished (OpalConnection &connection)
   
   PTRACE (3, "GMManager\t Will establish the connection");
   OpalManager::OnEstablished (connection);
-
-  /* Emit the signal */
-  Ekiga::Runtime *runtime = GnomeMeeting::Process ()->GetRuntime (); // FIXME
-  Ekiga::CallInfo info (connection, Ekiga::CallInfo::Established);
-  runtime->run_in_main (sigc::bind (call_event.make_slot (), info));
 }
 
 
@@ -905,14 +1456,6 @@ GMManager::OnClearedCall (OpalCall & call)
       && GetCurrentCallToken () != call.GetToken())
     return;
   
-  /* Stop the Timers */
-  NoIncomingMediaTimer.Stop ();
-  
-  /* we reset the no-data detection */
-  RTPTimer.Stop ();
-  AvgSignalTimer.Stop ();
-  stats.Reset ();
-
   /* Play busy tone if we were connected */
   if (GetCallingState () == GMManager::Connected)
     pcssEP->PlaySoundEvent ("busy_tone_sound"); 
@@ -930,52 +1473,6 @@ GMManager::OnClearedCall (OpalCall & call)
 }
 
 
-void
-GMManager::OnReleased (OpalConnection & connection)
-{ 
-  PTimeInterval t;
-  Ekiga::Runtime *runtime = GnomeMeeting::Process ()->GetRuntime (); // FIXME
-
-  PTRACE (3, "GMManager\t Will release the connection");
-  OpalManager::OnReleased (connection);
-
-  /* Do nothing for the PCSS connection */
-  if (PIsDescendant(&connection, OpalPCSSConnection)) {
-    return;
-  }
-
-  /* Start time */
-  if (connection.GetConnectionStartTime ().IsValid ())
-    t = PTime () - connection.GetConnectionStartTime();
-  
-  if (t.GetSeconds () == 0 
-      && !connection.IsOriginating ()
-      && connection.GetCallEndReason ()!=OpalConnection::EndedByAnswerDenied) {
-
-    Ekiga::CallInfo info (connection, Ekiga::CallInfo::Missed);
-    runtime->run_in_main (sigc::bind (call_event.make_slot (), info));
-  }
-
-  /* The currently active call was cleared */
-  if (GetCurrentCallToken() != PString::Empty() 
-      && GetCurrentCallToken () != connection.GetCall().GetToken())
-    return;
-
-  /* Emit the signal */
-  Ekiga::CallInfo info (connection, Ekiga::CallInfo::Cleared);
-  runtime->run_in_main (sigc::bind (call_event.make_slot (), info));
-}
-
-
-void 
-GMManager::OnHold (OpalConnection & connection)
-{
-  Ekiga::Runtime *runtime = GnomeMeeting::Process ()->GetRuntime (); // FIXME
-  Ekiga::CallInfo info (connection, Ekiga::CallInfo::Held);
-  runtime->run_in_main (sigc::bind (call_event.make_slot (), info));
-}
-
-
 void 
 GMManager::OnMessageReceived (const SIPURL & _from,
                               const PString & _body)
@@ -988,8 +1485,7 @@ GMManager::OnMessageReceived (const SIPURL & _from,
 
   pcssEP->PlaySoundEvent ("new_message_sound"); // FIXME use signals here too
 
-  Ekiga::Runtime *runtime = GnomeMeeting::Process ()->GetRuntime (); // FIXME
-  runtime->run_in_main (sigc::bind (im_received.make_slot (), display_name, uri, message));
+  runtime.run_in_main (sigc::bind (im_received.make_slot (), display_name, uri, message));
 }
 
 
@@ -1000,9 +1496,8 @@ GMManager::OnMessageFailed (const SIPURL & _to,
   SIPURL to = _to;
   to.AdjustForRequestURI ();
   std::string uri = (const char *) to.AsString ();
-  Ekiga::Runtime *runtime = GnomeMeeting::Process ()->GetRuntime (); // FIXME
-  runtime->run_in_main (sigc::bind (im_failed.make_slot (), uri, 
-                                    _("Could not send message")));
+  runtime.run_in_main (sigc::bind (im_failed.make_slot (), uri, 
+                                   _("Could not send message")));
 }
 
 
@@ -1014,8 +1509,7 @@ GMManager::OnMessageSent (const PString & _to,
   to.AdjustForRequestURI ();
   std::string uri = (const char *) to.AsString ();
   std::string message = (const char *) body;
-  Ekiga::Runtime *runtime = GnomeMeeting::Process ()->GetRuntime (); // FIXME
-  runtime->run_in_main (sigc::bind (im_sent.make_slot (), uri, message));
+  runtime.run_in_main (sigc::bind (im_sent.make_slot (), uri, message));
 }
 
 
@@ -1053,130 +1547,25 @@ GMManager::SetUserNameAndAlias ()
 
 
 void
-GMManager::SetPorts ()
-{
-  gchar *rtp_port_range = NULL;
-  gchar *udp_port_range = NULL;
-  gchar *tcp_port_range = NULL;
-
-  gchar **rtp_couple = NULL;
-  gchar **udp_couple = NULL;
-  gchar **tcp_couple = NULL;
-
-  rtp_port_range = gm_conf_get_string (PORTS_KEY "rtp_port_range");
-  udp_port_range = gm_conf_get_string (PORTS_KEY "udp_port_range");
-  tcp_port_range = gm_conf_get_string (PORTS_KEY "tcp_port_range");
-
-  if (rtp_port_range)
-    rtp_couple = g_strsplit (rtp_port_range, ":", 0);
-  if (udp_port_range)
-    udp_couple = g_strsplit (udp_port_range, ":", 0);
-  if (tcp_port_range)
-    tcp_couple = g_strsplit (tcp_port_range, ":", 0);
-  
-  if (tcp_couple && tcp_couple [0] && tcp_couple [1]) {
-
-    SetTCPPorts (atoi (tcp_couple [0]), atoi (tcp_couple [1]));
-    PTRACE (1, "Set TCP port range to " << setfill (':') 
-            << atoi (tcp_couple [0]) << ":"
-	    << atoi (tcp_couple [1])) << setfill (' ');
-  }
-
-  if (rtp_couple && rtp_couple [0] && rtp_couple [1]) {
-
-    SetRtpIpPorts (atoi (rtp_couple [0]), atoi (rtp_couple [1]));
-    PTRACE (1, "Set RTP port range to " << setfill (':')
-            << atoi (rtp_couple [0]) << ":"
-	    << atoi (rtp_couple [1])) << setfill (' ');
-  }
-
-  if (udp_couple && udp_couple [0] && udp_couple [1]) {
-
-    SetUDPPorts (atoi (udp_couple [0]), atoi (udp_couple [1]));
-    PTRACE (1, "Set UDP port range to " << setfill (':')
-            << atoi (udp_couple [0]) << ":"
-	    << atoi (udp_couple [1])) << setfill (' ');
-  }
-
-  g_free (tcp_port_range);
-  g_free (udp_port_range);
-  g_free (rtp_port_range);
-  g_strfreev (tcp_couple);
-  g_strfreev (udp_couple);
-  g_strfreev (rtp_couple);
-}
-
-
-void
 GMManager::Init ()
 {
-  OpalEchoCanceler::Params ec;
-  OpalSilenceDetector::Params sd;
   OpalMediaFormatList list;
   
-  int min_jitter = 20;
-  int max_jitter = 500;
   int nat_method = 0;
   
-  gboolean enable_sd = TRUE;  
-  gboolean enable_ec = TRUE;  
-
   gchar *ip = NULL;
   
   /* GmConf cache */
   gnomemeeting_threads_enter ();
-  min_jitter = gm_conf_get_int (AUDIO_CODECS_KEY "minimum_jitter_buffer");
-  max_jitter = gm_conf_get_int (AUDIO_CODECS_KEY "maximum_jitter_buffer");
-  enable_sd = gm_conf_get_bool (AUDIO_CODECS_KEY "enable_silence_detection");
-  enable_ec = gm_conf_get_bool (AUDIO_CODECS_KEY "enable_echo_cancelation");
-  autoStartTransmitVideo = 
-    autoStartReceiveVideo = 
-    gm_conf_get_bool (VIDEO_CODECS_KEY "enable_video");
   nat_method = gm_conf_get_int (NAT_KEY "method");
   ip = gm_conf_get_string (NAT_KEY "public_ip");
   gnomemeeting_threads_leave ();
-
-  /* Setup ports */
-  SetPorts ();
 
   /* Set Up IP translation */
   if (nat_method == 2 && ip)
     SetTranslationAddress (PString (ip));
   else
-    SetTranslationAddress (PString ("0.0.0.0"));
-  
-  /* H.323 Endpoint */
-  h323EP = new GMH323Endpoint (*this);
-  h323EP->Init ();
-  AddRouteEntry("pc:.*             = h323:<da>");
-	
-  /* SIP Endpoint */
-  sipEP = new GMSIPEndpoint (*this);
-  AddRouteEntry("pc:.*             = sip:<da>");
-  
-  /* PC Sound System Endpoint */
-  pcssEP = new GMPCSSEndpoint (*this);
-  AddRouteEntry("h323:.* = pc:<da>");
-  AddRouteEntry("sip:.* = pc:<da>");
-  
-  /* Jitter buffer */
-  SetAudioJitterDelay (PMAX (min_jitter, 20), PMIN (max_jitter, 1000));
-  
-  /* Silence Detection */
-  sd = GetSilenceDetectParams ();
-  if (enable_sd)
-    sd.m_mode = OpalSilenceDetector::AdaptiveSilenceDetection;
-  else
-    sd.m_mode = OpalSilenceDetector::NoSilenceDetection;
-  SetSilenceDetectParams (sd);
-  
-  /* Echo Cancelation */
-  ec = GetEchoCancelParams ();
-  if (enable_ec)
-    ec.m_mode = OpalEchoCanceler::Cancelation;
-  else
-    ec.m_mode = OpalEchoCanceler::NoCancelation;
-  SetEchoCancelParams (ec);
+    SetTranslationAddress (PString ("0.0.0.0")); 
   
   /* Update general devices configuration */
   UpdateDevices ();
@@ -1204,7 +1593,33 @@ GMManager::Init ()
 
   g_free (ip);
   
-  stats.Reset();
+  /* GMConf notifiers for what we manager */
+  gm_conf_notifier_add (PERSONAL_DATA_KEY "firstname",
+			fullname_changed_nt, this);
+  gm_conf_notifier_add (PERSONAL_DATA_KEY "lastname",
+			fullname_changed_nt, this);
+  gm_conf_notifier_add (VIDEO_CODECS_KEY "enable_video", 
+			enable_video_changed_nt, this);
+
+  gm_conf_notifier_add (PROTOCOLS_KEY "interface",
+			network_interface_changed_nt, this);
+  gm_conf_notifier_add (NAT_KEY "public_ip",
+			public_ip_changed_nt, this);
+  gm_conf_notifier_add (VIDEO_DEVICES_KEY "input_device", 
+			video_device_changed_nt, this);
+  gm_conf_notifier_add (VIDEO_DEVICES_KEY "channel", 
+			video_device_changed_nt, this);
+  gm_conf_notifier_add (VIDEO_DEVICES_KEY "size", 
+			video_device_changed_nt, this);
+  gm_conf_notifier_add (VIDEO_DEVICES_KEY "format", 
+			video_device_changed_nt, this);
+  gm_conf_notifier_add (VIDEO_DEVICES_KEY "image", 
+			video_device_changed_nt, this);
+  gm_conf_notifier_add (VIDEO_DEVICES_KEY "enable_preview", 
+			video_device_changed_nt, this);
+
+  gm_conf_notifier_add (PERSONAL_DATA_KEY "status",
+			status_changed_nt, this);
 }
 
 
@@ -1345,14 +1760,6 @@ GMManager::OnIPChanged (PTimer &,
 }
 
 
-void
-GMManager::OnNoIncomingMediaTimeout (PTimer &,
-				      INT)
-{
-  if (gm_conf_get_bool (CALL_OPTIONS_KEY "clear_inactive_calls"))
-    ClearAllCalls (H323Connection::EndedByTransportFail, FALSE);
-}
-
 bool
 GMManager::SetDeviceVolume (PSoundChannel *sound_channel,
 			     bool is_encoding,
@@ -1377,274 +1784,27 @@ GMManager::OnClosedMediaStream (const OpalMediaStream & stream)
   OpalManager::OnClosedMediaStream (stream);
 
   if (pcssEP->GetMediaFormats ().FindFormat(stream.GetMediaFormat()) == P_MAX_INDEX)
-    OnMediaStream ((OpalMediaStream &) stream, TRUE);
+    dynamic_cast <Opal::Call &> (stream.GetConnection ().GetCall ()).OnClosedMediaStream ((OpalMediaStream &) stream);
 }
 
 
 bool 
 GMManager::OnOpenMediaStream (OpalConnection & connection,
-			       OpalMediaStream & stream)
+                              OpalMediaStream & stream)
 {
   if (!OpalManager::OnOpenMediaStream (connection, stream))
     return FALSE;
 
-  if (pcssEP->GetMediaFormats ().FindFormat(stream.GetMediaFormat()) == P_MAX_INDEX)
-    OnMediaStream (stream, FALSE);
+  if (pcssEP->GetMediaFormats ().FindFormat(stream.GetMediaFormat()) == P_MAX_INDEX) 
+    dynamic_cast <Opal::Call &> (connection.GetCall ()).OnOpenMediaStream (stream);
 
   return TRUE;
 }
 
 
-bool 
-GMManager::OnMediaStream (OpalMediaStream & stream,
-			   bool is_closing)
+void GMManager::OnHold (OpalConnection & connection)
 {
-  PString codec_name;
-  bool is_encoding = FALSE;
-  bool is_video = FALSE;
- 
-  is_video = (stream.GetSessionID () == OpalMediaFormat::DefaultVideoSessionID);
-  is_encoding = !stream.IsSource (); // If the codec is from a source media
-  				     // stream, the sink will be PCM or YUV
-				     // and we are receiving.
-  codec_name = stream.GetMediaFormat ().GetEncodingName ();
-  codec_name = codec_name.ToUpper ();
-
-  Ekiga::Runtime *runtime = GnomeMeeting::Process ()->GetRuntime (); // FIXME
-  runtime->run_in_main (sigc::bind (media_stream_event.make_slot (), 
-                                    std::string ((const char *) codec_name),
-                                    is_video,
-                                    is_encoding,
-                                    is_closing));
-    
-  return TRUE;
-}
-
-
-void 
-GMManager::UpdateRTPStats (PTime start_time,
-                           RTP_Session *audio_session,
-                           RTP_Session *video_session)
-{
-  PTimeInterval t;
-  PTime now;
-  
-  PSafePtr <OpalMediaStream> stream = NULL;
-  PString call_token;
-  PSafePtr <OpalCall> call = NULL;
-  PSafePtr <OpalConnection> connection = NULL;
-  PVideoOutputDevice* device = NULL;
-
-  int elapsed_seconds = 0;
-  int re_bytes = 0;
-  int tr_bytes = 0;
-  int buffer_size = 0;
-  int time_units = 8;
-
-  t = now - stats.last_tick;
-  elapsed_seconds = t.GetSeconds ();
-
-  if (elapsed_seconds > 1) { /* To get more precision */
-
-    if (audio_session) {
-
-      re_bytes = audio_session->GetOctetsReceived ();
-      tr_bytes = audio_session->GetOctetsSent ();
-
-      stats.a_re_bandwidth = PMAX ((re_bytes - stats.re_a_bytes) / (1000.0 * elapsed_seconds), 0);
-      stats.a_tr_bandwidth = PMAX ((tr_bytes - stats.tr_a_bytes) / (1000.0 * elapsed_seconds), 0);
-
-      buffer_size = audio_session->GetJitterBufferSize ();
-      time_units = audio_session->GetJitterTimeUnits ();
-      
-      stats.jitter_buffer_size = buffer_size / PMAX (time_units, 8);
-
-      stats.re_a_bytes = re_bytes;
-      stats.tr_a_bytes = tr_bytes;
-
-      stats.total_packets += audio_session->GetPacketsReceived ();
-      stats.lost_packets += audio_session->GetPacketsLost ();
-      stats.late_packets += audio_session->GetPacketsTooLate ();
-      stats.out_of_order_packets += audio_session->GetPacketsOutOfOrder (); 
-    }
-
-    if (video_session) {
-      
-      re_bytes = video_session->GetOctetsReceived ();
-      tr_bytes = video_session->GetOctetsSent ();
-
-      stats.v_re_bandwidth = PMAX ((re_bytes - stats.re_v_bytes) / (1000.0 * elapsed_seconds), 0);
-      stats.v_tr_bandwidth = PMAX ((tr_bytes - stats.tr_v_bytes) / (1000.0 * elapsed_seconds), 0);
-
-      stats.re_v_bytes = re_bytes;
-      stats.tr_v_bytes = tr_bytes;
-      
-      stats.total_packets += video_session->GetPacketsReceived ();
-      stats.lost_packets += video_session->GetPacketsLost ();
-      stats.late_packets += video_session->GetPacketsTooLate ();
-      stats.out_of_order_packets += video_session->GetPacketsOutOfOrder ();
-    }
-
-    stats.v_re_fps = 0;
-    stats.re_width = 0;
-    stats.re_height =  0;
-    stats.v_tr_fps = 0;
-    stats.tr_width = 0;
-    stats.tr_height =  0;
-
-    call_token = GetCurrentCallToken ();
-    call = FindCallWithLock (call_token);
-
-    if (call != NULL) {
-
-      connection = GetConnection (call, FALSE);
-      if (connection != NULL) {
-
-        stream = connection->GetMediaStream (OpalMediaFormat::DefaultVideoSessionID, FALSE);
-        if (stream != NULL) {
-
-          // Get and calculate statistics for the Output Device
-          device = ((const OpalVideoMediaStream &) *stream).GetVideoOutputDevice ();
-          if (device) {
-
-            stats.v_re_fps = (int)((device->GetNumberOfFrames() - stats.v_re_frames) / elapsed_seconds);
-            stats.v_re_frames = device->GetNumberOfFrames();
-            if (stats.v_re_frames == 0) {
-
-              stats.re_width = 0; 
-              stats.re_height = 0;
-            }
-            else
-              device->GetFrameSize(stats.re_width, stats.re_height);
-          } 
-        }
-
-        stream = connection->GetMediaStream (OpalMediaFormat::DefaultVideoSessionID, TRUE);
-        if (stream != NULL) {
-
-          // Get and calculate statistics for the Preview Device
-          device = ((const OpalVideoMediaStream &) *stream).GetVideoOutputDevice ();
-          if (device) {
-            stats.v_tr_fps = (int)((device->GetNumberOfFrames() - stats.v_tr_frames) / elapsed_seconds);
-            stats.v_tr_frames = device->GetNumberOfFrames();
-            if (stats.v_tr_frames == 0) {
-              stats.tr_width = 0; 
-              stats.tr_height = 0;
-            }
-            else
-              device->GetFrameSize(stats.tr_width, stats.tr_height);
-          }
-        }
-      }
-    }
-
-    stats.last_tick = now;
-    stats.start_time = start_time;
-  }
-}
-
-
-void 
-GMManager::OnAvgSignalTimeout (PTimer &,
-                               INT)
-{
-  PSafePtr <OpalCall> call = NULL;
-  PSafePtr <OpalConnection> connection = NULL;
-
-  PSafePtr<OpalMediaStream> stream = NULL;
-  Ekiga::Runtime *runtime = GnomeMeeting::Process ()->GetRuntime (); // FIXME
-
-  float output = 0;
-  float input = 0;
-  
-  call = FindCallWithLock (GetCurrentCallToken ());
-  if (call != NULL) {
-
-    connection = GetConnection (call, FALSE);
-
-    if (connection != NULL) {
-
-      stream = connection->GetMediaStream (OpalMediaFormat::DefaultAudioSessionID,
-                                           FALSE);
-      if (stream) {
-        OpalRawMediaStream & audio_stream = (OpalRawMediaStream &) (*stream);
-        output = (linear2ulaw (audio_stream.GetAverageSignalLevel ()) ^ 0xff) / 100.0;
-      }
-
-      stream = connection->GetMediaStream (OpalMediaFormat::DefaultAudioSessionID,
-                                           TRUE);
-      if (stream) {
-        OpalRawMediaStream & audio_stream = (OpalRawMediaStream &) (*stream);
-	input = (linear2ulaw (audio_stream.GetAverageSignalLevel ()) ^ 0xff) / 100.0;
-      }
-    } 
-    runtime->run_in_main (sigc::bind (audio_signal_event.make_slot (), input, output));
-  }
-}
-
-
-void 
-GMManager::OnRTPTimeout (PTimer &, 
-                         INT)
-{
-  float lost_packets_per = 0;
-  float late_packets_per = 0;
-  float out_of_order_packets_per = 0;
-
-  PString remote_address;
-  
-  PSafePtr <OpalCall> call = NULL;
-  PSafePtr <OpalConnection> connection = NULL;
-  
-  RTP_Session *audio_session = NULL;
-  RTP_Session *video_session = NULL;
- 
-  /* If we didn't receive any audio and video data this time,
-    then we start the timer */
-  if (stats.a_re_bandwidth <= 0.0 && stats.v_re_bandwidth <= 0.0) {
-
-    if (!NoIncomingMediaTimer.IsRunning ()) 
-      NoIncomingMediaTimer.SetInterval (0, 30);
-  }
-  else
-    NoIncomingMediaTimer.Stop ();
-
-  /* Update the audio and video sessions statistics */
-  {
-    call = FindCallWithLock (GetCurrentCallToken ());
-    if (call != NULL) {
-
-      connection = GetConnection (call, TRUE);
-
-      if (connection != NULL) {
-
-        audio_session = 
-          connection->GetSession (OpalMediaFormat::DefaultAudioSessionID);
-        video_session = 
-          connection->GetSession (OpalMediaFormat::DefaultVideoSessionID);
-
-        UpdateRTPStats (connection->GetConnectionStartTime (),
-                        audio_session,
-                        video_session);
-      }
-    }
-  }
-
-  if (stats.total_packets > 0) {
-
-    lost_packets_per = ((float) stats.lost_packets * 100.0
-			/ (float) stats.total_packets);
-    late_packets_per = ((float) stats.late_packets * 100.0
-			/ (float) stats.total_packets);
-    out_of_order_packets_per = ((float) stats.out_of_order_packets * 100.0
-				/ (float) stats.total_packets);
-    stats.lost_packets_per = PMIN (100, PMAX (0, lost_packets_per));
-    stats.late_packets_per = PMIN (100, PMAX (0, late_packets_per));
-    stats.out_of_order_packets_per = PMIN (100, PMAX (0, out_of_order_packets_per));
-  }
-
-  Ekiga::Runtime *runtime = GnomeMeeting::Process ()->GetRuntime (); // FIXME
-  runtime->run_in_main (sigc::bind (call_stats_event.make_slot (), stats));
+  dynamic_cast <Opal::Call &> (connection.GetCall ()).OnHold (connection.IsConnectionOnHold ());
 }
 
 
@@ -1806,50 +1966,6 @@ GMManager::CreateVideoOutputDevice(G_GNUC_UNUSED const OpalConnection & connecti
 }
 
 
-bool
-GMManager::IsCallOnHold (PString callToken)
-{
-  PSafePtr<OpalCall> call = FindCallWithLock (callToken);
-  OpalConnection *connection = NULL;
-  
-  if (call != NULL) {
-
-    connection = GetConnection (call, TRUE);
-
-    if (connection != NULL) {
-
-      return connection->IsConnectionOnHold ();
-    }
-  }	
-  
-  return FALSE;
-}
-
-
-bool
-GMManager::SetCallOnHold (PString callToken,
-			   gboolean state)
-{
-  PSafePtr<OpalCall> call = FindCallWithLock (callToken);
-  OpalConnection *connection = NULL;
-
-  if (call != NULL) {
-
-    connection = GetConnection (call, TRUE);
-
-    if (connection != NULL) {
-
-      if (state) 
-	connection->HoldConnection ();
-      else 
-	connection->RetrieveConnection ();
-    }
-  }	
-  
-  return TRUE;
-}
-
-
 void
 GMManager::SendDTMF (PString callToken,
 		      PString dtmf)
@@ -1869,179 +1985,39 @@ GMManager::SendDTMF (PString callToken,
 }
 
 
-gboolean
-GMManager::IsCallWithAudio (PString callToken)
+void
+GMManager::on_dial (std::string uri)
 {
-  PSafePtr <OpalCall> call = NULL;
-  PSafePtr <OpalConnection> connection = NULL;
-
-  OpalMediaStream *stream = NULL;
-
-  call = FindCallWithLock (callToken);
-
-  if (call != NULL) {
-    
-    connection = GetConnection (call, TRUE);
-
-    if (connection != NULL) {
-
-      stream = 
-	connection->GetMediaStream (OpalMediaFormat::DefaultAudioSessionID, 
-				    FALSE);
-      if (stream)
-	return TRUE;
-    }
-  }
-  
-  return FALSE;
+  dial (uri);
 }
 
 
-gboolean
-GMManager::IsCallWithVideo (PString callToken)
+void
+GMManager::on_message (std::string name,
+                       std::string uri)
 {
-  PSafePtr <OpalCall> call = NULL;
-  PSafePtr <OpalConnection> connection = NULL;
-
-  OpalMediaStream *stream = NULL;
-
-  call = FindCallWithLock (callToken);
-
-  if (call != NULL) {
-    
-    connection = GetConnection (call, TRUE);
-
-    if (connection != NULL) {
-
-      stream = 
-	connection->GetMediaStream (OpalMediaFormat::DefaultVideoSessionID, 
-				    FALSE);
-      if (stream)
-	return TRUE;
-    }
-  }
-  
-  return FALSE;
+  runtime.run_in_main (sigc::bind (new_chat.make_slot (), name, uri));
 }
 
 
-gboolean
-GMManager::IsCallAudioPaused (PString callToken)
+void GMManager::detect_codecs ()
 {
-  OpalMediaStream *stream = NULL;
-  PSafePtr<OpalCall> call = FindCallWithLock (callToken);
-  PSafePtr<OpalConnection> connection = NULL;
+  Ekiga::CodecList codecs = get_codecs ();
+  GSList *codecs_list = NULL;
 
-  if (call != NULL) {
+  for (Ekiga::CodecList::iterator it = codecs.begin ();
+       it != codecs.end ();
+       it++) {
 
-    connection = GetConnection (call, TRUE);
+    std::stringstream val;
 
-    if (connection != NULL) {
-
-      stream = 
-	connection->GetMediaStream (OpalMediaFormat::DefaultAudioSessionID, 
-				    FALSE); // Sink media stream of the
-      					    // SIP connection
-
-      if (stream != NULL) {
-
-	return stream->IsPaused();
-      }
-    }
-  }	
-  
-  return FALSE;
-}
-
-
-gboolean
-GMManager::IsCallVideoPaused (PString callToken)
-{
-  OpalMediaStream *stream = NULL;
-  PSafePtr<OpalCall> call = FindCallWithLock (callToken);
-  PSafePtr<OpalConnection> connection = NULL;
-  
-  if (call != NULL) {
-
-    connection = GetConnection (call, TRUE);
-
-    if (connection != NULL) {
-
-      stream = 
-	connection->GetMediaStream (OpalMediaFormat::DefaultVideoSessionID, 
-				    FALSE); // Sink media stream of the
-      					    // SIP connection
-
-      if (stream != NULL) {
-
-	return stream->IsPaused();
-      }
-    }
-  }	
-  
-  return FALSE;
-}
-
-
-bool
-GMManager::SetCallAudioPause (PString callToken, 
-			       bool state)
-{
-  OpalMediaStream *stream = NULL;
-  PSafePtr<OpalCall> call = FindCallWithLock (callToken);
-  PSafePtr<OpalConnection> connection = NULL;
-
-  if (call != NULL) {
-
-    connection = GetConnection (call, TRUE);
-
-    if (connection != NULL) {
-
-      stream = 
-	connection->GetMediaStream (OpalMediaFormat::DefaultAudioSessionID, 
-				    FALSE); // Sink media stream of the
-      					    // SIP connection
-
-      if (stream != NULL) {
-
-	stream->SetPaused (state);
-	return TRUE;
-      }
-    }
+    val << (*it).name << "*" << (*it).bandwidth << "*" << (*it).rate << "=" << ((*it).active?"1":"0");
+    codecs_list = g_slist_append (codecs_list, g_strdup (val.str ().c_str ()));
   }
 
-  return FALSE;
-}
-
-
-bool
-GMManager::SetCallVideoPause (PString callToken, 
-			       bool state)
-{
-  OpalMediaStream *stream = NULL;
-  PSafePtr<OpalCall> call = FindCallWithLock (callToken);
-  PSafePtr<OpalConnection> connection = NULL;
-
-  if (call != NULL) {
-
-    connection = GetConnection (call, TRUE);
-
-    if (connection != NULL) {
-
-      stream = 
-	connection->GetMediaStream (OpalMediaFormat::DefaultVideoSessionID, 
-				    FALSE); // Sink media stream of the
-      					    // SIP connection
-
-      if (stream != NULL) {
-
-	stream->SetPaused (state);
-	return TRUE;
-      }
-    }
-  }
-
-  return FALSE;
+  gm_conf_set_string_list (CODECS_KEY "list", codecs_list);
+  g_slist_foreach (codecs_list, (GFunc) g_free, NULL);
+  g_slist_free (codecs_list);
 }
 
 
@@ -2049,7 +2025,6 @@ void
 GMManager::OnMWIReceived (const PString & account,
                           const PString & mwi)
 {
-  Ekiga::Runtime *runtime = GnomeMeeting::Process ()->GetRuntime (); // FIXME
   PINDEX i = 0;
   PINDEX j = 0;
   int total = 0;
@@ -2087,7 +2062,7 @@ GMManager::OnMWIReceived (const PString & account,
       i++;
     }
 
-    runtime->run_in_main (sigc::bind (mwi_event.make_slot (), 
+    runtime.run_in_main (sigc::bind (mwi_event.make_slot (), 
                                       (const char *) account, 
                                       (const char *) mwi,
                                       total));
@@ -2102,8 +2077,7 @@ void
 GMManager::OnRegistered (const PString & aor,
                          bool wasRegistering)
 {
-  Ekiga::Runtime *runtime = GnomeMeeting::Process ()->GetRuntime (); // FIXME
-  runtime->run_in_main (sigc::bind (registration_event.make_slot (), 
+  runtime.run_in_main (sigc::bind (registration_event.make_slot (), 
                                     std::string ((const char *) aor), 
                                     wasRegistering ? Registered : Unregistered,
                                     std::string ()));
@@ -2114,8 +2088,7 @@ void
 GMManager::OnRegistering (const PString & aor,
                          G_GNUC_UNUSED bool isRegistering)
 {
-  Ekiga::Runtime *runtime = GnomeMeeting::Process ()->GetRuntime (); // FIXME
-  runtime->run_in_main (sigc::bind (registration_event.make_slot (), 
+  runtime.run_in_main (sigc::bind (registration_event.make_slot (), 
                                     std::string ((const char *) aor), 
                                     Processing,
                                     std::string ()));
@@ -2127,22 +2100,37 @@ GMManager::OnRegistrationFailed (const PString & aor,
                                  bool wasRegistering,
                                  std::string info)
 {
-  Ekiga::Runtime *runtime = GnomeMeeting::Process ()->GetRuntime (); // FIXME
-  runtime->run_in_main (sigc::bind (registration_event.make_slot (), 
-                                    std::string ((const char *) aor), 
-                                    wasRegistering ? RegistrationFailed : UnregistrationFailed,
-                                    info));
+  runtime.run_in_main (sigc::bind (registration_event.make_slot (), 
+                                   std::string ((const char *) aor), 
+                                   wasRegistering ? RegistrationFailed : UnregistrationFailed,
+                                   info));
 }
 
 
-int
-GMManager::GetRegisteredAccounts ()
+void GMManager::GetAllowedFormats (OpalMediaFormatList & full_list)
 {
-  int number = 0;
-  
-  number = sipEP->GetRegisteredAccounts ();
-  if (h323EP->H323EndPoint::IsRegisteredWithGatekeeper ())
-    number++;
+  OpalMediaFormatList list = OpalTranscoder::GetPossibleFormats (pcssEP->GetMediaFormats ());
+  std::list<std::string> black_list;
+   
+  black_list.push_back ("RFC4175_YCbCr-4:2:0");
+  black_list.push_back ("RFC4175_RGB");
+  black_list.push_back ("GSM-AMR");
+  black_list.push_back ("LPC-10");
+  black_list.push_back ("SpeexIETFNarrow-11k");
+  black_list.push_back ("SpeexIETFNarrow-15k");
+  black_list.push_back ("SpeexIETFNarrow-18.2k");
+  black_list.push_back ("SpeexIETFNarrow-24.6k");
+  black_list.push_back ("SpeexIETFNarrow-5.95k");
+  black_list.push_back ("iLBC-13k3");
+  black_list.push_back ("iLBC-15k2");
+  black_list.push_back ("RFC4175_YCbCr-4:2:0");
+  black_list.push_back ("RFC4175_RGB");
 
-  return number;
+  // Purge blacklisted codecs
+  for (PINDEX i = 0 ; i < list.GetSize () ; i++) {
+
+    std::list<std::string>::iterator it = find (black_list.begin (), black_list.end (), (const char *) list [i]);
+    if (it == black_list.end ()) 
+      full_list += list [i];
+  }
 }

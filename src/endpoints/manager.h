@@ -54,11 +54,17 @@
 #include "stun.h"
 
 #include "accountshandler.h"
-#include "callinfo.h"
-#include "callstats.h"
+
+#include "runtime.h"
+#include "contact-core.h"
+#include "presence-core.h"
+#include "call-manager.h"
+#include "call-core.h"
+#include "call.h"
 
 #include <sigc++/sigc++.h>
 #include <string>
+
 
 class GMLid;
 class GMH323Gatekeeper;
@@ -75,7 +81,12 @@ PDICTIONARY (mwiDict, PString, PString);
  * creation.
  */
 
-class GMManager : public OpalManager
+class GMManager: 
+    public OpalManager,
+    public Ekiga::Service,
+    public Ekiga::ContactDecorator,
+    public Ekiga::PresentityDecorator,
+    public Ekiga::CallManager
 {
   PCLASSINFO(GMManager, OpalManager);
 
@@ -95,7 +106,7 @@ class GMManager : public OpalManager
    * 		     and initialises the variables
    * PRE          :  /
    */
-  GMManager ();
+  GMManager (Ekiga::ServiceCore & _core);
 
 
   /* DESCRIPTION  :  The destructor
@@ -103,6 +114,65 @@ class GMManager : public OpalManager
    * PRE          :  /
    */
   ~GMManager ();
+
+  /**/
+  const std::string get_name () const
+    { return "opal-component"; }
+
+  const std::string get_description () const
+    { return "\tObject bringing in Opal support (calls, text messaging, sip, h323, ...)"; }
+
+  bool populate_menu (Ekiga::Contact &contact,
+                      Ekiga::MenuBuilder &builder);
+
+  bool populate_menu (const std::string uri,
+                      Ekiga::MenuBuilder & builder);
+
+  bool menu_builder_add_actions (const std::string & fullname,
+                                 std::map<std::string, std::string> & uris,
+                                 Ekiga::MenuBuilder & builder);
+
+  void get_jitter_buffer_size (unsigned & min_val,
+                               unsigned & max_val);
+  void set_jitter_buffer_size (unsigned min_val,
+                               unsigned max_val);
+
+  bool get_silence_detection ();
+  void set_silence_detection (bool enabled);
+
+  bool get_echo_cancelation ();
+  void set_echo_cancelation (bool enabled);
+
+  void get_port_ranges (unsigned & min_udp_port, 
+                        unsigned & max_udp_port,
+                        unsigned & min_tcp_port, 
+                        unsigned & max_tcp_port,
+                        unsigned & min_rtp_port, 
+                        unsigned & max_rtp_port);
+  void set_port_ranges (unsigned min_udp_port, 
+                        unsigned max_udp_port,
+                        unsigned min_tcp_port, 
+                        unsigned max_tcp_port,
+                        unsigned min_rtp_port, 
+                        unsigned max_rtp_port);
+
+  void set_video_options (unsigned size,
+                          unsigned max_frame_rate,
+                          unsigned temporal_spatial_tradeoff,
+                          unsigned maximum_video_rx_bitrate,
+                          unsigned maximum_video_tx_bitrate);
+  void get_video_options (unsigned & size,
+                          unsigned & max_frame_rate,
+                          unsigned & temporal_spatial_tradeoff,
+                          unsigned & maximum_video_rx_bitrate,
+                          unsigned & maximum_video_tx_bitrate);
+
+
+  /**/
+  bool dial (const std::string uri); 
+
+  bool send_message (const std::string uri, 
+                     const std::string message);
 
   
   /* DESCRIPTION  :  /
@@ -131,14 +201,6 @@ class GMManager : public OpalManager
   void ResetListeners ();
   
   
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Makes a call to the given address, and fills in the
-   *                 call taken. 
-   * PRE          :  The called url, the call token.
-   */
-  bool SetUpCall (const PString &,
-		  PString &);
-
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Accepts the current incoming call, if any.
@@ -197,14 +259,6 @@ class GMManager : public OpalManager
   GMVideoGrabber *GetVideoGrabber ();
 
 
-  /* DESCRIPTION  :  This callback is called when a call is forwarded.
-   * BEHAVIOR     :  Outputs a message in the log and statusbar.
-   * PRE          :  /
-   */
-  virtual bool OnForwarded (OpalConnection &,
-			    const PString &);
-
-  
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Returns the local or remote OpalConnection for the 
    * 		     given call. If there are several remote connections,
@@ -215,33 +269,8 @@ class GMManager : public OpalManager
 					  bool);
 
 
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Returns the remote party name (UTF-8), the
-   *                 remote application name (UTF-8), and the best
-   *                 guess for the URL to use when calling back the user
-   *                 (the IP, or the alias or e164 number if the local
-   *                 user is registered to a gatekeeper. Not always accurate,
-   *                 for example if you are called by an user with an alias,
-   *                 but not registered to the same GK as you.)
-   * 		     It will use the address book to try matching the full
-   * 		     name.
-   * PRE          :  /
-   */
-  void GetRemoteConnectionInfo (OpalConnection &,
-				gchar * &,
-				gchar * &,
-				gchar * &);
+  OpalCall *CreateCall ();
 
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Returns the name and best guess for the URL to use when 
-   *                 calling back the user (see GetRemoteConnectionInfo)
-   *                 for the current active connection (if any).
-   * PRE          :  /
-   */
-  void GetCurrentConnectionInfo (gchar *&,
-				 gchar *&);
-  
   
   /* DESCRIPTION  :  Called when there is an incoming SIP/H323/PCSS connection.
    * BEHAVIOR     :  Updates the GUI and forward, reject the connection
@@ -278,25 +307,6 @@ class GMManager : public OpalManager
   void OnClearedCall (OpalCall &);
 
 
-  /* DESCRIPTION  :  This callback is called when a connection to a remote
-   *                 endpoint is cleared.
-   * BEHAVIOR     :  Sets the proper values for the current connection 
-   *                 parameters, updates the calls history, and the GUI
-   *                 to display the call end reason.
-   *                 Notice there are 2 connections for each call.
-   * PRE          :  /
-   */
-  void OnReleased (OpalConnection &);
-
-  
-  /* DESCRIPTION  :  This callback is called when a connection to a remote
-   *                 endpoint is put on hold.
-   * BEHAVIOR     :  Updates the GUI.
-   * PRE          :  /
-   */
-  void OnHold (OpalConnection &);
-  
-  
   /* DESCRIPTION  :  Called when a message has been received.
    * BEHAVIOR     :  Updates the text chat window, updates the tray icon in
    * 		     flashing state if the text chat window is hidden.
@@ -334,40 +344,18 @@ class GMManager : public OpalManager
 			       bool &);
 
 
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Returns the list of audio formats supported by
-   * 		     the manager.
-   * PRE          :  /
+  /** Return the list of available codecs
+   * @return a set of the codecs and their descriptions
    */
-  OpalMediaFormatList GetAvailableAudioMediaFormats ();
+  Ekiga::CodecList get_codecs ();
   
-  
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Returns the list of video formats supported by
-   * 		     the manager.
-   * PRE          :  /
-   */
-  OpalMediaFormatList GetAvailableVideoMediaFormats ();
-  
-  
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Add audio media formats following the given order.
-   *                 If no parameter is given, the order will be determined
-   *                 through the configuration.
-   * PRE          :  /
-   */
-  void SetAudioMediaFormats (PStringArray *order = NULL);
 
-  
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Add video media formats following the given order.
-   *                 If no parameter is given, the order will be determined
-   *                 through the configuration.
-   * PRE          :  /
+  /** Enable the given codecs
+   * @param codecs is a set of the codecs and their descriptions
    */
-  void SetVideoMediaFormats (PStringArray *order = NULL);
+  void set_codecs (Ekiga::CodecList codecs); 
   
-  
+
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Sets the User Input Mode following the
    *                 configuration options for each of the endpoints. 
@@ -435,26 +423,6 @@ class GMManager : public OpalManager
    * PRE          : Non-empty protocol.
    */
   PString GetURL (PString);
-  
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Starts an audio tester that will play any recorded
-   *                 sound to the speakers in real time. Can be used to
-   *                 check if the audio volumes are correct before 
-   *                 a conference.
-   * PRE          :  /
-   */
-  void StopAudioTester ();
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Stops the current audio tester if any for the given
-   *                 audio manager, player and recorder.
-   * PRE          :  /
-   */
-  void StartAudioTester (gchar *,
-			 gchar *,
-			 gchar *);
 
 
   /* DESCRIPTION  :  /
@@ -550,13 +518,6 @@ class GMManager : public OpalManager
    */
   void SetUserNameAndAlias ();
 
-    
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Update the RTP, TCP, UDP ports from the config database.
-   * PRE          :  /
-   */
-  void SetPorts ();
-
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Update the audio device volume (playing then recording). 
@@ -571,7 +532,6 @@ class GMManager : public OpalManager
    */
   bool GetDeviceVolume (PSoundChannel *, bool, unsigned int &);
   
-
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  TRUE if the video should automatically be transmitted
@@ -606,22 +566,6 @@ class GMManager : public OpalManager
 
 
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Checks if the call is on hold
-   * PRE          :  /
-   */
-  bool IsCallOnHold (PString callToken);
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Sets the call on hold or retrieve it and returns
-   * 		     FALSE if it fails, TRUE if it worked.
-   * PRE          :  /
-   */
-  bool SetCallOnHold (PString callToken, 
-		      gboolean state);
-
-
-  /* DESCRIPTION  :  /
    * BEHAVIOR     :  Send DTMF to the remote user if any.
    * PRE          :  /
    */
@@ -629,70 +573,18 @@ class GMManager : public OpalManager
 		 PString);
 
 
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Checks if the call has an audio channel
-   * PRE          :  Non-empty call token.
-   */
-  gboolean IsCallWithAudio (PString callToken);
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Checks if the call has a video channel
-   * PRE          :  Non-empty call token.
-   */
-  gboolean IsCallWithVideo (PString callToken);
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Checks if the call's audio channel is paused
-   * PRE          :  Non-empty call token.
-   */
-  gboolean IsCallAudioPaused (PString callToken);
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Checks if the call's video channel is paused
-   * PRE          :  Non-empty call token.
-   */
-  gboolean IsCallVideoPaused (PString callToken);
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Sets the call's audio channel on pause, or retrieve it
-   * PRE          :  Non-empty call token.
-   */
-  bool SetCallAudioPause (PString callToken, 
-			  bool state);
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Sets the call's video channel on pause, or retrieve it
-   * PRE          :  Non-empty call token.
-   */
-  bool SetCallVideoPause (PString callToken, 
-			  bool state);
-
-
-  /* DESCRIPTION  :  / 
-   * BEHAVIOR     :  Returns the number of registered accounts.
-   * PRE          :  /
-   */
-  int GetRegisteredAccounts ();
-  
-  // FIXME : those signals should move to the brand new TextChatCore
-  sigc::signal<void, std::string, std::string> im_failed;
-  sigc::signal<void, std::string, std::string, std::string> im_received;
-  sigc::signal<void, std::string, std::string> im_sent;
-  sigc::signal<void, std::string, std::string> new_chat;
-  // Endof FIXME
-
-  sigc::signal<void, Ekiga::CallInfo &> call_event;
   typedef enum { Processing, Registered, Unregistered, RegistrationFailed, UnregistrationFailed } RegistrationState;
   sigc::signal<void, std::string, GMManager::RegistrationState, std::string> registration_event;
   sigc::signal<void, std::string, std::string, unsigned int> mwi_event;
-  sigc::signal<void, std::string, bool, bool, bool> media_stream_event;
-  sigc::signal<void, float, float> audio_signal_event;
-  sigc::signal<void, Ekiga::CallStatistics &> call_stats_event;
+
+ private:
+  void on_dial (std::string uri);
+
+  void on_message (std::string name,
+                   std::string uri);
+
+  void detect_codecs ();
+
   
  protected:
   
@@ -710,11 +602,7 @@ class GMManager : public OpalManager
                              bool wasRegistering,
                              std::string info);
 
-  bool OnMediaStream (OpalMediaStream &, bool);
-
-  void UpdateRTPStats (PTime,
-		       RTP_Session *,
-		       RTP_Session *);
+  void OnHold (OpalConnection & connection);
 
   bool DeviceVolume (PSoundChannel *, bool, bool, unsigned int &);
 
@@ -726,30 +614,6 @@ class GMManager : public OpalManager
    */
   PDECLARE_NOTIFIER(PTimer, GMManager, OnIPChanged);
 
-
-  /* DESCRIPTION  :  Notifier called after 30 seconds of no media.
-   * BEHAVIOR     :  Clear the calls.
-   * PRE          :  /
-   */
-  PDECLARE_NOTIFIER(PTimer, GMManager, OnNoIncomingMediaTimeout);
-  
-
-  /* DESCRIPTION  :  Notifier called periodically during calls.
-   * BEHAVIOR     :  Refresh the average audio signal display 
-   *                 if it is currently shown.
-   * PRE          :  /
-   */
-  PDECLARE_NOTIFIER(PTimer, GMManager, OnAvgSignalTimeout);
-
-
-  /* DESCRIPTION  :  Notifier called periodically during calls.
-   * BEHAVIOR     :  Refresh the statistics window of the Control Panel
-   *                 if it is currently shown. Update all status bars.
-   * PRE          :  /
-   */
-  PDECLARE_NOTIFIER(PTimer, GMManager, OnRTPTimeout);
-
-
   /* DESCRIPTION  :  Notifier called periodically to update the gateway IP.
    * BEHAVIOR     :  Update the gateway IP to use for the IP translation
    *                 if IP Checking is enabled in the config database.
@@ -757,20 +621,16 @@ class GMManager : public OpalManager
    */
   PDECLARE_NOTIFIER(PTimer, GMManager, OnGatewayIPTimeout);  
 
+ private:
+  void GetAllowedFormats (OpalMediaFormatList & full_list);
 
   PString current_call_token;
 
   CallingState calling_state; 
 
-  PTimer ILSTimer;
-  PTimer AvgSignalTimer;
-  PTimer RTPTimer;
   PTimer GatewayIPTimer;
   PTimer IPChangedTimer;
-  PTimer NoIncomingMediaTimer;
     
-  bool ils_registered;
-
   /* MWI */
   mwiDict mwiData;
 
@@ -781,10 +641,6 @@ class GMManager : public OpalManager
   bool is_receiving_audio;  
 
 
-  /* RTP tats */
-  Ekiga::CallStatistics stats;
-
-  
   /* The various related endpoints */
   GMH323Endpoint *h323EP;
   GMSIPEndpoint *sipEP;
@@ -796,7 +652,6 @@ class GMManager : public OpalManager
   GMVideoGrabber *video_grabber;
   GMH323Gatekeeper *gk;
   GMStunClient *sc;
-  PThread *audio_tester;
 
 
   /* Various mutexes to ensure thread safeness around internal
@@ -806,7 +661,6 @@ class GMManager : public OpalManager
   PMutex ct_access_mutex;
   PMutex tct_access_mutex;
   PMutex lid_access_mutex;
-  PMutex at_access_mutex;
   PMutex mwi_access_mutex;
   PMutex rc_access_mutex;
   PMutex manager_access_mutex;
@@ -824,6 +678,9 @@ class GMManager : public OpalManager
   GMZeroconfPublisher *zcp;
   PMutex zcp_access_mutex;
 #endif
+
+  Ekiga::ServiceCore & core;
+  Ekiga::Runtime & runtime;
 };
 
 #endif
