@@ -148,7 +148,6 @@ protected:
 
   friend class GMAudioRP;
 };
-#endif
 
 
 class GMAudioRP : public PThread
@@ -179,3 +178,4 @@ class GMAudioRP : public PThread
   
   GMAudioTester & tester;
 };
+#endif
