@@ -45,13 +45,15 @@
 #include "common.h"
 
 #include "manager.h"
+#include "presence-core.h"
 
 
 PDICTIONARY (msgDict, PString, PString);
 
 
 /* Minimal SIP endpoint implementation */
-class GMSIPEndpoint : public SIPEndPoint
+class GMSIPEndpoint 
+: public SIPEndPoint, public Ekiga::PresenceFetcher
 {
   PCLASSINFO(GMSIPEndpoint, SIPEndPoint);
 
@@ -62,7 +64,7 @@ class GMSIPEndpoint : public SIPEndPoint
    * 		     and initialises the variables
    * PRE          :  /
    */
-  GMSIPEndpoint (GMManager &ep);
+  GMSIPEndpoint (GMManager &ep, Ekiga::ServiceCore & core);
 
   
   /* DESCRIPTION  :  The destructor.
@@ -71,6 +73,10 @@ class GMSIPEndpoint : public SIPEndPoint
    */
   ~GMSIPEndpoint ();
   
+  /***/
+  void fetch (const std::string uri);
+  void unfetch (const std::string uri);
+
   
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Starts the listener thread on the port choosen 
@@ -82,22 +88,6 @@ class GMSIPEndpoint : public SIPEndPoint
 		      WORD port);
 
   
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Returns the list of audio formats supported by
-   * 		     the endpoint.
-   * PRE          :  /
-   */
-  OpalMediaFormatList GetAvailableAudioMediaFormats ();
-  
-  
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Returns the list of video formats supported by
-   * 		     the endpoint.
-   * PRE          :  /
-   */
-  OpalMediaFormatList GetAvailableVideoMediaFormats ();
-  
-
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Set the local user name following the firstname and last 
    *                 name stored by the conf.
@@ -204,13 +194,6 @@ class GMSIPEndpoint : public SIPEndPoint
       
 
   /* DESCRIPTION  :  / 
-   * BEHAVIOR     :  Returns the number of registered accounts.
-   * PRE          :  /
-   */
-  int GetRegisteredAccounts ();
-
-
-  /* DESCRIPTION  :  / 
    * BEHAVIOR     :  Returns the account to use for outgoing PDU's.
    * PRE          :  /
    */
@@ -258,6 +241,10 @@ class GMSIPEndpoint : public SIPEndPoint
 
   PMutex msgDataMutex;
   msgDict msgData;
+
+  std::list <std::string> uris;    // List of subscribed uris
+  std::list <std::string> domains; // List of registered domains
+  Ekiga::ServiceCore & core;
 };
 
 #endif

@@ -59,7 +59,6 @@
 #include <sip/handlers.h>
 
 #include "presence-core.h"
-#include "sip-endpoint.h"
 
 #define new PNEW
 
@@ -149,10 +148,9 @@ nat_binding_timeout_changed_nt (G_GNUC_UNUSED gpointer id,
   }
 }
 
-
 /* The class */
-GMSIPEndpoint::GMSIPEndpoint (GMManager & ep)
-: SIPEndPoint (ep), endpoint (ep)
+GMSIPEndpoint::GMSIPEndpoint (GMManager & ep, Ekiga::ServiceCore & _core)
+: SIPEndPoint (ep), endpoint (ep), core (_core)
 {
   NoAnswerTimer.SetNotifier (PCREATE_NOTIFIER (OnNoAnswerTimeout));
   Init ();
@@ -161,6 +159,40 @@ GMSIPEndpoint::GMSIPEndpoint (GMManager & ep)
 
 GMSIPEndpoint::~GMSIPEndpoint ()
 {
+}
+
+
+void
+GMSIPEndpoint::fetch (const std::string _uri)
+{
+  std::string::size_type loc = _uri.find ("@", 0);
+  std::string domain;
+
+  if (loc != string::npos) 
+    domain = _uri.substr (loc+1);
+
+  if (std::find (uris.begin (), uris.end (), _uri) == uris.end ())
+    uris.push_back (_uri);
+
+  if (std::find (domains.begin (), domains.end (), domain) != domains.end ()
+      && !IsSubscribed (SIPSubscribe::Presence, _uri.c_str ())) {
+
+    SIPSubscribe::SubscribeType type = SIPSubscribe::Presence;
+    Subscribe (type, 1800, PString (_uri.c_str ()));
+  }
+}
+
+
+void
+GMSIPEndpoint::unfetch (const std::string uri)
+{
+  if (IsSubscribed (SIPSubscribe::Presence, uri.c_str ())) {
+
+    SIPSubscribe::SubscribeType type = SIPSubscribe::Presence;
+    Subscribe (type, 0, PString (uri.c_str ()));
+
+    uris.remove (uri);
+  }
 }
 
 
@@ -273,61 +305,6 @@ GMSIPEndpoint::StartListener (PString iface,
 }
 
 
-OpalMediaFormatList
-GMSIPEndpoint::GetAvailableAudioMediaFormats ()
-{
-  OpalMediaFormatList list;
-  OpalMediaFormatList media_formats;
-  OpalMediaFormatList sip_list;
-
-  GMPCSSEndpoint *pcssEP = endpoint.GetPCSSEndpoint ();
-
-  media_formats = pcssEP->GetMediaFormats ();
-  list += OpalTranscoder::GetPossibleFormats (media_formats);
-
-  for (int i = 0 ; i < list.GetSize () ; i++) {
-
-    if (list [i].GetDefaultSessionID () == 1) { 
-
-      if (PString (list [i].GetEncodingName ()).GetLength () > 0) {
-
-        if (list [i].IsValidForProtocol ("SIP")
-            && list [i].GetPayloadType () != RTP_DataFrame::MaxPayloadType)
-          sip_list += list [i];
-      }
-    }
-  }
-
-  return sip_list;
-}
-
-
-OpalMediaFormatList
-GMSIPEndpoint::GetAvailableVideoMediaFormats ()
-{
-  OpalMediaFormatList list;
-  OpalMediaFormatList media_formats;
-  OpalMediaFormatList sip_list;
-
-  GMPCSSEndpoint *pcssEP = endpoint.GetPCSSEndpoint ();
-
-  media_formats = pcssEP->GetMediaFormats ();
-  list += OpalTranscoder::GetPossibleFormats (media_formats);
-
-  for (int i = 0 ; i < list.GetSize () ; i++) {
-
-    if (list [i].GetDefaultSessionID () == 2) { 
-
-      if (list [i].IsValidForProtocol ("SIP")
-          && list [i].GetPayloadType () != RTP_DataFrame::MaxPayloadType)
-        sip_list += list [i];
-    }
-  }
-
-  return sip_list;
-}
-
-
 void
 GMSIPEndpoint::SetUserNameAndAlias ()
 {
@@ -433,29 +410,54 @@ GMSIPEndpoint::Register (const PString & aor,
 
 
 void
-GMSIPEndpoint::OnRegistered (const PString & aor,
-                             bool wasRegistering)
+GMSIPEndpoint::OnRegistered (const PString & _aor,
+                             bool was_registering)
 {
-  Ekiga::ServiceCore *services = NULL;
-  SIP::EndPoint *sip_endpoint = NULL;
+  std::string aor = (const char *) _aor;
+  std::string::size_type found;
+  std::string::size_type loc = aor.find ("@", 0);
+  std::string server;
 
   guint status = CONTACT_ONLINE;
 
   /* Signal the OpalManager */
-  endpoint.OnRegistered (aor, wasRegistering);
+  endpoint.OnRegistered (aor, was_registering);
 
   /* Signal the SIPEndpoint */
-  SIPEndPoint::OnRegistered (aor, wasRegistering);
+  SIPEndPoint::OnRegistered (aor, was_registering);
 
-  /* Signal the SIP::EndPoint of our engine */
-  services = GnomeMeeting::Process ()->GetServiceCore ();
-  sip_endpoint = 
-    dynamic_cast<SIP::EndPoint *>(services->get ("sip-endpoint"));
-  if (sip_endpoint)
-    sip_endpoint->OnRegistered (aor, wasRegistering);
+  if (loc != string::npos) {
+
+    server = aor.substr (loc+1);
+
+    if (server.empty ())
+      return;
+
+    if (was_registering && std::find (domains.begin (), domains.end (), server) == domains.end ()) 
+      domains.push_back (server);
+
+    if (!was_registering && std::find (domains.begin (), domains.end (), server) != domains.end ()) 
+      domains.remove (server);
+
+    for (std::list<std::string>::const_iterator iter = uris.begin (); 
+         iter != uris.end () ; 
+         iter++) {
+
+      found = (*iter).find (server, 0);
+      if (found != string::npos
+          && ((was_registering && !IsSubscribed (SIPSubscribe::Presence, (*iter).c_str ()))
+              || (!was_registering && IsSubscribed (SIPSubscribe::Presence, (*iter).c_str ())))) {
+
+        SIPSubscribe::SubscribeType type = SIPSubscribe::Presence;
+        Subscribe (type, was_registering ? 500 : 0, PString ((*iter).c_str ()));
+        if (!was_registering)
+          uris.remove (*iter);
+      }
+    }
+  }
 
   /* Publish current state */
-  if (wasRegistering)
+  if (was_registering)
     status = gm_conf_get_int (PERSONAL_DATA_KEY "status");
   else
     status = CONTACT_OFFLINE;
@@ -699,13 +701,6 @@ GMSIPEndpoint::Message (const PString & to,
 }
 
 
-int
-GMSIPEndpoint::GetRegisteredAccounts ()
-{
-  return SIPEndPoint::GetRegistrationsCount ();
-}
-
-
 SIPURL
 GMSIPEndpoint::GetRegisteredPartyName (const PString & host)
 {
@@ -764,15 +759,54 @@ GMSIPEndpoint::OnPresenceInfoReceived (const PString & user,
                                        const PString & basic,
                                        const PString & note)
 {
-  Ekiga::ServiceCore *services = NULL;
-  SIP::EndPoint *sip_endpoint = NULL;
+  PCaselessString b = basic;
+  PCaselessString s = note;
 
-  /* Signal the SIP::EndPoint of our engine */
-  services = GnomeMeeting::Process ()->GetServiceCore ();
-  sip_endpoint = 
-    dynamic_cast<SIP::EndPoint *>(services->get ("sip-endpoint"));
-  if (sip_endpoint)
-    sip_endpoint->OnPresenceInfoReceived (user, basic, note);
+  std::string status = "presence-unknown";
+  std::string presence;
+
+  SIPURL sip_uri = SIPURL (user);
+  sip_uri.AdjustForRequestURI ();
+  std::string _uri = sip_uri.AsString ();
+
+  if (b.Find ("Closed") != P_MAX_INDEX) {
+    presence = "presence-offline";
+    status = _("Offline");
+  }
+  else {
+    presence = "presence-online";
+    status = _("Online");
+  }
+
+  if (s.Find ("Away") != P_MAX_INDEX) {
+    presence = "presence-away";
+    status = _("Away");
+  }
+  else if (s.Find ("On the phone") != P_MAX_INDEX
+           || s.Find ("Ringing") != P_MAX_INDEX
+           || s.Find ("Do Not Disturb") != P_MAX_INDEX) {
+    presence = "presence-dnd";
+    status = _("Do Not Disturb");
+  }
+  else if (s.Find ("Free For Chat") != P_MAX_INDEX) {
+    presence = "presence-freeforchat";
+    status = _("Free For Chat");
+  }
+
+  Ekiga::PresenceCore *presence_core =
+    dynamic_cast<Ekiga::PresenceCore *>(core.get ("presence-core"));
+  Ekiga::Runtime *runtime = 
+    dynamic_cast<Ekiga::Runtime *> (core.get ("runtime")); 
+
+  if (runtime) {
+   
+    /**
+     * TODO
+     * Wouldn't it be convenient to emit the signal and have the presence core listen to it ?
+     */
+    runtime->run_in_main (sigc::bind (presence_core->presence_received.make_slot (), _uri, presence));
+    runtime->run_in_main (sigc::bind (presence_core->status_received.make_slot (), _uri, status));
+  }
 }
 
 
