@@ -1,5 +1,28 @@
 2007-12-31  Damien Sandras  <dsandras@gnome.org>
 
+	* lib/engine/gui/gtk-frontend/chat-window-page.cpp,
+	lib/engine/gui/gtk-frontend/gtk-frontend.cpp,
+	lib/engine/gui/gtk-frontend/chat-window.cpp,
+	lib/engine/gui/gtk-frontend/Makefile.am,
+	src/gui/tools.cpp,
+	src/gui/tools.h,
+	src/gui/preferences.h,
+	src/gui/druid.cpp,
+	src/gui/druid.h,
+	src/gui/callbacks.cpp,
+	src/gui/accounts.cpp,
+	src/gui/accounts.h,
+	src/gui/callbacks.h,
+	src/gui/main.cpp,
+	src/gui/main.h,
+	src/gui/statusicon.cpp:
+	Many changes. Got rid of GnomeMeeting::Process()->GetManager(), use
+	the Ekiga::ServiceCore and the CallCore instead. Addapted all objects
+	to the new engine so that they do not depend on OPAL anymore. They
+	depend on the engine, the engine has an OPAL implementation.
+
+2007-12-31  Damien Sandras  <dsandras@gnome.org>
+
 	* lib/engine/framework/runtime-glib.h, lib/engine/framework/runtime.h:
 	Turned the runtime into a Service. That way it can be accessed through
 	the Ekiga::ServiceCore. 

@@ -41,7 +41,8 @@
 
 #include "chat-window.h"
 #include "chat-window-page.h"
-#include "ekiga.h"
+
+#include "call-core.h"
 
 #include "gmconf.h"
 #include "gmtexttagaddon.h"
@@ -50,6 +51,8 @@
 #include "gmstockicons.h"
 
 #include <gdk/gdkkeysyms.h>
+#include <sigc++/sigc++.h>
+#include <vector>
 
 /*
  * The ChatWindow
@@ -136,7 +139,8 @@ static void conversation_changed_cb (GtkNotebook *notebook,
  *                displayed.
  * PRE          : The ChatWindow as last argument.
  */
-static void on_im_received_cb (std::string display_name,
+static void on_im_received_cb (Ekiga::CallManager & manager,
+                               std::string display_name,
                                std::string from, 
                                std::string message,
                                gpointer data);
@@ -147,7 +151,8 @@ static void on_im_received_cb (std::string display_name,
  *                ChatWindowPage.
  * PRE          : The ChatWindow as last argument.
  */
-static void on_im_sent_cb (std::string to,
+static void on_im_sent_cb (Ekiga::CallManager & manager,
+                           std::string to,
                            std::string message,
                            gpointer data);
 
@@ -157,7 +162,8 @@ static void on_im_sent_cb (std::string to,
  *                ChatWindowPage.
  * PRE          : The ChatWindow as last argument.
  */
-static void on_im_failed_cb (std::string to,
+static void on_im_failed_cb (Ekiga::CallManager & manager,
+                             std::string to,
                              std::string reason,
                              gpointer data);
 
@@ -359,7 +365,8 @@ conversation_changed_cb (GtkNotebook *notebook,
  */
 
 static void
-on_im_received_cb (std::string display_name,
+on_im_received_cb (Ekiga::CallManager & /*manager*/,
+                   std::string display_name,
                    std::string from, 
                    std::string message,
                    gpointer data)
@@ -396,7 +403,8 @@ on_im_received_cb (std::string display_name,
 
 
 static void
-on_im_sent_cb (std::string to,
+on_im_sent_cb (Ekiga::CallManager & /*manager*/,
+               std::string to,
                std::string message,
                gpointer data)
 {
@@ -410,7 +418,8 @@ on_im_sent_cb (std::string to,
 
 
 static void
-on_im_failed_cb (std::string to,
+on_im_failed_cb (Ekiga::CallManager & /*manager*/,
+                 std::string to,
                  std::string reason,
                  gpointer data)
 {
@@ -515,6 +524,7 @@ chat_window_new (Ekiga::ServiceCore & core)
   ChatWindow *self = NULL;
 
   GtkWidget *vbox = NULL;
+  Ekiga::CallCore *call_core = NULL;
 
   sigc::connection conn;
 
@@ -535,12 +545,13 @@ chat_window_new (Ekiga::ServiceCore & core)
   gtk_notebook_set_scrollable (GTK_NOTEBOOK (self->priv->notebook), TRUE);
   gtk_container_add (GTK_CONTAINER (self), self->priv->notebook);
 
-  // FIXME GnomeMeeting::Process should disappear
-  conn = GnomeMeeting::Process ()->GetManager ()->im_received.connect (sigc::bind (sigc::ptr_fun (on_im_received_cb), self));
+  /* Engine signals */
+  call_core = dynamic_cast<Ekiga::CallCore *> (core.get ("call-core"));
+  conn = call_core->im_received.connect (sigc::bind (sigc::ptr_fun (on_im_received_cb), self));
   self->priv->connections.push_back (conn);
-  conn = GnomeMeeting::Process ()->GetManager ()->im_sent.connect (sigc::bind (sigc::ptr_fun (on_im_sent_cb), self));
+  conn = call_core->im_sent.connect (sigc::bind (sigc::ptr_fun (on_im_sent_cb), self));
   self->priv->connections.push_back (conn);
-  conn = GnomeMeeting::Process ()->GetManager ()->im_failed.connect (sigc::bind (sigc::ptr_fun (on_im_failed_cb), self));
+  conn = call_core->im_failed.connect (sigc::bind (sigc::ptr_fun (on_im_failed_cb), self));
   self->priv->connections.push_back (conn);
 
   g_signal_connect (G_OBJECT (self), "hide",

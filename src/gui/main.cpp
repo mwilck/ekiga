@@ -65,10 +65,6 @@
 
 #include <gdk/gdkkeysyms.h>
 
-#ifdef HAVE_BONOBO
-#include <bonobo.h>
-#endif
-
 #ifndef WIN32
 #include <signal.h>
 #include <gdk/gdkx.h>
@@ -88,6 +84,7 @@
 
 #include <libxml/parser.h>
 
+#include "call-core.h"
 #include "gtk-frontend.h"
 #include "services.h"
 
@@ -98,8 +95,6 @@ struct _GmMainWindow
 {
   _GmMainWindow (Ekiga::ServiceCore & _core) : core (_core) { }
 
-  GtkWidget *input_signal;
-  GtkWidget *output_signal;
   GtkObject *adj_input_volume;
   GtkObject *adj_output_volume;
   GtkWidget *audio_volume_frame;
@@ -117,7 +112,7 @@ struct _GmMainWindow
 
   GtkWidget *main_menu;
   
-#if !defined HAVE_GNOME || !defined HAVE_BONOBO
+#if !defined HAVE_GNOME 
   GtkWidget *window_vbox;
   GtkWidget *window_hbox;
 #endif
@@ -138,9 +133,7 @@ struct _GmMainWindow
   GtkWidget *video_frame;
   GtkWidget *preview_button;
   GtkWidget *connect_button;
-  GtkWidget *disconnect_button;
   GtkWidget *hold_button;
-  GtkWidget *incoming_call_popup;
   GtkWidget *transfer_call_popup;
   GtkWidget *status_option_menu;
 
@@ -158,8 +151,11 @@ struct _GmMainWindow
   std::string transmitted_audio_codec;
   std::string received_video_codec;
   std::string received_audio_codec;
+  unsigned int timeout_id;
 
+  Ekiga::Call *current_call;
   Ekiga::ServiceCore & core;
+  std::vector<sigc::connection> connections;
 };
 
 typedef struct _GmMainWindow GmMainWindow;
@@ -238,13 +234,6 @@ static void gm_mw_init_menu (GtkWidget *);
  * pre          : The given GtkWidget pointer must be the main window GMObject. 
  */
 static void gm_mw_init_contacts_list (GtkWidget *);
-
-
-/* description  : /
- * behavior     : Builds the calls history part of the main window.
- * pre          : The given GtkWidget pointer must be the main window GMObject. 
- */
-static void gm_mw_init_calls_history (GtkWidget *);
 
 
 /* description  : /
@@ -330,12 +319,19 @@ static void hold_current_call_cb (GtkWidget *,
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Set the current active call audio or video channel on pause
- * 		   or not and update the GUI accordingly.
- * PRE          :  GPOINTER_TO_INT (data) is a CHANNEL_*
+ * BEHAVIOR     :  Set the current active call audio channel on pause or not
+ * PRE          :  a pointer to the main window 
  */
-static void pause_current_call_channel_cb (GtkWidget *,
-					   gpointer);
+static void toggle_audio_stream_pause_cb (GtkWidget *, 
+                                          gpointer);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Set the current active call video channel on pause or not
+ * PRE          :  a pointer to the main window 
+ */
+static void toggle_video_stream_pause_cb (GtkWidget *, 
+                                          gpointer);
 
 
 /* DESCRIPTION  :  /
@@ -463,17 +459,6 @@ static void url_changed_cb (GtkEditable *,
 			    gpointer);
 
 
-/* DESCRIPTION  :  This callback is called when the user selects a match in the
- * 		   possible URLs list.
- * BEHAVIOR     :  It udpates the URL bar and calls it.
- * PRE          :  /
- */
-static gboolean completion_url_selected_cb (GtkEntryCompletion *,
-					    GtkTreeModel *,
-					    GtkTreeIter *,
-					    gpointer);
-
-
 /* DESCRIPTION  :  This callback is called when the user clicks on enter
  * 		   with a non-empty URL bar.
  * BEHAVIOR     :  It calls the URL.
@@ -503,17 +488,6 @@ static gboolean statusbar_clicked_cb (GtkWidget *,
 				      gpointer);
 
 
-/* DESCRIPTION  :  This callback is called on delete event for the incoming
- * 		   call dialog.
- * BEHAVIOR     :  Disconnects and set the pointer to NULL, the destroy signal
- * 		   will destroy the dialog by itself.
- * PRE          :  A valid main window GMObject.
- */
-static gboolean delete_incoming_call_dialog_cb (GtkWidget *,
-						GdkEvent *,
-						gpointer);
-
-
 /* DESCRIPTION  : Called when a button associated to an Ekiga::Trigger is
  *                clicked
  * PRE          : The pointer must be a valid pointer to a trigger object
@@ -533,123 +507,6 @@ static gboolean main_window_focus_event_cb (GtkWidget *,
 /* 
  * Engine Callbacks 
  */
-static void on_call_event_cb (Ekiga::CallInfo & info, 
-                              gpointer self)
-{
-  gchar *info_string = NULL;
-  std::string end_reason;
-  GmMainWindow *mw = NULL;
-
-  g_return_if_fail (GTK_WIDGET (self) != NULL);
-  mw = gm_mw_get_mw (GTK_WIDGET (self));
-  g_return_if_fail (mw != NULL);
-
-  switch (info.get_call_type ()) 
-    {
-    case Ekiga::CallInfo::Established :
-      info_string = g_strdup_printf (_("Connected with %s"), info.get_remote_party_name ().c_str ());
-      gm_main_window_set_call_url (GTK_WIDGET (self), info.get_remote_uri ().c_str());
-      gm_main_window_set_stay_on_top (GTK_WIDGET (self), gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top"));
-      gm_main_window_set_status (GTK_WIDGET (self), info_string);
-      gm_main_window_flash_message (GTK_WIDGET (self), "%s", info_string);
-      gm_main_window_update_calling_state (GTK_WIDGET (self), GMManager::Connected);
-      g_free (info_string);
-      break;
-
-    case Ekiga::CallInfo::Cleared :
-      end_reason = info.get_call_end_reason ();
-      if (!end_reason.empty ())
-        gm_main_window_flash_message (GTK_WIDGET (self), "%s", end_reason.c_str ());
-      gm_main_window_set_stay_on_top (GTK_WIDGET (self), FALSE);
-      gm_main_window_update_calling_state (GTK_WIDGET (self), GMManager::Standby);
-      gm_main_window_set_status (GTK_WIDGET (self), _("Standby"));
-      gm_main_window_set_call_duration (GTK_WIDGET (self), NULL);
-      gm_main_window_set_call_info (GTK_WIDGET (self), NULL, NULL, NULL, NULL);
-      gm_main_window_set_panel_section (GTK_WIDGET (self), CONTACTS);
-      gm_main_window_clear_stats (GTK_WIDGET (self));
-      gm_main_window_update_logo_have_window (GTK_WIDGET (self));
-      gm_main_window_clear_signal_levels (GTK_WIDGET (self));
-      gm_main_window_push_message (GTK_WIDGET (self), 
-                                   mw->missed_calls,
-                                   mw->total_mwi);
-      break;
-
-    case Ekiga::CallInfo::Missed:
-      mw->missed_calls++;
-      info_string = g_strdup_printf (_("Missed call from %s"), info.get_remote_party_name ().c_str ());
-      gm_main_window_flash_message (GTK_WIDGET (self), "%s", info_string);
-      g_free (info_string);
-      break;
-
-    case Ekiga::CallInfo::Held:
-      gm_main_window_set_call_hold (GTK_WIDGET (self), info.is_call_on_hold ());
-      if (info.is_call_on_hold ())
-        info_string = g_strdup (_("Call on hold"));
-      else
-        info_string = g_strdup (_("Call retrieved"));
-      gm_main_window_flash_message (GTK_WIDGET (self), "%s", info_string);
-      g_free (info_string);
-      break;
-
-    case Ekiga::CallInfo::Forwarded:
-      info_string = g_strdup_printf (_("Forwarded call from %s"), info.get_remote_party_name ().c_str ());
-      gm_main_window_flash_message (GTK_WIDGET (self), "%s", info_string);
-      g_free (info_string);
-      break;
-
-    case Ekiga::CallInfo::Incoming:
-      info_string = g_strdup_printf (_("Call from %s"), info.get_remote_party_name ().c_str ());
-      gm_main_window_flash_message (GTK_WIDGET (self), "%s", info_string);
-      gm_main_window_update_calling_state (GTK_WIDGET (self), GMManager::Called);
-      gm_main_window_incoming_call_dialog_show (GTK_WIDGET (self),
-                                                (gchar *) info.get_remote_party_name ().c_str (),
-                                                (gchar *) info.get_remote_application ().c_str (),
-                                                (gchar *) info.get_remote_uri ().c_str ());
-      break;
-    default:
-      break;
-    }
-}
-
-
-static void on_call_stats_event_cb (Ekiga::CallStatistics & stats, 
-                                    gpointer self)
-{
-  PTimeInterval t;
-  gchar *msg = NULL;
-  msg = g_strdup_printf (_("A:%.1f/%.1f   V:%.1f/%.1f  FPS:%d/%d"), 
-                         stats.a_tr_bandwidth, stats.a_re_bandwidth, 
-                         stats.v_tr_bandwidth, stats.v_re_bandwidth,
-                         stats.v_tr_fps, stats.v_re_fps);
-  gm_main_window_push_info_message (GTK_WIDGET (self), msg);
-  g_free (msg);
-
-  if (stats.start_time.IsValid ())
-    t = PTime () - stats.start_time;
-
-  gm_main_window_update_stats (GTK_WIDGET (self),
-                               stats.lost_packets_per,
-                               stats.late_packets_per,
-                               stats.out_of_order_packets_per,
-                               (int) (stats.jitter_buffer_size),
-                               stats.v_re_bandwidth,
-                               stats.v_tr_bandwidth,
-                               stats.a_re_bandwidth,
-                               stats.a_tr_bandwidth,
-                               stats.re_width,
-                               stats.re_height,
-                               stats.tr_width,
-                               stats.tr_height);
-
-  msg = g_strdup_printf ("%.2ld:%.2ld:%.2ld", 
-                         (long) t.GetHours (), 
-                         (long) (t.GetMinutes () % 60), 
-                         (long) (t.GetSeconds () % 60));
-  gm_main_window_set_call_duration (GTK_WIDGET (self), msg);
-  g_free (msg);
-}
-
-
 static void on_mwi_event_cb (G_GNUC_UNUSED std::string account,
                              G_GNUC_UNUSED std::string mwi,
                              unsigned int total,
@@ -666,63 +523,6 @@ static void on_mwi_event_cb (G_GNUC_UNUSED std::string account,
   gm_main_window_push_message (GTK_WIDGET (self),
                                mw->missed_calls,
                                mw->total_mwi);
-}
-
-
-
-static void on_media_stream_event_cb (std::string name,
-                                      bool is_video,
-                                      bool is_encoding,
-                                      bool is_closing,
-                                      gpointer self)
-{
-  GmMainWindow *mw = NULL;
-
-  g_return_if_fail (GTK_WIDGET (self) != NULL);
-  mw = gm_mw_get_mw (GTK_WIDGET (self));
-  g_return_if_fail (mw != NULL);
-
-  /* FIXME: This should not be needed anymore */
-  if (is_video) {
-    
-    is_closing ?
-      (is_encoding ? mw->video_transmission_active = false : mw->video_reception_active = false)
-      :(is_encoding ? mw->video_transmission_active = true : mw->video_reception_active = true);
-
-    if (is_encoding)
-      is_closing ? mw->transmitted_video_codec = "" : mw->transmitted_video_codec = name;
-    else
-      is_closing ? mw->received_video_codec = "" : mw->received_video_codec = name;
-  }
-  else {
-    
-    is_closing ?
-      (is_encoding ? mw->audio_transmission_active = false : mw->audio_reception_active = false)
-      :(is_encoding ? mw->audio_transmission_active = true : mw->audio_reception_active = true);
-
-    if (is_encoding)
-      is_closing ? mw->transmitted_audio_codec = "" : mw->transmitted_audio_codec = name;
-    else
-      is_closing ? mw->received_audio_codec = "" : mw->received_audio_codec = name;
-  }
-
-  gm_main_window_update_sensitivity (GTK_WIDGET (self),
-                                     is_video,
-                                     is_video ? mw->video_reception_active : mw->audio_reception_active,
-                                     is_video ? mw->video_transmission_active : mw->audio_transmission_active);
-  gm_main_window_set_call_info (GTK_WIDGET (self), 
-                                mw->transmitted_audio_codec.c_str (), 
-                                mw->received_audio_codec.c_str (),
-                                mw->transmitted_video_codec.c_str (), 
-                                mw->received_audio_codec.c_str ());
-}
-
-
-static void on_audio_signal_event_cb (float input,
-                                      float output,
-                                      gpointer self)
-{
-  gm_main_window_set_signal_levels (GTK_WIDGET (self), input, output);
 }
 
 
@@ -758,6 +558,287 @@ static void on_registration_event_cb (std::string aor,
   if (msg)
     gm_main_window_flash_message (GTK_WIDGET (window), "%s", msg);
 }
+
+
+static void on_setup_call_cb (Ekiga::CallManager & /*manager*/,
+                              Ekiga::Call & call,
+                              gpointer self)
+{
+  if (!call.is_outgoing ())
+    gm_main_window_incoming_call_dialog_show (GTK_WIDGET (self), call);
+}
+
+
+static gboolean on_stats_refresh_cb (gpointer self) 
+{
+  gchar *msg = NULL;
+
+  GmMainWindow *mw = gm_mw_get_mw (GTK_WIDGET (self));
+  
+  if (mw->current_call) {
+
+    msg = g_strdup_printf (_("A:%.1f/%.1f   V:%.1f/%.1f"), 
+                           mw->current_call->get_transmitted_audio_bandwidth (),
+                           mw->current_call->get_received_audio_bandwidth (),
+                           mw->current_call->get_transmitted_video_bandwidth (),
+                           mw->current_call->get_received_video_bandwidth ());
+    gdk_threads_enter ();
+    gm_main_window_push_info_message (GTK_WIDGET (self), msg);
+    gm_main_window_set_call_duration (GTK_WIDGET (self), mw->current_call->get_call_duration ().c_str ());
+    gdk_threads_leave ();
+
+    g_free (msg);
+  }
+
+  /*
+  gm_main_window_update_stats (GTK_WIDGET (self),
+                               stats.lost_packets_per,
+                               stats.late_packets_per,
+                               stats.out_of_order_packets_per,
+                               (int) (stats.jitter_buffer_size),
+                               stats.v_re_bandwidth,
+                               stats.v_tr_bandwidth,
+                               stats.a_re_bandwidth,
+                               stats.a_tr_bandwidth,
+                               stats.re_width,
+                               stats.re_height,
+                               stats.tr_width,
+                               stats.tr_height);
+                               */
+
+  return true;
+}
+
+
+static void on_established_call_cb (Ekiga::CallManager & /*manager*/,
+                                    Ekiga::Call & call,
+                                    gpointer self)
+{
+  GmMainWindow *mw = gm_mw_get_mw (GTK_WIDGET (self));
+  std::stringstream info;
+
+  info << _("Connected with") << " " << call.get_remote_party_name ();
+
+  gm_main_window_set_call_url (GTK_WIDGET (self), call.get_remote_uri ().c_str());
+  gm_main_window_set_stay_on_top (GTK_WIDGET (self), gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top"));
+  gm_main_window_set_status (GTK_WIDGET (self), info.str ().c_str ());
+  gm_main_window_set_panel_section (GTK_WIDGET (self), CALL);
+  gm_main_window_flash_message (GTK_WIDGET (self), "%s", info.str ().c_str ());
+  gm_main_window_update_calling_state (GTK_WIDGET (self), GMManager::Connected);
+
+  mw->current_call = &call;
+
+  mw->timeout_id = g_timeout_add (1000, on_stats_refresh_cb, self);
+}
+
+
+static void on_cleared_call_cb (Ekiga::CallManager & /*manager*/,
+                                Ekiga::Call & call,
+                                std::string reason, 
+                                gpointer self)
+{
+  GmMainWindow *mw = gm_mw_get_mw (GTK_WIDGET (self));
+
+  gm_main_window_set_stay_on_top (GTK_WIDGET (self), FALSE);
+  gm_main_window_update_calling_state (GTK_WIDGET (self), GMManager::Standby);
+  gm_main_window_set_status (GTK_WIDGET (self), _("Standby"));
+  gm_main_window_set_call_duration (GTK_WIDGET (self), NULL);
+  gm_main_window_set_call_info (GTK_WIDGET (self), NULL, NULL, NULL, NULL);
+  gm_main_window_set_panel_section (GTK_WIDGET (self), CONTACTS);
+  gm_main_window_clear_stats (GTK_WIDGET (self));
+  gm_main_window_update_logo_have_window (GTK_WIDGET (self));
+  gm_main_window_push_message (GTK_WIDGET (self), 
+                               mw->missed_calls,
+                               mw->total_mwi);
+  gm_main_window_flash_message (GTK_WIDGET (self), "%s", reason.c_str ());
+
+  if (mw->current_call && mw->current_call->get_id () == call.get_id ()) {
+
+    mw->current_call = NULL;
+    g_source_remove (mw->timeout_id);
+    mw->timeout_id = -1;
+  }
+}
+
+
+static void on_cleared_incoming_call_cb (std::string /*reason*/,
+                                         gpointer self)
+{
+  gtk_widget_destroy (GTK_WIDGET (self));
+}
+
+
+static void on_missed_incoming_call_cb (gpointer self)
+{
+  gtk_widget_destroy (GTK_WIDGET (self));
+}
+
+
+static void on_held_call_cb (Ekiga::CallManager & /*manager*/,
+                             Ekiga::Call & /*call*/,
+                             gpointer self)
+{
+  gchar *info_string = NULL;
+
+  gm_main_window_set_call_hold (GTK_WIDGET (self), true);
+  info_string = g_strdup (_("Call on hold"));
+  gm_main_window_flash_message (GTK_WIDGET (self), "%s", info_string);
+  g_free (info_string);
+}
+
+
+static void on_retrieved_call_cb (Ekiga::CallManager & /*manager*/,
+                                  Ekiga::Call & /*call*/,
+                                  gpointer self)
+{
+  gchar *info_string = NULL;
+
+  gm_main_window_set_call_hold (GTK_WIDGET (self), false);
+  info_string = g_strdup (_("Call retrieved"));
+  gm_main_window_flash_message (GTK_WIDGET (self), "%s", info_string);
+  g_free (info_string);
+}
+
+
+static void on_missed_call_cb (Ekiga::CallManager & /*manager*/,
+                               Ekiga::Call & call,
+                               gpointer self)
+{
+  GmMainWindow *mw = gm_mw_get_mw (GTK_WIDGET (self));
+  std::stringstream info;
+
+  mw->missed_calls++;
+  info << _("Missed call from") << " " << call.get_remote_party_name ();
+
+  gm_main_window_flash_message (GTK_WIDGET (self), "%s", info.str ().c_str ());
+}
+
+
+static void on_stream_opened_cb (Ekiga::CallManager & /*manager*/,
+                                 Ekiga::Call & /* call */,
+                                 std::string name,
+                                 Ekiga::Call::StreamType type,
+                                 bool is_transmitting,
+                                 gpointer self)
+{
+  GmMainWindow *mw = NULL;
+
+  g_return_if_fail (GTK_WIDGET (self) != NULL);
+  mw = gm_mw_get_mw (GTK_WIDGET (self));
+  g_return_if_fail (mw != NULL);
+
+  bool is_closing = false;
+  bool is_encoding = is_transmitting;
+  bool is_video = (type == Ekiga::Call::Video);
+
+  /* FIXME: This should not be needed anymore */
+  if (type == Ekiga::Call::Video) {
+    
+    is_closing ?
+      (is_encoding ? mw->video_transmission_active = false : mw->video_reception_active = false)
+      :(is_encoding ? mw->video_transmission_active = true : mw->video_reception_active = true);
+
+    if (is_encoding)
+      is_closing ? mw->transmitted_video_codec = "" : mw->transmitted_video_codec = name;
+    else
+      is_closing ? mw->received_video_codec = "" : mw->received_video_codec = name;
+  }
+  else {
+    
+    is_closing ?
+      (is_encoding ? mw->audio_transmission_active = false : mw->audio_reception_active = false)
+      :(is_encoding ? mw->audio_transmission_active = true : mw->audio_reception_active = true);
+
+    if (is_encoding)
+      is_closing ? mw->transmitted_audio_codec = "" : mw->transmitted_audio_codec = name;
+    else
+      is_closing ? mw->received_audio_codec = "" : mw->received_audio_codec = name;
+  }
+
+  gm_main_window_update_sensitivity (GTK_WIDGET (self),
+                                     is_video,
+                                     is_video ? mw->video_reception_active : mw->audio_reception_active,
+                                     is_video ? mw->video_transmission_active : mw->audio_transmission_active);
+  gm_main_window_set_call_info (GTK_WIDGET (self), 
+                                mw->transmitted_audio_codec.c_str (), 
+                                mw->received_audio_codec.c_str (),
+                                mw->transmitted_video_codec.c_str (), 
+                                mw->received_audio_codec.c_str ());
+}
+
+
+static void on_stream_closed_cb (Ekiga::CallManager & /*manager*/,
+                                 Ekiga::Call & /* call */,
+                                 std::string name,
+                                 Ekiga::Call::StreamType type,
+                                 bool is_transmitting,
+                                 gpointer self)
+{
+  GmMainWindow *mw = NULL;
+
+  g_return_if_fail (GTK_WIDGET (self) != NULL);
+  mw = gm_mw_get_mw (GTK_WIDGET (self));
+  g_return_if_fail (mw != NULL);
+
+  bool is_closing = true;
+  bool is_encoding = is_transmitting;
+  bool is_video = (type == Ekiga::Call::Video);
+
+  /* FIXME: This should not be needed anymore */
+  if (type == Ekiga::Call::Video) {
+    
+    is_closing ?
+      (is_encoding ? mw->video_transmission_active = false : mw->video_reception_active = false)
+      :(is_encoding ? mw->video_transmission_active = true : mw->video_reception_active = true);
+
+    if (is_encoding)
+      is_closing ? mw->transmitted_video_codec = "" : mw->transmitted_video_codec = name;
+    else
+      is_closing ? mw->received_video_codec = "" : mw->received_video_codec = name;
+  }
+  else {
+    
+    is_closing ?
+      (is_encoding ? mw->audio_transmission_active = false : mw->audio_reception_active = false)
+      :(is_encoding ? mw->audio_transmission_active = true : mw->audio_reception_active = true);
+
+    if (is_encoding)
+      is_closing ? mw->transmitted_audio_codec = "" : mw->transmitted_audio_codec = name;
+    else
+      is_closing ? mw->received_audio_codec = "" : mw->received_audio_codec = name;
+  }
+
+  gm_main_window_update_sensitivity (GTK_WIDGET (self),
+                                     is_video,
+                                     is_video ? mw->video_reception_active : mw->audio_reception_active,
+                                     is_video ? mw->video_transmission_active : mw->audio_transmission_active);
+  gm_main_window_set_call_info (GTK_WIDGET (self), 
+                                mw->transmitted_audio_codec.c_str (), 
+                                mw->received_audio_codec.c_str (),
+                                mw->transmitted_video_codec.c_str (), 
+                                mw->received_audio_codec.c_str ());
+}
+
+
+static void on_stream_paused_cb (Ekiga::CallManager & /*manager*/,
+                                 Ekiga::Call & /*call*/,
+                                 std::string /*name*/,
+                                 Ekiga::Call::StreamType type,
+                                 gpointer self)
+{
+  gm_main_window_set_channel_pause (GTK_WIDGET (self), true, (type == Ekiga::Call::Video));
+}
+
+
+static void on_stream_resumed_cb (Ekiga::CallManager & /*manager*/,
+                                  Ekiga::Call & /*call*/,
+                                  std::string /*name*/,
+                                  Ekiga::Call::StreamType type,
+                                  gpointer self)
+{
+  gm_main_window_set_channel_pause (GTK_WIDGET (self), false, (type == Ekiga::Call::Video));
+}
+
 
 
 /* Implementation */
@@ -951,6 +1032,82 @@ gm_mw_init_main_toolbar (GtkWidget *main_window)
 }
 
 
+static void
+incoming_call_response_cb (GtkDialog *incoming_call_popup,
+                           gint response,
+                           gpointer data)
+{
+  Ekiga::Call *call = (Ekiga::Call *) data;
+
+  gtk_widget_hide (GTK_WIDGET (incoming_call_popup));
+
+  if (call) {
+
+    switch (response) {
+    case 2:
+      call->answer ();
+      break;
+
+    default:
+    case 0:
+      call->hangup ();
+      break;
+    }
+  }
+}
+
+
+static void
+place_call_cb (GtkWidget * /*widget*/,
+               gpointer data)
+{
+  std::string uri;
+
+  Ekiga::CallCore *call_core = NULL;
+  GmMainWindow *mw = NULL;
+
+  mw = gm_mw_get_mw (GTK_WIDGET (data));
+
+  if (!mw->current_call) {
+
+    call_core = dynamic_cast<Ekiga::CallCore*> (mw->core.get ("call-core"));
+    uri = gm_main_window_get_call_url (GTK_WIDGET (data));
+    call_core->dial (uri);
+  }
+
+}
+
+
+static void
+hangup_call_cb (GtkWidget * /*widget*/,
+                gpointer data)
+{
+  GmMainWindow *mw = NULL;
+
+  mw = gm_mw_get_mw (GTK_WIDGET (data));
+
+  if (mw->current_call) {
+
+    mw->current_call->hangup ();
+  }
+}
+
+
+static void 
+toggle_call_cb (GtkWidget *widget,
+                gpointer data)
+{
+  GmMainWindow *mw = NULL;
+
+  mw = gm_mw_get_mw (GTK_WIDGET (data));
+
+  if (mw->current_call && gm_connect_button_get_connected (GM_CONNECT_BUTTON (mw->connect_button)))
+    hangup_call_cb (widget, data);
+  else if (!mw->current_call && !gm_connect_button_get_connected (GM_CONNECT_BUTTON (mw->connect_button)))
+    place_call_cb (widget, data);
+}
+
+
 static GtkWidget *
 gm_mw_init_uri_toolbar (GtkWidget *main_window)
 {
@@ -1012,11 +1169,9 @@ gm_mw_init_uri_toolbar (GtkWidget *main_window)
 				       NULL);
   
   g_signal_connect (G_OBJECT (GTK_BIN (mw->combo)->child), "changed", 
-		    GTK_SIGNAL_FUNC (url_changed_cb), (gpointer) main_window);
+		    GTK_SIGNAL_FUNC (url_changed_cb), main_window);
   g_signal_connect (G_OBJECT (GTK_BIN (mw->combo)->child), "activate", 
-		    GTK_SIGNAL_FUNC (url_activated_cb), NULL);
-  g_signal_connect (G_OBJECT (completion), "match-selected", 
-		    GTK_SIGNAL_FUNC (completion_url_selected_cb), NULL);
+		    GTK_SIGNAL_FUNC (url_activated_cb), main_window);
 
   gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, 0);
 
@@ -1036,8 +1191,8 @@ gm_mw_init_uri_toolbar (GtkWidget *main_window)
   gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
 
   g_signal_connect (G_OBJECT (mw->connect_button), "clicked",
-                    G_CALLBACK (connect_button_clicked_cb), 
-		    GTK_ENTRY (GTK_BIN (mw->combo)->child));
+                    G_CALLBACK (toggle_call_cb), 
+                    main_window);
 
   gtk_widget_show_all (GTK_WIDGET (toolbar));
   
@@ -1088,11 +1243,11 @@ gm_mw_init_menu (GtkWidget *main_window)
 
       GTK_MENU_ENTRY("connect", _("Ca_ll"), _("Place a new call"), 
 		     GM_STOCK_PHONE_PICK_UP_16, 'o',
-		     GTK_SIGNAL_FUNC (connect_cb), main_window, TRUE),
+		     GTK_SIGNAL_FUNC (place_call_cb), main_window, TRUE),
       GTK_MENU_ENTRY("disconnect", _("_Hang up"),
 		     _("Terminate the current call"), 
 		     GM_STOCK_PHONE_HANG_UP_16, 'd',
-		     GTK_SIGNAL_FUNC (disconnect_cb), NULL, FALSE),
+		     GTK_SIGNAL_FUNC (hangup_call_cb), main_window, FALSE),
 
       GTK_MENU_SEPARATOR,
 
@@ -1130,7 +1285,7 @@ gm_mw_init_menu (GtkWidget *main_window)
 
       GTK_MENU_ENTRY("hold_call", _("_Hold Call"), _("Hold the current call"),
 		     NULL, 'g', 
-		     GTK_SIGNAL_FUNC (hold_current_call_cb), NULL,
+		     GTK_SIGNAL_FUNC (hold_current_call_cb), main_window,
 		     FALSE),
       GTK_MENU_ENTRY("transfer_call", _("_Transfer Call"),
 		     _("Transfer the current call"),
@@ -1143,13 +1298,13 @@ gm_mw_init_menu (GtkWidget *main_window)
       GTK_MENU_ENTRY("suspend_audio", _("Suspend _Audio"),
 		     _("Suspend or resume the audio transmission"),
 		     NULL, 0,
-		     GTK_SIGNAL_FUNC (pause_current_call_channel_cb),
-		     GINT_TO_POINTER (CHANNEL_AUDIO), FALSE),
+		     GTK_SIGNAL_FUNC (toggle_audio_stream_pause_cb),
+		     main_window, FALSE),
       GTK_MENU_ENTRY("suspend_video", _("Suspend _Video"),
 		     _("Suspend or resume the video transmission"),
 		     NULL, 0, 
-		     GTK_SIGNAL_FUNC (pause_current_call_channel_cb),
-		     GINT_TO_POINTER (CHANNEL_VIDEO), FALSE),
+		     GTK_SIGNAL_FUNC (toggle_video_stream_pause_cb),
+		     main_window, FALSE),
 
       GTK_MENU_SEPARATOR,
 
@@ -1207,12 +1362,6 @@ gm_mw_init_menu (GtkWidget *main_window)
 			   GTK_SIGNAL_FUNC (radio_menu_changed_cb), 
 			   (gpointer) USER_INTERFACE_KEY "main_window/panel_section",
 			   (cps == DIALPAD), TRUE),
-      GTK_MENU_RADIO_ENTRY("calls_history", _("Calls _History"),
-			   _("View the calls history"),
-			   NULL, 0, 
-			   GTK_SIGNAL_FUNC (radio_menu_changed_cb), 
-			   (gpointer) USER_INTERFACE_KEY "main_window/panel_section",
-			   (cps == CALLS_HISTORY), TRUE),
       GTK_MENU_RADIO_ENTRY("call", _("C_all"),
 			   _("View the call information"),
 			   NULL, 0, 
@@ -1334,12 +1483,6 @@ gm_mw_init_contacts_list (GtkWidget *main_window)
   label = gtk_label_new (_("Contacts"));
   gtk_notebook_append_page (GTK_NOTEBOOK (mw->main_notebook),
 			    frame, label);
-}
-
-
-static void 
-gm_mw_init_calls_history (GtkWidget *main_window)
-{
 }
 
 
@@ -1633,9 +1776,6 @@ gm_mw_audio_settings_window_new (GtkWidget *main_window)
   gtk_scale_set_value_pos (GTK_SCALE (hscale_play), GTK_POS_RIGHT); 
   gtk_scale_set_draw_value (GTK_SCALE (hscale_play), FALSE);
   gtk_box_pack_start (GTK_BOX (small_vbox), hscale_play, TRUE, TRUE, 0);
-
-  mw->output_signal = gtk_levelmeter_new ();
-  gtk_box_pack_start (GTK_BOX (small_vbox), mw->output_signal, TRUE, TRUE, 0);
   gtk_box_pack_start (GTK_BOX (hbox), small_vbox, TRUE, TRUE, 2);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 3);
 
@@ -1654,9 +1794,6 @@ gm_mw_audio_settings_window_new (GtkWidget *main_window)
   gtk_scale_set_value_pos (GTK_SCALE (hscale_rec), GTK_POS_RIGHT); 
   gtk_scale_set_draw_value (GTK_SCALE (hscale_rec), FALSE);
   gtk_box_pack_start (GTK_BOX (small_vbox), hscale_rec, TRUE, TRUE, 0);
-
-  mw->input_signal = gtk_levelmeter_new ();
-  gtk_box_pack_start (GTK_BOX (small_vbox), mw->input_signal, TRUE, TRUE, 0);
   gtk_box_pack_start (GTK_BOX (hbox), small_vbox, TRUE, TRUE, 2);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 3);
 
@@ -1869,7 +2006,7 @@ gm_mw_init_call (GtkWidget *main_window)
   gtk_widget_set_sensitive (GTK_WIDGET (mw->hold_button), FALSE);
 
   g_signal_connect (G_OBJECT (mw->hold_button), "clicked",
-		    G_CALLBACK (hold_current_call_cb), NULL); 
+		    G_CALLBACK (hold_current_call_cb), main_window); 
 
   gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (toolbar), 
 		    1, 3, 2, 3,
@@ -2039,91 +2176,43 @@ status_menu_changed_cb (GtkWidget *widget,
 
 static void 
 hold_current_call_cb (G_GNUC_UNUSED GtkWidget *widget,
-		      G_GNUC_UNUSED gpointer data)
+		      gpointer data)
 {
-  PString call_token;
-  GMManager *endpoint = NULL;
+  GmMainWindow *mw = NULL;
 
-  bool is_on_hold = FALSE;
-  
-  endpoint = GnomeMeeting::Process ()->GetManager ();
+  mw = gm_mw_get_mw (GTK_WIDGET (data));
 
-  call_token = endpoint->GetCurrentCallToken ();
-  is_on_hold = endpoint->IsCallOnHold (call_token);
-  if (endpoint->SetCallOnHold (call_token, !is_on_hold))
-    is_on_hold = !is_on_hold; /* It worked */
+  if (mw->current_call) {
+    mw->current_call->toggle_hold ();
+  }
 }
 
 
 static void
-pause_current_call_channel_cb (G_GNUC_UNUSED GtkWidget *widget,
-			       gpointer data)
+toggle_audio_stream_pause_cb (GtkWidget * /*widget*/,
+                              gpointer data)
 {
-  GMManager *endpoint = NULL;
-  GMVideoGrabber *vg = NULL;
+  GmMainWindow *mw = NULL;
 
-  GtkWidget *main_window = NULL;
- 
-  PString current_call_token;
-  bool is_paused = FALSE;
-  gint channel_type = 0;
-  
-  endpoint = GnomeMeeting::Process ()->GetManager ();
-  current_call_token = endpoint->GetCurrentCallToken ();
-  channel_type = GPOINTER_TO_INT (data);
+  mw = gm_mw_get_mw (GTK_WIDGET (data));
 
-  g_return_if_fail (CHANNEL_FIRST < channel_type
-		    && channel_type < CHANNEL_LAST); 
-
-  main_window = GnomeMeeting::Process ()->GetMainWindow (); 
-
-  if (current_call_token.IsEmpty ()
-      && (channel_type == CHANNEL_VIDEO)
-      && endpoint->GetCallingState () == GMManager::Standby) {
-
-    gdk_threads_leave ();
-    vg = endpoint->GetVideoGrabber ();
-    if (vg) {
-      
-      if (vg->IsGrabbing ()) {
-
-	vg->StopGrabbing ();
-	gm_main_window_set_channel_pause (main_window, TRUE, TRUE);
-      }
-      else {
-
-	vg->StartGrabbing ();
-	gm_main_window_set_channel_pause (main_window, FALSE, TRUE);
-      }
-
-      vg->Unlock ();
-    }
-    gdk_threads_enter ();
-  }
-  else {
-
-    if (channel_type == CHANNEL_AUDIO) {
-      
-      gdk_threads_leave ();
-      is_paused = endpoint->IsCallAudioPaused (current_call_token);
-      if (endpoint->SetCallAudioPause (current_call_token, !is_paused))
-	is_paused = !is_paused; /* It worked */
-      gdk_threads_enter ();
-
-      gm_main_window_set_channel_pause (main_window, is_paused, FALSE);
-    }
-    else {
-
-      gdk_threads_leave ();
-      is_paused = endpoint->IsCallVideoPaused (current_call_token);
-      if (endpoint->SetCallVideoPause (current_call_token, !is_paused))
-	is_paused = !is_paused; /* It worked */
-      gdk_threads_enter ();
-      
-      gm_main_window_set_channel_pause (main_window, is_paused, TRUE);
-    }
-  }
+  if (mw->current_call)
+    mw->current_call->toggle_stream_pause (Ekiga::Call::Audio);
 }
+
+
+static void
+toggle_video_stream_pause_cb (GtkWidget * /*widget*/,
+                              gpointer data)
+{
+  GmMainWindow *mw = NULL;
+
+  mw = gm_mw_get_mw (GTK_WIDGET (data));
+
+  if (mw->current_call)
+    mw->current_call->toggle_stream_pause (Ekiga::Call::Video);
+}
+
 
 
 static void 
@@ -2180,11 +2269,15 @@ video_window_expose_cb (GtkWidget *main_window,
 
 static void
 video_window_shown_cb (GtkWidget *w,
-		       G_GNUC_UNUSED gpointer data)
+		       gpointer data)
 {
+  GmMainWindow *mw = NULL;
   GMManager *endpoint = NULL;
 
-  endpoint = GnomeMeeting::Process ()->GetManager ();
+  mw = gm_mw_get_mw (GTK_WIDGET (data));
+
+  // FIXME API SHOULD CHANGE
+  endpoint = dynamic_cast<GMManager *> (mw->core.get ("opal-component"));
 
   if (endpoint 
       && gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top")
@@ -2195,8 +2288,9 @@ video_window_shown_cb (GtkWidget *w,
 
 static void 
 audio_volume_changed_cb (G_GNUC_UNUSED GtkAdjustment *adjustment,
-			 gpointer data)
+			 G_GNUC_UNUSED gpointer data)
 {
+  /*
   GMManager *ep = NULL;
   GMPCSSEndpoint *pcssEP = NULL;
 
@@ -2219,14 +2313,17 @@ audio_volume_changed_cb (G_GNUC_UNUSED GtkAdjustment *adjustment,
 
   if (!success)
     gm_main_window_set_volume_sliders_values (GTK_WIDGET (data), 0, 0);
+    */
+
+  std::cout << "should be fixed" << std::endl << std::flush;
 }
 
 
 static void 
 video_settings_changed_cb (G_GNUC_UNUSED GtkAdjustment *adjustment,
-			   gpointer data)
+			   G_GNUC_UNUSED gpointer data)
 { 
-  GMManager *ep = NULL;
+/*  GMManager *ep = NULL;
   GMVideoGrabber *video_grabber = NULL;
 
   bool success = FALSE;
@@ -2245,7 +2342,7 @@ video_settings_changed_cb (G_GNUC_UNUSED GtkAdjustment *adjustment,
 					   brightness,
 					   colour,
 					   contrast);
-
+*/
   /* Notice about mutexes:
      The GDK lock is taken in the callback. We need to release it, because
      if CreateVideoGrabber is called in another thread, it will only
@@ -2253,7 +2350,7 @@ video_settings_changed_cb (G_GNUC_UNUSED GtkAdjustment *adjustment,
      returns, but it will return only if it is opened, and it can't open 
      if the GDK lock is held as it will wait on the GDK lock before 
      updating the GUI */
-  gdk_threads_leave ();
+/*  gdk_threads_leave ();
   if ((video_grabber = ep->GetVideoGrabber ())) {
 
     if (whiteness > 0)
@@ -2269,7 +2366,8 @@ video_settings_changed_cb (G_GNUC_UNUSED GtkAdjustment *adjustment,
   gdk_threads_enter ();
 
   if (!success)
-    gm_main_window_set_video_sliders_values (GTK_WIDGET (data), 0, 0, 0, 0);
+    gm_main_window_set_video_sliders_values (GTK_WIDGET (data), 0, 0, 0, 0); */
+  std::cout << "should be fixed" << std::endl << std::flush;
 }
 
 
@@ -2297,19 +2395,13 @@ static void
 dialpad_button_clicked_cb (GtkButton *button,
 			   gpointer data)
 {
+  GmMainWindow *mw = NULL;
+
+  mw = gm_mw_get_mw (GTK_WIDGET (data));
+
+
   GtkWidget *label = NULL;
   const char *button_text = NULL;
-
-  bool sent = FALSE;
-  PString call_token;
-  PString url;
-
-  GMManager *endpoint = NULL;
-
-  g_return_if_fail (data != NULL);
-
-
-  endpoint = GnomeMeeting::Process ()->GetManager ();
 
   label = ( (GtkBoxChild*) GTK_BOX (gtk_bin_get_child (GTK_BIN (button)) )->children->data )->widget;
   button_text = gtk_label_get_text (GTK_LABEL (label));
@@ -2319,30 +2411,14 @@ dialpad_button_clicked_cb (GtkButton *button,
       && strlen (button_text) > 1
       && button_text [0]) {
 
-    /* Release the GDK thread to prevent deadlocks */
-    gdk_threads_leave ();
-    call_token = endpoint->GetCurrentCallToken ();
+    if (mw->current_call) {
 
-    /* Send the DTMF if there is a current call */
-    if (!call_token.IsEmpty ()) {
-
-      endpoint->SendDTMF (call_token, button_text [1]);
-      sent = TRUE;
+      mw->current_call->send_dtmf (button_text [1]);
     }
-    gdk_threads_enter ();
+    else {
 
-
-    /* Update the GUI, ie the URL bar if we are not in a call,
-     * and a button press in all cases */
-    if (!sent) {
-
-      url += button_text [1];
-      gm_main_window_append_call_url (GTK_WIDGET (data), url);
+      gm_main_window_append_call_url (GTK_WIDGET (data), (char *) &button_text [1]);
     }
-    else
-      gm_main_window_flash_message (GTK_WIDGET (data),
-				    _("Sent DTMF %c"), 
-				    button_text [1]);
   }
 }
 
@@ -2511,33 +2587,17 @@ url_changed_cb (GtkEditable  *e,
 }
 
 
-static gboolean
-completion_url_selected_cb (G_GNUC_UNUSED GtkEntryCompletion *completion,
-			    GtkTreeModel *model,
-			    GtkTreeIter *iter,
-			    G_GNUC_UNUSED gpointer data)
-{
-  gchar *url = NULL;
-
-  gtk_tree_model_get (GTK_TREE_MODEL (model), iter, 1, &url, -1);
-
-  GnomeMeeting::Process ()->Connect (url);
-
-  g_free (url);
-
-  return TRUE;
-}
-
-
 static void 
 url_activated_cb (GtkWidget *w,
-		  G_GNUC_UNUSED gpointer data)
+		  gpointer data)
 {
   const char *url = NULL;
+  GmMainWindow *mw = gm_mw_get_mw (GTK_WIDGET (data));
+  Ekiga::CallCore *call_core = dynamic_cast<Ekiga::CallCore *> (mw->core.get ("call-core"));
 
   url = gtk_entry_get_text (GTK_ENTRY (w));
 
-  GnomeMeeting::Process ()->Connect (url);
+  call_core->dial (url);
 }
 
 
@@ -2556,7 +2616,6 @@ statusbar_clicked_cb (G_GNUC_UNUSED GtkWidget *widget,
 		      G_GNUC_UNUSED GdkEventButton *event,
 		      gpointer data)
 {
-  GMManager *ep = NULL;
   gchar *info = NULL;
 
   GmMainWindow *mw = NULL;
@@ -2567,8 +2626,6 @@ statusbar_clicked_cb (G_GNUC_UNUSED GtkWidget *widget,
 
   g_return_val_if_fail (GTK_WIDGET (data), TRUE);
 
-  ep = GnomeMeeting::Process ()->GetManager ();
-
   mw->missed_calls = 0;
 
   gm_main_window_push_message (GTK_WIDGET (data), 
@@ -2576,27 +2633,6 @@ statusbar_clicked_cb (G_GNUC_UNUSED GtkWidget *widget,
                                mw->total_mwi);
   g_free (info);
 
-
-  return FALSE;
-}
-
-
-static gboolean
-delete_incoming_call_dialog_cb (G_GNUC_UNUSED GtkWidget *w,
-				G_GNUC_UNUSED GdkEvent *ev,
-				gpointer data)
-{
-  GmMainWindow *mw = NULL;
-
-  g_return_val_if_fail (data != NULL, TRUE);
-
-  mw = gm_mw_get_mw (GTK_WIDGET (data));
-
-  g_return_val_if_fail (GTK_WIDGET (data), TRUE);
-
-  mw->incoming_call_popup = NULL;
-
-  GnomeMeeting::Process ()->Disconnect ();
 
   return FALSE;
 }
@@ -2802,12 +2838,12 @@ gm_main_window_set_call_hold (GtkWidget *main_window,
   
   g_signal_handlers_block_by_func (G_OBJECT (mw->hold_button),
                                    (gpointer) hold_current_call_cb,
-                                   NULL);
+                                   main_window);
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (mw->hold_button), 
                                 is_on_hold);
   g_signal_handlers_unblock_by_func (G_OBJECT (mw->hold_button),
                                      (gpointer) hold_current_call_cb,
-                                     NULL);
+                                     main_window);
 }
 
 
@@ -2894,13 +2930,6 @@ gm_main_window_update_calling_state (GtkWidget *main_window,
       gm_connect_button_set_connected (GM_CONNECT_BUTTON (mw->connect_button),
 				       FALSE);
 	
-      /* Destroy the incoming call popup */
-      if (mw->incoming_call_popup) {
-
-	gnomemeeting_threads_widget_destroy (mw->incoming_call_popup);
-	mw->incoming_call_popup = NULL;
-      }
-
       /* Destroy the transfer call popup */
       if (mw->transfer_call_popup) 
 	gtk_dialog_response (GTK_DIALOG (mw->transfer_call_popup),
@@ -2934,13 +2963,6 @@ gm_main_window_update_calling_state (GtkWidget *main_window,
       /* Update the connect button */
       gm_connect_button_set_connected (GM_CONNECT_BUTTON (mw->connect_button),
 				       TRUE);
-      
-      /* Destroy the incoming call popup */
-      if (mw->incoming_call_popup) {
-
-	gtk_widget_destroy (mw->incoming_call_popup);
-	mw->incoming_call_popup = NULL;
-      }
       break;
 
 
@@ -3206,43 +3228,6 @@ gm_main_window_set_volume_sliders_values (GtkWidget *main_window,
 
 
 void
-gm_main_window_set_signal_levels (GtkWidget *main_window,
-				  float output,
-				  float input)
-{
-  GmMainWindow *mw = NULL;
-
-  g_return_if_fail (main_window != NULL);
-
-  mw = gm_mw_get_mw (main_window);
-
-  g_return_if_fail (mw != NULL);
-
-  if (output >= 0)
-    gtk_levelmeter_set_level (GTK_LEVELMETER (mw->output_signal), output);
-  
-  if (input >= 0)
-    gtk_levelmeter_set_level (GTK_LEVELMETER (mw->input_signal), input);
-}
-
-
-void
-gm_main_window_clear_signal_levels (GtkWidget *main_window)
-{
-  GmMainWindow *mw = NULL;
-
-  g_return_if_fail (main_window != NULL);
-
-  mw = gm_mw_get_mw (main_window);
-
-  g_return_if_fail (mw != NULL);
-
-  gtk_levelmeter_clear (GTK_LEVELMETER (mw->output_signal));
-  gtk_levelmeter_clear (GTK_LEVELMETER (mw->input_signal));
-}
-
-
-void
 gm_main_window_get_volume_sliders_values (GtkWidget *main_window,
 					  int &output_volume,
 					  int &input_volume)
@@ -3491,7 +3476,6 @@ gm_main_window_transfer_dialog_run (GtkWidget *main_window,
 				    GtkWidget *parent_window,
 				    const char *u)
 {
-  GMManager *endpoint = NULL;
   GmMainWindow *mw = NULL;
   
   GMURL url = GMURL (u);
@@ -3506,9 +3490,6 @@ gm_main_window_transfer_dialog_run (GtkWidget *main_window,
   mw = gm_mw_get_mw (main_window);
 
   g_return_val_if_fail (mw != NULL, FALSE);
-  
-
-  endpoint = GnomeMeeting::Process ()->GetManager ();
   
   mw->transfer_call_popup = 
     gm_entry_dialog_new (_("Transfer call to:"),
@@ -3535,7 +3516,7 @@ gm_main_window_transfer_dialog_run (GtkWidget *main_window,
 
     forward_url =
       gm_entry_dialog_get_text (GM_ENTRY_DIALOG (mw->transfer_call_popup));
-    new GMURLHandler (forward_url, TRUE);
+    new GMURLHandler (mw->core, forward_url, TRUE); // FIXME SHould not be called directly
       
     break;
 
@@ -3552,9 +3533,7 @@ gm_main_window_transfer_dialog_run (GtkWidget *main_window,
 
 void 
 gm_main_window_incoming_call_dialog_show (GtkWidget *main_window,
-					  gchar *utf8_name, 
-					  gchar *utf8_app,
-					  gchar *utf8_url)
+                                          Ekiga::Call & call)
 {
   GmMainWindow *mw = NULL;
   
@@ -3562,9 +3541,13 @@ gm_main_window_incoming_call_dialog_show (GtkWidget *main_window,
   GtkWidget *vbox = NULL;
   GtkWidget *b1 = NULL;
   GtkWidget *b2 = NULL;
-  GtkWidget *b3 = NULL;
+  GtkWidget *incoming_call_popup = NULL;
 
   gchar *msg = NULL;
+  // FIXME the call could be come invalid
+  const char *utf8_name = call.get_remote_party_name ().c_str ();
+  const char *utf8_app = call.get_remote_application ().c_str ();
+  const char *utf8_url = call.get_remote_uri ().c_str ();
 
   g_return_if_fail (main_window);
   
@@ -3572,18 +3555,15 @@ gm_main_window_incoming_call_dialog_show (GtkWidget *main_window,
   
   g_return_if_fail (mw != NULL);
 
-
-  mw->incoming_call_popup = gtk_dialog_new ();
-  b2 = gtk_dialog_add_button (GTK_DIALOG (mw->incoming_call_popup),
+  incoming_call_popup = gtk_dialog_new ();
+  b2 = gtk_dialog_add_button (GTK_DIALOG (incoming_call_popup),
 			      _("Reject"), 0);
-  b3 = gtk_dialog_add_button (GTK_DIALOG (mw->incoming_call_popup),
-			      _("Transfer"), 1);
-  b1 = gtk_dialog_add_button (GTK_DIALOG (mw->incoming_call_popup),
+  b1 = gtk_dialog_add_button (GTK_DIALOG (incoming_call_popup),
 			      _("Accept"), 2);
 
-  gtk_dialog_set_default_response (GTK_DIALOG (mw->incoming_call_popup), 2);
+  gtk_dialog_set_default_response (GTK_DIALOG (incoming_call_popup), 2);
 
-  vbox = GTK_DIALOG (mw->incoming_call_popup)->vbox;
+  vbox = GTK_DIALOG (incoming_call_popup)->vbox;
 
   msg = g_strdup_printf ("%s <i>%s</i>",
 			 _("Incoming call from"), (const char*) utf8_name);
@@ -3620,47 +3600,31 @@ gm_main_window_incoming_call_dialog_show (GtkWidget *main_window,
   }
 
   
-  gtk_window_set_title (GTK_WINDOW (mw->incoming_call_popup), utf8_name);
-  gtk_window_set_modal (GTK_WINDOW (mw->incoming_call_popup), TRUE);
-  gtk_window_set_keep_above (GTK_WINDOW (mw->incoming_call_popup), TRUE);
-#if GTK_MINOR_VERSION >= 8
-  g_debug ("Setting URGENCY hint for WM using GTK+ interface function");
-  if (!gnomemeeting_window_is_visible (GTK_WIDGET (main_window)))
-    {
-      gtk_window_set_urgency_hint (GTK_WINDOW (main_window), TRUE);
-    }
-#endif
-  gtk_window_set_transient_for (GTK_WINDOW (mw->incoming_call_popup),
+  gtk_window_set_title (GTK_WINDOW (incoming_call_popup), utf8_name);
+  gtk_window_set_modal (GTK_WINDOW (incoming_call_popup), TRUE);
+  gtk_window_set_keep_above (GTK_WINDOW (incoming_call_popup), TRUE);
+  gtk_window_set_urgency_hint (GTK_WINDOW (main_window), TRUE);
+  gtk_window_set_transient_for (GTK_WINDOW (incoming_call_popup),
 				GTK_WINDOW (main_window));
 
-  
-  g_signal_connect (G_OBJECT (b1), "clicked",
-		    GTK_SIGNAL_FUNC (connect_cb), main_window);
-  g_signal_connect (G_OBJECT (b2), "clicked",
-		    GTK_SIGNAL_FUNC (disconnect_cb), NULL);
-  g_signal_connect (G_OBJECT (b3), "clicked",
-		    GTK_SIGNAL_FUNC (transfer_current_call_cb), 
-		    mw->incoming_call_popup);
-  
-  g_signal_connect_swapped (G_OBJECT (b1), "clicked",
-			    GTK_SIGNAL_FUNC (gtk_widget_hide), 
-			    mw->incoming_call_popup);
-  g_signal_connect_swapped (G_OBJECT (b2), "clicked",
-			    GTK_SIGNAL_FUNC (gtk_widget_hide),
-			    mw->incoming_call_popup);
+  gtk_widget_show_all (incoming_call_popup);
 
-  g_signal_connect (G_OBJECT (mw->incoming_call_popup), "delete-event",
-		    GTK_SIGNAL_FUNC (delete_incoming_call_dialog_cb), 
-		    main_window);
+  g_signal_connect (G_OBJECT (incoming_call_popup), "delete_event",
+                    G_CALLBACK (gtk_widget_hide_on_delete), NULL);
+  g_signal_connect (G_OBJECT (incoming_call_popup), "response",
+                    GTK_SIGNAL_FUNC (incoming_call_response_cb), &call);
 
-  gtk_widget_show_all (vbox);
-  gnomemeeting_threads_dialog_show (mw->incoming_call_popup);
+  call.cleared.connect (sigc::bind (sigc::ptr_fun (on_cleared_incoming_call_cb),
+                                    (gpointer) incoming_call_popup));
+  call.missed.connect (sigc::bind (sigc::ptr_fun (on_missed_incoming_call_cb), 
+                                   (gpointer) incoming_call_popup));
 }
 
 
 GtkWidget *
 gm_main_window_new (Ekiga::ServiceCore & core)
 {
+  GMManager *ep = NULL;
   GmMainWindow *mw = NULL;
 
   GtkWidget *window = NULL;
@@ -3672,9 +3636,11 @@ gm_main_window_new (Ekiga::ServiceCore & core)
 
   PanelSection section = DIALPAD;
   guint status = CONTACT_ONLINE;
+
+  sigc::connection conn;
   
   /* The Top-level window */
-#if defined HAVE_GNOME && defined HAVE_BONOBO
+#if defined HAVE_GNOME 
   window = gnome_app_new ("ekiga", NULL);
 #else
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
@@ -3693,18 +3659,23 @@ gm_main_window_new (Ekiga::ServiceCore & core)
 
   /* The GMObject data */
   mw = new GmMainWindow (core);
-  mw->incoming_call_popup = mw->transfer_call_popup = NULL;
+  mw->transfer_call_popup = NULL;
+  mw->current_call = NULL;
+  mw->timeout_id = -1;
   mw->missed_calls = mw->total_mwi = 0;
   mw->audio_transmission_active = mw->audio_reception_active 
     = mw->video_transmission_active = mw->video_reception_active = false;
   g_object_set_data_full (G_OBJECT (window), "GMObject", 
 			  mw, (GDestroyNotify) gm_mw_destroy);
 
+  /* Get the manager */
+  ep = dynamic_cast<GMManager *> (core.get ("opal-component"));
+
 #ifndef WIN32
   mw->videoWidgetGC = NULL;
 #endif
 
-#if defined HAVE_GNOME && defined HAVE_BONOBO
+#if defined HAVE_GNOME
   int behavior = 0;
   bool toolbar_detachable = TRUE;
 
@@ -3717,7 +3688,7 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   mw->accel = gtk_accel_group_new ();
   gtk_window_add_accel_group (GTK_WINDOW (window), mw->accel);
 
-#if !defined HAVE_GNOME || !defined HAVE_BONOBO
+#if !defined HAVE_GNOME 
   mw->window_vbox = gtk_vbox_new (0, FALSE);
   gtk_container_add (GTK_CONTAINER (window), mw->window_vbox);
   gtk_widget_show_all (mw->window_vbox);
@@ -3730,7 +3701,7 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   /* The main menu */
   mw->statusbar = gm_statusbar_new ();
   gm_mw_init_menu (window); 
-#if defined HAVE_GNOME && defined HAVE_BONOBO
+#if defined HAVE_GNOME 
   gnome_app_set_menus (GNOME_APP (window), 
 		       GTK_MENU_BAR (mw->main_menu));
 #else
@@ -3744,7 +3715,7 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   gm_main_window_set_status (window, status);
   
   /* Add the toolbar to the UI */
-#if defined HAVE_GNOME && defined HAVE_BONOBO
+#if defined HAVE_GNOME
   behavior = (BONOBO_DOCK_ITEM_BEH_EXCLUSIVE
 	      | BONOBO_DOCK_ITEM_BEH_NEVER_VERTICAL);
 
@@ -3760,7 +3731,7 @@ gm_main_window_new (Ekiga::ServiceCore & core)
 		      FALSE, FALSE, 0);
 #endif
   
-#if !defined HAVE_GNOME || !defined HAVE_BONOBO
+#if !defined HAVE_GNOME
   gtk_box_pack_start (GTK_BOX (mw->window_vbox), mw->window_hbox, 
 		      FALSE, FALSE, 0);
 #endif
@@ -3768,7 +3739,7 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   /* Create a table in the main window to attach things like buttons */
   table = gtk_table_new (3, 4, FALSE);
   gtk_container_set_border_width (GTK_CONTAINER (table), 6);
-#if !defined HAVE_GNOME || !defined HAVE_BONOBO
+#if !defined HAVE_GNOME
   gtk_box_pack_start (GTK_BOX (mw->window_hbox), table, TRUE, TRUE, 0);
   gtk_widget_show (table);
 #else
@@ -3788,7 +3759,6 @@ gm_main_window_new (Ekiga::ServiceCore & core)
 
   gm_mw_init_contacts_list (window);
   gm_mw_init_dialpad (window);
-  gm_mw_init_calls_history (window);
   gm_mw_init_call (window);
 
   gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (mw->main_notebook),
@@ -3805,7 +3775,7 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   
   /* The URI toolbar */
   uri_toolbar = gm_mw_init_uri_toolbar (window);
-#if defined HAVE_GNOME && defined HAVE_BONOBO
+#if defined HAVE_GNOME
   gnome_app_add_docked (GNOME_APP (window), uri_toolbar, "main_toolbar",
 			BonoboDockItemBehavior (behavior),
   			BONOBO_DOCK_BOTTOM, 1, 0, 0);
@@ -3829,7 +3799,7 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   gtk_container_add (GTK_CONTAINER (mw->statusbar_ebox), mw->statusbar);
 
 
-#if !defined HAVE_GNOME || !defined HAVE_BONOBO
+#if !defined HAVE_GNOME
   gtk_box_pack_start (GTK_BOX (mw->window_vbox), hbox, 
 		      FALSE, FALSE, 0);
 #else
@@ -3862,7 +3832,7 @@ gm_main_window_new (Ekiga::ServiceCore & core)
 		    (gpointer) window);
 
   g_signal_connect (G_OBJECT (window), "show", 
-		    GTK_SIGNAL_FUNC (video_window_shown_cb), NULL);
+		    GTK_SIGNAL_FUNC (video_window_shown_cb), window);
 
   g_signal_connect (G_OBJECT (window), "expose-event", 
 		    GTK_SIGNAL_FUNC (video_window_expose_cb), NULL);
@@ -3875,25 +3845,44 @@ gm_main_window_new (Ekiga::ServiceCore & core)
                       (GDestroyNotify) g_free);
 
   /* Engine Signals callbacks */
-  // FIXME sigc::connection conn;
-  GnomeMeeting::Process ()->GetManager ()->call_event.connect (sigc::bind (sigc::ptr_fun (on_call_event_cb), 
-                                                                           (gpointer) window));
-  // FIXME self->priv->connections.push_back (conn);
-  GnomeMeeting::Process ()->GetManager ()->call_stats_event.connect (sigc::bind (sigc::ptr_fun (on_call_stats_event_cb), 
-                                                                           (gpointer) window));
-  // FIXME self->priv->connections.push_back (conn);
-  GnomeMeeting::Process ()->GetManager ()->mwi_event.connect (sigc::bind (sigc::ptr_fun (on_mwi_event_cb), 
-                                                                          (gpointer) window));
-  // FIXME self->priv->connections.push_back (conn);
-  GnomeMeeting::Process ()->GetManager ()->media_stream_event.connect (sigc::bind (sigc::ptr_fun (on_media_stream_event_cb), 
-                                                                                   (gpointer) window));
-  // FIXME self->priv->connections.push_back (conn);
-  GnomeMeeting::Process ()->GetManager ()->audio_signal_event.connect (sigc::bind (sigc::ptr_fun (on_audio_signal_event_cb), 
-                                                                                   (gpointer) window));
-  // FIXME self->priv->connections.push_back (conn);
-  GnomeMeeting::Process ()->GetManager ()->registration_event.connect (sigc::bind (sigc::ptr_fun (on_registration_event_cb), 
-                                                                                   (gpointer) window));
-  // FIXME self->priv->connections.push_back (conn);
+  conn = ep->mwi_event.connect (sigc::bind (sigc::ptr_fun (on_mwi_event_cb), (gpointer) window));
+  mw->connections.push_back (conn);
+
+  conn = ep->registration_event.connect (sigc::bind (sigc::ptr_fun (on_registration_event_cb), (gpointer) window));
+  mw->connections.push_back (conn);
+
+  /* New Call Engine signals */
+  Ekiga::CallCore *call_core = dynamic_cast<Ekiga::CallCore *> (mw->core.get ("call-core"));
+
+  conn = call_core->setup_call.connect (sigc::bind (sigc::ptr_fun (on_setup_call_cb), (gpointer) window));
+  mw->connections.push_back (conn);
+  
+  conn = call_core->established_call.connect (sigc::bind (sigc::ptr_fun (on_established_call_cb), (gpointer) window));
+  mw->connections.push_back (conn);
+  
+  conn = call_core->cleared_call.connect (sigc::bind (sigc::ptr_fun (on_cleared_call_cb), (gpointer) window));
+  mw->connections.push_back (conn);
+  
+  conn = call_core->held_call.connect (sigc::bind (sigc::ptr_fun (on_held_call_cb), (gpointer) window));
+  mw->connections.push_back (conn);
+  
+  conn = call_core->retrieved_call.connect (sigc::bind (sigc::ptr_fun (on_retrieved_call_cb), (gpointer) window));
+  mw->connections.push_back (conn);
+  
+  conn = call_core->missed_call.connect (sigc::bind (sigc::ptr_fun (on_missed_call_cb), (gpointer) window));
+  mw->connections.push_back (conn);
+  
+  conn = call_core->stream_opened.connect (sigc::bind (sigc::ptr_fun (on_stream_opened_cb), (gpointer) window));
+  mw->connections.push_back (conn);
+  
+  conn = call_core->stream_closed.connect (sigc::bind (sigc::ptr_fun (on_stream_closed_cb), (gpointer) window));
+  mw->connections.push_back (conn);
+
+  conn = call_core->stream_paused.connect (sigc::bind (sigc::ptr_fun (on_stream_paused_cb), (gpointer) window));
+  mw->connections.push_back (conn);
+
+  conn = call_core->stream_resumed.connect (sigc::bind (sigc::ptr_fun (on_stream_resumed_cb), (gpointer) window));
+  mw->connections.push_back (conn);
 
   return window;
 }
@@ -4307,24 +4296,17 @@ main (int argc,
   g_free (text_label);
 #endif
   
-  /* BONOBO initialization */
-#ifdef HAVE_BONOBO
-  if (bonobo_component_init (argc, argv))
-    exit (1);
-#endif
-
   /* Ekiga initialisation */
   static GnomeMeeting instance;
+  GnomeMeeting::Process ()->InitEngine ();
   if (debug_level != 0)
     PTrace::Initialise (PMAX (PMIN (4, debug_level), 0), NULL,
 			PTrace::Timestamp | PTrace::Thread
 			| PTrace::Blocks | PTrace::DateAndTime);
   if (!GnomeMeeting::Process ()->DetectDevices ()) 
     error = 1;
-  GnomeMeeting::Process ()->InitEngine ();
   GnomeMeeting::Process ()->BuildGUI ();
   GnomeMeeting::Process ()->DetectInterfaces ();
-  GnomeMeeting::Process ()->Init ();
   if (!GnomeMeeting::Process ()->DetectCodecs ()) 
     error = 2;
   
@@ -4340,6 +4322,8 @@ main (int argc,
    */
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   druid_window = GnomeMeeting::Process ()->GetDruidWindow ();
+  GmMainWindow *mw = gm_mw_get_mw (main_window); //TODO no gm_mw_get_mw here
+  Ekiga::CallCore *call_core = dynamic_cast<Ekiga::CallCore *> (mw->core.get ("call-core"));
   if (error == -1) {
 
     if (gm_conf_get_int (GENERAL_KEY "version") 
@@ -4359,7 +4343,7 @@ main (int argc,
 
     /* Call the given host if needed */
     if (url) 
-      GnomeMeeting::Process ()->Connect (url);
+      call_core->dial (url);
   }
   else {
 

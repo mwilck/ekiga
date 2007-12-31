@@ -44,6 +44,7 @@
 #include "common.h"
 
 #include "services.h"
+#include "call.h"
 
 
 /* DESCRIPTION  :  /
@@ -156,23 +157,6 @@ void gm_main_window_set_busy (GtkWidget *main_window,
 void gm_main_window_set_volume_sliders_values (GtkWidget *main_window,
 					       int output_volume,
 					       int input_volume);
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Update the main window signal level meters.
- * PRE          :  A valid pointer to the main window GMObject, followed
- * 		   by the output and input signals.
- */
-void gm_main_window_set_signal_levels (GtkWidget *main_window,
-				       float output,
-				       float input);
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Clear the main window signal level meters.
- * PRE          :  /
- */
-void gm_main_window_clear_signal_levels (GtkWidget *main_window);
 
 
 /* DESCRIPTION  :  /
@@ -307,13 +291,10 @@ gboolean gm_main_window_transfer_dialog_run (GtkWidget *main_window,
 /* DESCRIPTION   :  /
  * BEHAVIOR      : Creates a new incoming call popup and show it 
  * 		   as modal dialog.
- * PRE           : The main window GMObject.
- * 		   The name and the app in UTF-8 char * and the remote URL
+ * PRE           : The main window GMObject and the incoming call.
  */
 void gm_main_window_incoming_call_dialog_show (GtkWidget *main_window,
-					       gchar *utf8_name,
-					       gchar *utf8_app,
-					       gchar *utf8_url);
+                                               Ekiga::Call & call);
 
 
 /* DESCRIPTION  :  /

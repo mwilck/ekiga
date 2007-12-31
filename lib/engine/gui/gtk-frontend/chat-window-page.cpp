@@ -43,7 +43,7 @@
 #include "gmtextviewaddon.h"
 #include "gmstockicons.h"
 
-#include "sip-endpoint.h"
+#include "call-core.h"
 #include "presence-core.h"
 
 #include "ekiga.h"
@@ -392,12 +392,12 @@ send_button_clicked_cb (G_GNUC_UNUSED GtkWidget *w,
   message = body;
   g_free (body);
 
-  /* */ //FIXME protocol, use manager instead.
   if (!message.empty ()) {
-    SIP::EndPoint *endpoint =  dynamic_cast<SIP::EndPoint*>(self->priv->core.get ("sip-endpoint"));
-    if (endpoint) {
-      endpoint->message (self->priv->uri, message);
-    }
+    
+    Ekiga::CallCore *call_core = dynamic_cast<Ekiga::CallCore *>(self->priv->core.get ("call-core"));
+
+    if (call_core) 
+      call_core->send_message (self->priv->uri, message);
   }
 }
 

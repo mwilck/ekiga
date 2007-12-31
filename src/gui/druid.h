@@ -37,6 +37,9 @@
 
 #include "common.h"
 
+#include "services.h"
+
+
 /* the various kind of net known to the druid:
  */
 enum {
@@ -52,7 +55,7 @@ enum {
  * BEHAVIOR     :  Builds the "First time configuration druid" and returns it.
  * PRE          :  /
  */
-GtkWidget *gm_druid_window_new ();
+GtkWidget *gm_druid_window_new (Ekiga::ServiceCore &core);
 
 
 /* DESCRIPTION  :  /

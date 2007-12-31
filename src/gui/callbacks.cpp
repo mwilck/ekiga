@@ -108,35 +108,6 @@ hide_window_cb (G_GNUC_UNUSED GtkWidget *widget,
 
 
 void
-connect_cb (G_GNUC_UNUSED GtkWidget *widget,
-	    gpointer data)
-{	
-  PString url;
-
-  g_return_if_fail (data != NULL);
-  
-  url = gm_main_window_get_call_url (GTK_WIDGET (data)); 
-
-  GnomeMeeting::Process ()->Connect (url);
-}
-
-
-void
-disconnect_cb (G_GNUC_UNUSED GtkWidget *widget,
-	       G_GNUC_UNUSED gpointer data)
-{	
-  GtkWidget *main_window = NULL;
-  
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  gm_main_window_push_message (main_window, _("Disconnecting..."));
-
-  gdk_threads_leave ();
-  GnomeMeeting::Process ()->Disconnect ();
-  gdk_threads_enter ();
-}
-
-
-void
 about_callback (G_GNUC_UNUSED GtkWidget *widget, 
 		gpointer parent_window)
 {
@@ -389,42 +360,4 @@ entry_completion_url_match_cb (G_GNUC_UNUSED GtkEntryCompletion *completion,
   g_free (entry);
 
   return found;
-}
-
-gboolean 
-disconnect_idle_cb (G_GNUC_UNUSED gpointer data)
-{
-  //FIXME workaround
-  GnomeMeeting::Process ()->Disconnect ();
-  return FALSE;
-}
-
-void 
-connect_button_clicked_cb (GtkToggleButton *widget, 
-			   gpointer data)
-{
-  GMManager *ep = NULL;
-  PString url;
-
-  g_return_if_fail (data != NULL);
-
-  url = gtk_entry_get_text (GTK_ENTRY (data));
-  ep = GnomeMeeting::Process ()->GetManager ();
-  
-  /* Button is in disconnected state */
-  if (!gm_connect_button_get_connected (GM_CONNECT_BUTTON (widget))
-      && ep->GetCallingState () == GMManager::Standby) {
-      
-    if (!GMURL (url).IsEmpty ())
-      GnomeMeeting::Process ()->Connect (url);
-    else
-      gm_connect_button_set_connected (GM_CONNECT_BUTTON (widget), FALSE);
-  }
-  else if (gm_connect_button_get_connected (GM_CONNECT_BUTTON (widget))
-	   && ep->GetCallingState () != GMManager::Standby) {
-
-    g_idle_add (disconnect_idle_cb, NULL);
-  }
-  else 
-    gm_connect_button_set_connected (GM_CONNECT_BUTTON (widget), FALSE);
 }

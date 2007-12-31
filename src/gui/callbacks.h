@@ -80,24 +80,6 @@ void hide_window_cb (GtkWidget *widget,
 		     gpointer data);
 
 
-/* DESCRIPTION  :  This callback is called when the user choose to establish
- *                 a connection.
- * BEHAVIOR     :  Call the remote endpoint or accept the incoming call.
- * PRE          :  /
- */
-void connect_cb (GtkWidget *widget,
-		 gpointer data);
-
-
-/* DESCRIPTION  :  This callback is called when the user choose to stop
- *                 a connection.
- * BEHAVIOR     :  Do not accept the incoming call or stops the current call.
- * PRE          :  /
- */
-void disconnect_cb (GtkWidget *widget,
-		    gpointer data);
-
-
 /* DESCRIPTION  :  This callback is called when the user chooses to open
  *                 the about window.
  * BEHAVIOR     :  Open the about window.

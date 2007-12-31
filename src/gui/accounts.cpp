@@ -52,6 +52,8 @@
 #include "gmconf.h"
 #include "gmdialog.h"
 
+#include "services.h"
+
 
 typedef struct GmAccountsEditWindow_ {
 
@@ -67,16 +69,21 @@ typedef struct GmAccountsEditWindow_ {
   GtkWidget *domain_entry;
   GtkWidget *timeout_entry;
 
+
 } GmAccountsEditWindow;
 
 #define GM_ACCOUNTS_EDIT_WINDOW(x) (GmAccountsEditWindow *) (x)
 
 typedef struct GmAccountsWindow_ {
 
+  GmAccountsWindow_ (Ekiga::ServiceCore & _core) : core (_core) {};
+
   GtkWidget *accounts_list;
   GtkWidget *delete_button;
   GtkWidget *edit_button;
   GtkWidget *default_button;
+
+  Ekiga::ServiceCore &core;
 
 } GmAccountsWindow;
 
@@ -866,23 +873,15 @@ account_clicked_cb (G_GNUC_UNUSED GtkWidget *w,
 static void
 account_toggled_cb (G_GNUC_UNUSED GtkCellRendererToggle *cell,
 		    gchar *path_str,
-		    G_GNUC_UNUSED gpointer data)
+		    gpointer data)
 {
-  GMManager *ep = NULL;
-
   GmAccountsWindow *aw = NULL;
   GmAccount *account = NULL;
 
   GtkTreePath *path = NULL;
   GtkTreeSelection *selection = NULL;
 
-  GtkWidget *accounts_window = NULL;
-
-  accounts_window = GnomeMeeting::Process ()->GetAccountsWindow ();
-  ep = GnomeMeeting::Process ()->GetManager ();
-
-  aw = gm_aw_get_aw (accounts_window);
-
+  aw = gm_aw_get_aw (GTK_WIDGET (data));
 
   /* Make sure the toggled row is selected */
   selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (aw->accounts_list));
@@ -891,12 +890,12 @@ account_toggled_cb (G_GNUC_UNUSED GtkCellRendererToggle *cell,
   gtk_tree_path_free (path);
 
   /* Update the config */
-  account = gm_aw_get_selected_account (accounts_window);
+  account = gm_aw_get_selected_account (GTK_WIDGET (data));
   gnomemeeting_account_toggle_active (account);
 
   /* Update the account */
   gdk_threads_leave ();
-  ep->Register (account);
+  dynamic_cast<GMManager *>(aw->core.get ("opal-component"))->Register (account);
   gdk_threads_enter ();
 
   gm_account_delete (account);
@@ -951,24 +950,19 @@ edit_account2_cb (G_GNUC_UNUSED GtkTreeView *tree_view,
 
 static void
 set_account_as_default_cb (G_GNUC_UNUSED GtkWidget *button, 
-			   G_GNUC_UNUSED gpointer data)
+			   gpointer data)
 {
-  GMManager *ep = NULL;
-
   GmAccount *account = NULL;
+  GmAccountsWindow *aw = NULL;
 
-  GtkWidget *accounts_window = NULL;
+  aw = gm_aw_get_aw (GTK_WIDGET (data));
 
-  accounts_window = GnomeMeeting::Process ()->GetAccountsWindow (); 
-  ep = GnomeMeeting::Process ()->GetManager ();
-
-  /* Update the config */
-  account = gm_aw_get_selected_account (accounts_window);
+  account = gm_aw_get_selected_account (GTK_WIDGET (data));
   gnomemeeting_account_set_default (account, TRUE);
 
   /* Update the account */
   gdk_threads_leave ();
-  ep->SetUserNameAndAlias ();
+  dynamic_cast<GMManager *>(aw->core.get ("opal-component"))->SetUserNameAndAlias ();
   gdk_threads_enter ();
   
   gm_account_delete (account);
@@ -1506,7 +1500,7 @@ gnomemeeting_account_set_default (GmAccount *account,
 
 
 GtkWidget *
-gm_accounts_window_new ()
+gm_accounts_window_new (Ekiga::ServiceCore &core)
 {
   GmAccountsWindow *aw = NULL;
 
@@ -1559,10 +1553,9 @@ gm_accounts_window_new ()
   gtk_window_set_title (GTK_WINDOW (window), _("Accounts"));
   gtk_window_set_position (GTK_WINDOW (window), GTK_WIN_POS_CENTER);
 
-  aw = new GmAccountsWindow ();
+  aw = new GmAccountsWindow (core);
   g_object_set_data_full (G_OBJECT (window), "GMObject", 
 			  aw, gm_aw_destroy);
-
 
   /* The accounts list store */
   list_store = gtk_list_store_new (COLUMN_ACCOUNT_NUMBER,
@@ -1607,7 +1600,7 @@ gm_accounts_window_new ()
 				      COLUMN_ACCOUNT_ACTIVATABLE);
   g_signal_connect (G_OBJECT (renderer), "toggled",
   		    G_CALLBACK (account_toggled_cb),
-  		    (gpointer) aw->accounts_list);
+  		    (gpointer) window);
 
 
   /* Add all text renderers, ie all except the 
@@ -1700,7 +1693,7 @@ gm_accounts_window_new ()
   gtk_box_pack_start (GTK_BOX (buttons_vbox), 
 		      aw->default_button, TRUE, TRUE, 0);
   g_signal_connect (G_OBJECT (aw->default_button), "clicked", 
-  		    GTK_SIGNAL_FUNC (set_account_as_default_cb), NULL); 
+  		    GTK_SIGNAL_FUNC (set_account_as_default_cb), window); 
 
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG (window)->vbox), 
 		      event_box, TRUE, TRUE, 0);
@@ -1723,9 +1716,7 @@ gm_accounts_window_new ()
 
   /* Engine Signals callbacks */
   // FIXME sigc::connection conn;
-  GnomeMeeting::Process ()->GetManager ()->registration_event.connect (sigc::bind (sigc::ptr_fun (on_registration_event_cb), 
-                                                                                   (gpointer) window));
-
+  dynamic_cast<GMManager *> (core.get("opal-component"))->registration_event.connect (sigc::bind (sigc::ptr_fun (on_registration_event_cb), (gpointer) window));
   
   return window;
 }

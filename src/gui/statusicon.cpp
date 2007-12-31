@@ -57,7 +57,6 @@
 #include <gnome.h>
 #endif
 
-#include "callinfo.h"
 #include "services.h"
 #include "gtk-frontend.h"
 
@@ -115,10 +114,6 @@ static void
 statusicon_key_updated_cb (gpointer id, 
                            GmConfEntry *entry,
                            gpointer data);
-
-static void
-on_call_event_cb (Ekiga::CallInfo & info,
-                  gpointer data);
 
 
 /*
@@ -406,19 +401,6 @@ statusicon_key_updated_cb (G_GNUC_UNUSED gpointer id,
 }
 
 
-static void
-on_call_event_cb (Ekiga::CallInfo & info,
-                  gpointer data)
-{
-  StatusIcon *statusicon = STATUSICON (data);
-
-  if (info.get_call_type () == Ekiga::CallInfo::Incoming)
-    statusicon_start_blinking (statusicon, GM_STOCK_STATUS_RINGING);
-  else 
-    statusicon_stop_blinking (statusicon);
-}
-
-
 /* 
  * Local functions
  */
@@ -591,6 +573,8 @@ statusicon_new (Ekiga::ServiceCore & core,
                 const char *key)
 {
   StatusIcon *self = NULL;
+  GMManager *manager = NULL;
+
   sigc::connection conn;
 
   self = STATUSICON (g_object_new (STATUSICON_TYPE, NULL));
@@ -606,10 +590,9 @@ statusicon_new (Ekiga::ServiceCore & core,
 
   g_object_set (self, "key", key, NULL);
 
-  // FIXME GnomeMeeting::Process should disappear
-  conn = GnomeMeeting::Process ()->GetManager ()->call_event.connect (sigc::bind (sigc::ptr_fun (on_call_event_cb), self));
-  self->priv->connections.push_back (conn);
-
+  manager = dynamic_cast<GMManager *> (core.get ("opal-component"));
+//  conn = manager->call_event.connect (sigc::bind (sigc::ptr_fun (on_call_event_cb), self));
+  //self->priv->connections.push_back (conn); // TODO Announce all events here
   GtkFrontend *frontend = dynamic_cast<GtkFrontend*>(core.get ("gtk-frontend"));
   GtkWidget *chat_window = GTK_WIDGET (frontend->get_chat_window ());
 

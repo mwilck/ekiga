@@ -40,12 +40,15 @@
 #ifndef _TOOLS_H_
 #define _TOOLS_H_
 
+#include "services.h"
+
 #include "common.h"
+
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Build the PC-To-Phone window and returns it.
  * PRE          :  /
  */
-GtkWidget *gm_pc2phone_window_new ();
+GtkWidget *gm_pc2phone_window_new (Ekiga::ServiceCore & core);
 
 #endif

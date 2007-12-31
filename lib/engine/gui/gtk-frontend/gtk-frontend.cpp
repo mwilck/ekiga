@@ -64,15 +64,17 @@ GtkFrontend::GtkFrontend (Ekiga::ServiceCore &core)
 
   Ekiga::PresenceCore *presence_core = NULL;
   Ekiga::ContactCore *contact_core = NULL;
+  GMManager *manager = NULL;
 
   contact_core = dynamic_cast<Ekiga::ContactCore*>(core.get ("contact-core"));
   presence_core = dynamic_cast<Ekiga::PresenceCore*>(core.get ("presence-core"));
+  manager = dynamic_cast<GMManager *>(core.get ("opal-component"));
 
   roster_view = roster_view_gtk_new (*presence_core);
   addressbook_window = addressbook_window_new_with_key (*contact_core, USER_INTERFACE_KEY "addressbook_window");
   chat_window = chat_window_new_with_key (core, USER_INTERFACE_KEY "chat_window");
 
-  conn = GnomeMeeting::Process ()->GetManager ()->new_chat.connect (sigc::bind (sigc::ptr_fun (on_new_chat), *this));
+  conn = manager->new_chat.connect (sigc::bind (sigc::ptr_fun (on_new_chat), *this));
   connections.push_back (conn);
 }
 

@@ -40,6 +40,7 @@
 #define _ACCOUNTS_H_
 
 #include "common.h"
+#include "services.h"
 
 class GMManager;
 
@@ -164,7 +165,7 @@ gboolean gnomemeeting_account_set_default (GmAccount *account,
  * BEHAVIOR     : Builds the GMAccounts window GMObject.
  * PRE          : /
  */
-GtkWidget *gm_accounts_window_new ();
+GtkWidget *gm_accounts_window_new (Ekiga::ServiceCore &core);
 
 
 /* DESCRIPTION  :  /

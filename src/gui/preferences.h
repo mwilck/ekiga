@@ -62,18 +62,6 @@ void gm_prefs_window_update_devices_list (GtkWidget *prefs_window,
 					  PStringArray audio_output_devices,
 					  PStringArray video_input_devices);
 
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Refreshes the codecs list in the GUI to update them from
- *                 the given OpalMediaFormat list. Do it following the user 
- *                 configuration. The list is presented to the user using the 
- *                 short form (e.g. "PCMU") and not the long form (e.g.
- *                 "G.711-uLaw-64k") even though the configuration is supposed
- *                 to store the long form.
- * PRE          :  /
- */
-void gm_prefs_window_update_codecs_list (GtkWidget *prefs_window,
-                                         OpalMediaFormatList &l);
-
 
 /* DESCRIPTION  :  / 
  * BEHAVIOR     :  Builds the sound events list of the preferences window. 
