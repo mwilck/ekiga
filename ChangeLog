@@ -1,5 +1,16 @@
 2007-12-31  Damien Sandras  <dsandras@gnome.org>
 
+	* lib/engine/engine.cpp, lib/engine/engine.h, lib/engine/Makefile.am:
+	Changed engine initialisation so that the ServiceCore contains
+	a pointer to the Runtime created by the application. Added opal initilisation.
+
+2007-12-31  Damien Sandras  <dsandras@gnome.org>
+
+	* lib/engine:
+	Removed annoying debug.
+
+2007-12-31  Damien Sandras  <dsandras@gnome.org>
+
 	* lib/engine/gui/gtk-frontend/chat-window-page.cpp,
 	lib/engine/gui/gtk-frontend/gtk-frontend.cpp,
 	lib/engine/gui/gtk-frontend/chat-window.cpp,
@@ -36,6 +47,7 @@
 
 	* lib/engine/addressbook/ldap/:
 	Get the Runtime from the ServiceCore, not from GnomeMeeting::Process().
+	Removed annoying debug.
 
 2007-12-31  Damien Sandras  <dsandras@gnome.org>
 
