@@ -1,5 +1,12 @@
 2007-12-31  Damien Sandras  <dsandras@gnome.org>
 
+	* src/components/bonobo.cpp, src/components/bonobo.h:
+	Removed bonobo support. The only thing it was used for is to prevent
+	to run two ekiga instances at the same time. This will be
+	reimplemented using DBUS.
+
+2007-12-31  Damien Sandras  <dsandras@gnome.org>
+
 	* lib/gui/gmcodecsbox.cpp, lib/gui/gmcodecsbox.h: 
 	Adapted to the new engine codecs. The codecs box knows nothing about
 	OPAL media formats. It just knows there is a key for codecs with a
