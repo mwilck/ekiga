@@ -53,6 +53,81 @@
 #define new PNEW
 
 
+/* DESCRIPTION  :  This notifier is called when the config database data
+ *                 associated with the H.245 Tunneling changes.
+ * BEHAVIOR     :  It updates the endpoint.
+ * PRE          :  data is a pointer to the H323EndPoint.
+ */
+static void h245_tunneling_changed_nt (G_GNUC_UNUSED gpointer id,
+                                       GmConfEntry *entry,
+                                       gpointer data);
+
+
+
+/* DESCRIPTION  :  This notifier is called when the config database data
+ *                 associated with the early H.245 key changes.
+ * BEHAVIOR     :  It updates the endpoint.
+ * PRE          :  data is a pointer to the H323EndPoint.
+ */
+static void early_h245_changed_nt (G_GNUC_UNUSED gpointer id,
+                                   GmConfEntry *entry,
+                                   gpointer data);
+
+
+
+/* DESCRIPTION  :  This notifier is called when the config database data
+ *                 associated with the Fast Start changes.
+ * BEHAVIOR     :  It updates the endpoint.
+ * PRE          :  data is a pointer to the H323EndPoint.
+ */
+static void fast_start_changed_nt (G_GNUC_UNUSED gpointer id,
+                                   GmConfEntry *entry,
+                                   gpointer data);
+
+
+
+static void
+h245_tunneling_changed_nt (G_GNUC_UNUSED gpointer id,
+			   GmConfEntry *entry,
+			   G_GNUC_UNUSED gpointer data)
+{
+  GMH323Endpoint *h323EP = (GMH323Endpoint *) data;
+  
+  if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
+
+    h323EP->DisableH245Tunneling (!gm_conf_entry_get_bool (entry));
+  }
+}
+
+
+static void
+early_h245_changed_nt (G_GNUC_UNUSED gpointer id,
+		       GmConfEntry *entry,
+		       G_GNUC_UNUSED gpointer data)
+{
+  GMH323Endpoint *h323EP = (GMH323Endpoint *) data;
+  
+  if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
+
+    h323EP->DisableH245inSetup (!gm_conf_entry_get_bool (entry));
+  }
+}
+
+
+static void
+fast_start_changed_nt (G_GNUC_UNUSED gpointer id,
+		       GmConfEntry *entry,
+		       G_GNUC_UNUSED gpointer data)
+{
+  GMH323Endpoint *h323EP = (GMH323Endpoint *) data;
+
+  if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
+
+    h323EP->DisableFastStart (!gm_conf_entry_get_bool (entry));
+  }
+}
+
+
 /* The class */
 GMH323Endpoint::GMH323Endpoint (GMManager & ep)
 	: H323EndPoint (ep), endpoint (ep)
@@ -69,21 +144,15 @@ GMH323Endpoint::~GMH323Endpoint ()
 void 
 GMH323Endpoint::Init ()
 {
-  GtkWidget *main_window = NULL;
-  
-  gboolean early_h245 = FALSE;
-  gboolean h245_tunneling = FALSE;
-  gboolean fast_start = FALSE;
+  bool early_h245 = FALSE;
+  bool h245_tunneling = FALSE;
+  bool fast_start = FALSE;
 
-  
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  
   gnomemeeting_threads_enter ();
   fast_start = gm_conf_get_bool (H323_KEY "enable_fast_start");
   h245_tunneling = gm_conf_get_bool (H323_KEY "enable_h245_tunneling");
   early_h245 = gm_conf_get_bool (H323_KEY "enable_early_h245");
   gnomemeeting_threads_leave ();
-  
   
   /* Initialise internal parameters */
   DisableH245Tunneling (!h245_tunneling);
@@ -91,6 +160,16 @@ GMH323Endpoint::Init ()
   DisableH245inSetup (!early_h245);
 
   SetInitialBandwidth (40000);
+
+  /* Be notified for configuration changes */
+  gm_conf_notifier_add (H323_KEY "enable_h245_tunneling",
+			h245_tunneling_changed_nt, this);
+
+  gm_conf_notifier_add (H323_KEY "enable_early_h245",
+			early_h245_changed_nt, this);
+
+  gm_conf_notifier_add (H323_KEY "enable_fast_start",
+			fast_start_changed_nt, this);
 }
 
 
@@ -152,61 +231,6 @@ GMH323Endpoint::StartListener (PString iface,
   g_free (listen_to);
 
   return ok;
-}
-
-
-OpalMediaFormatList
-GMH323Endpoint::GetAvailableAudioMediaFormats ()
-{
-  OpalMediaFormatList list;
-  OpalMediaFormatList media_formats;
-  OpalMediaFormatList h323_list;
-
-  GMPCSSEndpoint *pcssEP = endpoint.GetPCSSEndpoint ();
-
-  media_formats = pcssEP->GetMediaFormats ();
-  list += OpalTranscoder::GetPossibleFormats (media_formats);
-
-  for (int i = 0 ; i < list.GetSize () ; i++) {
-
-    if (list [i].GetDefaultSessionID () == 1) { 
-      
-      if (PString (list [i].GetEncodingName ()).GetLength () > 0) {
-
-        if (list [i].IsValidForProtocol ("H323")
-            && list [i].GetPayloadType () != RTP_DataFrame::MaxPayloadType)
-          h323_list += list [i];
-      }
-    }
-  }
-
-  return h323_list;
-}
-
-
-OpalMediaFormatList
-GMH323Endpoint::GetAvailableVideoMediaFormats ()
-{
-  OpalMediaFormatList list;
-  OpalMediaFormatList media_formats;
-  OpalMediaFormatList h323_list;
-
-  GMPCSSEndpoint *pcssEP = endpoint.GetPCSSEndpoint ();
-
-  media_formats = pcssEP->GetMediaFormats ();
-  list += OpalTranscoder::GetPossibleFormats (media_formats);
-
-  for (int i = 0 ; i < list.GetSize () ; i++) {
-
-    if (list [i].GetDefaultSessionID () == 2) { 
-      
-        if (list [i].IsValidForProtocol ("H323")
-            && list [i].GetPayloadType () != RTP_DataFrame::MaxPayloadType)
-          h323_list += list [i];
-    }
-  }
-
-  return h323_list;
 }
 
 
