@@ -69,7 +69,6 @@
 typedef struct _GmPreferencesWindow
 {
   GtkWidget *audio_codecs_list;
-  GtkWidget *video_codecs_list;
   GtkWidget *sound_events_list;
   GtkWidget *audio_player;
   GtkWidget *sound_events_output;
@@ -203,21 +202,13 @@ static void gm_pw_init_video_devices_page (GtkWidget *prefs_window,
 
 
 /* DESCRIPTION  : /
- * BEHAVIOR     : Builds the audio codecs settings page.
+ * BEHAVIOR     : Builds the codecs settings page.
  * PRE          : A valid pointer to the preferences window GMObject, and to the
  * 		  container widget where to attach the generated page.
  */
-static void gm_pw_init_audio_codecs_page (GtkWidget *prefs_window,
-					  GtkWidget *container);
+static void gm_pw_init_codecs_page (GtkWidget *prefs_window,
+                                    GtkWidget *container);
 
-
-/* DESCRIPTION  : /
- * BEHAVIOR     : Builds the video codecs settings page.
- * PRE          : A valid pointer to the preferences window GMObject, and to the
- * 		  container widget where to attach the generated page.
- */
-static void gm_pw_init_video_codecs_page (GtkWidget *prefs_window,
-					  GtkWidget *container);
 
 
 /* GTK Callbacks */
@@ -319,25 +310,6 @@ static void audioev_filename_browse_play_cb (GtkWidget *playbutton,
                                              gpointer data);
 
 
-/* DESCRIPTION  :  This callback is called when the audio codecs list is 
- *                 modified (or setup).
- * BEHAVIOR     :  Updates the audio media formats list of the GMManager.
- * PRE          :  /
- */
-static void audio_codecs_list_changed_cb (GtkWidget *widget,
-                                          PStringArray *l,
-                                          gpointer data);
-
-
-/* DESCRIPTION  :  This callback is called when the audio codecs list is 
- *                 modified (or setup).
- * BEHAVIOR     :  Updates the video media formats list of the GMManager.
- * PRE          :  /
- */
-static void video_codecs_list_changed_cb (GtkWidget *widget,
-                                          PStringArray *l,
-                                          gpointer data);
-
 
 /* Implementation */
 static void
@@ -422,7 +394,7 @@ gm_pw_init_general_page (GtkWidget *prefs_window,
   gtk_widget_set_size_request (GTK_WIDGET (entry), 250, -1);
   gtk_entry_set_max_length (GTK_ENTRY (entry), 65);
   /* Add the update button */
-  gm_pw_add_update_button (prefs_window, container, GTK_STOCK_APPLY, _("_Apply"), GTK_SIGNAL_FUNC (personal_data_update_cb), _("Click here to update the users directory you are registered to with the new First Name, Last Name, E-Mail, Comment and Location"), 0, NULL);
+  gm_pw_add_update_button (prefs_window, container, GTK_STOCK_APPLY, _("_Apply"), GTK_SIGNAL_FUNC (personal_data_update_cb), _("Click here to update the users directory you are registered to with the new First Name, Last Name, E-Mail, Comment and Location"), 0, prefs_window);
 }                                                                              
 
 
@@ -476,8 +448,6 @@ gm_pw_init_call_options_page (GtkWidget *prefs_window,
                                            _("Call Options"), 2, 3);
 
   /* Add all the fields */
-  gnome_prefs_toggle_new (subsection, _("Automatically _clear calls after 30 seconds of inactivity"), CALL_OPTIONS_KEY "clear_inactive_calls", _("If enabled, calls for which no audio and video has been received in the last 30 seconds are automatically cleared"), 0);  
-
   gnome_prefs_spin_new (subsection, _("Timeout to reject or forward unanswered incoming calls (in seconds):"), CALL_OPTIONS_KEY "no_answer_timeout", _("Automatically reject or forward incoming calls if no answer is given after the specified amount of time (in seconds)"), 10.0, 299.0, 1.0, 1, NULL, true);
 }
 
@@ -685,6 +655,11 @@ gm_pw_init_network_page (GtkWidget *prefs_window,
     gnome_prefs_string_option_menu_new (subsection, _("Listen on:"), (const gchar **)array, PROTOCOLS_KEY "interface", _("The network interface to listen on"), 0);
   free (array);
 
+  /* BW */
+  subsection = gnome_prefs_subsection_new (prefs_window, container,
+                                           _("Video Bandwidth"), 1, 2);
+
+  gnome_prefs_spin_new (subsection, _("Maximum video _bitrate (in kbits/s):"), VIDEO_CODECS_KEY "maximum_video_tx_bitrate", _("The maximum video bitrate in kbits/s. The video quality and the number of transmitted frames per second (depends on codec) will be dynamically adjusted above their minimum during calls to try to minimize the bandwidth to the given value."), 16.0, 2048.0, 1.0, 1, NULL, true);
 
   /* NAT */
   subsection =
@@ -974,82 +949,37 @@ gm_pw_init_video_devices_page (GtkWidget *prefs_window,
 
 
 static void
-gm_pw_init_audio_codecs_page (GtkWidget *prefs_window,
-                              GtkWidget *container)
+gm_pw_init_codecs_page (GtkWidget *prefs_window,
+                        GtkWidget *container)
 {
-  GMManager *ep = NULL;
-
   GtkWidget *subsection = NULL;
 
   GmPreferencesWindow *pw = NULL;
 
   pw = gm_pw_get_pw (prefs_window);
-  ep = GnomeMeeting::Process ()->GetManager ();
 
   /* Packing widgets */
   subsection =
     gnome_prefs_subsection_new (prefs_window, container,
-				_("Available Audio Codecs"), 1, 1);
+				_("Available Codecs"), 1, 1);
 
-  pw->audio_codecs_list = gm_codecs_box_new (TRUE, AUDIO_CODECS_KEY "list");
+  pw->audio_codecs_list = gm_codecs_box_new ();
   gtk_table_attach (GTK_TABLE (subsection), pw->audio_codecs_list,
 		    0, 1, 0, 1,
 		    (GtkAttachOptions) (GTK_SHRINK), 
 		    (GtkAttachOptions) (GTK_SHRINK),
 		    0, 0);
 
-  g_signal_connect (G_OBJECT (pw->audio_codecs_list), "codecs-box-changed",
-                    G_CALLBACK (audio_codecs_list_changed_cb),
-                    NULL);
-
   /* Here we add the audio codecs options */
   subsection = 
     gnome_prefs_subsection_new (prefs_window, container,
-				_("Audio Codecs Settings"), 3, 1);
+				_("Codecs Settings"), 3, 1);
 
   /* Translators: the full sentence is Automatically adjust jitter buffer
      between X and Y ms */
-  gnome_prefs_range_new (subsection, _("Automatically adjust _jitter buffer between"), NULL, _("and"), NULL, _("ms"), AUDIO_CODECS_KEY "minimum_jitter_buffer", AUDIO_CODECS_KEY "maximum_jitter_buffer", _("The minimum jitter buffer size for audio reception (in ms)."), _("The maximum jitter buffer size for audio reception (in ms)."), 20.0, 20.0, 1000.0, 1000.0, 1.0, 0);
-
-  gnome_prefs_toggle_new (subsection, _("Enable silence _detection"), AUDIO_CODECS_KEY "enable_silence_detection", _("If enabled, use silence detection with the codecs supporting it."), 1);
+  gnome_prefs_toggle_new (subsection, _("Enable silence _detection"), AUDIO_CODECS_KEY "enable_silence_detection", _("If enabled, use silence detection with the codecs supporting it."), 0);
   
-  gnome_prefs_toggle_new (subsection, _("Enable echo can_celation"), AUDIO_CODECS_KEY "enable_echo_cancelation", _("If enabled, use echo cancelation."), 2);
-}
-
-
-static void
-gm_pw_init_video_codecs_page (GtkWidget *prefs_window,
-			      GtkWidget *container)
-{
-  GtkWidget *subsection = NULL;
-
-  GmPreferencesWindow *pw = NULL;
-
-  pw = gm_pw_get_pw (prefs_window);
-
-  /* Packing widgets */
-  subsection =
-    gnome_prefs_subsection_new (prefs_window, container,
-				_("Available Video Codecs"), 1, 1);
-
-  pw->video_codecs_list = gm_codecs_box_new (FALSE, VIDEO_CODECS_KEY "list");
-  gtk_table_attach (GTK_TABLE (subsection), pw->video_codecs_list,
-		    0, 1, 0, 1,
-		    (GtkAttachOptions) (GTK_SHRINK), 
-		    (GtkAttachOptions) (GTK_SHRINK),
-		    0, 0);
-
-  g_signal_connect (G_OBJECT (pw->video_codecs_list), "codecs-box-changed",
-                    G_CALLBACK (video_codecs_list_changed_cb),
-                    NULL);
-
-  /* Add fields */
-  subsection = gnome_prefs_subsection_new (prefs_window, container,
-					   _("Video Codecs Settings"), 3, 2);
-
-  gnome_prefs_toggle_new (subsection, _("Enable _video support"), VIDEO_CODECS_KEY "enable_video", _("If enabled, allows video during calls."), 0);
-
-  gnome_prefs_spin_new (subsection, _("Maximum video _bitrate (in kbits/s):"), VIDEO_CODECS_KEY "maximum_video_tx_bitrate", _("The maximum video bitrate in kbits/s. The video quality and the number of transmitted frames per second (depends on codec) will be dynamically adjusted above their minimum during calls to try to minimize the bandwidth to the given value."), 16.0, 2048.0, 1.0, 1, NULL, true);
+  gnome_prefs_toggle_new (subsection, _("Enable echo can_celation"), AUDIO_CODECS_KEY "enable_echo_cancelation", _("If enabled, use echo cancelation."), 1);
 
   /* Translators: the full sentence is Keep a minimum video quality of X % */
   gnome_prefs_scale_new (subsection, _("Picture Quality"), _("Frame Rate"), VIDEO_CODECS_KEY "temporal_spatial_tradeoff", _("Choose if you want to favour frame rate or quality for the transmitted video."), 0.0, 32.0, 1.0, 2);
@@ -1069,17 +999,14 @@ static void
 personal_data_update_cb (G_GNUC_UNUSED GtkWidget *widget,
 			 G_GNUC_UNUSED gpointer data)
 {
-  GMManager *endpoint = NULL;
-
-  endpoint = GnomeMeeting::Process ()->GetManager ();
-
-  /* Prevent crossed-mutex deadlock */
-  gdk_threads_leave ();
-
-  /* Both are able to not register if the option is not active */
-  endpoint->UpdatePublishers ();
-
-  gdk_threads_enter ();
+  // TODO
+  GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (data),
+                                              GTK_DIALOG_DESTROY_WITH_PARENT,
+                                              GTK_MESSAGE_ERROR,
+                                              GTK_BUTTONS_CLOSE,
+                                              "Please restart Ekiga. This button does not work yet in the SVN version. Sorry for the inconvenience, this will be fixed shortly.");
+  gtk_dialog_run (GTK_DIALOG (dialog));
+  gtk_widget_destroy (dialog);
 }
 
 
@@ -1087,34 +1014,14 @@ static void
 nat_method_update_cb (G_GNUC_UNUSED GtkWidget *widget,
 		      gpointer data)
 {
-  GMManager *ep = NULL;
-
-  int nat_method = 0;
-
-  gchar *stun_server = NULL;
-  gchar *ip = NULL;
-
-  g_return_if_fail (data != NULL);
-
-  ep = GnomeMeeting::Process ()->GetManager ();
-
-  nat_method = gm_conf_get_int (NAT_KEY "method");
-  stun_server = gm_conf_get_string (NAT_KEY "stun_server");
-  ip = gm_conf_get_string (NAT_KEY "public_ip");
-  
-  gdk_threads_leave ();
-  ep->SetTranslationAddress (PString ("0.0.0.0"));
-
-  if (nat_method == 1 && stun_server)
-    ep->CreateSTUNClient (TRUE, FALSE, FALSE, GTK_WIDGET (data));
-  else if (nat_method == 2 && ip)
-    ep->SetTranslationAddress (PString (ip));
-  else if (nat_method == 0) 
-    ep->RemoveSTUNClient ();
-  gdk_threads_enter ();
-
-  g_free (ip);
-  g_free (stun_server);
+  // TODO
+  GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (data),
+                                              GTK_DIALOG_DESTROY_WITH_PARENT,
+                                              GTK_MESSAGE_ERROR,
+                                              GTK_BUTTONS_CLOSE,
+                                              "Please restart Ekiga. This button does not work yet in the SVN version. Sorry for the inconvenience, this will be fixed shortly.");
+  gtk_dialog_run (GTK_DIALOG (dialog));
+  gtk_widget_destroy (dialog);
 }
 
 
@@ -1327,37 +1234,6 @@ audioev_filename_browse_play_cb (G_GNUC_UNUSED GtkWidget *playbutton,
 }
 
 
-static void
-audio_codecs_list_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
-                              PStringArray *l,
-                              G_GNUC_UNUSED gpointer data)
-{
-  GMManager *ep = NULL;
-
-  if (!l)
-    return;
-
-  ep = GnomeMeeting::Process ()->GetManager ();
-
-  ep->SetAudioMediaFormats (l);
-}
-
-
-static void
-video_codecs_list_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
-                              PStringArray *l,
-                              G_GNUC_UNUSED gpointer data)
-{
-  GMManager *ep = NULL;
-
-  if (!l)
-    return;
-
-  ep = GnomeMeeting::Process ()->GetManager ();
-
-  ep->SetVideoMediaFormats (l);
-}
-
 
 /* Public functions */
 void 
@@ -1421,26 +1297,6 @@ gm_prefs_window_update_devices_list (GtkWidget *prefs_window,
 					 (const gchar **)array,
 					 VIDEO_DEVICES_KEY "input_device");
   free (array);
-}
-
-
-void 
-gm_prefs_window_update_codecs_list (GtkWidget *prefs_window,
-                                    OpalMediaFormatList & l)
-{
-  GmPreferencesWindow *pw = NULL;
-
-  g_return_if_fail (prefs_window != NULL);
-
-  pw = gm_pw_get_pw (prefs_window);
-
-  if (l.GetSize () <= 0)
-    return;
-
-  if (l [0].GetDefaultSessionID () == 1) 
-    gm_codecs_box_set_codecs (GM_CODECS_BOX (pw->audio_codecs_list), l);
-  else 
-    gm_codecs_box_set_codecs (GM_CODECS_BOX (pw->video_codecs_list), l);
 }
 
 
@@ -1586,14 +1442,8 @@ gm_prefs_window_new ()
   gm_pw_init_h323_page (window, container);          
   gtk_widget_show_all (GTK_WIDGET (container));
 
-  gnome_prefs_window_section_new (window, _("Codecs"));
-
-  container = gnome_prefs_window_subsection_new (window, _("Audio Codecs"));
-  gm_pw_init_audio_codecs_page (window, container);
-  gtk_widget_show_all (GTK_WIDGET (container));
-
-  container = gnome_prefs_window_subsection_new (window, _("Video Codecs"));
-  gm_pw_init_video_codecs_page (window, container);
+  container = gnome_prefs_window_subsection_new (window, _("Codecs"));
+  gm_pw_init_codecs_page (window, container);
   gtk_widget_show_all (GTK_WIDGET (container));
 
   gnome_prefs_window_section_new (window, _("Devices"));

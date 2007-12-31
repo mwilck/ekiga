@@ -1,5 +1,13 @@
 2007-12-31  Damien Sandras  <dsandras@gnome.org>
 
+	* src/gui/preferences.cpp:
+	Reordered preferences. Removed settings that the user should not
+	change like the jitter buffer. The algorithm automatically calculates
+	the most efficient jitter buffer value. Merged audio and video codecs
+	settings. Moved bandwidth settings in the Network Settings section.
+
+2007-12-31  Damien Sandras  <dsandras@gnome.org>
+
 	* lib/gmconf/:
 	Fixed bug, gconf_value_get_list returns a list of GConfValue's, not a
 	list of string. Slightly changed our API to return a list of strings.
