@@ -30,7 +30,8 @@
  *                         dbus_component.h  -  description
  *                         -----------------------------
  *   begin                : Tue Nov 1  2005
- *   copyright            : (C) 2005 by Julien Puydt
+ *   copyright            : (c) 2005 by Julien Puydt
+ *                          (c) 2007 by Damien Sandras
  *   description          : This files contains the interface to the DBUS
  *                          interface of gnomemeeting.
  *
@@ -45,47 +46,13 @@
 
 G_BEGIN_DECLS
 
-enum {
-  INVALID_ACCOUNT,
-  UNREGISTERED,
-  REGISTERED
-};
-
-enum {
-  INVALID_CALL,
-  STANDBY,
-  CALLING,
-  CONNECTED,
-  CALLED
-};
 
 GObject *gnomemeeting_dbus_component_new ();
-
-void gnomemeeting_dbus_component_set_call_state (GObject *obj,
-						 const gchar *token,
-						 GMManager::CallingState state);
-
-void gnomemeeting_dbus_component_set_call_info (GObject *obj,
-						const gchar *token,
-						const gchar *name,
-						const gchar *client,
-						const gchar *url,
-						const gchar *protocol_prefix);
-
-void gnomemeeting_dbus_component_set_call_on_hold (GObject *obj,
-						   const gchar *token,
-						   gboolean is_on_hold);
 
 gboolean gnomemeting_dbus_component_is_first_instance (GObject *obj);
 
 void gnomemeeting_dbus_component_call (GObject *obj,
 				       const gchar *uri);
-
-void gnomemeeting_dbus_component_account_registration (GObject *obj,
-						       const gchar *username,
-						       const gchar *domain,
-						       gboolean registered);
-							      
 
 G_END_DECLS
 

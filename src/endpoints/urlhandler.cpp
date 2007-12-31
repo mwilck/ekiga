@@ -467,15 +467,6 @@ void GMURLHandler::Main ()
     if (result) {
 
       endpoint->SetCurrentCallToken (current_call_token);
-#ifdef HAVE_DBUS
-      gnomemeeting_dbus_component_set_call_state (dbus_component,
-						  current_call_token,
-						  GMManager::Calling);
-      gnomemeeting_dbus_component_set_call_info (dbus_component,
-						 current_call_token,
-						 NULL, NULL, call_address,
-						 NULL);
-#endif
     }
     else {
 

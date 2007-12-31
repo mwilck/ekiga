@@ -30,7 +30,8 @@
  *                         dbus_component.cpp  -  description
  *                         -----------------------------
  *   begin                : Tue Nov 1  2005
- *   copyright            : (C) 2005 by Julien Puydt
+ *   copyright            : (c) 2005 by Julien Puydt
+ *                          (c) 2007 by Damien Sandras
  *   description          : This files contains the implementation of the DBUS
  *                          interface of gnomemeeting.
  *
@@ -158,35 +159,10 @@ static gboolean dbus_component_claim_ownership (DbusComponent *self);
 
 /* Declaration of helper functions */
 
-static guint endpoint_to_dbus_state (GMManager::CallingState hstate);
 static const gchar *protocol_prefix_to_name (const PString prefix);
 
 /* Implementation of the helper functions */
 
-static guint
-endpoint_to_dbus_state (GMManager::CallingState hstate)
-{
-  guint result = INVALID_CALL;
-
-  switch (hstate) {
-  case GMManager::Standby :
-    result = INVALID_CALL;
-    break;
-  case GMManager::Calling :
-    result = CALLING;
-    break;
-  case GMManager::Connected :
-    result = CONNECTED;
-    break;
-  case GMManager::Called :
-    result = CALLED;
-    break;
-  default:
-    break;
-  }
-
-  return result;
-}
 
 static const gchar *
 protocol_prefix_to_name (const PString prefix)
@@ -331,29 +307,6 @@ dbus_component_register (G_GNUC_UNUSED DbusComponent *self,
 			 const char *token,
 			 G_GNUC_UNUSED GError **error)
 {
-  GMManager *endpoint = NULL;
-  GSList *gmaccounts = NULL;
-  GSList *iter = NULL;
-  GmAccount *account = NULL;
-
-  /* get some data from gnomemeeting */
-  endpoint = GnomeMeeting::Process ()->GetManager ();
-  gmaccounts = gnomemeeting_get_accounts_list ();
-
-  for (iter = gmaccounts ; iter != NULL ; iter = g_slist_next (iter)) {
-
-    account = GM_ACCOUNT (iter->data);
-    if (g_ascii_strcasecmp (account->aid, token) == 0) {
-
-      account->enabled = TRUE;
-      endpoint->Register (account);
-      break;
-    }
-  }
-
-  /* cleaning... */
-  g_slist_foreach (gmaccounts, (GFunc) gm_account_delete, NULL);
-  g_slist_free (gmaccounts);
 
   return TRUE;
 }
@@ -363,29 +316,6 @@ dbus_component_unregister (G_GNUC_UNUSED DbusComponent *self,
 			   const char *token,
 			   G_GNUC_UNUSED GError **error)
 {
-  GMManager *endpoint = NULL;
-  GSList *gmaccounts = NULL;
-  GSList *iter = NULL;
-  GmAccount *account = NULL;
-
-  /* get some data from gnomemeeting */
-  endpoint = GnomeMeeting::Process ()->GetManager ();
-  gmaccounts = gnomemeeting_get_accounts_list ();
-
-  for (iter = gmaccounts ; iter != NULL ; iter = g_slist_next (iter)) {
-
-    account = GM_ACCOUNT (iter->data);
-    if (g_ascii_strcasecmp (account->aid, token) == 0) {
-
-      account->enabled = FALSE;
-      endpoint->Register (account);
-      break;
-    }
-  }
-
-  /* cleaning... */
-  g_slist_foreach (gmaccounts, (GFunc) gm_account_delete, NULL);
-  g_slist_free (gmaccounts);
 
   return TRUE;
 }
@@ -395,35 +325,6 @@ dbus_component_resignal_account_info (DbusComponent *self,
 				      const char *token,
 				      G_GNUC_UNUSED GError **error)
 {
-  GSList *gmaccounts = NULL;
-  GSList *iter = NULL;
-  GmAccount *account = NULL;
-  gboolean found = FALSE;
-
-  /* get some data from gnomemeeting */
-  gmaccounts = gnomemeeting_get_accounts_list ();
-
-  for (iter = gmaccounts ; iter != NULL ; iter = g_slist_next (iter)) {
-
-    account = GM_ACCOUNT (iter->data);
-    if (g_ascii_strcasecmp (account->aid, token) == 0) {
-
-      found = TRUE;
-      g_signal_emit (self, signals[ACCOUNT_STATE], 0,
-		     token,
-		     account->enabled ? REGISTERED : UNREGISTERED);
-      g_signal_emit (self, signals[ACCOUNT_NAME], 0,
-		     token, account->account_name);
-      break; /* no need to go on with the loop */
-    }
-  }
-
-  if (!found)
-    g_signal_emit (self, signals[ACCOUNT_STATE], 0, token, INVALID_ACCOUNT);
-
-  /* cleaning... */
-  g_slist_foreach (gmaccounts, (GFunc) gm_account_delete, NULL);
-  g_slist_free (gmaccounts);
 
   return TRUE;
 }
@@ -433,23 +334,6 @@ dbus_component_get_calls_list (G_GNUC_UNUSED DbusComponent *self,
 			       char ***calls,
 			       G_GNUC_UNUSED GError **error)
 {
-  GMManager *endpoint = NULL;
-  PString ptoken;
-
-  endpoint = GnomeMeeting::Process ()->GetManager ();
-
-  ptoken = endpoint->GetCurrentCallToken ();
-
-  if (ptoken.IsEmpty ()) {
-
-    *calls = g_new (char *, 1);
-    (*calls)[0] = NULL;
-  } else {
-
-    *calls = g_new (char *, 2);
-    (*calls)[0] = g_strdup (ptoken);
-    (*calls)[1] = NULL;
-  }
 
   return TRUE;
 }
@@ -460,27 +344,6 @@ dbus_component_connect (DbusComponent *self,
 			char **token,
 			G_GNUC_UNUSED GError **error)
 {
-  GMManager *endpoint = NULL;
-  PString ptoken;
-
-  /* FIXME BUG: this will break if we're autolaunched to call through a
-   * SIP registrar, since we'll try to call before the registration is done...
-   */
-
-  endpoint = GnomeMeeting::Process ()->GetManager ();
-
-  GnomeMeeting::Process ()->Connect (url);
-
-  ptoken = endpoint->GetCurrentCallToken ();
-
-  if (!ptoken.IsEmpty ()) {
-
-    *token = g_strdup (ptoken);
-    g_signal_emit (self, signals[STATE_CHANGED], 0,
-		   *token, CALLING);
-    g_signal_emit (self, signals[URL_INFO], 0,
-		   *token, url);
-  }
 
   return TRUE;
 }
@@ -490,7 +353,6 @@ dbus_component_disconnect (G_GNUC_UNUSED DbusComponent *self,
 			   G_GNUC_UNUSED const char *token,
 			   G_GNUC_UNUSED GError **error)
 {
-  GnomeMeeting::Process ()->Disconnect ();
 
   return TRUE;
 }
@@ -500,14 +362,6 @@ dbus_component_play_pause (G_GNUC_UNUSED DbusComponent *self,
 			   const char *token,
 			   G_GNUC_UNUSED GError **error)
 {
-  GMManager *endpoint = NULL;
-  gboolean is_on_hold = FALSE;
-
-  endpoint = GnomeMeeting::Process ()->GetManager ();
-
-  is_on_hold = endpoint->IsCallOnHold (token);
-
-  (void)endpoint->SetCallOnHold (token, !is_on_hold);
 
   return TRUE;
 }
@@ -518,8 +372,6 @@ dbus_component_transfer (G_GNUC_UNUSED DbusComponent *self,
 			 const char *url,
 			 G_GNUC_UNUSED GError **error)
 {
-  new GMURLHandler (url, TRUE);
-
   return TRUE;
 }
 
@@ -528,53 +380,6 @@ dbus_component_resignal_call_info (DbusComponent *self,
 				   const char *token,
 				   G_GNUC_UNUSED GError **error)
 {
-  GMManager *endpoint = NULL;
-  PSafePtr<OpalCall> call = NULL;
-  PSafePtr<OpalConnection> connection = NULL;
-  guint state = INVALID_CALL;
-  gchar *name = NULL;
-  gchar *client = NULL;
-  gchar *url = NULL;
-  const gchar *protocol = NULL;
-
-  endpoint = GnomeMeeting::Process ()->GetManager ();
-
-  call = endpoint->FindCallWithLock (token);
-
-  if (call != NULL) {
-
-    state = endpoint_to_dbus_state (endpoint->GetCallingState ());
-
-    g_signal_emit (self, signals[STATE_CHANGED], 0, token, state);
-
-    if (state != INVALID_CALL) {
-
-      connection = endpoint->GetConnection (call, TRUE);
-
-      if (connection != NULL) {
-
-	endpoint->GetRemoteConnectionInfo (*connection, name, client, url);
-
-	if (name)
-	  g_signal_emit (self, signals[NAME_INFO], 0, token, name);
-
-	if (client)
-	  g_signal_emit (self, signals[CLIENT_INFO], 0, token, client);
-
-	if (url)
-	  g_signal_emit (self, signals[URL_INFO], 0, token, url);
-
-	g_signal_emit (self, signals[ON_HOLD_INFO], 0,
-		       token, endpoint->IsCallOnHold (token));
-
-	protocol = protocol_prefix_to_name (connection->GetEndPoint ().GetPrefixName ());
-	g_signal_emit (self, signals[PROTOCOL_INFO], 0, token, protocol);
-      }
-    }
-  }
-  else
-    g_signal_emit (self, signals[STATE_CHANGED], 0, token, INVALID_CALL);
-
     return TRUE;
 }
 
@@ -582,8 +387,6 @@ static gboolean
 dbus_component_shutdown (G_GNUC_UNUSED DbusComponent *self,
 			 G_GNUC_UNUSED GError **error)
 {
-  quit_callback (NULL, NULL);
-
   return TRUE;
 }
 
@@ -593,14 +396,6 @@ dbus_component_get_local_address (G_GNUC_UNUSED DbusComponent *self,
 				  char **url,
 				  G_GNUC_UNUSED GError **error)
 {
-  GMManager *endpoint = NULL;
-
-  endpoint = GnomeMeeting::Process ()->GetManager ();
-
-  PString purl = endpoint->GetURL (protocol);
-
-  *url = g_strdup (purl);
-
   return TRUE;
 }
 
@@ -715,10 +510,7 @@ gnomemeeting_dbus_component_set_call_state (GObject *obj,
 					    const gchar *token,
 					    GMManager::CallingState state)
 {
-  DbusComponent *self = DBUS_COMPONENT_OBJECT (obj);
 
-  g_signal_emit (self, signals[STATE_CHANGED], 0,
-		 token, endpoint_to_dbus_state (state));
 }
 
 void
@@ -790,24 +582,5 @@ gnomemeeting_dbus_component_account_registration (GObject *obj,
 						  const gchar *domain,
 						  gboolean registered)
 {
-  DbusComponent *self = DBUS_COMPONENT_OBJECT (obj);
-  GSList *accounts = NULL;
-  GSList *iter = NULL;
-  GmAccount *account = NULL;  
 
-  accounts = gnomemeeting_get_accounts_list ();
-
-  for (iter = accounts; iter != NULL; iter = iter->next) {
-
-    account = GM_ACCOUNT (iter->data);
-    if (!strcmp (account->domain, domain)
-	&& !strcmp (account->username, username)) {
-
-      g_signal_emit (self, signals[ACCOUNT_STATE], 0, account->aid,
-		     registered?REGISTERED:UNREGISTERED);
-    }
-  }
-
-  g_slist_foreach (accounts, (GFunc) gm_account_delete, NULL);
-  g_slist_free (accounts);
 }
