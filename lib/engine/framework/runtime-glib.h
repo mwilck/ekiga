@@ -29,6 +29,7 @@
  *                         ------------------------------------------
  *   begin                : written in 2007 by Julien Puydt
  *   copyright            : (c) 2007 by Julien Puydt
+ *                          (c) 2007 by Damien Sandras
  *   description          : Threading helper functions -- glib version
  *
  */
@@ -42,9 +43,10 @@
 
 namespace Ekiga {
 
-  class GlibRuntime: public Runtime
+  class GlibRuntime
+    : public Runtime
   {
-  public:
+public:
 
     GlibRuntime ();
 
@@ -55,9 +57,9 @@ namespace Ekiga {
     void quit ();
 
     void run_in_main (sigc::slot<void> action,
-		      unsigned int seconds);
+                      unsigned int seconds);
 
-  private:
+private:
 
     GAsyncQueue *queue;
   };

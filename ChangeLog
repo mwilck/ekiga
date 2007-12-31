@@ -1,5 +1,21 @@
 2007-12-31  Damien Sandras  <dsandras@gnome.org>
 
+	* lib/engine/framework/runtime-glib.h, lib/engine/framework/runtime.h:
+	Turned the runtime into a Service. That way it can be accessed through
+	the Ekiga::ServiceCore. 
+
+2007-12-31  Damien Sandras  <dsandras@gnome.org>
+
+	* src/gui/common.h, ekiga.schemas.in.in: Added new key to contain
+	audio and video codecs.
+
+2007-12-31  Damien Sandras  <dsandras@gnome.org>
+
+	* lib/engine/addressbook/ldap/:
+	Get the Runtime from the ServiceCore, not from GnomeMeeting::Process().
+
+2007-12-31  Damien Sandras  <dsandras@gnome.org>
+
 	* src/gui/conf.cpp: Moved notifiers where they should be, ie in the
 	class using the related gmconf setting.
 

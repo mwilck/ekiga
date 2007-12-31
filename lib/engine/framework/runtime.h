@@ -29,6 +29,7 @@
  *                         ------------------------------------------
  *   begin                : written in 2007 by Julien Puydt
  *   copyright            : (c) 2007 by Julien Puydt
+ *                          (c) 2007 by Damien Sandras
  *   description          : Threading helper functions
  *
  */
@@ -38,9 +39,12 @@
 #ifndef __RUNTIME_H__
 #define __RUNTIME_H__
 
+#include "services.h"
+
 namespace Ekiga {
 
   class Runtime
+    : public Service
   {
   public:
 
@@ -49,6 +53,12 @@ namespace Ekiga {
 
     virtual ~Runtime ()
     {}
+
+    const std::string get_name () const
+      { return "runtime"; }
+
+    const std::string get_description () const
+      { return "\tObject bringing in the runtime"; }
 
     virtual void run () = 0;
 
