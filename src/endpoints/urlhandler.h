@@ -40,7 +40,10 @@
 #ifndef _URLHANDLER_H_
 #define _URLHANDLER_H_
 
+#include "services.h"
+
 #include "common.h"
+
 
 class GMURL
 {
@@ -86,7 +89,8 @@ public:
    * PRE          :  The URL, transfer the call to the URL if true, else
    *                 call the url.
    */
-  GMURLHandler (PString c,
+  GMURLHandler (Ekiga::ServiceCore & core,
+                PString c,
 		bool transfer = FALSE);
 
   
@@ -111,5 +115,7 @@ protected:
   bool answer_call;
   bool transfer_call;
   PMutex quit_mutex;
+
+  Ekiga::ServiceCore & core;
 };
 #endif
