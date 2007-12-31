@@ -61,10 +61,6 @@ Evolution::Contact::~Contact ()
 {
   if (E_IS_CONTACT (econtact))
     g_object_unref (econtact);
-
-#ifdef __GNUC__
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
-#endif
 }
 
 const std::string
