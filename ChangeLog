@@ -1,5 +1,11 @@
 2007-12-31  Damien Sandras  <dsandras@gnome.org>
 
+	* lib/gmconf/:
+	Fixed bug, gconf_value_get_list returns a list of GConfValue's, not a
+	list of string. Slightly changed our API to return a list of strings.
+
+2007-12-31  Damien Sandras  <dsandras@gnome.org>
+
 	* lib/engine/protocol/Makefile.am, lib/engine/protocol/sip/: 
 	Removed all classes from protocol/sip. Call management is implemented by 
 	manager.cpp and presence is implemented by sip.cpp.

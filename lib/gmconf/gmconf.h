@@ -101,7 +101,8 @@ const gchar *gm_conf_entry_get_key (GmConfEntry *);
 gboolean gm_conf_entry_get_bool (GmConfEntry *);
 gint gm_conf_entry_get_int (GmConfEntry *);
 const gchar *gm_conf_entry_get_string (GmConfEntry *);
-const GSList *gm_conf_entry_get_list (GmConfEntry *);
+/* Should be freed! */
+GSList *gm_conf_entry_get_list (GmConfEntry *);
 
 /* the following functions are used to get/set keys in the config */
 

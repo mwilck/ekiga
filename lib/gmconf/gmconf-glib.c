@@ -1305,12 +1305,12 @@ gm_conf_entry_get_string (GmConfEntry *entry)
   return entry_get_string (entry);
 }
 
-const GSList *
+GSList *
 gm_conf_entry_get_list (GmConfEntry *entry)
 {
   g_return_val_if_fail (entry != NULL, NULL);
 
-  return entry_get_list (entry);
+  return g_slist_copy (entry_get_list (entry));
 }
 
 void 

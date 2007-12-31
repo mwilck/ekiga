@@ -365,15 +365,25 @@ gm_conf_entry_get_string (GmConfEntry *entry)
 }
 
 
-const GSList *
+GSList *
 gm_conf_entry_get_list (GmConfEntry *entry)
 {
   GConfEntry *gconf_entry = NULL;
+  GSList *list = NULL;
+  GSList *it = NULL;
 
   g_return_val_if_fail (entry != NULL, NULL);
 
   gconf_entry = (GConfEntry *)entry;
-  return gconf_value_get_list (gconf_entry->value);
+
+  it = gconf_value_get_list (gconf_entry->value);
+  while (it) {
+
+    list = g_slist_append (list, (char *) gconf_value_get_string (it->data));
+    it = g_slist_next (it);
+  }
+
+  return list;
 }
 
 
