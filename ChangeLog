@@ -1,5 +1,12 @@
 2007-12-31  Damien Sandras  <dsandras@gnome.org>
 
+	* lib/gui/gmcodecsbox.cpp, lib/gui/gmcodecsbox.h: 
+	Adapted to the new engine codecs. The codecs box knows nothing about
+	OPAL media formats. It just knows there is a key for codecs with a
+	specific format.
+
+2007-12-31  Damien Sandras  <dsandras@gnome.org>
+
 	* src/gui/preferences.cpp:
 	Reordered preferences. Removed settings that the user should not
 	change like the jitter buffer. The algorithm automatically calculates

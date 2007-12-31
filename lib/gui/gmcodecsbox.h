@@ -61,12 +61,7 @@ typedef struct
 {
   GtkHBox parent;
 
-  OpalMediaFormatList *media_formats;
-  
   GtkWidget *codecs_list;
-  
-  gchar *conf_key;
-  gboolean activatable_codecs;
 
 } GmCodecsBox;
 
@@ -93,27 +88,7 @@ GType gm_codecs_box_get_type (void);
  *                 where to store results.
  * PRE          :  A valid GMConf key.
  */
-GtkWidget *gm_codecs_box_new (gboolean activatable_codecs,
-                              const char *conf_key);
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Update the codecs list in the GmCodecsBox.
- *                 When codecs are enabled/disabled/moved or when
- *                 the codecs list is updated, the signal "codecs-box-changed"
- *                 is emitted.
- * PRE          :  /
- */
-void gm_codecs_box_set_codecs (GmCodecsBox *cb,
-                               const OpalMediaFormatList & l);
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Returns the list of OpalMediaFormats to enable.
- * PRE          :  /
- */
-void gm_codecs_box_get_codecs (GmCodecsBox *cb,
-                               PStringArray & order);
+GtkWidget *gm_codecs_box_new ();
 
 G_END_DECLS
 
