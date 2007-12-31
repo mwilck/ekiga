@@ -1,5 +1,11 @@
 2007-12-31  Damien Sandras  <dsandras@gnome.org>
 
+	* lib/engine/protocol/Makefile.am, lib/engine/protocol/sip/: 
+	Removed all classes from protocol/sip. Call management is implemented by 
+	manager.cpp and presence is implemented by sip.cpp.
+
+2007-12-31  Damien Sandras  <dsandras@gnome.org>
+
 	* src/clients/stun.cpp: Commented out method that will be
 	reimplemented later.
 

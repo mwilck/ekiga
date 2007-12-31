@@ -1,1 +1,1 @@
-SUBDIRS = sip
+SUBDIRS = skel
