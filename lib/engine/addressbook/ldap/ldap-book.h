@@ -41,6 +41,7 @@
 #include <vector>
 #include <libxml/tree.h>
 
+#include "runtime.h"
 #include "book-impl.h"
 #include "form.h"
 
@@ -114,6 +115,8 @@ namespace OPENLDAP
     unsigned int patience;
 
     std::string search_filter;
+
+    Ekiga::Runtime & runtime;
   };
 };
 

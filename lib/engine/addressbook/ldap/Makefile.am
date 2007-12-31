@@ -23,20 +23,3 @@ libgmldap_la_LIBADD = \
 	$(top_builddir)/lib/engine/addressbook/skel/libgmaddressbook.la
 
 libgmldap_la_LDFLAGS = -export-dynamic -no-undefined $(LDAP_LIBS) $(SIGC_LIBS) $(GLIB_LIBS) $(XML_LIBS)
-
-#### FIXME should be removed at a later stage
-INCLUDES += \
-	-I$(top_srcdir)/lib/engine/presence/skel        \
-	-I$(top_srcdir)/lib/engine/protocol/skel        \
-	-I$(top_srcdir)/src                             \
-	-I$(top_srcdir)/src/clients/                    \
-	-I$(top_srcdir)/src/components/                 \
-	-I$(top_srcdir)/src/devices/                    \
-	-I$(top_srcdir)/src/endpoints/                  \
-	-I$(top_srcdir)/src/gui/                        
-
-AM_CPPFLAGS += $(GTK_CFLAGS) $(GLIB_CFLAGS) $(OPAL_CFLAGS) $(PTLIB_CFLAGS)
-
-libgmldap_la_LDFLAGS += $(GTK_LIBS) $(GLIB_LIBS) $(OPAL_LIBS) $(PTLIB_LIBS)
-
-#### End

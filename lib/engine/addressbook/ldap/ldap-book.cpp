@@ -46,7 +46,6 @@
 #include "config.h"
 
 #include "ldap-book.h"
-#include "ekiga.h"
 #include "form-request-simple.h"
 
 
@@ -161,7 +160,8 @@ struct RefreshData
 
 OPENLDAP::Book::Book (Ekiga::ServiceCore &_core,
 		      xmlNodePtr _node):
-  core(_core), node(_node), ldap_context(NULL), patience(0)
+  core(_core), node(_node), ldap_context(NULL), patience(0), 
+  runtime (*(dynamic_cast<Ekiga::Runtime *>(core.get ("runtime"))))
 {
   xmlChar *xml_str;
 
@@ -234,7 +234,8 @@ OPENLDAP::Book::Book (Ekiga::ServiceCore &_core,
 		      const std::string _call_attribute):
   core(_core), name(_name), hostname(_hostname), port(_port),
   base(_base), scope(_scope), call_attribute(_call_attribute),
-  ldap_context(NULL), patience(0)
+  ldap_context(NULL), patience(0), 
+  runtime (*(dynamic_cast<Ekiga::Runtime *>(core.get ("runtime"))))
 {
   contact_core = dynamic_cast<Ekiga::ContactCore *>(core.get ("contact-core"));
 
@@ -422,8 +423,7 @@ OPENLDAP::Book::refresh_start ()
   }
 
   patience = 3;
-  //FIXME
-  dynamic_cast<Ekiga::Runtime *> (core.get ("runtime"))->run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_end), 3);
+  runtime.run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_end), 3);
 }
 
 void
@@ -445,15 +445,15 @@ OPENLDAP::Book::refresh_end ()
     if (patience == 3) {
 
       patience--;
-      dynamic_cast<Ekiga::Runtime *> (core.get ("runtime"))->run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_end), 12);
+      runtime.run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_end), 12);
     } else if (patience == 2) {
 
       patience--;
-      dynamic_cast<Ekiga::Runtime *> (core.get ("runtime"))->run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_end), 21);
+      runtime.run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_end), 21);
     } else if (patience == 1) {
 
       patience--;
-      dynamic_cast<Ekiga::Runtime *> (core.get ("runtime"))->run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_end), 30);
+      runtime.run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_end), 30);
     } else { // patience == 0
 
       status = std::string (_("Could not search"));
@@ -483,7 +483,7 @@ OPENLDAP::Book::refresh_end ()
     msg_result = ldap_next_message (ldap_context, msg_result);
   } while (msg_result != NULL);
 
-  stringstream strm;
+  std::stringstream strm;
   strm << nbr;
   status = std::string (strm.str ()) + " " + std::string (ngettext ("user found", "users found", nbr));
   updated.emit ();
