@@ -1,5 +1,10 @@
 2007-12-31  Damien Sandras  <dsandras@gnome.org>
 
+	* src/gui/conf.cpp: Moved notifiers where they should be, ie in the
+	class using the related gmconf setting.
+
+2007-12-31  Damien Sandras  <dsandras@gnome.org>
+
 	* src/components/bonobo.cpp, src/components/bonobo.h:
 	Removed bonobo support. The only thing it was used for is to prevent
 	to run two ekiga instances at the same time. This will be

@@ -66,10 +66,6 @@
 
 
 /* Declarations */
-static void applicability_check_nt (gpointer id,
-				    GmConfEntry *entry,
-				    gpointer data);
-
 
 /* DESCRIPTION  :  This callback is called when the control panel 
  *                 section key changes.
@@ -81,78 +77,13 @@ static void panel_section_changed_nt (gpointer id,
                                       GmConfEntry *entry,
                                       gpointer data);
 
-
-/* DESCRIPTION  :  This callback is called when the firstname or last name
- *                 keys changes.
- * BEHAVIOR     :  Updates the ILS and ZeroConf registrations and the 
- * 		   main endpoint configuration.
- * PRE          :  /
- */
-static void fullname_changed_nt (gpointer id,
-				 GmConfEntry *entry,
-				 gpointer data);
-
-static void h245_tunneling_changed_nt (gpointer id,
-				       GmConfEntry *entry,
-				       gpointer data);
-
-static void early_h245_changed_nt (gpointer id,
-				   GmConfEntry *entry,
-				   gpointer data);
-
-static void fast_start_changed_nt (gpointer id,
-				   GmConfEntry *enty,
-				   gpointer data);
-
-
-static void enable_video_changed_nt (gpointer id,
-				     GmConfEntry *entry,
-				     gpointer data);
-
-static void silence_detection_changed_nt (gpointer id,
-					  GmConfEntry *entry,
-                                          gpointer data);
-
-static void echo_cancelation_changed_nt (gpointer id,
-					 GmConfEntry *entry,
-					 gpointer data);
-
-
-static void video_media_format_changed_nt (gpointer id,
-					   GmConfEntry *entry,
-					   gpointer data);
-
-static void jitter_buffer_changed_nt (gpointer id,
-                                      GmConfEntry *entry,
-				      gpointer data);
-
 static void accounts_list_changed_nt (gpointer id,
 				      GmConfEntry *entry,
 				      gpointer data);
 
-static void interface_changed_nt (gpointer id,
-				  GmConfEntry *entry,
-				  gpointer data);
-
-static void public_ip_changed_nt (gpointer id,
-				  GmConfEntry *entry,
-				  gpointer data);
-
 static void manager_changed_nt (gpointer id,
 				GmConfEntry *entry,
 				gpointer data);
-
-static void video_device_changed_nt (gpointer id,
-				     GmConfEntry *entry,
-				     gpointer data);
-
-static void video_device_setting_changed_nt (gpointer id,
-					     GmConfEntry *entry,
-					     gpointer data);
-
-static void video_preview_changed_nt (gpointer id,
-                                      GmConfEntry *entry,
-				      gpointer data);
 
 static void sound_events_list_changed_nt (gpointer id,
 					  GmConfEntry *entry,
@@ -171,39 +102,6 @@ static void network_settings_changed_nt (gpointer id,
                                          gpointer data);
 
 
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Displays a popup if we are in a call.
- * PRE          :  A valid pointer to the preferences window GMObject.
- */
-static void
-applicability_check_nt (G_GNUC_UNUSED gpointer id,
-			GmConfEntry *entry,
-			gpointer data)
-{
-  GMManager *ep = NULL;
-  
-  g_return_if_fail (data != NULL);
-
-  
-  ep = GnomeMeeting::Process ()->GetManager ();
-  
-  if ((gm_conf_entry_get_type (entry) == GM_CONF_BOOL)
-      ||(gm_conf_entry_get_type (entry) == GM_CONF_STRING)
-      ||(gm_conf_entry_get_type (entry) == GM_CONF_INT)) {
-
-    if (ep->GetCallingState () != GMManager::Standby) {
-
-      gdk_threads_enter ();
-      gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (data),
-					     gm_conf_entry_get_key (entry),
-					     _("Changing this setting will only affect new calls"), 
-					     _("Ekiga cannot apply one or more changes to the current call. Your new settings will take effect for the next call."));
-      gdk_threads_leave ();
-    }
-  }
-}
-
-
 static void 
 panel_section_changed_nt (G_GNUC_UNUSED gpointer id, 
                           GmConfEntry *entry, 
@@ -220,344 +118,6 @@ panel_section_changed_nt (G_GNUC_UNUSED gpointer id,
     gm_main_window_set_panel_section (GTK_WIDGET (data), 
                                       section);
     gdk_threads_leave ();
-  }
-}
-
-
-static void 
-fullname_changed_nt (G_GNUC_UNUSED gpointer id,
-		     GmConfEntry *entry, 
-		     G_GNUC_UNUSED gpointer data)
-{
-  GMManager *endpoint = NULL;
-
-  endpoint = GnomeMeeting::Process ()->GetManager ();
-  
-  if (gm_conf_entry_get_type (entry) == GM_CONF_STRING) {
-
-    endpoint->SetUserNameAndAlias ();
-    endpoint->UpdatePublishers ();
-  }
-}
-
-
-/* DESCRIPTION  :  This notifier is called when the config database data
- *                 associated with the H.245 Tunneling changes.
- * BEHAVIOR     :  It updates the endpoint and displays a message.
- * PRE          :  /
- */
-static void
-h245_tunneling_changed_nt (G_GNUC_UNUSED gpointer id,
-			   GmConfEntry *entry,
-			   G_GNUC_UNUSED gpointer data)
-{
-  GMManager *ep = NULL;
-  GMH323Endpoint *h323EP = NULL;
-  
-  if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
-
-    ep = GnomeMeeting::Process ()->GetManager ();
-    h323EP = ep->GetH323Endpoint ();
-    
-    h323EP->DisableH245Tunneling (!gm_conf_entry_get_bool (entry));
-  }
-}
-
-
-/* DESCRIPTION  :  This notifier is called when the config database data
- *                 associated with the early H.245 key changes.
- * BEHAVIOR     :  It updates the endpoint and displays a message.
- * PRE          :  /
- */
-static void
-early_h245_changed_nt (G_GNUC_UNUSED gpointer id,
-		       GmConfEntry *entry,
-		       G_GNUC_UNUSED gpointer data)
-{
-  GMManager *ep = NULL;
-  GMH323Endpoint *h323EP = NULL;  
-  
-  if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
-
-    ep = GnomeMeeting::Process ()->GetManager ();
-    h323EP = ep->GetH323Endpoint ();
-    
-    h323EP->DisableH245inSetup (!gm_conf_entry_get_bool (entry));
-  }
-}
-
-
-/* DESCRIPTION  :  This notifier is called when the config database data
- *                 associated with the Fast Start changes.
- * BEHAVIOR     :  It updates the endpoint and displays a message.
- * PRE          :  /
- */
-static void
-fast_start_changed_nt (G_GNUC_UNUSED gpointer id,
-		       GmConfEntry *entry,
-		       G_GNUC_UNUSED gpointer data)
-{
-  GMManager *ep = NULL;
-  GMH323Endpoint *h323EP = NULL;
-  
-  
-  if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
-
-    ep = GnomeMeeting::Process ()->GetManager ();
-    h323EP = ep->GetH323Endpoint ();
-    h323EP->DisableFastStart (!gm_conf_entry_get_bool (entry));
-  }
-}
-
-
-/* DESCRIPTION  :  This notifier is called when the config database data
- *                 associated with the enable_video key changes.
- * BEHAVIOR     :  It updates the endpoint.
- * PRE          :  /
- */
-static void
-enable_video_changed_nt (G_GNUC_UNUSED gpointer id,
-			 GmConfEntry *entry,
-			 G_GNUC_UNUSED gpointer data)
-{
-  PString name;
-  GMManager *ep = NULL;
-
-  ep = GnomeMeeting::Process ()->GetManager ();
-
-  if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
-
-    ep->SetAutoStartTransmitVideo (gm_conf_entry_get_bool (entry));
-    ep->SetAutoStartReceiveVideo (gm_conf_entry_get_bool (entry));
-  }
-}
-
-
-/* DESCRIPTION  :  This callback is called when a silence detection key of
- *                 the config database associated with a toggle changes.
- * BEHAVIOR     :  Updates the silence detection.
- * PRE          :  /
- */
-static void 
-silence_detection_changed_nt (G_GNUC_UNUSED gpointer id,
-                              GmConfEntry *entry, 
-                              G_GNUC_UNUSED gpointer data)
-{
-  PSafePtr <OpalCall> call = NULL;
-  PSafePtr <OpalConnection> connection = NULL;
-  
-  OpalSilenceDetector *silence_detector = NULL;
-  OpalSilenceDetector::Params sd;
-  
-  GMManager *ep = NULL;
-  
-
-  ep = GnomeMeeting::Process ()->GetManager ();
-  
-  if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
-
-    /* We update the silence detection endpoint parameter */
-    sd = ep->GetSilenceDetectParams ();
-
-    gdk_threads_enter ();
-    if (gm_conf_entry_get_bool (entry)) {
-
-      sd.m_mode = OpalSilenceDetector::AdaptiveSilenceDetection;
-    } 
-    else {
-
-      sd.m_mode = OpalSilenceDetector::NoSilenceDetection;
-    }
-    gdk_threads_leave ();  
-    
-    ep->SetSilenceDetectParams (sd);
-
-
-    /* If we are in a call update it in real time */
-    call = ep->FindCallWithLock (ep->GetCurrentCallToken ());
-    if (call != NULL) {
-
-      connection = ep->GetConnection (call, FALSE);
-
-      if (connection != NULL) {
-
-	silence_detector = connection->GetSilenceDetector ();
-
-	if (silence_detector)
-	  silence_detector->SetParameters (sd);
-      }
-    }
-  }
-}
-
-
-/* DESCRIPTION  :  This callback is called when the echo cancelation key of
- *                 the config database associated with a toggle changes.
- * BEHAVIOR     :  Updates the echo cancelation.
- * PRE          :  /
- */
-static void 
-echo_cancelation_changed_nt (G_GNUC_UNUSED gpointer id,
-			     GmConfEntry *entry, 
-			     G_GNUC_UNUSED gpointer data)
-{
-  PSafePtr <OpalCall> call = NULL;
-  PSafePtr <OpalConnection> connection = NULL;
-  
-  OpalEchoCanceler *echo_canceler = NULL;
-  OpalEchoCanceler::Params ec;
-  
-  GMManager *ep = NULL;
-  
-  ep = GnomeMeeting::Process ()->GetManager ();
-  
-  if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
-
-    /* We update the echo cancelation endpoint parameter */
-    ec = ep->GetEchoCancelParams ();
-
-    gdk_threads_enter ();
-    if (gm_conf_entry_get_bool (entry)) {
-
-      ec.m_mode = OpalEchoCanceler::Cancelation;
-    } 
-    else {
-
-      ec.m_mode = OpalEchoCanceler::NoCancelation;
-    }
-    gdk_threads_leave ();  
-    
-    ep->SetEchoCancelParams (ec);
-
-
-    /* If we are in a call update it in real time */
-    call = ep->FindCallWithLock (ep->GetCurrentCallToken ());
-    if (call != NULL) {
-
-      connection = ep->GetConnection (call, FALSE);
-
-      if (connection != NULL) {
-
-	echo_canceler = connection->GetEchoCanceler ();
-
-	if (echo_canceler)
-	  echo_canceler->SetParameters (ec);
-      }
-    }
-  }
-}
-
-
-/* DESCRIPTION  :  This callback is called when one of the video media format
- * 		   settings changes.
- * BEHAVIOR     :  It updates the media format settings.
- * PRE          :  /
- */
-static void 
-video_media_format_changed_nt (G_GNUC_UNUSED gpointer id,
-			       GmConfEntry *entry, 
-			       G_GNUC_UNUSED gpointer data)
-{
-  GMManager *ep = NULL;
-  OpalMediaStream *stream = NULL;
-  PSafePtr<OpalCall> call = NULL;
-  PSafePtr<OpalConnection> connection = NULL;
-  
-  unsigned tsto = 1;
-  unsigned max_tx_bitrate = 16;
-
-  if (gm_conf_entry_get_type (entry) == GM_CONF_INT) {
-
-    ep = GnomeMeeting::Process ()->GetManager ();
-
-    call = ep->FindCallWithLock (ep->GetCurrentCallToken ());
-    if (call != NULL) {
-
-      connection = ep->GetConnection (call, TRUE);
-
-      if (connection != NULL) {
-
-	stream = 
-	  connection->GetMediaStream (OpalMediaFormat::DefaultVideoSessionID, 
-				      FALSE);
-
-	if (stream != NULL) {
-	  
-	  gdk_threads_enter ();
-	  tsto = gm_conf_get_int (VIDEO_CODECS_KEY "temporal_spatial_tradeoff");
-	  max_tx_bitrate = gm_conf_get_int (VIDEO_CODECS_KEY "maximum_video_tx_bitrate");
-	  gdk_threads_leave ();
-	  
-	  OpalMediaFormat mediaFormat = stream->GetMediaFormat ();
-          mediaFormat.SetOptionInteger (OpalVideoFormat::TemporalSpatialTradeOffOption() , tsto);  
-          mediaFormat.SetOptionInteger (OpalVideoFormat::TargetBitRateOption (), max_tx_bitrate * 1000);
-
-	  stream->UpdateMediaFormat (mediaFormat);
-	}
-      }
-    }
-
-    PStringArray *order = new PStringArray ();
-    PStringArray current_order = ep->GetMediaFormatOrder ();
-    for (int i = 0 ; i < current_order.GetSize () ; i++)
-      if (OpalMediaFormat (current_order [i]).GetDefaultSessionID () == 2)
-        *order += current_order [i];
-    ep->SetVideoMediaFormats (order);
-    delete order;
-  }
-}
-
-
-/* DESCRIPTION  :  This callback is called when the jitter buffer needs to be 
- *                 changed.
- * BEHAVIOR     :  It updates the value.
- * PRE          :  /
- */
-static void 
-jitter_buffer_changed_nt (G_GNUC_UNUSED gpointer id,
-                          GmConfEntry *entry, 
-                          G_GNUC_UNUSED gpointer data)
-{
-  GMManager *ep = NULL;
-  
-  PSafePtr<OpalCall> call = NULL;
-  PSafePtr<OpalConnection> connection = NULL;
-  RTP_Session *session = NULL;
-
-  int min_val = 20;
-  int max_val = 500;
-  unsigned units = 8;
-
-  ep = GnomeMeeting::Process ()->GetManager ();  
-  
-  if (gm_conf_entry_get_type (entry) == GM_CONF_INT) {
-
-    gdk_threads_enter ();
-    min_val = gm_conf_get_int (AUDIO_CODECS_KEY "minimum_jitter_buffer");
-    max_val = gm_conf_get_int (AUDIO_CODECS_KEY "maximum_jitter_buffer");
-    gdk_threads_leave ();
-
-    call = ep->FindCallWithLock (ep->GetCurrentCallToken ());
-    if (call != NULL) {
-
-      connection = ep->GetConnection (call, TRUE);
-
-      if (connection != NULL) {
-
-	session = 
-	  connection->GetSession (OpalMediaFormat::DefaultAudioSessionID);
-
-	if (session != NULL) {
-
-	  units = session->GetJitterTimeUnits ();
-	  session->SetJitterBufferSize (min_val * units, 
-					max_val * units, 
-					units);
-	}
-      }
-    }
-    else
-      ep->SetAudioJitterDelay (PMAX (min_val, 20), PMIN (max_val, 1000));
   }
 }
 
@@ -587,61 +147,6 @@ accounts_list_changed_nt (G_GNUC_UNUSED gpointer id,
 
 
 /* DESCRIPTION  :  This notifier is called when the config database data
- *                 associated with the listening interface changes.
- * BEHAVIOR     :  Updates the interface.
- * PRE          :  /
- */
-static void 
-interface_changed_nt (G_GNUC_UNUSED gpointer id,
-		      GmConfEntry *entry, 
-		      G_GNUC_UNUSED gpointer data)
-{
-  GMManager *ep = GnomeMeeting::Process ()->GetManager ();
-  
-  if (gm_conf_entry_get_type (entry) == GM_CONF_STRING) {
-
-    gdk_threads_enter ();
-    ep->ResetListeners ();
-    gdk_threads_leave ();
-  }
-
-}
-
-
-/* DESCRIPTION  :  This notifier is called when the config database data
- *                 associated with the public ip changes.
- * BEHAVIOR     :  Updates the IP Translation address.
- * PRE          :  /
- */
-static void 
-public_ip_changed_nt (G_GNUC_UNUSED gpointer id,
-		      GmConfEntry *entry, 
-		      G_GNUC_UNUSED gpointer data)
-{
-  const char *public_ip = NULL;
-  int nat_method = 0;
-  GMManager *ep = NULL;
-  
-  
-  if (gm_conf_entry_get_type (entry) == GM_CONF_STRING) {
-    
-    ep = GnomeMeeting::Process ()->GetManager ();
-    
-    gdk_threads_enter ();
-    public_ip = gm_conf_entry_get_string (entry);
-    nat_method = gm_conf_get_int (NAT_KEY "method");
-    gdk_threads_leave ();
-
-    if (nat_method == 2 && public_ip)
-      ep->SetTranslationAddress (PString (public_ip));
-    else
-      ep->SetTranslationAddress (PString ("0.0.0.0"));
-  }
-
-}
-
-
-/* DESCRIPTION  :  This notifier is called when the config database data
  *                 associated with the audio or video manager changes.
  * BEHAVIOR     :  Updates the devices list for the new manager.
  * PRE          :  /
@@ -660,106 +165,6 @@ manager_changed_nt (G_GNUC_UNUSED gpointer id,
     gdk_threads_enter ();
     GnomeMeeting::Process ()->DetectDevices ();
     gdk_threads_leave ();
-  }
-}
-
-
-/* DESCRIPTION  :  This callback is called when the video device changes
- *                 in the config database.
- * BEHAVIOR     :  It creates a new video grabber if preview is active with
- *                 the selected video device.
- *                 If preview is not enabled, then the potentially existing
- *                 video grabber is deleted provided we are not in
- *                 a call.
- *                 Notice that the video device can't be changed during calls,
- *                 but its settings can be changed.
- * PRE          :  /
- */
-static void 
-video_device_changed_nt (G_GNUC_UNUSED gpointer id,
-			 GmConfEntry *entry, 
-			 G_GNUC_UNUSED gpointer data)
-{
-  GMManager *ep = NULL;
-  
-  ep = GnomeMeeting::Process ()->GetManager ();
-  
-  if ((gm_conf_entry_get_type (entry) == GM_CONF_STRING) ||
-      (gm_conf_entry_get_type (entry) == GM_CONF_INT)) {
-
-    ep->UpdateDevices ();
-  }
-}
-
-
-/* DESCRIPTION  :  This callback is called when a video device setting changes
- *                 in the config database.
- * BEHAVIOR     :  It resets the video device if preview is enabled.
- * PRE          :  /
- */
-static void 
-video_device_setting_changed_nt (G_GNUC_UNUSED gpointer id,
-				 GmConfEntry *entry, 
-				 G_GNUC_UNUSED gpointer data)
-{
-  PString name;
-
-  bool preview = FALSE;
-  unsigned size = 0;
-  unsigned max_frame_rate = 15;
-
-  GMManager *ep = NULL;
-
-  ep = GnomeMeeting::Process ()->GetManager ();
-
-  if ((gm_conf_entry_get_type (entry) == GM_CONF_STRING) ||
-      (gm_conf_entry_get_type (entry) == GM_CONF_INT)) {
-    
-    if (ep && ep->GetCallingState () == GMManager::Standby) {
-
-      gdk_threads_enter ();
-      preview = gm_conf_get_bool (VIDEO_DEVICES_KEY "enable_preview");
-      size = gm_conf_get_int (VIDEO_DEVICES_KEY "size");
-      max_frame_rate = gm_conf_get_int (VIDEO_CODECS_KEY "max_frame_rate");
-      gdk_threads_leave ();
-
-      if (preview)
-	ep->CreateVideoGrabber (TRUE, TRUE, video_sizes[size].width, video_sizes[size].height, max_frame_rate);
-    }
-  }
-}
-
-
-/* DESCRIPTION  :  This callback is called when the video preview changes in
- *                 the config database.
- * BEHAVIOR     :  It starts or stops the preview.
- * PRE          :  /
- */
-static void video_preview_changed_nt (G_GNUC_UNUSED gpointer id,
-				      GmConfEntry *entry,
-				      G_GNUC_UNUSED gpointer data)
-{
-  GMManager *ep = NULL;
-  unsigned size = 0;
-  unsigned max_frame_rate = 15;
-
-  if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
-   
-    /* We reset the video device */
-    ep = GnomeMeeting::Process ()->GetManager ();
-    
-    if (ep && ep->GetCallingState () == GMManager::Standby) {
-    
-      gdk_threads_enter ();
-      size = gm_conf_get_int (VIDEO_DEVICES_KEY "size");
-      max_frame_rate = gm_conf_get_int (VIDEO_CODECS_KEY "max_frame_rate");
-      gdk_threads_leave ();
-
-      if (gm_conf_entry_get_bool (entry)) 
-	ep->CreateVideoGrabber (TRUE, TRUE, video_sizes[size].width, video_sizes[size].height, max_frame_rate);
-      else 
-	ep->RemoveVideoGrabber ();
-    }
   }
 }
 
@@ -798,12 +203,8 @@ status_changed_nt (G_GNUC_UNUSED gpointer id,
 {
   GtkWidget *main_window = NULL;
   
-  GMManager *ep = NULL;
-
-  guint status = CONTACT_ONLINE;
-
-  ep = GnomeMeeting::Process ()->GetManager ();
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
+  guint status = 0;
 
   if (gm_conf_entry_get_type (entry) == GM_CONF_INT) {
 
@@ -811,16 +212,9 @@ status_changed_nt (G_GNUC_UNUSED gpointer id,
     
     status = gm_conf_entry_get_int (entry);
     
-    /* Update the main window and its menu */
     gm_main_window_set_status (main_window, status);
     
     gdk_threads_leave ();
-
-    /* Update the publishers */
-    ep->UpdatePublishers ();
-
-    /* Publish presence */
-    ep->PublishPresence (status);
   }
 }
 
@@ -913,12 +307,6 @@ gnomemeeting_conf_init ()
 
   
   /* Notifiers for the PERSONAL_DATA_KEY keys */
-  gm_conf_notifier_add (PERSONAL_DATA_KEY "firstname",
-			fullname_changed_nt, NULL);
-  
-  gm_conf_notifier_add (PERSONAL_DATA_KEY "lastname",
-			fullname_changed_nt, NULL);
-
   gm_conf_notifier_add (PERSONAL_DATA_KEY "status",
 			status_changed_nt, NULL);
 
@@ -929,87 +317,24 @@ gnomemeeting_conf_init ()
  
 
   /* Notifiers related to the H323_KEY */
-  gm_conf_notifier_add (H323_KEY "enable_h245_tunneling",
-			applicability_check_nt, prefs_window);
-  gm_conf_notifier_add (H323_KEY "enable_h245_tunneling",
-			h245_tunneling_changed_nt, NULL);
-
-  gm_conf_notifier_add (H323_KEY "enable_early_h245",
-			applicability_check_nt, prefs_window);
-  gm_conf_notifier_add (H323_KEY "enable_early_h245",
-			early_h245_changed_nt, NULL);
-
-  gm_conf_notifier_add (H323_KEY "enable_fast_start",
-			applicability_check_nt, prefs_window);
-  gm_conf_notifier_add (H323_KEY "enable_fast_start",
-			fast_start_changed_nt, NULL);
 
   //FIXME gm_conf_notifier_add (H323_KEY "dtmf_mode",
 	//		dtmf_mode_changed_nt, NULL);
-  gm_conf_notifier_add (H323_KEY "dtmf_mode",
-			applicability_check_nt, prefs_window);
-  
-  gm_conf_notifier_add (H323_KEY "default_gateway", 
-			applicability_check_nt, prefs_window);
-  
+
   
   /* Notifiers for the PROTOCOLS_KEY */
   gm_conf_notifier_add (PROTOCOLS_KEY "accounts_list",
 			accounts_list_changed_nt, NULL);
-  
-  gm_conf_notifier_add (PROTOCOLS_KEY "interface",
-			interface_changed_nt, NULL);
-
-
-  /* Notifier for the NAT_KEY */
-  gm_conf_notifier_add (NAT_KEY "public_ip",
-			public_ip_changed_nt, NULL);
 
 
   /* Notifiers to AUDIO_DEVICES_KEY */
   gm_conf_notifier_add (AUDIO_DEVICES_KEY "plugin", 
 			manager_changed_nt, prefs_window);
 
-  gm_conf_notifier_add (AUDIO_DEVICES_KEY "output_device",
-			applicability_check_nt, prefs_window);
-  
-  gm_conf_notifier_add (AUDIO_DEVICES_KEY "input_device",
-			applicability_check_nt, prefs_window);
-
-
   /* Notifiers to VIDEO_DEVICES_KEY */
   gm_conf_notifier_add (VIDEO_DEVICES_KEY "plugin", 
 			manager_changed_nt, prefs_window);
-  
-  gm_conf_notifier_add (VIDEO_DEVICES_KEY "input_device", 
-			video_device_changed_nt, NULL);
-  gm_conf_notifier_add (VIDEO_DEVICES_KEY "input_device", 
-			applicability_check_nt, prefs_window);
 
-  gm_conf_notifier_add (VIDEO_DEVICES_KEY "channel", 
-			video_device_setting_changed_nt, NULL);
-  gm_conf_notifier_add (VIDEO_DEVICES_KEY "channel", 
-			applicability_check_nt, prefs_window);
-
-  gm_conf_notifier_add (VIDEO_DEVICES_KEY "size", 
-			video_device_setting_changed_nt, NULL);
-  gm_conf_notifier_add (VIDEO_DEVICES_KEY "size", 
-			video_media_format_changed_nt, NULL);
-  gm_conf_notifier_add (VIDEO_DEVICES_KEY "size", 
-			applicability_check_nt, prefs_window);
-
-  gm_conf_notifier_add (VIDEO_DEVICES_KEY "format", 
-			video_device_setting_changed_nt, NULL);
-  gm_conf_notifier_add (VIDEO_DEVICES_KEY "format", 
-			applicability_check_nt, prefs_window);
-
-  gm_conf_notifier_add (VIDEO_DEVICES_KEY "image", 
-			video_device_setting_changed_nt, NULL);
-  gm_conf_notifier_add (VIDEO_DEVICES_KEY "image", 
-			applicability_check_nt, prefs_window);
-
-  gm_conf_notifier_add (VIDEO_DEVICES_KEY "enable_preview", 
-			video_preview_changed_nt, NULL);
 
   
   /* Notifiers for the VIDEO_DISPLAY_KEY keys */
@@ -1048,36 +373,15 @@ gnomemeeting_conf_init ()
   gm_conf_notifier_add (SOUND_EVENTS_KEY "new_message_sound",
 			sound_events_list_changed_nt, prefs_window);
 
- 
-  /* Notifiers for the AUDIO_CODECS_KEY keys */
-  gm_conf_notifier_add (AUDIO_CODECS_KEY "minimum_jitter_buffer", 
-			jitter_buffer_changed_nt, NULL);
-
-  gm_conf_notifier_add (AUDIO_CODECS_KEY "maximum_jitter_buffer", 
-			jitter_buffer_changed_nt, NULL);
-
-  gm_conf_notifier_add (AUDIO_CODECS_KEY "enable_silence_detection", 
-			silence_detection_changed_nt, NULL);
-  
-  gm_conf_notifier_add (AUDIO_CODECS_KEY "enable_echo_cancelation", 
-			echo_cancelation_changed_nt, NULL);
-
   
   /* Notifiers for the VIDEO_CODECS_KEY keys */
   gm_conf_notifier_add (VIDEO_CODECS_KEY "enable_video",
 			network_settings_changed_nt, NULL);	     
-  gm_conf_notifier_add (VIDEO_CODECS_KEY "enable_video", 
-			enable_video_changed_nt, main_window);     
-  gm_conf_notifier_add (VIDEO_CODECS_KEY "enable_video", 
-			applicability_check_nt, prefs_window);
 
-  gm_conf_notifier_add (VIDEO_CODECS_KEY "maximum_video_tx_bitrate", 
-			video_media_format_changed_nt, NULL);
   gm_conf_notifier_add (VIDEO_CODECS_KEY "maximum_video_tx_bitrate", 
 			network_settings_changed_nt, NULL);
 
-  gm_conf_notifier_add (VIDEO_CODECS_KEY "temporal_spatial_tradeoff",
-			video_media_format_changed_nt, NULL);
+
   gm_conf_notifier_add (VIDEO_CODECS_KEY "temporal_spatial_tradeoff", 
 			network_settings_changed_nt, NULL);
 }
