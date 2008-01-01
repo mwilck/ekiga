@@ -1,5 +1,14 @@
 2008-01-01  Damien Sandras  <dsandras@gnome.org>
 
+	* src/endpoints/opal-call.cpp, src/endpoints/opal-call.h:
+	Applied patch from Matthias Schneider to fix stupid problems
+	introduced by Mr Sandras in 2007.
+	Fixed packets lost percentage display.
+	Got rid of the ekiga.h dependancy. This part will move in the engine
+	and should not depend on ekiga at all.
+
+2008-01-01  Damien Sandras  <dsandras@gnome.org>
+
 	* src/endpoints/callstats.h,
 	src/endpoints/callinfo.cpp,
 	src/endpoints/callstats.cpp,

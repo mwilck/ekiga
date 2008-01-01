@@ -40,6 +40,7 @@
 #include <ptlib.h>
 #include <opal/manager.h>
 
+#include "runtime.h"
 #include "services.h"
 #include "call.h"
 
@@ -161,12 +162,25 @@ namespace Opal {
        * Variables
        */
       Ekiga::ServiceCore & core;
+      Ekiga::Runtime & runtime;
+
       double re_a_bytes;
       double tr_a_bytes;
       double re_v_bytes;
       double tr_v_bytes;
-      PTime last_tick;
+      
+      PTime last_a_tick;
+      PTime last_v_tick;
       PTime start_time;
+
+      unsigned lost_a;
+      unsigned too_late_a;
+      unsigned out_of_order_a;
+      unsigned total_a;
+      unsigned lost_v;
+      unsigned too_late_v;
+      unsigned out_of_order_v;
+      unsigned total_v;
     };
 };
 

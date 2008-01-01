@@ -38,19 +38,35 @@
 #include <cctype>
 #include <algorithm>
 
+#include <opal/buildopts.h>
+#include <ptbuildopts.h>
+
+#include <ptlib.h>
+
+#include <opal/manager.h>
+#include <opal/pcss.h>
+
+#include "config.h"
+
 #include "opal-call.h"
 #include "call.h"
-
-#include "ekiga.h" // FIXME Runtime
 
 using namespace Opal;
 
 
 Call::Call (OpalManager & _manager, Ekiga::ServiceCore & _core) 
-: OpalCall (_manager), Ekiga::Call (), core (_core)  
+: OpalCall (_manager), Ekiga::Call (), core (_core), runtime (*dynamic_cast<Ekiga::Runtime*>(core.get ("runtime")))
 {
   re_a_bytes = tr_a_bytes = re_v_bytes = tr_v_bytes = 0.0;
-  last_tick = PTime ();
+  last_v_tick = last_a_tick= PTime ();
+  total_a =
+    total_v =
+    lost_a =
+    too_late_a =
+    out_of_order_a =
+    lost_v =
+    too_late_v =
+    out_of_order_v = 0;
 }
 
 
@@ -104,7 +120,6 @@ void Call::toggle_hold ()
 
 void Call::toggle_stream_pause (StreamType type)
 {
-  Ekiga::Runtime *runtime = dynamic_cast<Ekiga::Runtime *> (core.get ("runtime"));
   OpalMediaStreamPtr stream = NULL;
   PSafePtr<OpalConnection> connection = NULL;
   PString codec_name;
@@ -131,9 +146,9 @@ void Call::toggle_stream_pause (StreamType type)
       stream->SetPaused (!paused);
 
       if (paused)
-        runtime->run_in_main (sigc::bind (stream_resumed, stream_name, type));
+        runtime.run_in_main (sigc::bind (stream_resumed, stream_name, type));
       else
-        runtime->run_in_main (sigc::bind (stream_paused, stream_name, type));
+        runtime.run_in_main (sigc::bind (stream_paused, stream_name, type));
     }
   }
 }
@@ -234,12 +249,10 @@ void Call::parse_info (OpalConnection & connection)
 
 PBoolean Call::OnEstablished (OpalConnection & connection)
 {
-  Ekiga::Runtime *runtime = dynamic_cast<Ekiga::Runtime *> (core.get ("runtime"));
-
   if (!PIsDescendant(&connection, OpalPCSSConnection)) {
 
     parse_info (connection);
-    runtime->run_in_main (established.make_slot ());
+    runtime.run_in_main (established.make_slot ());
   }
     
   return OpalCall::OnEstablished (connection);
@@ -254,15 +267,13 @@ void Call::OnReleased (OpalConnection & connection)
    * the Call could be destroyed before the signal callback has been executed
    * maybe create a copy constructor
    */
-  Ekiga::Runtime *runtime = dynamic_cast<Ekiga::Runtime *> (core.get ("runtime"));
-
   if (!PIsDescendant(&connection, OpalPCSSConnection)) {
 
     if (!IsEstablished () 
         && !is_outgoing ()
         && connection.GetCallEndReason () != OpalConnection::EndedByAnswerDenied) {
 
-      runtime->run_in_main (missed.make_slot ());
+      runtime.run_in_main (missed.make_slot ());
     }
     else {
 
@@ -348,7 +359,7 @@ void Call::OnReleased (OpalConnection & connection)
         reason = _("Call completed");
       }
 
-      runtime->run_in_main (sigc::bind (cleared.make_slot (), reason));
+      runtime.run_in_main (sigc::bind (cleared.make_slot (), reason));
     }
   }
 
@@ -370,13 +381,11 @@ OpalConnection::AnswerCallResponse Call::OnAnswerCall (OpalConnection & connecti
 
 PBoolean Call::OnSetUp (OpalConnection & connection)
 {
-  Ekiga::Runtime *runtime = dynamic_cast<Ekiga::Runtime *> (core.get ("runtime"));
-
   parse_info (connection);
 
   outgoing = PIsDescendant(&connection, OpalPCSSConnection);
 
-  runtime->run_in_main (setup.make_slot ());
+  runtime.run_in_main (setup.make_slot ());
 
   return OpalCall::OnSetUp (connection);
 }
@@ -384,19 +393,15 @@ PBoolean Call::OnSetUp (OpalConnection & connection)
 
 void Call::OnHold (bool on_hold)
 {
-  Ekiga::Runtime *runtime = dynamic_cast<Ekiga::Runtime *> (core.get ("runtime"));
-
   if (on_hold)
-    runtime->run_in_main (held.make_slot ());
+    runtime.run_in_main (held.make_slot ());
   else
-    runtime->run_in_main (retrieved.make_slot ());
+    runtime.run_in_main (retrieved.make_slot ());
 }
 
 
 void Call::OnOpenMediaStream (OpalMediaStream & stream)
 {
-  Ekiga::Runtime *runtime = dynamic_cast<Ekiga::Runtime *> (core.get ("runtime"));
-
   StreamType type = (stream.GetSessionID () == OpalMediaFormat::DefaultAudioSessionID) ? Audio : Video;
   bool is_transmitting = false;
   std::string stream_name;
@@ -405,14 +410,12 @@ void Call::OnOpenMediaStream (OpalMediaStream & stream)
   std::transform (stream_name.begin (), stream_name.end (), stream_name.begin (), (int (*) (int)) toupper);
   is_transmitting = !stream.IsSource (); 
 
-  runtime->run_in_main (sigc::bind (stream_opened, stream_name, type, is_transmitting));
+  runtime.run_in_main (sigc::bind (stream_opened, stream_name, type, is_transmitting));
 }
 
 
 void Call::OnClosedMediaStream (OpalMediaStream & stream)
 {
-  Ekiga::Runtime *runtime = dynamic_cast<Ekiga::Runtime *> (core.get ("runtime"));
-
   StreamType type = (stream.GetSessionID () == OpalMediaFormat::DefaultAudioSessionID) ? Audio : Video;
   bool is_transmitting = false;
   std::string stream_name;
@@ -421,41 +424,57 @@ void Call::OnClosedMediaStream (OpalMediaStream & stream)
   std::transform (stream_name.begin (), stream_name.end (), stream_name.begin (), (int (*) (int)) toupper);
   is_transmitting = !stream.IsSource (); 
 
-  runtime->run_in_main (sigc::bind (stream_closed, stream_name, type, is_transmitting));
+  runtime.run_in_main (sigc::bind (stream_closed, stream_name, type, is_transmitting));
 }
 
 
-void Call::OnRTPStatistics (const OpalConnection & /*connection*/, const RTP_Session & session)
+void Call::OnRTPStatistics (const OpalConnection & /*connection*/, 
+                            const RTP_Session & session)
 {
-  double octets_received = 0.0;
-  double octets_sent = 0.0;
-
-  PTimeInterval t = PTime () - last_tick;
-  unsigned elapsed_seconds = max ((unsigned long) t.GetMilliSeconds (), (unsigned long) 1);
-
-  octets_received = session.GetOctetsReceived ();
-  octets_sent = session.GetOctetsSent ();
-
   if (session.GetSessionID () == OpalMediaFormat::DefaultAudioSessionID) {
+
+    PTimeInterval t = PTime () - last_a_tick;
+    unsigned elapsed_seconds = max ((unsigned long) t.GetMilliSeconds (), (unsigned long) 1);
+    double octets_received = session.GetOctetsReceived ();
+    double octets_sent = session.GetOctetsSent ();
 
     re_a_bw = max ((octets_received - re_a_bytes) / elapsed_seconds, 0.0);
     tr_a_bw = max ((octets_sent - tr_a_bytes) / elapsed_seconds, 0.0);
+
+    re_a_bytes = octets_received; 
+    tr_a_bytes = octets_sent;
+    last_a_tick = PTime ();
+
+    total_a = session.GetPacketsReceived ();
+    lost_a = session.GetPacketsLost ();
+    too_late_a = session.GetPacketsTooLate ();
+    out_of_order_a = session.GetPacketsOutOfOrder ();
 
     jitter = session.GetJitterBufferSize () / max ((unsigned) session.GetJitterTimeUnits (), (unsigned) 8);
   }
   else {
 
+    PTimeInterval t = PTime () - last_v_tick;
+    unsigned elapsed_seconds = max ((unsigned long) t.GetMilliSeconds (), (unsigned long) 1);
+    double octets_received = session.GetOctetsReceived ();
+    double octets_sent = session.GetOctetsSent ();
+
     re_v_bw = max ((octets_received - re_v_bytes) / elapsed_seconds, 0.0);
     tr_v_bw = max ((octets_sent - tr_v_bytes) / elapsed_seconds, 0.0);
+
+    re_v_bytes = octets_received; 
+    tr_v_bytes = octets_sent;
+    last_v_tick = PTime ();
+
+    total_v = session.GetPacketsReceived ();
+    lost_v = session.GetPacketsLost ();
+    too_late_v = session.GetPacketsTooLate ();
+    out_of_order_v = session.GetPacketsOutOfOrder ();
   }
 
-  lost_packets = session.GetPacketsLost () / max (session.GetPacketsReceived (), (DWORD) 1);
-  late_packets = session.GetPacketsTooLate () / max (session.GetPacketsReceived (), (DWORD) 1);
-  out_of_order_packets = session.GetPacketsOutOfOrder () / max (session.GetPacketsReceived (), (DWORD) 1);
-
-  re_a_bytes = octets_received; 
-  tr_a_bytes = octets_sent;
-  last_tick = PTime ();
+  lost_packets = (lost_a + lost_v) / max (total_a + total_v, (DWORD) 1);
+  late_packets = (too_late_a + too_late_v) / max (total_a + total_v, (DWORD) 1);
+  out_of_order_packets = (out_of_order_a + out_of_order_v) / max (total_a + total_v, (DWORD) 1);
 }
 
 
