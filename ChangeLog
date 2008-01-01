@@ -1,3 +1,17 @@
+2008-01-01  Damien Sandras  <dsandras@gnome.org>
+
+	* src/gui/main.cpp:
+	Fixed missed call display.
+
+2007-12-31  Damien Sandras  <dsandras@gnome.org>
+
+	* lib/engine/addressbook/ldap/Makefile.am,
+	lib/engine/addressbook/ldap/ldap-book.cpp,
+	lib/engine/addressbook/ldap/ldap-contact.cpp,
+	lib/engine/addressbook/ldap/ldap-book.h:
+	Removed ekiga.h dependancy. Get the runtime as a reference from the
+	Ekiga::ServiceCore.
+
 2007-12-31  Damien Sandras  <dsandras@gnome.org>
 
 	* lib/engine/protocol/skel/call-core.cpp,

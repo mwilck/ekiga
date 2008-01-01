@@ -710,6 +710,9 @@ static void on_missed_call_cb (Ekiga::CallManager & /*manager*/,
   mw->missed_calls++;
   info << _("Missed call from") << " " << call.get_remote_party_name ();
 
+  gm_main_window_push_message (GTK_WIDGET (self), 
+                               mw->missed_calls,
+                               mw->total_mwi);
   gm_main_window_flash_message (GTK_WIDGET (self), "%s", info.str ().c_str ());
 }
 
