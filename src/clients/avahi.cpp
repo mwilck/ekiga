@@ -348,6 +348,7 @@ GMZeroconfPublisher::GetPersonalData()
 {
   gchar	*lastname = NULL;
   gchar	*firstname = NULL;
+  std::string status;
   
   int state = 0;
 
@@ -356,8 +357,37 @@ GMZeroconfPublisher::GetPersonalData()
   lastname = gm_conf_get_string (PERSONAL_DATA_KEY "lastname");
   h323_port = gm_conf_get_int (H323_KEY "listen_port");
   sip_port = gm_conf_get_int (SIP_KEY "listen_port");
-  state = gm_conf_get_int (CALL_OPTIONS_KEY "incoming_call_mode");
+  state = gm_conf_get_int (PERSONAL_DATA_KEY "status");
   gnomemeeting_threads_leave ();
+
+  // TODO: largely improve this
+  switch (state) {
+
+  case CONTACT_ONLINE:
+    status = "presence-online";
+    break;
+
+  case CONTACT_OFFLINE:
+  case CONTACT_INVISIBLE:
+    status = "presence-offline";
+    break;
+
+  case CONTACT_DND:
+    status = "presence-dnd";
+    break;
+
+  case CONTACT_AWAY:
+    status = "presence-away";
+    break;
+
+  case CONTACT_FREEFORCHAT:
+    status = "presence-freeforchat";
+    break;
+
+  default:
+    break;
+  }
+
 
   /* Cleanups */
   if (h323_text_record) {
@@ -380,13 +410,10 @@ GMZeroconfPublisher::GetPersonalData()
 
   /* Update the internal state */
   name = gnomemeeting_create_fullname (firstname, lastname); 
-  if (manager.GetCallingState () != GMManager::Standby)
-    state = 2;
-  
   h323_text_record = 
-    avahi_string_list_add_printf (h323_text_record,"state=%d", state);
+    avahi_string_list_add_printf (h323_text_record,"presence=%s", status.c_str ());
   sip_text_record = 
-    avahi_string_list_add_printf (sip_text_record,"state=%d", state);
+    avahi_string_list_add_printf (sip_text_record,"presence=%s", status.c_str ());
 
   h323_text_record = 
     avahi_string_list_add (h323_text_record, "software=Ekiga/" PACKAGE_VERSION);

@@ -1,5 +1,14 @@
 2008-01-02  Damien Sandras  <dsandras@gnome.org>
 
+	* lib/engine/presence/avahi/avahi-presentity.h,
+	lib/engine/presence/avahi/avahi-heap.cpp,
+	lib/engine/presence/avahi/avahi-presentity.cpp,
+	src/clients/avahi.cpp: 
+	Quick and dirty (really) hack to have presence support working with 
+	Avahi. There is still a flickering effect to fix.
+
+2008-01-02  Damien Sandras  <dsandras@gnome.org>
+
 	* src/endpoints/opal-call.cpp, src/endpoints/opal-call.h:
 	Added mutex to prevent potential race condition in the computation due
 	to the callback being called from two different threads.

@@ -70,7 +70,7 @@ namespace Avahi
 
     bool populate_menu (Ekiga::MenuBuilder &builder);
 
-    void set_online (bool val);
+    void set_presence (const std::string _presence);
 
     void set_status (const std::string _status);
 
@@ -78,11 +78,10 @@ namespace Avahi
 
     Ekiga::PresenceCore &core;
     std::string name;
+    std::string presence;
     std::string status;
     std::set<std::string> groups;
     std::string url;
-    bool online;
-
   };
 
 };

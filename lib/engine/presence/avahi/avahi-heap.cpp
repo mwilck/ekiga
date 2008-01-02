@@ -242,16 +242,16 @@ Avahi::Heap::ResolverCallback (AvahiServiceResolver *resolver,
 			       AvahiProtocol /*protocol*/,
 			       AvahiResolverEvent event,
 			       const char *name,
-			       const char */*type*/,
-			       const char */*domain*/,
-			       const char */*host_name*/,
+			       const char * /*type*/,
+			       const char * /*domain*/,
+			       const char * /*host_name*/,
 			       const AvahiAddress *address,
 			       uint16_t port,
 			       AvahiStringList *txt,
 			       AvahiLookupResultFlags /*flags*/)
 {
-  bool online = true;
   std::string software;
+  std::string presence;
   bool already_known = false;
   char good_address[AVAHI_ADDRESS_STR_MAX];
   gchar *url = NULL;
@@ -272,13 +272,9 @@ Avahi::Heap::ResolverCallback (AvahiServiceResolver *resolver,
 
 	    std::string key (ckey);
 	    std::string value (cvalue);
-	    if (key == "state") {
-
-	      if (value == "2")
-		online = false;
-	      else
-		online = true;
-	    }
+	    if (key == "presence") 
+              presence = value;
+	    
 	    if (key == "software")
 	      software = value;
 	  }
@@ -288,25 +284,27 @@ Avahi::Heap::ResolverCallback (AvahiServiceResolver *resolver,
       }
 
       for (iterator iter = begin ();
-	   iter != end () && already_known == false;
-	   iter++)
+	   iter != end ();
+	   iter++) {
+
+        // FIXME never called
 	if ((*iter).get_name () == name) {
 
 	  /* known contact has been updated */
-	  if (!software.empty ())
-	    (*iter).set_status (software);
-	  (*iter).set_online (online);
+          (*iter).set_status ("");
+	  (*iter).set_presence (presence);
 	  (*iter).updated.emit ();
+          already_known = true;
 	}
+      }
       if (already_known == false) {
 
 	/* ok, this is a new contact */
 	avahi_address_snprint (good_address, sizeof (good_address), address);
 	url = g_strdup_printf ("sip:%s:%d", good_address, port);
 	presentity = new Presentity (core, name, url);
-	if (!software.empty ())
-	  presentity->set_status (software);
-	presentity->set_online (online);
+	presentity->set_status ("");
+	presentity->set_presence (presence);
 	add_presentity (*presentity);
 	g_free (url);
       }

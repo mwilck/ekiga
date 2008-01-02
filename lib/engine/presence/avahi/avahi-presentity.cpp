@@ -42,23 +42,16 @@ Avahi::Presentity::Presentity (Ekiga::PresenceCore &_core,
 			       std::string _url):
   core(_core), name(_name), url (_url)
 {
-  online = true;
 }
 
 Avahi::Presentity::~Presentity ()
 {
-#ifdef __GNUC__
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
-#endif
 }
 
 const std::string
 Avahi::Presentity::get_presence () const
 {
-  if (online)
-    return "presence-available";
-  else
-    return "presence-busy";
+  return presence;
 }
 
 const std::string
@@ -98,9 +91,9 @@ Avahi::Presentity::populate_menu (Ekiga::MenuBuilder &builder)
 }
 
 void
-Avahi::Presentity::set_online (bool val)
+Avahi::Presentity::set_presence (const std::string _presence)
 {
-  online = val;
+  presence = _presence;
 }
 
 void
