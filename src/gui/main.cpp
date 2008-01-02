@@ -82,6 +82,10 @@
 #include <gnome.h>
 #endif
 
+#ifdef HAVE_GCONF
+#include <gconf/gconf-client.h>
+#endif
+
 #if defined(P_FREEBSD) || defined (P_MACOSX)
 #include <libintl.h>
 #endif
@@ -4195,8 +4199,6 @@ gm_main_window_set_stay_on_top (GtkWidget *main_window,
   /* Update the stay-on-top attribute */
   gdk_window_set_always_on_top (GDK_WINDOW (gm_window), stay_on_top);
 }
-
-#include <gconf/gconf-client.h>
 
 /* The main () */
 int 
