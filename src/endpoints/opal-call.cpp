@@ -431,6 +431,8 @@ void Call::OnClosedMediaStream (OpalMediaStream & stream)
 void Call::OnRTPStatistics (const OpalConnection & /*connection*/, 
                             const RTP_Session & session)
 {
+  PWaitAndSignal m(stats_mutex); // The stats are computed from two different threads
+
   if (session.GetSessionID () == OpalMediaFormat::DefaultAudioSessionID) {
 
     PTimeInterval t = PTime () - last_a_tick;

@@ -164,6 +164,7 @@ namespace Opal {
       Ekiga::ServiceCore & core;
       Ekiga::Runtime & runtime;
 
+      PMutex stats_mutex;
       double re_a_bytes;
       double tr_a_bytes;
       double re_v_bytes;

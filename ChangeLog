@@ -1,3 +1,9 @@
+2008-01-02  Damien Sandras  <dsandras@gnome.org>
+
+	* src/endpoints/opal-call.cpp, src/endpoints/opal-call.h:
+	Added mutex to prevent potential race condition in the computation due
+	to the callback being called from two different threads.
+
 2008-01-02  Steve Frécinaux  <code@istique.net>
 
 	* src/gui/main.cpp: fix missing #ifdef arount a GConf include.
