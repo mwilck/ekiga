@@ -649,6 +649,7 @@ dnl  Output the different Makefiles
 dnl ###########################################################################
 AC_OUTPUT(
 Makefile
+Doxyfile
 src/ekiga-config-tool
 AC_PACKAGE_NAME.schemas.in
 AC_PACKAGE_NAME.desktop.in

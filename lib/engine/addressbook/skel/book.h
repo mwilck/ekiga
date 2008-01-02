@@ -90,7 +90,7 @@ namespace Ekiga {
     virtual std::string get_status () = 0;
 
 
-    /**
+    /*
      * Signals on that object
      */
 
