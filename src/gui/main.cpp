@@ -65,6 +65,10 @@
 
 #include <gdk/gdkkeysyms.h>
 
+#ifdef HAVE_DBUS
+#include "components/dbus.h"
+#endif
+
 #ifndef WIN32
 #include <signal.h>
 #include <gdk/gdkx.h>
@@ -4299,6 +4303,15 @@ main (int argc,
   g_free (text_label);
 #endif
   
+#ifdef HAVE_DBUS
+  if (!ekiga_dbus_claim_ownership ()) {
+    ekiga_dbus_client_show ();
+    if (url != NULL)
+      ekiga_dbus_client_connect (url);
+    exit (0);
+  }
+#endif
+
   /* Ekiga initialisation */
   static GnomeMeeting instance;
   GnomeMeeting::Process ()->InitEngine ();
@@ -4395,10 +4408,19 @@ main (int argc,
     g_free (msg);
   }
 
+#ifdef HAVE_DBUS
+  /* Create the dbus server instance */
+  EkigaDBusComponent *dbus_component = ekiga_dbus_component_new (&mw->core);
+#endif
+
   /* The GTK loop */
   gdk_threads_enter ();
   gtk_main ();
   gdk_threads_leave ();
+
+#ifdef HAVE_DBUS
+  g_object_unref (dbus_component);
+#endif
 
   /* Exit Ekiga */
   GnomeMeeting::Process ()->Exit ();

@@ -374,10 +374,7 @@ GMURLHandler::~GMURLHandler ()
 void GMURLHandler::Main ()
 {
   GtkWidget *main_window = NULL;
-#ifdef HAVE_DBUS
-  GObject *dbus_component = NULL;
-#endif
-  
+
   PString call_address;
   PString current_call_token;
 
@@ -398,9 +395,6 @@ void GMURLHandler::Main ()
   gnomemeeting_threads_leave ();
 
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
-#ifdef HAVE_DBUS
-  dbus_component = GnomeMeeting::Process ()->GetDbusComponent ();
-#endif
 
   endpoint = dynamic_cast<GMManager *> (core.get ("opal-component"));
   

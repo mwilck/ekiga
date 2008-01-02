@@ -434,9 +434,11 @@ dnl ###############################
 dnl   DBUS Support
 dnl ###############################
 DBUS="disabled"
+DBUS_SERVICE="disabled"
 
 if test "x${gm_platform}" != "xmingw" ; then
   AC_ARG_ENABLE(dbus, [  --disable-dbus		Disable DBUS support],,enable_dbus=yes)
+  AC_ARG_ENABLE(dbus-service, [  --disable-dbus-service 	Disable DBUS service installation],,enable_dbus_service=yes)
 
   if test "x$enable_dbus" = "xyes"; then
     PKG_CHECK_MODULES(DBUS, dbus-1 >= 0.36 dbus-glib-1 >= 0.36, found_dbus=yes)
@@ -444,11 +446,15 @@ if test "x${gm_platform}" != "xmingw" ; then
     AC_SUBST(DBUS_LIBS)
     DBUS="enabled"
     AC_DEFINE(HAVE_DBUS,1,[DBUS support])
+
+    if test "x$found_dbus" = "xyes" -a "x$enable_dbus_service" = "xyes"; then
+      DBUS_SERVICE="enabled"
+    fi
   fi
 fi
 
 AM_CONDITIONAL(HAVE_DBUS, test "x$found_dbus" = "xyes")
-AM_CONDITIONAL(DBUS_SERVICES_INSTALL, test "x$found_dbus" = "xyes")
+AM_CONDITIONAL(INSTALL_DBUS_SERVICE, test "x$DBUS_SERVICE" = "xenabled")
 
 
 dnl ###############################
@@ -653,8 +659,6 @@ Doxyfile
 src/ekiga-config-tool
 AC_PACKAGE_NAME.schemas.in
 AC_PACKAGE_NAME.desktop.in
-net.ekiga.instance.service
-net.ekiga.helper.service
 lib/Makefile
 lib/druid/Makefile
 lib/gmconf/Makefile
@@ -719,6 +723,7 @@ fi
 echo ""
 if test "x${gm_platform}" != "xmingw" ; then
 echo "                    DBUS support  :  $DBUS"
+echo "            DBUS service support  :  $DBUS_SERVICE"
 echo "             mDNS/DNS-SD support  :  $AVAHI"
 fi
 echo ""

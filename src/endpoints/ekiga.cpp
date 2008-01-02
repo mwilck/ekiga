@@ -430,14 +430,6 @@ GnomeMeeting::GetStatusicon ()
   return statusicon;
 }
 
-#ifdef HAVE_DBUS
-GObject *
-GnomeMeeting::GetDbusComponent ()
-{
-  return dbus_component;
-}
-#endif
-
 void GnomeMeeting::Main ()
 {
 }
@@ -456,9 +448,6 @@ void GnomeMeeting::BuildGUI ()
   accounts_window = gm_accounts_window_new (*service_core);
 
   main_window = gm_main_window_new (*service_core);
-#ifdef HAVE_DBUS
-  dbus_component = gnomemeeting_dbus_component_new ();
-#endif
   statusicon = statusicon_new (*service_core,
                                PERSONAL_DATA_KEY "status");
 

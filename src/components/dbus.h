@@ -41,19 +41,35 @@
 #define __DBUS_COMPONENT_H
 
 #include <glib-object.h>
-
-#include "manager.h"
+#include "framework/services.h"
 
 G_BEGIN_DECLS
 
+#define EKIGA_TYPE_DBUS_COMPONENT               (ekiga_dbus_component_get_type ())
+#define EKIGA_DBUS_COMPONENT(obj)               (G_TYPE_CHECK_INSTANCE_CAST ((obj), EKIGA_TYPE_DBUS_COMPONENT, EkigaDBusComponent))
+#define EKIGA_DBUS_COMPONENT_CLASS(klass)       (G_TYPE_CHECK_CLASS_CAST ((klass), EKIGA_TYPE_DBUS_COMPONENT, EkigaDBusComponentClass))
+#define EKIGA_IS_DBUS_COMPONENT(obj)            (G_TYPE_CHECK_INSTANCE_TYPE ((obj), EKIGA_TYPE_DBUS_COMPONENT))
+#define EKIGA_IS_DBUS_COMPONENT_CLASS(klass)    (G_TYPE_CHECK_CLASS_TYPE ((klass), EKIGA_TYPE_DBUS_COMPONENT))
 
-GObject *gnomemeeting_dbus_component_new ();
+typedef struct _EkigaDBusComponentPrivate       EkigaDBusComponentPrivate;
+typedef struct _EkigaDBusComponent              EkigaDBusComponent;
 
-gboolean gnomemeting_dbus_component_is_first_instance (GObject *obj);
+struct _EkigaDBusComponent {
+  GObject                    parent;
+  EkigaDBusComponentPrivate *priv;
+};
 
-void gnomemeeting_dbus_component_call (GObject *obj,
-				       const gchar *uri);
+typedef GObjectClass EkigaDBusComponentClass;
+
+GType                ekiga_dbus_component_get_type ();
+EkigaDBusComponent  *ekiga_dbus_component_new (Ekiga::ServiceCore *core);
+
+gboolean             ekiga_dbus_claim_ownership ();
+
+void                 ekiga_dbus_client_show ();
+void                 ekiga_dbus_client_connect (const gchar *uri);
 
 G_END_DECLS
 
 #endif /* __DBUS_COMPONENT_H */
+/* ex:set ts=2 sw=2 et: */

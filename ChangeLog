@@ -1,3 +1,51 @@
+2007-12-14  Steve Frécinaux  <code@istique.net>
+
+	The plan is to make the core Ekiga objects unaware of the DBus
+	interface exposed. The DBus component should just watch for the
+	signals emitted by those objects and should not require any code
+	changes in those.
+
+	* src/components/org.ekiga.Ekiga.service.in:
+	* src/components/dbus-stub.xml:
+	Simplify exposed DBus interface (only one interface), and change its
+	namespace to 'org.ekiga.Ekiga' (because 'net.ekiga' would be the SIP
+	proxy service, not the softphone client). Remove most of the existing
+	methods that were broken a few days ago.
+
+	* src/endpoints/ekiga.h:
+	* src/endpoints/ekiga.cpp:
+	* src/endpoints/urlhandler.cpp:
+	Make the core Ekiga objects unaware of DBus.
+
+	* src/components/dbus.h:
+	* src/components/dbus.cpp:
+	Rename into EkigaDBusComponent, make it a standard GObject, adapt to
+	the new interface defined above, remove most of the previously exposed
+	methods (not needed anymore), remove signals, add what's needed for
+	clean DBus activation and remote controlling, plug possible GError
+	leaks.
+
+	* src/gui/main.cpp:
+	Use DBus activation, create the DBus component if possible and remote
+	control the existing instance otherwise.
+
+	* src/components/dbus-helper.cxx:
+	* src/components/dbus-helper-stub.xml:
+	Change namespage to 'org.ekiga.Helper'.
+
+	* src/Makefile.am:
+	* Makefile.am:
+	* configure.ac:
+	Adapt for above changes, and add --enable-dbus-service to chose
+	whether or not to install the ekiga service file.
+
+	* net.ekiga.instance.service.in:
+	* net.ekiga.helper.service.in:
+	removed
+
+	* src/components/dbus_stub.xml:
+	renamed into src/components/dbus-stub.xml for consistency.
+
 2008-01-01  Steve Frécinaux  <code@istique.net>
 
 	* Doxyfile.in:

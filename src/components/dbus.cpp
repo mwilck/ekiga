@@ -1,4 +1,3 @@
-
 /* Ekiga -- A VoIP and Video-Conferencing application
  * Copyright (C) 2000-2006 Damien Sandras
  *
@@ -32,8 +31,9 @@
  *   begin                : Tue Nov 1  2005
  *   copyright            : (c) 2005 by Julien Puydt
  *                          (c) 2007 by Damien Sandras
+ *                          (c) 2008 by Steve Frécinaux
  *   description          : This files contains the implementation of the DBUS
- *                          interface of gnomemeeting.
+ *                          interface of ekiga.
  *
  */
 
@@ -50,362 +50,111 @@
 #include "misc.h"
 #include "urlhandler.h"
 #include "accounts.h"
+#include "manager.h"
 
-/* all signals understood by this component */
-enum {
-  ACCOUNT_STATE,
-  ACCOUNT_NAME,
-  STATE_CHANGED,
-  NAME_INFO,
-  CLIENT_INFO,
-  URL_INFO,
-  PROTOCOL_INFO,
-  ON_HOLD_INFO,
-  LAST_SIGNAL
-};
+#include "call-core.h"
 
-/* Beginning of a classic GObject declaration */
+/* Those defines the namespace and path we want to use. */
+#define EKIGA_DBUS_NAMESPACE "org.ekiga.Ekiga"
+#define EKIGA_DBUS_PATH      "/org/ekiga/Ekiga"
+#define EKIGA_DBUS_INTERFACE "org.ekiga.Ekiga"
 
-typedef struct DbusComponent DbusComponent;
-typedef struct DbusComponentPrivate DbusComponentPrivate;
-typedef struct DbusComponentClass DbusComponentClass;
+G_DEFINE_TYPE(EkigaDBusComponent, ekiga_dbus_component, G_TYPE_OBJECT);
 
-GType dbus_component_get_type (void);
-
-struct DbusComponent
+struct _EkigaDBusComponentPrivate
 {
-  GObject parent;
+  Ekiga::ServiceCore *core;
 };
 
-struct DbusComponentPrivate
-{
-  gboolean owner;
-};
+/**************************
+ * GOBJECT / DBUS METHODS *
+ **************************/
 
-struct DbusComponentClass
-{
-  GObjectClass parent;
-};
-
-static guint signals[LAST_SIGNAL] = { 0 };
-
-#define DBUS_COMPONENT_TYPE_OBJECT (dbus_component_get_type ())
-#define DBUS_COMPONENT_OBJECT(object) (G_TYPE_CHECK_INSTANCE_CAST ((object), DBUS_COMPONENT_TYPE_OBJECT, DbusComponent))
-#define DBUS_COMPONENT_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), DBUS_COMPONENT_TYPE_OBJECT, DbusComponentClass))
-#define DBUS_COMPONENT_IS_OBJECT(object) (G_TYPE_CHECK_INSTANCE_TYPE ((object), DBUS_COMPONENT_TYPE_OBJECT))
-#define DBUS_COMPONENT_IS_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), DBUS_COMPONENT_TYPE_OBJECT))
-#define DBUS_COMPONENT_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), DBUS_COMPONENT_TYPE_OBJECT, DbusComponentPrivate))
-
-G_DEFINE_TYPE(DbusComponent, dbus_component, G_TYPE_OBJECT);
-
-/* End of a classic GObject declaration */
-
-/* declaration of all the methods of this object */
-static gboolean dbus_component_get_accounts_list (DbusComponent *self,
-						  char ***accounts,
-						  GError **error);
-static gboolean dbus_component_register (DbusComponent *self,
-					 const char *token,
-					 GError **error);
-static gboolean dbus_component_unregister (DbusComponent *self,
-					   const char *token,
-					   GError **error);
-static gboolean dbus_component_resignal_account_info (DbusComponent *self,
-						       const char *token,
-						       GError **error);
-
-static gboolean dbus_component_get_calls_list (DbusComponent *self,
-					       char ***calls,
-					       GError **error);
-static gboolean dbus_component_connect (DbusComponent *self,
-					const char *url,
-					char **token,
-					GError **error);
-static gboolean dbus_component_disconnect (DbusComponent *self,
-					   const char *token,
-					   GError **error);
-static gboolean dbus_component_play_pause (DbusComponent *self,
-					   const char *token,
-					   GError **error);
-static gboolean dbus_component_transfer (DbusComponent *self,
-					 const char *token,
-					 const char *url,
-					 GError **error);
-static gboolean dbus_component_resignal_call_info (DbusComponent *self,
-						   const char *token,
-						   GError **error);
-static gboolean dbus_component_shutdown (DbusComponent *self,
-					 GError **error);
-static gboolean dbus_component_get_local_address (DbusComponent *self,
-						  const char *protocol,
-						  char **url,
-						  GError **error);
-static gboolean dbus_component_get_name (DbusComponent *self,
-					 char **name,
-					 GError **error);
-static gboolean dbus_component_get_location (DbusComponent *self,
-					     char **location,
-					     GError **error);
-static gboolean dbus_component_get_comment (DbusComponent *self,
-					    char **comment,
-					    GError **error);
-
-static gboolean dbus_component_claim_ownership (DbusComponent *self);
+static gboolean ekiga_dbus_component_show (EkigaDBusComponent *self,
+                                           GError **error);
+static gboolean ekiga_dbus_component_shutdown (EkigaDBusComponent *self,
+                                               GError **error);
+static gboolean ekiga_dbus_component_call (EkigaDBusComponent *self,
+                                           const gchar *uri,
+                                           GError **error);
+static gboolean ekiga_dbus_component_get_user_name (EkigaDBusComponent *self,
+                                                    char **name,
+                                                    GError **error);
+static gboolean ekiga_dbus_component_get_user_location (EkigaDBusComponent *self,
+                                                        char **location,
+                                                        GError **error);
+static gboolean ekiga_dbus_component_get_user_comment (EkigaDBusComponent *self,
+                                                       char **comment,
+                                                       GError **error);
 
 /* get the code to make the GObject accessible through dbus
  * (this is especially where we get dbus_glib_dbus_component_object_info !)
  */
-#include "dbus_stub.h"
-
-/* Declaration of helper functions */
-
-static const gchar *protocol_prefix_to_name (const PString prefix);
-
-/* Implementation of the helper functions */
-
-
-static const gchar *
-protocol_prefix_to_name (const PString prefix)
-{
-  if (prefix == "sip")
-    return "SIP";
-
-  if (prefix == "h323")
-    return "H.323";
-
-  return "Unknown";
-}
-
-/* implementation of the GObject's methods */
+#include "dbus-stub.h"
 
 static void
-dbus_component_init (G_GNUC_UNUSED DbusComponent *self)
+ekiga_dbus_component_init (EkigaDBusComponent *self)
 {
-  /* nothing to do */
+  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, EKIGA_TYPE_DBUS_COMPONENT,
+                                            EkigaDBusComponentPrivate);
 }
 
 static void
-dbus_component_class_init (DbusComponentClass *klass)
+ekiga_dbus_component_class_init (EkigaDBusComponentClass *klass)
 {
-  /* register our private structure */
-  g_type_class_add_private (klass, sizeof (DbusComponentPrivate));
-
-  /* creation of all the signals */
-  signals[ACCOUNT_STATE] = g_signal_new ("account-state",
-					 G_OBJECT_CLASS_TYPE (klass),
-					 G_SIGNAL_RUN_LAST,
-					 0,
-					 NULL, NULL,
-					 gm_marshal_VOID__STRING_UINT,
-					 G_TYPE_NONE,
-					 2, G_TYPE_STRING, G_TYPE_UINT);
-
-  signals[ACCOUNT_NAME] = g_signal_new ("account-name",
-					G_OBJECT_CLASS_TYPE (klass),
-					G_SIGNAL_RUN_LAST,
-					0,
-					NULL, NULL,
-					gm_marshal_VOID__STRING_STRING,
-					G_TYPE_NONE,
-					2, G_TYPE_STRING, G_TYPE_STRING);
-
-  signals[STATE_CHANGED] = g_signal_new ("state-changed",
-					 G_OBJECT_CLASS_TYPE (klass),
-					 G_SIGNAL_RUN_LAST,
-					 0,
-					 NULL, NULL,
-					 gm_marshal_VOID__STRING_UINT,
-					 G_TYPE_NONE,
-					 2, G_TYPE_STRING, G_TYPE_UINT);
-
-  signals[NAME_INFO] = g_signal_new ("name-info",
-				     G_OBJECT_CLASS_TYPE (klass),
-				     G_SIGNAL_RUN_LAST,
-				     0,
-				     NULL, NULL,
-				     gm_marshal_VOID__STRING_STRING,
-				     G_TYPE_NONE,
-				     2, G_TYPE_STRING, G_TYPE_STRING);
-  signals[CLIENT_INFO] = g_signal_new ("client-info",
-				       G_OBJECT_CLASS_TYPE (klass),
-				       G_SIGNAL_RUN_LAST,
-				       0,
-				       NULL, NULL,
-				       gm_marshal_VOID__STRING_STRING,
-				       G_TYPE_NONE,
-				       2, G_TYPE_STRING, G_TYPE_STRING);
-  signals[URL_INFO] = g_signal_new ("url-info",
-				    G_OBJECT_CLASS_TYPE (klass),
-				    G_SIGNAL_RUN_LAST,
-				    0,
-				    NULL, NULL,
-				    gm_marshal_VOID__STRING_STRING,
-				    G_TYPE_NONE,
-				    2, G_TYPE_STRING, G_TYPE_STRING);
-  signals[PROTOCOL_INFO] = g_signal_new ("protocol-info",
-					 G_OBJECT_CLASS_TYPE (klass),
-					 G_SIGNAL_RUN_LAST,
-					 0,
-					 NULL, NULL,
-					 gm_marshal_VOID__STRING_STRING,
-					 G_TYPE_NONE,
-					 2, G_TYPE_STRING, G_TYPE_STRING);
-  signals[ON_HOLD_INFO] = g_signal_new ("on-hold-info",
-					G_OBJECT_CLASS_TYPE (klass),
-					G_SIGNAL_RUN_LAST,
-					0,
-					NULL, NULL,
-					gm_marshal_VOID__STRING_BOOLEAN,
-					G_TYPE_NONE,
-					2, G_TYPE_STRING, G_TYPE_BOOLEAN);
+  g_type_class_add_private (klass, sizeof (EkigaDBusComponentPrivate));
 
   /* initializing as dbus object */
-  dbus_g_object_type_install_info (DBUS_COMPONENT_TYPE_OBJECT,
-				   &dbus_glib_dbus_component_object_info);
-
+  dbus_g_object_type_install_info (G_TYPE_FROM_CLASS (klass),
+                                   &dbus_glib_ekiga_dbus_component_object_info);
 }
 
 static gboolean
-dbus_component_get_accounts_list (G_GNUC_UNUSED DbusComponent *self,
-				  char ***accounts,
-				  G_GNUC_UNUSED GError **error)
+ekiga_dbus_component_show (G_GNUC_UNUSED EkigaDBusComponent *self,
+                           G_GNUC_UNUSED GError **error)
 {
-  GSList *gmaccounts = NULL;
-  GSList *iter = NULL;
-  GmAccount *account = NULL;
-  guint length;
-  guint index;
+  PTRACE (1, "DBus\tShow");
 
-  /* get some data from gnomemeeting */
-  gmaccounts = gnomemeeting_get_accounts_list ();
-  length = g_slist_length (gmaccounts);
-
-  /* prepare our answer with the right size
-   * and thinking about NULL-terminating it
-   */
-  *accounts = g_new (char *, length + 1);
-  (*accounts)[length] = NULL;
-
-  /* populating the rest */
-  for (iter = gmaccounts, index = 0 ;
-       iter != NULL ;
-       iter = g_slist_next (iter), index++) {
-
-    account = GM_ACCOUNT (iter->data);
-    (*accounts)[index] = g_strdup (account->aid);
-  }
-
-  /* cleaning... */
-  g_slist_foreach (gmaccounts, (GFunc) gm_account_delete, NULL);
-  g_slist_free (gmaccounts);
+  GtkWidget *window = GnomeMeeting::Process ()->GetMainWindow ();
+  if (GTK_WIDGET_VISIBLE (window))
+    gtk_window_set_urgency_hint (GTK_WINDOW (window), TRUE);
+  else
+    gtk_window_present (GTK_WINDOW (window));
 
   return TRUE;
 }
 
 static gboolean
-dbus_component_register (G_GNUC_UNUSED DbusComponent *self,
-			 const char *token,
-			 G_GNUC_UNUSED GError **error)
+ekiga_dbus_component_shutdown (G_GNUC_UNUSED EkigaDBusComponent *self,
+                               G_GNUC_UNUSED GError **error)
 {
+  quit_callback (NULL, NULL);
 
   return TRUE;
 }
 
 static gboolean
-dbus_component_unregister (G_GNUC_UNUSED DbusComponent *self,
-			   const char *token,
-			   G_GNUC_UNUSED GError **error)
+ekiga_dbus_component_call (EkigaDBusComponent *self,
+                           const gchar *uri,
+                           G_GNUC_UNUSED GError **error)
 {
+  Ekiga::CallCore *call_core = NULL;
+
+  call_core = dynamic_cast<Ekiga::CallCore*> (self->priv->core->get ("call-core"));
+  call_core->dial (uri);
 
   return TRUE;
 }
 
 static gboolean
-dbus_component_resignal_account_info (DbusComponent *self,
-				      const char *token,
-				      G_GNUC_UNUSED GError **error)
-{
-
-  return TRUE;
-}
-
-static gboolean
-dbus_component_get_calls_list (G_GNUC_UNUSED DbusComponent *self,
-			       char ***calls,
-			       G_GNUC_UNUSED GError **error)
-{
-
-  return TRUE;
-}
-
-static gboolean
-dbus_component_connect (DbusComponent *self,
-			const char *url,
-			char **token,
-			G_GNUC_UNUSED GError **error)
-{
-
-  return TRUE;
-}
-
-static gboolean
-dbus_component_disconnect (G_GNUC_UNUSED DbusComponent *self,
-			   G_GNUC_UNUSED const char *token,
-			   G_GNUC_UNUSED GError **error)
-{
-
-  return TRUE;
-}
-
-static gboolean
-dbus_component_play_pause (G_GNUC_UNUSED DbusComponent *self,
-			   const char *token,
-			   G_GNUC_UNUSED GError **error)
-{
-
-  return TRUE;
-}
-
-static gboolean
-dbus_component_transfer (G_GNUC_UNUSED DbusComponent *self,
-			 G_GNUC_UNUSED const char *token,
-			 const char *url,
-			 G_GNUC_UNUSED GError **error)
-{
-  return TRUE;
-}
-
-static gboolean
-dbus_component_resignal_call_info (DbusComponent *self,
-				   const char *token,
-				   G_GNUC_UNUSED GError **error)
-{
-    return TRUE;
-}
-
-static gboolean
-dbus_component_shutdown (G_GNUC_UNUSED DbusComponent *self,
-			 G_GNUC_UNUSED GError **error)
-{
-  return TRUE;
-}
-
-static gboolean
-dbus_component_get_local_address (G_GNUC_UNUSED DbusComponent *self,
-				  const char *protocol,
-				  char **url,
-				  G_GNUC_UNUSED GError **error)
-{
-  return TRUE;
-}
-
-static gboolean
-dbus_component_get_name (G_GNUC_UNUSED DbusComponent *self,
-			 char **name,
-			 G_GNUC_UNUSED GError **error)
+ekiga_dbus_component_get_user_name (G_GNUC_UNUSED EkigaDBusComponent *self,
+                                    char **name,
+                                    G_GNUC_UNUSED GError **error)
 {
   gchar *firstname = NULL;
   gchar *lastname = NULL;
+
+  PTRACE (1, "DBus\tGetName");
 
   firstname = gm_conf_get_string (PERSONAL_DATA_KEY "firstname");
   lastname = gm_conf_get_string (PERSONAL_DATA_KEY "lastname");
@@ -417,43 +166,51 @@ dbus_component_get_name (G_GNUC_UNUSED DbusComponent *self,
 
   return TRUE;
 }
+
 static gboolean
-dbus_component_get_location (G_GNUC_UNUSED DbusComponent *self,
-			     char **location,
-			     G_GNUC_UNUSED GError **error)
+ekiga_dbus_component_get_user_location (G_GNUC_UNUSED EkigaDBusComponent *self,
+                                        char **location,
+                                        G_GNUC_UNUSED GError **error)
 {
+  PTRACE (1, "DBus\tGetLocation");
+
   *location = gm_conf_get_string (PERSONAL_DATA_KEY "location");
 
   return TRUE;
 }
 
 static gboolean
-dbus_component_get_comment (G_GNUC_UNUSED DbusComponent *self,
-			    char **comment,
-			    G_GNUC_UNUSED GError **error)
+ekiga_dbus_component_get_user_comment (G_GNUC_UNUSED EkigaDBusComponent *self,
+                                       char **comment,
+                                       G_GNUC_UNUSED GError **error)
 {
+  PTRACE (1, "DBus\tGetComment");
+
   *comment = gm_conf_get_string (PERSONAL_DATA_KEY "comment");
 
   return TRUE;
 }
 
-static gboolean
-dbus_component_claim_ownership (DbusComponent *self)
+/**************
+ * PUBLIC API *
+ **************/
+
+/** Claim ownership on the EKIGA_DBUS_NAMESPACE namespace.
+ * This function will return false if the namespace is already taken, ie if
+ * another instance of Ekiga is already running.
+ */
+gboolean
+ekiga_dbus_claim_ownership ()
 {
-  DbusComponentPrivate *data = DBUS_COMPONENT_GET_PRIVATE (self);
   DBusGConnection *bus = NULL;
   DBusGProxy *bus_proxy = NULL;
   guint request_name_result;
   GError *error = NULL;
 
-  /* in case we are called automatically */
-  if (data->owner)
-    return TRUE;
-
   bus = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
   if (!bus) {
-
     PTRACE (1, "Couldn't connect to session bus : " << error->message);
+    g_error_free (error);
     return FALSE;
   }
 
@@ -462,125 +219,95 @@ dbus_component_claim_ownership (DbusComponent *self)
                                          "org.freedesktop.DBus");
 
   if (!dbus_g_proxy_call (bus_proxy, "RequestName", &error,
-                          G_TYPE_STRING, "net." PACKAGE_NAME ".instance",
+                          G_TYPE_STRING, EKIGA_DBUS_NAMESPACE,
                           G_TYPE_UINT, DBUS_NAME_FLAG_DO_NOT_QUEUE,
                           G_TYPE_INVALID,
                           G_TYPE_UINT, &request_name_result,
                           G_TYPE_INVALID)) {
 
-    PTRACE (1, "Couldn't get the net." PACKAGE_NAME ".instance name : "
-	    << error->message);
+    PTRACE (1, "Couldn't get ownership on the " EKIGA_DBUS_NAMESPACE " D-Bus namespace : "
+               << error->message);
+    g_error_free (error);
     return FALSE;
   }
 
-  dbus_g_connection_register_g_object (bus, "/net/ekiga/instance",
-				       G_OBJECT (self));
+  PTRACE (4, "Ekiga registered on D-Bus: " EKIGA_DBUS_NAMESPACE);
 
-  data->owner = TRUE;
-  return TRUE;
+  return request_name_result == DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER;
 }
 
-/* implementation of the externally-visible api */
-
-/* first a little helper function */
-
-GObject *
-gnomemeeting_dbus_component_new ()
+/** Create the server object for the D-Bus interface.
+ * This object acts mostly as a proxy for the manager and other common objects.
+ * NOTE: We expect we have claimed the namespace successfully before, and that
+ *       the manager and other key components are running.
+ */
+EkigaDBusComponent *
+ekiga_dbus_component_new (Ekiga::ServiceCore *core)
 {
-  DbusComponent *result = NULL;
+  DBusGConnection *bus;
+  GError *error = NULL;
+  EkigaDBusComponent *obj;
 
-  result = DBUS_COMPONENT_OBJECT (g_object_new (DBUS_COMPONENT_TYPE_OBJECT,
-						NULL));
+  bus = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
+  if (!bus) {
+    PTRACE (1, "Couldn't connect to session bus : " << error->message);
+    g_error_free (error);
+    return NULL;
+  }
 
-  (void)dbus_component_claim_ownership (result);
+  obj = EKIGA_DBUS_COMPONENT (g_object_new (EKIGA_TYPE_DBUS_COMPONENT, NULL));
+  obj->priv->core = core;
+  dbus_g_connection_register_g_object (bus, EKIGA_DBUS_PATH, G_OBJECT (obj));
 
-  return G_OBJECT (result);
+  return obj;
 }
 
-gboolean
-gnomemeeting_dbus_component_is_first_instance (GObject *self)
-{
-  DbusComponentPrivate *data = DBUS_COMPONENT_GET_PRIVATE (self);
-
-  return data->owner;
-}
-
-void
-gnomemeeting_dbus_component_set_call_state (GObject *obj,
-					    const gchar *token,
-					    GMManager::CallingState state)
-{
-
-}
-
-void
-gnomemeeting_dbus_component_set_call_info (GObject *obj,
-					   const gchar *token,
-					   const gchar *name,
-					   const gchar *client,
-					   const gchar *url,
-					   const gchar *protocol_prefix)
-{
-  DbusComponent *self = DBUS_COMPONENT_OBJECT (obj);
-
-  if (name)
-    g_signal_emit (self, signals[NAME_INFO], 0, token, name);
-
-  if (client)
-    g_signal_emit (self, signals[CLIENT_INFO], 0, token, client);
-
-  if (url)
-    g_signal_emit (self, signals[URL_INFO], 0, token, url);
-
-  if (protocol_prefix)
-    g_signal_emit (self, signals[PROTOCOL_INFO], 0, token,
-		   protocol_prefix_to_name (protocol_prefix));
-}
-
-void
-gnomemeeting_dbus_component_set_call_on_hold (G_GNUC_UNUSED GObject *obj,
-					      const gchar *token,
-					      gboolean is_on_hold)
-{
-  DbusComponent *self = DBUS_COMPONENT_OBJECT (obj);
-
-  g_return_if_fail (token != NULL);
-
-  g_signal_emit (self, signals[ON_HOLD_INFO], 0, token, is_on_hold);
-}
-
-void
-gnomemeeting_dbus_component_call (G_GNUC_UNUSED GObject *obj,
-				  const gchar *uri)
+static DBusGProxy *
+get_ekiga_client_proxy ()
 {
   DBusGConnection *bus = NULL;
   GError *error = NULL;
-  DBusGProxy *dbus_object;
 
   bus = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
+  if (!bus) {
+    PTRACE (1, "Couldn't connect to session bus : " << error->message);
+    g_error_free (error);
+    return NULL;
+  }
 
-  if (bus == NULL)
-    return;
-
-  dbus_object = dbus_g_proxy_new_for_name (bus,
-					   "net." PACKAGE_NAME ".instance",
-					   "/net/ekiga/instance",
-					   "net.ekiga.calls");
-
-  if (dbus_object == NULL)
-    return;
-
-  dbus_g_proxy_call_no_reply (dbus_object, "Connect",
-                              G_TYPE_STRING, uri,
-                              G_TYPE_INVALID);
-
+  return dbus_g_proxy_new_for_name (bus,
+                                    EKIGA_DBUS_NAMESPACE,
+                                    EKIGA_DBUS_PATH,
+                                    EKIGA_DBUS_INTERFACE);
 }
 
+/** Tell to a remote instance of Ekiga to connect to a remote SIP or H.323 
+ * address.
+ * You will typically use this function when claim_ownership failed.
+ */
 void
-gnomemeeting_dbus_component_account_registration (GObject *obj,
-						  const gchar *username,
-						  const gchar *domain,
-						  gboolean registered)
+ekiga_dbus_client_connect (const gchar *uri)
 {
+  DBusGProxy *proxy = get_ekiga_client_proxy ();
 
+  g_return_if_fail (proxy);
+
+  dbus_g_proxy_call_no_reply (proxy, "Call", G_TYPE_STRING, uri, G_TYPE_INVALID);
+  g_object_unref (proxy);
 }
+
+/** Tell to a remote instance of Ekiga to show the main window.
+ * You will typically use this function when claim_ownership failed.
+ */
+void
+ekiga_dbus_client_show ()
+{
+  DBusGProxy *proxy = get_ekiga_client_proxy ();
+
+  g_return_if_fail (proxy);
+
+  dbus_g_proxy_call_no_reply (proxy, "Show", G_TYPE_INVALID);
+  g_object_unref (proxy);
+}
+
+// ex:set ts=2 sw=2 et:

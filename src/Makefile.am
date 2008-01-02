@@ -107,9 +107,10 @@ ekiga_SOURCES +=			\
 
 if HAVE_DBUS 
 ekiga_SOURCES +=		\
+	components/dbus-stub.h	\
 	components/dbus.h	\
-	components/dbus.cpp	\
-	components/dbus_stub.h
+	components/dbus.cpp
+
 
 bin_PROGRAMS += ekiga-helper
 
@@ -119,17 +120,28 @@ ekiga_helper_SOURCES = 		\
 
 ekiga_helper_LDADD = $(DBUS_LIBS)
 
-ekiga_LDFLAGS = -export-dynamic
-
-BUILT_SOURCES = components/dbus-helper-stub.h components/dbus_stub.h
-
-endif
+BUILT_SOURCES = components/dbus-helper-stub.h components/dbus-stub.h
 
 components/dbus-helper-stub.h: components/dbus-helper-stub.xml
 	$(LIBTOOL) --mode=execute dbus-binding-tool --prefix=helper --mode=glib-server --output=$@ $^
 
-components/dbus_stub.h: components/dbus_stub.xml
-	$(LIBTOOL) --mode=execute dbus-binding-tool --prefix=dbus_component --mode=glib-server --output=$@ $^
+components/dbus-stub.h: components/dbus-stub.xml
+	$(LIBTOOL) --mode=execute dbus-binding-tool --prefix=ekiga_dbus_component --mode=glib-server --output=$@ $^
+endif
+
+if INSTALL_DBUS_SERVICE
+servicedir = $(datadir)/dbus-1/services
+service_in_files = \
+	components/org.ekiga.Ekiga.service.in \
+	components/org.ekiga.Helper.service.in
+service_DATA = $(service_in_files:.service.in=.service)
+
+components/org.ekiga.Ekiga.service: components/org.ekiga.Ekiga.service.in
+	(cd $(srcdir) && sed -e 's#\@bindir\@#@bindir@#' $<) > $@
+
+components/org.ekiga.Helper.service: components/org.ekiga.Helper.service.in
+	(cd $(srcdir) && sed -e 's#\@bindir\@#@bindir@#' $<) > $@
+endif
 
 if HAVE_AVAHI
 ekiga_SOURCES += 		\
@@ -143,3 +155,11 @@ AM_LIBS = $(GTK_LIBS) $(GLIB_LIBS) $(GNOME_LIBS) $(AVAHI_LIBS) $(DBUS_LIBS) $(BO
 ekiga_LDADD = \
 	$(top_builddir)/lib/libekiga.la $(top_builddir)/lib/engine/libekiga_engine.la $(AM_LIBS) 
 
+EXTRA_DIST = \
+	$(service_in_files)		\
+	@PACKAGE_NAME@.server		\
+	components/dbus-stub.xml	\
+	components/dbus-helper-stub.xml
+
+CLEANFILES = \
+	$(service_DATA)

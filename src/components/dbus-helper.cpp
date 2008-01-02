@@ -52,8 +52,8 @@
  *
  */
 
-#define GM_HELPER_SERVICE   "net." PACKAGE_NAME ".helper"
-#define GM_HELPER_OBJECT  "/net/ekiga/helper"
+#define GM_HELPER_SERVICE   "org.ekiga.Helper"
+#define GM_HELPER_OBJECT  "/org/ekiga/Helper"
 #define DBUS_COMPONENT_MAJOR_VERSION 0
 #define DBUS_COMPONENT_MINOR_VERSION 1
 

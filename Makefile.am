@@ -38,7 +38,20 @@ WIN32_DIST = \
 
 
 ### Extra dist
-EXTRA_DIST = $(DESKTOP_IN_FILES) $(DESKTOP_FILES) intltool-extract.in intltool-merge.in intltool-update.in gnome-doc-utils.make FAQ README $(SCHEMAS_FILE) src/components/@PACKAGE_NAME@.server gnome-doc-utils.make lib/gmmarshallers.list src/components/dbus-helper-stub.xml src/components/dbus_stub.xml $(WIN32_DIST)
+EXTRA_DIST = \
+	$(DESKTOP_IN_FILES)					\
+	$(DESKTOP_FILES)					\
+	intltool-extract.in					\
+	intltool-merge.in 					\
+	intltool-update.in					\
+	gnome-doc-utils.make					\
+	FAQ							\
+	README							\
+	$(SCHEMAS_FILE)						\
+	gnome-doc-utils.make					\
+	lib/gmmarshallers.list					\
+	$(WIN32_DIST)
+
 Applicationsdir = $(datadir)/applications
 Applications_DATA = $(DESKTOP_FILES)
 
@@ -65,11 +78,4 @@ if GCONF_SCHEMAS_INSTALL
 install-data-local: install-schemas 
 else
 install-data-local:
-endif
-
-if DBUS_SERVICES_INSTALL
-servicedir = ${datadir}/dbus-1/services
-service_DATA = \
-	net.ekiga.instance.service	\
-	net.ekiga.helper.service
 endif

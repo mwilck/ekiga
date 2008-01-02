@@ -186,16 +186,8 @@ class GnomeMeeting : public PProcess
    * PRE          :  /
    */
   StatusIcon *GetStatusicon ();
-  
-  
-#ifdef HAVE_DBUS
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Returns a pointer to the dbus component.
-   * PRE          :  /
-   */
-  GObject *GetDbusComponent ();
-#endif
-  
+
+
   /* Needed for PProcess */
   void Main();
 
