@@ -1,3 +1,9 @@
+2008-01-03  Steve Frécinaux  <code@istique.net>
+
+	* src/gui/main.cpp: remove useless GtkTable and GtkHBox widgets in
+	the main window layout (in particular, the hbox was packed with a buggy
+	expand=false).
+
 2008-01-02  Damien Sandras  <dsandras@gnome.org>
 
 	* src/endpoints/manager.cpp,

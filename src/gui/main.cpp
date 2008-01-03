@@ -122,7 +122,6 @@ struct _GmMainWindow
   
 #if !defined HAVE_GNOME 
   GtkWidget *window_vbox;
-  GtkWidget *window_hbox;
 #endif
 
   GtkWidget *status_label_ebox;
@@ -3639,7 +3638,6 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   GmMainWindow *mw = NULL;
 
   GtkWidget *window = NULL;
-  GtkWidget *table = NULL;
   GtkWidget *hbox = NULL;
   
   GtkWidget *main_toolbar = NULL;
@@ -3703,10 +3701,6 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   mw->window_vbox = gtk_vbox_new (0, FALSE);
   gtk_container_add (GTK_CONTAINER (window), mw->window_vbox);
   gtk_widget_show_all (mw->window_vbox);
-
-  /* The hbox */
-  mw->window_hbox = gtk_hbox_new (0, FALSE);
-  gtk_widget_show_all (mw->window_hbox);
 #endif
   
   /* The main menu */
@@ -3741,22 +3735,6 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   gtk_box_pack_start (GTK_BOX (mw->window_vbox), main_toolbar, 
 		      FALSE, FALSE, 0);
 #endif
-  
-#if !defined HAVE_GNOME
-  gtk_box_pack_start (GTK_BOX (mw->window_vbox), mw->window_hbox, 
-		      FALSE, FALSE, 0);
-#endif
-  
-  /* Create a table in the main window to attach things like buttons */
-  table = gtk_table_new (3, 4, FALSE);
-  gtk_container_set_border_width (GTK_CONTAINER (table), 6);
-#if !defined HAVE_GNOME
-  gtk_box_pack_start (GTK_BOX (mw->window_hbox), table, TRUE, TRUE, 0);
-  gtk_widget_show (table);
-#else
-  gnome_app_set_contents (GNOME_APP (window), table);
-#endif
-  gtk_widget_show (table);
 
   /* The Audio & Video Settings windows */
   mw->audio_settings_window = gm_mw_audio_settings_window_new (window);
@@ -3768,15 +3746,16 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   gtk_notebook_set_show_tabs (GTK_NOTEBOOK (mw->main_notebook), TRUE);
   gtk_notebook_set_scrollable (GTK_NOTEBOOK (mw->main_notebook), TRUE);
 
+#if !defined HAVE_GNOME
+  gtk_box_pack_start (GTK_BOX (mw->window_vbox), mw->main_notebook, TRUE, TRUE, 0);
+  gtk_widget_show (table);
+#else
+  gnome_app_set_contents (GNOME_APP (window), mw->main_notebook);
+#endif
+
   gm_mw_init_contacts_list (window);
   gm_mw_init_dialpad (window);
   gm_mw_init_call (window);
-
-  gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (mw->main_notebook),
-		    0, 2, 2, 3,
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    3, 3); 
 
   section = (PanelSection) 
     gm_conf_get_int (USER_INTERFACE_KEY "main_window/panel_section");
