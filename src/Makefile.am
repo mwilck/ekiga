@@ -39,6 +39,8 @@ ekiga_SOURCES +=			\
 	gui/callbacks.cpp		\
 	gui/conf.h			\
 	gui/conf.cpp			\
+	gui/dialpad.h			\
+	gui/dialpad.cpp			\
 	gui/druid.h			\
 	gui/druid.cpp			\
 	gui/main.h			\

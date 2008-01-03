@@ -46,6 +46,7 @@
 #include "misc.h"
 #include "callbacks.h"
 #include "statusicon.h"
+#include "dialpad.h"
 #include "audio.h"
 #include "urlhandler.h"
 
@@ -390,8 +391,9 @@ static void panel_section_changed_cb (GtkNotebook *,
  * BEHAVIOR     :  Generates a dialpad event.
  * PRE          :  A valid pointer to the main window GMObject.
  */
-static void dialpad_button_clicked_cb (GtkButton *, 
-				       gpointer);
+static void dialpad_button_clicked_cb (EkigaDialpad  *dialpad,
+				       const gchar *button_text,
+				       GtkWidget   *main_window);
 
 
 /* DESCRIPTION  :  This callback is called when the user tries to close
@@ -1496,82 +1498,22 @@ static void
 gm_mw_init_dialpad (GtkWidget *main_window)
 {
   GmMainWindow *mw = NULL;
-  
-  GtkSizeGroup *size_group_alpha = NULL;
 
+  GtkWidget *dialpad = NULL;
   GtkWidget *alignment = NULL;
-  GtkWidget *box = NULL;
-  GtkWidget *button = NULL;
   GtkWidget *label = NULL;
-  GtkWidget *table = NULL;
-
-  int i = 0;
-
-  const char *key_n [] = { "1", "2", "3", "4", "5", "6", "7", "8", "9",
-		     "*", "0", "#"};
-  guint key_kp [] = { GDK_KP_1, GDK_KP_2, GDK_KP_3, GDK_KP_4, GDK_KP_5, 
-    		      GDK_KP_6, GDK_KP_7, GDK_KP_8, GDK_KP_9, GDK_KP_Multiply,
-		      GDK_KP_0, GDK_numbersign};
-
-  const char *key_a []= { "  ", "abc", "def", "ghi", "jkl", "mno", "pqrs",
-			  "tuv", "wxyz", "  ", "  ", "  "};
-
-  gchar *text_label = NULL;
-  
 
   g_return_if_fail (main_window != NULL);
   mw = gm_mw_get_mw (main_window);
 
-  alignment = gtk_alignment_new (0.5, 0.5, 0.0, 0.0);
-  table = gtk_table_new (4, 3, TRUE);
-  gtk_container_add (GTK_CONTAINER (alignment), table);
+  dialpad = ekiga_dialpad_new (mw->accel);
+  g_signal_connect (dialpad, "button-clicked",
+                    G_CALLBACK (dialpad_button_clicked_cb), main_window);
 
-  size_group_alpha = gtk_size_group_new (GTK_SIZE_GROUP_BOTH);
+  alignment = gtk_alignment_new (0.5, 0.5, 0.2, 0.2);
+  gtk_container_add (GTK_CONTAINER (alignment), dialpad);
 
-  for (i = 0 ; i < 12 ; i++) {
-
-    box = gtk_hbox_new (FALSE, 0);
-
-    label = gtk_label_new (NULL);
-    text_label =
-      g_strdup_printf (" %s ",
-		       key_n [i]);
-    g_object_set (label, "xalign", 1.0, NULL);
-    gtk_label_set_markup (GTK_LABEL (label), text_label); 
-    gtk_box_pack_start (GTK_BOX(box), label, TRUE, TRUE, 0);
-    g_free (text_label);
-
-    label = gtk_label_new (NULL);
-    text_label =
-      g_strdup_printf ("<sub><span size=\"small\">%s</span></sub> ",
-		       key_a [i]);
-    g_object_set (label, "xalign", 0.0, NULL);
-    gtk_label_set_markup (GTK_LABEL (label), text_label); 
-    gtk_size_group_add_widget (size_group_alpha, label);
-    gtk_box_pack_start (GTK_BOX(box), label, FALSE, TRUE, 0);
-    g_free (text_label);
-
-    button = gtk_button_new ();
-    gtk_container_set_border_width (GTK_CONTAINER (button), 0);
-    gtk_container_add (GTK_CONTAINER (button), box);
-   
-    gtk_widget_add_accelerator (button, "clicked", 
-				mw->accel, key_kp [i], 
-				(GdkModifierType) 0, (GtkAccelFlags) 0);
-    
-    gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (button), 
-		      i%3, i%3+1, i/3, i/3+1,
-		      (GtkAttachOptions) (GTK_FILL),
-		      (GtkAttachOptions) (GTK_FILL),
-		      1, 2);
-    
-    g_signal_connect (G_OBJECT (button), "clicked",
-		      GTK_SIGNAL_FUNC (dialpad_button_clicked_cb), 
-		      main_window);
-  }
-  
   label = gtk_label_new (_("Dialpad"));
-
   gtk_notebook_append_page (GTK_NOTEBOOK (mw->main_notebook),
 			    alignment, label);
 }
@@ -2408,35 +2350,19 @@ panel_section_changed_cb (G_GNUC_UNUSED GtkNotebook *notebook,
 }
 
 
-static void 
-dialpad_button_clicked_cb (GtkButton *button,
-			   gpointer data)
+static void
+dialpad_button_clicked_cb (EkigaDialpad  * /* dialpad */,
+			   const gchar *button_text,
+			   GtkWidget   *main_window)
 {
   GmMainWindow *mw = NULL;
 
-  mw = gm_mw_get_mw (GTK_WIDGET (data));
+  mw = gm_mw_get_mw (main_window);
 
-
-  GtkWidget *label = NULL;
-  const char *button_text = NULL;
-
-  label = ( (GtkBoxChild*) GTK_BOX (gtk_bin_get_child (GTK_BIN (button)) )->children->data )->widget;
-  button_text = gtk_label_get_text (GTK_LABEL (label));
-
-  if (button_text
-      && strcmp (button_text, "")
-      && strlen (button_text) > 1
-      && button_text [0]) {
-
-    if (mw->current_call) {
-
-      mw->current_call->send_dtmf (button_text [1]);
-    }
-    else {
-
-      gm_main_window_append_call_url (GTK_WIDGET (data), (char *) &button_text [1]);
-    }
-  }
+  if (mw->current_call)
+    mw->current_call->send_dtmf (button_text[0]);
+  else
+    gm_main_window_append_call_url (main_window, button_text);
 }
 
 
