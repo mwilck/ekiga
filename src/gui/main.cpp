@@ -4317,6 +4317,9 @@ main (int argc,
   /* Ekiga initialisation */
   static GnomeMeeting instance;
   GnomeMeeting::Process ()->InitEngine ();
+  GnomeMeeting::Process ()->DetectInterfaces ();
+  if (!GnomeMeeting::Process ()->DetectCodecs ()) 
+    error = 2;
   if (debug_level != 0)
     PTrace::Initialise (PMAX (PMIN (4, debug_level), 0), NULL,
 			PTrace::Timestamp | PTrace::Thread
@@ -4324,9 +4327,6 @@ main (int argc,
   if (!GnomeMeeting::Process ()->DetectDevices ()) 
     error = 1;
   GnomeMeeting::Process ()->BuildGUI ();
-  GnomeMeeting::Process ()->DetectInterfaces ();
-  if (!GnomeMeeting::Process ()->DetectCodecs ()) 
-    error = 2;
   
   /* Configuration database initialization */
 #ifdef HAVE_GCONF
@@ -4358,6 +4358,10 @@ main (int argc,
       else
         g_timeout_add (15000, (GtkFunction) gnomemeeting_tray_hack_cb, NULL);
     }
+
+    GMManager *manager = dynamic_cast<GMManager *> (mw->core.get ("opal-component")); // FIXME
+    manager->Register ();
+
 
     /* Call the given host if needed */
     if (url) 

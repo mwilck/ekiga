@@ -195,18 +195,29 @@ static void from_gslist_to_codec_list (const GSList *codecs_config,
     if (couple [0] && couple [1]) {
       
       gchar **couple2 = NULL;
-      couple2 = g_strsplit (couple [0], "*", 3);
+      couple2 = g_strsplit (couple [0], "*", 4);
 
-      if (couple2 [0] && couple2 [1] && couple2 [2]) {
+      if (couple2 [0] && couple2 [1] && couple2 [2] && couple2 [3]) {
+
+        int i = 0;
+        gchar **protocols = NULL;
 
         Ekiga::CodecDescription desc;
         desc.name = std::string (couple2 [0]);
-        desc.bandwidth = atoi (couple2 [1]);
-        desc.rate = atoi (couple2 [2]);
+        desc.rate = atoi (couple2 [1]);
         desc.active = (atoi (couple [1]) == 1);
+        desc.audio = (atoi (couple2 [2]) == 1);
+
+        protocols = g_strsplit (couple2 [3], " ", 0);
+        while (protocols [i]) {
+          desc.protocols.push_back (protocols [i]);
+          i++;
+        };
+        
         config_codecs.push_back (desc);
 
         g_strfreev (couple2);
+        g_strfreev (protocols);
       }
 
       g_strfreev (couple);
@@ -226,13 +237,22 @@ static void from_media_formats_to_codec_list (OpalMediaFormatList & full_list, E
       Ekiga::CodecDescription desc;
       desc.name = (const char *) full_list [i].GetEncodingName ();
       desc.rate = full_list [i].GetClockRate ();
-      desc.bandwidth = full_list [i].GetBandwidth ();
       desc.active = false;
+      desc.audio = (full_list [i].GetDefaultSessionID () == OpalMediaFormat::DefaultAudioSessionID);
+      if (full_list [i].IsValidForProtocol ("SIP"))
+        desc.protocols.push_back ("SIP");
+      if (full_list [i].IsValidForProtocol ("H.323"))
+        desc.protocols.push_back ("H.323");
 
       Ekiga::CodecList::iterator it = 
         search_n (codecs.begin (), codecs.end (), 1, desc, same_codec_desc);
       if (it == codecs.end ()) 
         codecs.push_back (desc);
+      else {
+        it->protocols.sort ();
+        it->protocols.merge (desc.protocols);
+        it->protocols.unique ();
+      }
     }
   }
 }
@@ -438,7 +458,7 @@ GMManager::GMManager (Ekiga::ServiceCore & _core)
   video_grabber = NULL;
   SetCallingState (GMManager::Standby);
   
-#ifdef HAS_AVAHI
+#ifdef HAVE_AVAHI
   zcp = NULL;
 #endif
 
@@ -901,7 +921,7 @@ GMManager::Exit ()
 {
   ClearAllCalls (OpalConnection::EndedByLocalUser, TRUE);
 
-#ifdef HAS_AVAHI
+#ifdef HAVE_AVAHI
   RemoveZeroconfClient ();
 #endif
 
@@ -1205,7 +1225,7 @@ GMManager::GetVideoGrabber ()
 void
 GMManager::UpdatePublishers (void)
 {
-#ifdef HAS_AVAHI
+#ifdef HAVE_AVAHI
   PWaitAndSignal m(zcp_access_mutex);
   if (zcp)  
     zcp->Publish ();
@@ -1267,7 +1287,7 @@ GMManager::GetCurrentCallToken ()
 }
 
 
-#ifdef HAS_AVAHI
+#ifdef HAVE_AVAHI
 void 
 GMManager::CreateZeroconfClient ()
 {
@@ -1574,7 +1594,7 @@ GMManager::Init ()
   SetUserNameAndAlias ();
 
   /* Create a Zeroconf client */
-#ifdef HAS_AVAHI
+#ifdef HAVE_AVAHI
   CreateZeroconfClient ();
 #endif
 
@@ -1587,9 +1607,6 @@ GMManager::Init ()
 
   /* Reset the listeners */
   ResetListeners ();
-
-  /* Register the various accounts */
-  Register ();
 
   g_free (ip);
   
@@ -2005,13 +2022,26 @@ void GMManager::detect_codecs ()
   Ekiga::CodecList codecs = get_codecs ();
   GSList *codecs_list = NULL;
 
+  // TODO Helper
   for (Ekiga::CodecList::iterator it = codecs.begin ();
        it != codecs.end ();
        it++) {
 
     std::stringstream val;
+    std::stringstream proto;
 
-    val << (*it).name << "*" << (*it).bandwidth << "*" << (*it).rate << "=" << ((*it).active?"1":"0");
+    val << (*it).name << "*" << (*it).rate << "*" << (*it).audio << "*";
+    for (std::list<std::string>::iterator iter = it->protocols.begin ();
+         iter != it->protocols.end ();
+         iter++) {
+      
+      if (iter != it->protocols.begin ())
+        proto << " ";
+
+      proto << *iter;
+    }
+
+    val << proto.str () << "=" << ((*it).active?"1":"0");
     codecs_list = g_slist_append (codecs_list, g_strdup (val.str ().c_str ()));
   }
 
@@ -2112,8 +2142,6 @@ void GMManager::GetAllowedFormats (OpalMediaFormatList & full_list)
   OpalMediaFormatList list = OpalTranscoder::GetPossibleFormats (pcssEP->GetMediaFormats ());
   std::list<std::string> black_list;
    
-  black_list.push_back ("RFC4175_YCbCr-4:2:0");
-  black_list.push_back ("RFC4175_RGB");
   black_list.push_back ("GSM-AMR");
   black_list.push_back ("LPC-10");
   black_list.push_back ("SpeexIETFNarrow-11k");

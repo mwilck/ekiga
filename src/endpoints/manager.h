@@ -43,7 +43,7 @@
 
 #include "common.h"
 
-#ifdef HAS_AVAHI
+#ifdef HAVE_AVAHI
 #include "avahi.h"
 #endif
 
@@ -440,7 +440,7 @@ class GMManager:
   PString GetCurrentCallToken (void);
 
 
-#ifdef HAS_AVAHI
+#ifdef HAVE_AVAHI
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Create a zeroconf client that will publish information
    *                 about Ekiga.
@@ -674,7 +674,7 @@ class GMManager:
   PString tr_video_codec;
 
 
-#ifdef HAS_AVAHI
+#ifdef HAVE_AVAHI
   GMZeroconfPublisher *zcp;
   PMutex zcp_access_mutex;
 #endif
