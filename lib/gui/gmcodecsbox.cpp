@@ -46,8 +46,8 @@ enum {
 
   COLUMN_CODEC_ACTIVE,
   COLUMN_CODEC_NAME, 
-  COLUMN_CODEC_BANDWIDTH,
   COLUMN_CODEC_CLOCKRATE,
+  COLUMN_CODEC_PROTOCOLS,
   COLUMN_CODEC_CONFIG_NAME,
   COLUMN_CODEC_SELECTABLE,
   COLUMN_CODEC_NUMBER
@@ -84,11 +84,11 @@ gm_codecs_box_set_codecs (GmCodecsBox *cb)
   GtkTreeModel *model = NULL;
   GtkTreeIter iter;
 
-  gchar *bandwidth = NULL;
   gchar *name = NULL;
   gchar *clockrate = NULL;
   gchar *config_name = NULL;
   gchar *selected_codec = NULL;
+  gchar *protocols = NULL;
   gchar **couple = NULL;
   gchar **couple_info = NULL;
 
@@ -119,16 +119,17 @@ gm_codecs_box_set_codecs (GmCodecsBox *cb)
       couple_info = g_strsplit (couple [0], "*", 4);
 
       name = g_strup (couple_info [0]);
-      clockrate = g_strdup_printf ("%d kHz", atoi (couple_info [2]));
-      bandwidth = g_strdup_printf ("%.1f kbps", atoi (couple_info [1]) / 1000.0);
+      clockrate = g_strdup_printf ("%d kHz", atoi (couple_info [1]));
+      protocols = g_strdup (couple_info [3]);
+
       config_name = g_strdup (couple [0]);
 
       gtk_list_store_append (GTK_LIST_STORE (model), &iter);
       gtk_list_store_set (GTK_LIST_STORE (model), &iter,
                           COLUMN_CODEC_ACTIVE, !strcmp (couple [1], "1"),
                           COLUMN_CODEC_NAME, name,
-                          COLUMN_CODEC_BANDWIDTH, bandwidth,
                           COLUMN_CODEC_CLOCKRATE, clockrate,
+                          COLUMN_CODEC_PROTOCOLS, protocols,
                           COLUMN_CODEC_CONFIG_NAME, config_name,
                           COLUMN_CODEC_SELECTABLE, "true",
                           -1);
@@ -143,7 +144,7 @@ gm_codecs_box_set_codecs (GmCodecsBox *cb)
       g_free (name);
       g_free (config_name);
       g_free (clockrate);
-      g_free (bandwidth);
+      g_free (protocols);
     }
 
     codecs_data_iter = g_slist_next (codecs_data_iter);
@@ -442,7 +443,7 @@ gm_codecs_box_new ()
   column = gtk_tree_view_column_new_with_attributes (NULL,
                                                      renderer,
                                                      "text", 
-                                                     COLUMN_CODEC_BANDWIDTH,
+                                                     COLUMN_CODEC_CLOCKRATE,
                                                      NULL);
   gtk_tree_view_append_column (GTK_TREE_VIEW (cb->codecs_list), column);
 
@@ -450,7 +451,7 @@ gm_codecs_box_new ()
   column = gtk_tree_view_column_new_with_attributes (NULL,
                                                      renderer,
                                                      "text", 
-                                                     COLUMN_CODEC_CLOCKRATE,
+                                                     COLUMN_CODEC_PROTOCOLS,
                                                      NULL);
   gtk_tree_view_append_column (GTK_TREE_VIEW (cb->codecs_list), column);
 
