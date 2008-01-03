@@ -1,5 +1,10 @@
 2008-01-03  Steve Frécinaux  <code@istique.net>
 
+	* src/gui/main.cpp: remove gconf include since it is useless and may
+	make build fail because of missing $(GCONF_CFLAGS) and $(GCONF_LIBS).
+
+2008-01-03  Steve Frécinaux  <code@istique.net>
+
 	* src/gui/main.cpp: remove useless GtkTable and GtkHBox widgets in
 	the main window layout (in particular, the hbox was packed with a buggy
 	expand=false).

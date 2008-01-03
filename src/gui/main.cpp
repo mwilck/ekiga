@@ -82,10 +82,6 @@
 #include <gnome.h>
 #endif
 
-#ifdef HAVE_GCONF
-#include <gconf/gconf-client.h>
-#endif
-
 #if defined(P_FREEBSD) || defined (P_MACOSX)
 #include <libintl.h>
 #endif
