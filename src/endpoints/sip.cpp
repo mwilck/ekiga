@@ -696,7 +696,6 @@ void
 GMSIPEndpoint::Message (const PString & to,
                         const PString & body)
 {
-  std::cout << "message to " << to << std::endl << std::flush;
   SIPEndPoint::Message (to, body);
   endpoint.OnMessageSent (to, body);
 }
