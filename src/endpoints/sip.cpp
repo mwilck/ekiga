@@ -696,7 +696,8 @@ void
 GMSIPEndpoint::Message (const PString & to,
                         const PString & body)
 {
- SIPEndPoint::Message (to, body);
+  std::cout << "message to " << to << std::endl << std::flush;
+  SIPEndPoint::Message (to, body);
   endpoint.OnMessageSent (to, body);
 }
 
@@ -706,6 +707,9 @@ GMSIPEndpoint::GetRegisteredPartyName (const SIPURL & host)
 {
   GmAccount *account = NULL;
 
+  PString local_address;
+  PIPSocket::Address address;
+  WORD port;
   PString url;
   SIPURL registration_address;
 
@@ -714,32 +718,36 @@ GMSIPEndpoint::GetRegisteredPartyName (const SIPURL & host)
   if (info != NULL)
     registration_address = info->GetTargetAddress();
 
-  account = gnomemeeting_get_default_account ("SIP");
-  if (account && account->enabled) {
+  // If we are not exchanging messages with a local party, use the default account
+  // otherwise, use a direct call address in the from field
+  if (host.GetHostAddress ().GetIpAndPort (address, port) && !manager.IsLocalAddress (address)) {
 
-    if (info == NULL || registration_address.GetHostName () == account->host) {
+    account = gnomemeeting_get_default_account ("SIP");
+    if (account && account->enabled) {
 
-      if (PString(account->username).Find("@") == P_MAX_INDEX)
-        url = PString (account->username) + "@" + PString (account->host);
-      else
-        url = PString (account->username);
+      if (info == NULL || registration_address.GetHostName () == account->host) {
 
-      return url;
+        if (PString(account->username).Find("@") == P_MAX_INDEX)
+          url = PString (account->username) + "@" + PString (account->host);
+        else
+          url = PString (account->username);
+
+        return url;
+      }
     }
   }
-  if (info != NULL) {
 
-    PString local_address = info->GetTransport ().GetLocalAddress ();
-    PINDEX j = local_address.Find ('$');
-    if (j != P_MAX_INDEX)
-      local_address = local_address.Mid (j+1);
-    SIPURL myself = 
-      SIPURL ("\"" + GetDefaultDisplayName () + "\" <" + PString ("sip:") + GetDefaultLocalPartyName() + "@" + local_address + ";transport=udp>");
 
-    return myself;
-  }
-  else 
-    return SIPEndPoint::GetDefaultRegisteredPartyName (); 
+  // Not found (or local party)
+  local_address = GetListeners()[0].GetLocalAddress();
+
+  PINDEX j = local_address.Find ('$');
+  if (j != P_MAX_INDEX)
+    local_address = local_address.Mid (j+1);
+  SIPURL myself = 
+    SIPURL ("\"" + GetDefaultDisplayName () + "\" <" + PString ("sip:") + GetDefaultLocalPartyName() + "@" + local_address + ";transport=udp>");
+
+  return myself;
 }
 
 
