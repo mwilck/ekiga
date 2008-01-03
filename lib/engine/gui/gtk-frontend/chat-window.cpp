@@ -523,7 +523,6 @@ chat_window_new (Ekiga::ServiceCore & core)
 {
   ChatWindow *self = NULL;
 
-  GtkWidget *vbox = NULL;
   Ekiga::CallCore *call_core = NULL;
 
   sigc::connection conn;
@@ -540,7 +539,6 @@ chat_window_new (Ekiga::ServiceCore & core)
   g_object_set (G_OBJECT (self), "focus-on-map", true, NULL);
 
   /* Build the window */
-  vbox = gtk_vbox_new (FALSE, 0);
   self->priv->notebook = gtk_notebook_new ();
   gtk_notebook_set_scrollable (GTK_NOTEBOOK (self->priv->notebook), TRUE);
   gtk_container_add (GTK_CONTAINER (self), self->priv->notebook);
@@ -562,6 +560,8 @@ chat_window_new (Ekiga::ServiceCore & core)
 
   g_signal_connect (G_OBJECT (self->priv->notebook), "switch_page",
                     G_CALLBACK (conversation_changed_cb), self);
+
+  gtk_widget_show_all (GTK_WIDGET (self->priv->notebook));
 
   return GTK_WIDGET (self);
 }

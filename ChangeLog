@@ -1,5 +1,11 @@
 2008-01-03  Damien Sandras  <dsandras@gnome.org>
 
+	* lib/engine/gui/gtk-frontend/chat-window.cpp:
+	Correctly show the window on incoming messages. Removed redundant
+	widget.
+
+2008-01-03  Damien Sandras  <dsandras@gnome.org>
+
 	* src/endpoints/sip.cpp, src/endpoints/sip.h: 
 	Adapted to new API from OPAL. Fixed from field on outgoing PDUs when
 	no default account is registered.
