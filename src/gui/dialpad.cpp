@@ -36,6 +36,8 @@
 #include "dialpad.h"
 #include <gdk/gdkkeysyms.h>
 
+#include <iostream>
+
 struct const_key_info
 {
   const char *number;
@@ -169,10 +171,13 @@ ekiga_dialpad_init (EkigaDialpad *dialpad)
 
     label = gtk_label_new (NULL);
     gtk_misc_set_alignment (GTK_MISC (label), 0.0, 1.0);
-    text = g_strdup_printf ("<sub><span size=\"small\">%s</span></sub>",
-                            _(keys_info[i].letters));
-    gtk_label_set_markup (GTK_LABEL (label), text);
-    g_free (text);
+
+    if (strlen (keys_info [i].letters) > 0) {
+      text = g_strdup_printf ("<sub><span size=\"small\">%s</span></sub>",
+                              _(keys_info [i].letters));
+      gtk_label_set_markup (GTK_LABEL (label), text);
+      g_free (text);
+    }
     gtk_size_group_add_widget (letters_group, label);
     gtk_box_pack_start (GTK_BOX (box), label, FALSE, TRUE, 0);
 
