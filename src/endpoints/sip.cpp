@@ -736,6 +736,8 @@ GMSIPEndpoint::GetRegisteredPartyName (const SIPURL & host)
     }
   }
 
+  if (!manager.IsLocalAddress (address))
+    return SIPEndPoint::GetRegisteredPartyName (host);
 
   // Not found (or local party)
   local_address = GetListeners()[0].GetLocalAddress();
