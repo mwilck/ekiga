@@ -965,8 +965,15 @@ void GMManager::UpdateDevices ()
   if (GetCallingState () == GMManager::Standby) {
 
     /* Video preview */
-    if (preview) 
+    if (preview) {
+      GMVideoGrabber *vg = GetVideoGrabber ();
+      if (vg) {
+        vg->StopGrabbing (); 
+        vg->Unlock ();
+      }
+      PThread::Sleep (1000);
       CreateVideoGrabber (TRUE, TRUE, video_sizes[size].width, video_sizes[size].height, max_frame_rate);
+    }
     else 
       RemoveVideoGrabber ();
 

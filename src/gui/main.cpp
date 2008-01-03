@@ -2254,16 +2254,27 @@ video_window_expose_cb (GtkWidget *main_window,
   if (!GTK_WIDGET_REALIZED(videoWidget))
     return FALSE;
 
+  if (!GDK_IS_WINDOW(mw->main_video_image->window))
+    return FALSE;
+    
   videoInfo.x = mw->main_video_image->allocation.x;
   videoInfo.y = mw->main_video_image->allocation.y;
 #ifdef WIN32  
   videoInfo.hwnd = ((HWND)GDK_WINDOW_HWND (mw->main_video_image->window));
 #else 
-  if (!mw->videoWidgetGC)
-    mw->videoWidgetGC = GDK_GC_XGC(gdk_gc_new(mw->main_video_image->window));
+  if (!mw->videoWidgetGC) { 
+    GdkGC* gc = gdk_gc_new(mw->main_video_image->window);
+    if ( gc == NULL)
+      return FALSE;
 
+    mw->videoWidgetGC = GDK_GC_XGC(gc);
+    if (mw->videoWidgetGC == NULL)
+      return FALSE;
+  }
   videoInfo.gc = mw->videoWidgetGC;
-  videoInfo.window = GDK_WINDOW_XWINDOW (mw->main_video_image->window);
+  videoInfo.window = GDK_WINDOW_XWINDOW (mw->main_video_image->window); // None
+  if (videoInfo.window == None)
+    return FALSE;
   videoInfo.xdisplay = GDK_DISPLAY ();
 #endif
   videoInfo.widgetInfoSet = TRUE;
@@ -3801,7 +3812,7 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   gtk_window_set_title (GTK_WINDOW (window), _("Ekiga"));
 
   gtk_widget_realize (window);
-  gtk_window_set_resizable (GTK_WINDOW (window), FALSE);
+  gtk_window_set_resizable (GTK_WINDOW (window), TRUE);
 
   g_signal_connect_after (G_OBJECT (mw->main_notebook), "switch-page",
 			  G_CALLBACK (panel_section_changed_cb), 

@@ -1,5 +1,13 @@
 2008-01-03  Damien Sandras  <dsandras@gnome.org>
 
+	* src/endpoints/manager.cpp,
+	src/gui/callbacks.cpp,
+	src/gui/main.cpp:
+	Make sure we do not draw on a widget that is destroyed. Added awful
+	sleep hack until we fix the other problem.
+
+2008-01-03  Damien Sandras  <dsandras@gnome.org>
+
 	* src/endpoints/sip.cpp:
 	Better handling, more fixes.
 
