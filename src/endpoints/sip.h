@@ -197,7 +197,7 @@ class GMSIPEndpoint
    * BEHAVIOR     :  Returns the account to use for outgoing PDU's.
    * PRE          :  /
    */
-  SIPURL GetRegisteredPartyName (const PString & host);
+  SIPURL GetRegisteredPartyName (const SIPURL & host);
 
 
   /* DESCRIPTION  :  This callback is called when the connection is 

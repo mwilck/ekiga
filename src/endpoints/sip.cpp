@@ -696,20 +696,20 @@ void
 GMSIPEndpoint::Message (const PString & to,
                         const PString & body)
 {
-  SIPEndPoint::Message (to, body);
+ SIPEndPoint::Message (to, body);
   endpoint.OnMessageSent (to, body);
 }
 
 
 SIPURL
-GMSIPEndpoint::GetRegisteredPartyName (const PString & host)
+GMSIPEndpoint::GetRegisteredPartyName (const SIPURL & host)
 {
   GmAccount *account = NULL;
 
   PString url;
   SIPURL registration_address;
 
-  PSafePtr<SIPHandler> info = activeSIPHandlers.FindSIPHandlerByDomain(host, SIP_PDU::Method_REGISTER, PSafeReadOnly);
+  PSafePtr<SIPHandler> info = activeSIPHandlers.FindSIPHandlerByDomain(host.GetHostName (), SIP_PDU::Method_REGISTER, PSafeReadOnly);
 
   if (info != NULL)
     registration_address = info->GetTargetAddress();
@@ -727,8 +727,17 @@ GMSIPEndpoint::GetRegisteredPartyName (const PString & host)
       return url;
     }
   }
-  if (info != NULL) 
-    return registration_address;
+  if (info != NULL) {
+
+    PString local_address = info->GetTransport ().GetLocalAddress ();
+    PINDEX j = local_address.Find ('$');
+    if (j != P_MAX_INDEX)
+      local_address = local_address.Mid (j+1);
+    SIPURL myself = 
+      SIPURL ("\"" + GetDefaultDisplayName () + "\" <" + PString ("sip:") + GetDefaultLocalPartyName() + "@" + local_address + ";transport=udp>");
+
+    return myself;
+  }
   else 
     return SIPEndPoint::GetDefaultRegisteredPartyName (); 
 }
