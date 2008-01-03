@@ -48,6 +48,7 @@
 
 #include <gdk/gdkkeysyms.h>
 #include <vector>
+#include <iostream>
 
 
 struct _ChatWindowPagePrivate
@@ -63,6 +64,7 @@ struct _ChatWindowPagePrivate
   GtkWidget *tab;
 
   std::string uri;
+  std::string display_name;
 
   int last_user;
 
@@ -504,6 +506,7 @@ on_presentity_updated (G_GNUC_UNUSED Ekiga::Cluster &cluster,
                         presentity.get_name ().c_str ());
     gtk_label_set_text (GTK_LABEL (self->priv->tab_label_status),
                         presentity.get_status ().c_str ());
+    self->priv->display_name = presentity.get_name (); 
   }
 }
 
@@ -523,6 +526,7 @@ on_presentity_removed (G_GNUC_UNUSED Ekiga::Cluster &cluster,
                               GTK_ICON_SIZE_MENU);
     gtk_label_set_text (GTK_LABEL (self->priv->tab_label_name),
                         presentity.get_name ().c_str ());
+    self->priv->display_name = presentity.get_name (); 
   }
 }
 
@@ -795,6 +799,7 @@ chat_window_page_new (Ekiga::ServiceCore & core,
   gtk_box_pack_start (GTK_BOX (self->priv->tab), align, FALSE, FALSE, 0);
 
   self->priv->tab_label_name = gtk_label_new (display_name.c_str ());
+  self->priv->display_name = display_name;
   align = gtk_alignment_new (0.0, 0.0, 0.0, 0.0);
   gtk_container_add (GTK_CONTAINER (align), self->priv->tab_label_name);
   gtk_box_pack_start (GTK_BOX (vbox), align, FALSE, FALSE, 0);
@@ -890,6 +895,19 @@ chat_window_page_get_uri (ChatWindowPage *page)
   self = CHAT_WINDOW_PAGE (page);
 
   return self->priv->uri;
+}
+
+
+const std::string
+chat_window_page_get_display_name (ChatWindowPage *page)
+{
+  ChatWindowPage *self = NULL;
+
+  g_return_val_if_fail (page != NULL, "");
+
+  self = CHAT_WINDOW_PAGE (page);
+
+  return self->priv->display_name;
 }
 
 

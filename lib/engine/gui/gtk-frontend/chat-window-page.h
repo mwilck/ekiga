@@ -106,6 +106,14 @@ const std::string chat_window_page_get_uri (ChatWindowPage *page);
 
 
 /* DESCRIPTION  : /
+ * BEHAVIOR     : Return the std::string display name associated with the
+ *                ChatWindowPage.
+ * PRE          : The ChatWindowPage as argument. 
+ */
+const std::string chat_window_page_get_display_name (ChatWindowPage *page);
+
+
+/* DESCRIPTION  : /
  * BEHAVIOR     : Add the given message from the given uri into the
  *                ChatWindowPage.
  * PRE          : The ChatWindowPage as argument. 

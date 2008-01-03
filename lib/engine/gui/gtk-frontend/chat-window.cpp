@@ -53,6 +53,7 @@
 #include <gdk/gdkkeysyms.h>
 #include <sigc++/sigc++.h>
 #include <vector>
+#include <iostream>
 
 /*
  * The ChatWindow
@@ -187,7 +188,8 @@ static gint chat_window_get_page_index (ChatWindow *chat_window,
  * PRE          : The ChatWindow as first argument, non-empty URI string.
  */
 static GtkWidget *chat_window_get_page (ChatWindow *chat_window,
-                                        const std::string uri);
+                                        const std::string uri,
+                                        const std::string display_name = "");
 
 
 /* DESCRIPTION  : /
@@ -371,7 +373,7 @@ on_im_received_cb (Ekiga::CallManager & /*manager*/,
                    std::string message,
                    gpointer data)
 {
-  GtkWidget *page = chat_window_get_page (CHAT_WINDOW (data), from);
+  GtkWidget *page = chat_window_get_page (CHAT_WINDOW (data), from, display_name);
   GtkWidget *notebook_page = NULL;
 
   int n = 0;
@@ -465,11 +467,13 @@ chat_window_get_page_index (ChatWindow *chat_window,
 
 static GtkWidget *
 chat_window_get_page (ChatWindow *chat_window,
-                      const std::string uri)
+                      const std::string uri,
+                      const std::string display_name)
 {
   ChatWindow *self = CHAT_WINDOW (chat_window);
   GtkWidget *page = NULL;
 
+  std::string host1, host2;
   bool found = false;
   int i = 0;
   int n = 0;
@@ -478,9 +482,29 @@ chat_window_get_page (ChatWindow *chat_window,
 
   while (i < n && !found) {
 
+    std::size_t pos;
+
     page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (self->priv->notebook), i);
+    host1 = chat_window_page_get_uri (CHAT_WINDOW_PAGE (page));
+    host2 = uri;
+
+    pos = host1.find_first_of (':');
+    if (pos == 4)
+      host1 = host1.substr (pos+1);
+    pos = host2.find_first_of (':');
+    if (pos == 4)
+      host1 = host1.substr (pos+1);
+    pos = host1.find_last_of ('@');
+    if (pos != std::string::npos)
+      host1 = host1.substr (pos+1);
+    pos = host2.find_last_of ('@');
+    if (pos != std::string::npos)
+      host2 = host2.substr (pos+1);
 
     if (page != NULL && chat_window_page_get_uri (CHAT_WINDOW_PAGE (page)) == uri) 
+      return page;
+
+    if (page != NULL && host1 != host2 && chat_window_page_get_display_name (CHAT_WINDOW_PAGE (page)) == display_name)
       return page;
 
     i++;
@@ -606,7 +630,7 @@ chat_window_add_page (ChatWindow *chat_window,
                       G_CALLBACK (close_event_cb), chat_window);
   }
   else
-    page = chat_window_get_page (chat_window, uri);
+    page = chat_window_get_page (chat_window, uri, display_name);
 
   gtk_notebook_set_current_page (GTK_NOTEBOOK (self->priv->notebook), i);
 
