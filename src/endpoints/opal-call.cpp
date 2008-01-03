@@ -436,6 +436,9 @@ void Call::OnRTPStatistics (const OpalConnection & /*connection*/,
   if (session.GetSessionID () == OpalMediaFormat::DefaultAudioSessionID) {
 
     PTimeInterval t = PTime () - last_a_tick;
+    if (t.GetMilliSeconds () < 500)
+      return;
+      
     unsigned elapsed_seconds = max ((unsigned long) t.GetMilliSeconds (), (unsigned long) 1);
     double octets_received = session.GetOctetsReceived ();
     double octets_sent = session.GetOctetsSent ();
@@ -457,6 +460,9 @@ void Call::OnRTPStatistics (const OpalConnection & /*connection*/,
   else {
 
     PTimeInterval t = PTime () - last_v_tick;
+    if (t.GetMilliSeconds () < 500)
+      return;
+
     unsigned elapsed_seconds = max ((unsigned long) t.GetMilliSeconds (), (unsigned long) 1);
     double octets_received = session.GetOctetsReceived ();
     double octets_sent = session.GetOctetsSent ();
