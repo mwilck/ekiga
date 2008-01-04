@@ -581,12 +581,14 @@ static gboolean on_stats_refresh_cb (gpointer self)
   GmMainWindow *mw = gm_mw_get_mw (GTK_WIDGET (self));
   
   if (mw->current_call) {
-
-    msg = g_strdup_printf (_("A:%.1f/%.1f   V:%.1f/%.1f"), 
+  
+    msg = g_strdup_printf (_("A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d"), 
                            mw->current_call->get_transmitted_audio_bandwidth (),
                            mw->current_call->get_received_audio_bandwidth (),
                            mw->current_call->get_transmitted_video_bandwidth (),
-                           mw->current_call->get_received_video_bandwidth ());
+                           mw->current_call->get_received_video_bandwidth (),
+                           mw->current_call->get_transmitted_video_framerate (),
+                           mw->current_call->get_received_video_framerate ());
     gdk_threads_enter ();
     gm_main_window_push_info_message (GTK_WIDGET (self), msg);
     gm_main_window_set_call_duration (GTK_WIDGET (self), mw->current_call->get_call_duration ().c_str ());

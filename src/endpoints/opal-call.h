@@ -169,7 +169,7 @@ namespace Opal {
       double tr_a_bytes;
       double re_v_bytes;
       double tr_v_bytes;
-      
+
       PTime last_a_tick;
       PTime last_v_tick;
       PTime start_time;
@@ -182,7 +182,10 @@ namespace Opal {
       unsigned too_late_v;
       unsigned out_of_order_v;
       unsigned total_v;
-    };
+
+      unsigned re_v_frames;
+      unsigned tr_v_frames;
+   };
 };
 
 #endif

@@ -58,7 +58,7 @@ Call::Call (OpalManager & _manager, Ekiga::ServiceCore & _core)
 : OpalCall (_manager), Ekiga::Call (), core (_core), runtime (*dynamic_cast<Ekiga::Runtime*>(core.get ("runtime")))
 {
   re_a_bytes = tr_a_bytes = re_v_bytes = tr_v_bytes = 0.0;
-  last_v_tick = last_a_tick= PTime ();
+  last_v_tick = last_a_tick = PTime ();
   total_a =
     total_v =
     lost_a =
@@ -67,6 +67,10 @@ Call::Call (OpalManager & _manager, Ekiga::ServiceCore & _core)
     lost_v =
     too_late_v =
     out_of_order_v = 0;
+  re_v_frames = tr_v_frames = 0;
+  re_v_fps = tr_v_fps = 0;
+  tr_width = tr_height = 0;
+  re_width = re_height = 0;
 }
 
 
@@ -428,13 +432,12 @@ void Call::OnClosedMediaStream (OpalMediaStream & stream)
 }
 
 
-void Call::OnRTPStatistics (const OpalConnection & /*connection*/, 
+void Call::OnRTPStatistics (const OpalConnection & connection, 
                             const RTP_Session & session)
 {
   PWaitAndSignal m(stats_mutex); // The stats are computed from two different threads
 
   if (session.GetSessionID () == OpalMediaFormat::DefaultAudioSessionID) {
-
     PTimeInterval t = PTime () - last_a_tick;
     if (t.GetMilliSeconds () < 500)
       return;
@@ -463,6 +466,9 @@ void Call::OnRTPStatistics (const OpalConnection & /*connection*/,
     if (t.GetMilliSeconds () < 500)
       return;
 
+    PVideoOutputDevice* device = NULL;
+    PSafePtr <OpalMediaStream> stream = NULL;
+
     unsigned elapsed_seconds = max ((unsigned long) t.GetMilliSeconds (), (unsigned long) 1);
     double octets_received = session.GetOctetsReceived ();
     double octets_sent = session.GetOctetsSent ();
@@ -478,6 +484,42 @@ void Call::OnRTPStatistics (const OpalConnection & /*connection*/,
     lost_v = session.GetPacketsLost ();
     too_late_v = session.GetPacketsTooLate ();
     out_of_order_v = session.GetPacketsOutOfOrder ();
+
+    stream = connection.GetMediaStream (OpalMediaFormat::DefaultVideoSessionID, FALSE);
+    if (stream != NULL) {
+
+      // Get and calculate statistics for the Output Device
+      device = ((const OpalVideoMediaStream &) *stream).GetVideoOutputDevice ();
+      if (device) {
+
+        re_v_fps = (int)((device->GetNumberOfFrames() - re_v_frames) / elapsed_seconds);
+        re_v_frames = device->GetNumberOfFrames();
+        if (re_v_frames == 0) {
+
+          re_width = 0; 
+          re_height = 0;
+        }
+        else
+          device->GetFrameSize(re_width, re_height);
+      } 
+    }
+
+    stream = connection.GetMediaStream (OpalMediaFormat::DefaultVideoSessionID, TRUE);
+    if (stream != NULL) {
+
+      // Get and calculate statistics for the Preview Device
+      device = ((const OpalVideoMediaStream &) *stream).GetVideoOutputDevice ();
+      if (device) {
+        tr_v_fps = (int)((device->GetNumberOfFrames() - tr_v_frames) / elapsed_seconds);
+        tr_v_frames = device->GetNumberOfFrames();
+        if (tr_v_frames == 0) {
+          tr_width = 0; 
+          tr_height = 0;
+        }
+        else
+          device->GetFrameSize(tr_width, tr_height);
+      }
+    }
   }
 
   lost_packets = (lost_a + lost_v) / max (total_a + total_v, (DWORD) 1);
