@@ -1785,6 +1785,7 @@ gm_mw_init_call (GtkWidget *main_window)
   GtkToolItem *item = NULL;
 
   GtkWidget *image = NULL;
+  GtkWidget *alignment = NULL;
 
   GdkColor white;
   gdk_color_parse ("white", &white);
@@ -1827,6 +1828,7 @@ gm_mw_init_call (GtkWidget *main_window)
   gtk_widget_modify_bg (mw->info_text, GTK_STATE_PRELIGHT, &white);
   gtk_widget_modify_bg (mw->info_text, GTK_STATE_NORMAL, &white);
   gtk_widget_modify_bg (mw->info_text, GTK_STATE_INSENSITIVE, &white);
+
   gtk_text_view_set_editable (GTK_TEXT_VIEW (mw->info_text), FALSE);
   gtk_widget_set_sensitive (GTK_WIDGET (mw->info_text), FALSE);
   gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (mw->info_text),
@@ -1834,6 +1836,7 @@ gm_mw_init_call (GtkWidget *main_window)
 
   buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (mw->info_text));
   gtk_text_view_set_cursor_visible  (GTK_TEXT_VIEW (mw->info_text), FALSE);
+
   gtk_text_buffer_create_tag (buffer, "status",
 			      "foreground", "black", 
                               "paragraph-background", "white",
@@ -1857,8 +1860,11 @@ gm_mw_init_call (GtkWidget *main_window)
   gm_main_window_set_status (main_window, _("Standby"));
   gm_main_window_set_call_duration (main_window, NULL);
   gm_main_window_set_call_info (main_window, NULL, NULL, NULL, NULL);
-  
-  gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (mw->info_text), 
+
+  alignment = gtk_alignment_new (0.0, 0.0, 1.0, 0.0);
+  gtk_container_add (GTK_CONTAINER (alignment), mw->info_text);
+
+  gtk_table_attach (GTK_TABLE (table), alignment,
 		    0, 4, 1, 2,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
@@ -1956,10 +1962,10 @@ gm_mw_init_call (GtkWidget *main_window)
   g_signal_connect (G_OBJECT (mw->hold_button), "clicked",
 		    G_CALLBACK (hold_current_call_cb), main_window); 
 
-  gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (toolbar), 
+  gtk_table_attach (GTK_TABLE (table), toolbar,
 		    1, 3, 2, 3,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+		    (GtkAttachOptions) (GTK_FILL),
 		    5, 5);
   
   label = gtk_label_new (_("Call"));
