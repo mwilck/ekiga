@@ -1,25 +1,22 @@
-# translation of eu.po to Basque
-# translation of gnomemeeting.po to basque
+# translation of ekiga.HEAD.po to Basque
 # This file is distributed under the same license as the PACKAGE package.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER.
-# Hizkuntza Politikarako Sailburuordetza <hizpol@ej-gv.es>, 2004.
-# Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>, 2004, 2005, 2006.
 #
+# Hizkuntza Politikarako Sailburuordetza <hizpol@ej-gv.es>, 2004.
+# Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>, 2004, 2005, 2006, 2008.
 msgid ""
 msgstr ""
-"Project-Id-Version: eu\n"
+"Project-Id-Version: eu3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-07-08 13:03+0000\n"
-"PO-Revision-Date: 2006-07-08 13:10+0000\n"
+"POT-Creation-Date: 2008-01-05 17:38+0100\n"
+"PO-Revision-Date: 2008-01-05 17:41+0100\n"
 "Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>\n"
 "Language-Team: Basque <itzulpena@euskalgnu.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.10.2\n"
-"Plural-Forms: Plural-Forms: Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"\n"
-"\n"
+"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "\n"
 
 #: ../ekiga.desktop.in.in.h:1
@@ -43,30 +40,49 @@ msgid "Address of public IP detector"
 msgstr "IP helbide publiko detektatzailea"
 
 #: ../ekiga.schemas.in.in.h:3
-msgid "Alternative audio output device"
-msgstr "Bestelako irteerako audio-gailua"
+msgid ""
+"Allow Ekiga to fall back to software scaling the picture-in-picture if "
+"hardware support is not available. If this is set to false, Ekiga will not "
+"try to open the PIP if hardware support is not available."
+msgstr ""
+"Baimendu Ekiga-ri software bidez irudia irudian eskalatzea, hardwarearen "
+"euskarria ez badago erabilgarri. Hau faltsua bezala ezartzen bada, Ekiga ez "
+"da 'irudia irudian' irekitzen saiatuko hardwarearen euskarria eskuragarri ez "
+"dagoenean."
 
 #: ../ekiga.schemas.in.in.h:4
+msgid "Allow picture-in-picture software scaling"
+msgstr "Baimendu irudia irudian software bidez eskalatzea"
+
+#: ../ekiga.schemas.in.in.h:5
+msgid "Alternative audio output device"
+msgstr "Audioaren bestelako irteerako gailua"
+
+#: ../ekiga.schemas.in.in.h:6
 msgid "Always forward calls to the given host"
 msgstr "Deiak beti birbidali adierazitako ostalariari"
 
-#: ../ekiga.schemas.in.in.h:5
-msgid "Audio input device"
-msgstr "Sarrerako audio-gailua"
-
-#: ../ekiga.schemas.in.in.h:6
-msgid "Audio output device"
-msgstr "Irteerako audio-gailua"
-
 #: ../ekiga.schemas.in.in.h:7
+msgid "Audio input device"
+msgstr "Audioaren sarrerako gailua"
+
+#: ../ekiga.schemas.in.in.h:8
+msgid "Audio output device"
+msgstr "Audioaren irteerako gailua"
+
+#: ../ekiga.schemas.in.in.h:9
 msgid "Audio plugin"
 msgstr "Audioaren plugin-a"
 
-#: ../ekiga.schemas.in.in.h:8
+#: ../ekiga.schemas.in.in.h:10
+msgid "Auto Away Timeout"
+msgstr "Automatikoki aldentzeko denbora-muga"
+
+#: ../ekiga.schemas.in.in.h:11
 msgid "Automatic echo cancellation"
 msgstr "Oihartzunaren ezeztapen automatikoa"
 
-#: ../ekiga.schemas.in.in.h:9 ../src/gui/preferences.cpp:753
+#: ../ekiga.schemas.in.in.h:12 ../src/gui/preferences.cpp:451
 msgid ""
 "Automatically reject or forward incoming calls if no answer is given after "
 "the specified amount of time (in seconds)"
@@ -74,91 +90,75 @@ msgstr ""
 "Automatikoki ezetsi edo birbidali sarrerako deiak erantzunik ematen ez bada "
 "zehaztutako denbora igaro eta gero (segundoak)"
 
-#: ../ekiga.schemas.in.in.h:10
-msgid ""
-"Automatically switch to fullscreen for images displayed in the main GUI at "
-"the beginning of the call"
-msgstr ""
-"Automatikoki aldatu  GUI nagusian bistaratutako irudietarako pantaila osoan "
-"agertzeko deien hasieran"
-
-#: ../ekiga.schemas.in.in.h:11
+#: ../ekiga.schemas.in.in.h:13
 msgid "Calls history"
 msgstr "Deien historia"
 
-#: ../ekiga.schemas.in.in.h:12
+#: ../ekiga.schemas.in.in.h:14
 msgid "Change the main window panel section"
 msgstr "Aldatu leiho nagusiko kontrol-panelaren atala"
 
-#: ../ekiga.schemas.in.in.h:13
-msgid "Clear inactive calls"
-msgstr "Garbitu dei inaktiboak"
-
-#: ../ekiga.schemas.in.in.h:14
+#: ../ekiga.schemas.in.in.h:15
 msgid ""
 "Connection will be established in Fast Start mode. Fast Start is a new way "
 "to start calls faster that was introduced in H.323v2. It is not supported by "
 "Netmeeting and using both Fast Start and H.245 Tunneling can crash some "
 "versions of Netmeeting"
 msgstr ""
-"Konexioa 'Hasiera Azkarra' moduan ezarriko da. Hasiera Azkarra H.323v2an "
+"Konexioa 'Hasiera azkarra' moduan ezarriko da. Hasiera azkarra H.323v2an "
 "sartu den deiak azkarrago hasteko modu berria da. Netmeeting-ek ez du "
-"onartzen eta Hasiera Azkarra eta H.245 Tunnelling biak erabiliz gero "
+"onartzen eta 'Hasiera azkarra' eta H.245 Tunnelling biak erabiliz gero "
 "Netmeeting-en bertsio batzuk honda daitezke."
 
-#: ../ekiga.schemas.in.in.h:15
+#: ../ekiga.schemas.in.in.h:16
+msgid "Contact status"
+msgstr "Kontaktuaren egoera"
+
+#: ../ekiga.schemas.in.in.h:17
 msgid "Country code"
 msgstr "Estatuaren kodea"
 
-#: ../ekiga.schemas.in.in.h:16
+#: ../ekiga.schemas.in.in.h:18
 msgid "DTMF sending"
 msgstr "DTMF bidaltzen"
 
-#: ../ekiga.schemas.in.in.h:17
+#: ../ekiga.schemas.in.in.h:19
+msgid "Disable video hardware acceleration"
+msgstr "Desgaitu bideoaren hardware bidezko azelerazioa"
+
+#: ../ekiga.schemas.in.in.h:20
 msgid "Display a popup window when receiving a call"
 msgstr "Bistaratu laster-leihoa deia jasotzean"
 
-#: ../ekiga.schemas.in.in.h:18
+#: ../ekiga.schemas.in.in.h:21
 msgid "Enable 'Fast Start'"
-msgstr "Gaitu Hasiera Azkarra"
+msgstr "Gaitu 'Hasiera azkarra'"
 
-#: ../ekiga.schemas.in.in.h:19
+#: ../ekiga.schemas.in.in.h:22
 msgid "Enable H.245 tunneling"
 msgstr "Gaitu H.245 Tunnelling-a"
 
-#: ../ekiga.schemas.in.in.h:20
+#: ../ekiga.schemas.in.in.h:23
 msgid "Enable IP checking"
 msgstr "Gaitu IP egiaztaketa"
 
-#: ../ekiga.schemas.in.in.h:21
-msgid "Enable bilinear filtering on displayed video"
-msgstr "Gaitu iragazte bilinearra bistaratutako bideoan"
-
-#: ../ekiga.schemas.in.in.h:22
+#: ../ekiga.schemas.in.in.h:24
 msgid "Enable early H.245"
 msgstr "Gaitu H.245 goiztiarra"
 
-#: ../ekiga.schemas.in.in.h:23
+#: ../ekiga.schemas.in.in.h:25
 msgid "Enable echo cancelation"
 msgstr "Gaitu oihartzuna ezeztatzea"
 
-#: ../ekiga.schemas.in.in.h:24
-msgid ""
-"Enable or disable bilinear interpolation when rendering video images (this "
-"has no effect in fullscreen mode)"
-msgstr ""
-"Gaitu edo desgaitu interpolazio bilinearra bideo-irudiak errendatzean (honek "
-"ez du eraginik pantaila osoko moduan)."
-
-#: ../ekiga.schemas.in.in.h:25
+#: ../ekiga.schemas.in.in.h:26
 msgid "Enable silence detection"
 msgstr "Gaitu isiltasuna detektatzea"
 
-#: ../ekiga.schemas.in.in.h:26
+#: ../ekiga.schemas.in.in.h:27
 msgid "Enable video support"
 msgstr "Gaitu bideo euskarria"
 
-#: ../ekiga.schemas.in.in.h:27
+#: ../ekiga.schemas.in.in.h:28
 msgid ""
 "Enter a valid URL to connect to a web application that outputs the public IP "
 "of your host"
@@ -166,7 +166,7 @@ msgstr ""
 "Idatzi URL baliagarria zure ostalariaren IP publikoa kaleratzen duen web "
 "aplikazio batekin konektatzeko"
 
-#: ../ekiga.schemas.in.in.h:28
+#: ../ekiga.schemas.in.in.h:29
 msgid ""
 "Enter the number of seconds after which Ekiga should try refreshing the NAT "
 "binding when STUN is being used"
@@ -174,53 +174,57 @@ msgstr ""
 "Sartu segundo-kopurua, horren ondoren Ekigak NAT lotura freskatzeko STUN "
 "erabiltzen denean"
 
-#: ../ekiga.schemas.in.in.h:29
+#: ../ekiga.schemas.in.in.h:30
 msgid "Enter the public IP of your NAT/PAT router if you want to use IP translation"
 msgstr ""
 "Sartu NAT/PAT bideratzailearen IP publikoa, IP itzulpena erabiltzea nahi "
 "baduzu"
 
-#: ../ekiga.schemas.in.in.h:30 ../src/gui/preferences.cpp:648
+#: ../ekiga.schemas.in.in.h:31 ../src/gui/preferences.cpp:386
 msgid "Enter your first name"
 msgstr "Sartu zure izena."
 
-#: ../ekiga.schemas.in.in.h:31
+#: ../ekiga.schemas.in.in.h:32
 msgid "Enter your last name"
 msgstr "Sartu zure deitura."
 
-#: ../ekiga.schemas.in.in.h:32
+#: ../ekiga.schemas.in.in.h:33
 msgid "First name"
 msgstr "Izena"
 
-#: ../ekiga.schemas.in.in.h:33
+#: ../ekiga.schemas.in.in.h:34
 msgid "Forward calls to host"
 msgstr "Birbidali deiak ostalariari"
 
-#: ../ekiga.schemas.in.in.h:34
-msgid "Forward calls to the given host if busy"
-msgstr "Birbidali deiak emandako ostalariari okupatuta badago"
-
 #: ../ekiga.schemas.in.in.h:35
+msgid "Forward calls to the given host if busy"
+msgstr "Birbidali deiak emandako ostalariari lanpetuta badago"
+
+#: ../ekiga.schemas.in.in.h:36
 msgid "Forward calls to the given host if no answer"
 msgstr "Birbidali deiak emandako ostalariari erantzunik ez badago"
 
-#: ../ekiga.schemas.in.in.h:36
+#: ../ekiga.schemas.in.in.h:37 ../src/gui/preferences.cpp:985
+msgid "Frame Rate"
+msgstr "Fotograma-tasa"
+
+#: ../ekiga.schemas.in.in.h:38
 msgid "Gateway/proxy host"
 msgstr "Atebidea/proxy ostalaria"
 
-#: ../ekiga.schemas.in.in.h:37 ../src/gui/preferences.cpp:698
+#: ../ekiga.schemas.in.in.h:39 ../src/gui/preferences.cpp:413
 msgid ""
 "If enabled, Ekiga will start hidden provided that the notification area is "
 "present in the GNOME panel"
 msgstr ""
 "Gaituta badago, Ekiga ezkutatuta abiaraziko da, adierazpeneko area GNOMEko "
-"panelean agertuko da"
+"panelean agertuz"
 
-#: ../ekiga.schemas.in.in.h:38
+#: ../ekiga.schemas.in.in.h:40
 msgid "If enabled, a popup window will be displayed when receiving an incoming call"
 msgstr "Gaituta badago, laster-leiho bat bistaratuko da deiak jasotzean."
 
-#: ../ekiga.schemas.in.in.h:39
+#: ../ekiga.schemas.in.in.h:41
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below"
@@ -228,7 +232,7 @@ msgstr ""
 "Gaituta badago, sartzen diren dei guztiak beheko eremuan adierazitako "
 "ostalariari birbidaliko zaizkio."
 
-#: ../ekiga.schemas.in.in.h:40
+#: ../ekiga.schemas.in.in.h:42
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below if you already are in a call or if you are in "
@@ -238,7 +242,7 @@ msgstr ""
 "ostalariari birbidaliko zaizkio, dei batekin bazaude edo 'Ez molestatu' "
 "moduan bazaude."
 
-#: ../ekiga.schemas.in.in.h:41
+#: ../ekiga.schemas.in.in.h:43
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below if you do not answer the call"
@@ -246,29 +250,17 @@ msgstr ""
 "Gaituta badago, sartzen diren dei guztiak beheko eremuan adierazitako "
 "ostalariari birbidaliko zaizkio, zuk deia erantzuten ez baduzu."
 
-#: ../ekiga.schemas.in.in.h:42
+#: ../ekiga.schemas.in.in.h:44
 msgid "If enabled, allows video during calls"
 msgstr "Gaituta badago, bideoak jaso ahal izango dira deia martxan dagoela."
 
-#: ../ekiga.schemas.in.in.h:43 ../src/gui/preferences.cpp:751
-msgid ""
-"If enabled, calls for which no audio and video has been received in the last "
-"30 seconds are automatically cleared"
-msgstr ""
-"Gaituta badago, azken 30 segundotan jaso diren ez audio ez bideo deiak "
-"automatikoki garbituko dira"
-
-#: ../ekiga.schemas.in.in.h:44
+#: ../ekiga.schemas.in.in.h:45
 msgid "If enabled, use echo cancelation"
 msgstr "Gaituta badago, erabili oihartzunaren ezeztapena"
 
-#: ../ekiga.schemas.in.in.h:45
-msgid "If enabled, use silence detection with the codecs supporting it"
-msgstr "Gaituta badago, erabili isiltasunadetektatzea onartzen duten kodekekin"
-
 #: ../ekiga.schemas.in.in.h:46
-msgid "Incoming call mode"
-msgstr "Sarrerako deia"
+msgid "If enabled, use silence detection with the codecs supporting it"
+msgstr "Gaituta badago, erabili isiltasuna detektatzea onartzen duten kodekekin"
 
 #: ../ekiga.schemas.in.in.h:47
 msgid "Kind of network selected in the druid"
@@ -287,20 +279,20 @@ msgid "Local video window size"
 msgstr "Bideo lokalaren leihoaren zabalera"
 
 #: ../ekiga.schemas.in.in.h:51
+msgid "Maximum RX video bitrate"
+msgstr "Bideoa jasotzeko gehienezko bit-tasa"
+
+#: ../ekiga.schemas.in.in.h:52
+msgid "Maximum TX video bitrate"
+msgstr "Bideoa transmititzeko gehienezko bit-tasa"
+
+#: ../ekiga.schemas.in.in.h:53
 msgid "Maximum jitter buffer"
 msgstr "Bufferraren gehienezko atzerapena"
 
-#: ../ekiga.schemas.in.in.h:52
-msgid "Maximum video bandwidth"
-msgstr "Bideo-bandaren gehienezko zabalera"
-
-#: ../ekiga.schemas.in.in.h:53
+#: ../ekiga.schemas.in.in.h:54
 msgid "Minimum jitter buffer"
 msgstr "Bufferraren gutxieneko atzerapena"
-
-#: ../ekiga.schemas.in.in.h:54
-msgid "Minimum transmitted video quality"
-msgstr "Transmititutako gutxieneko bideo-kalitatea"
 
 #: ../ekiga.schemas.in.in.h:55
 msgid "NAT Binding Timeout"
@@ -312,19 +304,19 @@ msgstr "Erantzunik ez denbora-muga"
 
 #: ../ekiga.schemas.in.in.h:57
 msgid "Number of frames for G.711"
-msgstr "G.711rako marko-kopurua"
+msgstr "G.711ren marko-kopurua"
 
 #: ../ekiga.schemas.in.in.h:58
 msgid "Number of frames for GSM"
-msgstr "GSMrako marko-kopurua"
+msgstr "GSMren marko-kopurua"
 
 #: ../ekiga.schemas.in.in.h:59
 msgid "Number of frames transmitted in each packet for the G.711 codec"
-msgstr "Pakete bakoitzean G.711 kodekerako transmititutako marko-kopurua."
+msgstr "Pakete bakoitzean G.711 kodekean transmititutako marko-kopurua."
 
 #: ../ekiga.schemas.in.in.h:60
 msgid "Number of frames transmitted in each packet for the GSM codec"
-msgstr "Pakete bakoitzean GSM kodekerako transmititutako marko-kopurua."
+msgstr "Pakete bakoitzean GSM kodekean transmititutako marko-kopurua."
 
 #: ../ekiga.schemas.in.in.h:61
 msgid "Outbound Proxy"
@@ -334,21 +326,21 @@ msgstr "Irteerako proxy-a"
 msgid "Output device type"
 msgstr "Irteerako gailu mota"
 
-#: ../ekiga.schemas.in.in.h:63 ../src/gui/preferences.cpp:706
+#: ../ekiga.schemas.in.in.h:63 ../src/gui/preferences.cpp:421
 msgid "Place windows displaying video above other windows during calls"
 msgstr ""
 "Kokatu bideoak erakusten dituzten leihoak beste leihoen gainetik deia "
 "martxan dagoela."
 
-#: ../ekiga.schemas.in.in.h:64 ../src/gui/preferences.cpp:1893
+#: ../ekiga.schemas.in.in.h:64 ../src/gui/preferences.cpp:1348
 msgid "Play busy tone"
 msgstr "Erreproduzitu lanpetuta egoerako tonua"
 
-#: ../ekiga.schemas.in.in.h:65 ../src/gui/preferences.cpp:1884
+#: ../ekiga.schemas.in.in.h:65 ../src/gui/preferences.cpp:1339
 msgid "Play ring tone"
 msgstr "Erreproduzigailuaren txirrina tonua"
 
-#: ../ekiga.schemas.in.in.h:66 ../src/gui/preferences.cpp:1875
+#: ../ekiga.schemas.in.in.h:66 ../src/gui/preferences.cpp:1330
 msgid "Play sound on incoming calls"
 msgstr "Erreproduzitu soinua deiak jasotzean"
 
@@ -362,15 +354,15 @@ msgstr "Erreproduzitu soinua ahotsezko mezu berriarekin"
 
 #: ../ekiga.schemas.in.in.h:69
 msgid "Position of the local video window"
-msgstr "Bideo lokalaren leihoaren kokalekua"
+msgstr "Bideo lokalaren leihoaren posizioa"
 
 #: ../ekiga.schemas.in.in.h:70
 msgid "Position on the screen of the PC-To-Phone window"
-msgstr "'PCtik telefonora' leihoaren kokalekua pantailan"
+msgstr "'PCtik telefonora' leihoaren posizioa pantailan"
 
 #: ../ekiga.schemas.in.in.h:71
 msgid "Position on the screen of the address book window"
-msgstr "Helbide-liburuaren leihoaren kokalekua pantailan"
+msgstr "Helbide-liburuaren leihoaren posizioa pantailan"
 
 #: ../ekiga.schemas.in.in.h:72
 msgid "Position on the screen of the audio settings window"
@@ -378,23 +370,23 @@ msgstr "Audio-ezarpenen leihoaren posizioa pantailan"
 
 #: ../ekiga.schemas.in.in.h:73
 msgid "Position on the screen of the chat window"
-msgstr "Berriketarako leihoaren kokalekua pantailan"
+msgstr "Berriketarako leihoaren posizioa pantailan"
 
 #: ../ekiga.schemas.in.in.h:74
 msgid "Position on the screen of the druid window"
-msgstr "Morroia leihoaren kokalekua pantailan"
+msgstr "Morroia leihoaren posizioa pantailan"
 
 #: ../ekiga.schemas.in.in.h:75
 msgid "Position on the screen of the log window"
-msgstr "Eginkaria leihoaren kokalekua pantailan"
+msgstr "Eginkaria leihoaren posizioa pantailan"
 
 #: ../ekiga.schemas.in.in.h:76
 msgid "Position on the screen of the main window"
-msgstr "Leiho nagusiaren kokalekua pantailan"
+msgstr "Leiho nagusiaren posizioa pantailan"
 
 #: ../ekiga.schemas.in.in.h:77
 msgid "Position on the screen of the preferences window"
-msgstr "Hobespenak leihoaren kokalekua pantailan"
+msgstr "Hobespenak leihoaren posizioa pantailan"
 
 #: ../ekiga.schemas.in.in.h:78
 msgid "Position on the screen of the video settings window"
@@ -410,7 +402,7 @@ msgstr "Erregistratzeko denbora iraungitu da"
 
 #: ../ekiga.schemas.in.in.h:81
 msgid "Remote video window position"
-msgstr "Urruneko bideoaren leihoaren kokalekua"
+msgstr "Urruneko bideoaren leihoaren posizioa"
 
 #: ../ekiga.schemas.in.in.h:82
 msgid "Remote video window size"
@@ -421,26 +413,38 @@ msgid "Revision of the schema file"
 msgstr "Eskema-fitxategiaren berrikuspena"
 
 #: ../ekiga.schemas.in.in.h:84
+msgid "Roster view saving group status"
+msgstr "Zerrendaren ikuspegia taldearen egoera gordetzean"
+
+#: ../ekiga.schemas.in.in.h:85
 msgid "Select an alternative audio output device to use for sound events."
-msgstr "Hautatu beste audio-irteerako gailua dei-soinuaren gertaeran erabiltzako."
+msgstr "Hautatu audioaren beste irteerako gailua dei-soinuaren gertaeran erabiltzeko."
 
-#: ../ekiga.schemas.in.in.h:85 ../src/gui/preferences.cpp:1103
+#: ../ekiga.schemas.in.in.h:86 ../src/gui/preferences.cpp:808
 msgid "Select the audio input device to use"
-msgstr "Hautatu erabili beharreko audio-sarrerako gailua"
+msgstr "Hautatu erabili beharreko audioaren sarrerako gailua"
 
-#: ../ekiga.schemas.in.in.h:86 ../src/gui/preferences.cpp:1096
+#: ../ekiga.schemas.in.in.h:87 ../src/gui/preferences.cpp:801
 msgid "Select the audio output device to use"
-msgstr "Hautatu erabili beharreko audio-irteerako gailua"
+msgstr "Hautatu erabili beharreko audioaren irteerako gailua"
 
-#: ../ekiga.schemas.in.in.h:87 ../src/gui/preferences.cpp:966
+#: ../ekiga.schemas.in.in.h:88
+msgid ""
+"Select the contact status: 0 (Online), 1 (Offline), 2 (Unknown), 3 (Away), 4 "
+"(DND), 5 (Free For Chat), 6 (Invisible)"
+msgstr ""
+"Hautatu kontaktuaren egoera: 0 (konektatuta), 1 (deskonektatuta), 2 "
+"(ezezaguna), 3 (aldenduta), 4 (DND), 5 (berriketarako libre), 6 (ikusezina)"
+
+#: ../ekiga.schemas.in.in.h:89 ../src/gui/preferences.cpp:669
 msgid "Select the desired method for NAT traversal (STUN is strongly suggested)"
 msgstr "Hautatu zeharretako NATaren metodo gogokoena (STUN biziki gomendatzen da)"
 
-#: ../ekiga.schemas.in.in.h:88 ../src/gui/preferences.cpp:1179
+#: ../ekiga.schemas.in.in.h:90 ../src/gui/preferences.cpp:885
 msgid "Select the format for video cameras (does not apply to most USB cameras)"
 msgstr "Hautatu bideo-kameretako formatua (ez zaie USB kamera gehienei aplikatzen)."
 
-#: ../ekiga.schemas.in.in.h:89
+#: ../ekiga.schemas.in.in.h:91
 msgid ""
 "Select the transmitted video size: Small (QCIF 176x144) or Large (CIF "
 "352x288)"
@@ -448,7 +452,7 @@ msgstr ""
 "Hautatu transmititutako bideoaren tamaina: txikia (QCIF 176x144) edo handia "
 "(CIF 352x288)."
 
-#: ../ekiga.schemas.in.in.h:90 ../src/gui/preferences.cpp:1169
+#: ../ekiga.schemas.in.in.h:92 ../src/gui/preferences.cpp:877
 msgid ""
 "Select the video input device to use. If an error occurs when using this "
 "device a test picture will be transmitted."
@@ -456,56 +460,61 @@ msgstr ""
 "Hautatu erabili beharreko bideo-sarrerako gailua. Gailu hau erabiltzean "
 "errorerik gertatzen bada, probako irudi bat transmitituko da."
 
-#: ../ekiga.schemas.in.in.h:91
+#: ../ekiga.schemas.in.in.h:93
 msgid "Size of the PC-To-Phone window"
 msgstr "'PC telefonora' leihoaren tamaina"
 
-#: ../ekiga.schemas.in.in.h:92
+#: ../ekiga.schemas.in.in.h:94
 msgid "Size of the address book window"
 msgstr "Helbide-liburua leihoaren tamaina"
 
-#: ../ekiga.schemas.in.in.h:93
+#: ../ekiga.schemas.in.in.h:95
 msgid "Size of the audio settings window"
 msgstr "Audio-ezarpenen leihoaren tamaina"
 
-#: ../ekiga.schemas.in.in.h:94
+#: ../ekiga.schemas.in.in.h:96
 msgid "Size of the chat window"
 msgstr "Berriketarako leihoaren tamaina"
 
-#: ../ekiga.schemas.in.in.h:95
+#: ../ekiga.schemas.in.in.h:97
 msgid "Size of the druid window"
 msgstr "Morroia leihoaren tamaina"
 
-#: ../ekiga.schemas.in.in.h:96
-msgid "Size of the log window"
-msgstr "Egunkaria leihoaren tamaina"
-
-#: ../ekiga.schemas.in.in.h:97
+#: ../ekiga.schemas.in.in.h:98
 msgid "Size of the preferences window"
 msgstr "Hobespenak leihoaren tamaina"
 
-#: ../ekiga.schemas.in.in.h:98
+#: ../ekiga.schemas.in.in.h:99
 msgid "Size of the video settings window"
 msgstr "Bideo-ezarpenen leihoaren tamaina"
 
-#: ../ekiga.schemas.in.in.h:99
+#: ../ekiga.schemas.in.in.h:100
+msgid "Specify the software scaling algorithm"
+msgstr "Zehaztu software bidez eskalatzeko algoritmoa"
+
+#: ../ekiga.schemas.in.in.h:101
+msgid ""
+"Specify the software scaling algorithm: 0: nearest neighbor, 1: nearest "
+"neighbor with box filter, 2: bilinear filtering, 3: hyperbolic filtering. "
+"Does not apply on windows systems."
+msgstr ""
+"Zehaztu software bidez eskalatzeko algoritmoa: 0 (gertueneko balioa), 1 "
+"(gertueneko balioa kutxarekin iragazkia), 2 (iragazki bilineala), 3 "
+"(iragazki hiperbolikoa). Windows sistema eragiletan ez da aplikatzen."
+
+#: ../ekiga.schemas.in.in.h:102
 msgid "Start hidden"
 msgstr "Hasi ezkutatuta"
 
-#: ../ekiga.schemas.in.in.h:100 ../src/gui/main.cpp:1001
-#: ../src/gui/main.cpp:1736 ../src/gui/main.cpp:1761
-msgid "Switch to fullscreen"
-msgstr "Bistaratu pantaila osoa"
-
-#: ../ekiga.schemas.in.in.h:101
+#: ../ekiga.schemas.in.in.h:103
 msgid "TCP port range"
 msgstr "TCP atakaren barrutia"
 
-#: ../ekiga.schemas.in.in.h:102
-msgid "The Audio Codecs List"
-msgstr "Audio kodeken zerrenda"
+#: ../ekiga.schemas.in.in.h:104
+msgid "Temporal Spatial Trade Off"
+msgstr "Truke denbora-espaziala (TSTO)"
 
-#: ../ekiga.schemas.in.in.h:103
+#: ../ekiga.schemas.in.in.h:105
 msgid ""
 "The Automatic Echo Cancellation level: Off, Low, Medium, High, Automatic "
 "Gain Compensation. Choosing Automatic Gain Compensation modulates the volume "
@@ -515,7 +524,11 @@ msgstr ""
 "handia, irabaziaren konpentsazio automatikoa. Irabaziaren konpentsazio "
 "automatikoa aukeratuz gero, bolumena modulatzen da kalitate onena izan dezan."
 
-#: ../ekiga.schemas.in.in.h:104 ../src/gui/preferences.cpp:993
+#: ../ekiga.schemas.in.in.h:106
+msgid "The Codecs List"
+msgstr "Kodeken zerrenda"
+
+#: ../ekiga.schemas.in.in.h:107 ../src/gui/preferences.cpp:696
 msgid ""
 "The Gateway host is the host to use to do H.323 calls through a gateway that "
 "will relay calls"
@@ -523,51 +536,55 @@ msgstr ""
 "Atebide ostalaria H.323 deiak txandatzen dituen atebidearen bitartez deiak "
 "egiteko erabiliko den ostalaria da"
 
-#: ../ekiga.schemas.in.in.h:105
+#: ../ekiga.schemas.in.in.h:108
 msgid "The NAT method"
 msgstr "NAT metodoa"
 
-#: ../ekiga.schemas.in.in.h:106 ../src/gui/preferences.cpp:1045
+#: ../ekiga.schemas.in.in.h:109 ../src/gui/preferences.cpp:750
 msgid "The SIP Outbound Proxy to use for outgoing calls"
-msgstr "SIP irteerak oproxy-a kanpora deitzean erabiltzeko"
+msgstr "SIP irteerako proxy-a kanpora deitzean erabiltzeko"
 
-#: ../ekiga.schemas.in.in.h:107
+#: ../ekiga.schemas.in.in.h:110
 msgid "The STUN Server"
-msgstr "STUN erbitzari berria"
+msgstr "STUN zerbitzaria"
 
-#: ../ekiga.schemas.in.in.h:108
+#: ../ekiga.schemas.in.in.h:111
 msgid ""
-"The STUN server to use for STUN Support. STUN is a technic that permits to "
-"go through some types of NAT gateways"
+"The STUN server to use for STUN Support. STUN is a technology that permits "
+"passage through some types of NAT gateway"
 msgstr ""
 "STUN zerbitzaria STUN euskarria erabiltzeko. STUN teknikak NAT atebide mota "
 "batzuetan zehar igarotzen uzten du."
 
-#: ../ekiga.schemas.in.in.h:109
+#: ../ekiga.schemas.in.in.h:112
+msgid "The Video Codecs List"
+msgstr "Bideo-kodeken zerrenda"
+
+#: ../ekiga.schemas.in.in.h:113
 msgid "The accounts list"
 msgstr "Kontuen zerrenda"
 
-#: ../ekiga.schemas.in.in.h:110
+#: ../ekiga.schemas.in.in.h:114
 msgid "The audio plugin that will be used to detect the devices and manage them"
-msgstr "Gailuak detektatzeko eta kudeatzeko erabiliko den audio-plugin-a"
+msgstr "Gailuak detektatzeko eta kudeatzeko erabiliko den audioaren plugin-a"
 
-#: ../ekiga.schemas.in.in.h:111
+#: ../ekiga.schemas.in.in.h:115
 msgid "The busy tone sound"
 msgstr "Lanpetutako tonuaren soinua"
 
-#: ../ekiga.schemas.in.in.h:112
+#: ../ekiga.schemas.in.in.h:116
 msgid ""
 "The chosen sound will be played at the end of calls or calling somebody who "
 "is busy, if enabled"
 msgstr ""
-"Aukeratutako soinua erreproduzituko da deien amaieran edo okupatuta dagoen "
+"Aukeratutako soinua erreproduzituko da deien amaieran edo lanpetuta dagoen "
 "norbaiti deitzean, gaituta badago"
 
-#: ../ekiga.schemas.in.in.h:113
+#: ../ekiga.schemas.in.in.h:117
 msgid "The chosen sound will be played on incoming calls, if enabled"
 msgstr "Aukeratutako soinua erreproduzituko da sarrerako deietan, gaituta badago"
 
-#: ../ekiga.schemas.in.in.h:114
+#: ../ekiga.schemas.in.in.h:118
 msgid ""
 "The chosen sound will be played when a new instant message is received, if "
 "enabled"
@@ -575,42 +592,42 @@ msgstr ""
 "Aukeratutako soinua erreproduzituko da berehalako mezua jasotzean, gaituta "
 "badago"
 
-#: ../ekiga.schemas.in.in.h:115
+#: ../ekiga.schemas.in.in.h:119
 msgid "The chosen sound will be played when a new voice mail is received, if enabled"
 msgstr ""
 "Aukeratutako soinua erreproduzituko da ahotsezko mezua jasotzean, gaituta "
 "badago"
 
-#: ../ekiga.schemas.in.in.h:116
+#: ../ekiga.schemas.in.in.h:120
 msgid "The chosen sound will be played when calling somebody, if enabled"
 msgstr "Aukeratutako soinua erreproduzituko da norbaiti deitzean, gaituta badago"
 
-#: ../ekiga.schemas.in.in.h:117
+#: ../ekiga.schemas.in.in.h:121
 msgid "The default video view"
-msgstr "Bideo-ikuspegi lehenetsia"
+msgstr "Bideoaren ikuspegi lehenetsia"
 
-#: ../ekiga.schemas.in.in.h:118
+#: ../ekiga.schemas.in.in.h:122
 msgid ""
-"The default video view (0: Local, 1: Remote, 2: Both incrusted, 3: Both with "
+"The default video view (0: Local, 1: Remote, 2: Both layered, 3: Both with "
 "local video in a separate window, 4: Both)"
 msgstr ""
-"Bideo-ikuspegi lehenetsia (0: lokala, 1: urrunekoa, 2: biak sartuta, 3: biak "
-"bideo lokala beste leiho batean dagoela, 4: biak)"
+"Bideoaren ikuspegi lehenetsia (0: lokala, 1: urrunekoa, 2: biak sartuta, 3: "
+"biak bideo lokala beste leiho batean dagoela, 4: biak)"
 
-#: ../ekiga.schemas.in.in.h:119
+#: ../ekiga.schemas.in.in.h:123
 msgid "The dial tone sound"
 msgstr "Txirrina tonuaren soinua"
 
-#: ../ekiga.schemas.in.in.h:120
+#: ../ekiga.schemas.in.in.h:124
 msgid "The history of the 100 last calls"
-msgstr "Azken 100 landutako deien historia"
+msgstr "Historiaren azken 100 deiak"
 
-#: ../ekiga.schemas.in.in.h:121 ../src/gui/preferences.cpp:996
-#: ../src/gui/preferences.cpp:1048
+#: ../ekiga.schemas.in.in.h:125 ../src/gui/preferences.cpp:699
+#: ../src/gui/preferences.cpp:753
 msgid "The host where calls should be forwarded if call forwarding is enabled"
 msgstr "Ostalaria, deiak horra birbideratzeko (birbideratzea gaituta egonez gero)"
 
-#: ../ekiga.schemas.in.in.h:122
+#: ../ekiga.schemas.in.in.h:126
 msgid ""
 "The image to transmit if \"Picture\" is selected as video plugin or if the "
 "opening of the device fails. Leave blank to use the default Ekiga logo."
@@ -619,65 +636,71 @@ msgstr ""
 "gailua ireki ezin bada. Utzi hutsik Ekiga-ren logotipo lehenetsia "
 "erabiltzeko."
 
-#: ../ekiga.schemas.in.in.h:123
+#: ../ekiga.schemas.in.in.h:127
 msgid "The incoming call sound"
 msgstr "Sarrerako deien soinua"
 
-#: ../ekiga.schemas.in.in.h:124
+#: ../ekiga.schemas.in.in.h:128
 msgid "The list of accounts to which Ekiga should register"
 msgstr "Kontuen zerrenda Ekigak erregistratzeko"
 
-#: ../ekiga.schemas.in.in.h:125
-msgid "The local zoom value"
-msgstr "Zoom lokalaren balioa"
+#: ../ekiga.schemas.in.in.h:129
+msgid ""
+"The maximum RX video bitrate in kbit/s. This value will be signaled to the "
+"peer endpoint that can adjust (if it supports it) its TX bitrate if it is "
+"above the signaled value"
+msgstr ""
+"Bideoa jasotzeko gehienezko bit-tasa (Kbit/s). Balio hau amaierako puntura "
+"bidal daiteke bere transmisioko bit-tasa doitzeko (onartzen bada) bidalitako "
+"balioa baino altuagoa bada."
 
-#: ../ekiga.schemas.in.in.h:126
+#: ../ekiga.schemas.in.in.h:130
+msgid ""
+"The maximum TX video bitrate in kbit/s. The video quality and the number of "
+"transmitted frames per second (depends on selected codec) will be "
+"dynamically adjusted above their minimum during calls to try to minimize the "
+"bandwidth to the given value"
+msgstr ""
+"Bideoaren transmisioaren gehienezko bit-tasa (kbit/s). Bideo-kalitatea eta "
+"transmititutako marko-kopurua segundoko (hautatutako kodekaren arabera) "
+"dinamikoki doituko dira beraien gutxienekoaren gainetik deiak martxan dauden "
+"bitartean, banda-zabalera emandako baliora minimizatzen saiatzeko."
+
+#: ../ekiga.schemas.in.in.h:131
 msgid "The maximum jitter buffer size for audio reception (in ms)"
 msgstr "Audioa jasotzeko bufferraren gehienezko atzerapena (ms-tan)."
 
-#: ../ekiga.schemas.in.in.h:127
+#: ../ekiga.schemas.in.in.h:132
 msgid ""
-"The maximum video bandwidth in kbytes/s. The video quality and the number of "
-"transmitted frames per second will be dynamically adjusted above their "
-"minimum during calls to try to minimize the bandwidth to the given value"
+"The maximum transmitted frame rate in frames/s. This rate may not be reached "
+"in case a minimum quality was configure via a TSTO value smaller than 31 and "
+"the bitrate selected is not sufficient to support this minimum quality"
 msgstr ""
-"Bideoaren gehienezko banda-zabalera kbyte/s-tan. Bideo-kalitatea eta "
-"segundoko transmititutako marko-kopurua dinamikoki doituko dira beren "
-"gutxienekoaren gainetik deiak martxan dauden bitartean, banda-zabalera "
-"emandako baliora minimizatzen saiatzeko."
+"Transmititutako gehienezko fotograma-tasa (f/s). Baliteke tasa honetara ez "
+"iristea TSTOren gutxieneko kalitatea 31 baino baxuagoa bada eta hautatutako "
+"bit-tasa ez bada nahikoa gutxieneko kalitate hau onartzeko."
 
-#: ../ekiga.schemas.in.in.h:128
+#: ../ekiga.schemas.in.in.h:133
 msgid "The minimum jitter buffer size for audio reception (in ms)"
 msgstr "Audioa jasotzeko bufferraren gutxieneko atzerapena (ms-tan)."
 
-#: ../ekiga.schemas.in.in.h:130
-#, no-c-format
-msgid ""
-"The minimum transmitted video quality to keep when trying to minimize the "
-"used bandwidth: choose 100% on a LAN for the best quality, 1% being the "
-"worst quality"
-msgstr ""
-"Erabilitako banda-zabalera minimizatzen saiatzean, transmititutako bideoaren "
-"mantendu beharreko gutxieneko kalitatea: aukeratu % 100 sare lokalean "
-"kalitate onena izateko. % 1 kalitate txarrena da."
-
-#: ../ekiga.schemas.in.in.h:131
+#: ../ekiga.schemas.in.in.h:134
 msgid "The network interface"
 msgstr "Sareko interfazea"
 
-#: ../ekiga.schemas.in.in.h:132 ../src/gui/preferences.cpp:957
+#: ../ekiga.schemas.in.in.h:135 ../src/gui/preferences.cpp:655
 msgid "The network interface to listen on"
 msgstr "Sareko interfazea entzuteko"
 
-#: ../ekiga.schemas.in.in.h:133
+#: ../ekiga.schemas.in.in.h:136
 msgid "The new instant message sound"
 msgstr "Berehalako mezu berriaren soinua"
 
-#: ../ekiga.schemas.in.in.h:134
+#: ../ekiga.schemas.in.in.h:137
 msgid "The new voice mail sound"
 msgstr "Ahotsezko mezu berriaren soinua"
 
-#: ../ekiga.schemas.in.in.h:135
+#: ../ekiga.schemas.in.in.h:138
 msgid ""
 "The output device type is the type of device connected to your Quicknet "
 "card. It can be either a POTS (Plain Old Telephone System) or a headset."
@@ -685,31 +708,31 @@ msgstr ""
 "Irteerako gailu-mota zure Quicknet txartelarekin konektatutako gailu-mota "
 "da. POTS (Plain Old Telephone System) edo aurikularra izan daiteke."
 
-#: ../ekiga.schemas.in.in.h:136
+#: ../ekiga.schemas.in.in.h:139
 msgid ""
 "The port to listen to for incoming connections. Ekiga needs to be restarted "
 "for the new value to take effect"
 msgstr ""
-"Sarrerako konexioetarako entzun beharreko ataka. Ekiga berrabiarazi  egin "
+"Sarrerako konexioetarako entzun beharreko ataka. Ekiga berrabiarazi egin "
 "behar da balio berriak eragina izateko."
 
-#: ../ekiga.schemas.in.in.h:137
+#: ../ekiga.schemas.in.in.h:140
 msgid ""
 "The port to listen to for incoming connections. Ekiga needs to be restarted "
 "for the new value to take effect."
 msgstr ""
-"Sarrerako konexioetarako entzun beharreko ataka. Ekiga berrabiarazi  egin "
+"Sarrerako konexioetarako entzun beharreko ataka. Ekiga berrabiarazi egin "
 "behar da balio berriak eragina izateko."
 
-#: ../ekiga.schemas.in.in.h:138
+#: ../ekiga.schemas.in.in.h:141
 msgid "The position of the local video window"
-msgstr "Bideo lokalaren leihoaren kokalekua"
+msgstr "Bideo lokalaren leihoaren posizioa"
 
-#: ../ekiga.schemas.in.in.h:139
+#: ../ekiga.schemas.in.in.h:142
 msgid "The position of the remote video window"
-msgstr "Urruneko bideoaren leihoaren kokalekua"
+msgstr "Urruneko bideoaren leihoaren posizioa"
 
-#: ../ekiga.schemas.in.in.h:140
+#: ../ekiga.schemas.in.in.h:143
 msgid ""
 "The prefix that will be used to save pictures of the conversation. That "
 "prefix is followed by the snapshot number."
@@ -717,7 +740,7 @@ msgstr ""
 "Elkarrizketaren irudiak gordetzeko erabiliko den aurrizkia. Aurrizkiaren "
 "ondoren argazkiaren zenbakia joango da."
 
-#: ../ekiga.schemas.in.in.h:141
+#: ../ekiga.schemas.in.in.h:144
 msgid ""
 "The range of TCP ports that Ekiga will use for the H.323 H.245 channel. "
 "Ekiga needs to be restarted for the new values to take effect. This port "
@@ -731,121 +754,123 @@ msgstr ""
 "izateko. Ataka-barruti horrek ez du eraginik konferentziako bi parte-"
 "hartzaileak H.245 Tunneling erabiltzen ari badira."
 
-#: ../ekiga.schemas.in.in.h:142
+#: ../ekiga.schemas.in.in.h:145
 msgid ""
 "The range of UDP ports that Ekiga will use for RTP (audio and video "
 "communication channels). Ekiga needs to be restarted for the new values to "
 "take effect."
 msgstr ""
-"Sarrerako konexioetarako entzun beharreko ataka. Ekiga berrabiarazi  egin "
+"Sarrerako konexioetarako entzun beharreko ataka. Ekiga berrabiarazi egin "
 "behar da balio berriak eragina izateko."
 
-#: ../ekiga.schemas.in.in.h:143
+#: ../ekiga.schemas.in.in.h:146
 msgid ""
 "The range of UDP ports that Ekiga will use for SIP signaling and when "
 "registering to gatekeepers. Ekiga needs to be restarted for the new values "
 "to take effect."
 msgstr ""
-"Sarrerako konexioetarako entzun beharreko ataka. Ekiga berrabiarazi  egin "
-"behar da balio berriak eragina izateko."
+"Ekigak erabiliko duen UDP ataken zerrenda SIP seinalizatzeko eta "
+"'gatekeeper'-etan erregistratzeko. Ekiga berrabiarazi egin behar da balio "
+"berriak eragina izateko."
 
-#: ../ekiga.schemas.in.in.h:144
-msgid "The remote zoom value"
-msgstr "Urruneko zoomaren balioa"
-
-#: ../ekiga.schemas.in.in.h:145
+#: ../ekiga.schemas.in.in.h:147
 msgid "The save prefix"
 msgstr "Gordetzeko aurrizkia"
 
-#: ../ekiga.schemas.in.in.h:146
+#: ../ekiga.schemas.in.in.h:148
 msgid "The size of the local video window"
 msgstr "Bideo lokalaren leihoaren tamaina"
 
-#: ../ekiga.schemas.in.in.h:147
+#: ../ekiga.schemas.in.in.h:149
 msgid "The size of the remote video window"
 msgstr "Urruneko bideoaren leihoaren tamaina"
 
-#: ../ekiga.schemas.in.in.h:148
+#: ../ekiga.schemas.in.in.h:150
 msgid ""
 "The sound that will be played at the end of calls or when calling somebody "
 "who is busy, if enabled"
 msgstr ""
-"Deien amaieran edo okupatuta dagoen norbaiti deitzean erreproduzituko den "
+"Deien amaieran edo lanpetuta dagoen norbaiti deitzean erreproduzituko den "
 "soinua, gaituta badago"
 
-#: ../ekiga.schemas.in.in.h:149
+#: ../ekiga.schemas.in.in.h:151
 msgid "The sound that will be played on incoming calls, if enabled"
 msgstr "Deiak jasotzean erreproduzituko den soinua, gaituta badago"
 
-#: ../ekiga.schemas.in.in.h:150
+#: ../ekiga.schemas.in.in.h:152
 msgid "The sound that will be played when calling somebody, if enabled"
 msgstr "Norbait deitzen ari denean erreproduzituko den soinua, gaituta badago"
 
-#: ../ekiga.schemas.in.in.h:151
+#: ../ekiga.schemas.in.in.h:153
 msgid "The sound that will be played when there is a new instant message, if enabled"
 msgstr "Berehalako mezu berria dagoenean erreproduzituko den soinua, gaituta badago"
 
-#: ../ekiga.schemas.in.in.h:152
+#: ../ekiga.schemas.in.in.h:154
 msgid "The sound that will be played when there is a new voice mail, if enabled"
 msgstr "Ahotsezko mezu berria dagoenean erreproduzituko den soinua, gaituta badago"
 
-#: ../ekiga.schemas.in.in.h:153
+#: ../ekiga.schemas.in.in.h:155
 msgid "The time after which Ekiga will renew its registration with the registrar"
-msgstr "Denbora Ekiga-k bere erregistroa erregistratzaeilearekin berritzeko"
+msgstr "Denbora Ekiga-k bere erregistroa erregistratzailearekin berritzeko"
 
-#: ../ekiga.schemas.in.in.h:154
+#: ../ekiga.schemas.in.in.h:156
 msgid "The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)"
 msgstr "Zure estatuaren bi letrako herrialde-kodea (adib.: BE, UK, FR, DE...)."
 
-#: ../ekiga.schemas.in.in.h:155 ../src/gui/preferences.cpp:1173
+#: ../ekiga.schemas.in.in.h:157 ../src/gui/preferences.cpp:881
 msgid "The video channel number to use (to select camera, tv or other sources)"
 msgstr ""
 "Erabili beharreko bideo-kanalaren zenbakia (kamera, tb edo bestelako "
 "iturriak hautatzeko)."
 
-#: ../ekiga.schemas.in.in.h:156 ../src/gui/preferences.cpp:1157
+#: ../ekiga.schemas.in.in.h:158 ../src/gui/preferences.cpp:865
 msgid "The video plugin that will be used to detect the devices and manage them"
-msgstr "Bideo plugin-a, gailuak detektatzeko eta kudeatzeko erabiliko dena"
-
-#: ../ekiga.schemas.in.in.h:157
-msgid ""
-"The way to react to incoming calls: 0 displays a popup, 1 automatically "
-"answers the call, 2 automatically rejects the call and 3 forwards the call "
-"to the given URL, if any"
-msgstr ""
-"Sarrerako deiei erantzuteko modua: 0 laster-leihoa bistaratzen du, 1 "
-"automatikoki erantzuten du deia, 2 automatikoki baztertzen du deia eta 3 "
-"adierazitako URLari birbidaltzen dio deia, baldin badago"
-
-#: ../ekiga.schemas.in.in.h:158
-msgid "The zoom value"
-msgstr "Zoomaren balioa"
+msgstr "Bideoaren plugin-a, gailuak detektatzeko eta kudeatzeko erabiliko dena"
 
 #: ../ekiga.schemas.in.in.h:159
-msgid ""
-"The zoom value to apply to images displayed in the local video window (can "
-"be 0.50, 1.00, or 2.00)"
-msgstr ""
-"Bideo lokalaren -leihoan bistaratutako irudiei aplikatzeko zoomaren balioa "
-"(0.50, 1.00, edo 2.00 izan daiteke)"
+msgid "The video view before having switched to fullscreen"
+msgstr "Bideoaren ikuspegia pantaila osora aldatu aurretik"
 
 #: ../ekiga.schemas.in.in.h:160
 msgid ""
-"The zoom value to apply to images displayed in the main GUI (can be 0.50, "
-"1.00, or 2.00)"
+"The video view before having switched to fullscreen (same values as "
+"video_view)"
 msgstr ""
-"GUI nagusian bistaratutako irudiei aplikatzeko zoomaren balioa (0.50, 1.00, "
-"edo 2.00 izan daiteke)"
+"Bideoaren ikuspegia pantaila osora aldatu aurretik (bideoaren ikuspegiaren "
+"balio berdinak)"
 
 #: ../ekiga.schemas.in.in.h:161
-msgid ""
-"The zoom value to apply to images displayed in the remote video window (can "
-"be 0.50, 1.00, or 2.00)"
-msgstr ""
-"Urruneko bideo-leihoan bistaratutako irudiei aplikatzeko zoomaren balioa "
-"(0.50, 1.00, edo 2.00 izan daiteke)"
+msgid "The zoom value"
+msgstr "Zoomaren balioa"
 
-#: ../ekiga.schemas.in.in.h:162 ../src/gui/preferences.cpp:1008
+#: ../ekiga.schemas.in.in.h:162
+msgid ""
+"The zoom value in percent to apply to images displayed in the main GUI (can "
+"be 50, 100, or 200)"
+msgstr ""
+"GUI nagusian bistaratutako irudiei aplikatzeko zoomaren balioa (50, 100, edo "
+"200 izan daiteke)"
+
+#: ../ekiga.schemas.in.in.h:163
+msgid ""
+"This allows you to set the mode for sending DTMFs. The values can be "
+"\"RFC2833\" (0), \"INFO\" (1)"
+msgstr ""
+"Honek DTMFak bidaltzeko modua ezartzea baimentzen du. Balioa \"RFC2833"
+"\" (0), \"INFO\" (1) bakarrik izan daiteke."
+
+#: ../ekiga.schemas.in.in.h:164
+msgid ""
+"This allows you to set the mode for sending DTMFs. The values can be \"String"
+"\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (default is \"String"
+"\"). Choosing other values than \"String\" disables the Text Chat"
+msgstr ""
+"Honek DTMF bidez bidaltzeko modua ezartzen du. Balioak hauek izan daitezke: "
+"\"Katea\" (0), \"Tonua\" (1), \"RFC2833\"(2), \"Q.931\" (3) (lehenetsia "
+"\"Katea\") da. \"Katea\" ez diren balioak hautatuz gero, testu-berriketa "
+"desgaituko da."
+
+#: ../ekiga.schemas.in.in.h:165 ../src/gui/preferences.cpp:711
 msgid ""
 "This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages "
 "are encapsulated into the the H.225 channel (port 1720). This saves one TCP "
@@ -856,15 +881,15 @@ msgstr ""
 "Horrek H.245 Tunnelling modua gaitzen du. H.245 Tunnelling moduan H.245 "
 "mezuak H.225 kanalean kapsulatzen dira (1720 ataka). Horrek TCP konexioa "
 "gordetzen du deiak martxan dauden bitartean. H.245 Tunnelling H.323v2-an "
-"sartu zen eta Netmeeting-ek ez du onartzen. Hasiera Azkarra eta H.245 "
+"sartu zen eta Netmeeting-ek ez du onartzen. 'Hasiera azkarra' eta H.245 "
 "Tunnelling biak batera erabiliz gero, Netmeeting-en hainbat bertsio kraska "
 "daitezke."
 
-#: ../ekiga.schemas.in.in.h:163 ../src/gui/preferences.cpp:1010
+#: ../ekiga.schemas.in.in.h:166 ../src/gui/preferences.cpp:713
 msgid "This enables H.245 early in the setup"
 msgstr "Honek H.245 goiztiarra konfigurazioan gaitzen du"
 
-#: ../ekiga.schemas.in.in.h:164
+#: ../ekiga.schemas.in.in.h:167
 msgid ""
 "This enables IP checking from ekiga.com. The returned IP is only used when "
 "IP Translation is enabled."
@@ -872,209 +897,421 @@ msgstr ""
 "Honek IPa ekiga.com gunetik egiaztatzea gaitzen du. Erantzundako IP helbidea "
 "erabiltzeko IP helbidearen itzulpena gaituta egon behar du."
 
-#: ../ekiga.schemas.in.in.h:165
+#: ../ekiga.schemas.in.in.h:168
 msgid ""
-"This permits to set the mode for DTMFs sending. The values can be \"INFO"
-"\" (0), \"RFC2833\" (1)"
+"This key disables DirectX (on win32) and XVideo (on Linux) video hardware "
+"acceleration"
 msgstr ""
-"Honek DTMFak bidaltzeko modua ezartzea baimentzen du. Balioa \"INFO\" "
-"(0), \"RFC2833\" (1) bakarrik izan daiteke."
+"Gako honek bideoaren hardware bidezko DirectX (win32 sistemetan) eta XVideo "
+"(GNU/Linux sistemetan) azelerazioa desgaitzen du"
 
-#: ../ekiga.schemas.in.in.h:166
-msgid ""
-"This permits to set the mode for DTMFs sending. The values can be \"String"
-"\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (default is \"String"
-"\"). Choosing other values than \"String\" disables the Text Chat"
-msgstr ""
-"Honek DTMF bidez bidaltzeko modua ezartzen du. Balioak hauek izan daitezke: "
-"\"Katea\" (0), \"Tonua\" (1), \"RFC2833\"(2), \"QQ.931\" (3) (lehenetsia "
-"\"Katea\") da. \"Katea\" ez diren balioak hautatuz gero, testu-berriketa "
-"desgaituko da."
+#: ../ekiga.schemas.in.in.h:169
+msgid "Timeout after which the user is automatically set as away"
+msgstr "Denbora-muga erabiltzailea automatikoki aldenduta bezala ezartzeko"
 
-#: ../ekiga.schemas.in.in.h:167
+#: ../ekiga.schemas.in.in.h:170
 msgid "UDP port range"
 msgstr "UDP ataka-barrutia"
 
-#: ../ekiga.schemas.in.in.h:168
+#: ../ekiga.schemas.in.in.h:171
 msgid "User directory"
 msgstr "Erabiltzaile-direktorioa"
 
-#: ../ekiga.schemas.in.in.h:169
+#: ../ekiga.schemas.in.in.h:172
 msgid "Version"
 msgstr "Bertsioa"
 
-#: ../ekiga.schemas.in.in.h:170
+#: ../ekiga.schemas.in.in.h:173
 msgid "Video channel"
 msgstr "Bideo-kanala"
 
-#: ../ekiga.schemas.in.in.h:171
+#: ../ekiga.schemas.in.in.h:174
 msgid "Video format"
 msgstr "Bideo-formatua"
 
-#: ../ekiga.schemas.in.in.h:172
+#: ../ekiga.schemas.in.in.h:175
 msgid "Video image"
 msgstr "Bideo-irudia"
 
-#: ../ekiga.schemas.in.in.h:173
+#: ../ekiga.schemas.in.in.h:176
 msgid "Video input device"
-msgstr "Bideo-sarrerako gailua"
+msgstr "Bideoaren sarrerako gailua"
 
-#: ../ekiga.schemas.in.in.h:174
+#: ../ekiga.schemas.in.in.h:177
 msgid "Video plugin"
 msgstr "Bideo plugin-a"
 
-#: ../ekiga.schemas.in.in.h:175
+#: ../ekiga.schemas.in.in.h:178
 msgid "Video preview"
 msgstr "Bideoaren aurrebista"
 
-#: ../ekiga.schemas.in.in.h:176
+#: ../ekiga.schemas.in.in.h:179
 msgid "Video size"
 msgstr "Bideo-tamaina"
 
-#: ../lib/about/gnome-about.c:203
-msgid "Credits"
-msgstr "Kredituak"
-
-#: ../lib/about/gnome-about.c:235
-msgid "Written by"
-msgstr "Honek idatzita"
-
-#: ../lib/about/gnome-about.c:250
-msgid "Documented by"
-msgstr "Honek dokumentatua"
-
-#: ../lib/about/gnome-about.c:265
-msgid "Translated by"
-msgstr "Honek itzulita"
-
-#. Add the credits button
-#: ../lib/about/gnome-about.c:326
-msgid "C_redits"
-msgstr "_Kredituak"
-
-#: ../lib/about/gnome-about.c:407
-msgid "Authors"
-msgstr "Egileak"
-
-#: ../lib/about/gnome-about.c:408
-msgid "List of authors of the programs"
-msgstr "Programako egileen zerrenda"
-
-#: ../lib/about/gnome-about.c:421
-msgid "Documenter entry"
-msgstr "Dokumentu idazlearen sarrera"
-
-#: ../lib/about/gnome-about.c:422
-msgid "A single documenter entry"
-msgstr "Dokumentua idazlearen sarrera bakuna"
-
-#: ../lib/about/gnome-about.c:518
-#, c-format
-msgid "About %s"
-msgstr "%s(r)i buruz"
-
-#: ../lib/gmconf/gmconf-gconf.c:155
+#: ../ekiga.schemas.in.in.h:180
 msgid ""
-"An error has happened in the configuration backend.\n"
-"Maybe some of your settings won't be saved."
+"Whether to prefer to sustain the max. frame rate or lower it possibly in "
+"order to keep a minimum level of (spatial) quality for all frames. 0: "
+"Highest minimal quality, 31: lowest minimal quality"
 msgstr ""
-"Errorea gertatu da konfigurazio-euskarrian.\n"
-"Agian zure ezarpen batzuk ez ziren gordeko."
+"Gehienezko fotograma-tasa mantentzea edo murriztea nahi den edo fotograma "
+"guztien gutxieneko kalitate (espaziala) maila mantentzeko. 0: gutxieneko "
+"kalitate altuena, 31: gutxieneko kalitate baxuena."
 
-#: ../lib/gmcontacts/gmcontacts-avahi.cpp:285
-msgid "Contacts Near Me"
-msgstr "Gertuko kontaktuak"
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:231
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:290
+#: ../lib/engine/presence/local-roster/local-presentity.cpp:190
+msgid "_Remove"
+msgstr "_Kendu"
 
-#. Init the address book
-#: ../lib/gmcontacts/gmcontacts-eds.cpp:304 ../src/endpoints/ekiga.cpp:440
-msgid "On This Computer"
-msgstr "Ordenagailu honetan"
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:233
+#: ../lib/engine/presence/local-roster/local-presentity.cpp:188
+#: ../src/gui/main.cpp:1339
+msgid "_Edit"
+msgstr "_Editatu"
 
-#: ../lib/gmcontacts/gmcontacts-eds.cpp:308 ../src/endpoints/ekiga.cpp:440
-#: ../src/gui/addressbook.cpp:3033
-msgid "Personal"
-msgstr "Pertsonala"
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:321
+msgid "Edit contact"
+msgstr "Editatu kontaktua"
 
-#: ../lib/gui/gmdialog.c:466
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:323
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:298
+msgid "Please update the following fields:"
+msgstr "Eguneratu honako eremuak:"
+
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:325
+#: ../lib/engine/presence/local-roster/local-presentity.cpp:214
+#: ../lib/engine/presence/local-roster/local-heap.cpp:157
+msgid "Name:"
+msgstr "Izena:"
+
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:334
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:301
+msgid "VoIP _URI:"
+msgstr "VoIP _URIa:"
+
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:335
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:302
+msgid "_Home phone:"
+msgstr "_Etxeko telefonoa:"
+
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:336
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:303
+msgid "_Office phone:"
+msgstr "_Lantegiko telefonoa:"
+
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:337
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:304
+msgid "_Cell phone:"
+msgstr "_Mugikorra:"
+
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:338
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:305
+msgid "_Pager:"
+msgstr "_Bilagailua:"
+
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:88
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:488
+msgid "user found"
+msgid_plural "users found"
+msgstr[0] "erabiltzailea aurkituta"
+msgstr[1] "erabiltzaileak aurkituta"
+
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:255
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:287
+msgid "_Refresh"
+msgstr "_Freskatu"
+
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:258
+msgid "New _Contact"
+msgstr "Ko_ntaktu berria"
+
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:296
+#: ../lib/engine/presence/local-roster/local-heap.cpp:108
+msgid "New contact"
+msgstr "Kontaktu berria"
+
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:300
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:145
+msgid "_Name:"
+msgstr "_Izena:"
+
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:130
+msgid "Add an LDAP addressbook"
+msgstr "Gehitu LDAP helbide-liburua"
+
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:141
+msgid "Create LDAP directory"
+msgstr "Sortu LDAP direktorioa"
+
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:143
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:504
+msgid "Please edit the following fields"
+msgstr "Editatu honako eremuak"
+
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:146
+msgid "_Hostname:"
+msgstr "_Ostalari-izena:"
+
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:147
+msgid "_Port:"
+msgstr "_Ataka:"
+
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:148
+msgid "_Base DN:"
+msgstr "_Oinarrizko DNa:"
+
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:152
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:520
+msgid "_Subtree"
+msgstr "_Azpizuhaitza"
+
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:153
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:521
+msgid "Single _Level"
+msgstr "_Maila bat"
+
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:154
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:522
+msgid "_Scope"
+msgstr "_Esparrua"
+
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:157
+msgid "Call _Attribute:"
+msgstr "Deiaren _atributua:"
+
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:292
+msgid "_Properties"
+msgstr "_Propietateak"
+
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:350
+msgid "Refreshing"
+msgstr "Freskatzen"
+
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:356
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:371
+msgid "Could not contact server"
+msgstr "Ezin izan da zerbitzariarekin konektatu"
+
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:379
+msgid "Contacted server"
+msgstr "Konektatutako zerbitzaria"
+
+#. patience == 0
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:413
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:459
+msgid "Could not search"
+msgstr "Ezin izan da bilatu"
+
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:421
+msgid "Waiting for search results"
+msgstr "Bilaketaren emaitzen zai"
+
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:502
+msgid "Edit LDAP directory"
+msgstr "Editatu LDAP direktorioa"
+
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:506
+msgid "_Name"
+msgstr "_Izena"
+
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:507
+msgid "_Hostname"
+msgstr "_Ostalari-izena"
+
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:513
+msgid "_Port"
+msgstr "_Ataka"
+
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:515
+msgid "_Base DN"
+msgstr "_Oinarrizko DNa"
+
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:525
+msgid "Call _Attribute"
+msgstr "Deiaren _atributua"
+
+#: ../lib/engine/addressbook/skel/contact-core.cpp:60
+msgid "_Find"
+msgstr "_Bilatu"
+
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:642
+msgid "Address Book"
+msgstr "Helbide-liburua"
+
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:655
+msgid "Address _Book"
+msgstr "Helbide-li_burua"
+
+#. This will add static and dynamic actions
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:664
+msgid "_Action"
+msgstr "_Ekintza"
+
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:709
+msgid "Address Books"
+msgstr "Helbide-liburuak"
+
+#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:647
+msgid "Full Name"
+msgstr "Izen osoa"
+
+#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:657
+msgid "VoIP URI"
+msgstr "VoIP URIa"
+
+#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:689
+msgid "_Search Filter:"
+msgstr "Bilaketa-_iragazkia:"
+
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:577
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:609
+msgid "Unsorted"
+msgstr "Ordenatu gabe"
+
+#: ../lib/engine/gui/gtk-frontend/chat-window-page.cpp:747
+msgid "_Send"
+msgstr "_Bidali"
+
+#: ../lib/engine/gui/gtk-frontend/chat-window-page.cpp:952
+msgid "You say:\n"
+msgstr "diozu:\n"
+
+#: ../lib/engine/gui/gtk-frontend/chat-window-page.cpp:957
+msgid "says:"
+msgstr "dio:"
+
+#. The window
+#: ../lib/engine/gui/gtk-frontend/chat-window.cpp:561
+msgid "Chat Window"
+msgstr "Berriketa-leihoa"
+
+#: ../lib/engine/presence/local-roster/local-presentity.cpp:211
+msgid "Edit roster element"
+msgstr "Editatu zerrendako elementua"
+
+#: ../lib/engine/presence/local-roster/local-presentity.cpp:212
+msgid ""
+"Please fill in this form to change an existing element of ekiga's internal "
+"roster"
+msgstr "Bete inprimaki hau ekigaren barneko zerrendako elementu bat aldatzeko"
+
+#: ../lib/engine/presence/local-roster/local-presentity.cpp:216
+msgid "Choose groups:"
+msgstr "Aukeratu taldeak:"
+
+#: ../lib/engine/presence/local-roster/local-roster-bridge.cpp:100
+#: ../lib/engine/presence/local-roster/local-heap.cpp:154
+msgid "Add to local roster"
+msgstr "Gehitu lokaleko zerrendari"
+
+#: ../lib/engine/presence/local-roster/local-heap.cpp:101
+msgid "Local roster"
+msgstr "Lokaleko zerrenda"
+
+#: ../lib/engine/presence/local-roster/local-heap.cpp:155
+msgid "Please fill in this form to add a new contact to ekiga's internal roster"
+msgstr "Bete inprimaki hau kontaktu berria ekigako barneko zerrendari gehitzeko"
+
+#: ../lib/engine/presence/local-roster/local-heap.cpp:165
+msgid "Address:"
+msgstr "Helbidea:"
+
+#: ../lib/engine/presence/local-roster/local-heap.cpp:169
+msgid "Put contact in groups:"
+msgstr "Jarri kontaktuak taldeetan:"
+
+#: ../lib/engine/presence/local-roster/local-heap.cpp:272
+msgid "You supplied an unsupported address"
+msgstr "Onartu gabeko helbidea eman duzu"
+
+#: ../lib/engine/presence/local-roster/local-heap.cpp:274
+msgid "You already have a contact with this address!"
+msgstr "Helbide berdina duen kontaktua badago lehendik ere."
+
+#: ../lib/gui/gmdialog.c:474
 msgid "Do not show this dialog again"
 msgstr "Ez erakutsi elkarrizketa-koadro hau aurrerantzean"
 
-#: ../src/clients/ils.cpp:105 ../src/gui/tools.cpp:174
-msgid "Invalid parameters"
-msgstr "Baliogabeko parametroak"
+#: ../lib/gui/gmgroupseditor.c:800
+msgid "Group"
+msgstr "Taldea"
 
-#: ../src/clients/ils.cpp:105
-msgid ""
-"Please provide your first name and e-mail in the Personal Data section in "
-"order to be able to register to the users directory."
-msgstr ""
-"Idatzi izena eta helbide elektronikoa 'Datu pertsonalak' atalean "
-"erabiltzaile-direktorioan erregistratu ahal izateko."
+#: ../lib/gui/gmgroupseditor.c:1175
+msgid "Rename"
+msgstr "Aldatu izena"
 
-#: ../src/clients/ils.cpp:145
-msgid "Invalid users directory"
-msgstr "Erabiltzaile-direktorio baliogabea"
+#: ../lib/gui/gmgroupseditor.c:1184
+msgid "Delete"
+msgstr "Ezabatu"
 
-#: ../src/clients/ils.cpp:145
-msgid "Operation impossible since there is no users directory specified."
-msgstr "Eragiketa ezin da egin, ez baita erabiltzaile-direktoriorik adierazi."
-
-#: ../src/clients/ils.cpp:238
-msgid "Failed to parse XML file"
-msgstr "Ezin izan da XML fitxategia analizatu"
-
-#: ../src/clients/ils.cpp:238
-msgid ""
-"There was an error while parsing the XML file. Please make sure that it is "
-"correctly installed in your system."
-msgstr ""
-"Errorea gertatu da XML fitxategia analizatzean. Ziurtatu behar bezala "
-"instalatuta dagoela sisteman."
-
-#: ../src/clients/ils.cpp:249
-msgid "Bad information"
-msgstr "Informazio okerra"
-
-#: ../src/clients/ils.cpp:249
+#: ../lib/gui/gmgroupseditor.c:1248
 #, c-format
-msgid "Bad LDAP information from XML file: %s."
-msgstr "LDAP informazio okerra XML fitxategitik: %s."
+msgid "Delete group %s?"
+msgstr "Ezabatu %s taldea?"
 
-#: ../src/clients/ils.cpp:257
-#, c-format
-msgid "ILS registration failed: unable to connect to %s"
-msgstr "Ezin izan da ILS erregistratu: ezin da %s(r)a konektatu"
+#: ../lib/gui/gmgroupseditor.c:1271
+msgid "Group deleted."
+msgstr "Taldea ezabatuta."
 
-#: ../src/clients/ils.cpp:270
-msgid "ILS registration failed: unable to set time limit on operations"
-msgstr "Ezin izan da ILS erregistratu: ezin izan da denbora-muga jarri eragiketetan."
+#: ../lib/gui/gmgroupseditor.c:1276
+msgid "Could not delete group!"
+msgstr "Ezin izan da taldea ezabatu."
 
-#: ../src/clients/ils.cpp:282
-#, c-format
-msgid "ILS registration failed: failed to bind to %s"
-msgstr "Ezin izan da ILS erregistratu: ezin izan da %s(r)ekin lotu"
+#: ../lib/gui/gmgroupseditor.c:1321
+msgid "Rename group"
+msgstr "Aldatu taldearen izena"
 
-#: ../src/clients/ils.cpp:310
-#, c-format
-msgid "Updated information on %s"
-msgstr "Informazio eguneratua %s(e)n."
+#: ../lib/gui/gmgroupseditor.c:1377
+msgid "Group renamed."
+msgstr "Taldea izenez aldatuta."
 
-#: ../src/clients/ils.cpp:314 ../src/endpoints/accountshandler.cpp:332
-#: ../src/endpoints/sip.cpp:227
-#, c-format
-msgid "Unregistered from %s"
-msgstr "%s(e)tik erregistroa ezabatuta"
+#: ../lib/gui/gmgroupseditor.c:1382
+msgid "Could not rename group!"
+msgstr "Ezin izan da taldearen izena aldatu."
 
-#: ../src/clients/stun.cpp:104
-#, c-format
-msgid "STUN server set to %s"
-msgstr "STUN zerbitzaria %s(e)ra ezarri da"
+#: ../src/clients/stun.cpp:87
+msgid "Unknown NAT"
+msgstr "NAT ezezaguna"
 
-#: ../src/clients/stun.cpp:113
-msgid "Removed STUN server"
-msgstr "STUN zerbitzaria kenduta"
+#: ../src/clients/stun.cpp:88
+msgid "Open NAT"
+msgstr "Ireki NATa"
 
-#: ../src/clients/stun.cpp:142
+#: ../src/clients/stun.cpp:89
+msgid "Cone NAT"
+msgstr "NAT Konoa"
+
+#: ../src/clients/stun.cpp:90
+msgid "Restricted NAT"
+msgstr "NAT murriztua"
+
+#: ../src/clients/stun.cpp:91
+msgid "Port Restricted NAT"
+msgstr "NAT ataka murriztuekin"
+
+#: ../src/clients/stun.cpp:92
+msgid "Symmetric NAT"
+msgstr "NAT simetrikoa"
+
+#: ../src/clients/stun.cpp:93
+msgid "Symmetric Firewall"
+msgstr "Suebaki simetrikoa"
+
+#: ../src/clients/stun.cpp:94
+msgid "Blocked"
+msgstr "Blokeatuta"
+
+#: ../src/clients/stun.cpp:95
+msgid "Partially Blocked"
+msgstr "Partzialki blokeatuta"
+
+#: ../src/clients/stun.cpp:96
+msgid "No NAT"
+msgstr "Ez dago NAT"
+
+#: ../src/clients/stun.cpp:154
 #, c-format
 msgid ""
 "STUN test result: %s.\n"
@@ -1093,7 +1330,7 @@ msgstr ""
 "bideratzaile baten atzean bazaude. Ziurtatu zaitez suebakia lokalean "
 "exekutatzen ez dagoela."
 
-#: ../src/clients/stun.cpp:148
+#: ../src/clients/stun.cpp:160
 #, c-format
 msgid ""
 "STUN test result: %s.\n"
@@ -1106,7 +1343,7 @@ msgstr ""
 "Sistemak ez du konfigurazio zehatzik behar Ekiga-k behar dituen atakak "
 "blokeatzen duen suebaki lokalik ez duzun heinean."
 
-#: ../src/clients/stun.cpp:153
+#: ../src/clients/stun.cpp:165
 msgid ""
 "Ekiga detected Symmetric NAT. The most appropriate method, if your router "
 "does not natively support SIP or H.323, is to forward the required ports to "
@@ -1116,14 +1353,14 @@ msgid ""
 "enabled. If it does not report Cone NAT, then it means that there is a "
 "problem in your forwarding rules."
 msgstr ""
-"Ekiga-k NAT Simetrikoa detektatu du.  Metodo egokiena, zure bideratzaileak "
+"Ekiga-k NAT Simetrikoa detektatu du. Metodo egokiena, zure bideratzaileak "
 "natiboki H.323 ez badu onartzen, beharrezko atakak barneko ordenagailura "
 "bideratzea da NAT Simetrikoa NAT Konora aldatzeko asmoz. Proba hau berriro "
 "exekutatzean (ataka bideratu ondoren) NAT Konoa itzuli beharko luke eta "
 "Ekiga gaitutako STUN euskarriarekin erabiltzen utziko dizu. Ez badu NAT "
 "Konoa itzultzen, bideratzeko arauekin arazoak dituzula adieraziko luke."
 
-#: ../src/clients/stun.cpp:157
+#: ../src/clients/stun.cpp:169
 #, c-format
 msgid ""
 "STUN test result: %s.\n"
@@ -1134,7 +1371,7 @@ msgstr ""
 "\n"
 "Badirudi NAT bideratzailea ez darabilzula. STUN euskarria ez da beharrezkoa."
 
-#: ../src/clients/stun.cpp:162
+#: ../src/clients/stun.cpp:174
 #, c-format
 msgid ""
 "STUN test result: %s.\n"
@@ -1151,112 +1388,32 @@ msgstr ""
 "\n"
 "Gaitu STUN euskarria?"
 
-#: ../src/clients/stun.cpp:170 ../src/clients/stun.cpp:183
+#: ../src/clients/stun.cpp:182 ../src/clients/stun.cpp:195
 msgid "NAT Detection Finished"
 msgstr "NAT ongi detektatu da"
 
-#: ../src/clients/stun.cpp:194
+#: ../src/clients/stun.cpp:206
 msgid "The detection of your NAT type is finished"
 msgstr "NAT motaren detekzioa amaitu da"
 
-#: ../src/clients/stun.cpp:261
-msgid "Unknown NAT"
-msgstr "NAT ezezaguna"
-
-#: ../src/clients/stun.cpp:262
-msgid "Open NAT"
-msgstr "Ireki NATa"
-
-#: ../src/clients/stun.cpp:263
-msgid "Cone NAT"
-msgstr "NAT Konoa"
-
-#: ../src/clients/stun.cpp:264
-msgid "Restricted NAT"
-msgstr "NAT murriztua"
-
-#: ../src/clients/stun.cpp:265
-msgid "Port Restricted NAT"
-msgstr "NAT ataka murriztuekin"
-
-#: ../src/clients/stun.cpp:266
-msgid "Symmetric NAT"
-msgstr "NAT simetrikoa"
-
-#: ../src/clients/stun.cpp:267
-msgid "Symmetric Firewall"
-msgstr "Suebaki simetrikoa"
-
-#: ../src/clients/stun.cpp:268
-msgid "Blocked"
-msgstr "Blokeatuta"
-
-#: ../src/clients/stun.cpp:269
-msgid "Partially Blocked"
-msgstr "Partzialki blokeatuta"
-
-#: ../src/clients/stun.cpp:270
-msgid "No NAT"
-msgstr "Ez dago NAT"
-
-#: ../src/clients/stun.cpp:321
+#: ../src/clients/stun.cpp:310
 msgid "Detection in progress"
 msgstr "Detekzioa lantzen ari da"
 
-#: ../src/clients/stun.cpp:322
+#: ../src/clients/stun.cpp:311
 msgid "Please wait while your type of NAT is being detected."
 msgstr "Itxaron NAT mota detektatzen den bitartean."
 
-#: ../src/clients/stun.cpp:373
-#, c-format
-msgid "Set STUN server to %s (%s)"
-msgstr "Ezarri STUN zerbitzaria %s(r)a (%s)"
-
-#: ../src/clients/stun.cpp:375
-#, c-format
-msgid "Ignored STUN server (%s)"
-msgstr "STUN zerbitzaria ez ikusita (%s)"
-
-#: ../src/components/bonobo.cpp:115
-msgid "Cannot run Ekiga"
-msgstr "Ezin izan da Ekiga exekutatu"
-
-#: ../src/components/bonobo.cpp:115
-msgid ""
-"Ekiga is already running, if you want it to call a given SIP, H.323, or "
-"callto address, please use \"ekiga -c address\"."
-msgstr ""
-"Ekiga martxan dago jada, callto URL jakin bati deitu edo h323 URLa nahi "
-"badiozu, erabili \"ekiga -c URL\"."
-
-#: ../src/components/bonobo.cpp:168
-msgid ""
-"It appears that you do not have ekiga.server installed in a valid location. "
-"Factory mode disabled.\n"
-msgstr ""
-"Badirudi ekiga.server ez daukazula helbide egokian instalatuta. Fabrika-"
-"modua desgaituta.\n"
-
-#: ../src/components/bonobo.cpp:172
-msgid "Error registering Ekiga with the activation service; factory mode disabled.\n"
-msgstr ""
-"Errorea gertatu da Ekiga aktibatze-zerbitzuarekin erregistratzean; fabrika-"
-"modua desgaituta.\n"
-
-#: ../src/components/bonobo.cpp:212
-msgid "Failed to retrieve Ekiga server from activation server\n"
-msgstr "Hut segin du Ekiga zerbitzaria aktibatze-zerbitzaritik berreskuratzean\n"
-
 #: ../src/devices/audio.cpp:285
 msgid "Opening device for playing"
-msgstr "Gailua irekitzen erreproduzitzeko"
+msgstr "Gailua irekitzen, erreproduzitzeko"
 
 #: ../src/devices/audio.cpp:287
 msgid "Opening device for recording"
 msgstr "Gailua irekitzen, grabatzeko"
 
 #: ../src/devices/audio.cpp:298 ../src/devices/audio.cpp:300
-#: ../src/devices/videoinput.cpp:703
+#: ../src/devices/videoinput.cpp:681
 msgid "Failed to open the device"
 msgstr "Ezin izan da gailua ireki"
 
@@ -1267,7 +1424,7 @@ msgid ""
 "check your audio setup, the permissions and that the device is not busy."
 msgstr ""
 "Ezin izan da hautatutako audio-gailua (%s) ireki grabatzeko. Egiaztatu audio-"
-"konfigurazioa, baimenak eta gailua okupatuta ez dagoela."
+"konfigurazioa, baimenak eta gailua lanpetuta ez dagoela."
 
 #: ../src/devices/audio.cpp:300
 #, c-format
@@ -1276,90 +1433,74 @@ msgid ""
 "your audio setup, the permissions and that the device is not busy."
 msgstr ""
 "Ezin izan da hautatutako audio-gailua (%s) ireki erreproduzitzeko. Egiaztatu "
-"audio-konfigurazioa, baimenak eta gailua okupatuta ez dagoela."
+"audio-konfigurazioa, baimenak eta gailua lanpetuta ez dagoela."
 
-#: ../src/devices/audio.cpp:320 ../src/devices/audio.cpp:389
+#: ../src/devices/audio.cpp:316 ../src/devices/audio.cpp:385
 msgid "Cannot use the audio device"
 msgstr "Ezin da audio-gailua erabili"
 
-#: ../src/devices/audio.cpp:320
+#: ../src/devices/audio.cpp:316
 #, c-format
 msgid ""
 "The selected audio device (%s) was successfully opened but it is impossible "
 "to read data from this device. Please check your audio setup."
 msgstr ""
 "Hautatutako audio-gailua (%s) ondo ireki da, baina ezin dira datuak irakurri "
-"gailu horretatik. Egiaztatu audio-konfigurazioa."
+"gailu horretatik. Egiaztatu audioaren konfigurazioa."
 
-#: ../src/devices/audio.cpp:329
+#: ../src/devices/audio.cpp:325
 msgid "Recording your voice"
 msgstr "Zure ahotsa grabatzen"
 
-#: ../src/devices/audio.cpp:368
+#: ../src/devices/audio.cpp:364
 msgid "Recording and playing back"
 msgstr "Grabatzen eta erreproduzitzen"
 
-#: ../src/devices/audio.cpp:389
+#: ../src/devices/audio.cpp:385
 #, c-format
 msgid ""
 "The selected audio device (%s) was successfully opened but it is impossible "
 "to write data to this device. Please check your audio setup."
 msgstr ""
 "Hautatutako audio-gailua (%s) ondo ireki da, baina ezin dira datuak idatzi "
-"gailu horretan. Egiaztatu audio-konfigurazioa."
+"gailu horretan. Egiaztatu audioaren konfigurazioa."
 
-#: ../src/devices/audio.cpp:485 ../src/devices/audio.cpp:486
-#: ../src/devices/videoinput.cpp:310 ../src/devices/videoinput.cpp:580
-#: ../src/endpoints/ekiga.cpp:298 ../src/endpoints/ekiga.cpp:300
-#: ../src/endpoints/ekiga.cpp:302 ../src/endpoints/pcss.cpp:239
-#: ../src/gui/druid.cpp:1840 ../src/gui/druid.cpp:1854
-#: ../src/gui/druid.cpp:1914
+#: ../src/devices/audio.cpp:481 ../src/devices/audio.cpp:482
+#: ../src/devices/videoinput.cpp:306 ../src/devices/videoinput.cpp:555
+#: ../src/endpoints/ekiga.cpp:270 ../src/endpoints/ekiga.cpp:272
+#: ../src/endpoints/ekiga.cpp:274 ../src/endpoints/pcss.cpp:175
+#: ../src/gui/druid.cpp:1593 ../src/gui/druid.cpp:1605
 msgid "No device found"
 msgstr "Ez da gailurik aurkitu"
 
-#: ../src/devices/audio.cpp:504
+#: ../src/devices/audio.cpp:500
 #, c-format
 msgid ""
 "Ekiga is now recording from %s and playing back to %s. Please say \"1, 2, 3, "
-"Ekiga rocks!\" in your microphone. You should hear yourself back into the "
-"speakers with a four-second delay."
+"Ekiga rocks!\" in your microphone. You should hear yourself from the "
+"speakers after a four-second delay."
 msgstr ""
-"Ekiga orain %s(e)tik grabatzen ari da eta %s(e)n erreproduzitzen. Esan \"1 2 "
-"3\" zure mikrofonoan eta 4 segunduren barruan zeure ahotsa entzun beharko "
+"Ekiga orain %s(e)tik grabatzen ari da eta %s(e)n erreproduzitzen. Esan \"1, "
+"2, 3\" zure mikrofonoan eta 4 segunduren barruan zeure ahotsa entzun beharko "
 "zenuke bozgorailuetan."
 
-#: ../src/devices/videoinput.cpp:319
-#, c-format
-msgid "Opening video device %s with plugin %s"
-msgstr "%s bideo-gailua %s plugin-arekin irekitzen"
-
-#: ../src/devices/videoinput.cpp:347
-#, c-format
-msgid "Successfully opened video device %s, channel %d"
-msgstr "Ondo ireki da %s bideo-gailua, %d kanala"
-
-#: ../src/devices/videoinput.cpp:358
+#: ../src/devices/videoinput.cpp:338
 #, c-format
 msgid "Error while opening video device %s"
 msgstr "Errorea '%s' bideo-gailua irekitzean"
 
-#. Translators: Do not translate MovingLogo and Picture
-#: ../src/devices/videoinput.cpp:362
+#: ../src/devices/videoinput.cpp:341
 msgid ""
 "A moving logo will be transmitted during calls. Notice that you can always "
 "transmit a given image or the moving logo by choosing \"Picture\" as video "
-"plugin and \"MovingLogo\" or \"StaticPicture\" as device."
+"plugin and \"Moving logo\" or \"Static picture\" as device."
 msgstr ""
 "Ekiga-ren logotipo mugikorra transmitituko da deietan zehar. Kontuan izan "
 "beti transmiti dezakezula irudi jakin bat edo mugitzen ari den Ekiga-ren "
-"logotipoa \"Picture\" bideo-plugin gisa eta \"MovingLogo\" edo "
-"\"StaticPicture\" gailu gisa aukeratuz."
+"logotipoa \"Irudia\" bideo-plugin gisa eta \"Logotipo animatua\" edo \"Irudi "
+"estatikoa\" gailu gisa aukeratuz."
 
-#: ../src/devices/videoinput.cpp:364
-msgid "Couldn't open the video device"
-msgstr "Ezin izan da bideo-gailua ireki"
-
-#: ../src/devices/videoinput.cpp:368
+#: ../src/devices/videoinput.cpp:345
 msgid ""
 "There was an error while opening the device. Please check your permissions "
 "and make sure that the appropriate driver is loaded."
@@ -1367,15 +1508,15 @@ msgstr ""
 "Errorea gertatu da gailua irakurtzean. Egiaztatu baimenak eta ziurtatu "
 "kontrolatzaile egokia kargatuta dagoela."
 
-#: ../src/devices/videoinput.cpp:372 ../src/devices/videoinput.cpp:681
+#: ../src/devices/videoinput.cpp:349 ../src/devices/videoinput.cpp:656
 msgid "Your video driver doesn't support the requested video format."
 msgstr "Zure bideo-kontrolatzaileak ez du eskatutako bideo-formatua onartzen."
 
-#: ../src/devices/videoinput.cpp:376
+#: ../src/devices/videoinput.cpp:353
 msgid "Could not open the chosen channel."
 msgstr "Ezin izan da aukeratutako kanala ireki."
 
-#: ../src/devices/videoinput.cpp:380
+#: ../src/devices/videoinput.cpp:357
 msgid ""
 "Your driver doesn't seem to support any of the color formats supported by "
 "Ekiga.\n"
@@ -1384,26 +1525,22 @@ msgid ""
 msgstr ""
 "Badirudi zure kontrolatzaileak Ekiga-k onartzen dituen kolore-formatuak ez "
 "dituela onartzen.\n"
-" Egiaztatu zure nukleo-kontrolatzailearen dokumentazioa zein paleta onartzen "
+"Egiaztatu zure nukleo-kontrolatzailearen dokumentazioa zein paleta onartzen "
 "den zehazteko."
 
-#: ../src/devices/videoinput.cpp:384
+#: ../src/devices/videoinput.cpp:361
 msgid "Error while setting the frame rate."
 msgstr "Errorea gertatu da marko-abiadura ezartzean."
 
-#: ../src/devices/videoinput.cpp:388
+#: ../src/devices/videoinput.cpp:365
 msgid "Error while setting the frame size."
 msgstr "Errorea gertatu da marko-tamaina ezartzean."
 
-#: ../src/devices/videoinput.cpp:428
-msgid "Opened the video device using the \"Picture\" video plugin"
-msgstr "Bideo gailua irekita, \"Irudia\" plugin-a erabiliz"
-
-#: ../src/devices/videoinput.cpp:581
+#: ../src/devices/videoinput.cpp:556
 msgid "Picture"
 msgstr "Irudia"
 
-#: ../src/devices/videoinput.cpp:593
+#: ../src/devices/videoinput.cpp:568
 #, c-format
 msgid ""
 "Ekiga is now testing the %s video device. If you experience machine crashes, "
@@ -1412,424 +1549,267 @@ msgstr ""
 "Ekiga orain %s bideo-gailua probatzen ari da. Makina hondatu egiten bada, "
 "eman errorearen berri bideo-kontrolatzailearen egileari."
 
-#: ../src/devices/videoinput.cpp:655
+#: ../src/devices/videoinput.cpp:630
 #, c-format
 msgid "Test %d done"
-msgstr "%d proba eginda"
+msgstr "%d. proba eginda"
 
-#: ../src/devices/videoinput.cpp:657
+#: ../src/devices/videoinput.cpp:632
 #, c-format
 msgid "Test %d failed"
-msgstr "Huts egin du %d probak"
+msgstr "Huts egin du %d. probak"
 
-#: ../src/devices/videoinput.cpp:676
+#: ../src/devices/videoinput.cpp:651
 #, c-format
 msgid "Error while opening %s."
 msgstr "Errorea %s irekitzean."
 
-#: ../src/devices/videoinput.cpp:685
+#: ../src/devices/videoinput.cpp:660
 msgid "Could not open the chosen channel with the chosen video format."
 msgstr "Ezin izan da aukeratutako kanala aukeratutako bideo-formatuan ireki."
 
-#: ../src/devices/videoinput.cpp:689
+#: ../src/devices/videoinput.cpp:664
 msgid "Your driver doesn't support any of the color formats tried by Ekiga"
-msgstr "Zure kontrolatzaileak ez ditu Ekiga-k saiatu den kolore formaturik onartzen"
+msgstr "Zure kontrolatzaileak ez ditu onartzen Ekiga-k saiatutako kolore formatuak"
 
-#: ../src/devices/videoinput.cpp:693
+#: ../src/devices/videoinput.cpp:668
 msgid "Error with the frame rate."
-msgstr "Errorea gertatu da marko-abiadurarekin."
+msgstr "Errorea gertatu da fotograma-tasarekin."
 
-#: ../src/devices/videoinput.cpp:697
+#: ../src/devices/videoinput.cpp:672
 msgid "Error with the frame size."
-msgstr "Errorea gertatu da marko-tamainarekin."
+msgstr "Errorea gertatu da fotograma-tamainarekin."
 
-#: ../src/endpoints/accountshandler.cpp:186
-#: ../src/endpoints/accountshandler.cpp:270
-msgid "Registering"
-msgstr "Erregistratzen"
+#: ../src/devices/fakevideoinput.cpp:56
+msgid "Moving logo"
+msgstr "Logotipo animatua"
 
-#: ../src/endpoints/accountshandler.cpp:200
-#, c-format
-msgid "Registration of %s to %s failed"
-msgstr "%2$s(e)n %1$s erregistratzeak huts egin du"
+#: ../src/devices/fakevideoinput.cpp:57
+msgid "Static picture"
+msgstr "Irudi estatikoa"
 
-#: ../src/endpoints/accountshandler.cpp:211
-#: ../src/endpoints/accountshandler.cpp:323 ../src/endpoints/sip.cpp:308
-#: ../src/endpoints/sip.cpp:320
-msgid "Registration failed"
-msgstr "Huts egin du erregistratzean"
+#: ../src/endpoints/h323.cpp:327
+msgid "Duplicate alias"
+msgstr "Bikoiztu aliasa"
 
-#: ../src/endpoints/accountshandler.cpp:225
-#: ../src/endpoints/accountshandler.cpp:338
-msgid "Unregistering"
-msgstr "Erregistroa kentzen"
+#: ../src/endpoints/h323.cpp:330
+msgid "Bad username/password"
+msgstr "Okerreko erabiltzaile-izena edo pasahitza"
 
-#: ../src/endpoints/accountshandler.cpp:294
-msgid "Gatekeeper registration failed: duplicate alias"
-msgstr "Ezin izan da Gatekeeper-en erregistratu: aliasa bikoiztuta"
+#: ../src/endpoints/h323.cpp:333
+msgid "Transport error"
+msgstr "Garraioaren errorea"
 
-#: ../src/endpoints/accountshandler.cpp:298
-msgid "Gatekeeper registration failed: bad username/password"
-msgstr "Ezin izan da Gatekeeper-en erregistratu: erabiltzaile-izena/pasahitza okerra"
+#: ../src/endpoints/h323.cpp:344 ../src/endpoints/h323.cpp:349
+#: ../src/endpoints/sip.cpp:403 ../src/endpoints/sip.cpp:554
+msgid "Failed"
+msgstr "Huts egin du"
 
-#: ../src/endpoints/accountshandler.cpp:301
-msgid "Gatekeeper registration failed: transport error"
-msgstr "Ezin izan da Gatekeeper-en erregistratu: garraioko errorea"
+#: ../src/endpoints/manager.cpp:621 ../src/gui/main.cpp:1973
+msgid "Call"
+msgstr "Deitu"
 
-#: ../src/endpoints/accountshandler.cpp:304
-#: ../src/endpoints/accountshandler.cpp:309
-msgid "Gatekeeper registration failed"
-msgstr "Ezin izan da Gatekeeper-en erregistratu:"
+#: ../src/endpoints/manager.cpp:636
+msgid "Message"
+msgstr "Mezua"
 
-#: ../src/endpoints/accountshandler.cpp:312 ../src/endpoints/sip.cpp:216
-#, c-format
-msgid "Registered to %s"
-msgstr "%s(e)n erregistratzen"
+#: ../src/endpoints/manager.cpp:1527
+msgid "Could not send message"
+msgstr "Ezin izan da mezua bidali"
 
-#: ../src/endpoints/accountshandler.cpp:322 ../src/endpoints/sip.cpp:222
-msgid "Registered"
-msgstr "Erregistratuta"
-
-#: ../src/endpoints/accountshandler.cpp:352 ../src/endpoints/sip.cpp:233
-msgid "Unregistered"
-msgstr "Erregistroa ezabatuta"
-
-#: ../src/endpoints/ekiga.cpp:127
-msgid "Answering call..."
-msgstr "Deiak erantzuten..."
-
-#: ../src/endpoints/ekiga.cpp:152
-msgid "Disconnecting..."
-msgstr "Deskonektatzen..."
-
-#: ../src/endpoints/ekiga.cpp:160
-msgid "Hanging up..."
-msgstr "Esekitzen..."
-
-#: ../src/endpoints/ekiga.cpp:165
-msgid "Rejecting call..."
-msgstr "Deiak baztertzen..."
-
-#: ../src/endpoints/ekiga.cpp:170
-msgid "Clearing call..."
-msgstr "Deiak garbitzen..."
-
-#: ../src/endpoints/ekiga.cpp:470
-#, c-format
-msgid "Started Ekiga %d.%d.%d for user %s"
-msgstr "Ekiga %d.%d.%d abiarazi da %s erabiltzailearentzako"
-
-#: ../src/endpoints/manager.cpp:661
-#, c-format
-msgid "Forwarding call to %s"
-msgstr "Birbidali deia %s-(e)ra"
-
-#. Update the log and status bar
-#: ../src/endpoints/manager.cpp:819
-#, c-format
-msgid "Call from %s"
-msgstr "%s-(e)tik deia"
-
-#: ../src/endpoints/manager.cpp:833
-msgid "Rejecting incoming call"
-msgstr "Sarrerako deia baztertzea"
-
-#: ../src/endpoints/manager.cpp:835
-#, c-format
-msgid "Rejecting incoming call from %s"
-msgstr "%s(e)tik sartzen diren deiak baztertzen"
-
-#: ../src/endpoints/manager.cpp:841
-msgid "Forwarding incoming call"
-msgstr "Sarrerako deiak birbideratzen"
-
-#: ../src/endpoints/manager.cpp:843
-#, c-format
-msgid "Forwarding incoming call from %s to %s"
-msgstr "Sarrerako deia %s(e)tik %s(e)ra birbidaltzen"
-
-#: ../src/endpoints/manager.cpp:849
-msgid "Auto-Answering incoming call"
-msgstr "Sarrerako deiak automatikoki erantzutea"
-
-#: ../src/endpoints/manager.cpp:850
-#, c-format
-msgid "Auto-Answering incoming call from %s"
-msgstr "%s(e)ko sarrerako deiak automatikoki erantzutea"
-
-#: ../src/endpoints/manager.cpp:999
-#, c-format
-msgid "Connected with %s using %s"
-msgstr "%s(r)ekin konektatuta %s erabiliz"
-
-#: ../src/endpoints/manager.cpp:1001
-#, c-format
-msgid "Connected with %s"
-msgstr "%s(r)ekin konektatuta"
-
-#: ../src/endpoints/manager.cpp:1101 ../src/gui/main.cpp:1565
-msgid "Standby"
-msgstr "Egonean"
-
-#: ../src/endpoints/manager.cpp:1167
+#: ../src/endpoints/opal-call.cpp:287
 msgid "Local user cleared the call"
 msgstr "Erabiltzaile lokalak deia garbitu du"
 
-#: ../src/endpoints/manager.cpp:1170 ../src/endpoints/manager.cpp:1173
+#: ../src/endpoints/opal-call.cpp:290 ../src/endpoints/opal-call.cpp:293
 msgid "Local user rejected the call"
 msgstr "Erabiltzaile lokalak deia baztertu du"
 
-#: ../src/endpoints/manager.cpp:1176
+#: ../src/endpoints/opal-call.cpp:296
 msgid "Remote user cleared the call"
 msgstr "Urruneko erabiltzaileak deia garbitu du"
 
-#: ../src/endpoints/manager.cpp:1179
+#: ../src/endpoints/opal-call.cpp:299
 msgid "Remote user rejected the call"
 msgstr "Urruneko erabiltzaileak deia baztertu du"
 
-#: ../src/endpoints/manager.cpp:1182
-msgid "Call not answered in the required time"
-msgstr "Behar zen denboran erantzun ez den deia"
-
-#: ../src/endpoints/manager.cpp:1185
+#: ../src/endpoints/opal-call.cpp:302
 msgid "Remote user has stopped calling"
 msgstr "Urruneko erabiltzaileak deitzeari utzi dio"
 
-#: ../src/endpoints/manager.cpp:1188
+#: ../src/endpoints/opal-call.cpp:305
 msgid "Abnormal call termination"
 msgstr "Ohiz kanpoko dei-amaiera"
 
-#: ../src/endpoints/manager.cpp:1191
+#: ../src/endpoints/opal-call.cpp:308
 msgid "Could not connect to remote host"
 msgstr "Ezin izan da urruneko ostalariarekin konektatu"
 
-#: ../src/endpoints/manager.cpp:1194
+#: ../src/endpoints/opal-call.cpp:311
 msgid "The Gatekeeper cleared the call"
 msgstr "Gatekeeper-ek deia garbitu du"
 
-#: ../src/endpoints/manager.cpp:1197 ../src/endpoints/urlhandler.cpp:535
-#: ../src/endpoints/urlhandler.cpp:536
+#: ../src/endpoints/opal-call.cpp:314
 msgid "User not found"
 msgstr "Erabiltzailea ez da aurkitu"
 
-#: ../src/endpoints/manager.cpp:1200
+#: ../src/endpoints/opal-call.cpp:317
 msgid "Insufficient bandwidth"
 msgstr "Banda-zabalera ez da nahikoa"
 
-#: ../src/endpoints/manager.cpp:1203
+#: ../src/endpoints/opal-call.cpp:320
 msgid "No common codec"
 msgstr "Ohiko kodekik ez"
 
-#: ../src/endpoints/manager.cpp:1206
+#: ../src/endpoints/opal-call.cpp:323
 msgid "Call forwarded"
 msgstr "Deia birbidali da"
 
-#: ../src/endpoints/manager.cpp:1209
+#: ../src/endpoints/opal-call.cpp:326
 msgid "Security check failed"
-msgstr "Ezin izan da segurtasun-egiaztapena egin"
+msgstr "Huts egin du segurtasun egiaztapenak"
 
-#: ../src/endpoints/manager.cpp:1212
+#: ../src/endpoints/opal-call.cpp:329
 msgid "Local user is busy"
-msgstr "Erabiltzaile lokala okupatuta dago"
+msgstr "Erabiltzaile lokala lanpetuta dago"
 
-#: ../src/endpoints/manager.cpp:1215 ../src/endpoints/manager.cpp:1221
+#: ../src/endpoints/opal-call.cpp:332 ../src/endpoints/opal-call.cpp:338
 msgid "Congested link to remote party"
-msgstr "Urruneko erabiltzailerako esteka okupatuta"
+msgstr "Urruneko erabiltzailearen esteka lanpetuta"
 
-#: ../src/endpoints/manager.cpp:1218
+#: ../src/endpoints/opal-call.cpp:335
 msgid "Remote user is busy"
-msgstr "Urruneko erabiltzailea okupatuta dago"
+msgstr "Urruneko erabiltzailea lanpetuta dago"
 
-#: ../src/endpoints/manager.cpp:1224
+#: ../src/endpoints/opal-call.cpp:341
 msgid "Remote host is offline"
 msgstr "Urruneko ostalaria lineaz kanpo dago"
 
-#: ../src/endpoints/manager.cpp:1229
-msgid "Remote user is unreachable"
+#: ../src/endpoints/opal-call.cpp:348
+msgid "Remote user is not available"
 msgstr "Urruneko erabiltzailea ezin da atzitu"
 
-#: ../src/endpoints/manager.cpp:1233
+#: ../src/endpoints/opal-call.cpp:350
+msgid "Local user is not available"
+msgstr "Lokaleko erabiltzailea ezin da atzitu"
+
+#: ../src/endpoints/opal-call.cpp:363
 msgid "Call completed"
 msgstr "Deia amaituta"
 
-#: ../src/endpoints/manager.cpp:1604
-msgid "Error while starting the listener for the H.323 protocol"
-msgstr "Errorea gertatu da H.323 protokoloaren entzungailua abiaraztean"
-
-#: ../src/endpoints/manager.cpp:1604
-msgid ""
-"You will not be able to receive incoming H.323 calls. Please check that no "
-"other program is already running on the port used by Ekiga."
-msgstr ""
-"Ezingo dituzu sarrerako H.323 deiak jaso. Egiaztatu beste programarik ez "
-"dagoela martxan Ekiga-k erabiltzen duen atakan."
-
-#: ../src/endpoints/manager.cpp:1621
-msgid "Error while starting the listener for the SIP protocol"
-msgstr "Errorea gertatu da SIP protokoloaren entzungailua abiaraztean"
-
-#: ../src/endpoints/manager.cpp:1621
-msgid ""
-"You will not be able to receive incoming SIP calls. Please check that no "
-"other program is already running on the port used by Ekiga."
-msgstr ""
-"Ezingo dituzu sarrerako SIP deiak jaso. Egiaztatu beste programarik ez "
-"dagoela martxan Ekiga-k erabiltzen duen atakan."
-
-#: ../src/endpoints/manager.cpp:1868
-#, c-format
-msgid "Opened codec %s for transmission"
-msgstr "Transmisiorako %s kodeka irekita"
-
-#: ../src/endpoints/manager.cpp:1879
-#, c-format
-msgid "Closed codec %s which was opened for transmission"
-msgstr "%s kodeka itxita, transmisioarako ireki dena"
-
-#: ../src/endpoints/manager.cpp:1893
-#, c-format
-msgid "Opened codec %s for reception"
-msgstr "Hartzeko %s kodeka irekita"
-
-#: ../src/endpoints/manager.cpp:1904
-#, c-format
-msgid "Closed codec %s which was opened for reception"
-msgstr "%s kodeka itxita, hartzeko ireki dena"
-
-#: ../src/endpoints/manager.cpp:2050
-#, c-format
-msgid "A:%.2f/%.2f   V:%.2f/%.2f"
-msgstr "A:%.2f/%.2f   V:%.2f/%.2f"
-
-#: ../src/endpoints/pcss.cpp:264
-#, c-format
-msgid "Opened %s for recording with plugin %s"
-msgstr "%s irekita (%s plugin-arekin), grabatzeko"
-
-#: ../src/endpoints/pcss.cpp:265
-#, c-format
-msgid "Opened %s for playing with plugin %s"
-msgstr "%s irekita (%s plugin-arekin), erreproduzitzeko"
-
-#: ../src/endpoints/pcss.cpp:283
+#: ../src/endpoints/pcss.cpp:212
 msgid "Could not open audio channel for audio transmission"
 msgstr "Ezin izan da audio-kanala ireki audio-transmisiorako"
 
-#: ../src/endpoints/pcss.cpp:283
+#: ../src/endpoints/pcss.cpp:212
 msgid ""
-"An error occured while trying to record from the soundcard for the audio "
+"An error occurred while trying to record from the soundcard for the audio "
 "transmission. Please check that your soundcard is not busy and that your "
 "driver supports full-duplex.\n"
 "The audio transmission has been disabled."
 msgstr ""
 "Errorea gertatu da soinu-txarteletik audio-transmisiorako grabatzen "
-"saiatzean.Egiaztatu zure soinu-txartela ez dagoela okupatuta eta zure "
+"saiatzean. Egiaztatu zure soinu-txartela ez dagoela lanpetuta eta zure "
 "kontrolatzaileak erabateko duplexa onartzen duela.\n"
 "Audio-transmisioa desgaitu egin da."
 
-#: ../src/endpoints/pcss.cpp:285
+#: ../src/endpoints/pcss.cpp:214
 msgid "Could not open audio channel for audio reception"
 msgstr "Ezin izan da audio-kanala ireki audioa jasotzeko"
 
-#: ../src/endpoints/pcss.cpp:285
+#: ../src/endpoints/pcss.cpp:214
 msgid ""
-"An error occured while trying to play audio to the soundcard for the audio "
+"An error occurred while trying to play audio to the soundcard for the audio "
 "reception. Please check that your soundcard is not busy and that your driver "
 "supports full-duplex.\n"
 "The audio reception has been disabled."
 msgstr ""
 "Errorea gertatu da audioa jasotzeko soinu-txarteletik audioa erreproduzitzen "
-"saiatzean. Egiaztatu zure soinu-txartela ez dagoela okupatuta eta zure "
+"saiatzean. Egiaztatu zure soinu-txartela ez dagoela lanpetuta eta zure "
 "kontrolatzaileak erabateko duplexa onartzen duela.\n"
 "Audioa jasotzea desgaitu egin da."
 
-#: ../src/endpoints/sip.cpp:279
+#: ../src/endpoints/sip.cpp:484
 msgid "Bad request"
 msgstr "Eskaera okerra"
 
-#: ../src/endpoints/sip.cpp:283
+#: ../src/endpoints/sip.cpp:488
 msgid "Payment required"
 msgstr "Ordaindu egin behar da"
 
-#: ../src/endpoints/sip.cpp:288
+#: ../src/endpoints/sip.cpp:493
 msgid "Forbidden"
 msgstr "Debekatuta"
 
-#: ../src/endpoints/sip.cpp:292
+#: ../src/endpoints/sip.cpp:497
 msgid "Timeout"
 msgstr "Denbora-muga"
 
-#: ../src/endpoints/sip.cpp:296
+#: ../src/endpoints/sip.cpp:501
 msgid "Conflict"
 msgstr "Gatazka"
 
-#: ../src/endpoints/sip.cpp:300
+#: ../src/endpoints/sip.cpp:505
 msgid "Temporarily unavailable"
 msgstr "Aldi baterako ez dago erabilgarri"
 
-#: ../src/endpoints/sip.cpp:304
+#: ../src/endpoints/sip.cpp:509
 msgid "Not Acceptable"
 msgstr "Ezin da onartu"
 
-#: ../src/endpoints/sip.cpp:313
-#, c-format
-msgid "Registration failed: %s"
-msgstr "Huts egin du erregistratzean: %s"
+#: ../src/endpoints/sip.cpp:792
+msgid "Offline"
+msgstr "Lineaz kanpo"
 
-#: ../src/endpoints/sip.cpp:325
-#, c-format
-msgid "Unregistration failed: %s"
-msgstr "Huts egin du erregistroa ezabatzean: %s"
+#: ../src/endpoints/sip.cpp:796 ../src/gui/main.cpp:900
+msgid "Online"
+msgstr "Linean"
 
-#: ../src/endpoints/sip.cpp:332
-msgid "Unregistration failed"
-msgstr "Huts egin du erregistroa ezabatzean"
+#: ../src/endpoints/sip.cpp:801 ../src/gui/main.cpp:901
+msgid "Away"
+msgstr "Aldendua"
 
-#: ../src/endpoints/sip.cpp:529
-msgid "Error: User not found"
-msgstr "Errorea: ez da erabiltzailea aurkitu"
+#: ../src/endpoints/sip.cpp:807 ../src/gui/main.cpp:902
+msgid "Do Not Disturb"
+msgstr "Ez molestatu"
 
-#: ../src/endpoints/sip.cpp:533
-msgid "Error: User offline"
-msgstr "Errorea: erabiltzailea lineaz kanpo"
+#: ../src/endpoints/sip.cpp:811 ../src/gui/main.cpp:903
+msgid "Free For Chat"
+msgstr "Berriketarako libre"
 
-#: ../src/endpoints/sip.cpp:538
-msgid "Error: Forbidden"
-msgstr "Errorea: debekatuta"
-
-#: ../src/endpoints/sip.cpp:542
-msgid "Error: Timeout"
-msgstr "Errorea: denbora-muga"
-
-#: ../src/endpoints/sip.cpp:546 ../src/gui/chat.cpp:1031
-msgid "Error: Failed to transmit message"
-msgstr "Errorea: huts egin du mezua transmititzean"
-
-#: ../src/endpoints/urlhandler.cpp:441
+#: ../src/endpoints/urlhandler.cpp:424
 msgid "Invalid URL handler"
 msgstr "URL kudeatzaile baliogabea"
 
-#: ../src/endpoints/urlhandler.cpp:441
+#: ../src/endpoints/urlhandler.cpp:424
 msgid ""
-"Please specify a valid URL handler. Currently both h323: and callto: are "
+"Please specify a valid URL handler. Currently h323:, callto: and sip: are "
 "supported."
-msgstr "Adierazi baliozko URL kudeatzailea. Unean h323: eta callto: onartzen dira."
+msgstr ""
+"Adierazi baliozko URL kudeatzailea. Unean h323:, callto: eta sip: onartzen "
+"dira."
 
-#: ../src/endpoints/urlhandler.cpp:469
+#: ../src/endpoints/urlhandler.cpp:436
 #, c-format
 msgid "Calling %s"
 msgstr "%s(r)i deika"
 
-#: ../src/endpoints/urlhandler.cpp:472
+#: ../src/endpoints/urlhandler.cpp:439
 #, c-format
 msgid "Transferring call to %s"
 msgstr "Deia %s(r)i transferitzen"
 
-#: ../src/endpoints/urlhandler.cpp:541 ../src/endpoints/urlhandler.cpp:542
+#.
+#. call_history_item = gm_calls_history_item_new ();
+#. call_history_item->type = PLACED_CALL;
+#. call_history_item->url = g_strdup (call_address);
+#. call_history_item->duration = g_strdup ("0.00");
+#. FIXME
+#: ../src/endpoints/urlhandler.cpp:482
 msgid "Failed to call user"
 msgstr "Huts egin du erabiltzaileari deitzean"
 
-#: ../src/gui/accounts.cpp:408
+#: ../src/gui/accounts.cpp:407
 msgid "Edit the Account Information"
 msgstr "Editatu kontuaren informazioa"
 
@@ -1838,536 +1818,148 @@ msgstr "Editatu kontuaren informazioa"
 msgid "Account Name:"
 msgstr "Kontuaren izena:"
 
-#: ../src/gui/accounts.cpp:443
+#: ../src/gui/accounts.cpp:445
 msgid "Protocol:"
 msgstr "Protokoloa:"
 
-#: ../src/gui/accounts.cpp:464 ../src/gui/accounts.cpp:943
+#: ../src/gui/accounts.cpp:469 ../src/gui/accounts.cpp:1003
 msgid "Registrar:"
 msgstr "Erregistroa:"
 
-#: ../src/gui/accounts.cpp:466 ../src/gui/accounts.cpp:950
+#: ../src/gui/accounts.cpp:471 ../src/gui/accounts.cpp:1012
 msgid "Gatekeeper:"
 msgstr "Gatekeeper:"
 
 #. User
-#: ../src/gui/accounts.cpp:478
+#: ../src/gui/accounts.cpp:485
 msgid "User:"
 msgstr "Erabiltzailea:"
 
 #. Password
-#: ../src/gui/accounts.cpp:491
+#: ../src/gui/accounts.cpp:500
 msgid "Password:"
 msgstr "Pasahitza:"
 
 #. Advanced Options
-#: ../src/gui/accounts.cpp:506
+#: ../src/gui/accounts.cpp:517
 msgid "More _Options"
 msgstr "_Aukera gehiago"
 
-#: ../src/gui/accounts.cpp:518
+#: ../src/gui/accounts.cpp:531
 msgid "Authentication Login:"
 msgstr "Autentifikatzeko izena:"
 
-#: ../src/gui/accounts.cpp:536 ../src/gui/accounts.cpp:944
-msgid "Realm/Domain:"
-msgstr "Domeinua:"
-
-#: ../src/gui/accounts.cpp:538 ../src/gui/accounts.cpp:951
+#: ../src/gui/accounts.cpp:553 ../src/gui/accounts.cpp:1013
 msgid "Gatekeeper ID:"
 msgstr "Gatekeeper-en IDa:"
 
 #. Timeout
-#: ../src/gui/accounts.cpp:550
+#: ../src/gui/accounts.cpp:577
 msgid "Registration Timeout:"
 msgstr "Erregistratzeko denbora-muga:"
 
-#. SIP
-#. H323
-#: ../src/gui/accounts.cpp:654 ../src/gui/accounts.cpp:656
-#: ../src/gui/addressbook.cpp:3105 ../src/gui/addressbook.cpp:3584
-msgid "Missing information"
-msgstr "Informazioa falta da"
-
-#: ../src/gui/accounts.cpp:654
-msgid "Please make sure to provide a valid account name, host name, and user name."
-msgstr "Ziurtatu zaitez kontu, osatalari eta erabiltzailearen izena emateaz."
-
-#: ../src/gui/accounts.cpp:656
-msgid ""
-"Please make sure to provide a valid account name, host name and registration "
-"timeout."
-msgstr "Ziurtatu zaitez kontu, osatalari eta erregistroaren izena emateaz."
+#. !valid
+#: ../src/gui/accounts.cpp:685
+msgid "Missing or wrong information"
+msgstr "Informazioa falta edo okerrekoa da"
 
 #: ../src/gui/accounts.cpp:686
+msgid ""
+"Please make sure to provide at least an <b>account name</b>, a <b>username</"
+"b> and a valid <b>timeout in seconds</b>."
+msgstr ""
+"Ziurtatu zaitez gutxienez <b>kontuaren izena</b>, <b>erabiltzaile-izena</b> "
+"eta baliozko <b>denbora-muga (segundotan)</b> emateaz."
+
+#: ../src/gui/accounts.cpp:716
 #, c-format
 msgid "Are you sure you want to delete account %s?"
 msgstr "Ziur zaude %s kontua ezabatu nahi duzula?"
 
-#: ../src/gui/accounts.cpp:1440
+#: ../src/gui/accounts.cpp:804
+msgid "Registered"
+msgstr "Erregistratuta"
+
+#: ../src/gui/accounts.cpp:808
+msgid "Unregistered"
+msgstr "Erregistroa ezabatuta"
+
+#: ../src/gui/accounts.cpp:812
+msgid "Could not unregister"
+msgstr "Ezin izan da erregistroa ezabatu"
+
+#: ../src/gui/accounts.cpp:818
+msgid "Could not register"
+msgstr "Ezin izan da erregistratu"
+
+#: ../src/gui/accounts.cpp:824
+msgid "Processing..."
+msgstr "Prozesatzen..."
+
+#: ../src/gui/accounts.cpp:1004
+msgid "Realm/Domain:"
+msgstr "Domeinua:"
+
+#: ../src/gui/accounts.cpp:1531
 msgid "Account Name"
 msgstr "Kontuaren izena"
 
-#: ../src/gui/accounts.cpp:1441
+#: ../src/gui/accounts.cpp:1532
 msgid "Protocol"
 msgstr "Protokoloa"
 
-#: ../src/gui/accounts.cpp:1450
+#: ../src/gui/accounts.cpp:1541
 msgid "Voice Mails"
 msgstr "Ahotsezko mezuak"
 
-#: ../src/gui/accounts.cpp:1451
+#: ../src/gui/accounts.cpp:1542
 msgid "Status"
 msgstr "Egoera"
 
-#: ../src/gui/accounts.cpp:1462
+#: ../src/gui/accounts.cpp:1553 ../src/gui/accounts.cpp:1588
 msgid "Accounts"
 msgstr "Kontuak"
 
-#: ../src/gui/accounts.cpp:1498 ../src/gui/preferences.cpp:481
-#: ../src/gui/preferences.cpp:824
+#: ../src/gui/accounts.cpp:1591 ../src/gui/preferences.cpp:522
 msgid "A"
 msgstr "A"
 
-#: ../src/gui/accounts.cpp:1598
+#: ../src/gui/accounts.cpp:1691
 msgid "_Default"
 msgstr "_Lehenetsia"
 
-#: ../src/gui/addressbook.cpp:817
-msgid "Contact collision"
-msgstr "Kontaktuen talka"
-
-#: ../src/gui/addressbook.cpp:819
-#, c-format
-msgid ""
-"Another contact with the same speed dial already exists in your address "
-"book:\n"
-"\n"
-"<b>Name</b>: %s\n"
-"<b>URL</b>: %s\n"
-"<b>Speed Dial</b>: %s\n"
-msgstr ""
-"Markatze bizkor bera duen beste kontaktu bat dago helbide-liburuan:\n"
-"\n"
-"<b>Izena</b>: %s\n"
-"<b>URLa</b>: %s\n"
-"<b>Markatze bizkorra</b>: %s\n"
-
-#: ../src/gui/addressbook.cpp:819 ../src/gui/addressbook.cpp:821
-#: ../src/gui/druid.cpp:1976 ../src/gui/preferences.cpp:937
-msgid "None"
-msgstr "Bat ere ez"
-
-#: ../src/gui/addressbook.cpp:821
-#, c-format
-msgid ""
-"Another contact with similar information already exists in your address "
-"book:\n"
-"\n"
-"<b>Name</b>: %s\n"
-"<b>URL</b>: %s\n"
-"<b>Speed Dial</b>: %s\n"
-"\n"
-"Do you still want to add the contact?"
-msgstr ""
-"Markatze bizkor bera duen beste kontaktu bat dago helbide-liburuan:\n"
-"\n"
-"<b>Izena</b>: %s\n"
-"<b>URLa</b>: %s\n"
-"<b>Markatze bizkorra</b>: %s\n"
-"\n"
-"Hala ere kontaktua gehitu nahi duzu?"
-
-#. Translators: This is "S" as in "Status"
-#: ../src/gui/addressbook.cpp:989
-msgid "S"
-msgstr "E"
-
-#: ../src/gui/addressbook.cpp:1000 ../src/gui/callshistory.cpp:790
-#: ../src/gui/preferences.cpp:495
-msgid "Name"
-msgstr "Izena"
-
-#: ../src/gui/addressbook.cpp:1015
-msgid "Comment"
-msgstr "Iruzkina"
-
-#: ../src/gui/addressbook.cpp:1030
-msgid "Software"
-msgstr "Softwarea"
-
-#: ../src/gui/addressbook.cpp:1044
-msgid "VoIP URL"
-msgstr "VoIP URLa"
-
-#: ../src/gui/addressbook.cpp:1060
-msgid "E-Mail"
-msgstr "Helb. elek."
-
-#: ../src/gui/addressbook.cpp:1074
-msgid "Location"
-msgstr "Helbidea"
-
-#: ../src/gui/addressbook.cpp:1088
-msgid "Categories"
-msgstr "Kategoriak"
-
-#: ../src/gui/addressbook.cpp:1101
-msgid "Speed Dial"
-msgstr "Markatze bizkorra"
-
-#: ../src/gui/addressbook.cpp:1130
-msgid "Name contains"
-msgstr "Izenak hau dauka:"
-
-#: ../src/gui/addressbook.cpp:1131
-msgid "URL contains"
-msgstr "URLak hau dauka:"
-
-#: ../src/gui/addressbook.cpp:1133
-msgid "Belongs to category"
-msgstr "Kategoria honetakoa da:"
-
-#: ../src/gui/addressbook.cpp:1135
-msgid "Location contains"
-msgstr "Helbideak dauka"
-
-#. call a contact, usage: general
-#: ../src/gui/addressbook.cpp:1550 ../src/gui/addressbook.cpp:2578
-#: ../src/gui/callshistory.cpp:333 ../src/gui/chat.cpp:682
-msgid "C_all Contact"
-msgstr "Deitu _kontaktuari"
-
-#. copy a contact's URL to clipboard, usage: general
-#: ../src/gui/addressbook.cpp:1557 ../src/gui/addressbook.cpp:2587
-#: ../src/gui/chat.cpp:677 ../src/gui/chat.cpp:682
-msgid "_Copy URL to Clipboard"
-msgstr "_Kopiatu URLa arbelera"
-
-#: ../src/gui/addressbook.cpp:1563 ../src/gui/addressbook.cpp:2592
-msgid "_Write e-Mail"
-msgstr "_Idatzi posta"
-
-#. add a contact to the local addressbook, usage: remote contacts only
-#: ../src/gui/addressbook.cpp:1570 ../src/gui/addressbook.cpp:2604
-#: ../src/gui/callshistory.cpp:340 ../src/gui/chat.cpp:682
-msgid "Add Contact to _Address Book"
-msgstr "Ge_hitu kontaktua helbide-liburuan"
-
-#. send a contact a (SIP!) message, usage: SIP contacts only
-#: ../src/gui/addressbook.cpp:1577 ../src/gui/addressbook.cpp:2582
-msgid "_Send Message"
-msgstr "_Bidali mezua"
-
-#. edit a local contact's addressbook entry, usage: local contacts
-#: ../src/gui/addressbook.cpp:1584 ../src/gui/addressbook.cpp:1721
-#: ../src/gui/addressbook.cpp:2564
-msgid "_Properties"
-msgstr "_Propietateak"
-
-#. delete a local contact entry, usage: local contacts
-#: ../src/gui/addressbook.cpp:1591 ../src/gui/addressbook.cpp:1728
-#: ../src/gui/addressbook.cpp:2559
-msgid "_Delete"
-msgstr "E_zabatu"
-
-#. "new contact" dialog, usage: local context
-#: ../src/gui/addressbook.cpp:1598 ../src/gui/addressbook.cpp:2599
-msgid "New _Contact"
-msgstr "Ko_ntaktu berria"
-
-#: ../src/gui/addressbook.cpp:2025
-#, c-format
-msgid "Error while fetching users list from %s"
-msgstr "Errorea gertatu da %s(e)tik erabiltzaile-zerrenda eskuratzean."
-
-#: ../src/gui/addressbook.cpp:2029
-#, c-format
-msgid "Found %d user in %s"
-msgid_plural "Found %d users in %s"
-msgstr[0] "Erabiltzaile %d aurkituda %s(e)n"
-msgstr[1] "%d erabiltzaile aurkitu dira %s(e)n"
-
-#: ../src/gui/addressbook.cpp:2033
-#, c-format
-msgid "Found %d user in %s for a total of %d users"
-msgid_plural "Found %d users in %s for a total of %d users"
-msgstr[0] "%2$s(e)ko %3$d erabiltzailetatik erabiltzaile %1$d aurkituta"
-msgstr[1] "%2$s(e)ko %3$d erabiltzailetatik %1$d erabiltzaile aurkituta"
-
-#: ../src/gui/addressbook.cpp:2521
-msgid "Address Book"
-msgstr "Helbide-liburua"
-
-#: ../src/gui/addressbook.cpp:2550
-msgid "_File"
-msgstr "_Fitxategia"
-
-#: ../src/gui/addressbook.cpp:2552
-msgid "New _Address Book"
-msgstr "Helbide-_liburu berria"
-
-#: ../src/gui/addressbook.cpp:2571 ../src/gui/main.cpp:902
-msgid "_Close"
-msgstr "It_xi"
-
-#: ../src/gui/addressbook.cpp:2576
-msgid "C_ontact"
-msgstr "_Kontaktua"
-
-#: ../src/gui/addressbook.cpp:2677
-msgid "Remote Contacts"
-msgstr "Urruneko kontaktuak"
-
-#: ../src/gui/addressbook.cpp:2685
-msgid "Local Contacts"
-msgstr "Kontaktu lokalak"
-
-#: ../src/gui/addressbook.cpp:2808
-msgid "Edit the Contact Information"
-msgstr "Editatu kontaktuaren informazioa"
-
-#: ../src/gui/addressbook.cpp:2829 ../src/gui/addressbook.cpp:3299
-msgid "Name:"
-msgstr "Izena:"
-
-#: ../src/gui/addressbook.cpp:2849
-msgid "VoIP URL:"
-msgstr "VoIP URLa:"
-
-#: ../src/gui/addressbook.cpp:2871
-msgid "Email:"
-msgstr "Helb. el.:"
-
-#: ../src/gui/addressbook.cpp:2892
-msgid "Speed Dial:"
-msgstr "Markatze bizkorra:"
-
-#: ../src/gui/addressbook.cpp:2914
-msgid "Categories:"
-msgstr "Kategoriak"
-
-#: ../src/gui/addressbook.cpp:2939
-msgid "Local Addressbook:"
-msgstr "Helbide-liburua lokala:"
-
-#: ../src/gui/addressbook.cpp:3105
-msgid "Please make sure to provide at least a full name or an URL for the contact."
-msgstr "Ziurtatu zaitez kontaktuaren izen osoa edo URLa ematea."
-
-#: ../src/gui/addressbook.cpp:3152
-#, c-format
-msgid "Are you sure you want to delete %s from %s?"
-msgstr "Ziur zaude %s ezabatu nahi duzula %s(e)tik?"
-
-#: ../src/gui/addressbook.cpp:3278
-msgid "Edit an address book"
-msgstr "Editatu helbide-liburua"
-
-#: ../src/gui/addressbook.cpp:3279
-msgid "Add an address book"
-msgstr "Gehitu helbide-liburua"
-
-#: ../src/gui/addressbook.cpp:3324
-msgid "Type:"
-msgstr "Mota:"
-
-#: ../src/gui/addressbook.cpp:3330
-msgid "Local"
-msgstr "Lokala"
-
-#: ../src/gui/addressbook.cpp:3331
-msgid "Remote LDAP"
-msgstr "Urruneko LDAP"
-
-#: ../src/gui/addressbook.cpp:3332
-msgid "Remote ILS"
-msgstr "Urruneko ILS"
-
-#: ../src/gui/addressbook.cpp:3363
-msgid "Hostname:"
-msgstr "Ostalari-izena:"
-
-#: ../src/gui/addressbook.cpp:3386
-msgid "Port:"
-msgstr "Ataka:"
-
-#: ../src/gui/addressbook.cpp:3411
-msgid "Base DN:"
-msgstr "Oinarrizko DNa:"
-
-#: ../src/gui/addressbook.cpp:3434
-msgid "Search Scope:"
-msgstr "Bilatu esparrua:"
-
-#: ../src/gui/addressbook.cpp:3440
-msgid "Subtree"
-msgstr "Azpizuhaitza"
-
-#: ../src/gui/addressbook.cpp:3441
-msgid "One Level"
-msgstr "Maila bat"
-
-#: ../src/gui/addressbook.cpp:3471
-msgid "Search Attribute:"
-msgstr "Bilaketa-atributua:"
-
-#: ../src/gui/addressbook.cpp:3584
-msgid "Please make sure you fill in all required fields."
-msgstr "Ziurtatu eskatutako eremu guztiak betetzeaz."
-
-#: ../src/gui/addressbook.cpp:3630
-#, c-format
-msgid "Are you sure you want to delete %s and all its contacts?"
-msgstr "Ziur zaude %s eta hango kontaktu guztiak ezabatu nahi dituzula?"
-
-#: ../src/gui/callbacks.cpp:136
+#: ../src/gui/callbacks.cpp:117
 msgid "Contributors:"
 msgstr "Kolaboratzaileak:"
 
-#: ../src/gui/callbacks.cpp:143
+#: ../src/gui/callbacks.cpp:126
 msgid "Artwork:"
 msgstr "Irudiak:"
 
-#: ../src/gui/callbacks.cpp:149
+#: ../src/gui/callbacks.cpp:133
 msgid "See AUTHORS file for full credits"
 msgstr "Ikusi kreditu guztiak AUTHORS fitxategian"
 
 #. Translators: Please write translator credits here, and
-#. * seperate names with \n
-#: ../src/gui/callbacks.cpp:166
+#. * separate names with \n
+#: ../src/gui/callbacks.cpp:171
 msgid "translator-credits"
 msgstr ""
-"Iñaki Larrañaga  <dooteo@euskalgnu.org>\n"
+"Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>\n"
 "Hizkuntza Politikarako Sailburuordetza <hizkpol@ej-gv.es>"
 
-#. Translators: Please test to see if your translation
-#. * looks OK and fits within the box
-#: ../src/gui/callbacks.cpp:177
+#: ../src/gui/callbacks.cpp:176
 msgid ""
 "Ekiga is full-featured SIP and H.323 compatible VoIP, IP-Telephony and "
 "Videoconferencing application that allows you to make audio and video calls "
 "to remote users with SIP and H.323 hardware or software."
 msgstr ""
 "Ekiga H.323-rekin bateragarria den bideo-konferentzietarako, VoIP-rako eta "
-"IP telefoniarako eginbide askoko aplikazioa da, eta H.323 hardwarea edo "
-"softwarea duten urruneko erabiltzaileei audio- eta bideo-deiak egiteko "
-"aukera ematen dizu ."
+"IP telefoniarako funtzionalitate askoko aplikazioa da, eta H.323 hardwarea "
+"edo softwarea duten urruneko erabiltzaileei audio- eta bideo-deiak egiteko "
+"aukera ematen dizu."
 
-#: ../src/gui/callshistory.cpp:773
-msgid "Type"
-msgstr "Mota"
-
-#: ../src/gui/callshistory.cpp:782
-msgid "Date"
-msgstr "Data"
-
-#: ../src/gui/callshistory.cpp:799
-msgid "Duration"
-msgstr "Iraupena"
-
-#: ../src/gui/chat.cpp:625
-msgid "Hang _up"
-msgstr "E_seki"
-
-#: ../src/gui/chat.cpp:626 ../src/gui/statusicon.cpp:98
-msgid "_Call"
-msgstr "De_itu"
-
-#: ../src/gui/chat.cpp:627
-msgid "Call this user"
-msgstr "Deitu erabiltzaile honi"
-
-#: ../src/gui/chat.cpp:635
-msgid "_Send"
-msgstr "_Bidali"
-
-#: ../src/gui/chat.cpp:640
-msgid "Send message"
-msgstr "Bidali mezua"
-
-#: ../src/gui/chat.cpp:677
-msgid "_Open URL"
-msgstr "_Ireki URIa"
-
-#: ../src/gui/chat.cpp:705
-msgid "_Copy Equation"
-msgstr "_Kopiatu ekuazioa"
-
-#: ../src/gui/chat.cpp:1325
-msgid "Chat Window"
-msgstr "Berriketa-leihoa"
-
-#: ../src/gui/chat.cpp:1450
-msgid "You"
-msgstr "Zuk"
-
-#. Translators: "He says", "You say"
-#: ../src/gui/chat.cpp:1452
-msgid "says:"
-msgstr "dio:"
-
-#: ../src/gui/chat.cpp:1452
-msgid "say:"
-msgstr "diozu:"
-
-#: ../src/gui/chat.cpp:1524
-msgid "New Remote User"
-msgstr "Urruneko erabiltzaile berria"
-
-#: ../src/gui/config.cpp:225
-msgid "Changing this setting will only affect new calls"
-msgstr "Ezarpen hori aldatzeak dei berriei bakarrik eragingo die"
-
-#: ../src/gui/config.cpp:226
-msgid ""
-"Ekiga cannot apply one or more changes to the current call. Your new "
-"settings will take effect for the next call."
-msgstr ""
-"Ekiga-k ezin du aldaketa bat edo gehiago uneko deian aplikatu. Zure ezarpen "
-"berriak hurrengo deian bakarrik izango du eragina."
-
-#: ../src/gui/config.cpp:297
-msgid "H.245 Tunneling disabled"
-msgstr "H.245 Tunnelling desgaituta"
-
-#: ../src/gui/config.cpp:298
-msgid "H.245 Tunneling enabled"
-msgstr "H.245 Tunnelling gaituta"
-
-#: ../src/gui/config.cpp:330
-msgid "Early H.245 disabled"
-msgstr "H.245 goiztiarra desgaituta"
-
-#: ../src/gui/config.cpp:331
-msgid "Early H.245 enabled"
-msgstr "H.245 goiztiarra gaituta"
-
-#: ../src/gui/config.cpp:364
-msgid "Fast Start disabled"
-msgstr "Hasiera Azkarra desgaituta"
-
-#: ../src/gui/config.cpp:365
-msgid "Fast Start enabled"
-msgstr "Hasiera Azkarra gaituta"
-
-#: ../src/gui/config.cpp:472
-msgid "Enabled silence detection"
-msgstr "Isiltasuna detektatzea gaituta"
-
-#: ../src/gui/config.cpp:478
-msgid "Disabled silence detection"
-msgstr "Isiltasuna detektatzea desgaituta"
-
-#: ../src/gui/config.cpp:537
-msgid "Enabled echo cancelation"
-msgstr "Oihartzuna ezeztatzea gaituta"
-
-#: ../src/gui/config.cpp:543
-msgid "Disabled echo cancelation"
-msgstr "Oihartzuna ezeztatzea desgaituta"
-
-#: ../src/gui/druid.cpp:620
+#: ../src/gui/druid.cpp:578
 msgid ""
 "This is the Ekiga general configuration assistant. The following steps will "
 "set up Ekiga by asking a few simple questions.\n"
@@ -2381,22 +1973,22 @@ msgstr ""
 "Urrats horiek emandakoan, beti duzu ezarpenak aldatzeko aukera Editatu "
 "menuan Hobespenak aukeratuz."
 
-#: ../src/gui/druid.cpp:632
+#: ../src/gui/druid.cpp:590
 #, c-format
 msgid "Configuration Assistant - page 1/%d"
 msgstr "Konfigurazio-laguntza - 1/%d orrialdea"
 
-#: ../src/gui/druid.cpp:674
+#: ../src/gui/druid.cpp:632
 #, c-format
 msgid "Personal Information - page %d/%d"
-msgstr "Informazio pertsonala - %d/%d orrialdea "
+msgstr "Informazio pertsonala - %d/%d orrialdea"
 
 #. The user fields
-#: ../src/gui/druid.cpp:687
+#: ../src/gui/druid.cpp:645
 msgid "Please enter your first name and your surname:"
 msgstr "Sartu zure izen eta deitura:"
 
-#: ../src/gui/druid.cpp:696
+#: ../src/gui/druid.cpp:654
 msgid ""
 "Your first name and surname will be used when connecting to other VoIP and "
 "videoconferencing software."
@@ -2404,20 +1996,20 @@ msgstr ""
 "Zure izen eta deitura beste VoIP eta bideo-konferentzia softwareekin "
 "konektatzeko erabiliko dira."
 
-#: ../src/gui/druid.cpp:742
+#: ../src/gui/druid.cpp:700
 #, c-format
 msgid "ekiga.net Account - page %d/%d"
 msgstr "ekiga.net Kontua - %d/%d orrialdea"
 
-#: ../src/gui/druid.cpp:753
+#: ../src/gui/druid.cpp:711
 msgid "Please enter your username:"
 msgstr "Sartu zure erabiltzaile-izena:"
 
-#: ../src/gui/druid.cpp:761
+#: ../src/gui/druid.cpp:719
 msgid "Please enter your password:"
 msgstr "Sartu zure pasahitza:"
 
-#: ../src/gui/druid.cpp:772
+#: ../src/gui/druid.cpp:730
 msgid ""
 "The username and password are used to login to your existing account at the "
 "ekiga.net free SIP service. If you do not have an ekiga.net SIP address yet, "
@@ -2427,7 +2019,7 @@ msgid ""
 "You may skip this step if you use an alternative SIP service, or if you "
 "would prefer to specify the login details later."
 msgstr ""
-"Erailtzaile-izena eta pasahitza zure kontuan saioa hasteko erabiltzen da "
+"Erabiltzaile-izena eta pasahitza zure kontuan saioa hasteko erabiltzen da "
 "ekiga.net SIP zerbitzu librean. ekiga.net SIPeko helbiderik ez baduzu "
 "oraindik, sortu kontu bat hor behean. Horrela SIP helbidea edukiko duzu "
 "beste erabiltzaileek zuri deitzeko.\n"
@@ -2435,66 +2027,45 @@ msgstr ""
 "Urrats hau jaurti dezakezu bestelako SIP zerbizua erabiltzen baduzu, edo "
 "saio-hasierari buruzko xehetasunak beranduago zehaztea nahi baduzu."
 
-#: ../src/gui/druid.cpp:782
+#: ../src/gui/druid.cpp:740
 msgid "Get an ekiga.net SIP account"
 msgstr "Lortu ekiga.net SIP kontua"
 
-#: ../src/gui/druid.cpp:792
+#: ../src/gui/druid.cpp:750
 msgid "I do not want to sign up for the ekiga.net free service"
 msgstr "Ez dut nahi zinatzerik ekiga.net zerbitzu librean"
 
-#: ../src/gui/druid.cpp:848
+#: ../src/gui/druid.cpp:806
 #, c-format
 msgid "Connection Type - page %d/%d"
 msgstr "Konexio mota - %d/%d orrialdea"
 
 #. The connection type
-#: ../src/gui/druid.cpp:860
+#: ../src/gui/druid.cpp:818
 msgid "Please choose your connection type:"
 msgstr "Aukeratu konexio mota"
 
-#: ../src/gui/druid.cpp:875
+#: ../src/gui/druid.cpp:833
 msgid ""
 "The connection type will permit determining the best quality settings that "
 "Ekiga will use during calls. You can later change the settings individually "
 "in the preferences window."
 msgstr ""
-"Konexio-motaren bidez Ekiga-k deietan erabiliko duen kalitate oneneko "
+"Konexio motaren bidez Ekiga-k deietan erabiliko duen kalitate oneneko "
 "ezarpenak zehatz daitezke. Gero ezarpenak banaka alda daitezke hobespenenen "
 "leihoan."
 
-#: ../src/gui/druid.cpp:913
-#, c-format
-msgid "NAT Type - page %d/%d"
-msgstr "NAT mota - %d/%d orrialdea"
-
-#: ../src/gui/druid.cpp:923
-msgid "Click here to detect your NAT Type:"
-msgstr "Egin klik hemen zure NAT mota detektatzeko:"
-
-#: ../src/gui/druid.cpp:927
-msgid "Detect NAT Type"
-msgstr "Detektatu NAT mota"
-
-#: ../src/gui/druid.cpp:931
-msgid ""
-"The NAT type detection will permit to assist you in configuring your NAT "
-"router to be able to do calls with Ekiga."
-msgstr ""
-"Detektatu NAT mota NAT bideratzailea konfiguratzen laguntzeko, Ekiga-rekin "
-"deiak egiteko."
-
-#: ../src/gui/druid.cpp:976
+#: ../src/gui/druid.cpp:870
 #, c-format
 msgid "Audio Manager - page %d/%d"
 msgstr "Audio-kudeatzailea - %d/%d orrialdea"
 
 #. The Audio devices
-#: ../src/gui/druid.cpp:988
+#: ../src/gui/druid.cpp:882
 msgid "Please choose your audio manager:"
 msgstr "Aukeratu audio-kudeatzailea:"
 
-#: ../src/gui/druid.cpp:997
+#: ../src/gui/druid.cpp:891
 msgid ""
 "The audio manager is the plugin that will manage your audio devices. "
 "WindowsMultimedia is probably the best choice when available."
@@ -2502,7 +2073,7 @@ msgstr ""
 "Audio-kudeatzailea audio-gailuak kudeatuko dituen plugin-a da. "
 "WindowsMultimedia da ziurrenik aukerarik onena, erabilgarri badago."
 
-#: ../src/gui/druid.cpp:999
+#: ../src/gui/druid.cpp:893
 msgid ""
 "The audio manager is the plugin that will manage your audio devices. ALSA is "
 "probably the best choice when available."
@@ -2510,17 +2081,17 @@ msgstr ""
 "Audio-kudeatzailea audio-gailuak kudeatuko dituen plugin-a da. ALSA da "
 "ziurrenik aukerarik onena, erabilgarri badago."
 
-#: ../src/gui/druid.cpp:1039
+#: ../src/gui/druid.cpp:933
 #, c-format
 msgid "Audio Devices - page %d/%d"
 msgstr "Audio-gailuak - %d/%d orrialdea"
 
 #. The Audio devices
-#: ../src/gui/druid.cpp:1051
+#: ../src/gui/druid.cpp:945
 msgid "Please choose the audio output device:"
 msgstr "Aukeratu audio-irteerako gailua:"
 
-#: ../src/gui/druid.cpp:1059
+#: ../src/gui/druid.cpp:953
 msgid ""
 "The audio output device is the device managed by the audio manager that will "
 "be used to play audio."
@@ -2528,11 +2099,11 @@ msgstr ""
 "Audio-irteerako gailua audio-kudeatzaileak kudeatzen du eta audioa "
 "erreproduzitzeko erabiliko den gailua da."
 
-#: ../src/gui/druid.cpp:1069
+#: ../src/gui/druid.cpp:963
 msgid "Please choose the audio input device:"
 msgstr "Aukeratu audio-sarrerako gailua:"
 
-#: ../src/gui/druid.cpp:1077
+#: ../src/gui/druid.cpp:971
 msgid ""
 "The audio input device is the device managed by the audio manager that will "
 "be used to record your voice."
@@ -2540,21 +2111,21 @@ msgstr ""
 "Audio-irteerako gailua audio-kudeatzaileak kudeatzen du eta zure ahotsa "
 "grabatzeko erabiliko den gailua da."
 
-#: ../src/gui/druid.cpp:1090 ../src/gui/druid.cpp:1224
+#: ../src/gui/druid.cpp:985
 msgid "Test Settings"
-msgstr "Proba ezarpenak"
+msgstr "Probatu ezarpenak"
 
-#: ../src/gui/druid.cpp:1134
+#: ../src/gui/druid.cpp:1029
 #, c-format
 msgid "Video Manager - page %d/%d"
 msgstr "Bideo-kudeatzailea - %d/%d orrialdea"
 
 #. The Audio devices
-#: ../src/gui/druid.cpp:1146
+#: ../src/gui/druid.cpp:1041
 msgid "Please choose your video manager:"
 msgstr "Aukeratu bideo-kudeatzailea:"
 
-#: ../src/gui/druid.cpp:1154
+#: ../src/gui/druid.cpp:1049
 msgid ""
 "The video manager is the plugin that will manage your video devices, "
 "Video4Linux is the most common choice if you own a webcam."
@@ -2562,50 +2133,32 @@ msgstr ""
 "Bideo-kudeatzailea zure bideo-gailuak kudeatuko dituen plugin-a da. "
 "Video4Linux da aukerarik ohikoena web kamera baduzu."
 
-#: ../src/gui/druid.cpp:1192
-#, c-format
-msgid "Video Devices - page %d/%d"
-msgstr "Bideo-gailuak - %d/%d orrialdea"
-
-#. The Video devices
-#: ../src/gui/druid.cpp:1204
-msgid "Please choose the video input device:"
-msgstr "Aukeratu bideo-sarrerako gailua:"
-
-#: ../src/gui/druid.cpp:1212
-msgid ""
-"The video input device is the device managed by the video manager that will "
-"be used to capture video."
-msgstr ""
-" Audio-irteerako gailua audio-kudeatzaileak kudeatzen du eta bideoa "
-"kapturatzeko erabiliko den gailua da."
-
-#: ../src/gui/druid.cpp:1260
+#: ../src/gui/druid.cpp:1079
 #, c-format
 msgid "Configuration complete - page %d/%d"
 msgstr "Konfigurazioa amaituta - %d/%d orrialdea"
 
-#: ../src/gui/druid.cpp:1691
+#: ../src/gui/druid.cpp:1471
 msgid "56k Modem"
 msgstr "56K modema"
 
-#: ../src/gui/druid.cpp:1698
+#: ../src/gui/druid.cpp:1478
 msgid "ISDN"
 msgstr "ISDN"
 
-#: ../src/gui/druid.cpp:1705
+#: ../src/gui/druid.cpp:1485
 msgid "xDSL/Cable"
 msgstr "xDSL/Kablea"
 
-#: ../src/gui/druid.cpp:1712
+#: ../src/gui/druid.cpp:1492
 msgid "T1/LAN"
 msgstr "T1/Sare lokala"
 
-#: ../src/gui/druid.cpp:1719
+#: ../src/gui/druid.cpp:1499
 msgid "Keep current settings"
 msgstr "Mantendu uneko ezarpenak"
 
-#: ../src/gui/druid.cpp:1976
+#: ../src/gui/druid.cpp:1660
 #, c-format
 msgid ""
 "You have now finished the Ekiga configuration. All the settings can be "
@@ -2621,7 +2174,7 @@ msgid ""
 "Audio recorder: %s\n"
 "Video manager: %s\n"
 "Video input: %s\n"
-"SIP URL: %s\n"
+"SIP URI: %s\n"
 msgstr ""
 "Ekiga-ren konfigurazioa amaitu duzu. Ezarpen guztiak alda daitezke Ekiga-ren "
 "hobespenetan. Ondo pasa!\n"
@@ -2636,481 +2189,428 @@ msgstr ""
 "Audio-grabagailua:  %s\n"
 "Bideo-kudeatzailea:  %s\n"
 "Bideo-erreproduzigailua: %s\n"
-"SIP URLa: %s\n"
+"SIP URIa: %s\n"
 
-#: ../src/gui/druid.cpp:2031
+#: ../src/gui/druid.cpp:1660 ../src/gui/preferences.cpp:635
+msgid "None"
+msgstr "Bat ere ez"
+
+#: ../src/gui/druid.cpp:1689
 msgid "First Time Configuration Assistant"
 msgstr "Lehen aldiko konfigurazio-laguntzailea"
 
-#: ../src/gui/history.cpp:128 ../src/gui/main.cpp:1023
-msgid "General History"
-msgstr "Historia orokorra"
+#: ../src/gui/main.cpp:543
+#, c-format
+msgid "Registered %s"
+msgstr "%s erregistratuta"
 
-#: ../src/gui/main.cpp:669
-msgid "Enter a URL on the left, and click this button to place a call"
+#: ../src/gui/main.cpp:547
+#, c-format
+msgid "Unregistered %s"
+msgstr "%s erregistratu gabe"
+
+#: ../src/gui/main.cpp:551
+#, c-format
+msgid "Could not unregister %s"
+msgstr "Ezin izan da %s(r)en erregistroa ezabatu"
+
+#: ../src/gui/main.cpp:555
+#, c-format
+msgid "Could not register %s"
+msgstr "Ezin izan da %s erregistratu"
+
+#: ../src/gui/main.cpp:585
+#, c-format
+msgid "A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d"
+msgstr "A:%.1f/%.1f   B:%.1f/%.1f  f/s:%d/%d"
+
+#: ../src/gui/main.cpp:627
+msgid "Connected with"
+msgstr "Honekin konektatuta"
+
+#: ../src/gui/main.cpp:651 ../src/gui/main.cpp:1862
+msgid "Standby"
+msgstr "Egonean"
+
+#: ../src/gui/main.cpp:691
+msgid "Call on hold"
+msgstr "Deia mantenduta"
+
+#: ../src/gui/main.cpp:704
+msgid "Call retrieved"
+msgstr "Deia berreskuratuta"
+
+#: ../src/gui/main.cpp:718
+msgid "Missed call from"
+msgstr "Galdutako deia: "
+
+#: ../src/gui/main.cpp:904
+msgid "Invisible"
+msgstr "Ikusezina"
+
+#: ../src/gui/main.cpp:949
+msgid "Find Contacts"
+msgstr "Bilatu kontaktuak"
+
+#: ../src/gui/main.cpp:972
+msgid "Add contact to roster"
+msgstr "Gehitu kontaktua zerrendari"
+
+#: ../src/gui/main.cpp:1199
+msgid "Enter a URI on the left, and click this button to place a call"
 msgstr ""
-"Sartu zein URLetara deitu nahi duzun ezkerrean eta egin klik botoi honetan "
+"Sartu zein URIetara deitu nahi duzun ezkerrean eta egin klik botoi honetan "
 "deitzeko"
 
-#: ../src/gui/main.cpp:716
-msgid "New Contact"
-msgstr "Kontaktu berria"
-
-#: ../src/gui/main.cpp:735
-msgid "Find Contact"
-msgstr "Bilatu kontaktua"
-
-#: ../src/gui/main.cpp:751
-msgid "Open text chat"
-msgstr "Ireki testu-berriketa"
-
-#: ../src/gui/main.cpp:828 ../src/gui/main.cpp:950
+#: ../src/gui/main.cpp:1252 ../src/gui/main.cpp:1375
 msgid "C_all"
 msgstr "De_itu"
 
-#: ../src/gui/main.cpp:830
+#: ../src/gui/main.cpp:1254
 msgid "Ca_ll"
 msgstr "De_itu"
 
-#: ../src/gui/main.cpp:830 ../src/gui/statusicon.cpp:98
+#: ../src/gui/main.cpp:1254
 msgid "Place a new call"
 msgstr "Egin dei berria"
 
-#: ../src/gui/main.cpp:833 ../src/gui/statusicon.cpp:101
+#: ../src/gui/main.cpp:1257
 msgid "_Hang up"
 msgstr "_Eseki"
 
-#: ../src/gui/main.cpp:834 ../src/gui/statusicon.cpp:102
+#: ../src/gui/main.cpp:1258
 msgid "Terminate the current call"
 msgstr "Amaitu uneko deia"
 
-#: ../src/gui/main.cpp:840 ../src/gui/statusicon.cpp:108
-msgid "_Available"
-msgstr "_Eskuragarria"
+#: ../src/gui/main.cpp:1264 ../src/gui/statusicon.cpp:425
+msgid "_Online"
+msgstr "_Linean"
 
-#: ../src/gui/main.cpp:841 ../src/gui/statusicon.cpp:109
-msgid "Display a popup to accept the call"
-msgstr "Bistaratu laster-leihoa deia onartzean"
+#: ../src/gui/main.cpp:1270 ../src/gui/statusicon.cpp:431
+msgid "_Away"
+msgstr "_Aldenduta"
 
-#: ../src/gui/main.cpp:846 ../src/gui/statusicon.cpp:114
-msgid "Aut_o Answer"
-msgstr "_Erantzun automatikoa"
-
-#: ../src/gui/main.cpp:847 ../src/gui/statusicon.cpp:115
-msgid "Auto answer calls"
-msgstr "Erantzun deiak automatikoki"
-
-#: ../src/gui/main.cpp:852 ../src/gui/statusicon.cpp:120
-msgid "_Do Not Disturb"
+#: ../src/gui/main.cpp:1276 ../src/gui/statusicon.cpp:437
+msgid "Do Not _Disturb"
 msgstr "Ez _molestatu"
 
-#: ../src/gui/main.cpp:853 ../src/gui/statusicon.cpp:121
-msgid "Reject calls"
-msgstr "Ezetsi deiak"
+#: ../src/gui/main.cpp:1282 ../src/gui/statusicon.cpp:443
+msgid "_Free For Chat"
+msgstr "Berriketarako _libre"
 
-#: ../src/gui/main.cpp:858 ../src/gui/statusicon.cpp:126
-msgid "_Forward"
-msgstr "_Birbidali"
+#: ../src/gui/main.cpp:1288 ../src/gui/statusicon.cpp:449
+msgid "_Invisible"
+msgstr "_Ikusezina"
 
-#: ../src/gui/main.cpp:858 ../src/gui/statusicon.cpp:126
-msgid "Forward calls"
-msgstr "Birbidali deiak"
-
-#: ../src/gui/main.cpp:866
-msgid "Speed dials"
-msgstr "Markatze bizkorra"
-
-#: ../src/gui/main.cpp:870 ../src/gui/main.cpp:3167
+#: ../src/gui/main.cpp:1296 ../src/gui/main.cpp:2781
 msgid "_Hold Call"
 msgstr "_Eutsi deiari"
 
-#: ../src/gui/main.cpp:870 ../src/gui/main.cpp:1661
+#: ../src/gui/main.cpp:1296 ../src/gui/main.cpp:1961
 msgid "Hold the current call"
 msgstr "Eutsi uneko deiari"
 
-#: ../src/gui/main.cpp:874
+#: ../src/gui/main.cpp:1300
 msgid "_Transfer Call"
 msgstr "_Transferitu deia"
 
-#: ../src/gui/main.cpp:875
+#: ../src/gui/main.cpp:1301
 msgid "Transfer the current call"
 msgstr "Transferitu uneko deia"
 
-#: ../src/gui/main.cpp:882 ../src/gui/main.cpp:3206
+#: ../src/gui/main.cpp:1308 ../src/gui/main.cpp:2820
 msgid "Suspend _Audio"
 msgstr "Eseki _audioa"
 
-#: ../src/gui/main.cpp:883
+#: ../src/gui/main.cpp:1309
 msgid "Suspend or resume the audio transmission"
 msgstr "Eseki edo hasi berriro audio-transmisioa"
 
-#: ../src/gui/main.cpp:887 ../src/gui/main.cpp:3208
+#: ../src/gui/main.cpp:1313 ../src/gui/main.cpp:2822
 msgid "Suspend _Video"
 msgstr "Eseki _bideoa"
 
-#: ../src/gui/main.cpp:888
+#: ../src/gui/main.cpp:1314
 msgid "Suspend or resume the video transmission"
 msgstr "Eseki edo hasi berriro bideo-transmisioa"
 
-#: ../src/gui/main.cpp:895
-msgid "_Save Current Picture"
-msgstr "_Gorde uneko irudia"
-
-#: ../src/gui/main.cpp:896
+#: ../src/gui/main.cpp:1322
 msgid "Save a snapshot of the current video"
 msgstr "Gorde uneko bideoaren argazkia"
 
-#: ../src/gui/main.cpp:902
+#: ../src/gui/main.cpp:1328
 msgid "Close the Ekiga window"
 msgstr "Itxi Ekiga leihoa"
 
-#: ../src/gui/main.cpp:909 ../src/gui/statusicon.cpp:175
-msgid "_Quit"
-msgstr "Irte_n"
+#: ../src/gui/main.cpp:1335 ../src/gui/statusicon.cpp:482
+msgid "Quit"
+msgstr "I_rten"
 
-#: ../src/gui/main.cpp:909 ../src/gui/statusicon.cpp:176
-msgid "Quit Ekiga"
-msgstr "Irten Ekiga-tik"
-
-#: ../src/gui/main.cpp:913
-msgid "_Edit"
-msgstr "_Editatu"
-
-#: ../src/gui/main.cpp:915
+#: ../src/gui/main.cpp:1341
 msgid "Configuration Druid"
 msgstr "Konfigurazio-laguntzailea"
 
-#: ../src/gui/main.cpp:916
+#: ../src/gui/main.cpp:1342
 msgid "Run the configuration druid"
 msgstr "Exekutatu konfigurazio-laguntzailea"
 
-#: ../src/gui/main.cpp:923
+#: ../src/gui/main.cpp:1349
 msgid "_Accounts"
 msgstr "_Kontuak"
 
-#: ../src/gui/main.cpp:924
+#: ../src/gui/main.cpp:1350
 msgid "Edit your accounts"
 msgstr "Editatu zure kontuak"
 
-#: ../src/gui/main.cpp:929 ../src/gui/statusicon.cpp:142
-msgid "_Preferences"
-msgstr "_Hobespenak"
-
-#: ../src/gui/main.cpp:930 ../src/gui/statusicon.cpp:143
+#: ../src/gui/main.cpp:1356
 msgid "Change your preferences"
 msgstr "Aldatu zure hobespenak"
 
-#: ../src/gui/main.cpp:935
+#: ../src/gui/main.cpp:1361
 msgid "_View"
 msgstr "_Ikusi"
 
-#: ../src/gui/main.cpp:937
+#: ../src/gui/main.cpp:1363
 msgid "Panel"
 msgstr "Panela"
 
-#: ../src/gui/main.cpp:939
+#: ../src/gui/main.cpp:1365
+msgid "Con_tacts"
+msgstr "_Kontaktuak"
+
+#: ../src/gui/main.cpp:1365
+msgid "View the contacts list"
+msgstr "Ikusi kontaktuen zerrenda"
+
+#: ../src/gui/main.cpp:1370
 msgid "_Dialpad"
 msgstr "_Markatze-teklatua"
 
-#: ../src/gui/main.cpp:939
+#: ../src/gui/main.cpp:1370
 msgid "View the dialpad"
 msgstr "Ikusi markatze-teklatua"
 
-#: ../src/gui/main.cpp:944
-msgid "Calls _History"
-msgstr "Deien _historia"
-
-#: ../src/gui/main.cpp:945
-msgid "View the calls history"
-msgstr "Ikusi deien historia"
-
-#: ../src/gui/main.cpp:951
+#: ../src/gui/main.cpp:1376
 msgid "View the call information"
 msgstr "Ikusi deiaren informazioa"
 
-#: ../src/gui/main.cpp:959 ../src/gui/main.cpp:4196
+#: ../src/gui/main.cpp:1384
 msgid "Local Video"
 msgstr "Bideo lokala"
 
-#: ../src/gui/main.cpp:960
+#: ../src/gui/main.cpp:1385
 msgid "Local video image"
 msgstr "Bideo-irudi lokala"
 
-#: ../src/gui/main.cpp:965 ../src/gui/main.cpp:4203
+#: ../src/gui/main.cpp:1390
 msgid "Remote Video"
 msgstr "Urruneko bideoa"
 
-#: ../src/gui/main.cpp:966
+#: ../src/gui/main.cpp:1391
 msgid "Remote video image"
 msgstr "Urruneko bideo-irudia"
 
-#: ../src/gui/main.cpp:971
-msgid "Both (Picture-in-Picture)"
-msgstr "Biak (irudia irudian)"
+#: ../src/gui/main.cpp:1396
+msgid "Picture-in-Picture"
+msgstr "Irudia irudian"
 
-#: ../src/gui/main.cpp:972 ../src/gui/main.cpp:979
+#: ../src/gui/main.cpp:1397 ../src/gui/main.cpp:1403
 msgid "Both video images"
 msgstr "Bi bideo-irudiak"
 
-#: ../src/gui/main.cpp:978
-msgid "Both (Both in New Windows)"
-msgstr "Biak (biak leiho berrietan)"
+#: ../src/gui/main.cpp:1402
+msgid "Picture-in-Picture in Separate Window"
+msgstr "Irudia irudian bereiztutako leihoan"
 
-#: ../src/gui/main.cpp:987 ../src/gui/main.cpp:1722 ../src/gui/main.cpp:1747
-msgid "Zoom In"
-msgstr "Zooma handiagotu"
-
-#: ../src/gui/main.cpp:987 ../src/gui/main.cpp:1722 ../src/gui/main.cpp:1747
+#: ../src/gui/main.cpp:1410
 msgid "Zoom in"
 msgstr "Zooma handiagotu"
 
-#: ../src/gui/main.cpp:991 ../src/gui/main.cpp:1726 ../src/gui/main.cpp:1751
-msgid "Zoom Out"
-msgstr "Zooma txikiagotu"
-
-#: ../src/gui/main.cpp:991 ../src/gui/main.cpp:1726 ../src/gui/main.cpp:1751
+#: ../src/gui/main.cpp:1414
 msgid "Zoom out"
 msgstr "Zooma txikiagotu"
 
-#: ../src/gui/main.cpp:995 ../src/gui/main.cpp:1730 ../src/gui/main.cpp:1755
-msgid "Normal Size"
-msgstr "Tamaina normala"
-
-#: ../src/gui/main.cpp:995 ../src/gui/main.cpp:1730 ../src/gui/main.cpp:1755
+#: ../src/gui/main.cpp:1418
 msgid "Normal size"
 msgstr "Tamaina normala"
 
-#: ../src/gui/main.cpp:1001 ../src/gui/main.cpp:1736 ../src/gui/main.cpp:1761
+#: ../src/gui/main.cpp:1422
 msgid "Fullscreen"
 msgstr "Pantaila osoa"
 
-#: ../src/gui/main.cpp:1007
+#: ../src/gui/main.cpp:1422
+msgid "Switch to fullscreen"
+msgstr "Bistaratu pantaila osoa"
+
+#: ../src/gui/main.cpp:1427
 msgid "_Tools"
 msgstr "Tresn_ak"
 
-#: ../src/gui/main.cpp:1009 ../src/gui/statusicon.cpp:134
-msgid "Address _Book"
-msgstr "Helbide-li_burua"
+#: ../src/gui/main.cpp:1429
+msgid "_Find Contacts"
+msgstr "_Bilatu kontaktuak"
 
-#: ../src/gui/main.cpp:1010 ../src/gui/statusicon.cpp:135
-msgid "Open the address book"
-msgstr "Ireki helbide-liburua"
+#: ../src/gui/main.cpp:1430
+msgid "Find contacts"
+msgstr "Bilatu kontaktuak"
 
-#: ../src/gui/main.cpp:1017
-msgid "C_hat Window"
-msgstr "_Berriketa-leihoa"
-
-#: ../src/gui/main.cpp:1018
-msgid "Open the chat window"
-msgstr "Ireki berriketa-leihoa"
-
-#: ../src/gui/main.cpp:1024
-msgid "View the operations history"
-msgstr "Ikusi eragiketen historia"
-
-#: ../src/gui/main.cpp:1031
+#: ../src/gui/main.cpp:1437
 msgid "PC-To-Phone Account"
 msgstr "'PCtik telefonora' kontua"
 
-#: ../src/gui/main.cpp:1032
+#: ../src/gui/main.cpp:1438
 msgid "Manage your PC-To-Phone account"
 msgstr "Kudeatu 'PC telefonora' kontua"
 
-#: ../src/gui/main.cpp:1037
+#: ../src/gui/main.cpp:1443
 msgid "_Help"
 msgstr "La_guntza"
 
-#: ../src/gui/main.cpp:1039 ../src/gui/statusicon.cpp:151
-#: ../src/gui/statusicon.cpp:162
-msgid "_Contents"
-msgstr "_Edukiak"
-
-#: ../src/gui/main.cpp:1040 ../src/gui/statusicon.cpp:152
-#: ../src/gui/statusicon.cpp:163
+#: ../src/gui/main.cpp:1446 ../src/gui/statusicon.cpp:459
+#: ../src/gui/statusicon.cpp:470
 msgid "Get help by reading the Ekiga manual"
 msgstr "Lortu laguntza Ekiga-ren eskuliburua irrakurriz"
 
-#: ../src/gui/main.cpp:1044 ../src/gui/main.cpp:1050
-#: ../src/gui/statusicon.cpp:156 ../src/gui/statusicon.cpp:167
-msgid "_About"
-msgstr "Honi _buruz"
-
-#: ../src/gui/main.cpp:1045 ../src/gui/main.cpp:1051
-#: ../src/gui/statusicon.cpp:157 ../src/gui/statusicon.cpp:168
+#: ../src/gui/main.cpp:1450 ../src/gui/statusicon.cpp:464
+#: ../src/gui/statusicon.cpp:475
 msgid "View information about Ekiga"
 msgstr "Ikusi Ekiga-ri buruzko informazioa"
 
-#: ../src/gui/main.cpp:1139
-msgid "Calls History"
-msgstr "Deien historia"
+#: ../src/gui/main.cpp:1493
+msgid "Contacts"
+msgstr "Kontaktuak"
 
-#: ../src/gui/main.cpp:1224
+#: ../src/gui/main.cpp:1518
 msgid "Dialpad"
 msgstr "Markatze-teklatua"
 
-#: ../src/gui/main.cpp:1261
+#: ../src/gui/main.cpp:1554
 msgid "Video Settings"
 msgstr "Bideo-ezarpenak"
 
-#: ../src/gui/main.cpp:1289
+#: ../src/gui/main.cpp:1582
 msgid "Adjust brightness"
 msgstr "Doitu distira"
 
-#: ../src/gui/main.cpp:1311
+#: ../src/gui/main.cpp:1604
 msgid "Adjust whiteness"
 msgstr "Doitu zuritasuna"
 
-#: ../src/gui/main.cpp:1333
+#: ../src/gui/main.cpp:1626
 msgid "Adjust color"
 msgstr "Doitu kolorea"
 
-#: ../src/gui/main.cpp:1355
+#: ../src/gui/main.cpp:1648
 msgid "Adjust contrast"
 msgstr "Doitu kontrastea"
 
-#: ../src/gui/main.cpp:1408
+#: ../src/gui/main.cpp:1701
 msgid "Audio Settings"
 msgstr "Audio-ezarpenak"
 
-#: ../src/gui/main.cpp:1596
+#: ../src/gui/main.cpp:1896
 msgid "Change the volume of your soundcard"
 msgstr "Aldatu soinu-txartelaren bolumena"
 
-#: ../src/gui/main.cpp:1619
+#: ../src/gui/main.cpp:1919
 msgid "Change the color settings of your video device"
 msgstr "Aldatu bideo-txartelaren kolore-ezarpenak"
 
-#: ../src/gui/main.cpp:1640
+#: ../src/gui/main.cpp:1940
 msgid "Display images from your camera device"
 msgstr "Bistaratu irudiak kamera-gailutik."
 
-#: ../src/gui/main.cpp:1673
-msgid "Call"
-msgstr "Deitu"
-
-#: ../src/gui/main.cpp:1903
-msgid "Notification area not detected"
-msgstr "Jakinarazpen-area ez da detektatu"
-
-#: ../src/gui/main.cpp:1903
-msgid ""
-"The notification area is not present in your panel, so Ekiga cannot start "
-"hidden."
-msgstr ""
-"Jakinarazpen-area ez dago zure panelean; beraz, Ekiga ezin da ezkutatuta "
-"abiarazi."
-
-#: ../src/gui/main.cpp:2230
-#, c-format
-msgid "Sent DTMF %c"
-msgstr "Bidali DTMF %c"
-
-#: ../src/gui/main.cpp:2436 ../src/gui/main.cpp:4263
-#, c-format
-msgid "Missed calls: %d - Voice Mails: %s"
-msgstr "Galdutako deiak: %d - Ahotsezko mezuak: %s"
-
-#: ../src/gui/main.cpp:3154
+#: ../src/gui/main.cpp:2768
 msgid "_Retrieve Call"
 msgstr "_Berreskuratu deia"
 
-#: ../src/gui/main.cpp:3210
+#: ../src/gui/main.cpp:2824
 msgid "Resume _Audio"
 msgstr "Berriro ekin a_udioari"
 
-#: ../src/gui/main.cpp:3212
+#: ../src/gui/main.cpp:2826
 msgid "Resume _Video"
 msgstr "Berriro ekin b_ideoari"
 
-#: ../src/gui/main.cpp:3788
+#: ../src/gui/main.cpp:3407
 #, c-format
 msgid "Call Duration: %s\n"
 msgstr "Deiaren iraupena: %s\n"
 
-#: ../src/gui/main.cpp:3901
+#: ../src/gui/main.cpp:3446
 msgid "Transfer call to:"
 msgstr "Transferitu deia hona:"
 
-#: ../src/gui/main.cpp:3902 ../src/gui/main.cpp:3967
+#: ../src/gui/main.cpp:3447
 msgid "Transfer"
 msgstr "Transferitu"
 
-#: ../src/gui/main.cpp:3965
+#: ../src/gui/main.cpp:3511
 msgid "Reject"
 msgstr "Baztertu"
 
-#: ../src/gui/main.cpp:3969
+#: ../src/gui/main.cpp:3513
 msgid "Accept"
 msgstr "Onartu"
 
-#: ../src/gui/main.cpp:3976
+#: ../src/gui/main.cpp:3520
 msgid "Incoming call from"
 msgstr "Sarrerako deia hemendik"
 
-#: ../src/gui/main.cpp:3989
-msgid "Remote URL:"
-msgstr "Urruneko URLa:"
+#: ../src/gui/main.cpp:3533
+msgid "Remote URI:"
+msgstr "Urruneko URIa:"
 
-#: ../src/gui/main.cpp:4001
+#: ../src/gui/main.cpp:3545
 msgid "Remote Application:"
 msgstr "Urruneko aplikazioa:"
 
-#. Add the window icon and title
-#: ../src/gui/main.cpp:4066 ../src/gui/main.cpp:4175
+#. Add title
+#: ../src/gui/main.cpp:3602 ../src/gui/main.cpp:3746
 msgid "Ekiga"
 msgstr "Ekiga"
 
-#: ../src/gui/main.cpp:4418
+#: ../src/gui/main.cpp:3853
+#, c-format
+msgid "Missed calls: %d - Voice Mails: %d"
+msgstr "Galdutako deiak: %d - Ahotsezko mezuak: %d"
+
+#: ../src/gui/main.cpp:4030
+#, c-format
+msgid "TX: %dx%d "
+msgstr "TX: %dx%d"
+
+#: ../src/gui/main.cpp:4033
+#, c-format
+msgid "RX: %dx%d "
+msgstr "RX: %dx%d"
+
+#: ../src/gui/main.cpp:4035
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
 "Late packets: %.1f %%\n"
 "Out of order packets: %.1f %%\n"
-"Jitter buffer: %d ms"
+"Jitter buffer: %d ms%s%s%s"
 msgstr ""
 "Pakete galduak: %% %.1f\n"
 "Atzeratutako paketeak: %% %.1f\n"
-"Joan-etorriko atzerapena: %.1f ms\n"
-"Bufferraren atzerapena: %d ms"
+"Joan-etorriko atzerapena: %.1f\n"
+"Bufferraren atzerapena: %d ms%s%s%s"
 
-#: ../src/gui/main.cpp:4510
-#, c-format
-msgid ""
-"Ekiga got an invalid value for the GConf key %s.\n"
-"\n"
-"It probably means that your GConf schemas have not been correctly installed "
-"or the that permissions are not correct.\n"
-"\n"
-"Please check the FAQ (http://www.ekiga.org/), the troubleshooting section of "
-"the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list "
-"archives for more information (http://mail.gnome.org) about this problem."
-msgstr ""
-"Ekiga-k GConf %s gakoarentzat balio baliogabea jaso du.\n"
-"\n"
-"Agian esan nahi du zure GConf eskemak ez direla behar bezala instalatu edo "
-"baimenak ez direla zuzenak.\n"
-"\n"
-"Egiaztatu FAQ (http://www.ekiga.org/faq.php), GConf orriaren (http://www."
-"gnome.org/projects/gconf/) 'throubleshoot' atala edo posta-zerrendako "
-"artxiboak (http://mail.gnome.org) arazoari buruz informazio gehiago lortzeko."
-
-#: ../src/gui/main.cpp:4513
-msgid "Gconf key error"
-msgstr "Gconf gako-errorea"
-
-#: ../src/gui/main.cpp:4542
+#: ../src/gui/main.cpp:4186
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "Arazketa-mezuak inprimatzen ditu kontsolan (1. eta 6. maila artean)"
 
-#: ../src/gui/main.cpp:4547
-msgid "Makes Ekiga call the given URL"
-msgstr "Ekiga-k adierazitako URLari deitzea eragiten du"
+#: ../src/gui/main.cpp:4191
+msgid "Makes Ekiga call the given URI"
+msgstr "Ekiga-k adierazitako URIari deitzea eragiten du"
 
-#: ../src/gui/main.cpp:4594
+#: ../src/gui/main.cpp:4295
 msgid "No usable audio plugin detected"
 msgstr "Ez da audioaren plugin erabilgarririk detektatu"
 
-#: ../src/gui/main.cpp:4594
+#: ../src/gui/main.cpp:4296
 msgid ""
 "Ekiga didn't find any usable audio plugin. Make sure that your installation "
 "is correct."
@@ -3118,64 +2618,69 @@ msgstr ""
 "Ekiga-k ezin izan du audioko plugin erabilgarririk aurkitu. Ziurtatu zaitez "
 "instalazioa ongi dagoela."
 
-#: ../src/gui/misc.cpp:115
+#: ../src/gui/main.cpp:4299
+msgid "No usable audio codecs detected"
+msgstr "Ez da audioaren kodeka erabilgarririk detektatu"
+
+#: ../src/gui/main.cpp:4300
+msgid ""
+"Ekiga didn't find any usable audio codec. Make sure that your installation "
+"is correct."
+msgstr ""
+"Ekiga-k ezin izan du audioko kodeka erabilgarririk aurkitu. Ziurtatu zaitez "
+"instalazioa ongi dagoela."
+
+#: ../src/gui/main.cpp:4306
+msgid "Configuration database corruption"
+msgstr "Konfigurazioaren datu-basea hondatuta"
+
+#: ../src/gui/main.cpp:4307
+#, c-format
+msgid ""
+"Ekiga got an invalid value for the configuration key %s.\n"
+"\n"
+"It probably means that your configuration schemas have not been correctly "
+"installed or the that the permissions are not correct.\n"
+"\n"
+"Please check the FAQ (http://www.ekiga.org/), the troubleshooting section of "
+"the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list "
+"archives for more information (http://mail.gnome.org) about this problem."
+msgstr ""
+"Ekiga-k %s gakoarentzat balio baliogabea jaso du.\n"
+"\n"
+"Agian esan nahi du zure konfigurazioko eskemak ez direla behar bezala "
+"instalatu edo baimenak ez direla zuzenak.\n"
+"\n"
+"Egiaztatu MEG (http://www.ekiga.org), GConf orriaren (http://www.gnome.org/"
+"projects/gconf/) 'throubleshoot' atala edo posta-zerrendako artxiboak "
+"(http://mail.gnome.org) arazoari buruz informazio gehiago lortzeko."
+
+#: ../src/gui/misc.cpp:114
 msgid "Error"
 msgstr "Errorea"
 
-#: ../src/gui/preferences.cpp:506
-msgid "Bandwidth"
-msgstr "Banda-zabalera"
-
-#: ../src/gui/preferences.cpp:516
-msgid "Clock Rate"
-msgstr "Mahiztasuna"
-
-#: ../src/gui/preferences.cpp:643
+#: ../src/gui/preferences.cpp:381
 msgid "Personal Information"
 msgstr "Informazio pertsonala"
 
-#: ../src/gui/preferences.cpp:646
+#: ../src/gui/preferences.cpp:384
 msgid "_First name:"
 msgstr "_Izena:"
 
-#: ../src/gui/preferences.cpp:653
+#: ../src/gui/preferences.cpp:391
 msgid "Sur_name:"
 msgstr "_Abizena:"
 
-#: ../src/gui/preferences.cpp:655
+#: ../src/gui/preferences.cpp:393
 msgid "Enter your surname"
 msgstr "Sartu zure deitura."
 
-#: ../src/gui/preferences.cpp:661
-msgid "E-_mail address:"
-msgstr "_Helbide elektronikoa:"
-
-#: ../src/gui/preferences.cpp:663
-msgid "Enter your e-mail address"
-msgstr "Sartu zure helbide elektronikoa."
-
-#: ../src/gui/preferences.cpp:668
-msgid "_Comment:"
-msgstr "I_ruzkina:"
-
-#: ../src/gui/preferences.cpp:670
-msgid "Enter a comment about yourself"
-msgstr "Sartu zeuri buruzko iruzkina"
-
-#: ../src/gui/preferences.cpp:675
-msgid "_Location:"
-msgstr "_Helbidea:"
-
-#: ../src/gui/preferences.cpp:677
-msgid "Enter your country or city"
-msgstr "Sartu zure herrialde edo herria"
-
 #. Add the update button
-#: ../src/gui/preferences.cpp:682 ../src/gui/preferences.cpp:970
+#: ../src/gui/preferences.cpp:397 ../src/gui/preferences.cpp:673
 msgid "_Apply"
 msgstr "_Aplikatu"
 
-#: ../src/gui/preferences.cpp:682
+#: ../src/gui/preferences.cpp:397
 msgid ""
 "Click here to update the users directory you are registered to with the new "
 "First Name, Last Name, E-Mail, Comment and Location"
@@ -3183,67 +2688,45 @@ msgstr ""
 "Egin klik hemen izen, deitura, helbide elektroniko eta helbide berriekin "
 "erregistratzen ari zaren erabiltzailearen direktorioa eguneratzeko."
 
-#: ../src/gui/preferences.cpp:696
+#: ../src/gui/preferences.cpp:411
 msgid "Ekiga GUI"
 msgstr "Ekiga GUI"
 
-#: ../src/gui/preferences.cpp:698
+#: ../src/gui/preferences.cpp:413
 msgid "Start _hidden"
 msgstr "Abiarazi _ezkutatuta"
 
-#: ../src/gui/preferences.cpp:704
+#: ../src/gui/preferences.cpp:419
 msgid "Video Display"
 msgstr "Bideo-bistaratzea"
 
-#: ../src/gui/preferences.cpp:706
+#: ../src/gui/preferences.cpp:421
 msgid "Place windows displaying video _above other windows"
 msgstr "Kokatu bideoa bistaratzen dituzten leihoak beste leihoen gainetik"
 
-#: ../src/gui/preferences.cpp:719
-msgid "Users Directory"
-msgstr "Erabiltzaile-direktorioa"
+#: ../src/gui/preferences.cpp:426
+msgid "Auto Away"
+msgstr "Aldendu automatikoki"
 
-#. Add all the fields
-#: ../src/gui/preferences.cpp:723
-msgid "Users directory:"
-msgstr "Erabiltzaile-direktorioa:"
+#: ../src/gui/preferences.cpp:428
+msgid "Timeout after which the user is automatically set as away:"
+msgstr "Denbora-muga erabiltzailea automatikoki aldenduta ezartzeko:"
 
-#: ../src/gui/preferences.cpp:723
-msgid "The users directory server to register with"
-msgstr "Erregistratzeko erabiliko duzun erabiltzailearen direktorioaren zerbitzaria."
-
-#: ../src/gui/preferences.cpp:725
-msgid "Enable _registering"
-msgstr "Gaitu e_rregistratzea"
-
-#: ../src/gui/preferences.cpp:725
-msgid "If enabled, register with the selected users directory"
-msgstr "Gaituta badago, erregistratu hautatutako erabiltzailearen direktorioarekin."
-
-#: ../src/gui/preferences.cpp:727
-msgid "_Publish my details in the users directory when registering"
-msgstr "_Argitaratu nire xehetasunak erabiltzaileen direktorioan eregistratzean"
-
-#: ../src/gui/preferences.cpp:727
-msgid ""
-"If enabled, your details are shown to people browsing the users directory. "
-"If disabled, you are not visible to users browsing the users directory, but "
-"they can still use the callto URL to call you."
+#: ../src/gui/preferences.cpp:428
+msgid "Automatically set the user as away after the timeout has elapsed (in minutes)"
 msgstr ""
-"Gaituta badago, zure xehetasunak erabiltzaile-direktorioa arakatzen duen "
-"jendeari erakutsiko zaizkio. Desgaituta badago, ez zara ikusgai egongo "
-"erabiltzaile-direktorioa arakatzen duten erabiltzaileentzat, baina callto "
-"URLa erabil dezakete zuri deitzeko."
+"Automatikoki ezartzen du erailtzailea aldentuta bezala denbora-muga "
+"iraungitutakoan (minututan)"
 
-#: ../src/gui/preferences.cpp:738
+#: ../src/gui/preferences.cpp:438
 msgid "Call Forwarding"
 msgstr "Deia birbidaltzea"
 
-#: ../src/gui/preferences.cpp:740
+#: ../src/gui/preferences.cpp:440
 msgid "_Always forward calls to the given host"
 msgstr "_Deiak beti adierazitako ostalariari birbidali"
 
-#: ../src/gui/preferences.cpp:740
+#: ../src/gui/preferences.cpp:440
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the protocol settings"
@@ -3251,11 +2734,11 @@ msgstr ""
 "Gaituta badago, sartzen diren dei guztiak protokolo-ezarpenetan adierazitako "
 "ostalariari birbidaliko zaizkio."
 
-#: ../src/gui/preferences.cpp:742
+#: ../src/gui/preferences.cpp:442
 msgid "Forward calls to the given host if _no answer"
 msgstr "Birbidali deiak adierazitako ostalariari _erantzunik ez badago"
 
-#: ../src/gui/preferences.cpp:742
+#: ../src/gui/preferences.cpp:442
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the protocol settings if you do not answer the call"
@@ -3263,11 +2746,11 @@ msgstr ""
 "Gaituta badago, sartzen diren dei guztiak protokolo-ezarpenetan adierazitako "
 "ostalariari birbidaliko zaizkio, zuk deia erantzuten ez baduzu."
 
-#: ../src/gui/preferences.cpp:744
+#: ../src/gui/preferences.cpp:444
 msgid "Forward calls to the given host if _busy"
-msgstr "Birbidali deiak adierazitako ostalariari _okupatuta badago"
+msgstr "Birbidali deiak adierazitako ostalariari _lanpetuta badago"
 
-#: ../src/gui/preferences.cpp:744
+#: ../src/gui/preferences.cpp:444
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the protocol settings if you already are in a call or if you "
@@ -3277,433 +2760,370 @@ msgstr ""
 "ostalariari birbidaliko zaizkio, dei batekin bazaude edo 'Ez molestatu' "
 "moduan bazaude."
 
-#: ../src/gui/preferences.cpp:748 ../src/gui/preferences.cpp:1972
+#: ../src/gui/preferences.cpp:448 ../src/gui/preferences.cpp:1420
 msgid "Call Options"
 msgstr "Deiaren aukerak"
 
 #. Add all the fields
-#: ../src/gui/preferences.cpp:751
-msgid "Automatically _clear calls after 30 seconds of inactivity"
-msgstr "_Garbitu deiak automatikoki 30 segundo inaktiboki igarotakoan"
-
-#: ../src/gui/preferences.cpp:753
+#: ../src/gui/preferences.cpp:451
 msgid "Timeout to reject or forward unanswered incoming calls (in seconds):"
 msgstr ""
 "Denbora-muga erantzun ez diren sarrerako deiak baztertzeko edo birbidaltzeko "
 "(segundotan)"
 
-#: ../src/gui/preferences.cpp:787
+#: ../src/gui/preferences.cpp:485
 msgid "Ekiga Sound Events"
 msgstr "Ekiga-ren soinu gertaerak"
 
-#: ../src/gui/preferences.cpp:836 ../src/gui/preferences.cpp:845
-#: ../src/gui/preferences.cpp:854
+#: ../src/gui/preferences.cpp:534 ../src/gui/preferences.cpp:543
+#: ../src/gui/preferences.cpp:552
 msgid "Event"
 msgstr "Gertaera"
 
-#: ../src/gui/preferences.cpp:866
+#: ../src/gui/preferences.cpp:564
 msgid "Choose a sound"
 msgstr "Aukeratu soinu bat"
 
-#: ../src/gui/preferences.cpp:872
+#: ../src/gui/preferences.cpp:570
 msgid "Wavefiles"
 msgstr "Wave-fitxategiak"
 
-#: ../src/gui/preferences.cpp:881 ../src/gui/preferences.cpp:900
+#: ../src/gui/preferences.cpp:579 ../src/gui/preferences.cpp:598
 msgid "Play"
 msgstr "Erreproduzitu"
 
-#: ../src/gui/preferences.cpp:914
+#: ../src/gui/preferences.cpp:612
 msgid "Alternative Output Device"
 msgstr "Bestelako irteerako gailua"
 
-#: ../src/gui/preferences.cpp:920
+#: ../src/gui/preferences.cpp:618
 msgid "Alternative output device:"
 msgstr "Bestelako irteerako gailua:"
 
-#: ../src/gui/preferences.cpp:920
+#: ../src/gui/preferences.cpp:618
 msgid "Select an alternative audio output device to use for sound events"
-msgstr "Hautatu bestelako audio-irteerako gailua soinuaren gertaeran erabiltzeko"
+msgstr "Hautatu audioaren bestelako irteerako gailua soinuaren gertaeran erabiltzeko"
 
-#: ../src/gui/preferences.cpp:938
+#: ../src/gui/preferences.cpp:636
 msgid "STUN"
 msgstr "STUN"
 
-#: ../src/gui/preferences.cpp:939
+#: ../src/gui/preferences.cpp:637
 msgid "IP Translation"
 msgstr "IPen itzulpena"
 
-#: ../src/gui/preferences.cpp:952
+#: ../src/gui/preferences.cpp:650
 msgid "Network Interface"
 msgstr "Sareko interfazea"
 
-#: ../src/gui/preferences.cpp:957
+#: ../src/gui/preferences.cpp:655
 msgid "Listen on:"
 msgstr "Entzun hemen:"
 
-#: ../src/gui/preferences.cpp:964
+#: ../src/gui/preferences.cpp:660
+msgid "Video Bandwidth"
+msgstr "Bideoaren banda-zabalera"
+
+#: ../src/gui/preferences.cpp:662
+msgid "Maximum video _bitrate (in kbits/s):"
+msgstr "Bideoaren gehienezko bit-tasa (kb/s):"
+
+#: ../src/gui/preferences.cpp:662
+msgid ""
+"The maximum video bitrate in kbits/s. The video quality and the number of "
+"transmitted frames per second (depends on codec) will be dynamically "
+"adjusted above their minimum during calls to try to minimize the bandwidth "
+"to the given value."
+msgstr ""
+"Bideoaren gehienezko bit-tasa (kb/s). Bideo-kalitatea eta transmititutako "
+"marko-kopurua segundoko (kodekaren arabera) dinamikoki doituko dira beraien "
+"gutxienekoaren gainetik deiak martxan dauden bitartean, banda-zabalera "
+"emandako baliora minimizatzen saiatzeko."
+
+#: ../src/gui/preferences.cpp:667
 msgid "NAT Settings"
 msgstr "NAT ezarpenak"
 
-#: ../src/gui/preferences.cpp:966
+#: ../src/gui/preferences.cpp:669
 msgid "NAT Traversal Method:"
 msgstr "NAT zeharkako metodoa:"
 
-#: ../src/gui/preferences.cpp:968
+#: ../src/gui/preferences.cpp:671
 msgid "STUN Se_rver:"
 msgstr "STUN _zerbitzaria:"
 
-#: ../src/gui/preferences.cpp:968
+#: ../src/gui/preferences.cpp:671
 msgid "The STUN server to use for STUN Support."
 msgstr "STUN zerbitzaria STUN euskarrian erabiltzeko ."
 
-#: ../src/gui/preferences.cpp:970
+#: ../src/gui/preferences.cpp:673
 msgid "Click here to update your NAT settings"
 msgstr "Egin klik NAT ezarpenak eguneratzeko."
 
-#: ../src/gui/preferences.cpp:982
+#: ../src/gui/preferences.cpp:685
 msgid "String"
 msgstr "Katea"
 
-#: ../src/gui/preferences.cpp:983
+#: ../src/gui/preferences.cpp:686
 msgid "Tone"
 msgstr "Tonua"
 
-#: ../src/gui/preferences.cpp:984 ../src/gui/preferences.cpp:1035
+#: ../src/gui/preferences.cpp:687 ../src/gui/preferences.cpp:738
 msgid "RFC2833"
 msgstr "RFC2833"
 
-#: ../src/gui/preferences.cpp:985
+#: ../src/gui/preferences.cpp:688
 msgid "Q.931"
 msgstr "Q.931"
 
-#: ../src/gui/preferences.cpp:991 ../src/gui/preferences.cpp:1043
+#: ../src/gui/preferences.cpp:694 ../src/gui/preferences.cpp:748
 msgid "Misc Settings"
-msgstr "Hainbat ezarpenak"
+msgstr "Hainbat ezarpen"
 
-#: ../src/gui/preferences.cpp:993
+#: ../src/gui/preferences.cpp:696
 msgid "Default _gateway:"
 msgstr "_Atebide lehenetsia:"
 
-#: ../src/gui/preferences.cpp:996 ../src/gui/preferences.cpp:1048
-msgid "Forward _URL:"
-msgstr "_Birbidalzeko URLa:"
+#: ../src/gui/preferences.cpp:699 ../src/gui/preferences.cpp:753
+msgid "Forward _URI:"
+msgstr "Birbidaltzeko _URIa:"
 
-#: ../src/gui/preferences.cpp:1005
+#: ../src/gui/preferences.cpp:708
 msgid "Advanced Settings"
 msgstr "Ezarpen aurreratuak"
 
 #. The toggles
-#: ../src/gui/preferences.cpp:1008
+#: ../src/gui/preferences.cpp:711
 msgid "Enable H.245 _tunneling"
 msgstr "Gaitu H.245 _tunnelling"
 
-#: ../src/gui/preferences.cpp:1010
+#: ../src/gui/preferences.cpp:713
 msgid "Enable _early H.245"
 msgstr "Gaitu H.245 g_oiztiarra"
 
-#: ../src/gui/preferences.cpp:1012
+#: ../src/gui/preferences.cpp:715
 msgid "Enable fast _start procedure"
-msgstr "Gaitu Ha_siera Azkarra prozedura"
+msgstr "Gaitu 'Ha_siera azkarra' prozedura"
 
-#: ../src/gui/preferences.cpp:1012
+#: ../src/gui/preferences.cpp:715
 msgid ""
 "Connection will be established in Fast Start mode. Fast Start is a new way "
 "to start calls faster that was introduced in H.323v2. It is not supported by "
 "Netmeeting and using both Fast Start and H.245 Tunneling can crash some "
 "versions of Netmeeting."
 msgstr ""
-"Konexioa Hasiera Azkarra moduan ezarriko da. Hasiera Azkarra H.323v2an sartu "
-"den deiak azkarrago hasteko modu berria da. Netmeeting-ek ez du onartzen eta "
-"Hasiera Azkarra eta H.245 Tunnelling biak erabiliz gero Netmeeting-en "
-"bertsio batzuk honda daitezke."
+"Konexioa 'Hasiera azkarra' moduan ezarriko da. Hasiera Azkarra H.323v2an "
+"sartu den deiak azkarrago hasteko modu berria da. Netmeeting-ek ez du "
+"onartzen eta Hasiera Azkarra eta H.245 Tunnelling biak erabiliz gero "
+"Netmeeting-en bertsio batzuk honda daitezke."
 
-#: ../src/gui/preferences.cpp:1018 ../src/gui/preferences.cpp:1056
+#: ../src/gui/preferences.cpp:721 ../src/gui/preferences.cpp:761
 msgid "DTMF Mode"
 msgstr "DTMF modua"
 
-#: ../src/gui/preferences.cpp:1020 ../src/gui/preferences.cpp:1058
+#: ../src/gui/preferences.cpp:723 ../src/gui/preferences.cpp:763
 msgid "_Send DTMF as:"
 msgstr "_Bidali DTMF honela:"
 
-#: ../src/gui/preferences.cpp:1020 ../src/gui/preferences.cpp:1058
-msgid "This permits to set the mode for DTMFs sending."
+#: ../src/gui/preferences.cpp:723 ../src/gui/preferences.cpp:763
+msgid "This allows you to set the mode for DTMFs sending."
 msgstr "Honek DTMFak bidaltzeko modua ezartzea baimentzen du."
 
-#: ../src/gui/preferences.cpp:1034
+#: ../src/gui/preferences.cpp:739
 msgid "INFO"
 msgstr "INFO"
 
-#: ../src/gui/preferences.cpp:1045
+#: ../src/gui/preferences.cpp:750
 msgid "_Outbound Proxy:"
 msgstr "_Irteerako proxy-a:"
 
-#: ../src/gui/preferences.cpp:1078
+#: ../src/gui/preferences.cpp:783
 msgid "Audio Plugin"
 msgstr "Audioaren plugin-a"
 
-#: ../src/gui/preferences.cpp:1083
+#: ../src/gui/preferences.cpp:788
 msgid "Audio plugin:"
 msgstr "Audioaren plugin-a:"
 
-#: ../src/gui/preferences.cpp:1083
+#: ../src/gui/preferences.cpp:788
 msgid "The audio plugin that will be used to detect the devices and manage them."
 msgstr "Audioaren plugin-a gailuak detektatzeko eta kudeatzeko"
 
-#: ../src/gui/preferences.cpp:1089 ../src/gui/preferences.cpp:2008
+#: ../src/gui/preferences.cpp:794 ../src/gui/preferences.cpp:1450
 msgid "Audio Devices"
 msgstr "Audio-gailuak"
 
-#: ../src/gui/preferences.cpp:1096
+#: ../src/gui/preferences.cpp:801
 msgid "Output device:"
 msgstr "Irteerako gailua:"
 
-#: ../src/gui/preferences.cpp:1103 ../src/gui/preferences.cpp:1169
+#: ../src/gui/preferences.cpp:808 ../src/gui/preferences.cpp:877
 msgid "Input device:"
 msgstr "Sarrerako gailua:"
 
-#. That button will refresh the devices list
-#: ../src/gui/preferences.cpp:1108 ../src/gui/preferences.cpp:1235
+#. That button will refresh the device list
+#: ../src/gui/preferences.cpp:813 ../src/gui/preferences.cpp:941
 msgid "_Detect devices"
 msgstr "_Detektatu gailuak"
 
-#: ../src/gui/preferences.cpp:1108
-msgid "Click here to refresh the devices list"
+#: ../src/gui/preferences.cpp:813 ../src/gui/preferences.cpp:941
+msgid "Click here to refresh the device list."
 msgstr "Egin klik hemen gailu-zerrenda freskatzeko."
 
-#: ../src/gui/preferences.cpp:1134
-msgid "Normal"
-msgstr "Normala"
-
-#: ../src/gui/preferences.cpp:1135
-msgid "Large"
-msgstr "Handia"
-
-#: ../src/gui/preferences.cpp:1141
+#: ../src/gui/preferences.cpp:849
 msgid "PAL (Europe)"
 msgstr "PAL (Europa)"
 
-#: ../src/gui/preferences.cpp:1142
+#: ../src/gui/preferences.cpp:850
 msgid "NTSC (America)"
 msgstr "NTSC (Amerika)"
 
-#: ../src/gui/preferences.cpp:1143
+#: ../src/gui/preferences.cpp:851
 msgid "SECAM (France)"
 msgstr "SECAM (Frantzia)"
 
-#: ../src/gui/preferences.cpp:1144
+#: ../src/gui/preferences.cpp:852
 msgid "Auto"
 msgstr "Auto"
 
-#: ../src/gui/preferences.cpp:1153
+#: ../src/gui/preferences.cpp:861
 msgid "Video Plugin"
 msgstr "Bideoaren plugin-a"
 
-#: ../src/gui/preferences.cpp:1157
+#: ../src/gui/preferences.cpp:865
 msgid "Video plugin:"
 msgstr "Bideoaren plugin-a:"
 
-#: ../src/gui/preferences.cpp:1163 ../src/gui/preferences.cpp:2012
+#: ../src/gui/preferences.cpp:871 ../src/gui/preferences.cpp:1454
 msgid "Video Devices"
 msgstr "Bideo-gailuak"
 
 #. Video Channel
-#: ../src/gui/preferences.cpp:1173
+#: ../src/gui/preferences.cpp:881
 msgid "Channel:"
 msgstr "Kanala:"
 
-#: ../src/gui/preferences.cpp:1176
+#: ../src/gui/preferences.cpp:883
 msgid "Size:"
 msgstr "Tamaina:"
 
-#: ../src/gui/preferences.cpp:1176
-msgid ""
-"Select the transmitted video size: Normal (QCIF 176x144) or Large (CIF "
-"352x288)"
-msgstr ""
-"Hautatu transmititutako bideoaren tamaina: normala (QCIF 176x144) edo handia "
-"(CIF 352x288)."
+#: ../src/gui/preferences.cpp:883
+msgid "Select the transmitted video size"
+msgstr "Hautatu transmititutako bideoaren tamaina"
 
-#: ../src/gui/preferences.cpp:1179
+#: ../src/gui/preferences.cpp:885
 msgid "Format:"
 msgstr "Formatua:"
 
 #. The file selector button
-#: ../src/gui/preferences.cpp:1182
+#: ../src/gui/preferences.cpp:888
 msgid "Image:"
 msgstr "Irudia:"
 
-#: ../src/gui/preferences.cpp:1185
+#: ../src/gui/preferences.cpp:891
 msgid "Choose a Picture"
 msgstr "Aukeratu irudi bat"
 
-#: ../src/gui/preferences.cpp:1189
+#: ../src/gui/preferences.cpp:895
 msgid "Preview"
 msgstr "Aurrebista"
 
-#: ../src/gui/preferences.cpp:1199
+#: ../src/gui/preferences.cpp:905
 msgid "Images"
 msgstr "Irudiak"
 
-#: ../src/gui/preferences.cpp:1235
-msgid "Click here to refresh the devices list."
-msgstr "Egin klik hemen gailu-zerrenda freskatzeko."
+#: ../src/gui/preferences.cpp:964
+msgid "Available Codecs"
+msgstr "Kodeka erabilgarriak"
 
-#: ../src/gui/preferences.cpp:1258
-msgid "Available Audio Codecs"
-msgstr "Audio-kodek erabilgarriak"
-
-#: ../src/gui/preferences.cpp:1273
-msgid "Audio Codecs Settings"
-msgstr "Audio-kodeken ezarpenak"
+#: ../src/gui/preferences.cpp:976
+msgid "Codecs Settings"
+msgstr "Kodeken ezarpenak"
 
 #. Translators: the full sentence is Automatically adjust jitter buffer
 #. between X and Y ms
-#: ../src/gui/preferences.cpp:1277
-msgid "Automatically adjust _jitter buffer between"
-msgstr "Doitu _automatikoki hauen arteko bufferraren atzerapena:"
-
-#: ../src/gui/preferences.cpp:1277
-msgid "and"
-msgstr "eta"
-
-#: ../src/gui/preferences.cpp:1277
-msgid "ms"
-msgstr "ms"
-
-#: ../src/gui/preferences.cpp:1277
-msgid "The minimum jitter buffer size for audio reception (in ms)."
-msgstr "Audioa jasotzeko bufferraren gutxieneko atzerapena (ms-tan)."
-
-#: ../src/gui/preferences.cpp:1277
-msgid "The maximum jitter buffer size for audio reception (in ms)."
-msgstr "Audioa jasotzeko bufferraren gehienezko atzerapena (ms-tan)."
-
-#: ../src/gui/preferences.cpp:1279
+#: ../src/gui/preferences.cpp:980
 msgid "Enable silence _detection"
 msgstr "Gaitu _isiltasuna detektatzea"
 
-#: ../src/gui/preferences.cpp:1279
+#: ../src/gui/preferences.cpp:980
 msgid "If enabled, use silence detection with the codecs supporting it."
 msgstr "Gaituta badago, erabili isiltasuna detektatzea onartzen duten kodekekin."
 
-#: ../src/gui/preferences.cpp:1281
+#: ../src/gui/preferences.cpp:982
 msgid "Enable echo can_celation"
 msgstr "Gaitu oihartzuna e_zeztatzea"
 
-#: ../src/gui/preferences.cpp:1281
+#: ../src/gui/preferences.cpp:982
 msgid "If enabled, use echo cancelation."
-msgstr "Gaituta badago, erabili ohiartzuna ezeztatzea"
-
-#: ../src/gui/preferences.cpp:1294 ../src/gui/preferences.cpp:1961
-msgid "General Settings"
-msgstr "Ezarpen orokorrak"
-
-#: ../src/gui/preferences.cpp:1296
-msgid "Enable _video support"
-msgstr "Gaitu _bideo euskarria"
-
-#: ../src/gui/preferences.cpp:1296
-msgid "If enabled, allows video during calls."
-msgstr "Gaituta badago, bideoak jaso ahal izango dira deia martxan dagoela."
-
-#: ../src/gui/preferences.cpp:1300
-msgid "Bandwidth Control"
-msgstr "Banda-zabaleraren kontrola"
-
-#: ../src/gui/preferences.cpp:1302
-msgid "Maximum video _bandwidth (in kB/s):"
-msgstr "Bideoaren gehienezko banda-_zabalera (KB/s):"
-
-#: ../src/gui/preferences.cpp:1302
-msgid ""
-"The maximum video bandwidth in kbytes/s. The video quality and the number of "
-"transmitted frames per second will be dynamically adjusted above their "
-"minimum during calls to try to minimize the bandwidth to the given value."
-msgstr ""
-"Bideoaren gehienezko banda-zabalera kbyte/s-tan. Bideo-kalitatea eta "
-"segundoko transmititutako marko-kopurua dinamikoki doituko dira beren "
-"gutxienekoaren gainetik deiak martxan dauden bitartean, banda-zabalera "
-"emandako baliora minimizatzen saiatzeko."
-
-#: ../src/gui/preferences.cpp:1307
-msgid "Advanced Quality Settings"
-msgstr "Kalitatearen ezarpen aurreratuak"
+msgstr "Gaituta badago, erabili oihartzuna ezeztatzea"
 
 #. Translators: the full sentence is Keep a minimum video quality of X %
-#: ../src/gui/preferences.cpp:1310
-msgid "Frame Rate"
-msgstr "Fotograma-abiadura:"
-
-#: ../src/gui/preferences.cpp:1310
+#: ../src/gui/preferences.cpp:985
 msgid "Picture Quality"
 msgstr "Irudiaren kalitatea"
 
-#: ../src/gui/preferences.cpp:1310
-msgid "Choose if you want to favour speed or quality for the transmitted video."
-msgstr "Aukeratu transmititutako bideorako abiadura edo kalitatea hobetsi nahi duzun."
+#: ../src/gui/preferences.cpp:985
+msgid "Choose if you want to favour frame rate or quality for the transmitted video."
+msgstr "Aukeratu transmititutako fotograma-tasa edo kalitatea hobetsi nahi duzun."
 
-#: ../src/gui/preferences.cpp:1902
+#: ../src/gui/preferences.cpp:1357
 msgid "Play sound for new voice mails"
 msgstr "Erreproduzitu soinua ahotsezko mezu berriekin"
 
-#: ../src/gui/preferences.cpp:1911
+#: ../src/gui/preferences.cpp:1366
 msgid "Play sound for new instant messages"
 msgstr "Erreproduzitu soinua berehalako mezu berriekin"
 
-#: ../src/gui/preferences.cpp:1940
+#: ../src/gui/preferences.cpp:1395
 msgid "Ekiga Preferences"
 msgstr "Ekiga-ren _hobespenak"
 
-#: ../src/gui/preferences.cpp:1955
+#: ../src/gui/preferences.cpp:1410
 msgid "General"
 msgstr "Orokorra"
 
-#: ../src/gui/preferences.cpp:1956
+#: ../src/gui/preferences.cpp:1411
 msgid "Personal Data"
 msgstr "Datu pertsonalak"
 
-#: ../src/gui/preferences.cpp:1967
-msgid "Directory Settings"
-msgstr "Direktorioaren ezarpenak"
+#: ../src/gui/preferences.cpp:1416
+msgid "General Settings"
+msgstr "Ezarpen orokorrak"
 
-#: ../src/gui/preferences.cpp:1977
+#: ../src/gui/preferences.cpp:1425
 msgid "Sound Events"
 msgstr "Soinu gertaerak"
 
-#: ../src/gui/preferences.cpp:1981
+#: ../src/gui/preferences.cpp:1429
 msgid "Protocols"
 msgstr "Protokoloak"
 
-#: ../src/gui/preferences.cpp:1983
+#: ../src/gui/preferences.cpp:1431
 msgid "Network Settings"
 msgstr "Sareko ezarpenak"
 
-#: ../src/gui/preferences.cpp:1988
+#: ../src/gui/preferences.cpp:1436
 msgid "SIP Settings"
 msgstr "SIP ezarpenak"
 
-#: ../src/gui/preferences.cpp:1993
+#: ../src/gui/preferences.cpp:1441
 msgid "H.323 Settings"
 msgstr "H.323 ezarpenak"
 
-#: ../src/gui/preferences.cpp:1997
+#: ../src/gui/preferences.cpp:1445
 msgid "Codecs"
 msgstr "Kodekak"
 
-#: ../src/gui/preferences.cpp:1999
-msgid "Audio Codecs"
-msgstr "Audio-kodekak"
-
-#: ../src/gui/preferences.cpp:2003
-msgid "Video Codecs"
-msgstr "Bideo-kodekak"
-
-#: ../src/gui/preferences.cpp:2007
+#: ../src/gui/preferences.cpp:1449
 msgid "Devices"
 msgstr "Gailuak"
 
-#: ../src/gui/tools.cpp:174
+#: ../src/gui/tools.cpp:179
+msgid "Invalid parameters"
+msgstr "Baliogabeko parametroak"
+
+#: ../src/gui/tools.cpp:179
 msgid ""
 "Please provide your username and password in order to be able to use the PC-"
 "To-Phone service."
@@ -3711,12 +3131,12 @@ msgstr ""
 "Idatzi erabiltzaile-izena eta pasahitza 'PCtik Telefonora' (PC-to-Phone) "
 "zerbitzua erabil ahal izateko."
 
-#: ../src/gui/tools.cpp:312 ../src/gui/tools.cpp:331
+#: ../src/gui/tools.cpp:315 ../src/gui/tools.cpp:329
 msgid "PC-To-Phone Settings"
 msgstr "'PCtik telefonora' konfigurazioa"
 
 #. Introduction label
-#: ../src/gui/tools.cpp:322
+#: ../src/gui/tools.cpp:320
 msgid ""
 "You can make calls to regular phones and cell numbers worldwide using Ekiga. "
 "To enable this, you need to do three things. First create an account at the "
@@ -3734,39 +3154,57 @@ msgstr ""
 "Ziurtatu zaitez beheko URLa erabiltzen ari zarela, bestela zerbitzuak ez "
 "baitu funtzionatuko."
 
-#: ../src/gui/tools.cpp:333
+#: ../src/gui/tools.cpp:331
 msgid "Account _number:"
 msgstr "Kontu-_zenbakia:"
 
-#: ../src/gui/tools.cpp:350
+#: ../src/gui/tools.cpp:348
 msgid "_Password:"
 msgstr "_Pasahitza:"
 
-#: ../src/gui/tools.cpp:369
+#: ../src/gui/tools.cpp:367
 msgid "Use PC-To-Phone service"
 msgstr "Erabili 'PCtik telefonora' zerbitzua"
 
-#: ../src/gui/tools.cpp:381
+#: ../src/gui/tools.cpp:379
 msgid ""
 "Click on one of the following links to get more information about your "
 "existing Ekiga PC-To-Phone account, or to create a new account."
 msgstr ""
-"Egin klik hurrengo esteketako batean, zure Ekiga 'PCtik telefonora'  "
-"kontuari buruz informazio gehiago lortzeko edo kontu berria sortzeko."
+"Egin klik hurrengo esteketako batean, zure Ekiga 'PCtik telefonora' kontuari "
+"buruz informazio gehiago lortzeko edo kontu berria sortzeko."
 
-#: ../src/gui/tools.cpp:389
+#: ../src/gui/tools.cpp:387
 msgid "Get an Ekiga PC-To-Phone account"
 msgstr "Lortu Ekiga 'PC telefonora' kontua"
 
-#: ../src/gui/tools.cpp:403
+#: ../src/gui/tools.cpp:401
 msgid "Recharge the account"
 msgstr "Birkargatu kontua"
 
-#: ../src/gui/tools.cpp:417
+#: ../src/gui/tools.cpp:415
 msgid "Consult the balance history"
 msgstr "Kontsultatu balantzearen historia"
 
-#: ../src/gui/tools.cpp:431
+#: ../src/gui/tools.cpp:429
 msgid "Consult the calls history"
 msgstr "Kontsultatu deien historia"
+
+#: ../src/gui/statusicon.cpp:349
+#, c-format
+msgid "You have %d messages"
+msgstr "%d mezu dituzu"
+
+#: ../src/gui/statusicon.cpp:350
+#, c-format
+msgid "You have %d message"
+msgstr "Mezu %d duzu"
+
+#: ../src/gui/statusicon.cpp:469
+msgid "_Contents"
+msgstr "_Edukiak"
+
+#: ../src/gui/statusicon.cpp:474
+msgid "_About"
+msgstr "Honi _buruz"
 
