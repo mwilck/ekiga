@@ -591,7 +591,8 @@ static gboolean on_stats_refresh_cb (gpointer self)
                            mw->current_call->get_received_video_framerate ());
     gdk_threads_enter ();
     gm_main_window_push_info_message (GTK_WIDGET (self), msg);
-    gm_main_window_set_call_duration (GTK_WIDGET (self), mw->current_call->get_call_duration ().c_str ());
+    if (mw->current_call)
+      gm_main_window_set_call_duration (GTK_WIDGET (self), mw->current_call->get_call_duration ().c_str ());
     gdk_threads_leave ();
 
     g_free (msg);
@@ -1099,6 +1100,7 @@ hangup_call_cb (GtkWidget * /*widget*/,
   if (mw->current_call) {
 
     mw->current_call->hangup ();
+    mw->current_call = NULL;
   }
 }
 
