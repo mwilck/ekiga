@@ -47,18 +47,6 @@
 
 namespace Ekiga {
 
-  /*** Codec description ***/
-  typedef struct {
-    std::string name;
-    unsigned rate;
-    bool active;
-    bool audio;
-    std::list<std::string> protocols;
-
-  } CodecDescription;
-
-  typedef std::list<CodecDescription> CodecList;
-
   class CallManager;
 
 

@@ -12,6 +12,8 @@ libgmprotocol_la_SOURCES = \
 	$(protocol_dir)/call-core.h		\
 	$(protocol_dir)/call-manager.h		\
 	$(protocol_dir)/call.h			\
-	$(protocol_dir)/call-core.cpp
+	$(protocol_dir)/call-core.cpp		\
+	$(protocol_dir)/codec-description.h	\
+	$(protocol_dir)/codec-description.cpp
 
 libgmprotocol_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS)

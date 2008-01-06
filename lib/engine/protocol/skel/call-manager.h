@@ -40,6 +40,7 @@
 #define __CALL_MANAGER_H__
 
 #include "call-core.h"
+#include "codec-description.h"
 
 namespace Ekiga {
 

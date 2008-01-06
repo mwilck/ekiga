@@ -35,6 +35,7 @@
  */
 
 #include <iostream>
+#include <sstream>
 
 #include "config.h"
 
@@ -43,6 +44,7 @@
 
 
 using namespace Ekiga;
+
 
 void CallCore::add_manager (CallManager &manager)
 {

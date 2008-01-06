@@ -77,9 +77,9 @@ namespace Ekiga {
       virtual void answer () = 0; 
 
       /** Transfer the call to the specified uri
-       * @param: uri: where to transfer the call
+       * @param uri is the uri where to transfer the call
        */
-      virtual void transfer (std::string /*uri*/) = 0;
+      virtual void transfer (std::string uri) = 0;
 
       /** Put the call on hold or retrieve it
        */
@@ -91,7 +91,7 @@ namespace Ekiga {
       virtual void toggle_stream_pause (StreamType type) = 0;
 
       /** Send the given DTMF
-       * @param the dtmf (one char)
+       * @param dtmf is the dtmf to send (one char)
        */
       virtual void send_dtmf (const char dtmf) = 0;
 
@@ -160,14 +160,14 @@ namespace Ekiga {
       unsigned get_received_video_framerate () { return re_v_fps; }
 
       /** Return the transmitted video resolution
-       * @param: width: width in pixels
-       * @param: height: height in pixels
+       * @param width contains the width in pixels
+       * @param height contains the height in pixels
        */
       void get_transmitted_video_resolution (unsigned & width, unsigned & height) { width = tr_width; height = tr_height; }
 
       /** Return the received video resolution
-       * @param: width: width in pixels
-       * @param: height: height in pixels
+       * @param width contains the width in pixels
+       * @param height contains the height in pixels
        */
       void get_received_video_resolution (unsigned & width, unsigned & height) { width = re_width; height = re_height; }
 
