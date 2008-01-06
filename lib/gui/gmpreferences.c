@@ -544,7 +544,7 @@ gnome_prefs_int_option_menu_new (GtkWidget *table,
 
   writable = gm_conf_is_key_writable (conf_key);
 
-  label = gtk_label_new (label_txt);                                           
+  label = gtk_label_new_with_mnemonic (label_txt);
   if (!writable)
     gtk_widget_set_sensitive (GTK_WIDGET (label), FALSE);
   
