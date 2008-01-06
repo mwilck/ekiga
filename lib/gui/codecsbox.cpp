@@ -35,7 +35,7 @@
  *
  */
 
-
+#include "config.h"
 #include "codecsbox.h"
 
 #include "gmconf.h"
@@ -374,7 +374,7 @@ codecs_box_init (CodecsBox *self)
   self->priv = new CodecsBoxPrivate;
   self->priv->type = Ekiga::Call::Audio;
 
-  gtk_box_set_spacing (GTK_BOX (self), 0);
+  gtk_box_set_spacing (GTK_BOX (self), 6);
   gtk_box_set_homogeneous (GTK_BOX (self), FALSE);
 
   self->priv->codecs_list = gtk_tree_view_new ();
@@ -439,30 +439,25 @@ codecs_box_init (CodecsBox *self)
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scroll_window), 
                                   GTK_POLICY_NEVER, 
                                   GTK_POLICY_AUTOMATIC);
-
-  /* The frame containing the codecs list */
-  frame = gtk_frame_new (NULL);
-  gtk_widget_set_size_request (GTK_WIDGET (frame), -1, 150);
-  gtk_container_set_border_width (GTK_CONTAINER (frame), 4);
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
-  gtk_container_add (GTK_CONTAINER (frame), scroll_window);
+  gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scroll_window),
+                                       GTK_SHADOW_IN);
+  gtk_widget_set_size_request (scroll_window, -1, 150);
   gtk_container_add (GTK_CONTAINER (scroll_window), 
                      GTK_WIDGET (self->priv->codecs_list));
-  gtk_container_set_border_width (GTK_CONTAINER (self->priv->codecs_list), 0);
-  gtk_box_pack_start (GTK_BOX (self), frame, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (self), scroll_window, TRUE, TRUE, 0);
 
 
   /* The buttons */
   alignment = gtk_alignment_new (1, 0.5, 0, 0);
-  buttons_vbox = gtk_vbutton_box_new ();
-
-  gtk_box_set_spacing (GTK_BOX (buttons_vbox), 0);
+  buttons_vbox = gtk_vbox_new (TRUE, 6);
 
   gtk_container_add (GTK_CONTAINER (alignment), buttons_vbox);
 
   image = gtk_image_new_from_stock (GTK_STOCK_GO_UP, GTK_ICON_SIZE_MENU);
   button = gtk_button_new ();
   gtk_container_add (GTK_CONTAINER (button), image);
+  gtk_widget_set_tooltip_text (button,
+                               _("Move selected codec priority upwards"));
   gtk_box_pack_start (GTK_BOX (buttons_vbox), button, FALSE, FALSE, 0);
   g_object_set_data (G_OBJECT (button), "operation", (gpointer) "up");
   g_signal_connect (G_OBJECT (button), "clicked",
@@ -472,6 +467,8 @@ codecs_box_init (CodecsBox *self)
   image = gtk_image_new_from_stock (GTK_STOCK_GO_DOWN, GTK_ICON_SIZE_MENU);
   button = gtk_button_new ();
   gtk_container_add (GTK_CONTAINER (button), image);
+  gtk_widget_set_tooltip_text (button, 
+                               _("Move selected codec priority downwards"));
   gtk_box_pack_start (GTK_BOX (buttons_vbox), button, FALSE, FALSE, 0);
   g_object_set_data (G_OBJECT (button), "operation", (gpointer) "down");
   g_signal_connect (G_OBJECT (button), "clicked",
