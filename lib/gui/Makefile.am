@@ -7,8 +7,8 @@ libgmwidgets_la_SOURCES =	\
 	gmwindow.h		\
 	gmconfwidgets.c		\
 	gmconfwidgets.h		\
-	gmcodecsbox.cpp		\
-	gmcodecsbox.h		\
+	codecsbox.cpp		\
+	codecsbox.h		\
 	gmconnectbutton.c	\
 	gmconnectbutton.h	\
 	gmdialog.c		\
@@ -71,9 +71,9 @@ INCLUDES +=						\
 	-I$(top_srcdir)/lib/pixops
 endif
 
-AM_CXXFLAGS = $(GTK_CFLAGS) $(GLIB_CFLAGS) $(OPAL_CFLAGS) $(PTLIB_CFLAGS) $(XV_CFLAGS) $(DX_CFLAGS)
-AM_CFLAGS = $(GTK_CFLAGS) $(GLIB_CFLAGS) $(GNOME_CFLAGS)
-AM_LIBS = $(GTK_LIBS) $(GLIB_LIBS) $(OPAL_LIBS) $(PTLIB_LIBS) $(XV_LIBS) $(DX_LIBS) $(GNOME_LIBS) 
+AM_CXXFLAGS = $(GTK_CFLAGS) $(GLIB_CFLAGS) $(OPAL_CFLAGS) $(PTLIB_CFLAGS) $(XV_CFLAGS) $(DX_CFLAGS) $(SIGC_CFLAGS) -I ../../lib/engine/protocol/skel/ -I ../../lib/engine/framework/
+AM_CFLAGS = $(GTK_CFLAGS) $(GLIB_CFLAGS) $(GNOME_CFLAGS) 
+AM_LIBS = $(GTK_LIBS) $(GLIB_LIBS) $(OPAL_LIBS) $(PTLIB_LIBS) $(XV_LIBS) $(DX_LIBS) $(GNOME_LIBS) $(SIGC_LIBS)
 
 libgmwidgets_la_LDFLAGS = -export-dynamic
 libgmwidgets_la_LIBADD = $(AM_LIBS)
