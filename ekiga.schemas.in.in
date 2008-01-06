@@ -190,15 +190,15 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/codecs/list</key>
-      <applyto>/apps/@PACKAGE_NAME@/codecs/list</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/codecs/audio/list</key>
+      <applyto>/apps/@PACKAGE_NAME@/codecs/audio/list</applyto>
       <owner>Ekiga</owner>
       <type>list</type>
       <list_type>string</list_type>
-      <default>[Speex*20600*16000,gsm*13200*8000=1,Speex*8000*8000=1,PCMA*64000*8000=1,PCMU*64000*8000=1,h264*768000*4096000=1,theora*768000*4096000,h261*621700*4096000,G726-16*16000*8000=0,G726-24*24000*8000=0,G726-32*32000*8000=0,G726-40*40000*8000=0,iLBC*15200*8000=0,iLBC*13333*8000=0,ms-gsm*13200*8000=0]</default>
+      <default>[Speex*16000*1*H.323 SIP*1,iLBC*8000*1*H.323 SIP*1,gsm*8000*1*H.323 SIP*1,Speex*8000*1*H.323 SIP*1,PCMU*8000*1*H.323 SIP*1,PCMA*8000*1*H.323 SIP*1,G726-16*8000*1*H.323 SIP*1,G726-24*8000*1*H.323 SIP*1,G726-32*8000*1*H.323 SIP*1,G726-40*8000*1*H.323 SIP*1,ms-gsm*8000*1*H.323*1]</defaul>
       <locale name="C">
-	<short>The Codecs List</short>
-	<long>The Codecs List</long>
+	<short>The Audio Codecs List</short>
+	<long>The audio lodecs list</long>
       </locale>
     </schema>
     <schema>
@@ -792,7 +792,7 @@
       <owner>Ekiga</owner>
       <type>string</type>
       <default>0,0</default>
-      <locale name="C">
+      locale name="C">
 	<short>Position on the screen of the druid window</short>
 	<long>Position on the screen of the druid window</long>
       </locale>
@@ -1090,10 +1090,10 @@
       <owner>Ekiga</owner>
       <type>list</type>
       <list_type>string</list_type>
-      <default>[31|90000|621700=1]</default>
+      <default>[h264*90000*0*SIP*1,theora*90000*0*SIP*1,h261*90000*0*H.323 SIP*1]</default>
       <locale name="C">
 	<short>The Video Codecs List</short>
-	<long>The Video Codecs List</long>
+	<long>The video codecs list</long>
       </locale>
     </schema>
     <schema>
