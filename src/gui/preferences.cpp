@@ -53,7 +53,7 @@
 #include <gmdialog.h>
 #include <gmpreferences.h>
 #include <gmconf.h>
-#include <gmcodecsbox.h>
+#include "codecsbox.h"
 
 #ifdef WIN32
 #include "platform/winpaths.h"
@@ -206,8 +206,10 @@ static void gm_pw_init_video_devices_page (GtkWidget *prefs_window,
  * PRE          : A valid pointer to the preferences window GMObject, and to the
  * 		  container widget where to attach the generated page.
  */
-static void gm_pw_init_codecs_page (GtkWidget *prefs_window,
-                                    GtkWidget *container);
+static void gm_pw_init_audio_codecs_page (GtkWidget *prefs_window,
+                                          GtkWidget *container);
+static void gm_pw_init_video_codecs_page (GtkWidget *prefs_window,
+                                          GtkWidget *container);
 
 
 
@@ -655,12 +657,6 @@ gm_pw_init_network_page (GtkWidget *prefs_window,
     gnome_prefs_string_option_menu_new (subsection, _("Listen on:"), (const gchar **)array, PROTOCOLS_KEY "interface", _("The network interface to listen on"), 0);
   free (array);
 
-  /* BW */
-  subsection = gnome_prefs_subsection_new (prefs_window, container,
-                                           _("Video Bandwidth"), 1, 2);
-
-  gnome_prefs_spin_new (subsection, _("Maximum video _bitrate (in kbits/s):"), VIDEO_CODECS_KEY "maximum_video_tx_bitrate", _("The maximum video bitrate in kbits/s. The video quality and the number of transmitted frames per second (depends on codec) will be dynamically adjusted above their minimum during calls to try to minimize the bandwidth to the given value."), 16.0, 2048.0, 1.0, 1, NULL, true);
-
   /* NAT */
   subsection =
     gnome_prefs_subsection_new (prefs_window, container,
@@ -949,10 +945,11 @@ gm_pw_init_video_devices_page (GtkWidget *prefs_window,
 
 
 static void
-gm_pw_init_codecs_page (GtkWidget *prefs_window,
-                        GtkWidget *container)
+gm_pw_init_audio_codecs_page (GtkWidget *prefs_window,
+                              GtkWidget *container)
 {
   GtkWidget *subsection = NULL;
+  GtkWidget *codecs_list = NULL;
 
   GmPreferencesWindow *pw = NULL;
 
@@ -961,10 +958,11 @@ gm_pw_init_codecs_page (GtkWidget *prefs_window,
   /* Packing widgets */
   subsection =
     gnome_prefs_subsection_new (prefs_window, container,
-				_("Available Codecs"), 1, 1);
+				_("Codecs"), 1, 1);
 
-  pw->audio_codecs_list = gm_codecs_box_new ();
-  gtk_table_attach (GTK_TABLE (subsection), pw->audio_codecs_list,
+  codecs_list = codecs_box_new_with_type (Ekiga::Call::Audio);
+  gtk_table_attach (GTK_TABLE (subsection), 
+                    codecs_list,
 		    0, 1, 0, 1,
 		    (GtkAttachOptions) (GTK_SHRINK), 
 		    (GtkAttachOptions) (GTK_SHRINK),
@@ -973,16 +971,50 @@ gm_pw_init_codecs_page (GtkWidget *prefs_window,
   /* Here we add the audio codecs options */
   subsection = 
     gnome_prefs_subsection_new (prefs_window, container,
-				_("Codecs Settings"), 3, 1);
+				_("Settings"), 3, 1);
 
   /* Translators: the full sentence is Automatically adjust jitter buffer
      between X and Y ms */
   gnome_prefs_toggle_new (subsection, _("Enable silence _detection"), AUDIO_CODECS_KEY "enable_silence_detection", _("If enabled, use silence detection with the codecs supporting it."), 0);
   
   gnome_prefs_toggle_new (subsection, _("Enable echo can_celation"), AUDIO_CODECS_KEY "enable_echo_cancelation", _("If enabled, use echo cancelation."), 1);
+}
+
+
+static void
+gm_pw_init_video_codecs_page (GtkWidget *prefs_window,
+                              GtkWidget *container)
+{
+  GtkWidget *subsection = NULL;
+  GtkWidget *codecs_list = NULL;
+
+  GmPreferencesWindow *pw = NULL;
+
+  pw = gm_pw_get_pw (prefs_window);
+
+  /* Packing widgets */
+  subsection =
+    gnome_prefs_subsection_new (prefs_window, container,
+				_("Codecs"), 1, 1);
+
+  codecs_list = codecs_box_new_with_type (Ekiga::Call::Video);
+  gtk_table_attach (GTK_TABLE (subsection), 
+                    codecs_list,
+		    0, 1, 0, 1,
+		    (GtkAttachOptions) (GTK_SHRINK), 
+		    (GtkAttachOptions) (GTK_SHRINK),
+		    0, 0);
+
+  /* Here we add the video codecs options */
+  subsection = 
+    gnome_prefs_subsection_new (prefs_window, container,
+				_("Settings"), 3, 1);
 
   /* Translators: the full sentence is Keep a minimum video quality of X % */
   gnome_prefs_scale_new (subsection, _("Picture Quality"), _("Frame Rate"), VIDEO_CODECS_KEY "temporal_spatial_tradeoff", _("Choose if you want to favour frame rate or quality for the transmitted video."), 0.0, 32.0, 1.0, 2);
+
+  gnome_prefs_spin_new (subsection, _("Maximum video _bitrate (in kbits/s):"), VIDEO_CODECS_KEY "maximum_video_tx_bitrate", _("The maximum video bitrate in kbits/s. The video quality and the number of transmitted frames per second (depends on codec) will be dynamically adjusted above their minimum during calls to try to minimize the bandwidth to the given value."), 16.0, 2048.0, 1.0, 1, NULL, true);
+
 }
 
 
@@ -1442,18 +1474,25 @@ gm_prefs_window_new ()
   gm_pw_init_h323_page (window, container);          
   gtk_widget_show_all (GTK_WIDGET (container));
 
-  container = gnome_prefs_window_subsection_new (window, _("Codecs"));
-  gm_pw_init_codecs_page (window, container);
-  gtk_widget_show_all (GTK_WIDGET (container));
-
-  gnome_prefs_window_section_new (window, _("Devices"));
-  container = gnome_prefs_window_subsection_new (window, _("Audio Devices"));
+  gnome_prefs_window_section_new (window, _("Audio"));
+  container = gnome_prefs_window_subsection_new (window, _("Devices"));
   gm_pw_init_audio_devices_page (window, container);
   gtk_widget_show_all (GTK_WIDGET (container));
 
-  container = gnome_prefs_window_subsection_new (window, _("Video Devices"));
+  container = gnome_prefs_window_subsection_new (window, _("Codecs"));
+  gm_pw_init_audio_codecs_page (window, container);
+  gtk_widget_show_all (GTK_WIDGET (container));
+
+
+  gnome_prefs_window_section_new (window, _("Video"));
+  container = gnome_prefs_window_subsection_new (window, _("Devices"));
   gm_pw_init_video_devices_page (window, container);
   gtk_widget_show_all (GTK_WIDGET (container));
+
+  container = gnome_prefs_window_subsection_new (window, _("Codecs"));
+  gm_pw_init_video_codecs_page (window, container);
+  gtk_widget_show_all (GTK_WIDGET (container));
+
 
   /* That's an usual GtkWindow, connect it to the signals */
   g_signal_connect_swapped (GTK_OBJECT (window), 
