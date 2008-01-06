@@ -97,6 +97,8 @@ ekiga_SOURCES +=			\
 	endpoints/sip.cpp		\
 	endpoints/opal-call.h		\
 	endpoints/opal-call.cpp		\
+	endpoints/opal-codec-description.h	\
+	endpoints/opal-codec-description.cpp	\
 	endpoints/opal-main.h		\
 	endpoints/opal-main.cpp		\
 	endpoints/urlhandler.h		\
