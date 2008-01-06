@@ -3581,7 +3581,6 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   GmMainWindow *mw = NULL;
 
   GtkWidget *window = NULL;
-  GtkWidget *hbox = NULL;
   
   GtkWidget *main_toolbar = NULL;
   GtkWidget *uri_toolbar = NULL;
@@ -3719,28 +3718,31 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   
   
   /* The statusbar with qualitymeter */
-  hbox = gtk_hbox_new (FALSE, 1);
-  gtk_container_set_border_width (GTK_CONTAINER (hbox), 2);
+  gtk_statusbar_set_has_resize_grip (GTK_STATUSBAR (mw->statusbar), TRUE);
+  GtkShadowType shadow_type;
+  gtk_widget_style_get (mw->statusbar, "shadow-type", &shadow_type, NULL);
+
+  GtkWidget *frame = gtk_frame_new (NULL);
+  gtk_frame_set_shadow_type (GTK_FRAME (frame), shadow_type);
+  gtk_box_pack_start (GTK_BOX (mw->statusbar), frame, FALSE, TRUE, 0);
+
+  gtk_box_reorder_child (GTK_BOX (mw->statusbar), frame, 0);
 
   mw->qualitymeter = gm_powermeter_new ();
-  gtk_box_pack_start (GTK_BOX (hbox), mw->qualitymeter,
-		      FALSE, FALSE, 2);
+  gtk_container_add (GTK_CONTAINER (frame), mw->qualitymeter);
 
   mw->statusbar_ebox = gtk_event_box_new ();
-  gtk_box_pack_start (GTK_BOX (hbox), mw->statusbar_ebox,
-		      TRUE, TRUE, 0);
   gtk_container_add (GTK_CONTAINER (mw->statusbar_ebox), mw->statusbar);
 
-
 #if !defined HAVE_GNOME
-  gtk_box_pack_start (GTK_BOX (mw->window_vbox), hbox, 
+  gtk_box_pack_start (GTK_BOX (mw->window_vbox), mw->statusbar,
 		      FALSE, FALSE, 0);
 #else
-  gnome_app_set_statusbar_custom (GNOME_APP (window), 
-				  hbox, mw->statusbar);
+  gnome_app_set_statusbar_custom (GNOME_APP (window), mw->statusbar_ebox,
+                                  mw->statusbar);
 #endif
-  gtk_widget_show_all (hbox);
-  
+  gtk_widget_show_all (mw->statusbar_ebox);
+
   g_signal_connect (G_OBJECT (mw->statusbar_ebox), "button-press-event",
 		    GTK_SIGNAL_FUNC (statusbar_clicked_cb), window);
  
