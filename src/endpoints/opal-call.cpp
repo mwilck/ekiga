@@ -467,7 +467,7 @@ void Call::OnRTPStatistics (const OpalConnection & connection,
       return;
 
     PVideoOutputDevice* device = NULL;
-    PSafePtr <OpalMediaStream> stream = NULL;
+    OpalMediaStreamPtr stream = NULL;
 
     unsigned elapsed_seconds = max ((unsigned long) t.GetMilliSeconds (), (unsigned long) 1);
     double octets_received = session.GetOctetsReceived ();
