@@ -27,7 +27,7 @@
 
 
 /*
- *                         gmcodecsbox.h  -  description
+ *                         codecsbox.h  -  description
  *                         -------------------------------
  *   begin                : Sat Sep 02 2006
  *   copyright            : (C) 2000-2006 by Damien Sandras 
@@ -37,8 +37,8 @@
 
 
 
-#ifndef __GM_CODECS_BOX_H
-#define __GM_CODECS_BOX_H
+#ifndef __CODECS_BOX_H
+#define __CODECS_BOX_H
 
 #include <glib-object.h>
 #include <gtk/gtk.h>
@@ -46,50 +46,53 @@
 #include <ptlib.h>
 #include <opal/manager.h>
 
+#include "call.h"
 
 G_BEGIN_DECLS
 
-#define GM_CODECS_BOX_TYPE (gm_codecs_box_get_type ())
-#define GM_CODECS_BOX(o) (G_TYPE_CHECK_INSTANCE_CAST ((o), GM_CODECS_BOX_TYPE, GmCodecsBox))
-#define GM_CODECS_BOX_CLASS(k) (G_TYPE_CHECK_CLASS_CAST((k), GM_CODECS_BOX_TYPE, GmCodecsBoxClass))
-#define GM_IS_CODECS_BOX(o) (G_TYPE_CHECK_INSTANCE_TYPE ((o), GM_CODECS_BOX_TYPE))
-#define GM_IS_CODECS_BOX_CLASS(k) (G_TYPE_CHECK_CLASS_TYPE ((k), GM_CODECS_BOX_TYPE))
-#define GM_CODECS_BOX_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), GM_CODECS_BOX_TYPE, GmConnectButtonClass))
+#define CODECS_BOX_TYPE (codecs_box_get_type ())
+#define CODECS_BOX(o) (G_TYPE_CHECK_INSTANCE_CAST ((o), CODECS_BOX_TYPE, CodecsBox))
+#define CODECS_BOX_CLASS(k) (G_TYPE_CHECK_CLASS_CAST((k), CODECS_BOX_TYPE, CodecsBoxClass))
+#define IS_CODECS_BOX(o) (G_TYPE_CHECK_INSTANCE_TYPE ((o), CODECS_BOX_TYPE))
+#define IS_CODECS_BOX_CLASS(k) (G_TYPE_CHECK_CLASS_TYPE ((k), CODECS_BOX_TYPE))
+#define CODECS_BOX_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), CODECS_BOX_TYPE, CodecsBoxClass))
 
+typedef struct _CodecsBox CodecsBox;
+typedef struct _CodecsBoxPrivate CodecsBoxPrivate;
+typedef struct _CodecsBoxClass CodecsBoxClass;
 
-typedef struct
+struct _CodecsBox
 {
   GtkHBox parent;
 
-  GtkWidget *codecs_list;
+  CodecsBoxPrivate *priv;
+};
 
-} GmCodecsBox;
 
-
-typedef struct
+struct _CodecsBoxClass
 {
   GtkHBoxClass parent_class;
-  
-} GmCodecsBoxClass;
+};
 
 
 /* The functions */
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Returns the GType for the GmCodecsBox.
+ * BEHAVIOR     :  Returns the GType for the CodecsBox.
  * PRE          :  /
  */
-GType gm_codecs_box_get_type (void);
+GType codecs_box_get_type (void);
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Creates a new GmCodecsBox. If activatable_codecs is TRUE,
+ * BEHAVIOR     :  Creates a new CodecsBox. If activatable_codecs is TRUE,
  *                 codecs can be enabled or disabled. conf_key is the key
  *                 where to store results.
  * PRE          :  A valid GMConf key.
  */
-GtkWidget *gm_codecs_box_new ();
+GtkWidget *codecs_box_new ();
+GtkWidget *codecs_box_new_with_type (Ekiga::Call::StreamType type);
 
 G_END_DECLS
 
-#endif /* __GM_CODECS_BOX_H */
+#endif /* __CODECS_BOX_H */
