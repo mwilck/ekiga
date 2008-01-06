@@ -68,9 +68,8 @@ static GObjectClass *parent_class = NULL;
 
 
 /* Static functions */
-static void 
-codecs_box_set_codecs (CodecsBox *self,
-                          Ekiga::Call::StreamType type);
+static void codecs_box_set_codecs (CodecsBox *self,
+                                   Ekiga::Call::StreamType type);
 
 
 /* GTK+ Callbacks */
@@ -86,7 +85,7 @@ static GSList *codecs_box_to_gm_conf_list (CodecsBox *self);
 
 /* Static functions and declarations */
 static void codecs_box_class_init (gpointer g_class,
-                                      gpointer class_data);
+                                   gpointer class_data);
 
 static void codecs_box_init (CodecsBox *);
 
@@ -94,22 +93,21 @@ static void codecs_box_dispose (GObject *obj);
 
 static void codecs_box_finalize (GObject *obj);
 
-
 static void codecs_box_get_property (GObject *obj,
-                                        guint prop_id,
-                                        GValue *value,
-                                        GParamSpec *spec);
+                                     guint prop_id,
+                                     GValue *value,
+                                     GParamSpec *spec);
 
 static void codecs_box_set_property (GObject *obj,
-                                        guint prop_id,
-                                        const GValue *value,
-                                        GParamSpec *spec);
+                                     guint prop_id,
+                                     const GValue *value,
+                                     GParamSpec *spec);
 
 
 
 static void 
 codecs_box_set_codecs (CodecsBox *self,
-                          Ekiga::Call::StreamType type)
+                       Ekiga::Call::StreamType type)
 {
   GtkTreeSelection *selection = NULL;
   GtkTreeModel *model = NULL;
@@ -133,7 +131,7 @@ codecs_box_set_codecs (CodecsBox *self,
 
   if (gtk_tree_selection_get_selected (selection, &model, &iter)) 
     gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
-			COLUMN_CODEC_CONFIG_NAME, &selected_codec, -1);
+                        COLUMN_CODEC_CONFIG_NAME, &selected_codec, -1);
   gtk_list_store_clear (GTK_LIST_STORE (model));
 
 
@@ -188,8 +186,8 @@ codecs_box_set_codecs (CodecsBox *self,
 
 static void
 codec_toggled_cb (G_GNUC_UNUSED GtkCellRendererToggle *cell,
-		  gchar *path_str,
-		  gpointer data)
+                  gchar *path_str,
+                  gpointer data)
 {
   CodecsBox *self = NULL;
 
@@ -213,7 +211,7 @@ codec_toggled_cb (G_GNUC_UNUSED GtkCellRendererToggle *cell,
   gtk_tree_model_get_iter (model, &iter, path);
   gtk_tree_model_get (model, &iter, COLUMN_CODEC_ACTIVE, &fixed, -1);
   gtk_list_store_set (GTK_LIST_STORE (model), &iter,
-		      COLUMN_CODEC_ACTIVE, fixed^1, -1);
+                      COLUMN_CODEC_ACTIVE, fixed^1, -1);
   gtk_tree_path_free (path);
 
   /* Update the gmconf key */
@@ -229,7 +227,7 @@ codec_toggled_cb (G_GNUC_UNUSED GtkCellRendererToggle *cell,
 
 static void
 codec_moved_cb (GtkWidget *widget, 
-		gpointer data)
+                gpointer data)
 { 	
   CodecsBox *self = NULL;
 
@@ -257,7 +255,7 @@ codec_moved_cb (GtkWidget *widget,
   /* Update the tree view */
   iter2 = gtk_tree_iter_copy (&iter);
   path_str = gtk_tree_model_get_string_from_iter (GTK_TREE_MODEL (model), 
-						  &iter);
+                                                  &iter);
   tree_path = gtk_tree_path_new_from_string (path_str);
   if (!strcmp ((gchar *) g_object_get_data (G_OBJECT (widget), "operation"), 
                "up"))
@@ -272,7 +270,7 @@ codec_moved_cb (GtkWidget *widget,
 
   /* Scroll to the new position */
   gtk_tree_view_scroll_to_cell (GTK_TREE_VIEW (self->priv->codecs_list), 
-				tree_path, NULL, FALSE, 0, 0);
+                                tree_path, NULL, FALSE, 0, 0);
 
   gtk_tree_path_free (tree_path);
   gtk_tree_iter_free (iter2);
@@ -336,13 +334,13 @@ codecs_box_to_gm_conf_list (CodecsBox *self)
 
 static void
 codecs_box_class_init (gpointer g_class,
-                          gpointer /*class_data*/)
+                       gpointer /*class_data*/)
 {
   GObjectClass *gobject_class = NULL;
   GParamSpec *spec = NULL;
 
   parent_class = (GObjectClass *) g_type_class_peek_parent (g_class);
-  
+
   gobject_class = (GObjectClass *) g_class;
   gobject_class->dispose = codecs_box_dispose;
   gobject_class->finalize = codecs_box_finalize;
@@ -411,7 +409,7 @@ codecs_box_init (CodecsBox *self)
   g_signal_connect (G_OBJECT (renderer), "toggled",
                     G_CALLBACK (codec_toggled_cb),
                     (gpointer) self);
-  
+
   renderer = gtk_cell_renderer_text_new ();
   column = gtk_tree_view_column_new_with_attributes (NULL,
                                                      renderer,
@@ -508,9 +506,9 @@ codecs_box_finalize (GObject *obj)
 
 static void
 codecs_box_get_property (GObject *obj,
-                            guint prop_id,
-                            GValue *value,
-                            GParamSpec *spec)
+                         guint prop_id,
+                         GValue *value,
+                         GParamSpec *spec)
 {
   CodecsBox *self = NULL;
 
@@ -531,9 +529,9 @@ codecs_box_get_property (GObject *obj,
 
 static void
 codecs_box_set_property (GObject *obj,
-                            guint prop_id,
-                            const GValue *value,
-                            GParamSpec *spec)
+                         guint prop_id,
+                         const GValue *value,
+                         GParamSpec *spec)
 {
   CodecsBox *self = NULL;
 
@@ -559,30 +557,30 @@ GType
 codecs_box_get_type (void)
 {
   static GType codecs_box_type = 0;
-  
+
   if (codecs_box_type == 0)
-  {
-    static const GTypeInfo codecs_box_info =
     {
-      sizeof (CodecsBoxClass),
-      NULL,
-      NULL,
-      (GClassInitFunc) codecs_box_class_init,
-      NULL,
-      NULL,
-      sizeof (CodecsBox),
-      0,
-      (GInstanceInitFunc) codecs_box_init,
-      NULL
-    };
-    
-    codecs_box_type =
-      g_type_register_static (GTK_TYPE_HBOX,
-			      "CodecsBox",
-			      &codecs_box_info,
-			      (GTypeFlags) 0);
-  }
-  
+      static const GTypeInfo codecs_box_info =
+        {
+          sizeof (CodecsBoxClass),
+          NULL,
+          NULL,
+          (GClassInitFunc) codecs_box_class_init,
+          NULL,
+          NULL,
+          sizeof (CodecsBox),
+          0,
+          (GInstanceInitFunc) codecs_box_init,
+          NULL
+        };
+
+      codecs_box_type =
+        g_type_register_static (GTK_TYPE_HBOX,
+                                "CodecsBox",
+                                &codecs_box_info,
+                                (GTypeFlags) 0);
+    }
+
   return codecs_box_type;
 }
 

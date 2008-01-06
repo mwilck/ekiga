@@ -48,6 +48,15 @@
 
 #include "call.h"
 
+
+/** This implements a CodecsBox for the Ekiga Engine.
+ * The codecs list is loaded from the GmConf configuration engine, 
+ * using the /apps/ekiga/codecs/audio/list or /apps/ekiga/codecs/video/list
+ * following the type of codecs. The key is supposed to contain
+ * all codecs supported by the Engine. The key value is formated so that it
+ * respects the output of an Ekiga::CodecDescription.
+ */
+
 G_BEGIN_DECLS
 
 #define CODECS_BOX_TYPE (codecs_box_get_type ())
@@ -74,23 +83,17 @@ struct _CodecsBoxClass
   GtkHBoxClass parent_class;
 };
 
-
-/* The functions */
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Returns the GType for the CodecsBox.
- * PRE          :  /
- */
 GType codecs_box_get_type (void);
 
 
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Creates a new CodecsBox. If activatable_codecs is TRUE,
- *                 codecs can be enabled or disabled. conf_key is the key
- *                 where to store results.
- * PRE          :  A valid GMConf key.
+/** Create a new CodecsBox for Ekiga::Call::Audio codecs.
  */
 GtkWidget *codecs_box_new ();
+
+
+/** Create a new CodecsBox.
+ * @param type is a valid Ekiga::Call::StreamType (Audio or Video supported).
+ */
 GtkWidget *codecs_box_new_with_type (Ekiga::Call::StreamType type);
 
 G_END_DECLS
