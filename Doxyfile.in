@@ -230,6 +230,16 @@ DISTRIBUTE_GROUP_DOC   = NO
 
 SUBGROUPING            = YES
 
+# When TYPEDEF_HIDES_STRUCT is enabled, a typedef of a struct (or union) is
+# documented as struct with the name of the typedef. So typedef struct TypeS 
+# {} TypeT, will appear in the documentation as a struct with name TypeT. When
+# disabled the typedef will appear as a member of a file, namespace, or class.
+# And the struct will be named TypeS. This can typically be useful for C code
+# where the coding convention is that all structs are typedef'ed and only the
+# typedef is referenced never the struct's name (e.g. GTK+).
+
+TYPEDEF_HIDES_STRUCT   = YES
+
 #---------------------------------------------------------------------------
 # Build related configuration options
 #---------------------------------------------------------------------------
