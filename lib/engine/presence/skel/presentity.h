@@ -50,24 +50,55 @@ namespace Ekiga
   {
   public:
 
+    /** The destructor.
+     */
     virtual ~Presentity () {}
 
+    /** Returns the name of the Presentity.
+     * @return The Presentity's name.
+     */
     virtual const std::string get_name () const = 0;
 
+    /** Returns the presence of the Presentity.
+    * @return The Presentity's presence.
+    */
     virtual const std::string get_presence () const = 0;
 
+    /** Returns the status of the Presentity.
+     * @return The Presentity's status.
+     */
     virtual const std::string get_status () const = 0;
 
+    /** Returns the avatar of the Presentity.
+     * @return The Presentity's avatar.
+     */
     virtual const std::string get_avatar () const = 0;
 
+    /** Returns the set of groups the Presentity belongs to.
+     * @return The Presentity's set of groups.
+     */
     virtual const std::set<std::string> get_groups () const = 0;
 
+    /** Returns the uri of the Presentity.
+     * @return The presentity's uri.
+     */
     virtual const std::string get_uri () const = 0;
 
+    /** Populates a menu with the actions possible on the Presentity.
+     * @param The builder to populate.
+     */
     virtual bool populate_menu (MenuBuilder &) = 0;
 
+    /** This signal is emitted when the Presentity has been updated.
+     */
     sigc::signal<void> updated;
+
+    /** This signal is emitted when the Presentity has been removed.
+     */
     sigc::signal<void> removed;
+
+    /** This chain allows the Presentity to present forms to the user
+     */
     ChainOfResponsibility<FormRequest*> questions;
   };
 

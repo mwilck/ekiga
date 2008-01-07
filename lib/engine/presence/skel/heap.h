@@ -47,19 +47,51 @@ namespace Ekiga {
 
   public:
 
+    /** The destructor.
+     */
     virtual ~Heap () { }
 
+    /** Returns the name of the Heap
+     * @return The Heap's name
+     */
     virtual const std::string get_name () const = 0;
 
+    /** Get the list of Presentities by visiting them with a callback.
+     * @param The callback user to know about presentities.
+     */
     virtual void visit_presentities (sigc::slot<void, Presentity &>) = 0;
 
+    /** Populates a menu with the actions possible on the Heap.
+     * @param The builder to populate.
+     */
     virtual bool populate_menu (MenuBuilder &) = 0;
 
+    /**
+     * Signals on that object
+     */
+
+    /** This signal is emitted when the Heap has been updated.
+     */
     sigc::signal<void> updated;
+
+    /** This signal is emitted when the Heap has been removed.
+     */
     sigc::signal<void> removed;
+
+    /** This signal is emitted  when a Presentity has been added to the Heap.
+     */
     sigc::signal<void, Presentity &> presentity_added;
+
+    /** This signal is emitted when a Presentity has been updated in the Heap.
+     */
     sigc::signal<void, Presentity &> presentity_updated;
+
+    /** This signal is emitted when a Presentity has been removed from the Heap.
+     */
     sigc::signal<void, Presentity &> presentity_removed;
+
+    /** This chain allows the Heap to present forms to the user
+     */
     ChainOfResponsibility<FormRequest*> questions;
   };
 
