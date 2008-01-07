@@ -1,9 +1,5 @@
 SUBDIRS = gmconf gui toolbox platform engine
 
-if !HAVE_GNOME
-SUBDIRS += druid
-endif
-
 if !WIN32
 SUBDIRS += pixops
 endif

@@ -42,7 +42,6 @@
 #include "audio.h"
 #include "manager.h"
 #include "misc.h"
-#include "druid.h"
 
 #include "gmlevelmeter.h"
 #include "gmdialog.h"
@@ -79,9 +78,6 @@ static void dialog_response_cb (GtkWidget *widget,
 				gpointer data)
 {
   g_return_if_fail (data);
-
-
-  gm_druid_window_set_test_buttons_sensitivity (GTK_WIDGET (data), FALSE);
 
   gtk_widget_hide (widget);
 }
@@ -246,7 +242,7 @@ GMAudioRP::~GMAudioRP ()
 
 void GMAudioRP::Main ()
 {
-  GtkWidget *druid_window = NULL;
+  GtkWidget *assistant_window = NULL;
   
   PSoundChannel *channel = NULL;
   
@@ -265,8 +261,8 @@ void GMAudioRP::Main ()
   PWaitAndSignal m(quit_mutex);
   thread_sync_point.Signal ();
 
-  druid_window = GnomeMeeting::Process ()->GetDruidWindow ();
-    
+  assistant_window = GnomeMeeting::Process ()->GetAssistantWindow ();
+
   buffer = (char *) malloc (640);
   memset (buffer, '0', sizeof (buffer));
   
@@ -295,9 +291,9 @@ void GMAudioRP::Main ()
 
     gdk_threads_enter ();  
     if (is_encoding)
-      gnomemeeting_error_dialog (GTK_WINDOW (druid_window), _("Failed to open the device"), _("Impossible to open the selected audio device (%s) for recording. Please check your audio setup, the permissions and that the device is not busy."), (const char *) device_name);
+      gnomemeeting_error_dialog (GTK_WINDOW (assistant_window), _("Failed to open the device"), _("Impossible to open the selected audio device (%s) for recording. Please check your audio setup, the permissions and that the device is not busy."), (const char *) device_name);
     else
-      gnomemeeting_error_dialog (GTK_WINDOW (druid_window), _("Failed to open the device"), _("Impossible to open the selected audio device (%s) for playing. Please check your audio setup, the permissions and that the device is not busy."), (const char *) device_name);
+      gnomemeeting_error_dialog (GTK_WINDOW (assistant_window), _("Failed to open the device"), _("Impossible to open the selected audio device (%s) for playing. Please check your audio setup, the permissions and that the device is not busy."), (const char *) device_name);
     gdk_threads_leave ();  
   }
   else {
@@ -313,7 +309,7 @@ void GMAudioRP::Main ()
 	if (!channel->Read ((void *) buffer, 640)) {
       
 	  gdk_threads_enter ();  
-	  gnomemeeting_error_dialog (GTK_WINDOW (druid_window), _("Cannot use the audio device"), _("The selected audio device (%s) was successfully opened but it is impossible to read data from this device. Please check your audio setup."), (const char*) device_name);
+	  gnomemeeting_error_dialog (GTK_WINDOW (assistant_window), _("Cannot use the audio device"), _("The selected audio device (%s) was successfully opened but it is impossible to read data from this device. Please check your audio setup."), (const char*) device_name);
 	  gdk_threads_leave ();  
 
 	  stop = TRUE;
@@ -382,7 +378,7 @@ void GMAudioRP::Main ()
 	  if (!channel->Write ((void *) buffer, 640)) {
       
 	    gdk_threads_enter ();  
-	    gnomemeeting_error_dialog (GTK_WINDOW (druid_window), _("Cannot use the audio device"), _("The selected audio device (%s) was successfully opened but it is impossible to write data to this device. Please check your audio setup."), (const char*) device_name);
+	    gnomemeeting_error_dialog (GTK_WINDOW (assistant_window), _("Cannot use the audio device"), _("The selected audio device (%s) was successfully opened but it is impossible to write data to this device. Please check your audio setup."), (const char*) device_name);
 	    gdk_threads_leave ();  
 
 	    stop = TRUE;
@@ -462,15 +458,14 @@ GMAudioTester::~GMAudioTester ()
 
 void GMAudioTester::Main ()
 {
-  GtkWidget *druid_window = NULL;
+  GtkWidget *assistant_window = NULL;
   
   GMAudioRP *_player = NULL;
   GMAudioRP *_recorder = NULL;
 
   gchar *msg = NULL;
 
-  druid_window = GnomeMeeting::Process ()->GetDruidWindow ();
-
+  assistant_window = GnomeMeeting::Process ()->GetAssistantWindow ();
 
   PWaitAndSignal m(quit_mutex);
   thread_sync_point.Signal ();
@@ -491,7 +486,7 @@ void GMAudioTester::Main ()
   gdk_threads_enter ();
   test_dialog =
     gtk_dialog_new_with_buttons ("Audio test running",
-				 GTK_WINDOW (druid_window),
+				 GTK_WINDOW (assistant_window),
 				 (GtkDialogFlags) (GTK_DIALOG_MODAL),
 				 GTK_STOCK_OK,
 				 GTK_RESPONSE_ACCEPT,
@@ -519,10 +514,10 @@ void GMAudioTester::Main ()
 		    G_CALLBACK (gtk_widget_hide_on_delete), NULL);
   g_signal_connect (G_OBJECT (test_dialog), "response",
 		    G_CALLBACK (dialog_response_cb), 
-		    druid_window);
+		    assistant_window);
 
   gtk_window_set_transient_for (GTK_WINDOW (test_dialog),
-				GTK_WINDOW (druid_window));
+				GTK_WINDOW (assistant_window));
   gtk_widget_show_all (GTK_DIALOG (test_dialog)->vbox);
   gdk_threads_leave ();
 

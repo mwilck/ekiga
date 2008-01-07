@@ -44,7 +44,7 @@
 #include "urlhandler.h"
 #include "preferences.h"
 #include "chat-window.h"
-#include "druid.h"
+#include "assistant.h"
 #include "tools.h"
 #include "statusicon.h"
 #include "main.h"
@@ -105,9 +105,9 @@ GnomeMeeting::Exit ()
     gtk_widget_destroy (main_window);
   main_window = NULL;
   
-  if (druid_window)
-    gtk_widget_destroy (druid_window);
-  druid_window = NULL;
+  if (assistant_window)
+    gtk_widget_destroy (assistant_window);
+  assistant_window = NULL;
   
   if (accounts_window)
     gtk_widget_destroy (accounts_window);
@@ -404,9 +404,9 @@ GnomeMeeting::GetPrefsWindow ()
 
 
 GtkWidget *
-GnomeMeeting::GetDruidWindow ()
+GnomeMeeting::GetAssistantWindow ()
 {
-  return druid_window;
+  return assistant_window;
 }
 
 
@@ -444,7 +444,7 @@ void GnomeMeeting::BuildGUI ()
   gtk_window_set_default_icon_name (GM_ICON_LOGO);
   pc2phone_window = gm_pc2phone_window_new (*service_core);
   prefs_window = gm_prefs_window_new ();  
-  druid_window = gm_druid_window_new (*service_core);
+  assistant_window = ekiga_assistant_new (service_core);
   accounts_window = gm_accounts_window_new (*service_core);
 
   main_window = gm_main_window_new (*service_core);

@@ -161,10 +161,10 @@ class GnomeMeeting : public PProcess
  
   
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Returns a pointer to the druid window GMObject.
+   * BEHAVIOR     :  Returns a pointer to the assistant window.
    * PRE          :  /
    */
-  GtkWidget *GetDruidWindow ();
+  GtkWidget *GetAssistantWindow ();
 
   
   /* DESCRIPTION  :  /
@@ -297,7 +297,7 @@ class GnomeMeeting : public PProcess
   /* The different components of the GUI */
   GtkWidget *main_window;
   GtkWidget *history_window;
-  GtkWidget *druid_window;
+  GtkWidget *assistant_window;
   GtkWidget *prefs_window;
   GtkWidget *pc2phone_window;
   GtkWidget *accounts_window;

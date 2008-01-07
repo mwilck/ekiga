@@ -660,7 +660,6 @@ src/ekiga-config-tool
 AC_PACKAGE_NAME.schemas.in
 AC_PACKAGE_NAME.desktop.in
 lib/Makefile
-lib/druid/Makefile
 lib/gmconf/Makefile
 lib/gui/Makefile
 lib/pixops/Makefile

@@ -43,7 +43,6 @@
 #include "ekiga.h"
 #include "misc.h"
 #include "main.h"
-#include "druid.h"
 
 #include "gmdialog.h"
 #include "gmconf.h"
@@ -533,7 +532,7 @@ GMVideoTester::~GMVideoTester ()
 
 void GMVideoTester::Main ()
 {
-  GtkWidget *druid_window = NULL;
+  GtkWidget *assistant_window = NULL;
 
   PVideoInputDevice *grabber = NULL;
   
@@ -545,8 +544,8 @@ void GMVideoTester::Main ()
   gchar *dialog_msg = NULL;
   gchar *tmp = NULL;
 
-  druid_window = GnomeMeeting::Process ()->GetDruidWindow (); 
-  
+  assistant_window = GnomeMeeting::Process ()->GetAssistantWindow (); 
+
   PWaitAndSignal m(quit_mutex);
   thread_sync_point.Signal ();
 
@@ -559,7 +558,7 @@ void GMVideoTester::Main ()
   gdk_threads_enter ();
   test_dialog =
     gtk_dialog_new_with_buttons ("Video test running",
-				 GTK_WINDOW (druid_window),
+				 GTK_WINDOW (assistant_window),
 				 (GtkDialogFlags) (GTK_DIALOG_MODAL),
 				 GTK_STOCK_OK,
 				 GTK_RESPONSE_ACCEPT,
@@ -583,7 +582,7 @@ void GMVideoTester::Main ()
 		    G_CALLBACK (gtk_widget_hide_on_delete), NULL);
 
   gtk_window_set_transient_for (GTK_WINDOW (test_dialog),
-				GTK_WINDOW (druid_window));
+				GTK_WINDOW (assistant_window));
   gtk_widget_show_all (GTK_DIALOG (test_dialog)->vbox);
   gnomemeeting_threads_dialog_show (test_dialog);
   gdk_threads_leave ();
@@ -677,7 +676,7 @@ void GMVideoTester::Main ()
     }
 
     gdk_threads_enter ();
-    gnomemeeting_error_dialog (GTK_WINDOW (druid_window),
+    gnomemeeting_error_dialog (GTK_WINDOW (assistant_window),
 			       _("Failed to open the device"),
 			       "%s", dialog_msg);
     gdk_threads_leave ();
@@ -686,7 +685,6 @@ void GMVideoTester::Main ()
   }
 
   gdk_threads_enter ();
-  gm_druid_window_set_test_buttons_sensitivity (druid_window, FALSE);
   if (test_dialog)
     gnomemeeting_threads_widget_destroy (test_dialog);
   gdk_threads_leave ();

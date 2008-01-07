@@ -1,5 +1,29 @@
 2008-01-07  Steve Frécinaux  <code@istique.net>
 
+	* src/gui/assistant.cpp:
+	* src/gui/assistant.h:
+	New EkigaAssistant based on GtkAssistant instead of GnomeDruid.
+
+	* src/endpoints/ekiga.h:
+	* src/endpoints/ekiga.h:
+	Renamed GetDruidWindow into GetAssistantWindow and use EkigaAssistant.
+
+	* src/gui/druid.cpp:
+	* src/gui/druid.h:
+	* lib/druid/*:
+	Removed since they are not needed anymore.
+
+	* src/gui/main.cpp:
+	* src/gui/conf.cpp:
+	* src/devices/videoinput.cpp:
+	* src/devices/audio.cpp:
+	* src/Makefile.am:
+	* lib/Makefile.am:
+	* configure.ac:
+	Adapt for above changes.
+
+2008-01-07  Steve Frécinaux  <code@istique.net>
+
 	* src/endpoints/ekiga.cpp: remove status display of HAVE_BONOBO since
 	bonobo support has been removed.
 

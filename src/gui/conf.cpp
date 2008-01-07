@@ -51,7 +51,7 @@
 
 #include "ekiga.h"
 #include "preferences.h"
-#include "druid.h"
+#include "assistant.h"
 #include "accounts.h"
 #include "main.h"
 #include "misc.h"

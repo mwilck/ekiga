@@ -1,4 +1,3 @@
-
 /* Ekiga -- A VoIP and Video-Conferencing application
  * Copyright (C) 2000-2006 Damien Sandras
  *
@@ -31,17 +30,19 @@
  *                         -----------------------
  *   begin                : Mon May 1 2002
  *   copyright            : (C) 2000-2006 by Damien Sandras
+ *                          (C) 2008 by Steve Frécinaux
  *   description          : This file contains all the functions needed to
- *                          build the druid.
+ *                          build the assistant.
  */
 
-#include "common.h"
 
-#include "services.h"
+#ifndef __EKIGA_ASSISTANT_H__
+#define __EKIGA_ASSISTANT_H__
 
+#include <gtk/gtk.h>
 
-/* the various kind of net known to the druid:
- */
+G_BEGIN_DECLS
+
 enum {
   NET_PSTN,
   NET_ISDN,
@@ -50,17 +51,28 @@ enum {
   NET_CUSTOM
 };
 
+#define EKIGA_TYPE_ASSISTANT               (ekiga_assistant_get_type ())
+#define EKIGA_ASSISTANT(obj)               (G_TYPE_CHECK_INSTANCE_CAST ((obj), EKIGA_TYPE_ASSISTANT, EkigaAssistant))
+#define EKIGA_ASSISTANT_CLASS(klass)       (G_TYPE_CHECK_CLASS_CAST ((klass), EKIGA_TYPE_ASSISTANT, EkigaAssistantClass))
+#define EKIGA_IS_ASSISTANT(obj)            (G_TYPE_CHECK_INSTANCE_TYPE ((obj), EKIGA_TYPE_ASSISTANT))
+#define EKIGA_IS_ASSISTANT_CLASS(klass)    (G_TYPE_CHECK_CLASS_TYPE ((klass), EKIGA_TYPE_ASSISTANT))
 
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Builds the "First time configuration druid" and returns it.
- * PRE          :  /
- */
-GtkWidget *gm_druid_window_new (Ekiga::ServiceCore &core);
+typedef struct _EkigaAssistantPrivate       EkigaAssistantPrivate;
+typedef struct _EkigaAssistant              EkigaAssistant;
+
+struct _EkigaAssistant {
+  GtkAssistant           parent;
+  EkigaAssistantPrivate *priv;
+};
+
+typedef GtkAssistantClass EkigaAssistantClass;
+
+GType        ekiga_assistant_get_type   ();
+GtkWidget   *ekiga_assistant_new        (Ekiga::ServiceCore *core);
 
 
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Makes the device test buttons active/inactive
- * PRE          :  /
- */
-void gm_druid_window_set_test_buttons_sensitivity (GtkWidget *druid,
-						   gboolean value);
+G_END_DECLS
+
+#endif /* __EKIGA_ASSISTANT_H__ */
+
+/* ex:set ts=2 sw=2 et: */

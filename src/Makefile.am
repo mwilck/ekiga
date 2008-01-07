@@ -41,8 +41,8 @@ ekiga_SOURCES +=			\
 	gui/conf.cpp			\
 	gui/dialpad.h			\
 	gui/dialpad.cpp			\
-	gui/druid.h			\
-	gui/druid.cpp			\
+	gui/assistant.h			\
+	gui/assistant.cpp		\
 	gui/main.h			\
 	gui/main.cpp			\
 	gui/misc.h			\

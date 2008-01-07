@@ -1221,7 +1221,7 @@ gm_mw_init_menu (GtkWidget *main_window)
   GtkFrontend *gtk_frontend = NULL;
   
   GtkWidget *addressbook_window = NULL;
-  GtkWidget *druid_window = NULL;
+  GtkWidget *assistant_window = NULL;
   GtkWidget *prefs_window = NULL;
   GtkWidget *accounts_window = NULL;
   GtkWidget *pc2phone_window = NULL;
@@ -1235,7 +1235,7 @@ gm_mw_init_menu (GtkWidget *main_window)
   services = GnomeMeeting::Process ()->GetServiceCore ();
   gtk_frontend = dynamic_cast<GtkFrontend *>(services->get ("gtk-frontend"));
   addressbook_window = GTK_WIDGET (gtk_frontend->get_addressbook_window ()); 
-  druid_window = GnomeMeeting::Process ()->GetDruidWindow ();
+  assistant_window = GnomeMeeting::Process ()->GetAssistantWindow ();
   prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
   accounts_window = GnomeMeeting::Process ()->GetAccountsWindow ();
   pc2phone_window = GnomeMeeting::Process ()->GetPC2PhoneWindow ();
@@ -1340,11 +1340,11 @@ gm_mw_init_menu (GtkWidget *main_window)
 
       GTK_MENU_NEW (_("_Edit")),
 
-      GTK_MENU_ENTRY("configuration_druid", _("Configuration Druid"),
-		     _("Run the configuration druid"),
+      GTK_MENU_ENTRY("configuration_assistant", _("Configuration Assistant"),
+		     _("Run the configuration assistant"),
 		     NULL, 0, 
 		     GTK_SIGNAL_FUNC (show_window_cb),
-		     (gpointer) druid_window, TRUE),
+		     (gpointer) assistant_window, TRUE),
 
       GTK_MENU_SEPARATOR,
       
@@ -4133,7 +4133,7 @@ main (int argc,
   GOptionContext *context = NULL;
 
   GtkWidget *main_window = NULL;
-  GtkWidget *druid_window = NULL;
+  GtkWidget *assistant_window = NULL;
 
   GtkWidget *dialog = NULL;
   
@@ -4263,7 +4263,7 @@ main (int argc,
    * is a fatal error.
    */
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  druid_window = GnomeMeeting::Process ()->GetDruidWindow ();
+  assistant_window = GnomeMeeting::Process ()->GetAssistantWindow ();
   GmMainWindow *mw = gm_mw_get_mw (main_window); //TODO no gm_mw_get_mw here
   Ekiga::CallCore *call_core = dynamic_cast<Ekiga::CallCore *> (mw->core.get ("call-core"));
   if (error == -1) {
@@ -4272,7 +4272,7 @@ main (int argc,
         < 1000 * MAJOR_VERSION + 10 * MINOR_VERSION + BUILD_NUMBER) {
 
       gnomemeeting_conf_upgrade ();
-      gtk_widget_show_all (GTK_WIDGET (druid_window));
+      gtk_widget_show_all (assistant_window);
     }
     else {
 
