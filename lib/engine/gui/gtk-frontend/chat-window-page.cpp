@@ -546,6 +546,7 @@ chat_window_page_new (Ekiga::ServiceCore & core,
   
   GtkWidget *close_button = NULL;
   GtkWidget *close_image = NULL;
+  GtkRcStyle *rc_style;
 
   GtkWidget *scr = NULL;
   GtkWidget *hbox = NULL;
@@ -696,7 +697,7 @@ chat_window_page_new (Ekiga::ServiceCore & core,
 
   // An horizontal separator
   sep = gtk_hseparator_new ();
-  gtk_box_pack_start (GTK_BOX (vbox), sep, TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox), sep, FALSE, FALSE, 0);
 
   // The actions bar
   hbox = gtk_hbox_new (FALSE, 0);
@@ -734,7 +735,7 @@ chat_window_page_new (Ekiga::ServiceCore & core,
   gtk_menu_attach_to_widget (GTK_MENU (menu), arrow, NULL);
   gtk_box_pack_start (GTK_BOX (hbox2), GTK_WIDGET (arrow), FALSE, FALSE, 0);
 
-  gtk_box_pack_start (GTK_BOX (hbox), GTK_WIDGET (align), TRUE, TRUE, 0);
+  gtk_box_pack_start (GTK_BOX (hbox), align, FALSE, FALSE, 0);
 
   // The send message button
   align = gtk_alignment_new (1.0, 0.5, 0.0, 0.0);
@@ -824,10 +825,16 @@ chat_window_page_new (Ekiga::ServiceCore & core,
   align = gtk_alignment_new (1.0, 0.5, 0.0, 0.0);
   close_button = gtk_button_new ();
   gtk_button_set_relief (GTK_BUTTON (close_button), GTK_RELIEF_NONE);
+  gtk_button_set_focus_on_click (GTK_BUTTON (close_button), FALSE);
   close_image = gtk_image_new_from_stock (GTK_STOCK_CLOSE,
                                           GTK_ICON_SIZE_MENU); 
   gtk_container_add (GTK_CONTAINER (close_button), close_image);
-  gtk_widget_set_size_request (close_button, 22, 22);
+
+  rc_style = gtk_widget_get_modifier_style (close_button);
+  rc_style->xthickness = 0;
+  rc_style->ythickness = 0;
+  gtk_widget_modify_style (close_button, rc_style);
+
   gtk_container_add (GTK_CONTAINER (align), close_button);
   gtk_box_pack_start (GTK_BOX (self->priv->tab), align, TRUE, TRUE, 0);
   gtk_widget_show_all (self->priv->tab);
