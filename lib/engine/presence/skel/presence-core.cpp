@@ -29,6 +29,7 @@
  *                         ------------------------------------------
  *   begin                : written in 2007 by Julien Puydt
  *   copyright            : (c) 2007 by Julien Puydt
+ *                          (c) 2008 by Damien Sandras
  *   description          : implementation of the main
  *                          presentity managing object
  *
@@ -168,6 +169,21 @@ void Ekiga::PresenceCore::unfetch_presence (const std::string uri)
        iter != presence_fetchers.end ();
        iter++)
     (*iter)->unfetch (uri);
+}
+
+void Ekiga::PresenceCore::add_presence_publisher (PresencePublisher &publisher)
+{
+  presence_publishers.insert (&publisher);
+}
+
+void Ekiga::PresenceCore::publish (const std::string & presence,
+                                   const std::string & extended_status)
+{
+  for (std::set<PresencePublisher *>::iterator iter
+	 = presence_publishers.begin ();
+       iter != presence_publishers.end ();
+       iter++)
+    (*iter)->publish (presence, extended_status);
 }
 
 bool

@@ -29,6 +29,7 @@
  *                         ------------------------------------------
  *   begin                : written in 2007 by Julien Puydt
  *   copyright            : (c) 2007 by Julien Puydt
+ *                          (c) 2008 by Damien Sandras
  *   description          : declaration of the main
  *                          presentity managing object
  *
@@ -65,6 +66,16 @@ namespace Ekiga
 
     sigc::signal<void, std::string, std::string> presence_received;
     sigc::signal<void, std::string, std::string> status_received;
+  };
+
+  class PresencePublisher
+  {
+  public:
+
+    virtual ~PresencePublisher () {}
+
+    virtual void publish (const std::string & /*presence*/,
+                          const std::string & /*extended_status*/) = 0;
   };
 };
 
@@ -148,6 +159,18 @@ namespace Ekiga
   private:
 
     std::set<PresenceFetcher *> presence_fetchers;
+
+    /* help publishing presence */
+  public:
+
+    void add_presence_publisher (PresencePublisher &publisher);
+
+    void publish (const std::string & status, 
+                  const std::string & extended_status);
+
+  private:
+
+    std::set<PresencePublisher *> presence_publishers;
 
     /* help decide whether an uri is supported by runtime */
   public:
