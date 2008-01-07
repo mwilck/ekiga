@@ -476,11 +476,6 @@ void GnomeMeeting::BuildGUI ()
 #else
   PTRACE (1, "GConf support disabled");
 #endif
-#ifdef HAVE_BONOBO
-  PTRACE (1, "Bonobo support enabled");
-#else
-  PTRACE (1, "Bonobo support disabled");
-#endif
 #ifdef HAVE_ESD
   PTRACE (1, "ESound support enabled");
 #else
