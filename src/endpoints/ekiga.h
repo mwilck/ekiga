@@ -157,14 +157,14 @@ class GnomeMeeting : public PProcess
    * BEHAVIOR     :  Returns a pointer to the preferences window GMObject.
    * PRE          :  /
    */
-  GtkWidget *GetPrefsWindow ();
+  GtkWidget *GetPrefsWindow (bool create = true);
  
   
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Returns a pointer to the assistant window.
    * PRE          :  /
    */
-  GtkWidget *GetAssistantWindow ();
+  GtkWidget *GetAssistantWindow (bool create = true);
 
   
   /* DESCRIPTION  :  /

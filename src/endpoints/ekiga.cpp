@@ -79,6 +79,8 @@ GnomeMeeting::GnomeMeeting ()
   call_number = 0;
 
   service_core = NULL;
+  assistant_window = NULL;
+  prefs_window = NULL;
 }
 
 
@@ -397,15 +399,19 @@ GnomeMeeting::GetMainWindow ()
 
 
 GtkWidget *
-GnomeMeeting::GetPrefsWindow ()
+GnomeMeeting::GetPrefsWindow (bool create)
 {
+  if (!prefs_window && create)
+    prefs_window = gm_prefs_window_new ();
   return prefs_window;
 }
 
 
 GtkWidget *
-GnomeMeeting::GetAssistantWindow ()
+GnomeMeeting::GetAssistantWindow (bool create)
 {
+  if (!assistant_window && create)
+    assistant_window = ekiga_assistant_new (service_core);
   return assistant_window;
 }
 
@@ -443,8 +449,6 @@ void GnomeMeeting::BuildGUI ()
   /* Build the GUI */
   gtk_window_set_default_icon_name (GM_ICON_LOGO);
   pc2phone_window = gm_pc2phone_window_new (*service_core);
-  prefs_window = gm_prefs_window_new ();  
-  assistant_window = ekiga_assistant_new (service_core);
   accounts_window = gm_accounts_window_new (*service_core);
 
   main_window = gm_main_window_new (*service_core);

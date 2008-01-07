@@ -1,5 +1,19 @@
 2008-01-07  Steve Frécinaux  <code@istique.net>
 
+	* src/endpoints/ekiga.h:
+	* src/endpoints/ekiga.cpp:
+	Lazy dialog creation for assistant and pref dialog. This is done
+	because those are not shown often.
+
+	* src/gui/main.cpp:
+	* src/gui/conf.cpp:
+	* src/gui/callbacks.h:
+	* src/gui/callbacks.cpp:
+	Do not use direct reference to the dialogs in the callbacks, but get
+	the dialog in the callback itself when needed.
+
+2008-01-07  Steve Frécinaux  <code@istique.net>
+
 	* src/gui/assistant.cpp:
 	* src/gui/assistant.h:
 	New EkigaAssistant based on GtkAssistant instead of GnomeDruid.

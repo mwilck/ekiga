@@ -1075,7 +1075,6 @@ ekiga_assistant_apply (GtkAssistant *gtkassistant)
   GMManager *manager;
 
   GtkWidget *main_window;
-  GtkWidget *prefs_window;
 
   const int schema_version = MAJOR_VERSION * 1000
                            + MINOR_VERSION * 10

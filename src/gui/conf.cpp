@@ -154,14 +154,9 @@ accounts_list_changed_nt (G_GNUC_UNUSED gpointer id,
 static void
 manager_changed_nt (G_GNUC_UNUSED gpointer id,
 		    GmConfEntry *entry,
-		    gpointer data)
+		    G_GNUC_UNUSED gpointer data)
 {
-  g_return_if_fail (data != NULL);
-
-  
   if (gm_conf_entry_get_type (entry) == GM_CONF_STRING) {
-
-
     gdk_threads_enter ();
     GnomeMeeting::Process ()->DetectDevices ();
     gdk_threads_leave ();
@@ -177,16 +172,19 @@ manager_changed_nt (G_GNUC_UNUSED gpointer id,
 static void
 sound_events_list_changed_nt (G_GNUC_UNUSED gpointer id,
 			      GmConfEntry *entry,
-			      gpointer data)
-{ 
-  g_return_if_fail (data != NULL);
+			      G_GNUC_UNUSED gpointer data)
+{
+  GtkWidget *prefs_window;
 
   if (gm_conf_entry_get_type (entry) == GM_CONF_STRING
       || gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
    
-    gdk_threads_enter ();
-    gm_prefs_window_sound_events_list_build (GTK_WIDGET (data));
-    gdk_threads_leave ();
+    prefs_window = GnomeMeeting::Process ()->GetPrefsWindow (false);
+    if (prefs_window) {
+      gdk_threads_enter ();
+      gm_prefs_window_sound_events_list_build (prefs_window);
+      gdk_threads_leave ();
+    }
   }
 }
 
@@ -285,7 +283,6 @@ gnomemeeting_conf_init ()
   GtkWidget *main_window = NULL;
   GtkWidget *prefs_window = NULL;
   
-  prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
 
 
@@ -329,11 +326,11 @@ gnomemeeting_conf_init ()
 
   /* Notifiers to AUDIO_DEVICES_KEY */
   gm_conf_notifier_add (AUDIO_DEVICES_KEY "plugin", 
-			manager_changed_nt, prefs_window);
+			manager_changed_nt, NULL);
 
   /* Notifiers to VIDEO_DEVICES_KEY */
   gm_conf_notifier_add (VIDEO_DEVICES_KEY "plugin", 
-			manager_changed_nt, prefs_window);
+			manager_changed_nt, NULL);
 
 
   
@@ -344,34 +341,34 @@ gnomemeeting_conf_init ()
   
   /* Notifiers for SOUND_EVENTS_KEY keys */
   gm_conf_notifier_add (SOUND_EVENTS_KEY "enable_incoming_call_sound", 
-			sound_events_list_changed_nt, prefs_window);
+			sound_events_list_changed_nt, NULL);
   
   gm_conf_notifier_add (SOUND_EVENTS_KEY "incoming_call_sound",
-			sound_events_list_changed_nt, prefs_window);
+			sound_events_list_changed_nt, NULL);
 
   gm_conf_notifier_add (SOUND_EVENTS_KEY "enable_ring_tone_sound", 
-			sound_events_list_changed_nt, prefs_window);
+			sound_events_list_changed_nt, NULL);
   
   gm_conf_notifier_add (SOUND_EVENTS_KEY "ring_tone_sound", 
-			sound_events_list_changed_nt, prefs_window);
+			sound_events_list_changed_nt, NULL);
   
   gm_conf_notifier_add (SOUND_EVENTS_KEY "enable_busy_tone_sound", 
-			sound_events_list_changed_nt, prefs_window);
+			sound_events_list_changed_nt, NULL);
   
   gm_conf_notifier_add (SOUND_EVENTS_KEY "busy_tone_sound",
-			sound_events_list_changed_nt, prefs_window);
+			sound_events_list_changed_nt, NULL);
   
   gm_conf_notifier_add (SOUND_EVENTS_KEY "enable_new_voicemail_sound", 
-			sound_events_list_changed_nt, prefs_window);
+			sound_events_list_changed_nt, NULL);
   
   gm_conf_notifier_add (SOUND_EVENTS_KEY "new_voicemail_sound",
-			sound_events_list_changed_nt, prefs_window);
+			sound_events_list_changed_nt, NULL);
 
   gm_conf_notifier_add (SOUND_EVENTS_KEY "enable_new_message_sound",
-			sound_events_list_changed_nt, prefs_window);
+			sound_events_list_changed_nt, NULL);
 
   gm_conf_notifier_add (SOUND_EVENTS_KEY "new_message_sound",
-			sound_events_list_changed_nt, prefs_window);
+			sound_events_list_changed_nt, NULL);
 
   
   /* Notifiers for the VIDEO_CODECS_KEY keys */

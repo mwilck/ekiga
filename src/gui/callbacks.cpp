@@ -86,15 +86,37 @@ delete_window_cb (GtkWidget *widget,
   return TRUE;
 }
 
+static void
+show_window (GtkWidget *window)
+{
+  if (!gnomemeeting_window_is_visible (window))
+    gnomemeeting_window_show (window);
+  else
+    gtk_window_present (GTK_WINDOW (window));
+}
 
 void
 show_window_cb (G_GNUC_UNUSED GtkWidget *widget,
 		gpointer data)
 {
-  if (!gnomemeeting_window_is_visible (GTK_WIDGET (data)))
-    gnomemeeting_window_show (GTK_WIDGET (data));
-  else
-    gtk_window_present (GTK_WINDOW (data));
+  show_window (GTK_WIDGET (data));
+}
+
+
+void
+show_assistant_window_cb (G_GNUC_UNUSED GtkWidget *widget,
+                          G_GNUC_UNUSED gpointer data)
+{
+  GtkWidget *window = GnomeMeeting::Process ()->GetAssistantWindow ();
+  show_window (window);
+}
+
+void
+show_prefs_window_cb (G_GNUC_UNUSED GtkWidget *widget,
+                      G_GNUC_UNUSED gpointer data)
+{
+  GtkWidget *window = GnomeMeeting::Process ()->GetPrefsWindow ();
+  show_window (window);
 }
 
 
@@ -244,6 +266,7 @@ quit_callback (G_GNUC_UNUSED GtkWidget *widget,
 	       G_GNUC_UNUSED gpointer data)
 {
   GtkWidget *main_window = NULL;
+  GtkWidget *assistant_window = NULL;
   GtkWidget *prefs_window = NULL;
   GtkWidget *accounts_window = NULL;
 
@@ -255,11 +278,15 @@ quit_callback (G_GNUC_UNUSED GtkWidget *widget,
   gdk_threads_enter ();
   
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
+  assistant_window = GnomeMeeting::Process ()->GetAssistantWindow (false);
+  prefs_window = GnomeMeeting::Process ()->GetPrefsWindow (false);
   accounts_window = GnomeMeeting::Process ()->GetAccountsWindow ();
   
   gnomemeeting_window_hide (main_window);
-  gnomemeeting_window_hide (prefs_window);
+  if (assistant_window)
+    gnomemeeting_window_hide (assistant_window);
+  if (prefs_window)
+    gnomemeeting_window_hide (prefs_window);
   gnomemeeting_window_hide (accounts_window);
 
   while (gtk_events_pending ())
