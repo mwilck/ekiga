@@ -249,7 +249,6 @@ namespace Ekiga
 
     std::set<PresenceFetcher *> presence_fetchers;
 
-<<<<<<< HEAD:lib/engine/presence/skel/presence-core.h
     /* help publishing presence */
   public:
 
