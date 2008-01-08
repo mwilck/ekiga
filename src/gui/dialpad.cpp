@@ -226,6 +226,8 @@ ekiga_dialpad_finalize (GObject *object)
 
   if (dialpad->priv->accel_group != NULL)
     g_object_unref (dialpad->priv->accel_group);
+
+  G_OBJECT_CLASS (ekiga_dialpad_parent_class)->finalize (object);
 }
 
 static void

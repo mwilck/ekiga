@@ -1123,6 +1123,8 @@ ekiga_assistant_finalize (GObject *object)
   EkigaAssistant *assistant = EKIGA_ASSISTANT (object);
 
   g_object_unref (assistant->priv->icon);
+
+  G_OBJECT_CLASS (ekiga_assistant_parent_class)->finalize (object);
 }
 
 static void
