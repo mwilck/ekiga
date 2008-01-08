@@ -3686,7 +3686,6 @@ gm_main_window_new (Ekiga::ServiceCore & core)
 
 #if !defined HAVE_GNOME
   gtk_box_pack_start (GTK_BOX (mw->window_vbox), mw->main_notebook, TRUE, TRUE, 0);
-  gtk_widget_show (table);
 #else
   gnome_app_set_contents (GNOME_APP (window), mw->main_notebook);
 #endif

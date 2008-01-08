@@ -24,10 +24,6 @@ libekiga_la_LIBADD = gmconf/libgmconf.la \
 		     toolbox/libtoolbox.la \
 		     platform/libgmplatform.la
 
-if !HAVE_GNOME
-libekiga_la_LIBADD += druid/libdruid.la
-endif
-
 if !WIN32
 libekiga_la_LIBADD += pixops/libpixops.la
 endif
