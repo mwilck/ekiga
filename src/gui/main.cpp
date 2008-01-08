@@ -116,10 +116,8 @@ struct _GmMainWindow
   GtkAccelGroup *accel;
 
   GtkWidget *main_menu;
-  
-#if !defined HAVE_GNOME 
+
   GtkWidget *window_vbox;
-#endif
 
   GtkWidget *status_label_ebox;
   GtkWidget *info_text;
@@ -3587,11 +3585,7 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   sigc::connection conn;
   
   /* The Top-level window */
-#if defined HAVE_GNOME 
-  window = gnome_app_new ("ekiga", NULL);
-#else
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-#endif
   g_object_set_data_full (G_OBJECT (window), "window_name",
 			  g_strdup ("main_window"), g_free);
 
@@ -3622,57 +3616,29 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   mw->videoWidgetGC = NULL;
 #endif
 
-#if defined HAVE_GNOME
-  int behavior = 0;
-  bool toolbar_detachable = TRUE;
-
-  toolbar_detachable = 
-    gm_conf_get_bool ("/desktop/gnome/interface/toolbar_detachable");
-#endif
-  
   /* Tooltips and accelerators */
   mw->tips = gtk_tooltips_new ();
   mw->accel = gtk_accel_group_new ();
   gtk_window_add_accel_group (GTK_WINDOW (window), mw->accel);
 
-#if !defined HAVE_GNOME 
   mw->window_vbox = gtk_vbox_new (0, FALSE);
   gtk_container_add (GTK_CONTAINER (window), mw->window_vbox);
   gtk_widget_show_all (mw->window_vbox);
-#endif
-  
+
   /* The main menu */
   mw->statusbar = gm_statusbar_new ();
   gm_mw_init_menu (window); 
-#if defined HAVE_GNOME 
-  gnome_app_set_menus (GNOME_APP (window), 
-		       GTK_MENU_BAR (mw->main_menu));
-#else
   gtk_box_pack_start (GTK_BOX (mw->window_vbox), mw->main_menu,
-		      FALSE, FALSE, 0);
-#endif
-  
+                      FALSE, FALSE, 0);
+
   /* The main toolbar */
   main_toolbar = gm_mw_init_main_toolbar (window);
   status = gm_conf_get_int (PERSONAL_DATA_KEY "status");
   gm_main_window_set_status (window, status);
   
   /* Add the toolbar to the UI */
-#if defined HAVE_GNOME
-  behavior = (BONOBO_DOCK_ITEM_BEH_EXCLUSIVE
-	      | BONOBO_DOCK_ITEM_BEH_NEVER_VERTICAL);
-
-  if (!toolbar_detachable)
-    behavior |= BONOBO_DOCK_ITEM_BEH_LOCKED;
-
-  gnome_app_add_toolbar (GNOME_APP (window), GTK_TOOLBAR (main_toolbar),
- 			 "left_toolbar", 
-			 BonoboDockItemBehavior (behavior),
- 			 BONOBO_DOCK_TOP, 2, 0, 0);
-#else
   gtk_box_pack_start (GTK_BOX (mw->window_vbox), main_toolbar, 
-		      FALSE, FALSE, 0);
-#endif
+                      FALSE, FALSE, 0);
 
   /* The Audio & Video Settings windows */
   mw->audio_settings_window = gm_mw_audio_settings_window_new (window);
@@ -3684,11 +3650,8 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   gtk_notebook_set_show_tabs (GTK_NOTEBOOK (mw->main_notebook), TRUE);
   gtk_notebook_set_scrollable (GTK_NOTEBOOK (mw->main_notebook), TRUE);
 
-#if !defined HAVE_GNOME
-  gtk_box_pack_start (GTK_BOX (mw->window_vbox), mw->main_notebook, TRUE, TRUE, 0);
-#else
-  gnome_app_set_contents (GNOME_APP (window), mw->main_notebook);
-#endif
+  gtk_box_pack_start (GTK_BOX (mw->window_vbox), mw->main_notebook,
+                      TRUE, TRUE, 0);
 
   gm_mw_init_contacts_list (window);
   gm_mw_init_dialpad (window);
@@ -3702,16 +3665,9 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   
   /* The URI toolbar */
   uri_toolbar = gm_mw_init_uri_toolbar (window);
-#if defined HAVE_GNOME
-  gnome_app_add_docked (GNOME_APP (window), uri_toolbar, "main_toolbar",
-			BonoboDockItemBehavior (behavior),
-  			BONOBO_DOCK_BOTTOM, 1, 0, 0);
-#else
   gtk_box_pack_start (GTK_BOX (mw->window_vbox), uri_toolbar, 
-		      FALSE, FALSE, 0);
-#endif
-  
-  
+                      FALSE, FALSE, 0);
+
   /* The statusbar with qualitymeter */
   gtk_statusbar_set_has_resize_grip (GTK_STATUSBAR (mw->statusbar), TRUE);
   GtkShadowType shadow_type;
@@ -3729,13 +3685,8 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   mw->statusbar_ebox = gtk_event_box_new ();
   gtk_container_add (GTK_CONTAINER (mw->statusbar_ebox), mw->statusbar);
 
-#if !defined HAVE_GNOME
-  gtk_box_pack_start (GTK_BOX (mw->window_vbox), mw->statusbar,
-		      FALSE, FALSE, 0);
-#else
-  gnome_app_set_statusbar_custom (GNOME_APP (window), mw->statusbar_ebox,
-                                  mw->statusbar);
-#endif
+  gtk_box_pack_start (GTK_BOX (mw->window_vbox), mw->statusbar_ebox,
+                      FALSE, FALSE, 0);
   gtk_widget_show_all (mw->statusbar_ebox);
 
   g_signal_connect (G_OBJECT (mw->statusbar_ebox), "button-press-event",
