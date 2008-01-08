@@ -262,10 +262,7 @@ namespace Ekiga
 
     std::set<PresencePublisher *> presence_publishers;
 
-    /* help decide whether an uri is supported by runtime */
-=======
     /*** API to control which uri are supported by runtime ***/
->>>>>>> Commented the presence stack:lib/engine/presence/skel/presence-core.h
   public:
 
     /** Decides whether an uri is supported by the PresenceCore
