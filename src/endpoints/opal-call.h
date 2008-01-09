@@ -182,9 +182,6 @@ namespace Opal {
       unsigned too_late_v;
       unsigned out_of_order_v;
       unsigned total_v;
-
-      unsigned re_v_frames;
-      unsigned tr_v_frames;
    };
 };
 

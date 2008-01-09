@@ -585,8 +585,8 @@ static gboolean on_stats_refresh_cb (gpointer self)
                            mw->current_call->get_received_audio_bandwidth (),
                            mw->current_call->get_transmitted_video_bandwidth (),
                            mw->current_call->get_received_video_bandwidth (),
-                           mw->current_call->get_transmitted_video_framerate (),
-                           mw->current_call->get_received_video_framerate ());
+                           0,
+                           0);
     gdk_threads_enter ();
     gm_main_window_push_info_message (GTK_WIDGET (self), msg);
     if (mw->current_call)

@@ -149,28 +149,6 @@ namespace Ekiga {
        */
       double get_transmitted_video_bandwidth () { return tr_v_bw; }
 
-      /** Return the transmitted video framerate
-       * @return the transmitted video framerate  in frames/s
-       */
-      unsigned get_transmitted_video_framerate () { return tr_v_fps; }
-
-      /** Return the received video framerate
-       * @return the received video framerate in frames/s
-       */
-      unsigned get_received_video_framerate () { return re_v_fps; }
-
-      /** Return the transmitted video resolution
-       * @param width contains the width in pixels
-       * @param height contains the height in pixels
-       */
-      void get_transmitted_video_resolution (unsigned & width, unsigned & height) { width = tr_width; height = tr_height; }
-
-      /** Return the received video resolution
-       * @param width contains the width in pixels
-       * @param height contains the height in pixels
-       */
-      void get_received_video_resolution (unsigned & width, unsigned & height) { width = re_width; height = re_height; }
-
       /** Return the jitter size
        * @return the jitter size in ms
        */

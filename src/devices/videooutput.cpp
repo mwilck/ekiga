@@ -88,9 +88,6 @@ PVideoOutputDevice_EKIGA::PVideoOutputDevice_EKIGA (Ekiga::ServiceCore & _core)
   /* Used to distinguish between input and output device. */
   device_id = 0; 
 
-  /* Internal stuff */
-  numberOfFrames = 0;
-
   if (!videoDisplay) 
 #ifdef WIN32
      videoDisplay = new GMVideoDisplay_DX(core);
@@ -148,8 +145,6 @@ bool PVideoOutputDevice_EKIGA::SetFrameData (unsigned x,
 					   bool endFrame)
 {
  PWaitAndSignal m(videoDisplay_mutex);
-
-  numberOfFrames++;
 
   if (x > 0 || y > 0)
     return FALSE;
