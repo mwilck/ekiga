@@ -76,7 +76,6 @@ GMVideoDisplay_DX::SetupFrameDisplay (VideoMode display,
                                       unsigned int zoom)
 {
   VideoInfo localVideoInfo;
-  VideoAccelStatus status = 0;
 
   GetVideoInfo(&localVideoInfo);
 
@@ -111,11 +110,13 @@ GMVideoDisplay_DX::SetupFrameDisplay (VideoMode display,
 
   runtime->run_in_main (sigc::bind (set_display_type.make_slot (), display));
 
+  videoStats.videoAccelStatus = NONE;
+
   switch (display) {
   case LOCAL_VIDEO:
     PTRACE(4, "GMVideoDisplay_DX\tOpening LOCAL_VIDEO display with image of " << lf_width << "x" << lf_height);
     dxWindow = new DXWindow();
-    status = (VideoAccelStatus) dxWindow->Init (localVideoInfo.hwnd,
+    videoStats.videoAccelStatus = (VideoAccelStatus) dxWindow->Init (localVideoInfo.hwnd,
                           localVideoInfo.x,
                           localVideoInfo.y,
                           (int) (lf_width * zoom / 100), 
@@ -135,7 +136,7 @@ GMVideoDisplay_DX::SetupFrameDisplay (VideoMode display,
   case REMOTE_VIDEO:
     PTRACE(4, "GMVideoDisplay_DX\tOpening REMOTE_VIDEO display with image of " << rf_width << "x" << rf_height);
     dxWindow = new DXWindow();
-    status = (VideoAccelStatus) dxWindow->Init (localVideoInfo.hwnd,
+    videoStats.videoAccelStatus = (VideoAccelStatus) dxWindow->Init (localVideoInfo.hwnd,
                           localVideoInfo.x,
                           localVideoInfo.y,
                           (int) (rf_width * zoom / 100), 
@@ -159,7 +160,7 @@ GMVideoDisplay_DX::SetupFrameDisplay (VideoMode display,
            << lf_width << "x" << lf_height << "(local) and " 
 	   << rf_width << "x" << rf_height << "(remote)");
     dxWindow = new DXWindow();
-    status = (VideoAccelStatus) dxWindow->Init ((display == PIP) ? localVideoInfo.hwnd : NULL,
+    videoStats.videoAccelStatus = (VideoAccelStatus) dxWindow->Init ((display == PIP) ? localVideoInfo.hwnd : NULL,
                           (display == PIP) ? localVideoInfo.x : 0,
                           (display == PIP) ? localVideoInfo.y : 0,
                           (int) (rf_width * zoom / 100), 
@@ -199,16 +200,17 @@ GMVideoDisplay_DX::SetupFrameDisplay (VideoMode display,
 // 
 //     CloseFrameDisplay ();
 
-  runtime->run_in_main (sigc::bind (update_video_accel_status.make_slot (), status));
+  runtime->run_in_main (sigc::bind (update_video_accel_status.make_slot (), videoStats.videoAccelStatus));
 
 }
 
 bool 
 GMVideoDisplay_DX::CloseFrameDisplay ()
 {
-  if (runtime) //FIXME
-    runtime->run_in_main (sigc::bind (update_video_accel_status.make_slot (), NO_VIDEO));
-
+  if (runtime) {//FIXME
+    videoStats.videoAccelStatus = NO_VIDEO;
+    runtime->run_in_main (sigc::bind (update_video_accel_status.make_slot (), videoStats.videoAccelStatus));
+  }
   if (dxWindow) {
 
     delete dxWindow;

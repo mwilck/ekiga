@@ -95,7 +95,6 @@ GMVideoDisplay_X::SetupFrameDisplay (VideoMode display,
                                      unsigned int zoom)
 {
   VideoInfo localVideoInfo;
-  VideoAccelStatus status = NONE;
 
   if (video_disabled)
     return;
@@ -135,6 +134,8 @@ GMVideoDisplay_X::SetupFrameDisplay (VideoMode display,
 
   pipWindowAvailable = FALSE;
 
+  videoStats.videoAccelStatus = NONE;
+
   switch (display) {
 // LOCAL_VIDEO ------------------------------------------------------------------
   case LOCAL_VIDEO:
@@ -151,18 +152,18 @@ GMVideoDisplay_X::SetupFrameDisplay (VideoMode display,
                             (int) (lf_height * zoom / 100),
                             lf_width, 
                             lf_height)) {
-	status = ALL;
+	videoStats.videoAccelStatus = ALL;
         PTRACE(4, "GMVideoDisplay_X\tLOCAL_VIDEO: Successfully opened XV Window");
       }
       else {
 	delete lxWindow;
 	lxWindow = NULL;
-	status = NONE;
+	videoStats.videoAccelStatus = NONE;
         PTRACE(4, "GMVideoDisplay_X\tLOCAL_VIDEO: Could not open XV Window");
       }
     }
 #endif			   
-    if (status==NONE) {
+    if (videoStats.videoAccelStatus==NONE) {
       PTRACE(3, "GMVideoDisplay_X\tFalling back to SW" << ((localVideoInfo.disableHwAccel) 
                                       ? " since HW acceleration was deactivated by configuration" 
                                       : " since HW acceleration failed to initalize"));
@@ -183,7 +184,7 @@ GMVideoDisplay_X::SetupFrameDisplay (VideoMode display,
         delete lxWindow;
         lxWindow = NULL;
         video_disabled = TRUE;
-        status = NO_VIDEO;
+        videoStats.videoAccelStatus = NO_VIDEO;
         PTRACE(1, "GMVideoDisplay_X\tLOCAL_VIDEO: Could not open X Window - no video");
       }
     }
@@ -212,19 +213,19 @@ GMVideoDisplay_X::SetupFrameDisplay (VideoMode display,
                           (int) (rf_height * zoom / 100),
                           rf_width, 
                           rf_height)) {
-       status = ALL;
+       videoStats.videoAccelStatus = ALL;
        PTRACE(4, "GMVideoDisplay_X\tREMOTE_VIDEO: Successfully opened XV Window");
      }
      else {
        delete rxWindow;
        rxWindow = NULL;
-       status = NONE;
+       videoStats.videoAccelStatus = NONE;
        PTRACE(1, "GMVideoDisplay_X\tLOCAL_VIDEO: Could not open XV Window");
 
      }
     }
 #endif			   
-    if (status==NONE) {
+    if (videoStats.videoAccelStatus==NONE) {
       PTRACE(3, "GMVideoDisplay_X\tFalling back to SW" << ((localVideoInfo.disableHwAccel) 
                                       ? " since HW acceleration was deactivated by configuration" 
                                       : " since HW acceleration failed to initalize"));
@@ -245,7 +246,7 @@ GMVideoDisplay_X::SetupFrameDisplay (VideoMode display,
         delete rxWindow;
         rxWindow = NULL;
         video_disabled = TRUE;
-        status = NO_VIDEO;
+        videoStats.videoAccelStatus = NO_VIDEO;
         PTRACE(1, "GMVideoDisplay_X\tREMOTE_VIDEO: Could not open X Window - no video");
       }
     }
@@ -278,19 +279,19 @@ GMVideoDisplay_X::SetupFrameDisplay (VideoMode display,
                              (int) (rf_height * zoom / 100),
                              rf_width, 
                              rf_height)) {
-        status = REMOTE_ONLY;
+        videoStats.videoAccelStatus = REMOTE_ONLY;
         PTRACE(4, "GMVideoDisplay_X\tPIP: Successfully opened remote XV Window");
       }
       else 
       {
         delete rxWindow;
 	rxWindow = NULL;
-	status = NONE;
+	videoStats.videoAccelStatus = NONE;
         PTRACE(1, "GMVideoDisplay_X\tPIP: Could not open remote XV Window");
       }
     }
 #endif			   
-    if (status == NONE) {
+    if (videoStats.videoAccelStatus == NONE) {
       PTRACE(3, "GMVideoDisplay_X\tFalling back to SW" << ((localVideoInfo.disableHwAccel) 
                                       ? " since HW acceleration was deactivated by configuration" 
                                       : " since HW acceleration failed to initalize"));
@@ -311,14 +312,14 @@ GMVideoDisplay_X::SetupFrameDisplay (VideoMode display,
         delete rxWindow;
         rxWindow = NULL;
         video_disabled = TRUE;
-        status = NO_VIDEO;
+        videoStats.videoAccelStatus = NO_VIDEO;
         PTRACE(1, "GMVideoDisplay_X\tPIP: Could not open remote X Window - no video");
       }
     }
 
 
 #ifdef HAVE_XV
-    if (status == REMOTE_ONLY) {
+    if (videoStats.videoAccelStatus == REMOTE_ONLY) {
       lxWindow = new XVWindow();
       if (lxWindow->Init (   rxWindow->GetDisplay (), 
                              rxWindow->GetWindowHandle (),
@@ -329,7 +330,7 @@ GMVideoDisplay_X::SetupFrameDisplay (VideoMode display,
                              (int) (rf_height * zoom  / 100 / 3),
                              lf_width, 
                              lf_height)) {
-        status = ALL;
+        videoStats.videoAccelStatus = ALL;
         pipWindowAvailable = TRUE;
         PTRACE(4, "GMVideoDisplay_X\tPIP: Successfully opened local XV Window");
       }
@@ -341,7 +342,7 @@ GMVideoDisplay_X::SetupFrameDisplay (VideoMode display,
       }
     }
 #endif
-    if ((status != ALL) && (localVideoInfo.allowPipSwScaling)) {
+    if ((videoStats.videoAccelStatus != ALL) && (localVideoInfo.allowPipSwScaling)) {
       PTRACE(3, "GMVideoDisplay_X\tFalling back to SW" << ((localVideoInfo.disableHwAccel) 
                                       ? " since HW acceleration was deactivated by configuration" 
                                       : " since HW acceleration failed to initalize"));
@@ -367,9 +368,9 @@ GMVideoDisplay_X::SetupFrameDisplay (VideoMode display,
       }
     }
 
-    if ((status != ALL) && (!localVideoInfo.allowPipSwScaling)) {
+    if ((videoStats.videoAccelStatus != ALL) && (!localVideoInfo.allowPipSwScaling)) {
       PTRACE(3, "GMVideoDisplay_X\tNot opening PIP window since HW acceleration is not available and SW fallback is disabled by configuration");
-      status = ALL;
+      videoStats.videoAccelStatus = ALL;
     }
 
     if (rxWindow && lxWindow) {
@@ -408,15 +409,17 @@ GMVideoDisplay_X::SetupFrameDisplay (VideoMode display,
       rxWindow->ToggleOntop ();
   }
 
-  runtime->run_in_main (sigc::bind (update_video_accel_status.make_slot (), status));
+  runtime->run_in_main (sigc::bind (update_video_accel_status.make_slot (), videoStats.videoAccelStatus));
 }
 
 
 bool 
 GMVideoDisplay_X::CloseFrameDisplay ()
 {
-  if (runtime) //FIXME
-    runtime->run_in_main (sigc::bind (update_video_accel_status.make_slot (), NO_VIDEO));
+  if (runtime) { //FIXME
+    videoStats.videoAccelStatus = NO_VIDEO;
+    runtime->run_in_main (sigc::bind (update_video_accel_status.make_slot (), videoStats.videoAccelStatus));
+  }
 
   if (rxWindow) 
     rxWindow->RegisterSlave (NULL);

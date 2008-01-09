@@ -247,4 +247,15 @@ public:
   
 };
 
+//will be moved at a later stage
+typedef struct {
+  unsigned rxFPS;
+  unsigned rxWidth;
+  unsigned rxHeight;
+  unsigned txFPS;
+  unsigned txWidth;
+  unsigned txHeight;
+  VideoAccelStatus videoAccelStatus;
+} VideoStats;
+
 #endif /* GM_COMMON_H */

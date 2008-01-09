@@ -86,7 +86,7 @@ class GMVideoDisplay : public PThread
    * BEHAVIOR     :  Initialises the VideoDisplay.
    * PRE          :  /
    */
-  GMVideoDisplay ();
+  GMVideoDisplay (Ekiga::ServiceCore & core);
 
 
   /* DESCRIPTION  :  The destructor.
@@ -108,6 +108,56 @@ class GMVideoDisplay : public PThread
                              const BYTE *data,
                              bool local,
                              int devices_nbr) = 0;
+  /* DESCRIPTION  :  Update all information about the video_image widget,
+                     gconf-settings and display type and zoom settings..
+   *                 Needed for embedded window 
+   * BEHAVIOR     :  Called when the video_image widget receives an expose event,
+   *                 when a parameter like zoom or display type is change and
+   *                 once before the display i opened to initialize all settings
+   *                 obtained from gconf.
+   * PRE          :  A VideoInfo object with all the updated information
+   */
+  virtual void SetVideoInfo (VideoInfo* newVideoInfo);
+
+ protected:
+
+  /* Callbacks for functions that have to be
+     executed in the main thread  */
+  sigc::signal<void,
+               VideoMode> set_display_type;                 /* gm_main_window_set_display_type */
+
+  sigc::signal<void,
+               int> fullscreen_menu_update_sensitivity;     /* gm_main_window_fullscreen_menu_update_sensitivity */
+
+  sigc::signal<void,
+               FSToggle> toggle_fullscreen;                 /* gm_main_window_toggle_fullscreen */
+
+  sigc::signal<void,
+               int,
+               int> set_resized_video_widget;               /* gm_main_window_set_resized_video_widget */
+	       
+  sigc::signal<void> update_logo;                           /* gm_main_window_update_logo  */
+  sigc::signal<void> force_redraw;                          /* gm_main_window_force_redraw */
+  sigc::signal<void> update_zoom_display;                   /* gm_main_window_update_zoom_display */
+  sigc::signal<void,
+               VideoAccelStatus> update_video_accel_status; /* gm_main_window_update_video_accel_status */
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Copy the VideoInfo information to a local variable 
+                     in a protected manner
+   * PRE          :  The protected VideoInfo has been set via SetVideoInfo.
+   */
+  virtual void GetVideoInfo (VideoInfo* getVideoInfo);
+
+  VideoStats videoStats;
+
+  PMutex video_info_mutex; /* To protect the VideoInfo object*/
+
+  /* This variable has to be protected by video_info_mutex */
+  VideoInfo videoInfo;
+
+  Ekiga::Runtime* runtime;
+  Ekiga::ServiceCore & core;
 };
 
 
@@ -149,16 +199,6 @@ class GMVideoDisplay_embedded : public GMVideoDisplay
                              bool local,
                              int devices_nbr);
 
-  /* DESCRIPTION  :  Update all information about the video_image widget,
-                     gconf-settings and display type and zoom settings..
-   *                 Needed for embedded window 
-   * BEHAVIOR     :  Called when the video_image widget receives an expose event,
-   *                 when a parameter like zoom or display type is change and
-   *                 once before the display i opened to initialize all settings
-   *                 obtained from gconf.
-   * PRE          :  A VideoInfo object with all the updated information
-   */
-  virtual void SetVideoInfo (VideoInfo* newVideoInfo);
 
  protected:
 
@@ -230,12 +270,6 @@ class GMVideoDisplay_embedded : public GMVideoDisplay
    */
   virtual UpdateRequired Redraw ();
 
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Copy the VideoInfo information to a local variable 
-                     in a protected manner
-   * PRE          :  The protected VideoInfo has been set via SetVideoInfo.
-   */
-  virtual void GetVideoInfo (VideoInfo* getVideoInfo);
   
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Sync the output of the frame to the display
@@ -249,6 +283,9 @@ class GMVideoDisplay_embedded : public GMVideoDisplay
   FrameInfo lastFrame;
   FrameInfo currentFrame;
 
+  unsigned rxFrames;
+  unsigned txFrames;
+  
   bool stop;
   bool first_frame_received;
   bool video_disabled;
@@ -257,39 +294,14 @@ class GMVideoDisplay_embedded : public GMVideoDisplay
   PMutex var_mutex;      /* To protect variables that are read and written
 			    from various threads */
   PMutex quit_mutex;     /* To exit */
-  PMutex video_info_mutex; /* To protect the VideoInfo object*/
 
   PSyncPoint frame_available_sync_point;     /* To signal a new frame has to be displayed  */
   PSyncPoint thread_sync_point;              /* To signal that the thread has been created */
 
-  /* Callbacks for functions that have to be
-     executed in the main thread  */
-  sigc::signal<void,
-               VideoMode> set_display_type;                 /* gm_main_window_set_display_type */
-
-  sigc::signal<void,
-               int> fullscreen_menu_update_sensitivity;     /* gm_main_window_fullscreen_menu_update_sensitivity */
-
-  sigc::signal<void,
-               FSToggle> toggle_fullscreen;                 /* gm_main_window_toggle_fullscreen */
-
-  sigc::signal<void,
-               int,
-               int> set_resized_video_widget;               /* gm_main_window_set_resized_video_widget */
-	       
-  sigc::signal<void> update_logo;                           /* gm_main_window_update_logo  */
-  sigc::signal<void> force_redraw;                          /* gm_main_window_force_redraw */
-  sigc::signal<void> update_zoom_display;                   /* gm_main_window_update_zoom_display */
-  sigc::signal<void,
-               VideoAccelStatus> update_video_accel_status; /* gm_main_window_update_video_accel_status */
-
-  std::vector<sigc::connection> connections;
-
-  /* This variable has to be protected by video_info_mutex */
-  VideoInfo videoInfo;
+  std::vector<sigc::connection> connections; //FIXME
   
-  Ekiga::Runtime* runtime;
-  Ekiga::ServiceCore & core;
+  PTime lastStats;
+
 };
 
 #endif /* VIDEODISPLAY */

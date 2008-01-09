@@ -54,18 +54,34 @@
 #include "misc.h"
 #include "main.h"
 
-GMVideoDisplay::GMVideoDisplay ()
-  : PThread (1000, NoAutoDeleteThread, HighPriority, "GMVideoDisplay") // to be verified
+GMVideoDisplay::GMVideoDisplay (Ekiga::ServiceCore & _core)
+  : PThread (1000, NoAutoDeleteThread, HighPriority, "GMVideoDisplay"),
+  core (_core)
 {
+  videoStats.rxWidth = videoStats.rxWidth = videoStats.rxFPS = 0;
+  videoStats.txWidth = videoStats.txWidth = videoStats.txFPS = 0;
+  videoStats.videoAccelStatus = NONE;
 }
 
 GMVideoDisplay::~GMVideoDisplay ()
 {
 }
 
+void GMVideoDisplay::SetVideoInfo (VideoInfo* newVideoInfo) 
+{
+  PWaitAndSignal m(video_info_mutex);
+  videoInfo = *newVideoInfo;
+}
+
+void GMVideoDisplay::GetVideoInfo (VideoInfo* getVideoInfo) 
+{
+  PWaitAndSignal m(video_info_mutex);
+  *getVideoInfo = videoInfo;
+}
+
 /* The functions */
-GMVideoDisplay_embedded::GMVideoDisplay_embedded (Ekiga::ServiceCore & _core)
-: core (_core)
+GMVideoDisplay_embedded::GMVideoDisplay_embedded(Ekiga::ServiceCore & _core)
+: GMVideoDisplay(_core)
 {
   /* Variables */
 
@@ -91,6 +107,12 @@ GMVideoDisplay_embedded::GMVideoDisplay_embedded (Ekiga::ServiceCore & _core)
   update_required.local = FALSE;
   update_required.remote = FALSE;
 
+
+  rxFrames = 0;
+  txFrames = 0;
+  
+  lastStats = PTime ();
+  
   runtime = dynamic_cast<Ekiga::Runtime *> (core.get ("runtime")); 
   
   sigc::connection conn;
@@ -200,6 +222,14 @@ void GMVideoDisplay_embedded::SetFrameData (unsigned width,
     currentFrame.localWidth = width;
     currentFrame.localHeight= height;
 
+    txFrames++;
+    
+    if ((width != videoStats.txWidth) || (height != videoStats.txHeight)) {
+      videoStats.txWidth = width;
+      videoStats.txHeight = height;
+      //FIXME
+    }
+
     memcpy (lframeStore.GetPointer(), data, (width * height * 3) >> 1);
     if (update_required.local) 
       PTRACE(3, "Skipped earlier local frame");
@@ -211,12 +241,31 @@ void GMVideoDisplay_embedded::SetFrameData (unsigned width,
     rframeStore.SetSize (width * height * 3);
     currentFrame.remoteWidth = width;
     currentFrame.remoteHeight= height;
+    
+    rxFrames++;
+
+    if ((width != videoStats.rxWidth) || (height != videoStats.rxHeight)) {
+      videoStats.rxWidth = width;
+      videoStats.rxHeight = height;
+      //FIXME
+    }
 
     memcpy (rframeStore.GetPointer(), data, (width * height * 3) >> 1);
     if (update_required.remote) 
       PTRACE(3, "Skipped earlier remote frame");
     update_required.remote = TRUE;
   }
+
+  PTimeInterval t = PTime () - lastStats;
+  if (t.GetMilliSeconds() > 2000) {
+    videoStats.txFPS = round ((rxFrames * 1000) / t.GetMilliSeconds());
+    videoStats.rxFPS = round ((txFrames * 1000) / t.GetMilliSeconds());
+    rxFrames = 0;
+    txFrames = 0;
+    lastStats = PTime();
+    //FIXME
+  }
+
   var_mutex.Signal();
 
   if ((localVideoInfo.display == UNSET) || (localVideoInfo.zoom == 0) || (!localVideoInfo.gconfInfoSet)) {
@@ -324,16 +373,5 @@ GMVideoDisplay_embedded::Redraw ()
   return sync_required;
 }
 
-void GMVideoDisplay_embedded::SetVideoInfo (VideoInfo* newVideoInfo) 
-{
-  PWaitAndSignal m(video_info_mutex);
-  videoInfo = *newVideoInfo;
-}
-
-void GMVideoDisplay_embedded::GetVideoInfo (VideoInfo* getVideoInfo) 
-{
-  PWaitAndSignal m(video_info_mutex);
-  *getVideoInfo = videoInfo;
-}
 
 
