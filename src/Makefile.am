@@ -14,6 +14,7 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/engine/presence/skel	\
 	-I$(top_srcdir)/lib/engine/protocol/skel	\
 	-I$(top_srcdir)/lib/engine/protocol/sip		\
+	-I$(top_srcdir)/lib/engine/display/skel		\
 	-I$(top_srcdir)/lib/engine/framework		\
 	-I$(top_builddir)				\
 	$(GNOME_INCLUDEDIR)				\

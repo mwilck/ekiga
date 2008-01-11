@@ -1,0 +1,16 @@
+noinst_LTLIBRARIES = libgmdisplay.la
+
+display_dir = $(top_srcdir)/lib/engine/display/skel
+
+AM_CXXFLAGS = $(SIGC_CFLAGS)
+
+INCLUDES = \
+	-I$(top_srcdir)/lib/engine/include \
+	-I$(top_srcdir)/lib/engine/framework \
+	-I$(top_srcdir)/lib/engine/display/skel
+
+libgmdisplay_la_SOURCES = \
+	$(display_dir)/display-core.h		\
+	$(display_dir)/display-core.cpp
+
+libgmdisplay_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS)

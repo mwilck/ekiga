@@ -1,4 +1,4 @@
-SUBDIRS = framework addressbook presence gui protocol
+SUBDIRS = framework addressbook presence gui protocol display
 
 noinst_LTLIBRARIES = libekiga_engine.la
 
@@ -14,7 +14,8 @@ INCLUDES = 								\
 	-I$(top_srcdir)/lib/engine/addressbook/ldap			\
 	-I$(top_srcdir)/lib/engine/presence/skel			\
 	-I$(top_srcdir)/lib/engine/presence/avahi			\
-	-I$(top_srcdir)/lib/engine/presence/local-roster
+	-I$(top_srcdir)/lib/engine/presence/local-roster		\
+	-I$(top_srcdir)/lib/engine/display/skel
 
 libekiga_engine_la_SOURCES = engine.h engine.cpp
 

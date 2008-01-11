@@ -44,6 +44,7 @@
 #include "presence-core.h"
 #include "contact-core.h"
 #include "call-core.h"
+#include "display-core.h"
 #include "history-main.h"
 #include "local-roster-main.h"
 #include "local-roster-bridge.h"
@@ -75,10 +76,12 @@ engine_init (int argc,
   Ekiga::PresenceCore *presence_core = new Ekiga::PresenceCore;
   Ekiga::ContactCore *contact_core = new Ekiga::ContactCore;
   Ekiga::CallCore *call_core = new Ekiga::CallCore;
+  Ekiga::DisplayCore *display_core = new Ekiga::DisplayCore;
 
   core->add (*contact_core);
   core->add (*presence_core);
   core->add (*call_core);
+  core->add (*display_core);
   core->add (*runtime);
 
   if (!opal_init (*core, &argc, &argv)) {

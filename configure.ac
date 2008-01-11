@@ -684,6 +684,8 @@ lib/engine/presence/local-roster/Makefile
 lib/engine/presence/skel/Makefile
 lib/engine/protocol/Makefile
 lib/engine/protocol/skel/Makefile
+lib/engine/display/Makefile
+lib/engine/display/skel/Makefile
 lib/engine/gui/Makefile
 lib/engine/gui/gtk-core/Makefile
 lib/engine/gui/gtk-frontend/Makefile
