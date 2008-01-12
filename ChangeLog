@@ -1,5 +1,17 @@
 2008-01-12  Damien Sandras  <dsandras@gnome.org>
 
+	* src/endpoints/opal-gmconf-bridge.cpp:
+	Renamed variable in order not to shadow internal variables.
+
+2008-01-12  Damien Sandras  <dsandras@gnome.org>
+
+	* lib/engine/protocol/skel/codec-description.cpp:
+	* lib/engine/protocol/skel/codec-description.h:
+	* lib/engine/protocol/skel/Makefile.am:
+	Added method to build an Ekiga::CodecList from a GSList *.
+
+2008-01-12  Damien Sandras  <dsandras@gnome.org>
+
 	* lib/gui/codecsbox.cpp: Removed redundant variable.
 
 2008-01-12  Damien Sandras  <dsandras@gnome.org>

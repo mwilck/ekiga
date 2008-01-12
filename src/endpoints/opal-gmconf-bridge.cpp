@@ -46,8 +46,8 @@
 using namespace Opal;
 
 
-ConfBridge::ConfBridge (Ekiga::Service & service)
- : Ekiga::ConfBridge (service)
+ConfBridge::ConfBridge (Ekiga::Service & _service)
+ : Ekiga::ConfBridge (_service)
 {
   Ekiga::ConfKeys keys;
   keys.push_back (AUDIO_CODECS_KEY "enable_silence_detection");
