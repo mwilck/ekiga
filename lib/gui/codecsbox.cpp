@@ -358,7 +358,6 @@ codecs_box_init (CodecsBox *self)
 {
   GtkWidget *image = NULL;
   GtkWidget *scroll_window = NULL;
-  GtkWidget *frame = NULL;
   GtkWidget *button = NULL;
 
   GtkWidget *buttons_vbox = NULL;
