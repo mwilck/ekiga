@@ -123,3 +123,20 @@ std::string CodecDescription::str ()
 
   return val.str ();
 }
+
+
+CodecList::CodecList (GSList *codecs_config)
+{
+  GSList *codecs_config_it = NULL;
+  
+  codecs_config_it = (GSList *) codecs_config;
+  while (codecs_config_it) {
+
+
+    Ekiga::CodecDescription d = Ekiga::CodecDescription ((char *) codecs_config_it->data);
+    if (!d.name.empty ())
+      (*this).push_back (d);
+
+    codecs_config_it = g_slist_next (codecs_config_it);
+  }
+}

@@ -39,6 +39,8 @@
 #include <iostream>
 #include <list>
 
+#include <glib.h>
+
 namespace Ekiga {
 
   /** This class holds the representation of a codec. 
@@ -50,7 +52,7 @@ namespace Ekiga {
   public:
 
       /** Create an empty codec description
-       */
+      */
       CodecDescription ();
 
       /** Create a codec description based on the parameters
@@ -80,26 +82,39 @@ namespace Ekiga {
 
 
       /** name is the codec name as defined in the RFC
-       */
+      */
       std::string name;
 
       /** rate is the clock rate 
-       */
+      */
       unsigned rate;
 
       /** active is true if the codec is active
-       */
+      */
       bool active;
 
       /** audio is true if it reprensents an audio codec
-       */
+      */
       bool audio;
 
       /** protocols is a list of protocols supported by the codec
-       */
+      */
       std::list<std::string> protocols;
     };
 
-  typedef std::list<CodecDescription> CodecList;
+
+  class CodecList : public std::list<CodecDescription>
+    {
+  public :
+
+      /** Constructor that creates an empty CodecList
+       */
+      CodecList () {};
+
+      /** Constructor that creates a CodecList from a GSList whose elements
+       * are CodecDescription objects formatted as a string.
+       */
+      CodecList (GSList *);
+    };
 }
 #endif

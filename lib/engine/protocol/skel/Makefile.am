@@ -2,7 +2,7 @@ noinst_LTLIBRARIES = libgmprotocol.la
 
 protocol_dir = $(top_srcdir)/lib/engine/protocol/skel
 
-AM_CPPFLAGS = $(SIGC_CFLAGS)
+AM_CPPFLAGS = $(SIGC_CFLAGS) $(GLIB_CFLAGS)
 
 INCLUDES = \
 	-I$(top_srcdir)/lib/engine/include \
@@ -16,4 +16,4 @@ libgmprotocol_la_SOURCES = \
 	$(protocol_dir)/codec-description.h	\
 	$(protocol_dir)/codec-description.cpp
 
-libgmprotocol_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS)
+libgmprotocol_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(GLIB_LIBS)
