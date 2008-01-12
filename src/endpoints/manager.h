@@ -566,14 +566,6 @@ class GMManager:
   virtual void OnClosedMediaStream (const OpalMediaStream &);
 
 
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Send DTMF to the remote user if any.
-   * PRE          :  /
-   */
-  void SendDTMF (PString,
-		 PString);
-
-
   typedef enum { Processing, Registered, Unregistered, RegistrationFailed, UnregistrationFailed } RegistrationState;
   sigc::signal<void, std::string, GMManager::RegistrationState, std::string> registration_event;
   sigc::signal<void, std::string, std::string, unsigned int> mwi_event;
@@ -683,6 +675,7 @@ class GMManager:
   Ekiga::ServiceCore & core;
   Ekiga::Runtime & runtime;
   Ekiga::ConfBridge *bridge;
+  Ekiga::CodecList codecs; 
 };
 
 #endif

@@ -1,5 +1,12 @@
 2008-01-12  Damien Sandras  <dsandras@gnome.org>
 
+	* src/endpoints/manager.h:
+	* src/endpoints/manager.cpp:
+	Removed SendDTMF method as it is not used anymore. 
+	Use the new constructor for Ekiga::CodecList.
+
+2008-01-12  Damien Sandras  <dsandras@gnome.org>
+
 	* src/endpoints/opal-gmconf-bridge.cpp:
 	Renamed variable in order not to shadow internal variables.
 

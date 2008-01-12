@@ -152,24 +152,6 @@ static  bool same_codec_desc (Ekiga::CodecDescription a, Ekiga::CodecDescription
 }
 
 
-static void from_gslist_to_codec_list (const GSList *codecs_config, 
-                                       Ekiga::CodecList & config_codecs)
-{
-  GSList *codecs_config_it = NULL;
-  
-  codecs_config_it = (GSList *) codecs_config;
-  while (codecs_config_it) {
-
-
-    Ekiga::CodecDescription d = Ekiga::CodecDescription ((char *) codecs_config_it->data);
-    if (!d.name.empty ())
-      config_codecs.push_back (d);
-
-    codecs_config_it = g_slist_next (codecs_config_it);
-  }
-}
-
-
 static void from_media_formats_to_codec_list (OpalMediaFormatList & full_list, Ekiga::CodecList & codecs)
 {
   for (PINDEX i = 0 ; i < full_list.GetSize () ; i++) {
@@ -274,11 +256,13 @@ audio_codecs_list_changed_nt (G_GNUC_UNUSED gpointer id,
   if (gm_conf_entry_get_type (entry) == GM_CONF_LIST) {
 
     Ekiga::CodecList list; 
+    Ekiga::CodecList video_list; 
     GSList *audio_codecs_config = gm_conf_entry_get_list (entry);
     GSList *video_codecs_config = gm_conf_get_string_list (VIDEO_CODECS_KEY "list");
 
-    from_gslist_to_codec_list (audio_codecs_config, list);
-    from_gslist_to_codec_list (video_codecs_config, list);
+    list = Ekiga::CodecList (audio_codecs_config);
+    video_list = Ekiga::CodecList (video_codecs_config);
+    list.insert (list.end (), video_list.begin (), video_list.end ());
     
     ep->set_codecs (list);
 
@@ -300,11 +284,13 @@ video_codecs_list_changed_nt (G_GNUC_UNUSED gpointer id,
   if (gm_conf_entry_get_type (entry) == GM_CONF_LIST) {
 
     Ekiga::CodecList list; 
+    Ekiga::CodecList video_list; 
     GSList *video_codecs_config = gm_conf_entry_get_list (entry);
     GSList *audio_codecs_config = gm_conf_get_string_list (AUDIO_CODECS_KEY "list");
 
-    from_gslist_to_codec_list (audio_codecs_config, list);
-    from_gslist_to_codec_list (video_codecs_config, list);
+    list = Ekiga::CodecList (audio_codecs_config);
+    video_list = Ekiga::CodecList (video_codecs_config);
+    list.insert (list.end (), video_list.begin (), video_list.end ());
     
     ep->set_codecs (list);
 
@@ -950,27 +936,29 @@ Ekiga::CodecList GMManager::get_codecs ()
 {
   GSList *codecs_config = NULL;
 
-  std::map<std::string, Ekiga::CodecDescription> codecs;
   Ekiga::CodecList all_codecs;
   Ekiga::CodecList config_codecs;
+  Ekiga::CodecList video_config_codecs;
 
   OpalMediaFormatList full_list;
 
-  // Build the CodecList from the available OpalMediaFormats
+  // Build the Ekiga::CodecList from the available OpalMediaFormats
   GetAllowedFormats (full_list);
   from_media_formats_to_codec_list (full_list, all_codecs);
 
-  // Build the CodecList from the configuration
+  // Build the Ekiga::CodecList from the configuration
   codecs_config = gm_conf_get_string_list (AUDIO_CODECS_KEY "list");
-  from_gslist_to_codec_list (codecs_config, config_codecs);
-  g_slist_foreach (codecs_config, (GFunc) g_free, NULL);
-  g_slist_free (codecs_config);
-  codecs_config = gm_conf_get_string_list (VIDEO_CODECS_KEY "list");
-  from_gslist_to_codec_list (codecs_config, config_codecs);
+  config_codecs = Ekiga::CodecList (codecs_config);
   g_slist_foreach (codecs_config, (GFunc) g_free, NULL);
   g_slist_free (codecs_config);
 
-  // Finally build the CodecList taken into account by the GMManager
+  codecs_config = gm_conf_get_string_list (VIDEO_CODECS_KEY "list");
+  video_config_codecs = Ekiga::CodecList (codecs_config);
+  config_codecs.insert (config_codecs.end (), video_config_codecs.begin (), video_config_codecs.end ());
+  g_slist_foreach (codecs_config, (GFunc) g_free, NULL);
+  g_slist_free (codecs_config);
+
+  // Finally build the Ekiga::CodecList taken into account by the GMManager
   // It contains codecs from the configuration and other disabled codecs
   for (Ekiga::CodecList::iterator it = all_codecs.begin ();
        it != all_codecs.end ();
@@ -996,7 +984,7 @@ Ekiga::CodecList GMManager::get_codecs ()
 }
 
 
-void GMManager::set_codecs (Ekiga::CodecList codecs)
+void GMManager::set_codecs (Ekiga::CodecList _codecs)
 {
   PStringArray initial_order;
   PStringArray initial_mask;
@@ -1006,6 +994,8 @@ void GMManager::set_codecs (Ekiga::CodecList codecs)
 
   PStringArray order;
   PStringArray mask;
+
+  codecs = _codecs;
 
   GetAllowedFormats (all_media_formats);
 
@@ -1937,25 +1927,6 @@ GMManager::CreateVideoOutputDevice(G_GNUC_UNUSED const OpalConnection & connecti
 
 
 void
-GMManager::SendDTMF (PString callToken,
-		      PString dtmf)
-{
-  PSafePtr <OpalCall> call = NULL;
-  PSafePtr <OpalConnection> connection = NULL;
-
-  call = FindCallWithLock (callToken);
-
-  if (call != NULL) {
-    
-    connection = GetConnection (call, TRUE);
-
-    if (connection != NULL) 
-      connection->SendUserInputTone(dtmf [0], 180);
-  }
-}
-
-
-void
 GMManager::on_dial (std::string uri)
 {
   dial (uri);
@@ -1972,12 +1943,12 @@ GMManager::on_message (std::string name,
 
 void GMManager::detect_codecs ()
 {
-  Ekiga::CodecList codecs = get_codecs ();
+  Ekiga::CodecList gcodecs = get_codecs ();
   GSList *audio_codecs_list = NULL;
   GSList *video_codecs_list = NULL;
 
-  for (Ekiga::CodecList::iterator it = codecs.begin ();
-       it != codecs.end ();
+  for (Ekiga::CodecList::iterator it = gcodecs.begin ();
+       it != gcodecs.end ();
        it++) {
 
     if ((*it).audio)
