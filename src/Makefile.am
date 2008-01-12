@@ -100,6 +100,8 @@ ekiga_SOURCES +=			\
 	endpoints/opal-call.cpp		\
 	endpoints/opal-codec-description.h	\
 	endpoints/opal-codec-description.cpp	\
+	endpoints/opal-gmconf-bridge.h	\
+	endpoints/opal-gmconf-bridge.cpp\
 	endpoints/opal-main.h		\
 	endpoints/opal-main.cpp		\
 	endpoints/urlhandler.h		\

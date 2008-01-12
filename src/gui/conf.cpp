@@ -281,7 +281,6 @@ void
 gnomemeeting_conf_init ()
 {
   GtkWidget *main_window = NULL;
-  GtkWidget *prefs_window = NULL;
   
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
 

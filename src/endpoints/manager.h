@@ -55,6 +55,7 @@
 
 #include "accountshandler.h"
 
+#include "gmconf-bridge.h"
 #include "runtime.h"
 #include "contact-core.h"
 #include "presence-core.h"
@@ -681,6 +682,7 @@ class GMManager:
 
   Ekiga::ServiceCore & core;
   Ekiga::Runtime & runtime;
+  Ekiga::ConfBridge *bridge;
 };
 
 #endif

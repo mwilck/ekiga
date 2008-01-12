@@ -52,6 +52,7 @@
 #include "gmconf.h"
 
 #include "call-core.h"
+#include "opal-gmconf-bridge.h"
 #include "opal-call.h"
 #include "opal-codec-description.h"
 
@@ -70,17 +71,6 @@ extern "C" {
 
 
 
-/* DESCRIPTION  :  This notifier is called when the firstname or last name
- *                 keys changes.
- * BEHAVIOR     :  Updates the ZeroConf registrations and the internal i
- *                 configuration. 
- * PRE          :  data is a pointer to the GMManager.
- */
-static void fullname_changed_nt (gpointer id,
-				 GmConfEntry *entry,
-				 gpointer data);
-
-
 /* DESCRIPTION  :  This notifier is called when the config database data
  *                 associated with the enable_video key changes.
  * BEHAVIOR     :  It updates the endpoint.
@@ -89,26 +79,6 @@ static void fullname_changed_nt (gpointer id,
 static void enable_video_changed_nt (G_GNUC_UNUSED gpointer id,
                                      GmConfEntry *entry,
                                      gpointer data);
-
-
-/* DESCRIPTION  :  This callback is called when a silence detection key of
- *                 the config database associated with a toggle changes.
- * BEHAVIOR     :  Update silence detection.
- * PRE          :  data is a pointer to the GMManager.
- */
-static void silence_detection_changed_nt (G_GNUC_UNUSED gpointer id,
-                                          GmConfEntry *entry, 
-                                          gpointer data);
-
-
-/* DESCRIPTION  :  This callback is called when the echo cancelation key of
- *                 the config database associated with a toggle changes.
- * BEHAVIOR     :  Update echo cancelation.
- * PRE          :  data is a pointer to the GMManager.
- */
-static void echo_cancelation_changed_nt (G_GNUC_UNUSED gpointer id,
-                                         GmConfEntry *entry, 
-                                         gpointer data);
 
 
 /* DESCRIPTION  :  This notifier is called when the config database data
@@ -249,34 +219,6 @@ enable_video_changed_nt (G_GNUC_UNUSED gpointer id,
 
     ep->SetAutoStartTransmitVideo (gm_conf_entry_get_bool (entry));
     ep->SetAutoStartReceiveVideo (gm_conf_entry_get_bool (entry));
-  }
-}
-
-
-static void 
-silence_detection_changed_nt (G_GNUC_UNUSED gpointer id,
-                              GmConfEntry *entry, 
-                              gpointer data)
-{
-  GMManager *ep = (GMManager *) data;
-
-  if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
-
-    ep->set_silence_detection (gm_conf_entry_get_bool (entry));
-  }
-}
-
-
-static void 
-echo_cancelation_changed_nt (G_GNUC_UNUSED gpointer id,
-			     GmConfEntry *entry, 
-			     gpointer data)
-{
-  GMManager *ep = (GMManager *) data;
-
-  if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
-
-    ep->set_echo_cancelation (gm_conf_entry_get_bool (entry));
   }
 }
 
@@ -510,6 +452,9 @@ GMManager::GMManager (Ekiga::ServiceCore & _core)
   get_port_ranges (a, b, c, d, e, f);
   set_port_ranges (a, b, c, d, e, f);
 
+  // Test
+  bridge = new Opal::ConfBridge (*this);
+
   // Video options
   gm_conf_notifier_add (VIDEO_CODECS_KEY "maximum_video_tx_bitrate", 
 			video_option_changed_nt, this);
@@ -539,21 +484,14 @@ GMManager::GMManager (Ekiga::ServiceCore & _core)
   gm_conf_notifier_add (AUDIO_CODECS_KEY "maximum_jitter_buffer", 
 			jitter_buffer_changed_nt, this);
   gm_conf_notifier_trigger (AUDIO_CODECS_KEY "maximum_jitter_buffer"); 
-
-  // Audio codecs settings
-  gm_conf_notifier_add (AUDIO_CODECS_KEY "enable_silence_detection", 
-			silence_detection_changed_nt, this);
-  gm_conf_notifier_trigger (AUDIO_CODECS_KEY "enable_silence_detection");
-
-  gm_conf_notifier_add (AUDIO_CODECS_KEY "enable_echo_cancelation", 
-			echo_cancelation_changed_nt, this);
-  gm_conf_notifier_trigger (AUDIO_CODECS_KEY "enable_silence_detection");
 }
 
 
 GMManager::~GMManager ()
 {
   Exit ();
+
+  delete bridge;
 }
 
 
@@ -730,7 +668,11 @@ void GMManager::set_echo_cancelation (bool enabled)
 
 bool GMManager::get_silence_detection ()
 {
-  return gm_conf_get_bool (AUDIO_CODECS_KEY "enable_echo_cancelation");
+  OpalSilenceDetector::Params sd;
+
+  sd = GetSilenceDetectParams ();
+
+  return (sd.m_mode != OpalSilenceDetector::NoSilenceDetection);
 }
 
 

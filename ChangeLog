@@ -1,4 +1,19 @@
+2008-01-12  Damien Sandras  <dsandras@gnome.org>
+
+	* src/endpoints/opal-gmconf-bridge.h:
+	* src/endpoints/manager.cpp:
+	* src/endpoints/manager.h:
+	* src/endpoints/opal-gmconf-bridge.cpp:
+	* src/gui/conf.cpp:
+	* src/Makefile.am:
+	* lib/engine/framework/gmconf-bridge.cpp:
+	* lib/engine/framework/gmconf-bridge.h:
+	* lib/engine/framework/Makefile.am:
+	Added first shot at a GmConf bridge to asbtract the configuration
+	(properties) from the Ekiga::Service objects.
+	
 2008-01-11  Matthias Schneider  <ma30002000@yahoo.de>
+
 	* src/endpoints/opal-main.cpp: 
 	* src/Makefile.am: 
 	* configure.ac: 
@@ -14,6 +29,7 @@
 	First shot at a display core and manager.
 
 2008-01-09  Matthias Schneider  <ma30002000@yahoo.de>
+	
 	* src/devices/videodisplay.h: 
 	* src/devices/videodisplay_x.cpp: 
 	* src/devices/videodisplay_dx.cpp: 
