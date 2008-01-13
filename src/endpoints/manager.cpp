@@ -101,16 +101,6 @@ static void public_ip_changed_nt (G_GNUC_UNUSED gpointer id,
                                   gpointer data);
 
 
-/* DESCRIPTION  :  This callback is called when the jitter buffer needs to be 
- *                 changed.
- * BEHAVIOR     :  Update the jitter.
- * PRE          :  data is a pointer to the GMManager.
- */
-static void jitter_buffer_changed_nt (G_GNUC_UNUSED gpointer id,
-                                      GmConfEntry *entry, 
-                                      gpointer data);
-
-
 /* DESCRIPTION  :  This callback is called when the video device changes
  *                 in the config database.
  * BEHAVIOR     :  It creates a new video grabber if preview is active with
@@ -220,22 +210,6 @@ public_ip_changed_nt (G_GNUC_UNUSED gpointer id,
       ep->SetTranslationAddress (PString (public_ip));
     else
       ep->SetTranslationAddress (PString ("0.0.0.0"));
-  }
-}
-
-
-static void 
-jitter_buffer_changed_nt (G_GNUC_UNUSED gpointer id,
-                          GmConfEntry *entry, 
-                          gpointer data)
-{
-  GMManager *ep = (GMManager *) data;
-  
-  if (gm_conf_entry_get_type (entry) == GM_CONF_INT) {
-
-    unsigned min_val, max_val = 0;
-    ep->get_jitter_buffer_size (min_val, max_val);
-    ep->set_jitter_buffer_size (min_val, max_val);
   }
 }
 
@@ -375,15 +349,6 @@ GMManager::GMManager (Ekiga::ServiceCore & _core)
   gm_conf_notifier_add (VIDEO_CODECS_KEY "maximum_video_rx_bitrate",
                         video_option_changed_nt, this);
   gm_conf_notifier_trigger (VIDEO_CODECS_KEY "maximum_video_rx_bitrate");
-  
-
-
-  // The jitter
-  gm_conf_notifier_add (AUDIO_CODECS_KEY "minimum_jitter_buffer", 
-			jitter_buffer_changed_nt, this);
-  gm_conf_notifier_add (AUDIO_CODECS_KEY "maximum_jitter_buffer", 
-			jitter_buffer_changed_nt, this);
-  gm_conf_notifier_trigger (AUDIO_CODECS_KEY "maximum_jitter_buffer"); 
 }
 
 

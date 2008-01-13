@@ -58,6 +58,9 @@ ConfBridge::ConfBridge (Ekiga::Service & _service)
   keys.push_back (AUDIO_CODECS_KEY "list");
   keys.push_back (VIDEO_CODECS_KEY "list");
 
+  keys.push_back (AUDIO_CODECS_KEY "minimum_jitter_buffer");
+  keys.push_back (AUDIO_CODECS_KEY "maximum_jitter_buffer");
+
   load (keys);
 }
 
@@ -66,17 +69,47 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
 {
   GMManager & manager = (GMManager &) service;
 
-  if (key == AUDIO_CODECS_KEY "enable_silence_detection") {
+  // 
+  // Jitter buffer configuration
+  //
+  if (key == AUDIO_CODECS_KEY "minimum_jitter_buffer") {
+
+    unsigned max = (unsigned) gm_conf_get_int (AUDIO_CODECS_KEY "maximum_jitter_buffer");
+    manager.set_jitter_buffer_size (gm_conf_entry_get_int (entry), max);
+  }
+  else if (key == AUDIO_CODECS_KEY "maximum_jitter_buffer") {
+
+    unsigned min = (unsigned) gm_conf_get_int (AUDIO_CODECS_KEY "minimum_jitter_buffer");
+    manager.set_jitter_buffer_size (min, gm_conf_entry_get_int (entry));
+  }
+
+
+  // 
+  // Silence detection
+  //
+  else if (key == AUDIO_CODECS_KEY "enable_silence_detection") {
 
     manager.set_silence_detection (gm_conf_entry_get_bool (entry));
   }
+
+
+  //
+  // Echo cancelation
+  //
   else if (key == AUDIO_CODECS_KEY "enable_echo_cancelation") {
 
     manager.set_echo_cancelation (gm_conf_entry_get_bool (entry));
   }
+  
+  
+  // 
+  // Audio & video codecs
+  //
   else if (key == AUDIO_CODECS_KEY "list"
            || key == VIDEO_CODECS_KEY "list") {
 
+    // This is a bit longer, we are not sure the list stored in the 
+    // configuration is complete, and it could also contain unsupported codecs
     GSList *audio_codecs = NULL;
     GSList *video_codecs = NULL;
 
