@@ -50,12 +50,15 @@ ConfBridge::ConfBridge (Ekiga::Service & _service)
  : Ekiga::ConfBridge (_service)
 {
   Ekiga::ConfKeys keys;
+  property_changed.connect (sigc::mem_fun (this, &ConfBridge::on_property_changed));
+
   keys.push_back (AUDIO_CODECS_KEY "enable_silence_detection");
   keys.push_back (AUDIO_CODECS_KEY "enable_echo_cancelation");
 
-  load (keys);
+  keys.push_back (AUDIO_CODECS_KEY "list");
+  keys.push_back (VIDEO_CODECS_KEY "list");
 
-  property_changed.connect (sigc::mem_fun (this, &ConfBridge::on_property_changed));
+  load (keys);
 }
 
 
@@ -63,9 +66,62 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
 {
   GMManager & manager = (GMManager &) service;
 
-  if (key == AUDIO_CODECS_KEY "enable_silence_detection") 
+  if (key == AUDIO_CODECS_KEY "enable_silence_detection") {
+
     manager.set_silence_detection (gm_conf_entry_get_bool (entry));
-  else if (key == AUDIO_CODECS_KEY "enable_echo_cancelation") 
+  }
+  else if (key == AUDIO_CODECS_KEY "enable_echo_cancelation") {
+
     manager.set_echo_cancelation (gm_conf_entry_get_bool (entry));
+  }
+  else if (key == AUDIO_CODECS_KEY "list"
+           || key == VIDEO_CODECS_KEY "list") {
+
+    GSList *audio_codecs = NULL;
+    GSList *video_codecs = NULL;
+
+    if (key == AUDIO_CODECS_KEY "list") {
+
+      audio_codecs = gm_conf_entry_get_list (entry);
+      video_codecs = gm_conf_get_string_list (VIDEO_CODECS_KEY "list");
+    }
+    else {
+
+      video_codecs = gm_conf_entry_get_list (entry);
+      audio_codecs = gm_conf_get_string_list (AUDIO_CODECS_KEY "list");
+    }
+
+    Ekiga::CodecList codecs;
+    Ekiga::CodecList a_codecs (audio_codecs);
+    Ekiga::CodecList v_codecs (video_codecs);
+
+    // Update the manager codecs
+    codecs = a_codecs;
+    codecs.append (v_codecs);
+    manager.set_codecs (codecs);
+
+    g_slist_foreach (audio_codecs, (GFunc) g_free, NULL);
+    g_slist_free (audio_codecs);
+    g_slist_foreach (video_codecs, (GFunc) g_free, NULL);
+    g_slist_free (video_codecs);
+
+    // Update the GmConf keys, in case we would have missed some codecs or
+    // used codecs we do not really support
+    if (a_codecs != codecs.get_audio_list ()) {
+
+      audio_codecs = codecs.get_audio_list ().gslist ();
+      gm_conf_set_string_list (AUDIO_CODECS_KEY "list", audio_codecs);
+      g_slist_foreach (audio_codecs, (GFunc) g_free, NULL);
+      g_slist_free (audio_codecs);
+    }
+
+    if (v_codecs != codecs.get_video_list ()) {
+
+      video_codecs = codecs.get_video_list ().gslist ();
+      gm_conf_set_string_list (VIDEO_CODECS_KEY "list", video_codecs);
+      g_slist_foreach (video_codecs, (GFunc) g_free, NULL);
+      g_slist_free (video_codecs);
+    }
+  }
 }
 

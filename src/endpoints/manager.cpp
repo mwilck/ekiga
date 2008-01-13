@@ -225,62 +225,6 @@ public_ip_changed_nt (G_GNUC_UNUSED gpointer id,
 
 
 static void 
-audio_codecs_list_changed_nt (G_GNUC_UNUSED gpointer id,
-                        GmConfEntry *entry, 
-                        gpointer data)
-{
-  GMManager *ep = (GMManager *) data;
-  
-  if (gm_conf_entry_get_type (entry) == GM_CONF_LIST) {
-
-    Ekiga::CodecList list; 
-    Ekiga::CodecList video_list; 
-    GSList *audio_codecs_config = gm_conf_entry_get_list (entry);
-    GSList *video_codecs_config = gm_conf_get_string_list (VIDEO_CODECS_KEY "list");
-
-    list = Ekiga::CodecList (audio_codecs_config);
-    video_list = Ekiga::CodecList (video_codecs_config);
-    list.insert (list.end (), video_list.begin (), video_list.end ());
-    
-    ep->set_codecs (list);
-
-    g_slist_free (audio_codecs_config);
-
-    g_slist_foreach (video_codecs_config, (GFunc) g_free, NULL);
-    g_slist_free (video_codecs_config);
-  }
-}
-
-
-static void 
-video_codecs_list_changed_nt (G_GNUC_UNUSED gpointer id,
-                        GmConfEntry *entry, 
-                        gpointer data)
-{
-  GMManager *ep = (GMManager *) data;
-  
-  if (gm_conf_entry_get_type (entry) == GM_CONF_LIST) {
-
-    Ekiga::CodecList list; 
-    Ekiga::CodecList video_list; 
-    GSList *video_codecs_config = gm_conf_entry_get_list (entry);
-    GSList *audio_codecs_config = gm_conf_get_string_list (AUDIO_CODECS_KEY "list");
-
-    list = Ekiga::CodecList (audio_codecs_config);
-    video_list = Ekiga::CodecList (video_codecs_config);
-    list.insert (list.end (), video_list.begin (), video_list.end ());
-    
-    ep->set_codecs (list);
-
-    g_slist_free (video_codecs_config);
-
-    g_slist_foreach (audio_codecs_config, (GFunc) g_free, NULL);
-    g_slist_free (audio_codecs_config);
-  }
-}
-
-
-static void 
 jitter_buffer_changed_nt (G_GNUC_UNUSED gpointer id,
                           GmConfEntry *entry, 
                           gpointer data)
@@ -432,15 +376,7 @@ GMManager::GMManager (Ekiga::ServiceCore & _core)
                         video_option_changed_nt, this);
   gm_conf_notifier_trigger (VIDEO_CODECS_KEY "maximum_video_rx_bitrate");
   
-  // Set Codecs from the Configuration
-  detect_codecs ();
-  gm_conf_notifier_add (AUDIO_CODECS_KEY "list",
-			audio_codecs_list_changed_nt, this);
-  gm_conf_notifier_trigger (AUDIO_CODECS_KEY "list"); 
 
-  gm_conf_notifier_add (VIDEO_CODECS_KEY "list",
-			video_codecs_list_changed_nt, this);
-  gm_conf_notifier_trigger (VIDEO_CODECS_KEY "list"); 
 
   // The jitter
   gm_conf_notifier_add (AUDIO_CODECS_KEY "minimum_jitter_buffer", 
@@ -912,57 +848,11 @@ GMManager::GetCallingState ()
 
 Ekiga::CodecList GMManager::get_codecs ()
 {
-  GSList *codecs_config = NULL;
-
-  Ekiga::CodecList all_codecs;
-  Ekiga::CodecList config_codecs;
-  Ekiga::CodecList video_config_codecs;
-
-  OpalMediaFormatList full_list;
-
-  // Build the Ekiga::CodecList from the available OpalMediaFormats
-  GetAllowedFormats (full_list);
-  all_codecs = Opal::CodecList (full_list);
-
-  // Build the Ekiga::CodecList from the configuration
-  codecs_config = gm_conf_get_string_list (AUDIO_CODECS_KEY "list");
-  config_codecs = Ekiga::CodecList (codecs_config);
-  g_slist_foreach (codecs_config, (GFunc) g_free, NULL);
-  g_slist_free (codecs_config);
-
-  codecs_config = gm_conf_get_string_list (VIDEO_CODECS_KEY "list");
-  video_config_codecs = Ekiga::CodecList (codecs_config);
-  config_codecs.insert (config_codecs.end (), video_config_codecs.begin (), video_config_codecs.end ());
-  g_slist_foreach (codecs_config, (GFunc) g_free, NULL);
-  g_slist_free (codecs_config);
-
-  // Finally build the Ekiga::CodecList taken into account by the GMManager
-  // It contains codecs from the configuration and other disabled codecs
-  for (Ekiga::CodecList::iterator it = all_codecs.begin ();
-       it != all_codecs.end ();
-       it++) {
-
-    Ekiga::CodecList::iterator i  = search_n (config_codecs.begin (), config_codecs.end (), 1, *it, same_codec_desc);
-    if (i == config_codecs.end ()) {
-      config_codecs.push_back (*it);
-    }
-  }
-
-  // Remove unsupported codecs
-  for (Ekiga::CodecList::iterator it = config_codecs.begin ();
-       it != config_codecs.end ();
-       it++) {
-
-    Ekiga::CodecList::iterator i  = search_n (all_codecs.begin (), all_codecs.end (), 1, *it, same_codec_desc);
-    if (i == config_codecs.end ())
-      config_codecs.erase (it);
-  }
-
-  return config_codecs;
+  return codecs;
 }
 
 
-void GMManager::set_codecs (Ekiga::CodecList _codecs)
+void GMManager::set_codecs (Ekiga::CodecList & _codecs)
 {
   PStringArray initial_order;
   PStringArray initial_mask;
@@ -973,11 +863,46 @@ void GMManager::set_codecs (Ekiga::CodecList _codecs)
   PStringArray order;
   PStringArray mask;
 
+  // What do we support
+  GetAllowedFormats (all_media_formats);
+  Ekiga::CodecList all_codecs = Opal::CodecList (all_media_formats);
+
+  // 
+  // Clean the CodecList given as paramenter : remove unsupported codecs and 
+  // add missing codecs at the end of the list
+  //
+
+  // Build the Ekiga::CodecList taken into account by the GMManager
+  // It contains codecs given as argument to set_codecs, and other codecs
+  // supported by the manager
+  for (Ekiga::CodecList::iterator it = all_codecs.begin ();
+       it != all_codecs.end ();
+       it++) {
+
+    Ekiga::CodecList::iterator i  = 
+      search_n (_codecs.begin (), _codecs.end (), 1, *it, same_codec_desc);
+    if (i == _codecs.end ()) {
+      _codecs.push_back (*it);
+    }
+  }
+
+  // Remove unsupported codecs
+  for (Ekiga::CodecList::iterator it = _codecs.begin ();
+       it != _codecs.end ();
+       it++) {
+
+    Ekiga::CodecList::iterator i  = 
+      search_n (all_codecs.begin (), all_codecs.end (), 1, *it, same_codec_desc);
+    if (i == _codecs.end ())
+      _codecs.erase (it);
+  }
   codecs = _codecs;
 
-  GetAllowedFormats (all_media_formats);
+  
+  // 
+  // Update OPAL
+  //
 
-  // Build order
   Ekiga::CodecList::iterator codecs_it;
   for (codecs_it = codecs.begin () ;
        codecs_it != codecs.end () ;
@@ -1916,32 +1841,6 @@ GMManager::on_message (std::string name,
                        std::string uri)
 {
   runtime.run_in_main (sigc::bind (new_chat.make_slot (), name, uri));
-}
-
-
-void GMManager::detect_codecs ()
-{
-  Ekiga::CodecList gcodecs = get_codecs ();
-  GSList *audio_codecs_list = NULL;
-  GSList *video_codecs_list = NULL;
-
-  for (Ekiga::CodecList::iterator it = gcodecs.begin ();
-       it != gcodecs.end ();
-       it++) {
-
-    if ((*it).audio)
-      audio_codecs_list = g_slist_append (audio_codecs_list, g_strdup ((*it).str ().c_str ()));
-    else
-      video_codecs_list = g_slist_append (video_codecs_list, g_strdup ((*it).str ().c_str ()));
-  }
-
-  gm_conf_set_string_list (AUDIO_CODECS_KEY "list", audio_codecs_list);
-  g_slist_foreach (audio_codecs_list, (GFunc) g_free, NULL);
-  g_slist_free (audio_codecs_list);
-
-  gm_conf_set_string_list (VIDEO_CODECS_KEY "list", video_codecs_list);
-  g_slist_foreach (video_codecs_list, (GFunc) g_free, NULL);
-  g_slist_free (video_codecs_list);
 }
 
 

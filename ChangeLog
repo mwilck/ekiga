@@ -1,5 +1,13 @@
 2008-01-13  Damien Sandras  <dsandras@gnome.org>
 
+	* src/endpoints/manager.cpp:
+	* src/endpoints/manager.h:
+	* src/endpoints/opal-gmconf-bridge.cpp:
+	Have a much saner initialization process for the codecs, based on the
+	GmConfBridge.
+
+2008-01-13  Damien Sandras  <dsandras@gnome.org>
+
 	* lib/engine/protocol/skel/call-manager.h:
 	Slightly changed the API so that a CallManager is able to update the
 	given CodecList to add new codecs and remove unsupported ones.

@@ -354,7 +354,7 @@ class GMManager:
   /** Enable the given codecs
    * @param codecs is a set of the codecs and their descriptions
    */
-  void set_codecs (Ekiga::CodecList codecs); 
+  void set_codecs (Ekiga::CodecList & codecs); 
   
 
   /* DESCRIPTION  :  /
@@ -575,8 +575,6 @@ class GMManager:
 
   void on_message (std::string name,
                    std::string uri);
-
-  void detect_codecs ();
 
   
  protected:
