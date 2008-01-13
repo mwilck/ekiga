@@ -379,7 +379,7 @@ gm_conf_entry_get_list (GmConfEntry *entry)
   it = gconf_value_get_list (gconf_entry->value);
   while (it) {
 
-    list = g_slist_append (list, (char *) gconf_value_get_string (it->data));
+    list = g_slist_append (list, g_strdup ((char *) gconf_value_get_string (it->data)));
     it = g_slist_next (it);
   }
 
