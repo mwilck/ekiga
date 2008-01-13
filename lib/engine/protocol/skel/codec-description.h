@@ -100,6 +100,17 @@ namespace Ekiga {
       /** protocols is a list of protocols supported by the codec
       */
       std::list<std::string> protocols;
+
+
+      /** Return true if both CodecDescription are identical, false otherwise
+       * @return true if both CodecDescription are identical, false otherwise
+       */
+      bool operator== (const CodecDescription & c) const;
+
+      /** Return true if both CodecDescription are different, false otherwise
+       * @return true if both CodecDescription are different, false otherwise
+       */
+      bool operator!= (const CodecDescription & c) const;
     };
 
 
@@ -115,6 +126,46 @@ namespace Ekiga {
        * are CodecDescription objects formatted as a string.
        */
       CodecList (GSList *);
+
+
+      /** Append the given CodecList at the end of the current CodecList.
+       * @param list is the CodecList to append to the current one
+       */
+      void append (CodecList & list);
+
+
+      /** Return the list of audio codecs descriptions in the current CodecList 
+       * @return the list of audio CodecDescription
+       */
+      CodecList get_audio_list ();
+
+
+      /** Return the list of video codecs descriptions in the current CodecList 
+       * @return the list of video CodecDescription
+       */
+      CodecList get_video_list ();
+
+
+      /** Return the list of codecs descriptions under their str form
+       * @return the list of CodecDescription
+       */
+      GSList *gslist ();
+
+
+      /** Return true if both CodecList are identical, false otherwise
+       * @return true if both CodecList are identical, false otherwise
+       */
+      bool operator== (const CodecList & c) const;
+
+
+      /** Return true if both CodecList are different, false otherwise
+       * @return true if both CodecList are different, false otherwise
+       */
+      bool operator!= (const CodecList & c) const;
     };
 }
+
+/** Output the CodecList
+ */
+std::ostream& operator<< (std::ostream & os, const Ekiga::CodecList & c);
 #endif

@@ -125,6 +125,21 @@ std::string CodecDescription::str ()
 }
 
 
+bool CodecDescription::operator== (const CodecDescription & c) const
+{
+  CodecDescription d = c;
+  CodecDescription e = (*this);
+
+  return (e.str () == d.str ());
+}
+
+
+bool CodecDescription::operator!= (const CodecDescription & c) const
+{
+  return (!((*this) == c));
+}
+
+
 CodecList::CodecList (GSList *codecs_config)
 {
   GSList *codecs_config_it = NULL;
@@ -139,4 +154,101 @@ CodecList::CodecList (GSList *codecs_config)
 
     codecs_config_it = g_slist_next (codecs_config_it);
   }
+}
+
+
+void CodecList::append (CodecList & list)
+{
+  (*this).insert ((*this).begin (), list.begin (), list.end ());
+}
+
+
+CodecList CodecList::get_audio_list ()
+{
+  CodecList list;
+
+  for (CodecList::iterator it = (*this).begin ();
+       it != (*this).end ();
+       it++) {
+
+    if ((*it).audio)
+      list.push_back (*it);
+  }
+
+  return list;
+}
+
+
+CodecList CodecList::get_video_list ()
+{
+  CodecList list;
+
+  for (CodecList::iterator it = (*this).begin ();
+       it != (*this).end ();
+       it++) {
+
+    if (!(*it).audio)
+      list.push_back (*it);
+  }
+
+  return list;
+}
+
+
+GSList *CodecList::gslist ()
+{
+  GSList *list = NULL;
+
+  for (CodecList::iterator it = (*this).begin ();
+       it != (*this).end ();
+       it++) {
+
+    list = g_slist_append (list, g_strdup ((*it).str ().c_str ()));
+  }
+
+  return list;
+}
+
+
+bool CodecList::operator== (const CodecList & c) const
+{
+  CodecList::const_iterator it2 = c.begin ();
+
+  if ((*this).size () != c.size ())
+    return false;
+
+  for (CodecList::const_iterator it = (*this).begin ();
+       it != (*this).end ();
+       it++) {
+
+    if ((*it) != (*it2)) 
+      return false;
+    
+    it2++;
+  }
+
+  return true;
+}
+
+
+bool CodecList::operator!= (const CodecList & c) const
+{
+  return (!(*this == c));
+}
+
+
+std::ostream& operator<< (std::ostream & os, const CodecList & c)
+{
+  std::stringstream str;
+  for (CodecList::const_iterator it = c.begin ();
+       it != c.end ();
+       it++) {
+
+    if (it != c.begin ())
+      str << " ; ";
+
+    str << (*it).name;
+  }
+
+  return os << str.str ();
 }
