@@ -40,6 +40,7 @@
 #ifndef _EKIGAVIDEOIO_H_
 #define _EKIGAVIDEOIO_H_
 
+#include "display-core.h"
 #include "common.h"
 #include "videodisplay.h"
 
@@ -149,5 +150,7 @@ class PVideoOutputDevice_EKIGA : public PVideoOutputDevice
   enum {REMOTE, LOCAL};
 
   Ekiga::ServiceCore & core;
+  Ekiga::DisplayCore & display_core;
 };
+
 #endif

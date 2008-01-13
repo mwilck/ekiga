@@ -65,32 +65,32 @@ namespace Ekiga {
        * @return: true if a Ekiga::Call could be created
        */
       virtual void start () {
-        videoStats.rxWidth = videoStats.rxWidth = videoStats.rxFPS = 0;
-        videoStats.txWidth = videoStats.txWidth = videoStats.txFPS = 0;
-        videoStats.videoAccelStatus = NONE;
+        display_stats.rx_width = display_stats.rx_height = display_stats.rx_fps = 0;
+        display_stats.tx_width = display_stats.tx_height = display_stats.tx_fps = 0;
+        display_stats.video_accel_status = NONE_new;
       };
 
       virtual void stop () { };
 
-      virtual void setFrameData (unsigned width,
-                                 unsigned height,
-                                 const char *data,
-                                 bool local,
-                                 int devices_nbr) = 0;
+      virtual void set_frame_data (unsigned width,
+                                   unsigned height,
+                                   const char *data,
+                                   bool local,
+                                   int devices_nbr) = 0;
 
-      virtual void setVideoInfo (const DisplayInfo & newVideoInfo) { };
+      virtual void set_display_info (const DisplayInfo &) { };
 
       sigc::signal<void, DisplayMode> display_type_changed;       /* gm_main_window_set_display_type */
-      sigc::signal<void, FSToggle_new> fullscreen_mode_changed;     /* gm_main_window_toggle_fullscreen */
-      sigc::signal<void, unsigned, unsigned> size_changed;          /* gm_main_window_set_resized_video_widget */
-      sigc::signal<void> logo_update_required;                        /* gm_main_window_update_logo  */
-      sigc::signal<void> video_info_update_required;                  /* gm_main_window_update_zoom_display */
+      sigc::signal<void, FSToggle_new> fullscreen_mode_changed;   /* gm_main_window_toggle_fullscreen */
+      sigc::signal<void, unsigned, unsigned> size_changed;        /* gm_main_window_set_resized_video_widget */
+      sigc::signal<void> logo_update_required;                    /* gm_main_window_update_logo  */
+      sigc::signal<void> display_info_update_required;            /* gm_main_window_update_zoom_display */
 //      sigc::signal<void, DisplayManager &, VideoAccelStatus> update_video_accel_status; /* gm_main_window_update_video_accel_status */
 
   protected:  
-      virtual void GetVideoInfo (DisplayInfo & getVideoInfo) { };
+      virtual void get_display_info (DisplayInfo &) { };
 
-      VideoStats_new videoStats;
+      DisplayStats display_stats;
     };
 };
 

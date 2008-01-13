@@ -17,6 +17,20 @@ INCLUDES = 								\
 	-I$(top_srcdir)/lib/engine/presence/local-roster		\
 	-I$(top_srcdir)/lib/engine/display/skel
 
+# XVideo/X
+if !WIN32
+INCLUDES +=                                             \
+	-I$(top_srcdir)/lib/engine/display/common       \
+	-I$(top_srcdir)/lib/engine/display/x
+endif
+
+# DirectX
+if HAVE_DX
+INCLUDES +=                                             \
+	-I$(top_srcdir)/lib/engine/display/common       \
+	-I$(top_srcdir)/lib/engine/display/dx
+endif
+		
 libekiga_engine_la_SOURCES = engine.h engine.cpp
 
 AM_CXXFLAGS = $(SIGC_CFLAGS) $(GTK_CFLAGS)
@@ -32,7 +46,21 @@ libekiga_engine_la_LIBADD = \
 	$(top_builddir)/lib/engine/addressbook/call-history/libcall-history.la \
 	$(top_builddir)/lib/engine/presence/skel/libgmpresence.la \
 	$(top_builddir)/lib/engine/presence/local-roster/liblocal-roster.la \
+	$(top_builddir)/lib/engine/display/skel/libgmdisplay.la
 	$(AM_LIBS)
+
+# XVideo/X
+if !WIN32
+libekiga_engine_la_LIBADD += \
+	$(top_builddir)/lib/engine/display/x/libgmdisplay-x.la
+endif
+
+# DirectX
+if HAVE_DX
+libekiga_engine_la_LIBADD += \
+	$(top_builddir)/lib/engine/display/dx/libgmdisplay-dx.la
+endif
+
 
 if HAVE_AVAHI
 libekiga_engine_la_LIBADD += presence/avahi/libgmavahi.la

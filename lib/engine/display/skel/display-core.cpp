@@ -55,7 +55,7 @@ void DisplayCore::add_manager (DisplayManager &manager)
   manager.fullscreen_mode_changed.connect (sigc::bind (sigc::mem_fun (this, &DisplayCore::on_fullscreen_mode_changed), &manager));
   manager.size_changed.connect (sigc::bind (sigc::mem_fun (this, &DisplayCore::on_size_changed), &manager));
   manager.logo_update_required.connect (sigc::bind (sigc::mem_fun (this, &DisplayCore::on_logo_update_required), &manager));
-  manager.video_info_update_required.connect (sigc::bind (sigc::mem_fun (this, &DisplayCore::on_video_info_update_required), &manager));
+  manager.display_info_update_required.connect (sigc::bind (sigc::mem_fun (this, &DisplayCore::on_display_info_update_required), &manager));
 }
 
 
@@ -86,25 +86,25 @@ void DisplayCore::stop ()
   }
 }
 
-void DisplayCore::setFrameData (unsigned width,
-                                unsigned height,
-                                const char *data,
-                                bool local,
-                                int devices_nbr)
+void DisplayCore::set_frame_data (unsigned width,
+                                  unsigned height,
+                                  const char *data,
+                                  bool local,
+                                  int devices_nbr)
 {
   for (std::set<DisplayManager *>::iterator iter = managers.begin ();
        iter != managers.end ();
        iter++) {
-    (*iter)->setFrameData (width, height, data, local, devices_nbr);
+    (*iter)->set_frame_data (width, height, data, local, devices_nbr);
   }
 }
 
-void DisplayCore::setVideoInfo (const DisplayInfo & newVideoInfo)
+void DisplayCore::set_video_info (const DisplayInfo & newVideoInfo)
 {
   for (std::set<DisplayManager *>::iterator iter = managers.begin ();
        iter != managers.end ();
        iter++) {
-    (*iter)->setVideoInfo (newVideoInfo);
+    (*iter)->set_display_info (newVideoInfo);
   }
 }
 
@@ -129,7 +129,7 @@ void DisplayCore::on_logo_update_required (DisplayManager *manager)
   logo_update_required.emit (*manager);
 }
 
-void DisplayCore::on_video_info_update_required (DisplayManager *manager)
+void DisplayCore::on_display_info_update_required (DisplayManager *manager)
 {
-  video_info_update_required.emit (*manager);
+  display_info_update_required.emit (*manager);
 }

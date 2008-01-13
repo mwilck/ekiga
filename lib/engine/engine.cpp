@@ -51,6 +51,14 @@
 #include "gtk-core-main.h"
 #include "gtk-frontend.h"
 
+#ifndef WIN32
+#include "display-main-x.h"
+#endif
+
+#ifdef HAVE_DX
+#include "display-main-dx.h"
+#endif
+
 #include "opal-main.h"
 
 #ifdef HAVE_AVAHI
@@ -83,6 +91,21 @@ engine_init (int argc,
   core->add (*call_core);
   core->add (*display_core);
   core->add (*runtime);
+
+
+#ifndef WIN32
+  if (!display_x_init (*core, &argc, &argv)) {
+    delete core;
+    return;
+  }
+#endif
+
+#ifdef HAVE_DX
+  if (!display_dx_init (*core, &argc, &argv)) {
+    delete core;
+    return;
+  }
+#endif
 
   if (!opal_init (*core, &argc, &argv)) {
     delete core;

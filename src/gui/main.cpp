@@ -2219,7 +2219,7 @@ video_window_expose_cb (GtkWidget *main_window,
   }
   videoInfo.gc = mw->videoWidgetGC;
   videoInfo.window = GDK_WINDOW_XWINDOW (mw->main_video_image->window); // None
-  if (videoInfo.window == None)
+  if (videoInfo.window == 0)  //FIXME
     return FALSE;
   videoInfo.xdisplay = GDK_DISPLAY ();
 #endif

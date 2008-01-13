@@ -10,6 +10,7 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/engine/display/skel
 
 libgmdisplay_la_SOURCES = \
+	$(display_dir)/display-manager.h	\
 	$(display_dir)/display-core.h		\
 	$(display_dir)/display-core.cpp
 

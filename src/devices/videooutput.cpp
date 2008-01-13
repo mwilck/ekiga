@@ -79,7 +79,7 @@ PCREATE_PLUGIN(EKIGA, PVideoOutputDevice, &PVideoOutputDevice_EKIGA_descriptor);
 
 /* The Methods */
 PVideoOutputDevice_EKIGA::PVideoOutputDevice_EKIGA (Ekiga::ServiceCore & _core)
-: core (_core)
+: core (_core), display_core (*(dynamic_cast<Ekiga::DisplayCore *> (_core.get ("display-core"))))
 { 
  PWaitAndSignal m(videoDisplay_mutex);
 
@@ -88,12 +88,13 @@ PVideoOutputDevice_EKIGA::PVideoOutputDevice_EKIGA (Ekiga::ServiceCore & _core)
   /* Used to distinguish between input and output device. */
   device_id = 0; 
 
-  if (!videoDisplay) 
+  if (!videoDisplay) {
 #ifdef WIN32
      videoDisplay = new GMVideoDisplay_DX(core);
 #else
      videoDisplay = new GMVideoDisplay_X(core);
 #endif
+  }
 }
 
 
@@ -107,6 +108,7 @@ PVideoOutputDevice_EKIGA::~PVideoOutputDevice_EKIGA()
      if (videoDisplay)
        delete videoDisplay;
      videoDisplay = NULL;
+    display_core.stop();
   }
 }
 
@@ -158,12 +160,14 @@ bool PVideoOutputDevice_EKIGA::SetFrameData (unsigned x,
   if (!endFrame)
     return FALSE;
 
+  if (devices_nbr == 0)
+    display_core.start();
   /* Device is now open */
   if (!is_active) {
     is_active = TRUE;
     devices_nbr = PMIN (2, devices_nbr+1);
   }
-
+  display_core.set_frame_data(width, height, (char*) data, (device_id == LOCAL), devices_nbr);
   videoDisplay->SetFrameData (width, height, data, (device_id == LOCAL), devices_nbr);
 
   return TRUE;

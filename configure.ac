@@ -686,6 +686,8 @@ lib/engine/protocol/Makefile
 lib/engine/protocol/skel/Makefile
 lib/engine/display/Makefile
 lib/engine/display/skel/Makefile
+lib/engine/display/x/Makefile
+lib/engine/display/dx/Makefile
 lib/engine/gui/Makefile
 lib/engine/gui/gtk-core/Makefile
 lib/engine/gui/gtk-frontend/Makefile

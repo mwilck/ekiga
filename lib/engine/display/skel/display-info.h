@@ -42,45 +42,45 @@
 #undef None
 #endif
 
-namespace Ekiga {
+//namespace Ekiga {
   /* Video modes */
   typedef enum {
   
-    LOCAL_VIDEO, 
-    REMOTE_VIDEO, 
-    PIP,
-    PIP_WINDOW,
-    FULLSCREEN,
-    UNSET
+    LOCAL_VIDEO_new, 
+    REMOTE_VIDEO_new, 
+    PIP_new,
+    PIP_WINDOW_new,
+    FULLSCREEN_new,
+    UNSET_new
   } DisplayMode;
   
   /* Toggle operations for Fullscreen */
   typedef enum {
   
-    ON,
-    OFF,
-    TOGGLE
+    ON_new,
+    OFF_new,
+    TOGGLE_new
   } FSToggle_new;
   
   /* Video Acceleration Status */
   typedef enum {
   
-    NONE,
-    REMOTE_ONLY,
-    ALL,
-    NO_VIDEO
+    NONE_new,
+    REMOTE_ONLY_new,
+    ALL_new,
+    NO_VIDEO_new
   } VideoAccelStatus_new;  //FIXME
 
 
   typedef struct {
-    unsigned rxFPS;
-    unsigned rxWidth;
-    unsigned rxHeight;
-    unsigned txFPS;
-    unsigned txWidth;
-    unsigned txHeight;
-    VideoAccelStatus_new videoAccelStatus;
-  } VideoStats_new;       //FIXME
+    unsigned rx_fps;
+    unsigned rx_width;
+    unsigned rx_height;
+    unsigned tx_fps;
+    unsigned tx_width;
+    unsigned tx_height;
+    VideoAccelStatus_new video_accel_status;
+  } DisplayStats;
 
   class DisplayInfo
   {
@@ -103,7 +103,7 @@ namespace Ekiga {
       allowPipSwScaling = true;
       swScalingAlgorithm = 0;
   
-      display = UNSET;
+      display = UNSET_new;
       zoom = 0;
     };
     
@@ -129,7 +129,7 @@ namespace Ekiga {
         allowPipSwScaling = rhs.allowPipSwScaling;
         swScalingAlgorithm =  rhs.swScalingAlgorithm;
       }
-      if (rhs.display != UNSET) display = rhs.display;
+      if (rhs.display != UNSET_new) display = rhs.display;
       if (rhs.zoom != 0) zoom = rhs.zoom;
     };
   
@@ -155,6 +155,6 @@ namespace Ekiga {
     unsigned int zoom;
   };
   
-};
+//};
 
 #endif

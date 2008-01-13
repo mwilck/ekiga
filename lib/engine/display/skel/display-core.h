@@ -101,13 +101,13 @@ namespace Ekiga {
 
       void stop ();
 
-      void setFrameData (unsigned width,
-                         unsigned height,
-                         const char *data,
-                         bool local,
-                         int devices_nbr);
+      void set_frame_data (unsigned width,
+                           unsigned height,
+                           const char *data,
+                           bool local,
+                           int devices_nbr);
 
-      void setVideoInfo (const DisplayInfo & newVideoInfo);
+      void set_video_info (const DisplayInfo & newVideoInfo);
 
       /*** Display Related Signals ***/
       
@@ -117,7 +117,7 @@ namespace Ekiga {
       sigc::signal<void, DisplayManager &, FSToggle_new> fullscreen_mode_changed;     /* gm_main_window_toggle_fullscreen */
       sigc::signal<void, DisplayManager &, unsigned, unsigned> size_changed;          /* gm_main_window_set_resized_video_widget */
       sigc::signal<void, DisplayManager &> logo_update_required;                      /* gm_main_window_update_logo  */
-      sigc::signal<void, DisplayManager &> video_info_update_required;                /* gm_main_window_update_zoom_display */
+      sigc::signal<void, DisplayManager &> display_info_update_required;                /* gm_main_window_update_zoom_display */
 //      sigc::signal<void, DisplayManager &, VideoAccelStatus> update_video_accel_status; /* gm_main_window_update_video_accel_status */
 
 
@@ -126,7 +126,7 @@ namespace Ekiga {
       void on_fullscreen_mode_changed (FSToggle_new toggle, DisplayManager *manager);
       void on_size_changed ( unsigned width, unsigned height, DisplayManager *manager);
       void on_logo_update_required (DisplayManager *manager);
-      void on_video_info_update_required (DisplayManager *manager);
+      void on_display_info_update_required (DisplayManager *manager);
 
       std::set<DisplayManager *> managers;
     };  
