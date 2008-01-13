@@ -42,6 +42,12 @@
 using namespace Opal;
 
 
+static  bool same_codec_desc (Ekiga::CodecDescription a, Ekiga::CodecDescription b)
+{ 
+  return (a.name == b.name && a.rate == b.rate); 
+}
+
+
 CodecDescription::CodecDescription (OpalMediaFormat & format)
 : Ekiga::CodecDescription ()
 {
@@ -53,4 +59,26 @@ CodecDescription::CodecDescription (OpalMediaFormat & format)
   if (format.IsValidForProtocol ("H.323"))
     protocols.push_back ("H.323");
   protocols.sort ();
+}
+
+
+CodecList::CodecList (OpalMediaFormatList & list)
+{
+  for (PINDEX i = 0 ; i < list.GetSize () ; i++) {
+
+    if (list [i].IsTransportable ()) {
+
+      Ekiga::CodecDescription desc = Opal::CodecDescription (list [i]);
+
+      Ekiga::CodecList::iterator it = 
+        search_n ((*this).begin (), (*this).end (), 1, desc, same_codec_desc);
+      if (it == (*this).end ()) 
+        (*this).push_back (desc);
+      else {
+        it->protocols.sort ();
+        it->protocols.merge (desc.protocols);
+        it->protocols.unique ();
+      }
+    }
+  }
 }

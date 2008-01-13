@@ -56,5 +56,22 @@ namespace Opal {
        */
       CodecDescription (OpalMediaFormat & format);
     };
+
+
+  class CodecList 
+    : public Ekiga::CodecList
+    {
+  public :
+
+      /** Constructor that creates an empty CodecList
+       */
+      CodecList () {};
+
+
+      /** Constructor that creates a CodecList from an OpalMediaFormatList
+       * @param list is an OpalMediaFormatList
+       */
+      CodecList (OpalMediaFormatList & list);
+    };
 }
 #endif

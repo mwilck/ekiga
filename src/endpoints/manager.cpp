@@ -152,28 +152,6 @@ static  bool same_codec_desc (Ekiga::CodecDescription a, Ekiga::CodecDescription
 }
 
 
-static void from_media_formats_to_codec_list (OpalMediaFormatList & full_list, Ekiga::CodecList & codecs)
-{
-  for (PINDEX i = 0 ; i < full_list.GetSize () ; i++) {
-
-    if (full_list [i].IsTransportable ()) {
-
-      Ekiga::CodecDescription desc = Opal::CodecDescription (full_list [i]);
-
-      Ekiga::CodecList::iterator it = 
-        search_n (codecs.begin (), codecs.end (), 1, desc, same_codec_desc);
-      if (it == codecs.end ()) 
-        codecs.push_back (desc);
-      else {
-        it->protocols.sort ();
-        it->protocols.merge (desc.protocols);
-        it->protocols.unique ();
-      }
-    }
-  }
-}
-
-
 static void 
 fullname_changed_nt (G_GNUC_UNUSED gpointer id,
 		     GmConfEntry *entry, 
@@ -944,7 +922,7 @@ Ekiga::CodecList GMManager::get_codecs ()
 
   // Build the Ekiga::CodecList from the available OpalMediaFormats
   GetAllowedFormats (full_list);
-  from_media_formats_to_codec_list (full_list, all_codecs);
+  all_codecs = Opal::CodecList (full_list);
 
   // Build the Ekiga::CodecList from the configuration
   codecs_config = gm_conf_get_string_list (AUDIO_CODECS_KEY "list");
