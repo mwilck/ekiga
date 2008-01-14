@@ -72,16 +72,6 @@ extern "C" {
 
 
 /* DESCRIPTION  :  This notifier is called when the config database data
- *                 associated with the enable_video key changes.
- * BEHAVIOR     :  It updates the endpoint.
- * PRE          :  data is a pointer to the GMManager.
- */
-static void enable_video_changed_nt (G_GNUC_UNUSED gpointer id,
-                                     GmConfEntry *entry,
-                                     gpointer data);
-
-
-/* DESCRIPTION  :  This notifier is called when the config database data
  *                 associated with the listening interface changes.
  * BEHAVIOR     :  Updates the interface.
  * PRE          :  data is a pointer to the GMManager.
@@ -117,16 +107,6 @@ static void video_device_changed_nt (G_GNUC_UNUSED gpointer id,
                                      gpointer data);
 
 
-/* DESCRIPTION  :  This callback is called when one of the video media format
- * 		   settings changes.
- * BEHAVIOR     :  It updates the media format settings.
- * PRE          :  data is a pointer to the GMManager.
- */
-static void video_option_changed_nt (G_GNUC_UNUSED gpointer id,
-                                     GmConfEntry *entry, 
-                                     gpointer data);
-
-
 /* DESCRIPTION  :  This callback is called when the status config value changes.
  * BEHAVIOR     :  Updates the presence for the endpoints.
  * PRE          :  /
@@ -153,22 +133,6 @@ fullname_changed_nt (G_GNUC_UNUSED gpointer id,
 
     endpoint->SetUserNameAndAlias ();
     endpoint->UpdatePublishers ();
-  }
-}
-
-
-static void
-enable_video_changed_nt (G_GNUC_UNUSED gpointer id,
-			 GmConfEntry *entry,
-			 gpointer data)
-{
-  PString name;
-  GMManager *ep = (GMManager *) data;
-
-  if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
-
-    ep->SetAutoStartTransmitVideo (gm_conf_entry_get_bool (entry));
-    ep->SetAutoStartReceiveVideo (gm_conf_entry_get_bool (entry));
   }
 }
 
@@ -226,22 +190,6 @@ video_device_changed_nt (G_GNUC_UNUSED gpointer id,
       (gm_conf_entry_get_type (entry) == GM_CONF_INT)) {
 
     ep->UpdateDevices ();
-  }
-}
-
-// TODO use entry values in all notifiers
-static void 
-video_option_changed_nt (G_GNUC_UNUSED gpointer id,
-                         GmConfEntry *entry, 
-                         gpointer data)
-{
-  GMManager *ep = (GMManager *) data;
-
-  if (gm_conf_entry_get_type (entry) == GM_CONF_INT) {
-
-    unsigned a, b, c, d, e = 0;
-    ep->get_video_options (a, b, c, d, e);
-    ep->set_video_options (a, b, c, d, e);
   }
 }
 
@@ -314,13 +262,13 @@ GMManager::GMManager (Ekiga::ServiceCore & _core)
   // Create endpoints
   h323EP = new GMH323Endpoint (*this);
   h323EP->Init ();
-  AddRouteEntry("pc:.* = h323:<da>");
+  // AddRouteEntry("pc:.* = h323:<da>");
 	
   sipEP = new GMSIPEndpoint (*this, core);
   AddRouteEntry("pc:.* = sip:<da>");
   
   pcssEP = new GMPCSSEndpoint (*this);
-  AddRouteEntry("h323:.* = pc:<da>");
+// AddRouteEntry("h323:.* = pc:<da>");
   AddRouteEntry("sip:.* = pc:<da>");
   
   autoStartTransmitVideo = autoStartReceiveVideo = true;
@@ -334,21 +282,8 @@ GMManager::GMManager (Ekiga::ServiceCore & _core)
   get_port_ranges (a, b, c, d, e, f);
   set_port_ranges (a, b, c, d, e, f);
 
-  // Test
+  // Config
   bridge = new Opal::ConfBridge (*this);
-
-  // Video options
-  gm_conf_notifier_add (VIDEO_CODECS_KEY "maximum_video_tx_bitrate", 
-			video_option_changed_nt, this);
-  gm_conf_notifier_add (VIDEO_CODECS_KEY "temporal_spatial_tradeoff",
-			video_option_changed_nt, this);
-  gm_conf_notifier_add (VIDEO_DEVICES_KEY "size", 
-                        video_option_changed_nt, this);
-  gm_conf_notifier_add (VIDEO_CODECS_KEY "max_frame_rate",
-                        video_option_changed_nt, this);
-  gm_conf_notifier_add (VIDEO_CODECS_KEY "maximum_video_rx_bitrate",
-                        video_option_changed_nt, this);
-  gm_conf_notifier_trigger (VIDEO_CODECS_KEY "maximum_video_rx_bitrate");
 }
 
 
@@ -638,11 +573,7 @@ void GMManager::set_port_ranges (unsigned min_udp_port,
 }
 
 
-void GMManager::set_video_options (unsigned size,
-                                   unsigned max_frame_rate,
-                                   unsigned temporal_spatial_tradeoff,
-                                   unsigned maximum_video_rx_bitrate,
-                                   unsigned maximum_video_tx_bitrate)
+void GMManager::set_video_options (const GMManager::VideoOptions & options)
 {
   OpalMediaFormatList media_formats_list;
   OpalMediaFormat::GetAllRegisteredMediaFormats (media_formats_list);
@@ -654,15 +585,15 @@ void GMManager::set_video_options (unsigned size,
     if (media_format.GetDefaultSessionID () == OpalMediaFormat::DefaultVideoSessionID) {
 
       media_format.SetOptionInteger (OpalVideoFormat::FrameWidthOption (), 
-                                     video_sizes [size].width);  
+                                     video_sizes [options.size].width);  
       media_format.SetOptionInteger (OpalVideoFormat::FrameHeightOption (), 
-                                     video_sizes[ size].height);  
+                                     video_sizes [options.size].height);  
       media_format.SetOptionInteger (OpalVideoFormat::FrameTimeOption (),
-                                     (int) (90000 / max_frame_rate));
+                                     (int) (90000 / options.maximum_frame_rate));
       media_format.SetOptionInteger (OpalVideoFormat::MaxBitRateOption (), 
-                                     maximum_video_rx_bitrate * 1000);
+                                     options.maximum_received_bitrate * 1000);
       media_format.SetOptionInteger (OpalVideoFormat::TargetBitRateOption (), 
-                                     maximum_video_tx_bitrate * 1000);
+                                     options.maximum_transmitted_bitrate * 1000);
       media_format.SetOptionInteger (OpalVideoFormat::MinRxFrameWidthOption(), 
                                      160);
       media_format.SetOptionInteger (OpalVideoFormat::MinRxFrameHeightOption(), 
@@ -672,7 +603,8 @@ void GMManager::set_video_options (unsigned size,
       media_format.SetOptionInteger (OpalVideoFormat::MaxRxFrameHeightOption(), 
                                      1088);
       media_format.AddOption(new OpalMediaOptionUnsigned (OpalVideoFormat::TemporalSpatialTradeOffOption (), 
-                                                          true, OpalMediaOption::NoMerge, temporal_spatial_tradeoff));  
+                                                          true, OpalMediaOption::NoMerge, 
+                                                          options.temporal_spatial_tradeoff));  
       media_format.AddOption(new OpalMediaOptionUnsigned (OpalVideoFormat::MaxFrameSizeOption (), 
                                                           true, OpalMediaOption::NoMerge, 1400));
 
@@ -698,8 +630,10 @@ void GMManager::set_video_options (unsigned size,
         if (stream != NULL) {
 
           OpalMediaFormat mediaFormat = stream->GetMediaFormat ();
-          mediaFormat.SetOptionInteger (OpalVideoFormat::TemporalSpatialTradeOffOption() , temporal_spatial_tradeoff);  
-          mediaFormat.SetOptionInteger (OpalVideoFormat::TargetBitRateOption (), maximum_video_tx_bitrate * 1000);
+          mediaFormat.SetOptionInteger (OpalVideoFormat::TemporalSpatialTradeOffOption(), 
+                                        options.temporal_spatial_tradeoff);  
+          mediaFormat.SetOptionInteger (OpalVideoFormat::TargetBitRateOption (), 
+                                        options.maximum_transmitted_bitrate * 1000);
           stream->UpdateMediaFormat (mediaFormat);
         }
       }
@@ -708,17 +642,37 @@ void GMManager::set_video_options (unsigned size,
 }
 
 
-void GMManager::get_video_options (unsigned & size,
-                                   unsigned & max_frame_rate,
-                                   unsigned & temporal_spatial_tradeoff,
-                                   unsigned & maximum_video_rx_bitrate,
-                                   unsigned & maximum_video_tx_bitrate)
+void GMManager::get_video_options (GMManager::VideoOptions & options)
 {
-  max_frame_rate = gm_conf_get_int (VIDEO_CODECS_KEY "max_frame_rate");
-  temporal_spatial_tradeoff = gm_conf_get_int (VIDEO_CODECS_KEY "temporal_spatial_tradeoff");
-  maximum_video_rx_bitrate = gm_conf_get_int (VIDEO_CODECS_KEY "maximum_video_rx_bitrate");
-  maximum_video_tx_bitrate = gm_conf_get_int (VIDEO_CODECS_KEY "maximum_video_tx_bitrate");
-  size = gm_conf_get_int (VIDEO_DEVICES_KEY "size");
+  OpalMediaFormatList media_formats_list;
+  OpalMediaFormat::GetAllRegisteredMediaFormats (media_formats_list);
+
+  for (int i = 0 ; i < media_formats_list.GetSize () ; i++) {
+
+    OpalMediaFormat media_format = media_formats_list [i];
+    if (media_format.GetDefaultSessionID () == OpalMediaFormat::DefaultVideoSessionID) {
+
+      int j = 0;
+      for (j = 0; j < NB_VIDEO_SIZES; j++) {
+
+        if (video_sizes [j].width == media_format.GetOptionInteger (OpalVideoFormat::FrameWidthOption ())
+            && video_sizes [j].width == media_format.GetOptionInteger (OpalVideoFormat::FrameWidthOption ()))
+          break;
+      }
+      options.size = j;
+
+      options.maximum_frame_rate = 
+        (int) (90000 / media_format.GetOptionInteger (OpalVideoFormat::FrameTimeOption ()));
+      options.maximum_received_bitrate = 
+        (int) (media_format.GetOptionInteger (OpalVideoFormat::MaxBitRateOption ()) / 1000);
+      options.maximum_transmitted_bitrate = 
+        (int) (media_format.GetOptionInteger (OpalVideoFormat::TargetBitRateOption ()) / 1000);
+      options.temporal_spatial_tradeoff = 
+        media_format.GetOptionInteger (OpalVideoFormat::TemporalSpatialTradeOffOption ());
+
+      break;
+    }
+  }
 }
 
 
@@ -1426,8 +1380,6 @@ GMManager::Init ()
 			fullname_changed_nt, this);
   gm_conf_notifier_add (PERSONAL_DATA_KEY "lastname",
 			fullname_changed_nt, this);
-  gm_conf_notifier_add (VIDEO_CODECS_KEY "enable_video", 
-			enable_video_changed_nt, this);
 
   gm_conf_notifier_add (PROTOCOLS_KEY "interface",
 			network_interface_changed_nt, this);

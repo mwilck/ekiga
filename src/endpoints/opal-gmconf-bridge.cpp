@@ -61,6 +61,12 @@ ConfBridge::ConfBridge (Ekiga::Service & _service)
   keys.push_back (AUDIO_CODECS_KEY "minimum_jitter_buffer");
   keys.push_back (AUDIO_CODECS_KEY "maximum_jitter_buffer");
 
+  keys.push_back (VIDEO_CODECS_KEY "maximum_video_tx_bitrate");
+  keys.push_back (VIDEO_CODECS_KEY "temporal_spatial_tradeoff");
+  keys.push_back (VIDEO_DEVICES_KEY "size"); 
+  keys.push_back (VIDEO_CODECS_KEY "max_frame_rate");
+  keys.push_back (VIDEO_CODECS_KEY "maximum_video_rx_bitrate");
+
   load (keys);
 }
 
@@ -68,6 +74,46 @@ ConfBridge::ConfBridge (Ekiga::Service & _service)
 void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
 {
   GMManager & manager = (GMManager &) service;
+
+  //
+  // Video options
+  //
+  if (key == VIDEO_CODECS_KEY "maximum_video_tx_bitrate") {
+
+    GMManager::VideoOptions options;
+    manager.get_video_options (options);
+    options.maximum_transmitted_bitrate = gm_conf_entry_get_int (entry);
+    manager.set_video_options (options);
+  }
+  else if (key == VIDEO_CODECS_KEY "temporal_spatial_tradeoff") {
+
+    GMManager::VideoOptions options;
+    manager.get_video_options (options);
+    options.temporal_spatial_tradeoff = gm_conf_entry_get_int (entry);
+    manager.set_video_options (options);
+  }
+  else if (key == VIDEO_DEVICES_KEY "size") {
+
+    GMManager::VideoOptions options;
+    manager.get_video_options (options);
+    options.size = gm_conf_entry_get_int (entry);
+    manager.set_video_options (options);
+  }
+  else if (key == VIDEO_CODECS_KEY "max_frame_rate") {
+
+    GMManager::VideoOptions options;
+    manager.get_video_options (options);
+    options.maximum_frame_rate = gm_conf_entry_get_int (entry);
+    manager.set_video_options (options);
+  }
+  else if (key == VIDEO_CODECS_KEY "maximum_video_rx_bitrate") {
+
+    GMManager::VideoOptions options;
+    manager.get_video_options (options);
+    options.maximum_received_bitrate = gm_conf_entry_get_int (entry);
+    manager.set_video_options (options);
+  }
+
 
   // 
   // Jitter buffer configuration
