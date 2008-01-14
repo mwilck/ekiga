@@ -73,8 +73,8 @@ namespace Ekiga {
 
   public:
 
-    typedef typename Lister<PresentityType, connection_pair>::iterator iterator;
-    typedef typename Lister<PresentityType, connection_pair>::const_iterator const_iterator;
+    typedef typename Lister<PresentityType, ObjectManagementTrait>::iterator iterator;
+    typedef typename Lister<PresentityType, ObjectManagementTrait>::const_iterator const_iterator;
 
     HeapImpl ();
 

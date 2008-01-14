@@ -33,8 +33,8 @@
  *
  */
 
-#ifndef __LIST_H__
-#define __LIST_H__
+#ifndef __LISTER_H__
+#define __LISTER_H__
 
 #include <sigc++/sigc++.h>
 
@@ -68,8 +68,6 @@
  * the appropriate api function to delete the object in your backend.
  */
 
-#define connection_pair std::pair<sigc::connection, sigc::connection>
-
 
 namespace Ekiga {
 
@@ -97,8 +95,9 @@ namespace Ekiga {
 
   public:
 
-    typedef MapKeyReferenceIterator<ObjectType, connection_pair> iterator;
-    typedef MapKeyConstReferenceIterator<ObjectType, connection_pair> const_iterator;
+    typedef std::list<sigc::connection> connection_set;
+    typedef MapKeyReferenceIterator<ObjectType, connection_set> iterator;
+    typedef MapKeyConstReferenceIterator<ObjectType, connection_set> const_iterator;
 
 
     /** The destructor.
@@ -149,6 +148,13 @@ namespace Ekiga {
     void remove_object (ObjectType &object);
 
 
+    /** Adds a connection to an object to the Ekiga::Lister, so that when
+     * said object is removed, all connections to it are correctly severed.
+     * @param: The object to which the connection is linked.
+     */
+    void add_connection (ObjectType &object,
+			 sigc::connection conn);
+
     /** Signals emitted by this object
      *
      */
@@ -186,7 +192,7 @@ namespace Ekiga {
 
     /** Map of objects and signals.
      */
-    std::map<ObjectType *, connection_pair> connections;
+    std::map<ObjectType *, connection_set> connections;
   };
 };
 
@@ -274,9 +280,12 @@ template<typename ObjectType, typename ObjectManagementTrait>
 void
 Ekiga::Lister<ObjectType, ObjectManagementTrait>::add_object (ObjectType &object)
 {
-  sigc::connection rem_conn = object.removed.connect (sigc::bind (sigc::mem_fun (this, &Lister::on_object_removed), &object));
-  sigc::connection upd_conn = object.updated.connect (sigc::bind (sigc::mem_fun (this, &Lister::on_object_updated), &object));
-  connections[&object] = connection_pair (rem_conn, upd_conn);
+  sigc::connection conn;
+
+  conn = object.removed.connect (sigc::bind (sigc::mem_fun (this, &Lister::on_object_removed), &object));
+  add_connection (object, conn);
+  conn = object.updated.connect (sigc::bind (sigc::mem_fun (this, &Lister::on_object_updated), &object));
+  add_connection (object, conn);
   object_added.emit (object);
 }
 
@@ -289,14 +298,22 @@ Ekiga::Lister<ObjectType, ObjectManagementTrait>::remove_object (ObjectType &obj
   ObjectManagementTrait::announced_release (object);
 }
 
+template<typename ObjectType, typename ObjectManagementTrait>
+void
+Ekiga::Lister<ObjectType, ObjectManagementTrait>::add_connection (ObjectType &object, sigc::connection conn)
+{
+  connections[&object].push_front (conn);
+}
 
 template<typename ObjectType, typename ObjectManagementTrait>
 void
 Ekiga::Lister<ObjectType, ObjectManagementTrait>::common_removal_steps (ObjectType &object)
 {
-  connection_pair conns = connections[&object];
-  conns.first.disconnect ();
-  conns.second.disconnect ();
+  connection_set conns = connections[&object];
+  for (connection_set::iterator iter = conns.begin ();
+       iter != conns.end ();
+       iter++)
+    iter->disconnect ();
   connections.erase (&object);
   object_removed.emit (object);
 }
