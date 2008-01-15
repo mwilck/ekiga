@@ -2,7 +2,7 @@ noinst_LTLIBRARIES = libgmdisplay.la
 
 display_dir = $(top_srcdir)/lib/engine/display/skel
 
-AM_CXXFLAGS = $(SIGC_CFLAGS)
+AM_CXXFLAGS = $(SIGC_CFLAGS) $(GLIB_CFLAGS)
 
 INCLUDES = \
 	-I$(top_srcdir)/lib/engine/include \
@@ -14,4 +14,4 @@ libgmdisplay_la_SOURCES = \
 	$(display_dir)/display-core.h		\
 	$(display_dir)/display-core.cpp
 
-libgmdisplay_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS)
+libgmdisplay_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(GLIB_LIBS)

@@ -1,3 +1,33 @@
+2008-01-15  Matthias Schneider  <ma30002000@yahoo.de>
+
+
+	* src/devices/videooutput.cpp: 
+	* src/devices/videooutput.h: 
+	* src/endpoints/ekiga.h: 
+	* src/gui/main.cpp: 
+	* src/gui/main.h: 
+	* src/Makefile.am: 
+	* src/common.h: 
+	* lib/engine/display/x/display-manager-x.cpp: 
+	* lib/engine/display/x/display-manager-x.h: 
+	* lib/engine/display/x/Makefile.am: 
+	* lib/engine/display/common/display-manager-common.cpp: 
+	* lib/engine/display/common/display-manager-common.h: 
+	* lib/engine/display/dx/display-manager-x.cpp: 
+	* lib/engine/display/dx/display-manager-dx.cpp:
+	* lib/engine/display/dx/display-manager-x.h : 
+	* lib/engine/display/dx/Makefile.am : 
+	* lib/engine/display/dx/display-manager-dx.h:
+	* lib/engine/display/skel/display-core.h: 
+	* lib/engine/display/skel/display-manager.h: 
+	* lib/engine/display/skel/display-info.h: 
+	* lib/engine/display/skel/Makefile.am: 
+	* lib/engine/display/skel/display-core.cpp: 
+	* lib/engine/Makefile.am: 
+	* lib/Makefile.am: 
+	Move video output to the engine. The X/XV output only depends
+	on PTLIB for tracing and PThread, and on Xlib / Xv.
+
 2008-01-14  Damien Sandras  <dsandras@gnome.org>
 
 	* src/endpoints/manager.cpp:

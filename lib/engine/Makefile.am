@@ -52,7 +52,8 @@ libekiga_engine_la_LIBADD = \
 # XVideo/X
 if !WIN32
 libekiga_engine_la_LIBADD += \
-	$(top_builddir)/lib/engine/display/x/libgmdisplay-x.la
+	$(top_builddir)/lib/engine/display/x/libgmdisplay-x.la \
+	$(top_builddir)/lib/pixops/libpixops.la
 endif
 
 # DirectX

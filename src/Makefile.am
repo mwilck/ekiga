@@ -79,23 +79,8 @@ ekiga_SOURCES +=			\
 	devices/videoinput.h		\
 	devices/videoinput.cpp		\
 	devices/videooutput.h           \
-	devices/videooutput.cpp         \
-	devices/videodisplay.h          \
-	devices/videodisplay.cpp
+	devices/videooutput.cpp
 
-# XVideo/X
-if !WIN32
-ekiga_SOURCES +=                        \
-	devices/videodisplay_x.h        \
-	devices/videodisplay_x.cpp
-endif
-
-# DirectX
-if HAVE_DX
-ekiga_SOURCES +=                        \
-	devices/videodisplay_dx.h       \
-	devices/videodisplay_dx.cpp
-endif
 
 # Endpoints 
 ekiga_SOURCES +=			\
@@ -171,7 +156,7 @@ ekiga_SOURCES += 		\
 	clients/avahi.cpp 	
 endif
 
-AM_CXXFLAGS = $(GTK_CFLAGS) $(GLIB_CFLAGS) $(GNOME_CFLAGS) $(AVAHI_CFLAGS) $(DBUS_CFLAGS) $(BONOBO_CFLAGS) $(OPAL_CFLAGS) $(PTLIB_CFLAGS) $(SIGC_CFLAGS) $(XV_CFLAGS) $(DX_CFLAGS) $(XML_CFLAGS)
+AM_CXXFLAGS = $(GTK_CFLAGS) $(GLIB_CFLAGS) $(GNOME_CFLAGS) $(AVAHI_CFLAGS) $(DBUS_CFLAGS) $(BONOBO_CFLAGS) $(OPAL_CFLAGS) $(PTLIB_CFLAGS) $(SIGC_CFLAGS) $(XML_CFLAGS)
 AM_LIBS = $(GTK_LIBS) $(GLIB_LIBS) $(GNOME_LIBS) $(AVAHI_LIBS) $(DBUS_LIBS) $(BONOBO_LIBS) $(OPAL_LIBS) $(PTLIB_LIBS) $(SIGC_LIBS) $(XML_LIBS)
 
 ekiga_LDADD = \

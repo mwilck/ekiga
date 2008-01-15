@@ -46,40 +46,41 @@
   /* Video modes */
   typedef enum {
   
-    LOCAL_VIDEO_new, 
-    REMOTE_VIDEO_new, 
-    PIP_new,
-    PIP_WINDOW_new,
-    FULLSCREEN_new,
-    UNSET_new
+    LOCAL_VIDEO, 
+    REMOTE_VIDEO, 
+    PIP,
+    PIP_WINDOW,
+    FULLSCREEN,
+    UNSET
   } DisplayMode;
   
   /* Toggle operations for Fullscreen */
   typedef enum {
   
-    ON_new,
-    OFF_new,
-    TOGGLE_new
-  } FSToggle_new;
+    ON,
+    OFF,
+    TOGGLE
+  } FSToggle;
   
   /* Video Acceleration Status */
   typedef enum {
   
-    NONE_new,
-    REMOTE_ONLY_new,
-    ALL_new,
-    NO_VIDEO_new
-  } VideoAccelStatus_new;  //FIXME
+    NONE,
+    REMOTE_ONLY,
+    ALL,
+    NO_VIDEO
+  } DisplayAccelStatus;  //FIXME
 
 
   typedef struct {
     unsigned rx_fps;
     unsigned rx_width;
     unsigned rx_height;
+    unsigned rx_frames;
     unsigned tx_fps;
     unsigned tx_width;
     unsigned tx_height;
-    VideoAccelStatus_new video_accel_status;
+    unsigned tx_frames;
   } DisplayStats;
 
   class DisplayInfo
@@ -103,7 +104,7 @@
       allowPipSwScaling = true;
       swScalingAlgorithm = 0;
   
-      display = UNSET_new;
+      display = UNSET;
       zoom = 0;
     };
     
@@ -129,7 +130,7 @@
         allowPipSwScaling = rhs.allowPipSwScaling;
         swScalingAlgorithm =  rhs.swScalingAlgorithm;
       }
-      if (rhs.display != UNSET_new) display = rhs.display;
+      if (rhs.display != UNSET) display = rhs.display;
       if (rhs.zoom != 0) zoom = rhs.zoom;
     };
   

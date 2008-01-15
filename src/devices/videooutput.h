@@ -42,13 +42,6 @@
 
 #include "display-core.h"
 #include "common.h"
-#include "videodisplay.h"
-
-#ifdef WIN32
-#include "videodisplay_dx.h"
-#else
-#include "videodisplay_x.h"
-#endif
 
 class GMManager;
 
@@ -137,8 +130,6 @@ class PVideoOutputDevice_EKIGA : public PVideoOutputDevice
   virtual bool Stop () { return TRUE; };
 
  protected:
-
-  static GMVideoDisplay* videoDisplay;
 
   static int devices_nbr; /* The number of devices opened */
   int device_id;          /* The current device : local or remote */

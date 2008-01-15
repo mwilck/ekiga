@@ -3,7 +3,7 @@ noinst_LTLIBRARIES = libgmdisplay-dx.la
 display_dir = $(top_srcdir)/lib/engine/display/dx
 common_dir = $(top_srcdir)/lib/engine/display/common
 
-AM_CXXFLAGS = $(SIGC_CFLAGS)
+AM_CXXFLAGS = $(SIGC_CFLAGS) $(PTLIB_CFLAGS) $(DX_CFLAGS)
 
 INCLUDES = \
 	-I$(top_srcdir)/lib/engine/include \
@@ -19,4 +19,4 @@ libgmdisplay_dx_la_SOURCES = \
 	$(display_dir)/display-main-dx.cpp    \
 	$(display_dir)/display-main-dx.h
 
-libgmdisplay_dx_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS)
+libgmdisplay_dx_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(PTLIB_LIBS) $(DX_LIBS)

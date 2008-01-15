@@ -63,13 +63,6 @@ GtkWidget *gm_main_window_get_video_widget (GtkWidget *main_window);
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Set the size of the video video.
- * PRE          :  Width and height of the widget.
- */
-void gm_main_window_set_resized_video_widget (int width,
-                                              int height);
-
-/* DESCRIPTION  :  /
  * BEHAVIOR     :  Displays the gnomemeeting logo in the video window.
  * PRE          :  The main window GMObject.
  */
@@ -81,18 +74,6 @@ void gm_main_window_update_logo_have_window (GtkWidget *main_window);
  * PRE          :  /
  */
 void gm_main_window_update_logo ();
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Updates the zoom and display variable of the outputdevice.
- * PRE          :  /
- */
-void gm_main_window_update_zoom_display ();
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Updates the Video Acceleration status indicator.
- * PRE          :  /
- */
-void gm_main_window_update_video_accel_status (VideoAccelStatus status);
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Update the main window hold call menu and toolbar items
@@ -218,13 +199,6 @@ void gm_main_window_set_panel_section (GtkWidget *main_window,
  */
 void gm_main_window_set_status (GtkWidget *main_window,
                                 guint status);
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Select the display type for the main window.
- * PRE          :  A valid display type.
- */
-void gm_main_window_set_display_type (VideoMode display);
 
 
 /* DESCRIPTION  :  /
@@ -438,7 +412,7 @@ void gm_main_window_fullscreen_menu_update_sensitivity (bool fullscreen);
  * BEHAVIOR     :  Toggles between fullscreen mode and the other settings
  * PRE          :  -1: toggle, 0: off, 1: on
  */
-void gm_main_window_toggle_fullscreen (FSToggle toggle);
+// void gm_main_window_toggle_fullscreen (FSToggle toggle);
 
 
 /* DESCRIPTION  :  /

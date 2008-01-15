@@ -45,6 +45,8 @@
 #include <set>
 #include <map>
 
+#include <glib.h>
+
 namespace Ekiga {
   class DisplayManager;
 
@@ -56,7 +58,7 @@ namespace Ekiga {
 
       /* The constructor
       */
-      DisplayCore () {}
+      DisplayCore ();
 
       /* The destructor
       */
@@ -107,28 +109,34 @@ namespace Ekiga {
                            bool local,
                            int devices_nbr);
 
-      void set_video_info (const DisplayInfo & newVideoInfo);
+      void set_display_info (const DisplayInfo & _display_info);
 
       /*** Display Related Signals ***/
       
       /** See display-manager.h for the API
        */
-      sigc::signal<void, DisplayManager &, DisplayMode> display_type_changed;       /* gm_main_window_set_display_type */
-      sigc::signal<void, DisplayManager &, FSToggle_new> fullscreen_mode_changed;     /* gm_main_window_toggle_fullscreen */
-      sigc::signal<void, DisplayManager &, unsigned, unsigned> size_changed;          /* gm_main_window_set_resized_video_widget */
-      sigc::signal<void, DisplayManager &> logo_update_required;                      /* gm_main_window_update_logo  */
-      sigc::signal<void, DisplayManager &> display_info_update_required;                /* gm_main_window_update_zoom_display */
+      sigc::signal<void, DisplayManager &, DisplayMode> display_mode_changed;
+      sigc::signal<void, DisplayManager &, FSToggle> fullscreen_mode_changed;
+      sigc::signal<void, DisplayManager &, unsigned, unsigned> display_size_changed;
+      sigc::signal<void, DisplayManager &> logo_update_required;
+      sigc::signal<void, DisplayManager &> display_info_update_required;
 //      sigc::signal<void, DisplayManager &, VideoAccelStatus> update_video_accel_status; /* gm_main_window_update_video_accel_status */
 
-
+      /*** Statistics ***/
+      void get_display_stats (DisplayStats & _display_stats) {
+        _display_stats = display_stats;
+      };
   private:
-      void on_display_type_changed (DisplayMode display, DisplayManager *manager);
-      void on_fullscreen_mode_changed (FSToggle_new toggle, DisplayManager *manager);
-      void on_size_changed ( unsigned width, unsigned height, DisplayManager *manager);
+      void on_display_mode_changed (DisplayMode display, DisplayManager *manager);
+      void on_fullscreen_mode_changed (FSToggle toggle, DisplayManager *manager);
+      void on_display_size_changed ( unsigned width, unsigned height, DisplayManager *manager);
       void on_logo_update_required (DisplayManager *manager);
       void on_display_info_update_required (DisplayManager *manager);
 
       std::set<DisplayManager *> managers;
+
+      DisplayStats display_stats;
+      GTimeVal last_stats;
     };  
 };
 

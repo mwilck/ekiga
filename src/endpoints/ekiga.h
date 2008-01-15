@@ -50,7 +50,6 @@
 #include "statusicon.h"
 
 #include <ptlib/ipsock.h>
-#include <sigc++/sigc++.h>
 
 
 /**
@@ -264,9 +263,6 @@ class GnomeMeeting : public PProcess
    * PRE          : /
    */
   PStringArray GetVideoPlugins ();
-
-  sigc::signal<void,
-	       VideoInfo*> set_video_info;
 
  private:
   

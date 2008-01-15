@@ -42,25 +42,47 @@
 #define _DISPLAY_MANAGER_X_H_
 
 #include "display-manager-common.h"
+#include "../../../gui/xwindow.h"
 
 class GMDisplayManager_x
    : public  GMDisplayManager
 {
 public:
   GMDisplayManager_x (Ekiga::ServiceCore & core);
+
+  ~GMDisplayManager_x ();
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Returns TRUE if the given settings require a
+   *                 reinitialization of the display, FALSE 
+   *                 otherwise.
+   * PRE          :  /
+   */
+  virtual bool frame_display_change_needed (DisplayMode display, 
+                                            unsigned lf_width, 
+                                            unsigned lf_height, 
+                                            unsigned rf_width, 
+                                            unsigned rf_height, 
+                                            unsigned int zoom);
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Setup the display following the display type,
+   *                 picture dimensions and zoom value.
+   *                 Returns FALSE in case of failure.
+   * PRE          :  /
+   */
   virtual void setup_frame_display (DisplayMode display, 
                                     unsigned lf_width, 
                                     unsigned lf_height, 
                                     unsigned rf_width, 
                                     unsigned rf_height, 
-                                    unsigned int zoom) {};
+                                    unsigned int zoom);
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Closes the frame display and returns FALSE 
    *                 in case of failure.
    * PRE          :  /
    */
-  virtual bool close_frame_display () {return true;};
+  virtual bool close_frame_display ();
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Display the given frame on the correct display.
@@ -69,7 +91,7 @@ public:
    */
   virtual void display_frame (const char *frame,
                              unsigned width,
-                             unsigned height) {};
+                             unsigned height);
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Display the given frames as Picture in Picture.
@@ -81,13 +103,25 @@ public:
                                  unsigned lf_height,
                                  const char *remote_frame,
                                  unsigned rf_width,
-                                 unsigned rf_height) {};
+                                 unsigned rf_height);
   
+protected:
+
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Sync the output of the frame to the display
    * PRE          :  /
    */
-  virtual void sync(UpdateRequired sync_required) {};
+  virtual void sync(UpdateRequired sync_required);
+
+  XWindow *lxWindow;
+  XWindow *rxWindow;
+
+  Display *lDisplay;
+  Display *rDisplay;
+
+  GC* embGC;
+
+  bool pipWindowAvailable;
 
 };
 #endif /* DISPLAY_MANAGER_X */

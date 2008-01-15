@@ -42,18 +42,26 @@
 #include "display-core.h"
 #include "display-manager.h"
 
+#include <math.h>
 
 using namespace Ekiga;
 
+DisplayCore::DisplayCore ()
+{
+  display_stats.rx_width = display_stats.rx_height = display_stats.rx_fps = 0;
+  display_stats.tx_width = display_stats.tx_height = display_stats.tx_fps = 0;
+  display_stats.rx_frames = 0;
+  display_stats.tx_frames = 0;
+}
 
 void DisplayCore::add_manager (DisplayManager &manager)
 {
   managers.insert (&manager);
   manager_added.emit (manager);
 
-  manager.display_type_changed.connect (sigc::bind (sigc::mem_fun (this, &DisplayCore::on_display_type_changed), &manager));
+  manager.display_mode_changed.connect (sigc::bind (sigc::mem_fun (this, &DisplayCore::on_display_mode_changed), &manager));
   manager.fullscreen_mode_changed.connect (sigc::bind (sigc::mem_fun (this, &DisplayCore::on_fullscreen_mode_changed), &manager));
-  manager.size_changed.connect (sigc::bind (sigc::mem_fun (this, &DisplayCore::on_size_changed), &manager));
+  manager.display_size_changed.connect (sigc::bind (sigc::mem_fun (this, &DisplayCore::on_display_size_changed), &manager));
   manager.logo_update_required.connect (sigc::bind (sigc::mem_fun (this, &DisplayCore::on_logo_update_required), &manager));
   manager.display_info_update_required.connect (sigc::bind (sigc::mem_fun (this, &DisplayCore::on_display_info_update_required), &manager));
 }
@@ -70,6 +78,8 @@ void DisplayCore::visit_managers (sigc::slot<void, DisplayManager &> visitor)
 
 void DisplayCore::start ()
 {
+  g_get_current_time (&last_stats);
+
   for (std::set<DisplayManager *>::iterator iter = managers.begin ();
        iter != managers.end ();
        iter++) {
@@ -84,6 +94,10 @@ void DisplayCore::stop ()
        iter++) {
     (*iter)->stop ();
   }
+  display_stats.rx_width = display_stats.rx_height = display_stats.rx_fps = 0;
+  display_stats.tx_width = display_stats.tx_height = display_stats.tx_fps = 0;
+  display_stats.rx_frames = 0;
+  display_stats.tx_frames = 0;
 }
 
 void DisplayCore::set_frame_data (unsigned width,
@@ -92,6 +106,31 @@ void DisplayCore::set_frame_data (unsigned width,
                                   bool local,
                                   int devices_nbr)
 {
+  if (local) {
+    display_stats.tx_frames++;
+    display_stats.tx_width = width;
+    display_stats.tx_height = height;
+  }
+  else {
+    display_stats.rx_frames++;
+    display_stats.rx_width = width;
+    display_stats.rx_height = height;
+  }
+
+  GTimeVal current_time;
+  g_get_current_time (&current_time);
+
+  long unsigned milliseconds = ((current_time.tv_sec - last_stats.tv_sec) * 1000) 
+                             + ((current_time.tv_usec - last_stats.tv_usec) / 1000);
+
+  if (milliseconds > 2000) {
+    display_stats.tx_fps = round ((display_stats.rx_frames * 1000) / milliseconds);
+    display_stats.rx_fps = round ((display_stats.tx_frames * 1000) / milliseconds);
+    display_stats.rx_frames = 0;
+    display_stats.tx_frames = 0;
+    g_get_current_time (&last_stats);
+  }
+
   for (std::set<DisplayManager *>::iterator iter = managers.begin ();
        iter != managers.end ();
        iter++) {
@@ -99,29 +138,29 @@ void DisplayCore::set_frame_data (unsigned width,
   }
 }
 
-void DisplayCore::set_video_info (const DisplayInfo & newVideoInfo)
+void DisplayCore::set_display_info (const DisplayInfo & _display_info)
 {
   for (std::set<DisplayManager *>::iterator iter = managers.begin ();
        iter != managers.end ();
        iter++) {
-    (*iter)->set_display_info (newVideoInfo);
+    (*iter)->set_display_info (_display_info);
   }
 }
 
 
-void DisplayCore::on_display_type_changed (DisplayMode display, DisplayManager *manager)
+void DisplayCore::on_display_mode_changed (DisplayMode display, DisplayManager *manager)
 {
-  display_type_changed.emit (*manager, display);
+  display_mode_changed.emit (*manager, display);
 }
 
-void DisplayCore::on_fullscreen_mode_changed ( FSToggle_new toggle, DisplayManager *manager)
+void DisplayCore::on_fullscreen_mode_changed ( FSToggle toggle, DisplayManager *manager)
 {
   fullscreen_mode_changed.emit (*manager, toggle);
 }
 
-void DisplayCore::on_size_changed ( unsigned width, unsigned height, DisplayManager *manager)
+void DisplayCore::on_display_size_changed ( unsigned width, unsigned height, DisplayManager *manager)
 {
-  size_changed.emit (*manager, width, height);
+  display_size_changed.emit (*manager, width, height);
 }
 
 void DisplayCore::on_logo_update_required (DisplayManager *manager)

@@ -61,7 +61,7 @@ void GMDisplayManager::start ()
   Ekiga::DisplayManager::start();
 
   /* State for last frame */
-  last_frame.display = UNSET_new;
+  last_frame.display = UNSET;
   last_frame.local_width = 0;
   last_frame.local_height = 0;
   last_frame.remote_width = 0;
@@ -82,15 +82,9 @@ void GMDisplayManager::start ()
   update_required.local = false;
   update_required.remote = false;
 
-  rx_frames = 0;
-  tx_frames = 0;
-
-  last_stats = PTime ();
-
 //  this->Resume ();
   this->Restart ();
   thread_sync_point.Wait ();
-printf ("Start\n");
 }
 
 void GMDisplayManager::stop () {
@@ -104,7 +98,6 @@ void GMDisplayManager::stop () {
   rframeStore.SetSize (0);
 
   Ekiga::DisplayManager::stop();
-printf ("Stop\n");
 }
 
 void
@@ -118,7 +111,6 @@ GMDisplayManager::Main ()
 
   while (!end_thread) {
     frame_available_sync_point.Wait(250);
-printf ("Thread\n");
     var_mutex.Wait ();
       do_sync = first_frame_received;
       if (first_frame_received)
@@ -144,8 +136,6 @@ void GMDisplayManager::set_frame_data (unsigned width,
 
   get_display_info(local_display_info);
 
-printf ("SetFrameData\n");
-
   var_mutex.Wait();
 
   /* If there is only one device open, ignore the setting, and 
@@ -154,11 +144,11 @@ printf ("SetFrameData\n");
   if (devices_nbr <= 1) {
 
     if (!local)
-      local_display_info.display = REMOTE_VIDEO_new;
+      local_display_info.display = REMOTE_VIDEO;
     else 
-      local_display_info.display = LOCAL_VIDEO_new;
+      local_display_info.display = LOCAL_VIDEO;
 
-    runtime.run_in_main (sigc::bind (display_type_changed.make_slot (), local_display_info.display));
+    runtime.run_in_main (sigc::bind (display_mode_changed.make_slot (), local_display_info.display));
   }
 
   current_frame.display = local_display_info.display;
@@ -172,14 +162,6 @@ printf ("SetFrameData\n");
     current_frame.local_width = width;
     current_frame.local_height= height;
 
-    tx_frames++;
-    
-    if ((width != display_stats.tx_width) || (height != display_stats.tx_height)) {
-      display_stats.tx_width = width;
-      display_stats.tx_height = height;
-      //FIXME
-    }
-
     memcpy (lframeStore.GetPointer(), data, (width * height * 3) >> 1);
     if (update_required.local) 
       PTRACE(3, "Skipped earlier local frame");
@@ -191,14 +173,6 @@ printf ("SetFrameData\n");
     rframeStore.SetSize (width * height * 3);
     current_frame.remote_width = width;
     current_frame.remote_height= height;
-    
-    rx_frames++;
-
-    if ((width != display_stats.rx_width) || (height != display_stats.rx_height)) {
-      display_stats.rx_width = width;
-      display_stats.rx_height = height;
-      //FIXME
-    }
 
     memcpy (rframeStore.GetPointer(), data, (width * height * 3) >> 1);
     if (update_required.remote) 
@@ -206,30 +180,20 @@ printf ("SetFrameData\n");
     update_required.remote = true;
   }
 
-  PTimeInterval t = PTime () - last_stats;
-  if (t.GetMilliSeconds() > 2000) {
-    display_stats.tx_fps = round ((rx_frames * 1000) / t.GetMilliSeconds());
-    display_stats.rx_fps = round ((tx_frames * 1000) / t.GetMilliSeconds());
-    rx_frames = 0;
-    tx_frames = 0;
-    last_stats = PTime();
-    //FIXME
-  }
-
   var_mutex.Signal();
 
-  if ((local_display_info.display == UNSET_new) || (local_display_info.zoom == 0) || (!local_display_info.gconfInfoSet)) {
+  if ((local_display_info.display == UNSET) || (local_display_info.zoom == 0) || (!local_display_info.gconfInfoSet)) {
     runtime.run_in_main (display_info_update_required.make_slot ());
     PTRACE(4, "GMVideoDisplay_embedded\tDisplay and zoom variable not set yet, not opening display");
      return;
   }
 
-  if ((local_display_info.display == LOCAL_VIDEO_new) && !local)
+  if ((local_display_info.display == LOCAL_VIDEO) && !local)
       return;
 
-  if ((local_display_info.display == REMOTE_VIDEO_new) && local)
+  if ((local_display_info.display == REMOTE_VIDEO) && local)
       return;
-printf ("Signaling\n");
+
   frame_available_sync_point.Signal();
 }
 
@@ -246,36 +210,36 @@ GMDisplayManager::frame_display_change_needed (DisplayMode display,
   get_display_info(local_display_info);
 
   if ((!local_display_info.widgetInfoSet) || (!local_display_info.gconfInfoSet) ||
-      (local_display_info.display == UNSET_new) || (local_display_info.zoom == 0)) {
+      (local_display_info.display == UNSET) || (local_display_info.zoom == 0)) {
     PTRACE(4, "GMVideoDisplay_X\tWidget not yet realized or gconf info not yet set, not opening display");
     return false;
   }
   switch (display) {
-  case LOCAL_VIDEO_new:
-    return (last_frame.display != LOCAL_VIDEO_new 
+  case LOCAL_VIDEO:
+    return (last_frame.display != LOCAL_VIDEO 
             || last_frame.zoom != zoom || last_frame.local_width != lf_width || last_frame.local_height != lf_height 
             || local_display_info.x != last_frame.embedded_x || local_display_info.y != last_frame.embedded_y);
     break;
 
-  case REMOTE_VIDEO_new:
-    return (last_frame.display != REMOTE_VIDEO_new
+  case REMOTE_VIDEO:
+    return (last_frame.display != REMOTE_VIDEO
             || last_frame.zoom != zoom || last_frame.remote_width != rf_width || last_frame.remote_height != rf_height
             || local_display_info.x != last_frame.embedded_x || local_display_info.y != last_frame.embedded_y);
     break;
 
-  case PIP_new:
+  case PIP:
     return (last_frame.display != display || last_frame.zoom != zoom 
             || last_frame.remote_width != rf_width || last_frame.remote_height != rf_height
             || last_frame.local_width != lf_width || last_frame.local_height != lf_height
             || local_display_info.x != last_frame.embedded_x || local_display_info.y != last_frame.embedded_y);
     break;
-  case PIP_WINDOW_new:
-  case FULLSCREEN_new:
+  case PIP_WINDOW:
+  case FULLSCREEN:
     return (last_frame.display != display || last_frame.zoom != zoom 
             || last_frame.remote_width != rf_width || last_frame.remote_height != rf_height
             || last_frame.local_width != lf_width || last_frame.local_height != lf_height);
     break;
-  case UNSET_new:
+  case UNSET:
   default:
     break;
   }
@@ -295,24 +259,24 @@ GMDisplayManager::redraw ()
 
     switch (current_frame.display) 
       {
-      case LOCAL_VIDEO_new:
+      case LOCAL_VIDEO:
           if (lframeStore.GetSize() > 0)
             display_frame ((char*)lframeStore.GetPointer (), current_frame.local_width, current_frame.local_height);
         break;
 
-      case REMOTE_VIDEO_new:
+      case REMOTE_VIDEO:
           if (rframeStore.GetSize() > 0)
             display_frame ((char*)rframeStore.GetPointer (), current_frame.remote_width, current_frame.remote_height);
         break;
 
-     case FULLSCREEN_new:
-     case PIP_new:
-     case PIP_WINDOW_new:
+     case FULLSCREEN:
+     case PIP:
+     case PIP_WINDOW:
           if ((lframeStore.GetSize() > 0) &&  (rframeStore.GetSize() > 0))
             display_pip_frames ((char*)lframeStore.GetPointer (), current_frame.local_width, current_frame.local_height,
                               (char*)rframeStore.GetPointer (), current_frame.remote_width, current_frame.remote_height);
        break;
-    case UNSET_new:
+    case UNSET:
     default:
        break;
     }

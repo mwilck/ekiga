@@ -49,8 +49,8 @@
 #include "display-manager.h"
 #include "runtime.h"
 //FIXME
-#include "../../../../../ptlib/include/ptbuildopts.h"
-#include "../../../../../ptlib/include/ptlib.h"
+#include "ptbuildopts.h"
+#include "ptlib.h"
 
 
 typedef struct {
@@ -219,9 +219,6 @@ public:
 
   FrameInfo last_frame;
   FrameInfo current_frame;
-
-  unsigned rx_frames;
-  unsigned tx_frames;
   
   bool end_thread;
   bool first_frame_received;
@@ -234,8 +231,6 @@ public:
 
   PSyncPoint frame_available_sync_point;     /* To signal a new frame has to be displayed  */
   PSyncPoint thread_sync_point;              /* To signal that the thread has been created */
-
-  PTime last_stats;
 
   Ekiga::Runtime & runtime;
   Ekiga::ServiceCore & core;
