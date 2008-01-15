@@ -9,7 +9,8 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/engine/include \
 	-I$(top_srcdir)/lib/engine/framework \
 	-I$(top_srcdir)/lib/engine/display/skel \
-	-I$(top_srcdir)/lib/engine/display/common
+	-I$(top_srcdir)/lib/engine/display/common \
+	-I$(top_srcdir)/lib/gui
 
 libgmdisplay_x_la_SOURCES = \
 	$(common_dir)/display-manager-common.cpp\

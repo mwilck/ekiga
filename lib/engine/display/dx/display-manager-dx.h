@@ -48,19 +48,15 @@ class GMDisplayManager_dx
 {
 public:
   GMDisplayManager_dx (Ekiga::ServiceCore & core);
-  virtual void setup_frame_display (DisplayMode display, 
-                                    unsigned lf_width, 
-                                    unsigned lf_height, 
-                                    unsigned rf_width, 
-                                    unsigned rf_height, 
-                                    unsigned int zoom) {};
+
+  virtual void setup_frame_display () {};
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Closes the frame display and returns FALSE 
    *                 in case of failure.
    * PRE          :  /
    */
-  virtual bool close_frame_display () {return true;};
+  virtual void close_frame_display () {};
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Display the given frame on the correct display.

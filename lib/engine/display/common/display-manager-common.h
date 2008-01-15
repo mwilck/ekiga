@@ -90,13 +90,6 @@ public:
   /* DESCRIPTION  :  The destructor.
    * BEHAVIOR     :  /
    * PRE          :  /
-    ==============================================================================
-    ATTENTION: When deriving from this class, ALWAYS make sure that the 
-    destructor of the derived class waits for the thread to terminate -
-    if the thread is still running after the derived class' destructor finishes, 
-    all virtual functions will be switched back to this base class where they are 
-    purely virtual, leading to severe runtime issues.
-    ==============================================================================
   */
   virtual ~GMDisplayManager (void);
 
@@ -141,12 +134,7 @@ public:
    *                 otherwise.
    * PRE          :  /
    */
-  virtual bool frame_display_change_needed (DisplayMode display, 
-                                            unsigned lf_width, 
-                                            unsigned lf_height, 
-                                            unsigned rf_width, 
-                                            unsigned rf_height, 
-                                            unsigned int zoom);
+  virtual bool frame_display_change_needed ();
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Setup the display following the display type,
@@ -154,19 +142,14 @@ public:
    *                 Returns FALSE in case of failure.
    * PRE          :  /
    */
-  virtual void setup_frame_display (DisplayMode display, 
-                                    unsigned lf_width, 
-                                    unsigned lf_height, 
-                                    unsigned rf_width, 
-                                    unsigned rf_height, 
-                                    unsigned int zoom) = 0;
+  virtual void setup_frame_display () = 0;
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Closes the frame display and returns FALSE 
    *                 in case of failure.
    * PRE          :  /
    */
-  virtual bool close_frame_display () = 0;
+  virtual void close_frame_display () = 0;
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Display the given frame on the correct display.
@@ -232,8 +215,8 @@ public:
   PSyncPoint frame_available_sync_point;     /* To signal a new frame has to be displayed  */
   PSyncPoint thread_sync_point;              /* To signal that the thread has been created */
 
-  Ekiga::Runtime & runtime;
   Ekiga::ServiceCore & core;
+  Ekiga::Runtime & runtime;
 };
 
 #endif /* VIDEODISPLAY */

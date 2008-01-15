@@ -164,7 +164,7 @@ void GMDisplayManager::set_frame_data (unsigned width,
 
     memcpy (lframeStore.GetPointer(), data, (width * height * 3) >> 1);
     if (update_required.local) 
-      PTRACE(3, "Skipped earlier local frame");
+      PTRACE(3, "GMDisplayManager\tSkipped earlier local frame");
     update_required.local = true;
   }
   else {
@@ -176,7 +176,7 @@ void GMDisplayManager::set_frame_data (unsigned width,
 
     memcpy (rframeStore.GetPointer(), data, (width * height * 3) >> 1);
     if (update_required.remote) 
-      PTRACE(3, "Skipped earlier remote frame");
+      PTRACE(3, "GMDisplayManager\tSkipped earlier remote frame");
     update_required.remote = true;
   }
 
@@ -184,7 +184,7 @@ void GMDisplayManager::set_frame_data (unsigned width,
 
   if ((local_display_info.display == UNSET) || (local_display_info.zoom == 0) || (!local_display_info.gconfInfoSet)) {
     runtime.run_in_main (display_info_update_required.make_slot ());
-    PTRACE(4, "GMVideoDisplay_embedded\tDisplay and zoom variable not set yet, not opening display");
+    PTRACE(4, "GMDisplayManager\tDisplay and zoom variable not set yet, not opening display");
      return;
   }
 
@@ -197,13 +197,9 @@ void GMDisplayManager::set_frame_data (unsigned width,
   frame_available_sync_point.Signal();
 }
 
+
 bool 
-GMDisplayManager::frame_display_change_needed (DisplayMode display, 
-                                              unsigned lf_width, 
-                                              unsigned lf_height, 
-                                              unsigned rf_width, 
-                                              unsigned rf_height, 
-                                              unsigned int zoom)
+GMDisplayManager::frame_display_change_needed ()
 {
   DisplayInfo local_display_info;
 
@@ -211,33 +207,33 @@ GMDisplayManager::frame_display_change_needed (DisplayMode display,
 
   if ((!local_display_info.widgetInfoSet) || (!local_display_info.gconfInfoSet) ||
       (local_display_info.display == UNSET) || (local_display_info.zoom == 0)) {
-    PTRACE(4, "GMVideoDisplay_X\tWidget not yet realized or gconf info not yet set, not opening display");
+    PTRACE(4, "GMDisplayManager\tWidget not yet realized or gconf info not yet set, not opening display");
     return false;
   }
-  switch (display) {
+
+  if ( last_frame.display != current_frame.display || last_frame.zoom != current_frame.zoom )
+    return true;
+
+  switch (current_frame.display) {
   case LOCAL_VIDEO:
-    return (last_frame.display != LOCAL_VIDEO 
-            || last_frame.zoom != zoom || last_frame.local_width != lf_width || last_frame.local_height != lf_height 
-            || local_display_info.x != last_frame.embedded_x || local_display_info.y != last_frame.embedded_y);
+    return (   last_frame.local_width  != current_frame.local_width   || last_frame.local_height != current_frame.local_height 
+            || local_display_info.x    != last_frame.embedded_x       || local_display_info.y    != last_frame.embedded_y );
     break;
 
   case REMOTE_VIDEO:
-    return (last_frame.display != REMOTE_VIDEO
-            || last_frame.zoom != zoom || last_frame.remote_width != rf_width || last_frame.remote_height != rf_height
-            || local_display_info.x != last_frame.embedded_x || local_display_info.y != last_frame.embedded_y);
+    return (   last_frame.remote_width != current_frame.remote_width || last_frame.remote_height != current_frame.remote_height
+            || local_display_info.x    != last_frame.embedded_x      || local_display_info.y     != last_frame.embedded_y);
     break;
 
   case PIP:
-    return (last_frame.display != display || last_frame.zoom != zoom 
-            || last_frame.remote_width != rf_width || last_frame.remote_height != rf_height
-            || last_frame.local_width != lf_width || last_frame.local_height != lf_height
-            || local_display_info.x != last_frame.embedded_x || local_display_info.y != last_frame.embedded_y);
+    return (   last_frame.remote_width != current_frame.remote_width || last_frame.remote_height != current_frame.remote_height
+            || last_frame.local_width  != current_frame.local_width  || last_frame.local_height  != current_frame.local_height
+            || local_display_info.x    != last_frame.embedded_x      || local_display_info.y     != last_frame.embedded_y);
     break;
   case PIP_WINDOW:
   case FULLSCREEN:
-    return (last_frame.display != display || last_frame.zoom != zoom 
-            || last_frame.remote_width != rf_width || last_frame.remote_height != rf_height
-            || last_frame.local_width != lf_width || last_frame.local_height != lf_height);
+    return (   last_frame.remote_width != current_frame.remote_width || last_frame.remote_height != current_frame.remote_height
+            || last_frame.local_width  != current_frame.local_width  || last_frame.local_height  != current_frame.local_height);
     break;
   case UNSET:
   default:
@@ -252,10 +248,8 @@ GMDisplayManager::redraw ()
   UpdateRequired sync_required;
   sync_required = update_required;
   
-    if (frame_display_change_needed (current_frame.display, current_frame.local_width, current_frame.local_height, 
-                                  current_frame.remote_width, current_frame.remote_height, current_frame.zoom)) 
-      setup_frame_display (current_frame.display, current_frame.local_width, current_frame.local_height, 
-                         current_frame.remote_width, current_frame.remote_height, current_frame.zoom); 
+    if (frame_display_change_needed ()) 
+      setup_frame_display (); 
 
     switch (current_frame.display) 
       {

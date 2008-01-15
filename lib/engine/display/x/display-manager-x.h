@@ -58,31 +58,22 @@ public:
    *                 otherwise.
    * PRE          :  /
    */
-  virtual bool frame_display_change_needed (DisplayMode display, 
-                                            unsigned lf_width, 
-                                            unsigned lf_height, 
-                                            unsigned rf_width, 
-                                            unsigned rf_height, 
-                                            unsigned int zoom);
+  virtual bool frame_display_change_needed ();
+
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Setup the display following the display type,
    *                 picture dimensions and zoom value.
    *                 Returns FALSE in case of failure.
    * PRE          :  /
    */
-  virtual void setup_frame_display (DisplayMode display, 
-                                    unsigned lf_width, 
-                                    unsigned lf_height, 
-                                    unsigned rf_width, 
-                                    unsigned rf_height, 
-                                    unsigned int zoom);
+  virtual void setup_frame_display ();
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Closes the frame display and returns FALSE 
    *                 in case of failure.
    * PRE          :  /
    */
-  virtual bool close_frame_display ();
+  virtual void close_frame_display ();
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Display the given frame on the correct display.
@@ -119,9 +110,7 @@ protected:
   Display *lDisplay;
   Display *rDisplay;
 
-  GC* embGC;
-
-  bool pipWindowAvailable;
+  bool pip_window_available;
 
 };
 #endif /* DISPLAY_MANAGER_X */
