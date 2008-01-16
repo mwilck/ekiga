@@ -44,6 +44,7 @@ namespace Local
 {
 /**
  * @addtogroup presence
+ * @internal
  * @{
  */
 

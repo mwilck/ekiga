@@ -41,7 +41,13 @@
 
 #include <glib.h>
 
-namespace Ekiga {
+namespace Ekiga
+{
+
+/**
+ * @addtogroup calls
+ * @{
+ */
 
   /** This class holds the representation of a codec. 
    * That representation is different from the codec itself, but can be used
@@ -163,6 +169,11 @@ namespace Ekiga {
        */
       bool operator!= (const CodecList & c) const;
     };
+
+/**
+ * @}
+ */
+
 }
 
 /** Output the CodecList

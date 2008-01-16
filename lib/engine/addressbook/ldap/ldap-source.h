@@ -48,6 +48,12 @@
 namespace OPENLDAP
 {
 
+/**
+ * @addtogroup contacts
+ * @internal
+ * @{
+ */
+
   class Source:
     public Ekiga::SourceImpl<Book, Ekiga::delete_book_management<Book> >,
     public Ekiga::Service
@@ -89,6 +95,11 @@ namespace OPENLDAP
     void new_book ();
     void on_new_book_form_submitted (Ekiga::Form &result);
   };
+
+/**
+ * @}
+ */
+
 };
 
 #endif

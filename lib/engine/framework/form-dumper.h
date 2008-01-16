@@ -44,6 +44,11 @@
 namespace Ekiga
 {
 
+/**
+ * @addtogroup forms
+ * @{
+ */
+
   class FormDumper: public FormVisitor
   {
   public:
@@ -94,6 +99,11 @@ namespace Ekiga
 
     std::ostream &out;
   };
+
+/**
+ * @}
+ */
+
 };
 
 #endif

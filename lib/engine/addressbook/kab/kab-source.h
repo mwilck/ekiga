@@ -46,6 +46,12 @@
 namespace KAB
 {
 
+/**
+ * @addtogroup contacts
+ * @internal
+ * @{
+ */
+
   class Source: public Ekiga::SourceImpl<Book, Ekiga::delete_book_management<Book> >
   {
   public:
@@ -60,6 +66,11 @@ namespace KAB
 
     Ekiga::ContactCore &core;
   };
+
+/**
+ * @}
+ */
+
 };
 
 #endif

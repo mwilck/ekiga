@@ -41,6 +41,13 @@
 
 namespace History
 {
+
+/**
+ * @addtogroup contacts
+ * @internal
+ * @{
+ */
+
   class Source :
     public Ekiga::SourceImpl<Book, Ekiga::delete_book_management<Book> >,
     public Ekiga::Service
@@ -70,6 +77,12 @@ namespace History
     Book *book;
 
   };
+
+/**
+ * @addtogroup contacts
+ * @}
+ */
+
 }
 
 #endif

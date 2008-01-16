@@ -34,15 +34,6 @@
  */
 
 
-/**
- * This class implements an Ekiga::Presentity.
- *
- * The Presentity is represented by an internal XML document.
- *
- * There is a private signal, 'trigger_saving', which will be emitted
- * when appropriate to signal the Local::Heap that the XML tree has been
- * modified, and hence needs saving.
- */
 
 #ifndef __LOCAL_PRESENTITY_H__
 #define __LOCAL_PRESENTITY_H__
@@ -54,11 +45,22 @@
 
 namespace Local
 {
+
 /**
  * @addtogroup presence
+ * @internal
  * @{
  */
 
+  /**
+   * This class implements an Ekiga::Presentity.
+   *
+   * The Presentity is represented by an internal XML document.
+   *
+   * There is a private signal, 'trigger_saving', which will be emitted
+   * when appropriate to signal the Local::Heap that the XML tree has been
+   * modified, and hence needs saving.
+   */
   class Presentity: public Ekiga::Presentity
   {
   public:

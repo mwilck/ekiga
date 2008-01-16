@@ -33,19 +33,6 @@
  *
  */
 
-/**
- * This class implements an Ekiga::Heap.
- *
- * The Heap is internally represented by an XML document with all
- * presentities, and the groups they belong to.
- *
- * The parent class is responsible of emitting the appropriate
- * signals defined in heap.h through the use of global implementations
- * coded in heap-imp.h.
- *
- * When required, the Heap content is being saved in a GmConf entry.
- * Alternatively, it could be saved elsewhere.
- */
 
 #ifndef __LOCAL_HEAP_H__
 #define __LOCAL_HEAP_H__
@@ -60,9 +47,23 @@ namespace Local
 {
 /**
  * @addtogroup presence
+ * @internal
  * @{
  */
 
+  /**
+   * This class implements an Ekiga::Heap.
+   *
+   * The Heap is internally represented by an XML document with all
+   * presentities, and the groups they belong to.
+   *
+   * The parent class is responsible of emitting the appropriate
+   * signals defined in heap.h through the use of global implementations
+   * coded in heap-imp.h.
+   *
+   * When required, the Heap content is being saved in a GmConf entry.
+   * Alternatively, it could be saved elsewhere.
+   */
   class Heap : public Ekiga::HeapImpl<Presentity, Ekiga::delete_object_management <Presentity> >
   {
   public:

@@ -40,10 +40,19 @@
 #include "services.h"
 #include "runtime.h"
 
+/**
+ * @addtogroup services
+ * @{
+ */
+
 void
 engine_init (int argc,
              char *argv[],
              Ekiga::Runtime *runtime,
              Ekiga::ServiceCore *& core);
+
+/**
+ * @}
+ */
 
 #endif

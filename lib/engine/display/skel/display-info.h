@@ -43,6 +43,12 @@
 #endif
 
 //namespace Ekiga {
+
+/**
+ * @addtogroup display
+ * @{
+ */
+
   /* Video modes */
   typedef enum {
   
@@ -155,7 +161,11 @@
     DisplayMode display;
     unsigned int zoom;
   };
-  
+
+/**
+ * @}
+ */
+
 //};
 
 #endif

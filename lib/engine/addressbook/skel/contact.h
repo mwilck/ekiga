@@ -48,6 +48,11 @@
 namespace Ekiga
 {
 
+/**
+ * @addtogroup contacts
+ * @{
+ */
+
   class Contact
   {
   public:
@@ -111,6 +116,10 @@ namespace Ekiga
      */
     ChainOfResponsibility<FormRequest*> questions;
   };
+
+/**
+ * @}
+ */
 
 };
 #endif

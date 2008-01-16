@@ -41,12 +41,18 @@
 #ifndef __RUNTIME_GLIB_H__
 #define __RUNTIME_GLIB_H__
 
-namespace Ekiga {
+namespace Ekiga
+{
+
+/**
+ * @addtogroup services
+ * @{
+ */
 
   class GlibRuntime
     : public Runtime
   {
-public:
+  public:
 
     GlibRuntime ();
 
@@ -59,10 +65,15 @@ public:
     void run_in_main (sigc::slot<void> action,
                       unsigned int seconds);
 
-private:
+  private:
 
     GAsyncQueue *queue;
   };
+
+/**
+ * @}
+ */
+
 };
 
 #endif

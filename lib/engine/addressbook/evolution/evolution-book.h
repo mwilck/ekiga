@@ -50,6 +50,12 @@ class Wrapper;
 namespace Evolution
 {
 
+/**
+ * @addtogroup contacts
+ * @internal
+ * @{
+ */
+
   class Book:
     public Ekiga::BookImpl<Contact, Ekiga::delete_object_management<Contact> >
   {
@@ -95,6 +101,10 @@ namespace Evolution
 
     std::string search_filter;
   };
+
+/**
+ * @}
+ */
 
 };
 

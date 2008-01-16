@@ -41,35 +41,8 @@
 #include "map-key-reference-iterator.h"
 #include "map-key-const-reference-iterator.h"
 
-
-/** Ekiga::List
- *
- * This class is there to help write a dynamic object lister, that is an object
- * which will more or less 'own' objects which will emit "updated" and
- * "removed" signals.
- *
- * The more or less means that it supports different memory management traits
- * using the second (optional) template argument :
- * - either no management (the default) ;
- * - or the object is considered fully owned, which will trigger its
- * destruction (using delete) when removed.
- *
- * You can remove an object from an Ekiga::Lister in two ways :
- * - either by calling the remove_object method,
- * - or by emission of the object's removed signal.
- *
- * Notice that this class won't take care of removing the object from a
- * backend -- only from the Ekiga::Lister.
- * If you want the object *deleted* from the real backend, then you
- * probably should have an organization like :
- * - the object has a 'deleted' signal ;
- * - the lister child-class listens to this signal ;
- * - when the signal is received, then do a remove_object followed by calling
- * the appropriate api function to delete the object in your backend.
- */
-
-
-namespace Ekiga {
+namespace Ekiga
+{
 
   template<typename ObjectType>
   struct no_object_management
@@ -88,6 +61,32 @@ namespace Ekiga {
 
   };
 
+  /** Ekiga::Lister
+   *
+   * This class is there to help write a dynamic object lister, that is an
+   * object which will more or less 'own' objects which will emit "updated"
+   * and "removed" signals.
+   *
+   * The more or less means that it supports different memory management
+   * traits using the second (optional) template argument:
+   *  - either no management (the default);
+   *  - or the object is considered fully owned, which will trigger its
+   *    destruction (using delete) when removed.
+   *
+   * You can remove an object from an Ekiga::Lister in two ways:
+   *  - either by calling the remove_object method,
+   *  - or by emission of the object's removed signal.
+   *
+   * Notice that this class won't take care of removing the object from a
+   * backend -- only from the Ekiga::Lister.
+   * If you want the object *deleted* from the real backend, then you
+   * probably should have an organization like:
+   *  - the object has a 'deleted' signal;
+   *  - the lister child-class listens to this signal;
+   *  - when the signal is received, then do a remove_object followed by
+   *    calling the appropriate api function to delete the object in your
+   *    backend.
+   */
   template<typename ObjectType,
 	   typename ObjectManagementTrait = no_object_management<ObjectType> >
   class Lister

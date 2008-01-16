@@ -45,7 +45,13 @@
 #include <map>
 
 
-namespace Ekiga {
+namespace Ekiga
+{
+
+/**
+ * @defgroup calls Calls and protocols
+ * @{
+ */
 
   class CallManager;
 
@@ -56,12 +62,12 @@ namespace Ekiga {
 
   public:
 
-      /* The constructor
-      */
+      /** The constructor
+       */
       CallCore () {}
 
-      /* The destructor
-      */
+      /** The destructor
+       */
       ~CallCore () {}
 
 
@@ -168,6 +174,11 @@ namespace Ekiga {
 
       std::set<CallManager *> managers;
     };
+
+/**
+ * @}
+ */
+
 };
 
 

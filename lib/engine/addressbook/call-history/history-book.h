@@ -43,6 +43,13 @@
 
 namespace History
 {
+
+/**
+ * @addtogroup contacts
+ * @internal
+ * @{
+ */
+
   class Book
     : public Ekiga::BookImpl<Contact, Ekiga::delete_object_management <Contact> >
   {
@@ -85,6 +92,11 @@ namespace History
     Ekiga::ContactCore *contact_core;
     xmlDocPtr doc;
   };
+
+/**
+ * @}
+ */
+
 };
 
 #endif

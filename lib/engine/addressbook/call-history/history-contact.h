@@ -41,7 +41,14 @@
 #include "services.h"
 #include "contact-core.h"
 
-namespace History {
+namespace History
+{
+
+/**
+ * @addtogroup contacts
+ * @internal
+ * @{
+ */
 
   typedef enum {
 
@@ -92,6 +99,11 @@ namespace History {
     std::string status;
     std::set<std::string> groups;
   };
+
+/**
+ * @}
+ */
+
 };
 
 #endif

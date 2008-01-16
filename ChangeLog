@@ -1,5 +1,63 @@
 2008-01-16  Steve Frécinaux  <code@istique.net>
 
+	* Doxyfile.in:
+	Do not document internal classes
+
+	* lib/engine/addressbook/call-history/history-book.h:
+	* lib/engine/addressbook/call-history/history-contact.h:
+	* lib/engine/addressbook/call-history/history-main.h:
+	* lib/engine/addressbook/call-history/history-source.h:
+	* lib/engine/addressbook/evolution/evolution-book.h:
+	* lib/engine/addressbook/evolution/evolution-contact.h:
+	* lib/engine/addressbook/evolution/evolution-main.h:
+	* lib/engine/addressbook/evolution/evolution-source.h:
+	* lib/engine/addressbook/kab/kab-book.h:
+	* lib/engine/addressbook/kab/kab-contact.h:
+	* lib/engine/addressbook/kab/kab-main.h:
+	* lib/engine/addressbook/kab/kab-source.h:
+	* lib/engine/addressbook/ldap/ldap-book.h:
+	* lib/engine/addressbook/ldap/ldap-contact.h:
+	* lib/engine/addressbook/ldap/ldap-main.h:
+	* lib/engine/addressbook/ldap/ldap-source.h:
+	* lib/engine/addressbook/skel/book-impl.h:
+	* lib/engine/addressbook/skel/contact-core.h:
+	* lib/engine/addressbook/skel/contact.h:
+	* lib/engine/addressbook/skel/source-impl.h:
+	* lib/engine/display/skel/display-core.h:
+	* lib/engine/display/skel/display-info.h:
+	* lib/engine/display/skel/display-manager.h:
+	* lib/engine/engine.h:
+	* lib/engine/framework/form-builder.h:
+	* lib/engine/framework/form-dumper.h:
+	* lib/engine/framework/form-request-simple.h:
+	* lib/engine/framework/form-request.h:
+	* lib/engine/framework/form-visitor.h:
+	* lib/engine/framework/form.h:
+	* lib/engine/framework/lister.h:
+	* lib/engine/framework/menu-builder.h:
+	* lib/engine/framework/menu-xml.h:
+	* lib/engine/framework/runtime-glib.h:
+	* lib/engine/framework/runtime.h:
+	* lib/engine/framework/services.h:
+	* lib/engine/framework/trigger.h:
+	* lib/engine/presence/avahi/avahi-cluster.h:
+	* lib/engine/presence/avahi/avahi-heap.h:
+	* lib/engine/presence/avahi/avahi-presentity.h:
+	* lib/engine/presence/local-roster/local-cluster.h:
+	* lib/engine/presence/local-roster/local-heap.h:
+	* lib/engine/presence/local-roster/local-presentity.h:
+	* lib/engine/presence/skel/cluster-impl.h:
+	* lib/engine/protocol/skel/call-core.h:
+	* lib/engine/protocol/skel/call-manager.h:
+	* lib/engine/protocol/skel/call.h:
+	* lib/engine/protocol/skel/codec-description.h:
+	- Add groups for each engine module in the docs
+	- Fix some doc comments that were bound to the namespace instead of
+	  the class
+	- Add @internal to most implementation classes.
+
+2008-01-16  Steve Frécinaux  <code@istique.net>
+
 	* lib/engine/presence/avahi/avahi-cluster.h:
 	* lib/engine/presence/avahi/avahi-heap.h:
 	* lib/engine/presence/avahi/avahi-main.h:

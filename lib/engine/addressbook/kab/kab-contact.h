@@ -46,6 +46,12 @@
 namespace KAB
 {
 
+/**
+ * @addtogroup contacts
+ * @internal
+ * @{
+ */
+
   class Contact: public Ekiga::Contact
   {
   public:
@@ -73,6 +79,10 @@ namespace KAB
     std::map<std::string,std::string> uris;
 
   };
+
+/**
+ * @}
+ */
 
 };
 

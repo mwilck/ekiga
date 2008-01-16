@@ -43,6 +43,12 @@
 
 namespace Ekiga
 {
+
+/**
+ * @addtogroup forms
+ * @{
+ */
+
   class FormRequestSimple: public FormRequest,
 			   public FormBuilder
   {
@@ -60,6 +66,11 @@ namespace Ekiga
     sigc::signal<void, Form &> submitted;
 
   };
+
+/**
+ * @}
+ */
+
 };
 
 #endif

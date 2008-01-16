@@ -40,6 +40,12 @@
 
 namespace Ekiga
 {
+
+/**
+ * @defgroup forms Forms
+ * @{
+ */
+
   class Form
   {
   public:
@@ -80,6 +86,11 @@ namespace Ekiga
 
     virtual const std::set<std::string> editable_set (const std::string name) const = 0;
   };
+
+/**
+ * @}
+ */
+
 };
 
 #endif

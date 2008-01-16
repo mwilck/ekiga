@@ -39,26 +39,37 @@
 #include <string>
 #include <sigc++/sigc++.h>
 
-/* This object serves to make objects toolkit-independent : an object can add
- * actions to a MenuBuilder, and the specific implementation will take care of
- * the GUI.
- * For example you can do in your GUI :
- * MyToolkitMenuType *menu = new MyToolkitMenuType(whatever);
- * MyMenuBuilder builder(menu);
- *
- * toolkit_independent_object.populate_menu (builder);
- *
- * now use builder->menu, which is toolkit-dependent!
- *
- * ! Notice !
- * You better be sure the toolkit_independent_object will still live when
- * using the obtained menu, or the user may trigger a now-dead action... for
- * example it could be an object with "removed"&"updated" signals, and you
- * watch those, which allow you to regenerate or discard the menu in due time.
- */
 
 namespace Ekiga
 {
+
+/**
+ * @defgroup actions Actions
+ * @{
+ */
+
+  /** Menu builder.
+   *
+   * This object serves to make objects toolkit-independent: an object can
+   * add actions to a MenuBuilder, and the specific implementation will
+   * take care of the GUI.
+   * For example you can do in your GUI:
+   * <pre>
+   *   MyToolkitMenuType *menu = new MyToolkitMenuType(whatever);
+   *   MyMenuBuilder builder(menu);
+   *
+   *   toolkit_independent_object.populate_menu (builder);
+   * </pre>
+   *
+   * now use builder->menu, which is toolkit-dependent!
+   *
+   * ! Notice !
+   * You better be sure the toolkit_independent_object will still live
+   * when using the obtained menu, or the user may trigger a now-dead
+   * action... for example it could be an object with "removed" &
+   * "updated" signals, and you watch those, which allow you to regenerate
+   * or discard the menu in due time.
+   */
 
   class MenuBuilder
   {
@@ -76,6 +87,10 @@ namespace Ekiga
 
     virtual int size () const;
   };
+
+/**
+ * @}
+ */
 
 };
 

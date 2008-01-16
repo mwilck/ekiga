@@ -42,6 +42,12 @@
 /* declaration of a few helper classes */
 namespace Ekiga
 {
+
+/**
+ * @defgroup contacts Address Book
+ * @{
+ */
+
   class ContactDecorator
   {
   public:
@@ -52,15 +58,13 @@ namespace Ekiga
     virtual bool populate_menu (Contact &/*contact*/,
 				MenuBuilder &/*builder*/) = 0;
   };
-};
 
-
-/* notice that you give sources to this object as pointers, and this
- * object then assumes the ownership of the source : it will call delete
- * on each of them when it is destroyed.
- */
-namespace Ekiga
-{
+  /** Core object for address book support.
+   *
+   * Notice that you give sources to this object as pointers, and this
+   * object then assumes the ownership of the source: it will call delete
+   * on each of them when it is destroyed.
+   */
   class ContactCore: public Service
   {
   public:
@@ -190,6 +194,10 @@ namespace Ekiga
      */
     ChainOfResponsibility<FormRequest*> questions;
   };
+
+/**
+ * @}
+ */
 
 };
 #endif

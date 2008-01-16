@@ -42,7 +42,13 @@
 #include "call-core.h"
 #include "codec-description.h"
 
-namespace Ekiga {
+namespace Ekiga
+{
+
+/**
+ * @addtogroup calls
+ * @{
+ */
 
   class CallManager
     {
@@ -163,6 +169,11 @@ namespace Ekiga {
   private :
       std::string uri_type;
     };
+
+/**
+ * @}
+ */
+
 };
 
 #endif

@@ -40,7 +40,13 @@
 
 #include "display-core.h"
 
-namespace Ekiga {
+namespace Ekiga
+{
+
+/**
+ * @addtogroup display
+ * @{
+ */
 
   class DisplayManager
     {
@@ -61,8 +67,8 @@ namespace Ekiga {
        */               
 
       /** Create a call based on the remote uri given as parameter
-       * @param: An uri
-       * @return: true if a Ekiga::Call could be created
+       * @param uri  an uri
+       * @return     true if a Ekiga::Call could be created
        */
       virtual void start () { };
 
@@ -86,6 +92,11 @@ namespace Ekiga {
   protected:  
       virtual void get_display_info (DisplayInfo &) { };
     };
+
+/**
+ * @}
+ */
+
 };
 
 #endif

@@ -40,6 +40,12 @@
 
 namespace Ekiga
 {
+
+/**
+ * @addtogroup forms
+ * @{
+ */
+
   class FormRequest: public virtual Form
   {
   public:
@@ -49,6 +55,11 @@ namespace Ekiga
     virtual void submit (Form &) = 0;
 
   };
+
+/**
+ * @}
+ */
+
 };
 
 #endif

@@ -42,6 +42,12 @@
 
 namespace Ekiga
 {
+
+/**
+ * @addtogroup forms
+ * @{
+ */
+
   class FormBuilder: public virtual Form, public virtual FormVisitor
   {
   public:
@@ -236,5 +242,10 @@ namespace Ekiga
     std::list<struct MultipleChoiceField> multiple_choices;
     std::list<struct EditableSetField> editable_sets;
   };
+
+/**
+ * @}
+ */
+
 };
 #endif

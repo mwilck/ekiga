@@ -49,6 +49,13 @@
 
 namespace OPENLDAP
 {
+
+/**
+ * @addtogroup contacts
+ * @internal
+ * @{
+ */
+
   class Book:
     public Ekiga::BookImpl<Contact, Ekiga::delete_object_management<Contact> >
   {
@@ -118,6 +125,11 @@ namespace OPENLDAP
 
     Ekiga::Runtime & runtime;
   };
+
+/**
+ * @}
+ */
+
 };
 
 #endif

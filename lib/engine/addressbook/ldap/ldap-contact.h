@@ -42,6 +42,13 @@
 
 namespace OPENLDAP
 {
+
+/**
+ * @addtogroup contacts
+ * @internal
+ * @{
+ */
+
   class Contact: public Ekiga::Contact
   {
   public:
@@ -70,6 +77,11 @@ namespace OPENLDAP
 
     std::map<std::string, std::string> uris;
   };
+
+/**
+ * @}
+ */
+
 };
 
 #endif

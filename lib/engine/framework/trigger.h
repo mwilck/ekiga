@@ -38,7 +38,13 @@
 
 #include "services.h"
 
-namespace Ekiga {
+namespace Ekiga
+{
+
+/**
+ * @addtogroup services
+ * @{
+ */
 
   class Trigger: public Service
   {
@@ -48,6 +54,11 @@ namespace Ekiga {
 
     virtual void pull () = 0;
   };
+
+/**
+ * @}
+ */
+
 };
 
 #endif

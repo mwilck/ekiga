@@ -47,9 +47,18 @@
 
 #include <glib.h>
 
-namespace Ekiga {
+namespace Ekiga
+{
+
+/**
+ * @defgroup display Video Display
+ * @{
+ */
+
   class DisplayManager;
 
+  /** Core object for the video display support
+   */
   class DisplayCore
     : public Service
     {
@@ -137,7 +146,10 @@ namespace Ekiga {
 
       DisplayStats display_stats;
       GTimeVal last_stats;
-    };  
+    };
+/**
+ * @}
+ */
 };
 
 #endif

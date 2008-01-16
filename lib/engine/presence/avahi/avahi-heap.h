@@ -53,6 +53,7 @@ namespace Avahi
 
 /**
  * @addtogroup presence
+ * @internal
  * @{
  */
 

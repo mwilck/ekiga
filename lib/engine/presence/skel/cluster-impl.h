@@ -67,7 +67,7 @@ namespace Ekiga
 
   };
 
-  /** Generic implementation for the Cluster pure virtual class.
+  /** Generic implementation for the Ekiga::Cluster abstract class.
    *
    * This class is there to make it easy to implement a new type of
    * cluster: it will take care of implementing the external api, you

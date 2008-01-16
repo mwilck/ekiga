@@ -41,34 +41,41 @@
 #include "book.h"
 
 
-/** Ekiga::Book
- *
- * This class is there to make it easy to implement a new type of contact
- * addressbook : it will take care of implementing the external api, you
- * just have to decide when to add and remove contacts.
- *
- * It also provides basic memory management for contacts, with the second
- * (optional) template argument :
- * - either no management (the default) ;
- * - or the contact is considered bound to one Ekiga::Book, which will trigger its
- * destruction (using delete) when removed from it.
- *
- * You can remove a contact from an Ekiga::Book in two ways :
- * - either by calling the remove_contact method,
- * - or by emission of the contact's removed signal.
- *
- * Notice that this class won't take care of removing the contact from a
- * backend -- only from the Ekiga::Book.
- * If you want the contact *deleted* from the real backend, then you
- * probably should have an organization like :
- * - the contact has a 'deleted' signal ;
- * - the book listens to this signal ;
- * - when the signal is received, then do a remove_contact followed by calling
- * the appropriate api function to delete the contact in your backend.
+
+namespace Ekiga
+{
+
+/**
+ * @addtogroup contacts
+ * @{
  */
 
-namespace Ekiga {
-
+  /** Generic implementation for the Ekiga::Book abstract class.
+   *
+   * This class is there to make it easy to implement a new type of contact
+   * addressbook: it will take care of implementing the external api, you
+   * just have to decide when to add and remove contacts.
+   *
+   * It also provides basic memory management for Contacts, with the second
+   * (optional) template argument:
+   *  - either no management (the default);
+   *  - or the contact is considered bound to one Ekiga::Book, which will
+   *    trigger its destruction (using delete) when removed from it.
+   *
+   * You can remove a Contact from an Ekiga::Book in two ways:
+   *  - either by calling the remove_contact method,
+   *  - or by emission of the contact's removed signal.
+   *
+   * Notice that this class won't take care of removing the Contact from a
+   * backend -- only from the Ekiga::Book.
+   * If you want the Contact <b>deleted</b> from the real backend, then you
+   * probably should have an organization like:
+   *  - the contact has a 'deleted' signal ;
+   *  - the book listens to this signal ;
+   *  - when the signal is received, then do a remove_contact followed by
+   *    calling the appropriate api function to delete the contact in your
+   *    backend.
+   */
   template<typename ContactType = Contact,
 	   typename ObjectManagementTrait = no_object_management<ContactType> >
   class BookImpl:
@@ -134,6 +141,11 @@ namespace Ekiga {
     std::string status;
 
   };
+
+/**
+ * @}
+ */
+
 };
 
 

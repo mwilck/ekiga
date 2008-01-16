@@ -41,7 +41,13 @@
 
 #include "services.h"
 
-namespace Ekiga {
+namespace Ekiga
+{
+
+/**
+ * @addtogroup services
+ * @{
+ */
 
   class Runtime
     : public Service
@@ -67,6 +73,11 @@ namespace Ekiga {
     virtual void run_in_main (sigc::slot<void> action,
 			      unsigned int seconds = 0) = 0;
   };
+
+/**
+ * @}
+ */
+
 };
 
 #endif

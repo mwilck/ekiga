@@ -45,33 +45,14 @@
 #include "source.h"
 
 
-/** Ekiga::Source
- *
- * This class is there to make it easy to implement a new type of
- * addressbook source : it will take care of implementing the external api, you
- * just have to decide when to add and remove books.
- *
- * It also provides basic memory management for books, with the second
- * (optional) template argument :
- * - either no management (the default) ;
- * - or the book is considered bound to one Ekiga::Source, which will trigger
- * its destruction (using delete) when removed from it.
- *
- * You ca remove a book from an Ekiga::Source in two ways :
- * - either by calling the remove_book method,
- * - or by emission of the book's removed signal.
- *
- * Notice that this class won't take care of removing the book from a
- * backend -- only from the Ekiga::Source.
- * If you want the book *deleted* from the real backend, then you
- * probably should have an organization like :
- * - the book has a 'deleted' signal ;
- * - the source listens for this signal ;
- * - when the signal is received, then do a remove_book followed by calling
- * the appropriate api function to delete the book in your backend.
- */
 
-namespace Ekiga {
+namespace Ekiga
+{
+
+  /**
+   * @addtogroup contacts
+   * @{
+   */
 
   template<typename BookType>
   struct no_book_management
@@ -90,7 +71,32 @@ namespace Ekiga {
     static void release (BookType &book);
   };
 
-  template<typename BookType = Book,
+  /** Generic implementation for the Ekiga::Source abstract class.
+   *
+   * This class is there to make it easy to implement a new type of
+   * addressbook source: it will take care of implementing the external api,
+   * you just have to decide when to add and remove books.
+   * 
+   * It also provides basic memory management for books, with the second
+   * (optional) template argument:
+   *  - either no management (the default) ;
+   *  - or the book is considered bound to one Ekiga::Source, which will
+   *    trigger its destruction (using delete) when removed from it.
+   *
+   * You can remove a Book from an Ekiga::Source in two ways:
+   *  - either by calling the remove_book method,
+   *  - or by emission of the book's removed signal.
+   *
+   * Notice that this class won't take care of removing the book from a
+   * backend -- only from the Ekiga::Source.
+   * If you want the Book <b>deleted</b> from the real backend, then you
+   * probably should have an organization like :
+   *  - the book has a 'deleted' signal;
+   *  - the source listens for this signal;
+   *  - when the signal is received, then do a remove_book followed by calling
+   *    the appropriate api function to delete the Book in your backend.
+   */
+ template<typename BookType = Book,
 	   typename BookManagementTrait = no_book_management <BookType> >
   class SourceImpl: public Source
   {
@@ -215,6 +221,11 @@ namespace Ekiga {
      */
     std::map<BookType *, std::vector<sigc::connection> > connections;
   };
+
+/**
+ * @}
+ */
+
 };
 
 

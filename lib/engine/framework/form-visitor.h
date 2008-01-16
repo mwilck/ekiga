@@ -42,6 +42,12 @@
 
 namespace Ekiga
 {
+
+/**
+ * @addtogroup forms
+ * @{
+ */
+
   class FormVisitor
   {
   public:
@@ -94,6 +100,11 @@ namespace Ekiga
 			       const std::set<std::string> values,
 			       const std::set<std::string> proposed_values) = 0;
   };
+
+/**
+ * @}
+ */
+
 };
 
 #endif

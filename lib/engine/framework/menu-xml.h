@@ -41,7 +41,7 @@
 #include "services.h"
 #include "menu-builder.h"
 
-/** FIXME: write a proper XML schema
+/* FIXME: write a proper XML schema
  * Here is how what a toolbar description looks like :
  * <toolbar>
  *   <item type="...">...</item>
@@ -60,10 +60,16 @@
  * - 'external' : the command will be run as a shell command
  * - 'internal' : the command will be interpreted as an Ekiga::Trigger to get
  *                (if the trigger isn't available, the item will be dropped)
- **/
+ */
 
 namespace Ekiga
 {
+
+/**
+ * @addtogroup actions
+ * @{
+ */
+
   class MenuXML
   {
   public:
@@ -80,6 +86,11 @@ namespace Ekiga
     ServiceCore &core;
     xmlDocPtr doc;
   };
+
+/**
+ * @}
+ */
+
 };
 
 #endif

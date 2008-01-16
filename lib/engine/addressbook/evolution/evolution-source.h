@@ -48,6 +48,12 @@
 namespace Evolution
 {
 
+/**
+ * @addtogroup contacts
+ * @internal
+ * @{
+ */
+
   class Source: public Ekiga::SourceImpl<Book, Ekiga::delete_book_management<Book> >
   {
   public:
@@ -69,6 +75,11 @@ namespace Evolution
     Ekiga::ServiceCore &services;
     ESourceList *source_list;
   };
+
+/**
+ * @}
+ */
+
 };
 
 #endif

@@ -40,8 +40,17 @@
 
 #include "services.h"
 
+/**
+ * @addtogroup contacts
+ * @{
+ */
+
 bool history_init (Ekiga::ServiceCore &core,
 		   int *argc,
 		   char **argv[]);
+
+/**
+ * @}
+ */
 
 #endif

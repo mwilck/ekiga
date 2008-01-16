@@ -47,6 +47,12 @@
 namespace Evolution
 {
 
+/**
+ * @addtogroup contacts
+ * @internal
+ * @{
+ */
+
   class Contact: public Ekiga::Contact
   {
   public:
@@ -102,6 +108,10 @@ namespace Evolution
 
     void on_edit_form_submitted (Ekiga::Form &result);
   };
+
+/**
+ * @}
+ */
 
 };
 

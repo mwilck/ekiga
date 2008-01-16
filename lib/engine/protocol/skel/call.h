@@ -41,9 +41,15 @@
 #include <sigc++/sigc++.h>
 
 
-namespace Ekiga {
+namespace Ekiga
+{
 
-  /**
+/**
+ * @addtogroup calls
+ * @{
+ */
+
+  /*
    * Everything is handled asynchronously and signaled through the
    * Ekiga::CallManager
    */
@@ -259,6 +265,11 @@ namespace Ekiga {
       double late_packets; 
       double out_of_order_packets; 
     };
+
+/**
+ * @}
+ */
+
 };
 
 #endif

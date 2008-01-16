@@ -47,7 +47,13 @@
 #include <string>
 #include <sigc++/sigc++.h>
 
-namespace Ekiga {
+namespace Ekiga
+{
+
+/**
+ * @defgroup services Services
+ * @{
+ */
 
   struct Service
   {
@@ -80,6 +86,11 @@ namespace Ekiga {
     std::list<Service *> services;
 
   };
+
+/**
+ * @}
+ */
+
 };
 
 #endif
