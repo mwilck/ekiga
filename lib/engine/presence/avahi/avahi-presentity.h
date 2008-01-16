@@ -46,6 +46,11 @@
 namespace Avahi
 {
 
+/**
+ * @addtogroup presence
+ * @{
+ */
+
   class Presentity: public Ekiga::Presentity
   {
   public:
@@ -84,6 +89,9 @@ namespace Avahi
     std::string url;
   };
 
+/**
+ * @}
+ */
 };
 
 #endif

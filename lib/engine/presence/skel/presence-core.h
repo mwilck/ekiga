@@ -41,27 +41,15 @@
 #include "services.h"
 #include "cluster.h"
 
-/* The presence core has several goals :
- * - one of them is of course to list presentities, and know what happens to
- * them ;
- * - another one is that we may want to store presentities somewhere as dead
- * data, but still be able to gain presence information and actions on them.
- *
- * This is obtained by using three types of helpers :
- * - the abstract class PresentityDecorator, which allows to enable actions on
- * presentities based on uris ;
- * - the abstract class PresenceFetcher, through which it is possible to gain
- * presence information : they allow the PresenceCore to declare some presence
- * information is needed about an uri, or now unneeded ;
- * - finally, a simple callback-based api allows to add detecters for supported
- * uris : this allows for example a Presentity to know if it should declare
- * an uri as "foo@bar" or as "prtcl:foo@bar". FIXME : couldn't a chain of
- * responsibility be used there instead of a special registering magic?
+namespace Ekiga
+{
+
+/**
+ * @defgroup presence Presence
+ * @{
  */
 
 
-namespace Ekiga
-{
   class PresentityDecorator
   {
   public:
@@ -118,11 +106,31 @@ namespace Ekiga
     virtual void publish (const std::string & /*presence*/,
                           const std::string & /*extended_status*/) = 0;
   };
-};
 
-namespace Ekiga
-{
+  /** Core object for the presence support.
+   *
+   * The presence core has several goals:
+   *  - one of them is of course to list presentities, and know what happens to
+   *    them;
+   *  - another one is that we may want to store presentities somewhere as dead
+   *    data, but still be able to gain presence information and actions on
+   *    them.
+   *
+   * This is achieved by using three types of helpers:
+   *  - the abstract class PresentityDecorator, which allows to enable actions
+   *    on presentities based on uris;
+   * - the abstract class PresenceFetcher, through which it is possible to gain
+   *   presence information: they allow the PresenceCore to declare some
+   *   presence information is needed about an uri, or now unneeded;
+   * - finally, a simple callback-based api allows to add detecters for
+   *   supported uris: this allows for example a Presentity to know if it
+   *   should declare an uri as "foo@bar" or as "prtcl:foo@bar".
+   */
 
+  /*
+   * FIXME : couldn't a chain of responsibility be used there instead of a
+   *         special registering magic?
+   */
   class PresenceCore:
     public Service
   {
@@ -292,6 +300,10 @@ namespace Ekiga
     ChainOfResponsibility<FormRequest*> questions;
 
   };
+
+/**
+ * @}
+ */
 
 };
 

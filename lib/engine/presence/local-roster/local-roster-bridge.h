@@ -40,8 +40,16 @@
 
 #include "services.h"
 
+/**
+ * @addtogroup presence
+ * @{
+ */
+
 bool local_roster_bridge_init (Ekiga::ServiceCore &core,
 			       int *argc,
 			       char **argv[]);
 
+/**
+ * @}
+ */
 #endif

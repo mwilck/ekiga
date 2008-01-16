@@ -54,6 +54,11 @@
 
 namespace Local
 {
+/**
+ * @addtogroup presence
+ * @{
+ */
+
   class Presentity: public Ekiga::Presentity
   {
   public:
@@ -171,6 +176,10 @@ namespace Local
     std::map<std::string, xmlNodePtr> group_nodes;
     std::set<std::string> groups;
   };
+
+/**
+ * @}
+ */
 };
 
 #endif

@@ -51,6 +51,11 @@
 namespace Avahi
 {
 
+/**
+ * @addtogroup presence
+ * @{
+ */
+
   class Heap: public Ekiga::HeapImpl<Presentity,Ekiga::delete_object_management<Presentity> >
   {
   public:
@@ -97,6 +102,10 @@ namespace Avahi
     AvahiClient *client;
     AvahiServiceBrowser *browser;
   };
+
+/**
+ * @}
+ */
 
 };
 

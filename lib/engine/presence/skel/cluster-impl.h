@@ -42,28 +42,13 @@
 #include "map-key-const-reference-iterator.h"
 #include "cluster.h"
 
-/* This class is there to make it easy to implement a new type of
- * cluster : it will take care of implementing the external api, you
- * just have to decide when to add and remove heaps.
- *
- * It also provides basic memory management for heaps, with the second
- * (optional) template argument :
- * - either no management (the default) ;
- * - or the heap is considered bound to one cluster, which will trigger its
- * destruction (using delete) when removed from it, which can happen in two
- * ways : either by calling the remove_heap method, or by emission of the
- * heap's removed signal.
- *
- * Notice that this class won't take care of removing the heap from a
- * backend -- only from the cluster. If you want the heap *deleted* then you
- * probably should have an organization like :
- * - the heap has a 'deleted' signal ;
- * - the cluster listens for this signal ;
- * - when the signal is received, then do a remove_heap followed by calling
- * the appropriate api function to delete the heap in your backend.
- */
+namespace Ekiga
+{
 
-namespace Ekiga {
+/**
+ * @addtogroup presence
+ * @{
+ */
 
   template<typename HeapType>
   struct no_heap_management
@@ -81,6 +66,30 @@ namespace Ekiga {
     static void release (HeapType &heap);
 
   };
+
+  /** Generic implementation for the Cluster pure virtual class.
+   *
+   * This class is there to make it easy to implement a new type of
+   * cluster: it will take care of implementing the external api, you
+   * just have to decide when to add and remove heaps.
+   *
+   * It also provides basic memory management for heaps, with the second
+   * (optional) template argument:
+   *  - either no management (the default);
+   *  - or the heap is considered bound to one cluster, which will trigger its
+   *    destruction (using delete) when removed from it, which can happen in
+   *    two ways: either by calling the remove_heap method, or by emission of
+   *    the Heap's removed signal.
+   *
+   * Notice that this class won't take care of removing the heap from a
+   * backend -- only from the cluster. If you want the heap <b>deleted</b> then
+   * you probably should have an organization like:
+   *  - the heap has a 'deleted' signal;
+   *  - the cluster listens for this signal;
+   *  - when the signal is received, then do a remove_heap followed by calling
+   *    the appropriate api function to delete the Heap in your backend.
+   */
+
 
   template<typename HeapType = Heap,
 	   typename HeapManagementTrait = no_heap_management <HeapType> >
@@ -126,6 +135,10 @@ namespace Ekiga {
 
     std::map<HeapType *, std::vector<sigc::connection> > connections;
   };
+
+/**
+ * @}
+ */
 
 };
 

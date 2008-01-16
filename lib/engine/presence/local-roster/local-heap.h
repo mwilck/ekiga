@@ -58,6 +58,11 @@
 
 namespace Local
 {
+/**
+ * @addtogroup presence
+ * @{
+ */
+
   class Heap : public Ekiga::HeapImpl<Presentity, Ekiga::delete_object_management <Presentity> >
   {
   public:
@@ -167,6 +172,11 @@ namespace Local
     Ekiga::PresenceCore *presence_core;
     xmlDocPtr doc;
   };
+
+/**
+ * @}
+ */
+
 };
 
 #endif

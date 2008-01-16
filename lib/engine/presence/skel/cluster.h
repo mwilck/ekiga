@@ -39,7 +39,13 @@
 
 #include "heap.h"
 
-namespace Ekiga {
+namespace Ekiga
+{
+
+/**
+ * @addtogroup presence
+ * @{
+ */
 
   class Cluster
   {
@@ -79,6 +85,10 @@ namespace Ekiga {
      */
     ChainOfResponsibility<FormRequest*> questions;
   };
+
+/**
+ * @}
+ */
 
 };
 

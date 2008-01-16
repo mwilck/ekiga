@@ -40,8 +40,17 @@
 
 #include "services.h"
 
+/**
+ * @addtogroup presence
+ * @{
+ */
+
 bool avahi_init (Ekiga::ServiceCore &core,
 		 int *argc,
 		 char **argv[]);
+
+/**
+ * @}
+ */
 
 #endif

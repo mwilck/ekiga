@@ -44,6 +44,11 @@
 namespace Avahi
 {
 
+/**
+ * @addtogroup presence
+ * @{
+ */
+
   class Cluster:
     public Ekiga::ClusterImpl<Heap, Ekiga::delete_heap_management<Heap> >
   {
@@ -62,6 +67,10 @@ namespace Avahi
     Ekiga::PresenceCore &core;
     Heap *heap;
   };
+
+/**
+ * @}
+ */
 
 };
 

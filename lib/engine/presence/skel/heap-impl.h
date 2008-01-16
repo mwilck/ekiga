@@ -40,30 +40,37 @@
 #include "lister.h"
 #include "heap.h"
 
-/* This class is there to make it easy to implement a new type of presentity
- * heap : it will take care of implementing the external api, you
- * just have to decide when to add and remove presentities.
- *
- * It also provides basic memory management for presentities, with the second
- * (optional) template argument :
- * - either no management (the default) ;
- * - or the presentity is considered bound to one heap, which will trigger its
- * destruction (using delete) when removed from it, which can happen in two
- * ways : either by calling the remove_presentity method, or by emission of the
- * presentity's removed signal.
- *
- * Notice that this class won't take care of removing the presentity from a
- * backend -- only from the heap. If you want the presentity *deleted* then you
- * probably should have an organization like :
- * - the presentity has a 'deleted' signal ;
- * - the heap listens for this signal ;
- * - when the signal is received, then do a remove_presentity followed by
- * calling the appropriate api function to delete the presentity in your
- * backend.
+namespace Ekiga
+{
+
+/**
+ * @addtogroup presence
+ * @{
  */
 
-namespace Ekiga {
-
+  /** Generic implementation for the Heap pure virtual class.
+   *
+   * This class is there to make it easy to implement a new type of presentity
+   * heap: it will take care of implementing the external api, you
+   * just have to decide when to add and remove presentities.
+   *
+   * It also provides basic memory management for presentities, with the second
+   * (optional) template argument:
+   *  - either no management (the default);
+   *  - or the presentity is considered bound to one heap, which will trigger
+   *    its destruction (using delete) when removed from it, which can happen
+   *    in two ways: either by calling the remove_presentity method, or by
+   *    emission of the presentity's removed signal.
+   *
+   * Notice that this class won't take care of removing the presentity from a
+   * backend -- only from the heap. If you want the presentity <b>deleted</b>
+   * then you probably should have an organization like:
+   *  - the presentity has a 'deleted' signal;
+   *  - the heap listens for this signal;
+   *  - when the signal is received, then do a remove_presentity followed by
+   *    calling the appropriate api function to delete the presentity in your
+   *    backend.
+   */
   template<typename PresentityType = Presentity,
 	   typename ObjectManagementTrait = no_object_management<PresentityType> >
   class HeapImpl:
@@ -96,6 +103,10 @@ namespace Ekiga {
 
     void remove_presentity (PresentityType &presentity);
   };
+
+/**
+ * @}
+ */
 
 };
 

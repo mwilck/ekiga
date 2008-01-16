@@ -40,7 +40,13 @@
 
 #include "presentity.h"
 
-namespace Ekiga {
+namespace Ekiga
+{
+
+/**
+ * @addtogroup presence
+ * @{
+ */
 
   class Heap
   {
@@ -95,6 +101,9 @@ namespace Ekiga {
     ChainOfResponsibility<FormRequest*> questions;
   };
 
+/**
+ * @}
+ */
 };
 
 #endif

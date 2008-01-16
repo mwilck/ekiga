@@ -42,6 +42,11 @@
 
 namespace Local
 {
+/**
+ * @addtogroup presence
+ * @{
+ */
+
   class Cluster :
     public Ekiga::ClusterImpl<Heap, Ekiga::delete_heap_management<Heap> >,
     public Ekiga::Trigger
@@ -78,6 +83,10 @@ namespace Local
     void on_status_received (std::string uri,
 			     std::string status);
   };
+
+/**
+ * @}
+ */
 }
 
 #endif

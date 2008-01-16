@@ -46,6 +46,13 @@
 namespace Ekiga
 {
 
+/**
+ * @addtogroup presence
+ * @{
+ */
+
+  /** A presentity is a piece of presence information for a single URI.
+   */
   class Presentity
   {
   public:
@@ -102,6 +109,9 @@ namespace Ekiga
     ChainOfResponsibility<FormRequest*> questions;
   };
 
+/**
+ * @}
+ */
 };
 
 #endif
