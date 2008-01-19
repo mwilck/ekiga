@@ -691,6 +691,8 @@ lib/engine/display/dx/Makefile
 lib/engine/gui/Makefile
 lib/engine/gui/gtk-core/Makefile
 lib/engine/gui/gtk-frontend/Makefile
+lib/engine/components/Makefile
+lib/engine/components/gmconf-personal-details/Makefile
 )
 
 
