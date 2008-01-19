@@ -88,7 +88,7 @@ class GMH323Endpoint : public H323EndPoint
 
 
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Set the local user name following the firstname and last 
+   * BEHAVIOR     :  Set the local user name following the full 
    *                 name stored by the conf, set the gatekeeper alias, 
    *                 possibly as first alias.
    * PRE          :  /

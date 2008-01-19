@@ -235,35 +235,24 @@ create_personal_data_page (EkigaAssistant *assistant)
 static void
 prepare_personal_data_page (EkigaAssistant *assistant)
 {
-  gchar *firstname;
-  gchar *lastname;
-  gchar *text;
+  gchar *full_name;
 
-  firstname = gm_conf_get_string (PERSONAL_DATA_KEY "firstname");
-  lastname = gm_conf_get_string (PERSONAL_DATA_KEY "lastname");
+  full_name = gm_conf_get_string (PERSONAL_DATA_KEY "full_name");
 
-  text = gnomemeeting_create_fullname (firstname, lastname);
-  if (text) {
-    gtk_entry_set_text (GTK_ENTRY (assistant->priv->name), text);
-    g_free (text);
-  }
+  if (full_name)
+    gtk_entry_set_text (GTK_ENTRY (assistant->priv->name), full_name);
 
-  g_free (firstname);
-  g_free (lastname);
+  g_free (full_name);
 }
 
 static void
 apply_personal_data_page (EkigaAssistant *assistant)
 {
   GtkEntry *entry = GTK_ENTRY (assistant->priv->name);
-  gchar **couple = g_strsplit (gtk_entry_get_text (entry), " ", 2);
+  const gchar *full_name = gtk_entry_get_text (entry);
 
-  if (couple && couple[0])
-    gm_conf_set_string (PERSONAL_DATA_KEY "firstname", couple[0]);
-  if (couple && couple[1])
-    gm_conf_set_string (PERSONAL_DATA_KEY "lastname", couple[1]);
-
-  g_free (couple);
+  if (full_name)
+    gm_conf_set_string (PERSONAL_DATA_KEY "full_name", full_name);
 }
 
 /******************

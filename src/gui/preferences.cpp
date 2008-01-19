@@ -383,18 +383,12 @@ gm_pw_init_general_page (GtkWidget *prefs_window,
                                 _("Personal Information"), 2, 2);
 
   entry =
-    gnome_prefs_entry_new (subsection, _("_First name:"),
-                           PERSONAL_DATA_KEY "firstname",
+    gnome_prefs_entry_new (subsection, _("_Full name:"),
+                           PERSONAL_DATA_KEY "full_name",
                            _("Enter your first name"), 0, false);
   gtk_widget_set_size_request (GTK_WIDGET (entry), 250, -1);
   gtk_entry_set_max_length (GTK_ENTRY (entry), 65);
 
-  entry =
-    gnome_prefs_entry_new (subsection, _("Sur_name:"),
-                           PERSONAL_DATA_KEY "lastname",
-                           _("Enter your surname"), 1, false);
-  gtk_widget_set_size_request (GTK_WIDGET (entry), 250, -1);
-  gtk_entry_set_max_length (GTK_ENTRY (entry), 65);
   /* Add the update button */
   gm_pw_add_update_button (prefs_window, container, GTK_STOCK_APPLY, _("_Apply"), GTK_SIGNAL_FUNC (personal_data_update_cb), _("Click here to update the users directory you are registered to with the new First Name, Last Name, E-Mail, Comment and Location"), 0, prefs_window);
 }                                                                              

@@ -65,14 +65,14 @@ opal_init (Ekiga::ServiceCore &core,
   Ekiga::CallCore *call_core = NULL;
   Ekiga::DisplayCore *display_core = NULL;
   
-  GMManager *manager = new GMManager (core);
-  GMSIPEndpoint *sipEP = manager->GetSIPEndpoint ();
   //GMDisplayManager *displayManager = new GMDisplayManager_X(core);
-
   contact_core = dynamic_cast<Ekiga::ContactCore *> (core.get ("contact-core"));
   presence_core = dynamic_cast<Ekiga::PresenceCore *> (core.get ("presence-core"));
   call_core = dynamic_cast<Ekiga::CallCore *> (core.get ("call-core"));
   display_core = dynamic_cast<Ekiga::DisplayCore *> (core.get ("display-core"));
+
+  GMManager *manager = new GMManager (core);
+  GMSIPEndpoint *sipEP = manager->GetSIPEndpoint ();
 
   call_core->add_manager (*manager);
   core.add (*manager); // FIXME temporary
@@ -87,6 +87,7 @@ opal_init (Ekiga::ServiceCore &core,
     presence_core->add_presentity_decorator (*manager);
     presence_core->add_supported_uri (sigc::ptr_fun (is_sip_address));
     presence_core->add_presence_fetcher (*sipEP);
+    presence_core->add_presence_publisher (*sipEP);
   }
   else 
     return false;

@@ -38,6 +38,23 @@
 #include <iostream>
 
 #include "presence-core.h"
+#include "personal-details.h"
+
+
+Ekiga::PresencePublisher::PresencePublisher (Ekiga::ServiceCore & core)
+{
+  Ekiga::PersonalDetails *details = dynamic_cast <Ekiga::PersonalDetails *> (core.get ("personal-details"));
+
+  if (details) // If none, then we have no implementation of personal-details and won't relay signals
+    details->personal_details_updated.connect (sigc::mem_fun (this, &Ekiga::PresencePublisher::on_personal_details_updated));
+}
+
+
+void Ekiga::PresencePublisher::on_personal_details_updated (Ekiga::PersonalDetails & details)
+{
+  this->publish (details.get_display_name (), details.get_short_status (), details.get_long_status ());
+}
+
 
 Ekiga::PresenceCore::~PresenceCore ()
 {
@@ -176,14 +193,15 @@ void Ekiga::PresenceCore::add_presence_publisher (PresencePublisher &publisher)
   presence_publishers.insert (&publisher);
 }
 
-void Ekiga::PresenceCore::publish (const std::string & presence,
+void Ekiga::PresenceCore::publish (const std::string & display_name,
+                                   const std::string & presence,
                                    const std::string & extended_status)
 {
   for (std::set<PresencePublisher *>::iterator iter
 	 = presence_publishers.begin ();
        iter != presence_publishers.end ();
        iter++)
-    (*iter)->publish (presence, extended_status);
+    (*iter)->publish (display_name, presence, extended_status);
 }
 
 bool

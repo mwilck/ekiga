@@ -1,8 +1,9 @@
-SUBDIRS = framework addressbook presence gui protocol display
+SUBDIRS = framework addressbook presence gui protocol display components
 
 noinst_LTLIBRARIES = libekiga_engine.la
 
 INCLUDES = 								\
+	-I$(top_srcdir)/lib/gmconf/	 				\
 	-I$(top_srcdir)/lib/engine/	 				\
 	-I$(top_srcdir)/lib/engine/gui/gtk-core				\
 	-I$(top_srcdir)/lib/engine/gui/gtk-frontend			\
@@ -15,7 +16,8 @@ INCLUDES = 								\
 	-I$(top_srcdir)/lib/engine/presence/skel			\
 	-I$(top_srcdir)/lib/engine/presence/avahi			\
 	-I$(top_srcdir)/lib/engine/presence/local-roster		\
-	-I$(top_srcdir)/lib/engine/display/skel
+	-I$(top_srcdir)/lib/engine/display/skel				\
+	-I$(top_srcdir)/lib/engine/components/gmconf-personal-details
 
 # XVideo/X
 if !WIN32
@@ -38,15 +40,16 @@ AM_LIBS = $(SIGC_LIBS) $(GTK_LIBS)
 
 libekiga_engine_la_LDFLAGS = -export-dynamic
 libekiga_engine_la_LIBADD = \
-	$(top_builddir)/lib/engine/gui/gtk-core/libgmgtk-core.la \
-	$(top_builddir)/lib/engine/gui/gtk-frontend/libgmgtk-frontend.la \
-	$(top_builddir)/lib/engine/protocol/skel/libgmprotocol.la \
-	$(top_builddir)/lib/engine/framework/libgmframework.la \
-	$(top_builddir)/lib/engine/addressbook/skel/libgmaddressbook.la \
-	$(top_builddir)/lib/engine/addressbook/call-history/libcall-history.la \
-	$(top_builddir)/lib/engine/presence/skel/libgmpresence.la \
-	$(top_builddir)/lib/engine/presence/local-roster/liblocal-roster.la \
-	$(top_builddir)/lib/engine/display/skel/libgmdisplay.la
+	$(top_builddir)/lib/engine/gui/gtk-core/libgmgtk-core.la 					\
+	$(top_builddir)/lib/engine/gui/gtk-frontend/libgmgtk-frontend.la 				\
+	$(top_builddir)/lib/engine/protocol/skel/libgmprotocol.la 					\
+	$(top_builddir)/lib/engine/framework/libgmframework.la 						\
+	$(top_builddir)/lib/engine/addressbook/skel/libgmaddressbook.la 				\
+	$(top_builddir)/lib/engine/addressbook/call-history/libcall-history.la 				\
+	$(top_builddir)/lib/engine/presence/skel/libgmpresence.la 					\
+	$(top_builddir)/lib/engine/presence/local-roster/liblocal-roster.la 				\
+	$(top_builddir)/lib/engine/display/skel/libgmdisplay.la						\
+	$(top_builddir)/lib/engine/components/gmconf-personal-details/libgmconfpersonaldetails.la	\
 	$(AM_LIBS)
 
 # XVideo/X

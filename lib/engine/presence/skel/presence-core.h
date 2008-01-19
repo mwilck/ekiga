@@ -41,8 +41,11 @@
 #include "services.h"
 #include "cluster.h"
 
+
 namespace Ekiga
 {
+
+  class PersonalDetails;
 
 /**
  * @defgroup presence Presence
@@ -101,10 +104,14 @@ namespace Ekiga
   {
   public:
 
-    virtual ~PresencePublisher () {}
+    PresencePublisher (Ekiga::ServiceCore &);
+    virtual ~PresencePublisher () {};
 
-    virtual void publish (const std::string & /*presence*/,
+    virtual void publish (const std::string & /*display_name*/,
+                          const std::string & /*presence*/,
                           const std::string & /*extended_status*/) = 0;
+  private:
+    void on_personal_details_updated (PersonalDetails & details);
   };
 
   /** Core object for the presence support.
@@ -262,7 +269,8 @@ namespace Ekiga
 
     void add_presence_publisher (PresencePublisher &publisher);
 
-    void publish (const std::string & status, 
+    void publish (const std::string & display_name,
+                  const std::string & status, 
                   const std::string & extended_status);
 
   private:

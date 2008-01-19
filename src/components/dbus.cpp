@@ -151,17 +151,13 @@ ekiga_dbus_component_get_user_name (G_GNUC_UNUSED EkigaDBusComponent *self,
                                     char **name,
                                     G_GNUC_UNUSED GError **error)
 {
-  gchar *firstname = NULL;
-  gchar *lastname = NULL;
-
+  gchar * full_name;
   PTRACE (1, "DBus\tGetName");
 
-  firstname = gm_conf_get_string (PERSONAL_DATA_KEY "firstname");
-  lastname = gm_conf_get_string (PERSONAL_DATA_KEY "lastname");
-  *name = gnomemeeting_create_fullname (firstname, lastname);
+  full_name = gm_conf_get_string (PERSONAL_DATA_KEY "full_name");
+  if (full_name)
+    *name = full_name;
 
-  g_free (firstname);
-  g_free (lastname);
   /* not freeing the full name is not a leak : dbus will do it for us ! */
 
   return TRUE;
@@ -309,5 +305,3 @@ ekiga_dbus_client_show ()
   dbus_g_proxy_call_no_reply (proxy, "Show", G_TYPE_INVALID);
   g_object_unref (proxy);
 }
-
-// ex:set ts=2 sw=2 et:

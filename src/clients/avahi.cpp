@@ -346,15 +346,13 @@ GMZeroconfPublisher::Publish()
 int
 GMZeroconfPublisher::GetPersonalData()
 {
-  gchar	*lastname = NULL;
-  gchar	*firstname = NULL;
+  gchar	*full_name = NULL;
   std::string status;
   
   int state = 0;
 
   gnomemeeting_threads_enter ();
-  firstname = gm_conf_get_string (PERSONAL_DATA_KEY "firstname");
-  lastname = gm_conf_get_string (PERSONAL_DATA_KEY "lastname");
+  full_name = gm_conf_get_string (PERSONAL_DATA_KEY "full_name");
   h323_port = gm_conf_get_int (H323_KEY "listen_port");
   sip_port = gm_conf_get_int (SIP_KEY "listen_port");
   state = gm_conf_get_int (PERSONAL_DATA_KEY "status");
@@ -409,7 +407,7 @@ GMZeroconfPublisher::GetPersonalData()
   }
 
   /* Update the internal state */
-  name = gnomemeeting_create_fullname (firstname, lastname); 
+  name = full_name; 
   h323_text_record = 
     avahi_string_list_add_printf (h323_text_record,"presence=%s", status.c_str ());
   sip_text_record = 
@@ -419,10 +417,6 @@ GMZeroconfPublisher::GetPersonalData()
     avahi_string_list_add (h323_text_record, "software=Ekiga/" PACKAGE_VERSION);
   sip_text_record = 
     avahi_string_list_add (sip_text_record, "software=Ekiga/" PACKAGE_VERSION);
-
-
-  g_free (lastname);
-  g_free (firstname);
 
   return 0;
 }

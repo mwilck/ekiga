@@ -224,7 +224,7 @@ GMManager::GMManager (Ekiga::ServiceCore & _core)
   /* Initialise the endpoint paramaters */
   video_grabber = NULL;
   SetCallingState (GMManager::Standby);
-  
+
 #ifdef HAVE_AVAHI
   zcp = NULL;
 #endif
@@ -262,13 +262,13 @@ GMManager::GMManager (Ekiga::ServiceCore & _core)
   // Create endpoints
   h323EP = new GMH323Endpoint (*this);
   h323EP->Init ();
-  // AddRouteEntry("pc:.* = h323:<da>");
+  AddRouteEntry("pc:.* = h323:<da>");
 	
   sipEP = new GMSIPEndpoint (*this, core);
   AddRouteEntry("pc:.* = sip:<da>");
   
   pcssEP = new GMPCSSEndpoint (*this);
-// AddRouteEntry("h323:.* = pc:<da>");
+  AddRouteEntry("h323:.* = pc:<da>");
   AddRouteEntry("sip:.* = pc:<da>");
   
   autoStartTransmitVideo = autoStartReceiveVideo = true;
@@ -1301,33 +1301,22 @@ GMManager::OnMessageSent (const PString & _to,
 void
 GMManager::SetUserNameAndAlias ()
 {
-  gchar *firstname = NULL;
-  gchar *lastname = NULL;
-  gchar *local_name = NULL;
-  
+  gchar *full_name = NULL;
   
   gnomemeeting_threads_enter ();
-  firstname = gm_conf_get_string (PERSONAL_DATA_KEY "firstname");
-  lastname = gm_conf_get_string (PERSONAL_DATA_KEY "lastname");
+  full_name = gm_conf_get_string (PERSONAL_DATA_KEY "full_name");
   gnomemeeting_threads_leave ();
 
-  
-  local_name = gnomemeeting_create_fullname (firstname, lastname);
-  if (local_name)
-    SetDefaultDisplayName (local_name);
-
+  if (full_name)
+    SetDefaultDisplayName (full_name);
   
   /* Update the H.323 endpoint user name and alias */
   h323EP->SetUserNameAndAlias ();
-
   
   /* Update the SIP endpoint user name and alias */
   sipEP->SetUserNameAndAlias ();
 
-
-  g_free (local_name);
-  g_free (firstname);
-  g_free (lastname);
+  g_free (full_name);
 }
 
 
@@ -1376,9 +1365,7 @@ GMManager::Init ()
   g_free (ip);
   
   /* GMConf notifiers for what we manager */
-  gm_conf_notifier_add (PERSONAL_DATA_KEY "firstname",
-			fullname_changed_nt, this);
-  gm_conf_notifier_add (PERSONAL_DATA_KEY "lastname",
+  gm_conf_notifier_add (PERSONAL_DATA_KEY "full_name",
 			fullname_changed_nt, this);
 
   gm_conf_notifier_add (PROTOCOLS_KEY "interface",

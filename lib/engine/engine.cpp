@@ -50,6 +50,7 @@
 #include "local-roster-bridge.h"
 #include "gtk-core-main.h"
 #include "gtk-frontend.h"
+#include "gmconf-personal-details-main.h"
 
 #ifndef WIN32
 #include "display-main-x.h"
@@ -92,6 +93,10 @@ engine_init (int argc,
   core->add (*display_core);
   core->add (*runtime);
 
+  if (!gmconf_personal_details_init (*core, &argc, &argv)) {
+    delete core;
+    return;
+  }
 
 #ifndef WIN32
   if (!display_x_init (*core, &argc, &argv)) {

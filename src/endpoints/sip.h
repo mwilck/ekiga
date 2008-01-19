@@ -53,7 +53,9 @@ PDICTIONARY (msgDict, PString, PString);
 
 /* Minimal SIP endpoint implementation */
 class GMSIPEndpoint 
-: public SIPEndPoint, public Ekiga::PresenceFetcher
+:   public SIPEndPoint, 
+    public Ekiga::PresenceFetcher,
+    public Ekiga::PresencePublisher
 {
   PCLASSINFO(GMSIPEndpoint, SIPEndPoint);
 
@@ -76,6 +78,9 @@ class GMSIPEndpoint
   /***/
   void fetch (const std::string uri);
   void unfetch (const std::string uri);
+  void publish (const std::string & /*display_name*/,
+                const std::string & /*presence*/,
+                const std::string & /*extended_status*/);
 
   
   /* DESCRIPTION  :  /
@@ -89,7 +94,7 @@ class GMSIPEndpoint
 
   
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Set the local user name following the firstname and last 
+   * BEHAVIOR     :  Set the local user name following the full 
    *                 name stored by the conf.
    * PRE          :  /
    */

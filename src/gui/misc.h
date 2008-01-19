@@ -146,17 +146,4 @@ void gnomemeeting_window_hide (GtkWidget *w);
 void gnomemeeting_window_get_size (GtkWidget *w, 
 				   int &x, 
 				   int &y);
-
-
-/* DESCRIPTION  :  Concatenates a firstname and a lastname into a fullname.
- * BEHAVIOR     :  If both parts are non NULL and non-empty, 
- * 		   they are concatenated with a space in-between, 
- * 		   else fullname becomes a copy of the nonempty part.
- *                 If both parts are NULL or have a zero length, 
- *                 returns NULL.
- * PRE          :  /
- */
-gchar *gnomemeeting_create_fullname (const gchar *firstname, 
-				     const gchar *lastname);
-
 #endif

@@ -1,5 +1,27 @@
 2008-01-16  Damien Sandras  <dsandras@gnome.org>
 
+	* src/clients/avahi.cpp:
+	* src/endpoints/sip.h:
+	* src/endpoints/manager.cpp:
+	* src/endpoints/opal-main.cpp:
+	* src/endpoints/h323.h:
+	* src/endpoints/sip.cpp:
+	* src/gui/misc.h:
+	* src/gui/preferences.cpp:
+	* src/gui/assistant.cpp:
+	* src/gui/misc.cpp:
+	* src/components/dbus.cpp:
+	* lib/engine/presence/skel/presence-core.h:
+	* lib/engine/presence/skel/presence-core.cpp:
+	* lib/engine/engine.cpp:
+	* lib/engine/Makefile.am:
+	The PresencePublisher now uses the PersonalDetails class recently
+	introduced. Modified the SIP EndPoint so that it becomes a 
+	PresencePublisher. Also replace firstname/lastname by full_name, the
+	separation does not make sense anymore.
+
+2008-01-16  Damien Sandras  <dsandras@gnome.org>
+
 	* configure.ac:
 	Added generation of new Makefiles, including the Makefiles of the
 	components subdirectory where most engine components (plugins) will be

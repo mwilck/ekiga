@@ -150,7 +150,10 @@ nat_binding_timeout_changed_nt (G_GNUC_UNUSED gpointer id,
 
 /* The class */
 GMSIPEndpoint::GMSIPEndpoint (GMManager & ep, Ekiga::ServiceCore & _core)
-: SIPEndPoint (ep), endpoint (ep), core (_core)
+: SIPEndPoint (ep), 
+    Ekiga::PresencePublisher (_core), 
+    endpoint (ep), 
+    core (_core)
 {
   NoAnswerTimer.SetNotifier (PCREATE_NOTIFIER (OnNoAnswerTimeout));
   Init ();
@@ -193,6 +196,15 @@ GMSIPEndpoint::unfetch (const std::string uri)
 
     uris.remove (uri);
   }
+}
+
+
+void 
+GMSIPEndpoint::publish (const std::string & display_name,
+                        const std::string & presence,
+                        const std::string & extended_status)
+{
+  std::cout << "should publish" << display_name << std::endl << std::flush;
 }
 
 
