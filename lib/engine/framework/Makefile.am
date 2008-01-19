@@ -32,6 +32,8 @@ libgmframework_la_SOURCES = \
 			    $(framework_dir)/services.cpp \
 			    $(framework_dir)/trigger.h \
 			    $(framework_dir)/menu-xml.h \
-			    $(framework_dir)/menu-xml.cpp 
+			    $(framework_dir)/menu-xml.cpp \
+			    $(framework_dir)/personal-details.h \
+			    $(framework_dir)/personal-details.cpp
 
 libgmframework_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(GLIB_LIBS) $(XML_LIBS)

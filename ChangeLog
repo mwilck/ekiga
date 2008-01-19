@@ -1,3 +1,18 @@
+2008-01-16  Damien Sandras  <dsandras@gnome.org>
+
+	* lib/engine/framework/personal-details.cpp:
+	* lib/engine/framework/personal-details.h:
+	* lib/engine/framework/Makefile.am:
+	* lib/engine/components/Makefile.am:
+	* lib/engine/components/gmconf-personal-details/gmconf-personal-details.h:
+	* lib/engine/components/gmconf-personal-details/gmconf-personal-details-main.h:
+	* lib/engine/components/gmconf-personal-details/Makefile.am:
+	* lib/engine/components/gmconf-personal-details/gmconf-personal-details.cpp:
+	Added new framework to manage personal details (display name, status,
+	...) and a GmConf implementation. When one detail change, interested
+	objects can react appropriately if they have connected to the right
+	signal.
+
 2008-01-16  Steve Frécinaux  <code@istique.net>
 
 	* Doxyfile.in:
