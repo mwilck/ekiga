@@ -45,14 +45,6 @@ namespace Ekiga
 {
 
   template<typename ObjectType>
-  struct no_object_management
-  {
-    static void announced_release (ObjectType &);
-
-    static void release (ObjectType &);
-  };
-
-  template<typename ObjectType>
   struct delete_object_management
   {
     static void announced_release (ObjectType &object);
@@ -88,7 +80,7 @@ namespace Ekiga
    *    backend.
    */
   template<typename ObjectType,
-	   typename ObjectManagementTrait = no_object_management<ObjectType> >
+	   typename ObjectManagementTrait = delete_object_management<ObjectType> >
   class Lister
   {
 
@@ -197,21 +189,6 @@ namespace Ekiga
 
 
 /* here begins the code from the template functions */
-template<typename ObjectType>
-void
-Ekiga::no_object_management<ObjectType>::announced_release (ObjectType &object)
-{
-  // nothing
-}
-
-
-template<typename ObjectType>
-void
-Ekiga::no_object_management<ObjectType>::release (ObjectType &object)
-{
-  // nothing
-}
-
 
 template<typename ObjectType>
 void

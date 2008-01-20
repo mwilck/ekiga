@@ -77,7 +77,7 @@ namespace Ekiga
    *    backend.
    */
   template<typename ContactType = Contact,
-	   typename ObjectManagementTrait = no_object_management<ContactType> >
+	   typename ObjectManagementTrait = delete_object_management<ContactType> >
   class BookImpl:
     public Book,
     protected Lister<ContactType, ObjectManagementTrait>

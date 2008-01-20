@@ -72,7 +72,7 @@ namespace Ekiga
    *    backend.
    */
   template<typename PresentityType = Presentity,
-	   typename ObjectManagementTrait = no_object_management<PresentityType> >
+	   typename ObjectManagementTrait = delete_object_management<PresentityType> >
   class HeapImpl:
     public Heap,
     protected Lister<PresentityType, ObjectManagementTrait>
