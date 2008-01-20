@@ -57,7 +57,7 @@ namespace OPENLDAP
  */
 
   class Book:
-    public Ekiga::BookImpl<Contact, Ekiga::delete_object_management<Contact> >
+    public Ekiga::BookImpl<Contact>
   {
   public:
 

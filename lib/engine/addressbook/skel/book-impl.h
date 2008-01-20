@@ -56,12 +56,6 @@ namespace Ekiga
    * addressbook: it will take care of implementing the external api, you
    * just have to decide when to add and remove contacts.
    *
-   * It also provides basic memory management for Contacts, with the second
-   * (optional) template argument:
-   *  - either no management (the default);
-   *  - or the contact is considered bound to one Ekiga::Book, which will
-   *    trigger its destruction (using delete) when removed from it.
-   *
    * You can remove a Contact from an Ekiga::Book in two ways:
    *  - either by calling the remove_contact method,
    *  - or by emission of the contact's removed signal.
@@ -76,17 +70,16 @@ namespace Ekiga
    *    calling the appropriate api function to delete the contact in your
    *    backend.
    */
-  template<typename ContactType = Contact,
-	   typename ObjectManagementTrait = delete_object_management<ContactType> >
+  template<typename ContactType = Contact>
   class BookImpl:
     public Book,
-    protected Lister<ContactType, ObjectManagementTrait>
+    protected Lister<ContactType>
   {
 
   public:
 
-    typedef typename Lister<ContactType, ObjectManagementTrait>::iterator iterator;
-    typedef typename Lister<ContactType, ObjectManagementTrait>::const_iterator const_iterator;
+    typedef typename Lister<ContactType>::iterator iterator;
+    typedef typename Lister<ContactType>::const_iterator const_iterator;
 
     /** The constructor
      */
@@ -125,8 +118,7 @@ namespace Ekiga
     /** Removes a contact from the Ekiga::Book.
      * @param: The contact to be removed.
      * @return: The Ekiga::Book 'contact_removed' signal is emitted when the contact
-     * has been removed. The ContactManagementTrait associated with the Ekiga::Book
-     * will determine the memory management policy for that contact.
+     * has been removed.
      */
     void remove_contact (ContactType &contact);
 
@@ -151,83 +143,83 @@ namespace Ekiga
 
 /* here begins the code from the template functions */
 
-template<typename ContactType, typename ContactManagementTrait>
-Ekiga::BookImpl<ContactType, ContactManagementTrait>::BookImpl ()
+template<typename ContactType>
+Ekiga::BookImpl<ContactType>::BookImpl ()
 {
   /* this is signal forwarding */
-  Lister<ContactType,ContactManagementTrait>::object_added.connect (contact_added.make_slot ());
-  Lister<ContactType,ContactManagementTrait>::object_removed.connect (contact_removed.make_slot ());
-  Lister<ContactType,ContactManagementTrait>::object_updated.connect (contact_updated.make_slot ());
+  Lister<ContactType>::object_added.connect (contact_added.make_slot ());
+  Lister<ContactType>::object_removed.connect (contact_removed.make_slot ());
+  Lister<ContactType>::object_updated.connect (contact_updated.make_slot ());
 }
 
 
-template<typename ContactType, typename ContactManagementTrait>
-Ekiga::BookImpl<ContactType, ContactManagementTrait>::~BookImpl ()
+template<typename ContactType>
+Ekiga::BookImpl<ContactType>::~BookImpl ()
 {
 }
 
 
-template<typename ContactType, typename ContactManagementTrait>
+template<typename ContactType>
 void
-Ekiga::BookImpl<ContactType, ContactManagementTrait>::visit_contacts (sigc::slot<void, Contact &> visitor)
+Ekiga::BookImpl<ContactType>::visit_contacts (sigc::slot<void, Contact &> visitor)
 {
   for (iterator iter = begin (); iter != end (); iter++)
     visitor (*iter);
 }
 
 
-template<typename ContactType, typename ContactManagementTrait>
-typename Ekiga::BookImpl<ContactType, ContactManagementTrait>::iterator
-Ekiga::BookImpl<ContactType, ContactManagementTrait>::begin ()
+template<typename ContactType>
+typename Ekiga::BookImpl<ContactType>::iterator
+Ekiga::BookImpl<ContactType>::begin ()
 {
-  return Lister<ContactType, ContactManagementTrait>::begin ();
+  return Lister<ContactType>::begin ();
 }
 
 
-template<typename ContactType, typename ContactManagementTrait>
-typename Ekiga::BookImpl<ContactType, ContactManagementTrait>::iterator
-Ekiga::BookImpl<ContactType, ContactManagementTrait>::end ()
+template<typename ContactType>
+typename Ekiga::BookImpl<ContactType>::iterator
+Ekiga::BookImpl<ContactType>::end ()
 {
-  return Lister<ContactType, ContactManagementTrait>::end ();
+  return Lister<ContactType>::end ();
 }
 
 
-template<typename ContactType, typename ContactManagementTrait>
-typename Ekiga::BookImpl<ContactType, ContactManagementTrait>::const_iterator
-Ekiga::BookImpl<ContactType, ContactManagementTrait>::begin () const
+template<typename ContactType>
+typename Ekiga::BookImpl<ContactType>::const_iterator
+Ekiga::BookImpl<ContactType>::begin () const
 {
-  return Lister<ContactType, ContactManagementTrait>::begin ();
+  return Lister<ContactType>::begin ();
 }
 
 
-template<typename ContactType, typename ContactManagementTrait>
-typename Ekiga::BookImpl<ContactType, ContactManagementTrait>::const_iterator
-Ekiga::BookImpl<ContactType, ContactManagementTrait>::end () const
+template<typename ContactType>
+typename Ekiga::BookImpl<ContactType>::const_iterator
+Ekiga::BookImpl<ContactType>::end () const
 {
-  return Lister<ContactType, ContactManagementTrait>::end ();
+  return Lister<ContactType>::end ();
 }
 
 
-template<typename ContactType, typename ContactManagementTrait>
+template<typename ContactType>
 void
-Ekiga::BookImpl<ContactType, ContactManagementTrait>::add_contact (ContactType &contact)
+Ekiga::BookImpl<ContactType>::add_contact (ContactType &contact)
 {
   contact.questions.add_handler (questions.make_slot ());
   add_object (contact);
 }
 
 
-template<typename ContactType, typename ContactManagementTrait>
+template<typename ContactType>
 void
-Ekiga::BookImpl<ContactType, ContactManagementTrait>::remove_contact (ContactType &contact)
+Ekiga::BookImpl<ContactType>::remove_contact (ContactType &contact)
 {
   remove_object (contact);
 }
 
 
-template<typename ContactType, typename ContactManagementTrait>
+template<typename ContactType>
 std::string
-Ekiga::BookImpl<ContactType, ContactManagementTrait>::get_status ()
+Ekiga::BookImpl<ContactType>::get_status ()
 {
   return status;
 }

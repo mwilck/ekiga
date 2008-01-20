@@ -64,7 +64,7 @@ namespace Local
    * When required, the Heap content is being saved in a GmConf entry.
    * Alternatively, it could be saved elsewhere.
    */
-  class Heap : public Ekiga::HeapImpl<Presentity, Ekiga::delete_object_management <Presentity> >
+  class Heap : public Ekiga::HeapImpl<Presentity>
   {
   public:
 

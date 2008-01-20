@@ -54,14 +54,6 @@ namespace Ekiga
    * heap: it will take care of implementing the external api, you
    * just have to decide when to add and remove presentities.
    *
-   * It also provides basic memory management for presentities, with the second
-   * (optional) template argument:
-   *  - either no management (the default);
-   *  - or the presentity is considered bound to one heap, which will trigger
-   *    its destruction (using delete) when removed from it, which can happen
-   *    in two ways: either by calling the remove_presentity method, or by
-   *    emission of the presentity's removed signal.
-   *
    * Notice that this class won't take care of removing the presentity from a
    * backend -- only from the heap. If you want the presentity <b>deleted</b>
    * then you probably should have an organization like:
@@ -71,17 +63,16 @@ namespace Ekiga
    *    calling the appropriate api function to delete the presentity in your
    *    backend.
    */
-  template<typename PresentityType = Presentity,
-	   typename ObjectManagementTrait = delete_object_management<PresentityType> >
+  template<typename PresentityType = Presentity>
   class HeapImpl:
     public Heap,
-    protected Lister<PresentityType, ObjectManagementTrait>
+    protected Lister<PresentityType>
   {
 
   public:
 
-    typedef typename Lister<PresentityType, ObjectManagementTrait>::iterator iterator;
-    typedef typename Lister<PresentityType, ObjectManagementTrait>::const_iterator const_iterator;
+    typedef typename Lister<PresentityType>::iterator iterator;
+    typedef typename Lister<PresentityType>::const_iterator const_iterator;
 
     HeapImpl ();
 
@@ -111,68 +102,68 @@ namespace Ekiga
 };
 
 /* here are the implementations of the template methods */
-template<typename PresentityType, typename PresentityManagementTrait>
-Ekiga::HeapImpl<PresentityType, PresentityManagementTrait>::HeapImpl ()
+template<typename PresentityType>
+Ekiga::HeapImpl<PresentityType>::HeapImpl ()
 {
   /* this is signal forwarding */
-  Lister<PresentityType,PresentityManagementTrait>::object_added.connect (presentity_added.make_slot ());
-  Lister<PresentityType,PresentityManagementTrait>::object_removed.connect (presentity_removed.make_slot ());
-  Lister<PresentityType,PresentityManagementTrait>::object_updated.connect (presentity_updated.make_slot ());
+  Lister<PresentityType>::object_added.connect (presentity_added.make_slot ());
+  Lister<PresentityType>::object_removed.connect (presentity_removed.make_slot ());
+  Lister<PresentityType>::object_updated.connect (presentity_updated.make_slot ());
 }
 
 
-template<typename PresentityType, typename PresentityManagementTrait>
-Ekiga::HeapImpl<PresentityType, PresentityManagementTrait>::~HeapImpl ()
+template<typename PresentityType>
+Ekiga::HeapImpl<PresentityType>::~HeapImpl ()
 {
 }
 
-template<typename PresentityType, typename PresentityManagementTrait>
+template<typename PresentityType>
 void
-Ekiga::HeapImpl<PresentityType, PresentityManagementTrait>::visit_presentities (sigc::slot<void, Presentity &> visitor)
+Ekiga::HeapImpl<PresentityType>::visit_presentities (sigc::slot<void, Presentity &> visitor)
 {
   for (iterator iter = begin (); iter != end (); iter++)
     visitor (*iter);
 }
 
-template<typename PresentityType, typename PresentityManagementTrait>
-typename Ekiga::HeapImpl<PresentityType, PresentityManagementTrait>::iterator
-Ekiga::HeapImpl<PresentityType, PresentityManagementTrait>::begin ()
+template<typename PresentityType>
+typename Ekiga::HeapImpl<PresentityType>::iterator
+Ekiga::HeapImpl<PresentityType>::begin ()
 {
-  return Lister<PresentityType, PresentityManagementTrait>::begin ();
+  return Lister<PresentityType>::begin ();
 }
 
-template<typename PresentityType, typename PresentityManagementTrait>
-typename Ekiga::HeapImpl<PresentityType, PresentityManagementTrait>::iterator
-Ekiga::HeapImpl<PresentityType, PresentityManagementTrait>::end ()
+template<typename PresentityType>
+typename Ekiga::HeapImpl<PresentityType>::iterator
+Ekiga::HeapImpl<PresentityType>::end ()
 {
-  return Lister<PresentityType, PresentityManagementTrait>::end ();
+  return Lister<PresentityType>::end ();
 }
 
-template<typename PresentityType, typename PresentityManagementTrait>
-typename Ekiga::HeapImpl<PresentityType, PresentityManagementTrait>::const_iterator
-Ekiga::HeapImpl<PresentityType, PresentityManagementTrait>::begin () const
+template<typename PresentityType>
+typename Ekiga::HeapImpl<PresentityType>::const_iterator
+Ekiga::HeapImpl<PresentityType>::begin () const
 {
-  return Lister<PresentityType, PresentityManagementTrait>::begin ();
+  return Lister<PresentityType>::begin ();
 }
 
-template<typename PresentityType, typename PresentityManagementTrait>
-typename Ekiga::HeapImpl<PresentityType, PresentityManagementTrait>::const_iterator
-Ekiga::HeapImpl<PresentityType, PresentityManagementTrait>::end () const
+template<typename PresentityType>
+typename Ekiga::HeapImpl<PresentityType>::const_iterator
+Ekiga::HeapImpl<PresentityType>::end () const
 {
-  return Lister<PresentityType, PresentityManagementTrait>::end ();
+  return Lister<PresentityType>::end ();
 }
 
-template<typename PresentityType, typename PresentityManagementTrait>
+template<typename PresentityType>
 void
-Ekiga::HeapImpl<PresentityType, PresentityManagementTrait>::add_presentity (PresentityType &presentity)
+Ekiga::HeapImpl<PresentityType>::add_presentity (PresentityType &presentity)
 {
   presentity.questions.add_handler (questions.make_slot ());
   add_object (presentity);
 }
 
-template<typename PresentityType, typename PresentityManagementTrait>
+template<typename PresentityType>
 void
-Ekiga::HeapImpl<PresentityType, PresentityManagementTrait>::remove_presentity (PresentityType &presentity)
+Ekiga::HeapImpl<PresentityType>::remove_presentity (PresentityType &presentity)
 {
   remove_object (presentity);
 }

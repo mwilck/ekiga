@@ -43,27 +43,11 @@
 
 namespace Ekiga
 {
-
-  template<typename ObjectType>
-  struct delete_object_management
-  {
-    static void announced_release (ObjectType &object);
-
-    static void release (ObjectType &object);
-
-  };
-
   /** Ekiga::Lister
    *
    * This class is there to help write a dynamic object lister, that is an
-   * object which will more or less 'own' objects which will emit "updated"
+   * object which will own objects which will emit "updated"
    * and "removed" signals.
-   *
-   * The more or less means that it supports different memory management
-   * traits using the second (optional) template argument:
-   *  - either no management (the default);
-   *  - or the object is considered fully owned, which will trigger its
-   *    destruction (using delete) when removed.
    *
    * You can remove an object from an Ekiga::Lister in two ways:
    *  - either by calling the remove_object method,
@@ -79,8 +63,7 @@ namespace Ekiga
    *    calling the appropriate api function to delete the object in your
    *    backend.
    */
-  template<typename ObjectType,
-	   typename ObjectManagementTrait = delete_object_management<ObjectType> >
+  template<typename ObjectType>
   class Lister
   {
 
@@ -132,9 +115,7 @@ namespace Ekiga
     /** Removes an object from the Ekiga::Lister.
      * @param: The object to be removed.
      * @return: The Ekiga::Lister 'object_removed' signal is emitted when
-     * the object has been removed. The ObjectManagementTrait associated
-     * with the Ekiga::Lister will determine the memory management policy
-     * for that object.
+     * the object has been removed.
      */
     void remove_object (ObjectType &object);
 
@@ -157,8 +138,7 @@ namespace Ekiga
 
     /** Disconnects the signals for the object, emits the 'object_removed'
      * signal on the Ekiga::Lister and takes care of the release of that
-     * object following the policy of the ObjectManagementTrait associated
-     * with the Ekiga::Lister.
+     * object.
      * @param: The object to remove.
      */
     void common_removal_steps (ObjectType &object);
@@ -175,8 +155,7 @@ namespace Ekiga
     /** This callback is triggered when the 'removed' signal is emitted on
      * an object.
      * Emits the Ekiga::Lister 'object_removed' signal for that object and
-     * takes care of the deletion of the object or not following the
-     * ObjectManagementTrait associated with the Ekiga::Lister.
+     * takes care of the deletion of the object.
      * @param: The removed object.
      */
     void on_object_removed (ObjectType *object);
@@ -190,25 +169,9 @@ namespace Ekiga
 
 /* here begins the code from the template functions */
 
-template<typename ObjectType>
-void
-Ekiga::delete_object_management<ObjectType>::announced_release (ObjectType &object)
-{
-  object.removed.emit ();
-  release (object);
-}
-
 
 template<typename ObjectType>
-void
-Ekiga::delete_object_management<ObjectType>::release (ObjectType &object)
-{
-  delete &object;
-}
-
-
-template<typename ObjectType, typename ObjectManagementTrait>
-Ekiga::Lister<ObjectType, ObjectManagementTrait>::~Lister ()
+Ekiga::Lister<ObjectType>::~Lister ()
 {
   iterator iter = begin ();
 
@@ -220,41 +183,41 @@ Ekiga::Lister<ObjectType, ObjectManagementTrait>::~Lister ()
 }
 
 
-template<typename ObjectType, typename ObjectManagementTrait>
-typename Ekiga::Lister<ObjectType, ObjectManagementTrait>::const_iterator
-Ekiga::Lister<ObjectType, ObjectManagementTrait>::begin () const
+template<typename ObjectType>
+typename Ekiga::Lister<ObjectType>::const_iterator
+Ekiga::Lister<ObjectType>::begin () const
 {
   return const_iterator (connections.begin ());
 }
 
 
-template<typename ObjectType, typename ObjectManagementTrait>
-typename Ekiga::Lister<ObjectType, ObjectManagementTrait>::iterator
-Ekiga::Lister<ObjectType, ObjectManagementTrait>::begin ()
+template<typename ObjectType>
+typename Ekiga::Lister<ObjectType>::iterator
+Ekiga::Lister<ObjectType>::begin ()
 {
   return iterator (connections.begin ());
 }
 
 
-template<typename ObjectType, typename ObjectManagementTrait>
-typename Ekiga::Lister<ObjectType, ObjectManagementTrait>::const_iterator
-Ekiga::Lister<ObjectType, ObjectManagementTrait>::end () const
+template<typename ObjectType>
+typename Ekiga::Lister<ObjectType>::const_iterator
+Ekiga::Lister<ObjectType>::end () const
 {
   return const_iterator (connections.end ());
 }
 
 
-template<typename ObjectType, typename ObjectManagementTrait>
-typename Ekiga::Lister<ObjectType, ObjectManagementTrait>::iterator
-Ekiga::Lister<ObjectType, ObjectManagementTrait>::end ()
+template<typename ObjectType>
+typename Ekiga::Lister<ObjectType>::iterator
+Ekiga::Lister<ObjectType>::end ()
 {
   return iterator (connections.end ());
 }
 
 
-template<typename ObjectType, typename ObjectManagementTrait>
+template<typename ObjectType>
 void
-Ekiga::Lister<ObjectType, ObjectManagementTrait>::add_object (ObjectType &object)
+Ekiga::Lister<ObjectType>::add_object (ObjectType &object)
 {
   sigc::connection conn;
 
@@ -266,24 +229,25 @@ Ekiga::Lister<ObjectType, ObjectManagementTrait>::add_object (ObjectType &object
 }
 
 
-template<typename ObjectType, typename ObjectManagementTrait>
+template<typename ObjectType>
 void
-Ekiga::Lister<ObjectType, ObjectManagementTrait>::remove_object (ObjectType &object)
+Ekiga::Lister<ObjectType>::remove_object (ObjectType &object)
 {
   common_removal_steps (object);
-  ObjectManagementTrait::announced_release (object);
+  object.removed.emit ();
+  delete &object;
 }
 
-template<typename ObjectType, typename ObjectManagementTrait>
+template<typename ObjectType>
 void
-Ekiga::Lister<ObjectType, ObjectManagementTrait>::add_connection (ObjectType &object, sigc::connection conn)
+Ekiga::Lister<ObjectType>::add_connection (ObjectType &object, sigc::connection conn)
 {
   connections[&object].push_front (conn);
 }
 
-template<typename ObjectType, typename ObjectManagementTrait>
+template<typename ObjectType>
 void
-Ekiga::Lister<ObjectType, ObjectManagementTrait>::common_removal_steps (ObjectType &object)
+Ekiga::Lister<ObjectType>::common_removal_steps (ObjectType &object)
 {
   connection_set conns = connections[&object];
   for (connection_set::iterator iter = conns.begin ();
@@ -295,20 +259,20 @@ Ekiga::Lister<ObjectType, ObjectManagementTrait>::common_removal_steps (ObjectTy
 }
 
 
-template<typename ObjectType, typename ObjectManagementTrait>
+template<typename ObjectType>
 void
-Ekiga::Lister<ObjectType, ObjectManagementTrait>::on_object_updated (ObjectType *object)
+Ekiga::Lister<ObjectType>::on_object_updated (ObjectType *object)
 {
   object_updated.emit (*object);
 }
 
 
-template<typename ObjectType, typename ObjectManagementTrait>
+template<typename ObjectType>
 void
-Ekiga::Lister<ObjectType, ObjectManagementTrait>::on_object_removed (ObjectType *object)
+Ekiga::Lister<ObjectType>::on_object_removed (ObjectType *object)
 {
   common_removal_steps (*object);
-  ObjectManagementTrait::release (*object);
+  delete object;
 }
 
 #endif
