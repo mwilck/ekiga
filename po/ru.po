@@ -1,4 +1,4 @@
-# translation of ekiga.pot to Russian
+# translation of Ekiga to Russian
 # Copyright (C) 2001-2002,2003, 2004, 2005, 2006 Free Software Foundation, Inc.
 #
 # Valek Filippov <frob@df.ru>, 2001-2002, 2006.
@@ -8,15 +8,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ekiga trunk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-16 17:46+0400\n"
-"PO-Revision-Date: 2007-03-10 18:25+0200\n"
-"Last-Translator: Nickolay V. Shmyrev <nshmyrev@yandex.ru>\n"
-"Language-Team: Russian  <gnome-cyr@gnome.org>\n"
+"POT-Creation-Date: 2008-01-21 00:35+0300\n"
+"PO-Revision-Date: 2008-01-21 00:03+0300\n"
+"Last-Translator: Vasiliy Faronov <qvvx@yandex.ru>\n"
+"Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.1\n"
-"Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
 "10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: ../ekiga.desktop.in.in.h:1
@@ -337,7 +337,7 @@ msgstr "Число кадров, передаваемых в каждом пак
 
 #: ../ekiga.schemas.in.in.h:63
 msgid "Outbound Proxy"
-msgstr "Исходящий Proxy"
+msgstr "Исходящий прокси"
 
 #: ../ekiga.schemas.in.in.h:64
 msgid "Output device type"
@@ -534,8 +534,8 @@ msgid ""
 "The Gateway host is the host to use to do H.323 calls through a gateway that "
 "will relay calls"
 msgstr ""
-"Узел Gatekeeper - это узел, который используется для звонков H.323 через "
-"шлюз, который будет переадресовывать звонки"
+"Узел-шлюз — это узел, который используется для вызовов H.323 через шлюз, "
+"который будет ретранслировать звонки"
 
 #: ../ekiga.schemas.in.in.h:107
 msgid "The NAT method"
@@ -543,7 +543,7 @@ msgstr "Метод NAT"
 
 #: ../ekiga.schemas.in.in.h:108 ../src/gui/preferences.cpp:1037
 msgid "The SIP Outbound Proxy to use for outgoing calls"
-msgstr "Исходящий proxy-сервер для SIP"
+msgstr "Исходящий прокси-сервер для SIP"
 
 #: ../ekiga.schemas.in.in.h:109
 msgid "The STUN Server"
@@ -770,8 +770,8 @@ msgid ""
 "to take effect."
 msgstr ""
 "Диапазон портов UDP, которые Ekiga будет использовать для сигнализации по "
-"протоколу SIP и регистрации на шлюзах. Чтобы изменение вступило в силу, "
-"необходимо перезапустить Ekiga."
+"протоколу SIP и регистрации на узлах gatekeeper. Чтобы изменение вступило в "
+"силу, необходимо перезапустить Ekiga."
 
 #: ../ekiga.schemas.in.in.h:148
 msgid "The remote zoom value"
@@ -995,73 +995,6 @@ msgstr "Ориентация"
 #: ../lib/gui/gmtray/eggtrayicon.c:134
 msgid "The orientation of the tray."
 msgstr "Ориентация панели уведомлений."
-
-#: ../src/clients/ils.cpp:105 ../src/gui/tools.cpp:174
-msgid "Invalid parameters"
-msgstr "Неверные параметры"
-
-#: ../src/clients/ils.cpp:105
-msgid ""
-"Please provide your first name and e-mail in the Personal Data section in "
-"order to be able to register to the users directory."
-msgstr ""
-"Укажите ваше имя и адрес электр. почты в разделе \"Личные сведения\", чтобы "
-"можно было зарегистрироваться в каталоге пользователей."
-
-#: ../src/clients/ils.cpp:145
-msgid "Invalid users directory"
-msgstr "Неверный каталог пользователей"
-
-#: ../src/clients/ils.cpp:145
-msgid "Operation impossible since there is no users directory specified."
-msgstr "Операция невозможна, потому что не указан каталог пользователей."
-
-#: ../src/clients/ils.cpp:238
-msgid "Failed to parse XML file"
-msgstr "Ошибка разбора файла XML"
-
-#: ../src/clients/ils.cpp:238
-msgid ""
-"There was an error while parsing the XML file. Please make sure that it is "
-"correctly installed in your system."
-msgstr ""
-"При разборе файла XML произошла ошибка. Убедитесь, что он правильно "
-"установлен в вашей системе."
-
-#: ../src/clients/ils.cpp:249
-msgid "Bad information"
-msgstr "Неверная информация"
-
-#: ../src/clients/ils.cpp:249
-#, c-format
-msgid "Bad LDAP information from XML file: %s."
-msgstr "Неверная информация LDAP из файла XML: %s."
-
-#: ../src/clients/ils.cpp:257
-#, c-format
-msgid "ILS registration failed: unable to connect to %s"
-msgstr "Сбой регистрации ILS: не удается подключиться к %s"
-
-#: ../src/clients/ils.cpp:270
-msgid "ILS registration failed: unable to set time limit on operations"
-msgstr ""
-"Сбой регистрации ILS: не удается установить ограничение времени для операций"
-
-#: ../src/clients/ils.cpp:282
-#, c-format
-msgid "ILS registration failed: failed to bind to %s"
-msgstr "Сбой регистрации ILS: ошибка привязки к %s"
-
-#: ../src/clients/ils.cpp:310
-#, c-format
-msgid "Updated information on %s"
-msgstr "Обновлена информация на %s"
-
-#: ../src/clients/ils.cpp:314 ../src/endpoints/accountshandler.cpp:332
-#: ../src/endpoints/sip.cpp:236
-#, c-format
-msgid "Unregistered from %s"
-msgstr "Отключился от %s"
 
 #: ../src/clients/stun.cpp:104
 #, c-format
@@ -1311,9 +1244,9 @@ msgstr ""
 #: ../src/devices/audio.cpp:481 ../src/devices/audio.cpp:482
 #: ../src/devices/videoinput.cpp:310 ../src/devices/videoinput.cpp:585
 #: ../src/endpoints/ekiga.cpp:351 ../src/endpoints/ekiga.cpp:353
-#: ../src/endpoints/ekiga.cpp:355 ../src/endpoints/pcss.cpp:194
-#: ../src/gui/druid.cpp:1780 ../src/gui/druid.cpp:1792
-#: ../src/gui/druid.cpp:1850
+#: ../src/endpoints/ekiga.cpp:355 ../src/endpoints/pcss.cpp:198
+#: ../src/gui/druid.cpp:1784 ../src/gui/druid.cpp:1796
+#: ../src/gui/druid.cpp:1854
 msgid "No device found"
 msgstr "Устройство не найдено"
 
@@ -1466,20 +1399,20 @@ msgstr "Завершение сеанса"
 
 #: ../src/endpoints/accountshandler.cpp:294
 msgid "Gatekeeper registration failed: duplicate alias"
-msgstr "Сбой регистрации на шлюзе: повторяющиеся псевдонимы"
+msgstr "Сбой регистрации на узле gatekeeper: повторяющиеся псевдонимы"
 
 #: ../src/endpoints/accountshandler.cpp:298
 msgid "Gatekeeper registration failed: bad username/password"
-msgstr "Сбой регистрации на шлюзе: неверный логин/пароль"
+msgstr "Сбой регистрации на узле gatekeeper: неверный логин/пароль"
 
 #: ../src/endpoints/accountshandler.cpp:301
 msgid "Gatekeeper registration failed: transport error"
-msgstr "Сбой регистрации на шлюзе: ошибка транспорта"
+msgstr "Сбой регистрации на узле gatekeeper: ошибка транспорта"
 
 #: ../src/endpoints/accountshandler.cpp:304
 #: ../src/endpoints/accountshandler.cpp:309
 msgid "Gatekeeper registration failed"
-msgstr "Сбой регистрации на шлюзе"
+msgstr "Сбой регистрации на узле gatekeeper"
 
 #: ../src/endpoints/accountshandler.cpp:312 ../src/endpoints/sip.cpp:225
 #, c-format
@@ -1489,6 +1422,11 @@ msgstr "Зарегистрирован на %s"
 #: ../src/endpoints/accountshandler.cpp:322 ../src/endpoints/sip.cpp:231
 msgid "Registered"
 msgstr "Зарегистрирован"
+
+#: ../src/endpoints/accountshandler.cpp:332 ../src/endpoints/sip.cpp:236
+#, c-format
+msgid "Unregistered from %s"
+msgstr "Отключился от %s"
 
 #: ../src/endpoints/accountshandler.cpp:352 ../src/endpoints/sip.cpp:242
 msgid "Unregistered"
@@ -1551,7 +1489,7 @@ msgstr "Подключен к %s с использованием %s"
 msgid "Connected with %s"
 msgstr "Подключен к %s"
 
-#: ../src/endpoints/manager.cpp:1124 ../src/gui/main.cpp:4156
+#: ../src/endpoints/manager.cpp:1124 ../src/gui/main.cpp:4157
 msgid "Standby"
 msgstr "Ожидание"
 
@@ -1589,7 +1527,7 @@ msgstr "Не удается подключиться к удаленному у�
 
 #: ../src/endpoints/manager.cpp:1216
 msgid "The Gatekeeper cleared the call"
-msgstr "Gatekeeper прервал вызов"
+msgstr "Узел gatekeeper прервал вызов"
 
 #: ../src/endpoints/manager.cpp:1219 ../src/endpoints/urlhandler.cpp:530
 #: ../src/endpoints/urlhandler.cpp:535
@@ -1685,21 +1623,21 @@ msgstr "Закрыт кодек %s, который был открыт для п
 msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 msgstr "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 
-#: ../src/endpoints/pcss.cpp:218
+#: ../src/endpoints/pcss.cpp:222
 #, c-format
 msgid "Opened %s for recording with plugin %s"
 msgstr "Устройство %s открыто для записи модулем %s"
 
-#: ../src/endpoints/pcss.cpp:219
+#: ../src/endpoints/pcss.cpp:223
 #, c-format
 msgid "Opened %s for playing with plugin %s"
 msgstr "Устройство %s открыто для воспроизведения модулем %s"
 
-#: ../src/endpoints/pcss.cpp:237
+#: ../src/endpoints/pcss.cpp:241
 msgid "Could not open audio channel for audio transmission"
 msgstr "Не удается открыть звуковой канал для передачи звука"
 
-#: ../src/endpoints/pcss.cpp:237
+#: ../src/endpoints/pcss.cpp:241
 msgid ""
 "An error occured while trying to record from the soundcard for the audio "
 "transmission. Please check that your soundcard is not busy and that your "
@@ -1711,11 +1649,11 @@ msgstr ""
 "полного дуплекса.\n"
 "Передача звука отключена."
 
-#: ../src/endpoints/pcss.cpp:239
+#: ../src/endpoints/pcss.cpp:243
 msgid "Could not open audio channel for audio reception"
 msgstr "Не удается открыть звуковой канал для приема звука"
 
-#: ../src/endpoints/pcss.cpp:239
+#: ../src/endpoints/pcss.cpp:243
 msgid ""
 "An error occured while trying to play audio to the soundcard for the audio "
 "reception. Please check that your soundcard is not busy and that your driver "
@@ -1834,7 +1772,7 @@ msgstr "Регистратор:"
 
 #: ../src/gui/accounts.cpp:474 ../src/gui/accounts.cpp:1002
 msgid "Gatekeeper:"
-msgstr "Шлюз:"
+msgstr "Узел gatekeeper:"
 
 #. User
 #: ../src/gui/accounts.cpp:488
@@ -1857,7 +1795,7 @@ msgstr "Учётное имя:"
 
 #: ../src/gui/accounts.cpp:556 ../src/gui/accounts.cpp:1003
 msgid "Gatekeeper ID:"
-msgstr "Идентификатор шлюза:"
+msgstr "Идентификатор узла gatekeeper:"
 
 #. Timeout
 #: ../src/gui/accounts.cpp:580
@@ -1945,7 +1883,7 @@ msgstr ""
 "<b>Быстрый набор</b>: %s\n"
 
 #: ../src/gui/addressbook.cpp:821 ../src/gui/addressbook.cpp:823
-#: ../src/gui/druid.cpp:1912 ../src/gui/preferences.cpp:930
+#: ../src/gui/druid.cpp:1916 ../src/gui/preferences.cpp:930
 msgid "None"
 msgstr "Нет"
 
@@ -2097,7 +2035,7 @@ msgstr "_Файл"
 
 #: ../src/gui/addressbook.cpp:2559
 msgid "New _Address Book"
-msgstr "Новая _адресная книга"
+msgstr "Создать _адресную книгу"
 
 #: ../src/gui/addressbook.cpp:2578 ../src/gui/main.cpp:975
 msgid "_Close"
@@ -2171,7 +2109,7 @@ msgstr "Локальная"
 
 #: ../src/gui/addressbook.cpp:3339
 msgid "Remote LDAP"
-msgstr "Удаленная LDAP"
+msgstr "Удалённая LDAP"
 
 #: ../src/gui/addressbook.cpp:3340
 msgid "Remote ILS"
@@ -2245,7 +2183,7 @@ msgid ""
 "Videoconferencing application that allows you to make audio and video calls "
 "to remote users with SIP and H.323 hardware or software."
 msgstr ""
-"Ekiga - это полнофункциональное SIP и H.323-совместимое приложение для VoIP, "
+"Ekiga — это полнофункциональное SIP и H.323-совместимое приложение для VoIP, "
 "IP-телефонии и видеоконференций, которое позволяет связываться с другими "
 "пользователями, использующими программное или аппаратное обеспечение SIP или "
 "H.323."
@@ -2288,7 +2226,7 @@ msgstr "_Завершить вызов"
 
 #: ../src/gui/chat.cpp:626 ../src/gui/statusicon.cpp:100
 msgid "_Call"
-msgstr "_Вызов"
+msgstr "_Вызвать"
 
 #: ../src/gui/chat.cpp:627
 msgid "Call this user"
@@ -2400,12 +2338,12 @@ msgstr ""
 #: ../src/gui/druid.cpp:622
 #, c-format
 msgid "Configuration Assistant - page 1/%d"
-msgstr "Мастер первоначальной настройки - страница 1/%d"
+msgstr "Мастер первоначальной настройки — страница 1/%d"
 
 #: ../src/gui/druid.cpp:664
 #, c-format
 msgid "Personal Information - page %d/%d"
-msgstr "Личные сведения - страница %d/%d"
+msgstr "Личные сведения — страница %d/%d"
 
 #. The user fields
 #: ../src/gui/druid.cpp:677
@@ -2423,7 +2361,7 @@ msgstr ""
 #: ../src/gui/druid.cpp:732
 #, c-format
 msgid "ekiga.net Account - page %d/%d"
-msgstr "Учетная запись ekiga.net - страница %d/%d"
+msgstr "Учётная запись ekiga.net — страница %d/%d"
 
 #: ../src/gui/druid.cpp:743
 msgid "Please enter your username:"
@@ -2463,7 +2401,7 @@ msgstr "Я не хочу подписываться на бесплатный с
 #: ../src/gui/druid.cpp:835
 #, c-format
 msgid "Connection Type - page %d/%d"
-msgstr "Тип соединения - страница %d/%d"
+msgstr "Тип соединения — страница %d/%d"
 
 #. The connection type
 #: ../src/gui/druid.cpp:847
@@ -2483,7 +2421,7 @@ msgstr ""
 #: ../src/gui/druid.cpp:893
 #, c-format
 msgid "NAT Type - page %d/%d"
-msgstr "Тип NAT - страница %d/%d"
+msgstr "Тип NAT — страница %d/%d"
 
 #: ../src/gui/druid.cpp:903
 msgid "Click here to detect your NAT Type:"
@@ -2502,7 +2440,7 @@ msgstr "Определение типа NAT поможет вам настрои
 #: ../src/gui/druid.cpp:956
 #, c-format
 msgid "Audio Manager - page %d/%d"
-msgstr "Аудиоустройства - страница %d/%d"
+msgstr "Аудиоустройства — страница %d/%d"
 
 #. The Audio devices
 #: ../src/gui/druid.cpp:968
@@ -2529,7 +2467,7 @@ msgstr ""
 #: ../src/gui/druid.cpp:1019
 #, c-format
 msgid "Audio Devices - page %d/%d"
-msgstr "Аудиоустройства - страница %d/%d"
+msgstr "Устройства звука — страница %d/%d"
 
 #. The Audio devices
 #: ../src/gui/druid.cpp:1031
@@ -2541,7 +2479,7 @@ msgid ""
 "The audio output device is the device managed by the audio manager that will "
 "be used to play audio."
 msgstr ""
-"Устройство вывода звука - это устройство, управляемое менеджером звука, "
+"Устройство вывода звука — это устройство, управляемое менеджером звука, "
 "которое будет использоваться для воспроизведения звука."
 
 #: ../src/gui/druid.cpp:1049
@@ -2558,12 +2496,12 @@ msgstr ""
 
 #: ../src/gui/druid.cpp:1070 ../src/gui/druid.cpp:1204
 msgid "Test Settings"
-msgstr "Проверка параметров"
+msgstr "Проверить параметры"
 
 #: ../src/gui/druid.cpp:1114
 #, c-format
 msgid "Video Manager - page %d/%d"
-msgstr "Видеоустройства - страница %d/%d"
+msgstr "Видеоустройства — страница %d/%d"
 
 #. The Audio devices
 #: ../src/gui/druid.cpp:1126
@@ -2581,7 +2519,7 @@ msgstr ""
 #: ../src/gui/druid.cpp:1172
 #, c-format
 msgid "Video Devices - page %d/%d"
-msgstr "Видеоустройства - страница %d/%d"
+msgstr "Устройства видео — страница %d/%d"
 
 #. The Video devices
 #: ../src/gui/druid.cpp:1184
@@ -2599,29 +2537,29 @@ msgstr ""
 #: ../src/gui/druid.cpp:1240
 #, c-format
 msgid "Configuration complete - page %d/%d"
-msgstr "Настройка завершена - страница %d/%d"
+msgstr "Настройка завершена — страница %d/%d"
 
-#: ../src/gui/druid.cpp:1630
+#: ../src/gui/druid.cpp:1634
 msgid "56k Modem"
 msgstr "Модем 56К"
 
-#: ../src/gui/druid.cpp:1631
+#: ../src/gui/druid.cpp:1635
 msgid "ISDN"
 msgstr "ISDN"
 
-#: ../src/gui/druid.cpp:1632
+#: ../src/gui/druid.cpp:1636
 msgid "xDSL/Cable"
 msgstr "xDSL/Cable"
 
-#: ../src/gui/druid.cpp:1633
+#: ../src/gui/druid.cpp:1637
 msgid "T1/LAN"
 msgstr "T1/LAN"
 
-#: ../src/gui/druid.cpp:1634
+#: ../src/gui/druid.cpp:1638
 msgid "Keep current settings"
 msgstr "Сохранять текущие параметры"
 
-#: ../src/gui/druid.cpp:1912
+#: ../src/gui/druid.cpp:1916
 #, c-format
 msgid ""
 "You have now finished the Ekiga configuration. All the settings can be "
@@ -2654,7 +2592,7 @@ msgstr ""
 "Видеовход: %s\n"
 "SIP URL: %s\n"
 
-#: ../src/gui/druid.cpp:1967
+#: ../src/gui/druid.cpp:1971
 msgid "First Time Configuration Assistant"
 msgstr "Мастер первоначальной настройки"
 
@@ -3178,7 +3116,7 @@ msgstr ""
 "Пакетов вне последовательности: %.1f %%\n"
 "Буферизация: %d ms"
 
-#: ../src/gui/main.cpp:4574
+#: ../src/gui/main.cpp:4575
 #, c-format
 msgid ""
 "Ekiga got an invalid value for the GConf key %s.\n"
@@ -3200,23 +3138,23 @@ msgstr ""
 "архивами почтовых рассылок (http://mail.gnome.org) для получения "
 "дополнительной информации."
 
-#: ../src/gui/main.cpp:4577
+#: ../src/gui/main.cpp:4578
 msgid "Gconf key error"
 msgstr "Ошибка ключа Gconf"
 
-#: ../src/gui/main.cpp:4608 ../src/gui/main.cpp:4627
+#: ../src/gui/main.cpp:4609 ../src/gui/main.cpp:4628
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "Выводит отладочную информацию на консоль (уровни между 1 и 6)"
 
-#: ../src/gui/main.cpp:4611 ../src/gui/main.cpp:4632
+#: ../src/gui/main.cpp:4612 ../src/gui/main.cpp:4633
 msgid "Makes Ekiga call the given URL"
 msgstr "Заставляет Ekiga вызвать указанный URL"
 
-#: ../src/gui/main.cpp:4665
+#: ../src/gui/main.cpp:4666
 msgid "No usable audio plugin detected"
 msgstr "Не обнаружен подходящий звуковой модуль"
 
-#: ../src/gui/main.cpp:4665
+#: ../src/gui/main.cpp:4666
 msgid ""
 "Ekiga didn't find any usable audio plugin. Make sure that your installation "
 "is correct."
@@ -3488,11 +3426,11 @@ msgstr "Разные параметры"
 
 #: ../src/gui/preferences.cpp:986
 msgid "Default _gateway:"
-msgstr "Шлюз по умолчанию:"
+msgstr "_Шлюз по умолчанию:"
 
 #: ../src/gui/preferences.cpp:989 ../src/gui/preferences.cpp:1040
 msgid "Forward _URL:"
-msgstr "URL переадресации:"
+msgstr "URL переадреса_ции:"
 
 #: ../src/gui/preferences.cpp:998
 msgid "Advanced Settings"
@@ -3544,7 +3482,7 @@ msgstr ""
 
 #: ../src/gui/preferences.cpp:1037
 msgid "_Outbound Proxy:"
-msgstr "Исходящий proxy-сервер:"
+msgstr "Ис_ходящий прокси-сервер:"
 
 #: ../src/gui/preferences.cpp:1050
 msgid ""
@@ -3680,7 +3618,7 @@ msgstr "Параметры звуковых кодеков"
 #. between X and Y ms
 #: ../src/gui/preferences.cpp:1276
 msgid "Automatically adjust _jitter buffer between"
-msgstr "Автоматически настраивать буфер задержки между"
+msgstr "Автоматически настраивать _буфер задержки между"
 
 #: ../src/gui/preferences.cpp:1276
 msgid "and"
@@ -3709,7 +3647,7 @@ msgstr ""
 
 #: ../src/gui/preferences.cpp:1280
 msgid "Enable echo can_celation"
-msgstr "Включить подавление эха"
+msgstr "Включить подавление _эха"
 
 #: ../src/gui/preferences.cpp:1280
 msgid "If enabled, use echo cancelation."
@@ -3825,6 +3763,10 @@ msgid "Devices"
 msgstr "Устройства"
 
 #: ../src/gui/tools.cpp:174
+msgid "Invalid parameters"
+msgstr "Неверные параметры"
+
+#: ../src/gui/tools.cpp:174
 msgid ""
 "Please provide your username and password in order to be able to use the PC-"
 "To-Phone service."
@@ -3878,7 +3820,7 @@ msgstr ""
 
 #: ../src/gui/tools.cpp:389
 msgid "Get an Ekiga PC-To-Phone account"
-msgstr "Получить учетную запись PC-To-Phone для Ekiga"
+msgstr "Получить учётную запись PC-To-Phone для Ekiga"
 
 #: ../src/gui/tools.cpp:403
 msgid "Recharge the account"
@@ -3891,3 +3833,46 @@ msgstr "Просмотреть изменение баланса"
 #: ../src/gui/tools.cpp:431
 msgid "Consult the calls history"
 msgstr "Просмотреть журнал вызовов"
+
+#~ msgid ""
+#~ "Please provide your first name and e-mail in the Personal Data section in "
+#~ "order to be able to register to the users directory."
+#~ msgstr ""
+#~ "Укажите ваше имя и адрес электр. почты в разделе \"Личные сведения\", "
+#~ "чтобы можно было зарегистрироваться в каталоге пользователей."
+
+#~ msgid "Invalid users directory"
+#~ msgstr "Неверный каталог пользователей"
+
+#~ msgid "Operation impossible since there is no users directory specified."
+#~ msgstr "Операция невозможна, потому что не указан каталог пользователей."
+
+#~ msgid "Failed to parse XML file"
+#~ msgstr "Ошибка разбора файла XML"
+
+#~ msgid ""
+#~ "There was an error while parsing the XML file. Please make sure that it "
+#~ "is correctly installed in your system."
+#~ msgstr ""
+#~ "При разборе файла XML произошла ошибка. Убедитесь, что он правильно "
+#~ "установлен в вашей системе."
+
+#~ msgid "Bad information"
+#~ msgstr "Неверная информация"
+
+#~ msgid "Bad LDAP information from XML file: %s."
+#~ msgstr "Неверная информация LDAP из файла XML: %s."
+
+#~ msgid "ILS registration failed: unable to connect to %s"
+#~ msgstr "Сбой регистрации ILS: не удается подключиться к %s"
+
+#~ msgid "ILS registration failed: unable to set time limit on operations"
+#~ msgstr ""
+#~ "Сбой регистрации ILS: не удается установить ограничение времени для "
+#~ "операций"
+
+#~ msgid "ILS registration failed: failed to bind to %s"
+#~ msgstr "Сбой регистрации ILS: ошибка привязки к %s"
+
+#~ msgid "Updated information on %s"
+#~ msgstr "Обновлена информация на %s"
