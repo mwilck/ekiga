@@ -48,7 +48,7 @@ class GMDisplayManager_x
    : public  GMDisplayManager
 {
 public:
-  GMDisplayManager_x (Ekiga::ServiceCore & core);
+  GMDisplayManager_x (Ekiga::ServiceCore & _core);
 
   ~GMDisplayManager_x ();
 

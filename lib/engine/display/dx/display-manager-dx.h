@@ -47,16 +47,32 @@ class GMDisplayManager_dx
    : public  GMDisplayManager
 {
 public:
-  GMDisplayManager_dx (Ekiga::ServiceCore & core);
+  GMDisplayManager_dx (Ekiga::ServiceCore & _core);
 
-  virtual void setup_frame_display () {};
+  ~GMDisplayManager_dx ();
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Returns TRUE if the given settings require a
+   *                 reinitialization of the display, FALSE 
+   *                 otherwise.
+   * PRE          :  /
+   */
+  virtual bool frame_display_change_needed ();
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Setup the display following the display type,
+   *                 picture dimensions and zoom value.
+   *                 Returns FALSE in case of failure.
+   * PRE          :  /
+   */
+  virtual void setup_frame_display ();
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Closes the frame display and returns FALSE 
    *                 in case of failure.
    * PRE          :  /
    */
-  virtual void close_frame_display () {};
+  virtual void close_frame_display ();
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Display the given frame on the correct display.
@@ -65,7 +81,7 @@ public:
    */
   virtual void display_frame (const char *frame,
                              unsigned width,
-                             unsigned height) {};
+                             unsigned height);
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Display the given frames as Picture in Picture.
@@ -77,13 +93,16 @@ public:
                                  unsigned lf_height,
                                  const char *remote_frame,
                                  unsigned rf_width,
-                                 unsigned rf_height) {};
-  
+                                 unsigned rf_height);
+
+protected:
+
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Sync the output of the frame to the display
    * PRE          :  /
    */
-  virtual void sync(UpdateRequired sync_required) {};
+  virtual void sync(UpdateRequired sync_required);
 
+  DXWindow *dxWindow;
 };
 #endif /* VIDEODISPLAY_DX */
