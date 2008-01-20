@@ -75,7 +75,7 @@
     REMOTE_ONLY,
     ALL,
     NO_VIDEO
-  } DisplayAccelStatus;  //FIXME
+  } HwAccelStatus;
 
 
   typedef struct {
@@ -93,7 +93,7 @@
   {
   public:
     DisplayInfo() {
-      widgetInfoSet = false;
+      widget_info_set = false;
       x = 0;
       y = 0;
   #ifdef WIN32
@@ -104,11 +104,11 @@
       xdisplay = NULL;
   #endif
   
-      gconfInfoSet = false;
-      onTop = false;
-      disableHwAccel = false;
-      allowPipSwScaling = true;
-      swScalingAlgorithm = 0;
+      config_info_set = false;
+      on_top = false;
+      disable_hw_accel = false;
+      allow_pip_sw_scaling = true;
+      sw_scaling_algorithm = 0;
   
       display = UNSET;
       zoom = 0;
@@ -116,8 +116,8 @@
     
     void operator= ( const DisplayInfo& rhs) {
   
-    if (rhs.widgetInfoSet) {
-        widgetInfoSet = rhs.widgetInfoSet;
+    if (rhs.widget_info_set) {
+        widget_info_set = rhs.widget_info_set;
         x = rhs.x;
         y = rhs.y;
   #ifdef WIN32
@@ -129,18 +129,18 @@
   #endif
       }
   
-      if (rhs.gconfInfoSet) {
-        gconfInfoSet = rhs.gconfInfoSet;
-        onTop = rhs.onTop;
-        disableHwAccel = rhs.disableHwAccel;
-        allowPipSwScaling = rhs.allowPipSwScaling;
-        swScalingAlgorithm =  rhs.swScalingAlgorithm;
+      if (rhs.config_info_set) {
+        config_info_set = rhs.config_info_set;
+        on_top = rhs.on_top;
+        disable_hw_accel = rhs.disable_hw_accel;
+        allow_pip_sw_scaling = rhs.allow_pip_sw_scaling;
+        sw_scaling_algorithm =  rhs.sw_scaling_algorithm;
       }
       if (rhs.display != UNSET) display = rhs.display;
       if (rhs.zoom != 0) zoom = rhs.zoom;
     };
   
-    bool widgetInfoSet;
+    bool widget_info_set;
     int x;
     int y;
               
@@ -152,11 +152,11 @@
     Display* xdisplay;
   #endif
   
-    bool gconfInfoSet;
-    bool onTop;
-    bool disableHwAccel;
-    bool allowPipSwScaling;
-    unsigned int swScalingAlgorithm;
+    bool config_info_set;
+    bool on_top;
+    bool disable_hw_accel;
+    bool allow_pip_sw_scaling;
+    unsigned int sw_scaling_algorithm;
   
     DisplayMode display;
     unsigned int zoom;

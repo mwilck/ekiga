@@ -855,6 +855,85 @@ static void on_stream_resumed_cb (Ekiga::CallManager & /*manager*/,
 }
 
 
+/* 
+ * Display Engine Callbacks 
+ */
+
+void 
+on_display_mode_changed_cb (Ekiga::DisplayManager & /* manager */, DisplayMode display,  gpointer self)
+{
+  GmMainWindow *mw = gm_mw_get_mw (GTK_WIDGET (self));
+
+  gtk_radio_menu_select_with_id (mw->main_menu, "local_video", display);
+}
+
+void 
+on_fullscreen_mode_changed_cb (Ekiga::DisplayManager & /* manager */, FSToggle toggle,  gpointer self)
+{
+  gm_main_window_toggle_fullscreen (toggle, GTK_WIDGET (self));
+}
+
+void 
+on_display_size_changed_cb (Ekiga::DisplayManager & /* manager */, unsigned width, unsigned height,  gpointer self)
+{
+  GmMainWindow *mw = gm_mw_get_mw (GTK_WIDGET (self));
+
+  gtk_widget_set_size_request (mw->main_video_image, width, height);
+
+  GdkRectangle rect;
+  rect.x = mw->main_video_image->allocation.x;
+  rect.y = mw->main_video_image->allocation.y;
+  rect.width = mw->main_video_image->allocation.width;
+  rect.height = mw->main_video_image->allocation.height;
+
+  gdk_window_invalidate_rect (GDK_WINDOW (GTK_WIDGET (self)->window), &rect , TRUE);
+}
+
+void 
+on_hw_accel_status_changed_cb (Ekiga::DisplayManager & /* manager */, HwAccelStatus /* hw_accel_status */, gpointer /*self*/)
+{
+}
+
+void
+on_logo_update_required_cb (Ekiga::DisplayManager & /* manager */, gpointer self)
+{
+  gm_main_window_update_logo_have_window (GTK_WIDGET (self));
+}
+
+void 
+on_display_info_update_required_cb(Ekiga::DisplayManager & /* manager */, gpointer self)
+{
+  GmMainWindow *mw = gm_mw_get_mw (GTK_WIDGET (self));
+
+  DisplayInfo display_info;
+
+  if (( gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view") < 0) || ( gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view") > 4))
+    gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view", 0);
+
+  display_info.display = (DisplayMode) gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view");
+
+  display_info.zoom = gm_conf_get_int (VIDEO_DISPLAY_KEY "zoom");
+  if ((display_info.zoom != 100) && (display_info.zoom != 50) && (display_info.zoom != 200)) {
+    display_info.zoom = 100;
+    gm_conf_set_int (VIDEO_DISPLAY_KEY "zoom", 100);
+  }
+
+  display_info.on_top = gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top");
+  display_info.disable_hw_accel = gm_conf_get_bool (VIDEO_DISPLAY_KEY "disable_hw_accel");
+  display_info.allow_pip_sw_scaling = gm_conf_get_bool (VIDEO_DISPLAY_KEY "allow_pip_sw_scaling");
+  display_info.sw_scaling_algorithm = gm_conf_get_int (VIDEO_DISPLAY_KEY "sw_scaling_algorithm");
+  if (display_info.sw_scaling_algorithm > 3) {
+    display_info.sw_scaling_algorithm = 0;
+    gm_conf_set_int (VIDEO_DISPLAY_KEY "sw_scaling_algorithm", 0);
+  }
+  display_info.config_info_set = TRUE;
+
+  Ekiga::DisplayCore *display_core = dynamic_cast<Ekiga::DisplayCore *> (mw->core.get ("display-core"));
+  display_core->set_display_info(display_info);
+
+//   gm_main_window_set_resized_video_widget (176,144); //FIXME: is this necessary (call on_display_size_changed_cb)
+}
+
 
 /* Implementation */
 static void
@@ -2229,7 +2308,7 @@ video_window_expose_cb (GtkWidget *main_window,
     return FALSE;
   display_info.xdisplay = GDK_DISPLAY ();
 #endif
-  display_info.widgetInfoSet = TRUE;
+  display_info.widget_info_set = TRUE;
 
   Ekiga::DisplayCore *display_core = dynamic_cast<Ekiga::DisplayCore *> (mw->core.get ("display-core"));
   display_core->set_display_info(display_info);
@@ -2666,27 +2745,6 @@ gm_main_window_get_video_widget (GtkWidget *main_window)
   return mw->main_video_image;
 }
 
-void 
-on_display_size_changed_cb (Ekiga::DisplayManager & /* manager */, unsigned width, unsigned height,  gpointer self)  // FIXME new
-{
-  GmMainWindow *mw = gm_mw_get_mw (GTK_WIDGET (self));
-
-  gtk_widget_set_size_request (mw->main_video_image, width, height);
-
-  GdkRectangle rect;
-  rect.x = mw->main_video_image->allocation.x;
-  rect.y = mw->main_video_image->allocation.y;
-  rect.width = mw->main_video_image->allocation.width;
-  rect.height = mw->main_video_image->allocation.height;
-
-  gdk_window_invalidate_rect (GDK_WINDOW (GTK_WIDGET (self)->window), &rect , TRUE); //FIXME check
-}
-
-void
-on_logo_update_required_cb (Ekiga::DisplayManager & /* manager */, gpointer self)  //FIXME new
-{
-  gm_main_window_update_logo_have_window (GTK_WIDGET (self));
-}
 
 void 
 gm_main_window_update_logo_have_window (GtkWidget *main_window)
@@ -2715,44 +2773,6 @@ gm_main_window_update_logo_have_window (GtkWidget *main_window)
   gdk_window_invalidate_rect (GDK_WINDOW (main_window->window), &rect , TRUE);
 }
 
-void 
-on_display_info_update_required_cb(Ekiga::DisplayManager & /* manager */, gpointer self)  // FIXME new
-{
-  GmMainWindow *mw = gm_mw_get_mw (GTK_WIDGET (self));
-
-  DisplayInfo display_info;
-
-  if (( gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view") < 0) || ( gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view") > 4))
-    gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view", 0);
-
-  display_info.display = (DisplayMode) gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view");
-
-  display_info.zoom = gm_conf_get_int (VIDEO_DISPLAY_KEY "zoom");
-  if ((display_info.zoom != 100) && (display_info.zoom != 50) && (display_info.zoom != 200)) {
-    display_info.zoom = 100;
-    gm_conf_set_int (VIDEO_DISPLAY_KEY "zoom", 100);
-  }
-  
-  display_info.onTop = gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top");
-  display_info.disableHwAccel = gm_conf_get_bool (VIDEO_DISPLAY_KEY "disable_hw_accel");
-  display_info.allowPipSwScaling = gm_conf_get_bool (VIDEO_DISPLAY_KEY "allow_pip_sw_scaling");
-  display_info.swScalingAlgorithm = gm_conf_get_int (VIDEO_DISPLAY_KEY "sw_scaling_algorithm");
-  if (display_info.swScalingAlgorithm > 3) {
-    display_info.swScalingAlgorithm = 0;
-    gm_conf_set_int (VIDEO_DISPLAY_KEY "sw_scaling_algorithm", 0);
-  }
-  display_info.gconfInfoSet = TRUE;
-
-  Ekiga::DisplayCore *display_core = dynamic_cast<Ekiga::DisplayCore *> (mw->core.get ("display-core"));
-  display_core->set_display_info(display_info);
-
-//   gm_main_window_set_resized_video_widget (176,144); //FIXME: is this necessary (call on_display_size_changed_cb)
-}
-
-// void 
-// gm_main_window_update_video_accel_status (VideoAccelStatus status) {
-//   PTRACE(4, "MAIN: Update Accel status to " << status);
-// }
 
 void 
 gm_main_window_set_call_hold (GtkWidget *main_window,
@@ -3075,11 +3095,6 @@ gm_main_window_fullscreen_menu_update_sensitivity (bool FSMenu)
   gtk_menu_section_set_sensitive (mw->main_menu, "fullscreen", FSMenu);
 }
 
-void 
-on_fullscreen_mode_changed_cb (Ekiga::DisplayManager & /* manager */, FSToggle toggle,  gpointer self)  // FIXME new
-{
-  gm_main_window_toggle_fullscreen (toggle, GTK_WIDGET (self)); // FIXME new
-}
 
 void
 gm_main_window_toggle_fullscreen (FSToggle toggle,
@@ -3316,13 +3331,6 @@ gm_main_window_set_status (GtkWidget *main_window,
   gtk_combo_box_set_active (GTK_COMBO_BOX (mw->status_option_menu), status);
 }
 
-void 
-on_display_mode_changed_cb (Ekiga::DisplayManager & /* manager */, DisplayMode display,  gpointer self) //FIXME new
-{
-  GmMainWindow *mw = gm_mw_get_mw (GTK_WIDGET (self));
-
-  gtk_radio_menu_select_with_id (mw->main_menu, "local_video", display);
-}
 
 void 
 gm_main_window_set_call_info (GtkWidget *main_window,
@@ -3754,6 +3762,9 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   conn = display_core->display_info_update_required.connect (sigc::bind (sigc::ptr_fun (on_display_info_update_required_cb), (gpointer) window));
   mw->connections.push_back (conn);
 
+  conn = display_core->logo_update_required.connect (sigc::bind (sigc::ptr_fun (on_logo_update_required_cb), (gpointer) window));
+  mw->connections.push_back (conn);
+
   conn = display_core->display_size_changed.connect (sigc::bind (sigc::ptr_fun (on_display_size_changed_cb), (gpointer) window));
   mw->connections.push_back (conn);
 
@@ -3761,6 +3772,9 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   mw->connections.push_back (conn);
 
   conn = display_core->fullscreen_mode_changed.connect (sigc::bind (sigc::ptr_fun (on_fullscreen_mode_changed_cb), (gpointer) window));
+  mw->connections.push_back (conn);
+
+  conn = display_core->hw_accel_status_changed.connect (sigc::bind (sigc::ptr_fun (on_hw_accel_status_changed_cb), (gpointer) window));
   mw->connections.push_back (conn);
 
   /* New Call Engine signals */

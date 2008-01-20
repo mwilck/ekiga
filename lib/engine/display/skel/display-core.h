@@ -127,9 +127,9 @@ namespace Ekiga
       sigc::signal<void, DisplayManager &, DisplayMode> display_mode_changed;
       sigc::signal<void, DisplayManager &, FSToggle> fullscreen_mode_changed;
       sigc::signal<void, DisplayManager &, unsigned, unsigned> display_size_changed;
+      sigc::signal<void, DisplayManager &, HwAccelStatus> hw_accel_status_changed;
       sigc::signal<void, DisplayManager &> logo_update_required;
       sigc::signal<void, DisplayManager &> display_info_update_required;
-//      sigc::signal<void, DisplayManager &, VideoAccelStatus> update_video_accel_status; /* gm_main_window_update_video_accel_status */
 
       /*** Statistics ***/
       void get_display_stats (DisplayStats & _display_stats) {
@@ -139,6 +139,7 @@ namespace Ekiga
       void on_display_mode_changed (DisplayMode display, DisplayManager *manager);
       void on_fullscreen_mode_changed (FSToggle toggle, DisplayManager *manager);
       void on_display_size_changed ( unsigned width, unsigned height, DisplayManager *manager);
+      void on_hw_accel_status_changed (HwAccelStatus hw_accel_status, DisplayManager *manager);
       void on_logo_update_required (DisplayManager *manager);
       void on_display_info_update_required (DisplayManager *manager);
 

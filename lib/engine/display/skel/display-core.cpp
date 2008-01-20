@@ -62,6 +62,7 @@ void DisplayCore::add_manager (DisplayManager &manager)
   manager.display_mode_changed.connect (sigc::bind (sigc::mem_fun (this, &DisplayCore::on_display_mode_changed), &manager));
   manager.fullscreen_mode_changed.connect (sigc::bind (sigc::mem_fun (this, &DisplayCore::on_fullscreen_mode_changed), &manager));
   manager.display_size_changed.connect (sigc::bind (sigc::mem_fun (this, &DisplayCore::on_display_size_changed), &manager));
+  manager.hw_accel_status_changed.connect (sigc::bind (sigc::mem_fun (this, &DisplayCore::on_hw_accel_status_changed), &manager));
   manager.logo_update_required.connect (sigc::bind (sigc::mem_fun (this, &DisplayCore::on_logo_update_required), &manager));
   manager.display_info_update_required.connect (sigc::bind (sigc::mem_fun (this, &DisplayCore::on_display_info_update_required), &manager));
 }
@@ -161,6 +162,11 @@ void DisplayCore::on_fullscreen_mode_changed ( FSToggle toggle, DisplayManager *
 void DisplayCore::on_display_size_changed ( unsigned width, unsigned height, DisplayManager *manager)
 {
   display_size_changed.emit (*manager, width, height);
+}
+
+void DisplayCore::on_hw_accel_status_changed (HwAccelStatus hw_accel_status, DisplayManager *manager)
+{
+  hw_accel_status_changed.emit (*manager, hw_accel_status);
 }
 
 void DisplayCore::on_logo_update_required (DisplayManager *manager)

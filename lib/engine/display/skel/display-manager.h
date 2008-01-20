@@ -82,12 +82,12 @@ namespace Ekiga
 
       virtual void set_display_info (const DisplayInfo &) { };
 
-      sigc::signal<void, DisplayMode> display_mode_changed;       /* gm_main_window_set_display_type */
-      sigc::signal<void, FSToggle> fullscreen_mode_changed;   /* gm_main_window_toggle_fullscreen */
-      sigc::signal<void, unsigned, unsigned> display_size_changed;        /* gm_main_window_set_resized_video_widget */
-      sigc::signal<void> logo_update_required;                    /* gm_main_window_update_logo  */
-      sigc::signal<void> display_info_update_required;            /* gm_main_window_update_zoom_display */
-//      sigc::signal<void, DisplayManager &, VideoAccelStatus> update_video_accel_status; /* gm_main_window_update_video_accel_status */
+      sigc::signal<void, DisplayMode> display_mode_changed;
+      sigc::signal<void, FSToggle> fullscreen_mode_changed;
+      sigc::signal<void, unsigned, unsigned> display_size_changed;
+      sigc::signal<void, HwAccelStatus> hw_accel_status_changed;
+      sigc::signal<void> logo_update_required;
+      sigc::signal<void> display_info_update_required;
 
   protected:  
       virtual void get_display_info (DisplayInfo &) { };

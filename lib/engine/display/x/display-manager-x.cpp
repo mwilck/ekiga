@@ -122,7 +122,7 @@ GMDisplayManager_x::setup_frame_display ()
     break;
   }
 
-  if ((!local_display_info.widgetInfoSet) || (!local_display_info.gconfInfoSet) ||
+  if ((!local_display_info.widget_info_set) || (!local_display_info.config_info_set) ||
       (local_display_info.display == UNSET) || (local_display_info.zoom == 0) || (current_frame.zoom == 0)) {
     PTRACE(4, "GMDisplayManager_X\tWidget not yet realized or gconf info not yet set, not opening display");
     return;
@@ -134,14 +134,14 @@ GMDisplayManager_x::setup_frame_display ()
 
   pip_window_available = false;
 
-  DisplayAccelStatus display_accel_status = NONE;
+  HwAccelStatus hw_accel_status = NONE;
 
   switch (current_frame.display) {
 // LOCAL_VIDEO ------------------------------------------------------------------
   case LOCAL_VIDEO:
     PTRACE(4, "GMDisplayManager_X\tOpening LOCAL_VIDEO display with image of " << current_frame.local_width << "x" << current_frame.local_height);
 #ifdef HAVE_XV
-    if (!local_display_info.disableHwAccel) {
+    if (!local_display_info.disable_hw_accel) {
       lxWindow = new XVWindow ();
       if (lxWindow->Init (local_display_info.xdisplay, 
                             local_display_info.window, 
@@ -152,19 +152,19 @@ GMDisplayManager_x::setup_frame_display ()
                             (int) (current_frame.local_height * current_frame.zoom / 100),
                             current_frame.local_width, 
                             current_frame.local_height)) {
-	display_accel_status = ALL;
+	hw_accel_status = ALL;
         PTRACE(4, "GMDisplayManager_X\tLOCAL_VIDEO: Successfully opened XV Window");
       }
       else {
 	delete lxWindow;
 	lxWindow = NULL;
-	display_accel_status = NONE;
+	hw_accel_status = NONE;
         PTRACE(4, "GMDisplayManager_X\tLOCAL_VIDEO: Could not open XV Window");
       }
     }
 #endif			   
-    if (display_accel_status == NONE) {
-      PTRACE(3, "GMDisplayManager_X\tFalling back to SW" << ((local_display_info.disableHwAccel) 
+    if (hw_accel_status == NONE) {
+      PTRACE(3, "GMDisplayManager_X\tFalling back to SW" << ((local_display_info.disable_hw_accel) 
                                       ? " since HW acceleration was deactivated by configuration" 
                                       : " since HW acceleration failed to initalize"));
       lxWindow = new XWindow ();
@@ -177,14 +177,14 @@ GMDisplayManager_x::setup_frame_display ()
                            (int) (current_frame.local_height * current_frame.zoom / 100),
                            current_frame.local_width, 
                            current_frame.local_height)) {
-       lxWindow->SetSwScalingAlgo(local_display_info.swScalingAlgorithm);
+       lxWindow->SetSwScalingAlgo(local_display_info.sw_scaling_algorithm);
        PTRACE(4, "GMDisplayManager_X\tLOCAL_VIDEO: Successfully opened X Window");
       }
       else {
         delete lxWindow;
         lxWindow = NULL;
         video_disabled = true;
-        display_accel_status = NO_VIDEO;
+        hw_accel_status = NO_VIDEO;
         PTRACE(1, "GMDisplayManager_X\tLOCAL_VIDEO: Could not open X Window - no video");
       }
     }
@@ -202,7 +202,7 @@ GMDisplayManager_x::setup_frame_display ()
   case REMOTE_VIDEO:
     PTRACE(4, "GMDisplayManager_X\tOpening REMOTE_VIDEO display with image of " << current_frame.remote_width << "x" << current_frame.remote_height);
 #ifdef HAVE_XV
-    if (!local_display_info.disableHwAccel) {
+    if (!local_display_info.disable_hw_accel) {
       rxWindow = new XVWindow ();
       if (rxWindow->Init (local_display_info.xdisplay, 
                           local_display_info.window, 
@@ -213,20 +213,20 @@ GMDisplayManager_x::setup_frame_display ()
                           (int) (current_frame.remote_height * current_frame.zoom / 100),
                           current_frame.remote_width, 
                           current_frame.remote_height)) {
-       display_accel_status = ALL;
+       hw_accel_status = ALL;
        PTRACE(4, "GMDisplayManager_X\tREMOTE_VIDEO: Successfully opened XV Window");
      }
      else {
        delete rxWindow;
        rxWindow = NULL;
-       display_accel_status = NONE;
+       hw_accel_status = NONE;
        PTRACE(1, "GMDisplayManager_X\tLOCAL_VIDEO: Could not open XV Window");
 
      }
     }
 #endif			   
-    if (display_accel_status == NONE) {
-      PTRACE(3, "GMDisplayManager_X\tFalling back to SW" << ((local_display_info.disableHwAccel) 
+    if (hw_accel_status == NONE) {
+      PTRACE(3, "GMDisplayManager_X\tFalling back to SW" << ((local_display_info.disable_hw_accel) 
                                       ? " since HW acceleration was deactivated by configuration" 
                                       : " since HW acceleration failed to initalize"));
       rxWindow = new XWindow ();
@@ -239,14 +239,14 @@ GMDisplayManager_x::setup_frame_display ()
                              (int) (current_frame.remote_height * current_frame.zoom / 100),
                              current_frame.remote_width, 
                              current_frame.remote_height)) {
-        rxWindow->SetSwScalingAlgo(local_display_info.swScalingAlgorithm);
+        rxWindow->SetSwScalingAlgo(local_display_info.sw_scaling_algorithm);
         PTRACE(4, "GMDisplayManager_X\tREMOTE_VIDEO: Successfully opened X Window");
       }
       else {
         delete rxWindow;
         rxWindow = NULL;
         video_disabled = true;
-        display_accel_status = NO_VIDEO;
+        hw_accel_status = NO_VIDEO;
         PTRACE(1, "GMDisplayManager_X\tREMOTE_VIDEO: Could not open X Window - no video");
       }
     }
@@ -268,7 +268,7 @@ GMDisplayManager_x::setup_frame_display ()
             << current_frame.local_width << "x" << current_frame.local_height << "(local) and " 
 	    << current_frame.remote_width << "x" << current_frame.remote_height << "(remote)");
 #ifdef HAVE_XV
-    if (!local_display_info.disableHwAccel) {
+    if (!local_display_info.disable_hw_accel) {
       rxWindow = new XVWindow ();
       if (rxWindow->Init ((current_frame.display == PIP) ? local_display_info.xdisplay : rDisplay, 
                              (current_frame.display == PIP) ? local_display_info.window : DefaultRootWindow (rDisplay), 
@@ -279,20 +279,20 @@ GMDisplayManager_x::setup_frame_display ()
                              (int) (current_frame.remote_height * current_frame.zoom / 100),
                              current_frame.remote_width, 
                              current_frame.remote_height)) {
-        display_accel_status = REMOTE_ONLY;
+        hw_accel_status = REMOTE_ONLY;
         PTRACE(4, "GMDisplayManager_X\tPIP: Successfully opened remote XV Window");
       }
       else 
       {
         delete rxWindow;
 	rxWindow = NULL;
-	display_accel_status = NONE;
+	hw_accel_status = NONE;
         PTRACE(1, "GMDisplayManager_X\tPIP: Could not open remote XV Window");
       }
     }
 #endif			   
-    if (display_accel_status == NONE) {
-      PTRACE(3, "GMDisplayManager_X\tFalling back to SW" << ((local_display_info.disableHwAccel) 
+    if (hw_accel_status == NONE) {
+      PTRACE(3, "GMDisplayManager_X\tFalling back to SW" << ((local_display_info.disable_hw_accel) 
                                       ? " since HW acceleration was deactivated by configuration" 
                                       : " since HW acceleration failed to initalize"));
       rxWindow = new XWindow ();
@@ -305,21 +305,21 @@ GMDisplayManager_x::setup_frame_display ()
                              (int) (current_frame.remote_height * current_frame.zoom / 100),
                              current_frame.remote_width, 
                              current_frame.remote_height)) {
-        rxWindow->SetSwScalingAlgo(local_display_info.swScalingAlgorithm);
+        rxWindow->SetSwScalingAlgo(local_display_info.sw_scaling_algorithm);
         PTRACE(4, "GMDisplayManager_X\tPIP: Successfully opened remote X Window");
       }
       else {
         delete rxWindow;
         rxWindow = NULL;
         video_disabled = true;
-        display_accel_status = NO_VIDEO;
+        hw_accel_status = NO_VIDEO;
         PTRACE(1, "GMDisplayManager_X\tPIP: Could not open remote X Window - no video");
       }
     }
 
 
 #ifdef HAVE_XV
-    if (display_accel_status == REMOTE_ONLY) {
+    if (hw_accel_status == REMOTE_ONLY) {
       lxWindow = new XVWindow();
       if (lxWindow->Init (   rxWindow->GetDisplay (), 
                              rxWindow->GetWindowHandle (),
@@ -330,7 +330,7 @@ GMDisplayManager_x::setup_frame_display ()
                              (int) (current_frame.remote_height * current_frame.zoom  / 100 / 3),
                              current_frame.local_width, 
                              current_frame.local_height)) {
-        display_accel_status = ALL;
+        hw_accel_status = ALL;
         pip_window_available = true;
         PTRACE(4, "GMDisplayManager_X\tPIP: Successfully opened local XV Window");
       }
@@ -342,8 +342,8 @@ GMDisplayManager_x::setup_frame_display ()
       }
     }
 #endif
-    if ((display_accel_status != ALL) && (local_display_info.allowPipSwScaling)) {
-      PTRACE(3, "GMDisplayManager_X\tFalling back to SW" << ((local_display_info.disableHwAccel) 
+    if ((hw_accel_status != ALL) && (local_display_info.allow_pip_sw_scaling)) {
+      PTRACE(3, "GMDisplayManager_X\tFalling back to SW" << ((local_display_info.disable_hw_accel) 
                                       ? " since HW acceleration was deactivated by configuration" 
                                       : " since HW acceleration failed to initalize"));
       lxWindow = new XWindow ();
@@ -356,7 +356,7 @@ GMDisplayManager_x::setup_frame_display ()
                              (int) (current_frame.remote_height * current_frame.zoom  / 100 / 3),
                              current_frame.local_width, 
                              current_frame.local_height)) {
-       lxWindow->SetSwScalingAlgo(local_display_info.swScalingAlgorithm);
+       lxWindow->SetSwScalingAlgo(local_display_info.sw_scaling_algorithm);
        pip_window_available = true;
        PTRACE(4, "GMDisplayManager_X\tPIP: Successfully opened local X Window");
      }
@@ -368,9 +368,9 @@ GMDisplayManager_x::setup_frame_display ()
       }
     }
 
-    if ((display_accel_status != ALL) && (!local_display_info.allowPipSwScaling)) {
+    if ((hw_accel_status != ALL) && (!local_display_info.allow_pip_sw_scaling)) {
       PTRACE(3, "GMDisplayManager_X\tNot opening PIP window since HW acceleration is not available and SW fallback is disabled by configuration");
-      display_accel_status = ALL;
+      hw_accel_status = ALL;
     }
 
     if (rxWindow && lxWindow) {
@@ -401,7 +401,7 @@ GMDisplayManager_x::setup_frame_display ()
     break;
   }
 
-  if (local_display_info.onTop) {
+  if (local_display_info.on_top) {
 
     if (lxWindow)
       lxWindow->ToggleOntop ();
@@ -409,16 +409,13 @@ GMDisplayManager_x::setup_frame_display ()
       rxWindow->ToggleOntop ();
   }
 
-//  runtime.run_in_main (sigc::bind (update_display_accel_status.make_slot (), display_accel_status));
+  runtime.run_in_main (sigc::bind (hw_accel_status_changed.make_slot (), hw_accel_status));
 }
 
 void
 GMDisplayManager_x::close_frame_display ()
 {
-//   if (runtime) { //FIXME
-//     display_accel_status = NO_VIDEO;
-//     runtime.run_in_main (sigc::bind (update_display_accel_status.make_slot (), display_accel_status));
-//   }
+  runtime.run_in_main (sigc::bind (hw_accel_status_changed.make_slot (), NO_VIDEO));
 
   if (rxWindow) 
     rxWindow->RegisterSlave (NULL);

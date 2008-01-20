@@ -182,7 +182,7 @@ void GMDisplayManager::set_frame_data (unsigned width,
 
   var_mutex.Signal();
 
-  if ((local_display_info.display == UNSET) || (local_display_info.zoom == 0) || (!local_display_info.gconfInfoSet)) {
+  if ((local_display_info.display == UNSET) || (local_display_info.zoom == 0) || (!local_display_info.config_info_set)) {
     runtime.run_in_main (display_info_update_required.make_slot ());
     PTRACE(4, "GMDisplayManager\tDisplay and zoom variable not set yet, not opening display");
      return;
@@ -205,7 +205,7 @@ GMDisplayManager::frame_display_change_needed ()
 
   get_display_info(local_display_info);
 
-  if ((!local_display_info.widgetInfoSet) || (!local_display_info.gconfInfoSet) ||
+  if ((!local_display_info.widget_info_set) || (!local_display_info.config_info_set) ||
       (local_display_info.display == UNSET) || (local_display_info.zoom == 0)) {
     PTRACE(4, "GMDisplayManager\tWidget not yet realized or gconf info not yet set, not opening display");
     return false;
