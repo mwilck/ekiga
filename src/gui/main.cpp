@@ -140,7 +140,7 @@ struct _GmMainWindow
   GtkWidget *status_option_menu;
 
 #ifndef WIN32
-  GC videoWidgetGC;
+  GdkGC* video_widget_gc;
 #endif
 
   unsigned int missed_calls;
@@ -2293,19 +2293,21 @@ video_window_expose_cb (GtkWidget *main_window,
 #ifdef WIN32  
   display_info.hwnd = ((HWND)GDK_WINDOW_HWND (mw->main_video_image->window));
 #else 
-  if (!mw->videoWidgetGC) { 
-    GdkGC* gc = gdk_gc_new(mw->main_video_image->window);
-    if ( gc == NULL)
+  if (!mw->video_widget_gc) { 
+    mw->video_widget_gc = gdk_gc_new(mw->main_video_image->window);
+    if ( mw->video_widget_gc == NULL)
       return FALSE;
 
-    mw->videoWidgetGC = GDK_GC_XGC(gc);
-    if (mw->videoWidgetGC == NULL)
-      return FALSE;
   }
-  display_info.gc = mw->videoWidgetGC;
-  display_info.window = GDK_WINDOW_XWINDOW (mw->main_video_image->window); // None
-  if (display_info.window == 0)  //FIXME
+
+  if (GDK_GC_XGC(mw->video_widget_gc) == NULL)
     return FALSE;
+
+  display_info.gc = GDK_GC_XGC(mw->video_widget_gc);
+  display_info.window = GDK_WINDOW_XWINDOW (mw->main_video_image->window);
+  if (display_info.window == 0)  //FIXME: Should be None
+    return FALSE;
+
   display_info.xdisplay = GDK_DISPLAY ();
 #endif
   display_info.widget_info_set = TRUE;
@@ -3637,7 +3639,7 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   ep = dynamic_cast<GMManager *> (core.get ("opal-component"));
 
 #ifndef WIN32
-  mw->videoWidgetGC = NULL;
+  mw->video_widget_gc = NULL;
 #endif
 
   /* Tooltips and accelerators */
