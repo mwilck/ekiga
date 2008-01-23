@@ -51,7 +51,7 @@ namespace Avahi
  */
 
   class Cluster:
-    public Ekiga::ClusterImpl<Heap, Ekiga::delete_heap_management<Heap> >
+    public Ekiga::ClusterImpl<Heap>
   {
   public:
 

@@ -49,7 +49,7 @@ namespace Local
  */
 
   class Cluster :
-    public Ekiga::ClusterImpl<Heap, Ekiga::delete_heap_management<Heap> >,
+    public Ekiga::ClusterImpl<Heap>,
     public Ekiga::Trigger
   {
   public:
@@ -71,6 +71,9 @@ namespace Local
     void pull ();
 
     const std::set<std::string> existing_groups () const;
+
+    Heap &get_heap ()
+    { return *heap; }
 
   private:
 

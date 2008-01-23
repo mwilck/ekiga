@@ -79,6 +79,10 @@ namespace Ekiga
     ~Lister ();
 
 
+    /** Allows listing all objects
+     */
+    void visit_objects (sigc::slot<void, ObjectType &> visitor);
+
     /** Returns a const iterator to the first object of the collection.
      */
     const_iterator begin () const;
@@ -180,6 +184,15 @@ Ekiga::Lister<ObjectType>::~Lister ()
     remove_object (*iter); // here iter becomes invalid
     iter = begin ();
   }
+}
+
+
+template<typename ObjectType>
+void
+Ekiga::Lister<ObjectType>::visit_objects (sigc::slot<void, ObjectType &> visitor)
+{
+  for (iterator iter = begin (); iter != end (); iter++)
+    visitor (*iter);
 }
 
 

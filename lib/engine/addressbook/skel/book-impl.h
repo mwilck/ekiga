@@ -97,12 +97,20 @@ namespace Ekiga
 
   protected:
 
-    /** More STL-like ways to access the contacts within this Ekiga::BookImpl
-     *
+    /** Returns an iterator to the first Contact of the collection
      */
     iterator begin ();
+
+    /** Returns an iterator to the last Contact of the collection
+     */
     iterator end ();
+
+    /** Returns a const iterator to the first Contact of the collection
+     */
     const_iterator begin () const;
+
+    /** Returns a const iterator to the last Contact of the collection
+     */
     const_iterator end () const;
 
     /** Adds a contact to the Ekiga::Book.
@@ -163,8 +171,7 @@ template<typename ContactType>
 void
 Ekiga::BookImpl<ContactType>::visit_contacts (sigc::slot<void, Contact &> visitor)
 {
-  for (iterator iter = begin (); iter != end (); iter++)
-    visitor (*iter);
+  Lister<ContactType>::visit_objects (visitor);
 }
 
 

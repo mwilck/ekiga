@@ -54,7 +54,7 @@ namespace Evolution
  * @{
  */
 
-  class Source: public Ekiga::SourceImpl<Book, Ekiga::delete_book_management<Book> >
+  class Source: public Ekiga::SourceImpl<Book>
   {
   public:
 

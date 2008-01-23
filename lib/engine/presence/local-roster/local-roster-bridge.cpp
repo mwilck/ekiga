@@ -93,12 +93,12 @@ Local::ContactDecorator::populate_menu (Ekiga::Contact &contact,
 
     if (cluster.is_supported_uri (iter->second)) {
 
-      Cluster::iterator heapiter = cluster.begin (); // no loop : only one
+      Heap &heap = cluster.get_heap ();
 
-      if (!heapiter->has_presentity_with_uri (iter->second)) {
+      if (!heap.has_presentity_with_uri (iter->second)) {
 
 	builder.add_action ("add", _("Add to local roster"),
-			    sigc::bind (sigc::mem_fun (*heapiter, &Local::Heap::new_presentity),
+			    sigc::bind (sigc::mem_fun (heap, &Local::Heap::new_presentity),
 					contact.get_name (), iter->second));
 	populated = true;
       }

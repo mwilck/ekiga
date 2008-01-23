@@ -49,7 +49,7 @@ namespace History
  */
 
   class Source :
-    public Ekiga::SourceImpl<Book, Ekiga::delete_book_management<Book> >,
+    public Ekiga::SourceImpl<Book>,
     public Ekiga::Service
   {
   public:

@@ -121,8 +121,7 @@ template<typename PresentityType>
 void
 Ekiga::HeapImpl<PresentityType>::visit_presentities (sigc::slot<void, Presentity &> visitor)
 {
-  for (iterator iter = begin (); iter != end (); iter++)
-    visitor (*iter);
+  Lister<PresentityType>::visit_objects (visitor);
 }
 
 template<typename PresentityType>
@@ -158,6 +157,7 @@ void
 Ekiga::HeapImpl<PresentityType>::add_presentity (PresentityType &presentity)
 {
   presentity.questions.add_handler (questions.make_slot ());
+
   add_object (presentity);
 }
 

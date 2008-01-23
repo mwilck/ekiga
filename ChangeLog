@@ -1,3 +1,22 @@
+2008-01-23  Julien Puydt  <jpuydt@gnome.org>
+
+	* lib/engine/framework/lister.h: Added a visitor api.
+	* lib/engine/addressbook/skel/book-impl.h:
+	* lib/engine/addressbook/skel/source-impl.h:
+	* lib/engine/presence/skel/cluster-impl.h:
+	* lib/engine/presence/skel/heap-impl.h: Made them use Ekiga::Lister, so
+	we have less code to maintain.
+	* lib/engine/addressbook/call-history/history-source.h:
+	* lib/engine/addressbook/evolution/evolution-source.h:
+	* lib/engine/addressbook/ldap/ldap-source.h:
+	* lib/engine/presence/avahi/avahi-cluster.h:
+	* lib/engine/presence/local-roster/local-cluster.h: Made it cope with
+	the previous change.
+	* lib/engine/presence/local-roster/local-cluster.h: Provide a more
+	direct api to access the single Heap it manages.
+	* lib/engine/presence/local-roster/local-roster-bridge.cpp: Use previous
+	api instead of using an iterator.
+
 2008-01-22  Matthias Schneider  <ma30002000@yahoo.de>
 
 	* src/devices/videodisplay.h:
