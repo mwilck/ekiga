@@ -37,11 +37,14 @@
 #ifndef __DISPLAY_INFO_H__
 #define __DISPLAY_INFO_H__
 
-#include "X11/Xlib.h"
+#ifdef WIN32
+#include <windows.h>
+#else
+#include <X11/Xlib.h>
 #ifdef None
 #undef None
 #endif
-
+#endif
 //namespace Ekiga {
 
 /**

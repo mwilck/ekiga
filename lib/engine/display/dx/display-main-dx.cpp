@@ -40,7 +40,7 @@
 #include "display-manager-dx.h"
 
 bool
-display_x_init (Ekiga::ServiceCore &core,
+display_dx_init (Ekiga::ServiceCore &core,
 	    int */*argc*/,
 	    char **/*argv*/[])
 {

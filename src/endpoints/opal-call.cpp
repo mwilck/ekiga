@@ -480,9 +480,9 @@ void Call::OnRTPStatistics (const OpalConnection & /* connection */,
 
   }
 
-  lost_packets = (lost_a + lost_v) / max (total_a + total_v, (DWORD) 1);
-  late_packets = (too_late_a + too_late_v) / max (total_a + total_v, (DWORD) 1);
-  out_of_order_packets = (out_of_order_a + out_of_order_v) / max (total_a + total_v, (DWORD) 1);
+  lost_packets = (lost_a + lost_v) / max ((unsigned long)(total_a + total_v), (unsigned long) 1);
+  late_packets = (too_late_a + too_late_v) / max ((unsigned long)(total_a + total_v), (unsigned long) 1);
+  out_of_order_packets = (out_of_order_a + out_of_order_v) / max ((unsigned long)(total_a + total_v), (unsigned long) 1);
 }
 
 

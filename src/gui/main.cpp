@@ -75,6 +75,7 @@
 #include <gdk/gdkx.h>
 #else
 #include "platform/winpaths.h"
+#include <gdk/gdkwin32.h>
 #endif
 
 #ifdef HAVE_GNOME

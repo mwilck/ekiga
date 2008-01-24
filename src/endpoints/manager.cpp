@@ -61,6 +61,8 @@
 #include <ptclib/html.h>
 #include <ptclib/pstun.h>
 
+#include <math.h>
+
 #define new PNEW
 
 

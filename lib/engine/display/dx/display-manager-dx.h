@@ -42,6 +42,7 @@
 #define _DISPLAY_MANAGER_DX_H_
 
 #include "display-manager-common.h"
+#include "dxwindow.h"
 
 class GMDisplayManager_dx
    : public  GMDisplayManager

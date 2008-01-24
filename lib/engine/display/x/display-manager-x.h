@@ -42,7 +42,7 @@
 #define _DISPLAY_MANAGER_X_H_
 
 #include "display-manager-common.h"
-#include "../../../gui/xwindow.h"
+#include "xwindow.h"
 
 class GMDisplayManager_x
    : public  GMDisplayManager
