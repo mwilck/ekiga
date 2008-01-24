@@ -1,5 +1,17 @@
 2008-01-24  Matthias Schneider  <ma30002000@yahoo.de>
 
+        * win32/diff/ptlib_Makefile.am:
+	* win32/diff/opal_Makefile.am: 
+	* win32/diff/ptlib_configure.ac:
+	* win32/Makefile:
+	Adepted ot latest opal and ptlib.
+	* lib/engine/display/dx/display-manager-dx.cpp:
+	Windows cannot restart running threads -> we have to close it first.
+	* lib/engine/addressbook/ldap/ldap-book.cpp:
+	Added missing include.
+
+2008-01-24  Matthias Schneider  <ma30002000@yahoo.de>
+
 	* src/endpoints/opal-call.cpp:
 	* src/endpoints/manager.cpp:
 	* src/gui/main.cpp:

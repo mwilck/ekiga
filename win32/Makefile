@@ -69,11 +69,11 @@ EKIGA_INSTALLER := ekiga-setup-${EKIGA_VER}.exe
 EKIGA_URL1 := http://snapshots.buildserver.net/cvs
 EKIGA_URL2 := http://snapshots.voxgratia.org/cvs
 
-OPAL_VER:= 3.1.0
+OPAL_VER:= 3.1.3
 OPAL_DIR:= $(BUILDROOT)/opal
 OPAL_ARCHIVE := opal-snapshot.tar.gz
 
-PTLIB_VER:= 2.1.0
+PTLIB_VER:= 2.1.3
 PTLIB_DIR:= $(BUILDROOT)/ptlib
 PTLIB_ARCHIVE := ptlib-snapshot.tar.gz
 

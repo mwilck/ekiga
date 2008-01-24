@@ -191,6 +191,10 @@ libpt_la_SOURCES += \
 	$(COMPONENT_SRC_DIR)/inetmail.cxx 
 endif
 
+if COMPILE_URL
+libpt_la_SOURCES += \
+	$(COMPONENT_SRC_DIR)/url.cxx
+
 if COMPILE_HTTP
 libpt_la_SOURCES += \
 	$(COMPONENT_SRC_DIR)/http.cxx \
@@ -209,6 +213,8 @@ if COMPILE_OPENSSL
 libpt_la_SOURCES += $(COMPONENT_SRC_DIR)/shttpsvc.cxx
 endif #COMPILE_OPENSSL
 endif #COMPILE_HTTPSVC
+
+endif #COMPILE_URL
 
 if COMPILE_CONFIG_FILE
 libpt_la_SOURCES += $(BASE_SRC_DIR)/wincfg.cxx 

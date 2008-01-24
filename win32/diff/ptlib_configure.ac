@@ -180,6 +180,15 @@ P_VFW_CAPTURE=0
 HAS_DNS=1
 HAS_RESOLVER=1
 P_DNS=1
+P_URL=1
+HAS_URL=1
+HAS_HTTPFORMS=1
+P_HTTPFORMS=1
+P_USE_STANDARD_CXX_BOOL=1
+P_TTS=1
+HAS_TTS=1
+P_VXML=1
+HAS_VXML=1
 
 P_LDAP=${HAS_OPENLDAP}
 P_SNMP=${HAS_SNMP}
@@ -205,6 +214,15 @@ AC_DEFINE([P_DIRECTSHOW], 1, [check if directshow capture is to be compiled in])
 AC_DEFINE([P_AUDIO], 1, [check if audio support is in])
 AC_DEFINE([P_VIDEO], 1, [check if video support is in])
 AC_DEFINE([P_DNS], 1, [check if dns support is in])
+AC_DEFINE([P_URL], 1, [check if url support is in])
+AC_DEFINE([HAS_URL], 1, [check if url support is in])
+AC_DEFINE([P_HTTPFORMS], 1, [check if url support is in])
+AC_DEFINE([HAS_HTTPFORMS], 1, [check if url support is in])
+AC_DEFINE([P_USE_STANDARD_CXX_BOOL], 1, [check if url support is in])
+AC_DEFINE([P_TTS], 1, [check if url support is in])
+AC_DEFINE([HAS_TTS], 1, [check if url support is in])
+AC_DEFINE([HAS_VXML], 1, [check if url support is in])
+AC_DEFINE([P_VXML], 1, [check if url support is in])
 
 AM_CONDITIONAL(COMPILE_OPENLDAP, test "${HAS_OPENLDAP}" = "1")
 AM_CONDITIONAL(COMPILE_REGEX, test "${HAS_REGEX}" = "1")
@@ -220,6 +238,7 @@ AM_CONDITIONAL(COMPILE_SNMP, test "${HAS_SNMP}" = "1")
 AM_CONDITIONAL(COMPILE_TELNET, test "${HAS_TELNET}" = "1")
 AM_CONDITIONAL(COMPILE_SERIAL, test "${HAS_SERIAL}" = "1")
 AM_CONDITIONAL(COMPILE_POP3SMTP, test "${HAS_POP3SMTP}" = "1")
+AM_CONDITIONAL(COMPILE_URL, test "${HAS_URL}" = "1")
 AM_CONDITIONAL(COMPILE_HTTP, test "${HAS_HTTP}" = "1")
 AM_CONDITIONAL(COMPILE_HTTPSVC, test "${HAS_HTTPSVC}" = "1")
 AM_CONDITIONAL(COMPILE_EXPAT, test "${P_WINEXPAT}" = "1")
