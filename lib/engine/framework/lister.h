@@ -38,8 +38,9 @@
 
 #include <sigc++/sigc++.h>
 
-#include "map-key-reference-iterator.h"
-#include "map-key-const-reference-iterator.h"
+#include "ptr_array.h"
+#include "ptr_array_iterator.h"
+#include "ptr_array_const_iterator.h"
 
 namespace Ekiga
 {
@@ -69,9 +70,14 @@ namespace Ekiga
 
   public:
 
-    typedef std::list<sigc::connection> connection_set;
-    typedef MapKeyReferenceIterator<ObjectType, connection_set> iterator;
-    typedef MapKeyConstReferenceIterator<ObjectType, connection_set> const_iterator;
+    typedef Ekiga::ptr_array<ObjectType> container_type;
+    typedef typename Ekiga::ptr_array_iterator<ObjectType> iterator;
+    typedef typename Ekiga::ptr_array_const_iterator<ObjectType> const_iterator;
+
+
+    /** The constructor.
+     */
+    Lister ();
 
 
     /** The destructor.
@@ -124,13 +130,6 @@ namespace Ekiga
     void remove_object (ObjectType &object);
 
 
-    /** Adds a connection to an object to the Ekiga::Lister, so that when
-     * said object is removed, all connections to it are correctly severed.
-     * @param: The object to which the connection is linked.
-     */
-    void add_connection (ObjectType &object,
-			 sigc::connection conn);
-
     /** Signals emitted by this object
      *
      */
@@ -164,25 +163,36 @@ namespace Ekiga
      */
     void on_object_removed (ObjectType *object);
 
-    /** Map of objects and signals.
+    /** Object store.
      */
-    std::map<ObjectType *, connection_set> connections;
+    container_type objects;
+
+    /** Are we shutting done, hence not reacting to our objects saying goodbye?
+     */
+    bool shutting_down;
   };
 };
 
 
 /* here begins the code from the template functions */
 
+template<typename ObjectType>
+Ekiga::Lister<ObjectType>::Lister (): shutting_down(false)
+{
+}
+
 
 template<typename ObjectType>
 Ekiga::Lister<ObjectType>::~Lister ()
 {
-  iterator iter = begin ();
+  shutting_down = true;
 
-  while (iter != end ()) {
+  for (unsigned int ii = 0;
+       ii < objects.size ();
+       ii++) {
 
-    remove_object (*iter); // here iter becomes invalid
-    iter = begin ();
+    ObjectType *obj = objects[ii];
+    obj->removed.emit ();
   }
 }
 
@@ -191,8 +201,8 @@ template<typename ObjectType>
 void
 Ekiga::Lister<ObjectType>::visit_objects (sigc::slot<void, ObjectType &> visitor)
 {
-  for (iterator iter = begin (); iter != end (); iter++)
-    visitor (*iter);
+  for (unsigned int ii = 0; ii < objects.size (); ii++)
+    visitor (*objects[ii]);
 }
 
 
@@ -200,7 +210,7 @@ template<typename ObjectType>
 typename Ekiga::Lister<ObjectType>::const_iterator
 Ekiga::Lister<ObjectType>::begin () const
 {
-  return const_iterator (connections.begin ());
+  return const_iterator (objects);
 }
 
 
@@ -208,7 +218,7 @@ template<typename ObjectType>
 typename Ekiga::Lister<ObjectType>::iterator
 Ekiga::Lister<ObjectType>::begin ()
 {
-  return iterator (connections.begin ());
+  return iterator (objects);
 }
 
 
@@ -216,7 +226,7 @@ template<typename ObjectType>
 typename Ekiga::Lister<ObjectType>::const_iterator
 Ekiga::Lister<ObjectType>::end () const
 {
-  return const_iterator (connections.end ());
+  return const_iterator (objects, objects.size ());
 }
 
 
@@ -224,7 +234,7 @@ template<typename ObjectType>
 typename Ekiga::Lister<ObjectType>::iterator
 Ekiga::Lister<ObjectType>::end ()
 {
-  return iterator (connections.end ());
+  return iterator (objects, objects.size ());
 }
 
 
@@ -232,12 +242,9 @@ template<typename ObjectType>
 void
 Ekiga::Lister<ObjectType>::add_object (ObjectType &object)
 {
-  sigc::connection conn;
-
-  conn = object.removed.connect (sigc::bind (sigc::mem_fun (this, &Lister::on_object_removed), &object));
-  add_connection (object, conn);
-  conn = object.updated.connect (sigc::bind (sigc::mem_fun (this, &Lister::on_object_updated), &object));
-  add_connection (object, conn);
+  object.removed.connect (sigc::bind (sigc::mem_fun (this, &Lister::on_object_removed), &object));
+  object.updated.connect (sigc::bind (sigc::mem_fun (this, &Lister::on_object_updated), &object));
+  objects.add (&object);
   object_added.emit (object);
 }
 
@@ -247,28 +254,14 @@ void
 Ekiga::Lister<ObjectType>::remove_object (ObjectType &object)
 {
   common_removal_steps (object);
-  object.removed.emit ();
-  delete &object;
-}
-
-template<typename ObjectType>
-void
-Ekiga::Lister<ObjectType>::add_connection (ObjectType &object, sigc::connection conn)
-{
-  connections[&object].push_front (conn);
 }
 
 template<typename ObjectType>
 void
 Ekiga::Lister<ObjectType>::common_removal_steps (ObjectType &object)
 {
-  connection_set conns = connections[&object];
-  for (connection_set::iterator iter = conns.begin ();
-       iter != conns.end ();
-       iter++)
-    iter->disconnect ();
-  connections.erase (&object);
   object_removed.emit (object);
+  objects.remove (&object);
 }
 
 
@@ -284,8 +277,8 @@ template<typename ObjectType>
 void
 Ekiga::Lister<ObjectType>::on_object_removed (ObjectType *object)
 {
-  common_removal_steps (*object);
-  delete object;
+  if ( !shutting_down)
+    common_removal_steps (*object);
 }
 
 #endif

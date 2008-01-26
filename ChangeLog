@@ -1,3 +1,16 @@
+2008-01-26  Julien Puydt  <jpuydt@gnome.org>
+
+	* lib/engine/framework/ptr_array.h: Array of pointers.
+	* lib/engine/framework/ptr_array_iterator.h: Iterator on ptr_array.
+	* lib/engine/framework/ptr_array_const_iterator.h: Const iterator on
+	ptr_array.
+	* lib/engine/framework/lister.h: Simplified and use ptr_array.
+	* lib/engine/presence/local-roster/local-heap.cpp: Adapt to Lister's
+	simplification.
+	* lib/engine/framework/map-key-reference-iterator.h:
+	* lib/engine/framework/map-key-const-reference-iterator.h: Removed, as
+	it's now useless.
+
 2008-01-24  Matthias Schneider  <ma30002000@yahoo.de>
 
         * win32/diff/ptlib_Makefile.am:

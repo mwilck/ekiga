@@ -225,8 +225,7 @@ Local::Heap::common_add (Presentity &presentity)
   presence_core->fetch_presence (presentity.get_uri ());
 
   // Connect the Local::Presentity signals.
-  sigc::connection conn = presentity.trigger_saving.connect (sigc::mem_fun (this, &Local::Heap::save));
-  add_connection (presentity, conn);
+  presentity.trigger_saving.connect (sigc::mem_fun (this, &Local::Heap::save));
 }
 
 
