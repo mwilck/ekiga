@@ -38,6 +38,11 @@
 
 #include <iostream>
 
+/* Make this flag available with GTK+ 2.10 */
+#ifndef G_PARAM_SPEC_STATIC_STRINGS
+#define	G_PARAM_STATIC_STRINGS (G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB)
+#endif
+
 struct const_key_info
 {
   const char *number;
@@ -202,13 +207,24 @@ ekiga_dialpad_init (EkigaDialpad *dialpad)
   }
 }
 
-static void
-ekiga_dialpad_constructed (GObject *object)
+static GObject *
+ekiga_dialpad_constructor (GType                  type,
+                           guint                  n_construct_properties,
+                           GObjectConstructParam *construct_properties)
 {
-  EkigaDialpad *dialpad = EKIGA_DIALPAD (object);
-  unsigned i;
+  GObjectClass *parent_class;
+  EkigaDialpad *dialpad;
 
+  /* Invoke parent constructor. */
+  parent_class = G_OBJECT_CLASS (ekiga_dialpad_parent_class);
+  dialpad = EKIGA_DIALPAD (parent_class->constructor (type,
+                                                      n_construct_properties,
+                                                      construct_properties));
+
+  /* The construct properties have been set -> we can use them (similar to
+   * object_class->construcor which was not available in gtk 2.10) */
   if (dialpad->priv->accel_group != NULL) {
+    unsigned i;
     for (i = 0; i < G_N_ELEMENTS (keys_info); i++) {
       gtk_widget_add_accelerator (dialpad->priv->buttons[i],
                                   "clicked",
@@ -217,6 +233,8 @@ ekiga_dialpad_constructed (GObject *object)
                                   (GdkModifierType) 0, (GtkAccelFlags) 0);
     }
   }
+
+  return G_OBJECT (dialpad);
 }
 
 static void
@@ -236,7 +254,7 @@ ekiga_dialpad_class_init (EkigaDialpadClass *klass)
   GType the_type = G_TYPE_FROM_CLASS (klass);
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  object_class->constructed = ekiga_dialpad_constructed;
+  object_class->constructor = ekiga_dialpad_constructor;
   object_class->finalize = ekiga_dialpad_finalize;
   object_class->get_property = ekiga_dialpad_get_property;
   object_class->set_property = ekiga_dialpad_set_property;
