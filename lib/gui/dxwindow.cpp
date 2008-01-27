@@ -323,27 +323,9 @@ DXWindow::Init (HWND rootWindow,
   return true;	
 }
 
-
-void
-DXWindow::PutFrame (uint8_t *mainFrame, 
-                    uint16_t width,
-                    uint16_t height)
+void DXWindow::ProcessEvents()
 {
-  PutFrame (mainFrame, width, height, NULL, 0, 0);
-}
-
-
-void 
-DXWindow::PutFrame (uint8_t *mainFrame,
-                    uint16_t width, 
-                    uint16_t height,
-                    uint8_t *pipFrame,
-                    uint16_t pipWidth,
-                    uint16_t pipHeight)
-{
-  PTRACE(4, "DirectX\tEntering putFrame");
-
-  HRESULT ddResult, ddResultRestore;
+  PTRACE(4, "DirectX\tEntering processEvents");
   MSG message;
 
   // handle messages
@@ -353,34 +335,55 @@ DXWindow::PutFrame (uint8_t *mainFrame,
     DispatchMessage (&message);
   }
 
-  if (_sizemove) 
-    return;
-
-  if (width  != _DXSurface.mainSrc.right - _DXSurface.mainSrc.left
-      || height != _DXSurface.mainSrc.bottom - _DXSurface.mainSrc.top
-      || (_pip && (pipWidth  != (_DXSurface.pipSrc.right  - _DXSurface.pipSrc.left)
-                   || pipHeight != (_DXSurface.pipSrc.bottom - _DXSurface.pipSrc.top)))) {
-
-    PTRACE (1, "DirectX\tDynamic switching of resolution not supported\n");
-    PTRACE (1, "DirectX\tMy Resolution: " << (_DXSurface.mainSrc.right  - _DXSurface.mainSrc.left) 
-            << "x" << (_DXSurface.mainSrc.bottom - _DXSurface.mainSrc.top )
-            << ", frame: " << width << "x" << height);
-    PTRACE (1, "DirectX\tMy PIP Resolution: " << (_DXSurface.pipSrc.right  - _DXSurface.pipSrc.left) 
-            << "x" << (_DXSurface.pipSrc.bottom - _DXSurface.pipSrc.top )
-            << ", PIP frame: " << pipWidth << "x" << pipHeight);
-    return;
-  }
-
   if (_embedded) 
     CalculateEmbWindCoord (); 
 
-  // do a memcopy of the main frame and blt it to the backbuffer
-  CopyFrameBackbuffer (mainFrame, width, height, &_DXSurface.mainBack, &_DXSurface.mainSrc);
+  PTRACE(4, "DirectX\tLeaving processEvents");
+}
 
-  // do a memcopy of the PIP frame if provided and blt it to the backbuffer
-  if (pipFrame && _pip) 
-    CopyFrameBackbuffer (pipFrame, pipWidth, pipHeight, &_DXSurface.pipBack, &_DXSurface.pipSrc);
+void
+DXWindow::PutFrame (uint8_t *frame, 
+                    uint16_t width,
+                    uint16_t height,
+		    bool pip)
+{
+  PTRACE(4, "DirectX\tEntering putFrame");
 
+  if (_sizemove) 
+    return;
+
+  if (!pip) {
+    if (   ( width  != (_DXSurface.mainSrc.right - _DXSurface.mainSrc.left))
+        || ( height != (_DXSurface.mainSrc.bottom - _DXSurface.mainSrc.top)) ) {
+      PTRACE (1, "DirectX\tDynamic switching of resolution not supported\n");
+      PTRACE (1, "DirectX\tMy Resolution: " << (_DXSurface.mainSrc.right  - _DXSurface.mainSrc.left) 
+              << "x" << (_DXSurface.mainSrc.bottom - _DXSurface.mainSrc.top )
+              << ", frame: " << width << "x" << height);
+      return;
+    }
+    // do a memcopy of the main frame and blt it to the backbuffer
+    CopyFrameBackbuffer (frame, width, height, &_DXSurface.mainBack, &_DXSurface.mainSrc);
+  }
+  else {
+      if (   ( width  != (_DXSurface.pipSrc.right  - _DXSurface.pipSrc.left))
+        || ( height != (_DXSurface.pipSrc.bottom - _DXSurface.pipSrc.top )) ) {
+      PTRACE (1, "DirectX\tDynamic switching of resolution not supported\n");
+      PTRACE (1, "DirectX\tMy PIP Resolution: " << (_DXSurface.pipSrc.right  - _DXSurface.pipSrc.left) 
+              << "x" << (_DXSurface.pipSrc.bottom - _DXSurface.pipSrc.top )
+              << ", PIP frame: " << width << "x" << height);
+      return;
+    }
+    // do a memcopy of the pip frame and blt it to the backbuffer
+    CopyFrameBackbuffer (frame, width, height, &_DXSurface.pipBack, &_DXSurface.pipSrc);
+  }
+  PTRACE(4, "DirectX\tLeaving putFrame");
+}
+
+void DXWindow::Sync()
+{
+  HRESULT ddResult, ddResultRestore;
+
+  PTRACE(4, "DirectX\tEntering Sync");
   // Blt the combined pip and main window from the backbuffer 
   // to the final position on the visible primary surface
   ddResult = _DXSurface.primary->Blt (&_DXSurface.primaryDst,
@@ -400,7 +403,7 @@ DXWindow::PutFrame (uint8_t *mainFrame,
     PTRACE (1, "DirectX\tBlt failed - " << DDErrorMessage (ddResult));
     return;
   }
-  PTRACE(4, "DirectX\tLeaving putFrame");
+  PTRACE(4, "DirectX\tLeaving Sync");
 }
 
 

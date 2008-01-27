@@ -210,9 +210,10 @@ GMDisplayManager_dx::display_frame (const char *frame,
                              unsigned width,
                              unsigned height)
 {
-// FIXME processEvents
-  if  (dxWindow)
-    dxWindow->PutFrame ((uint8_t *) frame, width, height);
+  if  (dxWindow) {
+    dxWindow->ProcessEvents();
+    dxWindow->PutFrame ((uint8_t *) frame, width, height, false);
+  }
 }
 
 void
@@ -223,19 +224,24 @@ GMDisplayManager_dx::display_pip_frames (const char *local_frame,
                                  unsigned rf_width,
                                  unsigned rf_height)
 {
-// FIXME processEvents
+  if (dxWindow)
+    dxWindow->ProcessEvents(); 
+
   if (current_frame.display == FULLSCREEN && dxWindow && !dxWindow->IsFullScreen ())
     runtime.run_in_main (sigc::bind (fullscreen_mode_changed.make_slot (), OFF));
 
-//  if (dxWindow && (update_required.remote || (!update_required.remote && !update_required.local)))
-
-  if (dxWindow)
-    dxWindow->PutFrame ((uint8_t *) remote_frame, rf_width, rf_height, 
-                        (uint8_t *) local_frame, lf_width, lf_height);
+  if (dxWindow) {
+    if (update_required.remote || (!update_required.remote && !update_required.local))
+      dxWindow->PutFrame ((uint8_t *) remote_frame, rf_width, rf_height, false);
+      
+    if (update_required.local  || (!update_required.remote && !update_required.local))
+      dxWindow->PutFrame ((uint8_t *) local_frame, lf_width, lf_height, true);      
+  }
 }
 
 void
 GMDisplayManager_dx::sync (UpdateRequired sync_required)
 {
-  // FIXME sync
+  if (dxWindow)
+    dxWindow->Sync(); 
 }

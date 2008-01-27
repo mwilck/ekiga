@@ -138,27 +138,14 @@ public:
      *                 changing the framesize after having been 
      *                 initialized is not supported
      */
-    void PutFrame (uint8_t *mainFrame,
+    void PutFrame (uint8_t *frame,
                    uint16_t width, 
-                   uint16_t height);
+                   uint16_t height,
+		   bool pip);
 
 
-    /* DESCRIPTION  :  /
-     * BEHAVIOR     :  Display a new frame with picture-in-picture
-     * PRE          :  pointer to the main frame data
-     *                 width and height of the main frame
-     *                 pointer to the pip frame data
-     *                 width and height of the pip frame
-     *                 changing the framesize after having been 
-     *                 initialized is not supported
-     */
-    void PutFrame (uint8_t *mainFrame, 
-                   uint16_t width, 
-                   uint16_t height, 
-                   uint8_t *pipFrame, 
-                   uint16_t pipWidth,
-                   uint16_t pipHeight);
-
+    void ProcessEvents ();
+    void Sync ();
     void ToggleOntop ();
     void ToggleFullscreen ();
     void ToggleDecoration ();
