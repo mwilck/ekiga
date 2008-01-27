@@ -59,7 +59,7 @@ struct _CodecsBoxPrivate
 {
   Ekiga::Call::StreamType type;
   GtkWidget *codecs_list;
-
+  GtkTooltips *tooltips;
 };
 
 enum { TYPE = 1 };
@@ -391,6 +391,7 @@ codecs_box_init (CodecsBox *self)
 
   self->priv = new CodecsBoxPrivate;
   self->priv->type = Ekiga::Call::Audio;
+  self->priv->tooltips = gtk_tooltips_new ();
 
   gtk_box_set_spacing (GTK_BOX (self), 6);
   gtk_box_set_homogeneous (GTK_BOX (self), FALSE);
@@ -474,8 +475,8 @@ codecs_box_init (CodecsBox *self)
   image = gtk_image_new_from_stock (GTK_STOCK_GO_UP, GTK_ICON_SIZE_MENU);
   button = gtk_button_new ();
   gtk_container_add (GTK_CONTAINER (button), image);
-  gtk_widget_set_tooltip_text (button,
-                               _("Move selected codec priority upwards"));
+  gtk_tooltips_set_tip (self->priv->tooltips, button,
+                        _("Move selected codec priority upwards"), NULL);
   gtk_box_pack_start (GTK_BOX (buttons_vbox), button, FALSE, FALSE, 0);
   g_object_set_data (G_OBJECT (button), "operation", (gpointer) "up");
   g_signal_connect (G_OBJECT (button), "clicked",
@@ -485,8 +486,8 @@ codecs_box_init (CodecsBox *self)
   image = gtk_image_new_from_stock (GTK_STOCK_GO_DOWN, GTK_ICON_SIZE_MENU);
   button = gtk_button_new ();
   gtk_container_add (GTK_CONTAINER (button), image);
-  gtk_widget_set_tooltip_text (button, 
-                               _("Move selected codec priority downwards"));
+  gtk_tooltips_set_tip (self->priv->tooltips, button, 
+                        _("Move selected codec priority downwards"), NULL);
   gtk_box_pack_start (GTK_BOX (buttons_vbox), button, FALSE, FALSE, 0);
   g_object_set_data (G_OBJECT (button), "operation", (gpointer) "down");
   g_signal_connect (G_OBJECT (button), "clicked",
