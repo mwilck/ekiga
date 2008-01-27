@@ -37,22 +37,46 @@
 
 #include <iostream>
 
+#include "call-core.h"
 #include "presence-core.h"
 #include "personal-details.h"
 
 
 Ekiga::PresencePublisher::PresencePublisher (Ekiga::ServiceCore & core)
 {
+  Ekiga::CallCore *call_core = dynamic_cast <Ekiga::CallCore *> (core.get ("call-core"));
   Ekiga::PersonalDetails *details = dynamic_cast <Ekiga::PersonalDetails *> (core.get ("personal-details"));
 
-  if (details) // If none, then we have no implementation of personal-details and won't relay signals
+  if (details) 
     details->personal_details_updated.connect (sigc::mem_fun (this, &Ekiga::PresencePublisher::on_personal_details_updated));
+  if (call_core)
+    call_core->registration_event.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresencePublisher::on_registration_event), *details));
 }
 
 
 void Ekiga::PresencePublisher::on_personal_details_updated (Ekiga::PersonalDetails & details)
 {
-  this->publish (details.get_display_name (), details.get_short_status (), details.get_long_status ());
+  this->publish (details);
+}
+
+
+void Ekiga::PresencePublisher::on_registration_event (std::string /*aor*/,
+                                                      Ekiga::CallCore::RegistrationState state,
+                                                      std::string /*info*/,
+                                                      Ekiga::PersonalDetails & details)
+{
+  switch (state) {
+  case Ekiga::CallCore::Registered:
+    this->publish (details);
+    break;
+
+  case Ekiga::CallCore::Unregistered:
+  case Ekiga::CallCore::UnregistrationFailed:
+  case Ekiga::CallCore::RegistrationFailed:
+  case Ekiga::CallCore::Processing:
+  default:
+    break;
+  }
 }
 
 
@@ -193,15 +217,13 @@ void Ekiga::PresenceCore::add_presence_publisher (PresencePublisher &publisher)
   presence_publishers.insert (&publisher);
 }
 
-void Ekiga::PresenceCore::publish (const std::string & display_name,
-                                   const std::string & presence,
-                                   const std::string & extended_status)
+void Ekiga::PresenceCore::publish (const PersonalDetails & details) 
 {
   for (std::set<PresencePublisher *>::iterator iter
 	 = presence_publishers.begin ();
        iter != presence_publishers.end ();
        iter++)
-    (*iter)->publish (display_name, presence, extended_status);
+    (*iter)->publish (details);
 }
 
 bool

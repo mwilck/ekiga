@@ -146,36 +146,36 @@
       </locale>
     </schema>
     <schema>	
-      <key>/schemas/apps/@PACKAGE_NAME@/general/personal_data/firstname</key>
-      <applyto>/apps/@PACKAGE_NAME@/general/personal_data/firstname</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/personal_data/full_name</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/personal_data/full_name</applyto>
       <owner>Ekiga</owner>
       <type>string</type>
       <default></default>
       <locale name="C">
-	<short>First name</short>
-	<long>Enter your first name</long>
+	<short>Full name</short>
+	<long>Enter your full name</long>
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/general/personal_data/lastname</key>
-      <applyto>/apps/@PACKAGE_NAME@/general/personal_data/lastname</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/personal_data/short_status</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/personal_data/short_status</applyto>
       <owner>Ekiga</owner>
       <type>string</type>
-      <default></default>
+      <default>online</default>
       <locale name="C">
-	<short>Last name</short>
-	<long>Enter your last name</long>
+	<short>Contact short status</short>
+	<long>The short status information</long>
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/general/personal_data/status</key>
-      <applyto>/apps/@PACKAGE_NAME@/general/personal_data/status</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/personal_data/long_status</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/personal_data/long_status</applyto>
       <owner>Ekiga</owner>
-      <type>int</type>
-      <default>0</default>
+      <type>string</type>
+      <default>I'm online using Ekiga</default>
       <locale name="C">
-	<short>Contact status</short>
-	<long>Select the contact status: 0 (Online), 1 (Offline), 2 (Unknown), 3 (Away), 4 (DND), 5 (Free For Chat), 6 (Invisible)</long>
+	<short>Contact long status</short>
+	<long>The long status information</long>
       </locale>
     </schema>
     <schema>

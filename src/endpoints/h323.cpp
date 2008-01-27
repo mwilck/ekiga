@@ -450,8 +450,6 @@ GMH323Endpoint::OnIncomingConnection (OpalConnection &connection,
     else
       reason = 1; // Reject
   }
-  else if (status == CONTACT_FREEFORCHAT)
-    reason = 4; // Auto Answer
   else
     reason = 0; // Ask the user
 

@@ -153,6 +153,10 @@ namespace Ekiga
       sigc::signal<void, CallManager &, std::string, std::string> new_chat;
 
 
+      /*** Accounts ***/
+      /* TODO should move out of here */
+      typedef enum { Processing, Registered, Unregistered, RegistrationFailed, UnregistrationFailed } RegistrationState;
+      sigc::signal<void, std::string, Ekiga::CallCore::RegistrationState, std::string> registration_event;
 
   private:
       void on_new_call (Call *call, CallManager *manager);

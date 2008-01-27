@@ -378,10 +378,6 @@ GMZeroconfPublisher::GetPersonalData()
     status = "presence-away";
     break;
 
-  case CONTACT_FREEFORCHAT:
-    status = "presence-freeforchat";
-    break;
-
   default:
     break;
   }

@@ -121,50 +121,10 @@ void GMAccountsEndpoint::Main ()
 
   g_slist_foreach (defined_accounts, (GFunc) gm_account_delete, NULL);
   g_slist_free (defined_accounts);
-
-
-  while (active) {
-
-    accounts_mutex.Wait ();
-    accounts_iter = accounts;
-    while (accounts_iter) {
-
-      if (accounts_iter->data) {
-
-        list_account = GM_ACCOUNT (accounts_iter)->data;
-
-        /* Register SIP account */
-        if (list_account->protocol_name) {
-
-          if (!strcmp (list_account->protocol_name, "SIP")) 
-            SIPRegister (list_account);
-          else
-            H323Register (list_account);
-        }
-      }
-
-      accounts_iter = g_slist_next (accounts_iter);
-    }
-
-    g_slist_foreach (accounts, (GFunc) gm_account_delete, NULL);
-    g_slist_free (accounts);
-    accounts = NULL;
-    accounts_mutex.Signal ();
-
-    publishers_mutex.Wait ();
-    for (int i = 0 ; i < publishers.GetSize () ; i++) 
-      SIPPublishPresence (publishers [i], 
-                          publishers_status [i].AsInteger ());
-    publishers.RemoveAll ();
-    publishers_status.RemoveAll ();
-    
-    publishers_mutex.Signal ();
-    
-    PThread::Sleep (100);
-  }
 }
 
 
+/*
 void GMAccountsEndpoint::PublishPresence (guint status)
 {
   GSList *defined_accounts = NULL;
@@ -184,7 +144,6 @@ void GMAccountsEndpoint::PublishPresence (guint status)
 
       list_account = GM_ACCOUNT (accounts_iter)->data;
 
-      /* Publish presence for SIP account */
       if (list_account->protocol_name
           && list_account->enabled
           && !strcmp (list_account->protocol_name, "SIP")) {
@@ -209,7 +168,7 @@ void GMAccountsEndpoint::PublishPresence (guint status)
   g_slist_foreach (defined_accounts, (GFunc) gm_account_delete, NULL);
   g_slist_free (defined_accounts);
 }
-
+*/
 
 void GMAccountsEndpoint::RegisterAccount (GmAccount *account)
 {
@@ -219,17 +178,6 @@ void GMAccountsEndpoint::RegisterAccount (GmAccount *account)
 
   acc = gm_account_copy (account);
   accounts = g_slist_append (accounts, (gpointer) acc);
-}
-
-
-void GMAccountsEndpoint::SIPPublishPresence (const PString & to,
-                                             guint status)
-{
-  GMSIPEndpoint *sipEP = NULL;
-
-  sipEP = ep.GetSIPEndpoint ();
-
-  sipEP->PublishPresence (to, status);
 }
 
 

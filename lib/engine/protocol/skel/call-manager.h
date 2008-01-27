@@ -140,7 +140,6 @@ namespace Ekiga
       /*          
        * Accounts
        */        
-      typedef enum { Processing, Registered, Unregistered, RegistrationFailed, UnregistrationFailed } RegistrationState;
 
 
       /** Register the provided account.

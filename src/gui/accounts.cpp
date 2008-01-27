@@ -792,7 +792,7 @@ gm_aw_get_selected_account (GtkWidget *accounts_window)
 
 /* Engine callbacks */
 static void on_registration_event_cb (std::string aor,
-                                      GMManager::RegistrationState state,
+                                      Ekiga::CallCore::RegistrationState state,
                                       std::string info,
                                       gpointer window)
 {
@@ -800,27 +800,27 @@ static void on_registration_event_cb (std::string aor,
   std::string status;
 
   switch (state) {
-  case GMManager::Registered:
+  case Ekiga::CallCore::Registered:
     status = _("Registered");
     break;
 
-  case GMManager::Unregistered:
+  case Ekiga::CallCore::Unregistered:
     status = _("Unregistered");
     break;
 
-  case GMManager::UnregistrationFailed:
+  case Ekiga::CallCore::UnregistrationFailed:
     status = _("Could not unregister");
     if (!info.empty ())
       status = status + "(" + info + ")";
     break;
 
-  case GMManager::RegistrationFailed:
+  case Ekiga::CallCore::RegistrationFailed:
     status = _("Could not register");
     if (!info.empty ())
       status = status + "(" + info + ")";
     break;
 
-  case GMManager::Processing:
+  case Ekiga::CallCore::Processing:
     status = _("Processing...");
     is_processing = true;
   default:
@@ -1716,7 +1716,9 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
 
   /* Engine Signals callbacks */
   // FIXME sigc::connection conn;
-  dynamic_cast<GMManager *> (core.get("opal-component"))->registration_event.connect (sigc::bind (sigc::ptr_fun (on_registration_event_cb), (gpointer) window));
+  Ekiga::CallCore *call_core = dynamic_cast<Ekiga::CallCore *> (core.get ("call-core"));
+  if (call_core) 
+    call_core->registration_event.connect (sigc::bind (sigc::ptr_fun (on_registration_event_cb), (gpointer) window));
   
   return window;
 }

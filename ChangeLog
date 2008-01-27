@@ -1,3 +1,41 @@
+2008-01-27  Damien Sandras  <dsandras@gnome.org>
+
+	* src/clients/avahi.cpp:
+	* src/endpoints/sip.h:
+	* src/endpoints/pcss.cpp:
+	* src/endpoints/manager.cpp:
+	* src/endpoints/accountshandler.cpp:
+	* src/endpoints/h323.cpp:
+	* src/endpoints/manager.h:
+	* src/endpoints/accountshandler.h:
+	* src/endpoints/sip.cpp:
+	* src/gui/accounts.cpp:
+	* src/gui/main.cpp:
+	* src/gui/conf.cpp:
+	* src/gui/main.h:
+	* src/gui/statusicon.cpp:
+	* src/common.h:
+	* lib/engine/protocol/skel/call-core.h:
+	* lib/engine/protocol/skel/call-manager.h:
+	* lib/engine/presence/local-roster/Makefile.am:
+	* lib/engine/presence/avahi/Makefile.am:
+	* lib/engine/presence/skel/presence-core.h:
+	* lib/engine/presence/skel/Makefile.am:
+	* lib/engine/presence/skel/presence-core.cpp:
+	* lib/engine/components/gmconf-personal-details/gmconf-personal-details.cpp:
+	* ekiga.schemas.in.in:
+	Many major changes :
+	- All presence related details are now centralized in a
+	PersonalDetails class and presence publishing functions are using that
+	class.
+	- We now have a SIP implementation of a PresencePublisher. The
+	presence publishing code is now finally out of accountshandler.cpp.
+	Presence is automatically published when a registration occurs.
+	- Moved registration from the GMManager into the engine. It will move
+	to the AccountCore at a later stage.
+	- Added very preliminary support for extended presence messages
+	support (more to come).
+
 2008-01-27  Steve Frécinaux  <code@istique.net>
 
 	* lib/gui/codecsbox.cpp:
@@ -29,7 +67,7 @@
 
 2008-01-24  Matthias Schneider  <ma30002000@yahoo.de>
 
-        * win32/diff/ptlib_Makefile.am:
+	* win32/diff/ptlib_Makefile.am:
 	* win32/diff/opal_Makefile.am: 
 	* win32/diff/ptlib_configure.ac:
 	* win32/Makefile:

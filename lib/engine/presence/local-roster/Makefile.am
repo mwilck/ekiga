@@ -8,6 +8,7 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/gmconf	 		\
 	-I$(top_srcdir)/lib/engine/framework 		\
 	-I$(top_srcdir)/lib/engine/addressbook/skel	\
+	-I$(top_srcdir)/lib/engine/protocol/skel	\
 	-I$(top_srcdir)/lib/engine/presence/skel
 
 liblocal_roster_la_SOURCES = \

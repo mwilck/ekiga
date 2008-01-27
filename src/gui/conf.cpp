@@ -89,10 +89,6 @@ static void sound_events_list_changed_nt (gpointer id,
 					  GmConfEntry *entry,
 					  gpointer data);
 
-static void status_changed_nt (gpointer id,
-                               GmConfEntry *entry,
-                               gpointer data);
-
 static void stay_on_top_changed_nt (gpointer id,
 				    GmConfEntry *entry,
                                     gpointer data);
@@ -189,34 +185,6 @@ sound_events_list_changed_nt (G_GNUC_UNUSED gpointer id,
 }
 
 
-/* DESCRIPTION  :  This callback is called when the status config value changes.
- * BEHAVIOR     :  Modifies the tray icon, the main window, and the menus.
- *                 Updates the presence for the endpoints.
- * PRE          :  /
- */
-static void
-status_changed_nt (G_GNUC_UNUSED gpointer id,
-                   GmConfEntry *entry,
-                   G_GNUC_UNUSED gpointer data)
-{
-  GtkWidget *main_window = NULL;
-  
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  guint status = 0;
-
-  if (gm_conf_entry_get_type (entry) == GM_CONF_INT) {
-
-    gdk_threads_enter ();
-    
-    status = gm_conf_entry_get_int (entry);
-    
-    gm_main_window_set_status (main_window, status);
-    
-    gdk_threads_leave ();
-  }
-}
-
-
 /* DESCRIPTION  :  This callback is called when the "stay_on_top" 
  *                 config value changes.
  * BEHAVIOR     :  Changes the hint for the video windows.
@@ -300,11 +268,6 @@ gnomemeeting_conf_init ()
    * they can be reused at several places. If not, a same notifier can contain
    * several actions.
    */
-
-  
-  /* Notifiers for the PERSONAL_DATA_KEY keys */
-  gm_conf_notifier_add (PERSONAL_DATA_KEY "status",
-			status_changed_nt, NULL);
 
   
   /* Notifiers for the USER_INTERFACE_KEY keys */

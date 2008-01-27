@@ -86,5 +86,8 @@ PersonalDetails::PersonalDetails ()
                         short_status_changed_nt, this);
   gm_conf_notifier_add ("/apps/ekiga/general/personal_data/long_status",
                         long_status_changed_nt, this);
+  gm_conf_notifier_trigger ("/apps/ekiga/general/personal_data/full_name");
+  gm_conf_notifier_trigger ("/apps/ekiga/general/personal_data/short_status");
+  gm_conf_notifier_trigger ("/apps/ekiga/general/personal_data/long_status");
 }
 

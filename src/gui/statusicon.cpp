@@ -440,12 +440,6 @@ statusicon_build_menu ()
 			   (gpointer) PERSONAL_DATA_KEY "status",
 			   (status == CONTACT_DND), TRUE),
 
-      GTK_MENU_RADIO_ENTRY("free_for_chat", _("_Free For Chat"), NULL,
-			   NULL, 0,
-			   GTK_SIGNAL_FUNC (radio_menu_changed_cb),
-			   (gpointer) PERSONAL_DATA_KEY "status",
-			   (status == CONTACT_FREEFORCHAT), TRUE),
-      
       GTK_MENU_RADIO_ENTRY("invisible", _("_Invisible"), NULL,
 			   NULL, 0,
 			   GTK_SIGNAL_FUNC (radio_menu_changed_cb),
@@ -547,10 +541,6 @@ statusicon_set_status (StatusIcon *statusicon,
 
   case (CONTACT_DND):
     gtk_status_icon_set_from_stock (GTK_STATUS_ICON (statusicon), GM_STOCK_STATUS_DND);
-    break;
-
-  case (CONTACT_FREEFORCHAT):
-    gtk_status_icon_set_from_stock (GTK_STATUS_ICON (statusicon), GM_STOCK_STATUS_FREEFORCHAT);
     break;
 
   case (CONTACT_INVISIBLE):

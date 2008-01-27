@@ -82,13 +82,6 @@ public:
 
 
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Publish presence for all registered accounts.
-   * PRE          :  /
-   */
-  void PublishPresence (guint status);
-  
-
-  /* DESCRIPTION  :  /
    * BEHAVIOR     :  Register an account or unregister it.
    * PRE          :  A valid account.
    */
@@ -100,8 +93,6 @@ private:
   void SIPRegister (GmAccount *a);
   void SIPPresenceSubscribe (PString contact,
                              bool unsubscribe);
-  void SIPPublishPresence (const PString & to,
-                           guint status);
   void H323Register (GmAccount *a);
   
 

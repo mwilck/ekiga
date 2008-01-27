@@ -214,7 +214,6 @@ status_changed_nt (G_GNUC_UNUSED gpointer id,
     status = gm_conf_entry_get_int (entry);
     
     ep->UpdatePublishers ();
-    ep->PublishPresence (status);
   }
 }
 
@@ -286,6 +285,9 @@ GMManager::GMManager (Ekiga::ServiceCore & _core)
 
   // Config
   bridge = new Opal::ConfBridge (*this);
+
+  //
+  call_core = dynamic_cast<Ekiga::CallCore *> (core.get ("call-core"));
 }
 
 
@@ -1013,18 +1015,6 @@ GMManager::Register (GmAccount *account)
 }
 
 
-void 
-GMManager::PublishPresence (guint status)
-{
-  PWaitAndSignal m(manager_access_mutex);
-
-  if (manager == NULL)
-    manager = new GMAccountsEndpoint (*this);
-
-  manager->PublishPresence (status);
-}
-
-
 void
 GMManager::RemoveAccountsEndpoint ()
 {
@@ -1403,8 +1393,6 @@ GMManager::ResetListeners ()
   WORD min_port = 5060;
   WORD max_port = 5080;
 
-  bool success = FALSE;
-
   gnomemeeting_threads_enter ();
   iface = gm_conf_get_string (PROTOCOLS_KEY "interface");
   gnomemeeting_threads_leave ();
@@ -1437,6 +1425,8 @@ GMManager::ResetListeners ()
     gnomemeeting_threads_leave ();
     
     sipEP->RemoveListener (NULL);
+    sipEP->StartListeners(PStringArray());
+    /*
     if (!sipEP->StartListener (iface, port)) {
       
       port = min_port;
@@ -1452,6 +1442,7 @@ GMManager::ResetListeners ()
 
     g_strfreev (couple);
     g_free (ports);
+    */
   }
 
   g_free (iface);
@@ -1806,10 +1797,11 @@ void
 GMManager::OnRegistered (const PString & aor,
                          bool wasRegistering)
 {
-  runtime.run_in_main (sigc::bind (registration_event.make_slot (), 
-                                    std::string ((const char *) aor), 
-                                    wasRegistering ? Registered : Unregistered,
-                                    std::string ()));
+  if (call_core)
+    runtime.run_in_main (sigc::bind (call_core->registration_event.make_slot (), 
+                                     std::string ((const char *) aor), 
+                                     wasRegistering ? Ekiga::CallCore::Registered : Ekiga::CallCore::Unregistered,
+                                     std::string ()));
 }
 
 
@@ -1817,10 +1809,11 @@ void
 GMManager::OnRegistering (const PString & aor,
                          G_GNUC_UNUSED bool isRegistering)
 {
-  runtime.run_in_main (sigc::bind (registration_event.make_slot (), 
-                                    std::string ((const char *) aor), 
-                                    Processing,
-                                    std::string ()));
+  if (call_core)
+    runtime.run_in_main (sigc::bind (call_core->registration_event.make_slot (), 
+                                     std::string ((const char *) aor), 
+                                     Ekiga::CallCore::Processing,
+                                     std::string ()));
 }
 
 
@@ -1829,10 +1822,11 @@ GMManager::OnRegistrationFailed (const PString & aor,
                                  bool wasRegistering,
                                  std::string info)
 {
-  runtime.run_in_main (sigc::bind (registration_event.make_slot (), 
-                                   std::string ((const char *) aor), 
-                                   wasRegistering ? RegistrationFailed : UnregistrationFailed,
-                                   info));
+  if (call_core)
+    runtime.run_in_main (sigc::bind (call_core->registration_event.make_slot (), 
+                                     std::string ((const char *) aor), 
+                                     wasRegistering ? Ekiga::CallCore::RegistrationFailed : Ekiga::CallCore::UnregistrationFailed,
+                                     info));
 }
 
 

@@ -38,6 +38,8 @@
 
 #include "config.h"
 
+#include <sstream>
+
 #include "sip.h"
 #include "pcss.h"
 #include "ekiga.h"
@@ -59,6 +61,7 @@
 #include <sip/handlers.h>
 
 #include "presence-core.h"
+#include "personal-details.h"
 
 #define new PNEW
 
@@ -155,8 +158,14 @@ GMSIPEndpoint::GMSIPEndpoint (GMManager & ep, Ekiga::ServiceCore & _core)
     endpoint (ep), 
     core (_core)
 {
+  uri_prefix = "sip:";
+
   NoAnswerTimer.SetNotifier (PCREATE_NOTIFIER (OnNoAnswerTimeout));
   Init ();
+
+  Ekiga::PersonalDetails *details = dynamic_cast<Ekiga::PersonalDetails *> (_core.get ("personal-details"));
+  if (details)
+    publish (*details);
 }
 
 
@@ -200,11 +209,48 @@ GMSIPEndpoint::unfetch (const std::string uri)
 
 
 void 
-GMSIPEndpoint::publish (const std::string & display_name,
-                        const std::string & presence,
-                        const std::string & extended_status)
+GMSIPEndpoint::publish (const Ekiga::PersonalDetails & details)
 {
-  std::cout << "should publish" << display_name << std::endl << std::flush;
+  std::string hostname = (const char *) PIPSocket::GetHostName ();
+  // TODO: move this code outside of this class and allow a 
+  // more complete document
+  std::string status = ((Ekiga::PersonalDetails &) (details)).get_short_status ();
+  for (std::list<std::string>::iterator it = aors.begin ();
+       it != aors.end ();
+       it++) {
+    std::string to = it->substr (4);
+    PString data;
+    data += "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n";
+
+    data += "<presence xmlns=\"urn:ietf:params:xml:ns:pidf\" entity=\"pres:";
+    data += to;
+    data += "\">\r\n";
+
+    data += "<tuple id=\"";
+    data += to; 
+    data += "_on_";
+    data += hostname;
+    data += "\">\r\n";
+
+    data += "<note>";
+    data += status.c_str ();
+    data += "</note>\r\n";
+
+    data += "<status>\r\n";
+    data += "<basic>";
+    data += "open";
+    data += "</basic>\r\n";
+    data += "</status>\r\n";
+
+    data += "<contact priority=\"1\">sip:";
+    data += to;
+    data += "</contact>\r\n";
+
+    data += "</tuple>\r\n";
+    data += "</presence>\r\n";
+    Publish (to.c_str (), data, 500); // TODO: allow to change the 500 
+    std::cout << "hey" << data << std::endl << std::flush;
+  }
 }
 
 
@@ -348,65 +394,27 @@ GMSIPEndpoint::SetUserInputMode (unsigned int mode)
 }
 
 
-void
-GMSIPEndpoint::PublishPresence (const PString & to,
-                                guint state)
-{
-  PString status;
-  PString note;
-  PString body;
-
-  switch (state) {
-
-  case CONTACT_ONLINE:
-    status = "Online";
-    note = "open";
-    break;
-
-  case CONTACT_OFFLINE:
-  case CONTACT_INVISIBLE:
-    status = "Offline";
-    note = "closed";
-    break;
-
-  case CONTACT_DND:
-    status = "Do Not Disturb";
-    note = "open";
-    break;
-
-  case CONTACT_AWAY:
-    status = "Away";
-    note = "open";
-    break;
-
-  case CONTACT_FREEFORCHAT:
-    status = "Free For Chat";
-    note = "open";
-    break;
-
-  default:
-    break;
-  }
-
-  body = SIPPublishHandler::BuildBody (to, note, status);
-  Publish (to, body, 500); // FIXME
-}
-
-
 void 
-GMSIPEndpoint::Register (const PString & aor,
+GMSIPEndpoint::Register (const PString & _aor,
                          const PString & authUserName,
                          const PString & password,
                          unsigned int expires,
                          bool unregister)
 {
+  std::string aor = (const char *) _aor;
+  std::stringstream strm;
   bool result = false;
 
   /* Account is enabled, and we are not registered */
   if (!unregister && !IsRegistered (aor)) {
 
+    if (aor.find (uri_prefix) == std::string::npos) 
+      strm << uri_prefix << aor;
+    else
+      strm << aor;
+
     /* Signal the OpalManager */
-    endpoint.OnRegistering (aor, true);
+    endpoint.OnRegistering (strm.str (), true); // TODO we could directly emit the signal from here
 
     /* Trigger registering */
     result = SIPEndPoint::Register (PString::Empty (), aor, authUserName, password, PString::Empty (), expires);
@@ -429,14 +437,28 @@ GMSIPEndpoint::OnRegistered (const PString & _aor,
   std::string::size_type found;
   std::string::size_type loc = aor.find ("@", 0);
   std::string server;
+  std::stringstream strm;
 
-  guint status = CONTACT_ONLINE;
+  if (aor.find (uri_prefix) == std::string::npos) 
+    strm << uri_prefix << aor;
+  else
+    strm << aor;
+
+  std::list<std::string>::iterator it = find (aors.begin (), aors.end (), aor);
+
+  if (was_registering) {
+   
+    if (it == aors.end ())
+      aors.push_back (strm.str ());
+  }
+  else {
+
+    if (it != aors.end ())
+      aors.remove (strm.str ());
+  }
 
   /* Signal the OpalManager */
-  endpoint.OnRegistered (aor, was_registering);
-
-  /* Signal the SIPEndpoint */
-  SIPEndPoint::OnRegistered (aor, was_registering);
+  endpoint.OnRegistered (strm.str (), was_registering); // TODO we could directly emit the signal from here
 
   if (loc != string::npos) {
 
@@ -467,13 +489,6 @@ GMSIPEndpoint::OnRegistered (const PString & _aor,
       }
     }
   }
-
-  /* Publish current state */
-  if (was_registering)
-    status = gm_conf_get_int (PERSONAL_DATA_KEY "status");
-  else
-    status = CONTACT_OFFLINE;
-  PublishPresence (aor, status);
 
   /* Subscribe for MWI */
   if (!IsSubscribed (SIPSubscribe::MessageSummary, aor)) { 
@@ -633,8 +648,6 @@ GMSIPEndpoint::OnIncomingConnection (OpalConnection &connection,
     else
       reason = 1; // Reject
   }
-  else if (status == CONTACT_FREEFORCHAT)
-    reason = 4; // Auto Answer
   else
     reason = 0; // Ask the user
 

@@ -106,13 +106,6 @@ bool GMPCSSEndpoint::OnShowIncoming (const OpalPCSSConnection & connection)
   /* The token identifying the current call */
   incomingConnectionToken = connection.GetToken ();
 
-  /* If it is an auto-answer, answer now */
-  if (status == CONTACT_FREEFORCHAT) {
-  
-    AcceptCurrentIncomingCall ();
-    return TRUE;
-  }
-
   /* The timers */
   CallPendingTimer.RunContinuous (interval);
   

@@ -508,13 +508,6 @@ class GMManager:
 
   
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Publish new presence information.
-   * PRE          :  /
-   */
-  void PublishPresence (guint status);
-
-  
-  /* DESCRIPTION  :  /
    * BEHAVIOR     :  Remove the account manager.
    * PRE          :  /
    */
@@ -575,8 +568,6 @@ class GMManager:
   virtual void OnClosedMediaStream (const OpalMediaStream &);
 
 
-  typedef enum { Processing, Registered, Unregistered, RegistrationFailed, UnregistrationFailed } RegistrationState;
-  sigc::signal<void, std::string, GMManager::RegistrationState, std::string> registration_event;
   sigc::signal<void, std::string, std::string, unsigned int> mwi_event;
 
  private:
@@ -683,6 +674,7 @@ class GMManager:
   Ekiga::Runtime & runtime;
   Ekiga::ConfBridge *bridge;
   Ekiga::CodecList codecs; 
+  Ekiga::CallCore *call_core;
 };
 
 #endif

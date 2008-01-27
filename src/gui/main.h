@@ -198,7 +198,8 @@ void gm_main_window_set_panel_section (GtkWidget *main_window,
  * PRE          :  The main window GMObject and a valid incoming call mode.
  */
 void gm_main_window_set_status (GtkWidget *main_window,
-                                guint status);
+                                std::string short_status,
+                                std::string long_status);
 
 
 /* DESCRIPTION  :  /

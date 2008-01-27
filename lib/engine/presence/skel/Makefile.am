@@ -7,7 +7,8 @@ AM_CXXFLAGS = $(SIGC_CFLAGS)
 INCLUDES = \
 	-I$(top_srcdir)/lib/engine/include \
 	-I$(top_srcdir)/lib/engine/framework \
-	-I$(top_srcdir)/lib/engine/presence/skel
+	-I$(top_srcdir)/lib/engine/presence/skel \
+	-I$(top_srcdir)/lib/engine/protocol/skel
 
 libgmpresence_la_SOURCES = \
 	$(presence_dir)/presentity.h		\

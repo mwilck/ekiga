@@ -6,6 +6,7 @@ AM_CPPFLAGS = $(SIGC_CFLAGS) $(AVAHI_CFLAGS)
 
 INCLUDES = \
 	-I$(top_srcdir)/lib/engine/framework \
+	-I$(top_srcdir)/lib/engine/protocol/skel \
 	-I$(top_srcdir)/lib/engine/presence/skel
 
 libgmavahi_la_SOURCES = \

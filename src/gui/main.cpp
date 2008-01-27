@@ -533,30 +533,30 @@ static void on_mwi_event_cb (G_GNUC_UNUSED std::string account,
 
 
 static void on_registration_event_cb (std::string aor,
-                                      GMManager::RegistrationState state,
+                                      Ekiga::CallCore::RegistrationState state,
                                       G_GNUC_UNUSED std::string info,
                                       gpointer window)
 {
   gchar *msg = NULL;
 
   switch (state) {
-  case GMManager::Registered:
+  case Ekiga::CallCore::Registered:
     msg = g_strdup_printf (_("Registered %s"), aor.c_str ());
     break;
 
-  case GMManager::Unregistered:
+  case Ekiga::CallCore::Unregistered:
     msg = g_strdup_printf (_("Unregistered %s"), aor.c_str ());
     break;
 
-  case GMManager::UnregistrationFailed:
+  case Ekiga::CallCore::UnregistrationFailed:
     msg = g_strdup_printf (_("Could not unregister %s"), aor.c_str ());
     break;
 
-  case GMManager::RegistrationFailed:
+  case Ekiga::CallCore::RegistrationFailed:
     msg = g_strdup_printf (_("Could not register %s"), aor.c_str ());
     break;
 
-  case GMManager::Processing:
+  case Ekiga::CallCore::Processing:
   default:
     break;
   }
@@ -985,7 +985,6 @@ gm_mw_init_main_toolbar (GtkWidget *main_window)
       _("Online"), 
       _("Away"), 
       _("Do Not Disturb"), 
-      _("Free For Chat"),
       _("Invisible"),
       NULL, 
       NULL 
@@ -996,7 +995,6 @@ gm_mw_init_main_toolbar (GtkWidget *main_window)
       GM_STOCK_STATUS_ONLINE,
       GM_STOCK_STATUS_AWAY,
       GM_STOCK_STATUS_DND,
-      GM_STOCK_STATUS_FREEFORCHAT,
       GM_STOCK_STATUS_OFFLINE,
       NULL,
       NULL 
@@ -1074,11 +1072,11 @@ gm_mw_init_main_toolbar (GtkWidget *main_window)
 
   /* The status combo box */
   item = gtk_tool_item_new ();
-  list_store = gtk_list_store_new (2,
+  list_store = gtk_list_store_new (3,
                                    GDK_TYPE_PIXBUF,
+                                   G_TYPE_STRING,
                                    G_TYPE_STRING);
-  mw->status_option_menu = 
-    gtk_combo_box_new_with_model (GTK_TREE_MODEL (list_store));
+  mw->status_option_menu = gtk_combo_box_new_with_model (GTK_TREE_MODEL (list_store));
   gtk_container_add (GTK_CONTAINER (item), mw->status_option_menu);
 
   renderer = gtk_cell_renderer_pixbuf_new ();
@@ -1091,18 +1089,33 @@ gm_mw_init_main_toolbar (GtkWidget *main_window)
 
   renderer = gtk_cell_renderer_text_new ();
   gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (mw->status_option_menu), 
-                              renderer, TRUE);
+                              renderer, FALSE);
   gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (mw->status_option_menu), 
                                   renderer,
                                   "text", 1,
                                   NULL);
+
+  renderer = gtk_cell_renderer_text_new ();
+  g_object_set (renderer, 
+                "foreground", "darkgray",
+                "scale", 0.9,
+                "ellipsize", PANGO_ELLIPSIZE_END,
+                NULL);
+  gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (mw->status_option_menu), 
+                              renderer, TRUE);
+  gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (mw->status_option_menu), 
+                                  renderer,
+                                  "text", 2,
+                                  NULL);
+
+
   gtk_widget_show (mw->status_option_menu);
   gtk_toolbar_insert (GTK_TOOLBAR (toolbar), 
 		      GTK_TOOL_ITEM (item), -1);
 
   g_signal_connect (G_OBJECT (mw->status_option_menu), "changed",
-		    GTK_SIGNAL_FUNC (status_menu_changed_cb),
-		    (gpointer) PERSONAL_DATA_KEY "status");
+                    GTK_SIGNAL_FUNC (status_menu_changed_cb),
+                    NULL);
   
   for (int i = 0 ; i < CONTACT_LAST_STATE ; i++) { 
 
@@ -1116,7 +1129,7 @@ gm_mw_init_main_toolbar (GtkWidget *main_window)
       gtk_list_store_append (GTK_LIST_STORE (list_store), &iter);
       gtk_list_store_set (GTK_LIST_STORE (list_store), &iter,
                           0, status_icon, 
-                          1, status [i], -1);
+                          1, status [i], -1); 
       g_object_unref (status_icon);
     }
   }
@@ -1361,12 +1374,6 @@ gm_mw_init_menu (GtkWidget *main_window)
 			   (gpointer) PERSONAL_DATA_KEY "status",
 			   (status == CONTACT_DND), TRUE),
 
-      GTK_MENU_RADIO_ENTRY("free_for_chat", _("_Free For Chat"), NULL,
-			   NULL, 0,
-			   GTK_SIGNAL_FUNC (radio_menu_changed_cb),
-			   (gpointer) PERSONAL_DATA_KEY "status",
-			   (status == CONTACT_FREEFORCHAT), TRUE),
-      
       GTK_MENU_RADIO_ENTRY("invisible", _("_Invisible"), NULL,
 			   NULL, 0,
 			   GTK_SIGNAL_FUNC (radio_menu_changed_cb),
@@ -2176,10 +2183,7 @@ motion_detection_cb (gpointer data)
 
     if (idle->idle == TRUE) {
       
-      gdk_threads_enter ();
-      gm_main_window_set_status (main_window, idle->last_status);
-      gdk_threads_leave ();
-
+      //TODO Update status
       idle->idle = FALSE;
     }
   }
@@ -2195,7 +2199,6 @@ motion_detection_cb (gpointer data)
 
     gdk_threads_enter ();
     idle->last_status = status;
-    gm_main_window_set_status (main_window, CONTACT_AWAY);
     gdk_threads_leave ();
   }
 
@@ -2207,8 +2210,18 @@ static void
 status_menu_changed_cb (GtkWidget *widget,
                         G_GNUC_UNUSED gpointer data)
 {
-  gm_conf_set_int (PERSONAL_DATA_KEY "status", 
-                   gtk_combo_box_get_active (GTK_COMBO_BOX (widget)));
+  const char * status [] = 
+    { 
+      _("Online"), 
+      _("Away"), 
+      _("Do Not Disturb"), 
+      _("Invisible"),
+      NULL, 
+      NULL 
+    };
+
+  gm_conf_set_string (PERSONAL_DATA_KEY "short_status", 
+                      status[gtk_combo_box_get_active (GTK_COMBO_BOX (widget))]);
 }
 
 
@@ -3317,21 +3330,26 @@ gm_main_window_set_panel_section (GtkWidget *main_window,
 
 void 
 gm_main_window_set_status (GtkWidget *main_window,
-                           guint status)
+                           std::string short_status,
+                           std::string long_status)
 {
   GmMainWindow *mw = NULL;
   
-  GtkWidget *menu = NULL;
-  
+  /*
+  const char * status [] = 
+    { 
+      _("Online"), 
+      _("Away"), 
+      _("Do Not Disturb"), 
+      _("Invisible"),
+      NULL, 
+      NULL 
+    };
+*/
   g_return_if_fail (main_window != NULL);
 
   mw = gm_mw_get_mw (main_window);
   g_return_if_fail (mw != NULL);
-  
-  menu = gtk_menu_get_widget (mw->main_menu, "online");
-  gtk_radio_menu_select_with_widget (GTK_WIDGET (menu), status);
-
-  gtk_combo_box_set_active (GTK_COMBO_BOX (mw->status_option_menu), status);
 }
 
 
@@ -3660,8 +3678,9 @@ gm_main_window_new (Ekiga::ServiceCore & core)
 
   /* The main toolbar */
   main_toolbar = gm_mw_init_main_toolbar (window);
-  status = gm_conf_get_int (PERSONAL_DATA_KEY "status");
-  gm_main_window_set_status (window, status);
+  std::cout << "init menu" << std::endl << std::flush;
+//  status = gm_conf_get_int (PERSONAL_DATA_KEY "status");
+//  gm_main_window_set_status (window, status);
   
   /* Add the toolbar to the UI */
   gtk_box_pack_start (GTK_BOX (mw->window_vbox), main_toolbar, 
@@ -3756,9 +3775,6 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   conn = ep->mwi_event.connect (sigc::bind (sigc::ptr_fun (on_mwi_event_cb), (gpointer) window));
   mw->connections.push_back (conn);
 
-  conn = ep->registration_event.connect (sigc::bind (sigc::ptr_fun (on_registration_event_cb), (gpointer) window));
-  mw->connections.push_back (conn);
-
   /* New Display Engine signals */
   Ekiga::DisplayCore *display_core = dynamic_cast<Ekiga::DisplayCore *> (mw->core.get ("display-core"));
 
@@ -3782,6 +3798,9 @@ gm_main_window_new (Ekiga::ServiceCore & core)
 
   /* New Call Engine signals */
   Ekiga::CallCore *call_core = dynamic_cast<Ekiga::CallCore *> (mw->core.get ("call-core"));
+
+  conn = call_core->registration_event.connect (sigc::bind (sigc::ptr_fun (on_registration_event_cb), (gpointer) window));
+  mw->connections.push_back (conn);
 
   conn = call_core->setup_call.connect (sigc::bind (sigc::ptr_fun (on_setup_call_cb), (gpointer) window));
   mw->connections.push_back (conn);

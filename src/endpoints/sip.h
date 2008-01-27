@@ -51,6 +51,9 @@
 PDICTIONARY (msgDict, PString, PString);
 
 
+class Ekiga::PersonalDetails;
+
+
 /* Minimal SIP endpoint implementation */
 class GMSIPEndpoint 
 :   public SIPEndPoint, 
@@ -78,9 +81,7 @@ class GMSIPEndpoint
   /***/
   void fetch (const std::string uri);
   void unfetch (const std::string uri);
-  void publish (const std::string & /*display_name*/,
-                const std::string & /*presence*/,
-                const std::string & /*extended_status*/);
+  void publish (const Ekiga::PersonalDetails & details);
 
   
   /* DESCRIPTION  :  /
@@ -109,14 +110,6 @@ class GMSIPEndpoint
   void SetUserInputMode (unsigned int mode);
 
   
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Publish presence for the user.
-   * PRE          :  /
-   */
-  void PublishPresence (const PString & to,
-                        guint status);
-  
-
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Register the SIP endpoint to the given SIP server. 
    * PRE          :  Correct parameters.
@@ -247,9 +240,11 @@ class GMSIPEndpoint
   PMutex msgDataMutex;
   msgDict msgData;
 
-  std::list <std::string> uris;    // List of subscribed uris
-  std::list <std::string> domains; // List of registered domains
+  std::list<std::string> uris;    // List of subscribed uris
+  std::list<std::string> domains; // List of registered domains
+  std::list<std::string> aors;     // List of registered aor
   Ekiga::ServiceCore & core;
-};
 
+  std::string uri_prefix;
+};
 #endif
