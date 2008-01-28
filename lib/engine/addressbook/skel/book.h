@@ -87,7 +87,7 @@ namespace Ekiga {
      * the descendant of the Ekiga::Book, ie BookImpl or one
      * of its descendant.
      */
-    virtual std::string get_status () = 0;
+    virtual const std::string get_status () const = 0;
 
 
     /*

@@ -268,6 +268,11 @@ Evolution::Book::set_search_filter (std::string _search_filter)
   refresh ();
 }
 
+const std::string
+Evolution::Book::get_status () const
+{
+  return status;
+}
 
 void
 Evolution::Book::refresh ()

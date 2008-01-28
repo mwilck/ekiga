@@ -130,16 +130,6 @@ namespace Ekiga
      */
     void remove_contact (ContactType &contact);
 
-
-    /** Get the current status.
-     * This function is purely virtual and should be implemented by
-     * the descendant of the Ekiga::Book, ie BookImpl or one
-     * of its descendant.
-     */
-    std::string get_status ();
-
-    std::string status;
-
   };
 
 /**
@@ -221,14 +211,6 @@ void
 Ekiga::BookImpl<ContactType>::remove_contact (ContactType &contact)
 {
   remove_object (contact);
-}
-
-
-template<typename ContactType>
-std::string
-Ekiga::BookImpl<ContactType>::get_status ()
-{
-  return status;
 }
 
 #endif

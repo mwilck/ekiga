@@ -67,6 +67,8 @@ namespace History
 
     const std::set<std::string> existing_groups () const;
 
+    const std::string get_status () const;
+
     void set_search_filter (std::string);
 
     /* more specific api */

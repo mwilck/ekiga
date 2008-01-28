@@ -146,6 +146,12 @@ History::Book::existing_groups () const
   return std::set<std::string> ();
 }
 
+const std::string
+History::Book::get_status () const
+{
+  return ""; // nothing special here
+}
+
 void
 History::Book::set_search_filter (std::string /*filter*/)
 {

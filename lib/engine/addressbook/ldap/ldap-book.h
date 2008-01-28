@@ -80,6 +80,8 @@ namespace OPENLDAP
 
     void set_search_filter (std::string search_string);
 
+    const std::string get_status () const;
+
     void refresh ();
 
     void remove ();
@@ -121,6 +123,7 @@ namespace OPENLDAP
     struct ldap *ldap_context;
     unsigned int patience;
 
+    std::string status;
     std::string search_filter;
 
     Ekiga::Runtime & runtime;

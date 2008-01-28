@@ -75,6 +75,8 @@ namespace Evolution
 
     void set_search_filter (std::string search_filter);
 
+    const std::string get_status () const;
+
     void refresh ();
 
     /* those are private, but need to be called from C code */
@@ -99,6 +101,7 @@ namespace Evolution
     EBookView *view;
     Wrapper *self;
 
+    std::string status;
     std::string search_filter;
   };
 

@@ -304,6 +304,12 @@ OPENLDAP::Book::set_search_filter (std::string _search_filter)
   refresh ();
 }
 
+const std::string
+OPENLDAP::Book::get_status () const
+{
+  return status;
+}
+
 void
 OPENLDAP::Book::refresh ()
 {
