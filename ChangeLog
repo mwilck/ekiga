@@ -1,5 +1,13 @@
 2008-01-28  Julien Puydt  <jpuydt@gnome.org>
 
+	* lib/engine/addressbook/skel/book-impl.h:
+	* lib/engine/addressbook/skel/source-impl.h:
+	* lib/engine/presence/skel/cluster-impl.h:
+	* lib/engine/presence/skel/heap-impl.h: Added missing sigc::trackable
+	inheritance.
+
+2008-01-28  Julien Puydt  <jpuydt@gnome.org>
+
 	* lib/engine/addressbook/skel/book.h: Made get_status const.
 	* lib/engine/addressbook/skel/book-impl.h:
 	* lib/engine/addressbook/ldap/ldap-book.h:
