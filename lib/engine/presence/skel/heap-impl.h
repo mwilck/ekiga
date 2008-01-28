@@ -66,6 +66,7 @@ namespace Ekiga
   template<typename PresentityType = Presentity>
   class HeapImpl:
     public Heap,
+    public sigc::trackable,
     protected Lister<PresentityType>
   {
 
