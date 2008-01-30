@@ -609,8 +609,12 @@ void GMManager::set_video_options (const GMManager::VideoOptions & options)
       media_format.AddOption(new OpalMediaOptionUnsigned (OpalVideoFormat::TemporalSpatialTradeOffOption (), 
                                                           true, OpalMediaOption::NoMerge, 
                                                           options.temporal_spatial_tradeoff));  
+      media_format.SetOptionInteger (OpalVideoFormat::TemporalSpatialTradeOffOption(), 
+                                     options.temporal_spatial_tradeoff);  
       media_format.AddOption(new OpalMediaOptionUnsigned (OpalVideoFormat::MaxFrameSizeOption (), 
                                                           true, OpalMediaOption::NoMerge, 1400));
+      media_format.SetOptionInteger (OpalVideoFormat::MaxFrameSizeOption (), 
+                                     1400);  
 
       OpalMediaFormat::SetRegisteredMediaFormat(media_format);
     }
