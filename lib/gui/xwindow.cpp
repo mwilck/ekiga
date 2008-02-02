@@ -340,99 +340,103 @@ XWindow::ProcessEvents()
   bool ret = false;
 
   XLockDisplay (_display);
-
   while (XCheckWindowEvent (_display, _XWindow, StructureNotifyMask 
                                               | SubstructureRedirectMask
 					      | ExposureMask
 					      | KeyPressMask
 					      | ButtonPressMask, &event) == True) {
 
-    if (event.type == ClientMessage) {
-      // If "closeWindow" is clicked do nothing right now 
-      // (window is closed from the GUI)
-    }
+    switch (event.type) {
+      case ClientMessage:
+	      // If "closeWindow" is clicked do nothing right now 
+	      // (window is closed from the GUI)
+	      break;
 
-    // the window size has changed
-    if (event.type == ConfigureNotify) {
+      case ConfigureNotify:
+              {
+                // the window size has changed
+                XConfigureEvent *xce = &(event.xconfigure);
 
-      XConfigureEvent *xce = &(event.xconfigure);
+                    // if a slave window exists it has to be resized as well
+                if (_slave)
+                  _slave->SetWindow (xce->width - (int) (xce->width / ( _state.fullscreen ? PIP_RATIO_FS : PIP_RATIO_WIN)),
+                                     xce->height - (int) (_slave->GetYUVHeight () * xce->width / ( _state.fullscreen ? PIP_RATIO_FS :  PIP_RATIO_WIN) / _slave->GetYUVWidth ()),
+                                     (int) (xce->width / ( _state.fullscreen ? PIP_RATIO_FS :  PIP_RATIO_WIN)),
+                                     (int) (_slave->GetYUVHeight () * xce->width / ( _state.fullscreen ? PIP_RATIO_FS :  PIP_RATIO_WIN) / _slave->GetYUVWidth ()));
 
-      // if a slave window exists it has to be resized as well
-      if (_slave)
-        _slave->SetWindow (xce->width - (int) (xce->width / ( _state.fullscreen ? PIP_RATIO_FS : PIP_RATIO_WIN)),
-                            xce->height - (int) (_slave->GetYUVHeight () * xce->width / ( _state.fullscreen ? PIP_RATIO_FS :  PIP_RATIO_WIN) / _slave->GetYUVWidth ()),
-                            (int) (xce->width / ( _state.fullscreen ? PIP_RATIO_FS :  PIP_RATIO_WIN)),
-                            (int) (_slave->GetYUVHeight () * xce->width / ( _state.fullscreen ? PIP_RATIO_FS :  PIP_RATIO_WIN) / _slave->GetYUVWidth ()));
+                CalculateSize (xce->width, xce->height, true);
 
-      CalculateSize (xce->width, xce->height, true);
+                if( _paintColorKey ) {
 
-      if( _paintColorKey ) {
+                  XSetForeground( _display, _gc, _colorKey );
+                  XFillRectangle( _display, _XWindow, _gc, _state.curX, _state.curY, _state.curWidth, _state.curHeight);
+                }
+              }
+              break;
 
-        XSetForeground( _display, _gc, _colorKey );
-        XFillRectangle( _display, _XWindow, _gc, _state.curX, _state.curY, _state.curWidth, _state.curHeight);
-      }
-    }
+      case Expose:
+              if (_paintColorKey) {
+                XSetForeground( _display, _gc, _colorKey );
+                XFillRectangle( _display, _XWindow, _gc, _state.curX, _state.curY, _state.curWidth, _state.curHeight);
+              }
+              ret = true;
+              break;
 
-    if (event.type == Expose) {
+      case KeyPress:
+              // a key is pressed
+              {
+                XKeyEvent *xke = &(event.xkey);
+                switch (xke->keycode) {
+                  case 41:  
+                    if (_master) 
+                      _master->ToggleFullscreen (); 
+                    else 
+                      ToggleFullscreen (); // "f"
+                    break;
+                  case 40:  
+                    if (_master) 
+                      _master->ToggleDecoration (); 
+                    else 
+                      ToggleDecoration (); // "d"
+                    break;
+                  case 32:  
+                    if (_master) 
+                      _master->ToggleOntop (); 
+                    else 
+                      ToggleOntop ();      // "o"
+                    break;
+                  case 9:   
+                    if (_master) { 
+                      if (_master->IsFullScreen ()) 
+                        _master->ToggleFullscreen(); 
+                    } // esc
+                    else { 
+                      if (IsFullScreen ()) 
+                        ToggleFullscreen(); 
+                    }
+                    break;
+                  default:
+                    break;
+                }
+              }
+              break;
 
-      if (_paintColorKey) {
-        XSetForeground( _display, _gc, _colorKey );
-        XFillRectangle( _display, _XWindow, _gc, _state.curX, _state.curY, _state.curWidth, _state.curHeight);
-      }
-      ret = true;
-    }
+    case ButtonPress:
+              // a mouse button is clicked
 
-    // a key is pressed
-    if (event.type == KeyPress) {
-
-      XKeyEvent *xke = &(event.xkey);
-      switch (xke->keycode) {
-        case 41:  
-          if (_master) 
-            _master->ToggleFullscreen (); 
-          else 
-            ToggleFullscreen (); // "f"
-          break;
-        case 40:  
-          if (_master) 
-            _master->ToggleDecoration (); 
-          else 
-            ToggleDecoration (); // "d"
-          break;
-        case 32:  
-          if (_master) 
-            _master->ToggleOntop (); 
-          else 
-            ToggleOntop ();      // "o"
-          break;
-        case 9:   
-          if (_master) { 
-            if (_master->IsFullScreen ()) 
-              _master->ToggleFullscreen(); 
-          } // esc
-          else { 
-            if (IsFullScreen ()) 
-              ToggleFullscreen(); 
-          }
-          break;
-        default:
-          break;
-      }
-    }
-
-    // a mouse button is clicked
-    if (event.type == ButtonPress) {
-
-      if (_master)
-        if (!_master->HasDecoration())
-          _master->ToggleDecoration();
-        else
-          _master->ToggleFullscreen();
-      else 
-        if (!_state.decoration)
-          ToggleDecoration();
-        else
-          ToggleFullscreen();
+              if (_master)
+                if (!_master->HasDecoration())
+                  _master->ToggleDecoration();
+                else
+                  _master->ToggleFullscreen();
+              else 
+                if (!_state.decoration)
+                  ToggleDecoration();
+                else
+                  ToggleFullscreen();
+              break;
+    default:
+              PTRACE(1, "X11\tUnknown X Event " << event.type << " received");
     }
   }
   XUnlockDisplay (_display);
@@ -453,6 +457,9 @@ XWindow::Sync()
 void 
 XWindow::ToggleFullscreen ()
 {
+  if (_embedded)
+    return;
+
   Window childWindow;
   XWindowAttributes xwattributes;
 
@@ -535,6 +542,8 @@ XWindow::ToggleFullscreen ()
 void 
 XWindow::ToggleOntop ()
 {
+  if (_embedded)
+    return;
   SetLayer (_state.ontop ? 0 : 1);
   _state.ontop = !_state.ontop;
 }
@@ -543,6 +552,8 @@ XWindow::ToggleOntop ()
 void 
 XWindow::ToggleDecoration ()
 {
+  if (_embedded)
+    return;
   SetDecoration (!_state.decoration);
 }
 
@@ -616,7 +627,7 @@ XWindow::CreateAtomsAndWindow(GC gc,
 
   // define window properties and create the window
   xswattributes.colormap = XCreateColormap (_display, _rootWindow, _XVInfo.visual, AllocNone);
-  xswattributes.event_mask = StructureNotifyMask | ExposureMask;
+  xswattributes.event_mask = StructureNotifyMask | ExposureMask | KeyPressMask | ButtonPressMask;
 
   xswattributes.background_pixel = WhitePixel (_display, DefaultScreen (_display));
 
@@ -626,8 +637,7 @@ XWindow::CreateAtomsAndWindow(GC gc,
                              0, _XVInfo.depth, InputOutput, _XVInfo.visual, 
                              CWBackPixel | CWBorderPixel | CWColormap | CWEventMask,  &xswattributes);
 
-  // define inputs events
-  XSelectInput (_display, _XWindow, StructureNotifyMask | KeyPressMask | ButtonPressMask);
+  PTRACE(4, "X11\tCreated Window with ID " << _XWindow);
 
   SetSizeHints (DEFAULT_X,DEFAULT_Y, _imageWidth, _imageHeight, windowWidth, windowHeight);
   
