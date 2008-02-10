@@ -108,8 +108,6 @@ namespace Ekiga
      */
     iterator end ();
 
-  protected:
-
     /** Adds an object to the Ekiga::Lister.
      * @param: The object to be added.
      * @return: The Ekiga::Lister 'object_added' signal is emitted when
