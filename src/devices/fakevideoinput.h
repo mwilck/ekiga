@@ -193,7 +193,7 @@ class PVideoInputDevice_Picture : public PVideoInputDevice
   int rgb_increment;
   int pos;
   int increment;
-  PStringList GetDeviceNames() const
+  PStringArray GetDeviceNames() const
   { return GetInputDeviceNames(); }
 
   PAdaptiveDelay m_Pacing;

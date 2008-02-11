@@ -61,7 +61,7 @@ class PVideoOutputDevice_EKIGA_PluginServiceDescriptor
       }
     
     
-    virtual PStringList GetDeviceNames(int) const 
+    virtual PStringArray GetDeviceNames(int) const 
       { 
 	return PStringList("EKIGA"); 
       }
@@ -112,9 +112,9 @@ PVideoOutputDevice_EKIGA::Open (const PString &name,
 
 }
 
-PStringList PVideoOutputDevice_EKIGA::GetDeviceNames() const
+PStringArray PVideoOutputDevice_EKIGA::GetDeviceNames() const
 {
-  PStringList  devlist;
+  PStringArray devlist;
   devlist.AppendString(GetDeviceName());
 
   return devlist;

@@ -77,7 +77,7 @@ class PVideoOutputDevice_EKIGA : public PVideoOutputDevice
    * BEHAVIOR     :  Return a list of all of the drivers available.
    * PRE          :  /
    */
-  virtual PStringList GetDeviceNames() const;
+  virtual PStringArray GetDeviceNames() const;
 
 
   /* DESCRIPTION  :  /
