@@ -1429,10 +1429,9 @@ GMManager::ResetListeners ()
     gnomemeeting_threads_leave ();
     
     sipEP->RemoveListener (NULL);
-    sipEP->StartListeners(PStringArray());
-    /*
     if (!sipEP->StartListener (iface, port)) {
       
+      bool success = false;
       port = min_port;
       while (port <= max_port && !success) {
        
@@ -1446,7 +1445,6 @@ GMManager::ResetListeners ()
 
     g_strfreev (couple);
     g_free (ports);
-    */
   }
 
   g_free (iface);
@@ -1545,9 +1543,10 @@ GMManager::GetDeviceVolume (PSoundChannel *sound_channel,
 void
 GMManager::OnClosedMediaStream (const OpalMediaStream & stream)
 {
+  OpalMediaFormatList list = pcssEP->GetMediaFormats ();
   OpalManager::OnClosedMediaStream (stream);
 
-  if (pcssEP->GetMediaFormats ().FindFormat(stream.GetMediaFormat()) == P_MAX_INDEX)
+  if (list.FindFormat(stream.GetMediaFormat()) != list.end ())
     dynamic_cast <Opal::Call &> (stream.GetConnection ().GetCall ()).OnClosedMediaStream ((OpalMediaStream &) stream);
 }
 
@@ -1556,10 +1555,11 @@ bool
 GMManager::OnOpenMediaStream (OpalConnection & connection,
                               OpalMediaStream & stream)
 {
+  OpalMediaFormatList list = pcssEP->GetMediaFormats ();
   if (!OpalManager::OnOpenMediaStream (connection, stream))
     return FALSE;
 
-  if (pcssEP->GetMediaFormats ().FindFormat(stream.GetMediaFormat()) == P_MAX_INDEX) 
+  if (list.FindFormat(stream.GetMediaFormat()) == list.end ()) 
     dynamic_cast <Opal::Call &> (connection.GetCall ()).OnOpenMediaStream (stream);
 
   return TRUE;
