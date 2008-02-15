@@ -103,7 +103,7 @@ static void on_source_added (Ekiga::Source &source,
  * BEHAVIOR     : 
  * PRE          : The given GtkWidget pointer must be an SearchBook GObject.
  */
-static void visit_books (Ekiga::Book &book,
+static bool visit_books (Ekiga::Book &book,
 			 Ekiga::Source *source,
 			 gpointer data);
 
@@ -258,11 +258,13 @@ on_source_added (Ekiga::Source &source,
 }
 
 
-static void visit_books (Ekiga::Book &book,
+static bool visit_books (Ekiga::Book &book,
 			 Ekiga::Source *source,
 			 gpointer data)
 {
   on_book_added (*source, book, data);
+
+  return true;
 }
 
 
@@ -745,8 +747,8 @@ addressbook_window_new (Ekiga::ContactCore &core)
   conn = core.questions.connect (sigc::bind (sigc::ptr_fun (on_handle_questions), (gpointer) self));
   self->priv->connections.push_back (conn);
 
-  core.visit_sources (sigc::bind (sigc::ptr_fun (on_source_added),
-                                  (gpointer) self));
+  core.visit_sources (sigc::bind_return (sigc::bind (sigc::ptr_fun (on_source_added),
+						     (gpointer) self), true));
 
   return GTK_WIDGET (self);
 }

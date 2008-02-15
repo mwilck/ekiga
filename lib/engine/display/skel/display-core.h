@@ -98,7 +98,7 @@ namespace Ekiga
       /** Triggers a callback for all Ekiga::DisplayManager sources of the
        * DisplayCore service.
        */
-      void visit_managers (sigc::slot<void, DisplayManager &> visitor);
+      void visit_managers (sigc::slot<bool, DisplayManager &> visitor);
 
       /** This signal is emitted when a Ekiga::DisplayManager has been
        * added to the DisplayCore Service.

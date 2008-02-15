@@ -59,7 +59,7 @@ namespace Avahi
 
     ~Cluster ();
 
-    void visit_heaps (sigc::slot<void, Heap &> visitor);
+    void visit_heaps (sigc::slot<bool, Heap &> visitor);
 
     bool populate_menu (Ekiga::MenuBuilder &builder);
 

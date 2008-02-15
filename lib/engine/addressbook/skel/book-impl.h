@@ -94,7 +94,7 @@ namespace Ekiga
     /** Visit all contacts of the book and trigger the given callback.
      * @param The callback.
      */
-    void visit_contacts (sigc::slot<void, Contact &> visitor);
+    void visit_contacts (sigc::slot<bool, Contact &> visitor);
 
   protected:
 
@@ -160,7 +160,7 @@ Ekiga::BookImpl<ContactType>::~BookImpl ()
 
 template<typename ContactType>
 void
-Ekiga::BookImpl<ContactType>::visit_contacts (sigc::slot<void, Contact &> visitor)
+Ekiga::BookImpl<ContactType>::visit_contacts (sigc::slot<bool, Contact &> visitor)
 {
   Lister<ContactType>::visit_objects (visitor);
 }

@@ -102,12 +102,13 @@ Ekiga::PresenceCore::add_cluster (Cluster &cluster)
 }
 
 void
-Ekiga::PresenceCore::visit_clusters (sigc::slot<void, Cluster &> visitor)
+Ekiga::PresenceCore::visit_clusters (sigc::slot<bool, Cluster &> visitor)
 {
+  bool go_on = true;
   for (std::set<Cluster *>::iterator iter = clusters.begin ();
-       iter != clusters.end ();
+       iter != clusters.end () && go_on;
        iter++)
-    visitor (*(*iter));
+    go_on = visitor (*(*iter));
 }
 
 bool

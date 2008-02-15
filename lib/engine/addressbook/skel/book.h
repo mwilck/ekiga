@@ -62,7 +62,7 @@ namespace Ekiga {
      * the descendant of the Ekiga::Book.
      * @param The callback.
      */
-    virtual void visit_contacts (sigc::slot<void, Contact &>) = 0;
+    virtual void visit_contacts (sigc::slot<bool, Contact &>) = 0;
 
 
     /** Create the menu for that book and its actions.

@@ -87,12 +87,14 @@ Ekiga::ContactCore::add_source (Source &source)
 }
 
 void
-Ekiga::ContactCore::visit_sources (sigc::slot<void, Source &> visitor)
+Ekiga::ContactCore::visit_sources (sigc::slot<bool, Source &> visitor)
 {
+  bool go_on = true;
+
   for (std::set<Source *>::iterator iter = sources.begin ();
-       iter != sources.end ();
+       iter != sources.end () && go_on;
        iter++)
-    visitor (*(*iter));
+    go_on = visitor (*(*iter));
 }
 
 

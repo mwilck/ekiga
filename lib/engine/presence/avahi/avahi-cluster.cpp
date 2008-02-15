@@ -52,9 +52,9 @@ Avahi::Cluster::~Cluster ()
 }
 
 void
-Avahi::Cluster::visit_heaps (sigc::slot<void, Heap &> visitor)
+Avahi::Cluster::visit_heaps (sigc::slot<bool, Heap &> visitor)
 {
-  visitor (*heap);
+  (void)visitor (*heap);
 }
 
 bool

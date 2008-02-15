@@ -107,7 +107,7 @@ namespace Ekiga
      * ContactCore service.
      * @param The callback.
      */
-    void visit_sources (sigc::slot<void, Source &> visitor);
+    void visit_sources (sigc::slot<bool, Source &> visitor);
 
 
     /** This signal is emitted when a Ekiga::Source has been

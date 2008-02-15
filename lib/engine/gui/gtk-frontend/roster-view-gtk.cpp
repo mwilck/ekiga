@@ -153,7 +153,7 @@ static void on_cluster_added (Ekiga::Cluster &cluster,
  * BEHAVIOR     : Adds in the cluster heaps
  * PRE          : /
  */
-static void visit_heaps (Ekiga::Heap &heap,
+static bool visit_heaps (Ekiga::Heap &heap,
 			 Ekiga::Cluster *cluster,
 			 gpointer data);
 
@@ -190,7 +190,7 @@ static void on_heap_removed (Ekiga::Cluster &cluster,
  * BEHAVIOR     : Adds in the heap presentities
  * PRE          : /
  */
-static void visit_presentities (Ekiga::Presentity &presentity,
+static bool visit_presentities (Ekiga::Presentity &presentity,
 				Ekiga::Cluster *cluster,
 				Ekiga::Heap *heap,
 				gpointer data);
@@ -482,13 +482,15 @@ on_cluster_added (Ekiga::Cluster &cluster,
 				   &cluster, data));
 }
 
-static void
+static bool
 visit_heaps (Ekiga::Heap &heap,
 	     Ekiga::Cluster *cluster,
 	     gpointer data)
 {
   on_heap_updated (*cluster, heap, data);
   heap.visit_presentities (sigc::bind (sigc::ptr_fun (visit_presentities), cluster, &heap, data));
+
+  return true;
 }
 
 static void
@@ -533,13 +535,15 @@ on_heap_removed (Ekiga::Cluster &/*cluster*/,
 }
 
 
-static void
+static bool
 visit_presentities (Ekiga::Presentity &presentity,
 		    Ekiga::Cluster *cluster,
 		    Ekiga::Heap *heap,
 		    gpointer data)
 {
   on_presentity_added (*cluster, *heap, presentity, data);
+
+  return true;
 }
 
 static void
@@ -1061,8 +1065,8 @@ roster_view_gtk_new (Ekiga::PresenceCore &core)
   conn = core.questions.add_handler (sigc::bind (sigc::ptr_fun (on_handle_questions), (gpointer) self));
   self->priv->connections.push_back (conn);
 
-  core.visit_clusters (sigc::bind (sigc::ptr_fun (on_cluster_added),
-				   (gpointer)self));
+  core.visit_clusters (sigc::bind_return (sigc::bind (sigc::ptr_fun (on_cluster_added),
+						      (gpointer)self), true));
 
   return (GtkWidget *) self;
 }

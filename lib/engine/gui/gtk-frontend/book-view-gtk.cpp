@@ -87,7 +87,7 @@ void SignalCentralizer::watch_book (Ekiga::Book &book)
 
 void SignalCentralizer::repopulate (Ekiga::Book &book)
 {
-  book.visit_contacts (sigc::mem_fun (this, &SignalCentralizer::on_contact_added));
+  book.visit_contacts (sigc::bind_return (sigc::mem_fun (this, &SignalCentralizer::on_contact_added), true));
 }
 
 

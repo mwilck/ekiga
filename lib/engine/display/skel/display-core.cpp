@@ -68,12 +68,14 @@ void DisplayCore::add_manager (DisplayManager &manager)
 }
 
 
-void DisplayCore::visit_managers (sigc::slot<void, DisplayManager &> visitor)
+void DisplayCore::visit_managers (sigc::slot<bool, DisplayManager &> visitor)
 {
+  bool go_on = true;
+
   for (std::set<DisplayManager *>::iterator iter = managers.begin ();
-       iter != managers.end ();
+       iter != managers.end () && go_on;
        iter++)
-    visitor (*(*iter));
+    go_on = visitor (*(*iter));
 }
 
 

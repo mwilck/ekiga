@@ -160,7 +160,7 @@ static void on_cluster_added (Ekiga::Cluster &cluster,
  *                the monitored Ekiga::Heap to the list of active Heaps.
  * PRE          : The ChatWindowPage as last parameter.
  */
-static void on_heap_visited (Ekiga::Heap &heap,
+static bool on_heap_visited (Ekiga::Heap &heap,
                              Ekiga::Cluster *cluster,
                              gpointer data);
 
@@ -182,7 +182,7 @@ static void on_heap_added (Ekiga::Cluster &cluster,
  *                Presentities.
  * PRE          : The ChatWindowPage as last parameter.
  */
-static void on_presentity_visited (Ekiga::Presentity &presentity,
+static bool on_presentity_visited (Ekiga::Presentity &presentity,
                                    Ekiga::Cluster *cluster,
                                    Ekiga::Heap *heap,
                                    gpointer data);
@@ -451,12 +451,14 @@ on_cluster_added (Ekiga::Cluster &cluster,
 }
 
 
-static void
+static bool
 on_heap_visited (Ekiga::Heap &heap,
                  Ekiga::Cluster *cluster,
                  gpointer data)
 {
   on_heap_added (*cluster, heap, data);
+
+  return true;
 }
 
 
@@ -469,13 +471,15 @@ on_heap_added (Ekiga::Cluster &cluster,
 }
 
 
-static void
+static bool
 on_presentity_visited (Ekiga::Presentity &presentity,
                        Ekiga::Cluster *cluster,
                        Ekiga::Heap *heap,
                        gpointer data)
 {
   on_presentity_added (*cluster, *heap, presentity, data);
+
+  return true;
 }
 
 
@@ -873,7 +877,7 @@ chat_window_page_new (Ekiga::ServiceCore & core,
   conn = presence_core->presentity_removed.connect (sigc::bind (sigc::ptr_fun (on_presentity_removed), (gpointer) self));
   self->priv->connections.push_back (conn);
 
-  presence_core->visit_clusters (sigc::bind (sigc::ptr_fun (on_cluster_added), (gpointer) self));
+  presence_core->visit_clusters (sigc::bind_return (sigc::bind (sigc::ptr_fun (on_cluster_added), (gpointer) self), true));
 
   return GTK_WIDGET (self);
 }

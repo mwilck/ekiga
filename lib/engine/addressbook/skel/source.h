@@ -56,7 +56,7 @@ namespace Ekiga {
      * the descendant of the Ekiga::Source.
      * @param The callback.
      */
-    virtual void visit_books (sigc::slot<void, Book &>) = 0;
+    virtual void visit_books (sigc::slot<bool, Book &>) = 0;
 
 
     /** Create the menu for that source and its actions.

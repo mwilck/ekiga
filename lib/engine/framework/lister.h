@@ -87,7 +87,7 @@ namespace Ekiga
 
     /** Allows listing all objects
      */
-    void visit_objects (sigc::slot<void, ObjectType &> visitor);
+    void visit_objects (sigc::slot<bool, ObjectType &> visitor);
 
     /** Returns a const iterator to the first object of the collection.
      */
@@ -197,10 +197,12 @@ Ekiga::Lister<ObjectType>::~Lister ()
 
 template<typename ObjectType>
 void
-Ekiga::Lister<ObjectType>::visit_objects (sigc::slot<void, ObjectType &> visitor)
+Ekiga::Lister<ObjectType>::visit_objects (sigc::slot<bool, ObjectType &> visitor)
 {
-  for (unsigned int ii = 0; ii < objects.size (); ii++)
-    visitor (*objects[ii]);
+  bool go_on = true;
+  for (unsigned int ii = 0;
+       ii < objects.size () && go_on; ii++)
+    go_on = visitor (*objects[ii]);
 }
 
 

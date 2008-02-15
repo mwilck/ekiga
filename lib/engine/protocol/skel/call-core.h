@@ -95,7 +95,7 @@ namespace Ekiga
       /** Triggers a callback for all Ekiga::CallManager sources of the
        * CallCore service.
        */
-      void visit_managers (sigc::slot<void, CallManager &> visitor);
+      void visit_managers (sigc::slot<bool, CallManager &> visitor);
 
       /** This signal is emitted when a Ekiga::CallManager has been
        * added to the CallCore Service.

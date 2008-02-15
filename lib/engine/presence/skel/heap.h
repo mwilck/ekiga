@@ -65,7 +65,7 @@ namespace Ekiga
     /** Get the list of Presentities by visiting them with a callback.
      * @param The callback user to know about presentities.
      */
-    virtual void visit_presentities (sigc::slot<void, Presentity &>) = 0;
+    virtual void visit_presentities (sigc::slot<bool, Presentity &>) = 0;
 
     /** Populates a menu with the actions possible on the Heap.
      * @param The builder to populate.

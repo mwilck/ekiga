@@ -179,7 +179,7 @@ namespace Ekiga
      * PresenceCore service.
      * @param The callback.
      */
-    void visit_clusters (sigc::slot<void, Cluster &> visitor);
+    void visit_clusters (sigc::slot<bool, Cluster &> visitor);
 
     /** This signal is emitted when an Ekiga::Cluster has been added
      * to the PresenceCore Service.

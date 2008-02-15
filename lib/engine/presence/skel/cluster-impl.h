@@ -81,7 +81,7 @@ namespace Ekiga
 
     virtual ~ClusterImpl ();
 
-    void visit_heaps (sigc::slot<void, Heap &> visitor);
+    void visit_heaps (sigc::slot<bool, Heap &> visitor);
 
   protected:
 
@@ -124,7 +124,7 @@ Ekiga::ClusterImpl<HeapType>::~ClusterImpl ()
 
 template<typename HeapType>
 void
-Ekiga::ClusterImpl<HeapType>::visit_heaps (sigc::slot<void, Heap &> visitor)
+Ekiga::ClusterImpl<HeapType>::visit_heaps (sigc::slot<bool, Heap &> visitor)
 {
   Lister<HeapType>::visit_objects (visitor);
 }

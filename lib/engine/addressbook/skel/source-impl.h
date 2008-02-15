@@ -102,7 +102,7 @@ namespace Ekiga
     /** Visit all books of the source and trigger the given callback.
      * @param The callback.
      */
-    void visit_books (sigc::slot<void, Book &> visitor);
+    void visit_books (sigc::slot<bool, Book &> visitor);
 
   protected:
 
@@ -206,7 +206,7 @@ Ekiga::SourceImpl<BookType>::~SourceImpl ()
 
 template<typename BookType>
 void
-Ekiga::SourceImpl<BookType>::visit_books (sigc::slot<void, Book &> visitor)
+Ekiga::SourceImpl<BookType>::visit_books (sigc::slot<bool, Book &> visitor)
 {
   Lister<BookType>::visit_objects (visitor);
 }

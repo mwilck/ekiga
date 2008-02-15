@@ -59,7 +59,7 @@ namespace Ekiga
     /** Get the list of Heaps by visiting them with a callback.
      * @param The callback used to know about heaps.
      */
-    virtual void visit_heaps (sigc::slot<void, Heap &>) = 0;
+    virtual void visit_heaps (sigc::slot<bool, Heap &>) = 0;
 
     /** Populates a menu with the actions possible on the Cluster.
      * @param The builder to populate.

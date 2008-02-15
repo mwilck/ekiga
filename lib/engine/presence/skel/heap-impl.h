@@ -79,7 +79,7 @@ namespace Ekiga
 
     ~HeapImpl ();
 
-    void visit_presentities (sigc::slot<void, Presentity &> visitor);
+    void visit_presentities (sigc::slot<bool, Presentity &> visitor);
 
     const_iterator begin () const;
 
@@ -120,7 +120,7 @@ Ekiga::HeapImpl<PresentityType>::~HeapImpl ()
 
 template<typename PresentityType>
 void
-Ekiga::HeapImpl<PresentityType>::visit_presentities (sigc::slot<void, Presentity &> visitor)
+Ekiga::HeapImpl<PresentityType>::visit_presentities (sigc::slot<bool, Presentity &> visitor)
 {
   Lister<PresentityType>::visit_objects (visitor);
 }
