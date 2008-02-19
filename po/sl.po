@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: ekiga\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-10-30 12:36+0000\n"
-"PO-Revision-Date: 2007-12-20 15:38+0100\n"
+"PO-Revision-Date: 2008-02-19 14:10+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -76,7 +76,7 @@ msgid "Automatic echo cancellation"
 msgstr "Samodejno odstranjevanje odmeva"
 
 #: ../ekiga.schemas.in.in.h:12
-#: ../src/gui/preferences.cpp:481
+#: ../src/gui/preferences.cpp:447
 msgid "Automatically reject or forward incoming calls if no answer is given after the specified amount of time (in seconds)"
 msgstr "Samodejno zavrni ali posreduj dohodne klice, če po določenem času (v sekundah) ni odgovora"
 
@@ -89,16 +89,16 @@ msgid "Change the main window panel section"
 msgstr "Spremeni pladenj glavnega okna"
 
 #: ../ekiga.schemas.in.in.h:15
-msgid "Clear inactive calls"
-msgstr "Počisti nedejavne klice"
-
-#: ../ekiga.schemas.in.in.h:16
 msgid "Connection will be established in Fast Start mode. Fast Start is a new way to start calls faster that was introduced in H.323v2. It is not supported by Netmeeting and using both Fast Start and H.245 Tunneling can crash some versions of Netmeeting"
 msgstr "Povezava bo vzpostavljena v načinu Hitri zagon, ki je nov način za hitrejši začetek klicev, kot jih omogoča H.323v2. Ne podpira ga Netmeeting, uporaba skupaj s tuneliranjem H.245 pa lahko povzroči sesutje nekaterih različic Netmeetinga"
 
+#: ../ekiga.schemas.in.in.h:16
+msgid "Contact long status"
+msgstr "Dolg opis stanja stika"
+
 #: ../ekiga.schemas.in.in.h:17
-msgid "Contact status"
-msgstr "_Stanje stika"
+msgid "Contact short status"
+msgstr "Kratek opis stanja stika"
 
 #: ../ekiga.schemas.in.in.h:18
 msgid "Country code"
@@ -157,538 +157,536 @@ msgid "Enter the public IP of your NAT/PAT router if you want to use IP translat
 msgstr "Vnesite javni IP vašega usmerjevalnika NAT/PAT, če želite uporabljati prevajanje IP"
 
 #: ../ekiga.schemas.in.in.h:32
-#: ../src/gui/preferences.cpp:414
-msgid "Enter your first name"
-msgstr "Vnesite vaše ime"
+msgid "Enter your full name"
+msgstr "Vnesite vaše polno ime"
 
 #: ../ekiga.schemas.in.in.h:33
-msgid "Enter your last name"
-msgstr "Vnesite vaš priimek"
-
-#: ../ekiga.schemas.in.in.h:34
-msgid "First name"
-msgstr "Ime"
-
-#: ../ekiga.schemas.in.in.h:35
 msgid "Forward calls to host"
 msgstr "Posreduj klice gostitelju"
 
-#: ../ekiga.schemas.in.in.h:36
+#: ../ekiga.schemas.in.in.h:34
 msgid "Forward calls to the given host if busy"
 msgstr "Posreduj klice danemu gostitelju, ko sem zaseden"
 
-#: ../ekiga.schemas.in.in.h:37
+#: ../ekiga.schemas.in.in.h:35
 msgid "Forward calls to the given host if no answer"
 msgstr "Posreduj klice danemu gostitelju, ko ni odgovora"
 
-#: ../ekiga.schemas.in.in.h:38
-#: ../src/gui/preferences.cpp:1055
+#: ../ekiga.schemas.in.in.h:36
+#: ../src/gui/preferences.cpp:1008
 msgid "Frame Rate"
 msgstr "Hitrost sličic"
 
-#: ../ekiga.schemas.in.in.h:39
+#: ../ekiga.schemas.in.in.h:37
+msgid "Full name"
+msgstr "Polno Ime"
+
+#: ../ekiga.schemas.in.in.h:38
 msgid "Gateway/proxy host"
 msgstr "Gostitelj dostopne točke/posredovalnega strežnika"
 
-#: ../ekiga.schemas.in.in.h:40
-#: ../src/gui/preferences.cpp:441
+#: ../ekiga.schemas.in.in.h:39
+#: ../src/gui/preferences.cpp:409
 msgid "If enabled, Ekiga will start hidden provided that the notification area is present in the GNOME panel"
 msgstr "Možnost omogoča skriti zagon programa Ekiga, v primeru, da je pladenj z obvestili prisoten v pultu GNOME"
 
-#: ../ekiga.schemas.in.in.h:41
+#: ../ekiga.schemas.in.in.h:40
 msgid "If enabled, a popup window will be displayed when receiving an incoming call"
 msgstr "Možnost omogoča prikaz okna ob prejemanju dohodnih klicev"
 
-#: ../ekiga.schemas.in.in.h:42
+#: ../ekiga.schemas.in.in.h:41
 msgid "If enabled, all incoming calls will be forwarded to the host that is specified in the field below"
 msgstr "Možnost omogoča posredovanje dohodnih klicev h gostitelju, ki je naveden v spodnjem polju"
 
-#: ../ekiga.schemas.in.in.h:43
+#: ../ekiga.schemas.in.in.h:42
 msgid "If enabled, all incoming calls will be forwarded to the host that is specified in the field below if you already are in a call or if you are in Do Not Disturb mode"
 msgstr "Možnost omogoča posredovanje dohodnih klicev gostitelju, ki je naveden v spodnjem polju, kadar ste nedosegljivi ali pa ste med pogovorom"
 
-#: ../ekiga.schemas.in.in.h:44
+#: ../ekiga.schemas.in.in.h:43
 msgid "If enabled, all incoming calls will be forwarded to the host that is specified in the field below if you do not answer the call"
 msgstr "Možnost omogoča posredovanje dohodnih klicev gostitelju, ki je naveden v spodnjem polju, kadar ste se ne odzovete na klic"
 
-#: ../ekiga.schemas.in.in.h:45
+#: ../ekiga.schemas.in.in.h:44
 msgid "If enabled, allows video during calls"
 msgstr "Možnost omogoča prikaz videa med klici"
 
-#: ../ekiga.schemas.in.in.h:46
-#: ../src/gui/preferences.cpp:479
-msgid "If enabled, calls for which no audio and video has been received in the last 30 seconds are automatically cleared"
-msgstr "Možnost omogoča samodejno čiščenje klicev za katere v zadnjih 30 sekundah ni bilo prejetega zvoka ali videa"
-
-#: ../ekiga.schemas.in.in.h:47
+#: ../ekiga.schemas.in.in.h:45
 msgid "If enabled, use echo cancelation"
 msgstr "Možnost omogoča odstranjevanje odmeva"
 
-#: ../ekiga.schemas.in.in.h:48
+#: ../ekiga.schemas.in.in.h:46
 msgid "If enabled, use silence detection with the codecs supporting it"
 msgstr "Možnost omogoča zaznavanje tišine s kodeki, ki ga podpirajo"
 
-#: ../ekiga.schemas.in.in.h:49
+#: ../ekiga.schemas.in.in.h:47
 msgid "Kind of network selected in the druid"
 msgstr "Vrsta omrežja, ki ste jo izbrali v pomočniku"
 
-#: ../ekiga.schemas.in.in.h:50
-msgid "Last name"
-msgstr "Priimek"
-
-#: ../ekiga.schemas.in.in.h:51
+#: ../ekiga.schemas.in.in.h:48
 msgid "Listen port"
 msgstr "Poslušaj vrata"
 
-#: ../ekiga.schemas.in.in.h:52
+#: ../ekiga.schemas.in.in.h:49
 msgid "Local video window size"
 msgstr "Velikost okna lokalnega videa"
 
-#: ../ekiga.schemas.in.in.h:53
+#: ../ekiga.schemas.in.in.h:50
 msgid "Maximum RX video bitrate"
 msgstr "Največja RX bitna hitrost"
 
-#: ../ekiga.schemas.in.in.h:54
+#: ../ekiga.schemas.in.in.h:51
 msgid "Maximum TX video bitrate"
 msgstr "Največja TX bitna hitrost"
 
-#: ../ekiga.schemas.in.in.h:55
+#: ../ekiga.schemas.in.in.h:52
 msgid "Maximum jitter buffer"
 msgstr "Največji predpomnilnik trepetanja"
 
-#: ../ekiga.schemas.in.in.h:56
+#: ../ekiga.schemas.in.in.h:53
 msgid "Minimum jitter buffer"
 msgstr "Najmanjši predpomnilnik trepetanja"
 
-#: ../ekiga.schemas.in.in.h:57
+#: ../ekiga.schemas.in.in.h:54
 msgid "NAT Binding Timeout"
 msgstr "Zakasnitev vezave NAT"
 
-#: ../ekiga.schemas.in.in.h:58
+#: ../ekiga.schemas.in.in.h:55
 msgid "No answer timeout"
 msgstr "Zakasnitev za stanje Brez odgovora"
 
-#: ../ekiga.schemas.in.in.h:59
+#: ../ekiga.schemas.in.in.h:56
 msgid "Number of frames for G.711"
 msgstr "Število sličic za G.711"
 
-#: ../ekiga.schemas.in.in.h:60
+#: ../ekiga.schemas.in.in.h:57
 msgid "Number of frames for GSM"
 msgstr "Število sličic za GSM"
 
-#: ../ekiga.schemas.in.in.h:61
+#: ../ekiga.schemas.in.in.h:58
 msgid "Number of frames transmitted in each packet for the G.711 codec"
 msgstr "Število sličic, ki bodo oddane v vsakem paketu kodeka G.711"
 
-#: ../ekiga.schemas.in.in.h:62
+#: ../ekiga.schemas.in.in.h:59
 msgid "Number of frames transmitted in each packet for the GSM codec"
 msgstr "Število sličic, ki bodo oddane v vsakem paketu kodeka GSM"
 
-#: ../ekiga.schemas.in.in.h:63
+#: ../ekiga.schemas.in.in.h:60
 msgid "Outbound Proxy"
 msgstr "Zunanji posredovalni strežnik"
 
-#: ../ekiga.schemas.in.in.h:64
+#: ../ekiga.schemas.in.in.h:61
 msgid "Output device type"
 msgstr "Vrsta izhodne naprave"
 
-#: ../ekiga.schemas.in.in.h:65
-#: ../src/gui/preferences.cpp:449
+#: ../ekiga.schemas.in.in.h:62
+#: ../src/gui/preferences.cpp:417
 msgid "Place windows displaying video above other windows during calls"
 msgstr "Okna, ki prikazujejo video, med klici postavi nad ostala okna"
 
-#: ../ekiga.schemas.in.in.h:66
-#: ../src/gui/preferences.cpp:1492
+#: ../ekiga.schemas.in.in.h:63
+#: ../src/gui/preferences.cpp:1374
 msgid "Play busy tone"
 msgstr "Predvajaj ton zasedenosti"
 
-#: ../ekiga.schemas.in.in.h:67
-#: ../src/gui/preferences.cpp:1483
+#: ../ekiga.schemas.in.in.h:64
+#: ../src/gui/preferences.cpp:1365
 msgid "Play ring tone"
 msgstr "Predvajaj ton klicanja"
 
-#: ../ekiga.schemas.in.in.h:68
-#: ../src/gui/preferences.cpp:1474
+#: ../ekiga.schemas.in.in.h:65
+#: ../src/gui/preferences.cpp:1356
 msgid "Play sound on incoming calls"
 msgstr "Predvajaj zvok ob dohodnih klicih"
 
-#: ../ekiga.schemas.in.in.h:69
+#: ../ekiga.schemas.in.in.h:66
 msgid "Play sound on new message"
 msgstr "Predvajaj zvok ob novih sporočilih"
 
-#: ../ekiga.schemas.in.in.h:70
+#: ../ekiga.schemas.in.in.h:67
 msgid "Play sound on new voice mail"
 msgstr "Predvajaj zvok ob novi glasovni pošti"
 
-#: ../ekiga.schemas.in.in.h:71
+#: ../ekiga.schemas.in.in.h:68
 msgid "Position of the local video window"
 msgstr "Položaj okna z lokalnim videom"
 
-#: ../ekiga.schemas.in.in.h:72
+#: ../ekiga.schemas.in.in.h:69
 msgid "Position on the screen of the PC-To-Phone window"
 msgstr "Položaj okna PC-telefon na zaslonu"
 
-#: ../ekiga.schemas.in.in.h:73
+#: ../ekiga.schemas.in.in.h:70
 msgid "Position on the screen of the address book window"
 msgstr "Položaj okna imenika na zaslonu"
 
-#: ../ekiga.schemas.in.in.h:74
+#: ../ekiga.schemas.in.in.h:71
 msgid "Position on the screen of the audio settings window"
 msgstr "Položaj okna nastavitev zvoka na zaslonu"
 
-#: ../ekiga.schemas.in.in.h:75
+#: ../ekiga.schemas.in.in.h:72
 msgid "Position on the screen of the chat window"
 msgstr "Položaj okna za klepet na zaslonu"
 
-#: ../ekiga.schemas.in.in.h:76
+#: ../ekiga.schemas.in.in.h:73
 msgid "Position on the screen of the druid window"
 msgstr "Položaj okna pomočnika na zaslonu"
 
-#: ../ekiga.schemas.in.in.h:77
+#: ../ekiga.schemas.in.in.h:74
 msgid "Position on the screen of the log window"
 msgstr "Položaj okna dnevnika na zaslonu"
 
-#: ../ekiga.schemas.in.in.h:78
+#: ../ekiga.schemas.in.in.h:75
 msgid "Position on the screen of the main window"
 msgstr "Položaj glavnega okna na zaslonu"
 
-#: ../ekiga.schemas.in.in.h:79
+#: ../ekiga.schemas.in.in.h:76
 msgid "Position on the screen of the preferences window"
 msgstr "Položaj okna nastavitev na zaslonu"
 
-#: ../ekiga.schemas.in.in.h:80
+#: ../ekiga.schemas.in.in.h:77
 msgid "Position on the screen of the video settings window"
 msgstr "Položaj okna nastavitev slike na zaslonu"
 
-#: ../ekiga.schemas.in.in.h:81
+#: ../ekiga.schemas.in.in.h:78
 msgid "Public IP of the NAT/PAT router"
 msgstr "Javni IP usmerjevalnika NAT/PAT"
 
-#: ../ekiga.schemas.in.in.h:82
+#: ../ekiga.schemas.in.in.h:79
 msgid "Registration timeout"
 msgstr "Zakasnitev prijave"
 
-#: ../ekiga.schemas.in.in.h:83
+#: ../ekiga.schemas.in.in.h:80
 msgid "Remote video window position"
 msgstr "Položaj okna z oddaljenim videom"
 
-#: ../ekiga.schemas.in.in.h:84
+#: ../ekiga.schemas.in.in.h:81
 msgid "Remote video window size"
 msgstr "Velikost okna z oddaljenim videom"
 
-#: ../ekiga.schemas.in.in.h:85
+#: ../ekiga.schemas.in.in.h:82
 msgid "Revision of the schema file"
 msgstr "Različica datoteke s shemo"
 
-#: ../ekiga.schemas.in.in.h:86
+#: ../ekiga.schemas.in.in.h:83
 msgid "Roster view saving group status"
 msgstr "Okno seznama stikov shranjuje stanje skupine"
 
-#: ../ekiga.schemas.in.in.h:87
+#: ../ekiga.schemas.in.in.h:84
 msgid "Select an alternative audio output device to use for sound events."
 msgstr "Izberite alternativno zvočno izhodno napravo za uporabo zvočnih dogodkov."
 
-#: ../ekiga.schemas.in.in.h:88
-#: ../src/gui/preferences.cpp:833
+#: ../ekiga.schemas.in.in.h:85
+#: ../src/gui/preferences.cpp:798
 msgid "Select the audio input device to use"
 msgstr "Izberite zvočno vhodno napravo"
 
-#: ../ekiga.schemas.in.in.h:89
-#: ../src/gui/preferences.cpp:826
+#: ../ekiga.schemas.in.in.h:86
+#: ../src/gui/preferences.cpp:791
 msgid "Select the audio output device to use"
 msgstr "Izberite zvočno izhodno napravo"
 
-#: ../ekiga.schemas.in.in.h:90
-msgid "Select the contact status: 0 (Online), 1 (Offline), 2 (Unknown), 3 (Away), 4 (DND), 5 (Free For Chat), 6 (Invisible)"
-msgstr "Izberite stanje stika: 0 (na omrežju), 1 (nepovezan), 2 (neznano), 3 (zaseden), 4 (ne moti), 5 (prost za pogovor), 6 (neviden)"
-
-#: ../ekiga.schemas.in.in.h:91
-#: ../src/gui/preferences.cpp:694
+#: ../ekiga.schemas.in.in.h:87
+#: ../src/gui/preferences.cpp:659
 msgid "Select the desired method for NAT traversal (STUN is strongly suggested)"
 msgstr "Izberite želeno metodo za prehodni program NAT (priporočen je STUN)"
 
-#: ../ekiga.schemas.in.in.h:92
-#: ../src/gui/preferences.cpp:910
+#: ../ekiga.schemas.in.in.h:88
+#: ../src/gui/preferences.cpp:875
 msgid "Select the format for video cameras (does not apply to most USB cameras)"
 msgstr "Izberite zapis video kamer (ne vpliva na večino kamer USB)"
 
-#: ../ekiga.schemas.in.in.h:93
+#: ../ekiga.schemas.in.in.h:89
 msgid "Select the transmitted video size: Small (QCIF 176x144) or Large (CIF 352x288)"
 msgstr "Izberite velikost videa za oddajanje: majhno (QCIF 176x144) ali veliko (CIF 352x288)"
 
-#: ../ekiga.schemas.in.in.h:94
-#: ../src/gui/preferences.cpp:902
+#: ../ekiga.schemas.in.in.h:90
+#: ../src/gui/preferences.cpp:867
 msgid "Select the video input device to use. If an error occurs when using this device a test picture will be transmitted."
 msgstr "Izberite vhodno napravo videa. Če pride do napake pri uporabi te naprave, bo oddajana preizkusna slika."
 
-#: ../ekiga.schemas.in.in.h:95
+#: ../ekiga.schemas.in.in.h:91
 msgid "Size of the PC-To-Phone window"
 msgstr "Velikost okna PC-telefon"
 
-#: ../ekiga.schemas.in.in.h:96
+#: ../ekiga.schemas.in.in.h:92
 msgid "Size of the address book window"
 msgstr "Velikost okna imenika"
 
-#: ../ekiga.schemas.in.in.h:97
+#: ../ekiga.schemas.in.in.h:93
 msgid "Size of the audio settings window"
 msgstr "Velikost okna nastavitev zvoka"
 
-#: ../ekiga.schemas.in.in.h:98
+#: ../ekiga.schemas.in.in.h:94
 msgid "Size of the chat window"
 msgstr "Velikost okna za klepet"
 
-#: ../ekiga.schemas.in.in.h:99
+#: ../ekiga.schemas.in.in.h:95
 msgid "Size of the druid window"
 msgstr "Velikost okna pomočnika"
 
-#: ../ekiga.schemas.in.in.h:100
+#: ../ekiga.schemas.in.in.h:96
 msgid "Size of the preferences window"
 msgstr "Velikost okna nastavitev"
 
-#: ../ekiga.schemas.in.in.h:101
+#: ../ekiga.schemas.in.in.h:97
 msgid "Size of the video settings window"
 msgstr "Velikost okna nastavitev slike"
 
-#: ../ekiga.schemas.in.in.h:102
+#: ../ekiga.schemas.in.in.h:98
 msgid "Specify the software scaling algorithm"
 msgstr "Določilo programskega algoritma spreminjanja velikosti"
 
-#: ../ekiga.schemas.in.in.h:103
+#: ../ekiga.schemas.in.in.h:99
 msgid "Specify the software scaling algorithm: 0: nearest neighbor, 1: nearest neighbor with box filter, 2: bilinear filtering, 3: hyperbolic filtering. Does not apply on windows systems."
 msgstr "Določilo programskega algoritma spreminjanja velikosti: 0: najbližji sosed, 1: najbližji sosed s filtriranjem okvirja, 2: bilinearno filtriranje, 3: hiperbolično filtriranje. Ni podprt v okolju oken."
 
-#: ../ekiga.schemas.in.in.h:104
+#: ../ekiga.schemas.in.in.h:100
 msgid "Start hidden"
 msgstr "Zaženi skrito"
 
-#: ../ekiga.schemas.in.in.h:105
+#: ../ekiga.schemas.in.in.h:101
 msgid "TCP port range"
 msgstr "Obseg vrat TCP"
 
-#: ../ekiga.schemas.in.in.h:106
+#: ../ekiga.schemas.in.in.h:102
 msgid "Temporal Spatial Trade Off"
 msgstr "Začasna prostorska izmenjava"
 
-#: ../ekiga.schemas.in.in.h:107
+#: ../ekiga.schemas.in.in.h:103
 msgid "The Audio Codecs List"
 msgstr "Seznam zvočnih kodekov"
 
-#: ../ekiga.schemas.in.in.h:108
+#: ../ekiga.schemas.in.in.h:104
 msgid "The Automatic Echo Cancellation level: Off, Low, Medium, High, Automatic Gain Compensation. Choosing Automatic Gain Compensation modulates the volume for best quality."
 msgstr "Raven samodejnega odstranjevanja odmeva: izključeno, nizko, srednje, visoko, samodejno prilagodi. Izberite samodejno prilagajanje, če želite glasnost prilagajati najboljši kakovosti."
 
-#: ../ekiga.schemas.in.in.h:109
-#: ../src/gui/preferences.cpp:721
+#: ../ekiga.schemas.in.in.h:105
+#: ../src/gui/preferences.cpp:686
 msgid "The Gateway host is the host to use to do H.323 calls through a gateway that will relay calls"
 msgstr "Gostitelj prehoda je gostitelj za klice H.323 skozi prehod, ki bo izmenjeval klice"
 
-#: ../ekiga.schemas.in.in.h:110
+#: ../ekiga.schemas.in.in.h:106
 msgid "The NAT method"
 msgstr "Metoda NAT"
 
-#: ../ekiga.schemas.in.in.h:111
-#: ../src/gui/preferences.cpp:775
+#: ../ekiga.schemas.in.in.h:107
+#: ../src/gui/preferences.cpp:740
 msgid "The SIP Outbound Proxy to use for outgoing calls"
 msgstr "Zunanji posredovalni strežnik SIP za odhodne klice"
 
-#: ../ekiga.schemas.in.in.h:112
+#: ../ekiga.schemas.in.in.h:108
 msgid "The STUN Server"
 msgstr "Strežnik STUN"
 
-#: ../ekiga.schemas.in.in.h:113
+#: ../ekiga.schemas.in.in.h:109
 msgid "The STUN server to use for STUN Support. STUN is a technology that permits passage through some types of NAT gateway"
 msgstr "Strežnik STUN za uporabo pri podpori STUN. STUN je tehnika, ki omogoča pot skozi nekatere prehode NAT"
 
-#: ../ekiga.schemas.in.in.h:114
+#: ../ekiga.schemas.in.in.h:110
 msgid "The Video Codecs List"
 msgstr "Seznam slikovnih kodekov"
 
-#: ../ekiga.schemas.in.in.h:115
+#: ../ekiga.schemas.in.in.h:111
 msgid "The accounts list"
 msgstr "Seznam računov"
 
-#: ../ekiga.schemas.in.in.h:116
+#: ../ekiga.schemas.in.in.h:112
+msgid "The audio lodecs list"
+msgstr "Seznam zvočnih kodekov"
+
+#: ../ekiga.schemas.in.in.h:113
 msgid "The audio plugin that will be used to detect the devices and manage them"
 msgstr "Zvočni vstavek, ki bo uporabljen za zaznavo in upravljanje naprav"
 
-#: ../ekiga.schemas.in.in.h:117
+#: ../ekiga.schemas.in.in.h:114
 msgid "The busy tone sound"
 msgstr "Zvok tona zasedenosti"
 
-#: ../ekiga.schemas.in.in.h:118
+#: ../ekiga.schemas.in.in.h:115
 msgid "The chosen sound will be played at the end of calls or calling somebody who is busy, if enabled"
 msgstr "Izbran zvok se bo predvajal ob koncu klicev ali med klicanjem zasedenih uporabnikov, če je omogočeno"
 
-#: ../ekiga.schemas.in.in.h:119
+#: ../ekiga.schemas.in.in.h:116
 msgid "The chosen sound will be played on incoming calls, if enabled"
 msgstr "Izbran zvok se bo predvajal ob dohodnih klicih, če je omogočeno"
 
-#: ../ekiga.schemas.in.in.h:120
+#: ../ekiga.schemas.in.in.h:117
 msgid "The chosen sound will be played when a new instant message is received, if enabled"
 msgstr "Izbran zvok se bo predvajal ob prejemu novih neposrednih sporočil, če je omogočeno"
 
-#: ../ekiga.schemas.in.in.h:121
+#: ../ekiga.schemas.in.in.h:118
 msgid "The chosen sound will be played when a new voice mail is received, if enabled"
 msgstr "Izbran zvok se bo predvajal ob prejemu nove glasovne pošte, če je omogočeno"
 
-#: ../ekiga.schemas.in.in.h:122
+#: ../ekiga.schemas.in.in.h:119
 msgid "The chosen sound will be played when calling somebody, if enabled"
 msgstr "Izbran zvok se bo predvajal ob klicanju, če je omogočeno"
 
-#: ../ekiga.schemas.in.in.h:123
+#: ../ekiga.schemas.in.in.h:120
 msgid "The default video view"
 msgstr "Privzet pogled videa"
 
-#: ../ekiga.schemas.in.in.h:124
+#: ../ekiga.schemas.in.in.h:121
 msgid "The default video view (0: Local, 1: Remote, 2: Both layered, 3: Both with local video in a separate window, 4: Both)"
 msgstr "Privzet pogled videa (0: lokalno, 1: oddaljeno, 2: oba skupaj, 3: oba v ločenih oknih, 4: oba)"
 
-#: ../ekiga.schemas.in.in.h:125
+#: ../ekiga.schemas.in.in.h:122
 msgid "The dial tone sound"
 msgstr "Zvok tona klicanja"
 
-#: ../ekiga.schemas.in.in.h:126
+#: ../ekiga.schemas.in.in.h:123
 msgid "The history of the 100 last calls"
 msgstr "Zgodovina zadnjih 100 klicev"
 
-#: ../ekiga.schemas.in.in.h:127
-#: ../src/gui/preferences.cpp:724
-#: ../src/gui/preferences.cpp:778
+#: ../ekiga.schemas.in.in.h:124
+#: ../src/gui/preferences.cpp:689
+#: ../src/gui/preferences.cpp:743
 msgid "The host where calls should be forwarded if call forwarding is enabled"
 msgstr "Gostitelj, na katerega naj bodo posredovani klici, če je posredovanje omogočeno"
 
-#: ../ekiga.schemas.in.in.h:128
+#: ../ekiga.schemas.in.in.h:125
 msgid "The image to transmit if \"Picture\" is selected as video plugin or if the opening of the device fails. Leave blank to use the default Ekiga logo."
 msgstr "Slika za oddajanje, če je kot vstavek videa izbrana \"Slika\" ali če odpiranje naprave ne uspe. Pustite prazno, če želite uporabljati logotip Ekige."
 
-#: ../ekiga.schemas.in.in.h:129
+#: ../ekiga.schemas.in.in.h:126
 msgid "The incoming call sound"
 msgstr "Zvok dohodnih klicev"
 
-#: ../ekiga.schemas.in.in.h:130
+#: ../ekiga.schemas.in.in.h:127
 msgid "The list of accounts to which Ekiga should register"
 msgstr "Seznam računov, na katere naj se prijavi Ekiga"
 
-#: ../ekiga.schemas.in.in.h:131
+#: ../ekiga.schemas.in.in.h:128
+msgid "The long status information"
+msgstr "Daljši pregled podrobnosti"
+
+#: ../ekiga.schemas.in.in.h:129
 msgid "The maximum RX video bitrate in kbit/s. This value will be signaled to the peer endpoint that can adjust (if it supports it) its TX bitrate if it is above the signaled value"
 msgstr "Največja bitna hitrost RX v kbit/s. Vrednost bo odposlana prejemniku klica, ki lahko prilagodi (v primeru, da podpira možnost) svojo bitno hitrost TX,. če je nad odposlano vrednostjo."
 
-#: ../ekiga.schemas.in.in.h:132
+#: ../ekiga.schemas.in.in.h:130
 msgid "The maximum TX video bitrate in kbit/s. The video quality and the number of transmitted frames per second (depends on selected codec) will be dynamically adjusted above their minimum during calls to try to minimize the bandwidth to the given value"
 msgstr "Največja bitna hitrost TX v kbit/s. Kakovost videa in število oddanih okvirjev na sekundo (odvisno od izbire kodeka) bosta med klici dinamično prilagojena nad najnižjo vrednostjo z namenom zmanjševanja pasovne širine na dano vrednost"
 
-#: ../ekiga.schemas.in.in.h:133
+#: ../ekiga.schemas.in.in.h:131
 msgid "The maximum jitter buffer size for audio reception (in ms)"
 msgstr "Največja velikost predpomnilnika trepetanja za sprejemanje zvoka (v ms)"
 
-#: ../ekiga.schemas.in.in.h:134
+#: ../ekiga.schemas.in.in.h:132
 msgid "The maximum transmitted frame rate in frames/s. This rate may not be reached in case a minimum quality was configure via a TSTO value smaller than 31 and the bitrate selected is not sufficient to support this minimum quality"
 msgstr "Največja poslana hitrost v okvirjih na sekundo. Hitrosti morda ne bo mogoče doseči v primeru, da je določena najmanjša kakovost preko TSTO vrednosti manjše kot 31in je izbrana bitna hitrost prenizka za podporo kakovosti."
 
-#: ../ekiga.schemas.in.in.h:135
+#: ../ekiga.schemas.in.in.h:133
 msgid "The minimum jitter buffer size for audio reception (in ms)"
 msgstr "Najmanjša velikost predpomnilnika trepetanja za sprejemanje zvoka (v ms)"
 
-#: ../ekiga.schemas.in.in.h:136
+#: ../ekiga.schemas.in.in.h:134
 msgid "The network interface"
 msgstr "Omrežni vmesnik"
 
-#: ../ekiga.schemas.in.in.h:137
-#: ../src/gui/preferences.cpp:685
+#: ../ekiga.schemas.in.in.h:135
+#: ../src/gui/preferences.cpp:651
 msgid "The network interface to listen on"
 msgstr "Omrežni vmesnik za poslušanje"
 
-#: ../ekiga.schemas.in.in.h:138
+#: ../ekiga.schemas.in.in.h:136
 msgid "The new instant message sound"
 msgstr "Zvok novega neposrednega sporočila"
 
-#: ../ekiga.schemas.in.in.h:139
+#: ../ekiga.schemas.in.in.h:137
 msgid "The new voice mail sound"
 msgstr "Zvok nove zvočne pošte"
 
-#: ../ekiga.schemas.in.in.h:140
+#: ../ekiga.schemas.in.in.h:138
 msgid "The output device type is the type of device connected to your Quicknet card. It can be either a POTS (Plain Old Telephone System) or a headset."
 msgstr "Vrsta izhodne naprave in vrsta naprave, povezane na kartico Quicknet. Lahko je POTS (običajni telefon) ali slušalke z mikrofonom."
 
-#: ../ekiga.schemas.in.in.h:141
+#: ../ekiga.schemas.in.in.h:139
 msgid "The port to listen to for incoming connections. Ekiga needs to be restarted for the new value to take effect"
 msgstr "Vrata za poslušanje dohodnih povezav. Za uveljavitev novih vrednosti je potrebno ponovno zagnati Ekigo"
 
-#: ../ekiga.schemas.in.in.h:142
+#: ../ekiga.schemas.in.in.h:140
 msgid "The port to listen to for incoming connections. Ekiga needs to be restarted for the new value to take effect."
 msgstr "Vrata za poslušanje dohodnih povezav. Za uveljavitev novih vrednosti je potrebno ponovno zagnati Ekigo."
 
-#: ../ekiga.schemas.in.in.h:143
+#: ../ekiga.schemas.in.in.h:141
 msgid "The position of the local video window"
 msgstr "Položaj okna z lokalnim videom"
 
-#: ../ekiga.schemas.in.in.h:144
+#: ../ekiga.schemas.in.in.h:142
 msgid "The position of the remote video window"
 msgstr "Položaj okna z oddaljenim videom"
 
-#: ../ekiga.schemas.in.in.h:145
+#: ../ekiga.schemas.in.in.h:143
 msgid "The prefix that will be used to save pictures of the conversation. That prefix is followed by the snapshot number."
 msgstr "Predpona, ki bo uporabljena za shranjevanje slik pogovora. Predponi bo sledila številka posnetka."
 
-#: ../ekiga.schemas.in.in.h:146
+#: ../ekiga.schemas.in.in.h:144
 msgid "The range of TCP ports that Ekiga will use for the H.323 H.245 channel. Ekiga needs to be restarted for the new values to take effect. This port range has no effect if both participants to the conference are using H.245 Tunneling."
 msgstr "Obseg vrat TCP, ki ga bo Ekiga uporabljala za kanal H.323 H.245. Za uveljavitev novih vrednosti je potrebno ponovno zagnati Ekigo. Ta obseg vrat nima učinka, če oba sodelujoča v konferenci uporabljata tuneliranje H.245."
 
-#: ../ekiga.schemas.in.in.h:147
+#: ../ekiga.schemas.in.in.h:145
 msgid "The range of UDP ports that Ekiga will use for RTP (audio and video communication channels). Ekiga needs to be restarted for the new values to take effect."
 msgstr "Obseg vrat UDP, ki ga bo Ekiga uporabljala za RTP (komunikacijski kanali zvoka in videa). Za uveljavitev novih vrednosti je potrebno ponovno zagnati Ekigo."
 
-#: ../ekiga.schemas.in.in.h:148
+#: ../ekiga.schemas.in.in.h:146
 msgid "The range of UDP ports that Ekiga will use for SIP signaling and when registering to gatekeepers. Ekiga needs to be restarted for the new values to take effect."
 msgstr "Obseg vrat UDP, ki ga bo Ekiga uporabljala za signalizacijo SIP in prijavo vratarjev. Za uveljavitev novih vrednosti je potrebno ponovno zagnati Ekigo."
 
-#: ../ekiga.schemas.in.in.h:149
+#: ../ekiga.schemas.in.in.h:147
 msgid "The save prefix"
 msgstr "Shrani predpono"
 
-#: ../ekiga.schemas.in.in.h:150
+#: ../ekiga.schemas.in.in.h:148
+msgid "The short status information"
+msgstr "Krajši pogled podrobnosti"
+
+#: ../ekiga.schemas.in.in.h:149
 msgid "The size of the local video window"
 msgstr "Velikost okna z lokalnim videom"
 
-#: ../ekiga.schemas.in.in.h:151
+#: ../ekiga.schemas.in.in.h:150
 msgid "The size of the remote video window"
 msgstr "Velikost okna z oddaljenim videom"
 
-#: ../ekiga.schemas.in.in.h:152
+#: ../ekiga.schemas.in.in.h:151
 msgid "The sound that will be played at the end of calls or when calling somebody who is busy, if enabled"
 msgstr "Zvok, ki se bo predvajal ob koncu klicev ali ob klicih zasedenih oseb, če je omogočeno"
 
-#: ../ekiga.schemas.in.in.h:153
+#: ../ekiga.schemas.in.in.h:152
 msgid "The sound that will be played on incoming calls, if enabled"
 msgstr "Zvok, ki se bo predvajal ob dohodnih klicih, če je omogočeno"
 
-#: ../ekiga.schemas.in.in.h:154
+#: ../ekiga.schemas.in.in.h:153
 msgid "The sound that will be played when calling somebody, if enabled"
 msgstr "Zvok, ki se bo predvajal ob klicanju, če je omogočeno"
 
-#: ../ekiga.schemas.in.in.h:155
+#: ../ekiga.schemas.in.in.h:154
 msgid "The sound that will be played when there is a new instant message, if enabled"
 msgstr "Zvok, ki se bo predvajal ob novih neposrednih sporočilih, če je omogočeno"
 
-#: ../ekiga.schemas.in.in.h:156
+#: ../ekiga.schemas.in.in.h:155
 msgid "The sound that will be played when there is a new voice mail, if enabled"
 msgstr "Zvok, ki se bo predvajal ob novi glasovni pošti, če je omogočeno"
 
-#: ../ekiga.schemas.in.in.h:157
+#: ../ekiga.schemas.in.in.h:156
 msgid "The time after which Ekiga will renew its registration with the registrar"
 msgstr "Čas, po katerem bo Ekiga obnovila prijavo pri registrarju"
 
-#: ../ekiga.schemas.in.in.h:158
+#: ../ekiga.schemas.in.in.h:157
 msgid "The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)"
 msgstr "Dvomestna koda vaše države (npr. SI, UK, FR, DE, ...)"
 
-#: ../ekiga.schemas.in.in.h:159
-#: ../src/gui/preferences.cpp:906
+#: ../ekiga.schemas.in.in.h:158
+#: ../src/gui/preferences.cpp:871
 msgid "The video channel number to use (to select camera, tv or other sources)"
 msgstr "Številka kanala videa (za izbiro kamere, TV ali drugih virov)"
 
+#: ../ekiga.schemas.in.in.h:159
+msgid "The video codecs list"
+msgstr "Seznam slikovnih kodekov"
+
 #: ../ekiga.schemas.in.in.h:160
-#: ../src/gui/preferences.cpp:890
+#: ../src/gui/preferences.cpp:855
 msgid "The video plugin that will be used to detect the devices and manage them"
 msgstr "Vstavek videa, ki bo uporabljen za zaznavo in upravljanje naprav"
 
@@ -717,12 +715,12 @@ msgid "This allows you to set the mode for sending DTMFs. The values can be \"St
 msgstr "Omogoča nastavitev načina za pošiljanje DTMF-jev. Vrednosti so lahko samo \"Niz\" (0), \"Ton\" (1), \"RFC2833\" (2), \"Q.931\" (3) (privzeto je \"Niz\"). Če izberete drugo vrednost kot \"Niz\", onemogočite besedilni klepet"
 
 #: ../ekiga.schemas.in.in.h:167
-#: ../src/gui/preferences.cpp:736
+#: ../src/gui/preferences.cpp:701
 msgid "This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages are encapsulated into the the H.225 channel (port 1720). This saves one TCP connection during calls. H.245 Tunneling was introduced in H.323v2 and Netmeeting does not support it. Using both Fast Start and H.245 Tunneling can crash some versions of Netmeeting."
 msgstr "To omogoči način tuneliranja H.245, kjer so sporočila ovita v kanal H.225 (vrata 1720), med klici pa se prihrani ena povezava TCP. Tuneliranje H.245 je bilo predstavljeno v H.323v2, Netmeeting pa ga ne podpira. Uporaba skupaj s Hitrim zagonom lahko povzroči sesutje nekaterih različic Netmeetinga."
 
 #: ../ekiga.schemas.in.in.h:168
-#: ../src/gui/preferences.cpp:738
+#: ../src/gui/preferences.cpp:703
 msgid "This enables H.245 early in the setup"
 msgstr "To omogoči H.245 zgodaj med namestitvijo"
 
@@ -782,60 +780,60 @@ msgstr "Velikost videa"
 msgid "Whether to prefer to sustain the max. frame rate or lower it possibly in order to keep a minimum level of (spatial) quality for all frames. 0: Highest minimal quality, 31: lowest minimal quality"
 msgstr "Ali naj prednostno ohranja največjo hitrost ali naj jo zmanjša za ohranjevanje najmanjše ravno prostorske kakovosti za vse okvirje. 0: Največja minimalna kakovost, 31: najnižja minimalna kakovost."
 
-#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:184
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:289
-#: ../lib/engine/presence/local-roster/local-presentity.cpp:193
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:231
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:292
+#: ../lib/engine/presence/local-roster/local-presentity.cpp:190
 msgid "_Remove"
 msgstr "_Odstrani"
 
-#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:186
-#: ../lib/engine/presence/local-roster/local-presentity.cpp:191
-#: ../src/gui/main.cpp:1174
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:233
+#: ../lib/engine/presence/local-roster/local-presentity.cpp:188
+#: ../src/gui/main.cpp:1428
 msgid "_Edit"
 msgstr "_Urejanje"
 
-#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:214
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:321
 msgid "Edit contact"
 msgstr "Uredi stik"
 
-#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:216
-#: ../lib/engine/addressbook/evolution/evolution-book.cpp:298
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:323
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:303
 msgid "Please update the following fields:"
 msgstr "Prosim, posodobite naslednja polja:"
 
-#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:218
-#: ../lib/engine/presence/local-roster/local-presentity.cpp:217
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:325
+#: ../lib/engine/presence/local-roster/local-presentity.cpp:214
 #: ../lib/engine/presence/local-roster/local-heap.cpp:157
 msgid "Name:"
 msgstr "Ime:"
 
-#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:244
-#: ../lib/engine/addressbook/evolution/evolution-book.cpp:302
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:334
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:306
 msgid "VoIP _URI:"
 msgstr "URL za VoIP:"
 
-#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:245
-#: ../lib/engine/addressbook/evolution/evolution-book.cpp:303
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:335
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:307
 msgid "_Home phone:"
 msgstr "_Domači telefon:"
 
-#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:246
-#: ../lib/engine/addressbook/evolution/evolution-book.cpp:304
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:336
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:308
 msgid "_Office phone:"
 msgstr "_Službeni telefon:"
 
-#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:247
-#: ../lib/engine/addressbook/evolution/evolution-book.cpp:305
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:337
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:309
 msgid "_Cell phone:"
 msgstr "_Mobilni telefon:"
 
-#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:248
-#: ../lib/engine/addressbook/evolution/evolution-book.cpp:306
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:338
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:310
 msgid "_Pager:"
 msgstr "_Pozivnik:"
 
 #: ../lib/engine/addressbook/evolution/evolution-book.cpp:88
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:488
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:496
 msgid "user found"
 msgid_plural "users found"
 msgstr[0] "najdenih uporabnikov"
@@ -844,7 +842,7 @@ msgstr[2] "najdena uporabnika"
 msgstr[3] "najdeni uporabniki"
 
 #: ../lib/engine/addressbook/evolution/evolution-book.cpp:255
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:286
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:289
 msgid "_Refresh"
 msgstr "_Osveži"
 
@@ -852,12 +850,12 @@ msgstr "_Osveži"
 msgid "New _Contact"
 msgstr "Nov _stik"
 
-#: ../lib/engine/addressbook/evolution/evolution-book.cpp:296
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:301
 #: ../lib/engine/presence/local-roster/local-heap.cpp:108
 msgid "New contact"
 msgstr "Nov stik"
 
-#: ../lib/engine/addressbook/evolution/evolution-book.cpp:300
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:305
 #: ../lib/engine/addressbook/ldap/ldap-source.cpp:145
 msgid "_Name:"
 msgstr "_Ime:"
@@ -871,7 +869,7 @@ msgid "Create LDAP directory"
 msgstr "Ustvari LDAP imenik"
 
 #: ../lib/engine/addressbook/ldap/ldap-source.cpp:143
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:504
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:512
 msgid "Please edit the following fields"
 msgstr "Prosim uredite naslednja polja"
 
@@ -888,17 +886,17 @@ msgid "_Base DN:"
 msgstr "_Osnovni DN:"
 
 #: ../lib/engine/addressbook/ldap/ldap-source.cpp:152
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:520
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:528
 msgid "_Subtree"
 msgstr "_Poddrevo"
 
 #: ../lib/engine/addressbook/ldap/ldap-source.cpp:153
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:521
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:529
 msgid "Single _Level"
 msgstr "_Ena raven"
 
 #: ../lib/engine/addressbook/ldap/ldap-source.cpp:154
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:522
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:530
 msgid "_Scope"
 msgstr "_Obseg"
 
@@ -906,54 +904,54 @@ msgstr "_Obseg"
 msgid "Call _Attribute:"
 msgstr "Klicni _atribut:"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:291
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:294
 msgid "_Properties"
 msgstr "_Lastnosti"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:349
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:358
 msgid "Refreshing"
 msgstr "Osveževanje"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:355
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:370
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:364
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:379
 msgid "Could not contact server"
 msgstr "Ni mogoče priti v stik s strežnikom"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:378
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:387
 msgid "Contacted server"
 msgstr "Povezan strežnik"
 
 #. patience == 0
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:412
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:459
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:421
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:467
 msgid "Could not search"
 msgstr "Ni mogoče iskati"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:420
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:429
 msgid "Waiting for search results"
 msgstr "Čakanje na rezultate iskanja"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:502
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:510
 msgid "Edit LDAP directory"
 msgstr "Uredi LDAP imenik"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:506
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:514
 msgid "_Name"
 msgstr "_Ime"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:507
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:515
 msgid "_Hostname"
 msgstr "_Ime gostitelja"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:513
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:521
 msgid "_Port"
 msgstr "_Vrata"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:515
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:523
 msgid "_Base DN"
 msgstr "_Osnovni DN"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:525
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:533
 msgid "Call _Attribute"
 msgstr "Klicni _atribut"
 
@@ -961,20 +959,20 @@ msgstr "Klicni _atribut"
 msgid "_Find"
 msgstr "_Poišči"
 
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:642
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:644
 msgid "Address Book"
 msgstr "Imenik"
 
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:655
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:657
 msgid "Address _Book"
 msgstr "Imenik"
 
 #. This will add static and dynamic actions
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:664
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:666
 msgid "_Action"
 msgstr "_Dejanje"
 
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:709
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:711
 msgid "Address Books"
 msgstr "Imeniki"
 
@@ -990,37 +988,37 @@ msgstr "URL za VoIP"
 msgid "_Search Filter:"
 msgstr "_Filter iskanja"
 
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:577
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:609
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:581
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:613
 msgid "Unsorted"
 msgstr "Nerazvrščeno"
 
-#: ../lib/engine/gui/gtk-frontend/chat-window-page.cpp:744
+#: ../lib/engine/gui/gtk-frontend/chat-window-page.cpp:752
 msgid "_Send"
 msgstr "_Pošlji"
 
-#: ../lib/engine/gui/gtk-frontend/chat-window-page.cpp:935
+#: ../lib/engine/gui/gtk-frontend/chat-window-page.cpp:963
 msgid "You say:\n"
 msgstr "Vaše besede:\n"
 
-#: ../lib/engine/gui/gtk-frontend/chat-window-page.cpp:940
+#: ../lib/engine/gui/gtk-frontend/chat-window-page.cpp:968
 msgid "says:"
 msgstr "pravi:"
 
 #. The window
-#: ../lib/engine/gui/gtk-frontend/chat-window.cpp:528
+#: ../lib/engine/gui/gtk-frontend/chat-window.cpp:561
 msgid "Chat Window"
 msgstr "Klepetalno okno"
 
-#: ../lib/engine/presence/local-roster/local-presentity.cpp:214
+#: ../lib/engine/presence/local-roster/local-presentity.cpp:211
 msgid "Edit roster element"
 msgstr "Uredi element seznama stikov"
 
-#: ../lib/engine/presence/local-roster/local-presentity.cpp:215
+#: ../lib/engine/presence/local-roster/local-presentity.cpp:212
 msgid "Please fill in this form to change an existing element of ekiga's internal roster"
 msgstr "Prosim, izpolnite obrazec za spremembo obstoječega vnosa v seznam stikov"
 
-#: ../lib/engine/presence/local-roster/local-presentity.cpp:219
+#: ../lib/engine/presence/local-roster/local-presentity.cpp:216
 msgid "Choose groups:"
 msgstr "Izberi skupine:"
 
@@ -1053,78 +1051,17 @@ msgstr "Vnesli ste naslov, ki ga program ne podpira"
 msgid "You already have a contact with this address!"
 msgstr "Stik s tem naslovom že imate."
 
-#: ../lib/engine/protocol/sip/sip-endpoint.cpp:188
-msgid "Offline"
-msgstr "Nepovezan"
+#: ../lib/gui/codecsbox.cpp:479
+msgid "Move selected codec priority upwards"
+msgstr "Premakni prednost kodeka navzgor"
 
-#: ../lib/engine/protocol/sip/sip-endpoint.cpp:192
-#: ../src/gui/main.cpp:809
-msgid "Online"
-msgstr "Povezano"
-
-#: ../lib/engine/protocol/sip/sip-endpoint.cpp:197
-#: ../src/gui/main.cpp:810
-msgid "Away"
-msgstr "Odsoten"
-
-#: ../lib/engine/protocol/sip/sip-endpoint.cpp:203
-#: ../src/gui/main.cpp:811
-msgid "Do Not Disturb"
-msgstr "Ne moti"
-
-#: ../lib/engine/protocol/sip/sip-endpoint.cpp:207
-#: ../src/gui/main.cpp:812
-msgid "Free For Chat"
-msgstr "Prost za pogovor"
-
-#: ../lib/engine/protocol/sip/sip-basic.cpp:110
-msgid "_Call"
-msgstr "_Klic"
-
-#: ../lib/engine/protocol/sip/sip-basic.cpp:112
-msgid "Send _Message"
-msgstr "Pošlji _sporočilo"
+#: ../lib/gui/codecsbox.cpp:490
+msgid "Move selected codec priority downwards"
+msgstr "Premakni prednost kodeka navzdol"
 
 #: ../lib/gui/gmdialog.c:474
 msgid "Do not show this dialog again"
 msgstr "Tega okna ne prikaži več"
-
-#: ../lib/gui/gmgroupseditor.c:800
-msgid "Group"
-msgstr "Skupina"
-
-#: ../lib/gui/gmgroupseditor.c:1175
-msgid "Rename"
-msgstr "Preimenuj"
-
-#: ../lib/gui/gmgroupseditor.c:1184
-msgid "Delete"
-msgstr "Izbriši"
-
-#: ../lib/gui/gmgroupseditor.c:1248
-#, c-format
-msgid "Delete group %s?"
-msgstr "Izbrišem skupino %s?"
-
-#: ../lib/gui/gmgroupseditor.c:1271
-msgid "Group deleted."
-msgstr "Skupina je izbrisana."
-
-#: ../lib/gui/gmgroupseditor.c:1276
-msgid "Could not delete group!"
-msgstr "Skupine ni mogoče izbrisati!"
-
-#: ../lib/gui/gmgroupseditor.c:1321
-msgid "Rename group"
-msgstr "Preimenuj skupino"
-
-#: ../lib/gui/gmgroupseditor.c:1377
-msgid "Group renamed."
-msgstr "Skupina je preimenovana."
-
-#: ../lib/gui/gmgroupseditor.c:1382
-msgid "Could not rename group!"
-msgstr "Ni mogoče preimenovati skupine"
 
 #: ../src/clients/stun.cpp:87
 msgid "Unknown NAT"
@@ -1166,7 +1103,7 @@ msgstr "Delno zaprt"
 msgid "No NAT"
 msgstr "Brez NAT"
 
-#: ../src/clients/stun.cpp:151
+#: ../src/clients/stun.cpp:154
 #, c-format
 msgid ""
 "STUN test result: %s.\n"
@@ -1177,7 +1114,7 @@ msgstr ""
 "\n"
 "Ekiga ni uspela zaznati vrste NAT, ki ga uporabljate. Če vaš usmerjevalnik ne podpira SIP ali H.323, je verjetno najprimernejša metoda posredovanje zahtevanih vrat na vaš računalnik in uporaba prevajanja IP, če ste za usmerjevalnikom NAT. Prepričajte se, da ne uporabljate lokalnega požarnega zidu."
 
-#: ../src/clients/stun.cpp:157
+#: ../src/clients/stun.cpp:160
 #, c-format
 msgid ""
 "STUN test result: %s.\n"
@@ -1188,11 +1125,11 @@ msgstr ""
 "\n"
 "Vaš sistem ne potrebuje posebnih nastavitev, če nimate lokalnega požarnega zidu, ki bi onemogočal vrata, ki jih zahteva Ekiga."
 
-#: ../src/clients/stun.cpp:162
+#: ../src/clients/stun.cpp:165
 msgid "Ekiga detected Symmetric NAT. The most appropriate method, if your router does not natively support SIP or H.323, is to forward the required ports to your internal machine in order to change your Symmetric NAT into Cone NAT. If you run this test again after the port forwarding has been done, it should report Cone NAT. This should allow Ekiga to be used with STUN support enabled. If it does not report Cone NAT, then it means that there is a problem in your forwarding rules."
 msgstr "Ekiga je zaznala simetrični NAT. Če vaš usmerjevalnik ne podpira SIP ali H.323, je verjetno najprimernejša metoda posredovanje zahtevanih vrat na vaš računalnik, tako da simetrični NAT postane storžasti. Ko boste po nastavitvi posredovanja vrat ponovno zagnali preizkus, bi moral prikazati storžasti NAT. Tako boste Ekigo lahko uporabljali z omogočeno podporo STUN. Če preizkus ne prikaže storžastega NAT, potem je prisotna napaka v vaših pravilih posredovanja."
 
-#: ../src/clients/stun.cpp:166
+#: ../src/clients/stun.cpp:169
 #, c-format
 msgid ""
 "STUN test result: %s.\n"
@@ -1203,7 +1140,7 @@ msgstr ""
 "\n"
 "Nimate usmerjevalnika NAT. Podpora STUN ni potrebna."
 
-#: ../src/clients/stun.cpp:171
+#: ../src/clients/stun.cpp:174
 #, c-format
 msgid ""
 "STUN test result: %s.\n"
@@ -1218,132 +1155,111 @@ msgstr ""
 "\n"
 "Želite omogočiti podporo STUN?"
 
-#: ../src/clients/stun.cpp:179
-#: ../src/clients/stun.cpp:192
+#: ../src/clients/stun.cpp:182
+#: ../src/clients/stun.cpp:195
 msgid "NAT Detection Finished"
 msgstr "Zaznavanje NAT končano"
 
-#: ../src/clients/stun.cpp:203
+#: ../src/clients/stun.cpp:206
 msgid "The detection of your NAT type is finished"
 msgstr "Zaznavanje vaše vrste NAT je končano"
 
-#: ../src/clients/stun.cpp:307
+#: ../src/clients/stun.cpp:310
 msgid "Detection in progress"
 msgstr "Zaznavanje poteka"
 
-#: ../src/clients/stun.cpp:308
+#: ../src/clients/stun.cpp:311
 msgid "Please wait while your type of NAT is being detected."
 msgstr "Počakajte na dokončanje zaznavanja vaše vrste NAT."
 
-#: ../src/components/bonobo.cpp:117
-msgid "Cannot run Ekiga"
-msgstr "Ni mogoče zagnati Ekige"
-
-#: ../src/components/bonobo.cpp:117
-msgid "Ekiga is already running, if you want it to call a given SIP, H.323, or callto address, please use \"ekiga -c address\"."
-msgstr "Ekiga že odprta. Če želite da pokliče podan naslov SIP, H.323 ali callto, uporabite \"ekiga -c address\"."
-
-#: ../src/components/bonobo.cpp:170
-msgid "It appears that you do not have ekiga.server installed in a valid location. Factory mode disabled.\n"
-msgstr "Ekiga.server ni nameščen na veljavni lokaciji. Tovarniški način onemogočen.\n"
-
-#: ../src/components/bonobo.cpp:174
-msgid "Error registering Ekiga with the activation service; factory mode disabled.\n"
-msgstr "Napaka pri prijavi Ekige z aktivacijsko storitvijo. Tovarniški način onemogočen.\n"
-
-#: ../src/components/bonobo.cpp:215
-msgid "Failed to retrieve Ekiga server from activation server\n"
-msgstr "Pridobivanje strežnika Ekiga iz aktivacijskega strežnika ni uspelo\n"
-
-#: ../src/devices/audio.cpp:285
+#: ../src/devices/audio.cpp:281
 msgid "Opening device for playing"
 msgstr "Odpiranje naprave za predvajanje"
 
-#: ../src/devices/audio.cpp:287
+#: ../src/devices/audio.cpp:283
 msgid "Opening device for recording"
 msgstr "Odpiranje naprave za snemanje"
 
-#: ../src/devices/audio.cpp:298
-#: ../src/devices/audio.cpp:300
-#: ../src/devices/videoinput.cpp:681
+#: ../src/devices/audio.cpp:294
+#: ../src/devices/audio.cpp:296
+#: ../src/devices/videoinput.cpp:680
 msgid "Failed to open the device"
 msgstr "Odpiranje naprave ni uspelo"
 
-#: ../src/devices/audio.cpp:298
+#: ../src/devices/audio.cpp:294
 #, c-format
 msgid "Impossible to open the selected audio device (%s) for recording. Please check your audio setup, the permissions and that the device is not busy."
 msgstr "Ni mogoče odpreti izbrane zvočne naprave (%s) za snemanje. Preverite vaše zvočne nastavitve, dovoljenja in ali je naprava zasedena."
 
-#: ../src/devices/audio.cpp:300
+#: ../src/devices/audio.cpp:296
 #, c-format
 msgid "Impossible to open the selected audio device (%s) for playing. Please check your audio setup, the permissions and that the device is not busy."
 msgstr "Ni mogoče odpreti izbrane zvočne naprave (%s) za predvajanje. Preverite vaše zvočne nastavitve, dovoljenja in ali je naprava zasedena."
 
-#: ../src/devices/audio.cpp:316
-#: ../src/devices/audio.cpp:385
+#: ../src/devices/audio.cpp:312
+#: ../src/devices/audio.cpp:381
 msgid "Cannot use the audio device"
 msgstr "Ni mogoče uporabiti zvočne naprave"
 
-#: ../src/devices/audio.cpp:316
+#: ../src/devices/audio.cpp:312
 #, c-format
 msgid "The selected audio device (%s) was successfully opened but it is impossible to read data from this device. Please check your audio setup."
 msgstr "Izbrana zvočna naprava (%s) je bila uspešno odprta, vendar iz nje ni mogoče brati podatkov. Preverite vaše zvočne nastavitve."
 
-#: ../src/devices/audio.cpp:325
+#: ../src/devices/audio.cpp:321
 msgid "Recording your voice"
 msgstr "Snemanje vašega glasu"
 
-#: ../src/devices/audio.cpp:364
+#: ../src/devices/audio.cpp:360
 msgid "Recording and playing back"
 msgstr "Snemanje in predvajanje"
 
-#: ../src/devices/audio.cpp:385
+#: ../src/devices/audio.cpp:381
 #, c-format
 msgid "The selected audio device (%s) was successfully opened but it is impossible to write data to this device. Please check your audio setup."
 msgstr "Izbrana zvočna naprava (%s) je bila uspešno odprta, vendar nanjo ni mogoče pisati podatkov. Preverite vaše zvočne nastavitve."
 
-#: ../src/devices/audio.cpp:481
-#: ../src/devices/audio.cpp:482
-#: ../src/devices/videoinput.cpp:306
-#: ../src/devices/videoinput.cpp:555
-#: ../src/endpoints/ekiga.cpp:337
-#: ../src/endpoints/ekiga.cpp:339
-#: ../src/endpoints/ekiga.cpp:341
-#: ../src/endpoints/pcss.cpp:175
-#: ../src/gui/druid.cpp:1873
-#: ../src/gui/druid.cpp:1885
-#: ../src/gui/druid.cpp:1944
+#: ../src/devices/audio.cpp:476
+#: ../src/devices/audio.cpp:477
+#: ../src/devices/videoinput.cpp:305
+#: ../src/devices/videoinput.cpp:554
+#: ../src/endpoints/ekiga.cpp:272
+#: ../src/endpoints/ekiga.cpp:274
+#: ../src/endpoints/ekiga.cpp:276
+#: ../src/endpoints/pcss.cpp:168
+#: ../src/gui/assistant.cpp:724
+#: ../src/gui/assistant.cpp:732
 msgid "No device found"
 msgstr "Naprava ni bila najdena"
 
-#: ../src/devices/audio.cpp:500
+#: ../src/devices/audio.cpp:495
 #, c-format
 msgid "Ekiga is now recording from %s and playing back to %s. Please say \"1, 2, 3, Ekiga rocks!\" in your microphone. You should hear yourself from the speakers after a four-second delay."
 msgstr "Ekiga zdaj snema iz naprave %s in predvaja na napravo %s. V mikrofon recite \"1, 2, 3, Ekiga je zakon!\". Po štiri sekundnem premoru bi morali slišati sami sebe."
 
-#: ../src/devices/videoinput.cpp:338
+#: ../src/devices/videoinput.cpp:337
 #, c-format
 msgid "Error while opening video device %s"
 msgstr "Napaka pri odpiranju video-naprave %s"
 
-#: ../src/devices/videoinput.cpp:341
+#: ../src/devices/videoinput.cpp:340
 msgid "A moving logo will be transmitted during calls. Notice that you can always transmit a given image or the moving logo by choosing \"Picture\" as video plugin and \"Moving logo\" or \"Static picture\" as device."
 msgstr "Med klici se bo oddajal premikajoč logotip. Vedite, da lahko vedno oddajate izbrano sliko ali premikajoč logotip, tako da kot vstavek videa izberete \"Slika\" in kot napravo \"Premikajoči se Logo\" ali \"Običajna slika\"."
 
-#: ../src/devices/videoinput.cpp:345
+#: ../src/devices/videoinput.cpp:344
 msgid "There was an error while opening the device. Please check your permissions and make sure that the appropriate driver is loaded."
 msgstr "Prišlo je do napake pri odpiranju naprave. Preverite dovoljenja in se prepričajte, da je naložen ustrezen gonilnik."
 
-#: ../src/devices/videoinput.cpp:349
-#: ../src/devices/videoinput.cpp:656
+#: ../src/devices/videoinput.cpp:348
+#: ../src/devices/videoinput.cpp:655
 msgid "Your video driver doesn't support the requested video format."
 msgstr "Vaš gonilnik videa ne podpira zahtevanega zapisa videa."
 
-#: ../src/devices/videoinput.cpp:353
+#: ../src/devices/videoinput.cpp:352
 msgid "Could not open the chosen channel."
 msgstr "Ni mogoče odpreti izbranega kanala."
 
-#: ../src/devices/videoinput.cpp:357
+#: ../src/devices/videoinput.cpp:356
 msgid ""
 "Your driver doesn't seem to support any of the color formats supported by Ekiga.\n"
 " Please check your kernel driver documentation in order to determine which Palette is supported."
@@ -1351,51 +1267,51 @@ msgstr ""
 "Vaš gonilnik ne podpira nobenega barvnega zapisa, ki ga podpira Ekiga.\n"
 " Če želite ugotoviti, katera paleta je podprta, preglejte dokumentacijo gonilnika vašega jedra."
 
-#: ../src/devices/videoinput.cpp:361
+#: ../src/devices/videoinput.cpp:360
 msgid "Error while setting the frame rate."
 msgstr "Napaka pri nastavljanju hitrosti sličic."
 
-#: ../src/devices/videoinput.cpp:365
+#: ../src/devices/videoinput.cpp:364
 msgid "Error while setting the frame size."
 msgstr "Napaka pri nastavljanju velikosti sličic."
 
-#: ../src/devices/videoinput.cpp:556
+#: ../src/devices/videoinput.cpp:555
 msgid "Picture"
 msgstr "Slika"
 
-#: ../src/devices/videoinput.cpp:568
+#: ../src/devices/videoinput.cpp:567
 #, c-format
 msgid "Ekiga is now testing the %s video device. If you experience machine crashes, then report a bug to the video driver author."
 msgstr "Ekiga zdaj preizkuša napravo videa %s. Če pride do sesutja, pošljite poročilo o hrošču avtorju gonilnika videa."
 
-#: ../src/devices/videoinput.cpp:630
+#: ../src/devices/videoinput.cpp:629
 #, c-format
 msgid "Test %d done"
 msgstr "Preizkus %d končan"
 
-#: ../src/devices/videoinput.cpp:632
+#: ../src/devices/videoinput.cpp:631
 #, c-format
 msgid "Test %d failed"
 msgstr "Preizkus %d ni uspel"
 
-#: ../src/devices/videoinput.cpp:651
+#: ../src/devices/videoinput.cpp:650
 #, c-format
 msgid "Error while opening %s."
 msgstr "Napaka pri odpiranju %s."
 
-#: ../src/devices/videoinput.cpp:660
+#: ../src/devices/videoinput.cpp:659
 msgid "Could not open the chosen channel with the chosen video format."
 msgstr "Z izbranim zapisom posnetka ni mogoče odpreti izbranega kanala."
 
-#: ../src/devices/videoinput.cpp:664
+#: ../src/devices/videoinput.cpp:663
 msgid "Your driver doesn't support any of the color formats tried by Ekiga"
 msgstr "Vaš gonilnik ne podpira nobenega barvnega zapisa, ki ga je preizkusila Ekiga"
 
-#: ../src/devices/videoinput.cpp:668
+#: ../src/devices/videoinput.cpp:667
 msgid "Error with the frame rate."
 msgstr "Napaka hitrosti sličic."
 
-#: ../src/devices/videoinput.cpp:672
+#: ../src/devices/videoinput.cpp:671
 msgid "Error with the frame size."
 msgstr "Napaka velikosti sličic."
 
@@ -1407,120 +1323,125 @@ msgstr "Premikajoči se logotip"
 msgid "Static picture"
 msgstr "Stoječa slika"
 
-#: ../src/endpoints/callinfo.cpp:108
-msgid "Local user cleared the call"
-msgstr "Lokalni uporabnik je počistil klic"
-
-#: ../src/endpoints/callinfo.cpp:111
-#: ../src/endpoints/callinfo.cpp:114
-msgid "Local user rejected the call"
-msgstr "Lokalni uporabnik je zavrnil klic"
-
-#: ../src/endpoints/callinfo.cpp:117
-msgid "Remote user cleared the call"
-msgstr "Oddaljeni uporabnik je počistil klic"
-
-#: ../src/endpoints/callinfo.cpp:120
-msgid "Remote user rejected the call"
-msgstr "Oddaljeni uporabnik je zavrnil klic"
-
-#: ../src/endpoints/callinfo.cpp:123
-msgid "Remote user has stopped calling"
-msgstr "Oddaljeni uporabnik je prenehal klicati"
-
-#: ../src/endpoints/callinfo.cpp:126
-msgid "Abnormal call termination"
-msgstr "Nenavaden zaključek klica"
-
-#: ../src/endpoints/callinfo.cpp:129
-msgid "Could not connect to remote host"
-msgstr "Ni se mogoče povezati z oddaljenim gostiteljem"
-
-#: ../src/endpoints/callinfo.cpp:132
-msgid "The Gatekeeper cleared the call"
-msgstr "Vratar je počistil klic"
-
-#: ../src/endpoints/callinfo.cpp:135
-msgid "User not found"
-msgstr "Uporabnik ni bil najden"
-
-#: ../src/endpoints/callinfo.cpp:138
-msgid "Insufficient bandwidth"
-msgstr "Nezadostna pasovna širina"
-
-#: ../src/endpoints/callinfo.cpp:141
-msgid "No common codec"
-msgstr "Ni navadnega kodekov"
-
-#: ../src/endpoints/callinfo.cpp:144
-msgid "Call forwarded"
-msgstr "Klic posredovan"
-
-#: ../src/endpoints/callinfo.cpp:147
-msgid "Security check failed"
-msgstr "Varnostno preverjanje ni uspelo"
-
-#: ../src/endpoints/callinfo.cpp:150
-msgid "Local user is busy"
-msgstr "Lokalni uporabnik je zaseden"
-
-#: ../src/endpoints/callinfo.cpp:153
-#: ../src/endpoints/callinfo.cpp:159
-msgid "Congested link to remote party"
-msgstr "Prezasedena povezava do oddaljene stranke"
-
-#: ../src/endpoints/callinfo.cpp:156
-msgid "Remote user is busy"
-msgstr "Oddaljen uporabnik je zaseden"
-
-#: ../src/endpoints/callinfo.cpp:162
-msgid "Remote host is offline"
-msgstr "Oddaljen gostitelj ni na zvezi"
-
-#: ../src/endpoints/callinfo.cpp:169
-msgid "Remote user is not available at this time"
-msgstr "Oddaljen uporabnik v tem trenutku ni dosegljiv"
-
-#: ../src/endpoints/callinfo.cpp:171
-msgid "Local user is not available at this time"
-msgstr "Uporabnik v tem trenutku ni dostopen."
-
-#: ../src/endpoints/callinfo.cpp:175
-msgid "Call completed"
-msgstr "Klic končan"
-
-#: ../src/endpoints/ekiga.cpp:100
-msgid "Answering call..."
-msgstr "Odgovarjanje na klic ..."
-
-#: ../src/endpoints/h323.cpp:303
+#: ../src/endpoints/h323.cpp:327
 msgid "Duplicate alias"
 msgstr "Podvojevanje vzdevka"
 
-#: ../src/endpoints/h323.cpp:306
+#: ../src/endpoints/h323.cpp:330
 msgid "Bad username/password"
 msgstr "Napačno geslo ali uporabniško ime"
 
-#: ../src/endpoints/h323.cpp:309
+#: ../src/endpoints/h323.cpp:333
 msgid "Transport error"
 msgstr "Napaka prenosa"
 
-#: ../src/endpoints/h323.cpp:320
-#: ../src/endpoints/h323.cpp:325
-#: ../src/endpoints/sip.cpp:426
-#: ../src/endpoints/sip.cpp:552
+#: ../src/endpoints/h323.cpp:344
+#: ../src/endpoints/h323.cpp:349
+#: ../src/endpoints/sip.cpp:423
+#: ../src/endpoints/sip.cpp:581
 msgid "Failed"
 msgstr "Spodletelo"
 
-#: ../src/endpoints/manager.cpp:997
+#: ../src/endpoints/manager.cpp:362
+#: ../src/gui/main.cpp:2062
+msgid "Call"
+msgstr "Kliči"
+
+#: ../src/endpoints/manager.cpp:377
+msgid "Message"
+msgstr "Sporočilo"
+
+#: ../src/endpoints/manager.cpp:1281
 msgid "Could not send message"
 msgstr "Ni mogoče poslati sporočila"
 
-#: ../src/endpoints/pcss.cpp:212
+#: ../src/endpoints/opal-call.cpp:283
+msgid "Local user cleared the call"
+msgstr "Lokalni uporabnik je počistil klic"
+
+#: ../src/endpoints/opal-call.cpp:286
+#: ../src/endpoints/opal-call.cpp:289
+msgid "Local user rejected the call"
+msgstr "Lokalni uporabnik je zavrnil klic"
+
+#: ../src/endpoints/opal-call.cpp:292
+msgid "Remote user cleared the call"
+msgstr "Oddaljeni uporabnik je počistil klic"
+
+#: ../src/endpoints/opal-call.cpp:295
+msgid "Remote user rejected the call"
+msgstr "Oddaljeni uporabnik je zavrnil klic"
+
+#: ../src/endpoints/opal-call.cpp:298
+msgid "Remote user has stopped calling"
+msgstr "Oddaljeni uporabnik je prenehal klicati"
+
+#: ../src/endpoints/opal-call.cpp:301
+msgid "Abnormal call termination"
+msgstr "Nenavaden zaključek klica"
+
+#: ../src/endpoints/opal-call.cpp:304
+msgid "Could not connect to remote host"
+msgstr "Ni se mogoče povezati z oddaljenim gostiteljem"
+
+#: ../src/endpoints/opal-call.cpp:307
+msgid "The Gatekeeper cleared the call"
+msgstr "Vratar je počistil klic"
+
+#: ../src/endpoints/opal-call.cpp:310
+msgid "User not found"
+msgstr "Uporabnik ni bil najden"
+
+#: ../src/endpoints/opal-call.cpp:313
+msgid "Insufficient bandwidth"
+msgstr "Nezadostna pasovna širina"
+
+#: ../src/endpoints/opal-call.cpp:316
+msgid "No common codec"
+msgstr "Ni navadnega kodekov"
+
+#: ../src/endpoints/opal-call.cpp:319
+msgid "Call forwarded"
+msgstr "Klic posredovan"
+
+#: ../src/endpoints/opal-call.cpp:322
+msgid "Security check failed"
+msgstr "Varnostno preverjanje ni uspelo"
+
+#: ../src/endpoints/opal-call.cpp:325
+msgid "Local user is busy"
+msgstr "Lokalni uporabnik je zaseden"
+
+#: ../src/endpoints/opal-call.cpp:328
+#: ../src/endpoints/opal-call.cpp:334
+msgid "Congested link to remote party"
+msgstr "Prezasedena povezava do oddaljene stranke"
+
+#: ../src/endpoints/opal-call.cpp:331
+msgid "Remote user is busy"
+msgstr "Oddaljen uporabnik je zaseden"
+
+#: ../src/endpoints/opal-call.cpp:337
+msgid "Remote host is offline"
+msgstr "Oddaljen gostitelj ni na zvezi"
+
+#: ../src/endpoints/opal-call.cpp:344
+msgid "Remote user is not available"
+msgstr "Oddaljen uporabnik ni dosegljiv"
+
+#: ../src/endpoints/opal-call.cpp:346
+msgid "Local user is not available"
+msgstr "Uporabnik ni dostopen."
+
+#: ../src/endpoints/opal-call.cpp:359
+msgid "Call completed"
+msgstr "Klic končan"
+
+#: ../src/endpoints/pcss.cpp:205
 msgid "Could not open audio channel for audio transmission"
 msgstr "Ni mogoče odpreti zvočnega kanala za oddajanje zvoka"
 
-#: ../src/endpoints/pcss.cpp:212
+#: ../src/endpoints/pcss.cpp:205
 msgid ""
 "An error occurred while trying to record from the soundcard for the audio transmission. Please check that your soundcard is not busy and that your driver supports full-duplex.\n"
 "The audio transmission has been disabled."
@@ -1528,11 +1449,11 @@ msgstr ""
 "Prišlo je do napake pri poizkusu snemanja iz zvočne kartice za oddajanje zvoka. Prepričajte se, da zvočna kartica ni zasedena in da vaš gonilnik podpira polno dvosmerno komunikacijo.\n"
 "Oddajanje zvoka je bilo onemogočeno."
 
-#: ../src/endpoints/pcss.cpp:214
+#: ../src/endpoints/pcss.cpp:207
 msgid "Could not open audio channel for audio reception"
 msgstr "Ni mogoče odpreti zvočnega kanala za sprejemanje zvoka"
 
-#: ../src/endpoints/pcss.cpp:214
+#: ../src/endpoints/pcss.cpp:207
 msgid ""
 "An error occurred while trying to play audio to the soundcard for the audio reception. Please check that your soundcard is not busy and that your driver supports full-duplex.\n"
 "The audio reception has been disabled."
@@ -1540,48 +1461,74 @@ msgstr ""
 "Prišlo je do napake pri poizkusu predvajanja iz zvočne kartice za sprejemanje zvoka. Prepričajte se, da zvočna kartica ni zasedena in da vaš gonilnik podpira polno dvosmerno komunikacijo.\n"
 "Sprejemanje zvoka je bilo onemogočeno."
 
-#: ../src/endpoints/sip.cpp:482
+#: ../src/endpoints/sip.cpp:511
 msgid "Bad request"
 msgstr "Napačna zahteva"
 
-#: ../src/endpoints/sip.cpp:486
+#: ../src/endpoints/sip.cpp:515
 msgid "Payment required"
 msgstr "Zahtevano plačilo"
 
-#: ../src/endpoints/sip.cpp:491
+#: ../src/endpoints/sip.cpp:520
 msgid "Forbidden"
 msgstr "Prepovedano"
 
-#: ../src/endpoints/sip.cpp:495
+#: ../src/endpoints/sip.cpp:524
 msgid "Timeout"
 msgstr "Zakasnitev"
 
-#: ../src/endpoints/sip.cpp:499
+#: ../src/endpoints/sip.cpp:528
 msgid "Conflict"
 msgstr "Spor"
 
-#: ../src/endpoints/sip.cpp:503
+#: ../src/endpoints/sip.cpp:532
 msgid "Temporarily unavailable"
 msgstr "Začasno nedostopno"
 
-#: ../src/endpoints/sip.cpp:507
+#: ../src/endpoints/sip.cpp:536
 msgid "Not Acceptable"
 msgstr "Ni sprejemljivo"
 
-#: ../src/endpoints/urlhandler.cpp:429
+#: ../src/endpoints/sip.cpp:817
+msgid "Offline"
+msgstr "Nepovezan"
+
+#: ../src/endpoints/sip.cpp:821
+#: ../src/gui/main.cpp:985
+#: ../src/gui/main.cpp:2215
+msgid "Online"
+msgstr "Povezano"
+
+#: ../src/endpoints/sip.cpp:826
+#: ../src/gui/main.cpp:986
+#: ../src/gui/main.cpp:2216
+msgid "Away"
+msgstr "Odsoten"
+
+#: ../src/endpoints/sip.cpp:832
+#: ../src/gui/main.cpp:987
+#: ../src/gui/main.cpp:2217
+msgid "Do Not Disturb"
+msgstr "Ne moti"
+
+#: ../src/endpoints/sip.cpp:836
+msgid "Free For Chat"
+msgstr "Prost za pogovor"
+
+#: ../src/endpoints/urlhandler.cpp:424
 msgid "Invalid URL handler"
 msgstr "Neveljaven upravitelj URL"
 
-#: ../src/endpoints/urlhandler.cpp:429
+#: ../src/endpoints/urlhandler.cpp:424
 msgid "Please specify a valid URL handler. Currently h323:, callto: and sip: are supported."
 msgstr "Navedite veljavnega upravitelja URL. Trenutno so podprti tako h323: kot tudi callto: in sip:."
 
-#: ../src/endpoints/urlhandler.cpp:441
+#: ../src/endpoints/urlhandler.cpp:436
 #, c-format
 msgid "Calling %s"
 msgstr "Klicanje %s"
 
-#: ../src/endpoints/urlhandler.cpp:444
+#: ../src/endpoints/urlhandler.cpp:439
 #, c-format
 msgid "Transferring call to %s"
 msgstr "Prenašanje klica na %s"
@@ -1592,167 +1539,131 @@ msgstr "Prenašanje klica na %s"
 #. call_history_item->url = g_strdup (call_address);
 #. call_history_item->duration = g_strdup ("0.00");
 #. FIXME
-#: ../src/endpoints/urlhandler.cpp:496
+#: ../src/endpoints/urlhandler.cpp:482
 msgid "Failed to call user"
 msgstr "Klic uporabnika ni uspel"
 
-#: ../src/gui/accounts.cpp:400
+#: ../src/gui/accounts.cpp:407
 msgid "Edit the Account Information"
 msgstr "Uredi podatke računa"
 
 #. Account Name
-#: ../src/gui/accounts.cpp:424
+#: ../src/gui/accounts.cpp:431
 msgid "Account Name:"
 msgstr "Ime računa:"
 
-#: ../src/gui/accounts.cpp:438
+#: ../src/gui/accounts.cpp:445
 msgid "Protocol:"
 msgstr "Protokol:"
 
-#: ../src/gui/accounts.cpp:462
-#: ../src/gui/accounts.cpp:1009
+#: ../src/gui/accounts.cpp:469
+#: ../src/gui/accounts.cpp:1003
 msgid "Registrar:"
 msgstr "Registrar:"
 
-#: ../src/gui/accounts.cpp:464
-#: ../src/gui/accounts.cpp:1018
+#: ../src/gui/accounts.cpp:471
+#: ../src/gui/accounts.cpp:1012
 msgid "Gatekeeper:"
 msgstr "Vratar:"
 
 #. User
-#: ../src/gui/accounts.cpp:478
+#: ../src/gui/accounts.cpp:485
 msgid "User:"
 msgstr "Uporabnik:"
 
 #. Password
-#: ../src/gui/accounts.cpp:493
+#: ../src/gui/accounts.cpp:500
 msgid "Password:"
 msgstr "Geslo:"
 
 #. Advanced Options
-#: ../src/gui/accounts.cpp:510
+#: ../src/gui/accounts.cpp:517
 msgid "More _Options"
 msgstr "Več m_ožnosti"
 
-#: ../src/gui/accounts.cpp:524
+#: ../src/gui/accounts.cpp:531
 msgid "Authentication Login:"
 msgstr "Prijava:"
 
-#: ../src/gui/accounts.cpp:546
-#: ../src/gui/accounts.cpp:1019
+#: ../src/gui/accounts.cpp:553
+#: ../src/gui/accounts.cpp:1013
 msgid "Gatekeeper ID:"
 msgstr "ID vratarja:"
 
 #. Timeout
-#: ../src/gui/accounts.cpp:570
+#: ../src/gui/accounts.cpp:577
 msgid "Registration Timeout:"
 msgstr "Zakasnitev prijave:"
 
 #. !valid
-#: ../src/gui/accounts.cpp:678
+#: ../src/gui/accounts.cpp:685
 msgid "Missing or wrong information"
 msgstr "Manjkajoči ali napačni podatki"
 
-#: ../src/gui/accounts.cpp:679
+#: ../src/gui/accounts.cpp:686
 msgid "Please make sure to provide at least an <b>account name</b>, a <b>username</b> and a valid <b>timeout in seconds</b>."
 msgstr "Prepričajte se, da so navedeni podatki: <b>ime računa</b>, <b>uporabniško ime</b> in veljavna <b>časovna omejitev<b> prijave."
 
-#: ../src/gui/accounts.cpp:709
+#: ../src/gui/accounts.cpp:716
 #, c-format
 msgid "Are you sure you want to delete account %s?"
 msgstr "Ali ste prepričani, da želite zbrisati račun %s?"
 
-#: ../src/gui/accounts.cpp:797
+#: ../src/gui/accounts.cpp:804
 msgid "Registered"
 msgstr "Prijavljen"
 
-#: ../src/gui/accounts.cpp:801
+#: ../src/gui/accounts.cpp:808
 msgid "Unregistered"
 msgstr "Neprijavljen"
 
-#: ../src/gui/accounts.cpp:805
+#: ../src/gui/accounts.cpp:812
 msgid "Could not unregister"
 msgstr "Ni mogoče odstraniti registracije"
 
-#: ../src/gui/accounts.cpp:811
+#: ../src/gui/accounts.cpp:818
 msgid "Could not register"
 msgstr "Ni mogoče registrirati"
 
-#: ../src/gui/accounts.cpp:817
+#: ../src/gui/accounts.cpp:824
 msgid "Processing..."
 msgstr "Izvajanje ..."
 
-#: ../src/gui/accounts.cpp:1010
+#: ../src/gui/accounts.cpp:1004
 msgid "Realm/Domain:"
 msgstr "Področje/Domena:"
 
-#: ../src/gui/accounts.cpp:1537
+#: ../src/gui/accounts.cpp:1531
 msgid "Account Name"
 msgstr "Ime računa"
 
-#: ../src/gui/accounts.cpp:1538
+#: ../src/gui/accounts.cpp:1532
 msgid "Protocol"
 msgstr "Protokol"
 
-#: ../src/gui/accounts.cpp:1547
+#: ../src/gui/accounts.cpp:1541
 msgid "Voice Mails"
 msgstr "Glasovna pošta"
 
-#: ../src/gui/accounts.cpp:1548
+#: ../src/gui/accounts.cpp:1542
 msgid "Status"
 msgstr "Stanje"
 
-#: ../src/gui/accounts.cpp:1559
-#: ../src/gui/accounts.cpp:1595
+#: ../src/gui/accounts.cpp:1553
+#: ../src/gui/accounts.cpp:1588
 msgid "Accounts"
 msgstr "Računi"
 
-#: ../src/gui/accounts.cpp:1598
-#: ../src/gui/preferences.cpp:552
+#: ../src/gui/accounts.cpp:1591
+#: ../src/gui/preferences.cpp:518
 msgid "A"
 msgstr "A"
 
-#: ../src/gui/accounts.cpp:1698
+#: ../src/gui/accounts.cpp:1691
 msgid "_Default"
 msgstr "_Privzeto"
 
-#: ../src/gui/callbacks.cpp:131
-msgid "Disconnecting..."
-msgstr "Prekinjanje povezave ..."
-
-#: ../src/gui/callbacks.cpp:146
-msgid "Contributors:"
-msgstr "Sodelavci:"
-
-#: ../src/gui/callbacks.cpp:155
-msgid "Artwork:"
-msgstr "Slika:"
-
-#: ../src/gui/callbacks.cpp:162
-msgid "See AUTHORS file for full credits"
-msgstr "Glej datoteko AUTHORS za celotne zasluge"
-
-#. Translators: Please write translator credits here, and
-#. * separate names with \n
-#: ../src/gui/callbacks.cpp:200
-msgid "translator-credits"
-msgstr ""
-"Matjaž Horvat <m@owca.info>\n"
-"Matej Urbančič <mateju@svn.gnome.org>"
-
-#: ../src/gui/callbacks.cpp:205
-msgid "Ekiga is full-featured SIP and H.323 compatible VoIP, IP-Telephony and Videoconferencing application that allows you to make audio and video calls to remote users with SIP and H.323 hardware or software."
-msgstr "Ekiga je s SIP in H.323 združljiv program za VoIP, IP-telefonijo in videokonferene, ki omogoča opravljanje zvočnih in slikovnih pogovorov z oddaljenimi uporabniki preko strojne ali programske opreme SIP in H.323."
-
-#: ../src/gui/conf.cpp:199
-msgid "Changing this setting will only affect new calls"
-msgstr "Sprememba te nastavitve bo vplivala samo na nove klice"
-
-#: ../src/gui/conf.cpp:200
-msgid "Ekiga cannot apply one or more changes to the current call. Your new settings will take effect for the next call."
-msgstr "Ekiga ne more uveljaviti ene ali več sprememb trenutnega klica. Vaše nove nastavitve bodo uveljavljene šele ob naslednjem klicu."
-
-#: ../src/gui/druid.cpp:638
+#: ../src/gui/assistant.cpp:162
 msgid ""
 "This is the Ekiga general configuration assistant. The following steps will set up Ekiga by asking a few simple questions.\n"
 "\n"
@@ -1762,39 +1673,37 @@ msgstr ""
 "\n"
 "Ko dokončate te korake, boste nastavitve lahko še vedno spreminjali z izbiro Nastavitve v meniju Urejanje."
 
-#: ../src/gui/druid.cpp:650
-#, c-format
-msgid "Configuration Assistant - page 1/%d"
-msgstr "Pomočnik na nastavitve - stran 1/%d"
+#: ../src/gui/assistant.cpp:170
+msgid "Welcome in Ekiga"
+msgstr "Dobrodošli v program ekiga"
 
-#: ../src/gui/druid.cpp:692
-#, c-format
-msgid "Personal Information - page %d/%d"
-msgstr "Osebni podatki - stran %d/%d"
+#: ../src/gui/assistant.cpp:207
+#: ../src/gui/preferences.cpp:383
+msgid "Personal Information"
+msgstr "Osebni podatki"
 
 #. The user fields
-#: ../src/gui/druid.cpp:705
+#: ../src/gui/assistant.cpp:210
 msgid "Please enter your first name and your surname:"
 msgstr "Vnesite vaše ime in priimek:"
 
-#: ../src/gui/druid.cpp:714
+#: ../src/gui/assistant.cpp:219
 msgid "Your first name and surname will be used when connecting to other VoIP and videoconferencing software."
 msgstr "Vaše ime in priimek bosta uporabljena pri povezovanju v drugo programsko opremo za VoIP in videokonference."
 
-#: ../src/gui/druid.cpp:760
-#, c-format
-msgid "ekiga.net Account - page %d/%d"
-msgstr "Račun ekiga.net - stran %d/%d"
+#: ../src/gui/assistant.cpp:295
+msgid "ekiga.net Account"
+msgstr "ekiga.net račun"
 
-#: ../src/gui/druid.cpp:771
+#: ../src/gui/assistant.cpp:297
 msgid "Please enter your username:"
 msgstr "Vnesite vaše uporabniško ime:"
 
-#: ../src/gui/druid.cpp:779
+#: ../src/gui/assistant.cpp:305
 msgid "Please enter your password:"
 msgstr "Vnesite svoje geslo:"
 
-#: ../src/gui/druid.cpp:790
+#: ../src/gui/assistant.cpp:315
 msgid ""
 "The username and password are used to login to your existing account at the ekiga.net free SIP service. If you do not have an ekiga.net SIP address yet, you may first create an account below. This will provide a SIP address that allows people to call you.\n"
 "\n"
@@ -1804,614 +1713,566 @@ msgstr ""
 "\n"
 "Ta korak lahko preskočite, če uporabljate alternativno storitev SIP ali če želite podrobnosti o prijavi navesti pozneje."
 
-#: ../src/gui/druid.cpp:800
+#: ../src/gui/assistant.cpp:332
 msgid "Get an ekiga.net SIP account"
 msgstr "Dobi račun ekiga.net SIP"
 
-#: ../src/gui/druid.cpp:810
+#: ../src/gui/assistant.cpp:342
 msgid "I do not want to sign up for the ekiga.net free service"
 msgstr "Ne želim se prijaviti na brezplačno storitev ekiga.net"
 
-#: ../src/gui/druid.cpp:866
-#, c-format
-msgid "Connection Type - page %d/%d"
-msgstr "Vrsta povezave - stran %d/%d"
+#: ../src/gui/assistant.cpp:447
+msgid "Connection Type"
+msgstr "Vrsta povezave"
 
 #. The connection type
-#: ../src/gui/druid.cpp:878
+#: ../src/gui/assistant.cpp:450
 msgid "Please choose your connection type:"
 msgstr "Izberite vrsto povezave:"
 
-#: ../src/gui/druid.cpp:893
-msgid "The connection type will permit determining the best quality settings that Ekiga will use during calls. You can later change the settings individually in the preferences window."
-msgstr "Vrsta povezave bo omogočila ugotavljanje nastavitev za najboljšo kakovost, ki jih bo Ekiga uporabljala med klici. Pozneje lahko spremenite nastavitve v oknu z nastavitvami."
-
-#: ../src/gui/druid.cpp:931
-#, c-format
-msgid "NAT Type - page %d/%d"
-msgstr "Vrsta NAT - stran %d/%d"
-
-#: ../src/gui/druid.cpp:941
-msgid "Click here to detect your NAT Type:"
-msgstr "Kliknite za zaznavo vrste NAT:"
-
-#: ../src/gui/druid.cpp:945
-msgid "Detect NAT Type"
-msgstr "Zaznaj vrsto NAT"
-
-#: ../src/gui/druid.cpp:949
-msgid "The NAT type detection will permit to assist you in configuring your NAT router to be able to do calls with Ekiga."
-msgstr "Zaznavanje vrste NAT vam bo omogočilo pomoč pri nastavljanju vašega usmerjevalnika NAT za klicanje z Ekigo."
-
-#: ../src/gui/druid.cpp:994
-#, c-format
-msgid "Audio Manager - page %d/%d"
-msgstr "Upravitelj zvoka - stran %d/%d"
-
-#. The Audio devices
-#: ../src/gui/druid.cpp:1006
-msgid "Please choose your audio manager:"
-msgstr "Izberite vašega upravitelja zvoka:"
-
-#: ../src/gui/druid.cpp:1015
-msgid "The audio manager is the plugin that will manage your audio devices. WindowsMultimedia is probably the best choice when available."
-msgstr "Upravitelj zvoka je vstavek, ki bo upravljal vaše zvočne naprave. Če je na voljo, je verjetno najboljša izbira WindowsMultimedia."
-
-#: ../src/gui/druid.cpp:1017
-msgid "The audio manager is the plugin that will manage your audio devices. ALSA is probably the best choice when available."
-msgstr "Upravitelj zvoka je vstavek, ki bo upravljal vaše zvočne naprave. Če je na voljo, je verjetno najboljša izbira ALSA."
-
-#: ../src/gui/druid.cpp:1057
-#, c-format
-msgid "Audio Devices - page %d/%d"
-msgstr "Zvočne naprave - stran %d/%d"
-
-#. The Audio devices
-#: ../src/gui/druid.cpp:1069
-msgid "Please choose the audio output device:"
-msgstr "Izberite zvočno izhodno napravo:"
-
-#: ../src/gui/druid.cpp:1077
-msgid "The audio output device is the device managed by the audio manager that will be used to play audio."
-msgstr "Zvočna izhodna naprava je naprava, ki jo upravlja upravitelj zvoka in bo uporabljena za predvajanje zvoka."
-
-#: ../src/gui/druid.cpp:1087
-msgid "Please choose the audio input device:"
-msgstr "Izberite zvočno vhodno napravo:"
-
-#: ../src/gui/druid.cpp:1095
-msgid "The audio input device is the device managed by the audio manager that will be used to record your voice."
-msgstr "Zvočna vhodna naprava je naprava, ki jo upravlja upravitelj zvoka in bo uporabljena za snemanje vašega glasu."
-
-#: ../src/gui/druid.cpp:1108
-#: ../src/gui/druid.cpp:1251
-msgid "Test Settings"
-msgstr "Preizkusi nastavitve"
-
-#: ../src/gui/druid.cpp:1152
-#, c-format
-msgid "Video Manager - page %d/%d"
-msgstr "Upravitelj videa - stran %d/%d"
-
-#. The Audio devices
-#: ../src/gui/druid.cpp:1164
-msgid "Please choose your video manager:"
-msgstr "Izberite vašega upravitelja videa:"
-
-#: ../src/gui/druid.cpp:1172
-msgid "The video manager is the plugin that will manage your video devices, Video4Linux is the most common choice if you own a webcam."
-msgstr "Upravitelj videa je vstavek, ki bo upravljal vaše naprave videa. Če imate spletno kamero, je najpogostejša izbira Video4Linux."
-
-#: ../src/gui/druid.cpp:1212
-#, c-format
-msgid "Video Devices - page %d/%d"
-msgstr "Naprave videa - stran %d/%d"
-
-#. The Video devices
-#: ../src/gui/druid.cpp:1224
-msgid "Please choose the video input device:"
-msgstr "Izberite vhodno napravo videa:"
-
-#: ../src/gui/druid.cpp:1239
-msgid "The video input device is the device managed by the video manager that will be used to capture video."
-msgstr "Vhodna naprava videa je naprava, ki jo upravlja upravitelj videa in bo uporabljena za zajem videa."
-
-#: ../src/gui/druid.cpp:1287
-#, c-format
-msgid "Configuration complete - page %d/%d"
-msgstr "Nastavitev končana - stran %d/%d"
-
-#: ../src/gui/druid.cpp:1723
+#: ../src/gui/assistant.cpp:467
 msgid "56k Modem"
 msgstr "56k Modem"
 
-#: ../src/gui/druid.cpp:1730
+#: ../src/gui/assistant.cpp:472
 msgid "ISDN"
 msgstr "ISDN"
 
-#: ../src/gui/druid.cpp:1737
+#: ../src/gui/assistant.cpp:477
 msgid "xDSL/Cable"
 msgstr "xDSL/Kabel"
 
-#: ../src/gui/druid.cpp:1744
+#: ../src/gui/assistant.cpp:482
 msgid "T1/LAN"
 msgstr "T1/LAN"
 
-#: ../src/gui/druid.cpp:1751
+#: ../src/gui/assistant.cpp:487
 msgid "Keep current settings"
 msgstr "Obdrži trenutne nastavitve"
 
-#: ../src/gui/druid.cpp:2014
+#: ../src/gui/assistant.cpp:492
+msgid "The connection type will permit determining the best quality settings that Ekiga will use during calls. You can later change the settings individually in the preferences window."
+msgstr "Vrsta povezave bo omogočila ugotavljanje nastavitev za najboljšo kakovost, ki jih bo Ekiga uporabljala med klici. Pozneje lahko spremenite nastavitve v oknu z nastavitvami."
+
+#: ../src/gui/assistant.cpp:583
+msgid "Audio Manager"
+msgstr "Upravitelj zvoka"
+
+#: ../src/gui/assistant.cpp:585
+msgid "Please choose your audio manager:"
+msgstr "Izberite vašega upravitelja zvoka:"
+
+#: ../src/gui/assistant.cpp:594
+msgid "The audio manager is the plugin that will manage your audio devices. WindowsMultimedia is probably the best choice when available."
+msgstr "Upravitelj zvoka je vstavek, ki bo upravljal vaše zvočne naprave. Če je na voljo, je verjetno najboljša izbira WindowsMultimedia."
+
+#: ../src/gui/assistant.cpp:598
+msgid "The audio manager is the plugin that will manage your audio devices. ALSA is probably the best choice when available."
+msgstr "Upravitelj zvoka je vstavek, ki bo upravljal vaše zvočne naprave. Če je na voljo, je verjetno najboljša izbira ALSA."
+
+#: ../src/gui/assistant.cpp:652
+#: ../src/gui/preferences.cpp:784
+msgid "Audio Devices"
+msgstr "Zvočne naprave"
+
+#: ../src/gui/assistant.cpp:654
+msgid "Please choose the audio output device:"
+msgstr "Izberite zvočno izhodno napravo:"
+
+#: ../src/gui/assistant.cpp:662
+msgid "The audio output device is the device  managed by the audio manager that will be used to play audio."
+msgstr "Zvočna izhodna naprava je naprava, ki jo upravlja upravitelj zvoka in bo uporabljena za predvajanje zvoka."
+
+#: ../src/gui/assistant.cpp:674
+msgid "Please choose the audio input device:"
+msgstr "Izberite zvočno vhodno napravo:"
+
+#: ../src/gui/assistant.cpp:682
+msgid "The audio input device is the device managed by the audio manager that will be used to record your voice."
+msgstr "Zvočna vhodna naprava je naprava, ki jo upravlja upravitelj zvoka in bo uporabljena za snemanje vašega glasu."
+
+#: ../src/gui/assistant.cpp:777
+msgid "Video manager"
+msgstr "Upravljavec posnetkov"
+
+#: ../src/gui/assistant.cpp:779
+msgid "Please choose your video manager:"
+msgstr "Izberite vašega upravitelja videa:"
+
+#: ../src/gui/assistant.cpp:787
+msgid "The video manager is the plugin that will manage your video devices, Video4Linux is the most common choice if you own a webcam."
+msgstr "Upravitelj videa je vstavek, ki bo upravljal vaše naprave videa. Če imate spletno kamero, je najpogostejša izbira Video4Linux."
+
+#: ../src/gui/assistant.cpp:843
+msgid "Configuration Complete"
+msgstr "Nastavitev končana"
+
+#: ../src/gui/assistant.cpp:845
+msgid "You have now finished the Ekiga configuration. All the settings can be changed in the Ekiga preferences. Enjoy!"
+msgstr "Končali ste z nastavitvijo programa Ekiga. Vse nastavitve lahko spremenite med lastnostmi programa."
+
+#: ../src/gui/assistant.cpp:852
+msgid "Configuration summary:"
+msgstr "Povzetek nastavitve:"
+
+#: ../src/gui/assistant.cpp:1016
 #, c-format
-msgid ""
-"You have now finished the Ekiga configuration. All the settings can be changed in the Ekiga preferences. Enjoy!\n"
-"\n"
-"\n"
-"Configuration summary:\n"
-"\n"
-"Username: %s\n"
-"Connection type: %s\n"
-"Audio manager: %s\n"
-"Audio player: %s\n"
-"Audio recorder: %s\n"
-"Video manager: %s\n"
-"Video input: %s\n"
-"SIP URI: %s\n"
+msgid "Ekiga Configuration Assistant (%d of %d)"
+msgstr "Pomočnik na nastavitve Ekiga (%d od %d)"
+
+#: ../src/gui/callbacks.cpp:139
+msgid "Contributors:"
+msgstr "Sodelavci:"
+
+#: ../src/gui/callbacks.cpp:148
+msgid "Artwork:"
+msgstr "Slika:"
+
+#: ../src/gui/callbacks.cpp:155
+msgid "See AUTHORS file for full credits"
+msgstr "Glej datoteko AUTHORS za celotne zasluge"
+
+#. Translators: Please write translator credits here, and
+#. * separate names with \n
+#: ../src/gui/callbacks.cpp:193
+msgid "translator-credits"
 msgstr ""
-"Končali ste nastavljanje Ekige. Vse nastavitve lahko spremenite v nastavitvah Ekige. Veliko užitkov!\n"
-"\n"
-"\n"
-"Povzetek nastavitev:\n"
-"\n"
-"Uporabniško ime: %s\n"
-"Vrsta povezave: %s\n"
-"Upravitelj zvoka: %s\n"
-"Predvajalnik zvoka: %s\n"
-"Snemalnik zvoka: %s\n"
-"Upravitelj videa: %s\n"
-"Vhod videa: %s\n"
-"URL za SIP: %s\n"
+"Matjaž Horvat <m@owca.info>\n"
+"Matej Urbančič <mateju@svn.gnome.org>"
 
-#: ../src/gui/druid.cpp:2014
-#: ../src/gui/preferences.cpp:665
-msgid "None"
-msgstr "Brez"
+#: ../src/gui/callbacks.cpp:198
+msgid "Ekiga is full-featured SIP and H.323 compatible VoIP, IP-Telephony and Videoconferencing application that allows you to make audio and video calls to remote users with SIP and H.323 hardware or software."
+msgstr "Ekiga je s SIP in H.323 združljiv program za VoIP, IP-telefonijo in videokonferene, ki omogoča opravljanje zvočnih in slikovnih pogovorov z oddaljenimi uporabniki preko strojne ali programske opreme SIP in H.323."
 
-#: ../src/gui/druid.cpp:2061
-msgid "First Time Configuration Assistant"
-msgstr "Pomočnik za nastavitve pri prvi uporabi"
+#: ../src/gui/dialpad.cpp:58
+msgid "abc"
+msgstr "abc"
 
-#: ../src/gui/main.cpp:550
-#, c-format
-msgid "Connected with %s"
-msgstr "Povezan z %s"
+#: ../src/gui/dialpad.cpp:59
+msgid "def"
+msgstr "def"
 
-#: ../src/gui/main.cpp:565
-#: ../src/gui/main.cpp:1772
-msgid "Standby"
-msgstr "Pripravljenost"
+#: ../src/gui/dialpad.cpp:60
+msgid "ghi"
+msgstr "ghi"
 
-#: ../src/gui/main.cpp:579
-#, c-format
-msgid "Missed call from %s"
-msgstr "Zgrešen klic od %s"
+#: ../src/gui/dialpad.cpp:61
+msgid "jkl"
+msgstr "jkl"
 
-#: ../src/gui/main.cpp:587
-msgid "Call on hold"
-msgstr "Klic na čakanju"
+#: ../src/gui/dialpad.cpp:62
+msgid "mno"
+msgstr "mno"
 
-#: ../src/gui/main.cpp:589
-msgid "Call retrieved"
-msgstr "Klic prejet"
+#: ../src/gui/dialpad.cpp:63
+msgid "pqrs"
+msgstr "pqrs"
 
-#: ../src/gui/main.cpp:595
-#, c-format
-msgid "Forwarded call from %s"
-msgstr "Posredovanje klica preko %s"
+#: ../src/gui/dialpad.cpp:64
+msgid "tuv"
+msgstr "tuv"
 
-#: ../src/gui/main.cpp:601
-#, c-format
-msgid "Call from %s"
-msgstr "Klic od %s"
+#: ../src/gui/dialpad.cpp:65
+msgid "wxyz"
+msgstr "wxyz"
 
-#: ../src/gui/main.cpp:620
-#, c-format
-msgid "A:%.1f/%.1f   V:%.1f/%.1f  FPS:%d/%d"
-msgstr "A:%.1f/%.1f   V:%.1f/%.1f  FPS:%d/%d"
-
-#: ../src/gui/main.cpp:738
+#: ../src/gui/main.cpp:544
 #, c-format
 msgid "Registered %s"
 msgstr "Prijavljen %s"
 
-#: ../src/gui/main.cpp:742
+#: ../src/gui/main.cpp:548
 #, c-format
 msgid "Unregistered %s"
 msgstr "Neprijavljen %s"
 
-#: ../src/gui/main.cpp:746
+#: ../src/gui/main.cpp:552
 #, c-format
 msgid "Could not unregister %s"
 msgstr "Ni mogoče odstraniti registracije %s"
 
-#: ../src/gui/main.cpp:750
+#: ../src/gui/main.cpp:556
 #, c-format
 msgid "Could not register %s"
 msgstr "Ni mogoče registrirati %s"
 
-#: ../src/gui/main.cpp:813
+#: ../src/gui/main.cpp:590
+#, c-format
+msgid "A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d"
+msgstr "A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d"
+
+#: ../src/gui/main.cpp:633
+msgid "Connected with"
+msgstr "Povezan z"
+
+#: ../src/gui/main.cpp:657
+#: ../src/gui/main.cpp:1951
+msgid "Standby"
+msgstr "Pripravljenost"
+
+#: ../src/gui/main.cpp:697
+msgid "Call on hold"
+msgstr "Klic na čakanju"
+
+#: ../src/gui/main.cpp:710
+msgid "Call retrieved"
+msgstr "Klic prejet"
+
+#: ../src/gui/main.cpp:724
+msgid "Missed call from"
+msgstr "Zgrešen klic od"
+
+#: ../src/gui/main.cpp:988
+#: ../src/gui/main.cpp:2218
 msgid "Invisible"
 msgstr "Nevidno"
 
-#: ../src/gui/main.cpp:858
+#: ../src/gui/main.cpp:1032
 msgid "Find Contacts"
 msgstr "Poišči stik"
 
-#: ../src/gui/main.cpp:881
+#: ../src/gui/main.cpp:1055
 msgid "Add contact to roster"
 msgstr "Dodaj stik v lokalni seznam"
 
-#: ../src/gui/main.cpp:1034
+#: ../src/gui/main.cpp:1298
 msgid "Enter a URI on the left, and click this button to place a call"
 msgstr "Vnesite URL na levi in kliknite ta gumb za klic"
 
-#: ../src/gui/main.cpp:1087
-#: ../src/gui/main.cpp:1216
+#: ../src/gui/main.cpp:1347
+#: ../src/gui/main.cpp:1464
 msgid "C_all"
 msgstr "_Kliči"
 
-#: ../src/gui/main.cpp:1089
+#: ../src/gui/main.cpp:1349
 msgid "Ca_ll"
 msgstr "K_liči"
 
-#: ../src/gui/main.cpp:1089
+#: ../src/gui/main.cpp:1349
 msgid "Place a new call"
 msgstr "Nov klic"
 
-#: ../src/gui/main.cpp:1092
+#: ../src/gui/main.cpp:1352
 msgid "_Hang up"
 msgstr "_Odloži"
 
-#: ../src/gui/main.cpp:1093
+#: ../src/gui/main.cpp:1353
 msgid "Terminate the current call"
 msgstr "Končaj trenutni klic"
 
-#: ../src/gui/main.cpp:1099
-#: ../src/gui/statusicon.cpp:443
+#: ../src/gui/main.cpp:1359
+#: ../src/gui/statusicon.cpp:425
 msgid "_Online"
 msgstr "_V omrežju"
 
-#: ../src/gui/main.cpp:1105
-#: ../src/gui/statusicon.cpp:449
+#: ../src/gui/main.cpp:1365
+#: ../src/gui/statusicon.cpp:431
 msgid "_Away"
 msgstr "_Odsoten"
 
-#: ../src/gui/main.cpp:1111
-#: ../src/gui/statusicon.cpp:455
+#: ../src/gui/main.cpp:1371
+#: ../src/gui/statusicon.cpp:437
 msgid "Do Not _Disturb"
 msgstr "_Ne moti"
 
-#: ../src/gui/main.cpp:1117
-#: ../src/gui/statusicon.cpp:461
-msgid "_Free For Chat"
-msgstr "_Prost za pogovor"
-
-#: ../src/gui/main.cpp:1123
-#: ../src/gui/statusicon.cpp:467
+#: ../src/gui/main.cpp:1377
+#: ../src/gui/statusicon.cpp:443
 msgid "_Invisible"
 msgstr "_Nevidno"
 
-#: ../src/gui/main.cpp:1131
-#: ../src/gui/main.cpp:2794
+#: ../src/gui/main.cpp:1385
+#: ../src/gui/main.cpp:2828
 msgid "_Hold Call"
 msgstr "_Zadrži klic"
 
-#: ../src/gui/main.cpp:1131
-#: ../src/gui/main.cpp:1868
+#: ../src/gui/main.cpp:1385
+#: ../src/gui/main.cpp:2050
 msgid "Hold the current call"
 msgstr "Zadrži trenutni klic"
 
-#: ../src/gui/main.cpp:1135
+#: ../src/gui/main.cpp:1389
 msgid "_Transfer Call"
 msgstr "_Prenesi klic"
 
-#: ../src/gui/main.cpp:1136
+#: ../src/gui/main.cpp:1390
 msgid "Transfer the current call"
 msgstr "Prenesi trenutni klic"
 
-#: ../src/gui/main.cpp:1143
-#: ../src/gui/main.cpp:2833
+#: ../src/gui/main.cpp:1397
+#: ../src/gui/main.cpp:2867
 msgid "Suspend _Audio"
 msgstr "Z_austavi zvok"
 
-#: ../src/gui/main.cpp:1144
+#: ../src/gui/main.cpp:1398
 msgid "Suspend or resume the audio transmission"
 msgstr "Zaustavi ali nadaljuj oddajanje zvoka"
 
-#: ../src/gui/main.cpp:1148
-#: ../src/gui/main.cpp:2835
+#: ../src/gui/main.cpp:1402
+#: ../src/gui/main.cpp:2869
 msgid "Suspend _Video"
 msgstr "Zaustavi _video"
 
-#: ../src/gui/main.cpp:1149
+#: ../src/gui/main.cpp:1403
 msgid "Suspend or resume the video transmission"
 msgstr "Zaustavi ali nadaljuj oddajanje videa"
 
-#: ../src/gui/main.cpp:1157
+#: ../src/gui/main.cpp:1411
 msgid "Save a snapshot of the current video"
 msgstr "Shrani posnetek trenutnega videa"
 
-#: ../src/gui/main.cpp:1163
+#: ../src/gui/main.cpp:1417
 msgid "Close the Ekiga window"
 msgstr "Zapri okno Ekige"
 
-#: ../src/gui/main.cpp:1170
-#: ../src/gui/statusicon.cpp:500
+#: ../src/gui/main.cpp:1424
+#: ../src/gui/statusicon.cpp:476
 msgid "Quit"
 msgstr "Končaj"
 
-#: ../src/gui/main.cpp:1176
-msgid "Configuration Druid"
+#: ../src/gui/main.cpp:1430
+msgid "Configuration Assistant"
 msgstr "Pomočnik za nastavitve"
 
-#: ../src/gui/main.cpp:1177
-msgid "Run the configuration druid"
+#: ../src/gui/main.cpp:1431
+msgid "Run the configuration assistant"
 msgstr "Zaženi pomočnika za nastavitve"
 
-#: ../src/gui/main.cpp:1184
+#: ../src/gui/main.cpp:1438
 msgid "_Accounts"
 msgstr "R_ačuni"
 
-#: ../src/gui/main.cpp:1185
+#: ../src/gui/main.cpp:1439
 msgid "Edit your accounts"
 msgstr "Urejanje vaših računov"
 
-#: ../src/gui/main.cpp:1191
+#: ../src/gui/main.cpp:1445
 msgid "Change your preferences"
 msgstr "Spremenite vaše nastavitve"
 
-#: ../src/gui/main.cpp:1196
+#: ../src/gui/main.cpp:1450
 msgid "_View"
 msgstr "_Pogled"
 
-#: ../src/gui/main.cpp:1198
+#: ../src/gui/main.cpp:1452
 msgid "Panel"
 msgstr "Pult"
 
-#: ../src/gui/main.cpp:1200
+#: ../src/gui/main.cpp:1454
 msgid "Con_tacts"
 msgstr "S_tiki"
 
-#: ../src/gui/main.cpp:1200
+#: ../src/gui/main.cpp:1454
 msgid "View the contacts list"
 msgstr "Pogled spiska stikov"
 
-#: ../src/gui/main.cpp:1205
+#: ../src/gui/main.cpp:1459
 msgid "_Dialpad"
 msgstr "Š_tevilčnica"
 
-#: ../src/gui/main.cpp:1205
+#: ../src/gui/main.cpp:1459
 msgid "View the dialpad"
 msgstr "Prikaži številčnico"
 
-#: ../src/gui/main.cpp:1210
-msgid "Calls _History"
-msgstr "_Zgodovina klicev"
-
-#: ../src/gui/main.cpp:1211
-msgid "View the calls history"
-msgstr "Ogled zgodovine klicev"
-
-#: ../src/gui/main.cpp:1217
+#: ../src/gui/main.cpp:1465
 msgid "View the call information"
 msgstr "Pogled podrobnosti klicev"
 
-#: ../src/gui/main.cpp:1225
+#: ../src/gui/main.cpp:1473
 msgid "Local Video"
 msgstr "Lokalni video"
 
-#: ../src/gui/main.cpp:1226
+#: ../src/gui/main.cpp:1474
 msgid "Local video image"
 msgstr "Slika lokalnega videa"
 
-#: ../src/gui/main.cpp:1231
+#: ../src/gui/main.cpp:1479
 msgid "Remote Video"
 msgstr "Oddaljeni video"
 
-#: ../src/gui/main.cpp:1232
+#: ../src/gui/main.cpp:1480
 msgid "Remote video image"
 msgstr "Slika oddaljenega videa"
 
-#: ../src/gui/main.cpp:1237
+#: ../src/gui/main.cpp:1485
 msgid "Picture-in-Picture"
 msgstr "Slika v sliki"
 
-#: ../src/gui/main.cpp:1238
-#: ../src/gui/main.cpp:1244
+#: ../src/gui/main.cpp:1486
+#: ../src/gui/main.cpp:1492
 msgid "Both video images"
 msgstr "Obe sliki videa"
 
-#: ../src/gui/main.cpp:1243
+#: ../src/gui/main.cpp:1491
 msgid "Picture-in-Picture in Separate Window"
 msgstr "Slika v sliki v ločenem oknu"
 
-#: ../src/gui/main.cpp:1251
+#: ../src/gui/main.cpp:1499
 msgid "Zoom in"
 msgstr "Povečaj"
 
-#: ../src/gui/main.cpp:1255
+#: ../src/gui/main.cpp:1503
 msgid "Zoom out"
 msgstr "Pomanjšaj"
 
-#: ../src/gui/main.cpp:1259
+#: ../src/gui/main.cpp:1507
 msgid "Normal size"
 msgstr "Običajna velikost"
 
-#: ../src/gui/main.cpp:1263
+#: ../src/gui/main.cpp:1511
 msgid "Fullscreen"
 msgstr "Celozaslonski način"
 
-#: ../src/gui/main.cpp:1263
+#: ../src/gui/main.cpp:1511
 msgid "Switch to fullscreen"
 msgstr "Preklopi na cel zaslon"
 
-#: ../src/gui/main.cpp:1268
+#: ../src/gui/main.cpp:1516
 msgid "_Tools"
 msgstr "_Orodja"
 
-#: ../src/gui/main.cpp:1270
+#: ../src/gui/main.cpp:1518
 msgid "_Find Contacts"
 msgstr "_Poišči stik"
 
-#: ../src/gui/main.cpp:1271
+#: ../src/gui/main.cpp:1519
 msgid "Find contacts"
 msgstr "Poišči stik"
 
-#: ../src/gui/main.cpp:1278
+#: ../src/gui/main.cpp:1526
 msgid "PC-To-Phone Account"
 msgstr "Račun računalnik-telefon"
 
-#: ../src/gui/main.cpp:1279
+#: ../src/gui/main.cpp:1527
 msgid "Manage your PC-To-Phone account"
 msgstr "Upravljanje vašega računa za klice PC-telefon"
 
-#: ../src/gui/main.cpp:1284
+#: ../src/gui/main.cpp:1532
 msgid "_Help"
 msgstr "_Pomoč"
 
-#: ../src/gui/main.cpp:1287
-#: ../src/gui/statusicon.cpp:477
-#: ../src/gui/statusicon.cpp:488
+#: ../src/gui/main.cpp:1535
+#: ../src/gui/statusicon.cpp:453
+#: ../src/gui/statusicon.cpp:464
 msgid "Get help by reading the Ekiga manual"
 msgstr "Dobi pomoč z branjem priročnika Ekige"
 
-#: ../src/gui/main.cpp:1291
-#: ../src/gui/statusicon.cpp:482
-#: ../src/gui/statusicon.cpp:493
+#: ../src/gui/main.cpp:1539
+#: ../src/gui/statusicon.cpp:458
+#: ../src/gui/statusicon.cpp:469
 msgid "View information about Ekiga"
 msgstr "Ogled informacij o Ekigi"
 
-#: ../src/gui/main.cpp:1334
+#: ../src/gui/main.cpp:1582
 msgid "Contacts"
 msgstr "Stiki"
 
-#: ../src/gui/main.cpp:1424
+#: ../src/gui/main.cpp:1607
 msgid "Dialpad"
 msgstr "Številčnica"
 
-#: ../src/gui/main.cpp:1461
+#: ../src/gui/main.cpp:1643
 msgid "Video Settings"
 msgstr "Nastavitve slike"
 
-#: ../src/gui/main.cpp:1489
+#: ../src/gui/main.cpp:1671
 msgid "Adjust brightness"
 msgstr "Prilagodi svetlost"
 
-#: ../src/gui/main.cpp:1511
+#: ../src/gui/main.cpp:1693
 msgid "Adjust whiteness"
 msgstr "Prilagodi belino"
 
-#: ../src/gui/main.cpp:1533
+#: ../src/gui/main.cpp:1715
 msgid "Adjust color"
 msgstr "Prilagodi barvo"
 
-#: ../src/gui/main.cpp:1555
+#: ../src/gui/main.cpp:1737
 msgid "Adjust contrast"
 msgstr "Prilagodi kontrast"
 
-#: ../src/gui/main.cpp:1608
+#: ../src/gui/main.cpp:1790
 msgid "Audio Settings"
 msgstr "Nastavitve zvoka"
 
-#: ../src/gui/main.cpp:1803
+#: ../src/gui/main.cpp:1985
 msgid "Change the volume of your soundcard"
 msgstr "Spreminjanje glasnosti zvočne kartice"
 
-#: ../src/gui/main.cpp:1826
+#: ../src/gui/main.cpp:2008
 msgid "Change the color settings of your video device"
 msgstr "Spreminjanje nastavitev barv na slikovni napravi"
 
-#: ../src/gui/main.cpp:1847
+#: ../src/gui/main.cpp:2029
 msgid "Display images from your camera device"
 msgstr "Prikaži slike iz naprave vaše kamere"
 
-#: ../src/gui/main.cpp:1880
-msgid "Call"
-msgstr "Kliči"
-
-#: ../src/gui/main.cpp:2344
-#, c-format
-msgid "Sent DTMF %c"
-msgstr "Pošlji DTMF %c"
-
-#: ../src/gui/main.cpp:2781
+#: ../src/gui/main.cpp:2815
 msgid "_Retrieve Call"
 msgstr "P_ridobi klic"
 
-#: ../src/gui/main.cpp:2837
+#: ../src/gui/main.cpp:2871
 msgid "Resume _Audio"
 msgstr "N_adaljuj zvok"
 
-#: ../src/gui/main.cpp:2839
+#: ../src/gui/main.cpp:2873
 msgid "Resume _Video"
 msgstr "Nadaljuj _video"
 
-#: ../src/gui/main.cpp:3471
+#: ../src/gui/main.cpp:3448
 #, c-format
 msgid "Call Duration: %s\n"
 msgstr "Trajanje klicev: %s\n"
 
-#: ../src/gui/main.cpp:3514
+#: ../src/gui/main.cpp:3487
 msgid "Transfer call to:"
 msgstr "Prenesi klic na:"
 
-#: ../src/gui/main.cpp:3515
-#: ../src/gui/main.cpp:3580
+#: ../src/gui/main.cpp:3488
 msgid "Transfer"
 msgstr "Prenesi"
 
-#: ../src/gui/main.cpp:3578
+#: ../src/gui/main.cpp:3552
 msgid "Reject"
 msgstr "Zavrni"
 
-#: ../src/gui/main.cpp:3582
+#: ../src/gui/main.cpp:3554
 msgid "Accept"
 msgstr "Sprejmi"
 
-#: ../src/gui/main.cpp:3589
+#: ../src/gui/main.cpp:3561
 msgid "Incoming call from"
 msgstr "Dohodni klic od"
 
-#: ../src/gui/main.cpp:3602
+#: ../src/gui/main.cpp:3574
 msgid "Remote URI:"
 msgstr "Oddaljen URL:"
 
-#: ../src/gui/main.cpp:3614
+#: ../src/gui/main.cpp:3586
 msgid "Remote Application:"
 msgstr "Oddaljen program:"
 
 #. Add title
-#: ../src/gui/main.cpp:3686
-#: ../src/gui/main.cpp:3845
+#: ../src/gui/main.cpp:3638
+#: ../src/gui/main.cpp:3742
 msgid "Ekiga"
 msgstr "Ekiga"
 
-#: ../src/gui/main.cpp:3933
+#: ../src/gui/main.cpp:3870
 #, c-format
 msgid "Missed calls: %d - Voice Mails: %d"
 msgstr "Zgrešeni klici: %d - Glasovna pošta: %d"
 
-#: ../src/gui/main.cpp:4110
+#: ../src/gui/main.cpp:4047
 #, c-format
 msgid "TX: %dx%d "
 msgstr "TX: %dx%d "
 
-#: ../src/gui/main.cpp:4113
+#: ../src/gui/main.cpp:4050
 #, c-format
 msgid "RX: %dx%d "
 msgstr "RX: %dx%d "
 
-#: ../src/gui/main.cpp:4115
+#: ../src/gui/main.cpp:4052
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -2424,35 +2285,35 @@ msgstr ""
 "Pokvarjeni paketi: %.1f %%\n"
 "Predpomnilnik trepetanja: %d ms%s%s%s"
 
-#: ../src/gui/main.cpp:4268
+#: ../src/gui/main.cpp:4203
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "Izpiše razhroščevalna sporočila v konzolo (raven med 1 in 6)"
 
-#: ../src/gui/main.cpp:4273
+#: ../src/gui/main.cpp:4208
 msgid "Makes Ekiga call the given URI"
 msgstr "Ekigi ukaže klic podanega URL"
 
-#: ../src/gui/main.cpp:4369
+#: ../src/gui/main.cpp:4312
 msgid "No usable audio plugin detected"
 msgstr "Noben uporaben zvočni vstavek ni bil zaznan"
 
-#: ../src/gui/main.cpp:4370
+#: ../src/gui/main.cpp:4313
 msgid "Ekiga didn't find any usable audio plugin. Make sure that your installation is correct."
 msgstr "Ekiga ni našla nobenega uporabnega zvočnega vstavka. Prepričajte se, da je vaša namestitev pravilna."
 
-#: ../src/gui/main.cpp:4373
+#: ../src/gui/main.cpp:4316
 msgid "No usable audio codecs detected"
 msgstr "Ni zaznan noben uporaben kodek zvoka"
 
-#: ../src/gui/main.cpp:4374
+#: ../src/gui/main.cpp:4317
 msgid "Ekiga didn't find any usable audio codec. Make sure that your installation is correct."
 msgstr "Program ne zazna nobenega uporabnega zvočnega kodeka. Prepričajte se, da je vaša namestitev pravilna."
 
-#: ../src/gui/main.cpp:4380
+#: ../src/gui/main.cpp:4323
 msgid "Configuration database corruption"
 msgstr "Napaka v zbirki nastavitev"
 
-#: ../src/gui/main.cpp:4381
+#: ../src/gui/main.cpp:4324
 #, c-format
 msgid ""
 "Ekiga got an invalid value for the configuration key %s.\n"
@@ -2471,502 +2332,453 @@ msgstr ""
 msgid "Error"
 msgstr "Napaka"
 
-#: ../src/gui/preferences.cpp:409
-msgid "Personal Information"
-msgstr "Osebni podatki"
+#: ../src/gui/preferences.cpp:386
+msgid "_Full name:"
+msgstr "Polno _Ime:"
 
-#: ../src/gui/preferences.cpp:412
-msgid "_First name:"
-msgstr "_Ime:"
-
-#: ../src/gui/preferences.cpp:419
-msgid "Sur_name:"
-msgstr "_Priimek:"
-
-#: ../src/gui/preferences.cpp:421
-msgid "Enter your surname"
-msgstr "Vnesite vaš priimek"
+#: ../src/gui/preferences.cpp:388
+msgid "Enter your first name"
+msgstr "Vnesite vaše ime"
 
 #. Add the update button
-#: ../src/gui/preferences.cpp:425
-#: ../src/gui/preferences.cpp:698
+#: ../src/gui/preferences.cpp:393
+#: ../src/gui/preferences.cpp:663
 msgid "_Apply"
 msgstr "_Uporabi"
 
-#: ../src/gui/preferences.cpp:425
+#: ../src/gui/preferences.cpp:393
 msgid "Click here to update the users directory you are registered to with the new First Name, Last Name, E-Mail, Comment and Location"
 msgstr "Kliknite tu za posodobitev imenika uporabnikov, na katerega ste prijavljeni, z novim imenom, priimkom, e-pošto, komentarjem in krajem"
 
-#: ../src/gui/preferences.cpp:439
+#: ../src/gui/preferences.cpp:407
 msgid "Ekiga GUI"
 msgstr "GUI Ekige"
 
-#: ../src/gui/preferences.cpp:441
+#: ../src/gui/preferences.cpp:409
 msgid "Start _hidden"
 msgstr "Začni _skrito"
 
-#: ../src/gui/preferences.cpp:447
+#: ../src/gui/preferences.cpp:415
 msgid "Video Display"
 msgstr "Prikaz videa"
 
-#: ../src/gui/preferences.cpp:449
+#: ../src/gui/preferences.cpp:417
 msgid "Place windows displaying video _above other windows"
 msgstr "Okn_a, ki prikazujejo video, postavi nad ostala"
 
-#: ../src/gui/preferences.cpp:454
+#: ../src/gui/preferences.cpp:422
 msgid "Auto Away"
 msgstr "Samodejno nedosegljiv"
 
-#: ../src/gui/preferences.cpp:456
+#: ../src/gui/preferences.cpp:424
 msgid "Timeout after which the user is automatically set as away:"
 msgstr "Časovni zamik po katerem uporabnik samodejno postane zaseden:"
 
-#: ../src/gui/preferences.cpp:456
+#: ../src/gui/preferences.cpp:424
 msgid "Automatically set the user as away after the timeout has elapsed (in minutes)"
 msgstr "Samodejno označi uporabnika kot zasedenega, ko preteče določen čas (v minutah)"
 
-#: ../src/gui/preferences.cpp:466
+#: ../src/gui/preferences.cpp:434
 msgid "Call Forwarding"
 msgstr "Posredovanje klicev"
 
-#: ../src/gui/preferences.cpp:468
+#: ../src/gui/preferences.cpp:436
 msgid "_Always forward calls to the given host"
 msgstr "Vedno posreduj klice na d_anega gostitelja"
 
-#: ../src/gui/preferences.cpp:468
+#: ../src/gui/preferences.cpp:436
 msgid "If enabled, all incoming calls will be forwarded to the host that is specified in the protocol settings"
 msgstr "Če je omogočeno, bodo vsi dohodni klici posredovani gostitelju, ki je naveden v nastavitvah protokola"
 
-#: ../src/gui/preferences.cpp:470
+#: ../src/gui/preferences.cpp:438
 msgid "Forward calls to the given host if _no answer"
 msgstr "Če _ni odgovora, posreduj klice danemu gostitelju"
 
-#: ../src/gui/preferences.cpp:470
+#: ../src/gui/preferences.cpp:438
 msgid "If enabled, all incoming calls will be forwarded to the host that is specified in the protocol settings if you do not answer the call"
 msgstr "Če je omogočeno in če ne odgovorite, bodo vsi dohodni klici posredovani gostitelju, ki je naveden v nastavitvah protokola"
 
-#: ../src/gui/preferences.cpp:472
+#: ../src/gui/preferences.cpp:440
 msgid "Forward calls to the given host if _busy"
 msgstr "Ko sem _zaseden, posreduj klice danemu gostitelju"
 
-#: ../src/gui/preferences.cpp:472
+#: ../src/gui/preferences.cpp:440
 msgid "If enabled, all incoming calls will be forwarded to the host that is specified in the protocol settings if you already are in a call or if you are in Do Not Disturb mode"
 msgstr "Če je omogočeno in že kličete ali pa je vaše stanje Ne moti, bodo vsi dohodni klici posredovani gostitelju, ki je naveden v nastavitvah protokola"
 
-#: ../src/gui/preferences.cpp:476
-#: ../src/gui/preferences.cpp:1564
+#: ../src/gui/preferences.cpp:444
+#: ../src/gui/preferences.cpp:1446
 msgid "Call Options"
 msgstr "Možnosti klicev"
 
 #. Add all the fields
-#: ../src/gui/preferences.cpp:479
-msgid "Automatically _clear calls after 30 seconds of inactivity"
-msgstr "Samodejno počisti kli_ce po 30 sekundah nedejavnosti"
-
-#: ../src/gui/preferences.cpp:481
+#: ../src/gui/preferences.cpp:447
 msgid "Timeout to reject or forward unanswered incoming calls (in seconds):"
 msgstr "Zakasnitev za zavrnitev ali posredovanje neodgovorjenih dohodnih klicev (v sekundah):"
 
-#: ../src/gui/preferences.cpp:515
+#: ../src/gui/preferences.cpp:481
 msgid "Ekiga Sound Events"
 msgstr "Zvočni dogodki Ekige"
 
-#: ../src/gui/preferences.cpp:564
-#: ../src/gui/preferences.cpp:573
-#: ../src/gui/preferences.cpp:582
+#: ../src/gui/preferences.cpp:530
+#: ../src/gui/preferences.cpp:539
+#: ../src/gui/preferences.cpp:548
 msgid "Event"
 msgstr "Dogodek"
 
-#: ../src/gui/preferences.cpp:594
+#: ../src/gui/preferences.cpp:560
 msgid "Choose a sound"
 msgstr "Izberi zvok"
 
-#: ../src/gui/preferences.cpp:600
+#: ../src/gui/preferences.cpp:566
 msgid "Wavefiles"
 msgstr "Datoteke WAV"
 
-#: ../src/gui/preferences.cpp:609
-#: ../src/gui/preferences.cpp:628
+#: ../src/gui/preferences.cpp:575
+#: ../src/gui/preferences.cpp:594
 msgid "Play"
 msgstr "Predvajaj"
 
-#: ../src/gui/preferences.cpp:642
+#: ../src/gui/preferences.cpp:608
 msgid "Alternative Output Device"
 msgstr "Alternativna izhodna naprava"
 
-#: ../src/gui/preferences.cpp:648
+#: ../src/gui/preferences.cpp:614
 msgid "Alternative output device:"
 msgstr "Alternativna izhodna naprava:"
 
-#: ../src/gui/preferences.cpp:648
+#: ../src/gui/preferences.cpp:614
 msgid "Select an alternative audio output device to use for sound events"
 msgstr "Izberite alternativno zvočno izhodno napravo za zvočne dogodke"
 
-#: ../src/gui/preferences.cpp:666
+#: ../src/gui/preferences.cpp:631
+msgid "None"
+msgstr "Brez"
+
+#: ../src/gui/preferences.cpp:632
 msgid "STUN"
 msgstr "STUN"
 
-#: ../src/gui/preferences.cpp:667
+#: ../src/gui/preferences.cpp:633
 msgid "IP Translation"
 msgstr "Prevajanje IP"
 
-#: ../src/gui/preferences.cpp:680
+#: ../src/gui/preferences.cpp:646
 msgid "Network Interface"
 msgstr "Omrežni vmesnik"
 
-#: ../src/gui/preferences.cpp:685
+#: ../src/gui/preferences.cpp:651
 msgid "Listen on:"
 msgstr "Poslušaj na:"
 
-#: ../src/gui/preferences.cpp:692
+#: ../src/gui/preferences.cpp:657
 msgid "NAT Settings"
 msgstr "Nastavitve NAT"
 
-#: ../src/gui/preferences.cpp:694
+#: ../src/gui/preferences.cpp:659
 msgid "NAT Traversal Method:"
 msgstr "Prehodna metoda NAT:"
 
-#: ../src/gui/preferences.cpp:696
+#: ../src/gui/preferences.cpp:661
 msgid "STUN Se_rver:"
 msgstr "St_režnik STUN:"
 
-#: ../src/gui/preferences.cpp:696
+#: ../src/gui/preferences.cpp:661
 msgid "The STUN server to use for STUN Support."
 msgstr "Strežnik STUN za uporabo pri podpori STUN."
 
-#: ../src/gui/preferences.cpp:698
+#: ../src/gui/preferences.cpp:663
 msgid "Click here to update your NAT settings"
 msgstr "Kliknite tu za posodobitev vaših nastavitev NAT"
 
-#: ../src/gui/preferences.cpp:710
+#: ../src/gui/preferences.cpp:675
 msgid "String"
 msgstr "Niz"
 
-#: ../src/gui/preferences.cpp:711
+#: ../src/gui/preferences.cpp:676
 msgid "Tone"
 msgstr "Ton"
 
-#: ../src/gui/preferences.cpp:712
-#: ../src/gui/preferences.cpp:763
+#: ../src/gui/preferences.cpp:677
+#: ../src/gui/preferences.cpp:728
 msgid "RFC2833"
 msgstr "RFC2833"
 
-#: ../src/gui/preferences.cpp:713
+#: ../src/gui/preferences.cpp:678
 msgid "Q.931"
 msgstr "Q.931"
 
-#: ../src/gui/preferences.cpp:719
-#: ../src/gui/preferences.cpp:773
+#: ../src/gui/preferences.cpp:684
+#: ../src/gui/preferences.cpp:738
 msgid "Misc Settings"
 msgstr "Mešane nastavitve"
 
-#: ../src/gui/preferences.cpp:721
+#: ../src/gui/preferences.cpp:686
 msgid "Default _gateway:"
 msgstr "Privzeti _prehod:"
 
-#: ../src/gui/preferences.cpp:724
-#: ../src/gui/preferences.cpp:778
+#: ../src/gui/preferences.cpp:689
+#: ../src/gui/preferences.cpp:743
 msgid "Forward _URI:"
 msgstr "Posreduj _URL:"
 
-#: ../src/gui/preferences.cpp:733
+#: ../src/gui/preferences.cpp:698
 msgid "Advanced Settings"
 msgstr "Napredne nastavitve"
 
 #. The toggles
-#: ../src/gui/preferences.cpp:736
+#: ../src/gui/preferences.cpp:701
 msgid "Enable H.245 _tunneling"
 msgstr "Omogoči tuneliranje H.245"
 
-#: ../src/gui/preferences.cpp:738
+#: ../src/gui/preferences.cpp:703
 msgid "Enable _early H.245"
 msgstr "Omogoči _zgodnji H.245"
 
-#: ../src/gui/preferences.cpp:740
+#: ../src/gui/preferences.cpp:705
 msgid "Enable fast _start procedure"
 msgstr "Omogoči po_stopek hitrega zagona"
 
-#: ../src/gui/preferences.cpp:740
+#: ../src/gui/preferences.cpp:705
 msgid "Connection will be established in Fast Start mode. Fast Start is a new way to start calls faster that was introduced in H.323v2. It is not supported by Netmeeting and using both Fast Start and H.245 Tunneling can crash some versions of Netmeeting."
 msgstr "Povezava bo vzpostavljena v načinu Hitri zagon, ki je nov način za hitrejši začetek klicev, kot jih omogoča H.323v2. Ne podpira ga Netmeeting, uporaba skupaj s tuneliranjem H.245 pa lahko povzroči sesutje nekaterih različic Netmeetinga."
 
-#: ../src/gui/preferences.cpp:746
-#: ../src/gui/preferences.cpp:786
+#: ../src/gui/preferences.cpp:711
+#: ../src/gui/preferences.cpp:751
 msgid "DTMF Mode"
 msgstr "Način DTMF"
 
-#: ../src/gui/preferences.cpp:748
-#: ../src/gui/preferences.cpp:788
+#: ../src/gui/preferences.cpp:713
+#: ../src/gui/preferences.cpp:753
 msgid "_Send DTMF as:"
 msgstr "_Pošlji DTMF kot:"
 
-#: ../src/gui/preferences.cpp:748
-#: ../src/gui/preferences.cpp:788
+#: ../src/gui/preferences.cpp:713
+#: ../src/gui/preferences.cpp:753
 msgid "This allows you to set the mode for DTMFs sending."
 msgstr "Nastavitev omogoča nastavljanje načina za pošiljanje DTMF."
 
-#: ../src/gui/preferences.cpp:764
+#: ../src/gui/preferences.cpp:729
 msgid "INFO"
 msgstr "Podrobnosti"
 
-#: ../src/gui/preferences.cpp:775
+#: ../src/gui/preferences.cpp:740
 msgid "_Outbound Proxy:"
 msgstr "_Zunanji posredovalni strežnik:"
 
-#: ../src/gui/preferences.cpp:808
+#: ../src/gui/preferences.cpp:773
 msgid "Audio Plugin"
 msgstr "Zvočni vstavek"
 
-#: ../src/gui/preferences.cpp:813
+#: ../src/gui/preferences.cpp:778
 msgid "Audio plugin:"
 msgstr "Zvočni vstavek:"
 
-#: ../src/gui/preferences.cpp:813
+#: ../src/gui/preferences.cpp:778
 msgid "The audio plugin that will be used to detect the devices and manage them."
 msgstr "Zvočni vstavek, ki bo uporabljen za zaznavo in upravljanje naprav."
 
-#: ../src/gui/preferences.cpp:819
-#: ../src/gui/preferences.cpp:1600
-msgid "Audio Devices"
-msgstr "Zvočne naprave"
-
-#: ../src/gui/preferences.cpp:826
+#: ../src/gui/preferences.cpp:791
 msgid "Output device:"
 msgstr "Izhodna naprava:"
 
-#: ../src/gui/preferences.cpp:833
-#: ../src/gui/preferences.cpp:902
+#: ../src/gui/preferences.cpp:798
+#: ../src/gui/preferences.cpp:867
 msgid "Input device:"
 msgstr "Vhodne naprave:"
 
 #. That button will refresh the device list
-#: ../src/gui/preferences.cpp:838
-#: ../src/gui/preferences.cpp:966
+#: ../src/gui/preferences.cpp:803
+#: ../src/gui/preferences.cpp:931
 msgid "_Detect devices"
 msgstr "_Zaznaj naprave"
 
-#: ../src/gui/preferences.cpp:838
-#: ../src/gui/preferences.cpp:966
+#: ../src/gui/preferences.cpp:803
+#: ../src/gui/preferences.cpp:931
 msgid "Click here to refresh the device list."
 msgstr "Kliknite za osvežitev seznama naprav."
 
-#: ../src/gui/preferences.cpp:874
+#: ../src/gui/preferences.cpp:839
 msgid "PAL (Europe)"
 msgstr "PAL (Evropa)"
 
-#: ../src/gui/preferences.cpp:875
+#: ../src/gui/preferences.cpp:840
 msgid "NTSC (America)"
 msgstr "NTSC (Amerika)"
 
-#: ../src/gui/preferences.cpp:876
+#: ../src/gui/preferences.cpp:841
 msgid "SECAM (France)"
 msgstr "SECAM (Francija)"
 
-#: ../src/gui/preferences.cpp:877
+#: ../src/gui/preferences.cpp:842
 msgid "Auto"
 msgstr "Samodejno"
 
-#: ../src/gui/preferences.cpp:886
+#: ../src/gui/preferences.cpp:851
 msgid "Video Plugin"
 msgstr "Vstavek videa"
 
-#: ../src/gui/preferences.cpp:890
+#: ../src/gui/preferences.cpp:855
 msgid "Video plugin:"
 msgstr "Vstavek videa:"
 
-#: ../src/gui/preferences.cpp:896
-#: ../src/gui/preferences.cpp:1604
+#: ../src/gui/preferences.cpp:861
 msgid "Video Devices"
 msgstr "Naprave videa"
 
 #. Video Channel
-#: ../src/gui/preferences.cpp:906
+#: ../src/gui/preferences.cpp:871
 msgid "Channel:"
 msgstr "Kanal:"
 
-#: ../src/gui/preferences.cpp:908
+#: ../src/gui/preferences.cpp:873
 msgid "Size:"
 msgstr "Velikost:"
 
-#: ../src/gui/preferences.cpp:908
+#: ../src/gui/preferences.cpp:873
 msgid "Select the transmitted video size"
 msgstr "Izberite velikost poslanega videa"
 
-#: ../src/gui/preferences.cpp:910
+#: ../src/gui/preferences.cpp:875
 msgid "Format:"
 msgstr "Oblika:"
 
 #. The file selector button
-#: ../src/gui/preferences.cpp:913
+#: ../src/gui/preferences.cpp:878
 msgid "Image:"
 msgstr "Slika:"
 
-#: ../src/gui/preferences.cpp:916
+#: ../src/gui/preferences.cpp:881
 msgid "Choose a Picture"
 msgstr "Izberite sliko"
 
-#: ../src/gui/preferences.cpp:920
+#: ../src/gui/preferences.cpp:885
 msgid "Preview"
 msgstr "Predogled"
 
-#: ../src/gui/preferences.cpp:930
+#: ../src/gui/preferences.cpp:895
 msgid "Images"
 msgstr "Slike"
 
+#: ../src/gui/preferences.cpp:955
 #: ../src/gui/preferences.cpp:992
-msgid "Available Audio Codecs"
-msgstr "Zvočni kodeki na voljo"
-
-#: ../src/gui/preferences.cpp:1008
-msgid "Audio Codecs Settings"
-msgstr "Nastavitve zvočnih kodekov"
-
-#. Translators: the full sentence is Automatically adjust jitter buffer
-#. between X and Y ms
-#: ../src/gui/preferences.cpp:1012
-msgid "Automatically adjust _jitter buffer between"
-msgstr "Samodejno prilagodi predpomnilnik _trepetanja med"
-
-#: ../src/gui/preferences.cpp:1012
-msgid "and"
-msgstr "in"
-
-#: ../src/gui/preferences.cpp:1012
-msgid "ms"
-msgstr "ms"
-
-#: ../src/gui/preferences.cpp:1012
-msgid "The minimum jitter buffer size for audio reception (in ms)."
-msgstr "Najmanjša velikost predpomnilnika trepetanja za sprejemanje zvoka (v ms)."
-
-#: ../src/gui/preferences.cpp:1012
-msgid "The maximum jitter buffer size for audio reception (in ms)."
-msgstr "Največja velikost predpomnilnika trepetanja za sprejemanje zvoka (v ms)."
-
-#: ../src/gui/preferences.cpp:1014
-msgid "Enable silence _detection"
-msgstr "_Omogoči zaznavanje tišine"
-
-#: ../src/gui/preferences.cpp:1014
-msgid "If enabled, use silence detection with the codecs supporting it."
-msgstr "Če je omogočeno, uporabi zaznavanje tišine s kodeki, ki ga podpirajo."
-
-#: ../src/gui/preferences.cpp:1016
-msgid "Enable echo can_celation"
-msgstr "O_mogoči odstranjevanje odmeva"
-
-#: ../src/gui/preferences.cpp:1016
-msgid "If enabled, use echo cancelation."
-msgstr "Če je omogočeno, uporabi odstranjevanje odmeva."
-
-#: ../src/gui/preferences.cpp:1033
-msgid "Available Video Codecs"
-msgstr "Zvočni kodeki na voljo"
-
-#: ../src/gui/preferences.cpp:1048
-msgid "Video Codecs Settings"
-msgstr "Nastavitve zvočnih kodekov"
-
-#: ../src/gui/preferences.cpp:1050
-msgid "Enable _video support"
-msgstr "Omogoči podporo _videa"
-
-#: ../src/gui/preferences.cpp:1050
-msgid "If enabled, allows video during calls."
-msgstr "Če je omogočeno, omogoči video med klici."
-
-#: ../src/gui/preferences.cpp:1052
-msgid "Maximum video _bitrate (in kbits/s):"
-msgstr "Največja _pasovna širina videa (v kB/s):"
-
-#: ../src/gui/preferences.cpp:1052
-msgid "The maximum video bitrate in kbits/s. The video quality and the number of transmitted frames per second (depends on codec) will be dynamically adjusted above their minimum during calls to try to minimize the bandwidth to the given value."
-msgstr "Največja pasovna širina videa v kb/s. Kakovost videa in število oddanih sličic na sekundo bosta med klici dinamično prilagojena nad najnižjo vrednostjo z namenom zmanjševanja pasovne širine na dano vrednost."
-
-#. Translators: the full sentence is Keep a minimum video quality of X %
-#: ../src/gui/preferences.cpp:1055
-msgid "Picture Quality"
-msgstr "Kakovost slike"
-
-#: ../src/gui/preferences.cpp:1055
-msgid "Choose if you want to favour frame rate or quality for the transmitted video."
-msgstr "Izberite, ali želite dati prednost hitrosti ali kakovosti prenesenega posnetka."
-
-#: ../src/gui/preferences.cpp:1501
-msgid "Play sound for new voice mails"
-msgstr "Predvajaj zvok ob novi glasovni pošti"
-
-#: ../src/gui/preferences.cpp:1510
-msgid "Play sound for new instant messages"
-msgstr "Predvajaj zvok ob novih neposrednih sporočilih"
-
-#: ../src/gui/preferences.cpp:1539
-msgid "Ekiga Preferences"
-msgstr "Nastavitve Ekige"
-
-#: ../src/gui/preferences.cpp:1554
-msgid "General"
-msgstr "Splošno"
-
-#: ../src/gui/preferences.cpp:1555
-msgid "Personal Data"
-msgstr "Osebni podatki"
-
-#: ../src/gui/preferences.cpp:1560
-msgid "General Settings"
-msgstr "Splošne nastavitve"
-
-#: ../src/gui/preferences.cpp:1569
-msgid "Sound Events"
-msgstr "Zvočni dogodki"
-
-#: ../src/gui/preferences.cpp:1573
-msgid "Protocols"
-msgstr "Protokoli"
-
-#: ../src/gui/preferences.cpp:1575
-msgid "Network Settings"
-msgstr "Omrežne nastavitve"
-
-#: ../src/gui/preferences.cpp:1580
-msgid "SIP Settings"
-msgstr "Nastavitve SIP"
-
-#: ../src/gui/preferences.cpp:1585
-msgid "H.323 Settings"
-msgstr "Nastavitve H.323"
-
-#: ../src/gui/preferences.cpp:1589
+#: ../src/gui/preferences.cpp:1476
+#: ../src/gui/preferences.cpp:1486
 msgid "Codecs"
 msgstr "Kodeki"
 
-#: ../src/gui/preferences.cpp:1591
-msgid "Audio Codecs"
-msgstr "Zvočni kodeki"
+#: ../src/gui/preferences.cpp:968
+#: ../src/gui/preferences.cpp:1005
+msgid "Settings"
+msgstr "Nastavitve"
 
-#: ../src/gui/preferences.cpp:1595
-msgid "Video Codecs"
-msgstr "Kodeki videa"
+#. Translators: the full sentence is Automatically adjust jitter buffer
+#. between X and Y ms
+#: ../src/gui/preferences.cpp:972
+msgid "Enable silence _detection"
+msgstr "_Omogoči zaznavanje tišine"
 
-#: ../src/gui/preferences.cpp:1599
+#: ../src/gui/preferences.cpp:972
+msgid "If enabled, use silence detection with the codecs supporting it."
+msgstr "Če je omogočeno, uporabi zaznavanje tišine s kodeki, ki ga podpirajo."
+
+#: ../src/gui/preferences.cpp:974
+msgid "Enable echo can_celation"
+msgstr "O_mogoči odstranjevanje odmeva"
+
+#: ../src/gui/preferences.cpp:974
+msgid "If enabled, use echo cancelation."
+msgstr "Če je omogočeno, uporabi odstranjevanje odmeva."
+
+#. Translators: the full sentence is Keep a minimum video quality of X %
+#: ../src/gui/preferences.cpp:1008
+msgid "Picture Quality"
+msgstr "Kakovost slike"
+
+#: ../src/gui/preferences.cpp:1008
+msgid "Choose if you want to favour frame rate or quality for the transmitted video."
+msgstr "Izberite, ali želite dati prednost hitrosti ali kakovosti prenesenega posnetka."
+
+#: ../src/gui/preferences.cpp:1010
+msgid "Maximum video _bitrate (in kbits/s):"
+msgstr "Največja _pasovna širina videa (v kB/s):"
+
+#: ../src/gui/preferences.cpp:1010
+msgid "The maximum video bitrate in kbits/s. The video quality and the number of transmitted frames per second (depends on codec) will be dynamically adjusted above their minimum during calls to try to minimize the bandwidth to the given value."
+msgstr "Največja pasovna širina videa v kb/s. Kakovost videa in število oddanih sličic na sekundo bosta med klici dinamično prilagojena nad najnižjo vrednostjo z namenom zmanjševanja pasovne širine na dano vrednost."
+
+#: ../src/gui/preferences.cpp:1383
+msgid "Play sound for new voice mails"
+msgstr "Predvajaj zvok ob novi glasovni pošti"
+
+#: ../src/gui/preferences.cpp:1392
+msgid "Play sound for new instant messages"
+msgstr "Predvajaj zvok ob novih neposrednih sporočilih"
+
+#: ../src/gui/preferences.cpp:1421
+msgid "Ekiga Preferences"
+msgstr "Nastavitve Ekige"
+
+#: ../src/gui/preferences.cpp:1436
+msgid "General"
+msgstr "Splošno"
+
+#: ../src/gui/preferences.cpp:1437
+msgid "Personal Data"
+msgstr "Osebni podatki"
+
+#: ../src/gui/preferences.cpp:1442
+msgid "General Settings"
+msgstr "Splošne nastavitve"
+
+#: ../src/gui/preferences.cpp:1451
+msgid "Sound Events"
+msgstr "Zvočni dogodki"
+
+#: ../src/gui/preferences.cpp:1455
+msgid "Protocols"
+msgstr "Protokoli"
+
+#: ../src/gui/preferences.cpp:1457
+msgid "Network Settings"
+msgstr "Omrežne nastavitve"
+
+#: ../src/gui/preferences.cpp:1462
+msgid "SIP Settings"
+msgstr "Nastavitve SIP"
+
+#: ../src/gui/preferences.cpp:1467
+msgid "H.323 Settings"
+msgstr "Nastavitve H.323"
+
+#: ../src/gui/preferences.cpp:1471
+msgid "Audio"
+msgstr "Zvok"
+
+#: ../src/gui/preferences.cpp:1472
+#: ../src/gui/preferences.cpp:1482
 msgid "Devices"
 msgstr "Naprave"
 
-#: ../src/gui/tools.cpp:173
+#: ../src/gui/preferences.cpp:1481
+msgid "Video"
+msgstr "Posnetek"
+
+#: ../src/gui/tools.cpp:179
 msgid "Invalid parameters"
 msgstr "Neveljavni parametri"
 
-#: ../src/gui/tools.cpp:173
+#: ../src/gui/tools.cpp:179
 msgid "Please provide your username and password in order to be able to use the PC-To-Phone service."
 msgstr "Vnesite vaše uporabniško ime in geslo, če želite uporabljati klice PC-telefon."
 
-#: ../src/gui/tools.cpp:309
-#: ../src/gui/tools.cpp:323
+#: ../src/gui/tools.cpp:315
+#: ../src/gui/tools.cpp:329
 msgid "PC-To-Phone Settings"
 msgstr "Nastavitve klicev PC-telefon"
 
 #. Introduction label
-#: ../src/gui/tools.cpp:314
+#: ../src/gui/tools.cpp:320
 msgid ""
 "You can make calls to regular phones and cell numbers worldwide using Ekiga. To enable this, you need to do three things. First create an account at the URL below. Then enter your account number and password. Finally, activate the registration below.\n"
 "\n"
@@ -2976,53 +2788,53 @@ msgstr ""
 "\n"
 "Storitev bo deloval le, če račun ustvarite s pomočjo URL v tem oknu."
 
-#: ../src/gui/tools.cpp:325
+#: ../src/gui/tools.cpp:331
 msgid "Account _number:"
 msgstr "Številka raču_na:"
 
-#: ../src/gui/tools.cpp:342
+#: ../src/gui/tools.cpp:348
 msgid "_Password:"
 msgstr "_Geslo:"
 
-#: ../src/gui/tools.cpp:361
+#: ../src/gui/tools.cpp:367
 msgid "Use PC-To-Phone service"
 msgstr "Uporabi storitev PC-telefon"
 
-#: ../src/gui/tools.cpp:373
+#: ../src/gui/tools.cpp:379
 msgid "Click on one of the following links to get more information about your existing Ekiga PC-To-Phone account, or to create a new account."
 msgstr "Kliknite na eno izmed naslednjih povezav za več podatkov o vaše obstoječem računu PC-telefon ali za ustvarjanje novega"
 
-#: ../src/gui/tools.cpp:381
+#: ../src/gui/tools.cpp:387
 msgid "Get an Ekiga PC-To-Phone account"
 msgstr "Dobi račun Ekige PC-telefon"
 
-#: ../src/gui/tools.cpp:395
+#: ../src/gui/tools.cpp:401
 msgid "Recharge the account"
 msgstr "Ponovno napolni račun"
 
-#: ../src/gui/tools.cpp:409
+#: ../src/gui/tools.cpp:415
 msgid "Consult the balance history"
 msgstr "Preglej zgodovino ravnovesja"
 
-#: ../src/gui/tools.cpp:423
+#: ../src/gui/tools.cpp:429
 msgid "Consult the calls history"
 msgstr "Preglej zgodovino klicev"
 
-#: ../src/gui/statusicon.cpp:354
+#: ../src/gui/statusicon.cpp:349
 #, c-format
 msgid "You have %d messages"
 msgstr "Prispelo je %d sporočil"
 
-#: ../src/gui/statusicon.cpp:355
+#: ../src/gui/statusicon.cpp:350
 #, c-format
 msgid "You have %d message"
 msgstr "Prispelo je %d sporočilo"
 
-#: ../src/gui/statusicon.cpp:487
+#: ../src/gui/statusicon.cpp:463
 msgid "_Contents"
 msgstr "_Vsebina"
 
-#: ../src/gui/statusicon.cpp:492
+#: ../src/gui/statusicon.cpp:468
 msgid "_About"
 msgstr "_O programu"
 
