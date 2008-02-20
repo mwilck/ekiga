@@ -37,8 +37,8 @@
  */
 
 
-#ifndef _EKIGAVIDEOIO_H_
-#define _EKIGAVIDEOIO_H_
+#ifndef _EKIGA_VIDEO_OUTPUT_H_
+#define _EKIGA_VIDEO_OUTPUT_H_
 
 #include "display-core.h"
 #include "common.h"

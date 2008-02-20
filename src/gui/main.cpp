@@ -4251,6 +4251,14 @@ main (int argc,
   }
 #endif
 
+  /* Configuration database initialization */
+#ifdef HAVE_GCONF
+  if (!gnomemeeting_conf_check ()) 
+    error = 3;
+#endif
+  /* Init gm_conf */
+  gm_conf_watch ();
+
   /* Ekiga initialisation */
   static GnomeMeeting instance;
   GnomeMeeting::Process ()->InitEngine ();
@@ -4265,11 +4273,7 @@ main (int argc,
     error = 1;
   GnomeMeeting::Process ()->BuildGUI ();
   
-  /* Configuration database initialization */
-#ifdef HAVE_GCONF
-  if (!gnomemeeting_conf_check ()) 
-    error = 3;
-#endif
+  /* Add depreciated notifiers */
   gnomemeeting_conf_init ();
 
   /* Show the window if there is no error, exit with a popup if there

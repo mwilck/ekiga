@@ -253,10 +253,6 @@ gnomemeeting_conf_init ()
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
 
 
-  /* Init gm_conf */
-  gm_conf_watch ();
-
-    
   /* There are in general 2 notifiers to attach to each widget :
    * - the notifier that will update the widget itself to the new key,
    *   that one is attached when creating the widget.
