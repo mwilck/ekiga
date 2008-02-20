@@ -688,6 +688,10 @@ lib/engine/display/Makefile
 lib/engine/display/skel/Makefile
 lib/engine/display/x/Makefile
 lib/engine/display/dx/Makefile
+lib/engine/vidinput/Makefile
+lib/engine/vidinput/skel/Makefile
+lib/engine/vidinput/mlogo/Makefile
+lib/engine/vidinput/ptlib/Makefile
 lib/engine/gui/Makefile
 lib/engine/gui/gtk-core/Makefile
 lib/engine/gui/gtk-frontend/Makefile

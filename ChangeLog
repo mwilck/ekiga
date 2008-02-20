@@ -1,4 +1,37 @@
 2008-02-20  Matthias Schneider  <ma30002000@yahoo.de>
+
+	* configure.ac:
+	* lib/engine/vidinput/Makefile.am: 
+	* lib/engine/vidinput/ptlib/vidinput-main-ptlib.h: 
+	* lib/engine/vidinput/ptlib/vidinput-manager-ptlib.cpp: 
+	* lib/engine/vidinput/ptlib/vidinput-manager-ptlib.h: 
+	* lib/engine/vidinput/ptlib/Makefile.am: 
+	* lib/engine/vidinput/ptlib/vidinput-main-ptlib.cpp: 
+	* lib/engine/vidinput/mlogo/vidinput-main-mlogo.cpp: 
+	* lib/engine/vidinput/mlogo/vidinput-main-mlogo.h: 
+	* lib/engine/vidinput/mlogo/vidinput-manager-mlogo.cpp: 
+	* lib/engine/vidinput/mlogo/Makefile.am: 
+	* lib/engine/vidinput/mlogo/vidinput-manager-mlogo.h: 
+	* lib/engine/vidinput/skel/vidinput-manager.h: 
+	* lib/engine/vidinput/skel/vidinput-info.h: 
+	* lib/engine/vidinput/skel/vidinput-gmconf-bridge.cpp: 
+	* lib/engine/vidinput/skel/Makefile.am: 
+	* lib/engine/vidinput/skel/vidinput-core.cpp: 
+	* lib/engine/vidinput/skel/vidinput-gmconf-bridge.h: 
+	* lib/engine/vidinput/skel/vidinput-core.h: 
+	* lib/engine/engine.cpp:
+	* lib/engine/Makefile.am:
+	Added the Video Input engine. Not activated yet. 
+	Preview video and all state changes between streaming video
+	and preview video handled by the core.
+	Added a Moving Logo Manager.
+	Added a PTLIB Video Input Manager.
+	Add a gmconf-bridge for all relevant keys.
+	Allow switching a device at any time, even during a call.
+	
+
+2008-02-20  Matthias Schneider  <ma30002000@yahoo.de>
+
 	* pixmaps/conv-icon.pl:
 	* pixmaps/icon.h:
 	Added a script to convert a png file to a static yuv variable in a header file.

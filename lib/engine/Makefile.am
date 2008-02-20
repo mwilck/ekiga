@@ -1,4 +1,4 @@
-SUBDIRS = framework addressbook presence gui protocol display components
+SUBDIRS = framework addressbook presence gui protocol display vidinput components
 
 noinst_LTLIBRARIES = libekiga_engine.la
 
@@ -17,6 +17,7 @@ INCLUDES = 								\
 	-I$(top_srcdir)/lib/engine/presence/avahi			\
 	-I$(top_srcdir)/lib/engine/presence/local-roster		\
 	-I$(top_srcdir)/lib/engine/display/skel				\
+	-I$(top_srcdir)/lib/engine/vidinput/skel			\
 	-I$(top_srcdir)/lib/engine/components/gmconf-personal-details
 
 # XVideo/X
@@ -33,6 +34,15 @@ INCLUDES +=                                             \
 	-I$(top_srcdir)/lib/engine/display/dx
 endif
 		
+# Default Input Devices
+INCLUDES +=                                             \
+	-I$(top_srcdir)/lib/engine/vidinput/mlogo
+
+# Default PTLIB Input Devices
+INCLUDES +=                                             \
+	-I$(top_srcdir)/lib/engine/vidinput/ptlib
+
+
 libekiga_engine_la_SOURCES = engine.h engine.cpp
 
 AM_CXXFLAGS = $(SIGC_CFLAGS) $(GTK_CFLAGS)
@@ -49,8 +59,17 @@ libekiga_engine_la_LIBADD = \
 	$(top_builddir)/lib/engine/presence/skel/libgmpresence.la 					\
 	$(top_builddir)/lib/engine/presence/local-roster/liblocal-roster.la 				\
 	$(top_builddir)/lib/engine/display/skel/libgmdisplay.la						\
+	$(top_builddir)/lib/engine/vidinput/skel/libgmvidinput.la					\
 	$(top_builddir)/lib/engine/components/gmconf-personal-details/libgmconfpersonaldetails.la	\
 	$(AM_LIBS)
+
+# Default Input Devices
+libekiga_engine_la_LIBADD += \
+	$(top_builddir)/lib/engine/vidinput/mlogo/libgmvidinput-mlogo.la
+
+# PTLIB Input Devices
+libekiga_engine_la_LIBADD += \
+	$(top_builddir)/lib/engine/vidinput/ptlib/libgmvidinput-ptlib.la
 
 # XVideo/X
 if !WIN32

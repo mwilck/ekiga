@@ -45,6 +45,7 @@
 #include "contact-core.h"
 #include "call-core.h"
 #include "display-core.h"
+#include "vidinput-core.h"
 #include "history-main.h"
 #include "local-roster-main.h"
 #include "local-roster-bridge.h"
@@ -59,6 +60,10 @@
 #ifdef HAVE_DX
 #include "display-main-dx.h"
 #endif
+
+#include "vidinput-main-mlogo.h"
+
+#include "vidinput-main-ptlib.h"
 
 #include "opal-main.h"
 
@@ -86,11 +91,13 @@ engine_init (int argc,
   Ekiga::ContactCore *contact_core = new Ekiga::ContactCore;
   Ekiga::CallCore *call_core = new Ekiga::CallCore;
   Ekiga::DisplayCore *display_core = new Ekiga::DisplayCore;
+  Ekiga::VidInputCore *vidinput_core = new Ekiga::VidInputCore(*display_core);
 
   core->add (*contact_core);
   core->add (*presence_core);
   core->add (*call_core);
   core->add (*display_core);
+  core->add (*vidinput_core);
   core->add (*runtime);
 
   if (!gmconf_personal_details_init (*core, &argc, &argv)) {
@@ -111,6 +118,16 @@ engine_init (int argc,
     return;
   }
 #endif
+
+  if (!vidinput_mlogo_init (*core, &argc, &argv)) {
+    delete core;
+    return;
+  }
+
+  if (!vidinput_ptlib_init (*core, &argc, &argv)) {
+    delete core;
+    return;
+  }
 
   if (!opal_init (*core, &argc, &argv)) {
     delete core;
@@ -163,4 +180,6 @@ engine_init (int argc,
     delete core;
     return;
   }
+
+  vidinput_core->setup_conf_bridge();
 }
