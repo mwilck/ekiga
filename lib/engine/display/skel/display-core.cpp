@@ -48,14 +48,19 @@ using namespace Ekiga;
 
 DisplayCore::DisplayCore ()
 {
+  PWaitAndSignal m(var_mutex);
+
   display_stats.rx_width = display_stats.rx_height = display_stats.rx_fps = 0;
   display_stats.tx_width = display_stats.tx_height = display_stats.tx_fps = 0;
   display_stats.rx_frames = 0;
   display_stats.tx_frames = 0;
+  number_times_started = 0;
 }
 
 void DisplayCore::add_manager (DisplayManager &manager)
 {
+  PWaitAndSignal m(var_mutex);
+
   managers.insert (&manager);
   manager_added.emit (manager);
 
@@ -81,6 +86,12 @@ void DisplayCore::visit_managers (sigc::slot<bool, DisplayManager &> visitor)
 
 void DisplayCore::start ()
 {
+   PWaitAndSignal m(var_mutex);
+
+   number_times_started++;
+   if (number_times_started > 1)
+     return;
+
   g_get_current_time (&last_stats);
 
   for (std::set<DisplayManager *>::iterator iter = managers.begin ();
@@ -92,6 +103,18 @@ void DisplayCore::start ()
 
 void DisplayCore::stop ()
 {
+  PWaitAndSignal m(var_mutex);
+
+  number_times_started--;
+
+  if (number_times_started < 0) {
+    number_times_started = 0;
+    return;
+  }
+
+  if (number_times_started != 0)
+    return;
+    
   for (std::set<DisplayManager *>::iterator iter = managers.begin ();
        iter != managers.end ();
        iter++) {
@@ -109,6 +132,8 @@ void DisplayCore::set_frame_data (unsigned width,
                                   bool local,
                                   int devices_nbr)
 {
+  var_mutex.Wait ();
+
   if (local) {
     display_stats.tx_frames++;
     display_stats.tx_width = width;
@@ -134,6 +159,8 @@ void DisplayCore::set_frame_data (unsigned width,
     g_get_current_time (&last_stats);
   }
 
+  var_mutex.Signal ();
+  
   for (std::set<DisplayManager *>::iterator iter = managers.begin ();
        iter != managers.end ();
        iter++) {
@@ -143,6 +170,8 @@ void DisplayCore::set_frame_data (unsigned width,
 
 void DisplayCore::set_display_info (const DisplayInfo & _display_info)
 {
+  PWaitAndSignal m(var_mutex);
+
   for (std::set<DisplayManager *>::iterator iter = managers.begin ();
        iter != managers.end ();
        iter++) {

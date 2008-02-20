@@ -44,6 +44,9 @@
 #ifdef None
 #undef None
 #endif
+#ifdef BadRequest
+#undef BadRequest
+#endif
 #endif
 //namespace Ekiga {
 

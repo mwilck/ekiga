@@ -47,6 +47,10 @@
 
 #include <glib.h>
 
+//FIXME
+#include "ptbuildopts.h"
+#include "ptlib.h"
+
 namespace Ekiga
 {
 
@@ -147,6 +151,10 @@ namespace Ekiga
 
       DisplayStats display_stats;
       GTimeVal last_stats;
+      int number_times_started;
+
+      PMutex var_mutex;     /* Protect start, stop and number_times_started */
+       
     };
 /**
  * @}
