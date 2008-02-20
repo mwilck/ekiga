@@ -435,6 +435,11 @@ XWindow::ProcessEvents()
                 else
                   ToggleFullscreen();
               break;
+
+    case DestroyNotify:
+              PTRACE(4, "X11\tWindow is being destroyed");
+              break;
+
     default:
               PTRACE(1, "X11\tUnknown X Event " << event.type << " received");
     }
