@@ -4242,6 +4242,14 @@ main (int argc,
   g_free (text_label);
 #endif
   
+  /* Ekiga initialisation */
+  static GnomeMeeting instance;
+
+  if (debug_level != 0)
+    PTrace::Initialise (PMAX (PMIN (4, debug_level), 0), NULL,
+			PTrace::Timestamp | PTrace::Thread
+			| PTrace::Blocks | PTrace::DateAndTime);
+
 #ifdef HAVE_DBUS
   if (!ekiga_dbus_claim_ownership ()) {
     ekiga_dbus_client_show ();
@@ -4256,19 +4264,14 @@ main (int argc,
   if (!gnomemeeting_conf_check ()) 
     error = 3;
 #endif
+
   /* Init gm_conf */
   gm_conf_watch ();
 
-  /* Ekiga initialisation */
-  static GnomeMeeting instance;
   GnomeMeeting::Process ()->InitEngine ();
   GnomeMeeting::Process ()->DetectInterfaces ();
   if (!GnomeMeeting::Process ()->DetectCodecs ()) 
     error = 2;
-  if (debug_level != 0)
-    PTrace::Initialise (PMAX (PMIN (4, debug_level), 0), NULL,
-			PTrace::Timestamp | PTrace::Thread
-			| PTrace::Blocks | PTrace::DateAndTime);
   if (!GnomeMeeting::Process ()->DetectDevices ()) 
     error = 1;
   GnomeMeeting::Process ()->BuildGUI ();
