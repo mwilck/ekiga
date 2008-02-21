@@ -49,8 +49,8 @@
 using namespace Ekiga;
 
 PreviewManager::PreviewManager (VidInputCore& _vidinput_core, DisplayCore& _display_core)
-: PThread (1000, NoAutoDeleteThread),
-  vidinput_core (_vidinput_core),
+: PThread (1000, NoAutoDeleteThread, HighestPriority, "PreviewManager"),
+    vidinput_core (_vidinput_core),
   display_core (_display_core)
 {
   frame = NULL;
@@ -101,11 +101,14 @@ void PreviewManager::Main ()
   unsigned width = 176;
   unsigned height = 144;;
   while (!stop_thread) {
-    vidinput_core.get_frame_data(width, height, frame);
 
-    if (frame){
-      display_core.set_frame_data(width, height, frame, true, 1);
-    }
+    vidinput_core.get_frame_data(width, height, frame);
+    display_core.set_frame_data(width, height, frame, true, 1);
+
+    // We have to sleep some time outside the mutex lock
+    // to give other threads time to get the mutex
+    // It will be taken into account by PAdaptiveDelay
+    Current()->Sleep (5);
   }
 }
 

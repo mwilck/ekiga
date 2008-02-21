@@ -1,3 +1,11 @@
+2008-02-21  Matthias Schneider  <ma30002000@yahoo.de>
+
+	* lib/engine/vidinput/skel/vidinput-core.cpp:
+	* lib/engine/display/common/display-manager-common.cpp:
+	Reintroduced a 5 ms sleep in the Preview Manager to give
+	other threads the opportunity to take the mutex.
+	Change priority of videoinput and videooutput threads.
+
 2008-02-20  Matthias Schneider  <ma30002000@yahoo.de>
 
 	* lib/engine/vidinput/skel/vidinput-gmconf-bridge.cpp:

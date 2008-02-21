@@ -47,7 +47,7 @@
 
 /* The functions */
 GMDisplayManager::GMDisplayManager(Ekiga::ServiceCore & _core)
-  : PThread (1000, NoAutoDeleteThread, HighPriority, "GMDisplayManager"),
+  : PThread (1000, NoAutoDeleteThread, HighestPriority, "GMDisplayManager"),
     core (_core), runtime (*(dynamic_cast<Ekiga::Runtime *> (_core.get ("runtime"))))
 {
 }
