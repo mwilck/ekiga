@@ -45,6 +45,8 @@
 #include "toolbox/toolbox.h"
 #include "assistant.h"
 
+#include "vidinput-core.h"
+
 G_DEFINE_TYPE(EkigaAssistant, ekiga_assistant, GTK_TYPE_ASSISTANT)
 
 struct _EkigaAssistantPrivate
@@ -798,18 +800,79 @@ create_video_manager_page (EkigaAssistant *assistant)
   gtk_assistant_set_page_complete (GTK_ASSISTANT (assistant), vbox, TRUE);
 }
 
+// FIXME: duplicate to gm_prefs_window_get_video_devices_list
+void 
+get_video_devices_list (Ekiga::ServiceCore *core,
+                                        std::vector<std::string> & plugin_list,
+                                        std::vector<std::string> & device_list)
+{
+  Ekiga::VidInputCore *vidinput_core = dynamic_cast<Ekiga::VidInputCore *> (core->get ("vidinput-core"));
+  std::vector <Ekiga::VidInputDevice> vidinput_devices;
+  Ekiga::VidInputDevice vidinput_device;
+
+  vidinput_core->get_vidinput_devices(vidinput_devices);
+
+  std::string plugin_string;
+  std::string device_string;
+
+  gchar *current_plugin = NULL;
+  current_plugin = gm_conf_get_string (VIDEO_DEVICES_KEY "plugin");
+
+  for (std::vector<Ekiga::VidInputDevice>::iterator iter = vidinput_devices.begin ();
+       iter != vidinput_devices.end ();
+       iter++) {
+
+    vidinput_device = (*iter);
+    plugin_string = vidinput_device.type + "/" + vidinput_device.source;
+    plugin_list.push_back(plugin_string);
+
+    if (current_plugin && plugin_string == current_plugin) {
+      device_string = vidinput_device.device;
+      device_list.push_back(device_string);
+    }
+  }
+
+  if (device_list.size() == 0) {
+    device_string = _("No device found");
+      device_list.push_back(device_string);
+  }
+
+  g_free (current_plugin);
+
+}
+// FIXME: duplicate to gm_prefs_window_convert_string_list
+gchar**
+convert_string_list (const std::vector<std::string> & list)
+{
+  gchar **array = NULL;
+  unsigned i;
+
+  array = (gchar**) malloc (sizeof(gchar*) * (list.size() + 1));
+  for (i = 0; i < list.size(); i++)
+    array[i] = (gchar*) list[i].c_str();
+  array[i] = NULL;
+
+  return array;
+}
+
 static void
 prepare_video_manager_page (EkigaAssistant *assistant)
 {
-  char **array;
-  gchar *video_manager;
+  std::vector <std::string> plugin_list;
+  std::vector <std::string> device_list;
+  gchar** array;
+  gchar* current_plugin;
 
-  array = GnomeMeeting::Process ()->GetVideoPlugins ().ToCharArray ();
-  video_manager = gm_conf_get_string (VIDEO_DEVICES_KEY "plugin");
+  get_video_devices_list (assistant->priv->core, plugin_list, device_list);
+
+  array = convert_string_list (plugin_list);
+
+  current_plugin = gm_conf_get_string (VIDEO_DEVICES_KEY "plugin");
 
   update_combo_box (GTK_COMBO_BOX (assistant->priv->video_manager),
-                    array, video_manager);
-  free (array);
+                    array, current_plugin);
+
+  g_free (array);
 }
 
 static void

@@ -49,8 +49,6 @@
 
 #include "accounts.h"
 
-#include "videoinput.h"
-
 #include "stun.h"
 
 #include "accountshandler.h"
@@ -222,52 +220,6 @@ class GMManager:
   bool AcceptCurrentIncomingCall ();
 
   
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Update the internal audio and video devices for playing
-   *                 and recording following the config database content.
-   *                 If a Quicknet card is used, it will be opened, and if
-   *                 a video grabber is used in preview mode, it will also
-   *"                be opened.
-   * PRE          :  /
-   */
-  void UpdateDevices ();
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Creates a video grabber.
-   * PRE          :  If TRUE, then the grabber will start
-   *                 grabbing after its creation. If TRUE,
-   *                 then the opening is done sync.
-   */  
-  GMVideoGrabber *CreateVideoGrabber (bool start_grabbing, 
-				      bool synchronous,
-				      unsigned width,
-				      unsigned height,
-				      unsigned rate);
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Removes the current video grabber, if any.
-   * PRE          :  /
-   */  
-  void RemoveVideoGrabber ();
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Returns the current videograbber, if any.
-   *                 The pointer is locked, which means that the device
-   *                 can't be deleted until the pointer is unlocked with
-   *                 Unlock. This is a protection to always manipulate
-   *                 existing objects. Notice that all methods in the
-   *                 GMH323Endpoint class related to the GMVideoGrabber
-   *                 use internal mutexes so that the pointer cannot be
-   *                 returned during a RemoveVideoGrabber/CreateVideoGrabber,
-   *                 among others. You should use those functions and not
-   *                 manually delete the GMVideoGrabber.
-   * PRE          :  /
-   */
-  GMVideoGrabber *GetVideoGrabber ();
-
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Returns the local or remote OpalConnection for the 
@@ -330,28 +282,6 @@ class GMManager:
 
   void OnMessageSent (const PString & to,
                       const PString & body);
-
-  /* DESCRIPTION  :  This callback is called when an input video device 
-   *                 has to be opened.
-   * BEHAVIOR     :  Initialise the PVideoInputDevice.
-   * PRE          :  /
-   */
-  bool CreateVideoInputDevice (const OpalConnection &,
-			       const OpalMediaFormat &,
-			       PVideoInputDevice * &,
-			       bool &);
-
-  
-  /* DESCRIPTION  :  This callback is called when an input video device 
-   *                 has to be opened.
-   * BEHAVIOR     :  Initialise the PVideoOutputDevice.
-   * PRE          :  /
-   */
-  bool CreateVideoOutputDevice(const OpalConnection &,
-			       const OpalMediaFormat &,
-			       bool,
-			       PVideoOutputDevice * &,
-			       bool &);
 
 
   /** Return the list of available codecs
@@ -640,7 +570,6 @@ class GMManager:
 
   /* The various components of the endpoint */
   GMAccountsEndpoint *manager;
-  GMVideoGrabber *video_grabber;
   GMH323Gatekeeper *gk;
   GMStunClient *sc;
 

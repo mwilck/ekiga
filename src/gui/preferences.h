@@ -41,6 +41,8 @@
 #define _PREFERENCES_H_
 
 #include "common.h"
+#include "framework/services.h"
+#include "vidinput-core.h"
 
 
 /* DESCRIPTION  :  /
@@ -59,8 +61,7 @@ void gm_prefs_window_update_interfaces_list (GtkWidget *prefs_window,
  */
 void gm_prefs_window_update_devices_list (GtkWidget *prefs_window,
 					  PStringArray audio_input_devices,
-					  PStringArray audio_output_devices,
-					  PStringArray video_input_devices);
+					  PStringArray audio_output_devices);
 
 
 /* DESCRIPTION  :  / 
@@ -76,7 +77,7 @@ void gm_prefs_window_sound_events_list_build (GtkWidget *prefs_window);
  *                 to appropriate callbacks, then returns it.
  * PRE          :  /
  */
-GtkWidget *gm_prefs_window_new ();
+GtkWidget *gm_prefs_window_new (Ekiga::ServiceCore *core);
 
 
 #endif

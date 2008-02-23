@@ -219,16 +219,7 @@ class GnomeMeeting : public PProcess
    */
   PStringArray GetInterfaces ();
 
-  
-  /* DESCRIPTION  : / 
-   * BEHAVIOR     : Returns the list of detected video devices. 
-   * 		    That doesn't force a redetection. Use DetectDevices 
-   * 		    for that.
-   * PRE          : /
-   */
-  PStringArray GetVideoInputDevices ();
-  
-  
+
   /* DESCRIPTION  : / 
    * BEHAVIOR     : Returns the list of detected audio input devices. 
    * 		    That doesn't force a redetection. Use DetectDevices 
@@ -256,13 +247,6 @@ class GnomeMeeting : public PProcess
   PStringArray GetAudioPlugins ();
   
   
-  /* DESCRIPTION  : / 
-   * BEHAVIOR     : Returns the list of detected video plugins. 
-   * 		    That doesn't force a redetection. Use DetectDevices 
-   * 		    for that.
-   * PRE          : /
-   */
-  PStringArray GetVideoPlugins ();
 
  private:
   
@@ -279,7 +263,6 @@ class GnomeMeeting : public PProcess
 
 
   /* Detected devices and plugins */
-  PStringArray video_input_devices;
   PStringArray audio_input_devices;
   PStringArray audio_output_devices;
   PStringArray audio_managers;

@@ -15,6 +15,7 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/engine/protocol/skel	\
 	-I$(top_srcdir)/lib/engine/protocol/sip		\
 	-I$(top_srcdir)/lib/engine/display/skel		\
+	-I$(top_srcdir)/lib/engine/vidinput/skel	\
 	-I$(top_srcdir)/lib/engine/framework		\
 	-I$(top_builddir)				\
 	$(GNOME_INCLUDEDIR)				\
@@ -74,8 +75,6 @@ ekiga_SOURCES +=			\
 ekiga_SOURCES +=			\
 	devices/audio.h			\
 	devices/audio.cpp		\
-	devices/fakevideoinput.h	\
-	devices/fakevideoinput.cpp	\
 	devices/videoinput.h		\
 	devices/videoinput.cpp		\
 	devices/videooutput.h           \

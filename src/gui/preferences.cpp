@@ -75,6 +75,7 @@ typedef struct _GmPreferencesWindow
   GtkWidget *audio_recorder;
   GtkWidget *video_device;
   GtkWidget *iface;
+  Ekiga::ServiceCore *core;
 } GmPreferencesWindow;
 
 #define GM_PREFERENCES_WINDOW(x) (GmPreferencesWindow *) (x)
@@ -804,6 +805,60 @@ gm_pw_init_audio_devices_page (GtkWidget *prefs_window,
 }
 
 
+void 
+gm_prefs_window_get_video_devices_list (Ekiga::ServiceCore *core,
+                                        std::vector<std::string> & plugin_list,
+                                        std::vector<std::string> & device_list)
+{
+  Ekiga::VidInputCore *vidinput_core = dynamic_cast<Ekiga::VidInputCore *> (core->get ("vidinput-core"));
+  std::vector <Ekiga::VidInputDevice> vidinput_devices;
+  Ekiga::VidInputDevice vidinput_device;
+
+  vidinput_core->get_vidinput_devices(vidinput_devices);
+
+  std::string plugin_string;
+  std::string device_string;
+
+  gchar *current_plugin = NULL;
+  current_plugin = gm_conf_get_string (VIDEO_DEVICES_KEY "plugin");
+
+  for (std::vector<Ekiga::VidInputDevice>::iterator iter = vidinput_devices.begin ();
+       iter != vidinput_devices.end ();
+       iter++) {
+
+    vidinput_device = (*iter);
+    plugin_string = vidinput_device.type + "/" + vidinput_device.source;
+    plugin_list.push_back(plugin_string);
+
+    if (current_plugin && plugin_string == current_plugin) {
+      device_string = vidinput_device.device;
+      device_list.push_back(device_string);
+    }
+  }
+
+  if (device_list.size() == 0) {
+    device_string = _("No device found");
+      device_list.push_back(device_string);
+  }
+
+  g_free (current_plugin);
+}
+
+gchar**
+gm_prefs_window_convert_string_list (const std::vector<std::string> & list)
+{
+  gchar **array = NULL;
+  unsigned i;
+
+  array = (gchar**) malloc (sizeof(gchar*) * (list.size() + 1));
+  for (i = 0; i < list.size(); i++)
+    array[i] = (gchar*) list[i].c_str();
+  array[i] = NULL;
+
+  return array;
+}
+
+
 static void
 gm_pw_init_video_devices_page (GtkWidget *prefs_window,
                                GtkWidget *container)
@@ -829,7 +884,7 @@ gm_pw_init_video_devices_page (GtkWidget *prefs_window,
 
   for (i=0; i< NB_VIDEO_SIZES; i++) {
 
-    video_size[i] = g_strdup_printf  ( "%dx%d", video_sizes[i].width, video_sizes[i].height);
+    video_size[i] = g_strdup_printf  ( "%dx%d", Ekiga::VideoSizes[i].width, Ekiga::VideoSizes[i].height);
   }
 
   video_size [NB_VIDEO_SIZES] = NULL;
@@ -850,22 +905,30 @@ gm_pw_init_video_devices_page (GtkWidget *prefs_window,
   subsection = gnome_prefs_subsection_new (prefs_window, container,
                                            _("Video Plugin"), 1, 2);
 
-  devs = GnomeMeeting::Process ()->GetVideoPlugins ();
-  array = devs.ToCharArray ();
-  gnome_prefs_string_option_menu_new (subsection, _("Video plugin:"), (const gchar **)array, VIDEO_DEVICES_KEY "plugin", _("The video plugin that will be used to detect the devices and manage them"), 0);
-  free (array);
+  std::vector <std::string> plugin_list;
+  std::vector <std::string> device_list;
 
+  gm_prefs_window_get_video_devices_list (pw->core, plugin_list, device_list);
+
+  array = gm_prefs_window_convert_string_list(plugin_list);
+
+  gnome_prefs_string_option_menu_new (subsection, _("Video plugin:"), (const gchar **)array, VIDEO_DEVICES_KEY "plugin", _("The video plugin that will be used to detect the devices and manage them"), 0);
+
+  g_free (array);
 
   /* The video devices related options */
   subsection = gnome_prefs_subsection_new (prefs_window, container,
                                            _("Video Devices"), 5, 3);
 
   /* The video device */
-  devs = GnomeMeeting::Process ()->GetVideoInputDevices ();
-  array = devs.ToCharArray ();
+
+  array = gm_prefs_window_convert_string_list(device_list);
+
   pw->video_device =
     gnome_prefs_string_option_menu_new (subsection, _("Input device:"), (const gchar **)array, VIDEO_DEVICES_KEY "input_device", _("Select the video input device to use. If an error occurs when using this device a test picture will be transmitted."), 0);
-  free (array);
+
+  g_free (array);
+
 
   /* Video Channel */
   gnome_prefs_spin_new (subsection, _("Channel:"), VIDEO_DEVICES_KEY "channel", _("The video channel number to use (to select camera, tv or other sources)"), 0.0, 10.0, 1.0, 3, NULL, false);
@@ -1282,12 +1345,10 @@ gm_prefs_window_update_interfaces_list (GtkWidget *prefs_window,
   free (array);
 }
 
-
 void 
 gm_prefs_window_update_devices_list (GtkWidget *prefs_window, 
 				     PStringArray audio_input_devices,
-				     PStringArray audio_output_devices,
-				     PStringArray video_input_devices)
+				     PStringArray audio_output_devices)
 {
   GmPreferencesWindow *pw = NULL;
 
@@ -1318,11 +1379,18 @@ gm_prefs_window_update_devices_list (GtkWidget *prefs_window,
 
 
   /* The Video player */
-  array = video_input_devices.ToCharArray ();
+  std::vector <std::string> plugin_list;
+  std::vector <std::string> device_list;
+
+  gm_prefs_window_get_video_devices_list (pw->core, plugin_list, device_list);
+
+  array = gm_prefs_window_convert_string_list(device_list);
+
   gnome_prefs_string_option_menu_update (pw->video_device,
 					 (const gchar **)array,
 					 VIDEO_DEVICES_KEY "input_device");
-  free (array);
+
+  g_free (array);
 }
 
 
@@ -1404,7 +1472,7 @@ gm_prefs_window_sound_events_list_build (GtkWidget *prefs_window)
 
 
 GtkWidget *
-gm_prefs_window_new ()
+gm_prefs_window_new (Ekiga::ServiceCore *core)
 {
   GmPreferencesWindow *pw = NULL;
 
@@ -1429,6 +1497,9 @@ gm_prefs_window_new ()
 
   /* The GMObject data */
   pw = new GmPreferencesWindow ();
+
+  pw->core = core;
+
   g_object_set_data_full (G_OBJECT (window), "GMObject", 
 			  pw, (GDestroyNotify) gm_pw_destroy);
 

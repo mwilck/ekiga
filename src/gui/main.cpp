@@ -90,6 +90,8 @@
 
 #include <libxml/parser.h>
 
+#include "vidinput-core.h"
+
 #include "call-core.h"
 #include "gtk-frontend.h"
 #include "services.h"
@@ -2389,7 +2391,6 @@ video_settings_changed_cb (G_GNUC_UNUSED GtkAdjustment *adjustment,
 			   G_GNUC_UNUSED gpointer data)
 { 
 /*  GMManager *ep = NULL;
-  GMVideoGrabber *video_grabber = NULL;
 
   bool success = FALSE;
 
@@ -2416,8 +2417,6 @@ video_settings_changed_cb (G_GNUC_UNUSED GtkAdjustment *adjustment,
      if the GDK lock is held as it will wait on the GDK lock before 
      updating the GUI */
 /*  gdk_threads_leave ();
-  if ((video_grabber = ep->GetVideoGrabber ())) {
-
     if (whiteness > 0)
       success = video_grabber->SetWhiteness (whiteness << 8);
     if (brightness > 0)
@@ -2426,8 +2425,7 @@ video_settings_changed_cb (G_GNUC_UNUSED GtkAdjustment *adjustment,
       success = video_grabber->SetColour (colour << 8) || success;
     if (contrast > 0)
       success = video_grabber->SetContrast (contrast << 8) || success;
-    video_grabber->Unlock ();
-  }
+
   gdk_threads_enter ();
 
   if (!success)
@@ -3795,6 +3793,57 @@ gm_main_window_new (Ekiga::ServiceCore & core)
 
   conn = display_core->hw_accel_status_changed.connect (sigc::bind (sigc::ptr_fun (on_hw_accel_status_changed_cb), (gpointer) window));
   mw->connections.push_back (conn);
+
+
+  Ekiga::VidInputCore *vidinput_core = dynamic_cast<Ekiga::VidInputCore *> (mw->core.get ("vidinput-core"));
+  Ekiga::VidInputDevice vidinput_device;
+  std::vector <Ekiga::VidInputDevice> vidinput_devices;
+  vidinput_core->get_vidinput_devices(vidinput_devices);
+
+  // we have to register the error callback here...		    
+// 	dialog_title =
+// 	  g_strdup_printf (_("Error while opening video device %s"),
+// 			   (const char *) input_device);
+// 
+// 	tmp_msg = g_strdup (_("A moving logo will be transmitted during calls. Notice that you can always transmit a given image or the moving logo by choosing \"Picture\" as video plugin and \"Moving logo\" or \"Static picture\" as device."));
+// 	switch (error_code) {
+// 	  
+// 	case 1:
+// 	  dialog_msg = g_strconcat (tmp_msg, "\n\n", _("There was an error while opening the device. Please check your permissions and make sure that the appropriate driver is loaded."), NULL);
+// 	  break;
+// 	  
+// 	case 2:
+// 	  dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Your video driver doesn't support the requested video format."), NULL);
+// 	  break;
+// 
+// 	case 3:
+// 	  dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Could not open the chosen channel."), NULL);
+// 	  break;
+//       
+// 	case 4:
+// 	  dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Your driver doesn't seem to support any of the color formats supported by Ekiga.\n Please check your kernel driver documentation in order to determine which Palette is supported."), NULL);
+// 	  break;
+// 	  
+// 	case 5:
+// 	  dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Error while setting the frame rate."), NULL);
+// 	  break;
+// 
+// 	case 6:
+// 	  dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Error while setting the frame size."), NULL);
+// 	  break;
+// 
+// 	default:
+// 	  break;
+// 	}
+// 
+// 	gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (main_window),
+// 					       VIDEO_DEVICES_KEY "enable_preview",
+// 					       dialog_title,
+// 					       "%s", dialog_msg);
+// 	g_free (dialog_msg);
+// 	g_free (dialog_title);
+// 	g_free (tmp_msg);
+// 
 
   /* New Call Engine signals */
   Ekiga::CallCore *call_core = dynamic_cast<Ekiga::CallCore *> (mw->core.get ("call-core"));

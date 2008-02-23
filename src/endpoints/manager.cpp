@@ -56,6 +56,8 @@
 #include "opal-call.h"
 #include "opal-codec-description.h"
 
+#include "vidinput-info.h"
+
 #include <opal/transcoders.h>
 #include <ptclib/http.h>
 #include <ptclib/html.h>
@@ -83,6 +85,7 @@ static void network_interface_changed_nt (G_GNUC_UNUSED gpointer id,
                                           gpointer data);
 
 
+
 /* DESCRIPTION  :  This notifier is called when the config database data
  *                 associated with the public ip changes.
  * BEHAVIOR     :  Updates the IP Translation address.
@@ -92,21 +95,6 @@ static void public_ip_changed_nt (G_GNUC_UNUSED gpointer id,
                                   GmConfEntry *entry, 
                                   gpointer data);
 
-
-/* DESCRIPTION  :  This callback is called when the video device changes
- *                 in the config database.
- * BEHAVIOR     :  It creates a new video grabber if preview is active with
- *                 the selected video device.
- *                 If preview is not enabled, then the potentially existing
- *                 video grabber is deleted provided we are not in
- *                 a call.
- *                 Notice that the video device can't be changed during calls,
- *                 but its setting can be changed.
- * PRE          :  data is a pointer to the GMManager.
- */
-static void video_device_changed_nt (G_GNUC_UNUSED gpointer id,
-                                     GmConfEntry *entry, 
-                                     gpointer data);
 
 
 /* DESCRIPTION  :  This callback is called when the status config value changes.
@@ -180,22 +168,6 @@ public_ip_changed_nt (G_GNUC_UNUSED gpointer id,
 }
 
 
-static void 
-video_device_changed_nt (G_GNUC_UNUSED gpointer id,
-			 GmConfEntry *entry, 
-			 gpointer data)
-{
-  GMManager *ep = (GMManager *) data;
-  
-  if ((gm_conf_entry_get_type (entry) == GM_CONF_BOOL) ||
-      (gm_conf_entry_get_type (entry) == GM_CONF_STRING) ||
-      (gm_conf_entry_get_type (entry) == GM_CONF_INT)) {
-
-    ep->UpdateDevices ();
-  }
-}
-
-
 /* DESCRIPTION  :  This callback is called when the status config value changes.
  * BEHAVIOR     :  Updates the presence for the endpoints.
  * PRE          :  /
@@ -223,7 +195,6 @@ GMManager::GMManager (Ekiga::ServiceCore & _core)
 : core (_core), runtime (*(dynamic_cast<Ekiga::Runtime *> (core.get ("runtime"))))
 {
   /* Initialise the endpoint paramaters */
-  video_grabber = NULL;
   SetCallingState (GMManager::Standby);
 
 #ifdef HAVE_AVAHI
@@ -257,7 +228,7 @@ GMManager::GMManager (Ekiga::ServiceCore & _core)
   SetVideoPreviewDevice (video);
   
   video = GetVideoInputDevice();
-  video.deviceName = "Moving logo";
+  video.deviceName = "EKIGA";
   SetVideoInputDevice (video);
 
   // Create endpoints
@@ -589,9 +560,9 @@ void GMManager::set_video_options (const GMManager::VideoOptions & options)
     if (media_format.GetDefaultSessionID () == OpalMediaFormat::DefaultVideoSessionID) {
 
       media_format.SetOptionInteger (OpalVideoFormat::FrameWidthOption (), 
-                                     video_sizes [options.size].width);  
+                                     Ekiga::VideoSizes [options.size].width);  
       media_format.SetOptionInteger (OpalVideoFormat::FrameHeightOption (), 
-                                     video_sizes [options.size].height);  
+                                     Ekiga::VideoSizes [options.size].height);  
       media_format.SetOptionInteger (OpalVideoFormat::FrameTimeOption (),
                                      (int) (90000 / options.maximum_frame_rate));
       media_format.SetOptionInteger (OpalVideoFormat::MaxBitRateOption (), 
@@ -663,8 +634,8 @@ void GMManager::get_video_options (GMManager::VideoOptions & options)
       int j = 0;
       for (j = 0; j < NB_VIDEO_SIZES; j++) {
 
-        if (video_sizes [j].width == media_format.GetOptionInteger (OpalVideoFormat::FrameWidthOption ())
-            && video_sizes [j].width == media_format.GetOptionInteger (OpalVideoFormat::FrameWidthOption ()))
+        if (Ekiga::VideoSizes [j].width == media_format.GetOptionInteger (OpalVideoFormat::FrameWidthOption ())
+            && Ekiga::VideoSizes [j].width == media_format.GetOptionInteger (OpalVideoFormat::FrameWidthOption ()))
           break;
       }
       options.size = j;
@@ -695,8 +666,6 @@ GMManager::Exit ()
 
   RemoveAccountsEndpoint ();
 
-  RemoveVideoGrabber ();
-
   RemoveSTUNClient ();
 }
 
@@ -711,47 +680,6 @@ GMManager::AcceptCurrentIncomingCall ()
   }
 
   return FALSE;
-}
-
-
-void GMManager::UpdateDevices ()
-{
-  bool preview = FALSE;
-  gchar *device_name = NULL;
-  unsigned size = 0;
-  unsigned max_frame_rate = 15;
-
-  /* Get the config settings */
-  gnomemeeting_threads_enter ();
-  preview = gm_conf_get_bool (VIDEO_DEVICES_KEY "enable_preview");
-  device_name = gm_conf_get_string (VIDEO_DEVICES_KEY "input_device");
-  size = gm_conf_get_int (VIDEO_DEVICES_KEY "size");
-  max_frame_rate = gm_conf_get_int (VIDEO_CODECS_KEY "max_frame_rate");
-  gnomemeeting_threads_leave ();
-
-  /* Do not change these values during calls */
-  if (GetCallingState () == GMManager::Standby) {
-
-    /* Video preview */
-    if (preview) {
-      GMVideoGrabber *vg = GetVideoGrabber ();
-      if (vg) {
-        vg->StopGrabbing (); 
-        vg->Unlock ();
-      }
-      PThread::Sleep (1000);
-      CreateVideoGrabber (TRUE, TRUE, video_sizes[size].width, video_sizes[size].height, max_frame_rate);
-    }
-    else 
-      RemoveVideoGrabber ();
-
-    /* Update the video input device */
-    PVideoDevice::OpenArgs video = GetVideoInputDevice();
-    video.deviceName = device_name;
-    SetVideoInputDevice (video);
-  }
-
-  g_free (device_name);
 }
 
 
@@ -947,51 +875,6 @@ GMManager::GetURL (PString protocol)
   g_free (account_url);
 
   return url;
-}
-
-
-GMVideoGrabber *
-GMManager::CreateVideoGrabber (bool start_grabbing,
-                               bool synchronous,
-			       unsigned width,
-			       unsigned height,
-			       unsigned rate)
-{
-  PWaitAndSignal m(vg_access_mutex);
-
-  if (video_grabber)
-    delete (video_grabber);
-
-  video_grabber = new GMVideoGrabber (start_grabbing, synchronous, width, height, rate, *this);
-
-  return video_grabber;
-}
-
-
-void
-GMManager::RemoveVideoGrabber ()
-{
-  PWaitAndSignal m(vg_access_mutex);
-
-  PTRACE(4, "GMManager\t Deleting grabber device");  //FIXME: There seems to be a problem in win32 since 2.0.x here
-  if (video_grabber) {
-
-    delete (video_grabber);
-  }      
-  PTRACE(4, "GMManager\t Sucessfully deleted grabber device");  //FIXME: There seems to be a problem in win32 since 2.0.x here
-  video_grabber = NULL;
-}
-
-
-GMVideoGrabber *
-GMManager::GetVideoGrabber ()
-{
-  PWaitAndSignal m(vg_access_mutex);
-
-  if (video_grabber)
-    video_grabber->Lock ();
-  
-  return video_grabber;
 }
 
 
@@ -1247,10 +1130,6 @@ GMManager::OnClearedCall (OpalCall & call)
 
   /* Reinitialize codecs */
   re_audio_codec = tr_audio_codec = re_video_codec = tr_video_codec = "";
-
-  /* Try to update the devices use if some settings were changed 
-     during the call */
-  UpdateDevices ();
 }
 
 
@@ -1337,9 +1216,6 @@ GMManager::Init ()
   else
     SetTranslationAddress (PString ("0.0.0.0")); 
   
-  /* Update general devices configuration */
-  UpdateDevices ();
-  
   /* Set the User Name and Alias */  
   SetUserNameAndAlias ();
 
@@ -1368,19 +1244,6 @@ GMManager::Init ()
 			network_interface_changed_nt, this);
   gm_conf_notifier_add (NAT_KEY "public_ip",
 			public_ip_changed_nt, this);
-  gm_conf_notifier_add (VIDEO_DEVICES_KEY "input_device", 
-			video_device_changed_nt, this);
-  gm_conf_notifier_add (VIDEO_DEVICES_KEY "channel", 
-			video_device_changed_nt, this);
-  gm_conf_notifier_add (VIDEO_DEVICES_KEY "size", 
-			video_device_changed_nt, this);
-  gm_conf_notifier_add (VIDEO_DEVICES_KEY "format", 
-			video_device_changed_nt, this);
-  gm_conf_notifier_add (VIDEO_DEVICES_KEY "image", 
-			video_device_changed_nt, this);
-  gm_conf_notifier_add (VIDEO_DEVICES_KEY "enable_preview", 
-			video_device_changed_nt, this);
-
   gm_conf_notifier_add (PERSONAL_DATA_KEY "status",
 			status_changed_nt, this);
 }
@@ -1640,95 +1503,6 @@ GMManager::DeviceVolume (PSoundChannel *sound_channel,
 
   return err;
 }
-
-
-bool
-GMManager::CreateVideoInputDevice (G_GNUC_UNUSED const OpalConnection &con,
-				   const OpalMediaFormat &format,
-				   PVideoInputDevice * & device,
-				   bool & auto_delete)
-{
-  GMVideoGrabber *vg = NULL;
-  auto_delete = FALSE;
-
-  unsigned width  = format.GetOptionInteger(OpalVideoFormat::FrameWidthOption (),  PVideoFrameInfo::QCIFWidth);
-  unsigned height = format.GetOptionInteger(OpalVideoFormat::FrameHeightOption (), PVideoFrameInfo::QCIFHeight);
-  unsigned rate   = round ((double)format.GetClockRate() / (double)format.GetFrameTime());
-
-  PTRACE(4, "GMManager\tCreating grabber with " << width << "x" << height << "/" << rate);
-  vg = GetVideoGrabber ();
-  if (!vg) {
-    CreateVideoGrabber (FALSE, TRUE, width, height, rate);
-    vg = GetVideoGrabber ();
-  } 
-  else {
-    if ((vg->GetWidth()     != width)  ||
-        (vg->GetHeight()    != height) ||
-        (vg->GetFrameRate() != rate)) {
-      // We have negotiated a different resolution than the 
-      // preview device was configure with
-      CreateVideoGrabber (FALSE, TRUE, width, height, rate);
-      vg = GetVideoGrabber ();
-    }
-  }
-
-  vg->StopGrabbing ();
-  device = vg->GetInputDevice ();
-  vg->Unlock ();
-  
-  return (device != NULL);
-}
-
-
-bool 
-GMManager::CreateVideoOutputDevice(G_GNUC_UNUSED const OpalConnection & connection,
-				   const OpalMediaFormat & format,
-				   bool preview,
-				   PVideoOutputDevice * & device,
-				   bool & auto_delete)
-{
-  const PVideoDevice::OpenArgs & args = videoOutputDevice;
-
-  /* Display of the input video, the display already
-   * has the same size as the grabber 
-   */
-  if (preview) {
-
-    GMVideoGrabber *vg = NULL;
-    auto_delete = FALSE;
-
-    vg = GetVideoGrabber ();
-
-    if (vg) {
-
-      device = vg->GetOutputDevice ();
-      vg->Unlock ();
-    }
-    return (device != NULL);
-  }
-  else { /* Display of the video we are receiving */
-    
-    auto_delete = TRUE;
-    device = PVideoOutputDevice::CreateDeviceByName (args.deviceName);
-    
-    if (device != NULL) {
-      
-      videoOutputDevice.width = 
-	format.GetOptionInteger(OpalVideoFormat::FrameWidthOption (),  PVideoFrameInfo::QCIFWidth);
-      videoOutputDevice.height = 
-	format.GetOptionInteger(OpalVideoFormat::FrameHeightOption (), PVideoFrameInfo::QCIFHeight);
-      videoOutputDevice.rate = format.GetClockRate() / format.GetFrameTime();
-
-      if (device->OpenFull (args, FALSE))
-	return TRUE;
-
-      delete device;
-    }
-  }
-
-  return FALSE;
-}
-
 
 void
 GMManager::on_dial (std::string uri)

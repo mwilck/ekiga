@@ -61,6 +61,7 @@
 #include "gmconf.h"
 
 #include "engine.h"
+#include "vidinput-core.h"
 
 #define new PNEW
 
@@ -213,12 +214,10 @@ bool
 GnomeMeeting::DetectDevices ()
 {
   gchar *audio_plugin = NULL;
-  gchar *video_plugin = NULL;
 
   PINDEX fake_idx;
 
   audio_plugin = gm_conf_get_string (AUDIO_DEVICES_KEY "plugin");
-  video_plugin = gm_conf_get_string (VIDEO_DEVICES_KEY "plugin");
  
   PWaitAndSignal m(dev_access_mutex);
   
@@ -229,15 +228,9 @@ GnomeMeeting::DetectDevices ()
   
   /* Detect the plugins */
   audio_managers = PSoundChannel::GetDriverNames ();
-  video_managers = PVideoInputDevice::GetDriverNames ();
   
-  fake_idx = video_managers.GetValuesIndex (PString ("FakeVideo"));
-  if (fake_idx != P_MAX_INDEX)
-    video_managers.RemoveAt (fake_idx);
 
   PTRACE (1, "Detected audio plugins: " << setfill (',') << audio_managers
-	  << setfill (' '));
-  PTRACE (1, "Detected video plugins: " << setfill (',') << video_managers
 	  << setfill (' '));
 
 #ifdef HAX_IXJ
@@ -246,13 +239,7 @@ GnomeMeeting::DetectDevices ()
 
   PTRACE (1, "Detected audio plugins: " << setfill (',') << audio_managers
 	  << setfill (' '));
-  PTRACE (1, "Detected video plugins: " << setfill (',') << video_managers
-	  << setfill (' '));
   
-
-  fake_idx = video_managers.GetValuesIndex (PString ("Picture"));
-  if (fake_idx == P_MAX_INDEX)
-    return FALSE;
 
   /* No audio plugin => Exit */
   if (audio_managers.GetSize () == 0)
@@ -260,8 +247,7 @@ GnomeMeeting::DetectDevices ()
   
   
   /* Detect the devices */
-  video_input_devices = PVideoInputDevice::GetDriversDeviceNames (video_plugin);
- 
+
   audio_input_devices = 
     PSoundChannel::GetDeviceNames (audio_plugin, PSoundChannel::Recorder);
   audio_output_devices = 
@@ -272,9 +258,6 @@ GnomeMeeting::DetectDevices ()
     audio_input_devices += PString (_("No device found"));
   if (audio_output_devices.GetSize () == 0)
     audio_output_devices += PString (_("No device found"));
-  if (video_input_devices.GetSize () == 0)
-    video_input_devices += PString (_("No device found"));
-
 
   PTRACE (1, "Detected the following audio input devices: "
 	  << setfill (',') << audio_input_devices << setfill (' ')
@@ -282,9 +265,6 @@ GnomeMeeting::DetectDevices ()
   PTRACE (1, "Detected the following audio output devices: "
 	  << setfill (',') << audio_output_devices << setfill (' ')
 	  << " with plugin " << audio_plugin);
-  PTRACE (1, "Detected the following video input devices: "
-	  << setfill (',') << video_input_devices << setfill (' ')
-	  << " with plugin " << video_plugin);
   
   PTRACE (1, "Detected the following audio input devices: " 
 	  << setfill (',') << audio_input_devices << setfill (' ') 
@@ -292,12 +272,8 @@ GnomeMeeting::DetectDevices ()
   PTRACE (1, "Detected the following audio output devices: " 
 	  << setfill (',') << audio_output_devices << setfill (' ') 
 	  << " with plugin " << audio_plugin);
-  PTRACE (1, "Detected the following video input devices: " 
-	  << setfill (',') << video_input_devices << setfill (' ')  
-	  << " with plugin " << video_plugin);
 
   g_free (audio_plugin);
-  g_free (video_plugin);
 
   gnomemeeting_sound_daemons_resume ();
 
@@ -305,8 +281,7 @@ GnomeMeeting::DetectDevices ()
   if (prefs_window)
     gm_prefs_window_update_devices_list (prefs_window, 
 					 audio_input_devices,
-					 audio_output_devices,
-					 video_input_devices);
+					 audio_output_devices);
   return TRUE;
 }
 
@@ -402,7 +377,7 @@ GtkWidget *
 GnomeMeeting::GetPrefsWindow (bool create)
 {
   if (!prefs_window && create)
-    prefs_window = gm_prefs_window_new ();
+    prefs_window = gm_prefs_window_new (service_core);
   return prefs_window;
 }
 
@@ -487,7 +462,6 @@ void GnomeMeeting::BuildGUI ()
 #endif
 }
 
-
 PStringArray 
 GnomeMeeting::GetInterfaces ()
 {
@@ -496,14 +470,6 @@ GnomeMeeting::GetInterfaces ()
   return interfaces;
 }
 
-
-PStringArray 
-GnomeMeeting::GetVideoInputDevices ()
-{
-  PWaitAndSignal m(dev_access_mutex);
-
-  return video_input_devices;
-}
 
 
 PStringArray 
@@ -531,15 +497,6 @@ GnomeMeeting::GetAudioPlugins ()
   PWaitAndSignal m(dev_access_mutex);
 
   return audio_managers;
-}
-
-
-PStringArray 
-GnomeMeeting::GetVideoPlugins ()
-{
-  PWaitAndSignal m(dev_access_mutex);
-
-  return video_managers;
 }
 
 

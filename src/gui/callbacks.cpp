@@ -274,7 +274,6 @@ quit_callback (G_GNUC_UNUSED GtkWidget *widget,
   Ekiga::ServiceCore *core = GnomeMeeting::Process ()->GetServiceCore ();
   GMManager *manager = dynamic_cast<GMManager*> (core->get("opal-component"));
   manager->ClearAllCalls ();
-  manager->RemoveVideoGrabber ();
   gdk_threads_enter ();
   
   main_window = GnomeMeeting::Process ()->GetMainWindow ();

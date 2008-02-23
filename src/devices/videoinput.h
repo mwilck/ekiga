@@ -37,221 +37,150 @@
  */
 
 
-#ifndef _VIDEO_GRABBER_H_
-#define _VIDEO_GRABBER_H_
+#ifndef _EKIGA_VIDEO_INPUT_H_
+#define _EKIGA_VIDEO_INPUT_H_
 
+#include "vidinput-core.h"
 #include "common.h"
 
-class GMManager;
-
-class GMVideoGrabber : public PThread
+class PVideoInputDevice_EKIGA : public PVideoInputDevice 
 {
-  PCLASSINFO(GMVideoGrabber, PThread);
-
+  PCLASSINFO(PVideoInputDevice_EKIGA, PVideoInputDevice);
+  
  public:
-
+  
   /* DESCRIPTION  :  The constructor.
-   * BEHAVIOR     :  Initialises the VideoGrabber, the VideoGrabber is opened
-   *                 asynchronously given the config parameters. If the opening
-   *                 fails, an error popup is displayed.
-   * PRE          :  First parameter is TRUE if the VideoGrabber must grab
-   *                 once opened. The second one is TRUE if the VideoGrabber
-   *                 must be opened synchronously. The last one is a 
-   *                 reference to the GMManager.
+   * BEHAVIOR     :  Creates the Fake Input Device.
+   * PRE          :  /
    */
-  GMVideoGrabber (bool start_grabbing,
-		  bool sync,
-		  unsigned _width,
-		  unsigned _height,
-		  unsigned _rate,
-		  GMManager &endpoint);
+  PVideoInputDevice_EKIGA (Ekiga::ServiceCore & core);
 
 
-  /* DESCRIPTION  :  The destructor.
+  /* DESCRIPTION  :  The destructor
    * BEHAVIOR     :  /
    * PRE          :  /
    */
-  ~GMVideoGrabber (void);
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Start to grab, i.e. read from the specified device 
-   *                 and display images in the main interface.
-   * PRE          :  /
-   */
-  void StartGrabbing (void);
+  ~PVideoInputDevice_EKIGA ();
 
   
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Stop to grab, i.e. read from the specified device 
-   *                 and display images in the main interface.
-   * PRE          :  /
-   */
-  void StopGrabbing (void);
+  virtual bool Open (const PString &name,
+     	             bool start_immediate = TRUE);
 
   
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Returns TRUE if we are grabbing.
-   * PRE          :  /
+  /**Determine of the device is currently open.
    */
-  bool IsGrabbing (void);
+  virtual bool IsOpen() ;
 
   
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Returns the PVideoInputDevice used to capture
-   *                 the camera images.
-   * PRE          :  /
+  /**Close the device.
    */
-  PVideoInputDevice *GetInputDevice (void);
+  virtual bool Close();
 
   
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Returns the PVideoOutputDevice used to display
-   *                 the camera images.
-   * PRE          :  /
+  /**Start the video device I/O.
    */
-  PVideoOutputDevice *GetOutputDevice (void);
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Sets the colour for the specified device.
-   * PRE          :  0 <= int <= 65535
-   */
-  bool SetColour (int colour);
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Sets the brightness for the specified device.
-   * PRE          :  0 <= int <= 65535
-   */
-  bool SetBrightness (int brightness);
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Sets the whiteness for the specified device.
-   * PRE          :  0 <= int <= 65535
-   */
-  bool SetWhiteness (int whiteness);
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Sets the contrast for the specified device.
-   * PRE          :  0 <= int <= 65535
-   */
-  bool SetContrast (int contrast);
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Returns respectively the whiteness, brightness, 
-   *                 colour, contrast for the specified device.
-   * PRE          :  Allocated pointers to int. Grabber must be opened.
-   */
-  void GetParameters (int *whiteness,
-		      int *brightness,
-		      int *colour,
-		      int *contrast);
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Lock the device, preventing it to be Closed and deleted.
-   * PRE          :  /
-   */
-  void Lock ();
+  virtual bool Start();
 
   
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Unlock the device.
-   * PRE          :  /
+  /**Stop the video device I/O capture.
    */
-  void Unlock ();
+  virtual bool Stop();
 
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Return current width
-   * PRE          :  /
-   */
-  unsigned GetWidth () { return width; };
 
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Return current height
-   * PRE          :  /
+  /**Determine if the video device I/O capture is in progress.
    */
-  unsigned GetHeight () { return height; };
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Return current frame rate
-   * PRE          :  /
-   */
-  unsigned GetFrameRate () { return frame_rate; };
+  virtual bool IsCapturing();
 
   
- protected:
-  void Main (void);
-  void VGOpen (void);
-  void VGClose (void);
-
-  unsigned width;
-  unsigned height;
-  unsigned frame_rate;
-  int whiteness;
-  int brightness;
-  int colour;
-  int contrast;
-
-  char video_buffer [3 * GM_CIF_WIDTH * GM_CIF_HEIGHT];
-
-  PVideoInputDevice *grabber;
-  PVideoOutputDevice *display;
-
-  bool stop;
-  bool is_grabbing;
-  bool synchronous;
-  bool is_opened;
-
-  PMutex var_mutex;      /* To protect variables that are read and written
-			    from various threads */
-  PMutex quit_mutex;     /* To exit */
-  PMutex device_mutex;   /* To Lock and Unlock and not exit until
-			    it is unlocked */
-  PSyncPoint thread_sync_point;
-
-  GMManager & ep;
-};
-
-
-class GMVideoTester : public PThread
-{
-  PCLASSINFO(GMVideoTester, PThread);
-
-
-public:
-
-  /* DESCRIPTION  :  The constructor.
-   * BEHAVIOR     :  
-   * PRE          :  /
-   */
-  GMVideoTester (gchar *manager,
-		 gchar *recorder);
-
-
-  /* DESCRIPTION  :  The destructor.
+  virtual bool SetFrameSize (unsigned int width,
+       		             unsigned int height);
+  
+  
+  /* DESCRIPTION  :  The destructor
    * BEHAVIOR     :  /
    * PRE          :  /
    */
-  ~GMVideoTester ();
+  virtual bool GetFrameData (BYTE *a, PINDEX *i = NULL);
 
 
-  void Main ();
+  /* DESCRIPTION  :  The destructor
+   * BEHAVIOR     :  /
+   * PRE          :  /
+   */
+  virtual bool GetFrameDataNoDelay (BYTE *frame, PINDEX *i = NULL);
 
+  
+  virtual bool TestAllFormats ();
+
+  
+  /**Get the maximum frame size in bytes.
+  */
+  virtual PINDEX GetMaxFrameBytes();
+
+  
+  /** Given a preset interval of n milliseconds, this function
+      returns n msecs after the previous frame capture was initiated.
+  */
+//  virtual void WaitFinishPreviousFrame();
+
+  
+  /**Set the video format to be used.
+
+  Default behaviour sets the value of the videoFormat variable and then
+  returns the IsOpen() status.
+  */
+  virtual bool SetVideoFormat (VideoFormat newFormat);
+  
+  /**Get the number of video channels available on the device.
+
+  Default behaviour returns 1.
+  */
+  virtual int GetNumChannels() ;
+
+  
+  /**Set the video channel to be used on the device.
+
+  Default behaviour sets the value of the channelNumber variable and then
+  returns the IsOpen() status.
+  */
+  virtual bool SetChannel (int newChannel);
+			
+
+  /**Set the colour format to be used.
+
+  Default behaviour sets the value of the colourFormat variable and then
+  returns the IsOpen() status.
+  */
+  virtual bool SetColourFormat (const PString &newFormat);
+
+  
+  /**Set the video frame rate to be used on the device.
+
+  Default behaviour sets the value of the frameRate variable and then
+  return the IsOpen() status.
+  */
+  virtual bool SetFrameRate (unsigned rate);
+
+  
+  virtual bool GetFrameSizeLimits (unsigned &minWidth,
+			           unsigned &minHeight,
+			           unsigned &maxWidth,
+			           unsigned &maxHeight);
+  
+  virtual bool GetParameters (int *whiteness,
+		              int *brightness,
+		              int *colour,
+		              int *contrast,
+		              int *hue);
+  
+
+  virtual PStringArray GetDeviceNames() const;
 
 protected:
+  Ekiga::ServiceCore & core;
+  Ekiga::VidInputCore & vidinput_core;
 
-  PString video_manager;
-  PString video_recorder;
-
-  GtkWidget *test_label;
-  GtkWidget *test_dialog;
-
-  PMutex quit_mutex;
-  PSyncPoint thread_sync_point;
+  bool opened;
 };
+
 #endif
