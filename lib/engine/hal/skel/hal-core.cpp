@@ -1,0 +1,116 @@
+
+/*
+ * Ekiga -- A VoIP and Video-Conferencing application
+ * Copyright (C) 2000-2008 Damien Sandras
+
+ * This program is free software; you can  redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version. This program is distributed in the hope
+ * that it will be useful, but WITHOUT ANY WARRANTY; without even the
+ * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
+ *
+ * Ekiga is licensed under the GPL license and as a special exception, you
+ * have permission to link or otherwise combine this program with the
+ * programs OPAL, OpenH323 and PWLIB, and distribute the combination, without
+ * applying the requirements of the GNU GPL to the OPAL, OpenH323 and PWLIB
+ * programs, as long as you do follow the requirements of the GNU GPL for all
+ * the rest of the software thus combined.
+ */
+
+
+/*
+ *                         hal-core.cpp  -  description
+ *                         ------------------------------------------
+ *   begin                : written in 2008 by Matthias Schneider
+ *   copyright            : (c) 2008 by Matthias Schneider
+ *   description          : declaration of the interface of a hal core.
+ *                          A hal core manages a HalManager.
+ *
+ */
+
+#include <iostream>
+#include <sstream>
+
+#include "config.h"
+
+#include "hal-core.h"
+#include "hal-manager.h"
+
+
+using namespace Ekiga;
+
+HalCore::HalCore ()
+{
+}
+
+HalCore::~HalCore ()
+{
+}
+
+
+void HalCore::add_manager (HalManager &manager)
+{
+  managers.insert (&manager);
+  manager_added.emit (manager);
+
+  manager.video_input_device_added.connect (sigc::mem_fun (this, &HalCore::on_video_input_device_added));
+  manager.video_input_device_removed.connect (sigc::mem_fun (this, &HalCore::on_video_input_device_removed));
+
+  manager.audio_input_device_added.connect (sigc::mem_fun (this, &HalCore::on_audio_input_device_added));
+  manager.audio_input_device_removed.connect (sigc::mem_fun (this, &HalCore::on_audio_input_device_removed));
+
+  manager.audio_output_device_added.connect (sigc::mem_fun (this, &HalCore::on_audio_output_device_added));
+  manager.audio_output_device_removed.connect (sigc::mem_fun (this, &HalCore::on_audio_output_device_removed));
+
+  manager.network_interface_up.connect (sigc::mem_fun (this, &HalCore::on_network_interface_up));
+  manager.network_interface_down.connect (sigc::mem_fun (this, &HalCore::on_network_interface_down));
+}
+
+
+void HalCore::visit_managers (sigc::slot<bool, HalManager &> visitor)
+{
+  bool go_on = true;
+
+  for (std::set<HalManager *>::iterator iter = managers.begin ();
+       iter != managers.end () && go_on;
+       iter++)
+      go_on = visitor (*(*iter));
+}
+
+void HalCore::on_video_input_device_added (HalVideoInputDevice & video_input_device) {
+  video_input_device_added.emit (video_input_device);
+}
+
+void HalCore::on_video_input_device_removed (HalVideoInputDevice & video_input_device) {
+  video_input_device_removed.emit (video_input_device);
+}
+
+void HalCore::on_audio_input_device_added (HalAudioInputDevice & audio_input_device) {
+  audio_input_device_added.emit (audio_input_device);
+}
+
+void HalCore::on_audio_input_device_removed (HalAudioInputDevice & audio_input_device) {
+  audio_input_device_removed.emit (audio_input_device);
+}
+
+void HalCore::on_audio_output_device_added (HalAudioOutputDevice & audio_output_device) {
+  audio_output_device_added.emit (audio_output_device);
+}
+
+void HalCore::on_audio_output_device_removed (HalAudioOutputDevice & audio_output_device) {
+  audio_output_device_removed.emit (audio_output_device);
+}
+
+void HalCore::on_network_interface_up (HalNetworkInterface & network_interface) {
+  network_interface_up.emit (network_interface);
+}
+
+void HalCore::on_network_interface_down (HalNetworkInterface & network_interface) {
+  network_interface_down.emit (network_interface);
+}

@@ -1,4 +1,24 @@
 2008-02-23  Matthias Schneider  <ma30002000@yahoo.de>
+	* configure.ac:
+	* lib/engine/hal/Makefile.am:
+	* lib/engine/hal/dbus/hal-main-dbus.cpp:
+	* lib/engine/hal/dbus/hal-marshal.list:
+	* lib/engine/hal/dbus/hal-main-dbus.h:
+	* lib/engine/hal/dbus/hal-manager-dbus.cpp:
+	* lib/engine/hal/dbus/Makefile.am:
+	* lib/engine/hal/dbus/hal-manager-dbus.h:
+	* lib/engine/hal/skel/hal-core.h:
+	* lib/engine/hal/skel/hal-manager.h:
+	* lib/engine/hal/skel/Makefile.am:
+	* lib/engine/hal/skel/hal-core.cpp:
+	* lib/engine/engine.cpp:
+	* lib/engine/Makefile.am:
+	Add an initial implementation of a hal-core, and an 
+	implementation of a HalManager listening on dbus for
+	added/removed devices and network interfaces going up 
+	and down. Deactivated for now, some more work is needed,
+
+2008-02-23  Matthias Schneider  <ma30002000@yahoo.de>
 
 	* src/devices/fakevideoinput.h:
 	* src/devices/videoinput.cpp:

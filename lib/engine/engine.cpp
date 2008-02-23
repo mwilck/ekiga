@@ -46,6 +46,7 @@
 #include "call-core.h"
 #include "display-core.h"
 #include "vidinput-core.h"
+#include "hal-core.h"
 #include "history-main.h"
 #include "local-roster-main.h"
 #include "local-roster-bridge.h"
@@ -64,6 +65,10 @@
 #include "vidinput-main-mlogo.h"
 
 #include "vidinput-main-ptlib.h"
+
+#ifdef HAVE_DBUS
+#include "hal-main-dbus.h"
+#endif
 
 #include "opal-main.h"
 
@@ -92,12 +97,14 @@ engine_init (int argc,
   Ekiga::CallCore *call_core = new Ekiga::CallCore;
   Ekiga::DisplayCore *display_core = new Ekiga::DisplayCore;
   Ekiga::VidInputCore *vidinput_core = new Ekiga::VidInputCore(*display_core);
+  Ekiga::HalCore *hal_core = new Ekiga::HalCore;
 
   core->add (*contact_core);
   core->add (*presence_core);
   core->add (*call_core);
   core->add (*display_core);
   core->add (*vidinput_core);
+  core->add (*hal_core);
   core->add (*runtime);
 
   if (!gmconf_personal_details_init (*core, &argc, &argv)) {
@@ -128,6 +135,14 @@ engine_init (int argc,
     delete core;
     return;
   }
+
+#ifdef HAVE_DBUS
+// Do not use the dbus HAL for now until the main loop is moved
+//  if (!hal_dbus_init (*core, &argc, &argv)) {
+//    delete core;
+//    return;
+//  }
+#endif
 
   if (!opal_init (*core, &argc, &argv)) {
     delete core;

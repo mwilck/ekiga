@@ -1,4 +1,4 @@
-SUBDIRS = framework addressbook presence gui protocol display vidinput components
+SUBDIRS = framework addressbook presence gui protocol display vidinput hal components
 
 noinst_LTLIBRARIES = libekiga_engine.la
 
@@ -18,6 +18,7 @@ INCLUDES = 								\
 	-I$(top_srcdir)/lib/engine/presence/local-roster		\
 	-I$(top_srcdir)/lib/engine/display/skel				\
 	-I$(top_srcdir)/lib/engine/vidinput/skel			\
+	-I$(top_srcdir)/lib/engine/hal/skel				\
 	-I$(top_srcdir)/lib/engine/components/gmconf-personal-details
 
 # XVideo/X
@@ -42,6 +43,11 @@ INCLUDES +=                                             \
 INCLUDES +=                                             \
 	-I$(top_srcdir)/lib/engine/vidinput/ptlib
 
+# DBus / HALd
+if HAVE_DBUS
+INCLUDES +=                                             \
+	-I$(top_srcdir)/lib/engine/hal/dbus
+endif
 
 libekiga_engine_la_SOURCES = engine.h engine.cpp
 
@@ -60,6 +66,7 @@ libekiga_engine_la_LIBADD = \
 	$(top_builddir)/lib/engine/presence/local-roster/liblocal-roster.la 				\
 	$(top_builddir)/lib/engine/display/skel/libgmdisplay.la						\
 	$(top_builddir)/lib/engine/vidinput/skel/libgmvidinput.la					\
+	$(top_builddir)/lib/engine/hal/skel/libgmhal.la					\
 	$(top_builddir)/lib/engine/components/gmconf-personal-details/libgmconfpersonaldetails.la	\
 	$(AM_LIBS)
 
@@ -70,6 +77,12 @@ libekiga_engine_la_LIBADD += \
 # PTLIB Input Devices
 libekiga_engine_la_LIBADD += \
 	$(top_builddir)/lib/engine/vidinput/ptlib/libgmvidinput-ptlib.la
+
+# DBus/HALd
+if HAVE_DBUS
+libekiga_engine_la_LIBADD += \
+	$(top_builddir)/lib/engine/hal/dbus/libgmhal-dbus.la
+endif
 
 # XVideo/X
 if !WIN32

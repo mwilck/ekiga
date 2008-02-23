@@ -692,6 +692,9 @@ lib/engine/vidinput/Makefile
 lib/engine/vidinput/skel/Makefile
 lib/engine/vidinput/mlogo/Makefile
 lib/engine/vidinput/ptlib/Makefile
+lib/engine/hal/Makefile
+lib/engine/hal/skel/Makefile
+lib/engine/hal/dbus/Makefile
 lib/engine/gui/Makefile
 lib/engine/gui/gtk-core/Makefile
 lib/engine/gui/gtk-frontend/Makefile
