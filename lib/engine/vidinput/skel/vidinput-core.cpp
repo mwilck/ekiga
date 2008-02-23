@@ -179,6 +179,14 @@ void VidInputCore::get_vidinput_devices (std::vector <VidInputDevice> & vidinput
        iter != managers.end ();
        iter++)
     (*iter)->get_vidinput_devices (vidinput_devices);
+
+  if (PTrace::CanTrace(4)) {
+     for (std::vector<VidInputDevice>::iterator iter = vidinput_devices.begin ();
+         iter != vidinput_devices.end ();
+         iter++) {
+      PTRACE(4, "VidInputCore\tDetected Device: " << iter->type << "/" << iter->source << "/" << iter->device);
+    }
+  }
 }
 
 void VidInputCore::set_vidinput_device(const VidInputDevice & vidinput_device, int channel, VideoFormat format)
