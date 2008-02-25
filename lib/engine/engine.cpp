@@ -137,11 +137,10 @@ engine_init (int argc,
   }
 
 #ifdef HAVE_DBUS
-// Do not use the dbus HAL for now until the main loop is moved
-//  if (!hal_dbus_init (*core, &argc, &argv)) {
-//    delete core;
-//    return;
-//  }
+  if (!hal_dbus_init (*core, &argc, &argv)) {
+    delete core;
+    return;
+  }
 #endif
 
   if (!opal_init (*core, &argc, &argv)) {

@@ -54,18 +54,18 @@ namespace Ekiga
   class HalManager;
 
   typedef struct HalVideoInputDevice {
-    std::string source;
-    std::string device;
+    std::string category;
+    std::string name;
   };
 
   typedef struct HalAudioInputDevice {
-    std::string source;
-    std::string device;
+    std::string category;
+    std::string name;
   };
 
   typedef struct HalAudioOutputDevice {
-    std::string source;
-    std::string device;
+    std::string category;
+    std::string name;
   };
 
   typedef struct HalNetworkInterface {

@@ -37,6 +37,9 @@
 #include "hal-manager-dbus.h"
 #include "hal-marshal.h"
 
+#include <dbus/dbus-glib-lowlevel.h>
+#include <glib.h>
+
 //FIXME: for tracing
 #include "ptbuildopts.h"
 #include "ptlib.h"
@@ -52,7 +55,8 @@ HalManager_dbus::HalManager_dbus (Ekiga::ServiceCore & _core)
     g_error_free(error);
     return;
   }
-
+  dbus_connection_setup_with_g_main (dbus_g_connection_get_connection (bus), g_main_context_default());
+  
   hal_proxy = dbus_g_proxy_new_for_name (bus, "org.freedesktop.Hal",
                                               "/org/freedesktop/Hal/Manager",
                                               "org.freedesktop.Hal.Manager");
@@ -78,16 +82,7 @@ HalManager_dbus::HalManager_dbus (Ekiga::ServiceCore & _core)
   dbus_g_proxy_add_signal(nm_proxy, "DeviceNowActive", DBUS_TYPE_G_OBJECT_PATH, G_TYPE_INVALID);
   dbus_g_proxy_connect_signal(nm_proxy, "DeviceNowActive", G_CALLBACK(&device_now_active_cb_proxy), this, NULL);
 
-// The Main loop should be used from Ekiga itself
-       static GMainLoop *loop = g_main_loop_new (NULL, FALSE);
-
-       GMainContext *ctx = g_main_loop_get_context (loop);
-       while (g_main_context_pending (ctx))
-         g_main_context_iteration (ctx, FALSE);
-
-        dbus_g_connection_flush (bus);
-        g_main_loop_run (loop);
-// The Main loop should be used from Ekiga itself
+  dbus_g_connection_flush (bus);
 }
 
 HalManager_dbus::~HalManager_dbus ()
@@ -126,9 +121,44 @@ void HalManager_dbus::device_added_cb (const char *device)
   std::string type, name;
   HalDevice hal_device;
   hal_device.key = device;
-  get_device_type_name(device, hal_device.category, hal_device.product, hal_device.parent_product);
+  get_device_type_name(device, hal_device);
   hal_devices.push_back(hal_device);
-  PTRACE(4, "HalManager_dbus\tAdded device " << hal_device.category << "," << hal_device.product << " - " << hal_device.parent_product);
+  PTRACE(4, "HalManager_dbus\tAdded device " << hal_device.category << "," << hal_device.name << "," << hal_device.type);
+
+  if (hal_device.category == "alsa") {
+
+    if (hal_device.type == "capturing") {
+      Ekiga::HalAudioInputDevice audio_input_device;
+      audio_input_device.category = hal_device.category;
+      audio_input_device.name = hal_device.name;
+      audio_input_device_added.emit(audio_input_device);
+    }
+    else if (hal_device.type == "playback") {
+      Ekiga::HalAudioOutputDevice audio_output_device;
+      audio_output_device.category = hal_device.category;
+      audio_output_device.name = hal_device.name;
+      audio_output_device_added.emit(audio_output_device);
+    }
+  }
+  else if (hal_device.category == "oss") {
+      Ekiga::HalAudioInputDevice audio_input_device;
+      Ekiga::HalAudioOutputDevice audio_output_device;
+
+      audio_input_device.category = hal_device.category;
+      audio_input_device.name = hal_device.name;
+      audio_output_device.category = hal_device.category;
+      audio_output_device.name = hal_device.name;
+
+      audio_input_device_added.emit(audio_input_device);
+      audio_output_device_added.emit(audio_output_device);
+  }
+  else if (hal_device.category == "video4linux") {
+    Ekiga::HalVideoInputDevice video_input_device;
+    video_input_device.category = hal_device.category;
+    video_input_device.name = hal_device.name;
+    video_input_device_added.emit(video_input_device);
+  }
+
 }
 
 void HalManager_dbus::device_removed_cb (const char *device)
@@ -145,7 +175,7 @@ void HalManager_dbus::device_removed_cb (const char *device)
       }
 
   if (found) {
-    PTRACE(4, "HalManager_dbus\tRemoved device " << iter->category << "," << iter->product << " - " << iter->parent_product);
+    PTRACE(4, "HalManager_dbus\tRemoved device " << iter->category << "," << iter->name << "," << iter->type);
     hal_devices.erase(iter);
   }
 }
@@ -176,26 +206,41 @@ void HalManager_dbus::get_string_property(DBusGProxy *proxy, const char * proper
   g_free (c_value);
 }
 
-void HalManager_dbus::get_device_type_name (const char * device, std::string & category, std::string & product, std::string & parent_product)
+void HalManager_dbus::get_device_type_name (const char * device, HalDevice & hal_device)
 {
   DBusGProxy * device_proxy = NULL;
   DBusGProxy * parent_proxy = NULL;
   device_proxy = dbus_g_proxy_new_for_name (bus, "org.freedesktop.Hal",
                                                  device,
                                                  "org.freedesktop.Hal.Device");
-  std::string parent;
-  get_string_property(device_proxy, "info.category", category);
-  get_string_property(device_proxy, "info.product", product);
-  get_string_property(device_proxy, "info.parent", parent);
+  get_string_property(device_proxy, "info.category", hal_device.category);
 
-  parent_proxy = dbus_g_proxy_new_for_name (bus, "org.freedesktop.Hal",
+  if (hal_device.category == "alsa") {
+    get_string_property(device_proxy, "alsa.card_id", hal_device.name);
+    get_string_property(device_proxy, "alsa.type", hal_device.type);
+  }
+  else if (hal_device.category == "oss") {
+    get_string_property(device_proxy, "oss.card_id", hal_device.name);
+     hal_device.type = "";
+  }
+  else if (hal_device.category == "video4linux") {
+  
+    std::string parent;
+    get_string_property(device_proxy, "info.parent", parent);
+    parent_proxy = dbus_g_proxy_new_for_name (bus, "org.freedesktop.Hal",
                                                  parent.c_str(),
                                                  "org.freedesktop.Hal.Device");
 
-  get_string_property(parent_proxy, "info.product", parent_product);
+    get_string_property(parent_proxy, "info.product", hal_device.name);
+    hal_device.type = "";
+    g_object_unref(parent_proxy);
+  }
+  else {
+    get_string_property(device_proxy, "info.product", hal_device.name);
+    hal_device.type = "";
+  }
 
   g_object_unref(device_proxy);
-  g_object_unref(parent_proxy);
 }
 
 void HalManager_dbus::populate_devices_list ()
@@ -216,9 +261,9 @@ void HalManager_dbus::populate_devices_list ()
 
   for (device_list_ptr = device_list; *device_list_ptr; device_list_ptr++) {
     hal_device.key = *device_list_ptr;
-
+    
     if (hal_device.key != "/org/freedesktop/Hal/devices/computer") {
-      get_device_type_name(*device_list_ptr, hal_device.category, hal_device.product, hal_device.parent_product);
+      get_device_type_name(*device_list_ptr, hal_device);
       hal_devices.push_back(hal_device);
     }
   }

@@ -57,8 +57,8 @@ extern "C" {
   typedef struct HalDevice {
     std::string key;
     std::string category;
-    std::string product;
-    std::string parent_product;
+    std::string name;
+    std::string type;
   };
 
   class HalManager_dbus
@@ -96,7 +96,7 @@ extern "C" {
 
   protected:  
       void populate_devices_list();
-      void get_device_type_name (const char * device, std::string & category, std::string & product, std::string & parent_product);
+      void get_device_type_name (const char * device, HalDevice & hal_device);
       void get_string_property (DBusGProxy *proxy, const char * property, std::string & value);
       Ekiga::ServiceCore & core;
       Ekiga::Runtime & runtime;

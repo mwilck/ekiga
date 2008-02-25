@@ -1,4 +1,14 @@
+2008-02-24  Matthias Schneider  <ma30002000@yahoo.de>
+
+	* lib/engine/hal/dbus/hal-manager-dbus.cpp:
+	* lib/engine/hal/dbus/hal-manager-dbus.h:
+	* lib/engine/hal/skel/hal-core.h:
+	* lib/engine/engine.cpp:
+	Move dbus dispatch to the main loop. Activate hal on Linux.
+	Enable the actual callbacks for audio and video devices.
+
 2008-02-23  Matthias Schneider  <ma30002000@yahoo.de>
+
 	* configure.ac:
 	* lib/engine/hal/Makefile.am:
 	* lib/engine/hal/dbus/hal-main-dbus.cpp:
