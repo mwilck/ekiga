@@ -177,7 +177,8 @@ namespace Ekiga
 
     /** Triggers a callback for all Ekiga::Cluster clusters of the
      * PresenceCore service.
-     * @param The callback.
+     * @param The callback (the return value means "go on" and allows
+     *  stopping the visit)
      */
     void visit_clusters (sigc::slot<bool, Cluster &> visitor);
 

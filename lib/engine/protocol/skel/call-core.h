@@ -94,6 +94,8 @@ namespace Ekiga
 
       /** Triggers a callback for all Ekiga::CallManager sources of the
        * CallCore service.
+       * @param The callback (the return value means "go on" and allows
+       * stopping the visit)
        */
       void visit_managers (sigc::slot<bool, CallManager &> visitor);
 

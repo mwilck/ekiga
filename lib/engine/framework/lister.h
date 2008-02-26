@@ -86,6 +86,8 @@ namespace Ekiga
 
 
     /** Allows listing all objects
+     * @param The callback (the return value means "go on" and allows
+     *  stopping the visit)
      */
     void visit_objects (sigc::slot<bool, ObjectType &> visitor);
 

@@ -54,7 +54,8 @@ namespace Ekiga {
     /** Visit all books of the source and trigger the given callback.
      * This function is purely virtual and should be implemented by
      * the descendant of the Ekiga::Source.
-     * @param The callback.
+     * @param The callback (the return value means "go on" and allows
+     *  stopping the visit)
      */
     virtual void visit_books (sigc::slot<bool, Book &>) = 0;
 

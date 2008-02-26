@@ -105,7 +105,8 @@ namespace Ekiga
 
     /** Triggers a callback for all Ekiga::Source sources of the
      * ContactCore service.
-     * @param The callback.
+     * @param The callback (the return value means "go on" and allows
+     *  stopping the visit)
      */
     void visit_sources (sigc::slot<bool, Source &> visitor);
 

@@ -60,7 +60,8 @@ namespace Ekiga {
     /** Visit all contacts of the book and trigger the given callback.
      * This function is purely virtual and should be implemented by
      * the descendant of the Ekiga::Book.
-     * @param The callback.
+     * @param The callback (the return value means "go on" and allows
+     *  stopping the visit)
      */
     virtual void visit_contacts (sigc::slot<bool, Contact &>) = 0;
 

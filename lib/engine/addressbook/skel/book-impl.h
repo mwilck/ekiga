@@ -92,7 +92,8 @@ namespace Ekiga
 
 
     /** Visit all contacts of the book and trigger the given callback.
-     * @param The callback.
+     * @param The callback (the return value means "go on" and allows
+     *  stopping the visit)
      */
     void visit_contacts (sigc::slot<bool, Contact &> visitor);
 

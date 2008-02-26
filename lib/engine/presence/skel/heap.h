@@ -63,7 +63,8 @@ namespace Ekiga
     virtual const std::string get_name () const = 0;
 
     /** Get the list of Presentities by visiting them with a callback.
-     * @param The callback user to know about presentities.
+     * @param The callback user to know about presentities (the return value
+     * means "go on" and allows stopping the visit)
      */
     virtual void visit_presentities (sigc::slot<bool, Presentity &>) = 0;
 
