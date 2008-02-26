@@ -63,7 +63,6 @@ struct _ChatWindowPrivate
   _ChatWindowPrivate (Ekiga::ServiceCore & _core) : core (_core) { }
 
   GtkWidget *notebook;
-  gchar *key;
 
   std::vector<sigc::connection> connections;
   Ekiga::ServiceCore & core;
@@ -555,7 +554,6 @@ chat_window_new (Ekiga::ServiceCore & core)
   self->priv = new ChatWindowPrivate (core);
 
   self->priv->notebook = NULL;
-  self->priv->key = g_strdup ("");
 
   /* The window */
   gtk_window_set_title (GTK_WINDOW (self), _("Chat Window"));
