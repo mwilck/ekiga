@@ -127,7 +127,7 @@ GNUWIN32_URL := http://mesh.dl.sourceforge.net/gnuwin32
 EXPAT_VER = 2.0.0
 EXPAT_DIR = $(BUILDROOT)/expat-$(EXPAT_VER)
 EXPAT_ARCHIVE := expat-$(EXPAT_VER).tar.gz
-EXPAT_URL := http://belnet.dl.sourceforge.net/sourceforge/expat
+EXPAT_URL := http://kent.dl.sourceforge.net/sourceforge/expat
 
 LIBINTL_VER := 0.14.4
 
