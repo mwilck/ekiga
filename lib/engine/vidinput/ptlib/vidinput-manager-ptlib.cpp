@@ -130,9 +130,9 @@ bool GMVidInputManager_ptlib::open (unsigned width, unsigned height, unsigned fp
     return false;
   }
 
-  input_device->SetColour(current_state.colour);
+  input_device->SetWhiteness(current_state.whiteness);
   input_device->SetBrightness(current_state.brightness);
-  input_device->SetBrightness(current_state.whiteness);
+  input_device->SetColour(current_state.colour);
   input_device->SetContrast(current_state.contrast);
   current_state.opened = true;
 
@@ -188,7 +188,7 @@ void GMVidInputManager_ptlib::set_whiteness (unsigned whiteness)
   PTRACE(4, "GMVidInputManager_ptlib\tSetting whiteness to " << whiteness);
   current_state.whiteness = whiteness;
   if (input_device)
-    input_device->SetBrightness(whiteness);
+    input_device->SetWhiteness(whiteness);
 }
 
 void GMVidInputManager_ptlib::set_contrast (unsigned contrast)
