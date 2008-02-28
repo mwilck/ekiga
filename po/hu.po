@@ -1,18 +1,18 @@
 # Hungarian translation of gnomemeeting.
-# Copyright (C) 2002, 2003, 2004, 2006, 2007 Free Software Foundation, Inc.
+# Copyright (C) 2002, 2003, 2004, 2006, 2007, 2008 Free Software Foundation, Inc.
 # This file is distributed under the same license as the gnomemeeting package.
 #
 # Andras Timar <timar@gnome.hu>, 2002, 2003.
 # Laszlo Dvornik <dvornik@gnome.hu>, 2004.
-# Gabor Kelemen <kelemeng@gnome.hu>, 2004, 2005, 2006, 2007.
+# Gabor Kelemen <kelemeng@gnome.hu>, 2004, 2005, 2006, 2007, 2008.
 msgid ""
 msgstr ""
 "Project-Id-Version: ekiga.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-16 03:35+0100\n"
-"PO-Revision-Date: 2007-08-26 19:51+0200\n"
+"POT-Creation-Date: 2007-09-21 08:32+0100\n"
+"PO-Revision-Date: 2008-02-28 02:16+0100\n"
 "Last-Translator: Gabor Kelemen <kelemeng@gnome.hu>\n"
-"Language-Team: Hungarian <gnome@gnome.hu>\n"
+"Language-Team: Hungarian <gnome@fsf.hu>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -123,7 +123,7 @@ msgstr "Felbukkanó ablak megjelenítése a bejövő hívásoknál"
 
 #: ../ekiga.schemas.in.in.h:19
 msgid "Enable 'Fast Start'"
-msgstr "\"Gyors indítás\" engedélyezése"
+msgstr "”Gyors indítás” engedélyezése"
 
 #: ../ekiga.schemas.in.in.h:20
 msgid "Enable H.245 tunneling"
@@ -565,7 +565,7 @@ msgstr "Az eszközök felismeréséhez és kezeléséhez használandó hangbőv�
 
 #: ../ekiga.schemas.in.in.h:113
 msgid "The busy tone sound"
-msgstr "A \"foglalt\" hang"
+msgstr "A „foglalt” hang"
 
 #: ../ekiga.schemas.in.in.h:114
 msgid ""
@@ -639,7 +639,7 @@ msgid ""
 "The image to transmit if \"Picture\" is selected as video plugin or if the "
 "opening of the device fails. Leave blank to use the default Ekiga logo."
 msgstr ""
-"Az átvivendő kép ha a \"Kép\" videobővítmény van kiválasztva "
+"Az átvivendő kép ha a „Kép” videobővítmény van kiválasztva "
 "videobővítményként, vagy ha az eszköz megnyitása nem sikerül. Hagyja üresen "
 "az alapértelmezett Ekiga logó kiválasztásához."
 
@@ -665,7 +665,7 @@ msgid ""
 "transmitted frames per second will be dynamically adjusted above their "
 "minimum during calls to try to minimize the bandwidth to the given value"
 msgstr ""
-"A videosávszélesség felső határa Kb/s-ban. A videominőség és a "
+"A videosávszélesség felső határa Kb/mp-ban. A videominőség és a "
 "másodpercenként átvitt képkockák száma hívás közben dinamikusan lesz "
 "beállítva a minimális értékük felett, így próbálva a sávszélességet a "
 "megadott értékre csökkenteni"
@@ -680,10 +680,7 @@ msgid ""
 "The minimum transmitted video quality to keep when trying to minimize the "
 "used bandwidth: choose 100% on a LAN for the best quality, 1% being the "
 "worst quality"
-msgstr ""
-"A minimálisan megtartandó videominőség átvitelkor, ha a sávszélesség "
-"minimalizálandó: válasszon 100%-ot helyi hálózatnál a legjobb minőséghez, 1%-"
-"ot a legrosszabbhoz"
+msgstr "A minimálisan megtartandó videominőség átvitelkor, ha a sávszélesség minimalizálandó: válasszon 100 százalékot helyi hálózatnál a legjobb minőséghez, 1 százalékot a legrosszabbhoz"
 
 #: ../ekiga.schemas.in.in.h:135
 msgid "The network interface"
@@ -901,20 +898,14 @@ msgstr ""
 msgid ""
 "This permits to set the mode for DTMFs sending. The value can be \"RFC2833"
 "\" (0) only"
-msgstr ""
-"Ez lehetővé teszi a mód beállítását a DMTF küldéséhez. Az érték csak "
-"\"RFC2833\" (0) lehet"
+msgstr "Ez lehetővé teszi a mód beállítását a DMTF küldéséhez. Az érték csak ”RFC2833” (0) lehet"
 
 #: ../ekiga.schemas.in.in.h:170
 msgid ""
 "This permits to set the mode for DTMFs sending. The values can be \"String"
 "\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (default is \"String"
 "\"). Choosing other values than \"String\" disables the Text Chat"
-msgstr ""
-"Ezzel beállíthatja a DMTF küldési módot. A lehetséges értékek: \"String"
-"\" (Karaktersorozat - 0), \"Tone\" (Hang - 1) \"RFC2833\"(2), \"Q.931\" (3) "
-"(Az alapértelmezett a \"String\"). A \"String\"-től különböző érték "
-"választása kikapcsolja a szöveges csevegést."
+msgstr "Ezzel beállíthatja a DMTF küldési módot. A lehetséges értékek: „String” (Karaktersorozat - 0), „Tone” (Hang - 1) „RFC2833” (2), „Q.931” (3) (Az alapértelmezett a „String”). A „String”-től különböző érték választása kikapcsolja a szöveges csevegést."
 
 #: ../ekiga.schemas.in.in.h:171
 msgid "UDP port range"
@@ -990,74 +981,6 @@ msgstr "Tájolás"
 msgid "The orientation of the tray."
 msgstr "A tálca tájolása."
 
-#: ../src/clients/ils.cpp:105 ../src/gui/tools.cpp:174
-msgid "Invalid parameters"
-msgstr "Érvénytelen paraméterek"
-
-#: ../src/clients/ils.cpp:105
-msgid ""
-"Please provide your first name and e-mail in the Personal Data section in "
-"order to be able to register to the users directory."
-msgstr ""
-"Kérem adja meg utónevét és e-mail címét a Személyes adatok részben, hogy "
-"regisztrálhasson a felhasználói címtárba."
-
-#: ../src/clients/ils.cpp:145
-msgid "Invalid users directory"
-msgstr "A felhasználói címtár érvénytelen"
-
-#: ../src/clients/ils.cpp:145
-msgid "Operation impossible since there is no users directory specified."
-msgstr "A művelet lehetetlen, mivel nincs megadva a felhasználói címtár."
-
-#: ../src/clients/ils.cpp:238
-msgid "Failed to parse XML file"
-msgstr "Az XML-fájl feldolgozása sikertelen"
-
-#: ../src/clients/ils.cpp:238
-msgid ""
-"There was an error while parsing the XML file. Please make sure that it is "
-"correctly installed in your system."
-msgstr ""
-"Hiba történt az XML fájl feldolgozása során. Kérem győződjön meg, hogy "
-"megfelelően van telepítve a rendszerén."
-
-#: ../src/clients/ils.cpp:249
-msgid "Bad information"
-msgstr "Rossz adatok"
-
-#: ../src/clients/ils.cpp:249
-#, c-format
-msgid "Bad LDAP information from XML file: %s."
-msgstr "Hibás LDAP-adatok az XML-fájlból: %s."
-
-#: ../src/clients/ils.cpp:257
-#, c-format
-msgid "ILS registration failed: unable to connect to %s"
-msgstr "Az ILS regisztráció sikertelen: nem lehet csatlakozni a következőhöz: %s"
-
-#: ../src/clients/ils.cpp:270
-msgid "ILS registration failed: unable to set time limit on operations"
-msgstr ""
-"Az ILS regisztráció sikertelen: nem lehet időkorlátot beállítani a "
-"műveletekhez."
-
-#: ../src/clients/ils.cpp:282
-#, c-format
-msgid "ILS registration failed: failed to bind to %s"
-msgstr "Az ILS regisztráció sikertelen: nem sikerült csatlakozni ehhez: %s"
-
-#: ../src/clients/ils.cpp:310
-#, c-format
-msgid "Updated information on %s"
-msgstr "Az információk ezen: %s frissítve lettek"
-
-#: ../src/clients/ils.cpp:314 ../src/endpoints/accountshandler.cpp:332
-#: ../src/endpoints/sip.cpp:236
-#, c-format
-msgid "Unregistered from %s"
-msgstr "Kijelentkezés a következőről: %s"
-
 #: ../src/clients/stun.cpp:104
 #, c-format
 msgid "STUN server set to %s"
@@ -1080,7 +1003,11 @@ msgid ""
 msgstr ""
 "A STUN teszt eredménye: %s.\n"
 "\n"
-"Az Ekiga nem tudta megállapítani a használt NAT típusát. Ha az útválasztója nem támogatja a SIP vagy H.323 protokollt, akkor a legmegfelelőbb eljárás a szükséges portok átirányítása a belső gépre és IP fordítás használata, ha NAT útválasztó mögött van. Győződjön meg arról is, hogy nem futtat helyi tűzfalat."
+"Az Ekiga nem tudta megállapítani a használt NAT típusát. Ha az útválasztója "
+"nem támogatja a SIP vagy H.323 protokollt, akkor a legmegfelelőbb eljárás a "
+"szükséges portok átirányítása a belső gépre és IP fordítás használata, ha "
+"NAT útválasztó mögött van. Győződjön meg arról is, hogy nem futtat helyi "
+"tűzfalat."
 
 #: ../src/clients/stun.cpp:148
 #, c-format
@@ -1092,8 +1019,8 @@ msgid ""
 msgstr ""
 "A STUN teszt eredménye: %s.\n"
 "\n"
-"A rendszerének nincs szüksége semmilyen egyedi beállításra, amíg nincs "
-"az Ekiga által használt portokat blokkoló helyi tűzfala."
+"A rendszerének nincs szüksége semmilyen egyedi beállításra, amíg nincs az "
+"Ekiga által használt portokat blokkoló helyi tűzfala."
 
 #: ../src/clients/stun.cpp:153
 msgid ""
@@ -1106,11 +1033,12 @@ msgid ""
 "problem in your forwarding rules."
 msgstr ""
 "Az Ekiga szimmetrikus NAT-ot érzékelt. A legmegfelelőbb eljárás, ha az "
-"útválasztója nem támogatja a SIP vagy H.323 protokollt, a szükséges "
-"portok átirányítása a belső gépére, így a szimmetrikus NAT-ot tölcsér "
-"NAT-tá alakíthatja. Ezen teszt a portátirányítás után újrafuttatva tölcsér "
-"NAT-ot kell jelezzen, amely lehetővé teszi, hogy az Ekigat STUN támogatással "
-"használja. Ha nem jelez tölcsér NAT-ot, akkor az átirányítási szabályaival van probléma."
+"útválasztója nem támogatja a SIP vagy H.323 protokollt, a szükséges portok "
+"átirányítása a belső gépére, így a szimmetrikus NAT-ot tölcsér NAT-tá "
+"alakíthatja. Ezen teszt a portátirányítás után újrafuttatva tölcsér NAT-ot "
+"kell jelezzen, amely lehetővé teszi, hogy az Ekigat STUN támogatással "
+"használja. Ha nem jelez tölcsér NAT-ot, akkor az átirányítási szabályaival "
+"van probléma."
 
 #: ../src/clients/stun.cpp:157
 #, c-format
@@ -1135,8 +1063,8 @@ msgid ""
 msgstr ""
 "A STUN teszt eredménye: %s.\n"
 "\n"
-"Egy STUN kiszolgáló használata a legmegfelelőbb eljárás, ha az "
-"útválasztója nem támogatja a H.323 protokollt.\n"
+"Egy STUN kiszolgáló használata a legmegfelelőbb eljárás, ha az útválasztója "
+"nem támogatja a H.323 protokollt.\n"
 "\n"
 "Bekapcsolja a STUN támogatást?"
 
@@ -1216,7 +1144,7 @@ msgid ""
 "callto address, please use \"ekiga -c address\"."
 msgstr ""
 "Az Ekiga már fut, ha egy adott SIP, H.323 vagy callto URL címet szeretne "
-"hívni, akkor használja az \"ekiga -c cím\" parancsot."
+"hívni, akkor használja az „ekiga -c cím” parancsot."
 
 #: ../src/components/bonobo.cpp:170
 msgid ""
@@ -1316,7 +1244,7 @@ msgid ""
 "speakers with a four-second delay."
 msgstr ""
 "Az Ekiga most felvesz a(z) %s eszközről és lejátssza a felvételt a(z) %s "
-"eszközre. Kérem mondja a mikrofonba: \"1, 2, 3, az Ekiga szuper!\", ezt 4 "
+"eszközre. Kérem mondja a mikrofonba: „1, 2, 3, az Ekiga szuper!”, ezt 4 "
 "másodperc késéssel hallania kell a hangszóróból."
 
 #: ../src/devices/videoinput.cpp:319
@@ -1342,8 +1270,8 @@ msgid ""
 "plugin and \"MovingLogo\" or \"StaticPicture\" as device."
 msgstr ""
 "Hívások közben egy mozgó logó lesz átvíve. Ne feledje, hogy bármikor átvihet "
-"egy adott képet vagy a mozgó logót, ha videobővítményként a \"Kép\"-et, "
-"eszközként pedig a \"MovingLogo\"-t vagy a \"StaticPicture\"-t választja."
+"egy adott képet vagy a mozgó logót, ha videobővítményként a „Kép”-et, "
+"eszközként pedig a „MovingLogo”-t vagy a „StaticPicture”-t választja."
 
 #: ../src/devices/videoinput.cpp:364
 msgid "Couldn't open the video device"
@@ -1387,7 +1315,7 @@ msgstr "Hiba a képkockaméret beállítása közben."
 
 #: ../src/devices/videoinput.cpp:428
 msgid "Opened the video device using the \"Picture\" video plugin"
-msgstr "Videoeszköz megnyitva a \"Kép\" videobővítmény használatával"
+msgstr "Videoeszköz megnyitva a „Kép” videobővítmény használatával"
 
 #: ../src/devices/videoinput.cpp:586
 msgid "Picture"
@@ -1479,6 +1407,11 @@ msgstr "Regisztrálva a következőre: %s"
 #: ../src/endpoints/accountshandler.cpp:322 ../src/endpoints/sip.cpp:231
 msgid "Registered"
 msgstr "Regisztrálva"
+
+#: ../src/endpoints/accountshandler.cpp:332 ../src/endpoints/sip.cpp:236
+#, c-format
+msgid "Unregistered from %s"
+msgstr "Kijelentkezés a következőről: %s"
 
 #: ../src/endpoints/accountshandler.cpp:352 ../src/endpoints/sip.cpp:242
 msgid "Unregistered"
@@ -2538,7 +2471,9 @@ msgstr "Válassza ki a hangbemeneti eszközt:"
 msgid ""
 "The audio input device is the device managed by the audio manager that will "
 "be used to record your voice."
-msgstr "A hangbemeneti eszköz a hangkezelő által kezelt, a hang felvételére használandó eszköz."
+msgstr ""
+"A hangbemeneti eszköz a hangkezelő által kezelt, a hang felvételére "
+"használandó eszköz."
 
 #: ../src/gui/druid.cpp:1070 ../src/gui/druid.cpp:1204
 msgid "Test Settings"
@@ -3161,8 +3096,8 @@ msgid ""
 msgstr ""
 "Elveszett csomagok: %.1f %%\n"
 "Elkésett csomagok: %.1f %%\n"
-"Hibás csomagok: %.1f %%ms\n"
-"Jitter puffer: %d ms"
+"Hibás csomagok: %.1f %%em\n"
+"Jitter puffer: %d em"
 
 #: ../src/gui/main.cpp:4574
 #, c-format
@@ -3323,7 +3258,10 @@ msgid ""
 "If enabled, your details are shown to people browsing the users directory. "
 "If disabled, you are not visible to users browsing the users directory, but "
 "they can still use the callto URL to call you."
-msgstr "Ha engedélyezi, részletes információk jelennek meg Önről a felhasználói címtárat böngészők előtt. Ha kikapcsolja, a felhasználói címtárat böngészők nem fogják látni, de felhívhatják a callto URL használatával."
+msgstr ""
+"Ha engedélyezi, részletes információk jelennek meg Önről a felhasználói "
+"címtárat böngészők előtt. Ha kikapcsolja, a felhasználói címtárat böngészők "
+"nem fogják látni, de felhívhatják a callto URL használatával."
 
 #: ../src/gui/preferences.cpp:725
 msgid "Call Forwarding"
@@ -3523,11 +3461,7 @@ msgid ""
 "This permits to set the mode for DTMFs sending. The values can be \"String"
 "\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (default is \"String"
 "\"). Choosing other values than \"String\" disables the Text Chat."
-msgstr ""
-"Ezzel beállíthatja a DMTF küldési módot. A lehetséges értékek: \"String"
-"\" (Karakterlánc - 0), \"Tone\" (Hang - 1) \"RFC2833\"(2), \"Q.931\" ( 3) "
-"(Az alapértelmezett a \"String\"). A \"String\"-től különböző érték "
-"választása kikapcsolja a szöveges csevegést."
+msgstr "Ezzel beállíthatja a DMTF küldési módot. A lehetséges értékek: „String” (Karakterlánc - 0), „Tone” (Hang - 1) „RFC2833” (2), „Q.931” ( 3) (Az alapértelmezett a „String”). A „String”-től különböző érték választása kikapcsolja a szöveges csevegést."
 
 #: ../src/gui/preferences.cpp:1037
 msgid "_Outbound Proxy:"
@@ -3537,9 +3471,7 @@ msgstr "_Kimenő proxy:"
 msgid ""
 "This permits to set the mode for DTMFs sending. The value can be \"RFC2833"
 "\" (0) only."
-msgstr ""
-"Ez lehetővé teszi a DMTF küldési módjának beállítását. Az érték csak "
-"\"RFC2833\" (0) lehet."
+msgstr "Ez lehetővé teszi a DMTF küldési módjának beállítását. Az érték csak ”RFC2833” (0) lehet."
 
 #: ../src/gui/preferences.cpp:1070
 msgid "Audio Plugin"
@@ -3724,7 +3656,7 @@ msgid ""
 "transmitted frames per second will be dynamically adjusted above their "
 "minimum during calls to try to minimize the bandwidth to the given value."
 msgstr ""
-"A videosávszélesség felső határa Kb/s-ban. A videominőség és a "
+"A videosávszélesség felső határa Kb/mp-ban. A videominőség és a "
 "másodpercenként átvitt képkockák száma hívás közben dinamikusan lesz "
 "beállítva a minimális értékük felett, így próbálva a sávszélességet a "
 "megadott értékre csökkenteni."
@@ -3805,6 +3737,10 @@ msgstr "Videokodekek"
 #: ../src/gui/preferences.cpp:2012
 msgid "Devices"
 msgstr "Eszközök"
+
+#: ../src/gui/tools.cpp:174
+msgid "Invalid parameters"
+msgstr "Érvénytelen paraméterek"
 
 #: ../src/gui/tools.cpp:174
 msgid ""
