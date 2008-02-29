@@ -102,8 +102,8 @@ engine_init (int argc,
   core->add (*contact_core);
   core->add (*presence_core);
   core->add (*call_core);
-  core->add (*display_core);
   core->add (*vidinput_core);
+  core->add (*display_core);
   core->add (*hal_core);
   core->add (*runtime);
 

@@ -62,6 +62,8 @@ PreviewManager::PreviewManager (VidInputCore& _vidinput_core, DisplayCore& _disp
 
 PreviewManager::~PreviewManager ()
 {
+  if (!stop_thread)
+    stop();
 }
 
 void PreviewManager::start (unsigned width, unsigned height)
