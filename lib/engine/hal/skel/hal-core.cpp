@@ -59,17 +59,17 @@ void HalCore::add_manager (HalManager &manager)
   managers.insert (&manager);
   manager_added.emit (manager);
 
-  manager.video_input_device_added.connect (sigc::mem_fun (this, &HalCore::on_video_input_device_added));
-  manager.video_input_device_removed.connect (sigc::mem_fun (this, &HalCore::on_video_input_device_removed));
+  manager.video_input_device_added.connect (sigc::bind (sigc::mem_fun (this, &HalCore::on_video_input_device_added), &manager));
+  manager.video_input_device_removed.connect (sigc::bind (sigc::mem_fun (this, &HalCore::on_video_input_device_removed), &manager));
 
-  manager.audio_input_device_added.connect (sigc::mem_fun (this, &HalCore::on_audio_input_device_added));
-  manager.audio_input_device_removed.connect (sigc::mem_fun (this, &HalCore::on_audio_input_device_removed));
+  manager.audio_input_device_added.connect (sigc::bind (sigc::mem_fun (this, &HalCore::on_audio_input_device_added), &manager));
+  manager.audio_input_device_removed.connect (sigc::bind (sigc::mem_fun (this, &HalCore::on_audio_input_device_removed), &manager));
 
-  manager.audio_output_device_added.connect (sigc::mem_fun (this, &HalCore::on_audio_output_device_added));
-  manager.audio_output_device_removed.connect (sigc::mem_fun (this, &HalCore::on_audio_output_device_removed));
+  manager.audio_output_device_added.connect (sigc::bind (sigc::mem_fun (this, &HalCore::on_audio_output_device_added), &manager));
+  manager.audio_output_device_removed.connect (sigc::bind (sigc::mem_fun (this, &HalCore::on_audio_output_device_removed), &manager));
 
-  manager.network_interface_up.connect (sigc::mem_fun (this, &HalCore::on_network_interface_up));
-  manager.network_interface_down.connect (sigc::mem_fun (this, &HalCore::on_network_interface_down));
+  manager.network_interface_up.connect (sigc::bind (sigc::mem_fun (this, &HalCore::on_network_interface_up), &manager));
+  manager.network_interface_down.connect (sigc::bind (sigc::mem_fun (this, &HalCore::on_network_interface_down), &manager));
 }
 
 
@@ -83,34 +83,34 @@ void HalCore::visit_managers (sigc::slot<bool, HalManager &> visitor)
       go_on = visitor (*(*iter));
 }
 
-void HalCore::on_video_input_device_added (HalVideoInputDevice & video_input_device) {
-  video_input_device_added.emit (video_input_device);
+void HalCore::on_video_input_device_added (std::string & source, std::string & device, unsigned capabilities, HalManager* manager) {
+  video_input_device_added.emit (source, device, capabilities, manager);
 }
 
-void HalCore::on_video_input_device_removed (HalVideoInputDevice & video_input_device) {
-  video_input_device_removed.emit (video_input_device);
+void HalCore::on_video_input_device_removed (std::string & source, std::string & device, unsigned capabilities, HalManager* manager) {
+  video_input_device_removed.emit (source, device, capabilities, manager);
 }
 
-void HalCore::on_audio_input_device_added (HalAudioInputDevice & audio_input_device) {
-  audio_input_device_added.emit (audio_input_device);
+void HalCore::on_audio_input_device_added (std::string & source, std::string & device, HalManager* manager) {
+  audio_input_device_added.emit (source, device, manager);
 }
 
-void HalCore::on_audio_input_device_removed (HalAudioInputDevice & audio_input_device) {
-  audio_input_device_removed.emit (audio_input_device);
+void HalCore::on_audio_input_device_removed (std::string & source, std::string & device, HalManager* manager) {
+  audio_input_device_removed.emit (source, device, manager);
 }
 
-void HalCore::on_audio_output_device_added (HalAudioOutputDevice & audio_output_device) {
-  audio_output_device_added.emit (audio_output_device);
+void HalCore::on_audio_output_device_added (std::string & sink, std::string & device, HalManager* manager) {
+  audio_output_device_added.emit (sink, device, manager);
 }
 
-void HalCore::on_audio_output_device_removed (HalAudioOutputDevice & audio_output_device) {
-  audio_output_device_removed.emit (audio_output_device);
+void HalCore::on_audio_output_device_removed (std::string & sink, std::string & device, HalManager* manager) {
+  audio_output_device_removed.emit (sink, device, manager);
 }
 
-void HalCore::on_network_interface_up (HalNetworkInterface & network_interface) {
-  network_interface_up.emit (network_interface);
+void HalCore::on_network_interface_up (std::string & interface, std::string & ip4_address, HalManager* manager) {
+  network_interface_up.emit (interface, ip4_address, manager);
 }
 
-void HalCore::on_network_interface_down (HalNetworkInterface & network_interface) {
-  network_interface_down.emit (network_interface);
+void HalCore::on_network_interface_down (std::string & interface, std::string & ip4_address, HalManager* manager) {
+  network_interface_down.emit (interface,ip4_address, manager);
 }

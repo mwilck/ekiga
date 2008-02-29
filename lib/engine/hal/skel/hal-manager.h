@@ -71,17 +71,17 @@ namespace Ekiga
        * @return     true if a Ekiga::Call could be created
        */
 
-      sigc::signal<void, HalVideoInputDevice &> video_input_device_added;
-      sigc::signal<void, HalVideoInputDevice &> video_input_device_removed;
+      sigc::signal<void, std::string&, std::string&, unsigned> video_input_device_added;
+      sigc::signal<void, std::string&, std::string&, unsigned> video_input_device_removed;
 
-      sigc::signal<void, HalAudioInputDevice &> audio_input_device_added;
-      sigc::signal<void, HalAudioInputDevice &> audio_input_device_removed;
+      sigc::signal<void, std::string&, std::string&> audio_input_device_added;
+      sigc::signal<void, std::string&, std::string&> audio_input_device_removed;
 
-      sigc::signal<void, HalAudioOutputDevice &> audio_output_device_added;
-      sigc::signal<void, HalAudioOutputDevice &> audio_output_device_removed;
+      sigc::signal<void, std::string&, std::string&> audio_output_device_added;
+      sigc::signal<void, std::string&, std::string&> audio_output_device_removed;
 
-      sigc::signal<void, HalNetworkInterface &> network_interface_up;
-      sigc::signal<void, HalNetworkInterface &> network_interface_down;
+      sigc::signal<void, std::string&, std::string&> network_interface_up;
+      sigc::signal<void, std::string&, std::string&> network_interface_down;
 
   protected:  
 

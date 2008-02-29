@@ -44,6 +44,9 @@
 #include <set>
 #include <map>
 
+#define V4L_VERSION_1 (1<<0)
+#define V4L_VERSION_2 (1<<1)
+
 namespace Ekiga
 {
 /**
@@ -52,25 +55,6 @@ namespace Ekiga
  */
 
   class HalManager;
-
-  typedef struct HalVideoInputDevice {
-    std::string category;
-    std::string name;
-  };
-
-  typedef struct HalAudioInputDevice {
-    std::string category;
-    std::string name;
-  };
-
-  typedef struct HalAudioOutputDevice {
-    std::string category;
-    std::string name;
-  };
-
-  typedef struct HalNetworkInterface {
-    std::string name;
-  };
 
   /** Core object for hal support
    */
@@ -121,31 +105,31 @@ namespace Ekiga
 
       /** See hal-manager.h for the API
        */
-      sigc::signal<void, HalVideoInputDevice &> video_input_device_added;
-      sigc::signal<void, HalVideoInputDevice &> video_input_device_removed;
+      sigc::signal<void, std::string &, std::string &, unsigned, HalManager*> video_input_device_added;
+      sigc::signal<void, std::string &, std::string &, unsigned, HalManager*> video_input_device_removed;
 
-      sigc::signal<void, HalAudioInputDevice &> audio_input_device_added;
-      sigc::signal<void, HalAudioInputDevice &> audio_input_device_removed;
+      sigc::signal<void, std::string &, std::string &, HalManager*> audio_input_device_added;
+      sigc::signal<void, std::string &, std::string &, HalManager*> audio_input_device_removed;
 
-      sigc::signal<void, HalAudioOutputDevice &> audio_output_device_added;
-      sigc::signal<void, HalAudioOutputDevice &> audio_output_device_removed;
+      sigc::signal<void, std::string &, std::string &, HalManager*> audio_output_device_added;
+      sigc::signal<void, std::string &, std::string &, HalManager*> audio_output_device_removed;
 
-      sigc::signal<void, HalNetworkInterface &> network_interface_up;
-      sigc::signal<void, HalNetworkInterface &> network_interface_down;
+      sigc::signal<void, std::string &, std::string &, HalManager*> network_interface_up;
+      sigc::signal<void, std::string &, std::string &, HalManager*> network_interface_down;
 
   private:
 
-      void on_video_input_device_added (HalVideoInputDevice & video_input_device);
-      void on_video_input_device_removed (HalVideoInputDevice & video_input_device);
+      void on_video_input_device_added (std::string & source, std::string & device, unsigned capabilities, HalManager* manager);
+      void on_video_input_device_removed (std::string & source, std::string & device, unsigned capabilities, HalManager* manager);
 
-      void on_audio_input_device_added (HalAudioInputDevice & audio_input_device);
-      void on_audio_input_device_removed (HalAudioInputDevice & audio_input_device);
+      void on_audio_input_device_added (std::string & source, std::string & device, HalManager* manager);
+      void on_audio_input_device_removed (std::string & source, std::string & device, HalManager* manager);
 
-      void on_audio_output_device_added (HalAudioOutputDevice & audio_output_device);
-      void on_audio_output_device_removed (HalAudioOutputDevice & audio_output_device);
+      void on_audio_output_device_added (std::string & sink, std::string & device, HalManager* manager);
+      void on_audio_output_device_removed (std::string & sink, std::string & device, HalManager* manager);
 
-      void on_network_interface_up (HalNetworkInterface & network_interface);
-      void on_network_interface_down (HalNetworkInterface & network_interface);
+      void on_network_interface_up (std::string & interface, std::string & ip4_address, HalManager* manager);
+      void on_network_interface_down (std::string & interface, std::string & ip4_address, HalManager* manager);
 
       std::set<HalManager *> managers;
 

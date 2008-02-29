@@ -59,6 +59,14 @@ extern "C" {
     std::string category;
     std::string name;
     std::string type;
+    unsigned video_capabilities;
+  };
+
+  typedef struct NmInterface {
+    std::string key;
+    std::string name;
+    std::string ip4_address;
+    bool active;
   };
 
   class HalManager_dbus
@@ -85,19 +93,26 @@ extern "C" {
       static void device_added_cb_proxy (DBusGProxy *object, const char *device, gpointer user_data);
       static void device_removed_cb_proxy (DBusGProxy *object, const char *device, gpointer user_data);
 
-      static void device_no_longer_active_cb_proxy (DBusGProxy *object, const char *device, gpointer user_data);
-      static void device_now_active_cb_proxy (DBusGProxy *object, const char *device, gpointer user_data);
+      static void interface_no_longer_active_cb_proxy (DBusGProxy *object, const char *interface, gpointer user_data);
+      static void interface_now_active_cb_proxy (DBusGProxy *object, const char *interface, gpointer user_data);
+      static void interface_ip4_address_change_cb_proxy (DBusGProxy *object, const char *interface, gpointer user_data);
 
       void device_added_cb (const char *device);
       void device_removed_cb (const char *device);
 
-      void device_now_active_cb (const char *device);
-      void device_no_longer_active_cb (const char *device);
+      void interface_now_active_cb (const char *interface);
+      void interface_no_longer_active_cb (const char *interface);
+      void interface_ip4_address_change_cb (const char *interface);
 
   protected:  
       void populate_devices_list();
-      void get_device_type_name (const char * device, HalDevice & hal_device);
+      void populate_interfaces_list ();
+
+      bool get_device_type_name (const char * device, HalDevice & hal_device);
+      void get_interface_name_ip (const char * interface, NmInterface & nm_interface);
+
       void get_string_property (DBusGProxy *proxy, const char * property, std::string & value);
+
       Ekiga::ServiceCore & core;
       Ekiga::Runtime & runtime;
 
@@ -106,6 +121,7 @@ extern "C" {
       DBusGProxy * nm_proxy;
 
       std::vector <HalDevice> hal_devices;
+      std::vector <NmInterface> nm_interfaces;
 
   };
 /**

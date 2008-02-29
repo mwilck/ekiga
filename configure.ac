@@ -458,6 +458,21 @@ AM_CONDITIONAL(INSTALL_DBUS_SERVICE, test "x$DBUS_SERVICE" = "xenabled")
 
 
 dnl ###############################
+dnl   V4L headers
+dnl   These are only necessary until HAL has a decent V4L support...
+dnl ###############################
+
+V4L="disabled"
+if test "x${win32}" != "x1"; then
+  AC_CHECK_HEADER(linux/videodev.h, V4L="enabled")
+  
+  if test "x${V4L}" != "xdisabled"; then
+    AC_DEFINE(HAVE_V4L,1,[V4L support])
+  fi
+  AM_CONDITIONAL(HAVE_V4L, test "x${V4L}" != "xdisabled")
+fi
+
+dnl ###############################
 dnl   Avahi / mDNS Support
 dnl ###############################
 AVAHI="disabled"

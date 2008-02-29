@@ -20,6 +20,12 @@ libgmhal_dbus_la_SOURCES = \
 	$(hal_dir)/hal-marshal.h \
 	$(hal_dir)/hal-marshal.c
 
+if HAVE_V4L
+libgmhal_dbus_la_SOURCES += \
+	$(hal_dir)/hal-v4l-helper.h \
+	$(hal_dir)/hal-v4l-helper.c
+endif
+
 # forces the HAVE :
 BUILT_SOURCES = hal-marshal.h hal-marshal.c
 
