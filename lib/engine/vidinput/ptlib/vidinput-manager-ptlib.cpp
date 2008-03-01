@@ -123,6 +123,7 @@ bool GMVidInputManager_ptlib::open (unsigned width, unsigned height, unsigned fp
     error_code = Ekiga::ERR_FPS;
   else if (!input_device->SetFrameSizeConverter (current_state.width, current_state.height, PVideoFrameInfo::eScale))
     error_code = Ekiga::ERR_SCALE;
+  else input_device->Start ();
 
   if (error_code != Ekiga::ERR_NONE) {
     PTRACE(1, "GMVidInputManager_ptlib\tEncountered error " << error_code << " while opening device ");
@@ -143,8 +144,8 @@ void GMVidInputManager_ptlib::close()
 {
   PTRACE(4, "GMVidInputManager_ptlib\tClosing device " << current_state.vidinput_device.source << "/" <<  current_state.vidinput_device.device);
   if (input_device) {
-   delete input_device;
-   input_device = NULL;
+    delete input_device;
+    input_device = NULL;
   }
   current_state.opened = false;
 }
@@ -161,7 +162,7 @@ void GMVidInputManager_ptlib::get_frame_data (unsigned & width,
   width = current_state.width;
   height = current_state.height;
 
-  PINDEX I;
+  PINDEX I = 0;
 
   if (input_device)
     input_device->GetFrameData ((BYTE*)data, &I);
