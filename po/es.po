@@ -1,5 +1,6 @@
+# translation of ekiga.gnome-2-20.po to Español
 # Spanish translation for GnomeMeeting.
-# Copyright (C) 2000-2002,2003, 2004, 2005, 2006, 2007 Free Software Foundation, Inc.# translation of es.po to Spanish
+# Copyright (C) 2000-2002,2003, 2004, 2005, 2006, 2007, 2008 Free Software Foundation, Inc.# translation of es.po to Spanish
 #
 # Alberto Serrano <apserrano@bbvnet.com>, 2001.
 # Gary Castillo <elhumano@hotmail.com>, 2001.
@@ -9,15 +10,15 @@
 # Raul Jover Baison <cain@akrata.org>, 2003.
 # Yelitza Louze <ylouze@redhat.com>, 2003.
 # Francisco Javier F. Serrador <serrador@cvs.gnome.org>, 2004, 2005, 2006.
-# Jorge González <jorgegonz@svn.gnome.org>, 2007.
+# Jorge González <jorgegonz@svn.gnome.org>, 2007, 2008.
 msgid ""
 msgstr ""
-"Project-Id-Version: ekiga.gnome-2-20.es\n"
+"Project-Id-Version: ekiga.gnome-2-20\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-16 03:35+0100\n"
-"PO-Revision-Date: 2007-08-16 21:16+0200\n"
+"POT-Creation-Date: 2007-09-21 08:32+0100\n"
+"PO-Revision-Date: 2008-03-01 14:05+0100\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
-"Language-Team: Spanish <traductores@es.gnome.org>\n"
+"Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -447,11 +448,11 @@ msgstr ""
 
 #: ../ekiga.schemas.in.in.h:88 ../src/gui/preferences.cpp:1095
 msgid "Select the audio input device to use"
-msgstr "Seleccione el dispositivo de entrada de sonido a utilizar"
+msgstr "Seleccione el dispositivo de entrada de sonido que usar"
 
 #: ../ekiga.schemas.in.in.h:89 ../src/gui/preferences.cpp:1088
 msgid "Select the audio output device to use"
-msgstr "Seleccione el dispositivo de salida de sonido a utilizar"
+msgstr "Seleccione el dispositivo de salida de sonido que usar"
 
 #: ../ekiga.schemas.in.in.h:90 ../src/gui/preferences.cpp:959
 msgid "Select the desired method for NAT traversal (STUN is strongly suggested)"
@@ -837,7 +838,7 @@ msgstr "El código de dos letras de su país (ej: ES, AR, UK, FR, DE, ...)"
 
 #: ../ekiga.schemas.in.in.h:159 ../src/gui/preferences.cpp:1172
 msgid "The video channel number to use (to select camera, tv or other sources)"
-msgstr "El número de canal de vídeo a utilizar (cámara, tv, ...)"
+msgstr "El número de canal de vídeo que usar (cámara, tv, ...)"
 
 #: ../ekiga.schemas.in.in.h:160 ../src/gui/preferences.cpp:1156
 msgid "The video plugin that will be used to detect the devices and manage them"
@@ -914,7 +915,7 @@ msgid ""
 "This permits to set the mode for DTMFs sending. The value can be \"RFC2833"
 "\" (0) only"
 msgstr ""
-"Esto permite establecer el modo para enviar DTMFs. El valor puede ser sólo "
+"Esto permite establecer el modo para enviar DTMF. El valor puede ser sólo "
 "\"RFC2833\" (0)"
 
 #: ../ekiga.schemas.in.in.h:170
@@ -1001,77 +1002,6 @@ msgstr "Orientación"
 #: ../lib/gui/gmtray/eggtrayicon.c:134
 msgid "The orientation of the tray."
 msgstr "La orientación de la bandeja."
-
-#: ../src/clients/ils.cpp:105 ../src/gui/tools.cpp:174
-msgid "Invalid parameters"
-msgstr "Parámetros inválidos"
-
-#: ../src/clients/ils.cpp:105
-msgid ""
-"Please provide your first name and e-mail in the Personal Data section in "
-"order to be able to register to the users directory."
-msgstr ""
-"Por favor, proporcione su nombre, apellidos y correo-e en la sección de "
-"«Datos personales», para que sea posible registrarse al directorio de "
-"usuarios."
-
-#: ../src/clients/ils.cpp:145
-msgid "Invalid users directory"
-msgstr "Directorio de usuario inválido"
-
-#: ../src/clients/ils.cpp:145
-msgid "Operation impossible since there is no users directory specified."
-msgstr ""
-"La operación es imposible porque no se ha especificado un directorio de "
-"usuarios."
-
-#: ../src/clients/ils.cpp:238
-msgid "Failed to parse XML file"
-msgstr "No se pudo analizar el archivo XML"
-
-#: ../src/clients/ils.cpp:238
-msgid ""
-"There was an error while parsing the XML file. Please make sure that it is "
-"correctly installed in your system."
-msgstr ""
-"Se presentó un error mientras se analizaba el archivo XML. Por favor "
-"asegúrese de que está instalado correctamente en su sistema."
-
-#: ../src/clients/ils.cpp:249
-msgid "Bad information"
-msgstr "Información errónea"
-
-#: ../src/clients/ils.cpp:249
-#, c-format
-msgid "Bad LDAP information from XML file: %s."
-msgstr "Información LDAP incorrecta del archivo XML: %s."
-
-#: ../src/clients/ils.cpp:257
-#, c-format
-msgid "ILS registration failed: unable to connect to %s"
-msgstr "El registro ILS ha fallado: imposible conectarse con %s"
-
-#: ../src/clients/ils.cpp:270
-msgid "ILS registration failed: unable to set time limit on operations"
-msgstr ""
-"El registro ILS ha fallado: no se pudo establecer un límite de tiempo en las "
-"operaciones"
-
-#: ../src/clients/ils.cpp:282
-#, c-format
-msgid "ILS registration failed: failed to bind to %s"
-msgstr "El registro ILS ha fallado: falló al vincularse con %s"
-
-#: ../src/clients/ils.cpp:310
-#, c-format
-msgid "Updated information on %s"
-msgstr "Información actualizada en %s"
-
-#: ../src/clients/ils.cpp:314 ../src/endpoints/accountshandler.cpp:332
-#: ../src/endpoints/sip.cpp:236
-#, c-format
-msgid "Unregistered from %s"
-msgstr "Se quitó del registro de %s"
 
 #: ../src/clients/stun.cpp:104
 #, c-format
@@ -1348,7 +1278,7 @@ msgstr "Abriendo dispositivo de vídeo %s con el complemento %s"
 #: ../src/devices/videoinput.cpp:347
 #, c-format
 msgid "Successfully opened video device %s, channel %d"
-msgstr "Abríó con éxito el dispositivo de vídeo %s, canal %d"
+msgstr "Abrió con éxito el dispositivo de vídeo %s, canal %d"
 
 #: ../src/devices/videoinput.cpp:358
 #, c-format
@@ -1502,6 +1432,11 @@ msgstr "Registrado en %s"
 #: ../src/endpoints/accountshandler.cpp:322 ../src/endpoints/sip.cpp:231
 msgid "Registered"
 msgstr "Registrado"
+
+#: ../src/endpoints/accountshandler.cpp:332 ../src/endpoints/sip.cpp:236
+#, c-format
+msgid "Unregistered from %s"
+msgstr "Se quitó del registro de %s"
 
 #: ../src/endpoints/accountshandler.cpp:352 ../src/endpoints/sip.cpp:242
 msgid "Unregistered"
@@ -2247,7 +2182,7 @@ msgstr "Vea el archivo AUTHORS para los créditos completos"
 #: ../src/gui/callbacks.cpp:190
 msgid "translator-credits"
 msgstr ""
-"Jorge González <jorgegonz@svn.gnome.org>, 2007\n"
+"Jorge González <jorgegonz@svn.gnome.org>, 2007-2008\n"
 "Francisco Javier F. Serrador <serrador@cvs.gnome.org>, 2004-2006\n"
 "María Majadas <maria.majadas@hispalinux.es>"
 
@@ -3207,7 +3142,7 @@ msgstr ""
 "Esto probablemente significa que los esquemas de GConf no se han instalado "
 "correctamente, o que los permisos no son correctos.\n"
 "\n"
-"Por favor, revise las PF (http://www.ekiga.org/), la sección de resolución "
+"Por favor, revise las P+F (http://www.ekiga.org/), la sección de resolución "
 "de problemas del sitio de GConf (http://www.gnome.org/projects/gconf/) o los "
 "archivos de la lista de correo para más información (http://mail.gnome.org) "
 "acerca de este problema."
@@ -3443,7 +3378,7 @@ msgstr "Dispositivo de salida alternativo:"
 #: ../src/gui/preferences.cpp:913
 msgid "Select an alternative audio output device to use for sound events"
 msgstr ""
-"Seleccione el dispositivo de salida de sonido a utilizar para los sonidos de "
+"Seleccione el dispositivo de salida de sonido que usar para los sonidos de "
 "los eventos"
 
 #: ../src/gui/preferences.cpp:931
@@ -3750,7 +3685,7 @@ msgstr "Control de ancho de banda"
 
 #: ../src/gui/preferences.cpp:1301
 msgid "Maximum video _bandwidth (in kB/s):"
-msgstr "Máximo ancho de _banda para el vídeo (en kB/s):"
+msgstr "Máximo ancho de _banda para el vídeo (en KiB/s):"
 
 #: ../src/gui/preferences.cpp:1301
 msgid ""
@@ -3840,6 +3775,10 @@ msgstr "Códecs de vídeo"
 #: ../src/gui/preferences.cpp:2012
 msgid "Devices"
 msgstr "Dispositivos"
+
+#: ../src/gui/tools.cpp:174
+msgid "Invalid parameters"
+msgstr "Parámetros inválidos"
 
 #: ../src/gui/tools.cpp:174
 msgid ""
