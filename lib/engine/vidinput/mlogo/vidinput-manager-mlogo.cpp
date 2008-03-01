@@ -86,9 +86,11 @@ bool GMVidInputManager_mlogo::open (unsigned width, unsigned height, unsigned fp
   memset (background_frame + (current_state.width * current_state.height), 0x7f, (current_state.width*current_state.height) >> 2);
   memset (background_frame + (current_state.width * current_state.height) + ((current_state.width*current_state.height) >> 2), 0x7f, (current_state.width*current_state.height) >> 2);
 
-  current_state.opened  = true;
-
   m_Pacing.Restart();
+
+  current_state.opened  = true;
+  runtime.run_in_main (sigc::bind (vidinputdevice_opened.make_slot (), current_state.vidinput_device, 127, 127, 127, 127, false));
+  
   return true;
 }
 
@@ -97,6 +99,7 @@ void GMVidInputManager_mlogo::close()
   PTRACE(4, "GMVidInputManager_mlogo\tClosing Moving Logo");
   free (background_frame);
   current_state.opened  = false;
+  runtime.run_in_main (sigc::bind (vidinputdevice_closed.make_slot (), current_state.vidinput_device));
 }
 
 void GMVidInputManager_mlogo::get_frame_data (unsigned & width,

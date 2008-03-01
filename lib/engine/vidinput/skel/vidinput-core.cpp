@@ -157,6 +157,8 @@ void VidInputCore::add_manager (VidInputManager &manager)
   manager.error.connect (sigc::bind (sigc::mem_fun (this, &VidInputCore::on_error), &manager));
   manager.vidinputdevice_added.connect (sigc::bind (sigc::mem_fun (this, &VidInputCore::on_vidinputdevice_added), &manager));
   manager.vidinputdevice_removed.connect (sigc::bind (sigc::mem_fun (this, &VidInputCore::on_vidinputdevice_removed), &manager));
+  manager.vidinputdevice_opened.connect (sigc::bind (sigc::mem_fun (this, &VidInputCore::on_vidinputdevice_opened), &manager));
+  manager.vidinputdevice_closed.connect (sigc::bind (sigc::mem_fun (this, &VidInputCore::on_vidinputdevice_closed), &manager));
 }
 
 
@@ -350,44 +352,32 @@ void VidInputCore::set_colour (unsigned colour)
 {
   PWaitAndSignal m(var_mutex);
 
-  for (std::set<VidInputManager *>::iterator iter = managers.begin ();
-       iter != managers.end ();
-       iter++) {
-    (*iter)->set_colour (colour);
-  }
+  if (current_manager)
+    current_manager->set_colour (colour);
 }
 
 void VidInputCore::set_brightness (unsigned brightness)
 {
   PWaitAndSignal m(var_mutex);
 
-  for (std::set<VidInputManager *>::iterator iter = managers.begin ();
-       iter != managers.end ();
-       iter++) {
-    (*iter)->set_brightness (brightness);
-  }
+  if (current_manager)
+    current_manager->set_brightness (brightness);
 }
 
 void VidInputCore::set_whiteness  (unsigned whiteness)
 {
   PWaitAndSignal m(var_mutex);
 
-  for (std::set<VidInputManager *>::iterator iter = managers.begin ();
-       iter != managers.end ();
-       iter++) {
-    (*iter)->set_whiteness (whiteness);
-  }
+  if (current_manager)
+    current_manager->set_whiteness (whiteness);
 }
 
 void VidInputCore::set_contrast   (unsigned contrast)
 {
   PWaitAndSignal m(var_mutex);
 
-  for (std::set<VidInputManager *>::iterator iter = managers.begin ();
-       iter != managers.end ();
-       iter++) {
-    (*iter)->set_contrast (contrast);
-  }
+  if (current_manager)
+    current_manager->set_contrast (contrast);
 }
 
 void VidInputCore::on_error (VidInputErrorCodes error_code, VidInputManager *manager)
@@ -403,6 +393,18 @@ void VidInputCore::on_vidinputdevice_added (VidInputDevice vidinput_device, VidI
 void VidInputCore::on_vidinputdevice_removed (VidInputDevice vidinput_device, VidInputManager *manager)
 {
   vidinputdevice_removed.emit (*manager, vidinput_device);
+}
+
+void VidInputCore::on_vidinputdevice_opened (VidInputDevice vidinput_device,
+                               unsigned colour, unsigned brightness, unsigned whiteness, unsigned contrast, bool modifyable, 
+                               VidInputManager *manager)
+{
+  vidinputdevice_opened.emit (*manager, vidinput_device, colour, brightness, whiteness, contrast, modifyable);
+}
+
+void VidInputCore::on_vidinputdevice_closed (VidInputDevice vidinput_device, VidInputManager *manager)
+{
+  vidinputdevice_closed.emit (*manager, vidinput_device);
 }
 
 void VidInputCore::internal_open (unsigned width, unsigned height, unsigned fps)

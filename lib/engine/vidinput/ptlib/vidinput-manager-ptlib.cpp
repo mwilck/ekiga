@@ -43,10 +43,6 @@
 GMVidInputManager_ptlib::GMVidInputManager_ptlib (Ekiga::ServiceCore & _core)
 :    core (_core), runtime (*(dynamic_cast<Ekiga::Runtime *> (_core.get ("runtime"))))
 {
-  current_state.colour = 127;
-  current_state.brightness = 127;
-  current_state.whiteness = 127;
-  current_state.contrast = 127;
   current_state.opened = false;
   input_device = NULL;
   expectedFrameSize = 0;
@@ -94,15 +90,17 @@ bool GMVidInputManager_ptlib::set_vidinput_device (const Ekiga::VidInputDevice &
     current_state.format = format;
     return true;
   }
-		    
+
   return false;
 }
 
 bool GMVidInputManager_ptlib::open (unsigned width, unsigned height, unsigned fps)
 {
+  PVideoDevice::VideoFormat pvideo_format;
+  int whiteness, brightness, colour, contrast, hue;
+
   PTRACE(4, "GMVidInputManager_ptlib\tOpening Device " << current_state.vidinput_device.source << "/" <<  current_state.vidinput_device.device);
   PTRACE(4, "GMVidInputManager_ptlib\tOpening Device with " << width << "x" << height << "/" << fps);
-  PVideoDevice::VideoFormat pvideo_format;
 
   current_state.width  = width;
   current_state.height = height;
@@ -133,11 +131,9 @@ bool GMVidInputManager_ptlib::open (unsigned width, unsigned height, unsigned fp
     return false;
   }
 
-  input_device->SetWhiteness(current_state.whiteness << 8);
-  input_device->SetBrightness(current_state.brightness << 8);
-  input_device->SetColour(current_state.colour << 8);
-  input_device->SetContrast(current_state.contrast << 8);
+  input_device->GetParameters (&whiteness, &brightness, &colour, &contrast, &hue);
   current_state.opened = true;
+  runtime.run_in_main (sigc::bind (vidinputdevice_opened.make_slot (), current_state.vidinput_device, (unsigned) whiteness >> 8, (unsigned) brightness >> 8, (unsigned) colour >> 8, (unsigned) contrast >> 8, true));
 
   return true;
 }
@@ -150,6 +146,7 @@ void GMVidInputManager_ptlib::close()
     input_device = NULL;
   }
   current_state.opened = false;
+  runtime.run_in_main (sigc::bind (vidinputdevice_closed.make_slot (), current_state.vidinput_device));
 }
 
 void GMVidInputManager_ptlib::get_frame_data (unsigned & width,
@@ -169,38 +166,34 @@ void GMVidInputManager_ptlib::get_frame_data (unsigned & width,
   if (input_device)
     input_device->GetFrameData ((BYTE*)data, &I);
 
-  if (I != expectedFrameSize)
+  if ((unsigned) I != expectedFrameSize)
     PTRACE(1, "GMVidInputManager_ptlib\tExpected a frame of " << expectedFrameSize << " bytes but got " << I << " bytes");
 }
 
 void GMVidInputManager_ptlib::set_colour (unsigned colour)
 {
   PTRACE(4, "GMVidInputManager_ptlib\tSetting colour to " << colour);
-  current_state.colour = colour;
   if (input_device)
-    input_device->SetColour(colour);
+    input_device->SetColour(colour << 8);
 }
 
 void GMVidInputManager_ptlib::set_brightness (unsigned brightness)
 {
   PTRACE(4, "GMVidInputManager_ptlib\tSetting brightness to " << brightness);
-  current_state.brightness = brightness;
   if (input_device)
-    input_device->SetBrightness(brightness);
+    input_device->SetBrightness(brightness << 8);
 }
 
 void GMVidInputManager_ptlib::set_whiteness (unsigned whiteness)
 {
   PTRACE(4, "GMVidInputManager_ptlib\tSetting whiteness to " << whiteness);
-  current_state.whiteness = whiteness;
   if (input_device)
-    input_device->SetWhiteness(whiteness);
+    input_device->SetWhiteness(whiteness << 8);
 }
 
 void GMVidInputManager_ptlib::set_contrast (unsigned contrast)
 {
   PTRACE(4, "GMVidInputManager_ptlib\tSetting contrast to " << contrast);
-  current_state.contrast = contrast;
   if (input_device)
-    input_device->SetContrast(contrast);
+    input_device->SetContrast(contrast << 8);
 }
