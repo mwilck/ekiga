@@ -73,6 +73,8 @@ bool GMVidInputManager_mlogo::set_vidinput_device (const Ekiga::VidInputDevice &
 
 bool GMVidInputManager_mlogo::open (unsigned width, unsigned height, unsigned fps)
 {
+  Ekiga::VidInputConfig vidinput_config;
+
   PTRACE(4, "GMVidInputManager_mlogo\tOpening Moving Logo with " << width << "x" << height << "/" << fps);
   current_state.width  = width;
   current_state.height = height;
@@ -89,7 +91,12 @@ bool GMVidInputManager_mlogo::open (unsigned width, unsigned height, unsigned fp
   m_Pacing.Restart();
 
   current_state.opened  = true;
-  runtime.run_in_main (sigc::bind (vidinputdevice_opened.make_slot (), current_state.vidinput_device, 127, 127, 127, 127, false));
+  vidinput_config.whiteness = 127;
+  vidinput_config.brightness = 127;
+  vidinput_config.colour = 127;
+  vidinput_config.contrast = 127;
+  vidinput_config.modifyable = false;
+  runtime.run_in_main (sigc::bind (vidinputdevice_opened.make_slot (), current_state.vidinput_device, vidinput_config));
   
   return true;
 }

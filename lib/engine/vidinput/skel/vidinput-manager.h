@@ -102,11 +102,11 @@ namespace Ekiga
       virtual void set_whiteness  (unsigned /* whiteness  */ ) {};
       virtual void set_contrast   (unsigned /* contrast   */ ) {};
 
-      sigc::signal<void, VidInputErrorCodes> error;
-      sigc::signal<void, VidInputDevice> vidinputdevice_added;
-      sigc::signal<void, VidInputDevice> vidinputdevice_removed;
-      sigc::signal<void, VidInputDevice, unsigned, unsigned, unsigned, unsigned, bool> vidinputdevice_opened;
-      sigc::signal<void, VidInputDevice> vidinputdevice_closed;
+      sigc::signal<void, VidInputDevice&, VidInputErrorCodes> vidinputdevice_error;
+      sigc::signal<void, VidInputDevice&> vidinputdevice_added;
+      sigc::signal<void, VidInputDevice&> vidinputdevice_removed;
+      sigc::signal<void, VidInputDevice&, VidInputConfig&> vidinputdevice_opened;
+      sigc::signal<void, VidInputDevice&> vidinputdevice_closed;
 
   protected:  
       ManagerState current_state;

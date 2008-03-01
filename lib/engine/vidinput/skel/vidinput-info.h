@@ -93,6 +93,14 @@ namespace Ekiga
     std::string device;
   };
 
+  typedef struct VidInputConfig {
+    unsigned whiteness;
+    unsigned brightness;
+    unsigned colour;
+    unsigned contrast;
+    bool modifyable;
+  };
+
   enum VidInputErrorCodes {
     ERR_NONE = 0,
     ERR_DEVICE,

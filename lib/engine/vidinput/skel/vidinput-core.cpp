@@ -154,7 +154,7 @@ void VidInputCore::add_manager (VidInputManager &manager)
   managers.insert (&manager);
   manager_added.emit (manager);
 
-  manager.error.connect (sigc::bind (sigc::mem_fun (this, &VidInputCore::on_error), &manager));
+  manager.vidinputdevice_error.connect (sigc::bind (sigc::mem_fun (this, &VidInputCore::on_vidinputdevice_error), &manager));
   manager.vidinputdevice_added.connect (sigc::bind (sigc::mem_fun (this, &VidInputCore::on_vidinputdevice_added), &manager));
   manager.vidinputdevice_removed.connect (sigc::bind (sigc::mem_fun (this, &VidInputCore::on_vidinputdevice_removed), &manager));
   manager.vidinputdevice_opened.connect (sigc::bind (sigc::mem_fun (this, &VidInputCore::on_vidinputdevice_opened), &manager));
@@ -380,29 +380,29 @@ void VidInputCore::set_contrast   (unsigned contrast)
     current_manager->set_contrast (contrast);
 }
 
-void VidInputCore::on_error (VidInputErrorCodes error_code, VidInputManager *manager)
+void VidInputCore::on_vidinputdevice_error (VidInputDevice & vidinput_device, VidInputErrorCodes error_code, VidInputManager *manager)
 {
-  error.emit (*manager, error_code);
+  vidinputdevice_error.emit (*manager, vidinput_device, error_code);
 }
 
-void VidInputCore::on_vidinputdevice_added (VidInputDevice vidinput_device, VidInputManager *manager)
+void VidInputCore::on_vidinputdevice_added (VidInputDevice & vidinput_device, VidInputManager *manager)
 {
   vidinputdevice_added.emit (*manager, vidinput_device);
 }
 
-void VidInputCore::on_vidinputdevice_removed (VidInputDevice vidinput_device, VidInputManager *manager)
+void VidInputCore::on_vidinputdevice_removed (VidInputDevice & vidinput_device, VidInputManager *manager)
 {
   vidinputdevice_removed.emit (*manager, vidinput_device);
 }
 
-void VidInputCore::on_vidinputdevice_opened (VidInputDevice vidinput_device,
-                               unsigned colour, unsigned brightness, unsigned whiteness, unsigned contrast, bool modifyable, 
-                               VidInputManager *manager)
+void VidInputCore::on_vidinputdevice_opened (VidInputDevice & vidinput_device,
+                                             VidInputConfig & vidinput_config, 
+                                             VidInputManager *manager)
 {
-  vidinputdevice_opened.emit (*manager, vidinput_device, colour, brightness, whiteness, contrast, modifyable);
+  vidinputdevice_opened.emit (*manager, vidinput_device, vidinput_config);
 }
 
-void VidInputCore::on_vidinputdevice_closed (VidInputDevice vidinput_device, VidInputManager *manager)
+void VidInputCore::on_vidinputdevice_closed (VidInputDevice & vidinput_device, VidInputManager *manager)
 {
   vidinputdevice_closed.emit (*manager, vidinput_device);
 }

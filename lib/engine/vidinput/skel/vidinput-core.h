@@ -172,20 +172,20 @@ namespace Ekiga
       
       /** See vidinput-manager.h for the API
        */
-      sigc::signal<void, VidInputManager &, VidInputErrorCodes> error;
-      sigc::signal<void, VidInputManager &, VidInputDevice> vidinputdevice_added;
-      sigc::signal<void, VidInputManager &, VidInputDevice> vidinputdevice_removed;
-      sigc::signal<void, VidInputManager &, VidInputDevice, unsigned, unsigned, unsigned, unsigned, bool> vidinputdevice_opened;
-      sigc::signal<void, VidInputManager &, VidInputDevice> vidinputdevice_closed;
+      sigc::signal<void, VidInputManager &, VidInputDevice &, VidInputErrorCodes> vidinputdevice_error;
+      sigc::signal<void, VidInputManager &, VidInputDevice &> vidinputdevice_added;
+      sigc::signal<void, VidInputManager &, VidInputDevice &> vidinputdevice_removed;
+      sigc::signal<void, VidInputManager &, VidInputDevice &, VidInputConfig&> vidinputdevice_opened;
+      sigc::signal<void, VidInputManager &, VidInputDevice &> vidinputdevice_closed;
 
   private:
-      void on_error (VidInputErrorCodes error_code, VidInputManager *manager);
-      void on_vidinputdevice_added (VidInputDevice vidinput_device, VidInputManager *manager);
-      void on_vidinputdevice_removed (VidInputDevice vidinput_device, VidInputManager *manager);
-      void on_vidinputdevice_opened (VidInputDevice vidinput_device,  
-                                     unsigned colour, unsigned brightness, unsigned whiteness, unsigned contrast, bool modifyable, 
+      void on_vidinputdevice_error (VidInputDevice & vidinput_device, VidInputErrorCodes error_code, VidInputManager *manager);
+      void on_vidinputdevice_added (VidInputDevice & vidinput_device, VidInputManager *manager);
+      void on_vidinputdevice_removed (VidInputDevice & vidinput_device, VidInputManager *manager);
+      void on_vidinputdevice_opened (VidInputDevice & vidinput_device,  
+                                     VidInputConfig & vidinput_config, 
                                      VidInputManager *manager);
-      void on_vidinputdevice_closed (VidInputDevice vidinput_device, VidInputManager *manager);
+      void on_vidinputdevice_closed (VidInputDevice & vidinput_device, VidInputManager *manager);
 
       void internal_open (unsigned width, unsigned height, unsigned fps);
       void internal_close();

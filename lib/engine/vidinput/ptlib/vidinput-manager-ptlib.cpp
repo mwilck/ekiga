@@ -98,6 +98,7 @@ bool GMVidInputManager_ptlib::open (unsigned width, unsigned height, unsigned fp
 {
   PVideoDevice::VideoFormat pvideo_format;
   int whiteness, brightness, colour, contrast, hue;
+  Ekiga::VidInputConfig vidinput_config;
 
   PTRACE(4, "GMVidInputManager_ptlib\tOpening Device " << current_state.vidinput_device.source << "/" <<  current_state.vidinput_device.device);
   PTRACE(4, "GMVidInputManager_ptlib\tOpening Device with " << width << "x" << height << "/" << fps);
@@ -127,13 +128,20 @@ bool GMVidInputManager_ptlib::open (unsigned width, unsigned height, unsigned fp
 
   if (error_code != Ekiga::ERR_NONE) {
     PTRACE(1, "GMVidInputManager_ptlib\tEncountered error " << error_code << " while opening device ");
-    runtime.run_in_main (sigc::bind (error.make_slot (), error_code));
+    runtime.run_in_main (sigc::bind (vidinputdevice_error.make_slot (), current_state.vidinput_device, error_code));
     return false;
   }
 
   input_device->GetParameters (&whiteness, &brightness, &colour, &contrast, &hue);
   current_state.opened = true;
-  runtime.run_in_main (sigc::bind (vidinputdevice_opened.make_slot (), current_state.vidinput_device, (unsigned) whiteness >> 8, (unsigned) brightness >> 8, (unsigned) colour >> 8, (unsigned) contrast >> 8, true));
+
+  vidinput_config.whiteness = whiteness >> 8;
+  vidinput_config.brightness = brightness >> 8;
+  vidinput_config.colour = colour >> 8;
+  vidinput_config.contrast = contrast >> 8;
+  vidinput_config.modifyable = true;
+
+  runtime.run_in_main (sigc::bind (vidinputdevice_opened.make_slot (), current_state.vidinput_device, vidinput_config));
 
   return true;
 }

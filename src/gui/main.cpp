@@ -898,6 +898,78 @@ on_hw_accel_status_changed_cb (Ekiga::DisplayManager & /* manager */, HwAccelSta
 }
 
 void
+on_vidinputdevice_opened_cb (Ekiga::VidInputManager & /* manager */,
+                             Ekiga::VidInputDevice & /* vidinput_device */,
+                             Ekiga::VidInputConfig & /* vidinput_config */,
+                             gpointer self)
+{
+  gm_main_window_update_sensitivity (GTK_WIDGET (self), TRUE, FALSE, TRUE);
+}
+
+void 
+on_vidinputdevice_closed_cb (Ekiga::VidInputManager & /* manager */, Ekiga::VidInputDevice & /*vidinput_device*/, gpointer self)
+{
+  gm_main_window_update_sensitivity (GTK_WIDGET (self), TRUE, FALSE, FALSE);
+  gm_main_window_update_logo_have_window (GTK_WIDGET (self));
+}
+
+void 
+on_vidinputdevice_error_cb (Ekiga::VidInputManager & /* manager */, 
+                            Ekiga::VidInputDevice & vidinput_device, 
+                            Ekiga::VidInputErrorCodes error_code, 
+                            gpointer self)
+{
+  gchar *dialog_title = NULL;
+  gchar *dialog_msg = NULL;
+  gchar *tmp_msg = NULL;
+
+  dialog_title =
+  g_strdup_printf (_("Error while opening video device %s"),
+                   (const char *) vidinput_device.device.c_str());
+
+  tmp_msg = g_strdup (_("A moving logo will be transmitted during calls. Notice that you can always transmit a given image or the moving logo by choosing \"Picture\" as video plugin and \"Moving logo\" or \"Static picture\" as device."));
+  switch (error_code) {
+
+    case Ekiga::ERR_DEVICE:
+      dialog_msg = g_strconcat (tmp_msg, "\n\n", _("There was an error while opening the device. Please check your permissions and make sure that the appropriate driver is loaded."), NULL);
+      break;
+
+    case Ekiga::ERR_FORMAT:
+      dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Your video driver doesn't support the requested video format."), NULL);
+      break;
+
+    case Ekiga::ERR_CHANNEL:
+      dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Could not open the chosen channel."), NULL);
+      break;
+
+    case Ekiga::ERR_COLOUR:
+      dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Your driver doesn't seem to support any of the color formats supported by Ekiga.\n Please check your kernel driver documentation in order to determine which Palette is supported."), NULL);
+      break;
+
+    case Ekiga::ERR_FPS:
+      dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Error while setting the frame rate."), NULL);
+      break;
+
+    case Ekiga::ERR_SCALE:
+      dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Error while setting the frame size."), NULL);
+      break;
+
+    case Ekiga::ERR_NONE:
+    default:
+      dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Unknown error."), NULL);
+      break;
+  }
+
+  gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (GTK_WIDGET (self)),
+                                         VIDEO_DEVICES_KEY "enable_preview",
+                                         dialog_title,
+                                         "%s", dialog_msg);
+  g_free (dialog_msg);
+  g_free (dialog_title);
+  g_free (tmp_msg);
+}
+
+void
 on_logo_update_required_cb (Ekiga::DisplayManager & /* manager */, gpointer self)
 {
   gm_main_window_update_logo_have_window (GTK_WIDGET (self));
@@ -3800,6 +3872,14 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   std::vector <Ekiga::VidInputDevice> vidinput_devices;
   vidinput_core->get_vidinput_devices(vidinput_devices);
 
+  conn = vidinput_core->vidinputdevice_opened.connect (sigc::bind (sigc::ptr_fun (on_vidinputdevice_opened_cb), (gpointer) window));
+  mw->connections.push_back (conn);
+
+  conn = vidinput_core->vidinputdevice_closed.connect (sigc::bind (sigc::ptr_fun (on_vidinputdevice_closed_cb), (gpointer) window));
+  mw->connections.push_back (conn);
+
+  conn = vidinput_core->vidinputdevice_error.connect (sigc::bind (sigc::ptr_fun (on_vidinputdevice_error_cb), (gpointer) window));
+  mw->connections.push_back (conn);
   // we have to register the error callback here...		    
 // 	dialog_title =
 // 	  g_strdup_printf (_("Error while opening video device %s"),
