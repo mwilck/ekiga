@@ -43,10 +43,10 @@
 GMVidInputManager_ptlib::GMVidInputManager_ptlib (Ekiga::ServiceCore & _core)
 :    core (_core), runtime (*(dynamic_cast<Ekiga::Runtime *> (_core.get ("runtime"))))
 {
-  current_state.colour = 0;
-  current_state.brightness = 0;
-  current_state.whiteness = 0;
-  current_state.contrast = 0;
+  current_state.colour = 127;
+  current_state.brightness = 127;
+  current_state.whiteness = 127;
+  current_state.contrast = 127;
   current_state.opened = false;
   input_device = NULL;
 }
@@ -130,10 +130,10 @@ bool GMVidInputManager_ptlib::open (unsigned width, unsigned height, unsigned fp
     return false;
   }
 
-  input_device->SetWhiteness(current_state.whiteness);
-  input_device->SetBrightness(current_state.brightness);
-  input_device->SetColour(current_state.colour);
-  input_device->SetContrast(current_state.contrast);
+  input_device->SetWhiteness(current_state.whiteness << 8);
+  input_device->SetBrightness(current_state.brightness << 8);
+  input_device->SetColour(current_state.colour << 8);
+  input_device->SetContrast(current_state.contrast << 8);
   current_state.opened = true;
 
   return true;
