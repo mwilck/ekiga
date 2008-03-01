@@ -49,6 +49,7 @@ GMVidInputManager_ptlib::GMVidInputManager_ptlib (Ekiga::ServiceCore & _core)
   current_state.contrast = 127;
   current_state.opened = false;
   input_device = NULL;
+  expectedFrameSize = 0;
 }
 
 void GMVidInputManager_ptlib::get_vidinput_devices(std::vector <Ekiga::VidInputDevice> & vidinput_devices)
@@ -106,6 +107,7 @@ bool GMVidInputManager_ptlib::open (unsigned width, unsigned height, unsigned fp
   current_state.width  = width;
   current_state.height = height;
   current_state.fps    = fps;
+  expectedFrameSize = (width * height * 3) >> 1;
 
   pvideo_format = (PVideoDevice::VideoFormat)current_state.format;
   input_device = PVideoInputDevice::CreateOpenedDevice (current_state.vidinput_device.source, current_state.vidinput_device.device, FALSE);
@@ -166,6 +168,9 @@ void GMVidInputManager_ptlib::get_frame_data (unsigned & width,
 
   if (input_device)
     input_device->GetFrameData ((BYTE*)data, &I);
+
+  if (I != expectedFrameSize)
+    PTRACE(1, "GMVidInputManager_ptlib\tExpected a frame of " << expectedFrameSize << " bytes but got " << I << " bytes");
 }
 
 void GMVidInputManager_ptlib::set_colour (unsigned colour)

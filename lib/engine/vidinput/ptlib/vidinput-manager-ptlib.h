@@ -89,6 +89,7 @@
   protected:
       Ekiga::ServiceCore & core;
       Ekiga::Runtime & runtime;
+      unsigned expectedFrameSize;
 
       PVideoInputDevice *input_device;
   };
