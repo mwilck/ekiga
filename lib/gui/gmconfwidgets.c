@@ -35,6 +35,7 @@
  *
  */
 
+#include <string.h>
 #include "gmconfwidgets.h"
 
 
