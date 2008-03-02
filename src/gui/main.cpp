@@ -49,6 +49,7 @@
 #include "dialpad.h"
 #include "audio.h"
 #include "urlhandler.h"
+#include "statusmenu.h"
 
 #include "gmdialog.h"
 #include "gmentrydialog.h"
@@ -129,7 +130,7 @@ struct _GmMainWindow
   GtkWidget *statusbar;
   GtkWidget *statusbar_ebox;
   GtkWidget *qualitymeter;
-  GtkWidget *combo;
+  GtkWidget *entry;
   GtkWidget *main_notebook;
   GtkWidget *roster;
   GtkWidget *main_video_image;
@@ -207,21 +208,19 @@ static GmMainWindow *gm_mw_get_mw (GtkWidget *);
 
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Create the main toolbar of the main window.
- *                 The toolbar is created in its initial state, with
- *                 required items being unsensitive.
- * PRE          :  The main window GMObject.
- */
-static GtkWidget *gm_mw_init_main_toolbar (GtkWidget *);
-
-
-/* DESCRIPTION  :  /
  * BEHAVIOR     :  Create the URI toolbar of the main window.
  *                 The toolbar is created in its initial state, with
  *                 required items being unsensitive.
  * PRE          :  The main window GMObject.
  */
 static GtkWidget *gm_mw_init_uri_toolbar (GtkWidget *);
+
+
+/* DESCRIPTION  :  /
+ * BEHAVIOR     :  Create the status menu toolbar of the main window.
+ * PRE          :  The main window GMObject.
+ */
+static GtkWidget *gm_mw_init_status_toolbar (GtkWidget *);
 
 
 /* DESCRIPTION  :  /
@@ -306,15 +305,6 @@ static gboolean thread_safe_set_stats_tooltip (gpointer data);
  * PRE          :  /
  */
 static gboolean motion_detection_cb (gpointer data);
-
-
-/* DESCRIPTION  :  This callback is triggered when the status option menu
- *                 changes.
- * BEHAVIOR     :  Update the status GmConf key.
- * PRE          :  /
- */
-static void status_menu_changed_cb (GtkWidget *widget,
-                                    gpointer data);
 
 
 /* DESCRIPTION  :  /
@@ -494,14 +484,6 @@ static void toolbar_toggle_button_changed_cb (GtkWidget *,
 static gboolean statusbar_clicked_cb (GtkWidget *,
 				      GdkEventButton *,
 				      gpointer);
-
-
-/* DESCRIPTION  : Called when a button associated to an Ekiga::Trigger is
- *                clicked
- * PRE          : The pointer must be a valid pointer to a trigger object
- */
-static void pull_trigger_cb (GtkWidget *w,
-			     gpointer data);
 
 
 /* DESCRIPTION  :  This callback is called if main window is focussed
@@ -1032,188 +1014,6 @@ gm_mw_get_mw (GtkWidget *main_window)
 }
 
 
-static GtkWidget *
-gm_mw_init_main_toolbar (GtkWidget *main_window)
-{
-  GmMainWindow *mw = NULL;
-
-  Ekiga::ServiceCore *services = NULL;
-  GtkFrontend *gtk_frontend = NULL;
-  Ekiga::Trigger *trigger = NULL;
-
-  GtkWidget *button = NULL;
-  GtkToolItem *item = NULL;
-
-  GtkListStore *list_store = NULL;
-  GtkWidget *toolbar = NULL;
-  
-  GtkWidget *image = NULL;
-
-  GtkCellRenderer *renderer = NULL;
-
-  GdkPixbuf *status_icon = NULL;
-  GtkTreeIter iter;
-
-  const char * status [] = 
-    { 
-      _("Online"), 
-      _("Away"), 
-      _("Do Not Disturb"), 
-      _("Invisible"),
-      NULL, 
-      NULL 
-    };
-
-  const char * stock_status [] = 
-    { 
-      GM_STOCK_STATUS_ONLINE,
-      GM_STOCK_STATUS_AWAY,
-      GM_STOCK_STATUS_DND,
-      GM_STOCK_STATUS_OFFLINE,
-      NULL,
-      NULL 
-    };
-  
-  g_return_val_if_fail (main_window != NULL, NULL);
-  mw = gm_mw_get_mw (main_window);
-  g_return_val_if_fail (mw != NULL, NULL);
-
-  services = GnomeMeeting::Process ()->GetServiceCore ();
-  g_return_val_if_fail (services != NULL, NULL);
-
-
-  /* The main toolbar */
-  toolbar = gtk_toolbar_new ();
-  gtk_toolbar_set_orientation (GTK_TOOLBAR (toolbar), 
-			       GTK_ORIENTATION_HORIZONTAL);
-  gtk_toolbar_set_style (GTK_TOOLBAR (toolbar), GTK_TOOLBAR_ICONS);
-  gtk_toolbar_set_show_arrow (GTK_TOOLBAR (toolbar), FALSE);
-  
-
-  /* The find contact icon */
-  item = gtk_tool_item_new ();
-  button = gtk_button_new ();
-  gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
-  image = gtk_image_new_from_icon_name (GTK_STOCK_FIND,
-                                        GTK_ICON_SIZE_LARGE_TOOLBAR);
-  gtk_container_add (GTK_CONTAINER (button), image);
-  gtk_container_add (GTK_CONTAINER (item), button);
-  gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
-  
-  gtk_widget_show (GTK_WIDGET (item));
-  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
-  gtk_tool_item_set_tooltip (GTK_TOOL_ITEM (item), 
-			     mw->tips, _("Find Contacts"), NULL);
-
-  gtk_frontend = dynamic_cast<GtkFrontend *>(services->get ("gtk-frontend"));
-  g_signal_connect_swapped (G_OBJECT (button), "clicked",
-                            GTK_SIGNAL_FUNC (gtk_widget_show_all), 
-                            (gpointer) gtk_frontend->get_addressbook_window ());
-
-  /* The add contact icon */
-  trigger = dynamic_cast<Ekiga::Trigger *>(services->get ("local-cluster"));
-  if (trigger != NULL) {
-
-    item = gtk_tool_item_new ();
-    button = gtk_button_new ();
-    gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
-    image = gtk_image_new_from_icon_name (GTK_STOCK_ADD,
-					  GTK_ICON_SIZE_LARGE_TOOLBAR);
-    gtk_container_add (GTK_CONTAINER (button), image);
-    gtk_container_add (GTK_CONTAINER (item), button);
-    gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
-  
-    gtk_widget_show (GTK_WIDGET (item));
-    gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
-    gtk_tool_item_set_tooltip (GTK_TOOL_ITEM (item), 
-			       mw->tips, _("Add contact to roster"), NULL);
-    g_signal_connect (G_OBJECT (button), "clicked",
-		      GTK_SIGNAL_FUNC (pull_trigger_cb),
-		      (gpointer)trigger);
-  }
-
-  /* A separator */
-  item = gtk_separator_tool_item_new ();
-  gtk_separator_tool_item_set_draw (GTK_SEPARATOR_TOOL_ITEM (item), FALSE);
-  gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), TRUE);
-  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), 
-		      GTK_TOOL_ITEM (item), -1);
-
-  item = gtk_separator_tool_item_new ();
-  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), 
-		      GTK_TOOL_ITEM (item), -1);
-
-
-  /* The status combo box */
-  item = gtk_tool_item_new ();
-  list_store = gtk_list_store_new (3,
-                                   GDK_TYPE_PIXBUF,
-                                   G_TYPE_STRING,
-                                   G_TYPE_STRING);
-  mw->status_option_menu = gtk_combo_box_new_with_model (GTK_TREE_MODEL (list_store));
-  gtk_container_add (GTK_CONTAINER (item), mw->status_option_menu);
-
-  renderer = gtk_cell_renderer_pixbuf_new ();
-  gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (mw->status_option_menu), 
-                              renderer, FALSE);
-  gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (mw->status_option_menu), 
-                                  renderer,
-                                  "pixbuf", 0,
-                                  NULL);
-
-  renderer = gtk_cell_renderer_text_new ();
-  gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (mw->status_option_menu), 
-                              renderer, FALSE);
-  gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (mw->status_option_menu), 
-                                  renderer,
-                                  "text", 1,
-                                  NULL);
-
-  renderer = gtk_cell_renderer_text_new ();
-  g_object_set (renderer, 
-                "foreground", "darkgray",
-                "scale", 0.9,
-                "ellipsize", PANGO_ELLIPSIZE_END,
-                NULL);
-  gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (mw->status_option_menu), 
-                              renderer, TRUE);
-  gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (mw->status_option_menu), 
-                                  renderer,
-                                  "text", 2,
-                                  NULL);
-
-
-  gtk_widget_show (mw->status_option_menu);
-  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), 
-		      GTK_TOOL_ITEM (item), -1);
-
-  g_signal_connect (G_OBJECT (mw->status_option_menu), "changed",
-                    GTK_SIGNAL_FUNC (status_menu_changed_cb),
-                    NULL);
-  
-  for (int i = 0 ; i < CONTACT_LAST_STATE ; i++) { 
-
-    if (status [i] != NULL) {
-
-      status_icon = 
-        gtk_widget_render_icon (main_window,
-                                stock_status [i],
-                                GTK_ICON_SIZE_MENU, NULL);
-
-      gtk_list_store_append (GTK_LIST_STORE (list_store), &iter);
-      gtk_list_store_set (GTK_LIST_STORE (list_store), &iter,
-                          0, status_icon, 
-                          1, status [i], -1); 
-      g_object_unref (status_icon);
-    }
-  }
-
-  gtk_widget_show_all (GTK_WIDGET (toolbar));
-
-  return toolbar;
-}
-
-
 static void
 incoming_call_response_cb (GtkDialog *incoming_call_popup,
                            gint response,
@@ -1298,10 +1098,7 @@ gm_mw_init_uri_toolbar (GtkWidget *main_window)
 
   GtkToolItem *item = NULL;
 
-  GtkListStore *list_store = NULL;
   GtkWidget *toolbar = NULL;
-  
-  GtkEntryCompletion *completion = NULL;
   
   g_return_val_if_fail (main_window != NULL, NULL);
   mw = gm_mw_get_mw (main_window);
@@ -1317,55 +1114,37 @@ gm_mw_init_uri_toolbar (GtkWidget *main_window)
   /* URL bar */
   /* Entry */
   item = gtk_tool_item_new ();
-  mw->combo = gtk_combo_box_entry_new_text ();
+  mw->entry = gtk_entry_new ();
 
-  gtk_container_add (GTK_CONTAINER (item), mw->combo);
-  gtk_container_set_border_width (GTK_CONTAINER (item), 4);
-  gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), TRUE);
+  gtk_container_add (GTK_CONTAINER (item), mw->entry);
+  gtk_container_set_border_width (GTK_CONTAINER (item), 0);
+  gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), true);
   
-  completion = gtk_entry_completion_new ();
-  
-  list_store = gtk_list_store_new (3, 
-				   G_TYPE_STRING,
-				   G_TYPE_STRING,
-				   G_TYPE_STRING);
-  
-  gtk_entry_completion_set_model (GTK_ENTRY_COMPLETION (completion),
-				  GTK_TREE_MODEL (list_store));
-  gtk_entry_completion_set_text_column (GTK_ENTRY_COMPLETION (completion), 2);
-  gtk_entry_set_completion (GTK_ENTRY (GTK_BIN (mw->combo)->child), completion);
-  
-  gtk_entry_set_text (GTK_ENTRY (GTK_BIN (mw->combo)->child),
+  gtk_entry_set_text (GTK_ENTRY (mw->entry),
 		      GMURL ().GetDefaultURL ());
 
   // activate Ctrl-L to get the entry focus
-  gtk_widget_add_accelerator (mw->combo, "grab-focus",
+  gtk_widget_add_accelerator (mw->entry, "grab-focus",
 			      mw->accel, GDK_L,
 			      (GdkModifierType) GDK_CONTROL_MASK,
 			      (GtkAccelFlags) 0);
 
-  gtk_editable_set_position (GTK_EDITABLE (GTK_WIDGET ((GTK_BIN (mw->combo))->child)), -1);
+  gtk_editable_set_position (GTK_EDITABLE (GTK_WIDGET (mw->entry)), -1);
 
-  gtk_entry_completion_set_match_func (GTK_ENTRY_COMPLETION (completion),
-				       entry_completion_url_match_cb,
-				       (gpointer) list_store,
-				       NULL);
-  
-  g_signal_connect (G_OBJECT (GTK_BIN (mw->combo)->child), "changed", 
+  g_signal_connect (G_OBJECT (mw->entry), "changed", 
 		    GTK_SIGNAL_FUNC (url_changed_cb), main_window);
-  g_signal_connect (G_OBJECT (GTK_BIN (mw->combo)->child), "activate", 
+  g_signal_connect (G_OBJECT (mw->entry), "activate", 
 		    GTK_SIGNAL_FUNC (url_activated_cb), main_window);
 
   gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, 0);
 
-  
   /* The connect button */
   item = gtk_tool_item_new ();
   mw->connect_button = gm_connect_button_new (GM_STOCK_PHONE_PICK_UP_24,
 					      GM_STOCK_PHONE_HANG_UP_24,
 					      GTK_ICON_SIZE_LARGE_TOOLBAR);
   gtk_container_add (GTK_CONTAINER (item), mw->connect_button);
-  gtk_container_set_border_width (GTK_CONTAINER (mw->connect_button), 2);
+  gtk_container_set_border_width (GTK_CONTAINER (mw->connect_button), 0);
   gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
 
   gtk_tooltips_set_tip (mw->tips, GTK_WIDGET (mw->connect_button), 
@@ -1378,6 +1157,40 @@ gm_mw_init_uri_toolbar (GtkWidget *main_window)
                     main_window);
 
   gtk_widget_show_all (GTK_WIDGET (toolbar));
+  
+  return toolbar;
+}
+
+
+static GtkWidget *
+gm_mw_init_status_toolbar (GtkWidget *main_window)
+{
+  GmMainWindow *mw = NULL;
+
+  GtkWidget *toolbar = NULL;
+  GtkToolItem *item = NULL;
+
+  g_return_val_if_fail (main_window != NULL, NULL);
+  mw = gm_mw_get_mw (main_window);
+  g_return_val_if_fail (mw != NULL, NULL);
+
+  
+  /* The main horizontal toolbar */
+  toolbar = gtk_toolbar_new ();
+  gtk_toolbar_set_style (GTK_TOOLBAR (toolbar), GTK_TOOLBAR_ICONS);
+  gtk_toolbar_set_show_arrow (GTK_TOOLBAR (toolbar), FALSE);
+
+  item = gtk_tool_item_new ();
+  mw->status_option_menu = status_menu_new (); 
+  status_menu_set_parent_window (STATUS_MENU (mw->status_option_menu), 
+                                 GTK_WINDOW (main_window));
+  gtk_container_add (GTK_CONTAINER (item), mw->status_option_menu);
+  gtk_container_set_border_width (GTK_CONTAINER (item), 0);
+  gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), TRUE);
+  
+  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, 0);
+
+  gtk_widget_show_all (toolbar);
   
   return toolbar;
 }
@@ -1634,7 +1447,6 @@ gm_mw_init_contacts_list (GtkWidget *main_window)
   GmMainWindow *mw = NULL;
 
   GtkWidget *label = NULL;
-  GtkWidget *frame = NULL;
 
   GtkFrontend *gtk_frontend = NULL;
   Ekiga::ServiceCore *services = NULL;
@@ -1645,17 +1457,11 @@ gm_mw_init_contacts_list (GtkWidget *main_window)
   services = GnomeMeeting::Process ()->GetServiceCore ();
   g_return_if_fail (services != NULL);
 
-  /* A frame and a scrolled window */
-  frame = gtk_frame_new (NULL);
-  gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
-
-  /* The roster */
   gtk_frontend = dynamic_cast<GtkFrontend *>(services->get ("gtk-frontend"));
-  gtk_container_add (GTK_CONTAINER (frame), GTK_WIDGET (gtk_frontend->get_roster_view ()));
 
   label = gtk_label_new (_("Contacts"));
   gtk_notebook_append_page (GTK_NOTEBOOK (mw->main_notebook),
-			    frame, label);
+			    GTK_WIDGET (gtk_frontend->get_roster_view ()), label);
 }
 
 
@@ -2280,25 +2086,6 @@ motion_detection_cb (gpointer data)
 }
 
 
-static void
-status_menu_changed_cb (GtkWidget *widget,
-                        G_GNUC_UNUSED gpointer data)
-{
-  const char * status [] = 
-    { 
-      _("Online"), 
-      _("Away"), 
-      _("Do Not Disturb"), 
-      _("Invisible"),
-      NULL, 
-      NULL 
-    };
-
-  gm_conf_set_string (PERSONAL_DATA_KEY "short_status", 
-                      status[gtk_combo_box_get_active (GTK_COMBO_BOX (widget))]);
-}
-
-
 static void 
 hold_current_call_cb (G_GNUC_UNUSED GtkWidget *widget,
 		      gpointer data)
@@ -2771,19 +2558,6 @@ statusbar_clicked_cb (G_GNUC_UNUSED GtkWidget *widget,
 
 
   return FALSE;
-}
-
-
-static void
-pull_trigger_cb (G_GNUC_UNUSED GtkWidget *w,
-		 gpointer data)
-{
-  /* unfortunately, we can't use dynamic_cast<> here */
-  Ekiga::Trigger *trigger = (Ekiga::Trigger *)data;
-
-  g_return_if_fail (trigger != NULL);
-
-  trigger->pull ();
 }
 
 
@@ -3400,8 +3174,8 @@ gm_main_window_set_panel_section (GtkWidget *main_window,
 
 void 
 gm_main_window_set_status (GtkWidget *main_window,
-                           std::string short_status,
-                           std::string long_status)
+                           std::string /*short_status*/,
+                           std::string /*long_status*/)
 {
   GmMainWindow *mw = NULL;
   
@@ -3691,11 +3465,10 @@ gm_main_window_new (Ekiga::ServiceCore & core)
 
   GtkWidget *window = NULL;
   
-  GtkWidget *main_toolbar = NULL;
+  GtkWidget *status_toolbar = NULL;
   GtkWidget *uri_toolbar = NULL;
 
   PanelSection section = DIALPAD;
-  guint status = CONTACT_ONLINE;
 
   sigc::connection conn;
   
@@ -3746,15 +3519,9 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   gtk_box_pack_start (GTK_BOX (mw->window_vbox), mw->main_menu,
                       FALSE, FALSE, 0);
 
-  /* The main toolbar */
-  main_toolbar = gm_mw_init_main_toolbar (window);
-  std::cout << "init menu" << std::endl << std::flush;
-//  status = gm_conf_get_int (PERSONAL_DATA_KEY "status");
-//  gm_main_window_set_status (window, status);
-  
-  /* Add the toolbar to the UI */
-  gtk_box_pack_start (GTK_BOX (mw->window_vbox), main_toolbar, 
-                      FALSE, FALSE, 0);
+  /* The toolbars */
+  uri_toolbar = gm_mw_init_uri_toolbar (window);
+  gtk_box_pack_start (GTK_BOX (mw->window_vbox), uri_toolbar, false, false, 0); 
 
   /* The Audio & Video Settings windows */
   mw->audio_settings_window = gm_mw_audio_settings_window_new (window);
@@ -3763,8 +3530,8 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   /* The Notebook */
   mw->main_notebook = gtk_notebook_new ();
   gtk_notebook_popup_enable (GTK_NOTEBOOK (mw->main_notebook));
-  gtk_notebook_set_show_tabs (GTK_NOTEBOOK (mw->main_notebook), TRUE);
-  gtk_notebook_set_scrollable (GTK_NOTEBOOK (mw->main_notebook), TRUE);
+  gtk_notebook_set_show_tabs (GTK_NOTEBOOK (mw->main_notebook), false);
+  gtk_notebook_set_scrollable (GTK_NOTEBOOK (mw->main_notebook), true);
 
   gtk_box_pack_start (GTK_BOX (mw->window_vbox), mw->main_notebook,
                       TRUE, TRUE, 0);
@@ -3777,12 +3544,10 @@ gm_main_window_new (Ekiga::ServiceCore & core)
     gm_conf_get_int (USER_INTERFACE_KEY "main_window/panel_section");
   gtk_widget_show_all (GTK_WIDGET (mw->main_notebook));
   gm_main_window_set_panel_section (window, section);
-  
-  
-  /* The URI toolbar */
-  uri_toolbar = gm_mw_init_uri_toolbar (window);
-  gtk_box_pack_start (GTK_BOX (mw->window_vbox), uri_toolbar, 
-                      FALSE, FALSE, 0);
+
+  /* Status toolbar */
+  status_toolbar = gm_mw_init_status_toolbar (window);
+  gtk_box_pack_start (GTK_BOX (mw->window_vbox), status_toolbar, false, false, 0);
 
   /* The statusbar with qualitymeter */
   gtk_statusbar_set_has_resize_grip (GTK_STATUSBAR (mw->statusbar), TRUE);
@@ -4052,25 +3817,16 @@ gm_main_window_set_call_url (GtkWidget *main_window,
 {
   GmMainWindow *mw = NULL;
 
-  GtkWidget *entry = NULL;
-  GtkEntryCompletion *completion = NULL;
-
   g_return_if_fail (main_window != NULL && url != NULL);
 
   mw = gm_mw_get_mw (main_window);
 
   g_return_if_fail (mw != NULL);
 
-  entry = GTK_WIDGET (GTK_BIN (mw->combo)->child);
-  completion = 
-    gtk_entry_get_completion (GTK_ENTRY (GTK_BIN (mw->combo)->child));
- 
-  gtk_entry_completion_set_popup_completion (completion, FALSE);
-  gtk_entry_set_text (GTK_ENTRY (entry), url);
-  gtk_editable_set_position (GTK_EDITABLE (entry), -1);
-  gtk_widget_grab_focus (GTK_WIDGET (entry));
-  gtk_editable_select_region (GTK_EDITABLE (entry), -1, -1);
-  gtk_entry_completion_set_popup_completion (completion, TRUE);
+  gtk_entry_set_text (GTK_ENTRY (mw->entry), url);
+  gtk_editable_set_position (GTK_EDITABLE (mw->entry), -1);
+  gtk_widget_grab_focus (GTK_WIDGET (mw->entry));
+  gtk_editable_select_region (GTK_EDITABLE (mw->entry), -1, -1);
 }
 
 
@@ -4080,9 +3836,6 @@ gm_main_window_append_call_url (GtkWidget *main_window,
 {
   GmMainWindow *mw = NULL;
   
-  GtkWidget *entry = NULL;
-  GtkEntryCompletion *completion = NULL;
-
   int pos = -1;
 
   g_return_if_fail (main_window != NULL && url != NULL);
@@ -4091,21 +3844,15 @@ gm_main_window_append_call_url (GtkWidget *main_window,
 
   g_return_if_fail (mw != NULL && url != NULL);
  
-  entry = GTK_WIDGET (GTK_BIN (mw->combo)->child);
+  if (gtk_editable_get_selection_bounds (GTK_EDITABLE (mw->entry), NULL, NULL)) {
 
-  if (gtk_editable_get_selection_bounds (GTK_EDITABLE (entry), NULL, NULL)) {
-
-    gtk_editable_delete_selection (GTK_EDITABLE (entry));
-    pos = gtk_editable_get_position (GTK_EDITABLE (entry));
+    gtk_editable_delete_selection (GTK_EDITABLE (mw->entry));
+    pos = gtk_editable_get_position (GTK_EDITABLE (mw->entry));
   }
 
-  completion = 
-    gtk_entry_get_completion (GTK_ENTRY (GTK_BIN (mw->combo)->child));
-  gtk_entry_completion_set_popup_completion (completion, FALSE);
-  gtk_editable_insert_text (GTK_EDITABLE (entry), url, strlen (url), &pos);
-  gtk_widget_grab_focus (GTK_WIDGET (entry));
-  gtk_editable_select_region (GTK_EDITABLE (entry), -1, -1);
-  gtk_entry_completion_set_popup_completion (completion, TRUE);
+  gtk_editable_insert_text (GTK_EDITABLE (mw->entry), url, strlen (url), &pos);
+  gtk_widget_grab_focus (GTK_WIDGET (mw->entry));
+  gtk_editable_select_region (GTK_EDITABLE (mw->entry), -1, -1);
 }
 
 
@@ -4120,7 +3867,7 @@ gm_main_window_get_call_url (GtkWidget *main_window)
 
   g_return_val_if_fail (mw != NULL, NULL);
  
-  return gtk_entry_get_text (GTK_ENTRY (GTK_BIN (mw->combo)->child));
+  return gtk_entry_get_text (GTK_ENTRY (mw->entry));
 }
 
 
