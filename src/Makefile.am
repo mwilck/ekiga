@@ -69,13 +69,15 @@ ekiga_SOURCES +=			\
 	gui/tools.h			\
 	gui/tools.cpp			\
 	gui/statusicon.h		\
-	gui/statusicon.cpp
+	gui/statusicon.cpp		\
+	gui/statusmenu.h		\
+	gui/statusmenu.cpp
 
 # Devices 
 ekiga_SOURCES +=			\
 	devices/audio.h			\
 	devices/audio.cpp		\
-	devices/videoinput.h		\
+	devices/videoinput.h  	        \
 	devices/videoinput.cpp		\
 	devices/videooutput.h           \
 	devices/videooutput.cpp
