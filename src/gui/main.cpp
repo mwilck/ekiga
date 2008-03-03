@@ -307,6 +307,22 @@ static gboolean thread_safe_set_stats_tooltip (gpointer data);
 static gboolean motion_detection_cb (gpointer data);
 
 
+/** Pull a trigger from a Ekiga::Service
+ *
+ * @param data is a pointer to the Ekiga::Trigger
+ */
+static void pull_trigger_cb (GtkWidget * /*widget*/,
+                             gpointer data);
+
+
+/** Show the widget passed as parameter
+ *
+ * @param data is a pointer to the widget to show
+ */
+static void  show_widget_cb (GtkWidget * /*widget*/,
+                             gpointer data);
+
+
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Set the current active call on hold.
  * PRE          :  /
@@ -1202,6 +1218,7 @@ gm_mw_init_menu (GtkWidget *main_window)
   GmMainWindow *mw = NULL;
 
   Ekiga::ServiceCore *services = NULL;
+  Ekiga::Trigger *local_cluster_trigger = NULL;
   GtkFrontend *gtk_frontend = NULL;
   
   GtkWidget *addressbook_window = NULL;
@@ -1215,13 +1232,13 @@ gm_mw_init_menu (GtkWidget *main_window)
   mw = gm_mw_get_mw (main_window);
 
   services = GnomeMeeting::Process ()->GetServiceCore ();
+  local_cluster_trigger = dynamic_cast<Ekiga::Trigger *>(services->get ("local-cluster"));
   gtk_frontend = dynamic_cast<GtkFrontend *>(services->get ("gtk-frontend"));
   addressbook_window = GTK_WIDGET (gtk_frontend->get_addressbook_window ()); 
   accounts_window = GnomeMeeting::Process ()->GetAccountsWindow ();
   pc2phone_window = GnomeMeeting::Process ()->GetPC2PhoneWindow ();
 
   mw->main_menu = gtk_menu_bar_new ();
-
 
   /* Default values */
   status = gm_conf_get_int (PERSONAL_DATA_KEY "status"); 
@@ -1231,41 +1248,21 @@ gm_mw_init_menu (GtkWidget *main_window)
   
   static MenuEntry gnomemeeting_menu [] =
     {
-      GTK_MENU_NEW (_("C_all")),
+      GTK_MENU_NEW (_("C_hat")),
 
       GTK_MENU_ENTRY("connect", _("Ca_ll"), _("Place a new call"), 
 		     GM_STOCK_PHONE_PICK_UP_16, 'o',
 		     GTK_SIGNAL_FUNC (place_call_cb), main_window, TRUE),
       GTK_MENU_ENTRY("disconnect", _("_Hang up"),
 		     _("Terminate the current call"), 
-		     GM_STOCK_PHONE_HANG_UP_16, 'd',
+		     GM_STOCK_PHONE_HANG_UP_16, 0,
 		     GTK_SIGNAL_FUNC (hangup_call_cb), main_window, FALSE),
 
       GTK_MENU_SEPARATOR,
 
-      GTK_MENU_RADIO_ENTRY("online", _("_Online"), NULL,
-			   NULL, 0,
-			   GTK_SIGNAL_FUNC (radio_menu_changed_cb),
-			   (gpointer) PERSONAL_DATA_KEY "status",
-			   (status == CONTACT_ONLINE), TRUE),
-
-      GTK_MENU_RADIO_ENTRY("away", _("_Away"), NULL,
-			   NULL, 0,
-			   GTK_SIGNAL_FUNC (radio_menu_changed_cb),
-			   (gpointer) PERSONAL_DATA_KEY "status",
-			   (status == CONTACT_AWAY), TRUE),
-
-      GTK_MENU_RADIO_ENTRY("dnd", _("Do Not _Disturb"), NULL,
-			   NULL, 0,
-			   GTK_SIGNAL_FUNC (radio_menu_changed_cb),
-			   (gpointer) PERSONAL_DATA_KEY "status",
-			   (status == CONTACT_DND), TRUE),
-
-      GTK_MENU_RADIO_ENTRY("invisible", _("_Invisible"), NULL,
-			   NULL, 0,
-			   GTK_SIGNAL_FUNC (radio_menu_changed_cb),
-			   (gpointer) PERSONAL_DATA_KEY "status",
-			   (status == CONTACT_INVISIBLE), TRUE),
+      GTK_MENU_ENTRY("add_contact", _("_Add Contact"), _("Add a contact to the roster"),
+		     GTK_STOCK_ADD, 'a', 
+		     GTK_SIGNAL_FUNC (pull_trigger_cb), local_cluster_trigger, true),
 
       GTK_MENU_SEPARATOR,
 
@@ -1294,13 +1291,6 @@ gm_mw_init_menu (GtkWidget *main_window)
 
       GTK_MENU_SEPARATOR,
 
-      GTK_MENU_ENTRY("save_picture", NULL,
-		     _("Save a snapshot of the current video"),
-		     GTK_STOCK_SAVE, 'S',
-		     GTK_SIGNAL_FUNC (save_callback), NULL, FALSE),
-
-      GTK_MENU_SEPARATOR,
-      
       GTK_MENU_ENTRY("close", NULL, _("Close the Ekiga window"),
 		     GTK_STOCK_CLOSE, 'W', 
 		     GTK_SIGNAL_FUNC (window_closed_from_menu_cb),
@@ -1335,8 +1325,6 @@ gm_mw_init_menu (GtkWidget *main_window)
 		     NULL, TRUE),
 
       GTK_MENU_NEW(_("_View")),
-
-      GTK_SUBMENU_NEW("panel", _("Panel")),
 
       GTK_MENU_RADIO_ENTRY("contacts", _("Con_tacts"), _("View the contacts list"),
 			   NULL, 0,
@@ -1405,7 +1393,7 @@ gm_mw_init_menu (GtkWidget *main_window)
       GTK_MENU_THEME_ENTRY("address_book", _("_Find Contacts"),
 			   _("Find contacts"),
 			   GTK_STOCK_FIND, 0,
-			   GTK_SIGNAL_FUNC (gtk_widget_show_all),
+			   GTK_SIGNAL_FUNC (show_widget_cb),
 			   (gpointer) addressbook_window, TRUE),
       
       GTK_MENU_SEPARATOR,
@@ -1418,10 +1406,11 @@ gm_mw_init_menu (GtkWidget *main_window)
       
       GTK_MENU_NEW(_("_Help")),
 
-       GTK_MENU_ENTRY("help", NULL, 
+      GTK_MENU_ENTRY("help", NULL, 
                      _("Get help by reading the Ekiga manual"),
                      GTK_STOCK_HELP, GDK_F1, 
                      GTK_SIGNAL_FUNC (help_cb), NULL, TRUE),
+
       GTK_MENU_ENTRY("about", NULL,
 		     _("View information about Ekiga"),
 		     GTK_STOCK_ABOUT, 0, 
@@ -2083,6 +2072,28 @@ motion_detection_cb (gpointer data)
   }
 
   return TRUE;
+}
+
+
+static void 
+pull_trigger_cb (GtkWidget * /*widget*/,
+                 gpointer data)
+{
+  Ekiga::Trigger *trigger = (Ekiga::Trigger *) data;
+
+  g_return_if_fail (trigger != NULL);
+
+  trigger->pull ();
+}
+
+
+static void 
+show_widget_cb (GtkWidget * /*widget*/,
+                gpointer data)
+{
+  g_return_if_fail (data != NULL);
+
+  gtk_widget_show_all (GTK_WIDGET (data));
 }
 
 
@@ -2896,16 +2907,12 @@ gm_main_window_update_sensitivity (GtkWidget *main_window,
                                         "zoom_out", FALSE);
         gtk_menu_section_set_sensitive (mw->main_menu,
                                         "normal_size", FALSE);
-
-	gtk_menu_set_sensitive (mw->main_menu, "save_picture", FALSE);
       }
       else {
 
 	/* Or activate it as at least something is transmitted or 
 	 * received */
 	gm_mw_zooms_menu_update_sensitivity (main_window, zoom);
-	  
-	gtk_menu_set_sensitive (mw->main_menu, "save_picture", TRUE);
       }
   }
   
