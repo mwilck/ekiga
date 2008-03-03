@@ -43,15 +43,6 @@
 #include "common.h"
 
 
-
-/* DESCRIPTION  :  This callback is called when the user chooses to save.
- * BEHAVIOR     :  Saves the picture in the current video stream in a file.
- * PRE          :  /
- */
-void save_callback (GtkWidget *widget,
-		    gpointer data);
-
-
 /* DESCRIPTION  :  Simple wrapper that will call gnomemeeting_hide_window.
  * BEHAVIOR     :  Calls gnomemeeting_window_hide.
  * PRE          :  /

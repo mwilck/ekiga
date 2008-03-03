@@ -67,15 +67,6 @@
 
 
 /* The callbacks */
-void
-save_callback (G_GNUC_UNUSED GtkWidget *widget,
-	       G_GNUC_UNUSED gpointer data)
-{
-  std::cout << "Not implemented" << std::endl << std::flush; // FIXME Matthias ?
-}
-
-
-
 gboolean
 delete_window_cb (GtkWidget *widget,
                   G_GNUC_UNUSED GdkEvent *event,
