@@ -422,32 +422,6 @@ statusicon_build_menu ()
 
   static MenuEntry menu [] =
     {
-      GTK_MENU_RADIO_ENTRY("online", _("_Online"), NULL,
-			   NULL, 0,
-			   GTK_SIGNAL_FUNC (radio_menu_changed_cb),
-			   (gpointer) PERSONAL_DATA_KEY "status",
-			   (status == CONTACT_ONLINE), TRUE),
-
-      GTK_MENU_RADIO_ENTRY("away", _("_Away"), NULL,
-			   NULL, 0,
-			   GTK_SIGNAL_FUNC (radio_menu_changed_cb),
-			   (gpointer) PERSONAL_DATA_KEY "status",
-			   (status == CONTACT_AWAY), TRUE),
-
-      GTK_MENU_RADIO_ENTRY("dnd", _("Do Not _Disturb"), NULL,
-			   NULL, 0,
-			   GTK_SIGNAL_FUNC (radio_menu_changed_cb),
-			   (gpointer) PERSONAL_DATA_KEY "status",
-			   (status == CONTACT_DND), TRUE),
-
-      GTK_MENU_RADIO_ENTRY("invisible", _("_Invisible"), NULL,
-			   NULL, 0,
-			   GTK_SIGNAL_FUNC (radio_menu_changed_cb),
-			   (gpointer) PERSONAL_DATA_KEY "status",
-			   (status == CONTACT_INVISIBLE), TRUE),
-
-      GTK_MENU_SEPARATOR,
-
 #ifdef HAVE_GNOME
       GTK_MENU_ENTRY("help", NULL,
                      _("Get help by reading the Ekiga manual"),
