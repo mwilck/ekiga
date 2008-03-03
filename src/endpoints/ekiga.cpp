@@ -215,8 +215,6 @@ GnomeMeeting::DetectDevices ()
 {
   gchar *audio_plugin = NULL;
 
-  PINDEX fake_idx;
-
   audio_plugin = gm_conf_get_string (AUDIO_DEVICES_KEY "plugin");
  
   PWaitAndSignal m(dev_access_mutex);
