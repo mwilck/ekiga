@@ -240,8 +240,8 @@ GMManager::GMManager (Ekiga::ServiceCore & _core)
   AddRouteEntry("pc:.* = sip:<da>");
   
   pcssEP = new GMPCSSEndpoint (*this);
-  AddRouteEntry("h323:.* = pc:<da>");
-  AddRouteEntry("sip:.* = pc:<da>");
+  AddRouteEntry("h323:.* = pc:<db>");
+  AddRouteEntry("sip:.* = pc:<db>");
   
   autoStartTransmitVideo = autoStartReceiveVideo = true;
 
