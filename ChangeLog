@@ -1,5 +1,24 @@
 2008-03-04  Damien Sandras  <dsandras@gnome.org>
 
+	* src/endpoints/sip.cpp:
+	Fixed account registration/unregistration.
+	Fixed default outgoing identity : 
+	- use the registered account as outgoing identity
+	when calling users corresponding to that account
+	or
+	- use the default account if no corresponding registered account
+	or
+	- use the local IP address if we are exchanging messages with somebody
+	on the local LAN and in all other cases.
+	
+	That ensures that if we are registered to a local PBX, we are always
+	using that identity when calling local users on the same LAN. If we
+	are not registered to a local PBX, then we prefer using local IP
+	addressing than a default registered account to which the remote user
+	could not reply.
+
+2008-03-04  Damien Sandras  <dsandras@gnome.org>
+
 	* src/endpoints/accountshandler.cpp:
 	* src/endpoints/sip.cpp:
 	Some cleanups. Fixed on-the-fly account registration until it is moved

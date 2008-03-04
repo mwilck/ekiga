@@ -498,11 +498,18 @@ GMSIPEndpoint::OnRegistered (const PString & _aor,
 
 
 void
-GMSIPEndpoint::OnRegistrationFailed (const PString & aor,
+GMSIPEndpoint::OnRegistrationFailed (const PString & _aor,
                                      SIP_PDU::StatusCodes r,
                                      bool wasRegistering)
 {
+  std::stringstream strm;
   std::string info;
+  std::string aor = (const char *) _aor;
+
+  if (aor.find (uri_prefix) == std::string::npos) 
+    strm << uri_prefix << aor;
+  else
+    strm << aor;
 
   switch (r) {
 
@@ -590,10 +597,10 @@ GMSIPEndpoint::OnRegistrationFailed (const PString & aor,
   }
 
   /* Signal the OpalManager */
-  endpoint.OnRegistrationFailed (aor, wasRegistering, info);
+  endpoint.OnRegistrationFailed (strm.str ().c_str (), wasRegistering, info);
 
   /* Signal the SIP Endpoint */
-  SIPEndPoint::OnRegistrationFailed (aor, r, wasRegistering);
+  SIPEndPoint::OnRegistrationFailed (strm.str ().c_str (), r, wasRegistering);
 }
 
 
@@ -736,34 +743,38 @@ GMSIPEndpoint::GetRegisteredPartyName (const SIPURL & host)
   PString url;
   SIPURL registration_address;
 
+  /* If we are registered to an account corresponding to host, use it.
+   */
   PSafePtr<SIPHandler> info = activeSIPHandlers.FindSIPHandlerByDomain(host.GetHostName (), SIP_PDU::Method_REGISTER, PSafeReadOnly);
+  if (info != NULL) {
 
-  if (info != NULL)
-    registration_address = info->GetTargetAddress();
+    return SIPURL ("\"" + GetDefaultDisplayName () + "\" <" + info->GetTargetAddress ().AsString () + ">");
+  }
+  else {
 
-  // If we are not exchanging messages with a local party, use the default account
-  // otherwise, use a direct call address in the from field
-  if (host.GetHostAddress ().GetIpAndPort (address, port) && !manager.IsLocalAddress (address)) {
+    /* If we are not registered to host, 
+     * then use the default account as outgoing identity.
+     * If we are exchanging messages with a peer on our network,
+     * then do not use the default account as outgoing identity.
+     */
+    if (host.GetHostAddress ().GetIpAndPort (address, port) && !manager.IsLocalAddress (address)) {
 
-    account = gnomemeeting_get_default_account ("SIP");
-    if (account && account->enabled) {
-
-      if (info == NULL || registration_address.GetHostName () == account->host) {
+      account = gnomemeeting_get_default_account ("SIP");
+      if (account && account->enabled) {
 
         if (PString(account->username).Find("@") == P_MAX_INDEX)
           url = PString (account->username) + "@" + PString (account->host);
         else
           url = PString (account->username);
 
-        return url;
+        return SIPURL ("\"" + GetDefaultDisplayName () + "\" <" + url + ">");
       }
     }
   }
 
-  if (!manager.IsLocalAddress (address))
-    return SIPEndPoint::GetRegisteredPartyName (host);
-
-  // Not found (or local party)
+  /* As a last resort, ie not registered to host, no default account or
+   * dialog with a local peer, then use the local address 
+   */
   local_address = GetListeners()[0].GetLocalAddress();
 
   PINDEX j = local_address.Find ('$');
