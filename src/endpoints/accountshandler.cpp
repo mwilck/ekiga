@@ -121,54 +121,39 @@ void GMAccountsEndpoint::Main ()
 
   g_slist_foreach (defined_accounts, (GFunc) gm_account_delete, NULL);
   g_slist_free (defined_accounts);
-}
 
+  while (active) {       
 
-/*
-void GMAccountsEndpoint::PublishPresence (guint status)
-{
-  GSList *defined_accounts = NULL;
-  GSList *accounts_iter = NULL;
+    accounts_mutex.Wait ();     
+    accounts_iter = accounts;   
+    while (accounts_iter) {     
 
-  GmAccount *list_account = NULL;
+      if (accounts_iter->data) {        
 
-  gchar *aor = NULL;
+        list_account = GM_ACCOUNT (accounts_iter)->data;        
 
-  PWaitAndSignal m(publishers_mutex);
-  
-  defined_accounts = gnomemeeting_get_accounts_list ();
-  accounts_iter = defined_accounts;
-  while (accounts_iter) {
+        /* Register SIP account */      
+        if (list_account->protocol_name) {      
 
-    if (accounts_iter->data) {
+          if (!strcmp (list_account->protocol_name, "SIP"))     
+            SIPRegister (list_account);         
+          else          
+            H323Register (list_account);        
+        }       
+      }         
 
-      list_account = GM_ACCOUNT (accounts_iter)->data;
+      accounts_iter = g_slist_next (accounts_iter);     
+    }   
 
-      if (list_account->protocol_name
-          && list_account->enabled
-          && !strcmp (list_account->protocol_name, "SIP")) {
+    g_slist_foreach (accounts, (GFunc) gm_account_delete, NULL);        
+    g_slist_free (accounts);    
+    accounts = NULL;    
+    accounts_mutex.Signal ();   
 
-        if (PString (list_account->username).Find("@") != P_MAX_INDEX)
-          aor = g_strdup (list_account->username);
-        else
-          aor = g_strdup_printf ("%s@%s", 
-                                 list_account->username, 
-                                 list_account->host);
-
-        publishers += aor;
-        publishers_status += status;
-
-        g_free (aor);
-      }
-    }
-
-    accounts_iter = g_slist_next (accounts_iter);
+    PThread::Sleep (100);       
   }
-
-  g_slist_foreach (defined_accounts, (GFunc) gm_account_delete, NULL);
-  g_slist_free (defined_accounts);
 }
-*/
+
 
 void GMAccountsEndpoint::RegisterAccount (GmAccount *account)
 {

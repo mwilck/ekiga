@@ -249,7 +249,6 @@ GMSIPEndpoint::publish (const Ekiga::PersonalDetails & details)
     data += "</tuple>\r\n";
     data += "</presence>\r\n";
     Publish (to.c_str (), data, 500); // TODO: allow to change the 500 
-    std::cout << "hey" << data << std::endl << std::flush;
   }
 }
 
