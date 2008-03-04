@@ -1765,7 +1765,7 @@ gm_accounts_window_update_account_state (GtkWidget *accounts_window,
       if (PString (username).Find("@") != P_MAX_INDEX)
         ar = g_strdup (username);
       else
-        ar = g_strdup_printf ("%s@%s", username, host);
+        ar = g_strdup_printf ("sip:%s@%s", username, host);
 
       if (ar && aor && !strcmp (aor, ar)) {
 
