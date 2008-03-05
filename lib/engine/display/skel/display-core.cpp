@@ -55,6 +55,22 @@ DisplayCore::DisplayCore ()
   display_stats.rx_frames = 0;
   display_stats.tx_frames = 0;
   number_times_started = 0;
+  display_core_conf_bridge = NULL;
+}
+
+DisplayCore::~DisplayCore ()
+{
+  PWaitAndSignal m(var_mutex);
+
+  if (display_core_conf_bridge)
+    delete display_core_conf_bridge;
+}
+
+void DisplayCore::setup_conf_bridge ()
+{
+  PWaitAndSignal m(var_mutex);
+
+  display_core_conf_bridge = new DisplayCoreConfBridge (*this);
 }
 
 void DisplayCore::add_manager (DisplayManager &manager)
@@ -69,7 +85,6 @@ void DisplayCore::add_manager (DisplayManager &manager)
   manager.display_size_changed.connect (sigc::bind (sigc::mem_fun (this, &DisplayCore::on_display_size_changed), &manager));
   manager.hw_accel_status_changed.connect (sigc::bind (sigc::mem_fun (this, &DisplayCore::on_hw_accel_status_changed), &manager));
   manager.logo_update_required.connect (sigc::bind (sigc::mem_fun (this, &DisplayCore::on_logo_update_required), &manager));
-  manager.display_info_update_required.connect (sigc::bind (sigc::mem_fun (this, &DisplayCore::on_display_info_update_required), &manager));
 }
 
 
@@ -203,9 +218,4 @@ void DisplayCore::on_hw_accel_status_changed (HwAccelStatus hw_accel_status, Dis
 void DisplayCore::on_logo_update_required (DisplayManager *manager)
 {
   logo_update_required.emit (*manager);
-}
-
-void DisplayCore::on_display_info_update_required (DisplayManager *manager)
-{
-  display_info_update_required.emit (*manager);
 }

@@ -39,6 +39,7 @@
 
 #include "services.h"
 
+#include "display-gmconf-bridge.h"
 #include "display-info.h"
 
 #include <sigc++/sigc++.h>
@@ -75,8 +76,9 @@ namespace Ekiga
 
       /* The destructor
       */
-      ~DisplayCore () {}
+      ~DisplayCore ();
 
+      void setup_conf_bridge();
 
       /*** Service Implementation ***/
 
@@ -133,7 +135,6 @@ namespace Ekiga
       sigc::signal<void, DisplayManager &, unsigned, unsigned> display_size_changed;
       sigc::signal<void, DisplayManager &, HwAccelStatus> hw_accel_status_changed;
       sigc::signal<void, DisplayManager &> logo_update_required;
-      sigc::signal<void, DisplayManager &> display_info_update_required;
 
       /*** Statistics ***/
       void get_display_stats (DisplayStats & _display_stats) {
@@ -145,7 +146,6 @@ namespace Ekiga
       void on_display_size_changed ( unsigned width, unsigned height, DisplayManager *manager);
       void on_hw_accel_status_changed (HwAccelStatus hw_accel_status, DisplayManager *manager);
       void on_logo_update_required (DisplayManager *manager);
-      void on_display_info_update_required (DisplayManager *manager);
 
       std::set<DisplayManager *> managers;
 
@@ -154,7 +154,8 @@ namespace Ekiga
       int number_times_started;
 
       PMutex var_mutex;     /* Protect start, stop and number_times_started */
-       
+
+      DisplayCoreConfBridge* display_core_conf_bridge;
     };
 /**
  * @}

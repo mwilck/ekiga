@@ -196,4 +196,5 @@ engine_init (int argc,
   }
 
   vidinput_core->setup_conf_bridge();
+  display_core->setup_conf_bridge();
 }

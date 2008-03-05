@@ -6,6 +6,7 @@ common_dir = $(top_srcdir)/lib/engine/display/common
 AM_CXXFLAGS = $(SIGC_CFLAGS) $(PTLIB_CFLAGS) $(GLIB_CFLAGS) $(XV_CFLAGS)
 
 INCLUDES = \
+	-I$(top_srcdir)/lib/gmconf \
 	-I$(top_srcdir)/lib/engine/include \
 	-I$(top_srcdir)/lib/engine/framework \
 	-I$(top_srcdir)/lib/engine/display/skel \

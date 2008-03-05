@@ -183,7 +183,6 @@ void GMDisplayManager::set_frame_data (unsigned width,
   var_mutex.Signal();
 
   if ((local_display_info.display == UNSET) || (local_display_info.zoom == 0) || (!local_display_info.config_info_set)) {
-    runtime.run_in_main (display_info_update_required.make_slot ());
     PTRACE(4, "GMDisplayManager\tDisplay and zoom variable not set yet, not opening display");
      return;
   }

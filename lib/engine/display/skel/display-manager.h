@@ -87,7 +87,6 @@ namespace Ekiga
       sigc::signal<void, unsigned, unsigned> display_size_changed;
       sigc::signal<void, HwAccelStatus> hw_accel_status_changed;
       sigc::signal<void> logo_update_required;
-      sigc::signal<void> display_info_update_required;
 
   protected:  
       virtual void get_display_info (DisplayInfo &) { };

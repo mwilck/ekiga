@@ -973,41 +973,6 @@ on_logo_update_required_cb (Ekiga::DisplayManager & /* manager */, gpointer self
   gm_main_window_update_logo_have_window (GTK_WIDGET (self));
 }
 
-void 
-on_display_info_update_required_cb(Ekiga::DisplayManager & /* manager */, gpointer self)
-{
-  GmMainWindow *mw = gm_mw_get_mw (GTK_WIDGET (self));
-
-  DisplayInfo display_info;
-
-  if (( gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view") < 0) || ( gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view") > 4))
-    gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view", 0);
-
-  display_info.display = (DisplayMode) gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view");
-
-  display_info.zoom = gm_conf_get_int (VIDEO_DISPLAY_KEY "zoom");
-  if ((display_info.zoom != 100) && (display_info.zoom != 50) && (display_info.zoom != 200)) {
-    display_info.zoom = 100;
-    gm_conf_set_int (VIDEO_DISPLAY_KEY "zoom", 100);
-  }
-
-  display_info.on_top = gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top");
-  display_info.disable_hw_accel = gm_conf_get_bool (VIDEO_DISPLAY_KEY "disable_hw_accel");
-  display_info.allow_pip_sw_scaling = gm_conf_get_bool (VIDEO_DISPLAY_KEY "allow_pip_sw_scaling");
-  display_info.sw_scaling_algorithm = gm_conf_get_int (VIDEO_DISPLAY_KEY "sw_scaling_algorithm");
-  if (display_info.sw_scaling_algorithm > 3) {
-    display_info.sw_scaling_algorithm = 0;
-    gm_conf_set_int (VIDEO_DISPLAY_KEY "sw_scaling_algorithm", 0);
-  }
-  display_info.config_info_set = TRUE;
-
-  Ekiga::DisplayCore *display_core = dynamic_cast<Ekiga::DisplayCore *> (mw->core.get ("display-core"));
-  display_core->set_display_info(display_info);
-
-//   gm_main_window_set_resized_video_widget (176,144); //FIXME: is this necessary (call on_display_size_changed_cb)
-}
-
-
 /* Implementation */
 static void
 gm_mw_destroy (gpointer m)
@@ -2392,9 +2357,6 @@ zoom_in_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
 
   gm_conf_set_int ((char *) data, display_info.zoom);
   gm_mw_zooms_menu_update_sensitivity (main_window, display_info.zoom);
-
-  Ekiga::DisplayCore *display_core = dynamic_cast<Ekiga::DisplayCore *> (mw->core.get ("display-core"));
-  display_core->set_display_info(display_info);
 }
 
 
@@ -2419,11 +2381,6 @@ zoom_out_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
 
   gm_conf_set_int ((char *) data, display_info.zoom);
   gm_mw_zooms_menu_update_sensitivity (main_window, display_info.zoom);
-
-  Ekiga::DisplayCore *display_core = dynamic_cast<Ekiga::DisplayCore *> (mw->core.get ("display-core"));
-  display_core->set_display_info(display_info);
-
-
 }
 
 
@@ -2445,9 +2402,6 @@ zoom_normal_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
 
   gm_conf_set_int ((char *) data, display_info.zoom);
   gm_mw_zooms_menu_update_sensitivity (main_window, display_info.zoom);
-
-  Ekiga::DisplayCore *display_core = dynamic_cast<Ekiga::DisplayCore *> (mw->core.get ("display-core"));
-  display_core->set_display_info(display_info);
 }
 
 
@@ -2485,11 +2439,6 @@ display_changed_cb (GtkWidget *widget,
     }
 
     gm_conf_set_int ((gchar *) data, group_last_pos - active);
-
-    display_info.display = (DisplayMode) (group_last_pos - active);
-
-    Ekiga::DisplayCore *display_core = dynamic_cast<Ekiga::DisplayCore *> (mw->core.get ("display-core"));
-    display_core->set_display_info(display_info);
   }
 }
 
@@ -2970,26 +2919,22 @@ gm_main_window_toggle_fullscreen (FSToggle toggle,
   GmMainWindow *mw = gm_mw_get_mw (main_window);
   g_return_if_fail (mw != NULL);
 
-  DisplayInfo display_info;
-  Ekiga::DisplayCore *display_core = dynamic_cast<Ekiga::DisplayCore *> (mw->core.get ("display-core"));
+  DisplayMode display_mode;
 
   switch (toggle) {
     case OFF:
       if (gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view") == FULLSCREEN) {
 
-        display_info.display = (DisplayMode) gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view_before_fullscreen");
-        gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view", display_info.display);
-        display_core->set_display_info(display_info);
+        display_mode = (DisplayMode) gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view_before_fullscreen");
+        gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view", display_mode);
       }
       break;
     case ON:
       if (gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view") != FULLSCREEN) {
 
-        display_info.display = (DisplayMode) gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view");
-        gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view_before_fullscreen", display_info.display);
+        display_mode = (DisplayMode) gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view");
+        gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view_before_fullscreen", display_mode);
         gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view", FULLSCREEN);
-        display_info.display = FULLSCREEN;
-        display_core->set_display_info(display_info);
       }
       break;
 
@@ -2997,17 +2942,14 @@ gm_main_window_toggle_fullscreen (FSToggle toggle,
     default:
       if (gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view") == FULLSCREEN) {
 
-        display_info.display = (DisplayMode) gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view_before_fullscreen");
-        gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view", display_info.display);
-        display_core->set_display_info(display_info);
+        display_mode = (DisplayMode) gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view_before_fullscreen");
+        gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view", display_mode);
       }
       else {
 
-        display_info.display =  (DisplayMode) gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view");
-        gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view_before_fullscreen", display_info.display);
+        display_mode =  (DisplayMode) gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view");
+        gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view_before_fullscreen", display_mode);
         gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view", FULLSCREEN);
-        display_info.display = FULLSCREEN;
-        display_core->set_display_info(display_info);
       }
       break;
   }
@@ -3620,9 +3562,6 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   /* New Display Engine signals */
   Ekiga::DisplayCore *display_core = dynamic_cast<Ekiga::DisplayCore *> (mw->core.get ("display-core"));
 
-  conn = display_core->display_info_update_required.connect (sigc::bind (sigc::ptr_fun (on_display_info_update_required_cb), (gpointer) window));
-  mw->connections.push_back (conn);
-
   conn = display_core->logo_update_required.connect (sigc::bind (sigc::ptr_fun (on_logo_update_required_cb), (gpointer) window));
   mw->connections.push_back (conn);
 
@@ -3638,11 +3577,8 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   conn = display_core->hw_accel_status_changed.connect (sigc::bind (sigc::ptr_fun (on_hw_accel_status_changed_cb), (gpointer) window));
   mw->connections.push_back (conn);
 
-
+  /* New VidInput Engine signals */
   Ekiga::VidInputCore *vidinput_core = dynamic_cast<Ekiga::VidInputCore *> (mw->core.get ("vidinput-core"));
-  Ekiga::VidInputDevice vidinput_device;
-  std::vector <Ekiga::VidInputDevice> vidinput_devices;
-  vidinput_core->get_vidinput_devices(vidinput_devices);
 
   conn = vidinput_core->vidinputdevice_opened.connect (sigc::bind (sigc::ptr_fun (on_vidinputdevice_opened_cb), (gpointer) window));
   mw->connections.push_back (conn);
@@ -3652,50 +3588,6 @@ gm_main_window_new (Ekiga::ServiceCore & core)
 
   conn = vidinput_core->vidinputdevice_error.connect (sigc::bind (sigc::ptr_fun (on_vidinputdevice_error_cb), (gpointer) window));
   mw->connections.push_back (conn);
-  // we have to register the error callback here...		    
-// 	dialog_title =
-// 	  g_strdup_printf (_("Error while opening video device %s"),
-// 			   (const char *) input_device);
-// 
-// 	tmp_msg = g_strdup (_("A moving logo will be transmitted during calls. Notice that you can always transmit a given image or the moving logo by choosing \"Picture\" as video plugin and \"Moving logo\" or \"Static picture\" as device."));
-// 	switch (error_code) {
-// 	  
-// 	case 1:
-// 	  dialog_msg = g_strconcat (tmp_msg, "\n\n", _("There was an error while opening the device. Please check your permissions and make sure that the appropriate driver is loaded."), NULL);
-// 	  break;
-// 	  
-// 	case 2:
-// 	  dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Your video driver doesn't support the requested video format."), NULL);
-// 	  break;
-// 
-// 	case 3:
-// 	  dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Could not open the chosen channel."), NULL);
-// 	  break;
-//       
-// 	case 4:
-// 	  dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Your driver doesn't seem to support any of the color formats supported by Ekiga.\n Please check your kernel driver documentation in order to determine which Palette is supported."), NULL);
-// 	  break;
-// 	  
-// 	case 5:
-// 	  dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Error while setting the frame rate."), NULL);
-// 	  break;
-// 
-// 	case 6:
-// 	  dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Error while setting the frame size."), NULL);
-// 	  break;
-// 
-// 	default:
-// 	  break;
-// 	}
-// 
-// 	gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (main_window),
-// 					       VIDEO_DEVICES_KEY "enable_preview",
-// 					       dialog_title,
-// 					       "%s", dialog_msg);
-// 	g_free (dialog_msg);
-// 	g_free (dialog_title);
-// 	g_free (tmp_msg);
-// 
 
   /* New Call Engine signals */
   Ekiga::CallCore *call_core = dynamic_cast<Ekiga::CallCore *> (mw->core.get ("call-core"));
