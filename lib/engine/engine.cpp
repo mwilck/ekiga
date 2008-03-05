@@ -92,6 +92,10 @@ engine_init (int argc,
              Ekiga::ServiceCore * &core)
 {
   core = new Ekiga::ServiceCore; 
+
+  /* VidInputCore depends on DisplayCore and must this              *
+   * be constructed thereafter                                      */
+
   Ekiga::PresenceCore *presence_core = new Ekiga::PresenceCore;
   Ekiga::ContactCore *contact_core = new Ekiga::ContactCore;
   Ekiga::CallCore *call_core = new Ekiga::CallCore;
@@ -99,13 +103,21 @@ engine_init (int argc,
   Ekiga::VidInputCore *vidinput_core = new Ekiga::VidInputCore(*display_core);
   Ekiga::HalCore *hal_core = new Ekiga::HalCore;
 
+
+  /* The last item in the following list will be destroyed first.   *
+   * - VidInputCore must be destroyed before DisplayCore since its  *
+   *   PreviewManager may call functions of DisplayCore.            *
+   * - The runtime should be destroyed last since other core        *
+   *   components may still call runtime functions until destroyed  *
+   *   (e.g. DisplayCore).                                          */
+   
+  core->add (*runtime);
   core->add (*contact_core);
   core->add (*presence_core);
   core->add (*call_core);
-  core->add (*vidinput_core);
   core->add (*display_core);
+  core->add (*vidinput_core);
   core->add (*hal_core);
-  core->add (*runtime);
 
   if (!gmconf_personal_details_init (*core, &argc, &argv)) {
     delete core;

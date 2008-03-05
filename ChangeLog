@@ -1,5 +1,13 @@
 2008-03-05  Matthias Schneider  <ma30002000@yahoo.de>
 
+	* lib/engine/vidinput/skel/vidinput-core.cpp:
+	* lib/engine/hal/skel/hal-core.cpp:
+	* lib/engine/display/skel/display-core.cpp:
+	* lib/engine/engine.cpp:
+	Fix segfault on exit due to incorrect destruction order.
+
+2008-03-05  Matthias Schneider  <ma30002000@yahoo.de>
+
 	* src/gui/main.cpp:
 	* lib/engine/display/x/Makefile.am:
 	* lib/engine/display/common/display-manager-common.cpp:

@@ -136,6 +136,10 @@ VidInputCore::VidInputCore (DisplayCore& _display_core)
 
 VidInputCore::~VidInputCore ()
 {
+#ifdef __GNUC__
+  std::cout << __PRETTY_FUNCTION__ << std::endl;
+#endif
+
   PWaitAndSignal m(var_mutex);
 
   if (vidinput_core_conf_bridge)

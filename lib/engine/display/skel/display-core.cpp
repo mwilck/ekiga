@@ -60,6 +60,10 @@ DisplayCore::DisplayCore ()
 
 DisplayCore::~DisplayCore ()
 {
+#ifdef __GNUC__
+  std::cout << __PRETTY_FUNCTION__ << std::endl;
+#endif
+
   PWaitAndSignal m(var_mutex);
 
   if (display_core_conf_bridge)
