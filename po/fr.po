@@ -10,15 +10,15 @@
 # Laurent Richard <laurent.richard@lilit.be>, 2003.
 # Robert-André Mauchin <zebob.m@gmail.com>, 2006.
 # Jonathan Ernst <jonathan@ernstfamily.ch>, 2006-2007.
-# Stéphane Raimbault <stephane.raimbault@gmail.com>, 2007.
+# Stéphane Raimbault <stephane.raimbault@gmail.com>, 2007-2008.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Ekiga 2.O.3\n"
+"Project-Id-Version: Ekiga 2.0.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-24 16:00+0200\n"
-"PO-Revision-Date: 2007-08-24 16:21+0200\n"
-"Last-Translator: Fabrice Alphonso <fabrice@alphonso.dyndns.org>\n"
+"POT-Creation-Date: 2008-03-05 21:25+0100\n"
+"PO-Revision-Date: 2008-03-05 21:27+0100\n"
+"Last-Translator: Stéphane Raimbault <stephane.raimbault@gmail.com>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -33,13 +33,14 @@ msgstr "Softphone Ekiga"
 msgid "IP Telephony, VoIP and Video Conferencing"
 msgstr "Téléphonie IP, VoIP et vidéoconférence"
 
+# Utilisation de l'infinitif sur les infobulles du Bureau
 #: ../ekiga.desktop.in.in.h:3
 msgid "Talk to people over the Internet"
-msgstr "Communiquer à travers Internet"
+msgstr "Discuter avec des personnes sur Internet"
 
 #: ../ekiga.schemas.in.in.h:1
 msgid "0: 56Kbps, 1: ISDN, 2:DSL, 3: LAN, 4: Custom"
-msgstr "0 : 56kbps, 1 : RNIS, 2 : DSL, 3 : LAN, 4 : Personnalisée"
+msgstr "0 : 56 kbps, 1 : RNIS, 2 : DSL, 3 : LAN, 4 : personnalisée"
 
 #: ../ekiga.schemas.in.in.h:2
 msgid "Address of public IP detector"
@@ -274,7 +275,9 @@ msgstr "Si activé, la suppression automatique de l'écho sera utilisée"
 
 #: ../ekiga.schemas.in.in.h:46
 msgid "If enabled, use silence detection with the codecs supporting it"
-msgstr "Si activé, la détection du silence sera utilisée pour les codecs le prenant en charge"
+msgstr ""
+"Si activé, la détection du silence sera utilisée pour les codecs le prenant "
+"en charge"
 
 #: ../ekiga.schemas.in.in.h:47
 msgid "Incoming call mode"
@@ -898,7 +901,13 @@ msgid ""
 "connection during calls. H.245 Tunneling was introduced in H.323v2 and "
 "Netmeeting does not support it. Using both Fast Start and H.245 Tunneling "
 "can crash some versions of Netmeeting."
-msgstr "Ceci active le mode de Tunneling H.245. Dans le mode de Tunneling H.245 les messages H.245 sont encapsulés dans le canal H.225 (port 1720). Ceci permet de supprimer l'utilisation d'un port TCP durant les appels. Le Tunneling H.245 a été introduit dans H.323v2 et Netmeeting ne le prend pas en charge. Utiliser à la fois le Démarrage Rapide et le Tunneling H.245 peut faire planter certaines versions de Netmeeting."
+msgstr ""
+"Ceci active le mode de Tunneling H.245. Dans le mode de Tunneling H.245 les "
+"messages H.245 sont encapsulés dans le canal H.225 (port 1720). Ceci permet "
+"de supprimer l'utilisation d'un port TCP durant les appels. Le Tunneling "
+"H.245 a été introduit dans H.323v2 et Netmeeting ne le prend pas en charge. "
+"Utiliser à la fois le Démarrage Rapide et le Tunneling H.245 peut faire "
+"planter certaines versions de Netmeeting."
 
 #: ../ekiga.schemas.in.in.h:167 ../src/gui/preferences.cpp:1003
 msgid "This enables H.245 early in the setup"
@@ -1005,72 +1014,6 @@ msgstr "Orientation"
 msgid "The orientation of the tray."
 msgstr "Orientation de la zone de notification."
 
-#: ../src/clients/ils.cpp:105 ../src/gui/tools.cpp:174
-msgid "Invalid parameters"
-msgstr "Paramètres non valides"
-
-#: ../src/clients/ils.cpp:105
-msgid ""
-"Please provide your first name and e-mail in the Personal Data section in "
-"order to be able to register to the users directory."
-msgstr "Saisissez vos prénom et adresse électronique dans les Informations Personnelles pour pouvoir vous enregistrer dans l'annuaire utilisateur."
-
-#: ../src/clients/ils.cpp:145
-msgid "Invalid users directory"
-msgstr "Annuaire d'utilisateurs non valide"
-
-#: ../src/clients/ils.cpp:145
-msgid "Operation impossible since there is no users directory specified."
-msgstr ""
-"Opération impossible à effectuer tant qu'aucun annuaire d'utilisateurs n'est "
-"spécifié."
-
-#: ../src/clients/ils.cpp:238
-msgid "Failed to parse XML file"
-msgstr "L'analyse du fichier XML a échoué"
-
-#: ../src/clients/ils.cpp:238
-msgid ""
-"There was an error while parsing the XML file. Please make sure that it is "
-"correctly installed in your system."
-msgstr "Une erreur est survenue lors de l'analyse du fichier XML. Assurez-vous qu'il est correctement installé sur votre système."
-
-#: ../src/clients/ils.cpp:249
-msgid "Bad information"
-msgstr "Mauvaise information"
-
-#: ../src/clients/ils.cpp:249
-#, c-format
-msgid "Bad LDAP information from XML file: %s."
-msgstr "Mauvaise information LDAP dans le fichier XML: %s."
-
-#: ../src/clients/ils.cpp:257
-#, c-format
-msgid "ILS registration failed: unable to connect to %s"
-msgstr "L'inscription à l'ILS a échoué : impossible de se connecter à %s"
-
-#: ../src/clients/ils.cpp:270
-msgid "ILS registration failed: unable to set time limit on operations"
-msgstr ""
-"L'inscription à l'ILS a échoué : impossible de fixer une limite de temps "
-"pour les opérations"
-
-#: ../src/clients/ils.cpp:282
-#, c-format
-msgid "ILS registration failed: failed to bind to %s"
-msgstr "L'inscription à l'ILS a échoué : liaison à %s impossible"
-
-#: ../src/clients/ils.cpp:310
-#, c-format
-msgid "Updated information on %s"
-msgstr "Informations mises à jour sur %s"
-
-#: ../src/clients/ils.cpp:314 ../src/endpoints/accountshandler.cpp:332
-#: ../src/endpoints/sip.cpp:236
-#, c-format
-msgid "Unregistered from %s"
-msgstr "Inscription à %s annulée"
-
 #: ../src/clients/stun.cpp:104
 #, c-format
 msgid "STUN server set to %s"
@@ -1093,7 +1036,12 @@ msgid ""
 msgstr ""
 "Résultat du test STUN : %s.\n"
 "\n"
-"Ekiga n'a pas été capable de détecter le type de NAT que vous utilisez. La méthode la plus appropriée, si votre routeur ne prend pas en charge les protocoles SIP ou H.323 nativement, est d'activer la redirection de ports vers votre ordinateur interne et d'utiliser la traduction d'IP si vous vous trouvez derrière un routeur NAT. Assurez-vous que vous n'utilisez pas un pare-feu local."
+"Ekiga n'a pas été capable de détecter le type de NAT que vous utilisez. La "
+"méthode la plus appropriée, si votre routeur ne prend pas en charge les "
+"protocoles SIP ou H.323 nativement, est d'activer la redirection de ports "
+"vers votre ordinateur interne et d'utiliser la traduction d'IP si vous vous "
+"trouvez derrière un routeur NAT. Assurez-vous que vous n'utilisez pas un "
+"pare-feu local."
 
 #: ../src/clients/stun.cpp:148
 #, c-format
@@ -1109,6 +1057,7 @@ msgstr ""
 "vous n'utilisez pas un pare-feu local qui bloque les ports requis par Ekiga."
 
 #: ../src/clients/stun.cpp:153
+#, c-format
 msgid ""
 "Ekiga detected Symmetric NAT. The most appropriate method, if your router "
 "does not natively support SIP or H.323, is to forward the required ports to "
@@ -1117,7 +1066,15 @@ msgid ""
 "should report Cone NAT. This should allow Ekiga to be used with STUN support "
 "enabled. If it does not report Cone NAT, then it means that there is a "
 "problem in your forwarding rules."
-msgstr "Ekiga a détecté un NAT symétrique. La méthode la plus appropriée, si votre routeur ne prend pas en charge les protocoles SIP ou H.323 nativement, est de rediriger les ports requis vers votre ordinateur interne afin de transformer votre NAT symétrique en Cone NAT. Relancer ce test après avoir effectué la redirection de ports, devrait détecter un Cone NAT et permettre à Ekiga de fonctionner avec la prise en charge STUN activée. Si le test ne détecte pas un Cone NAT, cela signifie qu'il y a un problème dans vos règles de redirection."
+msgstr ""
+"Ekiga a détecté un NAT symétrique. La méthode la plus appropriée, si votre "
+"routeur ne prend pas en charge les protocoles SIP ou H.323 nativement, est "
+"de rediriger les ports requis vers votre ordinateur interne afin de "
+"transformer votre NAT symétrique en Cone NAT. Relancer ce test après avoir "
+"effectué la redirection de ports, devrait détecter un Cone NAT et permettre "
+"à Ekiga de fonctionner avec la prise en charge STUN activée. Si le test ne "
+"détecte pas un Cone NAT, cela signifie qu'il y a un problème dans vos règles "
+"de redirection."
 
 #: ../src/clients/stun.cpp:157
 #, c-format
@@ -1143,7 +1100,8 @@ msgid ""
 msgstr ""
 "Résultat du test STUN : %s.\n"
 "\n"
-"Utiliser un serveur STUN est probablement la méthode la plus appropriée si votre routeur ne prend pas en charge les protocoles SIP ou H323 nativement.\n"
+"Utiliser un serveur STUN est probablement la méthode la plus appropriée si "
+"votre routeur ne prend pas en charge les protocoles SIP ou H323 nativement.\n"
 "\n"
 "Activer la prise en charge STUN ?"
 
@@ -1226,6 +1184,7 @@ msgstr ""
 "H.323 ou callto donnée, veuillez utiliser la commande « ekiga -c URL »."
 
 #: ../src/components/bonobo.cpp:170
+#, c-format
 msgid ""
 "It appears that you do not have ekiga.server installed in a valid location. "
 "Factory mode disabled.\n"
@@ -1234,6 +1193,7 @@ msgstr ""
 "valide. Le mode Factory est désactivé.\n"
 
 #: ../src/components/bonobo.cpp:174
+#, c-format
 msgid ""
 "Error registering Ekiga with the activation service; factory mode disabled.\n"
 msgstr ""
@@ -1241,6 +1201,7 @@ msgstr ""
 "sera désactivé.\n"
 
 #: ../src/components/bonobo.cpp:214
+#, c-format
 msgid "Failed to retrieve Ekiga server from activation server\n"
 msgstr ""
 "Impossible de récupérer le serveur Ekiga à partir du serveur d'activation.\n"
@@ -1263,14 +1224,20 @@ msgstr "Ne peut ouvrir le périphérique"
 msgid ""
 "Impossible to open the selected audio device (%s) for recording. Please "
 "check your audio setup, the permissions and that the device is not busy."
-msgstr "Impossible d'ouvrir le périphérique audio sélectionné (%s) pour l'enregistrement. Vérifiez vos réglages audio, les permissions d'accès et que le périphérique ne soit pas déjà occupé."
+msgstr ""
+"Impossible d'ouvrir le périphérique audio sélectionné (%s) pour "
+"l'enregistrement. Vérifiez vos réglages audio, les permissions d'accès et "
+"que le périphérique ne soit pas déjà occupé."
 
 #: ../src/devices/audio.cpp:300
 #, c-format
 msgid ""
 "Impossible to open the selected audio device (%s) for playing. Please check "
 "your audio setup, the permissions and that the device is not busy."
-msgstr "Impossible d'ouvrir le périphérique audio sélectionné (%s) pour la lecture. Vérifiez vos réglages audio, les permissions d'accès et que le périphérique ne soit pas déjà occupé."
+msgstr ""
+"Impossible d'ouvrir le périphérique audio sélectionné (%s) pour la lecture. "
+"Vérifiez vos réglages audio, les permissions d'accès et que le périphérique "
+"ne soit pas déjà occupé."
 
 #: ../src/devices/audio.cpp:316 ../src/devices/audio.cpp:385
 msgid "Cannot use the audio device"
@@ -1281,7 +1248,10 @@ msgstr "Ne peut utiliser le périphérique audio"
 msgid ""
 "The selected audio device (%s) was successfully opened but it is impossible "
 "to read data from this device. Please check your audio setup."
-msgstr "Le périphérique audio sélectionné (%s) a été ouvert avec succès mais il est impossible de lire des données à partir de ce périphérique. Vérifiez votre configuration audio."
+msgstr ""
+"Le périphérique audio sélectionné (%s) a été ouvert avec succès mais il est "
+"impossible de lire des données à partir de ce périphérique. Vérifiez votre "
+"configuration audio."
 
 #: ../src/devices/audio.cpp:325
 msgid "Recording your voice"
@@ -1296,14 +1266,17 @@ msgstr "Enregistrement et lecture en retour"
 msgid ""
 "The selected audio device (%s) was successfully opened but it is impossible "
 "to write data to this device. Please check your audio setup."
-msgstr "Le périphérique audio sélectionné (%s) a été ouvert avec succès mais il est impossible d'écrire des données sur ce périphérique. Vérifiez votre configuration audio."
+msgstr ""
+"Le périphérique audio sélectionné (%s) a été ouvert avec succès mais il est "
+"impossible d'écrire des données sur ce périphérique. Vérifiez votre "
+"configuration audio."
 
 #: ../src/devices/audio.cpp:481 ../src/devices/audio.cpp:482
 #: ../src/devices/videoinput.cpp:310 ../src/devices/videoinput.cpp:585
 #: ../src/endpoints/ekiga.cpp:351 ../src/endpoints/ekiga.cpp:353
-#: ../src/endpoints/ekiga.cpp:355 ../src/endpoints/pcss.cpp:194
-#: ../src/gui/druid.cpp:1780 ../src/gui/druid.cpp:1792
-#: ../src/gui/druid.cpp:1850
+#: ../src/endpoints/ekiga.cpp:355 ../src/endpoints/pcss.cpp:198
+#: ../src/gui/druid.cpp:1784 ../src/gui/druid.cpp:1796
+#: ../src/gui/druid.cpp:1854
 msgid "No device found"
 msgstr "Aucun périphérique trouvé"
 
@@ -1339,7 +1312,11 @@ msgid ""
 "A moving logo will be transmitted during calls. Notice that you can always "
 "transmit a given image or the moving logo by choosing \"Picture\" as video "
 "plugin and \"MovingLogo\" or \"StaticPicture\" as device."
-msgstr "Un logo mobile sera transmis lors des appels. Notez que vous pouvez choisir de transmettre une image ou le logo Ekiga tout le temps en choisissant « Picture » comme greffon vidéo et « MovingLogo » ou « StaticPicture » comme périphérique vidéo."
+msgstr ""
+"Un logo mobile sera transmis lors des appels. Notez que vous pouvez choisir "
+"de transmettre une image ou le logo Ekiga tout le temps en choisissant "
+"« Picture » comme greffon vidéo et « MovingLogo » ou « StaticPicture » comme "
+"périphérique vidéo."
 
 #: ../src/devices/videoinput.cpp:364
 msgid "Couldn't open the video device"
@@ -1349,9 +1326,13 @@ msgstr "Impossible d'ouvrir le périphérique vidéo"
 msgid ""
 "There was an error while opening the device. Please check your permissions "
 "and make sure that the appropriate driver is loaded."
-msgstr "Il y a eu une erreur lors de l'ouverture du périphérique. Vérifiez vos permissions d'accès à ce périphérique et assurez-vous que le pilote approprié est chargé."
+msgstr ""
+"Il y a eu une erreur lors de l'ouverture du périphérique. Vérifiez vos "
+"permissions d'accès à ce périphérique et assurez-vous que le pilote "
+"approprié est chargé."
 
 #: ../src/devices/videoinput.cpp:372 ../src/devices/videoinput.cpp:686
+#, c-format
 msgid "Your video driver doesn't support the requested video format."
 msgstr "Votre pilote vidéo ne prend pas en charge le format vidéo demandé."
 
@@ -1366,8 +1347,10 @@ msgid ""
 " Please check your kernel driver documentation in order to determine which "
 "Palette is supported."
 msgstr ""
-"Votre pilote ne semble prendre en charge aucun des formats de couleurs pris en charge par Ekiga.\n"
-"Consultez la documentation de votre pilote noyau pour déterminer quelle palette est prise en charge."
+"Votre pilote ne semble prendre en charge aucun des formats de couleurs pris "
+"en charge par Ekiga.\n"
+"Consultez la documentation de votre pilote noyau pour déterminer quelle "
+"palette est prise en charge."
 
 #: ../src/devices/videoinput.cpp:384
 msgid "Error while setting the frame rate."
@@ -1411,18 +1394,24 @@ msgid "Error while opening %s."
 msgstr "Erreur lors de l'ouverture de %s."
 
 #: ../src/devices/videoinput.cpp:690
+#, c-format
 msgid "Could not open the chosen channel with the chosen video format."
 msgstr "Impossible d'ouvrir le canal choisi avec le format vidéo choisi."
 
 #: ../src/devices/videoinput.cpp:694
+#, c-format
 msgid "Your driver doesn't support any of the color formats tried by Ekiga"
-msgstr "Votre pilote vidéo ne prend en charge aucun des formats de couleur essayés par Ekiga"
+msgstr ""
+"Votre pilote vidéo ne prend en charge aucun des formats de couleur essayés "
+"par Ekiga"
 
 #: ../src/devices/videoinput.cpp:698
+#, c-format
 msgid "Error with the frame rate."
 msgstr "Erreur avec le nombre d'images transmises par seconde."
 
 #: ../src/devices/videoinput.cpp:702
+#, c-format
 msgid "Error with the frame size."
 msgstr "Erreur avec la taille de capture choisie."
 
@@ -1473,6 +1462,11 @@ msgstr "Inscrit à %s"
 #: ../src/endpoints/accountshandler.cpp:322 ../src/endpoints/sip.cpp:231
 msgid "Registered"
 msgstr "Inscrit"
+
+#: ../src/endpoints/accountshandler.cpp:332 ../src/endpoints/sip.cpp:236
+#, c-format
+msgid "Unregistered from %s"
+msgstr "Inscription à %s annulée"
 
 #: ../src/endpoints/accountshandler.cpp:352 ../src/endpoints/sip.cpp:242
 msgid "Unregistered"
@@ -1535,7 +1529,7 @@ msgstr "Connecté avec %s qui utilise %s"
 msgid "Connected with %s"
 msgstr "Connecté avec %s"
 
-#: ../src/endpoints/manager.cpp:1124 ../src/gui/main.cpp:4156
+#: ../src/endpoints/manager.cpp:1124 ../src/gui/main.cpp:4157
 msgid "Standby"
 msgstr "En attente"
 
@@ -1628,7 +1622,9 @@ msgstr "Erreur lors du démarrage de l'écouteur pour le protocole H.323"
 msgid ""
 "You will not be able to receive incoming H.323 calls. Please check that no "
 "other program is already running on the port used by Ekiga."
-msgstr "Vous ne serez pas capable de recevoir d'appel entrant utilisant le protocole H.323. Vérifiez qu'aucun autre programme n'utilise le port utilisé par Ekiga."
+msgstr ""
+"Vous ne serez pas capable de recevoir d'appel entrant utilisant le protocole "
+"H.323. Vérifiez qu'aucun autre programme n'utilise le port utilisé par Ekiga."
 
 #: ../src/endpoints/manager.cpp:1626
 msgid "Error while starting the listener for the SIP protocol"
@@ -1638,7 +1634,9 @@ msgstr "Erreur lors du démarrage de l'écouteur pour le protocole SIP"
 msgid ""
 "You will not be able to receive incoming SIP calls. Please check that no "
 "other program is already running on the port used by Ekiga."
-msgstr "Vous ne serez pas capable de recevoir d'appel entrant utilisant le protocole SIP. Vérifiez qu'aucun autre programme n'utilise le port utilisé par Ekiga."
+msgstr ""
+"Vous ne serez pas capable de recevoir d'appel entrant utilisant le protocole "
+"SIP. Vérifiez qu'aucun autre programme n'utilise le port utilisé par Ekiga."
 
 #: ../src/endpoints/manager.cpp:1873
 #, c-format
@@ -1665,42 +1663,46 @@ msgstr "Codec %s fermé alors qu'il a été ouvert pour la réception"
 msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 msgstr "%.2ld:%.2ld:%.2ld A:%.2f/%.2f V:%.2f/%.2f"
 
-#: ../src/endpoints/pcss.cpp:218
+#: ../src/endpoints/pcss.cpp:222
 #, c-format
 msgid "Opened %s for recording with plugin %s"
 msgstr "%s ouvert pour l'enregistrement avec le greffon %s"
 
-#: ../src/endpoints/pcss.cpp:219
+#: ../src/endpoints/pcss.cpp:223
 #, c-format
 msgid "Opened %s for playing with plugin %s"
 msgstr "%s ouvert pour la lecture avec le greffon %s"
 
-#: ../src/endpoints/pcss.cpp:237
+#: ../src/endpoints/pcss.cpp:241
 msgid "Could not open audio channel for audio transmission"
 msgstr "Impossible d'ouvrir un canal audio pour la transmission audio"
 
-#: ../src/endpoints/pcss.cpp:237
+#: ../src/endpoints/pcss.cpp:241
 msgid ""
 "An error occured while trying to record from the soundcard for the audio "
 "transmission. Please check that your soundcard is not busy and that your "
 "driver supports full-duplex.\n"
 "The audio transmission has been disabled."
 msgstr ""
-"Une erreur est survenue lors de l'enregistrement à partir de la carte son pour la transmission audio. Vérifiez que la carte son n'est pas occupée et que votre pilote audio prend en charge le full-duplex.\n"
+"Une erreur est survenue lors de l'enregistrement à partir de la carte son "
+"pour la transmission audio. Vérifiez que la carte son n'est pas occupée et "
+"que votre pilote audio prend en charge le full-duplex.\n"
 "La transmission audio a été désactivée."
 
-#: ../src/endpoints/pcss.cpp:239
+#: ../src/endpoints/pcss.cpp:243
 msgid "Could not open audio channel for audio reception"
 msgstr "Impossible d'ouvrir un canal audio pour la réception audio"
 
-#: ../src/endpoints/pcss.cpp:239
+#: ../src/endpoints/pcss.cpp:243
 msgid ""
 "An error occured while trying to play audio to the soundcard for the audio "
 "reception. Please check that your soundcard is not busy and that your driver "
 "supports full-duplex.\n"
 "The audio reception has been disabled."
 msgstr ""
-"Une erreur est survenue lors de la lecture à partir de la carte son pour la réception audio. Vérifiez que la carte son n'est pas occupée et que votre pilote audio prend en charge le full-duplex.\n"
+"Une erreur est survenue lors de la lecture à partir de la carte son pour la "
+"réception audio. Vérifiez que la carte son n'est pas occupée et que votre "
+"pilote audio prend en charge le full-duplex.\n"
 "La réception audio a été désactivée."
 
 #: ../src/endpoints/sip.cpp:288
@@ -1773,7 +1775,9 @@ msgstr "Prise en charge d'URL non valide"
 msgid ""
 "Please specify a valid URL handler. Currently both h323: and callto: are "
 "supported."
-msgstr "Veuillez indiquer une prise en charge d'URL valide. Actuellement, h323: et callto: sont pris en charge."
+msgstr ""
+"Veuillez indiquer une prise en charge d'URL valide. Actuellement, h323: et "
+"callto: sont pris en charge."
 
 #: ../src/endpoints/urlhandler.cpp:469
 #, c-format
@@ -1848,13 +1852,17 @@ msgstr "Information manquante"
 #: ../src/gui/accounts.cpp:631 ../src/gui/accounts.cpp:638
 msgid ""
 "Please make sure to provide a valid account name, host name, and user name."
-msgstr "Assurez-vous de fournir un nom de compte, un nom d'hôte et un nom d'utilisateur valides."
+msgstr ""
+"Assurez-vous de fournir un nom de compte, un nom d'hôte et un nom "
+"d'utilisateur valides."
 
 #: ../src/gui/accounts.cpp:650
 msgid ""
 "Please make sure to provide a valid account name, host name and registration "
 "timeout."
-msgstr "Assurez-vous de fournir un nom de compte, un nom d'hôte et un délai d'inscription valides."
+msgstr ""
+"Assurez-vous de fournir un nom de compte, un nom d'hôte et un délai "
+"d'inscription valides."
 
 #: ../src/gui/accounts.cpp:736
 #, c-format
@@ -1916,7 +1924,7 @@ msgstr ""
 "<b>Numéro abrégé</b> : %s\n"
 
 #: ../src/gui/addressbook.cpp:821 ../src/gui/addressbook.cpp:823
-#: ../src/gui/druid.cpp:1912 ../src/gui/preferences.cpp:930
+#: ../src/gui/druid.cpp:1916 ../src/gui/preferences.cpp:930
 msgid "None"
 msgstr "Aucune"
 
@@ -2117,7 +2125,9 @@ msgstr "Carnet d'adresses local :"
 #: ../src/gui/addressbook.cpp:3113
 msgid ""
 "Please make sure to provide at least a full name or an URL for the contact."
-msgstr "Assurez-vous de fournir au moins le nom complet ou une adresse pour le contact."
+msgstr ""
+"Assurez-vous de fournir au moins le nom complet ou une adresse pour le "
+"contact."
 
 #: ../src/gui/addressbook.cpp:3160
 #, c-format
@@ -2580,27 +2590,27 @@ msgstr ""
 msgid "Configuration complete - page %d/%d"
 msgstr "Configuration terminée - page %d/%d"
 
-#: ../src/gui/druid.cpp:1630
+#: ../src/gui/druid.cpp:1634
 msgid "56k Modem"
 msgstr "Modem 56K"
 
-#: ../src/gui/druid.cpp:1631
+#: ../src/gui/druid.cpp:1635
 msgid "ISDN"
 msgstr "RNIS"
 
-#: ../src/gui/druid.cpp:1632
+#: ../src/gui/druid.cpp:1636
 msgid "xDSL/Cable"
 msgstr "xDSL/Cable"
 
-#: ../src/gui/druid.cpp:1633
+#: ../src/gui/druid.cpp:1637
 msgid "T1/LAN"
 msgstr "T1/LAN"
 
-#: ../src/gui/druid.cpp:1634
+#: ../src/gui/druid.cpp:1638
 msgid "Keep current settings"
 msgstr "Conserver les réglages actuels"
 
-#: ../src/gui/druid.cpp:1912
+#: ../src/gui/druid.cpp:1916
 #, c-format
 msgid ""
 "You have now finished the Ekiga configuration. All the settings can be "
@@ -2633,7 +2643,7 @@ msgstr ""
 "Lecteur vidéo : %s\n"
 "Mon URL SIP : %s\n"
 
-#: ../src/gui/druid.cpp:1967
+#: ../src/gui/druid.cpp:1971
 msgid "First Time Configuration Assistant"
 msgstr "Assistant de première configuration"
 
@@ -3158,7 +3168,7 @@ msgstr ""
 "Paquets inutilisables : %.1f %%\n"
 "Délai de mise en cache : %d ms"
 
-#: ../src/gui/main.cpp:4574
+#: ../src/gui/main.cpp:4575
 #, c-format
 msgid ""
 "Ekiga got an invalid value for the GConf key %s.\n"
@@ -3172,31 +3182,37 @@ msgid ""
 msgstr ""
 "Ekiga a obtenu une valeur incorrecte pour la clé GConf %s.\n"
 "\n"
-"Cela pourrait signifier que les schémas GConf n'ont pas été correctement installés ou que les permissions ne sont pas correctes.\n"
+"Cela pourrait signifier que les schémas GConf n'ont pas été correctement "
+"installés ou que les permissions ne sont pas correctes.\n"
 "\n"
-"Consultez la FAQ (http://www.ekiga.org/faq.php), la section « Troubleshooting » du site Web de GConf (http://www.gnome.org/projects/gconf/) ou les archives de la liste de diffusion (http://mail.gnome.org) pour plus d'informations à propos de ce problème."
+"Consultez la FAQ (http://www.ekiga.org/faq.php), la section "
+"« Troubleshooting » du site Web de GConf (http://www.gnome.org/projects/"
+"gconf/) ou les archives de la liste de diffusion (http://mail.gnome.org) "
+"pour plus d'informations à propos de ce problème."
 
-#: ../src/gui/main.cpp:4577
+#: ../src/gui/main.cpp:4578
 msgid "Gconf key error"
 msgstr "Erreur de clé Gconf"
 
-#: ../src/gui/main.cpp:4608 ../src/gui/main.cpp:4627
+#: ../src/gui/main.cpp:4609 ../src/gui/main.cpp:4628
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "Affiche les messages de débogage dans la console (niveau entre 1 et 6)"
 
-#: ../src/gui/main.cpp:4611 ../src/gui/main.cpp:4632
+#: ../src/gui/main.cpp:4612 ../src/gui/main.cpp:4633
 msgid "Makes Ekiga call the given URL"
 msgstr "Ekiga appelle l'URL donné"
 
-#: ../src/gui/main.cpp:4665
+#: ../src/gui/main.cpp:4666
 msgid "No usable audio plugin detected"
 msgstr "Aucun greffon audio utilisable détecté"
 
-#: ../src/gui/main.cpp:4665
+#: ../src/gui/main.cpp:4666
 msgid ""
 "Ekiga didn't find any usable audio plugin. Make sure that your installation "
 "is correct."
-msgstr "Ekiga n'a pas pu trouver de greffon audio utilisable. Vérifiez que votre installation est correcte."
+msgstr ""
+"Ekiga n'a pas pu trouver de greffon audio utilisable. Vérifiez que votre "
+"installation est correcte."
 
 #: ../src/gui/misc.cpp:115
 msgid "Error"
@@ -3683,7 +3699,9 @@ msgstr "Activer la détection du _silence"
 
 #: ../src/gui/preferences.cpp:1278
 msgid "If enabled, use silence detection with the codecs supporting it."
-msgstr "Si activé, la détection du silence sera activée pour les codecs le prenant en charge."
+msgstr ""
+"Si activé, la détection du silence sera activée pour les codecs le prenant "
+"en charge."
 
 #: ../src/gui/preferences.cpp:1280
 msgid "Enable echo can_celation"
@@ -3805,10 +3823,16 @@ msgid "Devices"
 msgstr "Périphériques"
 
 #: ../src/gui/tools.cpp:174
+msgid "Invalid parameters"
+msgstr "Paramètres non valides"
+
+#: ../src/gui/tools.cpp:174
 msgid ""
 "Please provide your username and password in order to be able to use the PC-"
 "To-Phone service."
-msgstr "Saisissez vos nom d'utilisateur et mot de passe pour pouvoir utiliser le service PC-To-Phone."
+msgstr ""
+"Saisissez vos nom d'utilisateur et mot de passe pour pouvoir utiliser le "
+"service PC-To-Phone."
 
 #: ../src/gui/tools.cpp:312 ../src/gui/tools.cpp:331
 msgid "PC-To-Phone Settings"
@@ -3825,9 +3849,14 @@ msgid ""
 "The service will work only if your account is created using the URL in this "
 "dialog."
 msgstr ""
-"Vous pouvez passer des appels vers des téléphones normaux et mobiles à travers le monde en utilisant Ekiga. Pour activer ceci, vous devez créer un compte en utilisant l'URL ci dessous. Ensuite, vous devez saisir votre numéro de compte et le mot de passe. Et enfin vous devez activer l'inscription ci-dessous.\n"
+"Vous pouvez passer des appels vers des téléphones normaux et mobiles à "
+"travers le monde en utilisant Ekiga. Pour activer ceci, vous devez créer un "
+"compte en utilisant l'URL ci dessous. Ensuite, vous devez saisir votre "
+"numéro de compte et le mot de passe. Et enfin vous devez activer "
+"l'inscription ci-dessous.\n"
 "\n"
-"Utilisez l'URL ci-dessous pour créer votre compte ou le service ne fonctionnera pas."
+"Utilisez l'URL ci-dessous pour créer votre compte ou le service ne "
+"fonctionnera pas."
 
 #: ../src/gui/tools.cpp:333
 msgid "Account _number:"
@@ -3864,3 +3893,48 @@ msgstr "Afficher l'historique de la balance"
 #: ../src/gui/tools.cpp:431
 msgid "Consult the calls history"
 msgstr "Consulter l'historique des appels"
+
+#~ msgid ""
+#~ "Please provide your first name and e-mail in the Personal Data section in "
+#~ "order to be able to register to the users directory."
+#~ msgstr ""
+#~ "Saisissez vos prénom et adresse électronique dans les Informations "
+#~ "Personnelles pour pouvoir vous enregistrer dans l'annuaire utilisateur."
+
+#~ msgid "Invalid users directory"
+#~ msgstr "Annuaire d'utilisateurs non valide"
+
+#~ msgid "Operation impossible since there is no users directory specified."
+#~ msgstr ""
+#~ "Opération impossible à effectuer tant qu'aucun annuaire d'utilisateurs "
+#~ "n'est spécifié."
+
+#~ msgid "Failed to parse XML file"
+#~ msgstr "L'analyse du fichier XML a échoué"
+
+#~ msgid ""
+#~ "There was an error while parsing the XML file. Please make sure that it "
+#~ "is correctly installed in your system."
+#~ msgstr ""
+#~ "Une erreur est survenue lors de l'analyse du fichier XML. Assurez-vous "
+#~ "qu'il est correctement installé sur votre système."
+
+#~ msgid "Bad information"
+#~ msgstr "Mauvaise information"
+
+#~ msgid "Bad LDAP information from XML file: %s."
+#~ msgstr "Mauvaise information LDAP dans le fichier XML: %s."
+
+#~ msgid "ILS registration failed: unable to connect to %s"
+#~ msgstr "L'inscription à l'ILS a échoué : impossible de se connecter à %s"
+
+#~ msgid "ILS registration failed: unable to set time limit on operations"
+#~ msgstr ""
+#~ "L'inscription à l'ILS a échoué : impossible de fixer une limite de temps "
+#~ "pour les opérations"
+
+#~ msgid "ILS registration failed: failed to bind to %s"
+#~ msgstr "L'inscription à l'ILS a échoué : liaison à %s impossible"
+
+#~ msgid "Updated information on %s"
+#~ msgstr "Informations mises à jour sur %s"
