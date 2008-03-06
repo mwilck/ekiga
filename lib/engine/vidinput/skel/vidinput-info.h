@@ -37,19 +37,6 @@
 #ifndef __VIDINPUT_INFO_H__
 #define __VIDINPUT_INFO_H__
 
-#include "services.h"
-#include "display-core.h"
-#include "gmconf-bridge.h"
-
-#include <sigc++/sigc++.h>
-#include <set>
-#include <map>
-
-#include <glib.h>
-
-#include "ptbuildopts.h"
-#include "ptlib.h"
-
 #define GM_4CIF_WIDTH  704
 #define GM_4CIF_HEIGHT 576
 #define GM_CIF_WIDTH   352
