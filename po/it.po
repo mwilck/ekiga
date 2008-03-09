@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ekiga 1.00\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-08 23:12+0100\n"
-"PO-Revision-Date: 2008-03-08 18:08+0100\n"
+"POT-Creation-Date: 2008-03-09 14:53+0100\n"
+"PO-Revision-Date: 2008-03-09 14:46+0100\n"
 "Last-Translator: Alessio Dessì <alessio.dessi@gmail.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
@@ -94,7 +94,7 @@ msgstr ""
 
 #: ../ekiga.schemas.in.in.h:14
 msgid "Clear inactive calls"
-msgstr "Cancella le chiamate non attive"
+msgstr "Annulla le chiamate non attive"
 
 #: ../ekiga.schemas.in.in.h:15
 msgid ""
@@ -173,8 +173,8 @@ msgid ""
 "Enter the number of seconds after which Ekiga should try refreshing the NAT "
 "binding when STUN is being used"
 msgstr ""
-"Inserire il numero di secondi dopo i quali è necessario provare a ri-"
-"aggiornare l'associazione NAT quando si utilizza STUN"
+"Inserire il numero di secondi dopo i quali è necessario provare ad "
+"aggiornare nuovamente  l'associazione NAT quando si utilizza STUN"
 
 #: ../ekiga.schemas.in.in.h:30
 msgid ""
@@ -240,21 +240,21 @@ msgid ""
 "specified in the field below if you already are in a call or if you are in "
 "Do Not Disturb mode"
 msgstr ""
-"Se abilitato, tutte le chiamate saranno inoltrate all'host indicato nel "
-"campo sottostante se si è impegnati in una chiamata o in modalità \"Non "
-"disturbare\""
+"Se abilitato e si è impegnati in una chiamata o in modalità \"Non disturbare"
+"\", tutte le chiamate saranno inoltrate all'host indicato nel campo "
+"sottostante"
 
 #: ../ekiga.schemas.in.in.h:42
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below if you do not answer the call"
 msgstr ""
-"Se abilitato, tutte le chiamate saranno inoltrate all'host indicato nel "
-"campo sottostante quando non si risponde"
+"Se abilitato e non si risponde, tutte le chiamate saranno inoltrate all'host "
+"indicato nel campo sottostante"
 
 #: ../ekiga.schemas.in.in.h:43
 msgid "If enabled, allows video during calls"
-msgstr "Se abilitato, consente l'utilizzo delle video-chiamate"
+msgstr "Se abilitato, consente il video durante le chiamate"
 
 #: ../ekiga.schemas.in.in.h:44 ../src/gui/preferences.cpp:738
 msgid ""
@@ -662,8 +662,8 @@ msgid ""
 "opening of the device fails. Leave blank to use the default Ekiga logo."
 msgstr ""
 "L'immagine da trasmettere se si seleziona \"Picture\" come plug-in video o "
-"se fallisce l'apertura del dispositivo. Lasciare vuoto per usare il logo di "
-"Ekiga."
+"se fallisce l'apertura del dispositivo. Lasciare vuoto per usare il logo "
+"predefinito di Ekiga."
 
 #: ../ekiga.schemas.in.in.h:127
 msgid "The incoming call sound"
@@ -679,7 +679,7 @@ msgstr "Il livello di zoom locale"
 
 #: ../ekiga.schemas.in.in.h:130
 msgid "The maximum jitter buffer size for audio reception (in ms)"
-msgstr "Massima dimensione del buffer jitter per la ricezione audio (in ms)"
+msgstr "Dimensione massima del buffer jitter per la ricezione audio (in ms)"
 
 #: ../ekiga.schemas.in.in.h:131
 msgid ""
@@ -687,13 +687,13 @@ msgid ""
 "transmitted frames per second will be dynamically adjusted above their "
 "minimum during calls to try to minimize the bandwidth to the given value"
 msgstr ""
-"Massima banda video in kbyte/s. La qualità video e il numero di fotogrammi "
+"Banda video massima in kbyte/s. La qualità video e il numero di fotogrammi "
 "trasmessi al secondo vengono regolati dinamicamente per minimizzare la banda "
 "al valore richiesto"
 
 #: ../ekiga.schemas.in.in.h:132
 msgid "The minimum jitter buffer size for audio reception (in ms)"
-msgstr "Minima dimensione del buffer jitter per le chiamate audio (in ms)"
+msgstr "Dimensione minima del buffer jitter per le chiamate audio (in ms)"
 
 #: ../ekiga.schemas.in.in.h:134
 #, no-c-format
@@ -702,7 +702,7 @@ msgid ""
 "used bandwidth: choose 100% on a LAN for the best quality, 1% being the "
 "worst quality"
 msgstr ""
-"Minima qualità video da usare in trasmissione quando si cerca di minimizzare "
+"Qualità video minima da usare in trasmissione quando si cerca di minimizzare "
 "la banda. Per ottenere la migliore qualità su una LAN scegliere 100%, 1% per "
 "la qualità peggiore"
 
@@ -932,7 +932,7 @@ msgid ""
 "\" (0) only"
 msgstr ""
 "Consente di impostare la modalità di invio DTMF. Il valore può essere "
-"\"RFC2833\" (0) solamente"
+"solamente \"RFC2833\" (0)"
 
 # (ndt) più sotto sono traducibili e comunque non si 
 # immette il valore della stringa ma quello numerico
@@ -1199,21 +1199,21 @@ msgid ""
 "It appears that you do not have ekiga.server installed in a valid location. "
 "Factory mode disabled.\n"
 msgstr ""
-"Sembra che ekiga.server non sia installato correttamente. Funzionalità "
-"bonobo disabilitate.\n"
+"Sembra che ekiga.server non sia installato correttamente. Modalità fabbrica "
+"disabilitata.\n"
 
 #: ../src/components/bonobo.cpp:174
 #, c-format
 msgid ""
 "Error registering Ekiga with the activation service; factory mode disabled.\n"
 msgstr ""
-"Errore nel registrare di Ekiga col servizio di attivazione; funzionalità "
-"bonobo disabilitate.\n"
+"Errore nel registrare di Ekiga col servizio di attivazione; modalità "
+"fabbrica disabilitata.\n"
 
 #: ../src/components/bonobo.cpp:214
 #, c-format
 msgid "Failed to retrieve Ekiga server from activation server\n"
-msgstr "Impossibile recuperare Ekiga server dal server di attivazione\n"
+msgstr "Impossibile recuperare il server di Ekiga dal server di attivazione\n"
 
 #: ../src/devices/audio.cpp:285
 msgid "Opening device for playing"
@@ -1306,7 +1306,7 @@ msgstr "Apertura del dispositivo video «%s» con il plug-in «%s»"
 #: ../src/devices/videoinput.cpp:347
 #, c-format
 msgid "Successfully opened video device %s, channel %d"
-msgstr "Dispositivo video %s aperto con successo, canale %d"
+msgstr "Dispositivo video «%s» aperto con successo, canale «%d»"
 
 #: ../src/devices/videoinput.cpp:358
 #, c-format
@@ -1442,7 +1442,7 @@ msgstr "Cancellazione registrazione in corso"
 
 #: ../src/endpoints/accountshandler.cpp:294
 msgid "Gatekeeper registration failed: duplicate alias"
-msgstr "Registrazione su Gatekeeper fallita: alias già esistente"
+msgstr "Registrazione su Gatekeeper fallita: alias esistente"
 
 #: ../src/endpoints/accountshandler.cpp:298
 msgid "Gatekeeper registration failed: bad username/password"
@@ -3695,11 +3695,11 @@ msgstr "ms"
 
 #: ../src/gui/preferences.cpp:1276
 msgid "The minimum jitter buffer size for audio reception (in ms)."
-msgstr "Minima dimensione del buffer jitter per la ricezione audio (in ms)."
+msgstr "Dimensione minima del buffer jitter per la ricezione audio (in ms)."
 
 #: ../src/gui/preferences.cpp:1276
 msgid "The maximum jitter buffer size for audio reception (in ms)."
-msgstr "Massima dimensione del buffer jitter per la ricezione audio (in ms)."
+msgstr "Dimensione massima del buffer jitter per la ricezione audio (in ms)."
 
 #: ../src/gui/preferences.cpp:1278
 msgid "Enable silence _detection"
@@ -3855,8 +3855,8 @@ msgid ""
 "The service will work only if your account is created using the URL in this "
 "dialog."
 msgstr ""
-"È possibile chiamare telefoni fissi e cellulari di tutto il mondo usando "
-"Ekiga. Per abilitare questa funzionalità è necessario, per prima cosa, "
+"Usando Ekiga è possibile chiamare telefoni fissi e cellulari di tutto il "
+"mondo. Per abilitare questa funzionalità è necessario, per prima cosa, "
 "creare un account usando l'URL sottostante, inserire il numero del proprio "
 "account e la password e infine abilitare la registrazione qui sotto.\n"
 "\n"
