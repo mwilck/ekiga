@@ -41,7 +41,7 @@
 #include "opal-gmconf-bridge.h"
 
 #include "manager.h"
-
+#include "sip.h"
 
 using namespace Opal;
 
@@ -66,6 +66,10 @@ ConfBridge::ConfBridge (Ekiga::Service & _service)
   keys.push_back (VIDEO_DEVICES_KEY "size"); 
   keys.push_back (VIDEO_CODECS_KEY "max_frame_rate");
   keys.push_back (VIDEO_CODECS_KEY "maximum_video_rx_bitrate");
+
+  keys.push_back (SIP_KEY "outbound_proxy_host");
+  keys.push_back (SIP_KEY "dtmf_mode");
+  keys.push_back (NAT_KEY "binding_timeout");
 
   load (keys);
 }
@@ -201,6 +205,26 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
       g_slist_foreach (video_codecs, (GFunc) g_free, NULL);
       g_slist_free (video_codecs);
     }
+  }
+
+  //
+  // SIP related keys
+  // 
+  else if (key == SIP_KEY "outbound_proxy_host") {
+
+    manager.GetSIPEndpoint ()->set_outbound_proxy (gm_conf_entry_get_string (entry));
+  }
+  else if (key == SIP_KEY "dtmf_mode") {
+
+    manager.GetSIPEndpoint ()->set_dtmf_mode (gm_conf_entry_get_int (entry));
+  }
+
+  //
+  // NAT related keys
+  //
+  else if (key == NAT_KEY "binding_timeout") {
+
+    manager.GetSIPEndpoint ()->set_nat_binding_delay (gm_conf_entry_get_int (entry));
   }
 }
 

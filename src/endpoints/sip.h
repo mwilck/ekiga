@@ -83,6 +83,11 @@ class GMSIPEndpoint
   void unfetch (const std::string uri);
   void publish (const Ekiga::PersonalDetails & details);
 
+  /***/
+  void set_outbound_proxy (const std::string & uri);
+  void set_dtmf_mode (unsigned int mode);
+  void set_nat_binding_delay (unsigned int delay);
+
   
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Starts the listener thread on the port choosen 
@@ -100,14 +105,6 @@ class GMSIPEndpoint
    * PRE          :  /
    */
   void SetUserNameAndAlias ();
-
-  
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Adds the User Input Mode following the
-   *                 configuration options. 
-   * PRE          :  /
-   */
-  void SetUserInputMode (unsigned int mode);
 
   
   /* DESCRIPTION  :  /
@@ -223,15 +220,6 @@ class GMSIPEndpoint
    * PRE          :  /
    */
   PDECLARE_NOTIFIER(PTimer, GMSIPEndpoint, OnNoAnswerTimeout);
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Init the endpoint internal values and the various
-   *                 components.
-   * PRE          :  /
-   */
-  void Init ();
-
 
   PTimer NoAnswerTimer;
 

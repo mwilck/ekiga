@@ -66,91 +66,6 @@
 #define new PNEW
 
 
-
-/* DESCRIPTION  :  This notifier is called when the config database data
- *                 associated with the SIP Outbound Proxy changes.
- * BEHAVIOR     :  It updates the endpoint.
- * PRE          :  data is a pointer to the GMSIPEndPoint.
- */
-static void outbound_proxy_changed_nt (G_GNUC_UNUSED gpointer id,
-                                       GmConfEntry *entry,
-                                       gpointer data);
-
-
-/* DESCRIPTION  :  This callback is called to update capabilities when the
- *                 DTMF mode is changed.
- * BEHAVIOR     :  Updates them.
- * PRE          :  data is a pointer to the GMSIPEndPoint.
- */
-static void dtmf_mode_changed_nt (G_GNUC_UNUSED gpointer id,
-                                  GmConfEntry *entry,
-                                  gpointer data);
-
-
-/* DESCRIPTION  :  This callback is called to update capabilities when the
- *                 NAT binding timeout is changed.
- * BEHAVIOR     :  Update it.
- * PRE          :  data is a pointer to the GMSIPEndPoint.
- */
-static void dtmf_mode_changed_nt (G_GNUC_UNUSED gpointer id,
-                                  GmConfEntry *entry,
-                                  gpointer data);
-
-
-static void
-outbound_proxy_changed_nt (G_GNUC_UNUSED gpointer id,
-                           GmConfEntry *entry,
-                           gpointer data)
-{
-  gchar *outbound_proxy_host = NULL;
-
-  g_return_if_fail (data != NULL);
-
-  if (gm_conf_entry_get_type (entry) == GM_CONF_STRING) {
-
-    gdk_threads_enter ();
-    outbound_proxy_host = gm_conf_get_string (SIP_KEY "outbound_proxy_host");
-    gdk_threads_leave ();
-
-    ((GMSIPEndpoint *) data)->SetProxy (outbound_proxy_host); 
-    g_free (outbound_proxy_host);
-  }
-}
-
-
-static void
-dtmf_mode_changed_nt (G_GNUC_UNUSED gpointer id,
-                      GmConfEntry *entry,
-                      G_GNUC_UNUSED gpointer data)
-{
-  unsigned int mode = 0;
-
-  g_return_if_fail (data != NULL);
-
-  if (gm_conf_entry_get_type (entry) == GM_CONF_INT) {
-
-    mode = gm_conf_entry_get_int (entry);
-    ((GMSIPEndpoint *) data)->SetUserInputMode (mode);
-  }
-}
-
-
-static void
-nat_binding_timeout_changed_nt (G_GNUC_UNUSED gpointer id,
-                                GmConfEntry *entry,
-                                G_GNUC_UNUSED gpointer data)
-{
-  unsigned int binding_timeout = 0;
-
-  g_return_if_fail (data != NULL);
-
-  if (gm_conf_entry_get_type (entry) == GM_CONF_INT) {
-
-    binding_timeout = gm_conf_entry_get_int (entry);
-    ((GMSIPEndpoint *) data)->SetNATBindingTimeout (PTimeInterval (0, binding_timeout));
-  }
-}
-
 /* The class */
 GMSIPEndpoint::GMSIPEndpoint (GMManager & ep, Ekiga::ServiceCore & _core)
 : SIPEndPoint (ep), 
@@ -160,8 +75,18 @@ GMSIPEndpoint::GMSIPEndpoint (GMManager & ep, Ekiga::ServiceCore & _core)
 {
   uri_prefix = "sip:";
 
+  /* Timeouts */
+  SetAckTimeout (PTimeInterval (0, 32));
+  SetPduCleanUpTimeout (PTimeInterval (0, 1));
+  SetInviteTimeout (PTimeInterval (0, 6));
+  SetNonInviteTimeout (PTimeInterval (0, 6));
+  SetRetryTimeouts (500, 4000);
+  SetMaxRetries (8);
+
+  /* Update the User Agent */
+  SetUserAgent ("Ekiga/" PACKAGE_VERSION);
+
   NoAnswerTimer.SetNotifier (PCREATE_NOTIFIER (OnNoAnswerTimeout));
-  Init ();
 
   Ekiga::PersonalDetails *details = dynamic_cast<Ekiga::PersonalDetails *> (_core.get ("personal-details"));
   if (details)
@@ -254,48 +179,33 @@ GMSIPEndpoint::publish (const Ekiga::PersonalDetails & details)
 
 
 void 
-GMSIPEndpoint::Init ()
+GMSIPEndpoint::set_outbound_proxy (const std::string & uri)
 {
-  gchar *outbound_proxy_host = NULL;
-  int binding_timeout = 60;
-  unsigned int mode = 0;
+  SIPEndPoint::SetProxy (uri.c_str ());
+}
 
-  /* Read configuration */
-  gnomemeeting_threads_enter ();
-  outbound_proxy_host = gm_conf_get_string (SIP_KEY "outbound_proxy_host");
-  binding_timeout = gm_conf_get_int (NAT_KEY "binding_timeout");
-  mode = gm_conf_get_int (SIP_KEY "dtmf_mode");
-  gnomemeeting_threads_leave ();
 
-  /* Timeouts */
-  SetAckTimeout (PTimeInterval (0, 32));
-  SetPduCleanUpTimeout (PTimeInterval (0, 1));
-  SetInviteTimeout (PTimeInterval (0, 6));
-  SetNonInviteTimeout (PTimeInterval (0, 6));
-  SetNATBindingTimeout (PTimeInterval (0, binding_timeout));
-  SetRetryTimeouts (500, 4000);
-  SetMaxRetries (8);
+void 
+GMSIPEndpoint::set_dtmf_mode (unsigned int mode)
+{
+  switch (mode) 
+    {
+    case 0:
+      SetSendUserInputMode (OpalConnection::SendUserInputAsTone);
+      break;
+    case 1:
+      SetSendUserInputMode (OpalConnection::SendUserInputAsInlineRFC2833);
+      break;
+    default:
+      break;
+    }
+}
+  
 
-  /* Input mode */
-  SetUserInputMode (mode);
-
-  /* Update the User Agent */
-  SetUserAgent ("Ekiga/" PACKAGE_VERSION);
-
-  /* Initialise internal parameters */
-  if (outbound_proxy_host && !PString (outbound_proxy_host).IsEmpty ())
-    SetProxy (outbound_proxy_host);
-  SetNATBindingRefreshMethod (SIPEndPoint::EmptyRequest);
-
-  /* Notifiers */
-  gm_conf_notifier_add (SIP_KEY "outbound_proxy_host",
-                        outbound_proxy_changed_nt, (gpointer) this);
-  gm_conf_notifier_add (SIP_KEY "dtmf_mode",
-                        dtmf_mode_changed_nt, (gpointer) this);
-  gm_conf_notifier_add (NAT_KEY "binding_timeout",
-                        nat_binding_timeout_changed_nt, (gpointer) this);
-
-  g_free (outbound_proxy_host);
+void 
+GMSIPEndpoint::set_nat_binding_delay (unsigned int delay)
+{
+  SIPEndPoint::SetNATBindingTimeout (PTimeInterval (0, delay));
 }
 
 
@@ -373,23 +283,6 @@ GMSIPEndpoint::SetUserNameAndAlias ()
 
     SetDefaultDisplayName (default_local_name);
   }
-}
-
-
-void 
-GMSIPEndpoint::SetUserInputMode (unsigned int mode)
-{
-  switch (mode) 
-    {
-    case 0:
-      SetSendUserInputMode (OpalConnection::SendUserInputAsTone);
-      break;
-    case 1:
-      SetSendUserInputMode (OpalConnection::SendUserInputAsInlineRFC2833);
-      break;
-    default:
-      break;
-    }
 }
 
 
