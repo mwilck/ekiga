@@ -1,17 +1,15 @@
 # Përkthimi i mesazheve të ekiga në shqip
-# Copyright (C) 2000-2004, 2005, 2006, 2007 Free Software Foundation, Inc.
-#
-#
+# Copyright (C) 2000-2004, 2005, 2006, 2007, 2008 Free Software Foundation, Inc.
 # Jonita Prifti <jonita@jonita.net>, 2003, 2004.
 # maintainer: Jonita Prifti <jonita@jonita.net>, 2003, 2004.
 # Elian Myftiu <elian@alblinux.net>, 2006.
-# Laurent Dhima <laurenti@alblinux.net>, 2006, 2007.
+# Laurent Dhima <laurenti@alblinux.net>, 2006, 2007, 2008.
 msgid ""
 msgstr ""
 "Project-Id-Version: ekiga gnome-2-20\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-12 20:02+0200\n"
-"PO-Revision-Date: 2007-09-12 20:05+0200\n"
+"POT-Creation-Date: 2008-03-11 19:41+0100\n"
+"PO-Revision-Date: 2008-03-12 12:14+0100\n"
 "Last-Translator: Laurent Dhima <laurenti@alblinux.net>\n"
 "Language-Team: albanian <gnome-albanian-perkthyesit@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -21,7 +19,7 @@ msgstr ""
 
 #: ../ekiga.desktop.in.in.h:1
 msgid "Ekiga Softphone"
-msgstr "Soft-telefon Ekiga"
+msgstr "Telefoni software Ekiga"
 
 #: ../ekiga.desktop.in.in.h:2
 msgid "IP Telephony, VoIP and Video Conferencing"
@@ -980,74 +978,6 @@ msgstr "Orientimi"
 msgid "The orientation of the tray."
 msgstr "Orientimi i sirtarit."
 
-#: ../src/clients/ils.cpp:105 ../src/gui/tools.cpp:174
-msgid "Invalid parameters"
-msgstr "Parametra të pavlefshëm"
-
-#: ../src/clients/ils.cpp:105
-msgid ""
-"Please provide your first name and e-mail in the Personal Data section in "
-"order to be able to register to the users directory."
-msgstr ""
-"Të lutem jepni emrin dhe adresën tuaj e-mail në seksionin e të dhënave "
-"personale në menyrë që të mund të regjistroheni në directory e përdoruesve."
-
-#: ../src/clients/ils.cpp:145
-msgid "Invalid users directory"
-msgstr "Directory e pavlefshme përdoruesish"
-
-#: ../src/clients/ils.cpp:145
-msgid "Operation impossible since there is no users directory specified."
-msgstr ""
-"Operacion i pamundur meqenëse nuk është përcaktuar asnjë directory "
-"përdoruesish."
-
-#: ../src/clients/ils.cpp:238
-msgid "Failed to parse XML file"
-msgstr "I pamundur analizimi i file XML."
-
-#: ../src/clients/ils.cpp:238
-msgid ""
-"There was an error while parsing the XML file. Please make sure that it is "
-"correctly installed in your system."
-msgstr ""
-"Gabim gjatë analizimit të file XML.  Të lutem sigurohu që është instaluar "
-"korrektësisht në sistemin tënd."
-
-#: ../src/clients/ils.cpp:249
-msgid "Bad information"
-msgstr "Informacione të pavlefshme"
-
-#: ../src/clients/ils.cpp:249
-#, c-format
-msgid "Bad LDAP information from XML file: %s."
-msgstr "Informacione LDAP të gabuara nga file XML: %s."
-
-#: ../src/clients/ils.cpp:257
-#, c-format
-msgid "ILS registration failed: unable to connect to %s"
-msgstr "Regjistrimi në ILS dështoi: e pamundur lidhja me %s"
-
-#: ../src/clients/ils.cpp:270
-msgid "ILS registration failed: unable to set time limit on operations"
-msgstr "Regjistrimi në ILS dështoi: i pamundur caktimi i limitit kohor për veprimet"
-
-#: ../src/clients/ils.cpp:282
-#, c-format
-msgid "ILS registration failed: failed to bind to %s"
-msgstr "Regjistrimi me ILS dështoi: e pamundur lidhja me %s"
-
-#: ../src/clients/ils.cpp:310
-#, c-format
-msgid "Updated information on %s"
-msgstr "Të dhëna të përditësuara në %s"
-
-#: ../src/clients/ils.cpp:314 ../src/endpoints/accountshandler.cpp:332
-#: ../src/endpoints/sip.cpp:236
-#, c-format
-msgid "Unregistered from %s"
-msgstr "Çregjistruar nga %s"
-
 #: ../src/clients/stun.cpp:104
 #, c-format
 msgid "STUN server set to %s"
@@ -1301,9 +1231,9 @@ msgstr ""
 #: ../src/devices/audio.cpp:481 ../src/devices/audio.cpp:482
 #: ../src/devices/videoinput.cpp:310 ../src/devices/videoinput.cpp:585
 #: ../src/endpoints/ekiga.cpp:351 ../src/endpoints/ekiga.cpp:353
-#: ../src/endpoints/ekiga.cpp:355 ../src/endpoints/pcss.cpp:194
-#: ../src/gui/druid.cpp:1780 ../src/gui/druid.cpp:1792
-#: ../src/gui/druid.cpp:1850
+#: ../src/endpoints/ekiga.cpp:355 ../src/endpoints/pcss.cpp:198
+#: ../src/gui/druid.cpp:1784 ../src/gui/druid.cpp:1796
+#: ../src/gui/druid.cpp:1854
 msgid "No device found"
 msgstr "Nuk u gjet asnjë dispozitiv"
 
@@ -1485,6 +1415,11 @@ msgstr "Regjistruar në %s"
 msgid "Registered"
 msgstr "I regjistruar"
 
+#: ../src/endpoints/accountshandler.cpp:332 ../src/endpoints/sip.cpp:236
+#, c-format
+msgid "Unregistered from %s"
+msgstr "Çregjistruar nga %s"
+
 #: ../src/endpoints/accountshandler.cpp:352 ../src/endpoints/sip.cpp:242
 msgid "Unregistered"
 msgstr "Çregjistruar"
@@ -1546,7 +1481,7 @@ msgstr "Lidhur me %s duke përdorur %s"
 msgid "Connected with %s"
 msgstr "Lidhur me %s"
 
-#: ../src/endpoints/manager.cpp:1124 ../src/gui/main.cpp:4156
+#: ../src/endpoints/manager.cpp:1124 ../src/gui/main.cpp:4157
 msgid "Standby"
 msgstr "Në pritje"
 
@@ -1681,21 +1616,21 @@ msgstr "U mbyll kodek %s i cili ishte hapur për marrje"
 msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 msgstr "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 
-#: ../src/endpoints/pcss.cpp:218
+#: ../src/endpoints/pcss.cpp:222
 #, c-format
 msgid "Opened %s for recording with plugin %s"
 msgstr "U hap %s për të regjistruar me plugin %s"
 
-#: ../src/endpoints/pcss.cpp:219
+#: ../src/endpoints/pcss.cpp:223
 #, c-format
 msgid "Opened %s for playing with plugin %s"
 msgstr "U hap %s për të lexuar me plugin %s"
 
-#: ../src/endpoints/pcss.cpp:237
+#: ../src/endpoints/pcss.cpp:241
 msgid "Could not open audio channel for audio transmission"
 msgstr "E pamundur hapja e kanalit audio për transmetimin e zërit"
 
-#: ../src/endpoints/pcss.cpp:237
+#: ../src/endpoints/pcss.cpp:241
 msgid ""
 "An error occured while trying to record from the soundcard for the audio "
 "transmission. Please check that your soundcard is not busy and that your "
@@ -1707,11 +1642,11 @@ msgstr ""
 "dhe që driveri suporton full-duplex.\n"
 "Transmetimi i zërit u çaktivua."
 
-#: ../src/endpoints/pcss.cpp:239
+#: ../src/endpoints/pcss.cpp:243
 msgid "Could not open audio channel for audio reception"
 msgstr "E pamundur hapja e kanalit audio për marrjen e zërit"
 
-#: ../src/endpoints/pcss.cpp:239
+#: ../src/endpoints/pcss.cpp:243
 msgid ""
 "An error occured while trying to play audio to the soundcard for the audio "
 "reception. Please check that your soundcard is not busy and that your driver "
@@ -1941,7 +1876,7 @@ msgstr ""
 "<b>Shpejtësia e lidhjes</b>: %s\n"
 
 #: ../src/gui/addressbook.cpp:821 ../src/gui/addressbook.cpp:823
-#: ../src/gui/druid.cpp:1912 ../src/gui/preferences.cpp:930
+#: ../src/gui/druid.cpp:1916 ../src/gui/preferences.cpp:930
 msgid "None"
 msgstr "Asnjë"
 
@@ -2593,27 +2528,27 @@ msgstr "Dispozitivi i hyrjes së videos është ai që do përdoret për të shf
 msgid "Configuration complete - page %d/%d"
 msgstr "Konfigurimi përfundoi - faqja %d/%d"
 
-#: ../src/gui/druid.cpp:1630
+#: ../src/gui/druid.cpp:1634
 msgid "56k Modem"
 msgstr "Modem 56k"
 
-#: ../src/gui/druid.cpp:1631
+#: ../src/gui/druid.cpp:1635
 msgid "ISDN"
 msgstr "ISDN"
 
-#: ../src/gui/druid.cpp:1632
+#: ../src/gui/druid.cpp:1636
 msgid "xDSL/Cable"
 msgstr "xDSL/Cable"
 
-#: ../src/gui/druid.cpp:1633
+#: ../src/gui/druid.cpp:1637
 msgid "T1/LAN"
 msgstr "T1/LAN"
 
-#: ../src/gui/druid.cpp:1634
+#: ../src/gui/druid.cpp:1638
 msgid "Keep current settings"
 msgstr "Ruaj konfigurimet aktuale"
 
-#: ../src/gui/druid.cpp:1912
+#: ../src/gui/druid.cpp:1916
 #, c-format
 msgid ""
 "You have now finished the Ekiga configuration. All the settings can be "
@@ -2646,7 +2581,7 @@ msgstr ""
 "Hyrja e videos: %s\n"
 "Adresa URL e SIP: %s\n"
 
-#: ../src/gui/druid.cpp:1967
+#: ../src/gui/druid.cpp:1971
 msgid "First Time Configuration Assistant"
 msgstr "Asistenti i konfigurimit të parë"
 
@@ -3028,9 +2963,10 @@ msgstr "Shiko informacionet mbi Ekiga"
 msgid "Statistics"
 msgstr "Statistika"
 
+# (pofilter) accelerators: accelerator _ does not occur in original and should not be in translation
 #: ../src/gui/main.cpp:1315
 msgid "Dialpad"
-msgstr "_Tastiera numerike"
+msgstr "Tastiera numerike"
 
 #: ../src/gui/main.cpp:1368
 msgid "Adjust brightness"
@@ -3098,13 +3034,15 @@ msgstr "Thirrje të humbura: %d - Posta zanore: %s"
 msgid "_Retrieve Call"
 msgstr "_Rimarrje e thirrjes"
 
+# (pofilter) accelerators: accelerator _ is missing from translation
 #: ../src/gui/main.cpp:3186
 msgid "Resume _Audio"
-msgstr "Rihap zërin"
+msgstr "Rikthe _zërin"
 
+# (pofilter) accelerators: accelerator _ is missing from translation
 #: ../src/gui/main.cpp:3188
 msgid "Resume _Video"
-msgstr "Rinis videon"
+msgstr "Rinis _videon"
 
 #: ../src/gui/main.cpp:3730
 msgid "Out:"
@@ -3172,7 +3110,7 @@ msgstr ""
 "Paketa të çrregullta: %.1f%%\n"
 "Jitter buffer: %d ms"
 
-#: ../src/gui/main.cpp:4574
+#: ../src/gui/main.cpp:4575
 #, c-format
 msgid ""
 "Ekiga got an invalid value for the GConf key %s.\n"
@@ -3194,23 +3132,23 @@ msgstr ""
 "mesazheve për më shumë informacione rreth këtij problemi (http://mail.gnome."
 "org)."
 
-#: ../src/gui/main.cpp:4577
+#: ../src/gui/main.cpp:4578
 msgid "Gconf key error"
 msgstr "Gabim çelësi Gconf"
 
-#: ../src/gui/main.cpp:4608 ../src/gui/main.cpp:4627
+#: ../src/gui/main.cpp:4609 ../src/gui/main.cpp:4628
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "Shfaq mesazhet e debugimit në konsolë (niveli midis 1 dhe 6)"
 
-#: ../src/gui/main.cpp:4611 ../src/gui/main.cpp:4632
+#: ../src/gui/main.cpp:4612 ../src/gui/main.cpp:4633
 msgid "Makes Ekiga call the given URL"
 msgstr "Bën që Ekiga të thërrasë adresën e dhënë URL"
 
-#: ../src/gui/main.cpp:4665
+#: ../src/gui/main.cpp:4666
 msgid "No usable audio plugin detected"
 msgstr "Nuk u gjet asnjë plugin audio i përdorshëm"
 
-#: ../src/gui/main.cpp:4665
+#: ../src/gui/main.cpp:4666
 msgid ""
 "Ekiga didn't find any usable audio plugin. Make sure that your installation "
 "is correct."
@@ -3819,6 +3757,10 @@ msgstr "Kodekët e videos"
 #: ../src/gui/preferences.cpp:2012
 msgid "Devices"
 msgstr "Dispozitivët"
+
+#: ../src/gui/tools.cpp:174
+msgid "Invalid parameters"
+msgstr "Parametra të pavlefshëm"
 
 #: ../src/gui/tools.cpp:174
 msgid ""
