@@ -128,6 +128,7 @@ about_callback (G_GNUC_UNUSED GtkWidget *widget,
       "Damien Sandras <dsandras@seconix.com>",
       "",
       N_("Contributors:"),
+      "Yannick Defais <sevmek@free.fr>",
       "Kilian Krause <kk@verfaction.de>", 
       "Vincent Luba <luba@novacom.be>",
       "Julien Puydt <julien.puydt@laposte.net>",
@@ -148,8 +149,8 @@ about_callback (G_GNUC_UNUSED GtkWidget *widget,
   };
 	
   authors [2] = gettext (authors [2]);
-  authors [9] = gettext (authors [9]);
-  authors [16] = gettext (authors [16]);
+  authors [10] = gettext (authors [10]);
+  authors [17] = gettext (authors [17]);
   
   const gchar *documenters [] = {
     "Damien Sandras <dsandras@seconix.com>",
