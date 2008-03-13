@@ -235,21 +235,6 @@ GMH323Endpoint::StartListener (PString iface,
 
 
 void
-GMH323Endpoint::SetUserNameAndAlias ()
-{
-  PString default_local_name;
-
-  default_local_name = endpoint.GetDefaultDisplayName ();
-
-  if (!default_local_name.IsEmpty ()) {
-    
-    SetDefaultDisplayName (default_local_name);
-    SetLocalUserName (default_local_name);
-  }
-}
-
-
-void
 GMH323Endpoint::SetUserInputMode ()
 {
   int mode = 0;

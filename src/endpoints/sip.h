@@ -100,14 +100,6 @@ class GMSIPEndpoint
 
   
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Set the local user name following the full 
-   *                 name stored by the conf.
-   * PRE          :  /
-   */
-  void SetUserNameAndAlias ();
-
-  
-  /* DESCRIPTION  :  /
    * BEHAVIOR     :  Register the SIP endpoint to the given SIP server. 
    * PRE          :  Correct parameters.
    */

@@ -959,12 +959,6 @@ set_account_as_default_cb (G_GNUC_UNUSED GtkWidget *button,
 
   account = gm_aw_get_selected_account (GTK_WIDGET (data));
   gnomemeeting_account_set_default (account, TRUE);
-
-  /* Update the account */
-  gdk_threads_leave ();
-  dynamic_cast<GMManager *>(aw->core.get ("opal-component"))->SetUserNameAndAlias ();
-  gdk_threads_enter ();
-  
   gm_account_delete (account);
 }
 

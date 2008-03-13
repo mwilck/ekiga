@@ -182,6 +182,10 @@ class GMManager:
   bool send_message (const std::string uri, 
                      const std::string message);
 
+  /**/
+  void set_fullname (const std::string name);
+  const std::string get_fullname () const;
+
   
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Prepare the endpoint to exit by removing all
@@ -442,14 +446,6 @@ class GMManager:
    * PRE          :  /
    */
   void RemoveAccountsEndpoint ();
-
-  
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Updates the user name and alias(es) for all managed
-   * 		     endpoints following the preferences.
-   * PRE          :  /
-   */
-  void SetUserNameAndAlias ();
 
 
   /* DESCRIPTION  :  /

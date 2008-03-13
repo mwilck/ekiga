@@ -71,6 +71,8 @@ ConfBridge::ConfBridge (Ekiga::Service & _service)
   keys.push_back (SIP_KEY "dtmf_mode");
   keys.push_back (NAT_KEY "binding_timeout");
 
+  keys.push_back (PERSONAL_DATA_KEY "full_name");
+
   load (keys);
 }
 
@@ -225,6 +227,15 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
   else if (key == NAT_KEY "binding_timeout") {
 
     manager.GetSIPEndpoint ()->set_nat_binding_delay (gm_conf_entry_get_int (entry));
+  }
+
+
+  //
+  // Personal Data Key
+  //
+  else if (key == PERSONAL_DATA_KEY "full_name") {
+
+    manager.set_fullname (gm_conf_entry_get_string (entry));
   }
 }
 

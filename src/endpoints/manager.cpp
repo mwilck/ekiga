@@ -113,21 +113,6 @@ static  bool same_codec_desc (Ekiga::CodecDescription a, Ekiga::CodecDescription
 
 
 static void 
-fullname_changed_nt (G_GNUC_UNUSED gpointer id,
-		     GmConfEntry *entry, 
-		     gpointer data)
-{
-  GMManager *endpoint = (GMManager *) data;
-  
-  if (gm_conf_entry_get_type (entry) == GM_CONF_STRING) {
-
-    endpoint->SetUserNameAndAlias ();
-    endpoint->UpdatePublishers ();
-  }
-}
-
-
-static void 
 network_interface_changed_nt (G_GNUC_UNUSED gpointer id,
                               GmConfEntry *entry, 
                               gpointer data)
@@ -293,6 +278,20 @@ bool GMManager::send_message (const std::string uri, const std::string message)
   }
 
   return false;
+}
+
+void GMManager::set_fullname (const std::string name)
+{
+  SetDefaultDisplayName (name.c_str ());
+
+  sipEP->SetDefaultDisplayName (name.c_str ());
+  h323EP->SetDefaultDisplayName (name.c_str ());
+  h323EP->SetLocalUserName (name.c_str ());
+}
+
+const std::string GMManager::get_fullname () const
+{
+  return (const char*) GetDefaultDisplayName ();
 }
 
 
@@ -1172,28 +1171,6 @@ GMManager::OnMessageSent (const PString & _to,
 
 
 void
-GMManager::SetUserNameAndAlias ()
-{
-  gchar *full_name = NULL;
-  
-  gnomemeeting_threads_enter ();
-  full_name = gm_conf_get_string (PERSONAL_DATA_KEY "full_name");
-  gnomemeeting_threads_leave ();
-
-  if (full_name)
-    SetDefaultDisplayName (full_name);
-  
-  /* Update the H.323 endpoint user name and alias */
-  h323EP->SetUserNameAndAlias ();
-  
-  /* Update the SIP endpoint user name and alias */
-  sipEP->SetUserNameAndAlias ();
-
-  g_free (full_name);
-}
-
-
-void
 GMManager::Init ()
 {
   OpalMediaFormatList list;
@@ -1214,9 +1191,6 @@ GMManager::Init ()
   else
     SetTranslationAddress (PString ("0.0.0.0")); 
   
-  /* Set the User Name and Alias */  
-  SetUserNameAndAlias ();
-
   /* Create a Zeroconf client */
 #ifdef HAVE_AVAHI
   CreateZeroconfClient ();
@@ -1235,9 +1209,6 @@ GMManager::Init ()
   g_free (ip);
   
   /* GMConf notifiers for what we manager */
-  gm_conf_notifier_add (PERSONAL_DATA_KEY "full_name",
-			fullname_changed_nt, this);
-
   gm_conf_notifier_add (PROTOCOLS_KEY "interface",
 			network_interface_changed_nt, this);
   gm_conf_notifier_add (NAT_KEY "public_ip",

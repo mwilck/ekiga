@@ -86,15 +86,6 @@ class GMH323Endpoint : public H323EndPoint
   bool StartListener (PString iface, 
 		      WORD port);
 
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Set the local user name following the full 
-   *                 name stored by the conf, set the gatekeeper alias, 
-   *                 possibly as first alias.
-   * PRE          :  /
-   */
-  void SetUserNameAndAlias ();
-
   
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Adds the User Input Mode following the

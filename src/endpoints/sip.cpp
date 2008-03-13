@@ -272,20 +272,6 @@ GMSIPEndpoint::StartListener (PString iface,
 }
 
 
-void
-GMSIPEndpoint::SetUserNameAndAlias ()
-{
-  PString default_local_name;
-
-  default_local_name = endpoint.GetDefaultDisplayName ();
-
-  if (!default_local_name.IsEmpty ()) {
-
-    SetDefaultDisplayName (default_local_name);
-  }
-}
-
-
 void 
 GMSIPEndpoint::Register (const PString & _aor,
                          const PString & authUserName,
