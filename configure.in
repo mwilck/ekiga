@@ -60,8 +60,8 @@ fi
 if test ${enable_gnome} = yes && test ${enable_doc} = yes; then
 GNOME_DOC_INIT
 else
-ENABLE_SK_TRUE="#"
-ENABLE_SK_FALSE=""
+dnl Do not care if GDU is not found
+GNOME_DOC_INIT(,,[:])
 fi
 
 AM_CONDITIONAL(DISABLE_DOC, test ${enable_doc} = no)
