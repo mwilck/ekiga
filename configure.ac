@@ -507,12 +507,10 @@ GNOME_DOC_INIT
     fi
     GDU="enabled"
   else
-    ENABLE_SK_TRUE="#"
-    ENABLE_SK_FALSE=""
+    GNOME_DOC_INIT(,,[:])
   fi
 else
-  ENABLE_SK_TRUE="#"
-  ENABLE_SK_FALSE=""
+  GNOME_DOC_INIT(,,[:])
 fi
 
 AM_CONDITIONAL(HAVE_GNOME_DOC_UTILS, test "x${enable_gdu}" = "xyes")
