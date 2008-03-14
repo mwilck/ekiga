@@ -7,4 +7,4 @@ DOC_MODULE = ekiga
 DOC_ENTITIES = 
 DOC_INCLUDES = 
 
-DOC_LINGUAS = bg de es fr pt_BR ru sv uk
+DOC_LINGUAS = bg de el es fr pt_BR ru sv uk
