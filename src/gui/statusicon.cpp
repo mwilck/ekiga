@@ -494,13 +494,7 @@ void
 statusicon_set_status (StatusIcon *statusicon,
                        guint status)
 {
-  GtkWidget *menu = NULL;
-
   g_return_if_fail (statusicon != NULL);
-
-  /* Update the menu */
-  menu = gtk_menu_get_widget (statusicon->priv->popup_menu, "online");
-  gtk_radio_menu_select_with_widget (GTK_WIDGET (menu), status);
 
   /* Update the status icon */
   switch (status) {
