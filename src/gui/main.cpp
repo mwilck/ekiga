@@ -121,6 +121,9 @@ struct _GmMainWindow
 
   GtkWidget *main_menu;
 
+  int x;
+  int y;
+
   GtkWidget *window_vbox;
 
   GtkWidget *status_label_ebox;
@@ -132,6 +135,7 @@ struct _GmMainWindow
   GtkWidget *qualitymeter;
   GtkWidget *entry;
   GtkWidget *main_notebook;
+  GtkWidget *hpaned;
   GtkWidget *roster;
   GtkWidget *main_video_image;
   GtkWidget *local_video_image;
@@ -279,7 +283,33 @@ static void gm_mw_zooms_menu_update_sensitivity (GtkWidget *,
 void gm_main_window_toggle_fullscreen (FSToggle toggle,
                                        GtkWidget   *main_window);
 
+static void gm_main_window_show_call_panel (GtkWidget *self);
+
+static void gm_main_window_hide_call_panel (GtkWidget *self);
+
+
 /* Callbacks */
+
+/* DESCRIPTION  :  This callback is called when the control panel 
+ *                 section key changes.
+ * BEHAVIOR     :  Sets the right page, and also sets 
+ *                 the good value for the radio menu. 
+ * PRE          :  /
+ */
+static void panel_section_changed_nt (gpointer id,
+                                      GmConfEntry *entry,
+                                      gpointer data);
+
+
+/* DESCRIPTION  :  This callback is called when the call panel 
+ *                 section key changes.
+ * BEHAVIOR     :  Show it or hide it, resize the window appropriately.
+ * PRE          :  /
+ */
+static void show_call_panel_changed_nt (G_GNUC_UNUSED gpointer id, 
+                                        GmConfEntry *entry, 
+                                        gpointer data);
+
 
 #ifdef WIN32
 /* DESCRIPTION  :  This callback is a workaround to GTK+ bugs on WIN32.
@@ -635,8 +665,9 @@ static void on_established_call_cb (Ekiga::CallManager & /*manager*/,
   gm_main_window_set_call_url (GTK_WIDGET (self), call.get_remote_uri ().c_str());
   gm_main_window_set_stay_on_top (GTK_WIDGET (self), gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top"));
   gm_main_window_set_status (GTK_WIDGET (self), info.str ().c_str ());
-  gm_main_window_set_panel_section (GTK_WIDGET (self), CALL);
   gm_main_window_flash_message (GTK_WIDGET (self), "%s", info.str ().c_str ());
+  if (!gm_conf_get_bool (USER_INTERFACE_KEY "main_window/show_call_panel"))
+    gm_main_window_show_call_panel (GTK_WIDGET (self));
   gm_main_window_update_calling_state (GTK_WIDGET (self), GMManager::Connected);
 
   mw->current_call = &call;
@@ -657,7 +688,8 @@ static void on_cleared_call_cb (Ekiga::CallManager & /*manager*/,
   gm_main_window_set_status (GTK_WIDGET (self), _("Standby"));
   gm_main_window_set_call_duration (GTK_WIDGET (self), NULL);
   gm_main_window_set_call_info (GTK_WIDGET (self), NULL, NULL, NULL, NULL);
-  gm_main_window_set_panel_section (GTK_WIDGET (self), CONTACTS);
+  if (!gm_conf_get_bool (USER_INTERFACE_KEY "main_window/show_call_panel"))
+    gm_main_window_hide_call_panel (GTK_WIDGET (self));
   gm_main_window_clear_stats (GTK_WIDGET (self));
   gm_main_window_update_logo_have_window (GTK_WIDGET (self));
   gm_main_window_push_message (GTK_WIDGET (self), 
@@ -1189,8 +1221,9 @@ gm_mw_init_menu (GtkWidget *main_window)
   GtkWidget *addressbook_window = NULL;
   GtkWidget *accounts_window = NULL;
   GtkWidget *pc2phone_window = NULL;
+
+  bool show_call_panel = false;
   
-  guint status = CONTACT_ONLINE;
   PanelSection cps = DIALPAD;
 
   g_return_if_fail (main_window != NULL);
@@ -1206,10 +1239,8 @@ gm_mw_init_menu (GtkWidget *main_window)
   mw->main_menu = gtk_menu_bar_new ();
 
   /* Default values */
-  status = gm_conf_get_int (PERSONAL_DATA_KEY "status"); 
-  cps = (PanelSection)
-    gm_conf_get_int (USER_INTERFACE_KEY "main_window/panel_section"); 
-
+  show_call_panel = gm_conf_get_bool (USER_INTERFACE_KEY "main_window/show_call_panel");
+  cps = (PanelSection) gm_conf_get_int (USER_INTERFACE_KEY "main_window/panel_section"); 
   
   static MenuEntry gnomemeeting_menu [] =
     {
@@ -1220,7 +1251,7 @@ gm_mw_init_menu (GtkWidget *main_window)
 		     GTK_SIGNAL_FUNC (place_call_cb), main_window, TRUE),
       GTK_MENU_ENTRY("disconnect", _("_Hang up"),
 		     _("Terminate the current call"), 
-		     GM_STOCK_PHONE_HANG_UP_16, 0,
+		     GM_STOCK_PHONE_HANG_UP_16, 'd',
 		     GTK_SIGNAL_FUNC (hangup_call_cb), main_window, FALSE),
 
       GTK_MENU_SEPARATOR,
@@ -1301,12 +1332,15 @@ gm_mw_init_menu (GtkWidget *main_window)
 			   GTK_SIGNAL_FUNC (radio_menu_changed_cb), 
 			   (gpointer) USER_INTERFACE_KEY "main_window/panel_section",
 			   (cps == DIALPAD), TRUE),
-      GTK_MENU_RADIO_ENTRY("call", _("C_all"),
-			   _("View the call information"),
-			   NULL, 0, 
-			   GTK_SIGNAL_FUNC (radio_menu_changed_cb), 
-			   (gpointer) USER_INTERFACE_KEY "main_window/panel_section",
-			   (cps == CALL), TRUE),
+
+      GTK_MENU_SEPARATOR,
+
+
+      GTK_MENU_TOGGLE_ENTRY("callpanel", _("Show Call Panel"), _("Show the call panel"),
+                            NULL, 'C', 
+                            GTK_SIGNAL_FUNC (toggle_menu_changed_cb),
+                            (gpointer) USER_INTERFACE_KEY "main_window/show_call_panel", 
+                            show_call_panel, TRUE),
 
       GTK_MENU_SEPARATOR,
 
@@ -1701,9 +1735,9 @@ gm_mw_init_call (GtkWidget *main_window)
 {
   GmMainWindow *mw = NULL;
 
+  GtkWidget *frame = NULL;
   GtkWidget *event_box = NULL;
   GtkWidget *table = NULL;
-  GtkWidget *label = NULL;
 
   GtkWidget *toolbar = NULL;
   GtkWidget *button = NULL;
@@ -1719,12 +1753,14 @@ gm_mw_init_call (GtkWidget *main_window)
   mw = gm_mw_get_mw (main_window);
 
   /* The main table */
+  frame = gtk_frame_new (NULL);
   event_box = gtk_event_box_new ();
   gtk_widget_modify_bg (event_box, GTK_STATE_PRELIGHT, &white);
   gtk_widget_modify_bg (event_box, GTK_STATE_NORMAL, &white);
   table = gtk_table_new (3, 4, FALSE);
   gtk_container_add (GTK_CONTAINER (event_box), table);
-  
+  gtk_container_add (GTK_CONTAINER (frame), event_box);
+
   /* The frame that contains the video */
   mw->video_frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (mw->video_frame), 
@@ -1742,7 +1778,7 @@ gm_mw_init_call (GtkWidget *main_window)
 		    0, 4, 0, 1,
 		    (GtkAttachOptions) GTK_EXPAND,
 		    (GtkAttachOptions) GTK_EXPAND,
-		    10, 25);
+		    0, 0);
 
 
   /* The frame that contains information about the call */
@@ -1767,7 +1803,7 @@ gm_mw_init_call (GtkWidget *main_window)
                               "paragraph-background", "white",
                               "justification", GTK_JUSTIFY_CENTER,
                               "weight", PANGO_WEIGHT_BOLD,
-                              "scale", 1.5,
+                              "scale", 1.2,
                               NULL);
   gtk_text_buffer_create_tag (buffer, "codecs",
                               "justification", GTK_JUSTIFY_RIGHT,
@@ -1891,12 +1927,10 @@ gm_mw_init_call (GtkWidget *main_window)
 		    1, 3, 2, 3,
 		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
 		    (GtkAttachOptions) (GTK_FILL),
-		    5, 5);
+		    2, 2);
   
-  label = gtk_label_new (_("Call"));
-
-  gtk_notebook_append_page (GTK_NOTEBOOK (mw->main_notebook),
-                            event_box, label);
+  gtk_paned_pack2 (GTK_PANED (mw->hpaned), frame, true, true);
+  gtk_widget_set_size_request (frame, 200, -1);
 }  
 
 
@@ -1941,6 +1975,46 @@ gnomemeeting_tray_hack_cb (G_GNUC_UNUSED gpointer data)
   gdk_threads_leave ();
 
   return FALSE;
+}
+
+
+static void 
+panel_section_changed_nt (G_GNUC_UNUSED gpointer id, 
+                          GmConfEntry *entry, 
+                          gpointer data)
+{
+  gint section = 0;
+
+  g_return_if_fail (data != NULL);
+  
+  if (gm_conf_entry_get_type (entry) == GM_CONF_INT) {
+
+    gdk_threads_enter ();
+    section = gm_conf_entry_get_int (entry);
+    gm_main_window_set_panel_section (GTK_WIDGET (data), 
+                                      section);
+    gdk_threads_leave ();
+  }
+}
+
+
+static void 
+show_call_panel_changed_nt (G_GNUC_UNUSED gpointer id, 
+                            GmConfEntry *entry, 
+                            gpointer data)
+{
+  g_return_if_fail (data != NULL);
+
+  if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
+
+    gdk_threads_enter ();
+    if (gm_conf_entry_get_bool (entry)) 
+      gm_main_window_show_call_panel (GTK_WIDGET (data));
+    else 
+      gm_main_window_hide_call_panel (GTK_WIDGET (data));
+
+    gdk_threads_leave ();
+  }
 }
 
 
@@ -2956,6 +3030,37 @@ gm_main_window_toggle_fullscreen (FSToggle toggle,
 }
 
 
+static void 
+gm_main_window_show_call_panel (GtkWidget *self)
+{
+  GmMainWindow *mw = NULL;
+
+  mw = gm_mw_get_mw (GTK_WIDGET (self));
+
+  gtk_window_get_size (GTK_WINDOW (self), &mw->x, &mw->y);
+  gtk_widget_show_all (gtk_paned_get_child2 (GTK_PANED (mw->hpaned)));
+}
+
+
+static void 
+gm_main_window_hide_call_panel (GtkWidget *self)
+{
+  GmMainWindow *mw = NULL;
+
+  mw = gm_mw_get_mw (GTK_WIDGET (self));
+
+  if (mw->x == 0 && mw->y == 0) {
+
+    GtkRequisition req;
+    gtk_window_get_size (GTK_WINDOW (self), &mw->x, &mw->y);
+    gtk_widget_size_request (GTK_WIDGET (gtk_paned_get_child1 (GTK_PANED (mw->hpaned))), &req);
+    mw->x = req.width;
+  }
+
+  gtk_widget_hide (gtk_paned_get_child2 (GTK_PANED (mw->hpaned)));
+  gtk_window_resize (GTK_WINDOW (self), mw->x, mw->y);
+}
+
 
 void
 gm_main_window_force_redraw ()
@@ -3440,6 +3545,8 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   mw->transfer_call_popup = NULL;
   mw->current_call = NULL;
   mw->timeout_id = -1;
+  mw->x = 0;
+  mw->y = 0;
   mw->missed_calls = mw->total_mwi = 0;
   mw->audio_transmission_active = mw->audio_reception_active 
     = mw->video_transmission_active = mw->video_reception_active = false;
@@ -3476,22 +3583,30 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   mw->audio_settings_window = gm_mw_audio_settings_window_new (window);
   mw->video_settings_window = gm_mw_video_settings_window_new (window);
 
-  /* The Notebook */
-  mw->main_notebook = gtk_notebook_new ();
-  gtk_notebook_popup_enable (GTK_NOTEBOOK (mw->main_notebook));
-  gtk_notebook_set_show_tabs (GTK_NOTEBOOK (mw->main_notebook), false);
-  gtk_notebook_set_scrollable (GTK_NOTEBOOK (mw->main_notebook), true);
+  /* The 2 parts of the gui */
+  mw->hpaned = gtk_hpaned_new ();
+  gtk_box_pack_start (GTK_BOX (mw->window_vbox), mw->hpaned,
+                      true, true, 0);
 
-  gtk_box_pack_start (GTK_BOX (mw->window_vbox), mw->main_notebook,
-                      TRUE, TRUE, 0);
+  mw->main_notebook = gtk_notebook_new ();
+
+  gtk_notebook_popup_enable (GTK_NOTEBOOK (mw->main_notebook));
+  gtk_notebook_set_show_tabs (GTK_NOTEBOOK (mw->main_notebook), true);
+  gtk_notebook_set_scrollable (GTK_NOTEBOOK (mw->main_notebook), true);
 
   gm_mw_init_contacts_list (window);
   gm_mw_init_dialpad (window);
+  gtk_paned_pack1 (GTK_PANED (mw->hpaned), mw->main_notebook, true, true);
+  gtk_widget_set_size_request (mw->main_notebook, 200, -1);
+
   gm_mw_init_call (window);
 
   section = (PanelSection) 
     gm_conf_get_int (USER_INTERFACE_KEY "main_window/panel_section");
-  gtk_widget_show_all (GTK_WIDGET (mw->main_notebook));
+  gtk_widget_show (mw->hpaned);
+  gtk_widget_show_all (GTK_WIDGET (gtk_paned_get_child1 (GTK_PANED (mw->hpaned))));
+  if (gm_conf_get_bool (USER_INTERFACE_KEY "main_window/show_call_panel"))
+    gtk_widget_show_all (GTK_WIDGET (gtk_paned_get_child2 (GTK_PANED (mw->hpaned))));
   gm_main_window_set_panel_section (window, section);
 
   /* Status toolbar */
@@ -3624,6 +3739,13 @@ gm_main_window_new (Ekiga::ServiceCore & core)
 
   conn = call_core->stream_resumed.connect (sigc::bind (sigc::ptr_fun (on_stream_resumed_cb), (gpointer) window));
   mw->connections.push_back (conn);
+
+  /* Notifiers */
+  gm_conf_notifier_add (USER_INTERFACE_KEY "main_window/panel_section",
+			panel_section_changed_nt, window);
+
+  gm_conf_notifier_add (USER_INTERFACE_KEY "main_window/show_call_panel",
+			show_call_panel_changed_nt, window);
 
   return window;
 }

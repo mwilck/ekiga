@@ -67,16 +67,6 @@
 
 /* Declarations */
 
-/* DESCRIPTION  :  This callback is called when the control panel 
- *                 section key changes.
- * BEHAVIOR     :  Sets the right page, and also sets 
- *                 the good value for the radio menu. 
- * PRE          :  /
- */
-static void panel_section_changed_nt (gpointer id,
-                                      GmConfEntry *entry,
-                                      gpointer data);
-
 static void accounts_list_changed_nt (gpointer id,
 				      GmConfEntry *entry,
 				      gpointer data);
@@ -96,26 +86,6 @@ static void stay_on_top_changed_nt (gpointer id,
 static void network_settings_changed_nt (gpointer id,
 					 GmConfEntry *entry,
                                          gpointer data);
-
-
-static void 
-panel_section_changed_nt (G_GNUC_UNUSED gpointer id, 
-                          GmConfEntry *entry, 
-                          gpointer data)
-{
-  gint section = 0;
-
-  g_return_if_fail (data != NULL);
-  
-  if (gm_conf_entry_get_type (entry) == GM_CONF_INT) {
-
-    gdk_threads_enter ();
-    section = gm_conf_entry_get_int (entry);
-    gm_main_window_set_panel_section (GTK_WIDGET (data), 
-                                      section);
-    gdk_threads_leave ();
-  }
-}
 
 
 /* DESCRIPTION  :  This notifier is called when the config database data
@@ -266,11 +236,6 @@ gnomemeeting_conf_init ()
    */
 
   
-  /* Notifiers for the USER_INTERFACE_KEY keys */
-  gm_conf_notifier_add (USER_INTERFACE_KEY "main_window/panel_section",
-			panel_section_changed_nt, main_window);
- 
-
   /* Notifiers related to the H323_KEY */
 
   //FIXME gm_conf_notifier_add (H323_KEY "dtmf_mode",

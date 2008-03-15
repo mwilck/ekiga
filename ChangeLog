@@ -1,3 +1,15 @@
+2008-03-15  Damien Sandras  <dsandras@gnome.org>
+
+	* src/gui/main.cpp:
+	* src/gui/conf.cpp:
+	* ekiga.schemas.in.in:
+	Tried alternative UI style with the video being displayed on the right
+	of the contacts list. The video tab is shown and hidden when
+	convenient with some magic being done to restore the size of the
+	window between operations. This view should look more beautiful on
+	wide screens and on tablets like the Nokia or the Intel MID.
+	Moved more notifiers out of conf.cpp.
+
 2008-03-13  Damien Sandras  <dsandras@gnome.org>
 
 	* AUTHORS, src/gui/callbacks.cpp: Added Yannick in the About box for
