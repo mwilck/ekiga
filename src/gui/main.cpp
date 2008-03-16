@@ -920,6 +920,8 @@ on_display_size_changed_cb (Ekiga::DisplayManager & /* manager */, unsigned widt
   rect.height = mw->main_video_image->allocation.height;
 
   gdk_window_invalidate_rect (GDK_WINDOW (GTK_WIDGET (self)->window), &rect , TRUE);
+
+  gtk_window_resize (GTK_WINDOW (self), width + 20, mw->y ? mw->y : (int) height * 2.5);
 }
 
 void 
@@ -1930,7 +1932,6 @@ gm_mw_init_call (GtkWidget *main_window)
 		    2, 2);
   
   gtk_paned_pack2 (GTK_PANED (mw->hpaned), frame, true, true);
-  gtk_widget_set_size_request (frame, 200, -1);
 }  
 
 
