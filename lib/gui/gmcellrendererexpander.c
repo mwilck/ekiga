@@ -331,6 +331,8 @@ gm_cell_renderer_expander_render (GtkCellRenderer      *cell,
                       cell_area->x + x_offset + cell->xpad + priv->expander_size / 2,
                       cell_area->y + y_offset + cell->ypad + priv->expander_size / 2,
                       expander_style);
+  gtk_paint_hline (widget->style, window, GTK_STATE_NORMAL, NULL, widget, NULL, 0,
+                   widget->allocation.width, cell_area->y + cell_area->height);
 }
 
 static void
