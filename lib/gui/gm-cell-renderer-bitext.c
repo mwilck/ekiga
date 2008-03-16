@@ -105,9 +105,14 @@ gm_cell_renderer_bitext_update_text (GmCellRendererBitext *renderer,
   attr_size->end_index = (guint) - 1;
   pango_attr_list_insert (attr_list, attr_size);
 
-  str = g_strdup_printf ("%s\n%s",
-			 renderer->priv->primary_text,
-			 renderer->priv->secondary_text);
+  if (renderer->priv->secondary_text && strcmp (renderer->priv->secondary_text, ""))
+    str = g_strdup_printf ("%s\n%s",
+                           renderer->priv->primary_text,
+                           renderer->priv->secondary_text);
+  else
+    str = g_strdup_printf ("%s",
+                           renderer->priv->primary_text);
+
   g_object_set (renderer,
 		"visible", TRUE,
 		"weight", PANGO_WEIGHT_NORMAL,

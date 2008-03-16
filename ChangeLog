@@ -1,5 +1,11 @@
 2008-03-16  Damien Sandras  <dsandras@gnome.org>
 
+	* lib/gui/gm-cell-renderer-bitext.c:
+	When secondary-text is empty, do not try displaying anything in order
+	not to have uncentered text.
+
+2008-03-16  Damien Sandras  <dsandras@gnome.org>
+
 	* lib/gui/gmcellrendererexpander.c:
 	Added horizontal line for expanders in order to nicely separate groups
 	of contacts in a roster for example.
