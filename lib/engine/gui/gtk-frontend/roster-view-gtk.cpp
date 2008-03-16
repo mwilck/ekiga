@@ -97,6 +97,7 @@ enum {
   COLUMN_NAME,
   COLUMN_STATUS,
   COLUMN_PRESENCE,
+  COLUMN_ACTIVE,
   COLUMN_NUMBER
 };
 
@@ -129,8 +130,8 @@ static void show_cell_data_func (GtkTreeViewColumn *column,
 
 
 /* DESCRIPTION  : Called for a given renderer in order to modify properties.
- * BEHAVIOR     : Expand the expander renderer if required. Change the backgrounds to
- *                lightgray for Clusters, and hide the expander renderer for Presentity
+ * BEHAVIOR     : Expand the expander renderer if required.
+ *                Hide the expander renderer for Presentity.
  *                and Heap.
  * PRE          : /
  */
@@ -447,7 +448,7 @@ expand_cell_data_func (GtkTreeViewColumn *column,
                        GtkCellRenderer *renderer,
                        GtkTreeModel *model,
                        GtkTreeIter *iter,
-                       G_GNUC_UNUSED gpointer data)
+                       gpointer /*data*/)
 {
   GtkTreePath *path = NULL;
   gint column_type;
@@ -458,11 +459,6 @@ expand_cell_data_func (GtkTreeViewColumn *column,
   gtk_tree_path_free (path);
 
   gtk_tree_model_get (model, iter, COLUMN_TYPE, &column_type, -1);
-
-  if (column_type == TYPE_HEAP)
-    g_object_set (renderer, "cell-background", "lightgray", NULL);
-  else
-    g_object_set (renderer, "cell-background", NULL, NULL);
 
   if (column_type == TYPE_PRESENTITY || column_type == TYPE_HEAP)
     g_object_set (renderer, "visible", FALSE, NULL);
@@ -557,8 +553,11 @@ on_presentity_added (Ekiga::Cluster &/*cluster*/,
   std::set<std::string> groups = presentity.get_groups ();
   GtkTreeIter group_iter;
   GtkTreeIter iter;
+  bool active = false;
 
   roster_view_gtk_find_iter_for_heap (self, heap, &heap_iter);
+
+  active = presentity.get_presence () != "presence-offline";
 
   for (std::set<std::string>::const_iterator group = groups.begin ();
        group != groups.end ();
@@ -573,6 +572,7 @@ on_presentity_added (Ekiga::Cluster &/*cluster*/,
 			COLUMN_NAME, presentity.get_name ().c_str (),
 			COLUMN_STATUS, presentity.get_status ().c_str (),
 			COLUMN_PRESENCE, presentity.get_presence ().c_str (),
+                        COLUMN_ACTIVE, active ? "black" : "gray", 
 			-1);
   }
 
@@ -586,6 +586,7 @@ on_presentity_added (Ekiga::Cluster &/*cluster*/,
 			COLUMN_NAME, presentity.get_name ().c_str (),
 			COLUMN_STATUS, presentity.get_status ().c_str (),
 			COLUMN_PRESENCE, presentity.get_presence ().c_str (),
+                        COLUMN_ACTIVE, active ? "black" : "gray", 
 			-1);
   }
 
@@ -967,7 +968,9 @@ roster_view_gtk_new (Ekiga::PresenceCore &core)
                                           G_TYPE_POINTER,       // presentity
                                           G_TYPE_STRING,        // name
                                           G_TYPE_STRING,        // status
-                                          G_TYPE_STRING);       // presence
+                                          G_TYPE_STRING,        // presence
+                                          G_TYPE_STRING);       // color if active 
+
   self->priv->tree_view =
     GTK_TREE_VIEW (gtk_tree_view_new_with_model (GTK_TREE_MODEL (self->priv->store)));
   gtk_tree_view_set_headers_visible (self->priv->tree_view, FALSE);
@@ -989,13 +992,25 @@ roster_view_gtk_new (Ekiga::PresenceCore &core)
   gtk_tree_view_set_expander_column (self->priv->tree_view, col);
 
   col = gtk_tree_view_column_new ();
+  renderer = gm_cell_renderer_expander_new ();
+  gtk_tree_view_column_pack_start (col, renderer, FALSE);
+  g_object_set (renderer,
+                "xalign", 0,
+                "xpad", 0,
+                "ypad", 0,
+                "visible", TRUE,
+                "expander-style", GTK_EXPANDER_COLLAPSED,
+                NULL);
+  gtk_tree_view_column_set_cell_data_func (col, renderer, expand_cell_data_func, NULL, NULL);
+  gtk_tree_view_append_column (self->priv->tree_view, col);
+
   renderer = gtk_cell_renderer_text_new ();
   gtk_tree_view_column_set_spacing (col, 0);
   gtk_tree_view_column_pack_start (col, renderer, TRUE);
   gtk_tree_view_column_add_attribute (col, renderer, "text", COLUMN_NAME);
   gtk_tree_view_column_set_alignment (col, 0.0);
+  g_object_set (renderer, "xalign", 0.5, "ypad", 0, NULL);
   g_object_set (renderer, "weight", PANGO_WEIGHT_BOLD, NULL);
-  g_object_set (renderer, "cell-background", "lightgray", NULL);
   gtk_tree_view_column_set_cell_data_func (col, renderer,
                                            show_cell_data_func, GINT_TO_POINTER (TYPE_HEAP), NULL);
 
@@ -1008,7 +1023,7 @@ roster_view_gtk_new (Ekiga::PresenceCore &core)
                                            show_cell_data_func, GINT_TO_POINTER (TYPE_GROUP), NULL);
 
   renderer = gtk_cell_renderer_pixbuf_new ();
-  g_object_set (renderer, "xpad", 5, NULL);
+  g_object_set (renderer, "yalign", 0.5, "xpad", 5, NULL);
   gtk_tree_view_column_pack_start (col, renderer, FALSE);
   gtk_tree_view_column_add_attribute (col, renderer,
 				      "stock-id",
@@ -1020,17 +1035,9 @@ roster_view_gtk_new (Ekiga::PresenceCore &core)
   gtk_tree_view_column_pack_start (col, renderer, FALSE);
   gtk_tree_view_column_add_attribute (col, renderer, "primary-text", COLUMN_NAME);
   gtk_tree_view_column_add_attribute (col, renderer, "secondary-text", COLUMN_STATUS);
+  gtk_tree_view_column_add_attribute (col, renderer, "foreground", COLUMN_ACTIVE);
   gtk_tree_view_column_set_cell_data_func (col, renderer,
                                            show_cell_data_func, GINT_TO_POINTER (TYPE_PRESENTITY), NULL);
-
-  renderer = gm_cell_renderer_expander_new ();
-  gtk_tree_view_column_pack_end (col, renderer, FALSE);
-  g_object_set (renderer,
-                "visible", TRUE,
-                "expander-style", GTK_EXPANDER_COLLAPSED,
-                NULL);
-  gtk_tree_view_column_set_cell_data_func (col, renderer, expand_cell_data_func, NULL, NULL);
-  gtk_tree_view_append_column (self->priv->tree_view, col);
 
   /* Callback when the selection has been changed */
   selection = gtk_tree_view_get_selection (self->priv->tree_view);
