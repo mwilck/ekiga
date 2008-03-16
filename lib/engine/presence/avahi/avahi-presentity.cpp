@@ -35,6 +35,8 @@
  *
  */
 
+#include "config.h"
+
 #include "avahi-presentity.h"
 
 Avahi::Presentity::Presentity (Ekiga::PresenceCore &_core,
@@ -75,7 +77,9 @@ Avahi::Presentity::get_avatar () const
 const std::set<std::string>
 Avahi::Presentity::get_groups () const
 {
-  return std::set<std::string>();
+  std::set<std::string> groups;
+  groups.insert (_("Neighbours"));
+  return groups;
 }
 
 const std::string
