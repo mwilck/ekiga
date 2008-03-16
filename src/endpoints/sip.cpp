@@ -694,8 +694,8 @@ GMSIPEndpoint::OnPresenceInfoReceived (const PString & user,
   PCaselessString b = basic;
   PCaselessString s = note;
 
-  std::string status = "presence-unknown";
-  std::string presence;
+  std::string status;
+  std::string presence = "presence-unknown";
 
   SIPURL sip_uri = SIPURL (user);
   sip_uri.AdjustForRequestURI ();
@@ -703,11 +703,9 @@ GMSIPEndpoint::OnPresenceInfoReceived (const PString & user,
 
   if (b.Find ("Closed") != P_MAX_INDEX) {
     presence = "presence-offline";
-    status = _("Offline");
   }
   else {
     presence = "presence-online";
-    status = _("Online");
   }
 
   if (s.Find ("Away") != P_MAX_INDEX) {
