@@ -372,7 +372,7 @@ prepare_ekiga_net_page (EkigaAssistant *assistant)
                                 FALSE);
 
   set_current_page_complete (GTK_ASSISTANT (assistant),
-                             account->username && account->password);
+                             account && account->username && account->password);
 }
 
 static void
