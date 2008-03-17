@@ -80,7 +80,7 @@ PVideoInputDevice_EKIGA::~PVideoInputDevice_EKIGA ()
 }
 
 bool
-PVideoInputDevice_EKIGA::Open (const PString &name,
+PVideoInputDevice_EKIGA::Open (const PString &/*name*/,
 			       bool start_immediate)
 {
   if (start_immediate) {
