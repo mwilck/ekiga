@@ -67,11 +67,16 @@ ConfBridge::ConfBridge (Ekiga::Service & _service)
   keys.push_back (VIDEO_CODECS_KEY "max_frame_rate");
   keys.push_back (VIDEO_CODECS_KEY "maximum_video_rx_bitrate");
 
+  keys.push_back (SIP_KEY "forward_host"); 
   keys.push_back (SIP_KEY "outbound_proxy_host");
   keys.push_back (SIP_KEY "dtmf_mode");
   keys.push_back (NAT_KEY "binding_timeout");
 
   keys.push_back (PERSONAL_DATA_KEY "full_name");
+
+  keys.push_back (CALL_FORWARDING_KEY "forward_on_busy");
+  keys.push_back (CALL_FORWARDING_KEY "always_forward");
+  keys.push_back (CALL_OPTIONS_KEY "no_answer_timeout");
 
   load (keys);
 }
@@ -220,6 +225,10 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
 
     manager.GetSIPEndpoint ()->set_dtmf_mode (gm_conf_entry_get_int (entry));
   }
+  else if (key == SIP_KEY "forward_host") {
+
+    manager.GetSIPEndpoint ()->set_forward_host (gm_conf_entry_get_string (entry));
+  }
 
   //
   // NAT related keys
@@ -229,13 +238,29 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
     manager.GetSIPEndpoint ()->set_nat_binding_delay (gm_conf_entry_get_int (entry));
   }
 
-
   //
   // Personal Data Key
   //
   else if (key == PERSONAL_DATA_KEY "full_name") {
 
     manager.set_fullname (gm_conf_entry_get_string (entry));
+  }
+
+
+  //
+  // Misc keys
+  //
+  else if (CALL_FORWARDING_KEY "forward_on_busy") {
+
+    manager.GetSIPEndpoint ()->set_forward_on_busy (gm_conf_entry_get_bool (entry));
+  }
+  else if (CALL_FORWARDING_KEY "always_forward") {
+
+    manager.GetSIPEndpoint ()->set_unconditional_forward (gm_conf_entry_get_bool (entry));
+  }
+  else if (CALL_OPTIONS_KEY "no_answer_timeout") {
+
+    manager.GetSIPEndpoint ()->set_no_answer_timeout (gm_conf_entry_get_int (entry));
   }
 }
 

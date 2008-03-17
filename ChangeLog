@@ -1,5 +1,16 @@
 2008-03-17  Damien Sandras  <dsandras@gnome.org>
 
+	* src/endpoints/sip.h:
+	* src/endpoints/manager.cpp:
+	* src/endpoints/manager.h:
+	* src/endpoints/sip.cpp:
+	* src/endpoints/opal-gmconf-bridge.cpp:
+	Moved all SIP GmConf stuff to the bridge. Added a few functions for
+	call forwarding. They will probably be moved to the CallManager skel
+	interface at a later stage, but cleanup is iterative.
+
+2008-03-17  Damien Sandras  <dsandras@gnome.org>
+
 	* src/devices/videoinput.cpp: Fixed warning.
 
 2008-03-17  Damien Sandras  <dsandras@gnome.org>

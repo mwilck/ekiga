@@ -246,7 +246,7 @@ class GMManager:
    */
   bool OnIncomingConnection (OpalConnection &,
 			     unsigned,
-			     PString);
+			     const std::string & forward_uri);
 
   
   /* DESCRIPTION  :  This callback is called when a call is established. 

@@ -1032,7 +1032,7 @@ OpalCall *GMManager::CreateCall ()
 bool
 GMManager::OnIncomingConnection (OpalConnection &connection,
                                  unsigned reason,
-                                 PString extra)
+                                 const std::string & forward_uri)
 {
   bool res = FALSE;
 
@@ -1045,7 +1045,7 @@ GMManager::OnIncomingConnection (OpalConnection &connection,
     break;
     
   case 2:
-    connection.ForwardCall (extra);
+    connection.ForwardCall (forward_uri);
     res = FALSE;
     break;
     

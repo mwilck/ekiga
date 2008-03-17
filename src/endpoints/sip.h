@@ -88,6 +88,17 @@ class GMSIPEndpoint
   void set_dtmf_mode (unsigned int mode);
   void set_nat_binding_delay (unsigned int delay);
 
+  /***/
+  /* TODO: 
+   * It is probably needed to move some of those functions
+   * in the core
+   */
+  void set_forward_host (const std::string & uri);
+  void set_forward_on_busy (const bool enabled);
+  void set_unconditional_forward (const bool enabled);
+  void set_forward_on_no_answer (const bool enabled);
+  void set_no_answer_timeout (const unsigned timeout);
+
   
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Starts the listener thread on the port choosen 
@@ -226,5 +237,11 @@ class GMSIPEndpoint
   Ekiga::ServiceCore & core;
 
   std::string uri_prefix;
+  std::string forward_uri;
+
+  bool forward_on_busy;
+  bool unconditional_forward;
+  bool forward_on_no_answer;
+  unsigned no_answer_timeout;
 };
 #endif
