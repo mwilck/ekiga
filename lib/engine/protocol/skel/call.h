@@ -27,9 +27,9 @@
 /*
  *                         call.h  -  description
  *                         ------------------------------------------
- *   begin                : written in 2007 by Damien Sandras 
+ *   begin                : written in 2007 by Damien Sandras
  *   copyright            : (c) 2007 by Damien Sandras
- *   description          : declaration of the interface of a call handled by 
+ *   description          : declaration of the interface of a call handled by
  *                          the Ekiga::CallManager.
  *
  */
@@ -58,29 +58,25 @@ namespace Ekiga
 
   public:
 
-      Call () 
-        { 
-          outgoing = false; 
-          re_a_bw = tr_a_bw = re_v_bw = tr_v_bw = 0.0;
-          jitter = 0;
-          lost_packets = late_packets = out_of_order_packets = 0.0;
+      Call ()
+        {
         }
 
       virtual ~Call () {};
 
       enum StreamType { Audio, Video };
 
-      /* 
+      /*
        * Call Management
        */
 
       /** Hangup the call
        */
-      virtual void hangup () = 0; 
+      virtual void hangup () = 0;
 
       /** Answer an incoming call
        */
-      virtual void answer () = 0; 
+      virtual void answer () = 0;
 
       /** Transfer the call to the specified uri
        * @param uri is the uri where to transfer the call
@@ -101,86 +97,86 @@ namespace Ekiga
        */
       virtual void send_dtmf (const char dtmf) = 0;
 
-      /* 
+      /*
        * Call Information
        */
 
       /** Return the call id
-       * @return: the call id 
+       * @return: the call id
        */
-      virtual std::string get_id () = 0;
+      virtual const std::string get_id () const = 0;
 
       /** Return the remote party name
        * @return: the remote party name
        */
-      virtual std::string get_remote_party_name () = 0;
+      virtual const std::string get_remote_party_name () const = 0;
 
       /** Return the remote application
        * @return: the remote application
        */
-      virtual std::string get_remote_application () = 0; 
+      virtual const std::string get_remote_application () const = 0;
 
       /** Return the remote callback uri
        * @return: the remote uri
        */
-      virtual std::string get_remote_uri () = 0;
+      virtual const std::string get_remote_uri () const = 0;
 
       /** Return the call duration
        * @return the current call duration
        */
-      virtual std::string get_call_duration () = 0;
+      virtual const std::string get_call_duration () const = 0;
 
       /** Return information about call type
        * @return true if it is an outgoing call
        */
-      bool is_outgoing () { return outgoing; }
+      virtual bool is_outgoing () const = 0;
 
       /** Return the received audio bandwidth
        * @return the received audio bandwidth in kbytes/s
        */
-      double get_received_audio_bandwidth () { return re_a_bw; }
+      virtual double get_received_audio_bandwidth () const = 0;
 
       /** Return the transmitted audio bandwidth
        * @return the transmitted audio bandwidth in kbytes/s
        */
-      double get_transmitted_audio_bandwidth () { return tr_a_bw; }
-      
+      virtual double get_transmitted_audio_bandwidth () const = 0;
+
       /** Return the received video bandwidth
        * @return the received video bandwidth in kbytes/s
-       */ 
-      double get_received_video_bandwidth () { return re_v_bw; }
-      
+       */
+      virtual double get_received_video_bandwidth () const = 0;
+
       /** Return the transmitted video bandwidth
        * @return the transmitted video bandwidth in kbytes/s
        */
-      double get_transmitted_video_bandwidth () { return tr_v_bw; }
+      virtual double get_transmitted_video_bandwidth () const = 0;
 
       /** Return the jitter size
        * @return the jitter size in ms
        */
-      unsigned get_jitter_size () { return jitter; }
+      virtual unsigned get_jitter_size () const = 0;
 
-      /** Return the lost packets information 
+      /** Return the lost packets information
        * @return the lost packets percentage
        */
-      double get_lost_packets () { return lost_packets; }
-      
-      /** Return the late packets information 
+      virtual double get_lost_packets () const = 0;
+
+      /** Return the late packets information
        * @return the late packets percentage
        */
-      double get_late_packets () { return late_packets; }
+      virtual double get_late_packets () const = 0;
 
-      /** Return the out of order packets information 
+      /** Return the out of order packets information
        * @return the out of order packets percentage
        */
-      double get_out_of_order_packets () { return out_of_order_packets; }
+      virtual double get_out_of_order_packets () const = 0;
 
 
 
       /*
        * Signals
        */
-      
+
       /* Signal emitted when the call is established
        */
       sigc::signal<void> established;
@@ -202,7 +198,7 @@ namespace Ekiga
       /* Signal emitted when the call is held
        */
       sigc::signal<void> held;
-       
+
       /* Signal emitted when the call is retrieved
        */
       sigc::signal<void> retrieved;
@@ -239,31 +235,6 @@ namespace Ekiga
        */
       sigc::signal<void, std::string, StreamType> stream_resumed;
 
-
-  protected :
-      
-      std::string remote_party_name;
-      std::string remote_uri;
-      std::string remote_application;
-
-      bool outgoing;
-
-      double re_a_bw; 
-      double tr_a_bw; 
-      double re_v_bw; 
-      double tr_v_bw; 
-      unsigned re_v_fps;
-      unsigned tr_v_fps;
-      unsigned tr_width;
-      unsigned tr_height;
-      unsigned re_width;
-      unsigned re_height;
-
-      unsigned jitter; 
-
-      double lost_packets; 
-      double late_packets; 
-      double out_of_order_packets; 
     };
 
 /**

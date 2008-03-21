@@ -27,9 +27,9 @@
 /*
  *                         opal-call.h  -  description
  *                         ------------------------------------------
- *   begin                : written in 2007 by Damien Sandras 
+ *   begin                : written in 2007 by Damien Sandras
  *   copyright            : (c) 2007 by Damien Sandras
- *   description          : declaration of the interface of a call handled by 
+ *   description          : declaration of the interface of a call handled by
  *                          Opal.
  *
  */
@@ -62,17 +62,17 @@ namespace Opal {
 
       ~Call () { };
 
-      /* 
+      /*
        * Call Management
        */
 
       /** Hangup the call
        */
-      void hangup (); 
+      void hangup ();
 
       /** Answer an incoming call
        */
-      void answer (); 
+      void answer ();
 
       /** Transfer the call to the specified uri
        * @param: uri: where to transfer the call
@@ -94,42 +94,56 @@ namespace Opal {
       void send_dtmf (const char dtmf);
 
 
-      /* 
+      /*
        * Call Information
        */
 
       /** Return the call id
        * @return: the call id
        */
-      std::string get_id ();
-      
+      const std::string get_id () const;
+
       /** Return the remote party name
        * @return: the remote party name
        */
-      std::string get_remote_party_name ();
+      const std::string get_remote_party_name () const;
 
       /** Return the remote application
        * @return: the remote application
        */
-      std::string get_remote_application ();
+      const std::string get_remote_application () const;
 
 
       /** Return the remote callback uri
        * @return: the remote uri
        */
-      std::string get_remote_uri ();
+      const std::string get_remote_uri () const;
 
 
       /** Return the call duration
        * @return: the current call duration
        */
-      std::string get_call_duration ();
+      const std::string get_call_duration () const;
 
 
   public:
 
+      /* Implementation of inherited methods
+       */
+
+      bool is_outgoing () const { return outgoing; }
+      double get_received_audio_bandwidth () const { return re_a_bw; }
+      double get_transmitted_audio_bandwidth () const { return tr_a_bw; }
+      double get_received_video_bandwidth () const { return re_v_bw; }
+      double get_transmitted_video_bandwidth () const { return tr_v_bw; }
+      unsigned get_jitter_size () const { return jitter; }
+      double get_lost_packets () const { return lost_packets; }
+      double get_late_packets () const { return late_packets; }
+      double get_out_of_order_packets () const { return out_of_order_packets; }
+
+
       /*
-       * Opal Callbacks 
+       * Opal Callbacks
        */
       void OnHold (bool on_hold);
 
@@ -151,7 +165,7 @@ namespace Opal {
 
       PDECLARE_NOTIFIER (PThread, Opal::Call, OnAnswer);
 
-      
+
       /*
        * Helper methods
        */
@@ -163,6 +177,30 @@ namespace Opal {
        */
       Ekiga::ServiceCore & core;
       Ekiga::Runtime & runtime;
+
+
+      std::string remote_party_name;
+      std::string remote_uri;
+      std::string remote_application;
+
+      bool outgoing;
+
+      double re_a_bw;
+      double tr_a_bw;
+      double re_v_bw;
+      double tr_v_bw;
+      unsigned re_v_fps;
+      unsigned tr_v_fps;
+      unsigned tr_width;
+      unsigned tr_height;
+      unsigned re_width;
+      unsigned re_height;
+
+      unsigned jitter;
+
+      double lost_packets;
+      double late_packets;
+      double out_of_order_packets;
 
       PMutex stats_mutex;
       double re_a_bytes;

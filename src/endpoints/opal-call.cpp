@@ -27,9 +27,9 @@
 /*
  *                         opal-call.cpp  -  description
  *                         ------------------------------------------
- *   begin                : written in 2007 by Damien Sandras 
+ *   begin                : written in 2007 by Damien Sandras
  *   copyright            : (c) 2007 by Damien Sandras
- *   description          : declaration of the interface of a call handled by 
+ *   description          : declaration of the interface of a call handled by
  *                          Opal.
  *
  */
@@ -54,8 +54,10 @@
 using namespace Opal;
 
 
-Call::Call (OpalManager & _manager, Ekiga::ServiceCore & _core) 
-: OpalCall (_manager), Ekiga::Call (), core (_core), runtime (*dynamic_cast<Ekiga::Runtime*>(core.get ("runtime")))
+Opal::Call::Call (OpalManager & _manager, Ekiga::ServiceCore & _core)
+  : OpalCall (_manager), Ekiga::Call (), core (_core),
+    runtime (*dynamic_cast<Ekiga::Runtime*>(core.get ("runtime"))),
+    outgoing(false), jitter(0)
 {
   re_a_bytes = tr_a_bytes = re_v_bytes = tr_v_bytes = 0.0;
   last_v_tick = last_a_tick = PTime ();
@@ -67,37 +69,43 @@ Call::Call (OpalManager & _manager, Ekiga::ServiceCore & _core)
     lost_v =
     too_late_v =
     out_of_order_v = 0;
+  lost_packets = late_packets = out_of_order_packets = 0.0;
+  re_a_bw = tr_a_bw = re_v_bw = tr_v_bw = 0.0;
 }
 
 
-void Call::hangup ()
+void
+Opal::Call::hangup ()
 {
-  if (!is_outgoing () && !IsEstablished ()) 
+  if (!is_outgoing () && !IsEstablished ())
     Clear (OpalConnection::EndedByAnswerDenied);
   else
     Clear ();
 }
 
 
-void Call::answer ()
+void
+Opal::Call::answer ()
 {
-  PThread::Create (PCREATE_NOTIFIER (OnAnswer), NULL, 
-                   PThread::AutoDeleteThread, PThread::NormalPriority, 
+  PThread::Create (PCREATE_NOTIFIER (OnAnswer), NULL,
+                   PThread::AutoDeleteThread, PThread::NormalPriority,
                    "Opal::Call Answer Thread");
 }
 
 
-void Call::transfer (std::string uri)
+void
+Opal::Call::transfer (std::string uri)
 {
   //FIXME
   std::cout << "Should transfer to " << uri << std::endl << std::flush;
 }
 
 
-void Call::toggle_hold ()
+void
+Opal::Call::toggle_hold ()
 {
   PSafePtr<OpalConnection> connection = NULL;
-  
+
   bool on_hold = false;
   int i = 0;
 
@@ -105,20 +113,21 @@ void Call::toggle_hold ()
 
     connection = GetConnection (i);
     i++;
-  }  while (PIsDescendant(&(*connection), OpalPCSSConnection)); 
+  }  while (PIsDescendant(&(*connection), OpalPCSSConnection));
 
   if (connection) {
 
     on_hold = connection->IsConnectionOnHold ();
-    if (!on_hold) 
+    if (!on_hold)
       connection->HoldConnection ();
-    else 
+    else
       connection->RetrieveConnection ();
   }
 }
 
 
-void Call::toggle_stream_pause (StreamType type)
+void
+Opal::Call::toggle_stream_pause (StreamType type)
 {
   OpalMediaStreamPtr stream = NULL;
   PSafePtr<OpalConnection> connection = NULL;
@@ -133,11 +142,11 @@ void Call::toggle_stream_pause (StreamType type)
 
     connection = GetConnection (i);
     i++;
-  }  while (PIsDescendant(&(*connection), OpalPCSSConnection)); 
+  }  while (PIsDescendant(&(*connection), OpalPCSSConnection));
 
   if (connection != NULL) {
 
-    stream = connection->GetMediaStream ((type == Audio)?OpalMediaFormat::DefaultAudioSessionID:OpalMediaFormat::DefaultVideoSessionID, false); 
+    stream = connection->GetMediaStream ((type == Audio)?OpalMediaFormat::DefaultAudioSessionID:OpalMediaFormat::DefaultVideoSessionID, false);
     if (stream != NULL) {
 
       stream_name = std::string ((const char *) stream->GetMediaFormat ().GetEncodingName ());
@@ -154,7 +163,8 @@ void Call::toggle_stream_pause (StreamType type)
 }
 
 
-void Call::send_dtmf (const char dtmf)
+void
+Opal::Call::send_dtmf (const char dtmf)
 {
   PSafePtr<OpalConnection> connection = NULL;
 
@@ -164,38 +174,43 @@ void Call::send_dtmf (const char dtmf)
 
     connection = GetConnection (i);
     i++;
-  }  while (PIsDescendant(&(*connection), OpalPCSSConnection)); 
+  }  while (PIsDescendant(&(*connection), OpalPCSSConnection));
 
-  if (connection != NULL) 
+  if (connection != NULL)
     connection->SendUserInputTone (dtmf, 180);
 }
 
 
-std::string Call::get_id ()
+const std::string
+Opal::Call::get_id () const
 {
   return GetToken ();
 }
 
 
-std::string Call::get_remote_party_name ()
+const std::string
+Opal::Call::get_remote_party_name () const
 {
   return remote_party_name;
 }
 
 
-std::string Call::get_remote_application ()
+const std::string
+Opal::Call::get_remote_application () const
 {
   return remote_application;
 }
 
 
-std::string Call::get_remote_uri ()
+const std::string
+Opal::Call::get_remote_uri () const
 {
   return remote_uri;
 }
 
 
-std::string Call::get_call_duration ()
+const std::string
+Opal::Call::get_call_duration () const
 {
   std::stringstream duration;
   PTimeInterval t = PTime () - start_time;
@@ -204,11 +219,12 @@ std::string Call::get_call_duration ()
   duration << setfill ('0') << setw (2) << (t.GetMinutes () % 60) << ":";
   duration << setfill ('0') << setw (2) << (t.GetSeconds () % 60);
 
-  return duration.str (); 
+  return duration.str ();
 }
 
 
-void Call::parse_info (OpalConnection & connection)
+void
+Opal::Call::parse_info (OpalConnection & connection)
 {
   char special_chars [] = "([@";
   int i = 0;
@@ -220,7 +236,7 @@ void Call::parse_info (OpalConnection & connection)
   if (!PIsDescendant(&connection, OpalPCSSConnection)) {
 
     party_name = (const char *) connection.GetRemotePartyName ();
-    app = (const char *) connection.GetRemoteApplication (); 
+    app = (const char *) connection.GetRemoteApplication ();
     uri = (const char *) connection.GetRemotePartyCallbackURL ();
     start_time = connection.GetConnectionStartTime ();
 
@@ -247,19 +263,21 @@ void Call::parse_info (OpalConnection & connection)
 }
 
 
-PBoolean Call::OnEstablished (OpalConnection & connection)
+PBoolean
+Opal::Call::OnEstablished (OpalConnection & connection)
 {
   if (!PIsDescendant(&connection, OpalPCSSConnection)) {
 
     parse_info (connection);
     runtime.run_in_main (established.make_slot ());
   }
-    
+
   return OpalCall::OnEstablished (connection);
 }
 
 
-void Call::OnReleased (OpalConnection & connection)
+void
+Opal::Call::OnReleased (OpalConnection & connection)
 {
   std::string reason;
 
@@ -269,7 +287,7 @@ void Call::OnReleased (OpalConnection & connection)
    */
   if (!PIsDescendant(&connection, OpalPCSSConnection)) {
 
-    if (!IsEstablished () 
+    if (!IsEstablished ()
         && !is_outgoing ()
         && connection.GetCallEndReason () != OpalConnection::EndedByAnswerDenied) {
 
@@ -367,7 +385,9 @@ void Call::OnReleased (OpalConnection & connection)
 }
 
 
-OpalConnection::AnswerCallResponse Call::OnAnswerCall (OpalConnection & connection, const PString & caller)
+OpalConnection::AnswerCallResponse
+Opal::Call::OnAnswerCall (OpalConnection & connection,
+			  const PString & caller)
 {
   remote_party_name = (const char *) caller;
 
@@ -379,7 +399,8 @@ OpalConnection::AnswerCallResponse Call::OnAnswerCall (OpalConnection & connecti
 }
 
 
-PBoolean Call::OnSetUp (OpalConnection & connection)
+PBoolean
+Opal::Call::OnSetUp (OpalConnection & connection)
 {
   parse_info (connection);
 
@@ -391,7 +412,8 @@ PBoolean Call::OnSetUp (OpalConnection & connection)
 }
 
 
-void Call::OnHold (bool on_hold)
+void
+Opal::Call::OnHold (bool on_hold)
 {
   if (on_hold)
     runtime.run_in_main (held.make_slot ());
@@ -400,7 +422,8 @@ void Call::OnHold (bool on_hold)
 }
 
 
-void Call::OnOpenMediaStream (OpalMediaStream & stream)
+void
+Opal::Call::OnOpenMediaStream (OpalMediaStream & stream)
 {
   StreamType type = (stream.GetSessionID () == OpalMediaFormat::DefaultAudioSessionID) ? Audio : Video;
   bool is_transmitting = false;
@@ -408,13 +431,14 @@ void Call::OnOpenMediaStream (OpalMediaStream & stream)
 
   stream_name = std::string ((const char *) stream.GetMediaFormat ().GetEncodingName ());
   std::transform (stream_name.begin (), stream_name.end (), stream_name.begin (), (int (*) (int)) toupper);
-  is_transmitting = !stream.IsSource (); 
+  is_transmitting = !stream.IsSource ();
 
   runtime.run_in_main (sigc::bind (stream_opened, stream_name, type, is_transmitting));
 }
 
 
-void Call::OnClosedMediaStream (OpalMediaStream & stream)
+void
+Opal::Call::OnClosedMediaStream (OpalMediaStream & stream)
 {
   StreamType type = (stream.GetSessionID () == OpalMediaFormat::DefaultAudioSessionID) ? Audio : Video;
   bool is_transmitting = false;
@@ -422,14 +446,15 @@ void Call::OnClosedMediaStream (OpalMediaStream & stream)
 
   stream_name = std::string ((const char *) stream.GetMediaFormat ().GetEncodingName ());
   std::transform (stream_name.begin (), stream_name.end (), stream_name.begin (), (int (*) (int)) toupper);
-  is_transmitting = !stream.IsSource (); 
+  is_transmitting = !stream.IsSource ();
 
   runtime.run_in_main (sigc::bind (stream_closed, stream_name, type, is_transmitting));
 }
 
 
-void Call::OnRTPStatistics (const OpalConnection & /* connection */, 
-                            const RTP_Session & session)
+void
+Opal::Call::OnRTPStatistics (const OpalConnection & /* connection */,
+			     const RTP_Session & session)
 {
   PWaitAndSignal m(stats_mutex); // The stats are computed from two different threads
 
@@ -437,7 +462,7 @@ void Call::OnRTPStatistics (const OpalConnection & /* connection */,
     PTimeInterval t = PTime () - last_a_tick;
     if (t.GetMilliSeconds () < 500)
       return;
-      
+
     unsigned elapsed_seconds = max ((unsigned long) t.GetMilliSeconds (), (unsigned long) 1);
     double octets_received = session.GetOctetsReceived ();
     double octets_sent = session.GetOctetsSent ();
@@ -445,7 +470,7 @@ void Call::OnRTPStatistics (const OpalConnection & /* connection */,
     re_a_bw = max ((octets_received - re_a_bytes) / elapsed_seconds, 0.0);
     tr_a_bw = max ((octets_sent - tr_a_bytes) / elapsed_seconds, 0.0);
 
-    re_a_bytes = octets_received; 
+    re_a_bytes = octets_received;
     tr_a_bytes = octets_sent;
     last_a_tick = PTime ();
 
@@ -469,7 +494,7 @@ void Call::OnRTPStatistics (const OpalConnection & /* connection */,
     re_v_bw = max ((octets_received - re_v_bytes) / elapsed_seconds, 0.0);
     tr_v_bw = max ((octets_sent - tr_v_bytes) / elapsed_seconds, 0.0);
 
-    re_v_bytes = octets_received; 
+    re_v_bytes = octets_received;
     tr_v_bytes = octets_sent;
     last_v_tick = PTime ();
 
@@ -486,7 +511,8 @@ void Call::OnRTPStatistics (const OpalConnection & /* connection */,
 }
 
 
-void Call::OnAnswer (PThread &, INT /*param*/)
+void
+Opal::Call::OnAnswer (PThread &, INT /*param*/)
 {
   PSafePtr<OpalConnection> connection = NULL;
   PSafePtr<OpalPCSSConnection> conn = NULL;
@@ -499,11 +525,9 @@ void Call::OnAnswer (PThread &, INT /*param*/)
 
       connection = GetConnection (i);
       i++;
-    }  while (!PIsDescendant(&(*connection), OpalPCSSConnection)); 
+    }  while (!PIsDescendant(&(*connection), OpalPCSSConnection));
 
     if (PIsDescendant(&(*connection), OpalPCSSConnection))
       PDownCast (OpalPCSSConnection, &(*connection))->AcceptIncoming ();
   }
 }
-
-
