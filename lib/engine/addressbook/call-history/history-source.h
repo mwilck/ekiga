@@ -73,7 +73,6 @@ namespace History
   private:
 
     Ekiga::ServiceCore &core;
-    Ekiga::ContactCore *contact_core;
     Book *book;
 
   };

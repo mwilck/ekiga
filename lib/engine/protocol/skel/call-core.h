@@ -115,7 +115,7 @@ namespace Ekiga
 
       /*** Call Related Signals ***/
       
-      /** See call-manager.h for the API
+      /** See call.h for the API
        */
       sigc::signal<void, CallManager &, Call &> setup_call;
       sigc::signal<void, CallManager &, Call &> missed_call;

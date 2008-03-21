@@ -62,7 +62,7 @@ namespace History
   public:
 
     Contact (Ekiga::ServiceCore &_core,
-		xmlNodePtr _node);
+	     xmlNodePtr _node);
 
     Contact (Ekiga::ServiceCore &_core,
 	     const std::string _name,

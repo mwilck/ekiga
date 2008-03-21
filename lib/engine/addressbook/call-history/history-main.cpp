@@ -37,6 +37,7 @@
 
 #include "history-main.h"
 #include "contact-core.h"
+#include "call-core.h"
 #include "history-source.h"
 
 bool
@@ -46,12 +47,16 @@ history_init (Ekiga::ServiceCore &core,
 {
   bool result = false;
   Ekiga::ContactCore *contact_core = NULL;
+  Ekiga::CallCore *call_core = NULL;
   History::Source *source = NULL;
 
   contact_core
     = dynamic_cast<Ekiga::ContactCore*>(core.get ("contact-core"));
 
-  if (contact_core != NULL) {
+  call_core
+    = dynamic_cast<Ekiga::CallCore*>(core.get ("call-core"));
+
+  if (contact_core != NULL && call_core != NULL) {
 
     source = new History::Source (core);
     core.add (*source);

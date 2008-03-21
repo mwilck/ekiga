@@ -49,9 +49,6 @@ History::Book::Book (Ekiga::ServiceCore &_core) :
 {
   xmlNodePtr root;
 
-  contact_core
-    = dynamic_cast<Ekiga::ContactCore*>(core.get ("contact-core"));
-
   const gchar *c_raw = gm_conf_get_string (KEY);
 
   if (c_raw != NULL) {
@@ -81,6 +78,12 @@ History::Book::Book (Ekiga::ServiceCore &_core) :
     root = xmlNewDocNode (doc, NULL, BAD_CAST "list", NULL);
     xmlDocSetRootElement (doc, root);
   }
+
+  Ekiga::CallCore *call_core
+    = dynamic_cast<Ekiga::CallCore*>(core.get ("call-core"));
+
+  call_core->missed_call.connect (sigc::mem_fun (this, &History::Book::on_missed_call));
+  call_core->cleared_call.connect (sigc::mem_fun (this, &History::Book::on_cleared_call));
 }
 
 History::Book::~Book ()
@@ -177,4 +180,25 @@ History::Book::clear ()
   while (begin () != end ())
     remove_contact (*begin ());
   save ();
+}
+
+void
+History::Book::on_missed_call (Ekiga::CallManager &/*manager*/,
+			       Ekiga::Call &call)
+{
+  std::cout << "Missed call:" << std::endl
+	    << "\twith: " << call.get_remote_party_name () << std::endl
+	    << "\twhen: ???" << std::endl;
+}
+
+void
+History::Book::on_cleared_call (Ekiga::CallManager &/*manager*/,
+				Ekiga::Call &call,
+				std::string message)
+{
+  std::cout << "Normal call:" << std::endl
+	    << "\twith: " << call.get_remote_party_name () << std::endl
+	    << "\tdirection: " << (call.is_outgoing ()?"out":"in") << std::endl
+	    << "\tduration: " << call.get_call_duration () << std::endl
+	    << "\tended with: " << message << std::endl;
 }

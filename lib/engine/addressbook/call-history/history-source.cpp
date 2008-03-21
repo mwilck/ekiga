@@ -39,9 +39,6 @@
 
 History::Source::Source (Ekiga::ServiceCore &_core): core(_core)
 {
-  contact_core
-    = dynamic_cast<Ekiga::ContactCore*>(core.get ("contact-core"));
-
   book = new Book (core);
 
   add_book (*book);

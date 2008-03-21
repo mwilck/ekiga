@@ -38,6 +38,8 @@
 
 #include <libxml/tree.h>
 
+#include "call-core.h"
+
 #include "book-impl.h"
 #include "history-contact.h"
 
@@ -90,8 +92,14 @@ namespace History
 
     void common_add (Contact &contact);
 
+    void on_missed_call (Ekiga::CallManager &manager,
+			 Ekiga::Call &call);
+
+    void on_cleared_call (Ekiga::CallManager &manager,
+			  Ekiga::Call &call,
+			  std::string message);
+
     Ekiga::ServiceCore &core;
-    Ekiga::ContactCore *contact_core;
     xmlDocPtr doc;
   };
 
