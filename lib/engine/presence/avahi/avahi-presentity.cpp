@@ -44,6 +44,7 @@ Avahi::Presentity::Presentity (Ekiga::PresenceCore &_core,
 			       std::string _url):
   core(_core), name(_name), url (_url)
 {
+  groups.insert (_("Neighbours"));
 }
 
 Avahi::Presentity::~Presentity ()
@@ -77,8 +78,6 @@ Avahi::Presentity::get_avatar () const
 const std::set<std::string>
 Avahi::Presentity::get_groups () const
 {
-  std::set<std::string> groups;
-  groups.insert (_("Neighbours"));
   return groups;
 }
 
