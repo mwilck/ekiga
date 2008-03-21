@@ -124,7 +124,7 @@ namespace Ekiga
       /** Return the call duration
        * @return the current call duration
        */
-      virtual const std::string get_call_duration () const = 0;
+      virtual const std::string get_duration () const = 0;
 
       /** Return information about call type
        * @return true if it is an outgoing call

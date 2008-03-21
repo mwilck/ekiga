@@ -210,7 +210,7 @@ Opal::Call::get_remote_uri () const
 
 
 const std::string
-Opal::Call::get_call_duration () const
+Opal::Call::get_duration () const
 {
   std::stringstream duration;
   PTimeInterval t = PTime () - start_time;

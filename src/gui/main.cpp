@@ -627,7 +627,7 @@ static gboolean on_stats_refresh_cb (gpointer self)
     gdk_threads_enter ();
     gm_main_window_push_info_message (GTK_WIDGET (self), msg);
     if (mw->current_call)
-      gm_main_window_set_call_duration (GTK_WIDGET (self), mw->current_call->get_call_duration ().c_str ());
+      gm_main_window_set_call_duration (GTK_WIDGET (self), mw->current_call->get_duration ().c_str ());
     gdk_threads_leave ();
 
     g_free (msg);

@@ -199,6 +199,6 @@ History::Book::on_cleared_call (Ekiga::CallManager &/*manager*/,
   std::cout << "Normal call:" << std::endl
 	    << "\twith: " << call.get_remote_party_name () << std::endl
 	    << "\tdirection: " << (call.is_outgoing ()?"out":"in") << std::endl
-	    << "\tduration: " << call.get_call_duration () << std::endl
+	    << "\tduration: " << call.get_duration () << std::endl
 	    << "\tended with: " << message << std::endl;
 }

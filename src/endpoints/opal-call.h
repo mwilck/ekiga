@@ -123,7 +123,7 @@ namespace Opal {
       /** Return the call duration
        * @return: the current call duration
        */
-      const std::string get_call_duration () const;
+      const std::string get_duration () const;
 
 
   public:
