@@ -250,15 +250,15 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
   //
   // Misc keys
   //
-  else if (CALL_FORWARDING_KEY "forward_on_busy") {
+  else if (key == CALL_FORWARDING_KEY "forward_on_busy") {
 
     manager.GetSIPEndpoint ()->set_forward_on_busy (gm_conf_entry_get_bool (entry));
   }
-  else if (CALL_FORWARDING_KEY "always_forward") {
+  else if (key == CALL_FORWARDING_KEY "always_forward") {
 
     manager.GetSIPEndpoint ()->set_unconditional_forward (gm_conf_entry_get_bool (entry));
   }
-  else if (CALL_OPTIONS_KEY "no_answer_timeout") {
+  else if (key == CALL_OPTIONS_KEY "no_answer_timeout") {
 
     manager.GetSIPEndpoint ()->set_no_answer_timeout (gm_conf_entry_get_int (entry));
   }
