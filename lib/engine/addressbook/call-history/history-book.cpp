@@ -186,19 +186,19 @@ void
 History::Book::on_missed_call (Ekiga::CallManager &/*manager*/,
 			       Ekiga::Call &call)
 {
-  std::cout << "Missed call:" << std::endl
-	    << "\twith: " << call.get_remote_party_name () << std::endl
-	    << "\twhen: ???" << std::endl;
+  add (call.get_remote_party_name (),
+       call.get_remote_uri (),
+       "FIXME: what to say? Idea: when?",
+       MISSED);
 }
 
 void
 History::Book::on_cleared_call (Ekiga::CallManager &/*manager*/,
 				Ekiga::Call &call,
-				std::string message)
+				std::string /*message*/)
 {
-  std::cout << "Normal call:" << std::endl
-	    << "\twith: " << call.get_remote_party_name () << std::endl
-	    << "\tdirection: " << (call.is_outgoing ()?"out":"in") << std::endl
-	    << "\tduration: " << call.get_duration () << std::endl
-	    << "\tended with: " << message << std::endl;
+  add (call.get_remote_party_name (),
+       call.get_remote_uri (),
+       "FIXME: what to say? Idea: when? End message perhaps? Forget duration?",
+       (call.is_outgoing ()?PLACED:RECEIVED));
 }
