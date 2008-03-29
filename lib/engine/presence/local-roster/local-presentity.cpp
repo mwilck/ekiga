@@ -56,7 +56,8 @@ Local::Presentity::Presentity (Ekiga::ServiceCore &_core,
   presence_core = dynamic_cast<Ekiga::PresenceCore*>(core.get ("presence-core"));
 
   xml_str = xmlGetProp (node, (const xmlChar *)"uri");
-  uri = (const char *)xml_str;
+  if (xml_str != NULL)
+    uri = (const char *)xml_str;
   xmlFree (xml_str);
 
   for (xmlNodePtr child = node->children ;
@@ -69,7 +70,8 @@ Local::Presentity::Presentity (Ekiga::ServiceCore &_core,
       if (xmlStrEqual (BAD_CAST ("name"), child->name)) {
 
         xml_str = xmlNodeGetContent (child);
-        name = (const char *)xml_str;
+	if (xml_str != NULL)
+	  name = (const char *)xml_str;
 	name_node = child;
         xmlFree (xml_str);
       }
@@ -77,7 +79,10 @@ Local::Presentity::Presentity (Ekiga::ServiceCore &_core,
       if (xmlStrEqual (BAD_CAST ("group"), child->name)) {
 
         xml_str = xmlNodeGetContent (child);
-	group_nodes[(const char *)xml_str] = child;
+	if (xml_str != NULL)
+	  group_nodes[(const char *)xml_str] = child;
+	else
+	  group_nodes[""] = child;
         xmlFree (xml_str);
       }
     }

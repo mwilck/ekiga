@@ -47,11 +47,13 @@ History::Contact::Contact (Ekiga::ServiceCore &_core,
     = dynamic_cast<Ekiga::ContactCore*>(core.get ("contact-core"));
 
   xml_str = xmlGetProp (node, (const xmlChar *)"type");
-  groups.insert ((const char *)xml_str);
+  if (xml_str != NULL)
+    groups.insert ((const char *)xml_str);
   xmlFree (xml_str);
 
   xml_str = xmlGetProp (node, (const xmlChar *)"uri");
-  uri = (const char *)xml_str;
+  if (xml_str != NULL)
+    uri = (const char *)xml_str;
   xmlFree (xml_str);
 
   for (xmlNodePtr child = node->children ;
@@ -64,14 +66,16 @@ History::Contact::Contact (Ekiga::ServiceCore &_core,
       if (xmlStrEqual (BAD_CAST ("name"), child->name)) {
 
         xml_str = xmlNodeGetContent (child);
-        name = (const char *)xml_str;
+	if (xml_str != NULL)
+	  name = (const char *)xml_str;
         xmlFree (xml_str);
       }
 
       if (xmlStrEqual (BAD_CAST ("status"), child->name)) {
 
         xml_str = xmlNodeGetContent (child);
-        status = (const char *)xml_str;
+	if (xml_str != NULL)
+	  status = (const char *)xml_str;
         xmlFree (xml_str);
       }
     }
