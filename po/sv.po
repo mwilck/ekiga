@@ -1,6 +1,6 @@
 # Swedish messages for GnomeMeeting.
-# Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Free Software Foundation, Inc.
-# Daniel Nylander <po@danielnylander.se>, 2006.
+# Copyright (C) 2001-2008 Free Software Foundation, Inc.
+# Daniel Nylander <po@danielnylander.se>, 2006, 2008.
 # Christian Rose <menthos@menthos.com>, 2001, 2002, 2003, 2004, 2005.
 #
 # $Id: sv.po,v 1.147.2.3 2006/11/22 00:18:18 dnylande Exp $
@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ekiga\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-16 03:35+0100\n"
-"PO-Revision-Date: 2007-08-16 14:19+0100\n"
+"POT-Creation-Date: 2008-03-30 17:33+0200\n"
+"PO-Revision-Date: 2008-03-30 17:36+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "MIME-Version: 1.0\n"
@@ -808,66 +808,6 @@ msgstr "Orientering"
 msgid "The orientation of the tray."
 msgstr "Brickans orientering."
 
-#: ../src/clients/ils.cpp:105
-#: ../src/gui/tools.cpp:174
-msgid "Invalid parameters"
-msgstr "Ogiltiga parametrar"
-
-#: ../src/clients/ils.cpp:105
-msgid "Please provide your first name and e-mail in the Personal Data section in order to be able to register to the users directory."
-msgstr "Ange ditt förnamn och e-postadress i sektionen med personlig data för att kunna registrera i användarkatalogen."
-
-#: ../src/clients/ils.cpp:145
-msgid "Invalid users directory"
-msgstr "Ogiltig användarkatalog"
-
-#: ../src/clients/ils.cpp:145
-msgid "Operation impossible since there is no users directory specified."
-msgstr "Åtgärden omöjlig eftersom ingen användarkatalog är angiven."
-
-#: ../src/clients/ils.cpp:238
-msgid "Failed to parse XML file"
-msgstr "Misslyckades med att tolka XML-fil"
-
-#: ../src/clients/ils.cpp:238
-msgid "There was an error while parsing the XML file. Please make sure that it is correctly installed in your system."
-msgstr "Ett fel uppstod vid tolkningen av XML-filen. Försäkra dig om att den är korrekt installerad på ditt system."
-
-#: ../src/clients/ils.cpp:249
-msgid "Bad information"
-msgstr "Felaktig information"
-
-#: ../src/clients/ils.cpp:249
-#, c-format
-msgid "Bad LDAP information from XML file: %s."
-msgstr "Felaktig LDAP-information från XML-fil: %s."
-
-#: ../src/clients/ils.cpp:257
-#, c-format
-msgid "ILS registration failed: unable to connect to %s"
-msgstr "ILS-registrering misslyckades: kan inte ansluta till %s"
-
-#: ../src/clients/ils.cpp:270
-msgid "ILS registration failed: unable to set time limit on operations"
-msgstr "ILS-registrering misslyckades: kan inte ställa in tidsgräns på åtgärder"
-
-#: ../src/clients/ils.cpp:282
-#, c-format
-msgid "ILS registration failed: failed to bind to %s"
-msgstr "ILS-registrering misslyckades: misslyckades med att binda till %s"
-
-#: ../src/clients/ils.cpp:310
-#, c-format
-msgid "Updated information on %s"
-msgstr "Uppdaterade information om %s"
-
-#: ../src/clients/ils.cpp:314
-#: ../src/endpoints/accountshandler.cpp:332
-#: ../src/endpoints/sip.cpp:236
-#, c-format
-msgid "Unregistered from %s"
-msgstr "Avregistrerade från %s"
-
 #: ../src/clients/stun.cpp:104
 #, c-format
 msgid "STUN server set to %s"
@@ -900,6 +840,7 @@ msgstr ""
 "Ditt system verkar inte kräva någon speciell konfiguration, så länge du inte har en lokal brandvägg som blockerar de portar som krävs av Ekiga."
 
 #: ../src/clients/stun.cpp:153
+#, c-format
 msgid "Ekiga detected Symmetric NAT. The most appropriate method, if your router does not natively support SIP or H.323, is to forward the required ports to your internal machine in order to change your Symmetric NAT into Cone NAT. If you run this test again after the port forwarding has been done, it should report Cone NAT. This should allow Ekiga to be used with STUN support enabled. If it does not report Cone NAT, then it means that there is a problem in your forwarding rules."
 msgstr "Ekiga identifierade symmetrisk NAT. Den lämpligaste metoden, om din router inte har inbyggt stöd för SIP eller H.323, är att vidarebefordra de nödvändiga portarna till din interna maskin för att ändra din symmetriska NAT till en kon-NAT. Om du kör detta test igen efter det att portvidarebefordran genomförts ska kon-NAT rapporteras, och det ska då vara möjligt att använda Ekiga med stöd för STUN aktiverat. Om testet inte rapporterar kon-NAT innebär det att det finns ett problem med dina vidarebefordringsregler."
 
@@ -1005,14 +946,17 @@ msgid "Ekiga is already running, if you want it to call a given SIP, H.323, or c
 msgstr "Ekiga kör redan. Om du vill att det ska ringa en angiven SIP-, H.323- eller callto-adress bör du använda \"ekiga -c adress\"."
 
 #: ../src/components/bonobo.cpp:170
+#, c-format
 msgid "It appears that you do not have ekiga.server installed in a valid location. Factory mode disabled.\n"
 msgstr "Det verkar som om du inte har ekiga.server installerad på en giltig plats. Fabriksläge inaktiverat.\n"
 
 #: ../src/components/bonobo.cpp:174
+#, c-format
 msgid "Error registering Ekiga with the activation service; factory mode disabled.\n"
 msgstr "Fel vid registrering av Ekiga med aktiveringstjänsten; fabriksläge inaktiverat.\n"
 
 #: ../src/components/bonobo.cpp:214
+#, c-format
 msgid "Failed to retrieve Ekiga server from activation server\n"
 msgstr "Misslyckades med att hämta Ekiga-server från aktiveringsserver\n"
 
@@ -1070,10 +1014,10 @@ msgstr "Den valda ljudenheten (%s) kunde öppnas men det är omöjligt att skriv
 #: ../src/endpoints/ekiga.cpp:351
 #: ../src/endpoints/ekiga.cpp:353
 #: ../src/endpoints/ekiga.cpp:355
-#: ../src/endpoints/pcss.cpp:194
-#: ../src/gui/druid.cpp:1780
-#: ../src/gui/druid.cpp:1792
-#: ../src/gui/druid.cpp:1850
+#: ../src/endpoints/pcss.cpp:198
+#: ../src/gui/druid.cpp:1784
+#: ../src/gui/druid.cpp:1796
+#: ../src/gui/druid.cpp:1854
 msgid "No device found"
 msgstr "Ingen enhet hittades"
 
@@ -1112,6 +1056,7 @@ msgstr "Ett fel uppstod vid öppnandet av enheten. Kontrollera dina rättigheter
 
 #: ../src/devices/videoinput.cpp:372
 #: ../src/devices/videoinput.cpp:686
+#, c-format
 msgid "Your video driver doesn't support the requested video format."
 msgstr "Din videodrivrutin stöder inte det begärda videoformatet."
 
@@ -1164,18 +1109,22 @@ msgid "Error while opening %s."
 msgstr "Fel vid öppnande av %s."
 
 #: ../src/devices/videoinput.cpp:690
+#, c-format
 msgid "Could not open the chosen channel with the chosen video format."
 msgstr "Kunde inte öppna den valda kanalen med det valda videoformatet."
 
 #: ../src/devices/videoinput.cpp:694
+#, c-format
 msgid "Your driver doesn't support any of the color formats tried by Ekiga"
 msgstr "Din drivrutin stöder inte något av de färgformat som provats av Ekiga"
 
 #: ../src/devices/videoinput.cpp:698
+#, c-format
 msgid "Error with the frame rate."
 msgstr "Fel med bildfrekvensen."
 
 #: ../src/devices/videoinput.cpp:702
+#, c-format
 msgid "Error with the frame size."
 msgstr "Fel med bildstorleken."
 
@@ -1228,6 +1177,12 @@ msgstr "Registrerad mot %s"
 #: ../src/endpoints/sip.cpp:231
 msgid "Registered"
 msgstr "Registrerad"
+
+#: ../src/endpoints/accountshandler.cpp:332
+#: ../src/endpoints/sip.cpp:236
+#, c-format
+msgid "Unregistered from %s"
+msgstr "Avregistrerade från %s"
 
 #: ../src/endpoints/accountshandler.cpp:352
 #: ../src/endpoints/sip.cpp:242
@@ -1292,7 +1247,7 @@ msgid "Connected with %s"
 msgstr "Ansluten till %s"
 
 #: ../src/endpoints/manager.cpp:1124
-#: ../src/gui/main.cpp:4156
+#: ../src/gui/main.cpp:4157
 msgid "Standby"
 msgstr "Viloläge"
 
@@ -1421,21 +1376,21 @@ msgstr "Stängde kodeken %s som hade öppnats för mottagning"
 msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 msgstr "%.2ld:%.2ld:%.2ld  L:%.2f/%.2f   V:%.2f/%.2f"
 
-#: ../src/endpoints/pcss.cpp:218
+#: ../src/endpoints/pcss.cpp:222
 #, c-format
 msgid "Opened %s for recording with plugin %s"
 msgstr "Öppnade %s för inspelning med insticksmodulen %s"
 
-#: ../src/endpoints/pcss.cpp:219
+#: ../src/endpoints/pcss.cpp:223
 #, c-format
 msgid "Opened %s for playing with plugin %s"
 msgstr "Öppnade %s för uppspelning med insticksmodulen %s"
 
-#: ../src/endpoints/pcss.cpp:237
+#: ../src/endpoints/pcss.cpp:241
 msgid "Could not open audio channel for audio transmission"
 msgstr "Kunde inte öppna ljudkanal för ljudöverföring"
 
-#: ../src/endpoints/pcss.cpp:237
+#: ../src/endpoints/pcss.cpp:241
 msgid ""
 "An error occured while trying to record from the soundcard for the audio transmission. Please check that your soundcard is not busy and that your driver supports full-duplex.\n"
 "The audio transmission has been disabled."
@@ -1443,11 +1398,11 @@ msgstr ""
 "Ett fel inträffade vid försök att spela in från ljudkortet för ljudöverföringen. Kontrollera att ditt ljudkort inte är upptaget och att din drivrutin stöder full duplex.\n"
 "Ljudöverföringen har inaktiverats."
 
-#: ../src/endpoints/pcss.cpp:239
+#: ../src/endpoints/pcss.cpp:243
 msgid "Could not open audio channel for audio reception"
 msgstr "Kunde inte öppna ljudkanal för ljudmottagning"
 
-#: ../src/endpoints/pcss.cpp:239
+#: ../src/endpoints/pcss.cpp:243
 msgid ""
 "An error occured while trying to play audio to the soundcard for the audio reception. Please check that your soundcard is not busy and that your driver supports full-duplex.\n"
 "The audio reception has been disabled."
@@ -1671,7 +1626,7 @@ msgstr ""
 
 #: ../src/gui/addressbook.cpp:821
 #: ../src/gui/addressbook.cpp:823
-#: ../src/gui/druid.cpp:1912
+#: ../src/gui/druid.cpp:1916
 #: ../src/gui/preferences.cpp:930
 msgid "None"
 msgstr "Inga"
@@ -1968,9 +1923,21 @@ msgstr "Grafik:"
 msgid "See AUTHORS file for full credits"
 msgstr "Se filen AUTHORS för mer information"
 
+#: ../src/gui/callbacks.cpp:168
+msgid "This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version. "
+msgstr "Detta program är fri programvara. Du kan distribuera det och/eller modifiera det under villkoren i GNU General Public License, publicerad av Free Software Foundation, antingen version 2 eller (om du så vill) någon senare version."
+
+#: ../src/gui/callbacks.cpp:172
+msgid "This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA."
+msgstr "Detta program distribueras i hopp om att det ska vara användbart, men UTAN NÅGON SOM HELST GARANTI, även utan underförstådd garanti om SÄLJBARHET eller LÄMPLIGHET FÖR NÅGOT SPECIELLT ÄNDAMÅL. Se GNU General Public License för ytterligare information. Du bör ha fått en kopia av GNU General Public License tillsammans med detta program. Om inte, skriv till Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA."
+
+#: ../src/gui/callbacks.cpp:179
+msgid "Ekiga is licensed under the GPL license and as a special exception, you have permission to link or otherwise combine this program with the programs OPAL, OpenH323 and PWLIB, and distribute the combination, without applying the requirements of the GNU GPL to the OPAL, OpenH323 and PWLIB programs, as long as you do follow the requirements of the GNU GPL for all the rest of the software thus combined."
+msgstr "Ekiga är licensierat under licensen GPL och som ett speciellt undantag har du rätt att länka till eller annars kombinera detta program med programmen OPAL, OpenH323 och PWLIB, samt distribuera kombinationen, utan att tillämpa kraven för GNU GPL till programmen OPAL, OpenH323 och PWLIB, så länge som du följer kraven i GNU GPL för alla programvaror som kombinerats."
+
 #. Translators: Please write translator credits here, and
 #. * separate names with \n
-#: ../src/gui/callbacks.cpp:190
+#: ../src/gui/callbacks.cpp:191
 msgid "translator-credits"
 msgstr ""
 "Daniel Nylander\n"
@@ -1979,7 +1946,7 @@ msgstr ""
 "Skicka synpunkter på översättningen till\n"
 "tp-sv@listor.tp-sv.se"
 
-#: ../src/gui/callbacks.cpp:195
+#: ../src/gui/callbacks.cpp:196
 msgid "Ekiga is full-featured SIP and H.323 compatible VoIP, IP-Telephony and Videoconferencing application that allows you to make audio and video calls to remote users with SIP and H.323 hardware or software."
 msgstr "Ekiga är ett komplett SIP- och H.323-kompatibelt program för VoIP, IP-telefoni och videokonferens som låter dig göra röst- och videosamtal till fjärranvändare med SIP och H.323-hårdvara eller -programvara."
 
@@ -2283,27 +2250,27 @@ msgstr "Videoingångsenheten är den enhet som hanteras av videohanteraren som k
 msgid "Configuration complete - page %d/%d"
 msgstr "Konfigurationen klar - sida %d/%d"
 
-#: ../src/gui/druid.cpp:1630
+#: ../src/gui/druid.cpp:1634
 msgid "56k Modem"
 msgstr "56 kb/s-modem"
 
-#: ../src/gui/druid.cpp:1631
+#: ../src/gui/druid.cpp:1635
 msgid "ISDN"
 msgstr "ISDN"
 
-#: ../src/gui/druid.cpp:1632
+#: ../src/gui/druid.cpp:1636
 msgid "xDSL/Cable"
 msgstr "xDSL/Kabel"
 
-#: ../src/gui/druid.cpp:1633
+#: ../src/gui/druid.cpp:1637
 msgid "T1/LAN"
 msgstr "T1/Lokalt nätverk"
 
-#: ../src/gui/druid.cpp:1634
+#: ../src/gui/druid.cpp:1638
 msgid "Keep current settings"
 msgstr "Behåll nuvarande inställningar"
 
-#: ../src/gui/druid.cpp:1912
+#: ../src/gui/druid.cpp:1916
 #, c-format
 msgid ""
 "You have now finished the Ekiga configuration. All the settings can be changed in the Ekiga preferences. Enjoy!\n"
@@ -2334,7 +2301,7 @@ msgstr ""
 "Videoingång: %s\n"
 "SIP-URL: %s\n"
 
-#: ../src/gui/druid.cpp:1967
+#: ../src/gui/druid.cpp:1971
 msgid "First Time Configuration Assistant"
 msgstr "Förstagångsguide för konfiguration"
 
@@ -2888,7 +2855,7 @@ msgstr ""
 "Paket i fel ordning: %.1f %%\n"
 "Jitterbuffert: %d ms"
 
-#: ../src/gui/main.cpp:4574
+#: ../src/gui/main.cpp:4575
 #, c-format
 msgid ""
 "Ekiga got an invalid value for the GConf key %s.\n"
@@ -2903,25 +2870,25 @@ msgstr ""
 "\n"
 "Kontrollera frågorna och svaren (http://www.ekiga.org/), felsökningsstycket på GConf-webbplatsen (http://www.gnome.org/projects/gconf/) eller sändlistearkiven för mer information (http://mail.gnome.org) om det här problemet."
 
-#: ../src/gui/main.cpp:4577
+#: ../src/gui/main.cpp:4578
 msgid "Gconf key error"
 msgstr "Fel i GConf-nyckel"
 
-#: ../src/gui/main.cpp:4608
-#: ../src/gui/main.cpp:4627
+#: ../src/gui/main.cpp:4609
+#: ../src/gui/main.cpp:4628
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "Skriver ut felsökningsmeddelanden på konsollen (nivå mellan 1 och 6)"
 
-#: ../src/gui/main.cpp:4611
-#: ../src/gui/main.cpp:4632
+#: ../src/gui/main.cpp:4612
+#: ../src/gui/main.cpp:4633
 msgid "Makes Ekiga call the given URL"
 msgstr "Gör så att Ekiga ringer den angivna URL:en"
 
-#: ../src/gui/main.cpp:4665
+#: ../src/gui/main.cpp:4666
 msgid "No usable audio plugin detected"
 msgstr "Ingen användbar ljudinsticksmodul hittades"
 
-#: ../src/gui/main.cpp:4665
+#: ../src/gui/main.cpp:4666
 msgid "Ekiga didn't find any usable audio plugin. Make sure that your installation is correct."
 msgstr "Ekiga hittade ingen användbar ljudinsticksmodul. Försäkra dig om att din installation är korrekt."
 
@@ -3482,6 +3449,10 @@ msgid "Devices"
 msgstr "Enheter"
 
 #: ../src/gui/tools.cpp:174
+msgid "Invalid parameters"
+msgstr "Ogiltiga parametrar"
+
+#: ../src/gui/tools.cpp:174
 msgid "Please provide your username and password in order to be able to use the PC-To-Phone service."
 msgstr "Ange ditt användarnamn och lösenord för att kunna använda PC-To-Phone-tjänsten."
 
@@ -3533,6 +3504,37 @@ msgstr "Visa balanshistoriken"
 msgid "Consult the calls history"
 msgstr "Visa samtalshistoriken"
 
+#~ msgid ""
+#~ "Please provide your first name and e-mail in the Personal Data section in "
+#~ "order to be able to register to the users directory."
+#~ msgstr ""
+#~ "Ange ditt förnamn och e-postadress i sektionen med personlig data för att "
+#~ "kunna registrera i användarkatalogen."
+#~ msgid "Invalid users directory"
+#~ msgstr "Ogiltig användarkatalog"
+#~ msgid "Operation impossible since there is no users directory specified."
+#~ msgstr "Åtgärden omöjlig eftersom ingen användarkatalog är angiven."
+#~ msgid "Failed to parse XML file"
+#~ msgstr "Misslyckades med att tolka XML-fil"
+#~ msgid ""
+#~ "There was an error while parsing the XML file. Please make sure that it "
+#~ "is correctly installed in your system."
+#~ msgstr ""
+#~ "Ett fel uppstod vid tolkningen av XML-filen. Försäkra dig om att den är "
+#~ "korrekt installerad på ditt system."
+#~ msgid "Bad information"
+#~ msgstr "Felaktig information"
+#~ msgid "Bad LDAP information from XML file: %s."
+#~ msgstr "Felaktig LDAP-information från XML-fil: %s."
+#~ msgid "ILS registration failed: unable to connect to %s"
+#~ msgstr "ILS-registrering misslyckades: kan inte ansluta till %s"
+#~ msgid "ILS registration failed: unable to set time limit on operations"
+#~ msgstr ""
+#~ "ILS-registrering misslyckades: kan inte ställa in tidsgräns på åtgärder"
+#~ msgid "ILS registration failed: failed to bind to %s"
+#~ msgstr "ILS-registrering misslyckades: misslyckades med att binda till %s"
+#~ msgid "Updated information on %s"
+#~ msgstr "Uppdaterade information om %s"
 #~ msgid "Credits"
 #~ msgstr "Tack"
 #~ msgid "Written by"
