@@ -159,26 +159,27 @@ about_callback (G_GNUC_UNUSED GtkWidget *widget,
     NULL
   };
 
-  const gchar *license = "\
-This program is free software; you can redistribute it and/or modify \
+  const gchar *license[] = {
+N_("This program is free software; you can redistribute it and/or modify \
 it under the terms of the GNU General Public License as published by \
 the Free Software Foundation; either version 2 of the License, or \
-(at your option) any later version. \
-\n\n\
-This program is distributed in the hope that it will be useful, \
+(at your option) any later version. "),
+N_("This program is distributed in the hope that it will be useful, \
 but WITHOUT ANY WARRANTY; without even the implied warranty of \
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the \
 GNU General Public License for more details. \
 You should have received a copy of the GNU General Public License \
 along with this program; if not, write to the Free Software Foundation, \
-Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA. \
-\n\n\
-Ekiga is licensed under the GPL license and as a special exception, \
+Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA."),
+N_("Ekiga is licensed under the GPL license and as a special exception, \
 you have permission to link or otherwise combine this program with the \
 programs OPAL, OpenH323 and PWLIB, and distribute the combination, \
 without applying the requirements of the GNU GPL to the OPAL, OpenH323 \
 and PWLIB programs, as long as you do follow the requirements of the \
-GNU GPL for all the rest of the software thus combined.";
+GNU GPL for all the rest of the software thus combined.")
+  };
+
+  gchar *license_trans;
 
   /* Translators: Please write translator credits here, and
    * separate names with \n */
@@ -189,6 +190,9 @@ GNU GPL for all the rest of the software thus combined.";
  
   const gchar *comments =  _("Ekiga is full-featured SIP and H.323 compatible VoIP, IP-Telephony and Videoconferencing application that allows you to make audio and video calls to remote users with SIP and H.323 hardware or software.");
  
+  license_trans = g_strconcat (_(license[0]), "\n\n", _(license[1]), "\n\n",
+                               _(license[2]), "\n\n", NULL);
+
   gtk_show_about_dialog (GTK_WINDOW (parent_window),
 		"name", "Ekiga",
 		"version", VERSION,
@@ -198,10 +202,12 @@ GNU GPL for all the rest of the software thus combined.";
 		"translator-credits", translator_credits,
 		"comments", comments,
 		"logo-icon-name", GM_ICON_LOGO,
-		"license", license,
+		"license", license_trans,
 		"wrap-license", TRUE,
 		"website", "http://www.ekiga.org",
 		NULL);
+
+  g_free (license_trans);
 }
 
 
