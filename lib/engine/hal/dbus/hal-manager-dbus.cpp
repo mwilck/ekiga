@@ -148,7 +148,7 @@ void HalManager_dbus::device_added_cb (const char *device)
 
   if (hal_device.category == "alsa") {
 
-    if (hal_device.type == "capturing") {
+    if (hal_device.type == "capture") {
       audio_input_device_added.emit(hal_device.category, hal_device.name);
     }
     else if (hal_device.type == "playback") {
@@ -160,7 +160,10 @@ void HalManager_dbus::device_added_cb (const char *device)
     audio_output_device_added.emit(hal_device.category, hal_device.name);
   }
   else if (hal_device.category == "video4linux") {
-    video_input_device_added.emit(hal_device.category, hal_device.name, hal_device.video_capabilities);
+      if (hal_device.video_capabilities & 0x01) 
+        video_input_device_added.emit(hal_device.category, hal_device.name, 0x01);
+      if (hal_device.video_capabilities & 0x02) 
+        video_input_device_added.emit(hal_device.category, hal_device.name, 0x02);
   }
 
 }
@@ -183,7 +186,7 @@ void HalManager_dbus::device_removed_cb (const char *device)
 
     if (iter->category == "alsa") {
   
-      if (iter->type == "capturing") {
+      if (iter->type == "capture") {
         audio_input_device_removed.emit(iter->category, iter->name);
       }
       else if (iter->type == "playback") {
@@ -195,7 +198,11 @@ void HalManager_dbus::device_removed_cb (const char *device)
       audio_output_device_removed.emit(iter->category, iter->name);
     }
     else if (iter->category == "video4linux") {
-      video_input_device_removed.emit(iter->category, iter->name, iter->video_capabilities);
+      if (iter->video_capabilities & 0x01) 
+        video_input_device_removed.emit(iter->category, iter->name, 0x01);
+      if (iter->video_capabilities & 0x02) 
+        video_input_device_removed.emit(iter->category, iter->name, 0x02);
+	
     }
 
 
@@ -307,13 +314,13 @@ bool HalManager_dbus::get_device_type_name (const char * device, HalDevice & hal
         if (supported_versions && 1) {
           PTRACE(4, "HalManager_dbus\tDetected V4L capabilities on " << device_dir << " name: " << v4l1_name);
           hal_device.name = v4l1_name;
-          hal_device.type = "capturing";
+          hal_device.type = "capture";
           hal_device.video_capabilities  |= V4L_VERSION_1;
         }
         if (supported_versions && 2) {
           PTRACE(4, "HalManager_dbus\tDetected V4L2 capabilities on " << device_dir << " name: " << v4l2_name);
           hal_device.name = v4l2_name;
-          hal_device.type = "capturing";
+          hal_device.type = "capture";
           hal_device.video_capabilities  |= V4L_VERSION_2;
         }
         ret = true;
