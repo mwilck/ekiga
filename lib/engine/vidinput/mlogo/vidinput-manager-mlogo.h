@@ -83,6 +83,8 @@
                            unsigned & height,
                            char *data);
 
+      virtual bool has_device (const std::string & source, const std::string & device, unsigned capabilities, Ekiga::VidInputDevice & vidinput_device);
+
   protected:  
       void CopyYUVArea (const char* srcFrame,
 			unsigned srcWidth,

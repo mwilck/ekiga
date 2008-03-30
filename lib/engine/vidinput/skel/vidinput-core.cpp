@@ -114,8 +114,9 @@ void PreviewManager::Main ()
   }
 }
 
-VidInputCore::VidInputCore (DisplayCore& _display_core)
-:  preview_manager(*this, _display_core)
+VidInputCore::VidInputCore (Ekiga::Runtime & _runtime, DisplayCore& _display_core)
+:  runtime (_runtime),
+   preview_manager(*this, _display_core)
 {
   PWaitAndSignal m(var_mutex);
 
@@ -159,8 +160,6 @@ void VidInputCore::add_manager (VidInputManager &manager)
   manager_added.emit (manager);
 
   manager.vidinputdevice_error.connect (sigc::bind (sigc::mem_fun (this, &VidInputCore::on_vidinputdevice_error), &manager));
-  manager.vidinputdevice_added.connect (sigc::bind (sigc::mem_fun (this, &VidInputCore::on_vidinputdevice_added), &manager));
-  manager.vidinputdevice_removed.connect (sigc::bind (sigc::mem_fun (this, &VidInputCore::on_vidinputdevice_removed), &manager));
   manager.vidinputdevice_opened.connect (sigc::bind (sigc::mem_fun (this, &VidInputCore::on_vidinputdevice_opened), &manager));
   manager.vidinputdevice_closed.connect (sigc::bind (sigc::mem_fun (this, &VidInputCore::on_vidinputdevice_closed), &manager));
 }
@@ -384,29 +383,19 @@ void VidInputCore::set_contrast   (unsigned contrast)
     current_manager->set_contrast (contrast);
 }
 
-void VidInputCore::on_vidinputdevice_error (VidInputDevice & vidinput_device, VidInputErrorCodes error_code, VidInputManager *manager)
+void VidInputCore::on_vidinputdevice_error (VidInputDevice vidinput_device, VidInputErrorCodes error_code, VidInputManager *manager)
 {
   vidinputdevice_error.emit (*manager, vidinput_device, error_code);
 }
 
-void VidInputCore::on_vidinputdevice_added (VidInputDevice & vidinput_device, VidInputManager *manager)
-{
-  vidinputdevice_added.emit (*manager, vidinput_device);
-}
-
-void VidInputCore::on_vidinputdevice_removed (VidInputDevice & vidinput_device, VidInputManager *manager)
-{
-  vidinputdevice_removed.emit (*manager, vidinput_device);
-}
-
-void VidInputCore::on_vidinputdevice_opened (VidInputDevice & vidinput_device,
-                                             VidInputConfig & vidinput_config, 
+void VidInputCore::on_vidinputdevice_opened (VidInputDevice vidinput_device,
+                                             VidInputConfig vidinput_config, 
                                              VidInputManager *manager)
 {
   vidinputdevice_opened.emit (*manager, vidinput_device, vidinput_config);
 }
 
-void VidInputCore::on_vidinputdevice_closed (VidInputDevice & vidinput_device, VidInputManager *manager)
+void VidInputCore::on_vidinputdevice_closed (VidInputDevice vidinput_device, VidInputManager *manager)
 {
   vidinputdevice_closed.emit (*manager, vidinput_device);
 }
@@ -472,4 +461,37 @@ void VidInputCore::internal_close()
   PTRACE(4, "VidInputCore\tClosing current device");
   if (current_manager)
     current_manager->close();
+}
+
+void VidInputCore::add_device (std::string & source, std::string & device, unsigned capabilities, HalManager* /*manager*/)
+{
+  PTRACE(0, "VidInputCore\tAdding Device");
+  VidInputDevice vidinput_device;
+  for (std::set<VidInputManager *>::iterator iter = managers.begin ();
+       iter != managers.end ();
+       iter++) {
+     if ((*iter)->has_device (source, device, capabilities, vidinput_device)) {
+
+       if ( ( desired_device.type   == vidinput_device.type   ) &&
+            ( desired_device.source == vidinput_device.source ) &&
+            ( desired_device.device == vidinput_device.device ) ) {
+         set_vidinput_device(desired_device, current_channel, current_format);
+       }
+
+       runtime.run_in_main (sigc::bind (vidinputdevice_added.make_slot (), vidinput_device));
+     }
+  }
+}
+
+void VidInputCore::remove_device (std::string & source, std::string & device, unsigned capabilities, HalManager* /*manager*/)
+{
+  PTRACE(0, "VidInputCore\tRemoving Device");
+  VidInputDevice vidinput_device;
+  for (std::set<VidInputManager *>::iterator iter = managers.begin ();
+       iter != managers.end ();
+       iter++) {
+     if ((*iter)->has_device (source, device, capabilities, vidinput_device)) {
+       runtime.run_in_main (sigc::bind (vidinputdevice_removed.make_slot (), vidinput_device));
+     }
+  }
 }

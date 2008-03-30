@@ -86,6 +86,7 @@
       virtual void set_whiteness  (unsigned whiteness  );
       virtual void set_contrast   (unsigned contrast   );
 
+      virtual bool has_device     (const std::string & source, const std::string & device, unsigned capabilities, Ekiga::VidInputDevice & vidinput_device);
   protected:
       Ekiga::ServiceCore & core;
       Ekiga::Runtime & runtime;

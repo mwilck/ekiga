@@ -100,7 +100,7 @@ engine_init (int argc,
   Ekiga::ContactCore *contact_core = new Ekiga::ContactCore;
   Ekiga::CallCore *call_core = new Ekiga::CallCore;
   Ekiga::DisplayCore *display_core = new Ekiga::DisplayCore;
-  Ekiga::VidInputCore *vidinput_core = new Ekiga::VidInputCore(*display_core);
+  Ekiga::VidInputCore *vidinput_core = new Ekiga::VidInputCore(*runtime, *display_core);
   Ekiga::HalCore *hal_core = new Ekiga::HalCore;
 
 

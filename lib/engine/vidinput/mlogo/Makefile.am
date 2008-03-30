@@ -11,7 +11,8 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/engine/framework \
 	-I$(top_srcdir)/lib/engine/display/skel \
 	-I$(top_srcdir)/lib/engine/vidinput/skel \
-	-I$(top_srcdir)/lib/engine/vidinput/mlogo
+	-I$(top_srcdir)/lib/engine/vidinput/mlogo \
+	-I$(top_srcdir)/lib/engine/hal/skel
 
 libgmvidinput_mlogo_la_SOURCES = \
 	$(vidinput_dir)/vidinput-manager-mlogo.h \

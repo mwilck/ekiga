@@ -9,7 +9,8 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/engine/include \
 	-I$(top_srcdir)/lib/engine/framework \
 	-I$(top_srcdir)/lib/engine/display/skel \
-	-I$(top_srcdir)/lib/engine/vidinput/skel
+	-I$(top_srcdir)/lib/engine/vidinput/skel \
+	-I$(top_srcdir)/lib/engine/hal/skel
 
 libgmvidinput_la_SOURCES = \
 	$(vidinput_dir)/vidinput-manager.h	\

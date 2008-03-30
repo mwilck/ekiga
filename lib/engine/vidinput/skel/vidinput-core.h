@@ -38,12 +38,15 @@
 #define __VIDINPUT_CORE_H__
 
 #include "services.h"
+#include "runtime.h"
 #include "display-core.h"
+#include "hal-core.h"
 #include "vidinput-gmconf-bridge.h"
 #include "vidinput-info.h"
 
 #include <sigc++/sigc++.h>
 #include <glib.h>
+#include <set>
 
 #include "ptbuildopts.h"
 #include "ptlib.h"
@@ -97,7 +100,7 @@ namespace Ekiga
 
       /* The constructor
       */
-      VidInputCore (DisplayCore& _display_core);
+      VidInputCore (Ekiga::Runtime & _runtime, DisplayCore& _display_core);
 
       /* The destructor
       */
@@ -168,30 +171,33 @@ namespace Ekiga
       void set_whiteness  (unsigned whiteness);
       void set_contrast   (unsigned contrast);
 
+      void add_device (std::string & source, std::string & device, unsigned capabilities, HalManager* manager);
+      void remove_device (std::string & source, std::string & device, unsigned capabilities, HalManager* manager);
+
       /*** VidInput Related Signals ***/
       
       /** See vidinput-manager.h for the API
        */
       sigc::signal<void, VidInputManager &, VidInputDevice &, VidInputErrorCodes> vidinputdevice_error;
-      sigc::signal<void, VidInputManager &, VidInputDevice &> vidinputdevice_added;
-      sigc::signal<void, VidInputManager &, VidInputDevice &> vidinputdevice_removed;
+      sigc::signal<void, VidInputDevice> vidinputdevice_added;
+      sigc::signal<void, VidInputDevice> vidinputdevice_removed;
       sigc::signal<void, VidInputManager &, VidInputDevice &, VidInputConfig&> vidinputdevice_opened;
       sigc::signal<void, VidInputManager &, VidInputDevice &> vidinputdevice_closed;
 
   private:
-      void on_vidinputdevice_error (VidInputDevice & vidinput_device, VidInputErrorCodes error_code, VidInputManager *manager);
-      void on_vidinputdevice_added (VidInputDevice & vidinput_device, VidInputManager *manager);
-      void on_vidinputdevice_removed (VidInputDevice & vidinput_device, VidInputManager *manager);
-      void on_vidinputdevice_opened (VidInputDevice & vidinput_device,  
-                                     VidInputConfig & vidinput_config, 
+      void on_vidinputdevice_error (VidInputDevice vidinput_device, VidInputErrorCodes error_code, VidInputManager *manager);
+      void on_vidinputdevice_opened (VidInputDevice vidinput_device,  
+                                     VidInputConfig vidinput_config, 
                                      VidInputManager *manager);
-      void on_vidinputdevice_closed (VidInputDevice & vidinput_device, VidInputManager *manager);
+      void on_vidinputdevice_closed (VidInputDevice vidinput_device, VidInputManager *manager);
 
       void internal_open (unsigned width, unsigned height, unsigned fps);
       void internal_close();
       void internal_set_device (const VidInputDevice & vidinput_device, int channel, VideoFormat format);
 
       std::set<VidInputManager *> managers;
+
+      Ekiga::Runtime & runtime;
 
       DeviceConfig preview_config;
       DeviceConfig stream_config;

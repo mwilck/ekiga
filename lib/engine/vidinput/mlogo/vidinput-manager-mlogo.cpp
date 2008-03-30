@@ -185,3 +185,8 @@ void GMVidInputManager_mlogo::CopyYUVArea (const char* srcFrame,
     dstFrame += dstWidth;
   }
 }
+
+bool GMVidInputManager_mlogo::has_device     (const std::string & /*source*/, const std::string & /*device*/, unsigned /*capabilities*/, Ekiga::VidInputDevice & /*vidinput_device*/)
+{
+  return false;
+}

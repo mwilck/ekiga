@@ -205,3 +205,23 @@ void GMVidInputManager_ptlib::set_contrast (unsigned contrast)
   if (input_device)
     input_device->SetContrast(contrast << 8);
 }
+
+bool GMVidInputManager_ptlib::has_device(const std::string & source, const std::string & device, unsigned capabilities, Ekiga::VidInputDevice & vidinput_device)
+{
+  if (source == "video4linux") {
+    if (capabilities & 0x01) {
+      vidinput_device.type = DEVICE_TYPE;
+      vidinput_device.source = "V4L";
+      vidinput_device.device = device;
+      return true;
+    }
+    if (capabilities & 0x02) {
+      vidinput_device.type = DEVICE_TYPE;
+      vidinput_device.source = "V4L2";
+      vidinput_device.device = device;
+      return true;
+    }
+    return false;
+  }
+  return false;
+}
