@@ -58,7 +58,6 @@ libgmwidgets_la_SOURCES +=	\
 endif
 
 INCLUDES =						\
-	-DDATA_DIR=\""$(datadir)"\"			\
 	-I$(top_srcdir)/lib/gmconf			\
 	-I$(top_srcdir)/lib				\
 	-I$(top_srcdir)					\
