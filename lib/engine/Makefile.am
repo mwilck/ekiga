@@ -1,4 +1,4 @@
-SUBDIRS = framework addressbook presence gui protocol display vidinput hal components
+SUBDIRS = framework addressbook presence gui protocol display vidinput audioinput audiooutput hal components
 
 noinst_LTLIBRARIES = libekiga_engine.la
 
@@ -18,6 +18,8 @@ INCLUDES = 								\
 	-I$(top_srcdir)/lib/engine/presence/local-roster		\
 	-I$(top_srcdir)/lib/engine/display/skel				\
 	-I$(top_srcdir)/lib/engine/vidinput/skel			\
+	-I$(top_srcdir)/lib/engine/audioinput/skel			\
+	-I$(top_srcdir)/lib/engine/audiooutput/skel			\
 	-I$(top_srcdir)/lib/engine/hal/skel				\
 	-I$(top_srcdir)/lib/engine/components/gmconf-personal-details
 
@@ -37,11 +39,15 @@ endif
 		
 # Default Input Devices
 INCLUDES +=                                             \
-	-I$(top_srcdir)/lib/engine/vidinput/mlogo
+	-I$(top_srcdir)/lib/engine/vidinput/mlogo	\
+	-I$(top_srcdir)/lib/engine/audioinput/null      \
+	-I$(top_srcdir)/lib/engine/audiooutput/null
 
 # Default PTLIB Input Devices
 INCLUDES +=                                             \
-	-I$(top_srcdir)/lib/engine/vidinput/ptlib
+	-I$(top_srcdir)/lib/engine/vidinput/ptlib       \
+	-I$(top_srcdir)/lib/engine/audioinput/ptlib     \
+	-I$(top_srcdir)/lib/engine/audiooutput/ptlib
 
 # DBus / HALd
 if HAVE_DBUS
@@ -66,17 +72,23 @@ libekiga_engine_la_LIBADD = \
 	$(top_builddir)/lib/engine/presence/local-roster/liblocal-roster.la 				\
 	$(top_builddir)/lib/engine/display/skel/libgmdisplay.la						\
 	$(top_builddir)/lib/engine/vidinput/skel/libgmvidinput.la					\
+	$(top_builddir)/lib/engine/audioinput/skel/libgmaudioinput.la					\
+	$(top_builddir)/lib/engine/audiooutput/skel/libgmaudiooutput.la					\
 	$(top_builddir)/lib/engine/hal/skel/libgmhal.la					\
 	$(top_builddir)/lib/engine/components/gmconf-personal-details/libgmconfpersonaldetails.la	\
 	$(AM_LIBS)
 
 # Default Input Devices
 libekiga_engine_la_LIBADD += \
-	$(top_builddir)/lib/engine/vidinput/mlogo/libgmvidinput-mlogo.la
+	$(top_builddir)/lib/engine/vidinput/mlogo/libgmvidinput-mlogo.la \
+	$(top_builddir)/lib/engine/audioinput/null/libgmaudioinput-null.la \
+	$(top_builddir)/lib/engine/audiooutput/null/libgmaudiooutput-null.la
 
 # PTLIB Input Devices
 libekiga_engine_la_LIBADD += \
-	$(top_builddir)/lib/engine/vidinput/ptlib/libgmvidinput-ptlib.la
+	$(top_builddir)/lib/engine/vidinput/ptlib/libgmvidinput-ptlib.la \
+	$(top_builddir)/lib/engine/audioinput/ptlib/libgmaudioinput-ptlib.la \
+	$(top_builddir)/lib/engine/audiooutput/ptlib/libgmaudiooutput-ptlib.la
 
 # DBus/HALd
 if HAVE_DBUS

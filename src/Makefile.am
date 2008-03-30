@@ -16,10 +16,12 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/engine/protocol/sip		\
 	-I$(top_srcdir)/lib/engine/display/skel		\
 	-I$(top_srcdir)/lib/engine/vidinput/skel	\
+	-I$(top_srcdir)/lib/engine/audioinput/skel	\
+	-I$(top_srcdir)/lib/engine/audiooutput/skel	\
+	-I$(top_srcdir)/lib/engine/hal/skel	\
 	-I$(top_srcdir)/lib/engine/framework		\
 	-I$(top_builddir)				\
 	$(GNOME_INCLUDEDIR)				\
-	-DDATA_DIR=\""$(datadir)"\"			\
 	-DSCHEMA_AGE=@SCHEMA_AGE@ 
 
 # XVideo/X

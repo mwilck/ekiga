@@ -662,7 +662,8 @@ gnomeconfdir=`eval "echo ${sysconfdir}"`
 AC_SUBST(gnomedatadir)
 AC_SUBST(gnomeconfdir)
 
- 
+AC_DEFINE_UNQUOTED(DATA_DIR, "${ac_default_prefix}/${DATADIRNAME}",[fix])
+
 dnl ###########################################################################
 dnl  Output the different Makefiles
 dnl ###########################################################################
@@ -705,6 +706,14 @@ lib/engine/vidinput/Makefile
 lib/engine/vidinput/skel/Makefile
 lib/engine/vidinput/mlogo/Makefile
 lib/engine/vidinput/ptlib/Makefile
+lib/engine/audioinput/Makefile
+lib/engine/audioinput/skel/Makefile
+lib/engine/audioinput/null/Makefile
+lib/engine/audioinput/ptlib/Makefile
+lib/engine/audiooutput/Makefile
+lib/engine/audiooutput/skel/Makefile
+lib/engine/audiooutput/null/Makefile
+lib/engine/audiooutput/ptlib/Makefile
 lib/engine/hal/Makefile
 lib/engine/hal/skel/Makefile
 lib/engine/hal/dbus/Makefile

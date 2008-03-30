@@ -46,6 +46,8 @@
 #include "call-core.h"
 #include "display-core.h"
 #include "vidinput-core.h"
+#include "audioinput-core.h"
+#include "audiooutput-core.h"
 #include "hal-core.h"
 #include "history-main.h"
 #include "local-roster-main.h"
@@ -63,8 +65,12 @@
 #endif
 
 #include "vidinput-main-mlogo.h"
+#include "audioinput-main-null.h"
+#include "audiooutput-main-null.h"
 
 #include "vidinput-main-ptlib.h"
+#include "audioinput-main-ptlib.h"
+#include "audiooutput-main-ptlib.h"
 
 #ifdef HAVE_DBUS
 #include "hal-main-dbus.h"
@@ -101,6 +107,8 @@ engine_init (int argc,
   Ekiga::CallCore *call_core = new Ekiga::CallCore;
   Ekiga::DisplayCore *display_core = new Ekiga::DisplayCore;
   Ekiga::VidInputCore *vidinput_core = new Ekiga::VidInputCore(*runtime, *display_core);
+  Ekiga::AudioOutputCore *audiooutput_core = new Ekiga::AudioOutputCore(*runtime);  
+  Ekiga::AudioInputCore *audioinput_core = new Ekiga::AudioInputCore(*runtime, *audiooutput_core);
   Ekiga::HalCore *hal_core = new Ekiga::HalCore;
 
 
@@ -117,6 +125,8 @@ engine_init (int argc,
   core->add (*call_core);
   core->add (*display_core);
   core->add (*vidinput_core);
+  core->add (*audiooutput_core);
+  core->add (*audioinput_core);
   core->add (*hal_core);
 
   if (!gmconf_personal_details_init (*core, &argc, &argv)) {
@@ -143,7 +153,27 @@ engine_init (int argc,
     return;
   }
 
+  if (!audioinput_null_init (*core, &argc, &argv)) {
+    delete core;
+    return;
+  }
+
+  if (!audiooutput_null_init (*core, &argc, &argv)) {
+    delete core;
+    return;
+  }
+
   if (!vidinput_ptlib_init (*core, &argc, &argv)) {
+    delete core;
+    return;
+  }
+
+  if (!audioinput_ptlib_init (*core, &argc, &argv)) {
+    delete core;
+    return;
+  }
+
+  if (!audiooutput_ptlib_init (*core, &argc, &argv)) {
     delete core;
     return;
   }
@@ -207,6 +237,18 @@ engine_init (int argc,
     return;
   }
 
-  vidinput_core->setup_conf_bridge();
   display_core->setup_conf_bridge();
+  vidinput_core->setup_conf_bridge();
+//  audiooutput_core->setup_conf_bridge();
+//  audioinput_core->setup_conf_bridge();
+
+//  sigc::connection conn;
+//  conn = hal_core->video_input_device_added.connect (sigc::mem_fun (vidinput_core, &Ekiga::VidInputCore::add_device));
+//  conn = hal_core->video_input_device_removed.connect (sigc::mem_fun (vidinput_core, &Ekiga::VidInputCore::remove_device));
+//  conn = hal_core->audio_output_device_added.connect (sigc::mem_fun (audiooutput_core, &Ekiga::AudioOutputCore::add_device));
+//  conn = hal_core->audio_output_device_removed.connect (sigc::mem_fun (audiooutput_core, &Ekiga::AudioOutputCore::remove_device));
+//  conn = hal_core->audio_input_device_added.connect (sigc::mem_fun (audioinput_core, &Ekiga::AudioInputCore::add_device));
+//  conn = hal_core->audio_input_device_removed.connect (sigc::mem_fun (audioinput_core, &Ekiga::AudioInputCore::remove_device));
+  // std::vector<sigc::connection> connections;
+  //connections.push_back (conn);
 }
