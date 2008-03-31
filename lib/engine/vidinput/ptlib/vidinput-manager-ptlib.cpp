@@ -157,13 +157,14 @@ void GMVidInputManager_ptlib::close()
   runtime.run_in_main (sigc::bind (vidinputdevice_closed.make_slot (), current_state.vidinput_device));
 }
 
-void GMVidInputManager_ptlib::get_frame_data (unsigned & width,
+bool GMVidInputManager_ptlib::get_frame_data (unsigned & width,
                      unsigned & height,
                      char *data)
 {
+  bool ret = false;
   if (!current_state.opened) {
     PTRACE(1, "GMVidInputManager_ptlib\tTrying to get frame from closed device");
-    return;
+    return false;
   }
 
   width = current_state.width;
@@ -172,10 +173,13 @@ void GMVidInputManager_ptlib::get_frame_data (unsigned & width,
   PINDEX I = 0;
 
   if (input_device)
-    input_device->GetFrameData ((BYTE*)data, &I);
+    ret = input_device->GetFrameData ((BYTE*)data, &I);
 
-  if ((unsigned) I != expectedFrameSize)
+  if ((unsigned) I != expectedFrameSize) {
     PTRACE(1, "GMVidInputManager_ptlib\tExpected a frame of " << expectedFrameSize << " bytes but got " << I << " bytes");
+    ret = false;
+  }
+  return ret;
 }
 
 void GMVidInputManager_ptlib::set_colour (unsigned colour)

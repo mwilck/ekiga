@@ -109,13 +109,13 @@ void GMVidInputManager_mlogo::close()
   runtime.run_in_main (sigc::bind (vidinputdevice_closed.make_slot (), current_state.vidinput_device));
 }
 
-void GMVidInputManager_mlogo::get_frame_data (unsigned & width,
+bool GMVidInputManager_mlogo::get_frame_data (unsigned & width,
                      unsigned & height,
                      char *data)
 {
   if (!current_state.opened) {
     PTRACE(1, "GMVidInputManager_mlogo\tTrying to get frame from closed device");
-    return;
+    return true;
   }
   
   m_Pacing.Delay (1000 / current_state.fps);
@@ -137,6 +137,7 @@ void GMVidInputManager_mlogo::get_frame_data (unsigned & width,
 
   width  = current_state.width;
   height = current_state.height;
+  return true;
 }
 
 void GMVidInputManager_mlogo::CopyYUVArea (const char* srcFrame,

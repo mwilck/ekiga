@@ -77,7 +77,7 @@
 
       virtual void close();
 
-      virtual void get_frame_data (unsigned & width,
+      virtual bool get_frame_data (unsigned & width,
                            unsigned & height,
                            char *data);
 

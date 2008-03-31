@@ -1,5 +1,17 @@
 2008-03-31  Matthias Schneider  <ma30002000@yahoo.de>
 
+	* lib/engine/vidinput/ptlib/vidinput-manager-ptlib.cpp: 
+	* lib/engine/vidinput/ptlib/vidinput-manager-ptlib.h: 
+	* lib/engine/vidinput/mlogo/vidinput-manager-mlogo.cpp: 
+	* lib/engine/vidinput/mlogo/vidinput-manager-mlogo.h: 
+	* lib/engine/vidinput/skel/vidinput-manager.h:
+	* lib/engine/vidinput/skel/vidinput-core.cpp: 
+	* lib/engine/vidinput/skel/vidinput-core.h: 
+	Add internal_set_fallback routing to VidInputCore.
+	Also fallback if get_frame_data fails.
+
+2008-03-31  Matthias Schneider  <ma30002000@yahoo.de>
+
 	* lib/engine/vidinput/skel/vidinput-gmconf-bridge.cpp:
 	Add range check to some critical gconf variables.
 

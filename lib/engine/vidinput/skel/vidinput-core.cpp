@@ -347,8 +347,23 @@ void VidInputCore::get_frame_data (unsigned & width,
 {
   PWaitAndSignal m(var_mutex);
 
-  if (current_manager)
-    current_manager->get_frame_data(width, height, data);
+  if (current_manager) {
+    if (!current_manager->get_frame_data(width, height, data)) {
+
+      internal_close();
+
+      internal_set_fallback();
+
+      if (preview_config.active && !stream_config.active)
+        internal_open(preview_config.width, preview_config.height, preview_config.fps);
+
+      if (stream_config.active)
+        internal_open(stream_config.width, stream_config.height, stream_config.fps);
+
+      if (current_manager)
+        current_manager->get_frame_data(width, height, data); // the default device must always return true
+    }
+  }
 }
 
 void VidInputCore::set_colour (unsigned colour)
@@ -406,13 +421,7 @@ void VidInputCore::internal_open (unsigned width, unsigned height, unsigned fps)
 
   if (current_manager && !current_manager->open(width, height, fps)) {
 
-    PTRACE(3, "VidInputCore\tFalling back to " << FALLBACK_DEVICE_TYPE << "/" << FALLBACK_DEVICE_SOURCE << "/" << FALLBACK_DEVICE_DEVICE);
-    VidInputDevice vidinput_device;
-    vidinput_device.type = FALLBACK_DEVICE_TYPE;
-    vidinput_device.source = FALLBACK_DEVICE_SOURCE;
-    vidinput_device.device = FALLBACK_DEVICE_DEVICE;
-
-    internal_set_device(vidinput_device, current_channel, current_format);
+    internal_set_fallback();
     if (current_manager)
       current_manager->open(width, height, fps);
   }
@@ -436,20 +445,8 @@ void VidInputCore::internal_set_device (const VidInputDevice & vidinput_device, 
     current_device  = vidinput_device;
   }
   else {
-
     PTRACE(1, "VidInputCore\tTried to set unexisting device " << vidinput_device.type << "/" << vidinput_device.source << "/" << vidinput_device.device);
-    PTRACE(1, "VidInputCore\tFalling back to " << FALLBACK_DEVICE_TYPE << "/" << FALLBACK_DEVICE_SOURCE << "/" << FALLBACK_DEVICE_DEVICE);
-    current_device.type = FALLBACK_DEVICE_TYPE;
-    current_device.source = FALLBACK_DEVICE_SOURCE;
-    current_device.device = FALLBACK_DEVICE_DEVICE;
-
-    for (std::set<VidInputManager *>::iterator iter = managers.begin ();
-         iter != managers.end ();
-         iter++) {
-       if ((*iter)->set_vidinput_device (current_device, channel, format)) {
-         current_manager = (*iter);
-       }
-    }
+    internal_set_fallback();
   }
 
   current_channel = channel;
@@ -461,6 +458,16 @@ void VidInputCore::internal_close()
   PTRACE(4, "VidInputCore\tClosing current device");
   if (current_manager)
     current_manager->close();
+}
+
+void VidInputCore::internal_set_fallback ()
+{
+  PTRACE(3, "VidInputCore\tFalling back to " << FALLBACK_DEVICE_TYPE << "/" << FALLBACK_DEVICE_SOURCE << "/" << FALLBACK_DEVICE_DEVICE);
+  current_device.type = FALLBACK_DEVICE_TYPE;
+  current_device.source = FALLBACK_DEVICE_SOURCE;
+  current_device.device = FALLBACK_DEVICE_DEVICE;
+
+  internal_set_device(current_device, current_channel, current_format);
 }
 
 void VidInputCore::add_device (std::string & source, std::string & device, unsigned capabilities, HalManager* /*manager*/)
@@ -495,3 +502,4 @@ void VidInputCore::remove_device (std::string & source, std::string & device, un
      }
   }
 }
+

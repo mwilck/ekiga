@@ -90,7 +90,7 @@ namespace Ekiga
 
       virtual bool open (unsigned width, unsigned height, unsigned fps) = 0;
 
-      virtual void get_frame_data (unsigned & width,
+      virtual bool get_frame_data (unsigned & width,
                            unsigned & height,
                            char *data) = 0;
 

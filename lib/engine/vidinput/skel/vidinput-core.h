@@ -194,6 +194,7 @@ namespace Ekiga
       void internal_open (unsigned width, unsigned height, unsigned fps);
       void internal_close();
       void internal_set_device (const VidInputDevice & vidinput_device, int channel, VideoFormat format);
+      void internal_set_fallback ();
 
       std::set<VidInputManager *> managers;
 
