@@ -69,6 +69,19 @@ void VidInputCoreConfBridge::on_property_changed (std::string key, GmConfEntry *
        (key == VIDEO_DEVICES_KEY "max_frame_rate") ) {
 
     PTRACE(4, "VidInputCoreConfBridge\tUpdating preview size and fps");
+
+    if ( (gm_conf_get_int (VIDEO_DEVICES_KEY "size") < 0 ) || 
+         (gm_conf_get_int (VIDEO_DEVICES_KEY "size") >= NB_VIDEO_SIZES )) {
+      PTRACE(1, "VidInputCoreConfBridge\t" << VIDEO_DEVICES_KEY "size" << " out of range, ajusting to 0");
+      gm_conf_set_int (VIDEO_DEVICES_KEY "size", 0);
+    }
+
+    if ( (gm_conf_get_int (VIDEO_DEVICES_KEY "max_frame_rate") < 0 ) || 
+         (gm_conf_get_int (VIDEO_DEVICES_KEY "max_frame_rate") > 30)) {
+      PTRACE(1, "VidInputCoreConfBridge\t" << VIDEO_DEVICES_KEY "max_frame_rate" << " out of range, ajusting to 30");
+      gm_conf_set_int (VIDEO_DEVICES_KEY "max_frame_rate", 30);
+    }
+
     vidinput_core.set_preview_config (VideoSizes[gm_conf_get_int (VIDEO_DEVICES_KEY "size")].width,
                                       VideoSizes[gm_conf_get_int (VIDEO_DEVICES_KEY "size")].height,
                                       gm_conf_get_int (VIDEO_CODECS_KEY "max_frame_rate"));
