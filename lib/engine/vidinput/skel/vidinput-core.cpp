@@ -482,7 +482,10 @@ void VidInputCore::add_device (std::string & source, std::string & device, unsig
        if ( ( desired_device.type   == vidinput_device.type   ) &&
             ( desired_device.source == vidinput_device.source ) &&
             ( desired_device.device == vidinput_device.device ) ) {
-         set_vidinput_device(desired_device, current_channel, current_format);
+	 desired_device.type = "";
+	 desired_device.source = "";
+	 desired_device.device = "";
+         set_vidinput_device(vidinput_device, current_channel, current_format);
        }
 
        runtime.run_in_main (sigc::bind (vidinputdevice_added.make_slot (), vidinput_device));
