@@ -53,7 +53,6 @@ AudioEventScheduler::AudioEventScheduler (AudioOutputCore& _audio_output_core)
 
 AudioEventScheduler::~AudioEventScheduler ()
 {
-  PTRACE(4, "AudioEventScheduler\tStopping Preview");
   stop_thread = true;
   new_event.Signal ();
 
@@ -84,9 +83,10 @@ void AudioEventScheduler::Main ()
       break;
       
     get_pending_event_list(pending_event_list);
-PTRACE(0, "Pending list: " << pending_event_list.size());
+    PTRACE(0, "Checking pending list with " << pending_event_list.size() << " elements");
 
     while (pending_event_list.size() > 0) {
+      PTRACE(0, "Processing pending event list of size " << pending_event_list.size());
       event = *(pending_event_list.begin()); pending_event_list.erase(pending_event_list.begin());
       load_wav(event.name, event.is_file_name, buffer, buffer_len, channels, sample_rate, bps, primarySecondary);
       if (buffer) {
@@ -119,7 +119,8 @@ void AudioEventScheduler::get_pending_event_list (std::vector<AudioEvent> & pend
       pending_event_list.push_back(event);
     }
     else {
-      if (event.time >= time) {
+      PTRACE(0, "Checking recurring event with scheduled time " << event.time << ">=" << time);
+      if (event.time <= time) {
         pending_event_list.push_back(event);
         event.repetitions--; 
         if (event.repetitions > 0) {
@@ -134,7 +135,7 @@ void AudioEventScheduler::get_pending_event_list (std::vector<AudioEvent> & pend
   }
 
   event_list = new_event_list;
-  PTRACE(0, "repeting list " << new_event_list.size() << " " << event_list.size());
+  PTRACE(0, "Event list length: " << event_list.size() << ", after removing pending events:  " << new_event_list.size());
 }
 
 unsigned long AudioEventScheduler::get_time_ms()
@@ -162,7 +163,7 @@ unsigned AudioEventScheduler::get_time_to_next_event()
 
 void AudioEventScheduler::add_event_to_queue(const std::string & name, bool is_file_name, unsigned interval, unsigned repetitions)
 {
-PTRACE(0, "Adding Event " << name << " " << interval << "/" << repetitions);
+  PTRACE(0, "Adding Event " << name << " " << interval << "/" << repetitions);
   PWaitAndSignal m(event_list_mutex);
   AudioEvent event;
   event.name = name;
@@ -176,7 +177,7 @@ PTRACE(0, "Adding Event " << name << " " << interval << "/" << repetitions);
 
 void AudioEventScheduler::remove_event_from_queue(const std::string & name)
 {
-PTRACE(0, "Removing Event " << name);
+  PTRACE(0, "Removing Event " << name);
   PWaitAndSignal m(event_list_mutex);
 
   bool found = false;
@@ -211,7 +212,7 @@ void AudioEventScheduler::load_wav(const std::string & event_name, bool is_file_
   else 
     if (!get_file_name(event_name, file_name, primarySecondary)) // if this event is disabled
       return;
-
+  PTRACE(0, "Trying filename " << file_name << " for event " << event_name);
   wav = new PWAVFile (file_name.c_str(), PFile::ReadOnly);
 
   if (!wav->IsValid ()) {
@@ -221,13 +222,14 @@ void AudioEventScheduler::load_wav(const std::string & event_name, bool is_file_
     wav = NULL;
  
     gchar* filename = g_build_filename (DATA_DIR, "sounds", PACKAGE_NAME, file_name.c_str(), NULL);
+    PTRACE(0, "Typeing filename " << filename << " for event " << event_name);
+
     wav = new PWAVFile (filename, PFile::ReadOnly);
     g_free (filename);
   }
   
-PTRACE(0, "Loaded wav " << file_name);
+  PTRACE(0, "Loaded wav " << file_name);
   if (wav->IsValid ()) {
-    PTRACE(0, "is valid");
     len = wav->GetDataLength();
     channels = wav->GetChannels ();
     sample_rate = wav->GetSampleRate ();
