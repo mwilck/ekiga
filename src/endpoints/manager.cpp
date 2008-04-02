@@ -218,7 +218,6 @@ GMManager::GMManager (Ekiga::ServiceCore & _core)
 
   // Create endpoints
   h323EP = new GMH323Endpoint (*this);
-  h323EP->Init ();
   AddRouteEntry("pc:.* = h323:<da>");
 	
   sipEP = new GMSIPEndpoint (*this, core);
@@ -381,7 +380,7 @@ void GMManager::set_jitter_buffer_size (unsigned min_val,
          i < 2;
          i++) {
 
-      PSafePtr<OpalConnection> connection = call->GetConnection (i);
+      PSafePtr<OpalRTPConnection> connection = PSafePtrCast<OpalConnection, OpalRTPConnection> (call->GetConnection (i));
       if (connection) {
 
         RTP_Session *session = 
@@ -1093,16 +1092,18 @@ GMManager::OnEstablished (OpalConnection &connection)
     OpalManager::OnEstablished (connection);
     return;
   }
-  
-  /* Asterisk sometimes forgets to send an INVITE, HACK */
-  audio_session = connection.GetSession (OpalMediaFormat::DefaultAudioSessionID);
-  video_session = connection.GetSession (OpalMediaFormat::DefaultVideoSessionID);
-  if (audio_session) {
-    audio_session->SetIgnorePayloadTypeChanges (TRUE);
-  }
-  
-  if (video_session) {
-    video_session->SetIgnorePayloadTypeChanges (TRUE);
+
+  if (PIsDescendant(&connection, OpalRTPConnection)) {
+
+    audio_session = PDownCast (OpalRTPConnection, &connection)->GetSession (OpalMediaFormat::DefaultAudioSessionID);
+    video_session = PDownCast (OpalRTPConnection, &connection)->GetSession (OpalMediaFormat::DefaultVideoSessionID);
+    if (audio_session) {
+      audio_session->SetIgnorePayloadTypeChanges (TRUE);
+    }
+
+    if (video_session) {
+      video_session->SetIgnorePayloadTypeChanges (TRUE);
+    }
   }
   
   PTRACE (3, "GMManager\t Will establish the connection");
