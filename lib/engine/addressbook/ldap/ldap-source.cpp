@@ -56,6 +56,8 @@ OPENLDAP::Source::Source (Ekiga::ServiceCore &_core): core(_core), doc(NULL)
     const std::string raw = c_raw;
 
     doc = xmlRecoverMemory (raw.c_str (), raw.length ());
+    if (doc == NULL)
+      doc = xmlNewDoc (BAD_CAST "1.0");
 
     root = xmlDocGetRootElement (doc);
 
