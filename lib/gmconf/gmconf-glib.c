@@ -1338,8 +1338,9 @@ gm_conf_get_bool (const gchar *key)
   g_return_val_if_fail (key != NULL, FALSE);
 
   entry = database_get_entry_for_key (db, key);
-  if (entry == NULL)
-    return FALSE;
+
+  g_return_val_if_fail (entry != NULL, FALSE);
+
   return entry_get_bool (entry);
 }
 
@@ -1368,8 +1369,9 @@ gm_conf_get_int (const gchar *key)
   g_return_val_if_fail (key != NULL, 0);
 
   entry = database_get_entry_for_key (db, key);
-  if (entry == NULL)
-    return 0;
+
+  g_return_val_if_fail (entry != NULL, 0);
+
   return entry_get_int (entry);
 }
 
@@ -1398,8 +1400,8 @@ gm_conf_get_float (const gchar *key)
   g_return_val_if_fail (key != NULL, 0);
 
   entry = database_get_entry_for_key (db, key);
-  if (entry == NULL)
-    return 0;
+
+  g_return_val_if_fail (entry != NULL, 0);
 
   return entry_get_float (entry);
 }
@@ -1429,8 +1431,9 @@ gm_conf_get_string (const gchar *key)
   g_return_val_if_fail (key != NULL, NULL);
 
   entry = database_get_entry_for_key (db, key);
-  if (entry == NULL)
-    return NULL;
+
+  g_return_val_if_fail (entry != NULL, NULL);
+
   return g_strdup (entry_get_string (entry));
 }
 
@@ -1459,8 +1462,9 @@ gm_conf_get_string_list (const gchar *key)
   g_return_val_if_fail (key != NULL, NULL);
 
   entry = database_get_entry_for_key (db, key);
-  if (entry == NULL)
-    return NULL;
+
+  g_return_val_if_fail (entry != NULL, NULL);
+
   return string_list_deep_copy (entry_get_list (entry));
 }
 

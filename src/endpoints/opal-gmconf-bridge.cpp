@@ -190,9 +190,7 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
     codecs.append (v_codecs);
     manager.set_codecs (codecs);
 
-    g_slist_foreach (audio_codecs, (GFunc) g_free, NULL);
     g_slist_free (audio_codecs);
-    g_slist_foreach (video_codecs, (GFunc) g_free, NULL);
     g_slist_free (video_codecs);
 
     // Update the GmConf keys, in case we would have missed some codecs or
