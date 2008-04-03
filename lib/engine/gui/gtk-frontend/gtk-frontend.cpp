@@ -74,7 +74,11 @@ GtkFrontend::GtkFrontend (Ekiga::ServiceCore &core)
   history_book = history_source->get_book ();
 
   roster_view = roster_view_gtk_new (*presence_core);
+<<<<<<< HEAD:lib/engine/gui/gtk-frontend/gtk-frontend.cpp
   call_history_view = call_history_view_gtk_new (*history_book);
+=======
+  call_history_view = book_view_gtk_new (*history_book); // FIXME: better view
+>>>>>>> Put a call history view in the main window:lib/engine/gui/gtk-frontend/gtk-frontend.cpp
   addressbook_window = 
     addressbook_window_new_with_key (*contact_core, "/apps/ekiga/general/user_interface/addressbook_window");
   chat_window = 
