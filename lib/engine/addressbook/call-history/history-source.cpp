@@ -65,3 +65,9 @@ History::Source::populate_menu (Ekiga::MenuBuilder &)
    */
   return false;
 }
+
+History::Book*
+History::Source::get_book () const
+{
+  return book;
+}

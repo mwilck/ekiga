@@ -275,6 +275,13 @@ static GtkWidget *gm_mw_audio_settings_window_new (GtkWidget *);
 static void gm_mw_init_call (GtkWidget *);
 
 
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Builds the call history part of the main window.
+ * PRE          : The given GtkWidget pointer must be the main window GMObject. 
+ */
+static void gm_mw_init_history (GtkWidget *);
+
+
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  enables/disables the zoom related menuitems according
  *                 to zoom factor
@@ -2084,6 +2091,27 @@ gm_mw_init_call (GtkWidget *main_window)
   gtk_paned_pack2 (GTK_PANED (mw->hpaned), frame, true, true);
 }  
 
+static void
+gm_mw_init_history (GtkWidget *main_window)
+{
+  GmMainWindow *mw = NULL;
+  Ekiga::ServiceCore *services = NULL;
+  GtkWidget *label = NULL;
+  GtkFrontend *gtk_frontend = NULL;
+
+  g_return_if_fail (main_window != NULL);
+  mw = gm_mw_get_mw (main_window);
+
+  services = GnomeMeeting::Process ()->GetServiceCore ();
+  g_return_if_fail (services != NULL);
+
+  gtk_frontend = dynamic_cast<GtkFrontend *>(services->get ("gtk-frontend"));
+
+  label = gtk_label_new (_("Call history"));
+  gtk_notebook_append_page (GTK_NOTEBOOK (mw->main_notebook),
+			    GTK_WIDGET (gtk_frontend->get_call_history_view ()),
+			    label);
+}
 
 void
 gm_mw_zooms_menu_update_sensitivity (GtkWidget *main_window,
@@ -3700,6 +3728,7 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   gtk_widget_set_size_request (mw->main_notebook, 200, -1);
 
   gm_mw_init_call (window);
+  gm_mw_init_history (window);
 
   section = (PanelSection) 
     gm_conf_get_int (USER_INTERFACE_KEY "main_window/panel_section");

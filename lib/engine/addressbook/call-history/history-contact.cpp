@@ -34,6 +34,7 @@
  */
 
 #include <iostream>
+#include <glib.h>
 
 #include "history-contact.h"
 
@@ -48,7 +49,7 @@ History::Contact::Contact (Ekiga::ServiceCore &_core,
 
   xml_str = xmlGetProp (node, (const xmlChar *)"type");
   if (xml_str != NULL)
-    groups.insert ((const char *)xml_str);
+    m_type = (call_type)(xml_str[0] - '0'); // FIXME: I don't like it!
   xmlFree (xml_str);
 
   xml_str = xmlGetProp (node, (const xmlChar *)"uri");
@@ -87,7 +88,7 @@ History::Contact::Contact (Ekiga::ServiceCore &_core,
 			   const std::string _uri,
 			   const std::string _status,
 			   call_type c_t):
-  core(_core), name(_name), uri(_uri), status(_status)
+  core(_core), name(_name), uri(_uri), status(_status), m_type(c_t)
 {
   contact_core
     = dynamic_cast<Ekiga::ContactCore*>(core.get ("contact-core"));
@@ -100,26 +101,11 @@ History::Contact::Contact (Ekiga::ServiceCore &_core,
   xmlNewChild (node, NULL,
 	       BAD_CAST "status", BAD_CAST status.c_str ());
 
-  switch (c_t) {
-
-  case RECEIVED:
-
-    xmlSetProp (node, BAD_CAST "type", BAD_CAST "Received");
-    groups.insert ("Received");
-    break;
-  case PLACED:
-
-    groups.insert ("Placed");
-    break;
-  case MISSED:
-
-    groups.insert ("Missed");
-    break;
-
-  default:
-
-    break;
-  }
+  /* FIXME: I don't like the way it's done */
+  gchar *type_string = NULL;
+  type_string = g_strdup_printf ("%d", m_type);
+  xmlSetProp (node, BAD_CAST "type", BAD_CAST type_string);
+  g_free (type_string);
 }
 
 History::Contact::~Contact ()
@@ -138,6 +124,23 @@ History::Contact::get_name () const
 const std::set<std::string>
 History::Contact::get_groups () const
 {
+  std::set<std::string> groups;
+
+  switch (m_type) {
+  case RECEIVED:
+    groups.insert ("Received"); // FIXME: translate
+    break;
+  case PLACED:
+    groups.insert ("Placed"); // FIXME: translate
+    break;
+  case MISSED:
+    groups.insert ("Missed"); // FIXME: translate
+    break;
+
+  default:
+    groups.insert ("AIE!!");
+  }
+
   return groups;
 }
 
@@ -151,6 +154,18 @@ xmlNodePtr
 History::Contact::get_node ()
 {
   return node;
+}
+
+History::call_type
+History::Contact::get_type () const
+{
+  return m_type;
+}
+
+const std::string
+History::Contact::get_status () const
+{
+  return status;
 }
 
 const std::map<std::string,std::string>

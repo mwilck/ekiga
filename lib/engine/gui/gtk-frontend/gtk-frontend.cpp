@@ -50,6 +50,9 @@
 #include "addressbook-window.h"
 #include "chat-window.h"
 #include "roster-view-gtk.h"
+#include "history-source.h"
+#include "book-view-gtk.h"
+#include "call-history-view-gtk.h"
 
 #include "gmwindow.h"
 
@@ -61,12 +64,17 @@ GtkFrontend::GtkFrontend (Ekiga::ServiceCore &core)
   Ekiga::PresenceCore *presence_core = NULL;
   Ekiga::ContactCore *contact_core = NULL;
   Ekiga::CallCore *call_core = NULL;
+  History::Source *history_source = NULL;
+  History::Book *history_book = NULL;
 
   contact_core = dynamic_cast<Ekiga::ContactCore *>(core.get ("contact-core"));
   presence_core = dynamic_cast<Ekiga::PresenceCore *>(core.get ("presence-core"));
   call_core = dynamic_cast<Ekiga::CallCore *>(core.get ("call-core"));
+  history_source = dynamic_cast<History::Source*>(core.get ("call-history-store"));
+  history_book = history_source->get_book ();
 
   roster_view = roster_view_gtk_new (*presence_core);
+  call_history_view = call_history_view_gtk_new (*history_book);
   addressbook_window = 
     addressbook_window_new_with_key (*contact_core, "/apps/ekiga/general/user_interface/addressbook_window");
   chat_window = 
@@ -113,6 +121,13 @@ const GtkWidget *GtkFrontend::get_addressbook_window () const
 const GtkWidget *GtkFrontend::get_chat_window () const
 { 
   return chat_window; 
+}
+
+
+const GtkWidget *
+GtkFrontend::get_call_history_view () const
+{ 
+  return call_history_view;
 }
 
 

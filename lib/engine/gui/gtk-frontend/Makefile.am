@@ -2,7 +2,7 @@ noinst_LTLIBRARIES = libgmgtk-frontend.la
 
 gtk_frontend_dir = $(top_srcdir)/lib/engine/gui/gtk-frontend
 
-AM_CPPFLAGS = $(SIGC_CFLAGS) $(GTK_CFLAGS)
+AM_CPPFLAGS = $(XML_CFLAGS) $(SIGC_CFLAGS) $(GTK_CFLAGS)
 
 INCLUDES = \
 	-I$(top_srcdir)/lib/gui \
@@ -11,6 +11,7 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/engine/presence/skel \
 	-I$(top_srcdir)/lib/engine/protocol/skel \
 	-I$(top_srcdir)/lib/engine/addressbook/skel \
+	-I$(top_srcdir)/lib/engine/addressbook/call-history \
 	-I$(top_srcdir)/lib/engine/gui/gtk-core 
 
 libgmgtk_frontend_la_SOURCES = \
@@ -20,6 +21,8 @@ libgmgtk_frontend_la_SOURCES = \
 	$(gtk_frontend_dir)/book-view-gtk.cpp \
 	$(gtk_frontend_dir)/roster-view-gtk.h \
 	$(gtk_frontend_dir)/roster-view-gtk.cpp \
+	$(gtk_frontend_dir)/call-history-view-gtk.h \
+	$(gtk_frontend_dir)/call-history-view-gtk.cpp \
 	$(gtk_frontend_dir)/chat-window.h \
 	$(gtk_frontend_dir)/chat-window.cpp \
 	$(gtk_frontend_dir)/chat-window-page.h \

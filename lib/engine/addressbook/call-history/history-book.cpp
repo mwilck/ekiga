@@ -47,7 +47,7 @@
 History::Book::Book (Ekiga::ServiceCore &_core) :
   core(_core), doc(NULL)
 {
-  xmlNodePtr root;
+  xmlNodePtr root = NULL;
 
   const gchar *c_raw = gm_conf_get_string (KEY);
 
@@ -56,9 +56,11 @@ History::Book::Book (Ekiga::ServiceCore &_core) :
     const std::string raw = c_raw;
 
     doc = xmlRecoverMemory (raw.c_str (), raw.length ());
+    if (doc == NULL)
+      doc = xmlNewDoc (BAD_CAST "1.0");
 
     root = xmlDocGetRootElement (doc);
-    
+
     if (root == NULL) {
 
       root = xmlNewNode (NULL, BAD_CAST "list");
@@ -119,12 +121,18 @@ History::Book::add (const std::string name,
   Contact *contact = NULL;
   xmlNodePtr root = NULL;
 
-  root = xmlDocGetRootElement (doc);
-  contact = new Contact (core, name, uri, contact_status, c_t);
+  if ( !uri.empty ()) {
 
-  xmlAddChild (root, contact->get_node ());
+    root = xmlDocGetRootElement (doc);
 
-  common_add (*contact);
+    contact = new Contact (core, name, uri, contact_status, c_t);
+
+    xmlAddChild (root, contact->get_node ());
+
+    save ();
+
+    common_add (*contact);
+  }
 }
 
 void
@@ -176,10 +184,19 @@ History::Book::save () const
 void
 History::Book::clear ()
 {
+  xmlNodePtr root = NULL;
 
   while (begin () != end ())
     remove_contact (*begin ());
+
+  if (doc != NULL)
+    xmlFreeDoc (doc);
+  doc = xmlNewDoc (BAD_CAST "1.0");
+  root = xmlNewDocNode (doc, NULL, BAD_CAST "list", NULL);
+  xmlDocSetRootElement (doc, root);
+
   save ();
+  cleared.emit ();
 }
 
 void

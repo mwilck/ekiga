@@ -82,6 +82,8 @@ namespace History
 
     void clear ();
 
+    sigc::signal<void> cleared;
+
   private:
 
     void parse_entry (xmlNodePtr entry);

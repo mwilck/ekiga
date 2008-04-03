@@ -1,6 +1,6 @@
 
 /* Ekiga -- A VoIP and Video-Conferencing application
- * Copyright (C) 2000-2007 Damien Sandras
+ * Copyright (C) 2000-2008 Damien Sandras
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,63 +27,20 @@
 
 
 /*
- *                         gtk-frontend.h  -  description
+ *                         call-history-view-gtk.h  -  description
  *                         ------------------------------------------
- *   begin                : written in 2007 by Julien Puydt
- *   copyright            : (c) 2007 by Julien Puydt
- *   description          : code to hook a gtk+ user interface to
- *                          the main program
+ *   begin                : written in 2008 by Julien Puydt
+ *   copyright            : (c) 2008 by Julien Puydt
+ *   description          : declaration of a call history view widget
  *
  */
 
-#ifndef __GTK_FRONTEND_H__
-#define __GTK_FRONTEND_H__
+#ifndef __CALL_HISTORY_VIEW_GTK_H__
+#define __CALL_HISTORY_VIEW_GTK_H__
 
 #include <gtk/gtk.h>
-#include <vector>
+#include "history-book.h"
 
-#include "services.h"
-#include "contact-core.h"
-#include "presence-core.h"
-#include "call-manager.h"
-
-
-class GtkFrontend: public Ekiga::Service
-{
-public:
-
-    GtkFrontend (Ekiga::ServiceCore & _core);
-
-    ~GtkFrontend ();
-
-    const std::string get_name () const;
-
-    const std::string get_description () const;
-
-    const GtkWidget *get_roster_view () const;
-
-  const GtkWidget *get_call_history_view () const;
-
-    const GtkWidget *get_addressbook_window () const;
-
-    const GtkWidget *get_chat_window () const;
-
-private :
-    void on_new_chat (Ekiga::CallManager & manager,
-                      std::string name,
-                      std::string uri);
-
-    GtkWidget *addressbook_window;
-    GtkWidget *roster_view;
-  GtkWidget *call_history_view;
-    GtkWidget *chat_window;
-
-    std::vector<sigc::connection> connections;
-};
-
-
-bool gtk_frontend_init (Ekiga::ServiceCore &core,
-			int *argc,
-			char **argv[]);
+GtkWidget *call_history_view_gtk_new (History::Book &book);
 
 #endif

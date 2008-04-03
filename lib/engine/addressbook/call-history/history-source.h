@@ -70,6 +70,8 @@ namespace History
 
     const std::set<std::string> existing_groups () const;
 
+    Book *get_book () const;
+
   private:
 
     Ekiga::ServiceCore &core;

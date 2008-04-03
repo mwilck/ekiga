@@ -80,13 +80,17 @@ namespace History
 
     bool populate_menu (Ekiga::MenuBuilder &builder);
 
+    const std::map<std::string,std::string> get_uris () const;
+
+    bool is_found (std::string test) const;
+
     /* more specific api */
 
     xmlNodePtr get_node ();
 
-    const std::map<std::string,std::string> get_uris () const;
+    call_type get_type () const;
 
-    bool is_found (std::string test) const;
+    const std::string get_status () const;
 
   private:
 
@@ -97,7 +101,7 @@ namespace History
     std::string name;
     std::string uri;
     std::string status;
-    std::set<std::string> groups;
+    call_type m_type;
   };
 
 /**

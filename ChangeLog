@@ -1,5 +1,22 @@
 2008-04-03  Julien Puydt  <jpuydt@gnome.org>
 
+	* lib/engine/addressbook/call-history/history-book.cpp:
+	* lib/engine/addressbook/call-history/history-book.h:
+	* lib/engine/addressbook/call-history/history-contact.cpp:
+	* lib/engine/addressbook/call-history/history-contact.h:
+	* lib/engine/addressbook/call-history/history-source.cpp:
+	* lib/engine/addressbook/call-history/history-source.h:
+	* lib/engine/gui/gtk-frontend/Makefile.am:
+	* lib/engine/gui/gtk-frontend/call-history-view-gtk.cpp:
+	* lib/engine/gui/gtk-frontend/call-history-view-gtk.h:
+	* lib/engine/gui/gtk-frontend/gtk-frontend.cpp:
+	* lib/engine/gui/gtk-frontend/gtk-frontend.h:
+	* src/gui/main.cpp: Completed (and fixed...) the call history backend,
+	created a new view more specific to the call history, and made use of
+	it in the main window.
+
+2008-04-03  Julien Puydt  <jpuydt@gnome.org>
+
 	* lib/engine/addressbook/ldap/ldap-source.cpp: Fixed unguarded libxml
 	call.
 
