@@ -3,14 +3,15 @@
 # Copyright (C) 2003-2005 Free Software Foundation, Inc.
 # Tommi Vainikainen <Tommi.Vainikainen@iki.fi>, 2003-2005.
 # Ilkka Tuohela <hile@iki.fi>, 2005.
+# Timo Jyrinki <timo.jyrinki@iki.fi>, 2008.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gnomemeeting\n"
+"Project-Id-Version: ekiga\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-16 11:05+0300\n"
-"PO-Revision-Date: 2006-10-25 09:02+0300\n"
-"Last-Translator: Ilkka Tuohela <hile@iki.fi>\n"
+"POT-Creation-Date: 2008-04-03 15:56+0300\n"
+"PO-Revision-Date: 2008-04-03 16:05+0300\n"
+"Last-Translator: Timo Jyrinki <timo.jyrinki@iki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -987,73 +988,6 @@ msgstr "Suunta"
 msgid "The orientation of the tray."
 msgstr "Ilmoitusalueen suunta."
 
-#: ../src/clients/ils.cpp:105 ../src/gui/tools.cpp:174
-msgid "Invalid parameters"
-msgstr "Virheelliset parametrit"
-
-#: ../src/clients/ils.cpp:105
-msgid ""
-"Please provide your first name and e-mail in the Personal Data section in "
-"order to be able to register to the users directory."
-msgstr ""
-"Syötä etunimesi ja sähköpostisi Henkilötiedot-kohtaan, jotta voisit "
-"kirjautua käyttäjähakemistoon."
-
-#: ../src/clients/ils.cpp:145
-msgid "Invalid users directory"
-msgstr "Virheellinen käyttäjähakemisto"
-
-#: ../src/clients/ils.cpp:145
-msgid "Operation impossible since there is no users directory specified."
-msgstr "Operaatio on mahdoton, koska käyttäjähakemistoa ei ole määritetty."
-
-#: ../src/clients/ils.cpp:238
-msgid "Failed to parse XML file"
-msgstr "XML-tiedoston jäsentäminen epäonnistui"
-
-#: ../src/clients/ils.cpp:238
-msgid ""
-"There was an error while parsing the XML file. Please make sure that it is "
-"correctly installed in your system."
-msgstr ""
-"Virhe jäsennettäessä XML-tiedostoa. Tarkista, että tiedosto on oikein "
-"asennettuna järjestelmässäsi."
-
-#: ../src/clients/ils.cpp:249
-msgid "Bad information"
-msgstr "Huonoa tietoa"
-
-#: ../src/clients/ils.cpp:249
-#, c-format
-msgid "Bad LDAP information from XML file: %s."
-msgstr "Huono LDAP-tietoa XML-tiedostosta: %s."
-
-#: ../src/clients/ils.cpp:257
-#, c-format
-msgid "ILS registration failed: unable to connect to %s"
-msgstr "ILS-rekisteröinti epäonnistui: ei saatu yhteyttä palvelimeen %s"
-
-#: ../src/clients/ils.cpp:270
-msgid "ILS registration failed: unable to set time limit on operations"
-msgstr ""
-"ILS-rekisteröinti epäonnistui: operaation aikarajan asettaminen epäonnistui"
-
-#: ../src/clients/ils.cpp:282
-#, c-format
-msgid "ILS registration failed: failed to bind to %s"
-msgstr "ILS-rekisteröinti epäonnistui: bind(%s) epäonnistui"
-
-#: ../src/clients/ils.cpp:310
-#, c-format
-msgid "Updated information on %s"
-msgstr "Tiedot päivitetty palvelimella %s."
-
-#: ../src/clients/ils.cpp:314 ../src/endpoints/accountshandler.cpp:332
-#: ../src/endpoints/sip.cpp:236
-#, c-format
-msgid "Unregistered from %s"
-msgstr "Rekisteröinti rekisteristä %s peruttu"
-
 #: ../src/clients/stun.cpp:104
 #, c-format
 msgid "STUN server set to %s"
@@ -1308,9 +1242,9 @@ msgstr ""
 #: ../src/devices/audio.cpp:481 ../src/devices/audio.cpp:482
 #: ../src/devices/videoinput.cpp:310 ../src/devices/videoinput.cpp:585
 #: ../src/endpoints/ekiga.cpp:351 ../src/endpoints/ekiga.cpp:353
-#: ../src/endpoints/ekiga.cpp:355 ../src/endpoints/pcss.cpp:194
-#: ../src/gui/druid.cpp:1780 ../src/gui/druid.cpp:1792
-#: ../src/gui/druid.cpp:1850
+#: ../src/endpoints/ekiga.cpp:355 ../src/endpoints/pcss.cpp:198
+#: ../src/gui/druid.cpp:1784 ../src/gui/druid.cpp:1796
+#: ../src/gui/druid.cpp:1854
 msgid "No device found"
 msgstr "Laitetta ei löydy"
 
@@ -1490,6 +1424,11 @@ msgstr "Rekisteröinti palveluun %s onnistui"
 msgid "Registered"
 msgstr "Rekisteröity"
 
+#: ../src/endpoints/accountshandler.cpp:332 ../src/endpoints/sip.cpp:236
+#, c-format
+msgid "Unregistered from %s"
+msgstr "Rekisteröinti rekisteristä %s peruttu"
+
 #: ../src/endpoints/accountshandler.cpp:352 ../src/endpoints/sip.cpp:242
 msgid "Unregistered"
 msgstr "Ei rekisteröity"
@@ -1551,7 +1490,7 @@ msgstr "Yhdistetty %s kanssa käyttäen ohjelmistoa %s"
 msgid "Connected with %s"
 msgstr "Yhdistetty %s kanssa"
 
-#: ../src/endpoints/manager.cpp:1124 ../src/gui/main.cpp:4156
+#: ../src/endpoints/manager.cpp:1124 ../src/gui/main.cpp:4157
 msgid "Standby"
 msgstr "Valmiustila"
 
@@ -1685,21 +1624,21 @@ msgstr "Suljettiin koodekki %s, joka oli avattu vastaanottoon"
 msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 msgstr "%.2ld:%.2ld:%.2ld  Ä:%.2f/%.2f   V:%.2f/%.2f"
 
-#: ../src/endpoints/pcss.cpp:218
+#: ../src/endpoints/pcss.cpp:222
 #, c-format
 msgid "Opened %s for recording with plugin %s"
 msgstr "Avattiin laite %s nauhoitusta varten liitännäisellä %s"
 
-#: ../src/endpoints/pcss.cpp:219
+#: ../src/endpoints/pcss.cpp:223
 #, c-format
 msgid "Opened %s for playing with plugin %s"
 msgstr "Avattiin laite %s soittamista varten liitännäisellä %s"
 
-#: ../src/endpoints/pcss.cpp:237
+#: ../src/endpoints/pcss.cpp:241
 msgid "Could not open audio channel for audio transmission"
 msgstr "Ei voitu avata äänikanavaa äänen siirrolle"
 
-#: ../src/endpoints/pcss.cpp:237
+#: ../src/endpoints/pcss.cpp:241
 msgid ""
 "An error occured while trying to record from the soundcard for the audio "
 "transmission. Please check that your soundcard is not busy and that your "
@@ -1711,11 +1650,11 @@ msgstr ""
 "käyttöä. (full-duplex).\n"
 "Äänen siirto otettiin pois käytöstä."
 
-#: ../src/endpoints/pcss.cpp:239
+#: ../src/endpoints/pcss.cpp:243
 msgid "Could not open audio channel for audio reception"
 msgstr "Ei voitu avata äänikanavaa äänen vastaanottoon"
 
-#: ../src/endpoints/pcss.cpp:239
+#: ../src/endpoints/pcss.cpp:243
 msgid ""
 "An error occured while trying to play audio to the soundcard for the audio "
 "reception. Please check that your soundcard is not busy and that your driver "
@@ -1943,7 +1882,7 @@ msgstr ""
 "<b>Pikavalinta</b>: %s\n"
 
 #: ../src/gui/addressbook.cpp:821 ../src/gui/addressbook.cpp:823
-#: ../src/gui/druid.cpp:1912 ../src/gui/preferences.cpp:930
+#: ../src/gui/druid.cpp:1916 ../src/gui/preferences.cpp:930
 msgid "None"
 msgstr "Ei mitään"
 
@@ -2227,17 +2166,64 @@ msgstr "Kuvamateriaali:"
 msgid "See AUTHORS file for full credits"
 msgstr "Katso AUTHORS-tiedostosta kaikki kiitokset"
 
+#: ../src/gui/callbacks.cpp:168
+msgid ""
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version. "
+msgstr ""
+"Tämä ohjelma on vapaa ohjelma; sen levittäminen ja muuttaminen on "
+"sallittua GNU General Public Licensen ehtojen mukaisesti, siten "
+"kuin Free Software Foundation on ne julkaissut; joko lisenssin version 2, "
+"tai (valinnan mukaan) minkä tahansa myöhemmän version mukaisesti."
+
+#: ../src/gui/callbacks.cpp:172
+msgid ""
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for "
+"more details. You should have received a copy of the GNU General Public "
+"License along with this program; if not, write to the Free Software "
+"Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA."
+msgstr ""
+"Tätä ohjelmaa levitetään siinä toivossa, että se olisi hyödyllinen, "
+"mutta ilman mitään takuuta; ilman edes hiljaista takuuta kaupallisesti "
+"hyväksyttävästä laadusta tai soveltuvuudesta tiettyyn tarkoitukseen. "
+"Katso GPL-lisenssitekstistä lisätietoja."
+"Tämän ohjelman mukana pitäisi tulla kopio GPL-lisenssistä; jos näin ei"
+"ole, kirjoita osoitteeseen Free Software Foundation Inc., 51 Franklin St, "
+"Fifth Floor, Boston, MA 02110-1301, USA."
+
+
+#: ../src/gui/callbacks.cpp:179
+msgid ""
+"Ekiga is licensed under the GPL license and as a special exception, you have "
+"permission to link or otherwise combine this program with the programs OPAL, "
+"OpenH323 and PWLIB, and distribute the combination, without applying the "
+"requirements of the GNU GPL to the OPAL, OpenH323 and PWLIB programs, as "
+"long as you do follow the requirements of the GNU GPL for all the rest of "
+"the software thus combined."
+msgstr ""
+"Ekiga on lisensoitu GPL-lisenssillä. Lisäksi erityisenä poikkeuksena: "
+"sinulla on lupa linkittää tai muutoin yhdistää tämä ohjelma OPAL-, "
+"OpenH323- ja PWLIB-ohjelmien kanssa ja levittää yhdistelmää toteuttamatta "
+"GNU GPL:n ehtoja OPAL-, OpenH323- ja PWLIB-ohjelmiin, niin kauan kun "
+"seuraat kaikkien muiden yhdistettyjen ohjelmien kanssa GNU GPL:n "
+"vaatimuksia."
+
 #. Translators: Please write translator credits here, and
 #. * separate names with \n
-#: ../src/gui/callbacks.cpp:190
+#: ../src/gui/callbacks.cpp:191
 msgid "translator-credits"
 msgstr ""
 "Tommi Vainikainen, 2003-2005\n"
-"Ilkka tuohela, 2005\n"
+"Ilkka Tuohela, 2005\n"
+"Timo Jyrinki, 2008\n"
 "\n"
 "http://gnome.fi/"
 
-#: ../src/gui/callbacks.cpp:195
+#: ../src/gui/callbacks.cpp:196
 msgid ""
 "Ekiga is full-featured SIP and H.323 compatible VoIP, IP-Telephony and "
 "Videoconferencing application that allows you to make audio and video calls "
@@ -2551,8 +2537,8 @@ msgid ""
 "The audio input device is the device managed by the audio manager that will "
 "be used to record your voice."
 msgstr ""
-"Äänen nauhoituslaite on äänenhallinnan hallitsema laite, jota käytetään äänen "
-"nauhoittamiseen."
+"Äänen nauhoituslaite on äänenhallinnan hallitsema laite, jota käytetään "
+"äänen nauhoittamiseen."
 
 #: ../src/gui/druid.cpp:1070 ../src/gui/druid.cpp:1204
 msgid "Test Settings"
@@ -2599,27 +2585,27 @@ msgstr ""
 msgid "Configuration complete - page %d/%d"
 msgstr "Asennus päättynyt - sivu %d/%d"
 
-#: ../src/gui/druid.cpp:1630
+#: ../src/gui/druid.cpp:1634
 msgid "56k Modem"
 msgstr "56k-modeemi"
 
-#: ../src/gui/druid.cpp:1631
+#: ../src/gui/druid.cpp:1635
 msgid "ISDN"
 msgstr "ISDN"
 
-#: ../src/gui/druid.cpp:1632
+#: ../src/gui/druid.cpp:1636
 msgid "xDSL/Cable"
 msgstr "xDSL/kaapeli"
 
-#: ../src/gui/druid.cpp:1633
+#: ../src/gui/druid.cpp:1637
 msgid "T1/LAN"
 msgstr "Lähiverkko"
 
-#: ../src/gui/druid.cpp:1634
+#: ../src/gui/druid.cpp:1638
 msgid "Keep current settings"
 msgstr "Pidä nykyiset asetukset"
 
-#: ../src/gui/druid.cpp:1912
+#: ../src/gui/druid.cpp:1916
 #, c-format
 msgid ""
 "You have now finished the Ekiga configuration. All the settings can be "
@@ -2652,7 +2638,7 @@ msgstr ""
 "Videonkaappaus: %s\n"
 "SIP-URL: %s\n"
 
-#: ../src/gui/druid.cpp:1967
+#: ../src/gui/druid.cpp:1971
 msgid "First Time Configuration Assistant"
 msgstr "Ensimmäisen käyttökerran ohjattu asennus"
 
@@ -3175,7 +3161,7 @@ msgstr ""
 "Väärässä järjestyksessä saapuneet paketit: %.1f %%\n"
 "Värinäpuskuri: %d ms"
 
-#: ../src/gui/main.cpp:4574
+#: ../src/gui/main.cpp:4575
 #, c-format
 msgid ""
 "Ekiga got an invalid value for the GConf key %s.\n"
@@ -3196,23 +3182,23 @@ msgstr ""
 "(http://www.gnome.org/projects/gconf/) tai postilista-arkistosta (http://"
 "mail.gnome.org/) lisätietoja tästä ongelmasta."
 
-#: ../src/gui/main.cpp:4577
+#: ../src/gui/main.cpp:4578
 msgid "Gconf key error"
 msgstr "Gconf-avainvirhe"
 
-#: ../src/gui/main.cpp:4608 ../src/gui/main.cpp:4627
+#: ../src/gui/main.cpp:4609 ../src/gui/main.cpp:4628
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "Tulostaa vianetsintäviestit konsoliin (taso 1 ja 6 välillä)"
 
-#: ../src/gui/main.cpp:4611 ../src/gui/main.cpp:4632
+#: ../src/gui/main.cpp:4612 ../src/gui/main.cpp:4633
 msgid "Makes Ekiga call the given URL"
 msgstr "Laittaa Ekigan soittamaan annettuun URLiin"
 
-#: ../src/gui/main.cpp:4665
+#: ../src/gui/main.cpp:4666
 msgid "No usable audio plugin detected"
 msgstr "Käyttökelpoista ääniliitännäistä ei havaittu"
 
-#: ../src/gui/main.cpp:4665
+#: ../src/gui/main.cpp:4666
 msgid ""
 "Ekiga didn't find any usable audio plugin. Make sure that your installation "
 "is correct."
@@ -3819,6 +3805,10 @@ msgid "Devices"
 msgstr "Laitteet"
 
 #: ../src/gui/tools.cpp:174
+msgid "Invalid parameters"
+msgstr "Virheelliset parametrit"
+
+#: ../src/gui/tools.cpp:174
 msgid ""
 "Please provide your username and password in order to be able to use the PC-"
 "To-Phone service."
@@ -3883,3 +3873,45 @@ msgstr "Selaa tilihistoriaa"
 msgid "Consult the calls history"
 msgstr "Selaa puheluhistoriaa"
 
+#~ msgid ""
+#~ "Please provide your first name and e-mail in the Personal Data section in "
+#~ "order to be able to register to the users directory."
+#~ msgstr ""
+#~ "Syötä etunimesi ja sähköpostisi Henkilötiedot-kohtaan, jotta voisit "
+#~ "kirjautua käyttäjähakemistoon."
+
+#~ msgid "Invalid users directory"
+#~ msgstr "Virheellinen käyttäjähakemisto"
+
+#~ msgid "Operation impossible since there is no users directory specified."
+#~ msgstr "Operaatio on mahdoton, koska käyttäjähakemistoa ei ole määritetty."
+
+#~ msgid "Failed to parse XML file"
+#~ msgstr "XML-tiedoston jäsentäminen epäonnistui"
+
+#~ msgid ""
+#~ "There was an error while parsing the XML file. Please make sure that it "
+#~ "is correctly installed in your system."
+#~ msgstr ""
+#~ "Virhe jäsennettäessä XML-tiedostoa. Tarkista, että tiedosto on oikein "
+#~ "asennettuna järjestelmässäsi."
+
+#~ msgid "Bad information"
+#~ msgstr "Huonoa tietoa"
+
+#~ msgid "Bad LDAP information from XML file: %s."
+#~ msgstr "Huono LDAP-tietoa XML-tiedostosta: %s."
+
+#~ msgid "ILS registration failed: unable to connect to %s"
+#~ msgstr "ILS-rekisteröinti epäonnistui: ei saatu yhteyttä palvelimeen %s"
+
+#~ msgid "ILS registration failed: unable to set time limit on operations"
+#~ msgstr ""
+#~ "ILS-rekisteröinti epäonnistui: operaation aikarajan asettaminen "
+#~ "epäonnistui"
+
+#~ msgid "ILS registration failed: failed to bind to %s"
+#~ msgstr "ILS-rekisteröinti epäonnistui: bind(%s) epäonnistui"
+
+#~ msgid "Updated information on %s"
+#~ msgstr "Tiedot päivitetty palvelimella %s."
