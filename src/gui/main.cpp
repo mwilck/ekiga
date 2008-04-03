@@ -47,7 +47,6 @@
 #include "callbacks.h"
 #include "statusicon.h"
 #include "dialpad.h"
-#include "audio.h"
 #include "urlhandler.h"
 #include "statusmenu.h"
 
@@ -92,6 +91,8 @@
 #include <libxml/parser.h>
 
 #include "vidinput-core.h"
+#include "audioinput-core.h"
+#include "audiooutput-core.h"
 
 #include "call-core.h"
 #include "gtk-frontend.h"
@@ -104,6 +105,8 @@ struct _GmMainWindow
 {
   _GmMainWindow (Ekiga::ServiceCore & _core) : core (_core) { }
 
+  GtkWidget *input_signal;
+  GtkWidget *output_signal;
   GtkObject *adj_input_volume;
   GtkObject *adj_output_volume;
   GtkWidget *audio_volume_frame;
@@ -162,7 +165,7 @@ struct _GmMainWindow
   std::string received_video_codec;
   std::string received_audio_codec;
   unsigned int timeout_id;
-
+  unsigned int levelmeter_timeout_id;
   Ekiga::Call *current_call;
   Ekiga::ServiceCore & core;
   std::vector<sigc::connection> connections;
@@ -287,6 +290,9 @@ static void gm_main_window_show_call_panel (GtkWidget *self);
 
 static void gm_main_window_hide_call_panel (GtkWidget *self);
 
+
+void
+gm_main_window_clear_signal_levels (GtkWidget *main_window);
 
 /* Callbacks */
 
@@ -600,8 +606,16 @@ static void on_setup_call_cb (Ekiga::CallManager & /*manager*/,
                               Ekiga::Call & call,
                               gpointer self)
 {
-  if (!call.is_outgoing ())
+  GmMainWindow *mw = gm_mw_get_mw (GTK_WIDGET (self));
+  Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (mw->core.get ("audiooutput-core"));
+
+  if (call.is_outgoing ()) {
+    audiooutput_core->start_play_event("ring_tone_sound", 3000, 256);
+  }
+  else {
+    audiooutput_core->start_play_event("incoming_call_sound", 3000, 256);
     gm_main_window_incoming_call_dialog_show (GTK_WIDGET (self), call);
+  }
 }
 
 
@@ -652,6 +666,19 @@ static gboolean on_stats_refresh_cb (gpointer self)
   return true;
 }
 
+static gboolean on_signal_level_refresh_cb (gpointer self) 
+{
+  gchar *msg = NULL;
+
+  GmMainWindow *mw = gm_mw_get_mw (GTK_WIDGET (self));
+
+  Ekiga::AudioInputCore *audioinput_core = dynamic_cast<Ekiga::AudioInputCore *> (mw->core.get ("audioinput-core"));
+  Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (mw->core.get ("audiooutput-core"));
+
+  gtk_levelmeter_set_level (GTK_LEVELMETER (mw->output_signal), audiooutput_core->get_average_level());
+  gtk_levelmeter_set_level (GTK_LEVELMETER (mw->input_signal), audioinput_core->get_average_level());
+  return true;
+}
 
 static void on_established_call_cb (Ekiga::CallManager & /*manager*/,
                                     Ekiga::Call & call,
@@ -673,6 +700,18 @@ static void on_established_call_cb (Ekiga::CallManager & /*manager*/,
   mw->current_call = &call;
 
   mw->timeout_id = g_timeout_add (1000, on_stats_refresh_cb, self);
+
+  Ekiga::AudioInputCore *audioinput_core = dynamic_cast<Ekiga::AudioInputCore *> (mw->core.get ("audioinput-core"));
+  Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (mw->core.get ("audiooutput-core"));
+
+  audiooutput_core->stop_play_event("incoming_call_sound");
+  audiooutput_core->stop_play_event("ring_tone_sound");
+
+  audioinput_core->start_average_collection();
+  audiooutput_core->start_average_collection();
+  mw->levelmeter_timeout_id = g_timeout_add_full (G_PRIORITY_DEFAULT_IDLE, 50, on_signal_level_refresh_cb, self, NULL);
+
+  // G_PRIORITY_HIGH ?
 }
 
 
@@ -703,12 +742,34 @@ static void on_cleared_call_cb (Ekiga::CallManager & /*manager*/,
     g_source_remove (mw->timeout_id);
     mw->timeout_id = -1;
   }
+  g_source_remove (mw->levelmeter_timeout_id);
+
+  Ekiga::AudioInputCore *audioinput_core = dynamic_cast<Ekiga::AudioInputCore *> (mw->core.get ("audioinput-core"));
+  Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (mw->core.get ("audiooutput-core"));
+
+  audiooutput_core->stop_play_event("incoming_call_sound");
+  audiooutput_core->stop_play_event("ring_tone_sound");
+
+  audioinput_core->stop_average_collection();
+  audiooutput_core->stop_average_collection();
+
+  gm_main_window_clear_signal_levels(GTK_WIDGET (self));
 }
 
 
 static void on_cleared_incoming_call_cb (std::string /*reason*/,
                                          gpointer self)
 {
+  GmMainWindow *mw = NULL;
+
+  GtkWidget *main_window = NULL;
+  
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
+  mw = gm_mw_get_mw (main_window);
+  Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (mw->core.get ("audiooutput-core"));
+  audiooutput_core->stop_play_event("incoming_call_sound");
+  audiooutput_core->stop_play_event("ring_tone_sound");
+
   gtk_widget_destroy (GTK_WIDGET (self));
 }
 
@@ -750,6 +811,11 @@ static void on_missed_call_cb (Ekiga::CallManager & /*manager*/,
                                gpointer self)
 {
   GmMainWindow *mw = gm_mw_get_mw (GTK_WIDGET (self));
+  Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (mw->core.get ("audiooutput-core"));
+
+  audiooutput_core->stop_play_event("incoming_call_sound");
+  audiooutput_core->stop_play_event("ring_tone_sound");
+
   std::stringstream info;
 
   mw->missed_calls++;
@@ -932,11 +998,25 @@ on_hw_accel_status_changed_cb (Ekiga::DisplayManager & /* manager */, HwAccelSta
 void
 on_vidinputdevice_opened_cb (Ekiga::VidInputManager & /* manager */,
                              Ekiga::VidInputDevice & /* vidinput_device */,
-                             Ekiga::VidInputConfig & /* vidinput_config */,
+                             Ekiga::VidInputConfig &  vidinput_config,
                              gpointer self)
 {
   gm_main_window_update_sensitivity (GTK_WIDGET (self), TRUE, FALSE, TRUE);
+
+  GmMainWindow *mw = NULL;
+  g_return_if_fail (self != NULL);
+  mw = gm_mw_get_mw (GTK_WIDGET (self));
+  g_return_if_fail (mw != NULL);
+
+  GTK_ADJUSTMENT (mw->adj_whiteness)->value = vidinput_config.whiteness;
+  GTK_ADJUSTMENT (mw->adj_brightness)->value = vidinput_config.brightness;
+  GTK_ADJUSTMENT (mw->adj_colour)->value = vidinput_config.colour;
+  GTK_ADJUSTMENT (mw->adj_contrast)->value = vidinput_config.contrast;
+
+  gtk_widget_queue_draw (GTK_WIDGET (mw->video_settings_frame));
 }
+
+
 
 void 
 on_vidinputdevice_closed_cb (Ekiga::VidInputManager & /* manager */, Ekiga::VidInputDevice & /*vidinput_device*/, gpointer self)
@@ -999,6 +1079,70 @@ on_vidinputdevice_error_cb (Ekiga::VidInputManager & /* manager */,
   g_free (dialog_msg);
   g_free (dialog_title);
   g_free (tmp_msg);
+}
+
+void
+on_audioinputdevice_opened_cb (Ekiga::AudioInputManager & /* manager */,
+                             Ekiga::AudioInputDevice & /* audioinput_device */,
+                             Ekiga::AudioInputConfig &  audioinput_config,
+                             gpointer self)
+{
+  GmMainWindow *mw = NULL;
+  g_return_if_fail (self != NULL);
+  mw = gm_mw_get_mw (GTK_WIDGET (self));
+  g_return_if_fail (mw != NULL);
+
+  GTK_ADJUSTMENT (mw->adj_input_volume)->value = audioinput_config.volume;
+  
+  gtk_widget_queue_draw (GTK_WIDGET (mw->audio_volume_frame));
+}
+
+
+
+void 
+on_audioinputdevice_closed_cb (Ekiga::AudioInputManager & /* manager */, Ekiga::AudioInputDevice & /*audioinput_device*/, gpointer self)
+{
+}
+
+void 
+on_audioinputdevice_error_cb (Ekiga::AudioInputManager & /* manager */, 
+                            Ekiga::AudioInputDevice & audioinput_device, 
+                            Ekiga::AudioInputErrorCodes error_code, 
+                            gpointer self)
+{
+}
+
+void
+on_audiooutputdevice_opened_cb (Ekiga::AudioOutputManager & /* manager */,
+                             Ekiga::AudioOutputPrimarySecondary primarySecondary,
+                             Ekiga::AudioOutputDevice & /* audiooutput_device */,
+                             Ekiga::AudioOutputConfig &  audiooutput_config,
+                             gpointer self)
+{
+  GmMainWindow *mw = NULL;
+  g_return_if_fail (self != NULL);
+  mw = gm_mw_get_mw (GTK_WIDGET (self));
+  g_return_if_fail (mw != NULL);
+
+  GTK_ADJUSTMENT (mw->adj_output_volume)->value = audiooutput_config.volume;
+
+  gtk_widget_queue_draw (GTK_WIDGET (mw->audio_volume_frame));
+}
+
+
+
+void 
+on_audiooutputdevice_closed_cb (Ekiga::AudioOutputManager & /* manager */, Ekiga::AudioOutputPrimarySecondary primarySecondary, Ekiga::AudioOutputDevice & /*audiooutput_device*/, gpointer self)
+{
+}
+
+void 
+on_audiooutputdevice_error_cb (Ekiga::AudioOutputManager & /* manager */, 
+                            Ekiga::AudioOutputPrimarySecondary primarySecondary,
+                            Ekiga::AudioOutputDevice & audiooutput_device, 
+                            Ekiga::AudioOutputErrorCodes error_code, 
+                            gpointer self)
+{
 }
 
 void
@@ -1685,6 +1829,9 @@ gm_mw_audio_settings_window_new (GtkWidget *main_window)
   gtk_scale_set_value_pos (GTK_SCALE (hscale_play), GTK_POS_RIGHT); 
   gtk_scale_set_draw_value (GTK_SCALE (hscale_play), FALSE);
   gtk_box_pack_start (GTK_BOX (small_vbox), hscale_play, TRUE, TRUE, 0);
+
+  mw->output_signal = gtk_levelmeter_new ();
+  gtk_box_pack_start (GTK_BOX (small_vbox), mw->output_signal, TRUE, TRUE, 0);
   gtk_box_pack_start (GTK_BOX (hbox), small_vbox, TRUE, TRUE, 2);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 3);
 
@@ -1703,6 +1850,9 @@ gm_mw_audio_settings_window_new (GtkWidget *main_window)
   gtk_scale_set_value_pos (GTK_SCALE (hscale_rec), GTK_POS_RIGHT); 
   gtk_scale_set_draw_value (GTK_SCALE (hscale_rec), FALSE);
   gtk_box_pack_start (GTK_BOX (small_vbox), hscale_rec, TRUE, TRUE, 0);
+
+  mw->input_signal = gtk_levelmeter_new ();
+  gtk_box_pack_start (GTK_BOX (small_vbox), mw->input_signal, TRUE, TRUE, 0);
   gtk_box_pack_start (GTK_BOX (hbox), small_vbox, TRUE, TRUE, 2);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 3);
 
@@ -2264,83 +2414,36 @@ video_window_shown_cb (GtkWidget *w,
 
 
 static void 
-audio_volume_changed_cb (G_GNUC_UNUSED GtkAdjustment *adjustment,
-			 G_GNUC_UNUSED gpointer data)
+audio_volume_changed_cb (GtkAdjustment * /*adjustment*/,
+			 gpointer data)
 {
-  /*
-  GMManager *ep = NULL;
-  GMPCSSEndpoint *pcssEP = NULL;
-
-  bool success = FALSE;
-
-  int play_vol = 0; 
-  int rec_vol = 0;
-
+  GmMainWindow *mw = NULL;
   g_return_if_fail (data != NULL);
+  mw = gm_mw_get_mw (GTK_WIDGET (data));
 
-  ep = GnomeMeeting::Process ()->GetManager ();
-  pcssEP = ep->GetPCSSEndpoint ();
+  Ekiga::AudioInputCore *audioinput_core = dynamic_cast<Ekiga::AudioInputCore *> (mw->core.get ("audioinput-core"));
+  Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (mw->core.get ("audiooutput-core"));
 
-  gm_main_window_get_volume_sliders_values (GTK_WIDGET (data), 
-					    play_vol, rec_vol);
-
-  gdk_threads_leave ();
-  success = pcssEP->SetDeviceVolume (play_vol, rec_vol);
-  gdk_threads_enter ();
-
-  if (!success)
-    gm_main_window_set_volume_sliders_values (GTK_WIDGET (data), 0, 0);
-    */
-
-  std::cout << "should be fixed" << std::endl << std::flush;
+  audiooutput_core->set_volume(Ekiga::primary, (unsigned)GTK_ADJUSTMENT (mw->adj_output_volume)->value);
+//  audioinput_core->set_volume((unsigned)GTK_ADJUSTMENT (mw->adj_input_volume)->value); //FIXME
 }
 
 
 static void 
-video_settings_changed_cb (G_GNUC_UNUSED GtkAdjustment *adjustment,
-			   G_GNUC_UNUSED gpointer data)
+video_settings_changed_cb (GtkAdjustment * /*adjustment*/,
+			   gpointer data)
 { 
-/*  GMManager *ep = NULL;
-
-  bool success = FALSE;
-
-  int brightness = -1;
-  int whiteness = -1;
-  int colour = -1;
-  int contrast = -1;
-
+  GmMainWindow *mw = NULL;
   g_return_if_fail (data != NULL);
+  mw = gm_mw_get_mw (GTK_WIDGET (data));
+  g_return_if_fail (mw != NULL);
 
-  ep = GnomeMeeting::Process ()->GetManager ();
+  Ekiga::VidInputCore *vidinput_core = dynamic_cast<Ekiga::VidInputCore *> (mw->core.get ("vidinput-core"));
 
-  gm_main_window_get_video_sliders_values (GTK_WIDGET (data),
-					   whiteness,
-					   brightness,
-					   colour,
-					   contrast);
-*/
-  /* Notice about mutexes:
-     The GDK lock is taken in the callback. We need to release it, because
-     if CreateVideoGrabber is called in another thread, it will only
-     release its internal mutex (also used by GetVideoGrabber) after it 
-     returns, but it will return only if it is opened, and it can't open 
-     if the GDK lock is held as it will wait on the GDK lock before 
-     updating the GUI */
-/*  gdk_threads_leave ();
-    if (whiteness > 0)
-      success = video_grabber->SetWhiteness (whiteness << 8);
-    if (brightness > 0)
-      success = video_grabber->SetBrightness (brightness << 8) || success;
-    if (colour > 0)
-      success = video_grabber->SetColour (colour << 8) || success;
-    if (contrast > 0)
-      success = video_grabber->SetContrast (contrast << 8) || success;
-
-  gdk_threads_enter ();
-
-  if (!success)
-    gm_main_window_set_video_sliders_values (GTK_WIDGET (data), 0, 0, 0, 0); */
-  std::cout << "should be fixed" << std::endl << std::flush;
+  vidinput_core->set_whiteness ((unsigned) GTK_ADJUSTMENT (mw->adj_whiteness)->value);
+  vidinput_core->set_brightness ((unsigned) GTK_ADJUSTMENT (mw->adj_brightness)->value);
+  vidinput_core->set_colour ((unsigned) GTK_ADJUSTMENT (mw->adj_colour)->value);
+  vidinput_core->set_contrast ((unsigned) GTK_ADJUSTMENT (mw->adj_contrast)->value);
 }
 
 
@@ -3106,6 +3209,21 @@ gm_main_window_set_busy (GtkWidget *main_window,
     gdk_window_set_cursor (GTK_WIDGET (main_window)->window, NULL);
 }
 
+void
+gm_main_window_clear_signal_levels (GtkWidget *main_window)
+{
+  GmMainWindow *mw = NULL;
+
+  g_return_if_fail (main_window != NULL);
+
+  mw = gm_mw_get_mw (main_window);
+
+  g_return_if_fail (mw != NULL);
+
+  gtk_levelmeter_clear (GTK_LEVELMETER (mw->output_signal));
+  gtk_levelmeter_clear (GTK_LEVELMETER (mw->input_signal));
+}
+
 
 void
 gm_main_window_set_volume_sliders_values (GtkWidget *main_window,
@@ -3179,26 +3297,6 @@ gm_main_window_set_video_sliders_values (GtkWidget *main_window,
 }
 
 
-void
-gm_main_window_get_video_sliders_values (GtkWidget *main_window,
-					 int &whiteness, 
-					 int &brightness,
-					 int &colour,
-					 int &contrast)
-{
-  GmMainWindow *mw = NULL;
-
-  g_return_if_fail (main_window != NULL);
-
-  mw = gm_mw_get_mw (main_window);
-
-  g_return_if_fail (mw != NULL);
-
-  whiteness = (int) GTK_ADJUSTMENT (mw->adj_whiteness)->value;
-  brightness = (int) GTK_ADJUSTMENT (mw->adj_brightness)->value;
-  colour = (int) GTK_ADJUSTMENT (mw->adj_colour)->value;
-  contrast = (int) GTK_ADJUSTMENT (mw->adj_contrast)->value;
-}
 
 
 void 
@@ -3546,6 +3644,7 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   mw->transfer_call_popup = NULL;
   mw->current_call = NULL;
   mw->timeout_id = -1;
+  mw->levelmeter_timeout_id = -1;
   mw->x = 0;
   mw->y = 0;
   mw->missed_calls = mw->total_mwi = 0;
@@ -3705,6 +3804,30 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   conn = vidinput_core->vidinputdevice_error.connect (sigc::bind (sigc::ptr_fun (on_vidinputdevice_error_cb), (gpointer) window));
   mw->connections.push_back (conn);
 
+  /* New AudioInput Engine signals */
+  Ekiga::AudioInputCore *audioinput_core = dynamic_cast<Ekiga::AudioInputCore *> (mw->core.get ("audioinput-core"));
+
+  conn = audioinput_core->audioinputdevice_opened.connect (sigc::bind (sigc::ptr_fun (on_audioinputdevice_opened_cb), (gpointer) window));
+  mw->connections.push_back (conn);
+
+  conn = audioinput_core->audioinputdevice_closed.connect (sigc::bind (sigc::ptr_fun (on_audioinputdevice_closed_cb), (gpointer) window));
+  mw->connections.push_back (conn);
+
+  conn = audioinput_core->audioinputdevice_error.connect (sigc::bind (sigc::ptr_fun (on_audioinputdevice_error_cb), (gpointer) window));
+  mw->connections.push_back (conn);
+
+  /* New AudioOutput Engine signals */
+  Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (mw->core.get ("audiooutput-core"));
+
+  conn = audiooutput_core->audiooutputdevice_opened.connect (sigc::bind (sigc::ptr_fun (on_audiooutputdevice_opened_cb), (gpointer) window));
+  mw->connections.push_back (conn);
+
+  conn = audiooutput_core->audiooutputdevice_closed.connect (sigc::bind (sigc::ptr_fun (on_audiooutputdevice_closed_cb), (gpointer) window));
+  mw->connections.push_back (conn);
+
+  conn = audiooutput_core->audiooutputdevice_error.connect (sigc::bind (sigc::ptr_fun (on_audiooutputdevice_error_cb), (gpointer) window));
+  mw->connections.push_back (conn);
+    
   /* New Call Engine signals */
   Ekiga::CallCore *call_core = dynamic_cast<Ekiga::CallCore *> (mw->core.get ("call-core"));
 
@@ -4168,10 +4291,6 @@ main (int argc,
 
   GnomeMeeting::Process ()->InitEngine ();
   GnomeMeeting::Process ()->DetectInterfaces ();
-  if (!GnomeMeeting::Process ()->DetectCodecs ()) 
-    error = 2;
-  if (!GnomeMeeting::Process ()->DetectDevices ()) 
-    error = 1;
   GnomeMeeting::Process ()->BuildGUI ();
   
   /* Add depreciated notifiers */

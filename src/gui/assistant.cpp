@@ -41,11 +41,12 @@
 #include "ekiga.h"
 #include "gmconf.h"
 #include "misc.h"
-#include "devices/audio.h"
 #include "toolbox/toolbox.h"
 #include "assistant.h"
 
 #include "vidinput-core.h"
+#include "audioinput-core.h"
+#include "audiooutput-core.h"
 
 G_DEFINE_TYPE(EkigaAssistant, ekiga_assistant, GTK_TYPE_ASSISTANT)
 
@@ -58,9 +59,8 @@ struct _EkigaAssistantPrivate
   GtkWidget *personal_data_page;
   GtkWidget *ekiga_net_page;
   GtkWidget *connection_type_page;
-  GtkWidget *audio_manager_page;
   GtkWidget *audio_devices_page;
-  GtkWidget *video_manager_page;
+  GtkWidget *video_devices_page;
   GtkWidget *summary_page;
 
   GtkWidget *name;
@@ -71,12 +71,10 @@ struct _EkigaAssistantPrivate
 
   GtkWidget *connection_type;
 
-  GtkWidget *audio_manager;
-
   GtkWidget *audio_player;
   GtkWidget *audio_recorder;
 
-  GtkWidget *video_manager;
+  GtkWidget *video_device;
 
   GtkListStore *summary_model;
 };
@@ -125,6 +123,19 @@ set_current_page_complete (GtkAssistant *assistant,
   current_page = gtk_assistant_get_nth_page (assistant, page_number);
   gtk_assistant_set_page_complete (assistant, current_page, complete);
 }
+
+void 
+get_audio_output_devices_list (Ekiga::ServiceCore *core,
+                                        std::vector<std::string> & device_list);
+void 
+get_audio_input_devices_list (Ekiga::ServiceCore *core,
+                                        std::vector<std::string> & device_list);
+void 
+get_video_devices_list (Ekiga::ServiceCore *core,
+                                        std::vector<std::string> & device_list);
+
+gchar**
+convert_string_list (const std::vector<std::string> & list);
 
 static void
 update_combo_box (GtkComboBox         *combo_box,
@@ -571,74 +582,6 @@ apply_connection_type_page (EkigaAssistant *assistant)
   gm_conf_set_int (GENERAL_KEY "kind_of_net", connection_type);
 }
 
-/**********************
- * Audio manager page *
- **********************/
-
-static void
-create_audio_manager_page (EkigaAssistant *assistant)
-{
-  GtkWidget *vbox;
-  GtkWidget *label;
-  gchar *text;
-
-  vbox = create_page (assistant, _("Audio Manager"), GTK_ASSISTANT_PAGE_CONTENT);
-
-  label = gtk_label_new (_("Please choose your audio manager:"));
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
-
-  assistant->priv->audio_manager = gtk_combo_box_new_text ();
-  gtk_box_pack_start (GTK_BOX (vbox), assistant->priv->audio_manager, FALSE, FALSE, 0);
-
-  label = gtk_label_new (NULL);
-#ifdef WIN32
-  text = g_strdup_printf ("<i>%s</i>", _("The audio manager is the plugin that "
-                          "will manage your audio devices. WindowsMultimedia "
-                          "is probably the best choice when available."));
-#else
-  text = g_strdup_printf ("<i>%s</i>", _("The audio manager is the plugin that "
-                          "will manage your audio devices. ALSA is probably "
-                          "the best choice when available."));
-#endif
-  gtk_label_set_markup (GTK_LABEL (label), text);
-  g_free (text);
-  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, TRUE, 0);
-
-  assistant->priv->audio_manager_page = vbox;
-  gtk_widget_show_all (vbox);
-  gtk_assistant_set_page_complete (GTK_ASSISTANT (assistant), vbox, TRUE);
-}
-
-static void
-prepare_audio_manager_page (EkigaAssistant *assistant)
-{
-  char **array;
-  gchar *audio_manager;
-
-  array = GnomeMeeting::Process ()->GetAudioPlugins ().ToCharArray ();
-  audio_manager = gm_conf_get_string (AUDIO_DEVICES_KEY "plugin");
-
-  update_combo_box (GTK_COMBO_BOX (assistant->priv->audio_manager),
-                    array, audio_manager);
-  free (array);
-}
-
-static void
-apply_audio_manager_page (EkigaAssistant *assistant)
-{
-  GtkComboBox *combo_box;
-  gchar *audio_manager;
-
-  combo_box = GTK_COMBO_BOX (assistant->priv->audio_manager);
-  audio_manager = gtk_combo_box_get_active_text (combo_box);
-  if (audio_manager) {
-    gm_conf_set_string (AUDIO_DEVICES_KEY "plugin", audio_manager);
-    g_free (audio_manager);
-  }
-}
 
 /**********************
  * Audio devices page *
@@ -702,15 +645,12 @@ static void
 prepare_audio_devices_page (EkigaAssistant *assistant)
 {
   GMManager *manager;
-  gchar *audio_manager;
   gchar *player;
   gchar *recorder;
   PStringArray devices;
   char **array;
 
   manager = dynamic_cast<GMManager *> (assistant->priv->core->get ("opal-component"));
-
-  audio_manager = gtk_combo_box_get_active_text (GTK_COMBO_BOX (assistant->priv->audio_manager));
 
   player = gm_conf_get_string (AUDIO_DEVICES_KEY "output_device");
   recorder = gm_conf_get_string (AUDIO_DEVICES_KEY "input_device");
@@ -719,25 +659,18 @@ prepare_audio_devices_page (EkigaAssistant *assistant)
    * works only for the currently selected audio and video plugins,
    * not for a random one.
    */
-  gnomemeeting_sound_daemons_suspend ();
+  std::vector <std::string> device_list;
 
-  devices = PSoundChannel::GetDeviceNames (audio_manager, PSoundChannel::Player);
-  if (devices.GetSize () == 0)
-    devices += PString (_("No device found"));
-
-  array = devices.ToCharArray ();
+  get_audio_output_devices_list (assistant->priv->core, device_list);
+  array = convert_string_list(device_list);
   update_combo_box (GTK_COMBO_BOX (assistant->priv->audio_player), array, player);
-  free (array);
+  g_free (array);
 
-  devices = PSoundChannel::GetDeviceNames (audio_manager, PSoundChannel::Recorder);
-  if (devices.GetSize () == 0)
-    devices += PString (_("No device found"));
 
-  array = devices.ToCharArray ();
+  get_audio_input_devices_list (assistant->priv->core, device_list);
+  array = convert_string_list(device_list);
   update_combo_box (GTK_COMBO_BOX (assistant->priv->audio_recorder), array, player);
-  free (array);
-
-  gnomemeeting_sound_daemons_resume ();
+  g_free (array);
 
   g_free (player);
   g_free (recorder);
@@ -770,20 +703,20 @@ apply_audio_devices_page (EkigaAssistant *assistant)
  **********************/
 
 static void
-create_video_manager_page (EkigaAssistant *assistant)
+create_video_devices_page (EkigaAssistant *assistant)
 {
   GtkWidget *vbox;
   GtkWidget *label;
   gchar *text;
 
-  vbox = create_page (assistant, _("Video manager"), GTK_ASSISTANT_PAGE_CONTENT);
+  vbox = create_page (assistant, _("Video input device"), GTK_ASSISTANT_PAGE_CONTENT);
 
-  label = gtk_label_new (_("Please choose your video manager:"));
+  label = gtk_label_new (_("Please choose your video input device:"));
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
 
-  assistant->priv->video_manager = gtk_combo_box_new_text ();
-  gtk_box_pack_start (GTK_BOX (vbox), assistant->priv->video_manager, FALSE, FALSE, 0);
+  assistant->priv->video_device = gtk_combo_box_new_text ();
+  gtk_box_pack_start (GTK_BOX (vbox), assistant->priv->video_device, FALSE, FALSE, 0);
 
   label = gtk_label_new (NULL);
   text = g_strdup_printf ("<i>%s</i>", _("The video manager is the plugin that "
@@ -795,41 +728,64 @@ create_video_manager_page (EkigaAssistant *assistant)
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, TRUE, 0);
 
-  assistant->priv->video_manager_page = vbox;
+  assistant->priv->video_devices_page = vbox;
   gtk_widget_show_all (vbox);
   gtk_assistant_set_page_complete (GTK_ASSISTANT (assistant), vbox, TRUE);
 }
 
+static void
+prepare_video_devices_page (EkigaAssistant *assistant)
+{
+  std::vector <std::string> device_list;
+  gchar** array;
+  gchar* current_plugin;
+
+  get_video_devices_list (assistant->priv->core, device_list);
+  array = convert_string_list (device_list);
+  current_plugin = gm_conf_get_string (VIDEO_DEVICES_KEY "input_device");
+  update_combo_box (GTK_COMBO_BOX (assistant->priv->video_device),
+                    array, current_plugin);
+  g_free (array);
+}
+
+static void
+apply_video_devices_page (EkigaAssistant *assistant)
+{
+
+  GtkComboBox *combo_box;
+  gchar *video_device;
+
+  combo_box = GTK_COMBO_BOX (assistant->priv->video_device);
+  video_device = gtk_combo_box_get_active_text (combo_box);
+
+  if (video_device) {
+    gm_conf_set_string (VIDEO_DEVICES_KEY "input_device", video_device);
+    g_free (video_device);
+  }
+}
+
+
 // FIXME: duplicate to gm_prefs_window_get_video_devices_list
 void 
-get_video_devices_list (Ekiga::ServiceCore *core,
-                                        std::vector<std::string> & plugin_list,
+get_audio_output_devices_list (Ekiga::ServiceCore *core,
                                         std::vector<std::string> & device_list)
 {
-  Ekiga::VidInputCore *vidinput_core = dynamic_cast<Ekiga::VidInputCore *> (core->get ("vidinput-core"));
-  std::vector <Ekiga::VidInputDevice> vidinput_devices;
-  Ekiga::VidInputDevice vidinput_device;
+  Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (core->get ("audiooutput-core"));
+  Ekiga::AudioOutputDevice audiooutput_device;
+  std::vector <Ekiga::AudioOutputDevice> audiooutput_devices;
 
-  vidinput_core->get_vidinput_devices(vidinput_devices);
-
-  std::string plugin_string;
   std::string device_string;
+  device_list.clear();
 
-  gchar *current_plugin = NULL;
-  current_plugin = gm_conf_get_string (VIDEO_DEVICES_KEY "plugin");
+  audiooutput_core->get_audiooutput_devices(audiooutput_devices);
 
-  for (std::vector<Ekiga::VidInputDevice>::iterator iter = vidinput_devices.begin ();
-       iter != vidinput_devices.end ();
+  for (std::vector<Ekiga::AudioOutputDevice>::iterator iter = audiooutput_devices.begin ();
+       iter != audiooutput_devices.end ();
        iter++) {
 
-    vidinput_device = (*iter);
-    plugin_string = vidinput_device.type + "/" + vidinput_device.source;
-    plugin_list.push_back(plugin_string);
-
-    if (current_plugin && plugin_string == current_plugin) {
-      device_string = vidinput_device.device;
-      device_list.push_back(device_string);
-    }
+    audiooutput_device = (*iter);
+    device_string = audiooutput_device.type + "/" + audiooutput_device.source + "/" + audiooutput_device.device;
+    device_list.push_back(device_string);
   }
 
   if (device_list.size() == 0) {
@@ -837,9 +793,68 @@ get_video_devices_list (Ekiga::ServiceCore *core,
       device_list.push_back(device_string);
   }
 
-  g_free (current_plugin);
+}
+
+
+void 
+get_audio_input_devices_list (Ekiga::ServiceCore *core,
+                                        std::vector<std::string> & device_list)
+{
+  Ekiga::AudioInputCore *audioinput_core = dynamic_cast<Ekiga::AudioInputCore *> (core->get ("audioinput-core"));
+  Ekiga::AudioInputDevice audioinput_device;
+  std::vector <Ekiga::AudioInputDevice> audioinput_devices;
+
+  std::string device_string;
+  device_list.clear();
+
+  audioinput_core->get_audioinput_devices(audioinput_devices);
+
+  for (std::vector<Ekiga::AudioInputDevice>::iterator iter = audioinput_devices.begin ();
+       iter != audioinput_devices.end ();
+       iter++) {
+
+    audioinput_device = (*iter);
+    device_string = audioinput_device.type + "/" + audioinput_device.source + "/" + audioinput_device.device;
+    device_list.push_back(device_string);
+  }
+
+  if (device_list.size() == 0) {
+    device_string = _("No device found");
+      device_list.push_back(device_string);
+  }
 
 }
+
+
+void 
+get_video_devices_list (Ekiga::ServiceCore *core,
+                                        std::vector<std::string> & device_list)
+{
+  Ekiga::VidInputCore *vidinput_core = dynamic_cast<Ekiga::VidInputCore *> (core->get ("vidinput-core"));
+  std::vector <Ekiga::VidInputDevice> vidinput_devices;
+  Ekiga::VidInputDevice vidinput_device;
+
+  std::string device_string;
+  device_list.clear();
+
+  vidinput_core->get_vidinput_devices(vidinput_devices);
+
+  for (std::vector<Ekiga::VidInputDevice>::iterator iter = vidinput_devices.begin ();
+       iter != vidinput_devices.end ();
+       iter++) {
+
+    vidinput_device = (*iter);
+    device_string = vidinput_device.type + "/" + vidinput_device.source + "/" + vidinput_device.device;
+    device_list.push_back(device_string);
+  }
+
+  if (device_list.size() == 0) {
+    device_string = _("No device found");
+      device_list.push_back(device_string);
+  }
+}
+
+
 // FIXME: duplicate to gm_prefs_window_convert_string_list
 gchar**
 convert_string_list (const std::vector<std::string> & list)
@@ -853,40 +868,6 @@ convert_string_list (const std::vector<std::string> & list)
   array[i] = NULL;
 
   return array;
-}
-
-static void
-prepare_video_manager_page (EkigaAssistant *assistant)
-{
-  std::vector <std::string> plugin_list;
-  std::vector <std::string> device_list;
-  gchar** array;
-  gchar* current_plugin;
-
-  get_video_devices_list (assistant->priv->core, plugin_list, device_list);
-
-  array = convert_string_list (plugin_list);
-
-  current_plugin = gm_conf_get_string (VIDEO_DEVICES_KEY "plugin");
-
-  update_combo_box (GTK_COMBO_BOX (assistant->priv->video_manager),
-                    array, current_plugin);
-
-  g_free (array);
-}
-
-static void
-apply_video_manager_page (EkigaAssistant *assistant)
-{
-  GtkComboBox *combo_box;
-  gchar *video_manager;
-
-  combo_box = GTK_COMBO_BOX (assistant->priv->video_manager);
-  video_manager = gtk_combo_box_get_active_text (combo_box);
-  if (video_manager) {
-    gm_conf_set_string (VIDEO_DEVICES_KEY "plugin", video_manager);
-    g_free (video_manager);
-  }
 }
 
 /****************
@@ -983,20 +964,11 @@ static void prepare_summary_page (EkigaAssistant *assistant)
     g_free (value);
   }
 
-  /* The audio manager */
-  gtk_list_store_append (model, &iter);
-  value = gtk_combo_box_get_active_text (GTK_COMBO_BOX (assistant->priv->audio_manager));
-  gtk_list_store_set (model, &iter,
-                      SUMMARY_KEY_COLUMN, "Audio manager",
-                      SUMMARY_VALUE_COLUMN, value,
-                      -1);
-  g_free (value);
-
   /* The audio playing device */
   gtk_list_store_append (model, &iter);
   value = gtk_combo_box_get_active_text (GTK_COMBO_BOX (assistant->priv->audio_player));
   gtk_list_store_set (model, &iter,
-                      SUMMARY_KEY_COLUMN, "Audio player",
+                      SUMMARY_KEY_COLUMN, "Audio output device",
                       SUMMARY_VALUE_COLUMN, value,
                       -1);
   g_free (value);
@@ -1005,16 +977,16 @@ static void prepare_summary_page (EkigaAssistant *assistant)
   gtk_list_store_append (model, &iter);
   value = gtk_combo_box_get_active_text (GTK_COMBO_BOX (assistant->priv->audio_recorder));
   gtk_list_store_set (model, &iter,
-                      SUMMARY_KEY_COLUMN, "Audio recorder",
+                      SUMMARY_KEY_COLUMN, "Audio input device",
                       SUMMARY_VALUE_COLUMN, value,
                       -1);
   g_free (value);
 
   /* The video manager */
   gtk_list_store_append (model, &iter);
-  value = gtk_combo_box_get_active_text (GTK_COMBO_BOX (assistant->priv->video_manager));
+  value = gtk_combo_box_get_active_text (GTK_COMBO_BOX (assistant->priv->video_device));
   gtk_list_store_set (model, &iter,
-                      SUMMARY_KEY_COLUMN, "Video manager",
+                      SUMMARY_KEY_COLUMN, "Video input device",
                       SUMMARY_VALUE_COLUMN, value,
                       -1);
   g_free (value);
@@ -1060,9 +1032,8 @@ ekiga_assistant_init (EkigaAssistant *assistant)
   create_personal_data_page (assistant);
   create_ekiga_net_page (assistant);
   create_connection_type_page (assistant);
-  create_audio_manager_page (assistant);
   create_audio_devices_page (assistant);
-  create_video_manager_page (assistant);
+  create_video_devices_page (assistant);
   create_summary_page (assistant);
 
   /* FIXME: what the hell is it needed for? */
@@ -1098,18 +1069,13 @@ ekiga_assistant_prepare (GtkAssistant *gtkassistant,
     return;
   }
 
-  if (page == assistant->priv->audio_manager_page) {
-    prepare_audio_manager_page (assistant);
-    return;
-  }
-
   if (page == assistant->priv->audio_devices_page) {
     prepare_audio_devices_page (assistant);
     return;
   }
 
-  if (page == assistant->priv->video_manager_page) {
-    prepare_video_manager_page (assistant);
+  if (page == assistant->priv->video_devices_page) {
+    prepare_video_devices_page (assistant);
     return;
   }
 
@@ -1135,9 +1101,8 @@ ekiga_assistant_apply (GtkAssistant *gtkassistant)
   apply_personal_data_page (assistant);
   apply_ekiga_net_page (assistant);
   apply_connection_type_page (assistant);
-  apply_audio_manager_page (assistant);
   apply_audio_devices_page (assistant);
-  apply_video_manager_page (assistant);
+  apply_video_devices_page (assistant);
 
   manager = dynamic_cast<GMManager *> (assistant->priv->core->get ("opal-component"));
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
@@ -1146,12 +1111,6 @@ ekiga_assistant_apply (GtkAssistant *gtkassistant)
   gtk_widget_hide (GTK_WIDGET (assistant));
   gtk_assistant_set_current_page (gtkassistant, 0);
   gnomemeeting_window_show (main_window);
-
-  /* Will be done through the config if the manager changes, but not
-     if the manager doesn't change */
-  gdk_threads_leave ();
-  GnomeMeeting::Process ()->DetectDevices ();
-  gdk_threads_enter ();
 
   /* Update the version number */
   gm_conf_set_int (GENERAL_KEY "version", schema_version);

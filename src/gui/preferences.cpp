@@ -1,4 +1,4 @@
-
+ 
 /* Ekiga -- A VoIP and Video-Conferencing application
  * Copyright (C) 2000-2006 Damien Sandras
  *
@@ -45,7 +45,6 @@
 #include "h323.h"
 #include "sip.h"
 #include "ekiga.h"
-#include "audio.h"
 #include "misc.h"
 #include "urlhandler.h"
 #include "callbacks.h"
@@ -312,7 +311,19 @@ static void image_filename_browse_preview_cb (GtkWidget *selector,
 static void audioev_filename_browse_play_cb (GtkWidget *playbutton,
                                              gpointer data);
 
+void 
+gm_prefs_window_get_audio_output_devices_list (Ekiga::ServiceCore *core,
+                                        std::vector<std::string> & device_list);
 
+void 
+gm_prefs_window_get_audio_input_devices_list (Ekiga::ServiceCore *core,
+                                        std::vector<std::string> & device_list);
+
+gchar**
+gm_prefs_window_convert_string_list (const std::vector<std::string> & list);
+
+void 
+gm_prefs_window_update_devices_list (GtkWidget *prefs_window);
 
 /* Implementation */
 static void
@@ -345,7 +356,7 @@ gm_pw_add_update_button (G_GNUC_UNUSED GtkWidget *prefs_window,
 {
   GtkWidget *alignment = NULL;
   GtkWidget *image = NULL;
-  GtkWidget *button = NULL;                                                    
+  GtkWidget *button = NULL;
 
 
   /* Update Button */
@@ -358,13 +369,13 @@ gm_pw_add_update_button (G_GNUC_UNUSED GtkWidget *prefs_window,
 
   gtk_box_pack_start (GTK_BOX (box), alignment, TRUE, TRUE, 0);
 
-  g_signal_connect (G_OBJECT (button), "clicked",                          
+  g_signal_connect (G_OBJECT (button), "clicked",
                     G_CALLBACK (func), 
                     (gpointer) data);
 
 
-  return button;                                                               
-}                                                                              
+  return button;
+}
 
 
 static void
@@ -392,7 +403,7 @@ gm_pw_init_general_page (GtkWidget *prefs_window,
 
   /* Add the update button */
   gm_pw_add_update_button (prefs_window, container, GTK_STOCK_APPLY, _("_Apply"), GTK_SIGNAL_FUNC (personal_data_update_cb), _("Click here to update the users directory you are registered to with the new First Name, Last Name, E-Mail, Comment and Location"), 0, prefs_window);
-}                                                                              
+}
 
 
 static void
@@ -473,8 +484,6 @@ gm_pw_init_sound_events_page (GtkWidget *prefs_window,
   GtkFileFilter *filefilter = NULL;
 
   PStringArray devs;
-
-  gchar **array = NULL;
 
   pw = gm_pw_get_pw (prefs_window);
 
@@ -602,18 +611,6 @@ gm_pw_init_sound_events_page (GtkWidget *prefs_window,
   /* Place it after the signals so that we can make sure they are run if
      required */
   gm_prefs_window_sound_events_list_build (prefs_window);
-
-
-  /* The audio output */
-  subsection = gnome_prefs_subsection_new (prefs_window, container,
-                                           _("Alternative Output Device"), 
-                                           1, 1);
-
-  devs = GnomeMeeting::Process ()->GetAudioOutpoutDevices ();
-  array = devs.ToCharArray ();
-  pw->sound_events_output =
-    gnome_prefs_string_option_menu_new (subsection, _("Alternative output device:"), (const gchar **)array, SOUND_EVENTS_KEY "output_device", _("Select an alternative audio output device to use for sound events"), 0);
-  free (array);
 }
 
 
@@ -769,71 +766,82 @@ gm_pw_init_audio_devices_page (GtkWidget *prefs_window,
 
   pw = gm_pw_get_pw (prefs_window);
 
-
-  subsection = gnome_prefs_subsection_new (prefs_window, container,
-                                           _("Audio Plugin"), 1, 2);
-
-  /* Add all the fields for the audio manager */
-  devs = GnomeMeeting::Process ()->GetAudioPlugins ();
-  array = devs.ToCharArray ();
-  gnome_prefs_string_option_menu_new (subsection, _("Audio plugin:"), (const gchar **)array, AUDIO_DEVICES_KEY "plugin", _("The audio plugin that will be used to detect the devices and manage them."), 0);
-  free (array);
-
-
   /* Add all the fields */
   subsection = gnome_prefs_subsection_new (prefs_window, container,
-                                           _("Audio Devices"), 4, 2);
+                                           _("Audio Devices"), 4, 3);
 
+  /* Add all the fields for the audio manager */
+  std::vector <std::string> device_list;
 
-  /* The player */
-  devs = GnomeMeeting::Process ()->GetAudioOutpoutDevices ();
-  array = devs.ToCharArray ();
+  gm_prefs_window_get_audio_output_devices_list (pw->core, device_list);
+  array = gm_prefs_window_convert_string_list(device_list);
+  pw->sound_events_output = 
+    gnome_prefs_string_option_menu_new (subsection, _("Ringing Device"), (const gchar **)array, SOUND_EVENTS_KEY "output_device", _("Select the ringing audio device to use"), 0);
   pw->audio_player =
-    gnome_prefs_string_option_menu_new (subsection, _("Output device:"), (const gchar **)array, AUDIO_DEVICES_KEY "output_device", _("Select the audio output device to use"), 0);
-  free (array);
+    gnome_prefs_string_option_menu_new (subsection, _("Output device:"), (const gchar **)array, AUDIO_DEVICES_KEY "output_device", _("Select the audio output device to use"), 1);
+  g_free (array);
 
   /* The recorder */
-  devs = GnomeMeeting::Process ()->GetAudioInputDevices ();
-  array = devs.ToCharArray ();
+  gm_prefs_window_get_audio_input_devices_list (pw->core, device_list);
+  array = gm_prefs_window_convert_string_list(device_list);
   pw->audio_recorder =
     gnome_prefs_string_option_menu_new (subsection, _("Input device:"), (const gchar **)array, AUDIO_DEVICES_KEY "input_device", _("Select the audio input device to use"), 2);
-  free (array);
+  g_free (array);
 
 
   /* That button will refresh the device list */
-  gm_pw_add_update_button (prefs_window, container, GTK_STOCK_REFRESH, _("_Detect devices"), GTK_SIGNAL_FUNC (refresh_devices_list_cb), _("Click here to refresh the device list."), 1, NULL);
+  gm_pw_add_update_button (prefs_window, container, GTK_STOCK_REFRESH, _("_Detect devices"), GTK_SIGNAL_FUNC (refresh_devices_list_cb), _("Click here to refresh the device list."), 1, prefs_window);
 }
 
 
 void 
 gm_prefs_window_get_video_devices_list (Ekiga::ServiceCore *core,
-                                        std::vector<std::string> & plugin_list,
                                         std::vector<std::string> & device_list)
 {
   Ekiga::VidInputCore *vidinput_core = dynamic_cast<Ekiga::VidInputCore *> (core->get ("vidinput-core"));
   std::vector <Ekiga::VidInputDevice> vidinput_devices;
   Ekiga::VidInputDevice vidinput_device;
 
-  vidinput_core->get_vidinput_devices(vidinput_devices);
-
-  std::string plugin_string;
   std::string device_string;
+  device_list.clear();
 
-  gchar *current_plugin = NULL;
-  current_plugin = gm_conf_get_string (VIDEO_DEVICES_KEY "plugin");
+  vidinput_core->get_vidinput_devices(vidinput_devices);
 
   for (std::vector<Ekiga::VidInputDevice>::iterator iter = vidinput_devices.begin ();
        iter != vidinput_devices.end ();
        iter++) {
 
     vidinput_device = (*iter);
-    plugin_string = vidinput_device.type + "/" + vidinput_device.source;
-    plugin_list.push_back(plugin_string);
+    device_string = vidinput_device.type + "/" + vidinput_device.source + "/" + vidinput_device.device;
+    device_list.push_back(device_string);
+  }
 
-    if (current_plugin && plugin_string == current_plugin) {
-      device_string = vidinput_device.device;
+  if (device_list.size() == 0) {
+    device_string = _("No device found");
       device_list.push_back(device_string);
-    }
+  }
+}
+
+void 
+gm_prefs_window_get_audio_output_devices_list (Ekiga::ServiceCore *core,
+                                        std::vector<std::string> & device_list)
+{
+  Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (core->get ("audiooutput-core"));
+  Ekiga::AudioOutputDevice audiooutput_device;
+  std::vector <Ekiga::AudioOutputDevice> audiooutput_devices;
+
+  std::string device_string;
+  device_list.clear();
+
+  audiooutput_core->get_audiooutput_devices(audiooutput_devices);
+
+  for (std::vector<Ekiga::AudioOutputDevice>::iterator iter = audiooutput_devices.begin ();
+       iter != audiooutput_devices.end ();
+       iter++) {
+
+    audiooutput_device = (*iter);
+    device_string = audiooutput_device.type + "/" + audiooutput_device.source + "/" + audiooutput_device.device;
+    device_list.push_back(device_string);
   }
 
   if (device_list.size() == 0) {
@@ -841,8 +849,38 @@ gm_prefs_window_get_video_devices_list (Ekiga::ServiceCore *core,
       device_list.push_back(device_string);
   }
 
-  g_free (current_plugin);
 }
+
+
+void 
+gm_prefs_window_get_audio_input_devices_list (Ekiga::ServiceCore *core,
+                                        std::vector<std::string> & device_list)
+{
+  Ekiga::AudioInputCore *audioinput_core = dynamic_cast<Ekiga::AudioInputCore *> (core->get ("audioinput-core"));
+  Ekiga::AudioInputDevice audioinput_device;
+  std::vector <Ekiga::AudioInputDevice> audioinput_devices;
+
+  std::string device_string;
+  device_list.clear();
+
+  audioinput_core->get_audioinput_devices(audioinput_devices);
+
+  for (std::vector<Ekiga::AudioInputDevice>::iterator iter = audioinput_devices.begin ();
+       iter != audioinput_devices.end ();
+       iter++) {
+
+    audioinput_device = (*iter);
+    device_string = audioinput_device.type + "/" + audioinput_device.source + "/" + audioinput_device.device;
+    device_list.push_back(device_string);
+  }
+
+  if (device_list.size() == 0) {
+    device_string = _("No device found");
+      device_list.push_back(device_string);
+  }
+
+}
+
 
 gchar**
 gm_prefs_window_convert_string_list (const std::vector<std::string> & list)
@@ -901,20 +939,8 @@ gm_pw_init_video_devices_page (GtkWidget *prefs_window,
   pw = gm_pw_get_pw (prefs_window); 
 
 
-  /* The video manager */
-  subsection = gnome_prefs_subsection_new (prefs_window, container,
-                                           _("Video Plugin"), 1, 2);
-
-  std::vector <std::string> plugin_list;
   std::vector <std::string> device_list;
 
-  gm_prefs_window_get_video_devices_list (pw->core, plugin_list, device_list);
-
-  array = gm_prefs_window_convert_string_list(plugin_list);
-
-  gnome_prefs_string_option_menu_new (subsection, _("Video plugin:"), (const gchar **)array, VIDEO_DEVICES_KEY "plugin", _("The video plugin that will be used to detect the devices and manage them"), 0);
-
-  g_free (array);
 
   /* The video devices related options */
   subsection = gnome_prefs_subsection_new (prefs_window, container,
@@ -922,13 +948,11 @@ gm_pw_init_video_devices_page (GtkWidget *prefs_window,
 
   /* The video device */
 
+  gm_prefs_window_get_video_devices_list (pw->core, device_list);
   array = gm_prefs_window_convert_string_list(device_list);
-
   pw->video_device =
     gnome_prefs_string_option_menu_new (subsection, _("Input device:"), (const gchar **)array, VIDEO_DEVICES_KEY "input_device", _("Select the video input device to use. If an error occurs when using this device a test picture will be transmitted."), 0);
-
   g_free (array);
-
 
   /* Video Channel */
   gnome_prefs_spin_new (subsection, _("Channel:"), VIDEO_DEVICES_KEY "channel", _("The video channel number to use (to select camera, tv or other sources)"), 0.0, 10.0, 1.0, 3, NULL, false);
@@ -991,7 +1015,7 @@ gm_pw_init_video_devices_page (GtkWidget *prefs_window,
                           (gpointer) VIDEO_DEVICES_KEY "image");
 
   /* That button will refresh the device list */
-  gm_pw_add_update_button (prefs_window, container, GTK_STOCK_REFRESH, _("_Detect devices"), GTK_SIGNAL_FUNC (refresh_devices_list_cb), _("Click here to refresh the device list."), 1, NULL);
+  gm_pw_add_update_button (prefs_window, container, GTK_STOCK_REFRESH, _("_Detect devices"), GTK_SIGNAL_FUNC (refresh_devices_list_cb), _("Click here to refresh the device list."), 1, prefs_window);
 
   for (i=0; i< NB_VIDEO_SIZES; i++) {
 
@@ -1078,9 +1102,13 @@ gm_pw_init_video_codecs_page (GtkWidget *prefs_window,
 /* GTK Callbacks */
 static void
 refresh_devices_list_cb (G_GNUC_UNUSED GtkWidget *widget,
-			 G_GNUC_UNUSED gpointer data)
+			 gpointer data)
 {
-  GnomeMeeting::Process ()->DetectDevices ();
+  g_return_if_fail (data != NULL);
+  GtkWidget *prefs_window = GTK_WIDGET (data);
+
+  gm_prefs_window_update_devices_list(prefs_window);
+
 }
 
 
@@ -1228,14 +1256,17 @@ static void
 sound_event_play_cb (G_GNUC_UNUSED GtkWidget *widget,
 		     gpointer data)
 {
-  PString event;
-  
   g_return_if_fail (data != NULL);
 
-  event = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (data));
+  //FIXME
+  Ekiga::ServiceCore *core = GnomeMeeting::Process ()->GetServiceCore (); 
+  Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (core->get ("audiooutput-core"));
 
-  if (!event.IsEmpty ())
-    GMSoundEvent ev(event);
+  gchar* file_name = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (data));
+  std::string file_name_string = file_name;
+  audiooutput_core->play_file(file_name_string);
+
+  g_free (file_name);
 }
 
 
@@ -1307,19 +1338,21 @@ image_filename_browse_preview_cb (GtkWidget *selector,
 
 
 static void
-audioev_filename_browse_play_cb (G_GNUC_UNUSED GtkWidget *playbutton,
+audioev_filename_browse_play_cb (GtkWidget* /* playbutton */,
 				 gpointer data)
 {
-  char *filename = NULL;
-
   g_return_if_fail (data != NULL);
 
-  filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (data));
+  //FIXME
+  Ekiga::ServiceCore *core = GnomeMeeting::Process ()->GetServiceCore (); 
+  Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (core->get ("audiooutput-core"));
 
-  if (filename)
-    GMSoundEvent ev((const char*) filename);
+  gchar* file_name = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (data));
+  std::string file_name_string = file_name;
+  audiooutput_core->play_file(file_name_string);
+//FIXME: play_wav
 
-  g_free (filename);
+   g_free (file_name);
 }
 
 
@@ -1346,50 +1379,42 @@ gm_prefs_window_update_interfaces_list (GtkWidget *prefs_window,
 }
 
 void 
-gm_prefs_window_update_devices_list (GtkWidget *prefs_window, 
-				     PStringArray audio_input_devices,
-				     PStringArray audio_output_devices)
+gm_prefs_window_update_devices_list (GtkWidget *prefs_window)
 {
   GmPreferencesWindow *pw = NULL;
-
   gchar **array = NULL;
-
 
   g_return_if_fail (prefs_window != NULL);
   pw = gm_pw_get_pw (prefs_window);
 
+  std::vector <std::string> device_list;
 
   /* The player */
-  array = audio_output_devices.ToCharArray ();
+  gm_prefs_window_get_audio_output_devices_list (pw->core, device_list);
+  array = gm_prefs_window_convert_string_list(device_list);
   gnome_prefs_string_option_menu_update (pw->audio_player,
-					 (const gchar **)array,
-					 AUDIO_DEVICES_KEY "output_device");
-  gnome_prefs_string_option_menu_update (pw->sound_events_output,
-					 (const gchar **)array,
-					 SOUND_EVENTS_KEY "output_device");
-  free (array);
-
+ 					 (const gchar **)array,
+ 					 AUDIO_DEVICES_KEY "output_device");
+   gnome_prefs_string_option_menu_update (pw->sound_events_output,
+ 					 (const gchar **)array,
+ 					 SOUND_EVENTS_KEY "output_device");
+  g_free (array);
 
   /* The recorder */
-  array = audio_input_devices.ToCharArray ();
+  gm_prefs_window_get_audio_input_devices_list (pw->core, device_list);
+  array = gm_prefs_window_convert_string_list(device_list);
   gnome_prefs_string_option_menu_update (pw->audio_recorder,
-					 (const gchar **)array,
-					 AUDIO_DEVICES_KEY "input_device");
-  free (array);
+ 					 (const gchar **)array,
+ 					 AUDIO_DEVICES_KEY "input_device");
+  g_free (array);
 
 
   /* The Video player */
-  std::vector <std::string> plugin_list;
-  std::vector <std::string> device_list;
-
-  gm_prefs_window_get_video_devices_list (pw->core, plugin_list, device_list);
-
+  gm_prefs_window_get_video_devices_list (pw->core,  device_list);
   array = gm_prefs_window_convert_string_list(device_list);
-
   gnome_prefs_string_option_menu_update (pw->video_device,
 					 (const gchar **)array,
 					 VIDEO_DEVICES_KEY "input_device");
-
   g_free (array);
 }
 

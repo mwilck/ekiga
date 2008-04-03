@@ -57,28 +57,18 @@
 
 #define new PNEW
 
-GMPCSSEndpoint::GMPCSSEndpoint (GMManager & ep) 
-: OpalPCSSEndPoint (ep), endpoint (ep)
+GMPCSSEndpoint::GMPCSSEndpoint (GMManager & ep, Ekiga::ServiceCore & _core) 
+: OpalPCSSEndPoint (ep), 
+  endpoint (ep), 
+  core (_core),
+  audiooutput_core (*(dynamic_cast<Ekiga::AudioOutputCore *> (_core.get ("audiooutput-core"))))
 {
-  CallPendingTimer.SetNotifier (PCREATE_NOTIFIER (OnCallPending));
-  OutgoingCallTimer.SetNotifier (PCREATE_NOTIFIER (OnOutgoingCall));
-
 #ifdef WIN32
   SetSoundChannelBufferDepth (20);
 #else
   SetSoundChannelBufferDepth (5);
 #endif
 }
-
-
-bool 
-GMPCSSEndpoint::MakeConnection (OpalCall & call, 
-                                const PString & party,  
-                                void * userData)
-{
-  return OpalPCSSEndPoint::MakeConnection (call, party, userData);
-}
-
 
 void GMPCSSEndpoint::AcceptCurrentIncomingCall ()
 {
@@ -92,7 +82,6 @@ void GMPCSSEndpoint::AcceptCurrentIncomingCall ()
 
 bool GMPCSSEndpoint::OnShowIncoming (const OpalPCSSConnection & connection)
 {
-  guint interval = 2000;
   guint status = CONTACT_ONLINE;
 
   if (endpoint.GetCallingState() != GMManager::Called)
@@ -106,247 +95,11 @@ bool GMPCSSEndpoint::OnShowIncoming (const OpalPCSSConnection & connection)
   /* The token identifying the current call */
   incomingConnectionToken = connection.GetToken ();
 
-  /* The timers */
-  CallPendingTimer.RunContinuous (interval);
-  
   return TRUE;
 }
 
 
-bool GMPCSSEndpoint::OnShowOutgoing (G_GNUC_UNUSED const OpalPCSSConnection & connection)
+bool GMPCSSEndpoint::OnShowOutgoing (const OpalPCSSConnection & /*connection*/)
 {
-  if (endpoint.GetCallingState () == GMManager::Calling)
-    OutgoingCallTimer.RunContinuous (PTimeInterval (5));
-
   return TRUE;
 }
-
-
-void 
-GMPCSSEndpoint::PlaySoundEvent (PString ev)
-{
-  PWaitAndSignal m(sound_event_mutex);
-
-  GMSoundEvent c (ev);
-}
-
-
-PSoundChannel * 
-GMPCSSEndpoint::CreateSoundChannel (G_GNUC_UNUSED const OpalPCSSConnection & connection,
-				    const OpalMediaFormat & format,
-				    bool is_source)
-{
-  PTRACE(3, "Ekiga\tCreating Sound Channel");
-  GtkWidget *main_window = NULL;
-
-  PSoundChannel *sound_channel = NULL;
-
-  gchar *plugin = NULL;
-  gchar *device = NULL;
-
-  unsigned int play_vol = 0;
-  unsigned int record_vol = 0;
-
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-
-  /* Stop the Timers */
-  CallPendingTimer.Stop ();
-  OutgoingCallTimer.Stop ();
-
-  /* Suspend the daemons */
-  gnomemeeting_sound_daemons_suspend ();
-
-  /* Open the channel */
-  gnomemeeting_threads_enter ();
-  plugin = gm_conf_get_string (AUDIO_DEVICES_KEY "plugin");
-  if (is_source)
-    device = gm_conf_get_string (AUDIO_DEVICES_KEY "input_device");
-  else
-    device = gm_conf_get_string (AUDIO_DEVICES_KEY "output_device");
-  gnomemeeting_threads_leave ();
-
-  if (PString (device).Find (_("No device found")) == P_MAX_INDEX) {
-
-    PWaitAndSignal m(sound_event_mutex);
-
-    sound_channel = 
-      PSoundChannel::CreateOpenedChannel (plugin,
-					  device,
-					  is_source ?
-					  PSoundChannel::Recorder
-					  : PSoundChannel::Player, 
-					  1, format.GetClockRate (), 16);
-    if (sound_channel) {
-
-      
-      /* Update the volume sliders */
-      if (is_source) 
-	sound_channel->GetVolume (record_vol);
-      else 
-	sound_channel->GetVolume (play_vol);
-
-      /* Translators : the full sentence is "Opening %s for playing with
-	 plugin %s" or "Opening %s for recording with plugin" */
-      gnomemeeting_threads_enter ();
-      gm_main_window_set_volume_sliders_values (main_window, 
-						is_source?-1:(int) play_vol,
-						is_source?(int)record_vol:-1);
-      gnomemeeting_threads_leave ();
-
-      g_free (plugin);
-      g_free (device);
-
-      return sound_channel;
-    }
-
-
-    gnomemeeting_threads_enter ();
-    if (is_source) 
-      gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Could not open audio channel for audio transmission"), _("An error occurred while trying to record from the soundcard for the audio transmission. Please check that your soundcard is not busy and that your driver supports full-duplex.\nThe audio transmission has been disabled."));
-    else
-      gnomemeeting_error_dialog (GTK_WINDOW (main_window), _("Could not open audio channel for audio reception"), _("An error occurred while trying to play audio to the soundcard for the audio reception. Please check that your soundcard is not busy and that your driver supports full-duplex.\nThe audio reception has been disabled."));
-    gnomemeeting_threads_leave ();
-  }  
-
-  g_free (plugin);
-  g_free (device);
-
-  return NULL;
-}
-  
-
-void 
-GMPCSSEndpoint::OnEstablished (OpalConnection &connection)
-{
-  CallPendingTimer.Stop ();
-  OutgoingCallTimer.Stop ();
-
-  PTRACE (3, "GMPCSSEndpoint\t PCSS connection established");
-  OpalPCSSEndPoint::OnEstablished (connection);
-}
-
-
-void 
-GMPCSSEndpoint::OnReleased (OpalConnection &connection)
-{
-  PTimeInterval t;
-
-  CallPendingTimer.Stop ();
-  OutgoingCallTimer.Stop ();
-
-  gnomemeeting_sound_daemons_resume ();
-
-  PTRACE (3, "GMPCSSEndpoint\t PCSS connection released");
-  OpalPCSSEndPoint::OnReleased (connection);
-}
-
-
-PString 
-GMPCSSEndpoint::OnGetDestination (G_GNUC_UNUSED const OpalPCSSConnection &connection)
-{
-  return PString ();
-}
-
-
-void 
-GMPCSSEndpoint::GetDeviceVolume (unsigned int &play_vol,
-				 unsigned int &record_vol)
-{
-  PSafePtr<OpalCall> call = NULL;
-  PSafePtr<OpalConnection> connection = NULL;
-  PSafePtr<OpalMediaStream> stream = NULL;
-  PSoundChannel *channel = NULL;
-
-  call = endpoint.FindCallWithLock (endpoint.GetCurrentCallToken ());
-  
-  if (call != NULL) {
-
-    connection = endpoint.GetConnection (call, FALSE);
-
-    if (connection) {
-
-      stream = connection->GetMediaStream (OpalMediaFormat::DefaultAudioSessionID,
-					   FALSE);
-      if (stream) {
-	channel = (PSoundChannel *) ((OpalRawMediaStream &) *stream).GetChannel ();
-	channel->GetVolume (play_vol);
-      }
-
-      stream = connection->GetMediaStream (OpalMediaFormat::DefaultAudioSessionID,
-					   TRUE);
-
-      if (stream) {
-	channel = (PSoundChannel *) ((OpalRawMediaStream &) *stream).GetChannel ();
-	channel->GetVolume (record_vol);
-      }
-    }
-  }
-}
-
-
-bool
-GMPCSSEndpoint::SetDeviceVolume (unsigned int play_vol,
-				 unsigned int record_vol)
-{
-  bool success1 = FALSE;
-  bool success2 = FALSE;
-
-  PSafePtr<OpalCall> call = NULL;
-  PSafePtr<OpalConnection> connection = NULL;
-  PSafePtr<OpalMediaStream> stream = NULL;
-  PSoundChannel *channel = NULL;
-
-  g_return_val_if_fail (play_vol <= 100, FALSE);
-  g_return_val_if_fail (record_vol <= 100, FALSE);
-  
-  call = endpoint.FindCallWithLock (endpoint.GetCurrentCallToken ());
-  
-  if (call != NULL) {
-
-    connection = endpoint.GetConnection (call, FALSE);
-
-    if (connection) {
-
-      stream = connection->GetMediaStream (OpalMediaFormat::DefaultAudioSessionID,
-					   FALSE);
-
-      if (stream) {
-	channel = (PSoundChannel *) ((OpalRawMediaStream &) *stream).GetChannel ();
-	channel->SetVolume (play_vol);
-	success1 = TRUE;
-      }
-      
-      stream = connection->GetMediaStream (OpalMediaFormat::DefaultAudioSessionID,
-					   TRUE);
-
-      if (stream) {
-	channel = (PSoundChannel *) ((OpalRawMediaStream &) *stream).GetChannel ();
-	channel->SetVolume (record_vol);
-	success2 = TRUE;
-      }
-    }
-  }
-
-  return (success1 && success2);
-}
-
-
-void
-GMPCSSEndpoint::OnOutgoingCall (PTimer &,
-                                INT) 
-{
-  PlaySoundEvent ("ring_tone_sound");
-
-  if (OutgoingCallTimer.IsRunning ())
-    OutgoingCallTimer.RunContinuous (PTimeInterval (0, 3));
-}
-
-
-void
-GMPCSSEndpoint::OnCallPending (PTimer &,
-			       INT) 
-{
-  PlaySoundEvent ("incoming_call_sound");
-}
-
-

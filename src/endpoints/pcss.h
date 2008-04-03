@@ -41,6 +41,7 @@
 
 #include "common.h"
 #include "manager.h"
+#include "audiooutput-core.h"
 
 
 class GMPCSSEndpoint : public OpalPCSSEndPoint
@@ -48,16 +49,7 @@ class GMPCSSEndpoint : public OpalPCSSEndPoint
   PCLASSINFO (GMPCSSEndpoint, OpalPCSSEndPoint);
 
 public:
-  GMPCSSEndpoint (GMManager &);
-
-  
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Starts a call, play the dialtone.
-   * PRE          :  /
-   */
-  bool MakeConnection (OpalCall & call, 
-                       const PString & party,  
-                       void * userData);
+  GMPCSSEndpoint (GMManager &, Ekiga::ServiceCore & _core);
 
 
   /* DESCRIPTION  :  /
@@ -85,91 +77,16 @@ public:
    * 		     to generate a ring tone.
    * PRE          :  /
    */
-  virtual bool OnShowOutgoing (const OpalPCSSConnection &connection);
-  
-  
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Plays a sound event on its device.
-   * PRE          :  /
-   */
-  void PlaySoundEvent (PString ev);
-  
-  
-  /* DESCRIPTION  :  This callback is called when an audio channel has to
-   *                 be opened.
-   * BEHAVIOR     :  Open the Audio Channel or warn the user if it was
-   *                 impossible.
-   * PRE          :  /
-   */
-  PSoundChannel *CreateSoundChannel (const OpalPCSSConnection &connection,
-				     const OpalMediaFormat &format,
-				     bool is_source);
-
-  
-  /* DESCRIPTION  :  This callback is called when the connection is 
-   *                 established and everything is ok.
-   * BEHAVIOR     :  Stops the timers.
-   * PRE          :  /
-   */
-  void OnEstablished (OpalConnection &);
-
-  
-  /* DESCRIPTION  :  This callback is called when a connection to a remote
-   *                 endpoint is cleared.
-   * BEHAVIOR     :  Stops the timers.
-   * PRE          :  /
-   */
-  void OnReleased (OpalConnection &connection);
-
-
-  // FIXME
-  virtual PString OnGetDestination (const OpalPCSSConnection &connection);  
-  
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Returns the playing and recording volume levels.
-   * PRE          :  /
-   */
-  void GetDeviceVolume (unsigned int &play_vol,
-			unsigned int &record_vol);
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Updates the playing and recording volume levels.
-   *                 Returns FALSE if it fails.
-   * PRE          :  /
-   */
-  bool SetDeviceVolume (unsigned int play_vol,
-			unsigned int record_vol);
+  virtual bool OnShowOutgoing (const OpalPCSSConnection &connection);  
 
 private:
 
-  /* DESCRIPTION  :  Notifier called every second while waiting for an answer
-   *                 for an incoming call.
-   * BEHAVIOR     :  Display an animation in the docklet and play a ring
-   *                 sound.
-   * PRE          :  /
-   */
-  PDECLARE_NOTIFIER(PTimer, GMPCSSEndpoint, OnCallPending);
-
-  
-  /* DESCRIPTION  :  Notifier called every 2 seconds while waiting for an
-   *                 answer for an outging call.
-   * BEHAVIOR     :  Display an animation in the main winow and play a ring
-   *                 sound.
-   * PRE          :  /
-   */
-  PDECLARE_NOTIFIER(PTimer, GMPCSSEndpoint, OnOutgoingCall);
-  
-
-  PTimer CallPendingTimer;
-  PTimer OutgoingCallTimer;
-  
   GMManager & endpoint;
 
   PString incomingConnectionToken; 
 
-  PMutex sound_event_mutex;
+  Ekiga::ServiceCore & core;
+  Ekiga::AudioOutputCore & audiooutput_core;
 };
 
 #endif

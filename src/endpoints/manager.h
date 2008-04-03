@@ -60,6 +60,7 @@
 #include "call-manager.h"
 #include "call-core.h"
 #include "call.h"
+#include "audiooutput-core.h"
 
 #include <sigc++/sigc++.h>
 #include <string>
@@ -446,20 +447,6 @@ class GMManager:
    * PRE          :  /
    */
   void RemoveAccountsEndpoint ();
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Update the audio device volume (playing then recording). 
-   * PRE          :  /
-   */
-  bool SetDeviceVolume (PSoundChannel *, bool, unsigned int);
-
-  
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Returns the audio device volume (playing then recording). 
-   * PRE          :  /
-   */
-  bool GetDeviceVolume (PSoundChannel *, bool, unsigned int &);
   
 
   /* DESCRIPTION  :  /
@@ -600,6 +587,7 @@ class GMManager:
   Ekiga::ConfBridge *bridge;
   Ekiga::CodecList codecs; 
   Ekiga::CallCore *call_core;
+  Ekiga::AudioOutputCore & audiooutput_core;
 };
 
 #endif

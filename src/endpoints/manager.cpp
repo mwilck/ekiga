@@ -177,7 +177,10 @@ status_changed_nt (G_GNUC_UNUSED gpointer id,
 
 /* The class */
 GMManager::GMManager (Ekiga::ServiceCore & _core)
-: core (_core), runtime (*(dynamic_cast<Ekiga::Runtime *> (core.get ("runtime"))))
+: core (_core), 
+  runtime (*(dynamic_cast<Ekiga::Runtime *> (core.get ("runtime")))),
+  audiooutput_core (*(dynamic_cast<Ekiga::AudioOutputCore *> (_core.get ("audiooutput-core")))) 
+  //FIXME: we shouldnt call sound events here but signal to the frontend which then triggers them
 {
   /* Initialise the endpoint paramaters */
   SetCallingState (GMManager::Standby);
@@ -222,8 +225,10 @@ GMManager::GMManager (Ekiga::ServiceCore & _core)
 	
   sipEP = new GMSIPEndpoint (*this, core);
   AddRouteEntry("pc:.* = sip:<da>");
-  
-  pcssEP = new GMPCSSEndpoint (*this);
+
+  pcssEP = new GMPCSSEndpoint (*this, core);
+  pcssEP->SetSoundChannelPlayDevice("EKIGA");
+  pcssEP->SetSoundChannelRecordDevice("EKIGA");
   AddRouteEntry("h323:.* = pc:<db>");
   AddRouteEntry("sip:.* = pc:<db>");
   
@@ -1120,7 +1125,7 @@ GMManager::OnClearedCall (OpalCall & call)
   
   /* Play busy tone if we were connected */
   if (GetCallingState () == GMManager::Connected)
-    pcssEP->PlaySoundEvent ("busy_tone_sound"); 
+    audiooutput_core.play_event("busy_tone_sound");
 
   /* Update internal state */
   SetCallingState (GMManager::Standby);
@@ -1141,7 +1146,7 @@ GMManager::OnMessageReceived (const SIPURL & _from,
   std::string uri = (const char *) from.AsString ();
   std::string message = (const char *) _body;
 
-  pcssEP->PlaySoundEvent ("new_message_sound"); // FIXME use signals here too
+  audiooutput_core.play_event("new_message_sound");
 
   runtime.run_in_main (sigc::bind (im_received.make_slot (), display_name, uri, message));
 }
@@ -1355,24 +1360,6 @@ GMManager::OnIPChanged (PTimer &,
 }
 
 
-bool
-GMManager::SetDeviceVolume (PSoundChannel *sound_channel,
-			     bool is_encoding,
-			     unsigned int vol)
-{
-  return DeviceVolume (sound_channel, is_encoding, TRUE, vol);
-}
-
-
-bool
-GMManager::GetDeviceVolume (PSoundChannel *sound_channel,
-                                 bool is_encoding,
-                                 unsigned int &vol)
-{
-  return DeviceVolume (sound_channel, is_encoding, FALSE, vol);
-}
-
-
 void
 GMManager::OnClosedMediaStream (const OpalMediaStream & stream)
 {
@@ -1536,7 +1523,8 @@ GMManager::OnMWIReceived (const PString & account,
                                       total));
 
     /* Sound event if new voice mail */
-    pcssEP->PlaySoundEvent ("new_voicemail_sound");
+    audiooutput_core.play_event("new_voicemail_sound");
+
   }
 }
 

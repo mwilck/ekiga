@@ -77,12 +77,12 @@ ekiga_SOURCES +=			\
 
 # Devices 
 ekiga_SOURCES +=			\
-	devices/audio.h			\
-	devices/audio.cpp		\
 	devices/videoinput.h  	        \
 	devices/videoinput.cpp		\
 	devices/videooutput.h           \
-	devices/videooutput.cpp
+	devices/videooutput.cpp         \
+	devices/audiodev.h              \
+	devices/audiodev.cpp
 
 
 # Endpoints 

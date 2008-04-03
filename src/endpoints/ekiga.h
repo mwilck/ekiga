@@ -104,47 +104,6 @@ class GnomeMeeting : public PProcess
 
   
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Detects the available audio and video managers
-   *                 and audio, video devices corresponding to the managers
-   *                 selected in config. Returns FALSE if no audio manager
-   *                 is detected. Returns TRUE in other cases, even if no
-   *                 devices are found.
-   *                 Updates the preferences window.
-   * PRE          :  /
-   */
-  bool DetectDevices ();
-  
-  
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Detects the available audio and video codecs.
-   *                 Returns FALSE if no audio codecs are detected.
-   *                 Updates the preferences window.
-   * PRE          :  /
-   */
-  bool DetectCodecs ();
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Starts an audio tester that will play any recorded
-   *                 sound to the speakers in real time. Can be used to
-   *                 check if the audio volumes are correct before 
-   *                 a conference.
-   * PRE          :  /
-   */
-  void StartAudioTester (gchar *,
-			 gchar *,
-			 gchar *);
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Stops the current audio tester if any for the given
-   *                 audio manager, player and recorder.
-   * PRE          :  /
-   */
-  void StopAudioTester ();
-
-  
-  /* DESCRIPTION  :  /
    * BEHAVIOR     :  Returns a pointer to the GmWindow structure
    *                 of widgets.
    * PRE          :  /
@@ -219,35 +178,6 @@ class GnomeMeeting : public PProcess
    */
   PStringArray GetInterfaces ();
 
-
-  /* DESCRIPTION  : / 
-   * BEHAVIOR     : Returns the list of detected audio input devices. 
-   * 		    That doesn't force a redetection. Use DetectDevices 
-   * 		    for that.
-   * PRE          : /
-   */
-  PStringArray GetAudioInputDevices ();
-  
-  
-  /* DESCRIPTION  : / 
-   * BEHAVIOR     : Returns the list of detected audio output devices. 
-   * 		    That doesn't force a redetection. Use DetectDevices 
-   * 		    for that.
-   * PRE          : /
-   */
-  PStringArray GetAudioOutpoutDevices ();
-  
-  
-  /* DESCRIPTION  : / 
-   * BEHAVIOR     : Returns the list of detected audio plugins. 
-   * 		    That doesn't force a redetection. Use DetectDevices 
-   * 		    for that.
-   * PRE          : /
-   */
-  PStringArray GetAudioPlugins ();
-  
-  
-
  private:
   
   Ekiga::ServiceCore *service_core;
@@ -260,13 +190,6 @@ class GnomeMeeting : public PProcess
   PMutex dev_access_mutex;
   PMutex iface_access_mutex;
   int call_number;
-
-
-  /* Detected devices and plugins */
-  PStringArray audio_input_devices;
-  PStringArray audio_output_devices;
-  PStringArray audio_managers;
-  PStringArray video_managers;
 
 
   /* Detected interfaces */

@@ -40,7 +40,6 @@
 
 #include "ekiga.h"
 #include "callbacks.h"
-#include "audio.h"
 #include "urlhandler.h"
 #include "preferences.h"
 #include "chat-window.h"
@@ -49,8 +48,6 @@
 #include "statusicon.h"
 #include "main.h"
 #include "misc.h"
-
-#include "audio.h"
 
 #ifdef HAVE_DBUS
 #include "dbus.h"
@@ -61,7 +58,6 @@
 #include "gmconf.h"
 
 #include "engine.h"
-#include "vidinput-core.h"
 
 #define new PNEW
 
@@ -208,144 +204,6 @@ GnomeMeeting::DetectInterfaces ()
   return res;
 
 }
-  
-
-bool
-GnomeMeeting::DetectDevices ()
-{
-  gchar *audio_plugin = NULL;
-
-  audio_plugin = gm_conf_get_string (AUDIO_DEVICES_KEY "plugin");
- 
-  PWaitAndSignal m(dev_access_mutex);
-  
-
-  /* Detect the devices */
-  gnomemeeting_sound_daemons_suspend ();
-
-  
-  /* Detect the plugins */
-  audio_managers = PSoundChannel::GetDriverNames ();
-  
-
-  PTRACE (1, "Detected audio plugins: " << setfill (',') << audio_managers
-	  << setfill (' '));
-
-#ifdef HAX_IXJ
-  audio_managers += PString ("Quicknet");
-#endif
-
-  PTRACE (1, "Detected audio plugins: " << setfill (',') << audio_managers
-	  << setfill (' '));
-  
-
-  /* No audio plugin => Exit */
-  if (audio_managers.GetSize () == 0)
-    return FALSE;
-  
-  
-  /* Detect the devices */
-
-  audio_input_devices = 
-    PSoundChannel::GetDeviceNames (audio_plugin, PSoundChannel::Recorder);
-  audio_output_devices = 
-    PSoundChannel::GetDeviceNames (audio_plugin, PSoundChannel::Player);
-
-  
-  if (audio_input_devices.GetSize () == 0) 
-    audio_input_devices += PString (_("No device found"));
-  if (audio_output_devices.GetSize () == 0)
-    audio_output_devices += PString (_("No device found"));
-
-  PTRACE (1, "Detected the following audio input devices: "
-	  << setfill (',') << audio_input_devices << setfill (' ')
-	  << " with plugin " << audio_plugin);
-  PTRACE (1, "Detected the following audio output devices: "
-	  << setfill (',') << audio_output_devices << setfill (' ')
-	  << " with plugin " << audio_plugin);
-  
-  PTRACE (1, "Detected the following audio input devices: " 
-	  << setfill (',') << audio_input_devices << setfill (' ') 
-	  << " with plugin " << audio_plugin);
-  PTRACE (1, "Detected the following audio output devices: " 
-	  << setfill (',') << audio_output_devices << setfill (' ') 
-	  << " with plugin " << audio_plugin);
-
-  g_free (audio_plugin);
-
-  gnomemeeting_sound_daemons_resume ();
-
-  /* Update the GUI, if it is already there */
-  if (prefs_window)
-    gm_prefs_window_update_devices_list (prefs_window, 
-					 audio_input_devices,
-					 audio_output_devices);
-  return TRUE;
-}
-
-
-bool
-GnomeMeeting::DetectCodecs ()
-{
-  OpalMediaFormatList list;
-
-  /* Audio codecs */
-  /*
-  list = endpoint->GetAvailableAudioMediaFormats ();
-
-  PTRACE (1, "Detected audio codecs: " << setfill (',') << list
-	  << setfill (' '));
-
-  if (list.GetSize () == 0)
-    return FALSE;
-
-  if (prefs_window)
-    gm_prefs_window_update_codecs_list (prefs_window, list);
-  */
-
-  /* Video codecs */
-  /*
-  list = endpoint->GetAvailableVideoMediaFormats ();
-  
-  PTRACE (1, "Detected video codecs: " << setfill (',') << list
-	  << setfill (' '));
-
-  if (prefs_window)
-    gm_prefs_window_update_codecs_list (prefs_window, list);
-*/
-
-  return TRUE;
-}
-
-
-void 
-GnomeMeeting::StartAudioTester (G_GNUC_UNUSED gchar *audio_manager,
-                                G_GNUC_UNUSED gchar *audio_player,
-                                G_GNUC_UNUSED gchar *audio_recorder)
-{
-  /* FIXME
-  PWaitAndSignal m(at_access_mutex);
-  
-  if (audio_tester)     
-    delete (audio_tester);
-
-  audio_tester =
-    new GMAudioTester (audio_manager, audio_player, audio_recorder, *this);
-    */
-}
-
-
-void 
-GnomeMeeting::StopAudioTester ()
-{
-  PWaitAndSignal m(at_access_mutex);
-
-  if (audio_tester) {
-   
-    delete (audio_tester);
-    audio_tester = NULL;
-  }
-}
 
 
 Ekiga::ServiceCore *
@@ -466,35 +324,6 @@ GnomeMeeting::GetInterfaces ()
   PWaitAndSignal m(iface_access_mutex);
 
   return interfaces;
-}
-
-
-
-PStringArray 
-GnomeMeeting::GetAudioInputDevices ()
-{
-  PWaitAndSignal m(dev_access_mutex);
-
-  return audio_input_devices;
-}
-
-
-
-PStringArray 
-GnomeMeeting::GetAudioOutpoutDevices ()
-{
-  PWaitAndSignal m(dev_access_mutex);
-
-  return audio_output_devices;
-}
-
-
-PStringArray 
-GnomeMeeting::GetAudioPlugins ()
-{
-  PWaitAndSignal m(dev_access_mutex);
-
-  return audio_managers;
 }
 
 

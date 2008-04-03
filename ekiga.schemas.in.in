@@ -3,22 +3,11 @@
 <gconfschemafile>
   <schemalist>
     <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/devices/audio/plugin</key>
-      <applyto>/apps/@PACKAGE_NAME@/devices/audio/plugin</applyto>
-      <owner>Ekiga</owner>
-      <type>string</type>
-      <default>ALSA</default>
-      <locale name="C">
-	<short>Audio plugin</short>
-	<long>The audio plugin that will be used to detect the devices and manage them</long>
-      </locale>
-    </schema>
-    <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/devices/audio/output_device</key>
       <applyto>/apps/@PACKAGE_NAME@/devices/audio/output_device</applyto>
       <owner>Ekiga</owner>
       <type>string</type>
-      <default>None</default>
+      <default>PTLIB/ALSA/Default</default>
       <locale name="C">
 	<short>Audio output device</short>
 	<long>Select the audio output device to use</long>
@@ -29,21 +18,10 @@
       <applyto>/apps/@PACKAGE_NAME@/devices/audio/input_device</applyto>
       <owner>Ekiga</owner>
       <type>string</type>
-      <default>None</default>
+      <default>PTLIB/ALSA/Default</default>
       <locale name="C">
 	<short>Audio input device</short>
 	<long>Select the audio input device to use</long>
-      </locale>
-    </schema>
-    <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/devices/video/plugin</key>
-      <applyto>/apps/@PACKAGE_NAME@/devices/video/plugin</applyto>
-      <owner>Ekiga</owner>
-      <type>string</type>
-      <default>PTLIB/V4L2</default>
-      <locale name="C">
-	<short>Video plugin</short>
-	<long>The video plugin that will be used to detect the devices and manage them</long>
       </locale>
     </schema>
     <schema>
@@ -51,7 +29,7 @@
       <applyto>/apps/@PACKAGE_NAME@/devices/video/input_device</applyto>
       <owner>Ekiga</owner>
       <type>string</type>
-      <default>/dev/video0</default>
+      <default>PTLIB/V4L2//dev/video0</default>
       <locale name="C">
 	<short>Video input device</short>
 	<long>Select the video input device to use. If an error occurs when using this device a test picture will be transmitted.</long>
@@ -250,7 +228,7 @@
       <applyto>/apps/@PACKAGE_NAME@/general/sound_events/output_device</applyto>
       <owner>Ekiga</owner>
       <type>string</type>
-      <default>None</default>
+      <default>PTLIB/ALSA/Default</default>
       <locale name="C">
 	<short>Alternative audio output device</short>
 	<long>Select an alternative audio output device to use for sound events.</long>

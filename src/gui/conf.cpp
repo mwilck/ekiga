@@ -124,7 +124,7 @@ manager_changed_nt (G_GNUC_UNUSED gpointer id,
 {
   if (gm_conf_entry_get_type (entry) == GM_CONF_STRING) {
     gdk_threads_enter ();
-    GnomeMeeting::Process ()->DetectDevices ();
+//     GnomeMeeting::Process ()->DetectDevices (); //FIXME
     gdk_threads_leave ();
   }
 }

@@ -239,16 +239,16 @@ engine_init (int argc,
 
   display_core->setup_conf_bridge();
   vidinput_core->setup_conf_bridge();
-//  audiooutput_core->setup_conf_bridge();
-//  audioinput_core->setup_conf_bridge();
+  audiooutput_core->setup_conf_bridge();
+  audioinput_core->setup_conf_bridge();
 
-//  sigc::connection conn;
-//  conn = hal_core->video_input_device_added.connect (sigc::mem_fun (vidinput_core, &Ekiga::VidInputCore::add_device));
-//  conn = hal_core->video_input_device_removed.connect (sigc::mem_fun (vidinput_core, &Ekiga::VidInputCore::remove_device));
-//  conn = hal_core->audio_output_device_added.connect (sigc::mem_fun (audiooutput_core, &Ekiga::AudioOutputCore::add_device));
-//  conn = hal_core->audio_output_device_removed.connect (sigc::mem_fun (audiooutput_core, &Ekiga::AudioOutputCore::remove_device));
-//  conn = hal_core->audio_input_device_added.connect (sigc::mem_fun (audioinput_core, &Ekiga::AudioInputCore::add_device));
-//  conn = hal_core->audio_input_device_removed.connect (sigc::mem_fun (audioinput_core, &Ekiga::AudioInputCore::remove_device));
+  sigc::connection conn;
+  conn = hal_core->video_input_device_added.connect (sigc::mem_fun (vidinput_core, &Ekiga::VidInputCore::add_device));
+  conn = hal_core->video_input_device_removed.connect (sigc::mem_fun (vidinput_core, &Ekiga::VidInputCore::remove_device));
+  conn = hal_core->audio_output_device_added.connect (sigc::mem_fun (audiooutput_core, &Ekiga::AudioOutputCore::add_device));
+  conn = hal_core->audio_output_device_removed.connect (sigc::mem_fun (audiooutput_core, &Ekiga::AudioOutputCore::remove_device));
+  conn = hal_core->audio_input_device_added.connect (sigc::mem_fun (audioinput_core, &Ekiga::AudioInputCore::add_device));
+  conn = hal_core->audio_input_device_removed.connect (sigc::mem_fun (audioinput_core, &Ekiga::AudioInputCore::remove_device));
   // std::vector<sigc::connection> connections;
   //connections.push_back (conn);
 }

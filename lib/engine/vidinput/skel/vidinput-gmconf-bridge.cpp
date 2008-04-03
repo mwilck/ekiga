@@ -87,17 +87,20 @@ void VidInputCoreConfBridge::on_property_changed (std::string key, GmConfEntry *
                                       gm_conf_get_int (VIDEO_CODECS_KEY "max_frame_rate"));
   }
   else if ( (key == VIDEO_DEVICES_KEY "input_device") ||
-            (key == VIDEO_DEVICES_KEY "plugin") ||
             (key == VIDEO_DEVICES_KEY "channel") ||
             (key == VIDEO_DEVICES_KEY "format") ) {
 
     PTRACE(4, "VidInputCoreConfBridge\tUpdating device");
-    std::string type_source = gm_conf_get_string (VIDEO_DEVICES_KEY "plugin");
-    VidInputDevice vidinput_device;
 
-    vidinput_device.type   = type_source.substr ( 0, type_source.find_first_of("/"));
-    vidinput_device.source = type_source.substr ( type_source.find_first_of("/") + 1, type_source.size() - 1 );
-    vidinput_device.device = gm_conf_get_string (VIDEO_DEVICES_KEY "input_device");
+    std::string config_string = gm_conf_get_string (VIDEO_DEVICES_KEY "input_device");
+    VidInputDevice vidinput_device;
+    unsigned type_sep = config_string.find_first_of("/");
+    unsigned source_sep = config_string.find_first_of("/", type_sep + 1);
+
+    vidinput_device.type   = config_string.substr ( 0, type_sep );
+    vidinput_device.source = config_string.substr ( type_sep + 1, source_sep - type_sep - 1);
+    vidinput_device.device = config_string.substr ( source_sep + 1, config_string.size() - source_sep );
+
     vidinput_core.set_vidinput_device (vidinput_device,
                                        gm_conf_get_int (VIDEO_DEVICES_KEY "channel"),
                                        (VideoFormat) gm_conf_get_int (VIDEO_DEVICES_KEY "format"));

@@ -43,7 +43,8 @@
 #include "common.h"
 #include "framework/services.h"
 #include "vidinput-core.h"
-
+#include "audioinput-core.h"
+#include "audiooutput-core.h"
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Refreshes the interfaces list in the GUI to update them from
@@ -52,16 +53,6 @@
  */
 void gm_prefs_window_update_interfaces_list (GtkWidget *prefs_window,
 					     PStringArray interfaces);
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Refreshes the devices list in the GUI to update them from
- *                 the GnomeMeeting available devices list.
- * PRE          :  The prefs window GMObject, the audio input devices list,
- * 		   the audio output devices list, the video input devices list.
- */
-void gm_prefs_window_update_devices_list (GtkWidget *prefs_window,
-					  PStringArray audio_input_devices,
-					  PStringArray audio_output_devices);
 
 
 /* DESCRIPTION  :  / 
