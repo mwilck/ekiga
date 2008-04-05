@@ -692,7 +692,7 @@ entry_call_notifiers_from_g_idle (gpointer data)
   entry = (GmConfEntry *)data;
   for (ptr = entry->notifiers; ptr != NULL; ptr = ptr->next) {
     notif = (Notifier *)ptr->data;
-    if (entry->type == GM_CONF_OTHER)
+    if (entry->type == GM_CONF_OTHER && entry->value.redirect != NULL)
       notifier_call_on_entry (notif, entry->value.redirect);
     else
       notifier_call_on_entry (notif, entry);
