@@ -217,7 +217,9 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
   // 
   else if (key == SIP_KEY "outbound_proxy_host") {
 
-    manager.GetSIPEndpoint ()->set_outbound_proxy (gm_conf_entry_get_string (entry));
+    const gchar *str = gm_conf_entry_get_string (entry);
+    if (str != NULL)
+      manager.GetSIPEndpoint ()->set_outbound_proxy (str);
   }
   else if (key == SIP_KEY "dtmf_mode") {
 
@@ -225,7 +227,9 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
   }
   else if (key == SIP_KEY "forward_host") {
 
-    manager.GetSIPEndpoint ()->set_forward_host (gm_conf_entry_get_string (entry));
+    const gchar *str = gm_conf_entry_get_string (entry);
+    if (str != NULL)    
+      manager.GetSIPEndpoint ()->set_forward_host (str);
   }
 
   //
@@ -241,7 +245,9 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
   //
   else if (key == PERSONAL_DATA_KEY "full_name") {
 
-    manager.set_fullname (gm_conf_entry_get_string (entry));
+    const gchar *str = gm_conf_entry_get_string (entry);
+    if (str != NULL)    
+      manager.set_fullname (str);
   }
 
 
