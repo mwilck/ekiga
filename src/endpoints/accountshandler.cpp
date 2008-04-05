@@ -59,13 +59,11 @@
 /* Class to register accounts in a thread.
 */
 GMAccountsEndpoint::GMAccountsEndpoint (GMManager & endpoint)
-:PThread (1000, NoAutoDeleteThread), ep (endpoint)
+  :PThread (1000, NoAutoDeleteThread),
+   ep (endpoint), accounts(NULL), active(TRUE)
 {
   this->Resume ();
   thread_sync_point.Wait ();
-
-  active = TRUE;
-  accounts = NULL;
 }
 
 
@@ -104,7 +102,7 @@ void GMAccountsEndpoint::Main ()
 
     if (accounts_iter->data) {
 
-      list_account = GM_ACCOUNT (accounts_iter)->data;
+      list_account = GM_ACCOUNT (accounts_iter->data);
 
       /* Register SIP account */
       if (list_account->protocol_name) {
