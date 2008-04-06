@@ -40,7 +40,6 @@
 
 #include "main.h"
 
-#include "pcss.h"
 #include "ekiga.h"
 #include "conf.h"
 #include "misc.h"
@@ -99,6 +98,8 @@
 #include "services.h"
 
 #include "../devices/videooutput.h"
+
+enum CallingState {Standby, Calling, Connected, Called};
 
 /* Declarations */
 struct _GmMainWindow
@@ -700,7 +701,7 @@ static void on_established_call_cb (Ekiga::CallManager & /*manager*/,
   gm_main_window_flash_message (GTK_WIDGET (self), "%s", info.str ().c_str ());
   if (!gm_conf_get_bool (USER_INTERFACE_KEY "main_window/show_call_panel"))
     gm_main_window_show_call_panel (GTK_WIDGET (self));
-  gm_main_window_update_calling_state (GTK_WIDGET (self), GMManager::Connected);
+  gm_main_window_update_calling_state (GTK_WIDGET (self), Connected);
 
   mw->current_call = &call;
 
@@ -728,7 +729,7 @@ static void on_cleared_call_cb (Ekiga::CallManager & /*manager*/,
   GmMainWindow *mw = gm_mw_get_mw (GTK_WIDGET (self));
 
   gm_main_window_set_stay_on_top (GTK_WIDGET (self), FALSE);
-  gm_main_window_update_calling_state (GTK_WIDGET (self), GMManager::Standby);
+  gm_main_window_update_calling_state (GTK_WIDGET (self), Standby);
   gm_main_window_set_status (GTK_WIDGET (self), _("Standby"));
   gm_main_window_set_call_duration (GTK_WIDGET (self), NULL);
   gm_main_window_set_call_info (GTK_WIDGET (self), NULL, NULL, NULL, NULL);
@@ -1226,7 +1227,6 @@ place_call_cb (GtkWidget * /*widget*/,
     uri = gm_main_window_get_call_url (GTK_WIDGET (data));
     call_core->dial (uri);
   }
-
 }
 
 
@@ -2431,16 +2431,11 @@ video_window_shown_cb (GtkWidget *w,
 		       gpointer data)
 {
   GmMainWindow *mw = NULL;
-  GMManager *endpoint = NULL;
 
   mw = gm_mw_get_mw (GTK_WIDGET (data));
 
-  // FIXME API SHOULD CHANGE
-  endpoint = dynamic_cast<GMManager *> (mw->core.get ("opal-component"));
-
-  if (endpoint 
-      && gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top")
-      && endpoint->GetCallingState () == GMManager::Connected)
+  if (gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top")
+      && mw->current_call)
     gdk_window_set_always_on_top (GDK_WINDOW (w->window), TRUE);
 }
 
@@ -2922,7 +2917,7 @@ gm_main_window_update_calling_state (GtkWidget *main_window,
 
   switch (calling_state)
     {
-    case GMManager::Standby:
+    case Standby:
       
       /* Update the hold state */
       gm_main_window_set_call_hold (main_window, FALSE);
@@ -2949,7 +2944,7 @@ gm_main_window_update_calling_state (GtkWidget *main_window,
       break;
 
 
-    case GMManager::Calling:
+    case Calling:
 
       /* Update the menus and toolbar items */
       gtk_menu_set_sensitive (mw->main_menu, "connect", FALSE);
@@ -2963,7 +2958,7 @@ gm_main_window_update_calling_state (GtkWidget *main_window,
       break;
 
 
-    case GMManager::Connected:
+    case Connected:
 
       /* Update the menus and toolbar items */
       gtk_menu_set_sensitive (mw->main_menu, "connect", FALSE);
@@ -2978,7 +2973,7 @@ gm_main_window_update_calling_state (GtkWidget *main_window,
       break;
 
 
-    case GMManager::Called:
+    case Called:
 
       /* Update the menus and toolbar items */
       gtk_menu_set_sensitive (mw->main_menu, "disconnect", TRUE);

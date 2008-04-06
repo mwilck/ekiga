@@ -398,18 +398,6 @@ void GMURLHandler::Main ()
 
   endpoint = dynamic_cast<GMManager *> (core.get ("opal-component"));
   
-  /* Answer the current call in a separate thread if we are called
-   * and return 	 
-   */ 	 
-  if (endpoint->GetCallingState () == GMManager::Called) { 	 
-
-    if (!transfer_call) {
-      
-      endpoint->AcceptCurrentIncomingCall (); 	 
-      return; 	 
-    }
-  }
-  
   /* #INV: We have not been called to answer a call
    */
   if (url.IsEmpty ())
@@ -447,20 +435,13 @@ void GMURLHandler::Main ()
   /* Connect to the URL */
   if (!transfer_call) {
 
-    /* Update the state to "calling" */
-    gnomemeeting_threads_enter ();
-    gm_main_window_update_calling_state (main_window, GMManager::Calling);
-    gnomemeeting_threads_leave ();
-
-    endpoint->SetCallingState (GMManager::Calling);
-
     result = endpoint->SetUpCall ("pc:*", call_address, current_call_token);
     
     /* If we have a valid URL, we a have a valid connection, if not
        we put things back in the initial state */
     if (result) {
 
-      endpoint->SetCurrentCallToken (current_call_token);
+      //endpoint->SetCurrentCallToken (current_call_token);
     }
     else {
 
@@ -468,9 +449,9 @@ void GMURLHandler::Main ()
       /* The call failed, put back the state to "Standby", should 
        * be done in OnConnectionEstablished if con exists.
        */
-      gnomemeeting_threads_enter ();
-      gm_main_window_update_calling_state (main_window, 
-					   GMManager::Standby);
+      //gnomemeeting_threads_enter ();
+      //gm_main_window_update_calling_state (main_window, 
+	//				   GMManager::Standby);
       
       /*
       call_history_item = gm_calls_history_item_new ();
@@ -479,25 +460,27 @@ void GMURLHandler::Main ()
       call_history_item->duration = g_strdup ("0.00");
 FIXME */
 	
-      gm_main_window_flash_message (main_window, "%s", _("Failed to call user"));
+      //gm_main_window_flash_message (main_window, "%s", _("Failed to call user"));
       //call_history_item->end_reason = g_strdup (_("Failed to call user"));
 
       //gm_calls_history_add_call (call_history_item);
       //gm_calls_history_item_free (call_history_item);
 
-      gnomemeeting_threads_leave ();
+      //gnomemeeting_threads_leave ();
       //FIXME pcssEP->PlaySoundEvent ("busy_tone_sound");
     }
   }
   else {
 
+    // FIXME
+    /*
     PSafePtr<OpalCall> call = endpoint->FindCallWithLock (endpoint->GetCurrentCallToken ());
     PSafePtr<OpalConnection> con = endpoint->GetConnection (call, TRUE);
     
-    // Forward or transfer
     if (endpoint->GetCallingState () == GMManager::Called) 
       con->ForwardCall (call_address);
     else
       con->TransferConnection (call_address);
+      */
   }
 }

@@ -1,5 +1,18 @@
 2008-04-06  Damien Sandras  <dsandras@gnome.org>
 
+	* src/endpoints/urlhandler.cpp,
+	* src/endpoints/manager.cpp,
+	* src/endpoints/h323.cpp,
+	* src/endpoints/manager.h,
+	* src/endpoints/sip.cpp,
+	* src/gui/main.cpp:
+	Simplified GMManager. Removed all deprecated methods
+	like GetCurrentCallToken, SetCurrentCallToken, GetCallingState,
+	SetCallingState, ... as the engine is ready to handle several
+	simultaneous calls.
+
+2008-04-06  Damien Sandras  <dsandras@gnome.org>
+
 	* src/endpoints/pcss.cpp,
 	src/endpoints/pcss.h:
 	Reduced the PCSS EndPoint to its minimal form to keep OPAL happy.

@@ -39,7 +39,6 @@
 #include "config.h"
 
 #include "manager.h"
-#include "pcss.h"
 #include "h323.h"
 #include "sip.h"
 
@@ -55,6 +54,7 @@
 #include "opal-gmconf-bridge.h"
 #include "opal-call.h"
 #include "opal-codec-description.h"
+#include "pcss.h"
 
 #include "vidinput-info.h"
 
@@ -183,8 +183,6 @@ GMManager::GMManager (Ekiga::ServiceCore & _core)
   //FIXME: we shouldnt call sound events here but signal to the frontend which then triggers them
 {
   /* Initialise the endpoint paramaters */
-  SetCallingState (GMManager::Standby);
-
 #ifdef HAVE_AVAHI
   zcp = NULL;
 #endif
@@ -226,7 +224,7 @@ GMManager::GMManager (Ekiga::ServiceCore & _core)
   sipEP = new GMSIPEndpoint (*this, core);
   AddRouteEntry("pc:.* = sip:<da>");
 
-  pcssEP = new GMPCSSEndpoint (*this, core);
+  pcssEP = new GMPCSSEndpoint (*this);
   pcssEP->SetSoundChannelPlayDevice("EKIGA");
   pcssEP->SetSoundChannelRecordDevice("EKIGA");
   AddRouteEntry("h323:.* = pc:<db>");
@@ -597,37 +595,6 @@ GMManager::Exit ()
 }
 
 
-bool
-GMManager::AcceptCurrentIncomingCall ()
-{
-  if (pcssEP) {
-
-    pcssEP->AcceptCurrentIncomingCall ();
-    return TRUE;
-  }
-
-  return FALSE;
-}
-
-
-void 
-GMManager::SetCallingState (CallingState i)
-{
-  PWaitAndSignal m(cs_access_mutex);
-
-  calling_state = i;
-}
-
-
-GMManager::CallingState
-GMManager::GetCallingState ()
-{
-  PWaitAndSignal m(cs_access_mutex);
-
-  return calling_state;
-}
-
-
 Ekiga::CodecList GMManager::get_codecs ()
 {
   return codecs;
@@ -680,7 +647,7 @@ void GMManager::set_codecs (Ekiga::CodecList & _codecs)
   }
   codecs = _codecs;
 
-  
+
   // 
   // Update OPAL
   //
@@ -703,7 +670,7 @@ void GMManager::set_codecs (Ekiga::CodecList & _codecs)
 
         if (name == (const char *) all_media_formats [j].GetEncodingName ()
             && rate == all_media_formats [j].GetClockRate ()) {
-          
+
           // Found something
           order += all_media_formats [j];
         }
@@ -747,13 +714,6 @@ GMManager::GetSIPEndpoint ()
 }
 
 
-GMPCSSEndpoint *
-GMManager::GetPCSSEndpoint ()
-{
-  return pcssEP;
-}
-
-
 PString
 GMManager::GetCurrentAddress (PString protocol)
 {
@@ -763,13 +723,13 @@ GMManager::GetCurrentAddress (PString protocol)
   WORD port = 0;
 
   ep = FindEndPoint (protocol.IsEmpty () ? "sip" : protocol);
-  
+
   if (!ep)
     return PString ();
-  
+
   if (!ep->GetListeners ().IsEmpty ())
     ep->GetListeners()[0].GetLocalAddress().GetIpAndPort (ip, port);
-      
+
   return ip.AsString () + ":" + PString (port);
 }
 
@@ -790,13 +750,13 @@ GMManager::GetURL (PString protocol)
 
     if (account->enabled)
       account_url = g_strdup_printf ("%s:%s@%s", (const char *) protocol, 
-				     account->username, account->host);
+                                     account->username, account->host);
     gm_account_delete (account);
   }
 
   if (!account_url)
     account_url = g_strdup_printf ("%s:%s", (const char *) protocol,
-				   (const char *) GetCurrentAddress (protocol));
+                                   (const char *) GetCurrentAddress (protocol));
 
   url = account_url;
   g_free (account_url);
@@ -840,24 +800,6 @@ GMManager::RemoveAccountsEndpoint ()
 }
 
 
-void 
-GMManager::SetCurrentCallToken (PString s)
-{
-  PWaitAndSignal m(ct_access_mutex);
-
-  current_call_token = s;
-}
-
-
-PString 
-GMManager::GetCurrentCallToken ()
-{
-  PWaitAndSignal m(ct_access_mutex);
-
-  return current_call_token;
-}
-
-
 #ifdef HAVE_AVAHI
 void 
 GMManager::CreateZeroconfClient ()
@@ -884,12 +826,12 @@ GMManager::RemoveZeroconfClient ()
 }
 #endif
 
-			     
+
 void 
 GMManager::CreateSTUNClient (bool display_progress,
-			     bool display_config_dialog,
-			     bool wait,
-			     GtkWidget *parent)
+                             bool display_config_dialog,
+                             bool wait,
+                             GtkWidget *parent)
 {
   PWaitAndSignal m(sc_mutex);
 
@@ -897,13 +839,13 @@ GMManager::CreateSTUNClient (bool display_progress,
     delete (sc);
 
   SetSTUNServer (PString ());
-  
+
   /* Be a client for the specified STUN Server */
   sc = new GMStunClient (display_progress, 
-			 display_config_dialog, 
-			 wait,
-			 parent,
-			 *this);
+                         display_config_dialog, 
+                         wait,
+                         parent,
+                         *this);
 }
 
 
@@ -914,9 +856,9 @@ GMManager::RemoveSTUNClient ()
 
   if (sc) 
     delete (sc);
-  
+
   SetSTUNServer (PString ());
-  
+
   sc = NULL;
 
   ResetListeners ();
@@ -925,7 +867,7 @@ GMManager::RemoveSTUNClient ()
 
 
 PSafePtr<OpalConnection> GMManager::GetConnection (PSafePtr<OpalCall> call, 
-						    bool is_remote)
+                                                   bool is_remote)
 {
   PSafePtr<OpalConnection> connection = NULL;
 
@@ -983,26 +925,14 @@ GMManager::OnIncomingConnection (OpalConnection &connection,
     res = OpalManager::OnIncomingConnection (connection, 0, NULL);
     break;
   }
-  
-  /* Update the current state if action is 0 or 4.
-   * Show popup if action is 1 (show popup)
-   */
-  if (reason == 0 || reason == 4) {
-    
-    SetCallingState (GMManager::Called);
-    SetCurrentCallToken (connection.GetCall ().GetToken ());
-  }
 
   return res;
 }
 
 
 void 
-GMManager::OnEstablishedCall (OpalCall &call)
+GMManager::OnEstablishedCall (OpalCall &/*call*/)
 {
-  /* Update internal state */
-  SetCallingState (GMManager::Connected);
-  SetCurrentCallToken (call.GetToken ());
 }
 
 
@@ -1039,19 +969,14 @@ GMManager::OnEstablished (OpalConnection &connection)
 
 
 void 
-GMManager::OnClearedCall (OpalCall & call)
+GMManager::OnClearedCall (OpalCall & /*call*/)
 {
-  if (GetCurrentCallToken() != PString::Empty() 
-      && GetCurrentCallToken () != call.GetToken())
-    return;
-  
   /* Play busy tone if we were connected */
+  /*
   if (GetCallingState () == GMManager::Connected)
     audiooutput_core.play_event("busy_tone_sound");
+*/
 
-  /* Update internal state */
-  SetCallingState (GMManager::Standby);
-  SetCurrentCallToken ("");
 
   /* Reinitialize codecs */
   re_audio_codec = tr_audio_codec = re_video_codec = tr_video_codec = "";
@@ -1320,26 +1245,10 @@ GMManager::DeviceVolume (PSoundChannel *sound_channel,
 			 bool set,
 			 unsigned int &vol)
 {
-  bool err = TRUE;
+  if (sound_channel == NULL)
+    return false;
 
-  if (sound_channel && GetCallingState () == GMManager::Connected) {
-
-    
-    if (set) {
-
-      err = 
-	sound_channel->SetVolume (vol)
-	&& err;
-    }
-    else {
-
-      err = 
-	sound_channel->GetVolume (vol)
-	&& err;
-    }
-  }
-
-  return err;
+  return set ? sound_channel->SetVolume (vol) : sound_channel->GetVolume (vol);
 }
 
 

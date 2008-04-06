@@ -68,9 +68,9 @@
 
 class GMLid;
 class GMH323Gatekeeper;
-class GMPCSSEndpoint;
 class GMH323Endpoint;
 class GMSIPEndpoint;
+class GMPCSSEndpoint;
 
 
 PDICTIONARY (mwiDict, PString, PString);
@@ -88,16 +88,12 @@ class GMManager:
   PCLASSINFO(GMManager, OpalManager);
 
   friend class GMAccountsEndpoint;
-  friend class GMPCSSEndpoint;
   friend class GMH323Endpoint;
   friend class GMSIPEndpoint;
   
   
  public:
 
-  enum CallingState {Standby, Calling, Connected, Called};
-
-  
   /* DESCRIPTION  :  The constructor.
    * BEHAVIOR     :  Creates the supported endpoints 
    * 		     and initialises the variables
@@ -198,18 +194,6 @@ class GMManager:
   void ResetListeners ();
   
   
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Accepts the current incoming call, if any.
-   * 		     There is always only one current incoming call at a time.
-   * 		     If there is another incoming call in-between, 
-   * 		     it is rejected.
-   * PRE          :  /
-   */
-  bool AcceptCurrentIncomingCall ();
-
-  
-
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Returns the local or remote OpalConnection for the 
    * 		     given call. If there are several remote connections,
@@ -279,28 +263,6 @@ class GMManager:
 
   
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Set the current calling state :
-   *                   { Standby,
-   *                     Calling,
-   *                     Connected,
-   *                     Called }
-   * PRE          :  /
-   */
-  void SetCallingState (CallingState);
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Returns the current calling state :
-   *                   { Standby,
-   *                     Calling,
-   *                     Connected,
-   *                     Called }
-   * PRE          :  /
-   */
-  CallingState GetCallingState (void);
-
-
-  /* DESCRIPTION  :  /
    * BEHAVIOR     :  Returns the H.323 endpoint.
    * PRE          :  /
    */
@@ -313,13 +275,6 @@ class GMManager:
    */
   GMSIPEndpoint *GetSIPEndpoint ();
 
-  
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Returns the PCSS endpoint.
-   * PRE          :  /
-   */
-  GMPCSSEndpoint *GetPCSSEndpoint ();
-  
 
   /* DESCRIPTION  : /
    * BEHAVIOR     : Return the current listener address of the endpoint. 
@@ -337,21 +292,6 @@ class GMManager:
    * PRE          : Non-empty protocol.
    */
   PString GetURL (PString);
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Set the current call token.
-   * PRE          :  A valid PString for a call token.
-   */
-  void SetCurrentCallToken (PString);
-
-  
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Return the current call token (empty if
-   *                 no call is in progress).
-   * PRE          :  /
-   */
-  PString GetCurrentCallToken (void);
 
 
 #ifdef HAVE_AVAHI
@@ -493,10 +433,6 @@ class GMManager:
  private:
   void GetAllowedFormats (OpalMediaFormatList & full_list);
 
-  PString current_call_token;
-
-  CallingState calling_state; 
-
   PTimer GatewayIPTimer;
   PTimer IPChangedTimer;
     
@@ -525,8 +461,6 @@ class GMManager:
   /* Various mutexes to ensure thread safeness around internal
      variables */
   PMutex vg_access_mutex;
-  PMutex cs_access_mutex;
-  PMutex ct_access_mutex;
   PMutex tct_access_mutex;
   PMutex lid_access_mutex;
   PMutex mwi_access_mutex;

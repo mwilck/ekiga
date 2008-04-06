@@ -607,16 +607,10 @@ GMSIPEndpoint::OnIncomingConnection (OpalConnection &connection,
 
   PTRACE (3, "GMSIPEndpoint\tIncoming connection");
 
-  call = endpoint.FindCallWithLock (endpoint.GetCurrentCallToken());
-  if (call)
-    con = endpoint.GetConnection (call, TRUE);
-  if ((con && con->GetIdentifier () == connection.GetIdentifier())) {
-    return TRUE;
-  }
-
+  std::cout << endpoint.GetCallsNumber() << std::endl << std::flush;
   if (!forward_uri.empty () && unconditional_forward)
     reason = 2; // Forward
-  else if (endpoint.GetCallingState () != GMManager::Standby) { // TODO : to remove
+  else if (endpoint.GetCallsNumber () >= 1) { 
 
     if (!forward_uri.empty () && forward_on_busy)
       reason = 2; // Forward

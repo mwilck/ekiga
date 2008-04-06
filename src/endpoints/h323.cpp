@@ -308,17 +308,10 @@ GMH323Endpoint::OnIncomingConnection (OpalConnection &connection,
   gnomemeeting_threads_leave ();
   
   
-  call = endpoint.FindCallWithLock (endpoint.GetCurrentCallToken());
-  if (call)
-    con = endpoint.GetConnection (call, TRUE);
-  if ((con && con->GetIdentifier () == connection.GetIdentifier()) 
-      || (status == CONTACT_DND))
-    reason = 1;
-
-  else if (forward_host && always_forward)
+  if (forward_host && always_forward)
     reason = 2; // Forward
   /* We are in a call */
-  else if (endpoint.GetCallingState () != GMManager::Standby) {
+  else if (endpoint.GetCallsNumber () >= 1) { 
 
     if (forward_host && busy_forward)
       reason = 2; // Forward
