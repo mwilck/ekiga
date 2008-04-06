@@ -70,14 +70,6 @@ class GMH323Endpoint : public H323EndPoint
   
   
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Init the endpoint internal values and the various
-   *                 components.
-   * PRE          :  /
-   */
-  void Init ();
-  
-  
-  /* DESCRIPTION  :  /
    * BEHAVIOR     :  Starts the listener thread on the port choosen 
    *                 in the options after having removed old listeners.
    *                 returns TRUE if success and FALSE in case of error.
@@ -179,21 +171,12 @@ class GMH323Endpoint : public H323EndPoint
 
 
  private:
-  
-  /* DESCRIPTION  :  Notifier called when an incoming call
-   *                 has not been answered in the required time.
-   * BEHAVIOR     :  Reject the call, or forward if forward on no answer is
-   *                 enabled in the config database.
-   * PRE          :  /
-   */
-  PDECLARE_NOTIFIER(PTimer, GMH323Endpoint, OnNoAnswerTimeout);
-
-  PTimer NoAnswerTimer;
-
 
   GMManager & endpoint;
   PMutex gk_name_mutex;
   PString gk_name;
+
+  std::string forward_uri;
 };
 
 #endif

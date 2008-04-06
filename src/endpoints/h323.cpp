@@ -53,123 +53,16 @@
 #define new PNEW
 
 
-/* DESCRIPTION  :  This notifier is called when the config database data
- *                 associated with the H.245 Tunneling changes.
- * BEHAVIOR     :  It updates the endpoint.
- * PRE          :  data is a pointer to the H323EndPoint.
- */
-static void h245_tunneling_changed_nt (G_GNUC_UNUSED gpointer id,
-                                       GmConfEntry *entry,
-                                       gpointer data);
-
-
-
-/* DESCRIPTION  :  This notifier is called when the config database data
- *                 associated with the early H.245 key changes.
- * BEHAVIOR     :  It updates the endpoint.
- * PRE          :  data is a pointer to the H323EndPoint.
- */
-static void early_h245_changed_nt (G_GNUC_UNUSED gpointer id,
-                                   GmConfEntry *entry,
-                                   gpointer data);
-
-
-
-/* DESCRIPTION  :  This notifier is called when the config database data
- *                 associated with the Fast Start changes.
- * BEHAVIOR     :  It updates the endpoint.
- * PRE          :  data is a pointer to the H323EndPoint.
- */
-static void fast_start_changed_nt (G_GNUC_UNUSED gpointer id,
-                                   GmConfEntry *entry,
-                                   gpointer data);
-
-
-
-static void
-h245_tunneling_changed_nt (G_GNUC_UNUSED gpointer id,
-			   GmConfEntry *entry,
-			   G_GNUC_UNUSED gpointer data)
-{
-  GMH323Endpoint *h323EP = (GMH323Endpoint *) data;
-  
-  if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
-
-    h323EP->DisableH245Tunneling (!gm_conf_entry_get_bool (entry));
-  }
-}
-
-
-static void
-early_h245_changed_nt (G_GNUC_UNUSED gpointer id,
-		       GmConfEntry *entry,
-		       G_GNUC_UNUSED gpointer data)
-{
-  GMH323Endpoint *h323EP = (GMH323Endpoint *) data;
-  
-  if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
-
-    h323EP->DisableH245inSetup (!gm_conf_entry_get_bool (entry));
-  }
-}
-
-
-static void
-fast_start_changed_nt (G_GNUC_UNUSED gpointer id,
-		       GmConfEntry *entry,
-		       G_GNUC_UNUSED gpointer data)
-{
-  GMH323Endpoint *h323EP = (GMH323Endpoint *) data;
-
-  if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
-
-    h323EP->DisableFastStart (!gm_conf_entry_get_bool (entry));
-  }
-}
-
-
 /* The class */
 GMH323Endpoint::GMH323Endpoint (GMManager & ep)
 	: H323EndPoint (ep), endpoint (ep)
 {
-  NoAnswerTimer.SetNotifier (PCREATE_NOTIFIER (OnNoAnswerTimeout));
+  SetInitialBandwidth (40000);
 }
 
 
 GMH323Endpoint::~GMH323Endpoint ()
 {
-}
-
-
-void 
-GMH323Endpoint::Init ()
-{
-  bool early_h245 = FALSE;
-  bool h245_tunneling = FALSE;
-  bool fast_start = FALSE;
-
-  gnomemeeting_threads_enter ();
-  fast_start = gm_conf_get_bool (H323_KEY "enable_fast_start");
-  h245_tunneling = gm_conf_get_bool (H323_KEY "enable_h245_tunneling");
-  early_h245 = gm_conf_get_bool (H323_KEY "enable_early_h245");
-  gnomemeeting_threads_leave ();
-  
-  /* Initialise internal parameters */
-  DisableH245Tunneling (!h245_tunneling);
-  DisableFastStart (!fast_start);
-  DisableH245inSetup (!early_h245);
-
-  SetInitialBandwidth (40000);
-
-  /* Be notified for configuration changes */
-  gm_conf_notifier_add (H323_KEY "enable_h245_tunneling",
-			h245_tunneling_changed_nt, this);
-
-  gm_conf_notifier_add (H323_KEY "enable_early_h245",
-			early_h245_changed_nt, this);
-
-  gm_conf_notifier_add (H323_KEY "enable_fast_start",
-			fast_start_changed_nt, this);
 }
 
 
@@ -401,7 +294,6 @@ GMH323Endpoint::OnIncomingConnection (OpalConnection &connection,
 
   bool res = FALSE;
 
-  int no_answer_timeout = 0;
   unsigned reason = 0;
   gchar *forward_host = NULL;
 
@@ -413,8 +305,6 @@ GMH323Endpoint::OnIncomingConnection (OpalConnection &connection,
   busy_forward = gm_conf_get_bool (CALL_FORWARDING_KEY "forward_on_busy");
   always_forward = gm_conf_get_bool (CALL_FORWARDING_KEY "always_forward");
   status = gm_conf_get_int (PERSONAL_DATA_KEY "status");
-  no_answer_timeout =
-    gm_conf_get_int (CALL_OPTIONS_KEY "no_answer_timeout");
   gnomemeeting_threads_leave ();
   
   
@@ -437,9 +327,6 @@ GMH323Endpoint::OnIncomingConnection (OpalConnection &connection,
   }
   else
     reason = 0; // Ask the user
-
-  if (reason == 0)
-    NoAnswerTimer.SetInterval (0, PMIN (no_answer_timeout, 60));
 
   res = endpoint.OnIncomingConnection (connection, reason, forward_host);
 
@@ -469,8 +356,6 @@ GMH323Endpoint::OnRegistrationReject ()
 void 
 GMH323Endpoint::OnEstablished (OpalConnection &connection)
 {
-  NoAnswerTimer.Stop ();
-
   PTRACE (3, "GMSIPEndpoint\t H.323 connection established");
   H323EndPoint::OnEstablished (connection);
 }
@@ -479,42 +364,6 @@ GMH323Endpoint::OnEstablished (OpalConnection &connection)
 void 
 GMH323Endpoint::OnReleased (OpalConnection &connection)
 {
-  NoAnswerTimer.Stop ();
-
   PTRACE (3, "GMSIPEndpoint\t H.323 connection released");
   H323EndPoint::OnReleased (connection);
 }
-
-
-void
-GMH323Endpoint::OnNoAnswerTimeout (PTimer &,
-                                   INT) 
-{
-  gchar *forward_host = NULL;
-  gboolean forward_on_no_answer = FALSE;
-  
-  if (endpoint.GetCallingState () == GMManager::Called) {
-   
-    gnomemeeting_threads_enter ();
-    forward_host = gm_conf_get_string (H323_KEY "forward_host");
-    forward_on_no_answer = 
-      gm_conf_get_bool (CALL_FORWARDING_KEY "forward_on_no_answer");
-    gnomemeeting_threads_leave ();
-
-    if (forward_host && forward_on_no_answer) {
-      
-      PSafePtr<OpalCall> call = 
-        endpoint.FindCallWithLock (endpoint.GetCurrentCallToken ());
-      PSafePtr<OpalConnection> con = 
-        endpoint.GetConnection (call, TRUE);
-    
-      con->ForwardCall (forward_host);
-    }
-    else
-      ClearAllCalls (OpalConnection::EndedByNoAnswer, FALSE);
-
-    g_free (forward_host);
-  }
-}
-
-

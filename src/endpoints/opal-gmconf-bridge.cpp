@@ -42,6 +42,7 @@
 
 #include "manager.h"
 #include "sip.h"
+#include "h323.h"
 
 using namespace Opal;
 
@@ -77,6 +78,10 @@ ConfBridge::ConfBridge (Ekiga::Service & _service)
   keys.push_back (CALL_FORWARDING_KEY "forward_on_busy");
   keys.push_back (CALL_FORWARDING_KEY "always_forward");
   keys.push_back (CALL_OPTIONS_KEY "no_answer_timeout");
+
+  keys.push_back (H323_KEY "enable_h245_tunneling");
+  keys.push_back (H323_KEY "enable_early_h245");
+  keys.push_back (H323_KEY "enable_fast_start");
 
   load (keys);
 }
@@ -230,6 +235,22 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
     const gchar *str = gm_conf_entry_get_string (entry);
     if (str != NULL)    
       manager.GetSIPEndpoint ()->set_forward_host (str);
+  }
+
+  //
+  // H.323 keys
+  //
+  else if (key == H323_KEY "enable_h245_tunneling") {
+
+    manager.GetH323Endpoint ()->DisableH245Tunneling (!gm_conf_entry_get_bool (entry));
+  }
+  else if (key == H323_KEY "enable_early_h245") {
+
+    manager.GetH323Endpoint ()->DisableH245inSetup (!gm_conf_entry_get_bool (entry));
+  }
+  else if (key == H323_KEY "enable_fast_start") {
+
+    manager.GetH323Endpoint ()->DisableFastStart (!gm_conf_entry_get_bool (entry));
   }
 
   //
