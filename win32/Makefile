@@ -341,7 +341,7 @@ endif
 $(PTLIB_DIR)/configure: binaries $(LIBDIR)/libldap.dll $(INCLUDEDIR)/directx/dsound.h $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(SRCDIR)/$(PTLIB_ARCHIVE) $(EKIGA_WIN32_DIFF_DIR)/ptlib_Makefile.am $(LIBDIR)/libexpat.a $(EKIGA_WIN32_DIFF_DIR)/ptlib_configure.ac $(EKIGA_WIN32_DIFF_DIR)/ptlib_ptlib.pc.in
 	rm -f $(LIBDIR)/libpt.a
 	rm -rf $(PTLIB_DIR)
-	cp -r $(SRCDIR)/$(PTLIB_ARCHIVE) $(PTLIB_DIR)
+	$(CP) -r $(SRCDIR)/$(PTLIB_ARCHIVE) $(PTLIB_DIR)
 	$(RM) -f $(PTLIB_DIR)/configure.exe $(PTLIB_DIR)/configure $(PTLIB_DIR)/configure.ac $(PTLIB_DIR)/Makefile.in
 	$(CP) -fl $(EKIGA_WIN32_DIFF_DIR)/ptlib_configure.ac $(PTLIB_DIR)/configure.ac
 	$(CP) -fl $(EKIGA_WIN32_DIFF_DIR)/ptlib_Makefile.am $(PTLIB_DIR)/Makefile.am
@@ -410,7 +410,7 @@ endif
 
 $(FFMPEG_DIR)/config.status: $(SRCDIR)/$(FFMPEG_ARCHIVE)
 	rm -rf $(FFMPEG_DIR)
-	cp -r $(SRCDIR)/$(FFMPEG_ARCHIVE) $(FFMPEG_DIR)
+	$(CP) -r $(SRCDIR)/$(FFMPEG_ARCHIVE) $(FFMPEG_DIR)
 	(cd $(FFMPEG_DIR)/; \
 	./configure $(confffmpeg) \
 	)
@@ -439,7 +439,7 @@ update-sources::
 
 $(X264_DIR)/config.status: $(SRCDIR)/$(X264_ARCHIVE)
 	rm -rf $(X264_DIR)
-	cp -r $(SRCDIR)/$(X264_ARCHIVE) $(X264_DIR)
+	$(CP) -r $(SRCDIR)/$(X264_ARCHIVE) $(X264_DIR)
 	(cd $(X264_DIR)/; \
 	CC=$(REALCC) ./configure $(confx264); \
 	sed -i -e 's#ranlib#$(RANLIB)#g' $(X264_DIR)/Makefile; \
@@ -464,7 +464,7 @@ endif
 
 $(THEORA_DIR)/config.status: $(SRCDIR)/$(THEORA_ARCHIVE)
 	rm -rf $(THEORA_DIR)
-	cp -r $(SRCDIR)/$(THEORA_ARCHIVE) $(THEORA_DIR)
+	$(CP) -r $(SRCDIR)/$(THEORA_ARCHIVE) $(THEORA_DIR)
 	(cd $(THEORA_DIR)/; \
 	CC=$(REALCC) LD=$(LD) AR=$(AR) RANLIB=$(RANLIB) ./autogen.sh $(conftheora); )
 	touch $@
@@ -487,7 +487,7 @@ endif
 
 $(OPAL_DIR)/configure: binaries $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(LIBDIR)/libpt.a $(SRCDIR)/$(OPAL_ARCHIVE) $(EKIGA_WIN32_DIFF_DIR)/opal_configure.ac $(EKIGA_WIN32_DIFF_DIR)/opal_Makefile.am $(EKIGA_WIN32_DIFF_DIR)/opal_opal.pc.in $(BINDIR)/avcodec.dll $(LIBDIR)/libx264.a $(LIBDIR)/libtheora.a
 	rm -rf $(OPAL_DIR) $(LIBDIR)/libopal.a
-	cp -r $(SRCDIR)/$(OPAL_ARCHIVE) $(OPAL_DIR)
+	$(CP) -r $(SRCDIR)/$(OPAL_ARCHIVE) $(OPAL_DIR)
 	$(RM) -f $(OPAL_DIR)/configure.exe $(OPAL_DIR)/configure $(OPAL_DIR)/configure.ac $(OPAL_DIR)/Makefile.in
 	$(CP) -fl $(EKIGA_WIN32_DIFF_DIR)/opal_configure.ac $(OPAL_DIR)/configure.ac
 	$(CP) -fl $(EKIGA_WIN32_DIFF_DIR)/opal_Makefile.am $(OPAL_DIR)/Makefile.am
@@ -526,7 +526,7 @@ update-sources::
 	$(WGET) -P $(SRCDIR) $(GTK_INSTALLER_URL)/$(GTK_BIN_EXE) 	 
 
 $(LIBDIR)/$(GTK_BIN_EXE): $(SRCDIR)/$(GTK_BIN_EXE) 	
-	cp $(SRCDIR)/$(GTK_BIN_EXE)  $(LIBDIR)
+	$(CP) $(SRCDIR)/$(GTK_BIN_EXE)  $(LIBDIR)
 	touch $@
 
 ### libglib
@@ -631,7 +631,7 @@ $(DIRECTX_DIR)/config.status: $(SRCDIR)/$(DIRECTX_ARCHIVE)
 $(INCLUDEDIR)/directx/dsound.h: $(DIRECTX_DIR)/config.status
 	mkdir -p $(INCLUDEDIR)/directx
 	(for header in $(DIRECTX_DIR)/include/*h; do \
-		cp $$header $(INCLUDEDIR)/directx/; \
+		$(CP) $$header $(INCLUDEDIR)/directx/; \
 	done)
 	touch $@
 
@@ -647,7 +647,7 @@ endif
 
 $(EKIGA_DIR)/autogen.sh: binaries $(SRCDIR)/$(EKIGA_ARCHIVE)
 	rm -rf $(EKIGA_DIR)
-	cp -r $(SRCDIR)/$(EKIGA_ARCHIVE) $(EKIGA_DIR)
+	$(CP) -r $(SRCDIR)/$(EKIGA_ARCHIVE) $(EKIGA_DIR)
 	touch $@
 
 $(EKIGA_DIR)/config.status: binaries $(EKIGA_DIR)/autogen.sh $(LIBDIR)/libpt.a $(LIBDIR)/libopal.a \

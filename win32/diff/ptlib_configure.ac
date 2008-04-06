@@ -285,7 +285,7 @@ if test -d ${with_directx_dir}/include; then
     DIRECTX_LIBS="-ldsound -ldxerr9 -ldxguid -lstrmiids -lole32 -luuid -loleaut32 -lquartz"
 fi
 
-LIBS="-lwinmm -lwsock32 -lsnmpapi -lmpr -lcomdlg32 -lgdi32 -lavicap32 -lregex -lexpat -ldnsapi ${DIRECTX_LIBS}"
+LIBS="-lwinmm -lwsock32 -lsnmpapi -lmpr -lcomdlg32 -lgdi32 -lavicap32 -lregex -lexpat -liphlpapi -ldnsapi ${DIRECTX_LIBS}"
 
 
 AC_SUBST(LIBS)
