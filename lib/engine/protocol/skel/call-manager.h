@@ -137,34 +137,6 @@ namespace Ekiga
       sigc::signal<void, std::string, std::string> new_chat;
 
 
-      /*          
-       * Accounts
-       */        
-
-
-      /** Register the provided account.
-       * @param: account : the account to register.
-       */
-//      void register_account (Ekiga::Account & account);
-
-      /** Unregister the provided account.
-       * @param: account : the account to register.
-       */
-//      void register_account (Ekiga::Account & account);
-
-      /** This signal is emitted when a registration status changes.
-       * @param: aor            : the registered account
-       *         state          : the current registration state
-       *         error          : the associated error in case of failure 
-       */
-//      sigc::signal<void, std::string, RegistrationState, std::string> registration_event;
-
-
-      /*
-       * MISC
-       */ 
-
-
   private :
       std::string uri_type;
     };
