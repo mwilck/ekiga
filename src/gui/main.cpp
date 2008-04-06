@@ -675,8 +675,6 @@ static gboolean on_stats_refresh_cb (gpointer self)
 
 static gboolean on_signal_level_refresh_cb (gpointer self) 
 {
-  gchar *msg = NULL;
-
   GmMainWindow *mw = gm_mw_get_mw (GTK_WIDGET (self));
 
   Ekiga::AudioInputCore *audioinput_core = dynamic_cast<Ekiga::AudioInputCore *> (mw->core.get ("audioinput-core"));
@@ -1107,23 +1105,25 @@ on_audioinputdevice_opened_cb (Ekiga::AudioInputManager & /* manager */,
 
 
 void 
-on_audioinputdevice_closed_cb (Ekiga::AudioInputManager & /* manager */, Ekiga::AudioInputDevice & /*audioinput_device*/, gpointer self)
+on_audioinputdevice_closed_cb (Ekiga::AudioInputManager & /* manager */, 
+                               Ekiga::AudioInputDevice & /*audioinput_device*/, 
+                               gpointer /*self*/)
 {
 }
 
 void 
 on_audioinputdevice_error_cb (Ekiga::AudioInputManager & /* manager */, 
-                            Ekiga::AudioInputDevice & audioinput_device, 
-                            Ekiga::AudioInputErrorCodes error_code, 
-                            gpointer self)
+                            Ekiga::AudioInputDevice & /*audioinput_device*/, 
+                            Ekiga::AudioInputErrorCodes /*error_code*/, 
+                            gpointer /*self*/)
 {
 }
 
 void
-on_audiooutputdevice_opened_cb (Ekiga::AudioOutputManager & /* manager */,
-                             Ekiga::AudioOutputPrimarySecondary primarySecondary,
-                             Ekiga::AudioOutputDevice & /* audiooutput_device */,
-                             Ekiga::AudioOutputConfig &  audiooutput_config,
+on_audiooutputdevice_opened_cb (Ekiga::AudioOutputManager & /*manager*/,
+                             Ekiga::AudioOutputPrimarySecondary /*primarySecondary*/,
+                             Ekiga::AudioOutputDevice & /*audiooutput_device*/,
+                             Ekiga::AudioOutputConfig & audiooutput_config,
                              gpointer self)
 {
   GmMainWindow *mw = NULL;
@@ -1139,21 +1139,25 @@ on_audiooutputdevice_opened_cb (Ekiga::AudioOutputManager & /* manager */,
 
 
 void 
-on_audiooutputdevice_closed_cb (Ekiga::AudioOutputManager & /* manager */, Ekiga::AudioOutputPrimarySecondary primarySecondary, Ekiga::AudioOutputDevice & /*audiooutput_device*/, gpointer self)
+on_audiooutputdevice_closed_cb (Ekiga::AudioOutputManager & /*manager*/, 
+                                Ekiga::AudioOutputPrimarySecondary /*primarySecondary*/, 
+                                Ekiga::AudioOutputDevice & /*audiooutput_device*/, 
+                                gpointer /*self*/)
 {
 }
 
 void 
-on_audiooutputdevice_error_cb (Ekiga::AudioOutputManager & /* manager */, 
-                            Ekiga::AudioOutputPrimarySecondary primarySecondary,
-                            Ekiga::AudioOutputDevice & audiooutput_device, 
-                            Ekiga::AudioOutputErrorCodes error_code, 
-                            gpointer self)
+on_audiooutputdevice_error_cb (Ekiga::AudioOutputManager & /*manager */, 
+                               Ekiga::AudioOutputPrimarySecondary /*primarySecondary*/,
+                               Ekiga::AudioOutputDevice & /*audiooutput_device*/, 
+                               Ekiga::AudioOutputErrorCodes /*error_code*/, 
+                               gpointer /*self*/)
 {
 }
 
 void
-on_logo_update_required_cb (Ekiga::DisplayManager & /* manager */, gpointer self)
+on_logo_update_required_cb (Ekiga::DisplayManager & /* manager */, 
+                            gpointer self)
 {
   gm_main_window_update_logo_have_window (GTK_WIDGET (self));
 }
@@ -2449,7 +2453,7 @@ audio_volume_changed_cb (GtkAdjustment * /*adjustment*/,
   g_return_if_fail (data != NULL);
   mw = gm_mw_get_mw (GTK_WIDGET (data));
 
-  Ekiga::AudioInputCore *audioinput_core = dynamic_cast<Ekiga::AudioInputCore *> (mw->core.get ("audioinput-core"));
+ // Ekiga::AudioInputCore *audioinput_core = dynamic_cast<Ekiga::AudioInputCore *> (mw->core.get ("audioinput-core"));
   Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (mw->core.get ("audiooutput-core"));
 
   audiooutput_core->set_volume(Ekiga::primary, (unsigned)GTK_ADJUSTMENT (mw->adj_output_volume)->value);
