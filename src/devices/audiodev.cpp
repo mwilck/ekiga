@@ -222,3 +222,4 @@ bool PSoundChannel_EKIGA::IsOpen () const
 {
   return opened;
 }
+
