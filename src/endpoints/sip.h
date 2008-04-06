@@ -46,6 +46,7 @@
 
 #include "manager.h"
 #include "presence-core.h"
+#include "call-manager.h"
 
 
 PDICTIONARY (msgDict, PString, PString);
@@ -54,30 +55,44 @@ PDICTIONARY (msgDict, PString, PString);
 class Ekiga::PersonalDetails;
 
 
-/* Minimal SIP endpoint implementation */
 class GMSIPEndpoint 
 :   public SIPEndPoint, 
     public Ekiga::PresenceFetcher,
-    public Ekiga::PresencePublisher
+    public Ekiga::PresencePublisher,
+    public Ekiga::PresentityDecorator,
+    public Ekiga::ContactDecorator,
+    public Ekiga::CallManager
 {
   PCLASSINFO(GMSIPEndpoint, SIPEndPoint);
 
- public:
+public:
 
-  /* DESCRIPTION  :  The constructor.
-   * BEHAVIOR     :  Creates the H.323 Endpoint 
-   * 		     and initialises the variables
-   * PRE          :  /
-   */
   GMSIPEndpoint (GMManager &ep, Ekiga::ServiceCore & core);
 
-  
-  /* DESCRIPTION  :  The destructor.
-   * BEHAVIOR     :  /
-   * PRE          :  /
-   */
   ~GMSIPEndpoint ();
-  
+
+  /**/
+  bool dial (const std::string uri); 
+
+  bool send_message (const std::string uri, 
+                     const std::string message);
+
+  Ekiga::CodecList get_codecs ();
+
+  void set_codecs (Ekiga::CodecList & codecs); 
+
+  /***/
+  bool populate_menu (Ekiga::Contact &contact,
+                      Ekiga::MenuBuilder &builder);
+
+  bool populate_menu (const std::string uri,
+                      Ekiga::MenuBuilder & builder);
+
+  bool menu_builder_add_actions (const std::string & fullname,
+                                 std::map<std::string, std::string> & uris,
+                                 Ekiga::MenuBuilder & builder);
+  /***/
+
   /***/
   void fetch (const std::string uri);
   void unfetch (const std::string uri);
@@ -99,7 +114,7 @@ class GMSIPEndpoint
   void set_forward_on_no_answer (const bool enabled);
   void set_no_answer_timeout (const unsigned timeout);
 
-  
+
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Starts the listener thread on the port choosen 
    *                 in the options after having removed old listeners.
@@ -107,9 +122,9 @@ class GMSIPEndpoint
    * PRE          :  The interface.
    */
   bool StartListener (PString iface,
-		      WORD port);
+                      WORD port);
 
-  
+
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Register the SIP endpoint to the given SIP server. 
    * PRE          :  Correct parameters.
@@ -120,24 +135,30 @@ class GMSIPEndpoint
                  unsigned int expires,
                  bool unregister);
 
-  
+
   /* DESCRIPTION  :  Called when the registration is successful. 
    * BEHAVIOR     :  Displays a message in the status bar and history. 
    * PRE          :  /
    */
   void OnRegistered (const PString & aor,
-		     bool wasRegistering);
-  
-  
+                     bool wasRegistering);
+
+
   /* DESCRIPTION  :  Called when the registration fails.
    * BEHAVIOR     :  Displays a message in the status bar and history. 
    * PRE          :  /
    */
   void OnRegistrationFailed (const PString & aor,
-			     SIP_PDU::StatusCodes reason,
-			     bool wasRegistering);
-  
-  
+                             SIP_PDU::StatusCodes reason,
+                             bool wasRegistering);
+
+  bool MakeConnection(OpalCall & call,
+                      const PString & party,
+                      void * userData = NULL,
+                      unsigned int options = 0,
+                      OpalConnection::StringOptions *stringOptions = NULL);
+
+
   /* DESCRIPTION  :  Called when there is an incoming SIP connection.
    * BEHAVIOR     :  Checks if the connection must be rejected or forwarded
    * 		     and call the manager function of the same name
@@ -158,10 +179,10 @@ class GMSIPEndpoint
    * PRE          :  /
    */
   void OnMWIReceived (const PString & to,
-		      SIPSubscribe::MWIType type,
-		      const PString & msgs);
+                      SIPSubscribe::MWIType type,
+                      const PString & msgs);
 
-  
+
   /* DESCRIPTION  :  Called when presence information has been received.
    * BEHAVIOR     :  Updates the roster.
    * PRE          :  /
@@ -170,26 +191,26 @@ class GMSIPEndpoint
                                        const PString & basic,
                                        const PString & note);
 
-  
+
   /* DESCRIPTION  :  Called when a message has been received.
    * BEHAVIOR     :  Checks if we already received the message and call
    * 		     OnMessageReceived.
    * PRE          :  /
    */
   virtual void OnReceivedMESSAGE (OpalTransport & transport,
-				  SIP_PDU & pdu);
+                                  SIP_PDU & pdu);
 
-  
+
   /* DESCRIPTION  :  Called when sending a message fails. 
    * BEHAVIOR     :  /
    * PRE          :  /
    */
   void OnMessageFailed (const SIPURL & messageUrl,
-			SIP_PDU::StatusCodes reason);
+                        SIP_PDU::StatusCodes reason);
 
   void Message (const PString & to,
                 const PString & body);
-      
+
 
   /* DESCRIPTION  :  / 
    * BEHAVIOR     :  Returns the account to use for outgoing PDU's.
@@ -205,7 +226,7 @@ class GMSIPEndpoint
    */
   void OnEstablished (OpalConnection &);
 
-  
+
   /* DESCRIPTION  :  This callback is called when a connection to a remote
    *                 endpoint is cleared.
    * BEHAVIOR     :  Stops the timers.
@@ -214,27 +235,23 @@ class GMSIPEndpoint
   void OnReleased (OpalConnection &);
 
 
- private:
-  
-  /* DESCRIPTION  :  Notifier called when an incoming call
-   *                 has not been answered in the required time.
-   * BEHAVIOR     :  Reject the call, or forward if forward on no answer is
-   *                 enabled in the config database.
-   * PRE          :  /
-   */
-  PDECLARE_NOTIFIER(PTimer, GMSIPEndpoint, OnNoAnswerTimeout);
+private:
+  void on_dial (std::string uri);
 
-  PTimer NoAnswerTimer;
+  void on_message (std::string name,
+                   std::string uri);
+
 
   GMManager & endpoint;
 
   PMutex msgDataMutex;
   msgDict msgData;
 
-  std::list<std::string> uris;    // List of subscribed uris
+  std::list<std::string> subscribed_uris;    // List of subscribed uris
   std::list<std::string> domains; // List of registered domains
   std::list<std::string> aors;     // List of registered aor
   Ekiga::ServiceCore & core;
+  Ekiga::Runtime & runtime;
 
   std::string uri_prefix;
   std::string forward_uri;

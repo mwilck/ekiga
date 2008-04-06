@@ -57,8 +57,8 @@
 #include "runtime.h"
 #include "contact-core.h"
 #include "presence-core.h"
-#include "call-manager.h"
 #include "call-core.h"
+#include "call-manager.h"
 #include "call.h"
 #include "audiooutput-core.h"
 
@@ -82,11 +82,8 @@ PDICTIONARY (mwiDict, PString, PString);
  */
 
 class GMManager: 
-    public OpalManager,
     public Ekiga::Service,
-    public Ekiga::ContactDecorator,
-    public Ekiga::PresentityDecorator,
-    public Ekiga::CallManager
+    public OpalManager
 {
   PCLASSINFO(GMManager, OpalManager);
 
@@ -121,16 +118,6 @@ class GMManager:
 
   const std::string get_description () const
     { return "\tObject bringing in Opal support (calls, text messaging, sip, h323, ...)"; }
-
-  bool populate_menu (Ekiga::Contact &contact,
-                      Ekiga::MenuBuilder &builder);
-
-  bool populate_menu (const std::string uri,
-                      Ekiga::MenuBuilder & builder);
-
-  bool menu_builder_add_actions (const std::string & fullname,
-                                 std::map<std::string, std::string> & uris,
-                                 Ekiga::MenuBuilder & builder);
 
   void get_jitter_buffer_size (unsigned & min_val,
                                unsigned & max_val);
@@ -179,9 +166,6 @@ class GMManager:
 
   /**/
   bool dial (const std::string uri); 
-
-  bool send_message (const std::string uri, 
-                     const std::string message);
 
   /**/
   void set_fullname (const std::string name);
@@ -272,21 +256,6 @@ class GMManager:
    * PRE          :  /
    */
   void OnClearedCall (OpalCall &);
-
-
-  /* DESCRIPTION  :  Called when a message has been received.
-   * BEHAVIOR     :  Updates the text chat window, updates the tray icon in
-   * 		     flashing state if the text chat window is hidden.
-   * PRE          :  /
-   */
-  void OnMessageReceived (const SIPURL & from,
-			  const PString & body);
-
-  void OnMessageFailed (const SIPURL & messageUrl,
-                        SIP_PDU::StatusCodes reason);
-
-  void OnMessageSent (const PString & to,
-                      const PString & body);
 
 
   /** Return the list of available codecs
@@ -484,10 +453,6 @@ class GMManager:
   sigc::signal<void, std::string, std::string, unsigned int> mwi_event;
 
  private:
-  void on_dial (std::string uri);
-
-  void on_message (std::string name,
-                   std::string uri);
 
   
  protected:

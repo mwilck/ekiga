@@ -5,6 +5,18 @@
 
 2008-04-06  Damien Sandras  <dsandras@gnome.org>
 
+	* src/endpoints/sip.h,
+	src/endpoints/manager.cpp,
+	src/endpoints/opal-main.cpp,
+	src/endpoints/manager.h,
+	src/endpoints/sip.cpp:
+	First changes in order to make the SIP and H.323 EndPoints become a
+	CallManager implementation instead of the GMManager. Having the
+	GMManager being a CallManager was not a good idea for several reasons.
+	(difference of features between protocols).
+
+2008-04-06  Damien Sandras  <dsandras@gnome.org>
+
 	* src/endpoints/opal-gmconf-bridge.cpp:
 	* src/endpoints/h323.cpp, src/endpoints/h323.h:
 	Moved some settings from the endpoint to the bridge.

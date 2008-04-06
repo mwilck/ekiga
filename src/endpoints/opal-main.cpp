@@ -74,17 +74,17 @@ opal_init (Ekiga::ServiceCore &core,
   GMManager *manager = new GMManager (core);
   GMSIPEndpoint *sipEP = manager->GetSIPEndpoint ();
 
-  call_core->add_manager (*manager);
+  call_core->add_manager (*sipEP);
   core.add (*manager); // FIXME temporary
 
   if (contact_core != NULL) 
-    contact_core->add_contact_decorator (*manager);
+    contact_core->add_contact_decorator (*sipEP);
   else
     return false;
 
   if (presence_core != NULL) {
 
-    presence_core->add_presentity_decorator (*manager);
+    presence_core->add_presentity_decorator (*sipEP);
     presence_core->add_supported_uri (sigc::ptr_fun (is_sip_address));
     presence_core->add_presence_fetcher (*sipEP);
     presence_core->add_presence_publisher (*sipEP);

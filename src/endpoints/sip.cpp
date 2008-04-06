@@ -49,9 +49,10 @@
 /* The class */
 GMSIPEndpoint::GMSIPEndpoint (GMManager & ep, Ekiga::ServiceCore & _core)
 : SIPEndPoint (ep), 
-    Ekiga::PresencePublisher (_core), 
-    endpoint (ep), 
-    core (_core)
+  Ekiga::PresencePublisher (_core), 
+  endpoint (ep), 
+  core (_core),
+  runtime (*(dynamic_cast<Ekiga::Runtime *> (core.get ("runtime"))))
 {
   uri_prefix = "sip:";
 
@@ -66,8 +67,6 @@ GMSIPEndpoint::GMSIPEndpoint (GMManager & ep, Ekiga::ServiceCore & _core)
   /* Update the User Agent */
   SetUserAgent ("Ekiga/" PACKAGE_VERSION);
 
-  NoAnswerTimer.SetNotifier (PCREATE_NOTIFIER (OnNoAnswerTimeout));
-
   Ekiga::PersonalDetails *details = dynamic_cast<Ekiga::PersonalDetails *> (_core.get ("personal-details"));
   if (details)
     publish (*details);
@@ -79,6 +78,96 @@ GMSIPEndpoint::~GMSIPEndpoint ()
 }
 
 
+bool GMSIPEndpoint::dial (const std::string uri)
+{
+  return endpoint.dial (uri);
+}
+
+
+bool GMSIPEndpoint::send_message (const std::string uri, const std::string message)
+{
+  if (!uri.empty () && !message.empty ()) {
+    Message (uri.c_str (), message.c_str ());
+
+    return true;
+  }
+
+  return false;
+}
+
+
+Ekiga::CodecList GMSIPEndpoint::get_codecs ()
+{
+  return endpoint.get_codecs ();
+}
+
+
+void GMSIPEndpoint::set_codecs (Ekiga::CodecList & _codecs)
+{
+  endpoint.set_codecs (_codecs);
+}
+
+bool GMSIPEndpoint::populate_menu (Ekiga::Contact &contact,
+                                   Ekiga::MenuBuilder &builder)
+{
+  std::string name = contact.get_name ();
+  std::map<std::string, std::string> uris = contact.get_uris ();
+
+  return menu_builder_add_actions (name, uris, builder);
+}
+
+
+bool GMSIPEndpoint::populate_menu (const std::string uri,
+                                   Ekiga::MenuBuilder & builder)
+{
+  std::map<std::string, std::string> uris; 
+  uris [""] = uri;
+
+  return menu_builder_add_actions ("", uris, builder);
+}
+
+
+bool GMSIPEndpoint::menu_builder_add_actions (const std::string & fullname,
+                                              std::map<std::string,std::string> & uris,
+                                              Ekiga::MenuBuilder & builder)
+{
+  bool populated = false;
+
+  /* Add actions of type "call" for all uris */
+  for (std::map<std::string, std::string>::const_iterator iter = uris.begin ();
+       iter != uris.end ();
+       iter++) {
+
+    std::string action = _("Call");
+
+    if (!iter->first.empty ())
+      action = action + " [" + iter->first + "]";
+
+    builder.add_action ("call", action, sigc::bind (sigc::mem_fun (this, &GMSIPEndpoint::on_dial), iter->second));
+
+    populated = true;
+  }
+
+  /* Add actions of type "message" for all uris */
+  for (std::map<std::string, std::string>::const_iterator iter = uris.begin ();
+       iter != uris.end ();
+       iter++) {
+
+    std::string action = _("Message");
+
+    if (!iter->first.empty ())
+      action = action + " [" + iter->first + "]";
+
+    builder.add_action ("message", action, sigc::bind (sigc::mem_fun (this, &GMSIPEndpoint::on_message), fullname, iter->second));
+
+    populated = true;
+  }
+
+  return populated;
+}
+
+
+
 void
 GMSIPEndpoint::fetch (const std::string _uri)
 {
@@ -88,8 +177,8 @@ GMSIPEndpoint::fetch (const std::string _uri)
   if (loc != string::npos) 
     domain = _uri.substr (loc+1);
 
-  if (std::find (uris.begin (), uris.end (), _uri) == uris.end ())
-    uris.push_back (_uri);
+  if (std::find (subscribed_uris.begin (), subscribed_uris.end (), _uri) == subscribed_uris.end ())
+    subscribed_uris.push_back (_uri);
 
   if (std::find (domains.begin (), domains.end (), domain) != domains.end ()
       && !IsSubscribed (SIPSubscribe::Presence, _uri.c_str ())) {
@@ -108,7 +197,7 @@ GMSIPEndpoint::unfetch (const std::string uri)
     SIPSubscribe::SubscribeType type = SIPSubscribe::Presence;
     Subscribe (type, 0, PString (uri.c_str ()));
 
-    uris.remove (uri);
+    subscribed_uris.remove (uri);
   }
 }
 
@@ -361,8 +450,8 @@ GMSIPEndpoint::OnRegistered (const PString & _aor,
     if (!was_registering && std::find (domains.begin (), domains.end (), server) != domains.end ()) 
       domains.remove (server);
 
-    for (std::list<std::string>::const_iterator iter = uris.begin (); 
-         iter != uris.end () ; 
+    for (std::list<std::string>::const_iterator iter = subscribed_uris.begin (); 
+         iter != subscribed_uris.end () ; 
          iter++) {
 
       found = (*iter).find (server, 0);
@@ -373,7 +462,7 @@ GMSIPEndpoint::OnRegistered (const PString & _aor,
         SIPSubscribe::SubscribeType type = SIPSubscribe::Presence;
         Subscribe (type, was_registering ? 500 : 0, PString ((*iter).c_str ()));
         if (!was_registering)
-          uris.remove (*iter);
+          subscribed_uris.remove (*iter);
       }
     }
   }
@@ -383,6 +472,19 @@ GMSIPEndpoint::OnRegistered (const PString & _aor,
     SIPSubscribe::SubscribeType t = SIPSubscribe::MessageSummary;
     Subscribe (t, 3600, aor);
   }
+}
+
+
+bool GMSIPEndpoint::MakeConnection (OpalCall & _call,
+                                    const PString &party,
+                                    void *userData,
+                                    unsigned int options,
+                                    OpalConnection::StringOptions *stringOptions)
+{
+  Ekiga::Call *call = dynamic_cast<Ekiga::Call *> (&_call);
+  runtime.run_in_main (sigc::bind (new_call, call));
+
+  return SIPEndPoint::MakeConnection (_call, party, userData, options, stringOptions);
 }
 
 
@@ -524,9 +626,6 @@ GMSIPEndpoint::OnIncomingConnection (OpalConnection &connection,
   else
     reason = 0; // Ask the user
 
-  if (reason == 0)
-    NoAnswerTimer.SetInterval (0, PMIN (no_answer_timeout, 60));
-
   return endpoint.OnIncomingConnection (connection, reason, forward_uri.c_str ());
 }
 
@@ -561,25 +660,44 @@ GMSIPEndpoint::OnReceivedMESSAGE (G_GNUC_UNUSED OpalTransport & transport,
 
     val = new PString (pdu.GetMIME ().GetCallID ());
     msgData.SetAt (SIPURL (from).AsString (), val);
-    endpoint.OnMessageReceived(from, pdu.GetEntityBody());
+
+    SIPURL uri = from;
+    std::string display_name = (const char *) uri.GetDisplayName ();
+    uri.AdjustForRequestURI ();
+    std::string message_uri = (const char *) uri.AsString ();
+    std::string message = (const char *) pdu.GetEntityBody ();
+
+    // FIXME should be a signal
+    //audiooutput_core.play_event("new_message_sound");
+
+    runtime.run_in_main (sigc::bind (im_received.make_slot (), display_name, message_uri, message));
   }
 }
 
 
 void 
 GMSIPEndpoint::OnMessageFailed (const SIPURL & messageUrl,
-                                SIP_PDU::StatusCodes reason)
+                                SIP_PDU::StatusCodes /*reason*/)
 {
-  endpoint.OnMessageFailed (messageUrl, reason);
+  SIPURL to = messageUrl;
+  to.AdjustForRequestURI ();
+  std::string uri = (const char *) to.AsString ();
+  runtime.run_in_main (sigc::bind (im_failed.make_slot (), uri, 
+                                   _("Could not send message")));
 }
 
 
 void
-GMSIPEndpoint::Message (const PString & to,
+GMSIPEndpoint::Message (const PString & _to,
                         const PString & body)
 {
-  SIPEndPoint::Message (to, body);
-  endpoint.OnMessageSent (to, body);
+  SIPEndPoint::Message (_to, body);
+
+  SIPURL to = _to;
+  to.AdjustForRequestURI ();
+  std::string uri = (const char *) to.AsString ();
+  std::string message = (const char *) body;
+  runtime.run_in_main (sigc::bind (im_sent.make_slot (), uri, message));
 }
 
 
@@ -641,8 +759,6 @@ GMSIPEndpoint::GetRegisteredPartyName (const SIPURL & host)
 void 
 GMSIPEndpoint::OnEstablished (OpalConnection &connection)
 {
-  NoAnswerTimer.Stop ();
-
   PTRACE (3, "GMSIPEndpoint\t SIP connection established");
   SIPEndPoint::OnEstablished (connection);
 }
@@ -651,8 +767,6 @@ GMSIPEndpoint::OnEstablished (OpalConnection &connection)
 void 
 GMSIPEndpoint::OnReleased (OpalConnection &connection)
 {
-  NoAnswerTimer.Stop ();
-
   PTRACE (3, "GMSIPEndpoint\t SIP connection released");
   SIPEndPoint::OnReleased (connection);
 }
@@ -697,39 +811,24 @@ GMSIPEndpoint::OnPresenceInfoReceived (const PString & user,
 
   Ekiga::PresenceCore *presence_core =
     dynamic_cast<Ekiga::PresenceCore *>(core.get ("presence-core"));
-  Ekiga::Runtime *runtime = 
-    dynamic_cast<Ekiga::Runtime *> (core.get ("runtime")); 
 
-  if (runtime) {
-   
-    /**
-     * TODO
-     * Wouldn't it be convenient to emit the signal and have the presence core listen to it ?
-     */
-    runtime->run_in_main (sigc::bind (presence_core->presence_received.make_slot (), _uri, presence));
-    runtime->run_in_main (sigc::bind (presence_core->status_received.make_slot (), _uri, status));
-  }
+  /**
+   * TODO
+   * Wouldn't it be convenient to emit the signal and have the presence core listen to it ?
+   */
+  runtime.run_in_main (sigc::bind (presence_core->presence_received.make_slot (), _uri, presence));
+  runtime.run_in_main (sigc::bind (presence_core->status_received.make_slot (), _uri, status));
 }
 
 
-void
-GMSIPEndpoint::OnNoAnswerTimeout (PTimer &,
-                                  INT) 
+void GMSIPEndpoint::on_dial (std::string uri)
 {
-  if (endpoint.GetCallingState () == GMManager::Called) {
-   
-    if (!forward_uri.empty () && forward_on_no_answer) {
-      
-      PSafePtr<OpalCall> call = 
-        endpoint.FindCallWithLock (endpoint.GetCurrentCallToken ());
-      PSafePtr<OpalConnection> con = 
-        endpoint.GetConnection (call, TRUE);
-    
-      con->ForwardCall (forward_uri.c_str ());
-    }
-    else
-      ClearAllCalls (OpalConnection::EndedByNoAnswer, FALSE);
-  }
+  endpoint.dial (uri);
 }
 
 
+void GMSIPEndpoint::on_message (std::string name,
+                                std::string uri)
+{
+  runtime.run_in_main (sigc::bind (new_chat.make_slot (), name, uri));
+}

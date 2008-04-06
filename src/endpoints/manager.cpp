@@ -271,19 +271,6 @@ bool GMManager::dial (const std::string uri)
 }
 
 
-bool GMManager::send_message (const std::string uri, const std::string message)
-{
-  if (uri.find ("sip:") == 0 || uri.find (":") == string::npos) {
-
-    if (!uri.empty () && !message.empty ())
-      sipEP->Message (uri.c_str (), message.c_str ());
-
-    return true;
-  }
-
-  return false;
-}
-
 void GMManager::set_fullname (const std::string name)
 {
   SetDefaultDisplayName (name.c_str ());
@@ -296,69 +283,6 @@ void GMManager::set_fullname (const std::string name)
 const std::string GMManager::get_fullname () const
 {
   return (const char*) GetDefaultDisplayName ();
-}
-
-
-bool
-GMManager::populate_menu (Ekiga::Contact &contact,
-                          Ekiga::MenuBuilder &builder)
-{
-  std::string name = contact.get_name ();
-  std::map<std::string, std::string> uris = contact.get_uris ();
-
-  return menu_builder_add_actions (name, uris, builder);
-}
-
-
-bool 
-GMManager::populate_menu (const std::string uri,
-                          Ekiga::MenuBuilder & builder)
-{
-  std::map<std::string, std::string> uris; 
-  uris [""] = uri;
-
-  return menu_builder_add_actions ("", uris, builder);
-}
-
-
-bool 
-GMManager::menu_builder_add_actions (const std::string & fullname,
-                                     std::map<std::string,std::string> & uris,
-                                     Ekiga::MenuBuilder & builder)
-{
-  bool populated = false;
-
-  /* Add actions of type "call" for all uris */
-  for (std::map<std::string, std::string>::const_iterator iter = uris.begin ();
-       iter != uris.end ();
-       iter++) {
-
-    std::string action = _("Call");
-
-    if (!iter->first.empty ())
-      action = action + " [" + iter->first + "]";
-
-    builder.add_action ("call", action, sigc::bind (sigc::mem_fun (this, &GMManager::on_dial), iter->second));
-
-    populated = true;
-  }
-
-  /* Add actions of type "message" for all uris */
-  for (std::map<std::string, std::string>::const_iterator iter = uris.begin ();
-       iter != uris.end ();
-       iter++) {
-
-    std::string action = _("Message");
-
-    if (!iter->first.empty ())
-      action = action + " [" + iter->first + "]";
-
-    builder.add_action ("message", action, sigc::bind (sigc::mem_fun (this, &GMManager::on_message), fullname, iter->second));
-
-    populated = true;
-  }
-
-  return populated;
 }
 
 
@@ -1027,8 +951,6 @@ OpalCall *GMManager::CreateCall ()
 
   call = new Opal::Call (*this, core);
 
-  runtime.run_in_main (sigc::bind (new_call, call));
-
   return dynamic_cast<OpalCall *> (call);
 }
 
@@ -1134,47 +1056,6 @@ GMManager::OnClearedCall (OpalCall & call)
   /* Reinitialize codecs */
   re_audio_codec = tr_audio_codec = re_video_codec = tr_video_codec = "";
 }
-
-
-void 
-GMManager::OnMessageReceived (const SIPURL & _from,
-                              const PString & _body)
-{
-  SIPURL from = _from;
-  std::string display_name = (const char *) from.GetDisplayName ();
-  from.AdjustForRequestURI ();
-  std::string uri = (const char *) from.AsString ();
-  std::string message = (const char *) _body;
-
-  audiooutput_core.play_event("new_message_sound");
-
-  runtime.run_in_main (sigc::bind (im_received.make_slot (), display_name, uri, message));
-}
-
-
-void 
-GMManager::OnMessageFailed (const SIPURL & _to,
-                            G_GNUC_UNUSED SIP_PDU::StatusCodes reason)
-{
-  SIPURL to = _to;
-  to.AdjustForRequestURI ();
-  std::string uri = (const char *) to.AsString ();
-  runtime.run_in_main (sigc::bind (im_failed.make_slot (), uri, 
-                                   _("Could not send message")));
-}
-
-
-void 
-GMManager::OnMessageSent (const PString & _to,
-                          const PString & body)
-{
-  SIPURL to = _to;
-  to.AdjustForRequestURI ();
-  std::string uri = (const char *) to.AsString ();
-  std::string message = (const char *) body;
-  runtime.run_in_main (sigc::bind (im_sent.make_slot (), uri, message));
-}
-
 
 void
 GMManager::Init ()
@@ -1459,20 +1340,6 @@ GMManager::DeviceVolume (PSoundChannel *sound_channel,
   }
 
   return err;
-}
-
-void
-GMManager::on_dial (std::string uri)
-{
-  dial (uri);
-}
-
-
-void
-GMManager::on_message (std::string name,
-                       std::string uri)
-{
-  runtime.run_in_main (sigc::bind (new_chat.make_slot (), name, uri));
 }
 
 
