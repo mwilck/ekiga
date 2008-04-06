@@ -53,174 +53,179 @@ namespace Opal {
 
   class Call
     : public OpalCall,
-      public Ekiga::Call
-    {
+    public Ekiga::Call
+  {
 
-  public:
+public:
 
-      Call (OpalManager & _manager, Ekiga::ServiceCore & _core);
+    Call (OpalManager & _manager, Ekiga::ServiceCore & _core);
 
-      ~Call () { };
+    ~Call () { };
 
-      /*
-       * Call Management
-       */
+    /*
+     * Call Management
+     */
 
-      /** Hangup the call
-       */
-      void hangup ();
+    /** Hangup the call
+    */
+    void hangup ();
 
-      /** Answer an incoming call
-       */
-      void answer ();
+    /** Answer an incoming call
+    */
+    void answer ();
 
-      /** Transfer the call to the specified uri
-       * @param: uri: where to transfer the call
-       */
-      void transfer (std::string uri);
+    /** Transfer the call to the specified uri
+     * @param: uri: where to transfer the call
+     */
+    void transfer (std::string uri);
 
-      /** Put the call on hold or retrieve it
-       */
-      void toggle_hold ();
+    /** Put the call on hold or retrieve it
+    */
+    void toggle_hold ();
 
-      /** Toggle stream transmission (if any)
-       * @param type the stream type
-       */
-      void toggle_stream_pause (StreamType type);
+    /** Toggle stream transmission (if any)
+     * @param type the stream type
+     */
+    void toggle_stream_pause (StreamType type);
 
-      /** Send the given DTMF
-       * @param the dtmf (one char)
-       */
-      void send_dtmf (const char dtmf);
-
-
-      /*
-       * Call Information
-       */
-
-      /** Return the call id
-       * @return: the call id
-       */
-      const std::string get_id () const;
-
-      /** Return the remote party name
-       * @return: the remote party name
-       */
-      const std::string get_remote_party_name () const;
-
-      /** Return the remote application
-       * @return: the remote application
-       */
-      const std::string get_remote_application () const;
+    /** Send the given DTMF
+     * @param the dtmf (one char)
+     */
+    void send_dtmf (const char dtmf);
 
 
-      /** Return the remote callback uri
-       * @return: the remote uri
-       */
-      const std::string get_remote_uri () const;
+    /*
+     * Call Information
+     */
+
+    /** Return the call id
+     * @return: the call id
+     */
+    const std::string get_id () const;
+
+    /** Return the remote party name
+     * @return: the remote party name
+     */
+    const std::string get_remote_party_name () const;
+
+    /** Return the remote application
+     * @return: the remote application
+     */
+    const std::string get_remote_application () const;
 
 
-      /** Return the call duration
-       * @return: the current call duration
-       */
-      const std::string get_duration () const;
+    /** Return the remote callback uri
+     * @return: the remote uri
+     */
+    const std::string get_remote_uri () const;
 
 
-  public:
-
-      /* Implementation of inherited methods
-       */
-
-      bool is_outgoing () const { return outgoing; }
-      double get_received_audio_bandwidth () const { return re_a_bw; }
-      double get_transmitted_audio_bandwidth () const { return tr_a_bw; }
-      double get_received_video_bandwidth () const { return re_v_bw; }
-      double get_transmitted_video_bandwidth () const { return tr_v_bw; }
-      unsigned get_jitter_size () const { return jitter; }
-      double get_lost_packets () const { return lost_packets; }
-      double get_late_packets () const { return late_packets; }
-      double get_out_of_order_packets () const { return out_of_order_packets; }
+    /** Return the call duration
+     * @return: the current call duration
+     */
+    const std::string get_duration () const;
 
 
-      /*
-       * Opal Callbacks
-       */
-      void OnHold (bool on_hold);
+public:
 
-      void OnOpenMediaStream (OpalMediaStream & stream);
+    /* Implementation of inherited methods
+    */
 
-      void OnClosedMediaStream (OpalMediaStream & stream);
-
-      void OnRTPStatistics (const OpalConnection & connection, const RTP_Session & session);
-
-  private:
-
-      PBoolean OnEstablished (OpalConnection & connection);
-
-      void OnReleased (OpalConnection & connection);
-
-      OpalConnection::AnswerCallResponse OnAnswerCall (OpalConnection & connection, const PString & caller);
-
-      PBoolean OnSetUp (OpalConnection & connection);
-
-      PDECLARE_NOTIFIER (PThread, Opal::Call, OnAnswer);
+    bool is_outgoing () const { return outgoing; }
+    double get_received_audio_bandwidth () const { return re_a_bw; }
+    double get_transmitted_audio_bandwidth () const { return tr_a_bw; }
+    double get_received_video_bandwidth () const { return re_v_bw; }
+    double get_transmitted_video_bandwidth () const { return tr_v_bw; }
+    unsigned get_jitter_size () const { return jitter; }
+    double get_lost_packets () const { return lost_packets; }
+    double get_late_packets () const { return late_packets; }
+    double get_out_of_order_packets () const { return out_of_order_packets; }
 
 
-      /*
-       * Helper methods
-       */
-      void parse_info (OpalConnection & connection);
+    /*
+     * Opal Callbacks
+     */
+    void OnHold (bool on_hold);
+
+    void OnOpenMediaStream (OpalMediaStream & stream);
+
+    void OnClosedMediaStream (OpalMediaStream & stream);
+
+    void OnRTPStatistics (const OpalConnection & connection, const RTP_Session & session);
+
+private:
+
+    PBoolean OnEstablished (OpalConnection & connection);
+
+    void OnReleased (OpalConnection & connection);
+
+    OpalConnection::AnswerCallResponse OnAnswerCall (OpalConnection & connection, const PString & caller);
+
+    PBoolean OnSetUp (OpalConnection & connection);
+
+    PDECLARE_NOTIFIER (PThread, Opal::Call, OnAnswer);
 
 
-      /*
-       * Variables
-       */
-      Ekiga::ServiceCore & core;
-      Ekiga::Runtime & runtime;
+    /*
+     * Helper methods
+     */
+    void parse_info (OpalConnection & connection);
+
+    /*
+     *
+     */
+    PDECLARE_NOTIFIER(PTimer, Opal::Call, OnNoAnswerTimeout);
+    PTimer NoAnswerTimer;
+
+    /*
+     * Variables
+     */
+    Ekiga::ServiceCore & core;
+    Ekiga::Runtime & runtime;
 
 
-      std::string remote_party_name;
-      std::string remote_uri;
-      std::string remote_application;
+    std::string remote_party_name;
+    std::string remote_uri;
+    std::string remote_application;
 
-      bool outgoing;
+    bool outgoing;
 
-      double re_a_bw;
-      double tr_a_bw;
-      double re_v_bw;
-      double tr_v_bw;
-      unsigned re_v_fps;
-      unsigned tr_v_fps;
-      unsigned tr_width;
-      unsigned tr_height;
-      unsigned re_width;
-      unsigned re_height;
+    double re_a_bw;
+    double tr_a_bw;
+    double re_v_bw;
+    double tr_v_bw;
+    unsigned re_v_fps;
+    unsigned tr_v_fps;
+    unsigned tr_width;
+    unsigned tr_height;
+    unsigned re_width;
+    unsigned re_height;
 
-      unsigned jitter;
+    unsigned jitter;
 
-      double lost_packets;
-      double late_packets;
-      double out_of_order_packets;
+    double lost_packets;
+    double late_packets;
+    double out_of_order_packets;
 
-      PMutex stats_mutex;
-      double re_a_bytes;
-      double tr_a_bytes;
-      double re_v_bytes;
-      double tr_v_bytes;
+    PMutex stats_mutex;
+    double re_a_bytes;
+    double tr_a_bytes;
+    double re_v_bytes;
+    double tr_v_bytes;
 
-      PTime last_a_tick;
-      PTime last_v_tick;
-      PTime start_time;
+    PTime last_a_tick;
+    PTime last_v_tick;
+    PTime start_time;
 
-      unsigned lost_a;
-      unsigned too_late_a;
-      unsigned out_of_order_a;
-      unsigned total_a;
-      unsigned lost_v;
-      unsigned too_late_v;
-      unsigned out_of_order_v;
-      unsigned total_v;
-   };
+    unsigned lost_a;
+    unsigned too_late_a;
+    unsigned out_of_order_a;
+    unsigned total_a;
+    unsigned lost_v;
+    unsigned too_late_v;
+    unsigned out_of_order_v;
+    unsigned total_v;
+  };
 };
 
 #endif

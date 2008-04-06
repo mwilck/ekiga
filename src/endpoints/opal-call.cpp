@@ -71,6 +71,8 @@ Opal::Call::Call (OpalManager & _manager, Ekiga::ServiceCore & _core)
     out_of_order_v = 0;
   lost_packets = late_packets = out_of_order_packets = 0.0;
   re_a_bw = tr_a_bw = re_v_bw = tr_v_bw = 0.0;
+
+  NoAnswerTimer.SetNotifier (PCREATE_NOTIFIER (OnNoAnswerTimeout));
 }
 
 
@@ -266,6 +268,8 @@ Opal::Call::parse_info (OpalConnection & connection)
 PBoolean
 Opal::Call::OnEstablished (OpalConnection & connection)
 {
+  NoAnswerTimer.Stop (false);
+
   if (!PIsDescendant(&connection, OpalPCSSConnection)) {
 
     parse_info (connection);
@@ -280,6 +284,8 @@ void
 Opal::Call::OnReleased (OpalConnection & connection)
 {
   std::string reason;
+
+  NoAnswerTimer.Stop (false);
 
   /** TODO
    * the Call could be destroyed before the signal callback has been executed
@@ -408,6 +414,9 @@ Opal::Call::OnSetUp (OpalConnection & connection)
 
   runtime.run_in_main (setup.make_slot ());
 
+  if (!outgoing)
+    NoAnswerTimer.SetInterval (0, PMIN (10, 60));
+
   return OpalCall::OnSetUp (connection);
 }
 
@@ -502,7 +511,6 @@ Opal::Call::OnRTPStatistics (const OpalConnection & /* connection */,
     lost_v = session.GetPacketsLost ();
     too_late_v = session.GetPacketsTooLate ();
     out_of_order_v = session.GetPacketsOutOfOrder ();
-
   }
 
   lost_packets = (lost_a + lost_v) / max ((unsigned long)(total_a + total_v), (unsigned long) 1);
@@ -530,4 +538,31 @@ Opal::Call::OnAnswer (PThread &, INT /*param*/)
     if (PIsDescendant(&(*connection), OpalPCSSConnection))
       PDownCast (OpalPCSSConnection, &(*connection))->AcceptIncoming ();
   }
+}
+
+
+void
+Opal::Call::OnNoAnswerTimeout (PTimer &,
+                               INT) 
+{
+  //FIXME
+  if (!is_outgoing ()) {
+    std::cout << "should clear or forward" << std::endl << std::flush;
+  }
+  else
+    std::cout << "should not clear or forward" << std::endl << std::flush;
+  //if (!forward_uri.empty ()) {
+
+
+    /*
+       PSafePtr<OpalCall> call = 
+       endpoint.FindCallWithLock (endpoint.GetCurrentCallToken ());
+       PSafePtr<OpalConnection> con = 
+       endpoint.GetConnection (call, TRUE);
+
+       con->ForwardCall (forward_uri.c_str ());
+       */
+ // }
+ // else
+  //  ClearAllCalls (OpalConnection::EndedByNoAnswer, FALSE);
 }
