@@ -40,53 +40,19 @@
 #define _PCSS_ENDPOINT_H_
 
 #include "common.h"
-#include "manager.h"
-#include "audiooutput-core.h"
 
+class GMManager;
 
 class GMPCSSEndpoint : public OpalPCSSEndPoint
 {
   PCLASSINFO (GMPCSSEndpoint, OpalPCSSEndPoint);
 
 public:
-  GMPCSSEndpoint (GMManager &, Ekiga::ServiceCore & _core);
+  GMPCSSEndpoint (GMManager &);
 
+  bool OnShowIncoming (const OpalPCSSConnection &connection);
 
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Accept the current incoming call.
-   * PRE          :  /
-   */
-  void AcceptCurrentIncomingCall ();
-  
-
-  /* DESCRIPTION  :  This callback is called when there is an 
-   * 		     incoming PCSS connection. This only happens
-   * 		     when the SIP/H.323 connection is not rejected
-   * 		     or forwarded.
-   * 		     It triggers the appropriate timeouts (no answer, ringing).
-   *		     Display a popup if required.
-   * PRE          :  /
-   */
-  virtual bool OnShowIncoming (const OpalPCSSConnection &connection);
-
-
-  /* DESCRIPTION  :  This callback is called when there is an 
-   * 		     outgoing PCSS connection and the remote endpoint is
-   * 		     ringing.
-   * 		     It triggers the appropriate timeout in order
-   * 		     to generate a ring tone.
-   * PRE          :  /
-   */
-  virtual bool OnShowOutgoing (const OpalPCSSConnection &connection);  
-
-private:
-
-  GMManager & endpoint;
-
-  PString incomingConnectionToken; 
-
-  Ekiga::ServiceCore & core;
-  Ekiga::AudioOutputCore & audiooutput_core;
+  bool OnShowOutgoing (const OpalPCSSConnection &connection);  
 };
 
 #endif

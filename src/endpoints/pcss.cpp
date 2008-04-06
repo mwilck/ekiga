@@ -36,32 +36,14 @@
  */
 
 
-#include "config.h"
-
 #include "common.h"
-
-#include <opal/patch.h>
-
-#include "gmconf.h"
-#include "gmdialog.h"
 
 #include "pcss.h"
 #include "manager.h"
-#include "ekiga.h"
-#include "urlhandler.h"
-
-#include "misc.h"
-#include "audio.h"
-#include "main.h"
 
 
-#define new PNEW
-
-GMPCSSEndpoint::GMPCSSEndpoint (GMManager & ep, Ekiga::ServiceCore & _core) 
-: OpalPCSSEndPoint (ep), 
-  endpoint (ep), 
-  core (_core),
-  audiooutput_core (*(dynamic_cast<Ekiga::AudioOutputCore *> (_core.get ("audiooutput-core"))))
+GMPCSSEndpoint::GMPCSSEndpoint (GMManager & ep) 
+: OpalPCSSEndPoint (ep) 
 {
 #ifdef WIN32
   SetSoundChannelBufferDepth (20);
@@ -70,36 +52,14 @@ GMPCSSEndpoint::GMPCSSEndpoint (GMManager & ep, Ekiga::ServiceCore & _core)
 #endif
 }
 
-void GMPCSSEndpoint::AcceptCurrentIncomingCall ()
+
+bool GMPCSSEndpoint::OnShowIncoming (const OpalPCSSConnection & /*connection*/)
 {
-  if (!incomingConnectionToken.IsEmpty ()) {
-    
-    AcceptIncomingConnection (incomingConnectionToken);
-    incomingConnectionToken = PString ();
-  }
-}
-
-
-bool GMPCSSEndpoint::OnShowIncoming (const OpalPCSSConnection & connection)
-{
-  guint status = CONTACT_ONLINE;
-
-  if (endpoint.GetCallingState() != GMManager::Called)
-    return FALSE;
-
-  /* Check the config keys */
-  gnomemeeting_threads_enter ();
-  status = gm_conf_get_int (PERSONAL_DATA_KEY "status");
-  gnomemeeting_threads_leave ();
-
-  /* The token identifying the current call */
-  incomingConnectionToken = connection.GetToken ();
-
-  return TRUE;
+  return true;
 }
 
 
 bool GMPCSSEndpoint::OnShowOutgoing (const OpalPCSSConnection & /*connection*/)
 {
-  return TRUE;
+  return true;
 }
