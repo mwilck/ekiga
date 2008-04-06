@@ -469,8 +469,8 @@ if test "x${win32}" != "x1"; then
   if test "x${V4L}" != "xdisabled"; then
     AC_DEFINE(HAVE_V4L,1,[V4L support])
   fi
-  AM_CONDITIONAL(HAVE_V4L, test "x${V4L}" != "xdisabled")
 fi
+AM_CONDITIONAL(HAVE_V4L, test "x${V4L}" != "xdisabled")
 
 dnl ###############################
 dnl   Avahi / mDNS Support

@@ -58,24 +58,28 @@ export PKG_CONFIG_PATH:=$(LIBDIR)/pkgconfig
 export PATH:=$(BINDIR):$(PATH)
 
 
-EKIGA_VER = cvs-$(shell date +"%Y%m%d")
+EKIGA_VER = 2.9
+EKIGA_REV = HEAD
+EKIGA_URL = http://svn.gnome.org/svn/ekiga/trunk
+EKIGA_ARCHIVE := ekiga
 EKIGA_DIR = $(BUILDROOT)/ekiga
 EKIGA_PREFIX:= $(TARGETDIR)/Ekiga
-EKIGA_ARCHIVE := ekiga-snapshot.tar.gz
 EKIGA_WIN32_DIR := $(CURDIR)
 EKIGA_WIN32_DIFF_DIR := $(EKIGA_WIN32_DIR)/diff
 EKIGA_INSTALLER_DIR := $(BUILDROOT)/nsisinstaller
 EKIGA_INSTALLER := ekiga-setup-${EKIGA_VER}.exe
-EKIGA_URL1 := http://snapshots.buildserver.net/cvs
-EKIGA_URL2 := http://snapshots.voxgratia.org/cvs
 
-OPAL_VER:= 3.1.3
+OPAL_VER:= 3.3.0
+OPAL_REV:= HEAD
+OPAL_URL:= https://opalvoip.svn.sourceforge.net/svnroot/opalvoip/opal/trunk
+OPAL_ARCHIVE := opal
 OPAL_DIR:= $(BUILDROOT)/opal
-OPAL_ARCHIVE := opal-snapshot.tar.gz
 
-PTLIB_VER:= 2.1.3
+PTLIB_VER:= 2.3.0
+PTLIB_REV:= HEAD
+PTLIB_URL:= https://opalvoip.svn.sourceforge.net/svnroot/opalvoip/ptlib/trunk
 PTLIB_DIR:= $(BUILDROOT)/ptlib
-PTLIB_ARCHIVE := ptlib-snapshot.tar.gz
+PTLIB_ARCHIVE := ptlib
 
 OPENLDAP_VER := 2.3.28
 OPENLDAP_DIR := $(BUILDROOT)/openldap-$(OPENLDAP_VER)
@@ -155,7 +159,7 @@ FFMPEG_DIR := $(BUILDROOT)/ffmpeg
 FFMPEG_ARCHIVE := ffmpeg
 
 X264_VER := 676
-X264_URL := svn://svn.videolan.org/x264/trunk
+X264_URL := git://git.videolan.org/x264.git
 X264_DIR := $(BUILDROOT)/x264
 X264_ARCHIVE := x264
 
@@ -175,6 +179,8 @@ RM:=rm
 CP:=cp
 MV:=mv
 SVN:=svn
+GIT:=git
+ACLOCAL:=aclocal-1.9
 
 DOC_LINGUAS=bg de es fr pt_BR sv uk
 
@@ -219,7 +225,7 @@ update: update-sources
 binaries:
 	echo Checking prerequisites...
 	hash $(REALCC) $(REALCXX) $(LD) $(NM) $(AR) $(RANLIB) $(DLLTOOL) $(DLLWRAP) $(OBJDUMP) $(WINDRES) $(AS)||(echo You need to install mingw32;exit 1)
-	hash tar unzip zip wget aclocal-1.9 autoheader libtoolize automake-1.9 autoconf pkg-config gnome-autogen.sh bison gdk-pixbuf-csource||(echo we need more binaries ;exit 1)
+	hash tar unzip zip wget $(ACLOCAL) autoheader libtoolize automake-1.9 autoconf pkg-config gnome-autogen.sh bison gdk-pixbuf-csource||(echo we need more binaries ;exit 1)
 	[ -f /usr/share/gnome-doc-utils/gnome-doc-utils.make ]||(echo gnome-doc-tools not installed;exit 1)
 	[ -f /usr/lib/pkgconfig/gconf-2.0.pc ]||(echo libgconf2-dev not installed;exit 1)
 	[ -f /usr/lib/pkgconfig/avahi-glib.pc ]||(echo libavahi-glib-dev not installed;exit 1)
@@ -324,14 +330,18 @@ $(LIBDIR)/libldap.dll: binaries $(OPENLDAP_DIR)/config.status
 
 ### PTLib
 update-sources:: 
-	echo --- Getting PTLib $(PTLIB_VER) ...
-	$(WGET) -P src $(EKIGA_URL1)/$(PTLIB_ARCHIVE) || \
-	$(WGET) -P src $(EKIGA_URL2)/$(PTLIB_ARCHIVE)
+	echo --- Getting PTLib $(PTLIB_REV) ...
+ifneq ("$(shell $(SVN) co $(PTLIB_URL) $(SRCDIR)/$(PTLIB_ARCHIVE) -r $(PTLIB_REV) | cut -c1-7 | head -n1 )", "Checked")
+	echo "Updated to revision $(PTLIB_REV)"
+	touch $(SRCDIR)/$(PTLIB_ARCHIVE)
+else
+	echo "Already at revision $(PTLIB_REV)"
+endif
 
 $(PTLIB_DIR)/configure: binaries $(LIBDIR)/libldap.dll $(INCLUDEDIR)/directx/dsound.h $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(SRCDIR)/$(PTLIB_ARCHIVE) $(EKIGA_WIN32_DIFF_DIR)/ptlib_Makefile.am $(LIBDIR)/libexpat.a $(EKIGA_WIN32_DIFF_DIR)/ptlib_configure.ac $(EKIGA_WIN32_DIFF_DIR)/ptlib_ptlib.pc.in
 	rm -f $(LIBDIR)/libpt.a
 	rm -rf $(PTLIB_DIR)
-	tar xfz $(SRCDIR)/$(PTLIB_ARCHIVE) -C $(BUILDROOT)
+	cp -r $(SRCDIR)/$(PTLIB_ARCHIVE) $(PTLIB_DIR)
 	$(RM) -f $(PTLIB_DIR)/configure.exe $(PTLIB_DIR)/configure $(PTLIB_DIR)/configure.ac $(PTLIB_DIR)/Makefile.in
 	$(CP) -fl $(EKIGA_WIN32_DIFF_DIR)/ptlib_configure.ac $(PTLIB_DIR)/configure.ac
 	$(CP) -fl $(EKIGA_WIN32_DIFF_DIR)/ptlib_Makefile.am $(PTLIB_DIR)/Makefile.am
@@ -341,7 +351,7 @@ $(PTLIB_DIR)/configure: binaries $(LIBDIR)/libldap.dll $(INCLUDEDIR)/directx/dso
 	(cd $(PTLIB_DIR); \
 	sed -i "s#\$${buildroot}#${BUILDROOT}#" ptlib.pc.in; \
 	sed -i "s/\$${PTLIB_VER}/${PTLIB_VER}/" configure.ac; \
-	aclocal-1.9; autoheader; libtoolize --force; \
+	$(ACLOCAL); autoheader; libtoolize --force; \
 	touch NEWS README AUTHORS ChangeLog unused.h.in; \
 	automake-1.9 -a -c; autoconf; \
 	)
@@ -419,12 +429,13 @@ $(BINDIR)/avcodec.dll: $(FFMPEG_DIR)/config.status
 ### x264
 update-sources:: 
 	echo --- Getting x264 ---
-ifneq ("$(shell $(SVN) co $(X264_URL) $(SRCDIR)/$(X264_ARCHIVE) -r $(X264_VER) | cut -c1-7 | head -n1 )", "Checked")
+#ifneq ("$(shell $(SVN) co $(X264_URL) $(SRCDIR)/$(X264_ARCHIVE) -r $(X264_VER) | cut -c1-7 | head -n1 )", "Checked")
+	$(GIT) clone $(X264_URL) $(SRCDIR)/$(X264_ARCHIVE)
 	echo "Updated to revision $(X264_VER)"
 	touch $(SRCDIR)/$(X264_ARCHIVE)
-else
-	echo "Already at revision $(X264_VER)"
-endif
+#else
+#	echo "Already at revision $(X264_VER)"
+#endif
 
 $(X264_DIR)/config.status: $(SRCDIR)/$(X264_ARCHIVE)
 	rm -rf $(X264_DIR)
@@ -433,9 +444,7 @@ $(X264_DIR)/config.status: $(SRCDIR)/$(X264_ARCHIVE)
 	CC=$(REALCC) ./configure $(confx264); \
 	sed -i -e 's#ranlib#$(RANLIB)#g' $(X264_DIR)/Makefile; \
 	sed -i -e 's#strip#$(STRIP)#g' $(X264_DIR)/Makefile; \
-	sed -i -e 's#ar #$(AR) #g' $(X264_DIR)/Makefile; \
-	sed -i -e 's#install: x264#install: x264$$(EXE)#g' $(X264_DIR)/Makefile; \
-	sed -i -e 's#install x264#install x264$$(EXE)#g' $(X264_DIR)/Makefile	)
+	sed -i -e 's#ar #$(AR) #g' $(X264_DIR)/Makefile )
 	touch $@
 
 $(LIBDIR)/libx264.a: $(X264_DIR)/config.status
@@ -444,7 +453,7 @@ $(LIBDIR)/libx264.a: $(X264_DIR)/config.status
 	touch $@
 
 ### theora
-update-sources:: 
+update-sources::
 	echo --- Getting theora ---
 ifneq ("$(shell $(SVN) co $(THEORA_URL) $(SRCDIR)/$(THEORA_ARCHIVE) -r $(THEORA_VER) | cut -c1-7 | head -n1 )", "Checked")
 	echo "Updated to revision $(THEORA_VER)"
@@ -468,20 +477,24 @@ $(LIBDIR)/libtheora.a: $(THEORA_DIR)/config.status
 
 ### OPAL
 update-sources::
-	echo --- Getting OPAL $(OPAL_VER)...
-	$(WGET) -P src $(EKIGA_URL1)/$(OPAL_ARCHIVE) || \
-	$(WGET) -P src $(EKIGA_URL2)/$(OPAL_ARCHIVE)
+	echo --- Getting OPAL $(OPAL_REV)...
+ifneq ("$(shell $(SVN) co $(OPAL_URL) $(SRCDIR)/$(OPAL_ARCHIVE) -r $(OPAL_REV) | cut -c1-7 | head -n1 )", "Checked")
+	echo "Updated to revision $(OPAL_REV)"
+	touch $(SRCDIR)/$(OPAL_ARCHIVE)
+else
+	echo "Already at revision $(OPAL_REV)"
+endif
 
 $(OPAL_DIR)/configure: binaries $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(LIBDIR)/libpt.a $(SRCDIR)/$(OPAL_ARCHIVE) $(EKIGA_WIN32_DIFF_DIR)/opal_configure.ac $(EKIGA_WIN32_DIFF_DIR)/opal_Makefile.am $(EKIGA_WIN32_DIFF_DIR)/opal_opal.pc.in $(BINDIR)/avcodec.dll $(LIBDIR)/libx264.a $(LIBDIR)/libtheora.a
 	rm -rf $(OPAL_DIR) $(LIBDIR)/libopal.a
-	tar xfz $(SRCDIR)/$(OPAL_ARCHIVE) -C $(BUILDROOT)
+	cp -r $(SRCDIR)/$(OPAL_ARCHIVE) $(OPAL_DIR)
 	$(RM) -f $(OPAL_DIR)/configure.exe $(OPAL_DIR)/configure $(OPAL_DIR)/configure.ac $(OPAL_DIR)/Makefile.in
 	$(CP) -fl $(EKIGA_WIN32_DIFF_DIR)/opal_configure.ac $(OPAL_DIR)/configure.ac
 	$(CP) -fl $(EKIGA_WIN32_DIFF_DIR)/opal_Makefile.am $(OPAL_DIR)/Makefile.am
 	$(CP) -fl $(EKIGA_WIN32_DIFF_DIR)/opal_opal.pc.in $(OPAL_DIR)/opal.pc.in
 	(cd opal; \
 	sed -i "s/\$${OPAL_VER}/${OPAL_VER}/" configure.ac; \
-	aclocal-1.9; autoheader; libtoolize --force; \
+	$(ACLOCAL); autoheader; libtoolize --force; \
 	touch NEWS README AUTHORS ChangeLog unused.h.in; \
 	automake-1.9 -a -c; autoconf )
 
@@ -624,13 +637,17 @@ $(INCLUDEDIR)/directx/dsound.h: $(DIRECTX_DIR)/config.status
 
 ### GnomeMeeting / Ekiga
 update-sources::
-	echo --- Getting Ekiga-CVS ...
-	$(WGET) -P src $(EKIGA_URL1)/$(EKIGA_ARCHIVE)||\
-	$(WGET) -P src $(EKIGA_URL2)/$(EKIGA_ARCHIVE)
+	echo --- Getting Ekiga $(EKIGA_REV)...
+ifneq ("$(shell $(SVN) co $(EKIGA_URL) $(SRCDIR)/$(EKIGA_ARCHIVE) -r $(EKIGA_REV) | cut -c1-7 | head -n1 )", "Checked")
+	echo "Updated to revision $(EKIGA_REV)"
+	touch $(SRCDIR)/$(EKIGA_ARCHIVE)
+else
+	echo "Already at revision $(EKIGA_REV)"
+endif
 
 $(EKIGA_DIR)/autogen.sh: binaries $(SRCDIR)/$(EKIGA_ARCHIVE)
 	rm -rf $(EKIGA_DIR)
-	tar xfz $(SRCDIR)/$(EKIGA_ARCHIVE)
+	cp -r $(SRCDIR)/$(EKIGA_ARCHIVE) $(EKIGA_DIR)
 	touch $@
 
 $(EKIGA_DIR)/config.status: binaries $(EKIGA_DIR)/autogen.sh $(LIBDIR)/libpt.a $(LIBDIR)/libopal.a \

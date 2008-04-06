@@ -128,8 +128,8 @@ namespace Ekiga
       void on_audio_output_device_added (std::string & sink, std::string & device, HalManager* manager);
       void on_audio_output_device_removed (std::string & sink, std::string & device, HalManager* manager);
 
-      void on_network_interface_up (std::string & interface, std::string & ip4_address, HalManager* manager);
-      void on_network_interface_down (std::string & interface, std::string & ip4_address, HalManager* manager);
+      void on_network_interface_up (std::string & interface_name, std::string & ip4_address, HalManager* manager);
+      void on_network_interface_down (std::string & interface_name, std::string & ip4_address, HalManager* manager);
 
       std::set<HalManager *> managers;
 

@@ -110,10 +110,10 @@ void HalCore::on_audio_output_device_removed (std::string & sink, std::string & 
   audio_output_device_removed.emit (sink, device, manager);
 }
 
-void HalCore::on_network_interface_up (std::string & interface, std::string & ip4_address, HalManager* manager) {
-  network_interface_up.emit (interface, ip4_address, manager);
+void HalCore::on_network_interface_up (std::string & interface_name, std::string & ip4_address, HalManager* manager) {
+  network_interface_up.emit (interface_name, ip4_address, manager);
 }
 
-void HalCore::on_network_interface_down (std::string & interface, std::string & ip4_address, HalManager* manager) {
-  network_interface_down.emit (interface,ip4_address, manager);
+void HalCore::on_network_interface_down (std::string & interface_name, std::string & ip4_address, HalManager* manager) {
+  network_interface_down.emit (interface_name,ip4_address, manager);
 }

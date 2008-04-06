@@ -36,6 +36,7 @@
 #include "audiooutput-core.h"
 #include "audiooutput-manager.h"
 #include <algorithm>
+#include <math.h>
 
 #define FALLBACK_DEVICE_TYPE "NULL"
 #define FALLBACK_DEVICE_SOURCE "NULL"
