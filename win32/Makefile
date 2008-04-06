@@ -153,7 +153,7 @@ DIRECTX_URL := http://www.colombus.org/ekiga
 DIRECTX_DIR := $(BUILDROOT)/directx-dev
 DIRECTX_ARCHIVE := directx-dev.tar.gz
 
-FFMPEG_VER := 10521
+FFMPEG_VER := 12758
 FFMPEG_URL := svn://svn.mplayerhq.hu/ffmpeg/trunk
 FFMPEG_DIR := $(BUILDROOT)/ffmpeg
 FFMPEG_ARCHIVE := ffmpeg
@@ -200,7 +200,7 @@ confekiga:= $(confflags) --with-ptlib-dir=$(PTLIB_DIR) --with-opal-dir=$(OPAL_DI
 	    --disable-dbus --disable-avahi --disable-esd --with-ldap-dir=$(OPENLDAP_DIR)
 
 confffmpeg:=--cross-prefix=i586-mingw32msvc- --enable-shared --enable-memalign-hack \
-	    --cross-compile --disable-ffserver --target-os=mingw32 \
+	    --enable-cross-compile --disable-ffserver --target-os=mingw32 \
 	    --enable-w32threads --arch=i686  \
 	    --disable-parsers --enable-parser=h264 --enable-parser=mpeg4video --enable-parser=h263 \
 	    --disable-decoders --enable-decoder=h264 --enable-decoder=mpeg4  --enable-decoder=h263 \
@@ -417,6 +417,7 @@ $(FFMPEG_DIR)/config.status: $(SRCDIR)/$(FFMPEG_ARCHIVE)
 	touch $@
 
 $(BINDIR)/avcodec.dll: $(FFMPEG_DIR)/config.status
+	mkdir $(INCLUDEDIR)/ffmpeg
 	$(MAKE) $(MAKE_LIB_OPTS) -C $(FFMPEG_DIR)
 	$(MAKE) -C $(FFMPEG_DIR) install
 	$(CP) $(FFMPEG_DIR)/libavutil/intreadwrite.h $(INCLUDEDIR)/ffmpeg
