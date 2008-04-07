@@ -2448,11 +2448,11 @@ audio_volume_changed_cb (GtkAdjustment * /*adjustment*/,
   g_return_if_fail (data != NULL);
   mw = gm_mw_get_mw (GTK_WIDGET (data));
 
- // Ekiga::AudioInputCore *audioinput_core = dynamic_cast<Ekiga::AudioInputCore *> (mw->core.get ("audioinput-core"));
+  Ekiga::AudioInputCore *audioinput_core = dynamic_cast<Ekiga::AudioInputCore *> (mw->core.get ("audioinput-core"));
   Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (mw->core.get ("audiooutput-core"));
 
   audiooutput_core->set_volume(Ekiga::primary, (unsigned)GTK_ADJUSTMENT (mw->adj_output_volume)->value);
-//  audioinput_core->set_volume((unsigned)GTK_ADJUSTMENT (mw->adj_input_volume)->value); //FIXME
+  audioinput_core->set_volume((unsigned)GTK_ADJUSTMENT (mw->adj_input_volume)->value);
 }
 
 

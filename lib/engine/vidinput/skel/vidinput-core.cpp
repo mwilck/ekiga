@@ -118,18 +118,36 @@ VidInputCore::VidInputCore (Ekiga::Runtime & _runtime, DisplayCore& _display_cor
 :  runtime (_runtime),
    preview_manager(*this, _display_core)
 {
-  PWaitAndSignal m(var_mutex);
+  PWaitAndSignal m_var(var_mutex);
+  PWaitAndSignal m_set(set_mutex);
 
   preview_config.active = false;
   preview_config.width = 176;
   preview_config.height = 144;
   preview_config.fps = 30;
+  preview_config.settings.brightness = 0;
+  preview_config.settings.whiteness = 0;
+  preview_config.settings.colour = 0;
+  preview_config.settings.contrast = 0;
 
+  new_preview_settings.brightness = 0;
+  new_preview_settings.whiteness = 0;
+  new_preview_settings.colour = 0;
+  new_preview_settings.contrast = 0;
 
   stream_config.active = false;
   stream_config.width = 176;
   stream_config.height = 144;
   stream_config.fps = 30;
+  stream_config.settings.brightness = 0;
+  stream_config.settings.whiteness = 0;
+  stream_config.settings.colour = 0;
+  stream_config.settings.contrast = 0;
+
+  new_stream_settings.brightness = 0;
+  new_stream_settings.whiteness = 0;
+  new_stream_settings.colour = 0;
+  new_stream_settings.contrast = 0;
 
   current_manager = NULL;
   vidinput_core_conf_bridge = NULL;
@@ -363,39 +381,100 @@ void VidInputCore::get_frame_data (unsigned & width,
       if (current_manager)
         current_manager->get_frame_data(width, height, data); // the default device must always return true
     }
+    apply_settings();
+  }
+}
+
+void VidInputCore::apply_settings()
+{
+  PWaitAndSignal m_set(set_mutex);
+  if (preview_config.active && !stream_config.active) {
+
+    if (new_preview_settings.colour != preview_config.settings.colour) {
+      current_manager->set_colour (new_preview_settings.colour);
+      preview_config.settings.colour = new_preview_settings.colour;
+    }
+
+    if (new_preview_settings.brightness != preview_config.settings.brightness) {
+      current_manager->set_brightness (new_preview_settings.brightness);
+      preview_config.settings.brightness = new_preview_settings.brightness;
+    }
+
+    if (new_preview_settings.whiteness != preview_config.settings.whiteness) {
+      current_manager->set_whiteness (new_preview_settings.whiteness);
+      preview_config.settings.whiteness = new_preview_settings.whiteness;
+    }
+
+    if (new_preview_settings.contrast != preview_config.settings.contrast) {
+      current_manager->set_contrast (new_preview_settings.contrast);
+      preview_config.settings.contrast = new_preview_settings.contrast;
+    }
+
+  }
+
+  if (!preview_config.active && stream_config.active) {
+
+    if (new_stream_settings.colour != stream_config.settings.colour) {
+      current_manager->set_colour (new_stream_settings.colour);
+      stream_config.settings.colour = new_stream_settings.colour;
+    }
+
+    if (new_stream_settings.brightness != stream_config.settings.brightness) {
+      current_manager->set_brightness (new_stream_settings.brightness);
+      stream_config.settings.brightness = new_stream_settings.brightness;
+    }
+
+    if (new_stream_settings.whiteness != stream_config.settings.whiteness) {
+      current_manager->set_whiteness (new_stream_settings.whiteness);
+      stream_config.settings.whiteness = new_stream_settings.whiteness;
+    }
+
+    if (new_stream_settings.contrast != stream_config.settings.contrast) {
+      current_manager->set_contrast (new_stream_settings.contrast);
+      stream_config.settings.contrast = new_stream_settings.contrast;
+    }
+
   }
 }
 
 void VidInputCore::set_colour (unsigned colour)
 {
-  PWaitAndSignal m(var_mutex);
+  PWaitAndSignal m(set_mutex);
+  if (preview_config.active && !stream_config.active)
+    new_preview_settings.colour = colour;
 
-  if (current_manager)
-    current_manager->set_colour (colour);
+  if (!preview_config.active && stream_config.active)
+    new_stream_settings.colour = colour;
 }
 
 void VidInputCore::set_brightness (unsigned brightness)
 {
-  PWaitAndSignal m(var_mutex);
+  PWaitAndSignal m(set_mutex);
+  if (preview_config.active && !stream_config.active)
+    new_preview_settings.brightness  = brightness;
 
-  if (current_manager)
-    current_manager->set_brightness (brightness);
+  if (!preview_config.active && stream_config.active)
+    new_stream_settings.brightness = brightness;
 }
 
 void VidInputCore::set_whiteness  (unsigned whiteness)
 {
-  PWaitAndSignal m(var_mutex);
+  PWaitAndSignal m(set_mutex);
+  if (preview_config.active && !stream_config.active)
+    new_preview_settings.whiteness = whiteness;
 
-  if (current_manager)
-    current_manager->set_whiteness (whiteness);
+  if (!preview_config.active && stream_config.active)
+    new_stream_settings.whiteness = whiteness;
 }
 
 void VidInputCore::set_contrast   (unsigned contrast)
 {
-  PWaitAndSignal m(var_mutex);
+  PWaitAndSignal m(set_mutex);
+  if (preview_config.active && !stream_config.active)
+    new_preview_settings.contrast = contrast ;
 
-  if (current_manager)
-    current_manager->set_contrast (contrast);
+  if (!preview_config.active && stream_config.active)
+    new_stream_settings.contrast = contrast ;
 }
 
 void VidInputCore::on_vidinputdevice_error (VidInputDevice vidinput_device, VidInputErrorCodes error_code, VidInputManager *manager)

@@ -1,3 +1,11 @@
+2008-04-07  Matthias Schneider  <ma30002000@yahoo.de>
+
+	* src/gui/main.cpp:
+	* lib/engine/vidinput/skel/vidinput-core.cpp:
+	* lib/engine/vidinput/skel/vidinput-core.h:
+	Perform video device settings updates when getting frames
+	in order not to block the GUI thread.
+
 2008-04-06  Damien Sandras  <dsandras@gnome.org>
 
 	* src/endpoints/urlhandler.cpp,

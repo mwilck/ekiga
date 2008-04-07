@@ -58,6 +58,7 @@ namespace Ekiga
     unsigned width;
     unsigned height;
     unsigned fps;
+    VidInputConfig settings;
   };
 
   class VidInputManager;
@@ -195,6 +196,8 @@ namespace Ekiga
       void internal_close();
       void internal_set_device (const VidInputDevice & vidinput_device, int channel, VideoFormat format);
       void internal_set_fallback ();
+      void apply_settings();
+
 
       std::set<VidInputManager *> managers;
 
@@ -203,6 +206,9 @@ namespace Ekiga
       DeviceConfig preview_config;
       DeviceConfig stream_config;
 
+      VidInputConfig new_stream_settings; 
+      VidInputConfig new_preview_settings;
+
       VidInputManager* current_manager;
       VidInputDevice desired_device;
       VidInputDevice current_device;
@@ -210,6 +216,7 @@ namespace Ekiga
       int current_channel;
 
       PMutex var_mutex;      /* To protect variables that are read and written */
+      PMutex set_mutex;      /* To protect variables that are read and written */
 
       PreviewManager preview_manager;
       VidInputCoreConfBridge* vidinput_core_conf_bridge;
