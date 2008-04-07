@@ -41,6 +41,9 @@
 
 #include "common.h"
 
+#include "services.h"
+#include "runtime.h"
+
 class GMManager;
 
 class GMPCSSEndpoint : public OpalPCSSEndPoint
@@ -48,11 +51,15 @@ class GMPCSSEndpoint : public OpalPCSSEndPoint
   PCLASSINFO (GMPCSSEndpoint, OpalPCSSEndPoint);
 
 public:
-  GMPCSSEndpoint (GMManager &);
+  GMPCSSEndpoint (GMManager &manager, Ekiga::ServiceCore & _core);
 
   bool OnShowIncoming (const OpalPCSSConnection &connection);
 
   bool OnShowOutgoing (const OpalPCSSConnection &connection);  
+
+private:
+  Ekiga::ServiceCore & core;
+  Ekiga::Runtime & runtime;
 };
 
 #endif

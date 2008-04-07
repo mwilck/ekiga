@@ -617,14 +617,25 @@ static void on_setup_call_cb (Ekiga::CallManager & /*manager*/,
   GmMainWindow *mw = gm_mw_get_mw (GTK_WIDGET (self));
   Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (mw->core.get ("audiooutput-core"));
 
-  if (call.is_outgoing ()) {
-    audiooutput_core->start_play_event("ring_tone_sound", 3000, 256);
-  }
-  else {
+  if (!call.is_outgoing ()) {
     audiooutput_core->start_play_event("incoming_call_sound", 3000, 256);
     gm_main_window_incoming_call_dialog_show (GTK_WIDGET (self), call);
   }
 }
+
+
+static void on_ringing_call_cb (Ekiga::CallManager & /*manager*/,
+                                Ekiga::Call & call,
+                                gpointer self)
+{
+  GmMainWindow *mw = gm_mw_get_mw (GTK_WIDGET (self));
+  Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (mw->core.get ("audiooutput-core"));
+
+  if (call.is_outgoing ()) {
+    audiooutput_core->start_play_event("ring_tone_sound", 3000, 256);
+  }
+}
+
 
 
 static gboolean on_stats_refresh_cb (gpointer self) 
@@ -3934,6 +3945,9 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   mw->connections.push_back (conn);
 
   conn = call_core->setup_call.connect (sigc::bind (sigc::ptr_fun (on_setup_call_cb), (gpointer) window));
+  mw->connections.push_back (conn);
+
+  conn = call_core->ringing_call.connect (sigc::bind (sigc::ptr_fun (on_ringing_call_cb), (gpointer) window));
   mw->connections.push_back (conn);
   
   conn = call_core->established_call.connect (sigc::bind (sigc::ptr_fun (on_established_call_cb), (gpointer) window));

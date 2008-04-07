@@ -117,6 +117,7 @@ namespace Ekiga
       
       /** See call.h for the API
        */
+      sigc::signal<void, CallManager &, Call &> ringing_call;
       sigc::signal<void, CallManager &, Call &> setup_call;
       sigc::signal<void, CallManager &, Call &> missed_call;
       sigc::signal<void, CallManager &, Call &, std::string> cleared_call;
@@ -162,6 +163,7 @@ namespace Ekiga
 
   private:
       void on_new_call (Call *call, CallManager *manager);
+      void on_ringing_call (Call *call, CallManager *manager);
       void on_setup_call (Call *call, CallManager *manager);
       void on_missed_call (Call *call, CallManager *manager);
       void on_cleared_call (std::string, Call *call, CallManager *manager);

@@ -607,7 +607,7 @@ GMSIPEndpoint::OnIncomingConnection (OpalConnection &connection,
 
   PTRACE (3, "GMSIPEndpoint\tIncoming connection");
 
-  std::cout << endpoint.GetCallsNumber() << std::endl << std::flush;
+  std::cout << "OnIncomingConnection " << endpoint.GetCallsNumber() << std::endl << std::flush;
   if (!forward_uri.empty () && unconditional_forward)
     reason = 2; // Forward
   else if (endpoint.GetCallsNumber () >= 1) { 

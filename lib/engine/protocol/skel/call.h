@@ -203,9 +203,13 @@ namespace Ekiga
        */
       sigc::signal<void> retrieved;
 
-      /* Signal emitted when the call has been setup
+      /* Signal emitted when the call is being setup
        */
       sigc::signal<void> setup;
+
+      /* Signal emitted when the remote party is ringing
+       */
+      sigc::signal<void> ringing;
 
       /* Signal emitted when a stream is opened
        * @param the stream name

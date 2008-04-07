@@ -218,13 +218,6 @@ class GMManager:
 			     const std::string & forward_uri);
 
   
-  /* DESCRIPTION  :  This callback is called when a call is established. 
-   * BEHAVIOR     :  Updates the GUI to put it in the Established mode.
-   * PRE          :  /
-   */
-  void OnEstablishedCall (OpalCall &);
-
-  
   /* DESCRIPTION  :  This callback is called when the connection is 
    *                 established and everything is ok.
    * BEHAVIOR     :  Sets the proper values for the current connection 

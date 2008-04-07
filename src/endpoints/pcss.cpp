@@ -41,9 +41,14 @@
 #include "pcss.h"
 #include "manager.h"
 
+#include "call.h"
 
-GMPCSSEndpoint::GMPCSSEndpoint (GMManager & ep) 
-: OpalPCSSEndPoint (ep) 
+
+GMPCSSEndpoint::GMPCSSEndpoint (GMManager & ep,
+                                Ekiga::ServiceCore & _core) 
+:   OpalPCSSEndPoint (ep),
+    core (_core),
+    runtime (*dynamic_cast<Ekiga::Runtime*>(core.get ("runtime")))
 {
 #ifdef WIN32
   SetSoundChannelBufferDepth (20);
@@ -59,7 +64,12 @@ bool GMPCSSEndpoint::OnShowIncoming (const OpalPCSSConnection & /*connection*/)
 }
 
 
-bool GMPCSSEndpoint::OnShowOutgoing (const OpalPCSSConnection & /*connection*/)
+bool GMPCSSEndpoint::OnShowOutgoing (const OpalPCSSConnection &connection)
 {
+  Ekiga::Call *call = dynamic_cast<Ekiga::Call *> (&connection.GetCall ());
+
+  if (call)
+    runtime.run_in_main (call->ringing.make_slot ());
+
   return true;
 }

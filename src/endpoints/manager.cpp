@@ -224,7 +224,7 @@ GMManager::GMManager (Ekiga::ServiceCore & _core)
   sipEP = new GMSIPEndpoint (*this, core);
   AddRouteEntry("pc:.* = sip:<da>");
 
-  pcssEP = new GMPCSSEndpoint (*this);
+  pcssEP = new GMPCSSEndpoint (*this, core);
   pcssEP->SetSoundChannelPlayDevice("EKIGA");
   pcssEP->SetSoundChannelRecordDevice("EKIGA");
   AddRouteEntry("h323:.* = pc:<db>");
@@ -927,12 +927,6 @@ GMManager::OnIncomingConnection (OpalConnection &connection,
   }
 
   return res;
-}
-
-
-void 
-GMManager::OnEstablishedCall (OpalCall &/*call*/)
-{
 }
 
 

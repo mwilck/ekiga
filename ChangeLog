@@ -1,5 +1,21 @@
 2008-04-07  Damien Sandras  <dsandras@gnome.org>
 
+	* src/endpoints/pcss.cpp:
+	* src/endpoints/manager.cpp:
+	* src/endpoints/pcss.h:
+	* src/endpoints/manager.h:
+	* src/endpoints/sip.cpp:
+	* src/gui/main.cpp:
+	* lib/engine/protocol/skel/call.h:
+	* lib/engine/protocol/skel/call-core.cpp:
+	* lib/engine/protocol/skel/call-core.h:
+	Added ringing_call signal and make use of it. The Ringing tone should
+	only be played when the remote party answers with a 180 Ringing, and
+	not in other cases. That bug was already fixed in 2.0.x and was
+	reintroduced later.
+
+2008-04-07  Damien Sandras  <dsandras@gnome.org>
+
 	* lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:
 	Fixed valgrind leak.
 

@@ -102,6 +102,7 @@ bool CallCore::send_message (std::string uri,
 
 void CallCore::on_new_call (Call *call, CallManager *manager)
 {
+  call->ringing.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_ringing_call), call, manager));
   call->setup.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_setup_call), call, manager));
   call->missed.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_missed_call), call, manager));
   call->cleared.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_cleared_call), call, manager));
@@ -112,6 +113,12 @@ void CallCore::on_new_call (Call *call, CallManager *manager)
   call->stream_closed.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_stream_closed), call, manager));
   call->stream_paused.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_stream_paused), call, manager));
   call->stream_resumed.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_stream_resumed), call, manager));
+}
+
+
+void CallCore::on_ringing_call (Call *call, CallManager *manager)
+{
+  ringing_call.emit (*manager, *call);
 }
 
 
