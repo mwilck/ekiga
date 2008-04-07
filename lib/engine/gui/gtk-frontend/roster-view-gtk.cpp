@@ -823,6 +823,8 @@ roster_view_gtk_update_groups (RosterViewGtk *view,
 
           go_on = gtk_tree_model_iter_next (model, &iter);
         }
+
+        g_free (name);
       }
       // else remove the node (no children)
       else {
