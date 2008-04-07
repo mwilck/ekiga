@@ -1123,7 +1123,7 @@ on_audioinputdevice_error_cb (Ekiga::AudioInputManager & /* manager */,
   gchar *tmp_msg = NULL;
 
   dialog_title =
-  g_strdup_printf (_("Error while opening video device %s"),
+  g_strdup_printf (_("Error while opening audio input device %s"),
                    (const char *) audioinput_device.device.c_str());
 
   tmp_msg = g_strdup (_("Only silence will be transmitted."));
@@ -1198,7 +1198,7 @@ on_audiooutputdevice_error_cb (Ekiga::AudioOutputManager & /*manager */,
   gchar *tmp_msg = NULL;
 
   dialog_title =
-  g_strdup_printf (_("Error while opening video device %s"),
+  g_strdup_printf (_("Error while opening audio output device %s"),
                    (const char *) audiooutput_device.device.c_str());
 
   tmp_msg = g_strdup (_("No incoming sound will be played."));
