@@ -1114,19 +1114,55 @@ on_audioinputdevice_closed_cb (Ekiga::AudioInputManager & /* manager */,
 
 void 
 on_audioinputdevice_error_cb (Ekiga::AudioInputManager & /* manager */, 
-                            Ekiga::AudioInputDevice & /*audioinput_device*/, 
-                            Ekiga::AudioInputErrorCodes /*error_code*/, 
-                            gpointer /*self*/)
+                            Ekiga::AudioInputDevice & audioinput_device, 
+                            Ekiga::AudioInputErrorCodes error_code, 
+                            gpointer self)
 {
+  gchar *dialog_title = NULL;
+  gchar *dialog_msg = NULL;
+  gchar *tmp_msg = NULL;
+
+  dialog_title =
+  g_strdup_printf (_("Error while opening video device %s"),
+                   (const char *) audioinput_device.device.c_str());
+
+  tmp_msg = g_strdup (_("Only silence will be transmitted."));
+  switch (error_code) {
+
+    case Ekiga::AUDIO_ERR_DEVICE:
+      dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Impossible to open the selected audio device for recording. Please check your audio setup, the permissions and that the device is not busy."), NULL);
+      break;
+
+    case Ekiga::AUDIO_ERR_READ:
+      dialog_msg = g_strconcat (tmp_msg, "\n\n", _("The selected audio device was successfully opened but it is impossible to read data from this device. Please check your audio setup."), NULL);
+      break;
+
+    case Ekiga::ERR_NONE:
+    default:
+      dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Unknown error."), NULL);
+      break;
+  }
+
+  gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (GTK_WIDGET (self)),
+                                         VIDEO_DEVICES_KEY "enable_preview", //FIXME
+                                         dialog_title,
+                                         "%s", dialog_msg);
+  g_free (dialog_msg);
+  g_free (dialog_title);
+  g_free (tmp_msg);
+
 }
 
 void
 on_audiooutputdevice_opened_cb (Ekiga::AudioOutputManager & /*manager*/,
-                             Ekiga::AudioOutputPrimarySecondary /*primarySecondary*/,
+                             Ekiga::AudioOutputPrimarySecondary primarySecondary,
                              Ekiga::AudioOutputDevice & /*audiooutput_device*/,
                              Ekiga::AudioOutputConfig & audiooutput_config,
                              gpointer self)
 {
+  if (primarySecondary == Ekiga::secondary)
+    return;
+
   GmMainWindow *mw = NULL;
   g_return_if_fail (self != NULL);
   mw = gm_mw_get_mw (GTK_WIDGET (self));
@@ -1149,11 +1185,46 @@ on_audiooutputdevice_closed_cb (Ekiga::AudioOutputManager & /*manager*/,
 
 void 
 on_audiooutputdevice_error_cb (Ekiga::AudioOutputManager & /*manager */, 
-                               Ekiga::AudioOutputPrimarySecondary /*primarySecondary*/,
-                               Ekiga::AudioOutputDevice & /*audiooutput_device*/, 
-                               Ekiga::AudioOutputErrorCodes /*error_code*/, 
-                               gpointer /*self*/)
+                               Ekiga::AudioOutputPrimarySecondary primarySecondary,
+                               Ekiga::AudioOutputDevice & audiooutput_device, 
+                               Ekiga::AudioOutputErrorCodes error_code, 
+                               gpointer self)
 {
+  if (primarySecondary == Ekiga::secondary)
+    return;
+
+  gchar *dialog_title = NULL;
+  gchar *dialog_msg = NULL;
+  gchar *tmp_msg = NULL;
+
+  dialog_title =
+  g_strdup_printf (_("Error while opening video device %s"),
+                   (const char *) audiooutput_device.device.c_str());
+
+  tmp_msg = g_strdup (_("No incoming sound will be played."));
+  switch (error_code) {
+
+    case Ekiga::_AUDIO_ERR_DEVICE:
+      dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Impossible to open the selected audio device for playing. Please check your audio setup, the permissions and that the device is not busy."), NULL);
+      break;
+
+    case Ekiga::_AUDIO_ERR_WRITE:
+      dialog_msg = g_strconcat (tmp_msg, "\n\n", _("The selected audio device was successfully opened but it is impossible to write data from this device. Please check your audio setup."), NULL);
+      break;
+
+    case Ekiga::_AUDIO_ERR_NONE:
+    default:
+      dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Unknown error."), NULL);
+      break;
+  }
+
+  gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (GTK_WIDGET (self)),
+                                         VIDEO_DEVICES_KEY "enable_preview", //FIXME
+                                         dialog_title,
+                                         "%s", dialog_msg);
+  g_free (dialog_msg);
+  g_free (dialog_title);
+  g_free (tmp_msg);
 }
 
 void
