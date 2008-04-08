@@ -207,17 +207,6 @@ class GMManager:
   OpalCall *CreateCall ();
 
   
-  /* DESCRIPTION  :  Called when there is an incoming SIP/H323/PCSS connection.
-   * BEHAVIOR     :  Updates the GUI and forward, reject the connection
-   * 		     if required. If the connection is not forwarded, then
-   * 		     OnShowIncoming will be called on the PCSS Endpoint.
-   * PRE          :  /
-   */
-  bool OnIncomingConnection (OpalConnection &,
-			     unsigned,
-			     const std::string & forward_uri);
-
-  
   /* DESCRIPTION  :  This callback is called when the connection is 
    *                 established and everything is ok.
    * BEHAVIOR     :  Sets the proper values for the current connection 

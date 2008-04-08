@@ -597,30 +597,24 @@ GMSIPEndpoint::OnRegistrationFailed (const PString & _aor,
 
 bool 
 GMSIPEndpoint::OnIncomingConnection (OpalConnection &connection,
-                                     G_GNUC_UNUSED unsigned options,
-                                     G_GNUC_UNUSED OpalConnection::StringOptions * stroptions)
+                                     unsigned options,
+                                     OpalConnection::StringOptions * stroptions)
 {
-  PSafePtr<OpalConnection> con = NULL;
-  PSafePtr<OpalCall> call = NULL;
-
-  unsigned reason = 0;
-
   PTRACE (3, "GMSIPEndpoint\tIncoming connection");
 
-  std::cout << "OnIncomingConnection " << endpoint.GetCallsNumber() << std::endl << std::flush;
   if (!forward_uri.empty () && unconditional_forward)
-    reason = 2; // Forward
+    connection.ForwardCall (forward_uri);
   else if (endpoint.GetCallsNumber () >= 1) { 
 
     if (!forward_uri.empty () && forward_on_busy)
-      reason = 2; // Forward
-    else
-      reason = 1; // Reject
+      connection.ForwardCall (forward_uri);
+    else 
+      connection.ClearCall (OpalConnection::EndedByLocalBusy);
   }
   else
-    reason = 0; // Ask the user
+    return SIPEndPoint::OnIncomingConnection (connection, options, stroptions);
 
-  return endpoint.OnIncomingConnection (connection, reason, forward_uri.c_str ());
+  return false;
 }
 
 

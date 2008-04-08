@@ -285,46 +285,23 @@ GMH323Endpoint::OnIncomingConnection (OpalConnection &connection,
                                       G_GNUC_UNUSED unsigned options,
                                       G_GNUC_UNUSED OpalConnection::StringOptions *str_options)
 {
-  PSafePtr<OpalConnection> con = NULL;
-  PSafePtr<OpalCall> call = NULL;
-  
-  guint status = CONTACT_ONLINE;
-  gboolean busy_forward = FALSE;
-  gboolean always_forward = FALSE;
-
-  bool res = FALSE;
-
-  unsigned reason = 0;
-  gchar *forward_host = NULL;
-
   PTRACE (3, "GMH323Endpoint\tIncoming connection");
 
-
-  gnomemeeting_threads_enter ();
-  forward_host = gm_conf_get_string (H323_KEY "forward_host");
-  busy_forward = gm_conf_get_bool (CALL_FORWARDING_KEY "forward_on_busy");
-  always_forward = gm_conf_get_bool (CALL_FORWARDING_KEY "always_forward");
-  status = gm_conf_get_int (PERSONAL_DATA_KEY "status");
-  gnomemeeting_threads_leave ();
-  
-  
-  if (forward_host && always_forward)
-    reason = 2; // Forward
-  /* We are in a call */
+  /*
+  if (!forward_uri.empty () && unconditional_forward)
+    connection.ForwardCall (forward_uri);
   else if (endpoint.GetCallsNumber () >= 1) { 
 
-    if (forward_host && busy_forward)
-      reason = 2; // Forward
-    else
-      reason = 1; // Reject
+    if (!forward_uri.empty () && forward_on_busy)
+      connection.ForwardCall (forward_uri);
+    else 
+      connection.ClearCall (OpalConnection::EndedByLocalBusy);
   }
   else
-    reason = 0; // Ask the user
+    return H323EndPoint::OnIncomingConnection (connection, options, stroptions);
+    */ //TODO
 
-  res = endpoint.OnIncomingConnection (connection, reason, forward_host);
-
-  g_free (forward_host);
-  return res;
+  return false;
 }
 
 

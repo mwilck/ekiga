@@ -897,39 +897,6 @@ OpalCall *GMManager::CreateCall ()
 }
 
 
-bool
-GMManager::OnIncomingConnection (OpalConnection &connection,
-                                 unsigned reason,
-                                 const std::string & forward_uri)
-{
-  bool res = FALSE;
-
-  /* Act on the connection */
-  switch (reason) {
-
-  case 1:
-    connection.ClearCall (OpalConnection::EndedByLocalBusy);
-    res = FALSE;
-    break;
-    
-  case 2:
-    connection.ForwardCall (forward_uri);
-    res = FALSE;
-    break;
-    
-  case 4:
-    res = TRUE;
-  default:
-
-  case 0:
-    res = OpalManager::OnIncomingConnection (connection, 0, NULL);
-    break;
-  }
-
-  return res;
-}
-
-
 void 
 GMManager::OnEstablished (OpalConnection &connection)
 {
