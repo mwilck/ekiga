@@ -185,16 +185,6 @@ class GMManager:
 
   
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Reset the listeners for all components. Displays an
-   * 		     error dialog if it fails. The interface and ports
-   * 		     are retrieved from the GmConf database.
-   * 		     Remove old listeners if any.
-   * PRE          :  / 
-   */
-  void ResetListeners ();
-  
-  
-  /* DESCRIPTION  :  /
    * BEHAVIOR     :  Returns the local or remote OpalConnection for the 
    * 		     given call. If there are several remote connections,
    * 		     the first one is returned.

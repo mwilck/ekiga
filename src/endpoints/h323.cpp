@@ -57,73 +57,18 @@
 GMH323Endpoint::GMH323Endpoint (GMManager & ep)
 	: H323EndPoint (ep), endpoint (ep)
 {
+  udp_min = 5000;
+  udp_max = 5100; 
+  tcp_min = 30000;
+  tcp_max = 30010; 
+  listen_port = 5060;
+
   SetInitialBandwidth (40000);
 }
 
 
 GMH323Endpoint::~GMH323Endpoint ()
 {
-}
-
-
-bool 
-GMH323Endpoint::StartListener (PString iface,
-			       WORD port)
-{
-  PString iface_noip;
-  PString ip;
-  PIPSocket::InterfaceTable ifaces;
-  PINDEX i = 0;
-  PINDEX pos = 0;
-  
-  gboolean ok = FALSE;
-  gboolean found = FALSE;
-  
-  gchar *listen_to = NULL;
-
-  RemoveListener (NULL);
-
-  /* Detect the valid interfaces */
-  PIPSocket::GetInterfaceTable (ifaces);
-
-  while (i < ifaces.GetSize ()) {
-
-    ip = " [" + ifaces [i].GetAddress ().AsString () + "]";
-    
-    if (ifaces [i].GetName () + ip == iface)
-      listen_to = 
-	g_strdup_printf ("tcp$%s:%d", 
-			 (const char *) ifaces [i].GetAddress().AsString(),
-			 port);
-      
-    i++;
-  }
-
-  i = 0;
-  pos = iface.Find("[");
-  if (pos != P_MAX_INDEX)
-    iface_noip = iface.Left (pos).Trim ();
-  while (i < ifaces.GetSize() && !found) {
-
-    if (ifaces [i].GetName () == iface_noip) {
-      listen_to = 
-	g_strdup_printf ("tcp$%s:%d", 
-			 (const char *) ifaces [i].GetAddress().AsString(),
-			 port);
-      found = TRUE;
-    }
-    
-    i++;
-  }
-
-  /* Start the listener thread for incoming calls */
-  if (!listen_to)
-    return FALSE;
-
-  ok = StartListeners (PStringArray (listen_to));
-  g_free (listen_to);
-
-  return ok;
 }
 
 
@@ -281,7 +226,7 @@ GMH323Endpoint::IsRegisteredWithGatekeeper (const PString & address)
 
 
 bool 
-GMH323Endpoint::OnIncomingConnection (OpalConnection &connection,
+GMH323Endpoint::OnIncomingConnection (OpalConnection & /*connection*/,
                                       G_GNUC_UNUSED unsigned options,
                                       G_GNUC_UNUSED OpalConnection::StringOptions *str_options)
 {
@@ -337,3 +282,62 @@ GMH323Endpoint::OnReleased (OpalConnection &connection)
   PTRACE (3, "GMSIPEndpoint\t H.323 connection released");
   H323EndPoint::OnReleased (connection);
 }
+
+
+bool GMH323Endpoint::start_listening ()
+{
+  std::stringstream str;
+  RemoveListener (NULL);
+
+  str << "tcp$*:" << listen_port;
+  if (StartListeners (PStringArray (str.str ().c_str ()))) 
+    return true;
+
+  return false;
+}
+
+
+bool GMH323Endpoint::set_tcp_ports (const unsigned min, const unsigned max) 
+{
+  if (min > 0 && max > 0 && min < max) {
+
+    tcp_min = min;
+    tcp_max = max;
+    endpoint.SetTCPPorts (tcp_min, tcp_max);
+
+    return true;
+  }
+
+  return false;
+}
+
+
+bool GMH323Endpoint::set_udp_ports (const unsigned min, const unsigned max) 
+{
+  if (min > 0 && max > 0 && min + 12 < max) {
+
+    udp_min = min;
+    udp_max = max;
+    std::cout << "set udp " << udp_min << " : " << udp_max << std::endl << std::flush;
+    endpoint.SetRtpIpPorts (udp_min, udp_max);
+    endpoint.SetUDPPorts (udp_min, udp_max);
+
+    return true;
+  }
+
+  return false;
+}
+
+
+bool GMH323Endpoint::set_listen_port (const unsigned listen)
+{
+  if (listen > 0) {
+
+    listen_port = listen;
+    return start_listening ();
+  }
+
+  return false;
+}
+
+

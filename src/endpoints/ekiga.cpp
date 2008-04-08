@@ -127,6 +127,7 @@ GnomeMeeting::Exit ()
 bool
 GnomeMeeting::DetectInterfaces ()
 {
+  //TODO
   PString config_interface;
   PString iface_noip;
   PString ip;
@@ -195,14 +196,7 @@ GnomeMeeting::DetectInterfaces ()
     i++;
   }
 
-
-  /* Update the GUI, if it is already there */
-  if (prefs_window)
-    gm_prefs_window_update_interfaces_list (prefs_window, 
-                                            interfaces);
-
   return res;
-
 }
 
 

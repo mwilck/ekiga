@@ -619,7 +619,6 @@ gm_pw_init_network_page (GtkWidget *prefs_window,
   GtkWidget *subsection = NULL;
 
   PStringArray ifaces;
-  char **array = NULL;
   const gchar *nat_method [] = 
     {
       _("None"),
@@ -634,16 +633,6 @@ gm_pw_init_network_page (GtkWidget *prefs_window,
 
   g_return_if_fail (pw != NULL);
 
-
-  /* The network interface */
-  subsection = gnome_prefs_subsection_new (prefs_window, container,
-                                           _("Network Interface"), 1, 2);
-
-  ifaces = GnomeMeeting::Process ()->GetInterfaces ();
-  array = ifaces.ToCharArray ();
-  pw->iface =
-    gnome_prefs_string_option_menu_new (subsection, _("Listen on:"), (const gchar **)array, PROTOCOLS_KEY "interface", _("The network interface to listen on"), 0);
-  free (array);
 
   /* NAT */
   subsection =
@@ -1354,26 +1343,6 @@ audioev_filename_browse_play_cb (GtkWidget* /* playbutton */,
 
 
 /* Public functions */
-void 
-gm_prefs_window_update_interfaces_list (GtkWidget *prefs_window, 
-					PStringArray interfaces)
-{
-  GmPreferencesWindow *pw = NULL;
-
-  gchar **array = NULL;
-
-  g_return_if_fail (prefs_window != NULL);
-  pw = gm_pw_get_pw (prefs_window);
-
-
-  /* The Video player */
-  array = interfaces.ToCharArray ();
-  gnome_prefs_string_option_menu_update (pw->iface,
-					 (const gchar **)array,
-					 PROTOCOLS_KEY "interface");
-  free (array);
-}
-
 void 
 gm_prefs_window_update_devices_list (GtkWidget *prefs_window)
 {

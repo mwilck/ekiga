@@ -43,6 +43,9 @@
 #include "manager.h"
 #include "misc.h"
 
+#include "h323.h"
+#include "sip.h"
+
 #include "gmconf.h"
 #include "gmdialog.h"
 
@@ -344,7 +347,9 @@ void GMStunClient::Main ()
     ((OpalManager *) &ep)->SetSTUNServer (stun_host);
 
     stun = ep.GetSTUN ();
-    ep.ResetListeners ();
+    // TODO to improve heh
+    ep.GetSIPEndpoint()->start_listening ();
+    ep.GetH323Endpoint()->start_listening ();
   }
 
   if (stun) 

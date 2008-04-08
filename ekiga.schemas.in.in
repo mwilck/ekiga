@@ -378,17 +378,6 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/protocols/interface</key>
-      <applyto>/apps/@PACKAGE_NAME@/protocols/interface</applyto>
-      <owner>Ekiga</owner>
-      <type>string</type>
-      <default>eth0</default>
-      <locale name="C">
-	<short>The network interface</short>
-	<long>The network interface to listen on</long>
-      </locale>
-    </schema>
-    <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/protocols/accounts_list</key>
       <applyto>/apps/@PACKAGE_NAME@/protocols/accounts_list</applyto>
       <owner>Ekiga</owner>
@@ -474,18 +463,7 @@
       <default>30000:30010</default>
       <locale name="C">
 	<short>TCP port range</short>
-	<long>The range of TCP ports that Ekiga will use for the H.323 H.245 channel. Ekiga needs to be restarted for the new values to take effect. This port range has no effect if both participants to the conference are using H.245 Tunneling.</long>
-      </locale>
-    </schema>
-    <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/protocols/ports/rtp_port_range</key>
-      <applyto>/apps/@PACKAGE_NAME@/protocols/ports/rtp_port_range</applyto>
-      <owner>Ekiga</owner>
-      <type>string</type>
-      <default>5000:5059</default>
-      <locale name="C">
-	<short>UDP port range</short>
-	<long>The range of UDP ports that Ekiga will use for RTP (audio and video communication channels). Ekiga needs to be restarted for the new values to take effect.</long>
+	<long>The range of TCP ports that Ekiga will use for the H.323 H.245 channel. This port range has no effect if both participants to the conference are using H.245 Tunneling.</long>
       </locale>
     </schema>
     <schema>
@@ -496,7 +474,7 @@
       <default>5060:5100</default>
       <locale name="C">
 	<short>UDP port range</short>
-	<long>The range of UDP ports that Ekiga will use for SIP signaling and when registering to gatekeepers. Ekiga needs to be restarted for the new values to take effect.</long>
+	<long>The range of UDP ports that Ekiga will use.</long>
       </locale>
     </schema>
     <schema>

@@ -74,18 +74,6 @@ extern "C" {
 };
 
 
-
-/* DESCRIPTION  :  This notifier is called when the config database data
- *                 associated with the listening interface changes.
- * BEHAVIOR     :  Updates the interface.
- * PRE          :  data is a pointer to the GMManager.
- */
-static void network_interface_changed_nt (G_GNUC_UNUSED gpointer id,
-                                          GmConfEntry *entry, 
-                                          gpointer data);
-
-
-
 /* DESCRIPTION  :  This notifier is called when the config database data
  *                 associated with the public ip changes.
  * BEHAVIOR     :  Updates the IP Translation address.
@@ -109,22 +97,6 @@ static void status_changed_nt (G_GNUC_UNUSED gpointer id,
 static  bool same_codec_desc (Ekiga::CodecDescription a, Ekiga::CodecDescription b)
 { 
   return (a.name == b.name && a.rate == b.rate); 
-}
-
-
-static void 
-network_interface_changed_nt (G_GNUC_UNUSED gpointer id,
-                              GmConfEntry *entry, 
-                              gpointer data)
-{
-  GMManager *ep = (GMManager *) data;
-  
-  if (gm_conf_entry_get_type (entry) == GM_CONF_STRING) {
-
-    gdk_threads_enter ();
-    ep->ResetListeners ();
-    gdk_threads_leave ();
-  }
 }
 
 
@@ -860,8 +832,6 @@ GMManager::RemoveSTUNClient ()
   SetSTUNServer (PString ());
 
   sc = NULL;
-
-  ResetListeners ();
 }
 
 
@@ -976,83 +946,13 @@ GMManager::Init ()
   SetMediaFormatOrder (PStringArray ());
   SetMediaFormatMask (PStringArray ());
 
-  /* Reset the listeners */
-  ResetListeners ();
-
   g_free (ip);
   
   /* GMConf notifiers for what we manager */
-  gm_conf_notifier_add (PROTOCOLS_KEY "interface",
-			network_interface_changed_nt, this);
   gm_conf_notifier_add (NAT_KEY "public_ip",
 			public_ip_changed_nt, this);
   gm_conf_notifier_add (PERSONAL_DATA_KEY "status",
 			status_changed_nt, this);
-}
-
-
-void
-GMManager::ResetListeners ()
-{
-  gchar *iface = NULL;
-  gchar *ports = NULL;
-  gchar **couple = NULL;
-
-  WORD port = 0;
-  WORD min_port = 5060;
-  WORD max_port = 5080;
-
-  gnomemeeting_threads_enter ();
-  iface = gm_conf_get_string (PROTOCOLS_KEY "interface");
-  gnomemeeting_threads_leave ();
-  
-  /* Create the H.323 and SIP listeners */
-  if (h323EP) {
-  
-    gnomemeeting_threads_enter ();
-    port = gm_conf_get_int (H323_KEY "listen_port");
-    gnomemeeting_threads_leave ();
-    
-    h323EP->RemoveListener (NULL);
-    if (!h323EP->StartListener (iface, port)) 
-      PTRACE (1, "Manager\tCould not start H.323 listener on " << iface << ":" << port);
-  }
-
-  if (sipEP) {
-    
-    gnomemeeting_threads_enter ();
-    port = gm_conf_get_int (SIP_KEY "listen_port");
-    ports = gm_conf_get_string (PORTS_KEY "udp_port_range");
-    if (ports)
-      couple = g_strsplit (ports, ":", 2);
-    if (couple && couple [0]) {
-      min_port = atoi (couple [0]);
-    }
-    if (couple && couple [1]) {
-      max_port = atoi (couple [1]);
-    }
-    gnomemeeting_threads_leave ();
-    
-    sipEP->RemoveListener (NULL);
-    if (!sipEP->StartListener (iface, port)) {
-      
-      bool success = false;
-      port = min_port;
-      while (port <= max_port && !success) {
-       
-        success = sipEP->StartListener (iface, port);
-        port++;
-      }
-
-      if (!success) 
-        PTRACE (1, "Manager\tCould not start SIP listener on " << iface << ":" << min_port << "-" << max_port);
-    }
-
-    g_strfreev (couple);
-    g_free (ports);
-  }
-
-  g_free (iface);
 }
 
 

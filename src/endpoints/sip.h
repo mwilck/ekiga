@@ -108,21 +108,14 @@ public:
    * It is probably needed to move some of those functions
    * in the core
    */
+  bool start_listening ();
+  bool set_udp_ports (const unsigned min, const unsigned max);
+  bool set_listen_port (const unsigned listen);
   void set_forward_host (const std::string & uri);
   void set_forward_on_busy (const bool enabled);
   void set_unconditional_forward (const bool enabled);
   void set_forward_on_no_answer (const bool enabled);
   void set_no_answer_timeout (const unsigned timeout);
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Starts the listener thread on the port choosen 
-   *                 in the options after having removed old listeners.
-   *                 returns TRUE if success and FALSE in case of error.
-   * PRE          :  The interface.
-   */
-  bool StartListener (PString iface,
-                      WORD port);
 
 
   /* DESCRIPTION  :  /
@@ -260,5 +253,8 @@ private:
   bool unconditional_forward;
   bool forward_on_no_answer;
   unsigned no_answer_timeout;
+  unsigned udp_min;
+  unsigned udp_max;
+  unsigned listen_port;
 };
 #endif

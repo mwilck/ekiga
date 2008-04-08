@@ -83,6 +83,10 @@ ConfBridge::ConfBridge (Ekiga::Service & _service)
   keys.push_back (H323_KEY "enable_early_h245");
   keys.push_back (H323_KEY "enable_fast_start");
 
+  keys.push_back (SIP_KEY "listen_port");
+  keys.push_back (PORTS_KEY "udp_port_range");
+  keys.push_back (PORTS_KEY "tcp_port_range");
+
   load (keys);
 }
 
@@ -286,6 +290,47 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
   else if (key == CALL_OPTIONS_KEY "no_answer_timeout") {
 
     manager.GetSIPEndpoint ()->set_no_answer_timeout (gm_conf_entry_get_int (entry));
+  }
+
+
+  //
+  // Ports keys
+  //
+  else if (key == H323_KEY "listen_port") {
+
+    manager.GetH323Endpoint ()->set_listen_port (gm_conf_entry_get_int (entry));
+  }
+  else if (key == SIP_KEY "listen_port") {
+
+    manager.GetSIPEndpoint ()->set_listen_port (gm_conf_entry_get_int (entry));
+  }
+  else if (key == PORTS_KEY "udp_port_range"
+           || key == PORTS_KEY "tcp_port_range") {
+
+    const gchar *ports = gm_conf_entry_get_string (entry);
+    gchar **couple = NULL;
+    unsigned min_port = 0;
+    unsigned max_port = 0;
+
+    if (ports)
+      couple = g_strsplit (ports, ":", 2);
+
+    if (couple && couple [0]) 
+      min_port = atoi (couple [0]);
+    
+    if (couple && couple [1]) 
+      max_port = atoi (couple [1]);
+    
+    std::cout << "ici et la" << std::endl << std::flush;
+    if (key == PORTS_KEY "udp_port_range") {
+
+      manager.GetSIPEndpoint ()->set_udp_ports (min_port, max_port);
+      std::cout << "ici et la" << min_port << " " << max_port << std::endl << std::flush;
+      manager.GetH323Endpoint ()->set_udp_ports (min_port, max_port);
+    }
+    else
+      manager.GetH323Endpoint ()->set_tcp_ports (min_port, max_port);
+    g_free (couple);
   }
 }
 

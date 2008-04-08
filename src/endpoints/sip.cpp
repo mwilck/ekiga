@@ -55,6 +55,9 @@ GMSIPEndpoint::GMSIPEndpoint (GMManager & ep, Ekiga::ServiceCore & _core)
   runtime (*(dynamic_cast<Ekiga::Runtime *> (core.get ("runtime"))))
 {
   uri_prefix = "sip:";
+  udp_min = 5000;
+  udp_max = 5100; 
+  listen_port = 5060;
 
   /* Timeouts */
   SetAckTimeout (PTimeInterval (0, 32));
@@ -70,6 +73,9 @@ GMSIPEndpoint::GMSIPEndpoint (GMManager & ep, Ekiga::ServiceCore & _core)
   Ekiga::PersonalDetails *details = dynamic_cast<Ekiga::PersonalDetails *> (_core.get ("personal-details"));
   if (details)
     publish (*details);
+
+  /* Start listening */
+  start_listening ();
 }
 
 
@@ -277,6 +283,58 @@ GMSIPEndpoint::set_nat_binding_delay (unsigned int delay)
   SIPEndPoint::SetNATBindingTimeout (PTimeInterval (0, delay));
 }
 
+
+bool GMSIPEndpoint::start_listening ()
+{
+  unsigned port = listen_port;
+  std::stringstream str;
+  RemoveListener (NULL);
+
+  str << "udp$*:" << port;
+  if (!StartListeners (PStringArray (str.str ().c_str ()))) {
+
+    port = udp_min;
+    str << "udp$*:" << port;
+    while (port <= udp_max) {
+
+      if (StartListeners (PStringArray (str.str ().c_str ())))
+        return true;
+      port++;
+    }
+  }
+
+  return false;
+}
+
+
+bool GMSIPEndpoint::set_udp_ports (const unsigned min, const unsigned max) 
+{
+  if (min > 0 && max > 0 && min + 12 < max) {
+
+    udp_min = min;
+    udp_max = max;
+    endpoint.SetRtpIpPorts (udp_min, udp_max);
+    endpoint.SetUDPPorts (udp_min, udp_max);
+
+    return start_listening ();
+  }
+
+  return false;
+}
+
+
+bool GMSIPEndpoint::set_listen_port (const unsigned listen)
+{
+  if (listen > 0 && listen >= udp_min && listen <= udp_max) {
+
+    listen_port = listen;
+    return start_listening ();
+  }
+
+  return false;
+}
+
+
 void 
 GMSIPEndpoint::set_forward_host (const std::string & uri)
 {
@@ -305,69 +363,6 @@ void
 GMSIPEndpoint::set_no_answer_timeout (const unsigned timeout)
 {
   no_answer_timeout = timeout;
-}
-
-
-bool 
-GMSIPEndpoint::StartListener (PString iface, 
-                              WORD port)
-{
-  PString iface_noip;
-  PString ip;
-  PIPSocket::InterfaceTable ifaces;
-  PINDEX i = 0;
-  PINDEX pos = 0;
-
-  gboolean ok = FALSE;
-  gboolean found = FALSE;
-
-  gchar *listen_to = NULL;
-
-  RemoveListener (NULL);
-
-  /* Detect the valid interfaces */
-  PIPSocket::GetInterfaceTable (ifaces);
-
-  while (i < ifaces.GetSize ()) {
-
-    ip = " [" + ifaces [i].GetAddress ().AsString () + "]";
-
-    if (ifaces [i].GetName () + ip == iface) {
-      listen_to = 
-        g_strdup_printf ("udp$%s:%d", 
-                         (const char *) ifaces [i].GetAddress().AsString(),
-                         port);
-      found = TRUE;
-    }
-
-    i++;
-  }
-
-  i = 0;
-  pos = iface.Find("[");
-  if (pos != P_MAX_INDEX)
-    iface_noip = iface.Left (pos).Trim ();
-  while (i < ifaces.GetSize() && !found) {
-
-    if (ifaces [i].GetName () == iface_noip) {
-      listen_to = 
-        g_strdup_printf ("udp$%s:%d", 
-                         (const char *) ifaces [i].GetAddress().AsString(),
-                         port);
-      found = TRUE;
-    }
-
-    i++;
-  }
-
-  /* Start the listener thread for incoming calls */
-  if (!listen_to)
-    return FALSE;
-
-  ok = StartListeners (PStringArray (listen_to));
-  g_free (listen_to);
-
-  return ok;
 }
 
 

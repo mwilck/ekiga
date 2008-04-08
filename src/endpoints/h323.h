@@ -70,16 +70,6 @@ class GMH323Endpoint : public H323EndPoint
   
   
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Starts the listener thread on the port choosen 
-   *                 in the options after having removed old listeners.
-   *                 returns TRUE if success and FALSE in case of error.
-   * PRE          :  The interface.
-   */
-  bool StartListener (PString iface, 
-		      WORD port);
-
-  
-  /* DESCRIPTION  :  /
    * BEHAVIOR     :  Adds the User Input Mode following the
    *                 configuration options. String, Tone, and RFC2833 are 
    *                 supported for now.
@@ -169,6 +159,11 @@ class GMH323Endpoint : public H323EndPoint
    */
   void OnReleased (OpalConnection &);
 
+  bool start_listening ();
+  bool set_udp_ports (const unsigned min, const unsigned max);
+  bool set_tcp_ports (const unsigned min, const unsigned max);
+  bool set_listen_port (const unsigned listen);
+
 
  private:
 
@@ -177,6 +172,11 @@ class GMH323Endpoint : public H323EndPoint
   PString gk_name;
 
   std::string forward_uri;
+  unsigned tcp_min;
+  unsigned tcp_max;
+  unsigned udp_min;
+  unsigned udp_max;
+  unsigned listen_port;
 };
 
 #endif

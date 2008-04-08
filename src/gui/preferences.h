@@ -46,14 +46,6 @@
 #include "audioinput-core.h"
 #include "audiooutput-core.h"
 
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Refreshes the interfaces list in the GUI to update them from
- *                 the GnomeMeeting available list.
- * PRE          :  The prefs window GMObject, the available devices list.
- */
-void gm_prefs_window_update_interfaces_list (GtkWidget *prefs_window,
-					     PStringArray interfaces);
-
 
 /* DESCRIPTION  :  / 
  * BEHAVIOR     :  Builds the sound events list of the preferences window. 
