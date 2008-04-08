@@ -513,6 +513,9 @@ GMSIPEndpoint::OnRegistrationFailed (const PString & _aor,
     break;
 
   case SIP_PDU::Failure_UnAuthorised:
+    info = _("Unauthorized");
+    break;
+
   case SIP_PDU::Failure_Forbidden:
     info = _("Forbidden");
     break;
@@ -530,50 +533,173 @@ GMSIPEndpoint::OnRegistrationFailed (const PString & _aor,
     break;
 
   case SIP_PDU::Failure_NotAcceptable:
-    info = _("Not Acceptable");
+    info = _("Not acceptable");
     break;
 
   case SIP_PDU::IllegalStatusCode:
+    info = _("Illegal status code");
+    break;
+
   case SIP_PDU::Redirection_MultipleChoices:
+    info = _("Multiple choices");
+    break;
+
   case SIP_PDU::Redirection_MovedPermanently:
+    info = _("Moved permanently");
+    break;
+
   case SIP_PDU::Redirection_MovedTemporarily:
+    info = _("Moved temporarily");
+    break;
+
   case SIP_PDU::Redirection_UseProxy:
+    info = _("Use proxy");
+    break;
+
   case SIP_PDU::Redirection_AlternativeService:
+    info = _("Alternative service");
+    break;
+
   case SIP_PDU::Failure_NotFound:
+    info = _("Not found");
+    break;
+
   case SIP_PDU::Failure_MethodNotAllowed:
+    info = _("Method not allowed");
+    break;
+
   case SIP_PDU::Failure_ProxyAuthenticationRequired:
+    info = _("Proxy auth. required");
+    break;
+
   case SIP_PDU::Failure_Gone:
+    info = _("Gone");
+    break;
+
   case SIP_PDU::Failure_LengthRequired:
+    info = _("Length required");
+    break;
+
   case SIP_PDU::Failure_RequestEntityTooLarge:
+    info = _("Request entity too big");
+    break;
+
   case SIP_PDU::Failure_RequestURITooLong:
+    info = _("Request URI too long");
+    break;
+
   case SIP_PDU::Failure_UnsupportedMediaType:
+    info = _("Unsupported media type");
+    break;
+
   case SIP_PDU::Failure_UnsupportedURIScheme:
+    info = _("Unsupported URI scheme");
+    break;
+
   case SIP_PDU::Failure_BadExtension:
+    info = _("Bad extension");
+    break;
+
   case SIP_PDU::Failure_ExtensionRequired:
+    info = _("Extension required");
+    break;
+
   case SIP_PDU::Failure_IntervalTooBrief:
+    info = _("Interval too brief");
+    break;
+
   case SIP_PDU::Failure_TransactionDoesNotExist:
+    info = _("Trans. does not exist");
+    break;
+
   case SIP_PDU::Failure_LoopDetected:
+    info = _("Loop detected");
+    break;
+
   case SIP_PDU::Failure_TooManyHops:
+    info = _("Too many hops");
+    break;
+
   case SIP_PDU::Failure_AddressIncomplete:
+    info = _("Address incomplete");
+    break;
+
   case SIP_PDU::Failure_Ambiguous:
+    info = _("Ambiguous");
+    break;
+
   case SIP_PDU::Failure_BusyHere:
+    info = _("Busy Here");
+    break;
+
   case SIP_PDU::Failure_RequestTerminated:
+    info = _("Request terminated");
+    break;
+
   case SIP_PDU::Failure_NotAcceptableHere:
+    info = _("Not acceptable here");
+    break;
+
   case SIP_PDU::Failure_BadEvent:
+    info = _("Bad event");
+    break;
+
   case SIP_PDU::Failure_RequestPending:
+    info = _("Request pending");
+    break;
+
   case SIP_PDU::Failure_Undecipherable:
+    info = _("Undecipherable");
+    break;
+
   case SIP_PDU::Failure_InternalServerError:
+    info = _("Internal server error");
+    break;
+
   case SIP_PDU::Failure_NotImplemented:
+    info = _("Not implemented");
+    break;
+
   case SIP_PDU::Failure_BadGateway:
+    info = _("Bad gateway");
+    break;
+
   case SIP_PDU::Failure_ServiceUnavailable:
+    info = _("Service unavailable");
+    break;
+
   case SIP_PDU::Failure_ServerTimeout:
+    info = _("Server timeout");
+    break;
+
   case SIP_PDU::Failure_SIPVersionNotSupported:
+    info = _("SIP version not supp.");
+    break;
+
   case SIP_PDU::Failure_MessageTooLarge:
+    info = _("Message too large");
+    break;
+
   case SIP_PDU::GlobalFailure_BusyEverywhere:
+    info = _("Busy everywhere");
+    break;
+
   case SIP_PDU::GlobalFailure_Decline:
+    info = _("Decline");
+    break;
+
   case SIP_PDU::GlobalFailure_DoesNotExistAnywhere:
+    info = _("Does not exist anymore");
+    break;
+
   case SIP_PDU::GlobalFailure_NotAcceptable:
+    info = _("Globally not acceptable");
+    break;
+
   case SIP_PDU::MaxStatusCode:
+    info = _("Max status code");
+    break;
+
   default:
     info = _("Failed");
 
