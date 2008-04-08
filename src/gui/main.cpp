@@ -1090,7 +1090,7 @@ on_vidinputdevice_error_cb (Ekiga::VidInputManager & /* manager */,
   }
 
   gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (GTK_WIDGET (self)),
-                                         VIDEO_DEVICES_KEY "enable_preview",
+                                         USER_INTERFACE_KEY "show_device_warnings",
                                          dialog_title,
                                          "%s", dialog_msg);
   g_free (dialog_msg);
@@ -1155,7 +1155,7 @@ on_audioinputdevice_error_cb (Ekiga::AudioInputManager & /* manager */,
   }
 
   gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (GTK_WIDGET (self)),
-                                         VIDEO_DEVICES_KEY "enable_preview", //FIXME
+                                         USER_INTERFACE_KEY "show_device_warnings",
                                          dialog_title,
                                          "%s", dialog_msg);
   g_free (dialog_msg);
@@ -1230,7 +1230,7 @@ on_audiooutputdevice_error_cb (Ekiga::AudioOutputManager & /*manager */,
   }
 
   gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (GTK_WIDGET (self)),
-                                         VIDEO_DEVICES_KEY "enable_preview", //FIXME
+                                         USER_INTERFACE_KEY "show_device_warnings",
                                          dialog_title,
                                          "%s", dialog_msg);
   g_free (dialog_msg);

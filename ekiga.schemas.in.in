@@ -675,6 +675,17 @@
 	<long>If enabled, Ekiga will start hidden provided that the notification area is present in the GNOME panel</long>
       </locale>
     </schema>
+    <schema>	
+      <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/show_device_warnings</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/user_interface/show_device_warnings</applyto>
+      <owner>Ekiga</owner>
+      <type>bool</type>
+      <default>true</default>
+      <locale name="C">
+	<short>Show device warnings</short>
+	<long>If enabled, Ekiga will pop up a warning each time a audio/video input or output device could not be opened.</long>
+      </locale>
+    </schema>
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/show_popup</key>
       <applyto>/apps/@PACKAGE_NAME@/general/user_interface/show_popup</applyto>
