@@ -110,7 +110,8 @@ struct _GmMainWindow
   GtkWidget *output_signal;
   GtkObject *adj_input_volume;
   GtkObject *adj_output_volume;
-  GtkWidget *audio_volume_frame;
+  GtkWidget *audio_input_volume_frame;
+  GtkWidget *audio_output_volume_frame;
   GtkWidget *audio_settings_window;
 
   GtkObject *adj_whiteness;
@@ -1025,6 +1026,7 @@ on_vidinputdevice_opened_cb (Ekiga::VidInputManager & /* manager */,
   mw = gm_mw_get_mw (GTK_WIDGET (self));
   g_return_if_fail (mw != NULL);
 
+  gtk_widget_set_sensitive (GTK_WIDGET (mw->video_settings_frame),  vidinput_config.modifyable ? TRUE : FALSE);
   GTK_ADJUSTMENT (mw->adj_whiteness)->value = vidinput_config.whiteness;
   GTK_ADJUSTMENT (mw->adj_brightness)->value = vidinput_config.brightness;
   GTK_ADJUSTMENT (mw->adj_colour)->value = vidinput_config.colour;
@@ -1038,6 +1040,13 @@ on_vidinputdevice_opened_cb (Ekiga::VidInputManager & /* manager */,
 void 
 on_vidinputdevice_closed_cb (Ekiga::VidInputManager & /* manager */, Ekiga::VidInputDevice & /*vidinput_device*/, gpointer self)
 {
+  GmMainWindow *mw = NULL;
+  g_return_if_fail (self != NULL);
+  mw = gm_mw_get_mw (GTK_WIDGET (self));
+  g_return_if_fail (mw != NULL);
+
+  gtk_widget_set_sensitive (GTK_WIDGET (mw->video_settings_frame), FALSE);
+
   gm_main_window_update_sensitivity (GTK_WIDGET (self), TRUE, FALSE, FALSE);
   gm_main_window_update_logo_have_window (GTK_WIDGET (self));
 }
@@ -1109,9 +1118,11 @@ on_audioinputdevice_opened_cb (Ekiga::AudioInputManager & /* manager */,
   mw = gm_mw_get_mw (GTK_WIDGET (self));
   g_return_if_fail (mw != NULL);
 
+  gtk_widget_set_sensitive (GTK_WIDGET (mw->audio_input_volume_frame), audioinput_config.modifyable ? TRUE : FALSE);
   GTK_ADJUSTMENT (mw->adj_input_volume)->value = audioinput_config.volume;
   
-  gtk_widget_queue_draw (GTK_WIDGET (mw->audio_volume_frame));
+  gtk_widget_queue_draw (GTK_WIDGET (mw->audio_input_volume_frame));
+  PTRACE(0, "input opened");
 }
 
 
@@ -1119,8 +1130,14 @@ on_audioinputdevice_opened_cb (Ekiga::AudioInputManager & /* manager */,
 void 
 on_audioinputdevice_closed_cb (Ekiga::AudioInputManager & /* manager */, 
                                Ekiga::AudioInputDevice & /*audioinput_device*/, 
-                               gpointer /*self*/)
+                               gpointer self)
 {
+  GmMainWindow *mw = NULL;
+  g_return_if_fail (self != NULL);
+  mw = gm_mw_get_mw (GTK_WIDGET (self));
+  g_return_if_fail (mw != NULL);
+
+  gtk_widget_set_sensitive (GTK_WIDGET (mw->audio_input_volume_frame), FALSE);
 }
 
 void 
@@ -1179,19 +1196,30 @@ on_audiooutputdevice_opened_cb (Ekiga::AudioOutputManager & /*manager*/,
   mw = gm_mw_get_mw (GTK_WIDGET (self));
   g_return_if_fail (mw != NULL);
 
+  gtk_widget_set_sensitive (GTK_WIDGET (mw->audio_output_volume_frame), audiooutput_config.modifyable ? TRUE : FALSE);
   GTK_ADJUSTMENT (mw->adj_output_volume)->value = audiooutput_config.volume;
 
-  gtk_widget_queue_draw (GTK_WIDGET (mw->audio_volume_frame));
+  gtk_widget_queue_draw (GTK_WIDGET (mw->audio_output_volume_frame));
+  PTRACE(0, "output opened");
 }
 
 
 
 void 
 on_audiooutputdevice_closed_cb (Ekiga::AudioOutputManager & /*manager*/, 
-                                Ekiga::AudioOutputPrimarySecondary /*primarySecondary*/, 
+                                Ekiga::AudioOutputPrimarySecondary primarySecondary, 
                                 Ekiga::AudioOutputDevice & /*audiooutput_device*/, 
-                                gpointer /*self*/)
+                                gpointer self)
 {
+  if (primarySecondary == Ekiga::secondary)
+    return;
+
+  GmMainWindow *mw = NULL;
+  g_return_if_fail (self != NULL);
+  mw = gm_mw_get_mw (GTK_WIDGET (self));
+  g_return_if_fail (mw != NULL);
+
+  gtk_widget_set_sensitive (GTK_WIDGET (mw->audio_output_volume_frame), FALSE);
 }
 
 void 
@@ -1851,6 +1879,7 @@ gm_mw_video_settings_window_new (GtkWidget *main_window)
                      mw->video_settings_frame);
   gtk_widget_show_all (mw->video_settings_frame);
 
+  gtk_widget_set_sensitive (GTK_WIDGET (mw->video_settings_frame), FALSE);
   
   /* That's an usual GtkWindow, connect it to the signals */
   g_signal_connect_swapped (GTK_OBJECT (window), 
@@ -1897,15 +1926,15 @@ gm_mw_audio_settings_window_new (GtkWidget *main_window)
                         _("Audio Settings"));
 
   /* Audio control frame, we need it to disable controls */		
-  mw->audio_volume_frame = gtk_frame_new (NULL);
-  gtk_frame_set_shadow_type (GTK_FRAME (mw->audio_volume_frame), 
+  mw->audio_output_volume_frame = gtk_frame_new (NULL);
+  gtk_frame_set_shadow_type (GTK_FRAME (mw->audio_output_volume_frame), 
 			     GTK_SHADOW_NONE);
-  gtk_container_set_border_width (GTK_CONTAINER (mw->audio_volume_frame), 5);
+  gtk_container_set_border_width (GTK_CONTAINER (mw->audio_output_volume_frame), 5);
 
 
   /* The vbox */
   vbox = gtk_vbox_new (0, FALSE);
-  gtk_container_add (GTK_CONTAINER (mw->audio_volume_frame), vbox);
+  gtk_container_add (GTK_CONTAINER (mw->audio_output_volume_frame), vbox);
 
   /* Output volume */
   hbox = gtk_hbox_new (0, FALSE);
@@ -1928,6 +1957,21 @@ gm_mw_audio_settings_window_new (GtkWidget *main_window)
   gtk_box_pack_start (GTK_BOX (hbox), small_vbox, TRUE, TRUE, 2);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 3);
 
+  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (window)->vbox), 
+                     mw->audio_output_volume_frame);
+  gtk_widget_show_all (mw->audio_output_volume_frame);
+  gtk_widget_set_sensitive (GTK_WIDGET (mw->audio_output_volume_frame),  FALSE);
+
+  /* Audio control frame, we need it to disable controls */		
+  mw->audio_input_volume_frame = gtk_frame_new (NULL);
+  gtk_frame_set_shadow_type (GTK_FRAME (mw->audio_input_volume_frame), 
+			     GTK_SHADOW_NONE);
+  gtk_container_set_border_width (GTK_CONTAINER (mw->audio_input_volume_frame), 5);
+
+  /* The vbox */
+  vbox = gtk_vbox_new (0, FALSE);
+  gtk_container_add (GTK_CONTAINER (mw->audio_input_volume_frame), vbox);
+
   /* Input volume */
   hbox = gtk_hbox_new (0, FALSE);
   gtk_box_pack_start (GTK_BOX (hbox),
@@ -1949,6 +1993,11 @@ gm_mw_audio_settings_window_new (GtkWidget *main_window)
   gtk_box_pack_start (GTK_BOX (hbox), small_vbox, TRUE, TRUE, 2);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 3);
 
+  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (window)->vbox), 
+                     mw->audio_input_volume_frame);
+  gtk_widget_show_all (mw->audio_input_volume_frame);
+  gtk_widget_set_sensitive (GTK_WIDGET (mw->audio_input_volume_frame),  FALSE);
+
   g_signal_connect (G_OBJECT (mw->adj_output_volume), "value-changed",
 		    G_CALLBACK (audio_volume_changed_cb), main_window);
 
@@ -1956,9 +2005,6 @@ gm_mw_audio_settings_window_new (GtkWidget *main_window)
 		    G_CALLBACK (audio_volume_changed_cb), main_window);
 
 
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (window)->vbox), 
-                     mw->audio_volume_frame);
-  gtk_widget_show_all (mw->audio_volume_frame);
 
   
   /* That's an usual GtkWindow, connect it to the signals */
@@ -3332,81 +3378,6 @@ gm_main_window_clear_signal_levels (GtkWidget *main_window)
   gtk_levelmeter_clear (GTK_LEVELMETER (mw->output_signal));
   gtk_levelmeter_clear (GTK_LEVELMETER (mw->input_signal));
 }
-
-
-void
-gm_main_window_set_volume_sliders_values (GtkWidget *main_window,
-					  int output_volume,
-					  int input_volume)
-{
-  GmMainWindow *mw = NULL;
-
-  g_return_if_fail (main_window != NULL);
-
-  mw = gm_mw_get_mw (main_window);
-
-  g_return_if_fail (mw != NULL);
-
-  if (output_volume != -1)
-    GTK_ADJUSTMENT (mw->adj_output_volume)->value = output_volume;
-
-  if (input_volume != -1)
-    GTK_ADJUSTMENT (mw->adj_input_volume)->value = input_volume;
-  
-  gtk_widget_queue_draw (GTK_WIDGET (mw->audio_volume_frame));
-}
-
-
-void
-gm_main_window_get_volume_sliders_values (GtkWidget *main_window,
-					  int &output_volume,
-					  int &input_volume)
-{
-  GmMainWindow *mw = NULL;
-
-  g_return_if_fail (main_window != NULL);
-
-  mw = gm_mw_get_mw (main_window);
-
-  g_return_if_fail (mw != NULL);
-
-  output_volume = (int) GTK_ADJUSTMENT (mw->adj_output_volume)->value;
-  input_volume = (int) GTK_ADJUSTMENT (mw->adj_input_volume)->value;
-}
-
-
-void
-gm_main_window_set_video_sliders_values (GtkWidget *main_window,
-					 int whiteness,
-					 int brightness,
-					 int colour,
-					 int contrast)
-{
-  GmMainWindow *mw = NULL;
-
-  g_return_if_fail (main_window != NULL);
-
-  mw = gm_mw_get_mw (main_window);
-
-  g_return_if_fail (mw != NULL);
-
-  if (whiteness != -1)
-    GTK_ADJUSTMENT (mw->adj_whiteness)->value = whiteness;
-
-  if (brightness != -1)
-    GTK_ADJUSTMENT (mw->adj_brightness)->value = brightness;
-  
-  if (colour != -1)
-    GTK_ADJUSTMENT (mw->adj_colour)->value = colour;
-  
-  if (contrast != -1)
-    GTK_ADJUSTMENT (mw->adj_contrast)->value = contrast;
-  
-  gtk_widget_queue_draw (GTK_WIDGET (mw->video_settings_frame));
-}
-
-
-
 
 void 
 gm_main_window_set_panel_section (GtkWidget *main_window,
