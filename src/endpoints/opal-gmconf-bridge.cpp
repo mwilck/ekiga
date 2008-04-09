@@ -321,11 +321,9 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
     if (couple && couple [1]) 
       max_port = atoi (couple [1]);
     
-    std::cout << "ici et la" << std::endl << std::flush;
     if (key == PORTS_KEY "udp_port_range") {
 
       manager.GetSIPEndpoint ()->set_udp_ports (min_port, max_port);
-      std::cout << "ici et la" << min_port << " " << max_port << std::endl << std::flush;
       manager.GetH323Endpoint ()->set_udp_ports (min_port, max_port);
     }
     else
