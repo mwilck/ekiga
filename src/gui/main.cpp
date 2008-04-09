@@ -630,6 +630,9 @@ static void on_setup_call_cb (Ekiga::CallManager & /*manager*/,
     audiooutput_core->start_play_event("incoming_call_sound", 3000, 256);
     gm_main_window_incoming_call_dialog_show (GTK_WIDGET (self), call);
   }
+  else {
+    gm_main_window_update_calling_state (GTK_WIDGET (self), Calling);
+  }
 }
 
 
