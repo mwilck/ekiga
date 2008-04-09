@@ -71,6 +71,7 @@ struct _EkigaAssistantPrivate
 
   GtkWidget *connection_type;
 
+  GtkWidget *audio_ringer;
   GtkWidget *audio_player;
   GtkWidget *audio_recorder;
 
@@ -596,6 +597,27 @@ create_audio_devices_page (EkigaAssistant *assistant)
 
   vbox = create_page (assistant, _("Audio Devices"), GTK_ASSISTANT_PAGE_CONTENT);
 
+  label = gtk_label_new (_("Please choose the audio ringing device:"));
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
+
+  assistant->priv->audio_ringer = gtk_combo_box_new_text ();
+  gtk_box_pack_start (GTK_BOX (vbox), assistant->priv->audio_ringer, FALSE, FALSE, 0);
+
+  label = gtk_label_new (NULL);
+  text = g_strdup_printf ("<i>%s</i>", _("The audio ringing device is the device "
+                          " managed by the audio manager that will be used to "
+                          "play the ringing sound."));
+  gtk_label_set_markup (GTK_LABEL (label), text);
+  g_free (text);
+  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, TRUE, 0);
+
+  label = gtk_label_new ("");
+  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
+
+  //---
   label = gtk_label_new (_("Please choose the audio output device:"));
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
@@ -616,6 +638,7 @@ create_audio_devices_page (EkigaAssistant *assistant)
   label = gtk_label_new ("");
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
 
+  //---
   label = gtk_label_new (_("Please choose the audio input device:"));
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
@@ -645,6 +668,7 @@ static void
 prepare_audio_devices_page (EkigaAssistant *assistant)
 {
   GMManager *manager;
+  gchar *ringer;
   gchar *player;
   gchar *recorder;
   PStringArray devices;
@@ -652,6 +676,7 @@ prepare_audio_devices_page (EkigaAssistant *assistant)
 
   manager = dynamic_cast<GMManager *> (assistant->priv->core->get ("opal-component"));
 
+  ringer = gm_conf_get_string (SOUND_EVENTS_KEY "output_device");
   player = gm_conf_get_string (AUDIO_DEVICES_KEY "output_device");
   recorder = gm_conf_get_string (AUDIO_DEVICES_KEY "input_device");
 
@@ -663,15 +688,17 @@ prepare_audio_devices_page (EkigaAssistant *assistant)
 
   get_audio_output_devices_list (assistant->priv->core, device_list);
   array = convert_string_list(device_list);
+  update_combo_box (GTK_COMBO_BOX (assistant->priv->audio_ringer), array, ringer);
   update_combo_box (GTK_COMBO_BOX (assistant->priv->audio_player), array, player);
   g_free (array);
 
 
   get_audio_input_devices_list (assistant->priv->core, device_list);
   array = convert_string_list(device_list);
-  update_combo_box (GTK_COMBO_BOX (assistant->priv->audio_recorder), array, player);
+  update_combo_box (GTK_COMBO_BOX (assistant->priv->audio_recorder), array, recorder);
   g_free (array);
 
+  g_free (ringer);
   g_free (player);
   g_free (recorder);
 }
@@ -681,6 +708,13 @@ apply_audio_devices_page (EkigaAssistant *assistant)
 {
   GtkComboBox *combo_box;
   gchar *device;
+
+  combo_box = GTK_COMBO_BOX (assistant->priv->audio_ringer);
+  device = gtk_combo_box_get_active_text (combo_box);
+  if (device) {
+    gm_conf_set_string (SOUND_EVENTS_KEY "output_device", device);
+    g_free (device);
+  }
 
   combo_box = GTK_COMBO_BOX (assistant->priv->audio_player);
   device = gtk_combo_box_get_active_text (combo_box);
@@ -963,6 +997,15 @@ static void prepare_summary_page (EkigaAssistant *assistant)
                         -1);
     g_free (value);
   }
+
+  /* The audio ringing device */
+  gtk_list_store_append (model, &iter);
+  value = gtk_combo_box_get_active_text (GTK_COMBO_BOX (assistant->priv->audio_ringer));
+  gtk_list_store_set (model, &iter,
+                      SUMMARY_KEY_COLUMN, "Audio ringing device",
+                      SUMMARY_VALUE_COLUMN, value,
+                      -1);
+  g_free (value);
 
   /* The audio playing device */
   gtk_list_store_append (model, &iter);
