@@ -40,7 +40,6 @@
 
 #include "ekiga.h"
 #include "callbacks.h"
-#include "urlhandler.h"
 #include "preferences.h"
 #include "chat-window.h"
 #include "assistant.h"
@@ -69,8 +68,6 @@ GnomeMeeting::GnomeMeeting ()
   : PProcess("", "", MAJOR_VERSION, MINOR_VERSION, BUILD_TYPE, BUILD_NUMBER)
 
 {
-  url_handler = NULL;
-
   GM = this;
   
   call_number = 0;

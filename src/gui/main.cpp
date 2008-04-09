@@ -46,7 +46,6 @@
 #include "callbacks.h"
 #include "statusicon.h"
 #include "dialpad.h"
-#include "urlhandler.h"
 #include "statusmenu.h"
 
 #include "gmdialog.h"
@@ -1380,8 +1379,7 @@ gm_mw_init_uri_toolbar (GtkWidget *main_window)
   gtk_container_set_border_width (GTK_CONTAINER (item), 0);
   gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), true);
   
-  gtk_entry_set_text (GTK_ENTRY (mw->entry),
-		      GMURL ().GetDefaultURL ());
+  gtk_entry_set_text (GTK_ENTRY (mw->entry), "sip:");
 
   // activate Ctrl-L to get the entry focus
   gtk_widget_add_accelerator (mw->entry, "grab-focus",
@@ -3565,8 +3563,6 @@ gm_main_window_transfer_dialog_run (GtkWidget *main_window,
 {
   GmMainWindow *mw = NULL;
   
-  GMURL url = GMURL (u);
- 
   gint answer = 0;
   
   const char *forward_url = NULL;
@@ -3588,11 +3584,10 @@ gm_main_window_transfer_dialog_run (GtkWidget *main_window,
   gtk_dialog_set_default_response (GTK_DIALOG (mw->transfer_call_popup),
 				   GTK_RESPONSE_ACCEPT);
   
-  if (!url.IsEmpty ())
+  if (!strcmp (u, ""))
     gm_entry_dialog_set_text (GM_ENTRY_DIALOG (mw->transfer_call_popup), u);
   else
-    gm_entry_dialog_set_text (GM_ENTRY_DIALOG (mw->transfer_call_popup),
-			      (const char *) url.GetDefaultURL ());
+    gm_entry_dialog_set_text (GM_ENTRY_DIALOG (mw->transfer_call_popup), "sip:");
 
   gnomemeeting_threads_dialog_show (mw->transfer_call_popup);
 
@@ -3603,7 +3598,7 @@ gm_main_window_transfer_dialog_run (GtkWidget *main_window,
 
     forward_url =
       gm_entry_dialog_get_text (GM_ENTRY_DIALOG (mw->transfer_call_popup));
-    new GMURLHandler (mw->core, forward_url, TRUE); // FIXME SHould not be called directly
+    // FIXME NOT IMPLEMENTED SHould not be called directly
       
     break;
 

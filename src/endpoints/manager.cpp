@@ -42,8 +42,6 @@
 #include "h323.h"
 #include "sip.h"
 
-#include "urlhandler.h"
-
 #include "ekiga.h"
 #include "misc.h"
 #include "main.h"
@@ -147,6 +145,32 @@ status_changed_nt (G_GNUC_UNUSED gpointer id,
 }
 
 
+class dialer : public PThread
+{
+  PCLASSINFO(dialer, PThread);
+
+public:
+
+  dialer (const std::string uri, GMManager & ep) 
+    : PThread (1000, AutoDeleteThread), 
+      dial_uri (uri),
+      endpoint (ep) 
+  {
+    this->Resume ();
+  };
+  
+  void Main () 
+  {
+    PString token;
+    endpoint.SetUpCall ("pc:*", dial_uri.c_str (), token);
+  };
+
+private:
+  const std::string & dial_uri;
+  GMManager & endpoint;
+};
+
+
 /* The class */
 GMManager::GMManager (Ekiga::ServiceCore & _core)
 : core (_core), 
@@ -231,9 +255,20 @@ GMManager::~GMManager ()
 
 bool GMManager::dial (const std::string uri)
 {
-  if (uri.find ("sip:") == 0 || uri.find ("h323:") == 0 || uri.find (":") == string::npos) {
+  PString token;
+  std::stringstream ustr;
 
-    new GMURLHandler (core, uri.c_str ());
+  if (uri.find ("sip:") == 0 
+      || uri.find ("h323:") == 0 
+      || uri.find (":") == string::npos) {
+
+    if (uri.find (":") == string::npos)
+      ustr << "sip:" << uri;
+    else
+      ustr << uri;
+
+    new dialer (ustr.str (), *this);
+
     return true;
   }
 
@@ -1228,3 +1263,4 @@ void GMManager::GetAllowedFormats (OpalMediaFormatList & full_list)
       full_list += list [i];
   }
 }
+

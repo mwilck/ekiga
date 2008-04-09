@@ -182,7 +182,6 @@ class GnomeMeeting : public PProcess
   
   Ekiga::ServiceCore *service_core;
 
-  PThread *url_handler;
   PThread *audio_tester;
 
   PMutex at_access_mutex;

@@ -48,7 +48,6 @@
 #include "gmconf.h"
 #include "callbacks.h"
 #include "misc.h"
-#include "urlhandler.h"
 #include "accounts.h"
 #include "manager.h"
 

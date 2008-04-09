@@ -106,9 +106,7 @@ ekiga_SOURCES +=			\
 	endpoints/opal-gmconf-bridge.h	\
 	endpoints/opal-gmconf-bridge.cpp\
 	endpoints/opal-main.h		\
-	endpoints/opal-main.cpp		\
-	endpoints/urlhandler.h		\
-	endpoints/urlhandler.cpp		
+	endpoints/opal-main.cpp
 
 # Clients
 ekiga_SOURCES +=			\

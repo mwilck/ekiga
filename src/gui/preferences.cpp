@@ -46,7 +46,6 @@
 #include "sip.h"
 #include "ekiga.h"
 #include "misc.h"
-#include "urlhandler.h"
 #include "callbacks.h"
 
 #include <gmdialog.h>
@@ -671,7 +670,7 @@ gm_pw_init_h323_page (GtkWidget *prefs_window,
   entry =
     gnome_prefs_entry_new (subsection, _("Forward _URI:"), H323_KEY "forward_host", _("The host where calls should be forwarded if call forwarding is enabled"), 1, false);
   if (!strcmp (gtk_entry_get_text (GTK_ENTRY (entry)), ""))
-    gtk_entry_set_text (GTK_ENTRY (entry), GMURL ().GetDefaultURL ());
+    gtk_entry_set_text (GTK_ENTRY (entry), "h323:");
 
 
 
@@ -725,7 +724,7 @@ gm_pw_init_sip_page (GtkWidget *prefs_window,
   entry =
     gnome_prefs_entry_new (subsection, _("Forward _URI:"), SIP_KEY "forward_host", _("The host where calls should be forwarded if call forwarding is enabled"), 1, false);
   if (!strcmp (gtk_entry_get_text (GTK_ENTRY (entry)), ""))
-    gtk_entry_set_text (GTK_ENTRY (entry), GMURL ().GetDefaultURL ());
+    gtk_entry_set_text (GTK_ENTRY (entry), "sip:");
 
 
   /* Packing widget */                                                         

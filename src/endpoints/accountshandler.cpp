@@ -49,7 +49,6 @@
 #include "sip.h"
 #include "h323.h"
 #include "ekiga.h"
-#include "urlhandler.h"
 
 #include "misc.h"
 
