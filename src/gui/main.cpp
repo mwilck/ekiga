@@ -1122,7 +1122,6 @@ on_audioinputdevice_opened_cb (Ekiga::AudioInputManager & /* manager */,
   GTK_ADJUSTMENT (mw->adj_input_volume)->value = audioinput_config.volume;
   
   gtk_widget_queue_draw (GTK_WIDGET (mw->audio_input_volume_frame));
-  PTRACE(0, "input opened");
 }
 
 
@@ -1200,7 +1199,6 @@ on_audiooutputdevice_opened_cb (Ekiga::AudioOutputManager & /*manager*/,
   GTK_ADJUSTMENT (mw->adj_output_volume)->value = audiooutput_config.volume;
 
   gtk_widget_queue_draw (GTK_WIDGET (mw->audio_output_volume_frame));
-  PTRACE(0, "output opened");
 }
 
 
