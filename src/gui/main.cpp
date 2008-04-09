@@ -555,6 +555,14 @@ static gboolean main_window_focus_event_cb (GtkWidget *,
 					    GdkEventFocus *,
 					    gpointer);
 
+static void audio_volume_window_shown_cb (GtkWidget *widget,
+	                                  gpointer data);
+
+static void audio_volume_window_hidden_cb (GtkWidget *widget,
+	                                   gpointer data);
+
+
+
 /* 
  * Engine Callbacks 
  */
@@ -667,22 +675,6 @@ static gboolean on_stats_refresh_cb (gpointer self)
     g_free (msg);
   }
 
-  /*
-  gm_main_window_update_stats (GTK_WIDGET (self),
-                               stats.lost_packets_per,
-                               stats.late_packets_per,
-                               stats.out_of_order_packets_per,
-                               (int) (stats.jitter_buffer_size),
-                               stats.v_re_bandwidth,
-                               stats.v_tr_bandwidth,
-                               stats.a_re_bandwidth,
-                               stats.a_tr_bandwidth,
-                               stats.re_width,
-                               stats.re_height,
-                               stats.tr_width,
-                               stats.tr_height);
-                               */
-
   return true;
 }
 
@@ -719,17 +711,10 @@ static void on_established_call_cb (Ekiga::CallManager & /*manager*/,
 
   mw->timeout_id = g_timeout_add (1000, on_stats_refresh_cb, self);
 
-  Ekiga::AudioInputCore *audioinput_core = dynamic_cast<Ekiga::AudioInputCore *> (mw->core.get ("audioinput-core"));
   Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (mw->core.get ("audiooutput-core"));
 
   audiooutput_core->stop_play_event("incoming_call_sound");
   audiooutput_core->stop_play_event("ring_tone_sound");
-
-  audioinput_core->start_average_collection();
-  audiooutput_core->start_average_collection();
-  mw->levelmeter_timeout_id = g_timeout_add_full (G_PRIORITY_DEFAULT_IDLE, 50, on_signal_level_refresh_cb, self, NULL);
-
-  // G_PRIORITY_HIGH ?
 }
 
 
@@ -760,16 +745,10 @@ static void on_cleared_call_cb (Ekiga::CallManager & /*manager*/,
     g_source_remove (mw->timeout_id);
     mw->timeout_id = -1;
   }
-  g_source_remove (mw->levelmeter_timeout_id);
-
-  Ekiga::AudioInputCore *audioinput_core = dynamic_cast<Ekiga::AudioInputCore *> (mw->core.get ("audioinput-core"));
   Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (mw->core.get ("audiooutput-core"));
 
   audiooutput_core->stop_play_event("incoming_call_sound");
   audiooutput_core->stop_play_event("ring_tone_sound");
-
-  audioinput_core->stop_average_collection();
-  audiooutput_core->stop_average_collection();
 
   gm_main_window_clear_signal_levels(GTK_WIDGET (self));
 }
@@ -2015,6 +1994,12 @@ gm_mw_audio_settings_window_new (GtkWidget *main_window)
 		    "delete-event", 
 		    G_CALLBACK (delete_window_cb), NULL);
 
+  g_signal_connect (G_OBJECT (window), "show", 
+                    GTK_SIGNAL_FUNC (audio_volume_window_shown_cb), main_window);
+
+  g_signal_connect (G_OBJECT (window), "hide", 
+                    GTK_SIGNAL_FUNC (audio_volume_window_hidden_cb), main_window);
+
   return window;
 }
 
@@ -2581,6 +2566,38 @@ audio_volume_changed_cb (GtkAdjustment * /*adjustment*/,
   audioinput_core->set_volume((unsigned)GTK_ADJUSTMENT (mw->adj_input_volume)->value);
 }
 
+static void 
+audio_volume_window_shown_cb (GtkWidget * /*widget*/,
+	                      gpointer data)
+{
+  GmMainWindow *mw = NULL;
+  g_return_if_fail (data != NULL);
+  mw = gm_mw_get_mw (GTK_WIDGET (data));
+
+  Ekiga::AudioInputCore *audioinput_core = dynamic_cast<Ekiga::AudioInputCore *> (mw->core.get ("audioinput-core"));
+  Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (mw->core.get ("audiooutput-core"));
+
+  audioinput_core->start_average_collection();
+  audiooutput_core->start_average_collection();
+  mw->levelmeter_timeout_id = g_timeout_add_full (G_PRIORITY_DEFAULT_IDLE, 50, on_signal_level_refresh_cb, data, NULL);
+}
+
+
+static void 
+audio_volume_window_hidden_cb (GtkWidget * /*widget*/,
+                               gpointer data)
+{
+  GmMainWindow *mw = NULL;
+  g_return_if_fail (data != NULL);
+  mw = gm_mw_get_mw (GTK_WIDGET (data));
+
+  Ekiga::AudioInputCore *audioinput_core = dynamic_cast<Ekiga::AudioInputCore *> (mw->core.get ("audioinput-core"));
+  Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (mw->core.get ("audiooutput-core"));
+
+  g_source_remove (mw->levelmeter_timeout_id);
+  audioinput_core->stop_average_collection();
+  audiooutput_core->stop_average_collection();
+}
 
 static void 
 video_settings_changed_cb (GtkAdjustment * /*adjustment*/,
