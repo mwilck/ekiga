@@ -41,10 +41,6 @@
 #include "audioinput-core.h"
 #include "audioinput-manager.h"
 
-#define FALLBACK_DEVICE_TYPE "NULL"
-#define FALLBACK_DEVICE_SOURCE "NULL"
-#define FALLBACK_DEVICE_DEVICE "NULL"
-
 using namespace Ekiga;
 
 AudioPreviewManager::AudioPreviewManager (AudioInputCore& _audio_input_core, AudioOutputCore& _audio_output_core)
@@ -462,10 +458,10 @@ void AudioInputCore::calculate_average_level (const short *buffer, unsigned size
 
 void AudioInputCore::internal_set_fallback()
 {
-    PTRACE(1, "AudioInputCore\tFalling back to " << FALLBACK_DEVICE_TYPE << "/" << FALLBACK_DEVICE_SOURCE << "/" << FALLBACK_DEVICE_DEVICE);
-    current_device.type = FALLBACK_DEVICE_TYPE;
-    current_device.source = FALLBACK_DEVICE_SOURCE;
-    current_device.device = FALLBACK_DEVICE_DEVICE;
+    PTRACE(1, "AudioInputCore\tFalling back to " << AUDIO_INPUT_FALLBACK_DEVICE_TYPE << "/" << AUDIO_INPUT_FALLBACK_DEVICE_SOURCE << "/" << AUDIO_INPUT_FALLBACK_DEVICE_DEVICE);
+    current_device.type = AUDIO_INPUT_FALLBACK_DEVICE_TYPE;
+    current_device.source = AUDIO_INPUT_FALLBACK_DEVICE_SOURCE;
+    current_device.device = AUDIO_INPUT_FALLBACK_DEVICE_DEVICE;
     internal_set_device (current_device);
 }
 

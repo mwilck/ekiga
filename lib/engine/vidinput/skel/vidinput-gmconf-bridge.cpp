@@ -53,7 +53,6 @@ VidInputCoreConfBridge::VidInputCoreConfBridge (Ekiga::Service & _service)
   keys.push_back (VIDEO_DEVICES_KEY "size"); 
   keys.push_back (VIDEO_CODECS_KEY "max_frame_rate"); 
   keys.push_back (VIDEO_DEVICES_KEY "input_device"); 
-  keys.push_back (VIDEO_DEVICES_KEY "plugin"); 
   keys.push_back (VIDEO_DEVICES_KEY "channel"); 
   keys.push_back (VIDEO_DEVICES_KEY "format"); 
   keys.push_back (VIDEO_DEVICES_KEY "image"); 
@@ -61,7 +60,7 @@ VidInputCoreConfBridge::VidInputCoreConfBridge (Ekiga::Service & _service)
   load (keys);
 }
 
-void VidInputCoreConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
+void VidInputCoreConfBridge::on_property_changed (std::string key, GmConfEntry * /*entry*/)
 {
   VidInputCore & vidinput_core = (VidInputCore &) service;
 
@@ -70,21 +69,20 @@ void VidInputCoreConfBridge::on_property_changed (std::string key, GmConfEntry *
 
     PTRACE(4, "VidInputCoreConfBridge\tUpdating preview size and fps");
 
-    if ( (gm_conf_get_int (VIDEO_DEVICES_KEY "size") < 0 ) || 
-         (gm_conf_get_int (VIDEO_DEVICES_KEY "size") >= NB_VIDEO_SIZES )) {
+    unsigned size = gm_conf_get_int (VIDEO_DEVICES_KEY "size");
+    if (size >= NB_VIDEO_SIZES) {
       PTRACE(1, "VidInputCoreConfBridge\t" << VIDEO_DEVICES_KEY "size" << " out of range, ajusting to 0");
-      gm_conf_set_int (VIDEO_DEVICES_KEY "size", 0);
+      size = 0;
     }
 
-    if ( (gm_conf_get_int (VIDEO_DEVICES_KEY "max_frame_rate") < 0 ) || 
-         (gm_conf_get_int (VIDEO_DEVICES_KEY "max_frame_rate") > 30)) {
+    unsigned max_frame_rate = gm_conf_get_int (VIDEO_DEVICES_KEY "max_frame_rate");
+    if ( (max_frame_rate < 1) || (max_frame_rate > 30) ) {
       PTRACE(1, "VidInputCoreConfBridge\t" << VIDEO_DEVICES_KEY "max_frame_rate" << " out of range, ajusting to 30");
-      gm_conf_set_int (VIDEO_DEVICES_KEY "max_frame_rate", 30);
+      max_frame_rate = 30;
     }
-
-    vidinput_core.set_preview_config (VideoSizes[gm_conf_get_int (VIDEO_DEVICES_KEY "size")].width,
-                                      VideoSizes[gm_conf_get_int (VIDEO_DEVICES_KEY "size")].height,
-                                      gm_conf_get_int (VIDEO_CODECS_KEY "max_frame_rate"));
+    vidinput_core.set_preview_config (VideoSizes[size].width,
+                                      VideoSizes[size].height,
+                                      max_frame_rate);
   }
   else if ( (key == VIDEO_DEVICES_KEY "input_device") ||
             (key == VIDEO_DEVICES_KEY "channel") ||
@@ -92,18 +90,39 @@ void VidInputCoreConfBridge::on_property_changed (std::string key, GmConfEntry *
 
     PTRACE(4, "VidInputCoreConfBridge\tUpdating device");
 
-    std::string config_string = gm_conf_get_string (VIDEO_DEVICES_KEY "input_device");
     VidInputDevice vidinput_device;
-    unsigned type_sep = config_string.find_first_of("/");
-    unsigned source_sep = config_string.find_first_of("/", type_sep + 1);
+    if (gm_conf_get_string (VIDEO_DEVICES_KEY "input_device") == NULL) {
+      PTRACE(1, "VidInputCoreConfBridge\t" << VIDEO_DEVICES_KEY "input_device" << " is NULL");
+    }
+    else {
+      std::string config_string = gm_conf_get_string (VIDEO_DEVICES_KEY "input_device");
+  
+      unsigned type_sep = config_string.find_first_of("/");
+      unsigned source_sep = config_string.find_first_of("/", type_sep + 1);
 
-    vidinput_device.type   = config_string.substr ( 0, type_sep );
-    vidinput_device.source = config_string.substr ( type_sep + 1, source_sep - type_sep - 1);
-    vidinput_device.device = config_string.substr ( source_sep + 1, config_string.size() - source_sep );
+      vidinput_device.type   = config_string.substr ( 0, type_sep );
+      vidinput_device.source = config_string.substr ( type_sep + 1, source_sep - type_sep - 1);
+      vidinput_device.device = config_string.substr ( source_sep + 1, config_string.size() - source_sep );
+    }
+
+    if ( (vidinput_device.type == "" )   ||
+         (vidinput_device.source == "")  ||
+         (vidinput_device.device == "" ) ) {
+      PTRACE(1, "VidinputCore\tTried to set malformed device");
+      vidinput_device.type = VIDEO_INPUT_FALLBACK_DEVICE_TYPE;
+      vidinput_device.source = VIDEO_INPUT_FALLBACK_DEVICE_SOURCE;
+      vidinput_device.device = VIDEO_INPUT_FALLBACK_DEVICE_DEVICE;
+    }
+
+    unsigned video_format = gm_conf_get_int (VIDEO_DEVICES_KEY "format");
+    if (video_format >= NumVideoFormats) {
+      PTRACE(1, "VidInputCoreConfBridge\t" << VIDEO_DEVICES_KEY "format" << " out of range, ajusting to 3");
+      video_format = 3;
+    }
 
     vidinput_core.set_vidinput_device (vidinput_device,
                                        gm_conf_get_int (VIDEO_DEVICES_KEY "channel"),
-                                       (VideoFormat) gm_conf_get_int (VIDEO_DEVICES_KEY "format"));
+                                       (VideoFormat) video_format);
   }
   else if (key == VIDEO_DEVICES_KEY "enable_preview") {
 

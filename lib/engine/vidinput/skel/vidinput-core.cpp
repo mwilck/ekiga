@@ -42,10 +42,6 @@
 #include "vidinput-core.h"
 #include "vidinput-manager.h"
 
-#define FALLBACK_DEVICE_TYPE "Moving Logo"
-#define FALLBACK_DEVICE_SOURCE "Moving Logo"
-#define FALLBACK_DEVICE_DEVICE "Moving Logo"
-
 using namespace Ekiga;
 
 PreviewManager::PreviewManager (VidInputCore& _vidinput_core, DisplayCore& _display_core)
@@ -541,10 +537,10 @@ void VidInputCore::internal_close()
 
 void VidInputCore::internal_set_fallback ()
 {
-  PTRACE(3, "VidInputCore\tFalling back to " << FALLBACK_DEVICE_TYPE << "/" << FALLBACK_DEVICE_SOURCE << "/" << FALLBACK_DEVICE_DEVICE);
-  current_device.type = FALLBACK_DEVICE_TYPE;
-  current_device.source = FALLBACK_DEVICE_SOURCE;
-  current_device.device = FALLBACK_DEVICE_DEVICE;
+  PTRACE(3, "VidInputCore\tFalling back to " << VIDEO_INPUT_FALLBACK_DEVICE_TYPE << "/" << VIDEO_INPUT_FALLBACK_DEVICE_SOURCE << "/" << VIDEO_INPUT_FALLBACK_DEVICE_DEVICE);
+  current_device.type = VIDEO_INPUT_FALLBACK_DEVICE_TYPE;
+  current_device.source = VIDEO_INPUT_FALLBACK_DEVICE_SOURCE;
+  current_device.device = VIDEO_INPUT_FALLBACK_DEVICE_DEVICE;
 
   internal_set_device(current_device, current_channel, current_format);
 }

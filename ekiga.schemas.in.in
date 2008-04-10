@@ -90,6 +90,17 @@
 	<long>The image to transmit if "Picture" is selected as video plugin or if the opening of the device fails. Leave blank to use the default Ekiga logo.</long>
       </locale>
     </schema>
+    <schema>
+      <key>/schemas/apps/@PACKAGE_NAME@/devices/video/max_frame_rate</key>
+      <applyto>/apps/@PACKAGE_NAME@/devices/video/max_frame_rate</applyto>
+      <owner>Ekiga</owner>
+      <type>int</type>
+      <default>30</default>
+      <locale name="C">
+	<short>Frame Rate</short>
+	<long>The maximum transmitted frame rate in frames/s. This rate may not be reached in case a minimum quality was configure via a TSTO value smaller than 31 and the bitrate selected is not sufficient to support this minimum quality</long>
+      </locale>
+    </schema>
     <schema>	
       <key>/schemas/apps/@PACKAGE_NAME@/devices/audio/lid_output_device_type</key>
       <applyto>/apps/@PACKAGE_NAME@/devices/audio/lid_output_device_type</applyto>
@@ -1105,17 +1116,6 @@
       <locale name="C">
 	<short>Maximum RX video bitrate</short>
 	<long>The maximum RX video bitrate in kbit/s. This value will be signaled to the peer endpoint that can adjust (if it supports it) its TX bitrate if it is above the signaled value</long>
-      </locale>
-    </schema>
-    <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/codecs/video/max_frame_rate</key>
-      <applyto>/apps/@PACKAGE_NAME@/codecs/video/max_frame_rate</applyto>
-      <owner>Ekiga</owner>
-      <type>int</type>
-      <default>30</default>
-      <locale name="C">
-	<short>Frame Rate</short>
-	<long>The maximum transmitted frame rate in frames/s. This rate may not be reached in case a minimum quality was configure via a TSTO value smaller than 31 and the bitrate selected is not sufficient to support this minimum quality</long>
       </locale>
     </schema>
     <schema>

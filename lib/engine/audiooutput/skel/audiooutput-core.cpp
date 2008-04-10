@@ -38,10 +38,6 @@
 #include <algorithm>
 #include <math.h>
 
-#define FALLBACK_DEVICE_TYPE "NULL"
-#define FALLBACK_DEVICE_SOURCE "NULL"
-#define FALLBACK_DEVICE_DEVICE "NULL"
-
 using namespace Ekiga;
 AudioOutputCore::AudioOutputCore (Ekiga::Runtime & _runtime)
 :  runtime (_runtime),
@@ -448,10 +444,10 @@ void AudioOutputCore::set_volume (AudioOutputPrimarySecondary primarySecondary, 
 
 void AudioOutputCore::internal_set_primary_fallback()
 {
-  PTRACE(1, "AudioOutputCore\tFalling back to " << FALLBACK_DEVICE_TYPE << "/" << FALLBACK_DEVICE_SOURCE << "/" << FALLBACK_DEVICE_DEVICE);
-  current_device[primary].type = FALLBACK_DEVICE_TYPE;
-  current_device[primary].source = FALLBACK_DEVICE_SOURCE;
-  current_device[primary].device = FALLBACK_DEVICE_DEVICE;
+  PTRACE(1, "AudioOutputCore\tFalling back to " << AUDIO_OUTPUT_FALLBACK_DEVICE_TYPE << "/" << AUDIO_OUTPUT_FALLBACK_DEVICE_SOURCE << "/" << AUDIO_OUTPUT_FALLBACK_DEVICE_DEVICE);
+  current_device[primary].type = AUDIO_OUTPUT_FALLBACK_DEVICE_TYPE;
+  current_device[primary].source = AUDIO_OUTPUT_FALLBACK_DEVICE_SOURCE;
+  current_device[primary].device = AUDIO_OUTPUT_FALLBACK_DEVICE_DEVICE;
   internal_set_device(primary, current_device[primary]);
 }
 

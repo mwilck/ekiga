@@ -51,6 +51,10 @@
 #include "ptbuildopts.h"
 #include "ptlib.h"
 
+#define VIDEO_INPUT_FALLBACK_DEVICE_TYPE "Moving Logo"
+#define VIDEO_INPUT_FALLBACK_DEVICE_SOURCE "Moving Logo"
+#define VIDEO_INPUT_FALLBACK_DEVICE_DEVICE "Moving Logo"
+
 namespace Ekiga
 {
   typedef struct DeviceConfig {

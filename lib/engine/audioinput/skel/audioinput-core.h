@@ -51,6 +51,10 @@
 #include "ptbuildopts.h"
 #include "ptlib.h"
 
+#define AUDIO_INPUT_FALLBACK_DEVICE_TYPE "NULL"
+#define AUDIO_INPUT_FALLBACK_DEVICE_SOURCE "NULL"
+#define AUDIO_INPUT_FALLBACK_DEVICE_DEVICE "NULL"
+
 namespace Ekiga
 {
   typedef struct AudioDeviceConfig {

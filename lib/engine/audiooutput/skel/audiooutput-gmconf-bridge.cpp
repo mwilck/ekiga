@@ -53,7 +53,6 @@ AudioOutputCoreConfBridge::AudioOutputCoreConfBridge (Ekiga::Service & _service)
 
   keys.push_back (AUDIO_DEVICES_KEY "output_device"); 
   keys.push_back (SOUND_EVENTS_KEY "output_device"); 
-  keys.push_back (AUDIO_DEVICES_KEY "plugin"); 
   keys.push_back (SOUND_EVENTS_KEY "busy_tone_sound"); 
   keys.push_back (SOUND_EVENTS_KEY "incoming_call_sound"); 
   keys.push_back (SOUND_EVENTS_KEY "new_message_sound"); 
@@ -79,33 +78,72 @@ void AudioOutputCoreConfBridge::on_property_changed (std::string key, GmConfEntr
   if (key == AUDIO_DEVICES_KEY "output_device") {
 
     PTRACE(4, "AudioOutputCoreConfBridge\tUpdating device");
-    std::string config_string = gm_conf_entry_get_string (entry);
-    AudioOutputDevice audiooutput_device;
-    unsigned type_sep = config_string.find_first_of("/");
-    unsigned source_sep = config_string.find_first_of("/", type_sep + 1);
 
-    audiooutput_device.type   = config_string.substr ( 0, type_sep );
-    audiooutput_device.source = config_string.substr ( type_sep + 1, source_sep - type_sep - 1);
-    audiooutput_device.device = config_string.substr ( source_sep + 1, config_string.size() - source_sep );
+    AudioOutputDevice audiooutput_device;
+
+    if (gm_conf_entry_get_string (entry) == NULL) {
+      PTRACE(1, "AudioOutputCoreConfBridge\t" << AUDIO_DEVICES_KEY "output_device" << " is NULL");
+    }
+    else {
+      std::string config_string = gm_conf_entry_get_string (entry);
+      unsigned type_sep = config_string.find_first_of("/");
+      unsigned source_sep = config_string.find_first_of("/", type_sep + 1);
+
+      audiooutput_device.type   = config_string.substr ( 0, type_sep );
+      audiooutput_device.source = config_string.substr ( type_sep + 1, source_sep - type_sep - 1);
+      audiooutput_device.device = config_string.substr ( source_sep + 1, config_string.size() - source_sep );  
+    }
+  
+    if ( (audiooutput_device.type == "" )   ||
+         (audiooutput_device.source == "")  ||
+         (audiooutput_device.device == "" ) ) {
+      PTRACE(1, "AudioOutputCore\tTried to set malformed device");
+      audiooutput_device.type = AUDIO_OUTPUT_FALLBACK_DEVICE_TYPE;
+      audiooutput_device.source = AUDIO_OUTPUT_FALLBACK_DEVICE_SOURCE;
+      audiooutput_device.device = AUDIO_OUTPUT_FALLBACK_DEVICE_DEVICE;
+    }
+
     audioinput_core.set_audiooutput_device (primary, audiooutput_device);
   }
 
   if (key == SOUND_EVENTS_KEY "output_device") {
 
     PTRACE(4, "AudioOutputCoreConfBridge\tUpdating device");
-    std::string config_string = gm_conf_entry_get_string (entry);
     AudioOutputDevice audiooutput_device;
-    unsigned type_sep = config_string.find_first_of("/");
-    unsigned source_sep = config_string.find_first_of("/", type_sep + 1);
 
-    audiooutput_device.type   = config_string.substr ( 0, type_sep );
-    audiooutput_device.source = config_string.substr ( type_sep + 1, source_sep - type_sep - 1);
-    audiooutput_device.device = config_string.substr ( source_sep + 1, config_string.size() - source_sep );
+    if (gm_conf_entry_get_string (entry) == NULL) {
+      PTRACE(1, "AudioOutputCoreConfBridge\t" << AUDIO_DEVICES_KEY "output_device" << " is NULL");
+    }
+    else {
+      std::string config_string = gm_conf_entry_get_string (entry);
+
+      unsigned type_sep = config_string.find_first_of("/");
+      unsigned source_sep = config_string.find_first_of("/", type_sep + 1);
+
+      audiooutput_device.type   = config_string.substr ( 0, type_sep );
+      audiooutput_device.source = config_string.substr ( type_sep + 1, source_sep - type_sep - 1);
+      audiooutput_device.device = config_string.substr ( source_sep + 1, config_string.size() - source_sep );
+    }
+
+    if ( (audiooutput_device.type == "" )   ||
+         (audiooutput_device.source == "")  ||
+         (audiooutput_device.device == "" ) ) {
+      PTRACE(1, "AudioOutputCore\tTried to set malformed device");
+      audiooutput_device.type = AUDIO_OUTPUT_FALLBACK_DEVICE_TYPE;
+      audiooutput_device.source = AUDIO_OUTPUT_FALLBACK_DEVICE_SOURCE;
+      audiooutput_device.device = AUDIO_OUTPUT_FALLBACK_DEVICE_DEVICE;
+    }
     audioinput_core.set_audiooutput_device (secondary, audiooutput_device);
   }
 
   if ( (key == SOUND_EVENTS_KEY "busy_tone_sound") ||
        (key == SOUND_EVENTS_KEY "enable_busy_tone_sound") ) {
+
+    if (gm_conf_get_string (SOUND_EVENTS_KEY "busy_tone_sound") == NULL) {
+      PTRACE(1, "AudioOutputCoreConfBridge\t" << SOUND_EVENTS_KEY "busy_tone_sound" << " is NULL");
+      return;
+    }
+
     name = "busy_tone_sound";
     file_name = gm_conf_get_string (SOUND_EVENTS_KEY "busy_tone_sound");
     enabled = gm_conf_get_bool (SOUND_EVENTS_KEY "enable_busy_tone_sound");
@@ -114,6 +152,12 @@ void AudioOutputCoreConfBridge::on_property_changed (std::string key, GmConfEntr
 
   if ( (key == SOUND_EVENTS_KEY "incoming_call_sound") ||
        (key == SOUND_EVENTS_KEY "enable_incoming_call_sound") ) {
+
+    if (gm_conf_get_string (SOUND_EVENTS_KEY "incoming_call_sound") == NULL) {
+      PTRACE(1, "AudioOutputCoreConfBridge\t" <<  SOUND_EVENTS_KEY "incoming_call_sound" << " is NULL");
+      return;
+    }
+
     name = "incoming_call_sound";
     file_name = gm_conf_get_string (SOUND_EVENTS_KEY "incoming_call_sound");
     enabled = gm_conf_get_bool (SOUND_EVENTS_KEY "enable_incoming_call_sound");
@@ -122,6 +166,12 @@ void AudioOutputCoreConfBridge::on_property_changed (std::string key, GmConfEntr
 
   if ( (key == SOUND_EVENTS_KEY "new_message_sound") ||
        (key == SOUND_EVENTS_KEY "enable_new_message_sound") ) {
+
+    if (gm_conf_get_string (SOUND_EVENTS_KEY "new_message_sound") == NULL) {
+      PTRACE(1, "AudioOutputCoreConfBridge\t" <<  SOUND_EVENTS_KEY "new_message_sound" << " is NULL");
+      return;
+    }
+
     name = "new_message_sound";
     file_name = gm_conf_get_string (SOUND_EVENTS_KEY "new_message_sound");
     enabled = gm_conf_get_bool (SOUND_EVENTS_KEY "enable_new_message_sound");
@@ -131,6 +181,12 @@ void AudioOutputCoreConfBridge::on_property_changed (std::string key, GmConfEntr
 
   if ( (key == SOUND_EVENTS_KEY "new_voicemail_sound") ||
        (key == SOUND_EVENTS_KEY "enable_new_voicemail_sound") ) {
+
+    if (gm_conf_get_string (SOUND_EVENTS_KEY "new_voicemail_sound") == NULL) {
+      PTRACE(1, "AudioOutputCoreConfBridge\t" <<  SOUND_EVENTS_KEY "new_voicemail_sound" << " is NULL");
+      return;
+    }
+
     name = "new_voicemail_sound";
     file_name = gm_conf_get_string (SOUND_EVENTS_KEY "new_voicemail_sound");
     enabled = gm_conf_get_bool (SOUND_EVENTS_KEY "enable_new_voicemail_sound");
@@ -139,6 +195,12 @@ void AudioOutputCoreConfBridge::on_property_changed (std::string key, GmConfEntr
 
   if ( (key == SOUND_EVENTS_KEY "ring_tone_sound") ||
        (key == SOUND_EVENTS_KEY "enable_ring_tone_sound") ) {
+
+    if (gm_conf_get_string (SOUND_EVENTS_KEY "ring_tone_sound") == NULL) {
+      PTRACE(1, "AudioOutputCoreConfBridge\t" <<  SOUND_EVENTS_KEY "ring_tone_sound" << " is NULL");
+      return;
+    }
+
     name = "ring_tone_sound";
     file_name = gm_conf_get_string (SOUND_EVENTS_KEY "ring_tone_sound");
     enabled = gm_conf_get_bool (SOUND_EVENTS_KEY "enable_ring_tone_sound");
