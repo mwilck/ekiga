@@ -38,7 +38,7 @@
 
 #include "xwindow.h"
 
-#include <object.h>
+#include <ptlib/object.h>
 
 extern "C" {
 #include <pixops.h>

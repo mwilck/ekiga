@@ -39,8 +39,8 @@
 #include <stdint.h>
 #include "config.h"
 
-#include <videoio.h>
-#include <vconvert.h>
+#include <ptlib/videoio.h>
+#include <ptlib/vconvert.h>
 
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
