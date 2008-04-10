@@ -216,6 +216,14 @@ void gnome_prefs_string_option_menu_update (GtkWidget *,
 					    const gchar *);
 
 
+
+void gnome_prefs_string_option_menu_add (GtkWidget *option_menu,
+	    			         const gchar *option);
+
+void gnome_prefs_string_option_menu_remove (GtkWidget *option_menu,
+	 			            const gchar *option);
+
+
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Creates a subsection inside a section of a prefs window.
  *                 The parameters are the prefs window, the section of the

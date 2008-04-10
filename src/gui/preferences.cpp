@@ -74,6 +74,7 @@ typedef struct _GmPreferencesWindow
   GtkWidget *video_device;
   GtkWidget *iface;
   Ekiga::ServiceCore *core;
+  std::vector<sigc::connection> connections;
 } GmPreferencesWindow;
 
 #define GM_PREFERENCES_WINDOW(x) (GmPreferencesWindow *) (x)
@@ -1334,11 +1335,27 @@ audioev_filename_browse_play_cb (GtkWidget* /* playbutton */,
   gchar* file_name = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (data));
   std::string file_name_string = file_name;
   audiooutput_core->play_file(file_name_string);
-//FIXME: play_wav
 
    g_free (file_name);
 }
 
+void on_vidinputdevice_added_cb (const Ekiga::VidInputDevice & vidinput_device, GtkWidget *prefs_window)
+{
+  GmPreferencesWindow *pw = NULL;
+  g_return_if_fail (prefs_window != NULL);
+  pw = gm_pw_get_pw (prefs_window);
+  std::string device = vidinput_device.type + "/" + vidinput_device.source + "/" + vidinput_device.device;
+  gnome_prefs_string_option_menu_add (pw->video_device, device.c_str());
+}
+
+void on_vidinputdevice_removed_cb (const Ekiga::VidInputDevice & vidinput_device, GtkWidget *prefs_window)
+{
+  GmPreferencesWindow *pw = NULL;
+  g_return_if_fail (prefs_window != NULL);
+  pw = gm_pw_get_pw (prefs_window);
+  std::string device = vidinput_device.type + "/" + vidinput_device.source + "/" + vidinput_device.device;
+  gnome_prefs_string_option_menu_remove(pw->video_device, device.c_str());
+}
 
 
 /* Public functions */
@@ -1557,6 +1574,13 @@ gm_prefs_window_new (Ekiga::ServiceCore *core)
   g_signal_connect (GTK_OBJECT (window), 
 		    "delete-event", 
 		    G_CALLBACK (delete_window_cb), NULL);
+
+  sigc::connection conn;
+  Ekiga::VidInputCore *vidinput_core = dynamic_cast<Ekiga::VidInputCore *> (core->get ("vidinput-core"));
+  conn = vidinput_core->vidinputdevice_added.connect (sigc::bind (sigc::ptr_fun (on_vidinputdevice_added_cb), window));
+  pw->connections.push_back (conn);
+  conn = vidinput_core->vidinputdevice_removed.connect (sigc::bind (sigc::ptr_fun (on_vidinputdevice_removed_cb), window));
+  pw->connections.push_back (conn);
 
   return window;
 }
