@@ -653,13 +653,15 @@ status_menu_clear_status_message_dialog_run (StatusMenu *self)
 
         gtk_tree_model_get (GTK_TREE_MODEL (self->priv->list_store), &iter,
                             COL_ICON, &pixbuf, 
-                            COL_MESSAGE, &message, -1);
+                            COL_MESSAGE, &message,
+			    -1);
 
         gtk_list_store_append (GTK_LIST_STORE (list_store), &liter);
         gtk_list_store_set (GTK_LIST_STORE (list_store), &liter, 
-                            0, pixbuf, 
-                            1, message,
-                            2, i, -1);
+                            COL_ICON, pixbuf, 
+                            COL_MESSAGE, message,
+                            COL_MESSAGE_TYPE, i,
+			    -1);
         g_free (message);
         g_object_unref (pixbuf);
       }
