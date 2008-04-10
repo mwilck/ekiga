@@ -184,16 +184,6 @@ class GMManager:
   void Init ();
 
   
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Returns the local or remote OpalConnection for the 
-   * 		     given call. If there are several remote connections,
-   * 		     the first one is returned.
-   * PRE          :  /
-   */
-  PSafePtr<OpalConnection> GetConnection (PSafePtr<OpalCall>, 
-					  bool);
-
-
   OpalCall *CreateCall ();
 
   
@@ -227,14 +217,6 @@ class GMManager:
   
 
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Sets the User Input Mode following the
-   *                 configuration options for each of the endpoints. 
-   * PRE          :  /
-   */
-  void SetUserInputMode ();
-
-  
-  /* DESCRIPTION  :  /
    * BEHAVIOR     :  Returns the H.323 endpoint.
    * PRE          :  /
    */
@@ -246,24 +228,6 @@ class GMManager:
    * PRE          :  /
    */
   GMSIPEndpoint *GetSIPEndpoint ();
-
-
-  /* DESCRIPTION  : /
-   * BEHAVIOR     : Return the current listener address of the endpoint. 
-   * 		    for the given protocol. (default sip).
-   * PRE          : /
-   */
-  PString GetCurrentAddress (PString protocol = PString::Empty ());
-  
-  
-  /* DESCRIPTION  : /
-   * BEHAVIOR     : Returns the default url for the given protocol (if any).
-   * 		    The returned url is the best guess. It is in general more
-   * 		    accurate with SIP than with H.323. If there is no default
-   * 		    account configured and enabled, the IP address is returned.
-   * PRE          : Non-empty protocol.
-   */
-  PString GetURL (PString);
 
 
 #ifdef HAVE_AVAHI

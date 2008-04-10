@@ -700,13 +700,6 @@ void GMManager::set_codecs (Ekiga::CodecList & _codecs)
 }
 
 
-void
-GMManager::SetUserInputMode ()
-{
-  h323EP->SetUserInputMode ();
-}
-
-
 GMH323Endpoint *
 GMManager::GetH323Endpoint ()
 {
@@ -718,57 +711,6 @@ GMSIPEndpoint *
 GMManager::GetSIPEndpoint ()
 {
   return sipEP;
-}
-
-
-PString
-GMManager::GetCurrentAddress (PString protocol)
-{
-  OpalEndPoint *ep = NULL;
-
-  PIPSocket::Address ip(PIPSocket::GetDefaultIpAny());
-  WORD port = 0;
-
-  ep = FindEndPoint (protocol.IsEmpty () ? "sip" : protocol);
-
-  if (!ep)
-    return PString ();
-
-  if (!ep->GetListeners ().IsEmpty ())
-    ep->GetListeners()[0].GetLocalAddress().GetIpAndPort (ip, port);
-
-  return ip.AsString () + ":" + PString (port);
-}
-
-
-PString
-GMManager::GetURL (PString protocol)
-{
-  GmAccount *account = NULL;
-  PString url;
-  gchar *account_url = NULL;
-
-  if (protocol.IsEmpty ())
-    return PString ();
-
-  account = gnomemeeting_get_default_account ((gchar *)(const char *) protocol);
-
-  if (account) {
-
-    if (account->enabled)
-      account_url = g_strdup_printf ("%s:%s@%s", (const char *) protocol, 
-                                     account->username, account->host);
-    gm_account_delete (account);
-  }
-
-  if (!account_url)
-    account_url = g_strdup_printf ("%s:%s", (const char *) protocol,
-                                   (const char *) GetCurrentAddress (protocol));
-
-  url = account_url;
-  g_free (account_url);
-
-  return url;
 }
 
 
@@ -867,28 +809,6 @@ GMManager::RemoveSTUNClient ()
   SetSTUNServer (PString ());
 
   sc = NULL;
-}
-
-
-
-PSafePtr<OpalConnection> GMManager::GetConnection (PSafePtr<OpalCall> call, 
-                                                   bool is_remote)
-{
-  PSafePtr<OpalConnection> connection = NULL;
-
-  if (call == NULL)
-    return connection;
-
-  connection = call->GetConnection (is_remote ? 1:0);
-  /* is_remote => SIP or H.323 connection
-   * !is_remote => PCSS Connection
-   */
-  if (!connection
-      || (is_remote && PIsDescendant(&(*connection), OpalPCSSConnection))
-      || (!is_remote && !PIsDescendant(&(*connection), OpalPCSSConnection))) 
-    connection = call->GetConnection (is_remote ? 0:1);
-
-  return connection;
 }
 
 
