@@ -38,7 +38,7 @@
 
 #include "xvwindow.h"
 
-#include <object.h>
+#include <ptlib/object.h>
 
 #ifdef HAVE_SHM
 #include <sys/shm.h>
