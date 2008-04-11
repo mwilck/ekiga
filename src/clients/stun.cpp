@@ -316,41 +316,13 @@ void GMStunClient::Main ()
     gnomemeeting_threads_leave ();
   }
 
-  /* Are we listening on a public IP address? */
-  gnomemeeting_threads_enter ();
-  ip_detector = gm_conf_get_string (NAT_KEY "public_ip_detector");
-  gnomemeeting_threads_leave ();
-
-  if (ip_detector != NULL
-      && web_client.GetTextDocument (ip_detector, html)) {
-
-    if (!html.IsEmpty ()) {
-
-      PRegularExpression regex ("[0-9]*[.][0-9]*[.][0-9]*[.][0-9]*");
-      PINDEX len;
-
-      if (html.FindRegEx (regex, pos, len)) 
-	public_ip = html.Mid (pos,len);
-    }
-  }
-
-  listener_ip = ep.GetCurrentAddress ();
-  pos = listener_ip.Find (":");
-  if (pos != P_MAX_INDEX)
-    listener_ip = listener_ip.Left (pos);
-  has_nat = (listener_ip != public_ip);
-  g_free (ip_detector);
-
   /* Set the STUN server for the endpoint */
-  if (has_nat) {
+  ((OpalManager *) &ep)->SetSTUNServer (stun_host);
 
-    ((OpalManager *) &ep)->SetSTUNServer (stun_host);
-
-    stun = ep.GetSTUN ();
-    // TODO to improve heh
-    ep.GetSIPEndpoint()->start_listening ();
-    ep.GetH323Endpoint()->start_listening ();
-  }
+  stun = ep.GetSTUN ();
+  // TODO to improve heh
+  ep.GetSIPEndpoint()->start_listening ();
+  ep.GetH323Endpoint()->start_listening ();
 
   if (stun) 
     nat_type_index = stun->GetNatType ();
