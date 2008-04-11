@@ -78,6 +78,7 @@ struct _EkigaAssistantPrivate
   GtkWidget *video_device;
 
   GtkListStore *summary_model;
+  std::vector<sigc::connection> connections;
 };
 
 /* presenting the network connectoin type to the user */
@@ -161,6 +162,78 @@ update_combo_box (GtkComboBox         *combo_box,
   }
 
   gtk_combo_box_set_active(combo_box, selected);
+}
+
+static void
+add_combo_box (GtkComboBox         *combo_box,
+               const gchar         *option)
+{
+  g_return_if_fail (option != NULL);
+  gtk_combo_box_append_text (combo_box, option);
+}
+
+static void
+remove_combo_box (GtkComboBox         *combo_box,
+                  const gchar         *option)
+{
+  GtkTreeModel *model = NULL;
+  GtkTreeIter iter;
+
+  g_return_if_fail (option != NULL);
+  model = gtk_combo_box_get_model (combo_box);
+  if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (model), &iter)) {
+    do {
+      gchar *value_string = NULL;
+      GValue value = { 0, };
+      gtk_tree_model_get_value (GTK_TREE_MODEL (model), &iter, 0, &value);
+      value_string = (gchar *) g_value_get_string (&value);
+      if (g_ascii_strcasecmp  (value_string, option) == 0) {
+        gtk_list_store_remove (GTK_LIST_STORE (model), &iter);
+        g_value_unset(&value);
+        break;
+      }
+      g_value_unset(&value);
+    } while (gtk_tree_model_iter_next(GTK_TREE_MODEL (model), &iter));
+  }
+}
+
+void on_vidinputdevice_added_cb (const Ekiga::VidInputDevice & vidinput_device, EkigaAssistant *assistant)
+{
+  std::string device = vidinput_device.type + "/" + vidinput_device.source + "/" + vidinput_device.device;
+  add_combo_box (GTK_COMBO_BOX (assistant->priv->video_device), device.c_str());
+}
+
+void on_vidinputdevice_removed_cb (const Ekiga::VidInputDevice & vidinput_device, EkigaAssistant *assistant)
+{
+
+  std::string device = vidinput_device.type + "/" + vidinput_device.source + "/" + vidinput_device.device;
+  remove_combo_box (GTK_COMBO_BOX (assistant->priv->video_device),  device.c_str());
+}
+
+void on_audioinputdevice_added_cb (const Ekiga::AudioInputDevice & audioinput_device, EkigaAssistant *assistant)
+{
+  std::string device = audioinput_device.type + "/" + audioinput_device.source + "/" + audioinput_device.device;
+  add_combo_box (GTK_COMBO_BOX (assistant->priv->audio_recorder), device.c_str());
+}
+
+void on_audioinputdevice_removed_cb (const Ekiga::AudioInputDevice & audioinput_device, EkigaAssistant *assistant)
+{
+  std::string device = audioinput_device.type + "/" + audioinput_device.source + "/" + audioinput_device.device;
+  remove_combo_box (GTK_COMBO_BOX (assistant->priv->audio_recorder),  device.c_str());
+}
+
+void on_audiooutputdevice_added_cb (const Ekiga::AudioOutputDevice & audiooutput_device, EkigaAssistant *assistant)
+{
+  std::string device = audiooutput_device.type + "/" + audiooutput_device.source + "/" + audiooutput_device.device;
+  add_combo_box (GTK_COMBO_BOX (assistant->priv->audio_player), device.c_str());
+  add_combo_box (GTK_COMBO_BOX (assistant->priv->audio_ringer), device.c_str());
+}
+
+void on_audiooutputdevice_removed_cb (const Ekiga::AudioOutputDevice & audiooutput_device, EkigaAssistant *assistant)
+{
+  std::string device = audiooutput_device.type + "/" + audiooutput_device.source + "/" + audiooutput_device.device;
+  remove_combo_box (GTK_COMBO_BOX (assistant->priv->audio_player),  device.c_str());
+  remove_combo_box (GTK_COMBO_BOX (assistant->priv->audio_ringer),  device.c_str());
 }
 
 
@@ -1207,6 +1280,26 @@ ekiga_assistant_new (Ekiga::ServiceCore *core)
   /* FIXME: move this into the caller */
   g_signal_connect (assistant, "cancel",
                     G_CALLBACK (gtk_widget_hide), NULL);
+
+  sigc::connection conn;
+  Ekiga::VidInputCore *vidinput_core = dynamic_cast<Ekiga::VidInputCore *> (core->get ("vidinput-core"));
+  Ekiga::AudioInputCore *audioinput_core = dynamic_cast<Ekiga::AudioInputCore *> (core->get ("audioinput-core"));
+  Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (core->get ("audiooutput-core"));
+
+  conn = vidinput_core->vidinputdevice_added.connect (sigc::bind (sigc::ptr_fun (on_vidinputdevice_added_cb), assistant));
+  assistant->priv->connections.push_back (conn);
+  conn = vidinput_core->vidinputdevice_removed.connect (sigc::bind (sigc::ptr_fun (on_vidinputdevice_removed_cb), assistant));
+  assistant->priv->connections.push_back (conn);
+
+  conn = audioinput_core->audioinputdevice_added.connect (sigc::bind (sigc::ptr_fun (on_audioinputdevice_added_cb), assistant));
+  assistant->priv->connections.push_back (conn);
+  conn = audioinput_core->audioinputdevice_removed.connect (sigc::bind (sigc::ptr_fun (on_audioinputdevice_removed_cb), assistant));
+  assistant->priv->connections.push_back (conn);
+
+  conn = audiooutput_core->audiooutputdevice_added.connect (sigc::bind (sigc::ptr_fun (on_audiooutputdevice_added_cb), assistant));
+  assistant->priv->connections.push_back (conn);
+  conn = audiooutput_core->audiooutputdevice_removed.connect (sigc::bind (sigc::ptr_fun (on_audiooutputdevice_removed_cb), assistant));
+  assistant->priv->connections.push_back (conn);
 
   return GTK_WIDGET (assistant);
 }
