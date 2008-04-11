@@ -63,10 +63,10 @@ ConfBridge::ConfBridge (Ekiga::Service & _service)
   keys.push_back (AUDIO_CODECS_KEY "maximum_jitter_buffer");
 
   keys.push_back (VIDEO_CODECS_KEY "maximum_video_tx_bitrate");
+  keys.push_back (VIDEO_CODECS_KEY "maximum_video_rx_bitrate");
   keys.push_back (VIDEO_CODECS_KEY "temporal_spatial_tradeoff");
   keys.push_back (VIDEO_DEVICES_KEY "size"); 
-  keys.push_back (VIDEO_CODECS_KEY "max_frame_rate");
-  keys.push_back (VIDEO_CODECS_KEY "maximum_video_rx_bitrate");
+  keys.push_back (VIDEO_DEVICES_KEY "max_frame_rate");
 
   keys.push_back (SIP_KEY "forward_host"); 
   keys.push_back (SIP_KEY "outbound_proxy_host");
@@ -119,11 +119,15 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
     options.size = gm_conf_entry_get_int (entry);
     manager.set_video_options (options);
   }
-  else if (key == VIDEO_CODECS_KEY "max_frame_rate") {
+  else if (key == VIDEO_DEVICES_KEY "max_frame_rate") {
 
     GMManager::VideoOptions options;
     manager.get_video_options (options);
     options.maximum_frame_rate = gm_conf_entry_get_int (entry);
+    if ( (options.max_frame_rate < 1) || (options.max_frame_rate > 30) ) {
+      PTRACE(1, "OpalConfBridge\t" << VIDEO_DEVICES_KEY "max_frame_rate" << " out of range, ajusting to 30");
+      options.max_frame_rate = 30;
+    }
     manager.set_video_options (options);
   }
   else if (key == VIDEO_CODECS_KEY "maximum_video_rx_bitrate") {
