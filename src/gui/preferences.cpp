@@ -1357,6 +1357,44 @@ void on_vidinputdevice_removed_cb (const Ekiga::VidInputDevice & vidinput_device
   gnome_prefs_string_option_menu_remove(pw->video_device, device.c_str());
 }
 
+void on_audioinputdevice_added_cb (const Ekiga::AudioInputDevice & audioinput_device, GtkWidget *prefs_window)
+{
+  GmPreferencesWindow *pw = NULL;
+  g_return_if_fail (prefs_window != NULL);
+  pw = gm_pw_get_pw (prefs_window);
+  std::string device = audioinput_device.type + "/" + audioinput_device.source + "/" + audioinput_device.device;
+  gnome_prefs_string_option_menu_add (pw->audio_recorder, device.c_str());
+
+}
+
+void on_audioinputdevice_removed_cb (const Ekiga::AudioInputDevice & audioinput_device, GtkWidget *prefs_window)
+{
+  GmPreferencesWindow *pw = NULL;
+  g_return_if_fail (prefs_window != NULL);
+  pw = gm_pw_get_pw (prefs_window);
+  std::string device = audioinput_device.type + "/" + audioinput_device.source + "/" + audioinput_device.device;
+  gnome_prefs_string_option_menu_remove(pw->audio_recorder, device.c_str());
+}
+
+void on_audiooutputdevice_added_cb (const Ekiga::AudioOutputDevice & audiooutput_device, GtkWidget *prefs_window)
+{
+  GmPreferencesWindow *pw = NULL;
+  g_return_if_fail (prefs_window != NULL);
+  pw = gm_pw_get_pw (prefs_window);
+  std::string device = audiooutput_device.type + "/" + audiooutput_device.source + "/" + audiooutput_device.device;
+  gnome_prefs_string_option_menu_add (pw->audio_player, device.c_str());
+  gnome_prefs_string_option_menu_add (pw->sound_events_output, device.c_str());
+}
+
+void on_audiooutputdevice_removed_cb (const Ekiga::AudioOutputDevice & audiooutput_device, GtkWidget *prefs_window)
+{
+  GmPreferencesWindow *pw = NULL;
+  g_return_if_fail (prefs_window != NULL);
+  pw = gm_pw_get_pw (prefs_window);
+  std::string device = audiooutput_device.type + "/" + audiooutput_device.source + "/" + audiooutput_device.device;
+  gnome_prefs_string_option_menu_remove(pw->audio_player, device.c_str());
+  gnome_prefs_string_option_menu_remove(pw->sound_events_output, device.c_str());
+}
 
 /* Public functions */
 void 
@@ -1577,11 +1615,23 @@ gm_prefs_window_new (Ekiga::ServiceCore *core)
 
   sigc::connection conn;
   Ekiga::VidInputCore *vidinput_core = dynamic_cast<Ekiga::VidInputCore *> (core->get ("vidinput-core"));
+  Ekiga::AudioInputCore *audioinput_core = dynamic_cast<Ekiga::AudioInputCore *> (core->get ("audioinput-core"));
+  Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (core->get ("audiooutput-core"));
+
   conn = vidinput_core->vidinputdevice_added.connect (sigc::bind (sigc::ptr_fun (on_vidinputdevice_added_cb), window));
   pw->connections.push_back (conn);
   conn = vidinput_core->vidinputdevice_removed.connect (sigc::bind (sigc::ptr_fun (on_vidinputdevice_removed_cb), window));
   pw->connections.push_back (conn);
 
+  conn = audioinput_core->audioinputdevice_added.connect (sigc::bind (sigc::ptr_fun (on_audioinputdevice_added_cb), window));
+  pw->connections.push_back (conn);
+  conn = audioinput_core->audioinputdevice_removed.connect (sigc::bind (sigc::ptr_fun (on_audioinputdevice_removed_cb), window));
+  pw->connections.push_back (conn);
+
+  conn = audiooutput_core->audiooutputdevice_added.connect (sigc::bind (sigc::ptr_fun (on_audiooutputdevice_added_cb), window));
+  pw->connections.push_back (conn);
+  conn = audiooutput_core->audiooutputdevice_removed.connect (sigc::bind (sigc::ptr_fun (on_audiooutputdevice_removed_cb), window));
+  pw->connections.push_back (conn);
   return window;
 }
 

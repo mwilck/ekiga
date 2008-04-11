@@ -124,9 +124,9 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
     GMManager::VideoOptions options;
     manager.get_video_options (options);
     options.maximum_frame_rate = gm_conf_entry_get_int (entry);
-    if ( (options.max_frame_rate < 1) || (options.max_frame_rate > 30) ) {
+    if ( (options.maximum_frame_rate < 1) || (options.maximum_frame_rate > 30) ) {
       PTRACE(1, "OpalConfBridge\t" << VIDEO_DEVICES_KEY "max_frame_rate" << " out of range, ajusting to 30");
-      options.max_frame_rate = 30;
+      options.maximum_frame_rate = 30;
     }
     manager.set_video_options (options);
   }

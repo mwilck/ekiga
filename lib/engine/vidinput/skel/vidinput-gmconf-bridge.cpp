@@ -51,7 +51,7 @@ VidInputCoreConfBridge::VidInputCoreConfBridge (Ekiga::Service & _service)
   property_changed.connect (sigc::mem_fun (this, &VidInputCoreConfBridge::on_property_changed));
 
   keys.push_back (VIDEO_DEVICES_KEY "size"); 
-  keys.push_back (VIDEO_CODECS_KEY "max_frame_rate"); 
+  keys.push_back (VIDEO_DEVICES_KEY "max_frame_rate"); 
   keys.push_back (VIDEO_DEVICES_KEY "input_device"); 
   keys.push_back (VIDEO_DEVICES_KEY "channel"); 
   keys.push_back (VIDEO_DEVICES_KEY "format"); 
