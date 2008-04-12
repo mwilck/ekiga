@@ -28,6 +28,7 @@ libopal_la_SOURCES =				\
 	$(OPAL_SRC_DIR)/opal/call.cxx		\
 	$(OPAL_SRC_DIR)/opal/mediafmt.cxx	\
 	$(OPAL_SRC_DIR)/opal/mediastrm.cxx	\
+	$(OPAL_SRC_DIR)/opal/mediatype.cxx	\
 	$(OPAL_SRC_DIR)/opal/opalmixer.cxx	\
 	$(OPAL_SRC_DIR)/opal/patch.cxx		\
 	$(OPAL_SRC_DIR)/opal/transcoders.cxx	\
@@ -302,6 +303,7 @@ h323include_HEADERS = \
 opalincludedir = $(baseincludedir)/opal
 
 opalinclude_HEADERS = \
+	$(OPAL_INC_DIR)/audiorecord.h	\
 	$(OPAL_INC_DIR)/buildopts.h	\
 	$(OPAL_INC_DIR)/call.h		\
 	$(OPAL_INC_DIR)/connection.h	\
@@ -312,12 +314,15 @@ opalinclude_HEADERS = \
 	$(OPAL_INC_DIR)/mediacmd.h	\
 	$(OPAL_INC_DIR)/mediafmt.h	\
 	$(OPAL_INC_DIR)/mediastrm.h	\
+	$(OPAL_INC_DIR)/mediatype.h	\
 	$(OPAL_INC_DIR)/opalmixer.h	\
 	$(OPAL_INC_DIR)/opalvxml.h	\
 	$(OPAL_INC_DIR)/patch.h		\
 	$(OPAL_INC_DIR)/pcss.h		\
 	$(OPAL_INC_DIR)/transcoders.h	\
-	$(OPAL_INC_DIR)/transports.h
+	$(OPAL_INC_DIR)/transports.h    \
+	$(OPAL_INC_DIR)/rtpep.h \
+	$(OPAL_INC_DIR)/rtpconn.h
 
 codecincludedir = $(baseincludedir)/codec
 
@@ -334,8 +339,6 @@ codecinclude_HEADERS = \
 rtpincludedir = $(baseincludedir)/rtp
 
 rtpinclude_HEADERS = \
-	$(OPAL_INC_DIR)/rtpep.h \
-	$(OPAL_INC_DIR)/rtpconn.h \
 	$(RTP_INC_DIR)/jitter.h	\
 	$(RTP_INC_DIR)/rtp.h
 
