@@ -145,11 +145,14 @@ public:
                              SIP_PDU::StatusCodes reason,
                              bool wasRegistering);
 
-  bool MakeConnection(OpalCall & call,
-                      const PString & party,
-                      void * userData = NULL,
-                      unsigned int options = 0,
-                      OpalConnection::StringOptions *stringOptions = NULL);
+  SIPConnection *CreateConnection (OpalCall & call,
+                                   const PString & token,
+                                   void * userData,
+                                   const SIPURL & destination,
+                                   OpalTransport * transport,
+                                   SIP_PDU * invite,
+                                   unsigned int options = 0,
+                                   OpalConnection::StringOptions * stringOptions = NULL); 
 
 
   /* DESCRIPTION  :  Called when there is an incoming SIP connection.

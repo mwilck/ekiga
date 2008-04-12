@@ -51,9 +51,6 @@ void CallCore::add_manager (CallManager &manager)
   managers.insert (&manager);
   manager_added.emit (manager);
 
-  // If this Manager emits the new_call signal, let's relay it at the CallCore level
-  manager.new_call.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_new_call), &manager));
-
   // IM stuff
   manager.im_failed.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_im_failed), &manager));
   manager.im_received.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_im_received), &manager));
@@ -100,7 +97,7 @@ bool CallCore::send_message (std::string uri,
 }
 
 
-void CallCore::on_new_call (Call *call, CallManager *manager)
+void CallCore::add_call (Call *call, CallManager *manager)
 {
   call->ringing.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_ringing_call), call, manager));
   call->setup.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_setup_call), call, manager));

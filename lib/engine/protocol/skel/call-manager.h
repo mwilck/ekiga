@@ -74,13 +74,6 @@ namespace Ekiga
        */
       virtual bool dial (const std::string uri) = 0; 
 
-      /** This signal is emitted when a new call has been created,
-       * it does not mean the call is setup, just that an Ekiga::Call object
-       * has been created by the Ekiga::CallManager
-       * @param the created call 
-       */
-      sigc::signal<void, Ekiga::Call *> new_call; 
-
 
       /*
        * Mandatory Settings

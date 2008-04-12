@@ -183,7 +183,7 @@ GMManager::GMManager (Ekiga::ServiceCore & _core)
   SetVideoInputDevice (video);
 
   // Create endpoints
-  h323EP = new GMH323Endpoint (*this);
+  h323EP = new GMH323Endpoint (*this, core);
   AddRouteEntry("pc:.* = h323:<da>");
 	
   sipEP = new GMSIPEndpoint (*this, core);

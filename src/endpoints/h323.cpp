@@ -54,8 +54,11 @@
 
 
 /* The class */
-GMH323Endpoint::GMH323Endpoint (GMManager & ep)
-	: H323EndPoint (ep), endpoint (ep)
+GMH323Endpoint::GMH323Endpoint (GMManager & ep, Ekiga::ServiceCore & _core)
+: H323EndPoint (ep), 
+  endpoint (ep),
+  core (_core),
+  runtime (*(dynamic_cast<Ekiga::Runtime *> (core.get ("runtime"))))
 {
   udp_min = 5000;
   udp_max = 5100; 
@@ -225,6 +228,27 @@ GMH323Endpoint::IsRegisteredWithGatekeeper (const PString & address)
 }
 
 
+H323Connection *GMH323Endpoint::CreateConnection (OpalCall & _call,
+                                                  const PString & token,
+                                                  void *userData,
+                                                  OpalTransport & transport,
+                                                  const PString & alias,
+                                                  const H323TransportAddress & address,
+                                                  H323SignalPDU *setupPDU,
+                                                  unsigned options,
+                                                  OpalConnection::StringOptions *stringOptions)
+{
+  /* FIXME
+  Ekiga::Call *call = dynamic_cast<Ekiga::Call *> (&_call);
+  Ekiga::CallCore *call_core = dynamic_cast<Ekiga::CallCore *> (core.get ("call-core"));
+  if (call_core)
+    call_core->add_call (call, this);
+    */
+
+  return H323EndPoint::CreateConnection (_call, token, userData, transport, alias, address, setupPDU, options, stringOptions);
+}
+
+
 bool 
 GMH323Endpoint::OnIncomingConnection (OpalConnection & /*connection*/,
                                       G_GNUC_UNUSED unsigned options,
@@ -318,7 +342,6 @@ bool GMH323Endpoint::set_udp_ports (const unsigned min, const unsigned max)
 
     udp_min = min;
     udp_max = max;
-    std::cout << "set udp " << udp_min << " : " << udp_max << std::endl << std::flush;
     endpoint.SetRtpIpPorts (udp_min, udp_max);
     endpoint.SetUDPPorts (udp_min, udp_max);
 

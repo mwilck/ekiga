@@ -87,6 +87,12 @@ namespace Ekiga
         { return "\tCall Core managing Call Manager objects"; }
 
 
+      /** Adds a call handled by the CallCore serice.
+       * @param call is the call to be added.
+       * @param manager is the CallManager handling it.
+       */
+      void add_call (Call *call, CallManager *manager);
+
       /** Adds a CallManager to the CallCore service.
        * @param The manager to be added.
        */

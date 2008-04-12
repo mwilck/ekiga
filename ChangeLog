@@ -1,4 +1,21 @@
-2008-04-11  Matthias Schneider  <ma30002000@yahoo.de>
+2008-04-12  Damien Sandras  <dsandras@gnome.org>
+
+	* src/endpoints/sip.h:
+	* src/endpoints/opal-call.cpp:
+	* src/endpoints/manager.cpp:
+	* src/endpoints/h323.cpp:
+	* src/endpoints/h323.h:
+	* src/endpoints/sip.cpp:
+	* lib/engine/protocol/skel/call-core.cpp:
+	* lib/engine/protocol/skel/call-core.h:
+	* lib/engine/protocol/skel/call-manager.h:
+	Removed new_call signal which was a hack.
+	Added CreateConnection callbacks to connect signals when there are new
+	calls..
+	Fixed incoming calls handling (no more busy when there should be
+	none).
+
+2008-04-12  Matthias Schneider  <ma30002000@yahoo.de>
 
 	* win32/diff/opal_Makefile.am:
 	* win32/diff/opal_configure.ac:

@@ -215,7 +215,6 @@ GMSIPEndpoint::publish (const Ekiga::PersonalDetails & details)
   // TODO: move this code outside of this class and allow a 
   // more complete document
   std::string status = ((Ekiga::PersonalDetails &) (details)).get_short_status ();
-  std::cout << "ici " << status << std::endl << std::flush;
   for (std::list<std::string>::iterator it = aors.begin ();
        it != aors.end ();
        it++) {
@@ -471,19 +470,6 @@ GMSIPEndpoint::OnRegistered (const PString & _aor,
 }
 
 
-bool GMSIPEndpoint::MakeConnection (OpalCall & _call,
-                                    const PString &party,
-                                    void *userData,
-                                    unsigned int options,
-                                    OpalConnection::StringOptions *stringOptions)
-{
-  Ekiga::Call *call = dynamic_cast<Ekiga::Call *> (&_call);
-  runtime.run_in_main (sigc::bind (new_call, call));
-
-  return SIPEndPoint::MakeConnection (_call, party, userData, options, stringOptions);
-}
-
-
 void
 GMSIPEndpoint::OnRegistrationFailed (const PString & _aor,
                                      SIP_PDU::StatusCodes r,
@@ -717,6 +703,24 @@ GMSIPEndpoint::OnRegistrationFailed (const PString & _aor,
 }
 
 
+SIPConnection *GMSIPEndpoint::CreateConnection (OpalCall & _call,
+                                                const PString & token,
+                                                void * userData,
+                                                const SIPURL & destination,
+                                                OpalTransport *transport,
+                                                SIP_PDU *invite,
+                                                unsigned int options,
+                                                OpalConnection::StringOptions *stringOptions)
+{
+  Ekiga::Call *call = dynamic_cast<Ekiga::Call *> (&_call);
+  Ekiga::CallCore *call_core = dynamic_cast<Ekiga::CallCore *> (core.get ("call-core"));
+  if (call_core)
+    call_core->add_call (call, this);
+
+  return SIPEndPoint::CreateConnection (_call, token, userData, destination, transport, invite, options, stringOptions);
+}
+
+
 bool 
 GMSIPEndpoint::OnIncomingConnection (OpalConnection &connection,
                                      unsigned options,
@@ -726,14 +730,15 @@ GMSIPEndpoint::OnIncomingConnection (OpalConnection &connection,
 
   if (!forward_uri.empty () && unconditional_forward)
     connection.ForwardCall (forward_uri);
-  else if (endpoint.GetCallsNumber () >= 1) { 
+  else if (endpoint.GetCallsNumber () > 1) { 
 
     if (!forward_uri.empty () && forward_on_busy)
       connection.ForwardCall (forward_uri);
-    else 
+    else {
       connection.ClearCall (OpalConnection::EndedByLocalBusy);
+    }
   }
-  else
+  else 
     return SIPEndPoint::OnIncomingConnection (connection, options, stroptions);
 
   return false;

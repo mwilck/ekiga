@@ -287,6 +287,7 @@ Opal::Call::OnReleased (OpalConnection & connection)
 
   NoAnswerTimer.Stop (false);
 
+  std::cout << "releasing " << connection << std::endl << std::flush;
   /** TODO
    * the Call could be destroyed before the signal callback has been executed
    * maybe create a copy constructor
@@ -297,6 +298,7 @@ Opal::Call::OnReleased (OpalConnection & connection)
         && !is_outgoing ()
         && connection.GetCallEndReason () != OpalConnection::EndedByAnswerDenied) {
 
+      std::cout << "emit missed " << std::endl << std::flush;
       runtime.run_in_main (missed.make_slot ());
     }
     else {
@@ -412,7 +414,9 @@ Opal::Call::OnSetUp (OpalConnection & connection)
 
   outgoing = PIsDescendant(&connection, OpalPCSSConnection);
 
+  std::cout << "OnSetUp " << outgoing << std::endl << std::flush;
   runtime.run_in_main (setup.make_slot ());
+  std::cout << "emitted OnSetUp " << outgoing << std::endl << std::flush;
 
   if (!outgoing)
     NoAnswerTimer.SetInterval (0, PMIN (10, 60));
@@ -527,6 +531,8 @@ Opal::Call::OnAnswer (PThread &, INT /*param*/)
 
   int i = 0;
 
+  std::cout << "Should answer" << std::endl << std::flush;
+
   if (!is_outgoing () && !IsEstablished ()) {
 
     do {
@@ -535,8 +541,11 @@ Opal::Call::OnAnswer (PThread &, INT /*param*/)
       i++;
     }  while (!PIsDescendant(&(*connection), OpalPCSSConnection));
 
-    if (PIsDescendant(&(*connection), OpalPCSSConnection))
+    std::cout << "Should answer found" << std::endl << std::flush;
+    if (PIsDescendant(&(*connection), OpalPCSSConnection)) {
       PDownCast (OpalPCSSConnection, &(*connection))->AcceptIncoming ();
+      std::cout << "ici" << std::endl << std::flush;
+    }
   }
 }
 

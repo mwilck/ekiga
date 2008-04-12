@@ -59,7 +59,7 @@ class GMH323Endpoint : public H323EndPoint
    * 		     and initialises the variables
    * PRE          :  /
    */
-  GMH323Endpoint (GMManager &ep);
+  GMH323Endpoint (GMManager &ep, Ekiga::ServiceCore & core);
 
   
   /* DESCRIPTION  :  The destructor.
@@ -115,6 +115,17 @@ class GMH323Endpoint : public H323EndPoint
   bool IsRegisteredWithGatekeeper (const PString & address);
   
 
+  H323Connection *CreateConnection (OpalCall & call,
+                                    const PString & token,
+                                    void * userData,
+                                    OpalTransport & transport,
+                                    const PString & alias,
+                                    const H323TransportAddress & address,
+                                    H323SignalPDU *setupPDU,
+                                    unsigned int options = 0,
+                                    OpalConnection::StringOptions * stringOptions = NULL); 
+
+
   /* DESCRIPTION  :  Called when there is an incoming SIP connection.
    * BEHAVIOR     :  Checks if the connection must be rejected or forwarded
    * 		     and call the manager function of the same name
@@ -168,6 +179,9 @@ class GMH323Endpoint : public H323EndPoint
  private:
 
   GMManager & endpoint;
+  Ekiga::ServiceCore & core;
+  Ekiga::Runtime & runtime;
+
   PMutex gk_name_mutex;
   PString gk_name;
 
