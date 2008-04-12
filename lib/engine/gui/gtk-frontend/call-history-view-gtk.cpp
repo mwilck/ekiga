@@ -142,7 +142,7 @@ on_clicked (GtkWidget *tree,
       }
       if (!builder.empty())
 	builder.add_separator ();
-      builder.add_action ("FIXME", "clear history", // FIXME: translate
+      builder.add_action ("clear", _("Clear"),
 			  sigc::mem_fun (book, &History::Book::clear));
       gtk_widget_show_all (builder.menu);
       gtk_menu_popup (GTK_MENU (builder.menu), NULL, NULL,
