@@ -215,6 +215,7 @@ GMSIPEndpoint::publish (const Ekiga::PersonalDetails & details)
   // TODO: move this code outside of this class and allow a 
   // more complete document
   std::string status = ((Ekiga::PersonalDetails &) (details)).get_short_status ();
+  std::cout << "ici " << status << std::endl << std::flush;
   for (std::list<std::string>::iterator it = aors.begin ();
        it != aors.end ();
        it++) {

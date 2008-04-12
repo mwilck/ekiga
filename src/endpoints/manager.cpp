@@ -83,15 +83,6 @@ static void public_ip_changed_nt (G_GNUC_UNUSED gpointer id,
 
 
 
-/* DESCRIPTION  :  This callback is called when the status config value changes.
- * BEHAVIOR     :  Updates the presence for the endpoints.
- * PRE          :  /
- */
-static void status_changed_nt (G_GNUC_UNUSED gpointer id,
-                               GmConfEntry *entry,
-                               gpointer data);
-
-
 static  bool same_codec_desc (Ekiga::CodecDescription a, Ekiga::CodecDescription b)
 { 
   return (a.name == b.name && a.rate == b.rate); 
@@ -119,28 +110,6 @@ public_ip_changed_nt (G_GNUC_UNUSED gpointer id,
       ep->SetTranslationAddress (PString (public_ip));
     else
       ep->SetTranslationAddress (PString ("0.0.0.0"));
-  }
-}
-
-
-/* DESCRIPTION  :  This callback is called when the status config value changes.
- * BEHAVIOR     :  Updates the presence for the endpoints.
- * PRE          :  /
- */
-static void
-status_changed_nt (G_GNUC_UNUSED gpointer id,
-                   GmConfEntry *entry,
-                   gpointer data)
-{
-  GMManager *ep = (GMManager *) data;
-
-  guint status = CONTACT_ONLINE;
-
-  if (gm_conf_entry_get_type (entry) == GM_CONF_INT) {
-
-    status = gm_conf_entry_get_int (entry);
-    
-    ep->UpdatePublishers ();
   }
 }
 
@@ -906,8 +875,6 @@ GMManager::Init ()
   /* GMConf notifiers for what we manager */
   gm_conf_notifier_add (NAT_KEY "public_ip",
 			public_ip_changed_nt, this);
-  gm_conf_notifier_add (PERSONAL_DATA_KEY "status",
-			status_changed_nt, this);
 }
 
 

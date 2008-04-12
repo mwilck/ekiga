@@ -355,7 +355,7 @@ GMZeroconfPublisher::GetPersonalData()
   full_name = gm_conf_get_string (PERSONAL_DATA_KEY "full_name");
   h323_port = gm_conf_get_int (H323_KEY "listen_port");
   sip_port = gm_conf_get_int (SIP_KEY "listen_port");
-  state = gm_conf_get_int (PERSONAL_DATA_KEY "status");
+  std::cout << "FIXME" << std::endl << std::flush;
   gnomemeeting_threads_leave ();
 
   // TODO: largely improve this

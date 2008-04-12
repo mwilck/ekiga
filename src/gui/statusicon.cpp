@@ -412,13 +412,9 @@ statusicon_build_menu ()
   Ekiga::ServiceCore *services = NULL;
   GtkFrontend *gtk_frontend = NULL;
 
-  guint status = 0;
-
   services = GnomeMeeting::Process ()->GetServiceCore ();
   gtk_frontend = dynamic_cast<GtkFrontend *>(services->get ("gtk-frontend"));
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
-
-  status = gm_conf_get_int (PERSONAL_DATA_KEY "status");
 
   static MenuEntry menu [] =
     {

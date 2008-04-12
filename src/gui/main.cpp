@@ -179,7 +179,7 @@ struct _GmIdleTime
   gint x;
   gint y;
   guint counter;
-  guint last_status;
+  std::string last_status;
   gboolean idle;
 };
 
@@ -2365,7 +2365,8 @@ motion_detection_cb (gpointer data)
   GdkModifierType mask;
   gint x, y;
   gint timeout = 0;
-  int status = CONTACT_ONLINE;
+  gchar *st = NULL;
+  std::string status;
                   
   idle = (GmIdleTime *) data;
 
@@ -2375,7 +2376,9 @@ motion_detection_cb (gpointer data)
 
   gdk_threads_enter ();
   timeout = gm_conf_get_int (PERSONAL_DATA_KEY "auto_away_timeout");
-  status = gm_conf_get_int (PERSONAL_DATA_KEY "status");
+  st = gm_conf_get_string (PERSONAL_DATA_KEY "short_status");
+  status = st;
+  g_free (st);
   gdk_threads_leave ();
 
   if (x != idle->x && y != idle->y) {
@@ -2393,7 +2396,7 @@ motion_detection_cb (gpointer data)
   else
     idle->counter++;
 
-  if (status != CONTACT_ONLINE)
+  if (status != "online")
     return TRUE;
   
   if ((idle->counter > (unsigned) (timeout * 12)) && !idle->idle) {
