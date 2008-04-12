@@ -184,7 +184,8 @@ remove_combo_box (GtkComboBox         *combo_box,
   if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (model), &iter)) {
     do {
       gchar *value_string = NULL;
-      GValue value = { 0, };
+      GValue value;
+      g_value_init (&value, G_TYPE_STRING);
       gtk_tree_model_get_value (GTK_TREE_MODEL (model), &iter, 0, &value);
       value_string = (gchar *) g_value_get_string (&value);
       if (g_ascii_strcasecmp  (value_string, option) == 0) {
