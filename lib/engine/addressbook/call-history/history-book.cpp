@@ -34,6 +34,7 @@
  */
 
 #include <iostream>
+#include <sstream>
 #include <set>
 
 #include "config.h"
@@ -203,9 +204,12 @@ void
 History::Book::on_missed_call (Ekiga::CallManager &/*manager*/,
 			       Ekiga::Call &call)
 {
+  std::stringstream info;
+  info << call.get_start_time () << " " << call.get_duration ();
+
   add (call.get_remote_party_name (),
        call.get_remote_uri (),
-       "FIXME: what to say? Idea: when?",
+       info.str (),
        MISSED);
 }
 
@@ -214,8 +218,10 @@ History::Book::on_cleared_call (Ekiga::CallManager &/*manager*/,
 				Ekiga::Call &call,
 				std::string /*message*/)
 {
+  std::stringstream info;
+  info << call.get_start_time () << " " << call.get_duration ();
   add (call.get_remote_party_name (),
        call.get_remote_uri (),
-       "FIXME: what to say? Idea: when? End message perhaps? Forget duration?",
+       info.str (),
        (call.is_outgoing ()?PLACED:RECEIVED));
 }

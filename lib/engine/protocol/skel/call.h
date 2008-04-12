@@ -126,6 +126,11 @@ namespace Ekiga
        */
       virtual const std::string get_duration () const = 0;
 
+      /** Return the call start date and time
+       * @return the current call start date and time
+       */
+      virtual const std::string get_start_time () const = 0;
+
       /** Return information about call type
        * @return true if it is an outgoing call
        */

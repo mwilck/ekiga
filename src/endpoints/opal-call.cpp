@@ -225,6 +225,13 @@ Opal::Call::get_duration () const
 }
 
 
+const std::string
+Opal::Call::get_start_time () const
+{
+  return (const char *) start_time.AsString (PTime::LongDateTime);
+}
+
+
 void
 Opal::Call::parse_info (OpalConnection & connection)
 {
