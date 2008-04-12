@@ -151,7 +151,7 @@ class dialer : public PThread
 
 public:
 
-  dialer (const std::string uri, GMManager & ep) 
+  dialer (const std::string & uri, GMManager & ep) 
     : PThread (1000, AutoDeleteThread), 
       dial_uri (uri),
       endpoint (ep) 
