@@ -161,13 +161,13 @@ public:
   
   void Main () 
   {
-    PString token;
-    endpoint.SetUpCall ("pc:*", dial_uri.c_str (), token);
+    endpoint.SetUpCall ("pc:*", dial_uri, token);
   };
 
 private:
   const std::string & dial_uri;
   GMManager & endpoint;
+  PString token;
 };
 
 
