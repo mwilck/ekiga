@@ -67,12 +67,13 @@ namespace History
     Contact (Ekiga::ServiceCore &_core,
 	     const std::string _name,
 	     const std::string _uri,
-	     const std::string _status,
+             time_t call_start,
+             const std::string call_duration,
 	     call_type c_t);
 
     ~Contact ();
 
-    /* generic presentity api */
+    /*** generic contact api ***/
 
     const std::string get_name () const;
 
@@ -84,13 +85,15 @@ namespace History
 
     bool is_found (std::string test) const;
 
-    /* more specific api */
+    /*** more specific api ***/
 
     xmlNodePtr get_node ();
 
-    call_type get_type () const;
+    const call_type get_type () const;
 
-    const std::string get_status () const;
+    const time_t get_call_start () const;
+
+    const std::string get_call_duration () const;
 
   private:
 
@@ -100,7 +103,8 @@ namespace History
     xmlNodePtr node;
     std::string name;
     std::string uri;
-    std::string status;
+    time_t call_start;
+    std::string call_duration;
     call_type m_type;
   };
 

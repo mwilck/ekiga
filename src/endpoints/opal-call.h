@@ -129,7 +129,7 @@ public:
     /** Return the call start date and time
      * @return the current call start date and time
      */
-    const std::string get_start_time () const;
+    const time_t get_start_time () const;
 
 
 public:

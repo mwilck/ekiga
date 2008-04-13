@@ -38,6 +38,7 @@
 
 #include "history-contact.h"
 
+
 History::Contact::Contact (Ekiga::ServiceCore &_core,
 			   xmlNodePtr _node):
   core(_core), node(_node)
@@ -72,24 +73,35 @@ History::Contact::Contact (Ekiga::ServiceCore &_core,
         xmlFree (xml_str);
       }
 
-      if (xmlStrEqual (BAD_CAST ("status"), child->name)) {
+      if (xmlStrEqual (BAD_CAST ("call_start"), child->name)) {
 
         xml_str = xmlNodeGetContent (child);
 	if (xml_str != NULL)
-	  status = (const char *)xml_str;
+	  call_start = (time_t) atoi ((const char *) xml_str);
+        xmlFree (xml_str);
+      }
+
+      if (xmlStrEqual (BAD_CAST ("call_duration"), child->name)) {
+
+        xml_str = xmlNodeGetContent (child);
+	if (xml_str != NULL)
+	  call_duration = (unsigned) atoi ((const char *) xml_str);
         xmlFree (xml_str);
       }
     }
   }
 }
 
+
 History::Contact::Contact (Ekiga::ServiceCore &_core,
 			   const std::string _name,
 			   const std::string _uri,
-			   const std::string _status,
+                           time_t _call_start,
+                           const std::string _call_duration,
 			   call_type c_t):
-  core(_core), name(_name), uri(_uri), status(_status), m_type(c_t)
+  core(_core), name(_name), uri(_uri), call_start(_call_start), call_duration(_call_duration), m_type(c_t)
 {
+  std::string callp;
   contact_core
     = dynamic_cast<Ekiga::ContactCore*>(core.get ("contact-core"));
 
@@ -98,14 +110,19 @@ History::Contact::Contact (Ekiga::ServiceCore &_core,
   xmlSetProp (node, BAD_CAST "uri", BAD_CAST uri.c_str ());
   xmlNewChild (node, NULL,
 	       BAD_CAST "name", BAD_CAST name.c_str ());
+
+  callp = call_start;
   xmlNewChild (node, NULL,
-	       BAD_CAST "status", BAD_CAST status.c_str ());
+	       BAD_CAST "call_start", BAD_CAST callp.c_str ());
+  callp = call_duration;
+  xmlNewChild (node, NULL,
+	       BAD_CAST "call_duration", BAD_CAST callp.c_str ());
 
   /* FIXME: I don't like the way it's done */
-  gchar *type_string = NULL;
-  type_string = g_strdup_printf ("%d", m_type);
-  xmlSetProp (node, BAD_CAST "type", BAD_CAST type_string);
-  g_free (type_string);
+  gchar *tmp = NULL;
+  tmp = g_strdup_printf ("%d", m_type);
+  xmlSetProp (node, BAD_CAST "type", BAD_CAST tmp);
+  g_free (tmp);
 }
 
 History::Contact::~Contact ()
@@ -156,16 +173,22 @@ History::Contact::get_node ()
   return node;
 }
 
-History::call_type
+const History::call_type
 History::Contact::get_type () const
 {
   return m_type;
 }
 
-const std::string
-History::Contact::get_status () const
+const time_t
+History::Contact::get_call_start () const
 {
-  return status;
+  return call_start;
+}
+
+const std::string 
+History::Contact::get_call_duration () const
+{
+  return call_duration;
 }
 
 const std::map<std::string,std::string>

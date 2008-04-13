@@ -114,10 +114,11 @@ History::Book::add (xmlNodePtr node)
 }
 
 void
-History::Book::add (const std::string name,
-		    const std::string uri,
-		    const std::string contact_status,
-		    call_type c_t)
+History::Book::add (const std::string & name,
+		    const std::string & uri,
+                    const time_t call_start,
+                    const std::string & call_duration,
+		    const call_type c_t)
 {
   Contact *contact = NULL;
   xmlNodePtr root = NULL;
@@ -126,7 +127,7 @@ History::Book::add (const std::string name,
 
     root = xmlDocGetRootElement (doc);
 
-    contact = new Contact (core, name, uri, contact_status, c_t);
+    contact = new Contact (core, name, uri, call_start, call_duration, c_t);
 
     xmlAddChild (root, contact->get_node ());
 
@@ -204,12 +205,10 @@ void
 History::Book::on_missed_call (Ekiga::CallManager &/*manager*/,
 			       Ekiga::Call &call)
 {
-  std::stringstream info;
-  info << call.get_start_time () << " " << call.get_duration ();
-
   add (call.get_remote_party_name (),
        call.get_remote_uri (),
-       info.str (),
+       call.get_start_time (),
+       call.get_duration (),
        MISSED);
 }
 
@@ -218,10 +217,9 @@ History::Book::on_cleared_call (Ekiga::CallManager &/*manager*/,
 				Ekiga::Call &call,
 				std::string /*message*/)
 {
-  std::stringstream info;
-  info << call.get_start_time () << " " << call.get_duration ();
   add (call.get_remote_party_name (),
        call.get_remote_uri (),
-       info.str (),
+       call.get_start_time (),
+       call.get_duration (),
        (call.is_outgoing ()?PLACED:RECEIVED));
 }

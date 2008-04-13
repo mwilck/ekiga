@@ -39,7 +39,7 @@
 #define __CALL_H__
 
 #include <sigc++/sigc++.h>
-
+#include <time.h>
 
 namespace Ekiga
 {
@@ -129,7 +129,7 @@ namespace Ekiga
       /** Return the call start date and time
        * @return the current call start date and time
        */
-      virtual const std::string get_start_time () const = 0;
+      virtual const time_t get_start_time () const = 0;
 
       /** Return information about call type
        * @return true if it is an outgoing call

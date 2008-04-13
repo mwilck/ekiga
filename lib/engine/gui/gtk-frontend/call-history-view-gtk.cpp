@@ -35,6 +35,10 @@
  *
  */
 
+#include <sstream>
+#include <iostream>
+#include <iomanip>
+
 #include "call-history-view-gtk.h"
 
 #include "menu-builder-gtk.h"
@@ -66,9 +70,14 @@ static void
 on_contact_added (Ekiga::Contact &contact,
 		  GtkListStore *store)
 {
+  time_t t;
+  struct tm *timeinfo = NULL;
+  char buffer [80];
+  std::stringstream info;
+  const gchar *id = NULL;
+
   History::Contact *hcontact = NULL;
   GtkTreeIter iter;
-  const gchar *id = NULL;
 
   hcontact = dynamic_cast<History::Contact*>(&contact);
 
@@ -94,15 +103,20 @@ on_contact_added (Ekiga::Contact &contact,
     default:
       id = GTK_STOCK_MISSING_IMAGE;
     }
-
   }
+
+  t = hcontact->get_call_start ();
+  timeinfo = localtime (&t);
+  strftime (buffer, 80, "%x %X", timeinfo);
+
+  info << buffer << " (" << hcontact->get_call_duration () << ")";
 
   gtk_list_store_prepend (store, &iter);
   gtk_list_store_set (store, &iter,
 		      COLUMN_CONTACT, &contact,
 		      COLUMN_PIXBUF, id,
 		      COLUMN_NAME, contact.get_name ().c_str (),
-		      COLUMN_STATUS, hcontact->get_status ().c_str (),
+		      COLUMN_STATUS, info.str ().c_str (),
 		      -1);
 }
 

@@ -225,10 +225,10 @@ Opal::Call::get_duration () const
 }
 
 
-const std::string
+const time_t 
 Opal::Call::get_start_time () const
 {
-  return (const char *) start_time.AsString (PTime::LongDateTime);
+  return start_time.GetTimeInSeconds ();
 }
 
 

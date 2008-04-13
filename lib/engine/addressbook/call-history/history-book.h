@@ -75,10 +75,11 @@ namespace History
 
     /* more specific api */
 
-    void add (const std::string name,
-	      const std::string uri,
-	      const std::string status,
-	      call_type c_t);
+    void add (const std::string & name,
+              const std::string & uri,
+              const time_t call_start,
+              const std::string & call_duration,
+              const call_type c_t);
 
     void clear ();
 
