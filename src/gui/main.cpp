@@ -2377,7 +2377,8 @@ motion_detection_cb (gpointer data)
   gdk_threads_enter ();
   timeout = gm_conf_get_int (PERSONAL_DATA_KEY "auto_away_timeout");
   st = gm_conf_get_string (PERSONAL_DATA_KEY "short_status");
-  status = st;
+  if (st != NULL)
+    status = st;
   g_free (st);
   gdk_threads_leave ();
 
@@ -2404,7 +2405,8 @@ motion_detection_cb (gpointer data)
     idle->idle = TRUE;
 
     gdk_threads_enter ();
-    idle->last_status = status;
+    if (!status.empty ())
+      idle->last_status = status;
     gdk_threads_leave ();
   }
 
