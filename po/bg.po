@@ -1,18 +1,19 @@
 # Bulgarian translation of ekiga.
-# Copyright (C) 2004, 2005, 2006, 2007 Free Software Foundation, Inc.
+# Copyright (C) 2004, 2005, 2006, 2007, 2008 Free Software Foundation, Inc.
 # This file is distributed under the same license as the ekiga package.
 # Rostislav "zbrox" Raykov <zbrox@dir.bg>, 2004, 2005, 2006.
 # Vladimir Petkov <vpetkov@i-space.org>, 2005.
 # Iassen Pramatarov <turin@fsa-bg.org>, 2005.
 # Alexander Shopov <ash@contact.bg>, 2006, 2007.
+# Yavor Doganov <yavor@gnu.org>, 2008.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: ekiga gnome-2-20\n"
+"Project-Id-Version: ekiga gnome-2-22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-04 00:34+0300\n"
-"PO-Revision-Date: 2007-09-03 17:08+0300\n"
-"Last-Translator: Alexander Shopov <ash@contact.bg>\n"
+"POT-Creation-Date: 2008-04-13 21:15+0300\n"
+"PO-Revision-Date: 2008-03-31 18:06+0300\n"
+"Last-Translator: Yavor Doganov <yavor@gnu.org>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,7 +22,7 @@ msgstr ""
 
 #: ../ekiga.desktop.in.in.h:1
 msgid "Ekiga Softphone"
-msgstr "Телефон по Интернет - Ekiga"
+msgstr "Телефон по Интернет (Ekiga)"
 
 #: ../ekiga.desktop.in.in.h:2
 msgid "IP Telephony, VoIP and Video Conferencing"
@@ -447,7 +448,7 @@ msgstr "Избор на изходното звуково устройство"
 #: ../ekiga.schemas.in.in.h:90 ../src/gui/preferences.cpp:959
 msgid ""
 "Select the desired method for NAT traversal (STUN is strongly suggested)"
-msgstr "Предпочитан метод за преминаване през NAT (силно се препоръчва STUN)"
+msgstr "Предпочитан метод за преминаване през NAT (горещо се препоръчва STUN)"
 
 #: ../ekiga.schemas.in.in.h:91 ../src/gui/preferences.cpp:1178
 msgid ""
@@ -531,7 +532,7 @@ msgid ""
 "The Gateway host is the host to use to do H.323 calls through a gateway that "
 "will relay calls"
 msgstr ""
-"Шлюзът е хостът, който ще се използва за препредаване на обаждания с H.323"
+"Шлюзът е хостът, който ще се използва за препредаване на обаждания по H.323"
 
 #: ../ekiga.schemas.in.in.h:107
 msgid "The NAT method"
@@ -822,7 +823,7 @@ msgstr "Времето, след което Ekiga ще поднови регис
 
 #: ../ekiga.schemas.in.in.h:158
 msgid "The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)"
-msgstr "Двубуквеният код на вашата страна (например: BG, UK, FR, DE, ...)"
+msgstr "Двубуквеният код на вашата страна (например: BG, UK, FR, DE, …)"
 
 #: ../ekiga.schemas.in.in.h:159 ../src/gui/preferences.cpp:1172
 msgid "The video channel number to use (to select camera, tv or other sources)"
@@ -884,8 +885,8 @@ msgstr ""
 "Това включва тунелирането на H.245. В този режим съобщенията за H.245 се "
 "вграждат в канала за H.225 (порт 1720). Това спестява една връзка по TCP по "
 "време на обаждане. Тунелирането на H.245 бе въведено с H.323v2 и Netmeeting "
-"не го поддържа. Ползването на „Бързо набиране“ и тунелирането по H.245, може "
-"да забие някои версии на Netmeeting."
+"не го поддържа. Ползването едновременно на „Бързо набиране“ и тунелиране по "
+"H.245 може да забие някои версии на Netmeeting."
 
 #: ../ekiga.schemas.in.in.h:167 ../src/gui/preferences.cpp:1003
 msgid "This enables H.245 early in the setup"
@@ -992,74 +993,6 @@ msgstr "Ориентация"
 msgid "The orientation of the tray."
 msgstr "Ориентация на тавата."
 
-#: ../src/clients/ils.cpp:105 ../src/gui/tools.cpp:174
-msgid "Invalid parameters"
-msgstr "Невалидни параметри"
-
-#: ../src/clients/ils.cpp:105
-msgid ""
-"Please provide your first name and e-mail in the Personal Data section in "
-"order to be able to register to the users directory."
-msgstr ""
-"Въведете първото си име и е-пощата в раздела за лични данни, за да можете да "
-"се регистрирате в регистъра за потребители"
-
-#: ../src/clients/ils.cpp:145
-msgid "Invalid users directory"
-msgstr "Невалиден регистър с потребители"
-
-#: ../src/clients/ils.cpp:145
-msgid "Operation impossible since there is no users directory specified."
-msgstr "Действието е невъзможно, тъй като няма избран регистър с потребители."
-
-#: ../src/clients/ils.cpp:238
-msgid "Failed to parse XML file"
-msgstr "Неуспех при анализа на файл с XML"
-
-#: ../src/clients/ils.cpp:238
-msgid ""
-"There was an error while parsing the XML file. Please make sure that it is "
-"correctly installed in your system."
-msgstr ""
-"Грешка при анализа на файла с XML. Проверете дали е инсталиран правилно на "
-"системата ви."
-
-#: ../src/clients/ils.cpp:249
-msgid "Bad information"
-msgstr "Грешна информация"
-
-#: ../src/clients/ils.cpp:249
-#, c-format
-msgid "Bad LDAP information from XML file: %s."
-msgstr "Грешна информация за LDAP от файла с XML: %s."
-
-#: ../src/clients/ils.cpp:257
-#, c-format
-msgid "ILS registration failed: unable to connect to %s"
-msgstr "Грешка при регистрация по ILS: свързването към %s е невъзможно"
-
-#: ../src/clients/ils.cpp:270
-msgid "ILS registration failed: unable to set time limit on operations"
-msgstr ""
-"Грешка при регистрация по ILS: не може да се зададе ограничение по време на "
-"действията"
-
-#: ../src/clients/ils.cpp:282
-#, c-format
-msgid "ILS registration failed: failed to bind to %s"
-msgstr "Грешка при регистрация по ILS: неуспех при свързването към %s"
-
-#: ../src/clients/ils.cpp:310
-#, c-format
-msgid "Updated information on %s"
-msgstr "Данните за %s са обновени"
-
-#: ../src/clients/ils.cpp:314 ../src/endpoints/accountshandler.cpp:332
-#: ../src/endpoints/sip.cpp:236
-#, c-format
-msgid "Unregistered from %s"
-msgstr "Прекъсване на регистрацията към %s"
-
 #: ../src/clients/stun.cpp:104
 #, c-format
 msgid "STUN server set to %s"
@@ -1102,6 +1035,7 @@ msgstr ""
 "локална защитна стена, която да блокира портовете, използвани от Ekiga."
 
 #: ../src/clients/stun.cpp:153
+#, c-format
 msgid ""
 "Ekiga detected Symmetric NAT. The most appropriate method, if your router "
 "does not natively support SIP or H.323, is to forward the required ports to "
@@ -1228,6 +1162,7 @@ msgstr ""
 "(включително за SIP или H.323), използвайте „ekiga -c адрес“."
 
 #: ../src/components/bonobo.cpp:170
+#, c-format
 msgid ""
 "It appears that you do not have ekiga.server installed in a valid location. "
 "Factory mode disabled.\n"
@@ -1236,6 +1171,7 @@ msgstr ""
 "фабрика се изключва.\n"
 
 #: ../src/components/bonobo.cpp:174
+#, c-format
 msgid ""
 "Error registering Ekiga with the activation service; factory mode disabled.\n"
 msgstr ""
@@ -1243,6 +1179,7 @@ msgstr ""
 "фабрика се изключва.\n"
 
 #: ../src/components/bonobo.cpp:214
+#, c-format
 msgid "Failed to retrieve Ekiga server from activation server\n"
 msgstr "Грешка при получаване на сървъра на Ekiga от услугата за активиране.\n"
 
@@ -1311,9 +1248,9 @@ msgstr ""
 #: ../src/devices/audio.cpp:481 ../src/devices/audio.cpp:482
 #: ../src/devices/videoinput.cpp:310 ../src/devices/videoinput.cpp:585
 #: ../src/endpoints/ekiga.cpp:351 ../src/endpoints/ekiga.cpp:353
-#: ../src/endpoints/ekiga.cpp:355 ../src/endpoints/pcss.cpp:194
-#: ../src/gui/druid.cpp:1780 ../src/gui/druid.cpp:1792
-#: ../src/gui/druid.cpp:1850
+#: ../src/endpoints/ekiga.cpp:355 ../src/endpoints/pcss.cpp:198
+#: ../src/gui/druid.cpp:1784 ../src/gui/druid.cpp:1796
+#: ../src/gui/druid.cpp:1854
 msgid "No device found"
 msgstr "Не беше открито устройство"
 
@@ -1367,12 +1304,13 @@ msgstr ""
 "файловете и дали е зареден правилният драйвер."
 
 #: ../src/devices/videoinput.cpp:372 ../src/devices/videoinput.cpp:686
+#, c-format
 msgid "Your video driver doesn't support the requested video format."
 msgstr "Видео драйверът ви не поддържа избрания видео формат."
 
 #: ../src/devices/videoinput.cpp:376
 msgid "Could not open the chosen channel."
-msgstr "Избрания канал не може да бъде отворен."
+msgstr "Избраният канал не може да бъде отворен."
 
 #: ../src/devices/videoinput.cpp:380
 msgid ""
@@ -1427,19 +1365,23 @@ msgid "Error while opening %s."
 msgstr "Грешка при отваряне на %s."
 
 #: ../src/devices/videoinput.cpp:690
+#, c-format
 msgid "Could not open the chosen channel with the chosen video format."
 msgstr "Не може да се отвори избрания канал с избрания видео формат"
 
 #: ../src/devices/videoinput.cpp:694
+#, c-format
 msgid "Your driver doesn't support any of the color formats tried by Ekiga"
 msgstr ""
 "Драйверът ви не поддържа нито един от цветовите формати пробвани от Ekiga"
 
 #: ../src/devices/videoinput.cpp:698
+#, c-format
 msgid "Error with the frame rate."
-msgstr "Грешка с кадрите в секунда"
+msgstr "Грешка при кадрите в секунда."
 
 #: ../src/devices/videoinput.cpp:702
+#, c-format
 msgid "Error with the frame size."
 msgstr "Грешка при големината на прозореца."
 
@@ -1490,6 +1432,11 @@ msgstr "Регистриран към %s"
 #: ../src/endpoints/accountshandler.cpp:322 ../src/endpoints/sip.cpp:231
 msgid "Registered"
 msgstr "Регистриран"
+
+#: ../src/endpoints/accountshandler.cpp:332 ../src/endpoints/sip.cpp:236
+#, c-format
+msgid "Unregistered from %s"
+msgstr "Прекъсване на регистрацията към %s"
 
 #: ../src/endpoints/accountshandler.cpp:352 ../src/endpoints/sip.cpp:242
 msgid "Unregistered"
@@ -1552,7 +1499,7 @@ msgstr "Свързан с %s чрез %s"
 msgid "Connected with %s"
 msgstr "Свързан с %s"
 
-#: ../src/endpoints/manager.cpp:1124 ../src/gui/main.cpp:4156
+#: ../src/endpoints/manager.cpp:1124 ../src/gui/main.cpp:4157
 msgid "Standby"
 msgstr "Изчакване"
 
@@ -1688,21 +1635,21 @@ msgstr ""
 "%.2ldч.%.2ldм.%.2ldс.|ср. ск-ст изпр./пол. %.2f/%.2f|ск-ст изпр./пол. %.2f/"
 "%.2f"
 
-#: ../src/endpoints/pcss.cpp:218
+#: ../src/endpoints/pcss.cpp:222
 #, c-format
 msgid "Opened %s for recording with plugin %s"
 msgstr "%s е отворен за запис с приставката %s"
 
-#: ../src/endpoints/pcss.cpp:219
+#: ../src/endpoints/pcss.cpp:223
 #, c-format
 msgid "Opened %s for playing with plugin %s"
 msgstr "%s е отворен за възпроизвеждане с приставката %s"
 
-#: ../src/endpoints/pcss.cpp:237
+#: ../src/endpoints/pcss.cpp:241
 msgid "Could not open audio channel for audio transmission"
 msgstr "Неуспех при отваряне на аудио канала за аудио предаване"
 
-#: ../src/endpoints/pcss.cpp:237
+#: ../src/endpoints/pcss.cpp:241
 msgid ""
 "An error occured while trying to record from the soundcard for the audio "
 "transmission. Please check that your soundcard is not busy and that your "
@@ -1714,11 +1661,11 @@ msgstr ""
 "пълен дуплекс.\n"
 "Предаването на глас е изключено."
 
-#: ../src/endpoints/pcss.cpp:239
+#: ../src/endpoints/pcss.cpp:243
 msgid "Could not open audio channel for audio reception"
 msgstr "Звуковият канал не може да бъде отворен за приемане"
 
-#: ../src/endpoints/pcss.cpp:239
+#: ../src/endpoints/pcss.cpp:243
 msgid ""
 "An error occured while trying to play audio to the soundcard for the audio "
 "reception. Please check that your soundcard is not busy and that your driver "
@@ -1946,7 +1893,7 @@ msgstr ""
 "<b>Бързо набиране</b>: %s\n"
 
 #: ../src/gui/addressbook.cpp:821 ../src/gui/addressbook.cpp:823
-#: ../src/gui/druid.cpp:1912 ../src/gui/preferences.cpp:930
+#: ../src/gui/druid.cpp:1916 ../src/gui/preferences.cpp:930
 msgid "None"
 msgstr "Няма"
 
@@ -2216,7 +2163,7 @@ msgstr ""
 
 #: ../src/gui/callbacks.cpp:124
 msgid "Disconnecting..."
-msgstr "Прекратяване на връзката..."
+msgstr "Прекратяване на връзката…"
 
 #: ../src/gui/callbacks.cpp:139
 msgid "Contributors:"
@@ -2230,9 +2177,53 @@ msgstr "Дизайн:"
 msgid "See AUTHORS file for full credits"
 msgstr "За пълния списък погледнете файла AUTHORS"
 
+#: ../src/gui/callbacks.cpp:168
+msgid ""
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version. "
+msgstr ""
+"Тази програма е свободен софтуер; можете да я разпространявате и/или "
+"променяте под условията на Общия публичен лиценз на GNU (GNU GPL), както е "
+"публикуван от Фондацията за свободен софтуер; версия 2 на лиценза или (по "
+"ваше решение) по-късна версия."
+
+#: ../src/gui/callbacks.cpp:172
+msgid ""
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for "
+"more details. You should have received a copy of the GNU General Public "
+"License along with this program; if not, write to the Free Software "
+"Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA."
+msgstr ""
+"Тази програма се разпространява с надеждата, че ще бъде полезна, но БЕЗ "
+"НИКАКВИ ГАРАНЦИИ, дори и косвените за ПРОДАЖБА или СЪОТВЕТСТВИЕ С КАКВАТО И "
+"ДА Е УПОТРЕБА. За подробности погледнете Общия публичен лиценз на GNU. "
+"Трябва да сте получили копие от Общия публичен лиценз на GNU (GNU GPL) "
+"заедно с тази програма. Ако не сте, пишете до Free Software Foundation, "
+"Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA."
+
+#: ../src/gui/callbacks.cpp:179
+msgid ""
+"Ekiga is licensed under the GPL license and as a special exception, you have "
+"permission to link or otherwise combine this program with the programs OPAL, "
+"OpenH323 and PWLIB, and distribute the combination, without applying the "
+"requirements of the GNU GPL to the OPAL, OpenH323 and PWLIB programs, as "
+"long as you do follow the requirements of the GNU GPL for all the rest of "
+"the software thus combined."
+msgstr ""
+"Ekiga е лицензирана под лиценза GPL и като специално изключение, имате "
+"разрешение да свързвате или комбинирате тази програма с програмите OPAL, "
+"OpenH323 и PWLIB, като разпространявате комбинацията без да прилагате "
+"условията на GNU GPL към програмите OPAL, OpenH323 и PWLIB - стига да "
+"следвате изискванията на GNU GPL за останалата част от така комбинирания "
+"софтуер."
+
 #. Translators: Please write translator credits here, and
 #. * separate names with \n
-#: ../src/gui/callbacks.cpp:190
+#: ../src/gui/callbacks.cpp:191
 msgid "translator-credits"
 msgstr ""
 "Ясен Праматаров <turin@fsa-bg.org>\n"
@@ -2244,7 +2235,7 @@ msgstr ""
 "Научете повече за нас на http://gnome.cult.bg\n"
 "Докладвайте за грешки на http://gnome.cult.bg/bugs"
 
-#: ../src/gui/callbacks.cpp:195
+#: ../src/gui/callbacks.cpp:196
 msgid ""
 "Ekiga is full-featured SIP and H.323 compatible VoIP, IP-Telephony and "
 "Videoconferencing application that allows you to make audio and video calls "
@@ -2605,27 +2596,27 @@ msgstr ""
 msgid "Configuration complete - page %d/%d"
 msgstr "Настройването на Ekiga приключи - страница %d от %d"
 
-#: ../src/gui/druid.cpp:1630
+#: ../src/gui/druid.cpp:1634
 msgid "56k Modem"
 msgstr "56k модем"
 
-#: ../src/gui/druid.cpp:1631
+#: ../src/gui/druid.cpp:1635
 msgid "ISDN"
 msgstr "ISDN"
 
-#: ../src/gui/druid.cpp:1632
+#: ../src/gui/druid.cpp:1636
 msgid "xDSL/Cable"
 msgstr "xDSL/кабел"
 
-#: ../src/gui/druid.cpp:1633
+#: ../src/gui/druid.cpp:1637
 msgid "T1/LAN"
 msgstr "T1/LAN"
 
-#: ../src/gui/druid.cpp:1634
+#: ../src/gui/druid.cpp:1638
 msgid "Keep current settings"
 msgstr "Запазване на текущите настройки"
 
-#: ../src/gui/druid.cpp:1912
+#: ../src/gui/druid.cpp:1916
 #, c-format
 msgid ""
 "You have now finished the Ekiga configuration. All the settings can be "
@@ -2659,7 +2650,7 @@ msgstr ""
 "Видео вход: %s\n"
 "Адрес за SIP: %s\n"
 
-#: ../src/gui/druid.cpp:1967
+#: ../src/gui/druid.cpp:1971
 msgid "First Time Configuration Assistant"
 msgstr "Помощник за първоначално настройване"
 
@@ -2686,7 +2677,7 @@ msgstr "Отваряне на указателя"
 
 #: ../src/gui/main.cpp:775
 msgid "Display images from your camera device"
-msgstr "Показване на изображения от Вашата камера"
+msgstr "Показване на изображения от камерата ви"
 
 #: ../src/gui/main.cpp:798
 msgid ""
@@ -2726,7 +2717,7 @@ msgstr "Прекратяване на текущото обаждане"
 
 #: ../src/gui/main.cpp:913 ../src/gui/statusicon.cpp:110
 msgid "_Available"
-msgstr "_Свободен"
+msgstr "С_вободен"
 
 #: ../src/gui/main.cpp:914 ../src/gui/statusicon.cpp:111
 msgid "Display a popup to accept the call"
@@ -2742,7 +2733,7 @@ msgstr "Автоматично отговаряне на обаждания"
 
 #: ../src/gui/main.cpp:925 ../src/gui/statusicon.cpp:122
 msgid "_Do Not Disturb"
-msgstr "_Не ме безпокойте"
+msgstr "Не ме _безпокойте"
 
 #: ../src/gui/main.cpp:926 ../src/gui/statusicon.cpp:123
 msgid "Reject calls"
@@ -2750,7 +2741,7 @@ msgstr "Отказване на обаждания"
 
 #: ../src/gui/main.cpp:931 ../src/gui/statusicon.cpp:128
 msgid "_Forward"
-msgstr "_Прехвърляне"
+msgstr "Пр_ехвърляне"
 
 #: ../src/gui/main.cpp:931 ../src/gui/statusicon.cpp:128
 msgid "Forward calls"
@@ -2758,11 +2749,11 @@ msgstr "Прехвърляне на обаждания"
 
 #: ../src/gui/main.cpp:939
 msgid "Speed d_ials"
-msgstr "_Бързи набирания"
+msgstr "Б_ързи набирания"
 
 #: ../src/gui/main.cpp:943 ../src/gui/main.cpp:3148
 msgid "_Hold Call"
-msgstr "_Задържане на обаждането"
+msgstr "З_адържане на обаждането"
 
 #: ../src/gui/main.cpp:943
 msgid "Hold the current call"
@@ -2770,7 +2761,7 @@ msgstr "Задържане на текущото обаждане"
 
 #: ../src/gui/main.cpp:947
 msgid "_Transfer Call"
-msgstr "_Прехвърляне на обаждане"
+msgstr "Пре_хвърляне на обаждане"
 
 #: ../src/gui/main.cpp:948
 msgid "Transfer the current call"
@@ -2778,7 +2769,7 @@ msgstr "Прехвърляне на текущото обаждане"
 
 #: ../src/gui/main.cpp:955 ../src/gui/main.cpp:3182
 msgid "Suspend _Audio"
-msgstr "Спиране на _звука"
+msgstr "Сп_иране на звука"
 
 #: ../src/gui/main.cpp:956
 msgid "Suspend or resume the audio transmission"
@@ -2794,7 +2785,7 @@ msgstr "Спиране или продължаване на предаванет
 
 #: ../src/gui/main.cpp:968
 msgid "_Save Current Picture"
-msgstr "_Записване на текущата картинка"
+msgstr "Записване на те_кущата картинка"
 
 #: ../src/gui/main.cpp:969
 msgid "Save a snapshot of the current video"
@@ -2970,7 +2961,7 @@ msgstr "На _цял екран"
 
 #: ../src/gui/main.cpp:1115
 msgid "_Tools"
-msgstr "_Инструменти"
+msgstr "Ин_струменти"
 
 #: ../src/gui/main.cpp:1117 ../src/gui/statusicon.cpp:136
 msgid "Address _Book"
@@ -3184,7 +3175,7 @@ msgstr ""
 "Непоследователни пакети: %.1f %%\n"
 "Защитен буфер: %d ms"
 
-#: ../src/gui/main.cpp:4574
+#: ../src/gui/main.cpp:4575
 #, c-format
 msgid ""
 "Ekiga got an invalid value for the GConf key %s.\n"
@@ -3206,23 +3197,23 @@ msgstr ""
 "www.gnome.org/projects/gconf/) или архивите на пощенските списъци (http://"
 "mail.gnome.org)."
 
-#: ../src/gui/main.cpp:4577
+#: ../src/gui/main.cpp:4578
 msgid "Gconf key error"
 msgstr "Грешка в ключ на GConf"
 
-#: ../src/gui/main.cpp:4608 ../src/gui/main.cpp:4627
+#: ../src/gui/main.cpp:4609 ../src/gui/main.cpp:4628
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "Показване на съобщенията за грешка в конзолата (нива между 1 и 6)"
 
-#: ../src/gui/main.cpp:4611 ../src/gui/main.cpp:4632
+#: ../src/gui/main.cpp:4612 ../src/gui/main.cpp:4633
 msgid "Makes Ekiga call the given URL"
 msgstr "Кара Ekiga да набере дадения адрес"
 
-#: ../src/gui/main.cpp:4665
+#: ../src/gui/main.cpp:4666
 msgid "No usable audio plugin detected"
 msgstr "Не беше открита използваема аудио приставка"
 
-#: ../src/gui/main.cpp:4665
+#: ../src/gui/main.cpp:4666
 msgid ""
 "Ekiga didn't find any usable audio plugin. Make sure that your installation "
 "is correct."
@@ -3260,7 +3251,7 @@ msgstr "Въведете фамилията си"
 
 #: ../src/gui/preferences.cpp:648
 msgid "E-_mail address:"
-msgstr "Адрес на е-поща:"
+msgstr "Адрес на _е-поща:"
 
 #: ../src/gui/preferences.cpp:650
 msgid "Enter your e-mail address"
@@ -3310,7 +3301,7 @@ msgstr "Видео дисплей"
 
 #: ../src/gui/preferences.cpp:693
 msgid "Place windows displaying video _above other windows"
-msgstr "Поставяне на прозорците за видео над другите прозорци"
+msgstr "Поставяне на прозорците за видео _над другите прозорци"
 
 #: ../src/gui/preferences.cpp:706
 msgid "Users Directory"
@@ -3337,7 +3328,7 @@ msgstr "Ако е избрано, се регистрирате в избран�
 #: ../src/gui/preferences.cpp:714
 msgid "_Publish my details in the users directory when registering"
 msgstr ""
-"Публикуване на информацията ви в регистъра за потребители при регистрация"
+"_Публикуване на информацията ви в регистъра за потребители при регистрация"
 
 #: ../src/gui/preferences.cpp:714
 msgid ""
@@ -3832,6 +3823,10 @@ msgstr "Видео кодери"
 #: ../src/gui/preferences.cpp:2012
 msgid "Devices"
 msgstr "Устройства"
+
+#: ../src/gui/tools.cpp:174
+msgid "Invalid parameters"
+msgstr "Невалидни параметри"
 
 #: ../src/gui/tools.cpp:174
 msgid ""
