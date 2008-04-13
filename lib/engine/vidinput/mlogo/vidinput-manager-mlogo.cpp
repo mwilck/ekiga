@@ -89,6 +89,7 @@ bool GMVidInputManager_mlogo::open (unsigned width, unsigned height, unsigned fp
   memset (background_frame + (current_state.width * current_state.height) + ((current_state.width*current_state.height) >> 2), 0x7f, (current_state.width*current_state.height) >> 2);
 
   m_Pacing.Restart();
+  m_Pacing.SetMaximumSlip((unsigned )( 500.0 / fps));
 
   current_state.opened  = true;
   vidinput_config.whiteness = 127;
