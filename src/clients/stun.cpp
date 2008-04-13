@@ -279,9 +279,6 @@ void GMStunClient::Main ()
   PString html;
   PString public_ip;
   PString listener_ip;
-  PINDEX pos = 0;
-
-  gchar *ip_detector = NULL;
   gboolean has_nat = FALSE;
   int nat_type_index = 0;
 
