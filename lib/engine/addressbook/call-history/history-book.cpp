@@ -116,7 +116,7 @@ History::Book::add (xmlNodePtr node)
 void
 History::Book::add (const std::string & name,
 		    const std::string & uri,
-                    const time_t call_start,
+                    const time_t & call_start,
                     const std::string & call_duration,
 		    const call_type c_t)
 {
@@ -146,6 +146,7 @@ History::Book::common_add (Contact &contact)
 bool
 History::Book::populate_menu (Ekiga::MenuBuilder &builder)
 {
+  std::cout << "populate_menu" << std::endl << std::flush;
   builder.add_action ("clear",
 		      "Clear", sigc::mem_fun (this,
 					      &History::Book::clear));

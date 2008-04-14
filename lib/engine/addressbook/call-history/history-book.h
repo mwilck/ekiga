@@ -77,7 +77,7 @@ namespace History
 
     void add (const std::string & name,
               const std::string & uri,
-              const time_t call_start,
+              const time_t & call_start,
               const std::string & call_duration,
               const call_type c_t);
 

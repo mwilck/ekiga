@@ -49,7 +49,7 @@ enum {
   COLUMN_CONTACT,
   COLUMN_PIXBUF,
   COLUMN_NAME,
-  COLUMN_STATUS,
+  COLUMN_INFO,
   COLUMN_NUMBER
 };
 
@@ -107,16 +107,19 @@ on_contact_added (Ekiga::Contact &contact,
 
   t = hcontact->get_call_start ();
   timeinfo = localtime (&t);
-  strftime (buffer, 80, "%x %X", timeinfo);
-
-  info << buffer << " (" << hcontact->get_call_duration () << ")";
+  if (timeinfo != NULL) {
+    strftime (buffer, 80, "%x %X", timeinfo);
+    info << buffer << " (" << hcontact->get_call_duration () << ")";
+  }
+  else
+    info << hcontact->get_call_duration ();
 
   gtk_list_store_prepend (store, &iter);
   gtk_list_store_set (store, &iter,
 		      COLUMN_CONTACT, &contact,
 		      COLUMN_PIXBUF, id,
 		      COLUMN_NAME, contact.get_name ().c_str (),
-		      COLUMN_STATUS, info.str ().c_str (),
+		      COLUMN_INFO, info.str ().c_str (),
 		      -1);
 }
 
@@ -221,7 +224,7 @@ call_history_view_gtk_new (History::Book &book)
   gtk_tree_view_column_add_attribute (column, renderer,
 				      "primary-text", COLUMN_NAME);
   gtk_tree_view_column_add_attribute (column, renderer,
-				      "secondary-text", COLUMN_STATUS);
+				      "secondary-text", COLUMN_INFO);
   gtk_tree_view_append_column (GTK_TREE_VIEW (tree), column);
 
   /* react to user clicks */

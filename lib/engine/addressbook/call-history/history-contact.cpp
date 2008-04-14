@@ -85,7 +85,7 @@ History::Contact::Contact (Ekiga::ServiceCore &_core,
 
         xml_str = xmlNodeGetContent (child);
 	if (xml_str != NULL)
-	  call_duration = (unsigned) atoi ((const char *) xml_str);
+	  call_duration = (const char *) xml_str;
         xmlFree (xml_str);
       }
     }
@@ -101,6 +101,7 @@ History::Contact::Contact (Ekiga::ServiceCore &_core,
 			   call_type c_t):
   core(_core), name(_name), uri(_uri), call_start(_call_start), call_duration(_call_duration), m_type(c_t)
 {
+  gchar *tmp = NULL;
   std::string callp;
   contact_core
     = dynamic_cast<Ekiga::ContactCore*>(core.get ("contact-core"));
@@ -111,15 +112,15 @@ History::Contact::Contact (Ekiga::ServiceCore &_core,
   xmlNewChild (node, NULL,
 	       BAD_CAST "name", BAD_CAST name.c_str ());
 
-  callp = call_start;
+  tmp = g_strdup_printf ("%lu", call_start);
   xmlNewChild (node, NULL,
-	       BAD_CAST "call_start", BAD_CAST callp.c_str ());
-  callp = call_duration;
+	       BAD_CAST "call_start", BAD_CAST tmp);
+  g_free (tmp);
+
   xmlNewChild (node, NULL,
-	       BAD_CAST "call_duration", BAD_CAST callp.c_str ());
+	       BAD_CAST "call_duration", BAD_CAST call_duration.c_str ());
 
   /* FIXME: I don't like the way it's done */
-  gchar *tmp = NULL;
   tmp = g_strdup_printf ("%d", m_type);
   xmlSetProp (node, BAD_CAST "type", BAD_CAST tmp);
   g_free (tmp);
