@@ -1,5 +1,13 @@
 2008-04-14  Matthias Schneider  <ma30002000@yahoo.de>
 
+	* lib/engine/vidinput/skel/vidinput-core.cpp:
+	* lib/engine/vidinput/skel/vidinput-core.h:
+	Fallback on receiption of the video inut device removed
+	signal as well. Should not happen too often since the 
+	get_frame_data should have failed anyway before...
+
+2008-04-14  Matthias Schneider  <ma30002000@yahoo.de>
+
 	* lib/engine/audioinput/skel/audioinput-core.cpp:
 	* lib/engine/audioinput/skel/audioinput-core.h:
 	* lib/engine/audiooutput/skel/audiooutput-core.cpp:
@@ -8,7 +16,7 @@
 	Allow audio devices to be removed during a call. We fall back to 
 	NULL in that case. Added a small hack to allow hotplugging of Logitech
 	devices that are badly reported by hal.
-	
+
 2008-04-14  Matthias Schneider  <ma30002000@yahoo.de>
 
 	* lib/engine/hal/dbus/hal-manager-dbus.cpp:

@@ -212,31 +212,8 @@ void VidInputCore::get_vidinput_devices (std::vector <VidInputDevice> & vidinput
 
 void VidInputCore::set_vidinput_device(const VidInputDevice & vidinput_device, int channel, VideoFormat format)
 {
-  PTRACE(4, "VidInputCore\tSetting device: " << vidinput_device.type << "/" << vidinput_device.source << "/" << vidinput_device.device);
-
-  if ( ( desired_device.type   != vidinput_device.type   ) ||
-       ( desired_device.source != vidinput_device.source ) ||
-       ( desired_device.device != vidinput_device.device ) ||
-       ( current_channel       != channel ) ||
-       ( current_format        != format  ) ) {
-
-    if (preview_config.active && !stream_config.active)
-      preview_manager.stop();
-
-    if (preview_config.active || stream_config.active)
-      internal_close();
-
-    internal_set_device (vidinput_device, channel, format);
-
-    if (preview_config.active && !stream_config.active) {
-      internal_open(preview_config.width, preview_config.height, preview_config.fps);
-      preview_manager.start(preview_config.width,preview_config.height);
-    }
-
-    if (stream_config.active)
-      internal_open(stream_config.width, stream_config.height, stream_config.fps);
-
-  }
+  PWaitAndSignal m(var_mutex);
+  internal_set_vidinput_device(vidinput_device, channel, format);
   desired_device  = vidinput_device;
 }
 
@@ -490,6 +467,27 @@ void VidInputCore::on_vidinputdevice_closed (VidInputDevice vidinput_device, Vid
   vidinputdevice_closed.emit (*manager, vidinput_device);
 }
 
+void VidInputCore::internal_set_vidinput_device(const VidInputDevice & vidinput_device, int channel, VideoFormat format)
+{
+  PTRACE(4, "VidInputCore\tSetting device: " << vidinput_device.type << "/" << vidinput_device.source << "/" << vidinput_device.device);
+
+  if (preview_config.active && !stream_config.active)
+    preview_manager.stop();
+
+  if (preview_config.active || stream_config.active)
+    internal_close();
+
+  internal_set_device (vidinput_device, channel, format);
+
+  if (preview_config.active && !stream_config.active) {
+    internal_open(preview_config.width, preview_config.height, preview_config.fps);
+    preview_manager.start(preview_config.width,preview_config.height);
+  }
+
+  if (stream_config.active)
+    internal_open(stream_config.width, stream_config.height, stream_config.fps);
+}
+
 void VidInputCore::internal_open (unsigned width, unsigned height, unsigned fps)
 {
   PTRACE(4, "VidInputCore\tOpening device with " << width << "x" << height << "/" << fps );
@@ -547,7 +545,9 @@ void VidInputCore::internal_set_fallback ()
 
 void VidInputCore::add_device (std::string & source, std::string & device, unsigned capabilities, HalManager* /*manager*/)
 {
-  PTRACE(0, "VidInputCore\tAdding Device");
+  PTRACE(0, "VidInputCore\tAdding Device " << device);
+  PWaitAndSignal m(var_mutex);
+
   VidInputDevice vidinput_device;
   for (std::set<VidInputManager *>::iterator iter = managers.begin ();
        iter != managers.end ();
@@ -557,10 +557,7 @@ void VidInputCore::add_device (std::string & source, std::string & device, unsig
        if ( ( desired_device.type   == vidinput_device.type   ) &&
             ( desired_device.source == vidinput_device.source ) &&
             ( desired_device.device == vidinput_device.device ) ) {
-	 desired_device.type = "";
-	 desired_device.source = "";
-	 desired_device.device = "";
-         set_vidinput_device(vidinput_device, current_channel, current_format);
+         internal_set_vidinput_device(vidinput_device, current_channel, current_format);
        }
 
        runtime.run_in_main (sigc::bind (vidinputdevice_added.make_slot (), vidinput_device));
@@ -570,12 +567,25 @@ void VidInputCore::add_device (std::string & source, std::string & device, unsig
 
 void VidInputCore::remove_device (std::string & source, std::string & device, unsigned capabilities, HalManager* /*manager*/)
 {
-  PTRACE(0, "VidInputCore\tRemoving Device");
+  PTRACE(0, "VidInputCore\tRemoving Device " << device);
+  PWaitAndSignal m(var_mutex);
+
   VidInputDevice vidinput_device;
   for (std::set<VidInputManager *>::iterator iter = managers.begin ();
        iter != managers.end ();
        iter++) {
      if ((*iter)->has_device (source, device, capabilities, vidinput_device)) {
+       if ( ( current_device.type   == vidinput_device.type   ) &&
+            ( current_device.source == vidinput_device.source ) &&
+            ( current_device.device == vidinput_device.device ) ) {
+
+            VidInputDevice new_vidinput_device;
+            new_vidinput_device.type = VIDEO_INPUT_FALLBACK_DEVICE_TYPE;
+            new_vidinput_device.source = VIDEO_INPUT_FALLBACK_DEVICE_SOURCE;
+            new_vidinput_device.device = VIDEO_INPUT_FALLBACK_DEVICE_DEVICE;
+            internal_set_vidinput_device(new_vidinput_device, current_channel, current_format);
+       }
+
        runtime.run_in_main (sigc::bind (vidinputdevice_removed.make_slot (), vidinput_device));
      }
   }
