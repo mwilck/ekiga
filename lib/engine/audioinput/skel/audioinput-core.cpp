@@ -206,34 +206,8 @@ void AudioInputCore::get_audioinput_devices (std::vector <AudioInputDevice> & au
 void AudioInputCore::set_audioinput_device(const AudioInputDevice & audioinput_device)
 {
   PWaitAndSignal m(var_mutex);
-  PTRACE(0, "AudioInputCore\tSetting device: " << audioinput_device.type << "/" << audioinput_device.source << "/" << audioinput_device.device);
 
-  if (preview_config.active)
-    preview_manager.stop();
-
-  if (preview_config.active || stream_config.active)
-    internal_close();
-
-  internal_set_device (audioinput_device);
-
-  if (preview_config.active) {
-    internal_open(preview_config.channels, preview_config.samplerate, preview_config.bits_per_sample);
-
-    if ((preview_config.buffer_size > 0) && (preview_config.num_buffers > 0 ) ) {
-      if (current_manager)
-        current_manager->set_buffer_size (preview_config.buffer_size, preview_config.num_buffers);
-    }
-//    preview_manager.start();
-  }
-
-  if (stream_config.active) {
-    internal_open(stream_config.channels, stream_config.samplerate, stream_config.bits_per_sample);
-
-    if ((stream_config.buffer_size > 0) && (stream_config.num_buffers > 0 ) ) {
-      if (current_manager)
-        current_manager->set_buffer_size (stream_config.buffer_size, stream_config.num_buffers);
-    }
-  }
+  internal_set_audioinput_device(audioinput_device);
 
   desired_device  = audioinput_device;
 }
@@ -394,6 +368,39 @@ void AudioInputCore::on_audioinputdevice_closed (AudioInputDevice audioinput_dev
   audioinputdevice_closed.emit (*manager, audioinput_device);
 }
 
+void AudioInputCore::internal_set_audioinput_device(const AudioInputDevice & audioinput_device)
+{
+  PTRACE(0, "AudioInputCore\tSetting device: " << audioinput_device.type << "/" << audioinput_device.source << "/" << audioinput_device.device);
+
+  if (preview_config.active)
+    preview_manager.stop();
+
+  if (preview_config.active || stream_config.active)
+    internal_close();
+
+  internal_set_device (audioinput_device);
+
+  if (preview_config.active) {
+    internal_open(preview_config.channels, preview_config.samplerate, preview_config.bits_per_sample);
+
+    if ((preview_config.buffer_size > 0) && (preview_config.num_buffers > 0 ) ) {
+      if (current_manager)
+        current_manager->set_buffer_size (preview_config.buffer_size, preview_config.num_buffers);
+    }
+//    preview_manager.start();
+  }
+
+  if (stream_config.active) {
+    internal_open(stream_config.channels, stream_config.samplerate, stream_config.bits_per_sample);
+
+    if ((stream_config.buffer_size > 0) && (stream_config.num_buffers > 0 ) ) {
+      if (current_manager)
+        current_manager->set_buffer_size (stream_config.buffer_size, stream_config.num_buffers);
+    }
+  }
+}
+
+
 void AudioInputCore::internal_open (unsigned channels, unsigned samplerate, unsigned bits_per_sample)
 {
   PTRACE(0, "AudioInputCore\tOpening device with " << channels << "-" << samplerate << "/" << bits_per_sample );
@@ -467,7 +474,9 @@ void AudioInputCore::internal_set_fallback()
 
 void AudioInputCore::add_device (std::string & source, std::string & device, HalManager* /*manager*/)
 {
-  PTRACE(0, "AudioInputCore\tAdding Device");
+  PTRACE(0, "AudioInputCore\tAdding Device " << device);
+  PWaitAndSignal m(var_mutex);
+
   AudioInputDevice audioinput_device;
   for (std::set<AudioInputManager *>::iterator iter = managers.begin ();
        iter != managers.end ();
@@ -477,7 +486,7 @@ void AudioInputCore::add_device (std::string & source, std::string & device, Hal
        if ( ( desired_device.type   == audioinput_device.type   ) &&
             ( desired_device.source == audioinput_device.source ) &&
             ( desired_device.device == audioinput_device.device ) ) {
-         set_audioinput_device(desired_device);
+         internal_set_audioinput_device(desired_device);
        }
 
        runtime.run_in_main (sigc::bind (audioinputdevice_added.make_slot (), audioinput_device));
@@ -487,12 +496,25 @@ void AudioInputCore::add_device (std::string & source, std::string & device, Hal
 
 void AudioInputCore::remove_device (std::string & source, std::string & device, HalManager* /*manager*/)
 {
-  PTRACE(0, "AudioInputCore\tRemoving Device");
+  PTRACE(0, "AudioInputCore\tRemoving Device " << device);
+  PWaitAndSignal m(var_mutex);
+
   AudioInputDevice audioinput_device;
   for (std::set<AudioInputManager *>::iterator iter = managers.begin ();
        iter != managers.end ();
        iter++) {
      if ((*iter)->has_device (source, device, audioinput_device)) {
+       if ( ( current_device.type   == audioinput_device.type   ) &&
+            ( current_device.source == audioinput_device.source ) &&
+            ( current_device.device == audioinput_device.device ) ) {
+
+            AudioInputDevice new_audioinput_device;
+            new_audioinput_device.type = AUDIO_INPUT_FALLBACK_DEVICE_TYPE;
+            new_audioinput_device.source = AUDIO_INPUT_FALLBACK_DEVICE_SOURCE;
+            new_audioinput_device.device = AUDIO_INPUT_FALLBACK_DEVICE_DEVICE;
+            internal_set_audioinput_device( new_audioinput_device);
+       }
+
        runtime.run_in_main (sigc::bind (audioinputdevice_removed.make_slot (), audioinput_device));
      }
   }

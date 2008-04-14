@@ -180,6 +180,7 @@ namespace Ekiga
                                         AudioOutputManager *manager);
       void on_audiooutputdevice_closed (AudioOutputPrimarySecondary primarySecondary, AudioOutputDevice audiooutput_device, AudioOutputManager *manager);
 
+      void internal_set_prim_audiooutput_device(const AudioOutputDevice & audiooutput_device);
       void internal_set_device (AudioOutputPrimarySecondary primarySecondary, const AudioOutputDevice & audiooutput_device);
       bool internal_open (AudioOutputPrimarySecondary primarySecondary, unsigned channels, unsigned samplerate, unsigned bits_per_sample);
       void internal_close(AudioOutputPrimarySecondary primarySecondary);

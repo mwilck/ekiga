@@ -346,6 +346,13 @@ bool HalManager_dbus::get_device_type_name (const char * device, HalDevice & hal
   }
 
   g_object_unref(device_proxy);
+  
+  // FIXME: Hack to support badly named Logitech devices
+  // Maybe this should be fixed in hald?
+  if (hal_device.name.substr(0, 17) == "Logitech Logitech") {
+    hal_device.name = hal_device.name.substr(9);
+  }
+  
   return ret;
 }
 

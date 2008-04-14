@@ -1,4 +1,16 @@
 2008-04-14  Matthias Schneider  <ma30002000@yahoo.de>
+
+	* lib/engine/audioinput/skel/audioinput-core.cpp:
+	* lib/engine/audioinput/skel/audioinput-core.h:
+	* lib/engine/audiooutput/skel/audiooutput-core.cpp:
+	* lib/engine/audiooutput/skel/audiooutput-core.h:
+	* lib/engine/hal/dbus/hal-manager-dbus.cpp:
+	Allow audio devices to be removed during a call. We fall back to 
+	NULL in that case. Added a small hack to allow hotplugging of Logitech
+	devices that are badly reported by hal.
+	
+2008-04-14  Matthias Schneider  <ma30002000@yahoo.de>
+
 	* lib/engine/hal/dbus/hal-manager-dbus.cpp:
 	Fixed possible crash due to conversion char* -> std::string.
 

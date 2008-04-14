@@ -162,31 +162,8 @@ void AudioOutputCore::set_audiooutput_device(AudioOutputPrimarySecondary primary
   switch (primarySecondary) {
     case primary:
       var_mutex[primary].Wait();
-      if (current_primary_config.active)
-        internal_close(primary);
-
-      if ( (audiooutput_device.type == current_device[secondary].type) &&
-           (audiooutput_device.source == current_device[secondary].source) &&
-           (audiooutput_device.device == current_device[secondary].device) )
-      { 
-        current_manager[secondary] = NULL;
-        current_device[secondary].type = "";
-        current_device[secondary].source = "";
-        current_device[secondary].device = "";
-      }
-
-      internal_set_device(primary, audiooutput_device);
-
-      if (current_primary_config.active)
-        internal_open(primary, current_primary_config.channels, current_primary_config.samplerate, current_primary_config.bits_per_sample);
-
-      if ((current_primary_config.buffer_size > 0) && (current_primary_config.num_buffers > 0 ) ) {
-        if (current_manager[primary])
-          current_manager[primary]->set_buffer_size (primary, current_primary_config.buffer_size, current_primary_config.num_buffers);
-      }
-
+      internal_set_prim_audiooutput_device (audiooutput_device);
       desired_primary_device = audiooutput_device;
-
       var_mutex[primary].Signal();
 
       break;
@@ -314,7 +291,31 @@ PTRACE(0, "Play buffer " << primarySecondary);
   }
 }
 
+void AudioOutputCore::internal_set_prim_audiooutput_device(const AudioOutputDevice & audiooutput_device)
+{
+  if (current_primary_config.active)
+     internal_close(primary);
 
+  if ( (audiooutput_device.type == current_device[secondary].type) &&
+       (audiooutput_device.source == current_device[secondary].source) &&
+       (audiooutput_device.device == current_device[secondary].device) )
+  { 
+    current_manager[secondary] = NULL;
+    current_device[secondary].type = "";
+    current_device[secondary].source = "";
+    current_device[secondary].device = "";
+  }
+
+  internal_set_device(primary, audiooutput_device);
+
+  if (current_primary_config.active)
+    internal_open(primary, current_primary_config.channels, current_primary_config.samplerate, current_primary_config.bits_per_sample);
+
+  if ((current_primary_config.buffer_size > 0) && (current_primary_config.num_buffers > 0 ) ) {
+    if (current_manager[primary])
+      current_manager[primary]->set_buffer_size (primary, current_primary_config.buffer_size, current_primary_config.num_buffers);
+  }
+}
 void AudioOutputCore::internal_set_device (AudioOutputPrimarySecondary primarySecondary, const AudioOutputDevice & audiooutput_device)
 {
   current_manager[primarySecondary] = NULL;
@@ -453,7 +454,9 @@ void AudioOutputCore::internal_set_primary_fallback()
 
 void AudioOutputCore::add_device (std::string & sink, std::string & device, HalManager* /*manager*/)
 {
-  PTRACE(0, "AudioOutputCore\tAdding Device");
+  PTRACE(0, "AudioOutputCore\tAdding Device " << device);
+  PWaitAndSignal m_pri(var_mutex[primary]);
+
   AudioOutputDevice audiooutput_device;
   for (std::set<AudioOutputManager *>::iterator iter = managers.begin ();
        iter != managers.end ();
@@ -463,7 +466,7 @@ void AudioOutputCore::add_device (std::string & sink, std::string & device, HalM
        if ( ( desired_primary_device.type   == audiooutput_device.type   ) &&
             ( desired_primary_device.source == audiooutput_device.source ) &&
             ( desired_primary_device.device == audiooutput_device.device ) ) {
-         set_audiooutput_device(primary, desired_primary_device);
+         internal_set_prim_audiooutput_device(desired_primary_device);
        }
 
        runtime.run_in_main (sigc::bind (audiooutputdevice_added.make_slot (), audiooutput_device));
@@ -473,12 +476,25 @@ void AudioOutputCore::add_device (std::string & sink, std::string & device, HalM
 
 void AudioOutputCore::remove_device (std::string & sink, std::string & device, HalManager* /*manager*/)
 {
-  PTRACE(0, "AudioOutputCore\tRemoving Device");
+  PTRACE(0, "AudioOutputCore\tRemoving Device " << device);
+  PWaitAndSignal m_pri(var_mutex[primary]);
+
   AudioOutputDevice audiooutput_device;
   for (std::set<AudioOutputManager *>::iterator iter = managers.begin ();
        iter != managers.end ();
        iter++) {
      if ((*iter)->has_device (sink, device, audiooutput_device)) {
+       if ( (audiooutput_device.type   == current_device[primary].type) &&
+            (audiooutput_device.source == current_device[primary].source) &&
+            (audiooutput_device.device == current_device[primary].device) ) {
+
+         AudioOutputDevice new_audiooutput_device;
+         new_audiooutput_device.type = AUDIO_OUTPUT_FALLBACK_DEVICE_TYPE;
+         new_audiooutput_device.source = AUDIO_OUTPUT_FALLBACK_DEVICE_SOURCE;
+         new_audiooutput_device.device = AUDIO_OUTPUT_FALLBACK_DEVICE_DEVICE;
+         internal_set_prim_audiooutput_device(new_audiooutput_device);
+       }
+
        runtime.run_in_main (sigc::bind (audiooutputdevice_removed.make_slot (), audiooutput_device));
      }
   }

@@ -193,6 +193,7 @@ namespace Ekiga
                                        AudioInputManager *manager);
       void on_audioinputdevice_closed (AudioInputDevice audioinput_device, AudioInputManager *manager);
 
+      void internal_set_audioinput_device(const AudioInputDevice & audioinput_device);
       void internal_open (unsigned channels, unsigned samplerate, unsigned bits_per_sample);
       void internal_close();
       void internal_set_device (const AudioInputDevice & audioinput_device);
