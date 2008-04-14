@@ -312,18 +312,31 @@ bool HalManager_dbus::get_device_type_name (const char * device, HalDevice & hal
       }
       else {
         if (supported_versions && 1) {
-          PTRACE(4, "HalManager_dbus\tDetected V4L capabilities on " << device_dir << " name: " << v4l1_name);
-          hal_device.name = v4l1_name;
-          hal_device.type = "capture";
-          hal_device.video_capabilities  |= V4L_VERSION_1;
+          if (v4l1_name) {
+            PTRACE(4, "HalManager_dbus\tDetected V4L capabilities on " << device_dir << " name: " << v4l1_name);
+            hal_device.name = v4l1_name;
+            hal_device.type = "capture";
+            hal_device.video_capabilities  |= V4L_VERSION_1;
+          }
+          else {
+            PTRACE(4, "HalManager_dbus\tSkipped V4L1 device " << device_dir <<  "without name");
+            ret = false;
+          }
         }
         if (supported_versions && 2) {
-          PTRACE(4, "HalManager_dbus\tDetected V4L2 capabilities on " << device_dir << " name: " << v4l2_name);
-          hal_device.name = v4l2_name;
-          hal_device.type = "capture";
-          hal_device.video_capabilities  |= V4L_VERSION_2;
+          if (v4l2_name) {
+            PTRACE(4, "HalManager_dbus\tDetected V4L2 capabilities on " << device_dir << " name: " << v4l2_name);
+            hal_device.name = v4l2_name;
+            hal_device.type = "capture";
+            hal_device.video_capabilities  |= V4L_VERSION_2;
+            ret = true;
+          }
+          else {
+            PTRACE(4, "HalManager_dbus\tSkipped V4L2 device " << device_dir <<  "without name");
+            ret = false;
+          }
         }
-        ret = true;
+
       }
   
       v4l_free_device_name(&v4l1_name);
@@ -408,11 +421,12 @@ void HalManager_dbus::populate_devices_list ()
     hal_device.key = *device_list_ptr;
     
     if (hal_device.key != "/org/freedesktop/Hal/devices/computer") {
-      get_device_type_name(*device_list_ptr, hal_device);
-      if ( (hal_device.category == "alsa") ||
-           (hal_device.category == "oss") ||
-           (hal_device.category == "video4linux") )  
-            hal_devices.push_back(hal_device);
+      if (get_device_type_name(*device_list_ptr, hal_device)) {
+        if ( (hal_device.category == "alsa") ||
+             (hal_device.category == "oss") ||
+             (hal_device.category == "video4linux") )  
+              hal_devices.push_back(hal_device);
+      }
     }
   }
 
