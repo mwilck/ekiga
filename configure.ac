@@ -633,6 +633,7 @@ lib/engine/gui/gtk-core/Makefile
 lib/engine/gui/gtk-frontend/Makefile
 lib/engine/components/Makefile
 lib/engine/components/gmconf-personal-details/Makefile
+lib/engine/components/avahi-publisher/Makefile
 )
 
 

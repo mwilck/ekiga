@@ -1,5 +1,19 @@
 2008-04-14  Damien Sandras  <dsandras@gnome.org>
 
+	* configure.ac:
+	* lib/engine/components/avahi-publisher:
+	* lib/engine/components/avahi-publisher/avahi-publisher.cpp:
+	* lib/engine/components/avahi-publisher/avahi-publisher-main.cpp:
+	* lib/engine/components/avahi-publisher/avahi-publisher.h:
+	* lib/engine/components/avahi-publisher/Makefile.am:
+	* lib/engine/components/avahi-publisher/avahi-publisher-main.h:
+	* lib/engine/components/Makefile.am:
+	Added skeleton class for a future AVAHI publisher. It will allow
+	removing it from GMManager, and make it change the status according to
+	the new settings.
+
+2008-04-14  Damien Sandras  <dsandras@gnome.org>
+
 	* lib/engine/addressbook/call-history/history-book.cpp:
 	Removed redundant cout.
 

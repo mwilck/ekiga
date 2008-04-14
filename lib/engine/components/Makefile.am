@@ -1,2 +1,3 @@
 SUBDIRS = 				\
-	gmconf-personal-details 
+	gmconf-personal-details 	\
+	avahi-publisher
