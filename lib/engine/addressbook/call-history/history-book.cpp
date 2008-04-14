@@ -146,7 +146,6 @@ History::Book::common_add (Contact &contact)
 bool
 History::Book::populate_menu (Ekiga::MenuBuilder &builder)
 {
-  std::cout << "populate_menu" << std::endl << std::flush;
   builder.add_action ("clear",
 		      "Clear", sigc::mem_fun (this,
 					      &History::Book::clear));
