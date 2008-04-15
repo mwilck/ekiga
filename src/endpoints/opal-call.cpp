@@ -215,11 +215,15 @@ const std::string
 Opal::Call::get_duration () const
 {
   std::stringstream duration;
-  PTimeInterval t = PTime () - start_time;
+  
+  if (start_time.IsValid ()) {
 
-  duration << setfill ('0') << setw (2) << t.GetHours () << ":";
-  duration << setfill ('0') << setw (2) << (t.GetMinutes () % 60) << ":";
-  duration << setfill ('0') << setw (2) << (t.GetSeconds () % 60);
+    PTimeInterval t = PTime () - start_time;
+
+    duration << setfill ('0') << setw (2) << t.GetHours () << ":";
+    duration << setfill ('0') << setw (2) << (t.GetMinutes () % 60) << ":";
+    duration << setfill ('0') << setw (2) << (t.GetSeconds () % 60);
+  }
 
   return duration.str ();
 }
