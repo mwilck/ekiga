@@ -1,5 +1,11 @@
 2008-04-15  Damien Sandras  <dsandras@gnome.org>
 
+	* lib/engine/components/avahi-publisher/Makefile.am:
+	* lib/engine/Makefile.am:
+	Fixed compilation of the new avahi publisher.
+
+2008-04-15  Damien Sandras  <dsandras@gnome.org>
+
 	* src/endpoints/opal-call.cpp:
 	When we have a missed call, start_time is not valid.
 	Make sure we do not return insane value is that case.

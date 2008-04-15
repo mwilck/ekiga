@@ -74,8 +74,9 @@ libekiga_engine_la_LIBADD = \
 	$(top_builddir)/lib/engine/vidinput/skel/libgmvidinput.la					\
 	$(top_builddir)/lib/engine/audioinput/skel/libgmaudioinput.la					\
 	$(top_builddir)/lib/engine/audiooutput/skel/libgmaudiooutput.la					\
-	$(top_builddir)/lib/engine/hal/skel/libgmhal.la					\
+	$(top_builddir)/lib/engine/hal/skel/libgmhal.la							\
 	$(top_builddir)/lib/engine/components/gmconf-personal-details/libgmconfpersonaldetails.la	\
+	$(top_builddir)/lib/engine/components/avahi-publisher/libavahipublisher.la
 	$(AM_LIBS)
 
 # Default Input Devices
