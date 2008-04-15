@@ -216,7 +216,7 @@ Opal::Call::get_duration () const
 {
   std::stringstream duration;
   
-  if (start_time.IsValid ()) {
+  if (start_time.IsValid () && IsEstablished ()) {
 
     PTimeInterval t = PTime () - start_time;
 
@@ -252,6 +252,8 @@ Opal::Call::parse_info (OpalConnection & connection)
     app = (const char *) connection.GetRemoteApplication ();
     uri = (const char *) connection.GetRemotePartyCallbackURL ();
     start_time = connection.GetConnectionStartTime ();
+    if (!start_time.IsValid ())
+      start_time = PTime ();
 
     if (!party_name.empty ())
       remote_party_name = party_name;
@@ -303,6 +305,8 @@ Opal::Call::OnReleased (OpalConnection & connection)
    * maybe create a copy constructor
    */
   if (!PIsDescendant(&connection, OpalPCSSConnection)) {
+
+    parse_info (connection);
 
     if (!IsEstablished ()
         && !is_outgoing ()

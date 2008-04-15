@@ -109,7 +109,9 @@ on_contact_added (Ekiga::Contact &contact,
   timeinfo = localtime (&t);
   if (timeinfo != NULL) {
     strftime (buffer, 80, "%x %X", timeinfo);
-    info << buffer << " (" << hcontact->get_call_duration () << ")";
+    info << buffer;
+    if (!hcontact->get_call_duration ().empty ())
+      info << " (" << hcontact->get_call_duration () << ")";
   }
   else
     info << hcontact->get_call_duration ();
