@@ -21,7 +21,8 @@ INCLUDES = 								\
 	-I$(top_srcdir)/lib/engine/audioinput/skel			\
 	-I$(top_srcdir)/lib/engine/audiooutput/skel			\
 	-I$(top_srcdir)/lib/engine/hal/skel				\
-	-I$(top_srcdir)/lib/engine/components/gmconf-personal-details
+	-I$(top_srcdir)/lib/engine/components/gmconf-personal-details	\
+	-I$(top_srcdir)/lib/engine/components/avahi-publisher
 
 # XVideo/X
 if !WIN32
