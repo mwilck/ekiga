@@ -1043,14 +1043,14 @@ on_vidinputdevice_error_cb (Ekiga::VidInputManager & /* manager */,
   gchar *tmp_msg = NULL;
 
   dialog_title =
-  g_strdup_printf (_("Error while opening video device %s"),
+  g_strdup_printf (_("Error while accessing video device %s"),
                    (const char *) vidinput_device.device.c_str());
 
   tmp_msg = g_strdup (_("A moving logo will be transmitted during calls. Notice that you can always transmit a given image or the moving logo by choosing \"Picture\" as video plugin and \"Moving logo\" or \"Static picture\" as device."));
   switch (error_code) {
 
     case Ekiga::ERR_DEVICE:
-      dialog_msg = g_strconcat (tmp_msg, "\n\n", _("There was an error while opening the device. Please check your permissions and make sure that the appropriate driver is loaded."), NULL);
+      dialog_msg = g_strconcat (tmp_msg, "\n\n", _("There was an error while opening the device. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your permissions and make sure that the appropriate driver is loaded."), NULL);
       break;
 
     case Ekiga::ERR_FORMAT:
@@ -1138,11 +1138,11 @@ on_audioinputdevice_error_cb (Ekiga::AudioInputManager & /* manager */,
   switch (error_code) {
 
     case Ekiga::AUDIO_ERR_DEVICE:
-      dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Impossible to open the selected audio device for recording. Please check your audio setup, the permissions and that the device is not busy."), NULL);
+      dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Unable to open the selected audio device for recording. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your audio setup, the permissions and that the device is not busy."), NULL);
       break;
 
     case Ekiga::AUDIO_ERR_READ:
-      dialog_msg = g_strconcat (tmp_msg, "\n\n", _("The selected audio device was successfully opened but it is impossible to read data from this device. Please check your audio setup."), NULL);
+      dialog_msg = g_strconcat (tmp_msg, "\n\n", _("The selected audio device was successfully opened but it is impossible to read data from this device. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your audio setup."), NULL);
       break;
 
     case Ekiga::ERR_NONE:
@@ -1223,11 +1223,11 @@ on_audiooutputdevice_error_cb (Ekiga::AudioOutputManager & /*manager */,
   switch (error_code) {
 
     case Ekiga::_AUDIO_ERR_DEVICE:
-      dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Impossible to open the selected audio device for playing. Please check your audio setup, the permissions and that the device is not busy."), NULL);
+      dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Unable to open the selected audio device for playing. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your audio setup, the permissions and that the device is not busy."), NULL);
       break;
 
     case Ekiga::_AUDIO_ERR_WRITE:
-      dialog_msg = g_strconcat (tmp_msg, "\n\n", _("The selected audio device was successfully opened but it is impossible to write data from this device. Please check your audio setup."), NULL);
+      dialog_msg = g_strconcat (tmp_msg, "\n\n", _("The selected audio device was successfully opened but it is impossible to write data from this device. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your audio setup."), NULL);
       break;
 
     case Ekiga::_AUDIO_ERR_NONE:
