@@ -179,8 +179,8 @@ struct _GmIdleTime
   gint x;
   gint y;
   guint counter;
-  std::string last_status;
   gboolean idle;
+  gchar *last_status;
 };
 
 typedef struct _GmIdleTime GmIdleTime;
@@ -2365,8 +2365,7 @@ motion_detection_cb (gpointer data)
   GdkModifierType mask;
   gint x, y;
   gint timeout = 0;
-  gchar *st = NULL;
-  std::string status;
+  gchar *status = NULL;
                   
   idle = (GmIdleTime *) data;
 
@@ -2376,10 +2375,7 @@ motion_detection_cb (gpointer data)
 
   gdk_threads_enter ();
   timeout = gm_conf_get_int (PERSONAL_DATA_KEY "auto_away_timeout");
-  st = gm_conf_get_string (PERSONAL_DATA_KEY "short_status");
-  if (st != NULL)
-    status = st;
-  g_free (st);
+  status = gm_conf_get_string (PERSONAL_DATA_KEY "short_status");
   gdk_threads_leave ();
 
   if (x != idle->x && y != idle->y) {
@@ -2390,25 +2386,29 @@ motion_detection_cb (gpointer data)
 
     if (idle->idle == TRUE) {
       
-      //TODO Update status
+      gm_conf_set_string (PERSONAL_DATA_KEY "short_status", idle->last_status);
       idle->idle = FALSE;
+      g_free (idle->last_status);
     }
   }
   else
     idle->counter++;
 
-  if (status != "online")
+  if (status && strcmp ("online", status)) {
+    g_free (status);
     return TRUE;
+  }
   
   if ((idle->counter > (unsigned) (timeout * 12)) && !idle->idle) {
 
     idle->idle = TRUE;
 
     gdk_threads_enter ();
-    if (!status.empty ())
-      idle->last_status = status;
+    idle->last_status = g_strdup (status);
+    gm_conf_set_string (PERSONAL_DATA_KEY "short_status", "away");
     gdk_threads_leave ();
   }
+  g_free (status);
 
   return TRUE;
 }
