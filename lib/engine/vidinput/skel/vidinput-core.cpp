@@ -264,6 +264,7 @@ void VidInputCore::stop_preview ()
   if (preview_config.active && !stream_config.active) {
     preview_manager.stop();
     internal_close();
+    internal_set_device(desired_device, current_channel, current_format);
   }
 
   preview_config.active = false;
@@ -320,6 +321,7 @@ void VidInputCore::stop_stream ()
          preview_config.fps != stream_config.fps ) 
     {
       internal_close();
+      internal_set_device(desired_device, current_channel, current_format);
       internal_open(preview_config.width, preview_config.height, preview_config.fps);
     }
     preview_manager.start(preview_config.width, preview_config.height);
@@ -327,6 +329,7 @@ void VidInputCore::stop_stream ()
 
   if (!preview_config.active && stream_config.active) {
     internal_close();
+    internal_set_device(desired_device, current_channel, current_format);
   }
 
   stream_config.active = false;

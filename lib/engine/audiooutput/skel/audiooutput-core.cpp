@@ -211,6 +211,8 @@ void AudioOutputCore::stop()
 
   average_level = 0;
   internal_close(primary);
+  internal_set_device(primary, desired_primary_device);
+
   current_primary_config.active = false;
 }
 

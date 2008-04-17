@@ -251,7 +251,7 @@ void AudioInputCore::stop_preview ()
 
 //     preview_manager.stop();
   internal_close();
-
+  internal_set_device(desired_device);
   preview_config.active = false;
 }
 
@@ -301,6 +301,7 @@ void AudioInputCore::stop_stream ()
   }
 
   internal_close();
+  internal_set_device(desired_device);
 
   stream_config.active = false;
   average_level = 0;
