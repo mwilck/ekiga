@@ -1080,7 +1080,7 @@ on_vidinputdevice_error_cb (Ekiga::VidInputManager & /* manager */,
   }
 
   gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (GTK_WIDGET (self)),
-                                         USER_INTERFACE_KEY "show_device_warnings",
+                                         "show_device_warnings",
                                          dialog_title,
                                          "%s", dialog_msg);
   g_free (dialog_msg);
@@ -1152,7 +1152,7 @@ on_audioinputdevice_error_cb (Ekiga::AudioInputManager & /* manager */,
   }
 
   gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (GTK_WIDGET (self)),
-                                         USER_INTERFACE_KEY "show_device_warnings",
+                                         "show_device_warnings",
                                          dialog_title,
                                          "%s", dialog_msg);
   g_free (dialog_msg);
@@ -1237,7 +1237,7 @@ on_audiooutputdevice_error_cb (Ekiga::AudioOutputManager & /*manager */,
   }
 
   gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (GTK_WIDGET (self)),
-                                         USER_INTERFACE_KEY "show_device_warnings",
+                                         "show_device_warnings",
                                          dialog_title,
                                          "%s", dialog_msg);
   g_free (dialog_msg);
@@ -4279,6 +4279,7 @@ main (int argc,
   gchar *title = NULL;
 
   int debug_level = 0;
+  int debug_level_up = 0;
   int error = -1;
 #ifdef HAVE_GNOME
   GnomeProgram *program;
@@ -4323,7 +4324,12 @@ main (int argc,
     {
       {
 	"debug", 'd', 0, G_OPTION_ARG_INT, &debug_level, 
-       N_("Prints debug messages in the console (level between 1 and 6)"), 
+       N_("Prints debug messages in the console (level between 1 and 4)"), 
+       NULL
+      },
+      {
+	"debug_user_plane", 'u', 0, G_OPTION_ARG_INT, &debug_level_up, 
+       N_("Prints user plane debug messages in the console (level between 1 and 4)"), 
        NULL
       },
       {
@@ -4357,14 +4363,20 @@ main (int argc,
 
 #ifndef WIN32
   char* text_label =  g_strdup_printf ("%d", debug_level);
-  setenv ("PWLIB_TRACE_CODECS", text_label, TRUE);
+  setenv ("PTLIB_TRACE_CODECS", text_label, TRUE);
+  g_free (text_label);
+  text_label =  g_strdup_printf ("%d", debug_level_up);
+  setenv ("PTLIB_TRACE_CODECS_USER_PLANE", text_label, TRUE);
   g_free (text_label);
 #else
-  char* text_label =  g_strdup_printf ("PWLIB_TRACE_CODECS=%d", debug_level);
+  char* text_label =  g_strdup_printf ("PTLIB_TRACE_CODECS=%d", debug_level);
+  _putenv (text_label);
+  g_free (text_label);
+  text_label =  g_strdup_printf ("PTLIB_TRACE_CODECS_USER_PLANE=%d", debug_level_up);
   _putenv (text_label);
   g_free (text_label);
 #endif
-  
+
   /* Ekiga initialisation */
   static GnomeMeeting instance;
 
