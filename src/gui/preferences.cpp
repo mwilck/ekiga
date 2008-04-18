@@ -1252,12 +1252,12 @@ sound_event_play_cb (G_GNUC_UNUSED GtkWidget *widget,
   Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (core->get ("audiooutput-core"));
 
   gchar* file_name = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (data));
-  std::string file_name_string = file_name;
-  audiooutput_core->play_file(file_name_string);
-
-  g_free (file_name);
+  if (file_name) { 
+    std::string file_name_string = file_name;
+    audiooutput_core->play_file(file_name_string);
+    g_free (file_name);
+  }
 }
-
 
 static void
 sound_event_toggled_cb (G_GNUC_UNUSED GtkCellRendererToggle *cell,
