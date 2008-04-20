@@ -148,10 +148,6 @@ GMManager::GMManager (Ekiga::ServiceCore & _core)
   //FIXME: we shouldnt call sound events here but signal to the frontend which then triggers them
 {
   /* Initialise the endpoint paramaters */
-#ifdef HAVE_AVAHI
-  zcp = NULL;
-#endif
-
   gk = NULL;
   sc = NULL;
 
@@ -561,10 +557,6 @@ GMManager::Exit ()
 {
   ClearAllCalls (OpalConnection::EndedByLocalUser, TRUE);
 
-#ifdef HAVE_AVAHI
-  RemoveZeroconfClient ();
-#endif
-
   RemoveAccountsEndpoint ();
 
   RemoveSTUNClient ();
@@ -684,17 +676,6 @@ GMManager::GetSIPEndpoint ()
 
 
 void
-GMManager::UpdatePublishers (void)
-{
-#ifdef HAVE_AVAHI
-  PWaitAndSignal m(zcp_access_mutex);
-  if (zcp)  
-    zcp->Publish ();
-#endif
-}
-
-
-void
 GMManager::Register (GmAccount *account)
 {
   PWaitAndSignal m(manager_access_mutex);
@@ -716,33 +697,6 @@ GMManager::RemoveAccountsEndpoint ()
     delete manager;
   manager = NULL;
 }
-
-
-#ifdef HAVE_AVAHI
-void 
-GMManager::CreateZeroconfClient ()
-{
-  PWaitAndSignal m(zcp_access_mutex);
-
-  if (zcp)
-    delete zcp;
-
-  zcp = new GMZeroconfPublisher (*this);
-}
-
-
-void 
-GMManager::RemoveZeroconfClient ()
-{
-  PWaitAndSignal m(zcp_access_mutex);
-
-  if (zcp) {
-
-    delete zcp;
-    zcp = NULL;
-  }
-}
-#endif
 
 
 void 
@@ -858,14 +812,6 @@ GMManager::Init ()
   else
     SetTranslationAddress (PString ("0.0.0.0")); 
   
-  /* Create a Zeroconf client */
-#ifdef HAVE_AVAHI
-  CreateZeroconfClient ();
-#endif
-
-  /* Update publishers */
-  UpdatePublishers ();
-
   /* Set initial codecs */
   SetMediaFormatOrder (PStringArray ());
   SetMediaFormatMask (PStringArray ());

@@ -106,6 +106,7 @@ create_services (AvahiClient *c,
 GMZeroconfPublisher::GMZeroconfPublisher (GMManager & m)
   : manager (m)
 {  
+  std::cout << "Created publisher " << std::endl << std::flush;
   /* Create the GLIB Adaptor */
   glib_poll = avahi_glib_poll_new (NULL, G_PRIORITY_DEFAULT);
   poll_api = avahi_glib_poll_get (glib_poll);

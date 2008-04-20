@@ -43,10 +43,6 @@
 
 #include "common.h"
 
-#ifdef HAVE_AVAHI
-#include "avahi.h"
-#endif
-
 #include "accounts.h"
 
 #include "stun.h"
@@ -230,23 +226,6 @@ class GMManager:
   GMSIPEndpoint *GetSIPEndpoint ();
 
 
-#ifdef HAVE_AVAHI
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Create a zeroconf client that will publish information
-   *                 about Ekiga.
-   * PRE          :  /
-   */
-  void CreateZeroconfClient ();
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Remove any running Zeroconf client.
-   * PRE          :  /
-   */
-  void RemoveZeroconfClient ();
-#endif
-
-  
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Create a STUN client.
    * PRE          :  First parameter : TRUE if a progress dialog should be
@@ -269,13 +248,6 @@ class GMManager:
    * PRE          :  /
    */
   void RemoveSTUNClient ();
-
-  
-  /* DESCRIPTION :  /
-   * BEHAVIOR    :  Update the various registrations (ILS, zeroconf, etc)
-   * PRE         :  /
-   */
-  void UpdatePublishers (void);
 
   
   /* DESCRIPTION  :  /
@@ -411,11 +383,6 @@ class GMManager:
   PString re_video_codec;
   PString tr_video_codec;
 
-
-#ifdef HAVE_AVAHI
-  GMZeroconfPublisher *zcp;
-  PMutex zcp_access_mutex;
-#endif
 
   Ekiga::ServiceCore & core;
   Ekiga::Runtime & runtime;

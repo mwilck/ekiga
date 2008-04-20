@@ -80,6 +80,7 @@
 
 #ifdef HAVE_AVAHI
 #include "avahi-main.h"
+#include "avahi-publisher-main.h"
 #endif
 
 #ifdef HAVE_EDS
@@ -192,6 +193,12 @@ engine_init (int argc,
 
 #ifdef HAVE_AVAHI
   if (!avahi_init (*core, &argc, &argv)) {
+    delete core;
+    return;
+  }
+  
+  if (!avahi_publisher_init (*core, &argc, &argv)) {
+    std::cout << "delete" << std::endl << std::flush;
     delete core;
     return;
   }

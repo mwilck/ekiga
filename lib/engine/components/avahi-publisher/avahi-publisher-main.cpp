@@ -38,16 +38,17 @@
 #include "avahi-publisher-main.h"
 #include "avahi-publisher.h"
 
+#include <iostream>
+
 bool
 avahi_publisher_init (Ekiga::ServiceCore &core,
                       int* /*argc*/,
                       char* */*argv*/[])
 {
-  bool result = false;
   Ekiga::Service *service = NULL;
 
   service = new Avahi::PresencePublisher (core);
   core.add (*service);
 
-  return result;
+  return true;
 }
