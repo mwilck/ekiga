@@ -37,11 +37,13 @@
 
 
 #include <gmconf.h>
+#include <iostream>
 
-#include "avahi.h"
-#include "manager.h"
-#include "ekiga.h"
-#include "misc.h"
+#include "avahi-publisher.h"
+#include "personal-details.h"
+
+using namespace Avahi;
+
 
 /* deconnection callback */
 
@@ -66,7 +68,7 @@ static void entry_group_callback (AvahiEntryGroup *group,
 static gboolean
 on_disconnect (gpointer data)
 {
-  GMZeroconfPublisher *zero = (GMZeroconfPublisher *) data;
+  PresencePublisher *zero = (PresencePublisher *) data;
 
   zero->OnDisconnect();
   
@@ -78,7 +80,7 @@ entry_group_callback (AvahiEntryGroup *group,
 		      AvahiEntryGroupState state, 
 		      void *userdata) 
 {
-  GMZeroconfPublisher *zero = (GMZeroconfPublisher *) userdata;
+  PresencePublisher *zero = (PresencePublisher *) userdata;
   zero->EntryGroupCallback(group,state,userdata);
 }
 
@@ -88,7 +90,7 @@ client_callback (AvahiClient *c,
 		 AvahiClientState state, 
 		 void *userdata) 
 {
-  GMZeroconfPublisher *zero = (GMZeroconfPublisher *) userdata;
+  PresencePublisher *zero = (PresencePublisher *) userdata;
   zero->ClientCallback(c, state, userdata);
 }
 
@@ -97,15 +99,16 @@ static int
 create_services (AvahiClient *c, 
 		 void *userdata) 
 {
-  GMZeroconfPublisher *zero = (GMZeroconfPublisher *) userdata;
+  PresencePublisher *zero = (PresencePublisher *) userdata;
   return zero->CreateServices (c, userdata);
 }
 
 
 /* Implementation of the class */
-GMZeroconfPublisher::GMZeroconfPublisher (GMManager & m)
-  : manager (m)
-{  
+PresencePublisher::PresencePublisher (Ekiga::ServiceCore & _core)
+: Ekiga::PresencePublisher (_core),
+  core (_core)
+{
   std::cout << "Created publisher " << std::endl << std::flush;
   /* Create the GLIB Adaptor */
   glib_poll = avahi_glib_poll_new (NULL, G_PRIORITY_DEFAULT);
@@ -119,7 +122,7 @@ GMZeroconfPublisher::GMZeroconfPublisher (GMManager & m)
 }
 
 
-GMZeroconfPublisher::~GMZeroconfPublisher()
+PresencePublisher::~PresencePublisher()
 {
   if (h323_text_record) {
     
@@ -159,8 +162,17 @@ GMZeroconfPublisher::~GMZeroconfPublisher()
 }
 
 
+void 
+PresencePublisher::publish (const Ekiga::PersonalDetails & details)
+{
+  std::string status = ((Ekiga::PersonalDetails &) (details)).get_short_status ();
+
+  std::cout << "NEW AVAHI STATUS" << status << std::endl << std::flush;
+}
+
+
 void
-GMZeroconfPublisher::EntryGroupCallback (AvahiEntryGroup *_group,
+PresencePublisher::EntryGroupCallback (AvahiEntryGroup *_group,
 					 AvahiEntryGroupState state,
 					 void *userdata) 
 {
@@ -181,7 +193,7 @@ GMZeroconfPublisher::EntryGroupCallback (AvahiEntryGroup *_group,
 
 
 int
-GMZeroconfPublisher::CreateServices (AvahiClient *c, 
+PresencePublisher::CreateServices (AvahiClient *c, 
 				     void *userdata) 
 {
   int ret = 0;
@@ -193,16 +205,12 @@ GMZeroconfPublisher::CreateServices (AvahiClient *c,
     
     if (group == NULL) {
 
-      PTRACE (1, "AVAHI\tavahi_entry_group_new failed: " << 
-	      avahi_strerror (avahi_client_errno(c)));
       failure = TRUE;
     }
   }
   
   if (failure == FALSE) {
   
-    PTRACE(1, "AVAHI\tAdding service " << name);
-
     /* H.323 */
     ret = avahi_entry_group_add_service_strlst (group,
 						AVAHI_IF_UNSPEC,
@@ -216,7 +224,6 @@ GMZeroconfPublisher::CreateServices (AvahiClient *c,
 						h323_text_record);
     if (ret < 0) {
 
-      PTRACE (1, "AVAHI\tFailed to add service: " << avahi_strerror (ret));
       failure = TRUE;
     }
   }
@@ -236,7 +243,6 @@ GMZeroconfPublisher::CreateServices (AvahiClient *c,
 						sip_text_record);
     if (ret < 0) {
     
-      PTRACE (1, "AVAHI\tFailed to add service: " << avahi_strerror(ret));
       failure = TRUE;
     }
   }
@@ -247,7 +253,6 @@ GMZeroconfPublisher::CreateServices (AvahiClient *c,
     ret = avahi_entry_group_commit (group);
     if (ret < 0) {
     
-      PTRACE (1, "AVAHI\tFailed to commit entry_group: " << avahi_strerror (ret));
       failure = TRUE;
     }
   }
@@ -257,7 +262,7 @@ GMZeroconfPublisher::CreateServices (AvahiClient *c,
 
 
 void
-GMZeroconfPublisher::ClientCallback (AvahiClient *c, 
+PresencePublisher::ClientCallback (AvahiClient *c, 
 				     AvahiClientState state, 
 				     void *userdata) 
 {
@@ -282,7 +287,6 @@ GMZeroconfPublisher::ClientCallback (AvahiClient *c,
 
       if (avahi_client_errno(c) == AVAHI_ERR_DISCONNECTED) {
 
-	PTRACE(1, "AVAHI\tDbus Server connection scheduled for a restart.");
 	g_timeout_add (60000, on_disconnect, this);
       }
     }
@@ -290,9 +294,8 @@ GMZeroconfPublisher::ClientCallback (AvahiClient *c,
 }
 
 void
-GMZeroconfPublisher::OnDisconnect ()
+PresencePublisher::OnDisconnect ()
 {
-  PTRACE(1, "AVAHI\tRepublishing after a disconnection");
   
   if (client) {
 
@@ -306,7 +309,7 @@ GMZeroconfPublisher::OnDisconnect ()
 }
 
 int
-GMZeroconfPublisher::Publish()
+PresencePublisher::Publish()
 {
   int error = 0;
 
@@ -333,8 +336,6 @@ GMZeroconfPublisher::Publish()
       
       if (client == NULL) {
 	  
-	PTRACE (1, "AVAHI\tError initializing Avahi: %s" << 
-		avahi_strerror (error));
 	return -1;
       }
     }
@@ -345,19 +346,17 @@ GMZeroconfPublisher::Publish()
 
 
 int
-GMZeroconfPublisher::GetPersonalData()
+PresencePublisher::GetPersonalData()
 {
   gchar	*full_name = NULL;
   std::string status;
   
   int state = 0;
 
-  gnomemeeting_threads_enter ();
+  /*
   full_name = gm_conf_get_string (PERSONAL_DATA_KEY "full_name");
   h323_port = gm_conf_get_int (H323_KEY "listen_port");
   sip_port = gm_conf_get_int (SIP_KEY "listen_port");
-  std::cout << "FIXME" << std::endl << std::flush;
-  gnomemeeting_threads_leave ();
 
   // TODO: largely improve this
   switch (state) {
@@ -382,7 +381,7 @@ GMZeroconfPublisher::GetPersonalData()
   default:
     break;
   }
-
+*/
 
   /* Cleanups */
   if (h323_text_record) {
@@ -410,11 +409,12 @@ GMZeroconfPublisher::GetPersonalData()
   sip_text_record = 
     avahi_string_list_add_printf (sip_text_record,"presence=%s", status.c_str ());
 
+  /*
   h323_text_record = 
     avahi_string_list_add (h323_text_record, "software=Ekiga/" PACKAGE_VERSION);
   sip_text_record = 
     avahi_string_list_add (sip_text_record, "software=Ekiga/" PACKAGE_VERSION);
-
+*/
   return 0;
 }
 

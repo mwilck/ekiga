@@ -2,7 +2,7 @@ noinst_LTLIBRARIES = libavahipublisher.la
 
 avahi_publisher_dir = $(top_srcdir)/lib/engine/components/avahi-publisher/
 
-AM_CXXFLAGS = $(SIGC_CFLAGS) $(GLIB_CFLAGS)
+AM_CXXFLAGS = $(SIGC_CFLAGS) $(GLIB_CFLAGS) $(AVAHI_CFLAGS)
 
 INCLUDES = 						\
 	-I$(top_srcdir)/lib/gmconf	 		\
@@ -22,4 +22,4 @@ libavahipublisher_la_LIBADD = 						\
 	$(top_builddir)/lib/engine/framework/libgmframework.la		\
 	$(top_builddir)/lib/engine/presence/skel/libgmpresence.la
 
-libavahipublisher_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(GLIB_LIBS)
+libavahipublisher_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(GLIB_LIBS) $(AVAHI_LIBS)

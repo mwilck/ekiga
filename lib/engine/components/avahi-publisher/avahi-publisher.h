@@ -36,8 +36,6 @@
  */
 
 
-#include "common.h"
-
 #ifndef _AVAHI_PUBLISHER_H_
 #define _AVAHI_PUBLISHER_H_
 
@@ -49,86 +47,73 @@
 #include <avahi-common/timeval.h>
 #include <avahi-glib/glib-watch.h>
 
+#include "presence-core.h"
+#include "services.h"
 
 /* Zeroconf Service Type */
 #define ZC_H323 "_h323._tcp"
 #define ZC_SIP "_sip._udp"
 
-class GMManager;
+class Ekiga::PersonalDetails;
 
-
-class GMZeroconfPublisher
+namespace Avahi
 {
+  class PresencePublisher 
+    : public Ekiga::PresencePublisher,
+      public Ekiga::Service
+  {
 
- public:
+    public:
+    PresencePublisher (Ekiga::ServiceCore & core);
+    ~PresencePublisher ();
 
-  /* DESCRIPTION  : / 
-   * BEHAVIOR     : ZeroconfPublisher constructor
-   *		    - insert Avahi in Gnomemeeting Mainloop
-   *		    - initialization of some variables
-   * PRE          : /
-   */
-  GMZeroconfPublisher (GMManager &);
+    /*** Service API ***/
+    const std::string get_name () const
+      { return "avahi-presence-publisher"; }
 
+    const std::string get_description () const
+      { return "\tObject bringing in Avahi presence publishing"; }
 
-  /* DESCRIPTION  : ZeroconfPublisher destructor 
-   * BEHAVIOR     : 
-   *		    - Free avahi Client and Entry group
-   *		    - Stop publishing the gnomemeeting zeroconf service
-   *		    - free text_record.
-   * PRE          : /
-   */
-  ~GMZeroconfPublisher ();
+    /*** PresencePublisher API ***/
+    void publish (const Ekiga::PersonalDetails & details);
 
 
-  /* DESCRIPTION  : / 
-   * BEHAVIOR     : Return -1 when error occurred, 0 if no error.
-   *		    Publish the gnomemeeting zeroconf service
-   *		    with data store in class attributes info.
-   * PRE          : Start() method must be called before Publish ().
-   */
-  int Publish ();
-  
-  
-  void ClientCallback (AvahiClient *c, 
-		       AvahiClientState state, 
-		       void *userdata);
-  
-  
-  int CreateServices (AvahiClient *c, 
-		      void *userdata);
+    int Publish ();
 
-  void OnDisconnect ();
-  
-  void EntryGroupCallback (AvahiEntryGroup *group, 
-			   AvahiEntryGroupState state, 
-			   void *userdata);
 
- private:
+    void ClientCallback (AvahiClient *c, 
+                         AvahiClientState state, 
+                         void *userdata);
 
-  AvahiClient *client;
-  AvahiEntryGroup *group;
-  
-  char *name;                         /* Srv Record */
-  
-  AvahiStringList *h323_text_record;  /* H323 Txt Record */
-  AvahiStringList *sip_text_record;   /* Sip Txt Record */
-  
-  uint16_t h323_port;                 /* port number of Srv Record */
-  uint16_t sip_port;                  /* port number of Srv Record */
-  
-  AvahiGLibPoll *glib_poll;
-  const AvahiPoll *poll_api;
 
-  /* DESCRIPTION  : / 
-   * BEHAVIOR     : Return err=SW_OKAY when no error occurred.
-   *		    Retrieve user personal data from gmconf 
-   *		    to class attributes info.
-   * PRE          : must be call to update personal data
-   */
-  int GetPersonalData();
+    int CreateServices (AvahiClient *c, 
+                        void *userdata);
 
-  GMManager & manager;
+    void OnDisconnect ();
+
+    void EntryGroupCallback (AvahiEntryGroup *group, 
+                             AvahiEntryGroupState state, 
+                             void *userdata);
+
+    private:
+    Ekiga::ServiceCore & core;
+    AvahiClient *client;
+    AvahiEntryGroup *group;
+
+    char *name;                         /* Srv Record */
+
+    AvahiStringList *h323_text_record;  /* H323 Txt Record */
+    AvahiStringList *sip_text_record;   /* Sip Txt Record */
+
+    uint16_t h323_port;                 /* port number of Srv Record */
+    uint16_t sip_port;                  /* port number of Srv Record */
+
+    AvahiGLibPoll *glib_poll;
+    const AvahiPoll *poll_api;
+
+    int GetPersonalData();
+  };
 };
+
 
 #endif

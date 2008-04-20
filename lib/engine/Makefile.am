@@ -77,7 +77,6 @@ libekiga_engine_la_LIBADD = \
 	$(top_builddir)/lib/engine/audiooutput/skel/libgmaudiooutput.la					\
 	$(top_builddir)/lib/engine/hal/skel/libgmhal.la							\
 	$(top_builddir)/lib/engine/components/gmconf-personal-details/libgmconfpersonaldetails.la	\
-	$(top_builddir)/lib/engine/components/avahi-publisher/libavahipublisher.la
 	$(AM_LIBS)
 
 # Default Input Devices
@@ -113,7 +112,9 @@ endif
 
 
 if HAVE_AVAHI
-libekiga_engine_la_LIBADD += presence/avahi/libgmavahi.la
+libekiga_engine_la_LIBADD += \
+	$(top_builddir)/lib/engine/presence/avahi/libgmavahi.la \
+	$(top_builddir)/lib/engine/components/avahi-publisher/libavahipublisher.la
 endif
 
 if HAVE_EDS
