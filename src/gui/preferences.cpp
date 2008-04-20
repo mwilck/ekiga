@@ -433,7 +433,7 @@ gm_pw_init_interface_page (GtkWidget *prefs_window,
     gnome_prefs_subsection_new (prefs_window, container, 
                                 _("Auto Away"), 1, 2);
 
-  gnome_prefs_spin_new (subsection, _("Timeout after which the user is automatically set as away:"), PERSONAL_DATA_KEY "auto_away_timeout", _("Automatically set the user as away after the timeout has elapsed (in minutes)"), 1.0, 60.0, 1.0, 1, NULL, true);
+  gnome_prefs_spin_new (subsection, _("Timeout after which the user is automatically set as away (in minutes):"), PERSONAL_DATA_KEY "auto_away_timeout", _("Automatically set the user as away after the timeout has elapsed (in minutes)"), 1.0, 60.0, 1.0, 1, NULL, true);
 }
 
 static void
