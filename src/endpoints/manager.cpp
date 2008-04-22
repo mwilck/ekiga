@@ -484,6 +484,18 @@ void GMManager::set_video_options (const GMManager::VideoOptions & options)
       media_format.SetOptionInteger (OpalVideoFormat::MaxFrameSizeOption (), 
                                      1400);  
 
+      if ( media_format.GetName() != "YUV420P" &&
+           media_format.GetName() != "RGB32" &&
+           media_format.GetName() != "RGB24") {
+
+        media_format.SetOptionBoolean (OpalVideoFormat::RateControlEnableOption(),
+                                      true);
+        media_format.SetOptionInteger (OpalVideoFormat::RateControlWindowSizeOption(),
+                                      500);
+        media_format.SetOptionInteger (OpalVideoFormat::RateControlMaxFramesSkipOption(),
+                                      1);
+      }
+
       OpalMediaFormat::SetRegisteredMediaFormat(media_format);
     }
   }
