@@ -31,13 +31,15 @@
  *                         ------------------------------------
  *   begin                : Sun Aug 21 2005
  *   copyright            : (C) 2005 by Sebastien Estienne 
+ *                          (C) 2008 by Damien Sandras
  *   description          : This file contains the Avahi zeroconf publisher. 
  *
  */
 
 
-#include <gmconf.h>
 #include <iostream>
+
+#include "config.h"
 
 #include "avahi-publisher.h"
 #include "personal-details.h"
@@ -45,63 +47,50 @@
 using namespace Avahi;
 
 
-/* deconnection callback */
-
+/* Glib callback */
 static gboolean on_disconnect (gpointer data);
 
+
 /* Avahi callbacks */
+static void avahi_client_callback (AvahiClient *client, 
+                                   AvahiClientState state, 
+                                   void *data); 
 
-static int create_services (AvahiClient *c, 
-			    void *userdata);
-
-static void client_callback (AvahiClient *c, 
-			     AvahiClientState state, 
-			     void *userdata); 
-
-static void entry_group_callback (AvahiEntryGroup *group, 
-				  AvahiEntryGroupState state, 
-				  void *userdata);
+static void avahi_entry_group_callback (AvahiEntryGroup *group, 
+                                        AvahiEntryGroupState state, 
+                                        void *data);
 
 
 /* Implementation of the callbacks */
-
 static gboolean
 on_disconnect (gpointer data)
 {
-  PresencePublisher *zero = (PresencePublisher *) data;
-
-  zero->OnDisconnect();
+  if (data != NULL)
+    ((PresencePublisher *) data)->disconnect ();
   
   return FALSE;
 }
 
-static void 
-entry_group_callback (AvahiEntryGroup *group, 
-		      AvahiEntryGroupState state, 
-		      void *userdata) 
-{
-  PresencePublisher *zero = (PresencePublisher *) userdata;
-  zero->EntryGroupCallback(group,state,userdata);
-}
-
 
 static void 
-client_callback (AvahiClient *c, 
-		 AvahiClientState state, 
-		 void *userdata) 
+avahi_client_callback (AvahiClient *client,
+                       AvahiClientState state, 
+                       void *data) 
 {
-  PresencePublisher *zero = (PresencePublisher *) userdata;
-  zero->ClientCallback(c, state, userdata);
+  if (data != NULL)
+    ((PresencePublisher *) data)->client_callback (client, state);
 }
 
 
-static int
-create_services (AvahiClient *c, 
-		 void *userdata) 
+static void 
+avahi_entry_group_callback (AvahiEntryGroup *group, 
+                            AvahiEntryGroupState state, 
+                            void *data) 
 {
-  PresencePublisher *zero = (PresencePublisher *) userdata;
-  return zero->CreateServices (c, userdata);
+  if (data != NULL)
+    ((PresencePublisher *) data)->entry_group_callback (group, state);
 }
+
 
 
 /* Implementation of the class */
@@ -109,128 +98,90 @@ PresencePublisher::PresencePublisher (Ekiga::ServiceCore & _core)
 : Ekiga::PresencePublisher (_core),
   core (_core)
 {
-  std::cout << "Created publisher " << std::endl << std::flush;
   /* Create the GLIB Adaptor */
   glib_poll = avahi_glib_poll_new (NULL, G_PRIORITY_DEFAULT);
   poll_api = avahi_glib_poll_get (glib_poll);
   
   name = NULL;
   client = NULL;
-  h323_text_record = NULL;
-  sip_text_record = NULL;
   group = NULL;
+  text_record = NULL;
 }
 
 
 PresencePublisher::~PresencePublisher()
 {
-  if (h323_text_record) {
-    
-    avahi_string_list_free (h323_text_record);
-    h323_text_record = NULL;
-  }
-
-  if (sip_text_record) {
-    
-    avahi_string_list_free (sip_text_record);
-    sip_text_record = NULL;
+  if (text_record) {
+    avahi_string_list_free (text_record);
+    text_record = NULL;
   }
 
   if (group) {
-    
     avahi_entry_group_free (group);
     group = NULL;
   }
   
   if (client) {
-    
     avahi_client_free (client);
     client = NULL;
   }
   
   if (glib_poll) {
-    
     avahi_glib_poll_free (glib_poll);
     glib_poll = NULL;
   }
 
   if (name) {
-    
     g_free (name);
     name = NULL;
   }
 }
 
 
-void 
-PresencePublisher::publish (const Ekiga::PersonalDetails & details)
+void PresencePublisher::publish (const Ekiga::PersonalDetails & details)
 {
-  std::string status = ((Ekiga::PersonalDetails &) (details)).get_short_status ();
+  std::string short_status;
+  int error = 0;
 
-  std::cout << "NEW AVAHI STATUS" << status << std::endl << std::flush;
-}
+  if (text_record) {
+    avahi_string_list_free (text_record);
+    text_record = NULL;
+  }
 
+  if (name) {
+    g_free (name); 
+    name = NULL;
+  }
 
-void
-PresencePublisher::EntryGroupCallback (AvahiEntryGroup *_group,
-					 AvahiEntryGroupState state,
-					 void *userdata) 
-{
-  char *n = NULL;
-  
-  /* Called whenever the entry group state changes */
-  if (state == AVAHI_ENTRY_GROUP_COLLISION) {
+  name = g_strdup (details.get_display_name ().c_str ());
+  short_status = "presence-" + details.get_short_status ();
+  text_record = avahi_string_list_add_printf (text_record, "presence=%s", short_status.c_str ());
+  text_record = avahi_string_list_add (text_record, "software=Ekiga/" PACKAGE_VERSION);
 
-    /* A service name collision happened. Let's pick a new name */
-    n = avahi_alternative_service_name (name);
-    avahi_free (name);
-    name = n;
+  if (client && group) {
 
-    /* And recreate the services */
-    create_services (avahi_entry_group_get_client (_group), userdata);
+    avahi_entry_group_reset (group);
+    if (avahi_client_get_state(client) == AVAHI_CLIENT_S_RUNNING)
+      connect ();
+  }
+  else {
+
+    /* Allocate a new client */
+    if (name) {
+
+      client = avahi_client_new (poll_api, (AvahiClientFlags) 0, avahi_client_callback, this, &error);
+      group = avahi_entry_group_new (client, avahi_entry_group_callback, this);
+    }
   }
 }
 
 
-int
-PresencePublisher::CreateServices (AvahiClient *c, 
-				     void *userdata) 
+bool PresencePublisher::connect () 
 {
   int ret = 0;
-  bool failure = FALSE;
 
-  if (group == NULL) {
-    
-    group = avahi_entry_group_new (c, entry_group_callback, userdata);
-    
-    if (group == NULL) {
-
-      failure = TRUE;
-    }
-  }
+  if (group != NULL) {
   
-  if (failure == FALSE) {
-  
-    /* H.323 */
-    ret = avahi_entry_group_add_service_strlst (group,
-						AVAHI_IF_UNSPEC,
-						AVAHI_PROTO_UNSPEC,
-						(AvahiPublishFlags) 0,
-						name,
-						ZC_H323,
-						NULL,
-						NULL,
-						h323_port,
-						h323_text_record);
-    if (ret < 0) {
-
-      failure = TRUE;
-    }
-  }
-
-  if (failure == FALSE) {
-
-    /* SIP */
     ret = avahi_entry_group_add_service_strlst (group,
 						AVAHI_IF_UNSPEC,
 						AVAHI_PROTO_UNSPEC,
@@ -239,39 +190,41 @@ PresencePublisher::CreateServices (AvahiClient *c,
 						ZC_SIP,
 						NULL,
 						NULL,
-						sip_port,
-						sip_text_record);
-    if (ret < 0) {
-    
-      failure = TRUE;
+						5060,
+						text_record);
+    if (ret >= 0) {
+
+      /* Commit changes */
+      ret = avahi_entry_group_commit (group);
+      if (ret < 0) 
+        return false;
     }
   }
 
-  if (failure == FALSE) {
-
-    /* Commit changes */
-    ret = avahi_entry_group_commit (group);
-    if (ret < 0) {
-    
-      failure = TRUE;
-    }
-  }
-
-  return failure;
+  return true;
 }
 
 
-void
-PresencePublisher::ClientCallback (AvahiClient *c, 
-				     AvahiClientState state, 
-				     void *userdata) 
+void PresencePublisher::disconnect ()
+{
+  if (client) {
+    avahi_client_free (client);
+    client = NULL;
+  }
+
+  group = NULL;
+}
+
+
+void PresencePublisher::client_callback (AvahiClient *_client, 
+                                         AvahiClientState state)
 {
   /* Called whenever the client or server state changes */
   if (state == AVAHI_CLIENT_S_RUNNING) {
    
     /* The server has startup successfully and registered its host
      * name on the network, so it's time to create our services */
-    create_services(c, userdata);
+    connect ();
   }
   else {
     
@@ -285,7 +238,7 @@ PresencePublisher::ClientCallback (AvahiClient *c,
 
     } else if (state == AVAHI_CLIENT_FAILURE) {
 
-      if (avahi_client_errno(c) == AVAHI_ERR_DISCONNECTED) {
+      if (avahi_client_errno (_client) == AVAHI_ERR_DISCONNECTED) {
 
 	g_timeout_add (60000, on_disconnect, this);
       }
@@ -293,129 +246,25 @@ PresencePublisher::ClientCallback (AvahiClient *c,
   }
 }
 
-void
-PresencePublisher::OnDisconnect ()
+
+void PresencePublisher::entry_group_callback (AvahiEntryGroup *_group,
+                                              AvahiEntryGroupState state)
 {
+  char *n = NULL;
   
-  if (client) {
+  /* Called whenever the entry group state changes */
+  if (state == AVAHI_ENTRY_GROUP_COLLISION) {
 
-    avahi_client_free (client);
-    client = NULL;
+    /* A service name collision happened. Let's pick a new name */
+    n = avahi_alternative_service_name (name);
+    avahi_free (name);
+    name = n;
   }
 
-  group = NULL;
+  /* And recreate the services */
+  group = _group;
+  client = avahi_entry_group_get_client (group);
 
-  Publish();
+  connect ();
 }
-
-int
-PresencePublisher::Publish()
-{
-  int error = 0;
-
-  GetPersonalData ();
-
-  if (client && group) {
-    
-    avahi_entry_group_reset (group);
-    if (avahi_client_get_state(client) == AVAHI_CLIENT_S_RUNNING)
-      create_services (client, this);
-    else
-      return -1;
-  }
-  else {
-
-    /* Allocate a new client */
-    if (name) {
-      
-      client = avahi_client_new (poll_api, 
-				 (AvahiClientFlags) 0, 
-				 client_callback, 
-				 this, 
-				 &error);
-      
-      if (client == NULL) {
-	  
-	return -1;
-      }
-    }
-  }
-
-  return 0;
-}
-
-
-int
-PresencePublisher::GetPersonalData()
-{
-  gchar	*full_name = NULL;
-  std::string status;
-  
-  int state = 0;
-
-  /*
-  full_name = gm_conf_get_string (PERSONAL_DATA_KEY "full_name");
-  h323_port = gm_conf_get_int (H323_KEY "listen_port");
-  sip_port = gm_conf_get_int (SIP_KEY "listen_port");
-
-  // TODO: largely improve this
-  switch (state) {
-
-  case CONTACT_ONLINE:
-    status = "presence-online";
-    break;
-
-  case CONTACT_OFFLINE:
-  case CONTACT_INVISIBLE:
-    status = "presence-offline";
-    break;
-
-  case CONTACT_DND:
-    status = "presence-dnd";
-    break;
-
-  case CONTACT_AWAY:
-    status = "presence-away";
-    break;
-
-  default:
-    break;
-  }
-*/
-
-  /* Cleanups */
-  if (h323_text_record) {
-    
-    avahi_string_list_free (h323_text_record);
-    h323_text_record = NULL;
-  }
-  
-  if (sip_text_record) {
-    
-    avahi_string_list_free (sip_text_record);
-    sip_text_record = NULL;
-  }
-  
-  if (name) {
-    
-    g_free (name); 
-    name = NULL;
-  }
-
-  /* Update the internal state */
-  name = full_name; 
-  h323_text_record = 
-    avahi_string_list_add_printf (h323_text_record,"presence=%s", status.c_str ());
-  sip_text_record = 
-    avahi_string_list_add_printf (sip_text_record,"presence=%s", status.c_str ());
-
-  /*
-  h323_text_record = 
-    avahi_string_list_add (h323_text_record, "software=Ekiga/" PACKAGE_VERSION);
-  sip_text_record = 
-    avahi_string_list_add (sip_text_record, "software=Ekiga/" PACKAGE_VERSION);
-*/
-  return 0;
-}
-
 

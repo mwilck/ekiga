@@ -62,11 +62,11 @@ namespace Avahi
     : public Ekiga::PresencePublisher,
       public Ekiga::Service
   {
-
-    public:
+public:
     PresencePublisher (Ekiga::ServiceCore & core);
     ~PresencePublisher ();
 
+    
     /*** Service API ***/
     const std::string get_name () const
       { return "avahi-presence-publisher"; }
@@ -74,46 +74,32 @@ namespace Avahi
     const std::string get_description () const
       { return "\tObject bringing in Avahi presence publishing"; }
 
+    
     /*** PresencePublisher API ***/
     void publish (const Ekiga::PersonalDetails & details);
 
 
-    int Publish ();
+    /*** Avahi::PresencePublisher API ***/
+    bool connect (); 
+    void disconnect ();
 
+    void client_callback (AvahiClient *client, 
+                          AvahiClientState state);
 
-    void ClientCallback (AvahiClient *c, 
-                         AvahiClientState state, 
-                         void *userdata);
+    void entry_group_callback (AvahiEntryGroup *group, 
+                               AvahiEntryGroupState state);
 
-
-    int CreateServices (AvahiClient *c, 
-                        void *userdata);
-
-    void OnDisconnect ();
-
-    void EntryGroupCallback (AvahiEntryGroup *group, 
-                             AvahiEntryGroupState state, 
-                             void *userdata);
-
-    private:
+private:
     Ekiga::ServiceCore & core;
     AvahiClient *client;
     AvahiEntryGroup *group;
 
-    char *name;                         /* Srv Record */
-
-    AvahiStringList *h323_text_record;  /* H323 Txt Record */
-    AvahiStringList *sip_text_record;   /* Sip Txt Record */
-
-    uint16_t h323_port;                 /* port number of Srv Record */
-    uint16_t sip_port;                  /* port number of Srv Record */
+    char *name;                    /* Srv Record */
+    uint16_t port;                 /* port number of Srv Record */
+    AvahiStringList *text_record;  /* H323 Txt Record */
 
     AvahiGLibPoll *glib_poll;
     const AvahiPoll *poll_api;
-
-    int GetPersonalData();
   };
 };
-
-
 #endif
