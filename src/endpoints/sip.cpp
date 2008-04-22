@@ -52,6 +52,7 @@ GMSIPEndpoint::GMSIPEndpoint (GMManager & ep, Ekiga::ServiceCore & _core)
   Ekiga::PresencePublisher (_core), 
   endpoint (ep), 
   core (_core),
+  presence_core (*(dynamic_cast<Ekiga::PresenceCore *> (core.get ("presence-core")))),
   runtime (*(dynamic_cast<Ekiga::Runtime *> (core.get ("runtime"))))
 {
   uri_prefix = "sip:";
@@ -924,18 +925,12 @@ GMSIPEndpoint::OnPresenceInfoReceived (const PString & user,
     status = _("Free For Chat");
   }
 
-  Ekiga::PresenceCore *presence_core =
-    dynamic_cast<Ekiga::PresenceCore *>(core.get ("presence-core"));
-
   /**
    * TODO
    * Wouldn't it be convenient to emit the signal and have the presence core listen to it ?
    */
-  if (presence_core) {
-
-    runtime.run_in_main (sigc::bind (presence_core->presence_received.make_slot (), _uri, presence));
-    runtime.run_in_main (sigc::bind (presence_core->status_received.make_slot (), _uri, status));
-  }
+  runtime.run_in_main (sigc::bind (presence_core.presence_received.make_slot (), _uri, presence));
+  runtime.run_in_main (sigc::bind (presence_core.status_received.make_slot (), _uri, status));
 }
 
 

@@ -247,6 +247,7 @@ private:
   std::list<std::string> domains; // List of registered domains
   std::list<std::string> aors;     // List of registered aor
   Ekiga::ServiceCore & core;
+  Ekiga::PresenceCore & presence_core;
   Ekiga::Runtime & runtime;
 
   std::string uri_prefix;
