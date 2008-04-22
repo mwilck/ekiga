@@ -39,20 +39,20 @@
 using namespace Ekiga;
 
 
-const std::string & PersonalDetails::get_display_name () 
+const std::string & PersonalDetails::get_display_name () const
 { 
   return display_name; 
 }
 
 
-const std::string & PersonalDetails::get_short_status () 
+const std::string & PersonalDetails::get_short_status () const
 { 
   return short_status; 
 }
 
 
-const std::string & PersonalDetails::get_long_status () 
-{ 
+const std::string & PersonalDetails::get_long_status () const
+{
   return long_status; 
 }
 

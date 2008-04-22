@@ -68,11 +68,11 @@ namespace Ekiga
 
 
     /*** PersonalDetails API ***/
-    const std::string & get_display_name (); 
+    const std::string & get_display_name () const;
 
-    const std::string & get_short_status ();
+    const std::string & get_short_status () const;
 
-    const std::string & get_long_status ();
+    const std::string & get_long_status () const;
 
     void set_display_name (const std::string & display_name);
 
