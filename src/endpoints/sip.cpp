@@ -931,8 +931,11 @@ GMSIPEndpoint::OnPresenceInfoReceived (const PString & user,
    * TODO
    * Wouldn't it be convenient to emit the signal and have the presence core listen to it ?
    */
-  runtime.run_in_main (sigc::bind (presence_core->presence_received.make_slot (), _uri, presence));
-  runtime.run_in_main (sigc::bind (presence_core->status_received.make_slot (), _uri, status));
+  if (presence_core) {
+
+    runtime.run_in_main (sigc::bind (presence_core->presence_received.make_slot (), _uri, presence));
+    runtime.run_in_main (sigc::bind (presence_core->status_received.make_slot (), _uri, status));
+  }
 }
 
 
