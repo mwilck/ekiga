@@ -74,6 +74,10 @@ public:
   /**/
   bool dial (const std::string uri); 
 
+  const std::string & get_protocol_name () const;
+
+  const std::string & get_interface () const;
+
   bool send_message (const std::string uri, 
                      const std::string message);
 
@@ -250,6 +254,7 @@ private:
   Ekiga::PresenceCore & presence_core;
   Ekiga::Runtime & runtime;
 
+  std::string listener;
   std::string uri_prefix;
   std::string forward_uri;
 

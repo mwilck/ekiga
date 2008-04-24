@@ -91,6 +91,18 @@ bool GMSIPEndpoint::dial (const std::string uri)
 }
 
 
+const std::string & GMSIPEndpoint::get_protocol_name () const
+{
+  return uri_prefix;
+}
+
+
+const std::string & GMSIPEndpoint::get_interface () const
+{
+  return listener;
+}
+
+
 bool GMSIPEndpoint::send_message (const std::string uri, const std::string message)
 {
   if (!uri.empty () && !message.empty ()) {
@@ -298,8 +310,11 @@ bool GMSIPEndpoint::start_listening ()
     str << "udp$*:" << port;
     while (port <= udp_max) {
 
-      if (StartListeners (PStringArray (str.str ().c_str ())))
+      if (StartListeners (PStringArray (str.str ().c_str ()))) {
+
+        listener = str.str ();
         return true;
+      }
       port++;
     }
   }
