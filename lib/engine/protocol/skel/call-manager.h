@@ -76,6 +76,23 @@ namespace Ekiga
 
 
       /*
+       * PROTOCOL INFORMATION
+       */
+
+      /**
+       * @return the protocol name
+       */
+      virtual const std::string & get_protocol_name () const = 0;
+
+
+      /**
+       * @return the interface on which we are accepting calls. Generally,
+       * under the form protocol:IP:port.
+       */
+      virtual const std::string & get_interface () const = 0;
+
+
+      /*
        * Mandatory Settings
        */
 

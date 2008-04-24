@@ -61,6 +61,7 @@ namespace Ekiga
     {
 
   public:
+      typedef std::set<CallManager *>::iterator iterator;
 
       /** The constructor
        */
@@ -98,12 +99,15 @@ namespace Ekiga
        */
       void add_manager (CallManager &manager);
 
-      /** Triggers a callback for all Ekiga::CallManager sources of the
-       * CallCore service.
-       * @param The callback (the return value means "go on" and allows
-       * stopping the visit)
+      /** Return iterator to beginning
+       * @return iterator to beginning
        */
-      void visit_managers (sigc::slot<bool, CallManager &> visitor);
+      iterator begin ();
+
+      /** Return iterator to end
+       * @return iterator to end 
+       */
+      iterator end ();
 
       /** This signal is emitted when a Ekiga::CallManager has been
        * added to the CallCore Service.

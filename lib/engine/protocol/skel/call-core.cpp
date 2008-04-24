@@ -59,14 +59,15 @@ void CallCore::add_manager (CallManager &manager)
 }
 
 
-void CallCore::visit_managers (sigc::slot<bool, CallManager &> visitor)
+CallCore::iterator CallCore::begin ()
 {
-  bool go_on = true;
+  return managers.begin ();
+}
 
-  for (std::set<CallManager *>::iterator iter = managers.begin ();
-       iter != managers.end () && go_on;
-       iter++)
-    go_on = visitor (*(*iter));
+
+CallCore::iterator CallCore::end ()
+{
+  return managers.end (); 
 }
 
 
