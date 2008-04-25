@@ -593,10 +593,12 @@ static void on_registration_event_cb (std::string aor,
 
   switch (state) {
   case Ekiga::CallCore::Registered:
-    msg = g_strdup_printf (_("Registered %s"), aor.c_str ());
+    /* Translators: Is displayed once an account "%s" is registered. */
+    msg = g_strdup_printf (_("Registered %s"), aor.c_str ()); 
     break;
 
   case Ekiga::CallCore::Unregistered:
+    /* Translators: Is displayed once an account "%s" is unregistered. */
     msg = g_strdup_printf (_("Unregistered %s"), aor.c_str ());
     break;
 
