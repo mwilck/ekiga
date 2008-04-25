@@ -171,8 +171,8 @@ void DisplayCore::set_frame_data (unsigned width,
                              + ((current_time.tv_usec - last_stats.tv_usec) / 1000);
 
   if (milliseconds > 2000) {
-    display_stats.tx_fps = round ((display_stats.rx_frames * 1000) / milliseconds);
-    display_stats.rx_fps = round ((display_stats.tx_frames * 1000) / milliseconds);
+    display_stats.tx_fps = round ((display_stats.tx_frames * 1000) / milliseconds);
+    display_stats.rx_fps = round ((display_stats.rx_frames * 1000) / milliseconds);
     display_stats.rx_frames = 0;
     display_stats.tx_frames = 0;
     g_get_current_time (&last_stats);
