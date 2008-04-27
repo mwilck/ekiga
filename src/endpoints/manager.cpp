@@ -747,20 +747,6 @@ GMManager::OnEstablished (OpalConnection &connection)
 }
 
 
-void 
-GMManager::OnClearedCall (OpalCall & /*call*/)
-{
-  /* Play busy tone if we were connected */
-  /*
-  if (GetCallingState () == GMManager::Connected)
-    audiooutput_core.play_event("busy_tone_sound");
-*/
-
-
-  /* Reinitialize codecs */
-  re_audio_codec = tr_audio_codec = re_video_codec = tr_video_codec = "";
-}
-
 void
 GMManager::OnClosedMediaStream (const OpalMediaStream & stream)
 {

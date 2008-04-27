@@ -184,13 +184,6 @@ class GMManager:
   void OnEstablished (OpalConnection &);
 
 
-  /* DESCRIPTION  :  This callback is called when a call is cleared. 
-   * BEHAVIOR     :  Updates the GUI to put it back in the StandBy mode.
-   * PRE          :  /
-   */
-  void OnClearedCall (OpalCall &);
-
-
   /** Return the list of available codecs
    * @return a set of the codecs and their descriptions
    */
@@ -344,14 +337,6 @@ class GMManager:
   PMutex rc_access_mutex;
   PMutex manager_access_mutex;
   PMutex sc_mutex;
-
-  
-  /* Used codecs */
-  PString re_audio_codec;
-  PString tr_audio_codec;
-  PString re_video_codec;
-  PString tr_video_codec;
-
 
   Ekiga::ServiceCore & core;
   Ekiga::Runtime & runtime;
