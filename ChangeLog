@@ -1,5 +1,23 @@
 2008-04-27  Damien Sandras  <dsandras@gnome.org>
 
+	* src/endpoints/manager.cpp:
+	* src/endpoints/h323.cpp:
+	* src/endpoints/manager.h:
+	* src/endpoints/sip.cpp:
+	* src/gui/accounts.cpp:
+	* src/gui/main.cpp:
+	* lib/engine/protocol/skel/call-core.cpp:
+	* lib/engine/protocol/skel/call-core.h:
+	* lib/engine/protocol/skel/call-manager.h:
+	* lib/engine/presence/skel/presence-core.h:
+	* lib/engine/presence/skel/presence-core.cpp:
+	Moved the registration mechanism from the GMManager to the respective
+	CallManager's with the signal being relayed to the CallCore. At a
+	later stage, we should have an Accounts component in the engine and
+	those signals should be placed there.
+
+2008-04-27  Damien Sandras  <dsandras@gnome.org>
+
 	* src/endpoints/sip.h:
 	* src/endpoints/opal-call.cpp:
 	* src/endpoints/manager.cpp:

@@ -655,42 +655,6 @@ GMManager::OnOpenMediaStream (OpalConnection & connection,
   return TRUE;
 }
 
-void
-GMManager::OnRegistered (const PString & aor,
-                         bool wasRegistering)
-{
-  if (call_core)
-    runtime.run_in_main (sigc::bind (call_core->registration_event.make_slot (), 
-                                     std::string ((const char *) aor), 
-                                     wasRegistering ? Ekiga::CallCore::Registered : Ekiga::CallCore::Unregistered,
-                                     std::string ()));
-}
-
-
-void
-GMManager::OnRegistering (const PString & aor,
-                         G_GNUC_UNUSED bool isRegistering)
-{
-  if (call_core)
-    runtime.run_in_main (sigc::bind (call_core->registration_event.make_slot (), 
-                                     std::string ((const char *) aor), 
-                                     Ekiga::CallCore::Processing,
-                                     std::string ()));
-}
-
-
-void
-GMManager::OnRegistrationFailed (const PString & aor,
-                                 bool wasRegistering,
-                                 std::string info)
-{
-  if (call_core)
-    runtime.run_in_main (sigc::bind (call_core->registration_event.make_slot (), 
-                                     std::string ((const char *) aor), 
-                                     wasRegistering ? Ekiga::CallCore::RegistrationFailed : Ekiga::CallCore::UnregistrationFailed,
-                                     info));
-}
-
 
 void GMManager::GetAllowedFormats (OpalMediaFormatList & full_list)
 {

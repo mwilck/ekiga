@@ -128,9 +128,13 @@ GMH323Endpoint::Register (const PString & aor,
 
     H323EndPoint::RemoveGatekeeper (0);
 
-    /* Signal the OpalManager */
-    endpoint.OnRegistering (aor, true);
-
+    /* Signal */
+    /*
+    runtime.run_in_main (sigc::bind (registration_event.make_slot (), 
+                                     aor,
+                                     Ekiga::CallCore::Processing,
+                                     std::string ()));
+*/ //TODO
     if (!authUserName.IsEmpty ()) {
       SetLocalUserName (authUserName);
       AddAliasName (endpoint.GetDefaultDisplayName ());
@@ -174,12 +178,23 @@ GMH323Endpoint::Register (const PString & aor,
       else
 	info = _("Failed");
 
-      /* Signal the OpalManager */
-      endpoint.OnRegistrationFailed (aor, true, info);
+      /* Signal */
+      /*
+      runtime.run_in_main (sigc::bind (registration_event.make_slot (), 
+                                       aor, 
+                                       Ekiga::CallCore::RegistrationFailed,
+                                       info));
+                                       */
     }
     else {
-      /* Signal the OpalManager */
-      endpoint.OnRegistered (aor, true);
+
+      /* Signal */
+      /*
+      runtime.run_in_main (sigc::bind (registration_event.make_slot (), 
+                                       aor,
+                                       Ekiga::CallCore::Registered,
+                                       std::string ()));
+                                       */
     }
   }
   else if (unregister && IsRegisteredWithGatekeeper (host)) {
@@ -187,8 +202,13 @@ GMH323Endpoint::Register (const PString & aor,
     H323EndPoint::RemoveGatekeeper (0);
     RemoveAliasName (authUserName);
 
-    /* Signal the OpalManager */
-    endpoint.OnRegistered (aor, false);
+    /* Signal */
+    /*
+    runtime.run_in_main (sigc::bind (registration_event.make_slot (), 
+                                     aor,
+                                     Ekiga::CallCore::Unregistered,
+                                     std::string ()));
+                                     */
   }
 }
 

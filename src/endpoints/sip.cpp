@@ -407,14 +407,17 @@ GMSIPEndpoint::Register (const PString & _aor,
     else
       strm << aor;
 
-    /* Signal the OpalManager */
-    endpoint.OnRegistering (strm.str (), true); // TODO we could directly emit the signal from here
+    /* Signal */
+    runtime.run_in_main (sigc::bind (registration_event.make_slot (), 
+                                     aor,
+                                     Ekiga::CallCore::Processing,
+                                     std::string ()));
 
     /* Trigger registering */
     result = SIPEndPoint::Register (PString::Empty (), aor, authUserName, password, PString::Empty (), expires);
 
     if (!result) 
-      endpoint.OnRegistrationFailed (aor, true, _("Failed"));
+      OnRegistrationFailed (_aor, SIP_PDU::MaxStatusCode, true);
   }
   else if (unregister && IsRegistered (aor)) {
 
@@ -451,9 +454,6 @@ GMSIPEndpoint::OnRegistered (const PString & _aor,
       aors.remove (strm.str ());
   }
 
-  /* Signal the OpalManager */
-  endpoint.OnRegistered (strm.str (), was_registering); // TODO we could directly emit the signal from here
-
   if (loc != string::npos) {
 
     server = aor.substr (loc+1);
@@ -489,6 +489,12 @@ GMSIPEndpoint::OnRegistered (const PString & _aor,
     SIPSubscribe::SubscribeType t = SIPSubscribe::MessageSummary;
     Subscribe (t, 3600, aor);
   }
+
+  /* Signal */
+  runtime.run_in_main (sigc::bind (registration_event.make_slot (), 
+                                   strm.str (),
+                                   was_registering ? Ekiga::CallCore::Registered : Ekiga::CallCore::Unregistered,
+                                   std::string ()));
 }
 
 
@@ -701,9 +707,6 @@ GMSIPEndpoint::OnRegistrationFailed (const PString & _aor,
     break;
 
   case SIP_PDU::MaxStatusCode:
-    info = _("Max status code");
-    break;
-
   default:
     info = _("Failed");
 
@@ -717,11 +720,14 @@ GMSIPEndpoint::OnRegistrationFailed (const PString & _aor,
     break;
   }
 
-  /* Signal the OpalManager */
-  endpoint.OnRegistrationFailed (strm.str ().c_str (), wasRegistering, info);
-
   /* Signal the SIP Endpoint */
   SIPEndPoint::OnRegistrationFailed (strm.str ().c_str (), r, wasRegistering);
+
+  /* Signal */
+  runtime.run_in_main (sigc::bind (registration_event.make_slot (), 
+                                   aor, 
+                                   wasRegistering ? Ekiga::CallCore::RegistrationFailed : Ekiga::CallCore::UnregistrationFailed,
+                                   info));
 }
 
 

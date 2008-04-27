@@ -582,7 +582,8 @@ static void on_mwi_event_cb (G_GNUC_UNUSED Ekiga::CallManager & manager,
 }
 
 
-static void on_registration_event_cb (std::string aor,
+static void on_registration_event_cb (Ekiga::CallManager & /*manager*/,
+                                      std::string aor,
                                       Ekiga::CallCore::RegistrationState state,
                                       G_GNUC_UNUSED std::string info,
                                       gpointer window)

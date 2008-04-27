@@ -60,7 +60,8 @@ void Ekiga::PresencePublisher::on_personal_details_updated (Ekiga::PersonalDetai
 }
 
 
-void Ekiga::PresencePublisher::on_registration_event (std::string /*aor*/,
+void Ekiga::PresencePublisher::on_registration_event (Ekiga::CallManager & /*manager*/,
+                                                      std::string /*aor*/,
                                                       Ekiga::CallCore::RegistrationState state,
                                                       std::string /*info*/,
                                                       Ekiga::PersonalDetails & details)

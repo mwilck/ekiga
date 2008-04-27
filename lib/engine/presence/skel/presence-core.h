@@ -110,7 +110,8 @@ namespace Ekiga
 
   private:
     void on_personal_details_updated (PersonalDetails & details);
-    void on_registration_event (std::string aor,
+    void on_registration_event (Ekiga::CallManager & /*manager*/,
+                                std::string aor,
                                 Ekiga::CallCore::RegistrationState state,
                                 std::string /*info*/,
                                 Ekiga::PersonalDetails & details);

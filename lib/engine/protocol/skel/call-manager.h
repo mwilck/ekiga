@@ -156,14 +156,21 @@ namespace Ekiga
 
 
       /*
-       * MESSAGE WAITING INDICATION
+       * ACCOUNT INDICATIONS
        */
 
-      /** This signal is emitted when a chat conversation should be initiated
+      /** This signal is emitted when there is a new message waiting indication
        * @param: account is the voicemail account
        *         mwi is the message waiting indication
        */
       sigc::signal<void, std::string, std::string> mwi_event;
+
+      /** This signal is emitted when there is a new registration event
+       * @param: account is the voicemail account
+       *         state is the state
+       *         info contains information about the registration status
+       */
+      sigc::signal<void, std::string, Ekiga::CallCore::RegistrationState, std::string> registration_event;
 
   private :
       std::string uri_type;

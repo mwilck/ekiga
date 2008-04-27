@@ -791,7 +791,8 @@ gm_aw_get_selected_account (GtkWidget *accounts_window)
 }
 
 /* Engine callbacks */
-static void on_registration_event_cb (std::string aor,
+static void on_registration_event_cb (Ekiga::CallManager & /*manager*/,
+                                      std::string aor,
                                       Ekiga::CallCore::RegistrationState state,
                                       std::string info,
                                       gpointer window)

@@ -260,18 +260,6 @@ class GMManager:
   virtual void OnClosedMediaStream (const OpalMediaStream &);
 
 
- protected:
-
-  void OnRegistering (const PString & aor,
-                      bool isRegistering);
-
-  void OnRegistered (const PString & aor,
-                     bool wasRegistering);
-
-  void OnRegistrationFailed (const PString & aor,
-                             bool wasRegistering,
-                             std::string info);
-
  private:
   void GetAllowedFormats (OpalMediaFormatList & full_list);
 

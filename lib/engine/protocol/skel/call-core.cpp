@@ -58,6 +58,7 @@ void CallCore::add_manager (CallManager &manager)
   manager.new_chat.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_new_chat), &manager));
 
   manager.mwi_event.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_mwi_event), &manager));
+  manager.registration_event.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_registration_event), &manager));
 }
 
 
@@ -221,4 +222,10 @@ void CallCore::on_new_chat (std::string display_name, std::string uri, CallManag
 void CallCore::on_mwi_event (std::string account, std::string info, CallManager *manager)
 {
   mwi_event.emit (*manager, account, info);
+}
+
+
+void CallCore::on_registration_event (std::string account, Ekiga::CallCore::RegistrationState state, std::string info, CallManager *manager)
+{
+  registration_event.emit (*manager, account, state, info);
 }
