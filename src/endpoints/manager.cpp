@@ -27,8 +27,8 @@
 
 
 /*
- *                         endpoint.cpp  -  description
- *                         ----------------------------
+ *                         manager.cpp  -  description
+ *                         ---------------------------
  *   begin                : Sat Dec 23 2000
  *   copyright            : (C) 2000-2006 by Damien Sandras
  *   description          : This file contains the Endpoint class.
@@ -39,37 +39,16 @@
 #include "config.h"
 
 #include "manager.h"
+
 #include "h323.h"
 #include "sip.h"
-
-#include "ekiga.h"
-#include "misc.h"
-#include "main.h"
-
-#include "gmconf.h"
+#include "pcss.h"
 
 #include "call-core.h"
 #include "opal-gmconf-bridge.h"
 #include "opal-call.h"
 #include "opal-codec-description.h"
-#include "pcss.h"
-
 #include "vidinput-info.h"
-
-#include <opal/transcoders.h>
-#include <ptclib/http.h>
-#include <ptclib/html.h>
-#include <ptclib/pstun.h>
-
-#include <math.h>
-
-#define new PNEW
-
-
-extern "C" {
-  unsigned char linear2ulaw(int pcm_val);
-  int ulaw2linear(unsigned char u_val);
-};
 
 
 static  bool same_codec_desc (Ekiga::CodecDescription a, Ekiga::CodecDescription b)
@@ -104,24 +83,24 @@ private:
 };
 
 
+// FIXME: we shouldnt call sound events here but signal to the frontend which then triggers them
+
 /* The class */
 GMManager::GMManager (Ekiga::ServiceCore & _core)
 : core (_core), 
   runtime (*(dynamic_cast<Ekiga::Runtime *> (core.get ("runtime")))),
   audiooutput_core (*(dynamic_cast<Ekiga::AudioOutputCore *> (_core.get ("audiooutput-core")))) 
-  //FIXME: we shouldnt call sound events here but signal to the frontend which then triggers them
 {
   /* Initialise the endpoint paramaters */
-  gk = NULL;
-  sc = NULL;
-
   PIPSocket::SetDefaultIpAddressFamilyV4();
+  autoStartTransmitVideo = autoStartReceiveVideo = true;
   
   manager = NULL;
 
   h323EP = NULL;
   sipEP = NULL;
   pcssEP = NULL;
+  sc = NULL;
 
   // Create video devices
   PVideoDevice::OpenArgs video = GetVideoOutputDevice();
@@ -148,13 +127,6 @@ GMManager::GMManager (Ekiga::ServiceCore & _core)
   pcssEP->SetSoundChannelRecordDevice("EKIGA");
   AddRouteEntry("h323:.* = pc:<db>");
   AddRouteEntry("sip:.* = pc:<db>");
-  
-  autoStartTransmitVideo = autoStartReceiveVideo = true;
-
-  // Set ports
-  unsigned a, b, c, d, e, f = 0;
-  get_port_ranges (a, b, c, d, e, f);
-  set_port_ranges (a, b, c, d, e, f);
 
   // Media formats
   SetMediaFormatOrder (PStringArray ());
@@ -170,7 +142,9 @@ GMManager::GMManager (Ekiga::ServiceCore & _core)
 
 GMManager::~GMManager ()
 {
-  Exit ();
+  ClearAllCalls (OpalConnection::EndedByLocalUser, TRUE);
+  RemoveAccountsEndpoint ();
+  RemoveSTUNClient ();
 
   delete bridge;
 }
@@ -198,7 +172,6 @@ bool GMManager::dial (const std::string uri)
   return false;
 }
 
-
 void GMManager::set_fullname (const std::string name)
 {
   SetDefaultDisplayName (name.c_str ());
@@ -212,15 +185,6 @@ const std::string GMManager::get_fullname () const
 {
   return (const char*) GetDefaultDisplayName ();
 }
-
-
-void GMManager::get_jitter_buffer_size (unsigned & min_val,
-                                        unsigned & max_val)
-{
-  min_val = gm_conf_get_int (AUDIO_CODECS_KEY "minimum_jitter_buffer");
-  max_val = gm_conf_get_int (AUDIO_CODECS_KEY "maximum_jitter_buffer");
-}
-
 
 void GMManager::set_jitter_buffer_size (unsigned min_val,
                                         unsigned max_val)
@@ -255,12 +219,12 @@ void GMManager::set_jitter_buffer_size (unsigned min_val,
   }
 }
 
-
-bool GMManager::get_echo_cancelation ()
+void GMManager::get_jitter_buffer_size (unsigned & min_val,
+                                        unsigned & max_val)
 {
-  return gm_conf_get_bool (AUDIO_CODECS_KEY "enable_silence_detection");
+  min_val = GetMinAudioJitterDelay (); 
+  max_val = GetMaxAudioJitterDelay (); 
 }
-
 
 void GMManager::set_echo_cancelation (bool enabled)
 {
@@ -295,16 +259,12 @@ void GMManager::set_echo_cancelation (bool enabled)
   }
 }
 
-
-bool GMManager::get_silence_detection ()
+bool GMManager::get_echo_cancelation ()
 {
-  OpalSilenceDetector::Params sd;
+  OpalEchoCanceler::Params ec = GetEchoCancelParams ();
 
-  sd = GetSilenceDetectParams ();
-
-  return (sd.m_mode != OpalSilenceDetector::NoSilenceDetection);
+  return (ec.m_mode == OpalEchoCanceler::Cancelation); 
 }
-
 
 void GMManager::set_silence_detection (bool enabled)
 {
@@ -339,69 +299,36 @@ void GMManager::set_silence_detection (bool enabled)
   }
 }
 
-
-void GMManager::get_port_ranges (unsigned & min_udp_port, 
-                                 unsigned & max_udp_port,
-                                 unsigned & min_tcp_port, 
-                                 unsigned & max_tcp_port,
-                                 unsigned & min_rtp_port, 
-                                 unsigned & max_rtp_port)
+bool GMManager::get_silence_detection ()
 {
-  std::string key [3] = { 
-    PORTS_KEY "udp_port_range",
-    PORTS_KEY "rtp_port_range",
-    PORTS_KEY "tcp_port_range"
-  };
+  OpalSilenceDetector::Params sd;
 
-  gchar *port_range = NULL;
-  gchar **couple = NULL;
+  sd = GetSilenceDetectParams ();
 
-  for (int i = 0;
-       i < 3;
-       i++) {
-
-    port_range = gm_conf_get_string (key [i].c_str ());
-    if (port_range) {
-
-      couple = g_strsplit (port_range, ":", 2);
-
-      if (i == 0) {
-
-        min_udp_port = atoi (couple [0]);
-        max_udp_port = atoi (couple [1]);
-      }
-      else if (i == 1) {
-
-        min_tcp_port = atoi (couple [0]);
-        max_tcp_port = atoi (couple [1]);
-      }
-      else {
-
-        min_rtp_port = atoi (couple [0]);
-        max_rtp_port = atoi (couple [1]);
-      }
-    }
-
-    g_free (port_range);
-    g_strfreev (couple);
-    port_range = NULL;
-    couple = NULL;
-  }
+  return (sd.m_mode != OpalSilenceDetector::NoSilenceDetection);
 }
-
 
 void GMManager::set_port_ranges (unsigned min_udp_port, 
                                  unsigned max_udp_port,
                                  unsigned min_tcp_port, 
-                                 unsigned max_tcp_port,
-                                 unsigned min_rtp_port, 
-                                 unsigned max_rtp_port)
+                                 unsigned max_tcp_port)
 {
   SetTCPPorts (min_tcp_port, max_tcp_port);
-  SetRtpIpPorts (min_rtp_port, max_rtp_port);
+  SetRtpIpPorts (min_udp_port, max_udp_port);
   SetUDPPorts (min_udp_port, max_udp_port);
 }
 
+void GMManager::get_port_ranges (unsigned & min_udp_port, 
+                                 unsigned & max_udp_port,
+                                 unsigned & min_tcp_port, 
+                                 unsigned & max_tcp_port)
+{
+  min_udp_port = GetUDPPortBase ();
+  max_udp_port = GetUDPPortMax ();
+
+  min_tcp_port = GetTCPPortBase ();
+  max_tcp_port = GetTCPPortMax ();
+}
 
 void GMManager::set_video_options (const GMManager::VideoOptions & options)
 {
@@ -522,17 +449,6 @@ void GMManager::get_video_options (GMManager::VideoOptions & options)
 }
 
 
-void
-GMManager::Exit ()
-{
-  ClearAllCalls (OpalConnection::EndedByLocalUser, TRUE);
-
-  RemoveAccountsEndpoint ();
-
-  RemoveSTUNClient ();
-}
-
-
 Ekiga::CodecList GMManager::get_codecs ()
 {
   return codecs;
@@ -589,7 +505,6 @@ void GMManager::set_codecs (Ekiga::CodecList & _codecs)
   // 
   // Update OPAL
   //
-
   Ekiga::CodecList::iterator codecs_it;
   for (codecs_it = codecs.begin () ;
        codecs_it != codecs.end () ;
@@ -715,38 +630,6 @@ OpalCall *GMManager::CreateCall ()
 }
 
 
-void 
-GMManager::OnEstablished (OpalConnection &connection)
-{
-  RTP_Session *audio_session = NULL;
-  RTP_Session *video_session = NULL;
-
-  /* Do nothing for the PCSS connection */
-  if (PIsDescendant(&connection, OpalPCSSConnection)) {
-    
-    PTRACE (3, "GMManager\t Will establish the connection");
-    OpalManager::OnEstablished (connection);
-    return;
-  }
-
-  if (PIsDescendant(&connection, OpalRTPConnection)) {
-
-    audio_session = PDownCast (OpalRTPConnection, &connection)->GetSession (OpalMediaFormat::DefaultAudioSessionID);
-    video_session = PDownCast (OpalRTPConnection, &connection)->GetSession (OpalMediaFormat::DefaultVideoSessionID);
-    if (audio_session) {
-      audio_session->SetIgnorePayloadTypeChanges (TRUE);
-    }
-
-    if (video_session) {
-      video_session->SetIgnorePayloadTypeChanges (TRUE);
-    }
-  }
-  
-  PTRACE (3, "GMManager\t Will establish the connection");
-  OpalManager::OnEstablished (connection);
-}
-
-
 void
 GMManager::OnClosedMediaStream (const OpalMediaStream & stream)
 {
@@ -771,60 +654,6 @@ GMManager::OnOpenMediaStream (OpalConnection & connection,
 
   return TRUE;
 }
-
-
-void
-GMManager::OnMWIReceived (const PString & account,
-                          const PString & mwi)
-{
-  PINDEX i = 0;
-  PINDEX j = 0;
-  int total = 0;
-
-  PString key;
-  PString val;
-  PString *value = NULL;
-  
-  PWaitAndSignal m(mwi_access_mutex);
-
-  /* Add MWI information for given account */
-  value = mwiData.GetAt (key);
-
-  /* Something changed for that account */
-  if (value && *value != mwi) {
-    mwiData.SetAt (account, new PString (mwi));
-
-    /* Compute the total number of new voice mails */
-    while (i < mwiData.GetSize ()) {
-
-      value = NULL;
-      key = mwiData.GetKeyAt (i);
-      value = mwiData.GetAt (key);
-      if (value) {
-
-        val = *value;
-        j = val.Find ("/");
-        if (j != P_MAX_INDEX)
-          val = value->Left (j);
-        else 
-          val = *value;
-
-        total += val.AsInteger ();
-      }
-      i++;
-    }
-
-    runtime.run_in_main (sigc::bind (mwi_event.make_slot (), 
-                                      (const char *) account, 
-                                      (const char *) mwi,
-                                      total));
-
-    /* Sound event if new voice mail */
-    audiooutput_core.play_event("new_voicemail_sound");
-
-  }
-}
-
 
 void
 GMManager::OnRegistered (const PString & aor,

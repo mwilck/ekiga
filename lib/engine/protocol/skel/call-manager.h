@@ -155,6 +155,16 @@ namespace Ekiga
       sigc::signal<void, std::string, std::string> new_chat;
 
 
+      /*
+       * MESSAGE WAITING INDICATION
+       */
+
+      /** This signal is emitted when a chat conversation should be initiated
+       * @param: account is the voicemail account
+       *         mwi is the message waiting indication
+       */
+      sigc::signal<void, std::string, std::string> mwi_event;
+
   private :
       std::string uri_type;
     };

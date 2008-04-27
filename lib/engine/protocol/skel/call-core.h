@@ -162,10 +162,16 @@ namespace Ekiga
       bool send_message (const std::string uri, 
                          const std::string message);
 
+      /** See call-manager.h for API 
+       */
       sigc::signal<void, CallManager &, std::string, std::string> im_failed;
       sigc::signal<void, CallManager &, std::string, std::string, std::string> im_received;
       sigc::signal<void, CallManager &, std::string, std::string> im_sent;
       sigc::signal<void, CallManager &, std::string, std::string> new_chat;
+
+
+      /*** MWI ***/
+      sigc::signal<void, CallManager &, std::string, std::string> mwi_event;
 
 
       /*** Accounts ***/
@@ -191,6 +197,8 @@ namespace Ekiga
       void on_im_sent (std::string, std::string, CallManager *manager);
       void on_im_received (std::string, std::string, std::string, CallManager *manager);
       void on_new_chat (std::string, std::string, CallManager *manager);
+
+      void on_mwi_event (std::string, std::string, CallManager *manager);
 
       std::set<CallManager *> managers;
     };

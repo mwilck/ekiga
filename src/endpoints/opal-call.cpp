@@ -44,6 +44,7 @@
 #include <ptlib.h>
 
 #include <opal/manager.h>
+#include <opal/rtpconn.h>
 #include <opal/pcss.h>
 
 #include "config.h"
@@ -289,6 +290,17 @@ Opal::Call::OnEstablished (OpalConnection & connection)
     runtime.run_in_main (established.make_slot ());
   }
 
+  if (PIsDescendant(&connection, OpalRTPConnection)) {
+
+    RTP_Session *audio_session = PDownCast (OpalRTPConnection, &connection)->GetSession (OpalMediaFormat::DefaultAudioSessionID);
+    RTP_Session *video_session = PDownCast (OpalRTPConnection, &connection)->GetSession (OpalMediaFormat::DefaultVideoSessionID);
+    if (audio_session)
+      audio_session->SetIgnorePayloadTypeChanges (TRUE);
+
+    if (video_session)
+      video_session->SetIgnorePayloadTypeChanges (TRUE);
+  }
+  
   return OpalCall::OnEstablished (connection);
 }
 
@@ -436,7 +448,9 @@ Opal::Call::OnSetUp (OpalConnection & connection)
 }
 
 
-void Opal::Call::OnHold (OpalConnection & connection, bool from_remote, bool on_hold)
+void Opal::Call::OnHold (OpalConnection & /*connection*/, 
+                         bool /*from_remote*/, 
+                         bool on_hold)
 {
   if (on_hold)
     runtime.run_in_main (held.make_slot ());

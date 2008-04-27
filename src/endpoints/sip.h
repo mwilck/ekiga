@@ -51,9 +51,7 @@
 
 PDICTIONARY (msgDict, PString, PString);
 
-
 class Ekiga::PersonalDetails;
-
 
 class GMSIPEndpoint 
 :   public SIPEndPoint, 
@@ -242,10 +240,10 @@ private:
                    std::string uri);
 
 
-  GMManager & endpoint;
-
   PMutex msgDataMutex;
   msgDict msgData;
+
+  GMManager & endpoint;
 
   std::list<std::string> subscribed_uris;    // List of subscribed uris
   std::list<std::string> domains; // List of registered domains

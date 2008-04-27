@@ -565,9 +565,9 @@ static void audio_volume_window_hidden_cb (GtkWidget *widget,
 /* 
  * Engine Callbacks 
  */
-static void on_mwi_event_cb (G_GNUC_UNUSED std::string account,
+static void on_mwi_event_cb (G_GNUC_UNUSED Ekiga::CallManager & manager,
+                             G_GNUC_UNUSED std::string account,
                              G_GNUC_UNUSED std::string mwi,
-                             unsigned int total,
                              gpointer self)
 {
   GmMainWindow *mw = NULL;
@@ -575,8 +575,6 @@ static void on_mwi_event_cb (G_GNUC_UNUSED std::string account,
   g_return_if_fail (GTK_WIDGET (self) != NULL);
   mw = gm_mw_get_mw (GTK_WIDGET (self));
   g_return_if_fail (mw != NULL);
-
-  mw->total_mwi = total;
 
   gm_main_window_push_message (GTK_WIDGET (self),
                                mw->missed_calls,
@@ -3871,10 +3869,6 @@ gm_main_window_new (Ekiga::ServiceCore & core)
                       (gpointer) g_new0 (GmIdleTime, 1), 
                       (GDestroyNotify) g_free);
 
-  /* Engine Signals callbacks */
-  conn = ep->mwi_event.connect (sigc::bind (sigc::ptr_fun (on_mwi_event_cb), (gpointer) window));
-  mw->connections.push_back (conn);
-
   /* New Display Engine signals */
   Ekiga::DisplayCore *display_core = dynamic_cast<Ekiga::DisplayCore *> (mw->core.get ("display-core"));
 
@@ -3931,6 +3925,10 @@ gm_main_window_new (Ekiga::ServiceCore & core)
     
   /* New Call Engine signals */
   Ekiga::CallCore *call_core = dynamic_cast<Ekiga::CallCore *> (mw->core.get ("call-core"));
+
+  /* Engine Signals callbacks */
+  conn = call_core->mwi_event.connect (sigc::bind (sigc::ptr_fun (on_mwi_event_cb), (gpointer) window));
+  mw->connections.push_back (conn);
 
   conn = call_core->registration_event.connect (sigc::bind (sigc::ptr_fun (on_registration_event_cb), (gpointer) window));
   mw->connections.push_back (conn);

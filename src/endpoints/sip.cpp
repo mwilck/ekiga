@@ -768,11 +768,13 @@ GMSIPEndpoint::OnIncomingConnection (OpalConnection &connection,
 
 
 void 
-GMSIPEndpoint::OnMWIReceived (const PString & to,
+GMSIPEndpoint::OnMWIReceived (const PString & account,
                               G_GNUC_UNUSED SIPSubscribe::MWIType type,
                               const PString & msgs)
 {
-  endpoint.OnMWIReceived (to, msgs);
+  runtime.run_in_main (sigc::bind (mwi_event.make_slot (), 
+                                   (const char *) account, 
+                                   (const char *) msgs));
 }
 
 
@@ -803,9 +805,6 @@ GMSIPEndpoint::OnReceivedMESSAGE (G_GNUC_UNUSED OpalTransport & transport,
     uri.AdjustForRequestURI ();
     std::string message_uri = (const char *) uri.AsString ();
     std::string message = (const char *) pdu.GetEntityBody ();
-
-    // FIXME should be a signal
-    //audiooutput_core.play_event("new_message_sound");
 
     runtime.run_in_main (sigc::bind (im_received.make_slot (), display_name, message_uri, message));
   }

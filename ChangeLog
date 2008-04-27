@@ -1,5 +1,21 @@
 2008-04-27  Damien Sandras  <dsandras@gnome.org>
 
+	* src/endpoints/sip.h:
+	* src/endpoints/opal-call.cpp:
+	* src/endpoints/manager.cpp:
+	* src/endpoints/manager.h:
+	* src/endpoints/sip.cpp:
+	* src/gui/main.cpp:
+	* lib/engine/protocol/skel/call-core.cpp:
+	* lib/engine/protocol/skel/call-core.h:
+	* lib/engine/protocol/skel/call-manager.h:
+	Moved more stuff from the GMManager to the CallManager's.
+	Added signal in the call manager for message waiting indications.
+	Most protocols support MWIs. If they do not support it, then the
+	signal is not emitted.
+
+2008-04-27  Damien Sandras  <dsandras@gnome.org>
+
 	* src/endpoints/manager.cpp:
 	* src/endpoints/manager.h:
 	Removed unuseful OnClearedCall method, as well as various

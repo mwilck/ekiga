@@ -68,10 +68,6 @@ class GMH323Endpoint;
 class GMSIPEndpoint;
 class GMPCSSEndpoint;
 
-
-PDICTIONARY (mwiDict, PString, PString);
-
-
 /**
  * COMMON NOTICE: The Endpoint must be initialized with Init after its
  * creation.
@@ -111,29 +107,29 @@ class GMManager:
   const std::string get_description () const
     { return "\tObject bringing in Opal support (calls, text messaging, sip, h323, ...)"; }
 
-  void get_jitter_buffer_size (unsigned & min_val,
-                               unsigned & max_val);
   void set_jitter_buffer_size (unsigned min_val,
                                unsigned max_val);
+  
+  void get_jitter_buffer_size (unsigned & min_val,
+                               unsigned & max_val);
 
-  bool get_silence_detection ();
   void set_silence_detection (bool enabled);
 
-  bool get_echo_cancelation ();
+  bool get_silence_detection ();
+
   void set_echo_cancelation (bool enabled);
+  
+  bool get_echo_cancelation ();
+
+  void set_port_ranges (unsigned min_udp_port, 
+                        unsigned max_udp_port,
+                        unsigned min_tcp_port, 
+                        unsigned max_tcp_port);
 
   void get_port_ranges (unsigned & min_udp_port, 
                         unsigned & max_udp_port,
                         unsigned & min_tcp_port, 
-                        unsigned & max_tcp_port,
-                        unsigned & min_rtp_port, 
-                        unsigned & max_rtp_port);
-  void set_port_ranges (unsigned min_udp_port, 
-                        unsigned max_udp_port,
-                        unsigned min_tcp_port, 
-                        unsigned max_tcp_port,
-                        unsigned min_rtp_port, 
-                        unsigned max_rtp_port);
+                        unsigned & max_tcp_port);
 
   struct VideoOptions 
     {
@@ -163,25 +159,7 @@ class GMManager:
   void set_fullname (const std::string name);
   const std::string get_fullname () const;
 
-  
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Prepare the endpoint to exit by removing all
-   * 		     associated threads and components.
-   * PRE          :  /
-   */
-  void Exit ();
-
   OpalCall *CreateCall ();
-
-  
-  /* DESCRIPTION  :  This callback is called when the connection is 
-   *                 established and everything is ok.
-   * BEHAVIOR     :  Sets the proper values for the current connection 
-   *                 parameters and updates the GUI.
-   *                 Notice there are 2 connections for each call.
-   * PRE          :  /
-   */
-  void OnEstablished (OpalConnection &);
 
 
   /** Return the list of available codecs
@@ -282,16 +260,7 @@ class GMManager:
   virtual void OnClosedMediaStream (const OpalMediaStream &);
 
 
-  sigc::signal<void, std::string, std::string, unsigned int> mwi_event;
-
- private:
-
-  
  protected:
-  
-  
-  void OnMWIReceived (const PString & account, 
-                      const PString & mwi);
 
   void OnRegistering (const PString & aor,
                       bool isRegistering);
@@ -305,9 +274,6 @@ class GMManager:
 
  private:
   void GetAllowedFormats (OpalMediaFormatList & full_list);
-
-  /* MWI */
-  mwiDict mwiData;
 
   /* Different channels */
   bool is_transmitting_video;
@@ -324,7 +290,6 @@ class GMManager:
 
   /* The various components of the endpoint */
   GMAccountsEndpoint *manager;
-  GMH323Gatekeeper *gk;
   GMStunClient *sc;
 
 
@@ -333,7 +298,6 @@ class GMManager:
   PMutex vg_access_mutex;
   PMutex tct_access_mutex;
   PMutex lid_access_mutex;
-  PMutex mwi_access_mutex;
   PMutex rc_access_mutex;
   PMutex manager_access_mutex;
   PMutex sc_mutex;

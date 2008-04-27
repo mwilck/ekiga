@@ -56,6 +56,8 @@ void CallCore::add_manager (CallManager &manager)
   manager.im_received.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_im_received), &manager));
   manager.im_sent.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_im_sent), &manager));
   manager.new_chat.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_new_chat), &manager));
+
+  manager.mwi_event.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_mwi_event), &manager));
 }
 
 
@@ -213,4 +215,10 @@ void CallCore::on_im_received (std::string display_name, std::string uri, std::s
 void CallCore::on_new_chat (std::string display_name, std::string uri, CallManager *manager)
 {
   new_chat.emit (*manager, display_name, uri);
+}
+
+
+void CallCore::on_mwi_event (std::string account, std::string info, CallManager *manager)
+{
+  mwi_event.emit (*manager, account, info);
 }
