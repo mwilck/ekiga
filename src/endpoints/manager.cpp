@@ -793,19 +793,6 @@ void GMManager::OnHold (OpalConnection & connection)
 }
 
 
-bool 
-GMManager::DeviceVolume (PSoundChannel *sound_channel,
-			 G_GNUC_UNUSED bool is_encoding,
-			 bool set,
-			 unsigned int &vol)
-{
-  if (sound_channel == NULL)
-    return false;
-
-  return set ? sound_channel->SetVolume (vol) : sound_channel->GetVolume (vol);
-}
-
-
 void
 GMManager::OnMWIReceived (const PString & account,
                           const PString & mwi)

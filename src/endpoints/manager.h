@@ -312,8 +312,6 @@ class GMManager:
 
   void OnHold (OpalConnection & connection);
 
-  bool DeviceVolume (PSoundChannel *, bool, bool, unsigned int &);
-
  private:
   void GetAllowedFormats (OpalMediaFormatList & full_list);
 
