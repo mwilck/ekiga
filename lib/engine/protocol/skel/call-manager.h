@@ -54,6 +54,14 @@ namespace Ekiga
     {
 
   public:
+      class Interface
+        {
+      public:
+          std::string protocol;
+          std::string interface;
+          unsigned port;
+        };
+
 
       /* The constructor
        */
@@ -89,7 +97,7 @@ namespace Ekiga
        * @return the interface on which we are accepting calls. Generally,
        * under the form protocol:IP:port.
        */
-      virtual const std::string & get_interface () const = 0;
+      virtual const Interface & get_interface () const = 0;
 
 
       /*

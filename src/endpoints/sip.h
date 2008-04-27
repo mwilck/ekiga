@@ -76,7 +76,7 @@ public:
 
   const std::string & get_protocol_name () const;
 
-  const std::string & get_interface () const;
+  const Ekiga::CallManager::Interface & get_interface () const;
 
   bool send_message (const std::string uri, 
                      const std::string message);
@@ -254,7 +254,9 @@ private:
   Ekiga::PresenceCore & presence_core;
   Ekiga::Runtime & runtime;
 
-  std::string listener;
+  Ekiga::CallManager::Interface interface;
+
+  std::string protocol_name;
   std::string uri_prefix;
   std::string forward_uri;
 

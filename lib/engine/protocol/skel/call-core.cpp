@@ -65,7 +65,19 @@ CallCore::iterator CallCore::begin ()
 }
 
 
+CallCore::const_iterator CallCore::begin () const
+{
+  return managers.begin ();
+}
+
+
 CallCore::iterator CallCore::end ()
+{
+  return managers.end (); 
+}
+
+
+CallCore::const_iterator CallCore::end () const
 {
   return managers.end (); 
 }

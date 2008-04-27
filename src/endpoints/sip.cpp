@@ -55,6 +55,7 @@ GMSIPEndpoint::GMSIPEndpoint (GMManager & ep, Ekiga::ServiceCore & _core)
   presence_core (*(dynamic_cast<Ekiga::PresenceCore *> (core.get ("presence-core")))),
   runtime (*(dynamic_cast<Ekiga::Runtime *> (core.get ("runtime"))))
 {
+  protocol_name = "sip";
   uri_prefix = "sip:";
   udp_min = 5000;
   udp_max = 5100; 
@@ -93,13 +94,13 @@ bool GMSIPEndpoint::dial (const std::string uri)
 
 const std::string & GMSIPEndpoint::get_protocol_name () const
 {
-  return uri_prefix;
+  return protocol_name;
 }
 
 
-const std::string & GMSIPEndpoint::get_interface () const
+const Ekiga::CallManager::Interface & GMSIPEndpoint::get_interface () const
 {
-  return listener;
+  return interface;
 }
 
 
@@ -303,6 +304,9 @@ bool GMSIPEndpoint::start_listening ()
   std::stringstream str;
   RemoveListener (NULL);
 
+  interface.protocol = "udp";
+  interface.interface = "*";
+
   str << "udp$*:" << port;
   if (!StartListeners (PStringArray (str.str ().c_str ()))) {
 
@@ -312,12 +316,14 @@ bool GMSIPEndpoint::start_listening ()
 
       if (StartListeners (PStringArray (str.str ().c_str ()))) {
 
-        listener = str.str ();
+        interface.port = port;
         return true;
       }
       port++;
     }
   }
+  else
+    interface.port = port;
 
   return false;
 }

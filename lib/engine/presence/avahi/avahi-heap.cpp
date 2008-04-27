@@ -252,6 +252,7 @@ Avahi::Heap::ResolverCallback (AvahiServiceResolver *resolver,
 {
   std::string software;
   std::string presence;
+  std::string status;
   bool already_known = false;
   char good_address[AVAHI_ADDRESS_STR_MAX];
   gchar *url = NULL;
@@ -274,8 +275,9 @@ Avahi::Heap::ResolverCallback (AvahiServiceResolver *resolver,
 	    std::string value (cvalue);
 	    if (key == "presence") 
               presence = value;
-	    
-	    if (key == "software")
+            else if (key == "status") 
+              status = value;
+            else if (key == "software")
 	      software = value;
 	  }
 	  if (ckey != NULL) free (ckey);
@@ -291,7 +293,7 @@ Avahi::Heap::ResolverCallback (AvahiServiceResolver *resolver,
 	if ((*iter).get_name () == name) {
 
 	  /* known contact has been updated */
-          (*iter).set_status ("");
+          (*iter).set_status (status);
 	  (*iter).set_presence (presence);
 	  (*iter).updated.emit ();
           already_known = true;
@@ -303,7 +305,7 @@ Avahi::Heap::ResolverCallback (AvahiServiceResolver *resolver,
 	avahi_address_snprint (good_address, sizeof (good_address), address);
 	url = g_strdup_printf ("sip:%s:%d", good_address, port);
 	presentity = new Presentity (core, name, url);
-	presentity->set_status ("");
+	presentity->set_status (status);
 	presentity->set_presence (presence);
 	add_presentity (*presentity);
 	g_free (url);

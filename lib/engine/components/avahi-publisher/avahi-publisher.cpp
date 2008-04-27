@@ -38,11 +38,15 @@
 
 
 #include <iostream>
+#include <sstream>
 
 #include "config.h"
 
 #include "avahi-publisher.h"
 #include "personal-details.h"
+
+#include "call-core.h"
+#include "call-manager.h"
 
 using namespace Avahi;
 
@@ -153,9 +157,23 @@ void PresencePublisher::publish (const Ekiga::PersonalDetails & details)
     name = NULL;
   }
 
+  Ekiga::CallCore *call_core = dynamic_cast<Ekiga::CallCore *> (core.get ("call-core"));
+  if (call_core) {
+
+    to_publish.clear ();
+    Ekiga::CallCore::const_iterator it;
+    for (it = call_core->begin (); it != call_core->end (); it++) {
+
+      const Ekiga::CallManager::Interface & interface = (*it)->get_interface ();
+      const std::string & protocol = (*it)->get_protocol_name ();
+      to_publish [protocol] = interface;
+    }
+  }
+
   name = g_strdup (details.get_display_name ().c_str ());
   short_status = "presence-" + details.get_short_status ();
   text_record = avahi_string_list_add_printf (text_record, "presence=%s", short_status.c_str ());
+  text_record = avahi_string_list_add_printf (text_record, "status=%s", details.get_long_status ().c_str ());
   text_record = avahi_string_list_add (text_record, "software=Ekiga/" PACKAGE_VERSION);
 
   if (client && group) {
@@ -178,30 +196,40 @@ void PresencePublisher::publish (const Ekiga::PersonalDetails & details)
 
 bool PresencePublisher::connect () 
 {
+  bool success = true;
   int ret = 0;
 
   if (group != NULL) {
-  
-    ret = avahi_entry_group_add_service_strlst (group,
-						AVAHI_IF_UNSPEC,
-						AVAHI_PROTO_UNSPEC,
-						(AvahiPublishFlags) 0,
-						name,
-						ZC_SIP,
-						NULL,
-						NULL,
-						5060,
-						text_record);
-    if (ret >= 0) {
 
-      /* Commit changes */
-      ret = avahi_entry_group_commit (group);
-      if (ret < 0) 
-        return false;
+    std::map<std::string, Ekiga::CallManager::Interface>::const_iterator it;
+    for (it = to_publish.begin (); it != to_publish.end (); it++) {
+
+      std::stringstream srv;
+      srv << "_" << (*it).first << "._" << (*it).second.protocol;
+
+      ret = avahi_entry_group_add_service_strlst (group,
+                                                  AVAHI_IF_UNSPEC,
+                                                  AVAHI_PROTO_UNSPEC,
+                                                  (AvahiPublishFlags) 0,
+                                                  name,
+                                                  srv.str ().c_str (),
+                                                  NULL,
+                                                  NULL,
+                                                  (*it).second.port,
+                                                  text_record);
+      if (ret >= 0) {
+
+        /* Commit changes */
+        ret = avahi_entry_group_commit (group);
+        if (ret < 0) 
+          success = false;
+      }
+      else
+        success = false;
     }
   }
 
-  return true;
+  return success;
 }
 
 

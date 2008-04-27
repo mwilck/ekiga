@@ -55,13 +55,13 @@ namespace Ekiga
 
   class CallManager;
 
-
   class CallCore
     : public Service
     {
 
   public:
       typedef std::set<CallManager *>::iterator iterator;
+      typedef std::set<CallManager *>::const_iterator const_iterator;
 
       /** The constructor
        */
@@ -103,11 +103,13 @@ namespace Ekiga
        * @return iterator to beginning
        */
       iterator begin ();
+      const_iterator begin () const;
 
       /** Return iterator to end
        * @return iterator to end 
        */
       iterator end ();
+      const_iterator end () const;
 
       /** This signal is emitted when a Ekiga::CallManager has been
        * added to the CallCore Service.

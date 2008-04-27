@@ -50,9 +50,7 @@
 #include "presence-core.h"
 #include "services.h"
 
-/* Zeroconf Service Type */
-#define ZC_H323 "_h323._tcp"
-#define ZC_SIP "_sip._udp"
+#include "call-manager.h"
 
 class Ekiga::PersonalDetails;
 
@@ -100,6 +98,8 @@ private:
 
     AvahiGLibPoll *glib_poll;
     const AvahiPoll *poll_api;
+
+    std::map<std::string, Ekiga::CallManager::Interface> to_publish;
   };
 };
 #endif
