@@ -72,45 +72,9 @@ extern "C" {
 };
 
 
-/* DESCRIPTION  :  This notifier is called when the config database data
- *                 associated with the public ip changes.
- * BEHAVIOR     :  Updates the IP Translation address.
- * PRE          :  data is a pointer to the GMManager.
- */
-static void public_ip_changed_nt (G_GNUC_UNUSED gpointer id,
-                                  GmConfEntry *entry, 
-                                  gpointer data);
-
-
-
 static  bool same_codec_desc (Ekiga::CodecDescription a, Ekiga::CodecDescription b)
 { 
   return (a.name == b.name && a.rate == b.rate); 
-}
-
-
-static void 
-public_ip_changed_nt (G_GNUC_UNUSED gpointer id,
-		      GmConfEntry *entry, 
-		      gpointer data)
-{
-  GMManager *ep = (GMManager *) data;
-
-  const char *public_ip = NULL;
-  int nat_method = 0;
-  
-  if (gm_conf_entry_get_type (entry) == GM_CONF_STRING) {
-    
-    gdk_threads_enter ();
-    public_ip = gm_conf_entry_get_string (entry);
-    nat_method = gm_conf_get_int (NAT_KEY "method");
-    gdk_threads_leave ();
-
-    if (nat_method == 2 && public_ip)
-      ep->SetTranslationAddress (PString (public_ip));
-    else
-      ep->SetTranslationAddress (PString ("0.0.0.0"));
-  }
 }
 
 
@@ -155,12 +119,6 @@ GMManager::GMManager (Ekiga::ServiceCore & _core)
   
   manager = NULL;
 
-  GatewayIPTimer.SetNotifier (PCREATE_NOTIFIER (OnGatewayIPTimeout));
-  GatewayIPTimer.RunContinuous (PTimeInterval (5));
-
-  IPChangedTimer.SetNotifier (PCREATE_NOTIFIER (OnIPChanged));
-  IPChangedTimer.RunContinuous (120000);
-
   h323EP = NULL;
   sipEP = NULL;
   pcssEP = NULL;
@@ -193,14 +151,14 @@ GMManager::GMManager (Ekiga::ServiceCore & _core)
   
   autoStartTransmitVideo = autoStartReceiveVideo = true;
 
-  // Keep a pointer to the runtime
-
-  Init ();
-
   // Set ports
   unsigned a, b, c, d, e, f = 0;
   get_port_ranges (a, b, c, d, e, f);
   set_port_ranges (a, b, c, d, e, f);
+
+  // Media formats
+  SetMediaFormatOrder (PStringArray ());
+  SetMediaFormatMask (PStringArray ());
 
   // Config
   bridge = new Opal::ConfBridge (*this);
@@ -804,110 +762,6 @@ GMManager::OnClearedCall (OpalCall & /*call*/)
 }
 
 void
-GMManager::Init ()
-{
-  OpalMediaFormatList list;
-  
-  int nat_method = 0;
-  
-  gchar *ip = NULL;
-  
-  /* GmConf cache */
-  gnomemeeting_threads_enter ();
-  nat_method = gm_conf_get_int (NAT_KEY "method");
-  ip = gm_conf_get_string (NAT_KEY "public_ip");
-  gnomemeeting_threads_leave ();
-
-  /* Set Up IP translation */
-  if (nat_method == 2 && ip)
-    SetTranslationAddress (PString (ip));
-  else
-    SetTranslationAddress (PString ("0.0.0.0")); 
-  
-  /* Set initial codecs */
-  SetMediaFormatOrder (PStringArray ());
-  SetMediaFormatMask (PStringArray ());
-
-  g_free (ip);
-  
-  /* GMConf notifiers for what we manager */
-  gm_conf_notifier_add (NAT_KEY "public_ip",
-			public_ip_changed_nt, this);
-}
-
-
-void
-GMManager::OnIPChanged (PTimer &,
-			INT)
-{
-  PIPSocket::InterfaceTable ifaces;
-  OpalTransportAddress current_address;
-  PIPSocket::Address current_ip;
-  
-  PString ip;
-  PINDEX i = 0;
-  
-  bool found_ip = FALSE;
-  
-  gchar *iface = NULL;
-
-  gnomemeeting_threads_enter ();
-  iface = gm_conf_get_string (PROTOCOLS_KEY "interface");
-  gnomemeeting_threads_leave ();
-
-  /* Detect the valid interfaces */
-  PIPSocket::GetInterfaceTable (ifaces);
-  if (ifaces.GetSize () <= 0) {
-  
-    g_free (iface);
-    return;
-  }
-  
-  /* Is there a listener? */
-  if (sipEP->GetListeners ().GetSize () > 0) 
-    current_address = sipEP->GetListeners ()[0].GetLocalAddress ();
-  else if (h323EP->GetListeners ().GetSize () > 0) 
-    current_address = h323EP->GetListeners ()[0].GetLocalAddress ();
-  else {
-
-    g_free (iface);
-    return;
-  }
-    
-  /* Are we listening on the correct interface? */
-  if (current_address.GetIpAddress (current_ip)) {
-
-    while (i < ifaces.GetSize () && !found_ip) {
-
-      ip = ifaces [i].GetAddress ().AsString ();
-
-      if (ip == current_ip.AsString ())
-	found_ip = TRUE;
-
-      i++;
-    }
-  }
-
-  if (!found_ip) {
-
-    PTRACE (4, "Ekiga\tIP Address changed, updating listeners.");
-
-    if (ifaces.GetSize () > 1) {
-      
-      /* This will update the UI and the listeners through a GConf
-       * Notifier.
-       */
-      gnomemeeting_threads_enter ();
-      GnomeMeeting::Process ()->DetectInterfaces ();
-      gnomemeeting_threads_leave ();
-    }
-  }
-
-  g_free (iface);
-}
-
-
-void
 GMManager::OnClosedMediaStream (const OpalMediaStream & stream)
 {
   OpalMediaFormatList list = pcssEP->GetMediaFormats ();
@@ -936,47 +790,6 @@ GMManager::OnOpenMediaStream (OpalConnection & connection,
 void GMManager::OnHold (OpalConnection & connection)
 {
   dynamic_cast <Opal::Call &> (connection.GetCall ()).OnHold (connection.IsConnectionOnHold ());
-}
-
-
-void 
-GMManager::OnGatewayIPTimeout (PTimer &,
-				    INT)
-{
-  PHTTPClient web_client ("Ekiga");
-  PString html, ip_address;
-  gboolean ip_checking = false;
-
-  web_client.SetReadTimeout (PTimeInterval (0, 5));
-  gdk_threads_enter ();
-  ip_checking = gm_conf_get_bool (NAT_KEY "enable_ip_checking");
-  gchar *ip_detector = gm_conf_get_string (NAT_KEY "public_ip_detector");
-  gdk_threads_leave ();
-
-  if (ip_detector != NULL
-      && ip_checking
-      && web_client.GetTextDocument (ip_detector, html)) {
-
-    if (!html.IsEmpty ()) {
-
-      PRegularExpression regex ("[0-9]*[.][0-9]*[.][0-9]*[.][0-9]*");
-      PINDEX pos, len;
-
-      if (html.FindRegEx (regex, pos, len)) 
-	ip_address = html.Mid (pos,len);
-
-    }
-  }
-  g_free (ip_detector);
-  if (!ip_address.IsEmpty () && ip_checking) {
-
-    gdk_threads_enter ();
-    gm_conf_set_string (NAT_KEY "public_ip",
-			(gchar *) (const char *) ip_address);
-    gdk_threads_leave ();
-  }
-
-  GatewayIPTimer.RunContinuous (PTimeInterval (0, 0, 15));
 }
 
 

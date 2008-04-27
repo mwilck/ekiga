@@ -171,15 +171,6 @@ class GMManager:
    */
   void Exit ();
 
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Init the endpoint internal values and the various
-   *                 components.
-   * PRE          :  /
-   */
-  void Init ();
-
-  
   OpalCall *CreateCall ();
 
   
@@ -323,27 +314,9 @@ class GMManager:
 
   bool DeviceVolume (PSoundChannel *, bool, bool, unsigned int &);
 
- public:
-
-  /* DESCRIPTION  :  Notifier called every minute to check for IP changes.
-   * BEHAVIOR     :  Update the listeners. 
-   * PRE          :  /
-   */
-  PDECLARE_NOTIFIER(PTimer, GMManager, OnIPChanged);
-
-  /* DESCRIPTION  :  Notifier called periodically to update the gateway IP.
-   * BEHAVIOR     :  Update the gateway IP to use for the IP translation
-   *                 if IP Checking is enabled in the config database.
-   * PRE          :  /
-   */
-  PDECLARE_NOTIFIER(PTimer, GMManager, OnGatewayIPTimeout);  
-
  private:
   void GetAllowedFormats (OpalMediaFormatList & full_list);
 
-  PTimer GatewayIPTimer;
-  PTimer IPChangedTimer;
-    
   /* MWI */
   mwiDict mwiData;
 
