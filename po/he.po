@@ -1327,7 +1327,7 @@ msgstr ""
 "נראה שהנתב שברשותך לא משתמש ב-NAT. תמיכת STUN אינה נדרשת."
 
 #: ../src/clients/stun.cpp:177
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "STUN test result: %s.\n"
 "\n"
@@ -1336,15 +1336,12 @@ msgid ""
 "\n"
 "Enable STUN Support?"
 msgstr ""
-"תוצאות בדיקת STUN: %s.\n"
+"תוצאות בדיקת STUN:‏ %s.\n"
 "\n"
 "שימוש בשרת STUN הוא ככול הנראה הבחירה המתאימה אם הנתב שלך אינו תומך "
-"בH.323.\n"
-"שים לב שתמיכה בSTUN איננה מספיקה אם ברצונך ליצור קשר עם קליינט H.323 שאינם "
-"תומכים בתעלת H.245 כמו NetMeeting. במקרה הזה הנך חייב להשתמש בתרגום כתובות "
-"IP קלאסי והעברת שערים (PORT).\n"
+"ב-SIP או ב-H.323.\n"
 "\n"
-"אפשר תמיכת בSTUN?"
+"לאפשר תמיכה ב-STUN?"
 
 #: ../src/clients/stun.cpp:185 ../src/clients/stun.cpp:198
 msgid "NAT Detection Finished"
@@ -1381,7 +1378,7 @@ msgid ""
 "check your audio setup, the permissions and that the device is not busy."
 msgstr ""
 "לא אפשרי לפתוח את התקן האודיו הנבחר (%s) להקלטה. אנא בדוק את הגדרות האודיו "
-"שלך, ההרשאות ושההתקן לא תפוס."
+"שלך, ההרשאות ושההתקן לא עסוק."
 
 #: ../src/devices/audio.cpp:296
 #, c-format
@@ -1448,9 +1445,8 @@ msgid "Bad username/password"
 msgstr "שם משתמש/סיסמה שגוי"
 
 #: ../src/endpoints/h323.cpp:156
-#, fuzzy
 msgid "Transport error"
-msgstr "העבר"
+msgstr "שגיאת העברה"
 
 #: ../src/endpoints/h323.cpp:167 ../src/endpoints/h323.cpp:172
 #: ../src/endpoints/sip.cpp:395 ../src/endpoints/sip.cpp:699
@@ -1554,9 +1550,8 @@ msgid "Payment required"
 msgstr "נדרש תשלום"
 
 #: ../src/endpoints/sip.cpp:511
-#, fuzzy
 msgid "Unauthorized"
-msgstr "לא ממויין"
+msgstr "לא מאושר"
 
 #: ../src/endpoints/sip.cpp:515
 msgid "Forbidden"
@@ -1572,13 +1567,12 @@ msgid "Conflict"
 msgstr "א_יש קשר"
 
 #: ../src/endpoints/sip.cpp:527
-#, fuzzy
 msgid "Temporarily unavailable"
-msgstr "שגיאה זמנית"
+msgstr "לא זמין זמנית"
 
 #: ../src/endpoints/sip.cpp:531
 msgid "Not acceptable"
-msgstr ""
+msgstr "לא מקובל"
 
 #: ../src/endpoints/sip.cpp:535
 msgid "Illegal status code"
@@ -1601,9 +1595,8 @@ msgid "Use proxy"
 msgstr "השתמש במתווך"
 
 #: ../src/endpoints/sip.cpp:555
-#, fuzzy
 msgid "Alternative service"
-msgstr "יציאת התקן צלצול"
+msgstr "שירות חלופי"
 
 #: ../src/endpoints/sip.cpp:559
 msgid "Not found"
@@ -1829,9 +1822,9 @@ msgid ""
 msgstr "אנא בדוק שסיפקת לפחות שם או כתובת בשביל איש הקשר."
 
 #: ../src/gui/accounts.cpp:716
-#, fuzzy, c-format
+#, c-format
 msgid "Are you sure you want to delete account %s?"
-msgstr "אתה בטוח שאתה רוצה למחוק את %s מתוך %s?"
+msgstr "למחוק את החשבון %s?"
 
 #: ../src/gui/accounts.cpp:804
 msgid "Registered"
@@ -1991,9 +1984,8 @@ msgid "Audio Devices"
 msgstr "התקני אודיו"
 
 #: ../src/gui/assistant.cpp:600
-#, fuzzy
 msgid "Please choose the audio ringing device:"
-msgstr "נא לבחור את התקן קלט האדיו:"
+msgstr "בחר את התקן הצילצול:"
 
 #: ../src/gui/assistant.cpp:608
 #, fuzzy
@@ -2030,9 +2022,8 @@ msgid ""
 msgstr "התקן האודיו הוא ההתקן אשר מנוהל על ידי מנהל האודיו אשר יקליט את קולך."
 
 #: ../src/gui/assistant.cpp:748
-#, fuzzy
 msgid "Please choose your video input device:"
-msgstr "אנא בחר את התקני הוידאו:"
+msgstr "בחר את התקן קלט הוידאו:"
 
 #: ../src/gui/assistant.cpp:756
 msgid ""
@@ -3070,10 +3061,9 @@ msgid "Picture Quality"
 msgstr "איכות תמונה"
 
 #: ../src/gui/preferences.cpp:1079
-#, fuzzy
 msgid ""
 "Choose if you want to favour frame rate or quality for the transmitted video."
-msgstr "בחר/י אם ברצונך להעדיף איכות או מהירות עבור הוידאו הנשלח."
+msgstr "בחר אם להעדיף קצב מסגרת או איכות עבור הוידאו הנשלח."
 
 #: ../src/gui/preferences.cpp:1081
 #, fuzzy
