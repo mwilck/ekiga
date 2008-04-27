@@ -310,8 +310,6 @@ class GMManager:
                              bool wasRegistering,
                              std::string info);
 
-  void OnHold (OpalConnection & connection);
-
  private:
   void GetAllowedFormats (OpalMediaFormatList & full_list);
 

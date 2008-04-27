@@ -151,7 +151,7 @@ public:
     /*
      * Opal Callbacks
      */
-    void OnHold (bool on_hold);
+    void OnHold (OpalConnection & connection, bool from_remote, bool on_hold);
 
     void OnOpenMediaStream (OpalMediaStream & stream);
 

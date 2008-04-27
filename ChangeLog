@@ -1,5 +1,14 @@
 2008-04-27  Damien Sandras  <dsandras@gnome.org>
 
+	* src/endpoints/opal-call.cpp:
+	* src/endpoints/opal-call.h:
+	* src/endpoints/manager.cpp:
+	* src/endpoints/manager.h:
+	Moved OnHold callback from GMManager to Opal::Call now that I added a
+	method for it in the OpalCall class in OPAL.
+
+2008-04-27  Damien Sandras  <dsandras@gnome.org>
+
 	* src/endpoints/manager.cpp:
 	* src/endpoints/manager.h:
 	Removed deprecated DeviceVolume methods.

@@ -436,8 +436,7 @@ Opal::Call::OnSetUp (OpalConnection & connection)
 }
 
 
-void
-Opal::Call::OnHold (bool on_hold)
+void Opal::Call::OnHold (OpalConnection & connection, bool from_remote, bool on_hold)
 {
   if (on_hold)
     runtime.run_in_main (held.make_slot ());

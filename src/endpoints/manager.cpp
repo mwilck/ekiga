@@ -787,12 +787,6 @@ GMManager::OnOpenMediaStream (OpalConnection & connection,
 }
 
 
-void GMManager::OnHold (OpalConnection & connection)
-{
-  dynamic_cast <Opal::Call &> (connection.GetCall ()).OnHold (connection.IsConnectionOnHold ());
-}
-
-
 void
 GMManager::OnMWIReceived (const PString & account,
                           const PString & mwi)
