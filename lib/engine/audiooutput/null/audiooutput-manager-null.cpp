@@ -74,8 +74,8 @@ bool GMAudioOutputManager_null::open (Ekiga::AudioOutputPrimarySecondary primary
 {
   Ekiga::AudioOutputConfig audiooutput_config;
 
-  PTRACE(0, "GMAudioOutputManager_null\tOpening Device[" << primarySecondary << "] " << current_state[primarySecondary].audiooutput_device.source << "/" <<  current_state[primarySecondary].audiooutput_device.device);
-  PTRACE(0, "GMAudioOutputManager_null\tOpening Device with " << channels << "-" << samplerate << "/" << bits_per_sample);
+  PTRACE(4, "GMAudioOutputManager_null\tOpening Device[" << primarySecondary << "] " << current_state[primarySecondary].audiooutput_device.source << "/" <<  current_state[primarySecondary].audiooutput_device.device);
+  PTRACE(4, "GMAudioOutputManager_null\tOpening Device with " << channels << "-" << samplerate << "/" << bits_per_sample);
 
   current_state[primarySecondary].channels        = channels;
   current_state[primarySecondary].samplerate      = samplerate;

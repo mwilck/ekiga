@@ -84,7 +84,7 @@ bool GMAudioOutputManager_ptlib::set_audiooutput_device (Ekiga::AudioOutputPrima
 {
   if ( audiooutput_device.type == DEVICE_TYPE ) {
 
-    PTRACE(0, "GMAudioOutputManager_ptlib\tSetting Device[" << primarySecondary << "] " << audiooutput_device.source << "/" <<  audiooutput_device.device);
+    PTRACE(4, "GMAudioOutputManager_ptlib\tSetting Device[" << primarySecondary << "] " << audiooutput_device.source << "/" <<  audiooutput_device.device);
     current_state[primarySecondary].audiooutput_device = audiooutput_device;  
     return true;
   }
@@ -97,8 +97,8 @@ bool GMAudioOutputManager_ptlib::open (Ekiga::AudioOutputPrimarySecondary primar
   unsigned volume;
   Ekiga::AudioOutputConfig audiooutput_config;
 
-  PTRACE(0, "GMAudioOutputManager_ptlib\tOpening Device " << current_state[primarySecondary].audiooutput_device.source << "/" <<  current_state[primarySecondary].audiooutput_device.device);
-  PTRACE(0, "GMAudioOutputManager_ptlib\tOpening Device with " << channels << "-" << samplerate << "/" << bits_per_sample);
+  PTRACE(4, "GMAudioOutputManager_ptlib\tOpening Device " << current_state[primarySecondary].audiooutput_device.source << "/" <<  current_state[primarySecondary].audiooutput_device.device);
+  PTRACE(4, "GMAudioOutputManager_ptlib\tOpening Device with " << channels << "-" << samplerate << "/" << bits_per_sample);
 
   current_state[primarySecondary].channels        = channels;
   current_state[primarySecondary].samplerate      = samplerate;
@@ -134,7 +134,7 @@ bool GMAudioOutputManager_ptlib::open (Ekiga::AudioOutputPrimarySecondary primar
 
 void GMAudioOutputManager_ptlib::close(Ekiga::AudioOutputPrimarySecondary primarySecondary)
 {
-  PTRACE(0, "GMAudioOutputManager_ptlib\tClosing device[" << primarySecondary << "] " << current_state[primarySecondary].audiooutput_device.source << "/" <<  current_state[primarySecondary].audiooutput_device.device);
+  PTRACE(4, "GMAudioOutputManager_ptlib\tClosing device[" << primarySecondary << "] " << current_state[primarySecondary].audiooutput_device.source << "/" <<  current_state[primarySecondary].audiooutput_device.device);
   if (output_device[primarySecondary]) {
      delete output_device[primarySecondary];
      output_device[primarySecondary] = NULL;
@@ -145,7 +145,7 @@ void GMAudioOutputManager_ptlib::close(Ekiga::AudioOutputPrimarySecondary primar
 
 void GMAudioOutputManager_ptlib::set_buffer_size (Ekiga::AudioOutputPrimarySecondary primarySecondary, unsigned buffer_size, unsigned num_buffers)
 {
-  PTRACE(0, "GMAudioOutputManager_ptlib\tSetting buffer size of device[" << primarySecondary << "] " << buffer_size << "/" <<  num_buffers);
+  PTRACE(4, "GMAudioOutputManager_ptlib\tSetting buffer size of device[" << primarySecondary << "] " << buffer_size << "/" <<  num_buffers);
 
   if (output_device[primarySecondary])
     output_device[primarySecondary]->SetBuffers (buffer_size, num_buffers);
@@ -181,7 +181,7 @@ bool GMAudioOutputManager_ptlib::set_frame_data (Ekiga::AudioOutputPrimarySecond
 
 void GMAudioOutputManager_ptlib::set_volume (Ekiga::AudioOutputPrimarySecondary primarySecondary, unsigned volume )
 {
-  PTRACE(0, "GMAudioOutputManager_ptlib\tSetting volume of device [" << primarySecondary << "] to " << volume);
+  PTRACE(4, "GMAudioOutputManager_ptlib\tSetting volume of device [" << primarySecondary << "] to " << volume);
   if (output_device[primarySecondary])
     output_device[primarySecondary]->SetVolume(volume);
 }

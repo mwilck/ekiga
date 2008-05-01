@@ -72,8 +72,8 @@ bool GMAudioInputManager_null::open (unsigned channels, unsigned samplerate, uns
 {
   Ekiga::AudioInputConfig audioinput_config;
 
-  PTRACE(0, "GMAudioInputManager_null\tOpening Device " << current_state.audioinput_device.source << "/" <<  current_state.audioinput_device.device);
-  PTRACE(0, "GMAudioInputManager_null\tOpening Device with " << channels << "-" << samplerate << "/" << bits_per_sample);
+  PTRACE(4, "GMAudioInputManager_null\tOpening Device " << current_state.audioinput_device.source << "/" <<  current_state.audioinput_device.device);
+  PTRACE(4, "GMAudioInputManager_null\tOpening Device with " << channels << "-" << samplerate << "/" << bits_per_sample);
 
   current_state.channels        = channels;
   current_state.samplerate      = samplerate;

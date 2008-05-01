@@ -83,7 +83,7 @@ bool GMAudioInputManager_ptlib::set_audioinput_device (const Ekiga::AudioInputDe
 {
   if ( audioinput_device.type == DEVICE_TYPE ) {
 
-    PTRACE(0, "GMAudioInputManager_ptlib\tSetting Device " << audioinput_device.source << "/" <<  audioinput_device.device);
+    PTRACE(4, "GMAudioInputManager_ptlib\tSetting Device " << audioinput_device.source << "/" <<  audioinput_device.device);
     current_state.audioinput_device = audioinput_device;  
     return true;
   }
@@ -96,8 +96,8 @@ bool GMAudioInputManager_ptlib::open (unsigned channels, unsigned samplerate, un
   unsigned volume;
   Ekiga::AudioInputConfig audioinput_config;
 
-  PTRACE(0, "GMAudioInputManager_ptlib\tOpening Device " << current_state.audioinput_device.source << "/" <<  current_state.audioinput_device.device);
-  PTRACE(0, "GMAudioInputManager_ptlib\tOpening Device with " << channels << "-" << samplerate << "/" << bits_per_sample);
+  PTRACE(4, "GMAudioInputManager_ptlib\tOpening Device " << current_state.audioinput_device.source << "/" <<  current_state.audioinput_device.device);
+  PTRACE(4, "GMAudioInputManager_ptlib\tOpening Device with " << channels << "-" << samplerate << "/" << bits_per_sample);
 
   current_state.channels        = channels;
   current_state.samplerate      = samplerate;
@@ -133,7 +133,7 @@ bool GMAudioInputManager_ptlib::open (unsigned channels, unsigned samplerate, un
 
 void GMAudioInputManager_ptlib::close()
 {
-  PTRACE(0, "GMAudioInputManager_ptlib\tClosing device " << current_state.audioinput_device.source << "/" <<  current_state.audioinput_device.device);
+  PTRACE(4, "GMAudioInputManager_ptlib\tClosing device " << current_state.audioinput_device.source << "/" <<  current_state.audioinput_device.device);
   if (input_device) {
      delete input_device;
      input_device = NULL;
@@ -144,7 +144,7 @@ void GMAudioInputManager_ptlib::close()
 
 void GMAudioInputManager_ptlib::set_buffer_size (unsigned buffer_size, unsigned num_buffers)
 {
-  PTRACE(0, "GMAudioInputManager_ptlib\tSetting buffer size to " << buffer_size << "/" <<  num_buffers);
+  PTRACE(4, "GMAudioInputManager_ptlib\tSetting buffer size to " << buffer_size << "/" <<  num_buffers);
 
   if (input_device)
     input_device->SetBuffers (buffer_size, num_buffers);
@@ -178,7 +178,7 @@ bool GMAudioInputManager_ptlib::get_frame_data (char *data,
 
 void GMAudioInputManager_ptlib::set_volume (unsigned volume)
 {
-  PTRACE(0, "GMAudioInputManager_ptlib\tSetting volume to " << volume);
+  PTRACE(4, "GMAudioInputManager_ptlib\tSetting volume to " << volume);
   if (input_device)
     input_device->SetVolume(volume);
 }
