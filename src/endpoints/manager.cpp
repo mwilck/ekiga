@@ -403,10 +403,11 @@ void GMManager::set_video_options (const GMManager::VideoOptions & options)
         if (stream != NULL) {
 
           OpalMediaFormat mediaFormat = stream->GetMediaFormat ();
-          mediaFormat.SetOptionInteger (OpalVideoFormat::TemporalSpatialTradeOffOption(), 
-                                        options.temporal_spatial_tradeoff);  
-          mediaFormat.SetOptionInteger (OpalVideoFormat::TargetBitRateOption (), 
+          mediaFormat.SetOptionInteger (OpalVideoFormat::TemporalSpatialTradeOffOption(),
+                                        options.temporal_spatial_tradeoff);
+          mediaFormat.SetOptionInteger (OpalVideoFormat::TargetBitRateOption (),
                                         options.maximum_transmitted_bitrate * 1000);
+          mediaFormat.ToNormalisedOptions();
           stream->UpdateMediaFormat (mediaFormat);
         }
       }
