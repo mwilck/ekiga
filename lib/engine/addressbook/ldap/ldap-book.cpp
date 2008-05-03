@@ -41,7 +41,6 @@
 #include <sstream>
 #include <sys/time.h>
 
-#define LDAP_DEPRECATED 1
 #include <ldap.h>
 #include <glib.h>
 
@@ -347,21 +346,17 @@ OPENLDAP::Book::refresh_start ()
   int msgid = -1;
   int result = LDAP_SUCCESS;
   int ldap_version = LDAP_VERSION3;
-  std::vector<std::string> attributes_vector;
-  char **attributes = NULL;
-  int iscope = LDAP_SCOPE_SUBTREE;
-  std::string filter;
-
-  attributes_vector.push_back ("givenname");
-  attributes_vector.push_back (call_attribute);
+  char *ldap_uri = NULL;
 
   status = std::string (_("Refreshing"));
   updated.emit ();
 
-  ldap_context = ldap_init (hostname.c_str (), port);
-  if (ldap_context == NULL) {
+  ldap_uri = g_strdup_printf ("ldap://%s:%d", hostname.c_str (), port);
+  result = ldap_initialize (&ldap_context, ldap_uri);
+  g_free (ldap_uri);
+  if (result != LDAP_SUCCESS) {
 
-    status = std::string (_("Could not contact server"));
+    status = std::string (_("Could not initialize server"));
     updated.emit ();
     return;
   }
@@ -373,19 +368,73 @@ OPENLDAP::Book::refresh_start ()
 			 LDAP_OPT_PROTOCOL_VERSION, &ldap_version);
 
 
-  result = ldap_bind_s (ldap_context, NULL, NULL, LDAP_AUTH_SIMPLE);
+  result = ldap_sasl_bind (ldap_context, NULL,
+			   LDAP_SASL_SIMPLE, NULL,
+			   NULL, NULL,
+			   &msgid);
   if (result != LDAP_SUCCESS) {
 
     status = std::string (_("Could not contact server"));
     updated.emit ();
 
-    ldap_unbind (ldap_context);
+    ldap_unbind_ext (ldap_context, NULL, NULL);
     ldap_context = NULL;
     return;
   }
 
   status = std::string (_("Contacted server"));
   updated.emit ();
+
+  patience = 3;
+  runtime.run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_bound), 3);
+}
+
+void
+OPENLDAP::Book::refresh_bound ()
+{
+  int result = LDAP_SUCCESS;
+  struct timeval timeout = { 1, 0}; /* block 1s */
+  LDAPMessage *msg_entry = NULL;
+  int msgid;
+  std::vector<std::string> attributes_vector;
+  char **attributes = NULL;
+  int iscope = LDAP_SCOPE_SUBTREE;
+  std::string filter;
+
+  result = ldap_result (ldap_context, LDAP_RES_ANY, LDAP_MSG_ALL,
+			&timeout, &msg_entry);
+
+  if (result <= 0) {
+
+    if (patience == 3) {
+      patience--;
+      runtime.run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_bound), 12);
+    } else if (patience == 2) {
+
+      patience--;
+      runtime.run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_bound), 21);
+    } else if (patience == 1) {
+
+      patience--;
+      runtime.run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_bound), 30);
+    } else { // patience == 0
+
+      status = std::string (_("Could not connect to server"));
+      updated.emit ();
+
+      ldap_unbind_ext (ldap_context, NULL, NULL);
+      ldap_context = NULL;
+    }
+
+    if (msg_entry != NULL)
+      ldap_msgfree (msg_entry);
+
+    return;
+  }
+
+
+  attributes_vector.push_back ("givenname");
+  attributes_vector.push_back (call_attribute);
 
   if (scope == "sub")
     iscope = LDAP_SCOPE_SUBTREE;
@@ -405,12 +454,14 @@ OPENLDAP::Book::refresh_start ()
   else
     filter = "(cn=*)";
 
-  msgid = ldap_search (ldap_context,
-		       base.c_str (),
-		       iscope,
-		       filter.c_str (),
-		       attributes,
-		       0); /* attrsonly */
+  msgid = ldap_search_ext (ldap_context,
+			   base.c_str (),
+			   iscope,
+			   filter.c_str (),
+			   attributes,
+			   0, /* attrsonly */
+			   NULL, NULL,
+			   NULL, 0, &msgid);
 
   for (unsigned int i = 0; i < attributes_vector.size (); i++)
     free (attributes[i]);
@@ -421,7 +472,7 @@ OPENLDAP::Book::refresh_start ()
     status = std::string (_("Could not search"));
     updated.emit ();
 
-    ldap_unbind (ldap_context);
+    ldap_unbind_ext (ldap_context, NULL, NULL);
     ldap_context = NULL;
     return;
   } else {
@@ -431,11 +482,12 @@ OPENLDAP::Book::refresh_start ()
   }
 
   patience = 3;
-  runtime.run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_end), 3);
+  runtime.run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_result), 3);
+
 }
 
 void
-OPENLDAP::Book::refresh_end ()
+OPENLDAP::Book::refresh_result ()
 {
   int result = LDAP_SUCCESS;
   int nbr = 0;
@@ -453,21 +505,21 @@ OPENLDAP::Book::refresh_end ()
     if (patience == 3) {
 
       patience--;
-      runtime.run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_end), 12);
+      runtime.run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_result), 12);
     } else if (patience == 2) {
 
       patience--;
-      runtime.run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_end), 21);
+      runtime.run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_result), 21);
     } else if (patience == 1) {
 
       patience--;
-      runtime.run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_end), 30);
+      runtime.run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_result), 30);
     } else { // patience == 0
 
       status = std::string (_("Could not search"));
       updated.emit ();
 
-      ldap_unbind (ldap_context);
+      ldap_unbind_ext (ldap_context, NULL, NULL);
       ldap_context = NULL;
     }
 
@@ -498,7 +550,7 @@ OPENLDAP::Book::refresh_end ()
 
   (void)ldap_msgfree (msg_entry);
 
-  ldap_unbind (ldap_context);
+  ldap_unbind_ext (ldap_context, NULL, NULL);
   ldap_context = NULL;
 }
 

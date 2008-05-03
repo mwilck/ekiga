@@ -93,7 +93,8 @@ namespace OPENLDAP
   private:
 
     void refresh_start ();
-    void refresh_end ();
+    void refresh_bound ();
+    void refresh_result ();
 
     void edit ();
     void on_edit_form_submitted (Ekiga::Form &);
