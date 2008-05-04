@@ -176,8 +176,8 @@ namespace Ekiga
       void set_whiteness  (unsigned whiteness);
       void set_contrast   (unsigned contrast);
 
-      void add_device (std::string & source, std::string & device, unsigned capabilities, HalManager* manager);
-      void remove_device (std::string & source, std::string & device, unsigned capabilities, HalManager* manager);
+      void add_device (const std::string & source, const std::string & device, unsigned capabilities, HalManager* manager);
+      void remove_device (const std::string & source, const std::string & device, unsigned capabilities, HalManager* manager);
 
       /*** VidInput Related Signals ***/
       

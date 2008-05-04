@@ -473,7 +473,7 @@ void AudioInputCore::internal_set_fallback()
     internal_set_device (current_device);
 }
 
-void AudioInputCore::add_device (std::string & source, std::string & device, HalManager* /*manager*/)
+void AudioInputCore::add_device (const std::string & source, const std::string & device, HalManager* /*manager*/)
 {
   PTRACE(0, "AudioInputCore\tAdding Device " << device);
   PWaitAndSignal m(var_mutex);
@@ -495,7 +495,7 @@ void AudioInputCore::add_device (std::string & source, std::string & device, Hal
   }
 }
 
-void AudioInputCore::remove_device (std::string & source, std::string & device, HalManager* /*manager*/)
+void AudioInputCore::remove_device (const std::string & source, const std::string & device, HalManager* /*manager*/)
 {
   PTRACE(0, "AudioInputCore\tRemoving Device " << device);
   PWaitAndSignal m(var_mutex);

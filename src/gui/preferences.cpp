@@ -1083,7 +1083,7 @@ gm_pw_init_video_codecs_page (GtkWidget *prefs_window,
   /* Translators: the full sentence is Keep a minimum video quality of X % */
   gnome_prefs_scale_new (subsection, _("Picture Quality"), _("Frame Rate"), VIDEO_CODECS_KEY "temporal_spatial_tradeoff", _("Choose if you want to favour frame rate or quality for the transmitted video."), 0.0, 32.0, 1.0, 2);
 
-  gnome_prefs_spin_new (subsection, _("Maximum video _bitrate (in kbits/s):"), VIDEO_CODECS_KEY "maximum_video_tx_bitrate", _("The maximum video bitrate in kbits/s. The video quality and the number of transmitted frames per second (depends on codec) will be dynamically adjusted above their minimum during calls to try to minimize the bandwidth to the given value."), 16.0, 2048.0, 1.0, 1, NULL, true);
+  gnome_prefs_spin_new (subsection, _("Maximum video _bitrate (in kbits/s):"), VIDEO_CODECS_KEY "maximum_video_tx_bitrate", _("The maximum video bitrate in kbits/s. The video quality and the number of transmitted frames per second (depends on codec) will be dynamically adjusted above their minimum during calls to try to minimize the bandwidth to the given value."), 16.0, 10240.0, 1.0, 1, NULL, true);
 
 }
 

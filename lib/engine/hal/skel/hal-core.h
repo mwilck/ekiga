@@ -30,7 +30,8 @@
  *   begin                : written in 2008 by Matthias Schneider
  *   copyright            : (c) 2008 by Matthias Schneider
  *   description          : Declaration of the interface of a hal core.
- *                          A hal core manages HalManagers.
+ *                          A hal core manages hal managers and abstracts 
+ *                          their platform specific implementation.
  *
  */
 
@@ -50,13 +51,20 @@
 namespace Ekiga
 {
 /**
- * @defgroup hal
+ * @defgroup hal Hal HAL
  * @{
  */
 
   class HalManager;
 
   /** Core object for hal support
+
+      The hal core is used to abstract platform-specific hardware abstraction layer
+      managers. It will emit signals when interesting devices and are added to or
+      removed from the system or when network devices come up or go down.
+
+      Threads: The callbacks will always be passed back to the main thread,
+               independent from the actual manager runs in a separate thread or not.
    */
   class HalCore
     : public Service
@@ -72,6 +80,7 @@ namespace Ekiga
       */
       ~HalCore ();
 
+
       /*** Service Implementation ***/
 
       /** Returns the name of the service.
@@ -80,13 +89,14 @@ namespace Ekiga
       const std::string get_name () const
         { return "hal-core"; }
 
-
       /** Returns the description of the service.
        * @return The service description.
        */
       const std::string get_description () const
-        { return "\tHal Core managing Hal Manager objects"; }
+        { return "\tHardware abstraction layer core"; }
 
+
+      /*** API to list HalManagers ***/
 
       /** Adds a HalManager to the HalCore service.
        * @param The manager to be added.
@@ -95,41 +105,46 @@ namespace Ekiga
 
       /** Triggers a callback for all Ekiga::HalManager sources of the
        * HalCore service.
+       * @param The callback (the return value means "go on" and allows
+       *  stopping the visit)
        */
        void visit_managers (sigc::slot<bool, HalManager &> visitor);
 
-      /** This signal is emitted when a Ekiga::HalManager has been
+      /** This signal is emitted when an Ekiga::HalManager has been
        * added to the HalCore Service.
        */
        sigc::signal<void, HalManager &> manager_added;
 
+
+      /*** API to act on HAL events ***/
+
       /** See hal-manager.h for the API
        */
-      sigc::signal<void, std::string &, std::string &, unsigned, HalManager*> video_input_device_added;
-      sigc::signal<void, std::string &, std::string &, unsigned, HalManager*> video_input_device_removed;
+      sigc::signal<void, const std::string &, const std::string &, unsigned, HalManager*> video_input_device_added;
+      sigc::signal<void, const std::string &, const std::string &, unsigned, HalManager*> video_input_device_removed;
 
-      sigc::signal<void, std::string &, std::string &, HalManager*> audio_input_device_added;
-      sigc::signal<void, std::string &, std::string &, HalManager*> audio_input_device_removed;
+      sigc::signal<void, const std::string &, const std::string &, HalManager*> audio_input_device_added;
+      sigc::signal<void, const std::string &, const std::string &, HalManager*> audio_input_device_removed;
 
-      sigc::signal<void, std::string &, std::string &, HalManager*> audio_output_device_added;
-      sigc::signal<void, std::string &, std::string &, HalManager*> audio_output_device_removed;
+      sigc::signal<void, const std::string &, const std::string &, HalManager*> audio_output_device_added;
+      sigc::signal<void, const std::string &, const std::string &, HalManager*> audio_output_device_removed;
 
-      sigc::signal<void, std::string &, std::string &, HalManager*> network_interface_up;
-      sigc::signal<void, std::string &, std::string &, HalManager*> network_interface_down;
+      sigc::signal<void, const std::string &, const std::string &, HalManager*> network_interface_up;
+      sigc::signal<void, const std::string &, const std::string &, HalManager*> network_interface_down;
 
   private:
 
-      void on_video_input_device_added (std::string & source, std::string & device, unsigned capabilities, HalManager* manager);
-      void on_video_input_device_removed (std::string & source, std::string & device, unsigned capabilities, HalManager* manager);
+      void on_video_input_device_added (std::string source, std::string device, unsigned capabilities, HalManager* manager);
+      void on_video_input_device_removed (std::string source, std::string device, unsigned capabilities, HalManager* manager);
 
-      void on_audio_input_device_added (std::string & source, std::string & device, HalManager* manager);
-      void on_audio_input_device_removed (std::string & source, std::string & device, HalManager* manager);
+      void on_audio_input_device_added (std::string source, std::string device, HalManager* manager);
+      void on_audio_input_device_removed (std::string source, std::string device, HalManager* manager);
 
-      void on_audio_output_device_added (std::string & sink, std::string & device, HalManager* manager);
-      void on_audio_output_device_removed (std::string & sink, std::string & device, HalManager* manager);
+      void on_audio_output_device_added (std::string sink, std::string device, HalManager* manager);
+      void on_audio_output_device_removed (std::string sink, std::string device, HalManager* manager);
 
-      void on_network_interface_up (std::string & interface_name, std::string & ip4_address, HalManager* manager);
-      void on_network_interface_down (std::string & interface_name, std::string & ip4_address, HalManager* manager);
+      void on_network_interface_up (std::string interface_name, std::string ip4_address, HalManager* manager);
+      void on_network_interface_down (std::string interface_name, std::string ip4_address, HalManager* manager);
 
       std::set<HalManager *> managers;
 

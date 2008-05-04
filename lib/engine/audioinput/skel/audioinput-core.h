@@ -173,8 +173,8 @@ namespace Ekiga
 
       float get_average_level () { return average_level; }
 
-      void add_device (std::string & source, std::string & device, HalManager* manager);
-      void remove_device (std::string & source, std::string & device, HalManager* manager);
+      void add_device (const std::string & source, const std::string & device, HalManager* manager);
+      void remove_device (const std::string & source, const std::string & device, HalManager* manager);
 
       /*** VidInput Related Signals ***/
       

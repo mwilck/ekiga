@@ -86,34 +86,34 @@ void HalCore::visit_managers (sigc::slot<bool, HalManager &> visitor)
       go_on = visitor (*(*iter));
 }
 
-void HalCore::on_video_input_device_added (std::string & source, std::string & device, unsigned capabilities, HalManager* manager) {
+void HalCore::on_video_input_device_added (std::string source, std::string device, unsigned capabilities, HalManager* manager) {
   video_input_device_added.emit (source, device, capabilities, manager);
 }
 
-void HalCore::on_video_input_device_removed (std::string & source, std::string & device, unsigned capabilities, HalManager* manager) {
+void HalCore::on_video_input_device_removed (std::string source, std::string device, unsigned capabilities, HalManager* manager) {
   video_input_device_removed.emit (source, device, capabilities, manager);
 }
 
-void HalCore::on_audio_input_device_added (std::string & source, std::string & device, HalManager* manager) {
+void HalCore::on_audio_input_device_added (std::string source, std::string device, HalManager* manager) {
   audio_input_device_added.emit (source, device, manager);
 }
 
-void HalCore::on_audio_input_device_removed (std::string & source, std::string & device, HalManager* manager) {
+void HalCore::on_audio_input_device_removed (std::string source, std::string device, HalManager* manager) {
   audio_input_device_removed.emit (source, device, manager);
 }
 
-void HalCore::on_audio_output_device_added (std::string & sink, std::string & device, HalManager* manager) {
+void HalCore::on_audio_output_device_added (std::string sink, std::string device, HalManager* manager) {
   audio_output_device_added.emit (sink, device, manager);
 }
 
-void HalCore::on_audio_output_device_removed (std::string & sink, std::string & device, HalManager* manager) {
+void HalCore::on_audio_output_device_removed (std::string sink, std::string device, HalManager* manager) {
   audio_output_device_removed.emit (sink, device, manager);
 }
 
-void HalCore::on_network_interface_up (std::string & interface_name, std::string & ip4_address, HalManager* manager) {
+void HalCore::on_network_interface_up (std::string interface_name, std::string ip4_address, HalManager* manager) {
   network_interface_up.emit (interface_name, ip4_address, manager);
 }
 
-void HalCore::on_network_interface_down (std::string & interface_name, std::string & ip4_address, HalManager* manager) {
+void HalCore::on_network_interface_down (std::string interface_name, std::string ip4_address, HalManager* manager) {
   network_interface_down.emit (interface_name,ip4_address, manager);
 }

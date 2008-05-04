@@ -546,7 +546,7 @@ void VidInputCore::internal_set_fallback ()
   internal_set_device(current_device, current_channel, current_format);
 }
 
-void VidInputCore::add_device (std::string & source, std::string & device, unsigned capabilities, HalManager* /*manager*/)
+void VidInputCore::add_device (const std::string & source, const std::string & device, unsigned capabilities, HalManager* /*manager*/)
 {
   PTRACE(0, "VidInputCore\tAdding Device " << device);
   PWaitAndSignal m(var_mutex);
@@ -568,7 +568,7 @@ void VidInputCore::add_device (std::string & source, std::string & device, unsig
   }
 }
 
-void VidInputCore::remove_device (std::string & source, std::string & device, unsigned capabilities, HalManager* /*manager*/)
+void VidInputCore::remove_device (const std::string & source, const std::string & device, unsigned capabilities, HalManager* /*manager*/)
 {
   PTRACE(0, "VidInputCore\tRemoving Device " << device);
   PWaitAndSignal m(var_mutex);
