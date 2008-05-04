@@ -147,7 +147,7 @@ void AudioOutputCore::get_audiooutput_devices (std::vector <AudioOutputDevice> &
      for (std::vector<AudioOutputDevice>::iterator iter = audiooutput_devices.begin ();
          iter != audiooutput_devices.end ();
          iter++) {
-      PTRACE(0, "AudioOutputCore\tDetected Device: " << iter->type << "/" << iter->source << "/" << iter->device);
+      PTRACE(4, "AudioOutputCore\tDetected Device: " << iter->type << "/" << iter->source << "/" << iter->device);
     }
   }
 
@@ -155,7 +155,7 @@ void AudioOutputCore::get_audiooutput_devices (std::vector <AudioOutputDevice> &
 
 void AudioOutputCore::set_audiooutput_device(AudioOutputPrimarySecondary primarySecondary, const AudioOutputDevice & audiooutput_device)
 {
-  PTRACE(0, "AudioOutputCore\tSetting device[" << primarySecondary << "]: " << audiooutput_device.type << "/" << audiooutput_device.source << "/" << audiooutput_device.device);
+  PTRACE(4, "AudioOutputCore\tSetting device[" << primarySecondary << "]: " << audiooutput_device.type << "/" << audiooutput_device.source << "/" << audiooutput_device.device);
 
   PWaitAndSignal m_sec(var_mutex[secondary]);
 
@@ -255,19 +255,18 @@ void AudioOutputCore::set_frame_data (char *data,
 
 void AudioOutputCore::play_buffer(AudioOutputPrimarySecondary primarySecondary, char* buffer, unsigned long len, unsigned channels, unsigned sample_rate, unsigned bps)
 {
-PTRACE(0, "Play buffer " << primarySecondary);
   switch (primarySecondary) {
     case primary:
       var_mutex[primary].Wait();
 
       if (!current_manager[primary]) {
-        PTRACE(0, "AudioOutputCore\tDropping sound event, primary manager not set");
+        PTRACE(1, "AudioOutputCore\tDropping sound event, primary manager not set");
         var_mutex[primary].Signal();
         return;
       }
 
       if (current_primary_config.active) {
-        PTRACE(0, "AudioOutputCore\tDropping sound event, primary device not set");
+        PTRACE(1, "AudioOutputCore\tDropping sound event, primary device not set");
         var_mutex[primary].Signal();
         return;
       }
@@ -284,7 +283,7 @@ PTRACE(0, "Play buffer " << primarySecondary);
         }
         else {
           var_mutex[secondary].Signal();
-          PTRACE(0, "AudioOutputCore\tNo secondary audiooutput device defined, trying primary");
+          PTRACE(1, "AudioOutputCore\tNo secondary audiooutput device defined, trying primary");
           play_buffer(primary, buffer, len, channels, sample_rate, bps);
         }
       break;
@@ -368,7 +367,7 @@ void AudioOutputCore::on_audiooutputdevice_closed (AudioOutputPrimarySecondary p
 
 bool AudioOutputCore::internal_open (AudioOutputPrimarySecondary primarySecondary, unsigned channels, unsigned samplerate, unsigned bits_per_sample)
 {
-  PTRACE(0, "AudioOutputCore\tOpening device["<<primarySecondary<<"] with " << channels<< "-" << samplerate << "/" << bits_per_sample);
+  PTRACE(4, "AudioOutputCore\tOpening device["<<primarySecondary<<"] with " << channels<< "-" << samplerate << "/" << bits_per_sample);
 
   if (!current_manager[primarySecondary]) {
     PTRACE(1, "AudioOutputCore\tUnable to obtain current manager for device["<<primarySecondary<<"]");
@@ -392,7 +391,7 @@ bool AudioOutputCore::internal_open (AudioOutputPrimarySecondary primarySecondar
 
 void AudioOutputCore::internal_close(AudioOutputPrimarySecondary primarySecondary)
 {
-  PTRACE(0, "AudioOutputCore\tClosing current device");
+  PTRACE(4, "AudioOutputCore\tClosing current device");
   if (current_manager[primarySecondary])
     current_manager[primarySecondary]->close(primarySecondary);
 }
@@ -402,7 +401,6 @@ void AudioOutputCore::internal_play(AudioOutputPrimarySecondary primarySecondary
   unsigned long pos = 0;
   unsigned written = 0;
 
-  PTRACE(0, "AudioOutputCore\tinternal_play");
   if (!internal_open ( primarySecondary, channels, sample_rate, bps))
     return;
 

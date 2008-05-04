@@ -61,7 +61,7 @@ bool GMAudioInputManager_null::set_audioinput_device (const Ekiga::AudioInputDev
        ( audioinput_device.source == DEVICE_SOURCE) &&
        ( audioinput_device.device == DEVICE_DEVICE) ) {
 
-    PTRACE(4, "GMAudioInputManager_null\tSetting null device");
+    PTRACE(4, "GMAudioInputManager_null\tSetting Device " << audioinput_device.source << "/" <<  audioinput_device.device);
     current_state.audioinput_device = audioinput_device;
     return true;
   }

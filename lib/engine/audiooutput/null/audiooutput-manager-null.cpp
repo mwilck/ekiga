@@ -63,7 +63,7 @@ bool GMAudioOutputManager_null::set_audiooutput_device (Ekiga::AudioOutputPrimar
        ( audiooutput_device.source == DEVICE_SOURCE) &&
        ( audiooutput_device.device == DEVICE_DEVICE) ) {
 
-    PTRACE(4, "GMAudioOutputManager_null\tSetting null device");
+    PTRACE(4, "GMAudioOutputManager_null\tSetting Device[" << primarySecondary << "] " << audiooutput_device.source << "/" <<  audiooutput_device.device);
     current_state[primarySecondary].audiooutput_device = audiooutput_device;
     return true;
   }

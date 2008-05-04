@@ -137,6 +137,9 @@ bool PSoundChannel_EKIGA::Open (const PString & /*_device*/,
 
 bool PSoundChannel_EKIGA::Close()
 {
+  if (opened == false)
+    return true;
+
   if (direction == Recorder) {
     audioinput_core.stop_stream();
   }

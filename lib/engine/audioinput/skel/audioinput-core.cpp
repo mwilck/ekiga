@@ -197,7 +197,7 @@ void AudioInputCore::get_audioinput_devices (std::vector <AudioInputDevice> & au
      for (std::vector<AudioInputDevice>::iterator iter = audioinput_devices.begin ();
          iter != audioinput_devices.end ();
          iter++) {
-      PTRACE(0, "AudioInputCore\tDetected Device: " << iter->type << "/" << iter->source << "/" << iter->device);
+      PTRACE(4, "AudioInputCore\tDetected Device: " << iter->type << "/" << iter->source << "/" << iter->device);
     }
   }
 
@@ -217,10 +217,10 @@ void AudioInputCore::start_preview (unsigned channels, unsigned samplerate, unsi
 {
   PWaitAndSignal m(var_mutex);
 
-  PTRACE(0, "AudioInputCore\tStarting preview " << channels << "x" << samplerate << "/" << bits_per_sample);
+  PTRACE(4, "AudioInputCore\tStarting preview " << channels << "x" << samplerate << "/" << bits_per_sample);
 
   if (preview_config.active || stream_config.active) {
-    PTRACE(0, "AudioInputCore\tTrying to start preview in wrong state");
+    PTRACE(1, "AudioInputCore\tTrying to start preview in wrong state");
   }
 
   internal_open(channels, samplerate, bits_per_sample);
@@ -243,10 +243,10 @@ void AudioInputCore::stop_preview ()
 {
   PWaitAndSignal m(var_mutex);
 
-  PTRACE(0, "AudioInputCore\tStopping Preview");
+  PTRACE(4, "AudioInputCore\tStopping Preview");
 
   if (!preview_config.active || stream_config.active) {
-    PTRACE(0, "AudioInputCore\tTrying to stop preview in wrong state");
+    PTRACE(1, "AudioInputCore\tTrying to stop preview in wrong state");
   }
 
 //     preview_manager.stop();
@@ -260,7 +260,7 @@ void AudioInputCore::set_stream_buffer_size (unsigned buffer_size, unsigned num_
 {
   PWaitAndSignal m(var_mutex);
 
-  PTRACE(0, "AudioInputCore\tSetting stream buffer size " << num_buffers << "/" << buffer_size);
+  PTRACE(4, "AudioInputCore\tSetting stream buffer size " << num_buffers << "/" << buffer_size);
 
   if (current_manager)
     current_manager->set_buffer_size(buffer_size, num_buffers);
@@ -273,10 +273,10 @@ void AudioInputCore::start_stream (unsigned channels, unsigned samplerate, unsig
 {
   PWaitAndSignal m(var_mutex);
 
-  PTRACE(0, "AudioInputCore\tStarting stream " << channels << "x" << samplerate << "/" << bits_per_sample);
+  PTRACE(4, "AudioInputCore\tStarting stream " << channels << "x" << samplerate << "/" << bits_per_sample);
 
   if (preview_config.active || stream_config.active) {
-    PTRACE(0, "AudioInputCore\tTrying to start stream in wrong state");
+    PTRACE(1, "AudioInputCore\tTrying to start stream in wrong state");
   }
 
   internal_open(channels, samplerate, bits_per_sample);
@@ -293,10 +293,10 @@ void AudioInputCore::stop_stream ()
 {
   PWaitAndSignal m(var_mutex);
 
-  PTRACE(0, "AudioInputCore\tStopping Stream");
+  PTRACE(4, "AudioInputCore\tStopping Stream");
 
   if (preview_config.active || !stream_config.active) {
-    PTRACE(0, "AudioInputCore\tTrying to stop stream in wrong state");
+    PTRACE(1, "AudioInputCore\tTrying to stop stream in wrong state");
     return;
   }
 
@@ -371,7 +371,7 @@ void AudioInputCore::on_audioinputdevice_closed (AudioInputDevice audioinput_dev
 
 void AudioInputCore::internal_set_audioinput_device(const AudioInputDevice & audioinput_device)
 {
-  PTRACE(0, "AudioInputCore\tSetting device: " << audioinput_device.type << "/" << audioinput_device.source << "/" << audioinput_device.device);
+  PTRACE(4, "AudioInputCore\tSetting device: " << audioinput_device.type << "/" << audioinput_device.source << "/" << audioinput_device.device);
 
   if (preview_config.active)
     preview_manager.stop();
@@ -404,7 +404,7 @@ void AudioInputCore::internal_set_audioinput_device(const AudioInputDevice & aud
 
 void AudioInputCore::internal_open (unsigned channels, unsigned samplerate, unsigned bits_per_sample)
 {
-  PTRACE(0, "AudioInputCore\tOpening device with " << channels << "-" << samplerate << "/" << bits_per_sample );
+  PTRACE(4, "AudioInputCore\tOpening device with " << channels << "-" << samplerate << "/" << bits_per_sample );
 
   if (current_manager && !current_manager->open(channels, samplerate, bits_per_sample)) {
 
@@ -441,7 +441,7 @@ void AudioInputCore::internal_set_device (const AudioInputDevice & audioinput_de
 
 void AudioInputCore::internal_close()
 {
-  PTRACE(0, "AudioInputCore\tClosing current device");
+  PTRACE(4, "AudioInputCore\tClosing current device");
   if (current_manager)
     current_manager->close();
 }
