@@ -151,34 +151,6 @@ gnomemeeting_pstring_cut (PString s)
 
   return s2.Trim ();
 }
-
-
-gchar *
-gnomemeeting_from_iso88591_to_utf8 (PString iso_string)
-{
-  if (iso_string.IsEmpty ())
-    return NULL;
-
-  gchar *utf_8_string =
-    g_convert ((const char *) iso_string.GetPointer (),
-               iso_string.GetSize (), "UTF-8", "ISO-8859-1", 0, 0, 0);
-  
-  return utf_8_string;
-}
-
-
-gchar *
-gnomemeeting_get_utf8 (PString str)
-{
-  gchar *utf8_str = NULL;
-
-  if (g_utf8_validate ((gchar *) (const unsigned char*) str, -1, NULL))
-    utf8_str = g_strdup ((char *) (const char *) (str));
-  else
-    utf8_str = gnomemeeting_from_iso88591_to_utf8 (str);
-
-  return utf8_str;
-}
     
 
 /* Stolen from GDK */

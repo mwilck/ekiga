@@ -1,3 +1,10 @@
+2008-05-05  Julien Puydt  <jpuydt@gnome.org>
+
+	* src/gui/misc.h:
+	* src/gui/misc.cpp: Removed gnomemeeting_get_utf8 and
+	gnomemeeting_from_iso88591_to_utf8, which are probably fragile, and
+	are definitely unused. Fixes #491517.
+
 2008-05-04  Matthias Schneider  <ma30002000@yahoo.de>
 
 	* src/devices/audiodev.cpp:

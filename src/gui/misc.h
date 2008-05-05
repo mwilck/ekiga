@@ -81,16 +81,6 @@ PString
 gnomemeeting_pstring_cut (PString s);
 
 
-/* DESCRIPTION   :  /
- * BEHAVIOR      : Takes an ISO-8859-1 encoded PString, and returns an UTF-8
- *                 encoded string.
- * PRE           : An ISO-8859-1 encoded PString.
- */
-gchar *
-gnomemeeting_from_iso88591_to_utf8 (PString iso_string);
-
-
-gchar *gnomemeeting_get_utf8 (PString str);
 
 void gdk_window_set_always_on_top (GdkWindow *window, 
 				   gboolean enable);
