@@ -143,7 +143,7 @@ GMDisplayManager_x::setup_frame_display ()
 #ifdef HAVE_XV
     if (!local_display_info.disable_hw_accel) {
       lxWindow = new XVWindow ();
-      if (lxWindow->Init (local_display_info.xdisplay, 
+      if (lxWindow->Init (lDisplay, 
                             local_display_info.window, 
                             local_display_info.gc,
                             local_display_info.x,
@@ -168,7 +168,7 @@ GMDisplayManager_x::setup_frame_display ()
                                       ? " since HW acceleration was deactivated by configuration" 
                                       : " since HW acceleration failed to initalize"));
       lxWindow = new XWindow ();
-      if (lxWindow->Init (local_display_info.xdisplay, 
+      if (lxWindow->Init (lDisplay, 
                             local_display_info.window, 
                             local_display_info.gc,
                             local_display_info.x,
@@ -204,7 +204,7 @@ GMDisplayManager_x::setup_frame_display ()
 #ifdef HAVE_XV
     if (!local_display_info.disable_hw_accel) {
       rxWindow = new XVWindow ();
-      if (rxWindow->Init (local_display_info.xdisplay, 
+      if (rxWindow->Init (rDisplay, 
                           local_display_info.window, 
                           local_display_info.gc,
                           local_display_info.x,
@@ -230,7 +230,7 @@ GMDisplayManager_x::setup_frame_display ()
                                       ? " since HW acceleration was deactivated by configuration" 
                                       : " since HW acceleration failed to initalize"));
       rxWindow = new XWindow ();
-      if ( rxWindow->Init (local_display_info.xdisplay, 
+      if ( rxWindow->Init (rDisplay, 
                              local_display_info.window, 
                              local_display_info.gc,
                              local_display_info.x,
@@ -270,7 +270,7 @@ GMDisplayManager_x::setup_frame_display ()
 #ifdef HAVE_XV
     if (!local_display_info.disable_hw_accel) {
       rxWindow = new XVWindow ();
-      if (rxWindow->Init ((current_frame.display == PIP) ? local_display_info.xdisplay : rDisplay, 
+      if (rxWindow->Init ( rDisplay, 
                              (current_frame.display == PIP) ? local_display_info.window : DefaultRootWindow (rDisplay), 
                              (current_frame.display == PIP) ? local_display_info.gc : NULL,
                              (current_frame.display == PIP) ? local_display_info.x : 0,
@@ -296,7 +296,7 @@ GMDisplayManager_x::setup_frame_display ()
                                       ? " since HW acceleration was deactivated by configuration" 
                                       : " since HW acceleration failed to initalize"));
       rxWindow = new XWindow ();
-      if (rxWindow->Init ((current_frame.display == PIP) ? local_display_info.xdisplay : rDisplay, 
+      if (rxWindow->Init ( rDisplay, 
                              (current_frame.display == PIP) ? local_display_info.window : DefaultRootWindow (rDisplay), 
                              (current_frame.display == PIP) ? local_display_info.gc : NULL,
                              (current_frame.display == PIP) ? local_display_info.x : 0,
@@ -347,7 +347,7 @@ GMDisplayManager_x::setup_frame_display ()
                                       ? " since HW acceleration was deactivated by configuration" 
                                       : " since HW acceleration failed to initalize"));
       lxWindow = new XWindow ();
-      if (lxWindow->Init ((current_frame.display == PIP) ? local_display_info.xdisplay : lDisplay, 
+      if (lxWindow->Init ( lDisplay, 
                              rxWindow->GetWindowHandle (),
                              (current_frame.display == PIP) ? local_display_info.gc : NULL,
                              (int) (current_frame.remote_width * current_frame.zoom  / 100 * 2 / 3), 
