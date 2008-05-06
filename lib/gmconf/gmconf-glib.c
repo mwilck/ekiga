@@ -978,7 +978,7 @@ database_save_entry (GQuark quark, gpointer data,
     value = string_from_float (entry_get_float (entry));
     break;
   case GM_CONF_STRING:
-    value = g_strdup (entry_get_string (entry));
+    value = g_markup_escape_text (entry_get_string (entry), -1);
     break;
   case GM_CONF_LIST:
     value = string_from_list (entry_get_list (entry));
