@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Ekiga 2.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-04-30 01:52+0200\n"
-"PO-Revision-Date: 2008-04-30 01:58+0200\n"
+"POT-Creation-Date: 2008-05-06 19:46+0200\n"
+"PO-Revision-Date: 2008-05-06 19:51+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org\n"
 "Language-Team: Norwegian Bokmål <i18n-nb@lister.ping.uio.no\n"
 "MIME-Version: 1.0\n"
@@ -406,7 +406,7 @@ msgstr ""
 
 #: ../ekiga.schemas.in.in.h:84 ../src/gui/main.cpp:1585
 msgid "Show the call panel"
-msgstr ""
+msgstr "Vis samtalepanelet"
 
 #: ../ekiga.schemas.in.in.h:85
 msgid "Size of the PC-To-Phone window"
@@ -691,9 +691,8 @@ msgid "The save prefix"
 msgstr "Lagringsprefikset"
 
 #: ../ekiga.schemas.in.in.h:137
-#, fuzzy
 msgid "The short status information"
-msgstr "Vis samtaleloggen"
+msgstr "Kort statusinformasjon"
 
 #: ../ekiga.schemas.in.in.h:138
 msgid "The size of the local video window"
@@ -862,7 +861,7 @@ msgid ""
 msgstr ""
 
 #: ../lib/engine/addressbook/evolution/evolution-contact.cpp:231
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:292
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:291
 #: ../lib/engine/presence/local-roster/local-presentity.cpp:195
 msgid "_Remove"
 msgstr "Fje_rn"
@@ -914,14 +913,14 @@ msgid "_Pager:"
 msgstr "_Personsøker:"
 
 #: ../lib/engine/addressbook/evolution/evolution-book.cpp:88
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:496
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:548
 msgid "user found"
 msgid_plural "users found"
 msgstr[0] "bruker funnet"
 msgstr[1] "brukere funnet"
 
 #: ../lib/engine/addressbook/evolution/evolution-book.cpp:255
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:289
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:288
 msgid "_Refresh"
 msgstr "Oppdate_r"
 
@@ -948,7 +947,7 @@ msgid "Create LDAP directory"
 msgstr "Opprett LDAP-katalog"
 
 #: ../lib/engine/addressbook/ldap/ldap-source.cpp:145
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:512
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:564
 msgid "Please edit the following fields"
 msgstr "Vennligst rediger følgende felt"
 
@@ -965,17 +964,17 @@ msgid "_Base DN:"
 msgstr "_Base DN:"
 
 #: ../lib/engine/addressbook/ldap/ldap-source.cpp:154
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:528
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:580
 msgid "_Subtree"
 msgstr "_Undertre"
 
 #: ../lib/engine/addressbook/ldap/ldap-source.cpp:155
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:529
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:581
 msgid "Single _Level"
 msgstr "Ett _nivå"
 
 #: ../lib/engine/addressbook/ldap/ldap-source.cpp:156
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:530
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:582
 msgid "_Scope"
 msgstr "_Område"
 
@@ -983,54 +982,62 @@ msgstr "_Område"
 msgid "Call _Attribute:"
 msgstr "Samtale_attributt:"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:294
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:293
 msgid "_Properties"
 msgstr "Egenska_per"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:358
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:351
 msgid "Refreshing"
 msgstr "Oppdaterer"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:364
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:379
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:359
+msgid "Could not initialize server"
+msgstr "Kunne ikke initiere tjener"
+
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:377
 msgid "Could not contact server"
 msgstr "Kunne ikke kontakte tjener"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:387
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:385
 msgid "Contacted server"
 msgstr "Kontaktet tjener"
 
 #. patience == 0
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:421
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:467
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:422
+msgid "Could not connect to server"
+msgstr "Kunne ikke koble til tjener"
+
+#. patience == 0
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:472
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:519
 msgid "Could not search"
 msgstr "Kunne ikke søke"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:429
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:480
 msgid "Waiting for search results"
 msgstr "Venter på søkeresultater"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:510
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:562
 msgid "Edit LDAP directory"
 msgstr "Rediger LDAP-katalog"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:514
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:566
 msgid "_Name"
 msgstr "_Navn"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:515
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:567
 msgid "_Hostname"
 msgstr "_Vertsnavn:"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:521
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:573
 msgid "_Port"
 msgstr "_Port"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:523
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:575
 msgid "_Base DN"
 msgstr "_Base DN"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:533
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:585
 msgid "Call _Attribute"
 msgstr "Samt_aleattributt"
 
@@ -1100,12 +1107,10 @@ msgid "Neighbours"
 msgstr "Naboer"
 
 #: ../lib/engine/presence/local-roster/local-presentity.cpp:216
-#, fuzzy
 msgid "Edit roster element"
 msgstr "Rediger element i roster"
 
 #: ../lib/engine/presence/local-roster/local-presentity.cpp:217
-#, fuzzy
 msgid ""
 "Please fill in this form to change an existing element of ekiga's internal "
 "roster"
@@ -1568,15 +1573,15 @@ msgstr ""
 
 #: ../src/endpoints/sip.cpp:602
 msgid "Unsupported media type"
-msgstr ""
+msgstr "Medietype ikke støttet"
 
 #: ../src/endpoints/sip.cpp:606
 msgid "Unsupported URI scheme"
-msgstr ""
+msgstr "URI-skjema ikke støttet"
 
 #: ../src/endpoints/sip.cpp:610
 msgid "Bad extension"
-msgstr ""
+msgstr "Ugyldig utvidelse"
 
 #: ../src/endpoints/sip.cpp:614
 msgid "Extension required"
@@ -1584,7 +1589,7 @@ msgstr "Utvidelse kreves"
 
 #: ../src/endpoints/sip.cpp:618
 msgid "Interval too brief"
-msgstr ""
+msgstr "For kort intervall"
 
 #: ../src/endpoints/sip.cpp:622
 msgid "Trans. does not exist"
@@ -1652,7 +1657,7 @@ msgstr "Tidsavbrudd for tjener"
 
 #: ../src/endpoints/sip.cpp:686
 msgid "SIP version not supp."
-msgstr ""
+msgstr "SIP-versjon ikke støttet"
 
 #: ../src/endpoints/sip.cpp:690
 msgid "Message too large"
@@ -1926,18 +1931,14 @@ msgid "Audio Devices"
 msgstr "Lydenheter"
 
 #: ../src/gui/assistant.cpp:674
-#, fuzzy
 msgid "Please choose the audio ringing device:"
-msgstr "Velg enhet for opptak av lyd:"
+msgstr "Velg ringeenhet for lyd:"
 
 #: ../src/gui/assistant.cpp:682
-#, fuzzy
 msgid ""
 "The audio ringing device is the device  managed by the audio manager that "
 "will be used to play the ringing sound."
-msgstr ""
-"Utdataenhet for lyd er den enheten som lydhåndtereren vil bruke til å spille "
-"av lyd."
+msgstr "Ringeenhet for lyd er den enheten som lydhåndtereren vil bruke til å spille av ringelyden."
 
 #. ---
 #: ../src/gui/assistant.cpp:695
@@ -1966,9 +1967,8 @@ msgstr ""
 "opptak av stemmen din."
 
 #: ../src/gui/assistant.cpp:822
-#, fuzzy
 msgid "Please choose your video input device:"
-msgstr "Velg enhet for opptak av lyd:"
+msgstr "Velg enhet for opptak av video:"
 
 #: ../src/gui/assistant.cpp:830
 msgid ""
@@ -2138,7 +2138,7 @@ msgid "Missed call from"
 msgstr "Tapt anrop fra"
 
 #: ../src/gui/main.cpp:1047
-#, fuzzy, c-format
+#, c-format
 msgid "Error while accessing video device %s"
 msgstr "Feil under åpning av videoenhet %s"
 
@@ -2195,13 +2195,13 @@ msgid "Unknown error."
 msgstr "Ukjent feil."
 
 #: ../src/gui/main.cpp:1135
-#, fuzzy, c-format
+#, c-format
 msgid "Error while opening audio input device %s"
-msgstr "Feil under åpning av videoenhet %s"
+msgstr "Feil under åpning av inndataenhet for lyd %s"
 
 #: ../src/gui/main.cpp:1138
 msgid "Only silence will be transmitted."
-msgstr ""
+msgstr "Kun stillhet vil bli overført."
 
 #: ../src/gui/main.cpp:1142
 #, fuzzy
@@ -2226,13 +2226,13 @@ msgstr ""
 "data fra den. Sjekk lydoppsettet."
 
 #: ../src/gui/main.cpp:1220
-#, fuzzy, c-format
+#, c-format
 msgid "Error while opening audio output device %s"
-msgstr "Feil under åpning av videoenhet %s"
+msgstr "Feil under åpning av utenhet for lyd %s"
 
 #: ../src/gui/main.cpp:1223
 msgid "No incoming sound will be played."
-msgstr ""
+msgstr "Ingen innkommende lyd vil bli avspilt."
 
 #: ../src/gui/main.cpp:1227
 #, fuzzy
@@ -2262,9 +2262,8 @@ msgstr ""
 "Oppgi en URI til venstre og klikk på denne knappen for å starte en samtale"
 
 #: ../src/gui/main.cpp:1493
-#, fuzzy
 msgid "C_hat"
-msgstr "R_ing"
+msgstr "_Prat"
 
 #: ../src/gui/main.cpp:1495
 msgid "Ca_ll"
@@ -2283,9 +2282,8 @@ msgid "Terminate the current call"
 msgstr "Avslutt denne samtalen"
 
 #: ../src/gui/main.cpp:1505
-#, fuzzy
 msgid "_Add Contact"
-msgstr "_Finn kontakter"
+msgstr "_Legg til kontakt"
 
 #: ../src/gui/main.cpp:1505
 #, fuzzy
@@ -2374,7 +2372,7 @@ msgstr "Vis nummertastatur"
 
 #: ../src/gui/main.cpp:1585
 msgid "Show Call Panel"
-msgstr ""
+msgstr "Vis samtalepanel"
 
 #: ../src/gui/main.cpp:1593
 msgid "Local Video"
@@ -2503,7 +2501,6 @@ msgid "Display images from your camera device"
 msgstr "Vis bilder fra ditt kamera"
 
 #: ../src/gui/main.cpp:2227
-#, fuzzy
 msgid "Call history"
 msgstr "Samtalelogg"
 
@@ -2586,9 +2583,8 @@ msgstr ""
 "Jitterbuffer: %d ms%s%s%s"
 
 #: ../src/gui/main.cpp:4328
-#, fuzzy
 msgid "Prints debug messages in the console (level between 1 and 4)"
-msgstr "Skriver feilsjekkingsmeldinger til konsollet (nivå fra 1 til 6)"
+msgstr "Skriver feilsjekkingsmeldinger til konsollet (nivå fra 1 til 4)"
 
 #: ../src/gui/main.cpp:4333
 #, fuzzy
@@ -2652,9 +2648,8 @@ msgid "Error"
 msgstr "Feil"
 
 #: ../src/gui/preferences.cpp:398
-#, fuzzy
 msgid "_Full name:"
-msgstr "Fullt navn"
+msgstr "_Fullt navn:"
 
 #: ../src/gui/preferences.cpp:400
 msgid "Enter your first name"
@@ -2694,9 +2689,8 @@ msgid "Auto Away"
 msgstr "Automatisk bortemelding"
 
 #: ../src/gui/preferences.cpp:436
-#, fuzzy
 msgid "Timeout after which the user is automatically set as away (in minutes):"
-msgstr "Tidsavbrudd for automatisk borteinnstilling for bruker:"
+msgstr "Tidsavbrudd i minutter for automatisk borteinnstilling for bruker:"
 
 #: ../src/gui/preferences.cpp:436
 msgid ""
@@ -2893,12 +2887,11 @@ msgstr "_Utgående proxy:"
 
 #: ../src/gui/preferences.cpp:768
 msgid "Ringing Device"
-msgstr ""
+msgstr "Ringeenhet"
 
 #: ../src/gui/preferences.cpp:768
-#, fuzzy
 msgid "Select the ringing audio device to use"
-msgstr "Velg inndataenhet for lyd"
+msgstr "Velg lydenhet som skal brukes for ringing"
 
 #: ../src/gui/preferences.cpp:770
 msgid "Output device:"
