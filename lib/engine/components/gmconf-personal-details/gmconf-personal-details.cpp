@@ -49,10 +49,14 @@ display_name_changed_nt (gpointer /*id*/,
                          gpointer data)
 {
   PersonalDetails *details = (PersonalDetails *) data;
+  const gchar *name = NULL;
 
-  if (gm_conf_entry_get_type (entry) == GM_CONF_STRING) 
-    details->set_display_name (gm_conf_entry_get_string (entry));
-  
+  if (gm_conf_entry_get_type (entry) == GM_CONF_STRING) {
+
+    name = gm_conf_entry_get_string (entry);
+    if (name != NULL)
+      details->set_display_name (name);
+  }
 }
 
 static void
@@ -61,10 +65,14 @@ short_status_changed_nt (gpointer /*id*/,
                          gpointer data)
 {
   PersonalDetails *details = (PersonalDetails *) data;
+  const gchar *status = NULL;
 
-  if (gm_conf_entry_get_type (entry) == GM_CONF_STRING) 
-    details->set_short_status (gm_conf_entry_get_string (entry));
-  
+  if (gm_conf_entry_get_type (entry) == GM_CONF_STRING) {
+
+    status = gm_conf_entry_get_string (entry);
+    if (status != NULL)
+      details->set_short_status (status);
+  }
 }
 
 static void
@@ -73,12 +81,17 @@ long_status_changed_nt (gpointer /*id*/,
                         gpointer data)
 {
   PersonalDetails *details = (PersonalDetails *) data;
+  const gchar *status = NULL;
 
-  if (gm_conf_entry_get_type (entry) == GM_CONF_STRING) 
-    details->set_long_status (gm_conf_entry_get_string (entry));
+  if (gm_conf_entry_get_type (entry) == GM_CONF_STRING) {
+
+    status = gm_conf_entry_get_string (entry);
+    if (status != NULL)
+      details->set_long_status (status);
+  }
 }
 
-PersonalDetails::PersonalDetails () 
+PersonalDetails::PersonalDetails ()
 {
   gm_conf_notifier_add ("/apps/ekiga/general/personal_data/full_name",
                         display_name_changed_nt, this);
@@ -90,4 +103,3 @@ PersonalDetails::PersonalDetails ()
   gm_conf_notifier_trigger ("/apps/ekiga/general/personal_data/short_status");
   gm_conf_notifier_trigger ("/apps/ekiga/general/personal_data/long_status");
 }
-
