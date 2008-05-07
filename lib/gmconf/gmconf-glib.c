@@ -949,6 +949,7 @@ database_save_entry (G_GNUC_UNUSED GQuark quark,
   GmConfEntry *entry = NULL;
   GIOChannel *io = NULL;
   gchar *value = NULL;
+  const gchar *txt = NULL;
 
   g_return_if_fail (data != NULL);
   g_return_if_fail (user_data != NULL);
@@ -1002,7 +1003,11 @@ database_save_entry (G_GNUC_UNUSED GQuark quark,
     value = string_from_float (entry_get_float (entry));
     break;
   case GM_CONF_STRING:
-    value = g_markup_escape_text (entry_get_string (entry), -1);
+    txt = entry_get_string (entry);
+    if (txt != NULL)
+      value = g_markup_escape_text (txt, -1);
+    else
+      value = g_strdup ("");
     break;
   case GM_CONF_LIST:
     value = string_from_list (entry_get_list (entry));
