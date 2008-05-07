@@ -37,6 +37,7 @@
 
 #include <glib.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
 
@@ -469,7 +470,8 @@ list_from_string (const gchar *str)
 
 /* implementation of notifier functions */
 static Notifier *
-notifier_new (const GmConfNotifier func, const gpointer data)
+notifier_new (const GmConfNotifier func,
+	      const gpointer data)
 {
   Notifier *notifier = NULL;
 
@@ -488,13 +490,15 @@ notifier_destroy (Notifier *notifier)
 }
 
 static void
-notifier_destroy_in_list (gpointer elt, gpointer unused)
+notifier_destroy_in_list (gpointer elt,
+			  G_GNUC_UNUSED gpointer unused)
 {
   notifier_destroy ((Notifier *)elt);
 }
 
 static void
-notifier_call_on_entry (Notifier *notifier, GmConfEntry *entry)
+notifier_call_on_entry (Notifier *notifier,
+			GmConfEntry *entry)
 {
   g_return_if_fail (notifier != NULL);
   g_return_if_fail (entry != NULL);
@@ -544,6 +548,8 @@ entry_destroy (gpointer ent)
   case GM_CONF_LIST:
     string_list_deep_destroy (entry->value.list);
     break;
+  default:
+    break;
   }
 
   g_slist_foreach (entry->notifiers, notifier_destroy_in_list, NULL);
@@ -560,7 +566,8 @@ entry_get_key (const GmConfEntry *entry)
 }
 
 static void
-entry_set_key (GmConfEntry *entry, const gchar *key)
+entry_set_key (GmConfEntry *entry,
+	       const gchar *key)
 {
   g_return_if_fail (entry != NULL);
   g_return_if_fail (key != NULL);
@@ -579,7 +586,8 @@ entry_get_type (const GmConfEntry *entry)
 }
 
 static void
-entry_set_type (GmConfEntry *entry, const GmConfEntryType type)
+entry_set_type (GmConfEntry *entry,
+		const GmConfEntryType type)
 {
   g_return_if_fail (entry != NULL);
 
@@ -595,7 +603,8 @@ entry_get_bool (const GmConfEntry *entry)
 }
 
 static void
-entry_set_bool (GmConfEntry *entry, const gboolean val)
+entry_set_bool (GmConfEntry *entry,
+		const gboolean val)
 {
   g_return_if_fail (entry != NULL);
 
@@ -612,7 +621,8 @@ entry_get_int (const GmConfEntry *entry)
 }
 
 static void
-entry_set_int (GmConfEntry *entry, const gint val)
+entry_set_int (GmConfEntry *entry,
+	       const gint val)
 {
   g_return_if_fail (entry != NULL);
 
@@ -629,7 +639,8 @@ entry_get_float (const GmConfEntry *entry)
 }
 
 static void
-entry_set_float (GmConfEntry *entry, const gfloat val)
+entry_set_float (GmConfEntry *entry,
+		 const gfloat val)
 {
   g_return_if_fail (entry != NULL);
 
@@ -663,7 +674,8 @@ entry_get_list (const GmConfEntry *entry)
 }
 
 static void
-entry_set_list (GmConfEntry *entry, GSList *val)
+entry_set_list (GmConfEntry *entry,
+		GSList *val)
 {
   g_return_if_fail (entry != NULL);
 
@@ -672,7 +684,8 @@ entry_set_list (GmConfEntry *entry, GSList *val)
 }
 
 static void
-entry_set_redirect (GmConfEntry *entry, GmConfEntry *redirect)
+entry_set_redirect (GmConfEntry *entry,
+		    GmConfEntry *redirect)
 {
   g_return_if_fail (entry != NULL);
 
@@ -710,7 +723,9 @@ entry_call_notifiers (const GmConfEntry *entry)
 }
 
 static gpointer
-entry_add_notifier (GmConfEntry *entry, GmConfNotifier func, gpointer data)
+entry_add_notifier (GmConfEntry *entry,
+		    GmConfNotifier func,
+		    gpointer data)
 {
   Notifier *notif = NULL;
 
@@ -724,7 +739,8 @@ entry_add_notifier (GmConfEntry *entry, GmConfNotifier func, gpointer data)
 
 
 static void
-entry_remove_notifier (GmConfEntry *entry, gpointer identifier)
+entry_remove_notifier (GmConfEntry *entry,
+		       gpointer identifier)
 {
   /* no check, since the only function calling here is
      entry_remove_notifier_in_list */
@@ -733,7 +749,7 @@ entry_remove_notifier (GmConfEntry *entry, gpointer identifier)
 }
 
 static void
-entry_remove_notifier_in_list (GQuark unused,
+entry_remove_notifier_in_list (G_GNUC_UNUSED GQuark unused,
 			       gpointer entry,
 			       gpointer identifier)
 {
@@ -766,12 +782,12 @@ database_get_default ()
 }
 
 static void
-sch_parser_start_element (GMarkupParseContext *context,
+sch_parser_start_element (G_GNUC_UNUSED GMarkupParseContext *context,
 			  const gchar *element_name,
-			  const gchar **attribute_names,
-			  const gchar **attribute_values,
+			  G_GNUC_UNUSED const gchar **attribute_names,
+			  G_GNUC_UNUSED const gchar **attribute_values,
 			  gpointer data,
-			  GError **error)
+			  G_GNUC_UNUSED GError **error)
 {
   SchParser *parser = NULL;
 
@@ -790,10 +806,10 @@ sch_parser_start_element (GMarkupParseContext *context,
 }
 
 static void
-sch_parser_end_element (GMarkupParseContext *context,
+sch_parser_end_element (G_GNUC_UNUSED GMarkupParseContext *context,
 			const gchar *element_name,
 			gpointer data,
-			GError **error)
+			G_GNUC_UNUSED GError **error)
 {
   SchParser *parser = NULL;
 
@@ -811,11 +827,11 @@ sch_parser_end_element (GMarkupParseContext *context,
 }
 
 static void
-sch_parser_characters (GMarkupParseContext *context,
+sch_parser_characters (G_GNUC_UNUSED GMarkupParseContext *context,
 		       const gchar *text,
-		       gsize text_len,
+		       G_GNUC_UNUSED gsize text_len,
 		       gpointer data,
-		       GError **error)
+		       G_GNUC_UNUSED GError **error)
 {
   SchParser *parser = NULL;
 
@@ -824,6 +840,7 @@ sch_parser_characters (GMarkupParseContext *context,
   parser = (SchParser *)data;
 
   switch (parser->state) {
+
   case  START:
     /* we're not interested in that data: just eat it! */
     break;
@@ -861,14 +878,20 @@ sch_parser_characters (GMarkupParseContext *context,
     case GM_CONF_LIST:
       entry_set_list (parser->entry, list_from_string (text));
       break;
+    case GM_CONF_OTHER: /* shouldn't happen */
+      break;
     default:
       break;
     }
+
+  default:
+    ;/* nothing */
   }
 }
 
 static gboolean
-database_load_file (DataBase *db, const gchar *filename)
+database_load_file (DataBase *db,
+		    const gchar *filename)
 {
   SchParser *parser = NULL;
   GMarkupParseContext *context = NULL;
@@ -904,6 +927,7 @@ database_load_file (DataBase *db, const gchar *filename)
           return g_markup_parse_context_end_parse (context, NULL);
         case G_IO_STATUS_NORMAL:
         case G_IO_STATUS_AGAIN:
+	default:
           break;
         }
       if (!g_markup_parse_context_parse (context, buffer, len, NULL))
@@ -918,11 +942,11 @@ database_load_file (DataBase *db, const gchar *filename)
 }
 
 static void
-database_save_entry (GQuark quark, gpointer data,
+database_save_entry (G_GNUC_UNUSED GQuark quark,
+		     gpointer data,
 		     gpointer user_data)
 {
   GmConfEntry *entry = NULL;
-  GSList *ptr;
   GIOChannel *io = NULL;
   gchar *value = NULL;
 
@@ -996,7 +1020,8 @@ database_save_entry (GQuark quark, gpointer data,
 }
 
 static gboolean
-database_save_file (DataBase *db, const gchar *filename)
+database_save_file (DataBase *db,
+		    const gchar *filename)
 {
   GIOChannel *io = NULL;
   gchar *dirname = NULL;
@@ -1025,7 +1050,8 @@ database_save_file (DataBase *db, const gchar *filename)
 }
 
 static void
-database_add_entry (DataBase *db, GmConfEntry *entry)
+database_add_entry (DataBase *db,
+		    GmConfEntry *entry)
 {
   g_return_if_fail (db != NULL);
   g_return_if_fail (entry != NULL);
@@ -1035,7 +1061,7 @@ database_add_entry (DataBase *db, GmConfEntry *entry)
 }
 
 static void
-database_remove_namespace_in_datalist (GQuark key_id,
+database_remove_namespace_in_datalist (G_GNUC_UNUSED GQuark key_id,
 				       gpointer data,
 				       gpointer user_data)
 {
@@ -1056,7 +1082,8 @@ database_remove_namespace_in_datalist (GQuark key_id,
 }
 
 static void
-database_remove_namespace (DataBase *db, const gchar *namespc)
+database_remove_namespace (DataBase *db,
+			   const gchar *namespc)
 {
   NamespcWrapper *wrapper = NULL;
 
@@ -1072,7 +1099,8 @@ database_remove_namespace (DataBase *db, const gchar *namespc)
 }
 
 static GmConfEntry *
-database_get_entry_for_key (DataBase *db, const gchar *key)
+database_get_entry_for_key (DataBase *db,
+			    const gchar *key)
 {
   GmConfEntry *entry = NULL;
 
@@ -1085,7 +1113,8 @@ database_get_entry_for_key (DataBase *db, const gchar *key)
 }
 
 static GmConfEntry *
-database_get_entry_for_key_create (DataBase *db, const gchar *key)
+database_get_entry_for_key_create (DataBase *db,
+				   const gchar *key)
 {
   GmConfEntry *entry = NULL;
 
@@ -1102,7 +1131,8 @@ database_get_entry_for_key_create (DataBase *db, const gchar *key)
 }
 
 static void
-database_set_watched (DataBase *db, const gboolean bool)
+database_set_watched (DataBase *db,
+		      const gboolean bool)
 {
   g_return_if_fail (db != NULL);
 
@@ -1110,7 +1140,8 @@ database_set_watched (DataBase *db, const gboolean bool)
 }
 
 static void
-database_notify_on_namespace (DataBase *db, const gchar *namespac)
+database_notify_on_namespace (DataBase *db,
+			      const gchar *namespac)
 {
   GmConfEntry *parent_entry = NULL, *entry = NULL;
   gchar *key = NULL;
@@ -1200,7 +1231,7 @@ gm_conf_load_sys_conf (DataBase *db)
 
 /* last but not least, the implementation of the gmconf.h api */
 static gboolean
-saveconf_timer_callback (gpointer unused)
+saveconf_timer_callback (G_GNUC_UNUSED gpointer unused)
 {
   DataBase *db = database_get_default ();
   gchar *user_conf = NULL;
@@ -1348,7 +1379,8 @@ gm_conf_entry_get_list (GmConfEntry *entry)
 }
 
 void
-gm_conf_set_bool (const gchar *key, const gboolean val)
+gm_conf_set_bool (const gchar *key,
+		  const gboolean val)
 {
   DataBase *db = database_get_default ();
   GmConfEntry *entry = NULL;
@@ -1379,7 +1411,8 @@ gm_conf_get_bool (const gchar *key)
 }
 
 void
-gm_conf_set_int (const gchar *key, const int val)
+gm_conf_set_int (const gchar *key,
+		 const int val)
 {
   DataBase *db = database_get_default ();
   GmConfEntry *entry = NULL;
@@ -1410,7 +1443,8 @@ gm_conf_get_int (const gchar *key)
 }
 
 void
-gm_conf_set_float (const gchar *key, const float val)
+gm_conf_set_float (const gchar *key,
+		   const float val)
 {
   DataBase *db = database_get_default ();
   GmConfEntry *entry = NULL;
@@ -1441,7 +1475,8 @@ gm_conf_get_float (const gchar *key)
 }
 
 void
-gm_conf_set_string (const gchar *key, const gchar *val)
+gm_conf_set_string (const gchar *key,
+		    const gchar *val)
 {
   DataBase *db = database_get_default ();
   GmConfEntry *entry = NULL;
@@ -1472,7 +1507,8 @@ gm_conf_get_string (const gchar *key)
 }
 
 void
-gm_conf_set_string_list (const gchar *key, GSList *val)
+gm_conf_set_string_list (const gchar *key,
+			 GSList *val)
 {
   DataBase *db = database_get_default ();
   GmConfEntry *entry = NULL;
@@ -1521,13 +1557,15 @@ gm_conf_is_key_writable (const gchar *key)
 }
 
 gchar *
-gm_conf_escape_key (const gchar *key, gint len)
+gm_conf_escape_key (const gchar *key,
+		    G_GNUC_UNUSED gint len)
 {
   return g_strescape (key, NULL); /* we don't honor len */
 }
 
 gchar *
-gm_conf_unescape_key (const gchar *key, gint len)
+gm_conf_unescape_key (const gchar *key,
+		      G_GNUC_UNUSED gint len)
 {
   return g_strcompress (key); /* we don't honor len */
 }
