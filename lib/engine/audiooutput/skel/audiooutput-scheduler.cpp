@@ -44,49 +44,51 @@ AudioEventScheduler::AudioEventScheduler (AudioOutputCore& _audio_output_core)
 : PThread (1000, NoAutoDeleteThread, HighestPriority, "AudioEventScheduler"),
     audio_output_core (_audio_output_core)
 {
-  stop_thread = false;
+  end_thread = false;
   // Since windows does not like to restart a thread that 
   // was never started, we do so here
   this->Resume ();
-  thread_sync_point.Wait ();
+  thread_created.Wait ();
 }
 
 AudioEventScheduler::~AudioEventScheduler ()
 {
-  stop_thread = true;
-  new_event.Signal ();
+  end_thread = true;
+  run_thread.Signal ();
 
   /* Wait for the Main () method to be terminated */
-  PWaitAndSignal m(quit_mutex);
+  PWaitAndSignal m(thread_ended);
 
 }
 
 void AudioEventScheduler::Main ()
 {
-  PWaitAndSignal m(quit_mutex);
+  PWaitAndSignal m(thread_ended);
 
   std::vector <AudioEvent> pending_event_list;
-  unsigned idle_time = 32000;
+  unsigned idle_time = 65535;
   AudioEvent event;
   char* buffer = NULL;
   unsigned long buffer_len = 0;
   unsigned channels, sample_rate, bps;
   AudioOutputPrimarySecondary primarySecondary;
 
-  thread_sync_point.Signal ();
+  thread_created.Signal ();
 
-  while (!stop_thread) {
+  while (!end_thread) {
 
-    new_event.Wait (idle_time);
+    if (idle_time == 65535)
+      run_thread.Wait ();
+    else
+      run_thread.Wait (idle_time);
 
-    if (stop_thread)
+    if (end_thread)
       break;
       
     get_pending_event_list(pending_event_list);
-    PTRACE(0, "Checking pending list with " << pending_event_list.size() << " elements");
+    PTRACE(4, "AEScheduler\tChecking pending list with " << pending_event_list.size() << " elements");
 
     while (pending_event_list.size() > 0) {
-      PTRACE(0, "Processing pending event list of size " << pending_event_list.size());
       event = *(pending_event_list.begin()); pending_event_list.erase(pending_event_list.begin());
       load_wav(event.name, event.is_file_name, buffer, buffer_len, channels, sample_rate, bps, primarySecondary);
       if (buffer) {
@@ -97,7 +99,6 @@ void AudioEventScheduler::Main ()
       Current()->Sleep (10);
     }
     idle_time = get_time_to_next_event();
-    PTRACE(0, "Idling for " << idle_time);
   }
 }
 
@@ -119,7 +120,6 @@ void AudioEventScheduler::get_pending_event_list (std::vector<AudioEvent> & pend
       pending_event_list.push_back(event);
     }
     else {
-      PTRACE(0, "Checking recurring event with scheduled time " << event.time << ">=" << time);
       if (event.time <= time) {
         pending_event_list.push_back(event);
         event.repetitions--; 
@@ -135,7 +135,6 @@ void AudioEventScheduler::get_pending_event_list (std::vector<AudioEvent> & pend
   }
 
   event_list = new_event_list;
-  PTRACE(0, "Event list length: " << event_list.size() << ", after removing pending events:  " << new_event_list.size());
 }
 
 unsigned long AudioEventScheduler::get_time_ms()
@@ -149,7 +148,7 @@ unsigned AudioEventScheduler::get_time_to_next_event()
 {
   PWaitAndSignal m(event_list_mutex);
   unsigned long time = get_time_ms();
-  unsigned min_time = 32000;
+  unsigned min_time = 65535;
 
   for (std::vector<AudioEvent>::iterator iter = event_list.begin ();
        iter !=event_list.end ();
@@ -163,7 +162,7 @@ unsigned AudioEventScheduler::get_time_to_next_event()
 
 void AudioEventScheduler::add_event_to_queue(const std::string & name, bool is_file_name, unsigned interval, unsigned repetitions)
 {
-  PTRACE(0, "Adding Event " << name << " " << interval << "/" << repetitions);
+  PTRACE(4, "AEScheduler\tAdding Event " << name << " " << interval << "/" << repetitions << " to queue");
   PWaitAndSignal m(event_list_mutex);
   AudioEvent event;
   event.name = name;
@@ -172,12 +171,12 @@ void AudioEventScheduler::add_event_to_queue(const std::string & name, bool is_f
   event.repetitions = repetitions;
   event.time = get_time_ms();
   event_list.push_back(event);
-  new_event.Signal();
+  run_thread.Signal();
 }
 
 void AudioEventScheduler::remove_event_from_queue(const std::string & name)
 {
-  PTRACE(0, "Removing Event " << name);
+  PTRACE(4, "AEScheduler\tRemoving Event " << name << " from queue");
   PWaitAndSignal m(event_list_mutex);
 
   bool found = false;
@@ -185,12 +184,14 @@ void AudioEventScheduler::remove_event_from_queue(const std::string & name)
 
   for (iter = event_list.begin ();
        iter != event_list.end () ;
-       iter++){
+       iter++) {
+
       if ( (iter->name == name) ) { 
         found = true;
         break;
       }
-}
+  }
+
   if (found) {
     event_list.erase(iter);
   }
@@ -212,7 +213,8 @@ void AudioEventScheduler::load_wav(const std::string & event_name, bool is_file_
   else 
     if (!get_file_name(event_name, file_name, primarySecondary)) // if this event is disabled
       return;
-  PTRACE(0, "Trying filename " << file_name << " for event " << event_name);
+
+  PTRACE(4, "AEScheduler\tTrying to load " << file_name << " for event " << event_name);
   wav = new PWAVFile (file_name.c_str(), PFile::ReadOnly);
 
   if (!wav->IsValid ()) {
@@ -222,13 +224,12 @@ void AudioEventScheduler::load_wav(const std::string & event_name, bool is_file_
     wav = NULL;
  
     gchar* filename = g_build_filename (DATA_DIR, "sounds", PACKAGE_NAME, file_name.c_str(), NULL);
-    PTRACE(0, "Typeing filename " << filename << " for event " << event_name);
+    PTRACE(4, "AEScheduler\tTrying to load " << filename << " for event " << event_name);
 
     wav = new PWAVFile (filename, PFile::ReadOnly);
     g_free (filename);
   }
   
-  PTRACE(0, "Loaded wav " << file_name);
   if (wav->IsValid ()) {
     len = wav->GetDataLength();
     channels = wav->GetChannels ();

@@ -64,7 +64,6 @@ namespace Ekiga
     AudioOutputPrimarySecondary primarySecondary;
   };
   class AudioOutputCore;
-//  class AudioEventScheduler;
 
   class AudioEventScheduler : public PThread
   {
@@ -85,12 +84,11 @@ namespace Ekiga
     bool get_file_name(const std::string & event_name, std::string & file_name, AudioOutputPrimarySecondary & primarySecondary);
     void load_wav(const std::string & event_name, bool is_file_name, char* & buffer, unsigned long & len, unsigned & channels, unsigned & sample_rate, unsigned & bps, AudioOutputPrimarySecondary & primarySecondary);
 
-    bool stop_thread;
+    PSyncPoint run_thread;
+    bool end_thread;
 
-    PMutex quit_mutex;     /* To exit */
-    PSyncPoint thread_sync_point;
-
-    PSyncPoint new_event;
+    PMutex thread_ended;
+    PSyncPoint thread_created;
 
     PMutex event_list_mutex;
     std::vector <AudioEvent> event_list;
