@@ -41,17 +41,17 @@ GMDisplayManager_dx::GMDisplayManager_dx (Ekiga::ServiceCore & _core)
 : GMDisplayManager(_core)
 {
   dxWindow = NULL;
-  this->Resume ();
-  thread_sync_point.Wait ();
-  end_thread = true;
 
-  /* Wait for the Main () method to be terminated */
-  frame_available_sync_point.Signal();
-  PWaitAndSignal m(quit_mutex);
+  end_thread = false;
+  this->Resume ();
+  thread_created.Wait ();
 }
 
 GMDisplayManager_dx::~GMDisplayManager_dx ()
 {
+  end_thread = true;
+  run_thread.Signal();
+  thread_ended.Wait();
 }
 
 bool

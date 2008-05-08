@@ -54,10 +54,18 @@ GMDisplayManager_x::GMDisplayManager_x (Ekiga::ServiceCore & _core)
   lDisplay = XOpenDisplay (NULL);
 
   pip_window_available = true;
+
+  end_thread = false;
+  this->Resume ();
+  thread_created.Wait ();
 }
 
 GMDisplayManager_x::~GMDisplayManager_x ()
 {
+  end_thread = true;
+  run_thread.Signal();
+  thread_ended.Wait();
+
   if (lDisplay) 
     XCloseDisplay (lDisplay);
   if (rDisplay)

@@ -58,66 +58,61 @@ GMDisplayManager::~GMDisplayManager ()
 
 void GMDisplayManager::start ()
 {
-  Ekiga::DisplayManager::start();
-
-  /* State for last frame */
-  last_frame.display = UNSET;
-  last_frame.local_width = 0;
-  last_frame.local_height = 0;
-  last_frame.remote_width = 0;
-  last_frame.remote_height = 0;  
-  last_frame.zoom = 0;
-  last_frame.embedded_x = 0;
-  last_frame.embedded_y = 0;  
-
-  current_frame.local_width = 0;
-  current_frame.local_height = 0;
-  current_frame.remote_width = 0;
-  current_frame.remote_height = 0;
-
-  /* Initialisation */
-  end_thread = false;
-  video_disabled = false;
-  first_frame_received = false;
-  update_required.local = false;
-  update_required.remote = false;
-
-//  this->Resume ();
-  this->Restart ();
-  thread_sync_point.Wait ();
+  init_thread = true;
+  run_thread.Signal();
+  thread_initialised.Wait();
 }
 
-void GMDisplayManager::stop () {
-  end_thread = true;
-  /* Wait for the Main () method to be terminated */
-  frame_available_sync_point.Signal();
-  PWaitAndSignal m(quit_mutex);
+void GMDisplayManager::stop () 
+{
 
-  /* This is common to all output classes */
-  lframeStore.SetSize (0);
-  rframeStore.SetSize (0);
-
-  Ekiga::DisplayManager::stop();
+  uninit_thread = true;
+  run_thread.Signal();
+  thread_uninitialised.Wait();
 }
 
 void
 GMDisplayManager::Main ()
 {
-  bool do_sync;
+  bool do_sync = false;
+  bool initialised_thread = false;
   UpdateRequired sync_required;
 
-  PWaitAndSignal m(quit_mutex);
-  thread_sync_point.Signal ();
+  PWaitAndSignal m(thread_ended);
+  thread_created.Signal ();
 
   while (!end_thread) {
-    frame_available_sync_point.Wait(250);
-    var_mutex.Wait ();
-      do_sync = first_frame_received;
-      if (first_frame_received)
-        sync_required = redraw();
-    var_mutex.Signal ();
-    if (do_sync)
-      sync(sync_required);
+    if (initialised_thread)
+      run_thread.Wait(250);
+    else
+      run_thread.Wait();
+
+    if (init_thread) {
+      init();
+      init_thread = false;
+      initialised_thread = true;
+      thread_initialised.Signal();
+    }
+
+    if (initialised_thread) {
+      var_mutex.Wait ();
+        do_sync = first_frame_received;
+        if (first_frame_received)
+          sync_required = redraw();
+      var_mutex.Signal ();
+      if (do_sync)
+        sync(sync_required);
+    }
+
+    if (uninit_thread) {
+      var_mutex.Wait ();
+      close_frame_display ();
+      var_mutex.Signal ();
+      uninit();
+      uninit_thread = false;
+      initialised_thread = false;
+      thread_uninitialised.Signal();
+    }
   }
 
   var_mutex.Wait ();
@@ -193,9 +188,40 @@ void GMDisplayManager::set_frame_data (unsigned width,
   if ((local_display_info.display == REMOTE_VIDEO) && local)
       return;
 
-  frame_available_sync_point.Signal();
+  run_thread.Signal();
 }
 
+
+void GMDisplayManager::init()
+{
+  /* State for last frame */
+  last_frame.display = UNSET;
+  last_frame.local_width = 0;
+  last_frame.local_height = 0;
+  last_frame.remote_width = 0;
+  last_frame.remote_height = 0;  
+  last_frame.zoom = 0;
+  last_frame.embedded_x = 0;
+  last_frame.embedded_y = 0;  
+
+  current_frame.local_width = 0;
+  current_frame.local_height = 0;
+  current_frame.remote_width = 0;
+  current_frame.remote_height = 0;
+
+  /* Initialisation */
+  video_disabled = false;
+  first_frame_received = false;
+  update_required.local = false;
+  update_required.remote = false;
+
+}
+
+void GMDisplayManager::uninit () {
+  /* This is common to all output classes */
+  lframeStore.SetSize (0);
+  rframeStore.SetSize (0);
+}
 
 bool 
 GMDisplayManager::frame_display_change_needed ()

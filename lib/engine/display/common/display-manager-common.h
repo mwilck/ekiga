@@ -186,16 +186,26 @@ public:
    */
   virtual void sync(UpdateRequired sync_required) = 0;
 
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Initialises the display
+   * PRE          :  /
+   */
+  virtual void init ();
+
+  /* DESCRIPTION  :  /
+   * BEHAVIOR     :  Uninitialises the frame containers
+   * PRE          :  /
+   */
+  virtual void uninit ();
+
   virtual void get_display_info (DisplayInfo & _display_info) {
         PWaitAndSignal m(display_info_mutex);
         _display_info = display_info;
   }
 
-
-  PMutex display_info_mutex; /* To protect the DisplayInfo object */
-
   /* This variable has to be protected by display_info_mutex */
   DisplayInfo display_info;
+  PMutex display_info_mutex; /* To protect the DisplayInfo object */
 
   PBYTEArray lframeStore;
   PBYTEArray rframeStore;
@@ -203,17 +213,22 @@ public:
   FrameInfo last_frame;
   FrameInfo current_frame;
   
-  bool end_thread;
   bool first_frame_received;
   bool video_disabled;
   UpdateRequired update_required;
 
+  PSyncPoint run_thread;                  /* To signal the thread shall execute its tasks */
+  bool end_thread;
+  bool init_thread;
+  bool uninit_thread;
+
+  PSyncPoint thread_created;              /* To signal that the thread has been created */
+  PSyncPoint thread_initialised;          /* To signal that the thread has been initialised */
+  PSyncPoint thread_uninitialised;        /* To signal that the thread has been uninitialised */
+  PMutex     thread_ended;                /* To exit */
+  
   PMutex var_mutex;      /* To protect variables that are read and written
 			    from various threads */
-  PMutex quit_mutex;     /* To exit */
-
-  PSyncPoint frame_available_sync_point;     /* To signal a new frame has to be displayed  */
-  PSyncPoint thread_sync_point;              /* To signal that the thread has been created */
 
   Ekiga::ServiceCore & core;
   Ekiga::Runtime & runtime;
