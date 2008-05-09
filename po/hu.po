@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ekiga.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-21 08:32+0100\n"
-"PO-Revision-Date: 2008-02-28 02:16+0100\n"
+"POT-Creation-Date: 2008-03-30 10:24+0100\n"
+"PO-Revision-Date: 2008-05-09 23:37+0200\n"
 "Last-Translator: Gabor Kelemen <kelemeng@gnome.hu>\n"
 "Language-Team: Hungarian <gnome@fsf.hu>\n"
 "MIME-Version: 1.0\n"
@@ -680,7 +680,10 @@ msgid ""
 "The minimum transmitted video quality to keep when trying to minimize the "
 "used bandwidth: choose 100% on a LAN for the best quality, 1% being the "
 "worst quality"
-msgstr "A minimálisan megtartandó videominőség átvitelkor, ha a sávszélesség minimalizálandó: válasszon 100 százalékot helyi hálózatnál a legjobb minőséghez, 1 százalékot a legrosszabbhoz"
+msgstr ""
+"A minimálisan megtartandó videominőség átvitelkor, ha a sávszélesség "
+"minimalizálandó: válasszon 100 százalékot helyi hálózatnál a legjobb "
+"minőséghez, 1 százalékot a legrosszabbhoz"
 
 #: ../ekiga.schemas.in.in.h:135
 msgid "The network interface"
@@ -898,14 +901,20 @@ msgstr ""
 msgid ""
 "This permits to set the mode for DTMFs sending. The value can be \"RFC2833"
 "\" (0) only"
-msgstr "Ez lehetővé teszi a mód beállítását a DMTF küldéséhez. Az érték csak ”RFC2833” (0) lehet"
+msgstr ""
+"Ez lehetővé teszi a mód beállítását a DMTF küldéséhez. Az érték csak "
+"”RFC2833” (0) lehet"
 
 #: ../ekiga.schemas.in.in.h:170
 msgid ""
 "This permits to set the mode for DTMFs sending. The values can be \"String"
 "\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (default is \"String"
 "\"). Choosing other values than \"String\" disables the Text Chat"
-msgstr "Ezzel beállíthatja a DMTF küldési módot. A lehetséges értékek: „String” (Karaktersorozat - 0), „Tone” (Hang - 1) „RFC2833” (2), „Q.931” (3) (Az alapértelmezett a „String”). A „String”-től különböző érték választása kikapcsolja a szöveges csevegést."
+msgstr ""
+"Ezzel beállíthatja a DMTF küldési módot. A lehetséges értékek: "
+"„String” (Karaktersorozat - 0), „Tone” (Hang - 1) „RFC2833” (2), „Q.931” (3) "
+"(Az alapértelmezett a „String”). A „String”-től különböző érték választása "
+"kikapcsolja a szöveges csevegést."
 
 #: ../ekiga.schemas.in.in.h:171
 msgid "UDP port range"
@@ -1023,6 +1032,7 @@ msgstr ""
 "Ekiga által használt portokat blokkoló helyi tűzfala."
 
 #: ../src/clients/stun.cpp:153
+#, c-format
 msgid ""
 "Ekiga detected Symmetric NAT. The most appropriate method, if your router "
 "does not natively support SIP or H.323, is to forward the required ports to "
@@ -1147,6 +1157,7 @@ msgstr ""
 "hívni, akkor használja az „ekiga -c cím” parancsot."
 
 #: ../src/components/bonobo.cpp:170
+#, c-format
 msgid ""
 "It appears that you do not have ekiga.server installed in a valid location. "
 "Factory mode disabled.\n"
@@ -1155,12 +1166,14 @@ msgstr ""
 "mód letiltva.\n"
 
 #: ../src/components/bonobo.cpp:174
+#, c-format
 msgid "Error registering Ekiga with the activation service; factory mode disabled.\n"
 msgstr ""
 "Hiba az Ekiga regisztrációja közben az aktiválási szolgáltatásnál; a factory "
 "mód letiltva.\n"
 
 #: ../src/components/bonobo.cpp:214
+#, c-format
 msgid "Failed to retrieve Ekiga server from activation server\n"
 msgstr "Az Ekiga kiszolgáló lekérése sikertelen az aktivációs kiszolgálótól\n"
 
@@ -1230,9 +1243,9 @@ msgstr ""
 #: ../src/devices/audio.cpp:481 ../src/devices/audio.cpp:482
 #: ../src/devices/videoinput.cpp:310 ../src/devices/videoinput.cpp:585
 #: ../src/endpoints/ekiga.cpp:351 ../src/endpoints/ekiga.cpp:353
-#: ../src/endpoints/ekiga.cpp:355 ../src/endpoints/pcss.cpp:194
-#: ../src/gui/druid.cpp:1780 ../src/gui/druid.cpp:1792
-#: ../src/gui/druid.cpp:1850
+#: ../src/endpoints/ekiga.cpp:355 ../src/endpoints/pcss.cpp:198
+#: ../src/gui/druid.cpp:1784 ../src/gui/druid.cpp:1796
+#: ../src/gui/druid.cpp:1854
 msgid "No device found"
 msgstr "Eszköz nem található"
 
@@ -1286,6 +1299,7 @@ msgstr ""
 "jogosultságait és győződjön meg, hogy a megfelelő vezérlő be van töltve."
 
 #: ../src/devices/videoinput.cpp:372 ../src/devices/videoinput.cpp:686
+#, c-format
 msgid "Your video driver doesn't support the requested video format."
 msgstr "A videomeghajtója nem támogatja a kért videoformátumot."
 
@@ -1346,18 +1360,22 @@ msgid "Error while opening %s."
 msgstr "Hiba a(z) %s megnyitása közben."
 
 #: ../src/devices/videoinput.cpp:690
+#, c-format
 msgid "Could not open the chosen channel with the chosen video format."
 msgstr "Nem lehet megnyitni a kiválasztott csatornát a kiválasztott videoformátummal."
 
 #: ../src/devices/videoinput.cpp:694
+#, c-format
 msgid "Your driver doesn't support any of the color formats tried by Ekiga"
 msgstr "A meghajtója nem támogatja az Ekiga által próbált egyik színformátumot sem"
 
 #: ../src/devices/videoinput.cpp:698
+#, c-format
 msgid "Error with the frame rate."
 msgstr "Hibás képkockasebesség."
 
 #: ../src/devices/videoinput.cpp:702
+#, c-format
 msgid "Error with the frame size."
 msgstr "Hibás képkockaméret."
 
@@ -1474,7 +1492,7 @@ msgstr "Csatlakozva ehhez: %s, %s használatával"
 msgid "Connected with %s"
 msgstr "Csatlakozva ehhez: %s"
 
-#: ../src/endpoints/manager.cpp:1124 ../src/gui/main.cpp:4156
+#: ../src/endpoints/manager.cpp:1124 ../src/gui/main.cpp:4157
 msgid "Standby"
 msgstr "Készenlét"
 
@@ -1608,21 +1626,21 @@ msgstr "%s kodek bezárva, amely meg volt nyitva fogadásra"
 msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 msgstr "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 
-#: ../src/endpoints/pcss.cpp:218
+#: ../src/endpoints/pcss.cpp:222
 #, c-format
 msgid "Opened %s for recording with plugin %s"
 msgstr "%s megnyitva felvételhez a(z) %s bővítménnyel"
 
-#: ../src/endpoints/pcss.cpp:219
+#: ../src/endpoints/pcss.cpp:223
 #, c-format
 msgid "Opened %s for playing with plugin %s"
 msgstr "%s megnyitva lejátszáshoz a(z) %s bővítménnyel"
 
-#: ../src/endpoints/pcss.cpp:237
+#: ../src/endpoints/pcss.cpp:241
 msgid "Could not open audio channel for audio transmission"
 msgstr "Nem lehet megnyitni a hangcsatornát a hangátvitelhez"
 
-#: ../src/endpoints/pcss.cpp:237
+#: ../src/endpoints/pcss.cpp:241
 msgid ""
 "An error occured while trying to record from the soundcard for the audio "
 "transmission. Please check that your soundcard is not busy and that your "
@@ -1634,11 +1652,11 @@ msgstr ""
 "a full-duplex módot.\n"
 "A hangátvitel ki lett kapcsolva."
 
-#: ../src/endpoints/pcss.cpp:239
+#: ../src/endpoints/pcss.cpp:243
 msgid "Could not open audio channel for audio reception"
 msgstr "Nem lehet hangcsatornát nyitni a hang fogadásához"
 
-#: ../src/endpoints/pcss.cpp:239
+#: ../src/endpoints/pcss.cpp:243
 msgid ""
 "An error occured while trying to play audio to the soundcard for the audio "
 "reception. Please check that your soundcard is not busy and that your driver "
@@ -1867,7 +1885,7 @@ msgstr ""
 "<b>Gyorstárcsázás</b>: %s\n"
 
 #: ../src/gui/addressbook.cpp:821 ../src/gui/addressbook.cpp:823
-#: ../src/gui/druid.cpp:1912 ../src/gui/preferences.cpp:930
+#: ../src/gui/druid.cpp:1916 ../src/gui/preferences.cpp:930
 msgid "None"
 msgstr "Nincs"
 
@@ -2149,16 +2167,44 @@ msgstr "Grafika:"
 msgid "See AUTHORS file for full credits"
 msgstr "Lásd az AUTHORS fájlt a teljes listáért"
 
+#: ../src/gui/callbacks.cpp:168
+msgid ""
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version. "
+msgstr "Az Ekiga szabad szoftver, terjesztheti és/vagy módosíthatja a Free Software Foundation által kiadott GNU General Public License második (vagy bármely későbbi) változatában foglaltak alapján."
+
+#: ../src/gui/callbacks.cpp:172
+msgid ""
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for "
+"more details. You should have received a copy of the GNU General Public "
+"License along with this program; if not, write to the Free Software "
+"Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA."
+msgstr "Az Ekiga programot abban a reményben terjesztjük, hogy hasznos lesz, de nem vállalunk SEMMIFÉLE GARANCIÁT, még olyan értelemben sem, hogy a program alkalmas-e a KÖZREADÁSRA vagy EGY BIZONYOS FELADAT ELVÉGZÉSÉRE. További részletekért tanulmányozza a GNU GPL licencet. Az Ekiga programhoz a GNU General Public License egy példánya is jár, ha nem kapta meg, írjon a Free Software Foundation Inc.-nek. Levélcímük: 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA."
+
+#: ../src/gui/callbacks.cpp:179
+msgid ""
+"Ekiga is licensed under the GPL license and as a special exception, you have "
+"permission to link or otherwise combine this program with the programs OPAL, "
+"OpenH323 and PWLIB, and distribute the combination, without applying the "
+"requirements of the GNU GPL to the OPAL, OpenH323 and PWLIB programs, as "
+"long as you do follow the requirements of the GNU GPL for all the rest of "
+"the software thus combined."
+msgstr "Az Ekiga a GPL licenc alatt érhető el, és speciális kivételként engedélyezett a program összekapcsolása vagy más módon történő kombinációja az OPAL, OpenH323 és PWLIB programokkal, valamint ezen kombináció terjesztése a GNU GPL előírásainak alkalmazása nélkül az OPAL, OpenH323 és PWLIB programokra, amíg betartja a GNU GPL előírásait az így kombinált szoftver egyéb részeire."
+
 #. Translators: Please write translator credits here, and
 #. * separate names with \n
-#: ../src/gui/callbacks.cpp:190
+#: ../src/gui/callbacks.cpp:191
 msgid "translator-credits"
 msgstr ""
 "Dvornik László <dvornik@gnome.hu>\n"
 "Kelemen Gábor <kelemeng@gnome.hu>\n"
 "Tímár András <timar@gnome.hu>"
 
-#: ../src/gui/callbacks.cpp:195
+#: ../src/gui/callbacks.cpp:196
 msgid ""
 "Ekiga is full-featured SIP and H.323 compatible VoIP, IP-Telephony and "
 "Videoconferencing application that allows you to make audio and video calls "
@@ -2520,27 +2566,27 @@ msgstr ""
 msgid "Configuration complete - page %d/%d"
 msgstr "Beállítás kész - %d/%d oldal"
 
-#: ../src/gui/druid.cpp:1630
+#: ../src/gui/druid.cpp:1634
 msgid "56k Modem"
 msgstr "56k modem"
 
-#: ../src/gui/druid.cpp:1631
+#: ../src/gui/druid.cpp:1635
 msgid "ISDN"
 msgstr "ISDN"
 
-#: ../src/gui/druid.cpp:1632
+#: ../src/gui/druid.cpp:1636
 msgid "xDSL/Cable"
 msgstr "xDSL/Kábel"
 
-#: ../src/gui/druid.cpp:1633
+#: ../src/gui/druid.cpp:1637
 msgid "T1/LAN"
 msgstr "T1/LAN"
 
-#: ../src/gui/druid.cpp:1634
+#: ../src/gui/druid.cpp:1638
 msgid "Keep current settings"
 msgstr "Jelenlegi beállítások megtartása"
 
-#: ../src/gui/druid.cpp:1912
+#: ../src/gui/druid.cpp:1916
 #, c-format
 msgid ""
 "You have now finished the Ekiga configuration. All the settings can be "
@@ -2573,7 +2619,7 @@ msgstr ""
 "Videobemenet: %s\n"
 "SIP URL: %s\n"
 
-#: ../src/gui/druid.cpp:1967
+#: ../src/gui/druid.cpp:1971
 msgid "First Time Configuration Assistant"
 msgstr "Az első alkalommal lefutó beállításvarázsló"
 
@@ -3099,7 +3145,7 @@ msgstr ""
 "Hibás csomagok: %.1f %%em\n"
 "Jitter puffer: %d em"
 
-#: ../src/gui/main.cpp:4574
+#: ../src/gui/main.cpp:4575
 #, c-format
 msgid ""
 "Ekiga got an invalid value for the GConf key %s.\n"
@@ -3121,23 +3167,23 @@ msgstr ""
 "levelezőlisták archívumait (http://mail.gnome.org) ezzel a problémával "
 "kapcsolatban."
 
-#: ../src/gui/main.cpp:4577
+#: ../src/gui/main.cpp:4578
 msgid "Gconf key error"
 msgstr "Gconf-kulcs hiba"
 
-#: ../src/gui/main.cpp:4608 ../src/gui/main.cpp:4627
+#: ../src/gui/main.cpp:4609 ../src/gui/main.cpp:4628
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "Hibakövető üzenetek nyomtatása a konzolra (1-es és 6-os szint között)"
 
-#: ../src/gui/main.cpp:4611 ../src/gui/main.cpp:4632
+#: ../src/gui/main.cpp:4612 ../src/gui/main.cpp:4633
 msgid "Makes Ekiga call the given URL"
 msgstr "Az Ekiga felhívja a megadott URL címet"
 
-#: ../src/gui/main.cpp:4665
+#: ../src/gui/main.cpp:4666
 msgid "No usable audio plugin detected"
 msgstr "Nem találtam használható hangbővítményt"
 
-#: ../src/gui/main.cpp:4665
+#: ../src/gui/main.cpp:4666
 msgid ""
 "Ekiga didn't find any usable audio plugin. Make sure that your installation "
 "is correct."
@@ -3461,7 +3507,11 @@ msgid ""
 "This permits to set the mode for DTMFs sending. The values can be \"String"
 "\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (default is \"String"
 "\"). Choosing other values than \"String\" disables the Text Chat."
-msgstr "Ezzel beállíthatja a DMTF küldési módot. A lehetséges értékek: „String” (Karakterlánc - 0), „Tone” (Hang - 1) „RFC2833” (2), „Q.931” ( 3) (Az alapértelmezett a „String”). A „String”-től különböző érték választása kikapcsolja a szöveges csevegést."
+msgstr ""
+"Ezzel beállíthatja a DMTF küldési módot. A lehetséges értékek: "
+"„String” (Karakterlánc - 0), „Tone” (Hang - 1) „RFC2833” (2), „Q.931” ( 3) "
+"(Az alapértelmezett a „String”). A „String”-től különböző érték választása "
+"kikapcsolja a szöveges csevegést."
 
 #: ../src/gui/preferences.cpp:1037
 msgid "_Outbound Proxy:"
@@ -3471,7 +3521,9 @@ msgstr "_Kimenő proxy:"
 msgid ""
 "This permits to set the mode for DTMFs sending. The value can be \"RFC2833"
 "\" (0) only."
-msgstr "Ez lehetővé teszi a DMTF küldési módjának beállítását. Az érték csak ”RFC2833” (0) lehet."
+msgstr ""
+"Ez lehetővé teszi a DMTF küldési módjának beállítását. Az érték csak "
+"”RFC2833” (0) lehet."
 
 #: ../src/gui/preferences.cpp:1070
 msgid "Audio Plugin"
