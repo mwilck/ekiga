@@ -94,7 +94,7 @@ namespace Ekiga
 
       virtual bool has_device     (const std::string & source, const std::string & device_name, unsigned capabilities, VidInputDevice & device) = 0;
       
-      sigc::signal<void, VidInputDevice, VidInputErrorCodes> device_error;
+      sigc::signal<void, VidInputDevice, VideoInputErrorCodes> device_error;
       sigc::signal<void, VidInputDevice, VidInputConfig> device_opened;
       sigc::signal<void, VidInputDevice> device_closed;
 

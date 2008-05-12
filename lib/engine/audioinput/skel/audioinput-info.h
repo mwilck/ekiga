@@ -51,9 +51,9 @@ namespace Ekiga
   };
 
   enum AudioInputErrorCodes {
-    AUDIO_ERR_NONE = 0,
-    AUDIO_ERR_DEVICE, 
-    AUDIO_ERR_READ
+    AI_ERROR_NONE = 0,
+    AI_ERROR_DEVICE, 
+    AI_ERROR_READ
   };
 				      
 };

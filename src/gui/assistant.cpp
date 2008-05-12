@@ -1287,19 +1287,19 @@ ekiga_assistant_new (Ekiga::ServiceCore *core)
   Ekiga::AudioInputCore *audioinput_core = dynamic_cast<Ekiga::AudioInputCore *> (core->get ("audioinput-core"));
   Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (core->get ("audiooutput-core"));
 
-  conn = vidinput_core->vidinputdevice_added.connect (sigc::bind (sigc::ptr_fun (on_vidinputdevice_added_cb), assistant));
+  conn = vidinput_core->device_added.connect (sigc::bind (sigc::ptr_fun (on_vidinputdevice_added_cb), assistant));
   assistant->priv->connections.push_back (conn);
-  conn = vidinput_core->vidinputdevice_removed.connect (sigc::bind (sigc::ptr_fun (on_vidinputdevice_removed_cb), assistant));
-  assistant->priv->connections.push_back (conn);
-
-  conn = audioinput_core->audioinputdevice_added.connect (sigc::bind (sigc::ptr_fun (on_audioinputdevice_added_cb), assistant));
-  assistant->priv->connections.push_back (conn);
-  conn = audioinput_core->audioinputdevice_removed.connect (sigc::bind (sigc::ptr_fun (on_audioinputdevice_removed_cb), assistant));
+  conn = vidinput_core->device_removed.connect (sigc::bind (sigc::ptr_fun (on_vidinputdevice_removed_cb), assistant));
   assistant->priv->connections.push_back (conn);
 
-  conn = audiooutput_core->audiooutputdevice_added.connect (sigc::bind (sigc::ptr_fun (on_audiooutputdevice_added_cb), assistant));
+  conn = audioinput_core->device_added.connect (sigc::bind (sigc::ptr_fun (on_audioinputdevice_added_cb), assistant));
   assistant->priv->connections.push_back (conn);
-  conn = audiooutput_core->audiooutputdevice_removed.connect (sigc::bind (sigc::ptr_fun (on_audiooutputdevice_removed_cb), assistant));
+  conn = audioinput_core->device_removed.connect (sigc::bind (sigc::ptr_fun (on_audioinputdevice_removed_cb), assistant));
+  assistant->priv->connections.push_back (conn);
+
+  conn = audiooutput_core->device_added.connect (sigc::bind (sigc::ptr_fun (on_audiooutputdevice_added_cb), assistant));
+  assistant->priv->connections.push_back (conn);
+  conn = audiooutput_core->device_removed.connect (sigc::bind (sigc::ptr_fun (on_audiooutputdevice_removed_cb), assistant));
   assistant->priv->connections.push_back (conn);
 
   return GTK_WIDGET (assistant);

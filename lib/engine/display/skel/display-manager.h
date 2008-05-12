@@ -82,10 +82,11 @@ namespace Ekiga
 
       virtual void set_display_info (const DisplayInfo &) { };
 
+      sigc::signal<void, HwAccelStatus> device_opened;
+      sigc::signal<void> device_closed;
       sigc::signal<void, DisplayMode> display_mode_changed;
       sigc::signal<void, FSToggle> fullscreen_mode_changed;
       sigc::signal<void, unsigned, unsigned> display_size_changed;
-      sigc::signal<void, HwAccelStatus> hw_accel_status_changed;
       sigc::signal<void> logo_update_required;
 
   protected:  

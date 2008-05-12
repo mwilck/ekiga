@@ -111,22 +111,22 @@ bool GMVideoInputManager_ptlib::open (unsigned width, unsigned height, unsigned 
   pvideo_format = (PVideoDevice::VideoFormat)current_state.format;
   input_device = PVideoInputDevice::CreateOpenedDevice (current_state.device.source, current_state.device.device, FALSE);
 
-  Ekiga::VidInputErrorCodes error_code = Ekiga::ERR_NONE;
+  Ekiga::VideoInputErrorCodes error_code = Ekiga::VI_ERROR_NONE;
   if (!input_device)
-    error_code = Ekiga::ERR_DEVICE;
+    error_code = Ekiga::VI_ERROR_DEVICE;
   else if (!input_device->SetVideoFormat (pvideo_format))
-    error_code = Ekiga::ERR_FORMAT;
+    error_code = Ekiga::VI_ERROR_FORMAT;
   else if (!input_device->SetChannel (current_state.channel))
-    error_code = Ekiga::ERR_CHANNEL;
+    error_code = Ekiga::VI_ERROR_CHANNEL;
   else if (!input_device->SetColourFormatConverter ("YUV420P"))
-    error_code = Ekiga::ERR_COLOUR;
+    error_code = Ekiga::VI_ERROR_COLOUR;
   else if (!input_device->SetFrameRate (current_state.fps))
-    error_code = Ekiga::ERR_FPS;
+    error_code = Ekiga::VI_ERROR_FPS;
   else if (!input_device->SetFrameSizeConverter (current_state.width, current_state.height, PVideoFrameInfo::eScale))
-    error_code = Ekiga::ERR_SCALE;
+    error_code = Ekiga::VI_ERROR_SCALE;
   else input_device->Start ();
 
-  if (error_code != Ekiga::ERR_NONE) {
+  if (error_code != Ekiga::VI_ERROR_NONE) {
     PTRACE(1, "GMVideoInputManager_ptlib\tEncountered error " << error_code << " while opening device ");
     runtime.run_in_main (sigc::bind (device_error.make_slot (), current_state.device, error_code));
     return false;

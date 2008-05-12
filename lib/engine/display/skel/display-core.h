@@ -130,10 +130,11 @@ namespace Ekiga
       
       /** See display-manager.h for the API
        */
+      sigc::signal<void, VideoOutputManager &, HwAccelStatus> device_opened;
+      sigc::signal<void, VideoOutputManager &> device_closed;
       sigc::signal<void, VideoOutputManager &, DisplayMode> display_mode_changed;
       sigc::signal<void, VideoOutputManager &, FSToggle> fullscreen_mode_changed;
       sigc::signal<void, VideoOutputManager &, unsigned, unsigned> display_size_changed;
-      sigc::signal<void, VideoOutputManager &, HwAccelStatus> hw_accel_status_changed;
       sigc::signal<void, VideoOutputManager &> logo_update_required;
 
       /*** Statistics ***/
@@ -141,10 +142,12 @@ namespace Ekiga
         _display_stats = display_stats;
       };
   private:
+      void on_device_opened (HwAccelStatus hw_accel_status, VideoOutputManager *manager);
+      void on_device_closed (VideoOutputManager *manager);
+
       void on_display_mode_changed (DisplayMode display, VideoOutputManager *manager);
       void on_fullscreen_mode_changed (FSToggle toggle, VideoOutputManager *manager);
       void on_display_size_changed ( unsigned width, unsigned height, VideoOutputManager *manager);
-      void on_hw_accel_status_changed (HwAccelStatus hw_accel_status, VideoOutputManager *manager);
       void on_logo_update_required (VideoOutputManager *manager);
 
       std::set<VideoOutputManager *> managers;

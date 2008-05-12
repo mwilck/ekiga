@@ -51,9 +51,9 @@ namespace Ekiga
   };
 
   enum AudioOutputErrorCodes {
-    _AUDIO_ERR_NONE = 0,
-    _AUDIO_ERR_DEVICE,
-    _AUDIO_ERR_WRITE
+    AO_ERROR_NONE = 0,
+    AO_ERROR_DEVICE,
+    AO_ERROR_WRITE
   };
 
   enum AudioOutputPrimarySecondary {

@@ -110,11 +110,11 @@ bool GMAudioInputManager_ptlib::open (unsigned channels, unsigned samplerate, un
                                                      samplerate,
                                                      bits_per_sample);
  
-  Ekiga::AudioInputErrorCodes error_code = Ekiga::AUDIO_ERR_NONE;
+  Ekiga::AudioInputErrorCodes error_code = Ekiga::AI_ERROR_NONE;
   if (!input_device)
-    error_code = Ekiga::AUDIO_ERR_DEVICE;
+    error_code = Ekiga::AI_ERROR_DEVICE;
 
-  if (error_code != Ekiga::AUDIO_ERR_NONE) {
+  if (error_code != Ekiga::AI_ERROR_NONE) {
     PTRACE(1, "GMAudioInputManager_ptlib\tEncountered error " << error_code << " while opening device ");
     runtime.run_in_main (sigc::bind (device_error.make_slot (), current_state.device, error_code));
     return false;
@@ -170,7 +170,7 @@ bool GMAudioInputManager_ptlib::get_frame_data (char *data,
     }
     else {
       PTRACE(1, "GMAudioInputManager_ptlib\tEncountered error while trying to read data");
-      runtime.run_in_main (sigc::bind (device_error.make_slot (), current_state.device, Ekiga::AUDIO_ERR_READ));
+      runtime.run_in_main (sigc::bind (device_error.make_slot (), current_state.device, Ekiga::AI_ERROR_READ));
     }
   }
   return ret;

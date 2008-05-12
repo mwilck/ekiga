@@ -166,19 +166,19 @@ namespace Ekiga
       
       /** See audiooutput-manager.h for the API
        */
-      sigc::signal<void, AudioOutputManager &, AudioOutputPrimarySecondary, AudioOutputDevice&, AudioOutputErrorCodes> audiooutputdevice_error;
-      sigc::signal<void, AudioOutputDevice> audiooutputdevice_added;
-      sigc::signal<void, AudioOutputDevice> audiooutputdevice_removed;
-      sigc::signal<void, AudioOutputManager &, AudioOutputPrimarySecondary, AudioOutputDevice&, AudioOutputConfig&> audiooutputdevice_opened;
-      sigc::signal<void, AudioOutputManager &, AudioOutputPrimarySecondary, AudioOutputDevice&> audiooutputdevice_closed;
+      sigc::signal<void, AudioOutputManager &, AudioOutputPrimarySecondary, AudioOutputDevice&, AudioOutputConfig&> device_opened;
+      sigc::signal<void, AudioOutputManager &, AudioOutputPrimarySecondary, AudioOutputDevice&> device_closed;
+      sigc::signal<void, AudioOutputManager &, AudioOutputPrimarySecondary, AudioOutputDevice&, AudioOutputErrorCodes> device_error;
+      sigc::signal<void, AudioOutputDevice> device_added;
+      sigc::signal<void, AudioOutputDevice> device_removed;
 
   private:
-      void on_audiooutputdevice_error (AudioOutputPrimarySecondary primarySecondary, AudioOutputDevice audiooutput_device, AudioOutputErrorCodes error_code, AudioOutputManager *manager);
-      void on_audiooutputdevice_opened (AudioOutputPrimarySecondary primarySecondary, 
-                                        AudioOutputDevice audiooutput_device,  
-                                        AudioOutputConfig vidinput_config, 
-                                        AudioOutputManager *manager);
-      void on_audiooutputdevice_closed (AudioOutputPrimarySecondary primarySecondary, AudioOutputDevice audiooutput_device, AudioOutputManager *manager);
+      void on_device_opened (AudioOutputPrimarySecondary primarySecondary, 
+                             AudioOutputDevice device,
+                             AudioOutputConfig config, 
+                             AudioOutputManager *manager);
+      void on_device_closed (AudioOutputPrimarySecondary primarySecondary, AudioOutputDevice device, AudioOutputManager *manager);
+      void on_device_error  (AudioOutputPrimarySecondary primarySecondary, AudioOutputDevice device, AudioOutputErrorCodes error_code, AudioOutputManager *manager);
 
       void internal_set_prim_audiooutput_device(const AudioOutputDevice & audiooutput_device);
       void internal_set_device (AudioOutputPrimarySecondary primarySecondary, const AudioOutputDevice & audiooutput_device);

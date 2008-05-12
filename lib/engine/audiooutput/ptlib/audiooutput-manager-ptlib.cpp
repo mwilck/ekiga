@@ -111,11 +111,11 @@ bool GMAudioOutputManager_ptlib::open (Ekiga::AudioOutputPrimarySecondary primar
                                                      samplerate,
                                                      bits_per_sample);
  
-  Ekiga::AudioOutputErrorCodes error_code = Ekiga::_AUDIO_ERR_NONE;
+  Ekiga::AudioOutputErrorCodes error_code = Ekiga::AO_ERROR_NONE;
   if (!output_device[primarySecondary])
-    error_code = Ekiga::_AUDIO_ERR_DEVICE;
+    error_code = Ekiga::AO_ERROR_DEVICE;
 
-  if (error_code != Ekiga::_AUDIO_ERR_NONE) {
+  if (error_code != Ekiga::AO_ERROR_NONE) {
     PTRACE(1, "GMAudioOutputManager_ptlib\tEncountered error " << error_code << " while opening device[" << primarySecondary << "]");
     runtime.run_in_main (sigc::bind (device_error.make_slot (), primarySecondary, current_state[primarySecondary].device, error_code));
     return false;
@@ -172,7 +172,7 @@ bool GMAudioOutputManager_ptlib::set_frame_data (Ekiga::AudioOutputPrimarySecond
     }
     else {
       PTRACE(1, "GMAudioOutputManager_ptlib\tEncountered error while trying to write data");
-      runtime.run_in_main (sigc::bind (device_error.make_slot (), primarySecondary, current_state[primarySecondary].device, Ekiga::_AUDIO_ERR_WRITE));
+      runtime.run_in_main (sigc::bind (device_error.make_slot (), primarySecondary, current_state[primarySecondary].device, Ekiga::AO_ERROR_WRITE));
 
     }
   }

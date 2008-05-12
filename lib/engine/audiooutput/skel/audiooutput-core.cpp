@@ -89,9 +89,9 @@ void AudioOutputCore::add_manager (AudioOutputManager &manager)
   managers.insert (&manager);
   manager_added.emit (manager);
 
-  manager.device_error.connect (sigc::bind (sigc::mem_fun (this, &AudioOutputCore::on_audiooutputdevice_error), &manager));
-  manager.device_opened.connect (sigc::bind (sigc::mem_fun (this, &AudioOutputCore::on_audiooutputdevice_opened), &manager));
-  manager.device_closed.connect (sigc::bind (sigc::mem_fun (this, &AudioOutputCore::on_audiooutputdevice_closed), &manager));
+  manager.device_error.connect (sigc::bind (sigc::mem_fun (this, &AudioOutputCore::on_device_error), &manager));
+  manager.device_opened.connect (sigc::bind (sigc::mem_fun (this, &AudioOutputCore::on_device_opened), &manager));
+  manager.device_closed.connect (sigc::bind (sigc::mem_fun (this, &AudioOutputCore::on_device_closed), &manager));
 }
 
 void AudioOutputCore::visit_managers (sigc::slot<bool, AudioOutputManager &> visitor)
@@ -346,24 +346,23 @@ void AudioOutputCore::internal_set_device (AudioOutputPrimarySecondary primarySe
 
 }
 
-void AudioOutputCore::on_audiooutputdevice_error (AudioOutputPrimarySecondary primarySecondary, AudioOutputDevice audiooutput_device, AudioOutputErrorCodes error_code, AudioOutputManager *manager)
+void AudioOutputCore::on_device_opened (AudioOutputPrimarySecondary primarySecondary,
+                                        AudioOutputDevice device,
+                                        AudioOutputConfig config, 
+                                        AudioOutputManager *manager)
 {
-  audiooutputdevice_error.emit (*manager, primarySecondary, audiooutput_device, error_code);
+  device_opened.emit (*manager, primarySecondary, device, config);
 }
 
-void AudioOutputCore::on_audiooutputdevice_opened (AudioOutputPrimarySecondary primarySecondary,
-                                                AudioOutputDevice audiooutput_device,
-                                                AudioOutputConfig audiooutput_config, 
-                                                AudioOutputManager *manager)
+void AudioOutputCore::on_device_closed (AudioOutputPrimarySecondary primarySecondary, AudioOutputDevice device, AudioOutputManager *manager)
 {
-  audiooutputdevice_opened.emit (*manager, primarySecondary, audiooutput_device, audiooutput_config);
+  device_closed.emit (*manager, primarySecondary, device);
 }
 
-void AudioOutputCore::on_audiooutputdevice_closed (AudioOutputPrimarySecondary primarySecondary, AudioOutputDevice audiooutput_device, AudioOutputManager *manager)
+void AudioOutputCore::on_device_error (AudioOutputPrimarySecondary primarySecondary, AudioOutputDevice device, AudioOutputErrorCodes error_code, AudioOutputManager *manager)
 {
-  audiooutputdevice_closed.emit (*manager, primarySecondary, audiooutput_device);
+  device_error.emit (*manager, primarySecondary, device, error_code);
 }
-
 
 bool AudioOutputCore::internal_open (AudioOutputPrimarySecondary primarySecondary, unsigned channels, unsigned samplerate, unsigned bits_per_sample)
 {
@@ -469,7 +468,7 @@ void AudioOutputCore::add_device (const std::string & sink, const std::string & 
          internal_set_prim_audiooutput_device(desired_primary_device);
        }
 
-       runtime.run_in_main (sigc::bind (audiooutputdevice_added.make_slot (), audiooutput_device));
+       runtime.run_in_main (sigc::bind (device_added.make_slot (), audiooutput_device));
      }
   }
 }
@@ -495,7 +494,7 @@ void AudioOutputCore::remove_device (const std::string & sink, const std::string
          internal_set_prim_audiooutput_device(new_audiooutput_device);
        }
 
-       runtime.run_in_main (sigc::bind (audiooutputdevice_removed.make_slot (), audiooutput_device));
+       runtime.run_in_main (sigc::bind (device_removed.make_slot (), audiooutput_device));
      }
   }
 }

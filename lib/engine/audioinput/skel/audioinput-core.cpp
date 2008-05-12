@@ -165,9 +165,9 @@ void AudioInputCore::add_manager (AudioInputManager &manager)
   managers.insert (&manager);
   manager_added.emit (manager);
 
-  manager.device_error.connect   (sigc::bind (sigc::mem_fun (this, &AudioInputCore::on_audioinputdevice_error), &manager));
-  manager.device_opened.connect  (sigc::bind (sigc::mem_fun (this, &AudioInputCore::on_audioinputdevice_opened), &manager));
-  manager.device_closed.connect  (sigc::bind (sigc::mem_fun (this, &AudioInputCore::on_audioinputdevice_closed), &manager));
+  manager.device_error.connect   (sigc::bind (sigc::mem_fun (this, &AudioInputCore::on_device_error), &manager));
+  manager.device_opened.connect  (sigc::bind (sigc::mem_fun (this, &AudioInputCore::on_device_opened), &manager));
+  manager.device_closed.connect  (sigc::bind (sigc::mem_fun (this, &AudioInputCore::on_device_closed), &manager));
 }
 
 
@@ -350,23 +350,21 @@ void AudioInputCore::set_volume (unsigned volume)
     new_stream_volume = volume;
 }
 
-
-void AudioInputCore::on_audioinputdevice_error (AudioInputDevice audioinput_device, AudioInputErrorCodes error_code, AudioInputManager *manager)
+void AudioInputCore::on_device_opened (AudioInputDevice device,
+                                       AudioInputConfig audioinput_config, 
+                                       AudioInputManager *manager)
 {
-  audioinputdevice_error.emit (*manager, audioinput_device, error_code);
+  device_opened.emit (*manager, device, audioinput_config);
 }
 
-
-void AudioInputCore::on_audioinputdevice_opened (AudioInputDevice audioinput_device,
-                                             AudioInputConfig audioinput_config, 
-                                             AudioInputManager *manager)
+void AudioInputCore::on_device_closed (AudioInputDevice device, AudioInputManager *manager)
 {
-  audioinputdevice_opened.emit (*manager, audioinput_device, audioinput_config);
+  device_closed.emit (*manager, device);
 }
 
-void AudioInputCore::on_audioinputdevice_closed (AudioInputDevice audioinput_device, AudioInputManager *manager)
+void AudioInputCore::on_device_error (AudioInputDevice device, AudioInputErrorCodes error_code, AudioInputManager *manager)
 {
-  audioinputdevice_closed.emit (*manager, audioinput_device);
+ device_error.emit (*manager, device, error_code);
 }
 
 void AudioInputCore::internal_set_audioinput_device(const AudioInputDevice & audioinput_device)
@@ -490,7 +488,7 @@ void AudioInputCore::add_device (const std::string & source, const std::string &
          internal_set_audioinput_device(desired_device);
        }
 
-       runtime.run_in_main (sigc::bind (audioinputdevice_added.make_slot (), audioinput_device));
+       runtime.run_in_main (sigc::bind (device_added.make_slot (), audioinput_device));
      }
   }
 }
@@ -516,7 +514,7 @@ void AudioInputCore::remove_device (const std::string & source, const std::strin
             internal_set_audioinput_device( new_audioinput_device);
        }
 
-       runtime.run_in_main (sigc::bind (audioinputdevice_removed.make_slot (), audioinput_device));
+       runtime.run_in_main (sigc::bind (device_removed.make_slot (), audioinput_device));
      }
   }
 }

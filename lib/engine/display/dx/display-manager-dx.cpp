@@ -190,13 +190,13 @@ GMVideoOutputManager_dx::setup_frame_display ()
 //   if (!status)
 //     close_frame_display ();
 
-  runtime.run_in_main (sigc::bind (hw_accel_status_changed.make_slot (), hw_accel_status));
+  runtime.run_in_main (sigc::bind (device_opened.make_slot (), hw_accel_status));
 }
 
 void
 GMVideoOutputManager_dx::close_frame_display ()
 {
-  runtime.run_in_main (sigc::bind (hw_accel_status_changed.make_slot (), NO_VIDEO));
+  runtime.run_in_main (device_closed.make_slot ());
 
   if (dxWindow) {
 

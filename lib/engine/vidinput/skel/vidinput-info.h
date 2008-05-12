@@ -88,14 +88,14 @@ namespace Ekiga
     bool modifyable;
   };
 
-  enum VidInputErrorCodes {
-    ERR_NONE = 0,
-    ERR_DEVICE,
-    ERR_FORMAT,
-    ERR_CHANNEL,
-    ERR_COLOUR,
-    ERR_FPS,
-    ERR_SCALE
+  enum VideoInputErrorCodes {
+    VI_ERROR_NONE = 0,
+    VI_ERROR_DEVICE,
+    VI_ERROR_FORMAT,
+    VI_ERROR_CHANNEL,
+    VI_ERROR_COLOUR,
+    VI_ERROR_FPS,
+    VI_ERROR_SCALE
   };
 				      
 };

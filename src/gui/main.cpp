@@ -959,6 +959,16 @@ static void on_stream_resumed_cb (Ekiga::CallManager & /*manager*/,
  */
 
 void 
+on_videooutput_device_opened_cb (Ekiga::VideoOutputManager & /* manager */, HwAccelStatus /* hw_accel_status */, gpointer /*self*/)
+{
+}
+
+void 
+on_videooutput_device_closed_cb (Ekiga::VideoOutputManager & /* manager */, gpointer /*self*/)
+{
+}
+
+void 
 on_display_mode_changed_cb (Ekiga::VideoOutputManager & /* manager */, DisplayMode display,  gpointer self)
 {
   GmMainWindow *mw = gm_mw_get_mw (GTK_WIDGET (self));
@@ -990,16 +1000,11 @@ on_display_size_changed_cb (Ekiga::VideoOutputManager & /* manager */, unsigned 
   gtk_window_resize (GTK_WINDOW (self), width + 20, mw->y ? mw->y : (int) height * 2.5);
 }
 
-void 
-on_hw_accel_status_changed_cb (Ekiga::VideoOutputManager & /* manager */, HwAccelStatus /* hw_accel_status */, gpointer /*self*/)
-{
-}
-
 void
-on_vidinputdevice_opened_cb (Ekiga::VideoInputManager & /* manager */,
-                             Ekiga::VidInputDevice & /* vidinput_device */,
-                             Ekiga::VidInputConfig &  vidinput_config,
-                             gpointer self)
+on_videoinput_device_opened_cb (Ekiga::VideoInputManager & /* manager */,
+                                Ekiga::VidInputDevice & /* device */,
+                                Ekiga::VidInputConfig &  config,
+                                gpointer self)
 {
   gm_main_window_update_sensitivity (GTK_WIDGET (self), TRUE, FALSE, TRUE);
 
@@ -1008,11 +1013,11 @@ on_vidinputdevice_opened_cb (Ekiga::VideoInputManager & /* manager */,
   mw = gm_mw_get_mw (GTK_WIDGET (self));
   g_return_if_fail (mw != NULL);
 
-  gtk_widget_set_sensitive (GTK_WIDGET (mw->video_settings_frame),  vidinput_config.modifyable ? TRUE : FALSE);
-  GTK_ADJUSTMENT (mw->adj_whiteness)->value = vidinput_config.whiteness;
-  GTK_ADJUSTMENT (mw->adj_brightness)->value = vidinput_config.brightness;
-  GTK_ADJUSTMENT (mw->adj_colour)->value = vidinput_config.colour;
-  GTK_ADJUSTMENT (mw->adj_contrast)->value = vidinput_config.contrast;
+  gtk_widget_set_sensitive (GTK_WIDGET (mw->video_settings_frame),  config.modifyable ? TRUE : FALSE);
+  GTK_ADJUSTMENT (mw->adj_whiteness)->value = config.whiteness;
+  GTK_ADJUSTMENT (mw->adj_brightness)->value = config.brightness;
+  GTK_ADJUSTMENT (mw->adj_colour)->value = config.colour;
+  GTK_ADJUSTMENT (mw->adj_contrast)->value = config.contrast;
 
   gtk_widget_queue_draw (GTK_WIDGET (mw->video_settings_frame));
 }
@@ -1020,7 +1025,7 @@ on_vidinputdevice_opened_cb (Ekiga::VideoInputManager & /* manager */,
 
 
 void 
-on_vidinputdevice_closed_cb (Ekiga::VideoInputManager & /* manager */, Ekiga::VidInputDevice & /*vidinput_device*/, gpointer self)
+on_videoinput_device_closed_cb (Ekiga::VideoInputManager & /* manager */, Ekiga::VidInputDevice & /*device*/, gpointer self)
 {
   GmMainWindow *mw = NULL;
   g_return_if_fail (self != NULL);
@@ -1034,10 +1039,10 @@ on_vidinputdevice_closed_cb (Ekiga::VideoInputManager & /* manager */, Ekiga::Vi
 }
 
 void 
-on_vidinputdevice_error_cb (Ekiga::VideoInputManager & /* manager */, 
-                            Ekiga::VidInputDevice & vidinput_device, 
-                            Ekiga::VidInputErrorCodes error_code, 
-                            gpointer self)
+on_videoinput_device_error_cb (Ekiga::VideoInputManager & /* manager */, 
+                               Ekiga::VidInputDevice & device, 
+                               Ekiga::VideoInputErrorCodes error_code, 
+                               gpointer self)
 {
   gchar *dialog_title = NULL;
   gchar *dialog_msg = NULL;
@@ -1045,36 +1050,36 @@ on_vidinputdevice_error_cb (Ekiga::VideoInputManager & /* manager */,
 
   dialog_title =
   g_strdup_printf (_("Error while accessing video device %s"),
-                   (const char *) vidinput_device.device.c_str());
+                   (const char *) device.device.c_str());
 
   tmp_msg = g_strdup (_("A moving logo will be transmitted during calls. Notice that you can always transmit a given image or the moving logo by choosing \"Picture\" as video plugin and \"Moving logo\" or \"Static picture\" as device."));
   switch (error_code) {
 
-    case Ekiga::ERR_DEVICE:
+    case Ekiga::VI_ERROR_DEVICE:
       dialog_msg = g_strconcat (tmp_msg, "\n\n", _("There was an error while opening the device. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your permissions and make sure that the appropriate driver is loaded."), NULL);
       break;
 
-    case Ekiga::ERR_FORMAT:
+    case Ekiga::VI_ERROR_FORMAT:
       dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Your video driver doesn't support the requested video format."), NULL);
       break;
 
-    case Ekiga::ERR_CHANNEL:
+    case Ekiga::VI_ERROR_CHANNEL:
       dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Could not open the chosen channel."), NULL);
       break;
 
-    case Ekiga::ERR_COLOUR:
+    case Ekiga::VI_ERROR_COLOUR:
       dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Your driver doesn't seem to support any of the color formats supported by Ekiga.\n Please check your kernel driver documentation in order to determine which Palette is supported."), NULL);
       break;
 
-    case Ekiga::ERR_FPS:
+    case Ekiga::VI_ERROR_FPS:
       dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Error while setting the frame rate."), NULL);
       break;
 
-    case Ekiga::ERR_SCALE:
+    case Ekiga::VI_ERROR_SCALE:
       dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Error while setting the frame size."), NULL);
       break;
 
-    case Ekiga::ERR_NONE:
+    case Ekiga::VI_ERROR_NONE:
     default:
       dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Unknown error."), NULL);
       break;
@@ -1090,18 +1095,18 @@ on_vidinputdevice_error_cb (Ekiga::VideoInputManager & /* manager */,
 }
 
 void
-on_audioinputdevice_opened_cb (Ekiga::AudioInputManager & /* manager */,
-                             Ekiga::AudioInputDevice & /* audioinput_device */,
-                             Ekiga::AudioInputConfig &  audioinput_config,
-                             gpointer self)
+on_audioinput_device_opened_cb (Ekiga::AudioInputManager & /* manager */,
+                                Ekiga::AudioInputDevice & /* device */,
+                                Ekiga::AudioInputConfig &  config,
+                                gpointer self)
 {
   GmMainWindow *mw = NULL;
   g_return_if_fail (self != NULL);
   mw = gm_mw_get_mw (GTK_WIDGET (self));
   g_return_if_fail (mw != NULL);
 
-  gtk_widget_set_sensitive (GTK_WIDGET (mw->audio_input_volume_frame), audioinput_config.modifyable ? TRUE : FALSE);
-  GTK_ADJUSTMENT (mw->adj_input_volume)->value = audioinput_config.volume;
+  gtk_widget_set_sensitive (GTK_WIDGET (mw->audio_input_volume_frame), config.modifyable ? TRUE : FALSE);
+  GTK_ADJUSTMENT (mw->adj_input_volume)->value = config.volume;
   
   gtk_widget_queue_draw (GTK_WIDGET (mw->audio_input_volume_frame));
 }
@@ -1109,9 +1114,9 @@ on_audioinputdevice_opened_cb (Ekiga::AudioInputManager & /* manager */,
 
 
 void 
-on_audioinputdevice_closed_cb (Ekiga::AudioInputManager & /* manager */, 
-                               Ekiga::AudioInputDevice & /*audioinput_device*/, 
-                               gpointer self)
+on_audioinput_device_closed_cb (Ekiga::AudioInputManager & /* manager */, 
+                                Ekiga::AudioInputDevice & /*device*/, 
+                                gpointer self)
 {
   GmMainWindow *mw = NULL;
   g_return_if_fail (self != NULL);
@@ -1122,10 +1127,10 @@ on_audioinputdevice_closed_cb (Ekiga::AudioInputManager & /* manager */,
 }
 
 void 
-on_audioinputdevice_error_cb (Ekiga::AudioInputManager & /* manager */, 
-                            Ekiga::AudioInputDevice & audioinput_device, 
-                            Ekiga::AudioInputErrorCodes error_code, 
-                            gpointer self)
+on_audioinput_device_error_cb (Ekiga::AudioInputManager & /* manager */, 
+                               Ekiga::AudioInputDevice & device, 
+                               Ekiga::AudioInputErrorCodes error_code, 
+                               gpointer self)
 {
   gchar *dialog_title = NULL;
   gchar *dialog_msg = NULL;
@@ -1133,20 +1138,20 @@ on_audioinputdevice_error_cb (Ekiga::AudioInputManager & /* manager */,
 
   dialog_title =
   g_strdup_printf (_("Error while opening audio input device %s"),
-                   (const char *) audioinput_device.device.c_str());
+                   (const char *) device.device.c_str());
 
   tmp_msg = g_strdup (_("Only silence will be transmitted."));
   switch (error_code) {
 
-    case Ekiga::AUDIO_ERR_DEVICE:
+    case Ekiga::AI_ERROR_DEVICE:
       dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Unable to open the selected audio device for recording. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your audio setup, the permissions and that the device is not busy."), NULL);
       break;
 
-    case Ekiga::AUDIO_ERR_READ:
+    case Ekiga::AI_ERROR_READ:
       dialog_msg = g_strconcat (tmp_msg, "\n\n", _("The selected audio device was successfully opened but it is impossible to read data from this device. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your audio setup."), NULL);
       break;
 
-    case Ekiga::ERR_NONE:
+    case Ekiga::AI_ERROR_NONE:
     default:
       dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Unknown error."), NULL);
       break;
@@ -1163,11 +1168,11 @@ on_audioinputdevice_error_cb (Ekiga::AudioInputManager & /* manager */,
 }
 
 void
-on_audiooutputdevice_opened_cb (Ekiga::AudioOutputManager & /*manager*/,
-                             Ekiga::AudioOutputPrimarySecondary primarySecondary,
-                             Ekiga::AudioOutputDevice & /*audiooutput_device*/,
-                             Ekiga::AudioOutputConfig & audiooutput_config,
-                             gpointer self)
+on_audiooutput_device_opened_cb (Ekiga::AudioOutputManager & /*manager*/,
+                                 Ekiga::AudioOutputPrimarySecondary primarySecondary,
+                                 Ekiga::AudioOutputDevice & /*device*/,
+                                 Ekiga::AudioOutputConfig & config,
+                                 gpointer self)
 {
   if (primarySecondary == Ekiga::secondary)
     return;
@@ -1177,8 +1182,8 @@ on_audiooutputdevice_opened_cb (Ekiga::AudioOutputManager & /*manager*/,
   mw = gm_mw_get_mw (GTK_WIDGET (self));
   g_return_if_fail (mw != NULL);
 
-  gtk_widget_set_sensitive (GTK_WIDGET (mw->audio_output_volume_frame), audiooutput_config.modifyable ? TRUE : FALSE);
-  GTK_ADJUSTMENT (mw->adj_output_volume)->value = audiooutput_config.volume;
+  gtk_widget_set_sensitive (GTK_WIDGET (mw->audio_output_volume_frame), config.modifyable ? TRUE : FALSE);
+  GTK_ADJUSTMENT (mw->adj_output_volume)->value = config.volume;
 
   gtk_widget_queue_draw (GTK_WIDGET (mw->audio_output_volume_frame));
 }
@@ -1186,10 +1191,10 @@ on_audiooutputdevice_opened_cb (Ekiga::AudioOutputManager & /*manager*/,
 
 
 void 
-on_audiooutputdevice_closed_cb (Ekiga::AudioOutputManager & /*manager*/, 
-                                Ekiga::AudioOutputPrimarySecondary primarySecondary, 
-                                Ekiga::AudioOutputDevice & /*audiooutput_device*/, 
-                                gpointer self)
+on_audiooutput_device_closed_cb (Ekiga::AudioOutputManager & /*manager*/, 
+                                 Ekiga::AudioOutputPrimarySecondary primarySecondary, 
+                                 Ekiga::AudioOutputDevice & /*device*/, 
+                                 gpointer self)
 {
   if (primarySecondary == Ekiga::secondary)
     return;
@@ -1203,11 +1208,11 @@ on_audiooutputdevice_closed_cb (Ekiga::AudioOutputManager & /*manager*/,
 }
 
 void 
-on_audiooutputdevice_error_cb (Ekiga::AudioOutputManager & /*manager */, 
-                               Ekiga::AudioOutputPrimarySecondary primarySecondary,
-                               Ekiga::AudioOutputDevice & audiooutput_device, 
-                               Ekiga::AudioOutputErrorCodes error_code, 
-                               gpointer self)
+on_audiooutput_device_error_cb (Ekiga::AudioOutputManager & /*manager */, 
+                                Ekiga::AudioOutputPrimarySecondary primarySecondary,
+                                Ekiga::AudioOutputDevice & device, 
+                                Ekiga::AudioOutputErrorCodes error_code, 
+                                gpointer self)
 {
   if (primarySecondary == Ekiga::secondary)
     return;
@@ -1218,20 +1223,20 @@ on_audiooutputdevice_error_cb (Ekiga::AudioOutputManager & /*manager */,
 
   dialog_title =
   g_strdup_printf (_("Error while opening audio output device %s"),
-                   (const char *) audiooutput_device.device.c_str());
+                   (const char *) device.device.c_str());
 
   tmp_msg = g_strdup (_("No incoming sound will be played."));
   switch (error_code) {
 
-    case Ekiga::_AUDIO_ERR_DEVICE:
+    case Ekiga::AO_ERROR_DEVICE:
       dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Unable to open the selected audio device for playing. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your audio setup, the permissions and that the device is not busy."), NULL);
       break;
 
-    case Ekiga::_AUDIO_ERR_WRITE:
+    case Ekiga::AO_ERROR_WRITE:
       dialog_msg = g_strconcat (tmp_msg, "\n\n", _("The selected audio device was successfully opened but it is impossible to write data from this device. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your audio setup."), NULL);
       break;
 
-    case Ekiga::_AUDIO_ERR_NONE:
+    case Ekiga::AO_ERROR_NONE:
     default:
       dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Unknown error."), NULL);
       break;
@@ -3873,6 +3878,12 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   /* New Display Engine signals */
   Ekiga::DisplayCore *display_core = dynamic_cast<Ekiga::DisplayCore *> (mw->core.get ("display-core"));
 
+  conn = display_core->device_opened.connect (sigc::bind (sigc::ptr_fun (on_videooutput_device_opened_cb), (gpointer) window));
+  mw->connections.push_back (conn);
+
+  conn = display_core->device_closed.connect (sigc::bind (sigc::ptr_fun (on_videooutput_device_closed_cb), (gpointer) window));
+  mw->connections.push_back (conn);
+
   conn = display_core->logo_update_required.connect (sigc::bind (sigc::ptr_fun (on_logo_update_required_cb), (gpointer) window));
   mw->connections.push_back (conn);
 
@@ -3885,43 +3896,40 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   conn = display_core->fullscreen_mode_changed.connect (sigc::bind (sigc::ptr_fun (on_fullscreen_mode_changed_cb), (gpointer) window));
   mw->connections.push_back (conn);
 
-  conn = display_core->hw_accel_status_changed.connect (sigc::bind (sigc::ptr_fun (on_hw_accel_status_changed_cb), (gpointer) window));
-  mw->connections.push_back (conn);
-
   /* New VidInput Engine signals */
   Ekiga::VidInputCore *vidinput_core = dynamic_cast<Ekiga::VidInputCore *> (mw->core.get ("vidinput-core"));
 
-  conn = vidinput_core->vidinputdevice_opened.connect (sigc::bind (sigc::ptr_fun (on_vidinputdevice_opened_cb), (gpointer) window));
+  conn = vidinput_core->device_opened.connect (sigc::bind (sigc::ptr_fun (on_videoinput_device_opened_cb), (gpointer) window));
   mw->connections.push_back (conn);
 
-  conn = vidinput_core->vidinputdevice_closed.connect (sigc::bind (sigc::ptr_fun (on_vidinputdevice_closed_cb), (gpointer) window));
+  conn = vidinput_core->device_closed.connect (sigc::bind (sigc::ptr_fun (on_videoinput_device_closed_cb), (gpointer) window));
   mw->connections.push_back (conn);
 
-  conn = vidinput_core->vidinputdevice_error.connect (sigc::bind (sigc::ptr_fun (on_vidinputdevice_error_cb), (gpointer) window));
+  conn = vidinput_core->device_error.connect (sigc::bind (sigc::ptr_fun (on_videoinput_device_error_cb), (gpointer) window));
   mw->connections.push_back (conn);
 
   /* New AudioInput Engine signals */
   Ekiga::AudioInputCore *audioinput_core = dynamic_cast<Ekiga::AudioInputCore *> (mw->core.get ("audioinput-core"));
 
-  conn = audioinput_core->audioinputdevice_opened.connect (sigc::bind (sigc::ptr_fun (on_audioinputdevice_opened_cb), (gpointer) window));
+  conn = audioinput_core->device_opened.connect (sigc::bind (sigc::ptr_fun (on_audioinput_device_opened_cb), (gpointer) window));
   mw->connections.push_back (conn);
 
-  conn = audioinput_core->audioinputdevice_closed.connect (sigc::bind (sigc::ptr_fun (on_audioinputdevice_closed_cb), (gpointer) window));
+  conn = audioinput_core->device_closed.connect (sigc::bind (sigc::ptr_fun (on_audioinput_device_closed_cb), (gpointer) window));
   mw->connections.push_back (conn);
 
-  conn = audioinput_core->audioinputdevice_error.connect (sigc::bind (sigc::ptr_fun (on_audioinputdevice_error_cb), (gpointer) window));
+  conn = audioinput_core->device_error.connect (sigc::bind (sigc::ptr_fun (on_audioinput_device_error_cb), (gpointer) window));
   mw->connections.push_back (conn);
 
   /* New AudioOutput Engine signals */
   Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (mw->core.get ("audiooutput-core"));
 
-  conn = audiooutput_core->audiooutputdevice_opened.connect (sigc::bind (sigc::ptr_fun (on_audiooutputdevice_opened_cb), (gpointer) window));
+  conn = audiooutput_core->device_opened.connect (sigc::bind (sigc::ptr_fun (on_audiooutput_device_opened_cb), (gpointer) window));
   mw->connections.push_back (conn);
 
-  conn = audiooutput_core->audiooutputdevice_closed.connect (sigc::bind (sigc::ptr_fun (on_audiooutputdevice_closed_cb), (gpointer) window));
+  conn = audiooutput_core->device_closed.connect (sigc::bind (sigc::ptr_fun (on_audiooutput_device_closed_cb), (gpointer) window));
   mw->connections.push_back (conn);
 
-  conn = audiooutput_core->audiooutputdevice_error.connect (sigc::bind (sigc::ptr_fun (on_audiooutputdevice_error_cb), (gpointer) window));
+  conn = audiooutput_core->device_error.connect (sigc::bind (sigc::ptr_fun (on_audiooutput_device_error_cb), (gpointer) window));
   mw->connections.push_back (conn);
     
   /* New Call Engine signals */

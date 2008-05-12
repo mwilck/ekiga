@@ -84,10 +84,11 @@ void DisplayCore::add_manager (VideoOutputManager &manager)
   managers.insert (&manager);
   manager_added.emit (manager);
 
+  manager.device_opened.connect (sigc::bind (sigc::mem_fun (this, &DisplayCore::on_device_opened), &manager));
+  manager.device_closed.connect (sigc::bind (sigc::mem_fun (this, &DisplayCore::on_device_closed), &manager));
   manager.display_mode_changed.connect (sigc::bind (sigc::mem_fun (this, &DisplayCore::on_display_mode_changed), &manager));
   manager.fullscreen_mode_changed.connect (sigc::bind (sigc::mem_fun (this, &DisplayCore::on_fullscreen_mode_changed), &manager));
   manager.display_size_changed.connect (sigc::bind (sigc::mem_fun (this, &DisplayCore::on_display_size_changed), &manager));
-  manager.hw_accel_status_changed.connect (sigc::bind (sigc::mem_fun (this, &DisplayCore::on_hw_accel_status_changed), &manager));
   manager.logo_update_required.connect (sigc::bind (sigc::mem_fun (this, &DisplayCore::on_logo_update_required), &manager));
 }
 
@@ -199,6 +200,16 @@ void DisplayCore::set_display_info (const DisplayInfo & _display_info)
 }
 
 
+void DisplayCore::on_device_opened (HwAccelStatus hw_accel_status, VideoOutputManager *manager)
+{
+  device_opened.emit (*manager, hw_accel_status);
+}
+
+void DisplayCore::on_device_closed ( VideoOutputManager *manager)
+{
+  device_closed.emit (*manager);
+}
+
 void DisplayCore::on_display_mode_changed (DisplayMode display, VideoOutputManager *manager)
 {
   display_mode_changed.emit (*manager, display);
@@ -212,11 +223,6 @@ void DisplayCore::on_fullscreen_mode_changed ( FSToggle toggle, VideoOutputManag
 void DisplayCore::on_display_size_changed ( unsigned width, unsigned height, VideoOutputManager *manager)
 {
   display_size_changed.emit (*manager, width, height);
-}
-
-void DisplayCore::on_hw_accel_status_changed (HwAccelStatus hw_accel_status, VideoOutputManager *manager)
-{
-  hw_accel_status_changed.emit (*manager, hw_accel_status);
 }
 
 void DisplayCore::on_logo_update_required (VideoOutputManager *manager)

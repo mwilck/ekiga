@@ -173,9 +173,9 @@ void VidInputCore::add_manager (VideoInputManager &manager)
   managers.insert (&manager);
   manager_added.emit (manager);
 
-  manager.device_error.connect (sigc::bind (sigc::mem_fun (this, &VidInputCore::on_vidinputdevice_error), &manager));
-  manager.device_opened.connect (sigc::bind (sigc::mem_fun (this, &VidInputCore::on_vidinputdevice_opened), &manager));
-  manager.device_closed.connect (sigc::bind (sigc::mem_fun (this, &VidInputCore::on_vidinputdevice_closed), &manager));
+  manager.device_opened.connect (sigc::bind (sigc::mem_fun (this, &VidInputCore::on_device_opened), &manager));
+  manager.device_closed.connect (sigc::bind (sigc::mem_fun (this, &VidInputCore::on_device_closed), &manager));
+  manager.device_error.connect (sigc::bind (sigc::mem_fun (this, &VidInputCore::on_device_error), &manager));
 }
 
 
@@ -453,21 +453,21 @@ void VidInputCore::set_contrast   (unsigned contrast)
     new_stream_settings.contrast = contrast ;
 }
 
-void VidInputCore::on_vidinputdevice_error (VidInputDevice vidinput_device, VidInputErrorCodes error_code, VideoInputManager *manager)
+void VidInputCore::on_device_opened (VidInputDevice device,
+                                     VidInputConfig vidinput_config, 
+                                     VideoInputManager *manager)
 {
-  vidinputdevice_error.emit (*manager, vidinput_device, error_code);
+  device_opened.emit (*manager, device, vidinput_config);
 }
 
-void VidInputCore::on_vidinputdevice_opened (VidInputDevice vidinput_device,
-                                             VidInputConfig vidinput_config, 
-                                             VideoInputManager *manager)
+void VidInputCore::on_device_closed (VidInputDevice device, VideoInputManager *manager)
 {
-  vidinputdevice_opened.emit (*manager, vidinput_device, vidinput_config);
+  device_closed.emit (*manager, device);
 }
 
-void VidInputCore::on_vidinputdevice_closed (VidInputDevice vidinput_device, VideoInputManager *manager)
+void VidInputCore::on_device_error (VidInputDevice device, VideoInputErrorCodes error_code, VideoInputManager *manager)
 {
-  vidinputdevice_closed.emit (*manager, vidinput_device);
+  device_error.emit (*manager, device, error_code);
 }
 
 void VidInputCore::internal_set_vidinput_device(const VidInputDevice & vidinput_device, int channel, VideoFormat format)
@@ -563,7 +563,7 @@ void VidInputCore::add_device (const std::string & source, const std::string & d
          internal_set_vidinput_device(vidinput_device, current_channel, current_format);
        }
 
-       runtime.run_in_main (sigc::bind (vidinputdevice_added.make_slot (), vidinput_device));
+       runtime.run_in_main (sigc::bind (device_added.make_slot (), vidinput_device));
      }
   }
 }
@@ -589,7 +589,7 @@ void VidInputCore::remove_device (const std::string & source, const std::string 
             internal_set_vidinput_device(new_vidinput_device, current_channel, current_format);
        }
 
-       runtime.run_in_main (sigc::bind (vidinputdevice_removed.make_slot (), vidinput_device));
+       runtime.run_in_main (sigc::bind (device_removed.make_slot (), vidinput_device));
      }
   }
 }

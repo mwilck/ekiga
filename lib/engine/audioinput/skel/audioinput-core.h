@@ -180,18 +180,18 @@ namespace Ekiga
       
       /** See audioinput-manager.h for the API
        */
-      sigc::signal<void, AudioInputManager &, AudioInputDevice &, AudioInputErrorCodes> audioinputdevice_error;
-      sigc::signal<void, AudioInputDevice> audioinputdevice_added;
-      sigc::signal<void, AudioInputDevice> audioinputdevice_removed;
-      sigc::signal<void, AudioInputManager &, AudioInputDevice &, AudioInputConfig&> audioinputdevice_opened;
-      sigc::signal<void, AudioInputManager &, AudioInputDevice &> audioinputdevice_closed;
+      sigc::signal<void, AudioInputManager &, AudioInputDevice &, AudioInputConfig&> device_opened;
+      sigc::signal<void, AudioInputManager &, AudioInputDevice &> device_closed;
+      sigc::signal<void, AudioInputManager &, AudioInputDevice &, AudioInputErrorCodes> device_error;
+      sigc::signal<void, AudioInputDevice> device_added;
+      sigc::signal<void, AudioInputDevice> device_removed;
 
   private:
-      void on_audioinputdevice_error (AudioInputDevice audioinput_device, AudioInputErrorCodes error_code, AudioInputManager *manager);
-      void on_audioinputdevice_opened (AudioInputDevice audioinput_device,  
-                                       AudioInputConfig vidinput_config, 
-                                       AudioInputManager *manager);
-      void on_audioinputdevice_closed (AudioInputDevice audioinput_device, AudioInputManager *manager);
+      void on_device_opened (AudioInputDevice device,  
+                             AudioInputConfig vidinput_config, 
+                             AudioInputManager *manager);
+      void on_device_closed (AudioInputDevice device, AudioInputManager *manager);
+      void on_device_error  (AudioInputDevice device, AudioInputErrorCodes error_code, AudioInputManager *manager);
 
       void internal_set_audioinput_device(const AudioInputDevice & audioinput_device);
       void internal_open (unsigned channels, unsigned samplerate, unsigned bits_per_sample);

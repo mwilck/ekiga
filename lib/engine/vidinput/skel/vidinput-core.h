@@ -183,18 +183,18 @@ namespace Ekiga
       
       /** See vidinput-manager.h for the API
        */
-      sigc::signal<void, VideoInputManager &, VidInputDevice &, VidInputErrorCodes> vidinputdevice_error;
-      sigc::signal<void, VidInputDevice> vidinputdevice_added;
-      sigc::signal<void, VidInputDevice> vidinputdevice_removed;
-      sigc::signal<void, VideoInputManager &, VidInputDevice &, VidInputConfig&> vidinputdevice_opened;
-      sigc::signal<void, VideoInputManager &, VidInputDevice &> vidinputdevice_closed;
+      sigc::signal<void, VideoInputManager &, VidInputDevice &, VidInputConfig&> device_opened;
+      sigc::signal<void, VideoInputManager &, VidInputDevice &> device_closed;
+      sigc::signal<void, VideoInputManager &, VidInputDevice &, VideoInputErrorCodes> device_error;
+      sigc::signal<void, VidInputDevice> device_added;
+      sigc::signal<void, VidInputDevice> device_removed;
 
   private:
-      void on_vidinputdevice_error (VidInputDevice vidinput_device, VidInputErrorCodes error_code, VideoInputManager *manager);
-      void on_vidinputdevice_opened (VidInputDevice vidinput_device,  
-                                     VidInputConfig vidinput_config, 
-                                     VideoInputManager *manager);
-      void on_vidinputdevice_closed (VidInputDevice vidinput_device, VideoInputManager *manager);
+      void on_device_opened (VidInputDevice device,  
+                             VidInputConfig vidinput_config, 
+                             VideoInputManager *manager);
+      void on_device_closed (VidInputDevice device, VideoInputManager *manager);
+      void on_device_error  (VidInputDevice device, VideoInputErrorCodes error_code, VideoInputManager *manager);
 
       void internal_set_vidinput_device(const VidInputDevice & vidinput_device, int channel, VideoFormat format);
       void internal_open (unsigned width, unsigned height, unsigned fps);

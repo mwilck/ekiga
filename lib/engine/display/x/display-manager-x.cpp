@@ -417,13 +417,13 @@ GMVideoOutputManager_x::setup_frame_display ()
       rxWindow->ToggleOntop ();
   }
 
-  runtime.run_in_main (sigc::bind (hw_accel_status_changed.make_slot (), hw_accel_status));
+  runtime.run_in_main (sigc::bind (device_opened.make_slot (), hw_accel_status));
 }
 
 void
 GMVideoOutputManager_x::close_frame_display ()
 {
-  runtime.run_in_main (sigc::bind (hw_accel_status_changed.make_slot (), NO_VIDEO));
+  runtime.run_in_main (device_closed.make_slot ());
 
   if (rxWindow) 
     rxWindow->RegisterSlave (NULL);
