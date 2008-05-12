@@ -30,7 +30,7 @@
  *   begin                : written in 2008 by Matthias Schneider
  *   copyright            : (c) 2008 by Matthias Schneider
  *   description          : Declaration of the interface of a vidinput core.
- *                          A vidinput core manages VidInputManagers.
+ *                          A vidinput core manages VideoInputManagers.
  *
  */
 
@@ -50,17 +50,17 @@
  * @{
  */
 
-  class GMVidInputManager_mlogo
-   : public Ekiga::VidInputManager
+  class GMVideoInputManager_mlogo
+   : public Ekiga::VideoInputManager
     {
   public:
 
       /* The constructor
        */
-      GMVidInputManager_mlogo (Ekiga::ServiceCore & core);
+      GMVideoInputManager_mlogo (Ekiga::ServiceCore & core);
       /* The destructor
        */
-      ~GMVidInputManager_mlogo () {}
+      ~GMVideoInputManager_mlogo () {}
 
 
       /*                 
@@ -71,9 +71,9 @@
        * @param uri  an uri
        * @return     true if a Ekiga::Call could be created
        */
-      virtual void get_vidinput_devices(std::vector <Ekiga::VidInputDevice> & vidinput_devices);
+      virtual void get_devices(std::vector <Ekiga::VidInputDevice> & devices);
       
-      virtual bool set_vidinput_device (const Ekiga::VidInputDevice & vidinput_device, int channel, Ekiga::VideoFormat format);
+      virtual bool set_device (const Ekiga::VidInputDevice & device, int channel, Ekiga::VideoFormat format);
 
       virtual bool open (unsigned width, unsigned height, unsigned fps);
 
@@ -83,7 +83,7 @@
                            unsigned & height,
                            char *data);
 
-      virtual bool has_device (const std::string & source, const std::string & device, unsigned capabilities, Ekiga::VidInputDevice & vidinput_device);
+      virtual bool has_device (const std::string & source, const std::string & device_name, unsigned capabilities, Ekiga::VidInputDevice & device);
 
   protected:  
       void CopyYUVArea (const char* srcFrame,
@@ -102,7 +102,7 @@
       Ekiga::ServiceCore & core;
       Ekiga::Runtime & runtime;
 
-      PAdaptiveDelay m_Pacing;
+      PAdaptiveDelay adaptive_delay;
   };
 /**
  * @}

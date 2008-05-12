@@ -30,7 +30,7 @@
  *   begin                : written in 2008 by Matthias Schneider
  *   copyright            : (c) 2008 by Matthias Schneider
  *   description          : Declaration of the interface of a vidinput core.
- *                          A vidinput core manages VidInputManagers.
+ *                          A vidinput core manages VideoInputManagers.
  *
  */
 
@@ -41,29 +41,29 @@
 #define DEVICE_SOURCE "Moving Logo"
 #define DEVICE_DEVICE "Moving Logo"
 
-GMVidInputManager_mlogo::GMVidInputManager_mlogo (Ekiga::ServiceCore & _core)
+GMVideoInputManager_mlogo::GMVideoInputManager_mlogo (Ekiga::ServiceCore & _core)
 :    core (_core), runtime (*(dynamic_cast<Ekiga::Runtime *> (_core.get ("runtime"))))
 {
   current_state.opened  = false;
 }
 
-void GMVidInputManager_mlogo::get_vidinput_devices(std::vector <Ekiga::VidInputDevice> & vidinput_devices)
+void GMVideoInputManager_mlogo::get_devices(std::vector <Ekiga::VidInputDevice> & devices)
 {
-  Ekiga::VidInputDevice vidinput_device;
-  vidinput_device.type   = DEVICE_TYPE;
-  vidinput_device.source = DEVICE_SOURCE;
-  vidinput_device.device = DEVICE_DEVICE;
-  vidinput_devices.push_back(vidinput_device);
+  Ekiga::VidInputDevice device;
+  device.type   = DEVICE_TYPE;
+  device.source = DEVICE_SOURCE;
+  device.device = DEVICE_DEVICE;
+  devices.push_back(device);
 }
 
-bool GMVidInputManager_mlogo::set_vidinput_device (const Ekiga::VidInputDevice & vidinput_device, int channel, Ekiga::VideoFormat format)
+bool GMVideoInputManager_mlogo::set_device (const Ekiga::VidInputDevice & device, int channel, Ekiga::VideoFormat format)
 {
-  if ( ( vidinput_device.type   == DEVICE_TYPE ) &&
-       ( vidinput_device.source == DEVICE_SOURCE) &&
-       ( vidinput_device.device == DEVICE_DEVICE) ) {
+  if ( ( device.type   == DEVICE_TYPE ) &&
+       ( device.source == DEVICE_SOURCE) &&
+       ( device.device == DEVICE_DEVICE) ) {
 
-    PTRACE(4, "GMVidInputManager_mlogo\tSetting Device Moving Logo");
-    current_state.vidinput_device = vidinput_device;
+    PTRACE(4, "GMVideoInputManager_mlogo\tSetting Device Moving Logo");
+    current_state.device  = device;
     current_state.channel = channel;
     current_state.format  = format;
     return true;
@@ -71,11 +71,11 @@ bool GMVidInputManager_mlogo::set_vidinput_device (const Ekiga::VidInputDevice &
   return false;
 }
 
-bool GMVidInputManager_mlogo::open (unsigned width, unsigned height, unsigned fps)
+bool GMVideoInputManager_mlogo::open (unsigned width, unsigned height, unsigned fps)
 {
   Ekiga::VidInputConfig vidinput_config;
 
-  PTRACE(4, "GMVidInputManager_mlogo\tOpening Moving Logo with " << width << "x" << height << "/" << fps);
+  PTRACE(4, "GMVideoInputManager_mlogo\tOpening Moving Logo with " << width << "x" << height << "/" << fps);
   current_state.width  = width;
   current_state.height = height;
   current_state.fps    = fps;
@@ -88,8 +88,8 @@ bool GMVidInputManager_mlogo::open (unsigned width, unsigned height, unsigned fp
   memset (background_frame + (current_state.width * current_state.height), 0x7f, (current_state.width*current_state.height) >> 2);
   memset (background_frame + (current_state.width * current_state.height) + ((current_state.width*current_state.height) >> 2), 0x7f, (current_state.width*current_state.height) >> 2);
 
-  m_Pacing.Restart();
-  m_Pacing.SetMaximumSlip((unsigned )( 500.0 / fps));
+  adaptive_delay.Restart();
+  adaptive_delay.SetMaximumSlip((unsigned )( 500.0 / fps));
 
   current_state.opened  = true;
   vidinput_config.whiteness = 127;
@@ -97,29 +97,29 @@ bool GMVidInputManager_mlogo::open (unsigned width, unsigned height, unsigned fp
   vidinput_config.colour = 127;
   vidinput_config.contrast = 127;
   vidinput_config.modifyable = false;
-  runtime.run_in_main (sigc::bind (vidinputdevice_opened.make_slot (), current_state.vidinput_device, vidinput_config));
+  runtime.run_in_main (sigc::bind (device_opened.make_slot (), current_state.device, vidinput_config));
   
   return true;
 }
 
-void GMVidInputManager_mlogo::close()
+void GMVideoInputManager_mlogo::close()
 {
-  PTRACE(4, "GMVidInputManager_mlogo\tClosing Moving Logo");
+  PTRACE(4, "GMVideoInputManager_mlogo\tClosing Moving Logo");
   free (background_frame);
   current_state.opened  = false;
-  runtime.run_in_main (sigc::bind (vidinputdevice_closed.make_slot (), current_state.vidinput_device));
+  runtime.run_in_main (sigc::bind (device_closed.make_slot (), current_state.device));
 }
 
-bool GMVidInputManager_mlogo::get_frame_data (unsigned & width,
+bool GMVideoInputManager_mlogo::get_frame_data (unsigned & width,
                      unsigned & height,
                      char *data)
 {
   if (!current_state.opened) {
-    PTRACE(1, "GMVidInputManager_mlogo\tTrying to get frame from closed device");
+    PTRACE(1, "GMVideoInputManager_mlogo\tTrying to get frame from closed device");
     return true;
   }
   
-  m_Pacing.Delay (1000 / current_state.fps);
+  adaptive_delay.Delay (1000 / current_state.fps);
 
   memcpy (data, background_frame, (current_state.width * current_state.height * 3) >> 1);
 
@@ -141,7 +141,7 @@ bool GMVidInputManager_mlogo::get_frame_data (unsigned & width,
   return true;
 }
 
-void GMVidInputManager_mlogo::CopyYUVArea (const char* srcFrame,
+void GMVideoInputManager_mlogo::CopyYUVArea (const char* srcFrame,
 					 unsigned srcWidth,
 					 unsigned srcHeight,
 					 char* dstFrame,
@@ -188,7 +188,7 @@ void GMVidInputManager_mlogo::CopyYUVArea (const char* srcFrame,
   }
 }
 
-bool GMVidInputManager_mlogo::has_device     (const std::string & /*source*/, const std::string & /*device*/, unsigned /*capabilities*/, Ekiga::VidInputDevice & /*vidinput_device*/)
+bool GMVideoInputManager_mlogo::has_device     (const std::string & /*source*/, const std::string & /*device_name*/, unsigned /*capabilities*/, Ekiga::VidInputDevice & /*device*/)
 {
   return false;
 }

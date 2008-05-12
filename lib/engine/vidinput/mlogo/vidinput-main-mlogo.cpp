@@ -53,9 +53,9 @@ vidinput_mlogo_init (Ekiga::ServiceCore &core,
 
   if (vidinput_core != NULL) {
 
-    GMVidInputManager_mlogo *vidinput_manager = new GMVidInputManager_mlogo(core);
+    GMVideoInputManager_mlogo *videoinput_manager = new GMVideoInputManager_mlogo(core);
 
-    vidinput_core->add_manager (*vidinput_manager);
+    vidinput_core->add_manager (*videoinput_manager);
     result = true;
   }
 

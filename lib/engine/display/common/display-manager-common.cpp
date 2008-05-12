@@ -46,24 +46,24 @@
 #include "display-manager-common.h"
 
 /* The functions */
-GMDisplayManager::GMDisplayManager(Ekiga::ServiceCore & _core)
-  : PThread (1000, NoAutoDeleteThread, HighestPriority, "GMDisplayManager"),
+GMVideoOutputManager::GMVideoOutputManager(Ekiga::ServiceCore & _core)
+  : PThread (1000, NoAutoDeleteThread, HighestPriority, "GMVideoOutputManager"),
     core (_core), runtime (*(dynamic_cast<Ekiga::Runtime *> (_core.get ("runtime"))))
 {
 }
 
-GMDisplayManager::~GMDisplayManager ()
+GMVideoOutputManager::~GMVideoOutputManager ()
 {
 }
 
-void GMDisplayManager::start ()
+void GMVideoOutputManager::start ()
 {
   init_thread = true;
   run_thread.Signal();
   thread_initialised.Wait();
 }
 
-void GMDisplayManager::stop () 
+void GMVideoOutputManager::stop () 
 {
 
   uninit_thread = true;
@@ -72,7 +72,7 @@ void GMDisplayManager::stop ()
 }
 
 void
-GMDisplayManager::Main ()
+GMVideoOutputManager::Main ()
 {
   bool do_sync = false;
   bool initialised_thread = false;
@@ -120,7 +120,7 @@ GMDisplayManager::Main ()
   var_mutex.Signal ();
 }
 
-void GMDisplayManager::set_frame_data (unsigned width,
+void GMVideoOutputManager::set_frame_data (unsigned width,
 				       unsigned height,
 				       const char* data,
 				       bool local,
@@ -159,7 +159,7 @@ void GMDisplayManager::set_frame_data (unsigned width,
 
     memcpy (lframeStore.GetPointer(), data, (width * height * 3) >> 1);
     if (update_required.local) 
-      PTRACE(3, "GMDisplayManager\tSkipped earlier local frame");
+      PTRACE(3, "GMVideoOutputManager\tSkipped earlier local frame");
     update_required.local = true;
   }
   else {
@@ -171,14 +171,14 @@ void GMDisplayManager::set_frame_data (unsigned width,
 
     memcpy (rframeStore.GetPointer(), data, (width * height * 3) >> 1);
     if (update_required.remote) 
-      PTRACE(3, "GMDisplayManager\tSkipped earlier remote frame");
+      PTRACE(3, "GMVideoOutputManager\tSkipped earlier remote frame");
     update_required.remote = true;
   }
 
   var_mutex.Signal();
 
   if ((local_display_info.display == UNSET) || (local_display_info.zoom == 0) || (!local_display_info.config_info_set)) {
-    PTRACE(4, "GMDisplayManager\tDisplay and zoom variable not set yet, not opening display");
+    PTRACE(4, "GMVideoOutputManager\tDisplay and zoom variable not set yet, not opening display");
      return;
   }
 
@@ -192,7 +192,7 @@ void GMDisplayManager::set_frame_data (unsigned width,
 }
 
 
-void GMDisplayManager::init()
+void GMVideoOutputManager::init()
 {
   /* State for last frame */
   last_frame.display = UNSET;
@@ -217,14 +217,14 @@ void GMDisplayManager::init()
 
 }
 
-void GMDisplayManager::uninit () {
+void GMVideoOutputManager::uninit () {
   /* This is common to all output classes */
   lframeStore.SetSize (0);
   rframeStore.SetSize (0);
 }
 
 bool 
-GMDisplayManager::frame_display_change_needed ()
+GMVideoOutputManager::frame_display_change_needed ()
 {
   DisplayInfo local_display_info;
 
@@ -232,7 +232,7 @@ GMDisplayManager::frame_display_change_needed ()
 
   if ((!local_display_info.widget_info_set) || (!local_display_info.config_info_set) ||
       (local_display_info.display == UNSET) || (local_display_info.zoom == 0)) {
-    PTRACE(4, "GMDisplayManager\tWidget not yet realized or gconf info not yet set, not opening display");
+    PTRACE(4, "GMVideoOutputManager\tWidget not yet realized or gconf info not yet set, not opening display");
     return false;
   }
 
@@ -268,7 +268,7 @@ GMDisplayManager::frame_display_change_needed ()
 }
 
 UpdateRequired
-GMDisplayManager::redraw ()
+GMVideoOutputManager::redraw ()
 {
   UpdateRequired sync_required;
   sync_required = update_required;

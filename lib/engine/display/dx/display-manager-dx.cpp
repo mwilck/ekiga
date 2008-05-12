@@ -37,8 +37,8 @@
 
 #include "display-manager-dx.h"
 
-GMDisplayManager_dx::GMDisplayManager_dx (Ekiga::ServiceCore & _core)
-: GMDisplayManager(_core)
+GMVideoOutputManager_dx::GMVideoOutputManager_dx (Ekiga::ServiceCore & _core)
+: GMVideoOutputManager(_core)
 {
   dxWindow = NULL;
 
@@ -47,7 +47,7 @@ GMDisplayManager_dx::GMDisplayManager_dx (Ekiga::ServiceCore & _core)
   thread_created.Wait ();
 }
 
-GMDisplayManager_dx::~GMDisplayManager_dx ()
+GMVideoOutputManager_dx::~GMVideoOutputManager_dx ()
 {
   end_thread = true;
   run_thread.Signal();
@@ -55,16 +55,16 @@ GMDisplayManager_dx::~GMDisplayManager_dx ()
 }
 
 bool
-GMDisplayManager_dx::frame_display_change_needed ()
+GMVideoOutputManager_dx::frame_display_change_needed ()
 {
   if (!dxWindow)
     return true;
 
-  return GMDisplayManager::frame_display_change_needed ();
+  return GMVideoOutputManager::frame_display_change_needed ();
 }
 
 void
-GMDisplayManager_dx::setup_frame_display ()
+GMVideoOutputManager_dx::setup_frame_display ()
 {
   DisplayInfo local_display_info;
 
@@ -88,14 +88,14 @@ GMDisplayManager_dx::setup_frame_display ()
     break;
   case UNSET:
   default:
-    PTRACE (1, "GMDisplayManager_DX\tDisplay variable not set");
+    PTRACE (1, "GMVideoOutputManager_DX\tDisplay variable not set");
     return;
     break; 
   }
 
   if (   (!local_display_info.widget_info_set) || (!local_display_info.config_info_set) 
       || (local_display_info.display == UNSET) || (local_display_info.zoom == 0) || (current_frame.zoom == 0)) {
-    PTRACE(4, "GMDisplayManager_DX\tWidget not yet realized or gconf info not yet set, not opening display");
+    PTRACE(4, "GMVideoOutputManager_DX\tWidget not yet realized or gconf info not yet set, not opening display");
     return;
   }
 
@@ -107,7 +107,7 @@ GMDisplayManager_dx::setup_frame_display ()
 
   switch (current_frame.display) {
   case LOCAL_VIDEO:
-    PTRACE(4, "GMDisplayManager_DX\tOpening LOCAL_VIDEO display with image of " << current_frame.local_width << "x" << current_frame.local_height);
+    PTRACE(4, "GMVideoOutputManager_DX\tOpening LOCAL_VIDEO display with image of " << current_frame.local_width << "x" << current_frame.local_height);
     dxWindow = new DXWindow();
     hw_accel_status = (HwAccelStatus) dxWindow->Init (local_display_info.hwnd,
                           local_display_info.x,
@@ -127,7 +127,7 @@ GMDisplayManager_dx::setup_frame_display ()
     break;
 
   case REMOTE_VIDEO:
-    PTRACE(4, "GMDisplayManager_DX\tOpening REMOTE_VIDEO display with image of " << current_frame.remote_width << "x" << current_frame.remote_height);
+    PTRACE(4, "GMVideoOutputManager_DX\tOpening REMOTE_VIDEO display with image of " << current_frame.remote_width << "x" << current_frame.remote_height);
     dxWindow = new DXWindow();
     hw_accel_status = (HwAccelStatus) dxWindow->Init (local_display_info.hwnd,
                           local_display_info.x,
@@ -149,7 +149,7 @@ GMDisplayManager_dx::setup_frame_display ()
   case FULLSCREEN:
   case PIP:
   case PIP_WINDOW:
-    PTRACE(4, "GMDisplayManager_DX\tOpening display " << current_frame.display << " with images of " 
+    PTRACE(4, "GMVideoOutputManager_DX\tOpening display " << current_frame.display << " with images of " 
             << current_frame.local_width << "x" << current_frame.local_height << "(local) and " 
 	    << current_frame.remote_width << "x" << current_frame.remote_height << "(remote)");
     dxWindow = new DXWindow();
@@ -194,7 +194,7 @@ GMDisplayManager_dx::setup_frame_display ()
 }
 
 void
-GMDisplayManager_dx::close_frame_display ()
+GMVideoOutputManager_dx::close_frame_display ()
 {
   runtime.run_in_main (sigc::bind (hw_accel_status_changed.make_slot (), NO_VIDEO));
 
@@ -206,7 +206,7 @@ GMDisplayManager_dx::close_frame_display ()
 }
 
 void
-GMDisplayManager_dx::display_frame (const char *frame,
+GMVideoOutputManager_dx::display_frame (const char *frame,
                              unsigned width,
                              unsigned height)
 {
@@ -217,7 +217,7 @@ GMDisplayManager_dx::display_frame (const char *frame,
 }
 
 void
-GMDisplayManager_dx::display_pip_frames (const char *local_frame,
+GMVideoOutputManager_dx::display_pip_frames (const char *local_frame,
                                  unsigned lf_width,
                                  unsigned lf_height,
                                  const char *remote_frame,
@@ -240,7 +240,7 @@ GMDisplayManager_dx::display_pip_frames (const char *local_frame,
 }
 
 void
-GMDisplayManager_dx::sync (UpdateRequired sync_required)
+GMVideoOutputManager_dx::sync (UpdateRequired sync_required)
 {
   if (dxWindow)
     dxWindow->Sync(); 

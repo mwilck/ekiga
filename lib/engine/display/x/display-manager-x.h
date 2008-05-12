@@ -44,13 +44,13 @@
 #include "display-manager-common.h"
 #include "xwindow.h"
 
-class GMDisplayManager_x
-   : public  GMDisplayManager
+class GMVideoOutputManager_x
+   : public  GMVideoOutputManager
 {
 public:
-  GMDisplayManager_x (Ekiga::ServiceCore & _core);
+  GMVideoOutputManager_x (Ekiga::ServiceCore & _core);
 
-  ~GMDisplayManager_x ();
+  ~GMVideoOutputManager_x ();
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Returns TRUE if the given settings require a

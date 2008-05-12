@@ -1,4 +1,3 @@
-
 /*
  * Ekiga -- A VoIP and Video-Conferencing application
  * Copyright (C) 2000-2008 Damien Sandras
@@ -47,24 +46,24 @@ GMAudioOutputManager_null::GMAudioOutputManager_null (Ekiga::ServiceCore & _core
   current_state[Ekiga::secondary].opened = false;
 }
 
-void GMAudioOutputManager_null::get_audiooutput_devices(std::vector <Ekiga::AudioOutputDevice> & audiooutput_devices)
+void GMAudioOutputManager_null::get_devices(std::vector <Ekiga::AudioOutputDevice> & devices)
 {
-  Ekiga::AudioOutputDevice audiooutput_device;
-  audiooutput_device.type   = DEVICE_TYPE;
-  audiooutput_device.source = DEVICE_SOURCE;
-  audiooutput_device.device = DEVICE_DEVICE;
-  audiooutput_devices.push_back(audiooutput_device);
+  Ekiga::AudioOutputDevice device;
+  device.type   = DEVICE_TYPE;
+  device.source = DEVICE_SOURCE;
+  device.device = DEVICE_DEVICE;
+  devices.push_back(device);
 }
 
 
-bool GMAudioOutputManager_null::set_audiooutput_device (Ekiga::AudioOutputPrimarySecondary primarySecondary, const Ekiga::AudioOutputDevice & audiooutput_device)
+bool GMAudioOutputManager_null::set_device (Ekiga::AudioOutputPrimarySecondary primarySecondary, const Ekiga::AudioOutputDevice & device)
 {
-  if ( ( audiooutput_device.type   == DEVICE_TYPE ) &&
-       ( audiooutput_device.source == DEVICE_SOURCE) &&
-       ( audiooutput_device.device == DEVICE_DEVICE) ) {
+  if ( ( device.type   == DEVICE_TYPE ) &&
+       ( device.source == DEVICE_SOURCE) &&
+       ( device.device == DEVICE_DEVICE) ) {
 
-    PTRACE(4, "GMAudioOutputManager_null\tSetting Device[" << primarySecondary << "] " << audiooutput_device.source << "/" <<  audiooutput_device.device);
-    current_state[primarySecondary].audiooutput_device = audiooutput_device;
+    PTRACE(4, "GMAudioOutputManager_null\tSetting Device[" << primarySecondary << "] " << device.source << "/" <<  device.device);
+    current_state[primarySecondary].device = device;
     return true;
   }
   return false;
@@ -74,7 +73,7 @@ bool GMAudioOutputManager_null::open (Ekiga::AudioOutputPrimarySecondary primary
 {
   Ekiga::AudioOutputConfig audiooutput_config;
 
-  PTRACE(4, "GMAudioOutputManager_null\tOpening Device[" << primarySecondary << "] " << current_state[primarySecondary].audiooutput_device.source << "/" <<  current_state[primarySecondary].audiooutput_device.device);
+  PTRACE(4, "GMAudioOutputManager_null\tOpening Device[" << primarySecondary << "] " << current_state[primarySecondary].device.source << "/" <<  current_state[primarySecondary].device.device);
   PTRACE(4, "GMAudioOutputManager_null\tOpening Device with " << channels << "-" << samplerate << "/" << bits_per_sample);
 
   current_state[primarySecondary].channels        = channels;
@@ -82,12 +81,12 @@ bool GMAudioOutputManager_null::open (Ekiga::AudioOutputPrimarySecondary primary
   current_state[primarySecondary].bits_per_sample = bits_per_sample;
   current_state[primarySecondary].opened = true;
 
-  m_Pacing[primarySecondary].Restart();
+  adaptive_delay[primarySecondary].Restart();
 
   audiooutput_config.volume = 0;
   audiooutput_config.modifyable = false;
 
-  runtime.run_in_main (sigc::bind (audiooutputdevice_opened.make_slot (), primarySecondary, current_state[primarySecondary].audiooutput_device, audiooutput_config));
+  runtime.run_in_main (sigc::bind (device_opened.make_slot (), primarySecondary, current_state[primarySecondary].device, audiooutput_config));
 
   return true;
 }
@@ -95,7 +94,7 @@ bool GMAudioOutputManager_null::open (Ekiga::AudioOutputPrimarySecondary primary
 void GMAudioOutputManager_null::close(Ekiga::AudioOutputPrimarySecondary primarySecondary)
 {
   current_state[primarySecondary].opened = false;
-  runtime.run_in_main (sigc::bind (audiooutputdevice_closed.make_slot (), primarySecondary, current_state[primarySecondary].audiooutput_device));
+  runtime.run_in_main (sigc::bind (device_closed.make_slot (), primarySecondary, current_state[primarySecondary].device));
 }
 
 
@@ -111,11 +110,11 @@ bool GMAudioOutputManager_null::set_frame_data (Ekiga::AudioOutputPrimarySeconda
 
   written = size;
 
-  m_Pacing[primarySecondary].Delay(size * 8 / current_state[primarySecondary].bits_per_sample * 1000 / current_state[primarySecondary].samplerate);
+  adaptive_delay[primarySecondary].Delay(size * 8 / current_state[primarySecondary].bits_per_sample * 1000 / current_state[primarySecondary].samplerate);
   return true;
 }
 
-bool GMAudioOutputManager_null::has_device(const std::string & /*sink*/, const std::string & /*device*/, Ekiga::AudioOutputDevice & /*audiooutput_device*/)
+bool GMAudioOutputManager_null::has_device(const std::string & /*sink*/, const std::string & /*device_name*/, Ekiga::AudioOutputDevice & /*device*/)
 {
   return false;
 }

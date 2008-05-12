@@ -30,7 +30,7 @@
  *   begin                : written in 2007 by Matthias Schneider
  *   copyright            : (c) 2007 by Matthias Schneider
  *   description          : declaration of the interface of a display core.
- *                          A display core manages DisplayManagers.
+ *                          A display core manages VideoOutputManagers.
  *
  */
 
@@ -77,7 +77,7 @@ void DisplayCore::setup_conf_bridge ()
   display_core_conf_bridge = new DisplayCoreConfBridge (*this);
 }
 
-void DisplayCore::add_manager (DisplayManager &manager)
+void DisplayCore::add_manager (VideoOutputManager &manager)
 {
   PWaitAndSignal m(var_mutex);
 
@@ -92,11 +92,11 @@ void DisplayCore::add_manager (DisplayManager &manager)
 }
 
 
-void DisplayCore::visit_managers (sigc::slot<bool, DisplayManager &> visitor)
+void DisplayCore::visit_managers (sigc::slot<bool, VideoOutputManager &> visitor)
 {
   bool go_on = true;
 
-  for (std::set<DisplayManager *>::iterator iter = managers.begin ();
+  for (std::set<VideoOutputManager *>::iterator iter = managers.begin ();
        iter != managers.end () && go_on;
        iter++)
     go_on = visitor (*(*iter));
@@ -113,7 +113,7 @@ void DisplayCore::start ()
 
   g_get_current_time (&last_stats);
 
-  for (std::set<DisplayManager *>::iterator iter = managers.begin ();
+  for (std::set<VideoOutputManager *>::iterator iter = managers.begin ();
        iter != managers.end ();
        iter++) {
     (*iter)->start ();
@@ -134,7 +134,7 @@ void DisplayCore::stop ()
   if (number_times_started != 0)
     return;
     
-  for (std::set<DisplayManager *>::iterator iter = managers.begin ();
+  for (std::set<VideoOutputManager *>::iterator iter = managers.begin ();
        iter != managers.end ();
        iter++) {
     (*iter)->stop ();
@@ -180,7 +180,7 @@ void DisplayCore::set_frame_data (unsigned width,
 
   var_mutex.Signal ();
   
-  for (std::set<DisplayManager *>::iterator iter = managers.begin ();
+  for (std::set<VideoOutputManager *>::iterator iter = managers.begin ();
        iter != managers.end ();
        iter++) {
     (*iter)->set_frame_data (width, height, data, local, devices_nbr);
@@ -191,7 +191,7 @@ void DisplayCore::set_display_info (const DisplayInfo & _display_info)
 {
   PWaitAndSignal m(var_mutex);
 
-  for (std::set<DisplayManager *>::iterator iter = managers.begin ();
+  for (std::set<VideoOutputManager *>::iterator iter = managers.begin ();
        iter != managers.end ();
        iter++) {
     (*iter)->set_display_info (_display_info);
@@ -199,27 +199,27 @@ void DisplayCore::set_display_info (const DisplayInfo & _display_info)
 }
 
 
-void DisplayCore::on_display_mode_changed (DisplayMode display, DisplayManager *manager)
+void DisplayCore::on_display_mode_changed (DisplayMode display, VideoOutputManager *manager)
 {
   display_mode_changed.emit (*manager, display);
 }
 
-void DisplayCore::on_fullscreen_mode_changed ( FSToggle toggle, DisplayManager *manager)
+void DisplayCore::on_fullscreen_mode_changed ( FSToggle toggle, VideoOutputManager *manager)
 {
   fullscreen_mode_changed.emit (*manager, toggle);
 }
 
-void DisplayCore::on_display_size_changed ( unsigned width, unsigned height, DisplayManager *manager)
+void DisplayCore::on_display_size_changed ( unsigned width, unsigned height, VideoOutputManager *manager)
 {
   display_size_changed.emit (*manager, width, height);
 }
 
-void DisplayCore::on_hw_accel_status_changed (HwAccelStatus hw_accel_status, DisplayManager *manager)
+void DisplayCore::on_hw_accel_status_changed (HwAccelStatus hw_accel_status, VideoOutputManager *manager)
 {
   hw_accel_status_changed.emit (*manager, hw_accel_status);
 }
 
-void DisplayCore::on_logo_update_required (DisplayManager *manager)
+void DisplayCore::on_logo_update_required (VideoOutputManager *manager)
 {
   logo_update_required.emit (*manager);
 }

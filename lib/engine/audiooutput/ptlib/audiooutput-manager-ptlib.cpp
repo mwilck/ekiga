@@ -49,30 +49,30 @@ GMAudioOutputManager_ptlib::GMAudioOutputManager_ptlib (Ekiga::ServiceCore & _co
   output_device[Ekiga::secondary] = NULL;
 }
 
-void GMAudioOutputManager_ptlib::get_audiooutput_devices(std::vector <Ekiga::AudioOutputDevice> & audiooutput_devices)
+void GMAudioOutputManager_ptlib::get_devices(std::vector <Ekiga::AudioOutputDevice> & devices)
 {
   PStringArray audio_sources;
   PStringArray audio_devices;
   char **sources_array;
   char **devices_array;
 
-  Ekiga::AudioOutputDevice audiooutput_device;
-  audiooutput_device.type   = DEVICE_TYPE;
+  Ekiga::AudioOutputDevice device;
+  device.type   = DEVICE_TYPE;
 
   audio_sources = PSoundChannel::GetDriverNames ();
   sources_array = audio_sources.ToCharArray ();
   for (PINDEX i = 0; sources_array[i] != NULL; i++) {
 
-    audiooutput_device.source = sources_array[i];
+    device.source = sources_array[i];
 
-    if (audiooutput_device.source != "EKIGA") {
-      audio_devices = PSoundChannel::GetDeviceNames (audiooutput_device.source, PSoundChannel::Player);
+    if (device.source != "EKIGA") {
+      audio_devices = PSoundChannel::GetDeviceNames (device.source, PSoundChannel::Player);
       devices_array = audio_devices.ToCharArray ();
 
       for (PINDEX j = 0; devices_array[j] != NULL; j++) {
 
-        audiooutput_device.device = devices_array[j];
-        audiooutput_devices.push_back(audiooutput_device);
+        device.device = devices_array[j];
+        devices.push_back(device);
       }
       free (devices_array);
     }
@@ -80,12 +80,12 @@ void GMAudioOutputManager_ptlib::get_audiooutput_devices(std::vector <Ekiga::Aud
   free (sources_array);
 }
 
-bool GMAudioOutputManager_ptlib::set_audiooutput_device (Ekiga::AudioOutputPrimarySecondary primarySecondary, const Ekiga::AudioOutputDevice & audiooutput_device)
+bool GMAudioOutputManager_ptlib::set_device (Ekiga::AudioOutputPrimarySecondary primarySecondary, const Ekiga::AudioOutputDevice & device)
 {
-  if ( audiooutput_device.type == DEVICE_TYPE ) {
+  if ( device.type == DEVICE_TYPE ) {
 
-    PTRACE(4, "GMAudioOutputManager_ptlib\tSetting Device[" << primarySecondary << "] " << audiooutput_device.source << "/" <<  audiooutput_device.device);
-    current_state[primarySecondary].audiooutput_device = audiooutput_device;  
+    PTRACE(4, "GMAudioOutputManager_ptlib\tSetting Device[" << primarySecondary << "] " << device.source << "/" <<  device.device);
+    current_state[primarySecondary].device = device;  
     return true;
   }
 
@@ -97,15 +97,15 @@ bool GMAudioOutputManager_ptlib::open (Ekiga::AudioOutputPrimarySecondary primar
   unsigned volume;
   Ekiga::AudioOutputConfig audiooutput_config;
 
-  PTRACE(4, "GMAudioOutputManager_ptlib\tOpening Device " << current_state[primarySecondary].audiooutput_device.source << "/" <<  current_state[primarySecondary].audiooutput_device.device);
+  PTRACE(4, "GMAudioOutputManager_ptlib\tOpening Device " << current_state[primarySecondary].device.source << "/" <<  current_state[primarySecondary].device.device);
   PTRACE(4, "GMAudioOutputManager_ptlib\tOpening Device with " << channels << "-" << samplerate << "/" << bits_per_sample);
 
   current_state[primarySecondary].channels        = channels;
   current_state[primarySecondary].samplerate      = samplerate;
   current_state[primarySecondary].bits_per_sample = bits_per_sample;
 
-  output_device[primarySecondary] = PSoundChannel::CreateOpenedChannel (current_state[primarySecondary].audiooutput_device.source, 
-                                                     current_state[primarySecondary].audiooutput_device.device,
+  output_device[primarySecondary] = PSoundChannel::CreateOpenedChannel (current_state[primarySecondary].device.source, 
+                                                     current_state[primarySecondary].device.device,
                                                      PSoundChannel::Player,
                                                      channels,
                                                      samplerate,
@@ -117,7 +117,7 @@ bool GMAudioOutputManager_ptlib::open (Ekiga::AudioOutputPrimarySecondary primar
 
   if (error_code != Ekiga::_AUDIO_ERR_NONE) {
     PTRACE(1, "GMAudioOutputManager_ptlib\tEncountered error " << error_code << " while opening device[" << primarySecondary << "]");
-    runtime.run_in_main (sigc::bind (audiooutputdevice_error.make_slot (), primarySecondary, current_state[primarySecondary].audiooutput_device, error_code));
+    runtime.run_in_main (sigc::bind (device_error.make_slot (), primarySecondary, current_state[primarySecondary].device, error_code));
     return false;
   }
 
@@ -127,20 +127,20 @@ bool GMAudioOutputManager_ptlib::open (Ekiga::AudioOutputPrimarySecondary primar
   audiooutput_config.volume = volume;
   audiooutput_config.modifyable = true;
 
-  runtime.run_in_main (sigc::bind (audiooutputdevice_opened.make_slot (), primarySecondary, current_state[primarySecondary].audiooutput_device, audiooutput_config));
+  runtime.run_in_main (sigc::bind (device_opened.make_slot (), primarySecondary, current_state[primarySecondary].device, audiooutput_config));
 
   return true;
 }
 
 void GMAudioOutputManager_ptlib::close(Ekiga::AudioOutputPrimarySecondary primarySecondary)
 {
-  PTRACE(4, "GMAudioOutputManager_ptlib\tClosing device[" << primarySecondary << "] " << current_state[primarySecondary].audiooutput_device.source << "/" <<  current_state[primarySecondary].audiooutput_device.device);
+  PTRACE(4, "GMAudioOutputManager_ptlib\tClosing device[" << primarySecondary << "] " << current_state[primarySecondary].device.source << "/" <<  current_state[primarySecondary].device.device);
   if (output_device[primarySecondary]) {
      delete output_device[primarySecondary];
      output_device[primarySecondary] = NULL;
   }
   current_state[primarySecondary].opened = false;
-  runtime.run_in_main (sigc::bind (audiooutputdevice_closed.make_slot (), primarySecondary, current_state[primarySecondary].audiooutput_device));
+  runtime.run_in_main (sigc::bind (device_closed.make_slot (), primarySecondary, current_state[primarySecondary].device));
 }
 
 void GMAudioOutputManager_ptlib::set_buffer_size (Ekiga::AudioOutputPrimarySecondary primarySecondary, unsigned buffer_size, unsigned num_buffers)
@@ -172,7 +172,7 @@ bool GMAudioOutputManager_ptlib::set_frame_data (Ekiga::AudioOutputPrimarySecond
     }
     else {
       PTRACE(1, "GMAudioOutputManager_ptlib\tEncountered error while trying to write data");
-      runtime.run_in_main (sigc::bind (audiooutputdevice_error.make_slot (), primarySecondary, current_state[primarySecondary].audiooutput_device, Ekiga::_AUDIO_ERR_WRITE));
+      runtime.run_in_main (sigc::bind (device_error.make_slot (), primarySecondary, current_state[primarySecondary].device, Ekiga::_AUDIO_ERR_WRITE));
 
     }
   }
@@ -186,18 +186,18 @@ void GMAudioOutputManager_ptlib::set_volume (Ekiga::AudioOutputPrimarySecondary 
     output_device[primarySecondary]->SetVolume(volume);
 }
 
-bool GMAudioOutputManager_ptlib::has_device(const std::string & sink, const std::string & device, Ekiga::AudioOutputDevice & audiooutput_device)
+bool GMAudioOutputManager_ptlib::has_device(const std::string & sink, const std::string & device_name, Ekiga::AudioOutputDevice & device)
 {
   if (sink == "alsa") {
-    audiooutput_device.type = DEVICE_TYPE;
-    audiooutput_device.source = "ALSA";
-    audiooutput_device.device = device;
+    device.type = DEVICE_TYPE;
+    device.source = "ALSA";
+    device.device = device_name;
     return true;
   }
 /*  if (source == "oss") {
-    audiooutput_device.type = DEVICE_TYPE;
-    audiooutput_device.source = "OSS";
-    audiooutput_device.device = device;
+    device.type = DEVICE_TYPE;
+    device.source = "OSS";
+    device.device = device_name;
     return true;
   }*/
   return false;

@@ -89,9 +89,9 @@ void AudioOutputCore::add_manager (AudioOutputManager &manager)
   managers.insert (&manager);
   manager_added.emit (manager);
 
-  manager.audiooutputdevice_error.connect (sigc::bind (sigc::mem_fun (this, &AudioOutputCore::on_audiooutputdevice_error), &manager));
-  manager.audiooutputdevice_opened.connect (sigc::bind (sigc::mem_fun (this, &AudioOutputCore::on_audiooutputdevice_opened), &manager));
-  manager.audiooutputdevice_closed.connect (sigc::bind (sigc::mem_fun (this, &AudioOutputCore::on_audiooutputdevice_closed), &manager));
+  manager.device_error.connect (sigc::bind (sigc::mem_fun (this, &AudioOutputCore::on_audiooutputdevice_error), &manager));
+  manager.device_opened.connect (sigc::bind (sigc::mem_fun (this, &AudioOutputCore::on_audiooutputdevice_opened), &manager));
+  manager.device_closed.connect (sigc::bind (sigc::mem_fun (this, &AudioOutputCore::on_audiooutputdevice_closed), &manager));
 }
 
 void AudioOutputCore::visit_managers (sigc::slot<bool, AudioOutputManager &> visitor)
@@ -141,7 +141,7 @@ void AudioOutputCore::get_audiooutput_devices (std::vector <AudioOutputDevice> &
   for (std::set<AudioOutputManager *>::iterator iter = managers.begin ();
        iter != managers.end ();
        iter++)
-    (*iter)->get_audiooutput_devices (audiooutput_devices);
+    (*iter)->get_devices (audiooutput_devices);
 
   if (PTrace::CanTrace(4)) {
      for (std::vector<AudioOutputDevice>::iterator iter = audiooutput_devices.begin ();
@@ -323,7 +323,7 @@ void AudioOutputCore::internal_set_device (AudioOutputPrimarySecondary primarySe
   for (std::set<AudioOutputManager *>::iterator iter = managers.begin ();
        iter != managers.end ();
        iter++) {
-     if ((*iter)->set_audiooutput_device (primarySecondary, audiooutput_device)) {
+     if ((*iter)->set_device (primarySecondary, audiooutput_device)) {
        current_manager[primarySecondary] = (*iter);
      }
   }

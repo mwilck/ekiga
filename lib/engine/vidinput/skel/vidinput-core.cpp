@@ -30,7 +30,7 @@
  *   begin                : written in 2008 by Matthias Schneider
  *   copyright            : (c) 2008 by Matthias Schneider
  *   description          : declaration of the interface of a vidinput core.
- *                          A vidinput core manages VidInputManagers.
+ *                          A vidinput core manages VideoInputManagers.
  *
  */
 
@@ -168,23 +168,23 @@ void VidInputCore::setup_conf_bridge ()
   vidinput_core_conf_bridge = new VidInputCoreConfBridge (*this);
 }
 
-void VidInputCore::add_manager (VidInputManager &manager)
+void VidInputCore::add_manager (VideoInputManager &manager)
 {
   managers.insert (&manager);
   manager_added.emit (manager);
 
-  manager.vidinputdevice_error.connect (sigc::bind (sigc::mem_fun (this, &VidInputCore::on_vidinputdevice_error), &manager));
-  manager.vidinputdevice_opened.connect (sigc::bind (sigc::mem_fun (this, &VidInputCore::on_vidinputdevice_opened), &manager));
-  manager.vidinputdevice_closed.connect (sigc::bind (sigc::mem_fun (this, &VidInputCore::on_vidinputdevice_closed), &manager));
+  manager.device_error.connect (sigc::bind (sigc::mem_fun (this, &VidInputCore::on_vidinputdevice_error), &manager));
+  manager.device_opened.connect (sigc::bind (sigc::mem_fun (this, &VidInputCore::on_vidinputdevice_opened), &manager));
+  manager.device_closed.connect (sigc::bind (sigc::mem_fun (this, &VidInputCore::on_vidinputdevice_closed), &manager));
 }
 
 
-void VidInputCore::visit_managers (sigc::slot<bool, VidInputManager &> visitor)
+void VidInputCore::visit_managers (sigc::slot<bool, VideoInputManager &> visitor)
 {
   PWaitAndSignal m(var_mutex);
   bool go_on = true;
   
-  for (std::set<VidInputManager *>::iterator iter = managers.begin ();
+  for (std::set<VideoInputManager *>::iterator iter = managers.begin ();
        iter != managers.end () && go_on;
        iter++)
       go_on = visitor (*(*iter));
@@ -196,10 +196,10 @@ void VidInputCore::get_vidinput_devices (std::vector <VidInputDevice> & vidinput
 
   vidinput_devices.clear();
   
-  for (std::set<VidInputManager *>::iterator iter = managers.begin ();
+  for (std::set<VideoInputManager *>::iterator iter = managers.begin ();
        iter != managers.end ();
        iter++)
-    (*iter)->get_vidinput_devices (vidinput_devices);
+    (*iter)->get_devices (vidinput_devices);
 
   if (PTrace::CanTrace(4)) {
      for (std::vector<VidInputDevice>::iterator iter = vidinput_devices.begin ();
@@ -453,19 +453,19 @@ void VidInputCore::set_contrast   (unsigned contrast)
     new_stream_settings.contrast = contrast ;
 }
 
-void VidInputCore::on_vidinputdevice_error (VidInputDevice vidinput_device, VidInputErrorCodes error_code, VidInputManager *manager)
+void VidInputCore::on_vidinputdevice_error (VidInputDevice vidinput_device, VidInputErrorCodes error_code, VideoInputManager *manager)
 {
   vidinputdevice_error.emit (*manager, vidinput_device, error_code);
 }
 
 void VidInputCore::on_vidinputdevice_opened (VidInputDevice vidinput_device,
                                              VidInputConfig vidinput_config, 
-                                             VidInputManager *manager)
+                                             VideoInputManager *manager)
 {
   vidinputdevice_opened.emit (*manager, vidinput_device, vidinput_config);
 }
 
-void VidInputCore::on_vidinputdevice_closed (VidInputDevice vidinput_device, VidInputManager *manager)
+void VidInputCore::on_vidinputdevice_closed (VidInputDevice vidinput_device, VideoInputManager *manager)
 {
   vidinputdevice_closed.emit (*manager, vidinput_device);
 }
@@ -506,10 +506,10 @@ void VidInputCore::internal_open (unsigned width, unsigned height, unsigned fps)
 void VidInputCore::internal_set_device (const VidInputDevice & vidinput_device, int channel, VideoFormat format)
 {
   current_manager = NULL;
-  for (std::set<VidInputManager *>::iterator iter = managers.begin ();
+  for (std::set<VideoInputManager *>::iterator iter = managers.begin ();
        iter != managers.end ();
        iter++) {
-     if ((*iter)->set_vidinput_device (vidinput_device, channel, format)) {
+     if ((*iter)->set_device (vidinput_device, channel, format)) {
        current_manager = (*iter);
      }
   }
@@ -552,7 +552,7 @@ void VidInputCore::add_device (const std::string & source, const std::string & d
   PWaitAndSignal m(var_mutex);
 
   VidInputDevice vidinput_device;
-  for (std::set<VidInputManager *>::iterator iter = managers.begin ();
+  for (std::set<VideoInputManager *>::iterator iter = managers.begin ();
        iter != managers.end ();
        iter++) {
      if ((*iter)->has_device (source, device, capabilities, vidinput_device)) {
@@ -574,7 +574,7 @@ void VidInputCore::remove_device (const std::string & source, const std::string 
   PWaitAndSignal m(var_mutex);
 
   VidInputDevice vidinput_device;
-  for (std::set<VidInputManager *>::iterator iter = managers.begin ();
+  for (std::set<VideoInputManager *>::iterator iter = managers.begin ();
        iter != managers.end ();
        iter++) {
      if ((*iter)->has_device (source, device, capabilities, vidinput_device)) {

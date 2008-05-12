@@ -959,7 +959,7 @@ static void on_stream_resumed_cb (Ekiga::CallManager & /*manager*/,
  */
 
 void 
-on_display_mode_changed_cb (Ekiga::DisplayManager & /* manager */, DisplayMode display,  gpointer self)
+on_display_mode_changed_cb (Ekiga::VideoOutputManager & /* manager */, DisplayMode display,  gpointer self)
 {
   GmMainWindow *mw = gm_mw_get_mw (GTK_WIDGET (self));
 
@@ -967,13 +967,13 @@ on_display_mode_changed_cb (Ekiga::DisplayManager & /* manager */, DisplayMode d
 }
 
 void 
-on_fullscreen_mode_changed_cb (Ekiga::DisplayManager & /* manager */, FSToggle toggle,  gpointer self)
+on_fullscreen_mode_changed_cb (Ekiga::VideoOutputManager & /* manager */, FSToggle toggle,  gpointer self)
 {
   gm_main_window_toggle_fullscreen (toggle, GTK_WIDGET (self));
 }
 
 void 
-on_display_size_changed_cb (Ekiga::DisplayManager & /* manager */, unsigned width, unsigned height,  gpointer self)
+on_display_size_changed_cb (Ekiga::VideoOutputManager & /* manager */, unsigned width, unsigned height,  gpointer self)
 {
   GmMainWindow *mw = gm_mw_get_mw (GTK_WIDGET (self));
 
@@ -991,12 +991,12 @@ on_display_size_changed_cb (Ekiga::DisplayManager & /* manager */, unsigned widt
 }
 
 void 
-on_hw_accel_status_changed_cb (Ekiga::DisplayManager & /* manager */, HwAccelStatus /* hw_accel_status */, gpointer /*self*/)
+on_hw_accel_status_changed_cb (Ekiga::VideoOutputManager & /* manager */, HwAccelStatus /* hw_accel_status */, gpointer /*self*/)
 {
 }
 
 void
-on_vidinputdevice_opened_cb (Ekiga::VidInputManager & /* manager */,
+on_vidinputdevice_opened_cb (Ekiga::VideoInputManager & /* manager */,
                              Ekiga::VidInputDevice & /* vidinput_device */,
                              Ekiga::VidInputConfig &  vidinput_config,
                              gpointer self)
@@ -1020,7 +1020,7 @@ on_vidinputdevice_opened_cb (Ekiga::VidInputManager & /* manager */,
 
 
 void 
-on_vidinputdevice_closed_cb (Ekiga::VidInputManager & /* manager */, Ekiga::VidInputDevice & /*vidinput_device*/, gpointer self)
+on_vidinputdevice_closed_cb (Ekiga::VideoInputManager & /* manager */, Ekiga::VidInputDevice & /*vidinput_device*/, gpointer self)
 {
   GmMainWindow *mw = NULL;
   g_return_if_fail (self != NULL);
@@ -1034,7 +1034,7 @@ on_vidinputdevice_closed_cb (Ekiga::VidInputManager & /* manager */, Ekiga::VidI
 }
 
 void 
-on_vidinputdevice_error_cb (Ekiga::VidInputManager & /* manager */, 
+on_vidinputdevice_error_cb (Ekiga::VideoInputManager & /* manager */, 
                             Ekiga::VidInputDevice & vidinput_device, 
                             Ekiga::VidInputErrorCodes error_code, 
                             gpointer self)
@@ -1247,7 +1247,7 @@ on_audiooutputdevice_error_cb (Ekiga::AudioOutputManager & /*manager */,
 }
 
 void
-on_logo_update_required_cb (Ekiga::DisplayManager & /* manager */, 
+on_logo_update_required_cb (Ekiga::VideoOutputManager & /* manager */, 
                             gpointer self)
 {
   gm_main_window_update_logo_have_window (GTK_WIDGET (self));

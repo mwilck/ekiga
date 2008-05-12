@@ -1,4 +1,3 @@
-
 /*
  * Ekiga -- A VoIP and Video-Conferencing application
  * Copyright (C) 2000-2008 Damien Sandras
@@ -46,23 +45,23 @@ GMAudioInputManager_null::GMAudioInputManager_null (Ekiga::ServiceCore & _core)
   current_state.opened = false;
 }
 
-void GMAudioInputManager_null::get_audioinput_devices(std::vector <Ekiga::AudioInputDevice> & audioinput_devices)
+void GMAudioInputManager_null::get_devices(std::vector <Ekiga::AudioInputDevice> & devices)
 {
-  Ekiga::AudioInputDevice audioinput_device;
-  audioinput_device.type   = DEVICE_TYPE;
-  audioinput_device.source = DEVICE_SOURCE;
-  audioinput_device.device = DEVICE_DEVICE;
-  audioinput_devices.push_back(audioinput_device);
+  Ekiga::AudioInputDevice device;
+  device.type   = DEVICE_TYPE;
+  device.source = DEVICE_SOURCE;
+  device.device = DEVICE_DEVICE;
+  devices.push_back(device);
 }
 
-bool GMAudioInputManager_null::set_audioinput_device (const Ekiga::AudioInputDevice & audioinput_device)
+bool GMAudioInputManager_null::set_device (const Ekiga::AudioInputDevice & device)
 {
-  if ( ( audioinput_device.type   == DEVICE_TYPE ) &&
-       ( audioinput_device.source == DEVICE_SOURCE) &&
-       ( audioinput_device.device == DEVICE_DEVICE) ) {
+  if ( ( device.type   == DEVICE_TYPE ) &&
+       ( device.source == DEVICE_SOURCE) &&
+       ( device.device == DEVICE_DEVICE) ) {
 
-    PTRACE(4, "GMAudioInputManager_null\tSetting Device " << audioinput_device.source << "/" <<  audioinput_device.device);
-    current_state.audioinput_device = audioinput_device;
+    PTRACE(4, "GMAudioInputManager_null\tSetting Device " << device.source << "/" <<  device.device);
+    current_state.device = device;
     return true;
   }
   return false;
@@ -72,7 +71,7 @@ bool GMAudioInputManager_null::open (unsigned channels, unsigned samplerate, uns
 {
   Ekiga::AudioInputConfig audioinput_config;
 
-  PTRACE(4, "GMAudioInputManager_null\tOpening Device " << current_state.audioinput_device.source << "/" <<  current_state.audioinput_device.device);
+  PTRACE(4, "GMAudioInputManager_null\tOpening Device " << current_state.device.source << "/" <<  current_state.device.device);
   PTRACE(4, "GMAudioInputManager_null\tOpening Device with " << channels << "-" << samplerate << "/" << bits_per_sample);
 
   current_state.channels        = channels;
@@ -80,12 +79,12 @@ bool GMAudioInputManager_null::open (unsigned channels, unsigned samplerate, uns
   current_state.bits_per_sample = bits_per_sample;
   current_state.opened = true;
 
-  m_Pacing.Restart();
+  adaptive_delay.Restart();
 
   audioinput_config.volume = 0;
   audioinput_config.modifyable = false;
 
-  runtime.run_in_main (sigc::bind (audioinputdevice_opened.make_slot (), current_state.audioinput_device, audioinput_config));
+  runtime.run_in_main (sigc::bind (device_opened.make_slot (), current_state.device, audioinput_config));
 
   return true;
 }
@@ -93,7 +92,7 @@ bool GMAudioInputManager_null::open (unsigned channels, unsigned samplerate, uns
 void GMAudioInputManager_null::close()
 {
   current_state.opened = false;
-  runtime.run_in_main (sigc::bind (audioinputdevice_closed.make_slot (), current_state.audioinput_device));
+  runtime.run_in_main (sigc::bind (device_closed.make_slot (), current_state.device));
 }
 
 
@@ -109,12 +108,12 @@ bool GMAudioInputManager_null::get_frame_data (char *data,
 
   bytes_read = size;
 
-  m_Pacing.Delay(size * 8 / current_state.bits_per_sample * 1000 / current_state.samplerate);
-  
+  adaptive_delay.Delay(size * 8 / current_state.bits_per_sample * 1000 / current_state.samplerate);
+
   return true;
 }
 
-bool GMAudioInputManager_null::has_device(const std::string & /*source*/, const std::string & /*device*/, Ekiga::AudioInputDevice & /*audioinput_device*/)
+bool GMAudioInputManager_null::has_device(const std::string & /*source*/, const std::string & /*device_name*/, Ekiga::AudioInputDevice & /*device*/)
 {
   return false;
 }

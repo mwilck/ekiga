@@ -60,7 +60,7 @@ namespace Ekiga
  * @{
  */
 
-  class DisplayManager;
+  class VideoOutputManager;
 
   /** Core object for the video display support
    */
@@ -96,20 +96,20 @@ namespace Ekiga
         { return "\tDisplay Core managing Display Manager objects"; }
 
 
-      /** Adds a DisplayManager to the DisplayCore service.
+      /** Adds a VideoOutputManager to the DisplayCore service.
        * @param The manager to be added.
        */
-      void add_manager (DisplayManager &manager);
+      void add_manager (VideoOutputManager &manager);
 
-      /** Triggers a callback for all Ekiga::DisplayManager sources of the
+      /** Triggers a callback for all Ekiga::VideoOutputManager sources of the
        * DisplayCore service.
        */
-      void visit_managers (sigc::slot<bool, DisplayManager &> visitor);
+      void visit_managers (sigc::slot<bool, VideoOutputManager &> visitor);
 
-      /** This signal is emitted when a Ekiga::DisplayManager has been
+      /** This signal is emitted when a Ekiga::VideoOutputManager has been
        * added to the DisplayCore Service.
        */
-      sigc::signal<void, DisplayManager &> manager_added;
+      sigc::signal<void, VideoOutputManager &> manager_added;
 
 
       /*** Display Management ***/                 
@@ -130,24 +130,24 @@ namespace Ekiga
       
       /** See display-manager.h for the API
        */
-      sigc::signal<void, DisplayManager &, DisplayMode> display_mode_changed;
-      sigc::signal<void, DisplayManager &, FSToggle> fullscreen_mode_changed;
-      sigc::signal<void, DisplayManager &, unsigned, unsigned> display_size_changed;
-      sigc::signal<void, DisplayManager &, HwAccelStatus> hw_accel_status_changed;
-      sigc::signal<void, DisplayManager &> logo_update_required;
+      sigc::signal<void, VideoOutputManager &, DisplayMode> display_mode_changed;
+      sigc::signal<void, VideoOutputManager &, FSToggle> fullscreen_mode_changed;
+      sigc::signal<void, VideoOutputManager &, unsigned, unsigned> display_size_changed;
+      sigc::signal<void, VideoOutputManager &, HwAccelStatus> hw_accel_status_changed;
+      sigc::signal<void, VideoOutputManager &> logo_update_required;
 
       /*** Statistics ***/
       void get_display_stats (DisplayStats & _display_stats) {
         _display_stats = display_stats;
       };
   private:
-      void on_display_mode_changed (DisplayMode display, DisplayManager *manager);
-      void on_fullscreen_mode_changed (FSToggle toggle, DisplayManager *manager);
-      void on_display_size_changed ( unsigned width, unsigned height, DisplayManager *manager);
-      void on_hw_accel_status_changed (HwAccelStatus hw_accel_status, DisplayManager *manager);
-      void on_logo_update_required (DisplayManager *manager);
+      void on_display_mode_changed (DisplayMode display, VideoOutputManager *manager);
+      void on_fullscreen_mode_changed (FSToggle toggle, VideoOutputManager *manager);
+      void on_display_size_changed ( unsigned width, unsigned height, VideoOutputManager *manager);
+      void on_hw_accel_status_changed (HwAccelStatus hw_accel_status, VideoOutputManager *manager);
+      void on_logo_update_required (VideoOutputManager *manager);
 
-      std::set<DisplayManager *> managers;
+      std::set<VideoOutputManager *> managers;
 
       DisplayStats display_stats;
       GTimeVal last_stats;

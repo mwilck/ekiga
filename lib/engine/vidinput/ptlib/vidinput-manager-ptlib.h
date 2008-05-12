@@ -30,7 +30,7 @@
  *   begin                : written in 2008 by Matthias Schneider
  *   copyright            : (c) 2008 by Matthias Schneider
  *   description          : declaration of the interface of a vidinput core.
- *                          A vidinput core manages VidInputManagers.
+ *                          A vidinput core manages VideoInputManagers.
  *
  */
 
@@ -48,17 +48,17 @@
  * @{
  */
 
-  class GMVidInputManager_ptlib
-   : public Ekiga::VidInputManager
+  class GMVideoInputManager_ptlib
+   : public Ekiga::VideoInputManager
     {
   public:
 
       /* The constructor
        */
-      GMVidInputManager_ptlib (Ekiga::ServiceCore & core);
+      GMVideoInputManager_ptlib (Ekiga::ServiceCore & core);
       /* The destructor
        */
-      ~GMVidInputManager_ptlib () {}
+      ~GMVideoInputManager_ptlib () {}
 
 
       /*                 
@@ -69,9 +69,9 @@
        * @param uri  an uri
        * @return     true if a Ekiga::Call could be created
        */
-      virtual bool set_vidinput_device (const Ekiga::VidInputDevice & vidinput_device, int channel, Ekiga::VideoFormat format);
-		    
-      virtual void get_vidinput_devices(std::vector <Ekiga::VidInputDevice> & vidinput_devices);
+      virtual void get_devices(std::vector <Ekiga::VidInputDevice> & devices);
+
+      virtual bool set_device (const Ekiga::VidInputDevice & device, int channel, Ekiga::VideoFormat format);
 
       virtual bool open (unsigned width, unsigned height, unsigned fps);
 
@@ -86,7 +86,8 @@
       virtual void set_whiteness  (unsigned whiteness  );
       virtual void set_contrast   (unsigned contrast   );
 
-      virtual bool has_device     (const std::string & source, const std::string & device, unsigned capabilities, Ekiga::VidInputDevice & vidinput_device);
+      virtual bool has_device     (const std::string & source, const std::string & device_name, unsigned capabilities, Ekiga::VidInputDevice & device);
+
   protected:
       Ekiga::ServiceCore & core;
       Ekiga::Runtime & runtime;

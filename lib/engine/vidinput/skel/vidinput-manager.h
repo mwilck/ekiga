@@ -29,14 +29,14 @@
  *                         ------------------------------------------
  *   begin                : written in 2008 by Matthias Schneider
  *   copyright            : (c) 2008 by Matthias Schneider
- *   description          : Declaration of the interface of a vidinput manager
+ *   description          : Declaration of the interface of a videoinput manager
  *                          implementation backend.
  *
  */
 
 
-#ifndef __VIDINPUT_MANAGER_H__
-#define __VIDINPUT_MANAGER_H__
+#ifndef __VIDEOINPUT_MANAGER_H__
+#define __VIDEOINPUT_MANAGER_H__
 
 #include "vidinput-core.h"
 
@@ -44,33 +44,24 @@ namespace Ekiga
 {
 
 /**
- * @addtogroup vidinput
+ * @addtogroup videoinput
  * @{
  */
 
-  typedef struct ManagerState {
-    bool opened;
-    unsigned width;
-    unsigned height;
-    unsigned fps;
-    VidInputDevice vidinput_device;
-    VideoFormat format;
-    int channel;
-  };
   
 
-  class VidInputManager
+  class VideoInputManager
     {
 
   public:
 
       /* The constructor
        */
-      VidInputManager () {}
+      VideoInputManager () {}
 
       /* The destructor
        */
-      ~VidInputManager () {}
+      ~VideoInputManager () {}
 
 
       /*                 
@@ -82,35 +73,41 @@ namespace Ekiga
        * @return     true if a Ekiga::Call could be created
        */
 
-      virtual void get_vidinput_devices (std::vector <VidInputDevice> & vidinput_devices) = 0;
+      virtual void get_devices (std::vector <VidInputDevice> & devices) = 0;
 
-      virtual bool set_vidinput_device (const VidInputDevice & vidinput_device, int channel, VideoFormat format) = 0;
+      virtual bool set_device (const VidInputDevice & device, int channel, VideoFormat format) = 0;
 
       virtual void set_image_data (unsigned /* width */, unsigned /* height */, const char* /*data*/ ) {};
 
       virtual bool open (unsigned width, unsigned height, unsigned fps) = 0;
 
+      virtual void close() {};
+
       virtual bool get_frame_data (unsigned & width,
                            unsigned & height,
                            char *data) = 0;
-
-      virtual void close() {};
-
 
       virtual void set_colour     (unsigned /* colour     */ ) {};
       virtual void set_brightness (unsigned /* brightness */ ) {};
       virtual void set_whiteness  (unsigned /* whiteness  */ ) {};
       virtual void set_contrast   (unsigned /* contrast   */ ) {};
 
-      virtual bool has_device     (const std::string & source, const std::string & device, unsigned capabilities, VidInputDevice & vidinput_device) = 0;
+      virtual bool has_device     (const std::string & source, const std::string & device_name, unsigned capabilities, VidInputDevice & device) = 0;
       
-      sigc::signal<void, VidInputDevice, VidInputErrorCodes> vidinputdevice_error;
-      sigc::signal<void, VidInputDevice> vidinputdevice_added;
-      sigc::signal<void, VidInputDevice> vidinputdevice_removed;
-      sigc::signal<void, VidInputDevice, VidInputConfig> vidinputdevice_opened;
-      sigc::signal<void, VidInputDevice> vidinputdevice_closed;
+      sigc::signal<void, VidInputDevice, VidInputErrorCodes> device_error;
+      sigc::signal<void, VidInputDevice, VidInputConfig> device_opened;
+      sigc::signal<void, VidInputDevice> device_closed;
 
   protected:  
+      typedef struct ManagerState {
+        bool opened;
+        unsigned width;
+        unsigned height;
+        unsigned fps;
+        VidInputDevice device;
+        VideoFormat format;
+        int channel;
+      };
       ManagerState current_state;
   };
 /**

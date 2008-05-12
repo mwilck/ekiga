@@ -71,9 +71,9 @@
        * @param uri  an uri
        * @return     true if a Ekiga::Call could be created
        */
-      virtual bool set_audioinput_device (const Ekiga::AudioInputDevice & audioinput_device);
+      virtual bool set_device (const Ekiga::AudioInputDevice & device);
 		    
-      virtual void get_audioinput_devices(std::vector <Ekiga::AudioInputDevice> & audioinput_devices);
+      virtual void get_devices(std::vector <Ekiga::AudioInputDevice> & devices);
 
       virtual bool open (unsigned channels, unsigned samplerate, unsigned bits_per_sample);
 
@@ -84,13 +84,13 @@
                                    unsigned & bytes_read);
 
 
-      virtual bool has_device     (const std::string & source, const std::string & device, Ekiga::AudioInputDevice & audioinput_device);
+      virtual bool has_device     (const std::string & source, const std::string & device_name, Ekiga::AudioInputDevice & device);
       
   protected:
       Ekiga::ServiceCore & core;
       Ekiga::Runtime & runtime;
 
-      PAdaptiveDelay m_Pacing;
+      PAdaptiveDelay adaptive_delay;
   };
 /**
  * @}

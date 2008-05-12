@@ -165,9 +165,9 @@ void AudioInputCore::add_manager (AudioInputManager &manager)
   managers.insert (&manager);
   manager_added.emit (manager);
 
-  manager.audioinputdevice_error.connect   (sigc::bind (sigc::mem_fun (this, &AudioInputCore::on_audioinputdevice_error), &manager));
-  manager.audioinputdevice_opened.connect  (sigc::bind (sigc::mem_fun (this, &AudioInputCore::on_audioinputdevice_opened), &manager));
-  manager.audioinputdevice_closed.connect  (sigc::bind (sigc::mem_fun (this, &AudioInputCore::on_audioinputdevice_closed), &manager));
+  manager.device_error.connect   (sigc::bind (sigc::mem_fun (this, &AudioInputCore::on_audioinputdevice_error), &manager));
+  manager.device_opened.connect  (sigc::bind (sigc::mem_fun (this, &AudioInputCore::on_audioinputdevice_opened), &manager));
+  manager.device_closed.connect  (sigc::bind (sigc::mem_fun (this, &AudioInputCore::on_audioinputdevice_closed), &manager));
 }
 
 
@@ -191,7 +191,7 @@ void AudioInputCore::get_audioinput_devices (std::vector <AudioInputDevice> & au
   for (std::set<AudioInputManager *>::iterator iter = managers.begin ();
        iter != managers.end ();
        iter++)
-    (*iter)->get_audioinput_devices (audioinput_devices);
+    (*iter)->get_devices (audioinput_devices);
 
   if (PTrace::CanTrace(4)) {
      for (std::vector<AudioInputDevice>::iterator iter = audioinput_devices.begin ();
@@ -421,7 +421,7 @@ void AudioInputCore::internal_set_device (const AudioInputDevice & audioinput_de
   for (std::set<AudioInputManager *>::iterator iter = managers.begin ();
        iter != managers.end ();
        iter++) {
-     if ((*iter)->set_audioinput_device (audioinput_device)) {
+     if ((*iter)->set_device (audioinput_device)) {
        current_manager = (*iter);
      }
   }

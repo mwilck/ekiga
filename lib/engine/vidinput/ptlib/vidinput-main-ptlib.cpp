@@ -53,7 +53,7 @@ vidinput_ptlib_init (Ekiga::ServiceCore &core,
 
   if (vidinput_core != NULL) {
 
-    GMVidInputManager_ptlib *vidinput_manager = new GMVidInputManager_ptlib(core);
+    GMVideoInputManager_ptlib *vidinput_manager = new GMVideoInputManager_ptlib(core);
 
     vidinput_core->add_manager (*vidinput_manager);
     result = true;

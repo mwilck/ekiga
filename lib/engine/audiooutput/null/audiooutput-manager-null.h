@@ -71,9 +71,9 @@
        * @return     true if a Ekiga::Call could be created
        */
 
-      virtual void get_audiooutput_devices (std::vector <Ekiga::AudioOutputDevice> & audiooutput_devices);
+      virtual void get_devices (std::vector <Ekiga::AudioOutputDevice> & devices);
 
-      virtual bool set_audiooutput_device (Ekiga::AudioOutputPrimarySecondary primarySecondary, const Ekiga::AudioOutputDevice & audiooutput_device);
+      virtual bool set_device (Ekiga::AudioOutputPrimarySecondary primarySecondary, const Ekiga::AudioOutputDevice & device);
 
       virtual bool open (Ekiga::AudioOutputPrimarySecondary primarySecondary, unsigned channels, unsigned samplerate, unsigned bits_per_sample);
 
@@ -83,13 +83,13 @@
                                    char *data, 
                                    unsigned size,
 				   unsigned & written);
-      virtual bool has_device     (const std::string & sink, const std::string & device, Ekiga::AudioOutputDevice & audiooutput_device);
+      virtual bool has_device     (const std::string & sink, const std::string & device_name, Ekiga::AudioOutputDevice & device);
 
     protected:
       Ekiga::ServiceCore & core;
       Ekiga::Runtime & runtime;
 
-      PAdaptiveDelay m_Pacing[2];
+      PAdaptiveDelay adaptive_delay[2];
 
   };
 /**

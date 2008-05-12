@@ -47,16 +47,6 @@ namespace Ekiga
  * @addtogroup vidinput
  * @{
  */
-
-  typedef struct ManagerState {
-    bool opened;
-    unsigned channels;
-    unsigned samplerate;
-    unsigned bits_per_sample;
-    AudioOutputDevice audiooutput_device;
-  };
-  
-
   class AudioOutputManager
     {
 
@@ -80,30 +70,37 @@ namespace Ekiga
        * @return     true if a Ekiga::Call could be created
        */
 
-      virtual void get_audiooutput_devices (std::vector <AudioOutputDevice> & audiooutput_devices) = 0;
+      virtual void get_devices (std::vector <AudioOutputDevice> & devices) = 0;
 
-      virtual bool set_audiooutput_device (AudioOutputPrimarySecondary primarySecondary, const AudioOutputDevice & audiooutput_device) = 0;
+      virtual bool set_device (AudioOutputPrimarySecondary primarySecondary, const AudioOutputDevice & device) = 0;
 
       virtual bool open (AudioOutputPrimarySecondary primarySecondary, unsigned channels, unsigned samplerate, unsigned bits_per_sample) = 0;
 
       virtual void set_buffer_size (AudioOutputPrimarySecondary /*primarySecondary*/, unsigned /*buffer_size*/, unsigned /*num_buffers*/) {};
 
       virtual bool set_frame_data (AudioOutputPrimarySecondary primarySecondary, 
-                                   char *data, 
+                                   char *data,
                                    unsigned size,
-				   unsigned & written) = 0;
+                                   unsigned & written) = 0;
 
-      virtual void close(AudioOutputPrimarySecondary /*primarySecondary*/) {};
+      virtual void close (AudioOutputPrimarySecondary /*primarySecondary*/) {};
 
       virtual void set_volume (AudioOutputPrimarySecondary /*primarySecondary*/, unsigned /* volume */ ) {};
 
-      virtual bool has_device     (const std::string & sink, const std::string & device, AudioOutputDevice & audiooutput_device) = 0;
-      
-      sigc::signal<void, AudioOutputPrimarySecondary, AudioOutputDevice, AudioOutputErrorCodes> audiooutputdevice_error;
-      sigc::signal<void, AudioOutputPrimarySecondary, AudioOutputDevice, AudioOutputConfig> audiooutputdevice_opened;
-      sigc::signal<void, AudioOutputPrimarySecondary, AudioOutputDevice> audiooutputdevice_closed;
+      virtual bool has_device (const std::string & sink, const std::string & device_name, AudioOutputDevice & device) = 0;
+
+      sigc::signal<void, AudioOutputPrimarySecondary, AudioOutputDevice, AudioOutputErrorCodes> device_error;
+      sigc::signal<void, AudioOutputPrimarySecondary, AudioOutputDevice, AudioOutputConfig> device_opened;
+      sigc::signal<void, AudioOutputPrimarySecondary, AudioOutputDevice> device_closed;
 
   protected:  
+      typedef struct ManagerState {
+        bool opened;
+        unsigned channels;
+        unsigned samplerate;
+        unsigned bits_per_sample;
+        AudioOutputDevice device;
+      };
       ManagerState current_state[2];
   };
 /**

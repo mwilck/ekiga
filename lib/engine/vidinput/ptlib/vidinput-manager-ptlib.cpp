@@ -30,7 +30,7 @@
  *   begin                : written in 2008 by Matthias Schneider
  *   copyright            : (c) 2008 by Matthias Schneider
  *   description          : declaration of the interface of a vidinput core.
- *                          A vidinput core manages VidInputManagers.
+ *                          A vidinput core manages VideoInputManagers.
  *
  */
 
@@ -40,7 +40,7 @@
 
 #define DEVICE_TYPE "PTLIB"
 
-GMVidInputManager_ptlib::GMVidInputManager_ptlib (Ekiga::ServiceCore & _core)
+GMVideoInputManager_ptlib::GMVideoInputManager_ptlib (Ekiga::ServiceCore & _core)
 :    core (_core), runtime (*(dynamic_cast<Ekiga::Runtime *> (_core.get ("runtime"))))
 {
   current_state.opened = false;
@@ -48,31 +48,31 @@ GMVidInputManager_ptlib::GMVidInputManager_ptlib (Ekiga::ServiceCore & _core)
   expectedFrameSize = 0;
 }
 
-void GMVidInputManager_ptlib::get_vidinput_devices(std::vector <Ekiga::VidInputDevice> & vidinput_devices)
+void GMVideoInputManager_ptlib::get_devices(std::vector <Ekiga::VidInputDevice> & devices)
 {
   PStringArray video_sources;
   PStringArray video_devices;
   char **sources_array;
   char **devices_array;
 
-  Ekiga::VidInputDevice vidinput_device;
-  vidinput_device.type   = DEVICE_TYPE;
+  Ekiga::VidInputDevice device;
+  device.type   = DEVICE_TYPE;
 
   video_sources = PVideoInputDevice::GetDriverNames ();
   sources_array = video_sources.ToCharArray ();
   for (PINDEX i = 0; sources_array[i] != NULL; i++) {
 
-    vidinput_device.source = sources_array[i];
+    device.source = sources_array[i];
 
-    if ( (vidinput_device.source != "FakeVideo") &&
-         (vidinput_device.source != "EKIGA"    ) ) {
-      video_devices = PVideoInputDevice::GetDriversDeviceNames (vidinput_device.source);
+    if ( (device.source != "FakeVideo") &&
+         (device.source != "EKIGA"    ) ) {
+      video_devices = PVideoInputDevice::GetDriversDeviceNames (device.source);
       devices_array = video_devices.ToCharArray ();
   
       for (PINDEX j = 0; devices_array[j] != NULL; j++) {
   
-        vidinput_device.device = devices_array[j];
-        vidinput_devices.push_back(vidinput_device);  
+        device.device = devices_array[j];
+        devices.push_back(device);  
       }
       free (devices_array);
     }
@@ -80,12 +80,12 @@ void GMVidInputManager_ptlib::get_vidinput_devices(std::vector <Ekiga::VidInputD
   free (sources_array);
 }
 
-bool GMVidInputManager_ptlib::set_vidinput_device (const Ekiga::VidInputDevice & vidinput_device, int channel, Ekiga::VideoFormat format)
+bool GMVideoInputManager_ptlib::set_device (const Ekiga::VidInputDevice & device, int channel, Ekiga::VideoFormat format)
 {
-  if ( vidinput_device.type == DEVICE_TYPE ) {
+  if ( device.type == DEVICE_TYPE ) {
 
-    PTRACE(4, "GMVidInputManager_ptlib\tSetting Device " << vidinput_device.source << "/" <<  vidinput_device.device);
-    current_state.vidinput_device = vidinput_device;  
+    PTRACE(4, "GMVideoInputManager_ptlib\tSetting Device " << device.source << "/" <<  device.device);
+    current_state.device = device;  
     current_state.channel = channel;
     current_state.format = format;
     return true;
@@ -94,14 +94,14 @@ bool GMVidInputManager_ptlib::set_vidinput_device (const Ekiga::VidInputDevice &
   return false;
 }
 
-bool GMVidInputManager_ptlib::open (unsigned width, unsigned height, unsigned fps)
+bool GMVideoInputManager_ptlib::open (unsigned width, unsigned height, unsigned fps)
 {
   PVideoDevice::VideoFormat pvideo_format;
   int whiteness, brightness, colour, contrast, hue;
   Ekiga::VidInputConfig vidinput_config;
 
-  PTRACE(4, "GMVidInputManager_ptlib\tOpening Device " << current_state.vidinput_device.source << "/" <<  current_state.vidinput_device.device);
-  PTRACE(4, "GMVidInputManager_ptlib\tOpening Device with " << width << "x" << height << "/" << fps);
+  PTRACE(4, "GMVideoInputManager_ptlib\tOpening Device " << current_state.device.source << "/" <<  current_state.device.device);
+  PTRACE(4, "GMVideoInputManager_ptlib\tOpening Device with " << width << "x" << height << "/" << fps);
 
   current_state.width  = width;
   current_state.height = height;
@@ -109,7 +109,7 @@ bool GMVidInputManager_ptlib::open (unsigned width, unsigned height, unsigned fp
   expectedFrameSize = (width * height * 3) >> 1;
 
   pvideo_format = (PVideoDevice::VideoFormat)current_state.format;
-  input_device = PVideoInputDevice::CreateOpenedDevice (current_state.vidinput_device.source, current_state.vidinput_device.device, FALSE);
+  input_device = PVideoInputDevice::CreateOpenedDevice (current_state.device.source, current_state.device.device, FALSE);
 
   Ekiga::VidInputErrorCodes error_code = Ekiga::ERR_NONE;
   if (!input_device)
@@ -127,8 +127,8 @@ bool GMVidInputManager_ptlib::open (unsigned width, unsigned height, unsigned fp
   else input_device->Start ();
 
   if (error_code != Ekiga::ERR_NONE) {
-    PTRACE(1, "GMVidInputManager_ptlib\tEncountered error " << error_code << " while opening device ");
-    runtime.run_in_main (sigc::bind (vidinputdevice_error.make_slot (), current_state.vidinput_device, error_code));
+    PTRACE(1, "GMVideoInputManager_ptlib\tEncountered error " << error_code << " while opening device ");
+    runtime.run_in_main (sigc::bind (device_error.make_slot (), current_state.device, error_code));
     return false;
   }
 
@@ -141,29 +141,29 @@ bool GMVidInputManager_ptlib::open (unsigned width, unsigned height, unsigned fp
   vidinput_config.contrast = contrast >> 8;
   vidinput_config.modifyable = true;
 
-  runtime.run_in_main (sigc::bind (vidinputdevice_opened.make_slot (), current_state.vidinput_device, vidinput_config));
+  runtime.run_in_main (sigc::bind (device_opened.make_slot (), current_state.device, vidinput_config));
 
   return true;
 }
 
-void GMVidInputManager_ptlib::close()
+void GMVideoInputManager_ptlib::close()
 {
-  PTRACE(4, "GMVidInputManager_ptlib\tClosing device " << current_state.vidinput_device.source << "/" <<  current_state.vidinput_device.device);
+  PTRACE(4, "GMVideoInputManager_ptlib\tClosing device " << current_state.device.source << "/" <<  current_state.device.device);
   if (input_device) {
     delete input_device;
     input_device = NULL;
   }
   current_state.opened = false;
-  runtime.run_in_main (sigc::bind (vidinputdevice_closed.make_slot (), current_state.vidinput_device));
+  runtime.run_in_main (sigc::bind (device_closed.make_slot (), current_state.device));
 }
 
-bool GMVidInputManager_ptlib::get_frame_data (unsigned & width,
+bool GMVideoInputManager_ptlib::get_frame_data (unsigned & width,
                      unsigned & height,
                      char *data)
 {
   bool ret = false;
   if (!current_state.opened) {
-    PTRACE(1, "GMVidInputManager_ptlib\tTrying to get frame from closed device");
+    PTRACE(1, "GMVideoInputManager_ptlib\tTrying to get frame from closed device");
     return false;
   }
 
@@ -176,53 +176,53 @@ bool GMVidInputManager_ptlib::get_frame_data (unsigned & width,
     ret = input_device->GetFrameData ((BYTE*)data, &I);
 
   if ((unsigned) I != expectedFrameSize) {
-    PTRACE(1, "GMVidInputManager_ptlib\tExpected a frame of " << expectedFrameSize << " bytes but got " << I << " bytes");
+    PTRACE(1, "GMVideoInputManager_ptlib\tExpected a frame of " << expectedFrameSize << " bytes but got " << I << " bytes");
     ret = false;
   }
   return ret;
 }
 
-void GMVidInputManager_ptlib::set_colour (unsigned colour)
+void GMVideoInputManager_ptlib::set_colour (unsigned colour)
 {
-  PTRACE(4, "GMVidInputManager_ptlib\tSetting colour to " << colour);
+  PTRACE(4, "GMVideoInputManager_ptlib\tSetting colour to " << colour);
   if (input_device)
     input_device->SetColour(colour << 8);
 }
 
-void GMVidInputManager_ptlib::set_brightness (unsigned brightness)
+void GMVideoInputManager_ptlib::set_brightness (unsigned brightness)
 {
-  PTRACE(4, "GMVidInputManager_ptlib\tSetting brightness to " << brightness);
+  PTRACE(4, "GMVideoInputManager_ptlib\tSetting brightness to " << brightness);
   if (input_device)
     input_device->SetBrightness(brightness << 8);
 }
 
-void GMVidInputManager_ptlib::set_whiteness (unsigned whiteness)
+void GMVideoInputManager_ptlib::set_whiteness (unsigned whiteness)
 {
-  PTRACE(4, "GMVidInputManager_ptlib\tSetting whiteness to " << whiteness);
+  PTRACE(4, "GMVideoInputManager_ptlib\tSetting whiteness to " << whiteness);
   if (input_device)
     input_device->SetWhiteness(whiteness << 8);
 }
 
-void GMVidInputManager_ptlib::set_contrast (unsigned contrast)
+void GMVideoInputManager_ptlib::set_contrast (unsigned contrast)
 {
-  PTRACE(4, "GMVidInputManager_ptlib\tSetting contrast to " << contrast);
+  PTRACE(4, "GMVideoInputManager_ptlib\tSetting contrast to " << contrast);
   if (input_device)
     input_device->SetContrast(contrast << 8);
 }
 
-bool GMVidInputManager_ptlib::has_device(const std::string & source, const std::string & device, unsigned capabilities, Ekiga::VidInputDevice & vidinput_device)
+bool GMVideoInputManager_ptlib::has_device(const std::string & source, const std::string & device_name, unsigned capabilities, Ekiga::VidInputDevice & device)
 {
   if (source == "video4linux") {
     if (capabilities & 0x01) {
-      vidinput_device.type = DEVICE_TYPE;
-      vidinput_device.source = "V4L";
-      vidinput_device.device = device;
+      device.type = DEVICE_TYPE;
+      device.source = "V4L";
+      device.device = device_name;
       return true;
     }
     if (capabilities & 0x02) {
-      vidinput_device.type = DEVICE_TYPE;
-      vidinput_device.source = "V4L2";
-      vidinput_device.device = device;
+      device.type = DEVICE_TYPE;
+      device.source = "V4L2";
+      device.device = device_name;
       return true;
     }
     return false;

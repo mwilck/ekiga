@@ -35,8 +35,8 @@
  */
 
 
-#ifndef __DISPLAY_MANAGER_H__
-#define __DISPLAY_MANAGER_H__
+#ifndef __VIDEOOUTPUT_MANAGER_H__
+#define __VIDEOOUTPUT_MANAGER_H__
 
 #include "display-core.h"
 
@@ -48,18 +48,18 @@ namespace Ekiga
  * @{
  */
 
-  class DisplayManager
+  class VideoOutputManager
     {
 
   public:
 
       /* The constructor
        */
-      DisplayManager () {}
+      VideoOutputManager () {}
 
       /* The destructor
        */
-      ~DisplayManager () {}
+      ~VideoOutputManager () {}
 
 
       /*                 

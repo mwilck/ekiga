@@ -48,13 +48,6 @@ namespace Ekiga
  * @{
  */
 
-  typedef struct ManagerState {
-    bool opened;
-    unsigned channels;
-    unsigned samplerate;
-    unsigned bits_per_sample;
-    AudioInputDevice audioinput_device;
-  };
   
 
   class AudioInputManager
@@ -80,11 +73,13 @@ namespace Ekiga
        * @return     true if a Ekiga::Call could be created
        */
 
-      virtual void get_audioinput_devices (std::vector <AudioInputDevice> & audioinput_devices) = 0;
+      virtual void get_devices (std::vector <AudioInputDevice> & _devices) = 0;
 
-      virtual bool set_audioinput_device (const AudioInputDevice & audioinput_device) = 0;
+      virtual bool set_device (const AudioInputDevice & device) = 0;
 
       virtual bool open (unsigned channels, unsigned samplerate, unsigned bits_per_sample) = 0;
+
+      virtual void close() {};
 
       virtual void set_buffer_size (unsigned /*buffer_size*/, unsigned /*num_buffers*/) {};
 
@@ -92,17 +87,22 @@ namespace Ekiga
                                    unsigned size,
 				   unsigned & bytes_read) = 0;
 
-      virtual void close() {};
+      virtual void set_volume     (unsigned /* volume */ ) {};
 
-      virtual void set_volume     (unsigned /* volume     */ ) {};
+      virtual bool has_device     (const std::string & source, const std::string & device_name, AudioInputDevice & device) = 0;
 
-      virtual bool has_device     (const std::string & source, const std::string & device, AudioInputDevice & audioinput_device) = 0;
-
-      sigc::signal<void, AudioInputDevice, AudioInputErrorCodes> audioinputdevice_error;
-      sigc::signal<void, AudioInputDevice, AudioInputConfig> audioinputdevice_opened;
-      sigc::signal<void, AudioInputDevice> audioinputdevice_closed;
+      sigc::signal<void, AudioInputDevice, AudioInputErrorCodes> device_error;
+      sigc::signal<void, AudioInputDevice, AudioInputConfig> device_opened;
+      sigc::signal<void, AudioInputDevice> device_closed;
 
   protected:  
+      typedef struct ManagerState {
+        bool opened;
+        unsigned channels;
+        unsigned samplerate;
+        unsigned bits_per_sample;
+        AudioInputDevice device;
+      };
       ManagerState current_state;
   };
 /**

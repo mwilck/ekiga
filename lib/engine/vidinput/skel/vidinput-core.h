@@ -65,7 +65,7 @@ namespace Ekiga
     VidInputConfig settings;
   };
 
-  class VidInputManager;
+  class VideoInputManager;
   class VidInputCore;
 				      
   class PreviewManager : public PThread
@@ -126,23 +126,23 @@ namespace Ekiga
        * @return The service description.
        */
       const std::string get_description () const
-        { return "\tVidInput Core managing VidInput Manager objects"; }
+        { return "\tVidInput Core managing VideoInput Manager objects"; }
 
 
       /** Adds a VidInputManager to the VidInputCore service.
        * @param The manager to be added.
        */
-       void add_manager (VidInputManager &manager);
+       void add_manager (VideoInputManager &manager);
 
-      /** Triggers a callback for all Ekiga::VidInputManager sources of the
+      /** Triggers a callback for all Ekiga::VideoInputManager sources of the
        * VidInputCore service.
        */
-       void visit_managers (sigc::slot<bool, VidInputManager &> visitor);
+       void visit_managers (sigc::slot<bool, VideoInputManager &> visitor);
 
-      /** This signal is emitted when a Ekiga::VidInputManager has been
+      /** This signal is emitted when a Ekiga::VideoInputManager has been
        * added to the VidInputCore Service.
        */
-       sigc::signal<void, VidInputManager &> manager_added;
+       sigc::signal<void, VideoInputManager &> manager_added;
 
 
       void get_vidinput_devices(std::vector <VidInputDevice> & vidinput_devices);
@@ -183,18 +183,18 @@ namespace Ekiga
       
       /** See vidinput-manager.h for the API
        */
-      sigc::signal<void, VidInputManager &, VidInputDevice &, VidInputErrorCodes> vidinputdevice_error;
+      sigc::signal<void, VideoInputManager &, VidInputDevice &, VidInputErrorCodes> vidinputdevice_error;
       sigc::signal<void, VidInputDevice> vidinputdevice_added;
       sigc::signal<void, VidInputDevice> vidinputdevice_removed;
-      sigc::signal<void, VidInputManager &, VidInputDevice &, VidInputConfig&> vidinputdevice_opened;
-      sigc::signal<void, VidInputManager &, VidInputDevice &> vidinputdevice_closed;
+      sigc::signal<void, VideoInputManager &, VidInputDevice &, VidInputConfig&> vidinputdevice_opened;
+      sigc::signal<void, VideoInputManager &, VidInputDevice &> vidinputdevice_closed;
 
   private:
-      void on_vidinputdevice_error (VidInputDevice vidinput_device, VidInputErrorCodes error_code, VidInputManager *manager);
+      void on_vidinputdevice_error (VidInputDevice vidinput_device, VidInputErrorCodes error_code, VideoInputManager *manager);
       void on_vidinputdevice_opened (VidInputDevice vidinput_device,  
                                      VidInputConfig vidinput_config, 
-                                     VidInputManager *manager);
-      void on_vidinputdevice_closed (VidInputDevice vidinput_device, VidInputManager *manager);
+                                     VideoInputManager *manager);
+      void on_vidinputdevice_closed (VidInputDevice vidinput_device, VideoInputManager *manager);
 
       void internal_set_vidinput_device(const VidInputDevice & vidinput_device, int channel, VideoFormat format);
       void internal_open (unsigned width, unsigned height, unsigned fps);
@@ -204,7 +204,7 @@ namespace Ekiga
       void apply_settings();
 
 
-      std::set<VidInputManager *> managers;
+      std::set<VideoInputManager *> managers;
 
       Ekiga::Runtime & runtime;
 
@@ -214,7 +214,7 @@ namespace Ekiga
       VidInputConfig new_stream_settings; 
       VidInputConfig new_preview_settings;
 
-      VidInputManager* current_manager;
+      VideoInputManager* current_manager;
       VidInputDevice desired_device;
       VidInputDevice current_device;
       Ekiga::VideoFormat current_format;

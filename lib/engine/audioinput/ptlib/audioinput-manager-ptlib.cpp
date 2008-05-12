@@ -48,30 +48,30 @@ GMAudioInputManager_ptlib::GMAudioInputManager_ptlib (Ekiga::ServiceCore & _core
   expectedFrameSize = 0;
 }
 
-void GMAudioInputManager_ptlib::get_audioinput_devices(std::vector <Ekiga::AudioInputDevice> & audioinput_devices)
+void GMAudioInputManager_ptlib::get_devices(std::vector <Ekiga::AudioInputDevice> & devices)
 {
   PStringArray audio_sources;
   PStringArray audio_devices;
   char **sources_array;
   char **devices_array;
 
-  Ekiga::AudioInputDevice audioinput_device;
-  audioinput_device.type   = DEVICE_TYPE;
+  Ekiga::AudioInputDevice device;
+  device.type   = DEVICE_TYPE;
 
   audio_sources = PSoundChannel::GetDriverNames ();
   sources_array = audio_sources.ToCharArray ();
   for (PINDEX i = 0; sources_array[i] != NULL; i++) {
 
-    audioinput_device.source = sources_array[i];
+    device.source = sources_array[i];
 
-    if (audioinput_device.source != "EKIGA") {
-      audio_devices = PSoundChannel::GetDeviceNames (audioinput_device.source, PSoundChannel::Recorder);
+    if (device.source != "EKIGA") {
+      audio_devices = PSoundChannel::GetDeviceNames (device.source, PSoundChannel::Recorder);
       devices_array = audio_devices.ToCharArray ();
 
       for (PINDEX j = 0; devices_array[j] != NULL; j++) {
 
-        audioinput_device.device = devices_array[j];
-        audioinput_devices.push_back(audioinput_device);
+        device.device = devices_array[j];
+        devices.push_back(device);
       }
       free (devices_array);
     }
@@ -79,12 +79,12 @@ void GMAudioInputManager_ptlib::get_audioinput_devices(std::vector <Ekiga::Audio
   free (sources_array);
 }
 
-bool GMAudioInputManager_ptlib::set_audioinput_device (const Ekiga::AudioInputDevice & audioinput_device)
+bool GMAudioInputManager_ptlib::set_device (const Ekiga::AudioInputDevice & device)
 {
-  if ( audioinput_device.type == DEVICE_TYPE ) {
+  if ( device.type == DEVICE_TYPE ) {
 
-    PTRACE(4, "GMAudioInputManager_ptlib\tSetting Device " << audioinput_device.source << "/" <<  audioinput_device.device);
-    current_state.audioinput_device = audioinput_device;  
+    PTRACE(4, "GMAudioInputManager_ptlib\tSetting Device " << device.source << "/" <<  device.device);
+    current_state.device = device;
     return true;
   }
 
@@ -96,15 +96,15 @@ bool GMAudioInputManager_ptlib::open (unsigned channels, unsigned samplerate, un
   unsigned volume;
   Ekiga::AudioInputConfig audioinput_config;
 
-  PTRACE(4, "GMAudioInputManager_ptlib\tOpening Device " << current_state.audioinput_device.source << "/" <<  current_state.audioinput_device.device);
+  PTRACE(4, "GMAudioInputManager_ptlib\tOpening Device " << current_state.device.source << "/" <<  current_state.device.device);
   PTRACE(4, "GMAudioInputManager_ptlib\tOpening Device with " << channels << "-" << samplerate << "/" << bits_per_sample);
 
   current_state.channels        = channels;
   current_state.samplerate      = samplerate;
   current_state.bits_per_sample = bits_per_sample;
 
-  input_device = PSoundChannel::CreateOpenedChannel (current_state.audioinput_device.source, 
-                                                     current_state.audioinput_device.device,
+  input_device = PSoundChannel::CreateOpenedChannel (current_state.device.source, 
+                                                     current_state.device.device,
                                                      PSoundChannel::Recorder,
                                                      channels,
                                                      samplerate,
@@ -116,7 +116,7 @@ bool GMAudioInputManager_ptlib::open (unsigned channels, unsigned samplerate, un
 
   if (error_code != Ekiga::AUDIO_ERR_NONE) {
     PTRACE(1, "GMAudioInputManager_ptlib\tEncountered error " << error_code << " while opening device ");
-    runtime.run_in_main (sigc::bind (audioinputdevice_error.make_slot (), current_state.audioinput_device, error_code));
+    runtime.run_in_main (sigc::bind (device_error.make_slot (), current_state.device, error_code));
     return false;
   }
 
@@ -126,20 +126,20 @@ bool GMAudioInputManager_ptlib::open (unsigned channels, unsigned samplerate, un
   audioinput_config.volume = volume;
   audioinput_config.modifyable = true;
 
-  runtime.run_in_main (sigc::bind (audioinputdevice_opened.make_slot (), current_state.audioinput_device, audioinput_config));
+  runtime.run_in_main (sigc::bind (device_opened.make_slot (), current_state.device, audioinput_config));
 
   return true;
 }
 
 void GMAudioInputManager_ptlib::close()
 {
-  PTRACE(4, "GMAudioInputManager_ptlib\tClosing device " << current_state.audioinput_device.source << "/" <<  current_state.audioinput_device.device);
+  PTRACE(4, "GMAudioInputManager_ptlib\tClosing device " << current_state.device.source << "/" <<  current_state.device.device);
   if (input_device) {
      delete input_device;
      input_device = NULL;
   }
   current_state.opened = false;
-  runtime.run_in_main (sigc::bind (audioinputdevice_closed.make_slot (), current_state.audioinput_device));
+  runtime.run_in_main (sigc::bind (device_closed.make_slot (), current_state.device));
 }
 
 void GMAudioInputManager_ptlib::set_buffer_size (unsigned buffer_size, unsigned num_buffers)
@@ -170,7 +170,7 @@ bool GMAudioInputManager_ptlib::get_frame_data (char *data,
     }
     else {
       PTRACE(1, "GMAudioInputManager_ptlib\tEncountered error while trying to read data");
-      runtime.run_in_main (sigc::bind (audioinputdevice_error.make_slot (), current_state.audioinput_device, Ekiga::AUDIO_ERR_READ));
+      runtime.run_in_main (sigc::bind (device_error.make_slot (), current_state.device, Ekiga::AUDIO_ERR_READ));
     }
   }
   return ret;
@@ -183,18 +183,18 @@ void GMAudioInputManager_ptlib::set_volume (unsigned volume)
     input_device->SetVolume(volume);
 }
 
-bool GMAudioInputManager_ptlib::has_device(const std::string & source, const std::string & device, Ekiga::AudioInputDevice & audioinput_device)
+bool GMAudioInputManager_ptlib::has_device(const std::string & source, const std::string & device_name, Ekiga::AudioInputDevice & device)
 {
   if (source == "alsa") {
-    audioinput_device.type = DEVICE_TYPE;
-    audioinput_device.source = "ALSA";
-    audioinput_device.device = device;    
+    device.type = DEVICE_TYPE;
+    device.source = "ALSA";
+    device.device = device_name;
     return true;
   }
 /*  if (source == "oss") {
-    audioinput_device.type = DEVICE_TYPE;
-    audioinput_device.source = "OSS";
-    audioinput_device.device = device;    
+    device.type = DEVICE_TYPE;
+    device.source = "OSS";
+    device.device = device;
     return true;
   }*/
   return false;

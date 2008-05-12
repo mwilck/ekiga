@@ -73,25 +73,25 @@ typedef struct {
 } UpdateRequired;
 
 
-class GMDisplayManager
+class GMVideoOutputManager
    : public PThread,
-     public Ekiga::DisplayManager
+     public Ekiga::VideoOutputManager
 {
-  PCLASSINFO(GMDisplayManager, PThread); 
+  PCLASSINFO(GMVideoOutputManager, PThread); 
 public:
 
   /* DESCRIPTION  :  The constructor.
    * BEHAVIOR     :  Initialises the VideoDisplay_embedded.
    * PRE          :  /
    */
-  GMDisplayManager (Ekiga::ServiceCore & core);
+  GMVideoOutputManager (Ekiga::ServiceCore & core);
 
 
   /* DESCRIPTION  :  The destructor.
    * BEHAVIOR     :  /
    * PRE          :  /
   */
-  virtual ~GMDisplayManager (void);
+  virtual ~GMVideoOutputManager (void);
 
   virtual void start ();
 

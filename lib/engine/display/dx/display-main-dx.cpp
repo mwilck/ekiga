@@ -52,9 +52,9 @@ display_dx_init (Ekiga::ServiceCore &core,
 
   if (display_core != NULL) {
 
-    GMDisplayManager_dx *display_manager = new GMDisplayManager_dx(core);
+    GMVideoOutputManager_dx *videooutput_manager = new GMVideoOutputManager_dx(core);
 
-    display_core->add_manager (*display_manager);
+    display_core->add_manager (*videooutput_manager);
     result = true;
   }
 
