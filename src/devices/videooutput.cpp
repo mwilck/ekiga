@@ -155,7 +155,7 @@ bool PVideoOutputDevice_EKIGA::SetFrameData (unsigned x,
     is_active = TRUE;
     devices_nbr = PMIN (2, devices_nbr+1);
   }
-  display_core.set_frame_data(width, height, (char*) data, (device_id == LOCAL), devices_nbr);
+  display_core.set_frame_data((const char*) data, width, height, (device_id == LOCAL), devices_nbr);
 
   return TRUE;
 }

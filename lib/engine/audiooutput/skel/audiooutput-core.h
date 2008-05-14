@@ -147,11 +147,11 @@ namespace Ekiga
 
       void set_buffer_size (unsigned buffer_size, unsigned num_buffers);
 
-      void set_frame_data (char *data, unsigned size, unsigned & written); 
+      void set_frame_data (const char *data, unsigned size, unsigned & bytes_written); 
 
       void set_volume (AudioOutputPrimarySecondary primarySecondary, unsigned volume);
 
-      void play_buffer(AudioOutputPrimarySecondary primarySecondary, char* buffer, unsigned long len, unsigned channels, unsigned sample_rate, unsigned bps);
+      void play_buffer(AudioOutputPrimarySecondary primarySecondary, const char* buffer, unsigned long len, unsigned channels, unsigned sample_rate, unsigned bps);
 
       void start_average_collection () { calculate_average = true; }
 
@@ -184,7 +184,7 @@ namespace Ekiga
       void internal_set_device (AudioOutputPrimarySecondary primarySecondary, const AudioOutputDevice & audiooutput_device);
       bool internal_open (AudioOutputPrimarySecondary primarySecondary, unsigned channels, unsigned samplerate, unsigned bits_per_sample);
       void internal_close(AudioOutputPrimarySecondary primarySecondary);
-      void internal_play(AudioOutputPrimarySecondary primarySecondary, char* buffer, unsigned long len, unsigned channels, unsigned sample_rate, unsigned bps);
+      void internal_play(AudioOutputPrimarySecondary primarySecondary, const char* buffer, unsigned long len, unsigned channels, unsigned sample_rate, unsigned bps);
       void internal_set_primary_fallback();
       void calculate_average_level (const short *buffer, unsigned size);
 

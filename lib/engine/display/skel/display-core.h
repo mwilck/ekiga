@@ -118,9 +118,9 @@ namespace Ekiga
 
       void stop ();
 
-      void set_frame_data (unsigned width,
+      void set_frame_data (const char *data,
+                           unsigned width,
                            unsigned height,
-                           const char *data,
                            bool local,
                            int devices_nbr);
 

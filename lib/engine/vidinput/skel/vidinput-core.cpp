@@ -100,8 +100,8 @@ void PreviewManager::Main ()
   unsigned height = 144;;
   while (!stop_thread) {
 
-    vidinput_core.get_frame_data(width, height, frame);
-    display_core.set_frame_data(width, height, frame, true, 1);
+    vidinput_core.get_frame_data(frame, width, height);
+    display_core.set_frame_data(frame, width, height, true, 1);
 
     // We have to sleep some time outside the mutex lock
     // to give other threads time to get the mutex
@@ -335,14 +335,14 @@ void VidInputCore::stop_stream ()
   stream_config.active = false;
 }
 
-void VidInputCore::get_frame_data (unsigned & width,
-                                   unsigned & height,
-                                   char *data)
+void VidInputCore::get_frame_data (char *data,
+                                   unsigned & width,
+                                   unsigned & height)
 {
   PWaitAndSignal m(var_mutex);
 
   if (current_manager) {
-    if (!current_manager->get_frame_data(width, height, data)) {
+    if (!current_manager->get_frame_data(data, width, height)) {
 
       internal_close();
 
@@ -355,7 +355,7 @@ void VidInputCore::get_frame_data (unsigned & width,
         internal_open(stream_config.width, stream_config.height, stream_config.fps);
 
       if (current_manager)
-        current_manager->get_frame_data(width, height, data); // the default device must always return true
+        current_manager->get_frame_data(data, width, height); // the default device must always return true
     }
     apply_settings();
   }

@@ -110,9 +110,9 @@ void GMVideoInputManager_mlogo::close()
   runtime.run_in_main (sigc::bind (device_closed.make_slot (), current_state.device));
 }
 
-bool GMVideoInputManager_mlogo::get_frame_data (unsigned & width,
-                     unsigned & height,
-                     char *data)
+bool GMVideoInputManager_mlogo::get_frame_data (char *data,
+                                                unsigned & width,
+                                                unsigned & height)
 {
   if (!current_state.opened) {
     PTRACE(1, "GMVideoInputManager_mlogo\tTrying to get frame from closed device");

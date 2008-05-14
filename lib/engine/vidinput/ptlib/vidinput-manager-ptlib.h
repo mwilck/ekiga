@@ -77,9 +77,9 @@
 
       virtual void close();
 
-      virtual bool get_frame_data (unsigned & width,
-                           unsigned & height,
-                           char *data);
+      virtual bool get_frame_data (char *data,
+                                   unsigned & width,
+                                   unsigned & height);
 
       virtual void set_colour     (unsigned colour     );
       virtual void set_brightness (unsigned brightness );

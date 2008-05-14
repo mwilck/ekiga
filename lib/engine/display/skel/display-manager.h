@@ -44,46 +44,69 @@ namespace Ekiga
 {
 
 /**
- * @addtogroup display
+ * @addtogroup videooutput
  * @{
  */
 
+  /** Generic implementation for the Ekiga::VideoOutputManager class.
+   *
+   * Each VideoOutputManager represents a sink for video frames.
+   * A VideoOutputManager can display the video signal, record single frames or record video signal.
+   * The VideoOutputCore will control the different managers and pass the frames to all of them.
+   */
   class VideoOutputManager
     {
 
   public:
 
-      /* The constructor
+      /** The constructor
        */
       VideoOutputManager () {}
 
-      /* The destructor
+      /** The destructor
        */
       ~VideoOutputManager () {}
 
 
-      /*                 
-       * DISPLAY MANAGEMENT 
-       */               
+      /*** API for video output ***/
 
-      /** Create a call based on the remote uri given as parameter
-       * @param uri  an uri
-       * @return     true if a Ekiga::Call could be created
+      /** Open the device.
+       * The device must be opened before calling set_frame_data().
        */
-      virtual void start () { };
+      virtual void open () { };
 
-      virtual void stop () { };
+      /** Close the device.
+       */
+      virtual void close () { };
 
-      virtual void set_frame_data (unsigned width,
+      /** Set one video frame buffer.
+       * Requires the device to be opened.
+       * @param data a pointer to the buffer with the data to be written. It will not be freed.
+       * @param width the width in pixels of the frame to be written.
+       * @param height the height in pixels of the frame to be written.
+       * @param local true if the frame is a frame of the local video source, false if it is from the remote end.
+       * @param devices_nbr 1 if only local or remote device has been opened, 2 if both have been opened. //FIXME
+       */
+      virtual void set_frame_data (const char *data,
+                                   unsigned width,
                                    unsigned height,
-                                   const char *data,
                                    bool local,
                                    int devices_nbr) = 0;
 
       virtual void set_display_info (const DisplayInfo &) { };
 
+
+      /*** API to act on VideoOutputDevice events ***/
+
+      /** This signal is emitted when a video output device is opened.
+       * @param hw_accel_status actual hardware acceleration support active on the video output device opened).
+       */
       sigc::signal<void, HwAccelStatus> device_opened;
+
+      /** This signal is emitted when a video output device is closed.
+       */
       sigc::signal<void> device_closed;
+
       sigc::signal<void, DisplayMode> display_mode_changed;
       sigc::signal<void, FSToggle> fullscreen_mode_changed;
       sigc::signal<void, unsigned, unsigned> display_size_changed;

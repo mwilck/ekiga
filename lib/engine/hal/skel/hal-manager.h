@@ -48,6 +48,12 @@ namespace Ekiga
  * @{
  */
 
+  /** Generic implementation for the Ekiga::HalManager class.
+   *
+   * Each HalManager will represent a specific backend able to detect devices being removed or added
+   * and network devices going up and down (typically one per platform)
+   * On each event, the HalManager sends a signal to the main thread.
+   */
   class HalManager
     {
 
@@ -64,53 +70,53 @@ namespace Ekiga
 
       /*** API to act on HAL events ***/
 
-      /** This signal is emitted when a video input device is added to the system
-       * @param: source         : the video input framework (e.g. video4linux, etc.)
-       *         device         : the device name
-       *         capabilities   : source-dependent device capabilites (e.g. V4L1 or V4L2 for video4linux)
+      /** This signal is emitted when a video input device is added to the system.
+       * @param source the video input framework (e.g. video4linux, etc.).
+       * @param device the device name.
+       * @param capabilities source-dependent device capabilites (e.g. V4L1 or V4L2 for video4linux).
        */
       sigc::signal<void, std::string, std::string, unsigned> video_input_device_added;
 
-      /** This signal is emitted when a video input device is removed from the system
-       * @param: source         : the video input framework (e.g. video4linux, etc.)
-       *         device         : the device name
-       *         capabilities   : source-dependent device capabilites (e.g. V4L1 or V4L2 for video4linux)
+      /** This signal is emitted when a video input device is removed from the system.
+       * @param source the video input framework (e.g. video4linux, etc.).
+       * @param device the device name.
+       * @param capabilities source-dependent device capabilites (e.g. V4L1 or V4L2 for video4linux).
        */
       sigc::signal<void, std::string, std::string, unsigned> video_input_device_removed;
 
-      /** This signal is emitted when an audio input device is added to the system
-       * @param: source         : the audio input framework (e.g. alsa, oss, etc.)
-       *         device         : the device name
+      /** This signal is emitted when an audio input device is added to the system.
+       * @param source the audio input framework (e.g. alsa, oss, etc.).
+       * @param device the device name.
        */
       sigc::signal<void, std::string, std::string> audio_input_device_added;
 
-      /** This signal is emitted when an audio input device is removed from the system
-       * @param: source         : the audio input framework (e.g. alsa, oss, etc.)
-       *         device         : the device name
+      /** This signal is emitted when an audio input device is removed from the system.
+       * @param source the audio input framework (e.g. alsa, oss, etc.).
+       * @param device the device name.
        */
       sigc::signal<void, std::string, std::string> audio_input_device_removed;
 
-      /** This signal is emitted when an audio output device is added to the system
-       * @param: source         : the audio output framework (e.g. alsa, oss, etc.)
-       *         device         : the device name
+      /** This signal is emitted when an audio output device is added to the system.
+       * @param source the audio output framework (e.g. alsa, oss, etc.).
+       * @param device the device name.
        */
       sigc::signal<void, std::string, std::string> audio_output_device_added;
 
-      /** This signal is emitted when an audio output device is removed from the system
-       * @param: source         : the audio output framework (e.g. alsa, oss, etc.)
-       *         device         : the device name
+      /** This signal is emitted when an audio output device is removed from the system.
+       * @param source the audio output framework (e.g. alsa, oss, etc.).
+       * @param device the device name.
        */
       sigc::signal<void, std::string, std::string> audio_output_device_removed;
 
-      /** This signal is emitted when a network device comes up
-       * @param: interface_name : The interface name (e.g. eth0, etc.)
-       *         ip4_address    : The IPv4 address (e.g. "192.168.0.1")
+      /** This signal is emitted when a network device comes up.
+       * @param interface_name the interface name (e.g. eth0, etc.).
+       * @param ip4_address the IPv4 address (e.g. "192.168.0.1").
        */
       sigc::signal<void, std::string, std::string> network_interface_up;
 
-      /** This signal is emitted when a network device goes down
-       * @param: interface_name : The interface name (e.g. eth0, etc.)
-       *         ip4_address    : The IPv4 address (e.g. "192.168.0.1")
+      /** This signal is emitted when a network device goes down.
+       * @param interface_name the interface name (e.g. eth0, etc.).
+       * @param ip4_address the IPv4 address (e.g. "192.168.0.1").
        */
       sigc::signal<void, std::string, std::string> network_interface_down;
   };

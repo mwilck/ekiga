@@ -56,14 +56,14 @@ GMVideoOutputManager::~GMVideoOutputManager ()
 {
 }
 
-void GMVideoOutputManager::start ()
+void GMVideoOutputManager::open ()
 {
   init_thread = true;
   run_thread.Signal();
   thread_initialised.Wait();
 }
 
-void GMVideoOutputManager::stop () 
+void GMVideoOutputManager::close () 
 {
 
   uninit_thread = true;
@@ -120,12 +120,11 @@ GMVideoOutputManager::Main ()
   var_mutex.Signal ();
 }
 
-void GMVideoOutputManager::set_frame_data (unsigned width,
-				       unsigned height,
-				       const char* data,
-				       bool local,
-				       int devices_nbr
-)
+void GMVideoOutputManager::set_frame_data (const char* data,
+					   unsigned width,
+					   unsigned height,
+					   bool local,
+					   int devices_nbr)
 { 
   DisplayInfo local_display_info;
 

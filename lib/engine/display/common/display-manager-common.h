@@ -93,9 +93,9 @@ public:
   */
   virtual ~GMVideoOutputManager (void);
 
-  virtual void start ();
+  virtual void open ();
 
-  virtual void stop ();
+  virtual void close ();
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Copy the frame data to a local structur and signal 
@@ -105,9 +105,9 @@ public:
    *                 a boolean whether frame is a local or remote one
    *                 and the number of opened devices .
    */
-   virtual void set_frame_data (unsigned width,
+   virtual void set_frame_data (const char* data,
+                                unsigned width,
                                 unsigned height,
-                                const char* data,
                                 bool local,
                                 int devices_nbr);
 

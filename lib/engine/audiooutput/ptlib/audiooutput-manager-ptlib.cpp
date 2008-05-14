@@ -153,12 +153,12 @@ void GMAudioOutputManager_ptlib::set_buffer_size (Ekiga::AudioOutputPrimarySecon
 
 
 bool GMAudioOutputManager_ptlib::set_frame_data (Ekiga::AudioOutputPrimarySecondary primarySecondary, 
-                                   char *data, 
+                                   const char *data, 
                                    unsigned size,
-				   unsigned & written)
+				   unsigned & bytes_written)
 {
   bool ret = false;
-  written = 0;
+  bytes_written = 0;
 
   if (!current_state[primarySecondary].opened) {
     PTRACE(1, "GMAudioOutputManager_ptlib\tTrying to get frame from closed device[" << primarySecondary << "]");
@@ -168,7 +168,7 @@ bool GMAudioOutputManager_ptlib::set_frame_data (Ekiga::AudioOutputPrimarySecond
   if (output_device[primarySecondary]) {
     ret = output_device[primarySecondary]->Write ((void*)data, size);
     if (ret) {
-      written = output_device[primarySecondary]->GetLastWriteCount();
+      bytes_written = output_device[primarySecondary]->GetLastWriteCount();
     }
     else {
       PTRACE(1, "GMAudioOutputManager_ptlib\tEncountered error while trying to write data");

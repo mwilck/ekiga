@@ -79,9 +79,9 @@
 
       virtual void close();
 
-      virtual bool get_frame_data (unsigned & width,
-                           unsigned & height,
-                           char *data);
+      virtual bool get_frame_data (char *data,
+                                   unsigned & width,
+                                   unsigned & height);
 
       virtual bool has_device (const std::string & source, const std::string & device_name, unsigned capabilities, Ekiga::VidInputDevice & device);
 

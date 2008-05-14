@@ -157,9 +157,9 @@ void GMVideoInputManager_ptlib::close()
   runtime.run_in_main (sigc::bind (device_closed.make_slot (), current_state.device));
 }
 
-bool GMVideoInputManager_ptlib::get_frame_data (unsigned & width,
-                     unsigned & height,
-                     char *data)
+bool GMVideoInputManager_ptlib::get_frame_data (char *data,
+                                                unsigned & width,
+                                                unsigned & height)
 {
   bool ret = false;
   if (!current_state.opened) {

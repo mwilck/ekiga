@@ -99,16 +99,16 @@ void GMAudioOutputManager_null::close(Ekiga::AudioOutputPrimarySecondary primary
 
 
 bool GMAudioOutputManager_null::set_frame_data (Ekiga::AudioOutputPrimarySecondary primarySecondary, 
-                     char */*data*/, 
+                     const char */*data*/, 
                      unsigned size,
-		     unsigned & written)
+		     unsigned & bytes_written)
 {
   if (!current_state[primarySecondary].opened) {
     PTRACE(1, "GMAudioOutputManager_null\tTrying to get frame from closed device[" << primarySecondary << "]");
     return true;
   }
 
-  written = size;
+  bytes_written = size;
 
   adaptive_delay[primarySecondary].Delay(size * 8 / current_state[primarySecondary].bits_per_sample * 1000 / current_state[primarySecondary].samplerate);
   return true;

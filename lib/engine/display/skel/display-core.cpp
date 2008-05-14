@@ -117,7 +117,7 @@ void DisplayCore::start ()
   for (std::set<VideoOutputManager *>::iterator iter = managers.begin ();
        iter != managers.end ();
        iter++) {
-    (*iter)->start ();
+    (*iter)->open ();
   }
 }
 
@@ -138,7 +138,7 @@ void DisplayCore::stop ()
   for (std::set<VideoOutputManager *>::iterator iter = managers.begin ();
        iter != managers.end ();
        iter++) {
-    (*iter)->stop ();
+    (*iter)->close ();
   }
   display_stats.rx_width = display_stats.rx_height = display_stats.rx_fps = 0;
   display_stats.tx_width = display_stats.tx_height = display_stats.tx_fps = 0;
@@ -146,9 +146,9 @@ void DisplayCore::stop ()
   display_stats.tx_frames = 0;
 }
 
-void DisplayCore::set_frame_data (unsigned width,
+void DisplayCore::set_frame_data (const char *data,
+                                  unsigned width,
                                   unsigned height,
-                                  const char *data,
                                   bool local,
                                   int devices_nbr)
 {
@@ -184,7 +184,7 @@ void DisplayCore::set_frame_data (unsigned width,
   for (std::set<VideoOutputManager *>::iterator iter = managers.begin ();
        iter != managers.end ();
        iter++) {
-    (*iter)->set_frame_data (width, height, data, local, devices_nbr);
+    (*iter)->set_frame_data (data,width, height, local, devices_nbr);
   }
 }
 

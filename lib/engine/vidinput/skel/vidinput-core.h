@@ -166,9 +166,9 @@ namespace Ekiga
 
       void stop_stream ();
 
-      void get_frame_data (unsigned & width,
-                           unsigned & height,
-                           char *data);
+      void get_frame_data (char *data,
+                           unsigned & width,
+                           unsigned & height);
 
 
       void set_colour     (unsigned colour);

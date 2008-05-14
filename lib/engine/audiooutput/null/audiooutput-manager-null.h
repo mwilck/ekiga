@@ -80,9 +80,9 @@
       virtual void close(Ekiga::AudioOutputPrimarySecondary primarySecondary);
 
       virtual bool set_frame_data (Ekiga::AudioOutputPrimarySecondary primarySecondary, 
-                                   char *data, 
+                                   const char *data, 
                                    unsigned size,
-				   unsigned & written);
+				   unsigned & bytes_written);
       virtual bool has_device     (const std::string & sink, const std::string & device_name, Ekiga::AudioOutputDevice & device);
 
     protected:

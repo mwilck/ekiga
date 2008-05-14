@@ -100,7 +100,7 @@ class PVideoInputDevice_EKIGA : public PVideoInputDevice
    * BEHAVIOR     :  /
    * PRE          :  /
    */
-  virtual bool GetFrameData (BYTE *a, PINDEX *i = NULL);
+  virtual bool GetFrameData (BYTE *frame, PINDEX *i = NULL);
 
 
   /* DESCRIPTION  :  The destructor

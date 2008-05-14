@@ -81,9 +81,9 @@
       virtual void set_buffer_size (Ekiga::AudioOutputPrimarySecondary primarySecondary, unsigned buffer_size, unsigned num_buffers);
 
       virtual bool set_frame_data (Ekiga::AudioOutputPrimarySecondary primarySecondary, 
-                                   char *data, 
+                                   const char *data, 
                                    unsigned size,
-				   unsigned & written);
+				   unsigned & bytes_written);
 
       virtual void set_volume     (Ekiga::AudioOutputPrimarySecondary primarySecondary, unsigned volume );
 

@@ -156,12 +156,12 @@ PVideoInputDevice_EKIGA::SetFrameSize (unsigned int width,
 
 
 bool
-PVideoInputDevice_EKIGA::GetFrameData (BYTE *a,
+PVideoInputDevice_EKIGA::GetFrameData (BYTE *frame,
 				       PINDEX *i)
 {
   unsigned width;
   unsigned height;
-  vidinput_core.get_frame_data(width, height, (char*)a);
+  vidinput_core.get_frame_data((char*)frame, width, height);
 
   *i = width * height * 3 / 2;
  
@@ -174,7 +174,7 @@ bool PVideoInputDevice_EKIGA::GetFrameDataNoDelay (BYTE *frame,
 {
   unsigned width;
   unsigned height;
-  vidinput_core.get_frame_data(width, height, (char*)frame);
+  vidinput_core.get_frame_data((char*)frame, width, height);
 
   *i = width * height * 3 / 2;
   return true;

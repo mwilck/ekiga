@@ -227,19 +227,19 @@ void AudioOutputCore::set_buffer_size (unsigned buffer_size, unsigned num_buffer
 }
 
 
-void AudioOutputCore::set_frame_data (char *data,
+void AudioOutputCore::set_frame_data (const char *data,
                                       unsigned size,
-				      unsigned & written)
+				      unsigned & bytes_written)
 {
   PWaitAndSignal m_pri(var_mutex[primary]);
 
   if (current_manager[primary]) {
-    if (!current_manager[primary]->set_frame_data(primary,data, size, written)) {
+    if (!current_manager[primary]->set_frame_data(primary, data, size, bytes_written)) {
       internal_close(primary);
       internal_set_primary_fallback();
       internal_open(primary, current_primary_config.channels, current_primary_config.samplerate, current_primary_config.bits_per_sample);
       if (current_manager[primary])
-        current_manager[primary]->set_frame_data(primary,data, size, written); // the default device must always return true
+        current_manager[primary]->set_frame_data(primary, data, size, bytes_written); // the default device must always return true
     }
 
     PWaitAndSignal m_vol(vol_mutex);
@@ -250,10 +250,10 @@ void AudioOutputCore::set_frame_data (char *data,
   }
 
   if (calculate_average) 
-    calculate_average_level((const short*) data, written);
+    calculate_average_level((const short*) data, bytes_written);
 }
 
-void AudioOutputCore::play_buffer(AudioOutputPrimarySecondary primarySecondary, char* buffer, unsigned long len, unsigned channels, unsigned sample_rate, unsigned bps)
+void AudioOutputCore::play_buffer(AudioOutputPrimarySecondary primarySecondary, const char* buffer, unsigned long len, unsigned channels, unsigned sample_rate, unsigned bps)
 {
   switch (primarySecondary) {
     case primary:
@@ -395,10 +395,10 @@ void AudioOutputCore::internal_close(AudioOutputPrimarySecondary primarySecondar
     current_manager[primarySecondary]->close(primarySecondary);
 }
 
-void AudioOutputCore::internal_play(AudioOutputPrimarySecondary primarySecondary, char* buffer, unsigned long len, unsigned channels, unsigned sample_rate, unsigned bps)
+void AudioOutputCore::internal_play(AudioOutputPrimarySecondary primarySecondary, const char* buffer, unsigned long len, unsigned channels, unsigned sample_rate, unsigned bps)
 {
   unsigned long pos = 0;
-  unsigned written = 0;
+  unsigned bytes_written = 0;
 
   if (!internal_open ( primarySecondary, channels, sample_rate, bps))
     return;
@@ -406,7 +406,7 @@ void AudioOutputCore::internal_play(AudioOutputPrimarySecondary primarySecondary
   if (current_manager[primarySecondary]) {
     current_manager[primarySecondary]->set_buffer_size (primarySecondary, 320, 4);
     do {
-      if (!current_manager[primarySecondary]->set_frame_data(primarySecondary, buffer+pos, std::min((unsigned)320, (unsigned) (len - pos)), written))
+      if (!current_manager[primarySecondary]->set_frame_data(primarySecondary, buffer+pos, std::min((unsigned)320, (unsigned) (len - pos)), bytes_written))
         break;
       pos += 320;
     } while (pos < len);
