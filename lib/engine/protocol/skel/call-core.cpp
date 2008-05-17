@@ -99,20 +99,6 @@ bool CallCore::dial (const std::string uri)
 }
 
 
-bool CallCore::send_message (std::string uri, 
-                             std::string message)
-{
-  for (std::set<CallManager *>::iterator iter = managers.begin ();
-       iter != managers.end ();
-       iter++) {
-    if ((*iter)->send_message (uri, message))
-      return true;
-  }
-
-  return false;
-}
-
-
 void CallCore::add_call (Call *call, CallManager *manager)
 {
   call->ringing.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_ringing_call), call, manager));

@@ -54,13 +54,17 @@ namespace Ekiga
     {
 
   public:
+
       class Interface
         {
       public:
+          std::string voip_protocol;
           std::string protocol;
           std::string interface;
+          bool publish;
           unsigned port;
         };
+      typedef std::list<CallManager::Interface> InterfaceList;
 
 
       /* The constructor
@@ -80,7 +84,7 @@ namespace Ekiga
        * @param: An uri
        * @return: true if a Ekiga::Call could be created
        */
-      virtual bool dial (const std::string uri) = 0; 
+      virtual bool dial (const std::string & uri) = 0; 
 
 
       /*
@@ -90,24 +94,18 @@ namespace Ekiga
       /**
        * @return the protocol name
        */
-      virtual const std::string & get_protocol_name () const = 0;
-
+      virtual const std::list<std::string> & get_protocol_names () const = 0;
 
       /**
        * @return the interface on which we are accepting calls. Generally,
        * under the form protocol:IP:port.
        */
-      virtual const Interface & get_interface () const = 0;
+      virtual const CallManager::InterfaceList get_interfaces () const = 0;
 
 
       /*
-       * Mandatory Settings
+       * Misc
        */
-
-      /** Return the list of available codecs
-       * @return a set of the codecs and their descriptions
-       */
-      virtual CodecList get_codecs () = 0;
 
       /** Enable the given codecs
        * @param codecs is a set of the codecs and their descriptions
@@ -116,6 +114,64 @@ namespace Ekiga
        *        have been removed.
        */
       virtual void set_codecs (CodecList & codecs) = 0; 
+
+      /** Return the list of available codecs
+       * @return a set of the codecs and their descriptions
+       */
+      virtual const Ekiga::CodecList & get_codecs () const = 0;
+
+      /** Set the display name used on outgoing calls
+       * @param name is the display name to use.
+       */
+      virtual void set_display_name (const std::string & name) = 0;
+
+      /** Return the display name used on outgoing calls
+       */
+      virtual const std::string & get_display_name () const = 0;
+
+      /** Enable echo cancellation
+       * @param enabled is true if echo cancellation should be enabled, false
+       * otherwise.
+       */
+      virtual void set_echo_cancellation (bool enabled) = 0;
+
+      /** Get echo cancellation setting
+       * @return true if echo cancellation is enabled.
+       */
+      virtual bool get_echo_cancellation () const = 0;
+
+      /** Enable silence detection
+       * @param enabled is true if silence detection should be enabled, false
+       * otherwise.
+       */
+      virtual void set_silence_detection (bool enabled) = 0;
+
+      /** Get silence detection setting
+       * @return true if silence detection is enabled.
+       */
+      virtual bool get_silence_detection () const = 0;
+
+      /** Set maximum jitter 
+       * @param max_val is the maximum jitter for calls in seconds.
+       */
+      virtual void set_maximum_jitter (unsigned max_val) = 0;
+
+      /** Get maximum jitter 
+       * @return the maximum jitter for calls in seconds.
+       */
+      virtual unsigned get_maximum_jitter () const = 0;
+
+      /** Set delay before dropping an incoming call 
+       * @param delay is the delay after which the call should be rejected
+       * (or forwarded if supported by the CallManager).
+       */
+      virtual void set_reject_delay (unsigned delay) = 0;
+
+      /** Get delay before dropping an incoming call
+       * @return the delay in seconds after which a call should be rejected
+       * (or forwarded if supported by the CallManager).
+       */
+      virtual unsigned get_reject_delay () const = 0;
 
 
       /*
@@ -126,8 +182,8 @@ namespace Ekiga
        * @param: uri    : where to send the message
        *         message: what to send to the remote peer
        */
-      virtual bool send_message (const std::string uri, 
-                                 const std::string message) = 0;
+      //virtual bool send_message (const std::string uri, 
+                                 //const std::string message) = 0;
 
       /** This signal is emitted when the transmission of a message failed
        * @param: uri    : where the message could not be sent
@@ -171,9 +227,6 @@ namespace Ekiga
        *         info contains information about the registration status
        */
       sigc::signal<void, std::string, Ekiga::CallCore::RegistrationState, std::string> registration_event;
-
-  private :
-      std::string uri_type;
     };
 
 /**

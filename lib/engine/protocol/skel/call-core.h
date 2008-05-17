@@ -159,9 +159,10 @@ namespace Ekiga
        * @return: true if the operation could be handled 
        *          (that does not mean the message got though)
        */
+      /*
       bool send_message (const std::string uri, 
                          const std::string message);
-
+*/
       /** See call-manager.h for API 
        */
       sigc::signal<void, CallManager &, std::string, std::string> im_failed;

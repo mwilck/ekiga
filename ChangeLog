@@ -1,5 +1,17 @@
 2008-05-17  Damien Sandras  <dsandras@gnome.org>
 
+	* protocol/skel/protocol-manager.h:
+	* protocol/skel/call-core.cpp:
+	* protocol/skel/call-core.h:
+	* protocol/skel/Makefile.am:
+	* protocol/skel/call-manager.h:
+	Changed architecture, a CallManager now uses ProtocolManagers to
+	handle actions and settings. Methods that need to be supported by
+	all implemented CallManagers and ProtocolManagers are defined in the
+	base classes. It is still a work in progress.
+
+2008-05-17  Damien Sandras  <dsandras@gnome.org>
+
 	* ekiga.schemas.in.in:
 	Removed minimum jitter buffer key. The buffer should always be
 	at a minimal value.
