@@ -318,8 +318,7 @@ void GMStunClient::Main ()
 
   stun = ep.GetSTUN ();
   // TODO to improve heh
-  ep.GetSIPEndpoint()->start_listening ();
-  ep.GetH323Endpoint()->start_listening ();
+  ep.GetSIPEndpoint()->set_listen_port (5060);
 
   if (stun) 
     nat_type_index = stun->GetNatType ();
