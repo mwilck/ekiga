@@ -1,5 +1,23 @@
 2008-05-17  Damien Sandras  <dsandras@gnome.org>
 
+	* endpoints/sip.h:
+	* endpoints/manager.cpp:
+	* endpoints/opal-main.cpp:
+	* endpoints/h323.cpp:
+	* endpoints/manager.h:
+	* endpoints/h323.h:
+	* endpoints/sip.cpp:
+	* endpoints/opal-gmconf-bridge.cpp:
+	Changed architecture, a CallManager now uses ProtocolManagers to
+	handle actions and settings. Methods that need to be supported by
+	all implemented CallManagers and ProtocolManagers are defined in the
+	base classes. It is still a work in progress. It will allow to remove
+	horrors like GetSIPEndPoint and GetH323EndPoints. The GMManager is now
+	a CallManager handling SIP and H323 protocols using the SIP and H323
+	ProtocolManagers. Largely unfinished, be patient.
+
+2008-05-17  Damien Sandras  <dsandras@gnome.org>
+
 	* protocol/skel/protocol-manager.h:
 	* protocol/skel/call-core.cpp:
 	* protocol/skel/call-core.h:

@@ -74,7 +74,7 @@ opal_init (Ekiga::ServiceCore &core,
   GMManager *manager = new GMManager (core);
   GMSIPEndpoint *sipEP = manager->GetSIPEndpoint ();
 
-  call_core->add_manager (*sipEP);
+  call_core->add_manager (*manager);
   core.add (*manager); // FIXME temporary
 
   if (contact_core != NULL) 

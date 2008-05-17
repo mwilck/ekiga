@@ -51,45 +51,18 @@
 #include "vidinput-info.h"
 
 
+#include "call-manager.h"
+
 static  bool same_codec_desc (Ekiga::CodecDescription a, Ekiga::CodecDescription b)
 { 
   return (a.name == b.name && a.rate == b.rate); 
 }
 
 
-class dialer : public PThread
-{
-  PCLASSINFO(dialer, PThread);
-
-public:
-
-  dialer (const std::string & uri, GMManager & ep) 
-    : PThread (1000, AutoDeleteThread), 
-      dial_uri (uri),
-      endpoint (ep) 
-  {
-    this->Resume ();
-  };
-  
-  void Main () 
-  {
-    PString token;
-    endpoint.SetUpCall ("pc:*", dial_uri, token);
-  };
-
-private:
-  const std::string dial_uri;
-  GMManager & endpoint;
-};
-
-
-// FIXME: we shouldnt call sound events here but signal to the frontend which then triggers them
-
 /* The class */
 GMManager::GMManager (Ekiga::ServiceCore & _core)
 : core (_core), 
-  runtime (*(dynamic_cast<Ekiga::Runtime *> (core.get ("runtime")))),
-  audiooutput_core (*(dynamic_cast<Ekiga::AudioOutputCore *> (_core.get ("audiooutput-core")))) 
+  runtime (*(dynamic_cast<Ekiga::Runtime *> (core.get ("runtime"))))
 {
   /* Initialise the endpoint paramaters */
   PIPSocket::SetDefaultIpAddressFamilyV4();
@@ -127,6 +100,8 @@ GMManager::GMManager (Ekiga::ServiceCore & _core)
   pcssEP->SetSoundChannelRecordDevice("EKIGA");
   AddRouteEntry("h323:.* = pc:<db>");
   AddRouteEntry("sip:.* = pc:<db>");
+  protocols.push_back (h323EP->get_protocol_name ());
+  protocols.push_back (sipEP->get_protocol_name ());
 
   // Media formats
   SetMediaFormatOrder (PStringArray ());
@@ -150,83 +125,25 @@ GMManager::~GMManager ()
 }
 
 
-bool GMManager::dial (const std::string uri)
+void GMManager::set_display_name (const std::string & name)
 {
-  PString token;
-  std::stringstream ustr;
+  display_name = name;
 
-  if (uri.find ("sip:") == 0 
-      || uri.find ("h323:") == 0 
-      || uri.find (":") == string::npos) {
+  SetDefaultDisplayName (display_name);
 
-    if (uri.find (":") == string::npos)
-      ustr << "sip:" << uri;
-    else
-      ustr << uri;
-
-    new dialer (ustr.str (), *this);
-
-    return true;
-  }
-
-  return false;
+  sipEP->SetDefaultDisplayName (display_name);
+  h323EP->SetDefaultDisplayName (display_name);
+  h323EP->SetLocalUserName (display_name);
 }
 
-void GMManager::set_fullname (const std::string name)
-{
-  SetDefaultDisplayName (name.c_str ());
 
-  sipEP->SetDefaultDisplayName (name.c_str ());
-  h323EP->SetDefaultDisplayName (name.c_str ());
-  h323EP->SetLocalUserName (name.c_str ());
+const std::string & GMManager::get_display_name () const
+{
+  return display_name; 
 }
 
-const std::string GMManager::get_fullname () const
-{
-  return (const char*) GetDefaultDisplayName ();
-}
 
-void GMManager::set_jitter_buffer_size (unsigned min_val,
-                                        unsigned max_val)
-{
-  // Adjust general settings
-  SetAudioJitterDelay (PMAX (min_val, 20), PMIN (max_val, 1000));
-  
-  // Adjust setting for all sessions of all connections of all calls
-  for (PSafePtr<OpalCall> call = activeCalls;
-       call != NULL;
-       ++call) {
-
-    for (int i = 0; 
-         i < 2;
-         i++) {
-
-      PSafePtr<OpalRTPConnection> connection = PSafePtrCast<OpalConnection, OpalRTPConnection> (call->GetConnection (i));
-      if (connection) {
-
-        RTP_Session *session = 
-          connection->GetSession (OpalMediaFormat::DefaultAudioSessionID);
-
-        if (session != NULL) {
-
-          unsigned units = session->GetJitterTimeUnits ();
-          session->SetJitterBufferSize (min_val * units, 
-                                        max_val * units, 
-                                        units);
-        }
-      }
-    }
-  }
-}
-
-void GMManager::get_jitter_buffer_size (unsigned & min_val,
-                                        unsigned & max_val)
-{
-  min_val = GetMinAudioJitterDelay (); 
-  max_val = GetMaxAudioJitterDelay (); 
-}
-
-void GMManager::set_echo_cancelation (bool enabled)
+void GMManager::set_echo_cancellation (bool enabled)
 {
   OpalEchoCanceler::Params ec;
   
@@ -259,12 +176,51 @@ void GMManager::set_echo_cancelation (bool enabled)
   }
 }
 
-bool GMManager::get_echo_cancelation ()
+
+bool GMManager::get_echo_cancellation () const
 {
   OpalEchoCanceler::Params ec = GetEchoCancelParams ();
 
   return (ec.m_mode == OpalEchoCanceler::Cancelation); 
 }
+
+
+void GMManager::set_maximum_jitter (unsigned max_val)
+{
+  // Adjust general settings
+  SetAudioJitterDelay (20, PMIN (max_val, 1000));
+  
+  // Adjust setting for all sessions of all connections of all calls
+  for (PSafePtr<OpalCall> call = activeCalls;
+       call != NULL;
+       ++call) {
+
+    for (int i = 0; 
+         i < 2;
+         i++) {
+
+      PSafePtr<OpalRTPConnection> connection = PSafePtrCast<OpalConnection, OpalRTPConnection> (call->GetConnection (i));
+      if (connection) {
+
+        RTP_Session *session = 
+          connection->GetSession (OpalMediaFormat::DefaultAudioSessionID);
+
+        if (session != NULL) {
+
+          unsigned units = session->GetJitterTimeUnits ();
+          session->SetJitterBufferSize (20 * units, max_val * units, units);
+        }
+      }
+    }
+  }
+}
+
+
+unsigned GMManager::get_maximum_jitter () const
+{
+  return GetMaxAudioJitterDelay (); 
+}
+
 
 void GMManager::set_silence_detection (bool enabled)
 {
@@ -299,7 +255,8 @@ void GMManager::set_silence_detection (bool enabled)
   }
 }
 
-bool GMManager::get_silence_detection ()
+
+bool GMManager::get_silence_detection () const
 {
   OpalSilenceDetector::Params sd;
 
@@ -308,149 +265,20 @@ bool GMManager::get_silence_detection ()
   return (sd.m_mode != OpalSilenceDetector::NoSilenceDetection);
 }
 
-void GMManager::set_port_ranges (unsigned min_udp_port, 
-                                 unsigned max_udp_port,
-                                 unsigned min_tcp_port, 
-                                 unsigned max_tcp_port)
+
+void GMManager::set_reject_delay (unsigned delay)
 {
-  SetTCPPorts (min_tcp_port, max_tcp_port);
-  SetRtpIpPorts (min_udp_port, max_udp_port);
-  SetUDPPorts (min_udp_port, max_udp_port);
-}
-
-void GMManager::get_port_ranges (unsigned & min_udp_port, 
-                                 unsigned & max_udp_port,
-                                 unsigned & min_tcp_port, 
-                                 unsigned & max_tcp_port)
-{
-  min_udp_port = GetUDPPortBase ();
-  max_udp_port = GetUDPPortMax ();
-
-  min_tcp_port = GetTCPPortBase ();
-  max_tcp_port = GetTCPPortMax ();
-}
-
-void GMManager::set_video_options (const GMManager::VideoOptions & options)
-{
-  OpalMediaFormatList media_formats_list;
-  OpalMediaFormat::GetAllRegisteredMediaFormats (media_formats_list);
-
-  // Configure all mediaOptions of all Video MediaFormats
-  for (int i = 0 ; i < media_formats_list.GetSize () ; i++) {
-
-    OpalMediaFormat media_format = media_formats_list [i];
-    if (media_format.GetDefaultSessionID () == OpalMediaFormat::DefaultVideoSessionID) {
-
-      media_format.SetOptionInteger (OpalVideoFormat::FrameWidthOption (), 
-                                     Ekiga::VideoSizes [options.size].width);  
-      media_format.SetOptionInteger (OpalVideoFormat::FrameHeightOption (), 
-                                     Ekiga::VideoSizes [options.size].height);  
-      media_format.SetOptionInteger (OpalVideoFormat::FrameTimeOption (),
-                                     (int) (90000 / options.maximum_frame_rate));
-      media_format.SetOptionInteger (OpalVideoFormat::MaxBitRateOption (), 
-                                     options.maximum_received_bitrate * 1000);
-      media_format.SetOptionInteger (OpalVideoFormat::TargetBitRateOption (), 
-                                     options.maximum_transmitted_bitrate * 1000);
-      media_format.SetOptionInteger (OpalVideoFormat::MinRxFrameWidthOption(), 
-                                     160);
-      media_format.SetOptionInteger (OpalVideoFormat::MinRxFrameHeightOption(), 
-                                     120);
-      media_format.SetOptionInteger (OpalVideoFormat::MaxRxFrameWidthOption(), 
-                                     1920);
-      media_format.SetOptionInteger (OpalVideoFormat::MaxRxFrameHeightOption(), 
-                                     1088);
-      media_format.AddOption(new OpalMediaOptionUnsigned (OpalVideoFormat::TemporalSpatialTradeOffOption (), 
-                                                          true, OpalMediaOption::NoMerge, 
-                                                          options.temporal_spatial_tradeoff));  
-      media_format.SetOptionInteger (OpalVideoFormat::TemporalSpatialTradeOffOption(), 
-                                     options.temporal_spatial_tradeoff);  
-      media_format.AddOption(new OpalMediaOptionUnsigned (OpalVideoFormat::MaxFrameSizeOption (), 
-                                                          true, OpalMediaOption::NoMerge, 1400));
-      media_format.SetOptionInteger (OpalVideoFormat::MaxFrameSizeOption (), 
-                                     1400);  
-
-      if ( media_format.GetName() != "YUV420P" &&
-           media_format.GetName() != "RGB32" &&
-           media_format.GetName() != "RGB24") {
-
-        media_format.SetOptionBoolean (OpalVideoFormat::RateControlEnableOption(),
-                                      true);
-        media_format.SetOptionInteger (OpalVideoFormat::RateControlWindowSizeOption(),
-                                      500);
-        media_format.SetOptionInteger (OpalVideoFormat::RateControlMaxFramesSkipOption(),
-                                      1);
-      }
-
-      OpalMediaFormat::SetRegisteredMediaFormat(media_format);
-    }
-  }
-
-  // Adjust setting for all sessions of all connections of all calls
-  for (PSafePtr<OpalCall> call = activeCalls;
-       call != NULL;
-       ++call) {
-
-    for (int i = 0; 
-         i < 2;
-         i++) {
-
-      PSafePtr<OpalConnection> connection = call->GetConnection (i);
-      if (connection) {
-
-        OpalMediaStream *stream = 
-          connection->GetMediaStream (OpalMediaFormat::DefaultVideoSessionID, false); 
-
-        if (stream != NULL) {
-
-          OpalMediaFormat mediaFormat = stream->GetMediaFormat ();
-          mediaFormat.SetOptionInteger (OpalVideoFormat::TemporalSpatialTradeOffOption(),
-                                        options.temporal_spatial_tradeoff);
-          mediaFormat.SetOptionInteger (OpalVideoFormat::TargetBitRateOption (),
-                                        options.maximum_transmitted_bitrate * 1000);
-          mediaFormat.ToNormalisedOptions();
-          stream->UpdateMediaFormat (mediaFormat);
-        }
-      }
-    }
-  }
+  reject_delay = delay;
 }
 
 
-void GMManager::get_video_options (GMManager::VideoOptions & options)
+unsigned GMManager::get_reject_delay () const
 {
-  OpalMediaFormatList media_formats_list;
-  OpalMediaFormat::GetAllRegisteredMediaFormats (media_formats_list);
-
-  for (int i = 0 ; i < media_formats_list.GetSize () ; i++) {
-
-    OpalMediaFormat media_format = media_formats_list [i];
-    if (media_format.GetDefaultSessionID () == OpalMediaFormat::DefaultVideoSessionID) {
-
-      int j = 0;
-      for (j = 0; j < NB_VIDEO_SIZES; j++) {
-
-        if (Ekiga::VideoSizes [j].width == media_format.GetOptionInteger (OpalVideoFormat::FrameWidthOption ())
-            && Ekiga::VideoSizes [j].width == media_format.GetOptionInteger (OpalVideoFormat::FrameWidthOption ()))
-          break;
-      }
-      options.size = j;
-
-      options.maximum_frame_rate = 
-        (int) (90000 / media_format.GetOptionInteger (OpalVideoFormat::FrameTimeOption ()));
-      options.maximum_received_bitrate = 
-        (int) (media_format.GetOptionInteger (OpalVideoFormat::MaxBitRateOption ()) / 1000);
-      options.maximum_transmitted_bitrate = 
-        (int) (media_format.GetOptionInteger (OpalVideoFormat::TargetBitRateOption ()) / 1000);
-      options.temporal_spatial_tradeoff = 
-        media_format.GetOptionInteger (OpalVideoFormat::TemporalSpatialTradeOffOption ());
-
-      break;
-    }
-  }
+  return reject_delay;
 }
 
 
-Ekiga::CodecList GMManager::get_codecs ()
+const Ekiga::CodecList & GMManager::get_codecs () const
 {
   return codecs;
 }
@@ -547,6 +375,202 @@ void GMManager::set_codecs (Ekiga::CodecList & _codecs)
 }
 
 
+const std::list<std::string> & GMManager::get_protocol_names () const
+{
+  return protocols;
+}
+
+
+const Ekiga::CallManager::InterfaceList GMManager::get_interfaces () const
+{
+  InterfaceList list;
+  list.push_back (sipEP->get_listen_interface ());
+
+  return list;
+}
+
+void GMManager::set_forward_on_busy (bool enabled)
+{
+}
+
+
+void GMManager::set_unconditional_forward (bool enabled)
+{
+}
+
+void GMManager::set_udp_ports (unsigned min_port, 
+                               unsigned max_port)
+{
+  if (min_port < max_port) {
+
+    SetUDPPorts (min_port, max_port);
+    SetRtpIpPorts (min_port, max_port);
+  }
+}
+
+
+void GMManager::get_udp_ports (unsigned & min_port, 
+                               unsigned & max_port) const
+{
+  min_port = GetUDPPortBase ();
+  max_port = GetUDPPortMax ();
+}
+
+void GMManager::set_tcp_ports (unsigned min_port, 
+                               unsigned max_port)
+{
+  if (min_port < max_port) 
+    SetTCPPorts (min_port, max_port);
+}
+
+
+void GMManager::get_tcp_ports (unsigned & min_port, 
+                               unsigned & max_port) const
+{
+  min_port = GetTCPPortBase ();
+  max_port = GetTCPPortMax ();
+}
+
+
+bool GMManager::dial (const std::string & uri)
+{
+  if (uri.find ("sip:") == 0)
+    return sipEP->dial (uri);
+
+  return false;
+}
+
+
+bool GMManager::message (const std::string & _uri, 
+                         const std::string & _message)
+{
+  if (_uri.find ("sip:") == 0 || _uri.find (':') == string::npos)
+    return sipEP->message (_uri, _message);
+
+  return false;
+}
+
+
+void GMManager::set_video_options (const GMManager::VideoOptions & options)
+{
+  OpalMediaFormatList media_formats_list;
+  OpalMediaFormat::GetAllRegisteredMediaFormats (media_formats_list);
+
+  // Configure all mediaOptions of all Video MediaFormats
+  for (int i = 0 ; i < media_formats_list.GetSize () ; i++) {
+
+    OpalMediaFormat media_format = media_formats_list [i];
+    if (media_format.GetDefaultSessionID () == OpalMediaFormat::DefaultVideoSessionID) {
+
+      media_format.SetOptionInteger (OpalVideoFormat::FrameWidthOption (), 
+                                     Ekiga::VideoSizes [options.size].width);  
+      media_format.SetOptionInteger (OpalVideoFormat::FrameHeightOption (), 
+                                     Ekiga::VideoSizes [options.size].height);  
+      media_format.SetOptionInteger (OpalVideoFormat::FrameTimeOption (),
+                                     (int) (90000 / options.maximum_frame_rate));
+      media_format.SetOptionInteger (OpalVideoFormat::MaxBitRateOption (), 
+                                     options.maximum_received_bitrate * 1000);
+      media_format.SetOptionInteger (OpalVideoFormat::TargetBitRateOption (), 
+                                     options.maximum_transmitted_bitrate * 1000);
+      media_format.SetOptionInteger (OpalVideoFormat::MinRxFrameWidthOption(), 
+                                     160);
+      media_format.SetOptionInteger (OpalVideoFormat::MinRxFrameHeightOption(), 
+                                     120);
+      media_format.SetOptionInteger (OpalVideoFormat::MaxRxFrameWidthOption(), 
+                                     1920);
+      media_format.SetOptionInteger (OpalVideoFormat::MaxRxFrameHeightOption(), 
+                                     1088);
+      media_format.AddOption(new OpalMediaOptionUnsigned (OpalVideoFormat::TemporalSpatialTradeOffOption (), 
+                                                          true, OpalMediaOption::NoMerge, 
+                                                          options.temporal_spatial_tradeoff));  
+      media_format.SetOptionInteger (OpalVideoFormat::TemporalSpatialTradeOffOption(), 
+                                     options.temporal_spatial_tradeoff);  
+      media_format.AddOption(new OpalMediaOptionUnsigned (OpalVideoFormat::MaxFrameSizeOption (), 
+                                                          true, OpalMediaOption::NoMerge, 1400));
+      media_format.SetOptionInteger (OpalVideoFormat::MaxFrameSizeOption (), 
+                                     1400);  
+
+      if ( media_format.GetName() != "YUV420P" &&
+           media_format.GetName() != "RGB32" &&
+           media_format.GetName() != "RGB24") {
+
+        media_format.SetOptionBoolean (OpalVideoFormat::RateControlEnableOption(),
+                                      true);
+        media_format.SetOptionInteger (OpalVideoFormat::RateControlWindowSizeOption(),
+                                      500);
+        media_format.SetOptionInteger (OpalVideoFormat::RateControlMaxFramesSkipOption(),
+                                      1);
+      }
+
+      OpalMediaFormat::SetRegisteredMediaFormat(media_format);
+    }
+  }
+
+  // Adjust setting for all sessions of all connections of all calls
+  for (PSafePtr<OpalCall> call = activeCalls;
+       call != NULL;
+       ++call) {
+
+    for (int i = 0; 
+         i < 2;
+         i++) {
+
+      PSafePtr<OpalConnection> connection = call->GetConnection (i);
+      if (connection) {
+
+        OpalMediaStream *stream = 
+          connection->GetMediaStream (OpalMediaFormat::DefaultVideoSessionID, false); 
+
+        if (stream != NULL) {
+
+          OpalMediaFormat mediaFormat = stream->GetMediaFormat ();
+          mediaFormat.SetOptionInteger (OpalVideoFormat::TemporalSpatialTradeOffOption(),
+                                        options.temporal_spatial_tradeoff);
+          mediaFormat.SetOptionInteger (OpalVideoFormat::TargetBitRateOption (),
+                                        options.maximum_transmitted_bitrate * 1000);
+          mediaFormat.ToNormalisedOptions();
+          stream->UpdateMediaFormat (mediaFormat);
+        }
+      }
+    }
+  }
+}
+
+
+void GMManager::get_video_options (GMManager::VideoOptions & options) const
+{
+  OpalMediaFormatList media_formats_list;
+  OpalMediaFormat::GetAllRegisteredMediaFormats (media_formats_list);
+
+  for (int i = 0 ; i < media_formats_list.GetSize () ; i++) {
+
+    OpalMediaFormat media_format = media_formats_list [i];
+    if (media_format.GetDefaultSessionID () == OpalMediaFormat::DefaultVideoSessionID) {
+
+      int j = 0;
+      for (j = 0; j < NB_VIDEO_SIZES; j++) {
+
+        if (Ekiga::VideoSizes [j].width == media_format.GetOptionInteger (OpalVideoFormat::FrameWidthOption ())
+            && Ekiga::VideoSizes [j].width == media_format.GetOptionInteger (OpalVideoFormat::FrameWidthOption ()))
+          break;
+      }
+      options.size = j;
+
+      options.maximum_frame_rate = 
+        (int) (90000 / media_format.GetOptionInteger (OpalVideoFormat::FrameTimeOption ()));
+      options.maximum_received_bitrate = 
+        (int) (media_format.GetOptionInteger (OpalVideoFormat::MaxBitRateOption ()) / 1000);
+      options.maximum_transmitted_bitrate = 
+        (int) (media_format.GetOptionInteger (OpalVideoFormat::TargetBitRateOption ()) / 1000);
+      options.temporal_spatial_tradeoff = 
+        media_format.GetOptionInteger (OpalVideoFormat::TemporalSpatialTradeOffOption ());
+
+      break;
+    }
+  }
+}
+
+
 GMH323Endpoint *
 GMManager::GetH323Endpoint ()
 {
@@ -626,6 +650,7 @@ OpalCall *GMManager::CreateCall ()
   Ekiga::Call *call = NULL;
 
   call = new Opal::Call (*this, core);
+  call_core->add_call (call, this);
 
   return dynamic_cast<OpalCall *> (call);
 }

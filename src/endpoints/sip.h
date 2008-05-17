@@ -47,6 +47,7 @@
 #include "manager.h"
 #include "presence-core.h"
 #include "call-manager.h"
+#include "protocol-manager.h"
 
 
 PDICTIONARY (msgDict, PString, PString);
@@ -55,11 +56,11 @@ class Ekiga::PersonalDetails;
 
 class GMSIPEndpoint 
 :   public SIPEndPoint, 
+    public Ekiga::ProtocolManager,
     public Ekiga::PresenceFetcher,
     public Ekiga::PresencePublisher,
     public Ekiga::PresentityDecorator,
-    public Ekiga::ContactDecorator,
-    public Ekiga::CallManager
+    public Ekiga::ContactDecorator
 {
   PCLASSINFO(GMSIPEndpoint, SIPEndPoint);
 
@@ -67,21 +68,9 @@ public:
 
   GMSIPEndpoint (GMManager &ep, Ekiga::ServiceCore & core);
 
-  ~GMSIPEndpoint ();
-
   /**/
-  bool dial (const std::string uri); 
-
-  const std::string & get_protocol_name () const;
-
-  const Ekiga::CallManager::Interface & get_interface () const;
-
-  bool send_message (const std::string uri, 
-                     const std::string message);
-
-  Ekiga::CodecList get_codecs ();
-
-  void set_codecs (Ekiga::CodecList & codecs); 
+  bool message (const std::string & uri, 
+                const std::string & message);
 
   /***/
   bool populate_menu (Ekiga::Contact &contact,
@@ -93,145 +82,70 @@ public:
   bool menu_builder_add_actions (const std::string & fullname,
                                  std::map<std::string, std::string> & uris,
                                  Ekiga::MenuBuilder & builder);
-  /***/
 
   /***/
   void fetch (const std::string uri);
   void unfetch (const std::string uri);
   void publish (const Ekiga::PersonalDetails & details);
 
-  /***/
+  /* ProtocolManager */
+  bool dial (const std::string & uri); 
+
+  const std::string & get_protocol_name () const;
+
+  void set_dtmf_mode (unsigned mode);
+  unsigned get_dtmf_mode () const;
+
+  bool set_listen_port (unsigned port);
+  const Ekiga::CallManager::Interface & get_listen_interface () const;
+
+  /* SIP ProtocolManager */
+  void set_nat_binding_delay (unsigned delay);
+  unsigned get_nat_binding_delay ();
+
   void set_outbound_proxy (const std::string & uri);
-  void set_dtmf_mode (unsigned int mode);
-  void set_nat_binding_delay (unsigned int delay);
+  const std::string & get_outbound_proxy () const;
 
-  /***/
-  /* TODO: 
-   * It is probably needed to move some of those functions
-   * in the core
-   */
-  bool start_listening ();
-  bool set_udp_ports (const unsigned min, const unsigned max);
-  bool set_listen_port (const unsigned listen);
-  void set_forward_host (const std::string & uri);
-  void set_forward_on_busy (const bool enabled);
-  void set_unconditional_forward (const bool enabled);
-  void set_forward_on_no_answer (const bool enabled);
-  void set_no_answer_timeout (const unsigned timeout);
+  void set_forward_uri (const std::string & uri);
+  const std::string & get_forward_uri () const;
 
 
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Register the SIP endpoint to the given SIP server. 
-   * PRE          :  Correct parameters.
-   */
+  /* OPAL STUFF */
   void Register (const PString & aor,
                  const PString & authUserName,
                  const PString & password,
                  unsigned int expires,
                  bool unregister);
 
-
-  /* DESCRIPTION  :  Called when the registration is successful. 
-   * BEHAVIOR     :  Displays a message in the status bar and history. 
-   * PRE          :  /
-   */
   void OnRegistered (const PString & aor,
                      bool wasRegistering);
 
-
-  /* DESCRIPTION  :  Called when the registration fails.
-   * BEHAVIOR     :  Displays a message in the status bar and history. 
-   * PRE          :  /
-   */
   void OnRegistrationFailed (const PString & aor,
                              SIP_PDU::StatusCodes reason,
                              bool wasRegistering);
 
-  SIPConnection *CreateConnection (OpalCall & call,
-                                   const PString & token,
-                                   void * userData,
-                                   const SIPURL & destination,
-                                   OpalTransport * transport,
-                                   SIP_PDU * invite,
-                                   unsigned int options = 0,
-                                   OpalConnection::StringOptions * stringOptions = NULL); 
-
-
-  /* DESCRIPTION  :  Called when there is an incoming SIP connection.
-   * BEHAVIOR     :  Checks if the connection must be rejected or forwarded
-   * 		     and call the manager function of the same name
-   * 		     to update the GUI and take the appropriate action
-   * 		     on the connection. If the connection is not forwarded,
-   * 		     or rejected, OnShowIncoming will be called on the PCSS
-   * 		     endpoint, allowing to auto-answer the call or do further
-   * 		     updates of the GUI and internal timers.
-   * PRE          :  /
-   */
   bool OnIncomingConnection (OpalConnection &connection,
                              unsigned options,
                              OpalConnection::StringOptions * stroptions);
 
-
-  /* DESCRIPTION  :  Called when there is a MWI.
-   * BEHAVIOR     :  /
-   * PRE          :  /
-   */
   void OnMWIReceived (const PString & to,
                       SIPSubscribe::MWIType type,
                       const PString & msgs);
 
-
-  /* DESCRIPTION  :  Called when presence information has been received.
-   * BEHAVIOR     :  Updates the roster.
-   * PRE          :  /
-   */
   virtual void OnPresenceInfoReceived (const PString & user,
                                        const PString & basic,
                                        const PString & note);
 
-
-  /* DESCRIPTION  :  Called when a message has been received.
-   * BEHAVIOR     :  Checks if we already received the message and call
-   * 		     OnMessageReceived.
-   * PRE          :  /
-   */
   virtual void OnReceivedMESSAGE (OpalTransport & transport,
                                   SIP_PDU & pdu);
 
-
-  /* DESCRIPTION  :  Called when sending a message fails. 
-   * BEHAVIOR     :  /
-   * PRE          :  /
-   */
   void OnMessageFailed (const SIPURL & messageUrl,
                         SIP_PDU::StatusCodes reason);
 
   void Message (const PString & to,
                 const PString & body);
 
-
-  /* DESCRIPTION  :  / 
-   * BEHAVIOR     :  Returns the account to use for outgoing PDU's.
-   * PRE          :  /
-   */
   SIPURL GetRegisteredPartyName (const SIPURL & host);
-
-
-  /* DESCRIPTION  :  This callback is called when the connection is 
-   *                 established and everything is ok.
-   * BEHAVIOR     :  Stops the timers.
-   * PRE          :  /
-   */
-  void OnEstablished (OpalConnection &);
-
-
-  /* DESCRIPTION  :  This callback is called when a connection to a remote
-   *                 endpoint is cleared.
-   * BEHAVIOR     :  Stops the timers.
-   * PRE          :  /
-   */
-  void OnReleased (OpalConnection &);
-
 
 private:
   void on_dial (std::string uri);
@@ -257,10 +171,12 @@ private:
   std::string protocol_name;
   std::string uri_prefix;
   std::string forward_uri;
+  std::string outbound_proxy;
 
   bool forward_on_busy;
   bool unconditional_forward;
   bool forward_on_no_answer;
+
   unsigned no_answer_timeout;
   unsigned udp_min;
   unsigned udp_max;

@@ -64,16 +64,71 @@ GMH323Endpoint::GMH323Endpoint (GMManager & ep, Ekiga::ServiceCore & _core)
   udp_max = 5100; 
   tcp_min = 30000;
   tcp_max = 30010; 
-  listen_port = 5060;
+  listen_port = 1720;
 
   SetInitialBandwidth (40000);
+
+  uri_prefix = "h323:";
+  protocol_name = "h323";
+
+  start_listening ();
 }
 
-
-GMH323Endpoint::~GMH323Endpoint ()
+const std::string & GMH323Endpoint::get_protocol_name () const
 {
+  return protocol_name;
 }
 
+
+const Ekiga::CallManager::Interface & GMH323Endpoint::get_interface () const
+{
+  return interface;
+}
+
+
+bool GMH323Endpoint::populate_menu (Ekiga::Contact &contact,
+                                   Ekiga::MenuBuilder &builder)
+{
+  std::string name = contact.get_name ();
+  std::map<std::string, std::string> uris = contact.get_uris ();
+
+  return menu_builder_add_actions (name, uris, builder);
+}
+
+
+bool GMH323Endpoint::populate_menu (const std::string uri,
+                                   Ekiga::MenuBuilder & builder)
+{
+  std::map<std::string, std::string> uris; 
+  uris [""] = uri;
+
+  return menu_builder_add_actions ("", uris, builder);
+}
+
+
+bool GMH323Endpoint::menu_builder_add_actions (const std::string & /*fullname*/,
+                                               std::map<std::string,std::string> & uris,
+                                               Ekiga::MenuBuilder & builder)
+{
+  bool populated = false;
+
+  /* Add actions of type "call" for all uris */
+  for (std::map<std::string, std::string>::const_iterator iter = uris.begin ();
+       iter != uris.end ();
+       iter++) {
+
+    std::string action = _("Call");
+
+    if (!iter->first.empty ())
+      action = action + " [" + iter->first + "]";
+
+    builder.add_action ("call", action, sigc::bind (sigc::mem_fun (this, &GMH323Endpoint::on_dial), iter->second));
+
+    populated = true;
+  }
+
+  return populated;
+}
 
 void
 GMH323Endpoint::SetUserInputMode ()
@@ -333,9 +388,16 @@ bool GMH323Endpoint::start_listening ()
   std::stringstream str;
   RemoveListener (NULL);
 
+  interface.publish = false;
+  interface.voip_protocol = protocol_name;
+  interface.protocol = "tcp";
+  interface.interface = "*";
+
   str << "tcp$*:" << listen_port;
-  if (StartListeners (PStringArray (str.str ().c_str ()))) 
+  if (StartListeners (PStringArray (str.str ().c_str ()))) {
+    interface.port = listen_port;
     return true;
+  }
 
   return false;
 }
@@ -384,3 +446,7 @@ bool GMH323Endpoint::set_listen_port (const unsigned listen)
 }
 
 
+void GMH323Endpoint::on_dial (std::string uri)
+{
+  endpoint.dial (uri);
+}

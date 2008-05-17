@@ -56,7 +56,6 @@
 #include "call-core.h"
 #include "call-manager.h"
 #include "call.h"
-#include "audiooutput-core.h"
 
 #include <sigc++/sigc++.h>
 #include <string>
@@ -75,6 +74,7 @@ class GMPCSSEndpoint;
 
 class GMManager: 
     public Ekiga::Service,
+    public Ekiga::CallManager,
     public OpalManager
 {
   PCLASSINFO(GMManager, OpalManager);
@@ -86,18 +86,8 @@ class GMManager:
   
  public:
 
-  /* DESCRIPTION  :  The constructor.
-   * BEHAVIOR     :  Creates the supported endpoints 
-   * 		     and initialises the variables
-   * PRE          :  /
-   */
   GMManager (Ekiga::ServiceCore & _core);
 
-
-  /* DESCRIPTION  :  The destructor
-   * BEHAVIOR     :  /
-   * PRE          :  /
-   */
   ~GMManager ();
 
   /**/
@@ -106,169 +96,101 @@ class GMManager:
 
   const std::string get_description () const
     { return "\tObject bringing in Opal support (calls, text messaging, sip, h323, ...)"; }
-
-  void set_jitter_buffer_size (unsigned min_val,
-                               unsigned max_val);
   
-  void get_jitter_buffer_size (unsigned & min_val,
-                               unsigned & max_val);
+  /** Call Manager **/
+  bool dial (const std::string & uri); 
+
+  void set_display_name (const std::string & name);
+  const std::string & get_display_name () const;
+
+  void set_echo_cancellation (bool enabled);
+  bool get_echo_cancellation () const;
+
+  void set_maximum_jitter (unsigned max_val);
+  unsigned get_maximum_jitter () const;
 
   void set_silence_detection (bool enabled);
+  bool get_silence_detection () const;
 
-  bool get_silence_detection ();
+  void set_reject_delay (unsigned delay);
+  unsigned get_reject_delay () const;
 
-  void set_echo_cancelation (bool enabled);
-  
-  bool get_echo_cancelation ();
-
-  void set_port_ranges (unsigned min_udp_port, 
-                        unsigned max_udp_port,
-                        unsigned min_tcp_port, 
-                        unsigned max_tcp_port);
-
-  void get_port_ranges (unsigned & min_udp_port, 
-                        unsigned & max_udp_port,
-                        unsigned & min_tcp_port, 
-                        unsigned & max_tcp_port);
-
-  struct VideoOptions 
-    {
-      VideoOptions () 
-        : size (0), 
-        maximum_frame_rate (0), 
-        temporal_spatial_tradeoff (0), 
-        maximum_received_bitrate (0), 
-        maximum_transmitted_bitrate (0) {};
-
-      unsigned size;
-      unsigned maximum_frame_rate;
-      unsigned temporal_spatial_tradeoff;
-      unsigned maximum_received_bitrate;
-      unsigned maximum_transmitted_bitrate;
-    };
-
-  void set_video_options (const VideoOptions & option);
-
-  void get_video_options (VideoOptions & option);
-
-
-  /**/
-  bool dial (const std::string uri); 
-
-  /**/
-  void set_fullname (const std::string name);
-  const std::string get_fullname () const;
-
-  OpalCall *CreateCall ();
-
-
-  /** Return the list of available codecs
-   * @return a set of the codecs and their descriptions
-   */
-  Ekiga::CodecList get_codecs ();
-  
-
-  /** Enable the given codecs
-   * @param codecs is a set of the codecs and their descriptions
-   */
   void set_codecs (Ekiga::CodecList & codecs); 
-  
+  const Ekiga::CodecList & get_codecs () const;
 
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Returns the H.323 endpoint.
-   * PRE          :  /
-   */
+  const std::list<std::string> & get_protocol_names () const;
+  const InterfaceList get_interfaces () const;
+
+  /* Extended stuff, OPAL CallManager specific */
+  void set_forward_on_busy (bool enabled);
+  void set_unconditional_forward (bool enabled);
+  void set_udp_ports (unsigned min_port, 
+                      unsigned max_port);
+
+  void get_udp_ports (unsigned & min_port, 
+                      unsigned & max_port) const;
+
+  void set_tcp_ports (unsigned min_port, 
+                      unsigned max_port);
+
+  void get_tcp_ports (unsigned & min_port, 
+                      unsigned & max_port) const;
+
+
+  /**/
+  bool message (const std::string & uri, 
+                const std::string & message);
+
+  /**/
+  struct VideoOptions 
+  {
+    VideoOptions () 
+      : size (0), 
+      maximum_frame_rate (0), 
+      temporal_spatial_tradeoff (0), 
+      maximum_received_bitrate (0), 
+      maximum_transmitted_bitrate (0) {};
+
+    unsigned size;
+    unsigned maximum_frame_rate;
+    unsigned temporal_spatial_tradeoff;
+    unsigned maximum_received_bitrate;
+    unsigned maximum_transmitted_bitrate;
+  };
+
+  void set_video_options (const VideoOptions & options);
+  void get_video_options (VideoOptions & options) const;
+
+
+  /**/ 
   GMH323Endpoint *GetH323Endpoint ();
   
-  
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Returns the SIP endpoint.
-   * PRE          :  /
-   */
   GMSIPEndpoint *GetSIPEndpoint ();
 
+  void Register (GmAccount * = NULL);
 
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Create a STUN client.
-   * PRE          :  First parameter : TRUE if a progress dialog should be
-   * 		                       displayed.
-   * 		     Second parameter: TRUE if a config dialog should be
-   * 		                       displayed to ask the user to use
-   * 		                       STUN or not.
-   * 		     Third parameter : TRUE if should wait for the result
-   * 		     		       before returning.
-   * 		     Fourth parameter: Parent window for the other dialogs.
-   */
+ private:
+  OpalCall *CreateCall ();
+
   void CreateSTUNClient (bool,
 			 bool,
 			 bool,
 			 GtkWidget *);
 
-  
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Remove the STUN client.
-   * PRE          :  /
-   */
   void RemoveSTUNClient ();
 
-  
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Register (or unregister) all accounts or the one provided.
-   * 		     It launches an accounts manager to register the given
-   * 		     account or all accounts.
-   * PRE          :  /
-   */
-  void Register (GmAccount * = NULL);
 
-  
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Remove the account manager.
-   * PRE          :  /
-   */
   void RemoveAccountsEndpoint ();
-  
 
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  TRUE if the video should automatically be transmitted
-   *                 when a call begins.
-   * PRE          :  /
-   */
-  void SetAutoStartTransmitVideo (bool a) {autoStartTransmitVideo = a;}
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  TRUE if the video should automatically be received
-   *                 when a call begins.
-   * PRE          :  /
-   */
-  void SetAutoStartReceiveVideo (bool a) {autoStartReceiveVideo = a;}
-
-  
-  /* DESCRIPTION  :  Callback called when OpenH323 opens a new logical channel
-   * BEHAVIOR     :  Updates the log window with information about it, returns
-   *                 FALSE if error, TRUE if OK
-   * PRE          :  /
-   */
   virtual bool OnOpenMediaStream (OpalConnection &,
 				  OpalMediaStream &);
 
-
-  /* DESCRIPTION  :  Callback called when OpenH323 closes a new logical channel
-   * BEHAVIOR     :  Close the channel and update the GUI..
-   * PRE          :  /
-   */
   virtual void OnClosedMediaStream (const OpalMediaStream &);
 
 
- private:
   void GetAllowedFormats (OpalMediaFormatList & full_list);
 
-  /* Different channels */
-  bool is_transmitting_video;
-  bool is_transmitting_audio;
-  bool is_receiving_video;
-  bool is_receiving_audio;  
-
+  std::list<std::string> protocols;
 
   /* The various related endpoints */
   GMH323Endpoint *h323EP;
@@ -280,13 +202,8 @@ class GMManager:
   GMAccountsEndpoint *manager;
   GMStunClient *sc;
 
-
   /* Various mutexes to ensure thread safeness around internal
      variables */
-  PMutex vg_access_mutex;
-  PMutex tct_access_mutex;
-  PMutex lid_access_mutex;
-  PMutex rc_access_mutex;
   PMutex manager_access_mutex;
   PMutex sc_mutex;
 
@@ -295,7 +212,9 @@ class GMManager:
   Ekiga::ConfBridge *bridge;
   Ekiga::CodecList codecs; 
   Ekiga::CallCore *call_core;
-  Ekiga::AudioOutputCore & audiooutput_core;
+
+  std::string display_name;
+  unsigned reject_delay;
 };
 
 #endif

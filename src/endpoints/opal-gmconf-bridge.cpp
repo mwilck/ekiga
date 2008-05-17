@@ -142,15 +142,9 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
   // 
   // Jitter buffer configuration
   //
-  if (key == AUDIO_CODECS_KEY "minimum_jitter_buffer") {
-
-    unsigned max = (unsigned) gm_conf_get_int (AUDIO_CODECS_KEY "maximum_jitter_buffer");
-    manager.set_jitter_buffer_size (gm_conf_entry_get_int (entry), max);
-  }
   else if (key == AUDIO_CODECS_KEY "maximum_jitter_buffer") {
 
-    unsigned min = (unsigned) gm_conf_get_int (AUDIO_CODECS_KEY "minimum_jitter_buffer");
-    manager.set_jitter_buffer_size (min, gm_conf_entry_get_int (entry));
+    manager.set_maximum_jitter (gm_conf_entry_get_int (entry));
   }
 
 
@@ -168,7 +162,7 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
   //
   else if (key == AUDIO_CODECS_KEY "enable_echo_cancelation") {
 
-    manager.set_echo_cancelation (gm_conf_entry_get_bool (entry));
+    manager.set_echo_cancellation (gm_conf_entry_get_bool (entry));
   }
   
   
@@ -241,8 +235,7 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
   else if (key == SIP_KEY "forward_host") {
 
     const gchar *str = gm_conf_entry_get_string (entry);
-    if (str != NULL)    
-      manager.GetSIPEndpoint ()->set_forward_host (str);
+    manager.GetSIPEndpoint ()->set_forward_uri (str);
   }
 
   //
@@ -276,7 +269,7 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
 
     const gchar *str = gm_conf_entry_get_string (entry);
     if (str != NULL)    
-      manager.set_fullname (str);
+      manager.set_display_name (str);
   }
 
 
@@ -285,15 +278,15 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
   //
   else if (key == CALL_FORWARDING_KEY "forward_on_busy") {
 
-    manager.GetSIPEndpoint ()->set_forward_on_busy (gm_conf_entry_get_bool (entry));
+    manager.set_forward_on_busy (gm_conf_entry_get_bool (entry));
   }
   else if (key == CALL_FORWARDING_KEY "always_forward") {
 
-    manager.GetSIPEndpoint ()->set_unconditional_forward (gm_conf_entry_get_bool (entry));
+    manager.set_unconditional_forward (gm_conf_entry_get_bool (entry));
   }
   else if (key == CALL_OPTIONS_KEY "no_answer_timeout") {
 
-    manager.GetSIPEndpoint ()->set_no_answer_timeout (gm_conf_entry_get_int (entry));
+    manager.set_reject_delay (gm_conf_entry_get_int (entry));
   }
 
 
@@ -325,13 +318,11 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
     if (couple && couple [1]) 
       max_port = atoi (couple [1]);
     
-    if (key == PORTS_KEY "udp_port_range") {
-
-      manager.GetSIPEndpoint ()->set_udp_ports (min_port, max_port);
-      manager.GetH323Endpoint ()->set_udp_ports (min_port, max_port);
-    }
+    if (key == PORTS_KEY "udp_port_range") 
+      manager.set_udp_ports (min_port, max_port);
     else
-      manager.GetH323Endpoint ()->set_tcp_ports (min_port, max_port);
+      manager.set_tcp_ports (min_port, max_port);
+
     g_free (couple);
   }
 }

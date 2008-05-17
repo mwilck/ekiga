@@ -61,13 +61,21 @@ class GMH323Endpoint : public H323EndPoint
    */
   GMH323Endpoint (GMManager &ep, Ekiga::ServiceCore & core);
 
-  
-  /* DESCRIPTION  :  The destructor.
-   * BEHAVIOR     :  /
-   * PRE          :  /
-   */
-  ~GMH323Endpoint ();
-  
+  /**/
+  const std::string & get_protocol_name () const;
+
+  const Ekiga::CallManager::Interface & get_interface () const;
+
+  /**/
+  bool populate_menu (Ekiga::Contact &contact,
+                      Ekiga::MenuBuilder &builder);
+
+  bool populate_menu (const std::string uri,
+                      Ekiga::MenuBuilder & builder);
+
+  bool menu_builder_add_actions (const std::string & fullname,
+                                 std::map<std::string, std::string> & uris,
+                                 Ekiga::MenuBuilder & builder);
   
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Adds the User Input Mode following the
@@ -177,6 +185,7 @@ class GMH323Endpoint : public H323EndPoint
 
 
  private:
+  void on_dial (std::string uri);
 
   GMManager & endpoint;
   Ekiga::ServiceCore & core;
@@ -191,6 +200,11 @@ class GMH323Endpoint : public H323EndPoint
   unsigned udp_min;
   unsigned udp_max;
   unsigned listen_port;
+
+  Ekiga::CallManager::Interface interface;
+
+  std::string protocol_name;
+  std::string uri_prefix;
 };
 
 #endif
