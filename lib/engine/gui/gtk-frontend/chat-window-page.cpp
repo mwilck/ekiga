@@ -395,10 +395,12 @@ send_button_clicked_cb (G_GNUC_UNUSED GtkWidget *w,
 
   if (!message.empty ()) {
     
-    Ekiga::CallCore *call_core = dynamic_cast<Ekiga::CallCore *>(self->priv->core.get ("call-core"));
+    //GMManager *call_core = dynamic_cast<GMManager *>(self->priv->core.get ("opal-component"));
 
-    if (call_core) 
-      call_core->send_message (self->priv->uri, message);
+    // 
+    std::cout << "FIXME" << std::endl << std::flush;
+//    if (call_core) 
+  //    call_core->send_message (self->priv->uri, message);
   }
 }
 
