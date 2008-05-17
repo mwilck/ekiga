@@ -99,7 +99,7 @@ private:
     AvahiGLibPoll *glib_poll;
     const AvahiPoll *poll_api;
 
-    std::map<std::string, Ekiga::CallManager::Interface> to_publish;
+    Ekiga::CallManager::InterfaceList to_publish;
   };
 };
 #endif

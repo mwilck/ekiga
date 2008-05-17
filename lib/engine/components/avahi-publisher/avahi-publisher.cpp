@@ -162,12 +162,8 @@ void PresencePublisher::publish (const Ekiga::PersonalDetails & details)
 
     to_publish.clear ();
     Ekiga::CallCore::const_iterator it;
-    for (it = call_core->begin (); it != call_core->end (); it++) {
-
-      const Ekiga::CallManager::Interface & interface = (*it)->get_interface ();
-      const std::string & protocol = (*it)->get_protocol_name ();
-      to_publish [protocol] = interface;
-    }
+    for (it = call_core->begin (); it != call_core->end (); it++)
+     to_publish = (*it)->get_interfaces ();
   }
 
   name = g_strdup (details.get_display_name ().c_str ());
@@ -188,7 +184,8 @@ void PresencePublisher::publish (const Ekiga::PersonalDetails & details)
     if (name) {
 
       client = avahi_client_new (poll_api, (AvahiClientFlags) 0, avahi_client_callback, this, &error);
-      group = avahi_entry_group_new (client, avahi_entry_group_callback, this);
+      if (client)
+        group = avahi_entry_group_new (client, avahi_entry_group_callback, this);
     }
   }
 }
@@ -201,11 +198,11 @@ bool PresencePublisher::connect ()
 
   if (group != NULL) {
 
-    std::map<std::string, Ekiga::CallManager::Interface>::const_iterator it;
+    Ekiga::CallManager::InterfaceList::const_iterator it;
     for (it = to_publish.begin (); it != to_publish.end (); it++) {
 
       std::stringstream srv;
-      srv << "_" << (*it).first << "._" << (*it).second.protocol;
+      srv << "_" << (*it).voip_protocol << "._" << (*it).protocol;
 
       ret = avahi_entry_group_add_service_strlst (group,
                                                   AVAHI_IF_UNSPEC,
@@ -215,7 +212,7 @@ bool PresencePublisher::connect ()
                                                   srv.str ().c_str (),
                                                   NULL,
                                                   NULL,
-                                                  (*it).second.port,
+                                                  (*it).port,
                                                   text_record);
       if (ret >= 0) {
 
@@ -224,8 +221,9 @@ bool PresencePublisher::connect ()
         if (ret < 0) 
           success = false;
       }
-      else
+      else {
         success = false;
+      }
     }
   }
 
