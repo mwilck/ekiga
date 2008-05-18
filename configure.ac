@@ -573,7 +573,11 @@ gnomeconfdir=`eval "echo ${sysconfdir}"`
 AC_SUBST(gnomedatadir)
 AC_SUBST(gnomeconfdir)
 
-AC_DEFINE_UNQUOTED(DATA_DIR, "${ac_default_prefix}/${DATADIRNAME}",[fix])
+if test "x${prefix}" = "xNONE"; then
+  AC_DEFINE_UNQUOTED(DATA_DIR, "${ac_default_prefix}/${DATADIRNAME}",[fix])
+else
+  AC_DEFINE_UNQUOTED(DATA_DIR, "${prefix}/${DATADIRNAME}",[fix])
+fi
 
 dnl ###########################################################################
 dnl  Output the different Makefiles
