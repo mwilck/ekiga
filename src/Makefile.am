@@ -14,8 +14,8 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/engine/presence/skel	\
 	-I$(top_srcdir)/lib/engine/protocol/skel	\
 	-I$(top_srcdir)/lib/engine/protocol/sip		\
-	-I$(top_srcdir)/lib/engine/display/skel		\
-	-I$(top_srcdir)/lib/engine/vidinput/skel	\
+	-I$(top_srcdir)/lib/engine/videooutput/skel	\
+	-I$(top_srcdir)/lib/engine/videoinput/skel	\
 	-I$(top_srcdir)/lib/engine/audioinput/skel	\
 	-I$(top_srcdir)/lib/engine/audiooutput/skel	\
 	-I$(top_srcdir)/lib/engine/hal/skel	\
@@ -27,15 +27,15 @@ INCLUDES = \
 # XVideo/X
 if !WIN32
 INCLUDES +=                   				\
-	-I$(top_srcdir)/lib/engine/display/common       \
-	-I$(top_srcdir)/lib/engine/display/x
+	-I$(top_srcdir)/lib/engine/videooutput/common   \
+	-I$(top_srcdir)/lib/engine/videooutput/x
 endif
 
 # DirectX
 if HAVE_DX
 INCLUDES +=                   				\
-	-I$(top_srcdir)/lib/engine/display/common       \
-	-I$(top_srcdir)/lib/engine/display/dx
+	-I$(top_srcdir)/lib/engine/videooutput/common   \
+	-I$(top_srcdir)/lib/engine/videooutput/dx
 endif
 
 

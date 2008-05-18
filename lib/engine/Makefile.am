@@ -1,4 +1,4 @@
-SUBDIRS = framework addressbook presence gui protocol display vidinput audioinput audiooutput hal components
+SUBDIRS = framework addressbook presence gui protocol videooutput videoinput audioinput audiooutput hal components
 
 noinst_LTLIBRARIES = libekiga_engine.la
 
@@ -16,8 +16,8 @@ INCLUDES = 								\
 	-I$(top_srcdir)/lib/engine/presence/skel			\
 	-I$(top_srcdir)/lib/engine/presence/avahi			\
 	-I$(top_srcdir)/lib/engine/presence/local-roster		\
-	-I$(top_srcdir)/lib/engine/display/skel				\
-	-I$(top_srcdir)/lib/engine/vidinput/skel			\
+	-I$(top_srcdir)/lib/engine/videooutput/skel				\
+	-I$(top_srcdir)/lib/engine/videoinput/skel			\
 	-I$(top_srcdir)/lib/engine/audioinput/skel			\
 	-I$(top_srcdir)/lib/engine/audiooutput/skel			\
 	-I$(top_srcdir)/lib/engine/hal/skel				\
@@ -27,26 +27,26 @@ INCLUDES = 								\
 # XVideo/X
 if !WIN32
 INCLUDES +=                                             \
-	-I$(top_srcdir)/lib/engine/display/common       \
-	-I$(top_srcdir)/lib/engine/display/x
+	-I$(top_srcdir)/lib/engine/videooutput/common   \
+	-I$(top_srcdir)/lib/engine/videooutput/x
 endif
 
 # DirectX
 if HAVE_DX
 INCLUDES +=                                             \
-	-I$(top_srcdir)/lib/engine/display/common       \
-	-I$(top_srcdir)/lib/engine/display/dx
+	-I$(top_srcdir)/lib/engine/videooutput/common   \
+	-I$(top_srcdir)/lib/engine/videooutput/dx
 endif
 		
 # Default Input Devices
 INCLUDES +=                                             \
-	-I$(top_srcdir)/lib/engine/vidinput/mlogo	\
+	-I$(top_srcdir)/lib/engine/videoinput/mlogo	\
 	-I$(top_srcdir)/lib/engine/audioinput/null      \
 	-I$(top_srcdir)/lib/engine/audiooutput/null
 
 # Default PTLIB Input Devices
 INCLUDES +=                                             \
-	-I$(top_srcdir)/lib/engine/vidinput/ptlib       \
+	-I$(top_srcdir)/lib/engine/videoinput/ptlib     \
 	-I$(top_srcdir)/lib/engine/audioinput/ptlib     \
 	-I$(top_srcdir)/lib/engine/audiooutput/ptlib
 
@@ -71,8 +71,8 @@ libekiga_engine_la_LIBADD = \
 	$(top_builddir)/lib/engine/addressbook/call-history/libcall-history.la 				\
 	$(top_builddir)/lib/engine/presence/skel/libgmpresence.la 					\
 	$(top_builddir)/lib/engine/presence/local-roster/liblocal-roster.la 				\
-	$(top_builddir)/lib/engine/display/skel/libgmdisplay.la						\
-	$(top_builddir)/lib/engine/vidinput/skel/libgmvidinput.la					\
+	$(top_builddir)/lib/engine/videooutput/skel/libgmvideooutput.la					\
+	$(top_builddir)/lib/engine/videoinput/skel/libgmvideoinput.la					\
 	$(top_builddir)/lib/engine/audioinput/skel/libgmaudioinput.la					\
 	$(top_builddir)/lib/engine/audiooutput/skel/libgmaudiooutput.la					\
 	$(top_builddir)/lib/engine/hal/skel/libgmhal.la							\
@@ -81,13 +81,13 @@ libekiga_engine_la_LIBADD = \
 
 # Default Input Devices
 libekiga_engine_la_LIBADD += \
-	$(top_builddir)/lib/engine/vidinput/mlogo/libgmvidinput-mlogo.la \
+	$(top_builddir)/lib/engine/videoinput/mlogo/libgmvideoinput-mlogo.la \
 	$(top_builddir)/lib/engine/audioinput/null/libgmaudioinput-null.la \
 	$(top_builddir)/lib/engine/audiooutput/null/libgmaudiooutput-null.la
 
 # PTLIB Input Devices
 libekiga_engine_la_LIBADD += \
-	$(top_builddir)/lib/engine/vidinput/ptlib/libgmvidinput-ptlib.la \
+	$(top_builddir)/lib/engine/videoinput/ptlib/libgmvideoinput-ptlib.la \
 	$(top_builddir)/lib/engine/audioinput/ptlib/libgmaudioinput-ptlib.la \
 	$(top_builddir)/lib/engine/audiooutput/ptlib/libgmaudiooutput-ptlib.la
 
@@ -100,14 +100,14 @@ endif
 # XVideo/X
 if !WIN32
 libekiga_engine_la_LIBADD += \
-	$(top_builddir)/lib/engine/display/x/libgmdisplay-x.la \
+	$(top_builddir)/lib/engine/videooutput/x/libgmvideooutput-x.la \
 	$(top_builddir)/lib/pixops/libpixops.la
 endif
 
 # DirectX
 if HAVE_DX
 libekiga_engine_la_LIBADD += \
-	$(top_builddir)/lib/engine/display/dx/libgmdisplay-dx.la
+	$(top_builddir)/lib/engine/videooutput/dx/libgmvideooutput-dx.la
 endif
 
 
