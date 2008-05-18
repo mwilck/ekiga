@@ -25,13 +25,13 @@
 
 
 /*
- *                         protocol-manager.h  -  description
+ *                         call-protocol-manager.h  -  description
  *                         ------------------------------------------
  *   begin                : written in 2007 by Damien Sandras 
  *   copyright            : (c) 2007 by Damien Sandras
- *   description          : Declaration of the interface of a protocol manager
+ *   description          : Declaration of the interface of a call protocol manager
  *                          implementation backend. A call manager handles calls
- *                          thanks to various protocol-managers.
+ *                          thanks to various call protocol managers.
  *
  */
 
@@ -49,18 +49,18 @@ namespace Ekiga
  * @{
  */
 
-  class ProtocolManager
+  class CallProtocolManager
     {
 
   public:
 
       /* The constructor
        */
-      ProtocolManager () {};
+      CallProtocolManager () {};
 
       /* The destructor
        */
-      ~ProtocolManager () {}
+      ~CallProtocolManager () {}
 
 
       /*                 

@@ -13,7 +13,7 @@ libgmprotocol_la_SOURCES = \
 	$(protocol_dir)/call-manager.h		\
 	$(protocol_dir)/call.h			\
 	$(protocol_dir)/call-core.cpp		\
-	$(protocol_dir)/protocol-manager.h	\
+	$(protocol_dir)/call-protocol-manager.h	\
 	$(protocol_dir)/codec-description.h	\
 	$(protocol_dir)/codec-description.cpp
 

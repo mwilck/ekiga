@@ -47,7 +47,7 @@
 #include "manager.h"
 #include "presence-core.h"
 #include "call-manager.h"
-#include "protocol-manager.h"
+#include "call-protocol-manager.h"
 
 
 PDICTIONARY (msgDict, PString, PString);
@@ -56,7 +56,7 @@ class Ekiga::PersonalDetails;
 
 class GMSIPEndpoint 
 :   public SIPEndPoint, 
-    public Ekiga::ProtocolManager,
+    public Ekiga::CallProtocolManager,
     public Ekiga::PresenceFetcher,
     public Ekiga::PresencePublisher,
     public Ekiga::PresentityDecorator,
