@@ -43,6 +43,9 @@ GMVideoOutputManager_dx::GMVideoOutputManager_dx (Ekiga::ServiceCore & _core)
   dxWindow = NULL;
 
   end_thread = false;
+  init_thread = false;
+  uninit_thread = false;
+
   this->Resume ();
   thread_created.Wait ();
 }

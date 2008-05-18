@@ -56,6 +56,9 @@ GMVideoOutputManager_x::GMVideoOutputManager_x (Ekiga::ServiceCore & _core)
   pip_window_available = true;
 
   end_thread = false;
+  init_thread = false;
+  uninit_thread = false;
+
   this->Resume ();
   thread_created.Wait ();
 }
