@@ -90,7 +90,7 @@ struct _GmCellRendererExpanderPriv {
   guint                animation_expanding : 1;
 };
 
-G_DEFINE_TYPE (GmCellRendererExpander, gm_cell_renderer_expander, GTK_TYPE_CELL_RENDERER)
+G_DEFINE_TYPE (GmCellRendererExpander, gm_cell_renderer_expander, GTK_TYPE_CELL_RENDERER);
 
 static void
 gm_cell_renderer_expander_init (GmCellRendererExpander *expander)

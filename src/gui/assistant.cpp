@@ -48,7 +48,7 @@
 #include "audioinput-core.h"
 #include "audiooutput-core.h"
 
-G_DEFINE_TYPE(EkigaAssistant, ekiga_assistant, GTK_TYPE_ASSISTANT)
+G_DEFINE_TYPE(EkigaAssistant, ekiga_assistant, GTK_TYPE_ASSISTANT);
 
 struct _EkigaAssistantPrivate
 {

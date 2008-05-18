@@ -88,7 +88,7 @@ enum
   PROP_ACCEL_GROUP
 };
 
-G_DEFINE_TYPE (EkigaDialpad, ekiga_dialpad, GTK_TYPE_TABLE)
+G_DEFINE_TYPE (EkigaDialpad, ekiga_dialpad, GTK_TYPE_TABLE);
 
 static void
 ekiga_dialpad_get_property (GObject    *object,
