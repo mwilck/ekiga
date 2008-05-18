@@ -80,7 +80,7 @@ enum
   LAST_SIGNAL
 };
 
-static guint signals[LAST_SIGNAL];
+static guint ekiga_dialpad_signals[LAST_SIGNAL];
 
 enum
 {
@@ -135,7 +135,7 @@ on_dialpad_button_clicked (GtkButton    *button,
 
   for (i = 0; i < G_N_ELEMENTS (keys_info); i++) {
     if (GTK_WIDGET (button) == dialpad->priv->buttons[i]) {
-      g_signal_emit (dialpad, signals[BUTTON_CLICKED], 0,
+      g_signal_emit (dialpad, ekiga_dialpad_signals[BUTTON_CLICKED], 0,
                      keys_info[i].number);
       return;
     }
@@ -269,7 +269,7 @@ ekiga_dialpad_class_init (EkigaDialpadClass *klass)
                                                                        G_PARAM_CONSTRUCT_ONLY |
                                                                        G_PARAM_STATIC_STRINGS)));
 
-  signals[BUTTON_CLICKED] =
+  ekiga_dialpad_signals[BUTTON_CLICKED] =
             g_signal_new ("button-clicked", the_type,
                           G_SIGNAL_RUN_LAST,
                           G_STRUCT_OFFSET (EkigaDialpadClass, button_clicked),
