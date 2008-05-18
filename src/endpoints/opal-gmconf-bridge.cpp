@@ -71,7 +71,8 @@ ConfBridge::ConfBridge (Ekiga::Service & _service)
   keys.push_back (SIP_KEY "forward_host"); 
   keys.push_back (SIP_KEY "outbound_proxy_host");
   keys.push_back (SIP_KEY "dtmf_mode");
-  keys.push_back (NAT_KEY "binding_timeout");
+  keys.push_back (SIP_KEY "binding_timeout");
+  keys.push_back (SIP_KEY "listen_port");
 
   keys.push_back (PERSONAL_DATA_KEY "full_name");
 
@@ -83,7 +84,6 @@ ConfBridge::ConfBridge (Ekiga::Service & _service)
   keys.push_back (H323_KEY "enable_early_h245");
   keys.push_back (H323_KEY "enable_fast_start");
 
-  keys.push_back (SIP_KEY "listen_port");
   keys.push_back (PORTS_KEY "udp_port_range");
   keys.push_back (PORTS_KEY "tcp_port_range");
 
@@ -222,45 +222,64 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
   //
   // SIP related keys
   // 
-  else if (key == SIP_KEY "outbound_proxy_host") {
+  else if (key.find (SIP_KEY) != string::npos) {
 
-    const gchar *str = gm_conf_entry_get_string (entry);
-    if (str != NULL)
-      manager.GetSIPEndpoint ()->set_outbound_proxy (str);
-  }
-  else if (key == SIP_KEY "dtmf_mode") {
+    GMSIPEndpoint *sip_manager = dynamic_cast<GMSIPEndpoint *> (manager.get_protocol_manager ("sip"));
+    if (sip_manager) {
 
-    manager.GetSIPEndpoint ()->set_dtmf_mode (gm_conf_entry_get_int (entry));
-  }
-  else if (key == SIP_KEY "forward_host") {
+      if (key == SIP_KEY "outbound_proxy_host") {
 
-    const gchar *str = gm_conf_entry_get_string (entry);
-    manager.GetSIPEndpoint ()->set_forward_uri (str);
+        const gchar *str = gm_conf_entry_get_string (entry);
+        if (str != NULL)
+          sip_manager->set_outbound_proxy (str);
+      }
+      else if (key == SIP_KEY "dtmf_mode") {
+
+        sip_manager->set_dtmf_mode (gm_conf_entry_get_int (entry));
+      }
+      else if (key == SIP_KEY "forward_host") {
+
+        const gchar *str = gm_conf_entry_get_string (entry);
+        sip_manager->set_forward_uri (str);
+      }
+      else if (key == SIP_KEY "binding_timeout") {
+
+        sip_manager->set_nat_binding_delay (gm_conf_entry_get_int (entry));
+      }
+      else if (key == SIP_KEY "listen_port") {
+
+        sip_manager->set_listen_port (gm_conf_entry_get_int (entry));
+      }
+    }
   }
 
   //
   // H.323 keys
   //
-  else if (key == H323_KEY "enable_h245_tunneling") {
+  else if (key.find (SIP_KEY) != string::npos) {
 
-    manager.GetH323Endpoint ()->DisableH245Tunneling (!gm_conf_entry_get_bool (entry));
+    GMH323Endpoint *h323_manager = dynamic_cast<GMH323Endpoint *> (manager.get_protocol_manager ("h323"));
+    if (h323_manager) {
+
+      if (key == H323_KEY "enable_h245_tunneling") {
+
+        h323_manager->DisableH245Tunneling (!gm_conf_entry_get_bool (entry));
+      }
+      else if (key == H323_KEY "enable_early_h245") {
+
+        h323_manager->DisableH245inSetup (!gm_conf_entry_get_bool (entry));
+      }
+      else if (key == H323_KEY "enable_fast_start") {
+
+        h323_manager->DisableFastStart (!gm_conf_entry_get_bool (entry));
+      }
+      else if (key == H323_KEY "listen_port") {
+
+        h323_manager->set_listen_port (gm_conf_entry_get_int (entry));
   }
-  else if (key == H323_KEY "enable_early_h245") {
-
-    manager.GetH323Endpoint ()->DisableH245inSetup (!gm_conf_entry_get_bool (entry));
+    }
   }
-  else if (key == H323_KEY "enable_fast_start") {
-
-    manager.GetH323Endpoint ()->DisableFastStart (!gm_conf_entry_get_bool (entry));
-  }
-
-  //
-  // NAT related keys
-  //
-  else if (key == NAT_KEY "binding_timeout") {
-
-    manager.GetSIPEndpoint ()->set_nat_binding_delay (gm_conf_entry_get_int (entry));
-  }
+  
 
   //
   // Personal Data Key
@@ -293,14 +312,6 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
   //
   // Ports keys
   //
-  else if (key == H323_KEY "listen_port") {
-
-    manager.GetH323Endpoint ()->set_listen_port (gm_conf_entry_get_int (entry));
-  }
-  else if (key == SIP_KEY "listen_port") {
-
-    manager.GetSIPEndpoint ()->set_listen_port (gm_conf_entry_get_int (entry));
-  }
   else if (key == PORTS_KEY "udp_port_range"
            || key == PORTS_KEY "tcp_port_range") {
 

@@ -27,8 +27,8 @@
 /*
  *                         call-protocol-manager.h  -  description
  *                         ------------------------------------------
- *   begin                : written in 2007 by Damien Sandras 
- *   copyright            : (c) 2007 by Damien Sandras
+ *   begin                : written in 2008 by Damien Sandras 
+ *   copyright            : (c) 2008 by Damien Sandras
  *   description          : Declaration of the interface of a call protocol manager
  *                          implementation backend. A call manager handles calls
  *                          thanks to various call protocol managers.
@@ -36,8 +36,8 @@
  */
 
 
-#ifndef __PROTOCOL_MANAGER_H__
-#define __PROTOCOL_MANAGER_H__
+#ifndef __CALL_PROTOCOL_MANAGER_H__
+#define __CALL_PROTOCOL_MANAGER_H__
 
 #include "call-core.h"
 
@@ -46,7 +46,7 @@ namespace Ekiga
 
 /**
  * @addtogroup calls
- * @{
+ * @{:
  */
 
   class CallProtocolManager
@@ -54,13 +54,24 @@ namespace Ekiga
 
   public:
 
+      class Interface
+        {
+      public:
+          std::string voip_protocol;
+          std::string protocol;
+          std::string interface;
+          bool publish;
+          unsigned port;
+        };
+
+
       /* The constructor
        */
       CallProtocolManager () {};
 
       /* The destructor
        */
-      ~CallProtocolManager () {}
+      ~CallProtocolManager () {};
 
 
       /*                 
@@ -78,7 +89,7 @@ namespace Ekiga
        * PROTOCOL INFORMATION
        */
 
-      /** Return the protcol name
+      /** Return the protocol name
        * @return the protocol name
        */
       virtual const std::string & get_protocol_name () const = 0;
@@ -92,7 +103,7 @@ namespace Ekiga
        * @return the interface on which we are accepting calls. Generally,
        * under the form protocol:IP:port.
        */
-      virtual const Ekiga::CallManager::Interface & get_listen_interface () const = 0;
+      virtual const Interface & get_listen_interface () const = 0;
 
       /** Set the DTMF mode to use to send DTMFs
        * @param mode is the desired DTMF mode

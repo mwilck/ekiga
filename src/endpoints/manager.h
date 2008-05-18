@@ -64,7 +64,6 @@
 class GMLid;
 class GMH323Gatekeeper;
 class GMH323Endpoint;
-class GMSIPEndpoint;
 class GMPCSSEndpoint;
 
 /**
@@ -81,8 +80,6 @@ class GMManager:
 
   friend class GMAccountsEndpoint;
   friend class GMH323Endpoint;
-  friend class GMSIPEndpoint;
-  
   
  public:
 
@@ -138,10 +135,6 @@ class GMManager:
 
 
   /**/
-  bool message (const std::string & uri, 
-                const std::string & message);
-
-  /**/
   struct VideoOptions 
   {
     VideoOptions () 
@@ -165,20 +158,10 @@ class GMManager:
   /**/ 
   GMH323Endpoint *GetH323Endpoint ();
   
-  GMSIPEndpoint *GetSIPEndpoint ();
-
   void Register (GmAccount * = NULL);
 
  private:
   OpalCall *CreateCall ();
-
-  void CreateSTUNClient (bool,
-			 bool,
-			 bool,
-			 GtkWidget *);
-
-  void RemoveSTUNClient ();
-
 
   void RemoveAccountsEndpoint ();
 
@@ -194,22 +177,18 @@ class GMManager:
 
   /* The various related endpoints */
   GMH323Endpoint *h323EP;
-  GMSIPEndpoint *sipEP;
   GMPCSSEndpoint *pcssEP;
 
 
   /* The various components of the endpoint */
   GMAccountsEndpoint *manager;
-  GMStunClient *sc;
 
   /* Various mutexes to ensure thread safeness around internal
      variables */
   PMutex manager_access_mutex;
-  PMutex sc_mutex;
 
   Ekiga::ServiceCore & core;
   Ekiga::Runtime & runtime;
-  Ekiga::ConfBridge *bridge;
   Ekiga::CodecList codecs; 
   Ekiga::CallCore *call_core;
 

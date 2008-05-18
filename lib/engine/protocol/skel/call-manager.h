@@ -40,6 +40,7 @@
 #define __CALL_MANAGER_H__
 
 #include "call-core.h"
+#include "call-protocol-manager.h"
 #include "codec-description.h"
 
 namespace Ekiga
@@ -54,18 +55,9 @@ namespace Ekiga
     {
 
   public:
-
-      class Interface
-        {
-      public:
-          std::string voip_protocol;
-          std::string protocol;
-          std::string interface;
-          bool publish;
-          unsigned port;
-        };
-      typedef std::list<CallManager::Interface> InterfaceList;
-
+      typedef std::list<CallProtocolManager::Interface> InterfaceList;
+      typedef std::set<CallProtocolManager *>::iterator iterator;
+      typedef std::set<CallProtocolManager *>::const_iterator const_iterator;
 
       /* The constructor
        */
@@ -75,10 +67,38 @@ namespace Ekiga
        */
       ~CallManager () {}
 
+      /** Add a CallProtocolManager to the CallManager.
+       * @param The manager to be added.
+       */
+      void add_protocol_manager (CallProtocolManager &manager);
+
+      /** Return a pointer to a CallProtocolManager of the CallManager.
+       * @param protocol is the protcol name.
+       * @return a pointer to the CallProtocolManager or NULL if none.
+       */
+      CallProtocolManager * const get_protocol_manager (const std::string &protocol) const;
+
+      /** Return iterator to beginning
+       * @return iterator to beginning
+       */
+      iterator begin ();
+      const_iterator begin () const;
+
+      /** Return iterator to end
+       * @return iterator to end 
+       */
+      iterator end ();
+      const_iterator end () const;
+
+      /** This signal is emitted when a Ekiga::CallProtocolManager has been
+       * added to the CallManager.
+       */
+      sigc::signal<void, CallProtocolManager &> manager_added;
+
 
       /*                 
        * CALL MANAGEMENT 
-       */               
+       */              
 
       /** Create a call based on the remote uri given as parameter
        * @param: An uri
@@ -227,6 +247,9 @@ namespace Ekiga
        *         info contains information about the registration status
        */
       sigc::signal<void, std::string, Ekiga::CallCore::RegistrationState, std::string> registration_event;
+
+    private:
+      std::set<CallProtocolManager *> managers;
     };
 
 /**

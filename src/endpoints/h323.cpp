@@ -80,7 +80,7 @@ const std::string & GMH323Endpoint::get_protocol_name () const
 }
 
 
-const Ekiga::CallManager::Interface & GMH323Endpoint::get_interface () const
+const Ekiga::CallProtocolManager::Interface & GMH323Endpoint::get_interface () const
 {
   return interface;
 }
@@ -129,6 +129,7 @@ bool GMH323Endpoint::menu_builder_add_actions (const std::string & /*fullname*/,
 
   return populated;
 }
+
 
 void
 GMH323Endpoint::SetUserInputMode ()

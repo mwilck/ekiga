@@ -97,7 +97,7 @@ public:
   unsigned get_dtmf_mode () const;
 
   bool set_listen_port (unsigned port);
-  const Ekiga::CallManager::Interface & get_listen_interface () const;
+  const Ekiga::CallProtocolManager::Interface & get_listen_interface () const;
 
   /* SIP ProtocolManager */
   void set_nat_binding_delay (unsigned delay);
@@ -166,7 +166,7 @@ private:
   Ekiga::PresenceCore & presence_core;
   Ekiga::Runtime & runtime;
 
-  Ekiga::CallManager::Interface interface;
+  Ekiga::CallProtocolManager::Interface interface;
 
   std::string protocol_name;
   std::string uri_prefix;

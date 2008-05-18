@@ -90,10 +90,6 @@ void GMAccountsEndpoint::Main ()
   stun_support = (gm_conf_get_int (NAT_KEY "method") == 1);
   gnomemeeting_threads_leave ();
   
-  /* Enable STUN if required */
-  if (stun_support && ep.GetSTUN () == NULL) 
-    ep.CreateSTUNClient (FALSE, FALSE, TRUE, NULL);
-  
   /* Register all accounts */
   defined_accounts = gnomemeeting_get_accounts_list ();
   accounts_iter = defined_accounts;
@@ -166,29 +162,29 @@ void GMAccountsEndpoint::RegisterAccount (GmAccount *account)
 void GMAccountsEndpoint::SIPRegister (GmAccount *a)
 {
   std::string aor;
-  GMSIPEndpoint *sipEP = NULL;
+  GMSIPEndpoint *sip_manager = dynamic_cast<GMSIPEndpoint *> (ep.get_protocol_manager ("sip"));
 
-  sipEP = ep.GetSIPEndpoint ();
-
+  // TODO Move this to the engine and drop the dynamic cast
   aor = a->username;
   if (aor.find ("@") == string::npos)
     aor = aor + "@" + a->host;
 
-  sipEP->Register (aor.c_str (), a->auth_username, a->password, a->timeout, !a->enabled);
+  if (sip_manager)
+    sip_manager->Register (aor.c_str (), a->auth_username, a->password, a->timeout, !a->enabled);
 }
 
 
 void GMAccountsEndpoint::H323Register (GmAccount *a)
 {
   std::string aor;
-  GMH323Endpoint *h323EP = NULL;
+  GMH323Endpoint *h323_manager = dynamic_cast<GMH323Endpoint *> (ep.get_protocol_manager ("h323"));
 
-  h323EP = ep.GetH323Endpoint ();
-
+  // TODO Move this to the engine and drop the dynamic cast
   aor = a->username;
   if (aor.find ("@") == string::npos)
     aor = aor + "@" + a->host;
 
-  h323EP->Register (aor.c_str (), a->auth_username, a->password, a->domain, a->timeout, !a->enabled);
+  if (h323_manager)
+    h323_manager->Register (aor.c_str (), a->auth_username, a->password, a->domain, a->timeout, !a->enabled);
 }
 

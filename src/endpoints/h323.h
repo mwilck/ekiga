@@ -64,7 +64,7 @@ class GMH323Endpoint : public H323EndPoint
   /**/
   const std::string & get_protocol_name () const;
 
-  const Ekiga::CallManager::Interface & get_interface () const;
+  const Ekiga::CallProtocolManager::Interface & get_interface () const;
 
   /**/
   bool populate_menu (Ekiga::Contact &contact,
@@ -76,7 +76,7 @@ class GMH323Endpoint : public H323EndPoint
   bool menu_builder_add_actions (const std::string & fullname,
                                  std::map<std::string, std::string> & uris,
                                  Ekiga::MenuBuilder & builder);
-  
+
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Adds the User Input Mode following the
    *                 configuration options. String, Tone, and RFC2833 are 
@@ -201,7 +201,7 @@ class GMH323Endpoint : public H323EndPoint
   unsigned udp_max;
   unsigned listen_port;
 
-  Ekiga::CallManager::Interface interface;
+  Ekiga::CallProtocolManager::Interface interface;
 
   std::string protocol_name;
   std::string uri_prefix;

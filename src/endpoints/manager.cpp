@@ -45,7 +45,6 @@
 #include "pcss.h"
 
 #include "call-core.h"
-#include "opal-gmconf-bridge.h"
 #include "opal-call.h"
 #include "opal-codec-description.h"
 #include "vidinput-info.h"
@@ -64,6 +63,9 @@ GMManager::GMManager (Ekiga::ServiceCore & _core)
 : core (_core), 
   runtime (*(dynamic_cast<Ekiga::Runtime *> (core.get ("runtime"))))
 {
+  /* STUN */
+  SetSTUNServer ("stun.ekiga.net");
+
   /* Initialise the endpoint paramaters */
   PIPSocket::SetDefaultIpAddressFamilyV4();
   autoStartTransmitVideo = autoStartReceiveVideo = true;
@@ -71,9 +73,7 @@ GMManager::GMManager (Ekiga::ServiceCore & _core)
   manager = NULL;
 
   h323EP = NULL;
-  sipEP = NULL;
   pcssEP = NULL;
-  sc = NULL;
 
   // Create video devices
   PVideoDevice::OpenArgs video = GetVideoOutputDevice();
@@ -92,23 +92,17 @@ GMManager::GMManager (Ekiga::ServiceCore & _core)
   h323EP = new GMH323Endpoint (*this, core);
   AddRouteEntry("pc:.* = h323:<da>");
 	
-  sipEP = new GMSIPEndpoint (*this, core);
-  AddRouteEntry("pc:.* = sip:<da>");
-
   pcssEP = new GMPCSSEndpoint (*this, core);
   pcssEP->SetSoundChannelPlayDevice("EKIGA");
   pcssEP->SetSoundChannelRecordDevice("EKIGA");
   AddRouteEntry("h323:.* = pc:<db>");
   AddRouteEntry("sip:.* = pc:<db>");
   protocols.push_back (h323EP->get_protocol_name ());
-  protocols.push_back (sipEP->get_protocol_name ());
+  protocols.push_back ("sip"); //FIXME
 
   // Media formats
   SetMediaFormatOrder (PStringArray ());
   SetMediaFormatMask (PStringArray ());
-
-  // Config
-  bridge = new Opal::ConfBridge (*this);
 
   //
   call_core = dynamic_cast<Ekiga::CallCore *> (core.get ("call-core"));
@@ -119,9 +113,6 @@ GMManager::~GMManager ()
 {
   ClearAllCalls (OpalConnection::EndedByLocalUser, TRUE);
   RemoveAccountsEndpoint ();
-  RemoveSTUNClient ();
-
-  delete bridge;
 }
 
 
@@ -130,10 +121,6 @@ void GMManager::set_display_name (const std::string & name)
   display_name = name;
 
   SetDefaultDisplayName (display_name);
-
-  sipEP->SetDefaultDisplayName (display_name);
-  h323EP->SetDefaultDisplayName (display_name);
-  h323EP->SetLocalUserName (display_name);
 }
 
 
@@ -384,7 +371,11 @@ const std::list<std::string> & GMManager::get_protocol_names () const
 const Ekiga::CallManager::InterfaceList GMManager::get_interfaces () const
 {
   InterfaceList list;
-  list.push_back (sipEP->get_listen_interface ());
+
+  for (CallManager::iterator iter = begin ();
+       iter != end ();
+       iter++)
+    list.push_back ((*iter)->get_listen_interface ());
 
   return list;
 }
@@ -434,18 +425,11 @@ void GMManager::get_tcp_ports (unsigned & min_port,
 
 bool GMManager::dial (const std::string & uri)
 {
-  if (uri.find ("sip:") == 0)
-    return sipEP->dial (uri);
-
-  return false;
-}
-
-
-bool GMManager::message (const std::string & _uri, 
-                         const std::string & _message)
-{
-  if (_uri.find ("sip:") == 0 || _uri.find (':') == string::npos)
-    return sipEP->message (_uri, _message);
+  for (CallManager::iterator iter = begin ();
+       iter != end ();
+       iter++)
+    if ((*iter)->dial (uri))
+      return true;
 
   return false;
 }
@@ -578,13 +562,6 @@ GMManager::GetH323Endpoint ()
 }
 
 
-GMSIPEndpoint *
-GMManager::GetSIPEndpoint ()
-{
-  return sipEP;
-}
-
-
 void
 GMManager::Register (GmAccount *account)
 {
@@ -606,42 +583,6 @@ GMManager::RemoveAccountsEndpoint ()
   if (manager)
     delete manager;
   manager = NULL;
-}
-
-
-void 
-GMManager::CreateSTUNClient (bool display_progress,
-                             bool display_config_dialog,
-                             bool wait,
-                             GtkWidget *parent)
-{
-  PWaitAndSignal m(sc_mutex);
-
-  if (sc) 
-    delete (sc);
-
-  SetSTUNServer (PString ());
-
-  /* Be a client for the specified STUN Server */
-  sc = new GMStunClient (display_progress, 
-                         display_config_dialog, 
-                         wait,
-                         parent,
-                         *this);
-}
-
-
-void 
-GMManager::RemoveSTUNClient ()
-{
-  PWaitAndSignal m(sc_mutex);
-
-  if (sc) 
-    delete (sc);
-
-  SetSTUNServer (PString ());
-
-  sc = NULL;
 }
 
 

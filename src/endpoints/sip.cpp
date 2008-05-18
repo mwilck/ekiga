@@ -372,7 +372,7 @@ bool GMSIPEndpoint::set_listen_port (unsigned port)
 }
 
 
-const Ekiga::CallManager::Interface & GMSIPEndpoint::get_listen_interface () const
+const Ekiga::CallProtocolManager::Interface & GMSIPEndpoint::get_listen_interface () const
 {
   return interface;
 }

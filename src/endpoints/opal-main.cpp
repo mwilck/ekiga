@@ -40,6 +40,7 @@
 #include "presence-core.h"
 #include "call-core.h"
 #include "display-core.h"
+#include "opal-gmconf-bridge.h"
 
 #include "manager.h"
 #include "ekiga.h"
@@ -69,10 +70,15 @@ opal_init (Ekiga::ServiceCore &core,
   call_core = dynamic_cast<Ekiga::CallCore *> (core.get ("call-core"));
 
   GMManager *manager = new GMManager (core);
-  GMSIPEndpoint *sipEP = manager->GetSIPEndpoint ();
+  GMSIPEndpoint *sipEP = new GMSIPEndpoint (*manager, core);
+
+  manager->AddRouteEntry("pc:.* = sip:<da>");
+  manager->add_protocol_manager (*sipEP);
 
   call_core->add_manager (*manager);
   core.add (*manager); // FIXME temporary
+  new Opal::ConfBridge (*manager);
+  // FIXME Service ?
 
   if (contact_core != NULL) 
     contact_core->add_contact_decorator (*sipEP);
