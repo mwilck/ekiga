@@ -38,44 +38,12 @@
 
 #include "config.h"
 
-#include "stun.h"
-#include "ekiga.h"
 #include "manager.h"
-#include "misc.h"
-
-#include "h323.h"
-#include "sip.h"
-
+#include "stun.h"
 #include "gmconf.h"
-#include "gmdialog.h"
 
-#include <ptclib/http.h>
-#include <ptclib/html.h>
 #include <ptclib/pstun.h>
 
-
-/* Declarations */
-
-/* Callbacks */
-
-/* DESCRIPTION  :  This callback is called when the user validates an answer
- *                 to the stun dialog.
- * BEHAVIOR     :  Destroy the dialog and set/unset the STUN server.
- * PRE          :  /
- */
-static void stun_dialog_response_cb (GtkDialog *dialog, 
-				     gint response,
-				     gpointer data);
-
-/* GUI Functions */
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Create a dialog that presents the result of the STUN test.
- * 		   If the NAT type permits it, ask to the user if he wants
- * 		   to enable STUN support or not.
- * PRE          :  /
- */
-static GtkWidget *gm_sw_stun_result_window_new (GtkWidget *parent,
-						int nat_type);
 
 /* Helper function */
 static PString get_nat_name (int nat_type);
@@ -103,133 +71,6 @@ get_nat_name (int nat_type)
   return PString (gettext (name [nat_type]));
 }
 
-static void 
-stun_dialog_response_cb (G_GNUC_UNUSED GtkDialog *dialog,
-			 G_GNUC_UNUSED gint response,
-			 G_GNUC_UNUSED gpointer data)
-{
-  // FIXME
-  /*
-  GMManager *ep = NULL;
-
-  ep = GnomeMeeting::Process ()->GetManager ();
-  
-  switch (response) {
-
-  case GTK_RESPONSE_YES:
-
-    gm_conf_set_string (NAT_KEY "stun_server", "stun.ekiga.net");
-    gm_conf_set_int (NAT_KEY "method", 1);
-    break;
-
-  case GTK_RESPONSE_NO:
-  default:
-
-    ((OpalManager *) ep)->SetSTUNServer (PString ());
-    break;
-  }
-  
-  gtk_widget_destroy (GTK_WIDGET (dialog));
-  */
-}
-
-
-static GtkWidget *
-gm_sw_stun_result_window_new (GtkWidget *parent,
-			      int nat_type_index)
-{
-  GtkWidget *dialog = NULL;
-  GtkWidget *dialog_label = NULL;
-
-  gchar *prefered_method = NULL;
-  gchar *primary_text = NULL;
-  gchar *dialog_text = NULL;
-
-  gboolean stun_dialog = TRUE;
-
-  PString nat_type = get_nat_name (nat_type_index);
-  
-  switch (nat_type_index)
-    {
-    case 0:
-    case 7:
-    case 8:
-      prefered_method = g_strdup_printf (_("STUN test result: %s.\n\nEkiga could not detect the type of NAT you are using. The most appropriate method, if your router does not natively support SIP or H.323, is probably to forward the required ports to your internal machine and use IP translation if you are behind a NAT router. Please also make sure you are not running a local firewall."), (const char *) nat_type);
-      stun_dialog = FALSE;
-      break;
-
-    case 1:
-    case 6:
-      prefered_method = g_strdup_printf (_("STUN test result: %s.\n\nYour system does not need any specific configuration as long as you do not have a local firewall blocking the ports required by Ekiga."), (const char *) nat_type);
-      stun_dialog = FALSE;
-      break;
-
-    case 5:
-      prefered_method = g_strdup_printf (_("Ekiga detected Symmetric NAT. The most appropriate method, if your router does not natively support SIP or H.323, is to forward the required ports to your internal machine in order to change your Symmetric NAT into Cone NAT. If you run this test again after the port forwarding has been done, it should report Cone NAT. This should allow Ekiga to be used with STUN support enabled. If it does not report Cone NAT, then it means that there is a problem in your forwarding rules."));
-      stun_dialog = FALSE;
-      break;
-    case 9:
-      prefered_method = g_strdup_printf (_("STUN test result: %s.\n\nYou do not seem to be using a NAT router. STUN support is not required."), (const char *) nat_type);
-      stun_dialog = FALSE;
-      break;
-
-    default:
-      prefered_method = g_strdup_printf (_("STUN test result: %s.\n\nUsing a STUN server is most probably the most appropriate method if your router does not natively support SIP or H.323.\n\nEnable STUN Support?"), (const char *) nat_type);
-      stun_dialog = TRUE;
-      break;
-    }
-
-  if (stun_dialog) {
-
-    dialog = 
-      gtk_dialog_new_with_buttons (_("NAT Detection Finished"),
-				   GTK_WINDOW (parent),
-				   GTK_DIALOG_MODAL,
-				   GTK_STOCK_NO,
-				   GTK_RESPONSE_NO,
-				   GTK_STOCK_YES,
-				   GTK_RESPONSE_YES,
-				   NULL);
-    gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_YES);
-  }
-  else {
-
-    dialog = 
-      gtk_dialog_new_with_buttons (_("NAT Detection Finished"),
-				   GTK_WINDOW (parent),
-				   GTK_DIALOG_MODAL,
-				   GTK_STOCK_OK,
-				   GTK_RESPONSE_NO,
-				   NULL);
-    gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_NO);
-  }
-
-  primary_text =
-    g_strdup_printf ("<span weight=\"bold\" size=\"larger\">%s</span>",
-		     _("The detection of your NAT type is finished"));
-
-  dialog_text =
-    g_strdup_printf ("%s\n\n%s", primary_text, prefered_method);
-
-  gtk_window_set_title (GTK_WINDOW (dialog), "");
-  dialog_label = gtk_label_new (NULL);
-  gtk_label_set_markup (GTK_LABEL (dialog_label),
-			dialog_text);
-  gtk_label_set_line_wrap (GTK_LABEL (dialog_label), TRUE);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox),
-		     dialog_label);
-
-  g_signal_connect (GTK_WINDOW (dialog), "response",
-		    G_CALLBACK (stun_dialog_response_cb), NULL);
-
-  g_free (prefered_method);
-  g_free (primary_text);
-  g_free (dialog_text);
-
-  return dialog;
-}
-
-
 /* The class */
 GMStunClient::GMStunClient (bool display_progress_,
 			    bool display_config_dialog_,
@@ -242,11 +83,9 @@ GMStunClient::GMStunClient (bool display_progress_,
   gchar *conf_string = NULL;
   int nat_method = 0;
   
-  gnomemeeting_threads_enter ();
   nat_method = gm_conf_get_int (NAT_KEY "method");
   conf_string = gm_conf_get_string (NAT_KEY "stun_server");
   stun_host = conf_string;
-  gnomemeeting_threads_leave ();
   
   display_progress = display_progress_;
   display_config_dialog = display_config_dialog_;
@@ -271,55 +110,29 @@ GMStunClient::~GMStunClient ()
 
 void GMStunClient::Main ()
 {
-  GtkWidget *main_window = NULL;
-
   PSTUNClient *stun = NULL;
 
-  PHTTPClient web_client ("Ekiga");
   PString html;
   PString public_ip;
   PString listener_ip;
   gboolean has_nat = FALSE;
   int nat_type_index = 0;
 
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-
-  GtkWidget *progress_dialog = NULL;
-  GtkWidget *dialog = NULL;
-
-
   PWaitAndSignal m(quit_mutex);
 
   /* Async remove the current stun server setting */
   if (stun_host.IsEmpty ()) {
-
     if (wait)
       sync.Signal ();
-
     ((OpalManager *) &ep)->SetSTUNServer (PString ());
-    
     return;
   }
 
-  /* Display a progress dialog */
-  if (display_progress) {
-
-    gnomemeeting_threads_enter ();
-    progress_dialog = 
-      gnomemeeting_progress_dialog (GTK_WINDOW (parent),
-				    _("Detection in progress"), 
-				    _("Please wait while your type of NAT is being detected."));
-    gnomemeeting_threads_dialog_show_all (progress_dialog);
-    gnomemeeting_threads_leave ();
-  }
-
   /* Set the STUN server for the endpoint */
+  std::cout << "Set STUN server" << std::endl << std::flush;
   ((OpalManager *) &ep)->SetSTUNServer (stun_host);
 
   stun = ep.GetSTUN ();
-  // TODO to improve heh
-  ep.GetSIPEndpoint()->set_listen_port (5060);
-
   if (stun) 
     nat_type_index = stun->GetNatType ();
   else if (!has_nat) 
@@ -328,20 +141,4 @@ void GMStunClient::Main ()
 
   if (wait)
     sync.Signal ();
-
-  /* Show the config dialog */
-  gnomemeeting_threads_enter ();
-  if (display_config_dialog) {
-
-    dialog = gm_sw_stun_result_window_new (parent, nat_type_index);
-    gnomemeeting_threads_dialog_show_all (dialog);
-  }
-  gnomemeeting_threads_leave ();
-
-
-  /* Delete the progress if any */
-  gnomemeeting_threads_enter ();
-  if (display_progress) 
-    gnomemeeting_threads_widget_destroy (progress_dialog);
-  gnomemeeting_threads_leave ();
 }
