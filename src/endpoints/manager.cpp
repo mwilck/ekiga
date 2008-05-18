@@ -106,6 +106,10 @@ GMManager::GMManager (Ekiga::ServiceCore & _core)
 
   //
   call_core = dynamic_cast<Ekiga::CallCore *> (core.get ("call-core"));
+
+
+  // Ready
+  runtime.run_in_main (sigc::bind (ready.make_slot (), ""));
 }
 
 

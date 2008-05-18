@@ -248,6 +248,12 @@ namespace Ekiga
        */
       sigc::signal<void, std::string, Ekiga::CallCore::RegistrationState, std::string> registration_event;
 
+
+      /*
+       * MISC
+       */
+      sigc::signal<void, std::string> ready;
+
     private:
       std::set<CallProtocolManager *> managers;
     };

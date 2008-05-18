@@ -215,3 +215,9 @@ void CallCore::on_registration_event (std::string account, Ekiga::CallCore::Regi
 {
   registration_event.emit (*manager, account, state, info);
 }
+
+
+void CallCore::on_manager_ready (std::string info, CallManager *manager)
+{
+  manager_ready.emit (*manager, info);
+}

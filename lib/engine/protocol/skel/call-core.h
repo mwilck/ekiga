@@ -178,6 +178,8 @@ namespace Ekiga
       typedef enum { Processing, Registered, Unregistered, RegistrationFailed, UnregistrationFailed } RegistrationState;
       sigc::signal<void, CallManager &, std::string, Ekiga::CallCore::RegistrationState, std::string> registration_event;
 
+      /*** Misc ***/
+      sigc::signal<void, CallManager &, std::string> manager_ready;
 
   private:
       void on_new_call (Call *call, CallManager *manager);
@@ -201,6 +203,8 @@ namespace Ekiga
       void on_mwi_event (std::string, std::string, CallManager *manager);
       void on_registration_event (std::string, Ekiga::CallCore::RegistrationState, std::string, CallManager *manager);
 
+      void on_manager_ready (std::string, CallManager *manager);
+      
       std::set<CallManager *> managers;
     };
 
