@@ -37,7 +37,7 @@
 
 #define DEVICE_TYPE   "NULL"
 #define DEVICE_SOURCE "NULL"
-#define DEVICE_DEVICE "NULL"
+#define DEVICE_NAME   "NULL"
 
 GMAudioOutputManager_null::GMAudioOutputManager_null (Ekiga::ServiceCore & _core)
 :    core (_core), runtime (*(dynamic_cast<Ekiga::Runtime *> (_core.get ("runtime"))))
@@ -51,7 +51,7 @@ void GMAudioOutputManager_null::get_devices(std::vector <Ekiga::AudioOutputDevic
   Ekiga::AudioOutputDevice device;
   device.type   = DEVICE_TYPE;
   device.source = DEVICE_SOURCE;
-  device.device = DEVICE_DEVICE;
+  device.name   = DEVICE_NAME;
   devices.push_back(device);
 }
 
@@ -60,9 +60,9 @@ bool GMAudioOutputManager_null::set_device (Ekiga::AudioOutputPrimarySecondary p
 {
   if ( ( device.type   == DEVICE_TYPE ) &&
        ( device.source == DEVICE_SOURCE) &&
-       ( device.device == DEVICE_DEVICE) ) {
+       ( device.name   == DEVICE_NAME) ) {
 
-    PTRACE(4, "GMAudioOutputManager_null\tSetting Device[" << primarySecondary << "] " << device.source << "/" <<  device.device);
+    PTRACE(4, "GMAudioOutputManager_null\tSetting Device[" << primarySecondary << "] " << device);
     current_state[primarySecondary].device = device;
     return true;
   }
@@ -73,7 +73,7 @@ bool GMAudioOutputManager_null::open (Ekiga::AudioOutputPrimarySecondary primary
 {
   Ekiga::AudioOutputConfig audiooutput_config;
 
-  PTRACE(4, "GMAudioOutputManager_null\tOpening Device[" << primarySecondary << "] " << current_state[primarySecondary].device.source << "/" <<  current_state[primarySecondary].device.device);
+  PTRACE(4, "GMAudioOutputManager_null\tOpening Device[" << primarySecondary << "] " << current_state[primarySecondary].device);
   PTRACE(4, "GMAudioOutputManager_null\tOpening Device with " << channels << "-" << samplerate << "/" << bits_per_sample);
 
   current_state[primarySecondary].channels        = channels;

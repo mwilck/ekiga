@@ -63,13 +63,10 @@ opal_init (Ekiga::ServiceCore &core,
   Ekiga::ContactCore *contact_core = NULL;
   Ekiga::PresenceCore *presence_core = NULL;
   Ekiga::CallCore *call_core = NULL;
-  Ekiga::DisplayCore *display_core = NULL;
   
-  //GMDisplayManager *displayManager = new GMDisplayManager_X(core);
   contact_core = dynamic_cast<Ekiga::ContactCore *> (core.get ("contact-core"));
   presence_core = dynamic_cast<Ekiga::PresenceCore *> (core.get ("presence-core"));
   call_core = dynamic_cast<Ekiga::CallCore *> (core.get ("call-core"));
-  display_core = dynamic_cast<Ekiga::DisplayCore *> (core.get ("display-core"));
 
   GMManager *manager = new GMManager (core);
   GMSIPEndpoint *sipEP = manager->GetSIPEndpoint ();
@@ -91,13 +88,6 @@ opal_init (Ekiga::ServiceCore &core,
   }
   else 
     return false;
-
-/*  if (display_core != NULL)
-    display_core->add_manager (*displayManager);
-  else 
-    return false;
-*/
-
 
   return result;
 }

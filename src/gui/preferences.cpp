@@ -312,11 +312,11 @@ static void audioev_filename_browse_play_cb (GtkWidget *playbutton,
                                              gpointer data);
 
 void 
-gm_prefs_window_get_audio_output_devices_list (Ekiga::ServiceCore *core,
+gm_prefs_window_get_audiooutput_devices_list (Ekiga::ServiceCore *core,
                                         std::vector<std::string> & device_list);
 
 void 
-gm_prefs_window_get_audio_input_devices_list (Ekiga::ServiceCore *core,
+gm_prefs_window_get_audioinput_devices_list (Ekiga::ServiceCore *core,
                                         std::vector<std::string> & device_list);
 
 gchar**
@@ -762,7 +762,7 @@ gm_pw_init_audio_devices_page (GtkWidget *prefs_window,
   /* Add all the fields for the audio manager */
   std::vector <std::string> device_list;
 
-  gm_prefs_window_get_audio_output_devices_list (pw->core, device_list);
+  gm_prefs_window_get_audiooutput_devices_list (pw->core, device_list);
   array = gm_prefs_window_convert_string_list(device_list);
   pw->sound_events_output = 
     gnome_prefs_string_option_menu_new (subsection, _("Ringing Device"), (const gchar **)array, SOUND_EVENTS_KEY "output_device", _("Select the ringing audio device to use"), 0);
@@ -771,7 +771,7 @@ gm_pw_init_audio_devices_page (GtkWidget *prefs_window,
   g_free (array);
 
   /* The recorder */
-  gm_prefs_window_get_audio_input_devices_list (pw->core, device_list);
+  gm_prefs_window_get_audioinput_devices_list (pw->core, device_list);
   array = gm_prefs_window_convert_string_list(device_list);
   pw->audio_recorder =
     gnome_prefs_string_option_menu_new (subsection, _("Input device:"), (const gchar **)array, AUDIO_DEVICES_KEY "input_device", _("Select the audio input device to use"), 2);
@@ -784,90 +784,72 @@ gm_pw_init_audio_devices_page (GtkWidget *prefs_window,
 
 
 void 
-gm_prefs_window_get_video_devices_list (Ekiga::ServiceCore *core,
+gm_prefs_window_get_videoinput_devices_list (Ekiga::ServiceCore *core,
                                         std::vector<std::string> & device_list)
 {
-  Ekiga::VidInputCore *vidinput_core = dynamic_cast<Ekiga::VidInputCore *> (core->get ("vidinput-core"));
-  std::vector <Ekiga::VidInputDevice> vidinput_devices;
-  Ekiga::VidInputDevice vidinput_device;
+  Ekiga::VideoInputCore *videoinput_core = dynamic_cast<Ekiga::VideoInputCore *> (core->get ("videoinput-core"));
+  std::vector <Ekiga::VideoInputDevice> devices;
 
-  std::string device_string;
   device_list.clear();
+  videoinput_core->get_devices(devices);
 
-  vidinput_core->get_vidinput_devices(vidinput_devices);
-
-  for (std::vector<Ekiga::VidInputDevice>::iterator iter = vidinput_devices.begin ();
-       iter != vidinput_devices.end ();
+  for (std::vector<Ekiga::VideoInputDevice>::iterator iter = devices.begin ();
+       iter != devices.end ();
        iter++) {
 
-    vidinput_device = (*iter);
-    device_string = vidinput_device.type + "/" + vidinput_device.source + "/" + vidinput_device.device;
-    device_list.push_back(device_string);
+    device_list.push_back(iter->GetString());
   }
 
   if (device_list.size() == 0) {
-    device_string = _("No device found");
-      device_list.push_back(device_string);
+    device_list.push_back(_("No device found"));
   }
 }
 
 void 
-gm_prefs_window_get_audio_output_devices_list (Ekiga::ServiceCore *core,
+gm_prefs_window_get_audiooutput_devices_list (Ekiga::ServiceCore *core,
                                         std::vector<std::string> & device_list)
 {
   Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (core->get ("audiooutput-core"));
-  Ekiga::AudioOutputDevice audiooutput_device;
-  std::vector <Ekiga::AudioOutputDevice> audiooutput_devices;
+  std::vector <Ekiga::AudioOutputDevice> devices;
 
   std::string device_string;
   device_list.clear();
 
-  audiooutput_core->get_audiooutput_devices(audiooutput_devices);
+  audiooutput_core->get_audiooutput_devices(devices);
 
-  for (std::vector<Ekiga::AudioOutputDevice>::iterator iter = audiooutput_devices.begin ();
-       iter != audiooutput_devices.end ();
+  for (std::vector<Ekiga::AudioOutputDevice>::iterator iter = devices.begin ();
+       iter != devices.end ();
        iter++) {
 
-    audiooutput_device = (*iter);
-    device_string = audiooutput_device.type + "/" + audiooutput_device.source + "/" + audiooutput_device.device;
-    device_list.push_back(device_string);
+    device_list.push_back(iter->GetString());
   }
 
   if (device_list.size() == 0) {
-    device_string = _("No device found");
-      device_list.push_back(device_string);
+    device_list.push_back(_("No device found"));
   }
-
 }
 
 
 void 
-gm_prefs_window_get_audio_input_devices_list (Ekiga::ServiceCore *core,
+gm_prefs_window_get_audioinput_devices_list (Ekiga::ServiceCore *core,
                                         std::vector<std::string> & device_list)
 {
   Ekiga::AudioInputCore *audioinput_core = dynamic_cast<Ekiga::AudioInputCore *> (core->get ("audioinput-core"));
-  Ekiga::AudioInputDevice audioinput_device;
-  std::vector <Ekiga::AudioInputDevice> audioinput_devices;
+  std::vector <Ekiga::AudioInputDevice> devices;
 
-  std::string device_string;
   device_list.clear();
+  audioinput_core->get_audioinput_devices(devices);
 
-  audioinput_core->get_audioinput_devices(audioinput_devices);
-
-  for (std::vector<Ekiga::AudioInputDevice>::iterator iter = audioinput_devices.begin ();
-       iter != audioinput_devices.end ();
+  for (std::vector<Ekiga::AudioInputDevice>::iterator iter = devices.begin ();
+       iter != devices.end ();
        iter++) {
 
-    audioinput_device = (*iter);
-    device_string = audioinput_device.type + "/" + audioinput_device.source + "/" + audioinput_device.device;
-    device_list.push_back(device_string);
+    device_list.push_back(iter->GetString());
   }
 
   if (device_list.size() == 0) {
-    device_string = _("No device found");
-      device_list.push_back(device_string);
+    device_list.push_back(_("No device found"));
   }
-
 }
 
 
@@ -937,7 +919,7 @@ gm_pw_init_video_devices_page (GtkWidget *prefs_window,
 
   /* The video device */
 
-  gm_prefs_window_get_video_devices_list (pw->core, device_list);
+  gm_prefs_window_get_videoinput_devices_list (pw->core, device_list);
   array = gm_prefs_window_convert_string_list(device_list);
   pw->video_device =
     gnome_prefs_string_option_menu_new (subsection, _("Input device:"), (const gchar **)array, VIDEO_DEVICES_KEY "input_device", _("Select the video input device to use. If an error occurs when using this device a test picture will be transmitted."), 0);
@@ -1343,59 +1325,59 @@ audioev_filename_browse_play_cb (GtkWidget* /* playbutton */,
    g_free (file_name);
 }
 
-void on_vidinputdevice_added_cb (const Ekiga::VidInputDevice & vidinput_device, GtkWidget *prefs_window)
+void on_videoinput_device_added_cb (const Ekiga::VideoInputDevice & device, GtkWidget *prefs_window)
 {
   GmPreferencesWindow *pw = NULL;
   g_return_if_fail (prefs_window != NULL);
   pw = gm_pw_get_pw (prefs_window);
-  std::string device = vidinput_device.type + "/" + vidinput_device.source + "/" + vidinput_device.device;
-  gnome_prefs_string_option_menu_add (pw->video_device, device.c_str());
+  std::string device_string = device.type + "/" + device.source + "/" + device.name;
+  gnome_prefs_string_option_menu_add (pw->video_device, device_string.c_str());
 }
 
-void on_vidinputdevice_removed_cb (const Ekiga::VidInputDevice & vidinput_device, GtkWidget *prefs_window)
+void on_videoinput_device_removed_cb (const Ekiga::VideoInputDevice & device, GtkWidget *prefs_window)
 {
   GmPreferencesWindow *pw = NULL;
   g_return_if_fail (prefs_window != NULL);
   pw = gm_pw_get_pw (prefs_window);
-  std::string device = vidinput_device.type + "/" + vidinput_device.source + "/" + vidinput_device.device;
-  gnome_prefs_string_option_menu_remove(pw->video_device, device.c_str());
+  std::string device_string = device.type + "/" + device.source + "/" + device.name;
+  gnome_prefs_string_option_menu_remove(pw->video_device, device_string.c_str());
 }
 
-void on_audioinputdevice_added_cb (const Ekiga::AudioInputDevice & audioinput_device, GtkWidget *prefs_window)
+void on_audioinput_device_added_cb (const Ekiga::AudioInputDevice & audioinput_device, GtkWidget *prefs_window)
 {
   GmPreferencesWindow *pw = NULL;
   g_return_if_fail (prefs_window != NULL);
   pw = gm_pw_get_pw (prefs_window);
-  std::string device = audioinput_device.type + "/" + audioinput_device.source + "/" + audioinput_device.device;
+  std::string device = audioinput_device.type + "/" + audioinput_device.source + "/" + audioinput_device.name;
   gnome_prefs_string_option_menu_add (pw->audio_recorder, device.c_str());
 
 }
 
-void on_audioinputdevice_removed_cb (const Ekiga::AudioInputDevice & audioinput_device, GtkWidget *prefs_window)
+void on_audioinput_device_removed_cb (const Ekiga::AudioInputDevice & audioinput_device, GtkWidget *prefs_window)
 {
   GmPreferencesWindow *pw = NULL;
   g_return_if_fail (prefs_window != NULL);
   pw = gm_pw_get_pw (prefs_window);
-  std::string device = audioinput_device.type + "/" + audioinput_device.source + "/" + audioinput_device.device;
+  std::string device = audioinput_device.type + "/" + audioinput_device.source + "/" + audioinput_device.name;
   gnome_prefs_string_option_menu_remove(pw->audio_recorder, device.c_str());
 }
 
-void on_audiooutputdevice_added_cb (const Ekiga::AudioOutputDevice & audiooutput_device, GtkWidget *prefs_window)
+void on_audiooutput_device_added_cb (const Ekiga::AudioOutputDevice & audiooutput_device, GtkWidget *prefs_window)
 {
   GmPreferencesWindow *pw = NULL;
   g_return_if_fail (prefs_window != NULL);
   pw = gm_pw_get_pw (prefs_window);
-  std::string device = audiooutput_device.type + "/" + audiooutput_device.source + "/" + audiooutput_device.device;
+  std::string device = audiooutput_device.type + "/" + audiooutput_device.source + "/" + audiooutput_device.name;
   gnome_prefs_string_option_menu_add (pw->audio_player, device.c_str());
   gnome_prefs_string_option_menu_add (pw->sound_events_output, device.c_str());
 }
 
-void on_audiooutputdevice_removed_cb (const Ekiga::AudioOutputDevice & audiooutput_device, GtkWidget *prefs_window)
+void on_audiooutput_device_removed_cb (const Ekiga::AudioOutputDevice & audiooutput_device, GtkWidget *prefs_window)
 {
   GmPreferencesWindow *pw = NULL;
   g_return_if_fail (prefs_window != NULL);
   pw = gm_pw_get_pw (prefs_window);
-  std::string device = audiooutput_device.type + "/" + audiooutput_device.source + "/" + audiooutput_device.device;
+  std::string device = audiooutput_device.type + "/" + audiooutput_device.source + "/" + audiooutput_device.name;
   gnome_prefs_string_option_menu_remove(pw->audio_player, device.c_str());
   gnome_prefs_string_option_menu_remove(pw->sound_events_output, device.c_str());
 }
@@ -1413,7 +1395,7 @@ gm_prefs_window_update_devices_list (GtkWidget *prefs_window)
   std::vector <std::string> device_list;
 
   /* The player */
-  gm_prefs_window_get_audio_output_devices_list (pw->core, device_list);
+  gm_prefs_window_get_audiooutput_devices_list (pw->core, device_list);
   array = gm_prefs_window_convert_string_list(device_list);
   gnome_prefs_string_option_menu_update (pw->audio_player,
  					 (const gchar **)array,
@@ -1424,7 +1406,7 @@ gm_prefs_window_update_devices_list (GtkWidget *prefs_window)
   g_free (array);
 
   /* The recorder */
-  gm_prefs_window_get_audio_input_devices_list (pw->core, device_list);
+  gm_prefs_window_get_audioinput_devices_list (pw->core, device_list);
   array = gm_prefs_window_convert_string_list(device_list);
   gnome_prefs_string_option_menu_update (pw->audio_recorder,
  					 (const gchar **)array,
@@ -1433,7 +1415,7 @@ gm_prefs_window_update_devices_list (GtkWidget *prefs_window)
 
 
   /* The Video player */
-  gm_prefs_window_get_video_devices_list (pw->core,  device_list);
+  gm_prefs_window_get_videoinput_devices_list (pw->core,  device_list);
   array = gm_prefs_window_convert_string_list(device_list);
   gnome_prefs_string_option_menu_update (pw->video_device,
 					 (const gchar **)array,
@@ -1618,23 +1600,23 @@ gm_prefs_window_new (Ekiga::ServiceCore *core)
 		    G_CALLBACK (delete_window_cb), NULL);
 
   sigc::connection conn;
-  Ekiga::VidInputCore *vidinput_core = dynamic_cast<Ekiga::VidInputCore *> (core->get ("vidinput-core"));
+  Ekiga::VideoInputCore *videoinput_core = dynamic_cast<Ekiga::VideoInputCore *> (core->get ("videoinput-core"));
   Ekiga::AudioInputCore *audioinput_core = dynamic_cast<Ekiga::AudioInputCore *> (core->get ("audioinput-core"));
   Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (core->get ("audiooutput-core"));
 
-  conn = vidinput_core->device_added.connect (sigc::bind (sigc::ptr_fun (on_vidinputdevice_added_cb), window));
+  conn = videoinput_core->device_added.connect (sigc::bind (sigc::ptr_fun (on_videoinput_device_added_cb), window));
   pw->connections.push_back (conn);
-  conn = vidinput_core->device_removed.connect (sigc::bind (sigc::ptr_fun (on_vidinputdevice_removed_cb), window));
-  pw->connections.push_back (conn);
-
-  conn = audioinput_core->device_added.connect (sigc::bind (sigc::ptr_fun (on_audioinputdevice_added_cb), window));
-  pw->connections.push_back (conn);
-  conn = audioinput_core->device_removed.connect (sigc::bind (sigc::ptr_fun (on_audioinputdevice_removed_cb), window));
+  conn = videoinput_core->device_removed.connect (sigc::bind (sigc::ptr_fun (on_videoinput_device_removed_cb), window));
   pw->connections.push_back (conn);
 
-  conn = audiooutput_core->device_added.connect (sigc::bind (sigc::ptr_fun (on_audiooutputdevice_added_cb), window));
+  conn = audioinput_core->device_added.connect (sigc::bind (sigc::ptr_fun (on_audioinput_device_added_cb), window));
+  pw->connections.push_back (conn);
+  conn = audioinput_core->device_removed.connect (sigc::bind (sigc::ptr_fun (on_audioinput_device_removed_cb), window));
+  pw->connections.push_back (conn);
+
+  conn = audiooutput_core->device_added.connect (sigc::bind (sigc::ptr_fun (on_audiooutput_device_added_cb), window));
   pw->connections.push_back(conn);
-  conn = audiooutput_core->device_removed.connect (sigc::bind (sigc::ptr_fun (on_audiooutputdevice_removed_cb), window));
+  conn = audiooutput_core->device_removed.connect (sigc::bind (sigc::ptr_fun (on_audiooutput_device_removed_cb), window));
   pw->connections.push_back (conn);
   return window;
 }

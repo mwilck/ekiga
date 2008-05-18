@@ -37,9 +37,9 @@
 #include "vidinput-manager-mlogo.h"
 #include "icon.h"
 
-#define DEVICE_TYPE "Moving Logo"
+#define DEVICE_TYPE   "Moving Logo"
 #define DEVICE_SOURCE "Moving Logo"
-#define DEVICE_DEVICE "Moving Logo"
+#define DEVICE_NAME   "Moving Logo"
 
 GMVideoInputManager_mlogo::GMVideoInputManager_mlogo (Ekiga::ServiceCore & _core)
 :    core (_core), runtime (*(dynamic_cast<Ekiga::Runtime *> (_core.get ("runtime"))))
@@ -47,20 +47,20 @@ GMVideoInputManager_mlogo::GMVideoInputManager_mlogo (Ekiga::ServiceCore & _core
   current_state.opened  = false;
 }
 
-void GMVideoInputManager_mlogo::get_devices(std::vector <Ekiga::VidInputDevice> & devices)
+void GMVideoInputManager_mlogo::get_devices(std::vector <Ekiga::VideoInputDevice> & devices)
 {
-  Ekiga::VidInputDevice device;
+  Ekiga::VideoInputDevice device;
   device.type   = DEVICE_TYPE;
   device.source = DEVICE_SOURCE;
-  device.device = DEVICE_DEVICE;
+  device.name   = DEVICE_NAME;
   devices.push_back(device);
 }
 
-bool GMVideoInputManager_mlogo::set_device (const Ekiga::VidInputDevice & device, int channel, Ekiga::VideoFormat format)
+bool GMVideoInputManager_mlogo::set_device (const Ekiga::VideoInputDevice & device, int channel, Ekiga::VideoInputFormat format)
 {
   if ( ( device.type   == DEVICE_TYPE ) &&
        ( device.source == DEVICE_SOURCE) &&
-       ( device.device == DEVICE_DEVICE) ) {
+       ( device.name   == DEVICE_NAME) ) {
 
     PTRACE(4, "GMVideoInputManager_mlogo\tSetting Device Moving Logo");
     current_state.device  = device;
@@ -188,7 +188,7 @@ void GMVideoInputManager_mlogo::CopyYUVArea (const char* srcFrame,
   }
 }
 
-bool GMVideoInputManager_mlogo::has_device     (const std::string & /*source*/, const std::string & /*device_name*/, unsigned /*capabilities*/, Ekiga::VidInputDevice & /*device*/)
+bool GMVideoInputManager_mlogo::has_device     (const std::string & /*source*/, const std::string & /*device_name*/, unsigned /*capabilities*/, Ekiga::VideoInputDevice & /*device*/)
 {
   return false;
 }

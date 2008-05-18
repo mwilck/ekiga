@@ -34,20 +34,20 @@
  *
  */
 
-#ifndef __DISPLAY_GMCONF_BRIDGE_H__
-#define __DISPLAY_GMCONF_BRIDGE_H__
+#ifndef __VIDEOOUTPUT_GMCONF_BRIDGE_H__
+#define __VIDEOOUTPUT_GMCONF_BRIDGE_H__
 
 #include "services.h"
 #include "gmconf-bridge.h"
 
 namespace Ekiga
 {
-  class DisplayCoreConfBridge
+  class VideoOutputCoreConfBridge
     : public Ekiga::ConfBridge
   {
   public:
 
-    DisplayCoreConfBridge (Ekiga::Service & service);
+    VideoOutputCoreConfBridge (Ekiga::Service & service);
 
     void on_property_changed (std::string key, GmConfEntry *value);
   };

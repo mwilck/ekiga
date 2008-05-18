@@ -68,7 +68,7 @@ PCREATE_PLUGIN(EKIGA, PVideoInputDevice, &PVideoInputDevice_EKIGA_descriptor);
 
 
 PVideoInputDevice_EKIGA::PVideoInputDevice_EKIGA (Ekiga::ServiceCore & _core)
-: core (_core), vidinput_core (*(dynamic_cast<Ekiga::VidInputCore *> (_core.get ("vidinput-core"))))
+: core (_core), videoinput_core (*(dynamic_cast<Ekiga::VideoInputCore *> (_core.get ("videoinput-core"))))
 {
   opened = false;
 }
@@ -84,8 +84,8 @@ PVideoInputDevice_EKIGA::Open (const PString &/*name*/,
 			       bool start_immediate)
 {
   if (start_immediate) {
-    vidinput_core.set_stream_config(frameWidth, frameHeight, frameRate);
-    vidinput_core.start_stream();
+    videoinput_core.set_stream_config(frameWidth, frameHeight, frameRate);
+    videoinput_core.start_stream();
   }
   opened = true;
 
@@ -103,7 +103,7 @@ PVideoInputDevice_EKIGA::IsOpen ()
 bool
 PVideoInputDevice_EKIGA::Close ()
 {
-  vidinput_core.stop_stream();
+  videoinput_core.stop_stream();
   opened = false;
 
   return true;
@@ -113,8 +113,8 @@ PVideoInputDevice_EKIGA::Close ()
 bool
 PVideoInputDevice_EKIGA::Start ()
 {
-  vidinput_core.set_stream_config(frameWidth, frameHeight, frameRate);
-  vidinput_core.start_stream();
+  videoinput_core.set_stream_config(frameWidth, frameHeight, frameRate);
+  videoinput_core.start_stream();
 
   return true;
 }
@@ -161,7 +161,7 @@ PVideoInputDevice_EKIGA::GetFrameData (BYTE *frame,
 {
   unsigned width;
   unsigned height;
-  vidinput_core.get_frame_data((char*)frame, width, height);
+  videoinput_core.get_frame_data((char*)frame, width, height);
 
   *i = width * height * 3 / 2;
  
@@ -174,7 +174,7 @@ bool PVideoInputDevice_EKIGA::GetFrameDataNoDelay (BYTE *frame,
 {
   unsigned width;
   unsigned height;
-  vidinput_core.get_frame_data((char*)frame, width, height);
+  videoinput_core.get_frame_data((char*)frame, width, height);
 
   *i = width * height * 3 / 2;
   return true;

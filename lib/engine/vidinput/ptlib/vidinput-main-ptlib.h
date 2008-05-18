@@ -31,17 +31,17 @@
  *                         ------------------------------------------
  *   begin                : written in 2008 by Matthias Schneider
  *   copyright            : (c) 2008 by Matthias Schneider
- *   description          : code to hook the PTLIB vidinput manager 
+ *   description          : code to hook the PTLIB videoinput manager 
  *                          into the main program
  *
  */
 
-#ifndef __VIDINPUT_MAIN_PTLIB_H__
-#define __VIDINPUT_MAIN_PTLIB_H__
+#ifndef __VIDEOINPUT_MAIN_PTLIB_H__
+#define __VIDEOINPUT_MAIN_PTLIB_H__
 
 #include "services.h"
 
-bool vidinput_ptlib_init (Ekiga::ServiceCore &core,
+bool videoinput_ptlib_init (Ekiga::ServiceCore &core,
   		     int *argc,
 		     char **argv[]);
 

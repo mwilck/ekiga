@@ -70,7 +70,7 @@ void GMAudioInputManager_ptlib::get_devices(std::vector <Ekiga::AudioInputDevice
 
       for (PINDEX j = 0; devices_array[j] != NULL; j++) {
 
-        device.device = devices_array[j];
+        device.name = devices_array[j];
         devices.push_back(device);
       }
       free (devices_array);
@@ -83,7 +83,7 @@ bool GMAudioInputManager_ptlib::set_device (const Ekiga::AudioInputDevice & devi
 {
   if ( device.type == DEVICE_TYPE ) {
 
-    PTRACE(4, "GMAudioInputManager_ptlib\tSetting Device " << device.source << "/" <<  device.device);
+    PTRACE(4, "GMAudioInputManager_ptlib\tSetting Device " << device);
     current_state.device = device;
     return true;
   }
@@ -96,7 +96,7 @@ bool GMAudioInputManager_ptlib::open (unsigned channels, unsigned samplerate, un
   unsigned volume;
   Ekiga::AudioInputConfig audioinput_config;
 
-  PTRACE(4, "GMAudioInputManager_ptlib\tOpening Device " << current_state.device.source << "/" <<  current_state.device.device);
+  PTRACE(4, "GMAudioInputManager_ptlib\tOpening Device " << current_state.device);
   PTRACE(4, "GMAudioInputManager_ptlib\tOpening Device with " << channels << "-" << samplerate << "/" << bits_per_sample);
 
   current_state.channels        = channels;
@@ -104,7 +104,7 @@ bool GMAudioInputManager_ptlib::open (unsigned channels, unsigned samplerate, un
   current_state.bits_per_sample = bits_per_sample;
 
   input_device = PSoundChannel::CreateOpenedChannel (current_state.device.source, 
-                                                     current_state.device.device,
+                                                     current_state.device.name,
                                                      PSoundChannel::Recorder,
                                                      channels,
                                                      samplerate,
@@ -133,7 +133,7 @@ bool GMAudioInputManager_ptlib::open (unsigned channels, unsigned samplerate, un
 
 void GMAudioInputManager_ptlib::close()
 {
-  PTRACE(4, "GMAudioInputManager_ptlib\tClosing device " << current_state.device.source << "/" <<  current_state.device.device);
+  PTRACE(4, "GMAudioInputManager_ptlib\tClosing device " << current_state.device);
   if (input_device) {
      delete input_device;
      input_device = NULL;
@@ -188,7 +188,7 @@ bool GMAudioInputManager_ptlib::has_device(const std::string & source, const std
   if (source == "alsa") {
     device.type = DEVICE_TYPE;
     device.source = "ALSA";
-    device.device = device_name;
+    device.name = device_name;
     return true;
   }
 /*  if (source == "oss") {

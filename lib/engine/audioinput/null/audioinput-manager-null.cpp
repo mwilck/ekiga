@@ -35,9 +35,9 @@
 
 #include "audioinput-manager-null.h"
 
-#define DEVICE_TYPE "NULL"
+#define DEVICE_TYPE   "NULL"
 #define DEVICE_SOURCE "NULL"
-#define DEVICE_DEVICE "NULL"
+#define DEVICE_NAME   "NULL"
 
 GMAudioInputManager_null::GMAudioInputManager_null (Ekiga::ServiceCore & _core)
 :    core (_core), runtime (*(dynamic_cast<Ekiga::Runtime *> (_core.get ("runtime"))))
@@ -50,7 +50,7 @@ void GMAudioInputManager_null::get_devices(std::vector <Ekiga::AudioInputDevice>
   Ekiga::AudioInputDevice device;
   device.type   = DEVICE_TYPE;
   device.source = DEVICE_SOURCE;
-  device.device = DEVICE_DEVICE;
+  device.name   = DEVICE_NAME;
   devices.push_back(device);
 }
 
@@ -58,9 +58,9 @@ bool GMAudioInputManager_null::set_device (const Ekiga::AudioInputDevice & devic
 {
   if ( ( device.type   == DEVICE_TYPE ) &&
        ( device.source == DEVICE_SOURCE) &&
-       ( device.device == DEVICE_DEVICE) ) {
+       ( device.name   == DEVICE_NAME) ) {
 
-    PTRACE(4, "GMAudioInputManager_null\tSetting Device " << device.source << "/" <<  device.device);
+    PTRACE(4, "GMAudioInputManager_null\tSetting Device " << device);
     current_state.device = device;
     return true;
   }
@@ -71,7 +71,7 @@ bool GMAudioInputManager_null::open (unsigned channels, unsigned samplerate, uns
 {
   Ekiga::AudioInputConfig audioinput_config;
 
-  PTRACE(4, "GMAudioInputManager_null\tOpening Device " << current_state.device.source << "/" <<  current_state.device.device);
+  PTRACE(4, "GMAudioInputManager_null\tOpening Device " << current_state.device);
   PTRACE(4, "GMAudioInputManager_null\tOpening Device with " << channels << "-" << samplerate << "/" << bits_per_sample);
 
   current_state.channels        = channels;

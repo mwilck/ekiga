@@ -658,17 +658,17 @@ static gboolean on_stats_refresh_cb (gpointer self)
   
   if (mw->current_call) {
 
-    DisplayStats display_stats;
-    Ekiga::DisplayCore *display_core = dynamic_cast<Ekiga::DisplayCore *> (mw->core.get ("display-core"));
-    display_core->get_display_stats(display_stats);
+    VideoOutputStats videooutput_stats;
+    Ekiga::VideoOutputCore *videooutput_core = dynamic_cast<Ekiga::VideoOutputCore *> (mw->core.get ("videooutput-core"));
+    videooutput_core->get_videooutput_stats(videooutput_stats);
   
     msg = g_strdup_printf (_("A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d"), 
                            mw->current_call->get_transmitted_audio_bandwidth (),
                            mw->current_call->get_received_audio_bandwidth (),
                            mw->current_call->get_transmitted_video_bandwidth (),
                            mw->current_call->get_received_video_bandwidth (),
-                           display_stats.tx_fps,
-                           display_stats.rx_fps);
+                           videooutput_stats.tx_fps,
+                           videooutput_stats.rx_fps);
     gdk_threads_enter ();
     gm_main_window_push_info_message (GTK_WIDGET (self), msg);
     if (mw->current_call)
@@ -959,7 +959,7 @@ static void on_stream_resumed_cb (Ekiga::CallManager & /*manager*/,
  */
 
 void 
-on_videooutput_device_opened_cb (Ekiga::VideoOutputManager & /* manager */, HwAccelStatus /* hw_accel_status */, gpointer /*self*/)
+on_videooutput_device_opened_cb (Ekiga::VideoOutputManager & /* manager */, VideoOutputAccel /* accel */, gpointer /*self*/)
 {
 }
 
@@ -969,11 +969,11 @@ on_videooutput_device_closed_cb (Ekiga::VideoOutputManager & /* manager */, gpoi
 }
 
 void 
-on_display_mode_changed_cb (Ekiga::VideoOutputManager & /* manager */, DisplayMode display,  gpointer self)
+on_videooutput_mode_changed_cb (Ekiga::VideoOutputManager & /* manager */, VideoOutputMode mode,  gpointer self)
 {
   GmMainWindow *mw = gm_mw_get_mw (GTK_WIDGET (self));
 
-  gtk_radio_menu_select_with_id (mw->main_menu, "local_video", display);
+  gtk_radio_menu_select_with_id (mw->main_menu, "local_video", mode);
 }
 
 void 
@@ -1002,7 +1002,7 @@ on_display_size_changed_cb (Ekiga::VideoOutputManager & /* manager */, unsigned 
 
 void
 on_videoinput_device_opened_cb (Ekiga::VideoInputManager & /* manager */,
-                                Ekiga::VidInputDevice & /* device */,
+                                Ekiga::VideoInputDevice & /* device */,
                                 Ekiga::VidInputConfig &  config,
                                 gpointer self)
 {
@@ -1025,7 +1025,7 @@ on_videoinput_device_opened_cb (Ekiga::VideoInputManager & /* manager */,
 
 
 void 
-on_videoinput_device_closed_cb (Ekiga::VideoInputManager & /* manager */, Ekiga::VidInputDevice & /*device*/, gpointer self)
+on_videoinput_device_closed_cb (Ekiga::VideoInputManager & /* manager */, Ekiga::VideoInputDevice & /*device*/, gpointer self)
 {
   GmMainWindow *mw = NULL;
   g_return_if_fail (self != NULL);
@@ -1040,7 +1040,7 @@ on_videoinput_device_closed_cb (Ekiga::VideoInputManager & /* manager */, Ekiga:
 
 void 
 on_videoinput_device_error_cb (Ekiga::VideoInputManager & /* manager */, 
-                               Ekiga::VidInputDevice & device, 
+                               Ekiga::VideoInputDevice & device, 
                                Ekiga::VideoInputErrorCodes error_code, 
                                gpointer self)
 {
@@ -1050,7 +1050,7 @@ on_videoinput_device_error_cb (Ekiga::VideoInputManager & /* manager */,
 
   dialog_title =
   g_strdup_printf (_("Error while accessing video device %s"),
-                   (const char *) device.device.c_str());
+                   (const char *) device.name.c_str());
 
   tmp_msg = g_strdup (_("A moving logo will be transmitted during calls. Notice that you can always transmit a given image or the moving logo by choosing \"Picture\" as video plugin and \"Moving logo\" or \"Static picture\" as device."));
   switch (error_code) {
@@ -1138,7 +1138,7 @@ on_audioinput_device_error_cb (Ekiga::AudioInputManager & /* manager */,
 
   dialog_title =
   g_strdup_printf (_("Error while opening audio input device %s"),
-                   (const char *) device.device.c_str());
+                   (const char *) device.name.c_str());
 
   tmp_msg = g_strdup (_("Only silence will be transmitted."));
   switch (error_code) {
@@ -1223,7 +1223,7 @@ on_audiooutput_device_error_cb (Ekiga::AudioOutputManager & /*manager */,
 
   dialog_title =
   g_strdup_printf (_("Error while opening audio output device %s"),
-                   (const char *) device.device.c_str());
+                   (const char *) device.name.c_str());
 
   tmp_msg = g_strdup (_("No incoming sound will be played."));
   switch (error_code) {
@@ -2543,8 +2543,8 @@ video_window_expose_cb (GtkWidget *main_window,
 #endif
   display_info.widget_info_set = TRUE;
 
-  Ekiga::DisplayCore *display_core = dynamic_cast<Ekiga::DisplayCore *> (mw->core.get ("display-core"));
-  display_core->set_display_info(display_info);
+  Ekiga::VideoOutputCore *videooutput_core = dynamic_cast<Ekiga::VideoOutputCore *> (mw->core.get ("videooutput-core"));
+  videooutput_core->set_display_info(display_info);
 
   return FALSE;
 }
@@ -2620,12 +2620,12 @@ video_settings_changed_cb (GtkAdjustment * /*adjustment*/,
   mw = gm_mw_get_mw (GTK_WIDGET (data));
   g_return_if_fail (mw != NULL);
 
-  Ekiga::VidInputCore *vidinput_core = dynamic_cast<Ekiga::VidInputCore *> (mw->core.get ("vidinput-core"));
+  Ekiga::VideoInputCore *videoinput_core = dynamic_cast<Ekiga::VideoInputCore *> (mw->core.get ("videoinput-core"));
 
-  vidinput_core->set_whiteness ((unsigned) GTK_ADJUSTMENT (mw->adj_whiteness)->value);
-  vidinput_core->set_brightness ((unsigned) GTK_ADJUSTMENT (mw->adj_brightness)->value);
-  vidinput_core->set_colour ((unsigned) GTK_ADJUSTMENT (mw->adj_colour)->value);
-  vidinput_core->set_contrast ((unsigned) GTK_ADJUSTMENT (mw->adj_contrast)->value);
+  videoinput_core->set_whiteness ((unsigned) GTK_ADJUSTMENT (mw->adj_whiteness)->value);
+  videoinput_core->set_brightness ((unsigned) GTK_ADJUSTMENT (mw->adj_brightness)->value);
+  videoinput_core->set_colour ((unsigned) GTK_ADJUSTMENT (mw->adj_colour)->value);
+  videoinput_core->set_contrast ((unsigned) GTK_ADJUSTMENT (mw->adj_contrast)->value);
 }
 
 
@@ -3279,21 +3279,21 @@ gm_main_window_toggle_fullscreen (FSToggle toggle,
   GmMainWindow *mw = gm_mw_get_mw (main_window);
   g_return_if_fail (mw != NULL);
 
-  DisplayMode display_mode;
+  VideoOutputMode videooutput_mode;
 
   switch (toggle) {
     case OFF:
       if (gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view") == FULLSCREEN) {
 
-        display_mode = (DisplayMode) gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view_before_fullscreen");
-        gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view", display_mode);
+        videooutput_mode = (VideoOutputMode) gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view_before_fullscreen");
+        gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view", videooutput_mode);
       }
       break;
     case ON:
       if (gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view") != FULLSCREEN) {
 
-        display_mode = (DisplayMode) gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view");
-        gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view_before_fullscreen", display_mode);
+        videooutput_mode = (VideoOutputMode) gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view");
+        gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view_before_fullscreen", videooutput_mode);
         gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view", FULLSCREEN);
       }
       break;
@@ -3302,13 +3302,13 @@ gm_main_window_toggle_fullscreen (FSToggle toggle,
     default:
       if (gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view") == FULLSCREEN) {
 
-        display_mode = (DisplayMode) gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view_before_fullscreen");
-        gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view", display_mode);
+        videooutput_mode = (VideoOutputMode) gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view_before_fullscreen");
+        gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view", videooutput_mode);
       }
       else {
 
-        display_mode =  (DisplayMode) gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view");
-        gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view_before_fullscreen", display_mode);
+        videooutput_mode =  (VideoOutputMode) gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view");
+        gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view_before_fullscreen", videooutput_mode);
         gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view", FULLSCREEN);
       }
       break;
@@ -3876,36 +3876,36 @@ gm_main_window_new (Ekiga::ServiceCore & core)
                       (GDestroyNotify) g_free);
 
   /* New Display Engine signals */
-  Ekiga::DisplayCore *display_core = dynamic_cast<Ekiga::DisplayCore *> (mw->core.get ("display-core"));
+  Ekiga::VideoOutputCore *videooutput_core = dynamic_cast<Ekiga::VideoOutputCore *> (mw->core.get ("videooutput-core"));
 
-  conn = display_core->device_opened.connect (sigc::bind (sigc::ptr_fun (on_videooutput_device_opened_cb), (gpointer) window));
+  conn = videooutput_core->device_opened.connect (sigc::bind (sigc::ptr_fun (on_videooutput_device_opened_cb), (gpointer) window));
   mw->connections.push_back (conn);
 
-  conn = display_core->device_closed.connect (sigc::bind (sigc::ptr_fun (on_videooutput_device_closed_cb), (gpointer) window));
+  conn = videooutput_core->device_closed.connect (sigc::bind (sigc::ptr_fun (on_videooutput_device_closed_cb), (gpointer) window));
   mw->connections.push_back (conn);
 
-  conn = display_core->logo_update_required.connect (sigc::bind (sigc::ptr_fun (on_logo_update_required_cb), (gpointer) window));
+  conn = videooutput_core->logo_update_required.connect (sigc::bind (sigc::ptr_fun (on_logo_update_required_cb), (gpointer) window));
   mw->connections.push_back (conn);
 
-  conn = display_core->display_size_changed.connect (sigc::bind (sigc::ptr_fun (on_display_size_changed_cb), (gpointer) window));
+  conn = videooutput_core->display_size_changed.connect (sigc::bind (sigc::ptr_fun (on_display_size_changed_cb), (gpointer) window));
   mw->connections.push_back (conn);
 
-  conn = display_core->display_mode_changed.connect (sigc::bind (sigc::ptr_fun (on_display_mode_changed_cb), (gpointer) window));
+  conn = videooutput_core->videooutput_mode_changed.connect (sigc::bind (sigc::ptr_fun (on_videooutput_mode_changed_cb), (gpointer) window));
   mw->connections.push_back (conn);
 
-  conn = display_core->fullscreen_mode_changed.connect (sigc::bind (sigc::ptr_fun (on_fullscreen_mode_changed_cb), (gpointer) window));
+  conn = videooutput_core->fullscreen_mode_changed.connect (sigc::bind (sigc::ptr_fun (on_fullscreen_mode_changed_cb), (gpointer) window));
   mw->connections.push_back (conn);
 
-  /* New VidInput Engine signals */
-  Ekiga::VidInputCore *vidinput_core = dynamic_cast<Ekiga::VidInputCore *> (mw->core.get ("vidinput-core"));
+  /* New VideoInput Engine signals */
+  Ekiga::VideoInputCore *videoinput_core = dynamic_cast<Ekiga::VideoInputCore *> (mw->core.get ("videoinput-core"));
 
-  conn = vidinput_core->device_opened.connect (sigc::bind (sigc::ptr_fun (on_videoinput_device_opened_cb), (gpointer) window));
+  conn = videoinput_core->device_opened.connect (sigc::bind (sigc::ptr_fun (on_videoinput_device_opened_cb), (gpointer) window));
   mw->connections.push_back (conn);
 
-  conn = vidinput_core->device_closed.connect (sigc::bind (sigc::ptr_fun (on_videoinput_device_closed_cb), (gpointer) window));
+  conn = videoinput_core->device_closed.connect (sigc::bind (sigc::ptr_fun (on_videoinput_device_closed_cb), (gpointer) window));
   mw->connections.push_back (conn);
 
-  conn = vidinput_core->device_error.connect (sigc::bind (sigc::ptr_fun (on_videoinput_device_error_cb), (gpointer) window));
+  conn = videoinput_core->device_error.connect (sigc::bind (sigc::ptr_fun (on_videoinput_device_error_cb), (gpointer) window));
   mw->connections.push_back (conn);
 
   /* New AudioInput Engine signals */

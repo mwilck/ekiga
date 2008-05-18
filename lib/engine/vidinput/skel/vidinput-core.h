@@ -29,13 +29,13 @@
  *                         ------------------------------------------
  *   begin                : written in 2008 by Matthias Schneider
  *   copyright            : (c) 2008 by Matthias Schneider
- *   description          : Declaration of the interface of a vidinput core.
- *                          A vidinput core manages VidInputManagers.
+ *   description          : Declaration of the interface of a videoinput core.
+ *                          A videoinput core manages VideoInputManagers.
  *
  */
 
-#ifndef __VIDINPUT_CORE_H__
-#define __VIDINPUT_CORE_H__
+#ifndef __VIDEOINPUT_CORE_H__
+#define __VIDEOINPUT_CORE_H__
 
 #include "services.h"
 #include "runtime.h"
@@ -51,9 +51,9 @@
 #include "ptbuildopts.h"
 #include "ptlib.h"
 
-#define VIDEO_INPUT_FALLBACK_DEVICE_TYPE "Moving Logo"
+#define VIDEO_INPUT_FALLBACK_DEVICE_TYPE   "Moving Logo"
 #define VIDEO_INPUT_FALLBACK_DEVICE_SOURCE "Moving Logo"
-#define VIDEO_INPUT_FALLBACK_DEVICE_DEVICE "Moving Logo"
+#define VIDEO_INPUT_FALLBACK_DEVICE_NAME   "Moving Logo"
 
 namespace Ekiga
 {
@@ -66,14 +66,14 @@ namespace Ekiga
   };
 
   class VideoInputManager;
-  class VidInputCore;
+  class VideoInputCore;
 				      
   class PreviewManager : public PThread
   {
     PCLASSINFO(PreviewManager, PThread);
   
   public:
-    PreviewManager(VidInputCore& _vidinput_core, DisplayCore& _display_core);
+    PreviewManager(VideoInputCore& _videoinput_core, VideoOutputCore& _videooutput_core);
     ~PreviewManager();
     virtual void start(unsigned width, unsigned height);
     virtual void stop();
@@ -84,8 +84,8 @@ namespace Ekiga
     char* frame;
     PMutex quit_mutex;     /* To exit */
     PSyncPoint thread_sync_point;
-    VidInputCore& vidinput_core;
-    DisplayCore& display_core;
+    VideoInputCore & videoinput_core;
+    VideoOutputCore & videooutput_core;
   };
 
 /**
@@ -97,7 +97,7 @@ namespace Ekiga
 
   /** Core object for the video vidinput support
    */
-  class VidInputCore
+  class VideoInputCore
     : public Service
     {
 
@@ -105,11 +105,11 @@ namespace Ekiga
 
       /* The constructor
       */
-      VidInputCore (Ekiga::Runtime & _runtime, DisplayCore& _display_core);
+      VideoInputCore (Ekiga::Runtime & _runtime, VideoOutputCore& _videooutput_core);
 
       /* The destructor
       */
-      ~VidInputCore ();
+      ~VideoInputCore ();
 
       void setup_conf_bridge();
 
@@ -119,35 +119,35 @@ namespace Ekiga
        * @return The service name.
        */
       const std::string get_name () const
-        { return "vidinput-core"; }
+        { return "videoinput-core"; }
 
 
       /** Returns the description of the service.
        * @return The service description.
        */
       const std::string get_description () const
-        { return "\tVidInput Core managing VideoInput Manager objects"; }
+        { return "\tVideoInput Core managing VideoInput Manager objects"; }
 
 
-      /** Adds a VidInputManager to the VidInputCore service.
+      /** Adds a VideoInputManager to the VideoInputCore service.
        * @param The manager to be added.
        */
        void add_manager (VideoInputManager &manager);
 
       /** Triggers a callback for all Ekiga::VideoInputManager sources of the
-       * VidInputCore service.
+       * VideoInputCore service.
        */
        void visit_managers (sigc::slot<bool, VideoInputManager &> visitor);
 
       /** This signal is emitted when a Ekiga::VideoInputManager has been
-       * added to the VidInputCore Service.
+       * added to the VideoInputCore Service.
        */
        sigc::signal<void, VideoInputManager &> manager_added;
 
 
-      void get_vidinput_devices(std::vector <VidInputDevice> & vidinput_devices);
+      void get_devices(std::vector <VideoInputDevice> & devices);
 
-      void set_vidinput_device(const VidInputDevice & vidinput_device, int channel, VideoFormat format);
+      void set_device(const VideoInputDevice & device, int channel, VideoInputFormat format);
       
       /* To transmit a user specified image, pass a pointer to a raw YUV image*/      
       void set_image_data (unsigned width, unsigned height, const char* data);
@@ -176,30 +176,30 @@ namespace Ekiga
       void set_whiteness  (unsigned whiteness);
       void set_contrast   (unsigned contrast);
 
-      void add_device (const std::string & source, const std::string & device, unsigned capabilities, HalManager* manager);
-      void remove_device (const std::string & source, const std::string & device, unsigned capabilities, HalManager* manager);
+      void add_device (const std::string & source, const std::string & device_name, unsigned capabilities, HalManager* manager);
+      void remove_device (const std::string & source, const std::string & device_name, unsigned capabilities, HalManager* manager);
 
       /*** VidInput Related Signals ***/
       
       /** See vidinput-manager.h for the API
        */
-      sigc::signal<void, VideoInputManager &, VidInputDevice &, VidInputConfig&> device_opened;
-      sigc::signal<void, VideoInputManager &, VidInputDevice &> device_closed;
-      sigc::signal<void, VideoInputManager &, VidInputDevice &, VideoInputErrorCodes> device_error;
-      sigc::signal<void, VidInputDevice> device_added;
-      sigc::signal<void, VidInputDevice> device_removed;
+      sigc::signal<void, VideoInputManager &, VideoInputDevice &, VidInputConfig&> device_opened;
+      sigc::signal<void, VideoInputManager &, VideoInputDevice &> device_closed;
+      sigc::signal<void, VideoInputManager &, VideoInputDevice &, VideoInputErrorCodes> device_error;
+      sigc::signal<void, VideoInputDevice> device_added;
+      sigc::signal<void, VideoInputDevice> device_removed;
 
   private:
-      void on_device_opened (VidInputDevice device,  
+      void on_device_opened (VideoInputDevice device,  
                              VidInputConfig vidinput_config, 
                              VideoInputManager *manager);
-      void on_device_closed (VidInputDevice device, VideoInputManager *manager);
-      void on_device_error  (VidInputDevice device, VideoInputErrorCodes error_code, VideoInputManager *manager);
+      void on_device_closed (VideoInputDevice device, VideoInputManager *manager);
+      void on_device_error  (VideoInputDevice device, VideoInputErrorCodes error_code, VideoInputManager *manager);
 
-      void internal_set_vidinput_device(const VidInputDevice & vidinput_device, int channel, VideoFormat format);
+      void internal_set_vidinput_device(const VideoInputDevice & vidinput_device, int channel, VideoInputFormat format);
       void internal_open (unsigned width, unsigned height, unsigned fps);
       void internal_close();
-      void internal_set_device (const VidInputDevice & vidinput_device, int channel, VideoFormat format);
+      void internal_set_device (const VideoInputDevice & vidinput_device, int channel, VideoInputFormat format);
       void internal_set_fallback ();
       void apply_settings();
 
@@ -215,16 +215,16 @@ namespace Ekiga
       VidInputConfig new_preview_settings;
 
       VideoInputManager* current_manager;
-      VidInputDevice desired_device;
-      VidInputDevice current_device;
-      Ekiga::VideoFormat current_format;
+      VideoInputDevice desired_device;
+      VideoInputDevice current_device;
+      Ekiga::VideoInputFormat current_format;
       int current_channel;
 
       PMutex var_mutex;      /* To protect variables that are read and written */
       PMutex set_mutex;      /* To protect variables that are read and written */
 
       PreviewManager preview_manager;
-      VidInputCoreConfBridge* vidinput_core_conf_bridge;
+      VideoInputCoreConfBridge* videoinput_core_conf_bridge;
     };
 /**
  * @}

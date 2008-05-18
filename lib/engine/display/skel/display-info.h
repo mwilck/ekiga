@@ -64,7 +64,7 @@
     PIP_WINDOW,
     FULLSCREEN,
     UNSET
-  } DisplayMode;
+  } VideoOutputMode;
   
   /* Toggle operations for Fullscreen */
   typedef enum {
@@ -76,12 +76,12 @@
   
   /* Video Acceleration Status */
   typedef enum {
-  
-    NONE,
-    REMOTE_ONLY,
-    ALL,
-    NO_VIDEO
-  } HwAccelStatus;
+
+    VO_ACCEL_NONE,
+    VO_ACCEL_REMOTE_ONLY,
+    VO_ACCEL_ALL,
+    VO_ACCEL_NO_VIDEO
+  } VideoOutputAccel;
 
 
   typedef struct {
@@ -93,7 +93,7 @@
     unsigned tx_width;
     unsigned tx_height;
     unsigned tx_frames;
-  } DisplayStats;
+  } VideoOutputStats;
 
   class DisplayInfo
   {
@@ -116,7 +116,7 @@
       allow_pip_sw_scaling = true;
       sw_scaling_algorithm = 0;
   
-      display = UNSET;
+      mode = UNSET;
       zoom = 0;
     };
     
@@ -142,7 +142,7 @@
         allow_pip_sw_scaling = rhs.allow_pip_sw_scaling;
         sw_scaling_algorithm =  rhs.sw_scaling_algorithm;
       }
-      if (rhs.display != UNSET) display = rhs.display;
+      if (rhs.mode != UNSET) mode = rhs.mode;
       if (rhs.zoom != 0) zoom = rhs.zoom;
     };
   
@@ -164,7 +164,7 @@
     bool allow_pip_sw_scaling;
     unsigned int sw_scaling_algorithm;
   
-    DisplayMode display;
+    VideoOutputMode mode;
     unsigned int zoom;
   };
 

@@ -197,7 +197,7 @@ void AudioInputCore::get_audioinput_devices (std::vector <AudioInputDevice> & au
      for (std::vector<AudioInputDevice>::iterator iter = audioinput_devices.begin ();
          iter != audioinput_devices.end ();
          iter++) {
-      PTRACE(4, "AudioInputCore\tDetected Device: " << iter->type << "/" << iter->source << "/" << iter->device);
+      PTRACE(4, "AudioInputCore\tDetected Device: " << *iter);
     }
   }
 
@@ -369,7 +369,7 @@ void AudioInputCore::on_device_error (AudioInputDevice device, AudioInputErrorCo
 
 void AudioInputCore::internal_set_audioinput_device(const AudioInputDevice & audioinput_device)
 {
-  PTRACE(4, "AudioInputCore\tSetting device: " << audioinput_device.type << "/" << audioinput_device.source << "/" << audioinput_device.device);
+  PTRACE(4, "AudioInputCore\tSetting device: " << audioinput_device);
 
   if (preview_config.active)
     preview_manager.stop();
@@ -432,7 +432,7 @@ void AudioInputCore::internal_set_device (const AudioInputDevice & audioinput_de
   }
   else {
 
-    PTRACE(1, "AudioInputCore\tTried to set unexisting device " << audioinput_device.type << "/" << audioinput_device.source << "/" << audioinput_device.device);
+    PTRACE(1, "AudioInputCore\tTried to set unexisting device " << audioinput_device);
     internal_set_fallback();
   }
 }
@@ -464,10 +464,10 @@ void AudioInputCore::calculate_average_level (const short *buffer, unsigned size
 
 void AudioInputCore::internal_set_fallback()
 {
-    PTRACE(1, "AudioInputCore\tFalling back to " << AUDIO_INPUT_FALLBACK_DEVICE_TYPE << "/" << AUDIO_INPUT_FALLBACK_DEVICE_SOURCE << "/" << AUDIO_INPUT_FALLBACK_DEVICE_DEVICE);
     current_device.type = AUDIO_INPUT_FALLBACK_DEVICE_TYPE;
     current_device.source = AUDIO_INPUT_FALLBACK_DEVICE_SOURCE;
-    current_device.device = AUDIO_INPUT_FALLBACK_DEVICE_DEVICE;
+    current_device.name = AUDIO_INPUT_FALLBACK_DEVICE_NAME;
+    PTRACE(1, "AudioInputCore\tFalling back to " << current_device);
     internal_set_device (current_device);
 }
 
@@ -484,7 +484,7 @@ void AudioInputCore::add_device (const std::string & source, const std::string &
      
        if ( ( desired_device.type   == audioinput_device.type   ) &&
             ( desired_device.source == audioinput_device.source ) &&
-            ( desired_device.device == audioinput_device.device ) ) {
+            ( desired_device.name == audioinput_device.name ) ) {
          internal_set_audioinput_device(desired_device);
        }
 
@@ -505,12 +505,12 @@ void AudioInputCore::remove_device (const std::string & source, const std::strin
      if ((*iter)->has_device (source, device, audioinput_device)) {
        if ( ( current_device.type   == audioinput_device.type   ) &&
             ( current_device.source == audioinput_device.source ) &&
-            ( current_device.device == audioinput_device.device ) ) {
+            ( current_device.name == audioinput_device.name ) ) {
 
             AudioInputDevice new_audioinput_device;
             new_audioinput_device.type = AUDIO_INPUT_FALLBACK_DEVICE_TYPE;
             new_audioinput_device.source = AUDIO_INPUT_FALLBACK_DEVICE_SOURCE;
-            new_audioinput_device.device = AUDIO_INPUT_FALLBACK_DEVICE_DEVICE;
+            new_audioinput_device.name = AUDIO_INPUT_FALLBACK_DEVICE_NAME;
             internal_set_audioinput_device( new_audioinput_device);
        }
 

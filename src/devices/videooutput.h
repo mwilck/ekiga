@@ -141,7 +141,7 @@ class PVideoOutputDevice_EKIGA : public PVideoOutputDevice
   enum {REMOTE, LOCAL};
 
   Ekiga::ServiceCore & core;
-  Ekiga::DisplayCore & display_core;
+  Ekiga::VideoOutputCore & videooutput_core;
 };
 
 #endif

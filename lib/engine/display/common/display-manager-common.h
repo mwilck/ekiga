@@ -54,7 +54,7 @@
 
 
 typedef struct {
-  DisplayMode display;
+  VideoOutputMode mode;
   unsigned int remote_width;
   unsigned int remote_height;
 

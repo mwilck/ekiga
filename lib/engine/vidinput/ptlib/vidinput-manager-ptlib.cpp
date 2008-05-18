@@ -48,14 +48,14 @@ GMVideoInputManager_ptlib::GMVideoInputManager_ptlib (Ekiga::ServiceCore & _core
   expectedFrameSize = 0;
 }
 
-void GMVideoInputManager_ptlib::get_devices(std::vector <Ekiga::VidInputDevice> & devices)
+void GMVideoInputManager_ptlib::get_devices(std::vector <Ekiga::VideoInputDevice> & devices)
 {
   PStringArray video_sources;
   PStringArray video_devices;
   char **sources_array;
   char **devices_array;
 
-  Ekiga::VidInputDevice device;
+  Ekiga::VideoInputDevice device;
   device.type   = DEVICE_TYPE;
 
   video_sources = PVideoInputDevice::GetDriverNames ();
@@ -71,7 +71,7 @@ void GMVideoInputManager_ptlib::get_devices(std::vector <Ekiga::VidInputDevice> 
   
       for (PINDEX j = 0; devices_array[j] != NULL; j++) {
   
-        device.device = devices_array[j];
+        device.name = devices_array[j];
         devices.push_back(device);  
       }
       free (devices_array);
@@ -80,11 +80,11 @@ void GMVideoInputManager_ptlib::get_devices(std::vector <Ekiga::VidInputDevice> 
   free (sources_array);
 }
 
-bool GMVideoInputManager_ptlib::set_device (const Ekiga::VidInputDevice & device, int channel, Ekiga::VideoFormat format)
+bool GMVideoInputManager_ptlib::set_device (const Ekiga::VideoInputDevice & device, int channel, Ekiga::VideoInputFormat format)
 {
   if ( device.type == DEVICE_TYPE ) {
 
-    PTRACE(4, "GMVideoInputManager_ptlib\tSetting Device " << device.source << "/" <<  device.device);
+    PTRACE(4, "GMVideoInputManager_ptlib\tSetting Device " << device);
     current_state.device = device;  
     current_state.channel = channel;
     current_state.format = format;
@@ -100,7 +100,7 @@ bool GMVideoInputManager_ptlib::open (unsigned width, unsigned height, unsigned 
   int whiteness, brightness, colour, contrast, hue;
   Ekiga::VidInputConfig vidinput_config;
 
-  PTRACE(4, "GMVideoInputManager_ptlib\tOpening Device " << current_state.device.source << "/" <<  current_state.device.device);
+  PTRACE(4, "GMVideoInputManager_ptlib\tOpening Device " << current_state.device);
   PTRACE(4, "GMVideoInputManager_ptlib\tOpening Device with " << width << "x" << height << "/" << fps);
 
   current_state.width  = width;
@@ -109,7 +109,7 @@ bool GMVideoInputManager_ptlib::open (unsigned width, unsigned height, unsigned 
   expectedFrameSize = (width * height * 3) >> 1;
 
   pvideo_format = (PVideoDevice::VideoFormat)current_state.format;
-  input_device = PVideoInputDevice::CreateOpenedDevice (current_state.device.source, current_state.device.device, FALSE);
+  input_device = PVideoInputDevice::CreateOpenedDevice (current_state.device.source, current_state.device.name, FALSE);
 
   Ekiga::VideoInputErrorCodes error_code = Ekiga::VI_ERROR_NONE;
   if (!input_device)
@@ -148,7 +148,7 @@ bool GMVideoInputManager_ptlib::open (unsigned width, unsigned height, unsigned 
 
 void GMVideoInputManager_ptlib::close()
 {
-  PTRACE(4, "GMVideoInputManager_ptlib\tClosing device " << current_state.device.source << "/" <<  current_state.device.device);
+  PTRACE(4, "GMVideoInputManager_ptlib\tClosing device " << current_state.device);
   if (input_device) {
     delete input_device;
     input_device = NULL;
@@ -210,19 +210,19 @@ void GMVideoInputManager_ptlib::set_contrast (unsigned contrast)
     input_device->SetContrast(contrast << 8);
 }
 
-bool GMVideoInputManager_ptlib::has_device(const std::string & source, const std::string & device_name, unsigned capabilities, Ekiga::VidInputDevice & device)
+bool GMVideoInputManager_ptlib::has_device(const std::string & source, const std::string & device_name, unsigned capabilities, Ekiga::VideoInputDevice & device)
 {
   if (source == "video4linux") {
     if (capabilities & 0x01) {
       device.type = DEVICE_TYPE;
       device.source = "V4L";
-      device.device = device_name;
+      device.name = device_name;
       return true;
     }
     if (capabilities & 0x02) {
       device.type = DEVICE_TYPE;
       device.source = "V4L2";
-      device.device = device_name;
+      device.name = device_name;
       return true;
     }
     return false;

@@ -147,7 +147,7 @@ void AudioOutputCore::get_audiooutput_devices (std::vector <AudioOutputDevice> &
      for (std::vector<AudioOutputDevice>::iterator iter = audiooutput_devices.begin ();
          iter != audiooutput_devices.end ();
          iter++) {
-      PTRACE(4, "AudioOutputCore\tDetected Device: " << iter->type << "/" << iter->source << "/" << iter->device);
+      PTRACE(4, "AudioOutputCore\tDetected Device: " << *iter);
     }
   }
 
@@ -155,7 +155,7 @@ void AudioOutputCore::get_audiooutput_devices (std::vector <AudioOutputDevice> &
 
 void AudioOutputCore::set_audiooutput_device(AudioOutputPrimarySecondary primarySecondary, const AudioOutputDevice & audiooutput_device)
 {
-  PTRACE(4, "AudioOutputCore\tSetting device[" << primarySecondary << "]: " << audiooutput_device.type << "/" << audiooutput_device.source << "/" << audiooutput_device.device);
+  PTRACE(4, "AudioOutputCore\tSetting device[" << primarySecondary << "]: " << audiooutput_device);
 
   PWaitAndSignal m_sec(var_mutex[secondary]);
 
@@ -170,12 +170,12 @@ void AudioOutputCore::set_audiooutput_device(AudioOutputPrimarySecondary primary
     case secondary:
         if ( (audiooutput_device.type == current_device[primary].type) &&
              (audiooutput_device.source == current_device[primary].source) &&
-             (audiooutput_device.device == current_device[primary].device) )
+             (audiooutput_device.name == current_device[primary].name) )
         {
           current_manager[secondary] = NULL;
           current_device[secondary].type = "";
           current_device[secondary].source = "";
-          current_device[secondary].device = "";
+          current_device[secondary].name = "";
         }
         else {
           internal_set_device (secondary, audiooutput_device);
@@ -299,12 +299,12 @@ void AudioOutputCore::internal_set_prim_audiooutput_device(const AudioOutputDevi
 
   if ( (audiooutput_device.type == current_device[secondary].type) &&
        (audiooutput_device.source == current_device[secondary].source) &&
-       (audiooutput_device.device == current_device[secondary].device) )
+       (audiooutput_device.name == current_device[secondary].name) )
   { 
     current_manager[secondary] = NULL;
     current_device[secondary].type = "";
     current_device[secondary].source = "";
-    current_device[secondary].device = "";
+    current_device[secondary].name = "";
   }
 
   internal_set_device(primary, audiooutput_device);
@@ -333,14 +333,14 @@ void AudioOutputCore::internal_set_device (AudioOutputPrimarySecondary primarySe
   }
   else {
     if (primarySecondary == primary) {
-      PTRACE(1, "AudioOutputCore\tTried to set unexisting primary device " << audiooutput_device.type << "/" << audiooutput_device.source << "/" << audiooutput_device.device);
+      PTRACE(1, "AudioOutputCore\tTried to set unexisting primary device " << audiooutput_device);
       internal_set_primary_fallback();
     }
     else {
-      PTRACE(1, "AudioOutputCore\tTried to set unexisting secondary device " << audiooutput_device.type << "/" << audiooutput_device.source << "/" << audiooutput_device.device);
+      PTRACE(1, "AudioOutputCore\tTried to set unexisting secondary device " << audiooutput_device);
       current_device[secondary].type = "";
       current_device[secondary].source = "";
-      current_device[secondary].device = "";
+      current_device[secondary].name = "";
     }
   }
 
@@ -444,10 +444,10 @@ void AudioOutputCore::set_volume (AudioOutputPrimarySecondary primarySecondary, 
 
 void AudioOutputCore::internal_set_primary_fallback()
 {
-  PTRACE(1, "AudioOutputCore\tFalling back to " << AUDIO_OUTPUT_FALLBACK_DEVICE_TYPE << "/" << AUDIO_OUTPUT_FALLBACK_DEVICE_SOURCE << "/" << AUDIO_OUTPUT_FALLBACK_DEVICE_DEVICE);
-  current_device[primary].type = AUDIO_OUTPUT_FALLBACK_DEVICE_TYPE;
+  current_device[primary].type   = AUDIO_OUTPUT_FALLBACK_DEVICE_TYPE;
   current_device[primary].source = AUDIO_OUTPUT_FALLBACK_DEVICE_SOURCE;
-  current_device[primary].device = AUDIO_OUTPUT_FALLBACK_DEVICE_DEVICE;
+  current_device[primary].name   = AUDIO_OUTPUT_FALLBACK_DEVICE_NAME;
+  PTRACE(1, "AudioOutputCore\tFalling back to " << current_device[primary]);
   internal_set_device(primary, current_device[primary]);
 }
 
@@ -464,7 +464,7 @@ void AudioOutputCore::add_device (const std::string & sink, const std::string & 
 
        if ( ( desired_primary_device.type   == audiooutput_device.type   ) &&
             ( desired_primary_device.source == audiooutput_device.source ) &&
-            ( desired_primary_device.device == audiooutput_device.device ) ) {
+            ( desired_primary_device.name == audiooutput_device.name ) ) {
          internal_set_prim_audiooutput_device(desired_primary_device);
        }
 
@@ -485,12 +485,12 @@ void AudioOutputCore::remove_device (const std::string & sink, const std::string
      if ((*iter)->has_device (sink, device, audiooutput_device)) {
        if ( (audiooutput_device.type   == current_device[primary].type) &&
             (audiooutput_device.source == current_device[primary].source) &&
-            (audiooutput_device.device == current_device[primary].device) ) {
+            (audiooutput_device.name   == current_device[primary].name) ) {
 
          AudioOutputDevice new_audiooutput_device;
-         new_audiooutput_device.type = AUDIO_OUTPUT_FALLBACK_DEVICE_TYPE;
+         new_audiooutput_device.type   = AUDIO_OUTPUT_FALLBACK_DEVICE_TYPE;
          new_audiooutput_device.source = AUDIO_OUTPUT_FALLBACK_DEVICE_SOURCE;
-         new_audiooutput_device.device = AUDIO_OUTPUT_FALLBACK_DEVICE_DEVICE;
+         new_audiooutput_device.name   = AUDIO_OUTPUT_FALLBACK_DEVICE_NAME;
          internal_set_prim_audiooutput_device(new_audiooutput_device);
        }
 

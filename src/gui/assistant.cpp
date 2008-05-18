@@ -127,13 +127,13 @@ set_current_page_complete (GtkAssistant *assistant,
 }
 
 void 
-get_audio_output_devices_list (Ekiga::ServiceCore *core,
+get_audiooutput_devices_list (Ekiga::ServiceCore *core,
                                         std::vector<std::string> & device_list);
 void 
-get_audio_input_devices_list (Ekiga::ServiceCore *core,
+get_audioinput_devices_list (Ekiga::ServiceCore *core,
                                         std::vector<std::string> & device_list);
 void 
-get_video_devices_list (Ekiga::ServiceCore *core,
+get_videoinput_devices_list (Ekiga::ServiceCore *core,
                                         std::vector<std::string> & device_list);
 
 gchar**
@@ -198,43 +198,42 @@ remove_combo_box (GtkComboBox         *combo_box,
   }
 }
 
-void on_vidinputdevice_added_cb (const Ekiga::VidInputDevice & vidinput_device, EkigaAssistant *assistant)
+void on_videoinput_device_added_cb (const Ekiga::VideoInputDevice & device, EkigaAssistant *assistant)
 {
-  std::string device = vidinput_device.type + "/" + vidinput_device.source + "/" + vidinput_device.device;
-  add_combo_box (GTK_COMBO_BOX (assistant->priv->video_device), device.c_str());
+  std::string device_string = device.GetString();
+  add_combo_box (GTK_COMBO_BOX (assistant->priv->video_device), device_string.c_str());
 }
 
-void on_vidinputdevice_removed_cb (const Ekiga::VidInputDevice & vidinput_device, EkigaAssistant *assistant)
+void on_videoinput_device_removed_cb (const Ekiga::VideoInputDevice & device, EkigaAssistant *assistant)
 {
-
-  std::string device = vidinput_device.type + "/" + vidinput_device.source + "/" + vidinput_device.device;
-  remove_combo_box (GTK_COMBO_BOX (assistant->priv->video_device),  device.c_str());
+  std::string device_string = device.GetString();
+  remove_combo_box (GTK_COMBO_BOX (assistant->priv->video_device),  device_string.c_str());
 }
 
-void on_audioinputdevice_added_cb (const Ekiga::AudioInputDevice & audioinput_device, EkigaAssistant *assistant)
+void on_audioinput_device_added_cb (const Ekiga::AudioInputDevice & device, EkigaAssistant *assistant)
 {
-  std::string device = audioinput_device.type + "/" + audioinput_device.source + "/" + audioinput_device.device;
-  add_combo_box (GTK_COMBO_BOX (assistant->priv->audio_recorder), device.c_str());
+  std::string device_string = device.GetString();
+  add_combo_box (GTK_COMBO_BOX (assistant->priv->audio_recorder), device_string.c_str());
 }
 
-void on_audioinputdevice_removed_cb (const Ekiga::AudioInputDevice & audioinput_device, EkigaAssistant *assistant)
+void on_audioinput_device_removed_cb (const Ekiga::AudioInputDevice & device, EkigaAssistant *assistant)
 {
-  std::string device = audioinput_device.type + "/" + audioinput_device.source + "/" + audioinput_device.device;
-  remove_combo_box (GTK_COMBO_BOX (assistant->priv->audio_recorder),  device.c_str());
+  std::string device_string = device.GetString();
+  remove_combo_box (GTK_COMBO_BOX (assistant->priv->audio_recorder),  device_string.c_str());
 }
 
-void on_audiooutputdevice_added_cb (const Ekiga::AudioOutputDevice & audiooutput_device, EkigaAssistant *assistant)
+void on_audiooutput_device_added_cb (const Ekiga::AudioOutputDevice & device, EkigaAssistant *assistant)
 {
-  std::string device = audiooutput_device.type + "/" + audiooutput_device.source + "/" + audiooutput_device.device;
-  add_combo_box (GTK_COMBO_BOX (assistant->priv->audio_player), device.c_str());
-  add_combo_box (GTK_COMBO_BOX (assistant->priv->audio_ringer), device.c_str());
+  std::string device_string = device.GetString();
+  add_combo_box (GTK_COMBO_BOX (assistant->priv->audio_player), device_string.c_str());
+  add_combo_box (GTK_COMBO_BOX (assistant->priv->audio_ringer), device_string.c_str());
 }
 
-void on_audiooutputdevice_removed_cb (const Ekiga::AudioOutputDevice & audiooutput_device, EkigaAssistant *assistant)
+void on_audiooutput_device_removed_cb (const Ekiga::AudioOutputDevice & device, EkigaAssistant *assistant)
 {
-  std::string device = audiooutput_device.type + "/" + audiooutput_device.source + "/" + audiooutput_device.device;
-  remove_combo_box (GTK_COMBO_BOX (assistant->priv->audio_player),  device.c_str());
-  remove_combo_box (GTK_COMBO_BOX (assistant->priv->audio_ringer),  device.c_str());
+  std::string device_string = device.GetString();
+  remove_combo_box (GTK_COMBO_BOX (assistant->priv->audio_player),  device_string.c_str());
+  remove_combo_box (GTK_COMBO_BOX (assistant->priv->audio_ringer),  device_string.c_str());
 }
 
 
@@ -760,14 +759,14 @@ prepare_audio_devices_page (EkigaAssistant *assistant)
    */
   std::vector <std::string> device_list;
 
-  get_audio_output_devices_list (assistant->priv->core, device_list);
+  get_audiooutput_devices_list (assistant->priv->core, device_list);
   array = convert_string_list(device_list);
   update_combo_box (GTK_COMBO_BOX (assistant->priv->audio_ringer), array, ringer);
   update_combo_box (GTK_COMBO_BOX (assistant->priv->audio_player), array, player);
   g_free (array);
 
 
-  get_audio_input_devices_list (assistant->priv->core, device_list);
+  get_audioinput_devices_list (assistant->priv->core, device_list);
   array = convert_string_list(device_list);
   update_combo_box (GTK_COMBO_BOX (assistant->priv->audio_recorder), array, recorder);
   g_free (array);
@@ -848,7 +847,7 @@ prepare_video_devices_page (EkigaAssistant *assistant)
   gchar** array;
   gchar* current_plugin;
 
-  get_video_devices_list (assistant->priv->core, device_list);
+  get_videoinput_devices_list (assistant->priv->core, device_list);
   array = convert_string_list (device_list);
   current_plugin = gm_conf_get_string (VIDEO_DEVICES_KEY "input_device");
   update_combo_box (GTK_COMBO_BOX (assistant->priv->video_device),
@@ -875,90 +874,70 @@ apply_video_devices_page (EkigaAssistant *assistant)
 
 // FIXME: duplicate to gm_prefs_window_get_video_devices_list
 void 
-get_audio_output_devices_list (Ekiga::ServiceCore *core,
+get_audiooutput_devices_list (Ekiga::ServiceCore *core,
                                         std::vector<std::string> & device_list)
 {
   Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (core->get ("audiooutput-core"));
-  Ekiga::AudioOutputDevice audiooutput_device;
-  std::vector <Ekiga::AudioOutputDevice> audiooutput_devices;
+  std::vector <Ekiga::AudioOutputDevice> devices;
 
-  std::string device_string;
   device_list.clear();
+  audiooutput_core->get_audiooutput_devices(devices);
 
-  audiooutput_core->get_audiooutput_devices(audiooutput_devices);
-
-  for (std::vector<Ekiga::AudioOutputDevice>::iterator iter = audiooutput_devices.begin ();
-       iter != audiooutput_devices.end ();
+  for (std::vector<Ekiga::AudioOutputDevice>::iterator iter = devices.begin ();
+       iter != devices.end ();
        iter++) {
 
-    audiooutput_device = (*iter);
-    device_string = audiooutput_device.type + "/" + audiooutput_device.source + "/" + audiooutput_device.device;
-    device_list.push_back(device_string);
+    device_list.push_back(iter->GetString());
   }
 
   if (device_list.size() == 0) {
-    device_string = _("No device found");
-      device_list.push_back(device_string);
+    device_list.push_back(_("No device found"));
   }
-
 }
 
 
 void 
-get_audio_input_devices_list (Ekiga::ServiceCore *core,
+get_audioinput_devices_list (Ekiga::ServiceCore *core,
                                         std::vector<std::string> & device_list)
 {
   Ekiga::AudioInputCore *audioinput_core = dynamic_cast<Ekiga::AudioInputCore *> (core->get ("audioinput-core"));
-  Ekiga::AudioInputDevice audioinput_device;
-  std::vector <Ekiga::AudioInputDevice> audioinput_devices;
+  std::vector <Ekiga::AudioInputDevice> devices;
 
-  std::string device_string;
   device_list.clear();
+  audioinput_core->get_audioinput_devices(devices);
 
-  audioinput_core->get_audioinput_devices(audioinput_devices);
-
-  for (std::vector<Ekiga::AudioInputDevice>::iterator iter = audioinput_devices.begin ();
-       iter != audioinput_devices.end ();
+  for (std::vector<Ekiga::AudioInputDevice>::iterator iter = devices.begin ();
+       iter != devices.end ();
        iter++) {
 
-    audioinput_device = (*iter);
-    device_string = audioinput_device.type + "/" + audioinput_device.source + "/" + audioinput_device.device;
-    device_list.push_back(device_string);
+    device_list.push_back(iter->GetString());
   }
 
   if (device_list.size() == 0) {
-    device_string = _("No device found");
-      device_list.push_back(device_string);
+    device_list.push_back(_("No device found"));
   }
-
 }
 
 
 void 
-get_video_devices_list (Ekiga::ServiceCore *core,
+get_videoinput_devices_list (Ekiga::ServiceCore *core,
                                         std::vector<std::string> & device_list)
 {
-  Ekiga::VidInputCore *vidinput_core = dynamic_cast<Ekiga::VidInputCore *> (core->get ("vidinput-core"));
-  std::vector <Ekiga::VidInputDevice> vidinput_devices;
-  Ekiga::VidInputDevice vidinput_device;
+  Ekiga::VideoInputCore *videoinput_core = dynamic_cast<Ekiga::VideoInputCore *> (core->get ("videoinput-core"));
+  std::vector <Ekiga::VideoInputDevice> devices;
 
-  std::string device_string;
   device_list.clear();
+  videoinput_core->get_devices(devices);
 
-  vidinput_core->get_vidinput_devices(vidinput_devices);
-
-  for (std::vector<Ekiga::VidInputDevice>::iterator iter = vidinput_devices.begin ();
-       iter != vidinput_devices.end ();
+  for (std::vector<Ekiga::VideoInputDevice>::iterator iter = devices.begin ();
+       iter != devices.end ();
        iter++) {
 
-    vidinput_device = (*iter);
-    device_string = vidinput_device.type + "/" + vidinput_device.source + "/" + vidinput_device.device;
-    device_list.push_back(device_string);
+    device_list.push_back(iter->GetString());
   }
 
   if (device_list.size() == 0) {
-    device_string = _("No device found");
-      device_list.push_back(device_string);
+    device_list.push_back(_("No device found"));
   }
 }
 
@@ -1283,23 +1262,23 @@ ekiga_assistant_new (Ekiga::ServiceCore *core)
                     G_CALLBACK (gtk_widget_hide), NULL);
 
   sigc::connection conn;
-  Ekiga::VidInputCore *vidinput_core = dynamic_cast<Ekiga::VidInputCore *> (core->get ("vidinput-core"));
+  Ekiga::VideoInputCore *videoinput_core = dynamic_cast<Ekiga::VideoInputCore *> (core->get ("videoinput-core"));
   Ekiga::AudioInputCore *audioinput_core = dynamic_cast<Ekiga::AudioInputCore *> (core->get ("audioinput-core"));
   Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (core->get ("audiooutput-core"));
 
-  conn = vidinput_core->device_added.connect (sigc::bind (sigc::ptr_fun (on_vidinputdevice_added_cb), assistant));
+  conn = videoinput_core->device_added.connect (sigc::bind (sigc::ptr_fun (on_videoinput_device_added_cb), assistant));
   assistant->priv->connections.push_back (conn);
-  conn = vidinput_core->device_removed.connect (sigc::bind (sigc::ptr_fun (on_vidinputdevice_removed_cb), assistant));
-  assistant->priv->connections.push_back (conn);
-
-  conn = audioinput_core->device_added.connect (sigc::bind (sigc::ptr_fun (on_audioinputdevice_added_cb), assistant));
-  assistant->priv->connections.push_back (conn);
-  conn = audioinput_core->device_removed.connect (sigc::bind (sigc::ptr_fun (on_audioinputdevice_removed_cb), assistant));
+  conn = videoinput_core->device_removed.connect (sigc::bind (sigc::ptr_fun (on_videoinput_device_removed_cb), assistant));
   assistant->priv->connections.push_back (conn);
 
-  conn = audiooutput_core->device_added.connect (sigc::bind (sigc::ptr_fun (on_audiooutputdevice_added_cb), assistant));
+  conn = audioinput_core->device_added.connect (sigc::bind (sigc::ptr_fun (on_audioinput_device_added_cb), assistant));
   assistant->priv->connections.push_back (conn);
-  conn = audiooutput_core->device_removed.connect (sigc::bind (sigc::ptr_fun (on_audiooutputdevice_removed_cb), assistant));
+  conn = audioinput_core->device_removed.connect (sigc::bind (sigc::ptr_fun (on_audioinput_device_removed_cb), assistant));
+  assistant->priv->connections.push_back (conn);
+
+  conn = audiooutput_core->device_added.connect (sigc::bind (sigc::ptr_fun (on_audiooutput_device_added_cb), assistant));
+  assistant->priv->connections.push_back (conn);
+  conn = audiooutput_core->device_removed.connect (sigc::bind (sigc::ptr_fun (on_audiooutput_device_removed_cb), assistant));
   assistant->priv->connections.push_back (conn);
 
   return GTK_WIDGET (assistant);

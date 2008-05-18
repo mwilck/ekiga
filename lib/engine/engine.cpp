@@ -100,32 +100,32 @@ engine_init (int argc,
 {
   core = new Ekiga::ServiceCore; 
 
-  /* VidInputCore depends on DisplayCore and must this              *
+  /* VideoInputCore depends on VideoOutputCore and must this              *
    * be constructed thereafter                                      */
 
   Ekiga::PresenceCore *presence_core = new Ekiga::PresenceCore;
   Ekiga::ContactCore *contact_core = new Ekiga::ContactCore;
   Ekiga::CallCore *call_core = new Ekiga::CallCore;
-  Ekiga::DisplayCore *display_core = new Ekiga::DisplayCore;
-  Ekiga::VidInputCore *vidinput_core = new Ekiga::VidInputCore(*runtime, *display_core);
+  Ekiga::VideoOutputCore *videooutput_core = new Ekiga::VideoOutputCore;
+  Ekiga::VideoInputCore *videoinput_core = new Ekiga::VideoInputCore(*runtime, *videooutput_core);
   Ekiga::AudioOutputCore *audiooutput_core = new Ekiga::AudioOutputCore(*runtime);  
   Ekiga::AudioInputCore *audioinput_core = new Ekiga::AudioInputCore(*runtime, *audiooutput_core);
   Ekiga::HalCore *hal_core = new Ekiga::HalCore;
 
 
   /* The last item in the following list will be destroyed first.   *
-   * - VidInputCore must be destroyed before DisplayCore since its  *
-   *   PreviewManager may call functions of DisplayCore.            *
+   * - VideoInputCore must be destroyed before VideoOutputCore since its  *
+   *   PreviewManager may call functions of VideoOutputCore.            *
    * - The runtime should be destroyed last since other core        *
    *   components may still call runtime functions until destroyed  *
-   *   (e.g. DisplayCore).                                          */
+   *   (e.g. VideoOutputCore).                                          */
    
   core->add (*runtime);
   core->add (*contact_core);
   core->add (*presence_core);
   core->add (*call_core);
-  core->add (*display_core);
-  core->add (*vidinput_core);
+  core->add (*videooutput_core);
+  core->add (*videoinput_core);
   core->add (*audiooutput_core);
   core->add (*audioinput_core);
   core->add (*hal_core);
@@ -149,7 +149,7 @@ engine_init (int argc,
   }
 #endif
 
-  if (!vidinput_mlogo_init (*core, &argc, &argv)) {
+  if (!videoinput_mlogo_init (*core, &argc, &argv)) {
     delete core;
     return;
   }
@@ -164,7 +164,7 @@ engine_init (int argc,
     return;
   }
 
-  if (!vidinput_ptlib_init (*core, &argc, &argv)) {
+  if (!videoinput_ptlib_init (*core, &argc, &argv)) {
     delete core;
     return;
   }
@@ -244,14 +244,14 @@ engine_init (int argc,
     return;
   }
 
-  display_core->setup_conf_bridge();
-  vidinput_core->setup_conf_bridge();
+  videooutput_core->setup_conf_bridge();
+  videoinput_core->setup_conf_bridge();
   audiooutput_core->setup_conf_bridge();
   audioinput_core->setup_conf_bridge();
 
   sigc::connection conn;
-  conn = hal_core->video_input_device_added.connect (sigc::mem_fun (vidinput_core, &Ekiga::VidInputCore::add_device));
-  conn = hal_core->video_input_device_removed.connect (sigc::mem_fun (vidinput_core, &Ekiga::VidInputCore::remove_device));
+  conn = hal_core->video_input_device_added.connect (sigc::mem_fun (videoinput_core, &Ekiga::VideoInputCore::add_device));
+  conn = hal_core->video_input_device_removed.connect (sigc::mem_fun (videoinput_core, &Ekiga::VideoInputCore::remove_device));
   conn = hal_core->audio_output_device_added.connect (sigc::mem_fun (audiooutput_core, &Ekiga::AudioOutputCore::add_device));
   conn = hal_core->audio_output_device_removed.connect (sigc::mem_fun (audiooutput_core, &Ekiga::AudioOutputCore::remove_device));
   conn = hal_core->audio_input_device_added.connect (sigc::mem_fun (audioinput_core, &Ekiga::AudioInputCore::add_device));

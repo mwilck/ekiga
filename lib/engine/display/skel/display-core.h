@@ -34,8 +34,8 @@
  *
  */
 
-#ifndef __DISPLAY_CORE_H__
-#define __DISPLAY_CORE_H__
+#ifndef __VIDEOOUTPUT_CORE_H__
+#define __VIDEOOUTPUT_CORE_H__
 
 #include "services.h"
 
@@ -56,7 +56,7 @@ namespace Ekiga
 {
 
 /**
- * @defgroup display Video Display
+ * @defgroup videooutput
  * @{
  */
 
@@ -64,7 +64,7 @@ namespace Ekiga
 
   /** Core object for the video display support
    */
-  class DisplayCore
+  class VideoOutputCore
     : public Service
     {
 
@@ -72,11 +72,11 @@ namespace Ekiga
 
       /* The constructor
       */
-      DisplayCore ();
+      VideoOutputCore ();
 
       /* The destructor
       */
-      ~DisplayCore ();
+      ~VideoOutputCore ();
 
       void setup_conf_bridge();
 
@@ -86,28 +86,28 @@ namespace Ekiga
        * @return The service name.
        */
       const std::string get_name () const
-        { return "display-core"; }
+        { return "videooutput-core"; }
 
 
       /** Returns the description of the service.
        * @return The service description.
        */
       const std::string get_description () const
-        { return "\tDisplay Core managing Display Manager objects"; }
+        { return "VideoOutput Core managing VideoOutput Manager objects"; }
 
 
-      /** Adds a VideoOutputManager to the DisplayCore service.
+      /** Adds a VideoOutputManager to the VideoOutputCore service.
        * @param The manager to be added.
        */
       void add_manager (VideoOutputManager &manager);
 
       /** Triggers a callback for all Ekiga::VideoOutputManager sources of the
-       * DisplayCore service.
+       * VideoOutputCore service.
        */
       void visit_managers (sigc::slot<bool, VideoOutputManager &> visitor);
 
       /** This signal is emitted when a Ekiga::VideoOutputManager has been
-       * added to the DisplayCore Service.
+       * added to the VideoOutputCore Service.
        */
       sigc::signal<void, VideoOutputManager &> manager_added;
 
@@ -130,35 +130,35 @@ namespace Ekiga
       
       /** See display-manager.h for the API
        */
-      sigc::signal<void, VideoOutputManager &, HwAccelStatus> device_opened;
+      sigc::signal<void, VideoOutputManager &, VideoOutputAccel> device_opened;
       sigc::signal<void, VideoOutputManager &> device_closed;
-      sigc::signal<void, VideoOutputManager &, DisplayMode> display_mode_changed;
+      sigc::signal<void, VideoOutputManager &, VideoOutputMode> videooutput_mode_changed;
       sigc::signal<void, VideoOutputManager &, FSToggle> fullscreen_mode_changed;
       sigc::signal<void, VideoOutputManager &, unsigned, unsigned> display_size_changed;
       sigc::signal<void, VideoOutputManager &> logo_update_required;
 
       /*** Statistics ***/
-      void get_display_stats (DisplayStats & _display_stats) {
-        _display_stats = display_stats;
+      void get_videooutput_stats (VideoOutputStats & _videooutput_stats) {
+        _videooutput_stats = videooutput_stats;
       };
   private:
-      void on_device_opened (HwAccelStatus hw_accel_status, VideoOutputManager *manager);
+      void on_device_opened (VideoOutputAccel videooutput_accel, VideoOutputManager *manager);
       void on_device_closed (VideoOutputManager *manager);
 
-      void on_display_mode_changed (DisplayMode display, VideoOutputManager *manager);
+      void on_videooutput_mode_changed (VideoOutputMode mode, VideoOutputManager *manager);
       void on_fullscreen_mode_changed (FSToggle toggle, VideoOutputManager *manager);
       void on_display_size_changed ( unsigned width, unsigned height, VideoOutputManager *manager);
       void on_logo_update_required (VideoOutputManager *manager);
 
       std::set<VideoOutputManager *> managers;
 
-      DisplayStats display_stats;
+      VideoOutputStats videooutput_stats;
       GTimeVal last_stats;
       int number_times_started;
 
       PMutex var_mutex;     /* Protect start, stop and number_times_started */
 
-      DisplayCoreConfBridge* display_core_conf_bridge;
+      VideoOutputCoreConfBridge* videooutput_core_conf_bridge;
     };
 /**
  * @}

@@ -74,7 +74,7 @@ namespace Ekiga
        * Add it to the list of devices already collected by the core.
        * @param devices a vector of device names to be filled by the manager.
        */
-      virtual void get_devices (std::vector <VidInputDevice> & devices) = 0;
+      virtual void get_devices (std::vector <VideoInputDevice> & devices) = 0;
 
       /** Set the current device.
        * Must be called before opening the device.
@@ -85,7 +85,7 @@ namespace Ekiga
        * @param format the video formar to be used (PAL, NTSC, ...).
 
        */
-      virtual bool set_device (const VidInputDevice & device, int channel, VideoFormat format) = 0;
+      virtual bool set_device (const VideoInputDevice & device, int channel, VideoInputFormat format) = 0;
 
       /** Open the device.
        * The device must be opened before calling get_frame_data and set_* functions.
@@ -150,7 +150,7 @@ namespace Ekiga
        * @param device in case the device is supported by the manager, this structure will be filled with the device details.
        * @return true if the device is supported by the manager.
        */
-      virtual bool has_device     (const std::string & source, const std::string & device_name, unsigned capabilities, VidInputDevice & device) = 0;
+      virtual bool has_device     (const std::string & source, const std::string & device_name, unsigned capabilities, VideoInputDevice & device) = 0;
 
 
       /*** API to act on VidInputDevice events ***/
@@ -159,18 +159,18 @@ namespace Ekiga
        * @param device the video input device that was opened.
        * @param config the current video input device configuration (current brightness, colour, etc.).
        */
-      sigc::signal<void, VidInputDevice, VidInputConfig> device_opened;
+      sigc::signal<void, VideoInputDevice, VidInputConfig> device_opened;
 
       /** This signal is emitted when a video input device is closed.
        * @param device the video input device that was closed.
        */
-      sigc::signal<void, VidInputDevice> device_closed;
+      sigc::signal<void, VideoInputDevice> device_closed;
 
       /** This signal is emitted when an error occurs when opening a video input device.
        * @param device the video input device that caused the error.
        * @param error_code the video input device error code.
        */
-      sigc::signal<void, VidInputDevice, VideoInputErrorCodes> device_error;
+      sigc::signal<void, VideoInputDevice, VideoInputErrorCodes> device_error;
 
   protected:  
       typedef struct ManagerState {
@@ -178,8 +178,8 @@ namespace Ekiga
         unsigned width;
         unsigned height;
         unsigned fps;
-        VidInputDevice device;
-        VideoFormat format;
+        VideoInputDevice device;
+        VideoInputFormat format;
         int channel;
       };
       ManagerState current_state;

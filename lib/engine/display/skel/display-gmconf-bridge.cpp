@@ -44,11 +44,11 @@
 
 using namespace Ekiga;
 
-DisplayCoreConfBridge::DisplayCoreConfBridge (Ekiga::Service & _service)
+VideoOutputCoreConfBridge::VideoOutputCoreConfBridge (Ekiga::Service & _service)
  : Ekiga::ConfBridge (_service)
 {
   Ekiga::ConfKeys keys;
-  property_changed.connect (sigc::mem_fun (this, &DisplayCoreConfBridge::on_property_changed));
+  property_changed.connect (sigc::mem_fun (this, &VideoOutputCoreConfBridge::on_property_changed));
 
   keys.push_back (VIDEO_DISPLAY_KEY "video_view"); 
   keys.push_back (VIDEO_DISPLAY_KEY "zoom"); 
@@ -60,24 +60,24 @@ DisplayCoreConfBridge::DisplayCoreConfBridge (Ekiga::Service & _service)
   load (keys);
 }
 
-void DisplayCoreConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
+void VideoOutputCoreConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
 {
-  DisplayCore & display_core = (DisplayCore &) service;
+  VideoOutputCore & display_core = (VideoOutputCore &) service;
   if (key == VIDEO_DISPLAY_KEY "video_view")  {
 
     DisplayInfo display_info;
-    PTRACE(4, "DisplayCoreConfBridge\tUpdating video view");
+    PTRACE(4, "VideoOutputCoreConfBridge\tUpdating video view");
 
     if (( gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view") < 0) || ( gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view") > 4))
       gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view", 0);
 
-    display_info.display = (DisplayMode) gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view");
+    display_info.mode = (VideoOutputMode) gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view");
     display_core.set_display_info(display_info);
   }
   else if ( (key == VIDEO_DISPLAY_KEY "zoom") ) {
 
     DisplayInfo display_info;
-    PTRACE(4, "DisplayCoreConfBridge\tUpdating zoom");
+    PTRACE(4, "VideoOutputCoreConfBridge\tUpdating zoom");
       
     display_info.zoom = gm_conf_get_int (VIDEO_DISPLAY_KEY "zoom");
     if ((display_info.zoom != 100) && (display_info.zoom != 50) && (display_info.zoom != 200)) {
@@ -90,7 +90,7 @@ void DisplayCoreConfBridge::on_property_changed (std::string key, GmConfEntry *e
   }
   else {
 
-    PTRACE(4, "DisplayCoreConfBridge\tUpdating Video Settings");
+    PTRACE(4, "VideoOutputCoreConfBridge\tUpdating Video Settings");
     DisplayInfo display_info;
 
     display_info.on_top = gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top");

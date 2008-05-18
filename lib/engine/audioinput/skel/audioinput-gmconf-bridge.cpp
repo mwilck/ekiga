@@ -62,31 +62,24 @@ void AudioInputCoreConfBridge::on_property_changed (std::string key, GmConfEntry
 
     PTRACE(4, "AudioInputCoreConfBridge\tUpdating device");
 
-    AudioInputDevice audioinput_device;
+    AudioInputDevice device;
     if (gm_conf_entry_get_string (entry) == NULL) {
       PTRACE(1, "AudioInputCoreConfBridge\t" << AUDIO_DEVICES_KEY "input_device" << " is NULL");
     }
     else {
-      std::string config_string = gm_conf_entry_get_string (entry);
-  
-      unsigned type_sep = config_string.find_first_of("/");
-      unsigned source_sep = config_string.find_first_of("/", type_sep + 1);
-  
-      audioinput_device.type   = config_string.substr ( 0, type_sep );
-      audioinput_device.source = config_string.substr ( type_sep + 1, source_sep - type_sep - 1);
-      audioinput_device.device = config_string.substr ( source_sep + 1, config_string.size() - source_sep );
+      device.SetFromString(gm_conf_entry_get_string (entry));
     }
 
-    if ( (audioinput_device.type == "" )   ||
-         (audioinput_device.source == "")  ||
-         (audioinput_device.device == "" ) ) {
+    if ( (device.type == "" )   ||
+         (device.source == "")  ||
+         (device.name == "" ) ) {
       PTRACE(1, "AudioInputCore\tTried to set malformed device");
-      audioinput_device.type = AUDIO_INPUT_FALLBACK_DEVICE_TYPE;
-      audioinput_device.source = AUDIO_INPUT_FALLBACK_DEVICE_SOURCE;
-      audioinput_device.device = AUDIO_INPUT_FALLBACK_DEVICE_DEVICE;
+      device.type = AUDIO_INPUT_FALLBACK_DEVICE_TYPE;
+      device.source = AUDIO_INPUT_FALLBACK_DEVICE_SOURCE;
+      device.name = AUDIO_INPUT_FALLBACK_DEVICE_NAME;
     }
 
-    audioinput_core.set_audioinput_device (audioinput_device);
+    audioinput_core.set_audioinput_device (device);
   }
 }
 

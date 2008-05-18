@@ -178,7 +178,7 @@ class PVideoInputDevice_EKIGA : public PVideoInputDevice
 
 protected:
   Ekiga::ServiceCore & core;
-  Ekiga::VidInputCore & vidinput_core;
+  Ekiga::VideoInputCore & videoinput_core;
 
   bool opened;
 };

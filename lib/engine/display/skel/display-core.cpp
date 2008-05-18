@@ -46,19 +46,19 @@
 
 using namespace Ekiga;
 
-DisplayCore::DisplayCore ()
+VideoOutputCore::VideoOutputCore ()
 {
   PWaitAndSignal m(var_mutex);
 
-  display_stats.rx_width = display_stats.rx_height = display_stats.rx_fps = 0;
-  display_stats.tx_width = display_stats.tx_height = display_stats.tx_fps = 0;
-  display_stats.rx_frames = 0;
-  display_stats.tx_frames = 0;
+  videooutput_stats.rx_width = videooutput_stats.rx_height = videooutput_stats.rx_fps = 0;
+  videooutput_stats.tx_width = videooutput_stats.tx_height = videooutput_stats.tx_fps = 0;
+  videooutput_stats.rx_frames = 0;
+  videooutput_stats.tx_frames = 0;
   number_times_started = 0;
-  display_core_conf_bridge = NULL;
+  videooutput_core_conf_bridge = NULL;
 }
 
-DisplayCore::~DisplayCore ()
+VideoOutputCore::~VideoOutputCore ()
 {
 #ifdef __GNUC__
   std::cout << __PRETTY_FUNCTION__ << std::endl;
@@ -66,34 +66,34 @@ DisplayCore::~DisplayCore ()
 
   PWaitAndSignal m(var_mutex);
 
-  if (display_core_conf_bridge)
-    delete display_core_conf_bridge;
+  if (videooutput_core_conf_bridge)
+    delete videooutput_core_conf_bridge;
 }
 
-void DisplayCore::setup_conf_bridge ()
+void VideoOutputCore::setup_conf_bridge ()
 {
   PWaitAndSignal m(var_mutex);
 
-  display_core_conf_bridge = new DisplayCoreConfBridge (*this);
+  videooutput_core_conf_bridge = new VideoOutputCoreConfBridge (*this);
 }
 
-void DisplayCore::add_manager (VideoOutputManager &manager)
+void VideoOutputCore::add_manager (VideoOutputManager &manager)
 {
   PWaitAndSignal m(var_mutex);
 
   managers.insert (&manager);
   manager_added.emit (manager);
 
-  manager.device_opened.connect (sigc::bind (sigc::mem_fun (this, &DisplayCore::on_device_opened), &manager));
-  manager.device_closed.connect (sigc::bind (sigc::mem_fun (this, &DisplayCore::on_device_closed), &manager));
-  manager.display_mode_changed.connect (sigc::bind (sigc::mem_fun (this, &DisplayCore::on_display_mode_changed), &manager));
-  manager.fullscreen_mode_changed.connect (sigc::bind (sigc::mem_fun (this, &DisplayCore::on_fullscreen_mode_changed), &manager));
-  manager.display_size_changed.connect (sigc::bind (sigc::mem_fun (this, &DisplayCore::on_display_size_changed), &manager));
-  manager.logo_update_required.connect (sigc::bind (sigc::mem_fun (this, &DisplayCore::on_logo_update_required), &manager));
+  manager.device_opened.connect (sigc::bind (sigc::mem_fun (this, &VideoOutputCore::on_device_opened), &manager));
+  manager.device_closed.connect (sigc::bind (sigc::mem_fun (this, &VideoOutputCore::on_device_closed), &manager));
+  manager.videooutput_mode_changed.connect (sigc::bind (sigc::mem_fun (this, &VideoOutputCore::on_videooutput_mode_changed), &manager));
+  manager.fullscreen_mode_changed.connect (sigc::bind (sigc::mem_fun (this, &VideoOutputCore::on_fullscreen_mode_changed), &manager));
+  manager.display_size_changed.connect (sigc::bind (sigc::mem_fun (this, &VideoOutputCore::on_display_size_changed), &manager));
+  manager.logo_update_required.connect (sigc::bind (sigc::mem_fun (this, &VideoOutputCore::on_logo_update_required), &manager));
 }
 
 
-void DisplayCore::visit_managers (sigc::slot<bool, VideoOutputManager &> visitor)
+void VideoOutputCore::visit_managers (sigc::slot<bool, VideoOutputManager &> visitor)
 {
   bool go_on = true;
 
@@ -104,7 +104,7 @@ void DisplayCore::visit_managers (sigc::slot<bool, VideoOutputManager &> visitor
 }
 
 
-void DisplayCore::start ()
+void VideoOutputCore::start ()
 {
    PWaitAndSignal m(var_mutex);
 
@@ -121,7 +121,7 @@ void DisplayCore::start ()
   }
 }
 
-void DisplayCore::stop ()
+void VideoOutputCore::stop ()
 {
   PWaitAndSignal m(var_mutex);
 
@@ -140,13 +140,13 @@ void DisplayCore::stop ()
        iter++) {
     (*iter)->close ();
   }
-  display_stats.rx_width = display_stats.rx_height = display_stats.rx_fps = 0;
-  display_stats.tx_width = display_stats.tx_height = display_stats.tx_fps = 0;
-  display_stats.rx_frames = 0;
-  display_stats.tx_frames = 0;
+  videooutput_stats.rx_width = videooutput_stats.rx_height = videooutput_stats.rx_fps = 0;
+  videooutput_stats.tx_width = videooutput_stats.tx_height = videooutput_stats.tx_fps = 0;
+  videooutput_stats.rx_frames = 0;
+  videooutput_stats.tx_frames = 0;
 }
 
-void DisplayCore::set_frame_data (const char *data,
+void VideoOutputCore::set_frame_data (const char *data,
                                   unsigned width,
                                   unsigned height,
                                   bool local,
@@ -155,14 +155,14 @@ void DisplayCore::set_frame_data (const char *data,
   var_mutex.Wait ();
 
   if (local) {
-    display_stats.tx_frames++;
-    display_stats.tx_width = width;
-    display_stats.tx_height = height;
+    videooutput_stats.tx_frames++;
+    videooutput_stats.tx_width = width;
+    videooutput_stats.tx_height = height;
   }
   else {
-    display_stats.rx_frames++;
-    display_stats.rx_width = width;
-    display_stats.rx_height = height;
+    videooutput_stats.rx_frames++;
+    videooutput_stats.rx_width = width;
+    videooutput_stats.rx_height = height;
   }
 
   GTimeVal current_time;
@@ -172,10 +172,10 @@ void DisplayCore::set_frame_data (const char *data,
                              + ((current_time.tv_usec - last_stats.tv_usec) / 1000);
 
   if (milliseconds > 2000) {
-    display_stats.tx_fps = round ((display_stats.tx_frames * 1000) / milliseconds);
-    display_stats.rx_fps = round ((display_stats.rx_frames * 1000) / milliseconds);
-    display_stats.rx_frames = 0;
-    display_stats.tx_frames = 0;
+    videooutput_stats.tx_fps = round ((videooutput_stats.tx_frames * 1000) / milliseconds);
+    videooutput_stats.rx_fps = round ((videooutput_stats.rx_frames * 1000) / milliseconds);
+    videooutput_stats.rx_frames = 0;
+    videooutput_stats.tx_frames = 0;
     g_get_current_time (&last_stats);
   }
 
@@ -188,7 +188,7 @@ void DisplayCore::set_frame_data (const char *data,
   }
 }
 
-void DisplayCore::set_display_info (const DisplayInfo & _display_info)
+void VideoOutputCore::set_display_info (const DisplayInfo & _display_info)
 {
   PWaitAndSignal m(var_mutex);
 
@@ -200,32 +200,32 @@ void DisplayCore::set_display_info (const DisplayInfo & _display_info)
 }
 
 
-void DisplayCore::on_device_opened (HwAccelStatus hw_accel_status, VideoOutputManager *manager)
+void VideoOutputCore::on_device_opened (VideoOutputAccel videooutput_accel, VideoOutputManager *manager)
 {
-  device_opened.emit (*manager, hw_accel_status);
+  device_opened.emit (*manager, videooutput_accel);
 }
 
-void DisplayCore::on_device_closed ( VideoOutputManager *manager)
+void VideoOutputCore::on_device_closed ( VideoOutputManager *manager)
 {
   device_closed.emit (*manager);
 }
 
-void DisplayCore::on_display_mode_changed (DisplayMode display, VideoOutputManager *manager)
+void VideoOutputCore::on_videooutput_mode_changed (VideoOutputMode mode, VideoOutputManager *manager)
 {
-  display_mode_changed.emit (*manager, display);
+ videooutput_mode_changed.emit (*manager, mode);
 }
 
-void DisplayCore::on_fullscreen_mode_changed ( FSToggle toggle, VideoOutputManager *manager)
+void VideoOutputCore::on_fullscreen_mode_changed ( FSToggle toggle, VideoOutputManager *manager)
 {
   fullscreen_mode_changed.emit (*manager, toggle);
 }
 
-void DisplayCore::on_display_size_changed ( unsigned width, unsigned height, VideoOutputManager *manager)
+void VideoOutputCore::on_display_size_changed ( unsigned width, unsigned height, VideoOutputManager *manager)
 {
   display_size_changed.emit (*manager, width, height);
 }
 
-void DisplayCore::on_logo_update_required (VideoOutputManager *manager)
+void VideoOutputCore::on_logo_update_required (VideoOutputManager *manager)
 {
   logo_update_required.emit (*manager);
 }

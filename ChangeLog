@@ -1,3 +1,60 @@
+2008-05-18  Matthias Schneider  <ma30002000@yahoo.de>
+
+	* pixmaps/conv-icon.pl: 
+	* pixmaps/icon.h: 
+	* src/devices/videoinput.cpp: 
+	* src/devices/videooutput.cpp: 
+	* src/devices/videoinput.h: 
+	* src/devices/videooutput.h: 
+	* src/endpoints/opal-main.cpp: 
+	* src/gui/preferences.cpp: 
+	* src/gui/assistant.cpp: 
+	* src/gui/main.cpp: 
+	* lib/engine/audioinput/null/audioinput-manager-null.cpp: 
+	* lib/engine/audioinput/ptlib/audioinput-manager-ptlib.cpp: 
+	* lib/engine/audioinput/skel/audioinput-info.h: 
+	* lib/engine/audioinput/skel/audioinput-gmconf-bridge.cpp: 
+	* lib/engine/audioinput/skel/audioinput-core.cpp: 
+	* lib/engine/audioinput/skel/audioinput-core.h: 
+	* lib/engine/audiooutput/null/audiooutput-manager-null.cpp: 
+	* lib/engine/audiooutput/ptlib/audiooutput-manager-ptlib.cpp: 
+	* lib/engine/audiooutput/skel/audiooutput-info.h: 
+	* lib/engine/audiooutput/skel/audiooutput-gmconf-bridge.cpp: 
+	* lib/engine/audiooutput/skel/audiooutput-core.cpp: 
+	* lib/engine/audiooutput/skel/audiooutput-core.h: 
+	* lib/engine/engine.cpp: 
+	* lib/engine/framework/device-def.h:
+	* lib/engine/vidinput/ptlib/vidinput-main-ptlib.h: 
+	* lib/engine/vidinput/ptlib/vidinput-manager-ptlib.cpp: 
+	* lib/engine/vidinput/ptlib/vidinput-manager-ptlib.h: 
+	* lib/engine/vidinput/ptlib/vidinput-main-ptlib.cpp: 
+	* lib/engine/vidinput/mlogo/vidinput-main-mlogo.cpp: 
+	* lib/engine/vidinput/mlogo/vidinput-main-mlogo.h: 
+	* lib/engine/vidinput/mlogo/vidinput-manager-mlogo.cpp: 
+	* lib/engine/vidinput/mlogo/vidinput-manager-mlogo.h: 
+	* lib/engine/vidinput/skel/vidinput-manager.h: 
+	* lib/engine/vidinput/skel/vidinput-info.h: 
+	* lib/engine/vidinput/skel/vidinput-gmconf-bridge.cpp: 
+	* lib/engine/vidinput/skel/vidinput-core.cpp: 
+	* lib/engine/vidinput/skel/vidinput-gmconf-bridge.h: 
+	* lib/engine/vidinput/skel/vidinput-core.h: 
+	* lib/engine/hal/dbus/hal-main-dbus.h: 
+	* lib/engine/hal/dbus/hal-manager-dbus.h: 
+	* lib/engine/display/x/display-manager-x.cpp: 
+	* lib/engine/display/x/display-main-x.cpp: 
+	* lib/engine/display/common/display-manager-common.cpp: 
+	* lib/engine/display/common/display-manager-common.h: 
+	* lib/engine/display/dx/display-main-dx.cpp: 
+	* lib/engine/display/dx/display-manager-dx.cpp: 
+	* lib/engine/display/skel/display-core.h: 
+	* lib/engine/display/skel/display-manager.h: 
+	* lib/engine/display/skel/display-info.h: 
+	* lib/engine/display/skel/display-gmconf-bridge.cpp: 
+	* lib/engine/display/skel/display-core.cpp: 
+	* lib/engine/display/skel/display-gmconf-bridge.h: 
+	Some more cleanup and renaming. VidInputCore is now VideoInputCore.
+	DisplayCore is now VideoOutputCore.
+
 2008-05-18  Damien Sandras  <dsandras@gnome.org>
 
 	* lib/engine/addressbook/call-history/history-contact.cpp:

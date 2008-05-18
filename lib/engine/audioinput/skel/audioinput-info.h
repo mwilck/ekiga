@@ -36,14 +36,13 @@
 
 #ifndef __AUDIOINPUT_INFO_H__
 #define __AUDIOINPUT_INFO_H__
+
+#include "device-def.h"
 #include <string>
+
 namespace Ekiga
 {
-  typedef struct AudioInputDevice {
-    std::string type;
-    std::string source;
-    std::string device;
-  };
+  class AudioInputDevice : public Device {};
 
   typedef struct AudioInputConfig {
     unsigned volume;

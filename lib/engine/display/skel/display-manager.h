@@ -101,13 +101,13 @@ namespace Ekiga
       /** This signal is emitted when a video output device is opened.
        * @param hw_accel_status actual hardware acceleration support active on the video output device opened).
        */
-      sigc::signal<void, HwAccelStatus> device_opened;
+      sigc::signal<void, VideoOutputAccel> device_opened;
 
       /** This signal is emitted when a video output device is closed.
        */
       sigc::signal<void> device_closed;
 
-      sigc::signal<void, DisplayMode> display_mode_changed;
+      sigc::signal<void, VideoOutputMode> videooutput_mode_changed;
       sigc::signal<void, FSToggle> fullscreen_mode_changed;
       sigc::signal<void, unsigned, unsigned> display_size_changed;
       sigc::signal<void> logo_update_required;

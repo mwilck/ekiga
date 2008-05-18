@@ -78,7 +78,7 @@ PCREATE_PLUGIN(EKIGA, PVideoOutputDevice, &PVideoOutputDevice_EKIGA_descriptor);
 
 /* The Methods */
 PVideoOutputDevice_EKIGA::PVideoOutputDevice_EKIGA (Ekiga::ServiceCore & _core)
-: core (_core), display_core (*(dynamic_cast<Ekiga::DisplayCore *> (_core.get ("display-core"))))
+: core (_core), videooutput_core (*(dynamic_cast<Ekiga::VideoOutputCore *> (_core.get ("videooutput-core"))))
 { 
  PWaitAndSignal m(videoDisplay_mutex);
 
@@ -96,7 +96,7 @@ PVideoOutputDevice_EKIGA::~PVideoOutputDevice_EKIGA()
   if (is_active)
     devices_nbr = PMAX (0, devices_nbr-1);
   if (devices_nbr == 0) {
-    display_core.stop();
+    videooutput_core.stop();
   }
 }
 
@@ -149,13 +149,13 @@ bool PVideoOutputDevice_EKIGA::SetFrameData (unsigned x,
     return FALSE;
 
   if (devices_nbr == 0)
-    display_core.start();
+    videooutput_core.start();
   /* Device is now open */
   if (!is_active) {
     is_active = TRUE;
     devices_nbr = PMIN (2, devices_nbr+1);
   }
-  display_core.set_frame_data((const char*) data, width, height, (device_id == LOCAL), devices_nbr);
+  videooutput_core.set_frame_data((const char*) data, width, height, (device_id == LOCAL), devices_nbr);
 
   return TRUE;
 }

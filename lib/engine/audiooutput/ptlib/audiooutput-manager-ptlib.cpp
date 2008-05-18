@@ -71,7 +71,7 @@ void GMAudioOutputManager_ptlib::get_devices(std::vector <Ekiga::AudioOutputDevi
 
       for (PINDEX j = 0; devices_array[j] != NULL; j++) {
 
-        device.device = devices_array[j];
+        device.name = devices_array[j];
         devices.push_back(device);
       }
       free (devices_array);
@@ -84,7 +84,7 @@ bool GMAudioOutputManager_ptlib::set_device (Ekiga::AudioOutputPrimarySecondary 
 {
   if ( device.type == DEVICE_TYPE ) {
 
-    PTRACE(4, "GMAudioOutputManager_ptlib\tSetting Device[" << primarySecondary << "] " << device.source << "/" <<  device.device);
+    PTRACE(4, "GMAudioOutputManager_ptlib\tSetting Device[" << primarySecondary << "] " << device);
     current_state[primarySecondary].device = device;  
     return true;
   }
@@ -97,7 +97,7 @@ bool GMAudioOutputManager_ptlib::open (Ekiga::AudioOutputPrimarySecondary primar
   unsigned volume;
   Ekiga::AudioOutputConfig audiooutput_config;
 
-  PTRACE(4, "GMAudioOutputManager_ptlib\tOpening Device " << current_state[primarySecondary].device.source << "/" <<  current_state[primarySecondary].device.device);
+  PTRACE(4, "GMAudioOutputManager_ptlib\tOpening Device " << current_state[primarySecondary].device);
   PTRACE(4, "GMAudioOutputManager_ptlib\tOpening Device with " << channels << "-" << samplerate << "/" << bits_per_sample);
 
   current_state[primarySecondary].channels        = channels;
@@ -105,7 +105,7 @@ bool GMAudioOutputManager_ptlib::open (Ekiga::AudioOutputPrimarySecondary primar
   current_state[primarySecondary].bits_per_sample = bits_per_sample;
 
   output_device[primarySecondary] = PSoundChannel::CreateOpenedChannel (current_state[primarySecondary].device.source, 
-                                                     current_state[primarySecondary].device.device,
+                                                     current_state[primarySecondary].device.name,
                                                      PSoundChannel::Player,
                                                      channels,
                                                      samplerate,
@@ -134,7 +134,7 @@ bool GMAudioOutputManager_ptlib::open (Ekiga::AudioOutputPrimarySecondary primar
 
 void GMAudioOutputManager_ptlib::close(Ekiga::AudioOutputPrimarySecondary primarySecondary)
 {
-  PTRACE(4, "GMAudioOutputManager_ptlib\tClosing device[" << primarySecondary << "] " << current_state[primarySecondary].device.source << "/" <<  current_state[primarySecondary].device.device);
+  PTRACE(4, "GMAudioOutputManager_ptlib\tClosing device[" << primarySecondary << "] " << current_state[primarySecondary].device);
   if (output_device[primarySecondary]) {
      delete output_device[primarySecondary];
      output_device[primarySecondary] = NULL;
@@ -191,7 +191,7 @@ bool GMAudioOutputManager_ptlib::has_device(const std::string & sink, const std:
   if (sink == "alsa") {
     device.type = DEVICE_TYPE;
     device.source = "ALSA";
-    device.device = device_name;
+    device.name = device_name;
     return true;
   }
 /*  if (source == "oss") {

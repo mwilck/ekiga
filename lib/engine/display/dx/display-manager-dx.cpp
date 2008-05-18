@@ -72,7 +72,7 @@ GMVideoOutputManager_dx::setup_frame_display ()
 
 //  runtime.run_in_main (force_redraw.make_slot ()); //FIXME: check
 
-  switch (current_frame.display) {
+  switch (current_frame.mode) {
   case LOCAL_VIDEO:
     runtime.run_in_main (sigc::bind (display_size_changed.make_slot (), (unsigned) (current_frame.local_width * current_frame.zoom / 100), (unsigned) (current_frame.local_height * current_frame.zoom / 100)));
     break;
@@ -94,22 +94,22 @@ GMVideoOutputManager_dx::setup_frame_display ()
   }
 
   if (   (!local_display_info.widget_info_set) || (!local_display_info.config_info_set) 
-      || (local_display_info.display == UNSET) || (local_display_info.zoom == 0) || (current_frame.zoom == 0)) {
+      || (local_display_info.mode == UNSET) || (local_display_info.zoom == 0) || (current_frame.zoom == 0)) {
     PTRACE(4, "GMVideoOutputManager_DX\tWidget not yet realized or gconf info not yet set, not opening display");
     return;
   }
 
   close_frame_display ();
 
-  runtime.run_in_main (sigc::bind (display_mode_changed.make_slot (), current_frame.display));
+  runtime.run_in_main (sigc::bind (videooutput_mode_changed.make_slot (), current_frame.mode));
 
-  HwAccelStatus hw_accel_status = NONE;
+  VideoOutputAccel videooutput_accel = VO_ACCEL_NONE;
 
-  switch (current_frame.display) {
+  switch (current_frame.mode) {
   case LOCAL_VIDEO:
     PTRACE(4, "GMVideoOutputManager_DX\tOpening LOCAL_VIDEO display with image of " << current_frame.local_width << "x" << current_frame.local_height);
     dxWindow = new DXWindow();
-    hw_accel_status = (HwAccelStatus) dxWindow->Init (local_display_info.hwnd,
+    videooutput_accel = (VideoOutputAccel) dxWindow->Init (local_display_info.hwnd,
                           local_display_info.x,
                           local_display_info.y,
                             (int) (current_frame.local_width * current_frame.zoom / 100), 
@@ -120,7 +120,7 @@ GMVideoOutputManager_dx::setup_frame_display ()
     last_frame.embedded_x = local_display_info.x;
     last_frame.embedded_y = local_display_info.y;
 
-    last_frame.display = LOCAL_VIDEO;
+    last_frame.mode = LOCAL_VIDEO;
     last_frame.local_width = current_frame.local_width;
     last_frame.local_height = current_frame.local_height;
     last_frame.zoom = current_frame.zoom;
@@ -129,7 +129,7 @@ GMVideoOutputManager_dx::setup_frame_display ()
   case REMOTE_VIDEO:
     PTRACE(4, "GMVideoOutputManager_DX\tOpening REMOTE_VIDEO display with image of " << current_frame.remote_width << "x" << current_frame.remote_height);
     dxWindow = new DXWindow();
-    hw_accel_status = (HwAccelStatus) dxWindow->Init (local_display_info.hwnd,
+    videooutput_accel = (VideoOutputAccel) dxWindow->Init (local_display_info.hwnd,
                           local_display_info.x,
                           local_display_info.y,
                           (int) (current_frame.remote_width * current_frame.zoom / 100), 
@@ -140,7 +140,7 @@ GMVideoOutputManager_dx::setup_frame_display ()
     last_frame.embedded_x = local_display_info.x;
     last_frame.embedded_y = local_display_info.y;
 
-    last_frame.display = REMOTE_VIDEO;
+    last_frame.mode = REMOTE_VIDEO;
     last_frame.remote_width = current_frame.remote_width;
     last_frame.remote_height = current_frame.remote_height;
     last_frame.zoom = current_frame.zoom;
@@ -149,13 +149,13 @@ GMVideoOutputManager_dx::setup_frame_display ()
   case FULLSCREEN:
   case PIP:
   case PIP_WINDOW:
-    PTRACE(4, "GMVideoOutputManager_DX\tOpening display " << current_frame.display << " with images of " 
+    PTRACE(4, "GMVideoOutputManager_DX\tOpening display " << current_frame.mode << " with images of " 
             << current_frame.local_width << "x" << current_frame.local_height << "(local) and " 
 	    << current_frame.remote_width << "x" << current_frame.remote_height << "(remote)");
     dxWindow = new DXWindow();
-    hw_accel_status = (HwAccelStatus) dxWindow->Init ((current_frame.display == PIP) ? local_display_info.hwnd : NULL,
-                          (current_frame.display == PIP) ? local_display_info.x : 0,
-                          (current_frame.display == PIP) ? local_display_info.y : 0,
+    videooutput_accel = (VideoOutputAccel) dxWindow->Init ((current_frame.mode == PIP) ? local_display_info.hwnd : NULL,
+                          (current_frame.mode == PIP) ? local_display_info.x : 0,
+                          (current_frame.mode == PIP) ? local_display_info.y : 0,
                           (int) (current_frame.remote_width * current_frame.zoom  / 100), 
                           (int) (current_frame.remote_height * current_frame.zoom  / 100),
                              current_frame.remote_width, 
@@ -163,13 +163,13 @@ GMVideoOutputManager_dx::setup_frame_display ()
                              current_frame.local_width, 
                              current_frame.local_height); 
 
-    if (dxWindow && current_frame.display == FULLSCREEN) 
+    if (dxWindow && current_frame.mode == FULLSCREEN) 
       dxWindow->ToggleFullscreen ();
 
     last_frame.embedded_x = local_display_info.x;
     last_frame.embedded_y = local_display_info.y;
 
-    last_frame.display = current_frame.display;
+    last_frame.mode = current_frame.mode;
     last_frame.local_width = current_frame.local_width;
     last_frame.local_height = current_frame.local_height;
     last_frame.remote_width = current_frame.remote_width;
@@ -182,7 +182,7 @@ GMVideoOutputManager_dx::setup_frame_display ()
     return;
     break;
   }
-  PTRACE (4, "GMVideoDisplay_DX\tSetup display " << current_frame.display << " with zoom value of " << current_frame.zoom );
+  PTRACE (4, "GMVideoDisplay_DX\tSetup display " << current_frame.mode << " with zoom value of " << current_frame.zoom );
 
   if (local_display_info.on_top && dxWindow)
       dxWindow->ToggleOntop ();
@@ -190,7 +190,7 @@ GMVideoOutputManager_dx::setup_frame_display ()
 //   if (!status)
 //     close_frame_display ();
 
-  runtime.run_in_main (sigc::bind (device_opened.make_slot (), hw_accel_status));
+  runtime.run_in_main (sigc::bind (device_opened.make_slot (), videooutput_accel));
 }
 
 void
@@ -227,7 +227,7 @@ GMVideoOutputManager_dx::display_pip_frames (const char *local_frame,
   if (dxWindow)
     dxWindow->ProcessEvents(); 
 
-  if (current_frame.display == FULLSCREEN && dxWindow && !dxWindow->IsFullScreen ())
+  if (current_frame.mode == FULLSCREEN && dxWindow && !dxWindow->IsFullScreen ())
     runtime.run_in_main (sigc::bind (fullscreen_mode_changed.make_slot (), OFF));
 
   if (dxWindow) {

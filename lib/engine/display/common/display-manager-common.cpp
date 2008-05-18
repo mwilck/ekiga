@@ -138,14 +138,14 @@ void GMVideoOutputManager::set_frame_data (const char* data,
   if (devices_nbr <= 1) {
 
     if (!local)
-      local_display_info.display = REMOTE_VIDEO;
+      local_display_info.mode = REMOTE_VIDEO;
     else 
-      local_display_info.display = LOCAL_VIDEO;
+      local_display_info.mode = LOCAL_VIDEO;
 
-    runtime.run_in_main (sigc::bind (display_mode_changed.make_slot (), local_display_info.display));
+    runtime.run_in_main (sigc::bind (videooutput_mode_changed.make_slot (), local_display_info.mode));
   }
 
-  current_frame.display = local_display_info.display;
+  current_frame.mode = local_display_info.mode;
   current_frame.zoom = local_display_info.zoom; 
   first_frame_received = true;
 
@@ -176,15 +176,15 @@ void GMVideoOutputManager::set_frame_data (const char* data,
 
   var_mutex.Signal();
 
-  if ((local_display_info.display == UNSET) || (local_display_info.zoom == 0) || (!local_display_info.config_info_set)) {
+  if ((local_display_info.mode == UNSET) || (local_display_info.zoom == 0) || (!local_display_info.config_info_set)) {
     PTRACE(4, "GMVideoOutputManager\tDisplay and zoom variable not set yet, not opening display");
      return;
   }
 
-  if ((local_display_info.display == LOCAL_VIDEO) && !local)
+  if ((local_display_info.mode == LOCAL_VIDEO) && !local)
       return;
 
-  if ((local_display_info.display == REMOTE_VIDEO) && local)
+  if ((local_display_info.mode == REMOTE_VIDEO) && local)
       return;
 
   run_thread.Signal();
@@ -194,7 +194,7 @@ void GMVideoOutputManager::set_frame_data (const char* data,
 void GMVideoOutputManager::init()
 {
   /* State for last frame */
-  last_frame.display = UNSET;
+  last_frame.mode = UNSET;
   last_frame.local_width = 0;
   last_frame.local_height = 0;
   last_frame.remote_width = 0;
@@ -230,15 +230,15 @@ GMVideoOutputManager::frame_display_change_needed ()
   get_display_info(local_display_info);
 
   if ((!local_display_info.widget_info_set) || (!local_display_info.config_info_set) ||
-      (local_display_info.display == UNSET) || (local_display_info.zoom == 0)) {
+      (local_display_info.mode == UNSET) || (local_display_info.zoom == 0)) {
     PTRACE(4, "GMVideoOutputManager\tWidget not yet realized or gconf info not yet set, not opening display");
     return false;
   }
 
-  if ( last_frame.display != current_frame.display || last_frame.zoom != current_frame.zoom )
+  if ( last_frame.mode != current_frame.mode || last_frame.zoom != current_frame.zoom )
     return true;
 
-  switch (current_frame.display) {
+  switch (current_frame.mode) {
   case LOCAL_VIDEO:
     return (   last_frame.local_width  != current_frame.local_width   || last_frame.local_height != current_frame.local_height 
             || local_display_info.x    != last_frame.embedded_x       || local_display_info.y    != last_frame.embedded_y );
@@ -275,7 +275,7 @@ GMVideoOutputManager::redraw ()
     if (frame_display_change_needed ()) 
       setup_frame_display (); 
 
-    switch (current_frame.display) 
+    switch (current_frame.mode) 
       {
       case LOCAL_VIDEO:
           if (lframeStore.GetSize() > 0)

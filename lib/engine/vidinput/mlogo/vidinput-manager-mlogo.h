@@ -29,14 +29,14 @@
  *                         ------------------------------------------
  *   begin                : written in 2008 by Matthias Schneider
  *   copyright            : (c) 2008 by Matthias Schneider
- *   description          : Declaration of the interface of a vidinput core.
+ *   description          : Declaration of the interface of a videoinput core.
  *                          A vidinput core manages VideoInputManagers.
  *
  */
 
 
-#ifndef __VIDINPUT_MANAGER_MLOGO_H__
-#define __VIDINPUT_MANAGER_MLOGO_H__
+#ifndef __VIDEOINPUT_MANAGER_MLOGO_H__
+#define __VIDEOINPUT_MANAGER_MLOGO_H__
 
 #include "vidinput-core.h"
 #include "vidinput-manager.h"
@@ -46,7 +46,7 @@
 #include <ptclib/delaychan.h>
 
 /**
- * @addtogroup vidinput
+ * @addtogroup videoinput
  * @{
  */
 
@@ -71,9 +71,9 @@
        * @param uri  an uri
        * @return     true if a Ekiga::Call could be created
        */
-      virtual void get_devices(std::vector <Ekiga::VidInputDevice> & devices);
+      virtual void get_devices(std::vector <Ekiga::VideoInputDevice> & devices);
       
-      virtual bool set_device (const Ekiga::VidInputDevice & device, int channel, Ekiga::VideoFormat format);
+      virtual bool set_device (const Ekiga::VideoInputDevice & device, int channel, Ekiga::VideoInputFormat format);
 
       virtual bool open (unsigned width, unsigned height, unsigned fps);
 
@@ -83,7 +83,7 @@
                                    unsigned & width,
                                    unsigned & height);
 
-      virtual bool has_device (const std::string & source, const std::string & device_name, unsigned capabilities, Ekiga::VidInputDevice & device);
+      virtual bool has_device (const std::string & source, const std::string & device_name, unsigned capabilities, Ekiga::VideoInputDevice & device);
 
   protected:  
       void CopyYUVArea (const char* srcFrame,

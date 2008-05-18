@@ -41,21 +41,21 @@
 #include "vidinput-manager-mlogo.h"
 
 bool
-vidinput_mlogo_init (Ekiga::ServiceCore &core,
+videoinput_mlogo_init (Ekiga::ServiceCore &core,
 	    int */*argc*/,
 	    char **/*argv*/[])
 {
   bool result = false;
-  Ekiga::VidInputCore *vidinput_core = NULL;
+  Ekiga::VideoInputCore *videoinput_core = NULL;
 
-  vidinput_core
-    = dynamic_cast<Ekiga::VidInputCore*>(core.get ("vidinput-core"));
+  videoinput_core
+    = dynamic_cast<Ekiga::VideoInputCore*>(core.get ("videoinput-core"));
 
-  if (vidinput_core != NULL) {
+  if (videoinput_core != NULL) {
 
     GMVideoInputManager_mlogo *videoinput_manager = new GMVideoInputManager_mlogo(core);
 
-    vidinput_core->add_manager (*videoinput_manager);
+    videoinput_core->add_manager (*videoinput_manager);
     result = true;
   }
 

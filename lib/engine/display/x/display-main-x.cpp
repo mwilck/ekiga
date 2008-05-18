@@ -45,16 +45,16 @@ display_x_init (Ekiga::ServiceCore &core,
 	    char **/*argv*/[])
 {
   bool result = false;
-  Ekiga::DisplayCore *display_core = NULL;
+  Ekiga::VideoOutputCore *videooutput_core = NULL;
 
-  display_core
-    = dynamic_cast<Ekiga::DisplayCore*>(core.get ("display-core"));
+  videooutput_core
+    = dynamic_cast<Ekiga::VideoOutputCore*>(core.get ("videooutput-core"));
 
-  if (display_core != NULL) {
+  if (videooutput_core != NULL) {
 
     GMVideoOutputManager_x *videooutput_manager = new GMVideoOutputManager_x(core);
 
-    display_core->add_manager (*videooutput_manager);
+    videooutput_core->add_manager (*videooutput_manager);
     result = true;
   }
 

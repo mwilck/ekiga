@@ -29,13 +29,15 @@
  *                         ------------------------------------------
  *   begin                : written in 2008 by Matthias Schneider
  *   copyright            : (c) 2008 by Matthias Schneider
- *   description          : Declaration of the interface of a vidinput core.
- *                          A vidinput core manages VidInputManagers.
+ *   description          : Declaration of the interface of a videoinput core.
+ *                          A vidinput core manages VideoInputManagers.
  *
  */
 
-#ifndef __VIDINPUT_INFO_H__
-#define __VIDINPUT_INFO_H__
+#ifndef __VIDEOINPUT_INFO_H__
+#define __VIDEOINPUT_INFO_H__
+
+#include "device-def.h"
 
 #define GM_4CIF_WIDTH  704
 #define GM_4CIF_HEIGHT 576
@@ -54,10 +56,11 @@ namespace Ekiga
 {
 #define NB_VIDEO_SIZES 5
 
-  const static struct { 
+  static const struct { 
     int width; 
     int height; 
-  } 
+  }
+
   VideoSizes[NB_VIDEO_SIZES] = {
     {  GM_QCIF_WIDTH,  GM_QCIF_HEIGHT },
     {  GM_CIF_WIDTH,   GM_CIF_HEIGHT  },
@@ -66,19 +69,15 @@ namespace Ekiga
     {  GM_4SIF_WIDTH,  GM_4SIF_HEIGHT },
   };
   
-  enum VideoFormat {
-    PAL,
-    NTSC,
-    SECAM,
-    Auto,
-    NumVideoFormats
+  enum VideoInputFormat {
+    VI_FORMAT_PAL = 0,
+    VI_FORMAT_NTSC,
+    VI_FORMAT_SECAM,
+    VI_FORMAT_Auto,
+    VI_FORMAT_MAX
   };
 
-  typedef struct VidInputDevice {
-    std::string type;
-    std::string source;
-    std::string device;
-  };
+  class VideoInputDevice : public Device {};
 
   typedef struct VidInputConfig {
     unsigned whiteness;
@@ -97,7 +96,6 @@ namespace Ekiga
     VI_ERROR_FPS,
     VI_ERROR_SCALE
   };
-				      
 };
 
 #endif
