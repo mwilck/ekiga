@@ -128,9 +128,6 @@ History::Contact::Contact (Ekiga::ServiceCore &_core,
 
 History::Contact::~Contact ()
 {
-#ifdef __GNUC__
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
-#endif
 }
 
 const std::string
