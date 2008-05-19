@@ -108,11 +108,6 @@ ekiga_SOURCES +=			\
 	endpoints/opal-main.h		\
 	endpoints/opal-main.cpp
 
-# Clients
-ekiga_SOURCES +=			\
-	clients/stun.h			\
-	clients/stun.cpp
-
 if HAVE_DBUS 
 ekiga_SOURCES +=		\
 	components/dbus-stub.h	\
