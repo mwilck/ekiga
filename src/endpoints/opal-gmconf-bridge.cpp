@@ -240,7 +240,8 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
       else if (key == SIP_KEY "forward_host") {
 
         const gchar *str = gm_conf_entry_get_string (entry);
-        sip_manager->set_forward_uri (str);
+	if (str != NULL)
+	  sip_manager->set_forward_uri (str);
       }
       else if (key == SIP_KEY "binding_timeout") {
 
