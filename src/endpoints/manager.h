@@ -45,8 +45,6 @@
 
 #include "accounts.h"
 
-#include "stun.h"
-
 #include "accountshandler.h"
 
 #include "gmconf-bridge.h"
