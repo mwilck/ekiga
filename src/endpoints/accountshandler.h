@@ -94,6 +94,8 @@ private:
   void SIPPresenceSubscribe (PString contact,
                              bool unsubscribe);
   void H323Register (GmAccount *a);
+
+  void on_call_core_ready ();
   
 
   PMutex quit_mutex;
