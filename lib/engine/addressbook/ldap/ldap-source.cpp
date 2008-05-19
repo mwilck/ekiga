@@ -182,7 +182,7 @@ OPENLDAP::Source::on_new_book_form_submitted (Ekiga::Form &result)
     std::string base = result.text ("base");
     std::string scope = result.single_choice ("scope");
     std::string call_attribute = result.text ("call-attribute");
-    int port = std::atoi (port_string.c_str ());
+    int port = atoi (port_string.c_str ());
 
     add (name, hostname, port, base, scope, call_attribute);
     save ();

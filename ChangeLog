@@ -1,5 +1,10 @@
 2008-05-19  Damien Sandras  <dsandras@gnome.org>
 
+	* lib/engine/addressbook/ldap/ldap-source.cpp:
+	Fixed bug reported by Peter Robinso, atoi is not a member of std.
+
+2008-05-19  Damien Sandras  <dsandras@gnome.org>
+
 	* src/gui/preferences.cpp:
 	Removed obsolete network page. We do not need it anymore as we listen
 	on all interfaces and nat detection is now more or less automatic.
