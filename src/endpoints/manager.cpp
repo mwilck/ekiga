@@ -49,7 +49,6 @@
 #include "opal-codec-description.h"
 #include "vidinput-info.h"
 
-
 #include "call-manager.h"
 
 static  bool same_codec_desc (Ekiga::CodecDescription a, Ekiga::CodecDescription b)
@@ -58,14 +57,51 @@ static  bool same_codec_desc (Ekiga::CodecDescription a, Ekiga::CodecDescription
 }
 
 
+class StunDetector : public PThread
+{
+  PCLASSINFO(StunDetector, PThread);
+
+public:
+
+  StunDetector (const std::string & _server, 
+                GMManager & _manager,
+                Ekiga::Runtime & _runtime) 
+    : PThread (1000, AutoDeleteThread), 
+      server (_server),
+      manager (_manager),
+      runtime (_runtime)
+  {
+    this->Resume ();
+  };
+  
+  void Main () 
+  {
+    PSTUNClient::NatTypes type = manager.SetSTUNServer (server);
+    if (type == PSTUNClient::SymmetricNat 
+        || type == PSTUNClient::BlockedNat 
+        || type == PSTUNClient::PartialBlockedNat)
+      std::cout << "Bad NAT Type" << std::endl << std::flush;
+
+    for (Ekiga::CallManager::iterator iter = manager.begin ();
+         iter != manager.end ();
+         iter++) 
+      (*iter)->set_listen_port ((*iter)->get_listen_interface ().port);
+
+    runtime.run_in_main (manager.ready.make_slot ());
+  };
+
+private:
+  const std::string & server;
+  GMManager & manager;
+  Ekiga::Runtime & runtime;
+};
+
+
 /* The class */
 GMManager::GMManager (Ekiga::ServiceCore & _core)
 : core (_core), 
   runtime (*(dynamic_cast<Ekiga::Runtime *> (core.get ("runtime"))))
 {
-  /* STUN */
-  SetSTUNServer ("stun.ekiga.net");
-
   /* Initialise the endpoint paramaters */
   PIPSocket::SetDefaultIpAddressFamilyV4();
   autoStartTransmitVideo = autoStartReceiveVideo = true;
@@ -107,9 +143,8 @@ GMManager::GMManager (Ekiga::ServiceCore & _core)
   //
   call_core = dynamic_cast<Ekiga::CallCore *> (core.get ("call-core"));
 
-
   // Ready
-  runtime.run_in_main (sigc::bind (ready.make_slot (), ""));
+  new StunDetector ("stun.ekiga.net", *this, runtime);
 }
 
 

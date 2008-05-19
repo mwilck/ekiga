@@ -252,7 +252,7 @@ namespace Ekiga
       /*
        * MISC
        */
-      sigc::signal<void, std::string> ready;
+      sigc::signal<void> ready;
 
     private:
       std::set<CallProtocolManager *> managers;

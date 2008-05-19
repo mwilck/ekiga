@@ -4,6 +4,14 @@
 
 2008-05-18  Damien Sandras  <dsandras@gnome.org>
 
+	* src/endpoints/manager.cpp,
+	lib/engine/protocol/skel/call-manager.h:
+	Removed argument from ready signal. Added support for ready signal
+	indicating when the CallManager is ready to take calls. Made STUN
+	detection async.
+
+2008-05-18  Damien Sandras  <dsandras@gnome.org>
+
 	* src/endpoints/manager.cpp:
 	* lib/engine/protocol/skel/call-core.cpp:
 	* lib/engine/protocol/skel/call-core.h:
