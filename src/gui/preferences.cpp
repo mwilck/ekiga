@@ -157,15 +157,6 @@ static void gm_pw_init_sound_events_page (GtkWidget *prefs_window,
 
 
 /* DESCRIPTION  : /
- * BEHAVIOR     : Builds the network settings page.
- * PRE          : A valid pointer to the preferences window GMObject, and to the
- * 		  container widget where to attach the generated page.
- */
-static void gm_pw_init_network_page (GtkWidget *prefs_window,
-				     GtkWidget *container);
-
-
-/* DESCRIPTION  : /
  * BEHAVIOR     : Builds the H.323 settings page.
  * PRE          : A valid pointer to the preferences window GMObject, and to the
  * 		  container widget where to attach the generated page.
@@ -232,15 +223,6 @@ static void refresh_devices_list_cb (GtkWidget *widget,
  */
 static void personal_data_update_cb (GtkWidget *widget,
 				     gpointer data);
-
-
-/* DESCRIPTION  :  This callback is called when the user clicks
- *                 on the Update button of the NAT Settings.
- * BEHAVIOR     :  Update the NAT method used by the endpoint. 
- * PRE          :  Data is a pointer to the prefs window.
- */
-static void nat_method_update_cb (GtkWidget *widget,
-				  gpointer data);
 
 
 /* DESCRIPTION  :  This callback is called when the user clicks
@@ -611,43 +593,6 @@ gm_pw_init_sound_events_page (GtkWidget *prefs_window,
   /* Place it after the signals so that we can make sure they are run if
      required */
   gm_prefs_window_sound_events_list_build (prefs_window);
-}
-
-
-static void
-gm_pw_init_network_page (GtkWidget *prefs_window,
-                         GtkWidget *container)
-{
-  GmPreferencesWindow *pw = NULL;
-
-  GtkWidget *subsection = NULL;
-
-  PStringArray ifaces;
-  const gchar *nat_method [] = 
-    {
-      _("None"),
-      _("STUN"),
-      _("IP Translation"),
-      NULL
-    };
-
-  g_return_if_fail (prefs_window != NULL);
-
-  pw = gm_pw_get_pw (prefs_window); 
-
-  g_return_if_fail (pw != NULL);
-
-
-  /* NAT */
-  subsection =
-    gnome_prefs_subsection_new (prefs_window, container,
-                                _("NAT Settings"), 2, 1);
-
-  gnome_prefs_int_option_menu_new (subsection, _("NAT Traversal Method:"), nat_method, NAT_KEY "method", _("Select the desired method for NAT traversal (STUN is strongly suggested)"), 1);
-
-  gnome_prefs_entry_new (subsection, _("STUN Se_rver:"), NAT_KEY "stun_server", _("The STUN server to use for STUN Support."), 2, false);
-
-  gm_pw_add_update_button (prefs_window, container, GTK_STOCK_APPLY, _("_Apply"), GTK_SIGNAL_FUNC (nat_method_update_cb), _("Click here to update your NAT settings"), 0, prefs_window);
 }
 
 
@@ -1554,11 +1499,6 @@ gm_prefs_window_new (Ekiga::ServiceCore *core)
   gtk_widget_show_all (GTK_WIDGET (container));
 
   gnome_prefs_window_section_new (window, _("Protocols"));
-  container = gnome_prefs_window_subsection_new (window,
-						 _("Network Settings"));
-  gm_pw_init_network_page (window, container);          
-  gtk_widget_show_all (GTK_WIDGET (container));
-  
   container = gnome_prefs_window_subsection_new (window,
 						 _("SIP Settings"));
   gm_pw_init_sip_page (window, container);          

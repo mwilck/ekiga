@@ -1,5 +1,11 @@
 2008-05-19  Damien Sandras  <dsandras@gnome.org>
 
+	* src/gui/preferences.cpp:
+	Removed obsolete network page. We do not need it anymore as we listen
+	on all interfaces and nat detection is now more or less automatic.
+
+2008-05-19  Damien Sandras  <dsandras@gnome.org>
+
 	* src/Makefile.am: Removed stun.* from the build.
 
 2008-05-19  Damien Sandras  <dsandras@gnome.org>
