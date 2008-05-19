@@ -61,8 +61,8 @@ GMAccountsEndpoint::GMAccountsEndpoint (GMManager & endpoint)
   :PThread (1000, NoAutoDeleteThread),
    ep (endpoint), accounts(NULL), active(TRUE)
 {
-  this->Resume ();
-  thread_sync_point.Wait ();
+  // TODO CallCore
+  endpoint.ready.connect (sigc::mem_fun (this, &GMAccountsEndpoint::on_call_core_ready));
 }
 
 
@@ -84,7 +84,6 @@ void GMAccountsEndpoint::Main ()
   gboolean stun_support = FALSE;
 
   PWaitAndSignal m(quit_mutex);
-  thread_sync_point.Signal ();
 
   gnomemeeting_threads_enter ();
   stun_support = (gm_conf_get_int (NAT_KEY "method") == 1);
@@ -188,3 +187,8 @@ void GMAccountsEndpoint::H323Register (GmAccount *a)
     h323_manager->Register (aor.c_str (), a->auth_username, a->password, a->domain, a->timeout, !a->enabled);
 }
 
+
+void GMAccountsEndpoint::on_call_core_ready ()
+{
+  this->Resume ();
+}
