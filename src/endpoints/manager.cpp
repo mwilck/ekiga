@@ -92,7 +92,7 @@ public:
   };
 
 private:
-  const std::string & server;
+  const std::string server;
   GMManager & manager;
   Ekiga::Runtime & runtime;
 };
