@@ -40,7 +40,7 @@
 #ifndef _EKIGA_VIDEO_INPUT_H_
 #define _EKIGA_VIDEO_INPUT_H_
 
-#include "vidinput-core.h"
+#include "videoinput-core.h"
 #include "common.h"
 
 class PVideoInputDevice_EKIGA : public PVideoInputDevice 

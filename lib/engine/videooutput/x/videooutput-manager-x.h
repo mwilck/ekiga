@@ -27,30 +27,30 @@
 
 
 /*
-*                         display-manager-dx.h -  description
+*                         display-manager-x.h -  description
  *                         ----------------------------------
  *   begin                : Sun Nov 19 2006
  *   copyright            : (C) 2006-2008 by Matthias Schneider
  *                          (C) 2000-2008 by Damien Sandras
- *   description          : Class to allow video output to a DirectX
+ *   description          : Class to allow video output to a X/XVideo
  *                          accelerated window
  
  */
 
 
-#ifndef _DISPLAY_MANAGER_DX_H_
-#define _DISPLAY_MANAGER_DX_H_
+#ifndef _VIDEOOUTPUT_MANAGER_X_H_
+#define _VIDEOOUTPUT_MANAGER_X_H_
 
-#include "display-manager-common.h"
-#include "dxwindow.h"
+#include "videooutput-manager-common.h"
+#include "xwindow.h"
 
-class GMVideoOutputManager_dx
+class GMVideoOutputManager_x
    : public  GMVideoOutputManager
 {
 public:
-  GMVideoOutputManager_dx (Ekiga::ServiceCore & _core);
+  GMVideoOutputManager_x (Ekiga::ServiceCore & _core);
 
-  ~GMVideoOutputManager_dx ();
+  ~GMVideoOutputManager_x ();
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Returns TRUE if the given settings require a
@@ -95,7 +95,7 @@ public:
                                  const char *remote_frame,
                                  unsigned rf_width,
                                  unsigned rf_height);
-
+  
 protected:
 
   /* DESCRIPTION  :  /
@@ -104,6 +104,13 @@ protected:
    */
   virtual void sync(UpdateRequired sync_required);
 
-  DXWindow *dxWindow;
+  XWindow *lxWindow;
+  XWindow *rxWindow;
+
+  Display *lDisplay;
+  Display *rDisplay;
+
+  bool pip_window_available;
+
 };
-#endif /* VIDEODISPLAY_DX */
+#endif /* _VIDEOOUTPUT_MANAGER_X_H_ */

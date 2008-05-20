@@ -1,6 +1,6 @@
 
 /* Ekiga -- A VoIP and Video-Conferencing application
- * Copyright (C) 2000-2007 Damien Sandras
+ * Copyright (C) 2000-2008 Damien Sandras
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,20 +27,21 @@
 
 
 /*
- *                         display-main-dx.h  -  description
+ *                         videoinput-main-ptlib.h  -  description
  *                         ------------------------------------------
  *   begin                : written in 2008 by Matthias Schneider
  *   copyright            : (c) 2008 by Matthias Schneider
- *   description          : code to hook the DX display manager into the main program
+ *   description          : code to hook the PTLIB videoinput manager 
+ *                          into the main program
  *
  */
 
-#ifndef __DISPLAY_MAIN_DX_H__
-#define __DISPLAY_MAIN_DX_H__
+#ifndef __VIDEOINPUT_MAIN_PTLIB_H__
+#define __VIDEOINPUT_MAIN_PTLIB_H__
 
 #include "services.h"
 
-bool display_dx_init (Ekiga::ServiceCore &core,
+bool videoinput_ptlib_init (Ekiga::ServiceCore &core,
   		     int *argc,
 		     char **argv[]);
 

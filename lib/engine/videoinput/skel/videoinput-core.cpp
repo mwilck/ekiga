@@ -39,8 +39,8 @@
 
 #include "config.h"
 
-#include "vidinput-core.h"
-#include "vidinput-manager.h"
+#include "videoinput-core.h"
+#include "videoinput-manager.h"
 
 using namespace Ekiga;
 

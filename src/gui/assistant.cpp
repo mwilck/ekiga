@@ -44,7 +44,7 @@
 #include "toolbox/toolbox.h"
 #include "assistant.h"
 
-#include "vidinput-core.h"
+#include "videoinput-core.h"
 #include "audioinput-core.h"
 #include "audiooutput-core.h"
 

@@ -39,7 +39,6 @@
 #include "contact-core.h"
 #include "presence-core.h"
 #include "call-core.h"
-#include "display-core.h"
 #include "opal-gmconf-bridge.h"
 
 #include "manager.h"

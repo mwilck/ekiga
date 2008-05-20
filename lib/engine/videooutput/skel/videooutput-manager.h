@@ -38,7 +38,7 @@
 #ifndef __VIDEOOUTPUT_MANAGER_H__
 #define __VIDEOOUTPUT_MANAGER_H__
 
-#include "display-core.h"
+#include "videooutput-core.h"
 
 namespace Ekiga
 {

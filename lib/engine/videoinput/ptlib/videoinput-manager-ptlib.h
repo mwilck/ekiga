@@ -25,42 +25,40 @@
 
 
 /*
- *                         vidinput-manager-mlogo.h  -  description
+ *                         videoinput-manager-ptlib.h  -  description
  *                         ------------------------------------------
  *   begin                : written in 2008 by Matthias Schneider
  *   copyright            : (c) 2008 by Matthias Schneider
- *   description          : Declaration of the interface of a videoinput core.
- *                          A vidinput core manages VideoInputManagers.
+ *   description          : declaration of the interface of a videoinput core.
+ *                          A videoinput core manages VideoInputManagers.
  *
  */
 
 
-#ifndef __VIDEOINPUT_MANAGER_MLOGO_H__
-#define __VIDEOINPUT_MANAGER_MLOGO_H__
+#ifndef __VIDEOINPUT_MANAGER_PTLIB_H__
+#define __VIDEOINPUT_MANAGER_PTLIB_H__
 
-#include "vidinput-core.h"
-#include "vidinput-manager.h"
+#include "videoinput-manager.h"
 #include "runtime.h"
 
 #include "ptbuildopts.h"
-#include <ptclib/delaychan.h>
-
+#include <ptlib/videoio.h>
 /**
  * @addtogroup videoinput
  * @{
  */
 
-  class GMVideoInputManager_mlogo
+  class GMVideoInputManager_ptlib
    : public Ekiga::VideoInputManager
     {
   public:
 
       /* The constructor
        */
-      GMVideoInputManager_mlogo (Ekiga::ServiceCore & core);
+      GMVideoInputManager_ptlib (Ekiga::ServiceCore & core);
       /* The destructor
        */
-      ~GMVideoInputManager_mlogo () {}
+      ~GMVideoInputManager_ptlib () {}
 
 
       /*                 
@@ -72,7 +70,7 @@
        * @return     true if a Ekiga::Call could be created
        */
       virtual void get_devices(std::vector <Ekiga::VideoInputDevice> & devices);
-      
+
       virtual bool set_device (const Ekiga::VideoInputDevice & device, int channel, Ekiga::VideoInputFormat format);
 
       virtual bool open (unsigned width, unsigned height, unsigned fps);
@@ -83,26 +81,19 @@
                                    unsigned & width,
                                    unsigned & height);
 
-      virtual bool has_device (const std::string & source, const std::string & device_name, unsigned capabilities, Ekiga::VideoInputDevice & device);
+      virtual void set_colour     (unsigned colour     );
+      virtual void set_brightness (unsigned brightness );
+      virtual void set_whiteness  (unsigned whiteness  );
+      virtual void set_contrast   (unsigned contrast   );
 
-  protected:  
-      void CopyYUVArea (const char* srcFrame,
-			unsigned srcWidth,
-			unsigned srcHeight,
-			char* dstFrame,
-			unsigned dstX,
-			unsigned dstY,
-			unsigned dstWidth,
-			unsigned dstHeight);
+      virtual bool has_device     (const std::string & source, const std::string & device_name, unsigned capabilities, Ekiga::VideoInputDevice & device);
 
-      char* background_frame;
-      unsigned pos;
-      unsigned increment;
-
+  protected:
       Ekiga::ServiceCore & core;
       Ekiga::Runtime & runtime;
+      unsigned expectedFrameSize;
 
-      PAdaptiveDelay adaptive_delay;
+      PVideoInputDevice *input_device;
   };
 /**
  * @}

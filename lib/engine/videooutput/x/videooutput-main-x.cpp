@@ -1,6 +1,6 @@
 
 /* Ekiga -- A VoIP and Video-Conferencing application
- * Copyright (C) 2000-2008 Damien Sandras
+ * Copyright (C) 2000-2007 Damien Sandras
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,35 +27,34 @@
 
 
 /*
- *                         vidinput-main-ptlib.cpp  -  description
+ *                         display-main-x.cpp  -  description
  *                         ------------------------------------------
  *   begin                : written in 2008 by Matthias Schneider
  *   copyright            : (c) 2008 by Matthias Schneider
- *   description          : code to hook the PTLIB vidinput manager 
- *                          into the main program
+ *   description          : code to hook the X display manager into the main program
  *
  */
 
-#include "vidinput-main-ptlib.h"
-#include "vidinput-core.h"
-#include "vidinput-manager-ptlib.h"
+#include "videooutput-main-x.h"
+#include "videooutput-core.h"
+#include "videooutput-manager-x.h"
 
 bool
-videoinput_ptlib_init (Ekiga::ServiceCore &core,
+videooutput_x_init (Ekiga::ServiceCore &core,
 	    int */*argc*/,
 	    char **/*argv*/[])
 {
   bool result = false;
-  Ekiga::VideoInputCore *videoinput_core = NULL;
+  Ekiga::VideoOutputCore *videooutput_core = NULL;
 
-  videoinput_core
-    = dynamic_cast<Ekiga::VideoInputCore*>(core.get ("videoinput-core"));
+  videooutput_core
+    = dynamic_cast<Ekiga::VideoOutputCore*>(core.get ("videooutput-core"));
 
-  if (videoinput_core != NULL) {
+  if (videooutput_core != NULL) {
 
-    GMVideoInputManager_ptlib *videoinput_manager = new GMVideoInputManager_ptlib(core);
+    GMVideoOutputManager_x *videooutput_manager = new GMVideoOutputManager_x(core);
 
-    videoinput_core->add_manager (*videoinput_manager);
+    videooutput_core->add_manager (*videooutput_manager);
     result = true;
   }
 

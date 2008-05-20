@@ -47,7 +47,7 @@
 #include "call-core.h"
 #include "opal-call.h"
 #include "opal-codec-description.h"
-#include "vidinput-info.h"
+#include "videoinput-info.h"
 
 #include "call-manager.h"
 

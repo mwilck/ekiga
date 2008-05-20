@@ -27,36 +27,21 @@
 
 
 /*
- *                         display-main-dx.cpp  -  description
+ *                         display-main-x.h  -  description
  *                         ------------------------------------------
  *   begin                : written in 2008 by Matthias Schneider
  *   copyright            : (c) 2008 by Matthias Schneider
- *   description          : code to hook the DX display manager into the main program
+ *   description          : code to hook the X display manager into the main program
  *
  */
 
-#include "display-main-dx.h"
-#include "display-core.h"
-#include "display-manager-dx.h"
+#ifndef __VIDEOOUTPUT_MAIN_X_H__
+#define __VIDEOOUTPUT_MAIN_X_H__
 
-bool
-display_dx_init (Ekiga::ServiceCore &core,
-	    int */*argc*/,
-	    char **/*argv*/[])
-{
-  bool result = false;
-  Ekiga::VideoOutputCore *videooutput_core = NULL;
+#include "services.h"
 
-  videooutput_core
-    = dynamic_cast<Ekiga::VideoOutputCore*>(core.get ("videooutput-core"));
+bool videooutput_x_init (Ekiga::ServiceCore &core,
+  		     int *argc,
+		     char **argv[]);
 
-  if (videooutput_core != NULL) {
-
-    GMVideoOutputManager_dx *videooutput_manager = new GMVideoOutputManager_dx(core);
-
-    videooutput_core->add_manager (*videooutput_manager);
-    result = true;
-  }
-
-  return result;
-}
+#endif

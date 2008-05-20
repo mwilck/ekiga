@@ -34,7 +34,7 @@
  *
  */
 
-#include "vidinput-manager-mlogo.h"
+#include "videoinput-manager-mlogo.h"
 #include "icon.h"
 
 #define DEVICE_TYPE   "Moving Logo"

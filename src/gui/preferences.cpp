@@ -53,6 +53,10 @@
 #include <gmconf.h>
 #include "codecsbox.h"
 
+#include "videoinput-core.h"
+#include "audioinput-core.h"
+#include "audiooutput-core.h"
+
 #ifdef WIN32
 #include "platform/winpaths.h"
 #endif

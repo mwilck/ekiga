@@ -39,8 +39,8 @@
 
 #include "config.h"
 
-#include "display-core.h"
-#include "display-manager.h"
+#include "videooutput-core.h"
+#include "videooutput-manager.h"
 
 #include <math.h>
 

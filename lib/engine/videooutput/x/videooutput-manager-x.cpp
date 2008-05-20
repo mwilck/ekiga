@@ -35,7 +35,7 @@
  *                          accelerated window
  */
 
-#include "display-manager-x.h"
+#include "videooutput-manager-x.h"
 
 #include "xwindow.h"
 

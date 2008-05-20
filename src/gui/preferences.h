@@ -42,10 +42,6 @@
 
 #include "common.h"
 #include "framework/services.h"
-#include "vidinput-core.h"
-#include "audioinput-core.h"
-#include "audiooutput-core.h"
-
 
 /* DESCRIPTION  :  / 
  * BEHAVIOR     :  Builds the sound events list of the preferences window. 

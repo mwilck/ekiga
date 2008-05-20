@@ -25,7 +25,7 @@
 
 
 /*
- *                         vidinput-core.h  -  description
+ *                         videoinput-core.h  -  description
  *                         ------------------------------------------
  *   begin                : written in 2008 by Matthias Schneider
  *   copyright            : (c) 2008 by Matthias Schneider

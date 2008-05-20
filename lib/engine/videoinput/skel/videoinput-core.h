@@ -25,7 +25,7 @@
 
 
 /*
- *                         vidinput-core.h  -  description
+ *                         videoinput-core.h  -  description
  *                         ------------------------------------------
  *   begin                : written in 2008 by Matthias Schneider
  *   copyright            : (c) 2008 by Matthias Schneider
@@ -39,10 +39,10 @@
 
 #include "services.h"
 #include "runtime.h"
-#include "display-core.h"
+#include "videooutput-core.h"
 #include "hal-core.h"
-#include "vidinput-gmconf-bridge.h"
-#include "vidinput-info.h"
+#include "videoinput-gmconf-bridge.h"
+#include "videoinput-info.h"
 
 #include <sigc++/sigc++.h>
 #include <glib.h>
@@ -89,7 +89,7 @@ namespace Ekiga
   };
 
 /**
- * @defgroup vidinput Video VidInput
+ * @defgroup videoinput
  * @{
  */
 
@@ -181,7 +181,7 @@ namespace Ekiga
 
       /*** VidInput Related Signals ***/
       
-      /** See vidinput-manager.h for the API
+      /** See videoinput-manager.h for the API
        */
       sigc::signal<void, VideoInputManager &, VideoInputDevice &, VidInputConfig&> device_opened;
       sigc::signal<void, VideoInputManager &, VideoInputDevice &> device_closed;

@@ -15,9 +15,9 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/engine/hal/skel
 
 libgmvideoinput_mlogo_la_SOURCES = \
-	$(videoinput_dir)/vidinput-manager-mlogo.h \
-	$(videoinput_dir)/vidinput-manager-mlogo.cpp \
-	$(videoinput_dir)/vidinput-main-mlogo.h \
-	$(videoinput_dir)/vidinput-main-mlogo.cpp 
+	$(videoinput_dir)/videoinput-manager-mlogo.h \
+	$(videoinput_dir)/videoinput-manager-mlogo.cpp \
+	$(videoinput_dir)/videoinput-main-mlogo.h \
+	$(videoinput_dir)/videoinput-main-mlogo.cpp 
 
 libgmvideoinput_mlogo_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(GLIB_LIBS)

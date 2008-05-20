@@ -1,6 +1,6 @@
 
 /* Ekiga -- A VoIP and Video-Conferencing application
- * Copyright (C) 2000-2008 Damien Sandras
+ * Copyright (C) 2000-2007 Damien Sandras
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,22 +27,36 @@
 
 
 /*
- *                         vidinput-main-mlogo.h  -  description
+ *                         videooutput-main-dx.cpp  -  description
  *                         ------------------------------------------
  *   begin                : written in 2008 by Matthias Schneider
  *   copyright            : (c) 2008 by Matthias Schneider
- *   description          : code to hook the Moving Logo videoinput manager 
- *                          into the main program
+ *   description          : code to hook the DX videooutput manager into the main program
  *
  */
 
-#ifndef __VIDEOINPUT_MAIN_MLOGO_H__
-#define __VIDEOINPUT_MAIN_MLOGO_H__
+#include "videooutput-main-dx.h"
+#include "videooutput-core.h"
+#include "videooutput-manager-dx.h"
 
-#include "services.h"
+bool
+videooutput_dx_init (Ekiga::ServiceCore &core,
+	    int */*argc*/,
+	    char **/*argv*/[])
+{
+  bool result = false;
+  Ekiga::VideoOutputCore *videooutput_core = NULL;
 
-bool videoinput_mlogo_init (Ekiga::ServiceCore &core,
-  		            int *argc,
-		            char **argv[]);
+  videooutput_core
+    = dynamic_cast<Ekiga::VideoOutputCore*>(core.get ("videooutput-core"));
 
-#endif
+  if (videooutput_core != NULL) {
+
+    GMVideoOutputManager_dx *videooutput_manager = new GMVideoOutputManager_dx(core);
+
+    videooutput_core->add_manager (*videooutput_manager);
+    result = true;
+  }
+
+  return result;
+}

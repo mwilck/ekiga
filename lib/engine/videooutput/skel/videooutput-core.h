@@ -39,8 +39,8 @@
 
 #include "services.h"
 
-#include "display-gmconf-bridge.h"
-#include "display-info.h"
+#include "videooutput-gmconf-bridge.h"
+#include "videooutput-info.h"
 
 #include <sigc++/sigc++.h>
 #include <set>

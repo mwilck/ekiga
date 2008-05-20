@@ -25,77 +25,33 @@
 
 
 /*
- *                         vidinput-core.h  -  description
+ *                         videoinput-core.h  -  description
  *                         ------------------------------------------
  *   begin                : written in 2008 by Matthias Schneider
  *   copyright            : (c) 2008 by Matthias Schneider
  *   description          : Declaration of the interface of a videoinput core.
- *                          A vidinput core manages VideoInputManagers.
+ *                          A videoinput core manages VidInputManagers.
  *
  */
 
-#ifndef __VIDEOINPUT_INFO_H__
-#define __VIDEOINPUT_INFO_H__
+#ifndef __VIDEOINPUT_GMCONF_BRIDGE_H__
+#define __VIDEOINPUT_GMCONF_BRIDGE_H__
 
-#include "device-def.h"
-
-#define GM_4CIF_WIDTH  704
-#define GM_4CIF_HEIGHT 576
-#define GM_CIF_WIDTH   352
-#define GM_CIF_HEIGHT  288
-#define GM_QCIF_WIDTH  176
-#define GM_QCIF_HEIGHT 144
-#define GM_4SIF_WIDTH  640
-#define GM_4SIF_HEIGHT 480
-#define GM_SIF_WIDTH   320
-#define GM_SIF_HEIGHT  240
-#define GM_QSIF_WIDTH  160
-#define GM_QSIF_HEIGHT 120
+#include "services.h"
+#include "gmconf-bridge.h"
 
 namespace Ekiga
 {
-#define NB_VIDEO_SIZES 5
+  class VideoInputCoreConfBridge
+    : public Ekiga::ConfBridge
+  {
+  public:
 
-  static const struct { 
-    int width; 
-    int height; 
-  }
+    VideoInputCoreConfBridge (Ekiga::Service & service);
 
-  VideoSizes[NB_VIDEO_SIZES] = {
-    {  GM_QCIF_WIDTH,  GM_QCIF_HEIGHT },
-    {  GM_CIF_WIDTH,   GM_CIF_HEIGHT  },
-    {  GM_4CIF_WIDTH,  GM_4CIF_HEIGHT },
-    {  GM_SIF_WIDTH,   GM_SIF_HEIGHT  },
-    {  GM_4SIF_WIDTH,  GM_4SIF_HEIGHT },
-  };
-  
-  enum VideoInputFormat {
-    VI_FORMAT_PAL = 0,
-    VI_FORMAT_NTSC,
-    VI_FORMAT_SECAM,
-    VI_FORMAT_Auto,
-    VI_FORMAT_MAX
+    void on_property_changed (std::string key, GmConfEntry *value);
   };
 
-  class VideoInputDevice : public Device {};
-
-  typedef struct VidInputConfig {
-    unsigned whiteness;
-    unsigned brightness;
-    unsigned colour;
-    unsigned contrast;
-    bool modifyable;
-  };
-
-  enum VideoInputErrorCodes {
-    VI_ERROR_NONE = 0,
-    VI_ERROR_DEVICE,
-    VI_ERROR_FORMAT,
-    VI_ERROR_CHANNEL,
-    VI_ERROR_COLOUR,
-    VI_ERROR_FPS,
-    VI_ERROR_SCALE
-  };
 };
 
 #endif

@@ -43,7 +43,7 @@
  */
 
 
-#include "display-manager-common.h"
+#include "videooutput-manager-common.h"
 
 /* The functions */
 GMVideoOutputManager::GMVideoOutputManager(Ekiga::ServiceCore & _core)

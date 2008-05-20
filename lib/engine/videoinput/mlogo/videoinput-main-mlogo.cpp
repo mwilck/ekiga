@@ -27,22 +27,37 @@
 
 
 /*
- *                         vidinput-main-ptlib.h  -  description
+ *                         vidinput-main-mlogo.cpp  -  description
  *                         ------------------------------------------
  *   begin                : written in 2008 by Matthias Schneider
  *   copyright            : (c) 2008 by Matthias Schneider
- *   description          : code to hook the PTLIB videoinput manager 
+ *   description          : code to hook the Moving Logo vidinput manager 
  *                          into the main program
  *
  */
 
-#ifndef __VIDEOINPUT_MAIN_PTLIB_H__
-#define __VIDEOINPUT_MAIN_PTLIB_H__
+#include "videoinput-main-mlogo.h"
+#include "videoinput-core.h"
+#include "videoinput-manager-mlogo.h"
 
-#include "services.h"
+bool
+videoinput_mlogo_init (Ekiga::ServiceCore &core,
+	    int */*argc*/,
+	    char **/*argv*/[])
+{
+  bool result = false;
+  Ekiga::VideoInputCore *videoinput_core = NULL;
 
-bool videoinput_ptlib_init (Ekiga::ServiceCore &core,
-  		     int *argc,
-		     char **argv[]);
+  videoinput_core
+    = dynamic_cast<Ekiga::VideoInputCore*>(core.get ("videoinput-core"));
 
-#endif
+  if (videoinput_core != NULL) {
+
+    GMVideoInputManager_mlogo *videoinput_manager = new GMVideoInputManager_mlogo(core);
+
+    videoinput_core->add_manager (*videoinput_manager);
+    result = true;
+  }
+
+  return result;
+}

@@ -11,10 +11,10 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/engine/videooutput/skel
 
 libgmvideooutput_la_SOURCES = \
-	$(videooutput_dir)/display-manager.h	\
-	$(videooutput_dir)/display-core.h		\
-	$(videooutput_dir)/display-core.cpp         \
-	$(videooutput_dir)/display-gmconf-bridge.h  \
-	$(videooutput_dir)/display-gmconf-bridge.cpp
+	$(videooutput_dir)/videooutput-manager.h	\
+	$(videooutput_dir)/videooutput-core.h		\
+	$(videooutput_dir)/videooutput-core.cpp         \
+	$(videooutput_dir)/videooutput-gmconf-bridge.h  \
+	$(videooutput_dir)/videooutput-gmconf-bridge.cpp
 
 libgmvideooutput_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(GLIB_LIBS)

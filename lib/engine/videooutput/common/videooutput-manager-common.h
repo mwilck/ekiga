@@ -46,7 +46,7 @@
 #ifndef _VIDEODISPLAY_H_
 #define _VIDEODISPLAY_H_
 
-#include "display-manager.h"
+#include "videooutput-manager.h"
 #include "runtime.h"
 //FIXME
 #include "ptbuildopts.h"

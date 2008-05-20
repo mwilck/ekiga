@@ -34,8 +34,8 @@
  *
  */
 
-#ifndef __DISPLAY_INFO_H__
-#define __DISPLAY_INFO_H__
+#ifndef __VIDEOOUTPUT_INFO_H__
+#define __VIDEOOUTPUT_INFO_H__
 
 #ifdef WIN32
 #include <windows.h>

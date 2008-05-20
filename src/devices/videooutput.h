@@ -40,7 +40,7 @@
 #ifndef _EKIGA_VIDEO_OUTPUT_H_
 #define _EKIGA_VIDEO_OUTPUT_H_
 
-#include "display-core.h"
+#include "videooutput-core.h"
 #include "common.h"
 
 class GMManager;

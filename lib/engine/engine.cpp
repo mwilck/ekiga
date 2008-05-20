@@ -44,8 +44,8 @@
 #include "presence-core.h"
 #include "contact-core.h"
 #include "call-core.h"
-#include "display-core.h"
-#include "vidinput-core.h"
+#include "videooutput-core.h"
+#include "videoinput-core.h"
 #include "audioinput-core.h"
 #include "audiooutput-core.h"
 #include "hal-core.h"
@@ -57,18 +57,18 @@
 #include "gmconf-personal-details-main.h"
 
 #ifndef WIN32
-#include "display-main-x.h"
+#include "videooutput-main-x.h"
 #endif
 
 #ifdef HAVE_DX
-#include "display-main-dx.h"
+#include "videooutput-main-dx.h"
 #endif
 
-#include "vidinput-main-mlogo.h"
+#include "videoinput-main-mlogo.h"
 #include "audioinput-main-null.h"
 #include "audiooutput-main-null.h"
 
-#include "vidinput-main-ptlib.h"
+#include "videoinput-main-ptlib.h"
 #include "audioinput-main-ptlib.h"
 #include "audiooutput-main-ptlib.h"
 
@@ -136,14 +136,14 @@ engine_init (int argc,
   }
 
 #ifndef WIN32
-  if (!display_x_init (*core, &argc, &argv)) {
+  if (!videooutput_x_init (*core, &argc, &argv)) {
     delete core;
     return;
   }
 #endif
 
 #ifdef HAVE_DX
-  if (!display_dx_init (*core, &argc, &argv)) {
+  if (!videooutput_dx_init (*core, &argc, &argv)) {
     delete core;
     return;
   }

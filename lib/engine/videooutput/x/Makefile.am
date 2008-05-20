@@ -14,11 +14,11 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/gui
 
 libgmvideooutput_x_la_SOURCES = \
-	$(common_dir)/display-manager-common.cpp \
-	$(common_dir)/display-manager-common.h   \
-	$(videooutput_dir)/display-manager-x.cpp  \
-	$(videooutput_dir)/display-manager-x.h      \
-	$(videooutput_dir)/display-main-x.cpp    \
-	$(videooutput_dir)/display-main-x.h
+	$(common_dir)/videooutput-manager-common.cpp \
+	$(common_dir)/videooutput-manager-common.h   \
+	$(videooutput_dir)/videooutput-manager-x.cpp  \
+	$(videooutput_dir)/videooutput-manager-x.h      \
+	$(videooutput_dir)/videooutput-main-x.cpp    \
+	$(videooutput_dir)/videooutput-main-x.h
 
 libgmvideooutput_x_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(PTLIB_LIBS) $(GLIB_LIBS) $(XV_LIBS)

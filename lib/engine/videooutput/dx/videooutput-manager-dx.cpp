@@ -35,7 +35,7 @@
  *                          accelerated window
  */
 
-#include "display-manager-dx.h"
+#include "videooutput-manager-dx.h"
 
 GMVideoOutputManager_dx::GMVideoOutputManager_dx (Ekiga::ServiceCore & _core)
 : GMVideoOutputManager(_core)

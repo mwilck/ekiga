@@ -27,37 +27,22 @@
 
 
 /*
- *                         vidinput-main-mlogo.cpp  -  description
+ *                         videoinput-main-mlogo.h  -  description
  *                         ------------------------------------------
  *   begin                : written in 2008 by Matthias Schneider
  *   copyright            : (c) 2008 by Matthias Schneider
- *   description          : code to hook the Moving Logo vidinput manager 
+ *   description          : code to hook the Moving Logo videoinput manager 
  *                          into the main program
  *
  */
 
-#include "vidinput-main-mlogo.h"
-#include "vidinput-core.h"
-#include "vidinput-manager-mlogo.h"
+#ifndef __VIDEOINPUT_MAIN_MLOGO_H__
+#define __VIDEOINPUT_MAIN_MLOGO_H__
 
-bool
-videoinput_mlogo_init (Ekiga::ServiceCore &core,
-	    int */*argc*/,
-	    char **/*argv*/[])
-{
-  bool result = false;
-  Ekiga::VideoInputCore *videoinput_core = NULL;
+#include "services.h"
 
-  videoinput_core
-    = dynamic_cast<Ekiga::VideoInputCore*>(core.get ("videoinput-core"));
+bool videoinput_mlogo_init (Ekiga::ServiceCore &core,
+  		            int *argc,
+		            char **argv[]);
 
-  if (videoinput_core != NULL) {
-
-    GMVideoInputManager_mlogo *videoinput_manager = new GMVideoInputManager_mlogo(core);
-
-    videoinput_core->add_manager (*videoinput_manager);
-    result = true;
-  }
-
-  return result;
-}
+#endif

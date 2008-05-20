@@ -13,11 +13,11 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/engine/hal/skel
 
 libgmvideoinput_la_SOURCES = \
-	$(videoinput_dir)/vidinput-manager.h	\
-	$(videoinput_dir)/vidinput-info.h		\
-	$(videoinput_dir)/vidinput-core.h		\
-	$(videoinput_dir)/vidinput-core.cpp       \
-	$(videoinput_dir)/vidinput-gmconf-bridge.h \
-	$(videoinput_dir)/vidinput-gmconf-bridge.cpp
+	$(videoinput_dir)/videoinput-manager.h	\
+	$(videoinput_dir)/videoinput-info.h		\
+	$(videoinput_dir)/videoinput-core.h		\
+	$(videoinput_dir)/videoinput-core.cpp       \
+	$(videoinput_dir)/videoinput-gmconf-bridge.h \
+	$(videoinput_dir)/videoinput-gmconf-bridge.cpp
 
 libgmvideoinput_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(GLIB_LIBS)

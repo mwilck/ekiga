@@ -27,7 +27,7 @@
 
 
 /*
- *                         vidinput-main-mlogo.h  -  description
+ *                         hal-main-dbus.h  -  description
  *                         ------------------------------------------
  *   begin                : written in 2008 by Matthias Schneider
  *   copyright            : (c) 2008 by Matthias Schneider
