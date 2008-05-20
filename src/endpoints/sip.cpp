@@ -892,6 +892,7 @@ GMSIPEndpoint::OnPresenceInfoReceived (const PString & user,
   PCaselessString b = basic;
   PCaselessString s = note;
 
+  // TODO long status
   std::string status;
   std::string presence = "presence-unknown";
 
@@ -911,8 +912,11 @@ GMSIPEndpoint::OnPresenceInfoReceived (const PString & user,
     status = _("Away");
   }
   else if (s.Find ("On the phone") != P_MAX_INDEX
-           || s.Find ("dnd") != P_MAX_INDEX
-           || s.Find ("Ringing") != P_MAX_INDEX
+           || s.Find ("Ringing") != P_MAX_INDEX) {
+    presence = "presence-inacall";
+    status = _("In A Call");
+  }
+  else if (s.Find ("dnd") != P_MAX_INDEX
            || s.Find ("Do Not Disturb") != P_MAX_INDEX) {
     presence = "presence-dnd";
     status = _("Do Not Disturb");
