@@ -221,6 +221,7 @@ GMSIPEndpoint::publish (const Ekiga::PersonalDetails & details)
   std::string hostname = (const char *) PIPSocket::GetHostName ();
   // TODO: move this code outside of this class and allow a 
   // more complete document
+  // TODO: add support for long status
   std::string status = ((Ekiga::PersonalDetails &) (details)).get_short_status ();
   for (std::list<std::string>::iterator it = aors.begin ();
        it != aors.end ();
@@ -910,6 +911,7 @@ GMSIPEndpoint::OnPresenceInfoReceived (const PString & user,
     status = _("Away");
   }
   else if (s.Find ("On the phone") != P_MAX_INDEX
+           || s.Find ("dnd") != P_MAX_INDEX
            || s.Find ("Ringing") != P_MAX_INDEX
            || s.Find ("Do Not Disturb") != P_MAX_INDEX) {
     presence = "presence-dnd";
