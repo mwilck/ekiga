@@ -25,12 +25,12 @@
 
 
 /*
- *                         audioinput-core.cpp  -  description
+ *                         audioinput-gmconf-bridge.cpp -  description
  *                         ------------------------------------------
  *   begin                : written in 2008 by Matthias Schneider
  *   copyright            : (c) 2008 by Matthias Schneider
- *   description          : declaration of the interface of a audioinput core.
- *                          A audioinput core manages AudioInputManagers.
+ *   description          : Declaration of the bridge between the gmconf
+ *                          and the audioinput-core..
  *
  */
 

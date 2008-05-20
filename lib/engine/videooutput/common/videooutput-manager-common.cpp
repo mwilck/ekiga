@@ -266,7 +266,7 @@ GMVideoOutputManager::frame_display_change_needed ()
   return false;
 }
 
-UpdateRequired
+GMVideoOutputManager::UpdateRequired
 GMVideoOutputManager::redraw ()
 {
   UpdateRequired sync_required;

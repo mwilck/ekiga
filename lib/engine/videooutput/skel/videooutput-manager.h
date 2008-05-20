@@ -25,11 +25,11 @@
 
 
 /*
- *                         display-manager.h  -  description
+ *                         videooutput-manager.h  -  description
  *                         ------------------------------------------
  *   begin                : written in 2007 by Matthias Schneider
  *   copyright            : (c) 2007 by Matthias Schneider
- *   description          : Declaration of the interface of a display manager
+ *   description          : Declaration of the interface of a videooutput manager
  *                          implementation backend.
  *
  */

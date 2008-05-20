@@ -25,11 +25,11 @@
 
 
 /*
- *                         audioinput-manager.h  -  description
+ *                         audiooutput-manager.h  -  description
  *                         ------------------------------------------
  *   begin                : written in 2008 by Matthias Schneider
  *   copyright            : (c) 2008 by Matthias Schneider
- *   description          : Declaration of the interface of an audioinput manager
+ *   description          : Declaration of the interface of an audiooutput manager
  *                          implementation backend.
  *
  */

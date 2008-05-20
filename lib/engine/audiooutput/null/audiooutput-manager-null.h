@@ -29,8 +29,7 @@
  *                         ------------------------------------------
  *   begin                : written in 2008 by Matthias Schneider
  *   copyright            : (c) 2008 by Matthias Schneider
- *   description          : declaration of the interface of a audioinput core.
- *                          A audioinput core manages AudioInputManagers.
+ *   description          : declaration of a PTLIB audio input manager
  *
  */
 
@@ -54,22 +53,9 @@
     {
   public:
 
-      /* The constructor
-       */
        GMAudioOutputManager_null (Ekiga::ServiceCore & core);
-      /* The destructor
-       */
+
       ~GMAudioOutputManager_null () {}
-
-
-      /*                 
-       * DISPLAY MANAGEMENT 
-       */               
-
-      /** Create a call based on the remote uri given as parameter
-       * @param uri  an uri
-       * @return     true if a Ekiga::Call could be created
-       */
 
       virtual void get_devices (std::vector <Ekiga::AudioOutputDevice> & devices);
 
@@ -82,7 +68,8 @@
       virtual bool set_frame_data (Ekiga::AudioOutputPrimarySecondary primarySecondary, 
                                    const char *data, 
                                    unsigned size,
-				   unsigned & bytes_written);
+                                   unsigned & bytes_written);
+
       virtual bool has_device     (const std::string & sink, const std::string & device_name, Ekiga::AudioOutputDevice & device);
 
     protected:
@@ -90,11 +77,10 @@
       Ekiga::Runtime & runtime;
 
       PAdaptiveDelay adaptive_delay[2];
-
   };
+
 /**
  * @}
  */
-
 
 #endif

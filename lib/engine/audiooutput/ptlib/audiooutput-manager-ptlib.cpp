@@ -41,7 +41,8 @@
 #define DEVICE_TYPE "PTLIB"
 
 GMAudioOutputManager_ptlib::GMAudioOutputManager_ptlib (Ekiga::ServiceCore & _core)
-:    core (_core), runtime (*(dynamic_cast<Ekiga::Runtime *> (_core.get ("runtime"))))
+: core (_core),
+  runtime (*(dynamic_cast<Ekiga::Runtime *> (_core.get ("runtime"))))
 {
   current_state[Ekiga::primary].opened = false;
   current_state[Ekiga::secondary].opened = false;
@@ -94,9 +95,6 @@ bool GMAudioOutputManager_ptlib::set_device (Ekiga::AudioOutputPrimarySecondary 
 
 bool GMAudioOutputManager_ptlib::open (Ekiga::AudioOutputPrimarySecondary primarySecondary, unsigned channels, unsigned samplerate, unsigned bits_per_sample)
 {
-  unsigned volume;
-  Ekiga::AudioOutputConfig audiooutput_config;
-
   PTRACE(4, "GMAudioOutputManager_ptlib\tOpening Device " << current_state[primarySecondary].device);
   PTRACE(4, "GMAudioOutputManager_ptlib\tOpening Device with " << channels << "-" << samplerate << "/" << bits_per_sample);
 
@@ -105,12 +103,12 @@ bool GMAudioOutputManager_ptlib::open (Ekiga::AudioOutputPrimarySecondary primar
   current_state[primarySecondary].bits_per_sample = bits_per_sample;
 
   output_device[primarySecondary] = PSoundChannel::CreateOpenedChannel (current_state[primarySecondary].device.source, 
-                                                     current_state[primarySecondary].device.name,
-                                                     PSoundChannel::Player,
-                                                     channels,
-                                                     samplerate,
-                                                     bits_per_sample);
- 
+                                                                        current_state[primarySecondary].device.name,
+                                                                        PSoundChannel::Player,
+                                                                        channels,
+                                                                        samplerate,
+                                                                        bits_per_sample);
+
   Ekiga::AudioOutputErrorCodes error_code = Ekiga::AO_ERROR_NONE;
   if (!output_device[primarySecondary])
     error_code = Ekiga::AO_ERROR_DEVICE;
@@ -121,13 +119,14 @@ bool GMAudioOutputManager_ptlib::open (Ekiga::AudioOutputPrimarySecondary primar
     return false;
   }
 
+  unsigned volume;
   output_device[primarySecondary]->GetVolume (volume);
   current_state[primarySecondary].opened = true;
 
-  audiooutput_config.volume = volume;
-  audiooutput_config.modifyable = true;
-
-  runtime.run_in_main (sigc::bind (device_opened.make_slot (), primarySecondary, current_state[primarySecondary].device, audiooutput_config));
+  Ekiga::AudioOutputConfig config;
+  config.volume = volume;
+  config.modifyable = true;
+  runtime.run_in_main (sigc::bind (device_opened.make_slot (), primarySecondary, current_state[primarySecondary].device, config));
 
   return true;
 }

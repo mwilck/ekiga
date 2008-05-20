@@ -25,12 +25,12 @@
 
 
 /*
- *                         videoinput-core.h  -  description
+ *                         videooutput-gmconf-bridge.h -  description
  *                         ------------------------------------------
  *   begin                : written in 2008 by Matthias Schneider
  *   copyright            : (c) 2008 by Matthias Schneider
- *   description          : Declaration of the interface of a display core.
- *                          A display core manages DisplayManagers.
+ *   description          : Declaration of the bridge between the gmconf 
+ *                          and the videooutput-core.
  *
  */
 

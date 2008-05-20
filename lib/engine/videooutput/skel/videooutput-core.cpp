@@ -25,12 +25,12 @@
 
 
 /*
- *                         display-core.cpp  -  description
+ *                         videooutput-core.cpp  -  description
  *                         ------------------------------------------
  *   begin                : written in 2007 by Matthias Schneider
  *   copyright            : (c) 2007 by Matthias Schneider
- *   description          : declaration of the interface of a display core.
- *                          A display core manages VideoOutputManagers.
+ *   description          : declaration of the interface of a videooutput core.
+ *                          A videooutput core manages VideoOutputManagers.
  *
  */
 

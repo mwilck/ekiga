@@ -25,12 +25,12 @@
 
 
 /*
- *                          audioinput-core.h  -  description
+ *                         audioutput-info.h  -  description
  *                         ------------------------------------------
  *   begin                : written in 2008 by Matthias Schneider
  *   copyright            : (c) 2008 by Matthias Schneider
- *   description          : Declaration of the interface of a vidinput core.
- *                          A vidinput core manages VidInputManagers.
+ *   description          : Declaration of structs and classes used for communication
+ *                          with the AudioInputManagers
  *
  */
 

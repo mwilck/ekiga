@@ -25,12 +25,12 @@
 
 
 /*
- *                         videoinput-core.h  -  description
+ *                         videoinput-gmconf-bridge.h -  description
  *                         ------------------------------------------
  *   begin                : written in 2008 by Matthias Schneider
  *   copyright            : (c) 2008 by Matthias Schneider
- *   description          : Declaration of the interface of a videoinput core.
- *                          A videoinput core manages VidInputManagers.
+ *   description          : Declaration of the bridge between the gmconf
+ *                          and the videoinput-core..
  *
  */
 

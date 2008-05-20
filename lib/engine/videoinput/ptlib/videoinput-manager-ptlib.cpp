@@ -25,7 +25,7 @@
 
 
 /*
- *                         vidinput-manager-ptlib.cpp  -  description
+ *                         videoinput-manager-ptlib.cpp  -  description
  *                         ------------------------------------------
  *   begin                : written in 2008 by Matthias Schneider
  *   copyright            : (c) 2008 by Matthias Schneider
@@ -41,7 +41,8 @@
 #define DEVICE_TYPE "PTLIB"
 
 GMVideoInputManager_ptlib::GMVideoInputManager_ptlib (Ekiga::ServiceCore & _core)
-:    core (_core), runtime (*(dynamic_cast<Ekiga::Runtime *> (_core.get ("runtime"))))
+: core (_core), 
+  runtime (*(dynamic_cast<Ekiga::Runtime *> (_core.get ("runtime"))))
 {
   current_state.opened = false;
   input_device = NULL;
@@ -97,8 +98,6 @@ bool GMVideoInputManager_ptlib::set_device (const Ekiga::VideoInputDevice & devi
 bool GMVideoInputManager_ptlib::open (unsigned width, unsigned height, unsigned fps)
 {
   PVideoDevice::VideoFormat pvideo_format;
-  int whiteness, brightness, colour, contrast, hue;
-  Ekiga::VidInputConfig vidinput_config;
 
   PTRACE(4, "GMVideoInputManager_ptlib\tOpening Device " << current_state.device);
   PTRACE(4, "GMVideoInputManager_ptlib\tOpening Device with " << width << "x" << height << "/" << fps);
@@ -132,16 +131,18 @@ bool GMVideoInputManager_ptlib::open (unsigned width, unsigned height, unsigned 
     return false;
   }
 
+  int whiteness, brightness, colour, contrast, hue;
   input_device->GetParameters (&whiteness, &brightness, &colour, &contrast, &hue);
   current_state.opened = true;
 
-  vidinput_config.whiteness = whiteness >> 8;
-  vidinput_config.brightness = brightness >> 8;
-  vidinput_config.colour = colour >> 8;
-  vidinput_config.contrast = contrast >> 8;
-  vidinput_config.modifyable = true;
+  Ekiga::VidInputConfig config;
+  config.whiteness = whiteness >> 8;
+  config.brightness = brightness >> 8;
+  config.colour = colour >> 8;
+  config.contrast = contrast >> 8;
+  config.modifyable = true;
 
-  runtime.run_in_main (sigc::bind (device_opened.make_slot (), current_state.device, vidinput_config));
+  runtime.run_in_main (sigc::bind (device_opened.make_slot (), current_state.device, config));
 
   return true;
 }

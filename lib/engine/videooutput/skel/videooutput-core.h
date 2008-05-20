@@ -25,12 +25,12 @@
 
 
 /*
- *                         display-core.h  -  description
+ *                         videooutput-core.h  -  description
  *                         ------------------------------------------
  *   begin                : written in 2007 by Matthias Schneider
  *   copyright            : (c) 2007 by Matthias Schneider
- *   description          : declaration of the interface of a display core.
- *                          A display core manages DisplayManagers.
+ *   description          : declaration of the interface of a videooutput core.
+ *                          A videooutput core manages VideoOutputManagers.
  *
  */
 
@@ -48,7 +48,6 @@
 
 #include <glib.h>
 
-//FIXME
 #include "ptbuildopts.h"
 #include "ptlib.h"
 

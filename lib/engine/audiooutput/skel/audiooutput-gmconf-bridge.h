@@ -25,12 +25,12 @@
 
 
 /*
- *                         audiooutput-core.h  -  description
+ *                         audiooutput-gmconf-bridge.h -  description
  *                         ------------------------------------------
  *   begin                : written in 2008 by Matthias Schneider
  *   copyright            : (c) 2008 by Matthias Schneider
- *   description          : Declaration of the interface of a audiooutput core.
- *                          A audiooutput core manages AudioOutputManagers.
+ *   description          : Declaration of the bridge between the gmconf
+ *                          and the audiooutput-core..
  *
  */
 

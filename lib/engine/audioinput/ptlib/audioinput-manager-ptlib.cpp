@@ -29,8 +29,8 @@
  *                         ------------------------------------------
  *   begin                : written in 2008 by Matthias Schneider
  *   copyright            : (c) 2008 by Matthias Schneider
- *   description          : declaration of the interface of a audioinput core.
- *                          A audioinput core manages AudioInputManagers.
+ *   description          : declaration of a PTLIB audio input manager
+
  *
  */
 
@@ -41,7 +41,8 @@
 #define DEVICE_TYPE "PTLIB"
 
 GMAudioInputManager_ptlib::GMAudioInputManager_ptlib (Ekiga::ServiceCore & _core)
-:    core (_core), runtime (*(dynamic_cast<Ekiga::Runtime *> (_core.get ("runtime"))))
+: core (_core), 
+  runtime (*(dynamic_cast<Ekiga::Runtime *> (_core.get ("runtime"))))
 {
   current_state.opened = false;
   input_device = NULL;
@@ -93,9 +94,6 @@ bool GMAudioInputManager_ptlib::set_device (const Ekiga::AudioInputDevice & devi
 
 bool GMAudioInputManager_ptlib::open (unsigned channels, unsigned samplerate, unsigned bits_per_sample)
 {
-  unsigned volume;
-  Ekiga::AudioInputConfig audioinput_config;
-
   PTRACE(4, "GMAudioInputManager_ptlib\tOpening Device " << current_state.device);
   PTRACE(4, "GMAudioInputManager_ptlib\tOpening Device with " << channels << "-" << samplerate << "/" << bits_per_sample);
 
@@ -120,13 +118,14 @@ bool GMAudioInputManager_ptlib::open (unsigned channels, unsigned samplerate, un
     return false;
   }
 
+  unsigned volume;
   input_device->GetVolume (volume);
   current_state.opened = true;
 
-  audioinput_config.volume = volume;
-  audioinput_config.modifyable = true;
-
-  runtime.run_in_main (sigc::bind (device_opened.make_slot (), current_state.device, audioinput_config));
+  Ekiga::AudioInputConfig config;
+  config.volume = volume;
+  config.modifyable = true;
+  runtime.run_in_main (sigc::bind (device_opened.make_slot (), current_state.device, config));
 
   return true;
 }

@@ -28,8 +28,7 @@
  *                         ------------------------------------------
  *   begin                : written in 2008 by Matthias Schneider
  *   copyright            : (c) 2008 by Matthias Schneider
- *   description          : declaration of the interface of a audiooutput core.
- *                          A audiooutput core manages AudioOutputManagers.
+ *   description          : declaration of a NULL audio output manager
  *
  */
 
@@ -40,7 +39,8 @@
 #define DEVICE_NAME   "NULL"
 
 GMAudioOutputManager_null::GMAudioOutputManager_null (Ekiga::ServiceCore & _core)
-:    core (_core), runtime (*(dynamic_cast<Ekiga::Runtime *> (_core.get ("runtime"))))
+: core (_core),
+  runtime (*(dynamic_cast<Ekiga::Runtime *> (_core.get ("runtime"))))
 {
   current_state[Ekiga::primary].opened = false;
   current_state[Ekiga::secondary].opened = false;
@@ -71,22 +71,20 @@ bool GMAudioOutputManager_null::set_device (Ekiga::AudioOutputPrimarySecondary p
 
 bool GMAudioOutputManager_null::open (Ekiga::AudioOutputPrimarySecondary primarySecondary, unsigned channels, unsigned samplerate, unsigned bits_per_sample)
 {
-  Ekiga::AudioOutputConfig audiooutput_config;
-
-  PTRACE(4, "GMAudioOutputManager_null\tOpening Device[" << primarySecondary << "] " << current_state[primarySecondary].device);
-  PTRACE(4, "GMAudioOutputManager_null\tOpening Device with " << channels << "-" << samplerate << "/" << bits_per_sample);
-
   current_state[primarySecondary].channels        = channels;
   current_state[primarySecondary].samplerate      = samplerate;
   current_state[primarySecondary].bits_per_sample = bits_per_sample;
   current_state[primarySecondary].opened = true;
 
+  PTRACE(4, "GMAudioOutputManager_null\tOpening Device[" << primarySecondary << "] " << current_state[primarySecondary].device);
+  PTRACE(4, "GMAudioOutputManager_null\tOpening Device with " << channels << "-" << samplerate << "/" << bits_per_sample);
+
   adaptive_delay[primarySecondary].Restart();
 
-  audiooutput_config.volume = 0;
-  audiooutput_config.modifyable = false;
-
-  runtime.run_in_main (sigc::bind (device_opened.make_slot (), primarySecondary, current_state[primarySecondary].device, audiooutput_config));
+  Ekiga::AudioOutputConfig config;
+  config.volume = 0;
+  config.modifyable = false;
+  runtime.run_in_main (sigc::bind (device_opened.make_slot (), primarySecondary, current_state[primarySecondary].device, config));
 
   return true;
 }

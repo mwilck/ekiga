@@ -27,7 +27,7 @@
 
 
 /*
- *                         display-main-x.cpp  -  description
+ *                         videooutput-main-x.cpp  -  description
  *                         ------------------------------------------
  *   begin                : written in 2008 by Matthias Schneider
  *   copyright            : (c) 2008 by Matthias Schneider

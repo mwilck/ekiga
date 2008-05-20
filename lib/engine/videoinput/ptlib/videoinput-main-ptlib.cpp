@@ -27,11 +27,11 @@
 
 
 /*
- *                         vidinput-main-ptlib.cpp  -  description
+ *                         videoinput-main-ptlib.cpp  -  description
  *                         ------------------------------------------
  *   begin                : written in 2008 by Matthias Schneider
  *   copyright            : (c) 2008 by Matthias Schneider
- *   description          : code to hook the PTLIB vidinput manager 
+ *   description          : code to hook the PTLIB videoinput manager 
  *                          into the main program
  *
  */

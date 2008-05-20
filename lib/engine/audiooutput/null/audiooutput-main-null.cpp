@@ -27,11 +27,11 @@
 
 
 /*
- *                         audionput-main-null.cpp  -  description
+ *                         audiooutput-main-null.cpp  -  description
  *                         ------------------------------------------
  *   begin                : written in 2008 by Matthias Schneider
  *   copyright            : (c) 2008 by Matthias Schneider
- *   description          : code to hook the PTLIB audiooutput manager 
+ *   description          : code to hook the NULL audiooutput manager 
  *                          into the main program
  *
  */

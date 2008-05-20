@@ -29,8 +29,8 @@
  *                         ------------------------------------------
  *   begin                : written in 2008 by Matthias Schneider
  *   copyright            : (c) 2008 by Matthias Schneider
- *   description          : declaration of the interface of a vidinput core.
- *                          A vidinput core manages VideoInputManagers.
+ *   description          : declaration of the interface of a videoinput core.
+ *                          A videoinput core manages VideoInputManagers.
  *
  */
 

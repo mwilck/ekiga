@@ -43,6 +43,7 @@
 
 #include "ptbuildopts.h"
 #include <ptlib/videoio.h>
+
 /**
  * @addtogroup videoinput
  * @{
@@ -53,22 +54,11 @@
     {
   public:
 
-      /* The constructor
-       */
       GMVideoInputManager_ptlib (Ekiga::ServiceCore & core);
-      /* The destructor
-       */
+
       ~GMVideoInputManager_ptlib () {}
 
 
-      /*                 
-       * DISPLAY MANAGEMENT 
-       */               
-
-      /** Create a call based on the remote uri given as parameter
-       * @param uri  an uri
-       * @return     true if a Ekiga::Call could be created
-       */
       virtual void get_devices(std::vector <Ekiga::VideoInputDevice> & devices);
 
       virtual bool set_device (const Ekiga::VideoInputDevice & device, int channel, Ekiga::VideoInputFormat format);

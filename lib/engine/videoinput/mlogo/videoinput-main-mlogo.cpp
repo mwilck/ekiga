@@ -27,11 +27,11 @@
 
 
 /*
- *                         vidinput-main-mlogo.cpp  -  description
+ *                         videoinput-main-mlogo.cpp  -  description
  *                         ------------------------------------------
  *   begin                : written in 2008 by Matthias Schneider
  *   copyright            : (c) 2008 by Matthias Schneider
- *   description          : code to hook the Moving Logo vidinput manager 
+ *   description          : code to hook the Moving Logo videoinput manager 
  *                          into the main program
  *
  */

@@ -31,7 +31,7 @@
  *                         ------------------------------------------
  *   begin                : written in 2008 by Matthias Schneider
  *   copyright            : (c) 2008 by Matthias Schneider
- *   description          : code to hook the NULLaudioinput manager 
+ *   description          : code to hook the NULL audioinput manager 
  *                          into the main program
  *
  */

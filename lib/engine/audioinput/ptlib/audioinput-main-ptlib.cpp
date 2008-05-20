@@ -27,7 +27,7 @@
 
 
 /*
- *                         audionput-main-ptlib.cpp  -  description
+ *                         audioinput-main-ptlib.cpp  -  description
  *                         ------------------------------------------
  *   begin                : written in 2008 by Matthias Schneider
  *   copyright            : (c) 2008 by Matthias Schneider

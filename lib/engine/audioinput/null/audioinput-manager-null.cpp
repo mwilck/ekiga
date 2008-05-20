@@ -28,8 +28,7 @@
  *                         ------------------------------------------
  *   begin                : written in 2008 by Matthias Schneider
  *   copyright            : (c) 2008 by Matthias Schneider
- *   description          : declaration of the interface of a audioinput core.
- *                          A audioinput core manages AudioInputManagers.
+ *   description          : declaration of a NULL audio input manager
  *
  */
 
@@ -69,8 +68,6 @@ bool GMAudioInputManager_null::set_device (const Ekiga::AudioInputDevice & devic
 
 bool GMAudioInputManager_null::open (unsigned channels, unsigned samplerate, unsigned bits_per_sample)
 {
-  Ekiga::AudioInputConfig audioinput_config;
-
   PTRACE(4, "GMAudioInputManager_null\tOpening Device " << current_state.device);
   PTRACE(4, "GMAudioInputManager_null\tOpening Device with " << channels << "-" << samplerate << "/" << bits_per_sample);
 
@@ -81,10 +78,10 @@ bool GMAudioInputManager_null::open (unsigned channels, unsigned samplerate, uns
 
   adaptive_delay.Restart();
 
-  audioinput_config.volume = 0;
-  audioinput_config.modifyable = false;
-
-  runtime.run_in_main (sigc::bind (device_opened.make_slot (), current_state.device, audioinput_config));
+  Ekiga::AudioInputConfig config;
+  config.volume = 0;
+  config.modifyable = false;
+  runtime.run_in_main (sigc::bind (device_opened.make_slot (), current_state.device, config));
 
   return true;
 }

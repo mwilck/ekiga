@@ -43,6 +43,7 @@
 
 #include "ptbuildopts.h"
 #include <ptlib/sound.h>
+
 /**
  * @addtogroup audioinput
  * @{
@@ -53,22 +54,10 @@
     {
   public:
 
-      /* The constructor
-       */
        GMAudioOutputManager_ptlib (Ekiga::ServiceCore & core);
-      /* The destructor
-       */
+
       ~GMAudioOutputManager_ptlib () {}
 
-
-      /*                 
-       * DISPLAY MANAGEMENT 
-       */               
-
-      /** Create a call based on the remote uri given as parameter
-       * @param uri  an uri
-       * @return     true if a Ekiga::Call could be created
-       */
 
       virtual void get_devices (std::vector <Ekiga::AudioOutputDevice> & devices);
 
@@ -83,7 +72,7 @@
       virtual bool set_frame_data (Ekiga::AudioOutputPrimarySecondary primarySecondary, 
                                    const char *data, 
                                    unsigned size,
-				   unsigned & bytes_written);
+                                   unsigned & bytes_written);
 
       virtual void set_volume     (Ekiga::AudioOutputPrimarySecondary primarySecondary, unsigned volume );
 
@@ -95,9 +84,9 @@
 
       PSoundChannel *output_device[2];
   };
+
 /**
  * @}
  */
-
 
 #endif

@@ -29,8 +29,7 @@
  *                         ------------------------------------------
  *   begin                : written in 2008 by Matthias Schneider
  *   copyright            : (c) 2008 by Matthias Schneider
- *   description          : declaration of the interface of a audioinput core.
- *                          A audioinput core manages AudioInputManagers.
+ *   description          : declaration of a NULL audio input manager
  *
  */
 
@@ -55,24 +54,13 @@
     {
   public:
 
-      /* The constructor
-       */
       GMAudioInputManager_null (Ekiga::ServiceCore & core);
-      /* The destructor
-       */
+
       ~GMAudioInputManager_null () {}
 
 
-      /*                 
-       * DISPLAY MANAGEMENT 
-       */               
-
-      /** Create a call based on the remote uri given as parameter
-       * @param uri  an uri
-       * @return     true if a Ekiga::Call could be created
-       */
       virtual bool set_device (const Ekiga::AudioInputDevice & device);
-		    
+
       virtual void get_devices(std::vector <Ekiga::AudioInputDevice> & devices);
 
       virtual bool open (unsigned channels, unsigned samplerate, unsigned bits_per_sample);
@@ -85,7 +73,7 @@
 
 
       virtual bool has_device     (const std::string & source, const std::string & device_name, Ekiga::AudioInputDevice & device);
-      
+
   protected:
       Ekiga::ServiceCore & core;
       Ekiga::Runtime & runtime;
@@ -95,6 +83,5 @@
 /**
  * @}
  */
-
 
 #endif

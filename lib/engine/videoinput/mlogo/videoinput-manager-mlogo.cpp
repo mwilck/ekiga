@@ -25,11 +25,11 @@
 
 
 /*
- *                         vidinput-manager-mlogo.cpp  -  description
+ *                         videoinput-manager-mlogo.cpp  -  description
  *                         ------------------------------------------
  *   begin                : written in 2008 by Matthias Schneider
  *   copyright            : (c) 2008 by Matthias Schneider
- *   description          : Declaration of the interface of a vidinput core.
+ *   description          : Declaration of the interface of a videoinput core.
  *                          A vidinput core manages VideoInputManagers.
  *
  */
@@ -42,7 +42,8 @@
 #define DEVICE_NAME   "Moving Logo"
 
 GMVideoInputManager_mlogo::GMVideoInputManager_mlogo (Ekiga::ServiceCore & _core)
-:    core (_core), runtime (*(dynamic_cast<Ekiga::Runtime *> (_core.get ("runtime"))))
+: core (_core),
+  runtime (*(dynamic_cast<Ekiga::Runtime *> (_core.get ("runtime"))))
 {
   current_state.opened  = false;
 }
@@ -73,8 +74,6 @@ bool GMVideoInputManager_mlogo::set_device (const Ekiga::VideoInputDevice & devi
 
 bool GMVideoInputManager_mlogo::open (unsigned width, unsigned height, unsigned fps)
 {
-  Ekiga::VidInputConfig vidinput_config;
-
   PTRACE(4, "GMVideoInputManager_mlogo\tOpening Moving Logo with " << width << "x" << height << "/" << fps);
   current_state.width  = width;
   current_state.height = height;
@@ -85,19 +84,26 @@ bool GMVideoInputManager_mlogo::open (unsigned width, unsigned height, unsigned 
 
   background_frame = (char*) malloc ((current_state.width * current_state.height * 3) >> 1);
   memset (background_frame, 0xd3, current_state.width*current_state.height); //ff
-  memset (background_frame + (current_state.width * current_state.height), 0x7f, (current_state.width*current_state.height) >> 2);
-  memset (background_frame + (current_state.width * current_state.height) + ((current_state.width*current_state.height) >> 2), 0x7f, (current_state.width*current_state.height) >> 2);
+  memset (background_frame + (current_state.width * current_state.height), 
+          0x7f, 
+          (current_state.width*current_state.height) >> 2);
+  memset (background_frame + (current_state.width * current_state.height) + 
+                            ((current_state.width * current_state.height) >> 2), 
+          0x7f,
+          (current_state.width*current_state.height) >> 2);
 
   adaptive_delay.Restart();
   adaptive_delay.SetMaximumSlip((unsigned )( 500.0 / fps));
 
   current_state.opened  = true;
-  vidinput_config.whiteness = 127;
-  vidinput_config.brightness = 127;
-  vidinput_config.colour = 127;
-  vidinput_config.contrast = 127;
-  vidinput_config.modifyable = false;
-  runtime.run_in_main (sigc::bind (device_opened.make_slot (), current_state.device, vidinput_config));
+
+  Ekiga::VidInputConfig config;
+  config.whiteness = 127;
+  config.brightness = 127;
+  config.colour = 127;
+  config.contrast = 127;
+  config.modifyable = false;
+  runtime.run_in_main (sigc::bind (device_opened.make_slot (), current_state.device, config));
   
   return true;
 }

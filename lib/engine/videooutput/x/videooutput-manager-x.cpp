@@ -26,7 +26,7 @@
 
 
 /*
- *                         display-manager-x.cpp -  description
+ *                         videooutput-manager-x.cpp -  description
  *                         ----------------------------------
  *   begin                : Sun Nov 19 2006
  *   copyright            : (C) 2006-2008 by Matthias Schneider

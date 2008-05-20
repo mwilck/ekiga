@@ -25,12 +25,12 @@
 
 
 /*
- *                         videoinput-core.h  -  description
+ *                         videoinput-info.h  -  description
  *                         ------------------------------------------
  *   begin                : written in 2008 by Matthias Schneider
  *   copyright            : (c) 2008 by Matthias Schneider
- *   description          : Declaration of the interface of a videoinput core.
- *                          A vidinput core manages VideoInputManagers.
+ *   description          : Declaration of structs and classes used for communication
+ *                          with the VideoInputManagers
  *
  */
 

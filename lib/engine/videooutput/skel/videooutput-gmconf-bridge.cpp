@@ -25,12 +25,12 @@
 
 
 /*
- *                         vidinput-core.cpp  -  description
+ *                         videooutput-gmconf-bridge.cpp -  description
  *                         ------------------------------------------
  *   begin                : written in 2008 by Matthias Schneider
  *   copyright            : (c) 2008 by Matthias Schneider
- *   description          : declaration of the interface of a vidinput core.
- *                          A vidinput core manages VidInputManagers.
+ *   description          : Declaration of the bridge between the gmconf 
+ *                          and the videooutput-core.
  *
  */
 

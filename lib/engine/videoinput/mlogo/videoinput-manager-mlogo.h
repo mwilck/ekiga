@@ -55,24 +55,13 @@
     {
   public:
 
-      /* The constructor
-       */
       GMVideoInputManager_mlogo (Ekiga::ServiceCore & core);
-      /* The destructor
-       */
+
       ~GMVideoInputManager_mlogo () {}
 
 
-      /*                 
-       * DISPLAY MANAGEMENT 
-       */               
-
-      /** Create a call based on the remote uri given as parameter
-       * @param uri  an uri
-       * @return     true if a Ekiga::Call could be created
-       */
       virtual void get_devices(std::vector <Ekiga::VideoInputDevice> & devices);
-      
+
       virtual bool set_device (const Ekiga::VideoInputDevice & device, int channel, Ekiga::VideoInputFormat format);
 
       virtual bool open (unsigned width, unsigned height, unsigned fps);
@@ -85,7 +74,7 @@
 
       virtual bool has_device (const std::string & source, const std::string & device_name, unsigned capabilities, Ekiga::VideoInputDevice & device);
 
-  protected:  
+  protected:
       void CopyYUVArea (const char* srcFrame,
 			unsigned srcWidth,
 			unsigned srcHeight,

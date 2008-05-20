@@ -27,7 +27,7 @@
 
 
 /*
-*                         display-manager-dx.h -  description
+*                         videooutput-manager-dx.h -  description
  *                         ----------------------------------
  *   begin                : Sun Nov 19 2006
  *   copyright            : (C) 2006-2008 by Matthias Schneider
@@ -44,66 +44,45 @@
 #include "videooutput-manager-common.h"
 #include "dxwindow.h"
 
-class GMVideoOutputManager_dx
-   : public  GMVideoOutputManager
-{
-public:
-  GMVideoOutputManager_dx (Ekiga::ServiceCore & _core);
+/**
+ * @addtogroup videooutput
+ * @{
+ */
 
-  ~GMVideoOutputManager_dx ();
+  class GMVideoOutputManager_dx
+    : public  GMVideoOutputManager
+  {
+  public:
+    GMVideoOutputManager_dx (Ekiga::ServiceCore & _core);
 
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Returns TRUE if the given settings require a
-   *                 reinitialization of the display, FALSE 
-   *                 otherwise.
-   * PRE          :  /
-   */
-  virtual bool frame_display_change_needed ();
+    ~GMVideoOutputManager_dx ();
+  
+    virtual bool frame_display_change_needed ();
 
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Setup the display following the display type,
-   *                 picture dimensions and zoom value.
-   *                 Returns FALSE in case of failure.
-   * PRE          :  /
-   */
-  virtual void setup_frame_display ();
+    virtual void setup_frame_display ();
 
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Closes the frame display and returns FALSE 
-   *                 in case of failure.
-   * PRE          :  /
-   */
-  virtual void close_frame_display ();
+    virtual void close_frame_display ();
 
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Display the given frame on the correct display.
-   * PRE          :  The display needs to be initialized using 
-   *                 SetupFrameDisplay. 
-   */
-  virtual void display_frame (const char *frame,
-                             unsigned width,
-                             unsigned height);
+    virtual void display_frame (const char *frame,
+                                unsigned width,
+                                unsigned height);
 
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Display the given frames as Picture in Picture.
-   * PRE          :  The display needs to be initialized using 
-   *                 SetupFrameDisplay. 
-   */
-  virtual void display_pip_frames (const char *local_frame,
-                                 unsigned lf_width,
-                                 unsigned lf_height,
-                                 const char *remote_frame,
-                                 unsigned rf_width,
-                                 unsigned rf_height);
+    virtual void display_pip_frames (const char *local_frame,
+                                  unsigned lf_width,
+                                  unsigned lf_height,
+                                  const char *remote_frame,
+                                  unsigned rf_width,
+                                  unsigned rf_height);
 
-protected:
+  protected:
 
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Sync the output of the frame to the display
-   * PRE          :  /
-   */
-  virtual void sync(UpdateRequired sync_required);
+    virtual void sync(UpdateRequired sync_required);
 
-  DXWindow *dxWindow;
-};
+    DXWindow *dxWindow;
+  };
+
+/**
+ * @}
+ */
+
 #endif /* _VIDEOOUTPUT_MANAGER_DX_H_ */

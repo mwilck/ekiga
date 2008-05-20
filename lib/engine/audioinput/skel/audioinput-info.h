@@ -25,12 +25,12 @@
 
 
 /*
- *                          audioinput-core.h  -  description
+ *                          audioinput-info.h  -  description
  *                         ------------------------------------------
  *   begin                : written in 2008 by Matthias Schneider
  *   copyright            : (c) 2008 by Matthias Schneider
- *   description          : Declaration of the interface of a audioinput core.
- *                          A audioinput core manages AudioInputManagers.
+ *   description          : declaration of structs and classes used for communication
+ *                          with the AudioOutputManagers
  *
  */
 

@@ -25,12 +25,12 @@
 
 
 /*
- *                         display-info.h  -  description
+ *                         videooutput-info.h  -  description
  *                         ------------------------------------------
  *   begin                : written in 2007 by Matthias Schneider 
  *   copyright            : (c) 2007 by Matthias Schneider
- *   description          : declaration of structs and classes used for communication
- *                          with the DisplayManagers
+ *   description          : Declaration of structs and classes used for communication
+ *                          with the VideoOutputManagers
  *
  */
 
