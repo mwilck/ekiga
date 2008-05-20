@@ -35,6 +35,8 @@
  *
  */
 
+#include <cstdlib>
+
 #include "avahi-heap.h"
 
 static void

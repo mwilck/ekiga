@@ -36,6 +36,7 @@
 #include "dialpad.h"
 #include <gdk/gdkkeysyms.h>
 
+#include <cstring>
 #include <iostream>
 
 /* Make this flag available with GTK+ 2.10 */

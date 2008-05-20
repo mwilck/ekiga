@@ -38,6 +38,7 @@
 
 #include "config.h"
 
+#include <algorithm>
 #include <sstream>
 
 #include "sip.h"

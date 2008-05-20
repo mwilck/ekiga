@@ -33,6 +33,8 @@
  *
  */
 
+#include <algorithm>
+#include <cstring>
 #include <iostream>
 
 #include "form-dialog-gtk.h"
