@@ -367,6 +367,8 @@ bool GMSIPEndpoint::set_listen_port (unsigned port)
         port++;
       }
     }
+    else
+      interface.port = port;
   }
 
   return false;

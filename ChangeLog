@@ -1,5 +1,11 @@
 2008-05-20  Damien Sandras  <dsandras@gnome.org>
 
+	* src/endpoints/sip.cpp:
+	Update the port of the local listening interface after a successfull
+	bind. It was only working in case of failure for the first try.
+	
+2008-05-20  Damien Sandras  <dsandras@gnome.org>
+
 	* src/endpoints/manager.cpp: 
 	Do not use a reference for the stun server string. It could go away
 	before we actually use it if threads starting is slow. Hopefully fixes
