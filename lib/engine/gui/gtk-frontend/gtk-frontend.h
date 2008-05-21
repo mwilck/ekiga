@@ -45,7 +45,7 @@
 #include "services.h"
 #include "contact-core.h"
 #include "presence-core.h"
-#include "call-manager.h"
+#include "chat-manager.h"
 
 
 class GtkFrontend: public Ekiga::Service
@@ -69,9 +69,9 @@ public:
     const GtkWidget *get_chat_window () const;
 
 private :
-    void on_new_chat (Ekiga::CallManager & manager,
-                      std::string name,
-                      std::string uri);
+    void on_new_chat (const Ekiga::ChatManager & manager,
+                      const std::string & name,
+                      const std::string & uri);
 
     GtkWidget *addressbook_window;
     GtkWidget *roster_view;

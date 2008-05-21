@@ -42,7 +42,7 @@
 #include "chat-window.h"
 #include "chat-window-page.h"
 
-#include "call-core.h"
+#include "chat-core.h"
 
 #include "gmconf.h"
 #include "gmtexttagaddon.h"
@@ -139,10 +139,10 @@ static void conversation_changed_cb (GtkNotebook *notebook,
  *                displayed.
  * PRE          : The ChatWindow as last argument.
  */
-static void on_im_received_cb (Ekiga::CallManager & manager,
-                               std::string display_name,
-                               std::string from, 
-                               std::string message,
+static void on_im_received_cb (const Ekiga::ChatManager & manager,
+                               const std::string & display_name,
+                               const std::string & from, 
+                               const std::string & message,
                                gpointer data);
 
 
@@ -151,9 +151,9 @@ static void on_im_received_cb (Ekiga::CallManager & manager,
  *                ChatWindowPage.
  * PRE          : The ChatWindow as last argument.
  */
-static void on_im_sent_cb (Ekiga::CallManager & manager,
-                           std::string to,
-                           std::string message,
+static void on_im_sent_cb (const Ekiga::ChatManager & manager,
+                           const std::string & to,
+                           const std::string & message,
                            gpointer data);
 
 
@@ -162,9 +162,9 @@ static void on_im_sent_cb (Ekiga::CallManager & manager,
  *                ChatWindowPage.
  * PRE          : The ChatWindow as last argument.
  */
-static void on_im_failed_cb (Ekiga::CallManager & manager,
-                             std::string to,
-                             std::string reason,
+static void on_im_failed_cb (const Ekiga::ChatManager & manager,
+                             const std::string & to,
+                             const std::string & reason,
                              gpointer data);
 
 
@@ -366,10 +366,10 @@ conversation_changed_cb (GtkNotebook *notebook,
  */
 
 static void
-on_im_received_cb (Ekiga::CallManager & /*manager*/,
-                   std::string display_name,
-                   std::string from, 
-                   std::string message,
+on_im_received_cb (const Ekiga::ChatManager & /*manager*/,
+                   const std::string & display_name,
+                   const std::string & from, 
+                   const std::string & message,
                    gpointer data)
 {
   GtkWidget *page = chat_window_get_page (CHAT_WINDOW (data), from, display_name);
@@ -404,9 +404,9 @@ on_im_received_cb (Ekiga::CallManager & /*manager*/,
 
 
 static void
-on_im_sent_cb (Ekiga::CallManager & /*manager*/,
-               std::string to,
-               std::string message,
+on_im_sent_cb (const Ekiga::ChatManager & /*manager*/,
+               const std::string & to,
+               const std::string & message,
                gpointer data)
 {
   GtkWidget *page = chat_window_get_page (CHAT_WINDOW (data), to);
@@ -419,9 +419,9 @@ on_im_sent_cb (Ekiga::CallManager & /*manager*/,
 
 
 static void
-on_im_failed_cb (Ekiga::CallManager & /*manager*/,
-                 std::string to,
-                 std::string reason,
+on_im_failed_cb (const Ekiga::ChatManager & /*manager*/,
+                 const std::string & to,
+                 const std::string & reason,
                  gpointer data)
 {
   GtkWidget *page = chat_window_get_page (CHAT_WINDOW (data), to);
@@ -546,7 +546,7 @@ chat_window_new (Ekiga::ServiceCore & core)
 {
   ChatWindow *self = NULL;
 
-  Ekiga::CallCore *call_core = NULL;
+  Ekiga::ChatCore *chat_core = NULL;
 
   sigc::connection conn;
 
@@ -566,12 +566,12 @@ chat_window_new (Ekiga::ServiceCore & core)
   gtk_container_add (GTK_CONTAINER (self), self->priv->notebook);
 
   /* Engine signals */
-  call_core = dynamic_cast<Ekiga::CallCore *> (core.get ("call-core"));
-  conn = call_core->im_received.connect (sigc::bind (sigc::ptr_fun (on_im_received_cb), self));
+  chat_core = dynamic_cast<Ekiga::ChatCore *> (core.get ("chat-core"));
+  conn = chat_core->im_received.connect (sigc::bind (sigc::ptr_fun (on_im_received_cb), self));
   self->priv->connections.push_back (conn);
-  conn = call_core->im_sent.connect (sigc::bind (sigc::ptr_fun (on_im_sent_cb), self));
+  conn = chat_core->im_sent.connect (sigc::bind (sigc::ptr_fun (on_im_sent_cb), self));
   self->priv->connections.push_back (conn);
-  conn = call_core->im_failed.connect (sigc::bind (sigc::ptr_fun (on_im_failed_cb), self));
+  conn = chat_core->im_failed.connect (sigc::bind (sigc::ptr_fun (on_im_failed_cb), self));
   self->priv->connections.push_back (conn);
 
   g_signal_connect (G_OBJECT (self), "hide",

@@ -44,6 +44,7 @@
 #include "presence-core.h"
 #include "contact-core.h"
 #include "call-core.h"
+#include "chat-core.h"
 #include "videooutput-core.h"
 #include "videoinput-core.h"
 #include "audioinput-core.h"
@@ -106,6 +107,7 @@ engine_init (int argc,
   Ekiga::PresenceCore *presence_core = new Ekiga::PresenceCore;
   Ekiga::ContactCore *contact_core = new Ekiga::ContactCore;
   Ekiga::CallCore *call_core = new Ekiga::CallCore;
+  Ekiga::ChatCore *chat_core = new Ekiga::ChatCore;
   Ekiga::VideoOutputCore *videooutput_core = new Ekiga::VideoOutputCore;
   Ekiga::VideoInputCore *videoinput_core = new Ekiga::VideoInputCore(*runtime, *videooutput_core);
   Ekiga::AudioOutputCore *audiooutput_core = new Ekiga::AudioOutputCore(*runtime);  
@@ -124,6 +126,7 @@ engine_init (int argc,
   core->add (*contact_core);
   core->add (*presence_core);
   core->add (*call_core);
+  core->add (*chat_core);
   core->add (*videooutput_core);
   core->add (*videoinput_core);
   core->add (*audiooutput_core);

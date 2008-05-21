@@ -1,5 +1,24 @@
 2008-05-21  Damien Sandras  <dsandras@gnome.org>
 
+	* src/Makefile.am:
+	* lib/engine/chat/skel/chat-core.cpp:
+	* lib/engine/chat/skel/chat-core.h:
+	* lib/engine/chat/skel/chat-manager.h:
+	* lib/engine/gui/gtk-frontend/chat-window-page.cpp:
+	* lib/engine/gui/gtk-frontend/gtk-frontend.cpp:
+	* lib/engine/gui/gtk-frontend/gtk-frontend.h:
+	* lib/engine/gui/gtk-frontend/chat-window.cpp:
+	* lib/engine/gui/gtk-frontend/Makefile.am:
+	* lib/engine/engine.cpp:
+	* lib/engine/protocol/skel/call-core.cpp:
+	* lib/engine/protocol/skel/call-core.h:
+	* lib/engine/protocol/skel/call-protocol-manager.h:
+	* lib/engine/Makefile.am:
+	Removed Chat stuff from the CallCore/CallProtocolManager and use the
+	newly created ChatCore instead. 
+
+2008-05-21  Damien Sandras  <dsandras@gnome.org>
+
 	* src/endpoints/sip.h:
 	* src/endpoints/opal-main.cpp:
 	* src/endpoints/sip.cpp:

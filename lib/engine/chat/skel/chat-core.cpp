@@ -34,6 +34,8 @@
  *
  */
 
+#include <iostream>
+
 #include "config.h"
 
 #include "chat-core.h"
@@ -94,25 +96,25 @@ bool ChatCore::send_message (const std::string & uri,
 }
 
 
-void ChatCore::on_im_failed (const std::string & uri, const std::string & reason, ChatManager *manager)
+void ChatCore::on_im_failed (const std::string uri, const std::string reason, ChatManager *manager)
 {
   im_failed.emit (*manager, uri, reason);
 }
 
 
-void ChatCore::on_im_sent (const std::string & uri, const std::string & message, ChatManager *manager)
+void ChatCore::on_im_sent (const std::string uri, const std::string message, ChatManager *manager)
 {
   im_sent.emit (*manager, uri, message);
 }
 
 
-void ChatCore::on_im_received (const std::string & display_name, const std::string & uri, const std::string & message, ChatManager *manager)
+void ChatCore::on_im_received (const std::string display_name, const std::string uri, const std::string message, ChatManager *manager)
 {
   im_received.emit (*manager, display_name, uri, message);
 }
 
 
-void ChatCore::on_new_chat (const std::string & display_name, const std::string & uri, ChatManager *manager)
+void ChatCore::on_new_chat (const std::string display_name, const std::string uri, ChatManager *manager)
 {
   new_chat.emit (*manager, display_name, uri);
 }

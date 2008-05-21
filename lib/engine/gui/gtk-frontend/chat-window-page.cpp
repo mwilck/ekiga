@@ -43,7 +43,7 @@
 #include "gmtextviewaddon.h"
 #include "gmstockicons.h"
 
-#include "call-core.h"
+#include "chat-core.h"
 #include "presence-core.h"
 
 #include <gdk/gdkkeysyms.h>
@@ -395,10 +395,10 @@ send_button_clicked_cb (G_GNUC_UNUSED GtkWidget *w,
 
   if (!message.empty ()) {
     
-    Ekiga::CallCore *call_core = dynamic_cast<Ekiga::CallCore *>(self->priv->core.get ("call-core"));
+    Ekiga::ChatCore *chat_core = dynamic_cast<Ekiga::ChatCore *>(self->priv->core.get ("chat-core"));
 
-    if (call_core) 
-      call_core->send_message (self->priv->uri, message);
+    if (chat_core) 
+      chat_core->send_message (self->priv->uri, message);
   }
 }
 

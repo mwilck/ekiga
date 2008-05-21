@@ -11,6 +11,7 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/engine/			\
 	-I$(top_srcdir)/lib/engine/gui/gtk-frontend	\
 	-I$(top_srcdir)/lib/engine/addressbook/skel	\
+	-I$(top_srcdir)/lib/engine/chat/skel		\
 	-I$(top_srcdir)/lib/engine/presence/skel	\
 	-I$(top_srcdir)/lib/engine/protocol/skel	\
 	-I$(top_srcdir)/lib/engine/protocol/sip		\

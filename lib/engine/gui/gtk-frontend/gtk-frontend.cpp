@@ -44,7 +44,7 @@
 
 #include "gtk-frontend.h"
 
-#include "call-core.h"
+#include "chat-core.h"
 #include "contact-core.h"
 #include "presence-core.h"
 #include "addressbook-window.h"
@@ -63,13 +63,13 @@ GtkFrontend::GtkFrontend (Ekiga::ServiceCore &core)
 
   Ekiga::PresenceCore *presence_core = NULL;
   Ekiga::ContactCore *contact_core = NULL;
-  Ekiga::CallCore *call_core = NULL;
+  Ekiga::ChatCore *chat_core = NULL;
   History::Source *history_source = NULL;
   History::Book *history_book = NULL;
 
   contact_core = dynamic_cast<Ekiga::ContactCore *>(core.get ("contact-core"));
   presence_core = dynamic_cast<Ekiga::PresenceCore *>(core.get ("presence-core"));
-  call_core = dynamic_cast<Ekiga::CallCore *>(core.get ("call-core"));
+  chat_core = dynamic_cast<Ekiga::ChatCore *>(core.get ("chat-core"));
   history_source = dynamic_cast<History::Source*>(core.get ("call-history-store"));
   history_book = history_source->get_book ();
 
@@ -80,7 +80,7 @@ GtkFrontend::GtkFrontend (Ekiga::ServiceCore &core)
   chat_window = 
     chat_window_new_with_key (core, "/apps/ekiga/general/user_interface/chat_window");
 
-  conn = call_core->new_chat.connect (sigc::mem_fun (this, &GtkFrontend::on_new_chat));
+  conn = chat_core->new_chat.connect (sigc::mem_fun (this, &GtkFrontend::on_new_chat));
   connections.push_back (conn);
 }
 
@@ -131,9 +131,9 @@ GtkFrontend::get_call_history_view () const
 }
 
 
-void GtkFrontend::on_new_chat (Ekiga::CallManager & /*manager*/,
-                               std::string name,
-                               std::string uri)
+void GtkFrontend::on_new_chat (const Ekiga::ChatManager & /*manager*/,
+                               const std::string & name,
+                               const std::string & uri)
 {
   chat_window_add_page (CHAT_WINDOW (chat_window), name, uri);
   gtk_widget_show_all (GTK_WIDGET (chat_window));

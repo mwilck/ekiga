@@ -142,28 +142,6 @@ namespace Ekiga
       sigc::signal<void, CallManager &, Call &, std::string, Call::StreamType> stream_resumed;
 
 
-      /*** Instant Messaging ***/ 
-
-      /**
-       * NOTICE 
-       *
-       * At some point, Instant Messaging and its signals should be moved out of 
-       * the CallCore and put into a shiny new object. Probably the Presence 
-       * one. But that's a TODO for later. Later we could also introduce the notion
-       * of Conversation.
-       */
-
-      /** See call-protocol-manager.h for API 
-       */
-      bool send_message (const std::string & uri, 
-                         const std::string & message);
-
-      sigc::signal<void, CallManager &, std::string, std::string> im_failed;
-      sigc::signal<void, CallManager &, std::string, std::string, std::string> im_received;
-      sigc::signal<void, CallManager &, std::string, std::string> im_sent;
-      sigc::signal<void, CallManager &, std::string, std::string> new_chat;
-
-
       /*** Accounts ***/
       // TODO Should move too
       sigc::signal<void, CallManager &, std::string, std::string> mwi_event;

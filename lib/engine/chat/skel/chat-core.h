@@ -116,17 +116,17 @@ namespace Ekiga
       bool send_message (const std::string & uri, 
                          const std::string & message);
 
-      sigc::signal<void, const ChatManager &, const std::string &, const std::string &> im_failed;
-      sigc::signal<void, const ChatManager &, const std::string &, const std::string &, const std::string &> im_received;
-      sigc::signal<void, const ChatManager &, const std::string &, const std::string &> im_sent;
-      sigc::signal<void, const ChatManager &, const std::string &, const std::string &> new_chat;
+      sigc::signal<void, const ChatManager &, const std::string, const std::string> im_failed;
+      sigc::signal<void, const ChatManager &, const std::string, const std::string, const std::string> im_received;
+      sigc::signal<void, const ChatManager &, const std::string, const std::string> im_sent;
+      sigc::signal<void, const ChatManager &, const std::string, const std::string> new_chat;
 
 
   private:
-      void on_im_failed (const std::string &, const std::string &, ChatManager *manager);
-      void on_im_sent (const std::string &, const std::string &, ChatManager *manager);
-      void on_im_received (const std::string &, const std::string &, const std::string &, ChatManager *manager);
-      void on_new_chat (const std::string &, const std::string &, ChatManager *manager);
+      void on_im_failed (const std::string, const std::string, ChatManager *manager);
+      void on_im_sent (const std::string, const std::string, ChatManager *manager);
+      void on_im_received (const std::string, const std::string, const std::string, ChatManager *manager);
+      void on_new_chat (const std::string, const std::string, ChatManager *manager);
 
       std::set<ChatManager *> managers;
     };

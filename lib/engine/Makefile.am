@@ -1,4 +1,4 @@
-SUBDIRS = framework addressbook presence gui protocol videooutput videoinput audioinput audiooutput hal components chat
+SUBDIRS = framework addressbook presence chat gui protocol videooutput videoinput audioinput audiooutput hal components
 
 noinst_LTLIBRARIES = libekiga_engine.la
 
@@ -8,6 +8,7 @@ INCLUDES = 								\
 	-I$(top_srcdir)/lib/engine/gui/gtk-core				\
 	-I$(top_srcdir)/lib/engine/gui/gtk-frontend			\
 	-I$(top_srcdir)/lib/engine/framework/		 		\
+	-I$(top_srcdir)/lib/engine/chat/skel				\
 	-I$(top_srcdir)/lib/engine/protocol/skel			\
 	-I$(top_srcdir)/lib/engine/addressbook/skel			\
 	-I$(top_srcdir)/lib/engine/addressbook/call-history		\
