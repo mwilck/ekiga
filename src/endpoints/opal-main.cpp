@@ -39,6 +39,7 @@
 #include "contact-core.h"
 #include "presence-core.h"
 #include "call-core.h"
+#include "chat-core.h"
 #include "opal-gmconf-bridge.h"
 
 #include "manager.h"
@@ -63,10 +64,12 @@ opal_init (Ekiga::ServiceCore &core,
   Ekiga::ContactCore *contact_core = NULL;
   Ekiga::PresenceCore *presence_core = NULL;
   Ekiga::CallCore *call_core = NULL;
+  Ekiga::ChatCore *chat_core = NULL;
   
   contact_core = dynamic_cast<Ekiga::ContactCore *> (core.get ("contact-core"));
   presence_core = dynamic_cast<Ekiga::PresenceCore *> (core.get ("presence-core"));
   call_core = dynamic_cast<Ekiga::CallCore *> (core.get ("call-core"));
+  chat_core = dynamic_cast<Ekiga::ChatCore *> (core.get ("chat-core"));
 
   GMManager *manager = new GMManager (core);
   GMSIPEndpoint *sipEP = new GMSIPEndpoint (*manager, core);
@@ -76,6 +79,8 @@ opal_init (Ekiga::ServiceCore &core,
 
   call_core->add_manager (*manager);
   core.add (*manager); // FIXME temporary
+  chat_core->add_manager (*sipEP);
+
   new Opal::ConfBridge (*manager);
   // FIXME Service ?
 

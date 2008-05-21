@@ -46,6 +46,7 @@
 
 #include "manager.h"
 #include "presence-core.h"
+#include "chat-manager.h"
 #include "call-manager.h"
 #include "call-protocol-manager.h"
 
@@ -56,6 +57,7 @@ class Ekiga::PersonalDetails;
 
 class GMSIPEndpoint 
 :   public SIPEndPoint, 
+    public Ekiga::ChatManager,
     public Ekiga::CallProtocolManager,
     public Ekiga::PresenceFetcher,
     public Ekiga::PresencePublisher,
@@ -67,10 +69,6 @@ class GMSIPEndpoint
 public:
 
   GMSIPEndpoint (GMManager &ep, Ekiga::ServiceCore & core);
-
-  /**/
-  bool message (const std::string & uri, 
-                const std::string & message);
 
   /***/
   bool populate_menu (Ekiga::Contact &contact,
@@ -88,10 +86,14 @@ public:
   void unfetch (const std::string uri);
   void publish (const Ekiga::PersonalDetails & details);
 
-  /* ProtocolManager */
-  bool dial (const std::string & uri); 
+
+  /* ChatManager */
   bool send_message (const std::string & uri, 
                      const std::string & message);
+
+
+  /* ProtocolManager */
+  bool dial (const std::string & uri); 
 
 
   const std::string & get_protocol_name () const;
@@ -153,8 +155,8 @@ public:
 private:
   void on_dial (std::string uri);
 
-  void on_message (std::string name,
-                   std::string uri);
+  void on_message (const std::string & name,
+                   const std::string & uri);
 
 
   PMutex msgDataMutex;

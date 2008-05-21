@@ -248,6 +248,19 @@ GMSIPEndpoint::publish (const Ekiga::PersonalDetails & details)
 }
 
 
+bool GMSIPEndpoint::send_message (const std::string & _uri, 
+                                  const std::string & _message)
+{
+  if (!_uri.empty () && (_uri.find ("sip:") == 0 || _uri.find (':') == string::npos) && !_message.empty ()) {
+
+    Message (_uri.c_str (), _message.c_str ());
+    return true;
+  }
+
+  return false;
+}
+
+
 bool GMSIPEndpoint::dial (const std::string & uri)
 {
   PString token;
@@ -262,19 +275,6 @@ bool GMSIPEndpoint::dial (const std::string & uri)
 
     new dialer (ustr.str (), endpoint);
 
-    return true;
-  }
-
-  return false;
-}
-
-
-bool GMSIPEndpoint::send_message (const std::string & _uri, 
-                                  const std::string & _message)
-{
-  if (!_uri.empty () && (_uri.find ("sip:") == 0 || _uri.find (':') == string::npos) && !_message.empty ()) {
-
-    Message (_uri.c_str (), _message.c_str ());
     return true;
   }
 
@@ -943,8 +943,8 @@ void GMSIPEndpoint::on_dial (std::string uri)
 }
 
 
-void GMSIPEndpoint::on_message (std::string name,
-                                std::string uri)
+void GMSIPEndpoint::on_message (const std::string & name,
+                                const std::string & uri)
 {
   runtime.run_in_main (sigc::bind (new_chat.make_slot (), name, uri));
 }
