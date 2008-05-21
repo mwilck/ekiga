@@ -52,10 +52,18 @@ void CallCore::add_manager (CallManager &manager)
   manager_added.emit (manager);
 
   // IM stuff
-  manager.im_failed.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_im_failed), &manager));
-  manager.im_received.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_im_received), &manager));
-  manager.im_sent.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_im_sent), &manager));
-  manager.new_chat.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_new_chat), &manager));
+  // It should finally get out of the CallCore
+  // Currently IM Managers are CallProtocolManagers
+  // Of course, not all CallProtocolManagers implement IM
+  for (CallManager::iterator iter = manager.begin ();
+       iter != manager.end ();
+       iter++) {
+
+    (*iter)->im_failed.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_im_failed), &manager));
+    (*iter)->im_received.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_im_received), &manager));
+    (*iter)->im_sent.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_im_sent), &manager));
+    (*iter)->new_chat.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_new_chat), &manager));
+  }
 
   manager.mwi_event.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_mwi_event), &manager));
   manager.registration_event.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_registration_event), &manager));
@@ -93,6 +101,25 @@ bool CallCore::dial (const std::string uri)
        iter++) {
     if ((*iter)->dial (uri))
       return true;
+  }
+
+  return false;
+}
+
+
+bool CallCore::send_message (const std::string & uri, 
+                             const std::string & message)
+{
+  for (std::set<CallManager *>::iterator iter = managers.begin ();
+       iter != managers.end ();
+       iter++) {
+    for (CallManager::iterator miter = (*iter)->begin ();
+         miter != (*iter)->end ();
+         miter++) {
+
+      if ((*miter)->send_message (uri, message))
+        return true;
+    }
   }
 
   return false;

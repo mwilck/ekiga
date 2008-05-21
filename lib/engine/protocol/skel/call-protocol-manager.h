@@ -96,6 +96,56 @@ namespace Ekiga
 
 
       /*
+       * INSTANT MESSAGING 
+       */
+
+      /**
+       * NOTICE 
+       *
+       * At some point, Instant Messaging and its signals should be moved out of 
+       * the CallCore and put into a shiny new object. Probably the Presence 
+       * one. But that's a TODO for later. Later we could also introduce the notion
+       * of Conversation.
+       *
+       * Notice the current definition forces each CallProtocolManager to implement
+       * a send_message method. That is wrong. Please use a dummy function if needed
+       * before we implement something specific.
+       */
+
+      /** Send a message to the given uri
+       * @param: uri    : where to send the message
+       *         message: what to send to the remote peer
+       */
+      virtual bool send_message (const std::string & uri, 
+                                 const std::string & message) = 0;
+
+      /** This signal is emitted when the transmission of a message failed
+       * @param: uri    : where the message could not be sent
+       *         error  : a string describing the error that occured
+       */
+      sigc::signal<void, std::string, std::string> im_failed;
+
+      /** This signal is emitted when a message has been received
+       * @param: display_name: the display name of the sender
+       *         uri         : the uri of the sender
+       *         message     : the message sent by the sender
+       */
+      sigc::signal<void, std::string, std::string, std::string> im_received;
+
+      /** This signal is emitted when a message has been sent
+       * @param: uri    : where the message has been sent
+       *         message: the message that was sent
+       */
+      sigc::signal<void, std::string, std::string> im_sent;
+
+      /** This signal is emitted when a chat conversation should be initiated
+       * @param: uri            : the remote party
+       *         display_name   : the display name
+       */
+      sigc::signal<void, std::string, std::string> new_chat;
+
+
+      /*
        * Misc
        */
 

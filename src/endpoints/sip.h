@@ -90,6 +90,9 @@ public:
 
   /* ProtocolManager */
   bool dial (const std::string & uri); 
+  bool send_message (const std::string & uri, 
+                     const std::string & message);
+
 
   const std::string & get_protocol_name () const;
 

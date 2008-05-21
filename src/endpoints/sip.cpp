@@ -107,19 +107,6 @@ GMSIPEndpoint::GMSIPEndpoint (GMManager & ep, Ekiga::ServiceCore & _core)
 }
 
 
-bool GMSIPEndpoint::message (const std::string & _uri, 
-                             const std::string & _message)
-{
-  if (!_uri.empty () && (_uri.find ("sip:") == 0 || _uri.find (':') == string::npos) && !_message.empty ()) {
-    Message (_uri.c_str (), _message.c_str ());
-
-    return true;
-  }
-
-  return false;
-}
-
-
 bool GMSIPEndpoint::populate_menu (Ekiga::Contact &contact,
                                    Ekiga::MenuBuilder &builder)
 {
@@ -260,6 +247,7 @@ GMSIPEndpoint::publish (const Ekiga::PersonalDetails & details)
   }
 }
 
+
 bool GMSIPEndpoint::dial (const std::string & uri)
 {
   PString token;
@@ -279,6 +267,20 @@ bool GMSIPEndpoint::dial (const std::string & uri)
 
   return false;
 }
+
+
+bool GMSIPEndpoint::send_message (const std::string & _uri, 
+                                  const std::string & _message)
+{
+  if (!_uri.empty () && (_uri.find ("sip:") == 0 || _uri.find (':') == string::npos) && !_message.empty ()) {
+
+    Message (_uri.c_str (), _message.c_str ());
+    return true;
+  }
+
+  return false;
+}
+
 
 const std::string & GMSIPEndpoint::get_protocol_name () const
 {
@@ -798,7 +800,7 @@ GMSIPEndpoint::OnReceivedMESSAGE (G_GNUC_UNUSED OpalTransport & transport,
     std::string message_uri = (const char *) uri.AsString ();
     std::string _message = (const char *) pdu.GetEntityBody ();
 
-    runtime.run_in_main (sigc::bind (endpoint.im_received.make_slot (), display_name, message_uri, _message));
+    runtime.run_in_main (sigc::bind (im_received.make_slot (), display_name, message_uri, _message));
   }
 }
 
@@ -810,7 +812,7 @@ GMSIPEndpoint::OnMessageFailed (const SIPURL & messageUrl,
   SIPURL to = messageUrl;
   to.AdjustForRequestURI ();
   std::string uri = (const char *) to.AsString ();
-  runtime.run_in_main (sigc::bind (endpoint.im_failed.make_slot (), uri, 
+  runtime.run_in_main (sigc::bind (im_failed.make_slot (), uri, 
                                    _("Could not send message")));
 }
 
@@ -825,7 +827,7 @@ GMSIPEndpoint::Message (const PString & _to,
   to.AdjustForRequestURI ();
   std::string uri = (const char *) to.AsString ();
   std::string _message = (const char *) body;
-  runtime.run_in_main (sigc::bind (endpoint.im_sent.make_slot (), uri, _message));
+  runtime.run_in_main (sigc::bind (im_sent.make_slot (), uri, _message));
 }
 
 
@@ -944,5 +946,5 @@ void GMSIPEndpoint::on_dial (std::string uri)
 void GMSIPEndpoint::on_message (std::string name,
                                 std::string uri)
 {
-  runtime.run_in_main (sigc::bind (endpoint.new_chat.make_slot (), name, uri));
+  runtime.run_in_main (sigc::bind (new_chat.make_slot (), name, uri));
 }
