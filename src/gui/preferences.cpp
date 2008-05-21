@@ -1047,21 +1047,6 @@ personal_data_update_cb (G_GNUC_UNUSED GtkWidget *widget,
 }
 
 
-static void 
-nat_method_update_cb (G_GNUC_UNUSED GtkWidget *widget,
-		      gpointer data)
-{
-  // TODO
-  GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (data),
-                                              GTK_DIALOG_DESTROY_WITH_PARENT,
-                                              GTK_MESSAGE_ERROR,
-                                              GTK_BUTTONS_CLOSE,
-                                              "Please restart Ekiga. This button does not work yet in the SVN version. Sorry for the inconvenience, this will be fixed shortly.");
-  gtk_dialog_run (GTK_DIALOG (dialog));
-  gtk_widget_destroy (dialog);
-}
-
-
 static void
 image_filename_browse_cb (GtkWidget *b,
 			  gpointer data)
