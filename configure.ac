@@ -606,6 +606,8 @@ lib/engine/addressbook/call-history/Makefile
 lib/engine/addressbook/evolution/Makefile
 lib/engine/addressbook/ldap/Makefile
 lib/engine/addressbook/skel/Makefile
+lib/engine/chat/Makefile
+lib/engine/chat/skel/Makefile
 lib/engine/framework/Makefile
 lib/engine/presence/Makefile
 lib/engine/presence/avahi/Makefile

@@ -1,4 +1,4 @@
-SUBDIRS = framework addressbook presence gui protocol videooutput videoinput audioinput audiooutput hal components
+SUBDIRS = framework addressbook presence gui protocol videooutput videoinput audioinput audiooutput hal components chat
 
 noinst_LTLIBRARIES = libekiga_engine.la
 
@@ -65,7 +65,8 @@ libekiga_engine_la_LDFLAGS = -export-dynamic
 libekiga_engine_la_LIBADD = \
 	$(top_builddir)/lib/engine/gui/gtk-core/libgmgtk-core.la 					\
 	$(top_builddir)/lib/engine/gui/gtk-frontend/libgmgtk-frontend.la 				\
-	$(top_builddir)/lib/engine/protocol/skel/libgmprotocol.la 					\
+	$(top_builddir)/lib/engine/chat/skel/libgmchat.la 						\
+	$(top_builddir)/lib/engine/protocol/skel/libgmprotocol.la	 				\
 	$(top_builddir)/lib/engine/framework/libgmframework.la 						\
 	$(top_builddir)/lib/engine/addressbook/skel/libgmaddressbook.la 				\
 	$(top_builddir)/lib/engine/addressbook/call-history/libcall-history.la 				\
