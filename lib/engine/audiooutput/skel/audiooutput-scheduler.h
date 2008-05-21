@@ -61,7 +61,7 @@ namespace Ekiga
     std::string event_name;
     std::string file_name;
     bool enabled;
-    AudioOutputPrimarySecondary primarySecondary;
+    AudioOutputPS ps;
   };
   class AudioOutputCore;
 
@@ -74,15 +74,15 @@ namespace Ekiga
     ~AudioEventScheduler();
     void add_event_to_queue(const std::string & name, bool is_file_name, unsigned interval, unsigned repetitions);
     void remove_event_from_queue(const std::string & name);
-    void set_file_name(const std::string & event_name, const std::string & file_name, bool enabled, AudioOutputPrimarySecondary primarySecondary);
+    void set_file_name(const std::string & event_name, const std::string & file_name, AudioOutputPS ps, bool enabled);
   
   protected:
     void Main (void);
     void get_pending_event_list (std::vector<AudioEvent> & pending_event_list);
     unsigned long get_time_ms();
     unsigned get_time_to_next_event();
-    bool get_file_name(const std::string & event_name, std::string & file_name, AudioOutputPrimarySecondary & primarySecondary);
-    void load_wav(const std::string & event_name, bool is_file_name, char* & buffer, unsigned long & len, unsigned & channels, unsigned & sample_rate, unsigned & bps, AudioOutputPrimarySecondary & primarySecondary);
+    bool get_file_name(const std::string & event_name, std::string & file_name, AudioOutputPS & ps);
+    void load_wav(const std::string & event_name, bool is_file_name, char* & buffer, unsigned long & len, unsigned & channels, unsigned & sample_rate, unsigned & bps, AudioOutputPS & ps);
 
     PSyncPoint run_thread;
     bool end_thread;

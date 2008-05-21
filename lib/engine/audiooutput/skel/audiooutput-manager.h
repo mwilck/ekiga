@@ -83,7 +83,7 @@ namespace Ekiga
        * @param prim whether to set the primary or secondary device.
        * @param device the device to be used.
        */
-      virtual bool set_device (AudioOutputPrimarySecondary primarySecondary, const AudioOutputDevice & device) = 0;
+      virtual bool set_device (AudioOutputPS ps, const AudioOutputDevice & device) = 0;
 
       /** Open the device.
        * The device must be opened before calling set_frame_data(), set_buffer_size() and set_volume().
@@ -95,11 +95,11 @@ namespace Ekiga
        * @param bits_per_sample the number bits per sample.
        * @return true if the opening succeeded. False if the device cannot be opened.
        */
-      virtual bool open (AudioOutputPrimarySecondary primarySecondary, unsigned channels, unsigned samplerate, unsigned bits_per_sample) = 0;
+      virtual bool open (AudioOutputPS ps, unsigned channels, unsigned samplerate, unsigned bits_per_sample) = 0;
 
       /** Close the device.
        */
-      virtual void close (AudioOutputPrimarySecondary /*primarySecondary*/) {};
+      virtual void close (AudioOutputPS /*ps*/) {};
 
       /** Set the buffer size.
        * The buffer size must be set before calling set_frame_data().
@@ -108,7 +108,7 @@ namespace Ekiga
        * @param buffer_size the size of each buffer in bytes.
        * @param num_buffers the number of buffers.
        */
-      virtual void set_buffer_size (AudioOutputPrimarySecondary /*primarySecondary*/, unsigned /*buffer_size*/, unsigned /*num_buffers*/) {};
+      virtual void set_buffer_size (AudioOutputPS /*ps*/, unsigned /*buffer_size*/, unsigned /*num_buffers*/) {};
 
       /** Set one audio buffer.
        * Requires the device to be opened and the buffer size to be set.
@@ -118,7 +118,7 @@ namespace Ekiga
        * @param bytes_written returns the number of bytes actually written. Should be equal to size.
        * @return false if the writing failed.
        */
-      virtual bool set_frame_data (AudioOutputPrimarySecondary primarySecondary, 
+      virtual bool set_frame_data (AudioOutputPS ps, 
                                    const char *data,
                                    unsigned size,
                                    unsigned & bytes_written) = 0;
@@ -128,7 +128,7 @@ namespace Ekiga
        * @param prim wether the volume of the primary or secondary device shall be set.
        * @param volume the new volume (0..255).
        */
-      virtual void set_volume (AudioOutputPrimarySecondary /*primarySecondary*/, unsigned /* volume */ ) {};
+      virtual void set_volume (AudioOutputPS /*ps*/, unsigned /* volume */ ) {};
 
       /** Returns true if a specific device is supported by the manager.
        * If the device specified by sink and device_name is supported by the manager, true
@@ -148,20 +148,20 @@ namespace Ekiga
        * @param device the audio output device that was opened.
        * @param config the current audio output device configuration (current volume, etc.).
        */
-      sigc::signal<void, AudioOutputPrimarySecondary, AudioOutputDevice, AudioOutputConfig> device_opened;
+      sigc::signal<void, AudioOutputPS, AudioOutputDevice, AudioOutputConfig> device_opened;
 
       /** This signal is emitted when an audio output device is closed.
        * @param prim whether the primary or secondary audio output device was closed.
        * @param device the audio output device that was closed.
        */
-      sigc::signal<void, AudioOutputPrimarySecondary, AudioOutputDevice> device_closed;
+      sigc::signal<void, AudioOutputPS, AudioOutputDevice> device_closed;
 
       /** This signal is emitted when an error occurs when opening an audio output device.
        * @param prim whether the primary or secondary audio output device caused the error.
        * @param device the audio output device that caused the error.
        * @param error_code the audio output device error code.
        */
-      sigc::signal<void, AudioOutputPrimarySecondary, AudioOutputDevice, AudioOutputErrorCodes> device_error;
+      sigc::signal<void, AudioOutputPS, AudioOutputDevice, AudioOutputErrorCodes> device_error;
 
   protected:  
       typedef struct ManagerState {

@@ -159,7 +159,7 @@ namespace Ekiga
        * @param device the video input device that was opened.
        * @param config the current video input device configuration (current brightness, colour, etc.).
        */
-      sigc::signal<void, VideoInputDevice, VidInputConfig> device_opened;
+      sigc::signal<void, VideoInputDevice, VideoInputSettings> device_opened;
 
       /** This signal is emitted when a video input device is closed.
        * @param device the video input device that was closed.

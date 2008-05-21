@@ -881,7 +881,7 @@ get_audiooutput_devices_list (Ekiga::ServiceCore *core,
   std::vector <Ekiga::AudioOutputDevice> devices;
 
   device_list.clear();
-  audiooutput_core->get_audiooutput_devices(devices);
+  audiooutput_core->get_devices(devices);
 
   for (std::vector<Ekiga::AudioOutputDevice>::iterator iter = devices.begin ();
        iter != devices.end ();
@@ -904,7 +904,7 @@ get_audioinput_devices_list (Ekiga::ServiceCore *core,
   std::vector <Ekiga::AudioInputDevice> devices;
 
   device_list.clear();
-  audioinput_core->get_audioinput_devices(devices);
+  audioinput_core->get_devices(devices);
 
   for (std::vector<Ekiga::AudioInputDevice>::iterator iter = devices.begin ();
        iter != devices.end ();

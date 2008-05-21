@@ -54,7 +54,7 @@ namespace Ekiga
     AO_ERROR_WRITE
   };
 
-  enum AudioOutputPrimarySecondary {
+  enum AudioOutputPS {
     primary = 0,
     secondary
   };

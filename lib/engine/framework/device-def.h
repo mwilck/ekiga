@@ -104,19 +104,14 @@ namespace Ekiga
      else
        return false;
     }
-    
-    bool operator!=( const Device & rhs ) const
+
+    bool operator!=( const Device & rhs ) const 
     {
-     if ( (type   != rhs.type)   || 
-          (source != rhs.source) ||
-          (name   != rhs.name)   )
-       return true;
-     else
-       return false;
+      return (!(*this==rhs));
     }
 
     friend std::ostream& operator <<(std::ostream & stream, const Device & device){
-      stream << device.type << "/" << device.source << "/" << device.name;
+      stream << device.GetString();
       return stream;
     }
   };

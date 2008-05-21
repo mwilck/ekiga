@@ -1003,7 +1003,7 @@ on_display_size_changed_cb (Ekiga::VideoOutputManager & /* manager */, unsigned 
 void
 on_videoinput_device_opened_cb (Ekiga::VideoInputManager & /* manager */,
                                 Ekiga::VideoInputDevice & /* device */,
-                                Ekiga::VidInputConfig &  config,
+                                Ekiga::VideoInputSettings & settings,
                                 gpointer self)
 {
   gm_main_window_update_sensitivity (GTK_WIDGET (self), TRUE, FALSE, TRUE);
@@ -1013,11 +1013,11 @@ on_videoinput_device_opened_cb (Ekiga::VideoInputManager & /* manager */,
   mw = gm_mw_get_mw (GTK_WIDGET (self));
   g_return_if_fail (mw != NULL);
 
-  gtk_widget_set_sensitive (GTK_WIDGET (mw->video_settings_frame),  config.modifyable ? TRUE : FALSE);
-  GTK_ADJUSTMENT (mw->adj_whiteness)->value = config.whiteness;
-  GTK_ADJUSTMENT (mw->adj_brightness)->value = config.brightness;
-  GTK_ADJUSTMENT (mw->adj_colour)->value = config.colour;
-  GTK_ADJUSTMENT (mw->adj_contrast)->value = config.contrast;
+  gtk_widget_set_sensitive (GTK_WIDGET (mw->video_settings_frame),  settings.modifyable ? TRUE : FALSE);
+  GTK_ADJUSTMENT (mw->adj_whiteness)->value = settings.whiteness;
+  GTK_ADJUSTMENT (mw->adj_brightness)->value = settings.brightness;
+  GTK_ADJUSTMENT (mw->adj_colour)->value = settings.colour;
+  GTK_ADJUSTMENT (mw->adj_contrast)->value = settings.contrast;
 
   gtk_widget_queue_draw (GTK_WIDGET (mw->video_settings_frame));
 }
@@ -1169,12 +1169,12 @@ on_audioinput_device_error_cb (Ekiga::AudioInputManager & /* manager */,
 
 void
 on_audiooutput_device_opened_cb (Ekiga::AudioOutputManager & /*manager*/,
-                                 Ekiga::AudioOutputPrimarySecondary primarySecondary,
+                                 Ekiga::AudioOutputPS ps,
                                  Ekiga::AudioOutputDevice & /*device*/,
                                  Ekiga::AudioOutputConfig & config,
                                  gpointer self)
 {
-  if (primarySecondary == Ekiga::secondary)
+  if (ps == Ekiga::secondary)
     return;
 
   GmMainWindow *mw = NULL;
@@ -1192,11 +1192,11 @@ on_audiooutput_device_opened_cb (Ekiga::AudioOutputManager & /*manager*/,
 
 void 
 on_audiooutput_device_closed_cb (Ekiga::AudioOutputManager & /*manager*/, 
-                                 Ekiga::AudioOutputPrimarySecondary primarySecondary, 
+                                 Ekiga::AudioOutputPS ps, 
                                  Ekiga::AudioOutputDevice & /*device*/, 
                                  gpointer self)
 {
-  if (primarySecondary == Ekiga::secondary)
+  if (ps == Ekiga::secondary)
     return;
 
   GmMainWindow *mw = NULL;
@@ -1209,12 +1209,12 @@ on_audiooutput_device_closed_cb (Ekiga::AudioOutputManager & /*manager*/,
 
 void 
 on_audiooutput_device_error_cb (Ekiga::AudioOutputManager & /*manager */, 
-                                Ekiga::AudioOutputPrimarySecondary primarySecondary,
+                                Ekiga::AudioOutputPS ps,
                                 Ekiga::AudioOutputDevice & device, 
                                 Ekiga::AudioOutputErrorCodes error_code, 
                                 gpointer self)
 {
-  if (primarySecondary == Ekiga::secondary)
+  if (ps == Ekiga::secondary)
     return;
 
   gchar *dialog_title = NULL;
@@ -2589,8 +2589,8 @@ audio_volume_window_shown_cb (GtkWidget * /*widget*/,
   Ekiga::AudioInputCore *audioinput_core = dynamic_cast<Ekiga::AudioInputCore *> (mw->core.get ("audioinput-core"));
   Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (mw->core.get ("audiooutput-core"));
 
-  audioinput_core->start_average_collection();
-  audiooutput_core->start_average_collection();
+  audioinput_core->set_average_collection(true);
+  audiooutput_core->set_average_collection(true);
   mw->levelmeter_timeout_id = g_timeout_add_full (G_PRIORITY_DEFAULT_IDLE, 50, on_signal_level_refresh_cb, data, NULL);
 }
 
@@ -2607,8 +2607,8 @@ audio_volume_window_hidden_cb (GtkWidget * /*widget*/,
   Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (mw->core.get ("audiooutput-core"));
 
   g_source_remove (mw->levelmeter_timeout_id);
-  audioinput_core->stop_average_collection();
-  audiooutput_core->stop_average_collection();
+  audioinput_core->set_average_collection(false);
+  audiooutput_core->set_average_collection(false);
 }
 
 static void 

@@ -120,28 +120,28 @@ namespace Ekiga
 
       /** See hal-manager.h for the API
        */
-      sigc::signal<void, const std::string &, const std::string &, unsigned, HalManager*> video_input_device_added;
-      sigc::signal<void, const std::string &, const std::string &, unsigned, HalManager*> video_input_device_removed;
+      sigc::signal<void, const std::string &, const std::string &, unsigned, HalManager*> videoinput_device_added;
+      sigc::signal<void, const std::string &, const std::string &, unsigned, HalManager*> videoinput_device_removed;
 
-      sigc::signal<void, const std::string &, const std::string &, HalManager*> audio_input_device_added;
-      sigc::signal<void, const std::string &, const std::string &, HalManager*> audio_input_device_removed;
+      sigc::signal<void, const std::string &, const std::string &, HalManager*> audioinput_device_added;
+      sigc::signal<void, const std::string &, const std::string &, HalManager*> audioinput_device_removed;
 
-      sigc::signal<void, const std::string &, const std::string &, HalManager*> audio_output_device_added;
-      sigc::signal<void, const std::string &, const std::string &, HalManager*> audio_output_device_removed;
+      sigc::signal<void, const std::string &, const std::string &, HalManager*> audiooutput_device_added;
+      sigc::signal<void, const std::string &, const std::string &, HalManager*> audiooutput_device_removed;
 
       sigc::signal<void, const std::string &, const std::string &, HalManager*> network_interface_up;
       sigc::signal<void, const std::string &, const std::string &, HalManager*> network_interface_down;
 
   private:
 
-      void on_video_input_device_added (std::string source, std::string device, unsigned capabilities, HalManager* manager);
-      void on_video_input_device_removed (std::string source, std::string device, unsigned capabilities, HalManager* manager);
+      void on_videoinput_device_added (std::string source, std::string device, unsigned capabilities, HalManager* manager);
+      void on_videoinput_device_removed (std::string source, std::string device, unsigned capabilities, HalManager* manager);
 
-      void on_audio_input_device_added (std::string source, std::string device, HalManager* manager);
-      void on_audio_input_device_removed (std::string source, std::string device, HalManager* manager);
+      void on_audioinput_device_added (std::string source, std::string device, HalManager* manager);
+      void on_audioinput_device_removed (std::string source, std::string device, HalManager* manager);
 
-      void on_audio_output_device_added (std::string sink, std::string device, HalManager* manager);
-      void on_audio_output_device_removed (std::string sink, std::string device, HalManager* manager);
+      void on_audiooutput_device_added (std::string sink, std::string device, HalManager* manager);
+      void on_audiooutput_device_removed (std::string sink, std::string device, HalManager* manager);
 
       void on_network_interface_up (std::string interface_name, std::string ip4_address, HalManager* manager);
       void on_network_interface_down (std::string interface_name, std::string ip4_address, HalManager* manager);

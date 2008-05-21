@@ -42,7 +42,7 @@ using namespace Ekiga;
 
 AudioEventScheduler::AudioEventScheduler (AudioOutputCore& _audio_output_core)
 : PThread (1000, NoAutoDeleteThread, HighestPriority, "AudioEventScheduler"),
-    audio_output_core (_audio_output_core)
+  audio_output_core (_audio_output_core)
 {
   end_thread = false;
   // Since windows does not like to restart a thread that 
@@ -71,7 +71,7 @@ void AudioEventScheduler::Main ()
   char* buffer = NULL;
   unsigned long buffer_len = 0;
   unsigned channels, sample_rate, bps;
-  AudioOutputPrimarySecondary primarySecondary;
+  AudioOutputPS ps;
 
   thread_created.Signal ();
 
@@ -90,9 +90,9 @@ void AudioEventScheduler::Main ()
 
     while (pending_event_list.size() > 0) {
       event = *(pending_event_list.begin()); pending_event_list.erase(pending_event_list.begin());
-      load_wav(event.name, event.is_file_name, buffer, buffer_len, channels, sample_rate, bps, primarySecondary);
+      load_wav(event.name, event.is_file_name, buffer, buffer_len, channels, sample_rate, bps, ps);
       if (buffer) {
-         audio_output_core.play_buffer (primarySecondary, buffer, buffer_len, channels, sample_rate, bps);
+         audio_output_core.play_buffer (ps, buffer, buffer_len, channels, sample_rate, bps);
         free (buffer);
         buffer = NULL;
       }
@@ -197,7 +197,7 @@ void AudioEventScheduler::remove_event_from_queue(const std::string & name)
   }
 }
 
-void AudioEventScheduler::load_wav(const std::string & event_name, bool is_file_name, char* & buffer, unsigned long & len, unsigned & channels, unsigned & sample_rate, unsigned & bps, AudioOutputPrimarySecondary & primarySecondary)
+void AudioEventScheduler::load_wav(const std::string & event_name, bool is_file_name, char* & buffer, unsigned long & len, unsigned & channels, unsigned & sample_rate, unsigned & bps, AudioOutputPS & ps)
 {
   PWAVFile* wav = NULL;
   std::string file_name;
@@ -208,10 +208,10 @@ void AudioEventScheduler::load_wav(const std::string & event_name, bool is_file_
   // Shall we also try event name as file name?
   if (is_file_name) {
     file_name = event_name;
-    primarySecondary = primary;
+    ps = primary;
   }
   else 
-    if (!get_file_name(event_name, file_name, primarySecondary)) // if this event is disabled
+    if (!get_file_name(event_name, file_name, ps)) // if this event is disabled
       return;
 
   PTRACE(4, "AEScheduler\tTrying to load " << file_name << " for event " << event_name);
@@ -245,7 +245,7 @@ void AudioEventScheduler::load_wav(const std::string & event_name, bool is_file_
 }
 
 
-bool AudioEventScheduler::get_file_name(const std::string & event_name, std::string & file_name, AudioOutputPrimarySecondary & primarySecondary)
+bool AudioEventScheduler::get_file_name(const std::string & event_name, std::string & file_name, AudioOutputPS & ps)
 {
   PWaitAndSignal m(event_file_list_mutex);
 
@@ -257,7 +257,7 @@ bool AudioEventScheduler::get_file_name(const std::string & event_name, std::str
 
     if (iter->event_name == event_name) {
       file_name = iter->file_name;
-      primarySecondary = iter->primarySecondary;
+      ps = iter->ps;
       return (iter->enabled);
     }
   }
@@ -265,7 +265,7 @@ bool AudioEventScheduler::get_file_name(const std::string & event_name, std::str
   return false;
 }
 
-void AudioEventScheduler::set_file_name(const std::string & event_name, const std::string & file_name, bool enabled, AudioOutputPrimarySecondary primarySecondary)
+void AudioEventScheduler::set_file_name(const std::string & event_name, const std::string & file_name,  AudioOutputPS ps, bool enabled)
 {
   PWaitAndSignal m(event_file_list_mutex);
 
@@ -278,7 +278,7 @@ void AudioEventScheduler::set_file_name(const std::string & event_name, const st
     if (iter->event_name == event_name) {
       iter->file_name = file_name;
       iter->enabled = enabled;
-      iter->primarySecondary = primarySecondary;
+      iter->ps = ps;
       found = true;
       break;
     }
@@ -289,7 +289,7 @@ void AudioEventScheduler::set_file_name(const std::string & event_name, const st
     event_file_name.event_name = event_name;
     event_file_name.file_name = file_name;
     event_file_name.enabled = enabled;
-    event_file_name.primarySecondary = secondary;
+    event_file_name.ps = secondary;
     event_file_list.push_back(event_file_name);
   }
 }

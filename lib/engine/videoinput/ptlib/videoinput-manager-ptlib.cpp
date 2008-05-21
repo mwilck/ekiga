@@ -135,14 +135,14 @@ bool GMVideoInputManager_ptlib::open (unsigned width, unsigned height, unsigned 
   input_device->GetParameters (&whiteness, &brightness, &colour, &contrast, &hue);
   current_state.opened = true;
 
-  Ekiga::VidInputConfig config;
-  config.whiteness = whiteness >> 8;
-  config.brightness = brightness >> 8;
-  config.colour = colour >> 8;
-  config.contrast = contrast >> 8;
-  config.modifyable = true;
+  Ekiga::VideoInputSettings settings;
+  settings.whiteness = whiteness >> 8;
+  settings.brightness = brightness >> 8;
+  settings.colour = colour >> 8;
+  settings.contrast = contrast >> 8;
+  settings.modifyable = true;
 
-  runtime.run_in_main (sigc::bind (device_opened.make_slot (), current_state.device, config));
+  runtime.run_in_main (sigc::bind (device_opened.make_slot (), current_state.device, settings));
 
   return true;
 }

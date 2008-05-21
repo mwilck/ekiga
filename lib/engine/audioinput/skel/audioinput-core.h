@@ -57,47 +57,15 @@
 
 namespace Ekiga
 {
-  typedef struct AudioDeviceConfig {
-    bool active;
-    unsigned channels;
-    unsigned samplerate;
-    unsigned bits_per_sample;
-    unsigned buffer_size;
-    unsigned num_buffers;
-    unsigned volume;
-  };
-
   class AudioInputManager;
   class AudioInputCore;
-				      
-  class AudioPreviewManager : public PThread
-  {
-    PCLASSINFO(AudioPreviewManager, PThread);
-  
-  public:
-    AudioPreviewManager(AudioInputCore& _audio_input_core, AudioOutputCore& _audio_output_core);
-    ~AudioPreviewManager();
-    virtual void start(){};
-    virtual void stop(){};
-  
-  protected:
-    void Main (void);
-    bool stop_thread;
-    char* frame;
-    PMutex quit_mutex;     /* To exit */
-    PSyncPoint thread_sync_point;
-    AudioInputCore& audio_input_core;
-    AudioOutputCore& audio_output_core;
-  };
 
 /**
- * @defgroup audioinput Audio AudioInput
+ * @defgroup audioinput
  * @{
  */
 
-
-
-  /** Core object for the audio auioinput support
+  /** Core object for the audio inputsupport
    */
   class AudioInputCore
     : public Service
@@ -105,15 +73,20 @@ namespace Ekiga
 
   public:
 
-      /* The constructor
-      */
+      /** The constructor
+       * @param _runtime reference to Ekiga runtime.
+       * @param _videooutput_core reference ot the audio output core.
+       */
       AudioInputCore (Ekiga::Runtime & _runtime, AudioOutputCore& _audio_output_core);
 
-      /* The destructor
+      /** The destructor
       */
       ~AudioInputCore ();
 
+      /** Set up gmconf bridge
+       */
       void setup_conf_bridge();
+
 
       /*** Service Implementation ***/
 
@@ -134,56 +107,150 @@ namespace Ekiga
       /** Adds a AudioInputManager to the AudioInputCore service.
        * @param The manager to be added.
        */
-       void add_manager (AudioInputManager &manager);
+      void add_manager (AudioInputManager &manager);
 
       /** Triggers a callback for all Ekiga::AudioInputManager sources of the
        * AudioInputCore service.
        */
-       void visit_managers (sigc::slot<bool, AudioInputManager &> visitor);
+      void visit_managers (sigc::slot<bool, AudioInputManager &> visitor);
 
       /** This signal is emitted when a Ekiga::AudioInputManager has been
        * added to the AudioInputCore Service.
        */
-       sigc::signal<void, AudioInputManager &> manager_added;
+      sigc::signal<void, AudioInputManager &> manager_added;
 
 
-      void get_audioinput_devices(std::vector <AudioInputDevice> & audioinput_devices);
+      /*** AudioInput Device Management ***/
 
-      void set_audioinput_device(const AudioInputDevice & audioinput_device);
-      
-      /*** VidInput Management ***/                 
+      /** Get a list of all devices supported by all managers registered to the core.
+       * @param devices a vector of device names to be filled by the core.
+       */
+      void get_devices(std::vector <AudioInputDevice> & devices);
 
+      /** Set a specific device
+       * This function sets the current audio input device. This function can
+       * also be used while in a stream or in preview mode. In that case the old
+       * device is closed and the new device opened automatically. 
+       * @param device the new device to be used.
+       */
+      void set_device(const AudioInputDevice & device);
+
+      /** Inform the core of an added audioinout device
+       * This function is called by the HalCore when an audio device is added.
+       * It determines responsible managers for that specific device and informs the 
+       * GUI about the device that was added (via device_added signal). 
+       * In case the added device was the desired device and we fell back, 
+       * we will reactivate it.
+       * @param source the device source (e.g. alsa).
+       * @param device_name the name of the added device.
+       * @param manager the HalManger detected the addition.
+       */
+      void add_device (const std::string & source, const std::string & device_name, HalManager* manager);
+
+      /** Inform the core of a removed audioinput device
+       * This function is called by the HalCore when an audio device is removed.
+       * It determines responsible managers for that specific device and informs the 
+       * GUI about the device that was removed (via device_removed signal). 
+       * In case the removed device was the current device we fall back to the
+       * fallback device.
+       * @param source the device source (e.g. alsa).
+       * @param device_name the name of the removed device.
+       * @param manager the HalManger detected the removal.
+       */
+      void remove_device (const std::string & source, const std::string & device_name, HalManager* manager);
+
+ 
+      /*** AudioInput Stream and Preview Management ***/
+
+      /** Start the preview mode
+       * Contrary to the video input core this can only be done if 
+       * the streaming mode NOT active (responsability of the UI).
+       * @param channels the number of channels (1 or 2).
+       * @param samplerate the samplerate.
+       * @param bits_per_sample the number of bits per sample (e.g. 8, 16).
+       */
       void start_preview (unsigned channels, unsigned samplerate, unsigned bits_per_sample);
 
+      /** Stop the preview mode
+       */
       void stop_preview ();
 
+
+      /** Set the number and size of buffers for streaming mode
+       * Will be applied the next time the device is opened.
+       * @param buffer_size the size of each buffer in byte.
+       * @param num_buffers the number of buffers.
+       */
       void set_stream_buffer_size (unsigned buffer_size, unsigned num_buffers);
 
+      /** Start the stream mode
+       * Contrary to the video input core this can only be done if 
+       * preview is NOT active (responsability of the UI)
+       * @param channels the number of channels (1 or 2).
+       * @param samplerate the samplerate.
+       * @param bits_per_sample the number of bits per sample (e.g. 8, 16).
+       */ 
       void start_stream (unsigned channels, unsigned samplerate, unsigned bits_per_sample);
 
+      /** Stop the stream mode
+       */
       void stop_stream ();
 
+
+      /** Get one audio buffer from the current manager.
+       * This function will block until the buffer is completely filled.
+       * Requires the stream or the preview (when being called from the 
+       * VideoPreviewManager) to be started.
+       * In case the device returns an error reading the frame, get_frame_data()
+       * falls back to the fallback device and reads the frame from there. Thus
+       * get_frame_data() always returns a frame.
+       * In case a new volume has bee set, it will be applied here.
+       * @param data a pointer to the buffer that is to be filled. The memory has to be allocated already.
+       * @param size the number of bytes to be read
+       * @param bytes_read number of bytes actually read.
+       */
       void get_frame_data (char *data, unsigned size, unsigned & bytes_read);
 
+      /** Set the volume of the next opportunity
+       * Sets the volume to the specified value the next time
+       * get_frame_data() is called.
+       * @param volume The new volume level (0..255).
+       */
       void set_volume (unsigned volume);
 
-      void start_average_collection () { calculate_average = true; }
+      /** Turn average collecion on and off
+       * The average values can be collected via get_average_level()
+       * @param on_off whether to turn the collection on or off.
+       */
+      void set_average_collection (bool on_off) { calculate_average = on_off; }
 
-      void stop_average_collection () { calculate_average = false; }
-
+      /** Get the average volume level
+       * Get the average volume level ove the last read buffer.
+       * @return the average volume level.
+       */
       float get_average_level () { return average_level; }
 
-      void add_device (const std::string & source, const std::string & device, HalManager* manager);
-      void remove_device (const std::string & source, const std::string & device, HalManager* manager);
 
       /*** VidInput Related Signals ***/
-      
+
       /** See audioinput-manager.h for the API
        */
       sigc::signal<void, AudioInputManager &, AudioInputDevice &, AudioInputConfig&> device_opened;
       sigc::signal<void, AudioInputManager &, AudioInputDevice &> device_closed;
       sigc::signal<void, AudioInputManager &, AudioInputDevice &, AudioInputErrorCodes> device_error;
+
+      /** This signal is emitted when an audio device input has been added to the system.
+       * This signal will be emitted if add_device was called with a device name and
+       * a manager claimed support for this device.
+       * @param device the audio input device that was added.
+       */
       sigc::signal<void, AudioInputDevice> device_added;
+
+      /** This signal is emitted when an audio input device has been removed from the system.
+       * This signal will be emitted if remove_device was called with a device name and
+       * a manager claimed support for this device.
+       * @param device the audio input device that was removed.
+       */
       sigc::signal<void, AudioInputDevice> device_removed;
 
   private:
@@ -193,28 +260,64 @@ namespace Ekiga
       void on_device_closed (AudioInputDevice device, AudioInputManager *manager);
       void on_device_error  (AudioInputDevice device, AudioInputErrorCodes error_code, AudioInputManager *manager);
 
-      void internal_set_audioinput_device(const AudioInputDevice & audioinput_device);
+      void internal_set_device(const AudioInputDevice & device);
+      void internal_set_manager (const AudioInputDevice & device);
+      void internal_set_fallback();
+
       void internal_open (unsigned channels, unsigned samplerate, unsigned bits_per_sample);
       void internal_close();
-      void internal_set_device (const AudioInputDevice & audioinput_device);
-      void internal_set_fallback();
+
       void calculate_average_level (const short *buffer, unsigned size);
 
+  private:
+
+      class AudioPreviewManager : public PThread
+      {
+        PCLASSINFO(AudioPreviewManager, PThread);
+
+      public:
+        AudioPreviewManager(AudioInputCore& _audio_input_core, AudioOutputCore& _audio_output_core);
+        ~AudioPreviewManager();
+        virtual void start(){};
+        virtual void stop(){};
+
+      protected:
+        void Main (void);
+        bool stop_thread;
+        char* frame;
+        PMutex quit_mutex;     /* To exit */
+        PSyncPoint thread_sync_point;
+        AudioInputCore& audio_input_core;
+        AudioOutputCore& audio_output_core;
+      };
+
+      typedef struct DeviceConfig {
+        bool active;
+
+        unsigned channels;
+        unsigned samplerate;
+        unsigned bits_per_sample;
+
+        unsigned buffer_size;
+        unsigned num_buffers;
+      };
+
+  private:
+
       Ekiga::Runtime & runtime;
-	    
       std::set<AudioInputManager *> managers;
 
-      AudioDeviceConfig preview_config;
-      AudioDeviceConfig stream_config;
-      unsigned new_preview_volume;
-      unsigned new_stream_volume;
+      DeviceConfig preview_config;
+      DeviceConfig stream_config;
 
       AudioInputManager* current_manager;
       AudioInputDevice desired_device;
       AudioInputDevice current_device;
+      unsigned current_volume;
+      unsigned desired_volume;
 
-      PMutex var_mutex;      /* To protect variables that are read and written */
-      PMutex vol_mutex;      /* To protect variables that are read and written */
+      PMutex core_mutex;
+      PMutex volume_mutex;
 
       AudioPreviewManager preview_manager;
       AudioInputCoreConfBridge* audioinput_core_conf_bridge;

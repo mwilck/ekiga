@@ -97,13 +97,13 @@ bool GMVideoInputManager_mlogo::open (unsigned width, unsigned height, unsigned 
 
   current_state.opened  = true;
 
-  Ekiga::VidInputConfig config;
-  config.whiteness = 127;
-  config.brightness = 127;
-  config.colour = 127;
-  config.contrast = 127;
-  config.modifyable = false;
-  runtime.run_in_main (sigc::bind (device_opened.make_slot (), current_state.device, config));
+  Ekiga::VideoInputSettings settings;
+  settings.whiteness = 127;
+  settings.brightness = 127;
+  settings.colour = 127;
+  settings.contrast = 127;
+  settings.modifyable = false;
+  runtime.run_in_main (sigc::bind (device_opened.make_slot (), current_state.device, settings));
   
   return true;
 }

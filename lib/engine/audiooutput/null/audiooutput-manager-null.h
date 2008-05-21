@@ -59,13 +59,13 @@
 
       virtual void get_devices (std::vector <Ekiga::AudioOutputDevice> & devices);
 
-      virtual bool set_device (Ekiga::AudioOutputPrimarySecondary primarySecondary, const Ekiga::AudioOutputDevice & device);
+      virtual bool set_device (Ekiga::AudioOutputPS ps, const Ekiga::AudioOutputDevice & device);
 
-      virtual bool open (Ekiga::AudioOutputPrimarySecondary primarySecondary, unsigned channels, unsigned samplerate, unsigned bits_per_sample);
+      virtual bool open (Ekiga::AudioOutputPS ps, unsigned channels, unsigned samplerate, unsigned bits_per_sample);
 
-      virtual void close(Ekiga::AudioOutputPrimarySecondary primarySecondary);
+      virtual void close(Ekiga::AudioOutputPS ps);
 
-      virtual bool set_frame_data (Ekiga::AudioOutputPrimarySecondary primarySecondary, 
+      virtual bool set_frame_data (Ekiga::AudioOutputPS ps, 
                                    const char *data, 
                                    unsigned size,
                                    unsigned & bytes_written);

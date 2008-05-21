@@ -79,7 +79,7 @@ void AudioInputCoreConfBridge::on_property_changed (std::string key, GmConfEntry
       device.name = AUDIO_INPUT_FALLBACK_DEVICE_NAME;
     }
 
-    audioinput_core.set_audioinput_device (device);
+    audioinput_core.set_device (device);
   }
 }
 

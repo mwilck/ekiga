@@ -149,21 +149,21 @@ void HalManager_dbus::device_added_cb (const char *device)
   if (hal_device.category == "alsa") {
 
     if (hal_device.type == "capture") {
-      audio_input_device_added.emit(hal_device.category, hal_device.name);
+      audioinput_device_added.emit(hal_device.category, hal_device.name);
     }
     else if (hal_device.type == "playback") {
-      audio_output_device_added.emit(hal_device.category, hal_device.name);
+      audiooutput_device_added.emit(hal_device.category, hal_device.name);
     }
   }
   else if (hal_device.category == "oss") {
-    audio_input_device_added.emit(hal_device.category, hal_device.name);
-    audio_output_device_added.emit(hal_device.category, hal_device.name);
+    audioinput_device_added.emit(hal_device.category, hal_device.name);
+    audiooutput_device_added.emit(hal_device.category, hal_device.name);
   }
   else if (hal_device.category == "video4linux") {
       if (hal_device.video_capabilities & 0x01) 
-        video_input_device_added.emit(hal_device.category, hal_device.name, 0x01);
+        videoinput_device_added.emit(hal_device.category, hal_device.name, 0x01);
       if (hal_device.video_capabilities & 0x02) 
-        video_input_device_added.emit(hal_device.category, hal_device.name, 0x02);
+        videoinput_device_added.emit(hal_device.category, hal_device.name, 0x02);
   }
 
 }
@@ -187,21 +187,21 @@ void HalManager_dbus::device_removed_cb (const char *device)
     if (iter->category == "alsa") {
   
       if (iter->type == "capture") {
-        audio_input_device_removed.emit(iter->category, iter->name);
+        audioinput_device_removed.emit(iter->category, iter->name);
       }
       else if (iter->type == "playback") {
-        audio_output_device_removed.emit(iter->category, iter->name);
+        audiooutput_device_removed.emit(iter->category, iter->name);
       }
     }
     else if (iter->category == "oss") {
-      audio_input_device_removed.emit(iter->category, iter->name);
-      audio_output_device_removed.emit(iter->category, iter->name);
+      audioinput_device_removed.emit(iter->category, iter->name);
+      audiooutput_device_removed.emit(iter->category, iter->name);
     }
     else if (iter->category == "video4linux") {
       if (iter->video_capabilities & 0x01) 
-        video_input_device_removed.emit(iter->category, iter->name, 0x01);
+        videoinput_device_removed.emit(iter->category, iter->name, 0x01);
       if (iter->video_capabilities & 0x02) 
-        video_input_device_removed.emit(iter->category, iter->name, 0x02);
+        videoinput_device_removed.emit(iter->category, iter->name, 0x02);
 	
     }
 
