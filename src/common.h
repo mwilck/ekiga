@@ -55,6 +55,7 @@
 
 #define GENERAL_KEY         "/apps/" PACKAGE_NAME "/general/"
 #define USER_INTERFACE_KEY "/apps/" PACKAGE_NAME "/general/user_interface/"
+#define CONTACTS_KEY "/apps/" PACKAGE_NAME "/contacts/"
 #define VIDEO_DISPLAY_KEY USER_INTERFACE_KEY "video_display/"
 #define SOUND_EVENTS_KEY  "/apps/" PACKAGE_NAME "/general/sound_events/"
 #define AUDIO_DEVICES_KEY "/apps/" PACKAGE_NAME "/devices/audio/"
