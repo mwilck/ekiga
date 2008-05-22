@@ -343,6 +343,9 @@ codecs_list_changed_nt (G_GNUC_UNUSED gpointer id,
   if (clist != curlist)
     codecs_box_set_codecs (self, list);
 
+  g_slist_foreach (list, (GFunc) g_free, NULL);
+  g_slist_free (list);
+
   g_slist_foreach (current_list, (GFunc) g_free, NULL);
   g_slist_free (current_list);
 }
