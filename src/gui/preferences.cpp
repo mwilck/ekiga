@@ -402,10 +402,11 @@ gm_pw_init_interface_page (GtkWidget *prefs_window,
   /* GnomeMeeting GUI */
   subsection =
     gnome_prefs_subsection_new (prefs_window, container,
-                                _("Ekiga GUI"), 1, 2);
+                                _("User Interface"), 2, 2);
 
   gnome_prefs_toggle_new (subsection, _("Start _hidden"), USER_INTERFACE_KEY "start_hidden", _("If enabled, Ekiga will start hidden provided that the notification area is present in the GNOME panel"), 1);
 
+  gnome_prefs_toggle_new (subsection, _("Show offline _contacts"), CONTACTS_KEY "show_offline_contacts", _("If enabled, offline contacts will be shown in the roster"), 2);
 
   /* Video Display */
   subsection =
