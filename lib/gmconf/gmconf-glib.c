@@ -1380,7 +1380,7 @@ gm_conf_entry_get_list (GmConfEntry *entry)
 {
   g_return_val_if_fail (entry != NULL, NULL);
 
-  return g_slist_copy (entry_get_list (entry));
+  return string_list_deep_copy (entry_get_list (entry));
 }
 
 void
