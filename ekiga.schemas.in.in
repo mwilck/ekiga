@@ -1064,6 +1064,29 @@
       </locale>
     </schema>
     <schema>		
+      <key>/schemas/apps/@PACKAGE_NAME@/contacts/roster_folded_groups</key>
+      <applyto>/apps/@PACKAGE_NAME@/contacts/roster_folded_groups</applyto>
+      <owner>Ekiga</owner>
+      <type>list</type>
+      <list_type>string</list_type>
+      <default></default>
+      <locale name="C">
+	<short>List of folded groups in the roster</short>
+	<long></long>
+      </locale>
+    </schema>
+    <schema>		
+      <key>/schemas/apps/@PACKAGE_NAME@/contacts/show_offline_contacts</key>
+      <applyto>/apps/@PACKAGE_NAME@/contacts/show_offline_contacts</applyto>
+      <owner>Ekiga</owner>
+      <type>bool</type>
+      <default>false</default>
+      <locale name="C">
+	<short>Show offline contacts</short>
+	<long></long>
+      </locale>
+    </schema>
+    <schema>		
       <key>/schemas/apps/@PACKAGE_NAME@/contacts/remote_addressbooks_list</key>
       <applyto>/apps/@PACKAGE_NAME@/contacts/remote_addressbooks_list</applyto>
       <owner>Ekiga</owner>

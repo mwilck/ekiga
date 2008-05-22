@@ -62,6 +62,7 @@ struct _RosterViewGtkPrivate
   GtkWidget *vbox;
   GtkWidget *scrolled_window;
   GSList *folded_groups;
+  gboolean show_offline_contacts;
 };
 
 /* the different type of things which will appear in the view */
@@ -566,28 +567,34 @@ on_presentity_added (Ekiga::Cluster &/*cluster*/,
     roster_view_gtk_find_iter_for_group (self, &heap_iter, *group, &group_iter);
     roster_view_gtk_find_iter_for_presentity (self, &group_iter, presentity, &iter);
 
-    gtk_tree_store_set (self->priv->store, &iter,
-			COLUMN_TYPE, TYPE_PRESENTITY,
-			COLUMN_PRESENTITY, &presentity,
-			COLUMN_NAME, presentity.get_name ().c_str (),
-			COLUMN_STATUS, presentity.get_status ().c_str (),
-			COLUMN_PRESENCE, presentity.get_presence ().c_str (),
-                        COLUMN_ACTIVE, active ? "black" : "gray", 
-			-1);
+    if (active || self->priv->show_offline_contacts) 
+      gtk_tree_store_set (self->priv->store, &iter,
+                          COLUMN_TYPE, TYPE_PRESENTITY,
+                          COLUMN_PRESENTITY, &presentity,
+                          COLUMN_NAME, presentity.get_name ().c_str (),
+                          COLUMN_STATUS, presentity.get_status ().c_str (),
+                          COLUMN_PRESENCE, presentity.get_presence ().c_str (),
+                          COLUMN_ACTIVE, active ? "black" : "gray", 
+                          -1);
+    else
+      gtk_tree_store_remove (self->priv->store, &iter);
   }
 
   if (groups.empty ()) {
 
     roster_view_gtk_find_iter_for_group (self, &heap_iter, _("Unsorted"), &group_iter);
     roster_view_gtk_find_iter_for_presentity (self, &group_iter, presentity, &iter);
-    gtk_tree_store_set (self->priv->store, &iter,
-			COLUMN_TYPE, TYPE_PRESENTITY,
-			COLUMN_PRESENTITY, &presentity,
-			COLUMN_NAME, presentity.get_name ().c_str (),
-			COLUMN_STATUS, presentity.get_status ().c_str (),
-			COLUMN_PRESENCE, presentity.get_presence ().c_str (),
-                        COLUMN_ACTIVE, active ? "black" : "gray", 
-			-1);
+    if (active || self->priv->show_offline_contacts) 
+      gtk_tree_store_set (self->priv->store, &iter,
+                          COLUMN_TYPE, TYPE_PRESENTITY,
+                          COLUMN_PRESENTITY, &presentity,
+                          COLUMN_NAME, presentity.get_name ().c_str (),
+                          COLUMN_STATUS, presentity.get_status ().c_str (),
+                          COLUMN_PRESENCE, presentity.get_presence ().c_str (),
+                          COLUMN_ACTIVE, active ? "black" : "gray", 
+                          -1);
+    else
+      gtk_tree_store_remove (self->priv->store, &iter);
   }
 
   roster_view_gtk_update_groups (self, &heap_iter);
@@ -953,9 +960,8 @@ roster_view_gtk_new (Ekiga::PresenceCore &core)
 
   self->priv = new _RosterViewGtkPrivate (core);
 
-  self->priv->folded_groups =
-    gm_conf_get_string_list ("/apps/" PACKAGE_NAME "/contacts/roster_folded_groups");
-
+  self->priv->folded_groups = gm_conf_get_string_list ("/apps/" PACKAGE_NAME "/contacts/roster_folded_groups");
+  self->priv->show_offline_contacts = gm_conf_get_bool ("/apps/" PACKAGE_NAME "/contacts/show_offline_contacts");
   self->priv->vbox = gtk_vbox_new (FALSE, 0);
   self->priv->scrolled_window = gtk_scrolled_window_new (NULL, NULL);
   gtk_container_set_border_width (GTK_CONTAINER (self->priv->vbox), 0);
@@ -1074,8 +1080,7 @@ roster_view_gtk_new (Ekiga::PresenceCore &core)
   conn = core.questions.add_handler (sigc::bind (sigc::ptr_fun (on_handle_questions), (gpointer) self));
   self->priv->connections.push_back (conn);
 
-  core.visit_clusters (sigc::bind_return (sigc::bind (sigc::ptr_fun (on_cluster_added),
-						      (gpointer)self), true));
+  core.visit_clusters (sigc::bind_return (sigc::bind (sigc::ptr_fun (on_cluster_added), (gpointer) self), true));
 
   return (GtkWidget *) self;
 }
