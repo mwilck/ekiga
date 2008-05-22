@@ -53,8 +53,7 @@
  */
 struct _RosterViewGtkPrivate
 {
-  _RosterViewGtkPrivate (Ekiga::PresenceCore &)
-  { }
+  _RosterViewGtkPrivate (Ekiga::PresenceCore &_core) : core (_core) { }
 
   std::vector<sigc::connection> connections;
   GtkTreeStore *store;
@@ -63,6 +62,7 @@ struct _RosterViewGtkPrivate
   GtkWidget *scrolled_window;
   GSList *folded_groups;
   gboolean show_offline_contacts;
+  Ekiga::PresenceCore & core;
 };
 
 /* the different type of things which will appear in the view */
@@ -290,6 +290,28 @@ static void roster_view_gtk_update_groups (RosterViewGtk *view,
 
 
 /* Implementation of the callbacks */
+static void 
+show_offline_contacts_changed_nt (G_GNUC_UNUSED gpointer id, 
+                                  GmConfEntry *entry, 
+                                  gpointer data)
+{
+  RosterViewGtk *self = NULL;
+  gboolean show_offline_contacts = false;
+
+  g_return_if_fail (data != NULL);
+
+  self = ROSTER_VIEW_GTK (data);
+  
+  if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
+
+    show_offline_contacts = gm_conf_entry_get_bool (entry);
+
+    self->priv->show_offline_contacts = show_offline_contacts;
+    self->priv->core.visit_clusters (sigc::bind_return (sigc::bind (sigc::ptr_fun (on_cluster_added), (gpointer) self), true));
+  }
+}
+
+
 static gint
 on_view_clicked (GtkWidget *tree_view,
 		 GdkEventButton *event,
@@ -1081,6 +1103,10 @@ roster_view_gtk_new (Ekiga::PresenceCore &core)
   self->priv->connections.push_back (conn);
 
   core.visit_clusters (sigc::bind_return (sigc::bind (sigc::ptr_fun (on_cluster_added), (gpointer) self), true));
+
+  /* Notifiers */
+  gm_conf_notifier_add ("/apps/" PACKAGE_NAME "/contacts/show_offline_contacts",
+			show_offline_contacts_changed_nt, self);
 
   return (GtkWidget *) self;
 }
