@@ -58,14 +58,35 @@
 namespace Ekiga
 {
 /**
- * @defgroup audiooutput Audio AudioInput
+ * @defgroup audiooutput
  * @{
  */
 
    class AudioOutputManager;
    class AudioOutputCore;
 
-  /** Core object for the audio auioinput support
+  /** Core object for the audio output support
+   * The audio output core abstracts all functionality related to audio output
+   * in a thread safe manner. Typically, most of the functions except start(),
+   * stop(), set_buffer_size() and set_frame_data() will be called from a UI thread,
+   * while the three mentioned funtions will be used by an audio streaming thread.
+   * 
+   * The audio output core abstracts different audio output managers, which can 
+   * represent different backends like PTLIB, from the application and can 
+   * switch the output device transparently for the audio streaming thread,
+   * even while audio output is in progress.
+   *
+   * If the removal of an audio output device is detected by a failed
+   * write or by a message from the HalCore, the audio output core will 
+   * determine the responsible audio output manager and send a signal to the UI,
+   * which can be used to update device lists. Also, if the removed device was the 
+   * currently used one, the core falls back to the backup device.
+   * 
+   * A similar procedure is performed on the addition of a device. In case we fell 
+   * back due to a removed device, and the respective device is re-added to the system,
+   * it will be automatically activated.
+   *
+
    */
   class AudioOutputCore
     : public Service

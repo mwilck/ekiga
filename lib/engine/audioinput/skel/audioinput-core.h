@@ -65,7 +65,34 @@ namespace Ekiga
  * @{
  */
 
-  /** Core object for the audio inputsupport
+  /** Core object for the audio input support
+   * The audio input core abstracts all functionality related to audio input
+   * in a thread safe manner. Typically, most of the functions except start_stream(),
+   * stop_stream(), set_stream_buffer_size() and get_frame_data() will be called from 
+   * a UI thread, while the three mentioned funtions will be used by an audio 
+   * streaming thread.
+   * 
+   * The audio input core abstracts different audio input managers, which can 
+   * represent different backends like PTLIB, from the application and can 
+   * switch the input device transparently for the audio streaming thread
+   * even while capturing is in progress.
+   *
+   * If the removal of an audio input device is detected by a failed
+   * read or by a message from the HalCore, the audio input core will 
+   * determine the responsible audio input manager and send a signal to the UI,
+   * which can be used to update device lists. Also, if the removed device was the 
+   * currently used one, the core falls back to the backup device.
+   * 
+   * A similar procedure is performed on the addition of a device. In case we fell 
+   * back due to a removed device, and the respective device is re-added to the system,
+   * it will be automatically activated.
+   *
+   * The audio input core can also be used in a preview mode, where it starts a separate
+   * thread (represented by the AudioPreviewManager), which grabs frames from the audio 
+   * input core and passes them to the audio output core. This can be used for audio device
+   * testing. Note that, contrary to the video preview, the audio preview does not support
+   * direct switching between the preview and the streaming mode, which must tus be
+   * be prevented by the UI.
    */
   class AudioInputCore
     : public Service

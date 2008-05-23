@@ -65,7 +65,37 @@ namespace Ekiga
   class VideoInputManager;
   class VideoInputCore;
 
-  /** Core object for the video vidinput support
+  /** Core object for the video input support
+   * The video input core abstracts all functionality related to video input
+   * in a thread safe manner. Typically, most of the functions except start_stream(),
+   * stop_stream(), and get_frame_data() will be called from 
+   * a UI thread, while the three mentioned funtions will be used by a video
+   * streaming thread.
+   * 
+   * The video output core abstracts different video input managers, which can 
+   * represent different backends like PTLIB, from the application and can 
+   * switch the output device transparently for the video streaming thread,
+   * even while capturing is in progress.
+   *
+   * If the removal of an video input device is detected by a failed
+   * read or by a message from the HalCore, the video input core will 
+   * determine the responsible video input manager and send a signal to the UI,
+   * which can be used to update device lists. Also, if the removed device was the 
+   * currently used one, the core falls back to the backup device.
+   * 
+   * A similar procedure is performed on the addition of a device. In case we fell 
+   * back due to a removed device, and the respective device is re-added to the system,
+   * it will be automatically activated.
+   *
+   * The video input core can also be used in a preview mode, where it starts a separate
+   * thread (represented by the VideoPreviewManager), which grabs frames from the video 
+   * input core and passes them to the video output core. This can be used for displaying
+   * the local camera signal while not being in a call. If the preview is active and them
+   * and the stream is started, the core will automatically determined if the device needs
+   * to be reinitialized (the stream settings may be different from the preview settings
+   * due to the capabilities negotiation). In case preview is set to active and them
+   * the streaming is ended, the core will automatically switch back to preview mode,
+   * also reinitializing the device if preview settings differ from stream settings.
    */
   class VideoInputCore
     : public Service
