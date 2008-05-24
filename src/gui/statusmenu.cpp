@@ -292,17 +292,17 @@ status_menu_option_changed (GtkComboBox *box,
       {
       case TYPE_ONLINE:
         gm_conf_set_string (PERSONAL_DATA_KEY "short_status", "online");
-        gm_conf_set_string (PERSONAL_DATA_KEY "long_status", statuses[TYPE_ONLINE]);
+        gm_conf_set_string (PERSONAL_DATA_KEY "long_status", "");
         break;
 
       case TYPE_AWAY:
         gm_conf_set_string (PERSONAL_DATA_KEY "short_status", "away");
-        gm_conf_set_string (PERSONAL_DATA_KEY "long_status", statuses[TYPE_AWAY]);
+        gm_conf_set_string (PERSONAL_DATA_KEY "long_status", "");
         break;
 
       case TYPE_DND:
         gm_conf_set_string (PERSONAL_DATA_KEY "short_status", "dnd");
-        gm_conf_set_string (PERSONAL_DATA_KEY "long_status", statuses[TYPE_DND]);
+        gm_conf_set_string (PERSONAL_DATA_KEY "long_status", "");
         break;
 
       case TYPE_CUSTOM_ONLINE:

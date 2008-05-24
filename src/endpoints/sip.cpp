@@ -206,10 +206,9 @@ void
 GMSIPEndpoint::publish (const Ekiga::PersonalDetails & details)
 {
   std::string hostname = (const char *) PIPSocket::GetHostName ();
-  // TODO: move this code outside of this class and allow a 
-  // more complete document
-  // TODO: add support for long status
-  std::string status = ((Ekiga::PersonalDetails &) (details)).get_short_status ();
+  std::string short_status = ((Ekiga::PersonalDetails &) (details)).get_short_status ();
+  std::string long_status = ((Ekiga::PersonalDetails &) (details)).get_long_status ();
+
   for (std::list<std::string>::iterator it = aors.begin ();
        it != aors.end ();
        it++) {
@@ -228,7 +227,9 @@ GMSIPEndpoint::publish (const Ekiga::PersonalDetails & details)
     data += "\">\r\n";
 
     data += "<note>";
-    data += status.c_str ();
+    data += short_status.c_str ();
+    data += " - ";
+    data += long_status.c_str ();
     data += "</note>\r\n";
 
     data += "<status>\r\n";
@@ -891,10 +892,10 @@ GMSIPEndpoint::OnPresenceInfoReceived (const PString & user,
                                        const PString & basic,
                                        const PString & note)
 {
+  PINDEX j;
   PCaselessString b = basic;
   PCaselessString s = note;
 
-  // TODO long status
   std::string status;
   std::string presence = "presence-unknown";
 
@@ -902,31 +903,25 @@ GMSIPEndpoint::OnPresenceInfoReceived (const PString & user,
   sip_uri.AdjustForRequestURI ();
   std::string _uri = sip_uri.AsString ();
 
-  if (b.Find ("Closed") != P_MAX_INDEX) {
+  if (b.Find ("Closed") != P_MAX_INDEX)
     presence = "presence-offline";
-  }
-  else {
+  else
     presence = "presence-online";
-  }
 
-  if (s.Find ("Away") != P_MAX_INDEX) {
+  if (s.Find ("Away") != P_MAX_INDEX)
     presence = "presence-away";
-    status = _("Away");
-  }
   else if (s.Find ("On the phone") != P_MAX_INDEX
-           || s.Find ("Ringing") != P_MAX_INDEX) {
+           || s.Find ("Ringing") != P_MAX_INDEX) 
     presence = "presence-inacall";
-    status = _("In A Call");
-  }
   else if (s.Find ("dnd") != P_MAX_INDEX
-           || s.Find ("Do Not Disturb") != P_MAX_INDEX) {
+           || s.Find ("Do Not Disturb") != P_MAX_INDEX) 
     presence = "presence-dnd";
-    status = _("Do Not Disturb");
-  }
-  else if (s.Find ("Free For Chat") != P_MAX_INDEX) {
+  
+  else if (s.Find ("Free For Chat") != P_MAX_INDEX) 
     presence = "presence-freeforchat";
-    status = _("Free For Chat");
-  }
+  
+  if ((j = s.Find (" - ")) != P_MAX_INDEX)
+    status = (const char *) note.Mid (j + 3);
 
   /**
    * TODO
