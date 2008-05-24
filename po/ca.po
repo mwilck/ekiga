@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-21 00:33+0200\n"
-"PO-Revision-Date: 2007-08-21 00:37+0200\n"
+"POT-Creation-Date: 2008-05-24 12:33+0200\n"
+"PO-Revision-Date: 2008-05-24 12:34+0200\n"
 "Last-Translator: Josep Puigdemont <josep.puigdemont@gmail.com>\n"
 "Language-Team: Catalan <gnome@softcatala.net>\n"
 "MIME-Version: 1.0\n"
@@ -933,8 +933,8 @@ msgid ""
 msgstr ""
 "Això permet seleccionar el mode per a l'emissió de DTMF. Els valors poden "
 "ser «String» (0), «To» (1), «RFC2833» (2), o bé «Q.931» (3) (per defecte és "
-"«String»). Si escolliu un valor que no sigui «String», es inhabilitarà el "
-"xat de text"
+"«String»). Si escolliu un valor que no sigui «String», es inhabilitarà el xat "
+"de text"
 
 #: ../ekiga.schemas.in.in.h:171
 msgid "UDP port range"
@@ -1010,76 +1010,6 @@ msgstr "Orientació"
 msgid "The orientation of the tray."
 msgstr "Orientació de la safata."
 
-#: ../src/clients/ils.cpp:105 ../src/gui/tools.cpp:174
-msgid "Invalid parameters"
-msgstr "Paràmetres invàlids"
-
-#: ../src/clients/ils.cpp:105
-msgid ""
-"Please provide your first name and e-mail in the Personal Data section in "
-"order to be able to register to the users directory."
-msgstr ""
-"Indiqueu el nom i l'adreça electrònica dins la secció Dades Personals, per "
-"tal de poder-vos registrar al directori d'usuaris."
-
-#: ../src/clients/ils.cpp:145
-msgid "Invalid users directory"
-msgstr "Directori d'usuaris invàlid"
-
-#: ../src/clients/ils.cpp:145
-msgid "Operation impossible since there is no users directory specified."
-msgstr ""
-"No es pot realitzar l'operació ja que no s'ha especificat cap directori "
-"d'usuaris."
-
-#: ../src/clients/ils.cpp:238
-msgid "Failed to parse XML file"
-msgstr "Hi ha hagut un error en analitzar el fitxer XML"
-
-#: ../src/clients/ils.cpp:238
-msgid ""
-"There was an error while parsing the XML file. Please make sure that it is "
-"correctly installed in your system."
-msgstr ""
-"S'ha produït un error en analitzar el fitxer XML. Assegureu-vos que està "
-"correctament instal·lat al sistema."
-
-#: ../src/clients/ils.cpp:249
-msgid "Bad information"
-msgstr "Informació errònia"
-
-#: ../src/clients/ils.cpp:249
-#, c-format
-msgid "Bad LDAP information from XML file: %s."
-msgstr "Informació LDAP errònia en el fixer XML: %s."
-
-#: ../src/clients/ils.cpp:257
-#, c-format
-msgid "ILS registration failed: unable to connect to %s"
-msgstr "No s'ha pogut registrar a l'ILS: no s'ha pogut connectar a %s"
-
-#: ../src/clients/ils.cpp:270
-msgid "ILS registration failed: unable to set time limit on operations"
-msgstr ""
-"No s'ha pogut registrar a l'ILS: no s'ha pogut indicar un límit de temps per "
-"a les operacions"
-
-#: ../src/clients/ils.cpp:282
-#, c-format
-msgid "ILS registration failed: failed to bind to %s"
-msgstr "No s'ha pogut registrar a l'ILS: no s'ha pogut vincular a %s"
-
-#: ../src/clients/ils.cpp:310
-#, c-format
-msgid "Updated information on %s"
-msgstr "S'ha actualitzat la informació a %s"
-
-#: ../src/clients/ils.cpp:314 ../src/endpoints/accountshandler.cpp:332
-#: ../src/endpoints/sip.cpp:236
-#, c-format
-msgid "Unregistered from %s"
-msgstr "S'ha desregistrat de %s"
-
 #: ../src/clients/stun.cpp:104
 #, c-format
 msgid "STUN server set to %s"
@@ -1122,6 +1052,7 @@ msgstr ""
 "aquest ordinador no necessita cap tipus de configuració específica."
 
 #: ../src/clients/stun.cpp:153
+#, c-format
 msgid ""
 "Ekiga detected Symmetric NAT. The most appropriate method, if your router "
 "does not natively support SIP or H.323, is to forward the required ports to "
@@ -1247,6 +1178,7 @@ msgstr ""
 "adreça SIP, H.323 o callto, feu servir «ekiga -c URL»."
 
 #: ../src/components/bonobo.cpp:170
+#, c-format
 msgid ""
 "It appears that you do not have ekiga.server installed in a valid location. "
 "Factory mode disabled.\n"
@@ -1255,6 +1187,7 @@ msgstr ""
 "S'inhabilitarà el mode de fàbrica.\n"
 
 #: ../src/components/bonobo.cpp:174
+#, c-format
 msgid ""
 "Error registering Ekiga with the activation service; factory mode disabled.\n"
 msgstr ""
@@ -1262,6 +1195,7 @@ msgstr ""
 "fàbrica s'inhabilitarà.\n"
 
 #: ../src/components/bonobo.cpp:214
+#, c-format
 msgid "Failed to retrieve Ekiga server from activation server\n"
 msgstr "No s'ha pogut obtenir el servidor Ekiga del servidor d'activació\n"
 
@@ -1330,9 +1264,9 @@ msgstr ""
 #: ../src/devices/audio.cpp:481 ../src/devices/audio.cpp:482
 #: ../src/devices/videoinput.cpp:310 ../src/devices/videoinput.cpp:585
 #: ../src/endpoints/ekiga.cpp:351 ../src/endpoints/ekiga.cpp:353
-#: ../src/endpoints/ekiga.cpp:355 ../src/endpoints/pcss.cpp:194
-#: ../src/gui/druid.cpp:1780 ../src/gui/druid.cpp:1792
-#: ../src/gui/druid.cpp:1850
+#: ../src/endpoints/ekiga.cpp:355 ../src/endpoints/pcss.cpp:198
+#: ../src/gui/druid.cpp:1784 ../src/gui/druid.cpp:1796
+#: ../src/gui/druid.cpp:1854
 msgid "No device found"
 msgstr "No s'ha trobat cap dispositiu"
 
@@ -1369,8 +1303,8 @@ msgid ""
 "plugin and \"MovingLogo\" or \"StaticPicture\" as device."
 msgstr ""
 "Es transmetrà el logotip en moviment durant les trucades. És possible "
-"escollir transmetre una imatge enlloc del logotip si escolliu «Picture» com "
-"a connector de vídeo, i «MovingLogo» o «StaticPicture» com a dispositiu."
+"escollir transmetre una imatge enlloc del logotip si escolliu «Picture» com a "
+"connector de vídeo, i «MovingLogo» o «StaticPicture» com a dispositiu."
 
 #: ../src/devices/videoinput.cpp:364
 msgid "Couldn't open the video device"
@@ -1385,6 +1319,7 @@ msgstr ""
 "assegureu-vos que el controlador adequat estigui carregat."
 
 #: ../src/devices/videoinput.cpp:372 ../src/devices/videoinput.cpp:686
+#, c-format
 msgid "Your video driver doesn't support the requested video format."
 msgstr ""
 "El programa de control que feu servir no implementa el format de vídeo "
@@ -1448,19 +1383,23 @@ msgid "Error while opening %s."
 msgstr "Hi ha hagut un error en obrir %s."
 
 #: ../src/devices/videoinput.cpp:690
+#, c-format
 msgid "Could not open the chosen channel with the chosen video format."
 msgstr "No s'ha pogut obrir el canal escollit amb el format de vídeo indicat."
 
 #: ../src/devices/videoinput.cpp:694
+#, c-format
 msgid "Your driver doesn't support any of the color formats tried by Ekiga"
 msgstr ""
 "El controlador no implementa cap dels formats de color escollits per l'Ekiga"
 
 #: ../src/devices/videoinput.cpp:698
+#, c-format
 msgid "Error with the frame rate."
 msgstr "Hi ha hagut un error en el ràtio de quadres."
 
 #: ../src/devices/videoinput.cpp:702
+#, c-format
 msgid "Error with the frame size."
 msgstr "Hi ha hagut un error en la mida del quadre."
 
@@ -1512,6 +1451,11 @@ msgstr "S'ha registrat a %s"
 #: ../src/endpoints/accountshandler.cpp:322 ../src/endpoints/sip.cpp:231
 msgid "Registered"
 msgstr "Registrat"
+
+#: ../src/endpoints/accountshandler.cpp:332 ../src/endpoints/sip.cpp:236
+#, c-format
+msgid "Unregistered from %s"
+msgstr "S'ha desregistrat de %s"
 
 #: ../src/endpoints/accountshandler.cpp:352 ../src/endpoints/sip.cpp:242
 msgid "Unregistered"
@@ -1575,7 +1519,7 @@ msgstr "S'ha establert connexió amb %s utilitzant %s"
 msgid "Connected with %s"
 msgstr "Esteu connectat amb %s"
 
-#: ../src/endpoints/manager.cpp:1124 ../src/gui/main.cpp:4156
+#: ../src/endpoints/manager.cpp:1124 ../src/gui/main.cpp:4157
 msgid "Standby"
 msgstr "En espera"
 
@@ -1709,21 +1653,21 @@ msgstr "S'ha tancat el còdec %s que s'havia obert per a la recepció"
 msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 msgstr "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 
-#: ../src/endpoints/pcss.cpp:218
+#: ../src/endpoints/pcss.cpp:222
 #, c-format
 msgid "Opened %s for recording with plugin %s"
 msgstr "S'ha obert %s per enregistrar amb el connector %s"
 
-#: ../src/endpoints/pcss.cpp:219
+#: ../src/endpoints/pcss.cpp:223
 #, c-format
 msgid "Opened %s for playing with plugin %s"
 msgstr "S'ha obert %s per reproduir amb el connector %s"
 
-#: ../src/endpoints/pcss.cpp:237
+#: ../src/endpoints/pcss.cpp:241
 msgid "Could not open audio channel for audio transmission"
 msgstr "No s'ha pogut obrir el canal d'àudio per a la transmissió"
 
-#: ../src/endpoints/pcss.cpp:237
+#: ../src/endpoints/pcss.cpp:241
 msgid ""
 "An error occured while trying to record from the soundcard for the audio "
 "transmission. Please check that your soundcard is not busy and that your "
@@ -1735,11 +1679,11 @@ msgstr ""
 "que el controlador sigui full-dúplex.\n"
 "S'ha inhabilitat la transmissió d'àudio."
 
-#: ../src/endpoints/pcss.cpp:239
+#: ../src/endpoints/pcss.cpp:243
 msgid "Could not open audio channel for audio reception"
 msgstr "No s'ha pogut obrir el canal d'àudio per a la recepció"
 
-#: ../src/endpoints/pcss.cpp:239
+#: ../src/endpoints/pcss.cpp:243
 msgid ""
 "An error occured while trying to play audio to the soundcard for the audio "
 "reception. Please check that your soundcard is not busy and that your driver "
@@ -1970,7 +1914,7 @@ msgstr ""
 "<b>Tecla de marcatge ràpid</b>: %s\n"
 
 #: ../src/gui/addressbook.cpp:821 ../src/gui/addressbook.cpp:823
-#: ../src/gui/druid.cpp:1912 ../src/gui/preferences.cpp:930
+#: ../src/gui/druid.cpp:1916 ../src/gui/preferences.cpp:930
 msgid "None"
 msgstr "Cap"
 
@@ -2255,14 +2199,59 @@ msgstr "Art:"
 msgid "See AUTHORS file for full credits"
 msgstr "Vegeu el fitxer AUTHORS per veure tots els crèdits"
 
+#: ../src/gui/callbacks.cpp:168
+msgid ""
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version. "
+msgstr ""
+"Aquest programa és programari lliure; podeu redistribuir-lo i/o modificar-lo "
+"sota els termes de la Llicència Pública General GNU tal com ha estat "
+"publicada per la Free Software Foundation; ja sigui la versió 2 de la "
+"Llicència o bé (si ho preferiu) qualsevol altra versió posterior. "
+
+#: ../src/gui/callbacks.cpp:172
+msgid ""
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for "
+"more details. You should have received a copy of the GNU General Public "
+"License along with this program; if not, write to the Free Software "
+"Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA."
+msgstr ""
+"Aquest programa es distribueix amb l'expectativa que serà útil, però SENSE "
+"CAP GARANTIA; ni tan sols la garantia implícita de COMERCIABILITAT o "
+"ADEQUACIÓ PER UN PROPÒSIT PARTICULAR. Vegeu la Llicència Pública General GNU "
+"per obtenir-ne més detalls. Hauríeu d'haver rebut una còpia de la Llicència "
+"Pública General GNU juntament amb l'Evince; en cas contrari, escriviu a la "
+"Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-"
+"1307 USA."
+
+#: ../src/gui/callbacks.cpp:179
+msgid ""
+"Ekiga is licensed under the GPL license and as a special exception, you have "
+"permission to link or otherwise combine this program with the programs OPAL, "
+"OpenH323 and PWLIB, and distribute the combination, without applying the "
+"requirements of the GNU GPL to the OPAL, OpenH323 and PWLIB programs, as "
+"long as you do follow the requirements of the GNU GPL for all the rest of "
+"the software thus combined."
+msgstr ""
+"L'Ekiga està llicenciat sota la llicència GPL i té com a excepció especial, "
+"teniu permís per a enllaçar-lo o combinar-lo amb els programes OPAL, "
+"OpenH323 i PWLIB, i redistribuir-ne la combinació sense aplicar-ne els "
+"requeriments de la GNU GPL als programes OPAL, OpenH323 i PWLIB, sempre que "
+"seguiu els requeriments de la GNU GPL per a la resta del programari que està "
+"combinat."
+
 #. Translators: Please write translator credits here, and
 #. * separate names with \n
-#: ../src/gui/callbacks.cpp:190
+#: ../src/gui/callbacks.cpp:191
 msgid "translator-credits"
 msgstr "Josep Puigdemont i Casamajó <josep.puigdemont@gmail.com>"
 
 # FIXME
-#: ../src/gui/callbacks.cpp:195
+#: ../src/gui/callbacks.cpp:196
 msgid ""
 "Ekiga is full-featured SIP and H.323 compatible VoIP, IP-Telephony and "
 "Videoconferencing application that allows you to make audio and video calls "
@@ -2624,27 +2613,27 @@ msgstr ""
 msgid "Configuration complete - page %d/%d"
 msgstr "S'ha finalitzat la configuració - pàgina %d/%d"
 
-#: ../src/gui/druid.cpp:1630
+#: ../src/gui/druid.cpp:1634
 msgid "56k Modem"
 msgstr "Mòdem de 56k"
 
-#: ../src/gui/druid.cpp:1631
+#: ../src/gui/druid.cpp:1635
 msgid "ISDN"
 msgstr "XDSI"
 
-#: ../src/gui/druid.cpp:1632
+#: ../src/gui/druid.cpp:1636
 msgid "xDSL/Cable"
 msgstr "xDSL/Cable"
 
-#: ../src/gui/druid.cpp:1633
+#: ../src/gui/druid.cpp:1637
 msgid "T1/LAN"
 msgstr "T1/LAN"
 
-#: ../src/gui/druid.cpp:1634
+#: ../src/gui/druid.cpp:1638
 msgid "Keep current settings"
 msgstr "Mantén les preferències actuals"
 
-#: ../src/gui/druid.cpp:1912
+#: ../src/gui/druid.cpp:1916
 #, c-format
 msgid ""
 "You have now finished the Ekiga configuration. All the settings can be "
@@ -2677,7 +2666,7 @@ msgstr ""
 "Entrada de vídeo: %s\n"
 "URL SIP: %s\n"
 
-#: ../src/gui/druid.cpp:1967
+#: ../src/gui/druid.cpp:1971
 msgid "First Time Configuration Assistant"
 msgstr "Auxiliar de configuració"
 
@@ -3202,7 +3191,7 @@ msgstr ""
 "Paquets fora d'ordre: %.1f %%\n"
 "Mem. int. pel jitter: %d ms"
 
-#: ../src/gui/main.cpp:4574
+#: ../src/gui/main.cpp:4575
 #, c-format
 msgid ""
 "Ekiga got an invalid value for the GConf key %s.\n"
@@ -3224,23 +3213,23 @@ msgstr ""
 "gnome.org/projects/gconf/) o als arxius de les llistes de distribució "
 "(http://mail.gnome.org/)."
 
-#: ../src/gui/main.cpp:4577
+#: ../src/gui/main.cpp:4578
 msgid "Gconf key error"
 msgstr "Error en la clau Gconf"
 
-#: ../src/gui/main.cpp:4608 ../src/gui/main.cpp:4627
+#: ../src/gui/main.cpp:4609 ../src/gui/main.cpp:4628
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "Imprimeix missatges de depuració a la consola (nivell entre 1 i 6)"
 
-#: ../src/gui/main.cpp:4611 ../src/gui/main.cpp:4632
+#: ../src/gui/main.cpp:4612 ../src/gui/main.cpp:4633
 msgid "Makes Ekiga call the given URL"
 msgstr "Fa que l'Ekiga truqui la URL indicada"
 
-#: ../src/gui/main.cpp:4665
+#: ../src/gui/main.cpp:4666
 msgid "No usable audio plugin detected"
 msgstr "No s'ha pogut detectar cap gestor d'àudio adequat"
 
-#: ../src/gui/main.cpp:4665
+#: ../src/gui/main.cpp:4666
 msgid ""
 "Ekiga didn't find any usable audio plugin. Make sure that your installation "
 "is correct."
@@ -3571,8 +3560,8 @@ msgid ""
 msgstr ""
 "Això permet especificar el mode d'enviament de DTMF. Els valors poden ser "
 "«String» (0), «Tone» (1), «RFC2833» (2), o bé «Q.931» (3) (per defecte és "
-"«String»). Si escolliu algun altre valor que no sigui «String», "
-"s'inhabilitarà el xat de text."
+"«String»). Si escolliu algun altre valor que no sigui «String», s'inhabilitarà "
+"el xat de text."
 
 #: ../src/gui/preferences.cpp:1037
 msgid "_Outbound Proxy:"
@@ -3864,6 +3853,10 @@ msgid "Devices"
 msgstr "Dispositius"
 
 #: ../src/gui/tools.cpp:174
+msgid "Invalid parameters"
+msgstr "Paràmetres invàlids"
+
+#: ../src/gui/tools.cpp:174
 msgid ""
 "Please provide your username and password in order to be able to use the PC-"
 "To-Phone service."
@@ -3930,6 +3923,51 @@ msgstr "Consulta l'historial del balanç"
 #: ../src/gui/tools.cpp:431
 msgid "Consult the calls history"
 msgstr "Consulta l'historial de trucades"
+
+#~ msgid ""
+#~ "Please provide your first name and e-mail in the Personal Data section in "
+#~ "order to be able to register to the users directory."
+#~ msgstr ""
+#~ "Indiqueu el nom i l'adreça electrònica dins la secció Dades Personals, "
+#~ "per tal de poder-vos registrar al directori d'usuaris."
+
+#~ msgid "Invalid users directory"
+#~ msgstr "Directori d'usuaris invàlid"
+
+#~ msgid "Operation impossible since there is no users directory specified."
+#~ msgstr ""
+#~ "No es pot realitzar l'operació ja que no s'ha especificat cap directori "
+#~ "d'usuaris."
+
+#~ msgid "Failed to parse XML file"
+#~ msgstr "Hi ha hagut un error en analitzar el fitxer XML"
+
+#~ msgid ""
+#~ "There was an error while parsing the XML file. Please make sure that it "
+#~ "is correctly installed in your system."
+#~ msgstr ""
+#~ "S'ha produït un error en analitzar el fitxer XML. Assegureu-vos que està "
+#~ "correctament instal·lat al sistema."
+
+#~ msgid "Bad information"
+#~ msgstr "Informació errònia"
+
+#~ msgid "Bad LDAP information from XML file: %s."
+#~ msgstr "Informació LDAP errònia en el fixer XML: %s."
+
+#~ msgid "ILS registration failed: unable to connect to %s"
+#~ msgstr "No s'ha pogut registrar a l'ILS: no s'ha pogut connectar a %s"
+
+#~ msgid "ILS registration failed: unable to set time limit on operations"
+#~ msgstr ""
+#~ "No s'ha pogut registrar a l'ILS: no s'ha pogut indicar un límit de temps "
+#~ "per a les operacions"
+
+#~ msgid "ILS registration failed: failed to bind to %s"
+#~ msgstr "No s'ha pogut registrar a l'ILS: no s'ha pogut vincular a %s"
+
+#~ msgid "Updated information on %s"
+#~ msgstr "S'ha actualitzat la informació a %s"
 
 #~ msgid "Credits"
 #~ msgstr "Crèdits"
