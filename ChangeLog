@@ -1,6 +1,20 @@
 2008-05-25  Damien Sandras  <dsandras@gnome.org>
 
 	* src/endpoints/sip.h:
+	* src/endpoints/manager.cpp:
+	* src/endpoints/opal-main.cpp:
+	* src/endpoints/manager.h:
+	* src/endpoints/sip.cpp:
+	* src/endpoints/opal-gmconf-bridge.cpp:
+	A CallProtocolManager is now created with the listen port as argument
+	so that it can start listening on the correct port as soon as it is
+	created. Added a start () method to the GMManager so that we can
+	trigger the STUNDetector only when all CallProtocolManagers are active
+	and running.
+
+2008-05-25  Damien Sandras  <dsandras@gnome.org>
+
+	* src/endpoints/sip.h:
 	* src/endpoints/opal-call.cpp:
 	* src/endpoints/opal-call.h:
 	* src/endpoints/manager.cpp:

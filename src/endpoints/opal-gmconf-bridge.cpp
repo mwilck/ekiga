@@ -75,7 +75,6 @@ ConfBridge::ConfBridge (Ekiga::Service & _service)
   keys.push_back (SIP_KEY "outbound_proxy_host");
   keys.push_back (SIP_KEY "dtmf_mode");
   keys.push_back (SIP_KEY "binding_timeout");
-  keys.push_back (SIP_KEY "listen_port");
 
   keys.push_back (PERSONAL_DATA_KEY "full_name");
 
@@ -247,10 +246,6 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
       else if (key == SIP_KEY "binding_timeout") {
 
         sip_manager->set_nat_binding_delay (gm_conf_entry_get_int (entry));
-      }
-      else if (key == SIP_KEY "listen_port") {
-
-        sip_manager->set_listen_port (gm_conf_entry_get_int (entry));
       }
     }
   }

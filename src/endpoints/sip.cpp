@@ -75,7 +75,7 @@ private:
 
 
 /* The class */
-GMSIPEndpoint::GMSIPEndpoint (GMManager & ep, Ekiga::ServiceCore & _core)
+GMSIPEndpoint::GMSIPEndpoint (GMManager & ep, Ekiga::ServiceCore & _core, unsigned _listen_port)
 : SIPEndPoint (ep), 
   Ekiga::PresencePublisher (_core), 
   endpoint (ep), 
@@ -85,7 +85,7 @@ GMSIPEndpoint::GMSIPEndpoint (GMManager & ep, Ekiga::ServiceCore & _core)
 {
   protocol_name = "sip";
   uri_prefix = "sip:";
-  listen_port = 5060;
+  listen_port = _listen_port;
 
   /* Timeouts */
   SetAckTimeout (PTimeInterval (0, 32));
@@ -94,6 +94,9 @@ GMSIPEndpoint::GMSIPEndpoint (GMManager & ep, Ekiga::ServiceCore & _core)
   SetNonInviteTimeout (PTimeInterval (0, 6));
   SetRetryTimeouts (500, 4000);
   SetMaxRetries (8);
+  
+  /* Start listener */
+  set_listen_port (listen_port);
 
   /* Update the User Agent */
   SetUserAgent ("Ekiga/" PACKAGE_VERSION);

@@ -59,20 +59,21 @@ opal_init (Ekiga::ServiceCore &core,
            int * /*argc*/,
            char ** /*argv*/[])
 {
-  bool result = true;
-
   Ekiga::ContactCore *contact_core = NULL;
   Ekiga::PresenceCore *presence_core = NULL;
   Ekiga::CallCore *call_core = NULL;
   Ekiga::ChatCore *chat_core = NULL;
-  
+
+  bool result = true;
+  unsigned sip_port = gm_conf_get_int (SIP_KEY "listen_port");
+
   contact_core = dynamic_cast<Ekiga::ContactCore *> (core.get ("contact-core"));
   presence_core = dynamic_cast<Ekiga::PresenceCore *> (core.get ("presence-core"));
   call_core = dynamic_cast<Ekiga::CallCore *> (core.get ("call-core"));
   chat_core = dynamic_cast<Ekiga::ChatCore *> (core.get ("chat-core"));
 
   GMManager *manager = new GMManager (core);
-  GMSIPEndpoint *sipEP = new GMSIPEndpoint (*manager, core);
+  GMSIPEndpoint *sipEP = new GMSIPEndpoint (*manager, core, sip_port);
 
   manager->AddRouteEntry("pc:.* = sip:<da>");
   manager->add_protocol_manager (*sipEP);
@@ -82,6 +83,7 @@ opal_init (Ekiga::ServiceCore &core,
   chat_core->add_manager (*sipEP);
 
   new Opal::ConfBridge (*manager);
+  manager->start ();
   // FIXME Service ?
 
   if (contact_core != NULL) 

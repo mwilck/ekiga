@@ -86,6 +86,9 @@ class GMManager:
   ~GMManager ();
 
   /**/
+  void start ();
+
+  /**/
   const std::string get_name () const
     { return "opal-component"; }
 

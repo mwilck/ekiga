@@ -150,9 +150,6 @@ GMManager::GMManager (Ekiga::ServiceCore & _core)
 
   //
   call_core = dynamic_cast<Ekiga::CallCore *> (core.get ("call-core"));
-
-  // Ready
-  new StunDetector ("stun.voxgratia.org", *this, runtime);
 }
 
 
@@ -160,6 +157,13 @@ GMManager::~GMManager ()
 {
   ClearAllCalls (OpalConnection::EndedByLocalUser, TRUE);
   RemoveAccountsEndpoint ();
+}
+
+
+void GMManager::start ()
+{
+  // Ready
+  new StunDetector ("stun.voxgratia.org", *this, runtime);
 }
 
 

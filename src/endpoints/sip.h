@@ -68,7 +68,7 @@ class GMSIPEndpoint
 
 public:
 
-  GMSIPEndpoint (GMManager &ep, Ekiga::ServiceCore & core);
+  GMSIPEndpoint (GMManager &ep, Ekiga::ServiceCore & core, unsigned listen_port);
 
   /***/
   bool populate_menu (Ekiga::Contact &contact,
