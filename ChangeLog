@@ -1,3 +1,16 @@
+2008-05-25  Damien Sandras  <dsandras@gnome.org>
+
+	* src/endpoints/sip.h:
+	* src/endpoints/opal-call.cpp:
+	* src/endpoints/opal-call.h:
+	* src/endpoints/manager.cpp:
+	* src/endpoints/manager.h:
+	* src/endpoints/sip.cpp:
+	* src/endpoints/opal-gmconf-bridge.cpp:
+	Added back support for call forward on busy/no answer/always at the
+	Opal::Call level, this feature is indeed not possible with all types
+	of Calls. Added support for reject after a given delay.
+
 2008-05-24  Damien Sandras  <dsandras@gnome.org>
 
 	* src/endpoints/sip.cpp:

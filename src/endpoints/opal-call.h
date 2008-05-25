@@ -93,6 +93,17 @@ public:
      */
     void send_dtmf (const char dtmf);
 
+    /** Forward an incoming call after the given delay
+     * @param delay the delay after which we forward
+     * @param uri is the uri to forward to 
+     */
+    void set_no_answer_forward (unsigned delay, const std::string & uri);
+
+    /** Reject an incoming call after the given delay
+     * @param delay the delay after which reject the call
+     */
+    void set_reject_delay (unsigned delay);
+
 
     /*
      * Call Information
@@ -193,6 +204,8 @@ private:
     std::string remote_party_name;
     std::string remote_uri;
     std::string remote_application;
+
+    std::string forward_uri;
 
     bool outgoing;
 

@@ -118,7 +118,14 @@ class GMManager:
 
   /* Extended stuff, OPAL CallManager specific */
   void set_forward_on_busy (bool enabled);
+  bool get_forward_on_busy ();
+
+  void set_forward_on_no_answer (bool enabled);
+  bool get_forward_on_no_answer ();
+
   void set_unconditional_forward (bool enabled);
+  bool get_unconditional_forward ();
+
   void set_udp_ports (unsigned min_port, 
                       unsigned max_port);
 
@@ -192,6 +199,9 @@ class GMManager:
 
   std::string display_name;
   unsigned reject_delay;
+  bool forward_on_busy;
+  bool unconditional_forward;
+  bool forward_on_no_answer;
 };
 
 #endif

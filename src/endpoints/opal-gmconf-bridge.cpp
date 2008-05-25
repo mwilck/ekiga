@@ -53,6 +53,9 @@ ConfBridge::ConfBridge (Ekiga::Service & _service)
   Ekiga::ConfKeys keys;
   property_changed.connect (sigc::mem_fun (this, &ConfBridge::on_property_changed));
 
+  keys.push_back (PORTS_KEY "udp_port_range");
+  keys.push_back (PORTS_KEY "tcp_port_range");
+
   keys.push_back (AUDIO_CODECS_KEY "enable_silence_detection");
   keys.push_back (AUDIO_CODECS_KEY "enable_echo_cancelation");
 
@@ -76,6 +79,7 @@ ConfBridge::ConfBridge (Ekiga::Service & _service)
 
   keys.push_back (PERSONAL_DATA_KEY "full_name");
 
+  keys.push_back (CALL_FORWARDING_KEY "forward_on_no_answer");
   keys.push_back (CALL_FORWARDING_KEY "forward_on_busy");
   keys.push_back (CALL_FORWARDING_KEY "always_forward");
   keys.push_back (CALL_OPTIONS_KEY "no_answer_timeout");
@@ -83,9 +87,6 @@ ConfBridge::ConfBridge (Ekiga::Service & _service)
   keys.push_back (H323_KEY "enable_h245_tunneling");
   keys.push_back (H323_KEY "enable_early_h245");
   keys.push_back (H323_KEY "enable_fast_start");
-
-  keys.push_back (PORTS_KEY "udp_port_range");
-  keys.push_back (PORTS_KEY "tcp_port_range");
 
   load (keys);
 }
@@ -296,6 +297,10 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
   //
   // Misc keys
   //
+  else if (key == CALL_FORWARDING_KEY "forward_on_no_answer") {
+
+    manager.set_forward_on_no_answer (gm_conf_entry_get_bool (entry));
+  }
   else if (key == CALL_FORWARDING_KEY "forward_on_busy") {
 
     manager.set_forward_on_busy (gm_conf_entry_get_bool (entry));

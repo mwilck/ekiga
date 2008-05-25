@@ -184,6 +184,20 @@ Opal::Call::send_dtmf (const char dtmf)
 }
 
 
+void Opal::Call::set_no_answer_forward (unsigned delay, const std::string & uri)
+{
+  forward_uri = uri;
+
+  NoAnswerTimer.SetInterval (0, PMIN (delay, 60));
+}
+
+
+void Opal::Call::set_reject_delay (unsigned delay)
+{
+  NoAnswerTimer.SetInterval (0, PMIN (delay, 60));
+}
+
+
 const std::string
 Opal::Call::get_id () const
 {
@@ -441,9 +455,6 @@ Opal::Call::OnSetUp (OpalConnection & connection)
 
   runtime.run_in_main (setup.make_slot ());
 
-  if (!outgoing)
-    NoAnswerTimer.SetInterval (0, PMIN (10, 60));
-
   return OpalCall::OnSetUp (connection);
 }
 
@@ -551,8 +562,6 @@ void
 Opal::Call::OnAnswer (PThread &, INT /*param*/)
 {
   PSafePtr<OpalConnection> connection = NULL;
-  PSafePtr<OpalPCSSConnection> conn = NULL;
-
   int i = 0;
 
   if (!is_outgoing () && !IsEstablished ()) {
@@ -574,24 +583,22 @@ void
 Opal::Call::OnNoAnswerTimeout (PTimer &,
                                INT) 
 {
-  //FIXME
+  PSafePtr<OpalConnection> connection = NULL;
+  int i = 0;
+
   if (!is_outgoing ()) {
-    std::cout << "should clear or forward" << std::endl << std::flush;
+
+    if (!forward_uri.empty ()) {
+
+      do {
+        connection = GetConnection (i);
+        i++;
+      }  while (PIsDescendant(&(*connection), OpalPCSSConnection));
+
+      if (!PIsDescendant(&(*connection), OpalPCSSConnection)) 
+        connection->ForwardCall (forward_uri);
+    }
+    else
+      Clear (OpalConnection::EndedByAnswerDenied);
   }
-  else
-    std::cout << "should not clear or forward" << std::endl << std::flush;
-  //if (!forward_uri.empty ()) {
-
-
-    /*
-       PSafePtr<OpalCall> call = 
-       endpoint.FindCallWithLock (endpoint.GetCurrentCallToken ());
-       PSafePtr<OpalConnection> con = 
-       endpoint.GetConnection (call, TRUE);
-
-       con->ForwardCall (forward_uri.c_str ());
-       */
- // }
- // else
-  //  ClearAllCalls (OpalConnection::EndedByNoAnswer, FALSE);
 }

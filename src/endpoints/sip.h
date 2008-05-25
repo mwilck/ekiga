@@ -178,13 +178,6 @@ private:
   std::string forward_uri;
   std::string outbound_proxy;
 
-  bool forward_on_busy;
-  bool unconditional_forward;
-  bool forward_on_no_answer;
-
-  unsigned no_answer_timeout;
-  unsigned udp_min;
-  unsigned udp_max;
   unsigned listen_port;
 };
 #endif

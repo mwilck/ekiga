@@ -44,10 +44,10 @@
 namespace Ekiga
 {
 
-/**
- * @addtogroup calls
- * @{
- */
+  /**
+   * @addtogroup calls
+   * @{
+   */
 
   /*
    * Everything is handled asynchronously and signaled through the
@@ -71,11 +71,11 @@ namespace Ekiga
        */
 
       /** Hangup the call
-       */
+      */
       virtual void hangup () = 0;
 
       /** Answer an incoming call
-       */
+      */
       virtual void answer () = 0;
 
       /** Transfer the call to the specified uri
@@ -84,7 +84,7 @@ namespace Ekiga
       virtual void transfer (std::string uri) = 0;
 
       /** Put the call on hold or retrieve it
-       */
+      */
       virtual void toggle_hold () = 0;
 
       /** Toggle the stream transmission (if any)
@@ -96,6 +96,12 @@ namespace Ekiga
        * @param dtmf is the dtmf to send (one char)
        */
       virtual void send_dtmf (const char dtmf) = 0;
+
+      /** Reject an incoming call after the given delay
+       * @param delay the delay after which reject the call
+       */
+      virtual void set_reject_delay (unsigned delay) = 0;
+
 
       /*
        * Call Information

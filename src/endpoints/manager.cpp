@@ -106,11 +106,18 @@ GMManager::GMManager (Ekiga::ServiceCore & _core)
   /* Initialise the endpoint paramaters */
   PIPSocket::SetDefaultIpAddressFamilyV4();
   autoStartTransmitVideo = autoStartReceiveVideo = true;
+  SetUDPPorts (5000, 5100);
+  SetTCPPorts (30000, 30100);
+  SetRtpIpPorts (5000, 5100);
   
   manager = NULL;
 
   h323EP = NULL;
   pcssEP = NULL;
+
+  forward_on_no_answer = false;
+  forward_on_busy = false;
+  unconditional_forward = false;
 
   // Create video devices
   PVideoDevice::OpenArgs video = GetVideoOutputDevice();
@@ -145,7 +152,7 @@ GMManager::GMManager (Ekiga::ServiceCore & _core)
   call_core = dynamic_cast<Ekiga::CallCore *> (core.get ("call-core"));
 
   // Ready
-  new StunDetector ("stun.ekiga.net", *this, runtime);
+  new StunDetector ("stun.voxgratia.org", *this, runtime);
 }
 
 
@@ -420,13 +427,34 @@ const Ekiga::CallManager::InterfaceList GMManager::get_interfaces () const
   return list;
 }
 
-void GMManager::set_forward_on_busy (bool enabled)
+void GMManager::set_forward_on_no_answer (bool enabled)
 {
+  forward_on_no_answer = enabled;
 }
 
+bool GMManager::get_forward_on_no_answer ()
+{
+  return forward_on_no_answer;
+}
+
+void GMManager::set_forward_on_busy (bool enabled)
+{
+  forward_on_busy = enabled;
+}
+
+bool GMManager::get_forward_on_busy ()
+{
+  return forward_on_busy;
+}
 
 void GMManager::set_unconditional_forward (bool enabled)
 {
+  unconditional_forward = enabled;
+}
+
+bool GMManager::get_unconditional_forward ()
+{
+  return unconditional_forward;
 }
 
 void GMManager::set_udp_ports (unsigned min_port, 

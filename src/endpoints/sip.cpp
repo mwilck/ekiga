@@ -43,6 +43,8 @@
 
 #include "sip.h"
 
+#include "opal-call.h"
+
 #include "presence-core.h"
 #include "personal-details.h"
 
@@ -83,8 +85,6 @@ GMSIPEndpoint::GMSIPEndpoint (GMManager & ep, Ekiga::ServiceCore & _core)
 {
   protocol_name = "sip";
   uri_prefix = "sip:";
-  udp_min = 5000;
-  udp_max = 5100; 
   listen_port = 5060;
 
   /* Timeouts */
@@ -228,8 +228,10 @@ GMSIPEndpoint::publish (const Ekiga::PersonalDetails & details)
 
     data += "<note>";
     data += short_status.c_str ();
-    data += " - ";
-    data += long_status.c_str ();
+    if (!long_status.empty ()) {
+      data += " - ";
+      data += long_status.c_str ();
+    }
     data += "</note>\r\n";
 
     data += "<status>\r\n";
@@ -348,8 +350,13 @@ unsigned GMSIPEndpoint::get_dtmf_mode () const
 
 bool GMSIPEndpoint::set_listen_port (unsigned port)
 {
+  unsigned udp_min, udp_max;
+
   interface.protocol = "udp";
   interface.interface = "*";
+
+  endpoint.get_udp_ports (udp_min, udp_max);
+
   if (port > 0 && port >= udp_min && port <= udp_max) {
 
     std::stringstream str;
@@ -745,18 +752,29 @@ GMSIPEndpoint::OnIncomingConnection (OpalConnection &connection,
 {
   PTRACE (3, "GMSIPEndpoint\tIncoming connection");
 
-  if (!forward_uri.empty () && unconditional_forward)
+  if (!forward_uri.empty () && endpoint.get_unconditional_forward ())
     connection.ForwardCall (forward_uri);
   else if (endpoint.GetCallsNumber () > 1) { 
 
-    if (!forward_uri.empty () && forward_on_busy)
+    if (!forward_uri.empty () && endpoint.get_forward_on_busy ())
       connection.ForwardCall (forward_uri);
     else {
       connection.ClearCall (OpalConnection::EndedByLocalBusy);
     }
   }
-  else 
+  else {
+
+      Opal::Call *call = dynamic_cast<Opal::Call *> (&connection.GetCall ());
+      if (call) {
+
+        if (!forward_uri.empty () && endpoint.get_forward_on_no_answer ()) 
+          call->set_no_answer_forward (endpoint.get_reject_delay (), forward_uri);
+        else
+          call->set_reject_delay (endpoint.get_reject_delay ());
+      }
+
     return SIPEndPoint::OnIncomingConnection (connection, options, stroptions);
+  }
   
   return false;
 }
