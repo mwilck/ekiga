@@ -362,8 +362,10 @@ void GMManager::set_codecs (Ekiga::CodecList & _codecs)
 
     Ekiga::CodecList::iterator i  = 
       search_n (all_codecs.begin (), all_codecs.end (), 1, *it, same_codec_desc);
-    if (i == _codecs.end ())
+    if (i == all_codecs.end ()) {
       _codecs.erase (it);
+      it = _codecs.begin ();
+    }
   }
   codecs = _codecs;
 
