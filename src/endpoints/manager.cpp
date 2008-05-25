@@ -140,7 +140,6 @@ GMManager::GMManager (Ekiga::ServiceCore & _core)
   pcssEP->SetSoundChannelPlayDevice("EKIGA");
   pcssEP->SetSoundChannelRecordDevice("EKIGA");
   AddRouteEntry("h323:.* = pc:<db>");
-  AddRouteEntry("sip:.* = pc:<db>");
   protocols.push_back (h323EP->get_protocol_name ());
   protocols.push_back ("sip"); //FIXME
 

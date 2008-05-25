@@ -75,7 +75,6 @@ opal_init (Ekiga::ServiceCore &core,
   GMManager *manager = new GMManager (core);
   GMSIPEndpoint *sipEP = new GMSIPEndpoint (*manager, core, sip_port);
 
-  manager->AddRouteEntry("pc:.* = sip:<da>");
   manager->add_protocol_manager (*sipEP);
 
   call_core->add_manager (*manager);

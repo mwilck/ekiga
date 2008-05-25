@@ -101,6 +101,10 @@ GMSIPEndpoint::GMSIPEndpoint (GMManager & ep, Ekiga::ServiceCore & _core, unsign
   /* Update the User Agent */
   SetUserAgent ("Ekiga/" PACKAGE_VERSION);
 
+  /* Ready to take calls */
+  AddRouteEntry("sip:.* = pc:<db>");
+  AddRouteEntry("pc:.* = sip:<da>");
+
   /* NAT Binding */
   SetNATBindingRefreshMethod (SIPEndPoint::EmptyRequest);
 
