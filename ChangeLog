@@ -1,4 +1,17 @@
 2008-05-26  Damien Sandras  <dsandras@gnome.org>
+	
+	* src/gui/assistant.cpp:
+	* src/gui/callbacks.cpp:
+	* src/gui/accounts.cpp:
+	* src/gui/main.cpp:
+	* src/gui/conf.cpp:
+	* src/gui/misc.cpp:
+	First run of Ekiga without g_threads_init, gdk_threads_init,
+	gdk_threads_enter, gdk_threads_leave and friends...
+	Now, timeouts, idle and gconf notifer do not need to be protected
+	anymore.
+
+2008-05-26  Damien Sandras  <dsandras@gnome.org>
 
 	* src/endpoints/h323.cpp:
 	* src/gui/misc.h:

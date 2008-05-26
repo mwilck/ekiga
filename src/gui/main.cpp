@@ -669,11 +669,11 @@ static gboolean on_stats_refresh_cb (gpointer self)
                            mw->current_call->get_received_video_bandwidth (),
                            videooutput_stats.tx_fps,
                            videooutput_stats.rx_fps);
-    gdk_threads_enter ();
+    //gdk_threads_enter ();
     gm_main_window_push_info_message (GTK_WIDGET (self), msg);
     if (mw->current_call)
       gm_main_window_set_call_duration (GTK_WIDGET (self), mw->current_call->get_duration ().c_str ());
-    gdk_threads_leave ();
+    //gdk_threads_leave ();
 
     g_free (msg);
   }
@@ -2268,12 +2268,12 @@ gnomemeeting_tray_hack_cb (G_GNUC_UNUSED gpointer data)
   statusicon = GTK_STATUS_ICON (GnomeMeeting::Process ()->GetStatusicon ());
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   
-  gdk_threads_enter ();
+  //gdk_threads_enter ();
 
   if (!gtk_status_icon_is_embedded (GTK_STATUS_ICON (statusicon))) 
     gtk_widget_show (main_window);
   
-  gdk_threads_leave ();
+  //gdk_threads_leave ();
 
   return FALSE;
 }
@@ -2290,11 +2290,11 @@ panel_section_changed_nt (G_GNUC_UNUSED gpointer id,
   
   if (gm_conf_entry_get_type (entry) == GM_CONF_INT) {
 
-    gdk_threads_enter ();
+    //gdk_threads_enter ();
     section = gm_conf_entry_get_int (entry);
     gm_main_window_set_panel_section (GTK_WIDGET (data), 
                                       section);
-    gdk_threads_leave ();
+    //gdk_threads_leave ();
   }
 }
 
@@ -2308,13 +2308,13 @@ show_call_panel_changed_nt (G_GNUC_UNUSED gpointer id,
 
   if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
 
-    gdk_threads_enter ();
+    //gdk_threads_enter ();
     if (gm_conf_entry_get_bool (entry)) 
       gm_main_window_show_call_panel (GTK_WIDGET (data));
     else 
       gm_main_window_hide_call_panel (GTK_WIDGET (data));
 
-    gdk_threads_leave ();
+    //gdk_threads_leave ();
   }
 }
 
@@ -2330,10 +2330,10 @@ thread_safe_notebook_set_page (gpointer data)
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   mw = gm_mw_get_mw (main_window);
 
-  gdk_threads_enter ();
+  //gdk_threads_enter ();
   gtk_notebook_set_current_page (GTK_NOTEBOOK (mw->main_notebook), 
                                  GPOINTER_TO_INT (data));
-  gdk_threads_leave ();
+  //gdk_threads_leave ();
 
   return FALSE;
 }
@@ -2349,11 +2349,11 @@ thread_safe_set_stats_tooltip (gpointer data)
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   mw = gm_mw_get_mw (main_window);
 
-  gdk_threads_enter ();
+  //gdk_threads_enter ();
   gtk_tooltips_set_tip (mw->tips, mw->statusbar_ebox,
                         (gchar *) data, NULL);
   g_free ((gchar *) data);
-  gdk_threads_leave ();
+  //gdk_threads_leave ();
 
   return FALSE;
 
@@ -2379,10 +2379,10 @@ motion_detection_cb (gpointer data)
   gdk_window_get_pointer (GDK_WINDOW (GTK_WIDGET (main_window)->window), 
                           &x, &y, &mask);
 
-  gdk_threads_enter ();
+  //gdk_threads_enter ();
   timeout = gm_conf_get_int (PERSONAL_DATA_KEY "auto_away_timeout");
   status = gm_conf_get_string (PERSONAL_DATA_KEY "short_status");
-  gdk_threads_leave ();
+  //gdk_threads_leave ();
 
   if (x != idle->x && y != idle->y) {
     
@@ -2409,10 +2409,10 @@ motion_detection_cb (gpointer data)
 
     idle->idle = TRUE;
 
-    gdk_threads_enter ();
+    //gdk_threads_enter ();
     idle->last_status = g_strdup (status);
     gm_conf_set_string (PERSONAL_DATA_KEY "short_status", "away");
-    gdk_threads_leave ();
+    //gdk_threads_leave ();
   }
   g_free (status);
 
@@ -4309,8 +4309,8 @@ main (int argc,
   
   /* GTK+ initialization */
   g_type_init ();
-  g_thread_init (NULL);
-  gdk_threads_init ();
+//  g_thread_init (NULL);
+//  gdk_threads_init ();
 #ifndef WIN32
   signal (SIGPIPE, SIG_IGN);
 #endif
@@ -4504,9 +4504,9 @@ main (int argc,
 #endif
 
   /* The GTK loop */
-  gdk_threads_enter ();
+  //gdk_threads_enter ();
   gtk_main ();
-  gdk_threads_leave ();
+  //gdk_threads_leave ();
 
 #ifdef HAVE_DBUS
   g_object_unref (dbus_component);

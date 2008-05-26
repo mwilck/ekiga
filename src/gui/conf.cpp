@@ -103,9 +103,9 @@ accounts_list_changed_nt (G_GNUC_UNUSED gpointer id,
 
   if (gm_conf_entry_get_type (entry) == GM_CONF_LIST) {
 
-    gdk_threads_enter ();
+    //gdk_threads_enter ();
     gm_accounts_window_update_accounts_list (accounts_window);
-    gdk_threads_leave ();
+    //gdk_threads_leave ();
   }
 
 }
@@ -122,9 +122,9 @@ manager_changed_nt (G_GNUC_UNUSED gpointer id,
 		    G_GNUC_UNUSED gpointer data)
 {
   if (gm_conf_entry_get_type (entry) == GM_CONF_STRING) {
-    gdk_threads_enter ();
+    //gdk_threads_enter ();
 //     GnomeMeeting::Process ()->DetectDevices (); //FIXME
-    gdk_threads_leave ();
+    //gdk_threads_leave ();
   }
 }
 
@@ -146,9 +146,9 @@ sound_events_list_changed_nt (G_GNUC_UNUSED gpointer id,
    
     prefs_window = GnomeMeeting::Process ()->GetPrefsWindow (false);
     if (prefs_window) {
-      gdk_threads_enter ();
+      //gdk_threads_enter ();
       gm_prefs_window_sound_events_list_build (prefs_window);
-      gdk_threads_leave ();
+      //gdk_threads_leave ();
     }
   }
 }
@@ -170,13 +170,13 @@ stay_on_top_changed_nt (G_GNUC_UNUSED gpointer id,
 
   if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
 
-    gdk_threads_enter ();
+    //gdk_threads_enter ();
 
     val = gm_conf_entry_get_bool (entry);
 
     gm_main_window_set_stay_on_top (GTK_WIDGET (data), val);
 
-    gdk_threads_leave ();
+    //gdk_threads_leave ();
   }
 }
 
@@ -192,9 +192,9 @@ network_settings_changed_nt (G_GNUC_UNUSED gpointer id,
                              GmConfEntry *, 
                              gpointer)
 {
-  gdk_threads_enter ();
+  //gdk_threads_enter ();
   gm_conf_set_int (GENERAL_KEY "kind_of_net", NET_CUSTOM);
-  gdk_threads_leave ();
+  //gdk_threads_leave ();
 }
 
 

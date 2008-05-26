@@ -895,9 +895,9 @@ account_toggled_cb (G_GNUC_UNUSED GtkCellRendererToggle *cell,
   gnomemeeting_account_toggle_active (account);
 
   /* Update the account */
-  gdk_threads_leave ();
+  //gdk_threads_leave ();
   dynamic_cast<GMManager *>(aw->core.get ("opal-component"))->Register (account);
-  gdk_threads_enter ();
+  //gdk_threads_enter ();
 
   gm_account_delete (account);
 }

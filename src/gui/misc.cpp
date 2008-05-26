@@ -87,11 +87,13 @@ assert_error_msg (gpointer data)
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
 
   
-  gdk_threads_enter ();
+  //gdk_threads_enter ();
+  std::cout << "FIXME" << std::endl << std::flush;
+  //FIXME Should use a signal in the runtime.
   gnomemeeting_error_dialog (GTK_WINDOW (main_window), 
 			     _("Error"),
 			     "%s", (gchar *) data);
-  gdk_threads_leave ();
+  //gdk_threads_leave ();
 
   return FALSE;
 }

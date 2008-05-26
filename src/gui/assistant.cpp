@@ -506,12 +506,12 @@ apply_ekiga_net_page (EkigaAssistant *assistant)
   }
 
   /* Register the current Endpoint to GnomeMeeting.NET */
-  gdk_threads_leave ();
+  //gdk_threads_leave ();
   if (account->enabled) {
     manager = dynamic_cast<GMManager *> (assistant->priv->core->get ("opal-component"));
     manager->Register (account);
   }
-  gdk_threads_enter ();
+  //gdk_threads_enter ();
 
   gm_account_delete (account);
 }
