@@ -263,7 +263,10 @@ bool GMSIPEndpoint::send_message (const std::string & _uri,
 {
   if (!_uri.empty () && (_uri.find ("sip:") == 0 || _uri.find (':') == string::npos) && !_message.empty ()) {
 
-    Message (_uri.c_str (), _message.c_str ());
+    SIPEndPoint::Message (_uri, _message);
+
+    runtime.run_in_main (sigc::bind (im_sent.make_slot (), _uri, _message));
+
     return true;
   }
 
@@ -840,20 +843,6 @@ GMSIPEndpoint::OnMessageFailed (const SIPURL & messageUrl,
   std::string uri = (const char *) to.AsString ();
   runtime.run_in_main (sigc::bind (im_failed.make_slot (), uri, 
                                    _("Could not send message")));
-}
-
-
-void
-GMSIPEndpoint::Message (const PString & _to,
-                        const PString & body)
-{
-  SIPEndPoint::Message (_to, body);
-
-  SIPURL to = _to;
-  to.AdjustForRequestURI ();
-  std::string uri = (const char *) to.AsString ();
-  std::string _message = (const char *) body;
-  runtime.run_in_main (sigc::bind (im_sent.make_slot (), uri, _message));
 }
 
 

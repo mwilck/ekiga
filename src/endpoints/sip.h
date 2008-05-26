@@ -147,9 +147,6 @@ public:
   void OnMessageFailed (const SIPURL & messageUrl,
                         SIP_PDU::StatusCodes reason);
 
-  void Message (const PString & to,
-                const PString & body);
-
   SIPURL GetRegisteredPartyName (const SIPURL & host);
 
 private:
