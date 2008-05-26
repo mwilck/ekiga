@@ -572,8 +572,7 @@ status_menu_set_option (StatusMenu *self,
         break;
     }
     if (i == TYPE_ONLINE || i == TYPE_AWAY || i == TYPE_DND) {
-      if (!strcmp (status_types_names[i], short_status)
-	  && status && !strcmp (long_status, status))
+      if (!strcmp (status_types_names[i], short_status)) 
         break;
     }
 
@@ -876,7 +875,6 @@ status_menu_init (StatusMenu *self)
                         long_status_message_changed, self);
   gm_conf_notifier_add (PERSONAL_DATA_KEY "short_status", 
                         short_status_message_changed, self);
-  gm_conf_notifier_trigger (PERSONAL_DATA_KEY "long_status");
   gm_conf_notifier_trigger (PERSONAL_DATA_KEY "short_status");
 }
 
