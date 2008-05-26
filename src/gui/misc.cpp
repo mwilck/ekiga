@@ -55,28 +55,6 @@
 
 
 /* The functions */
-
-
-void 
-gnomemeeting_threads_enter () 
-{
-  if ((PThread::Current () != NULL) 
-      && (PThread::Current ()->GetThreadName () != PACKAGE_NAME && PThread::Current ()->GetThreadName () != "")) {    
-    gdk_threads_enter ();
-  }
-}
-
-
-void 
-gnomemeeting_threads_leave () 
-{
-  if ((PThread::Current () != NULL) 
-      && (PThread::Current ()->GetThreadName () != PACKAGE_NAME && PThread::Current ()->GetThreadName () != "")) {    
-    gdk_threads_leave ();
-  }
-}
-
-
 GtkWidget *
 gnomemeeting_button_new (const char *lbl, 
 			 GtkWidget *pixmap)

@@ -1,5 +1,14 @@
 2008-05-26  Damien Sandras  <dsandras@gnome.org>
 
+	* src/endpoints/h323.cpp:
+	* src/gui/misc.h:
+	* src/gui/misc.cpp:
+	Removed gnomemeeting_threads_enter and gnomemeeting_threads_leave.
+	They were introduced to fix thread-safety problems on 2001-11-23.
+	Toute une époque les amis, toute une époque...
+
+2008-05-26  Damien Sandras  <dsandras@gnome.org>
+
 	* src/endpoints/accountshandler.cpp:
 	Removed unuseful code.
 

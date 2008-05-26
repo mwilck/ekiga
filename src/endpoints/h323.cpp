@@ -136,9 +136,7 @@ GMH323Endpoint::SetUserInputMode ()
 {
   int mode = 0;
 
-  gnomemeeting_threads_enter ();
   mode = gm_conf_get_int (H323_KEY "dtmf_mode");
-  gnomemeeting_threads_leave ();
 
   switch (mode) 
     {
