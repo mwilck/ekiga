@@ -577,10 +577,12 @@ on_presentity_added (Ekiga::Cluster &/*cluster*/,
   GtkTreeIter group_iter;
   GtkTreeIter iter;
   bool active = false;
+  bool away = false;
 
   roster_view_gtk_find_iter_for_heap (self, heap, &heap_iter);
 
   active = presentity.get_presence () != "presence-offline";
+  away = presentity.get_presence () == "presence-away";
 
   for (std::set<std::string>::const_iterator group = groups.begin ();
        group != groups.end ();
@@ -596,7 +598,7 @@ on_presentity_added (Ekiga::Cluster &/*cluster*/,
                           COLUMN_NAME, presentity.get_name ().c_str (),
                           COLUMN_STATUS, presentity.get_status ().c_str (),
                           COLUMN_PRESENCE, presentity.get_presence ().c_str (),
-                          COLUMN_ACTIVE, active ? "black" : "gray", 
+                          COLUMN_ACTIVE, (!active || away) ? "gray" : "black", 
                           -1);
     else
       gtk_tree_store_remove (self->priv->store, &iter);
