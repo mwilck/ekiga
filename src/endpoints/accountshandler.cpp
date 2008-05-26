@@ -81,14 +81,8 @@ void GMAccountsEndpoint::Main ()
   
   GmAccount *list_account = NULL;
 
-  gboolean stun_support = FALSE;
-
   PWaitAndSignal m(quit_mutex);
 
-  gnomemeeting_threads_enter ();
-  stun_support = (gm_conf_get_int (NAT_KEY "method") == 1);
-  gnomemeeting_threads_leave ();
-  
   /* Register all accounts */
   defined_accounts = gnomemeeting_get_accounts_list ();
   accounts_iter = defined_accounts;
