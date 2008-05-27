@@ -1,4 +1,12 @@
 2008-05-26  Damien Sandras  <dsandras@gnome.org>
+
+	* src/gui/main.cpp:
+	Applied patch from Fabrice Alphonso to add back the entry to access
+	the call history in the menu. Thanks !
+	Applied patch from Matthias Schneidder to add back g_thread_init which
+	is still needed because we access glib from threads. Thanks!
+
+2008-05-26  Damien Sandras  <dsandras@gnome.org>
 	
 	* src/gui/assistant.cpp:
 	* src/gui/callbacks.cpp:

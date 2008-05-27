@@ -254,7 +254,6 @@ static void gm_mw_init_contacts_list (GtkWidget *);
  */
 static void gm_mw_init_dialpad (GtkWidget *);
 
-
 /* DESCRIPTION  : /
  * BEHAVIOR     : Builds the video settings popup of the main window.
  * PRE          : The given GtkWidget pointer must be the main window GMObject. 
@@ -1583,6 +1582,11 @@ gm_mw_init_menu (GtkWidget *main_window)
 			   GTK_SIGNAL_FUNC (radio_menu_changed_cb), 
 			   (gpointer) USER_INTERFACE_KEY "main_window/panel_section",
 			   (cps == DIALPAD), TRUE),
+      GTK_MENU_RADIO_ENTRY("callhistory", _("_Call History"), _("View the call history"),
+			   NULL, 0,
+			   GTK_SIGNAL_FUNC (radio_menu_changed_cb),
+			   (gpointer) USER_INTERFACE_KEY "main_window/panel_section",
+			   (cps == CALL), TRUE),
 
       GTK_MENU_SEPARATOR,
 
@@ -4309,7 +4313,7 @@ main (int argc,
   
   /* GTK+ initialization */
   g_type_init ();
-//  g_thread_init (NULL);
+  g_thread_init (NULL);
 //  gdk_threads_init ();
 #ifndef WIN32
   signal (SIGPIPE, SIG_IGN);
