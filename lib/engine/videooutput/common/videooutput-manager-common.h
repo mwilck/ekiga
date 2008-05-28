@@ -78,7 +78,7 @@
                                 bool local,
                                 int devices_nbr);
 
-    virtual void set_display_info (const DisplayInfo & _display_info)
+    virtual void set_display_info (const Ekiga::DisplayInfo & _display_info)
     {
       PWaitAndSignal m(display_info_mutex);
       display_info = _display_info;
@@ -156,21 +156,26 @@
     /** Uninitialises the display
     */
     virtual void uninit ();
-  
-    virtual void get_display_info (DisplayInfo & _display_info) {
+
+    void update_gui_device();
+
+    virtual void get_display_info (Ekiga::DisplayInfo & _display_info) {
           PWaitAndSignal m(display_info_mutex);
           _display_info = display_info;
     }
   
     /* This variable has to be protected by display_info_mutex */
-    DisplayInfo display_info;
+    Ekiga::DisplayInfo display_info;
     PMutex display_info_mutex; /* To protect the DisplayInfo object */
   
     PBYTEArray lframeStore;
     PBYTEArray rframeStore;
   
     typedef struct {
-      VideoOutputMode mode;
+      Ekiga::VideoOutputMode mode;
+      Ekiga::VideoOutputAccel accel;
+      bool both_streams_active;
+
       unsigned int remote_width;
       unsigned int remote_height;
     
@@ -182,11 +187,13 @@
       int embedded_x;
       int embedded_y;
     } FrameInfo;
+
     FrameInfo last_frame;
     FrameInfo current_frame;
     
     bool first_frame_received;
     bool video_disabled;
+
     UpdateRequired update_required;
   
     PSyncPoint run_thread;                  /* To signal the thread shall execute its tasks */

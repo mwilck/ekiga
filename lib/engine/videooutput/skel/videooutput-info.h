@@ -48,7 +48,8 @@
 #undef BadRequest
 #endif
 #endif
-//namespace Ekiga {
+
+namespace Ekiga {
 
 /**
  * @addtogroup display
@@ -58,21 +59,21 @@
   /* Video modes */
   typedef enum {
   
-    LOCAL_VIDEO, 
-    REMOTE_VIDEO, 
-    PIP,
-    PIP_WINDOW,
-    FULLSCREEN,
-    UNSET
+    VO_MODE_LOCAL, 
+    VO_MODE_REMOTE, 
+    VO_MODE_PIP,
+    VO_MODE_PIP_WINDOW,
+    VO_MODE_FULLSCREEN,
+    VO_MODE_UNSET
   } VideoOutputMode;
   
   /* Toggle operations for Fullscreen */
   typedef enum {
   
-    ON,
-    OFF,
-    TOGGLE
-  } FSToggle;
+    VO_FS_ON,
+    VO_FS_OFF,
+    VO_FS_TOGGLE
+  } VideoOutputFSToggle;
   
   /* Video Acceleration Status */
   typedef enum {
@@ -116,7 +117,7 @@
       allow_pip_sw_scaling = true;
       sw_scaling_algorithm = 0;
   
-      mode = UNSET;
+      mode = VO_MODE_UNSET;
       zoom = 0;
     };
     
@@ -142,7 +143,7 @@
         allow_pip_sw_scaling = rhs.allow_pip_sw_scaling;
         sw_scaling_algorithm =  rhs.sw_scaling_algorithm;
       }
-      if (rhs.mode != UNSET) mode = rhs.mode;
+      if (rhs.mode != VO_MODE_UNSET) mode = rhs.mode;
       if (rhs.zoom != 0) zoom = rhs.zoom;
     };
   
@@ -172,6 +173,6 @@
  * @}
  */
 
-//};
+};
 
 #endif

@@ -290,7 +290,7 @@ static void gm_mw_init_history (GtkWidget *);
 static void gm_mw_zooms_menu_update_sensitivity (GtkWidget *,
 			      			 unsigned int);
 
-void gm_main_window_toggle_fullscreen (FSToggle toggle,
+void gm_main_window_toggle_fullscreen (Ekiga::VideoOutputFSToggle toggle,
                                        GtkWidget   *main_window);
 
 static void gm_main_window_show_call_panel (GtkWidget *self);
@@ -657,7 +657,7 @@ static gboolean on_stats_refresh_cb (gpointer self)
   
   if (mw->current_call) {
 
-    VideoOutputStats videooutput_stats;
+    Ekiga::VideoOutputStats videooutput_stats;
     Ekiga::VideoOutputCore *videooutput_core = dynamic_cast<Ekiga::VideoOutputCore *> (mw->core.get ("videooutput-core"));
     videooutput_core->get_videooutput_stats(videooutput_stats);
   
@@ -958,31 +958,57 @@ static void on_stream_resumed_cb (Ekiga::CallManager & /*manager*/,
  */
 
 void 
-on_videooutput_device_opened_cb (Ekiga::VideoOutputManager & /* manager */, VideoOutputAccel /* accel */, gpointer /*self*/)
-{
-}
-
-void 
-on_videooutput_device_closed_cb (Ekiga::VideoOutputManager & /* manager */, gpointer /*self*/)
-{
-}
-
-void 
-on_videooutput_mode_changed_cb (Ekiga::VideoOutputManager & /* manager */, VideoOutputMode mode,  gpointer self)
+on_videooutput_device_opened_cb (Ekiga::VideoOutputManager & /* manager */, 
+                                 Ekiga::VideoOutputAccel /* accel */, 
+                                 Ekiga::VideoOutputMode mode, 
+                                 unsigned zoom, 
+                                 bool both_streams,
+                                 gpointer self)
 {
   GmMainWindow *mw = gm_mw_get_mw (GTK_WIDGET (self));
 
+  if (both_streams) {
+       gtk_menu_section_set_sensitive (mw->main_menu, "local_video", TRUE);
+       gtk_menu_section_set_sensitive (mw->main_menu, "fullscreen", TRUE);
+  } 
+  else {
+
+    if (mode == Ekiga::VO_MODE_LOCAL)
+      gtk_menu_set_sensitive (mw->main_menu, "local_video", TRUE);
+
+    if (mode == Ekiga::VO_MODE_REMOTE)
+       gtk_menu_set_sensitive (mw->main_menu, "remote_video", TRUE);
+  }
+
   gtk_radio_menu_select_with_id (mw->main_menu, "local_video", mode);
+
+  gtk_menu_set_sensitive (mw->main_menu, "zoom_in", (zoom == 200) ? FALSE : TRUE);
+  gtk_menu_set_sensitive (mw->main_menu, "zoom_out", (zoom == 50) ? FALSE : TRUE);
+  gtk_menu_set_sensitive (mw->main_menu, "normal_size", (zoom == 100) ? FALSE : TRUE);
 }
 
 void 
-on_fullscreen_mode_changed_cb (Ekiga::VideoOutputManager & /* manager */, FSToggle toggle,  gpointer self)
+on_videooutput_device_closed_cb (Ekiga::VideoOutputManager & /* manager */, gpointer self)
+{
+  GmMainWindow *mw = gm_mw_get_mw (GTK_WIDGET (self));
+
+  gtk_menu_section_set_sensitive (mw->main_menu, "local_video", FALSE);
+
+  gtk_menu_section_set_sensitive (mw->main_menu, "fullscreen", TRUE);
+
+  gtk_menu_section_set_sensitive (mw->main_menu, "zoom_in", FALSE);
+
+//  gm_main_window_update_logo_have_window (GTK_WIDGET (self));
+}
+
+void 
+on_fullscreen_mode_changed_cb (Ekiga::VideoOutputManager & /* manager */, Ekiga::VideoOutputFSToggle toggle,  gpointer self)
 {
   gm_main_window_toggle_fullscreen (toggle, GTK_WIDGET (self));
 }
 
 void 
-on_display_size_changed_cb (Ekiga::VideoOutputManager & /* manager */, unsigned width, unsigned height,  gpointer self)
+on_size_changed_cb (Ekiga::VideoOutputManager & /* manager */, unsigned width, unsigned height,  gpointer self)
 {
   GmMainWindow *mw = gm_mw_get_mw (GTK_WIDGET (self));
 
@@ -1250,12 +1276,6 @@ on_audiooutput_device_error_cb (Ekiga::AudioOutputManager & /*manager */,
   g_free (tmp_msg);
 }
 
-void
-on_logo_update_required_cb (Ekiga::VideoOutputManager & /* manager */, 
-                            gpointer self)
-{
-  gm_main_window_update_logo_have_window (GTK_WIDGET (self));
-}
 
 /* Implementation */
 static void
@@ -2522,7 +2542,7 @@ video_window_expose_cb (GtkWidget *main_window,
   if (!GDK_IS_WINDOW(mw->main_video_image->window))
     return FALSE;
 
-  DisplayInfo display_info;
+  Ekiga::DisplayInfo display_info;
   display_info.x = mw->main_video_image->allocation.x;
   display_info.y = mw->main_video_image->allocation.y;
 #ifdef WIN32  
@@ -2712,7 +2732,7 @@ zoom_in_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
 
   g_return_if_fail (data != NULL);
 
-  DisplayInfo display_info;
+  Ekiga::DisplayInfo display_info;
 
   display_info.zoom = gm_conf_get_int ((char *) data);
 
@@ -2736,7 +2756,7 @@ zoom_out_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
 
   g_return_if_fail (data != NULL);
 
-  DisplayInfo display_info;
+  Ekiga::DisplayInfo display_info;
 
   display_info.zoom = gm_conf_get_int ((char *) data);
 
@@ -2760,7 +2780,7 @@ zoom_normal_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
 
   g_return_if_fail (data != NULL);
 
-  DisplayInfo display_info;
+  Ekiga::DisplayInfo display_info;
 
   display_info.zoom  = 100;
 
@@ -2784,7 +2804,7 @@ display_changed_cb (GtkWidget *widget,
   GSList *group = NULL;
   int group_last_pos = 0;
   int active = 0;
-  DisplayInfo display_info;
+  Ekiga::DisplayInfo display_info;
 
   group = gtk_radio_menu_item_get_group (GTK_RADIO_MENU_ITEM (widget));
   group_last_pos = g_slist_length (group) - 1; /* If length 1, last pos is 0 */
@@ -2813,7 +2833,7 @@ fullscreen_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
 {
   GtkWidget* main_window = GnomeMeeting::Process()->GetMainWindow ();
   g_return_if_fail (main_window != NULL);
-  gm_main_window_toggle_fullscreen (TOGGLE, main_window);
+  gm_main_window_toggle_fullscreen (Ekiga::VO_FS_TOGGLE, main_window);
 }
 
 
@@ -3157,78 +3177,10 @@ gm_main_window_update_sensitivity (GtkWidget *main_window,
 {
   GmMainWindow *mw = NULL;
   
-  unsigned int zoom = 100;
-
   mw = gm_mw_get_mw (main_window);
 
   g_return_if_fail (mw != NULL);
 
-  zoom = gm_conf_get_int (VIDEO_DISPLAY_KEY "zoom");
-
-  
-  /* We are updating video related items */
-  if (is_video) {
-
-      /* Default to nothing being sensitive */
-      gtk_menu_section_set_sensitive (mw->main_menu,
-				      "local_video", FALSE);
-      gtk_menu_section_set_sensitive (mw->main_menu,
-				      "remote_video", FALSE);
-      gtk_menu_section_set_sensitive (mw->main_menu,
-				      "both_incrusted", FALSE);
-      gtk_menu_section_set_sensitive (mw->main_menu,
-				      "both_incrusted_window", FALSE);
-
-      
-      /* We are sending video, but not receiving 
-       * => local must be sensitive */
-      if (is_transmitting) {
-
-	gtk_menu_set_sensitive (mw->main_menu,
-				"local_video", TRUE);
-      }
-      /* We are receiving video, but not transmitting,
-       * => remote must be sensitive */
-      if (is_receiving) {
-
-	gtk_menu_set_sensitive (mw->main_menu,
-				"remote_video", TRUE);
-      }
-
-      if (is_receiving && is_transmitting) {
-	gtk_menu_set_sensitive (mw->main_menu,
-				"both_incrusted", TRUE);
-	gtk_menu_set_sensitive (mw->main_menu,
-				"both_incrusted_window", TRUE);
-        gm_main_window_fullscreen_menu_update_sensitivity (TRUE);
-
-      }
-      else {
-  
-        gm_main_window_fullscreen_menu_update_sensitivity (FALSE);
-      }
-
-      /* We are not transmitting, and not receiving anything,
-       * => Disable the zoom completely */
-      if (!is_receiving && !is_transmitting) {
-	/* set the sensitivity of the zoom related menuitems as
-	 * if we were in fullscreen -> disable
-	 * all: zoom_{in,out},normal_size */
-        gtk_menu_section_set_sensitive (mw->main_menu,
-                                        "zoom_in", FALSE);
-        gtk_menu_section_set_sensitive (mw->main_menu,
-                                        "zoom_out", FALSE);
-        gtk_menu_section_set_sensitive (mw->main_menu,
-                                        "normal_size", FALSE);
-      }
-      else {
-
-	/* Or activate it as at least something is transmitted or 
-	 * received */
-	gm_mw_zooms_menu_update_sensitivity (main_window, zoom);
-      }
-  }
-  
   if (is_transmitting) {
 
     if (!is_video) 
@@ -3244,76 +3196,47 @@ gm_main_window_update_sensitivity (GtkWidget *main_window,
       gtk_menu_set_sensitive (mw->main_menu, "suspend_video", FALSE);
 
   }
-
-  if (is_video) {
-
-    g_signal_handlers_block_by_func (G_OBJECT (mw->preview_button),
-                                     (gpointer) (toolbar_toggle_button_changed_cb),
-                                     (gpointer) VIDEO_DEVICES_KEY "enable_preview");
-
-    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (mw->preview_button), is_transmitting);
-
-    g_signal_handlers_unblock_by_func (G_OBJECT (mw->preview_button),
-                                       (gpointer) (toolbar_toggle_button_changed_cb),
-                                       (gpointer) VIDEO_DEVICES_KEY "enable_preview");
-  }
-}
-
-
-void 
-gm_main_window_fullscreen_menu_update_sensitivity (bool FSMenu)
-{
-  GtkWidget* main_window = NULL;
-  GmMainWindow *mw = NULL;
-
-  main_window = GnomeMeeting::Process()->GetMainWindow ();
-  g_return_if_fail (main_window != NULL);
-
-  mw = gm_mw_get_mw (main_window);
-  g_return_if_fail (mw != NULL);
-
-  gtk_menu_section_set_sensitive (mw->main_menu, "fullscreen", FSMenu);
 }
 
 
 void
-gm_main_window_toggle_fullscreen (FSToggle toggle,
+gm_main_window_toggle_fullscreen (Ekiga::VideoOutputFSToggle toggle,
                                   GtkWidget   *main_window)
 {
   GmMainWindow *mw = gm_mw_get_mw (main_window);
   g_return_if_fail (mw != NULL);
 
-  VideoOutputMode videooutput_mode;
+  Ekiga::VideoOutputMode videooutput_mode;
 
   switch (toggle) {
-    case OFF:
-      if (gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view") == FULLSCREEN) {
+    case Ekiga::VO_FS_OFF:
+      if (gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view") == Ekiga::VO_MODE_FULLSCREEN) {
 
-        videooutput_mode = (VideoOutputMode) gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view_before_fullscreen");
+        videooutput_mode = (Ekiga::VideoOutputMode) gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view_before_fullscreen");
         gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view", videooutput_mode);
       }
       break;
-    case ON:
-      if (gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view") != FULLSCREEN) {
+    case Ekiga::VO_FS_ON:
+      if (gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view") != Ekiga::VO_MODE_FULLSCREEN) {
 
-        videooutput_mode = (VideoOutputMode) gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view");
+        videooutput_mode = (Ekiga::VideoOutputMode) gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view");
         gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view_before_fullscreen", videooutput_mode);
-        gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view", FULLSCREEN);
+        gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view", Ekiga::VO_MODE_FULLSCREEN);
       }
       break;
 
-    case TOGGLE:
+    case Ekiga::VO_FS_TOGGLE:
     default:
-      if (gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view") == FULLSCREEN) {
+      if (gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view") == Ekiga::VO_MODE_FULLSCREEN) {
 
-        videooutput_mode = (VideoOutputMode) gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view_before_fullscreen");
+        videooutput_mode = (Ekiga::VideoOutputMode) gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view_before_fullscreen");
         gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view", videooutput_mode);
       }
       else {
 
-        videooutput_mode =  (VideoOutputMode) gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view");
+        videooutput_mode =  (Ekiga::VideoOutputMode) gm_conf_get_int (VIDEO_DISPLAY_KEY "video_view");
         gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view_before_fullscreen", videooutput_mode);
-        gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view", FULLSCREEN);
+        gm_conf_set_int (VIDEO_DISPLAY_KEY "video_view", Ekiga::VO_MODE_FULLSCREEN);
       }
       break;
   }
@@ -3888,13 +3811,7 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   conn = videooutput_core->device_closed.connect (sigc::bind (sigc::ptr_fun (on_videooutput_device_closed_cb), (gpointer) window));
   mw->connections.push_back (conn);
 
-  conn = videooutput_core->logo_update_required.connect (sigc::bind (sigc::ptr_fun (on_logo_update_required_cb), (gpointer) window));
-  mw->connections.push_back (conn);
-
-  conn = videooutput_core->display_size_changed.connect (sigc::bind (sigc::ptr_fun (on_display_size_changed_cb), (gpointer) window));
-  mw->connections.push_back (conn);
-
-  conn = videooutput_core->videooutput_mode_changed.connect (sigc::bind (sigc::ptr_fun (on_videooutput_mode_changed_cb), (gpointer) window));
+  conn = videooutput_core->size_changed.connect (sigc::bind (sigc::ptr_fun (on_size_changed_cb), (gpointer) window));
   mw->connections.push_back (conn);
 
   conn = videooutput_core->fullscreen_mode_changed.connect (sigc::bind (sigc::ptr_fun (on_fullscreen_mode_changed_cb), (gpointer) window));

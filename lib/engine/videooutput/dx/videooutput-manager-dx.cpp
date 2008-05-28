@@ -69,27 +69,27 @@ GMVideoOutputManager_dx::frame_display_change_needed ()
 void
 GMVideoOutputManager_dx::setup_frame_display ()
 {
-  DisplayInfo local_display_info;
+  Ekiga::DisplayInfo local_display_info;
 
   get_display_info(local_display_info);
 
 //  runtime.run_in_main (force_redraw.make_slot ()); //FIXME: check
 
   switch (current_frame.mode) {
-  case LOCAL_VIDEO:
-    runtime.run_in_main (sigc::bind (display_size_changed.make_slot (), (unsigned) (current_frame.local_width * current_frame.zoom / 100), (unsigned) (current_frame.local_height * current_frame.zoom / 100)));
+  case Ekiga::VO_MODE_LOCAL:
+    runtime.run_in_main (sigc::bind (size_changed.make_slot (), (unsigned) (current_frame.local_width * current_frame.zoom / 100), (unsigned) (current_frame.local_height * current_frame.zoom / 100)));
     break;
-  case REMOTE_VIDEO:
-  case PIP:
-    runtime.run_in_main (sigc::bind (display_size_changed.make_slot (), (unsigned) (current_frame.remote_width * current_frame.zoom / 100), (unsigned) (current_frame.remote_height * current_frame.zoom / 100)));
+  case Ekiga::VO_MODE_REMOTE:
+  case Ekiga::VO_MODE_PIP:
+    runtime.run_in_main (sigc::bind (size_changed.make_slot (), (unsigned) (current_frame.remote_width * current_frame.zoom / 100), (unsigned) (current_frame.remote_height * current_frame.zoom / 100)));
     break;
-  case FULLSCREEN:
-    runtime.run_in_main (sigc::bind (display_size_changed.make_slot (), 176, 144));
+  case Ekiga::VO_MODE_FULLSCREEN:
+    runtime.run_in_main (sigc::bind (size_changed.make_slot (), 176, 144));
     break;
-  case PIP_WINDOW:
-    runtime.run_in_main (sigc::bind (display_size_changed.make_slot (), 176, 144));
+  case Ekiga::VO_MODE_PIP_WINDOW:
+    runtime.run_in_main (sigc::bind (size_changed.make_slot (), 176, 144));
     break;
-  case UNSET:
+  case Ekiga::VO_MODE_UNSET:
   default:
     PTRACE (1, "GMVideoOutputManager_DX\tDisplay variable not set");
     return;
@@ -97,22 +97,20 @@ GMVideoOutputManager_dx::setup_frame_display ()
   }
 
   if (   (!local_display_info.widget_info_set) || (!local_display_info.config_info_set) 
-      || (local_display_info.mode == UNSET) || (local_display_info.zoom == 0) || (current_frame.zoom == 0)) {
+      || (local_display_info.mode == Ekiga::VO_MODE_UNSET) || (local_display_info.zoom == 0) || (current_frame.zoom == 0)) {
     PTRACE(4, "GMVideoOutputManager_DX\tWidget not yet realized or gconf info not yet set, not opening display");
     return;
   }
 
   close_frame_display ();
 
-  runtime.run_in_main (sigc::bind (videooutput_mode_changed.make_slot (), current_frame.mode));
-
-  VideoOutputAccel videooutput_accel = VO_ACCEL_NONE;
+  current_frame.accel = VO_ACCEL_NONE;
 
   switch (current_frame.mode) {
-  case LOCAL_VIDEO:
-    PTRACE(4, "GMVideoOutputManager_DX\tOpening LOCAL_VIDEO display with image of " << current_frame.local_width << "x" << current_frame.local_height);
+  case Ekiga::VO_MODE_LOCAL:
+    PTRACE(4, "GMVideoOutputManager_DX\tOpening :VO_MODE_LOCAL display with image of " << current_frame.local_width << "x" << current_frame.local_height);
     dxWindow = new DXWindow();
-    videooutput_accel = (VideoOutputAccel) dxWindow->Init (local_display_info.hwnd,
+    current_frame.accel = (VideoOutputAccel) dxWindow->Init (local_display_info.hwnd,
                           local_display_info.x,
                           local_display_info.y,
                             (int) (current_frame.local_width * current_frame.zoom / 100), 
@@ -123,16 +121,16 @@ GMVideoOutputManager_dx::setup_frame_display ()
     last_frame.embedded_x = local_display_info.x;
     last_frame.embedded_y = local_display_info.y;
 
-    last_frame.mode = LOCAL_VIDEO;
+    last_frame.mode = Ekiga::VO_MODE_LOCAL;
     last_frame.local_width = current_frame.local_width;
     last_frame.local_height = current_frame.local_height;
     last_frame.zoom = current_frame.zoom;
     break;
 
-  case REMOTE_VIDEO:
-    PTRACE(4, "GMVideoOutputManager_DX\tOpening REMOTE_VIDEO display with image of " << current_frame.remote_width << "x" << current_frame.remote_height);
+  case Ekiga::VO_MODE_REMOTE:
+    PTRACE(4, "GMVideoOutputManager_DX\tOpening VO_MODE_REMOTE display with image of " << current_frame.remote_width << "x" << current_frame.remote_height);
     dxWindow = new DXWindow();
-    videooutput_accel = (VideoOutputAccel) dxWindow->Init (local_display_info.hwnd,
+    current_frame.accel = (VideoOutputAccel) dxWindow->Init (local_display_info.hwnd,
                           local_display_info.x,
                           local_display_info.y,
                           (int) (current_frame.remote_width * current_frame.zoom / 100), 
@@ -143,22 +141,22 @@ GMVideoOutputManager_dx::setup_frame_display ()
     last_frame.embedded_x = local_display_info.x;
     last_frame.embedded_y = local_display_info.y;
 
-    last_frame.mode = REMOTE_VIDEO;
+    last_frame.mode = Ekiga::VO_MODE_REMOTE;
     last_frame.remote_width = current_frame.remote_width;
     last_frame.remote_height = current_frame.remote_height;
     last_frame.zoom = current_frame.zoom;
     break;
 
-  case FULLSCREEN:
-  case PIP:
-  case PIP_WINDOW:
+  case Ekiga::VO_MODE_FULLSCREEN:
+  case Ekiga::VO_MODE_PIP:
+  case Ekiga::VO_MODE_PIP_WINDOW:
     PTRACE(4, "GMVideoOutputManager_DX\tOpening display " << current_frame.mode << " with images of " 
             << current_frame.local_width << "x" << current_frame.local_height << "(local) and " 
 	    << current_frame.remote_width << "x" << current_frame.remote_height << "(remote)");
     dxWindow = new DXWindow();
-    videooutput_accel = (VideoOutputAccel) dxWindow->Init ((current_frame.mode == PIP) ? local_display_info.hwnd : NULL,
-                          (current_frame.mode == PIP) ? local_display_info.x : 0,
-                          (current_frame.mode == PIP) ? local_display_info.y : 0,
+    current_frame.accel = (VideoOutputAccel) dxWindow->Init ((current_frame.mode == Ekiga::VO_MODE_PIP) ? local_display_info.hwnd : NULL,
+                          (current_frame.mode == Ekiga::VO_MODE_PIP) ? local_display_info.x : 0,
+                          (current_frame.mode == Ekiga::VO_MODE_PIP) ? local_display_info.y : 0,
                           (int) (current_frame.remote_width * current_frame.zoom  / 100), 
                           (int) (current_frame.remote_height * current_frame.zoom  / 100),
                              current_frame.remote_width, 
@@ -166,7 +164,7 @@ GMVideoOutputManager_dx::setup_frame_display ()
                              current_frame.local_width, 
                              current_frame.local_height); 
 
-    if (dxWindow && current_frame.mode == FULLSCREEN) 
+    if (dxWindow && current_frame.mode == Ekiga::VO_MODE_FULLSCREEN) 
       dxWindow->ToggleFullscreen ();
 
     last_frame.embedded_x = local_display_info.x;
@@ -180,7 +178,7 @@ GMVideoOutputManager_dx::setup_frame_display ()
     last_frame.zoom = current_frame.zoom;
     break;
 
-  case UNSET:
+  case Ekiga::VO_MODE_UNSET:
   default:
     return;
     break;
@@ -193,7 +191,8 @@ GMVideoOutputManager_dx::setup_frame_display ()
 //   if (!status)
 //     close_frame_display ();
 
-  runtime.run_in_main (sigc::bind (device_opened.make_slot (), videooutput_accel));
+  last_frame.both_streams_active = current_frame.both_streams_active;
+  runtime.run_in_main (sigc::bind (device_opened.make_slot (), current_frame.accel, current_frame.mode, current_frame.zoom, current_frame.both_streams_active));
 }
 
 void
@@ -230,8 +229,8 @@ GMVideoOutputManager_dx::display_pip_frames (const char *local_frame,
   if (dxWindow)
     dxWindow->ProcessEvents(); 
 
-  if (current_frame.mode == FULLSCREEN && dxWindow && !dxWindow->IsFullScreen ())
-    runtime.run_in_main (sigc::bind (fullscreen_mode_changed.make_slot (), OFF));
+  if (current_frame.mode == Ekiga::VO_MODE_FULLSCREEN && dxWindow && !dxWindow->IsFullScreen ())
+    runtime.run_in_main (sigc::bind (fullscreen_mode_changed.make_slot (), Ekiga::VO_FS_OFF));
 
   if (dxWindow) {
     if (update_required.remote || (!update_required.remote && !update_required.local))

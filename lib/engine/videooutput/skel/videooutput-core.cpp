@@ -48,7 +48,7 @@ using namespace Ekiga;
 
 VideoOutputCore::VideoOutputCore ()
 {
-  PWaitAndSignal m(var_mutex);
+  PWaitAndSignal m(core_mutex);
 
   videooutput_stats.rx_width = videooutput_stats.rx_height = videooutput_stats.rx_fps = 0;
   videooutput_stats.tx_width = videooutput_stats.tx_height = videooutput_stats.tx_fps = 0;
@@ -64,7 +64,7 @@ VideoOutputCore::~VideoOutputCore ()
   std::cout << __PRETTY_FUNCTION__ << std::endl;
 #endif
 
-  PWaitAndSignal m(var_mutex);
+  PWaitAndSignal m(core_mutex);
 
   if (videooutput_core_conf_bridge)
     delete videooutput_core_conf_bridge;
@@ -72,24 +72,22 @@ VideoOutputCore::~VideoOutputCore ()
 
 void VideoOutputCore::setup_conf_bridge ()
 {
-  PWaitAndSignal m(var_mutex);
+  PWaitAndSignal m(core_mutex);
 
   videooutput_core_conf_bridge = new VideoOutputCoreConfBridge (*this);
 }
 
 void VideoOutputCore::add_manager (VideoOutputManager &manager)
 {
-  PWaitAndSignal m(var_mutex);
+  PWaitAndSignal m(core_mutex);
 
   managers.insert (&manager);
   manager_added.emit (manager);
 
   manager.device_opened.connect (sigc::bind (sigc::mem_fun (this, &VideoOutputCore::on_device_opened), &manager));
   manager.device_closed.connect (sigc::bind (sigc::mem_fun (this, &VideoOutputCore::on_device_closed), &manager));
-  manager.videooutput_mode_changed.connect (sigc::bind (sigc::mem_fun (this, &VideoOutputCore::on_videooutput_mode_changed), &manager));
   manager.fullscreen_mode_changed.connect (sigc::bind (sigc::mem_fun (this, &VideoOutputCore::on_fullscreen_mode_changed), &manager));
-  manager.display_size_changed.connect (sigc::bind (sigc::mem_fun (this, &VideoOutputCore::on_display_size_changed), &manager));
-  manager.logo_update_required.connect (sigc::bind (sigc::mem_fun (this, &VideoOutputCore::on_logo_update_required), &manager));
+  manager.size_changed.connect (sigc::bind (sigc::mem_fun (this, &VideoOutputCore::on_size_changed), &manager));
 }
 
 
@@ -106,7 +104,7 @@ void VideoOutputCore::visit_managers (sigc::slot<bool, VideoOutputManager &> vis
 
 void VideoOutputCore::start ()
 {
-   PWaitAndSignal m(var_mutex);
+   PWaitAndSignal m(core_mutex);
 
    number_times_started++;
    if (number_times_started > 1)
@@ -123,7 +121,7 @@ void VideoOutputCore::start ()
 
 void VideoOutputCore::stop ()
 {
-  PWaitAndSignal m(var_mutex);
+  PWaitAndSignal m(core_mutex);
 
   number_times_started--;
 
@@ -152,7 +150,7 @@ void VideoOutputCore::set_frame_data (const char *data,
                                   bool local,
                                   int devices_nbr)
 {
-  var_mutex.Wait ();
+  core_mutex.Wait ();
 
   if (local) {
     videooutput_stats.tx_frames++;
@@ -179,7 +177,7 @@ void VideoOutputCore::set_frame_data (const char *data,
     g_get_current_time (&last_stats);
   }
 
-  var_mutex.Signal ();
+  core_mutex.Signal ();
   
   for (std::set<VideoOutputManager *>::iterator iter = managers.begin ();
        iter != managers.end ();
@@ -190,7 +188,7 @@ void VideoOutputCore::set_frame_data (const char *data,
 
 void VideoOutputCore::set_display_info (const DisplayInfo & _display_info)
 {
-  PWaitAndSignal m(var_mutex);
+  PWaitAndSignal m(core_mutex);
 
   for (std::set<VideoOutputManager *>::iterator iter = managers.begin ();
        iter != managers.end ();
@@ -200,9 +198,9 @@ void VideoOutputCore::set_display_info (const DisplayInfo & _display_info)
 }
 
 
-void VideoOutputCore::on_device_opened (VideoOutputAccel videooutput_accel, VideoOutputManager *manager)
+void VideoOutputCore::on_device_opened (VideoOutputAccel videooutput_accel, VideoOutputMode mode, unsigned zoom, bool both_streams, VideoOutputManager *manager)
 {
-  device_opened.emit (*manager, videooutput_accel);
+  device_opened.emit (*manager, videooutput_accel, mode, zoom, both_streams);
 }
 
 void VideoOutputCore::on_device_closed ( VideoOutputManager *manager)
@@ -210,22 +208,13 @@ void VideoOutputCore::on_device_closed ( VideoOutputManager *manager)
   device_closed.emit (*manager);
 }
 
-void VideoOutputCore::on_videooutput_mode_changed (VideoOutputMode mode, VideoOutputManager *manager)
-{
- videooutput_mode_changed.emit (*manager, mode);
-}
-
-void VideoOutputCore::on_fullscreen_mode_changed ( FSToggle toggle, VideoOutputManager *manager)
+void VideoOutputCore::on_fullscreen_mode_changed ( VideoOutputFSToggle toggle, VideoOutputManager *manager)
 {
   fullscreen_mode_changed.emit (*manager, toggle);
 }
 
-void VideoOutputCore::on_display_size_changed ( unsigned width, unsigned height, VideoOutputManager *manager)
+void VideoOutputCore::on_size_changed ( unsigned width, unsigned height, VideoOutputManager *manager)
 {
-  display_size_changed.emit (*manager, width, height);
+  size_changed.emit (*manager, width, height);
 }
 
-void VideoOutputCore::on_logo_update_required (VideoOutputManager *manager)
-{
-  logo_update_required.emit (*manager);
-}

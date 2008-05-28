@@ -69,15 +69,18 @@ namespace Ekiga
 
   public:
 
-      /* The constructor
+      /** The constructor
       */
       VideoOutputCore ();
 
-      /* The destructor
+      /** The destructor
       */
       ~VideoOutputCore ();
 
+      /** Set up gmconf bridge
+       */
       void setup_conf_bridge();
+
 
       /*** Service Implementation ***/
 
@@ -111,12 +114,21 @@ namespace Ekiga
       sigc::signal<void, VideoOutputManager &> manager_added;
 
 
-      /*** Display Management ***/                 
+      /*** Videooutput Management ***/
 
+      /** Start the video output
+       * Must be called before outputting frames via set_frame_data()
+       */
       void start ();
 
+      /** Stop the video output
+       * 
+       */
       void stop ();
 
+      /** Display a single frame
+       * Pass the pointer to the frame to all registered mangers.
+       */
       void set_frame_data (const char *data,
                            unsigned width,
                            unsigned height,
@@ -125,29 +137,33 @@ namespace Ekiga
 
       void set_display_info (const DisplayInfo & _display_info);
 
-      /*** Display Related Signals ***/
-      
-      /** See display-manager.h for the API
-       */
-      sigc::signal<void, VideoOutputManager &, VideoOutputAccel> device_opened;
-      sigc::signal<void, VideoOutputManager &> device_closed;
-      sigc::signal<void, VideoOutputManager &, VideoOutputMode> videooutput_mode_changed;
-      sigc::signal<void, VideoOutputManager &, FSToggle> fullscreen_mode_changed;
-      sigc::signal<void, VideoOutputManager &, unsigned, unsigned> display_size_changed;
-      sigc::signal<void, VideoOutputManager &> logo_update_required;
 
       /*** Statistics ***/
+
+      /** Get the current video output statistics from the core
+       *
+       * @param _videooutput_stats the struct to be filled with the current values..
+       */
       void get_videooutput_stats (VideoOutputStats & _videooutput_stats) {
         _videooutput_stats = videooutput_stats;
       };
-  private:
-      void on_device_opened (VideoOutputAccel videooutput_accel, VideoOutputManager *manager);
-      void on_device_closed (VideoOutputManager *manager);
 
-      void on_videooutput_mode_changed (VideoOutputMode mode, VideoOutputManager *manager);
-      void on_fullscreen_mode_changed (FSToggle toggle, VideoOutputManager *manager);
-      void on_display_size_changed ( unsigned width, unsigned height, VideoOutputManager *manager);
-      void on_logo_update_required (VideoOutputManager *manager);
+
+      /*** Display Related Signals ***/
+
+      /** See videooutput-manager.h for the API
+       */
+      sigc::signal<void, VideoOutputManager &, VideoOutputAccel, VideoOutputMode, unsigned, bool> device_opened;
+      sigc::signal<void, VideoOutputManager &> device_closed;
+      sigc::signal<void, VideoOutputManager &, VideoOutputFSToggle> fullscreen_mode_changed;
+      sigc::signal<void, VideoOutputManager &, unsigned, unsigned> size_changed;
+
+
+  private:
+      void on_device_opened (VideoOutputAccel videooutput_accel, VideoOutputMode mode, unsigned zoom, bool both_streams, VideoOutputManager *manager);
+      void on_device_closed (VideoOutputManager *manager);
+      void on_size_changed ( unsigned width, unsigned height, VideoOutputManager *manager);
+      void on_fullscreen_mode_changed (VideoOutputFSToggle toggle, VideoOutputManager *manager);
 
       std::set<VideoOutputManager *> managers;
 
@@ -155,7 +171,7 @@ namespace Ekiga
       GTimeVal last_stats;
       int number_times_started;
 
-      PMutex var_mutex;     /* Protect start, stop and number_times_started */
+      PMutex core_mutex;
 
       VideoOutputCoreConfBridge* videooutput_core_conf_bridge;
     };
