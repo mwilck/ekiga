@@ -29,7 +29,7 @@
  *                         ------------------------------------------
  *   begin                : written in 2007 by Matthias Schneider
  *   copyright            : (c) 2007 by Matthias Schneider
- *   description          : declaration of the interface of a videooutput core.
+ *   description          : Declaration of the interface of a videooutput core.
  *                          A videooutput core manages VideoOutputManagers.
  *
  */
@@ -62,6 +62,12 @@ namespace Ekiga
   class VideoOutputManager;
 
   /** Core object for the video display support
+   *
+   * The VideoOutputCore will control the different VideoOutputManagers and pass pointers to 
+   * the frames to all of them.
+   * Before passing the first frame, start() has to be called. In order to close the video,
+   * stop() has to be called. The video output core interacts with the GUI when switching to fullscreen,
+   * when the size of the video has been changed and when a device is opened and closed.
    */
   class VideoOutputCore
     : public Service
@@ -128,7 +134,14 @@ namespace Ekiga
 
       /** Display a single frame
        * Pass the pointer to the frame to all registered mangers.
+       * The video output must have been started before.
+       * @param data a pointer to the buffer with the data to be written. It will not be freed.
+       * @param width the width in pixels of the frame to be written.
+       * @param height the height in pixels of the frame to be written.
+       * @param local true if the frame is a frame of the local video source, false if it is from the remote end.
+       * @param devices_nbr 1 if only local or remote device has been opened, 2 if both have been opened.
        */
+
       void set_frame_data (const char *data,
                            unsigned width,
                            unsigned height,
@@ -149,7 +162,7 @@ namespace Ekiga
       };
 
 
-      /*** Display Related Signals ***/
+      /*** Signals ***/
 
       /** See videooutput-manager.h for the API
        */

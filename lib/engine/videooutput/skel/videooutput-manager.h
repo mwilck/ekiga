@@ -52,7 +52,6 @@ namespace Ekiga
    *
    * Each VideoOutputManager represents a sink for video frames.
    * A VideoOutputManager can display the video signal, record single frames or record video signal.
-   * The VideoOutputCore will control the different managers and pass the frames to all of them.
    */
   class VideoOutputManager
     {
@@ -85,7 +84,7 @@ namespace Ekiga
        * @param width the width in pixels of the frame to be written.
        * @param height the height in pixels of the frame to be written.
        * @param local true if the frame is a frame of the local video source, false if it is from the remote end.
-       * @param devices_nbr 1 if only local or remote device has been opened, 2 if both have been opened. //FIXME
+       * @param devices_nbr 1 if only local or remote device has been opened, 2 if both have been opened.
        */
       virtual void set_frame_data (const char *data,
                                    unsigned width,
@@ -99,7 +98,10 @@ namespace Ekiga
       /*** API to act on VideoOutputDevice events ***/
 
       /** This signal is emitted when a video output device is opened.
-       * @param hw_accel_status actual hardware acceleration support active on the video output device opened).
+       * @param videooutput_accel actual hardware acceleration support active on the video output device opened.
+       * @param mode the mode in which the device was initially opened.
+       * @param zoom the initial zoom level when de device was opened.
+       * @param both_streams if a frame from both local and remote stream has been received.
        */
       sigc::signal<void, VideoOutputAccel, VideoOutputMode, unsigned, bool> device_opened;
 
@@ -107,7 +109,23 @@ namespace Ekiga
        */
       sigc::signal<void> device_closed;
 
+      /** This signal is emitted when a manager switches autonomously into or out of fullscreen mode.
+       * Some managers like DX and XV  allow the user to switch between FS
+       * by pressing a key or clicking a mouse button on top of the video. In order to
+       * This signal is called whenever the size of the widget carrying the video signal
+       * has to be changed. This happens when the displayed video changes in resolution
+       * or when it is being zoomed in or out.
+       * @param toggle VO_FS_ON or VO_FS_OFF depending on whether FS was activated or deactivated.
+       */
       sigc::signal<void, VideoOutputFSToggle> fullscreen_mode_changed;
+
+      /** This signal is emitted the video output size has changed.
+       * This signal is called whenever the size of the widget carrying the video signal
+       * has to be changed. This happens when the displayed video changes in resolution
+       * or when it is being zoomed in or out.
+       * @param width the new width of the widget.
+       * @param height the new height of the widget.
+       */
       sigc::signal<void, unsigned, unsigned> size_changed;
 
   protected:  
