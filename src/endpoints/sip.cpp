@@ -606,10 +606,6 @@ GMSIPEndpoint::OnRegistrationFailed (const PString & _aor,
     info = _("Proxy auth. required");
     break;
 
-  case SIP_PDU::Failure_Gone:
-    info = _("Gone");
-    break;
-
   case SIP_PDU::Failure_LengthRequired:
     info = _("Length required");
     break;
@@ -640,10 +636,6 @@ GMSIPEndpoint::OnRegistrationFailed (const PString & _aor,
 
   case SIP_PDU::Failure_IntervalTooBrief:
     info = _("Interval too brief");
-    break;
-
-  case SIP_PDU::Failure_TransactionDoesNotExist:
-    info = _("Trans. does not exist");
     break;
 
   case SIP_PDU::Failure_LoopDetected:
@@ -730,6 +722,8 @@ GMSIPEndpoint::OnRegistrationFailed (const PString & _aor,
     info = _("Globally not acceptable");
     break;
 
+  case SIP_PDU::Failure_TransactionDoesNotExist:
+  case SIP_PDU::Failure_Gone:
   case SIP_PDU::MaxStatusCode:
   default:
     info = _("Failed");
