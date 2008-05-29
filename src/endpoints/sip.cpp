@@ -818,9 +818,9 @@ GMSIPEndpoint::OnReceivedMESSAGE (G_GNUC_UNUSED OpalTransport & transport,
 
   PWaitAndSignal m(msgDataMutex);
   last = msgData.GetAt (SIPURL (from).AsString ());
-  if (!last || *last != pdu.GetMIME ().GetCallID ()) {
+  if (!last || *last != pdu.GetMIME ().GetFrom ()) {
 
-    val = new PString (pdu.GetMIME ().GetCallID ());
+    val = new PString (pdu.GetMIME ().GetFrom ());
     msgData.SetAt (SIPURL (from).AsString (), val);
 
     SIPURL uri = from;
