@@ -6,14 +6,15 @@
 # Stefan Brüns <lurchi@kawo1.rwrh-aachen.de>, 2001-2004, 2006.
 # Hendrik Richter <hendrikr@gnome.org>, 2005, 2006, 2007.
 # Andre Klapper <ak-47@gmx.net>, 2007.
+# Philipp Kerling <k.philipp@gmail.com>, 2008.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Ekiga 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-05 12:27+0200\n"
-"PO-Revision-Date: 2007-09-05 12:53+0200\n"
-"Last-Translator: Hendrik Richter <hendrikr@gnome.org>\n"
+"POT-Creation-Date: 2008-05-31 10:35+0200\n"
+"PO-Revision-Date: 2008-05-31 10:44+0200\n"
+"Last-Translator: Philipp Kerling <k.philipp@gmail.com>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -101,16 +102,16 @@ msgstr "Inaktive Verbindungen beenden"
 
 #: ../ekiga.schemas.in.in.h:15
 msgid ""
-"Connection will be established in Fast Start mode. Fast Start is a new way "
-"to start calls faster that was introduced in H.323v2. It is not supported by "
+"Connection will be established in Fast Start mode. Fast Start is a new way to "
+"start calls faster that was introduced in H.323v2. It is not supported by "
 "Netmeeting and using both Fast Start and H.245 Tunneling can crash some "
 "versions of Netmeeting"
 msgstr ""
-"Verbindungen werden im Schnellstart-Modus hergestellt. Der Schnellstart-"
-"Modus ist ein neuer Weg um Verbindungen schneller herzustellen, er wurde mit "
-"H.323v2 eingeführt. Dies wird von Netmeeting nicht unterstützt, die "
-"Benutzung des Schnellstartmodus zusammen mit H.245-Tunneln kann einige "
-"Versionen von Netmeeting zum Abstürzen bringen"
+"Verbindungen werden im Schnellstart-Modus hergestellt. Der Schnellstart-Modus "
+"ist ein neuer Weg um Verbindungen schneller herzustellen, er wurde mit "
+"H.323v2 eingeführt. Dies wird von Netmeeting nicht unterstützt, die Benutzung "
+"des Schnellstartmodus zusammen mit H.245-Tunneln kann einige Versionen von "
+"Netmeeting zum Abstürzen bringen"
 
 #: ../ekiga.schemas.in.in.h:16
 msgid "Country code"
@@ -220,8 +221,8 @@ msgid ""
 "If enabled, Ekiga will start hidden provided that the notification area is "
 "present in the GNOME panel"
 msgstr ""
-"Wenn aktiviert, wird Ekiga versteckt gestartet, unter der Voraussetzung, "
-"dass der Benachrichtigungsbereich in der Kontrollleiste vorhanden ist"
+"Wenn aktiviert, wird Ekiga versteckt gestartet, unter der Voraussetzung, dass "
+"der Benachrichtigungsbereich in der Kontrollleiste vorhanden ist"
 
 #: ../ekiga.schemas.in.in.h:39
 msgid ""
@@ -239,12 +240,11 @@ msgstr ""
 #: ../ekiga.schemas.in.in.h:41
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
-"specified in the field below if you already are in a call or if you are in "
-"Do Not Disturb mode"
+"specified in the field below if you already are in a call or if you are in Do "
+"Not Disturb mode"
 msgstr ""
 "Wenn aktiviert, werden alle ankommenden Anrufe an den obenstehenden Rechner "
-"weitergeleitet, wenn besetzt ist oder der »Nicht stören«-Modus ausgewählt "
-"wurde"
+"weitergeleitet, wenn besetzt ist oder der »Nicht stören«-Modus ausgewählt wurde"
 
 #: ../ekiga.schemas.in.in.h:42
 msgid ""
@@ -441,8 +441,8 @@ msgstr "Revision der Schema-Datei"
 #: ../ekiga.schemas.in.in.h:87
 msgid "Select an alternative audio output device to use for sound events."
 msgstr ""
-"Wählen Sie ein alternatives Audiowiedergabe-Gerät für die Ausgabe von "
-"Klängen bei Ereignissen."
+"Wählen Sie ein alternatives Audiowiedergabe-Gerät für die Ausgabe von Klängen "
+"bei Ereignissen."
 
 #: ../ekiga.schemas.in.in.h:88 ../src/gui/preferences.cpp:1095
 msgid "Select the audio input device to use"
@@ -453,26 +453,23 @@ msgid "Select the audio output device to use"
 msgstr "Wählen Sie das Audiowiedergabe-Gerät"
 
 #: ../ekiga.schemas.in.in.h:90 ../src/gui/preferences.cpp:959
-msgid ""
-"Select the desired method for NAT traversal (STUN is strongly suggested)"
+msgid "Select the desired method for NAT traversal (STUN is strongly suggested)"
 msgstr ""
 "Wählen Sie die Methode, die für NAT-Durchquerung verwendet werden soll (STUN "
 "wird empfohlen)"
 
 #: ../ekiga.schemas.in.in.h:91 ../src/gui/preferences.cpp:1178
-msgid ""
-"Select the format for video cameras (does not apply to most USB cameras)"
+msgid "Select the format for video cameras (does not apply to most USB cameras)"
 msgstr ""
 "Wählen Sie das Format für Videokameras aus. (Irrelevant für die meisten USB-"
 "Kameras)"
 
 #: ../ekiga.schemas.in.in.h:92
 msgid ""
-"Select the transmitted video size: Small (QCIF 176x144) or Large (CIF "
-"352x288)"
+"Select the transmitted video size: Small (QCIF 176x144) or Large (CIF 352x288)"
 msgstr ""
-"Wählen sie die zu übertragende Videogröße aus: Klein (QCIF 176x144) oder "
-"Groß (CIF 352x288)"
+"Wählen sie die zu übertragende Videogröße aus: Klein (QCIF 176x144) oder Groß "
+"(CIF 352x288)"
 
 #: ../ekiga.schemas.in.in.h:93 ../src/gui/preferences.cpp:1168
 msgid ""
@@ -529,9 +526,9 @@ msgstr "Liste der Audio-Codecs"
 
 #: ../ekiga.schemas.in.in.h:105
 msgid ""
-"The Automatic Echo Cancellation level: Off, Low, Medium, High, Automatic "
-"Gain Compensation. Choosing Automatic Gain Compensation modulates the volume "
-"for best quality."
+"The Automatic Echo Cancellation level: Off, Low, Medium, High, Automatic Gain "
+"Compensation. Choosing Automatic Gain Compensation modulates the volume for "
+"best quality."
 msgstr ""
 "Die Stärke der automatischen Echo-Unterdrückung: Aus, Gering, Mittel, Hoch, "
 "AGC. AGC (Automatic Gain Compensation) regelt die Stärke automatisch, um die "
@@ -557,19 +554,18 @@ msgstr "STUN-Server"
 
 #: ../ekiga.schemas.in.in.h:110
 msgid ""
-"The STUN server to use for STUN Support. STUN is a technic that permits to "
-"go through some types of NAT gateways"
+"The STUN server to use for STUN Support. STUN is a technic that permits to go "
+"through some types of NAT gateways"
 msgstr ""
-"Der Server für STUN-Unterstützung. STUN ist ein Verfahren, das es "
-"ermöglicht, durch einige NAT-Gateways hindurch eine Verbindung aufzubauen"
+"Der Server für STUN-Unterstützung. STUN ist ein Verfahren, das es ermöglicht, "
+"durch einige NAT-Gateways hindurch eine Verbindung aufzubauen"
 
 #: ../ekiga.schemas.in.in.h:111
 msgid "The accounts list"
 msgstr "Die Konten-Liste"
 
 #: ../ekiga.schemas.in.in.h:112
-msgid ""
-"The audio plugin that will be used to detect the devices and manage them"
+msgid "The audio plugin that will be used to detect the devices and manage them"
 msgstr ""
 "Das Audio-Plugin, das für die Erkennung und Verwaltung der Geräte verwendet "
 "wird"
@@ -583,8 +579,8 @@ msgid ""
 "The chosen sound will be played at the end of calls or calling somebody who "
 "is busy, if enabled"
 msgstr ""
-"Der gewählte Klang wird (wenn aktiviert) bei Beendigung einer Verbindung "
-"oder bei Anruf einer Person, die beschäftigt ist, abgespielt"
+"Der gewählte Klang wird (wenn aktiviert) bei Beendigung einer Verbindung oder "
+"bei Anruf einer Person, die beschäftigt ist, abgespielt"
 
 #: ../ekiga.schemas.in.in.h:115
 msgid "The chosen sound will be played on incoming calls, if enabled"
@@ -596,8 +592,8 @@ msgid ""
 "The chosen sound will be played when a new instant message is received, if "
 "enabled"
 msgstr ""
-"Der gewählte Klang wird (wenn aktiviert) abgespielt, wenn eine neue "
-"Nachricht eingetroffen ist"
+"Der gewählte Klang wird (wenn aktiviert) abgespielt, wenn eine neue Nachricht "
+"eingetroffen ist"
 
 #: ../ekiga.schemas.in.in.h:117
 msgid ""
@@ -620,8 +616,8 @@ msgid ""
 "The default video view (0: Local, 1: Remote, 2: Both incrusted, 3: Both with "
 "local video in a separate window, 4: Both)"
 msgstr ""
-"Die voreingestellte Videoansicht (0: Lokal, 1: Gegenseite, 2: Beide "
-"zusammen, 3: Beide, lokales in zusätzlichem Fenster, 4: Beide)"
+"Die voreingestellte Videoansicht (0: Lokal, 1: Gegenseite, 2: Beide zusammen, "
+"3: Beide, lokales in zusätzlichem Fenster, 4: Beide)"
 
 #: ../ekiga.schemas.in.in.h:121
 msgid "The dial tone sound"
@@ -693,12 +689,12 @@ msgstr ""
 #, no-c-format
 msgid ""
 "The minimum transmitted video quality to keep when trying to minimize the "
-"used bandwidth: choose 100% on a LAN for the best quality, 1% being the "
-"worst quality"
+"used bandwidth: choose 100% on a LAN for the best quality, 1% being the worst "
+"quality"
 msgstr ""
-"Die minimal zu übertragende Qualität des Videos, die bei "
-"Bandbreitenanpassung verwendet werden soll. In einem LAN sollte 100% für die "
-"höchste Qualität ausgewählt werden, 1% steht für die geringste Qualität"
+"Die minimal zu übertragende Qualität des Videos, die bei Bandbreitenanpassung "
+"verwendet werden soll. In einem LAN sollte 100% für die höchste Qualität "
+"ausgewählt werden, 1% steht für die geringste Qualität"
 
 #: ../ekiga.schemas.in.in.h:135
 msgid "The network interface"
@@ -718,8 +714,8 @@ msgstr "Klang für Sprachnachrichten"
 
 #: ../ekiga.schemas.in.in.h:139
 msgid ""
-"The output device type is the type of device connected to your Quicknet "
-"card. It can be either a POTS (Plain Old Telephone System) or a headset."
+"The output device type is the type of device connected to your Quicknet card. "
+"It can be either a POTS (Plain Old Telephone System) or a headset."
 msgstr ""
 "Art des Wiedergabe-Gerätes, das mit der Quicknet-Karte verbunden ist. Dies "
 "kann entweder ein normaler Telefonhörer (POTS, Plain Old Telephone System) "
@@ -759,15 +755,14 @@ msgstr ""
 
 #: ../ekiga.schemas.in.in.h:145
 msgid ""
-"The range of TCP ports that Ekiga will use for the H.323 H.245 channel. "
-"Ekiga needs to be restarted for the new values to take effect. This port "
-"range has no effect if both participants to the conference are using H.245 "
-"Tunneling."
+"The range of TCP ports that Ekiga will use for the H.323 H.245 channel. Ekiga "
+"needs to be restarted for the new values to take effect. This port range has "
+"no effect if both participants to the conference are using H.245 Tunneling."
 msgstr ""
 "Der Bereich von TCP-Ports, der von Ekiga für den H.245-Kanal von H.323 "
 "verwendet wird. Ekiga muss neu gestartet werden, damit Änderungen wirksam "
-"werden. Dieser Port-Bereich hat keine Auswirkungen, wenn beide Teilnehmer "
-"der Konferenz H.245-Tunnelung verwenden."
+"werden. Dieser Port-Bereich hat keine Auswirkungen, wenn beide Teilnehmer der "
+"Konferenz H.245-Tunnelung verwenden."
 
 #: ../ekiga.schemas.in.in.h:146
 msgid ""
@@ -782,12 +777,12 @@ msgstr ""
 #: ../ekiga.schemas.in.in.h:147
 msgid ""
 "The range of UDP ports that Ekiga will use for SIP signaling and when "
-"registering to gatekeepers. Ekiga needs to be restarted for the new values "
-"to take effect."
+"registering to gatekeepers. Ekiga needs to be restarted for the new values to "
+"take effect."
 msgstr ""
-"Der UDP-Port-Bereich, den Ekiga für SIP-Signalisierung und für die "
-"Gatekeeper-Anmeldung verwenden soll. Ekiga muss neu gestartet werden, damit "
-"die Einstellung in Kraft tritt."
+"Der UDP-Port-Bereich, den Ekiga für SIP-Signalisierung und für die Gatekeeper-"
+"Anmeldung verwenden soll. Ekiga muss neu gestartet werden, damit die "
+"Einstellung in Kraft tritt."
 
 #: ../ekiga.schemas.in.in.h:148
 msgid "The remote zoom value"
@@ -830,8 +825,7 @@ msgstr ""
 "eintrifft"
 
 #: ../ekiga.schemas.in.in.h:156
-msgid ""
-"The sound that will be played when there is a new voice mail, if enabled"
+msgid "The sound that will be played when there is a new voice mail, if enabled"
 msgstr ""
 "Der Klang, der bei einer neuen Sprachnachricht abgespielt wird (wenn "
 "aktiviert)"
@@ -853,8 +847,7 @@ msgstr ""
 "auszuwählen)"
 
 #: ../ekiga.schemas.in.in.h:160 ../src/gui/preferences.cpp:1156
-msgid ""
-"The video plugin that will be used to detect the devices and manage them"
+msgid "The video plugin that will be used to detect the devices and manage them"
 msgstr ""
 "Das Video-Plugin, das für die Erkennung und Verwaltung der Geräte verwendet "
 "wird"
@@ -862,8 +855,8 @@ msgstr ""
 #: ../ekiga.schemas.in.in.h:161
 msgid ""
 "The way to react to incoming calls: 0 displays a popup, 1 automatically "
-"answers the call, 2 automatically rejects the call and 3 forwards the call "
-"to the given URL, if any"
+"answers the call, 2 automatically rejects the call and 3 forwards the call to "
+"the given URL, if any"
 msgstr ""
 "Mögliche Reaktionen auf einen eingehenden Anruf: 0 öffnet ein Popup-Fenster, "
 "1 nimmt den Anruf automatisch entgegen, 2 lehnt den Anruf automatisch ab und "
@@ -875,8 +868,8 @@ msgstr "Der Vergrößerungsfaktor"
 
 #: ../ekiga.schemas.in.in.h:163
 msgid ""
-"The zoom value to apply to images displayed in the local video window (can "
-"be 0.50, 1.00, or 2.00)"
+"The zoom value to apply to images displayed in the local video window (can be "
+"0.50, 1.00, or 2.00)"
 msgstr ""
 "Der Vergrößerungsfaktor, der für Bilder im lokalen Videofenster gelten soll "
 "(Mögliche Werte sind 0.50, 1.00 oder 2.00)"
@@ -886,24 +879,24 @@ msgid ""
 "The zoom value to apply to images displayed in the main GUI (can be 0.50, "
 "1.00, or 2.00)"
 msgstr ""
-"Der Vergrößerungsfaktor, der für Bilder im Hauptfenster gelten soll "
-"(Mögliche Werte sind 0.50, 1.00 oder 2.00)"
+"Der Vergrößerungsfaktor, der für Bilder im Hauptfenster gelten soll (Mögliche "
+"Werte sind 0.50, 1.00 oder 2.00)"
 
 #: ../ekiga.schemas.in.in.h:165
 msgid ""
 "The zoom value to apply to images displayed in the remote video window (can "
 "be 0.50, 1.00, or 2.00)"
 msgstr ""
-"Der Vergrößerungsfaktor, der für Bilder im Fenster der Gegenseite gelten "
-"soll (Mögliche Werte sind 0.50, 1.00 oder 2.00)"
+"Der Vergrößerungsfaktor, der für Bilder im Fenster der Gegenseite gelten soll "
+"(Mögliche Werte sind 0.50, 1.00 oder 2.00)"
 
 #: ../ekiga.schemas.in.in.h:166 ../src/gui/preferences.cpp:1001
 msgid ""
-"This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages "
-"are encapsulated into the the H.225 channel (port 1720). This saves one TCP "
+"This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages are "
+"encapsulated into the the H.225 channel (port 1720). This saves one TCP "
 "connection during calls. H.245 Tunneling was introduced in H.323v2 and "
-"Netmeeting does not support it. Using both Fast Start and H.245 Tunneling "
-"can crash some versions of Netmeeting."
+"Netmeeting does not support it. Using both Fast Start and H.245 Tunneling can "
+"crash some versions of Netmeeting."
 msgstr ""
 "Hiermit wird der H.245-Tunnelmodus aktiviert. Im H.245-Tunnelmodus werden "
 "H.245-Nachrichten im H.225-Kanal (Port 1720) eingekapselt. Dadurch wird "
@@ -918,8 +911,8 @@ msgstr "H.245 beim Verbindungsaufbau frühzeitig verwenden"
 
 #: ../ekiga.schemas.in.in.h:168
 msgid ""
-"This enables IP checking from ekiga.com. The returned IP is only used when "
-"IP Translation is enabled."
+"This enables IP checking from ekiga.com. The returned IP is only used when IP "
+"Translation is enabled."
 msgstr ""
 "Hiermit wird IP-Adressüberprüfung von ekiga.com aktiviert. Die "
 "zurückgelieferte IP wird nur verwendet, wenn IP-Adressübersetzung aktiv ist."
@@ -935,13 +928,13 @@ msgstr ""
 #: ../ekiga.schemas.in.in.h:170
 msgid ""
 "This permits to set the mode for DTMFs sending. The values can be \"String"
-"\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (default is \"String"
-"\"). Choosing other values than \"String\" disables the Text Chat"
+"\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (default is \"String\"). "
+"Choosing other values than \"String\" disables the Text Chat"
 msgstr ""
 "Dies erlaubt es, den Modus für DTMF-Übertragung festzulegen. Mögliche Werte "
-"sind »Zeichenkette« (0), »Ton« (1), »RFC2833« (2) oder »Q.931« (3) "
-"(Vorgabewert ist »Zeichenkette«). Wenn ein anderer Wert als »Zeichenkette« "
-"gewählt wird, wird der Text-Chat deaktiviert"
+"sind »Zeichenkette« (0), »Ton« (1), »RFC2833« (2) oder »Q.931« (3) (Vorgabewert "
+"ist »Zeichenkette«). Wenn ein anderer Wert als »Zeichenkette« gewählt wird, "
+"wird der Text-Chat deaktiviert"
 
 #: ../ekiga.schemas.in.in.h:171
 msgid "UDP port range"
@@ -1017,77 +1010,6 @@ msgstr "Ausrichtung"
 msgid "The orientation of the tray."
 msgstr "Die Ausrichtung der Anzeige."
 
-#: ../src/clients/ils.cpp:105 ../src/gui/tools.cpp:174
-msgid "Invalid parameters"
-msgstr "Ungültige Parameter"
-
-#: ../src/clients/ils.cpp:105
-msgid ""
-"Please provide your first name and e-mail in the Personal Data section in "
-"order to be able to register to the users directory."
-msgstr ""
-"Bitte geben Sie Ihren Vornamen und Ihre E-Mail-Adresse im Abschnitt "
-"»Persönliche Daten« an, damit eine Anmeldung beim Benutzer-Verzeichnis "
-"durchgeführt werden kann."
-
-#: ../src/clients/ils.cpp:145
-msgid "Invalid users directory"
-msgstr "Ungültiges Benutzerverzeichnis"
-
-#: ../src/clients/ils.cpp:145
-msgid "Operation impossible since there is no users directory specified."
-msgstr "Operation unmöglich, da kein Benutzerverzeichnis angegeben wurde."
-
-#: ../src/clients/ils.cpp:238
-msgid "Failed to parse XML file"
-msgstr "XML-Datei konnte nicht interpretiert werden"
-
-#: ../src/clients/ils.cpp:238
-msgid ""
-"There was an error while parsing the XML file. Please make sure that it is "
-"correctly installed in your system."
-msgstr ""
-"Beim Interpretieren der XML-Datei ist ein Fehler aufgetreten. Bitte stellen "
-"Sie sicher, dass sie korrekt in Ihrem System installiert ist."
-
-#: ../src/clients/ils.cpp:249
-msgid "Bad information"
-msgstr "Fehlerhafte Daten"
-
-#: ../src/clients/ils.cpp:249
-#, c-format
-msgid "Bad LDAP information from XML file: %s."
-msgstr "Fehlerhafte LDAP-Informationen aus XML-Datei: %s."
-
-#: ../src/clients/ils.cpp:257
-#, c-format
-msgid "ILS registration failed: unable to connect to %s"
-msgstr ""
-"ILS-Anmeldung fehlgeschlagen: Verbindung zu %s konnte nicht hergestellt "
-"werden"
-
-#: ../src/clients/ils.cpp:270
-msgid "ILS registration failed: unable to set time limit on operations"
-msgstr ""
-"ILS-Anmeldung fehlgeschlagen: Zeitlimit für Operationen konnte nicht gesetzt "
-"werden"
-
-#: ../src/clients/ils.cpp:282
-#, c-format
-msgid "ILS registration failed: failed to bind to %s"
-msgstr "ILS-Anmeldung fehlgeschlagen: Bindung an %s nicht möglich"
-
-#: ../src/clients/ils.cpp:310
-#, c-format
-msgid "Updated information on %s"
-msgstr "Informationen im Verzeichnis %s wurden aktualisiert"
-
-#: ../src/clients/ils.cpp:314 ../src/endpoints/accountshandler.cpp:332
-#: ../src/endpoints/sip.cpp:236
-#, c-format
-msgid "Unregistered from %s"
-msgstr "Von %s abgemeldet"
-
 #: ../src/clients/stun.cpp:104
 #, c-format
 msgid "STUN server set to %s"
@@ -1103,10 +1025,10 @@ msgid ""
 "STUN test result: %s.\n"
 "\n"
 "Ekiga could not detect the type of NAT you are using. The most appropriate "
-"method, if your router does not natively support SIP or H.323, is probably "
-"to forward the required ports to your internal machine and use IP "
-"translation if you are behind a NAT router. Please also make sure you are "
-"not running a local firewall."
+"method, if your router does not natively support SIP or H.323, is probably to "
+"forward the required ports to your internal machine and use IP translation if "
+"you are behind a NAT router. Please also make sure you are not running a "
+"local firewall."
 msgstr ""
 "STUN Testergebnis: %s.\n"
 "\n"
@@ -1130,23 +1052,24 @@ msgstr ""
 "Firewall die von Ekiga benötigten Ports blockiert."
 
 #: ../src/clients/stun.cpp:153
+#, c-format
 msgid ""
 "Ekiga detected Symmetric NAT. The most appropriate method, if your router "
 "does not natively support SIP or H.323, is to forward the required ports to "
-"your internal machine in order to change your Symmetric NAT into Cone NAT. "
-"If you run this test again after the port forwarding has been done, it "
-"should report Cone NAT. This should allow Ekiga to be used with STUN support "
+"your internal machine in order to change your Symmetric NAT into Cone NAT. If "
+"you run this test again after the port forwarding has been done, it should "
+"report Cone NAT. This should allow Ekiga to be used with STUN support "
 "enabled. If it does not report Cone NAT, then it means that there is a "
 "problem in your forwarding rules."
 msgstr ""
-"Ekiga hat symmetrisches NAT erkannt. Die günstigste Methode, falls der "
-"Router SIP oder H.323 nicht nativ unterstützt, ist es, die benötigten Ports "
-"zum internen Rechner weiterzuleiten, wodurch das symmetrische NAT effektiv "
-"zu Cone NAT wird. Wenn dieser Test erneut nach Weiterleitung der "
-"entsprechenden Ports ausgeführt wird, sollte Cone NAT erkannt werden. In "
-"diesem Fall kann die STUN-Unterstützung von Ekiga verwendet werden. Falls "
-"etwas anderes als Cone NAT erkannt wird, sind wahrscheinlich die "
-"Weiterleitungs-Regeln im Router falsch konfiguriert."
+"Ekiga hat symmetrisches NAT erkannt. Die günstigste Methode, falls der Router "
+"SIP oder H.323 nicht nativ unterstützt, ist es, die benötigten Ports zum "
+"internen Rechner weiterzuleiten, wodurch das symmetrische NAT effektiv zu "
+"Cone NAT wird. Wenn dieser Test erneut nach Weiterleitung der entsprechenden "
+"Ports ausgeführt wird, sollte Cone NAT erkannt werden. In diesem Fall kann "
+"die STUN-Unterstützung von Ekiga verwendet werden. Falls etwas anderes als "
+"Cone NAT erkannt wird, sind wahrscheinlich die Weiterleitungs-Regeln im "
+"Router falsch konfiguriert."
 
 #: ../src/clients/stun.cpp:157
 #, c-format
@@ -1256,6 +1179,7 @@ msgstr ""
 "anrufen wollen, verwenden Sie bitte 'ekiga -c URL'."
 
 #: ../src/components/bonobo.cpp:170
+#, c-format
 msgid ""
 "It appears that you do not have ekiga.server installed in a valid location. "
 "Factory mode disabled.\n"
@@ -1264,6 +1188,7 @@ msgstr ""
 "Werksmodus wurde deaktiviert.\n"
 
 #: ../src/components/bonobo.cpp:174
+#, c-format
 msgid ""
 "Error registering Ekiga with the activation service; factory mode disabled.\n"
 msgstr ""
@@ -1271,6 +1196,7 @@ msgstr ""
 "wurde deaktiviert.\n"
 
 #: ../src/components/bonobo.cpp:214
+#, c-format
 msgid "Failed to retrieve Ekiga server from activation server\n"
 msgstr "Ekiga-Server konnte nicht vom Aktivierungs-Server empfangen werden\n"
 
@@ -1290,8 +1216,8 @@ msgstr "Das Gerät kann nicht geöffnet werden"
 #: ../src/devices/audio.cpp:298
 #, c-format
 msgid ""
-"Impossible to open the selected audio device (%s) for recording. Please "
-"check your audio setup, the permissions and that the device is not busy."
+"Impossible to open the selected audio device (%s) for recording. Please check "
+"your audio setup, the permissions and that the device is not busy."
 msgstr ""
 "Das gewählte Audiogerät (%s) konnte nicht für die Aufnahme geöffnet werden. "
 "Bitte überprüfen Sie die Audio-Einstellungen, die Berechtigungen und ob das "
@@ -1303,9 +1229,9 @@ msgid ""
 "Impossible to open the selected audio device (%s) for playing. Please check "
 "your audio setup, the permissions and that the device is not busy."
 msgstr ""
-"Das gewählte Audiogerät (%s) konnte nicht für die Wiedergabe geöffnet "
-"werden. Bitte überprüfen Sie die Audio-Einstellungen, die Berechtigungen und "
-"ob das Gerät bereits verwendet wird."
+"Das gewählte Audiogerät (%s) konnte nicht für die Wiedergabe geöffnet werden. "
+"Bitte überprüfen Sie die Audio-Einstellungen, die Berechtigungen und ob das "
+"Gerät bereits verwendet wird."
 
 #: ../src/devices/audio.cpp:316 ../src/devices/audio.cpp:385
 msgid "Cannot use the audio device"
@@ -1340,9 +1266,9 @@ msgstr ""
 #: ../src/devices/audio.cpp:481 ../src/devices/audio.cpp:482
 #: ../src/devices/videoinput.cpp:310 ../src/devices/videoinput.cpp:585
 #: ../src/endpoints/ekiga.cpp:351 ../src/endpoints/ekiga.cpp:353
-#: ../src/endpoints/ekiga.cpp:355 ../src/endpoints/pcss.cpp:194
-#: ../src/gui/druid.cpp:1780 ../src/gui/druid.cpp:1792
-#: ../src/gui/druid.cpp:1850
+#: ../src/endpoints/ekiga.cpp:355 ../src/endpoints/pcss.cpp:198
+#: ../src/gui/druid.cpp:1784 ../src/gui/druid.cpp:1796
+#: ../src/gui/druid.cpp:1854
 msgid "No device found"
 msgstr "Kein Gerät gefunden"
 
@@ -1353,8 +1279,8 @@ msgid ""
 "Ekiga rocks!\" in your microphone. You should hear yourself back into the "
 "speakers with a four-second delay."
 msgstr ""
-"Ekiga nimmt nun von %s auf und gibt über %s wieder. Bitte sprechen Sie »1, "
-"2, 3, Ekiga rockt!« in Ihr Mikrofon. Sie sollten sich selber mit einer "
+"Ekiga nimmt nun von %s auf und gibt über %s wieder. Bitte sprechen Sie »1, 2, "
+"3, Ekiga rockt!« in Ihr Mikrofon. Sie sollten sich selber mit einer "
 "Verzögerung von 4 Sekunden über die Lautsprecher hören."
 
 #: ../src/devices/videoinput.cpp:319
@@ -1394,10 +1320,11 @@ msgid ""
 "and make sure that the appropriate driver is loaded."
 msgstr ""
 "Beim Öffnen des Gerätes ist ein Fehler aufgetreten. Bitte überprüfen sie die "
-"Berechtigungen und stellen Sie sicher, dass der entsprechende Treiber "
-"geladen wurde."
+"Berechtigungen und stellen Sie sicher, dass der entsprechende Treiber geladen "
+"wurde."
 
 #: ../src/devices/videoinput.cpp:372 ../src/devices/videoinput.cpp:686
+#, c-format
 msgid "Your video driver doesn't support the requested video format."
 msgstr "Videogerät unterstützt angefordertes Videoformat nicht."
 
@@ -1458,19 +1385,23 @@ msgid "Error while opening %s."
 msgstr "Fehler beim Öffnen von %s."
 
 #: ../src/devices/videoinput.cpp:690
+#, c-format
 msgid "Could not open the chosen channel with the chosen video format."
 msgstr ""
 "Ausgewählter Kanal konnte nicht mit ausgewähltem Format geöffnet werden."
 
 #: ../src/devices/videoinput.cpp:694
+#, c-format
 msgid "Your driver doesn't support any of the color formats tried by Ekiga"
 msgstr "Ihr Treiber unterstützt keines der von Ekiga getesteten Farbformate"
 
 #: ../src/devices/videoinput.cpp:698
+#, c-format
 msgid "Error with the frame rate."
 msgstr "Fehlerhafte Bildrate."
 
 #: ../src/devices/videoinput.cpp:702
+#, c-format
 msgid "Error with the frame size."
 msgstr "Fehlerhafte Bildgröße."
 
@@ -1521,6 +1452,11 @@ msgstr "Bei %s angemeldet"
 #: ../src/endpoints/accountshandler.cpp:322 ../src/endpoints/sip.cpp:231
 msgid "Registered"
 msgstr "Angemeldet"
+
+#: ../src/endpoints/accountshandler.cpp:332 ../src/endpoints/sip.cpp:236
+#, c-format
+msgid "Unregistered from %s"
+msgstr "Von %s abgemeldet"
 
 #: ../src/endpoints/accountshandler.cpp:352 ../src/endpoints/sip.cpp:242
 msgid "Unregistered"
@@ -1583,7 +1519,7 @@ msgstr "Verbunden mit %s, %s wird verwendet"
 msgid "Connected with %s"
 msgstr "Verbunden mit %s"
 
-#: ../src/endpoints/manager.cpp:1124 ../src/gui/main.cpp:4156
+#: ../src/endpoints/manager.cpp:1124 ../src/gui/main.cpp:4157
 msgid "Standby"
 msgstr "Bereit"
 
@@ -1678,9 +1614,8 @@ msgid ""
 "You will not be able to receive incoming H.323 calls. Please check that no "
 "other program is already running on the port used by Ekiga."
 msgstr ""
-"Sie werden keine ankommenden H.323-Anrufe empfangen können. Bitte stellen "
-"Sie sicher, dass kein anderes Programm die von Ekiga benötigten Ports "
-"benutzt."
+"Sie werden keine ankommenden H.323-Anrufe empfangen können. Bitte stellen Sie "
+"sicher, dass kein anderes Programm die von Ekiga benötigten Ports benutzt."
 
 #: ../src/endpoints/manager.cpp:1626
 msgid "Error while starting the listener for the SIP protocol"
@@ -1719,21 +1654,21 @@ msgstr "Codec %s geschlossen, wurde vorher für Empfang geöffnet"
 msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 msgstr "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 
-#: ../src/endpoints/pcss.cpp:218
+#: ../src/endpoints/pcss.cpp:222
 #, c-format
 msgid "Opened %s for recording with plugin %s"
 msgstr "%s wurde für Aufnahme mit dem Plugin »%s« geöffnet"
 
-#: ../src/endpoints/pcss.cpp:219
+#: ../src/endpoints/pcss.cpp:223
 #, c-format
 msgid "Opened %s for playing with plugin %s"
 msgstr "%s wurde für Wiedergabe mit dem Plugin »%s« geöffnet"
 
-#: ../src/endpoints/pcss.cpp:237
+#: ../src/endpoints/pcss.cpp:241
 msgid "Could not open audio channel for audio transmission"
 msgstr "Audiokanal zur Audioübertragung konnte nicht geöffnet werden"
 
-#: ../src/endpoints/pcss.cpp:237
+#: ../src/endpoints/pcss.cpp:241
 msgid ""
 "An error occured while trying to record from the soundcard for the audio "
 "transmission. Please check that your soundcard is not busy and that your "
@@ -1745,19 +1680,19 @@ msgstr ""
 "anderweitig benutzt wird und dass der Treiber Voll-Duplex unterstützt.\n"
 "Die Audioübertragung wurde deaktiviert."
 
-#: ../src/endpoints/pcss.cpp:239
+#: ../src/endpoints/pcss.cpp:243
 msgid "Could not open audio channel for audio reception"
 msgstr "Audiokanal zum Audioempfang konnte nicht geöffnet werden"
 
-#: ../src/endpoints/pcss.cpp:239
+#: ../src/endpoints/pcss.cpp:243
 msgid ""
 "An error occured while trying to play audio to the soundcard for the audio "
 "reception. Please check that your soundcard is not busy and that your driver "
 "supports full-duplex.\n"
 "The audio reception has been disabled."
 msgstr ""
-"Beim Versuch, Audio für den Audio-Empfang über die Soundkarte auszugeben, "
-"ist ein Fehler aufgetreten. Bitte überprüfen Sie, dass die Soundkarte nicht "
+"Beim Versuch, Audio für den Audio-Empfang über die Soundkarte auszugeben, ist "
+"ein Fehler aufgetreten. Bitte überprüfen Sie, dass die Soundkarte nicht "
 "anderweitig benutzt wird und dass der Treiber Voll-Duplex unterstützt.\n"
 "Der Audioempfang wurde deaktiviert."
 
@@ -1981,7 +1916,7 @@ msgstr ""
 "<b>Kurzwahl:</b> %s\n"
 
 #: ../src/gui/addressbook.cpp:821 ../src/gui/addressbook.cpp:823
-#: ../src/gui/druid.cpp:1912 ../src/gui/preferences.cpp:930
+#: ../src/gui/druid.cpp:1916 ../src/gui/preferences.cpp:930
 msgid "None"
 msgstr "Keine"
 
@@ -2267,13 +2202,59 @@ msgstr "Artwork:"
 msgid "See AUTHORS file for full credits"
 msgstr "Schauen Sie in die AUTHORS-Datei für eine Liste aller Beteiligten"
 
+#: ../src/gui/callbacks.cpp:168
+msgid ""
+"This program is free software; you can redistribute it and/or modify it under "
+"the terms of the GNU General Public License as published by the Free Software "
+"Foundation; either version 2 of the License, or (at your option) any later "
+"version. "
+msgstr ""
+"Dieses Programm ist freie Software, Sie können sie weitergeben und/oder "
+"verändern solange Sie sich an die Regeln der GNU General Public License "
+"halten, so wie sie von der Free Software Foundation festgelegt wurden; "
+"entweder in Version 2 der Lizenz oder (nach Ihrem Ermessen) in jeder "
+"folgenden Lizenz. "
+
+#: ../src/gui/callbacks.cpp:172
+msgid ""
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
+"FOR A PARTICULAR PURPOSE. See the GNU General Public License for more "
+"details. You should have received a copy of the GNU General Public License "
+"along with this program; if not, write to the Free Software Foundation, Inc., "
+"51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA."
+msgstr ""
+"Dieses Programm wurde mit dem Ziel veröffentlicht, dass Sie es nützlich "
+"finden, jedoch OHNE JEDWEDE GARANTIE, sogar ohne eine implizite Garantie der "
+"VERKAUFBARKEIT oder der NUTZBARKEIT FÜR EINEN SPEZIELLEN ZWECK. Schauen Sie "
+"für weitere Informationen bitte in der GNU General Public License (GNU GPL) "
+"nach. Mit diesem Programm sollten Sie außerdem eine Kopie der GNU General "
+"Public License erhalten haben. Wenn dem nicht so ist, so schreiben Sie bitte "
+"an die Free Software Foundation, Inc.,  51 Franklin Street, Fifth Floor, "
+"Boston, MA 02110-1301, USA."
+
+#: ../src/gui/callbacks.cpp:179
+msgid ""
+"Ekiga is licensed under the GPL license and as a special exception, you have "
+"permission to link or otherwise combine this program with the programs OPAL, "
+"OpenH323 and PWLIB, and distribute the combination, without applying the "
+"requirements of the GNU GPL to the OPAL, OpenH323 and PWLIB programs, as long "
+"as you do follow the requirements of the GNU GPL for all the rest of the "
+"software thus combined."
+msgstr ""
+"Ekiga ist unter der GPL lizenziert. Als Spezialausnahme dürfen Sie dieses "
+"Programm mit den Programmen OPAL, OpenH323 und PWLIB binden oder auf andere "
+"Weise kombinieren und das Resultat ohne die Bedingungen der GNU GPL auf die "
+"Programme OPAL, OpenH323 und PWLIB anzuwenden verbreiten, solange Sie den "
+"Bedingungen der GNU GPL für die restlichen integrierten Programme folgen."
+
 #. Translators: Please write translator credits here, and
 #. * separate names with \n
-#: ../src/gui/callbacks.cpp:190
+#: ../src/gui/callbacks.cpp:191
 msgid "translator-credits"
 msgstr "Stefan Brüns"
 
-#: ../src/gui/callbacks.cpp:195
+#: ../src/gui/callbacks.cpp:196
 msgid ""
 "Ekiga is full-featured SIP and H.323 compatible VoIP, IP-Telephony and "
 "Videoconferencing application that allows you to make audio and video calls "
@@ -2374,8 +2355,8 @@ msgstr "Diese Änderung beeinflusst nur neue Anrufe"
 
 #: ../src/gui/config.cpp:237
 msgid ""
-"Ekiga cannot apply one or more changes to the current call. Your new "
-"settings will take effect for the next call."
+"Ekiga cannot apply one or more changes to the current call. Your new settings "
+"will take effect for the next call."
 msgstr ""
 "Eine oder mehrere Einstellungen können von Ekiga nicht für die aktuelle "
 "Verbindung verändert werden. Die neuen Einstellungen werden erst bei der "
@@ -2433,8 +2414,8 @@ msgstr ""
 "folgenden Schritten wird durch ein paar einfache Fragen eine Ekiga-"
 "Konfiguration erstellt.\n"
 "\n"
-"Nach Beendigung dieser Schritte kann diese jederzeit unter »Einstellungen« "
-"im »Bearbeiten«-Menü verändert werden."
+"Nach Beendigung dieser Schritte kann diese jederzeit unter »Einstellungen« im "
+"»Bearbeiten«-Menü verändert werden."
 
 #: ../src/gui/druid.cpp:622
 #, c-format
@@ -2479,13 +2460,13 @@ msgid ""
 "you may first create an account below. This will provide a SIP address that "
 "allows people to call you.\n"
 "\n"
-"You may skip this step if you use an alternative SIP service, or if you "
-"would prefer to specify the login details later."
+"You may skip this step if you use an alternative SIP service, or if you would "
+"prefer to specify the login details later."
 msgstr ""
 "Benutzername und Passwort werden verwendet, um sich in Ihr bestehendes Konto "
-"beim kostenlosen ekiga.net SIP-Service anzumelden. Falls Sie noch keine "
-"ekiga.net SIP-Adresse haben, können Sie nun ein Konto erstellen, sodass Sie "
-"unter einer SIP-Adresse von anderen angerufen werden können.\n"
+"beim kostenlosen ekiga.net SIP-Service anzumelden. Falls Sie noch keine ekiga."
+"net SIP-Adresse haben, können Sie nun ein Konto erstellen, sodass Sie unter "
+"einer SIP-Adresse von anderen angerufen werden können.\n"
 "\n"
 "Sie können diesen Schritt überspringen, wenn Sie einen anderen SIP-Service "
 "nutzen oder die Anmeldeinformationen später festlegen möchten."
@@ -2515,8 +2496,8 @@ msgid ""
 "in the preferences window."
 msgstr ""
 "Der Verbindungstyp wird benutzt, um möglichst passende Werte für die "
-"Qualitätseinstellungen zu wählen, die Ekiga während einer Verbindung "
-"benutzt. Sie können diese Einstellungen später individuell anpassen."
+"Qualitätseinstellungen zu wählen, die Ekiga während einer Verbindung benutzt. "
+"Sie können diese Einstellungen später individuell anpassen."
 
 #: ../src/gui/druid.cpp:893
 #, c-format
@@ -2580,8 +2561,8 @@ msgid ""
 "The audio output device is the device managed by the audio manager that will "
 "be used to play audio."
 msgstr ""
-"Das Wiedergabe-Gerät ist das Gerät, das verwendet wird, um Audio "
-"abzuspielen. Es wird vom Audio-Manager verwaltet."
+"Das Wiedergabe-Gerät ist das Gerät, das verwendet wird, um Audio abzuspielen. "
+"Es wird vom Audio-Manager verwaltet."
 
 #: ../src/gui/druid.cpp:1049
 msgid "Please choose the audio input device:"
@@ -2639,27 +2620,27 @@ msgstr ""
 msgid "Configuration complete - page %d/%d"
 msgstr "Konfiguration vollständig – Seite %d/%d"
 
-#: ../src/gui/druid.cpp:1630
+#: ../src/gui/druid.cpp:1634
 msgid "56k Modem"
 msgstr "56K Modem"
 
-#: ../src/gui/druid.cpp:1631
+#: ../src/gui/druid.cpp:1635
 msgid "ISDN"
 msgstr "ISDN"
 
-#: ../src/gui/druid.cpp:1632
+#: ../src/gui/druid.cpp:1636
 msgid "xDSL/Cable"
 msgstr "DSL/Kabelmodem"
 
-#: ../src/gui/druid.cpp:1633
+#: ../src/gui/druid.cpp:1637
 msgid "T1/LAN"
 msgstr "T1/LAN"
 
-#: ../src/gui/druid.cpp:1634
+#: ../src/gui/druid.cpp:1638
 msgid "Keep current settings"
 msgstr "Aktuelle Einstellungen beibehalten"
 
-#: ../src/gui/druid.cpp:1912
+#: ../src/gui/druid.cpp:1916
 #, c-format
 msgid ""
 "You have now finished the Ekiga configuration. All the settings can be "
@@ -2677,8 +2658,8 @@ msgid ""
 "Video input: %s\n"
 "SIP URL: %s\n"
 msgstr ""
-"Sie haben die Ekiga-Konfiguration abgeschlossen. Alle Einstellungen können "
-"in den Ekiga-Einstellungen geändert werden. Viel Spaß!\n"
+"Sie haben die Ekiga-Konfiguration abgeschlossen. Alle Einstellungen können in "
+"den Ekiga-Einstellungen geändert werden. Viel Spaß!\n"
 "\n"
 "\n"
 "Zusammenfassung:\n"
@@ -2692,7 +2673,7 @@ msgstr ""
 "Videoquelle: %s\n"
 "SIP-URL: %s\n"
 
-#: ../src/gui/druid.cpp:1967
+#: ../src/gui/druid.cpp:1971
 msgid "First Time Configuration Assistant"
 msgstr "Konfigurations-Assistent für den ersten Start"
 
@@ -2724,16 +2705,16 @@ msgstr "Bilder von der eigenen Kamera anzeigen"
 
 #: ../src/gui/main.cpp:798
 msgid ""
-"Audio transmission status. During a call, click here to suspend or resume "
-"the audio transmission."
+"Audio transmission status. During a call, click here to suspend or resume the "
+"audio transmission."
 msgstr ""
 "Status der Audioübertragung. Während einer Verbindung hier klicken, um die "
 "Audioübertragung anzuhalten oder fortzusetzen."
 
 #: ../src/gui/main.cpp:821
 msgid ""
-"Video transmission status. During a call, click here to suspend or resume "
-"the video transmission."
+"Video transmission status. During a call, click here to suspend or resume the "
+"video transmission."
 msgstr ""
 "Status der Videoübertragung. Während einer Verbindung hier klicken, um die "
 "Videoübertragung anzuhalten oder fortzusetzen."
@@ -3219,7 +3200,7 @@ msgstr ""
 "Pakete in falscher Folge: %.1f %%\n"
 "Jitter-Puffer: %d ms"
 
-#: ../src/gui/main.cpp:4574
+#: ../src/gui/main.cpp:4575
 #, c-format
 msgid ""
 "Ekiga got an invalid value for the GConf key %s.\n"
@@ -3231,8 +3212,7 @@ msgid ""
 "the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list "
 "archives for more information (http://mail.gnome.org) about this problem."
 msgstr ""
-"Ekiga wurde ein ungültiger Wert für den GConf-Schlüssel »%s« "
-"zurückgeliefert.\n"
+"Ekiga wurde ein ungültiger Wert für den GConf-Schlüssel »%s« zurückgeliefert.\n"
 "\n"
 "Dies könnte bedeuten, dass Ihre GConf-Schemata nicht richtig installiert "
 "wurden oder die Rechte nicht korrekt sind.\n"
@@ -3242,23 +3222,23 @@ msgstr ""
 "Mailinglisten-Archiv (http://mail.gnome.org) nach, um Lösungen für dieses "
 "Problem zu finden."
 
-#: ../src/gui/main.cpp:4577
+#: ../src/gui/main.cpp:4578
 msgid "Gconf key error"
 msgstr "Fehler bei GConf-Schlüssel"
 
-#: ../src/gui/main.cpp:4608 ../src/gui/main.cpp:4627
+#: ../src/gui/main.cpp:4609 ../src/gui/main.cpp:4628
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "Debug-Meldungen in der Konsole ausgeben (Stufe zwischen 1 und 6)"
 
-#: ../src/gui/main.cpp:4611 ../src/gui/main.cpp:4632
+#: ../src/gui/main.cpp:4612 ../src/gui/main.cpp:4633
 msgid "Makes Ekiga call the given URL"
 msgstr "Lässt Ekiga die angegebene URL anrufen"
 
-#: ../src/gui/main.cpp:4665
+#: ../src/gui/main.cpp:4666
 msgid "No usable audio plugin detected"
 msgstr "Kein verwendbares Audio-Plugin gefunden"
 
-#: ../src/gui/main.cpp:4665
+#: ../src/gui/main.cpp:4666
 msgid ""
 "Ekiga didn't find any usable audio plugin. Make sure that your installation "
 "is correct."
@@ -3378,9 +3358,9 @@ msgstr ""
 
 #: ../src/gui/preferences.cpp:714
 msgid ""
-"If enabled, your details are shown to people browsing the users directory. "
-"If disabled, you are not visible to users browsing the users directory, but "
-"they can still use the callto URL to call you."
+"If enabled, your details are shown to people browsing the users directory. If "
+"disabled, you are not visible to users browsing the users directory, but they "
+"can still use the callto URL to call you."
 msgstr ""
 "Wenn aktiviert, werden Ihre Anmeldungsdaten Personen gezeigt, die das "
 "Benutzerverzeichnis durchsuchen. Wenn deaktiviert, sind Sie für diese "
@@ -3423,8 +3403,8 @@ msgstr "Wenn _besetzt ist, an den angegebenen Rechner weiterleiten"
 #: ../src/gui/preferences.cpp:731
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
-"specified in the protocol settings if you already are in a call or if you "
-"are in Do Not Disturb mode"
+"specified in the protocol settings if you already are in a call or if you are "
+"in Do Not Disturb mode"
 msgstr ""
 "Wenn aktiviert, werden alle ankommenden Anrufe an den in den Protokoll-"
 "Einstellungen angegebenen Rechner weitergeleitet, wenn besetzt ist oder der "
@@ -3562,16 +3542,16 @@ msgstr "»_Schnellstart« aktivieren"
 
 #: ../src/gui/preferences.cpp:1005
 msgid ""
-"Connection will be established in Fast Start mode. Fast Start is a new way "
-"to start calls faster that was introduced in H.323v2. It is not supported by "
+"Connection will be established in Fast Start mode. Fast Start is a new way to "
+"start calls faster that was introduced in H.323v2. It is not supported by "
 "Netmeeting and using both Fast Start and H.245 Tunneling can crash some "
 "versions of Netmeeting."
 msgstr ""
-"Verbindungen werden im Schnellstart-Modus hergestellt. Der Schnellstart-"
-"Modus ist ein neuer Weg um Verbindungen schneller herzustellen, er wurde mit "
-"H.323v2 eingeführt. Dies wird von Netmeeting nicht unterstützt, die "
-"Benutzung des Schnellstartmodus zusammen mit H.245-Tunneln kann einige "
-"Versionen von Netmeeting zum Abstürzen bringen."
+"Verbindungen werden im Schnellstart-Modus hergestellt. Der Schnellstart-Modus "
+"ist ein neuer Weg um Verbindungen schneller herzustellen, er wurde mit "
+"H.323v2 eingeführt. Dies wird von Netmeeting nicht unterstützt, die Benutzung "
+"des Schnellstartmodus zusammen mit H.245-Tunneln kann einige Versionen von "
+"Netmeeting zum Abstürzen bringen."
 
 #: ../src/gui/preferences.cpp:1011 ../src/gui/preferences.cpp:1048
 msgid "DTMF Mode"
@@ -3584,13 +3564,13 @@ msgstr "_DTMF übertragen als:"
 #: ../src/gui/preferences.cpp:1013
 msgid ""
 "This permits to set the mode for DTMFs sending. The values can be \"String"
-"\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (default is \"String"
-"\"). Choosing other values than \"String\" disables the Text Chat."
+"\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (default is \"String\"). "
+"Choosing other values than \"String\" disables the Text Chat."
 msgstr ""
 "Dies erlaubt es, den Modus für DTMF-Übertragung festzulegen. Mögliche Werte "
-"sind »Zeichenkette« (0), »Ton« (1), »RFC2833« (2) oder »Q.931« (3) "
-"(Vorgabewert ist »Zeichenkette«). Wenn ein anderer Wert als »Zeichenkette« "
-"gewählt wird, wird der Text-Chat deaktiviert."
+"sind »Zeichenkette« (0), »Ton« (1), »RFC2833« (2) oder »Q.931« (3) (Vorgabewert "
+"ist »Zeichenkette«). Wenn ein anderer Wert als »Zeichenkette« gewählt wird, "
+"wird der Text-Chat deaktiviert."
 
 #: ../src/gui/preferences.cpp:1037
 msgid "_Outbound Proxy:"
@@ -3780,8 +3760,7 @@ msgstr "Video-Unterstützung _aktivieren"
 
 #: ../src/gui/preferences.cpp:1295
 msgid "If enabled, allows video during calls."
-msgstr ""
-"Wenn aktiviert, wird während der Verbindung Videoübertragung aktiviert."
+msgstr "Wenn aktiviert, wird während der Verbindung Videoübertragung aktiviert."
 
 #: ../src/gui/preferences.cpp:1299
 msgid "Bandwidth Control"
@@ -3815,8 +3794,7 @@ msgid "Picture Quality"
 msgstr "Bildqualität"
 
 #: ../src/gui/preferences.cpp:1309
-msgid ""
-"Choose if you want to favour speed or quality for the transmitted video."
+msgid "Choose if you want to favour speed or quality for the transmitted video."
 msgstr "Wählen Sie, ob sie eine höhere Bildrate oder Bildqualität bevorzugen."
 
 #: ../src/gui/preferences.cpp:1907
@@ -3880,12 +3858,16 @@ msgid "Devices"
 msgstr "Geräte"
 
 #: ../src/gui/tools.cpp:174
+msgid "Invalid parameters"
+msgstr "Ungültige Parameter"
+
+#: ../src/gui/tools.cpp:174
 msgid ""
 "Please provide your username and password in order to be able to use the PC-"
 "To-Phone service."
 msgstr ""
-"Bitte geben Sie Ihren Benutzernamen und Ihr Passwort an, damit Sie den »PC "
-"zu Telefon«-Dienst verwenden können."
+"Bitte geben Sie Ihren Benutzernamen und Ihr Passwort an, damit Sie den »PC zu "
+"Telefon«-Dienst verwenden können."
 
 #: ../src/gui/tools.cpp:312 ../src/gui/tools.cpp:331
 msgid "PC-To-Phone Settings"
@@ -3896,21 +3878,20 @@ msgstr "Einstellungen für »PC zu Telefon«"
 msgid ""
 "You can make calls to regular phones and cell numbers worldwide using Ekiga. "
 "To enable this, you need to do three things. First create an account at the "
-"URL below. Then enter your account number and password. Finally, activate "
-"the registration below.\n"
+"URL below. Then enter your account number and password. Finally, activate the "
+"registration below.\n"
 "\n"
 "The service will work only if your account is created using the URL in this "
 "dialog."
 msgstr ""
-"Sie können mit Ekiga Anrufe zu normalen Telefonen und Mobiltelefonen "
-"weltweit durchführen. Um dieses Merkmal zu aktivieren müssen Sie die "
-"folgenden drei Schritte befolgen: Zuerst erstellen Sie ein Konto über die "
-"untenstehende URL. Danach geben Sie hier die Kontonummer sowie die PIN ein. "
-"Abschließend aktivieren Sie darunter die Benutzung für den Ekiga »PC zu "
-"Telefon«-Dienst.\n"
+"Sie können mit Ekiga Anrufe zu normalen Telefonen und Mobiltelefonen weltweit "
+"durchführen. Um dieses Merkmal zu aktivieren müssen Sie die folgenden drei "
+"Schritte befolgen: Zuerst erstellen Sie ein Konto über die untenstehende URL. "
+"Danach geben Sie hier die Kontonummer sowie die PIN ein. Abschließend "
+"aktivieren Sie darunter die Benutzung für den Ekiga »PC zu Telefon«-Dienst.\n"
 "\n"
-"Dieser Dienst funktioniert nur, wenn die untenstehende URL für die "
-"Erstellung ihres Kontos verwenden wird."
+"Dieser Dienst funktioniert nur, wenn die untenstehende URL für die Erstellung "
+"ihres Kontos verwenden wird."
 
 #: ../src/gui/tools.cpp:333
 msgid "Account _number:"
@@ -3947,3 +3928,49 @@ msgstr "Den Verlauf des Kontostandes anzeigen"
 #: ../src/gui/tools.cpp:431
 msgid "Consult the calls history"
 msgstr "Die Anrufchronik anzeigen"
+
+#~ msgid ""
+#~ "Please provide your first name and e-mail in the Personal Data section in "
+#~ "order to be able to register to the users directory."
+#~ msgstr ""
+#~ "Bitte geben Sie Ihren Vornamen und Ihre E-Mail-Adresse im Abschnitt "
+#~ "»Persönliche Daten« an, damit eine Anmeldung beim Benutzer-Verzeichnis "
+#~ "durchgeführt werden kann."
+
+#~ msgid "Invalid users directory"
+#~ msgstr "Ungültiges Benutzerverzeichnis"
+
+#~ msgid "Operation impossible since there is no users directory specified."
+#~ msgstr "Operation unmöglich, da kein Benutzerverzeichnis angegeben wurde."
+
+#~ msgid "Failed to parse XML file"
+#~ msgstr "XML-Datei konnte nicht interpretiert werden"
+
+#~ msgid ""
+#~ "There was an error while parsing the XML file. Please make sure that it is "
+#~ "correctly installed in your system."
+#~ msgstr ""
+#~ "Beim Interpretieren der XML-Datei ist ein Fehler aufgetreten. Bitte "
+#~ "stellen Sie sicher, dass sie korrekt in Ihrem System installiert ist."
+
+#~ msgid "Bad information"
+#~ msgstr "Fehlerhafte Daten"
+
+#~ msgid "Bad LDAP information from XML file: %s."
+#~ msgstr "Fehlerhafte LDAP-Informationen aus XML-Datei: %s."
+
+#~ msgid "ILS registration failed: unable to connect to %s"
+#~ msgstr ""
+#~ "ILS-Anmeldung fehlgeschlagen: Verbindung zu %s konnte nicht hergestellt "
+#~ "werden"
+
+#~ msgid "ILS registration failed: unable to set time limit on operations"
+#~ msgstr ""
+#~ "ILS-Anmeldung fehlgeschlagen: Zeitlimit für Operationen konnte nicht "
+#~ "gesetzt werden"
+
+#~ msgid "ILS registration failed: failed to bind to %s"
+#~ msgstr "ILS-Anmeldung fehlgeschlagen: Bindung an %s nicht möglich"
+
+#~ msgid "Updated information on %s"
+#~ msgstr "Informationen im Verzeichnis %s wurden aktualisiert"
