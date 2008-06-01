@@ -567,12 +567,15 @@ status_menu_set_option (StatusMenu *self,
                         COL_MESSAGE_TYPE, &i,
                         COL_MESSAGE, &status, -1); 
 
+    // Check if it is a custom status message and if it is in the list
     if (i == TYPE_CUSTOM_ONLINE || i == TYPE_CUSTOM_AWAY || i == TYPE_CUSTOM_DND) {
       if (!strcmp (status_types_names[i - NUM_STATUS_TYPES - 1], short_status) && !strcmp (long_status, status))
         break;
     }
+
+    // Long status empty, the user did not set a custom message
     if (i == TYPE_ONLINE || i == TYPE_AWAY || i == TYPE_DND) {
-      if (!strcmp (status_types_names[i], short_status)) 
+      if (long_status && !strcmp(long_status, "") && !strcmp (status_types_names[i], short_status)) 
         break;
     }
 
