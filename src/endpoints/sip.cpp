@@ -253,7 +253,7 @@ GMSIPEndpoint::publish (const Ekiga::PersonalDetails & details)
 
     data += "</tuple>\r\n";
     data += "</presence>\r\n";
-    Publish (to.c_str (), data, 500); // TODO: allow to change the 500 
+    Publish (to.c_str (), data, 120); // TODO: allow to change the 500 
   }
 }
 
@@ -781,17 +781,6 @@ GMSIPEndpoint::OnIncomingConnection (OpalConnection &connection,
   }
   
   return false;
-}
-
-
-void 
-GMSIPEndpoint::OnMWIReceived (const PString & account,
-                              G_GNUC_UNUSED SIPSubscribe::MWIType type,
-                              const PString & msgs)
-{
-  runtime.run_in_main (sigc::bind (endpoint.mwi_event.make_slot (), 
-                                   (const char *) account, 
-                                   (const char *) msgs));
 }
 
 

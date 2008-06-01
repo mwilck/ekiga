@@ -696,6 +696,18 @@ GMManager::OnOpenMediaStream (OpalConnection & connection,
 }
 
 
+void 
+GMManager::OnMWIReceived (const PString & account,
+                          MessageWaitingType /*type*/,
+                          const PString & msgs)
+{
+  runtime.run_in_main (sigc::bind (mwi_event.make_slot (), 
+                                   (const char *) account, 
+                                   (const char *) msgs));
+}
+
+
+
 void GMManager::GetAllowedFormats (OpalMediaFormatList & full_list)
 {
   OpalMediaFormatList list = OpalTranscoder::GetPossibleFormats (pcssEP->GetMediaFormats ());

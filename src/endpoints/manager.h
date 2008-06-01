@@ -173,11 +173,14 @@ class GMManager:
 
   void RemoveAccountsEndpoint ();
 
-  virtual bool OnOpenMediaStream (OpalConnection &,
-				  OpalMediaStream &);
+  bool OnOpenMediaStream (OpalConnection &,
+                          OpalMediaStream &);
 
-  virtual void OnClosedMediaStream (const OpalMediaStream &);
+  void OnClosedMediaStream (const OpalMediaStream &);
 
+  void OnMWIReceived (const PString & party,
+                      MessageWaitingType type,
+                      const PString & info);
 
   void GetAllowedFormats (OpalMediaFormatList & full_list);
 

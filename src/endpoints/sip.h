@@ -133,10 +133,6 @@ public:
                              unsigned options,
                              OpalConnection::StringOptions * stroptions);
 
-  void OnMWIReceived (const PString & to,
-                      SIPSubscribe::MWIType type,
-                      const PString & msgs);
-
   virtual void OnPresenceInfoReceived (const PString & user,
                                        const PString & basic,
                                        const PString & note);
