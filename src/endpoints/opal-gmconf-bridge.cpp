@@ -86,6 +86,8 @@ ConfBridge::ConfBridge (Ekiga::Service & _service)
   keys.push_back (H323_KEY "enable_h245_tunneling");
   keys.push_back (H323_KEY "enable_early_h245");
   keys.push_back (H323_KEY "enable_fast_start");
+  keys.push_back (H323_KEY "dtmf_mode");
+  keys.push_back (H323_KEY "forward_host"); 
 
   load (keys);
 }
@@ -270,10 +272,16 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
 
         h323_manager->DisableFastStart (!gm_conf_entry_get_bool (entry));
       }
-      else if (key == H323_KEY "listen_port") {
+      else if (key == H323_KEY "dtmf_mode") {
 
-        h323_manager->set_listen_port (gm_conf_entry_get_int (entry));
-  }
+        h323_manager->set_dtmf_mode (gm_conf_entry_get_int (entry));
+      }
+      else if (key == H323_KEY "forward_host") {
+
+        const gchar *str = gm_conf_entry_get_string (entry);
+	if (str != NULL)
+	  h323_manager->set_forward_uri (str);
+      }
     }
   }
   

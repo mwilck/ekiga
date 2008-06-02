@@ -234,13 +234,6 @@ gnomemeeting_conf_init ()
    * several actions.
    */
 
-  
-  /* Notifiers related to the H323_KEY */
-
-  //FIXME gm_conf_notifier_add (H323_KEY "dtmf_mode",
-	//		dtmf_mode_changed_nt, NULL);
-
-  
   /* Notifiers for the PROTOCOLS_KEY */
   gm_conf_notifier_add (PROTOCOLS_KEY "accounts_list",
 			accounts_list_changed_nt, NULL);
