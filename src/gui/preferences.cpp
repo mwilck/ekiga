@@ -620,8 +620,6 @@ gm_pw_init_h323_page (GtkWidget *prefs_window,
   subsection = gnome_prefs_subsection_new (prefs_window, container,
                                            _("Misc Settings"), 2, 2);
 
-  gnome_prefs_entry_new (subsection, _("Default _gateway:"), H323_KEY "default_gateway", _("The Gateway host is the host to use to do H.323 calls through a gateway that will relay calls"), 0, false);
-
   entry =
     gnome_prefs_entry_new (subsection, _("Forward _URI:"), H323_KEY "forward_host", _("The host where calls should be forwarded if call forwarding is enabled"), 1, false);
   if (!strcmp (gtk_entry_get_text (GTK_ENTRY (entry)), ""))
