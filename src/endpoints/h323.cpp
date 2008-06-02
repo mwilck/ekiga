@@ -93,7 +93,7 @@ OpalH323::CallProtocolManager::CallProtocolManager (GMManager & ep, Ekiga::Servi
 
 
 bool OpalH323::CallProtocolManager::populate_menu (Ekiga::Contact &contact,
-                                   Ekiga::MenuBuilder &builder)
+                                                   Ekiga::MenuBuilder &builder)
 {
   std::string name = contact.get_name ();
   std::map<std::string, std::string> uris = contact.get_uris ();
@@ -103,7 +103,7 @@ bool OpalH323::CallProtocolManager::populate_menu (Ekiga::Contact &contact,
 
 
 bool OpalH323::CallProtocolManager::populate_menu (const std::string uri,
-                                   Ekiga::MenuBuilder & builder)
+                                                   Ekiga::MenuBuilder & builder)
 {
   std::map<std::string, std::string> uris; 
   uris [""] = uri;
@@ -113,8 +113,8 @@ bool OpalH323::CallProtocolManager::populate_menu (const std::string uri,
 
 
 bool OpalH323::CallProtocolManager::menu_builder_add_actions (const std::string & /*fullname*/,
-                                              std::map<std::string,std::string> & uris,
-                                              Ekiga::MenuBuilder & builder)
+                                                              std::map<std::string,std::string> & uris,
+                                                              Ekiga::MenuBuilder & builder)
 {
   bool populated = false;
 
@@ -239,13 +239,12 @@ const std::string & OpalH323::CallProtocolManager::get_forward_uri () const
 }
 
 
-void
-OpalH323::CallProtocolManager::Register (const PString & aor,
-                          const PString & authUserName,
-                          const PString & password,
-                          const PString & gatekeeperID,
-                          unsigned int expires,
-                          bool unregister)
+void OpalH323::CallProtocolManager::Register (const PString & aor,
+                                              const PString & authUserName,
+                                              const PString & password,
+                                              const PString & gatekeeperID,
+                                              unsigned int expires,
+                                              bool unregister)
 {
   PString info;
   PString host;
@@ -273,7 +272,7 @@ OpalH323::CallProtocolManager::Register (const PString & aor,
       SetLocalUserName (authUserName);
       AddAliasName (endpoint.GetDefaultDisplayName ());
     }
-      
+
     SetGatekeeperPassword (password);
     SetGatekeeperTimeToLive (expires * 1000);
     result = UseGatekeeper (host, gatekeeperID);
@@ -285,32 +284,32 @@ OpalH323::CallProtocolManager::Register (const PString & aor,
       /* Registering failed */
       if (gatekeeper) {
 
-	switch (gatekeeper->GetRegistrationFailReason()) {
+        switch (gatekeeper->GetRegistrationFailReason()) {
 
-	case H323Gatekeeper::DuplicateAlias :
-	  info = _("Duplicate alias");
-	  break;
-	case H323Gatekeeper::SecurityDenied :
-	  info = _("Bad username/password");
-	  break;
-	case H323Gatekeeper::TransportError :
-	  info = _("Transport error");
-	  break;
-	case H323Gatekeeper::RegistrationSuccessful:
-	  break;
-	case H323Gatekeeper::UnregisteredLocally:
-	case H323Gatekeeper::UnregisteredByGatekeeper:
-	case H323Gatekeeper::GatekeeperLostRegistration:
-	case H323Gatekeeper::InvalidListener:
-	case H323Gatekeeper::NumRegistrationFailReasons:
-	case H323Gatekeeper::RegistrationRejectReasonMask:
-	default :
-	  info = _("Failed");
-	  break;
-	}
+        case H323Gatekeeper::DuplicateAlias :
+          info = _("Duplicate alias");
+          break;
+        case H323Gatekeeper::SecurityDenied :
+          info = _("Bad username/password");
+          break;
+        case H323Gatekeeper::TransportError :
+          info = _("Transport error");
+          break;
+        case H323Gatekeeper::RegistrationSuccessful:
+          break;
+        case H323Gatekeeper::UnregisteredLocally:
+        case H323Gatekeeper::UnregisteredByGatekeeper:
+        case H323Gatekeeper::GatekeeperLostRegistration:
+        case H323Gatekeeper::InvalidListener:
+        case H323Gatekeeper::NumRegistrationFailReasons:
+        case H323Gatekeeper::RegistrationRejectReasonMask:
+        default :
+          info = _("Failed");
+          break;
+        }
       }
       else
-	info = _("Failed");
+        info = _("Failed");
 
       runtime.run_in_main (sigc::bind (endpoint.registration_event.make_slot (), 
                                        aor, 
@@ -340,45 +339,41 @@ OpalH323::CallProtocolManager::Register (const PString & aor,
 }
 
 
-bool 
-OpalH323::CallProtocolManager::UseGatekeeper (const PString & address,
-			       const PString & domain,
-			       const PString & iface)
+bool OpalH323::CallProtocolManager::UseGatekeeper (const PString & address,
+                                                   const PString & domain,
+                                                   const PString & iface)
 {
   bool result = 
     H323EndPoint::UseGatekeeper (address, domain, iface);
 
   PWaitAndSignal m(gk_name_mutex);
-  
+
   gk_name = address;
 
   return result;
 }
-  
 
-bool 
-OpalH323::CallProtocolManager::RemoveGatekeeper (const PString & address)
+
+bool OpalH323::CallProtocolManager::RemoveGatekeeper (const PString & address)
 {
   if (IsRegisteredWithGatekeeper (address))
     return H323EndPoint::RemoveGatekeeper (0);
 
   return FALSE;
 }
-  
-  
-bool 
-OpalH323::CallProtocolManager::IsRegisteredWithGatekeeper (const PString & address)
+
+
+bool OpalH323::CallProtocolManager::IsRegisteredWithGatekeeper (const PString & address)
 {
   PWaitAndSignal m(gk_name_mutex);
-  
+
   return ((gk_name *= address) && H323EndPoint::IsRegisteredWithGatekeeper ());
 }
 
 
-bool 
-OpalH323::CallProtocolManager::OnIncomingConnection (OpalConnection & connection,
-                                      G_GNUC_UNUSED unsigned options,
-                                      G_GNUC_UNUSED OpalConnection::StringOptions *stroptions)
+bool OpalH323::CallProtocolManager::OnIncomingConnection (OpalConnection & connection,
+                                                          G_GNUC_UNUSED unsigned options,
+                                                          G_GNUC_UNUSED OpalConnection::StringOptions *stroptions)
 {
   PTRACE (3, "OpalH323::CallProtocolManager\tIncoming connection");
 
@@ -394,18 +389,18 @@ OpalH323::CallProtocolManager::OnIncomingConnection (OpalConnection & connection
   }
   else {
 
-      Opal::Call *call = dynamic_cast<Opal::Call *> (&connection.GetCall ());
-      if (call) {
+    Opal::Call *call = dynamic_cast<Opal::Call *> (&connection.GetCall ());
+    if (call) {
 
-        if (!forward_uri.empty () && endpoint.get_forward_on_no_answer ()) 
-          call->set_no_answer_forward (endpoint.get_reject_delay (), forward_uri);
-        else
-          call->set_reject_delay (endpoint.get_reject_delay ());
-      }
+      if (!forward_uri.empty () && endpoint.get_forward_on_no_answer ()) 
+        call->set_no_answer_forward (endpoint.get_reject_delay (), forward_uri);
+      else
+        call->set_reject_delay (endpoint.get_reject_delay ());
+    }
 
     return H323EndPoint::OnIncomingConnection (connection, options, stroptions);
   }
-  
+
   return false;
 }
 

@@ -96,6 +96,7 @@ public:
                    unsigned int expires,
                    bool unregister);
 
+private:
     bool UseGatekeeper (const PString & address = PString::Empty (),
                         const PString & domain = PString::Empty (),
                         const PString & iface = PString::Empty ());
