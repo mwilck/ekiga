@@ -1,3 +1,17 @@
+2008-06-02  Matthias Schneider  <ma30002000@yahoo.de>
+
+	* src/gui/main.cpp:
+	* lib/engine/audioinput/skel/audioinput-core.cpp:
+	* lib/engine/audioinput/skel/audioinput-core.h:
+	* lib/engine/audiooutput/skel/audiooutput-core.cpp:
+	* lib/engine/audiooutput/skel/audiooutput-core.h:
+	Add debug level 5.
+	Allow lower priority threads to catch the mutexes
+	in the audio cores by telling the high priority 
+	threads to sleep 5 ms before taking it. Now 
+	preferences can also be opened during a call
+	with decent latency.
+
 2008-06-01  Damien Sandras  <dsandras@gnome.org>
 
 	* src/endpoints/sip.h:

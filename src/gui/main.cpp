@@ -4254,7 +4254,7 @@ main (int argc,
     {
       {
 	"debug", 'd', 0, G_OPTION_ARG_INT, &debug_level, 
-       N_("Prints debug messages in the console (level between 1 and 4)"), 
+       N_("Prints debug messages in the console (level between 1 and 5)"), 
        NULL
       },
       {
@@ -4311,7 +4311,7 @@ main (int argc,
   static GnomeMeeting instance;
 
   if (debug_level != 0)
-    PTrace::Initialise (PMAX (PMIN (4, debug_level), 0), NULL,
+    PTrace::Initialise (PMAX (PMIN (5, debug_level), 0), NULL,
 			PTrace::Timestamp | PTrace::Thread
 			| PTrace::Blocks | PTrace::DateAndTime);
 

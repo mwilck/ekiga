@@ -62,6 +62,7 @@ AudioOutputCore::AudioOutputCore (Ekiga::Runtime & _runtime)
   audiooutput_core_conf_bridge = NULL;
   average_level = 0;
   calculate_average = false;
+  yield = false;
 }
 
 AudioOutputCore::~AudioOutputCore ()
@@ -97,6 +98,7 @@ void AudioOutputCore::add_manager (AudioOutputManager &manager)
 
 void AudioOutputCore::visit_managers (sigc::slot<bool, AudioOutputManager &> visitor)
 {
+  yield = true;
   PWaitAndSignal m_pri(core_mutex[primary]);
   PWaitAndSignal m_sec(core_mutex[secondary]);
   bool go_on = true;
@@ -134,6 +136,7 @@ void AudioOutputCore::stop_play_event (const std::string & event_name)
 
 void AudioOutputCore::get_devices (std::vector <AudioOutputDevice> & devices)
 {
+  yield = true;
   PWaitAndSignal m_pri(core_mutex[primary]);
   PWaitAndSignal m_sec(core_mutex[secondary]);
 
@@ -157,11 +160,12 @@ void AudioOutputCore::get_devices (std::vector <AudioOutputDevice> & devices)
 void AudioOutputCore::set_device(AudioOutputPS ps, const AudioOutputDevice & device)
 {
   PTRACE(4, "AudioOutputCore\tSetting device[" << ps << "]: " << device);
-
+  yield = true;
   PWaitAndSignal m_sec(core_mutex[secondary]);
 
   switch (ps) {
     case primary:
+      yield = true;
       core_mutex[primary].Wait();
       internal_set_primary_device (device);
       desired_primary_device = device;
@@ -188,6 +192,7 @@ void AudioOutputCore::set_device(AudioOutputPS ps, const AudioOutputDevice & dev
 void AudioOutputCore::add_device (const std::string & sink, const std::string & device_name, HalManager* /*manager*/)
 {
   PTRACE(0, "AudioOutputCore\tAdding Device " << device_name);
+  yield = true;
   PWaitAndSignal m_pri(core_mutex[primary]);
 
   AudioOutputDevice device;
@@ -208,6 +213,7 @@ void AudioOutputCore::add_device (const std::string & sink, const std::string & 
 void AudioOutputCore::remove_device (const std::string & sink, const std::string & device_name, HalManager* /*manager*/)
 {
   PTRACE(0, "AudioOutputCore\tRemoving Device " << device_name);
+  yield = true;
   PWaitAndSignal m_pri(core_mutex[primary]);
 
   AudioOutputDevice device;
@@ -231,6 +237,7 @@ void AudioOutputCore::remove_device (const std::string & sink, const std::string
 
 void AudioOutputCore::start (unsigned channels, unsigned samplerate, unsigned bits_per_sample)
 {
+  yield = true;
   PWaitAndSignal m_pri(core_mutex[primary]);
 
   if (current_primary_config.active) {
@@ -250,6 +257,7 @@ void AudioOutputCore::start (unsigned channels, unsigned samplerate, unsigned bi
 
 void AudioOutputCore::stop()
 {
+  yield = true;
   PWaitAndSignal m_pri(core_mutex[primary]);
 
   average_level = 0;
@@ -260,6 +268,7 @@ void AudioOutputCore::stop()
 }
 
 void AudioOutputCore::set_buffer_size (unsigned buffer_size, unsigned num_buffers) {
+  yield = true;
   PWaitAndSignal m_pri(core_mutex[primary]);
 
   if (current_manager[primary])
@@ -273,6 +282,10 @@ void AudioOutputCore::set_frame_data (const char *data,
                                       unsigned size,
 				      unsigned & bytes_written)
 {
+  if (yield) {
+    yield = false;
+    PThread::Current()->Sleep(5);
+  }
   PWaitAndSignal m_pri(core_mutex[primary]);
 
   if (current_manager[primary]) {

@@ -371,6 +371,7 @@ namespace Ekiga
 
       float average_level;
       bool calculate_average;
+      bool yield;
     };
 /**
  * @}

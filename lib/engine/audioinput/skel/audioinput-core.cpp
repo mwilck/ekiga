@@ -138,6 +138,7 @@ AudioInputCore::AudioInputCore (Ekiga::Runtime & _runtime, AudioOutputCore& _aud
   audioinput_core_conf_bridge = NULL;
   average_level = 0;
   calculate_average = false;
+  yield = false;
 }
 
 AudioInputCore::~AudioInputCore ()
@@ -172,6 +173,7 @@ void AudioInputCore::add_manager (AudioInputManager &manager)
 
 void AudioInputCore::visit_managers (sigc::slot<bool, AudioInputManager &> visitor)
 {
+  yield = true;
   PWaitAndSignal m(core_mutex);
   bool go_on = true;
   
@@ -183,6 +185,7 @@ void AudioInputCore::visit_managers (sigc::slot<bool, AudioInputManager &> visit
 
 void AudioInputCore::get_devices (std::vector <AudioInputDevice> & devices)
 {
+  yield = true;
   PWaitAndSignal m(core_mutex);
 
   devices.clear();
@@ -215,6 +218,7 @@ void AudioInputCore::set_device(const AudioInputDevice & device)
 void AudioInputCore::add_device (const std::string & source, const std::string & device_name, HalManager* /*manager*/)
 {
   PTRACE(0, "AudioInputCore\tAdding Device " << device_name);
+  yield = true;
   PWaitAndSignal m(core_mutex);
 
   AudioInputDevice device;
@@ -234,6 +238,7 @@ void AudioInputCore::add_device (const std::string & source, const std::string &
 void AudioInputCore::remove_device (const std::string & source, const std::string & device_name, HalManager* /*manager*/)
 {
   PTRACE(0, "AudioInputCore\tRemoving Device " << device_name);
+  yield = true;
   PWaitAndSignal m(core_mutex);
 
   AudioInputDevice device;
@@ -257,6 +262,7 @@ void AudioInputCore::remove_device (const std::string & source, const std::strin
 
 void AudioInputCore::start_preview (unsigned channels, unsigned samplerate, unsigned bits_per_sample)
 {
+  yield = true;
   PWaitAndSignal m(core_mutex);
 
   PTRACE(4, "AudioInputCore\tStarting preview " << channels << "x" << samplerate << "/" << bits_per_sample);
@@ -283,6 +289,7 @@ void AudioInputCore::start_preview (unsigned channels, unsigned samplerate, unsi
 
 void AudioInputCore::stop_preview ()
 {
+  yield = true;
   PWaitAndSignal m(core_mutex);
 
   PTRACE(4, "AudioInputCore\tStopping Preview");
@@ -300,6 +307,7 @@ void AudioInputCore::stop_preview ()
 
 void AudioInputCore::set_stream_buffer_size (unsigned buffer_size, unsigned num_buffers)
 {
+  yield = true;
   PWaitAndSignal m(core_mutex);
 
   PTRACE(4, "AudioInputCore\tSetting stream buffer size " << num_buffers << "/" << buffer_size);
@@ -313,6 +321,7 @@ void AudioInputCore::set_stream_buffer_size (unsigned buffer_size, unsigned num_
 
 void AudioInputCore::start_stream (unsigned channels, unsigned samplerate, unsigned bits_per_sample)
 {
+  yield = true;
   PWaitAndSignal m(core_mutex);
 
   PTRACE(4, "AudioInputCore\tStarting stream " << channels << "x" << samplerate << "/" << bits_per_sample);
@@ -333,6 +342,7 @@ void AudioInputCore::start_stream (unsigned channels, unsigned samplerate, unsig
 
 void AudioInputCore::stop_stream ()
 {
+  yield = true;
   PWaitAndSignal m(core_mutex);
 
   PTRACE(4, "AudioInputCore\tStopping Stream");
@@ -353,6 +363,10 @@ void AudioInputCore::get_frame_data (char *data,
                                      unsigned size,
 				     unsigned & bytes_read)
 {
+  if (yield) {
+    yield = false;
+     PThread::Current()->Sleep(5);
+  }
   PWaitAndSignal m_var(core_mutex);
 
   if (current_manager) {
