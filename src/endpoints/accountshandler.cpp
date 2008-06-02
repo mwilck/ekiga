@@ -155,7 +155,7 @@ void GMAccountsEndpoint::RegisterAccount (GmAccount *account)
 void GMAccountsEndpoint::SIPRegister (GmAccount *a)
 {
   std::string aor;
-  GMSIPEndpoint *sip_manager = dynamic_cast<GMSIPEndpoint *> (ep.get_protocol_manager ("sip"));
+  OpalSip::CallProtocolManager *sip_manager = dynamic_cast<OpalSip::CallProtocolManager *> (ep.get_protocol_manager ("sip"));
 
   // TODO Move this to the engine and drop the dynamic cast
   aor = a->username;
@@ -170,7 +170,7 @@ void GMAccountsEndpoint::SIPRegister (GmAccount *a)
 void GMAccountsEndpoint::H323Register (GmAccount *a)
 {
   std::string aor;
-  GMH323Endpoint *h323_manager = dynamic_cast<GMH323Endpoint *> (ep.get_protocol_manager ("h323"));
+  OpalH323::CallProtocolManager *h323_manager = dynamic_cast<OpalH323::CallProtocolManager *> (ep.get_protocol_manager ("h323"));
 
   // TODO Move this to the engine and drop the dynamic cast
   aor = a->username;

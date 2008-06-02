@@ -55,129 +55,131 @@ PDICTIONARY (msgDict, PString, PString);
 
 class Ekiga::PersonalDetails;
 
-class GMSIPEndpoint 
-:   public SIPEndPoint, 
-    public Ekiga::ChatManager,
-    public Ekiga::CallProtocolManager,
-    public Ekiga::PresenceFetcher,
-    public Ekiga::PresencePublisher,
-    public Ekiga::PresentityDecorator,
-    public Ekiga::ContactDecorator
-{
-  PCLASSINFO(GMSIPEndpoint, SIPEndPoint);
+namespace OpalSip {
+
+  class CallProtocolManager : public SIPEndPoint, 
+                              public Ekiga::ChatManager,
+                              public Ekiga::CallProtocolManager,
+                              public Ekiga::PresenceFetcher,
+                              public Ekiga::PresencePublisher,
+                              public Ekiga::PresentityDecorator,
+                              public Ekiga::ContactDecorator
+  {
+    PCLASSINFO(CallProtocolManager, SIPEndPoint);
 
 public:
 
-  GMSIPEndpoint (GMManager &ep, Ekiga::ServiceCore & core, unsigned listen_port);
+    CallProtocolManager (GMManager &ep, Ekiga::ServiceCore & core, unsigned listen_port);
 
 
-  /* ContactDecorator and PresentityDecorator */
-  bool populate_menu (Ekiga::Contact &contact,
-                      Ekiga::MenuBuilder &builder);
+    /* ContactDecorator and PresentityDecorator */
+    bool populate_menu (Ekiga::Contact &contact,
+                        Ekiga::MenuBuilder &builder);
 
-  bool populate_menu (const std::string uri,
-                      Ekiga::MenuBuilder & builder);
+    bool populate_menu (const std::string uri,
+                        Ekiga::MenuBuilder & builder);
 
-  bool menu_builder_add_actions (const std::string & fullname,
-                                 std::map<std::string, std::string> & uris,
-                                 Ekiga::MenuBuilder & builder);
-
-
-  /* PresenceFetcher */
-  void fetch (const std::string uri);
-  void unfetch (const std::string uri);
+    bool menu_builder_add_actions (const std::string & fullname,
+                                   std::map<std::string, std::string> & uris,
+                                   Ekiga::MenuBuilder & builder);
 
 
-  /* PresencePublisher */
-  void publish (const Ekiga::PersonalDetails & details);
+    /* PresenceFetcher */
+    void fetch (const std::string uri);
+    void unfetch (const std::string uri);
 
 
-  /* ChatManager */
-  bool send_message (const std::string & uri, 
-                     const std::string & message);
+    /* PresencePublisher */
+    void publish (const Ekiga::PersonalDetails & details);
 
 
-  /* CallProtocolManager */
-  bool dial (const std::string & uri); 
-
-  const std::string & get_protocol_name () const;
-
-  void set_dtmf_mode (unsigned mode);
-  unsigned get_dtmf_mode () const;
-
-  bool set_listen_port (unsigned port);
-  const Ekiga::CallProtocolManager::Interface & get_listen_interface () const;
+    /* ChatManager */
+    bool send_message (const std::string & uri, 
+                       const std::string & message);
 
 
-  /* SIP CallProtocolManager */
-  void set_nat_binding_delay (unsigned delay);
-  unsigned get_nat_binding_delay ();
+    /* CallProtocolManager */
+    bool dial (const std::string & uri); 
 
-  void set_outbound_proxy (const std::string & uri);
-  const std::string & get_outbound_proxy () const;
+    const std::string & get_protocol_name () const;
 
-  void set_forward_uri (const std::string & uri);
-  const std::string & get_forward_uri () const;
+    void set_dtmf_mode (unsigned mode);
+    unsigned get_dtmf_mode () const;
 
-
-  /* OPAL Methods */
-  void Register (const PString & aor,
-                 const PString & authUserName,
-                 const PString & password,
-                 unsigned int expires,
-                 bool unregister);
-
-  void OnRegistered (const PString & aor,
-                     bool wasRegistering);
-
-  void OnRegistrationFailed (const PString & aor,
-                             SIP_PDU::StatusCodes reason,
-                             bool wasRegistering);
-
-  bool OnIncomingConnection (OpalConnection &connection,
-                             unsigned options,
-                             OpalConnection::StringOptions * stroptions);
-
-  virtual void OnPresenceInfoReceived (const PString & user,
-                                       const PString & basic,
-                                       const PString & note);
-
-  virtual void OnReceivedMESSAGE (OpalTransport & transport,
-                                  SIP_PDU & pdu);
-
-  void OnMessageFailed (const SIPURL & messageUrl,
-                        SIP_PDU::StatusCodes reason);
-
-  SIPURL GetRegisteredPartyName (const SIPURL & host);
+    bool set_listen_port (unsigned port);
+    const Ekiga::CallProtocolManager::Interface & get_listen_interface () const;
 
 
-  /* Callbacks */
+    /* SIP CallProtocolManager */
+    void set_nat_binding_delay (unsigned delay);
+    unsigned get_nat_binding_delay ();
+
+    void set_outbound_proxy (const std::string & uri);
+    const std::string & get_outbound_proxy () const;
+
+    void set_forward_uri (const std::string & uri);
+    const std::string & get_forward_uri () const;
+
+
+    /* OPAL Methods */
+    void Register (const PString & aor,
+                   const PString & authUserName,
+                   const PString & password,
+                   unsigned int expires,
+                   bool unregister);
+
+    void OnRegistered (const PString & aor,
+                       bool wasRegistering);
+
+    void OnRegistrationFailed (const PString & aor,
+                               SIP_PDU::StatusCodes reason,
+                               bool wasRegistering);
+
+    bool OnIncomingConnection (OpalConnection &connection,
+                               unsigned options,
+                               OpalConnection::StringOptions * stroptions);
+
+    virtual void OnPresenceInfoReceived (const PString & user,
+                                         const PString & basic,
+                                         const PString & note);
+
+    virtual void OnReceivedMESSAGE (OpalTransport & transport,
+                                    SIP_PDU & pdu);
+
+    void OnMessageFailed (const SIPURL & messageUrl,
+                          SIP_PDU::StatusCodes reason);
+
+    SIPURL GetRegisteredPartyName (const SIPURL & host);
+
+
+    /* Callbacks */
 private:
-  void on_dial (std::string uri);
+    void on_dial (std::string uri);
 
-  void on_message (const std::string & name,
-                   const std::string & uri);
+    void on_message (const std::string & name,
+                     const std::string & uri);
 
 
-  PMutex msgDataMutex;
-  msgDict msgData;
+    PMutex msgDataMutex;
+    msgDict msgData;
 
-  GMManager & endpoint;
+    GMManager & endpoint;
 
-  std::list<std::string> subscribed_uris;    // List of subscribed uris
-  std::list<std::string> domains; // List of registered domains
-  std::list<std::string> aors;     // List of registered aor
-  Ekiga::ServiceCore & core;
-  Ekiga::PresenceCore & presence_core;
-  Ekiga::Runtime & runtime;
+    std::list<std::string> subscribed_uris;    // List of subscribed uris
+    std::list<std::string> domains; // List of registered domains
+    std::list<std::string> aors;     // List of registered aor
+    Ekiga::ServiceCore & core;
+    Ekiga::PresenceCore & presence_core;
+    Ekiga::Runtime & runtime;
 
-  Ekiga::CallProtocolManager::Interface interface;
+    Ekiga::CallProtocolManager::Interface interface;
 
-  std::string protocol_name;
-  std::string uri_prefix;
-  std::string forward_uri;
-  std::string outbound_proxy;
+    std::string protocol_name;
+    std::string uri_prefix;
+    std::string forward_uri;
+    std::string outbound_proxy;
 
-  unsigned listen_port;
+    unsigned listen_port;
+  };
 };
 #endif

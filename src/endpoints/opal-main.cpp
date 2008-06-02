@@ -74,33 +74,33 @@ opal_init (Ekiga::ServiceCore &core,
   call_core = dynamic_cast<Ekiga::CallCore *> (core.get ("call-core"));
   chat_core = dynamic_cast<Ekiga::ChatCore *> (core.get ("chat-core"));
 
-  GMManager *manager = new GMManager (core);
-  GMSIPEndpoint *sipEP = new GMSIPEndpoint (*manager, core, sip_port);
-  GMH323Endpoint *h323EP = new GMH323Endpoint (*manager, core, h323_port);
+  GMManager *call_manager = new GMManager (core);
+  OpalSip::CallProtocolManager *sip_manager = new OpalSip::CallProtocolManager (*call_manager, core, sip_port);
+  OpalH323::CallProtocolManager *h323_manager = new OpalH323::CallProtocolManager (*call_manager, core, h323_port);
 
-  manager->add_protocol_manager (*sipEP);
-  manager->add_protocol_manager (*h323EP);
+  call_manager->add_protocol_manager (*sip_manager);
+  call_manager->add_protocol_manager (*h323_manager);
 
-  call_core->add_manager (*manager);
-  core.add (*manager); // FIXME temporary
-  chat_core->add_manager (*sipEP);
+  call_core->add_manager (*call_manager);
+  core.add (*call_manager); // FIXME temporary
+  chat_core->add_manager (*sip_manager);
 
-  new Opal::ConfBridge (*manager);
-  manager->start ();
+  new Opal::ConfBridge (*call_manager);
+  call_manager->start ();
   // FIXME Service ?
 
   if (contact_core != NULL) 
-    contact_core->add_contact_decorator (*sipEP);
+    contact_core->add_contact_decorator (*sip_manager);
   else
     return false;
 
   if (presence_core != NULL) {
 
-    presence_core->add_presentity_decorator (*sipEP);
+    presence_core->add_presentity_decorator (*sip_manager);
     presence_core->add_supported_uri (sigc::ptr_fun (is_sip_address));
 
-    presence_core->add_presence_fetcher (*sipEP);
-    presence_core->add_presence_publisher (*sipEP);
+    presence_core->add_presence_fetcher (*sip_manager);
+    presence_core->add_presence_publisher (*sip_manager);
   }
   else 
     return false;

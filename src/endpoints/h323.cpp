@@ -70,11 +70,11 @@ private:
 
 
 /* The class */
-GMH323Endpoint::GMH323Endpoint (GMManager & ep, Ekiga::ServiceCore & _core, unsigned _listen_port)
-: H323EndPoint (ep), 
-  endpoint (ep),
-  core (_core),
-  runtime (*(dynamic_cast<Ekiga::Runtime *> (core.get ("runtime"))))
+OpalH323::CallProtocolManager::CallProtocolManager (GMManager & ep, Ekiga::ServiceCore & _core, unsigned _listen_port)
+         : H323EndPoint (ep), 
+           endpoint (ep),
+           core (_core),
+           runtime (*(dynamic_cast<Ekiga::Runtime *> (core.get ("runtime"))))
 {
   protocol_name = "h323";
   uri_prefix = "h323:";
@@ -92,7 +92,7 @@ GMH323Endpoint::GMH323Endpoint (GMManager & ep, Ekiga::ServiceCore & _core, unsi
 }
 
 
-bool GMH323Endpoint::populate_menu (Ekiga::Contact &contact,
+bool OpalH323::CallProtocolManager::populate_menu (Ekiga::Contact &contact,
                                    Ekiga::MenuBuilder &builder)
 {
   std::string name = contact.get_name ();
@@ -102,7 +102,7 @@ bool GMH323Endpoint::populate_menu (Ekiga::Contact &contact,
 }
 
 
-bool GMH323Endpoint::populate_menu (const std::string uri,
+bool OpalH323::CallProtocolManager::populate_menu (const std::string uri,
                                    Ekiga::MenuBuilder & builder)
 {
   std::map<std::string, std::string> uris; 
@@ -112,7 +112,7 @@ bool GMH323Endpoint::populate_menu (const std::string uri,
 }
 
 
-bool GMH323Endpoint::menu_builder_add_actions (const std::string & /*fullname*/,
+bool OpalH323::CallProtocolManager::menu_builder_add_actions (const std::string & /*fullname*/,
                                               std::map<std::string,std::string> & uris,
                                               Ekiga::MenuBuilder & builder)
 {
@@ -128,7 +128,7 @@ bool GMH323Endpoint::menu_builder_add_actions (const std::string & /*fullname*/,
     if (!iter->first.empty ())
       action = action + " [" + iter->first + "]";
 
-    builder.add_action ("call", action, sigc::bind (sigc::mem_fun (this, &GMH323Endpoint::on_dial), iter->second));
+    builder.add_action ("call", action, sigc::bind (sigc::mem_fun (this, &OpalH323::CallProtocolManager::on_dial), iter->second));
 
     populated = true;
   }
@@ -137,7 +137,7 @@ bool GMH323Endpoint::menu_builder_add_actions (const std::string & /*fullname*/,
 }
 
 
-bool GMH323Endpoint::dial (const std::string & uri)
+bool OpalH323::CallProtocolManager::dial (const std::string & uri)
 {
   PString token;
   std::stringstream ustr;
@@ -153,13 +153,13 @@ bool GMH323Endpoint::dial (const std::string & uri)
 }
 
 
-const std::string & GMH323Endpoint::get_protocol_name () const
+const std::string & OpalH323::CallProtocolManager::get_protocol_name () const
 {
   return protocol_name;
 }
 
 
-void GMH323Endpoint::set_dtmf_mode (unsigned mode)
+void OpalH323::CallProtocolManager::set_dtmf_mode (unsigned mode)
 {
   switch (mode) 
     {
@@ -181,7 +181,7 @@ void GMH323Endpoint::set_dtmf_mode (unsigned mode)
 }
 
 
-unsigned GMH323Endpoint::get_dtmf_mode () const
+unsigned OpalH323::CallProtocolManager::get_dtmf_mode () const
 {
   if (GetSendUserInputMode () == OpalConnection::SendUserInputAsString)
     return 0;
@@ -199,7 +199,7 @@ unsigned GMH323Endpoint::get_dtmf_mode () const
 }
 
 
-bool GMH323Endpoint::set_listen_port (unsigned port)
+bool OpalH323::CallProtocolManager::set_listen_port (unsigned port)
 {
   interface.protocol = "tcp";
   interface.interface = "*";
@@ -221,26 +221,26 @@ bool GMH323Endpoint::set_listen_port (unsigned port)
 }
 
 
-const Ekiga::CallProtocolManager::Interface & GMH323Endpoint::get_listen_interface () const
+const Ekiga::CallProtocolManager::Interface & OpalH323::CallProtocolManager::get_listen_interface () const
 {
   return interface;
 }
 
 
-void GMH323Endpoint::set_forward_uri (const std::string & uri)
+void OpalH323::CallProtocolManager::set_forward_uri (const std::string & uri)
 {
   forward_uri = uri;
 }
 
 
-const std::string & GMH323Endpoint::get_forward_uri () const
+const std::string & OpalH323::CallProtocolManager::get_forward_uri () const
 {
   return forward_uri;
 }
 
 
 void
-GMH323Endpoint::Register (const PString & aor,
+OpalH323::CallProtocolManager::Register (const PString & aor,
                           const PString & authUserName,
                           const PString & password,
                           const PString & gatekeeperID,
@@ -341,7 +341,7 @@ GMH323Endpoint::Register (const PString & aor,
 
 
 bool 
-GMH323Endpoint::UseGatekeeper (const PString & address,
+OpalH323::CallProtocolManager::UseGatekeeper (const PString & address,
 			       const PString & domain,
 			       const PString & iface)
 {
@@ -357,7 +357,7 @@ GMH323Endpoint::UseGatekeeper (const PString & address,
   
 
 bool 
-GMH323Endpoint::RemoveGatekeeper (const PString & address)
+OpalH323::CallProtocolManager::RemoveGatekeeper (const PString & address)
 {
   if (IsRegisteredWithGatekeeper (address))
     return H323EndPoint::RemoveGatekeeper (0);
@@ -367,7 +367,7 @@ GMH323Endpoint::RemoveGatekeeper (const PString & address)
   
   
 bool 
-GMH323Endpoint::IsRegisteredWithGatekeeper (const PString & address)
+OpalH323::CallProtocolManager::IsRegisteredWithGatekeeper (const PString & address)
 {
   PWaitAndSignal m(gk_name_mutex);
   
@@ -376,11 +376,11 @@ GMH323Endpoint::IsRegisteredWithGatekeeper (const PString & address)
 
 
 bool 
-GMH323Endpoint::OnIncomingConnection (OpalConnection & connection,
+OpalH323::CallProtocolManager::OnIncomingConnection (OpalConnection & connection,
                                       G_GNUC_UNUSED unsigned options,
                                       G_GNUC_UNUSED OpalConnection::StringOptions *stroptions)
 {
-  PTRACE (3, "GMH323Endpoint\tIncoming connection");
+  PTRACE (3, "OpalH323::CallProtocolManager\tIncoming connection");
 
   if (!forward_uri.empty () && endpoint.get_unconditional_forward ())
     connection.ForwardCall (forward_uri);
@@ -410,7 +410,7 @@ GMH323Endpoint::OnIncomingConnection (OpalConnection & connection,
 }
 
 
-void GMH323Endpoint::on_dial (std::string uri)
+void OpalH323::CallProtocolManager::on_dial (std::string uri)
 {
   endpoint.dial (uri);
 }
