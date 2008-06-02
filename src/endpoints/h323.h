@@ -48,25 +48,20 @@
 
 
 /* Minimal H.323 endpoint implementation */
-class GMH323Endpoint : public H323EndPoint
+class GMH323Endpoint : 
+    public H323EndPoint,
+    public Ekiga::CallProtocolManager,
+    public Ekiga::PresentityDecorator,
+    public Ekiga::ContactDecorator
 {
   PCLASSINFO(GMH323Endpoint, H323EndPoint);
 
  public:
 
-  /* DESCRIPTION  :  The constructor.
-   * BEHAVIOR     :  Creates the H.323 Endpoint 
-   * 		     and initialises the variables
-   * PRE          :  /
-   */
-  GMH323Endpoint (GMManager &ep, Ekiga::ServiceCore & core);
+  GMH323Endpoint (GMManager &ep, Ekiga::ServiceCore & core, unsigned listen_port);
 
-  /**/
-  const std::string & get_protocol_name () const;
 
-  const Ekiga::CallProtocolManager::Interface & get_interface () const;
-
-  /**/
+  /* ContactDecorator and PresentityDecorator */
   bool populate_menu (Ekiga::Contact &contact,
                       Ekiga::MenuBuilder &builder);
 
@@ -77,19 +72,25 @@ class GMH323Endpoint : public H323EndPoint
                                  std::map<std::string, std::string> & uris,
                                  Ekiga::MenuBuilder & builder);
 
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Adds the User Input Mode following the
-   *                 configuration options. String, Tone, and RFC2833 are 
-   *                 supported for now.
-   * PRE          :  /
-   */
-  void SetUserInputMode ();
-  
 
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Register the H323 endpoint to the given H323 server. 
-   * PRE          :  Correct parameters.
-   */
+  /* CallProtocolManager */
+  bool dial (const std::string & uri); 
+
+  const std::string & get_protocol_name () const;
+
+  void set_dtmf_mode (unsigned mode);
+  unsigned get_dtmf_mode () const;
+
+  bool set_listen_port (unsigned port);
+  const Ekiga::CallProtocolManager::Interface & get_listen_interface () const;
+
+
+  /* H.323 CallProtocolManager */
+  void set_forward_uri (const std::string & uri);
+  const std::string & get_forward_uri () const;
+
+
+  /* OPAL methods */
   void Register (const PString & aor,
                  const PString & authUserName,
                  const PString & password,
@@ -97,91 +98,17 @@ class GMH323Endpoint : public H323EndPoint
                  unsigned int expires,
                  bool unregister);
 
-  
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Use the given gatekeeper.
-   * PRE          :  /
-   */
   bool UseGatekeeper (const PString & address = PString::Empty (),
 		      const PString & domain = PString::Empty (),
 		      const PString & iface = PString::Empty ());
   
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Remove the given gatekeeper if we were registered to it.
-   * 		     Returns TRUE if it worked.
-   * PRE          :  Non-Empty address.
-   */
   bool RemoveGatekeeper (const PString & address);
   
-  
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Returns TRUE if we are registered with 
-   * 		     the given gatekeeper.
-   * PRE          :  Non-Empty address.
-   */
   bool IsRegisteredWithGatekeeper (const PString & address);
   
-
-  H323Connection *CreateConnection (OpalCall & call,
-                                    const PString & token,
-                                    void * userData,
-                                    OpalTransport & transport,
-                                    const PString & alias,
-                                    const H323TransportAddress & address,
-                                    H323SignalPDU *setupPDU,
-                                    unsigned int options = 0,
-                                    OpalConnection::StringOptions * stringOptions = NULL); 
-
-
-  /* DESCRIPTION  :  Called when there is an incoming SIP connection.
-   * BEHAVIOR     :  Checks if the connection must be rejected or forwarded
-   * 		     and call the manager function of the same name
-   * 		     to update the GUI and take the appropriate action
-   * 		     on the connection. If the connection is not forwarded,
-   * 		     or rejected, OnShowIncoming will be called on the PCSS
-   * 		     endpoint, allowing to auto-answer the call or do further
-   * 		     updates of the GUI and internal timers.
-   * PRE          :  /
-   */
   bool OnIncomingConnection (OpalConnection &connection,
                              unsigned options,
                              OpalConnection::StringOptions *str_options);
-
-
-  /* DESCRIPTION  :  Called when the gatekeeper accepts the registration.
-   * BEHAVIOR     :  Update the endpoint state.
-   * PRE          :  /
-   */
-  void OnRegistrationConfirm ();
-
-  
-  /* DESCRIPTION  :  Called when the gatekeeper rejects the registration.
-   * BEHAVIOR     :  Update the endpoint state.
-   * PRE          :  /
-   */
-  void OnRegistrationReject ();
-
-  
-  /* DESCRIPTION  :  This callback is called when the connection is 
-   *                 established and everything is ok.
-   * BEHAVIOR     :  Stops the timers.
-   * PRE          :  /
-   */
-  void OnEstablished (OpalConnection &);
-
-  
-  /* DESCRIPTION  :  This callback is called when a connection to a remote
-   *                 endpoint is cleared.
-   * BEHAVIOR     :  Stops the timers.
-   * PRE          :  /
-   */
-  void OnReleased (OpalConnection &);
-
-  bool start_listening ();
-  bool set_udp_ports (const unsigned min, const unsigned max);
-  bool set_tcp_ports (const unsigned min, const unsigned max);
-  bool set_listen_port (const unsigned listen);
 
 
  private:
@@ -194,17 +121,13 @@ class GMH323Endpoint : public H323EndPoint
   PMutex gk_name_mutex;
   PString gk_name;
 
-  std::string forward_uri;
-  unsigned tcp_min;
-  unsigned tcp_max;
-  unsigned udp_min;
-  unsigned udp_max;
-  unsigned listen_port;
-
   Ekiga::CallProtocolManager::Interface interface;
 
   std::string protocol_name;
   std::string uri_prefix;
+  std::string forward_uri;
+
+  unsigned listen_port;
 };
 
 #endif

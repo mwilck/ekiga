@@ -133,14 +133,10 @@ GMManager::GMManager (Ekiga::ServiceCore & _core)
   SetVideoInputDevice (video);
 
   // Create endpoints
-  h323EP = new GMH323Endpoint (*this, core);
-  AddRouteEntry("pc:.* = h323:<da>");
-	
   pcssEP = new GMPCSSEndpoint (*this, core);
   pcssEP->SetSoundChannelPlayDevice("EKIGA");
   pcssEP->SetSoundChannelRecordDevice("EKIGA");
-  AddRouteEntry("h323:.* = pc:<db>");
-  protocols.push_back (h323EP->get_protocol_name ());
+  protocols.push_back ("h323");
   protocols.push_back ("sip"); //FIXME
 
   // Media formats

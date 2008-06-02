@@ -39,50 +39,56 @@
 #include "config.h"
 
 #include "h323.h"
-#include "ekiga.h"
-#include "pcss.h"
 
-#include "misc.h"
-
-#include "gmconf.h"
-#include "gmdialog.h"
-
-#include <opal/transcoders.h>
+#include "opal-call.h"
 
 
-#define new PNEW
+class dialer : public PThread
+{
+  PCLASSINFO(dialer, PThread);
+
+public:
+
+  dialer (const std::string & uri, GMManager & ep) 
+    : PThread (1000, AutoDeleteThread), 
+      dial_uri (uri),
+      endpoint (ep) 
+  {
+    this->Resume ();
+  };
+  
+  void Main () 
+  {
+    PString token;
+    endpoint.SetUpCall ("pc:*", dial_uri, token);
+  };
+
+private:
+  const std::string dial_uri;
+  GMManager & endpoint;
+};
 
 
 /* The class */
-GMH323Endpoint::GMH323Endpoint (GMManager & ep, Ekiga::ServiceCore & _core)
+GMH323Endpoint::GMH323Endpoint (GMManager & ep, Ekiga::ServiceCore & _core, unsigned _listen_port)
 : H323EndPoint (ep), 
   endpoint (ep),
   core (_core),
   runtime (*(dynamic_cast<Ekiga::Runtime *> (core.get ("runtime"))))
 {
-  udp_min = 5000;
-  udp_max = 5100; 
-  tcp_min = 30000;
-  tcp_max = 30010; 
-  listen_port = 1720;
-
-  SetInitialBandwidth (40000);
-
-  uri_prefix = "h323:";
   protocol_name = "h323";
+  uri_prefix = "h323:";
+  listen_port = _listen_port;
 
-  start_listening ();
-}
+  /* Initial requested bandwidth */
+  SetInitialBandwidth (40000);
+  
+  /* Start listener */
+  set_listen_port (listen_port);
 
-const std::string & GMH323Endpoint::get_protocol_name () const
-{
-  return protocol_name;
-}
-
-
-const Ekiga::CallProtocolManager::Interface & GMH323Endpoint::get_interface () const
-{
-  return interface;
+  /* Ready to take calls */
+  endpoint.AddRouteEntry("h323:.* = pc:<db>");
+  endpoint.AddRouteEntry("pc:.* = h323:<da>");
 }
 
 
@@ -107,8 +113,8 @@ bool GMH323Endpoint::populate_menu (const std::string uri,
 
 
 bool GMH323Endpoint::menu_builder_add_actions (const std::string & /*fullname*/,
-                                               std::map<std::string,std::string> & uris,
-                                               Ekiga::MenuBuilder & builder)
+                                              std::map<std::string,std::string> & uris,
+                                              Ekiga::MenuBuilder & builder)
 {
   bool populated = false;
 
@@ -131,13 +137,30 @@ bool GMH323Endpoint::menu_builder_add_actions (const std::string & /*fullname*/,
 }
 
 
-void
-GMH323Endpoint::SetUserInputMode ()
+bool GMH323Endpoint::dial (const std::string & uri)
 {
-  int mode = 0;
+  PString token;
+  std::stringstream ustr;
 
-  mode = gm_conf_get_int (H323_KEY "dtmf_mode");
+  if (uri.find ("h323:") == 0) {
 
+    new dialer (ustr.str (), endpoint);
+
+    return true;
+  }
+
+  return false;
+}
+
+
+const std::string & GMH323Endpoint::get_protocol_name () const
+{
+  return protocol_name;
+}
+
+
+void GMH323Endpoint::set_dtmf_mode (unsigned mode)
+{
   switch (mode) 
     {
     case 0:
@@ -155,6 +178,64 @@ GMH323Endpoint::SetUserInputMode ()
     default:
       break;
     }
+}
+
+
+unsigned GMH323Endpoint::get_dtmf_mode () const
+{
+  if (GetSendUserInputMode () == OpalConnection::SendUserInputAsString)
+    return 0;
+
+  if (GetSendUserInputMode () == OpalConnection::SendUserInputAsTone)
+    return 1;
+
+  if (GetSendUserInputMode () == OpalConnection::SendUserInputAsInlineRFC2833)
+    return 2;
+
+  if (GetSendUserInputMode () == OpalConnection::SendUserInputAsQ931)
+    return 2;
+
+  return 1;
+}
+
+
+bool GMH323Endpoint::set_listen_port (unsigned port)
+{
+  interface.protocol = "tcp";
+  interface.interface = "*";
+
+  if (port > 0) {
+
+    std::stringstream str;
+    RemoveListener (NULL);
+
+    str << "tcp$*:" << port;
+    if (StartListeners (PStringArray (str.str ()))) {
+
+      interface.port = port;
+      return true;
+    }
+  }
+
+  return false;
+}
+
+
+const Ekiga::CallProtocolManager::Interface & GMH323Endpoint::get_listen_interface () const
+{
+  return interface;
+}
+
+
+void GMH323Endpoint::set_forward_uri (const std::string & uri)
+{
+  forward_uri = uri;
+}
+
+
+const std::string & GMH323Endpoint::get_forward_uri () const
+{
+  return forward_uri;
 }
 
 
@@ -183,12 +264,11 @@ GMH323Endpoint::Register (const PString & aor,
     H323EndPoint::RemoveGatekeeper (0);
 
     /* Signal */
-    /*
-    runtime.run_in_main (sigc::bind (registration_event.make_slot (), 
+    runtime.run_in_main (sigc::bind (endpoint.registration_event.make_slot (), 
                                      aor,
                                      Ekiga::CallCore::Processing,
                                      std::string ()));
-*/ //TODO
+
     if (!authUserName.IsEmpty ()) {
       SetLocalUserName (authUserName);
       AddAliasName (endpoint.GetDefaultDisplayName ());
@@ -232,23 +312,18 @@ GMH323Endpoint::Register (const PString & aor,
       else
 	info = _("Failed");
 
-      /* Signal */
-      /*
-      runtime.run_in_main (sigc::bind (registration_event.make_slot (), 
+      runtime.run_in_main (sigc::bind (endpoint.registration_event.make_slot (), 
                                        aor, 
                                        Ekiga::CallCore::RegistrationFailed,
                                        info));
-                                       */
     }
     else {
 
       /* Signal */
-      /*
-      runtime.run_in_main (sigc::bind (registration_event.make_slot (), 
+      runtime.run_in_main (sigc::bind (endpoint.registration_event.make_slot (), 
                                        aor,
                                        Ekiga::CallCore::Registered,
                                        std::string ()));
-                                       */
     }
   }
   else if (unregister && IsRegisteredWithGatekeeper (host)) {
@@ -257,12 +332,10 @@ GMH323Endpoint::Register (const PString & aor,
     RemoveAliasName (authUserName);
 
     /* Signal */
-    /*
-    runtime.run_in_main (sigc::bind (registration_event.make_slot (), 
+    runtime.run_in_main (sigc::bind (endpoint.registration_event.make_slot (), 
                                      aor,
                                      Ekiga::CallCore::Unregistered,
                                      std::string ()));
-                                     */
   }
 }
 
@@ -302,145 +375,37 @@ GMH323Endpoint::IsRegisteredWithGatekeeper (const PString & address)
 }
 
 
-H323Connection *GMH323Endpoint::CreateConnection (OpalCall & _call,
-                                                  const PString & token,
-                                                  void *userData,
-                                                  OpalTransport & transport,
-                                                  const PString & alias,
-                                                  const H323TransportAddress & address,
-                                                  H323SignalPDU *setupPDU,
-                                                  unsigned options,
-                                                  OpalConnection::StringOptions *stringOptions)
-{
-  /* FIXME
-  Ekiga::Call *call = dynamic_cast<Ekiga::Call *> (&_call);
-  Ekiga::CallCore *call_core = dynamic_cast<Ekiga::CallCore *> (core.get ("call-core"));
-  if (call_core)
-    call_core->add_call (call, this);
-    */
-
-  return H323EndPoint::CreateConnection (_call, token, userData, transport, alias, address, setupPDU, options, stringOptions);
-}
-
-
 bool 
-GMH323Endpoint::OnIncomingConnection (OpalConnection & /*connection*/,
+GMH323Endpoint::OnIncomingConnection (OpalConnection & connection,
                                       G_GNUC_UNUSED unsigned options,
-                                      G_GNUC_UNUSED OpalConnection::StringOptions *str_options)
+                                      G_GNUC_UNUSED OpalConnection::StringOptions *stroptions)
 {
   PTRACE (3, "GMH323Endpoint\tIncoming connection");
 
-  /*
-  if (!forward_uri.empty () && unconditional_forward)
+  if (!forward_uri.empty () && endpoint.get_unconditional_forward ())
     connection.ForwardCall (forward_uri);
-  else if (endpoint.GetCallsNumber () >= 1) { 
+  else if (endpoint.GetCallsNumber () > 1) { 
 
-    if (!forward_uri.empty () && forward_on_busy)
+    if (!forward_uri.empty () && endpoint.get_forward_on_busy ())
       connection.ForwardCall (forward_uri);
-    else 
+    else {
       connection.ClearCall (OpalConnection::EndedByLocalBusy);
+    }
   }
-  else
+  else {
+
+      Opal::Call *call = dynamic_cast<Opal::Call *> (&connection.GetCall ());
+      if (call) {
+
+        if (!forward_uri.empty () && endpoint.get_forward_on_no_answer ()) 
+          call->set_no_answer_forward (endpoint.get_reject_delay (), forward_uri);
+        else
+          call->set_reject_delay (endpoint.get_reject_delay ());
+      }
+
     return H323EndPoint::OnIncomingConnection (connection, options, stroptions);
-    */ //TODO
-
-  return false;
-}
-
-
-void 
-GMH323Endpoint::OnRegistrationConfirm ()
-{
-  H323EndPoint::OnRegistrationConfirm ();
-}
-
+  }
   
-void 
-GMH323Endpoint::OnRegistrationReject ()
-{
-  PWaitAndSignal m(gk_name_mutex);
-
-  gk_name = PString::Empty ();
-
-  H323EndPoint::OnRegistrationReject ();
-}
-
-
-void 
-GMH323Endpoint::OnEstablished (OpalConnection &connection)
-{
-  PTRACE (3, "GMSIPEndpoint\t H.323 connection established");
-  H323EndPoint::OnEstablished (connection);
-}
-
-
-void 
-GMH323Endpoint::OnReleased (OpalConnection &connection)
-{
-  PTRACE (3, "GMSIPEndpoint\t H.323 connection released");
-  H323EndPoint::OnReleased (connection);
-}
-
-
-bool GMH323Endpoint::start_listening ()
-{
-  std::stringstream str;
-  RemoveListener (NULL);
-
-  interface.publish = false;
-  interface.voip_protocol = protocol_name;
-  interface.protocol = "tcp";
-  interface.interface = "*";
-
-  str << "tcp$*:" << listen_port;
-  if (StartListeners (PStringArray (str.str ().c_str ()))) {
-    interface.port = listen_port;
-    return true;
-  }
-
-  return false;
-}
-
-
-bool GMH323Endpoint::set_tcp_ports (const unsigned min, const unsigned max) 
-{
-  if (min > 0 && max > 0 && min < max) {
-
-    tcp_min = min;
-    tcp_max = max;
-    endpoint.SetTCPPorts (tcp_min, tcp_max);
-
-    return true;
-  }
-
-  return false;
-}
-
-
-bool GMH323Endpoint::set_udp_ports (const unsigned min, const unsigned max) 
-{
-  if (min > 0 && max > 0 && min + 12 < max) {
-
-    udp_min = min;
-    udp_max = max;
-    endpoint.SetRtpIpPorts (udp_min, udp_max);
-    endpoint.SetUDPPorts (udp_min, udp_max);
-
-    return true;
-  }
-
-  return false;
-}
-
-
-bool GMH323Endpoint::set_listen_port (const unsigned listen)
-{
-  if (listen > 0) {
-
-    listen_port = listen;
-    return start_listening ();
-  }
-
   return false;
 }
 

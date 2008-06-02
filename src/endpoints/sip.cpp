@@ -174,7 +174,6 @@ bool GMSIPEndpoint::menu_builder_add_actions (const std::string & fullname,
 }
 
 
-
 void
 GMSIPEndpoint::fetch (const std::string _uri)
 {
@@ -300,30 +299,6 @@ const std::string & GMSIPEndpoint::get_protocol_name () const
   return protocol_name;
 }
 
-void GMSIPEndpoint::set_forward_uri (const std::string & uri)
-{
-  forward_uri = uri;
-}
-
-
-const std::string & GMSIPEndpoint::get_forward_uri () const
-{
-  return forward_uri;
-}
-
-
-void GMSIPEndpoint::set_outbound_proxy (const std::string & uri)
-{
-  outbound_proxy = uri;
-  SetProxy (SIPURL (outbound_proxy));
-}
-
-
-const std::string & GMSIPEndpoint::get_outbound_proxy () const
-{
-  return outbound_proxy;
-}
-
 
 void GMSIPEndpoint::set_dtmf_mode (unsigned mode)
 {
@@ -400,6 +375,33 @@ const Ekiga::CallProtocolManager::Interface & GMSIPEndpoint::get_listen_interfac
 {
   return interface;
 }
+
+
+
+void GMSIPEndpoint::set_forward_uri (const std::string & uri)
+{
+  forward_uri = uri;
+}
+
+
+const std::string & GMSIPEndpoint::get_forward_uri () const
+{
+  return forward_uri;
+}
+
+
+void GMSIPEndpoint::set_outbound_proxy (const std::string & uri)
+{
+  outbound_proxy = uri;
+  SetProxy (SIPURL (outbound_proxy));
+}
+
+
+const std::string & GMSIPEndpoint::get_outbound_proxy () const
+{
+  return outbound_proxy;
+}
+
 
 
 void GMSIPEndpoint::GMSIPEndpoint::set_nat_binding_delay (unsigned delay)

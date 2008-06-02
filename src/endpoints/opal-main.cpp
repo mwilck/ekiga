@@ -45,6 +45,7 @@
 #include "manager.h"
 #include "ekiga.h"
 #include "sip.h"
+#include "h323.h"
 
 
 static bool
@@ -66,6 +67,7 @@ opal_init (Ekiga::ServiceCore &core,
 
   bool result = true;
   unsigned sip_port = gm_conf_get_int (SIP_KEY "listen_port");
+  unsigned h323_port = gm_conf_get_int (H323_KEY "listen_port");
 
   contact_core = dynamic_cast<Ekiga::ContactCore *> (core.get ("contact-core"));
   presence_core = dynamic_cast<Ekiga::PresenceCore *> (core.get ("presence-core"));
@@ -74,8 +76,10 @@ opal_init (Ekiga::ServiceCore &core,
 
   GMManager *manager = new GMManager (core);
   GMSIPEndpoint *sipEP = new GMSIPEndpoint (*manager, core, sip_port);
+  GMH323Endpoint *h323EP = new GMH323Endpoint (*manager, core, h323_port);
 
   manager->add_protocol_manager (*sipEP);
+  manager->add_protocol_manager (*h323EP);
 
   call_core->add_manager (*manager);
   core.add (*manager); // FIXME temporary

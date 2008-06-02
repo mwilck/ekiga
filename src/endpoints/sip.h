@@ -70,7 +70,8 @@ public:
 
   GMSIPEndpoint (GMManager &ep, Ekiga::ServiceCore & core, unsigned listen_port);
 
-  /***/
+
+  /* ContactDecorator and PresentityDecorator */
   bool populate_menu (Ekiga::Contact &contact,
                       Ekiga::MenuBuilder &builder);
 
@@ -81,9 +82,13 @@ public:
                                  std::map<std::string, std::string> & uris,
                                  Ekiga::MenuBuilder & builder);
 
-  /***/
+
+  /* PresenceFetcher */
   void fetch (const std::string uri);
   void unfetch (const std::string uri);
+
+
+  /* PresencePublisher */
   void publish (const Ekiga::PersonalDetails & details);
 
 
@@ -92,9 +97,8 @@ public:
                      const std::string & message);
 
 
-  /* ProtocolManager */
+  /* CallProtocolManager */
   bool dial (const std::string & uri); 
-
 
   const std::string & get_protocol_name () const;
 
@@ -104,7 +108,8 @@ public:
   bool set_listen_port (unsigned port);
   const Ekiga::CallProtocolManager::Interface & get_listen_interface () const;
 
-  /* SIP ProtocolManager */
+
+  /* SIP CallProtocolManager */
   void set_nat_binding_delay (unsigned delay);
   unsigned get_nat_binding_delay ();
 
@@ -115,7 +120,7 @@ public:
   const std::string & get_forward_uri () const;
 
 
-  /* OPAL STUFF */
+  /* OPAL Methods */
   void Register (const PString & aor,
                  const PString & authUserName,
                  const PString & password,
@@ -145,6 +150,8 @@ public:
 
   SIPURL GetRegisteredPartyName (const SIPURL & host);
 
+
+  /* Callbacks */
 private:
   void on_dial (std::string uri);
 
