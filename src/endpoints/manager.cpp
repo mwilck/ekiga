@@ -41,8 +41,6 @@
 
 #include "manager.h"
 
-#include "h323.h"
-#include "sip.h"
 #include "pcss.h"
 
 #include "call-core.h"
@@ -112,7 +110,6 @@ GMManager::GMManager (Ekiga::ServiceCore & _core)
   
   manager = NULL;
 
-  h323EP = NULL;
   pcssEP = NULL;
 
   forward_on_no_answer = false;
@@ -621,13 +618,6 @@ void GMManager::get_video_options (GMManager::VideoOptions & options) const
       break;
     }
   }
-}
-
-
-GMH323Endpoint *
-GMManager::GetH323Endpoint ()
-{
-  return h323EP;
 }
 
 

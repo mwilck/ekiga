@@ -98,6 +98,7 @@ opal_init (Ekiga::ServiceCore &core,
 
     presence_core->add_presentity_decorator (*sipEP);
     presence_core->add_supported_uri (sigc::ptr_fun (is_sip_address));
+
     presence_core->add_presence_fetcher (*sipEP);
     presence_core->add_presence_publisher (*sipEP);
   }

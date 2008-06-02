@@ -60,8 +60,6 @@
 
 
 class GMLid;
-class GMH323Gatekeeper;
-class GMH323Endpoint;
 class GMPCSSEndpoint;
 
 /**
@@ -77,7 +75,6 @@ class GMManager:
   PCLASSINFO(GMManager, OpalManager);
 
   friend class GMAccountsEndpoint;
-  friend class GMH323Endpoint;
   
  public:
 
@@ -164,8 +161,6 @@ class GMManager:
 
 
   /**/ 
-  GMH323Endpoint *GetH323Endpoint ();
-  
   void Register (GmAccount * = NULL);
 
  private:
@@ -187,9 +182,7 @@ class GMManager:
   std::list<std::string> protocols;
 
   /* The various related endpoints */
-  GMH323Endpoint *h323EP;
   GMPCSSEndpoint *pcssEP;
-
 
   /* The various components of the endpoint */
   GMAccountsEndpoint *manager;
