@@ -73,17 +73,19 @@ private:
   GMManager & endpoint;
 };
 
+using namespace Opal::Sip;
+
 
 /* The class */
-OpalSip::CallProtocolManager::CallProtocolManager (GMManager & ep, 
+CallProtocolManager::CallProtocolManager (GMManager & ep, 
                                                    Ekiga::ServiceCore & _core, 
                                                    unsigned _listen_port)
-        : SIPEndPoint (ep), 
-          Ekiga::PresencePublisher (_core), 
-          endpoint (ep), 
-          core (_core),
-          presence_core (*(dynamic_cast<Ekiga::PresenceCore *> (core.get ("presence-core")))),
-          runtime (*(dynamic_cast<Ekiga::Runtime *> (core.get ("runtime"))))
+                    : SIPEndPoint (ep), 
+                      Ekiga::PresencePublisher (_core), 
+                      endpoint (ep), 
+                      core (_core),
+                      presence_core (*(dynamic_cast<Ekiga::PresenceCore *> (core.get ("presence-core")))),
+                      runtime (*(dynamic_cast<Ekiga::Runtime *> (core.get ("runtime"))))
 {
   protocol_name = "sip";
   uri_prefix = "sip:";
@@ -116,7 +118,7 @@ OpalSip::CallProtocolManager::CallProtocolManager (GMManager & ep,
 }
 
 
-bool OpalSip::CallProtocolManager::populate_menu (Ekiga::Contact &contact,
+bool CallProtocolManager::populate_menu (Ekiga::Contact &contact,
                                                   Ekiga::MenuBuilder &builder)
 {
   std::string name = contact.get_name ();
@@ -126,7 +128,7 @@ bool OpalSip::CallProtocolManager::populate_menu (Ekiga::Contact &contact,
 }
 
 
-bool OpalSip::CallProtocolManager::populate_menu (const std::string uri,
+bool CallProtocolManager::populate_menu (const std::string uri,
                                                   Ekiga::MenuBuilder & builder)
 {
   std::map<std::string, std::string> uris; 
@@ -136,7 +138,7 @@ bool OpalSip::CallProtocolManager::populate_menu (const std::string uri,
 }
 
 
-bool OpalSip::CallProtocolManager::menu_builder_add_actions (const std::string & fullname,
+bool CallProtocolManager::menu_builder_add_actions (const std::string & fullname,
                                                              std::map<std::string,std::string> & uris,
                                                              Ekiga::MenuBuilder & builder)
 {
@@ -152,7 +154,7 @@ bool OpalSip::CallProtocolManager::menu_builder_add_actions (const std::string &
     if (!iter->first.empty ())
       action = action + " [" + iter->first + "]";
 
-    builder.add_action ("call", action, sigc::bind (sigc::mem_fun (this, &OpalSip::CallProtocolManager::on_dial), iter->second));
+    builder.add_action ("call", action, sigc::bind (sigc::mem_fun (this, &CallProtocolManager::on_dial), iter->second));
 
     populated = true;
   }
@@ -167,7 +169,7 @@ bool OpalSip::CallProtocolManager::menu_builder_add_actions (const std::string &
     if (!iter->first.empty ())
       action = action + " [" + iter->first + "]";
 
-    builder.add_action ("message", action, sigc::bind (sigc::mem_fun (this, &OpalSip::CallProtocolManager::on_message), fullname, iter->second));
+    builder.add_action ("message", action, sigc::bind (sigc::mem_fun (this, &CallProtocolManager::on_message), fullname, iter->second));
 
     populated = true;
   }
@@ -176,7 +178,7 @@ bool OpalSip::CallProtocolManager::menu_builder_add_actions (const std::string &
 }
 
 
-void OpalSip::CallProtocolManager::fetch (const std::string _uri)
+void CallProtocolManager::fetch (const std::string _uri)
 {
   std::string::size_type loc = _uri.find ("@", 0);
   std::string domain;
@@ -196,7 +198,7 @@ void OpalSip::CallProtocolManager::fetch (const std::string _uri)
 }
 
 
-void OpalSip::CallProtocolManager::unfetch (const std::string uri)
+void CallProtocolManager::unfetch (const std::string uri)
 {
   if (IsSubscribed (SIPSubscribe::Presence, uri.c_str ())) {
 
@@ -208,7 +210,7 @@ void OpalSip::CallProtocolManager::unfetch (const std::string uri)
 }
 
 
-void OpalSip::CallProtocolManager::publish (const Ekiga::PersonalDetails & details)
+void CallProtocolManager::publish (const Ekiga::PersonalDetails & details)
 {
   std::string hostname = (const char *) PIPSocket::GetHostName ();
   std::string short_status = ((Ekiga::PersonalDetails &) (details)).get_short_status ();
@@ -256,7 +258,7 @@ void OpalSip::CallProtocolManager::publish (const Ekiga::PersonalDetails & detai
 }
 
 
-bool OpalSip::CallProtocolManager::send_message (const std::string & _uri, 
+bool CallProtocolManager::send_message (const std::string & _uri, 
                                                  const std::string & _message)
 {
   if (!_uri.empty () && (_uri.find ("sip:") == 0 || _uri.find (':') == string::npos) && !_message.empty ()) {
@@ -272,7 +274,7 @@ bool OpalSip::CallProtocolManager::send_message (const std::string & _uri,
 }
 
 
-bool OpalSip::CallProtocolManager::dial (const std::string & uri)
+bool CallProtocolManager::dial (const std::string & uri)
 {
   PString token;
   std::stringstream ustr;
@@ -293,13 +295,13 @@ bool OpalSip::CallProtocolManager::dial (const std::string & uri)
 }
 
 
-const std::string & OpalSip::CallProtocolManager::get_protocol_name () const
+const std::string & CallProtocolManager::get_protocol_name () const
 {
   return protocol_name;
 }
 
 
-void OpalSip::CallProtocolManager::set_dtmf_mode (unsigned mode)
+void CallProtocolManager::set_dtmf_mode (unsigned mode)
 {
   switch (mode) {
 
@@ -318,7 +320,7 @@ void OpalSip::CallProtocolManager::set_dtmf_mode (unsigned mode)
 }
 
 
-unsigned OpalSip::CallProtocolManager::get_dtmf_mode () const
+unsigned CallProtocolManager::get_dtmf_mode () const
 {
   // SIP Info
   if (GetSendUserInputMode () == OpalConnection::SendUserInputAsTone)
@@ -332,7 +334,7 @@ unsigned OpalSip::CallProtocolManager::get_dtmf_mode () const
 }
 
 
-bool OpalSip::CallProtocolManager::set_listen_port (unsigned port)
+bool CallProtocolManager::set_listen_port (unsigned port)
 {
   unsigned udp_min, udp_max;
 
@@ -370,51 +372,51 @@ bool OpalSip::CallProtocolManager::set_listen_port (unsigned port)
 }
 
 
-const Ekiga::CallProtocolManager::Interface & OpalSip::CallProtocolManager::get_listen_interface () const
+const Ekiga::CallProtocolManager::Interface & CallProtocolManager::get_listen_interface () const
 {
   return interface;
 }
 
 
 
-void OpalSip::CallProtocolManager::set_forward_uri (const std::string & uri)
+void CallProtocolManager::set_forward_uri (const std::string & uri)
 {
   forward_uri = uri;
 }
 
 
-const std::string & OpalSip::CallProtocolManager::get_forward_uri () const
+const std::string & CallProtocolManager::get_forward_uri () const
 {
   return forward_uri;
 }
 
 
-void OpalSip::CallProtocolManager::set_outbound_proxy (const std::string & uri)
+void CallProtocolManager::set_outbound_proxy (const std::string & uri)
 {
   outbound_proxy = uri;
   SetProxy (SIPURL (outbound_proxy));
 }
 
 
-const std::string & OpalSip::CallProtocolManager::get_outbound_proxy () const
+const std::string & CallProtocolManager::get_outbound_proxy () const
 {
   return outbound_proxy;
 }
 
 
-void OpalSip::CallProtocolManager::set_nat_binding_delay (unsigned delay)
+void CallProtocolManager::set_nat_binding_delay (unsigned delay)
 {
   SetNATBindingTimeout (PTimeInterval (0, delay));
 }
 
 
-unsigned OpalSip::CallProtocolManager::get_nat_binding_delay ()
+unsigned CallProtocolManager::get_nat_binding_delay ()
 {
   return GetNATBindingTimeout ().GetSeconds ();
 }
 
 
-void  OpalSip::CallProtocolManager::Register (const PString & _aor,
+void  CallProtocolManager::Register (const PString & _aor,
                                               const PString & authUserName,
                                               const PString & password,
                                               unsigned int expires,
@@ -451,7 +453,7 @@ void  OpalSip::CallProtocolManager::Register (const PString & _aor,
 }
 
 
-void OpalSip::CallProtocolManager::OnRegistered (const PString & _aor,
+void CallProtocolManager::OnRegistered (const PString & _aor,
                                                  bool was_registering)
 {
   std::string aor = (const char *) _aor;
@@ -522,7 +524,7 @@ void OpalSip::CallProtocolManager::OnRegistered (const PString & _aor,
 }
 
 
-void OpalSip::CallProtocolManager::OnRegistrationFailed (const PString & _aor,
+void CallProtocolManager::OnRegistrationFailed (const PString & _aor,
                                                          SIP_PDU::StatusCodes r,
                                                          bool wasRegistering)
 {
@@ -748,11 +750,11 @@ void OpalSip::CallProtocolManager::OnRegistrationFailed (const PString & _aor,
 }
 
 
-bool OpalSip::CallProtocolManager::OnIncomingConnection (OpalConnection &connection,
+bool CallProtocolManager::OnIncomingConnection (OpalConnection &connection,
                                                          unsigned options,
                                                          OpalConnection::StringOptions * stroptions)
 {
-  PTRACE (3, "OpalSip::CallProtocolManager\tIncoming connection");
+  PTRACE (3, "CallProtocolManager\tIncoming connection");
 
   if (!forward_uri.empty () && endpoint.get_unconditional_forward ())
     connection.ForwardCall (forward_uri);
@@ -782,7 +784,7 @@ bool OpalSip::CallProtocolManager::OnIncomingConnection (OpalConnection &connect
 }
 
 
-void OpalSip::CallProtocolManager::OnReceivedMESSAGE (G_GNUC_UNUSED OpalTransport & transport,
+void CallProtocolManager::OnReceivedMESSAGE (G_GNUC_UNUSED OpalTransport & transport,
                                                       SIP_PDU & pdu)
 {
   PString *last = NULL;
@@ -814,7 +816,7 @@ void OpalSip::CallProtocolManager::OnReceivedMESSAGE (G_GNUC_UNUSED OpalTranspor
 }
 
 
-void OpalSip::CallProtocolManager::OnMessageFailed (const SIPURL & messageUrl,
+void CallProtocolManager::OnMessageFailed (const SIPURL & messageUrl,
                                                     SIP_PDU::StatusCodes /*reason*/)
 {
   SIPURL to = messageUrl;
@@ -825,7 +827,7 @@ void OpalSip::CallProtocolManager::OnMessageFailed (const SIPURL & messageUrl,
 }
 
 
-SIPURL OpalSip::CallProtocolManager::GetRegisteredPartyName (const SIPURL & host)
+SIPURL CallProtocolManager::GetRegisteredPartyName (const SIPURL & host)
 {
   GmAccount *account = NULL;
 
@@ -880,7 +882,7 @@ SIPURL OpalSip::CallProtocolManager::GetRegisteredPartyName (const SIPURL & host
 
 
 void 
-OpalSip::CallProtocolManager::OnPresenceInfoReceived (const PString & user,
+CallProtocolManager::OnPresenceInfoReceived (const PString & user,
                                                       const PString & basic,
                                                       const PString & note)
 {
@@ -924,13 +926,13 @@ OpalSip::CallProtocolManager::OnPresenceInfoReceived (const PString & user,
 }
 
 
-void OpalSip::CallProtocolManager::on_dial (std::string uri)
+void CallProtocolManager::on_dial (std::string uri)
 {
   endpoint.dial (uri);
 }
 
 
-void OpalSip::CallProtocolManager::on_message (const std::string & name,
+void CallProtocolManager::on_message (const std::string & name,
                                                const std::string & uri)
 {
   runtime.run_in_main (sigc::bind (new_chat.make_slot (), name, uri));

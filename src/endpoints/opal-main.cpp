@@ -54,6 +54,7 @@ is_sip_address (const std::string uri)
   return (uri.find ("sip:") == 0);
 }
 
+using namespace Opal;
 
 bool
 opal_init (Ekiga::ServiceCore &core,
@@ -75,8 +76,8 @@ opal_init (Ekiga::ServiceCore &core,
   chat_core = dynamic_cast<Ekiga::ChatCore *> (core.get ("chat-core"));
 
   GMManager *call_manager = new GMManager (core);
-  OpalSip::CallProtocolManager *sip_manager = new OpalSip::CallProtocolManager (*call_manager, core, sip_port);
-  OpalH323::CallProtocolManager *h323_manager = new OpalH323::CallProtocolManager (*call_manager, core, h323_port);
+  Sip::CallProtocolManager *sip_manager = new Sip::CallProtocolManager (*call_manager, core, sip_port);
+  H323::CallProtocolManager *h323_manager = new H323::CallProtocolManager (*call_manager, core, h323_port);
 
   call_manager->add_protocol_manager (*sip_manager);
   call_manager->add_protocol_manager (*h323_manager);

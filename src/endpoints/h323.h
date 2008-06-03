@@ -46,87 +46,90 @@
 #include "manager.h"
 
 
-namespace OpalH323 {
+namespace Opal {
 
-  class CallProtocolManager : public H323EndPoint,
-                              public Ekiga::CallProtocolManager,
-                              public Ekiga::PresentityDecorator,
-                              public Ekiga::ContactDecorator
-  {
-    PCLASSINFO(CallProtocolManager, H323EndPoint);
+  namespace H323 {
 
-public:
-    CallProtocolManager (GMManager &ep, Ekiga::ServiceCore & core, unsigned listen_port);
+    class CallProtocolManager : public H323EndPoint,
+                                public Ekiga::CallProtocolManager,
+                                public Ekiga::PresentityDecorator,
+                                public Ekiga::ContactDecorator
+    {
+      PCLASSINFO(CallProtocolManager, H323EndPoint);
 
-
-    /* ContactDecorator and PresentityDecorator */
-    bool populate_menu (Ekiga::Contact &contact,
-                        Ekiga::MenuBuilder &builder);
-
-    bool populate_menu (const std::string uri,
-                        Ekiga::MenuBuilder & builder);
-
-    bool menu_builder_add_actions (const std::string & fullname,
-                                   std::map<std::string, std::string> & uris,
-                                   Ekiga::MenuBuilder & builder);
+  public:
+      CallProtocolManager (GMManager &ep, Ekiga::ServiceCore & core, unsigned listen_port);
 
 
-    /* CallProtocolManager */
-    bool dial (const std::string & uri); 
+      /* ContactDecorator and PresentityDecorator */
+      bool populate_menu (Ekiga::Contact &contact,
+                          Ekiga::MenuBuilder &builder);
 
-    const std::string & get_protocol_name () const;
+      bool populate_menu (const std::string uri,
+                          Ekiga::MenuBuilder & builder);
 
-    void set_dtmf_mode (unsigned mode);
-    unsigned get_dtmf_mode () const;
-
-    bool set_listen_port (unsigned port);
-    const Ekiga::CallProtocolManager::Interface & get_listen_interface () const;
-
-
-    /* H.323 CallProtocolManager */
-    void set_forward_uri (const std::string & uri);
-    const std::string & get_forward_uri () const;
+      bool menu_builder_add_actions (const std::string & fullname,
+                                     std::map<std::string, std::string> & uris,
+                                     Ekiga::MenuBuilder & builder);
 
 
-    /* OPAL methods */
-    void Register (const PString & aor,
-                   const PString & authUserName,
-                   const PString & password,
-                   const PString & gatekeeperID,
-                   unsigned int expires,
-                   bool unregister);
+      /* CallProtocolManager */
+      bool dial (const std::string & uri); 
 
-private:
-    bool UseGatekeeper (const PString & address = PString::Empty (),
-                        const PString & domain = PString::Empty (),
-                        const PString & iface = PString::Empty ());
+      const std::string & get_protocol_name () const;
 
-    bool RemoveGatekeeper (const PString & address);
+      void set_dtmf_mode (unsigned mode);
+      unsigned get_dtmf_mode () const;
 
-    bool IsRegisteredWithGatekeeper (const PString & address);
-
-    bool OnIncomingConnection (OpalConnection &connection,
-                               unsigned options,
-                               OpalConnection::StringOptions *str_options);
+      bool set_listen_port (unsigned port);
+      const Ekiga::CallProtocolManager::Interface & get_listen_interface () const;
 
 
-private:
-    void on_dial (std::string uri);
+      /* H.323 CallProtocolManager */
+      void set_forward_uri (const std::string & uri);
+      const std::string & get_forward_uri () const;
 
-    GMManager & endpoint;
-    Ekiga::ServiceCore & core;
-    Ekiga::Runtime & runtime;
 
-    PMutex gk_name_mutex;
-    PString gk_name;
+      /* OPAL methods */
+      void Register (const PString & aor,
+                     const PString & authUserName,
+                     const PString & password,
+                     const PString & gatekeeperID,
+                     unsigned int expires,
+                     bool unregister);
 
-    Ekiga::CallProtocolManager::Interface interface;
+  private:
+      bool UseGatekeeper (const PString & address = PString::Empty (),
+                          const PString & domain = PString::Empty (),
+                          const PString & iface = PString::Empty ());
 
-    std::string protocol_name;
-    std::string uri_prefix;
-    std::string forward_uri;
+      bool RemoveGatekeeper (const PString & address);
 
-    unsigned listen_port;
+      bool IsRegisteredWithGatekeeper (const PString & address);
+
+      bool OnIncomingConnection (OpalConnection &connection,
+                                 unsigned options,
+                                 OpalConnection::StringOptions *str_options);
+
+
+  private:
+      void on_dial (std::string uri);
+
+      GMManager & endpoint;
+      Ekiga::ServiceCore & core;
+      Ekiga::Runtime & runtime;
+
+      PMutex gk_name_mutex;
+      PString gk_name;
+
+      Ekiga::CallProtocolManager::Interface interface;
+
+      std::string protocol_name;
+      std::string uri_prefix;
+      std::string forward_uri;
+
+      unsigned listen_port;
+    };
   };
 };
 #endif
