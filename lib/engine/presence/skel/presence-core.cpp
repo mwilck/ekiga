@@ -47,10 +47,11 @@ Ekiga::PresencePublisher::PresencePublisher (Ekiga::ServiceCore & core)
   Ekiga::CallCore *call_core = dynamic_cast <Ekiga::CallCore *> (core.get ("call-core"));
   Ekiga::PersonalDetails *details = dynamic_cast <Ekiga::PersonalDetails *> (core.get ("personal-details"));
 
-  if (details) 
+  if (details)
     details->personal_details_updated.connect (sigc::mem_fun (this, &Ekiga::PresencePublisher::on_personal_details_updated));
+
   if (call_core)
-    call_core->registration_event.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresencePublisher::on_registration_event), *details));
+    call_core->registration_event.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresencePublisher::on_registration_event), details));
 }
 
 
@@ -64,11 +65,12 @@ void Ekiga::PresencePublisher::on_registration_event (Ekiga::CallManager & /*man
                                                       std::string /*aor*/,
                                                       Ekiga::CallCore::RegistrationState state,
                                                       std::string /*info*/,
-                                                      Ekiga::PersonalDetails & details)
+                                                      Ekiga::PersonalDetails *details)
 {
   switch (state) {
   case Ekiga::CallCore::Registered:
-    this->publish (details);
+    if (details)
+      this->publish (*details);
     break;
 
   case Ekiga::CallCore::Unregistered:

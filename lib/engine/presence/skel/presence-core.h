@@ -114,7 +114,7 @@ namespace Ekiga
                                 std::string aor,
                                 Ekiga::CallCore::RegistrationState state,
                                 std::string /*info*/,
-                                Ekiga::PersonalDetails & details);
+                                Ekiga::PersonalDetails *details);
   };
 
   /** Core object for the presence support.
@@ -308,7 +308,6 @@ namespace Ekiga
     /** This chain allows the PresenceCore to present forms to the user
      */
     ChainOfResponsibility<FormRequest*> questions;
-
   };
 
 /**

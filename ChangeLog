@@ -1,5 +1,14 @@
 2008-06-03  Damien Sandras  <dsandras@gnome.org>
 
+	* lib/engine/presence/skel/presence-core.h:
+	* lib/engine/presence/skel/presence-core.cpp:
+	Use a pointer instead of a reference in the callback. Otherwise sigc++
+	makes a copy of the class content and we see old state being
+	republished again when a registration event occurs instead of seeing
+	the new state.
+
+2008-06-03  Damien Sandras  <dsandras@gnome.org>
+
 	* src/endpoints/sip.h:
 	* src/endpoints/accountshandler.cpp:
 	* src/endpoints/opal-main.cpp:
