@@ -60,10 +60,6 @@ VideoOutputCore::VideoOutputCore ()
 
 VideoOutputCore::~VideoOutputCore ()
 {
-#ifdef __GNUC__
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
-#endif
-
   PWaitAndSignal m(core_mutex);
 
   if (videooutput_core_conf_bridge)

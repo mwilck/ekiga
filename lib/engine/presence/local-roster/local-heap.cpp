@@ -87,9 +87,6 @@ Local::Heap::Heap (Ekiga::ServiceCore &_core): core (_core), doc (NULL)
 
 Local::Heap::~Heap ()
 {
-#ifdef __GNUC__
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
-#endif
   if (doc != NULL)
     xmlFreeDoc (doc);
 }

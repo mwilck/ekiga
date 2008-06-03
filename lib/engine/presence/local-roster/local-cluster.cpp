@@ -52,9 +52,6 @@ Local::Cluster::Cluster (Ekiga::ServiceCore &_core): core(_core)
 
 Local::Cluster::~Cluster ()
 {
-#ifdef __GNUC__
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
-#endif
 }
 
 bool

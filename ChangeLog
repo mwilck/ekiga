@@ -1,5 +1,31 @@
 2008-06-03  Damien Sandras  <dsandras@gnome.org>
 
+	* lib/engine/audioinput/skel/audioinput-core.cpp:
+	* lib/engine/audiooutput/skel/audiooutput-core.cpp:
+	* lib/engine/gui/gtk-core/form-dialog-gtk.cpp:
+	* lib/engine/videoinput/skel/videoinput-core.cpp:
+	* lib/engine/engine.cpp:
+	* lib/engine/videooutput/skel/videooutput-core.cpp:
+	* lib/engine/framework/menu-xml.cpp:
+	* lib/engine/framework/form-request-simple.cpp:
+	* lib/engine/framework/services.cpp:
+	* lib/engine/addressbook/ldap/ldap-source.cpp:
+	* lib/engine/addressbook/ldap/ldap-book.cpp:
+	* lib/engine/addressbook/evolution/evolution-source.cpp:
+	* lib/engine/addressbook/evolution/evolution-book.cpp:
+	* lib/engine/addressbook/call-history/history-source.cpp:
+	* lib/engine/addressbook/call-history/history-book.cpp:
+	* lib/engine/addressbook/skel/contact-core.cpp:
+	* lib/engine/presence/local-roster/local-roster-bridge.cpp:
+	* lib/engine/presence/local-roster/local-heap.cpp:
+	* lib/engine/presence/local-roster/local-cluster.cpp:
+	* lib/engine/presence/avahi/avahi-heap.cpp:
+	* lib/engine/presence/avahi/avahi-cluster.cpp:
+	* lib/engine/presence/skel/presence-core.cpp:
+	Removed debug output.
+
+2008-06-03  Damien Sandras  <dsandras@gnome.org>
+
 	* src/endpoints/manager.cpp:
 	* src/gui/callbacks.cpp:
 	Clear the GUI callbacks before exiting and thus deleting the engine.

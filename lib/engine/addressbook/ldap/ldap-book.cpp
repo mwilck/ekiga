@@ -271,9 +271,6 @@ OPENLDAP::Book::Book (Ekiga::ServiceCore &_core,
 
 OPENLDAP::Book::~Book ()
 {
-#ifdef __GNUC__
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
-#endif
 }
 
 const std::string

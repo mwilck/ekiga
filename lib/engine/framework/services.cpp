@@ -39,9 +39,6 @@
 
 Ekiga::ServiceCore::~ServiceCore ()
 {
-#ifdef __GNUC__
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
-#endif
   for (std::list<Service *>::iterator iter = services.begin ();
        iter != services.end ();
        iter++)

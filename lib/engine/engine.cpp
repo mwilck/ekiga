@@ -201,7 +201,6 @@ engine_init (int argc,
   }
   
   if (!avahi_publisher_init (*core, &argc, &argv)) {
-    std::cout << "delete" << std::endl << std::flush;
     delete core;
     return;
   }

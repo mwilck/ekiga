@@ -46,9 +46,6 @@ Avahi::Cluster::Cluster (Ekiga::PresenceCore &_core): core(_core)
 
 Avahi::Cluster::~Cluster ()
 {
-#ifdef __GNUC__
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
-#endif
 }
 
 void

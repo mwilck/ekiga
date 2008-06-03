@@ -157,10 +157,6 @@ Evolution::Source::Source (Ekiga::ServiceCore &_services)
 
 Evolution::Source::~Source ()
 {
-#ifdef __GNUC__
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
-#endif
-
   g_object_unref (source_list);
 }
 

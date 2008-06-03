@@ -67,10 +67,6 @@ AudioOutputCore::AudioOutputCore (Ekiga::Runtime & _runtime)
 
 AudioOutputCore::~AudioOutputCore ()
 {
-#ifdef __GNUC__
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
-#endif
-
   PWaitAndSignal m_pri(core_mutex[primary]);
   PWaitAndSignal m_sec(core_mutex[secondary]);
 

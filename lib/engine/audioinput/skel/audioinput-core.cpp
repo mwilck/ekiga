@@ -143,10 +143,6 @@ AudioInputCore::AudioInputCore (Ekiga::Runtime & _runtime, AudioOutputCore& _aud
 
 AudioInputCore::~AudioInputCore ()
 {
-#ifdef __GNUC__
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
-#endif
-
   PWaitAndSignal m(core_mutex);
 
   if (audioinput_core_conf_bridge)

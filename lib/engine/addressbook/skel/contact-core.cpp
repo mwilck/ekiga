@@ -47,9 +47,6 @@ on_search ()
 
 Ekiga::ContactCore::~ContactCore ()
 {
-#ifdef __GNUC__
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
-#endif
 }
 
 bool

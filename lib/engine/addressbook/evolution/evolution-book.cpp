@@ -224,10 +224,6 @@ Evolution::Book::~Book ()
     g_object_unref (book);
 
   delete self;
-
-#ifdef __GNUC__
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
-#endif
 }
 
 const std::string

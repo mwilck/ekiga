@@ -46,9 +46,6 @@ History::Source::Source (Ekiga::ServiceCore &_core): core(_core)
 
 History::Source::~Source ()
 {
-#ifdef __GNUC__
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
-#endif
 }
 
 const std::set<std::string>

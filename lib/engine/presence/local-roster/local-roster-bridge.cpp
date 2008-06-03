@@ -59,9 +59,6 @@ namespace Local
 
     ~ContactDecorator ()
     {
-#ifdef __GNUC__
-      std::cout << __PRETTY_FUNCTION__ << std::endl;
-#endif
     }
 
     const std::string get_name () const

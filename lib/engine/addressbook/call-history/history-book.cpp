@@ -91,9 +91,6 @@ History::Book::Book (Ekiga::ServiceCore &_core) :
 
 History::Book::~Book ()
 {
-#ifdef __GNUC__
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
-#endif
   if (doc != NULL)
     xmlFreeDoc (doc);
 }

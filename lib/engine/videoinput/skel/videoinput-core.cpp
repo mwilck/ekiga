@@ -143,10 +143,6 @@ VideoInputCore::VideoInputCore (Ekiga::Runtime & _runtime, VideoOutputCore& _vid
 
 VideoInputCore::~VideoInputCore ()
 {
-#ifdef __GNUC__
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
-#endif
-
   PWaitAndSignal m(core_mutex);
 
   if (videoinput_core_conf_bridge)

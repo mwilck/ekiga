@@ -615,10 +615,6 @@ FormDialog::FormDialog (Ekiga::FormRequest &_request,
 
 FormDialog::~FormDialog ()
 {
-#ifdef __GNUC__
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
-#endif
-
   gtk_widget_destroy (GTK_WIDGET (window));
   for (std::list<Submitter *>::iterator iter = submitters.begin ();
        iter != submitters.end ();
@@ -872,8 +868,6 @@ FormDialog::single_choice (const std::string name,
 
   rows++;
   gtk_table_resize (GTK_TABLE (fields), rows, 2);
-
-  std::cout << "ici" << std::endl << std::flush;
 
   label = gtk_label_new (description.c_str ());
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);

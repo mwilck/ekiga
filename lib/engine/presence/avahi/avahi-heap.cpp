@@ -110,10 +110,6 @@ Avahi::Heap::Heap (Ekiga::PresenceCore &_core): core(_core)
 
 Avahi::Heap::~Heap ()
 {
-#ifdef __GNUC__
- std::cout << __PRETTY_FUNCTION__ << std::endl;
-#endif
-
  if (browser != NULL)
    avahi_service_browser_free (browser);
 

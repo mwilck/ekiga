@@ -85,9 +85,6 @@ void Ekiga::PresencePublisher::on_registration_event (Ekiga::CallManager & /*man
 
 Ekiga::PresenceCore::~PresenceCore ()
 {
-#ifdef __GNUC__
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
-#endif
 }
 
 void

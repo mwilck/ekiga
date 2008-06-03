@@ -122,9 +122,6 @@ OPENLDAP::Source::common_add (Book &book)
 
 OPENLDAP::Source::~Source ()
 {
-#ifdef __GNUC__
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
-#endif
 }
 
 bool
