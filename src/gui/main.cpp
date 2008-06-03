@@ -3172,7 +3172,7 @@ gm_main_window_update_calling_state (GtkWidget *main_window,
 void
 gm_main_window_update_sensitivity (GtkWidget *main_window,
 				   bool is_video,
-				   bool is_receiving,
+				   bool /*is_receiving*/,
 				   bool is_transmitting)
 {
   GmMainWindow *mw = NULL;
