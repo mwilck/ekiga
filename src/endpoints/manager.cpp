@@ -147,7 +147,7 @@ GMManager::GMManager (Ekiga::ServiceCore & _core)
 
 GMManager::~GMManager ()
 {
-  ClearAllCalls (OpalConnection::EndedByLocalUser, TRUE);
+  ClearAllCalls (OpalConnection::EndedByLocalUser, false);
   RemoveAccountsEndpoint ();
 }
 

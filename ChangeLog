@@ -1,5 +1,12 @@
 2008-06-03  Damien Sandras  <dsandras@gnome.org>
 
+	* src/endpoints/manager.cpp:
+	* src/gui/callbacks.cpp:
+	Clear the GUI callbacks before exiting and thus deleting the engine.
+	Ensures no callback are executed with a bad timing.
+
+2008-06-03  Damien Sandras  <dsandras@gnome.org>
+
 	* src/gui/main.cpp: 
 	Fixed warning.
 

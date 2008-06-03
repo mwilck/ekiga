@@ -267,12 +267,6 @@ quit_callback (G_GNUC_UNUSED GtkWidget *widget,
   GtkWidget *prefs_window = NULL;
   GtkWidget *accounts_window = NULL;
 
-  //gdk_threads_leave ();
-  Ekiga::ServiceCore *core = GnomeMeeting::Process ()->GetServiceCore ();
-  GMManager *manager = dynamic_cast<GMManager*> (core->get("opal-component"));
-  manager->ClearAllCalls ();
-  //gdk_threads_enter ();
-  
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   assistant_window = GnomeMeeting::Process ()->GetAssistantWindow (false);
   prefs_window = GnomeMeeting::Process ()->GetPrefsWindow (false);
