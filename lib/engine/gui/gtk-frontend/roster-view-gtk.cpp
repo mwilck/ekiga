@@ -905,10 +905,6 @@ roster_view_gtk_finalize (GObject *obj)
 {
   RosterViewGtk *view = NULL;
 
-#ifdef __GNUC__
-  g_print ("%s\n", __PRETTY_FUNCTION__);
-#endif
-
   view = (RosterViewGtk *)obj;
 
   for (std::vector<sigc::connection>::iterator iter

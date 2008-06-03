@@ -51,9 +51,6 @@ HalCore::HalCore ()
 
 HalCore::~HalCore ()
 {
-#ifdef __GNUC__
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
-#endif
 }
 
 
