@@ -148,6 +148,13 @@ VideoInputCore::~VideoInputCore ()
 
   if (videoinput_core_conf_bridge)
     delete videoinput_core_conf_bridge;
+
+  for (std::set<VideoInputManager *>::iterator iter = managers.begin ();
+       iter != managers.end ();
+       iter++)
+    delete (*iter);
+
+  managers.clear();
 }
 
 void VideoInputCore::setup_conf_bridge ()

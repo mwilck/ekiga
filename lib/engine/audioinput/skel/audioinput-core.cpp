@@ -147,6 +147,13 @@ AudioInputCore::~AudioInputCore ()
 
   if (audioinput_core_conf_bridge)
     delete audioinput_core_conf_bridge;
+
+  for (std::set<AudioInputManager *>::iterator iter = managers.begin ();
+       iter != managers.end ();
+       iter++)
+    delete (*iter);
+
+  managers.clear();
 }
 
 void AudioInputCore::setup_conf_bridge ()

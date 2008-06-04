@@ -72,6 +72,13 @@ AudioOutputCore::~AudioOutputCore ()
 
   if (audiooutput_core_conf_bridge)
     delete audiooutput_core_conf_bridge;
+
+  for (std::set<AudioOutputManager *>::iterator iter = managers.begin ();
+       iter != managers.end ();
+       iter++)
+    delete (*iter);
+
+  managers.clear();
 }
 
 void AudioOutputCore::setup_conf_bridge ()

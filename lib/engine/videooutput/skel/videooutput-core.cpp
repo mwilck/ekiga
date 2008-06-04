@@ -64,6 +64,13 @@ VideoOutputCore::~VideoOutputCore ()
 
   if (videooutput_core_conf_bridge)
     delete videooutput_core_conf_bridge;
+
+  for (std::set<VideoOutputManager *>::iterator iter = managers.begin ();
+       iter != managers.end ();
+       iter++)
+    delete (*iter);
+
+  managers.clear();
 }
 
 void VideoOutputCore::setup_conf_bridge ()

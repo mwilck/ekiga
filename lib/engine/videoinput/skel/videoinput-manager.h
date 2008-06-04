@@ -65,7 +65,7 @@ namespace Ekiga
 
       /** The destructor
        */
-      ~VideoInputManager () {}
+      virtual ~VideoInputManager () {}
 
 
       /*** API for video input ***/

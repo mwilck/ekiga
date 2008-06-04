@@ -57,7 +57,7 @@
 
       GMVideoInputManager_mlogo (Ekiga::ServiceCore & core);
 
-      ~GMVideoInputManager_mlogo () {}
+      virtual ~GMVideoInputManager_mlogo () {}
 
 
       virtual void get_devices(std::vector <Ekiga::VideoInputDevice> & devices);

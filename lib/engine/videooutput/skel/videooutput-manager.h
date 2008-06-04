@@ -64,7 +64,7 @@ namespace Ekiga
 
       /** The destructor
        */
-      ~VideoOutputManager () {}
+      virtual ~VideoOutputManager () {}
 
 
       /*** API for video output ***/

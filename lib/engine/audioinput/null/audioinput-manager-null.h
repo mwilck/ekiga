@@ -56,7 +56,7 @@
 
       GMAudioInputManager_null (Ekiga::ServiceCore & core);
 
-      ~GMAudioInputManager_null () {}
+      virtual ~GMAudioInputManager_null () {}
 
 
       virtual bool set_device (const Ekiga::AudioInputDevice & device);

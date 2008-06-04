@@ -1,3 +1,24 @@
+2008-06-04 Matthias Schneider  <ma30002000@yahoo.de>
+
+	* lib/engine/audioinput/null/audioinput-manager-null.h:
+	* lib/engine/audioinput/ptlib/audioinput-manager-ptlib.h:
+	* lib/engine/audioinput/skel/audioinput-manager.h:
+	* lib/engine/audioinput/skel/audioinput-core.cpp:
+	* lib/engine/audiooutput/null/audiooutput-manager-null.h:
+	* lib/engine/audiooutput/ptlib/audiooutput-manager-ptlib.h:
+	* lib/engine/audiooutput/skel/audiooutput-manager.h:
+	* lib/engine/audiooutput/skel/audiooutput-core.cpp:
+	* lib/engine/videoinput/ptlib/videoinput-manager-ptlib.h:
+	* lib/engine/videoinput/mlogo/videoinput-manager-mlogo.h:
+	* lib/engine/videoinput/skel/videoinput-manager.h:
+	* lib/engine/videoinput/skel/videoinput-core.cpp:
+	* lib/engine/videooutput/x/videooutput-manager-x.h:
+	* lib/engine/videooutput/dx/videooutput-manager-dx.h:
+	* lib/engine/videooutput/skel/videooutput-manager.h:
+	* lib/engine/videooutput/skel/videooutput-core.cpp:
+	Call the managers destructors from the cores when 
+	the cores are being destroyed.
+
 2008-06-04  Damien Sandras  <dsandras@gnome.org>
 
 	* src/gui/statusmenu.cpp:

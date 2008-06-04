@@ -65,7 +65,7 @@ namespace Ekiga
 
       /** The destructor
        */
-      ~AudioInputManager () {}
+      virtual ~AudioInputManager () {}
 
 
       /*** API for audio input ***/

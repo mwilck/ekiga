@@ -55,7 +55,7 @@
 
        GMAudioOutputManager_null (Ekiga::ServiceCore & core);
 
-      ~GMAudioOutputManager_null () {}
+      virtual ~GMAudioOutputManager_null () {}
 
       virtual void get_devices (std::vector <Ekiga::AudioOutputDevice> & devices);
 

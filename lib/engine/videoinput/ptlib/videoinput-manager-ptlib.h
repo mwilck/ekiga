@@ -56,7 +56,7 @@
 
       GMVideoInputManager_ptlib (Ekiga::ServiceCore & core);
 
-      ~GMVideoInputManager_ptlib () {}
+      virtual ~GMVideoInputManager_ptlib () {}
 
 
       virtual void get_devices(std::vector <Ekiga::VideoInputDevice> & devices);

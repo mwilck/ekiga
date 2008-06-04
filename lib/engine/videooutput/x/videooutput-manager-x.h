@@ -55,7 +55,7 @@ class GMVideoOutputManager_x
 public:
   GMVideoOutputManager_x (Ekiga::ServiceCore & _core);
 
-  ~GMVideoOutputManager_x ();
+  virtual ~GMVideoOutputManager_x ();
 
   virtual bool frame_display_change_needed ();
 

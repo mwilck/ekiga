@@ -56,7 +56,7 @@
 
        GMAudioOutputManager_ptlib (Ekiga::ServiceCore & core);
 
-      ~GMAudioOutputManager_ptlib () {}
+      virtual ~GMAudioOutputManager_ptlib () {}
 
 
       virtual void get_devices (std::vector <Ekiga::AudioOutputDevice> & devices);

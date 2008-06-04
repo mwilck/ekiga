@@ -56,7 +56,7 @@
 
       GMAudioInputManager_ptlib (Ekiga::ServiceCore & core);
 
-      ~GMAudioInputManager_ptlib () {}
+      virtual ~GMAudioInputManager_ptlib () {}
 
 
       virtual bool set_device (const Ekiga::AudioInputDevice & device);
