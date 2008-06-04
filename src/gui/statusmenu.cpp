@@ -585,11 +585,12 @@ status_menu_set_option (StatusMenu *self,
     valid = gtk_tree_model_iter_next (GTK_TREE_MODEL (self->priv->list_store), &iter);
   }
 
-  if (status)
-    g_free (status);
-
-  if (valid) 
+  if (valid) {
     gtk_combo_box_set_active (GTK_COMBO_BOX (self), cpt);
+
+    if (status)
+      g_free (status);
+  }
 }
 
 
