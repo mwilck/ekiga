@@ -49,10 +49,11 @@
 
 
 static bool
-is_sip_address (const std::string uri)
+is_supported_address (const std::string uri)
 {
-  return (uri.find ("sip:") == 0);
+  return (uri.find ("sip:") == 0 || uri.find ("h323:") == 0);
 }
+
 
 using namespace Opal;
 
@@ -98,7 +99,7 @@ opal_init (Ekiga::ServiceCore &core,
   if (presence_core != NULL) {
 
     presence_core->add_presentity_decorator (*sip_manager);
-    presence_core->add_supported_uri (sigc::ptr_fun (is_sip_address));
+    presence_core->add_supported_uri (sigc::ptr_fun (is_supported_address));
 
     presence_core->add_presence_fetcher (*sip_manager);
     presence_core->add_presence_publisher (*sip_manager);

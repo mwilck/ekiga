@@ -133,8 +133,6 @@ GMManager::GMManager (Ekiga::ServiceCore & _core)
   pcssEP = new GMPCSSEndpoint (*this, core);
   pcssEP->SetSoundChannelPlayDevice("EKIGA");
   pcssEP->SetSoundChannelRecordDevice("EKIGA");
-  protocols.push_back ("h323");
-  protocols.push_back ("sip"); //FIXME
 
   // Media formats
   SetMediaFormatOrder (PStringArray ());
@@ -404,25 +402,6 @@ void GMManager::set_codecs (Ekiga::CodecList & _codecs)
   // Update the OpalManager
   SetMediaFormatMask (mask);
   SetMediaFormatOrder (order);
-}
-
-
-const std::list<std::string> & GMManager::get_protocol_names () const
-{
-  return protocols;
-}
-
-
-const Ekiga::CallManager::InterfaceList GMManager::get_interfaces () const
-{
-  InterfaceList list;
-
-  for (CallManager::iterator iter = begin ();
-       iter != end ();
-       iter++)
-    list.push_back ((*iter)->get_listen_interface ());
-
-  return list;
 }
 
 void GMManager::set_forward_on_no_answer (bool enabled)

@@ -113,9 +113,6 @@ class GMManager:
   void set_codecs (Ekiga::CodecList & codecs); 
   const Ekiga::CodecList & get_codecs () const;
 
-  const std::list<std::string> & get_protocol_names () const;
-  const InterfaceList get_interfaces () const;
-
   /* Extended stuff, OPAL CallManager specific */
   void set_forward_on_busy (bool enabled);
   bool get_forward_on_busy ();
@@ -178,8 +175,6 @@ class GMManager:
                       const PString & info);
 
   void GetAllowedFormats (OpalMediaFormatList & full_list);
-
-  std::list<std::string> protocols;
 
   /* The various related endpoints */
   GMPCSSEndpoint *pcssEP;

@@ -114,13 +114,13 @@ namespace Ekiga
       /**
        * @return the protocol name
        */
-      virtual const std::list<std::string> & get_protocol_names () const = 0;
+      const std::list<std::string> get_protocol_names () const;
 
       /**
        * @return the interface on which we are accepting calls. Generally,
        * under the form protocol:IP:port.
        */
-      virtual const CallManager::InterfaceList get_interfaces () const = 0;
+      const CallManager::InterfaceList get_interfaces () const;
 
 
       /*

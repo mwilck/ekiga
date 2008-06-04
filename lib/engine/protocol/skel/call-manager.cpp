@@ -84,3 +84,30 @@ CallManager::const_iterator CallManager::end () const
 {
   return managers.end (); 
 }
+
+
+const std::list<std::string> CallManager::get_protocol_names () const
+{
+  std::list<std::string> protocols;
+
+  for (CallManager::iterator iter = begin ();
+       iter != end ();
+       iter++)
+    protocols.push_back ((*iter)->get_protocol_name ());
+
+  return protocols;
+}
+
+
+const CallManager::InterfaceList CallManager::get_interfaces () const
+{
+  InterfaceList list;
+
+  for (CallManager::iterator iter = begin ();
+       iter != end ();
+       iter++)
+    list.push_back ((*iter)->get_listen_interface ());
+
+  return list;
+}
+
