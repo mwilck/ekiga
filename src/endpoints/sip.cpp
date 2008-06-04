@@ -276,7 +276,6 @@ bool CallProtocolManager::send_message (const std::string & _uri,
 
 bool CallProtocolManager::dial (const std::string & uri)
 {
-  PString token;
   std::stringstream ustr;
 
   if (uri.find ("sip:") == 0 || uri.find (":") == string::npos) {
