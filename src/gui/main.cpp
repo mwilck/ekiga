@@ -615,6 +615,8 @@ static void on_registration_event_cb (Ekiga::CallManager & /*manager*/,
 
   if (msg)
     gm_main_window_flash_message (GTK_WIDGET (window), "%s", msg);
+
+  g_free (msg);
 }
 
 
