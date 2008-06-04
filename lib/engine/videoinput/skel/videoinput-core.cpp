@@ -49,6 +49,7 @@ VideoInputCore::VideoPreviewManager::VideoPreviewManager (VideoInputCore& _video
     videoinput_core (_videoinput_core),
   videooutput_core (_videooutput_core)
 {
+  end_thread = false;
   frame = NULL;
   // Since windows does not like to restart a thread that 
   // was never started, we do so here
