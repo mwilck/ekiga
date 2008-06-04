@@ -83,6 +83,12 @@ OPENLDAP::Source::Source (Ekiga::ServiceCore &_core): core(_core), doc(NULL)
   }
 }
 
+OPENLDAP::Source::~Source ()
+{
+  if (doc)
+    xmlFreeDoc (doc);
+}
+
 void
 OPENLDAP::Source::add (xmlNodePtr node)
 {
@@ -118,10 +124,6 @@ OPENLDAP::Source::common_add (Book &book)
   book.trigger_saving.connect (sigc::mem_fun (this,
 					      &OPENLDAP::Source::save));
   add_book (book);
-}
-
-OPENLDAP::Source::~Source ()
-{
 }
 
 bool
