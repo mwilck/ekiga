@@ -142,12 +142,9 @@ bool CallProtocolManager::menu_builder_add_actions (const std::string & /*fullna
 
 bool CallProtocolManager::dial (const std::string & uri)
 {
-  PString token;
-  std::stringstream ustr;
-
   if (uri.find ("h323:") == 0) {
 
-    new dialer (ustr.str (), endpoint);
+    new dialer (uri, endpoint);
 
     return true;
   }
