@@ -71,7 +71,7 @@ namespace Opal {
 
   public:
 
-      CallProtocolManager (GMManager &ep, Ekiga::ServiceCore & core, unsigned listen_port);
+      CallProtocolManager (CallManager &ep, Ekiga::ServiceCore & core, unsigned listen_port);
 
 
       /* ContactDecorator and PresentityDecorator */
@@ -165,7 +165,7 @@ namespace Opal {
       PMutex msgDataMutex;
       msgDict msgData;
 
-      GMManager & endpoint;
+      CallManager & endpoint;
 
       std::list<std::string> subscribed_uris;    // List of subscribed uris
       std::list<std::string> domains; // List of registered domains

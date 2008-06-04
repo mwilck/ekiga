@@ -527,7 +527,7 @@ statusicon_new (Ekiga::ServiceCore & core,
                 const char *key)
 {
   StatusIcon *self = NULL;
-  GMManager *manager = NULL;
+  Opal::CallManager *manager = NULL;
 
   sigc::connection conn;
 
@@ -544,7 +544,7 @@ statusicon_new (Ekiga::ServiceCore & core,
 
   g_object_set (self, "key", key, NULL);
 
-  manager = dynamic_cast<GMManager *> (core.get ("opal-component"));
+  manager = dynamic_cast<Opal::CallManager *> (core.get ("opal-component"));
 //  conn = manager->call_event.connect (sigc::bind (sigc::ptr_fun (on_call_event_cb), self));
   //self->priv->connections.push_back (conn); // TODO Announce all events here
   GtkFrontend *frontend = dynamic_cast<GtkFrontend*>(core.get ("gtk-frontend"));

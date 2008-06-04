@@ -464,7 +464,7 @@ static void
 apply_ekiga_net_page (EkigaAssistant *assistant)
 {
   GmAccount *account = gnomemeeting_get_account ("ekiga.net");
-  GMManager *manager;
+  Opal::CallManager *manager;
   gboolean new_account = FALSE;
 
   if (account == NULL) {
@@ -508,7 +508,7 @@ apply_ekiga_net_page (EkigaAssistant *assistant)
   /* Register the current Endpoint to GnomeMeeting.NET */
   //gdk_threads_leave ();
   if (account->enabled) {
-    manager = dynamic_cast<GMManager *> (assistant->priv->core->get ("opal-component"));
+    manager = dynamic_cast<Opal::CallManager *> (assistant->priv->core->get ("opal-component"));
     manager->Register (account);
   }
   //gdk_threads_enter ();
@@ -740,14 +740,14 @@ create_audio_devices_page (EkigaAssistant *assistant)
 static void
 prepare_audio_devices_page (EkigaAssistant *assistant)
 {
-  GMManager *manager;
+  Opal::CallManager *manager;
   gchar *ringer;
   gchar *player;
   gchar *recorder;
   PStringArray devices;
   char **array;
 
-  manager = dynamic_cast<GMManager *> (assistant->priv->core->get ("opal-component"));
+  manager = dynamic_cast<Opal::CallManager *> (assistant->priv->core->get ("opal-component"));
 
   ringer = gm_conf_get_string (SOUND_EVENTS_KEY "output_device");
   player = gm_conf_get_string (AUDIO_DEVICES_KEY "output_device");
@@ -1186,7 +1186,7 @@ ekiga_assistant_apply (GtkAssistant *gtkassistant)
 {
   EkigaAssistant *assistant = EKIGA_ASSISTANT (gtkassistant);
 
-  GMManager *manager;
+  Opal::CallManager *manager;
 
   GtkWidget *main_window;
 
@@ -1200,7 +1200,7 @@ ekiga_assistant_apply (GtkAssistant *gtkassistant)
   apply_audio_devices_page (assistant);
   apply_video_devices_page (assistant);
 
-  manager = dynamic_cast<GMManager *> (assistant->priv->core->get ("opal-component"));
+  manager = dynamic_cast<Opal::CallManager *> (assistant->priv->core->get ("opal-component"));
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
 
   /* Hide the druid and show the main Ekiga window */

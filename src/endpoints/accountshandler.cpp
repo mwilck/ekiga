@@ -57,7 +57,7 @@
 
 /* Class to register accounts in a thread.
 */
-GMAccountsEndpoint::GMAccountsEndpoint (GMManager & endpoint)
+GMAccountsEndpoint::GMAccountsEndpoint (Opal::CallManager & endpoint)
   :PThread (1000, NoAutoDeleteThread),
    ep (endpoint), accounts(NULL), active(TRUE)
 {

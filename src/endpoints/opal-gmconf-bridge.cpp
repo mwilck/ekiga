@@ -95,35 +95,35 @@ ConfBridge::ConfBridge (Ekiga::Service & _service)
 
 void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
 {
-  GMManager & manager = (GMManager &) service;
+  CallManager & manager = (CallManager &) service;
 
   //
   // Video options
   //
   if (key == VIDEO_CODECS_KEY "maximum_video_tx_bitrate") {
 
-    GMManager::VideoOptions options;
+    CallManager::VideoOptions options;
     manager.get_video_options (options);
     options.maximum_transmitted_bitrate = gm_conf_entry_get_int (entry);
     manager.set_video_options (options);
   }
   else if (key == VIDEO_CODECS_KEY "temporal_spatial_tradeoff") {
 
-    GMManager::VideoOptions options;
+    CallManager::VideoOptions options;
     manager.get_video_options (options);
     options.temporal_spatial_tradeoff = gm_conf_entry_get_int (entry);
     manager.set_video_options (options);
   }
   else if (key == VIDEO_DEVICES_KEY "size") {
 
-    GMManager::VideoOptions options;
+    CallManager::VideoOptions options;
     manager.get_video_options (options);
     options.size = gm_conf_entry_get_int (entry);
     manager.set_video_options (options);
   }
   else if (key == VIDEO_DEVICES_KEY "max_frame_rate") {
 
-    GMManager::VideoOptions options;
+    CallManager::VideoOptions options;
     manager.get_video_options (options);
     options.maximum_frame_rate = gm_conf_entry_get_int (entry);
     if ( (options.maximum_frame_rate < 1) || (options.maximum_frame_rate > 30) ) {
@@ -134,7 +134,7 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
   }
   else if (key == VIDEO_CODECS_KEY "maximum_video_rx_bitrate") {
 
-    GMManager::VideoOptions options;
+    CallManager::VideoOptions options;
     manager.get_video_options (options);
     options.maximum_received_bitrate = gm_conf_entry_get_int (entry);
     manager.set_video_options (options);

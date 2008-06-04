@@ -896,7 +896,7 @@ account_toggled_cb (G_GNUC_UNUSED GtkCellRendererToggle *cell,
 
   /* Update the account */
   //gdk_threads_leave ();
-  dynamic_cast<GMManager *>(aw->core.get ("opal-component"))->Register (account);
+  dynamic_cast<Opal::CallManager *>(aw->core.get ("opal-component"))->Register (account);
   //gdk_threads_enter ();
 
   gm_account_delete (account);

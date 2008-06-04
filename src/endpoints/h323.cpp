@@ -49,7 +49,7 @@ class dialer : public PThread
 
 public:
 
-  dialer (const std::string & uri, GMManager & ep) 
+  dialer (const std::string & uri, Opal::CallManager & ep) 
     : PThread (1000, AutoDeleteThread), 
     dial_uri (uri),
     endpoint (ep) 
@@ -65,7 +65,7 @@ public:
 
 private:
   const std::string dial_uri;
-  GMManager & endpoint;
+  Opal::CallManager & endpoint;
 };
 
 
@@ -73,7 +73,7 @@ using namespace Opal::H323;
 
 
 /* The class */
-CallProtocolManager::CallProtocolManager (GMManager & ep, Ekiga::ServiceCore & _core, unsigned _listen_port)
+CallProtocolManager::CallProtocolManager (Opal::CallManager & ep, Ekiga::ServiceCore & _core, unsigned _listen_port)
                     : H323EndPoint (ep), 
                       endpoint (ep),
                       core (_core),

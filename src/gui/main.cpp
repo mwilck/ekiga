@@ -3644,7 +3644,7 @@ gm_main_window_incoming_call_dialog_show (GtkWidget *main_window,
 GtkWidget *
 gm_main_window_new (Ekiga::ServiceCore & core)
 {
-  GMManager *ep = NULL;
+  Opal::CallManager *ep = NULL;
   GmMainWindow *mw = NULL;
 
   GtkWidget *window = NULL;
@@ -3685,7 +3685,7 @@ gm_main_window_new (Ekiga::ServiceCore & core)
 			  mw, (GDestroyNotify) gm_mw_destroy);
 
   /* Get the manager */
-  ep = dynamic_cast<GMManager *> (core.get ("opal-component"));
+  ep = dynamic_cast<Opal::CallManager *> (core.get ("opal-component"));
 
 #ifndef WIN32
   mw->video_widget_gc = NULL;
@@ -4364,7 +4364,7 @@ main (int argc,
         g_timeout_add (15000, (GtkFunction) gnomemeeting_tray_hack_cb, NULL);
     }
 
-    GMManager *manager = dynamic_cast<GMManager *> (mw->core.get ("opal-component")); // FIXME
+    Opal::CallManager *manager = dynamic_cast<Opal::CallManager *> (mw->core.get ("opal-component")); // FIXME
     manager->Register ();
 
 

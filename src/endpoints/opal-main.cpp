@@ -76,7 +76,7 @@ opal_init (Ekiga::ServiceCore &core,
   call_core = dynamic_cast<Ekiga::CallCore *> (core.get ("call-core"));
   chat_core = dynamic_cast<Ekiga::ChatCore *> (core.get ("chat-core"));
 
-  GMManager *call_manager = new GMManager (core);
+  CallManager *call_manager = new CallManager (core);
   Sip::CallProtocolManager *sip_manager = new Sip::CallProtocolManager (*call_manager, core, sip_port);
   H323::CallProtocolManager *h323_manager = new H323::CallProtocolManager (*call_manager, core, h323_port);
 

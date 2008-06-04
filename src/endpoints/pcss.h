@@ -44,14 +44,16 @@
 #include "services.h"
 #include "runtime.h"
 
-class GMManager;
+namespace Opal {
+  class CallManager;
+}
 
 class GMPCSSEndpoint : public OpalPCSSEndPoint
 {
   PCLASSINFO (GMPCSSEndpoint, OpalPCSSEndPoint);
 
 public:
-  GMPCSSEndpoint (GMManager &manager, Ekiga::ServiceCore & _core);
+  GMPCSSEndpoint (Opal::CallManager &manager, Ekiga::ServiceCore & _core);
 
   bool OnShowIncoming (const OpalPCSSConnection &connection);
 

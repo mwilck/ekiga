@@ -147,7 +147,7 @@ pc2phone_window_response_cb (GtkWidget *widget,
 			     gint response,
 			     gpointer data)
 {
-  GMManager *ep = NULL;
+  Opal::CallManager *ep = NULL;
   
   GmAccount *account = NULL;
   GmPC2PhoneWindow *pcw = NULL;
@@ -164,7 +164,7 @@ pc2phone_window_response_cb (GtkWidget *widget,
   
   g_return_if_fail (pcw != NULL);
   
-  ep = dynamic_cast<GMManager *> (pcw->core.get ("opal-component"));
+  ep = dynamic_cast<Opal::CallManager *> (pcw->core.get ("opal-component"));
   
   /* Get the data from the widgets */
   username = gtk_entry_get_text (GTK_ENTRY (pcw->username_entry));

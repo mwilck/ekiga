@@ -43,8 +43,9 @@
 #include "accounts.h"
 
 
-class GMManager;
-
+namespace Opal {
+  class CallManager;
+}
 
 /* Class to register accounts in a thread.
  * SIP Accounts are registered asynchronously, H.323 accounts
@@ -62,7 +63,7 @@ public:
    * 		     thread. Register all accounts in the Ekiga configuration. 
    * PRE          :  /
    */
-  GMAccountsEndpoint (GMManager &endpoint);
+  GMAccountsEndpoint (Opal::CallManager &endpoint);
 
 
   /* DESCRIPTION  :  The destructor.
@@ -101,7 +102,7 @@ private:
   PMutex quit_mutex;
   PSyncPoint thread_sync_point;
 
-  GMManager & ep;
+  Opal::CallManager & ep;
 
   GSList *accounts;
   PMutex accounts_mutex;

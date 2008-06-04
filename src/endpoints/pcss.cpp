@@ -44,7 +44,7 @@
 #include "call.h"
 
 
-GMPCSSEndpoint::GMPCSSEndpoint (GMManager & ep,
+GMPCSSEndpoint::GMPCSSEndpoint (Opal::CallManager & ep,
                                 Ekiga::ServiceCore & _core) 
 :   OpalPCSSEndPoint (ep),
     core (_core),

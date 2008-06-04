@@ -58,7 +58,7 @@ namespace Opal {
       PCLASSINFO(CallProtocolManager, H323EndPoint);
 
   public:
-      CallProtocolManager (GMManager &ep, Ekiga::ServiceCore & core, unsigned listen_port);
+      CallProtocolManager (CallManager &ep, Ekiga::ServiceCore & core, unsigned listen_port);
 
 
       /* ContactDecorator and PresentityDecorator */
@@ -115,7 +115,7 @@ namespace Opal {
   private:
       void on_dial (std::string uri);
 
-      GMManager & endpoint;
+      CallManager & endpoint;
       Ekiga::ServiceCore & core;
       Ekiga::Runtime & runtime;
 

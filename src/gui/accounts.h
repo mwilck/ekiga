@@ -42,7 +42,9 @@
 #include "common.h"
 #include "services.h"
 
-class GMManager;
+namespace Opal {
+  class CallManager;
+}
 
 
 /* An account is uniquely identified by its Account ID */

@@ -63,7 +63,7 @@ class StunDetector : public PThread
 public:
 
   StunDetector (const std::string & _server, 
-                GMManager & _manager,
+                Opal::CallManager & _manager,
                 Ekiga::Runtime & _runtime) 
     : PThread (1000, AutoDeleteThread), 
       server (_server),
@@ -91,13 +91,16 @@ public:
 
 private:
   const std::string server;
-  GMManager & manager;
+  Opal::CallManager & manager;
   Ekiga::Runtime & runtime;
 };
 
 
+using namespace Opal;
+
+
 /* The class */
-GMManager::GMManager (Ekiga::ServiceCore & _core)
+CallManager::CallManager (Ekiga::ServiceCore & _core)
 : core (_core), 
   runtime (*(dynamic_cast<Ekiga::Runtime *> (core.get ("runtime"))))
 {
@@ -143,21 +146,21 @@ GMManager::GMManager (Ekiga::ServiceCore & _core)
 }
 
 
-GMManager::~GMManager ()
+CallManager::~CallManager ()
 {
   ClearAllCalls (OpalConnection::EndedByLocalUser, false);
   RemoveAccountsEndpoint ();
 }
 
 
-void GMManager::start ()
+void CallManager::start ()
 {
   // Ready
   new StunDetector ("stun.voxgratia.org", *this, runtime);
 }
 
 
-void GMManager::set_display_name (const std::string & name)
+void CallManager::set_display_name (const std::string & name)
 {
   display_name = name;
 
@@ -165,13 +168,13 @@ void GMManager::set_display_name (const std::string & name)
 }
 
 
-const std::string & GMManager::get_display_name () const
+const std::string & CallManager::get_display_name () const
 {
   return display_name; 
 }
 
 
-void GMManager::set_echo_cancellation (bool enabled)
+void CallManager::set_echo_cancellation (bool enabled)
 {
   OpalEchoCanceler::Params ec;
   
@@ -205,7 +208,7 @@ void GMManager::set_echo_cancellation (bool enabled)
 }
 
 
-bool GMManager::get_echo_cancellation () const
+bool CallManager::get_echo_cancellation () const
 {
   OpalEchoCanceler::Params ec = GetEchoCancelParams ();
 
@@ -213,7 +216,7 @@ bool GMManager::get_echo_cancellation () const
 }
 
 
-void GMManager::set_maximum_jitter (unsigned max_val)
+void CallManager::set_maximum_jitter (unsigned max_val)
 {
   // Adjust general settings
   SetAudioJitterDelay (20, PMIN (max_val, 1000));
@@ -244,13 +247,13 @@ void GMManager::set_maximum_jitter (unsigned max_val)
 }
 
 
-unsigned GMManager::get_maximum_jitter () const
+unsigned CallManager::get_maximum_jitter () const
 {
   return GetMaxAudioJitterDelay (); 
 }
 
 
-void GMManager::set_silence_detection (bool enabled)
+void CallManager::set_silence_detection (bool enabled)
 {
   OpalSilenceDetector::Params sd;
   
@@ -284,7 +287,7 @@ void GMManager::set_silence_detection (bool enabled)
 }
 
 
-bool GMManager::get_silence_detection () const
+bool CallManager::get_silence_detection () const
 {
   OpalSilenceDetector::Params sd;
 
@@ -294,25 +297,25 @@ bool GMManager::get_silence_detection () const
 }
 
 
-void GMManager::set_reject_delay (unsigned delay)
+void CallManager::set_reject_delay (unsigned delay)
 {
   reject_delay = delay;
 }
 
 
-unsigned GMManager::get_reject_delay () const
+unsigned CallManager::get_reject_delay () const
 {
   return reject_delay;
 }
 
 
-const Ekiga::CodecList & GMManager::get_codecs () const
+const Ekiga::CodecList & CallManager::get_codecs () const
 {
   return codecs;
 }
 
 
-void GMManager::set_codecs (Ekiga::CodecList & _codecs)
+void CallManager::set_codecs (Ekiga::CodecList & _codecs)
 {
   PStringArray initial_order;
   PStringArray initial_mask;
@@ -332,7 +335,7 @@ void GMManager::set_codecs (Ekiga::CodecList & _codecs)
   // add missing codecs at the end of the list
   //
 
-  // Build the Ekiga::CodecList taken into account by the GMManager
+  // Build the Ekiga::CodecList taken into account by the CallManager
   // It contains codecs given as argument to set_codecs, and other codecs
   // supported by the manager
   for (Ekiga::CodecList::iterator it = all_codecs.begin ();
@@ -404,37 +407,37 @@ void GMManager::set_codecs (Ekiga::CodecList & _codecs)
   SetMediaFormatOrder (order);
 }
 
-void GMManager::set_forward_on_no_answer (bool enabled)
+void CallManager::set_forward_on_no_answer (bool enabled)
 {
   forward_on_no_answer = enabled;
 }
 
-bool GMManager::get_forward_on_no_answer ()
+bool CallManager::get_forward_on_no_answer ()
 {
   return forward_on_no_answer;
 }
 
-void GMManager::set_forward_on_busy (bool enabled)
+void CallManager::set_forward_on_busy (bool enabled)
 {
   forward_on_busy = enabled;
 }
 
-bool GMManager::get_forward_on_busy ()
+bool CallManager::get_forward_on_busy ()
 {
   return forward_on_busy;
 }
 
-void GMManager::set_unconditional_forward (bool enabled)
+void CallManager::set_unconditional_forward (bool enabled)
 {
   unconditional_forward = enabled;
 }
 
-bool GMManager::get_unconditional_forward ()
+bool CallManager::get_unconditional_forward ()
 {
   return unconditional_forward;
 }
 
-void GMManager::set_udp_ports (unsigned min_port, 
+void CallManager::set_udp_ports (unsigned min_port, 
                                unsigned max_port)
 {
   if (min_port < max_port) {
@@ -445,14 +448,14 @@ void GMManager::set_udp_ports (unsigned min_port,
 }
 
 
-void GMManager::get_udp_ports (unsigned & min_port, 
+void CallManager::get_udp_ports (unsigned & min_port, 
                                unsigned & max_port) const
 {
   min_port = GetUDPPortBase ();
   max_port = GetUDPPortMax ();
 }
 
-void GMManager::set_tcp_ports (unsigned min_port, 
+void CallManager::set_tcp_ports (unsigned min_port, 
                                unsigned max_port)
 {
   if (min_port < max_port) 
@@ -460,7 +463,7 @@ void GMManager::set_tcp_ports (unsigned min_port,
 }
 
 
-void GMManager::get_tcp_ports (unsigned & min_port, 
+void CallManager::get_tcp_ports (unsigned & min_port, 
                                unsigned & max_port) const
 {
   min_port = GetTCPPortBase ();
@@ -468,7 +471,7 @@ void GMManager::get_tcp_ports (unsigned & min_port,
 }
 
 
-bool GMManager::dial (const std::string & uri)
+bool CallManager::dial (const std::string & uri)
 {
   for (CallManager::iterator iter = begin ();
        iter != end ();
@@ -480,7 +483,7 @@ bool GMManager::dial (const std::string & uri)
 }
 
 
-void GMManager::set_video_options (const GMManager::VideoOptions & options)
+void CallManager::set_video_options (const CallManager::VideoOptions & options)
 {
   OpalMediaFormatList media_formats_list;
   OpalMediaFormat::GetAllRegisteredMediaFormats (media_formats_list);
@@ -566,7 +569,7 @@ void GMManager::set_video_options (const GMManager::VideoOptions & options)
 }
 
 
-void GMManager::get_video_options (GMManager::VideoOptions & options) const
+void CallManager::get_video_options (CallManager::VideoOptions & options) const
 {
   OpalMediaFormatList media_formats_list;
   OpalMediaFormat::GetAllRegisteredMediaFormats (media_formats_list);
@@ -601,7 +604,7 @@ void GMManager::get_video_options (GMManager::VideoOptions & options) const
 
 
 void
-GMManager::Register (GmAccount *account)
+CallManager::Register (GmAccount *account)
 {
   PWaitAndSignal m(manager_access_mutex);
 
@@ -614,7 +617,7 @@ GMManager::Register (GmAccount *account)
 
 
 void
-GMManager::RemoveAccountsEndpoint ()
+CallManager::RemoveAccountsEndpoint ()
 {
   PWaitAndSignal m(manager_access_mutex);
 
@@ -624,7 +627,7 @@ GMManager::RemoveAccountsEndpoint ()
 }
 
 
-OpalCall *GMManager::CreateCall ()
+OpalCall *CallManager::CreateCall ()
 {
   Ekiga::Call *call = NULL;
 
@@ -636,7 +639,7 @@ OpalCall *GMManager::CreateCall ()
 
 
 void
-GMManager::OnClosedMediaStream (const OpalMediaStream & stream)
+CallManager::OnClosedMediaStream (const OpalMediaStream & stream)
 {
   OpalMediaFormatList list = pcssEP->GetMediaFormats ();
   OpalManager::OnClosedMediaStream (stream);
@@ -647,7 +650,7 @@ GMManager::OnClosedMediaStream (const OpalMediaStream & stream)
 
 
 bool 
-GMManager::OnOpenMediaStream (OpalConnection & connection,
+CallManager::OnOpenMediaStream (OpalConnection & connection,
                               OpalMediaStream & stream)
 {
   OpalMediaFormatList list = pcssEP->GetMediaFormats ();
@@ -662,7 +665,7 @@ GMManager::OnOpenMediaStream (OpalConnection & connection,
 
 
 void 
-GMManager::OnMWIReceived (const PString & account,
+CallManager::OnMWIReceived (const PString & account,
                           MessageWaitingType /*type*/,
                           const PString & msgs)
 {
@@ -673,7 +676,7 @@ GMManager::OnMWIReceived (const PString & account,
 
 
 
-void GMManager::GetAllowedFormats (OpalMediaFormatList & full_list)
+void CallManager::GetAllowedFormats (OpalMediaFormatList & full_list)
 {
   OpalMediaFormatList list = OpalTranscoder::GetPossibleFormats (pcssEP->GetMediaFormats ());
   std::list<std::string> black_list;
