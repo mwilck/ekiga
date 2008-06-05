@@ -119,7 +119,7 @@ CallProtocolManager::CallProtocolManager (Opal::CallManager & ep,
 
 
 bool CallProtocolManager::populate_menu (Ekiga::Contact &contact,
-                                                  Ekiga::MenuBuilder &builder)
+                                         Ekiga::MenuBuilder &builder)
 {
   std::string name = contact.get_name ();
   std::map<std::string, std::string> uris = contact.get_uris ();
@@ -129,7 +129,7 @@ bool CallProtocolManager::populate_menu (Ekiga::Contact &contact,
 
 
 bool CallProtocolManager::populate_menu (const std::string uri,
-                                                  Ekiga::MenuBuilder & builder)
+                                         Ekiga::MenuBuilder & builder)
 {
   std::map<std::string, std::string> uris; 
   uris [""] = uri;
@@ -139,8 +139,8 @@ bool CallProtocolManager::populate_menu (const std::string uri,
 
 
 bool CallProtocolManager::menu_builder_add_actions (const std::string & fullname,
-                                                             std::map<std::string,std::string> & uris,
-                                                             Ekiga::MenuBuilder & builder)
+                                                    std::map<std::string,std::string> & uris,
+                                                    Ekiga::MenuBuilder & builder)
 {
   bool populated = false;
 
@@ -259,7 +259,7 @@ void CallProtocolManager::publish (const Ekiga::PersonalDetails & details)
 
 
 bool CallProtocolManager::send_message (const std::string & _uri, 
-                                                 const std::string & _message)
+                                        const std::string & _message)
 {
   if (!_uri.empty () && (_uri.find ("sip:") == 0 || _uri.find (':') == string::npos) && !_message.empty ()) {
 
@@ -416,10 +416,10 @@ unsigned CallProtocolManager::get_nat_binding_delay ()
 
 
 void  CallProtocolManager::Register (const PString & _aor,
-                                              const PString & authUserName,
-                                              const PString & password,
-                                              unsigned int expires,
-                                              bool unregister)
+                                     const PString & authUserName,
+                                     const PString & password,
+                                     unsigned int expires,
+                                     bool unregister)
 {
   std::string aor = (const char *) _aor;
   std::stringstream strm;
@@ -453,7 +453,7 @@ void  CallProtocolManager::Register (const PString & _aor,
 
 
 void CallProtocolManager::OnRegistered (const PString & _aor,
-                                                 bool was_registering)
+                                        bool was_registering)
 {
   std::string aor = (const char *) _aor;
   std::string::size_type found;
@@ -524,8 +524,8 @@ void CallProtocolManager::OnRegistered (const PString & _aor,
 
 
 void CallProtocolManager::OnRegistrationFailed (const PString & _aor,
-                                                         SIP_PDU::StatusCodes r,
-                                                         bool wasRegistering)
+                                                SIP_PDU::StatusCodes r,
+                                                bool wasRegistering)
 {
   std::stringstream strm;
   std::string info;
@@ -750,8 +750,8 @@ void CallProtocolManager::OnRegistrationFailed (const PString & _aor,
 
 
 bool CallProtocolManager::OnIncomingConnection (OpalConnection &connection,
-                                                         unsigned options,
-                                                         OpalConnection::StringOptions * stroptions)
+                                                unsigned options,
+                                                OpalConnection::StringOptions * stroptions)
 {
   PTRACE (3, "CallProtocolManager\tIncoming connection");
 
@@ -784,7 +784,7 @@ bool CallProtocolManager::OnIncomingConnection (OpalConnection &connection,
 
 
 void CallProtocolManager::OnReceivedMESSAGE (G_GNUC_UNUSED OpalTransport & transport,
-                                                      SIP_PDU & pdu)
+                                             SIP_PDU & pdu)
 {
   PString *last = NULL;
   PString *val = NULL;
@@ -816,7 +816,7 @@ void CallProtocolManager::OnReceivedMESSAGE (G_GNUC_UNUSED OpalTransport & trans
 
 
 void CallProtocolManager::OnMessageFailed (const SIPURL & messageUrl,
-                                                    SIP_PDU::StatusCodes /*reason*/)
+                                           SIP_PDU::StatusCodes /*reason*/)
 {
   SIPURL to = messageUrl;
   to.AdjustForRequestURI ();
@@ -882,8 +882,8 @@ SIPURL CallProtocolManager::GetRegisteredPartyName (const SIPURL & host)
 
 void 
 CallProtocolManager::OnPresenceInfoReceived (const PString & user,
-                                                      const PString & basic,
-                                                      const PString & note)
+                                             const PString & basic,
+                                             const PString & note)
 {
   PINDEX j;
   PCaselessString b = basic;
@@ -932,7 +932,7 @@ void CallProtocolManager::on_dial (std::string uri)
 
 
 void CallProtocolManager::on_message (const std::string & name,
-                                               const std::string & uri)
+                                      const std::string & uri)
 {
   runtime.run_in_main (sigc::bind (new_chat.make_slot (), name, uri));
 }
