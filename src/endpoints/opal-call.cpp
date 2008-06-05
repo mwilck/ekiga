@@ -99,8 +99,18 @@ Opal::Call::answer ()
 void
 Opal::Call::transfer (std::string uri)
 {
-  //FIXME
-  std::cout << "Should transfer to " << uri << std::endl << std::flush;
+  PSafePtr<OpalConnection> connection = NULL;
+
+  int i = 0;
+
+  do {
+
+    connection = GetConnection (i);
+    i++;
+  }  while (PIsDescendant(&(*connection), OpalPCSSConnection));
+
+  if (connection)
+    connection->TransferConnection (uri);
 }
 
 
