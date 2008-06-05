@@ -1,21 +1,21 @@
 # Vietnamese translation for Ekiga.
-# Copyright © 2007 Gnome i18n Project for Vietnamese.
+# Copyright © 2008 GNOME i18n Project for Vietnamese.
 # Nguyễn Thái Ngọc Duy <pclouds@gmx.net>, 2002-2004.
-# Clytie Siddall <clytie@riverland.net.au>, 2005-2007.
+# Clytie Siddall <clytie@riverland.net.au>, 2005-2008.
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Ekiga GNOME TRUNK\n"
+"Project-Id-Version: Ekiga GNOME 2.22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-03 08:37+0100\n"
-"PO-Revision-Date: 2007-09-07 17:54+0930\n"
+"POT-Creation-Date: 2008-03-30 10:24+0100\n"
+"PO-Revision-Date: 2008-06-05 19:45+0930\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
-"Language-Team: Vietnamese <gnomevi-list@lists.sourceforge.net>\n"
+"Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: LocFactoryEditor 1.7b1\n"
+"X-Generator: LocFactoryEditor 1.7b3\n"
 
 #: ../ekiga.desktop.in.in.h:1
 msgid "Ekiga Softphone"
@@ -781,7 +781,8 @@ msgid ""
 "registering to gatekeepers. Ekiga needs to be restarted for the new values "
 "to take effect."
 msgstr ""
-"Phạm vi cổng UDP mà Ekiga sẽ dùng cho tín hiệu SIP và khi đăng ký với bộ gác cổng. Ekiga cần được khởi chạy lại để giá trị mới có tác dụng."
+"Phạm vi cổng UDP mà Ekiga sẽ dùng cho tín hiệu SIP và khi đăng ký với bộ gác "
+"cổng. Ekiga cần được khởi chạy lại để giá trị mới có tác dụng."
 
 #: ../ekiga.schemas.in.in.h:148
 msgid "The remote zoom value"
@@ -1009,75 +1010,6 @@ msgstr "Hướng"
 msgid "The orientation of the tray."
 msgstr "Hướng của khay."
 
-#: ../src/clients/ils.cpp:105
-#: ../src/gui/tools.cpp:174
-msgid "Invalid parameters"
-msgstr "Tham số không hợp lệ"
-
-#: ../src/clients/ils.cpp:105
-msgid ""
-"Please provide your first name and e-mail in the Personal Data section in "
-"order to be able to register to the users directory."
-msgstr ""
-"Hãy cung cấp tên và địa chỉ thư điện tử trong phần Dữ liệu Cá nhân để có thể "
-"đăng ký với sách chỉ dẫn người dùng."
-
-#: ../src/clients/ils.cpp:145
-msgid "Invalid users directory"
-msgstr "Sách chỉ dẫn người dùng không hợp lệ"
-
-#: ../src/clients/ils.cpp:145
-msgid "Operation impossible since there is no users directory specified."
-msgstr ""
-"Không thực hiện thao tác được vì chưa xác định sách chỉ dẫn người dùng."
-
-#: ../src/clients/ils.cpp:238
-msgid "Failed to parse XML file"
-msgstr "Không phân tách tập tin XML được"
-
-#: ../src/clients/ils.cpp:238
-msgid ""
-"There was an error while parsing the XML file. Please make sure that it is "
-"correctly installed in your system."
-msgstr ""
-"Gặp lỗi khi phân tách tập tin XML. Hãy kiểm tra xem nó được cài đặt cho đúng "
-"trong hệ thống của bạn."
-
-#: ../src/clients/ils.cpp:249
-msgid "Bad information"
-msgstr "Thông tin sai"
-
-#: ../src/clients/ils.cpp:249
-#, c-format
-msgid "Bad LDAP information from XML file: %s."
-msgstr "Thông tin LDAP sai trong tập tin XML: %s."
-
-#: ../src/clients/ils.cpp:257
-#, c-format
-msgid "ILS registration failed: unable to connect to %s"
-msgstr "Không đăng ký ILS được: không kết nối được đến %s"
-
-#: ../src/clients/ils.cpp:270
-msgid "ILS registration failed: unable to set time limit on operations"
-msgstr "Không đăng ký ILS được: không lập được thời hạn cho thao tác"
-
-#: ../src/clients/ils.cpp:282
-#, c-format
-msgid "ILS registration failed: failed to bind to %s"
-msgstr "Không đăng ký ILS được: không đóng kết được tới %s"
-
-#: ../src/clients/ils.cpp:310
-#, c-format
-msgid "Updated information on %s"
-msgstr "Đã cập nhật thông tin trên %s"
-
-#: ../src/clients/ils.cpp:314
-#: ../src/endpoints/accountshandler.cpp:332
-#: ../src/endpoints/sip.cpp:236
-#, c-format
-msgid "Unregistered from %s"
-msgstr "Đã hủy đăng ký khỏi %s"
-
 #: ../src/clients/stun.cpp:104
 #, c-format
 msgid "STUN server set to %s"
@@ -1120,6 +1052,7 @@ msgstr ""
 "cục bộ chặn những cổng cần thiết cho trình Ekiga."
 
 #: ../src/clients/stun.cpp:153
+#, c-format
 msgid ""
 "Ekiga detected Symmetric NAT. The most appropriate method, if your router "
 "does not natively support SIP or H.323, is to forward the required ports to "
@@ -1245,6 +1178,7 @@ msgstr ""
 "nào đó, hãy sử dụng « ekiga -c địa_chỉ »."
 
 #: ../src/components/bonobo.cpp:170
+#, c-format
 msgid ""
 "It appears that you do not have ekiga.server installed in a valid location. "
 "Factory mode disabled.\n"
@@ -1253,11 +1187,13 @@ msgstr ""
 "lệ. Vậy chế độ tạo bị tắt.\n"
 
 #: ../src/components/bonobo.cpp:174
+#, c-format
 msgid ""
 "Error registering Ekiga with the activation service; factory mode disabled.\n"
 msgstr "Gặp lỗi khi đăng ký Ekiga với dịch vụ kích hoạt; chế độ tạo bị tắt.\n"
 
 #: ../src/components/bonobo.cpp:214
+#, c-format
 msgid "Failed to retrieve Ekiga server from activation server\n"
 msgstr "Lỗi lấy trình phục vụ Ekiga từ máy phục vụ kích hoạt\n"
 
@@ -1331,10 +1267,10 @@ msgstr ""
 #: ../src/endpoints/ekiga.cpp:351
 #: ../src/endpoints/ekiga.cpp:353
 #: ../src/endpoints/ekiga.cpp:355
-#: ../src/endpoints/pcss.cpp:194
-#: ../src/gui/druid.cpp:1780
-#: ../src/gui/druid.cpp:1792
-#: ../src/gui/druid.cpp:1850
+#: ../src/endpoints/pcss.cpp:198
+#: ../src/gui/druid.cpp:1784
+#: ../src/gui/druid.cpp:1796
+#: ../src/gui/druid.cpp:1854
 msgid "No device found"
 msgstr "Không tìm thấy thiết bị"
 
@@ -1389,6 +1325,7 @@ msgstr ""
 
 #: ../src/devices/videoinput.cpp:372
 #: ../src/devices/videoinput.cpp:686
+#, c-format
 msgid "Your video driver doesn't support the requested video format."
 msgstr ""
 "Trình điều khiển thiết bị ảnh động không hỗ trợ định dạng ảnh động yêu cầu."
@@ -1451,20 +1388,24 @@ msgid "Error while opening %s."
 msgstr "Gặp lỗi khi mở %s."
 
 #: ../src/devices/videoinput.cpp:690
+#, c-format
 msgid "Could not open the chosen channel with the chosen video format."
 msgstr "Không mở được kênh được chọn với định dạng ảnh động đã chọn."
 
 #: ../src/devices/videoinput.cpp:694
+#, c-format
 msgid "Your driver doesn't support any of the color formats tried by Ekiga"
 msgstr ""
 "Trình điều khiển của bạn không hỗ trợ bất cứ định dạng màu nào được trình "
 "Ekiga thử."
 
 #: ../src/devices/videoinput.cpp:698
+#, c-format
 msgid "Error with the frame rate."
 msgstr "Lỗi đối với tỷ lệ khung."
 
 #: ../src/devices/videoinput.cpp:702
+#, c-format
 msgid "Error with the frame size."
 msgstr "Lỗi đối với kích cỡ khung."
 
@@ -1517,6 +1458,12 @@ msgstr "Đã đăng ký với %s"
 #: ../src/endpoints/sip.cpp:231
 msgid "Registered"
 msgstr "Đã đăng ký"
+
+#: ../src/endpoints/accountshandler.cpp:332
+#: ../src/endpoints/sip.cpp:236
+#, c-format
+msgid "Unregistered from %s"
+msgstr "Đã hủy đăng ký khỏi %s"
 
 #: ../src/endpoints/accountshandler.cpp:352
 #: ../src/endpoints/sip.cpp:242
@@ -1581,7 +1528,7 @@ msgid "Connected with %s"
 msgstr "Đã kết nối với %s"
 
 #: ../src/endpoints/manager.cpp:1124
-#: ../src/gui/main.cpp:4156
+#: ../src/gui/main.cpp:4157
 msgid "Standby"
 msgstr "Tạm nghỉ"
 
@@ -1718,21 +1665,21 @@ msgstr "Đã đóng codec %s, mà được mở trước để nhận"
 msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
 msgstr "%.2ld:%.2ld:%.2ld  Â:%.2f/%.2f   Ả:%.2f/%.2f"
 
-#: ../src/endpoints/pcss.cpp:218
+#: ../src/endpoints/pcss.cpp:222
 #, c-format
 msgid "Opened %s for recording with plugin %s"
 msgstr "Đã mở %s để thu bằng phần bổ sung %s"
 
-#: ../src/endpoints/pcss.cpp:219
+#: ../src/endpoints/pcss.cpp:223
 #, c-format
 msgid "Opened %s for playing with plugin %s"
 msgstr "Đã mở %s để phát với phần bổ sung %s"
 
-#: ../src/endpoints/pcss.cpp:237
+#: ../src/endpoints/pcss.cpp:241
 msgid "Could not open audio channel for audio transmission"
 msgstr "Không mở được kênh âm thanh để truyền âm thanh"
 
-#: ../src/endpoints/pcss.cpp:237
+#: ../src/endpoints/pcss.cpp:241
 msgid ""
 "An error occured while trying to record from the soundcard for the audio "
 "transmission. Please check that your soundcard is not busy and that your "
@@ -1744,11 +1691,11 @@ msgstr ""
 "đầy đủ (full-duplex).\n"
 "Khả năng truyền âm thanh đã bị tắt."
 
-#: ../src/endpoints/pcss.cpp:239
+#: ../src/endpoints/pcss.cpp:243
 msgid "Could not open audio channel for audio reception"
 msgstr "Không mở được kênh âm thanh để nhận âm thanh."
 
-#: ../src/endpoints/pcss.cpp:239
+#: ../src/endpoints/pcss.cpp:243
 msgid ""
 "An error occured while trying to play audio to the soundcard for the audio "
 "reception. Please check that your soundcard is not busy and that your driver "
@@ -1988,7 +1935,7 @@ msgstr ""
 
 #: ../src/gui/addressbook.cpp:821
 #: ../src/gui/addressbook.cpp:823
-#: ../src/gui/druid.cpp:1912
+#: ../src/gui/druid.cpp:1916
 #: ../src/gui/preferences.cpp:930
 msgid "None"
 msgstr "Không có"
@@ -2285,13 +2232,51 @@ msgstr "Nghệ thuật:"
 msgid "See AUTHORS file for full credits"
 msgstr "Xem tập tin AUTHORS (các tác giả) để tìm công trạng đầy đủ."
 
-#: ../src/gui/callbacks.cpp:190
+#: ../src/gui/callbacks.cpp:168
+msgid ""
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version. "
+msgstr "Chương trình này là phần mềm tự do; bạn có thể phát hành lại nó và/hoặc sửa đổi nó với điều kiện của Giấy Phép Công Cộng GNU như được xuất bản bởi Tổ Chức Phần Mềm Tự Do; hoặc phiên bản 2 của Giấy Phép này, hoặc (tùy chọn) bất kỳ phiên bản sau nào."
+
+#: ../src/gui/callbacks.cpp:172
+msgid ""
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for "
+"more details. You should have received a copy of the GNU General Public "
+"License along with this program; if not, write to the Free Software "
+"Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA."
+msgstr "Chương trình này được phát hành vì mong muốn nó có ích, nhưng KHÔNG CÓ BẢO HÀNH GÌ CẢ, THẬM CHÍ KHÔNG CÓ BẢO ĐẢM ĐƯỢC NGỤ Ý KHẢ NĂNG BÁN HAY KHẢ NĂNG LÀM ĐƯỢC VIỆC DỨT KHOÁT. Xem Giấy Phép Công Cộng GNU để biết thêm chi tiết.\n"
+"\n"
+"Bạn đã nhận một bản sao của Giấy Phép Công Cộng GNU cùng với chương trình này; nếu không, hãy viết thư cho Tổ Chức Phần Mềm Tự Do,\n"
+"Free Software Foundation, Inc.,\n"
+"51 Franklin Street, Fifth Floor,\n"
+"Boston, MA  02110-1301, USA (Mỹ)."
+
+#: ../src/gui/callbacks.cpp:179
+msgid ""
+"Ekiga is licensed under the GPL license and as a special exception, you have "
+"permission to link or otherwise combine this program with the programs OPAL, "
+"OpenH323 and PWLIB, and distribute the combination, without applying the "
+"requirements of the GNU GPL to the OPAL, OpenH323 and PWLIB programs, as "
+"long as you do follow the requirements of the GNU GPL for all the rest of "
+"the software thus combined."
+msgstr "Chương trình Ekiga được cấp phép dưới Giấy Phép Công Cộng GNU (GPL), và tùy "
+"theo một ngoại lệ đặc biệt bạn có quyền liên kết hay tổ hợp chương trình này "
+"bằng cách khác với những chương trình OPAL, OpenH323 và PWLIB, và phân phối "
+"tổ hợp này, mà không áp dụng các điều kiện của giấy phép GPL cho các chương "
+"trình OPAL, OpenH323 và PWLIB, miễn là bạn có phải tùy theo các điều kiện "
+"của giấy phép GPL đối với tất cả các phần phần mềm còn lại trong tổ hợp đó."
+
+#: ../src/gui/callbacks.cpp:191
 #. Translators: Please write translator credits here, and
 #. * separate names with \n
 msgid "translator-credits"
 msgstr "Nhóm Việt hoá GNOME (http://gnomevi.sourceforge.net)"
 
-#: ../src/gui/callbacks.cpp:195
+#: ../src/gui/callbacks.cpp:196
 msgid ""
 "Ekiga is full-featured SIP and H.323 compatible VoIP, IP-Telephony and "
 "Videoconferencing application that allows you to make audio and video calls "
@@ -2654,27 +2639,27 @@ msgstr ""
 msgid "Configuration complete - page %d/%d"
 msgstr "Hoàn tất cấu hình — trang %d trên %d"
 
-#: ../src/gui/druid.cpp:1630
+#: ../src/gui/druid.cpp:1634
 msgid "56k Modem"
 msgstr "Bộ điều giải 56k"
 
-#: ../src/gui/druid.cpp:1631
+#: ../src/gui/druid.cpp:1635
 msgid "ISDN"
 msgstr "ISDN"
 
-#: ../src/gui/druid.cpp:1632
+#: ../src/gui/druid.cpp:1636
 msgid "xDSL/Cable"
 msgstr "xDSL/Cáp"
 
-#: ../src/gui/druid.cpp:1633
+#: ../src/gui/druid.cpp:1637
 msgid "T1/LAN"
 msgstr "T1/mạng cục bộ"
 
-#: ../src/gui/druid.cpp:1634
+#: ../src/gui/druid.cpp:1638
 msgid "Keep current settings"
 msgstr "Giữ các thiết lập hiện thời"
 
-#: ../src/gui/druid.cpp:1912
+#: ../src/gui/druid.cpp:1916
 #, c-format
 msgid ""
 "You have now finished the Ekiga configuration. All the settings can be "
@@ -2707,7 +2692,7 @@ msgstr ""
 "Nhập ảnh động: %s\n"
 "Địa chỉ URL SIP: %s\n"
 
-#: ../src/gui/druid.cpp:1967
+#: ../src/gui/druid.cpp:1971
 msgid "First Time Configuration Assistant"
 msgstr "Trợ lý cấu hình lần đầu tiên"
 
@@ -3275,7 +3260,7 @@ msgstr ""
 "Gói tin sai thứ tự : %.1f %%\n"
 "Vùng đệm Jitter: %d mili-giây"
 
-#: ../src/gui/main.cpp:4574
+#: ../src/gui/main.cpp:4575
 #, c-format
 msgid ""
 "Ekiga got an invalid value for the GConf key %s.\n"
@@ -3296,25 +3281,25 @@ msgstr ""
 "của địa chỉ Web GConf (http://www.gnome.org/projects/gconf/) hoặc kho lưu "
 "hộp thư chung (http://mail.gnome.org) để biết thêm thông tin về vấn đề này."
 
-#: ../src/gui/main.cpp:4577
+#: ../src/gui/main.cpp:4578
 msgid "Gconf key error"
 msgstr "Lỗi khóa GConf"
 
-#: ../src/gui/main.cpp:4608
-#: ../src/gui/main.cpp:4627
+#: ../src/gui/main.cpp:4609
+#: ../src/gui/main.cpp:4628
 msgid "Prints debug messages in the console (level between 1 and 6)"
 msgstr "In thông tin gỡ lỗi ra bàn giao tiếp (cấp giữa 1 và 6)"
 
-#: ../src/gui/main.cpp:4611
-#: ../src/gui/main.cpp:4632
+#: ../src/gui/main.cpp:4612
+#: ../src/gui/main.cpp:4633
 msgid "Makes Ekiga call the given URL"
 msgstr "Khiến trình Ekiga gọi địa chỉ URL đưa ra."
 
-#: ../src/gui/main.cpp:4665
+#: ../src/gui/main.cpp:4666
 msgid "No usable audio plugin detected"
 msgstr "Không phát hiện phần bổ sung âm thanh có thể sử dụng"
 
-#: ../src/gui/main.cpp:4665
+#: ../src/gui/main.cpp:4666
 msgid ""
 "Ekiga didn't find any usable audio plugin. Make sure that your installation "
 "is correct."
@@ -3940,6 +3925,10 @@ msgid "Devices"
 msgstr "Thiết bị"
 
 #: ../src/gui/tools.cpp:174
+msgid "Invalid parameters"
+msgstr "Tham số không hợp lệ"
+
+#: ../src/gui/tools.cpp:174
 msgid ""
 "Please provide your username and password in order to be able to use the PC-"
 "To-Phone service."
@@ -4007,42 +3996,3 @@ msgstr "Xem lược sử số còn lại"
 #: ../src/gui/tools.cpp:431
 msgid "Consult the calls history"
 msgstr "Xem lược sử cuộc gọi"
-
-#~ msgid "Credits"
-#~ msgstr "Lời cám ơn"
-
-#~ msgid "Written by"
-#~ msgstr "Tác giả"
-
-#~ msgid "Documented by"
-#~ msgstr "Tài liệu"
-
-#~ msgid "Translated by"
-#~ msgstr "Người dịch"
-
-#~ msgid "C_redits"
-#~ msgstr "_Cám ơn"
-
-#~ msgid "Authors"
-#~ msgstr "Tác giả"
-
-#~ msgid "List of authors of the programs"
-#~ msgstr "Danh sách tác giả của chương trình"
-
-#~ msgid "Documenter entry"
-#~ msgstr "Mục nhập người việt tài liệu"
-
-#~ msgid "A single documenter entry"
-#~ msgstr "Một mục nhập người việt tài liệu"
-
-#~ msgid "About %s"
-#~ msgstr "Giới thiệu %s"
-
-#~ msgid "Remote user is offline"
-#~ msgstr "Người dùng từ xa đang ngoại tuyến"
-
-#~ msgid "_Call user"
-#~ msgstr "_Gọi người dùng"
-
-#~ msgid "SIP Outbound Proxy"
-#~ msgstr "Ủy nhiệm đi ra SIP"
