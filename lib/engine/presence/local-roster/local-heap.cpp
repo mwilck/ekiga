@@ -55,7 +55,7 @@ Local::Heap::Heap (Ekiga::ServiceCore &_core): core (_core), doc (NULL)
 
   presence_core = dynamic_cast<Ekiga::PresenceCore*>(core.get ("presence-core"));
 
-  const gchar *c_raw = gm_conf_get_string (KEY);
+  gchar *c_raw = gm_conf_get_string (KEY);
 
   // Build the XML document representing the contacts list from the configuration
   if (c_raw != NULL) {
@@ -75,8 +75,12 @@ Local::Heap::Heap (Ekiga::ServiceCore &_core): core (_core), doc (NULL)
 	  && child->name != NULL
 	  && xmlStrEqual (BAD_CAST ("entry"), child->name))
 	add (child);
+    
+    g_free (c_raw);
+
     // Or create a new XML document
-  } else {
+  } 
+  else {
 
     doc = xmlNewDoc (BAD_CAST "1.0");
     root = xmlNewDocNode (doc, NULL, BAD_CAST "list", NULL);

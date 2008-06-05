@@ -665,13 +665,14 @@ CallManager::OnOpenMediaStream (OpalConnection & connection,
 
 
 void 
-CallManager::OnMWIReceived (const PString & account,
-                          MessageWaitingType /*type*/,
-                          const PString & msgs)
+CallManager::OnMWIReceived (const PString & _acc,
+                            MessageWaitingType /*type*/,
+                            const PString & _msgs)
 {
-  runtime.run_in_main (sigc::bind (mwi_event.make_slot (), 
-                                   (const char *) account, 
-                                   (const char *) msgs));
+  std::string account = (const char *) _acc;
+  std::string summary = (const char *) _msgs;
+
+  runtime.run_in_main (sigc::bind (mwi_event.make_slot (), account, summary));
 }
 
 

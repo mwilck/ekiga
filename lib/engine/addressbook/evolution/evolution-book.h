@@ -62,8 +62,7 @@ namespace Evolution
   public:
 
     Book (Ekiga::ServiceCore &_services,
-	  EBook *_book,
-	  EBookQuery *_query = e_book_query_field_exists (E_CONTACT_FULL_NAME));
+	  EBook *_book);
 
     ~Book ();
 
@@ -97,7 +96,6 @@ namespace Evolution
 
     Ekiga::ServiceCore &services;
     EBook *book;
-    EBookQuery *query;
     EBookView *view;
     Wrapper *self;
 

@@ -91,18 +91,23 @@ parse_result (Ekiga::ServiceCore &core,
     if (strncmp("givenName",attribute, 9) == 0) {
 
       values = ldap_get_values_len (context, message, attribute);
-      if (values[0] != NULL)
+      if (values[0] != NULL) {
 	name = std::string (values[0]->bv_val, values[0]->bv_len);
+        ldap_value_free_len (values);
+      }
     }
     if (strncmp ("telephoneNumber", attribute, 15) == 0) {
 
       values = ldap_get_values_len (context, message, attribute);
-      if (values[0] != NULL)
+      if (values[0] != NULL) {
 	call_address = std::string (values[0]->bv_val, values[0]->bv_len);
+        ldap_value_free_len (values);
+      }
     }
     ldap_memfree (attribute);
     attribute = ldap_next_attribute (context, message, ber);
   }
+  ber_free (ber, 0);
 
   if (!name.empty () && !call_address.empty ()) {
 
@@ -428,7 +433,7 @@ OPENLDAP::Book::refresh_bound ()
 
     return;
   }
-
+  (void) ldap_msgfree (msg_entry);
 
   attributes_vector.push_back ("givenname");
   attributes_vector.push_back (call_attribute);

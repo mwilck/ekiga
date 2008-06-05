@@ -186,6 +186,7 @@ on_book_opened_c (EBook */*book*/,
 void
 Evolution::Book::on_book_opened (EBookStatus _status)
 {
+  EBookQuery *query = NULL;
   self = new Wrapper (*this);
 
   if (_status == E_BOOK_ERROR_OK) {
@@ -199,7 +200,11 @@ Evolution::Book::on_book_opened (EBookStatus _status)
 
     (void)e_book_async_get_book_view (book, query, NULL, 100,
 				      on_book_view_obtained_c, self);
-  } else {
+
+    e_book_query_unref (query);
+
+  } 
+  else {
 
     book = NULL;
     removed.emit ();
@@ -207,9 +212,8 @@ Evolution::Book::on_book_opened (EBookStatus _status)
 }
 
 Evolution::Book::Book (Ekiga::ServiceCore &_services,
-		       EBook *_book,
-		       EBookQuery *_query)
-  : services(_services), book(_book), query(_query), view(NULL)
+		       EBook *_book)
+  : services(_services), book(_book), view(NULL)
 {
   self = new Wrapper (*this);
 
