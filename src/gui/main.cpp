@@ -3524,7 +3524,7 @@ gm_main_window_transfer_dialog_run (GtkWidget *main_window,
   gtk_dialog_set_default_response (GTK_DIALOG (mw->transfer_call_popup),
 				   GTK_RESPONSE_ACCEPT);
   
-  if (!strcmp (u, ""))
+  if (u && !strcmp (u, ""))
     gm_entry_dialog_set_text (GM_ENTRY_DIALOG (mw->transfer_call_popup), u);
   else
     gm_entry_dialog_set_text (GM_ENTRY_DIALOG (mw->transfer_call_popup), "sip:");
@@ -3536,10 +3536,9 @@ gm_main_window_transfer_dialog_run (GtkWidget *main_window,
 
   case GTK_RESPONSE_ACCEPT:
 
-    forward_url =
-      gm_entry_dialog_get_text (GM_ENTRY_DIALOG (mw->transfer_call_popup));
-    // FIXME NOT IMPLEMENTED SHould not be called directly
-      
+    forward_url = gm_entry_dialog_get_text (GM_ENTRY_DIALOG (mw->transfer_call_popup));
+    if (strcmp (forward_url, "") && mw->current_call)
+      mw->current_call->transfer (forward_url);
     break;
 
   default:
