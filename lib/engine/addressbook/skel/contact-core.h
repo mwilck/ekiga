@@ -61,9 +61,8 @@ namespace Ekiga
 
   /** Core object for address book support.
    *
-   * Notice that you give sources to this object as pointers, and this
-   * object then assumes the ownership of the source: it will call delete
-   * on each of them when it is destroyed.
+   * Notice that you give sources to this object as references, so they won't
+   * be freed here : it's up to you to free them somehow.
    */
   class ContactCore: public Service
   {
