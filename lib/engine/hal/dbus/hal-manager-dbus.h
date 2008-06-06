@@ -60,14 +60,14 @@ extern "C" {
     std::string name;
     std::string type;
     unsigned video_capabilities;
-  };
+  } HalDevice;
 
   typedef struct NmInterface {
     std::string key;
     std::string name;
     std::string ip4_address;
     bool active;
-  };
+  } NmInterface;
 
   class HalManager_dbus
    : public Ekiga::HalManager

@@ -75,7 +75,7 @@ namespace Ekiga
     unsigned colour;
     unsigned contrast;
     bool modifyable;
-  };
+  } VideoInputSettings;
 
   enum VideoInputFormat {
     VI_FORMAT_PAL = 0,

@@ -181,7 +181,8 @@ namespace Ekiga
         VideoInputDevice device;
         VideoInputFormat format;
         int channel;
-      };
+      } ManagerState;
+
       ManagerState current_state;
   };
 /**

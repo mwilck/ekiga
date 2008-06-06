@@ -47,7 +47,7 @@ namespace Ekiga
   typedef struct AudioInputConfig {
     unsigned volume;
     bool modifyable;
-  };
+  } AudioInputConfig;
 
   enum AudioInputErrorCodes {
     AI_ERROR_NONE = 0,

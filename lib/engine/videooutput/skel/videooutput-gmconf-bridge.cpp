@@ -60,7 +60,7 @@ VideoOutputCoreConfBridge::VideoOutputCoreConfBridge (Ekiga::Service & _service)
   load (keys);
 }
 
-void VideoOutputCoreConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
+void VideoOutputCoreConfBridge::on_property_changed (std::string key, GmConfEntry */*entry*/)
 {
   VideoOutputCore & display_core = (VideoOutputCore &) service;
   if (key == VIDEO_DISPLAY_KEY "video_view")  {

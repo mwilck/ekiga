@@ -353,7 +353,7 @@ namespace Ekiga
         unsigned bits_per_sample;
         unsigned buffer_size;
         unsigned num_buffers;
-      };
+      } DeviceConfig;
 
       DeviceConfig current_primary_config;
 

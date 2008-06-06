@@ -165,7 +165,8 @@ namespace Ekiga
         unsigned samplerate;
         unsigned bits_per_sample;
         AudioInputDevice device;
-      };
+      } ManagerState;
+
       ManagerState current_state;
   };
 /**

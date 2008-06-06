@@ -55,14 +55,15 @@ namespace Ekiga
     unsigned interval;
     unsigned repetitions;
     unsigned long time;
-  };
+  } AudioEvent;
 
   typedef struct EventFileName {
     std::string event_name;
     std::string file_name;
     bool enabled;
     AudioOutputPS ps;
-  };
+  } EventFileName;
+
   class AudioOutputCore;
 
   class AudioEventScheduler : public PThread

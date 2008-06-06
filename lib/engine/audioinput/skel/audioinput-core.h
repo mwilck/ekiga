@@ -327,7 +327,7 @@ namespace Ekiga
 
         unsigned buffer_size;
         unsigned num_buffers;
-      };
+      } DeviceConfig;
 
   private:
 
