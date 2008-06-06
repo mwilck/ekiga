@@ -76,7 +76,7 @@ namespace Ekiga
        * @param protocol is the protcol name.
        * @return a pointer to the CallProtocolManager or NULL if none.
        */
-      CallProtocolManager * const get_protocol_manager (const std::string &protocol) const;
+      CallProtocolManager* get_protocol_manager (const std::string &protocol) const;
 
       /** Return iterator to beginning
        * @return iterator to beginning

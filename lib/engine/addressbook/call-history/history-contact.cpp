@@ -171,13 +171,13 @@ History::Contact::get_node ()
   return node;
 }
 
-const History::call_type
+History::call_type
 History::Contact::get_type () const
 {
   return m_type;
 }
 
-const time_t
+time_t
 History::Contact::get_call_start () const
 {
   return call_start;

@@ -254,7 +254,7 @@ Opal::Call::get_duration () const
 }
 
 
-const time_t 
+time_t 
 Opal::Call::get_start_time () const
 {
   return start_time.GetTimeInSeconds ();

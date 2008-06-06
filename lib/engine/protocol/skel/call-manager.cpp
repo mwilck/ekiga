@@ -50,7 +50,7 @@ void CallManager::add_protocol_manager (CallProtocolManager &manager)
 }
 
 
-CallProtocolManager * const CallManager::get_protocol_manager (const std::string &protocol) const
+CallProtocolManager* CallManager::get_protocol_manager (const std::string &protocol) const
 {
   for (CallManager::iterator iter = begin ();
        iter != end ();

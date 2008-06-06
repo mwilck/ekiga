@@ -89,9 +89,9 @@ namespace History
 
     xmlNodePtr get_node ();
 
-    const call_type get_type () const;
+    call_type get_type () const;
 
-    const time_t get_call_start () const;
+    time_t get_call_start () const;
 
     const std::string get_call_duration () const;
 
