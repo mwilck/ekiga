@@ -181,13 +181,13 @@ pc2phone_window_response_cb (GtkWidget *widget,
   }
   
   /* Let's go */
-  account = gnomemeeting_get_account ("eugw.ast.diamondcard.us");
+  account = gnomemeeting_get_account ("sip.diamondcard.us");
   if (account == NULL) {
 
     account = gm_account_new ();
     account->account_name = g_strdup ("Ekiga PC-To-Phone");
-    account->host = g_strdup ("eugw.ast.diamondcard.us");
-    account->domain = g_strdup ("eugw.ast.diamondcard.us");
+    account->host = g_strdup ("sip.diamondcard.us");
+    account->domain = g_strdup ("sip.diamondcard.us");
     account->protocol_name = g_strdup ("SIP");
   
     new_account = TRUE;
@@ -295,7 +295,7 @@ gm_pc2phone_window_new (Ekiga::ServiceCore & core)
   
 
   /* Get the PC-To-Phone account, if any */
-  account = gnomemeeting_get_account ("eugw.ast.diamondcard.us");
+  account = gnomemeeting_get_account ("sip.diamondcard.us");
 
   
   /* Build the window */
