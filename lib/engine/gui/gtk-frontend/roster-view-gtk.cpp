@@ -100,12 +100,28 @@ enum {
   COLUMN_PRESENCE,
   COLUMN_ACTIVE,
   COLUMN_GROUP_SIZE,
+  COLUMN_OFFLINE,
   COLUMN_NUMBER
 };
 
 /*
- * Callbacks
+ * Helpers
  */
+
+/* DESCRIPTION : Called whenever a (online/total) count has to be updated
+ * BEHAVIOUR   : Updates things...
+ * PRE         : Both arguments have to be correct
+ */
+static void update_offline_count (RosterViewGtk* self,
+				  GtkTreeIter* iter);
+
+/* DESCRIPTION : Called when the user changes the preference for offline
+ * BEHAVIOUR   : Updates things...
+ * PRE         : The gpointer must be a RosterViewGtk
+ */
+static void show_offline_contacts_changed_nt (gpointer id,
+					      GmConfEntry *entry,
+					      gpointer data);
 
 /* DESCRIPTION  : Called when the user right-clicks on a heap, group or
  *                presentity.
@@ -116,6 +132,14 @@ static gint on_view_clicked (GtkWidget *tree_view,
 			     GdkEventButton *event,
 			     gpointer data);
 
+/* DESCRIPTION : Called to decide whether to show a line ; used to hide/show
+ *               offline contacts on demand.
+ * BEHAVIOUR   : Returns TRUE if the line should be shown.
+ * PRE         : The gpointer must point to a RosterViewGtk object.
+ */
+static gboolean tree_model_filter_hide_show_offline (GtkTreeModel *model,
+						     GtkTreeIter *iter,
+						     gpointer data);
 
 /* DESCRIPTION  : Called for a given renderer in order to show or hide it.
  * BEHAVIOR     : Only show the renderer if current iter points to a line of
@@ -289,14 +313,41 @@ static void roster_view_gtk_update_groups (RosterViewGtk *view,
 
 
 
-/* Implementation of the callbacks */
+/* Implementation of the helpers */
 
-static void 
-show_offline_contacts_changed_nt (G_GNUC_UNUSED gpointer id, 
-                                  GmConfEntry *entry, 
+static void
+update_offline_count (RosterViewGtk* self,
+		      GtkTreeIter* iter)
+{
+  GtkTreeModel *model = NULL;
+  GtkTreeModel *filtered = NULL;
+  GtkTreeIter filtered_iter;
+  gint total = 0;
+  gint not_offline = 0;
+  gchar *size = NULL;
+
+  model = GTK_TREE_MODEL (self->priv->store);
+  filtered = gtk_tree_view_get_model (self->priv->tree_view);
+  gtk_tree_model_filter_convert_child_iter_to_iter (GTK_TREE_MODEL_FILTER (filtered), &filtered_iter, iter);
+  not_offline = gtk_tree_model_iter_n_children (filtered, &filtered_iter);
+  total = gtk_tree_model_iter_n_children (model, iter);
+  size = g_strdup_printf ("(%d/%d)", not_offline, total);
+  gtk_tree_store_set (GTK_TREE_STORE (model), iter,
+		      COLUMN_GROUP_SIZE, size,
+		      -1);
+  g_free (size);
+
+}
+
+static void
+show_offline_contacts_changed_nt (G_GNUC_UNUSED gpointer id,
+                                  GmConfEntry *entry,
                                   gpointer data)
 {
   RosterViewGtk *self = NULL;
+  GtkTreeModel *model = NULL;
+  GtkTreeIter heap_iter;
+  GtkTreeIter iter;
   gboolean show_offline_contacts = false;
 
   g_return_if_fail (data != NULL);
@@ -306,9 +357,30 @@ show_offline_contacts_changed_nt (G_GNUC_UNUSED gpointer id,
   if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
 
     show_offline_contacts = gm_conf_entry_get_bool (entry);
+    if (show_offline_contacts != self->priv->show_offline_contacts) {
 
-    self->priv->show_offline_contacts = show_offline_contacts;
-    self->priv->core.visit_clusters (sigc::bind_return (sigc::bind (sigc::ptr_fun (on_cluster_added), (gpointer) self), true));
+      self->priv->show_offline_contacts = show_offline_contacts;
+
+      /* beware: model is filtered here */
+      model = gtk_tree_view_get_model (self->priv->tree_view);
+      gtk_tree_model_filter_refilter (GTK_TREE_MODEL_FILTER (model));
+
+      /* beware: model is unfiltered here */
+      model = GTK_TREE_MODEL (self->priv->store);
+      if (gtk_tree_model_get_iter_first (model, &heap_iter)) {
+
+	do {
+
+	  if (gtk_tree_model_iter_nth_child (model, &iter, &heap_iter, 0)) {
+
+	    do {
+
+	      update_offline_count (self, &iter);
+	    } while (gtk_tree_model_iter_next (model, &iter)); 
+	  }
+	} while (gtk_tree_model_iter_next (model, &heap_iter));
+      }
+    }
   }
 }
 
@@ -445,6 +517,27 @@ on_view_clicked (GtkWidget *tree_view,
   }
 
   return TRUE;
+}
+
+static gboolean
+tree_model_filter_hide_show_offline (GtkTreeModel *model,
+				     GtkTreeIter *iter,
+				     gpointer data)
+{
+  RosterViewGtk *self = NULL;
+  gboolean offline = TRUE;
+  gint column_type;
+
+  self = ROSTER_VIEW_GTK (data);
+
+  gtk_tree_model_get (model, iter,
+		      COLUMN_OFFLINE, &offline,
+		      COLUMN_TYPE, &column_type,
+		      -1);
+  if (column_type != TYPE_PRESENTITY)
+    return TRUE;
+  else
+    return self->priv->show_offline_contacts || offline;
 }
 
 
@@ -592,34 +685,30 @@ on_presentity_added (Ekiga::Cluster &/*cluster*/,
     roster_view_gtk_find_iter_for_group (self, &heap_iter, *group, &group_iter);
     roster_view_gtk_find_iter_for_presentity (self, &group_iter, presentity, &iter);
 
-    if (active || self->priv->show_offline_contacts) 
-      gtk_tree_store_set (self->priv->store, &iter,
-                          COLUMN_TYPE, TYPE_PRESENTITY,
-                          COLUMN_PRESENTITY, &presentity,
-                          COLUMN_NAME, presentity.get_name ().c_str (),
-                          COLUMN_STATUS, presentity.get_status ().c_str (),
-                          COLUMN_PRESENCE, presentity.get_presence ().c_str (),
-                          COLUMN_ACTIVE, (!active || away) ? "gray" : "black", 
-                          -1);
-    else
-      gtk_tree_store_remove (self->priv->store, &iter);
+    gtk_tree_store_set (self->priv->store, &iter,
+			COLUMN_TYPE, TYPE_PRESENTITY,
+			COLUMN_OFFLINE, active,
+			COLUMN_PRESENTITY, &presentity,
+			COLUMN_NAME, presentity.get_name ().c_str (),
+			COLUMN_STATUS, presentity.get_status ().c_str (),
+			COLUMN_PRESENCE, presentity.get_presence ().c_str (),
+			COLUMN_ACTIVE, (!active || away) ? "gray" : "black", 
+			-1);
   }
 
   if (groups.empty ()) {
 
     roster_view_gtk_find_iter_for_group (self, &heap_iter, _("Unsorted"), &group_iter);
     roster_view_gtk_find_iter_for_presentity (self, &group_iter, presentity, &iter);
-    if (active || self->priv->show_offline_contacts) 
-      gtk_tree_store_set (self->priv->store, &iter,
-                          COLUMN_TYPE, TYPE_PRESENTITY,
-                          COLUMN_PRESENTITY, &presentity,
-                          COLUMN_NAME, presentity.get_name ().c_str (),
-                          COLUMN_STATUS, presentity.get_status ().c_str (),
-                          COLUMN_PRESENCE, presentity.get_presence ().c_str (),
-                          COLUMN_ACTIVE, active ? "black" : "gray", 
-                          -1);
-    else
-      gtk_tree_store_remove (self->priv->store, &iter);
+    gtk_tree_store_set (self->priv->store, &iter,
+			COLUMN_TYPE, TYPE_PRESENTITY,
+			COLUMN_OFFLINE, active,
+			COLUMN_PRESENTITY, &presentity,
+			COLUMN_NAME, presentity.get_name ().c_str (),
+			COLUMN_STATUS, presentity.get_status ().c_str (),
+			COLUMN_PRESENCE, presentity.get_presence ().c_str (),
+			COLUMN_ACTIVE, active ? "black" : "gray", 
+			-1);
   }
 
   roster_view_gtk_update_groups (self, &heap_iter);
@@ -817,7 +906,6 @@ roster_view_gtk_update_groups (RosterViewGtk *view,
 
   gboolean go_on = FALSE;
   gchar *name = NULL;
-  gchar *size = NULL;
 
   model = GTK_TREE_MODEL (view->priv->store);
 
@@ -829,13 +917,8 @@ roster_view_gtk_update_groups (RosterViewGtk *view,
       // folded or unfolded
       if (gtk_tree_model_iter_has_child (model, &iter)) {
 
-	size = g_strdup_printf ("%d", gtk_tree_model_iter_n_children (model,
-								      &iter));
-	gtk_tree_store_set (GTK_TREE_STORE (model), &iter,
-			    COLUMN_GROUP_SIZE, size,
-			    -1);
-	g_free (size);
 
+	update_offline_count (view, &iter);
         gtk_tree_model_get (model, &iter,
                             COLUMN_NAME, &name, -1);
         if (name) {
@@ -981,6 +1064,7 @@ roster_view_gtk_new (Ekiga::PresenceCore &core)
 
   sigc::connection conn;
 
+  GtkTreeModel *filtered = NULL;
   GtkTreeSelection *selection = NULL;
   GtkTreeViewColumn *col = NULL;
   GtkCellRenderer *renderer = NULL;
@@ -1007,10 +1091,18 @@ roster_view_gtk_new (Ekiga::PresenceCore &core)
                                           G_TYPE_STRING,    // status
                                           G_TYPE_STRING,    // presence
                                           G_TYPE_STRING,    // color if active
-					  G_TYPE_STRING);   // group size
+					  G_TYPE_STRING,    // group size
+					  G_TYPE_BOOLEAN);  // offline
 
+  filtered = gtk_tree_model_filter_new (GTK_TREE_MODEL (self->priv->store),
+					NULL);
   self->priv->tree_view =
-    GTK_TREE_VIEW (gtk_tree_view_new_with_model (GTK_TREE_MODEL (self->priv->store)));
+    GTK_TREE_VIEW (gtk_tree_view_new_with_model (filtered));
+  g_object_unref (filtered);
+  gtk_tree_model_filter_set_visible_func (GTK_TREE_MODEL_FILTER (filtered),
+					  tree_model_filter_hide_show_offline,
+					  self, NULL);
+
   gtk_tree_view_set_headers_visible (self->priv->tree_view, FALSE);
 
   gtk_container_add (GTK_CONTAINER (self), GTK_WIDGET (self->priv->vbox));
