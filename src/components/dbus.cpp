@@ -206,7 +206,7 @@ ekiga_dbus_claim_ownership ()
   if (!bus) {
     PTRACE (1, "Couldn't connect to session bus : " << error->message);
     g_error_free (error);
-    return FALSE;
+    return TRUE; // if we return FALSE here, ekiga won't even start without DBUS
   }
 
   bus_proxy = dbus_g_proxy_new_for_name (bus, "org.freedesktop.DBus",
@@ -285,7 +285,7 @@ ekiga_dbus_client_connect (const gchar *uri)
 {
   DBusGProxy *proxy = get_ekiga_client_proxy ();
 
-  g_return_if_fail (proxy);
+  g_return_if_fail (DBUS_IS_G_PROXY (proxy));
 
   dbus_g_proxy_call_no_reply (proxy, "Call", G_TYPE_STRING, uri, G_TYPE_INVALID);
   g_object_unref (proxy);
@@ -299,7 +299,7 @@ ekiga_dbus_client_show ()
 {
   DBusGProxy *proxy = get_ekiga_client_proxy ();
 
-  g_return_if_fail (proxy);
+  g_return_if_fail (DBUS_IS_G_PROXY (proxy));
 
   dbus_g_proxy_call_no_reply (proxy, "Show", G_TYPE_INVALID);
   g_object_unref (proxy);
