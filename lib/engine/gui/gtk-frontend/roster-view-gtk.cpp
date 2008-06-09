@@ -99,13 +99,13 @@ enum {
   COLUMN_STATUS,
   COLUMN_PRESENCE,
   COLUMN_ACTIVE,
+  COLUMN_GROUP_SIZE,
   COLUMN_NUMBER
 };
 
 /*
  * Callbacks
  */
-
 
 /* DESCRIPTION  : Called when the user right-clicks on a heap, group or
  *                presentity.
@@ -290,6 +290,7 @@ static void roster_view_gtk_update_groups (RosterViewGtk *view,
 
 
 /* Implementation of the callbacks */
+
 static void 
 show_offline_contacts_changed_nt (G_GNUC_UNUSED gpointer id, 
                                   GmConfEntry *entry, 
@@ -816,6 +817,7 @@ roster_view_gtk_update_groups (RosterViewGtk *view,
 
   gboolean go_on = FALSE;
   gchar *name = NULL;
+  gchar *size = NULL;
 
   model = GTK_TREE_MODEL (view->priv->store);
 
@@ -826,6 +828,13 @@ roster_view_gtk_update_groups (RosterViewGtk *view,
       // If this node has children, see if it must be
       // folded or unfolded
       if (gtk_tree_model_iter_has_child (model, &iter)) {
+
+	size = g_strdup_printf ("%d", gtk_tree_model_iter_n_children (model,
+								      &iter));
+	gtk_tree_store_set (GTK_TREE_STORE (model), &iter,
+			    COLUMN_GROUP_SIZE, size,
+			    -1);
+	g_free (size);
 
         gtk_tree_model_get (model, &iter,
                             COLUMN_NAME, &name, -1);
@@ -991,13 +1000,14 @@ roster_view_gtk_new (Ekiga::PresenceCore &core)
 				  GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 
   self->priv->store = gtk_tree_store_new (COLUMN_NUMBER,
-                                          G_TYPE_INT,           // type
-                                          G_TYPE_POINTER,       // heap
-                                          G_TYPE_POINTER,       // presentity
-                                          G_TYPE_STRING,        // name
-                                          G_TYPE_STRING,        // status
-                                          G_TYPE_STRING,        // presence
-                                          G_TYPE_STRING);       // color if active 
+                                          G_TYPE_INT,       // type
+                                          G_TYPE_POINTER,   // heap
+                                          G_TYPE_POINTER,   // presentity
+                                          G_TYPE_STRING,    // name
+                                          G_TYPE_STRING,    // status
+                                          G_TYPE_STRING,    // presence
+                                          G_TYPE_STRING,    // color if active
+					  G_TYPE_STRING);   // group size
 
   self->priv->tree_view =
     GTK_TREE_VIEW (gtk_tree_view_new_with_model (GTK_TREE_MODEL (self->priv->store)));
@@ -1066,6 +1076,15 @@ roster_view_gtk_new (Ekiga::PresenceCore &core)
   gtk_tree_view_column_add_attribute (col, renderer, "foreground", COLUMN_ACTIVE);
   gtk_tree_view_column_set_cell_data_func (col, renderer,
                                            show_cell_data_func, GINT_TO_POINTER (TYPE_PRESENTITY), NULL);
+
+  renderer = gtk_cell_renderer_text_new ();
+  gtk_tree_view_column_set_spacing (col, 0);
+  gtk_tree_view_column_pack_start (col, renderer, TRUE);
+  gtk_tree_view_column_add_attribute (col, renderer, "text", COLUMN_GROUP_SIZE);
+  gtk_tree_view_column_set_alignment (col, 0.0);
+  gtk_tree_view_column_set_cell_data_func (col, renderer,
+					   show_cell_data_func,
+					   GINT_TO_POINTER (TYPE_GROUP), NULL);
 
   /* Callback when the selection has been changed */
   selection = gtk_tree_view_get_selection (self->priv->tree_view);
