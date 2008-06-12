@@ -335,9 +335,7 @@ message_event_cb (G_GNUC_UNUSED GtkWidget *widget,
 {
   StatusIcon *self = STATUSICON (data);
 
-  gchar *msg1 = NULL;
-  gchar *msg2 = NULL;
-  char *message = NULL;
+  gchar *message = NULL;
 
   if (messages > 0) 
     statusicon_start_blinking (self, GM_STOCK_MESSAGE);
@@ -346,14 +344,13 @@ message_event_cb (G_GNUC_UNUSED GtkWidget *widget,
 
   if (messages > 0) {
 
-    msg1 = g_strdup_printf (_("You have %d messages"), messages);
-    msg2 = g_strdup_printf (_("You have %d message"), messages);
-    message = ngettext (msg2, msg1, messages);
+    message = g_strdup_printf (ngettext ("You have %d message",
+					 "You have %d messages",
+					 messages), messages);
     
     gtk_status_icon_set_tooltip (GTK_STATUS_ICON (self), message);
 
-    g_free (msg1);
-    g_free (msg2);
+    g_free (message);
   }
   else {
 
