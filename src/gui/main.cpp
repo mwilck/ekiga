@@ -2193,6 +2193,8 @@ gm_mw_init_call (GtkWidget *main_window)
   item = gtk_tool_item_new ();
   mw->preview_button = gtk_toggle_button_new ();
   gtk_button_set_relief (GTK_BUTTON (mw->preview_button), GTK_RELIEF_NONE);
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (mw->preview_button),
+								gm_conf_get_bool (VIDEO_DEVICES_KEY "enable_preview"));
   image = gtk_image_new_from_icon_name (GM_ICON_CAMERA_VIDEO, 
                                         GTK_ICON_SIZE_MENU);
   gtk_container_add (GTK_CONTAINER (mw->preview_button), image);

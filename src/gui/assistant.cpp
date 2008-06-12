@@ -47,6 +47,7 @@
 #include "videoinput-core.h"
 #include "audioinput-core.h"
 #include "audiooutput-core.h"
+#include <gdk/gdkkeysyms.h>
 
 G_DEFINE_TYPE(EkigaAssistant, ekiga_assistant, GTK_TYPE_ASSISTANT);
 
@@ -1249,6 +1250,20 @@ ekiga_assistant_class_init (EkigaAssistantClass *klass)
   g_type_class_add_private (klass, sizeof (EkigaAssistantPrivate));
 }
 
+static gboolean
+ekiga_assistant_key_press_cb (GtkWidget *widget,
+			      GdkEventKey *event,
+			      G_GNUC_UNUSED gpointer user_data)
+{
+  if (event->keyval == GDK_Escape) {
+
+    gtk_widget_hide (widget);
+    return TRUE;  /* do not propagate the key to parent */
+  }
+
+  return FALSE; /* propagate what we don't treat */
+}
+
 GtkWidget *
 ekiga_assistant_new (Ekiga::ServiceCore *core)
 {
@@ -1260,6 +1275,8 @@ ekiga_assistant_new (Ekiga::ServiceCore *core)
   /* FIXME: move this into the caller */
   g_signal_connect (assistant, "cancel",
                     G_CALLBACK (gtk_widget_hide), NULL);
+  g_signal_connect (assistant, "key-press-event",
+                    G_CALLBACK (ekiga_assistant_key_press_cb), NULL);
 
   sigc::connection conn;
   Ekiga::VideoInputCore *videoinput_core = dynamic_cast<Ekiga::VideoInputCore *> (core->get ("videoinput-core"));
