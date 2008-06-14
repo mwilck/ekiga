@@ -163,7 +163,10 @@ Local::Heap::new_presentity (const std::string name,
     } else {
 
       request.hidden ("good-uri", "no");
-      request.text ("uri", _("Address:"), uri);
+      if ( !uri.empty ())
+	request.text ("uri", _("Address:"), uri);
+      else
+	request.text ("uri", _("Address:"), "sip:"); // let's put a default
     }
 
     request.editable_set ("groups",
