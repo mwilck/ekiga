@@ -404,7 +404,7 @@ on_view_clicked (GtkWidget *tree_view,
   Ekiga::Presentity *presentity = NULL;
 
   self = ROSTER_VIEW_GTK (data);
-  model = GTK_TREE_MODEL (self->priv->store);
+  model = gtk_tree_view_get_model (self->priv->tree_view);
 
   if (event->type == GDK_BUTTON_PRESS || event->type == GDK_KEY_PRESS) {
 
