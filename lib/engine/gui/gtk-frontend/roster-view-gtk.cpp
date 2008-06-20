@@ -320,18 +320,30 @@ update_offline_count (RosterViewGtk* self,
 		      GtkTreeIter* iter)
 {
   GtkTreeModel *model = NULL;
-  GtkTreeModel *filtered = NULL;
-  GtkTreeIter filtered_iter;
+  GtkTreeIter loop_iter;
   gint total = 0;
-  gint not_offline = 0;
+  gint offline_count = 0;
+  gboolean offline;
+  gint column_type;
   gchar *size = NULL;
 
   model = GTK_TREE_MODEL (self->priv->store);
-  filtered = gtk_tree_view_get_model (self->priv->tree_view);
-  gtk_tree_model_filter_convert_child_iter_to_iter (GTK_TREE_MODEL_FILTER (filtered), &filtered_iter, iter);
-  not_offline = gtk_tree_model_iter_n_children (filtered, &filtered_iter);
+
+  if (gtk_tree_model_iter_nth_child (model, &loop_iter, iter, 0)) {
+
+    do {
+
+      gtk_tree_model_get (model, &loop_iter,
+			  COLUMN_OFFLINE, &offline,
+			  COLUMN_TYPE, &column_type,
+			  -1);
+      if (column_type == TYPE_PRESENTITY && !offline)
+	offline_count++;
+    } while (gtk_tree_model_iter_next (model, &loop_iter));
+  }
+
   total = gtk_tree_model_iter_n_children (model, iter);
-  size = g_strdup_printf ("(%d/%d)", not_offline, total);
+  size = g_strdup_printf ("(%d/%d)", total - offline_count, total);
   gtk_tree_store_set (GTK_TREE_STORE (model), iter,
 		      COLUMN_GROUP_SIZE, size,
 		      -1);
