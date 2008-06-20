@@ -805,8 +805,8 @@ void CallProtocolManager::OnReceivedMESSAGE (G_GNUC_UNUSED OpalTransport & trans
     msgData.SetAt (SIPURL (from).AsString (), val);
 
     SIPURL uri = from;
+    uri.Sanitise (SIPURL::FromURI);
     std::string display_name = (const char *) uri.GetDisplayName ();
-    uri.AdjustForRequestURI ();
     std::string message_uri = (const char *) uri.AsString ();
     std::string _message = (const char *) pdu.GetEntityBody ();
 
@@ -819,7 +819,7 @@ void CallProtocolManager::OnMessageFailed (const SIPURL & messageUrl,
                                            SIP_PDU::StatusCodes /*reason*/)
 {
   SIPURL to = messageUrl;
-  to.AdjustForRequestURI ();
+  to.Sanitise (SIPURL::ToURI);
   std::string uri = (const char *) to.AsString ();
   runtime.run_in_main (sigc::bind (im_failed.make_slot (), uri, 
                                    _("Could not send message")));
@@ -892,10 +892,6 @@ CallProtocolManager::OnPresenceInfoReceived (const PString & user,
   std::string status;
   std::string presence = "presence-unknown";
 
-  SIPURL sip_uri = SIPURL (user);
-  sip_uri.AdjustForRequestURI ();
-  std::string _uri = sip_uri.AsString ();
-
   if (b.Find ("Closed") != P_MAX_INDEX)
     presence = "presence-offline";
   else
@@ -915,6 +911,10 @@ CallProtocolManager::OnPresenceInfoReceived (const PString & user,
 
   if ((j = s.Find (" - ")) != P_MAX_INDEX)
     status = (const char *) note.Mid (j + 3);
+
+  SIPURL sip_uri = SIPURL (user);
+  sip_uri.Sanitise (SIPURL::ExternalURI);
+  std::string _uri = sip_uri.AsString ();
 
   /**
    * TODO
