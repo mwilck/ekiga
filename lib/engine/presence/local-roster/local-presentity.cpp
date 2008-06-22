@@ -218,6 +218,7 @@ Local::Presentity::edit_presentity ()
   request.instructions (_("Please fill in this form to change an existing "
 			  "element of ekiga's internal roster"));
   request.text ("name", _("Name:"), name);
+  request.text ("uri", _("Address:"), uri);
 
   request.editable_set ("groups", _("Choose groups:"),
 			groups, all_groups);
@@ -243,10 +244,17 @@ Local::Presentity::edit_presentity_form_submitted (Ekiga::Form &result)
     /* we first fetch all data before making any change, so if there's
      * a problem, we don't do anything */
     const std::string new_name = result.text ("name");
+    const std::string new_uri = result.text ("uri");
     const std::set<std::string> new_groups = result.editable_set ("groups");
     std::map<std::string, xmlNodePtr> future_group_nodes;
 
     name = new_name;
+    if (uri != new_uri) {
+
+      presence_core->unfetch_presence (uri);
+      uri = new_uri;
+      presence_core->fetch_presence (uri);
+    }
     xmlNodeSetContent (name_node,
 		       xmlEncodeSpecialChars(name_node->doc,
 					     BAD_CAST name.c_str ()));
