@@ -50,7 +50,7 @@ History::Book::Book (Ekiga::ServiceCore &_core) :
 {
   xmlNodePtr root = NULL;
 
-  const gchar *c_raw = gm_conf_get_string (KEY);
+  gchar *c_raw = gm_conf_get_string (KEY);
 
   if (c_raw != NULL) {
 
@@ -75,6 +75,8 @@ History::Book::Book (Ekiga::ServiceCore &_core) :
 	  && child->name != NULL
 	  && xmlStrEqual (BAD_CAST ("entry"), child->name))
         add (child);
+
+    g_free (c_raw);
   } else {
 
     doc = xmlNewDoc (BAD_CAST "1.0");

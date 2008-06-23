@@ -50,7 +50,7 @@
 OPENLDAP::Source::Source (Ekiga::ServiceCore &_core): core(_core), doc(NULL)
 {
   xmlNodePtr root;
-  const gchar *c_raw = gm_conf_get_string (KEY);
+  gchar *c_raw = gm_conf_get_string (KEY);
 
   if (c_raw != NULL) {
 
@@ -75,6 +75,8 @@ OPENLDAP::Source::Source (Ekiga::ServiceCore &_core): core(_core), doc(NULL)
 	  && child->name != NULL
 	  && xmlStrEqual (BAD_CAST "server", child->name))
 	add (child);
+
+    g_free (c_raw);
   } else {
 
     doc = xmlNewDoc (BAD_CAST "1.0");
