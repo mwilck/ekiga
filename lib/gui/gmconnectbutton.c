@@ -164,7 +164,6 @@ gm_connect_button_new (const char *pickup,
 {
   GmConnectButton *cb = NULL;
   
-  GtkWidget *hbox = NULL;
   GtkWidget *image = NULL;
   
   g_return_val_if_fail (pickup != NULL, NULL);
@@ -185,8 +184,7 @@ gm_connect_button_new (const char *pickup,
   gtk_container_add (GTK_CONTAINER (cb->hangup_button), image);
   g_signal_connect (G_OBJECT (cb->hangup_button), "clicked", 
                     G_CALLBACK (gm_connect_button_clicked_cb), cb);
-  
-  hbox = gtk_hbox_new (FALSE, 0);
+
   gtk_box_pack_start (GTK_BOX (cb), cb->pickup_button, FALSE, FALSE, 0);
   gtk_box_pack_start (GTK_BOX (cb), cb->hangup_button, FALSE, FALSE, 0);
 
