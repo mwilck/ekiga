@@ -226,6 +226,8 @@ Evolution::Book::~Book ()
 {
   if (book != NULL)
     g_object_unref (book);
+  if (view != NULL)
+    g_object_unref (view);
 
   delete self;
 }
