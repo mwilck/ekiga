@@ -1287,6 +1287,8 @@ gm_mw_destroy (gpointer m)
 
   g_return_if_fail (mw != NULL);
 
+  gtk_widget_destroy (mw->audio_settings_window);
+  gtk_widget_destroy (mw->video_settings_window);
   g_object_unref (mw->tips);
 
   delete ((GmMainWindow *) mw);
