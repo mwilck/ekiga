@@ -146,7 +146,7 @@ statusicon_dispose (GObject *obj)
 
   if (icon->priv->popup_menu) {
 
-    g_object_unref (icon->priv->popup_menu);
+    gtk_widget_destroy (icon->priv->popup_menu);
     icon->priv->popup_menu = NULL;
   }
 
@@ -282,7 +282,7 @@ statusicon_get_type ()
     };
 
     result = g_type_register_static (GTK_TYPE_STATUS_ICON,
-				     "StatusIconType",
+				     "StatusIcon",
 				     &info, (GTypeFlags) 0);
   }
 
