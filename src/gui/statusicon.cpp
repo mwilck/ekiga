@@ -64,7 +64,7 @@
 /*
  * The StatusIcon
  */
-struct _StatusIconPrivate 
+struct _StatusIconPrivate
 {
   _StatusIconPrivate (Ekiga::ServiceCore & _core) : core (_core) { }
 
@@ -89,8 +89,8 @@ enum { STATUSICON_KEY = 1 };
 static GObjectClass *parent_class = NULL;
 
 
-/* 
- * Declaration of Callbacks 
+/*
+ * Declaration of Callbacks
  */
 static void
 show_popup_menu_cb (GtkStatusIcon *icon,
@@ -102,7 +102,7 @@ static void
 statusicon_activated_cb (GtkStatusIcon *icon,
                          gpointer data);
 
-static void 
+static void
 message_event_cb (GtkWidget *widget,
                   guint messages,
                   gpointer data);
@@ -111,7 +111,7 @@ static gboolean
 statusicon_blink_cb (gpointer data);
 
 static void
-statusicon_key_updated_cb (gpointer id, 
+statusicon_key_updated_cb (gpointer id,
                            GmConfEntry *entry,
                            gpointer data);
 
@@ -134,7 +134,7 @@ statusicon_set_status (StatusIcon *widget,
                        guint status);
 
 
-/* 
+/*
  * GObject stuff
  */
 static void
@@ -144,8 +144,22 @@ statusicon_dispose (GObject *obj)
 
   icon = STATUSICON (obj);
 
-  icon->priv->blink_image = NULL;
-  icon->priv->key = NULL;
+  if (icon->priv->popup_menu) {
+
+    g_object_unref (icon->priv->popup_menu);
+    icon->priv->popup_menu = NULL;
+  }
+
+  if (icon->priv->blink_image) {
+
+    g_free (icon->priv->blink_image);
+    icon->priv->blink_image = NULL;
+  }
+  if (icon->priv->key) {
+
+    g_free (icon->priv->key);
+    icon->priv->key = NULL;
+  }
 
   parent_class->dispose (obj);
 }
@@ -158,7 +172,7 @@ statusicon_finalize (GObject *obj)
 
   self = STATUSICON (obj);
 
-  if (self->priv->blink_image) 
+  if (self->priv->blink_image)
     g_free (self->priv->blink_image);
 
   if (self->priv->key)
@@ -168,7 +182,7 @@ statusicon_finalize (GObject *obj)
        iter != self->priv->connections.end ();
        iter++)
     iter->disconnect ();
-  
+
   parent_class->finalize (obj);
 }
 
@@ -241,9 +255,9 @@ statusicon_class_init (gpointer g_class,
   gobject_class->get_property = statusicon_get_property;
   gobject_class->set_property = statusicon_set_property;
 
-  spec = g_param_spec_string ("key", "Key", "Key", 
+  spec = g_param_spec_string ("key", "Key", "Key",
                               NULL, (GParamFlags) G_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class, STATUSICON_KEY, spec); 
+  g_object_class_install_property (gobject_class, STATUSICON_KEY, spec);
 }
 
 
@@ -306,9 +320,9 @@ statusicon_activated_cb (G_GNUC_UNUSED GtkStatusIcon *icon,
   StatusIcon *self = STATUSICON (data);
 
   GtkWidget *window = NULL;
-  
+
   if (!self->priv->unread_messages) {
-  
+
     window = GnomeMeeting::Process ()->GetMainWindow (); //FIXME
 
     // FIXME when the main window becomes a gobject
@@ -328,7 +342,7 @@ statusicon_activated_cb (G_GNUC_UNUSED GtkStatusIcon *icon,
 }
 
 
-static void 
+static void
 message_event_cb (G_GNUC_UNUSED GtkWidget *widget,
                   guint messages,
                   gpointer data)
@@ -337,9 +351,9 @@ message_event_cb (G_GNUC_UNUSED GtkWidget *widget,
 
   gchar *message = NULL;
 
-  if (messages > 0) 
+  if (messages > 0)
     statusicon_start_blinking (self, GM_STOCK_MESSAGE);
-  else 
+  else
     statusicon_stop_blinking (self);
 
   if (messages > 0) {
@@ -347,7 +361,7 @@ message_event_cb (G_GNUC_UNUSED GtkWidget *widget,
     message = g_strdup_printf (ngettext ("You have %d message",
 					 "You have %d messages",
 					 messages), messages);
-    
+
     gtk_status_icon_set_tooltip (GTK_STATUS_ICON (self), message);
 
     g_free (message);
@@ -367,9 +381,9 @@ statusicon_blink_cb (gpointer data)
   StatusIcon *statusicon = STATUSICON (data);
 
   gdk_threads_enter ();
-  if (statusicon->priv->blinking) 
+  if (statusicon->priv->blinking)
     gtk_status_icon_set_from_stock (GTK_STATUS_ICON (statusicon), statusicon->priv->blink_image);
-  else  
+  else
     statusicon_set_status (statusicon, statusicon->priv->status);
   gdk_threads_leave ();
 
@@ -398,7 +412,7 @@ statusicon_key_updated_cb (G_GNUC_UNUSED gpointer id,
 }
 
 
-/* 
+/*
  * Local functions
  */
 static GtkWidget *
@@ -478,7 +492,7 @@ statusicon_stop_blinking (StatusIcon *icon)
     icon->priv->blinking = false;
   }
 
-  statusicon_set_status (STATUSICON (icon), 
+  statusicon_set_status (STATUSICON (icon),
                          gm_conf_get_int (icon->priv->key));
 }
 
