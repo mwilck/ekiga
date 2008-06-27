@@ -536,20 +536,47 @@ tree_model_filter_hide_show_offline (GtkTreeModel *model,
 				     GtkTreeIter *iter,
 				     gpointer data)
 {
+  gboolean result = FALSE;
   RosterViewGtk *self = NULL;
+  GtkTreeIter child_iter;
   gboolean offline = TRUE;
   gint column_type;
 
   self = ROSTER_VIEW_GTK (data);
 
   gtk_tree_model_get (model, iter,
-		      COLUMN_OFFLINE, &offline,
 		      COLUMN_TYPE, &column_type,
 		      -1);
-  if (column_type != TYPE_PRESENTITY)
-    return TRUE;
-  else
-    return self->priv->show_offline_contacts || offline;
+
+  switch (column_type) {
+
+  case TYPE_PRESENTITY:
+    gtk_tree_model_get (model, iter,
+			COLUMN_OFFLINE, &offline,
+			-1);
+    result = self->priv->show_offline_contacts || offline;
+    break;
+
+  case TYPE_GROUP:
+    result = FALSE;
+    if (gtk_tree_model_iter_nth_child (model, &child_iter, iter, 0)) {
+
+      do {
+
+	gtk_tree_model_get (model, &child_iter,
+			    COLUMN_OFFLINE, &offline,
+			    -1);
+	result = self->priv->show_offline_contacts || offline;
+      } while (!result && gtk_tree_model_iter_next (model, &child_iter));
+    }
+    break;
+
+  case TYPE_HEAP:
+  default:
+    result = TRUE;
+  }
+
+  return result;
 }
 
 
