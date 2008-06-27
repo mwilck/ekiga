@@ -108,6 +108,10 @@ GnomeMeeting::Exit ()
   if (accounts_window)
     gtk_widget_destroy (accounts_window);
   accounts_window = NULL;
+
+  if (statusicon)
+    g_object_unref (statusicon);
+  statusicon = NULL;
   
 #ifdef HAVE_DBUS
   if (dbus_component)
