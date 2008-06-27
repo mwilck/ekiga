@@ -91,6 +91,9 @@ GtkFrontend::~GtkFrontend ()
        iter != connections.end ();
        iter++)
     iter->disconnect ();
+
+  gtk_widget_destroy (addressbook_window);
+  gtk_widget_destroy (chat_window);
 }
 
 
