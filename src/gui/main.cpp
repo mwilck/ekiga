@@ -1284,7 +1284,7 @@ static void
 gm_mw_destroy (gpointer m)
 {
   GmMainWindow *mw = GM_MAIN_WINDOW (m);
-  
+
   g_return_if_fail (mw != NULL);
 
   g_object_unref (mw->tips);
@@ -3698,6 +3698,7 @@ gm_main_window_new (Ekiga::ServiceCore & core)
 
   /* Tooltips and accelerators */
   mw->tips = gtk_tooltips_new ();
+  g_object_ref_sink (mw->tips);
   mw->accel = gtk_accel_group_new ();
   gtk_window_add_accel_group (GTK_WINDOW (window), mw->accel);
 
