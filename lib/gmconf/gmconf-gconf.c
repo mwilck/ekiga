@@ -128,6 +128,7 @@ gm_conf_set_bool (const gchar *key,
 
   client = gconf_client_get_default ();
   gconf_client_set_bool (client, key, b, NULL);
+  g_object_unref (client);
 }
 
 
@@ -135,11 +136,15 @@ gboolean
 gm_conf_get_bool (const gchar *key)
 {
   GConfClient *client = NULL;
+  gboolean result;
 
   g_return_val_if_fail (key != NULL, FALSE);
 
   client = gconf_client_get_default ();
-  return gconf_client_get_bool (client, key, NULL);
+  result = gconf_client_get_bool (client, key, NULL);
+  g_object_unref (client);
+
+  return result;
 }
 
 
@@ -153,18 +158,23 @@ gm_conf_set_string (const gchar *key,
 
   client = gconf_client_get_default ();
   gconf_client_set_string (client, key, v, NULL);
+  g_object_unref (client);
 }
 
 
 gchar *
 gm_conf_get_string (const gchar *key)
 {
+  gchar *result = NULL;
   GConfClient *client = NULL;
  
   g_return_val_if_fail (key != NULL, NULL);
 
   client = gconf_client_get_default ();
-  return gconf_client_get_string (client, key, NULL);
+  result = gconf_client_get_string (client, key, NULL);
+  g_object_unref (client);
+
+  return result;
 }
 
 
@@ -178,18 +188,23 @@ gm_conf_set_int (const gchar *key,
 
   client = gconf_client_get_default ();
   gconf_client_set_int (client, key, v, NULL);
+  g_object_unref (client);
 }
 
 
 int
 gm_conf_get_int (const gchar *key)
 {
+  int result;
   GConfClient *client = NULL;
  
   g_return_val_if_fail (key != NULL, 0);
 
   client = gconf_client_get_default ();
-  return gconf_client_get_int (client, key, NULL);
+  result = gconf_client_get_int (client, key, NULL);
+  g_object_unref (client);
+
+  return result;
 }
 
 
@@ -203,18 +218,23 @@ gm_conf_set_float (const gchar *key,
 
   client = gconf_client_get_default ();
   gconf_client_set_float (client, key, v, NULL);
+  g_object_unref (client);
 }
 
 
 gfloat
 gm_conf_get_float (const gchar *key)
 {
+  gfloat result;
   GConfClient *client = NULL;
 
   g_return_val_if_fail (key != NULL, (float)0);
 
   client = gconf_client_get_default ();
-  return gconf_client_get_float (client, key, NULL);
+  result = gconf_client_get_float (client, key, NULL);
+  g_object_unref (client);
+
+  return result;
 }
 
 
@@ -228,18 +248,23 @@ gm_conf_set_string_list (const gchar *key,
 
   client = gconf_client_get_default ();
   gconf_client_set_list (client, key, GCONF_VALUE_STRING, l, NULL);
+  g_object_unref (client);
 }
 
 
 GSList *
 gm_conf_get_string_list (const gchar *key)
 {
+  GSList *result = NULL;
   GConfClient *client = NULL;
  
   g_return_val_if_fail (key != NULL, NULL);
 
   client = gconf_client_get_default ();
-  return gconf_client_get_list (client, key, GCONF_VALUE_STRING, NULL);
+  result = gconf_client_get_list (client, key, GCONF_VALUE_STRING, NULL);
+  g_object_unref (client);
+
+  return result;
 }
 
 
@@ -262,20 +287,27 @@ gm_conf_unescape_key (const gchar *key,
 gboolean
 gm_conf_is_key_writable (const gchar *key)
 {
+  gboolean result;
   GConfClient *client = NULL;
 
   g_return_val_if_fail (key != NULL, FALSE);
 
   client = gconf_client_get_default ();
-  return gconf_client_key_is_writable (client, key, NULL);
+  result = gconf_client_key_is_writable (client, key, NULL);
+  g_object_unref (client);
+
+  return result;
 }
 
 
 void
 gm_conf_init ()
 {
-  gconf_client_set_error_handling (gconf_client_get_default (),
-				   GCONF_CLIENT_HANDLE_UNRETURNED);
+  GConfClient *client = NULL;
+
+  client = gconf_client_get_default ();
+  gconf_client_set_error_handling (client, GCONF_CLIENT_HANDLE_UNRETURNED);
+  g_object_unref (client);
 }
 
 
@@ -392,6 +424,7 @@ gm_conf_notifier_add (const gchar *namespac,
 		      GmConfNotifier func,
 		      gpointer user_data)
 {
+  gpointer result;
   GConfClient *client = NULL;
   GConfNotifierWrap *wrapper = NULL;
 
@@ -400,10 +433,13 @@ gm_conf_notifier_add (const gchar *namespac,
   
   client = gconf_client_get_default ();
   wrapper = gconf_notifier_wrapper_new (func, user_data);
-  return GUINT_TO_POINTER(gconf_client_notify_add (client, namespac,
-						   gconf_notifier_wrapper_trigger,
-						   wrapper,
-						   gconf_notifier_wrapper_destroy, NULL));
+  result = GUINT_TO_POINTER(gconf_client_notify_add (client, namespac,
+						     gconf_notifier_wrapper_trigger,
+						     wrapper,
+						     gconf_notifier_wrapper_destroy, NULL));
+  g_object_unref (client);
+
+  return result;
 }
 
 
@@ -416,6 +452,7 @@ gm_conf_notifier_remove (gpointer identifier)
 
   client = gconf_client_get_default ();  
   gconf_client_notify_remove (client, GPOINTER_TO_UINT (identifier));
+  g_object_unref (client);
 }
 
 void
@@ -427,6 +464,7 @@ gm_conf_notifier_trigger (const gchar *namespac)
 
   client = gconf_client_get_default ();  
   gconf_client_notify (client, namespac);
+  g_object_unref (client);
 }
 
 void
@@ -437,6 +475,7 @@ gm_conf_watch ()
   client = gconf_client_get_default ();  
   gconf_client_add_dir (client, "/apps/" PACKAGE_NAME,
 			GCONF_CLIENT_PRELOAD_NONE, NULL);
+  g_object_unref (client);
 }
 
 
@@ -447,6 +486,7 @@ gm_conf_unwatch ()
 
   client = gconf_client_get_default ();  
   gconf_client_remove_dir (client, "/apps/" PACKAGE_NAME, NULL);
+  g_object_unref (client);
 }
 
 
@@ -460,5 +500,6 @@ gm_conf_destroy (const gchar *namespac)
   client = gconf_client_get_default ();  
   gconf_client_recursive_unset (client, namespac,
 				(GConfUnsetFlags)0, NULL);
+  g_object_unref (client);
 }
 
