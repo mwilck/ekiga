@@ -58,7 +58,7 @@
 
 
 GtkFrontend::GtkFrontend (Ekiga::ServiceCore &core)
-{ 
+{
   sigc::connection conn;
 
   Ekiga::PresenceCore *presence_core = NULL;
@@ -75,9 +75,9 @@ GtkFrontend::GtkFrontend (Ekiga::ServiceCore &core)
 
   roster_view = roster_view_gtk_new (*presence_core);
   call_history_view = call_history_view_gtk_new (*history_book);
-  addressbook_window = 
+  addressbook_window =
     addressbook_window_new_with_key (*contact_core, "/apps/ekiga/general/user_interface/addressbook_window");
-  chat_window = 
+  chat_window =
     chat_window_new_with_key (core, "/apps/ekiga/general/user_interface/chat_window");
 
   conn = chat_core->new_chat.connect (sigc::mem_fun (this, &GtkFrontend::on_new_chat));
@@ -95,38 +95,38 @@ GtkFrontend::~GtkFrontend ()
 
 
 const std::string GtkFrontend::get_name () const
-{ 
-  return "gtk-frontend"; 
+{
+  return "gtk-frontend";
 }
 
 
 const std::string GtkFrontend::get_description () const
-{ 
-  return "\tGtk+ frontend support"; 
+{
+  return "\tGtk+ frontend support";
 }
 
 
 const GtkWidget *GtkFrontend::get_roster_view () const
-{ 
-  return roster_view; 
+{
+  return roster_view;
 }
 
 
 const GtkWidget *GtkFrontend::get_addressbook_window () const
-{ 
-  return addressbook_window; 
+{
+  return addressbook_window;
 }
 
 
 const GtkWidget *GtkFrontend::get_chat_window () const
-{ 
-  return chat_window; 
+{
+  return chat_window;
 }
 
 
 const GtkWidget *
 GtkFrontend::get_call_history_view () const
-{ 
+{
   return call_history_view;
 }
 

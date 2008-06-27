@@ -52,33 +52,33 @@ class GtkFrontend: public Ekiga::Service
 {
 public:
 
-    GtkFrontend (Ekiga::ServiceCore & _core);
+  GtkFrontend (Ekiga::ServiceCore & _core);
 
-    ~GtkFrontend ();
+  ~GtkFrontend ();
 
-    const std::string get_name () const;
+  const std::string get_name () const;
 
-    const std::string get_description () const;
+  const std::string get_description () const;
 
-    const GtkWidget *get_roster_view () const;
+  const GtkWidget *get_roster_view () const;
 
   const GtkWidget *get_call_history_view () const;
 
-    const GtkWidget *get_addressbook_window () const;
+  const GtkWidget *get_addressbook_window () const;
 
-    const GtkWidget *get_chat_window () const;
+  const GtkWidget *get_chat_window () const;
 
 private :
-    void on_new_chat (const Ekiga::ChatManager & manager,
-                      const std::string & name,
-                      const std::string & uri);
+  void on_new_chat (const Ekiga::ChatManager & manager,
+		    const std::string & name,
+		    const std::string & uri);
 
-    GtkWidget *addressbook_window;
-    GtkWidget *roster_view;
+  GtkWidget *addressbook_window;
+  GtkWidget *roster_view;
   GtkWidget *call_history_view;
-    GtkWidget *chat_window;
+  GtkWidget *chat_window;
 
-    std::vector<sigc::connection> connections;
+  std::vector<sigc::connection> connections;
 };
 
 
