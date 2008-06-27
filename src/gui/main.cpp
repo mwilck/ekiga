@@ -1287,6 +1287,8 @@ gm_mw_destroy (gpointer m)
   
   g_return_if_fail (mw != NULL);
 
+  g_object_unref (mw->tips);
+
   delete ((GmMainWindow *) mw);
 }
 
