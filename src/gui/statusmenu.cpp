@@ -445,6 +445,9 @@ long_status_message_changed (gpointer /*id*/,
   short_status = gm_conf_get_string (PERSONAL_DATA_KEY "short_status");
   long_status = gm_conf_entry_get_string (entry);
 
+  if (short_status == NULL)
+    short_status = g_strdup ("");
+
   status_menu_set_option (self, short_status, long_status);
 
   g_free (short_status);
@@ -464,6 +467,9 @@ short_status_message_changed (gpointer /*id*/,
 
   short_status = gm_conf_entry_get_string (entry);
   long_status = gm_conf_get_string (PERSONAL_DATA_KEY "long_status");
+
+  if (long_status == NULL)
+    long_status = g_strdup ("");
 
   status_menu_set_option (self, short_status, long_status);
 
