@@ -146,7 +146,7 @@ statusicon_dispose (GObject *obj)
 
   if (icon->priv->popup_menu) {
 
-    gtk_widget_destroy (icon->priv->popup_menu);
+    g_object_unref (icon->priv->popup_menu);
     icon->priv->popup_menu = NULL;
   }
 
@@ -546,6 +546,7 @@ statusicon_new (Ekiga::ServiceCore & core,
   self->priv = new StatusIconPrivate (core);
 
   self->priv->popup_menu = statusicon_build_menu ();
+  g_object_ref_sink (self->priv->popup_menu);
   self->priv->has_message = FALSE;
   self->priv->blink_id = -1;
   self->priv->blinking = false;
