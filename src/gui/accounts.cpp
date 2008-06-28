@@ -1574,6 +1574,7 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
 
   aw->accounts_list = 
     gtk_tree_view_new_with_model (GTK_TREE_MODEL (list_store));
+  g_object_unref (list_store);
   gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (aw->accounts_list), TRUE);
   gtk_tree_view_set_reorderable (GTK_TREE_VIEW (aw->accounts_list), TRUE);
   g_signal_connect (G_OBJECT (aw->accounts_list), "row-activated",

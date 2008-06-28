@@ -648,6 +648,7 @@ status_menu_clear_status_message_dialog_run (StatusMenu *self)
                                    G_TYPE_STRING,
                                    G_TYPE_INT);
   tree_view = gtk_tree_view_new_with_model (GTK_TREE_MODEL (list_store));
+  g_object_unref (list_store);
   gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (tree_view), false);
 
   column = gtk_tree_view_column_new ();
@@ -852,6 +853,7 @@ status_menu_init (StatusMenu *self)
 
   gtk_combo_box_set_model (GTK_COMBO_BOX (self),
                            GTK_TREE_MODEL (self->priv->list_store));
+  g_object_unref (self->priv->list_store);
 
   renderer = gtk_cell_renderer_pixbuf_new ();
   gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (self), renderer, FALSE);

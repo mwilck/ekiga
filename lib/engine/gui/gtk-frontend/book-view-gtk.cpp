@@ -438,6 +438,8 @@ book_view_gtk_update_contact (BookViewGtk *self,
                       COLUMN_PHONE, phone.c_str (), 
                       COLUMN_PIXBUF, icon, -1);
 
+  g_object_unref (icon);
+
   if (GDK_IS_WINDOW (GTK_WIDGET (self)->window))
     gdk_window_set_cursor (GTK_WIDGET (self)->window, NULL);
 }
@@ -629,6 +631,7 @@ book_view_gtk_new (Ekiga::Book &book)
                               G_TYPE_STRING);
 
   gtk_tree_view_set_model (result->priv->tree_view, GTK_TREE_MODEL (store));
+  g_object_unref (store);
 
   /* Name */
   column = gtk_tree_view_column_new ();

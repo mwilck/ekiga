@@ -448,6 +448,7 @@ addressbook_window_add_book (AddressBookWindow *self,
                       COLUMN_NAME, book.get_name ().c_str (),
                       COLUMN_BOOK_POINTER, &book, COLUMN_VIEW, view,
                       -1);
+  g_object_unref (book_icon);
   gtk_tree_selection_select_iter (self->priv->selection, &iter);
 }
 
@@ -536,13 +537,6 @@ addressbook_window_dispose (GObject *obj)
   AddressBookWindow *self = NULL;
 
   self = ADDRESSBOOK_WINDOW (obj);
-
-  if (self->priv->store) {
-
-    gtk_tree_store_clear (self->priv->store);
-    g_object_unref (self->priv->store);
-    self->priv->store = NULL;
-  }
 
   if (self->priv->menu_item_view) {
 
@@ -689,7 +683,7 @@ addressbook_window_new (Ekiga::ContactCore &core)
                                           G_TYPE_POINTER,
                                           G_TYPE_OBJECT);
   view = gtk_tree_view_new_with_model (GTK_TREE_MODEL (self->priv->store));
-  g_object_ref (self->priv->store);
+  g_object_unref (self->priv->store);
   gtk_container_add (GTK_CONTAINER (frame), view);
   gtk_widget_set_size_request (GTK_WIDGET (view), 125, -1);
   gtk_paned_add1 (GTK_PANED (hpaned), frame);

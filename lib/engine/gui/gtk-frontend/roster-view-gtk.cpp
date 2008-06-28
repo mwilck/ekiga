@@ -1135,6 +1135,7 @@ roster_view_gtk_new (Ekiga::PresenceCore &core)
 
   filtered = gtk_tree_model_filter_new (GTK_TREE_MODEL (self->priv->store),
 					NULL);
+  g_object_unref (self->priv->store);
   self->priv->tree_view =
     GTK_TREE_VIEW (gtk_tree_view_new_with_model (filtered));
   g_object_unref (filtered);
