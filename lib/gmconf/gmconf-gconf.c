@@ -27,7 +27,7 @@
 
 
 /*
- *                         gmconf-gconf.c  -  description 
+ *                         gmconf-gconf.c  -  description
  *                         ------------------------------------------
  *   begin                : Mar 2004, derived from gconf_widgets_extensions.c
  *                          started on Fri Oct 17 2003.
@@ -46,18 +46,22 @@
 
 #include <gmconf/gmconf.h>
 
+/* Using a global variable is dirty, but the api is built like this
+ */
+static GConfClient *client;
+
 /* this is needed in order to really hide gconf: one needs to be able to
  * call the GmConfNotifier from inside a gconf notifier, so we hide the real
  * notifier and its associated user data into the user data of a gconf
  * notifier, that will do the unwrapping, and call the real stuff */
 typedef struct _GConfNotifierWrap GConfNotifierWrap;
 
-struct _GConfNotifierWrap {  
+struct _GConfNotifierWrap {
   GmConfNotifier real_notifier;
   gpointer real_user_data;
 };
 
-static GConfNotifierWrap *gconf_notifier_wrapper_new (GmConfNotifier, 
+static GConfNotifierWrap *gconf_notifier_wrapper_new (GmConfNotifier,
                                                       gpointer);
 
 /* gpointer, because it is a callback */
@@ -74,11 +78,11 @@ static void gconf_notifier_wrapper_trigger (GConfClient *,
 /* this functions expects a non-NULL conf notifier, and wraps it for
  * use by the universal gconf notifier */
 static GConfNotifierWrap *
-gconf_notifier_wrapper_new (GmConfNotifier notifier, 
+gconf_notifier_wrapper_new (GmConfNotifier notifier,
                             gpointer user_data)
 {
   GConfNotifierWrap *result = NULL;
-  
+
   g_return_val_if_fail (notifier != NULL, NULL);
 
   result = g_new (GConfNotifierWrap, 1);
@@ -99,8 +103,8 @@ gconf_notifier_wrapper_destroy (gpointer wrapper)
 /* this is the universal gconf notification unwrapper: it
  * expects a wrapped gm conf notifier in its user_data argument,
  * and calls it  */
-static void        
-gconf_notifier_wrapper_trigger (G_GNUC_UNUSED GConfClient *client,
+static void
+gconf_notifier_wrapper_trigger (G_GNUC_UNUSED GConfClient *client_,
 				guint identifier,
 				GConfEntry *entry,
 				gpointer user_data)
@@ -122,29 +126,18 @@ void
 gm_conf_set_bool (const gchar *key,
 		  const gboolean b)
 {
-  GConfClient *client = NULL;
-
   g_return_if_fail (key != NULL);
 
-  client = gconf_client_get_default ();
   gconf_client_set_bool (client, key, b, NULL);
-  g_object_unref (client);
 }
 
 
 gboolean
 gm_conf_get_bool (const gchar *key)
 {
-  GConfClient *client = NULL;
-  gboolean result;
-
   g_return_val_if_fail (key != NULL, FALSE);
 
-  client = gconf_client_get_default ();
-  result = gconf_client_get_bool (client, key, NULL);
-  g_object_unref (client);
-
-  return result;
+  return gconf_client_get_bool (client, key, NULL);
 }
 
 
@@ -152,29 +145,18 @@ void
 gm_conf_set_string (const gchar *key,
 		    const gchar *v)
 {
-  GConfClient *client = NULL;
-
   g_return_if_fail (key != NULL);
 
-  client = gconf_client_get_default ();
   gconf_client_set_string (client, key, v, NULL);
-  g_object_unref (client);
 }
 
 
 gchar *
 gm_conf_get_string (const gchar *key)
 {
-  gchar *result = NULL;
-  GConfClient *client = NULL;
- 
   g_return_val_if_fail (key != NULL, NULL);
 
-  client = gconf_client_get_default ();
-  result = gconf_client_get_string (client, key, NULL);
-  g_object_unref (client);
-
-  return result;
+  return gconf_client_get_string (client, key, NULL);
 }
 
 
@@ -182,29 +164,18 @@ void
 gm_conf_set_int (const gchar *key,
 		 const int v)
 {
-  GConfClient *client = NULL;
- 
   g_return_if_fail (key != NULL);
 
-  client = gconf_client_get_default ();
   gconf_client_set_int (client, key, v, NULL);
-  g_object_unref (client);
 }
 
 
 int
 gm_conf_get_int (const gchar *key)
 {
-  int result;
-  GConfClient *client = NULL;
- 
   g_return_val_if_fail (key != NULL, 0);
 
-  client = gconf_client_get_default ();
-  result = gconf_client_get_int (client, key, NULL);
-  g_object_unref (client);
-
-  return result;
+  return gconf_client_get_int (client, key, NULL);
 }
 
 
@@ -212,29 +183,18 @@ void
 gm_conf_set_float (const gchar *key,
 		   const float v)
 {
-  GConfClient *client = NULL;
-
   g_return_if_fail (key != NULL);
 
-  client = gconf_client_get_default ();
   gconf_client_set_float (client, key, v, NULL);
-  g_object_unref (client);
 }
 
 
 gfloat
 gm_conf_get_float (const gchar *key)
 {
-  gfloat result;
-  GConfClient *client = NULL;
-
   g_return_val_if_fail (key != NULL, (float)0);
 
-  client = gconf_client_get_default ();
-  result = gconf_client_get_float (client, key, NULL);
-  g_object_unref (client);
-
-  return result;
+  return gconf_client_get_float (client, key, NULL);
 }
 
 
@@ -242,34 +202,23 @@ void
 gm_conf_set_string_list (const gchar *key,
 			 GSList *l)
 {
-  GConfClient *client = NULL;
- 
   g_return_if_fail (key != NULL);
 
-  client = gconf_client_get_default ();
   gconf_client_set_list (client, key, GCONF_VALUE_STRING, l, NULL);
-  g_object_unref (client);
 }
 
 
 GSList *
 gm_conf_get_string_list (const gchar *key)
 {
-  GSList *result = NULL;
-  GConfClient *client = NULL;
- 
   g_return_val_if_fail (key != NULL, NULL);
 
-  client = gconf_client_get_default ();
-  result = gconf_client_get_list (client, key, GCONF_VALUE_STRING, NULL);
-  g_object_unref (client);
-
-  return result;
+  return gconf_client_get_list (client, key, GCONF_VALUE_STRING, NULL);
 }
 
 
 gchar *
-gm_conf_escape_key (const gchar *key, 
+gm_conf_escape_key (const gchar *key,
                     gint len)
 {
   return gconf_escape_key (key, len);
@@ -277,7 +226,7 @@ gm_conf_escape_key (const gchar *key,
 
 
 gchar *
-gm_conf_unescape_key (const gchar *key, 
+gm_conf_unescape_key (const gchar *key,
                       gint len)
 {
   return gconf_unescape_key (key, len);
@@ -287,26 +236,23 @@ gm_conf_unescape_key (const gchar *key,
 gboolean
 gm_conf_is_key_writable (const gchar *key)
 {
-  gboolean result;
-  GConfClient *client = NULL;
-
   g_return_val_if_fail (key != NULL, FALSE);
 
-  client = gconf_client_get_default ();
-  result = gconf_client_key_is_writable (client, key, NULL);
-  g_object_unref (client);
-
-  return result;
+  return gconf_client_key_is_writable (client, key, NULL);
 }
 
 
 void
 gm_conf_init ()
 {
-  GConfClient *client = NULL;
-
   client = gconf_client_get_default ();
   gconf_client_set_error_handling (client, GCONF_CLIENT_HANDLE_UNRETURNED);
+}
+
+
+void
+gm_conf_shutdown ()
+{
   g_object_unref (client);
 }
 
@@ -420,86 +366,62 @@ gm_conf_entry_get_list (GmConfEntry *entry)
 
 
 gpointer
-gm_conf_notifier_add (const gchar *namespac, 
+gm_conf_notifier_add (const gchar *namespac,
 		      GmConfNotifier func,
 		      gpointer user_data)
 {
   gpointer result;
-  GConfClient *client = NULL;
   GConfNotifierWrap *wrapper = NULL;
 
   g_return_val_if_fail (namespac != NULL, NULL);
   g_return_val_if_fail (func != NULL, NULL);
-  
-  client = gconf_client_get_default ();
+
   wrapper = gconf_notifier_wrapper_new (func, user_data);
-  result = GUINT_TO_POINTER(gconf_client_notify_add (client, namespac,
+  return GUINT_TO_POINTER(gconf_client_notify_add (client, namespac,
 						     gconf_notifier_wrapper_trigger,
 						     wrapper,
 						     gconf_notifier_wrapper_destroy, NULL));
-  g_object_unref (client);
 
   return result;
 }
 
 
-void 
+void
 gm_conf_notifier_remove (gpointer identifier)
 {
-  GConfClient *client = NULL;
-
   g_return_if_fail (identifier != NULL);
 
-  client = gconf_client_get_default ();  
   gconf_client_notify_remove (client, GPOINTER_TO_UINT (identifier));
-  g_object_unref (client);
 }
 
 void
 gm_conf_notifier_trigger (const gchar *namespac)
 {
-  GConfClient *client = NULL;
-
   g_return_if_fail (namespac != NULL);
 
-  client = gconf_client_get_default ();  
   gconf_client_notify (client, namespac);
-  g_object_unref (client);
 }
 
 void
 gm_conf_watch ()
 {
-  GConfClient *client = NULL;
-
-  client = gconf_client_get_default ();  
   gconf_client_add_dir (client, "/apps/" PACKAGE_NAME,
 			GCONF_CLIENT_PRELOAD_NONE, NULL);
-  g_object_unref (client);
 }
 
 
-void 
+void
 gm_conf_unwatch ()
 {
-  GConfClient *client = NULL;
-
-  client = gconf_client_get_default ();  
   gconf_client_remove_dir (client, "/apps/" PACKAGE_NAME, NULL);
-  g_object_unref (client);
 }
 
 
-void 
+void
 gm_conf_destroy (const gchar *namespac)
 {
-  GConfClient *client = NULL;
-
   g_return_if_fail (namespac != NULL);
 
-  client = gconf_client_get_default ();  
   gconf_client_recursive_unset (client, namespac,
 				(GConfUnsetFlags)0, NULL);
-  g_object_unref (client);
 }
-
