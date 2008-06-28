@@ -37,21 +37,45 @@
 #include "pixmaps/gm_powermeter_default_03.xpm"
 #include "pixmaps/gm_powermeter_default_04.xpm"
 
-static void
-gm_powermeter_class_init (GmPowermeterClass*);
+static GObjectClass *parent_class = NULL;
 
-static void
-gm_powermeter_init (GmPowermeter*);
+static void gm_powermeter_dispose (GObject *obj);
 
-static guint
-gm_powermeter_get_index_by_level (guint,
-				  gfloat);
+static void gm_powermeter_finalize (GObject *obj);
 
-void
-gm_powermeter_redraw (GmPowermeter*);
+static void gm_powermeter_class_init (gpointer g_class,
+				      gpointer class_data);
+
+static void gm_powermeter_init (GmPowermeter*);
+
+static guint gm_powermeter_get_index_by_level (guint,
+					       gfloat);
+
+void gm_powermeter_redraw (GmPowermeter*);
 
 
 /* Implementation */
+
+static void
+gm_powermeter_dispose (GObject *obj)
+{
+  g_object_unref (((GmPowermeter*)obj)->iconset->iconv[0]);
+  g_object_unref (((GmPowermeter*)obj)->iconset->iconv[1]);
+  g_object_unref (((GmPowermeter*)obj)->iconset->iconv[2]);
+  g_object_unref (((GmPowermeter*)obj)->iconset->iconv[3]);
+  g_object_unref (((GmPowermeter*)obj)->iconset->iconv[4]);
+
+  parent_class->dispose (obj);
+}
+
+static void
+gm_powermeter_finalize (GObject *obj)
+{
+  g_free (((GmPowermeter*)obj)->iconset->iconv);
+  g_free (((GmPowermeter*)obj)->iconset);
+
+  parent_class->finalize (obj);
+}
 
 GType
 gm_powermeter_get_type (void)
@@ -83,8 +107,16 @@ gm_powermeter_get_type (void)
 
 
 static void
-gm_powermeter_class_init (G_GNUC_UNUSED GmPowermeterClass* klass)
+gm_powermeter_class_init (gpointer g_class,
+			  G_GNUC_UNUSED gpointer class_data)
 {
+  GObjectClass *gobject_class = NULL;
+
+  parent_class = (GObjectClass *) g_type_class_peek_parent (g_class);
+
+  gobject_class = (GObjectClass*)g_class;
+  gobject_class->dispose = gm_powermeter_dispose;
+  gobject_class->finalize = gm_powermeter_finalize;
 }
 
 
@@ -108,7 +140,7 @@ gm_powermeter_init (GmPowermeter* powermeter)
 
   /* populate the vector table and append NULL */
   /* append/remove lines when you change the number of
-   * pictures for the default set! */
+   * pictures for the default set! (and free them in dispose!) */
   powermeter->iconset->iconv[0] =
     gdk_pixbuf_new_from_xpm_data ((const char **) gm_powermeter_default_00_xpm);
   powermeter->iconset->iconv[1] =
