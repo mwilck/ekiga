@@ -3703,6 +3703,7 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   g_object_ref_sink (mw->tips);
   mw->accel = gtk_accel_group_new ();
   gtk_window_add_accel_group (GTK_WINDOW (window), mw->accel);
+  g_object_unref (mw->accel);
 
   mw->window_vbox = gtk_vbox_new (0, FALSE);
   gtk_container_add (GTK_CONTAINER (window), mw->window_vbox);

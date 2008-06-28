@@ -192,6 +192,7 @@ gm_window_init (GTypeInstance *instance,
 
   accel = gtk_accel_group_new ();
   gtk_window_add_accel_group (GTK_WINDOW (self), accel);
+  g_object_unref (accel);
   gtk_accel_group_connect (accel, GDK_Escape, (GdkModifierType) 0, GTK_ACCEL_LOCKED,
                            g_cclosure_new_swap (G_CALLBACK (gtk_widget_hide), (gpointer) self, NULL));
 

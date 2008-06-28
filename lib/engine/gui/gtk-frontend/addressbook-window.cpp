@@ -646,6 +646,7 @@ addressbook_window_new (Ekiga::ContactCore &core)
 
   self->priv->accel = gtk_accel_group_new ();
   gtk_window_add_accel_group (GTK_WINDOW (self), self->priv->accel);
+  g_object_unref (self->priv->accel);
 
   self->priv->menu_item_core = 
     gtk_menu_item_new_with_mnemonic (_("Address _Book"));
