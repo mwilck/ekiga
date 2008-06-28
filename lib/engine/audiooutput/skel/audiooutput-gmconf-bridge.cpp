@@ -80,12 +80,14 @@ void AudioOutputCoreConfBridge::on_property_changed (std::string key, GmConfEntr
     PTRACE(4, "AudioOutputCoreConfBridge\tUpdating device");
 
     AudioOutputDevice device;
+    const gchar *audio_device = NULL;
+    audio_device = gm_conf_entry_get_string (entry);
 
-    if (gm_conf_entry_get_string (entry) == NULL) {
+    if (audio_device == NULL) {
       PTRACE(1, "AudioOutputCoreConfBridge\t" << AUDIO_DEVICES_KEY "output_device" << " is NULL");
     }
     else {
-      device.SetFromString(gm_conf_entry_get_string (entry));
+      device.SetFromString(audio_device);
     }
   
     if ( (device.type   == "" )   ||
@@ -104,12 +106,14 @@ void AudioOutputCoreConfBridge::on_property_changed (std::string key, GmConfEntr
 
     PTRACE(4, "AudioOutputCoreConfBridge\tUpdating device");
     AudioOutputDevice device;
+    const gchar *audio_device = NULL;
+    audio_device = gm_conf_entry_get_string (entry);
 
-    if (gm_conf_entry_get_string (entry) == NULL) {
+    if (audio_device == NULL) {
       PTRACE(1, "AudioOutputCoreConfBridge\t" << AUDIO_DEVICES_KEY "output_device" << " is NULL");
     }
     else {
-      device.SetFromString(gm_conf_entry_get_string (entry));
+      device.SetFromString(audio_device);
     }
 
     if ( (device.type   == "" )   ||
@@ -126,13 +130,16 @@ void AudioOutputCoreConfBridge::on_property_changed (std::string key, GmConfEntr
   if ( (key == SOUND_EVENTS_KEY "busy_tone_sound") ||
        (key == SOUND_EVENTS_KEY "enable_busy_tone_sound") ) {
 
-    if (gm_conf_get_string (SOUND_EVENTS_KEY "busy_tone_sound") == NULL) {
+    gchar *c_file_name = NULL;
+    c_file_name = gm_conf_get_string (SOUND_EVENTS_KEY "busy_tone_sound");
+    if (c_file_name == NULL) {
       PTRACE(1, "AudioOutputCoreConfBridge\t" << SOUND_EVENTS_KEY "busy_tone_sound" << " is NULL");
       return;
     }
 
     name = "busy_tone_sound";
-    file_name = gm_conf_get_string (SOUND_EVENTS_KEY "busy_tone_sound");
+    file_name = c_file_name;
+    g_free (c_file_name);
     enabled = gm_conf_get_bool (SOUND_EVENTS_KEY "enable_busy_tone_sound");
     audioinput_core.add_event (name, file_name, primary, enabled);
   }
@@ -140,13 +147,16 @@ void AudioOutputCoreConfBridge::on_property_changed (std::string key, GmConfEntr
   if ( (key == SOUND_EVENTS_KEY "incoming_call_sound") ||
        (key == SOUND_EVENTS_KEY "enable_incoming_call_sound") ) {
 
-    if (gm_conf_get_string (SOUND_EVENTS_KEY "incoming_call_sound") == NULL) {
+    gchar *c_file_name = NULL;
+    c_file_name = gm_conf_get_string (SOUND_EVENTS_KEY "incoming_call_sound");
+    if (c_file_name == NULL) {
       PTRACE(1, "AudioOutputCoreConfBridge\t" <<  SOUND_EVENTS_KEY "incoming_call_sound" << " is NULL");
       return;
     }
 
     name = "incoming_call_sound";
-    file_name = gm_conf_get_string (SOUND_EVENTS_KEY "incoming_call_sound");
+    file_name = c_file_name;
+    g_free (c_file_name);
     enabled = gm_conf_get_bool (SOUND_EVENTS_KEY "enable_incoming_call_sound");
     audioinput_core.add_event (name, file_name, secondary, enabled);
   }
@@ -154,13 +164,16 @@ void AudioOutputCoreConfBridge::on_property_changed (std::string key, GmConfEntr
   if ( (key == SOUND_EVENTS_KEY "new_message_sound") ||
        (key == SOUND_EVENTS_KEY "enable_new_message_sound") ) {
 
-    if (gm_conf_get_string (SOUND_EVENTS_KEY "new_message_sound") == NULL) {
+    gchar *c_file_name = NULL;
+    c_file_name = gm_conf_get_string (SOUND_EVENTS_KEY "new_message_sound");
+    if (c_file_name == NULL) {
       PTRACE(1, "AudioOutputCoreConfBridge\t" <<  SOUND_EVENTS_KEY "new_message_sound" << " is NULL");
       return;
     }
 
     name = "new_message_sound";
-    file_name = gm_conf_get_string (SOUND_EVENTS_KEY "new_message_sound");
+    file_name = c_file_name;
+    g_free (c_file_name);
     enabled = gm_conf_get_bool (SOUND_EVENTS_KEY "enable_new_message_sound");
     audioinput_core.add_event (name, file_name, secondary, enabled);
 
@@ -169,13 +182,16 @@ void AudioOutputCoreConfBridge::on_property_changed (std::string key, GmConfEntr
   if ( (key == SOUND_EVENTS_KEY "new_voicemail_sound") ||
        (key == SOUND_EVENTS_KEY "enable_new_voicemail_sound") ) {
 
-    if (gm_conf_get_string (SOUND_EVENTS_KEY "new_voicemail_sound") == NULL) {
+    gchar *c_file_name = NULL;
+    c_file_name = gm_conf_get_string (SOUND_EVENTS_KEY "new_voicemail_sound");
+    if (c_file_name == NULL) {
       PTRACE(1, "AudioOutputCoreConfBridge\t" <<  SOUND_EVENTS_KEY "new_voicemail_sound" << " is NULL");
       return;
     }
 
     name = "new_voicemail_sound";
-    file_name = gm_conf_get_string (SOUND_EVENTS_KEY "new_voicemail_sound");
+    file_name = c_file_name;
+    g_free (c_file_name);
     enabled = gm_conf_get_bool (SOUND_EVENTS_KEY "enable_new_voicemail_sound");
     audioinput_core.add_event (name, file_name, secondary, enabled);
   }
@@ -183,13 +199,16 @@ void AudioOutputCoreConfBridge::on_property_changed (std::string key, GmConfEntr
   if ( (key == SOUND_EVENTS_KEY "ring_tone_sound") ||
        (key == SOUND_EVENTS_KEY "enable_ring_tone_sound") ) {
 
-    if (gm_conf_get_string (SOUND_EVENTS_KEY "ring_tone_sound") == NULL) {
+    gchar *c_file_name = NULL;
+    c_file_name = gm_conf_get_string (SOUND_EVENTS_KEY "ring_tone_sound");
+    if (c_file_name == NULL) {
       PTRACE(1, "AudioOutputCoreConfBridge\t" <<  SOUND_EVENTS_KEY "ring_tone_sound" << " is NULL");
       return;
     }
 
     name = "ring_tone_sound";
-    file_name = gm_conf_get_string (SOUND_EVENTS_KEY "ring_tone_sound");
+    file_name = c_file_name;
+    g_free (c_file_name);
     enabled = gm_conf_get_bool (SOUND_EVENTS_KEY "enable_ring_tone_sound");
     audioinput_core.add_event (name, file_name, primary, enabled);
   }

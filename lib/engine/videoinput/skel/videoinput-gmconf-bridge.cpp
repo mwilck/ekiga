@@ -91,11 +91,14 @@ void VideoInputCoreConfBridge::on_property_changed (std::string key, GmConfEntry
     PTRACE(4, "VidInputCoreConfBridge\tUpdating device");
 
     VideoInputDevice device;
-    if (gm_conf_get_string (VIDEO_DEVICES_KEY "input_device") == NULL) {
+    gchar *input_device = NULL;
+    input_device = gm_conf_get_string (VIDEO_DEVICES_KEY "input_device");
+    if (input_device == NULL) {
       PTRACE(1, "VidInputCoreConfBridge\t" << VIDEO_DEVICES_KEY "input_device" << " is NULL");
     }
     else {
-      device.SetFromString(gm_conf_get_string (VIDEO_DEVICES_KEY "input_device"));
+      device.SetFromString(input_device);
+      g_free (input_device);
     }
 
     if ( (device.type == "" )   ||
