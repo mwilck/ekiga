@@ -225,7 +225,9 @@ chat_window_finalize (GObject *obj)
        iter != self->priv->connections.end ();
        iter++)
     iter->disconnect ();
-  
+
+  g_free (self->priv);
+
   parent_class->finalize (obj);
 }
 

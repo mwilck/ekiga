@@ -160,7 +160,7 @@ statusicon_dispose (GObject *obj)
     g_free (icon->priv->key);
     icon->priv->key = NULL;
   }
-
+  
   parent_class->dispose (obj);
 }
 
@@ -182,6 +182,8 @@ statusicon_finalize (GObject *obj)
        iter != self->priv->connections.end ();
        iter++)
     iter->disconnect ();
+
+  g_free (self->priv);
 
   parent_class->finalize (obj);
 }
