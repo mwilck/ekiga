@@ -1085,7 +1085,7 @@ roster_view_gtk_get_type ()
     };
 
     result = g_type_register_static (GTK_TYPE_FRAME,
-				     "RosterViewGtkType",
+				     "RosterViewGtk",
 				     &info, (GTypeFlags) 0);
   }
 
