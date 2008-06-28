@@ -149,7 +149,6 @@ static void
 ekiga_dialpad_init (EkigaDialpad *dialpad)
 {
   unsigned i;
-  GtkSizeGroup *letters_group;
 
   dialpad->priv = G_TYPE_INSTANCE_GET_PRIVATE (dialpad,
                                                EKIGA_TYPE_DIALPAD,
@@ -157,9 +156,6 @@ ekiga_dialpad_init (EkigaDialpad *dialpad)
 
   gtk_table_set_col_spacings (GTK_TABLE (dialpad), 2);
   gtk_table_set_row_spacings (GTK_TABLE (dialpad), 2);
-
-  /* Size groups to align the buttons properly */
-  letters_group = gtk_size_group_new (GTK_SIZE_GROUP_BOTH);
 
   /* Create the buttons */
   for (i = 0; i < G_N_ELEMENTS (keys_info); i++) {
@@ -184,7 +180,6 @@ ekiga_dialpad_init (EkigaDialpad *dialpad)
       gtk_label_set_markup (GTK_LABEL (label), text);
       g_free (text);
     }
-    gtk_size_group_add_widget (letters_group, label);
     gtk_box_pack_start (GTK_BOX (box), label, FALSE, TRUE, 0);
 
     alignment = gtk_alignment_new (0.5, 0.5, 0.0, 0.0);
