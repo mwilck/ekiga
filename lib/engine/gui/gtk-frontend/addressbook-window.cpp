@@ -568,6 +568,8 @@ addressbook_window_finalize (GObject *obj)
     iter->disconnect ();
 
   delete self->priv;
+
+  parent_class->finalize (obj);
 }
 
 
