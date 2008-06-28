@@ -60,10 +60,15 @@ static void
 gm_powermeter_dispose (GObject *obj)
 {
   g_object_unref (((GmPowermeter*)obj)->iconset->iconv[0]);
+  ((GmPowermeter*)obj)->iconset->iconv[0] = NULL;
   g_object_unref (((GmPowermeter*)obj)->iconset->iconv[1]);
+  ((GmPowermeter*)obj)->iconset->iconv[0] = NULL;
   g_object_unref (((GmPowermeter*)obj)->iconset->iconv[2]);
+  ((GmPowermeter*)obj)->iconset->iconv[0] = NULL;
   g_object_unref (((GmPowermeter*)obj)->iconset->iconv[3]);
+  ((GmPowermeter*)obj)->iconset->iconv[0] = NULL;
   g_object_unref (((GmPowermeter*)obj)->iconset->iconv[4]);
+  ((GmPowermeter*)obj)->iconset->iconv[0] = NULL;
 
   parent_class->dispose (obj);
 }
