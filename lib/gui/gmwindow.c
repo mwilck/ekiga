@@ -85,8 +85,6 @@ gm_window_dispose (GObject *obj)
 
   window = GM_WINDOW (obj);
 
-  window->priv->key = NULL;
-
   parent_class->dispose (obj);
 }
 
