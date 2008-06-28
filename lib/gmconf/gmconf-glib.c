@@ -772,6 +772,13 @@ database_new ()
   return db;
 }
 
+static void
+database_destroy (DataBase *db)
+{
+  g_datalist_clear (&db->entries);
+  g_free (db);
+}
+
 static DataBase *
 database_get_default ()
 {
@@ -1267,6 +1274,16 @@ gm_conf_init ()
   g_timeout_add (5000, (GSourceFunc)saveconf_timer_callback, NULL);
 
 }
+
+
+void
+gm_conf_shutdown ()
+{
+  /* a crash is sure to happen if anyone uses gmconf after this... */
+  DataBase *db = database_get_default ();
+  database_destroy (db);
+}
+
 
 void
 gm_conf_save ()
