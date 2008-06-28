@@ -4444,8 +4444,9 @@ main (int argc,
   /* Exit Ekiga */
   GnomeMeeting::Process ()->Exit ();
 
-  /* Save the configuration */
+  /* Save and shutdown the configuration */
   gm_conf_save ();
+  gm_conf_shutdown ();
 
 #ifdef HAVE_GNOME
   g_object_unref (program);

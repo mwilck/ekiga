@@ -78,6 +78,7 @@ typedef void (*GmConfNotifier) (gpointer identifier,
  * case it only saves things every now and then (this is the case of the glib
  * implementation, for example) */
 void gm_conf_init (); /* don't try anything before! */
+void gm_conf_shutdown (); /* don't try anything after! */
 void gm_conf_save (); /* to forcibly save */
 
 /* to accept/refuse that the notifiers get fired:
