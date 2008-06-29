@@ -59,15 +59,20 @@ void gm_powermeter_redraw (GmPowermeter*);
 static void
 gm_powermeter_dispose (GObject *obj)
 {
-  g_object_unref (((GmPowermeter*)obj)->iconset->iconv[0]);
+  if (((GmPowermeter*)obj)->iconset->iconv[0])
+    g_object_unref (((GmPowermeter*)obj)->iconset->iconv[0]);
   ((GmPowermeter*)obj)->iconset->iconv[0] = NULL;
-  g_object_unref (((GmPowermeter*)obj)->iconset->iconv[1]);
+  if (((GmPowermeter*)obj)->iconset->iconv[1])
+    g_object_unref (((GmPowermeter*)obj)->iconset->iconv[1]);
   ((GmPowermeter*)obj)->iconset->iconv[1] = NULL;
-  g_object_unref (((GmPowermeter*)obj)->iconset->iconv[2]);
+  if (((GmPowermeter*)obj)->iconset->iconv[2])
+    g_object_unref (((GmPowermeter*)obj)->iconset->iconv[2]);
   ((GmPowermeter*)obj)->iconset->iconv[2] = NULL;
-  g_object_unref (((GmPowermeter*)obj)->iconset->iconv[3]);
+  if (((GmPowermeter*)obj)->iconset->iconv[3])
+    g_object_unref (((GmPowermeter*)obj)->iconset->iconv[3]);
   ((GmPowermeter*)obj)->iconset->iconv[3] = NULL;
-  g_object_unref (((GmPowermeter*)obj)->iconset->iconv[4]);
+  if (((GmPowermeter*)obj)->iconset->iconv[4])
+    g_object_unref (((GmPowermeter*)obj)->iconset->iconv[4]);
   ((GmPowermeter*)obj)->iconset->iconv[4] = NULL;
 
   parent_class->dispose (obj);
