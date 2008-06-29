@@ -69,3 +69,30 @@ Ekiga::MenuBuilder::size () const
 {
   return 0;
 }
+
+Ekiga::ShortMenuBuilder::ShortMenuBuilder (MenuBuilder &builder_)
+  : builder(builder_), active(true)
+{
+  /* nothing more */
+}
+
+void
+Ekiga::ShortMenuBuilder::add_action (const std::string icon,
+				     const std::string label,
+				     sigc::slot<void> callback)
+{
+  if (active)
+    builder.add_action (icon, label, callback);
+}
+
+void
+Ekiga::ShortMenuBuilder::add_separator ()
+{
+  active = false;
+}
+
+int
+Ekiga::ShortMenuBuilder::size () const
+{
+  return builder.size ();
+}

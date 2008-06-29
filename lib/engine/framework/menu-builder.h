@@ -88,6 +88,58 @@ namespace Ekiga
     virtual int size () const;
   };
 
+  /** Short menu builder
+   *
+   * This object is in fact a filter for a MenuBuilder ; you sometimes don't
+   * want a long menu like this :
+   *  Action 1
+   *  Action 2
+   *  Separator
+   *  Action 3
+   *  Action 4
+   *  Action 5
+   *  Et caetera
+   * But would rather just have :
+   *  Action 1
+   *  Action 2
+   * since presumably only the actions before the separator are of interest.
+   *
+   * For example, you can do :
+   * <pre>
+   *   MyToolkitMenuType *menu = new MyToolkitMenuType (whatever);
+   *   MyMenuBuilder builder(menu);
+   *   Ekiga::ShortMenuBuilder shorter(builder);
+   *
+   *   toolkit_independent_object.populate_menu (shorter);
+   * </pre>
+   *
+   * now use builder->menu, which is toolkit-dependent!
+   *
+   * ! Notice !
+   * You better be sure the toolkit_independent_object will still live
+   * when using the obtained menu, or the user may trigger a now-dead
+   * action... for example it could be an object with "removed" &
+   * "updated" signals, and you watch those, which allow you to regenerate
+   * or discard the menu in due time.
+   */
+
+  class ShortMenuBuilder: public MenuBuilder
+  {
+    ShortMenuBuilder (MenuBuilder &builder);
+
+    void add_action (const std::string icon,
+		     const std::string label,
+		     sigc::slot<void> callback);
+
+    void add_separator ();
+
+    int size () const;
+
+  private:
+    MenuBuilder &builder;
+    bool active;
+  };
+
 /**
  * @}
  */
