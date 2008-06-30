@@ -1,3 +1,9 @@
+2008-06-30  Damien Sandras  <dsandras@gnome.org>
+
+	* lib/engine/videoinput/ptlib/videoinput-manager-ptlib.cpp:
+	Some webcams (like mine) have the first frames with 0 bytes. No
+	failure in that case, better ignore.
+
 2008-06-29  Julien Puydt  <jpuydt@gnome.org>
 
 	* lib/engine/framework/menu-builder.h:

@@ -178,7 +178,6 @@ bool GMVideoInputManager_ptlib::get_frame_data (char *data,
 
   if ((unsigned) I != expectedFrameSize) {
     PTRACE(1, "GMVideoInputManager_ptlib\tExpected a frame of " << expectedFrameSize << " bytes but got " << I << " bytes");
-    ret = false;
   }
   return ret;
 }
