@@ -127,10 +127,10 @@ namespace Ekiga
 				   responsibility_accumulator>::slot_type slot_type;
 
     iterator add_handler (const slot_type& slot_)
-    { return connect (slot_); }
+    { return this->connect (slot_); }
 
     bool handle_request (typename sigc::type_trait<T_request>::take request)
-    { return emit (request); }
+    { return this->emit (request); }
 
   };
 };
