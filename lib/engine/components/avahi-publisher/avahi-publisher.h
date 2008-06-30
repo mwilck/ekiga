@@ -52,7 +52,9 @@
 
 #include "call-manager.h"
 
-class Ekiga::PersonalDetails;
+namespace Ekiga {
+  class PersonalDetails;
+}
 
 namespace Avahi
 {

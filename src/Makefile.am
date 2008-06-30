@@ -1,15 +1,10 @@
 INCLUDES = \
-	-I$(top_srcdir)/src				\
-	-I$(top_srcdir)/src/clients/			\
-	-I$(top_srcdir)/src/components/			\
-	-I$(top_srcdir)/src/devices/			\
-	-I$(top_srcdir)/src/endpoints/			\
-	-I$(top_srcdir)/src/gui/			\
 	-I$(top_srcdir)/lib				\
 	-I$(top_srcdir)/lib/gmconf			\
 	-I$(top_srcdir)/lib/gui				\
 	-I$(top_srcdir)/lib/engine/			\
 	-I$(top_srcdir)/lib/engine/gui/gtk-frontend	\
+	-I$(top_srcdir)/lib/engine/account/skel		\
 	-I$(top_srcdir)/lib/engine/addressbook/skel	\
 	-I$(top_srcdir)/lib/engine/chat/skel		\
 	-I$(top_srcdir)/lib/engine/presence/skel	\
@@ -19,8 +14,15 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/engine/videoinput/skel	\
 	-I$(top_srcdir)/lib/engine/audioinput/skel	\
 	-I$(top_srcdir)/lib/engine/audiooutput/skel	\
-	-I$(top_srcdir)/lib/engine/hal/skel	\
+	-I$(top_srcdir)/lib/engine/hal/skel		\
 	-I$(top_srcdir)/lib/engine/framework		\
+	-I$(top_srcdir)/lib/engine/gui/gtk-core		\
+	-I$(top_srcdir)/src				\
+	-I$(top_srcdir)/src/clients/			\
+	-I$(top_srcdir)/src/components/			\
+	-I$(top_srcdir)/src/devices/			\
+	-I$(top_srcdir)/src/endpoints/			\
+	-I$(top_srcdir)/src/gui/			\
 	-I$(top_builddir)				\
 	$(GNOME_INCLUDEDIR)				\
 	-DSCHEMA_AGE=@SCHEMA_AGE@ 
@@ -87,26 +89,28 @@ ekiga_SOURCES +=			\
 
 
 # Endpoints 
-ekiga_SOURCES +=			\
-	endpoints/accountshandler.h	\
-	endpoints/accountshandler.cpp	\
-	endpoints/ekiga.h		\
-	endpoints/ekiga.cpp		\
-	endpoints/manager.h		\
-	endpoints/manager.cpp		\
-	endpoints/h323.h		\
-	endpoints/h323.cpp		\
-	endpoints/pcss.h		\
-	endpoints/pcss.cpp		\
-	endpoints/sip.h			\
-	endpoints/sip.cpp		\
-	endpoints/opal-call.h		\
-	endpoints/opal-call.cpp		\
+ekiga_SOURCES +=				\
+	endpoints/ekiga.h			\
+	endpoints/ekiga.cpp			\
+	endpoints/manager.h			\
+	endpoints/manager.cpp			\
+	endpoints/h323.h			\
+	endpoints/h323.cpp			\
+	endpoints/pcss.h			\
+	endpoints/pcss.cpp			\
+	endpoints/sip.h				\
+	endpoints/sip.cpp			\
+	endpoints/opal-account.h		\
+	endpoints/opal-account.cpp		\
+	endpoints/opal-bank.h			\
+	endpoints/opal-bank.cpp			\
+	endpoints/opal-call.h			\
+	endpoints/opal-call.cpp			\
 	endpoints/opal-codec-description.h	\
 	endpoints/opal-codec-description.cpp	\
-	endpoints/opal-gmconf-bridge.h	\
-	endpoints/opal-gmconf-bridge.cpp\
-	endpoints/opal-main.h		\
+	endpoints/opal-gmconf-bridge.h		\
+	endpoints/opal-gmconf-bridge.cpp	\
+	endpoints/opal-main.h			\
 	endpoints/opal-main.cpp
 
 if HAVE_DBUS 

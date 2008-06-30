@@ -44,6 +44,8 @@
 #include "common.h"
 
 #include "manager.h"
+#include "opal-account.h"
+#include "account-core.h"
 
 
 namespace Opal {
@@ -53,6 +55,7 @@ namespace Opal {
     class CallProtocolManager : public H323EndPoint,
                                 public Ekiga::CallProtocolManager,
                                 public Ekiga::PresentityDecorator,
+                                public Ekiga::AccountSubscriberImpl<Opal::Account>,
                                 public Ekiga::ContactDecorator
     {
       PCLASSINFO(CallProtocolManager, H323EndPoint);
@@ -90,6 +93,10 @@ namespace Opal {
       const std::string & get_forward_uri () const;
 
 
+      /* AccountSubscriber */
+      bool subscribe (const Ekiga::Account & account);
+      bool unsubscribe (const Ekiga::Account & account);
+
       /* OPAL methods */
       void Register (const PString & aor,
                      const PString & authUserName,
@@ -118,6 +125,7 @@ namespace Opal {
       CallManager & endpoint;
       Ekiga::ServiceCore & core;
       Ekiga::Runtime & runtime;
+      Ekiga::AccountCore & account_core;
 
       PMutex gk_name_mutex;
       PString gk_name;

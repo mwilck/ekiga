@@ -37,21 +37,20 @@
 
 #include <iostream>
 
-#include "call-core.h"
+#include "account-core.h"
 #include "presence-core.h"
 #include "personal-details.h"
 
 
 Ekiga::PresencePublisher::PresencePublisher (Ekiga::ServiceCore & core)
 {
-  Ekiga::CallCore *call_core = dynamic_cast <Ekiga::CallCore *> (core.get ("call-core"));
+  Ekiga::AccountCore *account_core = dynamic_cast <Ekiga::AccountCore *> (core.get ("account-core"));
   Ekiga::PersonalDetails *details = dynamic_cast <Ekiga::PersonalDetails *> (core.get ("personal-details"));
 
   if (details)
     details->personal_details_updated.connect (sigc::mem_fun (this, &Ekiga::PresencePublisher::on_personal_details_updated));
-
-  if (call_core)
-    call_core->registration_event.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresencePublisher::on_registration_event), details));
+  if (account_core)
+    account_core->registration_event.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresencePublisher::on_registration_event), details));
 }
 
 
@@ -61,22 +60,21 @@ void Ekiga::PresencePublisher::on_personal_details_updated (Ekiga::PersonalDetai
 }
 
 
-void Ekiga::PresencePublisher::on_registration_event (Ekiga::CallManager & /*manager*/,
-                                                      std::string /*aor*/,
-                                                      Ekiga::CallCore::RegistrationState state,
+void Ekiga::PresencePublisher::on_registration_event (std::string /*aor*/,
+                                                      Ekiga::AccountCore::RegistrationState state,
                                                       std::string /*info*/,
                                                       Ekiga::PersonalDetails *details)
 {
   switch (state) {
-  case Ekiga::CallCore::Registered:
+  case Ekiga::AccountCore::Registered:
     if (details)
       this->publish (*details);
     break;
 
-  case Ekiga::CallCore::Unregistered:
-  case Ekiga::CallCore::UnregistrationFailed:
-  case Ekiga::CallCore::RegistrationFailed:
-  case Ekiga::CallCore::Processing:
+  case Ekiga::AccountCore::Unregistered:
+  case Ekiga::AccountCore::UnregistrationFailed:
+  case Ekiga::AccountCore::RegistrationFailed:
+  case Ekiga::AccountCore::Processing:
   default:
     break;
   }

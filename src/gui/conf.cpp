@@ -65,11 +65,6 @@
 
 
 /* Declarations */
-
-static void accounts_list_changed_nt (gpointer id,
-				      GmConfEntry *entry,
-				      gpointer data);
-
 static void manager_changed_nt (gpointer id,
 				GmConfEntry *entry,
 				gpointer data);
@@ -85,30 +80,6 @@ static void stay_on_top_changed_nt (gpointer id,
 static void network_settings_changed_nt (gpointer id,
 					 GmConfEntry *entry,
                                          gpointer data);
-
-
-/* DESCRIPTION  :  This notifier is called when the config database data
- *                 associated with an account changes.
- * BEHAVIOR     :  Updates the GUI and the registrations.
- * PRE          :  /
- */
-static void 
-accounts_list_changed_nt (G_GNUC_UNUSED gpointer id,
-			  GmConfEntry *entry, 
-			  G_GNUC_UNUSED gpointer data)
-{
-  GtkWidget *accounts_window = NULL;
-
-  accounts_window = GnomeMeeting::Process ()->GetAccountsWindow ();
-
-  if (gm_conf_entry_get_type (entry) == GM_CONF_LIST) {
-
-    //gdk_threads_enter ();
-    gm_accounts_window_update_accounts_list (accounts_window);
-    //gdk_threads_leave ();
-  }
-
-}
 
 
 /* DESCRIPTION  :  This notifier is called when the config database data
@@ -233,11 +204,6 @@ gnomemeeting_conf_init ()
    * they can be reused at several places. If not, a same notifier can contain
    * several actions.
    */
-
-  /* Notifiers for the PROTOCOLS_KEY */
-  gm_conf_notifier_add (PROTOCOLS_KEY "accounts_list",
-			accounts_list_changed_nt, NULL);
-
 
   /* Notifiers to AUDIO_DEVICES_KEY */
   gm_conf_notifier_add (AUDIO_DEVICES_KEY "plugin", 

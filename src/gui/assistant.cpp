@@ -447,6 +447,7 @@ create_ekiga_net_page (EkigaAssistant *assistant)
 static void
 prepare_ekiga_net_page (EkigaAssistant *assistant)
 {
+/*
   GmAccount *account = gnomemeeting_get_account ("ekiga.net");
 
   if (account && account->username)
@@ -459,11 +460,14 @@ prepare_ekiga_net_page (EkigaAssistant *assistant)
 
   set_current_page_complete (GTK_ASSISTANT (assistant),
                              account && account->username && account->password);
+                             */
+  std::cout << "FIXME" << std::endl << std::flush;
 }
 
 static void
 apply_ekiga_net_page (EkigaAssistant *assistant)
 {
+/*
   GmAccount *account = gnomemeeting_get_account ("ekiga.net");
   Opal::CallManager *manager;
   gboolean new_account = FALSE;
@@ -495,18 +499,14 @@ apply_ekiga_net_page (EkigaAssistant *assistant)
   account->enabled =
     !gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (assistant->priv->skip_ekiga_net));
 
-  /* If creating a new account, add it only if the user wants to use GM.NET,
-   * and make it the default account */
   if (new_account) {
     if (account->enabled)
       gnomemeeting_account_add (account);
   }
   else {
-    /* Modify the account, do not set it as default */
     gnomemeeting_account_modify (account);
   }
 
-  /* Register the current Endpoint to GnomeMeeting.NET */
   //gdk_threads_leave ();
   if (account->enabled) {
     manager = dynamic_cast<Opal::CallManager *> (assistant->priv->core->get ("opal-component"));
@@ -515,6 +515,7 @@ apply_ekiga_net_page (EkigaAssistant *assistant)
   //gdk_threads_enter ();
 
   gm_account_delete (account);
+  */
 }
 
 /************************

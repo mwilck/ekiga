@@ -46,32 +46,66 @@
 #include "opal-call.h"
 
 #include "presence-core.h"
+#include "account-core.h"
 #include "personal-details.h"
+#include "opal-account.h"
 
-class dialer : public PThread
-{
-  PCLASSINFO(dialer, PThread);
+namespace Opal {
 
-public:
+  namespace Sip {
 
-  dialer (const std::string & uri, Opal::CallManager & ep) 
-    : PThread (1000, AutoDeleteThread), 
-    dial_uri (uri),
-    endpoint (ep) 
-  {
-    this->Resume ();
-  };
-
-  void Main () 
+    class dialer : public PThread
     {
-      PString token;
-      endpoint.SetUpCall ("pc:*", dial_uri, token);
+      PCLASSINFO(dialer, PThread);
+
+    public:
+
+      dialer (const std::string & uri, Opal::CallManager & ep) 
+        : PThread (1000, AutoDeleteThread), 
+        dial_uri (uri),
+        endpoint (ep) 
+      {
+        this->Resume ();
+      };
+
+      void Main () 
+        {
+          PString token;
+          endpoint.SetUpCall ("pc:*", dial_uri, token);
+        };
+
+    private:
+      const std::string dial_uri;
+      Opal::CallManager & endpoint;
     };
 
-private:
-  const std::string dial_uri;
-  Opal::CallManager & endpoint;
+
+    class subscriber : public PThread
+    {
+      PCLASSINFO(subscriber, PThread);
+
+    public:
+      subscriber (const Ekiga::Account & _account,
+                  Opal::Sip::CallProtocolManager & ep) 
+        : PThread (1000, AutoDeleteThread),
+        account (_account),
+        endpoint (ep) 
+      {
+        this->Resume ();
+      };
+
+      void Main () 
+        {
+          endpoint.Register (account);
+        };
+
+    private:
+      const Ekiga::Account & account;
+      Opal::Sip::CallProtocolManager & endpoint;
+    };
+  };
 };
+
 
 using namespace Opal::Sip;
 
@@ -85,7 +119,8 @@ CallProtocolManager::CallProtocolManager (Opal::CallManager & ep,
                       endpoint (ep), 
                       core (_core),
                       presence_core (*(dynamic_cast<Ekiga::PresenceCore *> (core.get ("presence-core")))),
-                      runtime (*(dynamic_cast<Ekiga::Runtime *> (core.get ("runtime"))))
+                      runtime (*(dynamic_cast<Ekiga::Runtime *> (core.get ("runtime")))),
+                      account_core (*(dynamic_cast<Ekiga::AccountCore *> (core.get ("account-core"))))
 {
   protocol_name = "sip";
   uri_prefix = "sip:";
@@ -415,40 +450,39 @@ unsigned CallProtocolManager::get_nat_binding_delay ()
 }
 
 
-void  CallProtocolManager::Register (const PString & _aor,
-                                     const PString & authUserName,
-                                     const PString & password,
-                                     unsigned int expires,
-                                     bool unregister)
+// FIXME : check code Ekiga::Account or Opal::Account, how can we be sure the correct one is called ?
+bool CallProtocolManager::subscribe (const Ekiga::Account & account)
 {
-  std::string aor = (const char *) _aor;
-  std::stringstream strm;
-  bool result = false;
+  if (account.get_protocol_name () != "SIP")
+    return false;
 
-  /* Account is enabled, and we are not registered */
-  if (!unregister && !IsRegistered (aor)) {
+  new subscriber (account, *this);
+  return true;
+}
 
-    if (aor.find (uri_prefix) == std::string::npos) 
-      strm << uri_prefix << aor;
-    else
-      strm << aor;
 
-    /* Signal */
-    runtime.run_in_main (sigc::bind (endpoint.registration_event.make_slot (), 
-                                     aor,
-                                     Ekiga::CallCore::Processing,
-                                     std::string ()));
+bool CallProtocolManager::unsubscribe (const Ekiga::Account & account)
+{
+  if (account.get_protocol_name () != "SIP")
+    return false;
 
-    /* Trigger registering */
-    result = SIPEndPoint::Register (PString::Empty (), aor, authUserName, password, PString::Empty (), expires);
+  new subscriber (account, *this);
+  return true;
+}
 
-    if (!result) 
-      OnRegistrationFailed (_aor, SIP_PDU::MaxStatusCode, true);
-  }
-  else if (unregister && IsRegistered (aor)) {
 
-    SIPEndPoint::Unregister (aor);
-  }
+void CallProtocolManager::Register (const Ekiga::Account & account)
+{
+  std::stringstream aor;
+  
+  aor << account.get_username () << "@" << account.get_host ();
+  if (!SIPEndPoint::Register (account.get_host (),
+                              account.get_username (),
+                              account.get_authentication_username (),
+                              account.get_password (),
+                              PString::Empty (), 
+                              (account.is_enabled () ? account.get_timeout () : 0)))
+    OnRegistrationFailed (aor.str (), SIP_PDU::MaxStatusCode, account.is_enabled ());
 }
 
 
@@ -516,9 +550,9 @@ void CallProtocolManager::OnRegistered (const PString & _aor,
   }
 
   /* Signal */
-  runtime.run_in_main (sigc::bind (endpoint.registration_event.make_slot (), 
+  runtime.run_in_main (sigc::bind (account_core.registration_event.make_slot (), 
                                    strm.str (),
-                                   was_registering ? Ekiga::CallCore::Registered : Ekiga::CallCore::Unregistered,
+                                   was_registering ? Ekiga::AccountCore::Registered : Ekiga::AccountCore::Unregistered,
                                    std::string ()));
 }
 
@@ -742,9 +776,9 @@ void CallProtocolManager::OnRegistrationFailed (const PString & _aor,
   SIPEndPoint::OnRegistrationFailed (strm.str ().c_str (), r, wasRegistering);
 
   /* Signal */
-  runtime.run_in_main (sigc::bind (endpoint.registration_event.make_slot (), 
+  runtime.run_in_main (sigc::bind (account_core.registration_event.make_slot (), 
                                    aor, 
-                                   wasRegistering ? Ekiga::CallCore::RegistrationFailed : Ekiga::CallCore::UnregistrationFailed,
+                                   wasRegistering ? Ekiga::AccountCore::RegistrationFailed : Ekiga::AccountCore::UnregistrationFailed,
                                    info));
 }
 
@@ -828,7 +862,8 @@ void CallProtocolManager::OnMessageFailed (const SIPURL & messageUrl,
 
 SIPURL CallProtocolManager::GetRegisteredPartyName (const SIPURL & host)
 {
-  GmAccount *account = NULL;
+  //FIXME
+  //GmAccount *account = NULL;
 
   PString local_address;
   PIPSocket::Address address;
@@ -852,6 +887,7 @@ SIPURL CallProtocolManager::GetRegisteredPartyName (const SIPURL & host)
      */
     if (host.GetHostAddress ().GetIpAndPort (address, port) && !manager.IsLocalAddress (address)) {
 
+      /*
       account = gnomemeeting_get_default_account ("SIP");
       if (account && account->enabled) {
 
@@ -862,6 +898,7 @@ SIPURL CallProtocolManager::GetRegisteredPartyName (const SIPURL & host)
 
         return SIPURL ("\"" + GetDefaultDisplayName () + "\" <" + url + ">");
       }
+          */
     }
   }
 

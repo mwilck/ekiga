@@ -111,8 +111,6 @@ CallManager::CallManager (Ekiga::ServiceCore & _core)
   SetTCPPorts (30000, 30100);
   SetRtpIpPorts (5000, 5100);
   
-  manager = NULL;
-
   pcssEP = NULL;
 
   forward_on_no_answer = false;
@@ -149,7 +147,6 @@ CallManager::CallManager (Ekiga::ServiceCore & _core)
 CallManager::~CallManager ()
 {
   ClearAllCalls (OpalConnection::EndedByLocalUser, false);
-  RemoveAccountsEndpoint ();
 }
 
 
@@ -177,7 +174,7 @@ const std::string & CallManager::get_display_name () const
 void CallManager::set_echo_cancellation (bool enabled)
 {
   OpalEchoCanceler::Params ec;
-  
+
   // General settings
   ec = GetEchoCancelParams ();
   if (enabled)
@@ -185,7 +182,7 @@ void CallManager::set_echo_cancellation (bool enabled)
   else
     ec.m_mode = OpalEchoCanceler::NoCancelation;
   SetEchoCancelParams (ec);
-  
+
   // Adjust setting for all connections of all calls
   for (PSafePtr<OpalCall> call = activeCalls;
        call != NULL;
@@ -198,10 +195,10 @@ void CallManager::set_echo_cancellation (bool enabled)
       PSafePtr<OpalConnection> connection = call->GetConnection (i);
       if (connection) {
 
-	OpalEchoCanceler *echo_canceler = connection->GetEchoCanceler ();
+        OpalEchoCanceler *echo_canceler = connection->GetEchoCanceler ();
 
-	if (echo_canceler)
-	  echo_canceler->SetParameters (ec);
+        if (echo_canceler)
+          echo_canceler->SetParameters (ec);
       }
     }
   }
@@ -220,7 +217,7 @@ void CallManager::set_maximum_jitter (unsigned max_val)
 {
   // Adjust general settings
   SetAudioJitterDelay (20, PMIN (max_val, 1000));
-  
+
   // Adjust setting for all sessions of all connections of all calls
   for (PSafePtr<OpalCall> call = activeCalls;
        call != NULL;
@@ -256,7 +253,7 @@ unsigned CallManager::get_maximum_jitter () const
 void CallManager::set_silence_detection (bool enabled)
 {
   OpalSilenceDetector::Params sd;
-  
+
   // General settings
   sd = GetSilenceDetectParams ();
   if (enabled)
@@ -264,7 +261,7 @@ void CallManager::set_silence_detection (bool enabled)
   else
     sd.m_mode = OpalSilenceDetector::NoSilenceDetection;
   SetSilenceDetectParams (sd);
-  
+
   // Adjust setting for all connections of all calls
   for (PSafePtr<OpalCall> call = activeCalls;
        call != NULL;
@@ -277,10 +274,10 @@ void CallManager::set_silence_detection (bool enabled)
       PSafePtr<OpalConnection> connection = call->GetConnection (i);
       if (connection) {
 
-	OpalSilenceDetector *silence_detector = connection->GetSilenceDetector ();
+        OpalSilenceDetector *silence_detector = connection->GetSilenceDetector ();
 
-	if (silence_detector)
-	  silence_detector->SetParameters (sd);
+        if (silence_detector)
+          silence_detector->SetParameters (sd);
       }
     }
   }
@@ -438,7 +435,7 @@ bool CallManager::get_unconditional_forward ()
 }
 
 void CallManager::set_udp_ports (unsigned min_port, 
-                               unsigned max_port)
+                                 unsigned max_port)
 {
   if (min_port < max_port) {
 
@@ -449,14 +446,14 @@ void CallManager::set_udp_ports (unsigned min_port,
 
 
 void CallManager::get_udp_ports (unsigned & min_port, 
-                               unsigned & max_port) const
+                                 unsigned & max_port) const
 {
   min_port = GetUDPPortBase ();
   max_port = GetUDPPortMax ();
 }
 
 void CallManager::set_tcp_ports (unsigned min_port, 
-                               unsigned max_port)
+                                 unsigned max_port)
 {
   if (min_port < max_port) 
     SetTCPPorts (min_port, max_port);
@@ -464,7 +461,7 @@ void CallManager::set_tcp_ports (unsigned min_port,
 
 
 void CallManager::get_tcp_ports (unsigned & min_port, 
-                               unsigned & max_port) const
+                                 unsigned & max_port) const
 {
   min_port = GetTCPPortBase ();
   max_port = GetTCPPortMax ();
@@ -527,11 +524,11 @@ void CallManager::set_video_options (const CallManager::VideoOptions & options)
            media_format.GetName() != "RGB24") {
 
         media_format.SetOptionBoolean (OpalVideoFormat::RateControlEnableOption(),
-                                      true);
+                                       true);
         media_format.SetOptionInteger (OpalVideoFormat::RateControlWindowSizeOption(),
-                                      500);
+                                       500);
         media_format.SetOptionInteger (OpalVideoFormat::RateControlMaxFramesSkipOption(),
-                                      1);
+                                       1);
       }
 
       OpalMediaFormat::SetRegisteredMediaFormat(media_format);
@@ -600,30 +597,6 @@ void CallManager::get_video_options (CallManager::VideoOptions & options) const
       break;
     }
   }
-}
-
-
-void
-CallManager::Register (GmAccount *account)
-{
-  PWaitAndSignal m(manager_access_mutex);
-
-  if (manager == NULL)
-    manager = new GMAccountsEndpoint (*this);
-
-  if (account != NULL)
-    manager->RegisterAccount (account);
-}
-
-
-void
-CallManager::RemoveAccountsEndpoint ()
-{
-  PWaitAndSignal m(manager_access_mutex);
-
-  if (manager)
-    delete manager;
-  manager = NULL;
 }
 
 

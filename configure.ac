@@ -601,6 +601,8 @@ pixmaps/Makefile
 sounds/Makefile
 help/Makefile
 lib/engine/Makefile
+lib/engine/account/Makefile
+lib/engine/account/skel/Makefile
 lib/engine/addressbook/Makefile
 lib/engine/addressbook/call-history/Makefile
 lib/engine/addressbook/evolution/Makefile

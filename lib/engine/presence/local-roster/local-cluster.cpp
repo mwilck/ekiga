@@ -42,7 +42,7 @@ Local::Cluster::Cluster (Ekiga::ServiceCore &_core): core(_core)
   presence_core
     = dynamic_cast<Ekiga::PresenceCore*>(core.get ("presence-core"));
 
-  heap = new Heap (core);
+  heap = new Local::Heap (core);
 
   presence_core->presence_received.connect (sigc::mem_fun (this, &Local::Cluster::on_presence_received));
   presence_core->status_received.connect (sigc::mem_fun (this, &Local::Cluster::on_status_received));

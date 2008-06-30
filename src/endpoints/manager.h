@@ -43,10 +43,6 @@
 
 #include "common.h"
 
-#include "accounts.h"
-
-#include "accountshandler.h"
-
 #include "gmconf-bridge.h"
 #include "runtime.h"
 #include "contact-core.h"
@@ -69,8 +65,6 @@ namespace Opal {
                       public OpalManager
   {
     PCLASSINFO(CallManager, OpalManager);
-
-    friend class GMAccountsEndpoint;
 
 public:
 
@@ -152,14 +146,8 @@ public:
     void set_video_options (const VideoOptions & options);
     void get_video_options (VideoOptions & options) const;
 
-
-    /**/ 
-    void Register (GmAccount * = NULL);
-
 private:
     OpalCall *CreateCall ();
-
-    void RemoveAccountsEndpoint ();
 
     bool OnOpenMediaStream (OpalConnection &,
                             OpalMediaStream &);
@@ -174,9 +162,6 @@ private:
 
     /* The various related endpoints */
     GMPCSSEndpoint *pcssEP;
-
-    /* The various components of the endpoint */
-    GMAccountsEndpoint *manager;
 
     /* Various mutexes to ensure thread safeness around internal
        variables */

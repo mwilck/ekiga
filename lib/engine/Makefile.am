@@ -1,4 +1,4 @@
-SUBDIRS = framework addressbook presence chat gui protocol videooutput videoinput audioinput audiooutput hal components
+SUBDIRS = framework account addressbook presence chat gui protocol videooutput videoinput audioinput audiooutput hal components
 
 noinst_LTLIBRARIES = libekiga_engine.la
 
@@ -14,10 +14,11 @@ INCLUDES = 								\
 	-I$(top_srcdir)/lib/engine/addressbook/call-history		\
 	-I$(top_srcdir)/lib/engine/addressbook/evolution		\
 	-I$(top_srcdir)/lib/engine/addressbook/ldap			\
+	-I$(top_srcdir)/lib/engine/account/skel				\
 	-I$(top_srcdir)/lib/engine/presence/skel			\
 	-I$(top_srcdir)/lib/engine/presence/avahi			\
 	-I$(top_srcdir)/lib/engine/presence/local-roster		\
-	-I$(top_srcdir)/lib/engine/videooutput/skel				\
+	-I$(top_srcdir)/lib/engine/videooutput/skel			\
 	-I$(top_srcdir)/lib/engine/videoinput/skel			\
 	-I$(top_srcdir)/lib/engine/audioinput/skel			\
 	-I$(top_srcdir)/lib/engine/audiooutput/skel			\
@@ -71,6 +72,7 @@ libekiga_engine_la_LIBADD = \
 	$(top_builddir)/lib/engine/framework/libgmframework.la 						\
 	$(top_builddir)/lib/engine/addressbook/skel/libgmaddressbook.la 				\
 	$(top_builddir)/lib/engine/addressbook/call-history/libcall-history.la 				\
+	$(top_builddir)/lib/engine/account/skel/libaccount.la 						\
 	$(top_builddir)/lib/engine/presence/skel/libgmpresence.la 					\
 	$(top_builddir)/lib/engine/presence/local-roster/liblocal-roster.la 				\
 	$(top_builddir)/lib/engine/videooutput/skel/libgmvideooutput.la					\

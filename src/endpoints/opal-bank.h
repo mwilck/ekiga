@@ -1,6 +1,6 @@
 
 /* Ekiga -- A VoIP and Video-Conferencing application
- * Copyright (C) 2000-2006 Damien Sandras
+ * Copyright (C) 2000-2007 Damien Sandras
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,43 +27,51 @@
 
 
 /*
- *                         accounts.h  -  description
- *                         --------------------------
- *   begin                : Sun Feb 13 2005
- *   copyright            : (C) 2000-2006 by Damien Sandras
- *   description          : This file contains all the functions needed to
- *   			    manipulate accounts.
+ *                         opal-bank.h  -  description
+ *                         ------------------------------------------
+ *   begin                : written in 2008 by Damien Sandras
+ *   copyright            : (c) 2008 by Damien Sandras
+ *   description          : declaration of an OPAL bank 
+ *
  */
 
+#ifndef __OPAL_BANK_H__
+#define __OPAL_BANK_H__
 
-#ifndef _ACCOUNTS_H_
-#define _ACCOUNTS_H_
+#include "bank-impl.h"
+#include "opal-account.h"
 
-#include "common.h"
-#include "services.h"
+namespace Opal
+{
+  /**
+   * @addtogroup accounts
+   * @internal
+   * @{
+   */
+  class Bank: public Ekiga::BankImpl<Account> 
+  {
+public:
+    Bank (Ekiga::ServiceCore &_core) : Ekiga::BankImpl<Opal::Account> (_core) {}
 
-/* The API */
+    bool populate_menu (Ekiga::MenuBuilder & builder);
 
-/* DESCRIPTION  : /
- * BEHAVIOR     : Builds the GMAccounts window GMObject.
- * PRE          : /
- */
-GtkWidget *gm_accounts_window_new (Ekiga::ServiceCore &core);
+    void new_account ();
 
+private:
+    void on_new_account_form_submitted (Ekiga::Form & form);
 
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Update the account corresponding to the given domain, and
- * 		   username with the given status message. Enables or not
- * 		   the refreshing state for that account (see below for
- * 		   the implications).
- * PRE          :  /
- */
+    void add (std::string name, 
+              std::string host,
+              std::string user,
+              std::string auth_user,
+              std::string password,
+              bool enabled,
+              unsigned timeout);
+  };
 
-void gm_accounts_window_update_account_state (GtkWidget *accounts_window,
-					      gboolean refreshing,
-					      const gchar *aor,
-					      const gchar *status,
-					      const gchar *voicemails);
-
+  /**
+   * @}
+   */
+};
 
 #endif

@@ -152,18 +152,10 @@ void GMAccountsEndpoint::RegisterAccount (GmAccount *account)
 }
 
 
-void GMAccountsEndpoint::SIPRegister (GmAccount *a)
+void GMAccountsEndpoint::SIPRegister (GmAccount * /*a*/)
 {
-  std::string aor;
-  Opal::Sip::CallProtocolManager *sip_manager = dynamic_cast<Opal::Sip::CallProtocolManager *> (ep.get_protocol_manager ("sip"));
+  return;
 
-  // TODO Move this to the engine and drop the dynamic cast
-  aor = a->username;
-  if (aor.find ("@") == string::npos)
-    aor = aor + "@" + a->host;
-
-  if (sip_manager)
-    sip_manager->Register (aor.c_str (), a->auth_username, a->password, a->timeout, !a->enabled);
 }
 
 

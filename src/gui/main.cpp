@@ -581,34 +581,33 @@ static void on_mwi_event_cb (G_GNUC_UNUSED Ekiga::CallManager & manager,
 }
 
 
-static void on_registration_event_cb (Ekiga::CallManager & /*manager*/,
-                                      std::string aor,
-                                      Ekiga::CallCore::RegistrationState state,
-                                      G_GNUC_UNUSED std::string info,
-                                      gpointer window)
+static void on_registration_event (std::string aor,
+                                   Ekiga::AccountCore::RegistrationState state,
+                                   G_GNUC_UNUSED std::string info,
+                                   gpointer window)
 {
   gchar *msg = NULL;
 
   switch (state) {
-  case Ekiga::CallCore::Registered:
+  case Ekiga::AccountCore::Registered:
     /* Translators: Is displayed once an account "%s" is registered. */
     msg = g_strdup_printf (_("Registered %s"), aor.c_str ()); 
     break;
 
-  case Ekiga::CallCore::Unregistered:
+  case Ekiga::AccountCore::Unregistered:
     /* Translators: Is displayed once an account "%s" is unregistered. */
     msg = g_strdup_printf (_("Unregistered %s"), aor.c_str ());
     break;
 
-  case Ekiga::CallCore::UnregistrationFailed:
+  case Ekiga::AccountCore::UnregistrationFailed:
     msg = g_strdup_printf (_("Could not unregister %s"), aor.c_str ());
     break;
 
-  case Ekiga::CallCore::RegistrationFailed:
+  case Ekiga::AccountCore::RegistrationFailed:
     msg = g_strdup_printf (_("Could not register %s"), aor.c_str ());
     break;
 
-  case Ekiga::CallCore::Processing:
+  case Ekiga::AccountCore::Processing:
   default:
     break;
   }
@@ -3864,12 +3863,13 @@ gm_main_window_new (Ekiga::ServiceCore & core)
     
   /* New Call Engine signals */
   Ekiga::CallCore *call_core = dynamic_cast<Ekiga::CallCore *> (mw->core.get ("call-core"));
+  Ekiga::AccountCore *account_core = dynamic_cast<Ekiga::AccountCore *> (mw->core.get ("account-core"));
 
   /* Engine Signals callbacks */
-  conn = call_core->mwi_event.connect (sigc::bind (sigc::ptr_fun (on_mwi_event_cb), (gpointer) window));
+  conn = account_core->registration_event.connect (sigc::bind (sigc::ptr_fun (on_registration_event), (gpointer) window));
   mw->connections.push_back (conn);
 
-  conn = call_core->registration_event.connect (sigc::bind (sigc::ptr_fun (on_registration_event_cb), (gpointer) window));
+  conn = call_core->mwi_event.connect (sigc::bind (sigc::ptr_fun (on_mwi_event_cb), (gpointer) window));
   mw->connections.push_back (conn);
 
   conn = call_core->setup_call.connect (sigc::bind (sigc::ptr_fun (on_setup_call_cb), (gpointer) window));
@@ -4372,10 +4372,6 @@ main (int argc,
       else
         g_timeout_add (15000, (GtkFunction) gnomemeeting_tray_hack_cb, NULL);
     }
-
-    Opal::CallManager *manager = dynamic_cast<Opal::CallManager *> (mw->core.get ("opal-component")); // FIXME
-    manager->Register ();
-
 
     /* Call the given host if needed */
     if (url) 

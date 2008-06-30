@@ -1,5 +1,59 @@
 2008-06-30  Damien Sandras  <dsandras@gnome.org>
 
+	* src/endpoints/sip.h:
+	* src/endpoints/opal-bank.cpp:
+	* src/endpoints/opal-bank.h:
+	* src/endpoints/manager.cpp:
+	* src/endpoints/opal-main.cpp:
+	* src/endpoints/accountshandler.cpp:
+	* src/endpoints/manager.h:
+	* src/endpoints/h323.cpp:
+	* src/endpoints/ekiga.cpp:
+	* src/endpoints/h323.h:
+	* src/endpoints/opal-account.cpp:
+	* src/endpoints/opal-account.h:
+	* src/endpoints/sip.cpp:
+	* src/gui/tools.cpp:
+	* src/gui/assistant.cpp:
+	* src/gui/accounts.cpp:
+	* src/gui/main.cpp:
+	* src/gui/accounts.h:
+	* src/gui/conf.cpp:
+	* src/Makefile.am:
+	* configure.ac:
+	* lib/gmmarshallers.c:
+	* lib/engine/gui/gtk-frontend/Makefile.am:
+	* lib/engine/components/avahi-publisher/Makefile.am:
+	* lib/engine/components/avahi-publisher/avahi-publisher.h:
+	* lib/engine/engine.cpp:
+	* lib/engine/account/Makefile.am:
+	* lib/engine/account/skel/bank-impl.h:
+	* lib/engine/account/skel/bank.h:
+	* lib/engine/account/skel/account.h:
+	* lib/engine/account/skel/account-core.cpp:
+	* lib/engine/account/skel/account-core.h:
+	* lib/engine/account/skel/Makefile.am:
+	* lib/engine/protocol/skel/call-core.cpp:
+	* lib/engine/protocol/skel/call-core.h:
+	* lib/engine/protocol/skel/call-manager.h:
+	* lib/engine/presence/local-roster/local-presentity.cpp:
+	* lib/engine/presence/local-roster/Makefile.am:
+	* lib/engine/presence/local-roster/local-cluster.cpp:
+	* lib/engine/presence/avahi/Makefile.am:
+	* lib/engine/presence/skel/presence-core.h:
+	* lib/engine/presence/skel/Makefile.am:
+	* lib/engine/presence/skel/presence-core.cpp:
+	* lib/engine/Makefile.am:
+	Created an AccountCore to manage registrations. This AccountCore has
+	various signals to notify from registration changes. It uses Banks of
+	Accounts. It is also using AccountSubscribers which are doing the real
+	job of registering an Account.
+	We current support OPAL accounts registered with SIP and H323
+	AccountSubscribers.
+	More work to come. Initial commit.
+
+2008-06-30  Damien Sandras  <dsandras@gnome.org>
+
 	* lib/engine/framework/chain-of-responsibility.h:
 	Apply method to this to avoid confusion with the connect function from the 
 	sockets library.

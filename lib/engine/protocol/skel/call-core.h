@@ -146,9 +146,6 @@ namespace Ekiga
       // TODO Should move too
       sigc::signal<void, CallManager &, std::string, std::string> mwi_event;
 
-      typedef enum { Processing, Registered, Unregistered, RegistrationFailed, UnregistrationFailed } RegistrationState;
-      sigc::signal<void, CallManager &, std::string, Ekiga::CallCore::RegistrationState, std::string> registration_event;
-
       /*** Misc ***/
       sigc::signal<void, CallManager &, std::string> manager_ready;
 
@@ -172,7 +169,6 @@ namespace Ekiga
       void on_new_chat (std::string, std::string, CallManager *manager);
 
       void on_mwi_event (std::string, std::string, CallManager *manager);
-      void on_registration_event (std::string, Ekiga::CallCore::RegistrationState, std::string, CallManager *manager);
 
       void on_manager_ready (std::string, CallManager *manager);
       

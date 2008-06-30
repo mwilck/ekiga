@@ -212,6 +212,7 @@ Local::Presentity::edit_presentity ()
 {
   Cluster *cluster = dynamic_cast<Cluster*>(core.get ("local-cluster"));
   Ekiga::FormRequestSimple request;
+
   std::set<std::string> all_groups = cluster->existing_groups ();
 
   request.title (_("Edit roster element"));
@@ -269,8 +270,10 @@ Local::Presentity::edit_presentity_form_submitted (Ekiga::Form &result)
 
 	xmlUnlinkNode (iter->second);
 	xmlFreeNode (iter->second);
-      } else
+      } 
+      else {
 	future_group_nodes[iter->first] = iter->second;
+      }
     }
 
     // the second loop looking for groups we weren't in but are now

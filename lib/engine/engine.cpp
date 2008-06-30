@@ -42,6 +42,7 @@
 #include "services.h"
 
 #include "presence-core.h"
+#include "account-core.h"
 #include "contact-core.h"
 #include "call-core.h"
 #include "chat-core.h"
@@ -105,6 +106,7 @@ engine_init (int argc,
    * be constructed thereafter                                      */
 
   Ekiga::PresenceCore *presence_core = new Ekiga::PresenceCore;
+  Ekiga::AccountCore *account_core = new Ekiga::AccountCore;
   Ekiga::ContactCore *contact_core = new Ekiga::ContactCore;
   Ekiga::CallCore *call_core = new Ekiga::CallCore;
   Ekiga::ChatCore *chat_core = new Ekiga::ChatCore;
@@ -123,6 +125,7 @@ engine_init (int argc,
    *   (e.g. VideoOutputCore).                                          */
    
   core->add (*runtime);
+  core->add (*account_core);
   core->add (*contact_core);
   core->add (*presence_core);
   core->add (*call_core);

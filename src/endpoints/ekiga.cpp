@@ -45,6 +45,7 @@
 #include "assistant.h"
 #include "tools.h"
 #include "statusicon.h"
+#include "accounts.h"
 #include "main.h"
 #include "misc.h"
 

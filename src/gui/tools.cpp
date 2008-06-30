@@ -147,8 +147,9 @@ pc2phone_window_response_cb (GtkWidget *widget,
 			     gint response,
 			     gpointer data)
 {
-  Opal::CallManager *ep = NULL;
+  //Opal::CallManager *ep = NULL;
   
+  /*
   GmAccount *account = NULL;
   GmPC2PhoneWindow *pcw = NULL;
 
@@ -166,13 +167,11 @@ pc2phone_window_response_cb (GtkWidget *widget,
   
   ep = dynamic_cast<Opal::CallManager *> (pcw->core.get ("opal-component"));
   
-  /* Get the data from the widgets */
   username = gtk_entry_get_text (GTK_ENTRY (pcw->username_entry));
   password = gtk_entry_get_text (GTK_ENTRY (pcw->password_entry));
   use_service = 
     gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pcw->use_service_toggle));
 
-  /* If validate or apply, check all settings are present */
   if (response != GTK_RESPONSE_CANCEL && use_service 
       && (!strcmp (username, "") || !strcmp (password, ""))) {
     
@@ -180,7 +179,6 @@ pc2phone_window_response_cb (GtkWidget *widget,
     return;
   }
   
-  /* Let's go */
   account = gnomemeeting_get_account ("sip.diamondcard.us");
   if (account == NULL) {
 
@@ -214,17 +212,17 @@ pc2phone_window_response_cb (GtkWidget *widget,
     account->enabled =
       gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (pcw->use_service_toggle));
 
-    /* Update the account or create it */
     if (new_account)
       gnomemeeting_account_add (account);
     else
       gnomemeeting_account_modify (account);
     
-    /* Register the current Endpoint to the Gatekeeper */
     ep->Register (account);
   }
 
   gm_account_delete (account);
+  */
+    //FIXME
 }
 
 
@@ -281,7 +279,7 @@ pc2phone_consult_cb (G_GNUC_UNUSED GtkWidget *widget,
 GtkWidget *
 gm_pc2phone_window_new (Ekiga::ServiceCore & core)
 {
-  GmAccount *account = NULL;
+  //GmAccount *account = NULL;
 
   GmPC2PhoneWindow *pcw = NULL;
   
@@ -295,7 +293,7 @@ gm_pc2phone_window_new (Ekiga::ServiceCore & core)
   
 
   /* Get the PC-To-Phone account, if any */
-  account = gnomemeeting_get_account ("sip.diamondcard.us");
+  //account = gnomemeeting_get_account ("sip.diamondcard.us");
 
   
   /* Build the window */
@@ -337,8 +335,8 @@ gm_pc2phone_window_new (Ekiga::ServiceCore & core)
 		    0, 0);
 
   pcw->username_entry = gtk_entry_new ();
-  if (account && account->username)
-    gtk_entry_set_text (GTK_ENTRY (pcw->username_entry), account->username);
+  //if (account && account->username)
+    //gtk_entry_set_text (GTK_ENTRY (pcw->username_entry), account->username);
   gtk_label_set_mnemonic_widget (GTK_LABEL (label), pcw->username_entry);
   gtk_table_attach (GTK_TABLE (subsection), pcw->username_entry, 1, 2, 0, 1,
 		    (GtkAttachOptions) (GTK_FILL),
@@ -355,8 +353,8 @@ gm_pc2phone_window_new (Ekiga::ServiceCore & core)
   
   pcw->password_entry = gtk_entry_new ();
   gtk_entry_set_visibility (GTK_ENTRY (pcw->password_entry), FALSE);
-  if (account && account->password)
-    gtk_entry_set_text (GTK_ENTRY (pcw->password_entry), account->password);
+  //if (account && account->password)
+    //gtk_entry_set_text (GTK_ENTRY (pcw->password_entry), account->password);
   gtk_label_set_mnemonic_widget (GTK_LABEL (label), pcw->password_entry);
   gtk_table_attach (GTK_TABLE (subsection), pcw->password_entry, 1, 2, 1, 2,
 		    (GtkAttachOptions) (GTK_FILL),
@@ -365,9 +363,9 @@ gm_pc2phone_window_new (Ekiga::ServiceCore & core)
 
   pcw->use_service_toggle =
     gtk_check_button_new_with_label (_("Use PC-To-Phone service"));
-  if (account && account->enabled)
-    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pcw->use_service_toggle), 
-				  TRUE);
+  //if (account && account->enabled)
+    //gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (pcw->use_service_toggle), 
+//				  TRUE);
   gtk_table_attach (GTK_TABLE (subsection), 
 		    pcw->use_service_toggle, 0, 2, 2, 3,
 		    (GtkAttachOptions) (GTK_FILL),
@@ -446,8 +444,9 @@ gm_pc2phone_window_new (Ekiga::ServiceCore & core)
   
   gtk_widget_show_all (GTK_WIDGET (GTK_DIALOG (window)->vbox));
 
-  if (account)
-    gm_account_delete (account);
+  //if (account)
+    //gm_account_delete (account);
   
+  //FIXME
   return window;
 }

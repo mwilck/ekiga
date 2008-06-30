@@ -41,43 +41,80 @@
 #include "h323.h"
 
 #include "opal-call.h"
+#include "account-core.h"
 
 
-class dialer : public PThread
-{
-  PCLASSINFO(dialer, PThread);
+namespace Opal {
 
-public:
+  namespace H323 {
 
-  dialer (const std::string & uri, Opal::CallManager & ep) 
-    : PThread (1000, AutoDeleteThread), 
-    dial_uri (uri),
-    endpoint (ep) 
-  {
-    this->Resume ();
-  };
-
-  void Main () 
+    class dialer : public PThread
     {
-      PString token;
-      endpoint.SetUpCall ("pc:*", dial_uri, token);
+      PCLASSINFO(dialer, PThread);
+
+    public:
+
+      dialer (const std::string & uri, Opal::CallManager & ep) 
+        : PThread (1000, AutoDeleteThread), 
+        dial_uri (uri),
+        endpoint (ep) 
+      {
+        this->Resume ();
+      };
+
+      void Main () 
+        {
+          PString token;
+          endpoint.SetUpCall ("pc:*", dial_uri, token);
+        };
+
+    private:
+      const std::string dial_uri;
+      Opal::CallManager & endpoint;
     };
 
-private:
-  const std::string dial_uri;
-  Opal::CallManager & endpoint;
+    class subscriber : public PThread
+    {
+      PCLASSINFO(subscriber, PThread);
+
+    public:
+
+      subscriber (const Ekiga::Account & _account,
+                  Opal::H323::CallProtocolManager & ep) 
+        : PThread (1000, AutoDeleteThread),
+        account (_account),
+        endpoint (ep) 
+      {
+        this->Resume ();
+      };
+
+      void Main () 
+        {
+          endpoint.Register (account.get_host (), 
+                             account.get_authentication_username (), 
+                             account.get_password (), 
+                             PString (), 
+                             account.get_timeout (), 
+                             false);
+        };
+
+    private:
+      const Ekiga::Account & account;
+      Opal::H323::CallProtocolManager & endpoint;
+    };
+  };
 };
 
 
 using namespace Opal::H323;
-
 
 /* The class */
 CallProtocolManager::CallProtocolManager (Opal::CallManager & ep, Ekiga::ServiceCore & _core, unsigned _listen_port)
                     : H323EndPoint (ep), 
                       endpoint (ep),
                       core (_core),
-                      runtime (*(dynamic_cast<Ekiga::Runtime *> (core.get ("runtime"))))
+                      runtime (*(dynamic_cast<Ekiga::Runtime *> (core.get ("runtime")))),
+                      account_core (*(dynamic_cast<Ekiga::AccountCore *> (core.get ("account-core"))))
 {
   protocol_name = "h323";
   uri_prefix = "h323:";
@@ -239,7 +276,25 @@ const std::string & CallProtocolManager::get_forward_uri () const
 }
 
 
-void CallProtocolManager::Register (const PString & aor,
+bool CallProtocolManager::subscribe (const Ekiga::Account & account)
+{
+  if (account.get_protocol_name () != "H323")
+    return false;
+
+  /* Signal */
+  new subscriber (account, *this);
+
+  return true;
+}
+
+
+bool CallProtocolManager::unsubscribe (const Ekiga::Account & /*account*/)
+{
+  return true;
+}
+
+
+void CallProtocolManager::Register (const PString & host,
                                     const PString & authUserName,
                                     const PString & password,
                                     const PString & gatekeeperID,
@@ -247,25 +302,18 @@ void CallProtocolManager::Register (const PString & aor,
                                     bool unregister)
 {
   PString info;
-  PString host;
-  PINDEX i = 0;
+  PString aor = authUserName + "@" + host;
 
   bool result = false;
-
-  i = aor.Find ("@");
-  if (i == P_MAX_INDEX)
-    return;
-
-  host = aor.Mid (i+1);
 
   if (!unregister && !IsRegisteredWithGatekeeper (host)) {
 
     H323EndPoint::RemoveGatekeeper (0);
 
     /* Signal */
-    runtime.run_in_main (sigc::bind (endpoint.registration_event.make_slot (), 
+    runtime.run_in_main (sigc::bind (account_core.registration_event.make_slot (), 
                                      aor,
-                                     Ekiga::CallCore::Processing,
+                                     Ekiga::AccountCore::Processing,
                                      std::string ()));
 
     if (!authUserName.IsEmpty ()) {
@@ -311,17 +359,17 @@ void CallProtocolManager::Register (const PString & aor,
       else
         info = _("Failed");
 
-      runtime.run_in_main (sigc::bind (endpoint.registration_event.make_slot (), 
+      runtime.run_in_main (sigc::bind (account_core.registration_event.make_slot (), 
                                        aor, 
-                                       Ekiga::CallCore::RegistrationFailed,
+                                       Ekiga::AccountCore::RegistrationFailed,
                                        info));
     }
     else {
 
       /* Signal */
-      runtime.run_in_main (sigc::bind (endpoint.registration_event.make_slot (), 
+      runtime.run_in_main (sigc::bind (account_core.registration_event.make_slot (), 
                                        aor,
-                                       Ekiga::CallCore::Registered,
+                                       Ekiga::AccountCore::Registered,
                                        std::string ()));
     }
   }
@@ -331,9 +379,9 @@ void CallProtocolManager::Register (const PString & aor,
     RemoveAliasName (authUserName);
 
     /* Signal */
-    runtime.run_in_main (sigc::bind (endpoint.registration_event.make_slot (), 
+    runtime.run_in_main (sigc::bind (account_core.registration_event.make_slot (), 
                                      aor,
-                                     Ekiga::CallCore::Unregistered,
+                                     Ekiga::AccountCore::Unregistered,
                                      std::string ()));
   }
 }

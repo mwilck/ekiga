@@ -40,7 +40,7 @@
 
 #include "services.h"
 #include "cluster.h"
-#include "call-core.h"
+#include "account-core.h"
 
 namespace Ekiga
 {
@@ -110,9 +110,8 @@ namespace Ekiga
 
   private:
     void on_personal_details_updated (PersonalDetails & details);
-    void on_registration_event (Ekiga::CallManager & /*manager*/,
-                                std::string aor,
-                                Ekiga::CallCore::RegistrationState state,
+    void on_registration_event (std::string aor,
+                                Ekiga::AccountCore::RegistrationState state,
                                 std::string /*info*/,
                                 Ekiga::PersonalDetails *details);
   };

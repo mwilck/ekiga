@@ -49,11 +49,12 @@
 #include "chat-manager.h"
 #include "call-manager.h"
 #include "call-protocol-manager.h"
+#include "account-core.h"
+#include "opal-account.h"
 
 
 PDICTIONARY (msgDict, PString, PString);
 
-class Ekiga::PersonalDetails;
 
 namespace Opal {
 
@@ -65,6 +66,7 @@ namespace Opal {
                                 public Ekiga::PresenceFetcher,
                                 public Ekiga::PresencePublisher,
                                 public Ekiga::PresentityDecorator,
+                                public Ekiga::AccountSubscriberImpl<Opal::Account>,
                                 public Ekiga::ContactDecorator
     {
       PCLASSINFO(CallProtocolManager, SIPEndPoint);
@@ -122,13 +124,14 @@ namespace Opal {
       void set_forward_uri (const std::string & uri);
       const std::string & get_forward_uri () const;
 
+      
+      /* AccountSubscriber */
+      bool subscribe (const Ekiga::Account & account);
+      bool unsubscribe (const Ekiga::Account & account);
+
 
       /* OPAL Methods */
-      void Register (const PString & aor,
-                     const PString & authUserName,
-                     const PString & password,
-                     unsigned int expires,
-                     bool unregister);
+      void Register (const Ekiga::Account & account);
 
       void OnRegistered (const PString & aor,
                          bool wasRegistering);
@@ -173,6 +176,7 @@ namespace Opal {
       Ekiga::ServiceCore & core;
       Ekiga::PresenceCore & presence_core;
       Ekiga::Runtime & runtime;
+      Ekiga::AccountCore & account_core;
 
       Ekiga::CallProtocolManager::Interface interface;
 

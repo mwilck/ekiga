@@ -8,8 +8,9 @@ INCLUDES = 						\
 	-I$(top_srcdir)/lib/gmconf	 		\
 	-I$(top_srcdir)/lib/engine/include 		\
 	-I$(top_srcdir)/lib/engine/framework		\
+	-I$(top_srcdir)/lib/engine/protocol/skel 	\
 	-I$(top_srcdir)/lib/engine/presence/skel 	\
-	-I$(top_srcdir)/lib/engine/protocol/skel 
+	-I$(top_srcdir)/lib/engine/account/skel 
 
 libavahipublisher_la_SOURCES = 						\
 	$(avahi_publisher_dir)/avahi-publisher-main.cpp			\
@@ -18,7 +19,7 @@ libavahipublisher_la_SOURCES = 						\
 	$(avahi_publisher_dir)/avahi-publisher.h
 
 libavahipublisher_la_LIBADD = 						\
-	$(top_builddir)/lib/engine/protocol/skel/libgmprotocol.la	\
+	$(top_builddir)/lib/engine/account/skel/libaccount.la		\
 	$(top_builddir)/lib/engine/framework/libgmframework.la		\
 	$(top_builddir)/lib/engine/presence/skel/libgmpresence.la
 
