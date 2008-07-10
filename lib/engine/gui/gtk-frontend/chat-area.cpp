@@ -27,80 +27,80 @@
 
 
 /*
- *                        gtk-chat-view.cpp  -  description
+ *                        chat-area.cpp  -  description
  *                         --------------------------------
  *   begin                : written in july 2008 by Julien Puydt
  *   copyright            : (C) 2008 by Julien Puydt
- *   description          : Implementation of a Chat "view" (it has controls)
+ *   description          : Implementation of a Chat area (view and control)
  *
  */
 
-#include "gtk-chat-view.h"
+#include "chat-area.h"
 
-class GtkChatViewHelper;
+class ChatAreaHelper;
 
-struct _GtkChatViewPrivate
+struct _ChatAreaPrivate
 {
-  Ekiga::Chat *chat;
+  Ekiga::Chat* chat;
   sigc::connection connection;
-  GtkChatViewHelper *helper;
+  ChatAreaHelper* helper;
 
   /* we contain those, so no need to unref them */
-  GtkWidget *text_view;
-  GtkWidget *entry;
+  GtkWidget* text_view;
+  GtkWidget* entry;
 };
 
 enum {
-  GTK_CHAT_VIEW_PROP_CHAT = 1
+  CHAT_AREA_PROP_CHAT = 1
 };
 
-static GObjectClass *parent_class = NULL;
+static GObjectClass* parent_class = NULL;
 
 /* declaration of internal api */
 
-static void gtk_chat_view_add_notice (GtkChatView *self,
-				      const gchar *txt);
+static void chat_area_add_notice (ChatArea* self,
+				  const gchar* txt);
 
-static void gtk_chat_view_add_message (GtkChatView *self,
-				       const gchar *from,
-				       const gchar *txt);
+static void chat_area_add_message (ChatArea* self,
+				   const gchar* from,
+				   const gchar* txt);
 
 /* declaration of the helping observer */
-class GtkChatViewHelper: public Ekiga::ChatObserver
+class ChatAreaHelper: public Ekiga::ChatObserver
 {
 public:
-  GtkChatViewHelper (GtkChatView *view_): view(view_)
+  ChatAreaHelper (ChatArea* area_): area(area_)
   {}
 
-  ~GtkChatViewHelper ()
+  ~ChatAreaHelper ()
   {}
 
   void message (const std::string from,
 		const std::string msg)
-  { gtk_chat_view_add_message (view, from.c_str (), msg.c_str ()); }
+  { chat_area_add_message (area, from.c_str (), msg.c_str ()); }
 
   void notice (const std::string msg)
-  { gtk_chat_view_add_notice (view, msg.c_str ()); }
+  { chat_area_add_notice (area, msg.c_str ()); }
 
 private:
-  GtkChatView *view;
+  ChatArea* area;
 };
 
 
 /* declaration of callbacks */
-static void on_entry_activated (GtkWidget *entry,
+static void on_entry_activated (GtkWidget* entry,
 				gpointer data);
 
-static void on_chat_removed (GtkChatView *self);
+static void on_chat_removed (ChatArea* self);
 
 /* implementation of internal api */
 
 static void
-gtk_chat_view_add_notice (GtkChatView *self,
-			  const gchar *txt)
+chat_area_add_notice (ChatArea* self,
+		      const gchar* txt)
 {
-  gchar *str = NULL;
-  GtkTextBuffer *buffer = NULL;
+  gchar* str = NULL;
+  GtkTextBuffer* buffer = NULL;
   GtkTextIter iter;
 
   str = g_strdup_printf ("NOTICE: %s\n", txt);
@@ -111,12 +111,12 @@ gtk_chat_view_add_notice (GtkChatView *self,
 }
 
 static void
-gtk_chat_view_add_message (GtkChatView *self,
-			   const gchar *from,
-			   const gchar *txt)
+chat_area_add_message (ChatArea* self,
+		       const gchar* from,
+		       const gchar* txt)
 {
-  gchar *str = NULL;
-  GtkTextBuffer *buffer = NULL;
+  gchar* str = NULL;
+  GtkTextBuffer* buffer = NULL;
   GtkTextIter iter;
 
   str = g_strdup_printf ("%s says: %s\n", from, txt);
@@ -129,19 +129,19 @@ gtk_chat_view_add_message (GtkChatView *self,
 /* implementation of callbacks */
 
 static void
-on_chat_removed (GtkChatView *self)
+on_chat_removed (ChatArea* self)
 {
   gtk_widget_hide (self->priv->entry);
 }
 
 static void
-on_entry_activated (GtkWidget *entry,
+on_entry_activated (GtkWidget* entry,
 		    gpointer data)
 {
-  GtkChatView *self = NULL;
-  const gchar *text = NULL;
+  ChatArea* self = NULL;
+  const gchar* text = NULL;
 
-  self = GTK_CHAT_VIEW (data);
+  self = CHAT_AREA (data);
 
   text = gtk_entry_get_text (GTK_ENTRY (entry));
 
@@ -155,21 +155,21 @@ on_entry_activated (GtkWidget *entry,
 /* GObject code */
 
 static void
-gtk_chat_view_dispose (GObject *obj)
+chat_area_dispose (GObject* obj)
 {
-  GtkChatView *self = NULL;
+  ChatArea* self = NULL;
 
-  self = (GtkChatView *)obj;
+  self = (ChatArea*)obj;
 
   parent_class->dispose (obj);
 }
 
 static void
-gtk_chat_view_finalize (GObject *obj)
+chat_area_finalize (GObject* obj)
 {
-  GtkChatView *self = NULL;
+  ChatArea* self = NULL;
 
-  self = (GtkChatView *)obj;
+  self = (ChatArea*)obj;
 
   if (self->priv->chat) {
 
@@ -186,18 +186,18 @@ gtk_chat_view_finalize (GObject *obj)
 }
 
 static void
-gtk_chat_view_get_property (GObject *obj,
-			    guint prop_id,
-			    GValue *value,
-			    GParamSpec *spec)
+chat_area_get_property (GObject* obj,
+			guint prop_id,
+			GValue* value,
+			GParamSpec* spec)
 {
-  GtkChatView *self = NULL;
+  ChatArea* self = NULL;
 
-  self = (GtkChatView *)obj;
+  self = (ChatArea*)obj;
 
   switch (prop_id) {
 
-  case GTK_CHAT_VIEW_PROP_CHAT:
+  case CHAT_AREA_PROP_CHAT:
     g_value_set_pointer (value, self->priv->chat);
     break;
 
@@ -208,23 +208,23 @@ gtk_chat_view_get_property (GObject *obj,
 }
 
 static void
-gtk_chat_view_set_property (GObject *obj,
-			    guint prop_id,
-			    const GValue *value,
-			    GParamSpec *spec)
+chat_area_set_property (GObject* obj,
+			guint prop_id,
+			const GValue* value,
+			GParamSpec* spec)
 {
-  GtkChatView *self = NULL;
+  ChatArea* self = NULL;
   gpointer ptr = NULL;
 
-  self = (GtkChatView *)obj;
+  self = (ChatArea* )obj;
 
   switch (prop_id) {
 
-  case GTK_CHAT_VIEW_PROP_CHAT:
+  case CHAT_AREA_PROP_CHAT:
     ptr = g_value_get_pointer (value);
     self->priv->chat = (Ekiga::Chat *)ptr;
     self->priv->connection = self->priv->chat->removed.connect (sigc::bind (sigc::ptr_fun (on_chat_removed), self));
-    self->priv->helper = new GtkChatViewHelper (self);
+    self->priv->helper = new ChatAreaHelper (self);
     self->priv->chat->connect (*(self->priv->helper));
     break;
 
@@ -235,46 +235,42 @@ gtk_chat_view_set_property (GObject *obj,
 }
 
 static void
-gtk_chat_view_class_init (gpointer g_class,
-			  gpointer class_data)
+chat_area_class_init (gpointer g_class,
+		      G_GNUC_UNUSED gpointer class_data)
 {
-  GObjectClass *gobject_class = NULL;
-  GParamSpec *spec = NULL;
+  GObjectClass* gobject_class = NULL;
+  GParamSpec* spec = NULL;
 
-  (void)class_data; /* -Wextra */
+  parent_class = (GObjectClass*)g_type_class_peek_parent (g_class);
 
-  parent_class = (GObjectClass *)g_type_class_peek_parent (g_class);
+  g_type_class_add_private (g_class, sizeof (ChatAreaPrivate));
 
-  g_type_class_add_private (g_class, sizeof (GtkChatViewPrivate));
-
-  gobject_class = (GObjectClass *) g_class;
-  gobject_class->dispose = gtk_chat_view_dispose;
-  gobject_class->finalize = gtk_chat_view_finalize;
-  gobject_class->get_property = gtk_chat_view_get_property;
-  gobject_class->set_property = gtk_chat_view_set_property;
+  gobject_class = (GObjectClass*)g_class;
+  gobject_class->dispose = chat_area_dispose;
+  gobject_class->finalize = chat_area_finalize;
+  gobject_class->get_property = chat_area_get_property;
+  gobject_class->set_property = chat_area_set_property;
 
   spec = g_param_spec_pointer ("chat",
 			       "displayed chat",
 			       "Displayed chat",
 			       (GParamFlags)(G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY));
   g_object_class_install_property (gobject_class,
-				   GTK_CHAT_VIEW_PROP_CHAT,
+				   CHAT_AREA_PROP_CHAT,
 				   spec);
 }
 
 static void
-gtk_chat_view_init (GTypeInstance *instance,
-		    gpointer g_class)
+chat_area_init (GTypeInstance* instance,
+		G_GNUC_UNUSED gpointer g_class)
 {
-  GtkChatView *self = NULL;
+  ChatArea* self = NULL;
 
-  (void)g_class; /* -Wextra */
-
-  self = (GtkChatView *)instance;
+  self = (ChatArea*)instance;
 
   self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self,
-					    GTK_TYPE_CHAT_VIEW,
-					    GtkChatViewPrivate);
+					    TYPE_CHAT_AREA,
+					    ChatAreaPrivate);
   self->priv->chat = NULL;
 
   self->priv->text_view = gtk_text_view_new ();
@@ -292,27 +288,27 @@ gtk_chat_view_init (GTypeInstance *instance,
 
 
 GType
-gtk_chat_view_get_type ()
+chat_area_get_type ()
 {
   static GType result = 0;
 
   if (result == 0) {
 
     static const GTypeInfo info = {
-      sizeof (GtkChatViewClass),
+      sizeof (ChatAreaClass),
       NULL,
       NULL,
-      gtk_chat_view_class_init,
+      chat_area_class_init,
       NULL,
       NULL,
-      sizeof (GtkChatView),
+      sizeof (ChatArea),
       0,
-      gtk_chat_view_init,
+      chat_area_init,
       NULL
     };
 
     result = g_type_register_static (GTK_TYPE_VBOX,
-				     "GtkChatView",
+				     "ChatArea",
 				     &info, (GTypeFlags) 0);
   }
 
@@ -321,16 +317,16 @@ gtk_chat_view_get_type ()
 
 /* public api */
 
-GtkWidget *
-gtk_chat_view_new (Ekiga::Chat &chat)
+GtkWidget* 
+chat_area_new (Ekiga::Chat& chat)
 {
-  return (GtkWidget *)g_object_new (GTK_TYPE_CHAT_VIEW,
-				    "chat", &chat,
-				    NULL);
+  return (GtkWidget*)g_object_new (TYPE_CHAT_AREA,
+				   "chat", &chat,
+				   NULL);
 }
 
 const std::string
-gtk_chat_view_get_title (GtkChatView* chat)
+chat_area_get_title (ChatArea* chat)
 {
   return chat->priv->chat->get_title ();
 }

@@ -27,16 +27,16 @@
 
 
 /*
- *                        gtk-chat-view.h  -  description
+ *                        chat-area.h  -  description
  *                         --------------------------------
  *   begin                : written in july 2008 by Julien Puydt
  *   copyright            : (C) 2008 by Julien Puydt
- *   description          : Declaration of a Chat "view" (it has controls)
+ *   description          : Declaration of a Chat area (both view and control)
  *
  */
 
-#ifndef __GTK_CHAT_VIEW_H__
-#define __GTK_CHAT_VIEW_H__
+#ifndef __CHAT_AREA_H__
+#define __CHAT_AREA_H__
 
 #include <gtk/gtk.h>
 
@@ -44,37 +44,37 @@
 
 G_BEGIN_DECLS
 
-typedef struct _GtkChatView GtkChatView;
-typedef struct _GtkChatViewClass GtkChatViewClass;
-typedef struct _GtkChatViewPrivate GtkChatViewPrivate;
+typedef struct _ChatArea ChatArea;
+typedef struct _ChatAreaClass ChatAreaClass;
+typedef struct _ChatAreaPrivate ChatAreaPrivate;
 
-struct _GtkChatView
+struct _ChatArea
 {
   GtkVBox parent;
 
-  GtkChatViewPrivate *priv;
+  ChatAreaPrivate* priv;
 };
 
-struct _GtkChatViewClass
+struct _ChatAreaClass
 {
   GtkVBoxClass parent;
 };
 
 /* public api */
-GtkWidget *gtk_chat_view_new (Ekiga::Chat &chat);
+GtkWidget *chat_area_new (Ekiga::Chat& chat);
 
-const std::string gtk_chat_view_get_title (GtkChatView* chat);
+const std::string chat_area_get_title (ChatArea* chat);
 
 /* GObject thingies */
 
-#define GTK_TYPE_CHAT_VIEW (gtk_chat_view_get_type ())
-#define GTK_CHAT_VIEW(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_CHAT_VIEW, GtkChatView))
-#define GTK_CHAT_VIEW_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_CHAT_VIEW, GtkChatViewClass))
-#define GTK_IS_CHAT_VIEW(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_CHAT_VIEW))
-#define GTK_IS_CHAT_VIEW_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_CHAT_VIEW))
-#define GTK_CHAT_VIEW_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_CHAT_VIEW, GtkChatViewClass))
+#define TYPE_CHAT_AREA (chat_area_get_type ())
+#define CHAT_AREA(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TYPE_CHAT_AREA, ChatArea))
+#define CHAT_AREA_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), TYPE_CHAT_AREA, ChatAreaClass))
+#define GTK_IS_CHAT_VIEW(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TYPE_CHAT_AREA))
+#define GTK_IS_CHAT_VIEW_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), TYPE_CHAT_AREA))
+#define CHAT_AREA_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), TYPE_CHAT_AREA, ChatAreaClass))
 
-GType gtk_chat_view_get_type ();
+GType chat_area_get_type () G_GNUC_CONST;
 
 
 G_END_DECLS

@@ -36,7 +36,7 @@
  */
 
 #include "chat-window.h"
-#include "gtk-chat-view.h"
+#include "chat-area.h"
 
 struct _ChatWindowPrivate
 {
@@ -82,7 +82,7 @@ on_simple_chat_added (ChatWindow* self,
   GtkWidget* label = NULL;
   gint num;
 
-  page = gtk_chat_view_new (chat);
+  page = chat_area_new (chat);
   label = gtk_label_new (chat.get_title ().c_str ());
 
   num = gtk_notebook_append_page (GTK_NOTEBOOK (self->priv->notebook),
