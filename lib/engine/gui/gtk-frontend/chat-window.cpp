@@ -36,7 +36,8 @@
  */
 
 #include "chat-window.h"
-#include "chat-area.h"
+#include "simple-chat-page.h"
+#include "multiple-chat-page.h"
 
 struct _ChatWindowPrivate
 {
@@ -46,6 +47,7 @@ struct _ChatWindowPrivate
   Ekiga::ChatCore& core;
   sigc::connection dialect_added_connection;
   std::list<sigc::connection> simple_chat_added_connections;
+  std::list<sigc::connection> multiple_chat_added_connections;
 
   GtkWidget* notebook;
 };
@@ -59,6 +61,9 @@ static bool on_dialect_added (ChatWindow* self,
 static bool on_simple_chat_added (ChatWindow* self,
 				  bool on_user_request,
 				  Ekiga::SimpleChat &chat);
+static bool on_multiple_chat_added (ChatWindow* self,
+				    bool on_user_request,
+				    Ekiga::MultipleChat &chat);
 
 /* signal callbacks (implementations) */
 
@@ -67,8 +72,10 @@ on_dialect_added (ChatWindow* self,
 		  Ekiga::Dialect& dialect)
 {
   self->priv->simple_chat_added_connections.push_front (dialect.simple_chat_added.connect (sigc::hide_return (sigc::bind<0> (sigc::ptr_fun (on_simple_chat_added), self))));
+  self->priv->multiple_chat_added_connections.push_front (dialect.multiple_chat_added.connect (sigc::hide_return (sigc::bind<0> (sigc::ptr_fun (on_multiple_chat_added), self))));
 
   dialect.visit_simple_chats (sigc::bind<0> (sigc::bind<0> (sigc::ptr_fun (on_simple_chat_added), self), false));
+  dialect.visit_multiple_chats (sigc::bind<0> (sigc::bind<0> (sigc::ptr_fun (on_multiple_chat_added), self), false));
 
   return true;
 }
@@ -82,7 +89,33 @@ on_simple_chat_added (ChatWindow* self,
   GtkWidget* label = NULL;
   gint num;
 
-  page = chat_area_new (chat);
+  page = simple_chat_page_new (chat);
+  label = gtk_label_new (chat.get_title ().c_str ());
+
+  num = gtk_notebook_append_page (GTK_NOTEBOOK (self->priv->notebook),
+				  page, label);
+  gtk_widget_show_all (page);
+
+  if (on_user_request) {
+
+    gtk_notebook_set_current_page (GTK_NOTEBOOK (self->priv->notebook), num);
+    gtk_widget_show (GTK_WIDGET (self));
+    gtk_window_present (GTK_WINDOW (self));
+  }
+
+  return true;
+}
+
+static bool
+on_multiple_chat_added (ChatWindow* self,
+			bool on_user_request,
+			Ekiga::MultipleChat &chat)
+{
+  GtkWidget* page = NULL;
+  GtkWidget* label = NULL;
+  gint num;
+
+  page = multiple_chat_page_new (chat);
   label = gtk_label_new (chat.get_title ().c_str ());
 
   num = gtk_notebook_append_page (GTK_NOTEBOOK (self->priv->notebook),
@@ -125,6 +158,12 @@ chat_window_finalize (GObject* obj)
        ++iter)
     iter->disconnect ();
 
+  for (std::list<sigc::connection>::iterator iter
+	 = self->priv->multiple_chat_added_connections.begin ();
+       iter != self->priv->multiple_chat_added_connections.end ();
+       ++iter)
+    iter->disconnect ();
+
   delete self->priv;
   self->priv = NULL;
 
@@ -148,11 +187,8 @@ static void
 chat_window_init (GTypeInstance* instance,
 		  G_GNUC_UNUSED gpointer g_class)
 {
-  ChatWindow* self = NULL;
-
-  self = (ChatWindow*)instance;
-
-  // hmmm...
+  /* we can't do much here since we get the Chat as reference... */
+  gtk_window_set_title (GTK_WINDOW (instance), "Chat window");
 }
 
 GType
