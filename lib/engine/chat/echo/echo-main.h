@@ -1,6 +1,6 @@
 
 /* Ekiga -- A VoIP and Video-Conferencing application
- * Copyright (C) 2000-2007 Damien Sandras
+ * Copyright (C) 2000-2008 Damien Sandras
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,64 +27,21 @@
 
 
 /*
- *                         gtk-frontend.h  -  description
+ *                         echo-main.h  -  description
  *                         ------------------------------------------
- *   begin                : written in 2007 by Julien Puydt
- *   copyright            : (c) 2007 by Julien Puydt
- *   description          : code to hook a gtk+ user interface to
- *                          the main program
+ *   begin                : written in 2008 by Julien Puydt
+ *   copyright            : (c) 2008 by Julien Puydt
+ *   description          : code to hook the echo chat to the main program
  *
  */
 
-#ifndef __GTK_FRONTEND_H__
-#define __GTK_FRONTEND_H__
-
-#include <gtk/gtk.h>
-#include <vector>
+#ifndef __ECHO_MAIN_H__
+#define __ECHO_MAIN_H__
 
 #include "services.h"
-#include "contact-core.h"
-#include "presence-core.h"
-#include "chat-manager.h"
 
-
-class GtkFrontend: public Ekiga::Service
-{
-public:
-
-  GtkFrontend (Ekiga::ServiceCore & _core);
-
-  ~GtkFrontend ();
-
-  const std::string get_name () const;
-
-  const std::string get_description () const;
-
-  const GtkWidget *get_roster_view () const;
-
-  const GtkWidget *get_call_history_view () const;
-
-  const GtkWidget *get_addressbook_window () const;
-
-  const GtkWidget *get_chat_window () const;
-
-private :
-  void on_new_chat (const Ekiga::ChatManager & manager,
-		    const std::string & name,
-		    const std::string & uri);
-
-  GtkWidget *addressbook_window;
-  GtkWidget *roster_view;
-  GtkWidget *call_history_view;
-  GtkWidget *chat_window;
-  GtkWidget *chat_window_old;
-
-  std::vector<sigc::connection> connections;
-};
-
-
-bool gtk_frontend_init (Ekiga::ServiceCore &core,
-			int *argc,
-			char **argv[]);
+bool echo_init (Ekiga::ServiceCore &core,
+		int *argc,
+		char **argv[]);
 
 #endif

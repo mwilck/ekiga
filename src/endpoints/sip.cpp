@@ -47,6 +47,7 @@
 
 #include "presence-core.h"
 #include "account-core.h"
+#include "chat-core.h"
 #include "personal-details.h"
 #include "opal-account.h"
 
@@ -122,9 +123,15 @@ CallProtocolManager::CallProtocolManager (Opal::CallManager & ep,
                       runtime (*(dynamic_cast<Ekiga::Runtime *> (core.get ("runtime")))),
                       account_core (*(dynamic_cast<Ekiga::AccountCore *> (core.get ("account-core"))))
 {
+  Ekiga::ChatCore* chat_core;
+
   protocol_name = "sip";
   uri_prefix = "sip:";
   listen_port = _listen_port;
+
+  chat_core = dynamic_cast<Ekiga::ChatCore *> (core.get ("chat-core"));
+  dialect = new SIP::Dialect (core, sigc::mem_fun (this, &CallProtocolManager::send_message));
+  chat_core->add_dialect (*dialect);
 
   /* Timeouts */
   SetAckTimeout (PTimeInterval (0, 32));
@@ -152,6 +159,10 @@ CallProtocolManager::CallProtocolManager (Opal::CallManager & ep,
     publish (*details);
 }
 
+CallProtocolManager::~CallProtocolManager ()
+{
+  delete dialect;
+}
 
 bool CallProtocolManager::populate_menu (Ekiga::Contact &contact,
                                          Ekiga::MenuBuilder &builder)
@@ -199,7 +210,7 @@ bool CallProtocolManager::menu_builder_add_actions (const std::string & fullname
        iter != uris.end ();
        iter++) {
 
-    std::string action = _("Message");
+    std::string action = _("Message (old)");
 
     if (!iter->first.empty ())
       action = action + " [" + iter->first + "]";
@@ -844,6 +855,7 @@ void CallProtocolManager::OnReceivedMESSAGE (G_GNUC_UNUSED OpalTransport & trans
     std::string message_uri = (const char *) uri.AsString ();
     std::string _message = (const char *) pdu.GetEntityBody ();
 
+    dialect->push_message (message_uri, display_name, _message);
     runtime.run_in_main (sigc::bind (im_received.make_slot (), display_name, message_uri, _message));
   }
 }
@@ -855,6 +867,9 @@ void CallProtocolManager::OnMessageFailed (const SIPURL & messageUrl,
   SIPURL to = messageUrl;
   to.Sanitise (SIPURL::ToURI);
   std::string uri = (const char *) to.AsString ();
+  std::string display_name = (const char *) to.GetDisplayName ();
+  
+  dialect->push_notice (uri, display_name, _("Could not send message"));
   runtime.run_in_main (sigc::bind (im_failed.make_slot (), uri, 
                                    _("Could not send message")));
 }

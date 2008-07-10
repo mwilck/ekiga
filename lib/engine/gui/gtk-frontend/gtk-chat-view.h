@@ -27,62 +27,55 @@
 
 
 /*
- *                         chat-window.h  -  description
- *                         -----------------------------
+ *                        gtk-chat-view.h  -  description
+ *                         --------------------------------
  *   begin                : written in july 2008 by Julien Puydt
  *   copyright            : (C) 2008 by Julien Puydt
- *   description          : Declaration of a window to display chats
+ *   description          : Declaration of a Chat "view" (it has controls)
  *
  */
 
+#ifndef __GTK_CHAT_VIEW_H__
+#define __GTK_CHAT_VIEW_H__
 
-#ifndef __CHAT_WINDOW_H__
-#define __CHAT_WINDOW_H__
+#include <gtk/gtk.h>
 
-#include "gmwindow.h"
-#include "chat-core.h"
-
-/* FIXME: remove the following line to begin killing the old code */
-#include "chat-window-old.h"
+#include "chat.h"
 
 G_BEGIN_DECLS
 
-typedef struct _ChatWindow ChatWindow;
-typedef struct _ChatWindowPrivate ChatWindowPrivate;
-typedef struct _ChatWindowClass ChatWindowClass;
+typedef struct _GtkChatView GtkChatView;
+typedef struct _GtkChatViewClass GtkChatViewClass;
+typedef struct _GtkChatViewPrivate GtkChatViewPrivate;
+
+struct _GtkChatView
+{
+  GtkVBox parent;
+
+  GtkChatViewPrivate *priv;
+};
+
+struct _GtkChatViewClass
+{
+  GtkVBoxClass parent;
+};
+
+/* public api */
+GtkWidget *gtk_chat_view_new (Ekiga::Chat &chat);
+
+const std::string gtk_chat_view_get_title (GtkChatView* chat);
 
 /* GObject thingies */
-struct _ChatWindow
-{
-  GmWindow parent;
-  ChatWindowPrivate *priv;
-};
 
-struct _ChatWindowClass
-{
-  GmWindowClass parent;
-};
+#define GTK_TYPE_CHAT_VIEW (gtk_chat_view_get_type ())
+#define GTK_CHAT_VIEW(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_CHAT_VIEW, GtkChatView))
+#define GTK_CHAT_VIEW_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_CHAT_VIEW, GtkChatViewClass))
+#define GTK_IS_CHAT_VIEW(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_CHAT_VIEW))
+#define GTK_IS_CHAT_VIEW_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_CHAT_VIEW))
+#define GTK_CHAT_VIEW_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_CHAT_VIEW, GtkChatViewClass))
 
-#define CHAT_WINDOW_TYPE (chat_window_get_type ())
+GType gtk_chat_view_get_type ();
 
-#define CHAT_WINDOW(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), CHAT_WINDOW_TYPE, ChatWindow))
-
-#define IS_CHAT_WINDOW(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CHAT_WINDOW_TYPE))
-
-#define CHAT_WINDOW_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), CHAT_WINDOW_TYPE, ChatWindowClass))
-
-#define IS_CHAT_WINDOW_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), CHAT_WINDOW_TYPE))
-
-#define CHAT_WINDOW_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), CHAT_WINDOW_TYPE, ChatWindowClass))
-
-GType chat_window_get_type ();
-
-
-/* Public API */
-
-GtkWidget* chat_window_new (Ekiga::ChatCore& core,
-			    const std::string key);
 
 G_END_DECLS
-
 #endif

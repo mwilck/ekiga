@@ -1,7 +1,7 @@
 
 /*
  * Ekiga -- A VoIP and Video-Conferencing application
- * Copyright (C) 2000-2007 Damien Sandras
+ * Copyright (C) 2000-2008 Damien Sandras
 
  * This program is free software; you can  redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,50 +25,44 @@
 
 
 /*
- *                         chat-core.cpp  -  description
+ *                         echo-presentity.h  -  description
  *                         ------------------------------------------
- *   begin                : written in 2007 by Julien Puydt
- *   copyright            : (c) 2007 by Julien Puydt
- *   description          : implementation of the main chat managing object
+ *   begin                : written in 2008 by Julien Puydt
+ *   copyright            : (c) 2008 by Julien Puydt
+ *   description          : declaration of an echo presentity
  *
  */
 
-#include "chat-core.h"
+#ifndef __ECHO_PRESENTITY__
+#define __ECHO_PRESENTITY__
 
-#include <iostream>
+#include "presentity.h"
 
-Ekiga::ChatCore::~ChatCore ()
+namespace Echo
 {
-}
+  class Presentity: public Ekiga::Presentity
+  {
+  public:
 
-void
-Ekiga::ChatCore::add_dialect (Dialect& dialect)
-{
-  dialects.insert (&dialect);
-  dialect.questions.add_handler (questions.make_slot ());
-  dialect_added.emit (dialect);
-}
+    Presentity ();
 
-void
-Ekiga::ChatCore::visit_dialects (sigc::slot<bool, Dialect&> visitor)
-{
-  bool go_on = true;
+    ~Presentity ();
 
-  for (std::set<Dialect*>::iterator iter = dialects.begin ();
-       iter != dialects.end () && go_on;
-       iter++)
-    go_on = visitor (**iter);
-}
+    const std::string get_name () const;
 
-bool
-Ekiga::ChatCore::populate_menu (MenuBuilder &builder)
-{
-  bool result = false;
+    const std::string get_presence () const;
 
-  for (std::set<Dialect*>::iterator iter = dialects.begin ();
-       iter != dialects.end ();
-       ++iter)
-    result = (*iter)->populate_menu (builder) || result;
+    const std::string get_status () const;
 
-  return result;
-}
+    const std::string get_avatar () const;
+
+    const std::set<std::string> get_groups () const;
+
+    const std::string get_uri () const;
+
+    bool populate_menu (Ekiga::MenuBuilder &);
+  };
+
+};
+
+#endif

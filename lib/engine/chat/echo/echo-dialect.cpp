@@ -1,7 +1,7 @@
 
 /*
  * Ekiga -- A VoIP and Video-Conferencing application
- * Copyright (C) 2000-2007 Damien Sandras
+ * Copyright (C) 2000-2008 Damien Sandras
 
  * This program is free software; you can  redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,50 +25,40 @@
 
 
 /*
- *                         chat-core.cpp  -  description
+ *                         echo-dialect.cpp  -  description
  *                         ------------------------------------------
- *   begin                : written in 2007 by Julien Puydt
- *   copyright            : (c) 2007 by Julien Puydt
- *   description          : implementation of the main chat managing object
+ *   begin                : written in 2008 by Julien Puydt
+ *   copyright            : (c) 2008 by Julien Puydt
+ *   description          : implementation of an echo chat backend
  *
  */
 
-#include "chat-core.h"
-
 #include <iostream>
 
-Ekiga::ChatCore::~ChatCore ()
+#include "echo-dialect.h"
+
+Echo::Dialect::Dialect ()
 {
 }
 
-void
-Ekiga::ChatCore::add_dialect (Dialect& dialect)
+Echo::Dialect::~Dialect ()
 {
-  dialects.insert (&dialect);
-  dialect.questions.add_handler (questions.make_slot ());
-  dialect_added.emit (dialect);
-}
-
-void
-Ekiga::ChatCore::visit_dialects (sigc::slot<bool, Dialect&> visitor)
-{
-  bool go_on = true;
-
-  for (std::set<Dialect*>::iterator iter = dialects.begin ();
-       iter != dialects.end () && go_on;
-       iter++)
-    go_on = visitor (**iter);
+#ifdef __GNUC_
+  std::cout << __PRETTY_FUNCTION__ << std::endl;
+#endif
 }
 
 bool
-Ekiga::ChatCore::populate_menu (MenuBuilder &builder)
+Echo::Dialect::populate_menu (Ekiga::MenuBuilder &builder)
+
 {
-  bool result = false;
+  builder.add_action ("FIXME", "New echo", sigc::mem_fun (this, &Echo::Dialect::new_chat));
 
-  for (std::set<Dialect*>::iterator iter = dialects.begin ();
-       iter != dialects.end ();
-       ++iter)
-    result = (*iter)->populate_menu (builder) || result;
+  return true;
+}
 
-  return result;
+void
+Echo::Dialect::new_chat ()
+{
+  add_simple_chat (true, new SimpleChat ());
 }

@@ -25,50 +25,39 @@
 
 
 /*
- *                         chat-core.cpp  -  description
+ *                         chat-simple.h  -  description
  *                         ------------------------------------------
  *   begin                : written in 2007 by Julien Puydt
  *   copyright            : (c) 2007 by Julien Puydt
- *   description          : implementation of the main chat managing object
+ *   description          : declaration of the interface of a chat with a
+ *                          single person
  *
  */
 
-#include "chat-core.h"
+#ifndef __CHAT_SIMPLE_H__
+#define __CHAT_SIMPLE_H__
 
-#include <iostream>
+#include "chat.h"
+#include "presentity.h"
 
-Ekiga::ChatCore::~ChatCore ()
+namespace Ekiga
 {
-}
 
-void
-Ekiga::ChatCore::add_dialect (Dialect& dialect)
-{
-  dialects.insert (&dialect);
-  dialect.questions.add_handler (questions.make_slot ());
-  dialect_added.emit (dialect);
-}
+  class SimpleChat: public Chat
+  {
+  public:
 
-void
-Ekiga::ChatCore::visit_dialects (sigc::slot<bool, Dialect&> visitor)
-{
-  bool go_on = true;
+    /** The destructor.
+     */
+    virtual ~SimpleChat ()
+    {}
 
-  for (std::set<Dialect*>::iterator iter = dialects.begin ();
-       iter != dialects.end () && go_on;
-       iter++)
-    go_on = visitor (**iter);
-}
+    /** Returns the Presentity associated with the SimpleChat.
+     * @return The SimpleChat's Presentity.
+     */
+    virtual Presentity &get_presentity () const = 0;
+  };
 
-bool
-Ekiga::ChatCore::populate_menu (MenuBuilder &builder)
-{
-  bool result = false;
+};
 
-  for (std::set<Dialect*>::iterator iter = dialects.begin ();
-       iter != dialects.end ();
-       ++iter)
-    result = (*iter)->populate_menu (builder) || result;
-
-  return result;
-}
+#endif

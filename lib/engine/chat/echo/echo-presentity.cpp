@@ -1,7 +1,7 @@
 
 /*
  * Ekiga -- A VoIP and Video-Conferencing application
- * Copyright (C) 2000-2007 Damien Sandras
+ * Copyright (C) 2000-2008 Damien Sandras
 
  * This program is free software; you can  redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,50 +25,67 @@
 
 
 /*
- *                         chat-core.cpp  -  description
+ *                         echo-presentity.cpp  -  description
  *                         ------------------------------------------
- *   begin                : written in 2007 by Julien Puydt
- *   copyright            : (c) 2007 by Julien Puydt
- *   description          : implementation of the main chat managing object
+ *   begin                : written in 2008 by Julien Puydt
+ *   copyright            : (c) 2008 by Julien Puydt
+ *   description          : implementation of an echo presentity
  *
  */
 
-#include "chat-core.h"
-
 #include <iostream>
 
-Ekiga::ChatCore::~ChatCore ()
+#include "echo-presentity.h"
+
+Echo::Presentity::Presentity ()
 {
 }
 
-void
-Ekiga::ChatCore::add_dialect (Dialect& dialect)
+Echo::Presentity::~Presentity ()
 {
-  dialects.insert (&dialect);
-  dialect.questions.add_handler (questions.make_slot ());
-  dialect_added.emit (dialect);
+#ifdef __GNUC__
+  std::cout << __PRETTY_FUNCTION__ << std::endl;
+#endif
 }
 
-void
-Ekiga::ChatCore::visit_dialects (sigc::slot<bool, Dialect&> visitor)
+const std::string
+Echo::Presentity::get_name () const
 {
-  bool go_on = true;
+  return "Echo";
+}
 
-  for (std::set<Dialect*>::iterator iter = dialects.begin ();
-       iter != dialects.end () && go_on;
-       iter++)
-    go_on = visitor (**iter);
+const std::string
+Echo::Presentity::get_presence () const
+{
+  return "online"; // FIXME
+}
+
+const std::string
+Echo::Presentity::get_status () const
+{
+  return "ready";
+}
+
+const std::string
+Echo::Presentity::get_avatar () const
+{
+  return ""; // FIXME
+}
+
+const std::set<std::string>
+Echo::Presentity::get_groups () const
+{
+  return std::set<std::string>();
+}
+
+const std::string
+Echo::Presentity::get_uri () const
+{
+  return ""; // should be good enough
 }
 
 bool
-Ekiga::ChatCore::populate_menu (MenuBuilder &builder)
+Echo::Presentity::populate_menu (Ekiga::MenuBuilder &)
 {
-  bool result = false;
-
-  for (std::set<Dialect*>::iterator iter = dialects.begin ();
-       iter != dialects.end ();
-       ++iter)
-    result = (*iter)->populate_menu (builder) || result;
-
-  return result;
+  return false; // FIXME?
 }

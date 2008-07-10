@@ -98,6 +98,12 @@ ekiga_SOURCES +=				\
 	endpoints/h323.cpp			\
 	endpoints/pcss.h			\
 	endpoints/pcss.cpp			\
+	endpoints/sip-presentity.h		\
+	endpoints/sip-presentity.cpp		\
+	endpoints/sip-chat-simple.h		\
+	endpoints/sip-chat-simple.cpp		\
+	endpoints/sip-dialect.h			\
+	endpoints/sip-dialect.cpp		\
 	endpoints/sip.h				\
 	endpoints/sip.cpp			\
 	endpoints/opal-account.h		\

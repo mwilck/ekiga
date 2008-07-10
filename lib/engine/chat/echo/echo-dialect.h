@@ -1,7 +1,7 @@
 
 /*
  * Ekiga -- A VoIP and Video-Conferencing application
- * Copyright (C) 2000-2007 Damien Sandras
+ * Copyright (C) 2000-2008 Damien Sandras
 
  * This program is free software; you can  redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,50 +25,36 @@
 
 
 /*
- *                         chat-core.cpp  -  description
+ *                         echo-dialect.h  -  description
  *                         ------------------------------------------
- *   begin                : written in 2007 by Julien Puydt
- *   copyright            : (c) 2007 by Julien Puydt
- *   description          : implementation of the main chat managing object
+ *   begin                : written in 2008 by Julien Puydt
+ *   copyright            : (c) 2008 by Julien Puydt
+ *   description          : declaration of an echo chat backend
  *
  */
 
-#include "chat-core.h"
+#ifndef __ECHO_DIALECT_H__
+#define __ECHO_DIALECT_H__
 
-#include <iostream>
+#include "dialect-impl.h"
+#include "echo-simple.h"
 
-Ekiga::ChatCore::~ChatCore ()
+namespace Echo
 {
-}
+  class Dialect: public Ekiga::DialectImpl<SimpleChat>
+  {
+  public:
+    
+    Dialect ();
 
-void
-Ekiga::ChatCore::add_dialect (Dialect& dialect)
-{
-  dialects.insert (&dialect);
-  dialect.questions.add_handler (questions.make_slot ());
-  dialect_added.emit (dialect);
-}
+    ~Dialect ();
 
-void
-Ekiga::ChatCore::visit_dialects (sigc::slot<bool, Dialect&> visitor)
-{
-  bool go_on = true;
+    bool populate_menu (Ekiga::MenuBuilder &builder);
 
-  for (std::set<Dialect*>::iterator iter = dialects.begin ();
-       iter != dialects.end () && go_on;
-       iter++)
-    go_on = visitor (**iter);
-}
+  private:
 
-bool
-Ekiga::ChatCore::populate_menu (MenuBuilder &builder)
-{
-  bool result = false;
+    void new_chat ();
+  };
+};
 
-  for (std::set<Dialect*>::iterator iter = dialects.begin ();
-       iter != dialects.end ();
-       ++iter)
-    result = (*iter)->populate_menu (builder) || result;
-
-  return result;
-}
+#endif

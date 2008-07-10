@@ -1,1 +1,1 @@
-SUBDIRS = skel
+SUBDIRS = skel echo

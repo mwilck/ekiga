@@ -25,50 +25,39 @@
 
 
 /*
- *                         chat-core.cpp  -  description
+ *                         chat-multiple.h  -  description
  *                         ------------------------------------------
  *   begin                : written in 2007 by Julien Puydt
  *   copyright            : (c) 2007 by Julien Puydt
- *   description          : implementation of the main chat managing object
+ *   description          : declaration of the interface of a chat with a
+ *                          several persons
  *
  */
 
-#include "chat-core.h"
+#ifndef __CHAT_MULTIPLE_H__
+#define __CHAT_MULTIPLE_H__
 
-#include <iostream>
+#include "chat.h"
+#include "heap.h"
 
-Ekiga::ChatCore::~ChatCore ()
+namespace Ekiga
 {
-}
 
-void
-Ekiga::ChatCore::add_dialect (Dialect& dialect)
-{
-  dialects.insert (&dialect);
-  dialect.questions.add_handler (questions.make_slot ());
-  dialect_added.emit (dialect);
-}
+  class MultipleChat: public Chat
+  {
+  public:
 
-void
-Ekiga::ChatCore::visit_dialects (sigc::slot<bool, Dialect&> visitor)
-{
-  bool go_on = true;
+    /** The destructor.
+     */
+    virtual ~MultipleChat ()
+    {}
 
-  for (std::set<Dialect*>::iterator iter = dialects.begin ();
-       iter != dialects.end () && go_on;
-       iter++)
-    go_on = visitor (**iter);
-}
+    /** Returns the Heap associated with the MultipleChat.
+     * @return The MultipleChat's Heap
+     */
+    virtual Heap& get_heap () const = 0;
+  };
 
-bool
-Ekiga::ChatCore::populate_menu (MenuBuilder &builder)
-{
-  bool result = false;
+};
 
-  for (std::set<Dialect*>::iterator iter = dialects.begin ();
-       iter != dialects.end ();
-       ++iter)
-    result = (*iter)->populate_menu (builder) || result;
-
-  return result;
-}
+#endif

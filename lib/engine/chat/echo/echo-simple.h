@@ -1,7 +1,7 @@
 
 /*
  * Ekiga -- A VoIP and Video-Conferencing application
- * Copyright (C) 2000-2007 Damien Sandras
+ * Copyright (C) 2000-2008 Damien Sandras
 
  * This program is free software; you can  redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,50 +25,47 @@
 
 
 /*
- *                         chat-core.cpp  -  description
+ *                         echo-simple.h  -  description
  *                         ------------------------------------------
- *   begin                : written in 2007 by Julien Puydt
- *   copyright            : (c) 2007 by Julien Puydt
- *   description          : implementation of the main chat managing object
+ *   begin                : written in 2008 by Julien Puydt
+ *   copyright            : (c) 2008 by Julien Puydt
+ *   description          : declaration of an echo simple chat
  *
  */
 
-#include "chat-core.h"
+#ifndef __ECHO_SIMPLE_H__
+#define __ECHO_SIMPLE_H__
 
-#include <iostream>
+#include "chat-simple.h"
+#include "echo-presentity.h"
 
-Ekiga::ChatCore::~ChatCore ()
+namespace Echo
 {
-}
+  class SimpleChat: public Ekiga::SimpleChat
+  {
+  public:
 
-void
-Ekiga::ChatCore::add_dialect (Dialect& dialect)
-{
-  dialects.insert (&dialect);
-  dialect.questions.add_handler (questions.make_slot ());
-  dialect_added.emit (dialect);
-}
+    SimpleChat ();
 
-void
-Ekiga::ChatCore::visit_dialects (sigc::slot<bool, Dialect&> visitor)
-{
-  bool go_on = true;
+    ~SimpleChat ();
 
-  for (std::set<Dialect*>::iterator iter = dialects.begin ();
-       iter != dialects.end () && go_on;
-       iter++)
-    go_on = visitor (**iter);
-}
+    const std::string get_title() const;
 
-bool
-Ekiga::ChatCore::populate_menu (MenuBuilder &builder)
-{
-  bool result = false;
+    void connect (Ekiga::ChatObserver &observer);
 
-  for (std::set<Dialect*>::iterator iter = dialects.begin ();
-       iter != dialects.end ();
-       ++iter)
-    result = (*iter)->populate_menu (builder) || result;
+    void disconnect (Ekiga::ChatObserver &observer);
 
-  return result;
-}
+    bool send_message (const std::string msg);
+
+    Ekiga::Presentity &get_presentity () const;
+
+    bool populate_menu (Ekiga::MenuBuilder &builder);
+
+  private:
+
+    std::list<Ekiga::ChatObserver*> observers;
+    Presentity *presentity;
+  };
+};
+
+#endif

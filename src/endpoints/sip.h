@@ -51,6 +51,7 @@
 #include "call-protocol-manager.h"
 #include "account-core.h"
 #include "opal-account.h"
+#include "sip-dialect.h"
 
 
 PDICTIONARY (msgDict, PString, PString);
@@ -75,6 +76,7 @@ namespace Opal {
 
       CallProtocolManager (CallManager &ep, Ekiga::ServiceCore & core, unsigned listen_port);
 
+      ~CallProtocolManager ();
 
       /* ContactDecorator and PresentityDecorator */
       bool populate_menu (Ekiga::Contact &contact,
@@ -186,6 +188,8 @@ namespace Opal {
       std::string outbound_proxy;
 
       unsigned listen_port;
+
+      SIP::Dialect *dialect;
     };
   };
 };

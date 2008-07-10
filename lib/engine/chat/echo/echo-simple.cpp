@@ -1,7 +1,7 @@
 
 /*
  * Ekiga -- A VoIP and Video-Conferencing application
- * Copyright (C) 2000-2007 Damien Sandras
+ * Copyright (C) 2000-2008 Damien Sandras
 
  * This program is free software; you can  redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,50 +25,71 @@
 
 
 /*
- *                         chat-core.cpp  -  description
+ *                         echo-simple.cpp  -  description
  *                         ------------------------------------------
- *   begin                : written in 2007 by Julien Puydt
- *   copyright            : (c) 2007 by Julien Puydt
- *   description          : implementation of the main chat managing object
+ *   begin                : written in 2008 by Julien Puydt
+ *   copyright            : (c) 2008 by Julien Puydt
+ *   description          : implementation of an echo simple chat
  *
  */
 
-#include "chat-core.h"
-
 #include <iostream>
 
-Ekiga::ChatCore::~ChatCore ()
+#include "echo-simple.h"
+
+Echo::SimpleChat::SimpleChat (): presentity(new Presentity ())
 {
 }
 
-void
-Ekiga::ChatCore::add_dialect (Dialect& dialect)
+Echo::SimpleChat::~SimpleChat ()
 {
-  dialects.insert (&dialect);
-  dialect.questions.add_handler (questions.make_slot ());
-  dialect_added.emit (dialect);
+#ifdef __GNUC__
+  std::cout << __PRETTY_FUNCTION__ << std::endl;
+#endif
 }
 
-void
-Ekiga::ChatCore::visit_dialects (sigc::slot<bool, Dialect&> visitor)
+Ekiga::Presentity&
+Echo::SimpleChat::get_presentity () const
 {
-  bool go_on = true;
-
-  for (std::set<Dialect*>::iterator iter = dialects.begin ();
-       iter != dialects.end () && go_on;
-       iter++)
-    go_on = visitor (**iter);
+  return *presentity;
 }
 
 bool
-Ekiga::ChatCore::populate_menu (MenuBuilder &builder)
+Echo::SimpleChat::populate_menu (Ekiga::MenuBuilder &/*builder*/)
 {
-  bool result = false;
+  return false;
+}
 
-  for (std::set<Dialect*>::iterator iter = dialects.begin ();
-       iter != dialects.end ();
+void
+Echo::SimpleChat::connect (Ekiga::ChatObserver &observer)
+{
+  observer.notice ("This is just an echo chat : type and see back");
+
+  observers.push_front (&observer);
+}
+
+void
+Echo::SimpleChat::disconnect (Ekiga::ChatObserver &observer)
+{
+  observers.remove (&observer);
+
+  if (observers.empty ())
+    removed.emit ();
+}
+
+bool
+Echo::SimpleChat::send_message (const std::string msg)
+{
+  for (std::list<Ekiga::ChatObserver*>::iterator iter = observers.begin ();
+       iter != observers.end ();
        ++iter)
-    result = (*iter)->populate_menu (builder) || result;
+    (*iter)->message ("Echo", msg);
 
-  return result;
+  return true;
+}
+
+const std::string
+Echo::SimpleChat::get_title() const
+{
+  return "Echo chat";
 }

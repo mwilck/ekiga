@@ -39,9 +39,6 @@
 #ifndef __CHAT_MANAGER_H__
 #define __CHAT_MANAGER_H__
 
-#include "chat-core.h"
-
-
 namespace Ekiga
 {
 

@@ -27,62 +27,56 @@
 
 
 /*
- *                         chat-window.h  -  description
- *                         -----------------------------
+ *                         sip-chat-simple.h  -  description
+ *                         --------------------------------
  *   begin                : written in july 2008 by Julien Puydt
  *   copyright            : (C) 2008 by Julien Puydt
- *   description          : Declaration of a window to display chats
+ *   description          : Interface of a simple chat in SIP
  *
  */
 
+#ifndef __SIP_CHAT_SIMPLE_H__
+#define __SIP_CHAT_SIMPLE_H__
 
-#ifndef __CHAT_WINDOW_H__
-#define __CHAT_WINDOW_H__
+#include "chat-simple.h"
+#include "sip-presentity.h"
 
-#include "gmwindow.h"
-#include "chat-core.h"
-
-/* FIXME: remove the following line to begin killing the old code */
-#include "chat-window-old.h"
-
-G_BEGIN_DECLS
-
-typedef struct _ChatWindow ChatWindow;
-typedef struct _ChatWindowPrivate ChatWindowPrivate;
-typedef struct _ChatWindowClass ChatWindowClass;
-
-/* GObject thingies */
-struct _ChatWindow
+namespace SIP
 {
-  GmWindow parent;
-  ChatWindowPrivate *priv;
+  class SimpleChat: public Ekiga::SimpleChat
+  {
+  public:
+    SimpleChat (Ekiga::ServiceCore& core,
+		std::string name,
+		std::string uri,
+		sigc::slot<bool, std::string> sender_);
+
+    ~SimpleChat ();
+
+    const std::string get_uri () const;
+
+    const std::string get_title () const;
+
+    void connect (Ekiga::ChatObserver& observer);
+
+    void disconnect (Ekiga::ChatObserver& observer);
+
+    bool send_message (const std::string msg);
+
+    void receive_message (const std::string msg);
+
+    void receive_notice (const std::string msg);
+
+    Ekiga::Presentity &get_presentity () const;
+
+    bool populate_menu (Ekiga::MenuBuilder& builder);
+
+  private:
+
+    sigc::slot<bool, std::string> sender;
+    std::list<Ekiga::ChatObserver*> observers;
+    Presentity *presentity;
+  };
 };
-
-struct _ChatWindowClass
-{
-  GmWindowClass parent;
-};
-
-#define CHAT_WINDOW_TYPE (chat_window_get_type ())
-
-#define CHAT_WINDOW(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), CHAT_WINDOW_TYPE, ChatWindow))
-
-#define IS_CHAT_WINDOW(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CHAT_WINDOW_TYPE))
-
-#define CHAT_WINDOW_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), CHAT_WINDOW_TYPE, ChatWindowClass))
-
-#define IS_CHAT_WINDOW_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), CHAT_WINDOW_TYPE))
-
-#define CHAT_WINDOW_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), CHAT_WINDOW_TYPE, ChatWindowClass))
-
-GType chat_window_get_type ();
-
-
-/* Public API */
-
-GtkWidget* chat_window_new (Ekiga::ChatCore& core,
-			    const std::string key);
-
-G_END_DECLS
 
 #endif

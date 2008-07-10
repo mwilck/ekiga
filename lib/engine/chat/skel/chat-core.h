@@ -27,10 +27,9 @@
 /*
  *                         chat-core.h  -  description
  *                         ------------------------------------------
- *   begin                : written in 2007 by Damien Sandras 
- *   copyright            : (c) 2007 by Damien Sandras
- *   description          : declaration of the interface of a chat core.
- *                          A chat core manages ChatManagers.
+ *   begin                : written in 2007 by Julien Puydt
+ *   copyright            : (c) 2007 by Julien Puydt
+ *   description          : declaration of the main chat managing object
  *
  */
 
@@ -38,104 +37,150 @@
 #define __CHAT_CORE_H__
 
 #include "services.h"
+#include "dialect.h"
 
-#include <sigc++/sigc++.h>
-#include <set>
-#include <map>
+// FIXME: that one is for Damien's temporary code
+#include "chat-manager.h"
 
+/* FIXME: probably it should have a decorator system, so we can for example
+ * hook a logger
+ */
 
 namespace Ekiga
 {
+  /**
+   * @defgroup chats Chats and protocols
+   * @{
+   */
 
-/**
- * @defgroup chats Chats and protocols
- * @{
- */
-
-  class ChatManager;
-
-  class ChatCore
-    : public Service
-    {
-
+  /*  Core object for text chat support.
+   *
+   * Notice that you give dialects to this object as references, so they won't
+   * be freed here : it's up to you to free them somehow.
+   */
+  class ChatCore: public Service
+  {
   public:
-      typedef std::set<ChatManager *>::iterator iterator;
-      typedef std::set<ChatManager *>::const_iterator const_iterator;
 
-      /** The constructor
-       */
-      ChatCore () {}
+    /** The constructor.
+     */
+    ChatCore () {}
 
-      /** The destructor
-       */
-      ~ChatCore () {}
+    /** The destructor.
+     */
+    ~ChatCore ();
 
+    /*** service implementation ***/
+  public:
 
-      /*** Service Implementation ***/
+    /** Returns the name of the service.
+     * @return The service name.
+     */
+    const std::string get_name () const
+    { return "chat-core"; }
 
-      /** Returns the name of the service.
-       * @return The service name.
-       */
-      const std::string get_name () const
-        { return "chat-core"; }
+    /** Returns the description of the service.
+     * @return: The service description.
+     */
+    const std::string get_description () const
+    { return "\tChat managing object"; }
 
+    /*** Public API ***/
+  public:
 
-      /** Returns the description of the service.
-       * @return The service description.
-       */
-      const std::string get_description () const
-        { return "\tChat Core managing ChatManager objects"; }
+    /** Adds a dialect to the ContactCore service.
+     * @param The dialect to be added.
+     */
+    void add_dialect (Dialect& dialect);
 
+    /** Triggers a callback for all Ekiga::Dialect dialects of the
+     * ChatCore service.
+     * @param The callback (the return value means "go on" and allows stopping
+     * the visit)
+     */
+    void visit_dialects (sigc::slot<bool, Dialect&> visitor);
 
-      /** Adds a ChatManager to the ChatCore service.
-       * @param The manager to be added.
-       */
-      void add_manager (ChatManager &manager);
-
-      /** Return iterator to beginning
-       * @return iterator to beginning
-       */
-      iterator begin ();
-      const_iterator begin () const;
-
-      /** Return iterator to end
-       * @return iterator to end 
-       */
-      iterator end ();
-      const_iterator end () const;
-
-      /** This signal is emitted when a Ekiga::ChatManager has been
-       * added to the ChatCore Service.
-       */
-      sigc::signal<void, ChatManager &> manager_added;
-
-
-      /*** Instant Messaging ***/ 
-
-      /** See chat-manager.h for API **/
-      bool send_message (const std::string & uri, 
-                         const std::string & message);
-
-      sigc::signal<void, const ChatManager &, const std::string, const std::string> im_failed;
-      sigc::signal<void, const ChatManager &, const std::string, const std::string, const std::string> im_received;
-      sigc::signal<void, const ChatManager &, const std::string, const std::string> im_sent;
-      sigc::signal<void, const ChatManager &, const std::string, const std::string> new_chat;
-
+    /** This signal is emitted when an Ekiga::Dialect has been added to
+     * the ChatCore service.
+     */
+    sigc::signal<void, Dialect&> dialect_added;
 
   private:
-      void on_im_failed (const std::string, const std::string, ChatManager *manager);
-      void on_im_sent (const std::string, const std::string, ChatManager *manager);
-      void on_im_received (const std::string, const std::string, const std::string, ChatManager *manager);
-      void on_new_chat (const std::string, const std::string, ChatManager *manager);
 
-      std::set<ChatManager *> managers;
-    };
+    std::set<Dialect*> dialects;
 
-/**
- * @}
- */
+    /*** Misc ***/
+  public:
 
+    /** Create the menu for the ChatCore and its actions.
+     * @param A MenuBuilder object to populate.
+     */
+    bool populate_menu (MenuBuilder &builder);
+
+    /** This signal is emitted when the ChatCore service has been updated.
+     */
+    sigc::signal<void> updated;
+
+    /** This chain allows the ChatCore to present forms to the user
+     */
+    ChainOfResponsibility<FormRequest*> questions;
+
+    /** FIXME: start of Damien's temporary code :
+     **
+     **/
+  public:
+    void add_manager (ChatManager &manager)
+    {
+      managers.insert (&manager);
+      manager.im_failed.connect (sigc::bind (sigc::mem_fun (this, &ChatCore::on_im_failed), &manager));
+      manager.im_received.connect (sigc::bind (sigc::mem_fun (this, &ChatCore::on_im_received), &manager));
+      manager.im_sent.connect (sigc::bind (sigc::mem_fun (this, &ChatCore::on_im_sent), &manager));
+      manager.new_chat.connect (sigc::bind (sigc::mem_fun (this, &ChatCore::on_new_chat), &manager));
+    }
+
+    bool send_message (const std::string & uri,
+		       const std::string & message)
+    {
+      for (std::set<ChatManager*>::iterator iter = managers.begin ();
+	   iter != managers.end ();
+	   iter++) {
+
+	if ((*iter)->send_message (uri, message))
+	  return true;
+      }
+
+      return false;
+    }
+
+    sigc::signal<void, const ChatManager &, const std::string, const std::string> im_failed;
+    sigc::signal<void, const ChatManager &, const std::string, const std::string, const std::string> im_received;
+    sigc::signal<void, const ChatManager &, const std::string, const std::string> im_sent;
+    sigc::signal<void, const ChatManager &, const std::string, const std::string> new_chat;
+
+  private:
+    std::set<ChatManager *> managers;
+
+    void on_im_failed (const std::string uri, const std::string reason, ChatManager *manager)
+    { im_failed.emit (*manager, uri, reason); }
+
+    void on_im_sent (const std::string uri, const std::string message, ChatManager *manager)
+    { im_sent.emit (*manager, uri, message); }
+
+    void on_im_received (const std::string display_name, const std::string uri, const std::string message, ChatManager *manager)
+    { im_received.emit (*manager, display_name, uri, message); }
+
+    void on_new_chat (const std::string display_name, const std::string uri, ChatManager *manager)
+    { new_chat.emit (*manager, display_name, uri); }
+
+
+    /** FIXME: end of Damien's temporary code
+     **
+     **/
+  };
+
+  /**
+   * @}
+   */
 };
-
 
 #endif
