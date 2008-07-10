@@ -27,6 +27,10 @@ libgmgtk_frontend_la_SOURCES = \
 	$(gtk_frontend_dir)/call-history-view-gtk.cpp 	\
 	$(gtk_frontend_dir)/chat-area.h			\
 	$(gtk_frontend_dir)/chat-area.cpp		\
+	$(gtk_frontend_dir)/simple-chat-page.h		\
+	$(gtk_frontend_dir)/simple-chat-page.cpp	\
+	$(gtk_frontend_dir)/multiple-chat-page.h	\
+	$(gtk_frontend_dir)/multiple-chat-page.cpp	\
 	$(gtk_frontend_dir)/chat-window.h 		\
 	$(gtk_frontend_dir)/chat-window.cpp 		\
 	$(gtk_frontend_dir)/chat-window-old.h 		\
