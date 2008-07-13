@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ekiga.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-01 07:25+0000\n"
-"PO-Revision-Date: 2008-07-04 15:41+0200\n"
+"POT-Creation-Date: 2008-07-10 08:10+0000\n"
+"PO-Revision-Date: 2008-07-13 20:28+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -1133,11 +1133,6 @@ msgstr "dices:\n"
 msgid "says:"
 msgstr "dice:"
 
-#. The window
-#: ../lib/engine/gui/gtk-frontend/chat-window.cpp:561
-msgid "Chat Window"
-msgstr "Ventana de charla"
-
 #: ../lib/engine/gui/gtk-frontend/call-history-view-gtk.cpp:164
 #: ../src/gui/statusmenu.cpp:547
 msgid "Clear"
@@ -1290,7 +1285,7 @@ msgstr ""
 "micrófono. Debería escucharse a sí mismo en los altavoces con un retardo de "
 "cuatro segundos."
 
-#: ../src/endpoints/h323.cpp:166 ../src/endpoints/sip.cpp:187
+#: ../src/endpoints/h323.cpp:166 ../src/endpoints/sip.cpp:198
 msgid "Call"
 msgstr "Llamada"
 
@@ -1307,7 +1302,7 @@ msgid "Transport error"
 msgstr "Error en el transporte"
 
 #: ../src/endpoints/h323.cpp:355 ../src/endpoints/h323.cpp:360
-#: ../src/endpoints/sip.cpp:763
+#: ../src/endpoints/sip.cpp:774
 msgid "Failed"
 msgstr "Falló"
 
@@ -1443,195 +1438,195 @@ msgstr "El usuario local no está disponible"
 msgid "Call completed"
 msgstr "Llamada concluida"
 
-#: ../src/endpoints/sip.cpp:202
-msgid "Message"
-msgstr "Mensaje"
+#: ../src/endpoints/sip.cpp:213
+msgid "Message (old)"
+msgstr "Mensaje (antiguo)"
 
-#: ../src/endpoints/sip.cpp:576
+#: ../src/endpoints/sip.cpp:587
 msgid "Bad request"
 msgstr "Solicitud errónea"
 
-#: ../src/endpoints/sip.cpp:580
+#: ../src/endpoints/sip.cpp:591
 msgid "Payment required"
 msgstr "Pago requerido"
 
-#: ../src/endpoints/sip.cpp:584
+#: ../src/endpoints/sip.cpp:595
 msgid "Unauthorized"
 msgstr "No autorizado"
 
-#: ../src/endpoints/sip.cpp:588
+#: ../src/endpoints/sip.cpp:599
 msgid "Forbidden"
 msgstr "Prohibido"
 
-#: ../src/endpoints/sip.cpp:592
+#: ../src/endpoints/sip.cpp:603
 msgid "Timeout"
 msgstr "Retardo"
 
-#: ../src/endpoints/sip.cpp:596
+#: ../src/endpoints/sip.cpp:607
 msgid "Conflict"
 msgstr "Conflicto"
 
-#: ../src/endpoints/sip.cpp:600
+#: ../src/endpoints/sip.cpp:611
 msgid "Temporarily unavailable"
 msgstr "Temporalmente no disponible"
 
-#: ../src/endpoints/sip.cpp:604
+#: ../src/endpoints/sip.cpp:615
 msgid "Not acceptable"
 msgstr "No aceptable"
 
-#: ../src/endpoints/sip.cpp:608
+#: ../src/endpoints/sip.cpp:619
 msgid "Illegal status code"
 msgstr "Código de estado ilegal"
 
-#: ../src/endpoints/sip.cpp:612
+#: ../src/endpoints/sip.cpp:623
 msgid "Multiple choices"
 msgstr "Múltiples opciones"
 
-#: ../src/endpoints/sip.cpp:616
+#: ../src/endpoints/sip.cpp:627
 msgid "Moved permanently"
 msgstr "Movido permanentemente"
 
-#: ../src/endpoints/sip.cpp:620
+#: ../src/endpoints/sip.cpp:631
 msgid "Moved temporarily"
 msgstr "Movido temporalmente"
 
-#: ../src/endpoints/sip.cpp:624
+#: ../src/endpoints/sip.cpp:635
 msgid "Use proxy"
 msgstr "Usar proxy"
 
-#: ../src/endpoints/sip.cpp:628
+#: ../src/endpoints/sip.cpp:639
 msgid "Alternative service"
 msgstr "Servicio alternativo"
 
-#: ../src/endpoints/sip.cpp:632
+#: ../src/endpoints/sip.cpp:643
 msgid "Not found"
 msgstr "No encontrado"
 
-#: ../src/endpoints/sip.cpp:636
+#: ../src/endpoints/sip.cpp:647
 msgid "Method not allowed"
 msgstr "Método no permitido"
 
-#: ../src/endpoints/sip.cpp:640
+#: ../src/endpoints/sip.cpp:651
 msgid "Proxy auth. required"
 msgstr "El proxy requiere autenticación"
 
-#: ../src/endpoints/sip.cpp:644
+#: ../src/endpoints/sip.cpp:655
 msgid "Length required"
 msgstr "Longitud requerida"
 
-#: ../src/endpoints/sip.cpp:648
+#: ../src/endpoints/sip.cpp:659
 msgid "Request entity too big"
 msgstr "La entidad solicitada es demasiado grande"
 
-#: ../src/endpoints/sip.cpp:652
+#: ../src/endpoints/sip.cpp:663
 msgid "Request URI too long"
 msgstr "El URI solicitado es demasiado largo"
 
-#: ../src/endpoints/sip.cpp:656
+#: ../src/endpoints/sip.cpp:667
 msgid "Unsupported media type"
 msgstr "No se soporta el tipo de medio"
 
-#: ../src/endpoints/sip.cpp:660
+#: ../src/endpoints/sip.cpp:671
 msgid "Unsupported URI scheme"
 msgstr "No se soporta el esquema URI"
 
-#: ../src/endpoints/sip.cpp:664
+#: ../src/endpoints/sip.cpp:675
 msgid "Bad extension"
 msgstr "Extensión errónea"
 
-#: ../src/endpoints/sip.cpp:668
+#: ../src/endpoints/sip.cpp:679
 msgid "Extension required"
 msgstr "Extensión requerida"
 
-#: ../src/endpoints/sip.cpp:672
+#: ../src/endpoints/sip.cpp:683
 msgid "Interval too brief"
 msgstr "Intervalo demasiado corto"
 
-#: ../src/endpoints/sip.cpp:676
+#: ../src/endpoints/sip.cpp:687
 msgid "Loop detected"
 msgstr "Bucle detectado"
 
-#: ../src/endpoints/sip.cpp:680
+#: ../src/endpoints/sip.cpp:691
 msgid "Too many hops"
 msgstr "Demasiados saltos"
 
-#: ../src/endpoints/sip.cpp:684
+#: ../src/endpoints/sip.cpp:695
 msgid "Address incomplete"
 msgstr "Dirección incompleta"
 
-#: ../src/endpoints/sip.cpp:688
+#: ../src/endpoints/sip.cpp:699
 msgid "Ambiguous"
 msgstr "Ambiguo"
 
-#: ../src/endpoints/sip.cpp:692
+#: ../src/endpoints/sip.cpp:703
 msgid "Busy Here"
 msgstr "Ocupado aquí"
 
-#: ../src/endpoints/sip.cpp:696
+#: ../src/endpoints/sip.cpp:707
 msgid "Request terminated"
 msgstr "Petición terminada"
 
-#: ../src/endpoints/sip.cpp:700
+#: ../src/endpoints/sip.cpp:711
 msgid "Not acceptable here"
 msgstr "No es aceptable aquí"
 
-#: ../src/endpoints/sip.cpp:704
+#: ../src/endpoints/sip.cpp:715
 msgid "Bad event"
 msgstr "Evento erróneo"
 
-#: ../src/endpoints/sip.cpp:708
+#: ../src/endpoints/sip.cpp:719
 msgid "Request pending"
 msgstr "Solicitud en espera"
 
-#: ../src/endpoints/sip.cpp:712
+#: ../src/endpoints/sip.cpp:723
 msgid "Undecipherable"
 msgstr "Indescifrable"
 
-#: ../src/endpoints/sip.cpp:716
+#: ../src/endpoints/sip.cpp:727
 msgid "Internal server error"
 msgstr "Error interno del servidor"
 
-#: ../src/endpoints/sip.cpp:720
+#: ../src/endpoints/sip.cpp:731
 msgid "Not implemented"
 msgstr "No implementado"
 
-#: ../src/endpoints/sip.cpp:724
+#: ../src/endpoints/sip.cpp:735
 msgid "Bad gateway"
 msgstr "Pasarela errónea"
 
-#: ../src/endpoints/sip.cpp:728
+#: ../src/endpoints/sip.cpp:739
 msgid "Service unavailable"
 msgstr "Servicio no disponible"
 
-#: ../src/endpoints/sip.cpp:732
+#: ../src/endpoints/sip.cpp:743
 msgid "Server timeout"
 msgstr "Expiró el tiempo de conexión del servidor"
 
-#: ../src/endpoints/sip.cpp:736
+#: ../src/endpoints/sip.cpp:747
 msgid "SIP version not supp."
 msgstr "No se soporta la versión SIP"
 
-#: ../src/endpoints/sip.cpp:740
+#: ../src/endpoints/sip.cpp:751
 msgid "Message too large"
 msgstr "El mensaje es demasiado largo"
 
-#: ../src/endpoints/sip.cpp:744
+#: ../src/endpoints/sip.cpp:755
 msgid "Busy everywhere"
 msgstr "Ocupado en todas partes"
 
-#: ../src/endpoints/sip.cpp:748
+#: ../src/endpoints/sip.cpp:759
 msgid "Decline"
 msgstr "Declinar"
 
-#: ../src/endpoints/sip.cpp:752
+#: ../src/endpoints/sip.cpp:763
 msgid "Does not exist anymore"
 msgstr "Ya no existe"
 
-#: ../src/endpoints/sip.cpp:756
+#: ../src/endpoints/sip.cpp:767
 msgid "Globally not acceptable"
 msgstr "No aceptable globalmente"
 
-#: ../src/endpoints/sip.cpp:859
+#: ../src/endpoints/sip.cpp:872 ../src/endpoints/sip.cpp:874
 msgid "Could not send message"
 msgstr "No se pudo enviar el mensaje"
 
