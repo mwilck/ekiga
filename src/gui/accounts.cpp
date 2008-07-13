@@ -138,7 +138,6 @@ enum {
   COLUMN_ACCOUNT_METHOD,
   COLUMN_ACCOUNT_VOICEMAILS,
   COLUMN_ACCOUNT_ERROR_MESSAGE,
-  COLUMN_ACCOUNT_ACTIVATABLE,
   COLUMN_ACCOUNT_NUMBER
 };
 
@@ -332,7 +331,6 @@ account_toggled_cb (G_GNUC_UNUSED GtkCellRendererToggle *cell,
   selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (aw->accounts_list));
   path = gtk_tree_path_new_from_string (path_str);
   gtk_tree_selection_select_path (selection, path);
-  gtk_tree_path_free (path);
 
   model = gtk_tree_view_get_model (GTK_TREE_VIEW (aw->accounts_list));
   if (gtk_tree_model_get_iter (model, &iter, path)) {
@@ -340,7 +338,9 @@ account_toggled_cb (G_GNUC_UNUSED GtkCellRendererToggle *cell,
     gtk_tree_model_get (model, &iter,
                         COLUMN_ACCOUNT, &account,
                         -1);
-    std::cout << "FIXME" << std::endl << std::flush;
+
+    bool enabled = account->is_enabled ();
+    enabled ? account->disable () : account->enable ();
   }
 
   gtk_tree_path_free (path);
@@ -560,8 +560,7 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
 				   G_TYPE_INT,     /* Timeout */
 				   G_TYPE_INT,     /* Method */
 				   G_TYPE_STRING,  /* VoiceMails */  
-				   G_TYPE_STRING,  /* Error Message */  
-				   G_TYPE_INT);    /* Activatable */
+				   G_TYPE_STRING); /* Error Message */  
 
   aw->accounts_list = 
     gtk_tree_view_new_with_model (GTK_TREE_MODEL (list_store));
@@ -580,9 +579,6 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
 						     NULL);
   gtk_tree_view_column_set_fixed_width (GTK_TREE_VIEW_COLUMN (column), 25);
   gtk_tree_view_append_column (GTK_TREE_VIEW (aw->accounts_list), column);
-  gtk_tree_view_column_add_attribute (column, renderer, 
-				      "activatable", 
-				      COLUMN_ACCOUNT_ACTIVATABLE);
   g_signal_connect (G_OBJECT (renderer), "toggled",
   		    G_CALLBACK (account_toggled_cb),
   		    (gpointer) window);
