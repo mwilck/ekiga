@@ -1,5 +1,27 @@
 2008-07-14  Damien Sandras  <dsandras@gnome.org>
 
+	* src/endpoints/sip.h:
+	* src/endpoints/h323.cpp:
+	* src/endpoints/h323.h:
+	* src/endpoints/opal-account.cpp:
+	* src/endpoints/opal-account.h:
+	* src/endpoints/sip.cpp:
+	* src/gui/accounts.cpp:
+	* src/gui/main.cpp:
+	* src/gui/accounts.h:
+	* lib/engine/account/skel/bank-impl.h:
+	* lib/engine/account/skel/bank.h:
+	* lib/engine/account/skel/account.h:
+	* lib/engine/account/skel/account-core.cpp:
+	* lib/engine/account/skel/account-core.h:
+	* lib/engine/presence/skel/presence-core.h:
+	* lib/engine/presence/skel/presence-core.cpp:
+	Added find_account method to find an account based on its aor.
+	Improved signal API so that a valid pointer (or reference) to
+	an Ekiga::Account is passed as argument of registration_event signals.
+
+2008-07-14  Damien Sandras  <dsandras@gnome.org>
+
 	* src/gui/preferences.cpp: Improved tooltip.
 
 2008-07-14  Damien Sandras  <dsandras@gnome.org>
