@@ -25,6 +25,8 @@ libgmgtk_frontend_la_SOURCES = \
 	$(gtk_frontend_dir)/roster-view-gtk.cpp 	\
 	$(gtk_frontend_dir)/call-history-view-gtk.h 	\
 	$(gtk_frontend_dir)/call-history-view-gtk.cpp 	\
+	$(gtk_frontend_dir)/presentity-view.h		\
+	$(gtk_frontend_dir)/presentity-view.cpp		\
 	$(gtk_frontend_dir)/chat-area.h			\
 	$(gtk_frontend_dir)/chat-area.cpp		\
 	$(gtk_frontend_dir)/simple-chat-page.h		\

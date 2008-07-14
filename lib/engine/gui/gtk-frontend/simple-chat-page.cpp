@@ -36,6 +36,7 @@
  */
 
 #include "simple-chat-page.h"
+#include "presentity-view.h"
 #include "chat-area.h"
 
 static GObjectClass *parent_class = NULL;
@@ -107,13 +108,19 @@ GtkWidget*
 simple_chat_page_new (Ekiga::SimpleChat& chat)
 {
   SimpleChatPage* result = NULL;
+  GtkWidget* presentity_view = NULL;
   GtkWidget* area = NULL;
 
   result = (SimpleChatPage*)g_object_new (TYPE_SIMPLE_CHAT_PAGE, NULL);
 
+  presentity_view = presentity_view_new (chat.get_presentity ());
+  gtk_box_pack_start (GTK_BOX (result), presentity_view,
+		      FALSE, TRUE, 2);
+  gtk_widget_show (presentity_view);
+
   area = chat_area_new (chat);
   gtk_box_pack_start (GTK_BOX (result), area,
-		      TRUE,TRUE, 2);
+		      TRUE, TRUE, 2);
   gtk_widget_show (area);
 
   return GTK_WIDGET (result);
