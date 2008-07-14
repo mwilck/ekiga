@@ -156,8 +156,9 @@ void GMVideoOutputManager::set_frame_data (const char* data,
     current_frame.local_height= height;
     memcpy (lframeStore.GetPointer(), data, (width * height * 3) >> 1);
 
-    if (update_required.local) 
+    if (update_required.local) {
       PTRACE(3, "GMVideoOutputManager\tSkipped earlier local frame");
+    }
     update_required.local = true;
   }
   else {
@@ -168,8 +169,9 @@ void GMVideoOutputManager::set_frame_data (const char* data,
     current_frame.remote_height= height;
     memcpy (rframeStore.GetPointer(), data, (width * height * 3) >> 1);
 
-    if (update_required.remote) 
+    if (update_required.remote) {
       PTRACE(3, "GMVideoOutputManager\tSkipped earlier remote frame");
+    }
     update_required.remote = true;
   }
 
