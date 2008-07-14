@@ -36,6 +36,9 @@
  */
 
 #include "chat-area.h"
+#include "gmtextviewaddon.h"
+#include "gmtextbufferaddon.h"
+#include "gmtexttagaddon.h"
 
 class ChatAreaHelper;
 
@@ -88,6 +91,16 @@ private:
 
 
 /* declaration of callbacks */
+
+static void on_bold_clicked (GtkButton* button,
+			     gpointer data);
+
+static void on_italic_clicked (GtkButton* button,
+			       gpointer data);
+
+static void on_underline_clicked (GtkButton* button,
+				  gpointer data);
+
 static void on_entry_activated (GtkWidget* entry,
 				gpointer data);
 
@@ -106,7 +119,7 @@ chat_area_add_notice (ChatArea* self,
   str = g_strdup_printf ("NOTICE: %s\n", txt);
   buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (self->priv->text_view));
   gtk_text_buffer_get_end_iter (buffer, &iter);
-  gtk_text_buffer_insert (buffer, &iter, str, -1);
+  gtk_text_buffer_insert_with_regex (buffer, &iter, str);
   g_free (str);
 }
 
@@ -122,16 +135,91 @@ chat_area_add_message (ChatArea* self,
   str = g_strdup_printf ("%s says: %s\n", from, txt);
   buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (self->priv->text_view));
   gtk_text_buffer_get_end_iter (buffer, &iter);
-  gtk_text_buffer_insert (buffer, &iter, str, -1);
+  gtk_text_buffer_insert_with_regex (buffer, &iter, str);
   g_free (str);
 }
 
 /* implementation of callbacks */
 
 static void
-on_chat_removed (ChatArea* self)
+on_bold_clicked (G_GNUC_UNUSED GtkButton* button,
+		 gpointer data)
 {
-  gtk_widget_hide (self->priv->entry);
+  ChatArea* self = NULL;
+  gint start;
+  gint end;
+  gint position;
+
+  self = (ChatArea*)data;
+
+  if (gtk_editable_get_selection_bounds (GTK_EDITABLE (self->priv->entry),
+					 &start, & end)) {
+    gtk_editable_insert_text (GTK_EDITABLE (self->priv->entry),
+			      "</b>", 4, &end);
+    gtk_editable_insert_text (GTK_EDITABLE (self->priv->entry),
+			      "<b>", 3, &start);
+    gtk_editable_select_region (GTK_EDITABLE (self->priv->entry),
+    				start, end - 1);
+  } else {
+
+    position = gtk_editable_get_position (GTK_EDITABLE (self->priv->entry));
+    gtk_editable_insert_text (GTK_EDITABLE (self->priv->entry),
+			      "<b></b>", 7, &position);
+  }
+}
+
+static void
+on_italic_clicked (G_GNUC_UNUSED GtkButton* button,
+		   gpointer data)
+{
+  ChatArea* self = NULL;
+  gint start;
+  gint end;
+  gint position;
+
+  self = (ChatArea*)data;
+
+  if (gtk_editable_get_selection_bounds (GTK_EDITABLE (self->priv->entry),
+					 &start, & end)) {
+    gtk_editable_insert_text (GTK_EDITABLE (self->priv->entry),
+			      "</i>", 4, &end);
+    gtk_editable_insert_text (GTK_EDITABLE (self->priv->entry),
+			      "<i>", 3, &start);
+    gtk_editable_select_region (GTK_EDITABLE (self->priv->entry),
+    				start, end - 1);
+  } else {
+
+    position = gtk_editable_get_position (GTK_EDITABLE (self->priv->entry));
+    gtk_editable_insert_text (GTK_EDITABLE (self->priv->entry),
+			      "<i></i>", 7, &position);
+  }
+}
+
+static void
+on_underline_clicked (G_GNUC_UNUSED GtkButton* button,
+		      gpointer data)
+{
+  ChatArea* self = NULL;
+  gint start;
+  gint end;
+  gint position;
+
+  self = (ChatArea*)data;
+
+  if (gtk_editable_get_selection_bounds (GTK_EDITABLE (self->priv->entry),
+					 &start, & end)) {
+    gtk_editable_insert_text (GTK_EDITABLE (self->priv->entry),
+			      "</u>", 4, &end);
+    gtk_editable_insert_text (GTK_EDITABLE (self->priv->entry),
+			      "<u>", 3, &start);
+    gtk_editable_select_region (GTK_EDITABLE (self->priv->entry),
+    				start, end - 1);
+  } else {
+
+    position = gtk_editable_get_position (GTK_EDITABLE (self->priv->entry));
+    gtk_editable_insert_text (GTK_EDITABLE (self->priv->entry),
+			      "<u></u>", 7, &position);
+  }
 }
 
 static void
@@ -150,6 +238,12 @@ on_entry_activated (GtkWidget* entry,
     if (self->priv->chat->send_message (text))
       gtk_entry_set_text (GTK_ENTRY (entry), "");
   }
+}
+
+static void
+on_chat_removed (ChatArea* self)
+{
+  gtk_widget_hide (self->priv->entry);
 }
 
 /* GObject code */
@@ -273,17 +367,91 @@ chat_area_init (GTypeInstance* instance,
 					    ChatAreaPrivate);
   self->priv->chat = NULL;
 
-  self->priv->text_view = gtk_text_view_new ();
+  /* first, the area has a text view with a quite rich set of features */
+  GtkTextBuffer* buffer = NULL;
+  GtkTextTag* tag = NULL;
+
+  self->priv->text_view = gtk_text_view_new_with_regex ();
+  buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (self->priv->text_view));
+
+  gtk_text_view_set_editable (GTK_TEXT_VIEW (self->priv->text_view), FALSE);
+  gtk_text_view_set_cursor_visible (GTK_TEXT_VIEW (self->priv->text_view),
+				    FALSE);
+  gtk_text_view_set_justification (GTK_TEXT_VIEW (self->priv->text_view),
+				   GTK_JUSTIFY_LEFT);
+  gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (self->priv->text_view),
+			       GTK_WRAP_WORD);
+
+  tag = gtk_text_buffer_create_tag (buffer, "bold",
+				    "weight", PANGO_WEIGHT_BOLD,
+				    NULL);
+  if (gtk_text_tag_set_regex (tag, "<b>.*</b>"))
+    gtk_text_tag_set_regex_display (tag, gtk_text_buffer_insert_markup);
+  else
+    g_object_unref (tag);
+
+  tag = gtk_text_buffer_create_tag (buffer, "italic",
+				    "style", PANGO_STYLE_ITALIC,
+				    NULL);
+  if (gtk_text_tag_set_regex (tag, "<i>.*</i>"))
+    gtk_text_tag_set_regex_display (tag, gtk_text_buffer_insert_markup);
+  else
+    g_object_unref (tag);
+
+  tag = gtk_text_buffer_create_tag (buffer, "underline",
+				    "underline", PANGO_UNDERLINE_SINGLE,
+				    NULL);
+  if (gtk_text_tag_set_regex (tag, "<u>.*</u>"))
+    gtk_text_tag_set_regex_display (tag, gtk_text_buffer_insert_markup);
+  else
+    g_object_unref (tag);
+
   gtk_widget_show (self->priv->text_view);
   gtk_box_pack_start (GTK_BOX (self), self->priv->text_view,
 		      TRUE, TRUE, 2);
 
-  self->priv->entry = gtk_entry_new ();
-  gtk_widget_show (self->priv->entry);
-  gtk_box_pack_end (GTK_BOX (self), self->priv->entry,
+  /* and then the chat area has a nice entry system */
+  GtkWidget* vbox = NULL;
+  GtkWidget* bbox = NULL;
+  GtkWidget* button = NULL;
+
+  vbox = gtk_vbox_new (FALSE, 2);
+  gtk_box_pack_end (GTK_BOX (self), vbox,
 		    FALSE, TRUE, 2);
+  gtk_widget_show (vbox);
+
+  bbox = gtk_hbutton_box_new ();
+  gtk_box_pack_start (GTK_BOX (vbox), bbox,
+		      FALSE, TRUE, 2);
+  gtk_widget_show (bbox);
+
+  button = gtk_button_new_from_stock (GTK_STOCK_BOLD);
+  g_signal_connect (G_OBJECT (button), "clicked",
+		    G_CALLBACK (on_bold_clicked), self);
+  gtk_box_pack_start (GTK_BOX (bbox), button,
+		      FALSE, TRUE, 2);
+  gtk_widget_show (button);
+
+  button = gtk_button_new_from_stock (GTK_STOCK_ITALIC);
+  g_signal_connect (G_OBJECT (button), "clicked",
+		    G_CALLBACK (on_italic_clicked), self);
+  gtk_box_pack_start (GTK_BOX (bbox), button,
+		      FALSE, TRUE, 2);
+  gtk_widget_show (button);
+
+  button = gtk_button_new_from_stock (GTK_STOCK_UNDERLINE);
+  g_signal_connect (G_OBJECT (button), "clicked",
+		    G_CALLBACK (on_underline_clicked), self);
+  gtk_box_pack_start (GTK_BOX (bbox), button,
+		      FALSE, TRUE, 2);
+  gtk_widget_show (button);
+
+  self->priv->entry = gtk_entry_new ();
+  gtk_box_pack_start (GTK_BOX (vbox), self->priv->entry,
+		      FALSE, TRUE, 2);
   g_signal_connect (self->priv->entry, "activate",
 		    G_CALLBACK (on_entry_activated), self);
+  gtk_widget_show (self->priv->entry);
 }
 
 
@@ -317,7 +485,7 @@ chat_area_get_type ()
 
 /* public api */
 
-GtkWidget* 
+GtkWidget*
 chat_area_new (Ekiga::Chat& chat)
 {
   return (GtkWidget*)g_object_new (TYPE_CHAT_AREA,
