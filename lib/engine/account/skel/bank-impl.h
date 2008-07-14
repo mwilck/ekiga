@@ -229,7 +229,6 @@ Ekiga::Account *Ekiga::BankImpl<T>::find_account (const std::string & aor)
     if (it->get_aor () == aor) {
       return (&(*it));
     }
-    else std::cout << "compared " << it->get_aor () << " and " << aor << std::endl << std::flush;
   }
 
   return NULL;
