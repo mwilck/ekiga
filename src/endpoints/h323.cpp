@@ -276,7 +276,7 @@ const std::string & CallProtocolManager::get_forward_uri () const
 }
 
 
-bool CallProtocolManager::subscribe (const Ekiga::Account & account)
+bool CallProtocolManager::subscribe (const Opal::Account & account)
 {
   if (account.get_protocol_name () != "H323")
     return false;
@@ -288,7 +288,7 @@ bool CallProtocolManager::subscribe (const Ekiga::Account & account)
 }
 
 
-bool CallProtocolManager::unsubscribe (const Ekiga::Account & /*account*/)
+bool CallProtocolManager::unsubscribe (const Opal::Account & /*account*/)
 {
   return true;
 }
@@ -311,11 +311,11 @@ void CallProtocolManager::Register (const PString & host,
     H323EndPoint::RemoveGatekeeper (0);
 
     /* Signal */
-    runtime.run_in_main (sigc::bind (account_core.registration_event.make_slot (), 
+/*    runtime.run_in_main (sigc::bind (account_core.registration_event.make_slot (), 
                                      aor,
                                      Ekiga::AccountCore::Processing,
                                      std::string ()));
-
+*/
     if (!authUserName.IsEmpty ()) {
       SetLocalUserName (authUserName);
       AddAliasName (endpoint.GetDefaultDisplayName ());
@@ -359,18 +359,22 @@ void CallProtocolManager::Register (const PString & host,
       else
         info = _("Failed");
 
+      /*
       runtime.run_in_main (sigc::bind (account_core.registration_event.make_slot (), 
                                        aor, 
                                        Ekiga::AccountCore::RegistrationFailed,
                                        info));
+    */
     }
     else {
 
       /* Signal */
+      /*
       runtime.run_in_main (sigc::bind (account_core.registration_event.make_slot (), 
                                        aor,
                                        Ekiga::AccountCore::Registered,
                                        std::string ()));
+                                       */
     }
   }
   else if (unregister && IsRegisteredWithGatekeeper (host)) {
@@ -379,10 +383,12 @@ void CallProtocolManager::Register (const PString & host,
     RemoveAliasName (authUserName);
 
     /* Signal */
+    /*
     runtime.run_in_main (sigc::bind (account_core.registration_event.make_slot (), 
                                      aor,
                                      Ekiga::AccountCore::Unregistered,
                                      std::string ()));
+                                     */
   }
 }
 

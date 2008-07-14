@@ -78,6 +78,12 @@ namespace Ekiga
     virtual const std::string get_protocol_name () const = 0;
 
 
+    /** Returns the address of record for that Ekiga::Account.
+     * @return The address of record.
+     */
+    virtual const std::string get_aor () const = 0;
+
+
     /** Returns the hostname for the Ekiga::Account.
      * This function is purely virtual and should be implemented by the
      * Ekiga::Account descendant.

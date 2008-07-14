@@ -110,7 +110,7 @@ namespace Ekiga
 
   private:
     void on_personal_details_updated (PersonalDetails & details);
-    void on_registration_event (std::string aor,
+    void on_registration_event (const Ekiga::Account & account,
                                 Ekiga::AccountCore::RegistrationState state,
                                 std::string /*info*/,
                                 Ekiga::PersonalDetails *details);

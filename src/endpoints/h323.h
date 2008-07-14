@@ -94,8 +94,8 @@ namespace Opal {
 
 
       /* AccountSubscriber */
-      bool subscribe (const Ekiga::Account & account);
-      bool unsubscribe (const Ekiga::Account & account);
+      bool subscribe (const Opal::Account & account);
+      bool unsubscribe (const Opal::Account & account);
 
       /* OPAL methods */
       void Register (const PString & aor,

@@ -41,6 +41,7 @@
 
 #include "common.h"
 #include "services.h"
+#include "account.h"
 
 /* The API */
 
@@ -58,10 +59,10 @@ GtkWidget *gm_accounts_window_new (Ekiga::ServiceCore &core);
  * 		   the implications).
  * PRE          :  /
  */
-
+//FIXME private
 void gm_accounts_window_update_account_state (GtkWidget *accounts_window,
 					      gboolean refreshing,
-					      const gchar *aor,
+                                              const Ekiga::Account & account,
 					      const gchar *status,
 					      const gchar *voicemails);
 

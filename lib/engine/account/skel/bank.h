@@ -61,6 +61,14 @@ namespace Ekiga
      */
     virtual void visit_accounts (sigc::slot<bool, Account &> visitor) = 0;
 
+
+    /** Find the account with the given address of record in the Bank
+     * @param aor is the address of record of the Account
+     * @return The Account corresponding to the find result
+     */
+    virtual Ekiga::Account *find_account (const std::string & aor) = 0;
+
+
     /** Create the menu for that Bank and its actions.
      * This function is purely virtual and should be implemented by
      * the descendant of the Ekiga::Bank.

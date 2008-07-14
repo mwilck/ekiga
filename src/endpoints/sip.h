@@ -128,8 +128,8 @@ namespace Opal {
 
       
       /* AccountSubscriber */
-      bool subscribe (const Ekiga::Account & account);
-      bool unsubscribe (const Ekiga::Account & account);
+      bool subscribe (const Opal::Account & account);
+      bool unsubscribe (const Opal::Account & account);
 
 
       /* OPAL Methods */
@@ -175,6 +175,7 @@ namespace Opal {
       std::list<std::string> subscribed_uris;    // List of subscribed uris
       std::list<std::string> domains; // List of registered domains
       std::list<std::string> aors;     // List of registered aor
+      std::map<std::string, const Opal::Account *> accounts;
       Ekiga::ServiceCore & core;
       Ekiga::PresenceCore & presence_core;
       Ekiga::Runtime & runtime;

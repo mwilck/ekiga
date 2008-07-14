@@ -67,9 +67,11 @@ public:
              bool enabled,
              unsigned timeout);
 
-    ~Account ();
+    virtual ~Account ();
 
     const std::string get_name () const;
+
+    const std::string get_aor () const;
 
     const std::string get_protocol_name () const;
 
@@ -112,7 +114,7 @@ private:
     std::string auth_username;
     std::string password;
 
-    Ekiga::AccountCore *account_core;
+    Ekiga::ServiceCore & core;
   };
 
   /**

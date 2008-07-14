@@ -162,7 +162,7 @@ gm_aw_get_aw (GtkWidget *accounts_window)
 
 
 /* Engine callbacks */
-static void on_registration_event (std::string aor,
+static void on_registration_event (const Ekiga::Account & account,
                                    Ekiga::AccountCore::RegistrationState state,
                                    std::string info,
                                    gpointer window)
@@ -199,7 +199,7 @@ static void on_registration_event (std::string aor,
   }
 
   gm_accounts_window_update_account_state (GTK_WIDGET (window), is_processing, 
-                                           aor.c_str (), status.c_str (), NULL); 
+                                           account, status.c_str (), NULL); 
 }
 
 
@@ -675,7 +675,7 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
 void
 gm_accounts_window_update_account_state (GtkWidget *accounts_window,
 					 gboolean refreshing,
-					 const gchar *aor,
+                                         const Ekiga::Account & account,
 					 const gchar *status,
 					 const gchar *voicemails)
 {
@@ -683,6 +683,7 @@ gm_accounts_window_update_account_state (GtkWidget *accounts_window,
 
   GtkTreeIter iter;
 
+  const gchar *aor = account.get_aor ().c_str ();
   gchar *host = NULL;
   gchar *realm = NULL;
   gchar *username = NULL;

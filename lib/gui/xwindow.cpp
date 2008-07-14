@@ -746,8 +746,9 @@ XWindow::SetEWMHFullscreen (int action)
 
     // send the event to the window
     XLockDisplay (_display);
-    if (!XSendEvent (_display, _rootWindow, FALSE, SubstructureRedirectMask | SubstructureNotifyMask, &xev))
+    if (!XSendEvent (_display, _rootWindow, FALSE, SubstructureRedirectMask | SubstructureNotifyMask, &xev)) {
       PTRACE(1, "X11\tSetEWMHFullscreen failed");
+    }
     XUnlockDisplay (_display);
   }
 }
@@ -865,8 +866,9 @@ XWindow::GetWMType ()
   }
 
   // unknown WM
-  if (wmType == 0) 
+  if (wmType == 0) {
     PTRACE(4, "X11\tUnknown wm type...");
+  }
   
   return wmType;
 }

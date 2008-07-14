@@ -48,8 +48,9 @@
 #include "form-request-simple.h"
 
 
-Opal::Account::Account (Ekiga::ServiceCore & core,
+Opal::Account::Account (Ekiga::ServiceCore & _core,
                         const std::string & account)
+: core (_core)
 {
   int i = 0;
   char *pch = strtok ((char *) account.c_str (), "|");
@@ -103,14 +104,12 @@ Opal::Account::Account (Ekiga::ServiceCore & core,
     i++;
   }
 
-  account_core = dynamic_cast<Ekiga::AccountCore*>(core.get ("account-core"));
-
   if (enabled)
     enable ();
 }
 
 
-Opal::Account::Account (Ekiga::ServiceCore & core,
+Opal::Account::Account (Ekiga::ServiceCore & _core,
                         std::string _name, 
                         std::string _host,
                         std::string _username,
@@ -118,6 +117,7 @@ Opal::Account::Account (Ekiga::ServiceCore & core,
                         std::string _password,
                         bool _enabled,
                         unsigned _timeout)
+: core (_core)
 {
   enabled = _enabled;
   aid = (const char *) PGloballyUniqueID ().AsString ();
@@ -128,8 +128,6 @@ Opal::Account::Account (Ekiga::ServiceCore & core,
   auth_username = _auth_username;
   password = _password;
   timeout = _timeout;
-
-  account_core = dynamic_cast<Ekiga::AccountCore*>(core.get ("account-core"));
 
   if (enabled)
     enable ();
@@ -164,6 +162,14 @@ const std::string Opal::Account::get_name () const
   return name;
 }
 
+const std::string Opal::Account::get_aor () const
+{
+  std::stringstream str;
+
+  str << "sip:" << username << "@" << host;
+
+  return str.str ();
+}
 
 const std::string Opal::Account::get_protocol_name () const
 {
@@ -205,6 +211,7 @@ void Opal::Account::enable ()
 {
   enabled = true;
 
+  Ekiga::AccountCore *account_core = dynamic_cast<Ekiga::AccountCore*>(core.get ("account-core"));
   account_core->subscribe_account (*this);
 
   updated.emit ();
@@ -216,6 +223,7 @@ void Opal::Account::disable ()
 {
   enabled = false;
 
+  Ekiga::AccountCore *account_core = dynamic_cast<Ekiga::AccountCore*>(core.get ("account-core"));
   account_core->unsubscribe_account (*this);
 
   updated.emit ();

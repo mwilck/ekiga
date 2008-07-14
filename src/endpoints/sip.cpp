@@ -461,23 +461,24 @@ unsigned CallProtocolManager::get_nat_binding_delay ()
 }
 
 
-// FIXME : check code Ekiga::Account or Opal::Account, how can we be sure the correct one is called ?
-bool CallProtocolManager::subscribe (const Ekiga::Account & account)
+bool CallProtocolManager::subscribe (const Opal::Account & account)
 {
   if (account.get_protocol_name () != "SIP")
     return false;
 
   new subscriber (account, *this);
+  accounts [account.get_aor ()] = &account;
   return true;
 }
 
 
-bool CallProtocolManager::unsubscribe (const Ekiga::Account & account)
+bool CallProtocolManager::unsubscribe (const Opal::Account & account)
 {
   if (account.get_protocol_name () != "SIP")
     return false;
 
   new subscriber (account, *this);
+  accounts.erase (account.get_aor ());
   return true;
 }
 
@@ -561,10 +562,11 @@ void CallProtocolManager::OnRegistered (const PString & _aor,
   }
 
   /* Signal */
-  runtime.run_in_main (sigc::bind (account_core.registration_event.make_slot (), 
-                                   strm.str (),
-                                   was_registering ? Ekiga::AccountCore::Registered : Ekiga::AccountCore::Unregistered,
-                                   std::string ()));
+  Ekiga::Account *account = account_core.find_account (strm.str ());
+  if (account)
+    runtime.run_in_main (sigc::bind (registration_event.make_slot (), account,
+                                     was_registering ? Ekiga::AccountCore::Registered : Ekiga::AccountCore::Unregistered,
+                                     std::string ()));
 }
 
 
@@ -767,6 +769,11 @@ void CallProtocolManager::OnRegistrationFailed (const PString & _aor,
     info = _("Globally not acceptable");
     break;
 
+  case SIP_PDU::Local_TransportError:
+  case SIP_PDU::Local_BadTransportAddress:
+    info = _("Transport error");
+    break;
+  
   case SIP_PDU::Failure_TransactionDoesNotExist:
   case SIP_PDU::Failure_Gone:
   case SIP_PDU::MaxStatusCode:
@@ -787,10 +794,11 @@ void CallProtocolManager::OnRegistrationFailed (const PString & _aor,
   SIPEndPoint::OnRegistrationFailed (strm.str ().c_str (), r, wasRegistering);
 
   /* Signal */
-  runtime.run_in_main (sigc::bind (account_core.registration_event.make_slot (), 
-                                   aor, 
-                                   wasRegistering ? Ekiga::AccountCore::RegistrationFailed : Ekiga::AccountCore::UnregistrationFailed,
-                                   info));
+  Ekiga::Account *account = account_core.find_account (strm.str ());
+  if (account)
+    runtime.run_in_main (sigc::bind (registration_event.make_slot (), account,
+                                     wasRegistering ? Ekiga::AccountCore::RegistrationFailed : Ekiga::AccountCore::UnregistrationFailed,
+                                     info));
 }
 
 

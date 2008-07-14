@@ -93,6 +93,7 @@
 #include "audiooutput-core.h"
 
 #include "call-core.h"
+#include "account.h"
 #include "gtk-frontend.h"
 #include "services.h"
 
@@ -581,12 +582,13 @@ static void on_mwi_event_cb (G_GNUC_UNUSED Ekiga::CallManager & manager,
 }
 
 
-static void on_registration_event (std::string aor,
+static void on_registration_event (const Ekiga::Account & account,
                                    Ekiga::AccountCore::RegistrationState state,
-                                   G_GNUC_UNUSED std::string info,
+                                   std::string /*info*/,
                                    gpointer window)
 {
   gchar *msg = NULL;
+  std::string aor = account.get_aor ();
 
   switch (state) {
   case Ekiga::AccountCore::Registered:

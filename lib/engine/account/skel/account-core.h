@@ -133,6 +133,44 @@ namespace Ekiga
     typedef std::set<Bank *>::const_iterator bank_const_iterator;
 
 
+    /*** Misc ***/
+
+  public:
+    typedef enum { Processing, Registered, Unregistered, RegistrationFailed, UnregistrationFailed } RegistrationState;
+
+    /** Find the account with the given address of record in the Bank
+     * @param aor is the address of record of the Account
+     * @return The Ekiga::Account if an Account was found, false otherwise.
+     */
+    Ekiga::Account *find_account (const std::string & aor);
+
+
+    /** Create the menu for the AccountCore and its actions.
+     * @param A MenuBuilder object to populate.
+     */
+    bool populate_menu (MenuBuilder &builder);
+
+
+    /** This signal is emitted when the AccountCore Service has been
+     * updated.
+     */
+    sigc::signal<void> updated;
+
+
+    /** This chain allows the AccountCore to present forms to the user
+     */
+    ChainOfResponsibility<FormRequest*> questions;
+
+
+    /** This signal is emitted when there is a new registration event
+     * @param: account is the account 
+     *         state is the state
+     *         info contains information about the registration status
+     */
+    sigc::signal<void, const Ekiga::Account &, Ekiga::AccountCore::RegistrationState, std::string> registration_event;
+
+
+
     /*** Account Subscriber API ***/
   public:
     void add_account_subscriber (AccountSubscriber &subscriber);
@@ -147,36 +185,9 @@ namespace Ekiga
     std::set<AccountSubscriber *> account_subscribers;
     typedef std::set<AccountSubscriber *>::iterator subscriber_iterator;
     typedef std::set<AccountSubscriber *>::const_iterator subscriber_const_iterator;
-
-
-    /*** Misc ***/
-
-  public:
-    typedef enum { Processing, Registered, Unregistered, RegistrationFailed, UnregistrationFailed } RegistrationState;
-
-
-    /** Create the menu for the AccountCore and its actions.
-     * @param A MenuBuilder object to populate.
-     */
-    bool populate_menu (MenuBuilder &builder);
-
-    /** This signal is emitted when the AccountCore Service has been
-     * updated.
-     */
-    sigc::signal<void> updated;
-
-
-    /** This chain allows the AccountCore to present forms to the user
-     */
-    ChainOfResponsibility<FormRequest*> questions;
-
-
-    /** This signal is emitted when there is a new registration event
-     * @param: account is the account uri
-     *         state is the state
-     *         info contains information about the registration status
-     */
-    sigc::signal<void, std::string, Ekiga::AccountCore::RegistrationState, std::string> registration_event;
+    void on_registration_event (const Ekiga::Account *account,
+                                Ekiga::AccountCore::RegistrationState state,
+                                const std::string & info);
   };
 
 
@@ -185,16 +196,12 @@ namespace Ekiga
 public:
     virtual ~AccountSubscriber () {}
 
-    /* Implemented by the object implementing an AccountSubscriberImpl */
-    virtual bool subscribe (const Ekiga::Account & account) = 0;
-    virtual bool unsubscribe (const Ekiga::Account & account) = 0;
-
     /** This signal is emitted when there is a new registration event
-     * @param: account is the account uri
+     * @param: account is the account 
      *         state is the state
      *         info contains information about the registration status
      */
-    sigc::signal<void, std::string, Ekiga::AccountCore::RegistrationState, std::string> registration_event;
+    sigc::signal<void, const Ekiga::Account *, Ekiga::AccountCore::RegistrationState, std::string> registration_event;
   };
 
 
@@ -223,9 +230,13 @@ bool Ekiga::AccountCore::subscribe_account (const T &account)
 
   for (subscriber_iterator iter = account_subscribers.begin ();
        iter != account_subscribers.end ();
-       iter++)
-    if ((*iter)->subscribe (account))
-      return true;
+       iter++) {
+
+    Ekiga::AccountSubscriberImpl<T> *subscriber = dynamic_cast<Ekiga::AccountSubscriberImpl<T> *> (*iter);
+    if (subscriber)
+      if (subscriber->subscribe (account))
+        return true;
+  }
 
   return false;
 }
@@ -239,9 +250,13 @@ bool Ekiga::AccountCore::unsubscribe_account (const T &account)
 
   for (subscriber_iterator iter = account_subscribers.begin ();
        iter != account_subscribers.end ();
-       iter++)
-    if ((*iter)->unsubscribe (account))
-      return true;
+       iter++) {
+
+    Ekiga::AccountSubscriberImpl<T> *subscriber = dynamic_cast<Ekiga::AccountSubscriberImpl<T> *> (*iter);
+    if (subscriber)
+      if (subscriber->subscribe (account))
+        return true;
+  }
 
   return false;
 }
