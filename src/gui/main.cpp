@@ -634,6 +634,7 @@ static void on_setup_call_cb (Ekiga::CallManager & /*manager*/,
   }
   else {
     gm_main_window_update_calling_state (GTK_WIDGET (self), Calling);
+    mw->current_call = &call;
   }
 }
 
@@ -4158,8 +4159,8 @@ gm_main_window_update_stats (GtkWidget *main_window,
 
   if ((lost < 0.02 && lost >= 0.0) ||
       (late < 0.02 && late >= 0.0) ||
-      (out_of_order < 0.02 && out_of_order >= 0.0) &&
-      quality_level > 0.2)
+      ((out_of_order < 0.02 && out_of_order >= 0.0) &&
+       quality_level > 0.2))
     quality_level = 0.2;
 
   if (mw->qualitymeter)
