@@ -43,6 +43,8 @@ Echo::SimpleChat::SimpleChat (): presentity(new Presentity ())
 
 Echo::SimpleChat::~SimpleChat ()
 {
+  delete presentity;
+
 #ifdef __GNUC__
   std::cout << __PRETTY_FUNCTION__ << std::endl;
 #endif
