@@ -124,20 +124,10 @@ enum {
   COLUMN_ACCOUNT,
   COLUMN_ACCOUNT_WEIGHT,
   COLUMN_ACCOUNT_ENABLED,
-  COLUMN_ACCOUNT_DEFAULT,
-  COLUMN_ACCOUNT_AID,
   COLUMN_ACCOUNT_ACCOUNT_NAME,
-  COLUMN_ACCOUNT_PROTOCOL_NAME,
-  COLUMN_ACCOUNT_HOST,
-  COLUMN_ACCOUNT_DOMAIN,
-  COLUMN_ACCOUNT_USERNAME,
-  COLUMN_ACCOUNT_AUTH_USERNAME,
-  COLUMN_ACCOUNT_PASSWORD,
-  COLUMN_ACCOUNT_STATE,
-  COLUMN_ACCOUNT_TIMEOUT,
-  COLUMN_ACCOUNT_METHOD,
   COLUMN_ACCOUNT_VOICEMAILS,
   COLUMN_ACCOUNT_ERROR_MESSAGE,
+  COLUMN_ACCOUNT_STATE,
   COLUMN_ACCOUNT_NUMBER
 };
 
@@ -367,14 +357,7 @@ gm_accounts_window_add_account (GtkWidget *window,
                       COLUMN_ACCOUNT, &account,
                       COLUMN_ACCOUNT_WEIGHT, PANGO_WEIGHT_NORMAL,
                       COLUMN_ACCOUNT_ENABLED, account.is_enabled (),
-                      COLUMN_ACCOUNT_DEFAULT, false,
                       COLUMN_ACCOUNT_ACCOUNT_NAME, account.get_name ().c_str (),
-                      COLUMN_ACCOUNT_PROTOCOL_NAME, account.get_protocol_name ().c_str (),
-                      COLUMN_ACCOUNT_HOST, account.get_host ().c_str (),
-                      COLUMN_ACCOUNT_DOMAIN, account.get_host ().c_str (),
-                      COLUMN_ACCOUNT_USERNAME, account.get_username ().c_str (),
-                      COLUMN_ACCOUNT_AUTH_USERNAME, account.get_authentication_username ().c_str (),
-                      COLUMN_ACCOUNT_PASSWORD, account.get_password ().c_str (),
                       -1); 
 }
 
@@ -410,14 +393,7 @@ gm_accounts_window_update_account (GtkWidget *accounts_window,
                             COLUMN_ACCOUNT, &account,
                             COLUMN_ACCOUNT_WEIGHT, PANGO_WEIGHT_NORMAL,
                             COLUMN_ACCOUNT_ENABLED, account.is_enabled (),
-                            COLUMN_ACCOUNT_DEFAULT, false,
                             COLUMN_ACCOUNT_ACCOUNT_NAME, account.get_name ().c_str (),
-                            COLUMN_ACCOUNT_PROTOCOL_NAME, account.get_protocol_name ().c_str (),
-                            COLUMN_ACCOUNT_HOST, account.get_host ().c_str (),
-                            COLUMN_ACCOUNT_DOMAIN, account.get_host ().c_str (),
-                            COLUMN_ACCOUNT_USERNAME, account.get_username ().c_str (),
-                            COLUMN_ACCOUNT_AUTH_USERNAME, account.get_authentication_username ().c_str (),
-                            COLUMN_ACCOUNT_PASSWORD, account.get_password ().c_str (),
                             -1); 
         break;
       }
@@ -498,17 +474,7 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
     "",
     "",
     "",
-    "",
     _("Account Name"),
-    _("Protocol"),
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
     _("Voice Mails"),
     _("Status"),
     ""
@@ -547,20 +513,10 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
                                    G_TYPE_POINTER,
 				   G_TYPE_INT,
 				   G_TYPE_BOOLEAN, /* Enabled? */
-				   G_TYPE_BOOLEAN, /* Default? */
-				   G_TYPE_STRING,  /* AID */
 				   G_TYPE_STRING,  /* Account Name */
-				   G_TYPE_STRING,  /* Protocol Name */
-				   G_TYPE_STRING,  /* Host */
-				   G_TYPE_STRING,  /* Domain */
-				   G_TYPE_STRING,  /* Username */
-				   G_TYPE_STRING,  /* Auth Username */
-				   G_TYPE_STRING,  /* Password */
-				   G_TYPE_INT,     /* State */
-				   G_TYPE_INT,     /* Timeout */
-				   G_TYPE_INT,     /* Method */
 				   G_TYPE_STRING,  /* VoiceMails */  
-				   G_TYPE_STRING); /* Error Message */  
+				   G_TYPE_STRING,  /* Error Message */  
+				   G_TYPE_INT);    /* State */
 
   aw->accounts_list = 
     gtk_tree_view_new_with_model (GTK_TREE_MODEL (list_store));
@@ -586,7 +542,7 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
 
   /* Add all text renderers, ie all except the 
    * "ACCOUNT_ENABLED/DEFAULT" columns */
-  for (int i = COLUMN_ACCOUNT_AID ; i < COLUMN_ACCOUNT_NUMBER - 1 ; i++) {
+  for (int i = COLUMN_ACCOUNT_ACCOUNT_NAME ; i < COLUMN_ACCOUNT_NUMBER - 1 ; i++) {
 
     renderer = gtk_cell_renderer_text_new ();
     column = gtk_tree_view_column_new_with_attributes (column_names [i],
@@ -603,17 +559,6 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
     if (i == COLUMN_ACCOUNT_ACCOUNT_NAME)
       gtk_tree_view_column_set_sort_column_id (column,
 					       COLUMN_ACCOUNT_ACCOUNT_NAME);
-
-    if (i == COLUMN_ACCOUNT_AID 
-	|| i == COLUMN_ACCOUNT_HOST
-	|| i == COLUMN_ACCOUNT_TIMEOUT
-	|| i == COLUMN_ACCOUNT_METHOD 
-	|| i == COLUMN_ACCOUNT_DOMAIN
-	|| i == COLUMN_ACCOUNT_USERNAME
-	|| i == COLUMN_ACCOUNT_AUTH_USERNAME
-	|| i == COLUMN_ACCOUNT_PASSWORD
-	|| i == COLUMN_ACCOUNT_STATE)
-      g_object_set (G_OBJECT (column), "visible", false, NULL);
   }
 
   g_signal_connect (G_OBJECT (aw->accounts_list), "event_after",
@@ -675,7 +620,7 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
 void
 gm_accounts_window_update_account_state (GtkWidget *accounts_window,
 					 gboolean refreshing,
-                                         const Ekiga::Account & account,
+                                         const Ekiga::Account & _account,
 					 const gchar *status,
 					 const gchar *voicemails)
 {
@@ -683,18 +628,10 @@ gm_accounts_window_update_account_state (GtkWidget *accounts_window,
 
   GtkTreeIter iter;
 
-  const gchar *aor = account.get_aor ().c_str ();
-  gchar *host = NULL;
-  gchar *realm = NULL;
-  gchar *username = NULL;
-  gchar *ar = NULL;
-
-  gboolean active = FALSE;
-
+  Ekiga::Account *account = NULL;
   GmAccountsWindow *aw = NULL;
 
   g_return_if_fail (accounts_window != NULL);
-  g_return_if_fail (aor != NULL);
 
   aw = gm_aw_get_aw (accounts_window);
 
@@ -705,18 +642,10 @@ gm_accounts_window_update_account_state (GtkWidget *accounts_window,
     do {
 
       gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
-			  COLUMN_ACCOUNT_ENABLED, &active,
-			  COLUMN_ACCOUNT_HOST, &host,
-			  COLUMN_ACCOUNT_DOMAIN, &realm,
-			  COLUMN_ACCOUNT_USERNAME, &username,
+			  COLUMN_ACCOUNT, &account,
 			  -1);
 
-      if (PString (username).Find("@") != P_MAX_INDEX)
-        ar = g_strdup (username);
-      else
-        ar = g_strdup_printf ("sip:%s@%s", username, host);
-
-      if (ar && aor && !strcmp (aor, ar)) {
+      if (account == &_account) {
 
 	gtk_list_store_set (GTK_LIST_STORE (model), &iter,
 			    COLUMN_ACCOUNT_STATE, refreshing, -1);
@@ -727,14 +656,6 @@ gm_accounts_window_update_account_state (GtkWidget *accounts_window,
 	  gtk_list_store_set (GTK_LIST_STORE (model), &iter,
 			      COLUMN_ACCOUNT_VOICEMAILS, voicemails, -1);
       }
-      else if (!active)
-	gtk_list_store_set (GTK_LIST_STORE (model), &iter,
-			    COLUMN_ACCOUNT_ERROR_MESSAGE, "", -1);
-
-      g_free (host);
-      g_free (realm);
-      g_free (username);
-      g_free (ar);
 
     } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (model), &iter));
   }
