@@ -149,11 +149,7 @@ GETTEXT_ARCHIVE := gettext-dev-$(GETTEXT_VER).zip
 ICONV_VER := 1.9.1
 ICONV_ARCHIVE := libiconv-$(ICONV_VER).bin.woe32.zip
 
-DIRECTX_URL := http://www.colombus.org/ekiga
-DIRECTX_DIR := $(BUILDROOT)/directx-dev
-DIRECTX_ARCHIVE := directx-dev.tar.gz
-
-FFMPEG_VER := 12758
+FFMPEG_VER := 14200
 FFMPEG_URL := svn://svn.mplayerhq.hu/ffmpeg/trunk
 FFMPEG_DIR := $(BUILDROOT)/ffmpeg
 FFMPEG_ARCHIVE := ffmpeg
@@ -190,11 +186,11 @@ endif
 
 confflags:=--prefix=$(BUILDROOT) --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE)
 confptlib:=--prefix=$(BUILDROOT) --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE) \
-	   --with-directx-dir=$(DIRECTX_DIR)
+	   --with-directx-dir=$(BUILDROOT)
 confopal :=--prefix=$(BUILDROOT) --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE) \
 	   --with-ffmpeg-dir=$(FFMPEG_DIR)
 confekiga:= $(confflags) --with-ptlib-dir=$(PTLIB_DIR) --with-opal-dir=$(OPAL_DIR) \
-	    --with-directx-dir=$(DIRECTX_DIR) --prefix=$(EKIGA_PREFIX) \
+	    --with-directx-dir=$(BUILDROOT) --prefix=$(EKIGA_PREFIX) \
 	    --bindir=$(EKIGA_PREFIX) --datadir=$(EKIGA_PREFIX) \
 	    --sysconfdir=$(EKIGA_PREFIX) --libdir=$(EKIGA_PREFIX) --disable-gnome \
 	    --disable-dbus --disable-avahi --disable-esd --with-ldap-dir=$(OPENLDAP_DIR)
@@ -207,7 +203,7 @@ confffmpeg:=--cross-prefix=i586-mingw32msvc- --enable-shared --enable-memalign-h
 	    --disable-muxers --enable-muxer=h264 --enable-muxer=mpeg4 --enable-muxer=h263 \
 	    --disable-encoders --enable-encoder=mpeg4 --enable-encoder=h263 \
 	    --disable-protocols --disable-bsfs --disable-ffplay --prefix=$(BUILDROOT) \
-            --libdir=$(EKIGA_PREFIX) --extra-ldflags=-Wl,-static
+            --libdir=$(EKIGA_PREFIX) --extra-ldflags=-Wl,-static --disable-devices --disable-ffmpeg
 #	    --disable-network
 
 confx264:=  --disable-avis-input --prefix=$(BUILDROOT) --host=$(DEB_HOST_GNU_TYPE)
@@ -331,12 +327,7 @@ $(LIBDIR)/libldap.dll: binaries $(OPENLDAP_DIR)/config.status
 ### PTLib
 update-sources:: 
 	echo --- Getting PTLib $(PTLIB_REV) ...
-ifneq ("$(shell $(SVN) co $(PTLIB_URL) $(SRCDIR)/$(PTLIB_ARCHIVE) -r $(PTLIB_REV) | cut -c1-7 | head -n1 )", "Checked")
-	echo "Updated to revision $(PTLIB_REV)"
-	touch $(SRCDIR)/$(PTLIB_ARCHIVE)
-else
-	echo "Already at revision $(PTLIB_REV)"
-endif
+	$(SVN) co $(PTLIB_URL) $(SRCDIR)/$(PTLIB_ARCHIVE) -r $(PTLIB_REV)
 
 $(PTLIB_DIR)/configure: binaries $(LIBDIR)/libldap.dll $(INCLUDEDIR)/directx/dsound.h $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(SRCDIR)/$(PTLIB_ARCHIVE) $(EKIGA_WIN32_DIFF_DIR)/ptlib_Makefile.am $(LIBDIR)/libexpat.a $(EKIGA_WIN32_DIFF_DIR)/ptlib_configure.ac $(EKIGA_WIN32_DIFF_DIR)/ptlib_ptlib.pc.in
 	rm -f $(LIBDIR)/libpt.a
@@ -401,12 +392,7 @@ $(LIBDIR)/libspeex.a: binaries $(SPEEX_DIR)/config.status
 ### ffmpeg
 update-sources::
 	echo --- Getting FFMPEG ---
-ifneq ("$(shell $(SVN) co $(FFMPEG_URL) $(SRCDIR)/$(FFMPEG_ARCHIVE) -r $(FFMPEG_VER) |  cut -c1-7 | head -n5 | tail -n1 )", "Checked")
-	echo "Updated to revision $(FFMPEG_VER)"
-	touch $(SRCDIR)/$(FFMPEG_ARCHIVE)
-else
-	echo "Already at revision $(FFMPEG_VER)"
-endif
+	$(SVN) co $(FFMPEG_URL) $(SRCDIR)/$(FFMPEG_ARCHIVE) -r $(FFMPEG_VER)
 
 $(FFMPEG_DIR)/config.status: $(SRCDIR)/$(FFMPEG_ARCHIVE)
 	rm -rf $(FFMPEG_DIR)
@@ -417,26 +403,16 @@ $(FFMPEG_DIR)/config.status: $(SRCDIR)/$(FFMPEG_ARCHIVE)
 	touch $@
 
 $(BINDIR)/avcodec.dll: $(FFMPEG_DIR)/config.status
-	mkdir $(INCLUDEDIR)/ffmpeg
 	$(MAKE) $(MAKE_LIB_OPTS) -C $(FFMPEG_DIR)
 	$(MAKE) -C $(FFMPEG_DIR) install
-	$(CP) $(FFMPEG_DIR)/libavutil/intreadwrite.h $(INCLUDEDIR)/ffmpeg
-	$(CP) $(FFMPEG_DIR)/libavutil/bswap.h $(INCLUDEDIR)/ffmpeg
-	for i in  mpegvideo.h bitstream.h  dsputil.h eval.h parser.h ratecontrol.h rl.h;do \
-	$(CP) $(FFMPEG_DIR)/libavcodec/$$i $(INCLUDEDIR)/ffmpeg ;\
-	done
 	touch $@
 
 ### x264
 update-sources:: 
 	echo --- Getting x264 ---
-#ifneq ("$(shell $(SVN) co $(X264_URL) $(SRCDIR)/$(X264_ARCHIVE) -r $(X264_VER) | cut -c1-7 | head -n1 )", "Checked")
 	$(GIT) clone $(X264_URL) $(SRCDIR)/$(X264_ARCHIVE)
 	echo "Updated to revision $(X264_VER)"
 	touch $(SRCDIR)/$(X264_ARCHIVE)
-#else
-#	echo "Already at revision $(X264_VER)"
-#endif
 
 $(X264_DIR)/config.status: $(SRCDIR)/$(X264_ARCHIVE)
 	rm -rf $(X264_DIR)
@@ -456,12 +432,7 @@ $(LIBDIR)/libx264.a: $(X264_DIR)/config.status
 ### theora
 update-sources::
 	echo --- Getting theora ---
-ifneq ("$(shell $(SVN) co $(THEORA_URL) $(SRCDIR)/$(THEORA_ARCHIVE) -r $(THEORA_VER) | cut -c1-7 | head -n1 )", "Checked")
-	echo "Updated to revision $(THEORA_VER)"
-	touch $(SRCDIR)/$(THEORA_ARCHIVE)
-else
-	echo "Already at revision $(THEORA_VER)"
-endif
+	$(SVN) co $(THEORA_URL) $(SRCDIR)/$(THEORA_ARCHIVE) -r $(THEORA_VER)
 
 $(THEORA_DIR)/config.status: $(SRCDIR)/$(THEORA_ARCHIVE)
 	rm -rf $(THEORA_DIR)
@@ -479,12 +450,7 @@ $(LIBDIR)/libtheora.a: $(THEORA_DIR)/config.status
 ### OPAL
 update-sources::
 	echo --- Getting OPAL $(OPAL_REV)...
-ifneq ("$(shell $(SVN) co $(OPAL_URL) $(SRCDIR)/$(OPAL_ARCHIVE) -r $(OPAL_REV) | cut -c1-7 | head -n1 )", "Checked")
-	echo "Updated to revision $(OPAL_REV)"
-	touch $(SRCDIR)/$(OPAL_ARCHIVE)
-else
-	echo "Already at revision $(OPAL_REV)"
-endif
+	$(SVN) co $(OPAL_URL) $(SRCDIR)/$(OPAL_ARCHIVE) -r $(OPAL_REV)
 
 $(OPAL_DIR)/configure: binaries $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(LIBDIR)/libpt.a $(SRCDIR)/$(OPAL_ARCHIVE) $(EKIGA_WIN32_DIFF_DIR)/opal_configure.ac $(EKIGA_WIN32_DIFF_DIR)/opal_Makefile.am $(EKIGA_WIN32_DIFF_DIR)/opal_opal.pc.in $(BINDIR)/avcodec.dll $(LIBDIR)/libx264.a $(LIBDIR)/libtheora.a
 	rm -rf $(OPAL_DIR) $(LIBDIR)/libopal.a
@@ -620,31 +586,10 @@ $(LIBDIR)/libxml2.a: binaries $(XML2_DIR)/config.status
 	$(MAKE) $(MAKEOPTS) -C $(XML2_DIR)
 	$(MAKE) $(MAKEOPTS) -C $(XML2_DIR) install
 
-### DirectX
-update-sources::
-	echo --- Getting DirectX-dev ---
-	$(WGET) -P $(SRCDIR) $(DIRECTX_URL)/$(DIRECTX_ARCHIVE)
-
-$(DIRECTX_DIR)/config.status: $(SRCDIR)/$(DIRECTX_ARCHIVE)
-	tar xzvf $(SRCDIR)/$(DIRECTX_ARCHIVE) -C $(BUILDROOT)
-	touch $@
-
-$(INCLUDEDIR)/directx/dsound.h: $(DIRECTX_DIR)/config.status
-	mkdir -p $(INCLUDEDIR)/directx
-	(for header in $(DIRECTX_DIR)/include/*h; do \
-		$(CP) $$header $(INCLUDEDIR)/directx/; \
-	done)
-	touch $@
-
 ### GnomeMeeting / Ekiga
 update-sources::
 	echo --- Getting Ekiga $(EKIGA_REV)...
-ifneq ("$(shell $(SVN) co $(EKIGA_URL) $(SRCDIR)/$(EKIGA_ARCHIVE) -r $(EKIGA_REV) | cut -c1-7 | head -n1 )", "Checked")
-	echo "Updated to revision $(EKIGA_REV)"
-	touch $(SRCDIR)/$(EKIGA_ARCHIVE)
-else
-	echo "Already at revision $(EKIGA_REV)"
-endif
+	$(SVN) co $(EKIGA_URL) $(SRCDIR)/$(EKIGA_ARCHIVE) -r $(EKIGA_REV)
 
 $(EKIGA_DIR)/autogen.sh: binaries $(SRCDIR)/$(EKIGA_ARCHIVE)
 	rm -rf $(EKIGA_DIR)
