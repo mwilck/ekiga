@@ -38,7 +38,7 @@
 SIP::Presentity::Presentity (Ekiga::ServiceCore &_core,
 			     std::string name_,
 			     std::string uri_)
-  : core(_core), name(name_), uri(uri_)
+  : core(_core), name(name_), uri(uri_), presence("presence-unknown")
 {
   presence_core = dynamic_cast<Ekiga::PresenceCore*>(core.get ("presence-core"));
 

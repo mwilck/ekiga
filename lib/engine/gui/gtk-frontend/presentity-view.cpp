@@ -76,14 +76,9 @@ static void
 on_presentity_updated (PresentityView* self)
 {
   gchar *txt = NULL;
-  std::string presence;
-
-  presence = self->priv->presentity->get_presence ();
-  if (presence == "")
-    presence = "presence-unknown";
 
   gtk_image_set_from_stock (GTK_IMAGE (self->priv->presence_image),
-			    presence.c_str (),
+			    self->priv->presentity->get_presence ().c_str (),
 			    GTK_ICON_SIZE_LARGE_TOOLBAR);
   txt = g_markup_printf_escaped ("<span size=\"large\" weight=\"bold\">%s</span>\n<span size=\"small\">%s</span>",
 				 self->priv->presentity->get_name ().c_str (),
