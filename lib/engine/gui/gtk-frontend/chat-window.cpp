@@ -94,7 +94,7 @@ on_simple_chat_added (ChatWindow* self,
 
   num = gtk_notebook_append_page (GTK_NOTEBOOK (self->priv->notebook),
 				  page, label);
-  gtk_widget_show_all (page);
+  gtk_widget_show (page);
 
   if (on_user_request) {
 
