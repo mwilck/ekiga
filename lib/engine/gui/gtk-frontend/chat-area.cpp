@@ -36,9 +36,9 @@
  */
 
 #include "chat-area.h"
-#include "gmtextviewaddon.h"
-#include "gmtextbufferaddon.h"
-#include "gmtexttagaddon.h"
+#include "gm-text-buffer-enhancer.h"
+#include "gm-text-anchored-tag.h"
+#include "gm-text-smiley.h"
 
 class ChatAreaHelper;
 
@@ -47,6 +47,7 @@ struct _ChatAreaPrivate
   Ekiga::Chat* chat;
   sigc::connection connection;
   ChatAreaHelper* helper;
+  GmTextBufferEnhancer* enhancer;
 
   /* we contain those, so no need to unref them */
   GtkWidget* text_view;
@@ -119,7 +120,8 @@ chat_area_add_notice (ChatArea* self,
   str = g_strdup_printf ("NOTICE: %s\n", txt);
   buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (self->priv->text_view));
   gtk_text_buffer_get_end_iter (buffer, &iter);
-  gtk_text_buffer_insert_with_regex (buffer, &iter, str);
+  gm_text_buffer_enhancer_insert_text (self->priv->enhancer, &iter,
+				       str, -1);
   g_free (str);
 }
 
@@ -135,7 +137,8 @@ chat_area_add_message (ChatArea* self,
   str = g_strdup_printf ("%s says: %s\n", from, txt);
   buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (self->priv->text_view));
   gtk_text_buffer_get_end_iter (buffer, &iter);
-  gtk_text_buffer_insert_with_regex (buffer, &iter, str);
+  gm_text_buffer_enhancer_insert_text (self->priv->enhancer, &iter,
+				       str, -1);
   g_free (str);
 }
 
@@ -255,6 +258,12 @@ chat_area_dispose (GObject* obj)
 
   self = (ChatArea*)obj;
 
+  if (self->priv->enhancer != NULL) {
+
+    g_object_unref (self->priv->enhancer);
+    self->priv->enhancer = NULL;
+  }
+
   parent_class->dispose (obj);
 }
 
@@ -359,6 +368,9 @@ chat_area_init (GTypeInstance* instance,
 		G_GNUC_UNUSED gpointer g_class)
 {
   ChatArea* self = NULL;
+  GtkTextBuffer* buffer = NULL;
+  GmTextBufferEnhancerHelperIFace* helper = NULL;
+  GtkTextTag* tag = NULL;
 
   self = (ChatArea*)instance;
 
@@ -367,11 +379,9 @@ chat_area_init (GTypeInstance* instance,
 					    ChatAreaPrivate);
   self->priv->chat = NULL;
 
-  /* first, the area has a text view with a quite rich set of features */
-  GtkTextBuffer* buffer = NULL;
-  GtkTextTag* tag = NULL;
+  /* first the area has a text view to display */
 
-  self->priv->text_view = gtk_text_view_new_with_regex ();
+  self->priv->text_view = gtk_text_view_new ();
   buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (self->priv->text_view));
 
   gtk_text_view_set_editable (GTK_TEXT_VIEW (self->priv->text_view), FALSE);
@@ -382,35 +392,49 @@ chat_area_init (GTypeInstance* instance,
   gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (self->priv->text_view),
 			       GTK_WRAP_WORD);
 
-  tag = gtk_text_buffer_create_tag (buffer, "bold",
-				    "weight", PANGO_WEIGHT_BOLD,
-				    NULL);
-  if (gtk_text_tag_set_regex (tag, "<b>.*</b>"))
-    gtk_text_tag_set_regex_display (tag, gtk_text_buffer_insert_markup);
-  else
-    g_object_unref (tag);
-
-  tag = gtk_text_buffer_create_tag (buffer, "italic",
-				    "style", PANGO_STYLE_ITALIC,
-				    NULL);
-  if (gtk_text_tag_set_regex (tag, "<i>.*</i>"))
-    gtk_text_tag_set_regex_display (tag, gtk_text_buffer_insert_markup);
-  else
-    g_object_unref (tag);
-
-  tag = gtk_text_buffer_create_tag (buffer, "underline",
-				    "underline", PANGO_UNDERLINE_SINGLE,
-				    NULL);
-  if (gtk_text_tag_set_regex (tag, "<u>.*</u>"))
-    gtk_text_tag_set_regex_display (tag, gtk_text_buffer_insert_markup);
-  else
-    g_object_unref (tag);
-
   gtk_widget_show (self->priv->text_view);
   gtk_box_pack_start (GTK_BOX (self), self->priv->text_view,
 		      TRUE, TRUE, 2);
 
-  /* and then the chat area has a nice entry system */
+  /* then we want to enhance this display */
+
+  self->priv->enhancer = gm_text_buffer_enhancer_new (buffer);
+
+  helper = gm_text_smiley_new ();
+  gm_text_buffer_enhancer_add_helper (self->priv->enhancer, helper);
+  g_object_unref (helper);
+
+  tag = gtk_text_buffer_create_tag (buffer, "bold",
+				    "weight", PANGO_WEIGHT_BOLD,
+				    NULL);
+  helper = gm_text_anchored_tag_new ("<b>", tag, TRUE);
+  gm_text_buffer_enhancer_add_helper (self->priv->enhancer, helper);
+  g_object_unref (helper);
+  helper = gm_text_anchored_tag_new ("</b>", tag, FALSE);
+  gm_text_buffer_enhancer_add_helper (self->priv->enhancer, helper);
+  g_object_unref (helper);
+
+  tag = gtk_text_buffer_create_tag (buffer, "italic",
+				    "style", PANGO_STYLE_ITALIC,
+				    NULL);
+  helper = gm_text_anchored_tag_new ("<i>", tag, TRUE);
+  gm_text_buffer_enhancer_add_helper (self->priv->enhancer, helper);
+  g_object_unref (helper);
+  helper = gm_text_anchored_tag_new ("</i>", tag, FALSE);
+  gm_text_buffer_enhancer_add_helper (self->priv->enhancer, helper);
+  g_object_unref (helper);
+
+  tag = gtk_text_buffer_create_tag (buffer, "underline",
+				    "underline", PANGO_UNDERLINE_SINGLE,
+				    NULL);
+  helper = gm_text_anchored_tag_new ("<u>", tag, TRUE);
+  gm_text_buffer_enhancer_add_helper (self->priv->enhancer, helper);
+  g_object_unref (helper);
+  helper = gm_text_anchored_tag_new ("</u>", tag, FALSE);
+  gm_text_buffer_enhancer_add_helper (self->priv->enhancer, helper);
+  g_object_unref (helper);
+
+  /* and finally the chat area has a nice entry system */
   GtkWidget* vbox = NULL;
   GtkWidget* bbox = NULL;
   GtkWidget* button = NULL;
