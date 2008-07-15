@@ -36,7 +36,15 @@ libgmwidgets_la_SOURCES =	\
 	gmcellrendererexpander.c  \
 	gmcellrendererexpander.h  \
 	gm-cell-renderer-bitext.c \
-	gm-cell-renderer-bitext.h
+	gm-cell-renderer-bitext.h \
+	gm-text-buffer-enhancer-helper-iface.c \
+	gm-text-buffer-enhancer-helper-iface.h \
+	gm-text-anchored-tag.c \
+	gm-text-anchored-tag.h \
+	gm-text-smiley.c \
+	gm-text-smiley.h \
+	gm-text-buffer-enhancer.c \
+	gm-text-buffer-enhancer.h
 
 
 if !WIN32
