@@ -120,6 +120,8 @@ struct _GmMainWindow
   GtkObject *adj_contrast;
   GtkWidget *video_settings_frame;
   GtkWidget *video_settings_window;
+
+  GtkListStore *completion;
   
   GtkTooltips *tips;
   GtkAccelGroup *accel;
@@ -171,6 +173,7 @@ struct _GmMainWindow
   Ekiga::Call *current_call;
   Ekiga::ServiceCore & core;
   std::vector<sigc::connection> connections;
+  std::list<std::string> accounts;
 };
 
 typedef struct _GmMainWindow GmMainWindow;
@@ -510,21 +513,12 @@ static void fullscreen_changed_cb (GtkWidget *,
 
 /* DESCRIPTION  :  This callback is called when the user changes the URL
  * 		   in the URL bar.
- * BEHAVIOR     :  It udpates the tooltip with the new URL.
+ * BEHAVIOR     :  It udpates the tooltip with the new URL
+ *                 and the completion cache.
  * PRE          :  A valid pointer to the main window GMObject. 
  */
 static void url_changed_cb (GtkEditable *, 
 			    gpointer);
-
-
-/* DESCRIPTION  :  This callback is called when the user clicks on enter
- * 		   with a non-empty URL bar.
- * BEHAVIOR     :  It calls the URL.
- * PRE          :  /
- */
-static void url_activated_cb (GtkWidget *, 
-			      gpointer);
-
 
 /* DESCRIPTION  :  This callback is called when the user presses a
  *                 button in the toolbar. 
@@ -585,20 +579,27 @@ static void on_mwi_event_cb (G_GNUC_UNUSED Ekiga::CallManager & manager,
 static void on_registration_event (const Ekiga::Account & account,
                                    Ekiga::AccountCore::RegistrationState state,
                                    std::string /*info*/,
-                                   gpointer window)
+                                   gpointer self)
 {
+  GmMainWindow *mw = NULL;
+
   gchar *msg = NULL;
   std::string aor = account.get_aor ();
+
+  g_return_if_fail (GTK_WIDGET (self) != NULL);
+  mw = gm_mw_get_mw (GTK_WIDGET (self));
 
   switch (state) {
   case Ekiga::AccountCore::Registered:
     /* Translators: Is displayed once an account "%s" is registered. */
     msg = g_strdup_printf (_("Registered %s"), aor.c_str ()); 
+    mw->accounts.push_back (account.get_host ());
     break;
 
   case Ekiga::AccountCore::Unregistered:
     /* Translators: Is displayed once an account "%s" is unregistered. */
     msg = g_strdup_printf (_("Unregistered %s"), aor.c_str ());
+    mw->accounts.remove (account.get_host ());
     break;
 
   case Ekiga::AccountCore::UnregistrationFailed:
@@ -615,7 +616,7 @@ static void on_registration_event (const Ekiga::Account & account,
   }
 
   if (msg)
-    gm_main_window_flash_message (GTK_WIDGET (window), "%s", msg);
+    gm_main_window_flash_message (GTK_WIDGET (self), "%s", msg);
 
   g_free (msg);
 }
@@ -1345,9 +1346,19 @@ place_call_cb (GtkWidget * /*widget*/,
 
   if (!mw->current_call) {
 
+    size_t pos;
+
     call_core = dynamic_cast<Ekiga::CallCore*> (mw->core.get ("call-core"));
     uri = gm_main_window_get_call_url (GTK_WIDGET (data));
     call_core->dial (uri);
+
+    pos = uri.find ("@");
+    if (pos != std::string::npos) {
+
+      std::string host = uri.substr (pos + 1);
+      mw->accounts.remove (host);
+      mw->accounts.push_front (host);
+    }
   }
 }
 
@@ -1391,6 +1402,7 @@ gm_mw_init_uri_toolbar (GtkWidget *main_window)
   GtkToolItem *item = NULL;
 
   GtkWidget *toolbar = NULL;
+  GtkEntryCompletion *completion = NULL;
   
   g_return_val_if_fail (main_window != NULL, NULL);
   mw = gm_mw_get_mw (main_window);
@@ -1407,6 +1419,12 @@ gm_mw_init_uri_toolbar (GtkWidget *main_window)
   /* Entry */
   item = gtk_tool_item_new ();
   mw->entry = gtk_entry_new ();
+  mw->completion = gtk_list_store_new (1, G_TYPE_STRING);
+  completion = gtk_entry_completion_new ();
+  gtk_entry_completion_set_model (GTK_ENTRY_COMPLETION (completion), GTK_TREE_MODEL (mw->completion));
+  gtk_entry_set_completion (GTK_ENTRY (mw->entry), completion);
+  gtk_entry_completion_set_inline_completion (GTK_ENTRY_COMPLETION (completion), true);
+  gtk_entry_completion_set_text_column (GTK_ENTRY_COMPLETION (completion), 0);
 
   gtk_container_add (GTK_CONTAINER (item), mw->entry);
   gtk_container_set_border_width (GTK_CONTAINER (item), 0);
@@ -1425,7 +1443,7 @@ gm_mw_init_uri_toolbar (GtkWidget *main_window)
   g_signal_connect (G_OBJECT (mw->entry), "changed", 
 		    GTK_SIGNAL_FUNC (url_changed_cb), main_window);
   g_signal_connect (G_OBJECT (mw->entry), "activate", 
-		    GTK_SIGNAL_FUNC (url_activated_cb), main_window);
+		    GTK_SIGNAL_FUNC (place_call_cb), main_window);
 
   gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, 0);
 
@@ -2853,28 +2871,31 @@ url_changed_cb (GtkEditable  *e,
 {
   GmMainWindow *mw = NULL;
 
+  GtkTreeIter iter;
   const char *tip_text = NULL;
+  gchar *entry = NULL;
 
   g_return_if_fail (data != NULL);
   mw = gm_mw_get_mw (GTK_WIDGET (data));
 
   tip_text = gtk_entry_get_text (GTK_ENTRY (e));
 
+  if (g_strrstr (tip_text, "@") == NULL) {
+
+    gtk_list_store_clear (mw->completion);
+
+    for (std::list<std::string>::iterator it = mw->accounts.begin ();
+         it != mw->accounts.end ();
+         it++) {
+
+      entry = g_strdup_printf ("%s@%s", tip_text, it->c_str ());
+      gtk_list_store_append (mw->completion, &iter);
+      gtk_list_store_set (mw->completion, &iter, 0, entry, -1);
+      g_free (entry);
+    }
+  }
+
   gtk_tooltips_set_tip (mw->tips, GTK_WIDGET (e), tip_text, NULL);
-}
-
-
-static void 
-url_activated_cb (GtkWidget *w,
-		  gpointer data)
-{
-  const char *url = NULL;
-  GmMainWindow *mw = gm_mw_get_mw (GTK_WIDGET (data));
-  Ekiga::CallCore *call_core = dynamic_cast<Ekiga::CallCore *> (mw->core.get ("call-core"));
-
-  url = gtk_entry_get_text (GTK_ENTRY (w));
-
-  call_core->dial (url);
 }
 
 
