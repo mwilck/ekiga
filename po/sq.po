@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ekiga gnome-2-22\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-11 19:41+0100\n"
+"POT-Creation-Date: 2008-03-21 11:00+0100\n"
 "PO-Revision-Date: 2008-03-12 12:13+0100\n"
 "Last-Translator: Laurent Dhima <laurenti@alblinux.net>\n"
 "Language-Team: albanian <gnome-albanian-perkthyesit@lists.sourceforge.net>\n"
@@ -29,9 +29,11 @@ msgstr "Telefoni IP, VoIP dhe video konferencë"
 msgid "Talk to people over the Internet"
 msgstr "Flisni me njerëz në internet"
 
+# (pofilter) puncspacing: checks for bad spacing after punctuation
+# (pofilter) acronyms: acronyms should not be translated: 2:DSL
 #: ../ekiga.schemas.in.in.h:1
 msgid "0: 56Kbps, 1: ISDN, 2:DSL, 3: LAN, 4: Custom"
-msgstr "0: 56Kbps, 1: ISDN, 2: DSL, 3: LAN, 4: Vetjake"
+msgstr "0: 56Kbps, 1: ISDN, 2: DSL, 3: LAN, 4: Personalizuar"
 
 #: ../ekiga.schemas.in.in.h:2
 msgid "Address of public IP detector"
@@ -69,6 +71,7 @@ msgstr ""
 "Refuzo automatikisht ose transfero thirrjet në hyrje nëse nuk ka përgjigje "
 "brenda kohës së caktuar (në sekonda)"
 
+# (pofilter) acronyms: acronyms should not be translated: GUI
 #: ../ekiga.schemas.in.in.h:10
 msgid ""
 "Automatically switch to fullscreen for images displayed in the main GUI at "
@@ -81,10 +84,12 @@ msgstr ""
 msgid "Change the control panel section"
 msgstr "Ndrysho seksionin e panelit të kontrollit"
 
+# (pofilter) acronyms: acronyms should not be translated: UI
 #: ../ekiga.schemas.in.in.h:12
 msgid "Change the view mode of the UI"
 msgstr "Ndrysho mënyrën e paraqitjes së interfaqes së përdorimit"
 
+# (pofilter) acronyms: acronyms should not be translated: UI
 #: ../ekiga.schemas.in.in.h:13
 msgid "Change the view mode of the UI (softphone, videophone, full view)"
 msgstr ""
@@ -95,6 +100,7 @@ msgstr ""
 msgid "Clear inactive calls"
 msgstr "Pastro thirrjet jo aktive"
 
+# (pofilter) doublespacing: checks for bad double-spaces by comparing to original
 #: ../ekiga.schemas.in.in.h:15
 msgid ""
 "Connection will be established in Fast Start mode. Fast Start is a new way "
@@ -103,8 +109,8 @@ msgid ""
 "versions of Netmeeting"
 msgstr ""
 "Lidhja do të kryhet në modalitetin Nisje e Shpejtë. Nisja e Shpejtë është "
-"një mënyrë e re për të filluar thirrjet më shpejt se në  H.323v2.  Nuk është "
-"e mbështetur nga Netmeeting dhe po të përdoren Nisja e Shpejtë dhe Tunneling "
+"një mënyrë e re për të filluar thirrjet më shpejt se në  H.323v2.  Nuk "
+"suportohet nga Netmeeting dhe po të përdoren Nisja e Shpejtë dhe Tunneling "
 "H.245 njëkohësisht disa versione të Netmeeting mund të kenë probleme"
 
 #: ../ekiga.schemas.in.in.h:16
@@ -119,6 +125,8 @@ msgstr "Dërgimi DTMF"
 msgid "Display a popup window when receiving a call"
 msgstr "Hap një dritare popup kur arrin një telefonatë"
 
+# (pofilter) singlequoting: checks whether singlequoting is consistent between the two strings
+# (pofilter) doublequoting: checks whether doublequoting is consistent between the two strings
 #: ../ekiga.schemas.in.in.h:19
 msgid "Enable 'Fast Start'"
 msgstr "Aktivo \"Nisje e Shpejtë\""
@@ -143,13 +151,14 @@ msgstr "Aktivo H.245 e shpejtë"
 msgid "Enable echo cancelation"
 msgstr "Aktivo fshirjen e jehonës"
 
+# (pofilter) endpunc: checks whether punctuation at the end of the strings match
 #: ../ekiga.schemas.in.in.h:25
 msgid ""
 "Enable or disable bilinear interpolation when rendering video images (this "
 "has no effect in fullscreen mode)"
 msgstr ""
-"Aktivo ose çaktivo interpolacionin bilinear në shfaqjen e imazheve video "
-"(nuk ka efekt në modalitetin me ekran të plotë)."
+"Aktivo ose çaktivo interpolimin bilinear në shfaqjen e imazheve video (nuk "
+"ka efekt në modalitetin me ekran të plotë)."
 
 #: ../ekiga.schemas.in.in.h:26
 msgid "Enable silence detection"
@@ -176,7 +185,8 @@ msgstr ""
 "NAT kur përdoret STUN"
 
 #: ../ekiga.schemas.in.in.h:30
-msgid "Enter the public IP of your NAT/PAT router if you want to use IP translation"
+msgid ""
+"Enter the public IP of your NAT/PAT router if you want to use IP translation"
 msgstr ""
 "Cakto IP publike të router-it tënd NAT/PAT nëse dëshiron të përdorësh "
 "përkthimin IP"
@@ -201,6 +211,7 @@ msgstr "Transfero thirrjet drejt host-it"
 msgid "Forward calls to the given host if busy"
 msgstr "Transferon thirrjet tek host i dhënë nëse je i zënë"
 
+# (pofilter) doublespacing: checks for bad double-spaces by comparing to original
 #: ../ekiga.schemas.in.in.h:36
 msgid "Forward calls to the given host if no answer"
 msgstr "Transferon thirrjet tek host i dhënë nëse  nuk ka përgjigje"
@@ -218,8 +229,10 @@ msgstr ""
 "njoftimit ndodhet në panelin e GNOME"
 
 #: ../ekiga.schemas.in.in.h:39
-msgid "If enabled, a popup window will be displayed when receiving an incoming call"
-msgstr "Nëse e aktivizon, një dritare popup do të shfaqet kur arrin një thirrje"
+msgid ""
+"If enabled, a popup window will be displayed when receiving an incoming call"
+msgstr ""
+"Nëse e aktivizon, një dritare popup do të shfaqet kur arrin një thirrje"
 
 #: ../ekiga.schemas.in.in.h:40
 msgid ""
@@ -239,6 +252,8 @@ msgstr ""
 "të specifikuar në fushën e mëposhtme nëse jeni i zënë në një bisedë ose nëse "
 "jeni në modalitetin Mos Më Shqetësoni"
 
+# (pofilter) doublewords: The word 'do' is repeated
+# (pofilter) doublespacing: checks for bad double-spaces by comparing to original
 #: ../ekiga.schemas.in.in.h:42
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
@@ -271,9 +286,10 @@ msgstr "Nëse aktivohet, përdoret zbulimi i heshtjes me kodekët që e suportoj
 msgid "Incoming call mode"
 msgstr "Mënyra e thirrjeve në hyrje"
 
+# (pofilter) brackets: translation has extra '(', ')'
 #: ../ekiga.schemas.in.in.h:48
 msgid "Kind of network selected in the druid"
-msgstr "Lloji i rrjetit i zgjedhur në asistentin e ndihmës (druid)"
+msgstr "Lloji i rrjetit i zgjedhur në asistentin e ndihmës"
 
 #: ../ekiga.schemas.in.in.h:49
 msgid "Last name"
@@ -327,9 +343,10 @@ msgstr "Numri i frame për GSM"
 msgid "Number of frames transmitted in each packet for the G.711 codec"
 msgstr "Numri i frames të transmetuara në çdo paketë për kodekun G.711"
 
+# (pofilter) endpunc: checks whether punctuation at the end of the strings match
 #: ../ekiga.schemas.in.in.h:62
 msgid "Number of frames transmitted in each packet for the GSM codec"
-msgstr "Numri i frames të transmetuara në çdo paketë për kodekun GSM."
+msgstr "Numri i frame të transmetuara në çdo paketë për kodekun GSM."
 
 #: ../ekiga.schemas.in.in.h:63
 msgid "Outbound Proxy"
@@ -442,15 +459,20 @@ msgid "Select the audio output device to use"
 msgstr "Zgjidh dispozitivin e zërit në dalje"
 
 #: ../ekiga.schemas.in.in.h:90 ../src/gui/preferences.cpp:959
-msgid "Select the desired method for NAT traversal (STUN is strongly suggested)"
+msgid ""
+"Select the desired method for NAT traversal (STUN is strongly suggested)"
 msgstr "Zgjidh metodën e dëshiruar për kalimin NAT (ju këshillojmë STUN)"
 
+# (pofilter) sentencecount: The number of sentences differ: 1 versus 2
+# (pofilter) endpunc: checks whether punctuation at the end of the strings match
 #: ../ekiga.schemas.in.in.h:91 ../src/gui/preferences.cpp:1178
-msgid "Select the format for video cameras (does not apply to most USB cameras)"
+msgid ""
+"Select the format for video cameras (does not apply to most USB cameras)"
 msgstr ""
-"Zgjidh formatin për kamerën video. (nuk hyn në punë për shumicën e kamerave "
+"Zgjidh formatin për video kamerën (nuk hyn në punë për shumicën e kamerave "
 "USB)."
 
+# (pofilter) endpunc: checks whether punctuation at the end of the strings match
 #: ../ekiga.schemas.in.in.h:92
 msgid ""
 "Select the transmitted video size: Small (QCIF 176x144) or Large (CIF "
@@ -530,9 +552,10 @@ msgstr ""
 "Host Gateway është host për tu përdorur për thirrje H.323 nëpërmjet një ure "
 "që përcjell thirrjet"
 
+# (pofilter) brackets: translation has extra '(', ')'
 #: ../ekiga.schemas.in.in.h:107
 msgid "The NAT method"
-msgstr "Metoda e NAT (përkthimi i adresave të rrjetit)"
+msgstr "Metoda e NAT"
 
 #: ../ekiga.schemas.in.in.h:108 ../src/gui/preferences.cpp:1037
 msgid "The SIP Outbound Proxy to use for outgoing calls"
@@ -542,21 +565,25 @@ msgstr "Proxy i jashtëm SIP për thirrjet në dalje"
 msgid "The STUN Server"
 msgstr "Serveri STUN"
 
+# (pofilter) endpunc: checks whether punctuation at the end of the strings match
+# (pofilter) doublewords: The word 'stun' is repeated
 #: ../ekiga.schemas.in.in.h:110
 msgid ""
 "The STUN server to use for STUN Support. STUN is a technic that permits to "
 "go through some types of NAT gateways"
 msgstr ""
 "Serveri STUN që duhet përdorur për suportin STUN. STUN është një teknikë që "
-"mundëson kalimin midis disa llojeve gateways NAT."
+"mundëson kalimin midis disa llojeve gateway NAT."
 
 #: ../ekiga.schemas.in.in.h:111
 msgid "The accounts list"
 msgstr "Lista e profileve"
 
 #: ../ekiga.schemas.in.in.h:112
-msgid "The audio plugin that will be used to detect the devices and manage them"
-msgstr "Plugin i zërit që do përdoret për të gjetur dhe organizuar dispozitivët"
+msgid ""
+"The audio plugin that will be used to detect the devices and manage them"
+msgstr ""
+"Plugin i zërit që do përdoret për të gjetur dhe organizuar dispozitivët"
 
 #: ../ekiga.schemas.in.in.h:113
 msgid "The busy tone sound"
@@ -578,10 +605,12 @@ msgstr "Tingulli i zgjedhur do dëgjohet kur vijnë thirrje, nëse është aktiv
 msgid ""
 "The chosen sound will be played when a new instant message is received, if "
 "enabled"
-msgstr "Tingulli i zgjedhur do dëgjohet kur vjen një mesazh i ri, nëse është aktivuar"
+msgstr ""
+"Tingulli i zgjedhur do dëgjohet kur vjen një mesazh i ri, nëse është aktivuar"
 
 #: ../ekiga.schemas.in.in.h:117
-msgid "The chosen sound will be played when a new voice mail is received, if enabled"
+msgid ""
+"The chosen sound will be played when a new voice mail is received, if enabled"
 msgstr ""
 "Tingulli i zgjedhur do dëgjohet kur vjen një postë e re zanore, nëse është "
 "aktivuar"
@@ -594,12 +623,13 @@ msgstr "Tingulli i zgjedhur do dëgjohet kur thërret dikë, nëse është aktiv
 msgid "The default video view"
 msgstr "Paraqitja e prezgjedhur e videos"
 
+# (pofilter) endwhitespace: checks whether whitespace at the end of the strings matches
 #: ../ekiga.schemas.in.in.h:120
 msgid ""
 "The default video view (0: Local, 1: Remote, 2: Both incrusted, 3: Both with "
 "local video in a separate window, 4: Both)"
 msgstr ""
-"Paraqitja e prezgjedhur e videos (0: Lokale, 1: Remote, 2: Së bashku, në një "
+"Paraqitja e paracaktuar e videos (0: Lokale, 1: Remote, 2: Së bashku, në një "
 "dritare 3: Së bashku, me videon lokale në një dritare të veçantë, 4: Së "
 "bashku) "
 
@@ -647,6 +677,7 @@ msgstr "Lista e profileve me të cilat Ekiga duhet të regjistrohet"
 msgid "The local zoom value"
 msgstr "Shkalla e zmadhimit lokal"
 
+# (pofilter) endpunc: checks whether punctuation at the end of the strings match
 #: ../ekiga.schemas.in.in.h:130
 msgid "The maximum jitter buffer size for audio reception (in ms)"
 msgstr "Masa maksimale e jitter buffer për marrjen e zërit (në ms)."
@@ -744,6 +775,7 @@ msgstr ""
 "duhet të riniset që vlerat e reja të kenë efekt. Ky rang portash nuk ka "
 "efekt nëse pjesmarrësit e një konference janë duke përdorur Tunneling H.245."
 
+# (pofilter) acronyms: acronyms should not be translated: UDP
 #: ../ekiga.schemas.in.in.h:146
 msgid ""
 "The range of UDP ports that Ekiga will use for RTP (audio and video "
@@ -796,21 +828,29 @@ msgid "The sound that will be played when calling somebody, if enabled"
 msgstr "Tingulli që do dëgjohet kur merr dikë, nëse është aktivuar"
 
 #: ../ekiga.schemas.in.in.h:155
-msgid "The sound that will be played when there is a new instant message, if enabled"
-msgstr "Tingulli që do dëgjohet kur ka një mesazh çasti të ri, nëse është aktivuar"
+msgid ""
+"The sound that will be played when there is a new instant message, if enabled"
+msgstr ""
+"Tingulli që do dëgjohet kur ka një mesazh çasti të ri, nëse është aktivuar"
 
 #: ../ekiga.schemas.in.in.h:156
-msgid "The sound that will be played when there is a new voice mail, if enabled"
-msgstr "Tingulli që do dëgjohet kur ka një postë zanore të re, nëse është aktivuar"
+msgid ""
+"The sound that will be played when there is a new voice mail, if enabled"
+msgstr ""
+"Tingulli që do dëgjohet kur ka një postë zanore të re, nëse është aktivuar"
 
 #: ../ekiga.schemas.in.in.h:157
-msgid "The time after which Ekiga will renew its registration with the registrar"
-msgstr "Periudha kohore mbas së cilës Ekiga do rinovojë regjistrimin me regjistruesin"
+msgid ""
+"The time after which Ekiga will renew its registration with the registrar"
+msgstr ""
+"Periudha kohore mbas së cilës Ekiga do rinovojë regjistrimin me regjistruesin"
 
 #: ../ekiga.schemas.in.in.h:158
 msgid "The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)"
 msgstr "Kodi i shtetit tënd me dy shifra (shembull : AL, FR, BE, UK, DE, ...)"
 
+# (pofilter) simplecaps: checks the capitalisation of two strings isn't wildly different
+# (pofilter) endpunc: checks whether punctuation at the end of the strings match
 #: ../ekiga.schemas.in.in.h:159 ../src/gui/preferences.cpp:1172
 msgid "The video channel number to use (to select camera, tv or other sources)"
 msgstr ""
@@ -818,8 +858,10 @@ msgstr ""
 "një TV, apo burime të tjerë)."
 
 #: ../ekiga.schemas.in.in.h:160 ../src/gui/preferences.cpp:1156
-msgid "The video plugin that will be used to detect the devices and manage them"
-msgstr "Plugin video që do përdoret për gjetjen dhe organizimin e dispozitivëve"
+msgid ""
+"The video plugin that will be used to detect the devices and manage them"
+msgstr ""
+"Plugin video që do përdoret për gjetjen dhe organizimin e dispozitivëve"
 
 #: ../ekiga.schemas.in.in.h:161
 msgid ""
@@ -843,6 +885,7 @@ msgstr ""
 "Vlera e zmadhimit që i duhet aplikuar figurave të shfaqura në dritaren e "
 "videos lokale (mund të jetë 0.50, 1.00, ose 2.00)"
 
+# (pofilter) acronyms: acronyms should not be translated: GUI
 #: ../ekiga.schemas.in.in.h:164
 msgid ""
 "The zoom value to apply to images displayed in the main GUI (can be 0.50, "
@@ -859,6 +902,8 @@ msgstr ""
 "Vlera e zmadhimit që i duhet aplikuar figurave të shfaqura në dritaren e "
 "videos në distancë (mund të jetë 0.50, 1.00, ose 2.00)"
 
+# (pofilter) numbers: checks whether numbers of various forms are consistent between the two strings
+# (pofilter) doublespacing: checks for bad double-spaces by comparing to original
 #: ../ekiga.schemas.in.in.h:166 ../src/gui/preferences.cpp:1001
 msgid ""
 "This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages "
@@ -893,6 +938,9 @@ msgstr ""
 "Kjo lejon caktimin e mënyrës për dërgimin e DTMF-ve. Vlera mund të jetë "
 "vetëm \"RFC2833\" (0)"
 
+# (pofilter) endpunc: checks whether punctuation at the end of the strings match
+# (pofilter) numbers: checks whether numbers of various forms are consistent between the two strings
+# (pofilter) brackets: translation is missing '(', ')'
 #: ../ekiga.schemas.in.in.h:170
 msgid ""
 "This permits to set the mode for DTMFs sending. The values can be \"String"
@@ -900,9 +948,9 @@ msgid ""
 "\"). Choosing other values than \"String\" disables the Text Chat"
 msgstr ""
 "Kjo të lejon të caktoni mënyrën për dërgimin e DTMF-ve. Vlerat mund të jenë "
-"\"String\" (0), \"Ton\" (1), \"RFC2833\" (2), \"Q.931\" (e prezgjedhur është "
-"\"String\"). Kur zgjidhni vlera të ndryshme nga \"String\" atëhere "
-"komunikimi me shkrime çaktivizohet."
+"\"String\" (0), \"Ton\" (1), \"RFC2833\" (2), \"Q.931\" (e paracaktuar është "
+"\"String\"). Kur zgjidhni vlera të ndryshme nga \"String\" atëhere komunikimi me "
+"shkrime çaktivizohet."
 
 #: ../ekiga.schemas.in.in.h:171
 msgid "UDP port range"
@@ -944,6 +992,7 @@ msgstr "Pamja e parë e videos"
 msgid "Video size"
 msgstr "Madhësia e videos"
 
+# (pofilter) doublespacing: checks for bad double-spaces by comparing to original
 #: ../lib/gmconf/gmconf-gconf.c:155
 msgid ""
 "An error has happened in the configuration backend.\n"
@@ -1118,6 +1167,7 @@ msgstr "Asnjë NAT"
 msgid "Detection in progress"
 msgstr "Në zbulim e sipër"
 
+# (pofilter) endpunc: checks whether punctuation at the end of the strings match
 #: ../src/clients/stun.cpp:322
 msgid "Please wait while your type of NAT is being detected."
 msgstr "Të lutem durim derisa të zbulohet lloji i NAT"
@@ -1136,6 +1186,8 @@ msgstr "U shpërfill serveri STUN (%s)"
 msgid "Cannot run Ekiga"
 msgstr "I pamundur ekzekutimi i Ekiga"
 
+# (pofilter) doublequoting: checks whether doublequoting is consistent between the two strings
+# (pofilter) acronyms: acronyms should not be translated: H.323
 #: ../src/components/bonobo.cpp:117
 msgid ""
 "Ekiga is already running, if you want it to call a given SIP, H.323, or "
@@ -1155,7 +1207,8 @@ msgstr ""
 
 #: ../src/components/bonobo.cpp:174
 #, c-format
-msgid "Error registering Ekiga with the activation service; factory mode disabled.\n"
+msgid ""
+"Error registering Ekiga with the activation service; factory mode disabled.\n"
 msgstr ""
 "Gabim gjatë regjistrimit të Ekiga tek shërbimi i aktivimit; modaliteti "
 "factory jjo aktiv.\n"
@@ -1202,6 +1255,7 @@ msgstr ""
 msgid "Cannot use the audio device"
 msgstr "I pamundur përdorimi i dispozitivit audio"
 
+# (pofilter) endwhitespace: checks whether whitespace at the end of the strings matches
 #: ../src/devices/audio.cpp:316
 #, c-format
 msgid ""
@@ -1219,6 +1273,7 @@ msgstr "Duke regjistruar zërin tuaj"
 msgid "Recording and playing back"
 msgstr "Duke regjistruar dhe lexuar"
 
+# (pofilter) endwhitespace: checks whether whitespace at the end of the strings matches
 #: ../src/devices/audio.cpp:385
 #, c-format
 msgid ""
@@ -1279,6 +1334,7 @@ msgstr ""
 msgid "Couldn't open the video device"
 msgstr "E pamundur hapja e dispozitivit video"
 
+# (pofilter) doublespacing: checks for bad double-spaces by comparing to original
 #: ../src/devices/videoinput.cpp:368
 msgid ""
 "There was an error while opening the device. Please check your permissions "
@@ -1356,7 +1412,8 @@ msgstr "E pamundur hapja e kanalit të zgjedhur me formatin e zgjedhur video."
 #: ../src/devices/videoinput.cpp:694
 #, c-format
 msgid "Your driver doesn't support any of the color formats tried by Ekiga"
-msgstr "Driveri yt nuk suporton asnjë nga formatet e ngjyrave të provuara nga Ekiga"
+msgstr ""
+"Driveri yt nuk suporton asnjë nga formatet e ngjyrave të provuara nga Ekiga"
 
 #: ../src/devices/videoinput.cpp:698
 #, c-format
@@ -1611,6 +1668,7 @@ msgstr "U hap kodek %s për marrje"
 msgid "Closed codec %s which was opened for reception"
 msgstr "U mbyll kodek %s i cili ishte hapur për marrje"
 
+# (pofilter) unchanged: please translate
 #: ../src/endpoints/manager.cpp:2095
 #, c-format
 msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
@@ -1724,6 +1782,7 @@ msgstr "Gabim: Transmetimi i mesazhit dështoi"
 msgid "Invalid URL handler"
 msgstr "Trajtues i pavlefshëm URL"
 
+# (pofilter) doublespacing: checks for bad double-spaces by comparing to original
 #: ../src/endpoints/urlhandler.cpp:441
 msgid ""
 "Please specify a valid URL handler. Currently both h323: and callto: are "
@@ -1763,6 +1822,7 @@ msgstr "Protokolli:"
 msgid "Registrar:"
 msgstr "Regjistri:"
 
+# (pofilter) unchanged: please translate
 #: ../src/gui/accounts.cpp:474 ../src/gui/accounts.cpp:1002
 msgid "Gatekeeper:"
 msgstr "Gatekeeper:"
@@ -1803,7 +1863,8 @@ msgid "Missing information"
 msgstr "Informacione munguese"
 
 #: ../src/gui/accounts.cpp:631 ../src/gui/accounts.cpp:638
-msgid "Please make sure to provide a valid account name, host name, and user name."
+msgid ""
+"Please make sure to provide a valid account name, host name, and user name."
 msgstr ""
 "Të lutem sigurohu që ke dhënë një emër të vlefshëm profili, emër host-i, dhe "
 "emër përdoruesi."
@@ -1821,6 +1882,7 @@ msgstr ""
 msgid "Are you sure you want to delete account %s?"
 msgstr "Je i sigurtë që dëshiron të eleminosh profilin %s?"
 
+# (pofilter) unchanged: please translate
 #: ../src/gui/accounts.cpp:994
 msgid "Realm/Domain:"
 msgstr "Realm/Domain:"
@@ -1858,6 +1920,7 @@ msgstr "_Prezgjedhur"
 msgid "Contact collision"
 msgstr "Konflikt në kontakte"
 
+# (pofilter) puncspacing: checks for bad spacing after punctuation
 #: ../src/gui/addressbook.cpp:821
 #, c-format
 msgid ""
@@ -1873,7 +1936,7 @@ msgstr ""
 "\n"
 "<b>Emri</b>: %s\n"
 "<b>URL</b> %s\n"
-"<b>Shpejtësia e lidhjes</b>: %s\n"
+"<b>Numri i shkurtër</b>: %s\n"
 
 #: ../src/gui/addressbook.cpp:821 ../src/gui/addressbook.cpp:823
 #: ../src/gui/druid.cpp:1916 ../src/gui/preferences.cpp:930
@@ -1921,6 +1984,7 @@ msgstr "Programi"
 msgid "VoIP URL"
 msgstr "Adresa URL e VoIP"
 
+# (pofilter) unchanged: please translate
 #: ../src/gui/addressbook.cpp:1062
 msgid "E-Mail"
 msgstr "E-Mail"
@@ -2009,6 +2073,7 @@ msgid_plural "Found %d users in %s"
 msgstr[0] "U gjet %d përdorues në %s"
 msgstr[1] "U gjetën %d përdorues në %s"
 
+# (pofilter) doublewords: The word 'në' is repeated
 #: ../src/gui/addressbook.cpp:2035
 #, c-format
 msgid "Found %d user in %s for a total of %d users"
@@ -2020,6 +2085,7 @@ msgstr[1] "U gjetën %d përdorues në %s në një total prej %d përdoruesish"
 msgid "Address Book"
 msgstr "Rubrika"
 
+# (pofilter) unchanged: please translate
 #: ../src/gui/addressbook.cpp:2557
 msgid "_File"
 msgstr "_File"
@@ -2056,6 +2122,7 @@ msgstr "Emri:"
 msgid "VoIP URL:"
 msgstr "Adresa URL e VoIP:"
 
+# (pofilter) unchanged: please translate
 #: ../src/gui/addressbook.cpp:2879
 msgid "Email:"
 msgstr "Email:"
@@ -2072,10 +2139,12 @@ msgstr "Kategoritë:"
 msgid "Local Addressbook:"
 msgstr "Rubrika lokale:"
 
+# (pofilter) doublespacing: checks for bad double-spaces by comparing to original
 #: ../src/gui/addressbook.cpp:3113
-msgid "Please make sure to provide at least a full name or an URL for the contact."
+msgid ""
+"Please make sure to provide at least a full name or an URL for the contact."
 msgstr ""
-"Të lutem ki kujdes të japëesh të paktën emrin dhe mbiemrin ose një adresë  "
+"Të lutem ki kujdes të japësh të paktën emrin dhe mbiemrin ose një adresë  "
 "URL për kontaktin."
 
 #: ../src/gui/addressbook.cpp:3160
@@ -2162,6 +2231,7 @@ msgstr "Puna artistike:"
 msgid "See AUTHORS file for full credits"
 msgstr "Shih file AUTHORS për kreditë e plota"
 
+# (pofilter) credits: checks for messages containing translation credits instead of normal translations.
 #. Translators: Please write translator credits here, and
 #. * separate names with \n
 #: ../src/gui/callbacks.cpp:190
@@ -2171,6 +2241,7 @@ msgstr ""
 "Elian Myftiu <elian@alblinux.net>\n"
 "Jonita Prifti <jonita@jonita.net>"
 
+# (pofilter) doublespacing: checks for bad double-spaces by comparing to original
 #: ../src/gui/callbacks.cpp:195
 msgid ""
 "Ekiga is full-featured SIP and H.323 compatible VoIP, IP-Telephony and "
@@ -2254,9 +2325,10 @@ msgstr "Ti"
 msgid "says:"
 msgstr "shkruan:"
 
+# (pofilter) endpunc: checks whether punctuation at the end of the strings match
 #: ../src/gui/chat.cpp:1452
 msgid "say:"
-msgstr "shkruan."
+msgstr "shkruan:"
 
 #: ../src/gui/chat.cpp:1524
 msgid "New Remote User"
@@ -2351,6 +2423,7 @@ msgstr ""
 "Emri dhe mbiemri do përdoren gjatë lidhjes me programe të tjerë VoIP dhe "
 "videokonference."
 
+# (pofilter) startcaps: checks that the message starts with the correct capitalisation
 #: ../src/gui/druid.cpp:732
 #, c-format
 msgid "ekiga.net Account - page %d/%d"
@@ -2364,6 +2437,7 @@ msgstr "Të lutem shkruaj emrin tënd të përdoruesit:"
 msgid "Please enter your password:"
 msgstr "Të lutem shkruaj fjalëkalimin tënd:"
 
+# (pofilter) doublewords: The word 'të' is repeated
 #: ../src/gui/druid.cpp:762
 msgid ""
 "The username and password are used to login to your existing account at the "
@@ -2374,7 +2448,7 @@ msgid ""
 "You may skip this step if you use an alternative SIP service, or if you "
 "would prefer to specify the login details later."
 msgstr ""
-"Emri i përdoruesit dhe fjalëkalimi përdoren për t'u kyçur në profilin tuaj "
+"Emri i përdoruesit dhe fjalëkalimi përdoren për tu kyçur në profilin tuaj "
 "ekzistues në shërbimin pa pagesë SIP ekiga.net. Nëse nuk ke një adresë SIP "
 "ekiga.net, mund të krijosh fillimisht një profil më poshtë. Kjo do të të "
 "sigurojë një adresë SIP që lejon të tjerët të të thërrasin.\n"
@@ -2423,6 +2497,7 @@ msgstr "Kliko këtu për të zbuluar llojin e NAT:"
 msgid "Detect NAT Type"
 msgstr "Zbulo llojin e NAT"
 
+# (pofilter) doublewords: The word 'të' is repeated
 #: ../src/gui/druid.cpp:911
 msgid ""
 "The NAT type detection will permit to assist you in configuring your NAT "
@@ -2471,7 +2546,8 @@ msgstr "Të lutem zgjidh dispozitivin e zërit në dalje:"
 msgid ""
 "The audio output device is the device managed by the audio manager that will "
 "be used to play audio."
-msgstr "Dispozitivi i daljes së zërit është ai që do përdoret për të dëgjuar zërin."
+msgstr ""
+"Dispozitivi i daljes së zërit është ai që do përdoret për të dëgjuar zërin."
 
 #: ../src/gui/druid.cpp:1049
 msgid "Please choose the audio input device:"
@@ -2521,13 +2597,15 @@ msgstr "Të lutem zgjidh dispozitivin e videos në hyrje:"
 msgid ""
 "The video input device is the device managed by the video manager that will "
 "be used to capture video."
-msgstr "Dispozitivi i hyrjes së videos është ai që do përdoret për të shfaqur video."
+msgstr ""
+"Dispozitivi i hyrjes së videos është ai që do përdoret për të shfaqur video."
 
 #: ../src/gui/druid.cpp:1240
 #, c-format
 msgid "Configuration complete - page %d/%d"
 msgstr "Konfigurimi përfundoi - faqja %d/%d"
 
+# (pofilter) startcaps: checks that the message starts with the correct capitalisation
 #: ../src/gui/druid.cpp:1634
 msgid "56k Modem"
 msgstr "Modem 56k"
@@ -2536,9 +2614,10 @@ msgstr "Modem 56k"
 msgid "ISDN"
 msgstr "ISDN"
 
+# (pofilter) unchanged: please translate
 #: ../src/gui/druid.cpp:1636
 msgid "xDSL/Cable"
-msgstr "xDSL/Cable"
+msgstr "xDSL/Kabëll"
 
 #: ../src/gui/druid.cpp:1637
 msgid "T1/LAN"
@@ -2771,6 +2850,7 @@ msgstr "_Shfaq"
 msgid "View _Mode"
 msgstr "_Mënyra e paraqitjes"
 
+# (pofilter) unchanged: please translate
 #: ../src/gui/main.cpp:1012
 msgid "Softp_hone"
 msgstr "Softp_hone"
@@ -2964,6 +3044,7 @@ msgid "Statistics"
 msgstr "Statistika"
 
 # (pofilter) accelerators: accelerator _ does not occur in original and should not be in translation
+# (pofilter) isreview: Check if the unit has been marked review.
 #: ../src/gui/main.cpp:1315
 msgid "Dialpad"
 msgstr "Tastiera numerike"
@@ -2984,6 +3065,7 @@ msgstr "Rregullo ngjyrën"
 msgid "Adjust contrast"
 msgstr "Rregullo kontrastin"
 
+# (pofilter) unchanged: please translate
 #: ../src/gui/main.cpp:1440
 msgid "Video"
 msgstr "Video"
@@ -3012,13 +3094,14 @@ msgstr "Ekran të plotë"
 msgid "Notification area not detected"
 msgstr "Nuk është zbuluar zona e njoftimit"
 
+# (pofilter) puncspacing: checks for bad spacing after punctuation
 #: ../src/gui/main.cpp:1775
 msgid ""
 "The notification area is not present in your panel, so Ekiga cannot start "
 "hidden."
 msgstr ""
-"Zona e njoftimit nuk gjendet në panelin tënd ,pra Ekiga nuk mund të niset në "
-"mënyrë të padukshme."
+"Zona e njoftimit nuk gjendet në panelin tënd , pra Ekiga nuk mund të niset "
+"në mënyrë të padukshme."
 
 #: ../src/gui/main.cpp:2088
 #, c-format
@@ -3035,11 +3118,13 @@ msgid "_Retrieve Call"
 msgstr "_Rimarrje e thirrjes"
 
 # (pofilter) accelerators: accelerator _ is missing from translation
+# (pofilter) isreview: Check if the unit has been marked review.
 #: ../src/gui/main.cpp:3186
 msgid "Resume _Audio"
 msgstr "Rikthe _zërin"
 
 # (pofilter) accelerators: accelerator _ is missing from translation
+# (pofilter) isreview: Check if the unit has been marked review.
 #: ../src/gui/main.cpp:3188
 msgid "Resume _Video"
 msgstr "Rinis _videon"
@@ -3084,6 +3169,7 @@ msgstr "Adresa URL e korrispondentit:"
 msgid "Remote Application:"
 msgstr "Programi remot:"
 
+# (pofilter) unchanged: please translate
 #. Add the window icon and title
 #: ../src/gui/main.cpp:4050 ../src/gui/main.cpp:4238
 msgid "Ekiga"
@@ -3110,6 +3196,8 @@ msgstr ""
 "Paketa të çrregullta: %.1f%%\n"
 "Jitter buffer: %d ms"
 
+# (pofilter) puncspacing: checks for bad spacing after punctuation
+# (pofilter) urls: checks that URLs are not translated
 #: ../src/gui/main.cpp:4575
 #, c-format
 msgid ""
@@ -3132,9 +3220,10 @@ msgstr ""
 "mesazheve për më shumë informacione rreth këtij problemi (http://mail.gnome."
 "org)."
 
+# (pofilter) simplecaps: checks the capitalisation of two strings isn't wildly different
 #: ../src/gui/main.cpp:4578
 msgid "Gconf key error"
-msgstr "Gabim çelësi Gconf"
+msgstr "Gabim kyçi Gconf"
 
 #: ../src/gui/main.cpp:4609 ../src/gui/main.cpp:4628
 msgid "Prints debug messages in the console (level between 1 and 6)"
@@ -3184,6 +3273,7 @@ msgstr "_Mbiemri:"
 msgid "Enter your surname"
 msgstr "Shkruaj mbiemrin tënd"
 
+# (pofilter) simplecaps: checks the capitalisation of two strings isn't wildly different
 #: ../src/gui/preferences.cpp:648
 msgid "E-_mail address:"
 msgstr "Adresa E-_mail:"
@@ -3213,6 +3303,7 @@ msgstr "Shkruaj shtetin ose qytetin tënd"
 msgid "_Apply"
 msgstr "_Zbato"
 
+# (pofilter) endpunc: checks whether punctuation at the end of the strings match
 #: ../src/gui/preferences.cpp:669
 msgid ""
 "Click here to update the users directory you are registered to with the new "
@@ -3222,6 +3313,7 @@ msgstr ""
 "regjistruar me të dhënat e reja, Emri, Mbiemri, E-mail, Komenti dhe "
 "Vendndodhja."
 
+# (pofilter) acronyms: acronyms should not be translated: GUI
 #: ../src/gui/preferences.cpp:683
 msgid "Ekiga GUI"
 msgstr "Interfaqja grafike e Ekiga"
@@ -3242,6 +3334,7 @@ msgstr "Vendos dritaret që shfaqin videon _mbi dritaret e tjera"
 msgid "Users Directory"
 msgstr "Directory e përdoruesve"
 
+# (pofilter) endpunc: checks whether punctuation at the end of the strings match
 #. Add all the fields
 #: ../src/gui/preferences.cpp:710
 msgid "Users directory:"
@@ -3261,7 +3354,8 @@ msgstr "Nëse aktiv, regjistrohesh me numratorin e zgjedhur të përdoruesve"
 
 #: ../src/gui/preferences.cpp:714
 msgid "_Publish my details in the users directory when registering"
-msgstr "_Publiko të dhënat personale në numratorin e përdoruesve gjatë regjistrimit"
+msgstr ""
+"_Publiko të dhënat personale në numratorin e përdoruesve gjatë regjistrimit"
 
 #: ../src/gui/preferences.cpp:714
 msgid ""
@@ -3294,6 +3388,8 @@ msgstr ""
 msgid "Forward calls to the given host if _no answer"
 msgstr "Transfero thirrjet drejt host-it të caktuar nëse _nuk ka përgjigje"
 
+# (pofilter) doublewords: The word 'do' is repeated
+# (pofilter) doublespacing: checks for bad double-spaces by comparing to original
 #: ../src/gui/preferences.cpp:729
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
@@ -3345,9 +3441,10 @@ msgstr "Ndodhia"
 msgid "Choose a sound"
 msgstr "Zgjidh një tingull"
 
+# (pofilter) simplecaps: checks the capitalisation of two strings isn't wildly different
 #: ../src/gui/preferences.cpp:865
 msgid "Wavefiles"
-msgstr "Files Wave"
+msgstr "File Wave"
 
 #: ../src/gui/preferences.cpp:874 ../src/gui/preferences.cpp:893
 msgid "Play"
@@ -3361,11 +3458,12 @@ msgstr "Dispozitivi alternativ prodhues"
 msgid "Alternative output device:"
 msgstr "Dispozitivi alternativ prodhues:"
 
+# (pofilter) endpunc: checks whether punctuation at the end of the strings match
 #: ../src/gui/preferences.cpp:913
 msgid "Select an alternative audio output device to use for sound events"
 msgstr ""
-"Zgjidh dispozitivin alternativ të zërit në dalje për t'u përdorur për "
-"tingujt e ndodhive."
+"Zgjidh dispozitivin alternativ të zërit në dalje për tu përdorur për tingujt "
+"e ndodhive."
 
 #: ../src/gui/preferences.cpp:931
 msgid "STUN"
@@ -3395,9 +3493,10 @@ msgstr "Metoda e kalimit NAT:"
 msgid "STUN Se_rver:"
 msgstr "Se_rveri STUN:"
 
+# (pofilter) endpunc: checks whether punctuation at the end of the strings match
 #: ../src/gui/preferences.cpp:961
 msgid "The STUN server to use for STUN Support."
-msgstr "Serveri STUN për t'u përdorur si suport STUN"
+msgstr "Serveri STUN për tu përdorur si suport STUN"
 
 #: ../src/gui/preferences.cpp:963
 msgid "Click here to update your NAT settings"
@@ -3407,6 +3506,7 @@ msgstr "Kliko këtu për të rifreskuar parametrat e NAT"
 msgid "String"
 msgstr "Stringë"
 
+# (pofilter) unchanged: please translate
 #: ../src/gui/preferences.cpp:976
 msgid "Tone"
 msgstr "Tone"
@@ -3448,6 +3548,8 @@ msgstr "Aktivo H.245 e shp_ejtë"
 msgid "Enable fast _start procedure"
 msgstr "Aktivo proçedurën e ni_sjes së shpejtë"
 
+# (pofilter) endpunc: checks whether punctuation at the end of the strings match
+# (pofilter) doublespacing: checks for bad double-spaces by comparing to original
 #: ../src/gui/preferences.cpp:1005
 msgid ""
 "Connection will be established in Fast Start mode. Fast Start is a new way "
@@ -3468,6 +3570,8 @@ msgstr "Modaliteti DTMF"
 msgid "_Send DTMF as:"
 msgstr "_Dërgo DTMF si:"
 
+# (pofilter) numbers: checks whether numbers of various forms are consistent between the two strings
+# (pofilter) brackets: translation is missing '(', ')'
 #: ../src/gui/preferences.cpp:1013
 msgid ""
 "This permits to set the mode for DTMFs sending. The values can be \"String"
@@ -3475,14 +3579,16 @@ msgid ""
 "\"). Choosing other values than \"String\" disables the Text Chat."
 msgstr ""
 "Kjo të lejon të caktoni mënyrën për dërgimin e DTMF-ve. Vlerat mund të jenë "
-"\"String\" (0), \"Ton\" (1), \"RFC2833\" (2), \"Q.931\" (e prezgjedhur është "
-"\"String\"). Kur zgjidhni vlera të ndryshme nga \"String\" atëhere "
-"komunikimi me shkrim çaktivizohet."
+"\"String\" (0), \"Ton\" (1), \"RFC2833\" (2), \"Q.931\" (e paracaktuar është "
+"\"String\"). Kur zgjidhni vlera të ndryshme nga \"String\" atëhere komunikimi me "
+"shkrim çaktivizohet."
 
+# (pofilter) endpunc: checks whether punctuation at the end of the strings match
 #: ../src/gui/preferences.cpp:1037
 msgid "_Outbound Proxy:"
 msgstr "Proxy në _dalje."
 
+# (pofilter) endpunc: checks whether punctuation at the end of the strings match
 #: ../src/gui/preferences.cpp:1050
 msgid ""
 "This permits to set the mode for DTMFs sending. The value can be \"RFC2833"
@@ -3500,8 +3606,10 @@ msgid "Audio plugin:"
 msgstr "Plugin i zërit:"
 
 #: ../src/gui/preferences.cpp:1075
-msgid "The audio plugin that will be used to detect the devices and manage them."
-msgstr "Plugin i zërit që do përdoret për të gjetur dhe organizuar dispozitivët."
+msgid ""
+"The audio plugin that will be used to detect the devices and manage them."
+msgstr ""
+"Plugin i zërit që do përdoret për të gjetur dhe organizuar dispozitivët."
 
 #: ../src/gui/preferences.cpp:1081 ../src/gui/preferences.cpp:2013
 msgid "Audio Devices"
@@ -3524,6 +3632,7 @@ msgstr "_Zbulo dispozitivët"
 msgid "Click here to refresh the devices list"
 msgstr "Kliko këtu për të rifreskuar listën e dispozitivëve"
 
+# (pofilter) unchanged: please translate
 #: ../src/gui/preferences.cpp:1126
 msgid "Normal"
 msgstr "Normal"
@@ -3620,6 +3729,7 @@ msgstr "Përshtat automatikisht _jitter buffer-in midis"
 msgid "and"
 msgstr "dhe"
 
+# (pofilter) unchanged: please translate
 #: ../src/gui/preferences.cpp:1276
 msgid "ms"
 msgstr "ms"
@@ -3638,7 +3748,8 @@ msgstr "Aktivo _zbulimin e heshtjes"
 
 #: ../src/gui/preferences.cpp:1278
 msgid "If enabled, use silence detection with the codecs supporting it."
-msgstr "Nëse aktivohet, përdoret zbulimi i heshtjes me kodekët që e suportojnë."
+msgstr ""
+"Nëse aktivohet, përdoret zbulimi i heshtjes me kodekët që e suportojnë."
 
 #: ../src/gui/preferences.cpp:1280
 msgid "Enable echo can_celation"
@@ -3683,6 +3794,7 @@ msgstr ""
 msgid "Advanced Quality Settings"
 msgstr "Parametrat e detajuar të cilësisë"
 
+# (pofilter) brackets: translation has extra '(', ')'
 #. Translators: the full sentence is Keep a minimum video quality of X %
 #: ../src/gui/preferences.cpp:1309
 msgid "Frame Rate"
@@ -3693,7 +3805,8 @@ msgid "Picture Quality"
 msgstr "Cilësia e figurave"
 
 #: ../src/gui/preferences.cpp:1309
-msgid "Choose if you want to favour speed or quality for the transmitted video."
+msgid ""
+"Choose if you want to favour speed or quality for the transmitted video."
 msgstr ""
 "Zgjidh nëse dëshiron t'i japësh përparësi shpejtësisë apo cilësisë për "
 "videon e transmetuar."
@@ -3829,4 +3942,3 @@ msgstr "Kontrollo kronollogjinë e harxhimeve"
 #: ../src/gui/tools.cpp:431
 msgid "Consult the calls history"
 msgstr "Kontrollo kronollogjinë e bisedave"
-
