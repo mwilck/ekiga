@@ -201,8 +201,12 @@ Ekiga::BankImpl<T>::save () const
 
   for (const_iterator it = begin ();
        it != end ();
-       it++)
-    accounts = g_slist_append (accounts, g_strdup ((*it).as_string ().c_str ()));
+       it++) {
+
+    std::string acct_str = (*it).as_string ();
+    if (!acct_str.empty ())
+      accounts = g_slist_append (accounts, g_strdup (acct_str.c_str ()));
+  }
 
   gm_conf_set_string_list ("/apps/ekiga/protocols/accounts_list", accounts);
 

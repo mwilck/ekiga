@@ -52,6 +52,8 @@ Opal::Account::Account (Ekiga::ServiceCore & _core,
                         const std::string & account)
 : core (_core)
 {
+  dead = false;
+
   int i = 0;
   char *pch = strtok ((char *) account.c_str (), "|");
   while (pch != NULL) {
@@ -119,6 +121,7 @@ Opal::Account::Account (Ekiga::ServiceCore & _core,
                         unsigned _timeout)
 : core (_core)
 {
+  dead = false;
   enabled = _enabled;
   aid = (const char *) PGloballyUniqueID ().AsString ();
   name = _name;
@@ -141,6 +144,9 @@ Opal::Account::~Account ()
 
 const std::string Opal::Account::as_string () const
 {
+  if (dead)
+    return "";
+
   std::stringstream str;
 
   str << enabled << "|1|" 
@@ -239,7 +245,13 @@ bool Opal::Account::is_enabled () const
     
 void Opal::Account::remove ()
 {
+  dead = true;
+
+  trigger_saving.emit ();
+
+  removed.emit ();
 }
+
 
 bool Opal::Account::populate_menu (Ekiga::MenuBuilder &builder)
 {

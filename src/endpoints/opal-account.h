@@ -104,6 +104,7 @@ public:
 private:
     void on_edit_form_submitted (Ekiga::Form &result);
 
+    bool dead;
     bool enabled;
     unsigned timeout;
     std::string aid;

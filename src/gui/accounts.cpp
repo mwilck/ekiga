@@ -290,6 +290,7 @@ account_clicked_cb (G_GNUC_UNUSED GtkWidget *w,
                               GTK_SIGNAL_FUNC (g_object_unref),
                               (gpointer) builder.menu);
           }
+          g_object_ref_sink (G_OBJECT (builder.menu));
         }
       }
 
@@ -402,6 +403,41 @@ gm_accounts_window_update_account (GtkWidget *accounts_window,
 }
 
 
+void
+gm_accounts_window_remove_account (GtkWidget *accounts_window,
+                                   Ekiga::Account & account)
+{
+  Ekiga::Account *caccount = NULL;
+
+  GtkTreeModel *model = NULL;
+
+  GtkTreeIter iter;
+
+  GmAccountsWindow *aw = NULL;
+
+  g_return_if_fail (accounts_window != NULL);
+
+  aw = gm_aw_get_aw (accounts_window);
+
+  model = gtk_tree_view_get_model (GTK_TREE_VIEW (aw->accounts_list));
+
+  if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (model), &iter)){
+
+    do {
+
+      gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
+			  COLUMN_ACCOUNT, &caccount, -1);
+      
+      if (caccount == &account) {
+
+        gtk_list_store_remove (GTK_LIST_STORE (model), &iter);
+        break;
+      }
+    } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (model), &iter));
+  }
+}
+
+
 static bool 
 visit_accounts (Ekiga::Account & account,
                 gpointer data)
@@ -425,6 +461,14 @@ on_account_updated (Ekiga::Account & account,
                     gpointer data)
 {
   gm_accounts_window_update_account (GTK_WIDGET (data), account);
+}
+
+
+static void 
+on_account_removed (Ekiga::Account & account,
+                    gpointer data)
+{
+  gm_accounts_window_remove_account (GTK_WIDGET (data), account);
 }
 
 
@@ -610,6 +654,7 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
   account_core->bank_added.connect (sigc::bind (sigc::ptr_fun (on_bank_added), window));
   account_core->account_added.connect (sigc::bind (sigc::ptr_fun (on_account_added), window));
   account_core->account_updated.connect (sigc::bind (sigc::ptr_fun (on_account_updated), window));
+  account_core->account_removed.connect (sigc::bind (sigc::ptr_fun (on_account_removed), window));
   account_core->questions.add_handler (sigc::bind (sigc::ptr_fun (on_handle_questions), (gpointer) window));
   account_core->registration_event.connect (sigc::bind (sigc::ptr_fun (on_registration_event), (gpointer) window));
   
