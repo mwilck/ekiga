@@ -72,7 +72,7 @@ void Opal::Bank::new_account ()
   request.text ("user", _("User:"), std::string ());
   request.text ("authentication_user", _("Authentication User:"), std::string ());
   request.private_text ("password", _("Password:"), std::string ());
-  request.text ("timeout", _("Timeout:"), std::string ());
+  request.text ("timeout", _("Timeout:"), "3600");
   request.boolean ("enabled", _("Enable Account"), true);
 
   request.submitted.connect (sigc::mem_fun (this, &Opal::Bank::on_new_account_form_submitted));
@@ -111,6 +111,8 @@ void Opal::Bank::on_new_account_form_submitted (Ekiga::Form &result)
       error = _("You did not supply a host to register to.");
     else if (new_user.empty ())
       error = _("You did not supply a user name for that account.");
+    else if (new_timeout < 10)
+      error = _("The timeout should have a bigger value.");
 
     if (!error.empty ()) {
       request.error (error);

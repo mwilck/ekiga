@@ -328,6 +328,8 @@ void Opal::Account::on_edit_form_submitted (Ekiga::Form &result)
       error = _("You did not supply a host to register to.");
     else if (new_user.empty ())
       error = _("You did not supply a user name for that account.");
+    else if (new_timeout < 10)
+      error = _("The timeout should have a bigger value.");
 
     if (!error.empty ()) {
       request.error (error);
