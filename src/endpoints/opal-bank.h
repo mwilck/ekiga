@@ -55,10 +55,12 @@ public:
 
     bool populate_menu (Ekiga::MenuBuilder & builder);
 
-    void new_account ();
-
 private:
-    void on_new_account_form_submitted (Ekiga::Form & form);
+    typedef enum { SIP, Ekiga, DiamondCard } Type;
+
+    void new_account (Type t);
+
+    void on_new_account_form_submitted (Ekiga::Form & form, Type t);
 
     void add (std::string name, 
               std::string host,

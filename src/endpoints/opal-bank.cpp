@@ -52,34 +52,59 @@
 
 bool Opal::Bank::populate_menu (Ekiga::MenuBuilder & builder)
 {
-  builder.add_action ("new", _("_New"),
-		      sigc::mem_fun (this, &Opal::Bank::new_account));
+  builder.add_action ("new", _("_New Ekiga.net Account"),
+		      sigc::bind (sigc::mem_fun (this, &Opal::Bank::new_account), Ekiga));
+  builder.add_action ("new", _("_New Ekiga Call Out Account"),
+		      sigc::bind (sigc::mem_fun (this, &Opal::Bank::new_account), DiamondCard));
+  builder.add_action ("new", _("_New SIP Account"),
+		      sigc::bind (sigc::mem_fun (this, &Opal::Bank::new_account), SIP));
 
   return true;
 }
 
 
-void Opal::Bank::new_account ()
+void Opal::Bank::new_account (Type t)
 {
   Ekiga::FormRequestSimple request;
 
   request.title (_("Edit account"));
-
   request.instructions (_("Please update the following fields:"));
 
-  request.text ("name", _("Name:"), std::string ());
-  request.text ("host", _("Host"), std::string ());
-  request.text ("user", _("User:"), std::string ());
-  request.text ("authentication_user", _("Authentication User:"), std::string ());
-  request.private_text ("password", _("Password:"), std::string ());
-  request.text ("timeout", _("Timeout:"), "3600");
+  switch (t) {
+
+  case Ekiga:
+    request.hidden ("name", "Ekiga.net");
+    request.hidden ("host", "ekiga.net");
+    request.text ("user", _("User:"), std::string ());
+    request.hidden ("authentication_user", std::string ());
+    request.private_text ("password", _("Password:"), std::string ());
+    request.hidden ("timeout", "3600");
+    break;
+
+  case DiamondCard:
+    request.hidden ("name", "Ekiga Call Out");
+    request.hidden ("host", "sip.diamondcard.us");
+    request.text ("user", _("User:"), std::string ());
+    request.hidden ("authentication_user", std::string ());
+    request.private_text ("password", _("Password:"), std::string ());
+    request.hidden ("timeout", "3600");
+    break;
+
+  case SIP:
+  default:
+    request.text ("name", _("Name:"), std::string ());
+    request.text ("host", _("Host"), std::string ());
+    request.text ("user", _("User:"), std::string ());
+    request.text ("authentication_user", _("Authentication User:"), std::string ());
+    request.private_text ("password", _("Password:"), std::string ());
+    request.text ("timeout", _("Timeout:"), "3600");
+    break;
+  }
   request.boolean ("enabled", _("Enable Account"), true);
 
-  request.submitted.connect (sigc::mem_fun (this, &Opal::Bank::on_new_account_form_submitted));
+  request.submitted.connect (sigc::bind (sigc::mem_fun (this, &Opal::Bank::on_new_account_form_submitted), t));
 
   if (!questions.handle_request (&request)) {
-
-    // FIXME: better error reporting
 #ifdef __GNUC__
     std::cout << "Unhandled form request in "
 	      << __PRETTY_FUNCTION__ << std::endl;
@@ -88,20 +113,21 @@ void Opal::Bank::new_account ()
 }
 
 
-void Opal::Bank::on_new_account_form_submitted (Ekiga::Form &result)
+void Opal::Bank::on_new_account_form_submitted (Ekiga::Form &result,
+                                                Type t)
 {
   try {
 
     Ekiga::FormRequestSimple request;
 
     std::string error;
-    std::string new_name = result.text ("name");
-    std::string new_host = result.text ("host");
+    std::string new_name = (t == SIP) ? result.text ("name") : result.hidden ("name");
+    std::string new_host = (t == SIP) ? result.text ("host") : result.hidden ("host");
     std::string new_user = result.text ("user");
-    std::string new_authentication_user = result.text ("authentication_user");
+    std::string new_authentication_user = (t == SIP) ? result.text ("authentication_user") : new_user;
     std::string new_password = result.private_text ("password");
     bool new_enabled = result.boolean ("enabled");
-    unsigned new_timeout = atoi (result.text ("timeout").c_str ());
+    unsigned new_timeout = atoi ((t == SIP) ? result.text ("timeout").c_str () : result.hidden ("timeout").c_str ());
 
     result.visit (request);
 
@@ -116,7 +142,7 @@ void Opal::Bank::on_new_account_form_submitted (Ekiga::Form &result)
 
     if (!error.empty ()) {
       request.error (error);
-      request.submitted.connect (sigc::mem_fun (this, &Opal::Bank::on_new_account_form_submitted));
+      request.submitted.connect (sigc::bind (sigc::mem_fun (this, &Opal::Bank::on_new_account_form_submitted) ,t));
 
       if (!questions.handle_request (&request)) {
 #ifdef __GNUC__
@@ -133,7 +159,7 @@ void Opal::Bank::on_new_account_form_submitted (Ekiga::Form &result)
 
   } catch (Ekiga::Form::not_found) {
 
-    std::cerr << "Invalid result form" << std::endl; // FIXME: do better
+    std::cerr << "Invalid result form" << std::endl;
   }
 }
 
