@@ -886,9 +886,6 @@ void CallProtocolManager::OnMessageFailed (const SIPURL & messageUrl,
 
 SIPURL CallProtocolManager::GetRegisteredPartyName (const SIPURL & host)
 {
-  //FIXME
-  //GmAccount *account = NULL;
-
   PString local_address;
   PIPSocket::Address address;
   WORD port;
@@ -911,18 +908,11 @@ SIPURL CallProtocolManager::GetRegisteredPartyName (const SIPURL & host)
      */
     if (host.GetHostAddress ().GetIpAndPort (address, port) && !manager.IsLocalAddress (address)) {
 
-      /*
-      account = gnomemeeting_get_default_account ("SIP");
-      if (account && account->enabled) {
+      Ekiga::AccountCore *account_core = dynamic_cast<Ekiga::AccountCore *> (core.get ("account-core"));
+      Ekiga::Account *account = account_core->find_account ("ekiga.net");
 
-        if (PString(account->username).Find("@") == P_MAX_INDEX)
-          url = PString (account->username) + "@" + PString (account->host);
-        else
-          url = PString (account->username);
-
-        return SIPURL ("\"" + GetDefaultDisplayName () + "\" <" + url + ">");
-      }
-          */
+      if (account)
+        return SIPURL ("\"" + GetDefaultDisplayName () + "\" <" + account->get_aor () + ">");
     }
   }
 
