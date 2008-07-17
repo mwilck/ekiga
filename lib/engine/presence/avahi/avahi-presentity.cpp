@@ -90,7 +90,7 @@ Avahi::Presentity::get_uri () const
 bool
 Avahi::Presentity::populate_menu (Ekiga::MenuBuilder &builder)
 {
-  return core.populate_presentity_menu (url, builder);
+  return core.populate_presentity_menu (*this, url, builder);
 }
 
 void

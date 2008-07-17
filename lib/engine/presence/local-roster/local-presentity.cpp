@@ -186,7 +186,7 @@ Local::Presentity::populate_menu (Ekiga::MenuBuilder &builder)
 {
   bool populated = false;
 
-  populated = presence_core->populate_presentity_menu (uri, builder);
+  populated = presence_core->populate_presentity_menu (*this, uri, builder);
 
   if (populated)
     builder.add_separator ();

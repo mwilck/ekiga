@@ -64,7 +64,8 @@ namespace SIP
 
     bool populate_menu (Ekiga::MenuBuilder& builder);
 
-    bool populate_menu (const std::string uri,
+    bool populate_menu (Ekiga::Presentity& presentity,
+			const std::string uri,
 			Ekiga::MenuBuilder &builder);
 
   private:

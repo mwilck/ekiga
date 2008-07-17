@@ -103,9 +103,5 @@ SIP::Presentity::set_status (const std::string _status)
 bool
 SIP::Presentity::populate_menu (Ekiga::MenuBuilder &builder)
 {
-  bool result = false;
-
-  result = presence_core->populate_presentity_menu (uri, builder);
-
-  return result;
+  return presence_core->populate_presentity_menu (*this, uri, builder);
 }

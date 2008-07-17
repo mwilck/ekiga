@@ -142,13 +142,14 @@ bool CallProtocolManager::populate_menu (Ekiga::Contact &contact,
 }
 
 
-bool CallProtocolManager::populate_menu (const std::string uri,
+bool CallProtocolManager::populate_menu (Ekiga::Presentity& presentity,
+					 const std::string uri,
                                          Ekiga::MenuBuilder & builder)
 {
   std::map<std::string, std::string> uris; 
   uris [""] = uri;
 
-  return menu_builder_add_actions ("", uris, builder);
+  return menu_builder_add_actions (presentity.get_name (), uris, builder);
 }
 
 

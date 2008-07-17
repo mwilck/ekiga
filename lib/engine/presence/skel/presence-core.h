@@ -61,10 +61,12 @@ namespace Ekiga
     virtual ~PresentityDecorator () {}
 
     /** Completes the menu for actions available on an uri
+     * @param The presentity for which the action could be made available.
      * @param The uri for which actions could be made available.
      * @param A MenuBuilder object to populate.
      */
-    virtual bool populate_menu (const std::string /*uri*/,
+    virtual bool populate_menu (Presentity& /*presentity*/,
+				const std::string /*uri*/,
 				MenuBuilder &/*builder*/) = 0;
   };
 
@@ -230,7 +232,8 @@ namespace Ekiga
      * @param The uri for which the decoration is needed.
      * @param The builder to populate.
      */
-    bool populate_presentity_menu (const std::string uri,
+    bool populate_presentity_menu (Presentity& presentity,
+				   const std::string uri,
 				   MenuBuilder &builder);
 
   private:

@@ -166,7 +166,8 @@ Ekiga::PresenceCore::add_presentity_decorator (PresentityDecorator &decorator)
 }
 
 bool
-Ekiga::PresenceCore::populate_presentity_menu (const std::string uri,
+Ekiga::PresenceCore::populate_presentity_menu (Presentity& presentity,
+					       const std::string uri,
 					       MenuBuilder &builder)
 {
   bool populated = false;
@@ -176,9 +177,7 @@ Ekiga::PresenceCore::populate_presentity_menu (const std::string uri,
        iter != presentity_decorators.end ();
        iter++) {
 
-    if (populated)
-      builder.add_separator ();
-    populated = (*iter)->populate_menu (uri, builder);
+    populated = (*iter)->populate_menu (presentity, uri, builder);
   }
 
   return populated;

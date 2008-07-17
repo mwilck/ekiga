@@ -86,12 +86,14 @@ SIP::Dialect::populate_menu (Ekiga::MenuBuilder& /*builder*/)
 }
 
 bool
-SIP::Dialect::populate_menu (const std::string uri,
+SIP::Dialect::populate_menu (Ekiga::Presentity& presentity,
+			     const std::string uri,
 			     Ekiga::MenuBuilder &builder)
 {
   std::string action = _("Message");
+  std::string name = presentity.get_name ();
 
-  builder.add_action ("message", action, sigc::hide_return (sigc::bind (sigc::mem_fun (this, &SIP::Dialect::open_chat_with), uri, "FIXME", true)));
+  builder.add_action ("message", action, sigc::hide_return (sigc::bind (sigc::mem_fun (this, &SIP::Dialect::open_chat_with), uri, name, true)));
 
   return true;
 }

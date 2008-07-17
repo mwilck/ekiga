@@ -82,7 +82,8 @@ namespace Opal {
       bool populate_menu (Ekiga::Contact &contact,
                           Ekiga::MenuBuilder &builder);
 
-      bool populate_menu (const std::string uri,
+      bool populate_menu (Ekiga::Presentity& presentity,
+			  const std::string uri,
                           Ekiga::MenuBuilder & builder);
 
       bool menu_builder_add_actions (const std::string & fullname,
