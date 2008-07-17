@@ -1,3 +1,4 @@
+
 /* Ekiga -- A VoIP and Video-Conferencing application
  * Copyright (C) 2000-2006 Damien Sandras
  *
@@ -38,6 +39,9 @@
 #include "config.h"
 
 #include "framework/services.h"
+#include "account-core.h"
+#include "account.h"
+
 #include "ekiga.h"
 #include "gmconf.h"
 #include "misc.h"
@@ -447,32 +451,32 @@ create_ekiga_net_page (EkigaAssistant *assistant)
 static void
 prepare_ekiga_net_page (EkigaAssistant *assistant)
 {
-/*
-  GmAccount *account = gnomemeeting_get_account ("ekiga.net");
+  Ekiga::AccountCore *account_core = dynamic_cast<Ekiga::AccountCore *> (assistant->priv->core->get ("account-core"));
+  Ekiga::Account *account = account_core->find_account ("ekiga.net");
 
-  if (account && account->username)
-    gtk_entry_set_text (GTK_ENTRY (assistant->priv->username), account->username);
-  if (account && account->password)
-    gtk_entry_set_text (GTK_ENTRY (assistant->priv->password), account->password);
+  if (account && !account->get_username ().empty ())
+    gtk_entry_set_text (GTK_ENTRY (assistant->priv->username), account->get_username ().c_str ());
+  if (account && !account->get_password ().empty ())
+    gtk_entry_set_text (GTK_ENTRY (assistant->priv->password), account->get_password ().c_str ());
 
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (assistant->priv->skip_ekiga_net),
                                 FALSE);
 
   set_current_page_complete (GTK_ASSISTANT (assistant),
-                             account && account->username && account->password);
-                             */
-  std::cout << "FIXME" << std::endl << std::flush;
+                             account && !account->get_username ().empty () && !account->get_password ().empty ());
 }
 
 static void
 apply_ekiga_net_page (EkigaAssistant *assistant)
 {
-/*
-  GmAccount *account = gnomemeeting_get_account ("ekiga.net");
-  Opal::CallManager *manager;
-  gboolean new_account = FALSE;
+  Ekiga::AccountCore *account_core = dynamic_cast<Ekiga::AccountCore *> (assistant->priv->core->get ("account-core"));
+  Ekiga::Account *account = account_core->find_account ("ekiga.net");
 
-  if (account == NULL) {
+  bool new_account = (account == NULL);
+
+  /*
+  if (new_account) {
+
     account = gm_account_new ();
     account->default_account = TRUE;
     account->account_name = g_strdup ("ekiga.net SIP Service");
