@@ -60,21 +60,21 @@ const std::string & PersonalDetails::get_long_status () const
 void PersonalDetails::set_display_name (const std::string & _display_name)
 {
   display_name = _display_name;
-  personal_details_updated.emit (*this);
+  updated.emit ();
 }
 
 
 void PersonalDetails::set_short_status (const std::string & _short_status)
 {
   short_status = _short_status;
-  personal_details_updated.emit (*this);
+  updated.emit ();
 }
 
 
 void PersonalDetails::set_long_status (const std::string & _long_status)
 {
   long_status = _long_status;
-  personal_details_updated.emit (*this);
+  updated.emit ();
 }
 
 

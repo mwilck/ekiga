@@ -48,7 +48,7 @@ Ekiga::PresencePublisher::PresencePublisher (Ekiga::ServiceCore & core)
   Ekiga::PersonalDetails *details = dynamic_cast <Ekiga::PersonalDetails *> (core.get ("personal-details"));
 
   if (details)
-    details->personal_details_updated.connect (sigc::mem_fun (this, &Ekiga::PresencePublisher::on_personal_details_updated));
+    details->updated.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresencePublisher::on_personal_details_updated), *details));
   if (account_core)
     account_core->registration_event.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresencePublisher::on_registration_event), details));
 }
