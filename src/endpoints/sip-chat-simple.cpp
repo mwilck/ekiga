@@ -37,11 +37,13 @@
 
 #include "sip-chat-simple.h"
 
-SIP::SimpleChat::SimpleChat (Ekiga::ServiceCore& core,
+#include "personal-details.h"
+
+SIP::SimpleChat::SimpleChat (Ekiga::ServiceCore& core_,
 			     std::string name,
 			     std::string uri,
 			     sigc::slot<bool, std::string> sender_)
-  : sender(sender_)
+  : core(core_), sender(sender_)
 {
   presentity = new Presentity (core, name, uri);
 }
@@ -83,13 +85,16 @@ bool
 SIP::SimpleChat::send_message (const std::string msg)
 {
   bool result;
+  Ekiga::PersonalDetails* personal = NULL;
 
+  personal
+    = dynamic_cast<Ekiga::PersonalDetails*>(core.get ("personal-details"));
   result = sender (msg);
   for (std::list<Ekiga::ChatObserver*>::iterator iter
 	 = observers.begin ();
        iter != observers.end ();
        ++iter)
-    (*iter)->message ("FIXME(Self)", msg);
+    (*iter)->message (personal->get_display_name (), msg);
   return result;
 }
 

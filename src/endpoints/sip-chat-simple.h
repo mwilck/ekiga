@@ -73,6 +73,7 @@ namespace SIP
 
   private:
 
+    Ekiga::ServiceCore& core;
     sigc::slot<bool, std::string> sender;
     std::list<Ekiga::ChatObserver*> observers;
     Presentity *presentity;
