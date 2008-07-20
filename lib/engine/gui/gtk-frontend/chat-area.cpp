@@ -39,6 +39,9 @@
 #include "gm-text-buffer-enhancer.h"
 #include "gm-text-anchored-tag.h"
 #include "gm-text-smiley.h"
+#include "gm-smileys.h"
+
+#include <string.h>
 
 class ChatAreaHelper;
 
@@ -48,6 +51,7 @@ struct _ChatAreaPrivate
   sigc::connection connection;
   ChatAreaHelper* helper;
   GmTextBufferEnhancer* enhancer;
+  GtkWidget* smiley_menu;
 
   /* we contain those, so no need to unref them */
   GtkWidget* text_view;
@@ -92,6 +96,12 @@ private:
 
 
 /* declaration of callbacks */
+
+static void on_smiley_activated (GtkMenuItem *item,
+				 gpointer data);
+
+static void on_smiley_clicked (GtkButton* button,
+			       gpointer data);
 
 static void on_bold_clicked (GtkButton* button,
 			     gpointer data);
@@ -143,6 +153,38 @@ chat_area_add_message (ChatArea* self,
 }
 
 /* implementation of callbacks */
+
+static void
+on_smiley_activated (GtkMenuItem *item,
+		     gpointer data)
+{
+  const gchar* text = NULL;
+  ChatArea* self = NULL;
+  gint position;
+
+  self = (ChatArea*)data;
+
+  /* FIXME: that will break when gtk+ will change... */
+  text = gtk_label_get_text (GTK_LABEL(GTK_BIN(GTK_MENU_ITEM (item))->child));
+
+  position = gtk_editable_get_position (GTK_EDITABLE (self->priv->entry));
+
+  gtk_editable_insert_text (GTK_EDITABLE (self->priv->entry),
+			    text, strlen (text),
+			    &position);
+}
+
+static void
+on_smiley_clicked (G_GNUC_UNUSED GtkButton* button,
+		   gpointer data)
+{
+  ChatArea* self = NULL;
+
+  self = (ChatArea*)data;
+
+  gtk_menu_popup (GTK_MENU (self->priv->smiley_menu),
+		  NULL, NULL, NULL, NULL, 0, 0);
+}
 
 static void
 on_bold_clicked (G_GNUC_UNUSED GtkButton* button,
@@ -262,6 +304,12 @@ chat_area_dispose (GObject* obj)
 
     g_object_unref (self->priv->enhancer);
     self->priv->enhancer = NULL;
+  }
+
+  if (self->priv->smiley_menu != NULL) {
+
+    g_object_unref (self->priv->smiley_menu);
+    self->priv->smiley_menu = NULL;
   }
 
   parent_class->dispose (obj);
@@ -438,6 +486,33 @@ chat_area_init (GTypeInstance* instance,
   GtkWidget* vbox = NULL;
   GtkWidget* bbox = NULL;
   GtkWidget* button = NULL;
+  const gchar** smileys = gm_get_smileys ();
+  gint smiley;
+  GdkPixbuf* pixbuf = NULL;
+  GtkWidget* image = NULL;
+  GtkWidget* smiley_item = NULL;
+
+  /* we need to build a nice */
+  self->priv->smiley_menu = gtk_menu_new ();
+  g_object_ref (self->priv->smiley_menu);
+  for (smiley = 0;
+       smileys[smiley] != NULL;
+       smiley = smiley + 2) {
+
+    smiley_item = gtk_image_menu_item_new_with_label (smileys[smiley]);
+    pixbuf = gtk_icon_theme_load_icon (gtk_icon_theme_get_default (),
+				       smileys[smiley + 1], 16,
+				       (GtkIconLookupFlags)0, NULL);
+    image = gtk_image_new_from_pixbuf (pixbuf);
+    gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (smiley_item),
+				   image);
+    gtk_widget_show_all (smiley_item);
+    gtk_menu_shell_append (GTK_MENU_SHELL (self->priv->smiley_menu),
+			   smiley_item);
+
+    g_signal_connect (G_OBJECT (smiley_item), "activate",
+		      G_CALLBACK (on_smiley_activated), self);
+  }
 
   vbox = gtk_vbox_new (FALSE, 2);
   gtk_box_pack_end (GTK_BOX (self), vbox,
@@ -448,6 +523,13 @@ chat_area_init (GTypeInstance* instance,
   gtk_box_pack_start (GTK_BOX (vbox), bbox,
 		      FALSE, TRUE, 2);
   gtk_widget_show (bbox);
+
+  button = gtk_button_new_from_stock (GTK_STOCK_INFO); // FIXME
+  g_signal_connect (G_OBJECT (button), "clicked",
+		    G_CALLBACK (on_smiley_clicked), self);
+  gtk_box_pack_start (GTK_BOX (bbox), button,
+		      FALSE, TRUE, 2);
+  gtk_widget_show (button);
 
   button = gtk_button_new_from_stock (GTK_STOCK_BOLD);
   g_signal_connect (G_OBJECT (button), "clicked",
