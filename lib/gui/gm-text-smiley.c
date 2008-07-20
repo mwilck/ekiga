@@ -37,28 +37,9 @@
 
 #include "gm-text-smiley.h"
 
-#include <string.h>
+#include "gm-smileys.h"
 
-/* here are the smileys */
-static const char* smileys[] = {
-  /* smiley, pixbux */
-  "0:-)", "face-angel",
-  "B-)", "face-cool",
-  ":'-(", "face-crying",
-  ":-[", "face-embarassed",
-  ">:-)", "face-devilish",
-  ":-*", "face-kiss",
-  ":-(|)", "face-monkey",
-  ":-|", "face-plain",
-  ":-P", "face-raspberry",
-  ":-(", "face-sad",
-  ":-)", "face-smile",
-  ":-D", "face-smile-big",
-  ":-!", "face-smirk",
-  ":-O", "face-surprise",
-  ";-)", "face-wink",
-  NULL
-};
+#include <string.h>
 
 static GObjectClass* parent_class = NULL;
 
@@ -90,6 +71,7 @@ enhancer_helper_check (G_GNUC_UNUSED GmTextBufferEnhancerHelperIFace* self,
 		       gint* start,
 		       gint* length)
 {
+  const gchar **smileys = gm_get_smileys ();
   gint smiley = 0;
   gint best_start = 0;
   gint best_smiley = -1;
@@ -132,6 +114,7 @@ enhancer_helper_enhance (G_GNUC_UNUSED GmTextBufferEnhancerHelperIFace* self,
 			 gint* start,
 			 gint length)
 {
+  const gchar **smileys = gm_get_smileys ();
   gchar* smiley = NULL;
   gint ii = 0;
   const gchar* pixbuf_name = NULL;

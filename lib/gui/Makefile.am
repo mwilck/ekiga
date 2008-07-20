@@ -3,6 +3,8 @@ SUBDIRS =
 noinst_LTLIBRARIES = libgmwidgets.la
 
 libgmwidgets_la_SOURCES =	\
+	gm-smileys.h		\
+	gm-smileys.c		\
 	gmwindow.c		\
 	gmwindow.h		\
 	gmconfwidgets.c		\
