@@ -1,7 +1,7 @@
 
 /*
  * Ekiga -- A VoIP and Video-Conferencing application
- * Copyright (C) 2000-2007 Damien Sandras
+ * Copyright (C) 2000-2008 Damien Sandras
 
  * This program is free software; you can  redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,47 +25,74 @@
 
 
 /*
- *                         menu-builder.cpp  -  description
+ *                         menu-builder-tools.cpp  -  description
  *                         ------------------------------------------
- *   begin                : written in 2007 by Julien Puydt
+ *   begin                : written in 2008 by Julien Puydt
  *   copyright            : (c) 2007 by Julien Puydt
- *   description          : implementation of the interface of a menu builder
+ *   description          : implementation of tools to build menus
  *
  */
 
-#include "menu-builder.h"
+#include "menu-builder-tools.h"
 
-Ekiga::MenuBuilder::~MenuBuilder ()
+Ekiga::ShortMenuBuilder::ShortMenuBuilder (MenuBuilder &builder_)
+  : builder(builder_), active(true)
 {
-  // nothing
+  /* nothing more */
 }
-
 
 void
-Ekiga::MenuBuilder::add_action (const std::string /*icon*/,
-				const std::string /*label*/,
-				sigc::slot<void> /*callback*/)
+Ekiga::ShortMenuBuilder::add_action (const std::string icon,
+				     const std::string label,
+				     sigc::slot<void> callback)
 {
-  // nothing
+  if (active)
+    builder.add_action (icon, label, callback);
 }
-
 
 void
-Ekiga::MenuBuilder::add_separator ()
+Ekiga::ShortMenuBuilder::add_separator ()
 {
-  // nothing
+  active = false;
 }
-
-
-bool
-Ekiga::MenuBuilder::empty () const
-{
-  return (size () == 0);
-}
-
 
 int
-Ekiga::MenuBuilder::size () const
+Ekiga::ShortMenuBuilder::size () const
 {
-  return 0;
+  return builder.size ();
+}
+
+
+
+Ekiga::TriggerMenuBuilder::TriggerMenuBuilder ()
+  : active(true)
+{
+  /* nothing more */
+}
+
+void
+Ekiga::TriggerMenuBuilder::add_action (const std::string /*icon*/,
+				       const std::string /*label*/,
+				       sigc::slot<void> callback)
+{
+  if (active) {
+
+    active = false;
+    callback ();
+  }
+}
+
+void
+Ekiga::TriggerMenuBuilder::add_separator ()
+{
+  /* nothing */
+}
+
+int
+Ekiga::TriggerMenuBuilder::size () const
+{
+  if (active)
+    return 0;
+  else
+    return 1;
 }
