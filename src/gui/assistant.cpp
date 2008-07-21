@@ -27,10 +27,10 @@
 
 
 /*
- *                         druid.cpp  -  description
- *                         --------------------------
+ *                          assistant.cpp  -  description
+ *                          -----------------------------
  *   begin                : Mon May 1 2002
- *   copyright            : (C) 2000-2006 by Damien Sandras
+ *   copyright            : (C) 2000-2008 by Damien Sandras
  *                          (C) 2008 by Steve Frécinaux
  *   description          : This file contains all the functions needed to
  *                          build the druid.
@@ -48,12 +48,13 @@
 #include "toolbox/toolbox.h"
 #include "assistant.h"
 
+#include "opal-bank.h"
 #include "videoinput-core.h"
 #include "audioinput-core.h"
 #include "audiooutput-core.h"
 #include <gdk/gdkkeysyms.h>
 
-G_DEFINE_TYPE(EkigaAssistant, ekiga_assistant, GTK_TYPE_ASSISTANT);
+G_DEFINE_TYPE (EkigaAssistant, ekiga_assistant, GTK_TYPE_ASSISTANT);
 
 struct _EkigaAssistantPrivate
 {
@@ -63,6 +64,7 @@ struct _EkigaAssistantPrivate
   GtkWidget *welcome_page;
   GtkWidget *personal_data_page;
   GtkWidget *ekiga_net_page;
+  GtkWidget *ekiga_out_page;
   GtkWidget *connection_type_page;
   GtkWidget *audio_devices_page;
   GtkWidget *video_devices_page;
@@ -73,6 +75,10 @@ struct _EkigaAssistantPrivate
   GtkWidget *username;
   GtkWidget *password;
   GtkWidget *skip_ekiga_net;
+
+  GtkWidget *dusername;
+  GtkWidget *dpassword;
+  GtkWidget *skip_ekiga_out;
 
   GtkWidget *connection_type;
 
@@ -86,16 +92,19 @@ struct _EkigaAssistantPrivate
   std::vector<sigc::connection> connections;
 };
 
+
 /* presenting the network connectoin type to the user */
 enum {
   CNX_LABEL_COLUMN,
   CNX_CODE_COLUMN
 };
 
+
 enum {
   SUMMARY_KEY_COLUMN,
   SUMMARY_VALUE_COLUMN
 };
+
 
 static GtkWidget *
 create_page (EkigaAssistant       *assistant,
@@ -242,10 +251,6 @@ void on_audiooutput_device_removed_cb (const Ekiga::AudioOutputDevice & device, 
 }
 
 
-/****************
- * Welcome page *
- ****************/
-
 static void
 create_welcome_page (EkigaAssistant *assistant)
 {
@@ -267,9 +272,6 @@ create_welcome_page (EkigaAssistant *assistant)
   assistant->priv->welcome_page = label;
 }
 
-/**********************
- * Personal data page *
- **********************/
 
 static void
 name_changed_cb (GtkEntry     *entry,
@@ -324,6 +326,7 @@ create_personal_data_page (EkigaAssistant *assistant)
   gtk_widget_show_all (vbox);
 }
 
+
 static void
 prepare_personal_data_page (EkigaAssistant *assistant)
 {
@@ -337,6 +340,7 @@ prepare_personal_data_page (EkigaAssistant *assistant)
   g_free (full_name);
 }
 
+
 static void
 apply_personal_data_page (EkigaAssistant *assistant)
 {
@@ -347,9 +351,6 @@ apply_personal_data_page (EkigaAssistant *assistant)
     gm_conf_set_string (PERSONAL_DATA_KEY "full_name", full_name);
 }
 
-/******************
- * Ekiga.net page *
- ******************/
 
 static void
 ekiga_net_button_clicked_cb (G_GNUC_UNUSED GtkWidget *button,
@@ -357,6 +358,7 @@ ekiga_net_button_clicked_cb (G_GNUC_UNUSED GtkWidget *button,
 {
   gm_open_uri ("http://www.ekiga.net");
 }
+
 
 static void
 ekiga_net_info_changed_cb (G_GNUC_UNUSED GtkWidget *w,
@@ -375,6 +377,25 @@ ekiga_net_info_changed_cb (G_GNUC_UNUSED GtkWidget *w,
   set_current_page_complete (GTK_ASSISTANT (assistant), complete);
 }
 
+
+static void
+ekiga_out_info_changed_cb (G_GNUC_UNUSED GtkWidget *w,
+                           EkigaAssistant *assistant)
+{
+  gboolean complete;
+
+  if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (assistant->priv->skip_ekiga_out)))
+    complete = TRUE;
+  else {
+    const char *username = gtk_entry_get_text (GTK_ENTRY (assistant->priv->dusername));
+    const char *password = gtk_entry_get_text (GTK_ENTRY (assistant->priv->dpassword));
+    complete = strcmp(username, "") != 0 && strcmp(password, "") != 0;
+  }
+
+  set_current_page_complete (GTK_ASSISTANT (assistant), complete);
+}
+
+
 static void
 create_ekiga_net_page (EkigaAssistant *assistant)
 {
@@ -384,7 +405,7 @@ create_ekiga_net_page (EkigaAssistant *assistant)
   GtkWidget *button;
   GtkWidget *align;
 
-  vbox = create_page (assistant, _("ekiga.net Account"), GTK_ASSISTANT_PAGE_CONTENT);
+  vbox = create_page (assistant, _("Ekiga.net Account"), GTK_ASSISTANT_PAGE_CONTENT);
 
   label = gtk_label_new (_("Please enter your username:"));
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
@@ -448,6 +469,7 @@ create_ekiga_net_page (EkigaAssistant *assistant)
   gtk_widget_show_all (vbox);
 }
 
+
 static void
 prepare_ekiga_net_page (EkigaAssistant *assistant)
 {
@@ -466,65 +488,137 @@ prepare_ekiga_net_page (EkigaAssistant *assistant)
                              account && !account->get_username ().empty () && !account->get_password ().empty ());
 }
 
+
 static void
 apply_ekiga_net_page (EkigaAssistant *assistant)
 {
   Ekiga::AccountCore *account_core = dynamic_cast<Ekiga::AccountCore *> (assistant->priv->core->get ("account-core"));
-  Ekiga::Account *account = account_core->find_account ("ekiga.net");
+
+  /* Some specific Opal stuff for the Ekiga.net account */
+  Opal::Bank *opal_bank = dynamic_cast<Opal::Bank *> (assistant->priv->core->get ("opal-account-store"));
+  Opal::Account *account = dynamic_cast<Opal::Account *> (account_core->find_account ("ekiga.net"));
 
   bool new_account = (account == NULL);
 
-  /*
-  if (new_account) {
-
-    account = gm_account_new ();
-    account->default_account = TRUE;
-    account->account_name = g_strdup ("ekiga.net SIP Service");
-    account->host = g_strdup ("ekiga.net");
-    account->domain = g_strdup ("ekiga.net");
-    account->protocol_name = g_strdup ("SIP");
-
-    new_account = TRUE;
-  }
-
-  if (account->auth_username)
-    g_free (account->auth_username);
-  if (account->username)
-    g_free (account->username);
-  if (account->password)
-    g_free (account->password);
-
-  account->username =
-    g_strdup (gtk_entry_get_text (GTK_ENTRY (assistant->priv->username)));
-  account->auth_username =
-    g_strdup (gtk_entry_get_text (GTK_ENTRY (assistant->priv->username)));
-  account->password =
-    g_strdup (gtk_entry_get_text (GTK_ENTRY (assistant->priv->password)));
-  account->enabled =
-    !gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (assistant->priv->skip_ekiga_net));
-
-  if (new_account) {
-    if (account->enabled)
-      gnomemeeting_account_add (account);
-  }
-  else {
-    gnomemeeting_account_modify (account);
-  }
-
-  //gdk_threads_leave ();
-  if (account->enabled) {
-    manager = dynamic_cast<Opal::CallManager *> (assistant->priv->core->get ("opal-component"));
-    manager->Register (account);
-  }
-  //gdk_threads_enter ();
-
-  gm_account_delete (account);
-  */
+  if (new_account)
+    opal_bank->new_account (Opal::Bank::Ekiga, 
+                            gtk_entry_get_text (GTK_ENTRY (assistant->priv->username)),
+                            gtk_entry_get_text (GTK_ENTRY (assistant->priv->password)));
+  else
+    account->set_authentication_settings (gtk_entry_get_text (GTK_ENTRY (assistant->priv->username)),
+                                          gtk_entry_get_text (GTK_ENTRY (assistant->priv->password)));
 }
 
-/************************
- * Connection type page *
- ************************/
+
+static void
+create_ekiga_out_page (EkigaAssistant *assistant)
+{
+  GtkWidget *vbox;
+  GtkWidget *label;
+  gchar *text;
+  GtkWidget *button;
+  GtkWidget *align;
+
+  vbox = create_page (assistant, _("Ekiga Call Out Account"), GTK_ASSISTANT_PAGE_CONTENT);
+
+  label = gtk_label_new (_("Please enter your username:"));
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
+
+  assistant->priv->dusername = gtk_entry_new ();
+  gtk_entry_set_activates_default (GTK_ENTRY (assistant->priv->dusername), TRUE);
+  gtk_box_pack_start (GTK_BOX (vbox), assistant->priv->dusername, FALSE, FALSE, 0);
+
+  label = gtk_label_new (_("Please enter your password:"));
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
+
+  assistant->priv->dpassword = gtk_entry_new ();
+  gtk_entry_set_activates_default (GTK_ENTRY (assistant->priv->dpassword), TRUE);
+  gtk_entry_set_visibility (GTK_ENTRY (assistant->priv->dpassword), FALSE);
+  gtk_box_pack_start (GTK_BOX (vbox), assistant->priv->dpassword, FALSE, FALSE, 0);
+
+  label = gtk_label_new (NULL);
+  text = g_strdup (_("You can make calls to regular phones and cell numbers worldwide using Ekiga. "
+                     "To enable this, you need to do three things. First create an account at the URL below. "
+                     "Then enter your account ID and PIN code. Finally, activate the registration below.\n\n"
+                     "The service will work only if your account is created using the URL in this dialog."));
+  gtk_label_set_markup (GTK_LABEL (label), text);
+  g_free (text);
+  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, TRUE, 0);
+
+  button = gtk_button_new ();
+  label = gtk_label_new (NULL);
+  text = g_strdup_printf ("<span foreground=\"blue\"><u>%s</u></span>",
+                          _("Get an Ekiga Call Out account //FIXME"));
+  gtk_label_set_markup (GTK_LABEL (label), text);
+  g_free (text);
+  gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
+  gtk_container_add (GTK_CONTAINER (button), label);
+  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (button), FALSE, FALSE, 10);
+  g_signal_connect (button, "clicked",
+                    G_CALLBACK (ekiga_net_button_clicked_cb), NULL);
+
+  assistant->priv->skip_ekiga_out = gtk_check_button_new ();
+  label = gtk_label_new (_("I do not want to sign up for the Ekiga Call Out service"));
+  gtk_container_add (GTK_CONTAINER (assistant->priv->skip_ekiga_out), label);
+  align = gtk_alignment_new (0, 1.0, 0, 0);
+  gtk_container_add (GTK_CONTAINER (align), assistant->priv->skip_ekiga_out);
+  gtk_box_pack_start (GTK_BOX (vbox), align, TRUE, TRUE, 0);
+
+  g_signal_connect (assistant->priv->username, "changed",
+                    G_CALLBACK (ekiga_out_info_changed_cb), assistant);
+  g_signal_connect (assistant->priv->password, "changed",
+                    G_CALLBACK (ekiga_out_info_changed_cb), assistant);
+  g_signal_connect (assistant->priv->skip_ekiga_out, "toggled",
+                    G_CALLBACK (ekiga_out_info_changed_cb), assistant);
+
+  assistant->priv->ekiga_out_page = vbox;
+  gtk_widget_show_all (vbox);
+}
+
+
+static void
+prepare_ekiga_out_page (EkigaAssistant *assistant)
+{
+  Ekiga::AccountCore *account_core = dynamic_cast<Ekiga::AccountCore *> (assistant->priv->core->get ("account-core"));
+  Ekiga::Account *account = account_core->find_account ("sip.diamondcard.us");
+
+  if (account && !account->get_username ().empty ())
+    gtk_entry_set_text (GTK_ENTRY (assistant->priv->dusername), account->get_username ().c_str ());
+  if (account && !account->get_password ().empty ())
+    gtk_entry_set_text (GTK_ENTRY (assistant->priv->dpassword), account->get_password ().c_str ());
+
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (assistant->priv->skip_ekiga_out),
+                                FALSE);
+
+  set_current_page_complete (GTK_ASSISTANT (assistant),
+                             account && !account->get_username ().empty () && !account->get_password ().empty ());
+}
+
+
+static void
+apply_ekiga_out_page (EkigaAssistant *assistant)
+{
+  Ekiga::AccountCore *account_core = dynamic_cast<Ekiga::AccountCore *> (assistant->priv->core->get ("account-core"));
+
+  /* Some specific Opal stuff for the Ekiga.net account */
+  Opal::Bank *opal_bank = dynamic_cast<Opal::Bank *> (assistant->priv->core->get ("opal-account-store"));
+  Opal::Account *account = dynamic_cast<Opal::Account *> (account_core->find_account ("sip.diamondcard.us"));
+
+  bool new_account = (account == NULL);
+
+  if (new_account)
+    opal_bank->new_account (Opal::Bank::DiamondCard, 
+                            gtk_entry_get_text (GTK_ENTRY (assistant->priv->dusername)),
+                            gtk_entry_get_text (GTK_ENTRY (assistant->priv->dpassword)));
+  else
+    account->set_authentication_settings (gtk_entry_get_text (GTK_ENTRY (assistant->priv->dusername)),
+                                          gtk_entry_get_text (GTK_ENTRY (assistant->priv->dpassword)));
+}
+
 
 static void
 create_connection_type_page (EkigaAssistant *assistant)
@@ -663,10 +757,6 @@ apply_connection_type_page (EkigaAssistant *assistant)
 }
 
 
-/**********************
- * Audio devices page *
- **********************/
-
 static void
 create_audio_devices_page (EkigaAssistant *assistant)
 {
@@ -743,17 +833,15 @@ create_audio_devices_page (EkigaAssistant *assistant)
   gtk_assistant_set_page_complete (GTK_ASSISTANT (assistant), vbox, TRUE);
 }
 
+
 static void
 prepare_audio_devices_page (EkigaAssistant *assistant)
 {
-  Opal::CallManager *manager;
   gchar *ringer;
   gchar *player;
   gchar *recorder;
   PStringArray devices;
   char **array;
-
-  manager = dynamic_cast<Opal::CallManager *> (assistant->priv->core->get ("opal-component"));
 
   ringer = gm_conf_get_string (SOUND_EVENTS_KEY "output_device");
   player = gm_conf_get_string (AUDIO_DEVICES_KEY "output_device");
@@ -781,6 +869,7 @@ prepare_audio_devices_page (EkigaAssistant *assistant)
   g_free (player);
   g_free (recorder);
 }
+
 
 static void
 apply_audio_devices_page (EkigaAssistant *assistant)
@@ -811,9 +900,6 @@ apply_audio_devices_page (EkigaAssistant *assistant)
 
 }
 
-/**********************
- * Video manager page *
- **********************/
 
 static void
 create_video_devices_page (EkigaAssistant *assistant)
@@ -930,7 +1016,7 @@ get_videoinput_devices_list (Ekiga::ServiceCore *core,
                                         std::vector<std::string> & device_list)
 {
   Ekiga::VideoInputCore *videoinput_core = dynamic_cast<Ekiga::VideoInputCore *> (core->get ("videoinput-core"));
-  std::vector <Ekiga::VideoInputDevice> devices;
+  std::vector<Ekiga::VideoInputDevice> devices;
 
   device_list.clear();
   videoinput_core->get_devices(devices);
@@ -942,7 +1028,7 @@ get_videoinput_devices_list (Ekiga::ServiceCore *core,
     device_list.push_back(iter->GetString());
   }
 
-  if (device_list.size() == 0) {
+  if (device_list.size () == 0) {
     device_list.push_back(_("No device found"));
   }
 }
@@ -963,9 +1049,6 @@ convert_string_list (const std::vector<std::string> & list)
   return array;
 }
 
-/****************
- * Summary page *
- ****************/
 
 static void
 create_summary_page (EkigaAssistant *assistant)
@@ -1021,7 +1104,9 @@ create_summary_page (EkigaAssistant *assistant)
   gtk_widget_show_all (vbox);
 }
 
-static void prepare_summary_page (EkigaAssistant *assistant)
+
+static void 
+prepare_summary_page (EkigaAssistant *assistant)
 {
   GtkListStore *model = assistant->priv->summary_model;
   GtkTreeIter iter;
@@ -1033,15 +1118,8 @@ static void prepare_summary_page (EkigaAssistant *assistant)
   /* The full name */
   gtk_list_store_append (model, &iter);
   gtk_list_store_set (model, &iter,
-                      SUMMARY_KEY_COLUMN, "Full name",
+                      SUMMARY_KEY_COLUMN, _("Full Name"),
                       SUMMARY_VALUE_COLUMN, gtk_entry_get_text (GTK_ENTRY (assistant->priv->name)),
-                      -1);
-
-  /* The user name */
-  gtk_list_store_append (model, &iter);
-  gtk_list_store_set (model, &iter,
-                      SUMMARY_KEY_COLUMN, "Username",
-                      SUMMARY_VALUE_COLUMN, gtk_entry_get_text (GTK_ENTRY (assistant->priv->username)),
                       -1);
 
   /* The connection type */
@@ -1051,7 +1129,7 @@ static void prepare_summary_page (EkigaAssistant *assistant)
 
     gtk_list_store_append (model, &iter);
     gtk_list_store_set (model, &iter,
-                        SUMMARY_KEY_COLUMN, "Connection type",
+                        SUMMARY_KEY_COLUMN, _("Connection Type"),
                         SUMMARY_VALUE_COLUMN, value,
                         -1);
     g_free (value);
@@ -1061,7 +1139,7 @@ static void prepare_summary_page (EkigaAssistant *assistant)
   gtk_list_store_append (model, &iter);
   value = gtk_combo_box_get_active_text (GTK_COMBO_BOX (assistant->priv->audio_ringer));
   gtk_list_store_set (model, &iter,
-                      SUMMARY_KEY_COLUMN, "Audio ringing device",
+                      SUMMARY_KEY_COLUMN, _("Audio Ringing Device"),
                       SUMMARY_VALUE_COLUMN, value,
                       -1);
   g_free (value);
@@ -1070,7 +1148,7 @@ static void prepare_summary_page (EkigaAssistant *assistant)
   gtk_list_store_append (model, &iter);
   value = gtk_combo_box_get_active_text (GTK_COMBO_BOX (assistant->priv->audio_player));
   gtk_list_store_set (model, &iter,
-                      SUMMARY_KEY_COLUMN, "Audio output device",
+                      SUMMARY_KEY_COLUMN, _("Audio Output Device"),
                       SUMMARY_VALUE_COLUMN, value,
                       -1);
   g_free (value);
@@ -1079,7 +1157,7 @@ static void prepare_summary_page (EkigaAssistant *assistant)
   gtk_list_store_append (model, &iter);
   value = gtk_combo_box_get_active_text (GTK_COMBO_BOX (assistant->priv->audio_recorder));
   gtk_list_store_set (model, &iter,
-                      SUMMARY_KEY_COLUMN, "Audio input device",
+                      SUMMARY_KEY_COLUMN, _("Audio Input Device"),
                       SUMMARY_VALUE_COLUMN, value,
                       -1);
   g_free (value);
@@ -1088,33 +1166,37 @@ static void prepare_summary_page (EkigaAssistant *assistant)
   gtk_list_store_append (model, &iter);
   value = gtk_combo_box_get_active_text (GTK_COMBO_BOX (assistant->priv->video_device));
   gtk_list_store_set (model, &iter,
-                      SUMMARY_KEY_COLUMN, "Video input device",
+                      SUMMARY_KEY_COLUMN, _("Video Input Device"),
                       SUMMARY_VALUE_COLUMN, value,
                       -1);
   g_free (value);
 
-  /* The ekiga.org account */
+  /* The ekiga.net account */
   gtk_list_store_append (model, &iter);
-  if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (assistant->priv->skip_ekiga_net))) {
+  if (!gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (assistant->priv->skip_ekiga_net))) {
     value = g_strdup_printf ("sip:%s@ekiga.net",
                              gtk_entry_get_text (GTK_ENTRY (assistant->priv->username)));
     gtk_list_store_set (model, &iter,
-                        SUMMARY_KEY_COLUMN, "SIP URI",
+                        SUMMARY_KEY_COLUMN, _("SIP URI"),
                         SUMMARY_VALUE_COLUMN, value,
                         -1);
     g_free (value);
   }
   else {
     gtk_list_store_set (model, &iter,
-                        SUMMARY_KEY_COLUMN, "SIP URI",
+                        SUMMARY_KEY_COLUMN, _("SIP URI"),
                         SUMMARY_VALUE_COLUMN, "None",
                         -1);
   }
+
+  /* Ekiga Call Out */
+  gtk_list_store_append (model, &iter);
+  gtk_list_store_set (model, &iter,
+                      SUMMARY_KEY_COLUMN, _("Ekiga Call Out"),
+                      SUMMARY_VALUE_COLUMN, gtk_entry_get_text (GTK_ENTRY (assistant->priv->dusername)),
+                      -1);
 }
 
-/****************
- * Window stuff *
- ****************/
 
 static void
 ekiga_assistant_init (EkigaAssistant *assistant)
@@ -1133,6 +1215,7 @@ ekiga_assistant_init (EkigaAssistant *assistant)
   create_welcome_page (assistant);
   create_personal_data_page (assistant);
   create_ekiga_net_page (assistant);
+  create_ekiga_out_page (assistant);
   create_connection_type_page (assistant);
   create_audio_devices_page (assistant);
   create_video_devices_page (assistant);
@@ -1141,6 +1224,7 @@ ekiga_assistant_init (EkigaAssistant *assistant)
   /* FIXME: what the hell is it needed for? */
   g_object_set_data (G_OBJECT (assistant), "window_name", (gpointer) "assistant");
 }
+
 
 static void
 ekiga_assistant_prepare (GtkAssistant *gtkassistant,
@@ -1166,6 +1250,11 @@ ekiga_assistant_prepare (GtkAssistant *gtkassistant,
     return;
   }
 
+  if (page == assistant->priv->ekiga_out_page) {
+    prepare_ekiga_out_page (assistant);
+    return;
+  }
+
   if (page == assistant->priv->connection_type_page) {
     prepare_connection_type_page (assistant);
     return;
@@ -1187,12 +1276,11 @@ ekiga_assistant_prepare (GtkAssistant *gtkassistant,
   }
 }
 
+
 static void
 ekiga_assistant_apply (GtkAssistant *gtkassistant)
 {
   EkigaAssistant *assistant = EKIGA_ASSISTANT (gtkassistant);
-
-  Opal::CallManager *manager;
 
   GtkWidget *main_window;
 
@@ -1202,11 +1290,11 @@ ekiga_assistant_apply (GtkAssistant *gtkassistant)
 
   apply_personal_data_page (assistant);
   apply_ekiga_net_page (assistant);
+  apply_ekiga_out_page (assistant);
   apply_connection_type_page (assistant);
   apply_audio_devices_page (assistant);
   apply_video_devices_page (assistant);
 
-  manager = dynamic_cast<Opal::CallManager *> (assistant->priv->core->get ("opal-component"));
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
 
   /* Hide the druid and show the main Ekiga window */
@@ -1217,6 +1305,7 @@ ekiga_assistant_apply (GtkAssistant *gtkassistant)
   /* Update the version number */
   gm_conf_set_int (GENERAL_KEY "version", schema_version);
 }
+
 
 static void
 ekiga_assistant_cancel (GtkAssistant *gtkassistant)
@@ -1230,6 +1319,7 @@ ekiga_assistant_cancel (GtkAssistant *gtkassistant)
   gnomemeeting_window_show (main_window);
 }
 
+
 static void
 ekiga_assistant_finalize (GObject *object)
 {
@@ -1239,6 +1329,7 @@ ekiga_assistant_finalize (GObject *object)
 
   G_OBJECT_CLASS (ekiga_assistant_parent_class)->finalize (object);
 }
+
 
 static void
 ekiga_assistant_class_init (EkigaAssistantClass *klass)
@@ -1255,6 +1346,7 @@ ekiga_assistant_class_init (EkigaAssistantClass *klass)
   g_type_class_add_private (klass, sizeof (EkigaAssistantPrivate));
 }
 
+
 static gboolean
 ekiga_assistant_key_press_cb (GtkWidget *widget,
 			      GdkEventKey *event,
@@ -1268,6 +1360,7 @@ ekiga_assistant_key_press_cb (GtkWidget *widget,
 
   return FALSE; /* propagate what we don't treat */
 }
+
 
 GtkWidget *
 ekiga_assistant_new (Ekiga::ServiceCore *core)
@@ -1305,5 +1398,3 @@ ekiga_assistant_new (Ekiga::ServiceCore *core)
 
   return GTK_WIDGET (assistant);
 }
-
-/* ex:set ts=2 sw=2 et: */

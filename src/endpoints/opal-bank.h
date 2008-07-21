@@ -40,6 +40,7 @@
 
 #include "bank-impl.h"
 #include "opal-account.h"
+#include "services.h"
 
 namespace Opal
 {
@@ -48,18 +49,28 @@ namespace Opal
    * @internal
    * @{
    */
-  class Bank: public Ekiga::BankImpl<Account> 
+  class Bank: 
+      public Ekiga::BankImpl<Account>,
+      public Ekiga::Service
   {
 public:
     Bank (Ekiga::ServiceCore &_core) : Ekiga::BankImpl<Opal::Account> (_core) {}
 
     bool populate_menu (Ekiga::MenuBuilder & builder);
 
-private:
+    const std::string get_name () const
+    { return "opal-account-store"; }
+
+    const std::string get_description () const
+    { return "\tStores the call history"; }
+
     typedef enum { SIP, Ekiga, DiamondCard } Type;
 
-    void new_account (Type t);
+    void new_account (Type t,
+                      std::string username = "",
+                      std::string password = "");
 
+private:
     void on_new_account_form_submitted (Ekiga::Form & form, Type t);
 
     void add (std::string name, 

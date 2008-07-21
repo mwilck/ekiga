@@ -67,7 +67,7 @@ on_call_manager_ready_cb (Ekiga::ServiceCore *core)
 
   Opal::Bank *bank = new Bank (*core);
   account_core->add_bank (*bank);
-  // FIXME Service ?
+  core->add (*bank);
 }
 
 bool

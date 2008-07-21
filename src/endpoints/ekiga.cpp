@@ -239,6 +239,7 @@ GnomeMeeting::GetAssistantWindow (bool create)
 {
   if (!assistant_window && create)
     assistant_window = ekiga_assistant_new (service_core);
+
   return assistant_window;
 }
 

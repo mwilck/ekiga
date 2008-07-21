@@ -213,6 +213,17 @@ unsigned Opal::Account::get_timeout () const
 }
 
 
+void Opal::Account::set_authentication_settings (const std::string & _username,
+                                                 const std::string & _password)
+{
+  username = _username;
+  auth_username = _username;
+  password = _password;
+
+  enable ();
+}
+
+
 void Opal::Account::enable ()
 {
   enabled = true;

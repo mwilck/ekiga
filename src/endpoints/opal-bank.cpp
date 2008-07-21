@@ -53,17 +53,19 @@
 bool Opal::Bank::populate_menu (Ekiga::MenuBuilder & builder)
 {
   builder.add_action ("new", _("_New Ekiga.net Account"),
-		      sigc::bind (sigc::mem_fun (this, &Opal::Bank::new_account), Ekiga));
+		      sigc::bind (sigc::mem_fun (this, &Opal::Bank::new_account), Ekiga, "", ""));
   builder.add_action ("new", _("_New Ekiga Call Out Account"),
-		      sigc::bind (sigc::mem_fun (this, &Opal::Bank::new_account), DiamondCard));
+		      sigc::bind (sigc::mem_fun (this, &Opal::Bank::new_account), DiamondCard, "", ""));
   builder.add_action ("new", _("_New SIP Account"),
-		      sigc::bind (sigc::mem_fun (this, &Opal::Bank::new_account), SIP));
+		      sigc::bind (sigc::mem_fun (this, &Opal::Bank::new_account), SIP, "", ""));
 
   return true;
 }
 
 
-void Opal::Bank::new_account (Type t)
+void Opal::Bank::new_account (Type t,
+                              std::string username,
+                              std::string password)
 {
   Ekiga::FormRequestSimple request;
 
@@ -75,18 +77,18 @@ void Opal::Bank::new_account (Type t)
   case Ekiga:
     request.hidden ("name", "Ekiga.net");
     request.hidden ("host", "ekiga.net");
-    request.text ("user", _("User:"), std::string ());
-    request.hidden ("authentication_user", std::string ());
-    request.private_text ("password", _("Password:"), std::string ());
+    request.text ("user", _("User:"), username);
+    request.hidden ("authentication_user", username);
+    request.private_text ("password", _("Password:"), password);
     request.hidden ("timeout", "3600");
     break;
 
   case DiamondCard:
     request.hidden ("name", "Ekiga Call Out");
     request.hidden ("host", "sip.diamondcard.us");
-    request.text ("user", _("User:"), std::string ());
-    request.hidden ("authentication_user", std::string ());
-    request.private_text ("password", _("Password:"), std::string ());
+    request.text ("user", _("User:"), username);
+    request.hidden ("authentication_user", username);
+    request.private_text ("password", _("Password:"), password);
     request.hidden ("timeout", "3600");
     break;
 
@@ -94,9 +96,9 @@ void Opal::Bank::new_account (Type t)
   default:
     request.text ("name", _("Name:"), std::string ());
     request.text ("host", _("Host"), std::string ());
-    request.text ("user", _("User:"), std::string ());
+    request.text ("user", _("User:"), username);
     request.text ("authentication_user", _("Authentication User:"), std::string ());
-    request.private_text ("password", _("Password:"), std::string ());
+    request.private_text ("password", _("Password:"), password);
     request.text ("timeout", _("Timeout:"), "3600");
     break;
   }
@@ -104,12 +106,15 @@ void Opal::Bank::new_account (Type t)
 
   request.submitted.connect (sigc::bind (sigc::mem_fun (this, &Opal::Bank::on_new_account_form_submitted), t));
 
-  if (!questions.handle_request (&request)) {
+  if (!username.empty () && !password.empty ())
+    request.submitted.emit (request);
+  else
+    if (!questions.handle_request (&request)) {
 #ifdef __GNUC__
-    std::cout << "Unhandled form request in "
-	      << __PRETTY_FUNCTION__ << std::endl;
+      std::cout << "Unhandled form request in "
+        << __PRETTY_FUNCTION__ << std::endl;
 #endif
-  }
+    }
 }
 
 

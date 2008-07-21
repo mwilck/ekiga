@@ -1,5 +1,6 @@
+
 /* Ekiga -- A VoIP and Video-Conferencing application
- * Copyright (C) 2000-2006 Damien Sandras
+ * Copyright (C) 2000-2008 Damien Sandras
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,10 +27,10 @@
 
 
 /*
- *                         druid.h  -  description
- *                         -----------------------
+ *                          assistant.h  -  description
+ *                          ---------------------------
  *   begin                : Mon May 1 2002
- *   copyright            : (C) 2000-2006 by Damien Sandras
+ *   copyright            : (C) 2000-2008 by Damien Sandras
  *                          (C) 2008 by Steve Frécinaux
  *   description          : This file contains all the functions needed to
  *                          build the assistant.
@@ -70,9 +71,6 @@ typedef GtkAssistantClass EkigaAssistantClass;
 GType        ekiga_assistant_get_type   ();
 GtkWidget   *ekiga_assistant_new        (Ekiga::ServiceCore *core);
 
-
 G_END_DECLS
 
 #endif /* __EKIGA_ASSISTANT_H__ */
-
-/* ex:set ts=2 sw=2 et: */

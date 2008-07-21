@@ -83,6 +83,9 @@ public:
 
     const std::string get_password () const;
 
+    void set_authentication_settings (const std::string & username,
+                                      const std::string & password);
+
     unsigned get_timeout () const;
 
     void enable ();
