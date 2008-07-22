@@ -1516,7 +1516,6 @@ gm_mw_init_menu (GtkWidget *main_window)
   
   GtkWidget *addressbook_window = NULL;
   GtkWidget *accounts_window = NULL;
-  GtkWidget *pc2phone_window = NULL;
 
   bool show_call_panel = false;
   
@@ -1530,7 +1529,6 @@ gm_mw_init_menu (GtkWidget *main_window)
   gtk_frontend = dynamic_cast<GtkFrontend *>(services->get ("gtk-frontend"));
   addressbook_window = GTK_WIDGET (gtk_frontend->get_addressbook_window ()); 
   accounts_window = GnomeMeeting::Process ()->GetAccountsWindow ();
-  pc2phone_window = GnomeMeeting::Process ()->GetPC2PhoneWindow ();
 
   mw->main_menu = gtk_menu_bar_new ();
 
@@ -1695,14 +1693,6 @@ gm_mw_init_menu (GtkWidget *main_window)
 			   GTK_STOCK_FIND, 0,
 			   GTK_SIGNAL_FUNC (show_widget_cb),
 			   (gpointer) addressbook_window, TRUE),
-      
-      GTK_MENU_SEPARATOR,
-
-      GTK_MENU_ENTRY("pc-to-phone", _("PC-To-Phone Account"),
-		     _("Manage your PC-To-Phone account"),
-		     NULL, 0, 
-		     GTK_SIGNAL_FUNC (show_window_cb),
-		     (gpointer) pc2phone_window, TRUE),
       
       GTK_MENU_NEW(_("_Help")),
 

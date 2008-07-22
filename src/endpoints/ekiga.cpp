@@ -43,7 +43,6 @@
 #include "preferences.h"
 #include "chat-window.h"
 #include "assistant.h"
-#include "tools.h"
 #include "statusicon.h"
 #include "accounts.h"
 #include "main.h"
@@ -93,10 +92,6 @@ GnomeMeeting::Exit ()
   if (prefs_window)
     gtk_widget_destroy (prefs_window);
   prefs_window = NULL;
-  
-  if (pc2phone_window)
-    gtk_widget_destroy (pc2phone_window);
-  pc2phone_window = NULL;
   
   if (main_window)
     gtk_widget_destroy (main_window);
@@ -245,13 +240,6 @@ GnomeMeeting::GetAssistantWindow (bool create)
 
 
 GtkWidget *
-GnomeMeeting::GetPC2PhoneWindow ()
-{
-  return pc2phone_window;
-}
-
-
-GtkWidget *
 GnomeMeeting::GetAccountsWindow ()
 {
   return accounts_window;
@@ -276,7 +264,6 @@ void GnomeMeeting::BuildGUI ()
   
   /* Build the GUI */
   gtk_window_set_default_icon_name (GM_ICON_LOGO);
-  pc2phone_window = gm_pc2phone_window_new (*service_core);
   accounts_window = gm_accounts_window_new (*service_core);
 
   main_window = gm_main_window_new (*service_core);

@@ -55,7 +55,6 @@
 #include "accounts.h"
 #include "main.h"
 #include "misc.h"
-#include "tools.h"
 
 #include "gmdialog.h"
 #include "gmstockicons.h"

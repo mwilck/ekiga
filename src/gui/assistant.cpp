@@ -92,14 +92,13 @@ struct _EkigaAssistantPrivate
   std::vector<sigc::connection> connections;
 };
 
-
 /* presenting the network connectoin type to the user */
 enum {
   CNX_LABEL_COLUMN,
   CNX_CODE_COLUMN
 };
 
-
+/**/
 enum {
   SUMMARY_KEY_COLUMN,
   SUMMARY_VALUE_COLUMN
@@ -113,7 +112,7 @@ create_page (EkigaAssistant       *assistant,
 {
   GtkWidget *vbox;
 
-  vbox = gtk_vbox_new (FALSE, 6);
+  vbox = gtk_vbox_new (FALSE, 2);
 
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 6);
 
@@ -361,6 +360,102 @@ ekiga_net_button_clicked_cb (G_GNUC_UNUSED GtkWidget *button,
 
 
 static void
+ekiga_out_new_clicked_cb (G_GNUC_UNUSED GtkWidget *widget,
+                          gpointer data)
+{
+  EkigaAssistant *assistant = NULL;
+
+  const char *account = NULL;
+  const char *password = NULL;
+
+  assistant = EKIGA_ASSISTANT (data);
+
+  account = gtk_entry_get_text (GTK_ENTRY (assistant->priv->dusername));
+  password = gtk_entry_get_text (GTK_ENTRY (assistant->priv->dpassword));
+
+  if (account == NULL || password == NULL)
+    return; /* no account configured yet */
+  
+  gm_open_uri ("https://www.diamondcard.us/exec/voip-login?act=sgn&spo=ekiga");
+}
+
+
+static void
+ekiga_out_recharge_clicked_cb (G_GNUC_UNUSED GtkWidget *widget,
+                               gpointer data)
+{
+  EkigaAssistant *assistant = NULL;
+
+  const char *account = NULL;
+  const char *password = NULL;
+
+  gchar *url = NULL;
+
+  assistant = EKIGA_ASSISTANT (data);
+
+  account = gtk_entry_get_text (GTK_ENTRY (assistant->priv->dusername));
+  password = gtk_entry_get_text (GTK_ENTRY (assistant->priv->dpassword));
+
+  if (account == NULL || password == NULL)
+    return; /* no account configured yet */
+  
+  url = g_strdup_printf ("https://www.diamondcard.us/exec/voip-login?accId=%s&pinCode=%s&act=rch&spo=ekiga", account, password);
+  gm_open_uri (url);
+  g_free (url);
+}
+
+
+static void
+ekiga_out_history_balance_clicked_cb (G_GNUC_UNUSED GtkWidget *widget,
+                                      gpointer data)
+{
+  EkigaAssistant *assistant = NULL;
+
+  const char *account = NULL;
+  const char *password = NULL;
+
+  gchar *url = NULL;
+
+  assistant = EKIGA_ASSISTANT (data);
+
+  account = gtk_entry_get_text (GTK_ENTRY (assistant->priv->dusername));
+  password = gtk_entry_get_text (GTK_ENTRY (assistant->priv->dpassword));
+
+  if (account == NULL || password == NULL)
+    return; /* no account configured yet */
+  
+  url = g_strdup_printf ("https://www.diamondcard.us/exec/voip-login?accId=%s&pinCode=%s&act=bh&spo=ekiga", account, password);
+  gm_open_uri (url);
+  g_free (url);
+}
+
+
+static void
+ekiga_out_history_calls_clicked_cb (G_GNUC_UNUSED GtkWidget *widget,
+                                    gpointer data)
+{
+  EkigaAssistant *assistant = NULL;
+
+  const char *account = NULL;
+  const char *password = NULL;
+
+  gchar *url = NULL;
+
+  assistant = EKIGA_ASSISTANT (data);
+
+  account = gtk_entry_get_text (GTK_ENTRY (assistant->priv->dusername));
+  password = gtk_entry_get_text (GTK_ENTRY (assistant->priv->dpassword));
+
+  if (account == NULL || password == NULL)
+    return; /* no account configured yet */
+  
+  url = g_strdup_printf ("https://www.diamondcard.us/exec/voip-login?accId=%s&pinCode=%s&act=ch&spo=ekiga", account, password);
+  gm_open_uri (url);
+  g_free (url);
+}
+
+
+static void
 ekiga_net_info_changed_cb (G_GNUC_UNUSED GtkWidget *w,
                            EkigaAssistant *assistant)
 {
@@ -539,10 +634,11 @@ create_ekiga_out_page (EkigaAssistant *assistant)
   gtk_box_pack_start (GTK_BOX (vbox), assistant->priv->dpassword, FALSE, FALSE, 0);
 
   label = gtk_label_new (NULL);
-  text = g_strdup (_("You can make calls to regular phones and cell numbers worldwide using Ekiga. "
-                     "To enable this, you need to do three things. First create an account at the URL below. "
-                     "Then enter your account ID and PIN code. Finally, activate the registration below.\n\n"
-                     "The service will work only if your account is created using the URL in this dialog."));
+  text = g_strdup_printf ("<i>%s</i>",
+                          _("You can make calls to regular phones and cell numbers worldwide using Ekiga. "
+                            "To enable this, you need to do three things. First create an account at the URL below. "
+                            "Then enter your account ID and PIN code. Finally, activate the registration below.\n\n"
+                            "The service will work only if your account is created using the URL in this dialog."));
   gtk_label_set_markup (GTK_LABEL (label), text);
   g_free (text);
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
@@ -552,14 +648,50 @@ create_ekiga_out_page (EkigaAssistant *assistant)
   button = gtk_button_new ();
   label = gtk_label_new (NULL);
   text = g_strdup_printf ("<span foreground=\"blue\"><u>%s</u></span>",
-                          _("Get an Ekiga Call Out account //FIXME"));
+                          _("Get an Ekiga Call Out account"));
   gtk_label_set_markup (GTK_LABEL (label), text);
   g_free (text);
   gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
   gtk_container_add (GTK_CONTAINER (button), label);
-  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (button), FALSE, FALSE, 10);
+  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (button), FALSE, FALSE, 0);
   g_signal_connect (button, "clicked",
-                    G_CALLBACK (ekiga_net_button_clicked_cb), NULL);
+                    G_CALLBACK (ekiga_out_new_clicked_cb), assistant);
+
+  button = gtk_button_new ();
+  label = gtk_label_new (NULL);
+  text = g_strdup_printf ("<span foreground=\"blue\"><u>%s</u></span>",
+			 _("Recharge the account"));
+  gtk_label_set_markup (GTK_LABEL (label), text);
+  g_free (text);
+  gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
+  gtk_container_add (GTK_CONTAINER (button), label);
+  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (button), FALSE, FALSE, 0);
+  g_signal_connect (button, "clicked",
+                    G_CALLBACK (ekiga_out_recharge_clicked_cb), assistant);
+
+  button = gtk_button_new ();
+  label = gtk_label_new (NULL);
+  text = g_strdup_printf ("<span foreground=\"blue\"><u>%s</u></span>",
+			 _("Consult the balance history"));
+  gtk_label_set_markup (GTK_LABEL (label), text);
+  g_free (text);
+  gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
+  gtk_container_add (GTK_CONTAINER (button), label);
+  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (button), FALSE, FALSE, 0);
+  g_signal_connect (button, "clicked",
+                    G_CALLBACK (ekiga_out_history_balance_clicked_cb), assistant);
+
+  button = gtk_button_new ();
+  label = gtk_label_new (NULL);
+  text = g_strdup_printf ("<span foreground=\"blue\"><u>%s</u></span>",
+			 _("Consult the calls history"));
+  gtk_label_set_markup (GTK_LABEL (label), text);
+  g_free (text);
+  gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
+  gtk_container_add (GTK_CONTAINER (button), label);
+  gtk_box_pack_start (GTK_BOX (vbox), GTK_WIDGET (button), FALSE, FALSE, 0);
+  g_signal_connect (button, "clicked",
+                    G_CALLBACK (ekiga_out_history_calls_clicked_cb), assistant);
 
   assistant->priv->skip_ekiga_out = gtk_check_button_new ();
   label = gtk_label_new (_("I do not want to sign up for the Ekiga Call Out service"));

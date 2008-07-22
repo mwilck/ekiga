@@ -123,13 +123,6 @@ class GnomeMeeting : public PProcess
    * PRE          :  /
    */
   GtkWidget *GetAssistantWindow (bool create = true);
-
-  
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Returns a pointer to the PC-2-Phone window.
-   * PRE          :  /
-   */
-  GtkWidget *GetPC2PhoneWindow ();
   
   
   /* DESCRIPTION  :  /
@@ -200,7 +193,6 @@ class GnomeMeeting : public PProcess
   GtkWidget *history_window;
   GtkWidget *assistant_window;
   GtkWidget *prefs_window;
-  GtkWidget *pc2phone_window;
   GtkWidget *accounts_window;
   StatusIcon *statusicon;
 

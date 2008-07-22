@@ -71,8 +71,6 @@ ekiga_SOURCES +=			\
 	gui/misc.cpp			\
 	gui/preferences.h		\
 	gui/preferences.cpp		\
-	gui/tools.h			\
-	gui/tools.cpp			\
 	gui/statusicon.h		\
 	gui/statusicon.cpp		\
 	gui/statusmenu.h		\
