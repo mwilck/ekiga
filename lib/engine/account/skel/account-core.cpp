@@ -92,6 +92,16 @@ void Ekiga::AccountCore::add_bank (Bank &bank)
 }
 
 
+void Ekiga::AccountCore::remove_bank (Bank &bank)
+{
+  banks.erase (&bank);
+
+  bank_removed.emit (bank);
+
+  bank.questions.add_handler (questions.make_slot ());
+}
+
+
 void Ekiga::AccountCore::visit_banks (sigc::slot<bool, Bank &> visitor)
 {
   bool go_on = true;

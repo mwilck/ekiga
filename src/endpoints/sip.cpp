@@ -164,6 +164,7 @@ CallProtocolManager::~CallProtocolManager ()
   delete dialect;
 }
 
+
 bool CallProtocolManager::populate_menu (Ekiga::Contact &contact,
                                          Ekiga::MenuBuilder &builder)
 {
@@ -481,6 +482,22 @@ bool CallProtocolManager::unsubscribe (const Opal::Account & account)
   new subscriber (account, *this);
   accounts.erase (account.get_aor ());
   return true;
+}
+
+
+void CallProtocolManager::ShutDown ()
+{
+  listeners.RemoveAll ();
+
+  for (PSafePtr<SIPTransaction> transaction(transactions, PSafeReference);      transaction != NULL; ++transaction)
+    transaction->WaitForCompletion();
+
+  while (activeSIPHandlers.GetSize() > 0) {
+    PSafePtr<SIPHandler> handler = activeSIPHandlers;
+    activeSIPHandlers.Remove(handler);
+  }
+
+  SIPEndPoint::ShutDown ();
 }
 
 
@@ -908,8 +925,7 @@ SIPURL CallProtocolManager::GetRegisteredPartyName (const SIPURL & host)
      */
     if (host.GetHostAddress ().GetIpAndPort (address, port) && !manager.IsLocalAddress (address)) {
 
-      Ekiga::AccountCore *account_core = dynamic_cast<Ekiga::AccountCore *> (core.get ("account-core"));
-      Ekiga::Account *account = account_core->find_account ("ekiga.net");
+      Ekiga::Account *account = account_core.find_account ("ekiga.net");
 
       if (account)
         return SIPURL ("\"" + GetDefaultDisplayName () + "\" <" + account->get_aor () + ">");

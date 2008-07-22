@@ -64,10 +64,9 @@ void
 on_call_manager_ready_cb (Ekiga::ServiceCore *core)
 {
   Ekiga::AccountCore *account_core = dynamic_cast<Ekiga::AccountCore *> (core->get ("account-core"));
-
   Opal::Bank *bank = new Bank (*core);
+
   account_core->add_bank (*bank);
-  core->add (*bank);
 }
 
 bool

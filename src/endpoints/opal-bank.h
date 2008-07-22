@@ -56,6 +56,8 @@ namespace Opal
 public:
     Bank (Ekiga::ServiceCore &_core) : Ekiga::BankImpl<Opal::Account> (_core) {}
 
+    virtual ~Bank () { }
+
     bool populate_menu (Ekiga::MenuBuilder & builder);
 
     const std::string get_name () const

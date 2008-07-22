@@ -98,6 +98,11 @@ namespace Ekiga
      */
     void add_bank (Bank &bank);
 
+    /** Remove a bank to the AccountCore service.
+     * @param The bank to be removed.
+     */
+    void remove_bank (Bank &bank);
+
 
     /** Triggers a callback for all Ekiga::Bank banks of the
      * AccountCore service.
@@ -110,6 +115,10 @@ namespace Ekiga
     /** This signal is emitted when a bank has been added to the core
      */
     sigc::signal<void, Bank &> bank_added;
+
+    /** This signal is emitted when a bank has been removed from the core
+     */
+    sigc::signal<void, Bank &> bank_removed;
 
     /** This signal is emitted when a account has been added to one of
      * the banks

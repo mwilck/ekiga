@@ -55,6 +55,10 @@ namespace Ekiga
   {
   public:
 
+
+    virtual ~Bank () { }
+
+
     /** Visit all accounts of the bank and trigger the given callback.
      * @param The callback (the return value means "go on" and allows
      *  stopping the visit)

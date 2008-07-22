@@ -1,4 +1,4 @@
- 
+
 /* Ekiga -- A VoIP and Video-Conferencing application
  * Copyright (C) 2000-2006 Damien Sandras
  *
@@ -122,7 +122,7 @@ struct _GmMainWindow
   GtkWidget *video_settings_window;
 
   GtkListStore *completion;
-  
+
   GtkTooltips *tips;
   GtkAccelGroup *accel;
 
@@ -3674,7 +3674,6 @@ gm_main_window_incoming_call_dialog_show (GtkWidget *main_window,
 GtkWidget *
 gm_main_window_new (Ekiga::ServiceCore & core)
 {
-  Opal::CallManager *ep = NULL;
   GmMainWindow *mw = NULL;
 
   GtkWidget *window = NULL;
@@ -3713,9 +3712,6 @@ gm_main_window_new (Ekiga::ServiceCore & core)
     = mw->video_transmission_active = mw->video_reception_active = false;
   g_object_set_data_full (G_OBJECT (window), "GMObject", 
 			  mw, (GDestroyNotify) gm_mw_destroy);
-
-  /* Get the manager */
-  ep = dynamic_cast<Opal::CallManager *> (core.get ("opal-component"));
 
 #ifndef WIN32
   mw->video_widget_gc = NULL;

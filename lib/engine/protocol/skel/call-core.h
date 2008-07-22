@@ -43,6 +43,7 @@
 #include <sigc++/sigc++.h>
 #include <set>
 #include <map>
+#include <iostream>
 
 
 namespace Ekiga
@@ -65,11 +66,11 @@ namespace Ekiga
 
       /** The constructor
        */
-      CallCore () {}
+      CallCore () { }
 
       /** The destructor
        */
-      ~CallCore () {}
+      ~CallCore () { }
 
 
       /*** Service Implementation ***/
