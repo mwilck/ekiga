@@ -127,6 +127,7 @@ struct _GmMainWindow
   GtkAccelGroup *accel;
 
   GtkWidget *main_menu;
+  GtkWidget *main_toolbar;
 
   int x;
   int y;
@@ -573,6 +574,12 @@ static void on_mwi_event_cb (G_GNUC_UNUSED Ekiga::CallManager & manager,
   gm_main_window_push_message (GTK_WIDGET (self),
                                mw->missed_calls,
                                mw->total_mwi);
+}
+
+
+static void on_ready_cb (gpointer self)
+{
+  gm_main_window_set_busy (GTK_WIDGET (self), false);
 }
 
 
@@ -3327,7 +3334,8 @@ gm_main_window_set_busy (GtkWidget *main_window,
 
   g_return_if_fail (mw != NULL);
 
-  gtk_menu_section_set_sensitive (mw->main_menu, "quit", !busy);
+  gtk_widget_set_sensitive (mw->main_toolbar, !busy);
+  gtk_widget_set_sensitive (mw->main_menu, !busy);
 
   if (busy) {
 
@@ -3669,7 +3677,6 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   GtkWidget *window = NULL;
   
   GtkWidget *status_toolbar = NULL;
-  GtkWidget *uri_toolbar = NULL;
 
   PanelSection section = DIALPAD;
 
@@ -3725,8 +3732,8 @@ gm_main_window_new (Ekiga::ServiceCore & core)
                       FALSE, FALSE, 0);
 
   /* The toolbars */
-  uri_toolbar = gm_mw_init_uri_toolbar (window);
-  gtk_box_pack_start (GTK_BOX (mw->window_vbox), uri_toolbar, false, false, 0); 
+  mw->main_toolbar = gm_mw_init_uri_toolbar (window);
+  gtk_box_pack_start (GTK_BOX (mw->window_vbox), mw->main_toolbar, false, false, 0); 
 
   /* The Audio & Video Settings windows */
   mw->audio_settings_window = gm_mw_audio_settings_window_new (window);
@@ -3882,6 +3889,9 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   conn = call_core->mwi_event.connect (sigc::bind (sigc::ptr_fun (on_mwi_event_cb), (gpointer) window));
   mw->connections.push_back (conn);
 
+  conn = call_core->ready.connect (sigc::bind (sigc::ptr_fun (on_ready_cb), (gpointer) window));
+  mw->connections.push_back (conn);
+
   conn = call_core->setup_call.connect (sigc::bind (sigc::ptr_fun (on_setup_call_cb), (gpointer) window));
   mw->connections.push_back (conn);
 
@@ -3921,6 +3931,9 @@ gm_main_window_new (Ekiga::ServiceCore & core)
 
   gm_conf_notifier_add (USER_INTERFACE_KEY "main_window/show_call_panel",
 			show_call_panel_changed_nt, window);
+
+  /* Until we are ready, nothing possible  */
+  gm_main_window_set_busy (window, true);
 
   return window;
 }

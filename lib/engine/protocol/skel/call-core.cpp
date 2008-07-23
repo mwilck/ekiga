@@ -52,6 +52,7 @@ void CallCore::add_manager (CallManager &manager)
   manager_added.emit (manager);
 
   manager.mwi_event.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_mwi_event), &manager));
+  manager.ready.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_manager_ready), &manager));
 }
 
 
@@ -180,7 +181,11 @@ void CallCore::on_mwi_event (std::string account, std::string info, CallManager 
 }
 
 
-void CallCore::on_manager_ready (std::string info, CallManager *manager)
+void CallCore::on_manager_ready (CallManager *manager)
 {
-  manager_ready.emit (*manager, info);
+  manager_ready.emit (*manager);
+  nr_ready++;
+
+  if (nr_ready >= managers.size ())
+    ready.emit ();
 }

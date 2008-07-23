@@ -1,5 +1,14 @@
 2008-07-23  Damien Sandras  <dsandras@gnome.org>
 
+	* src/gui/main.cpp:
+	* ChangeLog:
+	* lib/engine/protocol/skel/call-core.cpp:
+	* lib/engine/protocol/skel/call-core.h:
+	Added ready signal to the CallCore emitted when all CallManager are
+	ready. Disable critical elements of the GUI until we are ready.
+
+2008-07-23  Damien Sandras  <dsandras@gnome.org>
+
 	* src/endpoints/sip.cpp, src/endpoints/sip.h:
 	Restored exit method.
 

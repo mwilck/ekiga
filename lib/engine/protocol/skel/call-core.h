@@ -66,7 +66,7 @@ namespace Ekiga
 
       /** The constructor
        */
-      CallCore () { }
+      CallCore () { nr_ready = 0; }
 
       /** The destructor
        */
@@ -148,7 +148,8 @@ namespace Ekiga
       sigc::signal<void, CallManager &, std::string, std::string> mwi_event;
 
       /*** Misc ***/
-      sigc::signal<void, CallManager &, std::string> manager_ready;
+      sigc::signal<void, CallManager &> manager_ready;
+      sigc::signal<void> ready;
 
   private:
       void on_new_call (Call *call, CallManager *manager);
@@ -171,9 +172,10 @@ namespace Ekiga
 
       void on_mwi_event (std::string, std::string, CallManager *manager);
 
-      void on_manager_ready (std::string, CallManager *manager);
+      void on_manager_ready (CallManager *manager);
       
       std::set<CallManager *> managers;
+      unsigned nr_ready;
     };
 
 /**
