@@ -485,6 +485,22 @@ bool CallProtocolManager::unsubscribe (const Opal::Account & account)
 }
 
 
+void CallProtocolManager::ShutDown ()
+{
+  listeners.RemoveAll ();
+
+  for (PSafePtr<SIPTransaction> transaction(transactions, PSafeReference);      transaction != NULL; ++transaction)
+    transaction->WaitForCompletion();
+
+  while (activeSIPHandlers.GetSize() > 0) {
+    PSafePtr<SIPHandler> handler = activeSIPHandlers;
+    activeSIPHandlers.Remove(handler);
+  }
+
+  SIPEndPoint::ShutDown ();
+}
+
+
 void CallProtocolManager::Register (const Ekiga::Account & account)
 {
   std::stringstream aor;

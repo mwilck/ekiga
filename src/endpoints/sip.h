@@ -134,6 +134,8 @@ namespace Opal {
 
 
       /* OPAL Methods */
+      void ShutDown ();
+
       void Register (const Ekiga::Account & account);
 
       void OnRegistered (const PString & aor,
