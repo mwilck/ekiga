@@ -576,9 +576,6 @@ prepare_ekiga_net_page (EkigaAssistant *assistant)
   if (account && !account->get_password ().empty ())
     gtk_entry_set_text (GTK_ENTRY (assistant->priv->password), account->get_password ().c_str ());
 
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (assistant->priv->skip_ekiga_net),
-                                FALSE);
-
   set_current_page_complete (GTK_ASSISTANT (assistant),
                              account && !account->get_username ().empty () && !account->get_password ().empty ());
 }
@@ -635,10 +632,11 @@ create_ekiga_out_page (EkigaAssistant *assistant)
 
   label = gtk_label_new (NULL);
   text = g_strdup_printf ("<i>%s</i>",
-                          _("You can make calls to regular phones and cell numbers worldwide using Ekiga. "
-                            "To enable this, you need to do three things. First create an account at the URL below. "
-                            "Then enter your account ID and PIN code. Finally, activate the registration below.\n\n"
-                            "The service will work only if your account is created using the URL in this dialog."));
+                          _("You can make calls to regular phones and cell numbers worldwide using Ekiga.\n\n"
+                            "To enable this, you need to do three things:\n"
+                            "- First buy an account at the URL below.\n"
+                            "- Then enter your account ID and PIN code.\n"
+                            "The service will work only if your account is created using the URL in this dialog.\n"));
   gtk_label_set_markup (GTK_LABEL (label), text);
   g_free (text);
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
@@ -722,9 +720,6 @@ prepare_ekiga_out_page (EkigaAssistant *assistant)
     gtk_entry_set_text (GTK_ENTRY (assistant->priv->dusername), account->get_username ().c_str ());
   if (account && !account->get_password ().empty ())
     gtk_entry_set_text (GTK_ENTRY (assistant->priv->dpassword), account->get_password ().c_str ());
-
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (assistant->priv->skip_ekiga_out),
-                                FALSE);
 
   set_current_page_complete (GTK_ASSISTANT (assistant),
                              account && !account->get_username ().empty () && !account->get_password ().empty ());
