@@ -577,7 +577,8 @@ prepare_ekiga_net_page (EkigaAssistant *assistant)
     gtk_entry_set_text (GTK_ENTRY (assistant->priv->password), account->get_password ().c_str ());
 
   set_current_page_complete (GTK_ASSISTANT (assistant),
-                             account && !account->get_username ().empty () && !account->get_password ().empty ());
+                             gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (assistant->priv->skip_ekiga_net))
+                             || (account && !account->get_username ().empty () && !account->get_password ().empty ()));
 }
 
 
@@ -593,7 +594,7 @@ apply_ekiga_net_page (EkigaAssistant *assistant)
   bool new_account = (account == NULL);
 
   if (new_account)
-    opal_bank->new_account (Opal::Bank::Ekiga, 
+    opal_bank->new_account (Opal::Account::Ekiga, 
                             gtk_entry_get_text (GTK_ENTRY (assistant->priv->username)),
                             gtk_entry_get_text (GTK_ENTRY (assistant->priv->password)));
   else
@@ -613,7 +614,7 @@ create_ekiga_out_page (EkigaAssistant *assistant)
 
   vbox = create_page (assistant, _("Ekiga Call Out Account"), GTK_ASSISTANT_PAGE_CONTENT);
 
-  label = gtk_label_new (_("Please enter your username:"));
+  label = gtk_label_new (_("Please enter your account ID:"));
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
 
@@ -621,7 +622,7 @@ create_ekiga_out_page (EkigaAssistant *assistant)
   gtk_entry_set_activates_default (GTK_ENTRY (assistant->priv->dusername), TRUE);
   gtk_box_pack_start (GTK_BOX (vbox), assistant->priv->dusername, FALSE, FALSE, 0);
 
-  label = gtk_label_new (_("Please enter your password:"));
+  label = gtk_label_new (_("Please enter your PIN code:"));
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
 
@@ -698,9 +699,9 @@ create_ekiga_out_page (EkigaAssistant *assistant)
   gtk_container_add (GTK_CONTAINER (align), assistant->priv->skip_ekiga_out);
   gtk_box_pack_start (GTK_BOX (vbox), align, TRUE, TRUE, 0);
 
-  g_signal_connect (assistant->priv->username, "changed",
+  g_signal_connect (assistant->priv->dusername, "changed",
                     G_CALLBACK (ekiga_out_info_changed_cb), assistant);
-  g_signal_connect (assistant->priv->password, "changed",
+  g_signal_connect (assistant->priv->dpassword, "changed",
                     G_CALLBACK (ekiga_out_info_changed_cb), assistant);
   g_signal_connect (assistant->priv->skip_ekiga_out, "toggled",
                     G_CALLBACK (ekiga_out_info_changed_cb), assistant);
@@ -722,7 +723,8 @@ prepare_ekiga_out_page (EkigaAssistant *assistant)
     gtk_entry_set_text (GTK_ENTRY (assistant->priv->dpassword), account->get_password ().c_str ());
 
   set_current_page_complete (GTK_ASSISTANT (assistant),
-                             account && !account->get_username ().empty () && !account->get_password ().empty ());
+                             gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (assistant->priv->skip_ekiga_out))
+                             || (account && !account->get_username ().empty () && !account->get_password ().empty ()));
 }
 
 
@@ -738,7 +740,7 @@ apply_ekiga_out_page (EkigaAssistant *assistant)
   bool new_account = (account == NULL);
 
   if (new_account)
-    opal_bank->new_account (Opal::Bank::DiamondCard, 
+    opal_bank->new_account (Opal::Account::DiamondCard, 
                             gtk_entry_get_text (GTK_ENTRY (assistant->priv->dusername)),
                             gtk_entry_get_text (GTK_ENTRY (assistant->priv->dpassword)));
   else
