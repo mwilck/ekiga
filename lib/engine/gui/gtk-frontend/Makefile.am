@@ -35,10 +35,6 @@ libgmgtk_frontend_la_SOURCES = \
 	$(gtk_frontend_dir)/multiple-chat-page.cpp	\
 	$(gtk_frontend_dir)/chat-window.h 		\
 	$(gtk_frontend_dir)/chat-window.cpp 		\
-	$(gtk_frontend_dir)/chat-window-old.h 		\
-	$(gtk_frontend_dir)/chat-window-old.cpp 	\
-	$(gtk_frontend_dir)/chat-window-page.h 		\
-	$(gtk_frontend_dir)/chat-window-page.cpp 	\
 	$(gtk_frontend_dir)/gtk-frontend.h 		\
 	$(gtk_frontend_dir)/gtk-frontend.cpp
 

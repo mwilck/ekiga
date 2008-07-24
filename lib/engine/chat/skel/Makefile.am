@@ -16,7 +16,6 @@ libgmchat_la_SOURCES = \
 	$(chat_dir)/dialect-impl.h		\
 	$(chat_dir)/chat.h			\
 	$(chat_dir)/chat-simple.h		\
-	$(chat_dir)/chat-multiple.h		\
-	$(chat_dir)/chat-manager.h
+	$(chat_dir)/chat-multiple.h
 
 libgmchat_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS)

@@ -39,9 +39,6 @@
 #include "services.h"
 #include "dialect.h"
 
-// FIXME: that one is for Damien's temporary code
-#include "chat-manager.h"
-
 /* FIXME: probably it should have a decorator system, so we can for example
  * hook a logger
  */
@@ -125,57 +122,6 @@ namespace Ekiga
      */
     ChainOfResponsibility<FormRequest*> questions;
 
-    /** FIXME: start of Damien's temporary code :
-     **
-     **/
-  public:
-    void add_manager (ChatManager &manager)
-    {
-      managers.insert (&manager);
-      manager.im_failed.connect (sigc::bind (sigc::mem_fun (this, &ChatCore::on_im_failed), &manager));
-      manager.im_received.connect (sigc::bind (sigc::mem_fun (this, &ChatCore::on_im_received), &manager));
-      manager.im_sent.connect (sigc::bind (sigc::mem_fun (this, &ChatCore::on_im_sent), &manager));
-      manager.new_chat.connect (sigc::bind (sigc::mem_fun (this, &ChatCore::on_new_chat), &manager));
-    }
-
-    bool send_message (const std::string & uri,
-		       const std::string & message)
-    {
-      for (std::set<ChatManager*>::iterator iter = managers.begin ();
-	   iter != managers.end ();
-	   iter++) {
-
-	if ((*iter)->send_message (uri, message))
-	  return true;
-      }
-
-      return false;
-    }
-
-    sigc::signal<void, const ChatManager &, const std::string, const std::string> im_failed;
-    sigc::signal<void, const ChatManager &, const std::string, const std::string, const std::string> im_received;
-    sigc::signal<void, const ChatManager &, const std::string, const std::string> im_sent;
-    sigc::signal<void, const ChatManager &, const std::string, const std::string> new_chat;
-
-  private:
-    std::set<ChatManager *> managers;
-
-    void on_im_failed (const std::string uri, const std::string reason, ChatManager *manager)
-    { im_failed.emit (*manager, uri, reason); }
-
-    void on_im_sent (const std::string uri, const std::string message, ChatManager *manager)
-    { im_sent.emit (*manager, uri, message); }
-
-    void on_im_received (const std::string display_name, const std::string uri, const std::string message, ChatManager *manager)
-    { im_received.emit (*manager, display_name, uri, message); }
-
-    void on_new_chat (const std::string display_name, const std::string uri, ChatManager *manager)
-    { new_chat.emit (*manager, display_name, uri); }
-
-
-    /** FIXME: end of Damien's temporary code
-     **
-     **/
   };
 
   /**

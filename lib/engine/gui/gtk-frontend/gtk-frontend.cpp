@@ -80,24 +80,13 @@ GtkFrontend::GtkFrontend (Ekiga::ServiceCore &core)
   chat_window =
     chat_window_new (*chat_core,
 		     "/apps/ekiga/general/user_interface/chat_window");
-  chat_window_old =
-    chat_window_old_new_with_key (core, "/apps/ekiga/general/user_interface/chat_window");
-
-  conn = chat_core->new_chat.connect (sigc::mem_fun (this, &GtkFrontend::on_new_chat));
-  connections.push_back (conn);
 }
 
 
 GtkFrontend::~GtkFrontend ()
 {
-  for (std::vector<sigc::connection>::iterator iter = connections.begin () ;
-       iter != connections.end ();
-       iter++)
-    iter->disconnect ();
-
   gtk_widget_destroy (addressbook_window);
   gtk_widget_destroy (chat_window);
-  gtk_widget_destroy (chat_window_old);
 }
 
 
@@ -127,7 +116,7 @@ const GtkWidget *GtkFrontend::get_addressbook_window () const
 
 const GtkWidget *GtkFrontend::get_chat_window () const
 {
-  return chat_window_old;
+  return chat_window;
 }
 
 
@@ -135,15 +124,6 @@ const GtkWidget *
 GtkFrontend::get_call_history_view () const
 {
   return call_history_view;
-}
-
-
-void GtkFrontend::on_new_chat (const Ekiga::ChatManager & /*manager*/,
-                               const std::string & name,
-                               const std::string & uri)
-{
-  chat_window_old_add_page (CHAT_WINDOW_OLD (chat_window_old), name, uri);
-  gtk_widget_show_all (GTK_WIDGET (chat_window_old));
 }
 
 

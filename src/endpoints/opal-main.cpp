@@ -99,7 +99,6 @@ opal_init (Ekiga::ServiceCore &core,
 
   call_core->add_manager (*call_manager);
   core.add (*call_manager); // FIXME temporary
-  chat_core->add_manager (*sip_manager);
   account_core->add_account_subscriber (*sip_manager);
 
   new ConfBridge (*call_manager);

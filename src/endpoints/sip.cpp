@@ -186,7 +186,7 @@ bool CallProtocolManager::populate_menu (Ekiga::Presentity& presentity,
 }
 
 
-bool CallProtocolManager::menu_builder_add_actions (const std::string & fullname,
+bool CallProtocolManager::menu_builder_add_actions (const std::string& /*fullname*/,
                                                     std::map<std::string,std::string> & uris,
                                                     Ekiga::MenuBuilder & builder)
 {
@@ -203,21 +203,6 @@ bool CallProtocolManager::menu_builder_add_actions (const std::string & fullname
       action = action + " [" + iter->first + "]";
 
     builder.add_action ("call", action, sigc::bind (sigc::mem_fun (this, &CallProtocolManager::on_dial), iter->second));
-
-    populated = true;
-  }
-
-  /* Add actions of type "message" for all uris */
-  for (std::map<std::string, std::string>::const_iterator iter = uris.begin ();
-       iter != uris.end ();
-       iter++) {
-
-    std::string action = _("Message (old)");
-
-    if (!iter->first.empty ())
-      action = action + " [" + iter->first + "]";
-
-    builder.add_action ("message", action, sigc::bind (sigc::mem_fun (this, &CallProtocolManager::on_message), fullname, iter->second));
 
     populated = true;
   }
@@ -312,8 +297,6 @@ bool CallProtocolManager::send_message (const std::string & _uri,
   if (!_uri.empty () && (_uri.find ("sip:") == 0 || _uri.find (':') == string::npos) && !_message.empty ()) {
 
     SIPEndPoint::Message (_uri, _message);
-
-    runtime.run_in_main (sigc::bind (im_sent.make_slot (), _uri, _message));
 
     return true;
   }
@@ -882,7 +865,6 @@ void CallProtocolManager::OnReceivedMESSAGE (G_GNUC_UNUSED OpalTransport & trans
     std::string _message = (const char *) pdu.GetEntityBody ();
 
     dialect->push_message (message_uri, display_name, _message);
-    runtime.run_in_main (sigc::bind (im_received.make_slot (), display_name, message_uri, _message));
   }
 }
 
@@ -896,8 +878,6 @@ void CallProtocolManager::OnMessageFailed (const SIPURL & messageUrl,
   std::string display_name = (const char *) to.GetDisplayName ();
   
   dialect->push_notice (uri, display_name, _("Could not send message"));
-  runtime.run_in_main (sigc::bind (im_failed.make_slot (), uri, 
-                                   _("Could not send message")));
 }
 
 
@@ -996,11 +976,3 @@ void CallProtocolManager::on_dial (std::string uri)
 {
   endpoint.dial (uri);
 }
-
-
-void CallProtocolManager::on_message (const std::string & name,
-                                      const std::string & uri)
-{
-  runtime.run_in_main (sigc::bind (new_chat.make_slot (), name, uri));
-}
-

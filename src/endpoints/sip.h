@@ -46,7 +46,6 @@
 
 #include "manager.h"
 #include "presence-core.h"
-#include "chat-manager.h"
 #include "call-manager.h"
 #include "call-protocol-manager.h"
 #include "account-core.h"
@@ -62,7 +61,6 @@ namespace Opal {
   namespace Sip {
 
     class CallProtocolManager : public SIPEndPoint, 
-                                public Ekiga::ChatManager,
                                 public Ekiga::CallProtocolManager,
                                 public Ekiga::PresenceFetcher,
                                 public Ekiga::PresencePublisher,
@@ -100,7 +98,7 @@ namespace Opal {
       void publish (const Ekiga::PersonalDetails & details);
 
 
-      /* ChatManager */
+      /* Chat subsystem */
       bool send_message (const std::string & uri, 
                          const std::string & message);
 
@@ -165,10 +163,6 @@ namespace Opal {
       /* Callbacks */
   private:
       void on_dial (std::string uri);
-
-      void on_message (const std::string & name,
-                       const std::string & uri);
-
 
       PMutex msgDataMutex;
       msgDict msgData;

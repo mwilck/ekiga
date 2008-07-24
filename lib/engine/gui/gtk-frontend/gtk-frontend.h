@@ -45,7 +45,6 @@
 #include "services.h"
 #include "contact-core.h"
 #include "presence-core.h"
-#include "chat-manager.h"
 
 
 class GtkFrontend: public Ekiga::Service
@@ -69,17 +68,11 @@ public:
   const GtkWidget *get_chat_window () const;
 
 private :
-  void on_new_chat (const Ekiga::ChatManager & manager,
-		    const std::string & name,
-		    const std::string & uri);
 
   GtkWidget *addressbook_window;
   GtkWidget *roster_view;
   GtkWidget *call_history_view;
   GtkWidget *chat_window;
-  GtkWidget *chat_window_old;
-
-  std::vector<sigc::connection> connections;
 };
 
 

@@ -103,9 +103,9 @@ statusicon_activated_cb (GtkStatusIcon *icon,
                          gpointer data);
 
 static void
-message_event_cb (GtkWidget *widget,
-                  guint messages,
-                  gpointer data);
+unread_count_cb (GtkWidget *widget,
+		 guint messages,
+		 gpointer data);
 
 static gboolean
 statusicon_blink_cb (gpointer data);
@@ -345,9 +345,9 @@ statusicon_activated_cb (G_GNUC_UNUSED GtkStatusIcon *icon,
 
 
 static void
-message_event_cb (G_GNUC_UNUSED GtkWidget *widget,
-                  guint messages,
-                  gpointer data)
+unread_count_cb (G_GNUC_UNUSED GtkWidget *widget,
+		 guint messages,
+		 gpointer data)
 {
   StatusIcon *self = STATUSICON (data);
 
@@ -566,8 +566,8 @@ statusicon_new (Ekiga::ServiceCore & core,
   g_signal_connect (self, "activate",
                     G_CALLBACK (statusicon_activated_cb), self);
 
-  g_signal_connect (chat_window, "message-event",
-                    G_CALLBACK (message_event_cb), self);
+  g_signal_connect (chat_window, "unread-count",
+                    G_CALLBACK (unread_count_cb), self);
 
   return self;
 }
