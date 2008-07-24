@@ -108,6 +108,18 @@ enum {
  * Helpers
  */
 
+/* DESCRIPTION : Set of functions called when the user clicks in a view
+ * BEHAVIOUR   : Folds/unfolds, shows a menu or triggers default action
+ */
+static void on_clicked_show_heap_menu (Ekiga::Heap* heap,
+				       GdkEventButton* event);
+static void on_clicked_show_presentity_menu (Ekiga::Presentity* presentity,
+					     GdkEventButton* event);
+
+static void on_clicked_fold (RosterViewGtk* self,
+			     GtkTreePath* path,
+			     const gchar* name);
+
 /* DESCRIPTION : Called whenever a (online/total) count has to be updated
  * BEHAVIOUR   : Updates things...
  * PRE         : Both arguments have to be correct
@@ -316,6 +328,80 @@ static void roster_view_gtk_update_groups (RosterViewGtk *view,
 /* Implementation of the helpers */
 
 static void
+on_clicked_show_heap_menu (Ekiga::Heap* heap,
+			   GdkEventButton* event)
+{
+  MenuBuilderGtk builder;
+  heap->populate_menu (builder);
+  if (!builder.empty ()) {
+
+    gtk_widget_show_all (builder.menu);
+    gtk_menu_popup (GTK_MENU (builder.menu), NULL, NULL,
+		    NULL, NULL, event->button, event->time);
+    g_signal_connect (G_OBJECT (builder.menu), "hide",
+		      GTK_SIGNAL_FUNC (g_object_unref),
+		      (gpointer) builder.menu);
+  }
+  g_object_ref_sink (G_OBJECT (builder.menu));
+
+}
+
+static void
+on_clicked_show_presentity_menu (Ekiga::Presentity* presentity,
+				 GdkEventButton* event)
+{
+  MenuBuilderGtk builder;
+  presentity->populate_menu (builder);
+  if (!builder.empty ()) {
+
+    gtk_widget_show_all (builder.menu);
+    gtk_menu_popup (GTK_MENU (builder.menu), NULL, NULL,
+		    NULL, NULL, event->button, event->time);
+    g_signal_connect (G_OBJECT (builder.menu), "hide",
+		      GTK_SIGNAL_FUNC (g_object_unref),
+		      (gpointer) builder.menu);
+  }
+  g_object_ref_sink (G_OBJECT (builder.menu));
+}
+
+static void
+on_clicked_fold (RosterViewGtk* self,
+		 GtkTreePath* path,
+		 const gchar* name)
+{
+  gboolean row_expanded = TRUE;
+  GSList* existing_group = NULL;
+
+  row_expanded
+    = gtk_tree_view_row_expanded (GTK_TREE_VIEW (self->priv->tree_view), path);
+
+  existing_group = g_slist_find_custom (self->priv->folded_groups,
+					name,
+					(GCompareFunc) g_ascii_strcasecmp);
+  if (!row_expanded) {
+
+    if (existing_group == NULL) {
+      self->priv->folded_groups = g_slist_append (self->priv->folded_groups,
+						  g_strdup (name));
+    }
+  }
+  else {
+
+    if (existing_group != NULL) {
+
+      self->priv->folded_groups
+	= g_slist_remove_link (self->priv->folded_groups, existing_group);
+
+      g_free ((gchar *) existing_group->data);
+      g_slist_free_1 (existing_group);
+    }
+  }
+
+  gm_conf_set_string_list ("/apps/" PACKAGE_NAME "/contacts/roster_folded_groups",
+			   self->priv->folded_groups);
+}
+
+static void
 update_offline_count (RosterViewGtk* self,
 		      GtkTreeIter* iter)
 {
@@ -365,7 +451,7 @@ show_offline_contacts_changed_nt (G_GNUC_UNUSED gpointer id,
   g_return_if_fail (data != NULL);
 
   self = ROSTER_VIEW_GTK (data);
-  
+
   if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
 
     show_offline_contacts = gm_conf_entry_get_bool (entry);
@@ -388,7 +474,7 @@ show_offline_contacts_changed_nt (G_GNUC_UNUSED gpointer id,
 	    do {
 
 	      update_offline_count (self, &iter);
-	    } while (gtk_tree_model_iter_next (model, &iter)); 
+	    } while (gtk_tree_model_iter_next (model, &iter));
 	  }
 	} while (gtk_tree_model_iter_next (model, &heap_iter));
       }
@@ -404,127 +490,63 @@ on_view_clicked (GtkWidget *tree_view,
 {
   RosterViewGtk *self = NULL;
   GtkTreeModel *model = NULL;
-
   GtkTreePath *path = NULL;
   GtkTreeIter iter;
-  gint column_type;
-  gchar *name = NULL;
-  gboolean row_expanded = TRUE;
-  GSList *existing_group = NULL;
-
-  Ekiga::Heap *heap = NULL;
-  Ekiga::Presentity *presentity = NULL;
 
   self = ROSTER_VIEW_GTK (data);
   model = gtk_tree_view_get_model (self->priv->tree_view);
 
-  if (event->type == GDK_BUTTON_PRESS || event->type == GDK_KEY_PRESS) {
+  if (gtk_tree_view_get_path_at_pos (GTK_TREE_VIEW (tree_view),
+				     (gint) event->x, (gint) event->y,
+				     &path, NULL, NULL, NULL)) {
 
+    if (gtk_tree_model_get_iter (model, &iter, path)) {
 
-    if (gtk_tree_view_get_path_at_pos (GTK_TREE_VIEW (tree_view),
-                                       (gint) event->x, (gint) event->y,
-                                       &path, NULL, NULL, NULL)) {
+      gint column_type;
+      gchar *name = NULL;
+      Ekiga::Heap *heap = NULL;
+      Ekiga::Presentity *presentity = NULL;
+      gtk_tree_model_get (model, &iter,
+			  COLUMN_NAME, &name,
+			  COLUMN_TYPE, &column_type,
+			  COLUMN_HEAP, &heap,
+			  COLUMN_PRESENTITY, &presentity,
+			  -1);
 
-      if (gtk_tree_model_get_iter (model, &iter, path)) {
+      switch (column_type) {
 
-        gtk_tree_model_get (model, &iter,
-                            COLUMN_NAME, &name,
-                            COLUMN_TYPE, &column_type,
-                            COLUMN_HEAP, &heap,
-                            COLUMN_PRESENTITY, &presentity,
-                            -1);
+      case TYPE_HEAP:
 
-        if (event->button == 3) {
+	if (event->type == GDK_BUTTON_PRESS && event->button == 1 && name)
+	  on_clicked_fold (self, path, name);
+	if (event->type == GDK_BUTTON_PRESS && event->button == 3)
+	  on_clicked_show_heap_menu (heap, event);
+	break;
+      case TYPE_GROUP:
 
-          switch (column_type) {
+	if (event->type == GDK_BUTTON_PRESS && event->button == 1 && name)
+	  on_clicked_fold (self, path, name);
+	/* FIXME: what about making it possible for a heap to have actions on groups?
+	 * It would allow for example (and optional to each Heap) group renaming,
+	 * or group invitations to a MUC or anything collaborative!
+	 * What is needed is :
+	 * - store_set the &heap when adding a group so we have access to it here in heap
+	 * - in this function we should also store_get on COLUMN_NAME to have the group name
+	 *   (don't forget the g_free!)
+	 * - add the proper populate_group_menu api to Ekiga::Heap
+	 */
+	break;
+      case TYPE_PRESENTITY:
 
-          case TYPE_HEAP:
-	    {
-	      MenuBuilderGtk builder;
-	      heap->populate_menu (builder);
-	      if (!builder.empty ()) {
+	if (event->type == GDK_BUTTON_PRESS && event->button == 3)
+	  on_clicked_show_presentity_menu (presentity, event);
+	break;
+      default:
 
-		gtk_widget_show_all (builder.menu);
-		gtk_menu_popup (GTK_MENU (builder.menu), NULL, NULL,
-				NULL, NULL, event->button, event->time);
-		g_signal_connect (G_OBJECT (builder.menu), "hide",
-				  GTK_SIGNAL_FUNC (g_object_unref),
-				  (gpointer) builder.menu);
-	      }
-	      g_object_ref_sink (G_OBJECT (builder.menu));
-	      break;
-	    }
-
-          case TYPE_GROUP:
-
-            /* FIXME: what about making it possible for a heap to have actions on groups?
-             * It would allow for example (and optional to each Heap) group renaming,
-             * or group invitations to a MUC or anything collaborative!
-             * What is needed is :
-             * - store_set the &heap when adding a group so we have access to it here in heap
-             * - in this function we should also store_get on COLUMN_NAME to have the group name
-             *   (don't forget the g_free!)
-             * - add the proper populate_group_menu api to Ekiga::Heap
-             */
-            break;
-
-          case TYPE_PRESENTITY:
-	    {
-	      MenuBuilderGtk builder;
-	      presentity->populate_menu (builder);
-	      if (!builder.empty ()) {
-
-		gtk_widget_show_all (builder.menu);
-		gtk_menu_popup (GTK_MENU (builder.menu), NULL, NULL,
-				NULL, NULL, event->button, event->time);
-		g_signal_connect (G_OBJECT (builder.menu), "hide",
-				  GTK_SIGNAL_FUNC (g_object_unref),
-				  (gpointer) builder.menu);
-	      }
-	      g_object_ref_sink (G_OBJECT (builder.menu));
-	      break;
-	    }
-
-          default:
-            break; // shouldn't happen
-          }
-        }
-        else {
-
-          if (event->button == 1
-              && name
-              && (column_type == TYPE_HEAP || column_type == TYPE_GROUP)) {
-
-            row_expanded = gtk_tree_view_row_expanded (GTK_TREE_VIEW (tree_view), path);
-            existing_group = g_slist_find_custom (self->priv->folded_groups,
-                                                  name,
-                                                  (GCompareFunc) g_ascii_strcasecmp);
-            if (!row_expanded) {
-
-              if (existing_group == NULL) {
-                self->priv->folded_groups = g_slist_append (self->priv->folded_groups, g_strdup (name));
-              }
-            }
-            else {
-
-              if (existing_group != NULL) {
-
-                self->priv->folded_groups = g_slist_remove_link (self->priv->folded_groups, existing_group);
-
-                g_free ((gchar *) existing_group->data);
-                g_slist_free_1 (existing_group);
-              }
-            }
-          }
-
-          gm_conf_set_string_list ("/apps/" PACKAGE_NAME "/contacts/roster_folded_groups",
-                                   self->priv->folded_groups);
-        }
+	break; // shouldn't happen
       }
-
       g_free (name);
     }
-
     gtk_tree_path_free (path);
   }
 
@@ -731,7 +753,7 @@ on_presentity_added (Ekiga::Cluster &/*cluster*/,
 			COLUMN_NAME, presentity.get_name ().c_str (),
 			COLUMN_STATUS, presentity.get_status ().c_str (),
 			COLUMN_PRESENCE, presentity.get_presence ().c_str (),
-			COLUMN_ACTIVE, (!active || away) ? "gray" : "black", 
+			COLUMN_ACTIVE, (!active || away) ? "gray" : "black",
 			-1);
   }
 
@@ -746,7 +768,7 @@ on_presentity_added (Ekiga::Cluster &/*cluster*/,
 			COLUMN_NAME, presentity.get_name ().c_str (),
 			COLUMN_STATUS, presentity.get_status ().c_str (),
 			COLUMN_PRESENCE, presentity.get_presence ().c_str (),
-			COLUMN_ACTIVE, active ? "black" : "gray", 
+			COLUMN_ACTIVE, active ? "black" : "gray",
 			-1);
   }
 
