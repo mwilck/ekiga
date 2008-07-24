@@ -38,6 +38,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <iostream>
+#include <algorithm>
 #include <sstream>
 
 #include "config.h"
@@ -90,6 +91,9 @@ Opal::Account::Account (Ekiga::ServiceCore & _core,
 
     case 9:
       password = pch;
+      // Could be empty, it is the only field allowed to be empty
+      if (password == " ")
+        password = "";
       break;
 
     case 10:
@@ -158,7 +162,7 @@ const std::string Opal::Account::as_string () const
       << host << "|" 
       << username << "|" 
       << auth_username << "|" 
-      << password << "|" 
+      << (password.empty () ? " " : password) << "|" 
       << timeout; 
 
   return str.str ();
@@ -297,9 +301,13 @@ void Opal::Account::edit ()
   request.instructions (_("Please update the following fields:"));
 
   request.text ("name", _("Name:"), get_name ());
-  request.text ("host", _("Host"), get_host ());
+  if (get_protocol_name () == "SIP")
+    request.text ("host", _("Registrar:"), get_host ());
+  else
+    request.text ("host", _("Gatekeeper:"), get_host ());
   request.text ("user", _("User:"), get_username ());
-  request.text ("authentication_user", _("Authentication User:"), get_authentication_username ());
+  if (get_protocol_name () == "SIP")
+    request.text ("authentication_user", _("Authentication User:"), get_authentication_username ());
   request.private_text ("password", _("Password:"), get_password ());
   request.text ("timeout", _("Timeout:"), str.str ());
   request.boolean ("enabled", _("Enable Account"), enabled);
@@ -327,7 +335,9 @@ void Opal::Account::on_edit_form_submitted (Ekiga::Form &result)
     std::string new_name = result.text ("name");
     std::string new_host = result.text ("host");
     std::string new_user = result.text ("user");
-    std::string new_authentication_user = result.text ("authentication_user");
+      std::string new_authentication_user = new_user;
+    if (get_protocol_name () == "SIP")
+      new_authentication_user = result.text ("authentication_user");
     std::string new_password = result.private_text ("password");
     bool new_enabled = result.boolean ("enabled");
     unsigned new_timeout = atoi (result.text ("timeout").c_str ());
