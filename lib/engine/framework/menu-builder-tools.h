@@ -77,6 +77,8 @@ namespace Ekiga
 
   class ShortMenuBuilder: public MenuBuilder
   {
+  public:
+
     ShortMenuBuilder (MenuBuilder& builder);
 
     void add_action (const std::string icon,
@@ -109,6 +111,8 @@ namespace Ekiga
    */
   class TriggerMenuBuilder: public MenuBuilder
   {
+  public:
+
     TriggerMenuBuilder ();
 
     void add_action (const std::string icon,
