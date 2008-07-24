@@ -39,7 +39,21 @@
 #include "presentity-view.h"
 #include "chat-area.h"
 
+enum {
+  MESSAGE_NOTICE_EVENT,
+  LAST_SIGNAL
+};
+
+static guint signals[LAST_SIGNAL] = { 0 };
+
 static GObjectClass *parent_class = NULL;
+
+static void
+on_message_notice_event (G_GNUC_UNUSED GtkWidget* widget,
+			 gpointer data)
+{
+  g_signal_emit (data, signals[MESSAGE_NOTICE_EVENT], 0);
+}
 
 static void
 simple_chat_page_dispose (GObject *obj)
@@ -68,6 +82,7 @@ static void
 simple_chat_page_class_init (gpointer g_class,
 			     G_GNUC_UNUSED gpointer class_data)
 {
+  SimpleChatPageClass* simple_chat_page_class = NULL;
   GObjectClass* gobject_class = NULL;
 
   parent_class = (GObjectClass*)g_type_class_peek_parent (g_class);
@@ -75,6 +90,19 @@ simple_chat_page_class_init (gpointer g_class,
   gobject_class = (GObjectClass*)g_class;
   gobject_class->dispose = simple_chat_page_dispose;
   gobject_class->finalize = simple_chat_page_finalize;
+
+  signals[MESSAGE_NOTICE_EVENT] =
+    g_signal_new ("message-notice-event",
+		  G_OBJECT_CLASS_TYPE (gobject_class),
+		  G_SIGNAL_RUN_LAST,
+		  G_STRUCT_OFFSET (ChatAreaClass, message_notice_event),
+		  NULL, NULL,
+		  g_cclosure_marshal_VOID__VOID,
+		  G_TYPE_NONE, 0);
+
+  /* FIXME: is it useful? */
+  simple_chat_page_class = (SimpleChatPageClass*)g_class;
+  simple_chat_page_class->message_notice_event = NULL;
 }
 
 GType
@@ -122,6 +150,8 @@ simple_chat_page_new (Ekiga::SimpleChat& chat)
   gtk_box_pack_start (GTK_BOX (result), area,
 		      TRUE, TRUE, 2);
   gtk_widget_show (area);
+  g_signal_connect (area, "message-notice-event",
+		    G_CALLBACK (on_message_notice_event), result);
 
   return GTK_WIDGET (result);
 }

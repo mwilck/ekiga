@@ -58,6 +58,9 @@ struct _SimpleChatPage {
 
 struct _SimpleChatPageClass {
   GtkVBoxClass parent_class;
+
+  /* this is the "message-notice-event" signal */
+  void (*message_notice_event) (SimpleChatPage* self);
 };
 
 #define TYPE_SIMPLE_CHAT_PAGE             (simple_chat_page_get_type())
