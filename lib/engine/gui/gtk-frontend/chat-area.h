@@ -58,9 +58,13 @@ struct _ChatArea
 struct _ChatAreaClass
 {
   GtkVBoxClass parent;
+
+  /* this is the "message-notice-event" signal */
+  void (*message_notice_event) (ChatArea* self);
 };
 
 /* public api */
+
 GtkWidget *chat_area_new (Ekiga::Chat& chat);
 
 const std::string chat_area_get_title (ChatArea* chat);

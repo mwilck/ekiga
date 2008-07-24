@@ -62,6 +62,13 @@ enum {
   CHAT_AREA_PROP_CHAT = 1
 };
 
+enum {
+  MESSAGE_NOTICE_EVENT,
+  LAST_SIGNAL
+};
+
+static guint signals[LAST_SIGNAL] = { 0 };
+
 static GObjectClass* parent_class = NULL;
 
 /* declaration of internal api */
@@ -133,6 +140,8 @@ chat_area_add_notice (ChatArea* self,
   gm_text_buffer_enhancer_insert_text (self->priv->enhancer, &iter,
 				       str, -1);
   g_free (str);
+
+  g_signal_emit (self, signals[MESSAGE_NOTICE_EVENT], 0);
 }
 
 static void
@@ -150,6 +159,8 @@ chat_area_add_message (ChatArea* self,
   gm_text_buffer_enhancer_insert_text (self->priv->enhancer, &iter,
 				       str, -1);
   g_free (str);
+
+  g_signal_emit (self, signals[MESSAGE_NOTICE_EVENT], 0);
 }
 
 /* implementation of callbacks */
@@ -389,6 +400,7 @@ static void
 chat_area_class_init (gpointer g_class,
 		      G_GNUC_UNUSED gpointer class_data)
 {
+  ChatAreaClass* chat_area_class = NULL;
   GObjectClass* gobject_class = NULL;
   GParamSpec* spec = NULL;
 
@@ -409,6 +421,19 @@ chat_area_class_init (gpointer g_class,
   g_object_class_install_property (gobject_class,
 				   CHAT_AREA_PROP_CHAT,
 				   spec);
+
+  signals[MESSAGE_NOTICE_EVENT] =
+    g_signal_new ("message-notice-event",
+		  G_OBJECT_CLASS_TYPE (gobject_class),
+		  G_SIGNAL_RUN_LAST,
+		  G_STRUCT_OFFSET (ChatAreaClass, message_notice_event),
+		  NULL, NULL,
+		  g_cclosure_marshal_VOID__VOID,
+		  G_TYPE_NONE, 0);
+
+  /* FIXME: is it useful? */
+  chat_area_class = (ChatAreaClass*)g_class;
+  chat_area_class->message_notice_event = NULL;
 }
 
 static void
@@ -492,7 +517,7 @@ chat_area_init (GTypeInstance* instance,
   GtkWidget* image = NULL;
   GtkWidget* smiley_item = NULL;
 
-  /* we need to build a nice */
+  /* we need to build a nice menu for smileys */
   self->priv->smiley_menu = gtk_menu_new ();
   g_object_ref (self->priv->smiley_menu);
   for (smiley = 0;
@@ -525,6 +550,7 @@ chat_area_init (GTypeInstance* instance,
   gtk_widget_show (bbox);
 
   button = gtk_button_new_from_stock (GTK_STOCK_INFO); // FIXME
+  gtk_button_set_focus_on_click (GTK_BUTTON (button), FALSE);
   g_signal_connect (G_OBJECT (button), "clicked",
 		    G_CALLBACK (on_smiley_clicked), self);
   gtk_box_pack_start (GTK_BOX (bbox), button,
@@ -532,6 +558,7 @@ chat_area_init (GTypeInstance* instance,
   gtk_widget_show (button);
 
   button = gtk_button_new_from_stock (GTK_STOCK_BOLD);
+  gtk_button_set_focus_on_click (GTK_BUTTON (button), FALSE);
   g_signal_connect (G_OBJECT (button), "clicked",
 		    G_CALLBACK (on_bold_clicked), self);
   gtk_box_pack_start (GTK_BOX (bbox), button,
@@ -539,6 +566,7 @@ chat_area_init (GTypeInstance* instance,
   gtk_widget_show (button);
 
   button = gtk_button_new_from_stock (GTK_STOCK_ITALIC);
+  gtk_button_set_focus_on_click (GTK_BUTTON (button), FALSE);
   g_signal_connect (G_OBJECT (button), "clicked",
 		    G_CALLBACK (on_italic_clicked), self);
   gtk_box_pack_start (GTK_BOX (bbox), button,
@@ -546,6 +574,7 @@ chat_area_init (GTypeInstance* instance,
   gtk_widget_show (button);
 
   button = gtk_button_new_from_stock (GTK_STOCK_UNDERLINE);
+  gtk_button_set_focus_on_click (GTK_BUTTON (button), FALSE);
   g_signal_connect (G_OBJECT (button), "clicked",
 		    G_CALLBACK (on_underline_clicked), self);
   gtk_box_pack_start (GTK_BOX (bbox), button,
@@ -600,7 +629,7 @@ chat_area_new (Ekiga::Chat& chat)
 }
 
 const std::string
-chat_area_get_title (ChatArea* chat)
+chat_area_get_title (ChatArea* area)
 {
-  return chat->priv->chat->get_title ();
+  return area->priv->chat->get_title ();
 }
