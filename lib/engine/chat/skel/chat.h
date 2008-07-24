@@ -112,6 +112,10 @@ namespace Ekiga
      */
     sigc::signal<void> updated;
 
+    /** This signal is emitted when the user requested to see this Chat
+     */
+    sigc::signal<void> user_requested;
+
     /** This signal is emitted when the Chat has been removed.
      */
     sigc::signal<void> removed;

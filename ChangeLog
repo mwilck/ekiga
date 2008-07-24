@@ -1,3 +1,14 @@
+2008-07-24  Julien Puydt  <jpuydt@gnome.org>
+
+	* lib/engine/chat/echo/echo-dialect.cpp:
+	* lib/engine/chat/skel/chat.h:
+	* lib/engine/chat/skel/dialect-impl.h:
+	* lib/engine/chat/skel/dialect.h:
+	* lib/engine/gui/gtk-frontend/chat-window.cpp:
+	* src/endpoints/sip-dialect.cpp: Changed the user request api, which
+	make the code better (hopefully), and fixing a bug Yannick found, and
+	simplified the way the chat window manages its sigc connections.
+
 2008-07-24  Damien Sandras  <dsandras@gnome.org>
 
 	* src/endpoints/opal-account.cpp:

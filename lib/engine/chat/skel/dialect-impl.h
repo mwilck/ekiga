@@ -92,8 +92,7 @@ namespace Ekiga
      * @param The SimpleChat to be added.
      * @return: The Ekiga::Dialect 'simple_chat_added' signal is emitted.
      */
-    void add_simple_chat (bool user_request,
-			  SimpleChatType* chat);
+    void add_simple_chat (SimpleChatType* chat);
 
     /** Removes a SimpleChat from the Ekiga::Dialect.
      * @param The SimpleChat to be removed.
@@ -104,8 +103,7 @@ namespace Ekiga
      * @param The MultipleChat to be added.
      * @return: The Ekiga::Dialect 'multiple_chat_added' signal is emitted.
      */
-    void add_multiple_chat (bool user_request,
-			    MultipleChatType* chat);
+    void add_multiple_chat (MultipleChatType* chat);
 
     /** Removes a MultipleChat from the Ekiga::Dialect.
      * @param The MultipleChat to be removed.
@@ -201,11 +199,10 @@ Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::multiple_end () const
 
 template<typename SimpleChatType, typename MultipleChatType>
 void
-Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::add_simple_chat (bool user_request,
-								       SimpleChatType* chat)
+Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::add_simple_chat (SimpleChatType* chat)
 {
   simple_chats.add_object (*chat);
-  simple_chat_added.emit (user_request, *chat);
+  simple_chat_added.emit (*chat);
 }
 
 template<typename SimpleChatType, typename MultipleChatType>
@@ -217,10 +214,10 @@ Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::remove_simple_chat (Simple
 
 template<typename SimpleChatType, typename MultipleChatType>
 void
-Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::add_multiple_chat (bool user_request, MultipleChatType* chat)
+Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::add_multiple_chat (MultipleChatType* chat)
 {
   multiple_chats.add_object (*chat);
-  multiple_chat_added.emit (user_request, *chat);
+  multiple_chat_added.emit (*chat);
 }
 
 template<typename SimpleChatType, typename MultipleChatType>

@@ -114,8 +114,11 @@ SIP::Dialect::open_chat_with (std::string uri,
   if (result == NULL) {
 
     result = new SimpleChat (core, name, uri, sigc::bind<0>(sender, uri));
-    add_simple_chat (user_request, result);
+    add_simple_chat (result);
   }
+
+  if (user_request)
+    result->user_requested.emit ();
 
   return result;
 }

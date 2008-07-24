@@ -70,16 +70,14 @@ namespace Ekiga
     virtual bool populate_menu (MenuBuilder &) = 0;
 
     /** This signal is emitted when an Ekiga::SimpleChat has been added to
-     * the dialect ; the boolean indicates whether the opening was from direct
-     * user request.
+     * the dialect.
      */
-    sigc::signal<void, bool, SimpleChat&> simple_chat_added;
+    sigc::signal<void, SimpleChat&> simple_chat_added;
 
     /** This signal is emitted when an Ekiga::MultipleChat has been added to
-     * the dialect ; the boolean indicates whether the opening was from direct
-     * user request.
+     * the dialect.
      */
-    sigc::signal<void, bool, MultipleChat&> multiple_chat_added;
+    sigc::signal<void, MultipleChat&> multiple_chat_added;
 
     /** This chain allows the Dialect to present forms to the user.
      */
