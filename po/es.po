@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ekiga.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-18 22:13+0000\n"
-"PO-Revision-Date: 2008-07-20 14:46+0200\n"
+"POT-Creation-Date: 2008-07-22 04:42+0000\n"
+"PO-Revision-Date: 2008-07-24 17:32+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -876,7 +876,7 @@ msgstr "Formato de vídeo"
 msgid "Video image"
 msgstr "Imagen de vídeo"
 
-#: ../ekiga.schemas.in.in.h:164 ../src/gui/assistant.cpp:825
+#: ../ekiga.schemas.in.in.h:164 ../src/gui/assistant.cpp:911
 msgid "Video input device"
 msgstr "Dispositivo de entrada de vídeo"
 
@@ -901,13 +901,13 @@ msgstr ""
 #: ../lib/engine/addressbook/evolution/evolution-contact.cpp:231
 #: ../lib/engine/addressbook/ldap/ldap-book.cpp:293
 #: ../lib/engine/presence/local-roster/local-presentity.cpp:196
-#: ../src/endpoints/opal-account.cpp:269
+#: ../src/endpoints/opal-account.cpp:280
 msgid "_Remove"
 msgstr "_Quitar"
 
 #: ../lib/engine/addressbook/evolution/evolution-contact.cpp:233
 #: ../lib/engine/presence/local-roster/local-presentity.cpp:194
-#: ../src/endpoints/opal-account.cpp:267 ../src/gui/main.cpp:1597
+#: ../src/endpoints/opal-account.cpp:278 ../src/gui/main.cpp:1597
 msgid "_Edit"
 msgstr "_Editar"
 
@@ -917,14 +917,14 @@ msgstr "Editar contacto"
 
 #: ../lib/engine/addressbook/evolution/evolution-contact.cpp:323
 #: ../lib/engine/addressbook/evolution/evolution-book.cpp:305
-#: ../src/endpoints/opal-account.cpp:285 ../src/endpoints/opal-bank.cpp:71
+#: ../src/endpoints/opal-account.cpp:296 ../src/endpoints/opal-bank.cpp:73
 msgid "Please update the following fields:"
 msgstr "Actualice los siguientes campos:"
 
 #: ../lib/engine/addressbook/evolution/evolution-contact.cpp:325
 #: ../lib/engine/presence/local-roster/local-presentity.cpp:221
 #: ../lib/engine/presence/local-roster/local-heap.cpp:158
-#: ../src/endpoints/opal-account.cpp:287 ../src/endpoints/opal-bank.cpp:95
+#: ../src/endpoints/opal-account.cpp:298 ../src/endpoints/opal-bank.cpp:97
 msgid "Name:"
 msgstr "Nombre:"
 
@@ -1104,6 +1104,7 @@ msgid "Address Books"
 msgstr "Libretas de direcciones"
 
 #: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:650
+#: ../src/gui/assistant.cpp:1121
 msgid "Full Name"
 msgstr "Nombre completo"
 
@@ -1268,8 +1269,8 @@ msgstr ""
 "sonido."
 
 #: ../src/devices/audio.cpp:476 ../src/devices/audio.cpp:477
-#: ../src/gui/assistant.cpp:900 ../src/gui/assistant.cpp:923
-#: ../src/gui/assistant.cpp:946 ../src/gui/preferences.cpp:752
+#: ../src/gui/assistant.cpp:986 ../src/gui/assistant.cpp:1009
+#: ../src/gui/assistant.cpp:1032 ../src/gui/preferences.cpp:752
 #: ../src/gui/preferences.cpp:776 ../src/gui/preferences.cpp:799
 msgid "No device found"
 msgstr "No se ha encontrado ningún dispositivo"
@@ -1306,57 +1307,57 @@ msgstr "Error en el transporte"
 msgid "Failed"
 msgstr "Falló"
 
-#: ../src/endpoints/opal-account.cpp:259
+#: ../src/endpoints/opal-account.cpp:270
 msgid "_Disable"
 msgstr "_Desactivar"
 
-#: ../src/endpoints/opal-account.cpp:262
+#: ../src/endpoints/opal-account.cpp:273
 msgid "_Enable"
 msgstr "Ac_tivar"
 
-#: ../src/endpoints/opal-account.cpp:283 ../src/endpoints/opal-bank.cpp:70
+#: ../src/endpoints/opal-account.cpp:294 ../src/endpoints/opal-bank.cpp:72
 msgid "Edit account"
 msgstr "Editar cuenta"
 
-#: ../src/endpoints/opal-account.cpp:288 ../src/endpoints/opal-bank.cpp:96
+#: ../src/endpoints/opal-account.cpp:299 ../src/endpoints/opal-bank.cpp:98
 msgid "Host"
 msgstr "Equipo"
 
-#: ../src/endpoints/opal-account.cpp:289 ../src/endpoints/opal-bank.cpp:78
-#: ../src/endpoints/opal-bank.cpp:87 ../src/endpoints/opal-bank.cpp:97
+#: ../src/endpoints/opal-account.cpp:300 ../src/endpoints/opal-bank.cpp:80
+#: ../src/endpoints/opal-bank.cpp:89 ../src/endpoints/opal-bank.cpp:99
 msgid "User:"
 msgstr "Usuario:"
 
-#: ../src/endpoints/opal-account.cpp:290 ../src/endpoints/opal-bank.cpp:98
+#: ../src/endpoints/opal-account.cpp:301 ../src/endpoints/opal-bank.cpp:100
 msgid "Authentication User:"
 msgstr "Usuario para autenticación:"
 
-#: ../src/endpoints/opal-account.cpp:291 ../src/endpoints/opal-bank.cpp:80
-#: ../src/endpoints/opal-bank.cpp:89 ../src/endpoints/opal-bank.cpp:99
+#: ../src/endpoints/opal-account.cpp:302 ../src/endpoints/opal-bank.cpp:82
+#: ../src/endpoints/opal-bank.cpp:91 ../src/endpoints/opal-bank.cpp:101
 msgid "Password:"
 msgstr "Contraseña:"
 
-#: ../src/endpoints/opal-account.cpp:292 ../src/endpoints/opal-bank.cpp:100
+#: ../src/endpoints/opal-account.cpp:303 ../src/endpoints/opal-bank.cpp:102
 msgid "Timeout:"
 msgstr "Tiempo de expiración:"
 
-#: ../src/endpoints/opal-account.cpp:293 ../src/endpoints/opal-bank.cpp:103
+#: ../src/endpoints/opal-account.cpp:304 ../src/endpoints/opal-bank.cpp:105
 msgid "Enable Account"
 msgstr "Activar cuenta"
 
-#: ../src/endpoints/opal-account.cpp:326 ../src/endpoints/opal-bank.cpp:135
+#: ../src/endpoints/opal-account.cpp:337 ../src/endpoints/opal-bank.cpp:140
 msgid "You did not supply a name for that account."
 msgstr "No proporcionó un nombre para la cuenta."
 
-#: ../src/endpoints/opal-account.cpp:328 ../src/endpoints/opal-bank.cpp:137
+#: ../src/endpoints/opal-account.cpp:339 ../src/endpoints/opal-bank.cpp:142
 msgid "You did not supply a host to register to."
 msgstr "No proporcionó un equipo en el que registrarse."
 
-#: ../src/endpoints/opal-account.cpp:330 ../src/endpoints/opal-bank.cpp:139
+#: ../src/endpoints/opal-account.cpp:341 ../src/endpoints/opal-bank.cpp:144
 msgid "You did not supply a user name for that account."
 msgstr "No proporcionó un usuario para la cuenta."
 
-#: ../src/endpoints/opal-account.cpp:332 ../src/endpoints/opal-bank.cpp:141
+#: ../src/endpoints/opal-account.cpp:343 ../src/endpoints/opal-bank.cpp:146
 msgid "The timeout should have a bigger value."
 msgstr "El tiempo de expiración debería tener un valor mayor."
 
@@ -1688,7 +1689,7 @@ msgstr "Cuenta"
 msgid "A"
 msgstr "A"
 
-#: ../src/gui/assistant.cpp:254
+#: ../src/gui/assistant.cpp:259
 msgid ""
 "This is the Ekiga general configuration assistant. The following steps will "
 "set up Ekiga by asking a few simple questions.\n"
@@ -1702,20 +1703,20 @@ msgstr ""
 "Una vez que haya completado los siguientes pasos, usted podrá cambiarlos más "
 "tarde seleccionando Preferencias en el menú Editar."
 
-#: ../src/gui/assistant.cpp:262
+#: ../src/gui/assistant.cpp:267
 msgid "Welcome in Ekiga"
 msgstr "Bienvenido a Ekiga"
 
-#: ../src/gui/assistant.cpp:299 ../src/gui/preferences.cpp:381
+#: ../src/gui/assistant.cpp:301 ../src/gui/preferences.cpp:381
 msgid "Personal Information"
 msgstr "Información personal"
 
 #. The user fields
-#: ../src/gui/assistant.cpp:302
+#: ../src/gui/assistant.cpp:304
 msgid "Please enter your first name and your surname:"
 msgstr "Introduzca su nombre y apellidos:"
 
-#: ../src/gui/assistant.cpp:311
+#: ../src/gui/assistant.cpp:313
 msgid ""
 "Your first name and surname will be used when connecting to other VoIP and "
 "videoconferencing software."
@@ -1723,19 +1724,19 @@ msgstr ""
 "Su nombre y apellidos serán usados al conectarse a otro software de VoIP o "
 "videoconferencia."
 
-#: ../src/gui/assistant.cpp:387
-msgid "ekiga.net Account"
-msgstr "Cuenta de ekiga.net"
+#: ../src/gui/assistant.cpp:408
+msgid "Ekiga.net Account"
+msgstr "Cuenta de Ekiga.net"
 
-#: ../src/gui/assistant.cpp:389
+#: ../src/gui/assistant.cpp:410 ../src/gui/assistant.cpp:524
 msgid "Please enter your username:"
 msgstr "Introduzca su usuario:"
 
-#: ../src/gui/assistant.cpp:397
+#: ../src/gui/assistant.cpp:418 ../src/gui/assistant.cpp:532
 msgid "Please enter your password:"
 msgstr "Introduzca su contraseña:"
 
-#: ../src/gui/assistant.cpp:407
+#: ../src/gui/assistant.cpp:428
 msgid ""
 "The username and password are used to login to your existing account at the "
 "ekiga.net free SIP service. If you do not have an ekiga.net SIP address yet, "
@@ -1753,44 +1754,75 @@ msgstr ""
 "Quizá pueda saltarse este paso si usa un servicio SIP alternativo, o si "
 "preferiría especificar los detalles de inicio de sesión más tarde."
 
-#: ../src/gui/assistant.cpp:424
+#: ../src/gui/assistant.cpp:445
 msgid "Get an ekiga.net SIP account"
 msgstr "Obtener una cuenta SIP de ekiga.net"
 
-#: ../src/gui/assistant.cpp:434
+#: ../src/gui/assistant.cpp:455
 msgid "I do not want to sign up for the ekiga.net free service"
 msgstr "No quiero registrarme en el servicio gratuito ekiga.net"
 
-#: ../src/gui/assistant.cpp:540
+#: ../src/gui/assistant.cpp:522
+msgid "Ekiga Call Out Account"
+msgstr "Cuenta de Ekiga Call out "
+
+#. Introduction label
+#: ../src/gui/assistant.cpp:542 ../src/gui/tools.cpp:318
+msgid ""
+"You can make calls to regular phones and cell numbers worldwide using Ekiga. "
+"To enable this, you need to do three things. First create an account at the "
+"URL below. Then enter your account ID and PIN code. Finally, activate the "
+"registration below.\n"
+"\n"
+"The service will work only if your account is created using the URL in this "
+"dialog."
+msgstr ""
+"Puede hacer llamadas a teléfonos fijos y móviles a lo largo de todo el "
+"planeta usando Ekiga. Para activar esto, necesita hacer tres cosas. Primero "
+"crear una cuenta usando la URL de abajo. Después introduzca su número de "
+"cuenta y la contraseña y, finalmente, active el registro de abajo.\n"
+"\n"
+"El servicio sólo funcionará si su cuenta se crea usando la URL en este "
+"diálogo."
+
+#: ../src/gui/assistant.cpp:555
+msgid "Get an Ekiga Call Out account //FIXME"
+msgstr "Obtener una cuenta de Ekiga Call out"
+
+#: ../src/gui/assistant.cpp:565
+msgid "I do not want to sign up for the Ekiga Call Out service"
+msgstr "No quiero registrarme en el servicio Ekiga Call out"
+
+#: ../src/gui/assistant.cpp:634 ../src/gui/assistant.cpp:1132
 msgid "Connection Type"
 msgstr "Tipo de conexión"
 
 #. The connection type
-#: ../src/gui/assistant.cpp:543
+#: ../src/gui/assistant.cpp:637
 msgid "Please choose your connection type:"
 msgstr "Elija el tipo de conexión:"
 
-#: ../src/gui/assistant.cpp:560
+#: ../src/gui/assistant.cpp:654
 msgid "56k Modem"
 msgstr "Módem de 56Kbps"
 
-#: ../src/gui/assistant.cpp:565
+#: ../src/gui/assistant.cpp:659
 msgid "ISDN"
 msgstr "RDSI"
 
-#: ../src/gui/assistant.cpp:570
+#: ../src/gui/assistant.cpp:664
 msgid "xDSL/Cable"
 msgstr "xDSL/Cable"
 
-#: ../src/gui/assistant.cpp:575
+#: ../src/gui/assistant.cpp:669
 msgid "T1/LAN"
 msgstr "T1/LAN"
 
-#: ../src/gui/assistant.cpp:580
+#: ../src/gui/assistant.cpp:674
 msgid "Keep current settings"
 msgstr "Conservar la configuración actual"
 
-#: ../src/gui/assistant.cpp:585
+#: ../src/gui/assistant.cpp:679
 msgid ""
 "The connection type will permit determining the best quality settings that "
 "Ekiga will use during calls. You can later change the settings individually "
@@ -1800,15 +1832,15 @@ msgstr ""
 "Ekiga usará durante las llamadas. Puede cambiarlos más tarde individualmente "
 "en la ventana de preferencias."
 
-#: ../src/gui/assistant.cpp:677 ../src/gui/preferences.cpp:708
+#: ../src/gui/assistant.cpp:767 ../src/gui/preferences.cpp:708
 msgid "Audio Devices"
 msgstr "Dispositivos de sonido"
 
-#: ../src/gui/assistant.cpp:679
+#: ../src/gui/assistant.cpp:769
 msgid "Please choose the audio ringing device:"
 msgstr "Elija el dispositivo de sonido de llamada:"
 
-#: ../src/gui/assistant.cpp:687
+#: ../src/gui/assistant.cpp:777
 msgid ""
 "The audio ringing device is the device  managed by the audio manager that "
 "will be used to play the ringing sound."
@@ -1817,11 +1849,11 @@ msgstr ""
 "sonido, que se usará para reproducir el timbre de llamada."
 
 #. ---
-#: ../src/gui/assistant.cpp:700
+#: ../src/gui/assistant.cpp:790
 msgid "Please choose the audio output device:"
 msgstr "Elija el dispositivo de salida de sonido:"
 
-#: ../src/gui/assistant.cpp:708
+#: ../src/gui/assistant.cpp:798
 msgid ""
 "The audio output device is the device  managed by the audio manager that "
 "will be used to play audio."
@@ -1830,11 +1862,11 @@ msgstr ""
 "gestor de sonido que se usará para reproducir sonido."
 
 #. ---
-#: ../src/gui/assistant.cpp:721
+#: ../src/gui/assistant.cpp:811
 msgid "Please choose the audio input device:"
 msgstr "Elija el dispositivo de entrada de sonido:"
 
-#: ../src/gui/assistant.cpp:729
+#: ../src/gui/assistant.cpp:819
 msgid ""
 "The audio input device is the device managed by the audio manager that will "
 "be used to record your voice."
@@ -1842,11 +1874,11 @@ msgstr ""
 "El dispositivo de entrada de sonido es el dispositivo manejado por el gestor "
 "de sonido que se utilizará para grabar su voz."
 
-#: ../src/gui/assistant.cpp:827
+#: ../src/gui/assistant.cpp:913
 msgid "Please choose your video input device:"
 msgstr "Elija el dispositivo de entrada de vídeo:"
 
-#: ../src/gui/assistant.cpp:835
+#: ../src/gui/assistant.cpp:921
 msgid ""
 "The video manager is the plugin that will manage your video devices, "
 "Video4Linux is the most common choice if you own a webcam."
@@ -1854,11 +1886,11 @@ msgstr ""
 "El gestor de vídeo es el complemento que manejará sus dispositivos de vídeo, "
 "Video4Linux es la selección más común si tiene una cámara web."
 
-#: ../src/gui/assistant.cpp:980
+#: ../src/gui/assistant.cpp:1063
 msgid "Configuration Complete"
 msgstr "Configuración terminada"
 
-#: ../src/gui/assistant.cpp:982
+#: ../src/gui/assistant.cpp:1065
 msgid ""
 "You have now finished the Ekiga configuration. All the settings can be "
 "changed in the Ekiga preferences. Enjoy!"
@@ -1866,11 +1898,35 @@ msgstr ""
 "Ha terminado de configurar Ekiga. Todos los ajustes se pueden cambiar en las "
 "preferencias de Ekiga."
 
-#: ../src/gui/assistant.cpp:989
+#: ../src/gui/assistant.cpp:1072
 msgid "Configuration summary:"
 msgstr "Resumen de la configuración:"
 
-#: ../src/gui/assistant.cpp:1152
+#: ../src/gui/assistant.cpp:1142
+msgid "Audio Ringing Device"
+msgstr "Dispositivo de llamada de sonido"
+
+#: ../src/gui/assistant.cpp:1151
+msgid "Audio Output Device"
+msgstr "Dispositivo de salida de sonido"
+
+#: ../src/gui/assistant.cpp:1160
+msgid "Audio Input Device"
+msgstr "Dispositivo de entrada de sonido"
+
+#: ../src/gui/assistant.cpp:1169
+msgid "Video Input Device"
+msgstr "Dispositivo de entrada de vídeo"
+
+#: ../src/gui/assistant.cpp:1180 ../src/gui/assistant.cpp:1187
+msgid "SIP URI"
+msgstr "URI SIP"
+
+#: ../src/gui/assistant.cpp:1195
+msgid "Ekiga Call Out"
+msgstr "Ekiga Call out"
+
+#: ../src/gui/assistant.cpp:1236
 #, c-format
 msgid "Ekiga Configuration Assistant (%d of %d)"
 msgstr "Asistente de configuración de Ekiga (%d de %d)"
@@ -2882,9 +2938,9 @@ msgid ""
 "dropped frames in order not to surpass the bitrate limit) or if you prefer "
 "to keep the frame rate."
 msgstr ""
-"Elija si quiere garantizar una calidad de imagen mínima (lo que posiblemente lleve a "
-"fotogramas perdidos para no sobrepasar el límite de la tasa de bits) o si prefiere "
-"mantener la tasa de fotogramas."
+"Elija si quiere garantizar una calidad de imagen mínima (lo que posiblemente "
+"lleve a fotogramas perdidos para no sobrepasar el límite de la tasa de bits) "
+"o si prefiere mantener la tasa de fotogramas."
 
 #: ../src/gui/preferences.cpp:1016
 msgid "Maximum video _bitrate (in kbits/s):"
@@ -2896,9 +2952,9 @@ msgid ""
 "frame rate will be dynamically adjusted to keep the bitrate at the given "
 "value."
 msgstr ""
-"El máximo ancho de banda destinado al vídeo en Kbits/s. La calidad del vídeo y la tasa de "
-"fotogramas efectiva se ajustarán dinámicamente para mantener la tasa de bits al valor "
-"dato."
+"El máximo ancho de banda destinado al vídeo en Kbits/s. La calidad del vídeo "
+"y la tasa de fotogramas efectiva se ajustarán dinámicamente para mantener la "
+"tasa de bits al valor dato."
 
 #: ../src/gui/preferences.cpp:1414
 msgid "Play sound for new voice mails"
@@ -2955,25 +3011,6 @@ msgstr "Vídeo"
 #: ../src/gui/tools.cpp:313 ../src/gui/tools.cpp:327
 msgid "PC-To-Phone Settings"
 msgstr "Ajustes PC-To-Phone"
-
-#. Introduction label
-#: ../src/gui/tools.cpp:318
-msgid ""
-"You can make calls to regular phones and cell numbers worldwide using Ekiga. "
-"To enable this, you need to do three things. First create an account at the "
-"URL below. Then enter your account ID and PIN code. Finally, activate the "
-"registration below.\n"
-"\n"
-"The service will work only if your account is created using the URL in this "
-"dialog."
-msgstr ""
-"Puede hacer llamadas a teléfonos fijos y móviles a lo largo de todo el "
-"planeta usando Ekiga. Para activar esto, necesita hacer tres cosas. Primero "
-"crear una cuenta usando la URL de abajo. Después introduzca su número de "
-"cuenta y la contraseña y, finalmente, active el registro de abajo.\n"
-"\n"
-"El servicio sólo funcionará si su cuenta se crea usando la URL en este "
-"diálogo."
 
 #: ../src/gui/tools.cpp:329
 msgid "Account _ID:"
