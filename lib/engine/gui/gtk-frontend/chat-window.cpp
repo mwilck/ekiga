@@ -52,7 +52,18 @@ struct _ChatWindowPrivate
   GtkWidget* notebook;
 };
 
+enum {
+  UNREAD_COUNT,
+  LAST_SIGNAL
+};
+
+static guint signals[LAST_SIGNAL] = { 0 };
+
 static GObjectClass* parent_class = NULL;
+
+/* helper (declaration) */
+
+static void update_unread (ChatWindow* self);
 
 /* signal callbacks (declarations) */
 
@@ -77,6 +88,32 @@ static bool on_multiple_chat_added (ChatWindow* self,
 				    bool on_user_request,
 				    Ekiga::MultipleChat &chat);
 
+/* helper (implementation) */
+
+static void
+update_unread (ChatWindow* self)
+{
+  guint unread_count = 0;
+  GtkWidget* page = NULL;
+  GtkWidget* label = NULL;
+
+  for (gint ii = 0;
+       ii < gtk_notebook_get_n_pages (GTK_NOTEBOOK (self->priv->notebook)) ;
+       ii++) {
+
+    page
+      = gtk_notebook_get_nth_page (GTK_NOTEBOOK (self->priv->notebook), ii);
+    label = gtk_notebook_get_tab_label (GTK_NOTEBOOK (self->priv->notebook),
+					page);
+    unread_count
+      = unread_count
+      + GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (label), "unread-count"));
+
+  }
+
+  g_signal_emit (self, signals[UNREAD_COUNT], 0, unread_count);
+}
+
 /* signal callbacks (implementations) */
 
 static void
@@ -97,6 +134,8 @@ on_switch_page (G_GNUC_UNUSED GtkNotebook* notebook,
 						       "base-title"));
   g_object_set_data (G_OBJECT (label), "unread-count",
 		     GUINT_TO_POINTER (0));
+
+  update_unread (self);
 }
 
 static gboolean
@@ -118,6 +157,8 @@ on_focus_in_event (G_GNUC_UNUSED GtkWidget* widget,
 						       "base-title"));
   g_object_set_data (G_OBJECT (label), "unread-count",
 		     GUINT_TO_POINTER (0));
+
+  update_unread (self);
 
   return FALSE;
 }
@@ -162,6 +203,8 @@ on_message_notice_event (GtkWidget* page,
     txt = g_strdup_printf ("[%d] %s", unread_count, base_title);
     gtk_label_set_text (GTK_LABEL (label), txt);
     g_free (txt);
+
+    update_unread (self);
   }
 }
 
@@ -237,6 +280,7 @@ on_multiple_chat_added (ChatWindow* self,
 }
 
 /* GObject code */
+
 static void
 chat_window_dispose (GObject* obj)
 {
@@ -278,6 +322,7 @@ static void
 chat_window_class_init (gpointer g_class,
 			G_GNUC_UNUSED gpointer class_data)
 {
+  ChatWindowClass* chat_window_class = NULL;
   GObjectClass* gobject_class = NULL;
 
   parent_class = (GObjectClass*) g_type_class_peek_parent (g_class);
@@ -285,6 +330,20 @@ chat_window_class_init (gpointer g_class,
   gobject_class = (GObjectClass*) g_class;
   gobject_class->dispose = chat_window_dispose;
   gobject_class->finalize = chat_window_finalize;
+
+  signals[UNREAD_COUNT] =
+    g_signal_new ("unread-count",
+		  G_OBJECT_CLASS_TYPE (gobject_class),
+		  G_SIGNAL_RUN_LAST,
+		  G_STRUCT_OFFSET (ChatWindowClass, unread_count),
+		  NULL, NULL,
+		  g_cclosure_marshal_VOID__UINT,
+		  G_TYPE_NONE, 1,
+		  G_TYPE_UINT);
+
+  /* FIXME: is it useful? */
+  chat_window_class = (ChatWindowClass*)g_class;
+  chat_window_class->unread_count = NULL;
 }
 
 static void

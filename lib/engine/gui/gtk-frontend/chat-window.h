@@ -61,6 +61,10 @@ struct _ChatWindow
 struct _ChatWindowClass
 {
   GmWindowClass parent;
+
+  /* this is the "unread-count" signal */
+  void (*unread_count) (ChatWindow* self,
+			guint unread_count);
 };
 
 #define CHAT_WINDOW_TYPE (chat_window_get_type ())
