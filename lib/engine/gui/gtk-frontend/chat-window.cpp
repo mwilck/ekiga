@@ -183,7 +183,8 @@ on_message_notice_event (GtkWidget* page,
   }
 
   if (num
-      != gtk_notebook_get_current_page (GTK_NOTEBOOK (self->priv->notebook))) {
+      != gtk_notebook_get_current_page (GTK_NOTEBOOK (self->priv->notebook))
+      || !gtk_window_is_active (GTK_WINDOW (self))) {
 
     GtkWidget* label = NULL;
     guint unread_count = 0;
@@ -203,9 +204,9 @@ on_message_notice_event (GtkWidget* page,
     txt = g_strdup_printf ("[%d] %s", unread_count, base_title);
     gtk_label_set_text (GTK_LABEL (label), txt);
     g_free (txt);
-
-    update_unread (self);
   }
+
+  update_unread (self);
 }
 
 static bool
