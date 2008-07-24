@@ -55,10 +55,13 @@ namespace Opal
   {
 public:
 
+    typedef enum { SIP, Ekiga, DiamondCard, H323 } Type;
+
     Account (Ekiga::ServiceCore & core, 
              const std::string & account);
 
     Account (Ekiga::ServiceCore & core,
+             Type t,
              std::string name, 
              std::string host,
              std::string user,
@@ -103,7 +106,7 @@ public:
     const std::string as_string () const;
 
     sigc::signal<void> trigger_saving;
-    
+ 
 private:
     void on_edit_form_submitted (Ekiga::Form &result);
 

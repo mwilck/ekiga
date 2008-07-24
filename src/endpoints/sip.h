@@ -134,7 +134,7 @@ namespace Opal {
       /* OPAL Methods */
       void ShutDown ();
 
-      void Register (const Ekiga::Account & account);
+      void Register (const Opal::Account & account);
 
       void OnRegistered (const PString & aor,
                          bool wasRegistering);
@@ -172,7 +172,6 @@ namespace Opal {
       std::list<std::string> subscribed_uris;    // List of subscribed uris
       std::list<std::string> domains; // List of registered domains
       std::list<std::string> aors;     // List of registered aor
-      std::map<std::string, const Opal::Account *> accounts;
       Ekiga::ServiceCore & core;
       Ekiga::PresenceCore & presence_core;
       Ekiga::Runtime & runtime;

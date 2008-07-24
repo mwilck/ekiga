@@ -79,7 +79,7 @@ namespace Opal {
 
     public:
 
-      subscriber (const Ekiga::Account & _account,
+      subscriber (const Opal::Account & _account,
                   Opal::H323::CallProtocolManager & ep) 
         : PThread (1000, AutoDeleteThread),
         account (_account),
@@ -90,16 +90,11 @@ namespace Opal {
 
       void Main () 
         {
-          endpoint.Register (account.get_host (), 
-                             account.get_authentication_username (), 
-                             account.get_password (), 
-                             PString (), 
-                             account.get_timeout (), 
-                             false);
+          endpoint.Register (account);
         };
 
     private:
-      const Ekiga::Account & account;
+      const Opal::Account & account;
       Opal::H323::CallProtocolManager & endpoint;
     };
   };
@@ -282,49 +277,43 @@ bool CallProtocolManager::subscribe (const Opal::Account & account)
   if (account.get_protocol_name () != "H323")
     return false;
 
-  /* Signal */
   new subscriber (account, *this);
 
   return true;
 }
 
 
-bool CallProtocolManager::unsubscribe (const Opal::Account & /*account*/)
+bool CallProtocolManager::unsubscribe (const Opal::Account & account)
 {
+  if (account.get_protocol_name () != "H323")
+    return false;
+
+  new subscriber (account, *this);
+
   return true;
 }
 
 
-void CallProtocolManager::Register (const PString & host,
-                                    const PString & authUserName,
-                                    const PString & password,
-                                    const PString & gatekeeperID,
-                                    unsigned int expires,
-                                    bool unregister)
+void CallProtocolManager::Register (const Opal::Account & account)
 {
-  PString info;
-  PString aor = authUserName + "@" + host;
+  PString gatekeeperID;
+  std::string info;
+  std::string aor = account.get_aor ();
 
-  bool result = false;
+  bool unregister = !account.is_enabled ();
 
-  if (!unregister && !IsRegisteredWithGatekeeper (host)) {
+  if (!unregister && !IsRegisteredWithGatekeeper (account.get_host ())) {
 
     H323EndPoint::RemoveGatekeeper (0);
 
-    /* Signal */
-/*    runtime.run_in_main (sigc::bind (account_core.registration_event.make_slot (), 
-                                     aor,
-                                     Ekiga::AccountCore::Processing,
-                                     std::string ()));
-*/
-    if (!authUserName.IsEmpty ()) {
-      SetLocalUserName (authUserName);
+    if (!account.get_username ().empty ()) {
+      SetLocalUserName (account.get_username ());
       AddAliasName (endpoint.GetDefaultDisplayName ());
     }
 
-    SetGatekeeperPassword (password);
-    SetGatekeeperTimeToLive (expires * 1000);
-    result = UseGatekeeper (host, gatekeeperID);
+    SetGatekeeperPassword (account.get_password ());
+    SetGatekeeperTimeToLive (account.get_timeout () * 1000);
+    bool result = UseGatekeeper (account.get_host (), gatekeeperID);
 
     /* There was an error (missing parameter or registration failed)
        or the user chose to not register */
@@ -333,7 +322,7 @@ void CallProtocolManager::Register (const PString & host,
       /* Registering failed */
       if (gatekeeper) {
 
-        switch (gatekeeper->GetRegistrationFailReason()) {
+        switch (gatekeeper->GetRegistrationFailReason ()) {
 
         case H323Gatekeeper::DuplicateAlias :
           info = _("Duplicate alias");
@@ -360,36 +349,27 @@ void CallProtocolManager::Register (const PString & host,
       else
         info = _("Failed");
 
-      /*
-      runtime.run_in_main (sigc::bind (account_core.registration_event.make_slot (), 
-                                       aor, 
+      /* Signal */
+      runtime.run_in_main (sigc::bind (registration_event.make_slot (), &account,
                                        Ekiga::AccountCore::RegistrationFailed,
                                        info));
-    */
     }
     else {
 
-      /* Signal */
-      /*
-      runtime.run_in_main (sigc::bind (account_core.registration_event.make_slot (), 
-                                       aor,
+      runtime.run_in_main (sigc::bind (registration_event.make_slot (), &account,
                                        Ekiga::AccountCore::Registered,
                                        std::string ()));
-                                       */
     }
   }
-  else if (unregister && IsRegisteredWithGatekeeper (host)) {
+  else if (unregister && IsRegisteredWithGatekeeper (account.get_host ())) {
 
     H323EndPoint::RemoveGatekeeper (0);
-    RemoveAliasName (authUserName);
+    RemoveAliasName (account.get_username ());
 
     /* Signal */
-    /*
-    runtime.run_in_main (sigc::bind (account_core.registration_event.make_slot (), 
-                                     aor,
+    runtime.run_in_main (sigc::bind (registration_event.make_slot (), &account,
                                      Ekiga::AccountCore::Unregistered,
                                      std::string ()));
-                                     */
   }
 }
 

@@ -86,7 +86,7 @@ namespace Opal {
       PCLASSINFO(subscriber, PThread);
 
     public:
-      subscriber (const Ekiga::Account & _account,
+      subscriber (const Opal::Account & _account,
                   Opal::Sip::CallProtocolManager & ep) 
         : PThread (1000, AutoDeleteThread),
         account (_account),
@@ -101,7 +101,7 @@ namespace Opal {
         };
 
     private:
-      const Ekiga::Account & account;
+      const Opal::Account & account;
       Opal::Sip::CallProtocolManager & endpoint;
     };
   };
@@ -452,7 +452,6 @@ bool CallProtocolManager::subscribe (const Opal::Account & account)
     return false;
 
   new subscriber (account, *this);
-  accounts [account.get_aor ()] = &account;
   return true;
 }
 
@@ -463,7 +462,6 @@ bool CallProtocolManager::unsubscribe (const Opal::Account & account)
     return false;
 
   new subscriber (account, *this);
-  accounts.erase (account.get_aor ());
   return true;
 }
 
@@ -484,7 +482,7 @@ void CallProtocolManager::ShutDown ()
 }
 
 
-void CallProtocolManager::Register (const Ekiga::Account & account)
+void CallProtocolManager::Register (const Opal::Account & account)
 {
   std::stringstream aor;
   

@@ -112,6 +112,7 @@ Opal::Account::Account (Ekiga::ServiceCore & _core,
 
 
 Opal::Account::Account (Ekiga::ServiceCore & _core,
+                        Type t,
                         std::string _name, 
                         std::string _host,
                         std::string _username,
@@ -125,7 +126,7 @@ Opal::Account::Account (Ekiga::ServiceCore & _core,
   enabled = _enabled;
   aid = (const char *) PGloballyUniqueID ().AsString ();
   name = _name;
-  protocol_name = "SIP";
+  protocol_name = (t == H323) ? "H323" : "SIP";
   host = _host;
   username = _username;
   auth_username = _auth_username;
@@ -172,7 +173,7 @@ const std::string Opal::Account::get_aor () const
 {
   std::stringstream str;
 
-  str << "sip:" << username << "@" << host;
+  str << (protocol_name == "SIP" ? "sip:" : "h323:") << username << "@" << host;
 
   return str.str ();
 }

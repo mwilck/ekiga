@@ -67,6 +67,7 @@ on_call_manager_ready_cb (Ekiga::ServiceCore *core)
   Opal::Bank *bank = new Bank (*core);
 
   account_core->add_bank (*bank);
+  core->add (*bank);
 }
 
 bool
@@ -98,12 +99,12 @@ opal_init (Ekiga::ServiceCore &core,
   call_manager->add_protocol_manager (*h323_manager);
 
   call_core->add_manager (*call_manager);
-  core.add (*call_manager); // FIXME temporary
+
   account_core->add_account_subscriber (*sip_manager);
+  account_core->add_account_subscriber (*h323_manager);
 
   new ConfBridge (*call_manager);
   call_manager->start ();
-  // FIXME Service ?
 
   // Add the bank of accounts when the CallManager is ready
   call_manager->ready.connect (sigc::bind (sigc::ptr_fun (on_call_manager_ready_cb), &core));

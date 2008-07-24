@@ -99,12 +99,7 @@ namespace Opal {
       bool unsubscribe (const Opal::Account & account);
 
       /* OPAL methods */
-      void Register (const PString & aor,
-                     const PString & authUserName,
-                     const PString & password,
-                     const PString & gatekeeperID,
-                     unsigned int expires,
-                     bool unregister);
+      void Register (const Opal::Account & account);
 
   private:
       bool UseGatekeeper (const PString & address = PString::Empty (),

@@ -66,16 +66,15 @@ public:
     const std::string get_description () const
     { return "\tStores the call history"; }
 
-    typedef enum { SIP, Ekiga, DiamondCard } Type;
-
-    void new_account (Type t,
+    void new_account (Account::Type t,
                       std::string username = "",
                       std::string password = "");
 
 private:
-    void on_new_account_form_submitted (Ekiga::Form & form, Type t);
+    void on_new_account_form_submitted (Ekiga::Form & form, Account::Type t);
 
-    void add (std::string name, 
+    void add (Account::Type t,
+              std::string name, 
               std::string host,
               std::string user,
               std::string auth_user,
