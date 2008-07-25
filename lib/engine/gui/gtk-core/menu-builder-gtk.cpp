@@ -113,6 +113,25 @@ MenuBuilderGtk::add_separator ()
   }
 }
 
+void
+MenuBuilderGtk::add_ghost (const std::string icon,
+			   const std::string label)
+{
+  GtkWidget *item = NULL;
+  GtkWidget *image = NULL;
+
+  nbr_elements++;
+  last_was_separator = false;
+
+  item = gtk_image_menu_item_new_with_mnemonic (label.c_str ());
+  image = gtk_image_new_from_stock (icon.c_str (), GTK_ICON_SIZE_MENU);
+  if (image)
+    gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (item), image);
+
+  gtk_widget_set_sensitive (GTK_WIDGET (item), FALSE);
+
+  gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+}
 
 int
 MenuBuilderGtk::size () const

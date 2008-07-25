@@ -57,6 +57,13 @@ Ekiga::MenuBuilder::add_separator ()
 }
 
 
+void
+Ekiga::MenuBuilder::add_ghost (const std::string /*icon*/,
+			       const std::string /*label*/)
+{
+  // nothing
+}
+
 bool
 Ekiga::MenuBuilder::empty () const
 {

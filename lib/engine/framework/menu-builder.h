@@ -83,6 +83,9 @@ namespace Ekiga
 
     virtual void add_separator ();
 
+    virtual void add_ghost (const std::string icon,
+			    const std::string label);
+
     virtual bool empty () const;
 
     virtual int size () const;

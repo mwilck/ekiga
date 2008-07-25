@@ -59,6 +59,9 @@ public:
 
   void add_separator ();
 
+  void add_ghost (const std::string icon,
+		  const std::string label);
+
   int size () const;
 
   GtkWidget *menu;
