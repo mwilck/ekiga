@@ -186,7 +186,7 @@ bool CallProtocolManager::populate_menu (Ekiga::Presentity& presentity,
 }
 
 
-bool CallProtocolManager::menu_builder_add_actions (const std::string& /*fullname*/,
+bool CallProtocolManager::menu_builder_add_actions (const std::string& fullname,
                                                     std::map<std::string,std::string> & uris,
                                                     Ekiga::MenuBuilder & builder)
 {
@@ -197,12 +197,19 @@ bool CallProtocolManager::menu_builder_add_actions (const std::string& /*fullnam
        iter != uris.end ();
        iter++) {
 
-    std::string action = _("Call");
+    std::string call_action = _("Call");
+    std::string msg_action = _("Message");
 
-    if (!iter->first.empty ())
-      action = action + " [" + iter->first + "]";
+    if (!iter->first.empty ()) {
 
-    builder.add_action ("call", action, sigc::bind (sigc::mem_fun (this, &CallProtocolManager::on_dial), iter->second));
+      call_action = call_action + " [" + iter->first + "]";
+      msg_action = msg_action + " [" + iter->first + "]";
+    }
+
+    builder.add_action ("call", call_action,
+			sigc::bind (sigc::mem_fun (this, &CallProtocolManager::on_dial), iter->second));
+    builder.add_action ("message", msg_action,
+			sigc::bind (sigc::mem_fun (this, &CallProtocolManager::on_message), iter->second, fullname));
 
     populated = true;
   }
@@ -973,4 +980,10 @@ CallProtocolManager::OnPresenceInfoReceived (const PString & user,
 void CallProtocolManager::on_dial (std::string uri)
 {
   endpoint.dial (uri);
+}
+
+void CallProtocolManager::on_message (std::string uri,
+				      std::string name)
+{
+  dialect->start_chat_with (uri, name);
 }

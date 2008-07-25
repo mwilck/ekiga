@@ -163,6 +163,8 @@ namespace Opal {
       /* Callbacks */
   private:
       void on_dial (std::string uri);
+      void on_message (std::string uri,
+		       std::string name);
 
       PMutex msgDataMutex;
       msgDict msgData;

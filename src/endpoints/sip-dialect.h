@@ -43,9 +43,7 @@
 
 namespace SIP
 {
-  class Dialect:
-    public Ekiga::DialectImpl<SimpleChat>,
-    public Ekiga::PresentityDecorator
+  class Dialect: public Ekiga::DialectImpl<SimpleChat>
   {
   public:
     Dialect (Ekiga::ServiceCore& core_,
@@ -64,9 +62,8 @@ namespace SIP
 
     bool populate_menu (Ekiga::MenuBuilder& builder);
 
-    bool populate_menu (Ekiga::Presentity& presentity,
-			const std::string uri,
-			Ekiga::MenuBuilder &builder);
+    void start_chat_with (std::string uri,
+			  std::string name);
 
   private:
     Ekiga::ServiceCore& core;

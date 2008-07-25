@@ -43,12 +43,6 @@ SIP::Dialect::Dialect (Ekiga::ServiceCore& core_,
 		       sigc::slot<bool, std::string, std::string> sender_)
   : core(core_), sender(sender_)
 {
-  Ekiga::PresenceCore *presence_core = NULL;
-
-  presence_core =
-    dynamic_cast<Ekiga::PresenceCore *> (core.get ("presence-core"));
-
-  presence_core->add_presentity_decorator (*this);
 }
 
 SIP::Dialect::~Dialect ()
@@ -85,17 +79,11 @@ SIP::Dialect::populate_menu (Ekiga::MenuBuilder& /*builder*/)
   return false;
 }
 
-bool
-SIP::Dialect::populate_menu (Ekiga::Presentity& presentity,
-			     const std::string uri,
-			     Ekiga::MenuBuilder &builder)
+void
+SIP::Dialect::start_chat_with (std::string uri,
+			       std::string name)
 {
-  std::string action = _("Message");
-  std::string name = presentity.get_name ();
-
-  builder.add_action ("message", action, sigc::hide_return (sigc::bind (sigc::mem_fun (this, &SIP::Dialect::open_chat_with), uri, name, true)));
-
-  return true;
+  (void)open_chat_with (uri, name, true);
 }
 
 SIP::SimpleChat*
