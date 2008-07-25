@@ -41,6 +41,7 @@
 
 #include "call-history-view-gtk.h"
 
+#include "menu-builder-tools.h"
 #include "menu-builder-gtk.h"
 #include "gm-cell-renderer-bitext.h"
 #include "gmstockicons.h"
@@ -140,39 +141,49 @@ on_clicked (GtkWidget *tree,
   book = (History::Book*)data;
   model = gtk_tree_view_get_model (GTK_TREE_VIEW (tree));
 
-  if (event->type == GDK_BUTTON_PRESS || event->type == GDK_KEY_PRESS) {
 
-    if (event->button == 3) {
+  if (gtk_tree_view_get_path_at_pos (GTK_TREE_VIEW (tree),
+				     (gint) event->x, (gint) event->y,
+				     &path, NULL, NULL, NULL)) {
 
-      MenuBuilderGtk builder;
-      if (gtk_tree_view_get_path_at_pos (GTK_TREE_VIEW (tree),
-					 (gint) event->x, (gint) event->y,
-					 &path, NULL, NULL, NULL)) {
+    if (gtk_tree_model_get_iter (model, &iter, path)) {
 
-	if (gtk_tree_model_get_iter (model, &iter, path)) {
+      gtk_tree_model_get (model, &iter,
+			  COLUMN_CONTACT, &contact,
+			  -1);
 
-	  gtk_tree_model_get (model, &iter,
-			      COLUMN_CONTACT, &contact,
-			      -1);
 
-	  if (contact != NULL)
-	    contact->populate_menu (builder);
+      if (event->type == GDK_BUTTON_PRESS && event->button == 3) {
+
+	MenuBuilderGtk builder;
+	if (contact != NULL)
+	  contact->populate_menu (builder);
+	if (!builder.empty())
+	  builder.add_separator ();
+	builder.add_action ("clear", _("Clear"),
+			    sigc::mem_fun (book, &History::Book::clear));
+	gtk_widget_show_all (builder.menu);
+	gtk_menu_popup (GTK_MENU (builder.menu), NULL, NULL,
+			NULL, NULL, event->button, event->time);
+	g_signal_connect (G_OBJECT (builder.menu), "hide",
+			  GTK_SIGNAL_FUNC (g_object_unref),
+			  (gpointer) builder.menu);
+	g_object_ref_sink (G_OBJECT (builder.menu));
+      }
+      if (event->type == GDK_2BUTTON_PRESS) {
+
+	if (contact != NULL) {
+
+	  Ekiga::TriggerMenuBuilder builder;
+
+	  contact->populate_menu (builder);
 	}
       }
-      if (!builder.empty())
-	builder.add_separator ();
-      builder.add_action ("clear", _("Clear"),
-			  sigc::mem_fun (book, &History::Book::clear));
-      gtk_widget_show_all (builder.menu);
-      gtk_menu_popup (GTK_MENU (builder.menu), NULL, NULL,
-		      NULL, NULL, event->button, event->time);
-      g_signal_connect (G_OBJECT (builder.menu), "hide",
-			GTK_SIGNAL_FUNC (g_object_unref),
-			(gpointer) builder.menu);
-      g_object_ref_sink (G_OBJECT (builder.menu));
 
     }
+    gtk_tree_path_free (path);
   }
+
   return TRUE;
 }
 
