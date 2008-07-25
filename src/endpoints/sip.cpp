@@ -198,16 +198,26 @@ bool CallProtocolManager::menu_builder_add_actions (const std::string& fullname,
        iter++) {
 
     std::string call_action = _("Call");
+    std::string forward_action = _("Forward");
     std::string msg_action = _("Message");
 
     if (!iter->first.empty ()) {
 
       call_action = call_action + " [" + iter->first + "]";
+      forward_action = forward_action + " [" + iter->first + "]";
       msg_action = msg_action + " [" + iter->first + "]";
     }
 
-    builder.add_action ("call", call_action,
-			sigc::bind (sigc::mem_fun (this, &CallProtocolManager::on_dial), iter->second));
+    if (0 == GetConnectionCount ()) {
+
+      builder.add_action ("call", call_action,
+			  sigc::bind (sigc::mem_fun (this, &CallProtocolManager::on_dial), iter->second));
+    } else {
+
+      builder.add_action ("forward", forward_action,
+			  sigc::bind (sigc::mem_fun (this, &CallProtocolManager::on_forward), iter->second));
+    }
+
     builder.add_action ("message", msg_action,
 			sigc::bind (sigc::mem_fun (this, &CallProtocolManager::on_message), iter->second, fullname));
 
@@ -986,4 +996,13 @@ void CallProtocolManager::on_message (std::string uri,
 				      std::string name)
 {
   dialect->start_chat_with (uri, name);
+}
+
+void CallProtocolManager::on_forward (std::string uri)
+{
+  PStringList connections = GetAllConnections ();
+  /* FIXME : we don't handle several connections here */
+  PSafePtr<OpalConnection> connection = GetConnectionWithLock (connections[0]);
+
+  connection->ForwardCall (uri);
 }
