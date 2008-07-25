@@ -40,9 +40,10 @@
 #include <algorithm>
 #include <iostream>
 
-#include "gmstockicons.h"
-
 #include "book-view-gtk.h"
+
+#include "gmstockicons.h"
+#include "menu-builder-tools.h"
 #include "menu-builder-gtk.h"
 
 /*
@@ -341,42 +342,44 @@ on_contact_clicked (GtkWidget *tree_view,
   GtkTreeModel *model = NULL;
   Ekiga::Contact *contact = NULL;
 
-  if (event->type == GDK_BUTTON_PRESS || event->type == GDK_KEY_PRESS) {
+  if (gtk_tree_view_get_path_at_pos (GTK_TREE_VIEW (tree_view),
+				     (gint) event->x, (gint) event->y,
+				     &path, NULL, NULL, NULL)) {
 
-    if (event->button == 3) {
+    model
+      = gtk_tree_view_get_model (BOOK_VIEW_GTK (data)->priv->tree_view);
 
-      if (gtk_tree_view_get_path_at_pos (GTK_TREE_VIEW (tree_view),
-					 (gint) event->x, (gint) event->y,
-					 &path, NULL, NULL, NULL)) {
+    if (gtk_tree_model_get_iter (model, &iter, path)) {
 
-	model
-	  = gtk_tree_view_get_model (BOOK_VIEW_GTK (data)->priv->tree_view);
+      gtk_tree_model_get (model, &iter,
+			  COLUMN_CONTACT_POINTER, &contact,
+			  -1);
 
-	if (gtk_tree_model_get_iter (model, &iter, path)) {
+      if (contact != NULL) {
 
-	  gtk_tree_model_get (model, &iter,
-			      COLUMN_CONTACT_POINTER, &contact,
-			      -1);
+	if (event->type == GDK_BUTTON_PRESS && event->button == 3) {
 
-	  if (contact) {
+	  MenuBuilderGtk builder;
+	  contact->populate_menu (builder);
+	  if (!builder.empty ()) {
 
-	    MenuBuilderGtk builder;
-	    contact->populate_menu (builder);
-	    if (!builder.empty ()) {
-
-	      gtk_widget_show_all (builder.menu);
-	      gtk_menu_popup (GTK_MENU (builder.menu), NULL, NULL,
-			      NULL, NULL, event->button, event->time);
-	      g_signal_connect (G_OBJECT (builder.menu), "hide",
-				GTK_SIGNAL_FUNC (g_object_unref),
-				(gpointer) builder.menu);
-	    }
-	    g_object_ref_sink (G_OBJECT (builder.menu));
+	    gtk_widget_show_all (builder.menu);
+	    gtk_menu_popup (GTK_MENU (builder.menu), NULL, NULL,
+			    NULL, NULL, event->button, event->time);
+	    g_signal_connect (G_OBJECT (builder.menu), "hide",
+			      GTK_SIGNAL_FUNC (g_object_unref),
+			      (gpointer) builder.menu);
 	  }
+	  g_object_ref_sink (G_OBJECT (builder.menu));
+	} else if (event->type == GDK_2BUTTON_PRESS) {
+
+	  Ekiga::TriggerMenuBuilder builder;
+
+	  contact->populate_menu (builder);
 	}
-	gtk_tree_path_free (path);
       }
     }
+    gtk_tree_path_free (path);
   }
 
   return TRUE;
@@ -434,8 +437,8 @@ book_view_gtk_update_contact (BookViewGtk *self,
                                  GM_STOCK_PHONE_PICK_UP_16,
                                  GTK_ICON_SIZE_MENU, NULL);
 
-  gtk_list_store_set (store, iter, 
-                      COLUMN_PHONE, phone.c_str (), 
+  gtk_list_store_set (store, iter,
+                      COLUMN_PHONE, phone.c_str (),
                       COLUMN_PIXBUF, icon, -1);
 
   g_object_unref (icon);
@@ -585,7 +588,7 @@ GtkWidget *
 book_view_gtk_new (Ekiga::Book &book)
 {
   BookViewGtk *result = NULL;
-  
+
   GtkWidget *label = NULL;
   GtkWidget *hbox = NULL;
   GtkWidget *button = NULL;
@@ -684,7 +687,7 @@ book_view_gtk_new (Ekiga::Book &book)
   gtk_tree_view_append_column (GTK_TREE_VIEW (result->priv->tree_view), column);
   g_object_set (G_OBJECT (renderer), "foreground", "darkgray", NULL);
 
-  
+
   /* The Search Box */
   hbox = gtk_hbox_new (FALSE, 0);
   result->priv->entry = gtk_entry_new ();
@@ -694,9 +697,9 @@ book_view_gtk_new (Ekiga::Book &book)
   gtk_box_pack_start (GTK_BOX (hbox), result->priv->entry, TRUE, TRUE, 2);
   gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 2);
   gtk_box_pack_start (GTK_BOX (result->priv->vbox), hbox, FALSE, FALSE, 0);
-  g_signal_connect (result->priv->entry, "activate", 
+  g_signal_connect (result->priv->entry, "activate",
                     G_CALLBACK (on_entry_activated_cb), result);
-  g_signal_connect (button, "clicked", 
+  g_signal_connect (button, "clicked",
                     G_CALLBACK (on_button_clicked_cb), result);
 
 
