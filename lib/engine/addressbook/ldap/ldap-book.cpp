@@ -48,7 +48,7 @@
 
 #include "ldap-book.h"
 #include "form-request-simple.h"
-
+#include "robust-xml.h"
 
 /* little helper function... can probably be made more complete */
 static const std::string
@@ -69,25 +69,6 @@ fix_to_utf8 (const std::string str)
   g_free (utf8_str);
 
   return result;
-}
-
-/* another helper, which helps avoid crashes */
-static void
-robust_xmlNodeSetContent (xmlNodePtr parent,
-			  xmlNodePtr* child,
-			  const std::string& name,
-			  const std::string& value)
-{
-  if (*child == NULL) {
-
-    *child = xmlNewChild (parent, NULL,
-			  BAD_CAST name.c_str (),
-			  BAD_CAST value.c_str ());
-  } else {
-
-    xmlNodeSetContent (*child, xmlEncodeSpecialChars ((*child)->doc,
-						      BAD_CAST value.c_str ()));
-  }
 }
 
 /* parses a message to construct a nice contact */
