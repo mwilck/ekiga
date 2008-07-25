@@ -43,9 +43,8 @@
 OPENLDAP::Contact::Contact (Ekiga::ServiceCore &_core,
 			    const std::string _name,
 			    const std::string _uri)
-  : core(_core), name(_name)
+  : core(_core), name(_name), uri(_uri)
 {
-  uris[""] = _uri;
 }
 
 
@@ -65,12 +64,6 @@ OPENLDAP::Contact::get_groups () const
   return std::set<std::string>();
 }
 
-const std::map<std::string, std::string>
-OPENLDAP::Contact::get_uris () const
-{
-  return uris;
-}
-
 bool
 OPENLDAP::Contact::populate_menu (Ekiga::MenuBuilder &builder)
 {
@@ -80,7 +73,7 @@ OPENLDAP::Contact::populate_menu (Ekiga::MenuBuilder &builder)
    * (before or after the uri-specific actions)
    */
 
-  return contact_core->populate_contact_menu (*this, builder);
+  return contact_core->populate_contact_menu (*this, uri, builder);
 }
 
 bool

@@ -149,24 +149,23 @@ Ekiga::ContactCore::on_contact_updated (Book &book,
 void
 Ekiga::ContactCore::add_contact_decorator (ContactDecorator &decorator)
 {
-  contact_decorators.insert (&decorator);
+  contact_decorators.push_back (&decorator);
 }
 
 
 bool
 Ekiga::ContactCore::populate_contact_menu (Contact &contact,
+					   const std::string uri,
 					   MenuBuilder &builder)
 {
   bool populated = false;
 
-  for (std::set<ContactDecorator *>::const_iterator iter
+  for (std::list<ContactDecorator *>::const_iterator iter
 	 = contact_decorators.begin ();
        iter != contact_decorators.end ();
        iter++) {
 
-    if (populated)
-      builder.add_separator ();
-    populated = (*iter)->populate_menu (contact, builder);
+    populated = (*iter)->populate_menu (contact, uri, builder);
   }
 
   return populated;

@@ -81,8 +81,6 @@ namespace History
 
     bool populate_menu (Ekiga::MenuBuilder &builder);
 
-    const std::map<std::string,std::string> get_uris () const;
-
     bool is_found (std::string test) const;
 
     /*** more specific api ***/

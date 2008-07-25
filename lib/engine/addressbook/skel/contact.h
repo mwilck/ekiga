@@ -78,13 +78,6 @@ namespace Ekiga
     virtual const std::set<std::string> get_groups () const = 0;
 
 
-    /** Returns a list of uris.
-     * @return Returns a map of (precision -> uri) association pairs,
-     * like ("home" -> "sip:home@ekiga.net")
-     */
-    virtual const std::map<std::string,std::string> get_uris () const = 0;
-
-
     /** Returns if a contact is found or not.
      * @return True if the contact has been found.
      */

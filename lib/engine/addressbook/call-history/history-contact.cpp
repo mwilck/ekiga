@@ -33,6 +33,8 @@
  *
  */
 
+#include "config.h"
+
 #include <iostream>
 #include <glib.h>
 
@@ -143,13 +145,13 @@ History::Contact::get_groups () const
 
   switch (m_type) {
   case RECEIVED:
-    groups.insert ("Received"); // FIXME: translate
+    groups.insert (_("Received"));
     break;
   case PLACED:
-    groups.insert ("Placed"); // FIXME: translate
+    groups.insert (_("Placed"));
     break;
   case MISSED:
-    groups.insert ("Missed"); // FIXME: translate
+    groups.insert (_("Missed"));
     break;
 
   default:
@@ -162,7 +164,7 @@ History::Contact::get_groups () const
 bool
 History::Contact::populate_menu (Ekiga::MenuBuilder &builder)
 {
-  return contact_core->populate_contact_menu (*this, builder);
+  return contact_core->populate_contact_menu (*this, uri, builder);
 }
 
 xmlNodePtr
@@ -187,16 +189,6 @@ const std::string
 History::Contact::get_call_duration () const
 {
   return call_duration;
-}
-
-const std::map<std::string,std::string>
-History::Contact::get_uris () const
-{
-  std::map<std::string,std::string> result;
-
-  result[""] = uri;
-
-  return result;
 }
 
 bool

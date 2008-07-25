@@ -128,12 +128,10 @@ CallProtocolManager::CallProtocolManager (Opal::CallManager & ep, Ekiga::Service
 
 
 bool CallProtocolManager::populate_menu (Ekiga::Contact &contact,
+					 std::string uri,
                                          Ekiga::MenuBuilder &builder)
 {
-  std::string name = contact.get_name ();
-  std::map<std::string, std::string> uris = contact.get_uris ();
-
-  return menu_builder_add_actions (name, uris, builder);
+  return menu_builder_add_actions (contact.get_name (), uri, builder);
 }
 
 
@@ -141,33 +139,20 @@ bool CallProtocolManager::populate_menu (Ekiga::Presentity& presentity,
 					 const std::string uri,
                                          Ekiga::MenuBuilder & builder)
 {
-  std::map<std::string, std::string> uris; 
-  uris [""] = uri;
-
-  return menu_builder_add_actions (presentity.get_name (), uris, builder);
+  return menu_builder_add_actions (presentity.get_name (), uri, builder);
 }
 
 
 bool CallProtocolManager::menu_builder_add_actions (const std::string & /*fullname*/,
-                                                    std::map<std::string,std::string> & uris,
+                                                    const std::string& uri,
                                                     Ekiga::MenuBuilder & builder)
 {
   bool populated = false;
+  std::string action = _("Call");
 
-  /* Add actions of type "call" for all uris */
-  for (std::map<std::string, std::string>::const_iterator iter = uris.begin ();
-       iter != uris.end ();
-       iter++) {
+  builder.add_action ("call", action, sigc::bind (sigc::mem_fun (this, &CallProtocolManager::on_dial), uri));
 
-    std::string action = _("Call");
-
-    if (!iter->first.empty ())
-      action = action + " [" + iter->first + "]";
-
-    builder.add_action ("call", action, sigc::bind (sigc::mem_fun (this, &CallProtocolManager::on_dial), iter->second));
-
-    populated = true;
-  }
+  populated = true;
 
   return populated;
 }

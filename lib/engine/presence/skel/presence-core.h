@@ -238,7 +238,7 @@ namespace Ekiga
 
   private:
 
-    std::set<PresentityDecorator *> presentity_decorators;
+    std::list<PresentityDecorator *> presentity_decorators;
 
     /*** API to help presentities get presence ***/
   public:

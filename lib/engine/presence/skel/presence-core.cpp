@@ -162,7 +162,7 @@ Ekiga::PresenceCore::on_presentity_removed (Heap &heap,
 void
 Ekiga::PresenceCore::add_presentity_decorator (PresentityDecorator &decorator)
 {
-  presentity_decorators.insert (&decorator);
+  presentity_decorators.push_back (&decorator);
 }
 
 bool
@@ -172,7 +172,7 @@ Ekiga::PresenceCore::populate_presentity_menu (Presentity& presentity,
 {
   bool populated = false;
 
-  for (std::set<PresentityDecorator *>::const_iterator iter
+  for (std::list<PresentityDecorator *>::const_iterator iter
 	 = presentity_decorators.begin ();
        iter != presentity_decorators.end ();
        iter++) {

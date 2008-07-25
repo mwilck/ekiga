@@ -68,6 +68,7 @@ namespace Local
     { return "\tComponent to push contacts into the local roster"; }
 
     bool populate_menu (Ekiga::Contact &contact,
+			const std::string uri,
 			Ekiga::MenuBuilder &builder);
 
   private:
@@ -79,26 +80,21 @@ namespace Local
 
 bool
 Local::ContactDecorator::populate_menu (Ekiga::Contact &contact,
+					const std::string uri,
 					Ekiga::MenuBuilder &builder)
 {
-  std::map<std::string, std::string> uris = contact.get_uris ();
   bool populated = false;
 
-  for (std::map<std::string, std::string>::const_iterator iter = uris.begin ();
-       iter != uris.end ();
-       iter++) {
+  if (cluster.is_supported_uri (uri)) {
 
-    if (cluster.is_supported_uri (iter->second)) {
+    Heap &heap = cluster.get_heap ();
 
-      Heap &heap = cluster.get_heap ();
+    if (!heap.has_presentity_with_uri (uri)) {
 
-      if (!heap.has_presentity_with_uri (iter->second)) {
-
-	builder.add_action ("add", _("Add to local roster"),
-			    sigc::bind (sigc::mem_fun (heap, &Local::Heap::new_presentity),
-					contact.get_name (), iter->second));
-	populated = true;
-      }
+      builder.add_action ("add", _("Add to local roster"),
+			  sigc::bind (sigc::mem_fun (heap, &Local::Heap::new_presentity),
+				      contact.get_name (), uri));
+      populated = true;
     }
   }
 

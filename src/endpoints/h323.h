@@ -66,6 +66,7 @@ namespace Opal {
 
       /* ContactDecorator and PresentityDecorator */
       bool populate_menu (Ekiga::Contact &contact,
+			  const std::string uri,
                           Ekiga::MenuBuilder &builder);
 
       bool populate_menu (Ekiga::Presentity& presentity,
@@ -73,7 +74,7 @@ namespace Opal {
                           Ekiga::MenuBuilder & builder);
 
       bool menu_builder_add_actions (const std::string & fullname,
-                                     std::map<std::string, std::string> & uris,
+                                     const std::string& uri,
                                      Ekiga::MenuBuilder & builder);
 
 

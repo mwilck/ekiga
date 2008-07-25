@@ -410,38 +410,42 @@ book_view_gtk_update_contact (BookViewGtk *self,
 			      GtkTreeIter *iter)
 {
   GtkListStore *store = NULL;
-  GdkPixbuf *icon = NULL;
-  std::string phone;
 
   store = GTK_LIST_STORE (gtk_tree_view_get_model (self->priv->tree_view));
-  gtk_list_store_set (store, iter, COLUMN_NAME, contact.get_name ().c_str (), -1);
-
-  std::map<std::string, std::string> uris = contact.get_uris ();
-
-  for (std::map<std::string, std::string>::const_iterator uri = uris.begin () ;
-       uri != uris.end () ;
-       uri++) {
-
-    std::string::size_type loc = uri->second.find ("sip:", 0);
-    if (loc != std::string::npos) {
-      gtk_list_store_set (store, iter, COLUMN_VIDEO_URL, uri->second.c_str (), -1);
-    }
-    else if (!uri->second.empty ()) {
-      if (!phone.empty ())
-        phone += ", ";
-      phone += uri->second;
-    }
-  }
-
-  icon = gtk_widget_render_icon (GTK_WIDGET (self),
-                                 GM_STOCK_PHONE_PICK_UP_16,
-                                 GTK_ICON_SIZE_MENU, NULL);
 
   gtk_list_store_set (store, iter,
-                      COLUMN_PHONE, phone.c_str (),
-                      COLUMN_PIXBUF, icon, -1);
+		      COLUMN_NAME, contact.get_name ().c_str (),
+		      -1);
 
-  g_object_unref (icon);
+// FIXME: that doesn't look good at all!
+//   std::map<std::string, std::string> uris = contact.get_uris ();
+//   GdkPixbuf *icon = NULL;
+//   std::string phone;
+
+//   for (std::map<std::string, std::string>::const_iterator uri = uris.begin () ;
+//        uri != uris.end () ;
+//        uri++) {
+
+//     std::string::size_type loc = uri->second.find ("sip:", 0);
+//     if (loc != std::string::npos) {
+//       gtk_list_store_set (store, iter, COLUMN_VIDEO_URL, uri->second.c_str (), -1);
+//     }
+//     else if (!uri->second.empty ()) {
+//       if (!phone.empty ())
+//         phone += ", ";
+//       phone += uri->second;
+//     }
+//   }
+
+//   icon = gtk_widget_render_icon (GTK_WIDGET (self),
+//                                  GM_STOCK_PHONE_PICK_UP_16,
+//                                  GTK_ICON_SIZE_MENU, NULL);
+
+//   gtk_list_store_set (store, iter,
+//                       COLUMN_PHONE, phone.c_str (),
+//                       COLUMN_PIXBUF, icon, -1);
+
+//   g_object_unref (icon);
 
   if (GDK_IS_WINDOW (GTK_WIDGET (self)->window))
     gdk_window_set_cursor (GTK_WIDGET (self)->window, NULL);

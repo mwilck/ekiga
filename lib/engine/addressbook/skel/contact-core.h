@@ -56,6 +56,7 @@ namespace Ekiga
     {}
 
     virtual bool populate_menu (Contact &/*contact*/,
+				const std::string /*uri*/,
 				MenuBuilder &/*builder*/) = 0;
   };
 
@@ -163,16 +164,18 @@ namespace Ekiga
 
     void add_contact_decorator (ContactDecorator &decorator);
 
-
     /** Create the menu for a given Contact and its actions.
-     * @param The Ekiga::Contact and a MenuBuilder object to populate.
+     * @param The Ekiga::Contact for which the actions could be made available.
+     * @param The uri for which actions could be made available.
+     * @param A MenuBuilder object to populate.
      */
     bool populate_contact_menu (Contact &contact,
+				const std::string uri,
                                 MenuBuilder &builder);
 
   private:
 
-    std::set<ContactDecorator *> contact_decorators;
+    std::list<ContactDecorator *> contact_decorators;
 
 
     /*** Misc ***/

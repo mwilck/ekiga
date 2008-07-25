@@ -103,21 +103,6 @@ Evolution::Contact::get_groups () const
   return groups;
 }
 
-const std::map<std::string, std::string>
-Evolution::Contact::get_uris () const
-{
-  std::map<std::string, std::string> uris;
-
-  for (unsigned int attr_type = 0; attr_type < ATTR_NUMBER; attr_type++) {
-
-    std::string attr_value = get_attribute_value (attr_type);
-    if ( !attr_value.empty ())
-      uris[get_attribute_name_from_type (attr_type)] = attr_value;
-  }
-
-  return uris;
-}
-
 bool
 Evolution::Contact::is_found (const std::string /*test*/) const
 {
@@ -221,19 +206,34 @@ Evolution::Contact::populate_menu (Ekiga::MenuBuilder &builder)
 {
   Ekiga::ContactCore *core = dynamic_cast<Ekiga::ContactCore *>(services.get ("contact-core"));
   bool populated = false;
+  std::map<std::string, std::string> uris;
 
-  if (core != NULL)
-    populated = core->populate_contact_menu (*this, builder);
+  if (core != NULL) {
 
-  if (populated)
-    builder.add_separator ();
+    for (unsigned int attr_type = 0; attr_type < ATTR_NUMBER; attr_type++) {
 
-  builder.add_action ("remove", _("_Remove"),
-		      sigc::mem_fun (this, &Evolution::Contact::remove));
-  builder.add_action ("edit", _("_Edit"),
-		      sigc::mem_fun (this, &Evolution::Contact::edit_action));
+      std::string attr_value = get_attribute_value (attr_type);
+      if ( !attr_value.empty ()) {
 
-  return true;
+	// get_attribute_name_from_type (attr_type) will tell the name of
+	// this attribute
+	populated = populated || core->populate_contact_menu (*this,
+							      attr_value,
+							      builder);
+      }
+    }
+
+    if (populated)
+      builder.add_separator ();
+
+    builder.add_action ("remove", _("_Remove"),
+			sigc::mem_fun (this, &Evolution::Contact::remove));
+    builder.add_action ("edit", _("_Edit"),
+			sigc::mem_fun (this, &Evolution::Contact::edit_action));
+    populated = true;
+  }
+
+  return populated;
 }
 
 

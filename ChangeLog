@@ -1,4 +1,26 @@
 2008-07-25  Julien Puydt  <jpuydt@gnome.org>
+	* lib/engine/addressbook/call-history/history-contact.cpp:
+	* lib/engine/addressbook/call-history/history-contact.h:
+	* lib/engine/addressbook/evolution/evolution-contact.cpp:
+	* lib/engine/addressbook/evolution/evolution-contact.h:
+	* lib/engine/addressbook/ldap/ldap-contact.cpp:
+	* lib/engine/addressbook/ldap/ldap-contact.h:
+	* lib/engine/addressbook/skel/contact-core.cpp:
+	* lib/engine/addressbook/skel/contact-core.h:
+	* lib/engine/addressbook/skel/contact.h:
+	* lib/engine/gui/gtk-frontend/book-view-gtk.cpp:
+	* lib/engine/presence/local-roster/local-roster-bridge.cpp:
+	* lib/engine/presence/skel/presence-core.cpp:
+	* lib/engine/presence/skel/presence-core.h:
+	* src/endpoints/h323.cpp:
+	* src/endpoints/h323.h:
+	* src/endpoints/sip.cpp:
+	* src/endpoints/sip.h: Made the ContactDecorator api more like
+	PresentityDecorator, removed the get_uris method from Ekiga::Contact,
+	and made the rest of the code cope with it. Things are ugly, but should
+	improve in the near future.
+
+2008-07-25  Julien Puydt  <jpuydt@gnome.org>
 
 	* src/endpoints/sip.h:
 	* src/endpoints/sip.cpp: Enable "Call" or "Forward", depending on
