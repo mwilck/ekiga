@@ -119,11 +119,7 @@ struct _BookViewGtkPrivate
 enum
   {
     COLUMN_CONTACT_POINTER,
-    COLUMN_PIXBUF,
-    COLUMN_GROUP_NAME,
     COLUMN_NAME,
-    COLUMN_VIDEO_URL,
-    COLUMN_PHONE,
     COLUMN_NUMBER
   };
 
@@ -417,36 +413,6 @@ book_view_gtk_update_contact (BookViewGtk *self,
 		      COLUMN_NAME, contact.get_name ().c_str (),
 		      -1);
 
-// FIXME: that doesn't look good at all!
-//   std::map<std::string, std::string> uris = contact.get_uris ();
-//   GdkPixbuf *icon = NULL;
-//   std::string phone;
-
-//   for (std::map<std::string, std::string>::const_iterator uri = uris.begin () ;
-//        uri != uris.end () ;
-//        uri++) {
-
-//     std::string::size_type loc = uri->second.find ("sip:", 0);
-//     if (loc != std::string::npos) {
-//       gtk_list_store_set (store, iter, COLUMN_VIDEO_URL, uri->second.c_str (), -1);
-//     }
-//     else if (!uri->second.empty ()) {
-//       if (!phone.empty ())
-//         phone += ", ";
-//       phone += uri->second;
-//     }
-//   }
-
-//   icon = gtk_widget_render_icon (GTK_WIDGET (self),
-//                                  GM_STOCK_PHONE_PICK_UP_16,
-//                                  GTK_ICON_SIZE_MENU, NULL);
-
-//   gtk_list_store_set (store, iter,
-//                       COLUMN_PHONE, phone.c_str (),
-//                       COLUMN_PIXBUF, icon, -1);
-
-//   g_object_unref (icon);
-
   if (GDK_IS_WINDOW (GTK_WIDGET (self)->window))
     gdk_window_set_cursor (GTK_WIDGET (self)->window, NULL);
 }
@@ -631,10 +597,6 @@ book_view_gtk_new (Ekiga::Book &book)
 
   store = gtk_list_store_new (COLUMN_NUMBER,
 			      G_TYPE_POINTER,
-                              GDK_TYPE_PIXBUF,
-                              G_TYPE_STRING,
-                              G_TYPE_STRING,
-                              G_TYPE_STRING,
                               G_TYPE_STRING);
 
   gtk_tree_view_set_model (result->priv->tree_view, GTK_TREE_MODEL (store));
@@ -642,11 +604,6 @@ book_view_gtk_new (Ekiga::Book &book)
 
   /* Name */
   column = gtk_tree_view_column_new ();
-  renderer = gtk_cell_renderer_pixbuf_new ();
-  gtk_tree_view_column_pack_start (column, renderer, FALSE);
-  gtk_tree_view_column_set_attributes (column, renderer,
-                                       "pixbuf", COLUMN_PIXBUF,
-                                       NULL);
 
   renderer = gtk_cell_renderer_text_new ();
   gtk_tree_view_column_pack_start (column, renderer, FALSE);
@@ -660,37 +617,6 @@ book_view_gtk_new (Ekiga::Book &book)
                                    GTK_TREE_VIEW_COLUMN_AUTOSIZE);
   gtk_tree_view_column_set_resizable (column, true);
   gtk_tree_view_append_column (GTK_TREE_VIEW (result->priv->tree_view), column);
-
-
-  /* URI */
-  renderer = gtk_cell_renderer_text_new ();
-  column = gtk_tree_view_column_new_with_attributes (_("VoIP URI"),
-                                                     renderer,
-                                                     "text",
-                                                     COLUMN_VIDEO_URL,
-                                                     NULL);
-  gtk_tree_view_column_set_sort_column_id (column, COLUMN_VIDEO_URL);
-  gtk_tree_view_column_set_sizing (GTK_TREE_VIEW_COLUMN (column),
-                                   GTK_TREE_VIEW_COLUMN_AUTOSIZE);
-  gtk_tree_view_column_set_resizable (column, true);
-  gtk_tree_view_append_column (GTK_TREE_VIEW (result->priv->tree_view), column);
-  g_object_set (G_OBJECT (renderer), "foreground", "blue",
-                "underline", TRUE, NULL);
-
-  /* Phone */
-  renderer = gtk_cell_renderer_text_new ();
-  column = gtk_tree_view_column_new_with_attributes ("Phone",
-                                                     renderer,
-                                                     "text",
-                                                     COLUMN_PHONE,
-                                                     NULL);
-  gtk_tree_view_column_set_sort_column_id (column, COLUMN_PHONE);
-  gtk_tree_view_column_set_sizing (GTK_TREE_VIEW_COLUMN (column),
-                                   GTK_TREE_VIEW_COLUMN_AUTOSIZE);
-  gtk_tree_view_column_set_resizable (column, true);
-  gtk_tree_view_append_column (GTK_TREE_VIEW (result->priv->tree_view), column);
-  g_object_set (G_OBJECT (renderer), "foreground", "darkgray", NULL);
-
 
   /* The Search Box */
   hbox = gtk_hbox_new (FALSE, 0);

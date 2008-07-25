@@ -70,7 +70,8 @@ namespace OPENLDAP
 	  int _port,
 	  const std::string _base,
 	  const std::string _scope,
-	  const std::string _call_attribute);
+	  const std::string _call_attribute,
+	  const std::string _password);
 
     ~Book ();
 
@@ -120,6 +121,9 @@ namespace OPENLDAP
 
     std::string call_attribute;
     xmlNodePtr call_attribute_node;
+
+    std::string password;
+    xmlNodePtr password_node;
 
     struct ldap *ldap_context;
     unsigned int patience;

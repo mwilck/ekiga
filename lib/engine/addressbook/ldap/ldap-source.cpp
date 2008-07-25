@@ -107,13 +107,15 @@ OPENLDAP::Source::add (const std::string name,
 		       int port,
 		       const std::string base,
 		       const std::string scope,
-		       const std::string call_attribute)
+		       const std::string call_attribute,
+		       const std::string password)
 {
   Book *book = NULL;
   xmlNodePtr root;
 
   root = xmlDocGetRootElement (doc);
-  book = new Book (core, name, hostname, port, base, scope, call_attribute);
+  book = new Book (core, name, hostname, port, base,
+		   scope, call_attribute, password);
 
   xmlAddChild (root, book->get_node ());
 
@@ -158,7 +160,8 @@ OPENLDAP::Source::new_book ()
     request.single_choice ("scope", _("_Scope"), "sub", choices);
   }
 
-  request.text ("call-attribute", _("Call _Attribute:"), "telephoneNumber");
+  request.text ("call-attribute", _("Call _Attribute"), "telephoneNumber");
+  request.private_text ("password", _("Password"), "");
 
   request.submitted.connect (sigc::mem_fun (this,
 					    &OPENLDAP::Source::on_new_book_form_submitted));
@@ -184,9 +187,10 @@ OPENLDAP::Source::on_new_book_form_submitted (Ekiga::Form &result)
     std::string base = result.text ("base");
     std::string scope = result.single_choice ("scope");
     std::string call_attribute = result.text ("call-attribute");
+    std::string password = result.private_text ("password");
     int port = atoi (port_string.c_str ());
 
-    add (name, hostname, port, base, scope, call_attribute);
+    add (name, hostname, port, base, scope, call_attribute, password);
     save ();
 
   } catch (Ekiga::Form::not_found) {

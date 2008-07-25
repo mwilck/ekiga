@@ -84,7 +84,8 @@ namespace OPENLDAP
 	      int port,
 	      const std::string base,
 	      const std::string scope,
-	      const std::string call_attribute);
+	      const std::string call_attribute,
+	      const std::string password);
 
     void common_add (Book &book);
 

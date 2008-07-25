@@ -71,6 +71,25 @@ fix_to_utf8 (const std::string str)
   return result;
 }
 
+/* another helper, which helps avoid crashes */
+static void
+robust_xmlNodeSetContent (xmlNodePtr parent,
+			  xmlNodePtr* child,
+			  const std::string& name,
+			  const std::string& value)
+{
+  if (*child == NULL) {
+
+    *child = xmlNewChild (parent, NULL,
+			  BAD_CAST name.c_str (),
+			  BAD_CAST value.c_str ());
+  } else {
+
+    xmlNodeSetContent (*child, xmlEncodeSpecialChars ((*child)->doc,
+						      BAD_CAST value.c_str ()));
+  }
+}
+
 /* parses a message to construct a nice contact */
 static OPENLDAP::Contact *
 parse_result (Ekiga::ServiceCore &core,
@@ -134,13 +153,14 @@ struct RefreshData
 	       const std::string _base,
 	       const std::string _scope,
 	       const std::string _call_attribute,
+	       const std::string _password,
 	       const std::string _search_string,
 	       sigc::slot<void, std::vector<OPENLDAP::Contact *> > _publish_results):
     core(_core), name(_name), hostname(_hostname), port(_port),
     base(_base), scope(_scope), call_attribute(_call_attribute),
-    search_string(_search_string), publish_results (_publish_results)
+    password(_password), search_string(_search_string),
+    error(false), publish_results (_publish_results)
   {
-    error = false;
   }
 
   /* search data */
@@ -151,6 +171,7 @@ struct RefreshData
   std::string base;
   std::string scope;
   std::string call_attribute;
+  std::string password;
   std::string search_string;
 
   /* result data */
@@ -166,7 +187,9 @@ struct RefreshData
 
 OPENLDAP::Book::Book (Ekiga::ServiceCore &_core,
 		      xmlNodePtr _node):
-  core(_core), node(_node), ldap_context(NULL), patience(0), 
+  core(_core), node(_node), name_node(NULL), hostname_node(NULL),
+  port_node(NULL), base_node(NULL), scope_node(NULL), call_attribute_node(NULL),
+  password_node(NULL), ldap_context(NULL), patience(0),
   runtime (*(dynamic_cast<Ekiga::Runtime *>(core.get ("runtime"))))
 {
   xmlChar *xml_str;
@@ -227,6 +250,14 @@ OPENLDAP::Book::Book (Ekiga::ServiceCore &_core,
 	call_attribute_node = child;
 	xmlFree (xml_str);
       }
+
+      if (xmlStrEqual (BAD_CAST ("password"), child->name)) {
+
+	xml_str = xmlNodeGetContent (child);
+	password = (const char *)xml_str;
+	password_node = child;
+	xmlFree (xml_str);
+      }
     }
   }
 }
@@ -237,10 +268,13 @@ OPENLDAP::Book::Book (Ekiga::ServiceCore &_core,
 		      int _port,
 		      const std::string _base,
 		      const std::string _scope,
-		      const std::string _call_attribute):
-  core(_core), name(_name), hostname(_hostname), port(_port),
-  base(_base), scope(_scope), call_attribute(_call_attribute),
-  ldap_context(NULL), patience(0), 
+		      const std::string _call_attribute,
+		      const std::string _password):
+  core(_core), name(_name), name_node(NULL),
+  hostname(_hostname), hostname_node(NULL), port(_port), port_node(NULL),
+  base(_base), base_node(NULL), scope(_scope), scope_node(NULL),
+  call_attribute(_call_attribute), call_attribute_node(NULL),
+  password (_password), password_node(NULL), ldap_context(NULL), patience(0),
   runtime (*(dynamic_cast<Ekiga::Runtime *>(core.get ("runtime"))))
 {
   contact_core = dynamic_cast<Ekiga::ContactCore *>(core.get ("contact-core"));
@@ -251,7 +285,7 @@ OPENLDAP::Book::Book (Ekiga::ServiceCore &_core,
 			   BAD_CAST "name", BAD_CAST name.c_str ());
 
   hostname_node = xmlNewChild (node, NULL,
-			   BAD_CAST "hostname", BAD_CAST hostname.c_str ());
+			       BAD_CAST "hostname", BAD_CAST hostname.c_str ());
 
   { // Snark hates C++ -- and there isn't only a reason for it -- but many
     std::stringstream strm;
@@ -272,6 +306,10 @@ OPENLDAP::Book::Book (Ekiga::ServiceCore &_core,
   call_attribute_node = xmlNewChild (node, NULL,
 				     BAD_CAST "call_attribute",
 				     BAD_CAST call_attribute.c_str ());
+
+  password_node = xmlNewChild (node, NULL,
+			       BAD_CAST "password",
+			       BAD_CAST password.c_str ());
 }
 
 OPENLDAP::Book::~Book ()
@@ -298,7 +336,7 @@ OPENLDAP::Book::populate_menu (Ekiga::MenuBuilder &builder)
   return true;
 }
 
-void 
+void
 OPENLDAP::Book::set_search_filter (std::string _search_filter)
 {
   search_filter = _search_filter;
@@ -369,11 +407,26 @@ OPENLDAP::Book::refresh_start ()
   (void)ldap_set_option (ldap_context,
 			 LDAP_OPT_PROTOCOL_VERSION, &ldap_version);
 
+  if (password.empty ()) {
 
-  result = ldap_sasl_bind (ldap_context, NULL,
-			   LDAP_SASL_SIMPLE, NULL,
-			   NULL, NULL,
-			   &msgid);
+    result = ldap_sasl_bind (ldap_context, NULL,
+			     LDAP_SASL_SIMPLE, NULL,
+			     NULL, NULL,
+			     &msgid);
+  } else {
+
+    struct berval passwd = { 0, NULL };
+    passwd.bv_val = g_strdup (password.c_str ());
+    passwd.bv_len = strlen (password.c_str ());
+
+    result = ldap_sasl_bind (ldap_context, NULL,
+			     LDAP_SASL_SIMPLE, &passwd,
+			     NULL, NULL,
+			     &msgid);
+
+    g_free (passwd.bv_val);
+  }
+
   if (result != LDAP_SUCCESS) {
 
     status = std::string (_("Could not contact server"));
@@ -586,6 +639,8 @@ OPENLDAP::Book::edit ()
 
   request.text ("call-attribute", _("Call _Attribute"), call_attribute);
 
+  request.private_text ("password", _("_Password"), password);
+
   request.submitted.connect (sigc::mem_fun (this,
 					    &OPENLDAP::Book::on_edit_form_submitted));
 
@@ -610,34 +665,30 @@ OPENLDAP::Book::on_edit_form_submitted (Ekiga::Form &result)
     std::string new_base = result.text ("base");
     std::string new_scope = result.single_choice ("scope");
     std::string new_call_attribute = result.text ("call-attribute");
+    std::string new_password = result.private_text ("password");
     int new_port = std::atoi (new_port_string.c_str ());
 
     name = new_name;
-    xmlNodeSetContent (name_node,
-		       xmlEncodeSpecialChars(name_node->doc,
-					     BAD_CAST name.c_str ()));
+    robust_xmlNodeSetContent (node, &name_node, "name", name);
 
     hostname = new_hostname;
-    xmlNodeSetContent (hostname_node,
-		       xmlEncodeSpecialChars(hostname_node->doc,
-					     BAD_CAST hostname.c_str ()));
+    robust_xmlNodeSetContent (node, &hostname_node, "hostname", hostname);
 
     port = new_port;
-    xmlNodeSetContent (port_node,
-		       xmlEncodeSpecialChars(port_node->doc,
-					     BAD_CAST new_port_string.c_str ()));
+    robust_xmlNodeSetContent (node, &port_node, "port", new_port_string);
+
     base = new_base;
-    xmlNodeSetContent (base_node,
-		       xmlEncodeSpecialChars(base_node->doc,
-					     BAD_CAST base.c_str ()));
+    robust_xmlNodeSetContent (node, &base_node, "base", base);
+
     scope = new_scope;
-    xmlNodeSetContent (scope_node,
-		       xmlEncodeSpecialChars(scope_node->doc,
-					     BAD_CAST scope.c_str ()));
+    robust_xmlNodeSetContent (node, &scope_node, "scope", scope);
+
     call_attribute = new_call_attribute;
-    xmlNodeSetContent (call_attribute_node,
-		       xmlEncodeSpecialChars(call_attribute_node->doc,
-					     BAD_CAST call_attribute.c_str ()));
+    robust_xmlNodeSetContent (node, &call_attribute_node,
+			      "call_attribute", call_attribute);
+
+    password = new_password;
+    robust_xmlNodeSetContent (node, &password_node, "password", password);
 
     updated.emit ();
     trigger_saving.emit ();
