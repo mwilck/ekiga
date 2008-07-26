@@ -35,6 +35,9 @@
 
 #include "menu-builder-tools.h"
 
+/* First, the implementation of the short menu builder
+ */
+
 Ekiga::ShortMenuBuilder::ShortMenuBuilder (MenuBuilder &builder_)
   : builder(builder_), active(true)
 {
@@ -63,6 +66,8 @@ Ekiga::ShortMenuBuilder::size () const
 }
 
 
+/* Second, the implementation of the trigger menu builder
+ */
 
 Ekiga::TriggerMenuBuilder::TriggerMenuBuilder ()
   : active(true)
@@ -95,4 +100,150 @@ Ekiga::TriggerMenuBuilder::size () const
     return 0;
   else
     return 1;
+}
+
+
+/* third, the implementation of the temporary menu builder
+ * (with first the definiton of its helpers)
+ */
+
+class TemporaryMenuBuilderHelperAction:
+  public Ekiga::TemporaryMenuBuilderHelper
+{
+public:
+
+  TemporaryMenuBuilderHelperAction (const std::string icon_,
+				    const std::string label_,
+				    sigc::slot<void> callback_):
+    icon(icon_), label(label_), callback(callback_)
+  {
+  }
+
+  bool populate_menu (Ekiga::MenuBuilder& builder)
+  {
+    builder.add_action (icon, label, callback);
+    return true;
+  }
+
+private:
+
+  std::string icon;
+  std::string label;
+  sigc::slot<void> callback;
+};
+
+class TemporaryMenuBuilderHelperSeparator:
+  public Ekiga::TemporaryMenuBuilderHelper
+{
+public:
+
+  TemporaryMenuBuilderHelperSeparator ()
+  {}
+
+  bool populate_menu (Ekiga::MenuBuilder& builder)
+  {
+    builder.add_separator ();
+    return false;
+  }
+};
+
+class TemporaryMenuBuilderHelperGhost:
+  public Ekiga::TemporaryMenuBuilderHelper
+{
+public:
+
+  TemporaryMenuBuilderHelperGhost (const std::string icon_,
+				   const std::string label_):
+    icon(icon_), label(label_)
+  {
+  }
+
+  bool populate_menu (Ekiga::MenuBuilder& builder)
+  {
+    builder.add_ghost (icon, label);
+    return false;
+  }
+
+private:
+
+  std::string icon;
+  std::string label;
+};
+
+Ekiga::TemporaryMenuBuilder::TemporaryMenuBuilder ()
+  : count(0)
+{
+  /* nothing more */
+}
+
+Ekiga::TemporaryMenuBuilder::~TemporaryMenuBuilder ()
+{
+  clear ();
+}
+
+void
+Ekiga::TemporaryMenuBuilder::add_action (const std::string icon,
+					 const std::string label,
+					 sigc::slot<void> callback)
+{
+  TemporaryMenuBuilderHelperAction* helper = NULL;
+
+  helper = new TemporaryMenuBuilderHelperAction (icon, label, callback);
+
+  count++;
+  helpers.push_back (helper);
+}
+
+void
+Ekiga::TemporaryMenuBuilder::add_separator ()
+{
+  TemporaryMenuBuilderHelperSeparator* helper = NULL;
+
+  helper = new TemporaryMenuBuilderHelperSeparator;
+
+  helpers.push_back (helper);
+}
+
+void
+Ekiga::TemporaryMenuBuilder::add_ghost (const std::string icon,
+					const std::string label)
+{
+  TemporaryMenuBuilderHelperGhost* helper = NULL;
+
+  helper = new TemporaryMenuBuilderHelperGhost (icon, label);
+
+  helpers.push_back (helper);
+}
+
+int
+Ekiga::TemporaryMenuBuilder::size () const
+{
+  return count;
+}
+
+bool
+Ekiga::TemporaryMenuBuilder::populate_menu (MenuBuilder& builder)
+{
+  bool result = false;
+
+  for (std::list<TemporaryMenuBuilderHelper*>::iterator iter = helpers.begin ();
+       iter != helpers.end ();
+       ++iter)
+    result = result || (*iter)->populate_menu (builder);
+
+  clear ();
+
+  return result;
+}
+
+void
+Ekiga::TemporaryMenuBuilder::clear ()
+{
+  count = 0;
+
+  for (std::list<TemporaryMenuBuilderHelper*>::iterator iter = helpers.begin ();
+       iter != helpers.end ();
+       ++iter)
+    delete *iter;
+  helpers.clear ();
 }

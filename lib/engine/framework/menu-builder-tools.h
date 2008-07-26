@@ -127,6 +127,72 @@ namespace Ekiga
     bool active;
   };
 
+
+  /** Temporary menu builder
+   *
+   * Again, this menu builder doesn't really build a menu itself ; instead
+   * it stores what is given to it, to give it later to a real menu builder.
+   * The idea is that the fact the populate_menu methods return a boolean
+   * allows knowing whether something was given, but there is no way to
+   * know if something will be given.
+   *
+   * For example, you can do :
+   * <pre>
+   *  SomeRealMenuBuilder builder;
+   *  TemporartyMenuBuilder tmp_builder;
+   *
+   *  if (object1->populate_menu (tmp_builder)) {
+   *
+   *    builder.add_ghost ("", "Object 1");
+   *    tmp_builder.populate_menu (builder);
+   *  }
+   *  if (object2->populate_menu (tmp_builder)) {
+   *
+   *    builder.add_ghost ("", "Object 2");
+   *    tmp_builder.populate_menu (builder);
+   *  }
+   * </pre>
+   *
+   */
+
+  /* it's stupid to have to make it public, but... */
+  class TemporaryMenuBuilderHelper
+  {
+  public:
+
+    virtual bool populate_menu (Ekiga::MenuBuilder& builder) = 0;
+  };
+
+  class TemporaryMenuBuilder: public MenuBuilder
+  {
+  public:
+
+    TemporaryMenuBuilder ();
+
+    ~TemporaryMenuBuilder ();
+
+    void add_action (const std::string icon,
+		     const std::string label,
+		     sigc::slot<void> callback);
+
+    void add_separator ();
+
+    void add_ghost (const std::string icon,
+		    const std::string label);
+
+    int size () const;
+
+    /* this empties this temporary builder, so it can be reused */
+    bool populate_menu (MenuBuilder& builder);
+
+  private:
+
+    int count;
+
+    std::list<TemporaryMenuBuilderHelper*> helpers;
+
+    void clear ();
+  };
 };
 
 #endif
