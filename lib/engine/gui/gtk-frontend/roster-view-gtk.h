@@ -60,6 +60,9 @@ struct _RosterViewGtk
 struct _RosterViewGtkClass
 {
   GtkFrameClass parent;
+
+  void (*presentity_selected) (RosterViewGtk* self,
+			       gpointer presentity);
 };
 
 #define ROSTER_VIEW_GTK_TYPE (roster_view_gtk_get_type ())

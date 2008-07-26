@@ -73,6 +73,13 @@ enum {
   TYPE_PRESENTITY
 };
 
+enum {
+  PRESENTITY_SELECTED_SIGNAL,
+  LAST_SIGNAL
+};
+
+static guint signals[LAST_SIGNAL] = { 0 };
+
 static GObjectClass *parent_class = NULL;
 
 
@@ -136,6 +143,13 @@ static void update_offline_count (RosterViewGtk* self,
 static void show_offline_contacts_changed_nt (gpointer id,
 					      GmConfEntry *entry,
 					      gpointer data);
+
+/* DESCRIPTION  : Called when the user selects a presentity
+ * BEHAVIOR     : Emit the presentity-selected signal
+ * PRE          : The gpointer must point to the RosterViewGtk GObject.
+ */
+static void on_selection_changed (GtkTreeSelection* selection,
+				  gpointer data);
 
 /* DESCRIPTION  : Called when the user right-clicks on a heap, group or
  *                presentity.
@@ -492,6 +506,26 @@ show_offline_contacts_changed_nt (G_GNUC_UNUSED gpointer id,
   }
 }
 
+
+static void
+on_selection_changed (GtkTreeSelection* selection,
+		      gpointer data)
+{
+  RosterViewGtk* self = NULL;
+  GtkTreeModel* model = NULL;
+  GtkTreeIter iter;
+
+  self = ROSTER_VIEW_GTK (data);
+
+  if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
+
+    Ekiga::Presentity *presentity = NULL;
+    gtk_tree_model_get (model, &iter,
+			COLUMN_PRESENTITY, &presentity,
+			-1);
+    g_signal_emit (self, signals[PRESENTITY_SELECTED_SIGNAL], 0, presentity);
+  }
+}
 
 static gint
 on_view_clicked (GtkWidget *tree_view,
@@ -1088,6 +1122,7 @@ static void
 roster_view_gtk_class_init (gpointer g_class,
 			    gpointer /*class_data*/)
 {
+  RosterViewGtkClass* roster_view_gtk_class = NULL;
   GObjectClass *gobject_class = NULL;
 
   parent_class = (GObjectClass *) g_type_class_peek_parent (g_class);
@@ -1095,6 +1130,20 @@ roster_view_gtk_class_init (gpointer g_class,
   gobject_class = (GObjectClass *) g_class;
   gobject_class->dispose = roster_view_gtk_dispose;
   gobject_class->finalize = roster_view_gtk_finalize;
+
+  signals[PRESENTITY_SELECTED_SIGNAL] =
+    g_signal_new ("presentity-selected",
+		  G_OBJECT_CLASS_TYPE (gobject_class),
+		  G_SIGNAL_RUN_LAST,
+		  G_STRUCT_OFFSET (RosterViewGtkClass, presentity_selected),
+		  NULL, NULL,
+		  g_cclosure_marshal_VOID__POINTER,
+		  G_TYPE_NONE, 1,
+		  G_TYPE_POINTER);
+
+  /* FIXME: is it useful? */
+  roster_view_gtk_class = (RosterViewGtkClass*)g_class;
+  roster_view_gtk_class->presentity_selected = NULL;
 }
 
 
@@ -1257,6 +1306,8 @@ roster_view_gtk_new (Ekiga::PresenceCore &core)
   /* Callback when the selection has been changed */
   selection = gtk_tree_view_get_selection (self->priv->tree_view);
   gtk_tree_selection_set_mode (selection, GTK_SELECTION_SINGLE);
+  g_signal_connect (G_OBJECT (selection), "changed",
+		    G_CALLBACK (on_selection_changed), self);
   g_signal_connect (G_OBJECT (self->priv->tree_view), "event-after",
 		    G_CALLBACK (on_view_clicked), self);
 
