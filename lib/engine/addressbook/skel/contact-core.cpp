@@ -165,7 +165,7 @@ Ekiga::ContactCore::populate_contact_menu (Contact &contact,
        iter != contact_decorators.end ();
        iter++) {
 
-    populated = (*iter)->populate_menu (contact, uri, builder);
+    populated = (*iter)->populate_menu (contact, uri, builder) || populated;
   }
 
   return populated;

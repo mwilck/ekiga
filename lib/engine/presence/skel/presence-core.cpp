@@ -177,7 +177,7 @@ Ekiga::PresenceCore::populate_presentity_menu (Presentity& presentity,
        iter != presentity_decorators.end ();
        iter++) {
 
-    populated = (*iter)->populate_menu (presentity, uri, builder);
+    populated = (*iter)->populate_menu (presentity, uri, builder) || populated;
   }
 
   return populated;

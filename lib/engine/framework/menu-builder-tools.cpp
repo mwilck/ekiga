@@ -223,7 +223,7 @@ Ekiga::TemporaryMenuBuilder::populate_menu (MenuBuilder& builder)
   for (std::list<TemporaryMenuBuilderHelper*>::iterator iter = helpers.begin ();
        iter != helpers.end ();
        ++iter)
-    result = result || (*iter)->populate_menu (builder);
+    result =  (*iter)->populate_menu (builder) || result;
 
   clear ();
 
