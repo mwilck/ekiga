@@ -41,6 +41,7 @@
 
 #include "evolution-contact.h"
 #include "form-request-simple.h"
+#include "menu-builder-tools.h"
 
 Evolution::Contact::Contact (Ekiga::ServiceCore &_services,
 			     EBook *ebook,
@@ -210,28 +211,31 @@ Evolution::Contact::populate_menu (Ekiga::MenuBuilder &builder)
 
   if (core != NULL) {
 
+    Ekiga::TemporaryMenuBuilder tmp_builder;
+
     for (unsigned int attr_type = 0; attr_type < ATTR_NUMBER; attr_type++) {
 
       std::string attr_value = get_attribute_value (attr_type);
       if ( !attr_value.empty ()) {
 
-	populated = true;
-	builder.add_ghost ("", get_attribute_name_from_type (attr_type));
-	core->populate_contact_menu (*this,
-				     attr_value,
-				     builder);
+	if (core->populate_contact_menu (*this, attr_value, tmp_builder)) {
+
+	  builder.add_ghost ("", get_attribute_name_from_type (attr_type));
+	  tmp_builder.populate_menu (builder);
+	  populated = true;
+	}
       }
     }
-
-    if (populated)
-      builder.add_separator ();
-
-    builder.add_action ("remove", _("_Remove"),
-			sigc::mem_fun (this, &Evolution::Contact::remove));
-    builder.add_action ("edit", _("_Edit"),
-			sigc::mem_fun (this, &Evolution::Contact::edit_action));
-    populated = true;
   }
+
+  if (populated)
+    builder.add_separator ();
+
+  builder.add_action ("remove", _("_Remove"),
+		      sigc::mem_fun (this, &Evolution::Contact::remove));
+  builder.add_action ("edit", _("_Edit"),
+		      sigc::mem_fun (this, &Evolution::Contact::edit_action));
+  populated = true;
 
   return populated;
 }
