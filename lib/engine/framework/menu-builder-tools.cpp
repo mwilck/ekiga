@@ -87,12 +87,6 @@ Ekiga::TriggerMenuBuilder::add_action (const std::string /*icon*/,
   }
 }
 
-void
-Ekiga::TriggerMenuBuilder::add_separator ()
-{
-  /* nothing */
-}
-
 int
 Ekiga::TriggerMenuBuilder::size () const
 {

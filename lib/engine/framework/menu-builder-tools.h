@@ -119,8 +119,6 @@ namespace Ekiga
 		     const std::string label,
 		     sigc::slot<void> callback);
 
-    void add_separator ();
-
     int size () const;
 
   private:
