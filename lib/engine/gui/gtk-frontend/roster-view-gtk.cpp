@@ -1167,6 +1167,8 @@ roster_view_gtk_new (Ekiga::PresenceCore &core)
 					  G_TYPE_STRING,    // group size
 					  G_TYPE_BOOLEAN);  // offline
 
+  gtk_tree_sortable_set_sort_column_id (GTK_TREE_SORTABLE (self->priv->store),
+                                        COLUMN_NAME, GTK_SORT_ASCENDING);
   filtered = gtk_tree_model_filter_new (GTK_TREE_MODEL (self->priv->store),
 					NULL);
   g_object_unref (self->priv->store);
