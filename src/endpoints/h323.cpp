@@ -43,6 +43,26 @@
 #include "opal-call.h"
 #include "account-core.h"
 
+/* run_in_main helpers */
+struct registration_event_in_main: public Ekiga::RuntimeCallback
+{
+  registration_event_in_main (Opal::H323::CallProtocolManager* manager_,
+			      const Opal::Account* account_,
+			      Ekiga::AccountCore::RegistrationState state_,
+			      std::string info_):
+    manager(manager_), account(account_), state(state_), info(info_)
+  {}
+
+  void run ()
+  { manager->registration_event.emit (account, state, info); }
+
+private:
+  Opal::H323::CallProtocolManager* manager;
+  const Opal::Account* account;
+  Ekiga::AccountCore::RegistrationState state;
+  std::string info;
+};
+
 
 namespace Opal {
 
@@ -335,15 +355,11 @@ void CallProtocolManager::Register (const Opal::Account & account)
         info = _("Failed");
 
       /* Signal */
-      runtime.run_in_main (sigc::bind (registration_event.make_slot (), &account,
-                                       Ekiga::AccountCore::RegistrationFailed,
-                                       info));
+      runtime.run_in_main (new registration_event_in_main (this, &account, Ekiga::AccountCore::RegistrationFailed, info));
     }
     else {
 
-      runtime.run_in_main (sigc::bind (registration_event.make_slot (), &account,
-                                       Ekiga::AccountCore::Registered,
-                                       std::string ()));
+      runtime.run_in_main (new registration_event_in_main (this, &account, Ekiga::AccountCore::Registered, std::string ()));
     }
   }
   else if (unregister && IsRegisteredWithGatekeeper (account.get_host ())) {
@@ -352,9 +368,7 @@ void CallProtocolManager::Register (const Opal::Account & account)
     RemoveAliasName (account.get_username ());
 
     /* Signal */
-    runtime.run_in_main (sigc::bind (registration_event.make_slot (), &account,
-                                     Ekiga::AccountCore::Unregistered,
-                                     std::string ()));
+    runtime.run_in_main (new registration_event_in_main (this, &account, Ekiga::AccountCore::Unregistered, std::string ()));
   }
 }
 

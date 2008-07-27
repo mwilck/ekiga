@@ -41,6 +41,45 @@
 #define DEVICE_SOURCE "Moving Logo"
 #define DEVICE_NAME   "Moving Logo"
 
+/* run_in_main helpers */
+struct device_opened_in_main: public Ekiga::RuntimeCallback
+{
+  device_opened_in_main (GMVideoInputManager_mlogo* manager_,
+			 Ekiga::VideoInputDevice device_,
+			 Ekiga::VideoInputSettings settings_):
+    manager(manager_), device(device_), settings(settings_)
+  {}
+
+  void run ()
+  {
+    manager->device_opened.emit (device, settings);
+  }
+
+private:
+  GMVideoInputManager_mlogo* manager;
+  Ekiga::VideoInputDevice device;
+  Ekiga::VideoInputSettings settings;
+};
+
+struct device_closed_in_main: public Ekiga::RuntimeCallback
+{
+  device_closed_in_main (GMVideoInputManager_mlogo* manager_,
+			 Ekiga::VideoInputDevice device_):
+    manager(manager_), device(device_)
+  {}
+
+  void run ()
+  {
+    manager->device_closed.emit (device);
+  }
+
+private:
+  GMVideoInputManager_mlogo* manager;
+  Ekiga::VideoInputDevice device;
+};
+
+
+
 GMVideoInputManager_mlogo::GMVideoInputManager_mlogo (Ekiga::ServiceCore & _core)
 : core (_core),
   runtime (*(dynamic_cast<Ekiga::Runtime *> (_core.get ("runtime"))))
@@ -103,7 +142,7 @@ bool GMVideoInputManager_mlogo::open (unsigned width, unsigned height, unsigned 
   settings.colour = 127;
   settings.contrast = 127;
   settings.modifyable = false;
-  runtime.run_in_main (sigc::bind (device_opened.make_slot (), current_state.device, settings));
+  runtime.run_in_main (new device_opened_in_main (this, current_state.device, settings));
   
   return true;
 }
@@ -113,7 +152,7 @@ void GMVideoInputManager_mlogo::close()
   PTRACE(4, "GMVideoInputManager_mlogo\tClosing Moving Logo");
   free (background_frame);
   current_state.opened  = false;
-  runtime.run_in_main (sigc::bind (device_closed.make_slot (), current_state.device));
+  runtime.run_in_main (new device_closed_in_main (this, current_state.device));
 }
 
 bool GMVideoInputManager_mlogo::get_frame_data (char *data,

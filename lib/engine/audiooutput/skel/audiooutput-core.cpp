@@ -39,6 +39,44 @@
 #include <math.h>
 
 using namespace Ekiga;
+
+
+/* run_in_main helpers */
+
+struct device_added_in_main: public RuntimeCallback
+{
+  device_added_in_main (AudioOutputCore* manager_,
+			AudioOutputDevice device_):
+    manager(manager_), device(device_)
+  {}
+
+  void run ()
+  { manager->device_added.emit (device); }
+
+private:
+
+  AudioOutputCore* manager;
+  AudioOutputDevice device;
+};
+
+struct device_removed_in_main: public RuntimeCallback
+{
+  device_removed_in_main (AudioOutputCore* manager_,
+			  AudioOutputDevice device_):
+    manager(manager_), device(device_)
+  {}
+
+  void run ()
+  { manager->device_removed.emit (device); }
+
+private:
+
+  AudioOutputCore* manager;
+  AudioOutputDevice device;
+};
+
+
+
 AudioOutputCore::AudioOutputCore (Ekiga::Runtime & _runtime)
 :  runtime (_runtime),
    audio_event_scheduler(*this)
@@ -208,7 +246,7 @@ void AudioOutputCore::add_device (const std::string & sink, const std::string & 
          internal_set_primary_device(desired_primary_device);
        }
 
-       runtime.run_in_main (sigc::bind (device_added.make_slot (), device));
+       runtime.run_in_main (new device_added_in_main (this, device));
      }
   }
 }
@@ -233,7 +271,7 @@ void AudioOutputCore::remove_device (const std::string & sink, const std::string
          internal_set_primary_device(new_device);
        }
 
-       runtime.run_in_main (sigc::bind (device_removed.make_slot (), device));
+       runtime.run_in_main (new device_removed_in_main (this, device));
      }
   }
 }

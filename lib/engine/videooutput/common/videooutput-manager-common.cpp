@@ -42,8 +42,34 @@
  *
  */
 
-
 #include "videooutput-manager-common.h"
+
+/* stupid run_in_main helper
+ */
+struct update_gui_device_in_main: public Ekiga::RuntimeCallback
+{
+  update_gui_device_in_main (GMVideoOutputManager* manager_,
+			     Ekiga::VideoOutputAccel accel_,
+			     Ekiga::VideoOutputMode mode_,
+			     unsigned int zoom_,
+			     bool both_streams_active_):
+    manager(manager_), accel(accel_), mode(mode_),
+    zoom(zoom_), both_streams_active(both_streams_active_)    
+  {}
+
+  void run ()
+  {
+    manager->device_closed.emit ();
+    manager->device_opened.emit (accel, mode, zoom, both_streams_active);
+  }
+
+private:
+  GMVideoOutputManager* manager;
+  Ekiga::VideoOutputAccel accel;
+  Ekiga::VideoOutputMode mode;
+  unsigned int zoom;
+  bool both_streams_active;
+};
 
 /* The functions */
 GMVideoOutputManager::GMVideoOutputManager(Ekiga::ServiceCore & _core)
@@ -230,10 +256,13 @@ void GMVideoOutputManager::uninit ()
 
 void GMVideoOutputManager::update_gui_device ()
 {
-  last_frame.both_streams_active = current_frame.both_streams_active;
-  runtime.run_in_main (device_closed.make_slot ());
-  runtime.run_in_main (sigc::bind (device_opened.make_slot (), current_frame.accel, current_frame.mode, current_frame.zoom, current_frame.both_streams_active));
+  update_gui_device_in_main* callback =
+    new update_gui_device_in_main (this, current_frame.accel,
+				   current_frame.mode, current_frame.zoom,
+				   current_frame.both_streams_active);
 
+  last_frame.both_streams_active = current_frame.both_streams_active;
+  runtime.run_in_main (callback);
 }
 
 

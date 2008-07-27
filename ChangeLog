@@ -1,3 +1,28 @@
+2008-07-27  Julien Puydt  <jpuydt@gnome.org>
+	* lib/engine/framework/runtime-glib.cpp:
+	* lib/engine/framework/runtime-glib.h:
+	* lib/engine/framework/runtime.h: Made run_in_main take a structure,
+	as playing with sigc::mem_fun on a sigc::trackable on a thread can
+	lead to pain, suffering and crashes.
+	* lib/engine/addressbook/ldap/ldap-book.cpp:
+	* lib/engine/addressbook/ldap/ldap-book.h:
+	* lib/engine/audioinput/null/audioinput-manager-null.cpp:
+	* lib/engine/audioinput/ptlib/audioinput-manager-ptlib.cpp:
+	* lib/engine/audioinput/skel/audioinput-core.cpp:
+	* lib/engine/audiooutput/null/audiooutput-manager-null.cpp:
+	* lib/engine/audiooutput/ptlib/audiooutput-manager-ptlib.cpp:
+	* lib/engine/audiooutput/skel/audiooutput-core.cpp:
+	* lib/engine/videoinput/mlogo/videoinput-manager-mlogo.cpp:
+	* lib/engine/videoinput/ptlib/videoinput-manager-ptlib.cpp:
+	* lib/engine/videoinput/skel/videoinput-core.cpp:
+	* lib/engine/videooutput/common/videooutput-manager-common.cpp:
+	* lib/engine/videooutput/x/videooutput-manager-x.cpp:
+	* src/endpoints/h323.cpp:
+	* src/endpoints/manager.cpp:
+	* src/endpoints/opal-call.cpp:
+	* src/endpoints/pcss.cpp:
+	* src/endpoints/sip.cpp: Cope with the change in run_in_main.
+
 2008-07-26  Julien Puydt  <jpuydt@gnome.org>
 
 	* lib/engine/gui/gtk-frontend/roster-view-gtk.h:

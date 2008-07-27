@@ -40,6 +40,66 @@
 
 #define DEVICE_TYPE "PTLIB"
 
+/* run_in_main helpers */
+
+struct device_opened_in_main: public Ekiga::RuntimeCallback
+{
+  device_opened_in_main (GMVideoInputManager_ptlib* manager_,
+			 Ekiga::VideoInputDevice device_,
+			 Ekiga::VideoInputSettings settings_):
+    manager(manager_), device(device_), settings(settings_)
+  {}
+
+  void run ()
+  {
+    manager->device_opened.emit (device, settings);
+  }
+
+private:
+  GMVideoInputManager_ptlib* manager;
+  Ekiga::VideoInputDevice device;
+  Ekiga::VideoInputSettings settings;
+};
+
+struct device_closed_in_main: public Ekiga::RuntimeCallback
+{
+  device_closed_in_main (GMVideoInputManager_ptlib* manager_,
+			 Ekiga::VideoInputDevice device_):
+    manager(manager_), device(device_)
+  {}
+
+  void run ()
+  {
+    manager->device_closed.emit (device);
+  }
+
+private:
+  GMVideoInputManager_ptlib* manager;
+  Ekiga::VideoInputDevice device;
+};
+
+struct device_error_in_main: public Ekiga::RuntimeCallback
+{
+  device_error_in_main (GMVideoInputManager_ptlib* manager_,
+			Ekiga::VideoInputDevice device_,
+			Ekiga::VideoInputErrorCodes error_code_):
+    manager(manager_), device(device_), error_code(error_code_)
+  {}
+
+  void run ()
+  {
+    manager->device_closed.emit (device);
+  }
+
+private:
+  GMVideoInputManager_ptlib* manager;
+  Ekiga::VideoInputDevice device;
+  Ekiga::VideoInputErrorCodes error_code;
+};
+
+
+
+
 GMVideoInputManager_ptlib::GMVideoInputManager_ptlib (Ekiga::ServiceCore & _core)
 : core (_core), 
   runtime (*(dynamic_cast<Ekiga::Runtime *> (_core.get ("runtime"))))
@@ -127,7 +187,7 @@ bool GMVideoInputManager_ptlib::open (unsigned width, unsigned height, unsigned 
 
   if (error_code != Ekiga::VI_ERROR_NONE) {
     PTRACE(1, "GMVideoInputManager_ptlib\tEncountered error " << error_code << " while opening device ");
-    runtime.run_in_main (sigc::bind (device_error.make_slot (), current_state.device, error_code));
+    runtime.run_in_main (new device_error_in_main (this, current_state.device, error_code));
     return false;
   }
 
@@ -142,7 +202,7 @@ bool GMVideoInputManager_ptlib::open (unsigned width, unsigned height, unsigned 
   settings.contrast = contrast >> 8;
   settings.modifyable = true;
 
-  runtime.run_in_main (sigc::bind (device_opened.make_slot (), current_state.device, settings));
+  runtime.run_in_main (new device_opened_in_main (this, current_state.device, settings));
 
   return true;
 }
@@ -155,7 +215,7 @@ void GMVideoInputManager_ptlib::close()
     input_device = NULL;
   }
   current_state.opened = false;
-  runtime.run_in_main (sigc::bind (device_closed.make_slot (), current_state.device));
+  runtime.run_in_main (new device_closed_in_main (this, current_state.device));
 }
 
 bool GMVideoInputManager_ptlib::get_frame_data (char *data,
