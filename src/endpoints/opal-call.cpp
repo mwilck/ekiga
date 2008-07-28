@@ -52,170 +52,6 @@
 #include "opal-call.h"
 #include "call.h"
 
-/* run_in_main helpers */
-
-struct stream_resumed_in_main: public Ekiga::RuntimeCallback
-{
-
-  stream_resumed_in_main (Opal::Call* call_,
-			  std::string name_,
-			  Opal::Call::StreamType type_):
-    call(call_), name(name_), type(type_)
-  {}
-
-  void run ()
-  { call->stream_resumed.emit (name, type); }
-
-  private:
-
-  Opal::Call* call;
-  std::string name;
-  Opal::Call::StreamType type;
-};
-
-struct stream_paused_in_main: public Ekiga::RuntimeCallback
-{
-
-  stream_paused_in_main (Opal::Call* call_,
-			 std::string name_,
-			 Opal::Call::StreamType type_):
-    call(call_), name(name_), type(type_)
-  {}
-
-  void run ()
-  { call->stream_paused.emit (name, type); }
-
-  private:
-
-  Opal::Call* call;
-  std::string name;
-  Opal::Call::StreamType type;
-};
-
-struct stream_opened_in_main: public Ekiga::RuntimeCallback
-{
-
-  stream_opened_in_main (Opal::Call* call_,
-			 std::string name_,
-			 Opal::Call::StreamType type_,
-			 bool is_transmitting_):
-    call(call_), name(name_), type(type_), is_transmitting(is_transmitting_)
-  {}
-
-  void run ()
-  { call->stream_opened.emit (name, type, is_transmitting); }
-
-  private:
-
-  Opal::Call* call;
-  std::string name;
-  Opal::Call::StreamType type;
-  bool is_transmitting;
-};
-
-struct stream_closed_in_main: public Ekiga::RuntimeCallback
-{
-
-  stream_closed_in_main (Opal::Call* call_,
-			 std::string name_,
-			 Opal::Call::StreamType type_,
-			 bool is_transmitting_):
-    call(call_), name(name_), type(type_), is_transmitting(is_transmitting_)
-  {}
-
-  void run ()
-  { call->stream_closed.emit (name, type, is_transmitting); }
-
-  private:
-
-  Opal::Call* call;
-  std::string name;
-  Opal::Call::StreamType type;
-  bool is_transmitting;
-};
-
-struct established_in_main: public Ekiga::RuntimeCallback
-{
-  established_in_main (Opal::Call* call_): call(call_)
-  {}
-
-  void run ()
-  { call->established.emit (); }
-
-private:
-
-  Opal::Call* call;
-};
-
-struct missed_in_main: public Ekiga::RuntimeCallback
-{
-  missed_in_main (Opal::Call* call_): call(call_)
-  {}
-
-  void run ()
-  { call->missed.emit (); }
-
-private:
-
-  Opal::Call* call;
-};
-
-struct cleared_in_main: public Ekiga::RuntimeCallback
-{
-  cleared_in_main (Opal::Call* call_,
-		   std::string reason_):
-    call(call_), reason(reason_)
-  {}
-
-  void run ()
-  { call->missed.emit (); }
-
-private:
-
-  Opal::Call* call;
-  std::string reason;
-};
-
-struct setup_in_main: public Ekiga::RuntimeCallback
-{
-  setup_in_main (Opal::Call* call_): call(call_)
-  {}
-
-  void run ()
-  { call->setup.emit (); }
-
-private:
-
-  Opal::Call* call;
-};
-
-struct held_in_main: public Ekiga::RuntimeCallback
-{
-  held_in_main (Opal::Call* call_): call(call_)
-  {}
-
-  void run ()
-  { call->held.emit (); }
-
-private:
-
-  Opal::Call* call;
-};
-
-struct retrieved_in_main: public Ekiga::RuntimeCallback
-{
-  retrieved_in_main (Opal::Call* call_): call(call_)
-  {}
-
-  void run ()
-  { call->retrieved.emit (); }
-
-private:
-
-  Opal::Call* call;
-};
-
-
 using namespace Opal;
 
 
@@ -332,11 +168,9 @@ Opal::Call::toggle_stream_pause (StreamType type)
       stream->SetPaused (!paused);
 
       if (paused)
-        runtime.run_in_main (new stream_resumed_in_main (this,
-							 stream_name, type));
+        runtime.run_in_main (sigc::bind (stream_resumed, stream_name, type));
       else
-        runtime.run_in_main (new stream_paused_in_main (this,
-							stream_name, type));
+        runtime.run_in_main (sigc::bind (stream_paused, stream_name, type));
     }
   }
 }
@@ -477,7 +311,7 @@ Opal::Call::OnEstablished (OpalConnection & connection)
   if (!PIsDescendant(&connection, OpalPCSSConnection)) {
 
     parse_info (connection);
-    runtime.run_in_main (new established_in_main (this));
+    runtime.run_in_main (established.make_slot ());
   }
 
   if (PIsDescendant(&connection, OpalRTPConnection)) {
@@ -514,7 +348,7 @@ Opal::Call::OnReleased (OpalConnection & connection)
         && !is_outgoing ()
         && connection.GetCallEndReason () != OpalConnection::EndedByAnswerDenied) {
 
-      runtime.run_in_main (new missed_in_main (this));
+      runtime.run_in_main (missed.make_slot ());
     }
     else {
 
@@ -600,7 +434,7 @@ Opal::Call::OnReleased (OpalConnection & connection)
         reason = _("Call completed");
       }
 
-      runtime.run_in_main (new cleared_in_main (this, reason));
+      runtime.run_in_main (sigc::bind (cleared.make_slot (), reason));
     }
   }
 
@@ -629,7 +463,7 @@ Opal::Call::OnSetUp (OpalConnection & connection)
 
   outgoing = PIsDescendant(&connection, OpalPCSSConnection);
 
-  runtime.run_in_main (new setup_in_main (this));
+  runtime.run_in_main (setup.make_slot ());
 
   return OpalCall::OnSetUp (connection);
 }
@@ -640,9 +474,9 @@ void Opal::Call::OnHold (OpalConnection & /*connection*/,
                          bool on_hold)
 {
   if (on_hold)
-    runtime.run_in_main (new held_in_main (this));
+    runtime.run_in_main (held.make_slot ());
   else
-    runtime.run_in_main (new retrieved_in_main (this));
+    runtime.run_in_main (retrieved.make_slot ());
 }
 
 
@@ -657,8 +491,7 @@ Opal::Call::OnOpenMediaStream (OpalMediaStream & stream)
   std::transform (stream_name.begin (), stream_name.end (), stream_name.begin (), (int (*) (int)) toupper);
   is_transmitting = !stream.IsSource ();
 
-  runtime.run_in_main (new stream_opened_in_main (this, stream_name,
-						  type, is_transmitting));
+  runtime.run_in_main (sigc::bind (stream_opened, stream_name, type, is_transmitting));
 }
 
 
@@ -673,8 +506,7 @@ Opal::Call::OnClosedMediaStream (OpalMediaStream & stream)
   std::transform (stream_name.begin (), stream_name.end (), stream_name.begin (), (int (*) (int)) toupper);
   is_transmitting = !stream.IsSource ();
 
-  runtime.run_in_main (new stream_closed_in_main (this, stream_name,
-						  type, is_transmitting));
+  runtime.run_in_main (sigc::bind (stream_closed, stream_name, type, is_transmitting));
 }
 
 

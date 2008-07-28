@@ -44,19 +44,6 @@
 #include "call.h"
 
 
-/* run_in_main helper */
-struct ringing_in_main: public Ekiga::RuntimeCallback
-{
-  ringing_in_main (Ekiga::Call* call_): call(call_)
-  {}
-
-  void run ()
-  { call->ringing.emit (); }
-
-private:
-  Ekiga::Call* call;
-};
-
 GMPCSSEndpoint::GMPCSSEndpoint (Opal::CallManager & ep,
                                 Ekiga::ServiceCore & _core) 
 :   OpalPCSSEndPoint (ep),
@@ -82,7 +69,7 @@ bool GMPCSSEndpoint::OnShowOutgoing (const OpalPCSSConnection &connection)
   Ekiga::Call *call = dynamic_cast<Ekiga::Call *> (&connection.GetCall ());
 
   if (call)
-    runtime.run_in_main (new ringing_in_main (call));
+    runtime.run_in_main (call->ringing.make_slot ());
 
   return true;
 }

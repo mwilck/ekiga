@@ -50,32 +50,6 @@
 #include "form-request-simple.h"
 #include "robust-xml.h"
 
-/* stupid run_in_main helpers */
-
-struct refresh_bound_in_main: public Ekiga::RuntimeCallback
-{
-  refresh_bound_in_main (OPENLDAP::Book* book_): book(book_)
-  {}
-
-  void run ()
-  { book-> refresh_bound (); }
-
-private:
-  OPENLDAP::Book* book;
-};
-
-struct refresh_result_in_main: public Ekiga::RuntimeCallback
-{
-  refresh_result_in_main (OPENLDAP::Book* book_): book(book_)
-  {}
-
-  void run ()
-  { book-> refresh_result (); }
-
-private:
-  OPENLDAP::Book* book;
-};
-
 /* little helper function... can probably be made more complete */
 static const std::string
 fix_to_utf8 (const std::string str)
@@ -448,7 +422,7 @@ OPENLDAP::Book::refresh_start ()
   updated.emit ();
 
   patience = 3;
-  runtime.run_in_main (new refresh_bound_in_main (this), 3);
+  runtime.run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_bound), 3);
 }
 
 void
@@ -470,15 +444,15 @@ OPENLDAP::Book::refresh_bound ()
 
     if (patience == 3) {
       patience--;
-      runtime.run_in_main (new refresh_bound_in_main (this), 12);
+      runtime.run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_bound), 12);
     } else if (patience == 2) {
 
       patience--;
-      runtime.run_in_main (new refresh_bound_in_main (this), 21);
+      runtime.run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_bound), 21);
     } else if (patience == 1) {
 
       patience--;
-      runtime.run_in_main (new refresh_bound_in_main (this), 30);
+      runtime.run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_bound), 30);
     } else { // patience == 0
 
       status = std::string (_("Could not connect to server"));
@@ -544,7 +518,7 @@ OPENLDAP::Book::refresh_bound ()
   }
 
   patience = 3;
-  runtime.run_in_main (new refresh_result_in_main (this), 3);
+  runtime.run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_result), 3);
 
 }
 
@@ -567,15 +541,15 @@ OPENLDAP::Book::refresh_result ()
     if (patience == 3) {
 
       patience--;
-      runtime.run_in_main (new refresh_result_in_main (this), 12);
+      runtime.run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_result), 12);
     } else if (patience == 2) {
 
       patience--;
-      runtime.run_in_main (new refresh_result_in_main (this), 21);
+      runtime.run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_result), 21);
     } else if (patience == 1) {
 
       patience--;
-      runtime.run_in_main (new refresh_result_in_main (this), 30);
+      runtime.run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_result), 30);
     } else { // patience == 0
 
       status = std::string (_("Could not search"));

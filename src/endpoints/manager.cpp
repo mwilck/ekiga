@@ -50,37 +50,6 @@
 
 #include "call-manager.h"
 
-/* run_in_main helpers */
-
-struct manager_ready_in_main: public Ekiga::RuntimeCallback
-{
-  manager_ready_in_main (Ekiga::CallManager* manager_): manager(manager_)
-  {}
-
-  void run ()
-  { manager->ready.emit (); }
-
-private:
-  Ekiga::CallManager* manager;
-};
-
-struct mwi_event_in_main: public Ekiga::RuntimeCallback
-{
-  mwi_event_in_main (Ekiga::CallManager* manager_,
-		     std::string account_,
-		     std::string summary_):
-    manager(manager_), account(account_), summary(summary_)
-  {}
-
-  void run ()
-  { manager->mwi_event.emit (account, summary); }
-
-private:
-  Ekiga::CallManager* manager;
-  std::string account;
-  std::string summary;
-};
-
 static  bool same_codec_desc (Ekiga::CodecDescription a, Ekiga::CodecDescription b)
 { 
   return (a.name == b.name && a.rate == b.rate); 
@@ -117,7 +86,7 @@ public:
          iter++) 
       (*iter)->set_listen_port ((*iter)->get_listen_interface ().port);
 
-    runtime.run_in_main (new manager_ready_in_main (&manager));
+    runtime.run_in_main (manager.ready.make_slot ());
   };
 
 private:
@@ -680,7 +649,7 @@ CallManager::OnMWIReceived (const PString & _acc,
   std::string account = (const char *) _acc;
   std::string summary = (const char *) _msgs;
 
-  runtime.run_in_main (new mwi_event_in_main (this, account, summary));
+  runtime.run_in_main (sigc::bind (mwi_event.make_slot (), account, summary));
 }
 
 

@@ -91,13 +91,11 @@ namespace OPENLDAP
 
     sigc::signal<void> trigger_saving;
 
-    /* should be private, but have to be called by C code */
-    void refresh_bound ();
-    void refresh_result ();
-
   private:
 
     void refresh_start ();
+    void refresh_bound ();
+    void refresh_result ();
 
     void edit ();
     void on_edit_form_submitted (Ekiga::Form &);

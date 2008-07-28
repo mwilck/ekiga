@@ -51,50 +51,6 @@
 #include "personal-details.h"
 #include "opal-account.h"
 
-
-/* run_in_main helpers */
-struct registration_event_in_main: public Ekiga::RuntimeCallback
-{
-  registration_event_in_main (Opal::Sip::CallProtocolManager* manager_,
-			      Ekiga::Account* account_,
-			      Ekiga::AccountCore::RegistrationState state_,
-			      std::string info_):
-    manager(manager_), account(account_), state(state_), info(info_)
-  {}
-
-  void run ()
-  { manager->registration_event.emit (account, state, info); }
-
-private:
-  Opal::Sip::CallProtocolManager* manager;
-  Ekiga::Account* account;
-  Ekiga::AccountCore::RegistrationState state;
-  std::string info;
-};
-
-struct presence_status_received_in_main: public Ekiga::RuntimeCallback
-{
-  presence_status_received_in_main (Ekiga::PresenceCore& core_,
-				    std::string uri_,
-				    std::string presence_,
-				    std::string status_):
-    core(core_), uri(uri_), presence(presence_), status(status_)
-  {}
-
-  void run ()
-  {
-    core.presence_received.emit (uri, presence);
-    core.status_received.emit (uri, status);
-  }
-
-private:
-  Ekiga::PresenceCore &core;
-  std::string uri;
-  std::string presence;
-  std::string status;
-};
-
-
 namespace Opal {
 
   namespace Sip {
@@ -605,7 +561,9 @@ void CallProtocolManager::OnRegistered (const PString & _aor,
   /* Signal */
   Ekiga::Account *account = account_core.find_account (strm.str ());
   if (account)
-    runtime.run_in_main (new registration_event_in_main (this, account, was_registering ? Ekiga::AccountCore::Registered : Ekiga::AccountCore::Unregistered, std::string ()));
+    runtime.run_in_main (sigc::bind (registration_event.make_slot (), account,
+                                     was_registering ? Ekiga::AccountCore::Registered : Ekiga::AccountCore::Unregistered,
+                                     std::string ()));
 }
 
 
@@ -835,7 +793,9 @@ void CallProtocolManager::OnRegistrationFailed (const PString & _aor,
   /* Signal */
   Ekiga::Account *account = account_core.find_account (strm.str ());
   if (account)
-    runtime.run_in_main (new registration_event_in_main (this, account, wasRegistering ? Ekiga::AccountCore::RegistrationFailed : Ekiga::AccountCore::UnregistrationFailed, info));
+    runtime.run_in_main (sigc::bind (registration_event.make_slot (), account,
+                                     wasRegistering ? Ekiga::AccountCore::RegistrationFailed : Ekiga::AccountCore::UnregistrationFailed,
+                                     info));
 }
 
 
@@ -1003,7 +963,8 @@ CallProtocolManager::OnPresenceInfoReceived (const PString & user,
    * TODO
    * Wouldn't it be convenient to emit the signal and have the presence core listen to it ?
    */
-  runtime.run_in_main (new presence_status_received_in_main (presence_core, _uri, presence, status));
+  runtime.run_in_main (sigc::bind (presence_core.presence_received.make_slot (), _uri, presence));
+  runtime.run_in_main (sigc::bind (presence_core.status_received.make_slot (), _uri, status));
 }
 
 

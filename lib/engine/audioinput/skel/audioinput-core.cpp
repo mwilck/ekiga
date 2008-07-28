@@ -43,41 +43,6 @@
 
 using namespace Ekiga;
 
-/* run_in_main helpers */
-struct device_added_in_main: public RuntimeCallback
-{
-  device_added_in_main (AudioInputCore* manager_,
-			AudioInputDevice device_):
-    manager(manager_), device(device_)
-  {}
-
-  void run ()
-  {
-    manager->device_added.emit (device);
-  }
-
-private:
-  AudioInputCore* manager;
-  AudioInputDevice device;
-};
-
-struct device_removed_in_main: public RuntimeCallback
-{
-  device_removed_in_main (AudioInputCore* manager_,
-			  AudioInputDevice device_):
-    manager(manager_), device(device_)
-  {}
-
-  void run ()
-  {
-    manager->device_removed.emit (device);
-  }
-
-private:
-  AudioInputCore* manager;
-  AudioInputDevice device;
-};
-
 AudioInputCore::AudioPreviewManager::AudioPreviewManager (AudioInputCore& _audio_input_core, AudioOutputCore& _audio_output_core)
 : PThread (1000, NoAutoDeleteThread, HighestPriority, "PreviewManager"),
   audio_input_core (_audio_input_core),
@@ -268,7 +233,7 @@ void AudioInputCore::add_device (const std::string & source, const std::string &
        if ( desired_device == device)
          internal_set_device(desired_device);
 
-       runtime.run_in_main (new device_added_in_main (this, device));
+       runtime.run_in_main (sigc::bind (device_added.make_slot (), device));
      }
   }
 }
@@ -293,7 +258,7 @@ void AudioInputCore::remove_device (const std::string & source, const std::strin
             new_device.name = AUDIO_INPUT_FALLBACK_DEVICE_NAME;
             internal_set_device( new_device);
        }
-       runtime.run_in_main (new device_removed_in_main (this, device));
+       runtime.run_in_main (sigc::bind (device_removed.make_slot (), device));
      }
   }
 }

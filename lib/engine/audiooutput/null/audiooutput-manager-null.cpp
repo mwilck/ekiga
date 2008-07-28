@@ -38,49 +38,6 @@
 #define DEVICE_SOURCE "NULL"
 #define DEVICE_NAME   "NULL"
 
-/* run_in_main helpers */
-
-struct device_opened_in_main: public Ekiga::RuntimeCallback
-{
-
-  device_opened_in_main (GMAudioOutputManager_null* manager_,
-			 Ekiga::AudioOutputPS ps_,
-			 Ekiga::AudioOutputDevice device_,
-			 Ekiga::AudioOutputConfig config_):
-    manager(manager_), ps(ps_), device(device_), config(config_)
-  {}
-
-  void run ()
-  { manager->device_opened.emit (ps, device, config); }
-
-private:
-  GMAudioOutputManager_null* manager;
-  Ekiga::AudioOutputPS ps;
-  Ekiga::AudioOutputDevice device;
-  Ekiga::AudioOutputConfig config;
-};
-
-struct device_closed_in_main: public Ekiga::RuntimeCallback
-{
-
-  device_closed_in_main (GMAudioOutputManager_null* manager_,
-			 Ekiga::AudioOutputPS ps_,
-			 Ekiga::AudioOutputDevice device_):
-    manager(manager_), ps(ps_), device(device_)
-  {}
-
-  void run ()
-  { manager->device_closed.emit (ps, device); }
-
-private:
-  GMAudioOutputManager_null* manager;
-  Ekiga::AudioOutputPS ps;
-  Ekiga::AudioOutputDevice device;
-};
-
-
-
-
 GMAudioOutputManager_null::GMAudioOutputManager_null (Ekiga::ServiceCore & _core)
 : core (_core),
   runtime (*(dynamic_cast<Ekiga::Runtime *> (_core.get ("runtime"))))
@@ -127,7 +84,7 @@ bool GMAudioOutputManager_null::open (Ekiga::AudioOutputPS ps, unsigned channels
   Ekiga::AudioOutputConfig config;
   config.volume = 0;
   config.modifyable = false;
-  runtime.run_in_main (new device_opened_in_main (this, ps, current_state[ps].device, config));
+  runtime.run_in_main (sigc::bind (device_opened.make_slot (), ps, current_state[ps].device, config));
 
   return true;
 }
@@ -135,7 +92,7 @@ bool GMAudioOutputManager_null::open (Ekiga::AudioOutputPS ps, unsigned channels
 void GMAudioOutputManager_null::close(Ekiga::AudioOutputPS ps)
 {
   current_state[ps].opened = false;
-  runtime.run_in_main (new device_closed_in_main (this, ps, current_state[ps].device));
+  runtime.run_in_main (sigc::bind (device_closed.make_slot (), ps, current_state[ps].device));
 }
 
 

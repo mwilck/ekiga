@@ -44,42 +44,6 @@
 
 using namespace Ekiga;
 
-/* run_in_main helpers */
-struct device_added_in_main: public Ekiga::RuntimeCallback
-{
-  device_added_in_main (VideoInputCore* manager_,
-			VideoInputDevice device_):
-    manager(manager_), device(device_)
-  {}
-
-  void run ()
-  {
-    manager->device_added.emit (device);
-  }
-
-private:
-  VideoInputCore* manager;
-  VideoInputDevice device;
-};
-
-struct device_removed_in_main: public Ekiga::RuntimeCallback
-{
-  device_removed_in_main (VideoInputCore* manager_,
-			  VideoInputDevice device_):
-    manager(manager_), device(device_)
-  {}
-
-  void run ()
-  {
-    manager->device_removed.emit (device);
-  }
-
-private:
-  VideoInputCore* manager;
-  VideoInputDevice device;
-};
-
-
 VideoInputCore::VideoPreviewManager::VideoPreviewManager (VideoInputCore& _videoinput_core, VideoOutputCore& _videooutput_core)
 : PThread (1000, NoAutoDeleteThread, HighestPriority, "VideoPreviewManager"),
     videoinput_core (_videoinput_core),
@@ -263,7 +227,7 @@ void VideoInputCore::add_device (const std::string & source, const std::string &
       if ( desired_device == device )
         internal_set_device(device, current_channel, current_format);
 
-      runtime.run_in_main (new device_added_in_main (this, device));
+      runtime.run_in_main (sigc::bind (device_added.make_slot (), device));
     }
   }
 }
@@ -287,7 +251,7 @@ void VideoInputCore::remove_device (const std::string & source, const std::strin
             internal_set_device(new_device, current_channel, current_format);
        }
 
-       runtime.run_in_main (new device_removed_in_main (this, device));
+       runtime.run_in_main (sigc::bind (device_removed.make_slot (), device));
      }
   }
 }

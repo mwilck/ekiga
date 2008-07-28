@@ -40,65 +40,6 @@
 
 #define DEVICE_TYPE "PTLIB"
 
-/* run_in_main helpers */
-
-struct device_opened_in_main: public Ekiga::RuntimeCallback
-{
-  device_opened_in_main (GMAudioInputManager_ptlib* manager_,
-			 Ekiga::AudioInputDevice device_,
-			 Ekiga::AudioInputConfig config_):
-    manager(manager_), device(device_), config(config_)
-  {}
-
-  void run ()
-  {
-    manager->device_opened.emit (device, config);
-  }
-
-private:
-  GMAudioInputManager_ptlib* manager;
-  Ekiga::AudioInputDevice device;
-  Ekiga::AudioInputConfig config;
-};
-
-struct device_closed_in_main: public Ekiga::RuntimeCallback
-{
-  device_closed_in_main (GMAudioInputManager_ptlib* manager_,
-			 Ekiga::AudioInputDevice device_):
-    manager(manager_), device(device_)
-  {}
-
-  void run ()
-  {
-    manager->device_closed.emit (device);
-  }
-
-private:
-  GMAudioInputManager_ptlib* manager;
-  Ekiga::AudioInputDevice device;
-};
-
-struct device_error_in_main: public Ekiga::RuntimeCallback
-{
-  device_error_in_main (GMAudioInputManager_ptlib* manager_,
-			Ekiga::AudioInputDevice device_,
-			Ekiga::AudioInputErrorCodes error_code_):
-    manager(manager_), device(device_), error_code(error_code_)
-  {}
-
-  void run ()
-  {
-    manager->device_closed.emit (device);
-  }
-
-private:
-  GMAudioInputManager_ptlib* manager;
-  Ekiga::AudioInputDevice device;
-  Ekiga::AudioInputErrorCodes error_code;
-};
-
-
-
 GMAudioInputManager_ptlib::GMAudioInputManager_ptlib (Ekiga::ServiceCore & _core)
 : core (_core), 
   runtime (*(dynamic_cast<Ekiga::Runtime *> (_core.get ("runtime"))))
@@ -173,7 +114,7 @@ bool GMAudioInputManager_ptlib::open (unsigned channels, unsigned samplerate, un
 
   if (error_code != Ekiga::AI_ERROR_NONE) {
     PTRACE(1, "GMAudioInputManager_ptlib\tEncountered error " << error_code << " while opening device ");
-    runtime.run_in_main (new device_error_in_main (this, current_state.device, error_code));
+    runtime.run_in_main (sigc::bind (device_error.make_slot (), current_state.device, error_code));
     return false;
   }
 
@@ -184,7 +125,7 @@ bool GMAudioInputManager_ptlib::open (unsigned channels, unsigned samplerate, un
   Ekiga::AudioInputConfig config;
   config.volume = volume;
   config.modifyable = true;
-  runtime.run_in_main (new device_opened_in_main (this, current_state.device, config));
+  runtime.run_in_main (sigc::bind (device_opened.make_slot (), current_state.device, config));
 
   return true;
 }
@@ -197,7 +138,7 @@ void GMAudioInputManager_ptlib::close()
      input_device = NULL;
   }
   current_state.opened = false;
-  runtime.run_in_main (new device_closed_in_main (this, current_state.device));
+  runtime.run_in_main (sigc::bind (device_closed.make_slot (), current_state.device));
 }
 
 void GMAudioInputManager_ptlib::set_buffer_size (unsigned buffer_size, unsigned num_buffers)
@@ -228,7 +169,7 @@ bool GMAudioInputManager_ptlib::get_frame_data (char *data,
     }
     else {
       PTRACE(1, "GMAudioInputManager_ptlib\tEncountered error while trying to read data");
-      runtime.run_in_main (new device_error_in_main (this, current_state.device, Ekiga::AI_ERROR_READ));
+      runtime.run_in_main (sigc::bind (device_error.make_slot (), current_state.device, Ekiga::AI_ERROR_READ));
     }
   }
   return ret;

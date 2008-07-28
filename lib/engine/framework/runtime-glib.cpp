@@ -41,11 +41,12 @@
 
 struct message
 {
-  message (Ekiga::RuntimeCallback* _callback,
-	   unsigned int _seconds): callback(_callback), seconds(_seconds)
+  message (sigc::slot<void> _action,
+	   unsigned int _seconds): action(_action),
+				   seconds(_seconds)
   {}
 
-  Ekiga::RuntimeCallback* callback;
+  sigc::slot<void> action;
   unsigned int seconds;
 };
 
@@ -54,8 +55,7 @@ run_later_or_back_in_main_helper (gpointer data)
 {
   struct message *msg = (struct message *)data;
 
-  msg->callback->run ();
-  delete msg->callback;
+  msg->action ();
   delete msg;
 
   return FALSE;
@@ -153,9 +153,8 @@ Ekiga::GlibRuntime::quit ()
 }
 
 void
-Ekiga::GlibRuntime::run_in_main (RuntimeCallback* callback,
+Ekiga::GlibRuntime::run_in_main (sigc::slot<void> action,
 				 unsigned int seconds)
 {
-  g_async_queue_push (queue,
-		      (gpointer)(new struct message (callback, seconds)));
+  g_async_queue_push (queue, (gpointer)(new struct message (action, seconds)));
 }

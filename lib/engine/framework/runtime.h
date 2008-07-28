@@ -49,18 +49,6 @@ namespace Ekiga
  * @{
  */
 
-  /** FIXME: this is really ugly, but it seems sigc++ isn't thread-safe
-   * at all, so trying anything with signals is bound to give segfaults.
-   */
-  class RuntimeCallback
-  {
-  public:
-    virtual ~RuntimeCallback ()
-    {}
-
-    virtual void run () = 0;
-  };
-
   class Runtime
     : public Service
   {
@@ -82,12 +70,7 @@ namespace Ekiga
 
     virtual void quit () = 0;
 
-    /* Run a callback after a while
-     * @param callback the callback to run, on which delete will be called
-     * after use
-     * @param seconds how long should be waited before the callback is run
-     */
-    virtual void run_in_main (RuntimeCallback* callback,
+    virtual void run_in_main (sigc::slot<void> action,
 			      unsigned int seconds = 0) = 0;
   };
 
