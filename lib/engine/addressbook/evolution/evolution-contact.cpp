@@ -232,7 +232,7 @@ Evolution::Contact::populate_menu (Ekiga::MenuBuilder &builder)
     builder.add_separator ();
 
   builder.add_action ("remove", _("_Remove"),
-		      sigc::mem_fun (this, &Evolution::Contact::remove));
+		      sigc::mem_fun (this, &Evolution::Contact::remove_action));
   builder.add_action ("edit", _("_Edit"),
 		      sigc::mem_fun (this, &Evolution::Contact::edit_action));
   populated = true;
@@ -381,4 +381,32 @@ Evolution::Contact::on_edit_form_submitted (Ekiga::Form &result)
 
     std::cerr << "Invalid result form" << std::endl; // FIXME: do better
   }
+}
+
+void
+Evolution::Contact::remove_action ()
+{
+  Ekiga::FormRequestSimple request;
+
+  request.title (_("Remove contact"));
+
+  request.instructions (_("Please confirm you want that contact removed"));
+
+  request.submitted.connect (sigc::mem_fun (this,
+					    &Evolution::Contact::on_remove_form_submitted));
+
+  if (!questions.handle_request (&request)) {
+
+    // FIXME: better error reporting
+#ifdef __GNUC__
+    std::cout << "Unhandled form request in "
+	      << __PRETTY_FUNCTION__ << std::endl;
+#endif
+  }
+}
+
+void
+Evolution::Contact::on_remove_form_submitted (Ekiga::Form& /*result*/)
+{
+  remove ();
 }
