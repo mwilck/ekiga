@@ -49,7 +49,6 @@ gmconf_personal_details_init (Ekiga::ServiceCore &core,
   personal_details = new Gmconf::PersonalDetails ();
   
   core.add (*personal_details);
-  std::cout << "Added " << personal_details << std::endl << std::flush;
 
   return true;
 }

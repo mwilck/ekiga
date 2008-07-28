@@ -38,7 +38,6 @@
 
 #include <string>
 #include <sigc++/sigc++.h>
-#include <iostream>
 
 #include "services.h"
 
@@ -48,7 +47,7 @@ namespace Ekiga
     : public Service
   {
   public:
-    PersonalDetails () { std::cout << "Created " << this << std::endl << std::flush; };
+    PersonalDetails () { };
 
     virtual ~PersonalDetails () {}
 
