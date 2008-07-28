@@ -284,6 +284,7 @@ void CallProtocolManager::publish (const Ekiga::PersonalDetails & details)
 
     data += "</tuple>\r\n";
     data += "</presence>\r\n";
+
     Publish (to.c_str (), data, 120); // TODO: allow to change the 500 
   }
 }

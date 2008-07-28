@@ -1,9 +1,23 @@
+2008-07-28  Damien Sandras  <dsandras@gnome.org>
+
+	* src/endpoints/sip.cpp:
+	* lib/engine/components/gmconf-personal-details/gmconf-personal-details-main.cpp:
+	* lib/engine/components/gmconf-personal-details/gmconf-personal-details.cpp:
+	* lib/engine/framework/personal-details.cpp:
+	* lib/engine/framework/personal-details.h:
+	* lib/engine/presence/skel/presence-core.h:
+	* lib/engine/presence/skel/presence-core.cpp:
+	Changed the updated signal so that the 'details' object is passed as
+	argument of the callback. Fixes a few problems due to sigc:: doing a
+	copy of the argument.
+
 2008-07-28  Julien Puydt  <jpuydt@gnome.org>
 
 	* lib/engine/gui/gtk-frontend/addressbook-window.cpp: Removed the
 	directory icons in the list of addressbooks, which fixes #544959.
 
 2008-07-28  Julien Puydt  <jpuydt@gnome.org>
+
 	* lib/engine/framework/runtime-glib.cpp:
 	* lib/engine/framework/runtime-glib.h:
 	* lib/engine/framework/runtime.h:

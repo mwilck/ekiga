@@ -38,6 +38,7 @@
 
 #include <string>
 #include <sigc++/sigc++.h>
+#include <iostream>
 
 #include "services.h"
 
@@ -47,7 +48,7 @@ namespace Ekiga
     : public Service
   {
   public:
-    PersonalDetails () {};
+    PersonalDetails () { std::cout << "Created " << this << std::endl << std::flush; };
 
     virtual ~PersonalDetails () {}
 
@@ -80,7 +81,7 @@ namespace Ekiga
 
     void set_long_status (const std::string & long_status);
 
-    sigc::signal<void> updated;
+    sigc::signal<void, PersonalDetails &> updated;
 
   private:
     std::string display_name;

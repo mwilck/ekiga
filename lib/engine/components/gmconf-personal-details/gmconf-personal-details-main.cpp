@@ -37,6 +37,7 @@
 
 #include "gmconf-personal-details-main.h"
 #include "gmconf-personal-details.h"
+#include <iostream>
 
 bool 
 gmconf_personal_details_init (Ekiga::ServiceCore &core,
@@ -48,6 +49,7 @@ gmconf_personal_details_init (Ekiga::ServiceCore &core,
   personal_details = new Gmconf::PersonalDetails ();
   
   core.add (*personal_details);
+  std::cout << "Added " << personal_details << std::endl << std::flush;
 
   return true;
 }

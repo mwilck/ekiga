@@ -111,7 +111,7 @@ namespace Ekiga
     virtual void publish (const PersonalDetails & details) = 0;
 
   private:
-    void on_personal_details_updated (PersonalDetails & details);
+    void on_personal_details_updated (PersonalDetails &details);
     void on_registration_event (const Ekiga::Account & account,
                                 Ekiga::AccountCore::RegistrationState state,
                                 std::string /*info*/,

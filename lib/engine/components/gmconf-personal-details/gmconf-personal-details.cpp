@@ -39,8 +39,6 @@
 #include "gmconf.h"
 #include "gmconf-personal-details.h"
 
-#include <iostream>
-
 using namespace Gmconf;
 
 static void

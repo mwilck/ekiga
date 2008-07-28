@@ -35,8 +35,6 @@
  *
  */
 
-#include <iostream>
-
 #include "account-core.h"
 #include "presence-core.h"
 #include "personal-details.h"
@@ -48,13 +46,13 @@ Ekiga::PresencePublisher::PresencePublisher (Ekiga::ServiceCore & core)
   Ekiga::PersonalDetails *details = dynamic_cast <Ekiga::PersonalDetails *> (core.get ("personal-details"));
 
   if (details)
-    details->updated.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresencePublisher::on_personal_details_updated), *details));
+    details->updated.connect (sigc::mem_fun (this, &Ekiga::PresencePublisher::on_personal_details_updated));
   if (account_core)
     account_core->registration_event.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresencePublisher::on_registration_event), details));
 }
 
 
-void Ekiga::PresencePublisher::on_personal_details_updated (Ekiga::PersonalDetails & details)
+void Ekiga::PresencePublisher::on_personal_details_updated (Ekiga::PersonalDetails &details)
 {
   this->publish (details);
 }
