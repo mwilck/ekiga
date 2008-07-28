@@ -62,7 +62,6 @@ struct _AddressBookWindowPrivate
 
 enum {
 
-  COLUMN_PIXBUF,
   COLUMN_NAME,
   COLUMN_BOOK_POINTER,
   COLUMN_VIEW,
@@ -425,7 +424,6 @@ addressbook_window_add_book (AddressBookWindow *self,
 {
   GtkTreeIter iter;
   GtkWidget *view = NULL;
-  GdkPixbuf *book_icon = NULL;
   gint page = -1;
 
   view = book_view_gtk_new (book);
@@ -438,17 +436,11 @@ addressbook_window_add_book (AddressBookWindow *self,
 
   g_signal_connect (view, "updated", G_CALLBACK (on_view_updated), self);
 
-  book_icon =  gtk_widget_render_icon (view,
-                                       GTK_STOCK_DIRECTORY,
-                                       GTK_ICON_SIZE_MENU, NULL);
-
   gtk_tree_store_append (self->priv->store, &iter, NULL);
   gtk_tree_store_set (self->priv->store, &iter,
-                      COLUMN_PIXBUF, book_icon,
                       COLUMN_NAME, book.get_name ().c_str (),
                       COLUMN_BOOK_POINTER, &book, COLUMN_VIEW, view,
                       -1);
-  g_object_unref (book_icon);
   gtk_tree_selection_select_iter (self->priv->selection, &iter);
 }
 
@@ -681,7 +673,6 @@ addressbook_window_new (Ekiga::ContactCore &core)
   frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
   self->priv->store = gtk_tree_store_new (NUM_COLUMNS,
-                                          GDK_TYPE_PIXBUF,
                                           G_TYPE_STRING,
                                           G_TYPE_POINTER,
                                           G_TYPE_OBJECT);
@@ -693,11 +684,6 @@ addressbook_window_new (Ekiga::ContactCore &core)
 
   /* Two renderers for one column */
   column = gtk_tree_view_column_new ();
-  cell = gtk_cell_renderer_pixbuf_new ();
-  gtk_tree_view_column_pack_start (column, cell, FALSE);
-  gtk_tree_view_column_set_attributes (column, cell,
-                                       "pixbuf", COLUMN_PIXBUF,
-                                       NULL);
 
   cell = gtk_cell_renderer_text_new ();
   gtk_tree_view_column_pack_start (column, cell, FALSE);
