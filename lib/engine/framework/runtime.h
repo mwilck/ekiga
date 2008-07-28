@@ -55,6 +55,9 @@ namespace Ekiga
   class RuntimeCallback
   {
   public:
+    virtual ~RuntimeCallback ()
+    {}
+
     virtual void run () = 0;
   };
 
