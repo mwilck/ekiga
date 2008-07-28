@@ -1134,7 +1134,7 @@ on_videoinput_device_error_cb (Ekiga::VideoInputManager & /* manager */,
 void
 on_audioinput_device_opened_cb (Ekiga::AudioInputManager & /* manager */,
                                 Ekiga::AudioInputDevice & /* device */,
-                                Ekiga::AudioInputConfig &  config,
+                                Ekiga::AudioInputSettings & settings,
                                 gpointer self)
 {
   GmMainWindow *mw = NULL;
@@ -1142,8 +1142,8 @@ on_audioinput_device_opened_cb (Ekiga::AudioInputManager & /* manager */,
   mw = gm_mw_get_mw (GTK_WIDGET (self));
   g_return_if_fail (mw != NULL);
 
-  gtk_widget_set_sensitive (GTK_WIDGET (mw->audio_input_volume_frame), config.modifyable ? TRUE : FALSE);
-  GTK_ADJUSTMENT (mw->adj_input_volume)->value = config.volume;
+  gtk_widget_set_sensitive (GTK_WIDGET (mw->audio_input_volume_frame), settings.modifyable ? TRUE : FALSE);
+  GTK_ADJUSTMENT (mw->adj_input_volume)->value = settings.volume;
   
   gtk_widget_queue_draw (GTK_WIDGET (mw->audio_input_volume_frame));
 }
@@ -1208,7 +1208,7 @@ void
 on_audiooutput_device_opened_cb (Ekiga::AudioOutputManager & /*manager*/,
                                  Ekiga::AudioOutputPS ps,
                                  Ekiga::AudioOutputDevice & /*device*/,
-                                 Ekiga::AudioOutputConfig & config,
+                                 Ekiga::AudioOutputSettings & settings,
                                  gpointer self)
 {
   if (ps == Ekiga::secondary)
@@ -1219,8 +1219,8 @@ on_audiooutput_device_opened_cb (Ekiga::AudioOutputManager & /*manager*/,
   mw = gm_mw_get_mw (GTK_WIDGET (self));
   g_return_if_fail (mw != NULL);
 
-  gtk_widget_set_sensitive (GTK_WIDGET (mw->audio_output_volume_frame), config.modifyable ? TRUE : FALSE);
-  GTK_ADJUSTMENT (mw->adj_output_volume)->value = config.volume;
+  gtk_widget_set_sensitive (GTK_WIDGET (mw->audio_output_volume_frame), settings.modifyable ? TRUE : FALSE);
+  GTK_ADJUSTMENT (mw->adj_output_volume)->value = settings.volume;
 
   gtk_widget_queue_draw (GTK_WIDGET (mw->audio_output_volume_frame));
 }

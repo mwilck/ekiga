@@ -167,7 +167,7 @@ namespace Ekiga
        * It determines responsible managers for that specific device and informs the 
        * GUI about the device that was added (via device_added signal). 
        * In case the added device was the desired device and we fell back, 
-       * we will reactivate it.
+       * we will reactivate it. MUST be called from main thread.
        * @param source the device source (e.g. alsa).
        * @param device_name the name of the added device.
        * @param manager the HalManger detected the addition.
@@ -179,7 +179,7 @@ namespace Ekiga
        * It determines responsible managers for that specific device and informs the 
        * GUI about the device that was removed (via device_removed signal). 
        * In case the removed device was the current device we fall back to the
-       * fallback device.
+       * fallback device. MUST be called from main thread.
        * @param source the device source (e.g. alsa).
        * @param device_name the name of the removed device.
        * @param manager the HalManger detected the removal.
@@ -262,7 +262,7 @@ namespace Ekiga
 
       /** See audioinput-manager.h for the API
        */
-      sigc::signal<void, AudioInputManager &, AudioInputDevice &, AudioInputConfig&> device_opened;
+      sigc::signal<void, AudioInputManager &, AudioInputDevice &, AudioInputSettings&> device_opened;
       sigc::signal<void, AudioInputManager &, AudioInputDevice &> device_closed;
       sigc::signal<void, AudioInputManager &, AudioInputDevice &, AudioInputErrorCodes> device_error;
 
@@ -282,7 +282,7 @@ namespace Ekiga
 
   private:
       void on_device_opened (AudioInputDevice device,  
-                             AudioInputConfig vidinput_config, 
+                             AudioInputSettings settings, 
                              AudioInputManager *manager);
       void on_device_closed (AudioInputDevice device, AudioInputManager *manager);
       void on_device_error  (AudioInputDevice device, AudioInputErrorCodes error_code, AudioInputManager *manager);

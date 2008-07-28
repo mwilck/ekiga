@@ -40,6 +40,7 @@
 
 #define DEVICE_TYPE "PTLIB"
 
+
 GMAudioInputManager_ptlib::GMAudioInputManager_ptlib (Ekiga::ServiceCore & _core)
 : core (_core), 
   runtime (*(dynamic_cast<Ekiga::Runtime *> (_core.get ("runtime"))))
@@ -122,10 +123,10 @@ bool GMAudioInputManager_ptlib::open (unsigned channels, unsigned samplerate, un
   input_device->GetVolume (volume);
   current_state.opened = true;
 
-  Ekiga::AudioInputConfig config;
-  config.volume = volume;
-  config.modifyable = true;
-  runtime.run_in_main (sigc::bind (device_opened.make_slot (), current_state.device, config));
+  Ekiga::AudioInputSettings settings;
+  settings.volume = volume;
+  settings.modifyable = true;
+  runtime.run_in_main (sigc::bind (device_opened.make_slot (), current_state.device, settings));
 
   return true;
 }

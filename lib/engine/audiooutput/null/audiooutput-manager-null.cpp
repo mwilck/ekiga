@@ -81,10 +81,10 @@ bool GMAudioOutputManager_null::open (Ekiga::AudioOutputPS ps, unsigned channels
 
   adaptive_delay[ps].Restart();
 
-  Ekiga::AudioOutputConfig config;
-  config.volume = 0;
-  config.modifyable = false;
-  runtime.run_in_main (sigc::bind (device_opened.make_slot (), ps, current_state[ps].device, config));
+  Ekiga::AudioOutputSettings settings;
+  settings.volume = 0;
+  settings.modifyable = false;
+  runtime.run_in_main (sigc::bind (device_opened.make_slot (), ps, current_state[ps].device, settings));
 
   return true;
 }

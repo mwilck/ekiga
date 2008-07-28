@@ -43,10 +43,10 @@ namespace Ekiga
 {
   class AudioOutputDevice : public Device {};
 
-  typedef struct AudioOutputConfig {
+  typedef struct AudioOutputSettings {
     unsigned volume;
     bool modifyable;
-  } AudioOutputConfig;
+  } AudioOutputSettings;
 
   enum AudioOutputErrorCodes {
     AO_ERROR_NONE = 0,

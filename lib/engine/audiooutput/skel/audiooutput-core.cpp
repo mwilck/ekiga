@@ -39,6 +39,7 @@
 #include <math.h>
 
 using namespace Ekiga;
+
 AudioOutputCore::AudioOutputCore (Ekiga::Runtime & _runtime)
 :  runtime (_runtime),
    audio_event_scheduler(*this)
@@ -208,7 +209,7 @@ void AudioOutputCore::add_device (const std::string & sink, const std::string & 
          internal_set_primary_device(desired_primary_device);
        }
 
-       runtime.run_in_main (sigc::bind (device_added.make_slot (), device));
+       device_added.emit(device);
      }
   }
 }
@@ -233,7 +234,7 @@ void AudioOutputCore::remove_device (const std::string & sink, const std::string
          internal_set_primary_device(new_device);
        }
 
-       runtime.run_in_main (sigc::bind (device_removed.make_slot (), device));
+       device_removed.emit(device);
      }
   }
 }
@@ -361,10 +362,10 @@ void AudioOutputCore::play_buffer(AudioOutputPS ps, const char* buffer, unsigned
 
 void AudioOutputCore::on_device_opened (AudioOutputPS ps,
                                         AudioOutputDevice device,
-                                        AudioOutputConfig config, 
+                                        AudioOutputSettings settings, 
                                         AudioOutputManager *manager)
 {
-  device_opened.emit (*manager, ps, device, config);
+  device_opened.emit (*manager, ps, device, settings);
 }
 
 void AudioOutputCore::on_device_closed (AudioOutputPS ps, AudioOutputDevice device, AudioOutputManager *manager)

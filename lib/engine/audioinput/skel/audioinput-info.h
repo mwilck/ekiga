@@ -44,10 +44,10 @@ namespace Ekiga
 {
   class AudioInputDevice : public Device {};
 
-  typedef struct AudioInputConfig {
+  typedef struct AudioInputSettings {
     unsigned volume;
     bool modifyable;
-  } AudioInputConfig;
+  } AudioInputSettings;
 
   enum AudioInputErrorCodes {
     AI_ERROR_NONE = 0,

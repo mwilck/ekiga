@@ -171,7 +171,7 @@ namespace Ekiga
        * It determines responsible managers for that specific device and informs the 
        * GUI about the device that was added (via device_added signal). 
        * In case the added device was the desired device and we fell back, 
-       * we will reactivate it.
+       * we will reactivate it. MUST be called from main thread.
        * @param source the device source (e.g. video4linux).
        * @param device_name the name of the added device.
        * @param capabilities used for differentiating V4L1 and V4L2.
@@ -184,7 +184,7 @@ namespace Ekiga
        * It determines responsible managers for that specific device and informs the 
        * GUI about the device that was removed (via device_removed signal). 
        * In case the removed device was the current device we fall back to the
-       * fallback device.
+       * fallback device. MUST be called from main thread.
        * @param source the device source (e.g. video4linux).
        * @param device_name the name of the removed device.
        * @param capabilities used for differentiating V4L1 and V4L2.

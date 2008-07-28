@@ -148,7 +148,7 @@ namespace Ekiga
        * @param device the audio output device that was opened.
        * @param config the current audio output device configuration (current volume, etc.).
        */
-      sigc::signal<void, AudioOutputPS, AudioOutputDevice, AudioOutputConfig> device_opened;
+      sigc::signal<void, AudioOutputPS, AudioOutputDevice, AudioOutputSettings> device_opened;
 
       /** This signal is emitted when an audio output device is closed.
        * @param prim whether the primary or secondary audio output device was closed.

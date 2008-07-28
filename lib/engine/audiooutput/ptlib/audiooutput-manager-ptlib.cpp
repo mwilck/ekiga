@@ -123,10 +123,10 @@ bool GMAudioOutputManager_ptlib::open (Ekiga::AudioOutputPS ps, unsigned channel
   output_device[ps]->GetVolume (volume);
   current_state[ps].opened = true;
 
-  Ekiga::AudioOutputConfig config;
-  config.volume = volume;
-  config.modifyable = true;
-  runtime.run_in_main (sigc::bind (device_opened.make_slot (), ps, current_state[ps].device, config));
+  Ekiga::AudioOutputSettings settings;
+  settings.volume = volume;
+  settings.modifyable = true;
+  runtime.run_in_main (sigc::bind (device_opened.make_slot (), ps, current_state[ps].device, settings));
 
   return true;
 }

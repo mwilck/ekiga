@@ -38,6 +38,7 @@
 #define DEVICE_SOURCE "NULL"
 #define DEVICE_NAME   "NULL"
 
+
 GMAudioInputManager_null::GMAudioInputManager_null (Ekiga::ServiceCore & _core)
 :    core (_core), runtime (*(dynamic_cast<Ekiga::Runtime *> (_core.get ("runtime"))))
 {
@@ -78,10 +79,10 @@ bool GMAudioInputManager_null::open (unsigned channels, unsigned samplerate, uns
 
   adaptive_delay.Restart();
 
-  Ekiga::AudioInputConfig config;
-  config.volume = 0;
-  config.modifyable = false;
-  runtime.run_in_main (sigc::bind (device_opened.make_slot (), current_state.device, config));
+  Ekiga::AudioInputSettings settings;
+  settings.volume = 0;
+  settings.modifyable = false;
+  runtime.run_in_main (sigc::bind (device_opened.make_slot (), current_state.device, settings));
 
   return true;
 }

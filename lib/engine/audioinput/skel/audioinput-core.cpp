@@ -233,7 +233,7 @@ void AudioInputCore::add_device (const std::string & source, const std::string &
        if ( desired_device == device)
          internal_set_device(desired_device);
 
-       runtime.run_in_main (sigc::bind (device_added.make_slot (), device));
+       device_added.emit (device);
      }
   }
 }
@@ -258,7 +258,7 @@ void AudioInputCore::remove_device (const std::string & source, const std::strin
             new_device.name = AUDIO_INPUT_FALLBACK_DEVICE_NAME;
             internal_set_device( new_device);
        }
-       runtime.run_in_main (sigc::bind (device_removed.make_slot (), device));
+       device_removed.emit (device);
      }
   }
 }
@@ -400,10 +400,10 @@ void AudioInputCore::set_volume (unsigned volume)
 }
 
 void AudioInputCore::on_device_opened (AudioInputDevice device,
-                                       AudioInputConfig audioinput_config, 
+                                       AudioInputSettings settings, 
                                        AudioInputManager *manager)
 {
-  device_opened.emit (*manager, device, audioinput_config);
+  device_opened.emit (*manager, device, settings);
 }
 
 void AudioInputCore::on_device_closed (AudioInputDevice device, AudioInputManager *manager)

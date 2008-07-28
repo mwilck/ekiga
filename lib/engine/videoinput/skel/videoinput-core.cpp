@@ -227,7 +227,7 @@ void VideoInputCore::add_device (const std::string & source, const std::string &
       if ( desired_device == device )
         internal_set_device(device, current_channel, current_format);
 
-      runtime.run_in_main (sigc::bind (device_added.make_slot (), device));
+      device_added.emit(device);
     }
   }
 }
@@ -251,7 +251,7 @@ void VideoInputCore::remove_device (const std::string & source, const std::strin
             internal_set_device(new_device, current_channel, current_format);
        }
 
-       runtime.run_in_main (sigc::bind (device_removed.make_slot (), device));
+       device_removed.emit(device);
      }
   }
 }

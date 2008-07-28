@@ -157,7 +157,7 @@ namespace Ekiga
        * It determines responsible managers for that specific device and informs the 
        * GUI about the device that was added (via device_added signal). 
        * In case the added device was the desired device and we fell back, 
-       * we will reactivate it.
+       * we will reactivate it. MUST be called from main thread,
        * @param sink the device sink (e.g. alsa).
        * @param device_name the name of the added device.
        * @param manager the HalManger detected the addition.
@@ -169,7 +169,7 @@ namespace Ekiga
        * It determines responsible managers for that specific device and informs the 
        * GUI about the device that was removed (via device_removed signal). 
        * In case the removed device was the current device we fall back to the
-       * fallback device.
+       * fallback device. MUST be called from main thread,
        * @param sink the device sink (e.g. alsa).
        * @param device_name the name of the removed device.
        * @param manager the HalManger detected the removal.
@@ -306,7 +306,7 @@ namespace Ekiga
 
       /** See audiooutput-manager.h for the API
        */
-      sigc::signal<void, AudioOutputManager &, AudioOutputPS, AudioOutputDevice&, AudioOutputConfig&> device_opened;
+      sigc::signal<void, AudioOutputManager &, AudioOutputPS, AudioOutputDevice&, AudioOutputSettings&> device_opened;
       sigc::signal<void, AudioOutputManager &, AudioOutputPS, AudioOutputDevice&> device_closed;
       sigc::signal<void, AudioOutputManager &, AudioOutputPS, AudioOutputDevice&, AudioOutputErrorCodes> device_error;
 
@@ -327,7 +327,7 @@ namespace Ekiga
   private:
       void on_device_opened (AudioOutputPS ps, 
                              AudioOutputDevice device,
-                             AudioOutputConfig config, 
+                             AudioOutputSettings settings, 
                              AudioOutputManager *manager);
       void on_device_closed (AudioOutputPS ps, AudioOutputDevice device, AudioOutputManager *manager);
       void on_device_error  (AudioOutputPS ps, AudioOutputDevice device, AudioOutputErrorCodes error_code, AudioOutputManager *manager);

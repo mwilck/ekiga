@@ -790,12 +790,17 @@ create_connection_type_page (EkigaAssistant *assistant)
                       -1);
   gtk_list_store_append (store, &iter);
   gtk_list_store_set (store, &iter,
-                      CNX_LABEL_COLUMN, _("xDSL/Cable"),
-                      CNX_CODE_COLUMN, NET_DSL,
+                      CNX_LABEL_COLUMN, _("DSL/Cable (128 kbit/s uplink)"),
+                      CNX_CODE_COLUMN, NET_DSL128,
                       -1);
   gtk_list_store_append (store, &iter);
   gtk_list_store_set (store, &iter,
-                      CNX_LABEL_COLUMN, _("T1/LAN"),
+                      CNX_LABEL_COLUMN, _("DSL/Cable (512 kbit/s uplink)"),
+                      CNX_CODE_COLUMN, NET_DSL512,
+                      -1);
+  gtk_list_store_append (store, &iter);
+  gtk_list_store_set (store, &iter,
+                      CNX_LABEL_COLUMN, _("LAN"),
                       CNX_CODE_COLUMN, NET_LAN,
                       -1);
   gtk_list_store_append (store, &iter);
@@ -854,26 +859,28 @@ apply_connection_type_page (EkigaAssistant *assistant)
   /* Set the connection quality settings */
   switch (connection_type) {
     case NET_PSTN:
-      gm_conf_set_int (VIDEO_CODECS_KEY "frame_rate", 5);
-      gm_conf_set_int (VIDEO_CODECS_KEY "maximum_video_tx_bitrate", 8);
       gm_conf_set_bool (VIDEO_CODECS_KEY "enable_video", FALSE);
       break;
 
     case NET_ISDN:
-      gm_conf_set_int (VIDEO_CODECS_KEY "frame_rate", 10);
-      gm_conf_set_int (VIDEO_CODECS_KEY "maximum_video_tx_bitrate", 16);
       gm_conf_set_bool (VIDEO_CODECS_KEY "enable_video", FALSE);
       break;
 
-    case NET_DSL:
-      gm_conf_set_int (VIDEO_CODECS_KEY "frame_rate", 15);
+    case NET_DSL128:
+      gm_conf_set_int (VIDEO_DEVICES_KEY "size", 0); //QCIF
       gm_conf_set_int (VIDEO_CODECS_KEY "maximum_video_tx_bitrate", 64);
       gm_conf_set_bool (VIDEO_CODECS_KEY "enable_video", TRUE);
       break;
 
+    case NET_DSL512:
+      gm_conf_set_int (VIDEO_DEVICES_KEY "size", 3); // 320x240
+      gm_conf_set_int (VIDEO_CODECS_KEY "maximum_video_tx_bitrate", 384);
+      gm_conf_set_bool (VIDEO_CODECS_KEY "enable_video", TRUE);
+      break;
+
     case NET_LAN:
-      gm_conf_set_int (VIDEO_CODECS_KEY "frame_rate", 25);
-      gm_conf_set_int (VIDEO_CODECS_KEY "maximum_video_tx_bitrate", 800);
+      gm_conf_set_int (VIDEO_DEVICES_KEY "size", 3); // 320x240
+      gm_conf_set_int (VIDEO_CODECS_KEY "maximum_video_tx_bitrate", 1024);
       gm_conf_set_bool (VIDEO_CODECS_KEY "enable_video", TRUE);
       break;
 
