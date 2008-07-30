@@ -534,26 +534,39 @@ on_selection_changed (GtkTreeSelection* selection,
 
   if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
 
+    gint column_type;
     Ekiga::Heap* heap = NULL;
     Ekiga::Presentity *presentity = NULL;
     gtk_tree_model_get (model, &iter,
+			COLUMN_TYPE, &column_type,
 			COLUMN_HEAP, &heap,
 			COLUMN_PRESENTITY, &presentity,
 			-1);
     gtk_container_foreach (GTK_CONTAINER (self->priv->toolbar),
 			   (GtkCallback)remove_child, self->priv->toolbar);
-    if (presentity != NULL) {
+
+    switch (column_type) {
+
+    case TYPE_PRESENTITY: {
 
       ToolbarBuilderGtk builder(self->priv->toolbar);
       Ekiga::ShortMenuBuilder shorter(builder);
       presentity->populate_menu (shorter);
       gtk_widget_show_all (self->priv->toolbar);
-    } else if (heap != NULL) {
+      break;
+    }
+    case TYPE_HEAP: {
 
       ToolbarBuilderGtk builder(self->priv->toolbar);
       Ekiga::ShortMenuBuilder shorter(builder);
       heap->populate_menu (shorter);
       gtk_widget_show_all (self->priv->toolbar);
+      break;
+    }
+
+    case TYPE_GROUP:
+    default:
+      break;
     }
     g_signal_emit (self, signals[PRESENTITY_SELECTED_SIGNAL], 0, presentity);
   }
