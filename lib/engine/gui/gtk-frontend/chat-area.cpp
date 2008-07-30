@@ -221,6 +221,8 @@ on_bold_clicked (G_GNUC_UNUSED GtkButton* button,
     position = gtk_editable_get_position (GTK_EDITABLE (self->priv->entry));
     gtk_editable_insert_text (GTK_EDITABLE (self->priv->entry),
 			      "<b></b>", 7, &position);
+    gtk_editable_set_position (GTK_EDITABLE (self->priv->entry),
+			       position - 4);
   }
 }
 
@@ -248,6 +250,8 @@ on_italic_clicked (G_GNUC_UNUSED GtkButton* button,
     position = gtk_editable_get_position (GTK_EDITABLE (self->priv->entry));
     gtk_editable_insert_text (GTK_EDITABLE (self->priv->entry),
 			      "<i></i>", 7, &position);
+    gtk_editable_set_position (GTK_EDITABLE (self->priv->entry),
+			       position - 4);
   }
 }
 
@@ -275,6 +279,8 @@ on_underline_clicked (G_GNUC_UNUSED GtkButton* button,
     position = gtk_editable_get_position (GTK_EDITABLE (self->priv->entry));
     gtk_editable_insert_text (GTK_EDITABLE (self->priv->entry),
 			      "<u></u>", 7, &position);
+    gtk_editable_set_position (GTK_EDITABLE (self->priv->entry),
+			       position - 4);
   }
 }
 
