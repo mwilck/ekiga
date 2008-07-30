@@ -1,3 +1,10 @@
+2008-07-30  Julien Puydt  <jpuydt@gnome.org>
+
+	* src/endpoints/sip.cpp:
+	* src/endpoints/pcss.cpp:
+	* src/endpoints/manager.cpp: Made the run_in_main calls more careful
+	about sigc::trackable objects.
+
 2008-07-29  Damien Sandras  <dsandras@gnome.org>
 
 	* src/endpoints/sip.cpp: 

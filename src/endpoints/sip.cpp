@@ -51,6 +51,16 @@
 #include "personal-details.h"
 #include "opal-account.h"
 
+static void
+presence_status_in_main (Ekiga::PresenceCore* core,
+			 std::string uri,
+			 std::string presence,
+			 std::string status)
+{
+  core->presence_received.emit (uri, presence);
+  core->status_received.emit (uri, status);
+}
+
 namespace Opal {
 
   namespace Sip {
@@ -964,8 +974,7 @@ CallProtocolManager::OnPresenceInfoReceived (const PString & user,
    * TODO
    * Wouldn't it be convenient to emit the signal and have the presence core listen to it ?
    */
-  runtime.run_in_main (sigc::bind (presence_core.presence_received.make_slot (), _uri, presence));
-  runtime.run_in_main (sigc::bind (presence_core.status_received.make_slot (), _uri, status));
+  runtime.run_in_main (sigc::bind (sigc::ptr_fun (presence_status_in_main), &presence_core, _uri, presence, status));
 }
 
 

@@ -50,6 +50,12 @@
 
 #include "call-manager.h"
 
+static void
+manager_ready_in_main (Ekiga::CallManager* manager)
+{
+  manager->ready.emit ();
+}
+
 static  bool same_codec_desc (Ekiga::CodecDescription a, Ekiga::CodecDescription b)
 { 
   return (a.name == b.name && a.rate == b.rate); 
@@ -86,7 +92,8 @@ public:
          iter++) 
       (*iter)->set_listen_port ((*iter)->get_listen_interface ().port);
 
-    runtime.run_in_main (manager.ready.make_slot ());
+    runtime.run_in_main (sigc::bind (sigc::ptr_fun (manager_ready_in_main),
+				     &manager));
   };
 
 private:
