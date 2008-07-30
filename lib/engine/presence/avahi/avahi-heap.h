@@ -69,6 +69,9 @@ namespace Avahi
 
     bool populate_menu (Ekiga::MenuBuilder &builder);
 
+    bool populate_menu_for_group (const std::string name,
+				  Ekiga::MenuBuilder& builder);
+
     /* these should be private but are called from C code */
 
     void ClientCallback (AvahiClient *client,

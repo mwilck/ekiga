@@ -6,6 +6,21 @@
 
 2008-07-30  Julien Puydt  <jpuydt@gnome.org>
 
+	* lib/engine/presence/skel/heap.h: Added the populate_menu_for_group
+	method.
+	* lib/engine/presence/avahi/avahi-heap.cpp:
+	* lib/engine/presence/avahi/avahi-heap.h: Implemented empty
+	populate_menu_for_group.
+	* lib/engine/presence/local-roster/local-heap.cpp:
+	* lib/engine/presence/local-roster/local-heap.h:
+	* lib/engine/presence/local-roster/local-presentity.cpp:
+	* lib/engine/presence/local-roster/local-presentity.h: Implemented
+	renaming of groups and export it via populate_menu_for_group.
+	* lib/engine/gui/gtk-frontend/roster-view-gtk.cpp: Allow context menus
+	and toolbars for heap groups.
+
+2008-07-30  Julien Puydt  <jpuydt@gnome.org>
+
 	* lib/engine/gui/gtk-frontend/roster-view-gtk.cpp: Cleaned the selection
 	code.
 

@@ -75,11 +75,11 @@ Local::Heap::Heap (Ekiga::ServiceCore &_core): core (_core), doc (NULL)
 	  && child->name != NULL
 	  && xmlStrEqual (BAD_CAST ("entry"), child->name))
 	add (child);
-    
+
     g_free (c_raw);
 
     // Or create a new XML document
-  } 
+  }
   else {
 
     doc = xmlNewDoc (BAD_CAST "1.0");
@@ -108,6 +108,16 @@ Local::Heap::populate_menu (Ekiga::MenuBuilder &builder)
 {
   builder.add_action ("new", _("New contact"),
 		      sigc::bind (sigc::mem_fun (this, &Local::Heap::new_presentity), "", ""));
+  return true;
+}
+
+
+bool
+Local::Heap::populate_menu_for_group (const std::string name,
+				      Ekiga::MenuBuilder& builder)
+{
+  builder.add_action ("rename_group", _("Rename"),
+		      sigc::bind (sigc::mem_fun (this, &Local::Heap::on_rename_group), name));
   return true;
 }
 
@@ -284,6 +294,52 @@ Local::Heap::new_presentity_form_submitted (Ekiga::Form &result)
 	std::cout << "Unhandled form request in "
 		  << __PRETTY_FUNCTION__ << std::endl;
 #endif
+      }
+    }
+  } catch (Ekiga::Form::not_found) {
+
+#ifdef __GNUC__
+    std::cerr << "Invalid form submitted to "
+	      << __PRETTY_FUNCTION__ << std::endl;
+#endif
+  }
+}
+
+void
+Local::Heap::on_rename_group (std::string name)
+{
+  Ekiga::FormRequestSimple request;
+
+  request.title (_("Rename group"));
+  request.instructions (_("Please edit this group name"));
+  request.text ("name", _("Name:"), name);
+
+  request.submitted.connect (sigc::bind<0>(sigc::mem_fun (this, &Local::Heap::rename_group_form_submitted), name));
+
+  if (!questions.handle_request (&request)) {
+
+    // FIXME: better error reporting
+#ifdef __GNUC__
+    std::cout << "Unhandled form request in "
+	      << __PRETTY_FUNCTION__ << std::endl;
+#endif
+  }
+}
+
+void
+Local::Heap::rename_group_form_submitted (std::string old_name,
+					  Ekiga::Form& result)
+{
+  try {
+    const std::string new_name = result.text ("name");
+
+    if ( !new_name.empty ()) {
+
+      for (iterator iter = begin ();
+	   iter != end ();
+	   ++iter) {
+
+	iter->rename_group (old_name, new_name);
       }
     }
   } catch (Ekiga::Form::not_found) {

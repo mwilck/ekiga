@@ -128,6 +128,9 @@ static void remove_child (GtkWidget* child,
  */
 static void on_clicked_show_heap_menu (Ekiga::Heap* heap,
 				       GdkEventButton* event);
+static void on_clicked_show_heap_group_menu (Ekiga::Heap* heap,
+					     const std::string name,
+					     GdkEventButton* event);
 static void on_clicked_show_presentity_menu (Ekiga::Presentity* presentity,
 					     GdkEventButton* event);
 
@@ -321,6 +324,7 @@ static void roster_view_gtk_find_iter_for_heap (RosterViewGtk *view,
  * PRE          : /
  */
 static void roster_view_gtk_find_iter_for_group (RosterViewGtk *view,
+						 Ekiga::Heap& heap,
                                                  GtkTreeIter *heap_iter,
                                                  const std::string name,
                                                  GtkTreeIter *iter);
@@ -374,7 +378,25 @@ on_clicked_show_heap_menu (Ekiga::Heap* heap,
 		      (gpointer) builder.menu);
   }
   g_object_ref_sink (G_OBJECT (builder.menu));
+}
 
+static void
+on_clicked_show_heap_group_menu (Ekiga::Heap* heap,
+				 const std::string name,
+				 GdkEventButton* event)
+{
+  MenuBuilderGtk builder;
+  heap->populate_menu_for_group (name, builder);
+  if (!builder.empty ()) {
+
+    gtk_widget_show_all (builder.menu);
+    gtk_menu_popup (GTK_MENU (builder.menu), NULL, NULL,
+		    NULL, NULL, event->button, event->time);
+    g_signal_connect (G_OBJECT (builder.menu), "hide",
+		      GTK_SIGNAL_FUNC (g_object_unref),
+		      (gpointer) builder.menu);
+  }
+  g_object_ref_sink (G_OBJECT (builder.menu));
 }
 
 static void
@@ -535,9 +557,11 @@ on_selection_changed (GtkTreeSelection* selection,
   if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
 
     gint column_type;
+    gchar* name = NULL;
     Ekiga::Heap* heap = NULL;
     Ekiga::Presentity *presentity = NULL;
     gtk_tree_model_get (model, &iter,
+			COLUMN_NAME, &name,
 			COLUMN_TYPE, &column_type,
 			COLUMN_HEAP, &heap,
 			COLUMN_PRESENTITY, &presentity,
@@ -564,11 +588,20 @@ on_selection_changed (GtkTreeSelection* selection,
       break;
     }
 
-    case TYPE_GROUP:
+    case TYPE_GROUP: {
+
+      ToolbarBuilderGtk builder(self->priv->toolbar);
+      Ekiga::ShortMenuBuilder shorter(builder);
+      heap->populate_menu_for_group (name, shorter);
+      gtk_widget_show_all (self->priv->toolbar);
+      break;
+    }
     default:
       break;
     }
+
     g_signal_emit (self, signals[PRESENTITY_SELECTED_SIGNAL], 0, presentity);
+    g_free (name);
   }
 }
 
@@ -615,15 +648,8 @@ on_view_clicked (GtkWidget *tree_view,
 
 	if (event->type == GDK_BUTTON_PRESS && event->button == 1 && name)
 	  on_clicked_fold (self, path, name);
-	/* FIXME: what about making it possible for a heap to have actions on groups?
-	 * It would allow for example (and optional to each Heap) group renaming,
-	 * or group invitations to a MUC or anything collaborative!
-	 * What is needed is :
-	 * - store_set the &heap when adding a group so we have access to it here in heap
-	 * - in this function we should also store_get on COLUMN_NAME to have the group name
-	 *   (don't forget the g_free!)
-	 * - add the proper populate_group_menu api to Ekiga::Heap
-	 */
+	if (event->type == GDK_BUTTON_PRESS && event->button == 3)
+	  on_clicked_show_heap_group_menu (heap, name, event);
 	break;
       case TYPE_PRESENTITY:
 
@@ -834,7 +860,8 @@ on_presentity_added (Ekiga::Cluster &/*cluster*/,
        group != groups.end ();
        group++) {
 
-    roster_view_gtk_find_iter_for_group (self, &heap_iter, *group, &group_iter);
+    roster_view_gtk_find_iter_for_group (self, heap, &heap_iter,
+					 *group, &group_iter);
     roster_view_gtk_find_iter_for_presentity (self, &group_iter, presentity, &iter);
 
     gtk_tree_store_set (self->priv->store, &iter,
@@ -850,7 +877,8 @@ on_presentity_added (Ekiga::Cluster &/*cluster*/,
 
   if (groups.empty ()) {
 
-    roster_view_gtk_find_iter_for_group (self, &heap_iter, _("Unsorted"), &group_iter);
+    roster_view_gtk_find_iter_for_group (self, heap, &heap_iter,
+					 _("Unsorted"), &group_iter);
     roster_view_gtk_find_iter_for_presentity (self, &group_iter, presentity, &iter);
     gtk_tree_store_set (self->priv->store, &iter,
 			COLUMN_TYPE, TYPE_PRESENTITY,
@@ -986,6 +1014,7 @@ roster_view_gtk_find_iter_for_heap (RosterViewGtk *view,
 
 static void
 roster_view_gtk_find_iter_for_group (RosterViewGtk *view,
+				     Ekiga::Heap& heap,
                                      GtkTreeIter *heap_iter,
                                      const std::string name,
                                      GtkTreeIter *iter)
@@ -1013,6 +1042,7 @@ roster_view_gtk_find_iter_for_group (RosterViewGtk *view,
     gtk_tree_store_append (view->priv->store, iter, heap_iter);
     gtk_tree_store_set (view->priv->store, iter,
                         COLUMN_TYPE, TYPE_GROUP,
+			COLUMN_HEAP, &heap,
                         COLUMN_NAME, name.c_str (),
                         -1);
   }

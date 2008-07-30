@@ -301,6 +301,46 @@ Local::Presentity::edit_presentity_form_submitted (Ekiga::Form &result)
 
 
 void
+Local::Presentity::rename_group (const std::string old_name,
+				 const std::string new_name)
+{
+  std::map<std::string, xmlNodePtr>::iterator iter
+    = group_nodes.find (old_name);
+
+  if (iter != group_nodes.end ()) {
+
+    if (group_nodes.find (new_name) != group_nodes.end ()) {
+
+      /* we're already in the new group */
+      xmlUnlinkNode (iter->second);
+      xmlFreeNode (iter->second);
+      group_nodes.erase (iter);
+    } else {
+
+      /* it is a real renaming */
+      xmlNodePtr group_node = iter->second;
+      robust_xmlNodeSetContent (node, &group_node,
+				"group", new_name.c_str ());
+      group_nodes.erase (iter);
+      group_nodes[new_name] = group_node;
+    }
+
+    groups.clear ();
+
+    for (std::map<std::string, xmlNodePtr>::iterator it = group_nodes.begin ();
+	 it != group_nodes.end ();
+	 ++it) {
+
+      groups.insert (iter->first);
+    }
+
+    updated.emit ();
+    trigger_saving.emit ();
+  }
+}
+
+
+void
 Local::Presentity::remove ()
 {
   presence_core->unfetch_presence (uri);

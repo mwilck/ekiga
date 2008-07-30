@@ -128,6 +128,13 @@ namespace Local
     xmlNodePtr get_node () const;
 
 
+    /** Rename the given group, if this Presentity belongs to it
+     *
+     */
+    void rename_group (const std::string old_name,
+		       const std::string new_name);
+
+
     /** Remove the current node from the XML document,
      * emit the 'removed' signal so the different views
      * know we're going away, and finally emit 'trigger_saving'

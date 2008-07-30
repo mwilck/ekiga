@@ -87,11 +87,21 @@ namespace Local
 
 
     /** Populates the given Ekiga::MenuBuilder with the actions.
-     * Inherits from Ekiga::Heap.
+     * Inherited from Ekiga::Heap.
      * @param: A MenuBuilder.
      * @return: A populated menu.
      */
     bool populate_menu (Ekiga::MenuBuilder &);
+
+
+    /** Populates the given Ekiga::MenuBuilder with the actions.
+     * Inherited from Ekiga::Heap.
+     * @param: The name of the group on which to act.
+     * @param: A MenuBuilder.
+     * @return: A populated menu.
+     */
+    bool populate_menu_for_group (const std::string name,
+				  Ekiga::MenuBuilder& builder);
 
 
     /** Determines if the given uri is already present in the Heap.
@@ -168,6 +178,16 @@ namespace Local
      * Heap if everything is valid.
      */
     void new_presentity_form_submitted (Ekiga::Form &form);
+
+    /** Triggered when the user decides to rename a group.
+     * @param The group name
+     */
+    void on_rename_group (std::string name);
+
+    /**
+     */
+    void rename_group_form_submitted (std::string old_name,
+				      Ekiga::Form& result);
 
     Ekiga::ServiceCore &core;
     Ekiga::PresenceCore *presence_core;
