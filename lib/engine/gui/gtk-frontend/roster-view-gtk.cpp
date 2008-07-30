@@ -46,6 +46,7 @@
 #include "menu-builder-tools.h"
 #include "roster-view-gtk.h"
 #include "menu-builder-gtk.h"
+#include "toolbar-builder-gtk.h"
 #include "form-dialog-gtk.h"
 
 /*
@@ -60,6 +61,7 @@ struct _RosterViewGtkPrivate
   GtkTreeView *tree_view;
   GtkWidget *vbox;
   GtkWidget *scrolled_window;
+  GtkWidget* toolbar;
   GSList *folded_groups;
   gboolean show_offline_contacts;
   Ekiga::PresenceCore & core;
@@ -114,6 +116,12 @@ enum {
 /*
  * Helpers
  */
+
+/* DESCRIPTION: Remove a child from a GtkContainer
+ *
+ */
+static void remove_child (GtkWidget* child,
+			  GtkWidget* container);
 
 /* DESCRIPTION : Set of functions called when the user clicks in a view
  * BEHAVIOUR   : Folds/unfolds, shows a menu or triggers default action
@@ -344,6 +352,13 @@ static void roster_view_gtk_update_groups (RosterViewGtk *view,
 /* Implementation of the helpers */
 
 static void
+remove_child (GtkWidget* child,
+	      GtkWidget* container)
+{
+  gtk_container_remove (GTK_CONTAINER (container), child);
+}
+
+static void
 on_clicked_show_heap_menu (Ekiga::Heap* heap,
 			   GdkEventButton* event)
 {
@@ -519,10 +534,27 @@ on_selection_changed (GtkTreeSelection* selection,
 
   if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
 
+    Ekiga::Heap* heap = NULL;
     Ekiga::Presentity *presentity = NULL;
     gtk_tree_model_get (model, &iter,
+			COLUMN_HEAP, &heap,
 			COLUMN_PRESENTITY, &presentity,
 			-1);
+    gtk_container_foreach (GTK_CONTAINER (self->priv->toolbar),
+			   (GtkCallback)remove_child, self->priv->toolbar);
+    if (presentity != NULL) {
+
+      ToolbarBuilderGtk builder(self->priv->toolbar);
+      Ekiga::ShortMenuBuilder shorter(builder);
+      presentity->populate_menu (shorter);
+      gtk_widget_show_all (self->priv->toolbar);
+    } else if (heap != NULL) {
+
+      ToolbarBuilderGtk builder(self->priv->toolbar);
+      Ekiga::ShortMenuBuilder shorter(builder);
+      heap->populate_menu (shorter);
+      gtk_widget_show_all (self->priv->toolbar);
+    }
     g_signal_emit (self, signals[PRESENTITY_SELECTED_SIGNAL], 0, presentity);
   }
 }
@@ -1199,6 +1231,8 @@ roster_view_gtk_new (Ekiga::PresenceCore &core)
   self->priv->show_offline_contacts = gm_conf_get_bool ("/apps/" PACKAGE_NAME "/contacts/show_offline_contacts");
   self->priv->vbox = gtk_vbox_new (FALSE, 0);
   self->priv->scrolled_window = gtk_scrolled_window_new (NULL, NULL);
+  self->priv->toolbar = gtk_toolbar_new ();
+  gtk_toolbar_set_style (GTK_TOOLBAR (self->priv->toolbar), GTK_TOOLBAR_BOTH);
   gtk_container_set_border_width (GTK_CONTAINER (self->priv->vbox), 0);
   gtk_container_set_border_width (GTK_CONTAINER (self->priv->scrolled_window), 0);
   gtk_frame_set_shadow_type (GTK_FRAME (self), GTK_SHADOW_NONE);
@@ -1231,8 +1265,10 @@ roster_view_gtk_new (Ekiga::PresenceCore &core)
   gtk_tree_view_set_headers_visible (self->priv->tree_view, FALSE);
 
   gtk_container_add (GTK_CONTAINER (self), GTK_WIDGET (self->priv->vbox));
-  gtk_container_add (GTK_CONTAINER (self->priv->vbox),
-		     GTK_WIDGET (self->priv->scrolled_window));
+  gtk_box_pack_start (GTK_BOX (self->priv->vbox),
+		      GTK_WIDGET (self->priv->scrolled_window), TRUE, TRUE, 2);
+  gtk_box_pack_start (GTK_BOX (self->priv->vbox),
+		      self->priv->toolbar, FALSE, TRUE, 2);
   gtk_container_add (GTK_CONTAINER (self->priv->scrolled_window),
 		     GTK_WIDGET (self->priv->tree_view));
 
