@@ -63,6 +63,11 @@ struct _RosterViewGtkClass
 
   void (*presentity_selected) (RosterViewGtk* self,
 			       gpointer presentity);
+  void (*heap_selected) (RosterViewGtk* self,
+			 gpointer heap);
+  void (*heap_group_selected) (RosterViewGtk* self,
+			       gpointer heap,
+			       const gchar* group_name);
 };
 
 #define ROSTER_VIEW_GTK_TYPE (roster_view_gtk_get_type ())

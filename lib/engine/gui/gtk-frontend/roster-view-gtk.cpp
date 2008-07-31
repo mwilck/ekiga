@@ -49,6 +49,18 @@
 #include "toolbar-builder-gtk.h"
 #include "form-dialog-gtk.h"
 
+
+/* FIXME: this is stupid : I can't seem to be able to use the marshallers
+ * defined in lib/ from here!
+ */
+static void gm_marshal_VOID__POINTER_STRING (GClosure     *closure,
+                                             GValue       *return_value,
+                                             guint         n_param_values,
+                                             const GValue *param_values,
+                                             gpointer      invocation_hint,
+                                             gpointer      marshal_data);
+
+
 /*
  * The Roster
  */
@@ -77,6 +89,8 @@ enum {
 
 enum {
   PRESENTITY_SELECTED_SIGNAL,
+  HEAP_SELECTED_SIGNAL,
+  HEAP_GROUP_SELECTED_SIGNAL,
   LAST_SIGNAL
 };
 
@@ -577,6 +591,9 @@ on_selection_changed (GtkTreeSelection* selection,
       Ekiga::ShortMenuBuilder shorter(builder);
       presentity->populate_menu (shorter);
       gtk_widget_show_all (self->priv->toolbar);
+      g_signal_emit (self, signals[PRESENTITY_SELECTED_SIGNAL], 0, presentity);
+      g_signal_emit (self, signals[HEAP_SELECTED_SIGNAL], 0, NULL);
+      g_signal_emit (self, signals[HEAP_GROUP_SELECTED_SIGNAL], 0, NULL, NULL);
       break;
     }
     case TYPE_HEAP: {
@@ -585,6 +602,9 @@ on_selection_changed (GtkTreeSelection* selection,
       Ekiga::ShortMenuBuilder shorter(builder);
       heap->populate_menu (shorter);
       gtk_widget_show_all (self->priv->toolbar);
+      g_signal_emit (self, signals[PRESENTITY_SELECTED_SIGNAL], 0, NULL);
+      g_signal_emit (self, signals[HEAP_SELECTED_SIGNAL], 0, heap);
+      g_signal_emit (self, signals[HEAP_GROUP_SELECTED_SIGNAL], 0, NULL, NULL);
       break;
     }
 
@@ -594,14 +614,21 @@ on_selection_changed (GtkTreeSelection* selection,
       Ekiga::ShortMenuBuilder shorter(builder);
       heap->populate_menu_for_group (name, shorter);
       gtk_widget_show_all (self->priv->toolbar);
+      g_signal_emit (self, signals[PRESENTITY_SELECTED_SIGNAL], 0, NULL);
+      g_signal_emit (self, signals[HEAP_SELECTED_SIGNAL], 0, NULL);
+      g_signal_emit (self, signals[HEAP_GROUP_SELECTED_SIGNAL], 0, heap, name);
       break;
     }
     default:
       break;
     }
 
-    g_signal_emit (self, signals[PRESENTITY_SELECTED_SIGNAL], 0, presentity);
     g_free (name);
+  } else {
+
+    g_signal_emit (self, signals[PRESENTITY_SELECTED_SIGNAL], 0, NULL);
+    g_signal_emit (self, signals[HEAP_SELECTED_SIGNAL], 0, NULL);
+    g_signal_emit (self, signals[HEAP_GROUP_SELECTED_SIGNAL], 0, NULL, NULL);
   }
 }
 
@@ -1216,9 +1243,32 @@ roster_view_gtk_class_init (gpointer g_class,
 		  G_TYPE_NONE, 1,
 		  G_TYPE_POINTER);
 
+  signals[HEAP_SELECTED_SIGNAL] =
+    g_signal_new ("heap-selected",
+		  G_OBJECT_CLASS_TYPE (gobject_class),
+		  G_SIGNAL_RUN_LAST,
+		  G_STRUCT_OFFSET (RosterViewGtkClass, heap_selected),
+		  NULL, NULL,
+		  g_cclosure_marshal_VOID__POINTER,
+		  G_TYPE_NONE, 1,
+		  G_TYPE_POINTER);
+
+  signals[HEAP_SELECTED_SIGNAL] =
+    g_signal_new ("heap-group-selected",
+		  G_OBJECT_CLASS_TYPE (gobject_class),
+		  G_SIGNAL_RUN_LAST,
+		  G_STRUCT_OFFSET (RosterViewGtkClass, heap_group_selected),
+		  NULL, NULL,
+		  gm_marshal_VOID__POINTER_STRING,
+		  G_TYPE_NONE, 2,
+		  G_TYPE_POINTER,
+		  G_TYPE_STRING);
+
   /* FIXME: is it useful? */
   roster_view_gtk_class = (RosterViewGtkClass*)g_class;
   roster_view_gtk_class->presentity_selected = NULL;
+  roster_view_gtk_class->heap_selected = NULL;
+  roster_view_gtk_class->heap_group_selected = NULL;
 }
 
 
@@ -1425,3 +1475,43 @@ roster_view_gtk_new (Ekiga::PresenceCore &core)
 
   return (GtkWidget *) self;
 }
+
+
+
+/* FIXME: stupid, stupid! */
+static void
+gm_marshal_VOID__POINTER_STRING (GClosure     *closure,
+                                 GValue       *return_value G_GNUC_UNUSED,
+                                 guint         n_param_values,
+                                 const GValue *param_values,
+                                 gpointer      invocation_hint G_GNUC_UNUSED,
+                                 gpointer      marshal_data)
+{
+  typedef void (*GMarshalFunc_VOID__POINTER_STRING) (gpointer     data1,
+                                                     gpointer     arg_1,
+                                                     gpointer     arg_2,
+                                                     gpointer     data2);
+  GMarshalFunc_VOID__POINTER_STRING callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gpointer data1, data2;
+
+  g_return_if_fail (n_param_values == 3);
+
+  if (G_CCLOSURE_SWAP_DATA (closure))
+    {
+      data1 = closure->data;
+      data2 = g_value_peek_pointer (param_values + 0);
+    }
+  else
+    {
+      data1 = g_value_peek_pointer (param_values + 0);
+      data2 = closure->data;
+    }
+  callback = (GMarshalFunc_VOID__POINTER_STRING) (marshal_data ? marshal_data : cc->callback);
+
+  callback (data1,
+            (param_values + 1)->data[0].v_pointer,
+            (gchar*)(param_values + 2)->data[0].v_pointer,
+            data2);
+}
+
