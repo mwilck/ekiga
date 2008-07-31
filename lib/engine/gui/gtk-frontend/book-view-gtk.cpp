@@ -581,6 +581,7 @@ book_view_gtk_new (Ekiga::Book &book)
 				  GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
 
   result->priv->tree_view = GTK_TREE_VIEW (gtk_tree_view_new ());
+  gtk_tree_view_set_headers_visible (result->priv->tree_view, FALSE);
   gtk_container_add (GTK_CONTAINER (result), GTK_WIDGET (result->priv->vbox));
   gtk_box_pack_start (GTK_BOX (result->priv->vbox),
 		     GTK_WIDGET (result->priv->scrolled_window), TRUE, TRUE, 0);
