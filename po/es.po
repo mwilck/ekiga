@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ekiga.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-03 18:11+0000\n"
-"PO-Revision-Date: 2008-08-04 17:54+0200\n"
+"POT-Creation-Date: 2008-08-04 20:21+0000\n"
+"PO-Revision-Date: 2008-08-04 22:31+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -913,13 +913,13 @@ msgstr "Perdidas"
 #: ../lib/engine/addressbook/evolution/evolution-contact.cpp:234
 #: ../lib/engine/addressbook/ldap/ldap-book.cpp:312
 #: ../lib/engine/presence/local-roster/local-presentity.cpp:196
-#: ../src/endpoints/opal-account.cpp:285
+#: ../src/endpoints/opal-account.cpp:296
 msgid "_Remove"
 msgstr "_Quitar"
 
 #: ../lib/engine/addressbook/evolution/evolution-contact.cpp:236
 #: ../lib/engine/presence/local-roster/local-presentity.cpp:194
-#: ../src/endpoints/opal-account.cpp:283 ../src/gui/main.cpp:1602
+#: ../src/endpoints/opal-account.cpp:294 ../src/gui/main.cpp:1602
 msgid "_Edit"
 msgstr "_Editar"
 
@@ -929,7 +929,7 @@ msgstr "Editar contacto"
 
 #: ../lib/engine/addressbook/evolution/evolution-contact.cpp:327
 #: ../lib/engine/addressbook/evolution/evolution-book.cpp:305
-#: ../src/endpoints/opal-account.cpp:301 ../src/endpoints/opal-bank.cpp:75
+#: ../src/endpoints/opal-account.cpp:337
 msgid "Please update the following fields:"
 msgstr "Actualice los siguientes campos:"
 
@@ -937,8 +937,8 @@ msgstr "Actualice los siguientes campos:"
 #: ../lib/engine/presence/local-roster/local-presentity.cpp:221
 #: ../lib/engine/presence/local-roster/local-heap.cpp:168
 #: ../lib/engine/presence/local-roster/local-heap.cpp:315
-#: ../src/endpoints/opal-account.cpp:303 ../src/endpoints/opal-bank.cpp:98
-#: ../src/endpoints/opal-bank.cpp:108
+#: ../src/endpoints/opal-account.cpp:339 ../src/endpoints/opal-bank.cpp:101
+#: ../src/endpoints/opal-bank.cpp:111
 msgid "Name:"
 msgstr "Nombre:"
 
@@ -1347,82 +1347,106 @@ msgstr "Error en el transporte"
 msgid "Failed"
 msgstr "Falló"
 
-#: ../src/endpoints/opal-account.cpp:275
+#: ../src/endpoints/opal-account.cpp:286
 msgid "_Disable"
 msgstr "_Desactivar"
 
-#: ../src/endpoints/opal-account.cpp:278
+#: ../src/endpoints/opal-account.cpp:289
 msgid "_Enable"
 msgstr "Ac_tivar"
 
-#: ../src/endpoints/opal-account.cpp:299 ../src/endpoints/opal-bank.cpp:74
+#: ../src/endpoints/opal-account.cpp:310 ../src/gui/assistant.cpp:662
+msgid "Recharge the account"
+msgstr "Recargar la cuenta"
+
+#: ../src/endpoints/opal-account.cpp:315 ../src/gui/assistant.cpp:674
+msgid "Consult the balance history"
+msgstr "Muestra el histórico de balance"
+
+#: ../src/endpoints/opal-account.cpp:320 ../src/gui/assistant.cpp:686
+msgid "Consult the calls history"
+msgstr "Consultar el histórico de llamadas"
+
+#: ../src/endpoints/opal-account.cpp:335 ../src/endpoints/opal-bank.cpp:74
 msgid "Edit account"
 msgstr "Editar cuenta"
 
-#: ../src/endpoints/opal-account.cpp:305 ../src/endpoints/opal-bank.cpp:109
+#: ../src/endpoints/opal-account.cpp:341 ../src/endpoints/opal-bank.cpp:112
 msgid "Registrar:"
 msgstr "Servidor de registro:"
 
-#: ../src/endpoints/opal-account.cpp:307 ../src/endpoints/opal-bank.cpp:99
+#: ../src/endpoints/opal-account.cpp:343 ../src/endpoints/opal-bank.cpp:102
 msgid "Gatekeeper:"
 msgstr "Gatekeeper:"
 
-#: ../src/endpoints/opal-account.cpp:308 ../src/endpoints/opal-bank.cpp:82
-#: ../src/endpoints/opal-bank.cpp:91 ../src/endpoints/opal-bank.cpp:100
-#: ../src/endpoints/opal-bank.cpp:110
+#: ../src/endpoints/opal-account.cpp:344 ../src/endpoints/opal-bank.cpp:83
+#: ../src/endpoints/opal-bank.cpp:94 ../src/endpoints/opal-bank.cpp:103
+#: ../src/endpoints/opal-bank.cpp:113
 msgid "User:"
 msgstr "Usuario:"
 
-#: ../src/endpoints/opal-account.cpp:310 ../src/endpoints/opal-bank.cpp:111
+#: ../src/endpoints/opal-account.cpp:346 ../src/endpoints/opal-bank.cpp:114
 msgid "Authentication User:"
 msgstr "Usuario para autenticación:"
 
-#: ../src/endpoints/opal-account.cpp:311 ../src/endpoints/opal-bank.cpp:84
-#: ../src/endpoints/opal-bank.cpp:93 ../src/endpoints/opal-bank.cpp:102
-#: ../src/endpoints/opal-bank.cpp:112
+#: ../src/endpoints/opal-account.cpp:347 ../src/endpoints/opal-bank.cpp:85
+#: ../src/endpoints/opal-bank.cpp:96 ../src/endpoints/opal-bank.cpp:105
+#: ../src/endpoints/opal-bank.cpp:115
 msgid "Password:"
 msgstr "Contraseña:"
 
-#: ../src/endpoints/opal-account.cpp:312 ../src/endpoints/opal-bank.cpp:103
-#: ../src/endpoints/opal-bank.cpp:113
+#: ../src/endpoints/opal-account.cpp:348 ../src/endpoints/opal-bank.cpp:106
+#: ../src/endpoints/opal-bank.cpp:116
 msgid "Timeout:"
 msgstr "Tiempo de expiración:"
 
-#: ../src/endpoints/opal-account.cpp:313 ../src/endpoints/opal-bank.cpp:116
+#: ../src/endpoints/opal-account.cpp:349 ../src/endpoints/opal-bank.cpp:119
 msgid "Enable Account"
 msgstr "Activar cuenta"
 
-#: ../src/endpoints/opal-account.cpp:348 ../src/endpoints/opal-bank.cpp:152
+#: ../src/endpoints/opal-account.cpp:384 ../src/endpoints/opal-bank.cpp:155
 msgid "You did not supply a name for that account."
 msgstr "No proporcionó un nombre para la cuenta."
 
-#: ../src/endpoints/opal-account.cpp:350 ../src/endpoints/opal-bank.cpp:154
+#: ../src/endpoints/opal-account.cpp:386 ../src/endpoints/opal-bank.cpp:157
 msgid "You did not supply a host to register to."
 msgstr "No proporcionó un equipo en el que registrarse."
 
-#: ../src/endpoints/opal-account.cpp:352 ../src/endpoints/opal-bank.cpp:156
+#: ../src/endpoints/opal-account.cpp:388 ../src/endpoints/opal-bank.cpp:159
 msgid "You did not supply a user name for that account."
 msgstr "No proporcionó un usuario para la cuenta."
 
-#: ../src/endpoints/opal-account.cpp:354 ../src/endpoints/opal-bank.cpp:158
+#: ../src/endpoints/opal-account.cpp:390 ../src/endpoints/opal-bank.cpp:161
 msgid "The timeout should have a bigger value."
 msgstr "El tiempo de expiración debería tener un valor mayor."
 
 #: ../src/endpoints/opal-bank.cpp:55
-msgid "_Add Ekiga.net Account"
-msgstr "_Añadir cuenta de Ekiga.net"
+msgid "_Add an Ekiga.net Account"
+msgstr "_Añadir una cuenta de Ekiga.net"
 
 #: ../src/endpoints/opal-bank.cpp:57
-msgid "_Add Ekiga Call Out Account"
-msgstr "_Añadir cuenta de Ekiga Call out"
+msgid "_Add an Ekiga Call Out Account"
+msgstr "_Añadir una cuenta de Ekiga Call out"
 
 #: ../src/endpoints/opal-bank.cpp:59
-msgid "_Add SIP Account"
-msgstr "_Añadir cuenta SIP nueva"
+msgid "_Add a SIP Account"
+msgstr "_Añadir una cuenta SIP"
 
 #: ../src/endpoints/opal-bank.cpp:61
-msgid "_Add H.323 Account"
-msgstr "_Añadir cuenta H.323"
+msgid "_Add an H.323 Account"
+msgstr "_Añadir una cuenta H.323"
+
+#: ../src/endpoints/opal-bank.cpp:75
+msgid "Please update the following fields."
+msgstr "Actualice los siguientes campos."
+
+#: ../src/endpoints/opal-bank.cpp:80 ../src/gui/assistant.cpp:540
+msgid "Get an ekiga.net SIP account"
+msgstr "Obtener una cuenta SIP de ekiga.net"
+
+#: ../src/endpoints/opal-bank.cpp:90 ../src/gui/assistant.cpp:650
+msgid "Get an Ekiga Call Out account"
+msgstr "Obtener una cuenta de Ekiga Call out"
 
 #: ../src/endpoints/opal-call.cpp:358
 msgid "Local user cleared the call"
@@ -1809,10 +1833,6 @@ msgstr ""
 "Quizá pueda saltarse este paso si usa un servicio SIP alternativo, o si "
 "preferiría especificar los detalles de inicio de sesión más tarde."
 
-#: ../src/gui/assistant.cpp:540
-msgid "Get an ekiga.net SIP account"
-msgstr "Obtener una cuenta SIP de ekiga.net"
-
 #: ../src/gui/assistant.cpp:550
 msgid "I do not want to sign up for the ekiga.net free service"
 msgstr "No quiero registrarme en el servicio gratuito ekiga.net"
@@ -1848,22 +1868,6 @@ msgstr ""
 "* Después introduzca su número de cuenta y número PIN.\n"
 "El servicio sólo funcionará si su cuenta se crea usando la URL en este "
 "diálogo.\n"
-
-#: ../src/gui/assistant.cpp:650
-msgid "Get an Ekiga Call Out account"
-msgstr "Obtener una cuenta de Ekiga Call out"
-
-#: ../src/gui/assistant.cpp:662
-msgid "Recharge the account"
-msgstr "Recargar la cuenta"
-
-#: ../src/gui/assistant.cpp:674
-msgid "Consult the balance history"
-msgstr "Muestra el histórico de balance"
-
-#: ../src/gui/assistant.cpp:686
-msgid "Consult the calls history"
-msgstr "Consultar el histórico de llamadas"
 
 #: ../src/gui/assistant.cpp:696
 msgid "I do not want to sign up for the Ekiga Call Out service"
