@@ -68,6 +68,9 @@ public:
 
   void instructions (const std::string instructions);
 
+  void link (const std::string link,
+             const std::string uri);
+
   void error (const std::string error);
 
   void hidden (const std::string name,

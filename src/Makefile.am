@@ -1,6 +1,7 @@
 INCLUDES = \
 	-I$(top_srcdir)/lib				\
 	-I$(top_srcdir)/lib/gmconf			\
+	-I$(top_srcdir)/lib/toolbox			\
 	-I$(top_srcdir)/lib/gui				\
 	-I$(top_srcdir)/lib/engine/			\
 	-I$(top_srcdir)/lib/engine/gui/gtk-frontend	\

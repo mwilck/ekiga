@@ -37,6 +37,7 @@
 #include <cstring>
 #include <iostream>
 
+#include "toolbox.h"
 #include "form-dialog-gtk.h"
 
 /*
@@ -97,6 +98,16 @@ static void
 editable_set_choice_toggled_cb (GtkCellRendererToggle *cell,
 				gchar *path_str,
 				gpointer data);
+
+
+/** Called when a link in a Form is clicked.
+ * Open the URI.
+ *
+ * @param: The URI to open. 
+ */
+static void 
+link_clicked_cb (GtkWidget *widget,
+                 gpointer data);
 
 
 /*
@@ -575,6 +586,15 @@ multiple_choice_choice_toggled_cb (G_GNUC_UNUSED GtkCellRendererToggle *cell,
   gtk_tree_path_free (path);
 }
 
+
+static void 
+link_clicked_cb (GtkWidget * /*widget*/,
+                 gpointer data)
+{
+  gm_open_uri ((gchar *) data);
+}
+
+
 FormDialog::FormDialog (Ekiga::FormRequest &_request,
 			GtkWidget *parent): request(_request)
 {
@@ -670,10 +690,36 @@ FormDialog::instructions (const std::string _instructions)
 #if GTK_CHECK_VERSION(2,10,0)
   gtk_label_set_line_wrap_mode (GTK_LABEL (widget), PANGO_WRAP_WORD);
 #endif
-  gtk_container_add (GTK_CONTAINER (preamble), widget);
+  gtk_box_pack_start (GTK_BOX (preamble), widget, FALSE, FALSE, 0);
 
   submitter = new InstructionsSubmitter (_instructions);
   submitters.push_back (submitter);
+}
+
+
+void
+FormDialog::link (const std::string _link,
+                  const std::string _uri)
+{
+  GtkWidget *widget = NULL;
+  GtkWidget *label = NULL;
+  gchar *label_text = NULL;
+
+  widget = gtk_button_new ();
+  label = gtk_label_new (NULL);
+  label_text = g_strdup_printf ("<span foreground=\"blue\"><u>%s</u></span>",
+                                _link.c_str ());
+  gtk_label_set_markup (GTK_LABEL (label), label_text);
+  g_free (label_text);
+
+  gtk_container_add (GTK_CONTAINER (widget), label);
+
+  gtk_button_set_relief (GTK_BUTTON (widget), GTK_RELIEF_NONE);
+  gtk_box_pack_start (GTK_BOX (preamble), widget, FALSE, FALSE, 0);
+
+  g_signal_connect_data (G_OBJECT (widget), "clicked",
+                         G_CALLBACK (link_clicked_cb), (gpointer) g_strdup (_uri.c_str ()),
+                         (GClosureNotify) g_free, (GConnectFlags) 0);
 }
 
 

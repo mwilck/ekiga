@@ -54,6 +54,8 @@ Ekiga::FormBuilder::visit (Ekiga::FormVisitor &visitor) const
 
   visitor.title (my_title);
   visitor.instructions (my_instructions);
+  if (!my_link.first.empty () && !my_link.second.empty ())
+    visitor.link (my_link.first, my_link.second); 
   visitor.error (my_error);
 
   for (std::list<FieldType>::const_iterator iter = ordering.begin ();
@@ -237,6 +239,13 @@ void
 Ekiga::FormBuilder::instructions (const std::string _instructions)
 {
   my_instructions = _instructions;
+}
+
+void
+Ekiga::FormBuilder::link (const std::string _link,
+                          const std::string _uri)
+{
+  my_link = make_pair (_link, _uri);
 }
 
 void

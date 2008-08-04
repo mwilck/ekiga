@@ -109,6 +109,7 @@ public:
  
 private:
     void on_edit_form_submitted (Ekiga::Form &result);
+    void on_consult (const std::string url);
 
     bool dead;
     bool enabled;
@@ -120,6 +121,7 @@ private:
     std::string username;
     std::string auth_username;
     std::string password;
+    Type type;
 
     Ekiga::ServiceCore & core;
   };

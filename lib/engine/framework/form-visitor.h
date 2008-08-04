@@ -57,6 +57,9 @@ namespace Ekiga
     virtual void title (const std::string title) = 0;
 
     virtual void instructions (const std::string instructions) = 0;
+    
+    virtual void link (const std::string link,
+                       const std::string uri) = 0;
 
     virtual void error (const std::string error) = 0;
 

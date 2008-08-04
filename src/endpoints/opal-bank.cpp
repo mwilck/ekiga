@@ -52,13 +52,13 @@
 
 bool Opal::Bank::populate_menu (Ekiga::MenuBuilder & builder)
 {
-  builder.add_action ("add", _("_Add Ekiga.net Account"),
+  builder.add_action ("add", _("_Add an Ekiga.net Account"),
 		      sigc::bind (sigc::mem_fun (this, &Opal::Bank::new_account), Opal::Account::Ekiga, "", ""));
-  builder.add_action ("add", _("_Add Ekiga Call Out Account"),
+  builder.add_action ("add", _("_Add an Ekiga Call Out Account"),
 		      sigc::bind (sigc::mem_fun (this, &Opal::Bank::new_account), Opal::Account::DiamondCard, "", ""));
-  builder.add_action ("add", _("_Add SIP Account"),
+  builder.add_action ("add", _("_Add a SIP Account"),
 		      sigc::bind (sigc::mem_fun (this, &Opal::Bank::new_account), Opal::Account::SIP, "", ""));
-  builder.add_action ("add", _("_Add H.323 Account"),
+  builder.add_action ("add", _("_Add an H.323 Account"),
 		      sigc::bind (sigc::mem_fun (this, &Opal::Bank::new_account), Opal::Account::H323, "", ""));
 
   return true;
@@ -72,11 +72,12 @@ void Opal::Bank::new_account (Account::Type t,
   Ekiga::FormRequestSimple request;
 
   request.title (_("Edit account"));
-  request.instructions (_("Please update the following fields:"));
+  request.instructions (_("Please update the following fields."));
 
   switch (t) {
 
   case Opal::Account::Ekiga:
+    request.link (_("Get an ekiga.net SIP account"), "http://www.ekiga.net");
     request.hidden ("name", "Ekiga.net");
     request.hidden ("host", "ekiga.net");
     request.text ("user", _("User:"), username);
@@ -86,6 +87,8 @@ void Opal::Bank::new_account (Account::Type t,
     break;
 
   case Opal::Account::DiamondCard:
+    request.link (_("Get an Ekiga Call Out account"),
+                  "https://www.diamondcard.us/exec/voip-login?act=sgn&spo=ekiga");
     request.hidden ("name", "Ekiga Call Out");
     request.hidden ("host", "sip.diamondcard.us");
     request.text ("user", _("User:"), username);

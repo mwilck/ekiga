@@ -5,6 +5,7 @@ gtk_core_dir = $(top_srcdir)/lib/engine/gui/gtk-core
 AM_CPPFLAGS = $(SIGC_CFLAGS) $(GTK_CFLAGS)
 
 INCLUDES = \
+	-I$(top_srcdir)/lib/toolbox \
 	-I$(top_srcdir)/lib/gui \
 	-I$(top_srcdir)/lib/engine \
 	-I$(top_srcdir)/lib/engine/framework \

@@ -47,6 +47,7 @@
 
 #include "opal-account.h"
 #include "form-request-simple.h"
+#include "toolbox.h"
 
 
 Opal::Account::Account (Ekiga::ServiceCore & _core,
@@ -112,6 +113,15 @@ Opal::Account::Account (Ekiga::ServiceCore & _core,
 
   if (enabled)
     enable ();
+
+  if (host == "ekiga.net")
+    type = Account::Ekiga;
+  else if (host == "sip.diamondcard.us")
+    type = Account::DiamondCard;
+  else if (protocol_name == "SIP")
+    type = Account::SIP;
+  else 
+    type = Account::H323;
 }
 
 
@@ -136,6 +146,7 @@ Opal::Account::Account (Ekiga::ServiceCore & _core,
   auth_username = _auth_username;
   password = _password;
   timeout = _timeout;
+  type = t;
 
   if (enabled)
     enable ();
@@ -285,6 +296,31 @@ bool Opal::Account::populate_menu (Ekiga::MenuBuilder &builder)
   builder.add_action ("remove", _("_Remove"),
 		      sigc::mem_fun (this, &Opal::Account::remove));
 
+  if (type == DiamondCard) {
+
+    std::stringstream str;
+    std::stringstream url;
+    str << "https://www.diamondcard.us/exec/voip-login?accId=" << get_username () << "&pinCode=" << get_password () << "&spo=ekiga"; 
+
+    builder.add_separator ();
+
+    url.str ("");
+    url << str.str () << "&act=rch";
+    builder.add_action ("recharge",
+			 _("Recharge the account"),
+                        sigc::bind (sigc::mem_fun (this, &Opal::Account::on_consult), url.str ()));
+    url.str ("");
+    url << str.str () << "&act=bh";
+    builder.add_action ("balance", 
+                        _("Consult the balance history"),
+                        sigc::bind (sigc::mem_fun (this, &Opal::Account::on_consult), url.str ()));
+    url.str ("");
+    url << str.str () << "&act=ch";
+    builder.add_action ("history", 
+                        _("Consult the calls history"),
+                        sigc::bind (sigc::mem_fun (this, &Opal::Account::on_consult), url.str ()));
+  }
+
   return true;
 }
 
@@ -384,4 +420,10 @@ void Opal::Account::on_edit_form_submitted (Ekiga::Form &result)
 
     std::cerr << "Invalid result form" << std::endl; // FIXME: do better
   }
+}
+
+
+void Opal::Account::on_consult (const std::string url)
+{
+  gm_open_uri (url.c_str ());
 }
