@@ -103,8 +103,8 @@ ekiga_SOURCES +=				\
 	endpoints/sip-chat-simple.cpp		\
 	endpoints/sip-dialect.h			\
 	endpoints/sip-dialect.cpp		\
-	endpoints/sip.h				\
-	endpoints/sip.cpp			\
+	endpoints/sip-endpoint.h		\
+	endpoints/sip-endpoint.cpp		\
 	endpoints/opal-account.h		\
 	endpoints/opal-account.cpp		\
 	endpoints/opal-bank.h			\

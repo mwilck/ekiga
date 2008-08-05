@@ -49,7 +49,7 @@
 #include "preferences.h"
 
 #include "manager.h"
-#include "sip.h"
+#include "sip-endpoint.h"
 #include "h323.h"
 #include "ekiga.h"
 

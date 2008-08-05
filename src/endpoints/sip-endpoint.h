@@ -60,7 +60,7 @@ namespace Opal {
 
   namespace Sip {
 
-    class CallProtocolManager : public SIPEndPoint, 
+    class EndPoint : public SIPEndPoint, 
                                 public Ekiga::CallProtocolManager,
                                 public Ekiga::PresenceFetcher,
                                 public Ekiga::PresencePublisher,
@@ -68,13 +68,13 @@ namespace Opal {
                                 public Ekiga::AccountSubscriberImpl<Opal::Account>,
                                 public Ekiga::ContactDecorator
     {
-      PCLASSINFO(CallProtocolManager, SIPEndPoint);
+      PCLASSINFO(EndPoint, SIPEndPoint);
 
   public:
 
-      CallProtocolManager (CallManager &ep, Ekiga::ServiceCore & core, unsigned listen_port);
+      EndPoint (CallManager &ep, Ekiga::ServiceCore & core, unsigned listen_port);
 
-      ~CallProtocolManager ();
+      ~EndPoint ();
 
       /* ContactDecorator and PresentityDecorator */
       bool populate_menu (Ekiga::Contact &contact,
@@ -116,7 +116,7 @@ namespace Opal {
       const Ekiga::CallProtocolManager::Interface & get_listen_interface () const;
 
 
-      /* SIP CallProtocolManager */
+      /* SIP EndPoint */
       void set_nat_binding_delay (unsigned delay);
       unsigned get_nat_binding_delay ();
 
@@ -171,7 +171,7 @@ namespace Opal {
       PMutex msgDataMutex;
       msgDict msgData;
 
-      CallManager & endpoint;
+      CallManager & manager;
 
       std::list<std::string> subscribed_uris;    // List of subscribed uris
       std::list<std::string> domains; // List of registered domains

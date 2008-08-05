@@ -41,7 +41,7 @@
 #include "opal-gmconf-bridge.h"
 
 #include "manager.h"
-#include "sip.h"
+#include "sip-endpoint.h"
 #include "h323.h"
 
 using namespace Opal;
@@ -228,7 +228,7 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
   // 
   else if (key.find (SIP_KEY) != string::npos) {
 
-    Opal::Sip::CallProtocolManager *sip_manager = dynamic_cast<Opal::Sip::CallProtocolManager *> (manager.get_protocol_manager ("sip"));
+    Opal::Sip::EndPoint *sip_manager = dynamic_cast<Opal::Sip::EndPoint *> (manager.get_protocol_manager ("sip"));
     if (sip_manager) {
 
       if (key == SIP_KEY "outbound_proxy_host") {

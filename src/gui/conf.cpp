@@ -46,7 +46,7 @@
 #include "conf.h"
 
 #include "h323.h"
-#include "sip.h"
+#include "sip-endpoint.h"
 #include "manager.h"
 
 #include "ekiga.h"

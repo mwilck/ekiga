@@ -47,7 +47,7 @@
 
 #include "manager.h"
 #include "ekiga.h"
-#include "sip.h"
+#include "sip-endpoint.h"
 #include "h323.h"
 
 
@@ -92,7 +92,7 @@ opal_init (Ekiga::ServiceCore &core,
   account_core = dynamic_cast<Ekiga::AccountCore *> (core.get ("account-core"));
 
   CallManager *call_manager = new CallManager (core);
-  Sip::CallProtocolManager *sip_manager = new Sip::CallProtocolManager (*call_manager, core, sip_port);
+  Sip::EndPoint *sip_manager = new Sip::EndPoint (*call_manager, core, sip_port);
   H323::CallProtocolManager *h323_manager = new H323::CallProtocolManager (*call_manager, core, h323_port);
 
   call_manager->add_protocol_manager (*sip_manager);

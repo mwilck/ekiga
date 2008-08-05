@@ -43,7 +43,7 @@
 
 #include "accounts.h"
 #include "h323.h"
-#include "sip.h"
+#include "sip-endpoint.h"
 #include "ekiga.h"
 #include "misc.h"
 #include "callbacks.h"
