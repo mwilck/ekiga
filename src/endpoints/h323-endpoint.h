@@ -17,7 +17,7 @@
  * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  *
- * Ekiga is licensed under the GPL license and as a special exception,
+ * Ekiga is licensed under the GPL license and as a special exc_managertion,
  * you have permission to link or otherwise combine this program with the
  * programs OPAL, OpenH323 and PWLIB, and distribute the combination,
  * without applying the requirements of the GNU GPL to the OPAL, OpenH323
@@ -52,16 +52,16 @@ namespace Opal {
 
   namespace H323 {
 
-    class CallProtocolManager : public H323EndPoint,
+    class EndPoint : public H323EndPoint,
                                 public Ekiga::CallProtocolManager,
                                 public Ekiga::PresentityDecorator,
                                 public Ekiga::AccountSubscriberImpl<Opal::Account>,
                                 public Ekiga::ContactDecorator
     {
-      PCLASSINFO(CallProtocolManager, H323EndPoint);
+      PCLASSINFO(EndPoint, H323EndPoint);
 
   public:
-      CallProtocolManager (CallManager &ep, Ekiga::ServiceCore & core, unsigned listen_port);
+      EndPoint (CallManager &_manager, Ekiga::ServiceCore & core, unsigned listen_port);
 
 
       /* ContactDecorator and PresentityDecorator */
@@ -119,7 +119,7 @@ namespace Opal {
   private:
       void on_dial (std::string uri);
 
-      CallManager & endpoint;
+      CallManager & manager;
       Ekiga::ServiceCore & core;
       Ekiga::Runtime & runtime;
       Ekiga::AccountCore & account_core;

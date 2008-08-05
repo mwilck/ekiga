@@ -42,7 +42,7 @@
 
 #include "manager.h"
 #include "sip-endpoint.h"
-#include "h323.h"
+#include "h323-endpoint.h"
 
 using namespace Opal;
 
@@ -259,7 +259,7 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
   //
   else if (key.find (SIP_KEY) != string::npos) {
 
-    Opal::H323::CallProtocolManager *h323_manager = dynamic_cast<Opal::H323::CallProtocolManager *> (manager.get_protocol_manager ("h323"));
+    Opal::H323::EndPoint *h323_manager = dynamic_cast<Opal::H323::EndPoint *> (manager.get_protocol_manager ("h323"));
     if (h323_manager) {
 
       if (key == H323_KEY "enable_h245_tunneling") {

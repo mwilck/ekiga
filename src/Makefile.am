@@ -93,8 +93,8 @@ ekiga_SOURCES +=				\
 	endpoints/ekiga.cpp			\
 	endpoints/manager.h			\
 	endpoints/manager.cpp			\
-	endpoints/h323.h			\
-	endpoints/h323.cpp			\
+	endpoints/h323-endpoint.h		\
+	endpoints/h323-endpoint.cpp		\
 	endpoints/pcss.h			\
 	endpoints/pcss.cpp			\
 	endpoints/sip-presentity.h		\

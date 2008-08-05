@@ -42,7 +42,7 @@
 #include "preferences.h"
 
 #include "accounts.h"
-#include "h323.h"
+#include "h323-endpoint.h"
 #include "sip-endpoint.h"
 #include "ekiga.h"
 #include "misc.h"

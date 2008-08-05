@@ -38,7 +38,7 @@
 
 #include "config.h"
 
-#include "h323.h"
+#include "h323-endpoint.h"
 
 #include "opal-call.h"
 #include "account-core.h"
@@ -52,12 +52,12 @@ namespace Opal {
     {
       PCLASSINFO(dialer, PThread);
 
-    public:
+  public:
 
-      dialer (const std::string & uri, Opal::CallManager & ep) 
+      dialer (const std::string & uri, Opal::CallManager & _manager) 
         : PThread (1000, AutoDeleteThread), 
         dial_uri (uri),
-        endpoint (ep) 
+        manager (_manager) 
       {
         this->Resume ();
       };
@@ -65,51 +65,49 @@ namespace Opal {
       void Main () 
         {
           PString token;
-          endpoint.SetUpCall ("pc:*", dial_uri, token);
+          manager.SetUpCall ("pc:*", dial_uri, token);
         };
 
-    private:
+  private:
       const std::string dial_uri;
-      Opal::CallManager & endpoint;
+      Opal::CallManager & manager;
     };
 
     class subscriber : public PThread
     {
       PCLASSINFO(subscriber, PThread);
 
-    public:
+  public:
 
       subscriber (const Opal::Account & _account,
-                  Opal::H323::CallProtocolManager & ep) 
+                  Opal::H323::EndPoint::EndPoint & _manager) 
         : PThread (1000, AutoDeleteThread),
         account (_account),
-        endpoint (ep) 
+        manager (_manager) 
       {
         this->Resume ();
       };
 
       void Main () 
         {
-          endpoint.Register (account);
+          manager.Register (account);
         };
 
-    private:
+  private:
       const Opal::Account & account;
-      Opal::H323::CallProtocolManager & endpoint;
+      Opal::H323::EndPoint::EndPoint & manager;
     };
   };
 };
 
 
-using namespace Opal::H323;
-
 /* The class */
-CallProtocolManager::CallProtocolManager (Opal::CallManager & ep, Ekiga::ServiceCore & _core, unsigned _listen_port)
-                    : H323EndPoint (ep), 
-                      endpoint (ep),
-                      core (_core),
-                      runtime (*(dynamic_cast<Ekiga::Runtime *> (core.get ("runtime")))),
-                      account_core (*(dynamic_cast<Ekiga::AccountCore *> (core.get ("account-core"))))
+Opal::H323::EndPoint::EndPoint (Opal::CallManager & _manager, Ekiga::ServiceCore & _core, unsigned _listen_port)
+        : H323EndPoint (_manager), 
+          manager (_manager),
+          core (_core),
+          runtime (*(dynamic_cast<Ekiga::Runtime *> (core.get ("runtime")))),
+          account_core (*(dynamic_cast<Ekiga::AccountCore *> (core.get ("account-core"))))
 {
   protocol_name = "h323";
   uri_prefix = "h323:";
@@ -122,35 +120,35 @@ CallProtocolManager::CallProtocolManager (Opal::CallManager & ep, Ekiga::Service
   set_listen_port (listen_port);
 
   /* Ready to take calls */
-  endpoint.AddRouteEntry("h323:.* = pc:<db>");
-  endpoint.AddRouteEntry("pc:.* = h323:<da>");
+  manager.AddRouteEntry("h323:.* = pc:<db>");
+  manager.AddRouteEntry("pc:.* = h323:<da>");
 }
 
 
-bool CallProtocolManager::populate_menu (Ekiga::Contact &contact,
-					 std::string uri,
-                                         Ekiga::MenuBuilder &builder)
+bool Opal::H323::EndPoint::populate_menu (Ekiga::Contact &contact,
+                                          std::string uri,
+                                          Ekiga::MenuBuilder &builder)
 {
   return menu_builder_add_actions (contact.get_name (), uri, builder);
 }
 
 
-bool CallProtocolManager::populate_menu (Ekiga::Presentity& presentity,
-					 const std::string uri,
-                                         Ekiga::MenuBuilder & builder)
+bool Opal::H323::EndPoint::populate_menu (Ekiga::Presentity& presentity,
+                                          const std::string uri,
+                                          Ekiga::MenuBuilder & builder)
 {
   return menu_builder_add_actions (presentity.get_name (), uri, builder);
 }
 
 
-bool CallProtocolManager::menu_builder_add_actions (const std::string & /*fullname*/,
-                                                    const std::string& uri,
-                                                    Ekiga::MenuBuilder & builder)
+bool Opal::H323::EndPoint::menu_builder_add_actions (const std::string & /*fullname*/,
+                                                     const std::string& uri,
+                                                     Ekiga::MenuBuilder & builder)
 {
   bool populated = false;
   std::string action = _("Call");
 
-  builder.add_action ("call", action, sigc::bind (sigc::mem_fun (this, &CallProtocolManager::on_dial), uri));
+  builder.add_action ("call", action, sigc::bind (sigc::mem_fun (this, &EndPoint::on_dial), uri));
 
   populated = true;
 
@@ -158,11 +156,11 @@ bool CallProtocolManager::menu_builder_add_actions (const std::string & /*fullna
 }
 
 
-bool CallProtocolManager::dial (const std::string & uri)
+bool Opal::H323::EndPoint::dial (const std::string & uri)
 {
   if (uri.find ("h323:") == 0) {
 
-    new dialer (uri, endpoint);
+    new dialer (uri, manager);
 
     return true;
   }
@@ -171,13 +169,13 @@ bool CallProtocolManager::dial (const std::string & uri)
 }
 
 
-const std::string & CallProtocolManager::get_protocol_name () const
+const std::string & Opal::H323::EndPoint::get_protocol_name () const
 {
   return protocol_name;
 }
 
 
-void CallProtocolManager::set_dtmf_mode (unsigned mode)
+void Opal::H323::EndPoint::set_dtmf_mode (unsigned mode)
 {
   switch (mode) 
     {
@@ -199,7 +197,7 @@ void CallProtocolManager::set_dtmf_mode (unsigned mode)
 }
 
 
-unsigned CallProtocolManager::get_dtmf_mode () const
+unsigned Opal::H323::EndPoint::get_dtmf_mode () const
 {
   if (GetSendUserInputMode () == OpalConnection::SendUserInputAsString)
     return 0;
@@ -217,7 +215,7 @@ unsigned CallProtocolManager::get_dtmf_mode () const
 }
 
 
-bool CallProtocolManager::set_listen_port (unsigned port)
+bool Opal::H323::EndPoint::set_listen_port (unsigned port)
 {
   interface.protocol = "tcp";
   interface.interface = "*";
@@ -239,25 +237,25 @@ bool CallProtocolManager::set_listen_port (unsigned port)
 }
 
 
-const Ekiga::CallProtocolManager::Interface & CallProtocolManager::get_listen_interface () const
+const Ekiga::CallProtocolManager::Interface & Opal::H323::EndPoint::get_listen_interface () const
 {
   return interface;
 }
 
 
-void CallProtocolManager::set_forward_uri (const std::string & uri)
+void Opal::H323::EndPoint::set_forward_uri (const std::string & uri)
 {
   forward_uri = uri;
 }
 
 
-const std::string & CallProtocolManager::get_forward_uri () const
+const std::string & Opal::H323::EndPoint::get_forward_uri () const
 {
   return forward_uri;
 }
 
 
-bool CallProtocolManager::subscribe (const Opal::Account & account)
+bool Opal::H323::EndPoint::subscribe (const Opal::Account & account)
 {
   if (account.get_protocol_name () != "H323")
     return false;
@@ -268,7 +266,7 @@ bool CallProtocolManager::subscribe (const Opal::Account & account)
 }
 
 
-bool CallProtocolManager::unsubscribe (const Opal::Account & account)
+bool Opal::H323::EndPoint::unsubscribe (const Opal::Account & account)
 {
   if (account.get_protocol_name () != "H323")
     return false;
@@ -279,7 +277,7 @@ bool CallProtocolManager::unsubscribe (const Opal::Account & account)
 }
 
 
-void CallProtocolManager::Register (const Opal::Account & account)
+void Opal::H323::EndPoint::Register (const Opal::Account & account)
 {
   PString gatekeeperID;
   std::string info;
@@ -293,7 +291,7 @@ void CallProtocolManager::Register (const Opal::Account & account)
 
     if (!account.get_username ().empty ()) {
       SetLocalUserName (account.get_username ());
-      AddAliasName (endpoint.GetDefaultDisplayName ());
+      AddAliasName (manager.GetDefaultDisplayName ());
     }
 
     SetGatekeeperPassword (account.get_password ());
@@ -359,9 +357,9 @@ void CallProtocolManager::Register (const Opal::Account & account)
 }
 
 
-bool CallProtocolManager::UseGatekeeper (const PString & address,
-                                         const PString & domain,
-                                         const PString & iface)
+bool Opal::H323::EndPoint::UseGatekeeper (const PString & address,
+                                          const PString & domain,
+                                          const PString & iface)
 {
   bool result = 
     H323EndPoint::UseGatekeeper (address, domain, iface);
@@ -374,7 +372,7 @@ bool CallProtocolManager::UseGatekeeper (const PString & address,
 }
 
 
-bool CallProtocolManager::RemoveGatekeeper (const PString & address)
+bool Opal::H323::EndPoint::RemoveGatekeeper (const PString & address)
 {
   if (IsRegisteredWithGatekeeper (address))
     return H323EndPoint::RemoveGatekeeper (0);
@@ -383,7 +381,7 @@ bool CallProtocolManager::RemoveGatekeeper (const PString & address)
 }
 
 
-bool CallProtocolManager::IsRegisteredWithGatekeeper (const PString & address)
+bool Opal::H323::EndPoint::IsRegisteredWithGatekeeper (const PString & address)
 {
   PWaitAndSignal m(gk_name_mutex);
 
@@ -391,17 +389,17 @@ bool CallProtocolManager::IsRegisteredWithGatekeeper (const PString & address)
 }
 
 
-bool CallProtocolManager::OnIncomingConnection (OpalConnection & connection,
-                                                G_GNUC_UNUSED unsigned options,
-                                                G_GNUC_UNUSED OpalConnection::StringOptions *stroptions)
+bool Opal::H323::EndPoint::OnIncomingConnection (OpalConnection & connection,
+                                                 G_GNUC_UNUSED unsigned options,
+                                                 G_GNUC_UNUSED OpalConnection::StringOptions *stroptions)
 {
-  PTRACE (3, "CallProtocolManager\tIncoming connection");
+  PTRACE (3, "EndPoint\tIncoming connection");
 
-  if (!forward_uri.empty () && endpoint.get_unconditional_forward ())
+  if (!forward_uri.empty () && manager.get_unconditional_forward ())
     connection.ForwardCall (forward_uri);
-  else if (endpoint.GetCallsNumber () > 1) { 
+  else if (manager.GetCallsNumber () > 1) { 
 
-    if (!forward_uri.empty () && endpoint.get_forward_on_busy ())
+    if (!forward_uri.empty () && manager.get_forward_on_busy ())
       connection.ForwardCall (forward_uri);
     else {
       connection.ClearCall (OpalConnection::EndedByLocalBusy);
@@ -412,10 +410,10 @@ bool CallProtocolManager::OnIncomingConnection (OpalConnection & connection,
     Opal::Call *call = dynamic_cast<Opal::Call *> (&connection.GetCall ());
     if (call) {
 
-      if (!forward_uri.empty () && endpoint.get_forward_on_no_answer ()) 
-        call->set_no_answer_forward (endpoint.get_reject_delay (), forward_uri);
+      if (!forward_uri.empty () && manager.get_forward_on_no_answer ()) 
+        call->set_no_answer_forward (manager.get_reject_delay (), forward_uri);
       else
-        call->set_reject_delay (endpoint.get_reject_delay ());
+        call->set_reject_delay (manager.get_reject_delay ());
     }
 
     return H323EndPoint::OnIncomingConnection (connection, options, stroptions);
@@ -425,7 +423,7 @@ bool CallProtocolManager::OnIncomingConnection (OpalConnection & connection,
 }
 
 
-void CallProtocolManager::on_dial (std::string uri)
+void Opal::H323::EndPoint::on_dial (std::string uri)
 {
-  endpoint.dial (uri);
+  manager.dial (uri);
 }

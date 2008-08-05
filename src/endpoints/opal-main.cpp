@@ -48,7 +48,7 @@
 #include "manager.h"
 #include "ekiga.h"
 #include "sip-endpoint.h"
-#include "h323.h"
+#include "h323-endpoint.h"
 
 
 static bool
@@ -93,7 +93,7 @@ opal_init (Ekiga::ServiceCore &core,
 
   CallManager *call_manager = new CallManager (core);
   Sip::EndPoint *sip_manager = new Sip::EndPoint (*call_manager, core, sip_port);
-  H323::CallProtocolManager *h323_manager = new H323::CallProtocolManager (*call_manager, core, h323_port);
+  H323::EndPoint *h323_manager = new H323::EndPoint (*call_manager, core, h323_port);
 
   call_manager->add_protocol_manager (*sip_manager);
   call_manager->add_protocol_manager (*h323_manager);
