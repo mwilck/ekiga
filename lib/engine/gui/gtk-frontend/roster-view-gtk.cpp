@@ -1253,7 +1253,7 @@ roster_view_gtk_class_init (gpointer g_class,
 		  G_TYPE_NONE, 1,
 		  G_TYPE_POINTER);
 
-  signals[HEAP_SELECTED_SIGNAL] =
+  signals[HEAP_GROUP_SELECTED_SIGNAL] =
     g_signal_new ("heap-group-selected",
 		  G_OBJECT_CLASS_TYPE (gobject_class),
 		  G_SIGNAL_RUN_LAST,
