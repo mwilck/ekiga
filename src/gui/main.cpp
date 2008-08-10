@@ -96,6 +96,7 @@
 #include "account.h"
 #include "gtk-frontend.h"
 #include "services.h"
+#include "form-dialog-gtk.h"
 
 #include "../devices/videooutput.h"
 
@@ -965,6 +966,30 @@ static void on_stream_resumed_cb (Ekiga::CallManager & /*manager*/,
 }
 
 
+static bool on_handle_errors (std::string error,
+                              gpointer data)
+{
+  g_return_val_if_fail (data != NULL, false);
+
+  GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (data), 
+                                              GTK_DIALOG_MODAL, 
+                                              GTK_MESSAGE_ERROR,
+                                              GTK_BUTTONS_OK, NULL);
+
+  gtk_window_set_title (GTK_WINDOW (dialog), _("Error"));
+  gtk_label_set_markup (GTK_LABEL (GTK_MESSAGE_DIALOG (dialog)->label), error.c_str ());
+  
+  g_signal_connect_swapped (GTK_OBJECT (dialog), "response",
+                            G_CALLBACK (gtk_widget_destroy),
+                            GTK_OBJECT (dialog));
+  
+  gtk_widget_show_all (dialog);
+
+  return true;
+}
+
+
+
 /* 
  * Display Engine Callbacks 
  */
@@ -1697,7 +1722,7 @@ gm_mw_init_menu (GtkWidget *main_window)
       
       GTK_MENU_THEME_ENTRY("address_book", _("_Find Contacts"),
 			   _("Find contacts"),
-			   GTK_STOCK_FIND, 0,
+			   GTK_STOCK_FIND, 'F',
 			   GTK_SIGNAL_FUNC (show_widget_cb),
 			   (gpointer) addressbook_window, TRUE),
       
@@ -3925,6 +3950,9 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   conn = call_core->stream_resumed.connect (sigc::bind (sigc::ptr_fun (on_stream_resumed_cb), (gpointer) window));
   mw->connections.push_back (conn);
 
+  conn = call_core->errors.add_handler (sigc::bind (sigc::ptr_fun (on_handle_errors), (gpointer) window));
+  mw->connections.push_back (conn);
+
   /* Notifiers */
   gm_conf_notifier_add (USER_INTERFACE_KEY "main_window/panel_section",
 			panel_section_changed_nt, window);
@@ -4366,8 +4394,8 @@ main (int argc,
   gm_conf_watch ();
 
   GnomeMeeting::Process ()->InitEngine ();
-  GnomeMeeting::Process ()->DetectInterfaces ();
   GnomeMeeting::Process ()->BuildGUI ();
+  GnomeMeeting::Process ()->DetectInterfaces ();
   
   /* Add depreciated notifiers */
   gnomemeeting_conf_init ();

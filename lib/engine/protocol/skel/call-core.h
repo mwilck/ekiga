@@ -37,6 +37,8 @@
 #ifndef __CALL_CORE_H__
 #define __CALL_CORE_H__
 
+#include "form-request.h"
+#include "chain-of-responsibility.h"
 #include "services.h"
 #include "call.h"
 
@@ -150,6 +152,10 @@ namespace Ekiga
       /*** Misc ***/
       sigc::signal<void, CallManager &> manager_ready;
       sigc::signal<void> ready;
+
+      /** This chain allows the CallCore to report errors to the user
+       */
+      ChainOfResponsibility<std::string> errors;
 
   private:
       void on_new_call (Call *call, CallManager *manager);

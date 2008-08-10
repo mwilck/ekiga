@@ -192,11 +192,6 @@ engine_init (int argc,
   }
 #endif
 
-  if (!opal_init (*core, &argc, &argv)) {
-    delete core;
-    return;
-  }
-
 #ifdef HAVE_AVAHI
   if (!avahi_init (*core, &argc, &argv)) {
     delete core;
@@ -245,6 +240,11 @@ engine_init (int argc,
   }
 
   if (!local_roster_bridge_init (*core, &argc, &argv)) {
+    delete core;
+    return;
+  }
+
+  if (!opal_init (*core, &argc, &argv)) {
     delete core;
     return;
   }

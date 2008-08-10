@@ -49,6 +49,7 @@
 #include "videoinput-info.h"
 
 #include "call-manager.h"
+#include "form-request-simple.h"
 
 static void
 manager_ready_in_main (Ekiga::CallManager* manager)
@@ -69,10 +70,12 @@ class StunDetector : public PThread
 public:
 
   StunDetector (const std::string & _server, 
+                Ekiga::CallCore & _core,
                 Opal::CallManager & _manager,
                 Ekiga::Runtime & _runtime) 
     : PThread (1000, AutoDeleteThread), 
       server (_server),
+      core (_core),
       manager (_manager),
       runtime (_runtime)
   {
@@ -84,8 +87,17 @@ public:
     PSTUNClient::NatTypes type = manager.SetSTUNServer (server);
     if (type == PSTUNClient::SymmetricNat 
         || type == PSTUNClient::BlockedNat 
-        || type == PSTUNClient::PartialBlockedNat)
-      std::cout << "Bad NAT Type" << std::endl << std::flush;
+        || type == PSTUNClient::PartialBlockedNat) {
+
+      std::string nat_error =  _("The type of NAT that has been detected is not compatible "
+                                 "with Ekiga. "
+                                 "Please refer to our WIKI on http://wiki.ekiga.org to solve that problem.");
+
+      // FIXME: this is a hack
+      while (!core.errors.handle_request (nat_error)) {
+        PThread::Current ()->Sleep (100);
+      }
+    }
 
     for (Ekiga::CallManager::iterator iter = manager.begin ();
          iter != manager.end ();
@@ -98,6 +110,7 @@ public:
 
 private:
   const std::string server;
+  Ekiga::CallCore & core;
   Opal::CallManager & manager;
   Ekiga::Runtime & runtime;
 };
@@ -160,7 +173,7 @@ CallManager::~CallManager ()
 void CallManager::start ()
 {
   // Ready
-  new StunDetector ("stun.voxgratia.org", *this, runtime);
+  new StunDetector ("stun.voxgratia.org", *call_core, *this, runtime);
 }
 
 
