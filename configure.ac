@@ -95,7 +95,7 @@ case $target_os in
     gm_platform="solaris"
     ;;
 
-  linux-gnu | linux-gnueabi | linux | Linux)
+  linux-gnulp | linux-gnu | linux-gnueabi | linux | Linux)
     ARCH_PTLIB_CFLAGS="-DPTRACING -DNDEBUG -Os -g -fno-exceptions -felide-constructors"
     ARCH_OPAL_LIBS="-lpt -lopal -ldl -lpthread"
     AC_MSG_RESULT([yes])
