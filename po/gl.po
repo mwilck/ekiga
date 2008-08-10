@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-08 19:52+0200\n"
-"PO-Revision-Date: 2008-08-08 19:55+0200\n"
+"POT-Creation-Date: 2008-08-10 13:35+0200\n"
+"PO-Revision-Date: 2008-08-10 13:45+0200\n"
 "Last-Translator: Ignacio Casal Quinteiro <icq@svn.gnome.org>\n"
 "Language-Team: Galego <proxecto@trasno.net>\n"
 "MIME-Version: 1.0\n"
@@ -41,10 +41,13 @@ msgid ""
 "hardware support is not available. If this is set to false, Ekiga will not "
 "try to open the PIP if hardware support is not available."
 msgstr ""
+"Permitir que Ekiga volva ao escalado de software de imaxe-en-imaxe se o "
+"soporte de hardware non está dispoñible. Se está establecido como falso, "
+"Ekiga non tentará abrir o PIP se o soporte de hardware non está dispoñible."
 
 #: ../ekiga.schemas.in.in.h:3
 msgid "Allow picture-in-picture software scaling"
-msgstr ""
+msgstr "Permitir software de escalado imaxe-en-imaxe"
 
 #: ../ekiga.schemas.in.in.h:4
 msgid "Alternative audio output device"
@@ -99,14 +102,12 @@ msgstr ""
 "H.245 pode facer que fallen algunhas versións do Netmeeting"
 
 #: ../ekiga.schemas.in.in.h:14
-#, fuzzy
 msgid "Contact long status"
-msgstr "Estado do contacto"
+msgstr "Estado longo do contacto"
 
 #: ../ekiga.schemas.in.in.h:15
-#, fuzzy
 msgid "Contact short status"
-msgstr "Estado do contacto"
+msgstr "Estado curto do contacto"
 
 #: ../ekiga.schemas.in.in.h:16
 msgid "Country code"
@@ -227,7 +228,7 @@ msgstr "Se se activa, permite vídeo durante unha chamada"
 
 #: ../ekiga.schemas.in.in.h:39 ../src/gui/preferences.cpp:409
 msgid "If enabled, offline contacts will be shown in the roster"
-msgstr ""
+msgstr "Se está activo, mostraranse os contactos desconectados na lista"
 
 #: ../ekiga.schemas.in.in.h:40
 msgid "If enabled, use echo cancelation"
@@ -244,7 +245,7 @@ msgstr "Tipo de rede seleccionada no asistente"
 
 #: ../ekiga.schemas.in.in.h:43
 msgid "List of folded groups in the roster"
-msgstr ""
+msgstr "Listaxe dos grupos agrupados na lista"
 
 #: ../ekiga.schemas.in.in.h:44
 msgid "Listen port"
@@ -467,6 +468,9 @@ msgid ""
 "neighbor with box filter, 2: bilinear filtering, 3: hyperbolic filtering. "
 "Does not apply on windows systems."
 msgstr ""
+"Especifica o algoritmo de software de escalado: 0: valor máis cercano, 1: "
+"valor máis cercano co filtro de caixa, 2: filtrado bilineal, 3: filtrado "
+"hiperbólico. Non se aplica en sistemas windows."
 
 #: ../ekiga.schemas.in.in.h:95
 msgid "Start hidden"
@@ -478,7 +482,7 @@ msgstr "Intervalo de portos TCP"
 
 #: ../ekiga.schemas.in.in.h:97
 msgid "Temporal Spatial Trade Off"
-msgstr ""
+msgstr "Intercambio temporal espacial"
 
 #: ../ekiga.schemas.in.in.h:98
 msgid "The Audio Codecs List"
@@ -604,9 +608,8 @@ msgid "The list of accounts to which Ekiga should register"
 msgstr "A lista de contas nas que o Ekiga se debería rexistrar"
 
 #: ../ekiga.schemas.in.in.h:120
-#, fuzzy
 msgid "The long status information"
-msgstr "Información persoal"
+msgstr "A información de estado longa"
 
 #: ../ekiga.schemas.in.in.h:121
 msgid ""
@@ -640,6 +643,10 @@ msgid ""
 "in case a minimum quality was configure via a TSTO value smaller than 31 and "
 "the bitrate selected is not sufficient to support this minimum quality"
 msgstr ""
+"A máxima taxa de cadros transmitidos en cadros/s. Esta taxa pode que non se "
+"alcance en cado de que se configurase unha calidade mínima TSTO menos que 31 "
+"e a taxa de bits seleccionada non sexa suficiente para soportar esta mínima "
+"calidade"
 
 #: ../ekiga.schemas.in.in.h:125
 msgid "The new instant message sound"
@@ -690,29 +697,26 @@ msgstr ""
 "seguido do número da foto instantánea."
 
 #: ../ekiga.schemas.in.in.h:133
-#, fuzzy
 msgid ""
 "The range of TCP ports that Ekiga will use for the H.323 H.245 channel. This "
 "port range has no effect if both participants to the conference are using "
 "H.245 Tunneling."
 msgstr ""
-"O intervalo de portos TCP que o Ekiga utilizará para o canal H.323 H.245. É "
-"necesario reiniciar o Ekiga para que os novos valores sexan efectivos. Este "
-"intervalo de portos non é efectivo se os dous participantes da conferencia "
-"están usando o túnel H.245."
+"O intervalo de portos TCP que o Ekiga utilizará para a canle H.323 H.245. "
+"Este intervalo de portos non é efectivo se os dous participantes da "
+"conferencia están usando o túnel H.245."
 
 #: ../ekiga.schemas.in.in.h:134
 msgid "The range of UDP ports that Ekiga will use."
-msgstr ""
+msgstr "O intervalo de portos UDP que usará o Ekiga."
 
 #: ../ekiga.schemas.in.in.h:135
 msgid "The save prefix"
 msgstr "O prefixo de gravación"
 
 #: ../ekiga.schemas.in.in.h:136
-#, fuzzy
 msgid "The short status information"
-msgstr "Ver a información da chamada"
+msgstr "A información de estado curta"
 
 #: ../ekiga.schemas.in.in.h:137
 msgid "The size of the local video window"
@@ -790,13 +794,12 @@ msgid "The zoom value"
 msgstr "O valor de zoom"
 
 #: ../ekiga.schemas.in.in.h:151
-#, fuzzy
 msgid ""
 "The zoom value in percent to apply to images displayed in the main GUI (can "
 "be 50, 100, or 200)"
 msgstr ""
-"O valor de zoom que se aplica ás imaxes mostradas na interface gráfica de "
-"usuario principal (pode ser 0.50, 1.00 ou 2.00)"
+"O valor en porcentaxe de zoom que se aplica ás imaxes mostradas na interface "
+"gráfica de usuario principal (pode ser 50, 100 ou 200)"
 
 #: ../ekiga.schemas.in.in.h:152
 msgid ""
@@ -818,7 +821,6 @@ msgstr ""
 "conversa de texto"
 
 #: ../ekiga.schemas.in.in.h:154 ../src/gui/preferences.cpp:636
-#, fuzzy
 msgid ""
 "This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages "
 "are encapsulated into the H.225 channel (port 1720). This saves one TCP "
@@ -827,7 +829,7 @@ msgid ""
 "can crash some versions of Netmeeting."
 msgstr ""
 "Isto activa o modo de túnel H.245. No modo de túnel H.245 as mensaxes H.245 "
-"son encapsuladas no canal H.225 (porto 1720). Isto permite aforrar unha "
+"son encapsuladas na canle H.225 (porto 1720). Isto permite aforrar unha "
 "conexión TCP durante as chamadas. O túnel H.245 introduciuse no H.323v2 e o "
 "Netmeeting non o soporta. A utilización simultánea do Inicio rápido e do "
 "túnel H.245 pode facer que fallen algunhas versións do Netmeeting."
@@ -892,15 +894,17 @@ msgid ""
 "order to keep a minimum level of (spatial) quality for all frames. 0: "
 "Highest minimal quality, 31: lowest minimal quality"
 msgstr ""
+"Indica se se prefire soster a taxa de cadros máxima ou reducila para manter "
+"un mínimo nivel de calidade (espacial) para todos os cadros. 0: máxima "
+"calidade mínima, 31: mínima calidade mínima."
 
 #: ../lib/engine/addressbook/call-history/history-contact.cpp:148
 msgid "Received"
 msgstr "Recibido"
 
 #: ../lib/engine/addressbook/call-history/history-contact.cpp:151
-#, fuzzy
 msgid "Placed"
-msgstr "Bloqueado"
+msgstr "Localizado"
 
 #: ../lib/engine/addressbook/call-history/history-contact.cpp:154
 msgid "Missed"
@@ -969,7 +973,7 @@ msgstr "Eliminar contacto"
 
 #: ../lib/engine/addressbook/evolution/evolution-contact.cpp:393
 msgid "Please confirm you want that contact removed"
-msgstr ""
+msgstr "Confirme que quere quitar ese contacto"
 
 #: ../lib/engine/addressbook/evolution/evolution-book.cpp:88
 #: ../lib/engine/addressbook/ldap/ldap-book.cpp:584
@@ -1043,9 +1047,8 @@ msgid "Call _Attribute"
 msgstr "_Atributo de chamada"
 
 #: ../lib/engine/addressbook/ldap/ldap-source.cpp:164
-#, fuzzy
 msgid "Password"
-msgstr "Contrasinal:"
+msgstr "Contrasinal"
 
 #: ../lib/engine/addressbook/ldap/ldap-book.cpp:314
 msgid "_Properties"
@@ -1103,9 +1106,8 @@ msgid "_Base DN"
 msgstr "DN _base"
 
 #: ../lib/engine/addressbook/ldap/ldap-book.cpp:623
-#, fuzzy
 msgid "_Password"
-msgstr "_Contrasinal:"
+msgstr "_Contrasinal"
 
 #: ../lib/engine/addressbook/skel/contact-core.cpp:57
 msgid "_Find"
@@ -1226,9 +1228,8 @@ msgid "Rename group"
 msgstr "Renomear o grupo"
 
 #: ../lib/engine/presence/local-roster/local-heap.cpp:314
-#, fuzzy
 msgid "Please edit this group name"
-msgstr "Introduza o seu nome de usuario:"
+msgstr "Edite o nome do grupo"
 
 #: ../lib/gui/codecsbox.cpp:479
 msgid "Move selected codec priority upwards"
