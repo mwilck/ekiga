@@ -1,5 +1,12 @@
 2008-08-08  Damien Sandras  <dsandras@gnome.org>
 
+	* src/endpoints/sip-endpoint.cpp:
+	When populating the actions supported by the SIP CallManager,
+	make sure the uri are complete. If they are not, suggest various
+	possibilities to the user following active accounts.
+
+2008-08-08  Damien Sandras  <dsandras@gnome.org>
+
 	* lib/engine/account/skel/bank-impl.h:
 	Made iterators public.
 

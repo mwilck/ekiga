@@ -43,6 +43,7 @@
 
 #include "sip-endpoint.h"
 
+#include "opal-bank.h"
 #include "opal-call.h"
 
 #include "presence-core.h"
@@ -195,22 +196,94 @@ bool Opal::Sip::EndPoint::menu_builder_add_actions (const std::string& fullname,
                                                     Ekiga::MenuBuilder & builder)
 {
   bool populated = false;
-  std::string call_action = _("Call");
-  std::string forward_action = _("Forward");
-  std::string msg_action = _("Message");
 
-  if (0 == GetConnectionCount ()) {
 
-    builder.add_action ("call", call_action,
-                        sigc::bind (sigc::mem_fun (this, &Opal::Sip::EndPoint::on_dial), uri));
-  } else {
+  std::list<std::string> uris;
+  std::list<std::string> accounts;
 
-    builder.add_action ("forward", forward_action,
-                        sigc::bind (sigc::mem_fun (this, &Opal::Sip::EndPoint::on_forward), uri));
+  if (uri.find ("@") == string::npos) {
+    
+    Opal::Bank *bank = dynamic_cast<Opal::Bank*> (core.get ("opal-account-store"));
+
+    if (bank) {
+
+      for (Opal::Bank::iterator it = bank->begin ();
+           it != bank->end ();
+           it++) {
+
+        if (it->get_protocol_name () == "SIP" && it->is_enabled ()) {
+
+          std::stringstream uristr;
+          std::string str = uri;
+
+          for (unsigned i = 0 ; i < str.length() ; i++) {
+
+            if (str [i] == ' ' || str [i] == '-') {
+              str.erase (i,1);
+              i--;
+            }
+          }
+
+          if (str.find ("sip:") == string::npos)
+            uristr << "sip:" << str;
+          else
+            uristr << str;
+
+          uristr << "@" << it->get_host ();
+
+          uris.push_back (uristr.str ());
+          accounts.push_back (it->get_name ());
+        }
+      }
+    }
+  }
+  else {
+    uris.push_back (uri);
+    accounts.push_back ("");
   }
 
-  builder.add_action ("message", msg_action,
-                      sigc::bind (sigc::mem_fun (this, &Opal::Sip::EndPoint::on_message), uri, fullname));
+  std::list<std::string>::iterator ita = accounts.begin ();
+  for (std::list<std::string>::iterator it = uris.begin ();
+       it != uris.end ();
+       it++) {
+
+    std::stringstream call_action;
+    std::stringstream forward_action;
+    if (!(*ita).empty ()) {
+      call_action << _("Call") << " [" << (*ita) << "]";
+      forward_action << _("Forward") << " [" << (*ita) << "]";
+    }
+    else {
+      call_action << _("Call");
+      forward_action << _("Forward");
+    }
+
+    if (0 == GetConnectionCount ())
+      builder.add_action ("call", call_action.str (),
+                          sigc::bind (sigc::mem_fun (this, &Opal::Sip::EndPoint::on_dial), (*it)));
+    else 
+      builder.add_action ("forward", forward_action.str (),
+                          sigc::bind (sigc::mem_fun (this, &Opal::Sip::EndPoint::on_forward), (*it)));
+
+    ita++;
+  }
+
+  ita = accounts.begin ();
+  for (std::list<std::string>::iterator it = uris.begin ();
+       it != uris.end ();
+       it++) {
+
+    std::stringstream msg_action;
+    if (!(*ita).empty ()) 
+      msg_action << _("Message") << " [" << (*ita) << "]";
+    else
+      msg_action << _("Message");
+
+    builder.add_action ("message", msg_action.str (),
+                        sigc::bind (sigc::mem_fun (this, &Opal::Sip::EndPoint::on_message), (*it), fullname));
+
+    ita++;
+  }
 
   populated = true;
 
