@@ -113,8 +113,6 @@ namespace Ekiga
      */
     void new_account ();
   
-  protected:
-
     /** Returns an iterator to the first Account of the collection
      */
     iterator begin ();
@@ -130,6 +128,8 @@ namespace Ekiga
     /** Returns a const iterator to the last Account of the collection
      */
     const_iterator end () const;
+
+  protected:
 
     /** Adds a account to the Ekiga::BankImpl.
      * @param: The account to be added.
