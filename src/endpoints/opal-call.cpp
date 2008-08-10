@@ -271,11 +271,14 @@ Opal::Call::parse_info (OpalConnection & connection)
   std::string app;
   std::string uri;
 
+  uri = (const char *) connection.GetRemotePartyCallbackURL ();
+  if (!uri.empty ())
+    remote_uri = uri;
+
   if (!PIsDescendant(&connection, OpalPCSSConnection)) {
 
     party_name = (const char *) connection.GetRemotePartyName ();
     app = (const char *) connection.GetRemoteApplication ();
-    uri = (const char *) connection.GetRemotePartyCallbackURL ();
     start_time = connection.GetConnectionStartTime ();
     if (!start_time.IsValid ())
       start_time = PTime ();
@@ -284,8 +287,6 @@ Opal::Call::parse_info (OpalConnection & connection)
       remote_party_name = party_name;
     if (!app.empty ())
       remote_application = app;
-    if (!uri.empty ())
-      remote_uri = uri;
 
     while (i < 3) {
 
