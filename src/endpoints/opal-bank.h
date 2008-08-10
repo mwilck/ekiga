@@ -64,7 +64,7 @@ public:
     { return "opal-account-store"; }
 
     const std::string get_description () const
-    { return "\tStores the call history"; }
+    { return "\tStores the opal accounts"; }
 
     void new_account (Account::Type t,
                       std::string username = "",
