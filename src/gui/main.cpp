@@ -643,6 +643,7 @@ static void on_setup_call_cb (Ekiga::CallManager & /*manager*/,
   }
   else {
     gm_main_window_update_calling_state (GTK_WIDGET (self), Calling);
+    gm_main_window_set_call_url (GTK_WIDGET (self), call.get_remote_uri ().c_str());
     mw->current_call = &call;
   }
 }
