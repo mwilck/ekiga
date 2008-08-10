@@ -593,13 +593,15 @@ apply_ekiga_net_page (EkigaAssistant *assistant)
 
   bool new_account = (account == NULL);
 
-  if (new_account)
-    opal_bank->new_account (Opal::Account::Ekiga, 
-                            gtk_entry_get_text (GTK_ENTRY (assistant->priv->username)),
-                            gtk_entry_get_text (GTK_ENTRY (assistant->priv->password)));
-  else
-    account->set_authentication_settings (gtk_entry_get_text (GTK_ENTRY (assistant->priv->username)),
-                                          gtk_entry_get_text (GTK_ENTRY (assistant->priv->password)));
+  if (!gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (assistant->priv->skip_ekiga_net))) {
+	if (new_account)
+	  opal_bank->new_account (Opal::Account::Ekiga,
+							  gtk_entry_get_text (GTK_ENTRY (assistant->priv->username)),
+							  gtk_entry_get_text (GTK_ENTRY (assistant->priv->password)));
+	else
+	  account->set_authentication_settings (gtk_entry_get_text (GTK_ENTRY (assistant->priv->username)),
+											gtk_entry_get_text (GTK_ENTRY (assistant->priv->password)));
+  }
 }
 
 
@@ -739,13 +741,15 @@ apply_ekiga_out_page (EkigaAssistant *assistant)
 
   bool new_account = (account == NULL);
 
-  if (new_account)
-    opal_bank->new_account (Opal::Account::DiamondCard, 
-                            gtk_entry_get_text (GTK_ENTRY (assistant->priv->dusername)),
-                            gtk_entry_get_text (GTK_ENTRY (assistant->priv->dpassword)));
-  else
-    account->set_authentication_settings (gtk_entry_get_text (GTK_ENTRY (assistant->priv->dusername)),
-                                          gtk_entry_get_text (GTK_ENTRY (assistant->priv->dpassword)));
+  if (!gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (assistant->priv->skip_ekiga_out))) {
+	if (new_account)
+	  opal_bank->new_account (Opal::Account::DiamondCard,
+							  gtk_entry_get_text (GTK_ENTRY (assistant->priv->dusername)),
+							  gtk_entry_get_text (GTK_ENTRY (assistant->priv->dpassword)));
+	else
+	  account->set_authentication_settings (gtk_entry_get_text (GTK_ENTRY (assistant->priv->dusername)),
+											gtk_entry_get_text (GTK_ENTRY (assistant->priv->dpassword)));
+  }
 }
 
 
@@ -1309,28 +1313,28 @@ prepare_summary_page (EkigaAssistant *assistant)
 
   /* The ekiga.net account */
   gtk_list_store_append (model, &iter);
-  if (!gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (assistant->priv->skip_ekiga_net))) {
+  if (!gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (assistant->priv->skip_ekiga_net)))
     value = g_strdup_printf ("sip:%s@ekiga.net",
                              gtk_entry_get_text (GTK_ENTRY (assistant->priv->username)));
-    gtk_list_store_set (model, &iter,
-                        SUMMARY_KEY_COLUMN, _("SIP URI"),
-                        SUMMARY_VALUE_COLUMN, value,
-                        -1);
-    g_free (value);
-  }
-  else {
-    gtk_list_store_set (model, &iter,
-                        SUMMARY_KEY_COLUMN, _("SIP URI"),
-                        SUMMARY_VALUE_COLUMN, "None",
-                        -1);
-  }
+  else
+	value = g_strdup ("None");
+  gtk_list_store_set (model, &iter,
+					  SUMMARY_KEY_COLUMN, _("SIP URI"),
+					  SUMMARY_VALUE_COLUMN, value,
+					  -1);
+  g_free (value);
 
   /* Ekiga Call Out */
   gtk_list_store_append (model, &iter);
+  if (!gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (assistant->priv->skip_ekiga_out)))
+    value = g_strdup (gtk_entry_get_text (GTK_ENTRY (assistant->priv->dusername)));
+  else
+	value = g_strdup ("None");
   gtk_list_store_set (model, &iter,
                       SUMMARY_KEY_COLUMN, _("Ekiga Call Out"),
-                      SUMMARY_VALUE_COLUMN, gtk_entry_get_text (GTK_ENTRY (assistant->priv->dusername)),
+                      SUMMARY_VALUE_COLUMN, value,
                       -1);
+  g_free (value);
 }
 
 
