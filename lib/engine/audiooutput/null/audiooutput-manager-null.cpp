@@ -34,9 +34,9 @@
 
 #include "audiooutput-manager-null.h"
 
-#define DEVICE_TYPE   "NULL"
-#define DEVICE_SOURCE "NULL"
-#define DEVICE_NAME   "NULL"
+#define DEVICE_TYPE   "Ekiga"
+#define DEVICE_SOURCE "Ekiga"
+#define DEVICE_NAME   "SILENT"
 
 GMAudioOutputManager_null::GMAudioOutputManager_null (Ekiga::ServiceCore & _core)
 : core (_core),
