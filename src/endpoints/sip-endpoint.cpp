@@ -211,7 +211,7 @@ bool Opal::Sip::EndPoint::menu_builder_add_actions (const std::string& fullname,
            it != bank->end ();
            it++) {
 
-        if (it->get_protocol_name () == "SIP" && it->is_enabled ()) {
+        if (it->get_protocol_name () == "SIP" && it->is_active ()) {
 
           std::stringstream uristr;
           std::string str = uri;
@@ -644,7 +644,7 @@ void Opal::Sip::EndPoint::OnRegistered (const PString & _aor,
   /* Signal */
   Ekiga::Account *account = account_core.find_account (strm.str ());
   if (account)
-    runtime.run_in_main (sigc::bind (registration_event.make_slot (), account,
+    runtime.run_in_main (sigc::bind (account->registration_event.make_slot (),
                                      was_registering ? Ekiga::AccountCore::Registered : Ekiga::AccountCore::Unregistered,
                                      std::string ()));
 }
@@ -876,7 +876,7 @@ void Opal::Sip::EndPoint::OnRegistrationFailed (const PString & _aor,
   /* Signal */
   Ekiga::Account *account = account_core.find_account (strm.str ());
   if (account)
-    runtime.run_in_main (sigc::bind (registration_event.make_slot (), account,
+    runtime.run_in_main (sigc::bind (account->registration_event.make_slot (),
                                      wasRegistering ? Ekiga::AccountCore::RegistrationFailed : Ekiga::AccountCore::UnregistrationFailed,
                                      info));
 }

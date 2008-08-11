@@ -1,5 +1,25 @@
 2008-08-08  Damien Sandras  <dsandras@gnome.org>
 
+	* src/endpoints/sip-endpoint.cpp:
+	Only propose default accounts as possible accounts when dialing a
+	contact (for example from the evolution-data-server back-end).
+
+2008-08-08  Damien Sandras  <dsandras@gnome.org>
+
+	* src/endpoints/opal-account.cpp:
+	* src/endpoints/opal-account.h:
+	* src/endpoints/h323-endpoint.cpp:
+	* lib/engine/account/skel/bank-impl.h:
+	* lib/engine/account/skel/bank.h:
+	* lib/engine/account/skel/account.h:
+	* lib/engine/account/skel/account-core.cpp:
+	* lib/engine/account/skel/account-core.h:
+	Sanitized signals logic, the registration_event signal is now emitted
+	by the Account. Fixed is_active method so that it only returns true
+	when the account is really active.
+
+2008-08-08  Damien Sandras  <dsandras@gnome.org>
+
 	* src/endpoints/manager.cpp: 
 	Fixed NAT detection logic in case of error and make sure the signal is
 	not triggered in the thread.
