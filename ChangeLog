@@ -1,10 +1,25 @@
 2008-08-08  Damien Sandras  <dsandras@gnome.org>
 
+	* src/gui/preferences.cpp:
+	* src/gui/assistant.cpp:
+	* src/gui/main.cpp:
+	* lib/gui/gmpreferences.c:
+	* lib/gui/gmpreferences.h:
+	* lib/engine/audioinput/skel/audioinput-core.cpp:
+	* lib/engine/audioinput/skel/audioinput-core.h:
+	* lib/engine/audiooutput/skel/audiooutput-core.cpp:
+	* lib/engine/audiooutput/skel/audiooutput-core.h:
+	* lib/engine/videoinput/skel/videoinput-core.h:
+	* lib/engine/videoinput/skel/videoinput-core.cpp:
+	Hotplug notifications support thanks to Mr M.
+
+2008-08-11  Damien Sandras  <dsandras@gnome.org>
+
 	* src/endpoints/sip-endpoint.cpp:
 	Only propose default accounts as possible accounts when dialing a
 	contact (for example from the evolution-data-server back-end).
 
-2008-08-08  Damien Sandras  <dsandras@gnome.org>
+2008-08-11  Damien Sandras  <dsandras@gnome.org>
 
 	* src/endpoints/opal-account.cpp:
 	* src/endpoints/opal-account.h:
@@ -18,7 +33,7 @@
 	by the Account. Fixed is_active method so that it only returns true
 	when the account is really active.
 
-2008-08-08  Damien Sandras  <dsandras@gnome.org>
+2008-08-11  Damien Sandras  <dsandras@gnome.org>
 
 	* src/endpoints/manager.cpp: 
 	Fixed NAT detection logic in case of error and make sure the signal is

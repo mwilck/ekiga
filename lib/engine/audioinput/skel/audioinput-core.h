@@ -271,14 +271,14 @@ namespace Ekiga
        * a manager claimed support for this device.
        * @param device the audio input device that was added.
        */
-      sigc::signal<void, AudioInputDevice> device_added;
+      sigc::signal<void, AudioInputDevice, bool> device_added;
 
       /** This signal is emitted when an audio input device has been removed from the system.
        * This signal will be emitted if remove_device was called with a device name and
        * a manager claimed support for this device.
        * @param device the audio input device that was removed.
        */
-      sigc::signal<void, AudioInputDevice> device_removed;
+      sigc::signal<void, AudioInputDevice, bool> device_removed;
 
   private:
       void on_device_opened (AudioInputDevice device,  

@@ -290,14 +290,14 @@ namespace Ekiga
        * a manager claimed support for this device.
        * @param device the video input device that was added.
        */
-      sigc::signal<void, VideoInputDevice> device_added;
+      sigc::signal<void, VideoInputDevice, bool> device_added;
 
       /** This signal is emitted when a video input has been removed from the system.
        * This signal will be emitted if remove_device was called with a device name and
        * a manager claimed support for this device.
        * @param device the video input device that was removed.
        */
-      sigc::signal<void, VideoInputDevice> device_removed;
+      sigc::signal<void, VideoInputDevice, bool> device_removed;
 
   private:
       void on_device_opened (VideoInputDevice device,  

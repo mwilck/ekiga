@@ -102,6 +102,12 @@
 
 enum CallingState {Standby, Calling, Connected, Called};
 
+enum DeviceType { AudioInput, AudioOutput, VideoInput} ;
+struct deviceStruct {
+  char name[256];
+  DeviceType deviceType;
+};
+
 /* Declarations */
 struct _GmMainWindow
 {
@@ -792,6 +798,10 @@ static void on_missed_incoming_call_cb (gpointer self)
   gtk_widget_destroy (GTK_WIDGET (self));
 }
 
+void 
+gm_main_window_add_device_dialog_show (GtkWidget *main_window,
+                                       const Ekiga::Device & device,
+                                       DeviceType deviceType);
 
 static void on_held_call_cb (Ekiga::CallManager & /*manager*/,
                              Ekiga::Call & /*call*/,
@@ -1102,6 +1112,30 @@ on_videoinput_device_closed_cb (Ekiga::VideoInputManager & /* manager */, Ekiga:
 }
 
 void 
+on_videoinput_device_added_cb (const Ekiga::VideoInputDevice & device, bool isDesired, gpointer self)
+{
+  GmMainWindow *mw = NULL;
+  g_return_if_fail (self != NULL);
+  mw = gm_mw_get_mw (GTK_WIDGET (self));
+  g_return_if_fail (mw != NULL);
+  std::string message = _("added video input device ") + device.GetString();
+  gm_main_window_flash_message (GTK_WIDGET (self), "%s", message.c_str ());
+  if (!isDesired && !mw->current_call) 
+    gm_main_window_add_device_dialog_show (GTK_WIDGET (self), device, VideoInput);
+}
+
+void 
+on_videoinput_device_removed_cb (const Ekiga::VideoInputDevice & device, bool, gpointer self)
+{
+  GmMainWindow *mw = NULL;
+  g_return_if_fail (self != NULL);
+  mw = gm_mw_get_mw (GTK_WIDGET (self));
+  g_return_if_fail (mw != NULL);
+  std::string message = _("removed video input device ") + device.GetString();
+  gm_main_window_flash_message (GTK_WIDGET (self), "%s", message.c_str ());
+}
+
+void 
 on_videoinput_device_error_cb (Ekiga::VideoInputManager & /* manager */, 
                                Ekiga::VideoInputDevice & device, 
                                Ekiga::VideoInputErrorCodes error_code, 
@@ -1190,6 +1224,35 @@ on_audioinput_device_closed_cb (Ekiga::AudioInputManager & /* manager */,
 }
 
 void 
+on_audioinput_device_added_cb (const Ekiga::AudioInputDevice & device, 
+                               bool isDesired,
+                               gpointer self)
+{
+  GmMainWindow *mw = NULL;
+  g_return_if_fail (self != NULL);
+  mw = gm_mw_get_mw (GTK_WIDGET (self));
+  g_return_if_fail (mw != NULL);
+  std::string message = _("added audio input device ") + device.GetString();
+  gm_main_window_flash_message (GTK_WIDGET (self), "%s", message.c_str ());
+  if (!isDesired  && !mw->current_call)
+    gm_main_window_add_device_dialog_show (GTK_WIDGET (self), device,  AudioInput);
+    
+}
+
+void 
+on_audioinput_device_removed_cb (const Ekiga::AudioInputDevice & device, 
+                                 bool,
+                                 gpointer self)
+{
+  GmMainWindow *mw = NULL;
+  g_return_if_fail (self != NULL);
+  mw = gm_mw_get_mw (GTK_WIDGET (self));
+  g_return_if_fail (mw != NULL);
+  std::string message = _("removed audio input device ") + device.GetString();
+  gm_main_window_flash_message (GTK_WIDGET (self), "%s", message.c_str ());
+}
+
+void 
 on_audioinput_device_error_cb (Ekiga::AudioInputManager & /* manager */, 
                                Ekiga::AudioInputDevice & device, 
                                Ekiga::AudioInputErrorCodes error_code, 
@@ -1268,6 +1331,34 @@ on_audiooutput_device_closed_cb (Ekiga::AudioOutputManager & /*manager*/,
   g_return_if_fail (mw != NULL);
 
   gtk_widget_set_sensitive (GTK_WIDGET (mw->audio_output_volume_frame), FALSE);
+}
+
+void 
+on_audiooutput_device_added_cb (const Ekiga::AudioOutputDevice & device, 
+                                bool isDesired,
+                                gpointer self)
+{
+  GmMainWindow *mw = NULL;
+  g_return_if_fail (self != NULL);
+  mw = gm_mw_get_mw (GTK_WIDGET (self));
+  g_return_if_fail (mw != NULL);
+  std::string message = _("added audio output device ") + device.GetString();
+  gm_main_window_flash_message (GTK_WIDGET (self), "%s", message.c_str ());
+  if (!isDesired && !mw->current_call)
+    gm_main_window_add_device_dialog_show (GTK_WIDGET (self), device, AudioOutput);
+}
+
+void 
+on_audiooutput_device_removed_cb (const Ekiga::AudioOutputDevice & device, 
+                                  bool,
+                                  gpointer self)
+{
+  GmMainWindow *mw = NULL;
+  g_return_if_fail (self != NULL);
+  mw = gm_mw_get_mw (GTK_WIDGET (self));
+  g_return_if_fail (mw != NULL);
+  std::string message = _("removed audio output device ") + device.GetString();
+  gm_main_window_flash_message (GTK_WIDGET (self), "%s", message.c_str ());
 }
 
 void 
@@ -1365,6 +1456,32 @@ incoming_call_response_cb (GtkDialog *incoming_call_popup,
   }
 }
 
+static void
+add_device_response_cb (GtkDialog *add_device_popup,
+                           gint response,
+                           gpointer data)
+{
+  deviceStruct *device_struct = (deviceStruct*) data;
+
+  gtk_widget_hide (GTK_WIDGET (add_device_popup));
+
+  if (response == 2) {
+
+    switch (device_struct->deviceType)
+    {
+     case AudioInput:
+       gm_conf_set_string (AUDIO_DEVICES_KEY "input_device", device_struct->name);
+       break;
+     case AudioOutput:
+       gm_conf_set_string (AUDIO_DEVICES_KEY "output_device", device_struct->name);
+       break;
+     case VideoInput:
+       gm_conf_set_string (VIDEO_DEVICES_KEY "input_device", device_struct->name);
+       break;	                
+     default:;
+    }
+  }
+}
 
 static void
 place_call_cb (GtkWidget * /*widget*/,
@@ -3694,6 +3811,100 @@ gm_main_window_incoming_call_dialog_show (GtkWidget *main_window,
                                    (gpointer) incoming_call_popup));
 }
 
+void 
+gm_main_window_add_device_dialog_show (GtkWidget *main_window,
+                                       const Ekiga::Device & device,
+                                       DeviceType deviceType)
+{
+  GmMainWindow *mw = NULL;
+  
+  GtkWidget *label = NULL;
+  GtkWidget *vbox = NULL;
+  GtkWidget *b1 = NULL;
+  GtkWidget *b2 = NULL;
+  GtkWidget *add_device_popup = NULL;
+
+  g_return_if_fail (main_window);
+  mw = gm_mw_get_mw (main_window);
+  g_return_if_fail (mw != NULL);
+
+
+  add_device_popup = gtk_dialog_new ();
+  b2 = gtk_dialog_add_button (GTK_DIALOG (add_device_popup),
+			      _("No"), 0);
+  b1 = gtk_dialog_add_button (GTK_DIALOG (add_device_popup),
+			      _("Yes"), 2);
+
+  gtk_dialog_set_default_response (GTK_DIALOG (add_device_popup), 2);
+
+  vbox = GTK_DIALOG (add_device_popup)->vbox;
+
+  std::string msg;
+
+  switch (deviceType) {
+    case AudioInput:
+      msg = _("Detected new audio input device:");
+      break;
+    case AudioOutput:
+      msg = _("Detected new audio output device:");
+      break;
+    case VideoInput:
+      msg = _("Detected new video input device:");
+      break;
+    default:
+      break;
+  }
+  label = gtk_label_new (NULL);
+  gtk_label_set_markup (GTK_LABEL (label), msg.c_str());
+  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 2);
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
+  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
+  
+  msg  = "<b>" + device.GetString() + "</b>";
+  label = gtk_label_new (NULL);
+  gtk_label_set_markup (GTK_LABEL (label), msg.c_str());
+  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 2);
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
+  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
+
+  msg  = _("Do you want to use it as default device?");
+  label = gtk_label_new (NULL);
+  gtk_label_set_markup (GTK_LABEL (label), msg.c_str());
+  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 2);
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
+  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
+
+  gtk_window_set_title (GTK_WINDOW (add_device_popup), "New device");
+  gtk_window_set_modal (GTK_WINDOW (add_device_popup), TRUE);
+  gtk_window_set_keep_above (GTK_WINDOW (add_device_popup), TRUE);
+  gtk_window_set_urgency_hint (GTK_WINDOW (main_window), TRUE);
+  gtk_window_set_transient_for (GTK_WINDOW (add_device_popup),
+				GTK_WINDOW (main_window));
+
+  gtk_widget_show_all (add_device_popup);
+
+
+//  g_signal_connect (G_OBJECT (add_device_popup), "delete_event",
+//                    G_CALLBACK (gtk_widget_hide_on_delete), NULL);
+//  g_signal_connect (G_OBJECT (add_device_popup), "response",
+//                    GTK_SIGNAL_FUNC (add_device_response_cb), &device);
+
+  deviceStruct* device_struct = g_new(deviceStruct, 1);
+  snprintf (device_struct->name, sizeof (device_struct->name), "%s", (device.GetString()).c_str());
+  device_struct->deviceType = deviceType;
+
+  g_signal_connect_data (G_OBJECT (add_device_popup), "delete_event",
+                         G_CALLBACK (gtk_widget_hide_on_delete), 
+                         (gpointer) device_struct,
+                         (GClosureNotify) g_free,
+                         (GConnectFlags) 0);
+
+  g_signal_connect_data (G_OBJECT (add_device_popup), "response",
+                         G_CALLBACK (add_device_response_cb), 
+                         (gpointer) device_struct,
+                         (GClosureNotify) g_free,
+                         (GConnectFlags) 0);
+}
 
 GtkWidget *
 gm_main_window_new (Ekiga::ServiceCore & core)
@@ -3877,6 +4088,12 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   conn = videoinput_core->device_closed.connect (sigc::bind (sigc::ptr_fun (on_videoinput_device_closed_cb), (gpointer) window));
   mw->connections.push_back (conn);
 
+  conn = videoinput_core->device_added.connect (sigc::bind (sigc::ptr_fun (on_videoinput_device_added_cb), (gpointer) window));
+  mw->connections.push_back (conn);
+
+  conn = videoinput_core->device_removed.connect (sigc::bind (sigc::ptr_fun (on_videoinput_device_removed_cb), (gpointer) window));
+  mw->connections.push_back (conn);
+
   conn = videoinput_core->device_error.connect (sigc::bind (sigc::ptr_fun (on_videoinput_device_error_cb), (gpointer) window));
   mw->connections.push_back (conn);
 
@@ -3889,6 +4106,12 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   conn = audioinput_core->device_closed.connect (sigc::bind (sigc::ptr_fun (on_audioinput_device_closed_cb), (gpointer) window));
   mw->connections.push_back (conn);
 
+  conn = audioinput_core->device_added.connect (sigc::bind (sigc::ptr_fun (on_audioinput_device_added_cb), (gpointer) window));
+  mw->connections.push_back (conn);
+
+  conn = audioinput_core->device_removed.connect (sigc::bind (sigc::ptr_fun (on_audioinput_device_removed_cb), (gpointer) window));
+  mw->connections.push_back (conn);
+
   conn = audioinput_core->device_error.connect (sigc::bind (sigc::ptr_fun (on_audioinput_device_error_cb), (gpointer) window));
   mw->connections.push_back (conn);
 
@@ -3899,6 +4122,12 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   mw->connections.push_back (conn);
 
   conn = audiooutput_core->device_closed.connect (sigc::bind (sigc::ptr_fun (on_audiooutput_device_closed_cb), (gpointer) window));
+  mw->connections.push_back (conn);
+
+  conn = audiooutput_core->device_added.connect (sigc::bind (sigc::ptr_fun (on_audiooutput_device_added_cb), (gpointer) window));
+  mw->connections.push_back (conn);
+
+  conn = audiooutput_core->device_removed.connect (sigc::bind (sigc::ptr_fun (on_audiooutput_device_removed_cb), (gpointer) window));
   mw->connections.push_back (conn);
 
   conn = audiooutput_core->device_error.connect (sigc::bind (sigc::ptr_fun (on_audiooutput_device_error_cb), (gpointer) window));

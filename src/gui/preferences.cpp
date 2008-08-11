@@ -1258,16 +1258,16 @@ audioev_filename_browse_play_cb (GtkWidget* /* playbutton */,
    g_free (file_name);
 }
 
-void on_videoinput_device_added_cb (const Ekiga::VideoInputDevice & device, GtkWidget *prefs_window)
+void on_videoinput_device_added_cb (const Ekiga::VideoInputDevice & device, bool isDesired, GtkWidget *prefs_window)
 {
   GmPreferencesWindow *pw = NULL;
   g_return_if_fail (prefs_window != NULL);
   pw = gm_pw_get_pw (prefs_window);
   std::string device_string = device.type + "/" + device.source + "/" + device.name;
-  gnome_prefs_string_option_menu_add (pw->video_device, device_string.c_str());
+  gnome_prefs_string_option_menu_add (pw->video_device, device_string.c_str(),  isDesired ? TRUE : FALSE);
 }
 
-void on_videoinput_device_removed_cb (const Ekiga::VideoInputDevice & device, GtkWidget *prefs_window)
+void on_videoinput_device_removed_cb (const Ekiga::VideoInputDevice & device, bool, GtkWidget *prefs_window)
 {
   GmPreferencesWindow *pw = NULL;
   g_return_if_fail (prefs_window != NULL);
@@ -1276,17 +1276,17 @@ void on_videoinput_device_removed_cb (const Ekiga::VideoInputDevice & device, Gt
   gnome_prefs_string_option_menu_remove(pw->video_device, device_string.c_str());
 }
 
-void on_audioinput_device_added_cb (const Ekiga::AudioInputDevice & audioinput_device, GtkWidget *prefs_window)
+void on_audioinput_device_added_cb (const Ekiga::AudioInputDevice & audioinput_device, bool isDesired, GtkWidget *prefs_window)
 {
   GmPreferencesWindow *pw = NULL;
   g_return_if_fail (prefs_window != NULL);
   pw = gm_pw_get_pw (prefs_window);
   std::string device = audioinput_device.type + "/" + audioinput_device.source + "/" + audioinput_device.name;
-  gnome_prefs_string_option_menu_add (pw->audio_recorder, device.c_str());
+  gnome_prefs_string_option_menu_add (pw->audio_recorder, device.c_str(),  isDesired ? TRUE : FALSE);
 
 }
 
-void on_audioinput_device_removed_cb (const Ekiga::AudioInputDevice & audioinput_device, GtkWidget *prefs_window)
+void on_audioinput_device_removed_cb (const Ekiga::AudioInputDevice & audioinput_device, bool, GtkWidget *prefs_window)
 {
   GmPreferencesWindow *pw = NULL;
   g_return_if_fail (prefs_window != NULL);
@@ -1295,17 +1295,17 @@ void on_audioinput_device_removed_cb (const Ekiga::AudioInputDevice & audioinput
   gnome_prefs_string_option_menu_remove(pw->audio_recorder, device.c_str());
 }
 
-void on_audiooutput_device_added_cb (const Ekiga::AudioOutputDevice & audiooutput_device, GtkWidget *prefs_window)
+void on_audiooutput_device_added_cb (const Ekiga::AudioOutputDevice & audiooutput_device, bool isDesired,  GtkWidget *prefs_window)
 {
   GmPreferencesWindow *pw = NULL;
   g_return_if_fail (prefs_window != NULL);
   pw = gm_pw_get_pw (prefs_window);
   std::string device = audiooutput_device.type + "/" + audiooutput_device.source + "/" + audiooutput_device.name;
-  gnome_prefs_string_option_menu_add (pw->audio_player, device.c_str());
-  gnome_prefs_string_option_menu_add (pw->sound_events_output, device.c_str());
+  gnome_prefs_string_option_menu_add (pw->audio_player, device.c_str(), isDesired ? TRUE : FALSE);
+  gnome_prefs_string_option_menu_add (pw->sound_events_output, device.c_str(), FALSE);
 }
 
-void on_audiooutput_device_removed_cb (const Ekiga::AudioOutputDevice & audiooutput_device, GtkWidget *prefs_window)
+void on_audiooutput_device_removed_cb (const Ekiga::AudioOutputDevice & audiooutput_device, bool, GtkWidget *prefs_window)
 {
   GmPreferencesWindow *pw = NULL;
   g_return_if_fail (prefs_window != NULL);

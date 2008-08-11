@@ -215,7 +215,7 @@ void VideoInputCore::set_device(const VideoInputDevice & device, int channel, Vi
 
 void VideoInputCore::add_device (const std::string & source, const std::string & device_name, unsigned capabilities, HalManager* /*manager*/)
 {
-  PTRACE(0, "VidInputCore\tAdding Device " << device_name);
+  PTRACE(4, "VidInputCore\tAdding Device " << device_name);
   PWaitAndSignal m(core_mutex);
 
   VideoInputDevice device;
@@ -227,14 +227,14 @@ void VideoInputCore::add_device (const std::string & source, const std::string &
       if ( desired_device == device )
         internal_set_device(device, current_channel, current_format);
 
-      device_added.emit(device);
+      device_added.emit(device, desired_device == device);
     }
   }
 }
 
 void VideoInputCore::remove_device (const std::string & source, const std::string & device_name, unsigned capabilities, HalManager* /*manager*/)
 {
-  PTRACE(0, "VidInputCore\tRemoving Device " << device_name);
+  PTRACE(4, "VidInputCore\tRemoving Device " << device_name);
   PWaitAndSignal m(core_mutex);
 
   VideoInputDevice device;
@@ -251,7 +251,7 @@ void VideoInputCore::remove_device (const std::string & source, const std::strin
             internal_set_device(new_device, current_channel, current_format);
        }
 
-       device_removed.emit(device);
+       device_removed.emit(device, current_device == device);
      }
   }
 }

@@ -757,7 +757,8 @@ gnome_prefs_string_option_menu_update (GtkWidget *option_menu,
 
 void
 gnome_prefs_string_option_menu_add (GtkWidget *option_menu,
-				    const gchar *option)
+				    const gchar *option,
+				    gboolean active)
 {
   GtkTreeModel *model = NULL;
   GtkTreeIter iter;
@@ -772,7 +773,8 @@ gnome_prefs_string_option_menu_add (GtkWidget *option_menu,
   gtk_list_store_set (GTK_LIST_STORE (model), &iter, 
                              COLUMN_STRING_RAW, option,
                             COLUMN_STRING_TRANSLATED, option_string, -1);
-
+  if (active == TRUE)
+    gtk_combo_box_set_active_iter (GTK_COMBO_BOX (option_menu), &iter);
   g_free (option_string);
 }
 

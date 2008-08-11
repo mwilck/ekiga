@@ -211,38 +211,38 @@ remove_combo_box (GtkComboBox         *combo_box,
   }
 }
 
-void on_videoinput_device_added_cb (const Ekiga::VideoInputDevice & device, EkigaAssistant *assistant)
+void on_videoinput_device_added_cb (const Ekiga::VideoInputDevice & device, bool, EkigaAssistant *assistant)
 {
   std::string device_string = device.GetString();
   add_combo_box (GTK_COMBO_BOX (assistant->priv->video_device), device_string.c_str());
 }
 
-void on_videoinput_device_removed_cb (const Ekiga::VideoInputDevice & device, EkigaAssistant *assistant)
+void on_videoinput_device_removed_cb (const Ekiga::VideoInputDevice & device, bool,  EkigaAssistant *assistant)
 {
   std::string device_string = device.GetString();
   remove_combo_box (GTK_COMBO_BOX (assistant->priv->video_device),  device_string.c_str());
 }
 
-void on_audioinput_device_added_cb (const Ekiga::AudioInputDevice & device, EkigaAssistant *assistant)
+void on_audioinput_device_added_cb (const Ekiga::AudioInputDevice & device, bool, EkigaAssistant *assistant)
 {
   std::string device_string = device.GetString();
   add_combo_box (GTK_COMBO_BOX (assistant->priv->audio_recorder), device_string.c_str());
 }
 
-void on_audioinput_device_removed_cb (const Ekiga::AudioInputDevice & device, EkigaAssistant *assistant)
+void on_audioinput_device_removed_cb (const Ekiga::AudioInputDevice & device, bool, EkigaAssistant *assistant)
 {
   std::string device_string = device.GetString();
   remove_combo_box (GTK_COMBO_BOX (assistant->priv->audio_recorder),  device_string.c_str());
 }
 
-void on_audiooutput_device_added_cb (const Ekiga::AudioOutputDevice & device, EkigaAssistant *assistant)
+void on_audiooutput_device_added_cb (const Ekiga::AudioOutputDevice & device, bool, EkigaAssistant *assistant)
 {
   std::string device_string = device.GetString();
   add_combo_box (GTK_COMBO_BOX (assistant->priv->audio_player), device_string.c_str());
   add_combo_box (GTK_COMBO_BOX (assistant->priv->audio_ringer), device_string.c_str());
 }
 
-void on_audiooutput_device_removed_cb (const Ekiga::AudioOutputDevice & device, EkigaAssistant *assistant)
+void on_audiooutput_device_removed_cb (const Ekiga::AudioOutputDevice & device, bool, EkigaAssistant *assistant)
 {
   std::string device_string = device.GetString();
   remove_combo_box (GTK_COMBO_BOX (assistant->priv->audio_player),  device_string.c_str());

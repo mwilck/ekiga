@@ -218,7 +218,8 @@ void gnome_prefs_string_option_menu_update (GtkWidget *,
 
 
 void gnome_prefs_string_option_menu_add (GtkWidget *option_menu,
-	    			         const gchar *option);
+	    			         const gchar *option,
+	    			         gboolean active);
 
 void gnome_prefs_string_option_menu_remove (GtkWidget *option_menu,
 	 			            const gchar *option);
