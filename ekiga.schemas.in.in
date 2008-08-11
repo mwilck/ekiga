@@ -7,7 +7,7 @@
       <applyto>/apps/@PACKAGE_NAME@/devices/audio/output_device</applyto>
       <owner>Ekiga</owner>
       <type>string</type>
-      <default>PTLIB/ALSA/Default</default>
+      <default>Default (PTLIB/ALSA)</default>
       <locale name="C">
 	<short>Audio output device</short>
 	<long>Select the audio output device to use</long>
@@ -18,7 +18,7 @@
       <applyto>/apps/@PACKAGE_NAME@/devices/audio/input_device</applyto>
       <owner>Ekiga</owner>
       <type>string</type>
-      <default>PTLIB/ALSA/Default</default>
+      <default>Default (PTLIB/ALSA)</default>
       <locale name="C">
 	<short>Audio input device</short>
 	<long>Select the audio input device to use</long>
@@ -29,7 +29,7 @@
       <applyto>/apps/@PACKAGE_NAME@/devices/video/input_device</applyto>
       <owner>Ekiga</owner>
       <type>string</type>
-      <default>PTLIB/V4L2//dev/video0</default>
+      <default>/dev/video0 (PTLIB/V4L2)</default>
       <locale name="C">
 	<short>Video input device</short>
 	<long>Select the video input device to use. If an error occurs when using this device a test picture will be transmitted.</long>

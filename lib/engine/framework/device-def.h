@@ -69,12 +69,12 @@ namespace Ekiga
      */
     void SetFromString(std::string str)
     {
-      unsigned type_sep = str.find_first_of("/");
+      unsigned type_sep = str.find_last_of("(");
       unsigned source_sep = str.find_first_of("/", type_sep + 1);
 
-      type   = str.substr ( 0, type_sep );
-      source = str.substr ( type_sep + 1, source_sep - type_sep - 1);
-      name   = str.substr ( source_sep + 1, str.size() - source_sep );
+      name   = str.substr ( 0, type_sep - 1);
+      type   = str.substr ( type_sep + 1, source_sep - type_sep - 1);
+      source = str.substr ( source_sep + 1,  str.size() - source_sep - 2);
     }
 
     /** Get a condensed string of the device identifier.
@@ -84,7 +84,7 @@ namespace Ekiga
      */
     std::string GetString() const
     {
-      return (type + "/" + source + "/" + name);
+      return ( name + " (" + type + "/" + source + ")");
     }
     
     Device & operator= (const Device & rhs)
