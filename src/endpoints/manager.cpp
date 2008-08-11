@@ -81,6 +81,15 @@ public:
   {
     this->Resume ();
   };
+
+  ~StunDetector ()
+  {
+    if (!nat_error.empty ()) {
+      while (!core.errors.handle_request (nat_error)) {
+        PThread::Current ()->Sleep (100);
+      }
+    }
+  }
   
   void Main () 
   {
@@ -89,20 +98,19 @@ public:
         || type == PSTUNClient::BlockedNat 
         || type == PSTUNClient::PartialBlockedNat) {
 
-      std::string nat_error =  _("The type of NAT that has been detected is not compatible "
-                                 "with Ekiga. "
-                                 "Please refer to our WIKI on http://wiki.ekiga.org to solve that problem.");
+      nat_error =  _("The type of NAT that has been detected is not compatible "
+                     "with Ekiga. "
+                     "Please refer to our WIKI on http://wiki.ekiga.org to solve that problem.");
 
-      // FIXME: this is a hack
-      while (!core.errors.handle_request (nat_error)) {
-        PThread::Current ()->Sleep (100);
-      }
+
     }
+    else {
 
-    for (Ekiga::CallManager::iterator iter = manager.begin ();
-         iter != manager.end ();
-         iter++) 
-      (*iter)->set_listen_port ((*iter)->get_listen_interface ().port);
+      for (Ekiga::CallManager::iterator iter = manager.begin ();
+           iter != manager.end ();
+           iter++) 
+        (*iter)->set_listen_port ((*iter)->get_listen_interface ().port);
+    }
 
     runtime.run_in_main (sigc::bind (sigc::ptr_fun (manager_ready_in_main),
 				     &manager));
@@ -113,6 +121,7 @@ private:
   Ekiga::CallCore & core;
   Opal::CallManager & manager;
   Ekiga::Runtime & runtime;
+  std::string nat_error;
 };
 
 
