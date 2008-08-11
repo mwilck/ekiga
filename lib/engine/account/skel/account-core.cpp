@@ -89,6 +89,7 @@ void Ekiga::AccountCore::add_bank (Bank &bank)
   bank_added.emit (bank);
 
   bank.questions.add_handler (questions.make_slot ());
+  bank.registration_event.connect (sigc::mem_fun (this, &Ekiga::AccountCore::on_registration_event));
 }
 
 
@@ -116,8 +117,6 @@ void Ekiga::AccountCore::visit_banks (sigc::slot<bool, Bank &> visitor)
 void Ekiga::AccountCore::add_account_subscriber (AccountSubscriber &subscriber)
 {
   account_subscribers.insert (&subscriber);
-
-  subscriber.registration_event.connect (sigc::mem_fun (this, &Ekiga::AccountCore::on_registration_event));
 }
 
 

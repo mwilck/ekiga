@@ -333,13 +333,13 @@ void Opal::H323::EndPoint::Register (const Opal::Account & account)
         info = _("Failed");
 
       /* Signal */
-      runtime.run_in_main (sigc::bind (registration_event.make_slot (), &account,
+      runtime.run_in_main (sigc::bind (account.registration_event.make_slot (),
                                        Ekiga::AccountCore::RegistrationFailed,
                                        info));
     }
     else {
 
-      runtime.run_in_main (sigc::bind (registration_event.make_slot (), &account,
+      runtime.run_in_main (sigc::bind (account.registration_event.make_slot (),
                                        Ekiga::AccountCore::Registered,
                                        std::string ()));
     }
@@ -350,7 +350,7 @@ void Opal::H323::EndPoint::Register (const Opal::Account & account)
     RemoveAliasName (account.get_username ());
 
     /* Signal */
-    runtime.run_in_main (sigc::bind (registration_event.make_slot (), &account,
+    runtime.run_in_main (sigc::bind (account.registration_event.make_slot (),
                                      Ekiga::AccountCore::Unregistered,
                                      std::string ()));
   }

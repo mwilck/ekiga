@@ -41,6 +41,8 @@
 #include <map>
 #include <string>
 
+#include "account-core.h"
+
 #include "chain-of-responsibility.h"
 #include "form-request.h"
 #include "menu-builder.h"
@@ -56,6 +58,7 @@ namespace Ekiga
   class Account
   {
   public:
+
 
     /** The destructor.
      */
@@ -138,13 +141,20 @@ namespace Ekiga
     virtual void disable () = 0;
 
 
-    /** Return true if the account is active.
+    /** Return true if the account is enabled.
      * It does not mean that the account is successfully registered, it
-     * just means it is active.
+     * just means it is enabled.
      * This function is purely virtual and should be implemented by the
      * Ekiga::Account descendant.
      */
     virtual bool is_enabled () const = 0;
+
+
+    /** Return true if the account is active.
+     * This function is purely virtual and should be implemented by the
+     * Ekiga::Account descendant.
+     */
+    virtual bool is_active () const = 0;
     
     
     /** Create the menu for that account and its actions.
@@ -167,6 +177,14 @@ namespace Ekiga
     /** This signal is emitted when the Account has been removed.
      */
     sigc::signal<void> removed;
+
+
+    /** This signal is emitted when there is a new registration event for 
+     *  the Account.
+     * @param: state is the state
+     *         info contains information about the registration status
+     */
+    sigc::signal<void, Ekiga::AccountCore::RegistrationState, std::string> registration_event;
 
 
     /** This chain allows the Account to present forms to the user

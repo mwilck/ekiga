@@ -154,6 +154,9 @@ namespace Ekiga
   protected:
     ServiceCore & core;
     AccountCore *account_core;
+
+  private:
+    void on_registration_event (Ekiga::AccountCore::RegistrationState, std::string info, Ekiga::Account *account);
   };
 
 /**
@@ -294,6 +297,7 @@ Ekiga::BankImpl<T>::add_account (T &account)
 
   account.questions.add_handler (questions.make_slot ());
   account.trigger_saving.connect (sigc::mem_fun (this, &Ekiga::BankImpl<T>::save));
+  account.registration_event.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::BankImpl<T>::on_registration_event), &account));
 }
 
 
@@ -304,4 +308,10 @@ Ekiga::BankImpl<T>::remove_account (T &account)
   remove_object (account);
 }
 
+template<typename T>
+void
+Ekiga::BankImpl<T>::on_registration_event (Ekiga::AccountCore::RegistrationState state, std::string info, Ekiga::Account *account)
+{
+  registration_event.emit (account, state, info);
+}
 #endif

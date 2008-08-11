@@ -55,6 +55,7 @@ Opal::Account::Account (Ekiga::ServiceCore & _core,
 : core (_core)
 {
   dead = false;
+  active = false;
 
   int i = 0;
   char *pch = strtok ((char *) account.c_str (), "|");
@@ -122,6 +123,8 @@ Opal::Account::Account (Ekiga::ServiceCore & _core,
     type = Account::SIP;
   else 
     type = Account::H323;
+
+  registration_event.connect (sigc::mem_fun (this, &Opal::Account::on_registration_event));
 }
 
 
@@ -137,6 +140,7 @@ Opal::Account::Account (Ekiga::ServiceCore & _core,
 : core (_core)
 {
   dead = false;
+  active = false;
   enabled = _enabled;
   aid = (const char *) PGloballyUniqueID ().AsString ();
   name = _name;
@@ -150,6 +154,8 @@ Opal::Account::Account (Ekiga::ServiceCore & _core,
 
   if (enabled)
     enable ();
+
+  registration_event.connect (sigc::mem_fun (this, &Opal::Account::on_registration_event));
 }
 
 
@@ -269,7 +275,13 @@ bool Opal::Account::is_enabled () const
   return enabled;
 }
 
-    
+
+bool Opal::Account::is_active () const
+{
+  return active;
+}
+
+
 void Opal::Account::remove ()
 {
   dead = true;
@@ -426,4 +438,12 @@ void Opal::Account::on_edit_form_submitted (Ekiga::Form &result)
 void Opal::Account::on_consult (const std::string url)
 {
   gm_open_uri (url.c_str ());
+}
+
+void Opal::Account::on_registration_event (Ekiga::AccountCore::RegistrationState state, std::string /*info*/)
+{
+  active = false;
+
+  if (state == Ekiga::AccountCore::Registered)
+    active = true;
 }

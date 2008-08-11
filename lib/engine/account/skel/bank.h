@@ -93,6 +93,12 @@ namespace Ekiga
      */
     sigc::signal<void, Account &> account_updated;
 
+    /** This signal is emitted when there is a new registration event
+     * @param: account is the account 
+     *         state is the state
+     *         info contains information about the registration status
+     */
+    sigc::signal<void, const Ekiga::Account *, Ekiga::AccountCore::RegistrationState, std::string> registration_event;
 
     /** This chain allows the BankImpl to present forms to the user
      */

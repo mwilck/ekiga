@@ -192,6 +192,7 @@ namespace Ekiga
     template<class T>
     bool unsubscribe_account (const T &account);
 
+    /*** Misc ***/
   private:
     std::set<AccountSubscriber *> account_subscribers;
     typedef std::set<AccountSubscriber *>::iterator subscriber_iterator;
@@ -206,13 +207,6 @@ namespace Ekiga
   {
 public:
     virtual ~AccountSubscriber () {}
-
-    /** This signal is emitted when there is a new registration event
-     * @param: account is the account 
-     *         state is the state
-     *         info contains information about the registration status
-     */
-    sigc::signal<void, const Ekiga::Account *, Ekiga::AccountCore::RegistrationState, std::string> registration_event;
   };
 
 

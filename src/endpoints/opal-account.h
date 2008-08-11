@@ -97,6 +97,8 @@ public:
 
     bool is_enabled () const;
 
+    bool is_active () const;
+
     void remove ();
 
     void edit ();
@@ -110,8 +112,12 @@ public:
 private:
     void on_edit_form_submitted (Ekiga::Form &result);
     void on_consult (const std::string url);
+    
+    // Triggered for our own event
+    void on_registration_event (Ekiga::AccountCore::RegistrationState state, std::string info);
 
     bool dead;
+    bool active;
     bool enabled;
     unsigned timeout;
     std::string aid;
