@@ -83,6 +83,8 @@ namespace OPENLDAP
 
     const std::string get_status () const;
 
+    const std::string get_type () const;
+
     void refresh ();
 
     void remove ();

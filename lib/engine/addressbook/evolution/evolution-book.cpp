@@ -276,6 +276,12 @@ Evolution::Book::get_status () const
   return status;
 }
 
+const std::string
+Evolution::Book::get_type () const
+{
+  return "local";
+}
+
 void
 Evolution::Book::refresh ()
 {

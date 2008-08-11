@@ -71,6 +71,8 @@ namespace History
 
     const std::string get_status () const;
 
+    const std::string get_type () const;
+
     void set_search_filter (std::string);
 
     /* more specific api */

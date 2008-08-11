@@ -76,6 +76,8 @@ namespace Evolution
 
     const std::string get_status () const;
 
+    const std::string get_type () const;
+
     void refresh ();
 
     /* those are private, but need to be called from C code */

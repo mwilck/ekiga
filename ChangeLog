@@ -1,5 +1,17 @@
 2008-08-11  Damien Sandras  <dsandras@gnome.org>
 
+	* lib/engine/addressbook/ldap/ldap-book.cpp:
+	* lib/engine/addressbook/ldap/ldap-book.h:
+	* lib/engine/addressbook/evolution/evolution-book.h:
+	* lib/engine/addressbook/evolution/evolution-book.cpp:
+	* lib/engine/addressbook/call-history/history-book.h:
+	* lib/engine/addressbook/call-history/history-book.cpp:
+	* lib/engine/addressbook/skel/book.h:
+	Added get_type method giving hints about the type of Book it is. It
+	can be used by GUI elements to display appropriate icons.
+
+2008-08-11  Damien Sandras  <dsandras@gnome.org>
+
 	* lib/engine/framework/device-def.h:
 	* ekiga.schemas.in.in:
 	Better device naming with plugins thanks to Mr. M.

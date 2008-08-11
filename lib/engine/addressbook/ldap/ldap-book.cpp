@@ -330,6 +330,13 @@ OPENLDAP::Book::get_status () const
   return status;
 }
 
+const std::string
+OPENLDAP::Book::get_type () const
+{
+  return "remote";
+}
+
+
 void
 OPENLDAP::Book::refresh ()
 {
