@@ -470,6 +470,7 @@ statusicon_new (Ekiga::ServiceCore & core)
   Ekiga::PersonalDetails *details = dynamic_cast<Ekiga::PersonalDetails*> (core.get ("personal-details"));
   GtkWidget *chat_window = GTK_WIDGET (frontend->get_chat_window ());
 
+  statusicon_set_status (self, details->get_short_status ());
   conn = details->updated.connect (sigc::bind (sigc::ptr_fun (personal_details_updated_cb), 
                                                (gpointer) self));
   self->priv->connections.push_back (conn);
