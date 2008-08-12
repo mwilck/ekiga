@@ -429,14 +429,14 @@ statusicon_set_status (StatusIcon *statusicon,
   /* Update the status icon */
   if (short_status == "away")
     pixbuf = gtk_widget_render_icon (chat_window, GM_STOCK_STATUS_AWAY, 
-                                     GTK_ICON_SIZE_MENU, NULL); 
+                                     GTK_ICON_SIZE_SMALL_TOOLBAR, NULL); 
 
   else if (short_status == "dnd")
     pixbuf = gtk_widget_render_icon (chat_window, GM_STOCK_STATUS_DND, 
-                                     GTK_ICON_SIZE_MENU, NULL); 
+                                     GTK_ICON_SIZE_SMALL_TOOLBAR, NULL); 
   else
     pixbuf = gtk_widget_render_icon (chat_window, GM_STOCK_STATUS_ONLINE, 
-                                     GTK_ICON_SIZE_MENU, NULL); 
+                                     GTK_ICON_SIZE_SMALL_TOOLBAR, NULL); 
 
   gtk_status_icon_set_from_pixbuf (GTK_STATUS_ICON (statusicon), pixbuf);
   g_object_unref (pixbuf);
