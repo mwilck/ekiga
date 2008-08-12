@@ -1704,6 +1704,12 @@ gm_mw_init_menu (GtkWidget *main_window)
 		     GTK_STOCK_ADD, 'a', 
 		     GTK_SIGNAL_FUNC (pull_trigger_cb), local_cluster_trigger, true),
 
+      GTK_MENU_THEME_ENTRY("address_book", _("_Find Contacts"),
+			   _("Find contacts"),
+			   GTK_STOCK_FIND, 'F',
+			   GTK_SIGNAL_FUNC (show_widget_cb),
+			   (gpointer) addressbook_window, TRUE),
+
       GTK_MENU_SEPARATOR,
 
       GTK_MENU_ENTRY("hold_call", _("_Hold Call"), _("Hold the current call"),
@@ -1784,7 +1790,6 @@ gm_mw_init_menu (GtkWidget *main_window)
 
       GTK_MENU_SEPARATOR,
 
-
       GTK_MENU_TOGGLE_ENTRY("callpanel", _("Show Call Panel"), _("Show the call panel"),
                             NULL, 'C', 
                             GTK_SIGNAL_FUNC (toggle_menu_changed_cb),
@@ -1836,14 +1841,6 @@ gm_mw_init_menu (GtkWidget *main_window)
 		     GTK_SIGNAL_FUNC (fullscreen_changed_cb),
 		     (gpointer) main_window, FALSE),
 
-      GTK_MENU_NEW(_("_Tools")),
-      
-      GTK_MENU_THEME_ENTRY("address_book", _("_Find Contacts"),
-			   _("Find contacts"),
-			   GTK_STOCK_FIND, 'F',
-			   GTK_SIGNAL_FUNC (show_widget_cb),
-			   (gpointer) addressbook_window, TRUE),
-      
       GTK_MENU_NEW(_("_Help")),
 
       GTK_MENU_ENTRY("help", NULL, 
