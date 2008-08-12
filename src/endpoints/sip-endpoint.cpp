@@ -305,8 +305,7 @@ void Opal::Sip::EndPoint::fetch (const std::string _uri)
   if (std::find (domains.begin (), domains.end (), domain) != domains.end ()
       && !IsSubscribed (SIPSubscribe::Presence, _uri.c_str ())) {
 
-    SIPSubscribe::SubscribeType type = SIPSubscribe::Presence;
-    Subscribe (type, 1800, PString (_uri.c_str ()));
+    Subscribe (SIPSubscribe::Presence, 1800, PString (_uri.c_str ()));
   }
 }
 
@@ -315,8 +314,7 @@ void Opal::Sip::EndPoint::unfetch (const std::string uri)
 {
   if (IsSubscribed (SIPSubscribe::Presence, uri.c_str ())) {
 
-    SIPSubscribe::SubscribeType type = SIPSubscribe::Presence;
-    Subscribe (type, 0, PString (uri.c_str ()));
+    Subscribe (SIPSubscribe::Presence, 0, PString (uri.c_str ()));
 
     subscribed_uris.remove (uri);
   }
@@ -627,8 +625,7 @@ void Opal::Sip::EndPoint::OnRegistered (const PString & _aor,
           && ((was_registering && !IsSubscribed (SIPSubscribe::Presence, (*iter).c_str ()))
               || (!was_registering && IsSubscribed (SIPSubscribe::Presence, (*iter).c_str ())))) {
 
-        SIPSubscribe::SubscribeType type = SIPSubscribe::Presence;
-        Subscribe (type, was_registering ? 500 : 0, PString ((*iter).c_str ()));
+        Subscribe (SIPSubscribe::Presence, was_registering ? 500 : 0, PString ((*iter).c_str ()));
         if (!was_registering)
           subscribed_uris.remove (*iter);
       }
@@ -636,10 +633,8 @@ void Opal::Sip::EndPoint::OnRegistered (const PString & _aor,
   }
 
   /* Subscribe for MWI */
-  if (!IsSubscribed (SIPSubscribe::MessageSummary, aor)) { 
-    SIPSubscribe::SubscribeType t = SIPSubscribe::MessageSummary;
-    Subscribe (t, 3600, aor);
-  }
+  if (!IsSubscribed (SIPSubscribe::MessageSummary, aor))
+    Subscribe (SIPSubscribe::MessageSummary, 3600, aor);
 
   /* Signal */
   Ekiga::Account *account = account_core.find_account (strm.str ());
