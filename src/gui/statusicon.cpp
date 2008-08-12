@@ -503,30 +503,38 @@ void
 statusicon_set_status (StatusIcon *statusicon,
                        guint status)
 {
+  GtkFrontend *frontend = NULL;
+  GtkWidget *chat_window = NULL;
+  GdkPixbuf *pixbuf = NULL;
+
   g_return_if_fail (statusicon != NULL);
+
+  frontend = dynamic_cast<GtkFrontend*>(statusicon->priv->core.get ("gtk-frontend"));
+  // FIXME use main_window here
+  chat_window = GTK_WIDGET (frontend->get_chat_window ());
 
   /* Update the status icon */
   switch (status) {
 
-  case CONTACT_ONLINE:
-    gtk_status_icon_set_from_stock (GTK_STATUS_ICON (statusicon), GM_STOCK_STATUS_ONLINE);
-    break;
-
   case (CONTACT_AWAY):
-    gtk_status_icon_set_from_stock (GTK_STATUS_ICON (statusicon), GM_STOCK_STATUS_AWAY);
+    pixbuf = gtk_widget_render_icon (chat_window, GM_STOCK_STATUS_AWAY, 
+                                     GTK_ICON_SIZE_MENU, NULL); 
     break;
 
   case (CONTACT_DND):
-    gtk_status_icon_set_from_stock (GTK_STATUS_ICON (statusicon), GM_STOCK_STATUS_DND);
-    break;
-
-  case (CONTACT_INVISIBLE):
-    gtk_status_icon_set_from_stock (GTK_STATUS_ICON (statusicon), GM_STOCK_STATUS_OFFLINE);
+    pixbuf = gtk_widget_render_icon (chat_window, GM_STOCK_STATUS_DND, 
+                                     GTK_ICON_SIZE_MENU, NULL); 
     break;
 
   default:
+  case CONTACT_ONLINE:
+    pixbuf = gtk_widget_render_icon (chat_window, GM_STOCK_STATUS_ONLINE, 
+                                     GTK_ICON_SIZE_MENU, NULL); 
     break;
   }
+
+  gtk_status_icon_set_from_pixbuf (GTK_STATUS_ICON (statusicon), pixbuf);
+  g_object_unref (pixbuf);
 
   statusicon->priv->status = status;
 }
