@@ -59,6 +59,7 @@
 
 #include "services.h"
 #include "gtk-frontend.h"
+#include "personal-details.h"
 
 
 /*
@@ -73,9 +74,8 @@ struct _StatusIconPrivate
 
   std::vector<sigc::connection> connections;
 
-  gchar *key;
   int blink_id;
-  int status;
+  std::string status;
   bool unread_messages;
   bool blinking;
 
@@ -83,8 +83,6 @@ struct _StatusIconPrivate
 
   Ekiga::ServiceCore & core;
 };
-
-enum { STATUSICON_KEY = 1 };
 
 static GObjectClass *parent_class = NULL;
 
@@ -110,11 +108,6 @@ unread_count_cb (GtkWidget *widget,
 static gboolean
 statusicon_blink_cb (gpointer data);
 
-static void
-statusicon_key_updated_cb (gpointer id,
-                           GmConfEntry *entry,
-                           gpointer data);
-
 
 /*
  * Declaration of local functions
@@ -131,7 +124,7 @@ statusicon_stop_blinking (StatusIcon *icon);
 
 static void
 statusicon_set_status (StatusIcon *widget,
-                       guint status);
+                       const std::string & short_status);
 
 
 /*
@@ -155,11 +148,6 @@ statusicon_dispose (GObject *obj)
     g_free (icon->priv->blink_image);
     icon->priv->blink_image = NULL;
   }
-  if (icon->priv->key) {
-
-    g_free (icon->priv->key);
-    icon->priv->key = NULL;
-  }
   
   parent_class->dispose (obj);
 }
@@ -175,9 +163,6 @@ statusicon_finalize (GObject *obj)
   if (self->priv->blink_image)
     g_free (self->priv->blink_image);
 
-  if (self->priv->key)
-    g_free (self->priv->key);
-
   for (std::vector<sigc::connection>::iterator iter = self->priv->connections.begin () ;
        iter != self->priv->connections.end ();
        iter++)
@@ -190,76 +175,16 @@ statusicon_finalize (GObject *obj)
 
 
 static void
-statusicon_get_property (GObject *obj,
-                         guint prop_id,
-                         GValue *value,
-                         GParamSpec *spec)
-{
-  StatusIcon *self = NULL;
-
-  self = STATUSICON (self);
-
-  switch (prop_id) {
-
-  case STATUSICON_KEY:
-    g_value_set_string (value, self->priv->key);
-    break;
-
-  default:
-    G_OBJECT_WARN_INVALID_PROPERTY_ID (obj, prop_id, spec);
-    break;
-  }
-}
-
-
-static void
-statusicon_set_property (GObject *obj,
-                         guint prop_id,
-                         const GValue *value,
-                         GParamSpec *spec)
-{
-  StatusIcon *self = NULL;
-  const gchar *str = NULL;
-
-  self = STATUSICON (obj);
-
-  switch (prop_id) {
-
-  case STATUSICON_KEY:
-    g_free ((gchar *) self->priv->key);
-    str = g_value_get_string (value);
-    self->priv->key = g_strdup (str ? str : "");
-    if (str) {
-      gm_conf_notifier_add (str, statusicon_key_updated_cb, self);
-      statusicon_set_status (self, gm_conf_get_int (str));
-    }
-    break;
-
-  default:
-    G_OBJECT_WARN_INVALID_PROPERTY_ID (obj, prop_id, spec);
-    break;
-  }
-}
-
-
-static void
 statusicon_class_init (gpointer g_class,
                        G_GNUC_UNUSED gpointer class_data)
 {
   GObjectClass *gobject_class = NULL;
-  GParamSpec *spec = NULL;
 
   parent_class = (GObjectClass *) g_type_class_peek_parent (g_class);
 
   gobject_class = (GObjectClass *) g_class;
   gobject_class->dispose = statusicon_dispose;
   gobject_class->finalize = statusicon_finalize;
-  gobject_class->get_property = statusicon_get_property;
-  gobject_class->set_property = statusicon_set_property;
-
-  spec = g_param_spec_string ("key", "Key", "Key",
-                              NULL, (GParamFlags) G_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class, STATUSICON_KEY, spec);
 }
 
 
@@ -396,21 +321,10 @@ statusicon_blink_cb (gpointer data)
 
 
 static void
-statusicon_key_updated_cb (G_GNUC_UNUSED gpointer id,
-                           GmConfEntry *entry,
-                           gpointer data)
+personal_details_updated_cb (Ekiga::PersonalDetails & details,
+                             gpointer self)
 {
-  guint status = CONTACT_ONLINE;
-
-  g_return_if_fail (data != NULL);
-
-  if (gm_conf_entry_get_type (entry) == GM_CONF_INT) {
-
-    gdk_threads_enter ();
-    status = gm_conf_entry_get_int (entry);
-    statusicon_set_status (STATUSICON (data), status);
-    gdk_threads_leave ();
-  }
+  statusicon_set_status (STATUSICON (self), details.get_short_status ());
 }
 
 
@@ -479,29 +393,28 @@ statusicon_start_blinking (StatusIcon *icon,
 
 
 static void
-statusicon_stop_blinking (StatusIcon *icon)
+statusicon_stop_blinking (StatusIcon *self)
 {
-  if (icon->priv->blink_image) {
+  if (self->priv->blink_image) {
 
-    g_free (icon->priv->blink_image);
-    icon->priv->blink_image = NULL;
+    g_free (self->priv->blink_image);
+    self->priv->blink_image = NULL;
   }
 
-  if (icon->priv->blink_id != -1) {
+  if (self->priv->blink_id != -1) {
 
-    g_source_remove (icon->priv->blink_id);
-    icon->priv->blink_id = -1;
-    icon->priv->blinking = false;
+    g_source_remove (self->priv->blink_id);
+    self->priv->blink_id = -1;
+    self->priv->blinking = false;
   }
 
-  statusicon_set_status (STATUSICON (icon),
-                         gm_conf_get_int (icon->priv->key));
+  statusicon_set_status (STATUSICON (self), self->priv->status);
 }
 
 
 void
 statusicon_set_status (StatusIcon *statusicon,
-                       guint status)
+                       const std::string & short_status)
 {
   GtkFrontend *frontend = NULL;
   GtkWidget *chat_window = NULL;
@@ -514,29 +427,21 @@ statusicon_set_status (StatusIcon *statusicon,
   chat_window = GTK_WIDGET (frontend->get_chat_window ());
 
   /* Update the status icon */
-  switch (status) {
-
-  case (CONTACT_AWAY):
+  if (short_status == "away")
     pixbuf = gtk_widget_render_icon (chat_window, GM_STOCK_STATUS_AWAY, 
                                      GTK_ICON_SIZE_MENU, NULL); 
-    break;
 
-  case (CONTACT_DND):
+  else if (short_status == "dnd")
     pixbuf = gtk_widget_render_icon (chat_window, GM_STOCK_STATUS_DND, 
                                      GTK_ICON_SIZE_MENU, NULL); 
-    break;
-
-  default:
-  case CONTACT_ONLINE:
+  else
     pixbuf = gtk_widget_render_icon (chat_window, GM_STOCK_STATUS_ONLINE, 
                                      GTK_ICON_SIZE_MENU, NULL); 
-    break;
-  }
 
   gtk_status_icon_set_from_pixbuf (GTK_STATUS_ICON (statusicon), pixbuf);
   g_object_unref (pixbuf);
 
-  statusicon->priv->status = status;
+  statusicon->priv->status = short_status;
 }
 
 
@@ -544,8 +449,7 @@ statusicon_set_status (StatusIcon *statusicon,
  * Public API
  */
 StatusIcon *
-statusicon_new (Ekiga::ServiceCore & core,
-                const char *key)
+statusicon_new (Ekiga::ServiceCore & core)
 {
   StatusIcon *self = NULL;
 
@@ -561,12 +465,14 @@ statusicon_new (Ekiga::ServiceCore & core,
   self->priv->blinking = false;
   self->priv->blink_image = NULL;
   self->priv->unread_messages = false;
-  self->priv->key = g_strdup ("");
-
-  g_object_set (self, "key", key, NULL);
 
   GtkFrontend *frontend = dynamic_cast<GtkFrontend*>(core.get ("gtk-frontend"));
+  Ekiga::PersonalDetails *details = dynamic_cast<Ekiga::PersonalDetails*> (core.get ("personal-details"));
   GtkWidget *chat_window = GTK_WIDGET (frontend->get_chat_window ());
+
+  conn = details->updated.connect (sigc::bind (sigc::ptr_fun (personal_details_updated_cb), 
+                                               (gpointer) self));
+  self->priv->connections.push_back (conn);
 
   g_signal_connect (self, "popup-menu",
                     G_CALLBACK (show_popup_menu_cb), self->priv->popup_menu);

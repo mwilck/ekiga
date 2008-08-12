@@ -82,11 +82,8 @@ GType statusicon_get_type ();
 
 /* DESCRIPTION  : /
  * BEHAVIOR     : Returns a new statusicon, with the default icon and menu
- * PRE          : A valid gmconf key where to store the status
  */
-StatusIcon *statusicon_new (Ekiga::ServiceCore & core,
-                            const char *key);
-
+StatusIcon *statusicon_new (Ekiga::ServiceCore & core);
 
 G_END_DECLS
 

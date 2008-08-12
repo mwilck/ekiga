@@ -267,8 +267,7 @@ void GnomeMeeting::BuildGUI ()
   accounts_window = gm_accounts_window_new (*service_core);
 
   main_window = gm_main_window_new (*service_core);
-  statusicon = statusicon_new (*service_core,
-                               PERSONAL_DATA_KEY "status");
+  statusicon = statusicon_new (*service_core);
 
   /* GM is started */
   PTRACE (1, "Ekiga version "
