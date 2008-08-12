@@ -411,7 +411,7 @@ book_view_gtk_update_contact (BookViewGtk *self,
 
   store = GTK_LIST_STORE (gtk_tree_view_get_model (self->priv->tree_view));
   icon = gtk_widget_render_icon (GTK_WIDGET (self->priv->tree_view), 
-                                 GM_STOCK_LOCAL_CONTACT, GTK_ICON_SIZE_MENU, NULL); 
+                                 GM_STOCK_STATUS_UNKNOWN, GTK_ICON_SIZE_MENU, NULL); 
 
   gtk_list_store_set (store, iter,
                       COLUMN_PIXBUF, icon,

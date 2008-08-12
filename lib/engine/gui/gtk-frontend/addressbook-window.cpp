@@ -52,7 +52,7 @@ struct _AddressBookWindowPrivate
 
   Ekiga::ContactCore & core;
   std::vector<sigc::connection> connections;
-  GtkTreeStore *store;
+  GtkWidget *tree_view;
   GtkWidget *notebook;
   GtkTreeSelection *selection;
   GtkWidget *menu_item_core;
@@ -62,6 +62,7 @@ struct _AddressBookWindowPrivate
 
 enum {
 
+  COLUMN_PIXBUF,
   COLUMN_NAME,
   COLUMN_BOOK_POINTER,
   COLUMN_VIEW,
@@ -386,7 +387,7 @@ on_book_clicked (GtkWidget *tree_view,
                                          (gint) event->x, (gint) event->y,
                                          &path, NULL, NULL, NULL)) {
 
-        model = GTK_TREE_MODEL (((AddressBookWindow *)data)->priv->store);
+        model = gtk_tree_view_get_model (GTK_TREE_VIEW (((AddressBookWindow *) data)->priv->tree_view));
         if (gtk_tree_model_get_iter (model, &iter, path)) {
 
           MenuBuilderGtk menu_builder;
@@ -423,7 +424,9 @@ addressbook_window_add_book (AddressBookWindow *self,
                              Ekiga::Book &book)
 {
   GtkTreeIter iter;
+  GtkTreeModel *store = NULL;
   GtkWidget *view = NULL;
+  GdkPixbuf *icon = NULL;
   gint page = -1;
 
   view = book_view_gtk_new (book);
@@ -436,12 +439,29 @@ addressbook_window_add_book (AddressBookWindow *self,
 
   g_signal_connect (view, "updated", G_CALLBACK (on_view_updated), self);
 
-  gtk_tree_store_append (self->priv->store, &iter, NULL);
-  gtk_tree_store_set (self->priv->store, &iter,
+  if (book.get_type () == "remote")
+    icon = gtk_widget_render_icon (GTK_WIDGET (self->priv->tree_view), 
+                                   GM_STOCK_REMOTE_CONTACT, GTK_ICON_SIZE_MENU, NULL); 
+  else
+    icon = gtk_widget_render_icon (GTK_WIDGET (self->priv->tree_view), 
+                                   GM_STOCK_LOCAL_CONTACT, GTK_ICON_SIZE_MENU, NULL); 
+
+  store = gtk_tree_view_get_model (GTK_TREE_VIEW (self->priv->tree_view));
+  gtk_tree_store_append (GTK_TREE_STORE (store), &iter, NULL);
+  gtk_tree_store_set (GTK_TREE_STORE (store), &iter,
+                      COLUMN_PIXBUF, icon, 
                       COLUMN_NAME, book.get_name ().c_str (),
-                      COLUMN_BOOK_POINTER, &book, COLUMN_VIEW, view,
+                      COLUMN_BOOK_POINTER, &book, 
+                      COLUMN_VIEW, view,
                       -1);
-  gtk_tree_selection_select_iter (self->priv->selection, &iter);
+
+  if (!gtk_tree_selection_get_selected (self->priv->selection, &store, &iter)) {
+   
+    gtk_tree_model_get_iter_first (store, &iter);
+    gtk_tree_selection_select_iter (self->priv->selection, &iter);
+  }
+
+  g_object_unref (icon);
 }
 
 
@@ -450,9 +470,11 @@ addressbook_window_update_book (AddressBookWindow *self,
                                 Ekiga::Book &book)
 {
   GtkTreeIter iter;
+  GtkTreeModel *store = NULL;
 
+  store = gtk_tree_view_get_model (GTK_TREE_VIEW (self->priv->tree_view));
   if (find_iter_for_book (self, book, &iter))
-    gtk_tree_store_set (self->priv->store, &iter,
+    gtk_tree_store_set (GTK_TREE_STORE (store), &iter,
                         COLUMN_NAME, book.get_name ().c_str (),
                         -1);
 }
@@ -465,14 +487,17 @@ addressbook_window_remove_book (AddressBookWindow *self,
   GtkTreeIter iter;
   gint page = -1;
   GtkWidget *view = NULL;
+  GtkTreeModel *store = NULL;
 
   gtk_notebook_set_current_page (GTK_NOTEBOOK (self->priv->notebook), 0);
   gtk_widget_set_sensitive (self->priv->menu_item_view, FALSE);
   gtk_menu_item_remove_submenu (GTK_MENU_ITEM (self->priv->menu_item_view));
 
+  store = gtk_tree_view_get_model (GTK_TREE_VIEW (self->priv->tree_view));
+
   while (find_iter_for_book (self, book, &iter)) {
 
-    gtk_tree_model_get (GTK_TREE_MODEL (self->priv->store), &iter,
+    gtk_tree_model_get (store, &iter,
                         COLUMN_VIEW, &view,
                         -1);
 
@@ -483,7 +508,7 @@ addressbook_window_remove_book (AddressBookWindow *self,
                                           NULL,	/* closure */
                                           NULL,	/* func */
                                           self); /* data */
-    gtk_tree_store_remove (self->priv->store, &iter);
+    gtk_tree_store_remove (GTK_TREE_STORE (store), &iter);
     page = gtk_notebook_page_num (GTK_NOTEBOOK (self->priv-> notebook), view);
     g_object_unref (view);
     if (page > 0)
@@ -498,24 +523,26 @@ find_iter_for_book (AddressBookWindow *self,
                     GtkTreeIter *iter)
 {
   Ekiga::Book *book_iter = NULL;
+  GtkTreeModel *store = NULL;
 
-  if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (self->priv->store),
-                                     iter)) {
+  store = gtk_tree_view_get_model (GTK_TREE_VIEW (self->priv->tree_view));
 
-    while (gtk_tree_store_iter_is_valid (self->priv->store, iter)) {
+  if (gtk_tree_model_get_iter_first (store, iter)) {
 
-      gtk_tree_model_get (GTK_TREE_MODEL (self->priv->store), iter,
+    while (gtk_tree_store_iter_is_valid (GTK_TREE_STORE (store), iter)) {
+
+      gtk_tree_model_get (store, iter,
                           COLUMN_BOOK_POINTER, &book_iter,
                           -1);
 
       if (&book == book_iter)
         break;
 
-      if (!gtk_tree_model_iter_next (GTK_TREE_MODEL (self->priv->store), iter))
+      if (!gtk_tree_model_iter_next (store, iter))
         return FALSE;
     }
 
-    return gtk_tree_store_iter_is_valid (self->priv->store, iter);
+    return gtk_tree_store_iter_is_valid (GTK_TREE_STORE (store), iter);
   } 
 
   return FALSE;
@@ -621,10 +648,10 @@ addressbook_window_new (Ekiga::ContactCore &core)
   GtkWidget *frame = NULL;
   GtkWidget *vbox = NULL;
   GtkWidget *hpaned = NULL;
-  GtkWidget *view = NULL;
 
   GtkCellRenderer *cell = NULL;
   GtkTreeViewColumn *column = NULL;
+  GtkTreeStore *store = NULL;
 
   self = (AddressBookWindow *) g_object_new (ADDRESSBOOK_WINDOW_TYPE, NULL);
   self->priv = new AddressBookWindowPrivate (core);
@@ -672,18 +699,24 @@ addressbook_window_new (Ekiga::ContactCore &core)
   /* The store listing the Books */
   frame = gtk_frame_new (NULL);
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
-  self->priv->store = gtk_tree_store_new (NUM_COLUMNS,
-                                          G_TYPE_STRING,
-                                          G_TYPE_POINTER,
-                                          G_TYPE_OBJECT);
-  view = gtk_tree_view_new_with_model (GTK_TREE_MODEL (self->priv->store));
-  g_object_unref (self->priv->store);
-  gtk_container_add (GTK_CONTAINER (frame), view);
-  gtk_widget_set_size_request (GTK_WIDGET (view), 125, -1);
+  store = gtk_tree_store_new (NUM_COLUMNS,
+                              GDK_TYPE_PIXBUF,
+                              G_TYPE_STRING,
+                              G_TYPE_POINTER,
+                              G_TYPE_OBJECT);
+  self->priv->tree_view = gtk_tree_view_new_with_model (GTK_TREE_MODEL (store));
+  g_object_unref (store);
+  gtk_container_add (GTK_CONTAINER (frame), self->priv->tree_view);
+  gtk_widget_set_size_request (GTK_WIDGET (self->priv->tree_view), 125, -1);
   gtk_paned_add1 (GTK_PANED (hpaned), frame);
 
-  /* Two renderers for one column */
+  /* Several renderers for one column */
   column = gtk_tree_view_column_new ();
+  cell = gtk_cell_renderer_pixbuf_new ();
+  gtk_tree_view_column_pack_start (column, cell, FALSE);
+  gtk_tree_view_column_set_attributes (column, cell,
+                                       "pixbuf", COLUMN_PIXBUF,
+                                       NULL);
 
   cell = gtk_cell_renderer_text_new ();
   gtk_tree_view_column_pack_start (column, cell, FALSE);
@@ -693,20 +726,20 @@ addressbook_window_new (Ekiga::ContactCore &core)
 
   gtk_tree_view_column_set_title (column, _("Address Books"));
   gtk_tree_view_column_set_sort_column_id (column, COLUMN_NAME);
-  gtk_tree_view_column_set_min_width (GTK_TREE_VIEW_COLUMN (column), 125);
+  gtk_tree_view_column_set_min_width (GTK_TREE_VIEW_COLUMN (column), 130);
   gtk_tree_view_column_set_sizing (GTK_TREE_VIEW_COLUMN (column),
                                    GTK_TREE_VIEW_COLUMN_AUTOSIZE);
   gtk_tree_view_column_set_resizable (GTK_TREE_VIEW_COLUMN (column), true);
-  gtk_tree_view_append_column (GTK_TREE_VIEW (view),
+  gtk_tree_view_append_column (GTK_TREE_VIEW (self->priv->tree_view),
                                GTK_TREE_VIEW_COLUMN (column));
 
 
-  self->priv->selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (view));
+  self->priv->selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (self->priv->tree_view));
   gtk_tree_selection_set_mode (GTK_TREE_SELECTION (self->priv->selection),
                                GTK_SELECTION_SINGLE);
   g_signal_connect (G_OBJECT (self->priv->selection), "changed",
                     G_CALLBACK (on_book_selection_changed), self);
-  g_signal_connect (G_OBJECT (view), "event-after",
+  g_signal_connect (G_OBJECT (self->priv->tree_view), "event-after",
                     G_CALLBACK (on_book_clicked), self);
 
   /* The notebook containing the books */
