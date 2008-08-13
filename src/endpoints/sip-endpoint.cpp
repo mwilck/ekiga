@@ -885,7 +885,7 @@ bool Opal::Sip::EndPoint::OnIncomingConnection (OpalConnection &connection,
 
   if (!forward_uri.empty () && manager.get_unconditional_forward ())
     connection.ForwardCall (forward_uri);
-  else if (manager.GetCallsNumber () > 1) { 
+  else if (manager.GetCallCount () > 1) { 
 
     if (!forward_uri.empty () && manager.get_forward_on_busy ())
       connection.ForwardCall (forward_uri);
