@@ -1263,8 +1263,7 @@ void on_videoinput_device_added_cb (const Ekiga::VideoInputDevice & device, bool
   GmPreferencesWindow *pw = NULL;
   g_return_if_fail (prefs_window != NULL);
   pw = gm_pw_get_pw (prefs_window);
-  std::string device_string = device.type + "/" + device.source + "/" + device.name;
-  gnome_prefs_string_option_menu_add (pw->video_device, device_string.c_str(),  isDesired ? TRUE : FALSE);
+  gnome_prefs_string_option_menu_add (pw->video_device, (device.GetString()).c_str(),  isDesired ? TRUE : FALSE);
 }
 
 void on_videoinput_device_removed_cb (const Ekiga::VideoInputDevice & device, bool, GtkWidget *prefs_window)
@@ -1272,47 +1271,42 @@ void on_videoinput_device_removed_cb (const Ekiga::VideoInputDevice & device, bo
   GmPreferencesWindow *pw = NULL;
   g_return_if_fail (prefs_window != NULL);
   pw = gm_pw_get_pw (prefs_window);
-  std::string device_string = device.type + "/" + device.source + "/" + device.name;
-  gnome_prefs_string_option_menu_remove(pw->video_device, device_string.c_str());
+  gnome_prefs_string_option_menu_remove(pw->video_device, (device.GetString()).c_str());
 }
 
-void on_audioinput_device_added_cb (const Ekiga::AudioInputDevice & audioinput_device, bool isDesired, GtkWidget *prefs_window)
+void on_audioinput_device_added_cb (const Ekiga::AudioInputDevice & device, bool isDesired, GtkWidget *prefs_window)
 {
   GmPreferencesWindow *pw = NULL;
   g_return_if_fail (prefs_window != NULL);
   pw = gm_pw_get_pw (prefs_window);
-  std::string device = audioinput_device.type + "/" + audioinput_device.source + "/" + audioinput_device.name;
-  gnome_prefs_string_option_menu_add (pw->audio_recorder, device.c_str(),  isDesired ? TRUE : FALSE);
+  gnome_prefs_string_option_menu_add (pw->audio_recorder, (device.GetString()).c_str(),  isDesired ? TRUE : FALSE);
 
 }
 
-void on_audioinput_device_removed_cb (const Ekiga::AudioInputDevice & audioinput_device, bool, GtkWidget *prefs_window)
+void on_audioinput_device_removed_cb (const Ekiga::AudioInputDevice & device, bool, GtkWidget *prefs_window)
 {
   GmPreferencesWindow *pw = NULL;
   g_return_if_fail (prefs_window != NULL);
   pw = gm_pw_get_pw (prefs_window);
-  std::string device = audioinput_device.type + "/" + audioinput_device.source + "/" + audioinput_device.name;
-  gnome_prefs_string_option_menu_remove(pw->audio_recorder, device.c_str());
+  gnome_prefs_string_option_menu_remove(pw->audio_recorder, (device.GetString()).c_str());
 }
 
-void on_audiooutput_device_added_cb (const Ekiga::AudioOutputDevice & audiooutput_device, bool isDesired,  GtkWidget *prefs_window)
+void on_audiooutput_device_added_cb (const Ekiga::AudioOutputDevice & device, bool isDesired,  GtkWidget *prefs_window)
 {
   GmPreferencesWindow *pw = NULL;
   g_return_if_fail (prefs_window != NULL);
   pw = gm_pw_get_pw (prefs_window);
-  std::string device = audiooutput_device.type + "/" + audiooutput_device.source + "/" + audiooutput_device.name;
-  gnome_prefs_string_option_menu_add (pw->audio_player, device.c_str(), isDesired ? TRUE : FALSE);
-  gnome_prefs_string_option_menu_add (pw->sound_events_output, device.c_str(), FALSE);
+  gnome_prefs_string_option_menu_add (pw->audio_player, (device.GetString()).c_str(), isDesired ? TRUE : FALSE);
+  gnome_prefs_string_option_menu_add (pw->sound_events_output, (device.GetString()).c_str(), FALSE);
 }
 
-void on_audiooutput_device_removed_cb (const Ekiga::AudioOutputDevice & audiooutput_device, bool, GtkWidget *prefs_window)
+void on_audiooutput_device_removed_cb (const Ekiga::AudioOutputDevice & device, bool, GtkWidget *prefs_window)
 {
   GmPreferencesWindow *pw = NULL;
   g_return_if_fail (prefs_window != NULL);
   pw = gm_pw_get_pw (prefs_window);
-  std::string device = audiooutput_device.type + "/" + audiooutput_device.source + "/" + audiooutput_device.name;
-  gnome_prefs_string_option_menu_remove(pw->audio_player, device.c_str());
-  gnome_prefs_string_option_menu_remove(pw->sound_events_output, device.c_str());
+  gnome_prefs_string_option_menu_remove(pw->audio_player, (device.GetString()).c_str());
+  gnome_prefs_string_option_menu_remove(pw->sound_events_output, (device.GetString()).c_str());
 }
 
 /* Public functions */
