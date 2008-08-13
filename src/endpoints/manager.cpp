@@ -98,9 +98,10 @@ public:
         || type == PSTUNClient::BlockedNat 
         || type == PSTUNClient::PartialBlockedNat) {
 
-      nat_error =  _("The type of NAT that has been detected is not compatible "
-                     "with Ekiga. "
-                     "Please refer to our WIKI on http://wiki.ekiga.org to solve that problem.");
+      nat_error =  _("Ekiga did not manage to configure your network settings automatically. You can"
+                     "still use Ekiga, but you need to configure your network settings manually.\n\n"
+                     "Please see http://wiki.ekiga.org/index.php/Enable_port_forwarding_manually for"
+                     "instructions");
 
 
     }
