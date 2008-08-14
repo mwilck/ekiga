@@ -154,7 +154,7 @@ chat_area_add_message (ChatArea* self,
   GtkTextBuffer* buffer = NULL;
   GtkTextIter iter;
 
-  str = g_strdup_printf ("%s says: %s\n", from, txt);
+  str = g_strdup_printf ("<i>%s says:</i> %s\n", from, txt);
   buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (self->priv->text_view));
   gtk_text_buffer_get_end_iter (buffer, &iter);
   gm_text_buffer_enhancer_insert_text (self->priv->enhancer, &iter,
@@ -478,6 +478,10 @@ chat_area_init (GTypeInstance* instance,
 				   GTK_JUSTIFY_LEFT);
   gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (self->priv->text_view),
 			       GTK_WRAP_WORD);
+  gtk_text_view_set_left_margin (GTK_TEXT_VIEW (self->priv->text_view),
+				 2);
+  gtk_text_view_set_right_margin (GTK_TEXT_VIEW (self->priv->text_view),
+				  2);
 
   gtk_container_add (GTK_CONTAINER (self->priv->scrolled_text_window),
 		     self->priv->text_view);
