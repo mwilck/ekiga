@@ -343,7 +343,7 @@ gtk_build_menu (GtkWidget *menubar,
 
       if (menu [i].accel && accel)
 	{
-        if (menu [i].accel == GDK_F1)
+/*        if ((menu [i].accel == GDK_F1) || (menu [i].accel == GDK_F11))
           gtk_widget_add_accelerator (menu [i].widget, "activate", 
                                       accel, menu [i].accel, 
                                       0, GTK_ACCEL_VISIBLE);
@@ -351,6 +351,25 @@ gtk_build_menu (GtkWidget *menubar,
           gtk_widget_add_accelerator (menu [i].widget, "activate", 
                                       accel, menu [i].accel, 
                                       GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
+*/
+	  switch (menu [i].accel) {
+		case GDK_F1:
+		case GDK_F11:
+		case GDK_Escape:
+		case GDK_h:
+		case GDK_t:
+		case GDK_m:
+		case GDK_p:
+          		gtk_widget_add_accelerator (menu [i].widget, "activate",
+                                      accel, menu [i].accel,
+                                      0, GTK_ACCEL_VISIBLE);
+			break;
+		default:
+          		gtk_widget_add_accelerator (menu [i].widget, "activate",
+                                      accel, menu [i].accel,
+                                      GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
+			break;
+	  }		
 	}
 
       if (menu [i].func) {
