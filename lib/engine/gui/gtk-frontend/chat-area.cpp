@@ -31,6 +31,7 @@
  *                         --------------------------------
  *   begin                : written in july 2008 by Julien Puydt
  *   copyright            : (C) 2008 by Julien Puydt
+ *                          (C) 2008 by Jan Schampera
  *   description          : Implementation of a Chat area (view and control)
  *
  */
@@ -42,6 +43,7 @@
 #include "gm-smileys.h"
 
 #include <string.h>
+#include <stdarg.h>
 
 class ChatAreaHelper;
 
@@ -102,6 +104,18 @@ private:
   ChatArea* area;
 };
 
+/* a helper to shorten tag definitions
+ * FIXME when C99 finally is supported everywhere, this
+ * can be a variadic macro
+ */
+
+static void gm_chat_area_define_simple_text_tag (GtkTextBuffer*,
+						 GmTextBufferEnhancer*,
+						 const gchar*,
+						 const gchar*,
+						 const gchar*,
+						 const gchar*,
+						 ...);
 
 /* declaration of callbacks */
 
@@ -126,6 +140,52 @@ static void on_entry_activated (GtkWidget* entry,
 static void on_chat_removed (ChatArea* self);
 
 /* implementation of internal api */
+
+static void
+gm_chat_area_define_simple_text_tag (GtkTextBuffer* buffer,
+				     GmTextBufferEnhancer* enhancer,
+				     const gchar* tag_name,
+				     const gchar* opening_tag,
+				     const gchar* closing_tag,
+				     const gchar* first_property_name,
+				     ...)
+{
+  va_list args;
+  GtkTextTag* tag = NULL;
+  GmTextBufferEnhancerHelperIFace* helper = NULL;
+  gchar* tmp_tagstring = NULL;
+
+  g_return_if_fail (buffer != NULL);
+  g_return_if_fail (enhancer != NULL);
+  g_return_if_fail (opening_tag != NULL);
+  g_return_if_fail (closing_tag != NULL);
+
+  va_start (args, first_property_name);
+  tag = gtk_text_buffer_create_tag (buffer, tag_name,
+				    first_property_name, NULL);
+
+  if (first_property_name)
+    g_object_set_valist (G_OBJECT (tag), first_property_name,
+			 args);
+  va_end (args);
+
+  /* the OPENING tag */
+  tmp_tagstring = g_strdup (opening_tag);
+  helper = gm_text_anchored_tag_new (tmp_tagstring, tag, TRUE);
+  gm_text_buffer_enhancer_add_helper (enhancer, helper);
+  g_object_unref (helper);
+  g_free (tmp_tagstring);
+  /* the CLOSING tag */
+  tmp_tagstring = g_strdup (closing_tag);
+  helper = gm_text_anchored_tag_new (tmp_tagstring, tag, FALSE);
+  gm_text_buffer_enhancer_add_helper (enhancer, helper);
+  g_object_unref (helper);
+  g_free (tmp_tagstring);
+
+  /* FIXME shouldn't 'tag' be unref'd? it wasn't in the original code
+   * so i didn't do it here, too - TheBonsai */
+}
+
 
 static void
 chat_area_add_notice (ChatArea* self,
@@ -497,35 +557,20 @@ chat_area_init (GTypeInstance* instance,
   gm_text_buffer_enhancer_add_helper (self->priv->enhancer, helper);
   g_object_unref (helper);
 
-  tag = gtk_text_buffer_create_tag (buffer, "bold",
-				    "weight", PANGO_WEIGHT_BOLD,
-				    NULL);
-  helper = gm_text_anchored_tag_new ("<b>", tag, TRUE);
-  gm_text_buffer_enhancer_add_helper (self->priv->enhancer, helper);
-  g_object_unref (helper);
-  helper = gm_text_anchored_tag_new ("</b>", tag, FALSE);
-  gm_text_buffer_enhancer_add_helper (self->priv->enhancer, helper);
-  g_object_unref (helper);
+  gm_chat_area_define_simple_text_tag (buffer, self->priv->enhancer,
+				       "bold", "<b>", "</b>",
+				       "weight", PANGO_WEIGHT_BOLD,
+				       NULL);
 
-  tag = gtk_text_buffer_create_tag (buffer, "italic",
-				    "style", PANGO_STYLE_ITALIC,
-				    NULL);
-  helper = gm_text_anchored_tag_new ("<i>", tag, TRUE);
-  gm_text_buffer_enhancer_add_helper (self->priv->enhancer, helper);
-  g_object_unref (helper);
-  helper = gm_text_anchored_tag_new ("</i>", tag, FALSE);
-  gm_text_buffer_enhancer_add_helper (self->priv->enhancer, helper);
-  g_object_unref (helper);
+  gm_chat_area_define_simple_text_tag (buffer, self->priv->enhancer,
+				       "italic", "<i>", "</i>",
+				       "style", PANGO_STYLE_ITALIC,
+				       NULL);
 
-  tag = gtk_text_buffer_create_tag (buffer, "underline",
-				    "underline", PANGO_UNDERLINE_SINGLE,
-				    NULL);
-  helper = gm_text_anchored_tag_new ("<u>", tag, TRUE);
-  gm_text_buffer_enhancer_add_helper (self->priv->enhancer, helper);
-  g_object_unref (helper);
-  helper = gm_text_anchored_tag_new ("</u>", tag, FALSE);
-  gm_text_buffer_enhancer_add_helper (self->priv->enhancer, helper);
-  g_object_unref (helper);
+  gm_chat_area_define_simple_text_tag (buffer, self->priv->enhancer,
+				       "underline", "<u>", "</u>",
+				       "underline", PANGO_UNDERLINE_SINGLE,
+				       NULL);
 
   /* and finally the chat area has a nice entry system */
   GtkWidget* vbox = NULL;
