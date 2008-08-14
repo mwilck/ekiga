@@ -162,7 +162,7 @@ gm_chat_area_define_simple_text_tag (GtkTextBuffer* buffer,
 
   va_start (args, first_property_name);
   tag = gtk_text_buffer_create_tag (buffer, tag_name,
-				    first_property_name, NULL);
+				    NULL);
 
   if (first_property_name)
     g_object_set_valist (G_OBJECT (tag), first_property_name,
@@ -571,6 +571,47 @@ chat_area_init (GTypeInstance* instance,
 				       "underline", "<u>", "</u>",
 				       "underline", PANGO_UNDERLINE_SINGLE,
 				       NULL);
+
+  gm_chat_area_define_simple_text_tag (buffer, self->priv->enhancer,
+				       "col_black", "<color=black>", "</color>",
+				       "foreground", "#000000",
+				       NULL);
+
+  gm_chat_area_define_simple_text_tag (buffer, self->priv->enhancer,
+                                       "col_white", "<color=white>", "</color>",
+                                       "foreground", "#FFFFFF",
+                                       NULL);
+
+  gm_chat_area_define_simple_text_tag (buffer, self->priv->enhancer,
+                                       "col_red", "<color=red>", "</color>",
+                                       "foreground", "#FF0000",
+                                       NULL);
+
+  gm_chat_area_define_simple_text_tag (buffer, self->priv->enhancer,
+                                       "col_cyan", "<color=cyan>", "</color>",
+                                       "foreground", "#00FFFF",
+                                       NULL);
+
+  gm_chat_area_define_simple_text_tag (buffer, self->priv->enhancer,
+                                       "col_green", "<color=green>", "</color>",
+                                       "foreground", "#00FF00",
+                                       NULL);
+
+  gm_chat_area_define_simple_text_tag (buffer, self->priv->enhancer,
+                                       "col_magenta", "<color=magenta>", "</color>",
+                                       "foreground", "#FF00FF",
+                                       NULL);
+
+  gm_chat_area_define_simple_text_tag (buffer, self->priv->enhancer,
+                                       "col_blue", "<color=blue>", "</color>",
+                                       "foreground", "#0000FF",
+                                       NULL);
+
+  gm_chat_area_define_simple_text_tag (buffer, self->priv->enhancer,
+                                       "col_yellow", "<color=yellow>", "</color>",
+                                       "foreground", "#FFFF00",
+                                       NULL);
+
 
   /* and finally the chat area has a nice entry system */
   GtkWidget* vbox = NULL;
