@@ -299,23 +299,28 @@ void Opal::Sip::EndPoint::fetch (const std::string _uri)
   if (loc != string::npos) 
     domain = _uri.substr (loc+1);
 
-  if (std::find (subscribed_uris.begin (), subscribed_uris.end (), _uri) == subscribed_uris.end ())
-    subscribed_uris.push_back (_uri);
+  // It is not in the list of uris for which a subscribe is active
+  if (std::find (subscribed_uris.begin (), subscribed_uris.end (), _uri) == subscribed_uris.end ()) {
 
-  if (std::find (domains.begin (), domains.end (), domain) != domains.end ()
-      && !IsSubscribed (SIPSubscribe::Presence, _uri.c_str ())) {
+    // We are registered yet
+    if (std::find (domains.begin (), domains.end (), domain) != domains.end ()) {
 
-    Subscribe (SIPSubscribe::Presence, 1800, PString (_uri.c_str ()));
+      Subscribe (SIPSubscribe::Presence, 1800, PString (_uri.c_str ()));
+      subscribed_uris.push_back (_uri);
+    }
+    else {
+     
+      to_subscribe_uris.push_back (_uri);
+    }
   }
 }
 
 
 void Opal::Sip::EndPoint::unfetch (const std::string uri)
 {
-  if (IsSubscribed (SIPSubscribe::Presence, uri.c_str ())) {
+  if (std::find (subscribed_uris.begin (), subscribed_uris.end (), uri) != subscribed_uris.end ()) {
 
     Subscribe (SIPSubscribe::Presence, 0, PString (uri.c_str ()));
-
     subscribed_uris.remove (uri);
   }
 }
@@ -603,6 +608,7 @@ void Opal::Sip::EndPoint::OnRegistered (const PString & _aor,
       aors.remove (strm.str ());
   }
 
+  std::cout << "OnREGISTERED" << std::endl << std::flush;
   if (loc != string::npos) {
 
     server = aor.substr (loc+1);
@@ -616,18 +622,39 @@ void Opal::Sip::EndPoint::OnRegistered (const PString & _aor,
     if (!was_registering && std::find (domains.begin (), domains.end (), server) != domains.end ()) 
       domains.remove (server);
 
-    for (std::list<std::string>::const_iterator iter = subscribed_uris.begin (); 
-         iter != subscribed_uris.end () ; 
-         iter++) {
+    if (was_registering) {
+      for (std::list<std::string>::const_iterator iter = to_subscribe_uris.begin (); 
+           iter != to_subscribe_uris.end () ; 
+           iter++) {
 
-      found = (*iter).find (server, 0);
-      if (found != string::npos
-          && ((was_registering && !IsSubscribed (SIPSubscribe::Presence, (*iter).c_str ()))
-              || (!was_registering && IsSubscribed (SIPSubscribe::Presence, (*iter).c_str ())))) {
+        std::cout << "Will search for " << (*iter) << std::endl << std::flush;
+        found = (*iter).find (server, 0);
+        std::cout << "DONE SEARCH" << std::endl << std::flush;
+        if (found != string::npos) {
 
-        Subscribe (SIPSubscribe::Presence, was_registering ? 500 : 0, PString ((*iter).c_str ()));
-        if (!was_registering)
+          std::cout << "NEW Subscribing presence for " << _aor << std::endl << std::flush;
+          Subscribe (SIPSubscribe::Presence, 500, PString ((*iter).c_str ()));
+          subscribed_uris.push_back (*iter);
+          to_subscribe_uris.remove (*iter);
+          std::cout << "DONE SUBSCRIBE" << std::endl << std::flush;
+          iter = to_subscribe_uris.begin ();
+        }
+      }
+    }
+    else {
+      for (std::list<std::string>::const_iterator iter = subscribed_uris.begin (); 
+           iter != subscribed_uris.end () ; 
+           iter++) {
+
+        found = (*iter).find (server, 0);
+        if (found != string::npos) {
+
+          std::cout << "UNSubscribing presence for " << _aor << std::endl << std::flush;
+          Subscribe (SIPSubscribe::Presence, 0, PString ((*iter).c_str ()));
           subscribed_uris.remove (*iter);
+          to_subscribe_uris.push_back (*iter);
+          iter = subscribed_uris.begin ();
+        }
       }
     }
   }

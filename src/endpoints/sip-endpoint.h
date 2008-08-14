@@ -173,9 +173,10 @@ namespace Opal {
 
       CallManager & manager;
 
+      std::list<std::string> to_subscribe_uris;  // List of uris to subscribe
       std::list<std::string> subscribed_uris;    // List of subscribed uris
-      std::list<std::string> domains; // List of registered domains
-      std::list<std::string> aors;     // List of registered aor
+      std::list<std::string> domains;            // List of registered domains
+      std::list<std::string> aors;               // List of registered aor
       Ekiga::ServiceCore & core;
       Ekiga::PresenceCore & presence_core;
       Ekiga::Runtime & runtime;
