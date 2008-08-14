@@ -99,9 +99,9 @@ public:
         || type == PSTUNClient::PartialBlockedNat) {
 
       nat_error =  _("Ekiga did not manage to configure your network settings automatically. You can"
-                     "still use Ekiga, but you need to configure your network settings manually.\n\n"
+                     " still use it, but you need to configure your network settings manually.\n\n"
                      "Please see http://wiki.ekiga.org/index.php/Enable_port_forwarding_manually for"
-                     "instructions");
+                     " instructions");
 
 
     }
