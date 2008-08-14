@@ -2,14 +2,14 @@
 # Suomennos: http://gnome-fi.sourceforge.net/
 # Copyright (C) 2003-2005 Free Software Foundation, Inc.
 # Tommi Vainikainen <Tommi.Vainikainen@iki.fi>, 2003-2005.
-# Ilkka Tuohela <hile@iki.fi>, 2005-2007.
+# Ilkka Tuohela <hile@iki.fi>, 2005-2008.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: ekiga\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-14 10:06+0300\n"
-"PO-Revision-Date: 2008-08-10 13:00+0300\n"
+"POT-Creation-Date: 2008-08-14 15:58+0300\n"
+"PO-Revision-Date: 2008-08-14 15:00+0300\n"
 "Last-Translator: Ilkka Tuohela <hile@iki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -41,8 +41,8 @@ msgid ""
 msgstr ""
 "Salli ekigan käyttää ohjelmistollista kuvan skaalausta kuva-kuvassa "
 "toiminnolle, jos laitteistopohjaista tukea ei ole. Jos tämä on asetettu "
-"arvoon false, Ekiga ei yritä avata kuva-kuvassa ikkunoita, jos laitteisto "
-"ei tue toimintoa."
+"arvoon false, Ekiga ei yritä avata kuva-kuvassa ikkunoita, jos laitteisto ei "
+"tue toimintoa."
 
 #: ../ekiga.schemas.in.in.h:3
 msgid "Allow picture-in-picture software scaling"
@@ -459,8 +459,8 @@ msgid ""
 "Does not apply on windows systems."
 msgstr ""
 "Määritä ohjelmistoskaalauksen algoritmi: 0 lähin naapuri, 1 lähin naapuri "
-"laatikkosuotimella, 2 bi-lineaarinen suodatus, 3 hyberbolinen suodatus. "
-"Ei koske windows-käyttäjiä."
+"laatikkosuotimella, 2 bi-lineaarinen suodatus, 3 hyberbolinen suodatus. Ei "
+"koske windows-käyttäjiä."
 
 #: ../ekiga.schemas.in.in.h:95
 msgid "Start hidden"
@@ -689,8 +689,8 @@ msgid ""
 "H.245 Tunneling."
 msgstr ""
 "Väli TCP-portteja, joita Ekiga käyttää H.323 H.245 -kanavalle. Tämä "
-"porttiväli ei vaikuta mitään, jos molemmat keskustelijat käyttävät "
-"H.245-tunnelointia."
+"porttiväli ei vaikuta mitään, jos molemmat keskustelijat käyttävät H.245-"
+"tunnelointia."
 
 #: ../ekiga.schemas.in.in.h:134
 msgid "The range of UDP ports that Ekiga will use."
@@ -780,8 +780,8 @@ msgid ""
 "The zoom value in percent to apply to images displayed in the main GUI (can "
 "be 50, 100, or 200)"
 msgstr ""
-"Pääikkunassa näytettävissä kuvissa käytettävä suurennuskerroin. Arvo voi olla "
-"50, 100 tai 200."
+"Pääikkunassa näytettävissä kuvissa käytettävä suurennuskerroin. Arvo voi "
+"olla 50, 100 tai 200."
 
 #: ../ekiga.schemas.in.in.h:152
 msgid ""
@@ -803,7 +803,6 @@ msgstr ""
 "\"String\"."
 
 #: ../ekiga.schemas.in.in.h:154 ../src/gui/preferences.cpp:636
-#, fuzzy
 msgid ""
 "This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages "
 "are encapsulated into the H.225 channel (port 1720). This saves one TCP "
@@ -815,7 +814,7 @@ msgstr ""
 "viestit kapseloidaan H.225-kanavaan (portissa 1720). Tämä säästää yhden TCP-"
 "yhteyden puhelun aikana. H.245-tunnelointi otettiin käyttöön H.323v2:ssa ja "
 "Netmeeting ei tue sitä. Jotkut Netmeetingin versiot voivat kaatua "
-"käytettäessä sekä Nopeaa käynnistystä sekä H.245-tunnelointia."
+"käytettäessä sekä nopeaa käynnistystä sekä H.245-tunnelointia."
 
 #: ../ekiga.schemas.in.in.h:155 ../src/gui/preferences.cpp:638
 msgid "This enables H.245 early in the setup"
@@ -875,6 +874,10 @@ msgid ""
 "order to keep a minimum level of (spatial) quality for all frames. 0: "
 "Highest minimal quality, 31: lowest minimal quality"
 msgstr ""
+"Pyritäänkö säilyttämään suurin mahdollinen ruutunopeus vai pyritäänkö "
+"säilyttämään kaikille ruuduille tietty laadun minimitaso vähentämällä "
+"ruutunopeutta tarvittaessa. Arvo on väliltä 0 (korkein minimilaatu) "
+"ja 31 (matalin minimilaatu)"
 
 #: ../lib/engine/addressbook/call-history/history-contact.cpp:148
 msgid "Received"
@@ -1315,31 +1318,29 @@ msgid "Bad username/password"
 msgstr "Virheellinen käyttäjätunnus tai salasana"
 
 #: ../src/endpoints/h323-endpoint.cpp:317
-#: ../src/endpoints/sip-endpoint.cpp:849
+#: ../src/endpoints/sip-endpoint.cpp:876
 msgid "Transport error"
 msgstr "Siirtovirhe"
 
 #: ../src/endpoints/h323-endpoint.cpp:328
 #: ../src/endpoints/h323-endpoint.cpp:333
-#: ../src/endpoints/sip-endpoint.cpp:856
+#: ../src/endpoints/sip-endpoint.cpp:883
 msgid "Failed"
 msgstr "Epäonnistui"
 
 #: ../src/endpoints/manager.cpp:101
 msgid ""
 "Ekiga did not manage to configure your network settings automatically. You "
-"canstill use Ekiga, but you need to configure your network settings "
-"manually.\n"
+"can still use it, but you need to configure your network settings manually.\n"
 "\n"
 "Please see http://wiki.ekiga.org/index.php/Enable_port_forwarding_manually "
-"forinstructions"
+"for instructions"
 msgstr ""
 "Ekiga ei voinut määritellä verkkoasetuksia automaattisesti. Voit silti "
-"käyttää ekigaa, mutta sinun täytyy määritellä Ekigan verkkoasetuksesi "
-"itse.\n"
+"käyttää ekigaa, mutta sinun täytyy määritellä Ekigan verkkoasetuksesi itse.\n"
 "\n"
-"Lue lisäohjeita itse määritellyistä asetuksista osoitteesta "
-"http://wiki.ekiga.org/index.php/Enable_port_forwarding_manually"
+"Lue lisäohjeita itse määritellyistä asetuksista osoitteesta http://wiki."
+"ekiga.org/index.php/Enable_port_forwarding_manually"
 
 #: ../src/endpoints/opal-account.cpp:298
 msgid "_Disable"
@@ -1530,191 +1531,191 @@ msgstr "Uudelleenohjaa"
 msgid "Message"
 msgstr "Viesti"
 
-#: ../src/endpoints/sip-endpoint.cpp:664
+#: ../src/endpoints/sip-endpoint.cpp:691
 msgid "Bad request"
 msgstr "Virheellinen pyyntö"
 
-#: ../src/endpoints/sip-endpoint.cpp:668
+#: ../src/endpoints/sip-endpoint.cpp:695
 msgid "Payment required"
 msgstr "Vaatii maksun"
 
-#: ../src/endpoints/sip-endpoint.cpp:672
+#: ../src/endpoints/sip-endpoint.cpp:699
 msgid "Unauthorized"
 msgstr "Ei sallittu"
 
-#: ../src/endpoints/sip-endpoint.cpp:676
+#: ../src/endpoints/sip-endpoint.cpp:703
 msgid "Forbidden"
 msgstr "Estetty"
 
-#: ../src/endpoints/sip-endpoint.cpp:680
+#: ../src/endpoints/sip-endpoint.cpp:707
 msgid "Timeout"
 msgstr "Aikakatkaisu"
 
-#: ../src/endpoints/sip-endpoint.cpp:684
+#: ../src/endpoints/sip-endpoint.cpp:711
 msgid "Conflict"
 msgstr "Ristiriita"
 
-#: ../src/endpoints/sip-endpoint.cpp:688
+#: ../src/endpoints/sip-endpoint.cpp:715
 msgid "Temporarily unavailable"
 msgstr "Väliaikaisesti poissa käytöstä"
 
-#: ../src/endpoints/sip-endpoint.cpp:692
+#: ../src/endpoints/sip-endpoint.cpp:719
 msgid "Not acceptable"
 msgstr "Ei hyväksyttävä"
 
-#: ../src/endpoints/sip-endpoint.cpp:696
+#: ../src/endpoints/sip-endpoint.cpp:723
 msgid "Illegal status code"
 msgstr "Virheellinen tilakoodi"
 
-#: ../src/endpoints/sip-endpoint.cpp:700
+#: ../src/endpoints/sip-endpoint.cpp:727
 msgid "Multiple choices"
 msgstr "Useita valintoja"
 
-#: ../src/endpoints/sip-endpoint.cpp:704
+#: ../src/endpoints/sip-endpoint.cpp:731
 msgid "Moved permanently"
 msgstr "Siirretty pysyvästi"
 
-#: ../src/endpoints/sip-endpoint.cpp:708
+#: ../src/endpoints/sip-endpoint.cpp:735
 msgid "Moved temporarily"
 msgstr "Siirretty väliaikaisesti"
 
-#: ../src/endpoints/sip-endpoint.cpp:712
+#: ../src/endpoints/sip-endpoint.cpp:739
 msgid "Use proxy"
 msgstr "Käytä välipalvelinta"
 
-#: ../src/endpoints/sip-endpoint.cpp:716
+#: ../src/endpoints/sip-endpoint.cpp:743
 msgid "Alternative service"
 msgstr "Vaihtoehtoinen palvelu"
 
-#: ../src/endpoints/sip-endpoint.cpp:720
+#: ../src/endpoints/sip-endpoint.cpp:747
 msgid "Not found"
 msgstr "Ei löytynyt"
 
-#: ../src/endpoints/sip-endpoint.cpp:724
+#: ../src/endpoints/sip-endpoint.cpp:751
 msgid "Method not allowed"
 msgstr "Menetelmä ei ole sallittu"
 
-#: ../src/endpoints/sip-endpoint.cpp:728
+#: ../src/endpoints/sip-endpoint.cpp:755
 msgid "Proxy auth. required"
 msgstr "Välipalvelin vaatii todentamisen"
 
-#: ../src/endpoints/sip-endpoint.cpp:732
+#: ../src/endpoints/sip-endpoint.cpp:759
 msgid "Length required"
 msgstr "Pituus vaaditaan"
 
-#: ../src/endpoints/sip-endpoint.cpp:736
+#: ../src/endpoints/sip-endpoint.cpp:763
 msgid "Request entity too big"
 msgstr "Pyyntö on liian pitkä"
 
-#: ../src/endpoints/sip-endpoint.cpp:740
+#: ../src/endpoints/sip-endpoint.cpp:767
 msgid "Request URI too long"
 msgstr "Pyynnön URI on liian pitkä"
 
-#: ../src/endpoints/sip-endpoint.cpp:744
+#: ../src/endpoints/sip-endpoint.cpp:771
 msgid "Unsupported media type"
 msgstr "Mediatyyppi ei ole tuettu"
 
-#: ../src/endpoints/sip-endpoint.cpp:748
+#: ../src/endpoints/sip-endpoint.cpp:775
 msgid "Unsupported URI scheme"
 msgstr "URI-malli ei ole tuettu"
 
-#: ../src/endpoints/sip-endpoint.cpp:752
+#: ../src/endpoints/sip-endpoint.cpp:779
 msgid "Bad extension"
 msgstr "Virheellinen suuntanumero"
 
-#: ../src/endpoints/sip-endpoint.cpp:756
+#: ../src/endpoints/sip-endpoint.cpp:783
 msgid "Extension required"
 msgstr "Suuntanumero vaaditaan"
 
-#: ../src/endpoints/sip-endpoint.cpp:760
+#: ../src/endpoints/sip-endpoint.cpp:787
 msgid "Interval too brief"
 msgstr "Väli on liian lyhyt"
 
-#: ../src/endpoints/sip-endpoint.cpp:764
+#: ../src/endpoints/sip-endpoint.cpp:791
 msgid "Loop detected"
 msgstr "Havaittiin silmukka"
 
-#: ../src/endpoints/sip-endpoint.cpp:768
+#: ../src/endpoints/sip-endpoint.cpp:795
 msgid "Too many hops"
 msgstr "Liian monta hyppyä"
 
-#: ../src/endpoints/sip-endpoint.cpp:772
+#: ../src/endpoints/sip-endpoint.cpp:799
 msgid "Address incomplete"
 msgstr "Osoite on puutteellinen"
 
-#: ../src/endpoints/sip-endpoint.cpp:776
+#: ../src/endpoints/sip-endpoint.cpp:803
 msgid "Ambiguous"
 msgstr "Epäselvä"
 
-#: ../src/endpoints/sip-endpoint.cpp:780
+#: ../src/endpoints/sip-endpoint.cpp:807
 msgid "Busy Here"
 msgstr "Varattu täällä"
 
-#: ../src/endpoints/sip-endpoint.cpp:784
+#: ../src/endpoints/sip-endpoint.cpp:811
 msgid "Request terminated"
 msgstr "Pyyntö keskeytettiin"
 
-#: ../src/endpoints/sip-endpoint.cpp:788
+#: ../src/endpoints/sip-endpoint.cpp:815
 msgid "Not acceptable here"
 msgstr "Ei hyväksyttävä tässä"
 
-#: ../src/endpoints/sip-endpoint.cpp:792
+#: ../src/endpoints/sip-endpoint.cpp:819
 msgid "Bad event"
 msgstr "Virheellinen tapahtuma"
 
-#: ../src/endpoints/sip-endpoint.cpp:796
+#: ../src/endpoints/sip-endpoint.cpp:823
 msgid "Request pending"
 msgstr "Pyyntö on jonossa"
 
-#: ../src/endpoints/sip-endpoint.cpp:800
+#: ../src/endpoints/sip-endpoint.cpp:827
 msgid "Undecipherable"
 msgstr "Käsittämätön"
 
-#: ../src/endpoints/sip-endpoint.cpp:804
+#: ../src/endpoints/sip-endpoint.cpp:831
 msgid "Internal server error"
 msgstr "Sisäinen palvelinvirhe"
 
-#: ../src/endpoints/sip-endpoint.cpp:808
+#: ../src/endpoints/sip-endpoint.cpp:835
 msgid "Not implemented"
 msgstr "Ei toteutettu"
 
-#: ../src/endpoints/sip-endpoint.cpp:812
+#: ../src/endpoints/sip-endpoint.cpp:839
 msgid "Bad gateway"
 msgstr "Virheellinen yhtyskäytävä"
 
-#: ../src/endpoints/sip-endpoint.cpp:816
+#: ../src/endpoints/sip-endpoint.cpp:843
 msgid "Service unavailable"
 msgstr "Palvelu ei ole käytettävissä"
 
-#: ../src/endpoints/sip-endpoint.cpp:820
+#: ../src/endpoints/sip-endpoint.cpp:847
 msgid "Server timeout"
 msgstr "Palvelimen aikakatkaisu"
 
-#: ../src/endpoints/sip-endpoint.cpp:824
+#: ../src/endpoints/sip-endpoint.cpp:851
 msgid "SIP version not supp."
 msgstr "SIP-versio ei ole tuettu"
 
-#: ../src/endpoints/sip-endpoint.cpp:828
+#: ../src/endpoints/sip-endpoint.cpp:855
 msgid "Message too large"
 msgstr "Viesti on liian suuri"
 
-#: ../src/endpoints/sip-endpoint.cpp:832
+#: ../src/endpoints/sip-endpoint.cpp:859
 msgid "Busy everywhere"
 msgstr "Aina varattu"
 
-#: ../src/endpoints/sip-endpoint.cpp:836
+#: ../src/endpoints/sip-endpoint.cpp:863
 msgid "Decline"
 msgstr "Kiellä"
 
-#: ../src/endpoints/sip-endpoint.cpp:840
+#: ../src/endpoints/sip-endpoint.cpp:867
 msgid "Does not exist anymore"
 msgstr "Ei ole enää olemassa"
 
-#: ../src/endpoints/sip-endpoint.cpp:844
+#: ../src/endpoints/sip-endpoint.cpp:871
 msgid "Globally not acceptable"
 msgstr "Ei hyväksyttävä missään"
 
-#: ../src/endpoints/sip-endpoint.cpp:954
+#: ../src/endpoints/sip-endpoint.cpp:981
 msgid "Could not send message"
 msgstr "Viestiä ei voitu lähettää"
 
@@ -1844,7 +1845,6 @@ msgid "Please enter your PIN code:"
 msgstr "Syötä PIN-koodisi:"
 
 #: ../src/gui/assistant.cpp:638
-#, fuzzy
 msgid ""
 "You can make calls to regular phones and cell numbers worldwide using "
 "Ekiga.\n"
@@ -1856,11 +1856,12 @@ msgid ""
 "dialog.\n"
 msgstr ""
 "Voit soittaa puheluita tavallisiin lankapuhelimiin ja matkapuhelimiin ympäri "
-"maailman Ekigan avulla. Ota tämä toiminto käyttöön rekisteröitymällä alla "
-"olevassa osoitteessa, ja rekisteröidyttyäsi aktivoi rekisteröintisi "
-"syöttämällä tilinumero ja salasana alla oleviin kenttiin.\n"
+"maailman Ekigan avulla.\n"
 "\n"
-"Palvelu toimii ainoastaan jos rekisteröidyt käyttäen alla olevaa osoitetta."
+"Voit ottaa tämän toiminnon käyttöön seuraavasti:\n"
+"- Osta käyttäjätili alla olevasta osoitteesta.\n"
+"- Syötä tilisi tunniste ja PIN-koodi.\n"
+"Palvelu toimii ainoastaan jos rekisteröidyt käyttäen alla olevaa osoitetta.\n"
 
 #: ../src/gui/assistant.cpp:698
 msgid "I do not want to sign up for the Ekiga Call Out service"
@@ -1918,13 +1919,12 @@ msgid "Please choose the audio ringing device:"
 msgstr "Valitse äänimerkkien toistolaite:"
 
 #: ../src/gui/assistant.cpp:917
-#, fuzzy
 msgid ""
 "The audio ringing device is the device  managed by the audio manager that "
 "will be used to play the ringing sound."
 msgstr ""
-"Äänisoitinlaite on äänenhallinnan hallitsema laite, jota käytetään äänen "
-"soittamiseen."
+"Äänihälytyslaite on äänenhallinnan hallitsema laite, jota käytetään "
+"soittoäänen soittamiseen."
 
 #. ---
 #: ../src/gui/assistant.cpp:930
@@ -1932,13 +1932,12 @@ msgid "Please choose the audio output device:"
 msgstr "Valitse äänisoitinlaite:"
 
 #: ../src/gui/assistant.cpp:938
-#, fuzzy
 msgid ""
 "The audio output device is the device  managed by the audio manager that "
 "will be used to play audio."
 msgstr ""
-"Äänisoitinlaite on äänenhallinnan hallitsema laite, jota käytetään äänen "
-"soittamiseen."
+"Äänisoitinlaite on äänenhallinnan hallitsema laite, jota käytetään puheen "
+"ja äänen toistamiseen."
 
 #. ---
 #: ../src/gui/assistant.cpp:951
@@ -2029,6 +2028,10 @@ msgid ""
 "Software Foundation; either version 2 of the License, or (at your option) "
 "any later version. "
 msgstr ""
+"Tämä on vapaa ohjelma; sitä on sallittu levittää edelleen ja muuttaa "
+"GNU yleisen lisenssin (GPL lisenssin) ehtojen mukaan sellaisina kuin "
+"Free Software Foundation on ne julkaissut; joko lisenssin version 2, "
+"tai (valinnan mukaan) minkä tahansa myöhemmän version mukaisesti."
 
 #: ../src/gui/callbacks.cpp:166
 msgid ""
@@ -2039,6 +2042,13 @@ msgid ""
 "License along with this program; if not, write to the Free Software "
 "Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA."
 msgstr ""
+"Tätä ohjelmaa levitetään siinä toivossa, että se olisi hyödyllinen, "
+"mutta ilman mitään takuuta; ilman edes hiljaista takuuta kaupallisesti "
+"hyväksyttävästä laadusta tai soveltuvuudesta tiettyyn tarkoitukseen. "
+"Katso GPL lisenssistä lisää yksityiskohtia. Tämän ohjelman mukana pitäisi "
+"tulla kopio GPL-lisenssistä; jos näin ei ole, kirjoita osoitteeseen Free "
+"Software Foundation Inc., 51 Franklin St, Fifth Floor, Boston, MA "
+"02110-1301, USA."
 
 #: ../src/gui/callbacks.cpp:173
 msgid ""
@@ -2049,6 +2059,11 @@ msgid ""
 "long as you do follow the requirements of the GNU GPL for all the rest of "
 "the software thus combined."
 msgstr ""
+"Ekiga on lisensoitu GPL-lisenssillä erityisen lisäehdon kanssa. Sinulla "
+"oikeus linkittää tai muuten yhdistää tämä ohjelma ohjelmien OPAL, OpenH323 "
+"ja PWLIB, sekä levittää tätä yhdistelmää soveltamatta GPL-lisenssin ehtoja "
+"OPAL, OpenH323 tai PWLIB -ohjelmiin, niin kauan kuin GNU GPL-lisenssin "
+"ehtoja noudatetaan kaikkien muiden täten yhdistetyn ohjelman osien osalta."
 
 #. Translators: Please write translator credits here, and
 #. * separate names with \n
@@ -2177,15 +2192,15 @@ msgstr ""
 "\"Kuva\"  ja laitteeksi \"Liikkuva logo\" tai \"Kiinteä kuva\"."
 
 #: ../src/gui/main.cpp:1156
-#, fuzzy
 msgid ""
 "There was an error while opening the device. In case it is a pluggable "
 "device it may be sufficient to reconnect it. If not, or if it still is not "
 "accessible, please check your permissions and make sure that the appropriate "
 "driver is loaded."
 msgstr ""
-"Virhe avattaessa laitetta. Tarkista oikeudet ja varmista, että "
-"asiaankuuluvat ajuri on ladattu."
+"Tapahtui virhe avattaessa laitetta. Jos laite on irrotettava, voi riittää "
+"että sen irrottaa ja liittää uudestaan. Jos laite on kiinteä tai tämä ei "
+"auta, tarkista oikeudet ja varmista että asiaankuuluvat ajurit on ladattu."
 
 #: ../src/gui/main.cpp:1160
 msgid "Your video driver doesn't support the requested video format."
@@ -2235,26 +2250,28 @@ msgid "Only silence will be transmitted."
 msgstr "Vain hiljaisuutta lähetetään."
 
 #: ../src/gui/main.cpp:1273
-#, fuzzy
 msgid ""
 "Unable to open the selected audio device for recording. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
 "still is not accessible, please check your audio setup, the permissions and "
 "that the device is not busy."
 msgstr ""
-"Mahdotonta avata valittua äänilaitetta (%s) nauhoittamiseen. Tarkista "
-"ääniasetuksesi, oikeudet ja että laite ei ole varattu."
+"Valittua laitetta ei voitu avata nauhoitusta varten. Jos laite on "
+"irrotettava, voi riittää että sen irrottaa ja liittää uudestaan. Jos "
+"laite on kiinteä tai tämä ei auta, tarkista oikeudet ja varmista että "
+"asiaankuuluvat ajurit on ladattu."
 
 #: ../src/gui/main.cpp:1277
-#, fuzzy
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "read data from this device. In case it is a pluggable device it may be "
 "sufficient to reconnect it. If not, or if it still is not accessible, please "
 "check your audio setup."
 msgstr ""
-"Valittu äänilaite (%s) avattiin onnistuneesti, mutta on mahdotonta lukea "
-"dataa tästä laitteesta. Tarkista ääniasetuksesi."
+"Valittu äänilaite avattiin onnistuneesti, mutta laittesta ei voitu lukea "
+"dataa. Jos laite on irrotettava, voi riittää että sen irrottaa ja liittää "
+"uudestaan. Jos laite on kiinteä tai tämä ei auta, tarkista oikeudet ja "
+"varmista että asiaankuuluvat ajurit on ladattu."
 
 #: ../src/gui/main.cpp:1345
 msgid "added audio output device "
@@ -2274,33 +2291,35 @@ msgid "No incoming sound will be played."
 msgstr "Saapuvaa ääntä ei voida toistaa."
 
 #: ../src/gui/main.cpp:1386
-#, fuzzy
 msgid ""
 "Unable to open the selected audio device for playing. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
 "still is not accessible, please check your audio setup, the permissions and "
 "that the device is not busy."
 msgstr ""
-"Mahdotonta avata valittu äänilaite (%s) soittoon. Tarkista ääniasetuksesi, "
-"oikeudet ja että laite ei ole varattu."
+"Valittua äänilaitetta ei voitu avata äänen toistamista varten. Jos laite "
+"on irrotettava, voi riittää että sen irrottaa ja liittää uudestaan. "
+"Jos laite on kiinteä tai tämä ei auta, tarkista oikeudet ja varmista että "
+"asiaankuuluvat ajurit on ladattu."
 
 #: ../src/gui/main.cpp:1390
-#, fuzzy
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "write data from this device. In case it is a pluggable device it may be "
 "sufficient to reconnect it. If not, or if it still is not accessible, please "
 "check your audio setup."
 msgstr ""
-"Valittu äänilaite (%s) avattiin onnistuneesti, mutta on mahdotonta "
-"kirjoittaa dataa tähän laitteeseen. Tarkista ääniasetuksesi."
+"Valittu äänilaite avattiin onnistuneesti, mutta laitteelle ei voitu kirjoittaa "
+"dataa. Jos laite on irrotettava, voi riittää että sen irrottaa ja liittää "
+"uudestaan. Jos laite on kiinteä tai tämä ei auta, tarkista oikeudet ja "
+"varmista että asiaankuuluvat ajurit on ladattu."
 
 #: ../src/gui/main.cpp:1610
 msgid "Enter a URI on the left, and click this button to place a call"
 msgstr "Syötä URL vasemmalle ja soita puhelu napsauttamalla tästä"
 
 #: ../src/gui/main.cpp:1691
-msgid "C_hat"
+msgid "_Chat"
 msgstr "_Juttele"
 
 #: ../src/gui/main.cpp:1693
@@ -2320,7 +2339,7 @@ msgid "Terminate the current call"
 msgstr "Katkaise nykyinen puhelu"
 
 #: ../src/gui/main.cpp:1703
-msgid "_Add Contact"
+msgid "A_dd Contact"
 msgstr "_Lisää tuttava"
 
 #: ../src/gui/main.cpp:1703
@@ -2335,8 +2354,8 @@ msgstr "_Etsi tuttavia"
 msgid "Find contacts"
 msgstr "Etsi tuttavia"
 
-#: ../src/gui/main.cpp:1715 ../src/gui/main.cpp:3184
-msgid "_Hold Call"
+#: ../src/gui/main.cpp:1715
+msgid "H_old Call"
 msgstr "Puhelu _pitoon"
 
 #: ../src/gui/main.cpp:1715 ../src/gui/main.cpp:2390
@@ -2376,8 +2395,8 @@ msgid "Quit"
 msgstr "Sulje"
 
 #: ../src/gui/main.cpp:1753
-msgid "Configuration Assistant"
-msgstr "Ohjattu asennus"
+msgid "_Configuration Assistant"
+msgstr "_Ohjattu asennus"
 
 #: ../src/gui/main.cpp:1754
 msgid "Run the configuration assistant"
@@ -2424,36 +2443,36 @@ msgid "View the call history"
 msgstr "Näytä puheluhistoria"
 
 #: ../src/gui/main.cpp:1793
-msgid "Show Call Panel"
-msgstr "Näytä soittopaneeli"
+msgid "_Show Call Panel"
+msgstr "_Näytä soittopaneeli"
 
 #: ../src/gui/main.cpp:1801
-msgid "Local Video"
-msgstr "Paikallinen video"
+msgid "_Local Video"
+msgstr "_Paikallinen video"
 
 #: ../src/gui/main.cpp:1802
 msgid "Local video image"
 msgstr "Paikallinen videokuva"
 
 #: ../src/gui/main.cpp:1807
-msgid "Remote Video"
-msgstr "Etävideo"
+msgid "_Remote Video"
+msgstr "_Etävideo"
 
 #: ../src/gui/main.cpp:1808
 msgid "Remote video image"
 msgstr "Etävideokuva"
 
 #: ../src/gui/main.cpp:1813
-msgid "Picture-in-Picture"
-msgstr "Kuva-kuvassa"
+msgid "_Picture-in-Picture"
+msgstr "_Kuva-kuvassa"
 
 #: ../src/gui/main.cpp:1814 ../src/gui/main.cpp:1820
 msgid "Both video images"
 msgstr "Molemmat videokuvat"
 
 #: ../src/gui/main.cpp:1819
-msgid "Picture-in-Picture in Separate Window"
-msgstr "Kuva-kuvassa erillisessä ikkunassa"
+msgid "Picture-in-Picture in Separate _Window"
+msgstr "Kuva-kuvassa _erillisessä ikkunassa"
 
 #: ../src/gui/main.cpp:1827
 msgid "Zoom in"
@@ -2468,8 +2487,8 @@ msgid "Normal size"
 msgstr "Peruskoko"
 
 #: ../src/gui/main.cpp:1839
-msgid "Fullscreen"
-msgstr "Kokoruutu"
+msgid "_Fullscreen"
+msgstr "_Kokoruutu"
 
 #: ../src/gui/main.cpp:1839
 msgid "Switch to fullscreen"
@@ -2540,6 +2559,10 @@ msgstr "Puheluhistoria"
 #: ../src/gui/main.cpp:3171
 msgid "_Retrieve Call"
 msgstr "_Palauta puhelu"
+
+#: ../src/gui/main.cpp:3184
+msgid "_Hold Call"
+msgstr "Puhelu _pitoon"
 
 #: ../src/gui/main.cpp:3227
 msgid "Resume _Audio"
@@ -2645,7 +2668,8 @@ msgstr "Tulostaa vianetsintäviestit konsoliin (taso väliltä 1 ja 5)"
 
 #: ../src/gui/main.cpp:4549
 msgid "Prints user plane debug messages in the console (level between 1 and 4)"
-msgstr "Tulostaa käyttäjätason vianetsintäviestit konsoliin (taso väliltä 1 ja 4)"
+msgstr ""
+"Tulostaa käyttäjätason vianetsintäviestit konsoliin (taso väliltä 1 ja 4)"
 
 #: ../src/gui/main.cpp:4554
 msgid "Makes Ekiga call the given URI"
@@ -2680,7 +2704,7 @@ msgid "Configuration database corruption"
 msgstr "Asetustietokanta on vioittunut"
 
 #: ../src/gui/main.cpp:4675
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Ekiga got an invalid value for the configuration key %s.\n"
 "\n"
@@ -2697,8 +2721,8 @@ msgstr ""
 "tai oikeudet eivät ole kunnossa.\n"
 "\n"
 "Etsi FAQ:sta (http://www.ekiga.org/), vianetsintäkohdasta GConf-sivustolla "
-"(http://www.gnome.org/projects/gconf/) tai postilista-arkistosta (http://"
-"mail.gnome.org/) lisätietoja tästä ongelmasta."
+"(http://www.gnome.org/projects/gconf/) tai gnomen postilista-arkistosta "
+"(http://mail.gnome.org/) lisätietoja tästä ongelmasta."
 
 #: ../src/gui/preferences.cpp:384
 msgid "_Full name:"
@@ -2747,7 +2771,8 @@ msgstr "Automaattinen poissaolo"
 
 #: ../src/gui/preferences.cpp:423
 msgid "Timeout after which the user is automatically set as away (in minutes):"
-msgstr "Aikaviive, jonka jälkeen käyttäjä merkitään poissaolevaksi (minuutteja):"
+msgstr ""
+"Aikaviive, jonka jälkeen käyttäjä merkitään poissaolevaksi (minuutteja):"
 
 #: ../src/gui/preferences.cpp:423
 msgid ""
@@ -3033,8 +3058,8 @@ msgid ""
 "value."
 msgstr ""
 "Videon suurin bittinopeus kilobitteinä sekunnissa. Videon laatua ja "
-"lähetettävien ruutujen määrää sekunnissa säädetään dynaamisesti "
-"jotta saavutetaan haluttu siirtokaista."
+"lähetettävien ruutujen määrää sekunnissa säädetään dynaamisesti jotta "
+"saavutetaan haluttu siirtokaista."
 
 #: ../src/gui/preferences.cpp:1408
 msgid "Play sound for new voice mails"
