@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-13 15:16+0200\n"
-"PO-Revision-Date: 2008-08-13 15:25+0200\n"
+"POT-Creation-Date: 2008-08-14 20:33+0200\n"
+"PO-Revision-Date: 2008-08-14 20:35+0200\n"
 "Last-Translator: Ignacio Casal Quinteiro <icq@svn.gnome.org>\n"
 "Language-Team: Galego <proxecto@trasno.net>\n"
 "MIME-Version: 1.0\n"
@@ -305,15 +305,15 @@ msgstr ""
 "Colocar as ventás que mostren vídeo por enriba doutras ventás durante as "
 "chamadas"
 
-#: ../ekiga.schemas.in.in.h:58 ../src/gui/preferences.cpp:1405
+#: ../ekiga.schemas.in.in.h:58 ../src/gui/preferences.cpp:1399
 msgid "Play busy tone"
 msgstr "Reproducir o sinal de ocupado"
 
-#: ../ekiga.schemas.in.in.h:59 ../src/gui/preferences.cpp:1396
+#: ../ekiga.schemas.in.in.h:59 ../src/gui/preferences.cpp:1390
 msgid "Play ring tone"
 msgstr "Reproducir o sinal de chamada"
 
-#: ../ekiga.schemas.in.in.h:60 ../src/gui/preferences.cpp:1387
+#: ../ekiga.schemas.in.in.h:60 ../src/gui/preferences.cpp:1381
 msgid "Play sound on incoming calls"
 msgstr "Reproducir un son ao recibir chamadas entrantes"
 
@@ -1337,23 +1337,30 @@ msgid "Bad username/password"
 msgstr "Nome de usuario/contrasinal incorrecto"
 
 #: ../src/endpoints/h323-endpoint.cpp:317
-#: ../src/endpoints/sip-endpoint.cpp:849
+#: ../src/endpoints/sip-endpoint.cpp:876
 msgid "Transport error"
 msgstr "Erro de transporte"
 
 #: ../src/endpoints/h323-endpoint.cpp:328
 #: ../src/endpoints/h323-endpoint.cpp:333
-#: ../src/endpoints/sip-endpoint.cpp:856
+#: ../src/endpoints/sip-endpoint.cpp:883
 msgid "Failed"
 msgstr "Fallou"
 
 #: ../src/endpoints/manager.cpp:101
 msgid ""
-"The type of NAT that has been detected is not compatible with Ekiga. Please "
-"refer to our WIKI on http://wiki.ekiga.org to solve that problem."
+"Ekiga did not manage to configure your network settings automatically. You "
+"can still use it, but you need to configure your network settings manually.\n"
+"\n"
+"Please see http://wiki.ekiga.org/index.php/Enable_port_forwarding_manually "
+"for instructions"
 msgstr ""
-"O tipo de NAT detectado non é compatible con Ekiga. Consulte o noso Wiki en "
-"http://wiki.ekiga.org para resolver o problema."
+"Ekiga non puido xestionar os axustes de configuración da súa rede "
+"automaticamente. Aínda pode usar Ekiga, pero debe configurar os seus axuste "
+"de rede manualmente.\n"
+"\n"
+"Vexa http://wiki.ekiga.org/index.php/Enable_port_forwarding_manually para "
+"obter máis instrucións"
 
 #: ../src/endpoints/opal-account.cpp:298
 msgid "_Disable"
@@ -1544,191 +1551,191 @@ msgstr "Reenviar"
 msgid "Message"
 msgstr "Mensaxe"
 
-#: ../src/endpoints/sip-endpoint.cpp:664
+#: ../src/endpoints/sip-endpoint.cpp:691
 msgid "Bad request"
 msgstr "A solicitude non é válida"
 
-#: ../src/endpoints/sip-endpoint.cpp:668
+#: ../src/endpoints/sip-endpoint.cpp:695
 msgid "Payment required"
 msgstr "É necesario o pagamento"
 
-#: ../src/endpoints/sip-endpoint.cpp:672
+#: ../src/endpoints/sip-endpoint.cpp:699
 msgid "Unauthorized"
 msgstr "Non autorizado"
 
-#: ../src/endpoints/sip-endpoint.cpp:676
+#: ../src/endpoints/sip-endpoint.cpp:703
 msgid "Forbidden"
 msgstr "Prohibido"
 
-#: ../src/endpoints/sip-endpoint.cpp:680
+#: ../src/endpoints/sip-endpoint.cpp:707
 msgid "Timeout"
 msgstr "Tempo de espera excedido"
 
-#: ../src/endpoints/sip-endpoint.cpp:684
+#: ../src/endpoints/sip-endpoint.cpp:711
 msgid "Conflict"
 msgstr "Conflito"
 
-#: ../src/endpoints/sip-endpoint.cpp:688
+#: ../src/endpoints/sip-endpoint.cpp:715
 msgid "Temporarily unavailable"
 msgstr "Non dispoñible temporalmente"
 
-#: ../src/endpoints/sip-endpoint.cpp:692
+#: ../src/endpoints/sip-endpoint.cpp:719
 msgid "Not acceptable"
 msgstr "Non aceptable"
 
-#: ../src/endpoints/sip-endpoint.cpp:696
+#: ../src/endpoints/sip-endpoint.cpp:723
 msgid "Illegal status code"
 msgstr "Código de estado ilegal"
 
-#: ../src/endpoints/sip-endpoint.cpp:700
+#: ../src/endpoints/sip-endpoint.cpp:727
 msgid "Multiple choices"
 msgstr "Múltiples opcións"
 
-#: ../src/endpoints/sip-endpoint.cpp:704
+#: ../src/endpoints/sip-endpoint.cpp:731
 msgid "Moved permanently"
 msgstr "Movido permanentemente"
 
-#: ../src/endpoints/sip-endpoint.cpp:708
+#: ../src/endpoints/sip-endpoint.cpp:735
 msgid "Moved temporarily"
 msgstr "Movido temporalmente"
 
-#: ../src/endpoints/sip-endpoint.cpp:712
+#: ../src/endpoints/sip-endpoint.cpp:739
 msgid "Use proxy"
 msgstr "Usar proxy"
 
-#: ../src/endpoints/sip-endpoint.cpp:716
+#: ../src/endpoints/sip-endpoint.cpp:743
 msgid "Alternative service"
 msgstr "Servizo alternativo"
 
-#: ../src/endpoints/sip-endpoint.cpp:720
+#: ../src/endpoints/sip-endpoint.cpp:747
 msgid "Not found"
 msgstr "Non encontrado"
 
-#: ../src/endpoints/sip-endpoint.cpp:724
+#: ../src/endpoints/sip-endpoint.cpp:751
 msgid "Method not allowed"
 msgstr "Método non permitido"
 
-#: ../src/endpoints/sip-endpoint.cpp:728
+#: ../src/endpoints/sip-endpoint.cpp:755
 msgid "Proxy auth. required"
 msgstr "O proxy require autenticación"
 
-#: ../src/endpoints/sip-endpoint.cpp:732
+#: ../src/endpoints/sip-endpoint.cpp:759
 msgid "Length required"
 msgstr "Lonxitude requerida"
 
-#: ../src/endpoints/sip-endpoint.cpp:736
+#: ../src/endpoints/sip-endpoint.cpp:763
 msgid "Request entity too big"
 msgstr "A entidade solicitada é demasiado grande"
 
-#: ../src/endpoints/sip-endpoint.cpp:740
+#: ../src/endpoints/sip-endpoint.cpp:767
 msgid "Request URI too long"
 msgstr "O URI solicitado é demasiado longo"
 
-#: ../src/endpoints/sip-endpoint.cpp:744
+#: ../src/endpoints/sip-endpoint.cpp:771
 msgid "Unsupported media type"
 msgstr "Non se soporta o tipo de medio"
 
-#: ../src/endpoints/sip-endpoint.cpp:748
+#: ../src/endpoints/sip-endpoint.cpp:775
 msgid "Unsupported URI scheme"
 msgstr "Esquema de URI non soportado"
 
-#: ../src/endpoints/sip-endpoint.cpp:752
+#: ../src/endpoints/sip-endpoint.cpp:779
 msgid "Bad extension"
 msgstr "Extensión errónea"
 
-#: ../src/endpoints/sip-endpoint.cpp:756
+#: ../src/endpoints/sip-endpoint.cpp:783
 msgid "Extension required"
 msgstr "Extensión necesaria"
 
-#: ../src/endpoints/sip-endpoint.cpp:760
+#: ../src/endpoints/sip-endpoint.cpp:787
 msgid "Interval too brief"
 msgstr "Intervalo demasiado curto"
 
-#: ../src/endpoints/sip-endpoint.cpp:764
+#: ../src/endpoints/sip-endpoint.cpp:791
 msgid "Loop detected"
 msgstr "Detectado bucle"
 
-#: ../src/endpoints/sip-endpoint.cpp:768
+#: ../src/endpoints/sip-endpoint.cpp:795
 msgid "Too many hops"
 msgstr "Demasiados saltos"
 
-#: ../src/endpoints/sip-endpoint.cpp:772
+#: ../src/endpoints/sip-endpoint.cpp:799
 msgid "Address incomplete"
 msgstr "Enderezo incompleto"
 
-#: ../src/endpoints/sip-endpoint.cpp:776
+#: ../src/endpoints/sip-endpoint.cpp:803
 msgid "Ambiguous"
 msgstr "Ambiguo"
 
-#: ../src/endpoints/sip-endpoint.cpp:780
+#: ../src/endpoints/sip-endpoint.cpp:807
 msgid "Busy Here"
 msgstr "Ocupado aquí"
 
-#: ../src/endpoints/sip-endpoint.cpp:784
+#: ../src/endpoints/sip-endpoint.cpp:811
 msgid "Request terminated"
 msgstr "Petición rematada"
 
-#: ../src/endpoints/sip-endpoint.cpp:788
+#: ../src/endpoints/sip-endpoint.cpp:815
 msgid "Not acceptable here"
 msgstr "Non é aceptable aquí"
 
-#: ../src/endpoints/sip-endpoint.cpp:792
+#: ../src/endpoints/sip-endpoint.cpp:819
 msgid "Bad event"
 msgstr "Evento erróneo"
 
-#: ../src/endpoints/sip-endpoint.cpp:796
+#: ../src/endpoints/sip-endpoint.cpp:823
 msgid "Request pending"
 msgstr "Solicitude de espera"
 
-#: ../src/endpoints/sip-endpoint.cpp:800
+#: ../src/endpoints/sip-endpoint.cpp:827
 msgid "Undecipherable"
 msgstr "Indescifrable"
 
-#: ../src/endpoints/sip-endpoint.cpp:804
+#: ../src/endpoints/sip-endpoint.cpp:831
 msgid "Internal server error"
 msgstr "Erro interno de servidor"
 
-#: ../src/endpoints/sip-endpoint.cpp:808
+#: ../src/endpoints/sip-endpoint.cpp:835
 msgid "Not implemented"
 msgstr "Sen implementar"
 
-#: ../src/endpoints/sip-endpoint.cpp:812
+#: ../src/endpoints/sip-endpoint.cpp:839
 msgid "Bad gateway"
 msgstr "Pasarala errónea"
 
-#: ../src/endpoints/sip-endpoint.cpp:816
+#: ../src/endpoints/sip-endpoint.cpp:843
 msgid "Service unavailable"
 msgstr "Servidor non dispoñible"
 
-#: ../src/endpoints/sip-endpoint.cpp:820
+#: ../src/endpoints/sip-endpoint.cpp:847
 msgid "Server timeout"
 msgstr "Expirou o tempo de espera do servidor"
 
-#: ../src/endpoints/sip-endpoint.cpp:824
+#: ../src/endpoints/sip-endpoint.cpp:851
 msgid "SIP version not supp."
 msgstr "Non se soporta a versión SIP"
 
-#: ../src/endpoints/sip-endpoint.cpp:828
+#: ../src/endpoints/sip-endpoint.cpp:855
 msgid "Message too large"
 msgstr "Mensaxe demasiado longa"
 
-#: ../src/endpoints/sip-endpoint.cpp:832
+#: ../src/endpoints/sip-endpoint.cpp:859
 msgid "Busy everywhere"
 msgstr "Ocupado en todas partes"
 
-#: ../src/endpoints/sip-endpoint.cpp:836
+#: ../src/endpoints/sip-endpoint.cpp:863
 msgid "Decline"
 msgstr "Declinar"
 
-#: ../src/endpoints/sip-endpoint.cpp:840
+#: ../src/endpoints/sip-endpoint.cpp:867
 msgid "Does not exist anymore"
 msgstr "Xa non existe"
 
-#: ../src/endpoints/sip-endpoint.cpp:844
+#: ../src/endpoints/sip-endpoint.cpp:871
 msgid "Globally not acceptable"
 msgstr "Non aceptable globalmente"
 
-#: ../src/endpoints/sip-endpoint.cpp:954
+#: ../src/endpoints/sip-endpoint.cpp:981
 msgid "Could not send message"
 msgstr "Non se puido enviar a mensaxe"
 
@@ -2334,8 +2341,8 @@ msgstr ""
 "Introduza unha URI á esquerda e prema este botón para realizar unha chamada"
 
 #: ../src/gui/main.cpp:1691
-msgid "C_hat"
-msgstr "C_onversa"
+msgid "_Chat"
+msgstr "_Conversa"
 
 #: ../src/gui/main.cpp:1693
 msgid "Ca_ll"
@@ -2354,7 +2361,7 @@ msgid "Terminate the current call"
 msgstr "Terminar a chamada actual"
 
 #: ../src/gui/main.cpp:1703
-msgid "_Add Contact"
+msgid "A_dd Contact"
 msgstr "_Engadir contacto"
 
 #: ../src/gui/main.cpp:1703
@@ -2369,8 +2376,8 @@ msgstr "_Buscar contactos"
 msgid "Find contacts"
 msgstr "Buscar contactos"
 
-#: ../src/gui/main.cpp:1715 ../src/gui/main.cpp:3184
-msgid "_Hold Call"
+#: ../src/gui/main.cpp:1715
+msgid "H_old Call"
 msgstr "Por a chamada en _espera"
 
 #: ../src/gui/main.cpp:1715 ../src/gui/main.cpp:2390
@@ -2410,8 +2417,8 @@ msgid "Quit"
 msgstr "Saír"
 
 #: ../src/gui/main.cpp:1753
-msgid "Configuration Assistant"
-msgstr "Asistente de configuración"
+msgid "_Configuration Assistant"
+msgstr "Asistente de _configuración"
 
 #: ../src/gui/main.cpp:1754
 msgid "Run the configuration assistant"
@@ -2458,36 +2465,36 @@ msgid "View the call history"
 msgstr "Ver o historial de chamadas"
 
 #: ../src/gui/main.cpp:1793
-msgid "Show Call Panel"
-msgstr "Mostrar panel de chamar"
+msgid "_Show Call Panel"
+msgstr "_Mostrar panel de chamar"
 
 #: ../src/gui/main.cpp:1801
-msgid "Local Video"
-msgstr "Vídeo local"
+msgid "_Local Video"
+msgstr "Vídeo _local"
 
 #: ../src/gui/main.cpp:1802
 msgid "Local video image"
 msgstr "Imaxe de vídeo local"
 
 #: ../src/gui/main.cpp:1807
-msgid "Remote Video"
-msgstr "Vídeo remoto"
+msgid "_Remote Video"
+msgstr "Vídeo _remoto"
 
 #: ../src/gui/main.cpp:1808
 msgid "Remote video image"
 msgstr "Imaxe de vídeo remoto"
 
 #: ../src/gui/main.cpp:1813
-msgid "Picture-in-Picture"
-msgstr "Imaxe na imaxe"
+msgid "_Picture-in-Picture"
+msgstr "I_maxe na imaxe"
 
 #: ../src/gui/main.cpp:1814 ../src/gui/main.cpp:1820
 msgid "Both video images"
 msgstr "Ambas as imaxes de vídeo"
 
 #: ../src/gui/main.cpp:1819
-msgid "Picture-in-Picture in Separate Window"
-msgstr "Imaxe na imaxe nunha ventá separada"
+msgid "Picture-in-Picture in Separate _Window"
+msgstr "Imaxe na imaxe nunha _ventá separada"
 
 #: ../src/gui/main.cpp:1827
 msgid "Zoom in"
@@ -2502,8 +2509,8 @@ msgid "Normal size"
 msgstr "Tamaño normal"
 
 #: ../src/gui/main.cpp:1839
-msgid "Fullscreen"
-msgstr "Pantalla completa"
+msgid "_Fullscreen"
+msgstr "_Pantalla completa"
 
 #: ../src/gui/main.cpp:1839
 msgid "Switch to fullscreen"
@@ -2574,6 +2581,10 @@ msgstr "Historial de chamadas"
 #: ../src/gui/main.cpp:3171
 msgid "_Retrieve Call"
 msgstr "_Recuperar chamada"
+
+#: ../src/gui/main.cpp:3184
+msgid "_Hold Call"
+msgstr "Por a chamada en _espera"
 
 #: ../src/gui/main.cpp:3227
 msgid "Resume _Audio"
@@ -2834,7 +2845,7 @@ msgstr ""
 "especifica nas configuracións de protocolo se xa está atendendo unha chamada "
 "ou se está no modo \"non molestar\""
 
-#: ../src/gui/preferences.cpp:443 ../src/gui/preferences.cpp:1480
+#: ../src/gui/preferences.cpp:443 ../src/gui/preferences.cpp:1474
 msgid "Call Options"
 msgstr "Opcións de chamada"
 
@@ -3019,7 +3030,7 @@ msgid "Images"
 msgstr "Imaxes"
 
 #: ../src/gui/preferences.cpp:961 ../src/gui/preferences.cpp:998
-#: ../src/gui/preferences.cpp:1505 ../src/gui/preferences.cpp:1515
+#: ../src/gui/preferences.cpp:1499 ../src/gui/preferences.cpp:1509
 msgid "Codecs"
 msgstr "Códecs"
 
@@ -3075,55 +3086,55 @@ msgstr ""
 "e o número de fotogramas transmitidos por segundo axustaranse dinamicamente "
 "para tentar minimizar a largura de banda co valor seleccionado."
 
-#: ../src/gui/preferences.cpp:1414
+#: ../src/gui/preferences.cpp:1408
 msgid "Play sound for new voice mails"
 msgstr "Reproducir un son para as novas mensaxes de voz"
 
-#: ../src/gui/preferences.cpp:1423
+#: ../src/gui/preferences.cpp:1417
 msgid "Play sound for new instant messages"
 msgstr "Reproducir un son para as novas mensaxes instantáneas"
 
-#: ../src/gui/preferences.cpp:1452
+#: ../src/gui/preferences.cpp:1446
 msgid "Ekiga Preferences"
 msgstr "Preferencias do Ekiga"
 
-#: ../src/gui/preferences.cpp:1470
+#: ../src/gui/preferences.cpp:1464
 msgid "General"
 msgstr "Xeral"
 
-#: ../src/gui/preferences.cpp:1471
+#: ../src/gui/preferences.cpp:1465
 msgid "Personal Data"
 msgstr "Información persoal"
 
-#: ../src/gui/preferences.cpp:1476
+#: ../src/gui/preferences.cpp:1470
 msgid "General Settings"
 msgstr "Configuración xeral"
 
-#: ../src/gui/preferences.cpp:1485
+#: ../src/gui/preferences.cpp:1479
 msgid "Sound Events"
 msgstr "Eventos de son"
 
-#: ../src/gui/preferences.cpp:1489
+#: ../src/gui/preferences.cpp:1483
 msgid "Protocols"
 msgstr "Protocolos"
 
-#: ../src/gui/preferences.cpp:1491
+#: ../src/gui/preferences.cpp:1485
 msgid "SIP Settings"
 msgstr "Configuración de SIP"
 
-#: ../src/gui/preferences.cpp:1496
+#: ../src/gui/preferences.cpp:1490
 msgid "H.323 Settings"
 msgstr "Configuración de H.323"
 
-#: ../src/gui/preferences.cpp:1500
+#: ../src/gui/preferences.cpp:1494
 msgid "Audio"
 msgstr "Son"
 
-#: ../src/gui/preferences.cpp:1501 ../src/gui/preferences.cpp:1511
+#: ../src/gui/preferences.cpp:1495 ../src/gui/preferences.cpp:1505
 msgid "Devices"
 msgstr "Dispositivos"
 
-#: ../src/gui/preferences.cpp:1510
+#: ../src/gui/preferences.cpp:1504
 msgid "Video"
 msgstr "Vídeo"
 
@@ -3169,6 +3180,13 @@ msgstr "Eliminar mensaxes personalizadas:"
 #: ../src/gui/statusmenu.cpp:783
 msgid "Define a custom message:"
 msgstr "Definir unha mensaxe personalizada:"
+
+#~ msgid ""
+#~ "The type of NAT that has been detected is not compatible with Ekiga. "
+#~ "Please refer to our WIKI on http://wiki.ekiga.org to solve that problem."
+#~ msgstr ""
+#~ "O tipo de NAT detectado non é compatible con Ekiga. Consulte o noso Wiki "
+#~ "en http://wiki.ekiga.org para resolver o problema."
 
 #~ msgid "_Tools"
 #~ msgstr "_Ferramentas"
