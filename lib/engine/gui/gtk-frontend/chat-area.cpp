@@ -54,6 +54,7 @@ struct _ChatAreaPrivate
   GtkWidget* smiley_menu;
 
   /* we contain those, so no need to unref them */
+  GtkWidget* scrolled_text_window;
   GtkWidget* text_view;
   GtkWidget* entry;
 };
@@ -458,7 +459,14 @@ chat_area_init (GTypeInstance* instance,
 					    ChatAreaPrivate);
   self->priv->chat = NULL;
 
-  /* first the area has a text view to display */
+  /* first the area has a text view to display
+     the GtkScrolledWindow is there to make
+     the GtkTextView scrollable */
+
+  self->priv->scrolled_text_window = gtk_scrolled_window_new (NULL, NULL);
+  gtk_scrolled_window_set_policy
+    (GTK_SCROLLED_WINDOW (self->priv->scrolled_text_window),
+     GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
 
   self->priv->text_view = gtk_text_view_new ();
   buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (self->priv->text_view));
@@ -471,9 +479,11 @@ chat_area_init (GTypeInstance* instance,
   gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (self->priv->text_view),
 			       GTK_WRAP_WORD);
 
-  gtk_widget_show (self->priv->text_view);
-  gtk_box_pack_start (GTK_BOX (self), self->priv->text_view,
-		      TRUE, TRUE, 2);
+  gtk_container_add (GTK_CONTAINER (self->priv->scrolled_text_window),
+		     self->priv->text_view);
+  gtk_box_pack_start (GTK_BOX (self),
+		      self->priv->scrolled_text_window, TRUE, TRUE, 2);
+  gtk_widget_show_all (self->priv->scrolled_text_window);
 
   /* then we want to enhance this display */
 
@@ -551,6 +561,10 @@ chat_area_init (GTypeInstance* instance,
   gtk_widget_show (vbox);
 
   bbox = gtk_hbutton_box_new ();
+  /* FIXME gtk_box_set_spacing() seems to be neccesary, though we
+     define a padding with the pack() methods */
+  /* FIXME the box doesn't do the 2px space at the left and right edges! */
+  gtk_box_set_spacing (GTK_BOX (bbox), 2);
   gtk_box_pack_start (GTK_BOX (vbox), bbox,
 		      FALSE, TRUE, 2);
   gtk_widget_show (bbox);
