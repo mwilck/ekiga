@@ -322,8 +322,21 @@ statusicon_blink_cb (gpointer data)
 {
   StatusIcon *statusicon = STATUSICON (data);
 
+  GtkFrontend *frontend = NULL;
+  GtkWidget *chat_window = NULL;
+  GdkPixbuf *pixbuf = NULL;
+
+  g_return_val_if_fail (data != NULL, false);
+
+  frontend = dynamic_cast<GtkFrontend*>(STATUSICON (data)->priv->core.get ("gtk-frontend"));
+  // FIXME use main_window here
+  chat_window = GTK_WIDGET (frontend->get_chat_window ());
+
+  pixbuf = gtk_widget_render_icon (chat_window, STATUSICON (data)->priv->blink_image,
+                                   GTK_ICON_SIZE_MENU, NULL); 
+
   if (statusicon->priv->blinking)
-    gtk_status_icon_set_from_stock (GTK_STATUS_ICON (statusicon), statusicon->priv->blink_image);
+    gtk_status_icon_set_from_pixbuf (GTK_STATUS_ICON (statusicon), pixbuf);
   else
     statusicon_set_status (statusicon, statusicon->priv->status);
 
@@ -418,6 +431,8 @@ static void
 statusicon_start_blinking (StatusIcon *icon,
                            const char *stock_id)
 {
+  g_return_if_fail (icon != NULL);
+
   icon->priv->blink_image = g_strdup (stock_id);
   if (icon->priv->blink_id == -1)
     icon->priv->blink_id = g_timeout_add (1000, statusicon_blink_cb, icon);
@@ -494,8 +509,10 @@ statusicon_set_inacall (StatusIcon *statusicon,
   /* Update the status icon */ 
   if (inacall) {
 
-    pixbuf = gtk_widget_render_icon (chat_window, GM_STOCK_STATUS_INACALL, 
-                                     GTK_ICON_SIZE_MENU, NULL); 
+    pixbuf = gtk_widget_render_icon (chat_window, 
+                                     GM_STOCK_STATUS_INACALL, 
+                                     GTK_ICON_SIZE_MENU, 
+                                     NULL); 
     gtk_status_icon_set_from_pixbuf (GTK_STATUS_ICON (statusicon), pixbuf);
     g_object_unref (pixbuf);
   }
