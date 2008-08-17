@@ -89,40 +89,22 @@ win32=0
 case $target_os in
 
   solaris*)
-    ARCH_PTLIB_CFLAGS="-DPTRACING -DNDEBUG -DSOLARIS -g "
-    ARCH_OPAL_LIBS="-lpt -lopal -ldl -lpthread"
-    AC_MSG_RESULT([yes])
     gm_platform="solaris"
     ;;
 
   linux-gnulp | linux-gnu | linux-gnueabi | linux | Linux)
-    ARCH_PTLIB_CFLAGS="-DPTRACING -DNDEBUG -Os -g -fno-exceptions -felide-constructors"
-    ARCH_OPAL_LIBS="-lpt -lopal -ldl -lpthread"
-    AC_MSG_RESULT([yes])
     gm_platform="linux"
-
-dnl if debug add this and link to -lh323_linux_x86_d -lpt_linux_x86_d
-dnl -D_DEBUG -DPMEMORY_CHECK=1 -DPTRACING -g
     ;;
 
   FreeBSD* | freebsd* )
-    ARCH_PTLIB_CFLAGS="-DPTRACING -DNDEBUG -Os -g"
-    ARCH_OPAL_LIBS="-lpt -lopal -lpthread"
-    AC_MSG_RESULT([yes])
     gm_platform="freebsd"
     ;;
 
   darwin* )
-    ARCH_PTLIB_CFLAGS="-Os -DPTRACING -DNDEBUG -DNO_LONG_DOUBLE -DSTATIC_LIBS_USED"
-    ARCH_OPAL_LIBS="-multiply_defined suppress -lh323_Darwin_ppc_r_s -lpt_Darwin_ppc_r_s -lssl -lcrypto -lX11 -framework AudioToolbox -framework CoreAudio -framework CoreServices"
-    AC_MSG_RESULT([yes])
     gm_platform="macosx"
     ;;
 
   mingw* )
-    ARCH_PTLIB_CFLAGS="-mms-bitfields -DPTRACING -DSTATIC_LIBS_USED"
-    ARCH_OPAL_LIBS="-mwindows -enable-auto-import -enable-runtime-pseudo-reloc -enable-stdcall-fixup -lpt -lopal -lwinmm -lwsock32 -lsnmpapi -lmpr -lcomdlg32"
-    AC_MSG_RESULT([yes])
     gm_platform="mingw"
     win32=1
     ;;
@@ -131,8 +113,38 @@ dnl -D_DEBUG -DPMEMORY_CHECK=1 -DPTRACING -g
     AC_MSG_ERROR([Only Linux, FreeBSD, Solaris and Mac OS X are supported. Please contact the author to know how you can add more OS types.])
     ;;
 esac
+AC_MSG_RESULT([yes])
 
 AM_CONDITIONAL(WIN32, test "x${win32}" = "x1")
+
+dnl This ARCH stuff is here for reference only and should be removed in the future...
+case $target_os in
+
+  solaris*)
+    ARCH_PTLIB_CFLAGS="-DPTRACING -DNDEBUG -DSOLARIS -g "
+    ARCH_OPAL_LIBS="-lpt -lopal -ldl -lpthread"
+    ;;
+
+  linux-gnulp | linux-gnu | linux-gnueabi | linux | Linux)
+    ARCH_PTLIB_CFLAGS="-DPTRACING -DNDEBUG -Os -g -fno-exceptions -felide-constructors"
+    ARCH_OPAL_LIBS="-lpt -lopal -ldl -lpthread"
+    ;;
+
+  FreeBSD* | freebsd* )
+    ARCH_PTLIB_CFLAGS="-DPTRACING -DNDEBUG -Os -g"
+    ARCH_OPAL_LIBS="-lpt -lopal -lpthread"
+    ;;
+
+  darwin* )
+    ARCH_PTLIB_CFLAGS="-Os -DPTRACING -DNDEBUG -DNO_LONG_DOUBLE -DSTATIC_LIBS_USED"
+    ARCH_OPAL_LIBS="-multiply_defined suppress -lh323_Darwin_ppc_r_s -lpt_Darwin_ppc_r_s -lssl -lcrypto -lX11 -framework AudioToolbox -framework CoreAudio -framework CoreServices"
+    ;;
+
+  mingw* )
+    ARCH_PTLIB_CFLAGS="-mms-bitfields -DPTRACING -DSTATIC_LIBS_USED"
+    ARCH_OPAL_LIBS="-mwindows -enable-auto-import -enable-runtime-pseudo-reloc -enable-stdcall-fixup -lpt -lopal -lwinmm -lwsock32 -lsnmpapi -lmpr -lcomdlg32"
+    ;;
+esac
 
 dnl Check the byte order 
 AC_MSG_CHECKING(Byte order)
@@ -520,7 +532,6 @@ dnl ###########################################################################
 dnl PTLib Headers and Libraries
 dnl ###########################################################################
 PKG_CHECK_MODULES(PTLIB, ptlib >= ${PTLIB_REC_VERSION})
-PTLIB_CFLAGS="$ARCH_PTLIB_CFLAGS $PTLIB_CFLAGS"
 AC_SUBST(PTLIB_CFLAGS)
 AC_SUBST(PTLIB_LIBS)
                   
@@ -529,7 +540,6 @@ dnl ###########################################################################
 dnl Opal Headers and Libraries
 dnl ###########################################################################
 PKG_CHECK_MODULES(OPAL, opal >= ${OPAL_REC_VERSION})
-OPAL_LIBS="$ARCH_OPAL_LIBS $OPAL_LIBS"
 AC_SUBST(OPAL_CFLAGS)
 AC_SUBST(OPAL_LIBS)
 

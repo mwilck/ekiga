@@ -3,7 +3,9 @@
 #include <ole2.h>
 #include <limits.h>
 
+#ifndef _WINGDI_
 #define _WINGDI_ 1
+#endif
 #define AM_NOVTABLE
 #define _OBJBASE_H_
 #undef _X86_
