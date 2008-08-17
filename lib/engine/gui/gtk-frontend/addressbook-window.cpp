@@ -707,7 +707,7 @@ addressbook_window_new (Ekiga::ContactCore &core)
   self->priv->tree_view = gtk_tree_view_new_with_model (GTK_TREE_MODEL (store));
   g_object_unref (store);
   gtk_container_add (GTK_CONTAINER (frame), self->priv->tree_view);
-  gtk_widget_set_size_request (GTK_WIDGET (self->priv->tree_view), 125, -1);
+  gtk_widget_set_size_request (GTK_WIDGET (self->priv->tree_view), 185, -1);
   gtk_paned_add1 (GTK_PANED (hpaned), frame);
 
   /* Several renderers for one column */
@@ -724,9 +724,8 @@ addressbook_window_new (Ekiga::ContactCore &core)
                                        "text", COLUMN_NAME,
                                        NULL);
 
-  gtk_tree_view_column_set_title (column, _("Address Books"));
+  gtk_tree_view_column_set_title (column, _("Category"));
   gtk_tree_view_column_set_sort_column_id (column, COLUMN_NAME);
-  gtk_tree_view_column_set_min_width (GTK_TREE_VIEW_COLUMN (column), 130);
   gtk_tree_view_column_set_sizing (GTK_TREE_VIEW_COLUMN (column),
                                    GTK_TREE_VIEW_COLUMN_AUTOSIZE);
   gtk_tree_view_column_set_resizable (GTK_TREE_VIEW_COLUMN (column), true);
