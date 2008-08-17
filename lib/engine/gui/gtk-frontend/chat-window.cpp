@@ -35,6 +35,8 @@
  *
  */
 
+#include "config.h"
+
 #include "chat-window.h"
 #include "simple-chat-page.h"
 #include "multiple-chat-page.h"
@@ -343,7 +345,7 @@ chat_window_init (GTypeInstance* instance,
 		  G_GNUC_UNUSED gpointer g_class)
 {
   /* we can't do much here since we get the Chat as reference... */
-  gtk_window_set_title (GTK_WINDOW (instance), "Chat window");
+  gtk_window_set_title (GTK_WINDOW (instance), _("Chat Window"));
 }
 
 GType

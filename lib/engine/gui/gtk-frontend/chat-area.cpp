@@ -36,6 +36,8 @@
  *
  */
 
+#include "config.h"
+
 #include "chat-area.h"
 #include "gm-text-buffer-enhancer.h"
 #include "gm-text-anchored-tag.h"
@@ -214,7 +216,7 @@ chat_area_add_message (ChatArea* self,
   GtkTextBuffer* buffer = NULL;
   GtkTextIter iter;
 
-  str = g_strdup_printf ("<i>%s says:</i> %s\n", from, txt);
+  str = g_strdup_printf ("<i>%s %s</i> %s\n", from, _("says:"), txt);
   buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (self->priv->text_view));
   gtk_text_buffer_get_end_iter (buffer, &iter);
   gm_text_buffer_enhancer_insert_text (self->priv->enhancer, &iter,
