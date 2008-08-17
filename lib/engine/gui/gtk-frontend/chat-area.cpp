@@ -513,7 +513,6 @@ chat_area_init (GTypeInstance* instance,
   ChatArea* self = NULL;
   GtkTextBuffer* buffer = NULL;
   GmTextBufferEnhancerHelperIFace* helper = NULL;
-  GtkTextTag* tag = NULL;
 
   self = (ChatArea*)instance;
 

@@ -76,7 +76,6 @@ static void
 on_presentity_updated (PresentityView* self)
 {
   gchar *txt = NULL;
-  GdkPixbuf *pixbuf = NULL;
 
   gtk_image_set_from_stock (GTK_IMAGE (self->priv->presence_image),
 			    self->priv->presentity->get_presence ().c_str (),
