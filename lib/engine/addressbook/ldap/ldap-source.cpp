@@ -37,6 +37,7 @@
 
 #include <cstdlib>
 #include <iostream>
+#include <string.h>
 
 #include "config.h"
 
@@ -52,7 +53,7 @@ OPENLDAP::Source::Source (Ekiga::ServiceCore &_core): core(_core), doc(NULL)
   xmlNodePtr root;
   gchar *c_raw = gm_conf_get_string (KEY);
 
-  if (c_raw != NULL) {
+  if (c_raw != NULL && strcmp (c_raw, "")) {
 
     const std::string raw = c_raw;
 
@@ -82,6 +83,8 @@ OPENLDAP::Source::Source (Ekiga::ServiceCore &_core): core(_core), doc(NULL)
     doc = xmlNewDoc (BAD_CAST "1.0");
     root = xmlNewNode (NULL, BAD_CAST "list");
     xmlDocSetRootElement (doc, root);
+
+    new_ekiga_net_book ();
   }
 }
 
@@ -133,9 +136,12 @@ OPENLDAP::Source::common_add (Book &book)
 bool
 OPENLDAP::Source::populate_menu (Ekiga::MenuBuilder &builder)
 {
-  builder.add_action ("add", _("Add an LDAP addressbook"),
+  builder.add_action ("add", _("Add an LDAP Address Book"),
 		      sigc::mem_fun (this,
 				     &OPENLDAP::Source::new_book));
+  builder.add_action ("add", _("Add the Ekiga.net Directory"),
+		      sigc::mem_fun (this,
+				     &OPENLDAP::Source::new_ekiga_net_book));
   return true;
 }
 
@@ -174,6 +180,18 @@ OPENLDAP::Source::new_book ()
 	      << __PRETTY_FUNCTION__ << std::endl;
 #endif
   }
+}
+
+void
+OPENLDAP::Source::new_ekiga_net_book ()
+{
+  add (_("Ekiga.net Directory"),
+       "ekiga.net", 389,
+       "dc=ekiga,dc=net",
+       "sub",
+       "telephoneNumber", 
+       "");
+  save ();
 }
 
 void

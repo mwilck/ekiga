@@ -1076,15 +1076,14 @@
       </locale>
     </schema>
     <schema>		
-      <key>/schemas/apps/@PACKAGE_NAME@/contacts/remote_addressbooks_list</key>
-      <applyto>/apps/@PACKAGE_NAME@/contacts/remote_addressbooks_list</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/contacts/ldap_servers</key>
+      <applyto>/apps/@PACKAGE_NAME@/contacts/ldap_servers</applyto>
       <owner>Ekiga</owner>
-      <type>list</type>
-      <list_type>string</list_type>
-      <default>[1086549787.11023.35@golgoth01|Ekiga White Pages|ldap://ldap.ekiga.net:389/dc=ekiga\,dc=net??sub|telephoneNumber,1086536533.479.17@golgoth01]</default>
+      <type>string</type>
+      <default></default>
       <locale name="C">
-	<short>User directory</short>
-	<long></long>
+	<short>LDAP servers</short>
+	<long>List of configured LDAP servers</long>
       </locale>
     </schema>
     <schema>
