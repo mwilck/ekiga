@@ -254,8 +254,11 @@ Local::Presentity::edit_presentity_form_submitted (Ekiga::Form &result)
 
       presence_core->unfetch_presence (uri);
       uri = new_uri;
+      presence = "presence-unknown";
       presence_core->fetch_presence (uri);
+      xmlSetProp (node, (const xmlChar*)"uri", (const xmlChar*)uri.c_str ());
     }
+
     robust_xmlNodeSetContent (node, &name_node, "name", name);
 
     // the first loop looks at groups we were in : are we still in ?
