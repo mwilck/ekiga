@@ -54,7 +54,9 @@ namespace SIP
   /**
    * This class implements an Ekiga::Presentity.
    */
-  class Presentity: public Ekiga::Presentity
+  class Presentity:
+    public Ekiga::Presentity,
+    public sigc::trackable
   {
   public:
 
@@ -107,6 +109,12 @@ namespace SIP
     std::string presence;
     std::string status;
     std::string avatar;
+
+    void on_presence_received (std::string uri_,
+			       std::string presence_);
+
+    void on_status_received (std::string uri_,
+			     std::string status_);
 
     std::set<std::string> groups;
   };

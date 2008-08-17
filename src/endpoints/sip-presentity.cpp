@@ -41,7 +41,8 @@ SIP::Presentity::Presentity (Ekiga::ServiceCore &_core,
   : core(_core), name(name_), uri(uri_), presence("presence-unknown")
 {
   presence_core = dynamic_cast<Ekiga::PresenceCore*>(core.get ("presence-core"));
-
+  presence_core->presence_received.connect (sigc::mem_fun (this, &SIP::Presentity::on_presence_received));
+  presence_core->status_received.connect (sigc::mem_fun (this, &SIP::Presentity::on_status_received));
   presence_core->fetch_presence (uri);
 }
 
@@ -104,4 +105,26 @@ bool
 SIP::Presentity::populate_menu (Ekiga::MenuBuilder &builder)
 {
   return presence_core->populate_presentity_menu (*this, uri, builder);
+}
+
+void
+SIP::Presentity::on_presence_received (std::string uri_,
+				       std::string presence_)
+{
+  if (uri == uri_) {
+
+    presence = presence_;
+    updated.emit ();
+  }
+}
+
+void
+SIP::Presentity::on_status_received (std::string uri_,
+				     std::string status_)
+{
+  if (uri == uri_) {
+
+    status = status_;
+    updated.emit ();
+  }
 }
