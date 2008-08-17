@@ -69,7 +69,7 @@ gnomemeeting_stock_icons_init (void)
 		{ GM_STOCK_STATUS_UNKNOWN, gm_status_unknown_stock_data },
 		{ GM_STOCK_STATUS_AWAY, gm_status_away_stock_data },
 		{ GM_STOCK_STATUS_DND, gm_status_dnd_stock_data },
-		{ GM_STOCK_STATUS_INACALL, gm_status_inacall_stock_data },
+		{ GM_STOCK_STATUS_INACALL, gm_status_inacall_stock_data_16 },
 
 		{ GM_STOCK_REMOTE_CONTACT, gm_remote_contact_stock_data},
 		{ GM_STOCK_LOCAL_CONTACT, gm_local_contact_stock_data},

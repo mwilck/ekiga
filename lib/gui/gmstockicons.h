@@ -70,7 +70,7 @@ G_BEGIN_DECLS
 #define GM_STOCK_STATUS_UNKNOWN "gm_status_unknown_stock"
 #define GM_STOCK_STATUS_AWAY "gm_status_away_stock"
 #define GM_STOCK_STATUS_DND "gm_status_dnd_stock"
-#define GM_STOCK_STATUS_INACALL "gm_status_inacall_stock"
+#define GM_STOCK_STATUS_INACALL "gm_status_inacall_stock_16"
 
 #define GM_STOCK_PHONE_HANG_UP_16    "gm_phone_hang_up_stock_16"
 #define GM_STOCK_PHONE_PICK_UP_16    "gm_phone_pick_up_stock_16"
