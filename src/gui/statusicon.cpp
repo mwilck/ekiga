@@ -47,6 +47,7 @@
 #include "ekiga.h"
 
 #include "gtk-frontend.h"
+#include "call-core.h"
 
 #include <sigc++/sigc++.h>
 #include <vector>
@@ -126,6 +127,20 @@ static void
 statusicon_set_status (StatusIcon *widget,
                        const std::string & short_status);
 
+static void
+statusicon_set_inacall (StatusIcon *widget,
+                        bool inacall);
+
+static void 
+established_call_cb (Ekiga::CallManager & manager,
+                     Ekiga::Call & call,
+                     gpointer self);
+
+static void 
+cleared_call_cb (Ekiga::CallManager & manager,
+                 Ekiga::Call & call,
+                 std::string reason,
+                 gpointer self);
 
 /*
  * GObject stuff
@@ -307,12 +322,10 @@ statusicon_blink_cb (gpointer data)
 {
   StatusIcon *statusicon = STATUSICON (data);
 
-  gdk_threads_enter ();
   if (statusicon->priv->blinking)
     gtk_status_icon_set_from_stock (GTK_STATUS_ICON (statusicon), statusicon->priv->blink_image);
   else
     statusicon_set_status (statusicon, statusicon->priv->status);
-  gdk_threads_leave ();
 
   statusicon->priv->blinking = !statusicon->priv->blinking;
 
@@ -325,6 +338,25 @@ personal_details_updated_cb (Ekiga::PersonalDetails & details,
                              gpointer self)
 {
   statusicon_set_status (STATUSICON (self), details.get_short_status ());
+}
+
+
+static void 
+established_call_cb (Ekiga::CallManager & /*manager*/,
+                     Ekiga::Call & /*call*/,
+                     gpointer self)
+{
+  statusicon_set_inacall (STATUSICON (self), true);
+}
+
+
+static void 
+cleared_call_cb (Ekiga::CallManager & /*manager*/,
+                 Ekiga::Call & /*call*/,
+                 std::string /*reason*/,
+                 gpointer self)
+{
+  statusicon_set_inacall (STATUSICON (self), false);
 }
 
 
@@ -445,6 +477,35 @@ statusicon_set_status (StatusIcon *statusicon,
 }
 
 
+void
+statusicon_set_inacall (StatusIcon *statusicon,
+                        bool inacall)
+{
+  GtkFrontend *frontend = NULL;
+  GtkWidget *chat_window = NULL;
+  GdkPixbuf *pixbuf = NULL;
+
+  g_return_if_fail (statusicon != NULL);
+
+  frontend = dynamic_cast<GtkFrontend*>(statusicon->priv->core.get ("gtk-frontend"));
+  // FIXME use main_window here
+  chat_window = GTK_WIDGET (frontend->get_chat_window ());
+
+  /* Update the status icon */ 
+  if (inacall) {
+
+    pixbuf = gtk_widget_render_icon (chat_window, GM_STOCK_STATUS_INACALL, 
+                                     GTK_ICON_SIZE_MENU, NULL); 
+    gtk_status_icon_set_from_pixbuf (GTK_STATUS_ICON (statusicon), pixbuf);
+    g_object_unref (pixbuf);
+  }
+  else {
+    
+    statusicon_set_status (statusicon, statusicon->priv->status);
+  }
+}
+
+
 /*
  * Public API
  */
@@ -468,11 +529,20 @@ statusicon_new (Ekiga::ServiceCore & core)
 
   GtkFrontend *frontend = dynamic_cast<GtkFrontend*>(core.get ("gtk-frontend"));
   Ekiga::PersonalDetails *details = dynamic_cast<Ekiga::PersonalDetails*> (core.get ("personal-details"));
+  Ekiga::CallCore *call_core = dynamic_cast<Ekiga::CallCore*> (core.get ("call-core"));
   GtkWidget *chat_window = GTK_WIDGET (frontend->get_chat_window ());
 
   statusicon_set_status (self, details->get_short_status ());
   conn = details->updated.connect (sigc::bind (sigc::ptr_fun (personal_details_updated_cb), 
                                                (gpointer) self));
+  self->priv->connections.push_back (conn);
+
+  conn = call_core->established_call.connect (sigc::bind (sigc::ptr_fun (established_call_cb), 
+                                                          (gpointer) self));
+  self->priv->connections.push_back (conn);
+
+  conn = call_core->cleared_call.connect (sigc::bind (sigc::ptr_fun (cleared_call_cb), 
+                                                      (gpointer) self));
   self->priv->connections.push_back (conn);
 
   g_signal_connect (self, "popup-menu",
