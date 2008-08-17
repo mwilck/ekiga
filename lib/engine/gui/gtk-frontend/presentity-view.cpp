@@ -76,18 +76,24 @@ static void
 on_presentity_updated (PresentityView* self)
 {
   gchar *txt = NULL;
+  GdkPixbuf *pixbuf = NULL;
 
   gtk_image_set_from_stock (GTK_IMAGE (self->priv->presence_image),
 			    self->priv->presentity->get_presence ().c_str (),
-			    GTK_ICON_SIZE_LARGE_TOOLBAR);
-  txt = g_markup_printf_escaped ("<span size=\"large\" weight=\"bold\">%s</span>\n<span size=\"small\">%s</span>",
-				 self->priv->presentity->get_name ().c_str (),
-				 self->priv->presentity->get_status ().c_str ());
+			    GTK_ICON_SIZE_MENU);
+  if (!self->priv->presentity->get_status ().empty ())
+    txt = g_markup_printf_escaped ("<span weight=\"bold\">%s</span>\n<span size=\"small\">%s</span>",
+                                   self->priv->presentity->get_name ().c_str (),
+                                   self->priv->presentity->get_status ().c_str ());
+  else
+    txt = g_markup_printf_escaped ("<span weight=\"bold\">%s</span>",
+                                   self->priv->presentity->get_name ().c_str ());
+
   gtk_label_set_markup (GTK_LABEL (self->priv->name_status), txt);
   g_free (txt);
   gtk_image_set_from_stock (GTK_IMAGE (self->priv->avatar_image),
 			    self->priv->presentity->get_avatar ().c_str (),
-			    GTK_ICON_SIZE_LARGE_TOOLBAR);
+			    GTK_ICON_SIZE_MENU);
 }
 
 static void
