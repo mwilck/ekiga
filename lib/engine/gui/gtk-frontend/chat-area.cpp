@@ -47,6 +47,7 @@
 #include <string.h>
 #include <stdarg.h>
 
+
 class ChatAreaHelper;
 
 struct _ChatAreaPrivate
@@ -624,6 +625,7 @@ chat_area_init (GTypeInstance* instance,
   GdkPixbuf* pixbuf = NULL;
   GtkWidget* image = NULL;
   GtkWidget* smiley_item = NULL;
+  GtkWidget* smiley_button = NULL;
 
   /* we need to build a nice menu for smileys */
   self->priv->smiley_menu = gtk_menu_new ();
@@ -661,7 +663,9 @@ chat_area_init (GTypeInstance* instance,
 		      FALSE, TRUE, 2);
   gtk_widget_show (bbox);
 
-  button = gtk_button_new_from_stock (GTK_STOCK_INFO); // FIXME
+  button = gtk_button_new_with_mnemonic (_("_Smile..."));
+  smiley_button = gtk_image_new_from_icon_name ("face-smile", GTK_ICON_SIZE_BUTTON);
+  gtk_button_set_image (GTK_BUTTON(button), smiley_button);
   gtk_button_set_focus_on_click (GTK_BUTTON (button), FALSE);
   g_signal_connect (G_OBJECT (button), "clicked",
 		    G_CALLBACK (on_smiley_clicked), self);
