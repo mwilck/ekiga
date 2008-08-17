@@ -135,6 +135,7 @@ gm_powermeter_init (GmPowermeter* powermeter)
 {
   /* adjust that when you change the number of pictures for the default set! */
   const int num_pics = 5;
+  char ** tmp_xmp = { NULL };
 
   g_return_if_fail (powermeter != NULL);
   g_return_if_fail (GM_IS_POWERMETER (powermeter));
@@ -150,17 +151,23 @@ gm_powermeter_init (GmPowermeter* powermeter)
 
   /* populate the vector table and append NULL */
   /* append/remove lines when you change the number of
-   * pictures for the default set! (and free them in dispose!) */
-  powermeter->iconset->iconv[0] =
-    gdk_pixbuf_new_from_xpm_data ((const char **) gm_powermeter_default_00_xpm);
-  powermeter->iconset->iconv[1] =
-    gdk_pixbuf_new_from_xpm_data ((const char **) gm_powermeter_default_01_xpm);
-  powermeter->iconset->iconv[2] =
-    gdk_pixbuf_new_from_xpm_data ((const char **) gm_powermeter_default_02_xpm);
-  powermeter->iconset->iconv[3] =
-    gdk_pixbuf_new_from_xpm_data ((const char **) gm_powermeter_default_03_xpm);
-  powermeter->iconset->iconv[4] =
-    gdk_pixbuf_new_from_xpm_data ((const char **) gm_powermeter_default_04_xpm);
+   * pictures for the default set! (and free them in dispose!)
+   * FIXME FIXME
+   * the way round char** tmp_xmp for temporary assignment is needed because
+   * there seems to be no way to directly do
+   *   foo = gdk_pixbuf_new_from_xpm_data ((const char **) xpm_data);
+   * without compiler warnings!
+   */
+  tmp_xmp = (char **) gm_powermeter_default_00_xpm;
+  powermeter->iconset->iconv[0] = gdk_pixbuf_new_from_xpm_data ((const char**) tmp_xmp);
+  tmp_xmp = (char **) gm_powermeter_default_01_xpm;
+  powermeter->iconset->iconv[1] = gdk_pixbuf_new_from_xpm_data ((const char**) tmp_xmp);
+  tmp_xmp = (char **) gm_powermeter_default_02_xpm;
+  powermeter->iconset->iconv[2] = gdk_pixbuf_new_from_xpm_data ((const char**) tmp_xmp);
+  tmp_xmp = (char **) gm_powermeter_default_03_xpm;
+  powermeter->iconset->iconv[3] = gdk_pixbuf_new_from_xpm_data ((const char**) tmp_xmp);
+  tmp_xmp = (char **) gm_powermeter_default_04_xpm;
+  powermeter->iconset->iconv[4] = gdk_pixbuf_new_from_xpm_data ((const char**) tmp_xmp);
   powermeter->iconset->iconv[num_pics] = NULL;
 
   gm_powermeter_redraw (powermeter);
@@ -228,7 +235,7 @@ gm_powermeter_set_level (GmPowermeter* powermeter,
 
   /* don't bother if we're requested to display the same
    * level we already do */
-  if (level == powermeter->level)
+  if (fabs (level - powermeter->level) <= 0.0001)
     return;
 
   powermeter->level = level;
