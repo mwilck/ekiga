@@ -62,6 +62,24 @@ presence_status_in_main (Ekiga::PresenceCore* core,
   core->status_received.emit (uri, status);
 }
 
+static void
+push_message_in_main (SIP::Dialect* dialect,
+		      const std::string uri,
+		      const std::string name,
+		      const std::string msg)
+{
+  dialect->push_message (uri, name, msg);
+}
+
+static void
+push_notice_in_main (SIP::Dialect* dialect,
+		     const std::string uri,
+		     const std::string name,
+		     const std::string msg)
+{
+  dialect->push_notice (uri, name, msg);
+}
+
 namespace Opal {
 
   namespace Sip {
@@ -965,7 +983,8 @@ void Opal::Sip::EndPoint::OnReceivedMESSAGE (G_GNUC_UNUSED OpalTransport & trans
     std::string message_uri = (const char *) uri.AsString ();
     std::string _message = (const char *) pdu.GetEntityBody ();
 
-    dialect->push_message (message_uri, display_name, _message);
+
+    runtime.run_in_main (sigc::bind (sigc::ptr_fun (push_message_in_main), dialect, message_uri, display_name, _message));
   }
 }
 
@@ -978,7 +997,9 @@ void Opal::Sip::EndPoint::OnMessageFailed (const SIPURL & messageUrl,
   std::string uri = (const char *) to.AsString ();
   std::string display_name = (const char *) to.GetDisplayName ();
 
-  dialect->push_notice (uri, display_name, _("Could not send message"));
+  runtime.run_in_main (sigc::bind (sigc::ptr_fun (push_notice_in_main),
+				   dialect, uri, display_name,
+				   _("Could not send message")));
 }
 
 
