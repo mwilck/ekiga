@@ -36,6 +36,7 @@
  */
 
 #include <iostream>
+#include <sstream>
 
 #include "config.h"
 
@@ -231,10 +232,10 @@ Evolution::Contact::populate_menu (Ekiga::MenuBuilder &builder)
   if (populated)
     builder.add_separator ();
 
-  builder.add_action ("remove", _("_Remove"),
-		      sigc::mem_fun (this, &Evolution::Contact::remove_action));
   builder.add_action ("edit", _("_Edit"),
 		      sigc::mem_fun (this, &Evolution::Contact::edit_action));
+  builder.add_action ("remove", _("_Remove"),
+		      sigc::mem_fun (this, &Evolution::Contact::remove_action));
   populated = true;
 
   return populated;
@@ -387,10 +388,12 @@ void
 Evolution::Contact::remove_action ()
 {
   Ekiga::FormRequestSimple request;
+  std::stringstream strm;
 
   request.title (_("Remove contact"));
 
-  request.instructions (_("Please confirm you want that contact removed"));
+  strm << _("Are you sure you want to remove ") << get_name () << " " << _("from the address book ?");
+  request.instructions (strm.str ());
 
   request.submitted.connect (sigc::mem_fun (this,
 					    &Evolution::Contact::on_remove_form_submitted));

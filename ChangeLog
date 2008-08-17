@@ -1,5 +1,13 @@
 2008-08-17  Damien Sandras  <dsandras@gnome.org>
 
+	* lib/engine/addressbook/evolution/evolution-contact.cpp:
+	Made Edit the default action. It should have more priority than
+	delete. Indeed, if you can not call the user because there is no
+	callable address, you can fix that by editing the user, not deleting
+	it. Improved deletion confirmation message.
+
+2008-08-17  Damien Sandras  <dsandras@gnome.org>
+
 	* win32/include/directx/mingw_dshow_port.h:
 	* configure.ac:
 	Small build fixes thanks to Mr M.
