@@ -191,6 +191,7 @@ chat_area_add_notice (ChatArea* self,
 		      const gchar* txt)
 {
   gchar* str = NULL;
+  GtkTextMark *mark = NULL;
   GtkTextBuffer* buffer = NULL;
   GtkTextIter iter;
 
@@ -201,6 +202,10 @@ chat_area_add_notice (ChatArea* self,
 				       str, -1);
   g_free (str);
 
+  mark = gtk_text_buffer_get_mark (buffer, "current-position");
+  gtk_text_view_scroll_to_mark (GTK_TEXT_VIEW (self->priv->text_view), mark, 
+                                0.0, FALSE, 0,0);
+
   g_signal_emit (self, signals[MESSAGE_NOTICE_EVENT], 0);
 }
 
@@ -210,6 +215,7 @@ chat_area_add_message (ChatArea* self,
 		       const gchar* txt)
 {
   gchar* str = NULL;
+  GtkTextMark *mark = NULL;
   GtkTextBuffer* buffer = NULL;
   GtkTextIter iter;
 
@@ -219,6 +225,10 @@ chat_area_add_message (ChatArea* self,
   gm_text_buffer_enhancer_insert_text (self->priv->enhancer, &iter,
 				       str, -1);
   g_free (str);
+
+  mark = gtk_text_buffer_get_mark (buffer, "current-position");
+  gtk_text_view_scroll_to_mark (GTK_TEXT_VIEW (self->priv->text_view), mark, 
+                                0.0, FALSE, 0,0);
 
   g_signal_emit (self, signals[MESSAGE_NOTICE_EVENT], 0);
 }
@@ -486,6 +496,7 @@ chat_area_init (GTypeInstance* instance,
   ChatArea* self = NULL;
   GtkTextBuffer* buffer = NULL;
   GmTextBufferEnhancerHelperIFace* helper = NULL;
+  GtkTextIter iter;
   GtkWidget *frame = NULL;
   GtkWidget *sep = NULL;
 
@@ -519,6 +530,10 @@ chat_area_init (GTypeInstance* instance,
 				 2);
   gtk_text_view_set_right_margin (GTK_TEXT_VIEW (self->priv->text_view),
 				  2);
+  buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (self->priv->text_view));
+  gtk_text_buffer_get_end_iter (buffer, &iter);
+  gtk_text_view_set_cursor_visible (GTK_TEXT_VIEW (self->priv->text_view), FALSE);
+  gtk_text_buffer_create_mark (buffer, "current-position", &iter, FALSE);
 
   gtk_container_add (GTK_CONTAINER (self->priv->scrolled_text_window),
 		     self->priv->text_view);
