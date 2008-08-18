@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ekiga.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-17 17:52+0000\n"
-"PO-Revision-Date: 2008-08-17 23:39+0200\n"
+"POT-Creation-Date: 2008-08-18 12:43+0000\n"
+"PO-Revision-Date: 2008-08-18 18:42+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -1146,10 +1146,19 @@ msgstr "_Acción"
 msgid "Category"
 msgstr "Categoría"
 
+#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:220
+#: ../lib/engine/gui/gtk-frontend/chat-window-page.cpp:968
+msgid "says:"
+msgstr "dice:"
+
+#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:665
+msgid "_Smile..."
+msgstr "E_moticono..."
+
 #. The window
 #. we can't do much here since we get the Chat as reference...
 #: ../lib/engine/gui/gtk-frontend/chat-window-old.cpp:562
-#: ../lib/engine/gui/gtk-frontend/chat-window.cpp:348
+#: ../lib/engine/gui/gtk-frontend/chat-window.cpp:371
 msgid "Chat Window"
 msgstr "Ventana de charla"
 
@@ -1175,10 +1184,6 @@ msgstr "_Enviar"
 #, c-format
 msgid "You say:\n"
 msgstr "dices:\n"
-
-#: ../lib/engine/gui/gtk-frontend/chat-window-page.cpp:968
-msgid "says:"
-msgstr "dice:"
 
 #: ../lib/engine/gui/gtk-frontend/call-history-view-gtk.cpp:163
 #: ../src/gui/statusmenu.cpp:547
@@ -1333,6 +1338,10 @@ msgstr ""
 msgid "No device found"
 msgstr "No se ha encontrado ningún dispositivo"
 
+#: ../src/devices/audio.cpp:488
+msgid "Audio test running"
+msgstr "Prueba de sonido ejecutándose"
+
 #: ../src/devices/audio.cpp:495
 #, c-format
 msgid ""
@@ -1345,7 +1354,7 @@ msgstr ""
 "cuatro segundos."
 
 #: ../src/endpoints/h323-endpoint.cpp:149
-#: ../src/endpoints/sip-endpoint.cpp:253 ../src/endpoints/sip-endpoint.cpp:257
+#: ../src/endpoints/sip-endpoint.cpp:271 ../src/endpoints/sip-endpoint.cpp:275
 msgid "Call"
 msgstr "Llamada"
 
@@ -1358,13 +1367,13 @@ msgid "Bad username/password"
 msgstr "Nombre de usuario/contraseña incorrecto"
 
 #: ../src/endpoints/h323-endpoint.cpp:317
-#: ../src/endpoints/sip-endpoint.cpp:876
+#: ../src/endpoints/sip-endpoint.cpp:894
 msgid "Transport error"
 msgstr "Error en el transporte"
 
 #: ../src/endpoints/h323-endpoint.cpp:328
 #: ../src/endpoints/h323-endpoint.cpp:333
-#: ../src/endpoints/sip-endpoint.cpp:883
+#: ../src/endpoints/sip-endpoint.cpp:901
 msgid "Failed"
 msgstr "Falló"
 
@@ -1564,199 +1573,199 @@ msgstr "El usuario local no está disponible"
 msgid "Call completed"
 msgstr "Llamada concluida"
 
-#: ../src/endpoints/sip-endpoint.cpp:254 ../src/endpoints/sip-endpoint.cpp:258
+#: ../src/endpoints/sip-endpoint.cpp:272 ../src/endpoints/sip-endpoint.cpp:276
 msgid "Forward"
 msgstr "Reenviar"
 
-#: ../src/endpoints/sip-endpoint.cpp:278 ../src/endpoints/sip-endpoint.cpp:280
+#: ../src/endpoints/sip-endpoint.cpp:296 ../src/endpoints/sip-endpoint.cpp:298
 msgid "Message"
 msgstr "Mensaje"
 
-#: ../src/endpoints/sip-endpoint.cpp:691
+#: ../src/endpoints/sip-endpoint.cpp:709
 msgid "Bad request"
 msgstr "Solicitud errónea"
 
-#: ../src/endpoints/sip-endpoint.cpp:695
+#: ../src/endpoints/sip-endpoint.cpp:713
 msgid "Payment required"
 msgstr "Pago requerido"
 
-#: ../src/endpoints/sip-endpoint.cpp:699
+#: ../src/endpoints/sip-endpoint.cpp:717
 msgid "Unauthorized"
 msgstr "No autorizado"
 
-#: ../src/endpoints/sip-endpoint.cpp:703
+#: ../src/endpoints/sip-endpoint.cpp:721
 msgid "Forbidden"
 msgstr "Prohibido"
 
-#: ../src/endpoints/sip-endpoint.cpp:707
+#: ../src/endpoints/sip-endpoint.cpp:725
 msgid "Timeout"
 msgstr "Retardo"
 
-#: ../src/endpoints/sip-endpoint.cpp:711
+#: ../src/endpoints/sip-endpoint.cpp:729
 msgid "Conflict"
 msgstr "Conflicto"
 
-#: ../src/endpoints/sip-endpoint.cpp:715
+#: ../src/endpoints/sip-endpoint.cpp:733
 msgid "Temporarily unavailable"
 msgstr "Temporalmente no disponible"
 
-#: ../src/endpoints/sip-endpoint.cpp:719
+#: ../src/endpoints/sip-endpoint.cpp:737
 msgid "Not acceptable"
 msgstr "No aceptable"
 
-#: ../src/endpoints/sip-endpoint.cpp:723
+#: ../src/endpoints/sip-endpoint.cpp:741
 msgid "Illegal status code"
 msgstr "Código de estado ilegal"
 
-#: ../src/endpoints/sip-endpoint.cpp:727
+#: ../src/endpoints/sip-endpoint.cpp:745
 msgid "Multiple choices"
 msgstr "Múltiples opciones"
 
-#: ../src/endpoints/sip-endpoint.cpp:731
+#: ../src/endpoints/sip-endpoint.cpp:749
 msgid "Moved permanently"
 msgstr "Movido permanentemente"
 
-#: ../src/endpoints/sip-endpoint.cpp:735
+#: ../src/endpoints/sip-endpoint.cpp:753
 msgid "Moved temporarily"
 msgstr "Movido temporalmente"
 
-#: ../src/endpoints/sip-endpoint.cpp:739
+#: ../src/endpoints/sip-endpoint.cpp:757
 msgid "Use proxy"
 msgstr "Usar proxy"
 
-#: ../src/endpoints/sip-endpoint.cpp:743
+#: ../src/endpoints/sip-endpoint.cpp:761
 msgid "Alternative service"
 msgstr "Servicio alternativo"
 
-#: ../src/endpoints/sip-endpoint.cpp:747
+#: ../src/endpoints/sip-endpoint.cpp:765
 msgid "Not found"
 msgstr "No encontrado"
 
-#: ../src/endpoints/sip-endpoint.cpp:751
+#: ../src/endpoints/sip-endpoint.cpp:769
 msgid "Method not allowed"
 msgstr "Método no permitido"
 
-#: ../src/endpoints/sip-endpoint.cpp:755
+#: ../src/endpoints/sip-endpoint.cpp:773
 msgid "Proxy auth. required"
 msgstr "El proxy requiere autenticación"
 
-#: ../src/endpoints/sip-endpoint.cpp:759
+#: ../src/endpoints/sip-endpoint.cpp:777
 msgid "Length required"
 msgstr "Longitud requerida"
 
-#: ../src/endpoints/sip-endpoint.cpp:763
+#: ../src/endpoints/sip-endpoint.cpp:781
 msgid "Request entity too big"
 msgstr "La entidad solicitada es demasiado grande"
 
-#: ../src/endpoints/sip-endpoint.cpp:767
+#: ../src/endpoints/sip-endpoint.cpp:785
 msgid "Request URI too long"
 msgstr "El URI solicitado es demasiado largo"
 
-#: ../src/endpoints/sip-endpoint.cpp:771
+#: ../src/endpoints/sip-endpoint.cpp:789
 msgid "Unsupported media type"
 msgstr "No se soporta el tipo de medio"
 
-#: ../src/endpoints/sip-endpoint.cpp:775
+#: ../src/endpoints/sip-endpoint.cpp:793
 msgid "Unsupported URI scheme"
 msgstr "No se soporta el esquema URI"
 
-#: ../src/endpoints/sip-endpoint.cpp:779
+#: ../src/endpoints/sip-endpoint.cpp:797
 msgid "Bad extension"
 msgstr "Extensión errónea"
 
-#: ../src/endpoints/sip-endpoint.cpp:783
+#: ../src/endpoints/sip-endpoint.cpp:801
 msgid "Extension required"
 msgstr "Extensión requerida"
 
-#: ../src/endpoints/sip-endpoint.cpp:787
+#: ../src/endpoints/sip-endpoint.cpp:805
 msgid "Interval too brief"
 msgstr "Intervalo demasiado corto"
 
-#: ../src/endpoints/sip-endpoint.cpp:791
+#: ../src/endpoints/sip-endpoint.cpp:809
 msgid "Loop detected"
 msgstr "Bucle detectado"
 
-#: ../src/endpoints/sip-endpoint.cpp:795
+#: ../src/endpoints/sip-endpoint.cpp:813
 msgid "Too many hops"
 msgstr "Demasiados saltos"
 
-#: ../src/endpoints/sip-endpoint.cpp:799
+#: ../src/endpoints/sip-endpoint.cpp:817
 msgid "Address incomplete"
 msgstr "Dirección incompleta"
 
-#: ../src/endpoints/sip-endpoint.cpp:803
+#: ../src/endpoints/sip-endpoint.cpp:821
 msgid "Ambiguous"
 msgstr "Ambiguo"
 
-#: ../src/endpoints/sip-endpoint.cpp:807
+#: ../src/endpoints/sip-endpoint.cpp:825
 msgid "Busy Here"
 msgstr "Ocupado aquí"
 
-#: ../src/endpoints/sip-endpoint.cpp:811
+#: ../src/endpoints/sip-endpoint.cpp:829
 msgid "Request terminated"
 msgstr "Petición terminada"
 
-#: ../src/endpoints/sip-endpoint.cpp:815
+#: ../src/endpoints/sip-endpoint.cpp:833
 msgid "Not acceptable here"
 msgstr "No es aceptable aquí"
 
-#: ../src/endpoints/sip-endpoint.cpp:819
+#: ../src/endpoints/sip-endpoint.cpp:837
 msgid "Bad event"
 msgstr "Evento erróneo"
 
-#: ../src/endpoints/sip-endpoint.cpp:823
+#: ../src/endpoints/sip-endpoint.cpp:841
 msgid "Request pending"
 msgstr "Solicitud en espera"
 
-#: ../src/endpoints/sip-endpoint.cpp:827
+#: ../src/endpoints/sip-endpoint.cpp:845
 msgid "Undecipherable"
 msgstr "Indescifrable"
 
-#: ../src/endpoints/sip-endpoint.cpp:831
+#: ../src/endpoints/sip-endpoint.cpp:849
 msgid "Internal server error"
 msgstr "Error interno del servidor"
 
-#: ../src/endpoints/sip-endpoint.cpp:835
+#: ../src/endpoints/sip-endpoint.cpp:853
 msgid "Not implemented"
 msgstr "No implementado"
 
-#: ../src/endpoints/sip-endpoint.cpp:839
+#: ../src/endpoints/sip-endpoint.cpp:857
 msgid "Bad gateway"
 msgstr "Pasarela errónea"
 
-#: ../src/endpoints/sip-endpoint.cpp:843
+#: ../src/endpoints/sip-endpoint.cpp:861
 msgid "Service unavailable"
 msgstr "Servicio no disponible"
 
-#: ../src/endpoints/sip-endpoint.cpp:847
+#: ../src/endpoints/sip-endpoint.cpp:865
 msgid "Server timeout"
 msgstr "Expiró el tiempo de conexión del servidor"
 
-#: ../src/endpoints/sip-endpoint.cpp:851
+#: ../src/endpoints/sip-endpoint.cpp:869
 msgid "SIP version not supp."
 msgstr "No se soporta la versión SIP"
 
-#: ../src/endpoints/sip-endpoint.cpp:855
+#: ../src/endpoints/sip-endpoint.cpp:873
 msgid "Message too large"
 msgstr "El mensaje es demasiado largo"
 
-#: ../src/endpoints/sip-endpoint.cpp:859
+#: ../src/endpoints/sip-endpoint.cpp:877
 msgid "Busy everywhere"
 msgstr "Ocupado en todas partes"
 
-#: ../src/endpoints/sip-endpoint.cpp:863
+#: ../src/endpoints/sip-endpoint.cpp:881
 msgid "Decline"
 msgstr "Declinar"
 
-#: ../src/endpoints/sip-endpoint.cpp:867
+#: ../src/endpoints/sip-endpoint.cpp:885
 msgid "Does not exist anymore"
 msgstr "Ya no existe"
 
-#: ../src/endpoints/sip-endpoint.cpp:871
+#: ../src/endpoints/sip-endpoint.cpp:889
 msgid "Globally not acceptable"
 msgstr "No aceptable globalmente"
 
-#: ../src/endpoints/sip-endpoint.cpp:981
+#: ../src/endpoints/sip-endpoint.cpp:1002
 msgid "Could not send message"
 msgstr "No se pudo enviar el mensaje"
 
@@ -2436,7 +2445,7 @@ msgstr "Suspender o reanudar la transmisión de vídeo"
 msgid "Close the Ekiga window"
 msgstr "Cerrar la ventana de Ekiga"
 
-#: ../src/gui/main.cpp:1747 ../src/gui/statusicon.cpp:405
+#: ../src/gui/main.cpp:1747 ../src/gui/statusicon.cpp:418
 msgid "Quit"
 msgstr "Salir"
 
@@ -2544,13 +2553,13 @@ msgstr "Pasar a pantalla completa"
 msgid "_Help"
 msgstr "Ay_uda"
 
-#: ../src/gui/main.cpp:1847 ../src/gui/statusicon.cpp:382
-#: ../src/gui/statusicon.cpp:393
+#: ../src/gui/main.cpp:1847 ../src/gui/statusicon.cpp:395
+#: ../src/gui/statusicon.cpp:406
 msgid "Get help by reading the Ekiga manual"
 msgstr "Obtenga ayuda leyendo el manual de Ekiga"
 
-#: ../src/gui/main.cpp:1852 ../src/gui/statusicon.cpp:387
-#: ../src/gui/statusicon.cpp:398
+#: ../src/gui/main.cpp:1852 ../src/gui/statusicon.cpp:400
+#: ../src/gui/statusicon.cpp:411
 msgid "View information about Ekiga"
 msgstr "Ver información acerca de Ekiga"
 
@@ -3175,11 +3184,11 @@ msgid_plural "You have %d messages"
 msgstr[0] "Tiene %d mensaje"
 msgstr[1] "Tiene %d mensajes"
 
-#: ../src/gui/statusicon.cpp:392
+#: ../src/gui/statusicon.cpp:405
 msgid "_Contents"
 msgstr "_Índice"
 
-#: ../src/gui/statusicon.cpp:397
+#: ../src/gui/statusicon.cpp:410
 msgid "_About"
 msgstr "Acerca _de"
 
