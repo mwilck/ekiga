@@ -95,6 +95,7 @@ update_unread (ChatWindow* self)
 {
   guint unread_count = 0;
   GtkWidget* page = NULL;
+  GtkWidget* hbox = NULL;
   GtkWidget* label = NULL;
 
   for (gint ii = 0;
@@ -103,8 +104,9 @@ update_unread (ChatWindow* self)
 
     page
       = gtk_notebook_get_nth_page (GTK_NOTEBOOK (self->priv->notebook), ii);
-    label = gtk_notebook_get_tab_label (GTK_NOTEBOOK (self->priv->notebook),
-					page);
+    hbox = gtk_notebook_get_tab_label (GTK_NOTEBOOK (self->priv->notebook),
+				       page);
+    label = (GtkWidget*)g_object_get_data (G_OBJECT (hbox), "label-widget");
     unread_count
       = unread_count
       + GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (label), "unread-count"));
@@ -124,11 +126,13 @@ on_switch_page (G_GNUC_UNUSED GtkNotebook* notebook,
 {
   ChatWindow* self = (ChatWindow*)data;
   GtkWidget* page = NULL;
+  GtkWidget* hbox = NULL;
   GtkWidget* label = NULL;
 
   page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (self->priv->notebook), num);
-  label = gtk_notebook_get_tab_label (GTK_NOTEBOOK (self->priv->notebook),
-				      page);
+  hbox = gtk_notebook_get_tab_label (GTK_NOTEBOOK (self->priv->notebook),
+				     page);
+  label = (GtkWidget*)g_object_get_data (G_OBJECT (hbox), "label-widget");
   gtk_label_set_text (GTK_LABEL (label),
 		      (const gchar*)g_object_get_data (G_OBJECT (label),
 						       "base-title"));
@@ -146,12 +150,13 @@ on_focus_in_event (G_GNUC_UNUSED GtkWidget* widget,
   ChatWindow* self = (ChatWindow*)data;
   gint num;
   GtkWidget* page = NULL;
+  GtkWidget* hbox = NULL;
   GtkWidget* label = NULL;
 
   num = gtk_notebook_get_current_page (GTK_NOTEBOOK (self->priv->notebook));
   page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (self->priv->notebook), num);
-  label = gtk_notebook_get_tab_label (GTK_NOTEBOOK (self->priv->notebook),
-				      page);
+  hbox = gtk_notebook_get_tab_label (GTK_NOTEBOOK (self->priv->notebook), page);
+  label = (GtkWidget*)g_object_get_data (G_OBJECT (hbox), "label-widget");
   gtk_label_set_text (GTK_LABEL (label),
 		      (const gchar*)g_object_get_data (G_OBJECT (label),
 						       "base-title"));
@@ -186,13 +191,15 @@ on_message_notice_event (GtkWidget* page,
       != gtk_notebook_get_current_page (GTK_NOTEBOOK (self->priv->notebook))
       || !gtk_window_is_active (GTK_WINDOW (self))) {
 
+    GtkWidget* hbox = NULL;
     GtkWidget* label = NULL;
     guint unread_count = 0;
     const gchar* base_title = NULL;
     gchar* txt = NULL;
 
-    label = gtk_notebook_get_tab_label (GTK_NOTEBOOK (self->priv->notebook),
-					page);
+    hbox = gtk_notebook_get_tab_label (GTK_NOTEBOOK (self->priv->notebook),
+				       page);
+    label = (GtkWidget*)g_object_get_data (G_OBJECT (hbox), "label-widget");
     base_title = (const gchar*)g_object_get_data (G_OBJECT (label),
 						  "base-title");
     unread_count = GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (label),
@@ -227,18 +234,34 @@ on_simple_chat_added (ChatWindow* self,
 		      Ekiga::SimpleChat &chat)
 {
   GtkWidget* page = NULL;
+  GtkWidget* hbox = NULL;
   GtkWidget* label = NULL;
+  GtkWidget* close_button = NULL;
+  GtkWidget* close_image = NULL;
   gint num;
 
   page = simple_chat_page_new (chat);
-  label = gtk_label_new (chat.get_title ().c_str ());
+  hbox = gtk_hbox_new (FALSE, 2);
 
+  label = gtk_label_new (chat.get_title ().c_str ());
   g_object_set_data_full (G_OBJECT (label), "base-title",
 			  g_strdup (chat.get_title ().c_str ()),
 			  g_free);
+  
+  close_button = gtk_button_new ();
+  gtk_button_set_relief (GTK_BUTTON (close_button), GTK_RELIEF_NONE);
+  gtk_button_set_focus_on_click (GTK_BUTTON (close_button), FALSE);
+  close_image = gtk_image_new_from_stock (GTK_STOCK_CLOSE, GTK_ICON_SIZE_MENU);
+  gtk_container_add (GTK_CONTAINER (close_button), close_image);
+
+  gtk_box_pack_start (GTK_BOX (hbox), label, TRUE, TRUE, 2);
+  g_object_set_data (G_OBJECT (hbox), "label-widget", label);
+  gtk_box_pack_end (GTK_BOX (hbox), close_button, FALSE, FALSE, 2);
+  g_object_set_data (G_OBJECT (hbox), "close-button-widget", close_button);
+  gtk_widget_show_all (hbox);
 
   num = gtk_notebook_append_page (GTK_NOTEBOOK (self->priv->notebook),
-				  page, label);
+				  page, hbox);
   gtk_widget_show (page);
   g_signal_connect (page, "message-notice-event",
 		    G_CALLBACK (on_message_notice_event), self);
