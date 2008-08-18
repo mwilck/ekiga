@@ -181,8 +181,8 @@ gm_chat_area_define_simple_text_tag (GtkTextBuffer* buffer,
   g_object_unref (helper);
   g_free (tmp_tagstring);
 
-  /* FIXME shouldn't 'tag' be unref'd? it wasn't in the original code
-   * so i didn't do it here, too - TheBonsai */
+  /* 'tag' must not be unref'd because its refcount is equal to one, and
+   * owned by the buffer's tag table */
 }
 
 
