@@ -174,16 +174,20 @@ on_focus_in_event (G_GNUC_UNUSED GtkWidget* widget,
   GtkWidget* label = NULL;
 
   num = gtk_notebook_get_current_page (GTK_NOTEBOOK (self->priv->notebook));
-  page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (self->priv->notebook), num);
-  hbox = gtk_notebook_get_tab_label (GTK_NOTEBOOK (self->priv->notebook), page);
-  label = (GtkWidget*)g_object_get_data (G_OBJECT (hbox), "label-widget");
-  gtk_label_set_text (GTK_LABEL (label),
-		      (const gchar*)g_object_get_data (G_OBJECT (label),
-						       "base-title"));
-  g_object_set_data (G_OBJECT (label), "unread-count",
-		     GUINT_TO_POINTER (0));
+  if (num != -1) { /* the notebook may be empty */
 
-  update_unread (self);
+    page = gtk_notebook_get_nth_page (GTK_NOTEBOOK (self->priv->notebook), num);
+    hbox = gtk_notebook_get_tab_label (GTK_NOTEBOOK (self->priv->notebook),
+				       page);
+    label = (GtkWidget*)g_object_get_data (G_OBJECT (hbox), "label-widget");
+    gtk_label_set_text (GTK_LABEL (label),
+			(const gchar*)g_object_get_data (G_OBJECT (label),
+						       "base-title"));
+    g_object_set_data (G_OBJECT (label), "unread-count",
+		       GUINT_TO_POINTER (0));
+
+    update_unread (self);
+  }
 
   return FALSE;
 }
