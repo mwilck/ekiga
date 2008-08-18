@@ -485,7 +485,7 @@ void GMAudioTester::Main ()
 
   gdk_threads_enter ();
   test_dialog =
-    gtk_dialog_new_with_buttons ("Audio test running",
+    gtk_dialog_new_with_buttons (_("Audio test running"),
 				 GTK_WINDOW (assistant_window),
 				 (GtkDialogFlags) (GTK_DIALOG_MODAL),
 				 GTK_STOCK_OK,
