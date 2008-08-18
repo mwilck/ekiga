@@ -67,6 +67,9 @@ static void update_unread (ChatWindow* self);
 
 /* signal callbacks (declarations) */
 
+static void on_close_button_clicked (GtkButton* button,
+				     gpointer data);
+
 static void on_switch_page (GtkNotebook* notebook,
 			    GtkNotebookPage* page,
 			    guint num,
@@ -117,6 +120,23 @@ update_unread (ChatWindow* self)
 }
 
 /* signal callbacks (implementations) */
+
+static void
+on_close_button_clicked (GtkButton* button,
+			 gpointer data)
+{
+  ChatWindow* self = (ChatWindow*)data;
+  GtkWidget* page = NULL;
+  gint num = 0;
+
+  page = (GtkWidget*)g_object_get_data (G_OBJECT (button), "page-widget");
+  num = gtk_notebook_page_num (GTK_NOTEBOOK (self->priv->notebook), page);
+
+  if (num != -1) {
+
+    gtk_notebook_remove_page (GTK_NOTEBOOK (self->priv->notebook), num);
+  }
+}
 
 static void
 on_switch_page (G_GNUC_UNUSED GtkNotebook* notebook,
@@ -253,6 +273,9 @@ on_simple_chat_added (ChatWindow* self,
   gtk_button_set_focus_on_click (GTK_BUTTON (close_button), FALSE);
   close_image = gtk_image_new_from_stock (GTK_STOCK_CLOSE, GTK_ICON_SIZE_MENU);
   gtk_container_add (GTK_CONTAINER (close_button), close_image);
+  g_object_set_data (G_OBJECT (close_button), "page-widget", page);
+  g_signal_connect (close_button, "clicked",
+		    G_CALLBACK (on_close_button_clicked), self);
 
   gtk_box_pack_start (GTK_BOX (hbox), label, TRUE, TRUE, 2);
   g_object_set_data (G_OBJECT (hbox), "label-widget", label);
