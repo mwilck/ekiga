@@ -626,7 +626,6 @@ void Opal::Sip::EndPoint::OnRegistered (const PString & _aor,
       aors.remove (strm.str ());
   }
 
-  std::cout << "OnREGISTERED" << std::endl << std::flush;
   if (loc != string::npos) {
 
     server = aor.substr (loc+1);
@@ -642,37 +641,32 @@ void Opal::Sip::EndPoint::OnRegistered (const PString & _aor,
 
     if (was_registering) {
       for (std::list<std::string>::const_iterator iter = to_subscribe_uris.begin (); 
-           iter != to_subscribe_uris.end () ; 
-           iter++) {
+           iter != to_subscribe_uris.end () ; ) { 
 
-        std::cout << "Will search for " << (*iter) << std::endl << std::flush;
         found = (*iter).find (server, 0);
-        std::cout << "DONE SEARCH" << std::endl << std::flush;
         if (found != string::npos) {
 
-          std::cout << "NEW Subscribing presence for " << _aor << std::endl << std::flush;
           Subscribe (SIPSubscribe::Presence, 500, PString ((*iter).c_str ()));
           subscribed_uris.push_back (*iter);
-          to_subscribe_uris.remove (*iter);
-          std::cout << "DONE SUBSCRIBE" << std::endl << std::flush;
-          iter = to_subscribe_uris.begin ();
+          to_subscribe_uris.remove (*iter++);
         }
+        else
+          ++iter;
       }
     }
     else {
       for (std::list<std::string>::const_iterator iter = subscribed_uris.begin (); 
-           iter != subscribed_uris.end () ; 
-           iter++) {
+           iter != subscribed_uris.end () ; ) { 
 
         found = (*iter).find (server, 0);
         if (found != string::npos) {
 
-          std::cout << "UNSubscribing presence for " << _aor << std::endl << std::flush;
           Subscribe (SIPSubscribe::Presence, 0, PString ((*iter).c_str ()));
-          subscribed_uris.remove (*iter);
           to_subscribe_uris.push_back (*iter);
-          iter = subscribed_uris.begin ();
+          subscribed_uris.remove (*iter++);
         }
+        else
+          iter++;
       }
     }
   }
