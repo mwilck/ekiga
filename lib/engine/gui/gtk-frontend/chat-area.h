@@ -50,14 +50,14 @@ typedef struct _ChatAreaPrivate ChatAreaPrivate;
 
 struct _ChatArea
 {
-  GtkVBox parent;
+  GtkVPaned parent;
 
   ChatAreaPrivate* priv;
 };
 
 struct _ChatAreaClass
 {
-  GtkVBoxClass parent;
+  GtkVPanedClass parent;
 
   /* this is the "message-notice-event" signal */
   void (*message_notice_event) (ChatArea* self);
