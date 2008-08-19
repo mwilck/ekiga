@@ -1,15 +1,15 @@
-# Përkthimi i mesazheve të ekiga në shqip
-# Copyright (C) 2000-2004, 2005, 2006, 2007, 2008 Free Software Foundation, Inc.
-# Jonita Prifti <jonita@jonita.net>, 2003, 2004.
-# maintainer: Jonita Prifti <jonita@jonita.net>, 2003, 2004.
+# Përkthimi i mesazheve të ekiga në shqip.
+# Copyright (C) 2000-2008 Free Software Foundation, Inc.
+# Jonita Prifti <jonita@jonita.net>, 2003-2004.
+# maintainer: Jonita Prifti <jonita@jonita.net>, 2003-2004.
 # Elian Myftiu <elian@alblinux.net>, 2006.
-# Laurent Dhima <laurenti@alblinux.net>, 2006, 2007, 2008.
+# Laurent Dhima <laurenti@alblinux.net>, 2007-2008.
 msgid ""
 msgstr ""
-"Project-Id-Version: ekiga gnome-2-22\n"
+"Project-Id-Version: ekiga HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-21 11:00+0100\n"
-"PO-Revision-Date: 2008-03-12 12:13+0100\n"
+"POT-Creation-Date: 2008-08-17 17:52+0000\n"
+"PO-Revision-Date: 2008-08-19 20:47+0200\n"
 "Last-Translator: Laurent Dhima <laurenti@alblinux.net>\n"
 "Language-Team: albanian <gnome-albanian-perkthyesit@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -36,72 +36,58 @@ msgid "0: 56Kbps, 1: ISDN, 2:DSL, 3: LAN, 4: Custom"
 msgstr "0: 56Kbps, 1: ISDN, 2: DSL, 3: LAN, 4: Personalizuar"
 
 #: ../ekiga.schemas.in.in.h:2
-msgid "Address of public IP detector"
-msgstr "Adresa e dalluesit së IP-së publike"
+msgid ""
+"Allow Ekiga to fall back to software scaling the picture-in-picture if "
+"hardware support is not available. If this is set to false, Ekiga will not "
+"try to open the PIP if hardware support is not available."
+msgstr ""
 
 #: ../ekiga.schemas.in.in.h:3
+msgid "Allow picture-in-picture software scaling"
+msgstr "Lejo shkallëzimin software figurë-në-figurë"
+
+#: ../ekiga.schemas.in.in.h:4
 msgid "Alternative audio output device"
 msgstr "Dispozitivi alternativ i zërit në dalje"
 
-#: ../ekiga.schemas.in.in.h:4
-msgid "Always forward calls to the given host"
-msgstr "Gjithmonë transfero thirrjet drejt host-it të caktuar"
-
 #: ../ekiga.schemas.in.in.h:5
+msgid "Always forward calls to the given host"
+msgstr "Gjithmonë transfero telefonatat drejt host-it të caktuar"
+
+#: ../ekiga.schemas.in.in.h:6
 msgid "Audio input device"
 msgstr "Dispozitivi i zërit në hyrje"
 
-#: ../ekiga.schemas.in.in.h:6
+#: ../ekiga.schemas.in.in.h:7
 msgid "Audio output device"
 msgstr "Dispozitivi i zërit në dalje"
 
-#: ../ekiga.schemas.in.in.h:7
-msgid "Audio plugin"
-msgstr "Plugin i zërit"
-
 #: ../ekiga.schemas.in.in.h:8
+msgid "Auto Away Timeout"
+msgstr "Koha për mospraninë automatike"
+
+#: ../ekiga.schemas.in.in.h:9
 msgid "Automatic echo cancellation"
 msgstr "Fshirje automatike e jehonës"
 
-#: ../ekiga.schemas.in.in.h:9 ../src/gui/preferences.cpp:740
+#: ../ekiga.schemas.in.in.h:10 ../src/gui/preferences.cpp:446
 msgid ""
 "Automatically reject or forward incoming calls if no answer is given after "
 "the specified amount of time (in seconds)"
 msgstr ""
-"Refuzo automatikisht ose transfero thirrjet në hyrje nëse nuk ka përgjigje "
+"Refuzo automatikisht ose transfero telefonatat në hyrje nëse nuk ka përgjigje "
 "brenda kohës së caktuar (në sekonda)"
 
-# (pofilter) acronyms: acronyms should not be translated: GUI
-#: ../ekiga.schemas.in.in.h:10
-msgid ""
-"Automatically switch to fullscreen for images displayed in the main GUI at "
-"the beginning of the call"
-msgstr ""
-"Kalo automatikishti në modalitet me ekran të plotë për figurat e shfaqura në "
-"dritaren kryesore në fillim të thirrjes"
-
 #: ../ekiga.schemas.in.in.h:11
-msgid "Change the control panel section"
-msgstr "Ndrysho seksionin e panelit të kontrollit"
+msgid "Calls history"
+msgstr "Kronollogjia e thirrjeve"
 
-# (pofilter) acronyms: acronyms should not be translated: UI
 #: ../ekiga.schemas.in.in.h:12
-msgid "Change the view mode of the UI"
-msgstr "Ndrysho mënyrën e paraqitjes së interfaqes së përdorimit"
-
-# (pofilter) acronyms: acronyms should not be translated: UI
-#: ../ekiga.schemas.in.in.h:13
-msgid "Change the view mode of the UI (softphone, videophone, full view)"
-msgstr ""
-"Ndrysho mënyrën e paraqitjes së interfaqes së përdorimit (soft-fon, "
-"videofon, paraqitje e plotë)"
-
-#: ../ekiga.schemas.in.in.h:14
-msgid "Clear inactive calls"
-msgstr "Pastro thirrjet jo aktive"
+msgid "Change the main window panel section"
+msgstr "Ndrysho seksionin e panelit të dritares qendrore"
 
 # (pofilter) doublespacing: checks for bad double-spaces by comparing to original
-#: ../ekiga.schemas.in.in.h:15
+#: ../ekiga.schemas.in.in.h:13
 msgid ""
 "Connection will be established in Fast Start mode. Fast Start is a new way "
 "to start calls faster that was introduced in H.323v2. It is not supported by "
@@ -109,9 +95,17 @@ msgid ""
 "versions of Netmeeting"
 msgstr ""
 "Lidhja do të kryhet në modalitetin Nisje e Shpejtë. Nisja e Shpejtë është "
-"një mënyrë e re për të filluar thirrjet më shpejt se në  H.323v2.  Nuk "
+"një mënyrë e re për të filluar telefonatat më shpejt se në  H.323v2.  Nuk "
 "suportohet nga Netmeeting dhe po të përdoren Nisja e Shpejtë dhe Tunneling "
 "H.245 njëkohësisht disa versione të Netmeeting mund të kenë probleme"
+
+#: ../ekiga.schemas.in.in.h:14
+msgid "Contact long status"
+msgstr "Gjëndja hollësisht e kontaktit"
+
+#: ../ekiga.schemas.in.in.h:15
+msgid "Contact short status"
+msgstr "Gjëndja shkurt e kontaktit"
 
 #: ../ekiga.schemas.in.in.h:16
 msgid "Country code"
@@ -122,61 +116,40 @@ msgid "DTMF sending"
 msgstr "Dërgimi DTMF"
 
 #: ../ekiga.schemas.in.in.h:18
+msgid "Disable video hardware acceleration"
+msgstr "Çaktivizo përshpejtimin hardware të video-s"
+
+#: ../ekiga.schemas.in.in.h:19
 msgid "Display a popup window when receiving a call"
 msgstr "Hap një dritare popup kur arrin një telefonatë"
 
 # (pofilter) singlequoting: checks whether singlequoting is consistent between the two strings
 # (pofilter) doublequoting: checks whether doublequoting is consistent between the two strings
-#: ../ekiga.schemas.in.in.h:19
+#: ../ekiga.schemas.in.in.h:20
 msgid "Enable 'Fast Start'"
 msgstr "Aktivo \"Nisje e Shpejtë\""
 
-#: ../ekiga.schemas.in.in.h:20
+#: ../ekiga.schemas.in.in.h:21
 msgid "Enable H.245 tunneling"
 msgstr "Aktivo tunelin H.245"
 
-#: ../ekiga.schemas.in.in.h:21
-msgid "Enable IP checking"
-msgstr "Aktivo kontrollin e IP-së"
-
 #: ../ekiga.schemas.in.in.h:22
-msgid "Enable bilinear filtering on displayed video"
-msgstr "Aktivo filtrimin bilinear mbi videon e shfaqur"
-
-#: ../ekiga.schemas.in.in.h:23
 msgid "Enable early H.245"
 msgstr "Aktivo H.245 e shpejtë"
 
-#: ../ekiga.schemas.in.in.h:24
+#: ../ekiga.schemas.in.in.h:23
 msgid "Enable echo cancelation"
 msgstr "Aktivo fshirjen e jehonës"
 
-# (pofilter) endpunc: checks whether punctuation at the end of the strings match
-#: ../ekiga.schemas.in.in.h:25
-msgid ""
-"Enable or disable bilinear interpolation when rendering video images (this "
-"has no effect in fullscreen mode)"
-msgstr ""
-"Aktivo ose çaktivo interpolimin bilinear në shfaqjen e imazheve video (nuk "
-"ka efekt në modalitetin me ekran të plotë)."
-
-#: ../ekiga.schemas.in.in.h:26
+#: ../ekiga.schemas.in.in.h:24
 msgid "Enable silence detection"
 msgstr "Aktivo zbulimin e heshtjes"
 
-#: ../ekiga.schemas.in.in.h:27
+#: ../ekiga.schemas.in.in.h:25
 msgid "Enable video support"
 msgstr "Aktivo suportin video"
 
-#: ../ekiga.schemas.in.in.h:28
-msgid ""
-"Enter a valid URL to connect to a web application that outputs the public IP "
-"of your host"
-msgstr ""
-"Shkruaj një adresë URL të vlefshme për tu lidhur me një aplikativ web që "
-"nxjerr adresën publike IP të host-it tënd"
-
-#: ../ekiga.schemas.in.in.h:29
+#: ../ekiga.schemas.in.in.h:26
 msgid ""
 "Enter the number of seconds after which Ekiga should try refreshing the NAT "
 "binding when STUN is being used"
@@ -184,43 +157,33 @@ msgstr ""
 "Cakto numrin e sekondave mbas të cilave Ekiga duhet të rifreskojë lidhjen "
 "NAT kur përdoret STUN"
 
-#: ../ekiga.schemas.in.in.h:30
-msgid ""
-"Enter the public IP of your NAT/PAT router if you want to use IP translation"
-msgstr ""
-"Cakto IP publike të router-it tënd NAT/PAT nëse dëshiron të përdorësh "
-"përkthimin IP"
+#: ../ekiga.schemas.in.in.h:27
+msgid "Enter your full name"
+msgstr "Shkruaj emrin tuaj të plotë"
 
-#: ../ekiga.schemas.in.in.h:31 ../src/gui/preferences.cpp:635
-msgid "Enter your first name"
-msgstr "Shkruaj emrin tënd"
-
-#: ../ekiga.schemas.in.in.h:32
-msgid "Enter your last name"
-msgstr "Shkruaj mbiemrin tënd"
-
-#: ../ekiga.schemas.in.in.h:33
-msgid "First name"
-msgstr "Emri"
-
-#: ../ekiga.schemas.in.in.h:34
+#: ../ekiga.schemas.in.in.h:28
 msgid "Forward calls to host"
-msgstr "Transfero thirrjet drejt host-it"
+msgstr "Transfero telefonatat drejt host-it"
 
-#: ../ekiga.schemas.in.in.h:35
+#: ../ekiga.schemas.in.in.h:29
 msgid "Forward calls to the given host if busy"
-msgstr "Transferon thirrjet tek host i dhënë nëse je i zënë"
+msgstr "Transferon telefonatat tek host i dhënë nëse je i zënë"
 
 # (pofilter) doublespacing: checks for bad double-spaces by comparing to original
-#: ../ekiga.schemas.in.in.h:36
+#: ../ekiga.schemas.in.in.h:30
 msgid "Forward calls to the given host if no answer"
-msgstr "Transferon thirrjet tek host i dhënë nëse  nuk ka përgjigje"
+msgstr "Transferon telefonatat tek host i dhënë nëse  nuk ka përgjigje"
 
-#: ../ekiga.schemas.in.in.h:37
-msgid "Gateway/proxy host"
-msgstr "Host gateway/proxy"
+# (pofilter) brackets: translation has extra '(', ')'
+#: ../ekiga.schemas.in.in.h:31 ../src/gui/preferences.cpp:1014
+msgid "Frame Rate"
+msgstr "Raporti i figurave (framerate)"
 
-#: ../ekiga.schemas.in.in.h:38 ../src/gui/preferences.cpp:685
+#: ../ekiga.schemas.in.in.h:32
+msgid "Full name"
+msgstr "Emri i plotë"
+
+#: ../ekiga.schemas.in.in.h:33 ../src/gui/preferences.cpp:407
 msgid ""
 "If enabled, Ekiga will start hidden provided that the notification area is "
 "present in the GNOME panel"
@@ -228,252 +191,232 @@ msgstr ""
 "Ekiga do të fillojë i fshehtë nëse aktivizon këtë funksion dhe nëse zona e "
 "njoftimit ndodhet në panelin e GNOME"
 
-#: ../ekiga.schemas.in.in.h:39
-msgid ""
-"If enabled, a popup window will be displayed when receiving an incoming call"
-msgstr ""
-"Nëse e aktivizon, një dritare popup do të shfaqet kur arrin një thirrje"
+#: ../ekiga.schemas.in.in.h:34
+msgid "If enabled, a popup window will be displayed when receiving an incoming call"
+msgstr "Nëse e aktivizon, një dritare popup do të shfaqet kur arrin një thirrje"
 
-#: ../ekiga.schemas.in.in.h:40
+#: ../ekiga.schemas.in.in.h:35
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below"
 msgstr ""
-"Nëse aktivohet, të gjitha thirrjet në hyrje do të transferohen drejt host-it "
+"Nëse aktivizohet, të gjitha telefonatat në hyrje do të transferohen drejt host-it "
 "të specifikuar në fushën e mëposhtme"
 
-#: ../ekiga.schemas.in.in.h:41
+#: ../ekiga.schemas.in.in.h:36
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below if you already are in a call or if you are in "
 "Do Not Disturb mode"
 msgstr ""
-"Nëse aktivohet, të gjitha thirrjet në hyrje do të transferohen drejt host-it "
+"Nëse aktivizohet, të gjitha telefonatat në hyrje do të transferohen drejt host-it "
 "të specifikuar në fushën e mëposhtme nëse jeni i zënë në një bisedë ose nëse "
 "jeni në modalitetin Mos Më Shqetësoni"
 
 # (pofilter) doublewords: The word 'do' is repeated
 # (pofilter) doublespacing: checks for bad double-spaces by comparing to original
-#: ../ekiga.schemas.in.in.h:42
+#: ../ekiga.schemas.in.in.h:37
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below if you do not answer the call"
 msgstr ""
-"Nëse aktivohet, të gjitha thirrjet në hyrje do do të transferohen drejt  "
+"Nëse aktivizohet, të gjitha telefonatat në hyrje do do të transferohen drejt  "
 "host-it të specifikuar në fushën e mëposhtme nëse nuk i përgjigjesh thirrjes"
 
-#: ../ekiga.schemas.in.in.h:43
+#: ../ekiga.schemas.in.in.h:38
 msgid "If enabled, allows video during calls"
-msgstr "Nëse aktivohet, lejon video gjatë bisedave"
+msgstr "Nëse aktivizohet, lejon video gjatë bisedave"
 
-#: ../ekiga.schemas.in.in.h:44 ../src/gui/preferences.cpp:738
-msgid ""
-"If enabled, calls for which no audio and video has been received in the last "
-"30 seconds are automatically cleared"
-msgstr ""
-"Nëse aktivohet, thirrjet për të cilat as audio e as video nuk është marrë në "
-"30 sekondat e fundit, pastrohen automatikisht"
+#: ../ekiga.schemas.in.in.h:39 ../src/gui/preferences.cpp:409
+msgid "If enabled, offline contacts will be shown in the roster"
+msgstr "Nëse aktivizuar, kontaktet jashtë linje do të shfaqen në listë"
 
-#: ../ekiga.schemas.in.in.h:45
+#: ../ekiga.schemas.in.in.h:40
 msgid "If enabled, use echo cancelation"
-msgstr "Nëse aktivohet, përdoret fshirja e jehonës"
+msgstr "Nëse aktivizohet, përdoret fshirja e jehonës"
 
-#: ../ekiga.schemas.in.in.h:46
+#: ../ekiga.schemas.in.in.h:41
 msgid "If enabled, use silence detection with the codecs supporting it"
-msgstr "Nëse aktivohet, përdoret zbulimi i heshtjes me kodekët që e suportojnë"
-
-#: ../ekiga.schemas.in.in.h:47
-msgid "Incoming call mode"
-msgstr "Mënyra e thirrjeve në hyrje"
+msgstr "Nëse aktivizohet, përdoret zbulimi i heshtjes me kodekët që e suportojnë"
 
 # (pofilter) brackets: translation has extra '(', ')'
-#: ../ekiga.schemas.in.in.h:48
+#: ../ekiga.schemas.in.in.h:42
 msgid "Kind of network selected in the druid"
 msgstr "Lloji i rrjetit i zgjedhur në asistentin e ndihmës"
 
-#: ../ekiga.schemas.in.in.h:49
-msgid "Last name"
-msgstr "Mbiemri"
+#: ../ekiga.schemas.in.in.h:43
+msgid "LDAP servers"
+msgstr "Serverët LDAP"
 
-#: ../ekiga.schemas.in.in.h:50
+#: ../ekiga.schemas.in.in.h:44
+msgid "List of configured LDAP servers"
+msgstr "Lista e serverëve të konfiguruar LDAP"
+
+#: ../ekiga.schemas.in.in.h:45
+msgid "List of folded groups in the roster"
+msgstr "Lista e grupeve të grupuar në listë"
+
+#: ../ekiga.schemas.in.in.h:46
 msgid "Listen port"
 msgstr "Porta në pritje"
 
-#: ../ekiga.schemas.in.in.h:51
+#: ../ekiga.schemas.in.in.h:47
 msgid "Local video window size"
 msgstr "Gjerësia e dritares së videos lokale"
 
-#: ../ekiga.schemas.in.in.h:52
+#: ../ekiga.schemas.in.in.h:48
+msgid "Maximum RX video bitrate"
+msgstr "Banda video maksimum RX"
+
+#: ../ekiga.schemas.in.in.h:49
+msgid "Maximum TX video bitrate"
+msgstr "Banda video maksimum TX"
+
+#: ../ekiga.schemas.in.in.h:50
 msgid "Maximum jitter buffer"
 msgstr "Buffer maksimum i jitter"
 
-#: ../ekiga.schemas.in.in.h:53
-msgid "Maximum video bandwidth"
-msgstr "Gjerësia maksimum e bandës për video"
-
-#: ../ekiga.schemas.in.in.h:54
-msgid "Minimum jitter buffer"
-msgstr "Buffer minimum i jitter"
-
-#: ../ekiga.schemas.in.in.h:55
-msgid "Minimum transmitted video quality"
-msgstr "Cilësia minimale e videos së transmetuar"
-
-#: ../ekiga.schemas.in.in.h:56
-msgid "Missed calls history"
-msgstr "Historiku i thirrjeve të humbura"
-
-#: ../ekiga.schemas.in.in.h:57
+#: ../ekiga.schemas.in.in.h:51
 msgid "NAT Binding Timeout"
 msgstr "Skadenca e NAT binding"
 
-#: ../ekiga.schemas.in.in.h:58
+#: ../ekiga.schemas.in.in.h:52
 msgid "No answer timeout"
 msgstr "Asnjë skadencë kohore për përgjigjen"
 
-#: ../ekiga.schemas.in.in.h:59
+#: ../ekiga.schemas.in.in.h:53
 msgid "Number of frames for G.711"
 msgstr "Numri i frame për G.711"
 
-#: ../ekiga.schemas.in.in.h:60
+#: ../ekiga.schemas.in.in.h:54
 msgid "Number of frames for GSM"
 msgstr "Numri i frame për GSM"
 
-#: ../ekiga.schemas.in.in.h:61
+#: ../ekiga.schemas.in.in.h:55
 msgid "Number of frames transmitted in each packet for the G.711 codec"
 msgstr "Numri i frames të transmetuara në çdo paketë për kodekun G.711"
 
 # (pofilter) endpunc: checks whether punctuation at the end of the strings match
-#: ../ekiga.schemas.in.in.h:62
+#: ../ekiga.schemas.in.in.h:56
 msgid "Number of frames transmitted in each packet for the GSM codec"
 msgstr "Numri i frame të transmetuara në çdo paketë për kodekun GSM."
 
-#: ../ekiga.schemas.in.in.h:63
+#: ../ekiga.schemas.in.in.h:57
 msgid "Outbound Proxy"
 msgstr "Proxy në dalje"
 
-#: ../ekiga.schemas.in.in.h:64
+#: ../ekiga.schemas.in.in.h:58
 msgid "Output device type"
 msgstr "Lloji i dispozitivit të daljes"
 
-#: ../ekiga.schemas.in.in.h:65 ../src/gui/preferences.cpp:693
+#: ../ekiga.schemas.in.in.h:59 ../src/gui/preferences.cpp:416
 msgid "Place windows displaying video above other windows during calls"
 msgstr "Vendos dritaret që shfaqin videon mbi dritaret e tjera gjatë bisedave"
 
-#: ../ekiga.schemas.in.in.h:66
-msgid "Placed calls history"
-msgstr "Historiku i thirrjeve të kryera"
-
-#: ../ekiga.schemas.in.in.h:67 ../src/gui/preferences.cpp:1898
+#: ../ekiga.schemas.in.in.h:60 ../src/gui/preferences.cpp:1399
 msgid "Play busy tone"
 msgstr "Tingull kur linja është e zënë"
 
-#: ../ekiga.schemas.in.in.h:68 ../src/gui/preferences.cpp:1889
+#: ../ekiga.schemas.in.in.h:61 ../src/gui/preferences.cpp:1390
 msgid "Play ring tone"
 msgstr "Bjeri ziles"
 
-#: ../ekiga.schemas.in.in.h:69 ../src/gui/preferences.cpp:1880
+#: ../ekiga.schemas.in.in.h:62 ../src/gui/preferences.cpp:1381
 msgid "Play sound on incoming calls"
 msgstr "Tingull kurr arrin një thirrje"
 
-#: ../ekiga.schemas.in.in.h:70
+#: ../ekiga.schemas.in.in.h:63
 msgid "Play sound on new message"
 msgstr "Tingull kur ka mesazh të ri"
 
-#: ../ekiga.schemas.in.in.h:71
+#: ../ekiga.schemas.in.in.h:64
 msgid "Play sound on new voice mail"
 msgstr "Tingull kur ka postë të re zanore"
 
-#: ../ekiga.schemas.in.in.h:72
+#: ../ekiga.schemas.in.in.h:65
 msgid "Position of the local video window"
 msgstr "Pozicioni i dritares së videos lokale"
 
-#: ../ekiga.schemas.in.in.h:73
+#: ../ekiga.schemas.in.in.h:66
 msgid "Position on the screen of the PC-To-Phone window"
 msgstr "Pozicioni në ekranit i dritares PC-në-Telefon"
 
-#: ../ekiga.schemas.in.in.h:74
+#: ../ekiga.schemas.in.in.h:67
 msgid "Position on the screen of the address book window"
 msgstr "Pozicioni në ekran i dritares së rubrikës"
 
-#: ../ekiga.schemas.in.in.h:75
-msgid "Position on the screen of the calls history window"
-msgstr "Pozicioni në ekran i dritares së historikut të thirrjeve"
+#: ../ekiga.schemas.in.in.h:68
+msgid "Position on the screen of the audio settings window"
+msgstr "Pozicioni në ekran i dritares së rregullimeve audio"
 
-#: ../ekiga.schemas.in.in.h:76
+#: ../ekiga.schemas.in.in.h:69
 msgid "Position on the screen of the chat window"
 msgstr "Pozicioni në ekran i dritares së bisedës"
 
-#: ../ekiga.schemas.in.in.h:77
+#: ../ekiga.schemas.in.in.h:70
 msgid "Position on the screen of the druid window"
 msgstr "Pozicioni në ekran i dritares së asistentit të konfigurimit"
 
-#: ../ekiga.schemas.in.in.h:78
+#: ../ekiga.schemas.in.in.h:71
 msgid "Position on the screen of the log window"
 msgstr "Pozicioni në ekran i dritares së regjistrimeve"
 
-#: ../ekiga.schemas.in.in.h:79
+#: ../ekiga.schemas.in.in.h:72
 msgid "Position on the screen of the main window"
 msgstr "Pozicioni në ekran i dritares kryesore"
 
-#: ../ekiga.schemas.in.in.h:80
+#: ../ekiga.schemas.in.in.h:73
 msgid "Position on the screen of the preferences window"
 msgstr "Pozicioni në ekran i dritares së preferimeve"
 
-#: ../ekiga.schemas.in.in.h:81
-msgid "Public IP of the NAT/PAT router"
-msgstr "Adresa IP publike e router-it NAT/PAT"
+#: ../ekiga.schemas.in.in.h:74
+msgid "Position on the screen of the video settings window"
+msgstr "Pozicioni në ekran i dritares së rregullimeve video"
 
-#: ../ekiga.schemas.in.in.h:82
-msgid "Received calls history"
-msgstr "Historiku i thirrjeve të marra"
-
-#: ../ekiga.schemas.in.in.h:83
+#: ../ekiga.schemas.in.in.h:75
 msgid "Registration timeout"
 msgstr "Skadenca e regjistrimit"
 
-#: ../ekiga.schemas.in.in.h:84
+#: ../ekiga.schemas.in.in.h:76
 msgid "Remote video window position"
 msgstr "Pozicioni i dritares së videos remote"
 
-#: ../ekiga.schemas.in.in.h:85
+#: ../ekiga.schemas.in.in.h:77
 msgid "Remote video window size"
 msgstr "Madhësia e dritares së videos remote"
 
-#: ../ekiga.schemas.in.in.h:86
+#: ../ekiga.schemas.in.in.h:78
 msgid "Revision of the schema file"
 msgstr "Revizioni i file të skemës"
 
-#: ../ekiga.schemas.in.in.h:87
+#: ../ekiga.schemas.in.in.h:79
+msgid "Roster view saving group status"
+msgstr "Shfaq listën duke ruajtur gjëndjen e grupit "
+
+#: ../ekiga.schemas.in.in.h:80
 msgid "Select an alternative audio output device to use for sound events."
 msgstr ""
 "Zgjidh dispozitivin alternativ të zërit në dalje për t'u përdorur për "
 "tingujt e ndodhive."
 
-#: ../ekiga.schemas.in.in.h:88 ../src/gui/preferences.cpp:1095
+#: ../ekiga.schemas.in.in.h:81 ../src/gui/preferences.cpp:725
 msgid "Select the audio input device to use"
 msgstr "Zgjidh dispozitivin e zërit në hyrje"
 
-#: ../ekiga.schemas.in.in.h:89 ../src/gui/preferences.cpp:1088
+#: ../ekiga.schemas.in.in.h:82 ../src/gui/preferences.cpp:718
 msgid "Select the audio output device to use"
 msgstr "Zgjidh dispozitivin e zërit në dalje"
 
-#: ../ekiga.schemas.in.in.h:90 ../src/gui/preferences.cpp:959
-msgid ""
-"Select the desired method for NAT traversal (STUN is strongly suggested)"
-msgstr "Zgjidh metodën e dëshiruar për kalimin NAT (ju këshillojmë STUN)"
-
 # (pofilter) sentencecount: The number of sentences differ: 1 versus 2
 # (pofilter) endpunc: checks whether punctuation at the end of the strings match
-#: ../ekiga.schemas.in.in.h:91 ../src/gui/preferences.cpp:1178
-msgid ""
-"Select the format for video cameras (does not apply to most USB cameras)"
+#: ../ekiga.schemas.in.in.h:83 ../src/gui/preferences.cpp:881
+msgid "Select the format for video cameras (does not apply to most USB cameras)"
 msgstr ""
 "Zgjidh formatin për video kamerën (nuk hyn në punë për shumicën e kamerave "
 "USB)."
 
 # (pofilter) endpunc: checks whether punctuation at the end of the strings match
-#: ../ekiga.schemas.in.in.h:92
+#: ../ekiga.schemas.in.in.h:84
 msgid ""
 "Select the transmitted video size: Small (QCIF 176x144) or Large (CIF "
 "352x288)"
@@ -481,7 +424,7 @@ msgstr ""
 "Zgjidh madhësinë e videos së transmetuar : E vogël (QCIF 176x144) ose E "
 "madhe (CIF 352x288)."
 
-#: ../ekiga.schemas.in.in.h:93 ../src/gui/preferences.cpp:1168
+#: ../ekiga.schemas.in.in.h:85 ../src/gui/preferences.cpp:873
 msgid ""
 "Select the video input device to use. If an error occurs when using this "
 "device a test picture will be transmitted."
@@ -489,52 +432,70 @@ msgstr ""
 "Zgjidh dispozitivin e videos. Nëse ndeshet një gabim gjatë përdorimit të "
 "këtij dispozitivi, do të transmetohet vetëm një figurë prove."
 
-#: ../ekiga.schemas.in.in.h:94
+#: ../ekiga.schemas.in.in.h:86
+msgid "Show offline contacts"
+msgstr "Shfaq kontaktet jashtë linje"
+
+#: ../ekiga.schemas.in.in.h:87 ../src/gui/main.cpp:1793
+msgid "Show the call panel"
+msgstr "Shfaq panelin e thirrjes"
+
+#: ../ekiga.schemas.in.in.h:88
 msgid "Size of the PC-To-Phone window"
 msgstr "Madhësia e dritares PC-në-Telefon"
 
-#: ../ekiga.schemas.in.in.h:95
+#: ../ekiga.schemas.in.in.h:89
 msgid "Size of the address book window"
 msgstr "Madhësia e dritares së rubrikës"
 
-#: ../ekiga.schemas.in.in.h:96
-msgid "Size of the calls history window"
-msgstr "Madhësia e dritares së historikut të thirrjeve"
+#: ../ekiga.schemas.in.in.h:90
+msgid "Size of the audio settings window"
+msgstr "Madhësia e dritares së rregullimeve audio"
 
-#: ../ekiga.schemas.in.in.h:97
+#: ../ekiga.schemas.in.in.h:91
 msgid "Size of the chat window"
 msgstr "Madhësia e dritares së bisedave"
 
-#: ../ekiga.schemas.in.in.h:98
+#: ../ekiga.schemas.in.in.h:92
 msgid "Size of the druid window"
 msgstr "Madhësia e dritares së asistentit të konfigurimit"
 
-#: ../ekiga.schemas.in.in.h:99
-msgid "Size of the log window"
-msgstr "Madhësia e dritares së regjistrimeve"
-
-#: ../ekiga.schemas.in.in.h:100
+#: ../ekiga.schemas.in.in.h:93
 msgid "Size of the preferences window"
 msgstr "Madhësia e dritares së preferimeve"
 
-#: ../ekiga.schemas.in.in.h:101
+#: ../ekiga.schemas.in.in.h:94
+msgid "Size of the video settings window"
+msgstr "Madhësia e dritares së rregullimeve video"
+
+#: ../ekiga.schemas.in.in.h:95
+msgid "Specify the software scaling algorithm"
+msgstr "Përcakto algoritmin e shkallëzimit software"
+
+#: ../ekiga.schemas.in.in.h:96
+msgid ""
+"Specify the software scaling algorithm: 0: nearest neighbor, 1: nearest "
+"neighbor with box filter, 2: bilinear filtering, 3: hyperbolic filtering. "
+"Does not apply on windows systems."
+msgstr ""
+
+#: ../ekiga.schemas.in.in.h:97
 msgid "Start hidden"
 msgstr "Nis të padukshëm"
 
-#: ../ekiga.schemas.in.in.h:102 ../src/gui/main.cpp:1109
-#: ../src/gui/main.cpp:1587 ../src/gui/main.cpp:1612
-msgid "Switch to fullscreen"
-msgstr "Kalo në modalitetin me ekran të plotë"
-
-#: ../ekiga.schemas.in.in.h:103
+#: ../ekiga.schemas.in.in.h:98
 msgid "TCP port range"
 msgstr "Intervali i portave TCP"
 
-#: ../ekiga.schemas.in.in.h:104
+#: ../ekiga.schemas.in.in.h:99
+msgid "Temporal Spatial Trade Off"
+msgstr "Shkëmbimi temporal spacial (TSTO)"
+
+#: ../ekiga.schemas.in.in.h:100
 msgid "The Audio Codecs List"
 msgstr "Lista e kodekëve audio"
 
-#: ../ekiga.schemas.in.in.h:105
+#: ../ekiga.schemas.in.in.h:101
 msgid ""
 "The Automatic Echo Cancellation level: Off, Low, Medium, High, Automatic "
 "Gain Compensation. Choosing Automatic Gain Compensation modulates the volume "
@@ -544,52 +505,41 @@ msgstr ""
 "Automatik. Kur zgjidhet Automatik, volumi do të ndryshohet për marrjen e "
 "cilësisë më të mirë."
 
-#: ../ekiga.schemas.in.in.h:106 ../src/gui/preferences.cpp:986
-msgid ""
-"The Gateway host is the host to use to do H.323 calls through a gateway that "
-"will relay calls"
-msgstr ""
-"Host Gateway është host për tu përdorur për thirrje H.323 nëpërmjet një ure "
-"që përcjell thirrjet"
-
-# (pofilter) brackets: translation has extra '(', ')'
-#: ../ekiga.schemas.in.in.h:107
-msgid "The NAT method"
-msgstr "Metoda e NAT"
-
-#: ../ekiga.schemas.in.in.h:108 ../src/gui/preferences.cpp:1037
+#: ../ekiga.schemas.in.in.h:102 ../src/gui/preferences.cpp:675
 msgid "The SIP Outbound Proxy to use for outgoing calls"
-msgstr "Proxy i jashtëm SIP për thirrjet në dalje"
+msgstr "Proxy i jashtëm SIP për telefonatat në dalje"
 
-#: ../ekiga.schemas.in.in.h:109
+#: ../ekiga.schemas.in.in.h:103
 msgid "The STUN Server"
 msgstr "Serveri STUN"
 
 # (pofilter) endpunc: checks whether punctuation at the end of the strings match
 # (pofilter) doublewords: The word 'stun' is repeated
-#: ../ekiga.schemas.in.in.h:110
+#: ../ekiga.schemas.in.in.h:104
 msgid ""
-"The STUN server to use for STUN Support. STUN is a technic that permits to "
-"go through some types of NAT gateways"
+"The STUN server to use for STUN Support. STUN is a technology that permits "
+"passage through some types of NAT gateway"
 msgstr ""
 "Serveri STUN që duhet përdorur për suportin STUN. STUN është një teknikë që "
-"mundëson kalimin midis disa llojeve gateway NAT."
+"mundëson kalimin midis disa prej llojeve gateway NAT"
 
-#: ../ekiga.schemas.in.in.h:111
+#: ../ekiga.schemas.in.in.h:105
+msgid "The Video Codecs List"
+msgstr "Lista e kodekëve video"
+
+#: ../ekiga.schemas.in.in.h:106
 msgid "The accounts list"
 msgstr "Lista e profileve"
 
-#: ../ekiga.schemas.in.in.h:112
-msgid ""
-"The audio plugin that will be used to detect the devices and manage them"
-msgstr ""
-"Plugin i zërit që do përdoret për të gjetur dhe organizuar dispozitivët"
+#: ../ekiga.schemas.in.in.h:107
+msgid "The audio codecs list"
+msgstr "Lista e kodekëve audio"
 
-#: ../ekiga.schemas.in.in.h:113
+#: ../ekiga.schemas.in.in.h:108
 msgid "The busy tone sound"
 msgstr "Tingulli për linjën e zënë"
 
-#: ../ekiga.schemas.in.in.h:114
+#: ../ekiga.schemas.in.in.h:109
 msgid ""
 "The chosen sound will be played at the end of calls or calling somebody who "
 "is busy, if enabled"
@@ -597,66 +547,56 @@ msgstr ""
 "Tingulli i zgjedhur do dëgjohet në fund të thirrjeve ose kur merr dikë që "
 "është i zënë, nëse është aktivuar"
 
-#: ../ekiga.schemas.in.in.h:115
+#: ../ekiga.schemas.in.in.h:110
 msgid "The chosen sound will be played on incoming calls, if enabled"
 msgstr "Tingulli i zgjedhur do dëgjohet kur vijnë thirrje, nëse është aktivuar"
 
-#: ../ekiga.schemas.in.in.h:116
+#: ../ekiga.schemas.in.in.h:111
 msgid ""
 "The chosen sound will be played when a new instant message is received, if "
 "enabled"
-msgstr ""
-"Tingulli i zgjedhur do dëgjohet kur vjen një mesazh i ri, nëse është aktivuar"
+msgstr "Tingulli i zgjedhur do dëgjohet kur vjen një mesazh i ri, nëse është aktivuar"
 
-#: ../ekiga.schemas.in.in.h:117
-msgid ""
-"The chosen sound will be played when a new voice mail is received, if enabled"
+#: ../ekiga.schemas.in.in.h:112
+msgid "The chosen sound will be played when a new voice mail is received, if enabled"
 msgstr ""
 "Tingulli i zgjedhur do dëgjohet kur vjen një postë e re zanore, nëse është "
 "aktivuar"
 
-#: ../ekiga.schemas.in.in.h:118
+#: ../ekiga.schemas.in.in.h:113
 msgid "The chosen sound will be played when calling somebody, if enabled"
 msgstr "Tingulli i zgjedhur do dëgjohet kur thërret dikë, nëse është aktivuar"
 
-#: ../ekiga.schemas.in.in.h:119
+#: ../ekiga.schemas.in.in.h:114
 msgid "The default video view"
 msgstr "Paraqitja e prezgjedhur e videos"
 
 # (pofilter) endwhitespace: checks whether whitespace at the end of the strings matches
-#: ../ekiga.schemas.in.in.h:120
+#: ../ekiga.schemas.in.in.h:115
 msgid ""
-"The default video view (0: Local, 1: Remote, 2: Both incrusted, 3: Both with "
+"The default video view (0: Local, 1: Remote, 2: Both layered, 3: Both with "
 "local video in a separate window, 4: Both)"
 msgstr ""
-"Paraqitja e paracaktuar e videos (0: Lokale, 1: Remote, 2: Së bashku, në një "
-"dritare 3: Së bashku, me videon lokale në një dritare të veçantë, 4: Së "
-"bashku) "
+"Paraqitja e paracaktuar e video-s (0: Lokale, 1: Remote, 2: Së bashku, në një "
+"dritare 3: Së bashku, me video-n lokale në një dritare të veçantë, 4: Së "
+"bashku)"
 
-#: ../ekiga.schemas.in.in.h:121
+#: ../ekiga.schemas.in.in.h:116
 msgid "The dial tone sound"
 msgstr "Tingulli i tonit të thirrjes"
 
-#: ../ekiga.schemas.in.in.h:122
-msgid "The history of the last 100 missed calls"
-msgstr "Historiku i 100 thirrjeve të fundit të humbura"
+#: ../ekiga.schemas.in.in.h:117
+msgid "The history of the 100 last calls"
+msgstr "Kronollogjia e 100 thirrjeve të fundit"
 
-#: ../ekiga.schemas.in.in.h:123
-msgid "The history of the last 100 placed calls"
-msgstr "Historiku i 100 thirrjeve të fundit të kryera"
-
-#: ../ekiga.schemas.in.in.h:124
-msgid "The history of the last 100 received calls"
-msgstr "Historiku i 100 thirrjeve të fundit të marra"
-
-#: ../ekiga.schemas.in.in.h:125 ../src/gui/preferences.cpp:989
-#: ../src/gui/preferences.cpp:1040
+#: ../ekiga.schemas.in.in.h:118 ../src/gui/preferences.cpp:624
+#: ../src/gui/preferences.cpp:678
 msgid "The host where calls should be forwarded if call forwarding is enabled"
 msgstr ""
-"Host-i drejt të cilit do të transferohen thirrjet në rast se transferimi "
+"Host-i drejt të cilit do të transferohen telefonatat në rast se transferimi "
 "është aktivizuar"
 
-#: ../ekiga.schemas.in.in.h:126
+#: ../ekiga.schemas.in.in.h:119
 msgid ""
 "The image to transmit if \"Picture\" is selected as video plugin or if the "
 "opening of the device fails. Leave blank to use the default Ekiga logo."
@@ -665,66 +605,58 @@ msgstr ""
 "video ose nëse hapja e dispozitivit së videos dështon. Lëre bosh për të "
 "shfaqur stemën e Ekiga."
 
-#: ../ekiga.schemas.in.in.h:127
+#: ../ekiga.schemas.in.in.h:120
 msgid "The incoming call sound"
 msgstr "Tingulli i thirrjeve në hyrje"
 
-#: ../ekiga.schemas.in.in.h:128
+#: ../ekiga.schemas.in.in.h:121
 msgid "The list of accounts to which Ekiga should register"
 msgstr "Lista e profileve me të cilat Ekiga duhet të regjistrohet"
 
-#: ../ekiga.schemas.in.in.h:129
-msgid "The local zoom value"
-msgstr "Shkalla e zmadhimit lokal"
+#: ../ekiga.schemas.in.in.h:122
+msgid "The long status information"
+msgstr "Informacione të hollësishme të gjëndjes"
+
+#: ../ekiga.schemas.in.in.h:123
+msgid ""
+"The maximum RX video bitrate in kbit/s. This value will be signaled to the "
+"peer endpoint that can adjust (if it supports it) its TX bitrate if it is "
+"above the signaled value"
+msgstr ""
+
+#: ../ekiga.schemas.in.in.h:124
+msgid ""
+"The maximum TX video bitrate in kbit/s. The video quality and the number of "
+"transmitted frames per second (depends on selected codec) will be "
+"dynamically adjusted above their minimum during calls to try to minimize the "
+"bandwidth to the given value"
+msgstr ""
+"Maksimumi i bandës video TX në kbit/s. Cilësia e videos dhe numri i "
+"imazheve të transmetuara për sekondë (varet nga kodeku i zgjedhur) do të "
+"përshtatet në mënyrë dinamike sipër minimumit gjatë telefonatave për të "
+"minimizuar bandën tek vlera e dhënë"
 
 # (pofilter) endpunc: checks whether punctuation at the end of the strings match
-#: ../ekiga.schemas.in.in.h:130
+#: ../ekiga.schemas.in.in.h:125
 msgid "The maximum jitter buffer size for audio reception (in ms)"
 msgstr "Masa maksimale e jitter buffer për marrjen e zërit (në ms)."
 
-#: ../ekiga.schemas.in.in.h:131
+#: ../ekiga.schemas.in.in.h:126
 msgid ""
-"The maximum video bandwidth in kbytes/s. The video quality and the number of "
-"transmitted frames per second will be dynamically adjusted above their "
-"minimum during calls to try to minimize the bandwidth to the given value"
+"The maximum transmitted frame rate in frames/s. This rate may not be reached "
+"in case a minimum quality was configure via a TSTO value smaller than 31 and "
+"the bitrate selected is not sufficient to support this minimum quality"
 msgstr ""
-"Gjerësia maksimale e bandës në kbytes/s. Cilësia e videos dhe numri i "
-"imazheve të transmetuara për sekondë do të përshtatet në mënyrë dinamike "
-"sipër minimumit gjatë thirrjeve për të minimizuar gjerësinë e bandës rreth "
-"vlerës së dhënë"
 
-#: ../ekiga.schemas.in.in.h:132
-msgid "The minimum jitter buffer size for audio reception (in ms)"
-msgstr "Masa minimale e jitter buffer për marrjen e zërit (në ms)"
-
-#: ../ekiga.schemas.in.in.h:134
-#, no-c-format
-msgid ""
-"The minimum transmitted video quality to keep when trying to minimize the "
-"used bandwidth: choose 100% on a LAN for the best quality, 1% being the "
-"worst quality"
-msgstr ""
-"Cilësia minimale e transmetimit të videos duke minimizuar gjerësinë e bandës "
-"në përdorim: zgjidh 100% në një LAN për cilësinë më të mirë, 1% është "
-"cilësia më e keqe"
-
-#: ../ekiga.schemas.in.in.h:135
-msgid "The network interface"
-msgstr "Interfaqja e rrjetit"
-
-#: ../ekiga.schemas.in.in.h:136 ../src/gui/preferences.cpp:950
-msgid "The network interface to listen on"
-msgstr "Interfaqja e rrjetit në dëgjim"
-
-#: ../ekiga.schemas.in.in.h:137
+#: ../ekiga.schemas.in.in.h:127
 msgid "The new instant message sound"
 msgstr "Tingulli i mesazhit të ri direkt"
 
-#: ../ekiga.schemas.in.in.h:138
+#: ../ekiga.schemas.in.in.h:128
 msgid "The new voice mail sound"
 msgstr "Tingulli i postës së re zanore"
 
-#: ../ekiga.schemas.in.in.h:139
+#: ../ekiga.schemas.in.in.h:129
 msgid ""
 "The output device type is the type of device connected to your Quicknet "
 "card. It can be either a POTS (Plain Old Telephone System) or a headset."
@@ -732,7 +664,7 @@ msgstr ""
 "Lloji i dispozitivit në dalje është dispozitivi i lidhur me kartën Quicknet. "
 "Mund të jetë një POTS (Plain Old Telephone System) apo një kufje."
 
-#: ../ekiga.schemas.in.in.h:140
+#: ../ekiga.schemas.in.in.h:130
 msgid ""
 "The port to listen to for incoming connections. Ekiga needs to be restarted "
 "for the new value to take effect"
@@ -740,7 +672,7 @@ msgstr ""
 "Porta në pritje të lidhjeve në hyrje. Ekiga duhet të riniset që vlera e re "
 "të ketë efekt"
 
-#: ../ekiga.schemas.in.in.h:141
+#: ../ekiga.schemas.in.in.h:131
 msgid ""
 "The port to listen to for incoming connections. Ekiga needs to be restarted "
 "for the new value to take effect."
@@ -748,15 +680,15 @@ msgstr ""
 "Porta në pritje të thirrjeve në hyrje. Ekiga duhet të riniset që vlera e re "
 "të ketë efekt."
 
-#: ../ekiga.schemas.in.in.h:142
+#: ../ekiga.schemas.in.in.h:132
 msgid "The position of the local video window"
 msgstr "Pozicioni i dritares së videos lokale"
 
-#: ../ekiga.schemas.in.in.h:143
+#: ../ekiga.schemas.in.in.h:133
 msgid "The position of the remote video window"
 msgstr "Pozicioni i dritares së videos remote"
 
-#: ../ekiga.schemas.in.in.h:144
+#: ../ekiga.schemas.in.in.h:134
 msgid ""
 "The prefix that will be used to save pictures of the conversation. That "
 "prefix is followed by the snapshot number."
@@ -764,54 +696,37 @@ msgstr ""
 "Parashtesa që do të përdoret për të ruajtur figurat gjatë bisedës. Kjo "
 "parashtesë është i ndjekur nga numri i figurës së regjistruar."
 
-#: ../ekiga.schemas.in.in.h:145
+#: ../ekiga.schemas.in.in.h:135
 msgid ""
-"The range of TCP ports that Ekiga will use for the H.323 H.245 channel. "
-"Ekiga needs to be restarted for the new values to take effect. This port "
-"range has no effect if both participants to the conference are using H.245 "
-"Tunneling."
+"The range of TCP ports that Ekiga will use for the H.323 H.245 channel. This "
+"port range has no effect if both participants to the conference are using "
+"H.245 Tunneling."
 msgstr ""
-"Rangu i portave TCP që Ekiga do të përdorë për kanalin H.323 H.245. Ekiga "
-"duhet të riniset që vlerat e reja të kenë efekt. Ky rang portash nuk ka "
-"efekt nëse pjesmarrësit e një konference janë duke përdorur Tunneling H.245."
+"Intervali i portave TCP që Ekiga do të përdorë për kanalin H.323 H.245. Ky "
+"interval portash nuk ka efekt nëse pjesmarrësit e një konference të jenë "
+"duke përdorur Tunneling H.245."
 
-# (pofilter) acronyms: acronyms should not be translated: UDP
-#: ../ekiga.schemas.in.in.h:146
-msgid ""
-"The range of UDP ports that Ekiga will use for RTP (audio and video "
-"communication channels). Ekiga needs to be restarted for the new values to "
-"take effect."
-msgstr ""
-"Rangu i portave UDB që Ekiga do të përdorë për RTP (kanale komunikimi audio "
-"dhe video). Ekiga duhet të riniset që vlerat e reja të kenë efekt."
+#: ../ekiga.schemas.in.in.h:136
+msgid "The range of UDP ports that Ekiga will use."
+msgstr "Intervali i portave UDP që do të përdoren nga Ekiga."
 
-#: ../ekiga.schemas.in.in.h:147
-msgid ""
-"The range of UDP ports that Ekiga will use for SIP signaling and when "
-"registering to gatekeepers. Ekiga needs to be restarted for the new values "
-"to take effect."
-msgstr ""
-"Rangu i portave UDP që Ekiga do të përdorë për senjalizim SIP dhe kur të "
-"regjistrohet në gatekeepers. Ekiga duhet të riniset që vlerat e reja të kenë "
-"efekt."
-
-#: ../ekiga.schemas.in.in.h:148
-msgid "The remote zoom value"
-msgstr "Shkalla e zmadhimit remot"
-
-#: ../ekiga.schemas.in.in.h:149
+#: ../ekiga.schemas.in.in.h:137
 msgid "The save prefix"
 msgstr "Parashtesa e ruajtjes"
 
-#: ../ekiga.schemas.in.in.h:150
+#: ../ekiga.schemas.in.in.h:138
+msgid "The short status information"
+msgstr "Informacione shkurt të gjëndjes"
+
+#: ../ekiga.schemas.in.in.h:139
 msgid "The size of the local video window"
 msgstr "Madhësia e dritares së videos lokale"
 
-#: ../ekiga.schemas.in.in.h:151
+#: ../ekiga.schemas.in.in.h:140
 msgid "The size of the remote video window"
 msgstr "Madhësia e dritares së videos remote"
 
-#: ../ekiga.schemas.in.in.h:152
+#: ../ekiga.schemas.in.in.h:141
 msgid ""
 "The sound that will be played at the end of calls or when calling somebody "
 "who is busy, if enabled"
@@ -819,419 +734,535 @@ msgstr ""
 "Tingulli që do dëgjohet në fund të thirrjes apo kur mer dikë që është i "
 "zënë, nëse është aktivuar"
 
-#: ../ekiga.schemas.in.in.h:153
+#: ../ekiga.schemas.in.in.h:142
 msgid "The sound that will be played on incoming calls, if enabled"
-msgstr "Tingulli që do dëgjohet për thirrjet në hyrje, nëse është aktivuar"
+msgstr "Tingulli që do dëgjohet për telefonatat në hyrje, nëse është aktivuar"
 
-#: ../ekiga.schemas.in.in.h:154
+#: ../ekiga.schemas.in.in.h:143
 msgid "The sound that will be played when calling somebody, if enabled"
 msgstr "Tingulli që do dëgjohet kur merr dikë, nëse është aktivuar"
 
-#: ../ekiga.schemas.in.in.h:155
-msgid ""
-"The sound that will be played when there is a new instant message, if enabled"
-msgstr ""
-"Tingulli që do dëgjohet kur ka një mesazh çasti të ri, nëse është aktivuar"
+#: ../ekiga.schemas.in.in.h:144
+msgid "The sound that will be played when there is a new instant message, if enabled"
+msgstr "Tingulli që do dëgjohet kur ka një mesazh çasti të ri, nëse është aktivuar"
 
-#: ../ekiga.schemas.in.in.h:156
-msgid ""
-"The sound that will be played when there is a new voice mail, if enabled"
-msgstr ""
-"Tingulli që do dëgjohet kur ka një postë zanore të re, nëse është aktivuar"
+#: ../ekiga.schemas.in.in.h:145
+msgid "The sound that will be played when there is a new voice mail, if enabled"
+msgstr "Tingulli që do dëgjohet kur ka një postë zanore të re, nëse është aktivuar"
 
-#: ../ekiga.schemas.in.in.h:157
-msgid ""
-"The time after which Ekiga will renew its registration with the registrar"
-msgstr ""
-"Periudha kohore mbas së cilës Ekiga do rinovojë regjistrimin me regjistruesin"
+#: ../ekiga.schemas.in.in.h:146
+msgid "The time after which Ekiga will renew its registration with the registrar"
+msgstr "Periudha kohore mbas së cilës Ekiga do rinovojë regjistrimin me regjistruesin"
 
-#: ../ekiga.schemas.in.in.h:158
+#: ../ekiga.schemas.in.in.h:147
 msgid "The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)"
 msgstr "Kodi i shtetit tënd me dy shifra (shembull : AL, FR, BE, UK, DE, ...)"
 
 # (pofilter) simplecaps: checks the capitalisation of two strings isn't wildly different
 # (pofilter) endpunc: checks whether punctuation at the end of the strings match
-#: ../ekiga.schemas.in.in.h:159 ../src/gui/preferences.cpp:1172
+#: ../ekiga.schemas.in.in.h:148 ../src/gui/preferences.cpp:877
 msgid "The video channel number to use (to select camera, tv or other sources)"
 msgstr ""
 "Numri i kanalit të videos që duhet përdorur (për të zgjedhur një webcam , "
 "një TV, apo burime të tjerë)."
 
-#: ../ekiga.schemas.in.in.h:160 ../src/gui/preferences.cpp:1156
-msgid ""
-"The video plugin that will be used to detect the devices and manage them"
-msgstr ""
-"Plugin video që do përdoret për gjetjen dhe organizimin e dispozitivëve"
+#: ../ekiga.schemas.in.in.h:149
+msgid "The video codecs list"
+msgstr "Lista e kodekëve video"
 
-#: ../ekiga.schemas.in.in.h:161
-msgid ""
-"The way to react to incoming calls: 0 displays a popup, 1 automatically "
-"answers the call, 2 automatically rejects the call and 3 forwards the call "
-"to the given URL, if any"
-msgstr ""
-"Mënyra e reaksionit për thirrjet në hyrje: 0 hap një dritare popup, 1 "
-"përgjigjet automatikisht, 2 refuzon automatikisht thirrjen dhe 3 transferon "
-"thirrjen tek URL e dhëne, nëse kjo e fundit ekziston"
+#: ../ekiga.schemas.in.in.h:150
+msgid "The video view before having switched to fullscreen"
+msgstr "Shfaqja e video-s para se të kalohet në modalitet me ekran të plotë"
 
-#: ../ekiga.schemas.in.in.h:162
+#: ../ekiga.schemas.in.in.h:151
+msgid ""
+"The video view before having switched to fullscreen (same values as "
+"video_view)"
+msgstr ""
+"Shfaqja e video-s para se të kalohet në modalitet me ekran të plotë (të "
+"njëjtat vlera sikurse video_view)"
+
+#: ../ekiga.schemas.in.in.h:152
 msgid "The zoom value"
 msgstr "Vlera e zmadhimit"
 
-#: ../ekiga.schemas.in.in.h:163
-msgid ""
-"The zoom value to apply to images displayed in the local video window (can "
-"be 0.50, 1.00, or 2.00)"
-msgstr ""
-"Vlera e zmadhimit që i duhet aplikuar figurave të shfaqura në dritaren e "
-"videos lokale (mund të jetë 0.50, 1.00, ose 2.00)"
-
 # (pofilter) acronyms: acronyms should not be translated: GUI
-#: ../ekiga.schemas.in.in.h:164
+#: ../ekiga.schemas.in.in.h:153
 msgid ""
-"The zoom value to apply to images displayed in the main GUI (can be 0.50, "
-"1.00, or 2.00)"
+"The zoom value in percent to apply to images displayed in the main GUI (can "
+"be 50, 100, or 200)"
 msgstr ""
 "Vlera e zmadhimit që i duhet aplikuar figurave shfaqura në dritaren kryesore "
-"(mund të jetë 0.50, 1.00, ose 2.00)"
+"(mund të jetë 50, 100, ose 200)"
 
-#: ../ekiga.schemas.in.in.h:165
+#: ../ekiga.schemas.in.in.h:154
 msgid ""
-"The zoom value to apply to images displayed in the remote video window (can "
-"be 0.50, 1.00, or 2.00)"
+"This allows you to set the mode for sending DTMFs. The values can be "
+"\"RFC2833\" (0), \"INFO\" (1)"
 msgstr ""
-"Vlera e zmadhimit që i duhet aplikuar figurave të shfaqura në dritaren e "
-"videos në distancë (mund të jetë 0.50, 1.00, ose 2.00)"
-
-# (pofilter) numbers: checks whether numbers of various forms are consistent between the two strings
-# (pofilter) doublespacing: checks for bad double-spaces by comparing to original
-#: ../ekiga.schemas.in.in.h:166 ../src/gui/preferences.cpp:1001
-msgid ""
-"This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages "
-"are encapsulated into the the H.225 channel (port 1720). This saves one TCP "
-"connection during calls. H.245 Tunneling was introduced in H.323v2 and "
-"Netmeeting does not support it. Using both Fast Start and H.245 Tunneling "
-"can crash some versions of Netmeeting."
-msgstr ""
-"Aktivon mënyrën e Tunneling H.245. Në mënyrën e Tunneling H.245, mesazhet "
-"janë të kapsuluara në kanalin H.225 (porta 1720). Kjo regjistron një lidhje "
-"TCP gjatë thirrjeve.  H.245 Tunneling është paraqitur në H.323v2 dhe nuk "
-"punon me Netmeeting. Përdorimi i Nisjes së Shpejtë dhe Tunneling H.245 mund "
-"të krijojë probleme në disa versione të Netmeeting."
-
-#: ../ekiga.schemas.in.in.h:167 ../src/gui/preferences.cpp:1003
-msgid "This enables H.245 early in the setup"
-msgstr "Kjo aktivon H.245 e shpejtë në përgatitje"
-
-#: ../ekiga.schemas.in.in.h:168
-msgid ""
-"This enables IP checking from ekiga.com. The returned IP is only used when "
-"IP Translation is enabled."
-msgstr ""
-"Kjo aktivon kontrollin e IP-së nga ekiga.com. IP-ja e kthyer përdoret vetëm "
-"kur është aktivizuar përkthimi i IP."
-
-#: ../ekiga.schemas.in.in.h:169
-msgid ""
-"This permits to set the mode for DTMFs sending. The value can be \"RFC2833"
-"\" (0) only"
-msgstr ""
-"Kjo lejon caktimin e mënyrës për dërgimin e DTMF-ve. Vlera mund të jetë "
-"vetëm \"RFC2833\" (0)"
+"Kjo lejon caktimin e mënyrës për dërgimin e DTMF-ve. Vlerat mund të "
+"jenë \"RFC2833\" (0), \"INFO\" (1)"
 
 # (pofilter) endpunc: checks whether punctuation at the end of the strings match
 # (pofilter) numbers: checks whether numbers of various forms are consistent between the two strings
 # (pofilter) brackets: translation is missing '(', ')'
-#: ../ekiga.schemas.in.in.h:170
+#: ../ekiga.schemas.in.in.h:155
 msgid ""
-"This permits to set the mode for DTMFs sending. The values can be \"String"
+"This allows you to set the mode for sending DTMFs. The values can be \"String"
 "\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (default is \"String"
 "\"). Choosing other values than \"String\" disables the Text Chat"
 msgstr ""
 "Kjo të lejon të caktoni mënyrën për dërgimin e DTMF-ve. Vlerat mund të jenë "
 "\"String\" (0), \"Ton\" (1), \"RFC2833\" (2), \"Q.931\" (e paracaktuar është "
-"\"String\"). Kur zgjidhni vlera të ndryshme nga \"String\" atëhere komunikimi me "
-"shkrime çaktivizohet."
+"\"String\"). Kur zgjidhni vlera të ndryshme nga \"String\" atëhere "
+"komunikimi me shkrim çaktivizohet"
 
-#: ../ekiga.schemas.in.in.h:171
+# (pofilter) numbers: checks whether numbers of various forms are consistent between the two strings
+# (pofilter) doublespacing: checks for bad double-spaces by comparing to original
+#: ../ekiga.schemas.in.in.h:156 ../src/gui/preferences.cpp:636
+msgid ""
+"This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages "
+"are encapsulated into the H.225 channel (port 1720). This saves one TCP "
+"connection during calls. H.245 Tunneling was introduced in H.323v2 and "
+"Netmeeting does not support it. Using both Fast Start and H.245 Tunneling "
+"can crash some versions of Netmeeting."
+msgstr ""
+"Aktivizon mënyrën e Tunneling H.245. Në mënyrën e Tunneling H.245, mesazhet "
+"janë të kapsuluara në kanalin H.225 (porta 1720). Kjo regjistron një lidhje "
+"TCP gjatë thirrjeve. H.245 Tunneling është shtuar në H.323v2 dhe nuk "
+"punon me Netmeeting. Përdorimi i Nisjes së Shpejtë dhe Tunneling H.245 së "
+"bashku mund të krijojë probleme në disa versione të Netmeeting."
+
+#: ../ekiga.schemas.in.in.h:157 ../src/gui/preferences.cpp:638
+msgid "This enables H.245 early in the setup"
+msgstr "Kjo aktivizon H.245 e shpejtë në përgatitje"
+
+#: ../ekiga.schemas.in.in.h:158
+msgid ""
+"This key disables DirectX (on win32) and XVideo (on Linux) video hardware "
+"acceleration"
+msgstr ""
+"Ky opsion çaktivizon përshpejtimin hardware video DirectX (në win32) dhe "
+"XVideo (në Linux)"
+
+#: ../ekiga.schemas.in.in.h:159
+msgid "Timeout after which the user is automatically set as away"
+msgstr "Koha mbas së cilës përdoruesi caktohet automatikisht si jo prezent"
+
+#: ../ekiga.schemas.in.in.h:160
 msgid "UDP port range"
 msgstr "Intervali i portave UDP"
 
-#: ../ekiga.schemas.in.in.h:172
-msgid "User directory"
-msgstr "Directory e përdoruesve"
-
-#: ../ekiga.schemas.in.in.h:173
+#: ../ekiga.schemas.in.in.h:161
 msgid "Version"
 msgstr "Versioni"
 
-#: ../ekiga.schemas.in.in.h:174
+#: ../ekiga.schemas.in.in.h:162
 msgid "Video channel"
 msgstr "Kanali i videos"
 
-#: ../ekiga.schemas.in.in.h:175
+#: ../ekiga.schemas.in.in.h:163
 msgid "Video format"
 msgstr "Formati i videos"
 
-#: ../ekiga.schemas.in.in.h:176
+#: ../ekiga.schemas.in.in.h:164
 msgid "Video image"
 msgstr "Figura e videos"
 
-#: ../ekiga.schemas.in.in.h:177
+#: ../ekiga.schemas.in.in.h:165 ../src/gui/assistant.cpp:1051
 msgid "Video input device"
 msgstr "Dispozitivi i videos në hyrje"
 
-#: ../ekiga.schemas.in.in.h:178
-msgid "Video plugin"
-msgstr "Plugin video"
-
-#: ../ekiga.schemas.in.in.h:179
+#: ../ekiga.schemas.in.in.h:166
 msgid "Video preview"
 msgstr "Pamja e parë e videos"
 
-#: ../ekiga.schemas.in.in.h:180
+#: ../ekiga.schemas.in.in.h:167
 msgid "Video size"
 msgstr "Madhësia e videos"
 
-# (pofilter) doublespacing: checks for bad double-spaces by comparing to original
-#: ../lib/gmconf/gmconf-gconf.c:155
+#: ../ekiga.schemas.in.in.h:168
 msgid ""
-"An error has happened in the configuration backend.\n"
-"Maybe some of your settings won't be saved."
+"Whether to prefer to sustain the max. frame rate or lower it possibly in "
+"order to keep a minimum level of (spatial) quality for all frames. 0: "
+"Highest minimal quality, 31: lowest minimal quality"
 msgstr ""
-"U ndesh një gabim në strukturën e  konfigurimit.\n"
-"Ndoshta disa nga rregullimet tuaja nuk do ruhen."
 
-#: ../lib/gmcontacts/gmcontacts-avahi.cpp:285
-msgid "Contacts Near Me"
-msgstr "Kontaktet afër meje"
+#: ../lib/engine/addressbook/call-history/history-contact.cpp:148
+msgid "Received"
+msgstr "Marrë"
 
-#. Init the address book
-#: ../lib/gmcontacts/gmcontacts-eds.cpp:304 ../src/endpoints/ekiga.cpp:500
-msgid "On This Computer"
-msgstr "Në këtë kompjuter"
+#: ../lib/engine/addressbook/call-history/history-contact.cpp:151
+msgid "Placed"
+msgstr "Kryer"
 
-#: ../lib/gmcontacts/gmcontacts-eds.cpp:308 ../src/endpoints/ekiga.cpp:500
-#: ../src/gui/addressbook.cpp:3041
-msgid "Personal"
-msgstr "Personale"
+#: ../lib/engine/addressbook/call-history/history-contact.cpp:154
+msgid "Missed"
+msgstr "Humbur"
 
-#: ../lib/gui/gmdialog.c:487
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:235
+#: ../lib/engine/presence/local-roster/local-presentity.cpp:194
+#: ../src/endpoints/opal-account.cpp:306 ../src/gui/main.cpp:1751
+msgid "_Edit"
+msgstr "_Ndrysho"
+
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:237
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:312
+#: ../lib/engine/presence/local-roster/local-presentity.cpp:196
+#: ../src/endpoints/opal-account.cpp:308
+msgid "_Remove"
+msgstr "_Hiq"
+
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:326
+msgid "Edit contact"
+msgstr "Ndrysho kontaktin"
+
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:328
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:311
+#: ../src/endpoints/opal-account.cpp:349
+msgid "Please update the following fields:"
+msgstr "Përditëso fushat në vijim:"
+
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:330
+#: ../lib/engine/presence/local-roster/local-presentity.cpp:221
+#: ../lib/engine/presence/local-roster/local-heap.cpp:168
+#: ../lib/engine/presence/local-roster/local-heap.cpp:315
+#: ../src/endpoints/opal-account.cpp:351 ../src/endpoints/opal-bank.cpp:101
+#: ../src/endpoints/opal-bank.cpp:111
+msgid "Name:"
+msgstr "Emri:"
+
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:339
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:314
+msgid "VoIP _URI:"
+msgstr "_URI e VoIP:"
+
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:340
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:315
+msgid "_Home phone:"
+msgstr "Telefoni në s_htëpi:"
+
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:341
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:316
+msgid "_Office phone:"
+msgstr "Telef_oni në zyrë:"
+
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:342
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:317
+msgid "_Cell phone:"
+msgstr "_Celulari:"
+
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:343
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:318
+msgid "_Pager:"
+msgstr "_Radiolajmëruesi personal:"
+
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:393
+msgid "Remove contact"
+msgstr "Hiq kontaktin"
+
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:395
+msgid "Are you sure you want to remove "
+msgstr "Je i sigurtë që dëshiron të heqësh "
+
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:395
+msgid "from the address book ?"
+msgstr "nga rubrika?"
+
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:88
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:591
+msgid "user found"
+msgid_plural "users found"
+msgstr[0] "përdorues i gjetur"
+msgstr[1] "përdorues të gjetur"
+
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:257
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:309
+msgid "_Refresh"
+msgstr "_Rifresko"
+
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:260
+msgid "New _Contact"
+msgstr "Kontakt i _ri"
+
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:309
+#: ../lib/engine/presence/local-roster/local-heap.cpp:109
+msgid "New contact"
+msgstr "Kontakti i ri"
+
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:313
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:157
+msgid "_Name:"
+msgstr "_Emri:"
+
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:139
+msgid "Add an LDAP Address Book"
+msgstr "Shto një rubrikë LDAP"
+
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:142
+msgid "Add the Ekiga.net Directory"
+msgstr "Shto Ekiga.net Directory"
+
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:153
+msgid "Create LDAP directory"
+msgstr "Krijo directory LDAP"
+
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:155
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:607
+msgid "Please edit the following fields"
+msgstr "Ndrysho fushat në vijim"
+
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:158
+msgid "_Hostname:"
+msgstr "Emri i _host:"
+
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:159
+msgid "_Port:"
+msgstr "_Porta:"
+
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:160
+msgid "_Base DN:"
+msgstr "DN _bazë:"
+
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:164
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:623
+msgid "_Subtree"
+msgstr "_Nëndegëzimi"
+
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:165
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:624
+msgid "Single _Level"
+msgstr "Nive_l i vetëm"
+
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:166
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:625
+msgid "_Scope"
+msgstr "_Shtrirja"
+
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:169
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:628
+msgid "Call _Attribute"
+msgstr "Veti_a e telefonatës"
+
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:170
+msgid "Password"
+msgstr "Fjalëkalimi"
+
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:188
+msgid "Ekiga.net Directory"
+msgstr "Directory Ekiga.net"
+
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:314
+msgid "_Properties"
+msgstr "_Pronësitë"
+
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:379
+msgid "Refreshing"
+msgstr "Duke rifreskuar"
+
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:387
+msgid "Could not initialize server"
+msgstr "I pamundur fillimi i serverit"
+
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:420
+msgid "Could not contact server"
+msgstr "E pamundur vënia në kontakt me serverin"
+
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:428
+msgid "Contacted server"
+msgstr "Serveri i kontaktuar"
+
+#. patience == 0
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:465
+msgid "Could not connect to server"
+msgstr "E pamundur lidhja me serverin"
+
+#. patience == 0
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:515
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:562
+msgid "Could not search"
+msgstr "Kërkimi është i pamundur"
+
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:523
+msgid "Waiting for search results"
+msgstr "Në pritje të rezultateve të kërkimit"
+
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:605
+msgid "Edit LDAP directory"
+msgstr "Ndrysho directory LDAP"
+
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:609
+msgid "_Name"
+msgstr "_Emri"
+
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:610
+msgid "_Hostname"
+msgstr "Emri i _host"
+
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:616
+msgid "_Port"
+msgstr "_Porta"
+
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:618
+msgid "_Base DN"
+msgstr "DN _bazë"
+
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:630
+msgid "_Password"
+msgstr "_Fjalëkalimi"
+
+# (pofilter) unchanged: please translate
+#: ../lib/engine/addressbook/skel/contact-core.cpp:57
+msgid "_Find"
+msgstr "_Gjej"
+
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:659
+msgid "Address Book"
+msgstr "Rubrika"
+
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:673
+msgid "Address _Book"
+msgstr "_Rubrika"
+
+#. This will add static and dynamic actions
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:682
+msgid "_Action"
+msgstr "_Veprimi"
+
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:727
+msgid "Category"
+msgstr "Kategoria"
+
+#. The window
+#. we can't do much here since we get the Chat as reference...
+#: ../lib/engine/gui/gtk-frontend/chat-window-old.cpp:562
+#: ../lib/engine/gui/gtk-frontend/chat-window.cpp:348
+msgid "Chat Window"
+msgstr "Dritarja e shkrimit"
+
+#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:628
+#: ../src/gui/assistant.cpp:1261
+msgid "Full Name"
+msgstr "Emri i plotë"
+
+#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:639
+msgid "_Search Filter:"
+msgstr "Filtri i _kërkimit:"
+
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:908
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:942
+msgid "Unsorted"
+msgstr "Pa renditur"
+
+#: ../lib/engine/gui/gtk-frontend/chat-window-page.cpp:752
+msgid "_Send"
+msgstr "_Dërgo"
+
+# (pofilter) endpunc: checks whether punctuation at the end of the strings match
+#: ../lib/engine/gui/gtk-frontend/chat-window-page.cpp:963
+#, c-format
+msgid "You say:\n"
+msgstr "Ti the:\n"
+
+#: ../lib/engine/gui/gtk-frontend/chat-window-page.cpp:968
+msgid "says:"
+msgstr "shkruan:"
+
+#: ../lib/engine/gui/gtk-frontend/call-history-view-gtk.cpp:163
+#: ../src/gui/statusmenu.cpp:547
+msgid "Clear"
+msgstr "Pastro"
+
+#: ../lib/engine/presence/avahi/avahi-presentity.cpp:47
+msgid "Neighbours"
+msgstr "Të afërt"
+
+#: ../lib/engine/presence/local-roster/local-presentity.cpp:218
+msgid "Edit roster element"
+msgstr "Ndrysho elementin e listës"
+
+#: ../lib/engine/presence/local-roster/local-presentity.cpp:219
+msgid ""
+"Please fill in this form to change an existing element of ekiga's internal "
+"roster"
+msgstr ""
+"Të lutem plotëso këtë formular për të ndryshuar një element ekzistues të "
+"listës së brendshme të ekiga"
+
+#: ../lib/engine/presence/local-roster/local-presentity.cpp:222
+#: ../lib/engine/presence/local-roster/local-heap.cpp:177
+#: ../lib/engine/presence/local-roster/local-heap.cpp:179
+msgid "Address:"
+msgstr "Adresa:"
+
+#: ../lib/engine/presence/local-roster/local-presentity.cpp:224
+msgid "Choose groups:"
+msgstr "Zgjidh grupet:"
+
+#: ../lib/engine/presence/local-roster/local-roster-bridge.cpp:94
+#: ../lib/engine/presence/local-roster/local-heap.cpp:165
+msgid "Add to local roster"
+msgstr "Shto tek lista lokale"
+
+#: ../lib/engine/presence/local-roster/local-heap.cpp:102
+msgid "Local roster"
+msgstr "Lista lokale"
+
+#: ../lib/engine/presence/local-roster/local-heap.cpp:119
+msgid "Rename"
+msgstr "Riemërto"
+
+#: ../lib/engine/presence/local-roster/local-heap.cpp:166
+msgid "Please fill in this form to add a new contact to ekiga's internal roster"
+msgstr ""
+"Plotëso këtë formular për të shtuar një kontakt të ri tek lista e brendshme "
+"e ekiga"
+
+#: ../lib/engine/presence/local-roster/local-heap.cpp:183
+msgid "Put contact in groups:"
+msgstr "Fut kontaktin në grupe:"
+
+#: ../lib/engine/presence/local-roster/local-heap.cpp:286
+msgid "You supplied an unsupported address"
+msgstr "Keni dhënë një adresë të pasuportuar"
+
+#: ../lib/engine/presence/local-roster/local-heap.cpp:288
+msgid "You already have a contact with this address!"
+msgstr "Një kontakt me këtë adresë ekziston rregullisht!"
+
+#: ../lib/engine/presence/local-roster/local-heap.cpp:313
+msgid "Rename group"
+msgstr "Ndrysho emrin e grupit"
+
+#: ../lib/engine/presence/local-roster/local-heap.cpp:314
+msgid "Please edit this group name"
+msgstr "Të lutem ndrysho emrin e këtij grupi"
+
+#: ../lib/gui/codecsbox.cpp:479
+msgid "Move selected codec priority upwards"
+msgstr "Rrit prioritetin e kodekut të zgjedhur"
+
+#: ../lib/gui/codecsbox.cpp:490
+msgid "Move selected codec priority downwards"
+msgstr "Ul prioritetin e kodekut të zgjedhur"
+
+#: ../lib/gui/gmdialog.c:474
 msgid "Do not show this dialog again"
 msgstr "Mos shfaq më këtë dritare dialogu"
 
-#: ../lib/gui/gmtray/eggtrayicon.c:133
-msgid "Orientation"
-msgstr "Orientimi"
-
-#: ../lib/gui/gmtray/eggtrayicon.c:134
-msgid "The orientation of the tray."
-msgstr "Orientimi i sirtarit."
-
-#: ../src/clients/stun.cpp:104
-#, c-format
-msgid "STUN server set to %s"
-msgstr "Serveri STUN caktuar tek %s"
-
-#: ../src/clients/stun.cpp:113
-msgid "Removed STUN server"
-msgstr "Serveri STUN u hoq"
-
-#: ../src/clients/stun.cpp:142
-#, c-format
-msgid ""
-"STUN test result: %s.\n"
-"\n"
-"Ekiga could not detect the type of NAT you are using. The most appropriate "
-"method, if your router does not natively support SIP or H.323, is probably "
-"to forward the required ports to your internal machine and use IP "
-"translation if you are behind a NAT router. Please also make sure you are "
-"not running a local firewall."
-msgstr ""
-"Rezultati i provës STUN: %s.\n"
-"\n"
-"Ekiga nuk mundi të zbulojë llojin e NAT në përdorim. Metoda më e "
-"përshtatshme nëse router-i yt nuk suporton SIP apo H.323 është ndoshta "
-"transferimi i portave të nevojshme për tek kompjuteri yt dhe përdorimi i "
-"përkthimit të IP-së nëse gjendesh prapa një router-i NAT. Të lutem "
-"gjithashtu sigurohu që nuk po përdor një firewall lokal."
-
-#: ../src/clients/stun.cpp:148
-#, c-format
-msgid ""
-"STUN test result: %s.\n"
-"\n"
-"Your system does not need any specific configuration as long as you do not "
-"have a local firewall blocking the ports required by Ekiga."
-msgstr ""
-"Rezultati i provës STUN: %s.\n"
-"\n"
-"Sistemi yt nuk ka nevojë për ndonjë konfigurim të veçantë për sa kohë nuk ke "
-"një firewall lokal i cili bllokon portat që përdor Ekiga."
-
-#: ../src/clients/stun.cpp:153
-#, c-format
-msgid ""
-"Ekiga detected Symmetric NAT. The most appropriate method, if your router "
-"does not natively support SIP or H.323, is to forward the required ports to "
-"your internal machine in order to change your Symmetric NAT into Cone NAT. "
-"If you run this test again after the port forwarding has been done, it "
-"should report Cone NAT. This should allow Ekiga to be used with STUN support "
-"enabled. If it does not report Cone NAT, then it means that there is a "
-"problem in your forwarding rules."
-msgstr ""
-"Ekiga zbuloi një NAT Simetrik. Mënyra më e përshtatshme nëse router-i yt nuk "
-"e suporton vetvetiu SIP apo H.323, është transferimi i portave të duhura për "
-"t'a ndryshuar NAT-in Simetrik në një NAT Konik dhe ripërsëritja e kësaj "
-"prove. Në këtë mënyrë duhet të zbulojë NAT Konik. Kjo duhet të lejojë "
-"përdorimin e Ekiga me një suport STUN. Nëse nuk arrin të zbulojë NAT Konik "
-"pas transferimit të portave, do të thotë që ekziston një problem me "
-"rregullat e transferimit."
-
-#: ../src/clients/stun.cpp:157
-#, c-format
-msgid ""
-"STUN test result: %s.\n"
-"\n"
-"You do not seem to be using a NAT router. STUN support is not required."
-msgstr ""
-"Rezultati i provës STUN: %s.\n"
-"\n"
-"Nuk ngjan të jeni duke përdorur një router NAT. STUN nuk nevojitet."
-
-#: ../src/clients/stun.cpp:162
-#, c-format
-msgid ""
-"STUN test result: %s.\n"
-"\n"
-"Using a STUN server is most probably the most appropriate method if your "
-"router does not natively support SIP or H.323.\n"
-"\n"
-"Enable STUN Support?"
-msgstr ""
-"Rezultati i provës STUN: %s.\n"
-"\n"
-"Përdorimi i një serveri STUN është mënyra më e përshtatshme nëse router-i yt "
-"nuk suporton vetvetiu SIP apo H.323.\n"
-"\n"
-"Aktivon suportin STUN?"
-
-#: ../src/clients/stun.cpp:170 ../src/clients/stun.cpp:183
-msgid "NAT Detection Finished"
-msgstr "Zbulimi i NAT përfundoi"
-
-#: ../src/clients/stun.cpp:194
-msgid "The detection of your NAT type is finished"
-msgstr "Zbulimi i llojit të NAT përfundoi"
-
-#: ../src/clients/stun.cpp:261
-msgid "Unknown NAT"
-msgstr "NAT i panjohur"
-
-#: ../src/clients/stun.cpp:262
-msgid "Open NAT"
-msgstr "NAT i hapur"
-
-#: ../src/clients/stun.cpp:263
-msgid "Cone NAT"
-msgstr "NAT konik"
-
-#: ../src/clients/stun.cpp:264
-msgid "Restricted NAT"
-msgstr "NAT i kufizuar"
-
-#: ../src/clients/stun.cpp:265
-msgid "Port Restricted NAT"
-msgstr "NAT i kufizuar sipas portave"
-
-#: ../src/clients/stun.cpp:266
-msgid "Symmetric NAT"
-msgstr "NAT simetrik"
-
-#: ../src/clients/stun.cpp:267
-msgid "Symmetric Firewall"
-msgstr "Firewall simetrik"
-
-#: ../src/clients/stun.cpp:268
-msgid "Blocked"
-msgstr "I bllokuar"
-
-#: ../src/clients/stun.cpp:269
-msgid "Partially Blocked"
-msgstr "Pjesërisht i bllokuar"
-
-#: ../src/clients/stun.cpp:270
-msgid "No NAT"
-msgstr "Asnjë NAT"
-
-#: ../src/clients/stun.cpp:321
-msgid "Detection in progress"
-msgstr "Në zbulim e sipër"
-
-# (pofilter) endpunc: checks whether punctuation at the end of the strings match
-#: ../src/clients/stun.cpp:322
-msgid "Please wait while your type of NAT is being detected."
-msgstr "Të lutem durim derisa të zbulohet lloji i NAT"
-
-#: ../src/clients/stun.cpp:373
-#, c-format
-msgid "Set STUN server to %s (%s)"
-msgstr "Cakto serverin STUN tek %s (%s)"
-
-#: ../src/clients/stun.cpp:375
-#, c-format
-msgid "Ignored STUN server (%s)"
-msgstr "U shpërfill serveri STUN (%s)"
-
-#: ../src/components/bonobo.cpp:117
-msgid "Cannot run Ekiga"
-msgstr "I pamundur ekzekutimi i Ekiga"
-
-# (pofilter) doublequoting: checks whether doublequoting is consistent between the two strings
-# (pofilter) acronyms: acronyms should not be translated: H.323
-#: ../src/components/bonobo.cpp:117
-msgid ""
-"Ekiga is already running, if you want it to call a given SIP, H.323, or "
-"callto address, please use \"ekiga -c address\"."
-msgstr ""
-"Ekiga është në ekzekutim e sipër, nëse dëshiron të thërrasësh një SIP të "
-"dhënë, H323 apo një adresë \"callto\", përdor komandën \"ekiga -c adresa\"."
-
-#: ../src/components/bonobo.cpp:170
-#, c-format
-msgid ""
-"It appears that you do not have ekiga.server installed in a valid location. "
-"Factory mode disabled.\n"
-msgstr ""
-"Mesa duket nuk keni instaluar serverin ekiga në një pozicion të vlefshëm. "
-"Modaliteti Factory jo aktiv.\n"
-
-#: ../src/components/bonobo.cpp:174
-#, c-format
-msgid ""
-"Error registering Ekiga with the activation service; factory mode disabled.\n"
-msgstr ""
-"Gabim gjatë regjistrimit të Ekiga tek shërbimi i aktivimit; modaliteti "
-"factory jjo aktiv.\n"
-
-#: ../src/components/bonobo.cpp:214
-#, c-format
-msgid "Failed to retrieve Ekiga server from activation server\n"
-msgstr "Tërheqja e serverit Ekiga nga serveri i aktivimit dështoi\n"
-
-#: ../src/devices/audio.cpp:285
+#: ../src/devices/audio.cpp:281
 msgid "Opening device for playing"
 msgstr "Hapja e dispozitivit për lexim"
 
-#: ../src/devices/audio.cpp:287
+#: ../src/devices/audio.cpp:283
 msgid "Opening device for recording"
 msgstr "Hapja e dispozitivit për regjistrim"
 
-#: ../src/devices/audio.cpp:298 ../src/devices/audio.cpp:300
-#: ../src/devices/videoinput.cpp:708
+#: ../src/devices/audio.cpp:294 ../src/devices/audio.cpp:296
 msgid "Failed to open the device"
 msgstr "E pamundur hapja e dispozitivit"
 
-#: ../src/devices/audio.cpp:298
+#: ../src/devices/audio.cpp:294
 #, c-format
 msgid ""
 "Impossible to open the selected audio device (%s) for recording. Please "
@@ -1241,7 +1272,7 @@ msgstr ""
 "Verifiko konfigurimin audio, të drejtat dhe që dispozitivi të mos jetë duke "
 "u përdorur nga programe të tjerë."
 
-#: ../src/devices/audio.cpp:300
+#: ../src/devices/audio.cpp:296
 #, c-format
 msgid ""
 "Impossible to open the selected audio device (%s) for playing. Please check "
@@ -1251,12 +1282,12 @@ msgstr ""
 "Verifiko konfigurimin audio, të drejtat dhe që dispozitivi të mos jetë duke "
 "u përdorur nga programe të tjerë."
 
-#: ../src/devices/audio.cpp:316 ../src/devices/audio.cpp:385
+#: ../src/devices/audio.cpp:312 ../src/devices/audio.cpp:381
 msgid "Cannot use the audio device"
 msgstr "I pamundur përdorimi i dispozitivit audio"
 
 # (pofilter) endwhitespace: checks whether whitespace at the end of the strings matches
-#: ../src/devices/audio.cpp:316
+#: ../src/devices/audio.cpp:312
 #, c-format
 msgid ""
 "The selected audio device (%s) was successfully opened but it is impossible "
@@ -1265,16 +1296,16 @@ msgstr ""
 "Dispozitivi i zgjedhur audio (%s) u hap me sukses por është i pamundur "
 "leximi i të dhënave nga ky dispozitiv. Verifikoni konfigurimin audio. "
 
-#: ../src/devices/audio.cpp:325
+#: ../src/devices/audio.cpp:321
 msgid "Recording your voice"
 msgstr "Duke regjistruar zërin tuaj"
 
-#: ../src/devices/audio.cpp:364
+#: ../src/devices/audio.cpp:360
 msgid "Recording and playing back"
 msgstr "Duke regjistruar dhe lexuar"
 
 # (pofilter) endwhitespace: checks whether whitespace at the end of the strings matches
-#: ../src/devices/audio.cpp:385
+#: ../src/devices/audio.cpp:381
 #, c-format
 msgid ""
 "The selected audio device (%s) was successfully opened but it is impossible "
@@ -1283,1110 +1314,481 @@ msgstr ""
 "Dispozitivi i zgjedhur audio (%s) u hap me sukses por është i pamundur "
 "shkrimi i të dhënave në këtë dispozitiv. Verifikoni konfigurimin audio. "
 
-#: ../src/devices/audio.cpp:481 ../src/devices/audio.cpp:482
-#: ../src/devices/videoinput.cpp:310 ../src/devices/videoinput.cpp:585
-#: ../src/endpoints/ekiga.cpp:351 ../src/endpoints/ekiga.cpp:353
-#: ../src/endpoints/ekiga.cpp:355 ../src/endpoints/pcss.cpp:198
-#: ../src/gui/druid.cpp:1784 ../src/gui/druid.cpp:1796
-#: ../src/gui/druid.cpp:1854
+#: ../src/devices/audio.cpp:476 ../src/devices/audio.cpp:477
+#: ../src/gui/assistant.cpp:1126 ../src/gui/assistant.cpp:1149
+#: ../src/gui/assistant.cpp:1172 ../src/gui/preferences.cpp:752
+#: ../src/gui/preferences.cpp:776 ../src/gui/preferences.cpp:799
 msgid "No device found"
 msgstr "Nuk u gjet asnjë dispozitiv"
 
-#: ../src/devices/audio.cpp:500
+#: ../src/devices/audio.cpp:495
 #, c-format
 msgid ""
 "Ekiga is now recording from %s and playing back to %s. Please say \"1, 2, 3, "
-"Ekiga rocks!\" in your microphone. You should hear yourself back into the "
-"speakers with a four-second delay."
+"Ekiga rocks!\" in your microphone. You should hear yourself from the "
+"speakers after a four-second delay."
 msgstr ""
-"Ekiga është duke regjistruar nga %s dhe duke lexuar tek %s. Të lutem, thuaj "
-"\"1 2 3, Ekiga është i mrekullueshëm!\" në mikrofonin tënd. Duhet të dëgjosh "
-"veten në altoparlant me katër sekonda vonesë."
-
-#: ../src/devices/videoinput.cpp:319
-#, c-format
-msgid "Opening video device %s with plugin %s"
-msgstr "Duke hapur dispozitivin %s me plugin %s"
-
-#: ../src/devices/videoinput.cpp:347
-#, c-format
-msgid "Successfully opened video device %s, channel %d"
-msgstr "U hap mesukses dispozitivi video %s, kanali %d"
-
-#: ../src/devices/videoinput.cpp:358
-#, c-format
-msgid "Error while opening video device %s"
-msgstr "Gabim gjatë hapjes së dispozitivit video %s"
-
-#. Translators: Do not translate MovingLogo and Picture
-#: ../src/devices/videoinput.cpp:362
-msgid ""
-"A moving logo will be transmitted during calls. Notice that you can always "
-"transmit a given image or the moving logo by choosing \"Picture\" as video "
-"plugin and \"MovingLogo\" or \"StaticPicture\" as device."
-msgstr ""
-"Një stemë në lëvizje do të transmetohet gjatë thirrjeve. Ki parasysh që mund "
-"të transmetosh gjithmonë një figurë të caktuar apo stemën në lëvizje duke "
-"zgjedhur \"Figurë\" si plugin video dhe \"StemëeLëvizshme\" apo "
-"\"FigurëStatike\" si dispozitiv."
-
-#: ../src/devices/videoinput.cpp:364
-msgid "Couldn't open the video device"
-msgstr "E pamundur hapja e dispozitivit video"
-
-# (pofilter) doublespacing: checks for bad double-spaces by comparing to original
-#: ../src/devices/videoinput.cpp:368
-msgid ""
-"There was an error while opening the device. Please check your permissions "
-"and make sure that the appropriate driver is loaded."
-msgstr ""
-"U ndesh një gabim gjatë hapjes së dispositivit.  Verifikoni të drejtat dhe "
-"sigurohuni që të jetë ngarkuar driveri i duhur."
-
-#: ../src/devices/videoinput.cpp:372 ../src/devices/videoinput.cpp:686
-#, c-format
-msgid "Your video driver doesn't support the requested video format."
-msgstr "Driveri juaj video nuk suporton formatin e kërkuar video."
-
-#: ../src/devices/videoinput.cpp:376
-msgid "Could not open the chosen channel."
-msgstr "E pamundur hapja e kanalit të zgjedhur."
-
-#: ../src/devices/videoinput.cpp:380
-msgid ""
-"Your driver doesn't seem to support any of the color formats supported by "
-"Ekiga.\n"
-" Please check your kernel driver documentation in order to determine which "
-"Palette is supported."
-msgstr ""
-"Driveri yt mesa duket nuk suporton formatet e ngjyrave të suportuara nga "
-"Ekiga.\n"
-" Të lutem lexo dokumentimet e kernelit tënd për të përcaktuar cila paletë "
-"funksionon."
-
-#: ../src/devices/videoinput.cpp:384
-msgid "Error while setting the frame rate."
-msgstr "Gabim gjatë caktimit të numrit të frame."
-
-#: ../src/devices/videoinput.cpp:388
-msgid "Error while setting the frame size."
-msgstr "Gabim gjatë caktimit të madhësisë së frame."
-
-#: ../src/devices/videoinput.cpp:428
-msgid "Opened the video device using the \"Picture\" video plugin"
-msgstr "Dispozitivi i videos u hap duke përdorur plugin \"Figurë\""
-
-#: ../src/devices/videoinput.cpp:586
-msgid "Picture"
-msgstr "Figurë"
-
-#: ../src/devices/videoinput.cpp:598
-#, c-format
-msgid ""
-"Ekiga is now testing the %s video device. If you experience machine crashes, "
-"then report a bug to the video driver author."
-msgstr ""
-"Ekiga është duke provuar dispozitivin video %s. Nëse kompjuteri bllokohet, "
-"atëhere raporto një difekt tek autori i driver-it video."
-
-#: ../src/devices/videoinput.cpp:660
-#, c-format
-msgid "Test %d done"
-msgstr "U plotësua prova %d"
-
-#: ../src/devices/videoinput.cpp:662
-#, c-format
-msgid "Test %d failed"
-msgstr "Prova %d dështoi"
-
-#: ../src/devices/videoinput.cpp:681
-#, c-format
-msgid "Error while opening %s."
-msgstr "Gabim gjatë hapjes së %s."
-
-#: ../src/devices/videoinput.cpp:690
-#, c-format
-msgid "Could not open the chosen channel with the chosen video format."
-msgstr "E pamundur hapja e kanalit të zgjedhur me formatin e zgjedhur video."
-
-#: ../src/devices/videoinput.cpp:694
-#, c-format
-msgid "Your driver doesn't support any of the color formats tried by Ekiga"
-msgstr ""
-"Driveri yt nuk suporton asnjë nga formatet e ngjyrave të provuara nga Ekiga"
-
-#: ../src/devices/videoinput.cpp:698
-#, c-format
-msgid "Error with the frame rate."
-msgstr "Gabim me numrin e frame."
-
-#: ../src/devices/videoinput.cpp:702
-#, c-format
-msgid "Error with the frame size."
-msgstr "Gabim në madhësinë e frame."
-
-#: ../src/endpoints/accountshandler.cpp:186
-#: ../src/endpoints/accountshandler.cpp:270
-msgid "Registering"
-msgstr "Duke u regjistruar"
-
-#: ../src/endpoints/accountshandler.cpp:200
-#, c-format
-msgid "Registration of %s to %s failed"
-msgstr "Regjistrimi i %s në %s dështoi"
-
-#: ../src/endpoints/accountshandler.cpp:211
-#: ../src/endpoints/accountshandler.cpp:323 ../src/endpoints/sip.cpp:317
-#: ../src/endpoints/sip.cpp:329
-msgid "Registration failed"
-msgstr "Regjistrimi dështoi"
-
-#: ../src/endpoints/accountshandler.cpp:225
-#: ../src/endpoints/accountshandler.cpp:338
-msgid "Unregistering"
-msgstr "Duke u çregjistruar"
-
-#: ../src/endpoints/accountshandler.cpp:294
-msgid "Gatekeeper registration failed: duplicate alias"
-msgstr "Regjistrimi në gatekeeper dështoi: alias i dyfishtë"
-
-#: ../src/endpoints/accountshandler.cpp:298
-msgid "Gatekeeper registration failed: bad username/password"
-msgstr "Regjistrimi në gatekeeper dështoi: përdorues/fjalëkalim i pasaktë"
-
-#: ../src/endpoints/accountshandler.cpp:301
-msgid "Gatekeeper registration failed: transport error"
-msgstr "Regjistrimi në gatekeeper dështoi: gabim transporti"
-
-#: ../src/endpoints/accountshandler.cpp:304
-#: ../src/endpoints/accountshandler.cpp:309
-msgid "Gatekeeper registration failed"
-msgstr "Regjistrimi në gatekeeper dështoi"
-
-#: ../src/endpoints/accountshandler.cpp:312 ../src/endpoints/sip.cpp:225
-#, c-format
-msgid "Registered to %s"
-msgstr "Regjistruar në %s"
-
-#: ../src/endpoints/accountshandler.cpp:322 ../src/endpoints/sip.cpp:231
-msgid "Registered"
-msgstr "I regjistruar"
-
-#: ../src/endpoints/accountshandler.cpp:332 ../src/endpoints/sip.cpp:236
-#, c-format
-msgid "Unregistered from %s"
-msgstr "Çregjistruar nga %s"
-
-#: ../src/endpoints/accountshandler.cpp:352 ../src/endpoints/sip.cpp:242
-msgid "Unregistered"
-msgstr "Çregjistruar"
-
-#: ../src/endpoints/ekiga.cpp:105
-msgid "Answering incoming call"
-msgstr "Përgjigje thirrjes në hyrje"
-
-#: ../src/endpoints/ekiga.cpp:529
-#, c-format
-msgid "Started Ekiga %d.%d.%d for user %s"
-msgstr "U nis Ekiga %d.%d.%d për përdoruesin %s"
-
-#: ../src/endpoints/manager.cpp:672
-#, c-format
-msgid "Forwarding call to %s"
-msgstr "Duke transferuar thirrjen tek %s"
-
-#. Update the log and status bar
-#: ../src/endpoints/manager.cpp:826
-#, c-format
-msgid "Call from %s"
-msgstr "Thirrje nga %s"
-
-#: ../src/endpoints/manager.cpp:840
-msgid "Rejecting incoming call"
-msgstr "Duke refuzuar thirrjen në hyrje"
-
-#: ../src/endpoints/manager.cpp:842
-#, c-format
-msgid "Rejecting incoming call from %s"
-msgstr "Duke refuzuar thirrjen në hyrje nga %s"
-
-#: ../src/endpoints/manager.cpp:848
-msgid "Forwarding incoming call"
-msgstr "Duke transferuar thirrjen në hyrje"
-
-#: ../src/endpoints/manager.cpp:850
-#, c-format
-msgid "Forwarding incoming call from %s to %s"
-msgstr "Duke transferuar thirrjen në hyrje nga %s tek %s"
-
-#: ../src/endpoints/manager.cpp:856
-msgid "Auto-Answering incoming call"
-msgstr "Auto-Përgjigje thirrjes në hyrje"
-
-#: ../src/endpoints/manager.cpp:857
-#, c-format
-msgid "Auto-Answering incoming call from %s"
-msgstr "Auto-Përgjigje thirrjes në hyrje nga %s"
-
-#: ../src/endpoints/manager.cpp:1012
-#, c-format
-msgid "Connected with %s using %s"
-msgstr "Lidhur me %s duke përdorur %s"
-
-#: ../src/endpoints/manager.cpp:1014
-#, c-format
-msgid "Connected with %s"
-msgstr "Lidhur me %s"
-
-#: ../src/endpoints/manager.cpp:1124 ../src/gui/main.cpp:4157
-msgid "Standby"
-msgstr "Në pritje"
-
-#: ../src/endpoints/manager.cpp:1189
-msgid "Local user cleared the call"
-msgstr "Përdoruesi lokal e mbylli thirrjen"
-
-#: ../src/endpoints/manager.cpp:1192 ../src/endpoints/manager.cpp:1195
-msgid "Local user rejected the call"
-msgstr "Përdoruesi lokal refuzoi thirrjen"
-
-#: ../src/endpoints/manager.cpp:1198
-msgid "Remote user cleared the call"
-msgstr "Përdoruesi remot e mbylli thirrjen"
-
-#: ../src/endpoints/manager.cpp:1201
-msgid "Remote user rejected the call"
-msgstr "Përdoruesi remot refuzoi thirrjen"
-
-#: ../src/endpoints/manager.cpp:1204
-msgid "Call not answered in the required time"
-msgstr "Asnjë përgjigje thirrjes brenda kohës së kërkuar"
-
-#: ../src/endpoints/manager.cpp:1207
-msgid "Remote user has stopped calling"
-msgstr "Përdoruesi remot ndërpreu thirrjen"
-
-#: ../src/endpoints/manager.cpp:1210
-msgid "Abnormal call termination"
-msgstr "Përfundim anormal i thirrjes"
-
-#: ../src/endpoints/manager.cpp:1213
-msgid "Could not connect to remote host"
-msgstr "E pamundur lidhje me host remot"
-
-#: ../src/endpoints/manager.cpp:1216
-msgid "The Gatekeeper cleared the call"
-msgstr "Gatekeeperi e mbylli thirrjen"
-
-#: ../src/endpoints/manager.cpp:1219 ../src/endpoints/urlhandler.cpp:530
-#: ../src/endpoints/urlhandler.cpp:535
-msgid "User not found"
-msgstr "Përdoruesi nuk u gjet"
-
-#: ../src/endpoints/manager.cpp:1222
-msgid "Insufficient bandwidth"
-msgstr "Sasi e pamjaftueshme bande"
-
-#: ../src/endpoints/manager.cpp:1225
-msgid "No common codec"
-msgstr "Asnjë kodek i përbashkët"
-
-#: ../src/endpoints/manager.cpp:1228
-msgid "Call forwarded"
-msgstr "Thirrje e transferuar"
-
-#: ../src/endpoints/manager.cpp:1231
-msgid "Security check failed"
-msgstr "Verifikimi i sigurisë dështoi"
-
-#: ../src/endpoints/manager.cpp:1234
-msgid "Local user is busy"
-msgstr "Përdoruesi lokal është i zënë"
-
-#: ../src/endpoints/manager.cpp:1237 ../src/endpoints/manager.cpp:1243
-msgid "Congested link to remote party"
-msgstr "Linja e korrespondentit remot është e ngarkuar"
-
-#: ../src/endpoints/manager.cpp:1240
-msgid "Remote user is busy"
-msgstr "Përdoruesi remot ështe i zënë"
-
-#: ../src/endpoints/manager.cpp:1246
-msgid "Remote host is offline"
-msgstr "Përdoruesi remot është jashtë linje"
-
-#: ../src/endpoints/manager.cpp:1251
-msgid "Remote user is unreachable"
-msgstr "Përdoruesi remot nuk mund të arrihet"
-
-#: ../src/endpoints/manager.cpp:1255
-msgid "Call completed"
-msgstr "Thirrja u plotësua"
-
-#: ../src/endpoints/manager.cpp:1609
-msgid "Error while starting the listener for the H.323 protocol"
-msgstr "Gabim gjatë nisjes së përgjuesit për protokollin H.323"
-
-#: ../src/endpoints/manager.cpp:1609
-msgid ""
-"You will not be able to receive incoming H.323 calls. Please check that no "
-"other program is already running on the port used by Ekiga."
-msgstr ""
-"Nuk do të kesh mundësi të marrësh thirrjet H.323 në hyrje. Të lutem "
-"kontrollo që asnjë program tjetër nuk është në zbatim tek porta e përdorur "
-"nga Ekiga."
-
-#: ../src/endpoints/manager.cpp:1626
-msgid "Error while starting the listener for the SIP protocol"
-msgstr "Gabim gjatë nisjes të përgjuesit për protokollin SIP"
-
-#: ../src/endpoints/manager.cpp:1626
-msgid ""
-"You will not be able to receive incoming SIP calls. Please check that no "
-"other program is already running on the port used by Ekiga."
-msgstr ""
-"Nuk do të kesh mundësi të marrësh thirrjet SIP në hyrje. Të lutem kontrollo "
-"që asnjë program tjetër nuk është në zbatim tek porta e përdorur nga Ekiga."
-
-#: ../src/endpoints/manager.cpp:1873
-#, c-format
-msgid "Opened codec %s for transmission"
-msgstr "U hap kodek %s për transmetim"
-
-#: ../src/endpoints/manager.cpp:1884
-#, c-format
-msgid "Closed codec %s which was opened for transmission"
-msgstr "U mbyll kodek %s që ishte hapur për transmetim"
-
-#: ../src/endpoints/manager.cpp:1898
-#, c-format
-msgid "Opened codec %s for reception"
-msgstr "U hap kodek %s për marrje"
-
-#: ../src/endpoints/manager.cpp:1909
-#, c-format
-msgid "Closed codec %s which was opened for reception"
-msgstr "U mbyll kodek %s i cili ishte hapur për marrje"
+"Ekiga është duke regjistruar nga %s dhe duke riprodhuar tek %s. Të lutem, "
+"thuaj \"1 2 3, Ekiga është i mrekullueshëm!\" në mikrofonin tënd. Duhet të "
+"dëgjosh veten në altoparlant mbas një intervali prej katër sekondash."
+
+#: ../src/endpoints/h323-endpoint.cpp:149
+#: ../src/endpoints/sip-endpoint.cpp:253 ../src/endpoints/sip-endpoint.cpp:257
+msgid "Call"
+msgstr "Telefonatë"
+
+#: ../src/endpoints/h323-endpoint.cpp:311
+msgid "Duplicate alias"
+msgstr "Alias i duplikuar"
+
+#: ../src/endpoints/h323-endpoint.cpp:314
+msgid "Bad username/password"
+msgstr "Përdorues/fjalëkalim i pavlefshëm"
+
+#: ../src/endpoints/h323-endpoint.cpp:317
+#: ../src/endpoints/sip-endpoint.cpp:876
+msgid "Transport error"
+msgstr "Gabim gjatë transportimit"
 
 # (pofilter) unchanged: please translate
-#: ../src/endpoints/manager.cpp:2095
-#, c-format
-msgid "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
-msgstr "%.2ld:%.2ld:%.2ld  A:%.2f/%.2f   V:%.2f/%.2f"
+#: ../src/endpoints/h323-endpoint.cpp:328
+#: ../src/endpoints/h323-endpoint.cpp:333
+#: ../src/endpoints/sip-endpoint.cpp:883
+msgid "Failed"
+msgstr "Dështoi"
 
-#: ../src/endpoints/pcss.cpp:222
-#, c-format
-msgid "Opened %s for recording with plugin %s"
-msgstr "U hap %s për të regjistruar me plugin %s"
-
-#: ../src/endpoints/pcss.cpp:223
-#, c-format
-msgid "Opened %s for playing with plugin %s"
-msgstr "U hap %s për të lexuar me plugin %s"
-
-#: ../src/endpoints/pcss.cpp:241
-msgid "Could not open audio channel for audio transmission"
-msgstr "E pamundur hapja e kanalit audio për transmetimin e zërit"
-
-#: ../src/endpoints/pcss.cpp:241
+#: ../src/endpoints/manager.cpp:101
 msgid ""
-"An error occured while trying to record from the soundcard for the audio "
-"transmission. Please check that your soundcard is not busy and that your "
-"driver supports full-duplex.\n"
-"The audio transmission has been disabled."
+"Ekiga did not manage to configure your network settings automatically. You "
+"can still use it, but you need to configure your network settings manually.\n"
+"\n"
+"Please see http://wiki.ekiga.org/index.php/Enable_port_forwarding_manually "
+"for instructions"
 msgstr ""
-"U ndesh një gabim gjatë përpjekjes për të regjistruar nga skeda audio për "
-"transmetimin e zërit. Ju lutem verifikoni që karta e zërit nuk është e zënë "
-"dhe që driveri suporton full-duplex.\n"
-"Transmetimi i zërit u çaktivua."
 
-#: ../src/endpoints/pcss.cpp:243
-msgid "Could not open audio channel for audio reception"
-msgstr "E pamundur hapja e kanalit audio për marrjen e zërit"
+#: ../src/endpoints/opal-account.cpp:298
+msgid "_Disable"
+msgstr "_Çaktivizo"
 
-#: ../src/endpoints/pcss.cpp:243
-msgid ""
-"An error occured while trying to play audio to the soundcard for the audio "
-"reception. Please check that your soundcard is not busy and that your driver "
-"supports full-duplex.\n"
-"The audio reception has been disabled."
-msgstr ""
-"U ndesh një gabim gjatë përpjekjes për të lexuar nga skeda audio për marrjen "
-"e zërit. Ju lutem verifikoni që karta e zërit nuk është e zënë dhe që "
-"driveri suporton full-duplex.\n"
-"Marrja e zërit u çaktivua."
+#: ../src/endpoints/opal-account.cpp:301
+msgid "_Enable"
+msgstr "_Aktivizo"
 
-#: ../src/endpoints/sip.cpp:288
-msgid "Bad request"
-msgstr "Kërkesë e gabuar"
+#: ../src/endpoints/opal-account.cpp:322 ../src/gui/assistant.cpp:664
+msgid "Recharge the account"
+msgstr "Ringarko profilin"
 
-#: ../src/endpoints/sip.cpp:292
-msgid "Payment required"
-msgstr "Është me pagesë"
+#: ../src/endpoints/opal-account.cpp:327 ../src/gui/assistant.cpp:676
+msgid "Consult the balance history"
+msgstr "Kontrollo kronollogjinë e harxhimeve"
 
-#: ../src/endpoints/sip.cpp:297
-msgid "Forbidden"
-msgstr "Ndalohet"
+#: ../src/endpoints/opal-account.cpp:332 ../src/gui/assistant.cpp:688
+msgid "Consult the calls history"
+msgstr "Kontrollo kronollogjinë e bisedave"
 
-#: ../src/endpoints/sip.cpp:301
-msgid "Timeout"
-msgstr "Koha skadoi"
+#: ../src/endpoints/opal-account.cpp:347 ../src/endpoints/opal-bank.cpp:74
+msgid "Edit account"
+msgstr "Ndrysho profilin"
 
-#: ../src/endpoints/sip.cpp:305
-msgid "Conflict"
-msgstr "Konflikt"
-
-#: ../src/endpoints/sip.cpp:309
-msgid "Temporarily unavailable"
-msgstr "Përkohësisht jo në dispozicion"
-
-#: ../src/endpoints/sip.cpp:313
-msgid "Not Acceptable"
-msgstr "E papranueshme"
-
-#: ../src/endpoints/sip.cpp:322
-#, c-format
-msgid "Registration failed: %s"
-msgstr "Regjistrimi dështoi: %s"
-
-#: ../src/endpoints/sip.cpp:334
-#, c-format
-msgid "Unregistration failed: %s"
-msgstr "Çregjistrimi dështoi: %s"
-
-#: ../src/endpoints/sip.cpp:341
-msgid "Unregistration failed"
-msgstr "Çregjistrimi dështoi"
-
-#: ../src/endpoints/sip.cpp:542
-msgid "Error: User not found"
-msgstr "Gabim: Përdoruesi nuk u gjet"
-
-#: ../src/endpoints/sip.cpp:546
-msgid "Error: User offline"
-msgstr "Gabim: Përdorues jashtë linje"
-
-#: ../src/endpoints/sip.cpp:551
-msgid "Error: Forbidden"
-msgstr "Gabim: Ndalohet"
-
-#: ../src/endpoints/sip.cpp:555
-msgid "Error: Timeout"
-msgstr "Gabim: Koha skadoi"
-
-#: ../src/endpoints/sip.cpp:559 ../src/gui/chat.cpp:1031
-msgid "Error: Failed to transmit message"
-msgstr "Gabim: Transmetimi i mesazhit dështoi"
-
-#: ../src/endpoints/urlhandler.cpp:441
-msgid "Invalid URL handler"
-msgstr "Trajtues i pavlefshëm URL"
-
-# (pofilter) doublespacing: checks for bad double-spaces by comparing to original
-#: ../src/endpoints/urlhandler.cpp:441
-msgid ""
-"Please specify a valid URL handler. Currently both h323: and callto: are "
-"supported."
-msgstr ""
-"Ju lutem specifikoni një trajtues të vlefshëm adresash URL.  Aktualisht dhe "
-"h323: dhe callto: suportohen."
-
-#: ../src/endpoints/urlhandler.cpp:469
-#, c-format
-msgid "Calling %s"
-msgstr "Duke thirrur %s"
-
-#: ../src/endpoints/urlhandler.cpp:472
-#, c-format
-msgid "Transferring call to %s"
-msgstr "Transferim i thirrjes drejt %s"
-
-#: ../src/endpoints/urlhandler.cpp:541 ../src/endpoints/urlhandler.cpp:546
-msgid "Failed to call user"
-msgstr "Thirrja e përdoruesit dështoi"
-
-#: ../src/gui/accounts.cpp:410
-msgid "Edit the Account Information"
-msgstr "Ndrysho të dhënat e profilit"
-
-#. Account Name
-#: ../src/gui/accounts.cpp:434
-msgid "Account Name:"
-msgstr "Emri i profilit:"
-
-#: ../src/gui/accounts.cpp:448
-msgid "Protocol:"
-msgstr "Protokolli:"
-
-#: ../src/gui/accounts.cpp:472 ../src/gui/accounts.cpp:993
+#: ../src/endpoints/opal-account.cpp:353 ../src/endpoints/opal-bank.cpp:112
 msgid "Registrar:"
 msgstr "Regjistri:"
 
 # (pofilter) unchanged: please translate
-#: ../src/gui/accounts.cpp:474 ../src/gui/accounts.cpp:1002
+#: ../src/endpoints/opal-account.cpp:355 ../src/endpoints/opal-bank.cpp:102
 msgid "Gatekeeper:"
 msgstr "Gatekeeper:"
 
-#. User
-#: ../src/gui/accounts.cpp:488
+#: ../src/endpoints/opal-account.cpp:356 ../src/endpoints/opal-bank.cpp:83
+#: ../src/endpoints/opal-bank.cpp:94 ../src/endpoints/opal-bank.cpp:103
+#: ../src/endpoints/opal-bank.cpp:113
 msgid "User:"
 msgstr "Përdoruesi:"
 
-#. Password
-#: ../src/gui/accounts.cpp:503
+#: ../src/endpoints/opal-account.cpp:358 ../src/endpoints/opal-bank.cpp:114
+msgid "Authentication User:"
+msgstr "Përdoruesi për autentifikim:"
+
+#: ../src/endpoints/opal-account.cpp:359 ../src/endpoints/opal-bank.cpp:85
+#: ../src/endpoints/opal-bank.cpp:96 ../src/endpoints/opal-bank.cpp:105
+#: ../src/endpoints/opal-bank.cpp:115
 msgid "Password:"
 msgstr "Fjalëkalimi:"
 
-#. Advanced Options
-#: ../src/gui/accounts.cpp:520
-msgid "More _Options"
-msgstr "_Opsione shtesë"
+#: ../src/endpoints/opal-account.cpp:360 ../src/endpoints/opal-bank.cpp:106
+#: ../src/endpoints/opal-bank.cpp:116
+msgid "Timeout:"
+msgstr "Koha e skadimit:"
 
-#: ../src/gui/accounts.cpp:534
-msgid "Authentication Login:"
-msgstr "Autentifikimi i hyrjes:"
+#: ../src/endpoints/opal-account.cpp:361 ../src/endpoints/opal-bank.cpp:119
+msgid "Enable Account"
+msgstr "Aktivizo profilin"
 
-#: ../src/gui/accounts.cpp:556 ../src/gui/accounts.cpp:1003
-msgid "Gatekeeper ID:"
-msgstr "ID në Gatekeeper:"
+#: ../src/endpoints/opal-account.cpp:396 ../src/endpoints/opal-bank.cpp:155
+msgid "You did not supply a name for that account."
+msgstr "Nuk ke dhënë emrin për atë profil."
 
-#. Timeout
-#: ../src/gui/accounts.cpp:580
-msgid "Registration Timeout:"
-msgstr "Skadenca e regjistrimit"
+#: ../src/endpoints/opal-account.cpp:398 ../src/endpoints/opal-bank.cpp:157
+msgid "You did not supply a host to register to."
+msgstr "Nuk ke dhënë host ku duhet kryer regjistrimi."
 
-#. FIXME change strings after stringfreeze to something more useful - js
-#: ../src/gui/accounts.cpp:630 ../src/gui/accounts.cpp:637
-#: ../src/gui/accounts.cpp:649 ../src/gui/addressbook.cpp:3113
-#: ../src/gui/addressbook.cpp:3592
-msgid "Missing information"
-msgstr "Informacione munguese"
+#: ../src/endpoints/opal-account.cpp:400 ../src/endpoints/opal-bank.cpp:159
+msgid "You did not supply a user name for that account."
+msgstr "Nuk ke dhënë emrin e përdoruesit për atë profil."
 
-#: ../src/gui/accounts.cpp:631 ../src/gui/accounts.cpp:638
-msgid ""
-"Please make sure to provide a valid account name, host name, and user name."
-msgstr ""
-"Të lutem sigurohu që ke dhënë një emër të vlefshëm profili, emër host-i, dhe "
-"emër përdoruesi."
+#: ../src/endpoints/opal-account.cpp:402 ../src/endpoints/opal-bank.cpp:161
+msgid "The timeout should have a bigger value."
+msgstr "Koha e skadimit duhet të ketë një vlerë më të madhe."
 
-#: ../src/gui/accounts.cpp:650
-msgid ""
-"Please make sure to provide a valid account name, host name and registration "
-"timeout."
-msgstr ""
-"Të lutem sigurohu që ke dhënë një emër të vlefshëm profili, emër host-i dhe "
-"skadencë regjistrimi."
+#: ../src/endpoints/opal-bank.cpp:55
+msgid "_Add an Ekiga.net Account"
+msgstr "_Shto një profil Ekiga.net"
 
-#: ../src/gui/accounts.cpp:736
-#, c-format
-msgid "Are you sure you want to delete account %s?"
-msgstr "Je i sigurtë që dëshiron të eleminosh profilin %s?"
+#: ../src/endpoints/opal-bank.cpp:57
+msgid "_Add an Ekiga Call Out Account"
+msgstr "_Shto një profil Ekiga Call Out"
 
-# (pofilter) unchanged: please translate
-#: ../src/gui/accounts.cpp:994
-msgid "Realm/Domain:"
-msgstr "Realm/Domain:"
+#: ../src/endpoints/opal-bank.cpp:59
+msgid "_Add a SIP Account"
+msgstr "_Shto një profil SIP"
 
-#: ../src/gui/accounts.cpp:1517
+#: ../src/endpoints/opal-bank.cpp:61
+msgid "_Add an H.323 Account"
+msgstr "_Shto një profil H.323"
+
+#: ../src/endpoints/opal-bank.cpp:75
+msgid "Please update the following fields."
+msgstr "Të lutem përditëso fushat në vijim."
+
+#: ../src/endpoints/opal-bank.cpp:80 ../src/gui/assistant.cpp:540
+msgid "Get an ekiga.net SIP account"
+msgstr "Merr një profil SIP tek ekiga.net"
+
+#: ../src/endpoints/opal-bank.cpp:90 ../src/gui/assistant.cpp:652
+msgid "Get an Ekiga Call Out account"
+msgstr "Merr një profil Ekiga Call Out"
+
+#: ../src/endpoints/opal-call.cpp:359
+msgid "Local user cleared the call"
+msgstr "Përdoruesi lokal e mbylli thirrjen"
+
+#: ../src/endpoints/opal-call.cpp:362 ../src/endpoints/opal-call.cpp:365
+msgid "Local user rejected the call"
+msgstr "Përdoruesi lokal refuzoi thirrjen"
+
+#: ../src/endpoints/opal-call.cpp:368
+msgid "Remote user cleared the call"
+msgstr "Përdoruesi remot e mbylli thirrjen"
+
+#: ../src/endpoints/opal-call.cpp:371
+msgid "Remote user rejected the call"
+msgstr "Përdoruesi remot refuzoi thirrjen"
+
+#: ../src/endpoints/opal-call.cpp:374
+msgid "Remote user has stopped calling"
+msgstr "Përdoruesi remot ndërpreu thirrjen"
+
+#: ../src/endpoints/opal-call.cpp:377
+msgid "Abnormal call termination"
+msgstr "Përfundim anormal i thirrjes"
+
+#: ../src/endpoints/opal-call.cpp:380
+msgid "Could not connect to remote host"
+msgstr "E pamundur lidhje me host remot"
+
+#: ../src/endpoints/opal-call.cpp:383
+msgid "The Gatekeeper cleared the call"
+msgstr "Gatekeeper-i e mbylli thirrjen"
+
+#: ../src/endpoints/opal-call.cpp:386
+msgid "User not found"
+msgstr "Përdoruesi nuk u gjet"
+
+#: ../src/endpoints/opal-call.cpp:389
+msgid "Insufficient bandwidth"
+msgstr "Sasi e pamjaftueshme bande"
+
+#: ../src/endpoints/opal-call.cpp:392
+msgid "No common codec"
+msgstr "Asnjë kodek i përbashkët"
+
+#: ../src/endpoints/opal-call.cpp:395
+msgid "Call forwarded"
+msgstr "Thirrje e transferuar"
+
+#: ../src/endpoints/opal-call.cpp:398
+msgid "Security check failed"
+msgstr "Verifikimi i sigurisë dështoi"
+
+#: ../src/endpoints/opal-call.cpp:401
+msgid "Local user is busy"
+msgstr "Përdoruesi lokal është i zënë"
+
+#: ../src/endpoints/opal-call.cpp:404 ../src/endpoints/opal-call.cpp:410
+msgid "Congested link to remote party"
+msgstr "Linja e korrespondentit remot është e ngarkuar"
+
+#: ../src/endpoints/opal-call.cpp:407
+msgid "Remote user is busy"
+msgstr "Përdoruesi remot ështe i zënë"
+
+#: ../src/endpoints/opal-call.cpp:413
+msgid "Remote host is offline"
+msgstr "Përdoruesi remot është jashtë linje"
+
+#: ../src/endpoints/opal-call.cpp:420
+msgid "Remote user is not available"
+msgstr "Përdoruesi remot nuk gjendet në dispozicion"
+
+#: ../src/endpoints/opal-call.cpp:422
+msgid "Local user is not available"
+msgstr "Përdoruesi lokal nuk është në dispozicion"
+
+#: ../src/endpoints/opal-call.cpp:435
+msgid "Call completed"
+msgstr "Thirrja u plotësua"
+
+#: ../src/endpoints/sip-endpoint.cpp:254 ../src/endpoints/sip-endpoint.cpp:258
+msgid "Forward"
+msgstr "Përcill"
+
+#: ../src/endpoints/sip-endpoint.cpp:278 ../src/endpoints/sip-endpoint.cpp:280
+msgid "Message"
+msgstr "Mesazhi"
+
+#: ../src/endpoints/sip-endpoint.cpp:691
+msgid "Bad request"
+msgstr "Kërkesë e gabuar"
+
+#: ../src/endpoints/sip-endpoint.cpp:695
+msgid "Payment required"
+msgstr "Është me pagesë"
+
+#: ../src/endpoints/sip-endpoint.cpp:699
+msgid "Unauthorized"
+msgstr "I paautorizuar"
+
+#: ../src/endpoints/sip-endpoint.cpp:703
+msgid "Forbidden"
+msgstr "Ndalohet"
+
+#: ../src/endpoints/sip-endpoint.cpp:707
+msgid "Timeout"
+msgstr "Koha skadoi"
+
+#: ../src/endpoints/sip-endpoint.cpp:711
+msgid "Conflict"
+msgstr "Konflikt"
+
+#: ../src/endpoints/sip-endpoint.cpp:715
+msgid "Temporarily unavailable"
+msgstr "Përkohësisht jo në dispozicion"
+
+#: ../src/endpoints/sip-endpoint.cpp:719
+msgid "Not acceptable"
+msgstr "Nuk pranohet"
+
+#: ../src/endpoints/sip-endpoint.cpp:723
+msgid "Illegal status code"
+msgstr "kod i pavlefshëm gjëndje"
+
+#: ../src/endpoints/sip-endpoint.cpp:727
+msgid "Multiple choices"
+msgstr "Zgjedhje shumëfishe"
+
+#: ../src/endpoints/sip-endpoint.cpp:731
+msgid "Moved permanently"
+msgstr "Lëvizur përgjithmonë"
+
+#: ../src/endpoints/sip-endpoint.cpp:735
+msgid "Moved temporarily"
+msgstr "Lëvizur përkohësisht"
+
+#: ../src/endpoints/sip-endpoint.cpp:739
+msgid "Use proxy"
+msgstr "Përdor proxy"
+
+#: ../src/endpoints/sip-endpoint.cpp:743
+msgid "Alternative service"
+msgstr "Shërbimi alternativ"
+
+#: ../src/endpoints/sip-endpoint.cpp:747
+msgid "Not found"
+msgstr "Nuk u gjet"
+
+#: ../src/endpoints/sip-endpoint.cpp:751
+msgid "Method not allowed"
+msgstr "Metoda nuk lejohet"
+
+#: ../src/endpoints/sip-endpoint.cpp:755
+msgid "Proxy auth. required"
+msgstr "Proxy kërkon identifikimin"
+
+#: ../src/endpoints/sip-endpoint.cpp:759
+msgid "Length required"
+msgstr "Gjatësia kërkohet"
+
+#: ../src/endpoints/sip-endpoint.cpp:763
+msgid "Request entity too big"
+msgstr "Objekti i kërkuar është tepër i madh"
+
+#: ../src/endpoints/sip-endpoint.cpp:767
+msgid "Request URI too long"
+msgstr "URI e kërkuar është tepër e gjatë"
+
+#: ../src/endpoints/sip-endpoint.cpp:771
+msgid "Unsupported media type"
+msgstr "Lloj i pasuportuar media"
+
+#: ../src/endpoints/sip-endpoint.cpp:775
+msgid "Unsupported URI scheme"
+msgstr "Skemë e pasuprtuar URI"
+
+#: ../src/endpoints/sip-endpoint.cpp:779
+msgid "Bad extension"
+msgstr "Shtojcë e gabuar"
+
+#: ../src/endpoints/sip-endpoint.cpp:783
+msgid "Extension required"
+msgstr "Nevoitet shtojca"
+
+#: ../src/endpoints/sip-endpoint.cpp:787
+msgid "Interval too brief"
+msgstr "Intervali është tepër i shkurtër"
+
+#: ../src/endpoints/sip-endpoint.cpp:791
+msgid "Loop detected"
+msgstr "U zbulua një cikël"
+
+#: ../src/endpoints/sip-endpoint.cpp:795
+msgid "Too many hops"
+msgstr "Tepër kërcime"
+
+#: ../src/endpoints/sip-endpoint.cpp:799
+msgid "Address incomplete"
+msgstr "Adresë e paplotë"
+
+#: ../src/endpoints/sip-endpoint.cpp:803
+msgid "Ambiguous"
+msgstr "E paqartë"
+
+#: ../src/endpoints/sip-endpoint.cpp:807
+msgid "Busy Here"
+msgstr "I zënë këtu"
+
+#: ../src/endpoints/sip-endpoint.cpp:811
+msgid "Request terminated"
+msgstr "Kërkesa përfundoi"
+
+#: ../src/endpoints/sip-endpoint.cpp:815
+msgid "Not acceptable here"
+msgstr "Nuk pranohet këtu"
+
+#: ../src/endpoints/sip-endpoint.cpp:819
+msgid "Bad event"
+msgstr "Event i pasaktë"
+
+#: ../src/endpoints/sip-endpoint.cpp:823
+msgid "Request pending"
+msgstr "Kërkesë në pritje"
+
+#: ../src/endpoints/sip-endpoint.cpp:827
+msgid "Undecipherable"
+msgstr "I padeshifrueshëm"
+
+#: ../src/endpoints/sip-endpoint.cpp:831
+msgid "Internal server error"
+msgstr "Gabim i brendshëm i serverit"
+
+#: ../src/endpoints/sip-endpoint.cpp:835
+msgid "Not implemented"
+msgstr "Pa plotësuar"
+
+#: ../src/endpoints/sip-endpoint.cpp:839
+msgid "Bad gateway"
+msgstr "Gateway i pasaktë"
+
+#: ../src/endpoints/sip-endpoint.cpp:843
+msgid "Service unavailable"
+msgstr "Shërbim jo në dispozicion"
+
+#: ../src/endpoints/sip-endpoint.cpp:847
+msgid "Server timeout"
+msgstr "Skadoi koha për tu lidhur me serverin"
+
+#: ../src/endpoints/sip-endpoint.cpp:851
+msgid "SIP version not supp."
+msgstr "Version i pasuportuar SIP"
+
+#: ../src/endpoints/sip-endpoint.cpp:855
+msgid "Message too large"
+msgstr "Mesazhi është tepër i madh"
+
+#: ../src/endpoints/sip-endpoint.cpp:859
+msgid "Busy everywhere"
+msgstr "I zënë nga të gjitha anët"
+
+#: ../src/endpoints/sip-endpoint.cpp:863
+msgid "Decline"
+msgstr "Refuzo"
+
+#: ../src/endpoints/sip-endpoint.cpp:867
+msgid "Does not exist anymore"
+msgstr "Nuk ekziston më"
+
+#: ../src/endpoints/sip-endpoint.cpp:871
+msgid "Globally not acceptable"
+msgstr "Tërësisht e papranueshme"
+
+#: ../src/endpoints/sip-endpoint.cpp:981
+msgid "Could not send message"
+msgstr "I pamundur dërgimi i mesazhit"
+
+#: ../src/gui/accounts.cpp:165
+msgid "Registered"
+msgstr "I regjistruar"
+
+#: ../src/gui/accounts.cpp:169
+msgid "Unregistered"
+msgstr "Çregjistruar"
+
+#: ../src/gui/accounts.cpp:173
+msgid "Could not unregister"
+msgstr "Çregjistrimi nuk është i mundur"
+
+#: ../src/gui/accounts.cpp:179
+msgid "Could not register"
+msgstr "Regjistrimi nuk është i mundur"
+
+#: ../src/gui/accounts.cpp:185
+msgid "Processing..."
+msgstr "Duke proçesuar..."
+
+#: ../src/gui/accounts.cpp:521
 msgid "Account Name"
 msgstr "Emri i profilit"
 
-#: ../src/gui/accounts.cpp:1518
-msgid "Protocol"
-msgstr "Protokolli"
-
-#: ../src/gui/accounts.cpp:1527
+#: ../src/gui/accounts.cpp:522
 msgid "Voice Mails"
 msgstr "Posta zanore"
 
-#: ../src/gui/accounts.cpp:1528
+#: ../src/gui/accounts.cpp:523
 msgid "Status"
 msgstr "Gjendja"
 
-#: ../src/gui/accounts.cpp:1539
+#: ../src/gui/accounts.cpp:534 ../src/gui/accounts.cpp:572
 msgid "Accounts"
 msgstr "Profilet"
 
-#: ../src/gui/accounts.cpp:1575 ../src/gui/preferences.cpp:474
-#: ../src/gui/preferences.cpp:817
+#: ../src/gui/accounts.cpp:549
+msgid "Account"
+msgstr "Profili"
+
+#: ../src/gui/accounts.cpp:575 ../src/gui/preferences.cpp:515
 msgid "A"
 msgstr "A"
 
-#: ../src/gui/accounts.cpp:1675
-msgid "_Default"
-msgstr "_Prezgjedhur"
-
-#: ../src/gui/addressbook.cpp:819
-msgid "Contact collision"
-msgstr "Konflikt në kontakte"
-
-# (pofilter) puncspacing: checks for bad spacing after punctuation
-#: ../src/gui/addressbook.cpp:821
-#, c-format
-msgid ""
-"Another contact with the same speed dial already exists in your address "
-"book:\n"
-"\n"
-"<b>Name</b>: %s\n"
-"<b>URL</b>: %s\n"
-"<b>Speed Dial</b>: %s\n"
-msgstr ""
-"Një kontakt tjetër me të njëjtën shpejtësi lidhjeje ekziston në rubrikën "
-"tuaj:\n"
-"\n"
-"<b>Emri</b>: %s\n"
-"<b>URL</b> %s\n"
-"<b>Numri i shkurtër</b>: %s\n"
-
-#: ../src/gui/addressbook.cpp:821 ../src/gui/addressbook.cpp:823
-#: ../src/gui/druid.cpp:1916 ../src/gui/preferences.cpp:930
-msgid "None"
-msgstr "Asnjë"
-
-#: ../src/gui/addressbook.cpp:823
-#, c-format
-msgid ""
-"Another contact with similar information already exists in your address "
-"book:\n"
-"\n"
-"<b>Name</b>: %s\n"
-"<b>URL</b>: %s\n"
-"<b>Speed Dial</b>: %s\n"
-"\n"
-"Do you still want to add the contact?"
-msgstr ""
-"Një kontakt tjetër me të dhëna të ngjashme ekziston në rubrikën tuaj:\n"
-"\n"
-"<b>Emri</b>: %s\n"
-"<b>URL</b>: %s\n"
-"<b>Shpejtësia e lidhjes</b>: %s\n"
-"\n"
-"Dëshiron akoma të shtosh kontaktin?"
-
-#. Translators: This is "S" as in "Status"
-#: ../src/gui/addressbook.cpp:991
-msgid "S"
-msgstr "S"
-
-#: ../src/gui/addressbook.cpp:1002 ../src/gui/preferences.cpp:488
-msgid "Name"
-msgstr "Emri"
-
-#: ../src/gui/addressbook.cpp:1017
-msgid "Comment"
-msgstr "Komenti"
-
-#: ../src/gui/addressbook.cpp:1032 ../src/gui/callshistory.cpp:755
-msgid "Software"
-msgstr "Programi"
-
-#: ../src/gui/addressbook.cpp:1046
-msgid "VoIP URL"
-msgstr "Adresa URL e VoIP"
-
-# (pofilter) unchanged: please translate
-#: ../src/gui/addressbook.cpp:1062
-msgid "E-Mail"
-msgstr "E-Mail"
-
-#: ../src/gui/addressbook.cpp:1076
-msgid "Location"
-msgstr "Vendodhja"
-
-#: ../src/gui/addressbook.cpp:1090
-msgid "Categories"
-msgstr "Kategoritë"
-
-#: ../src/gui/addressbook.cpp:1103
-msgid "Speed Dial"
-msgstr "Telefonatë e shpejtë"
-
-#: ../src/gui/addressbook.cpp:1132
-msgid "Name contains"
-msgstr "Emri përmban"
-
-#: ../src/gui/addressbook.cpp:1133
-msgid "URL contains"
-msgstr "URL përmban"
-
-#: ../src/gui/addressbook.cpp:1135
-msgid "Belongs to category"
-msgstr "I përket kategorisë"
-
-#: ../src/gui/addressbook.cpp:1137
-msgid "Location contains"
-msgstr "Vendndodhja përmban"
-
-#. call a contact, usage: general
-#: ../src/gui/addressbook.cpp:1552 ../src/gui/addressbook.cpp:2585
-#: ../src/gui/callshistory.cpp:295 ../src/gui/chat.cpp:682
-msgid "C_all Contact"
-msgstr "Thirr kont_aktin"
-
-#. copy a contact's URL to clipboard, usage: general
-#: ../src/gui/addressbook.cpp:1559 ../src/gui/addressbook.cpp:2595
-#: ../src/gui/chat.cpp:677 ../src/gui/chat.cpp:682
-msgid "_Copy URL to Clipboard"
-msgstr "_Kopjo URL në bllokun e shënimeve"
-
-#: ../src/gui/addressbook.cpp:1565 ../src/gui/addressbook.cpp:2600
-msgid "_Write e-Mail"
-msgstr "_Shkruaj e-Mail"
-
-#. add a contact to the local addressbook, usage: remote contacts only
-#: ../src/gui/addressbook.cpp:1572 ../src/gui/addressbook.cpp:2612
-#: ../src/gui/callshistory.cpp:302 ../src/gui/chat.cpp:682
-msgid "Add Contact to _Address Book"
-msgstr "Shto kontaktin në bllokun e _Adresave"
-
-#. send a contact a (SIP!) message, usage: SIP contacts only
-#: ../src/gui/addressbook.cpp:1579 ../src/gui/addressbook.cpp:2590
-msgid "_Send Message"
-msgstr "_Dërgo Mesazh"
-
-#. edit a local contact's addressbook entry, usage: local contacts
-#: ../src/gui/addressbook.cpp:1586 ../src/gui/addressbook.cpp:1723
-#: ../src/gui/addressbook.cpp:2571
-msgid "_Properties"
-msgstr "_Pronësitë"
-
-#. delete a local contact entry, usage: local contacts
-#: ../src/gui/addressbook.cpp:1593 ../src/gui/addressbook.cpp:1730
-#: ../src/gui/addressbook.cpp:2566
-msgid "_Delete"
-msgstr "_Elemino"
-
-#. "new contact" dialog, usage: local context
-#: ../src/gui/addressbook.cpp:1600 ../src/gui/addressbook.cpp:2607
-msgid "New _Contact"
-msgstr "Kontakt i _ri"
-
-#: ../src/gui/addressbook.cpp:2027
-#, c-format
-msgid "Error while fetching users list from %s"
-msgstr "Gabim gjatë tërheqjes së listës së përdoruesve prej %s"
-
-#: ../src/gui/addressbook.cpp:2031
-#, c-format
-msgid "Found %d user in %s"
-msgid_plural "Found %d users in %s"
-msgstr[0] "U gjet %d përdorues në %s"
-msgstr[1] "U gjetën %d përdorues në %s"
-
-# (pofilter) doublewords: The word 'në' is repeated
-#: ../src/gui/addressbook.cpp:2035
-#, c-format
-msgid "Found %d user in %s for a total of %d users"
-msgid_plural "Found %d users in %s for a total of %d users"
-msgstr[0] "U gjet %d përdorues në %s në një total prej %d përdoruesish"
-msgstr[1] "U gjetën %d përdorues në %s në një total prej %d përdoruesish"
-
-#: ../src/gui/addressbook.cpp:2522
-msgid "Address Book"
-msgstr "Rubrika"
-
-# (pofilter) unchanged: please translate
-#: ../src/gui/addressbook.cpp:2557
-msgid "_File"
-msgstr "_File"
-
-#: ../src/gui/addressbook.cpp:2559
-msgid "New _Address Book"
-msgstr "_Rubrikë e re"
-
-#: ../src/gui/addressbook.cpp:2578 ../src/gui/main.cpp:975
-msgid "_Close"
-msgstr "_Mbyll"
-
-#: ../src/gui/addressbook.cpp:2583
-msgid "C_ontact"
-msgstr "K_ontakti"
-
-#: ../src/gui/addressbook.cpp:2685
-msgid "Remote Contacts"
-msgstr "Kontakte remote"
-
-#: ../src/gui/addressbook.cpp:2693
-msgid "Local Contacts"
-msgstr "Kontakte lokalë"
-
-#: ../src/gui/addressbook.cpp:2816
-msgid "Edit the Contact Information"
-msgstr "Ndrysho të dhënat e kontaktit"
-
-#: ../src/gui/addressbook.cpp:2837 ../src/gui/addressbook.cpp:3307
-msgid "Name:"
-msgstr "Emri:"
-
-#: ../src/gui/addressbook.cpp:2857
-msgid "VoIP URL:"
-msgstr "Adresa URL e VoIP:"
-
-# (pofilter) unchanged: please translate
-#: ../src/gui/addressbook.cpp:2879
-msgid "Email:"
-msgstr "Email:"
-
-#: ../src/gui/addressbook.cpp:2900
-msgid "Speed Dial:"
-msgstr "Telefonatë e shpejtë:"
-
-#: ../src/gui/addressbook.cpp:2922
-msgid "Categories:"
-msgstr "Kategoritë:"
-
-#: ../src/gui/addressbook.cpp:2947
-msgid "Local Addressbook:"
-msgstr "Rubrika lokale:"
-
-# (pofilter) doublespacing: checks for bad double-spaces by comparing to original
-#: ../src/gui/addressbook.cpp:3113
-msgid ""
-"Please make sure to provide at least a full name or an URL for the contact."
-msgstr ""
-"Të lutem ki kujdes të japësh të paktën emrin dhe mbiemrin ose një adresë  "
-"URL për kontaktin."
-
-#: ../src/gui/addressbook.cpp:3160
-#, c-format
-msgid "Are you sure you want to delete %s from %s?"
-msgstr "Je i sigurtë që dëshiron të eleminosh %s nga %s?"
-
-#: ../src/gui/addressbook.cpp:3286
-msgid "Edit an address book"
-msgstr "Ndrysho një rubrikë"
-
-#: ../src/gui/addressbook.cpp:3287
-msgid "Add an address book"
-msgstr "Shto një rubrikë"
-
-#: ../src/gui/addressbook.cpp:3332
-msgid "Type:"
-msgstr "Lloji:"
-
-#: ../src/gui/addressbook.cpp:3338
-msgid "Local"
-msgstr "Lokal"
-
-#: ../src/gui/addressbook.cpp:3339
-msgid "Remote LDAP"
-msgstr "LDAP remot"
-
-#: ../src/gui/addressbook.cpp:3340
-msgid "Remote ILS"
-msgstr "ILS remot"
-
-#: ../src/gui/addressbook.cpp:3371
-msgid "Hostname:"
-msgstr "Emri i host:"
-
-#: ../src/gui/addressbook.cpp:3394
-msgid "Port:"
-msgstr "Porta:"
-
-#: ../src/gui/addressbook.cpp:3419
-msgid "Base DN:"
-msgstr "DN bazë:"
-
-#: ../src/gui/addressbook.cpp:3442
-msgid "Search Scope:"
-msgstr "Qëllimi i kërkimit:"
-
-#: ../src/gui/addressbook.cpp:3448
-msgid "Subtree"
-msgstr "Nëndegëzimi"
-
-#: ../src/gui/addressbook.cpp:3449
-msgid "One Level"
-msgstr "Një nivel"
-
-#: ../src/gui/addressbook.cpp:3479
-msgid "Search Attribute:"
-msgstr "Vetia e kërkimit:"
-
-#: ../src/gui/addressbook.cpp:3592
-msgid "Please make sure you fill in all required fields."
-msgstr "Të lutem kontrollo që të kesh plotësuar të gjitha fushat e kërkuara."
-
-#: ../src/gui/addressbook.cpp:3638
-#, c-format
-msgid "Are you sure you want to delete %s and all its contacts?"
-msgstr ""
-"Je i sigurtë që dëshiron të eleminosh grupin %s dhe të gjithë kontaktet e "
-"tij?"
-
-#: ../src/gui/callbacks.cpp:124
-msgid "Disconnecting..."
-msgstr "Duke u shkëputur..."
-
-#: ../src/gui/callbacks.cpp:139
-msgid "Contributors:"
-msgstr "Ndihmuan:"
-
-#: ../src/gui/callbacks.cpp:146
-msgid "Artwork:"
-msgstr "Puna artistike:"
-
-#: ../src/gui/callbacks.cpp:152
-msgid "See AUTHORS file for full credits"
-msgstr "Shih file AUTHORS për kreditë e plota"
-
-# (pofilter) credits: checks for messages containing translation credits instead of normal translations.
-#. Translators: Please write translator credits here, and
-#. * separate names with \n
-#: ../src/gui/callbacks.cpp:190
-msgid "translator-credits"
-msgstr ""
-"Laurent Dhima <laurenti@alblinux.net>\n"
-"Elian Myftiu <elian@alblinux.net>\n"
-"Jonita Prifti <jonita@jonita.net>"
-
-# (pofilter) doublespacing: checks for bad double-spaces by comparing to original
-#: ../src/gui/callbacks.cpp:195
-msgid ""
-"Ekiga is full-featured SIP and H.323 compatible VoIP, IP-Telephony and "
-"Videoconferencing application that allows you to make audio and video calls "
-"to remote users with SIP and H.323 hardware or software."
-msgstr ""
-"Ekiga është një aplikativ VoIP me karakteristika të plota SIP dhe  H.323 "
-"kompatibël, Telefoni-IP dhe VideoKonferencë që bën të mundur biseda audio-"
-"vizive me përdorues në largësi me hardware apo software SIP dhe H.323."
-
-#: ../src/gui/callshistory.cpp:664
-msgid "Received Calls"
-msgstr "Thirrjet e marra"
-
-#: ../src/gui/callshistory.cpp:664
-msgid "Placed Calls"
-msgstr "Thirrjet e kryera"
-
-#: ../src/gui/callshistory.cpp:664
-msgid "Missed Calls"
-msgstr "Thirrjet e humbura"
-
-#: ../src/gui/callshistory.cpp:676 ../src/gui/statusicon.cpp:144
-msgid "Calls History"
-msgstr "Historiku i thirrjeve"
-
-#: ../src/gui/callshistory.cpp:719
-msgid "Date"
-msgstr "Data"
-
-#: ../src/gui/callshistory.cpp:727
-msgid "Remote User"
-msgstr "Përdoruesi remot"
-
-#: ../src/gui/callshistory.cpp:736
-msgid "Call Duration"
-msgstr "Kohëzgjatja e bisedës"
-
-#: ../src/gui/callshistory.cpp:746
-msgid "Call End Reason"
-msgstr "Shkaku i përfundimit të thirrjes"
-
-#: ../src/gui/chat.cpp:625
-msgid "Hang _up"
-msgstr "Mbyll_e"
-
-#: ../src/gui/chat.cpp:626 ../src/gui/statusicon.cpp:100
-msgid "_Call"
-msgstr "_Thirrje"
-
-#: ../src/gui/chat.cpp:627
-msgid "Call this user"
-msgstr "Thirr këtë përdorues"
-
-#: ../src/gui/chat.cpp:635
-msgid "_Send"
-msgstr "_Dërgo"
-
-#: ../src/gui/chat.cpp:640
-msgid "Send message"
-msgstr "Dërgo mesazhin"
-
-#: ../src/gui/chat.cpp:677
-msgid "_Open URL"
-msgstr "_Hap adresën URL"
-
-#: ../src/gui/chat.cpp:705
-msgid "_Copy Equation"
-msgstr "_Kopjo ekuacionin"
-
-#: ../src/gui/chat.cpp:1325
-msgid "Chat Window"
-msgstr "Dritarja e shkrimit"
-
-#: ../src/gui/chat.cpp:1450
-msgid "You"
-msgstr "Ti"
-
-#. Translators: "He says", "You say"
-#: ../src/gui/chat.cpp:1452
-msgid "says:"
-msgstr "shkruan:"
-
-# (pofilter) endpunc: checks whether punctuation at the end of the strings match
-#: ../src/gui/chat.cpp:1452
-msgid "say:"
-msgstr "shkruan:"
-
-#: ../src/gui/chat.cpp:1524
-msgid "New Remote User"
-msgstr "Përdorues i ri remot"
-
-#: ../src/gui/config.cpp:236
-msgid "Changing this setting will only affect new calls"
-msgstr "Ndryshimi i kësaj vlere do ketë efekt vetëm për thirrjet e reja"
-
-#: ../src/gui/config.cpp:237
-msgid ""
-"Ekiga cannot apply one or more changes to the current call. Your new "
-"settings will take effect for the next call."
-msgstr ""
-"Ekiga nuk mund të aplikojë një apo disa ndryshime gjatë thirrjes së "
-"tanishme. Rregullimet e reja do të ndikojnë thirrjen tjetër."
-
-#: ../src/gui/config.cpp:331
-msgid "H.245 Tunneling disabled"
-msgstr "Tunneling H.245 jo aktiv"
-
-#: ../src/gui/config.cpp:332
-msgid "H.245 Tunneling enabled"
-msgstr "Tunneling H.245 aktiv"
-
-#: ../src/gui/config.cpp:364
-msgid "Early H.245 disabled"
-msgstr "H.245 i shpejtë jo aktiv"
-
-#: ../src/gui/config.cpp:365
-msgid "Early H.245 enabled"
-msgstr "H.245 i shpejtë aktiv"
-
-#: ../src/gui/config.cpp:398
-msgid "Fast Start disabled"
-msgstr "Nisje e shpejtë nuk është aktivuar"
-
-#: ../src/gui/config.cpp:399
-msgid "Fast Start enabled"
-msgstr "Nisje e Shpejtë është aktivuar"
-
-#: ../src/gui/config.cpp:506
-msgid "Enabled silence detection"
-msgstr "Zbulimi i heshtjes është aktivuar"
-
-#: ../src/gui/config.cpp:512
-msgid "Disabled silence detection"
-msgstr "Zbulimi i heshtjes nuk është aktivuar"
-
-#: ../src/gui/config.cpp:571
-msgid "Enabled echo cancelation"
-msgstr "Heqja e jehonës u aktivua"
-
-#: ../src/gui/config.cpp:577
-msgid "Disabled echo cancelation"
-msgstr "Heqja e jehonës u çaktivua"
-
-#: ../src/gui/druid.cpp:610
+#: ../src/gui/assistant.cpp:258
 msgid ""
 "This is the Ekiga general configuration assistant. The following steps will "
 "set up Ekiga by asking a few simple questions.\n"
@@ -2400,22 +1802,20 @@ msgstr ""
 "Kur të kesh mbaruar këto hapa, mund t'i ndryshosh edhe më vonë duke zgjedhur "
 "Preferimet tek zëri Ndrysho i menusë."
 
-#: ../src/gui/druid.cpp:622
-#, c-format
-msgid "Configuration Assistant - page 1/%d"
-msgstr "Ndihmësi i konfigurimit - faqja 1/%d"
+#: ../src/gui/assistant.cpp:266
+msgid "Welcome in Ekiga"
+msgstr "Mirësevini në Ekiga"
 
-#: ../src/gui/druid.cpp:664
-#, c-format
-msgid "Personal Information - page %d/%d"
-msgstr "Të dhënat personale - faqja %d/%d"
+#: ../src/gui/assistant.cpp:300 ../src/gui/preferences.cpp:381
+msgid "Personal Information"
+msgstr "Informacione personale"
 
 #. The user fields
-#: ../src/gui/druid.cpp:677
+#: ../src/gui/assistant.cpp:303
 msgid "Please enter your first name and your surname:"
 msgstr "Të lutem shkruaj emrin dhe mbiemrin tënd:"
 
-#: ../src/gui/druid.cpp:686
+#: ../src/gui/assistant.cpp:312
 msgid ""
 "Your first name and surname will be used when connecting to other VoIP and "
 "videoconferencing software."
@@ -2424,21 +1824,20 @@ msgstr ""
 "videokonference."
 
 # (pofilter) startcaps: checks that the message starts with the correct capitalisation
-#: ../src/gui/druid.cpp:732
-#, c-format
-msgid "ekiga.net Account - page %d/%d"
-msgstr "Profili në ekiga.net - faqja %d/%d"
+#: ../src/gui/assistant.cpp:503
+msgid "Ekiga.net Account"
+msgstr "Profili Ekiga.net"
 
-#: ../src/gui/druid.cpp:743
+#: ../src/gui/assistant.cpp:505
 msgid "Please enter your username:"
 msgstr "Të lutem shkruaj emrin tënd të përdoruesit:"
 
-#: ../src/gui/druid.cpp:751
+#: ../src/gui/assistant.cpp:513
 msgid "Please enter your password:"
 msgstr "Të lutem shkruaj fjalëkalimin tënd:"
 
 # (pofilter) doublewords: The word 'të' is repeated
-#: ../src/gui/druid.cpp:762
+#: ../src/gui/assistant.cpp:523
 msgid ""
 "The username and password are used to login to your existing account at the "
 "ekiga.net free SIP service. If you do not have an ekiga.net SIP address yet, "
@@ -2456,25 +1855,81 @@ msgstr ""
 "Mund ta kapërcesh këtë hap nëse përdor një shërbim tjetër SIP, ose nëse "
 "preferon t'i caktosh të dhënat e profilit më vonë."
 
-#: ../src/gui/druid.cpp:772
-msgid "Get an ekiga.net SIP account"
-msgstr "Merr një profil SIP tek ekiga.net"
-
-#: ../src/gui/druid.cpp:782
+#: ../src/gui/assistant.cpp:550
 msgid "I do not want to sign up for the ekiga.net free service"
 msgstr "Nuk dëshiroj të regjistrohem në shërbimin pa pagesë ekiga.net"
 
-#: ../src/gui/druid.cpp:835
-#, c-format
-msgid "Connection Type - page %d/%d"
-msgstr "Lloji i lidhjes - faqja %d/%d"
+#: ../src/gui/assistant.cpp:617
+msgid "Ekiga Call Out Account"
+msgstr "Profili Ekiga Call Out"
+
+#: ../src/gui/assistant.cpp:619
+msgid "Please enter your account ID:"
+msgstr "Të lutem shkruaj ID e profilit tuaj:"
+
+#: ../src/gui/assistant.cpp:627
+msgid "Please enter your PIN code:"
+msgstr "Të lutem shkruaj kodin tënd PIN:"
+
+#: ../src/gui/assistant.cpp:638
+msgid ""
+"You can make calls to regular phones and cell numbers worldwide using "
+"Ekiga.\n"
+"\n"
+"To enable this, you need to do three things:\n"
+"- First buy an account at the URL below.\n"
+"- Then enter your account ID and PIN code.\n"
+"The service will work only if your account is created using the URL in this "
+"dialog.\n"
+msgstr ""
+"Mund të kryesh thirrje me numra telefonësh normalë dhe celularësh në të "
+"gjithë botën duke përdorur Ekiga.\n"
+"\n"
+"Për të aktivizuar këtë funksion duhet të bësh tre gjëra:\n"
+"- Së pari krijo një profil në adresën e mëposhtme URL.\n"
+"- Më pas shkruaj ID e profilit tuaj dhe kodin PIN.\n"
+"Shërbimi do të punojë vetëm nëse profili juaj është krijuar duke përdorur "
+"adresën URL në këtë dialog.\n"
+
+#: ../src/gui/assistant.cpp:698
+msgid "I do not want to sign up for the Ekiga Call Out service"
+msgstr "Nuk dëshiroj të regjistrohem në shërbimin \"Ekiga Call Out\""
+
+#: ../src/gui/assistant.cpp:767 ../src/gui/assistant.cpp:1272
+msgid "Connection Type"
+msgstr "Lloji i lidhjes"
 
 #. The connection type
-#: ../src/gui/druid.cpp:847
+#: ../src/gui/assistant.cpp:770
 msgid "Please choose your connection type:"
 msgstr "Të lutem zgjidh llojin e lidhjes:"
 
-#: ../src/gui/druid.cpp:855
+# (pofilter) startcaps: checks that the message starts with the correct capitalisation
+#: ../src/gui/assistant.cpp:787
+msgid "56k Modem"
+msgstr "Modem 56k"
+
+#: ../src/gui/assistant.cpp:792
+msgid "ISDN"
+msgstr "ISDN"
+
+#: ../src/gui/assistant.cpp:797
+msgid "DSL/Cable (128 kbit/s uplink)"
+msgstr "DSL/Kavo (128 kbit/s uplink)"
+
+#: ../src/gui/assistant.cpp:802
+msgid "DSL/Cable (512 kbit/s uplink)"
+msgstr "DSL/Kavo (512 kbit/s uplink)"
+
+#: ../src/gui/assistant.cpp:807
+msgid "LAN"
+msgstr "LAN"
+
+#: ../src/gui/assistant.cpp:812
+msgid "Keep current settings"
+msgstr "Ruaj konfigurimet aktuale"
+
+#: ../src/gui/assistant.cpp:817
 msgid ""
 "The connection type will permit determining the best quality settings that "
 "Ekiga will use during calls. You can later change the settings individually "
@@ -2484,76 +1939,41 @@ msgstr ""
 "të përdorë gjatë thirrjeve. Mund t'i ndryshosh më vonë këto vlera tek "
 "dritarja e preferimeve."
 
-#: ../src/gui/druid.cpp:893
-#, c-format
-msgid "NAT Type - page %d/%d"
-msgstr "Lloji i NAT - faqja %d/%d"
+#: ../src/gui/assistant.cpp:907 ../src/gui/preferences.cpp:708
+msgid "Audio Devices"
+msgstr "Dispozitivët audio"
 
-#: ../src/gui/druid.cpp:903
-msgid "Click here to detect your NAT Type:"
-msgstr "Kliko këtu për të zbuluar llojin e NAT:"
+#: ../src/gui/assistant.cpp:909
+msgid "Please choose the audio ringing device:"
+msgstr "Të lutem zgjidh dispozitivin audio për zilen:"
 
-#: ../src/gui/druid.cpp:907
-msgid "Detect NAT Type"
-msgstr "Zbulo llojin e NAT"
-
-# (pofilter) doublewords: The word 'të' is repeated
-#: ../src/gui/druid.cpp:911
+#: ../src/gui/assistant.cpp:917
 msgid ""
-"The NAT type detection will permit to assist you in configuring your NAT "
-"router to be able to do calls with Ekiga."
+"The audio ringing device is the device  managed by the audio manager that "
+"will be used to play the ringing sound."
 msgstr ""
-"Zbulimi i llojit të NAT do të të ndihmojë në konfigurimin e router-it tënd "
-"NAT për të mundësuar thirrjet me Ekiga."
+"Dispozitivi audio i ziles është dispozitivi i kontrolluar nga menazhuesi audio "
+"që do të përdoret për të riprodhuar tingullin e ziles së telefonit."
 
-#: ../src/gui/druid.cpp:956
-#, c-format
-msgid "Audio Manager - page %d/%d"
-msgstr "Manazhuesi i zërit - faqja %d/%d"
-
-#. The Audio devices
-#: ../src/gui/druid.cpp:968
-msgid "Please choose your audio manager:"
-msgstr "Të lutem zgjidh manazhuesin e zërit:"
-
-#: ../src/gui/druid.cpp:977
-msgid ""
-"The audio manager is the plugin that will manage your audio devices. "
-"WindowsMultimedia is probably the best choice when available."
-msgstr ""
-"Manazhuesi i zërit është një plugin që do të organizojë dispozitivët tuaj "
-"audio. WindowsMultimedia është ndoshta zgjidhja më e mirë kur ekziston."
-
-#: ../src/gui/druid.cpp:979
-msgid ""
-"The audio manager is the plugin that will manage your audio devices. ALSA is "
-"probably the best choice when available."
-msgstr ""
-"Manazhuesi i zërit është një plugin që do të organizojë dispozitivët tuaj "
-"audio. ALSA është ndoshta zgjidhja më e mirë kur ekziston."
-
-#: ../src/gui/druid.cpp:1019
-#, c-format
-msgid "Audio Devices - page %d/%d"
-msgstr "Dispozitivët e zërit - faqja %d/%d"
-
-#. The Audio devices
-#: ../src/gui/druid.cpp:1031
+#. ---
+#: ../src/gui/assistant.cpp:930
 msgid "Please choose the audio output device:"
 msgstr "Të lutem zgjidh dispozitivin e zërit në dalje:"
 
-#: ../src/gui/druid.cpp:1039
+#: ../src/gui/assistant.cpp:938
 msgid ""
-"The audio output device is the device managed by the audio manager that will "
-"be used to play audio."
+"The audio output device is the device  managed by the audio manager that "
+"will be used to play audio."
 msgstr ""
-"Dispozitivi i daljes së zërit është ai që do përdoret për të dëgjuar zërin."
+"Dispozitivi audio në dalje është dispozitivi i kontrolluar nga menazhuesi audio "
+"që do të përdoret për të riprodhuar audio."
 
-#: ../src/gui/druid.cpp:1049
+#. ---
+#: ../src/gui/assistant.cpp:951
 msgid "Please choose the audio input device:"
 msgstr "Të lutem zgjidh dispozitivin e zërit në hyrje:"
 
-#: ../src/gui/druid.cpp:1057
+#: ../src/gui/assistant.cpp:959
 msgid ""
 "The audio input device is the device managed by the audio manager that will "
 "be used to record your voice."
@@ -2561,21 +1981,11 @@ msgstr ""
 "Dispozitivi i hyrjes së zërit është ai që do përdoret për të regjistruar "
 "zërin."
 
-#: ../src/gui/druid.cpp:1070 ../src/gui/druid.cpp:1204
-msgid "Test Settings"
-msgstr "Provo konfigurimet"
+#: ../src/gui/assistant.cpp:1053
+msgid "Please choose your video input device:"
+msgstr "Të lutem zgjidh dispozitivin e video input:"
 
-#: ../src/gui/druid.cpp:1114
-#, c-format
-msgid "Video Manager - page %d/%d"
-msgstr "Manazhuesi video - faqja %d/%d"
-
-#. The Audio devices
-#: ../src/gui/druid.cpp:1126
-msgid "Please choose your video manager:"
-msgstr "Të lutem zgjidh manazhuesin video:"
-
-#: ../src/gui/druid.cpp:1134
+#: ../src/gui/assistant.cpp:1061
 msgid ""
 "The video manager is the plugin that will manage your video devices, "
 "Video4Linux is the most common choice if you own a webcam."
@@ -2583,661 +1993,741 @@ msgstr ""
 "Manazhuesi video është një plugin që do të organizojë dispozitivët tuaj "
 "video, Video4Linux është zgjedhja më e zakonshme nëse ke një kamër web."
 
-#: ../src/gui/druid.cpp:1172
-#, c-format
-msgid "Video Devices - page %d/%d"
-msgstr "Dispozitivët video - faqja %d/%d"
+#: ../src/gui/assistant.cpp:1203
+msgid "Configuration Complete"
+msgstr "Konfigurimi përfundoi"
 
-#. The Video devices
-#: ../src/gui/druid.cpp:1184
-msgid "Please choose the video input device:"
-msgstr "Të lutem zgjidh dispozitivin e videos në hyrje:"
-
-#: ../src/gui/druid.cpp:1192
-msgid ""
-"The video input device is the device managed by the video manager that will "
-"be used to capture video."
-msgstr ""
-"Dispozitivi i hyrjes së videos është ai që do përdoret për të shfaqur video."
-
-#: ../src/gui/druid.cpp:1240
-#, c-format
-msgid "Configuration complete - page %d/%d"
-msgstr "Konfigurimi përfundoi - faqja %d/%d"
-
-# (pofilter) startcaps: checks that the message starts with the correct capitalisation
-#: ../src/gui/druid.cpp:1634
-msgid "56k Modem"
-msgstr "Modem 56k"
-
-#: ../src/gui/druid.cpp:1635
-msgid "ISDN"
-msgstr "ISDN"
-
-# (pofilter) unchanged: please translate
-#: ../src/gui/druid.cpp:1636
-msgid "xDSL/Cable"
-msgstr "xDSL/Kabëll"
-
-#: ../src/gui/druid.cpp:1637
-msgid "T1/LAN"
-msgstr "T1/LAN"
-
-#: ../src/gui/druid.cpp:1638
-msgid "Keep current settings"
-msgstr "Ruaj konfigurimet aktuale"
-
-#: ../src/gui/druid.cpp:1916
-#, c-format
+#: ../src/gui/assistant.cpp:1205
 msgid ""
 "You have now finished the Ekiga configuration. All the settings can be "
-"changed in the Ekiga preferences. Enjoy!\n"
-"\n"
-"\n"
-"Configuration summary:\n"
-"\n"
-"Username: %s\n"
-"Connection type: %s\n"
-"Audio manager: %s\n"
-"Audio player: %s\n"
-"Audio recorder: %s\n"
-"Video manager: %s\n"
-"Video input: %s\n"
-"SIP URL: %s\n"
+"changed in the Ekiga preferences. Enjoy!"
 msgstr ""
-"Tani mbaruat konfigurimin e Ekiga-s. Të gjithë parametrat mund të ndryshohen "
-"tek preferimet e Ekiga. Kënaqu!\n"
-"\n"
-"\n"
-"Përmbledhje e konfigurimit:\n"
-"\n"
-"Emri i përdoruesit: %s\n"
-"Lloji i lidhjes: %s\n"
-"Manazhuesi i zërit: %s\n"
-"Lexuesi i zërit: %s\n"
-"Regjistruesi i zërit: %s\n"
-"Manazhuesi i videos: %s\n"
-"Hyrja e videos: %s\n"
-"Adresa URL e SIP: %s\n"
+"Sapo keni përfunduar konfigurimin e Ekiga. Të gjithë rregullimet mund të "
+"ndryshohen tek preferimet e Ekiga. Argëtohu!"
 
-#: ../src/gui/druid.cpp:1971
-msgid "First Time Configuration Assistant"
-msgstr "Asistenti i konfigurimit të parë"
+#: ../src/gui/assistant.cpp:1212
+msgid "Configuration summary:"
+msgstr "Përmbledhja e konfigurimit:"
 
-#: ../src/gui/history.cpp:128
-msgid "General History"
-msgstr "Historiku i përgjithshëm"
+#: ../src/gui/assistant.cpp:1282
+msgid "Audio Ringing Device"
+msgstr "Dispozitivi audio i ziles"
 
-#: ../src/gui/main.cpp:667
-msgid "Enter a URL on the left, and click this button to place a call"
-msgstr ""
-"Shkruaj një adresë URL në të majtë, dhe kliko këtë buton për të kryer një "
-"thirrje"
+#: ../src/gui/assistant.cpp:1291
+msgid "Audio Output Device"
+msgstr "Dispozitivi audio në dalje"
 
-#: ../src/gui/main.cpp:711
-msgid "Open text chat"
-msgstr "Hap dritaren e shkrimit"
+#: ../src/gui/assistant.cpp:1300
+msgid "Audio Input Device"
+msgstr "Dispozitivi audio në hyrje"
 
-#: ../src/gui/main.cpp:735
-msgid "Change the view mode"
-msgstr "Ndrysho mënyrën e paraqitjes"
+#: ../src/gui/assistant.cpp:1309
+msgid "Video Input Device"
+msgstr "Dispozitivi video në hyrje"
 
-#: ../src/gui/main.cpp:754
-msgid "Open address book"
-msgstr "Hap rubrikën"
+#: ../src/gui/assistant.cpp:1322
+msgid "SIP URI"
+msgstr "URI SIP"
 
-#: ../src/gui/main.cpp:775
-msgid "Display images from your camera device"
-msgstr "Shfaq figura nga kamera juaj"
+#: ../src/gui/assistant.cpp:1334
+msgid "Ekiga Call Out"
+msgstr "Ekiga Call Out"
 
-#: ../src/gui/main.cpp:798
+#: ../src/gui/assistant.cpp:1376
+#, c-format
+msgid "Ekiga Configuration Assistant (%d of %d)"
+msgstr "Asistenti i konfigurimit të Ekiga (%d në %d)"
+
+#: ../src/gui/callbacks.cpp:129
+msgid "Contributors:"
+msgstr "Ndihmuan:"
+
+#: ../src/gui/callbacks.cpp:139
+msgid "Artwork:"
+msgstr "Puna artistike:"
+
+#: ../src/gui/callbacks.cpp:146
+msgid "See AUTHORS file for full credits"
+msgstr "Shih file AUTHORS për kreditë e plota"
+
+#: ../src/gui/callbacks.cpp:162
 msgid ""
-"Audio transmission status. During a call, click here to suspend or resume "
-"the audio transmission."
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version. "
 msgstr ""
-"Gjëndja e transmetimit të audios. Gjatë thirrjes, klikoni këtu për të "
-"ndaluar ose rifilluar transmetimin e zërit."
+"Ky program është software i lirë; mund ta rishpërndani apo/dhe ndryshoni "
+"nën kushtet e Liçencës Publike të Përgjithshme GNU sikurse publikuar nga "
+"Fondacioni Free Software; duke zgjedhur midis versionit 2 të Liçencës, ose "
+"(sipas dëshirës suaj) çdo versioni tjetër të mëvonshëm. "
 
-#: ../src/gui/main.cpp:821
+#: ../src/gui/callbacks.cpp:166
 msgid ""
-"Video transmission status. During a call, click here to suspend or resume "
-"the video transmission."
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for "
+"more details. You should have received a copy of the GNU General Public "
+"License along with this program; if not, write to the Free Software "
+"Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA."
 msgstr ""
-"Gjëndja e transmetimit video. Gjatë bisedës, klikoni këtu për të ndaluar apo "
-"rifilluar transmetimin e videos."
+"Ky program shpërndahet me dëshirën që të jetë i vlefshëm për ju, por PA "
+"ASNJË LLOJ GARANCIE; bile as pa garancinë e TREGTIMIT apo PËRDORIMIT "
+"PËR QËLLIME TË VEÇANTA. Shiko Liçencën Publike të Përgjithshme GNU për "
+"hollësi të mëtejshme. Së bashku me këtë program duhet të keni marrë "
+"edhe një kopje të Liçencës Publike të Përgjithshme GNU; nëse jo, shkruaj "
+"tek Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, "
+"MA 02110-1301, USA."
 
-#: ../src/gui/main.cpp:901
-msgid "C_all"
-msgstr "_Thirrje"
+#: ../src/gui/callbacks.cpp:173
+msgid ""
+"Ekiga is licensed under the GPL license and as a special exception, you have "
+"permission to link or otherwise combine this program with the programs OPAL, "
+"OpenH323 and PWLIB, and distribute the combination, without applying the "
+"requirements of the GNU GPL to the OPAL, OpenH323 and PWLIB programs, as "
+"long as you do follow the requirements of the GNU GPL for all the rest of "
+"the software thus combined."
+msgstr ""
+"Ekiga është e liçensuar nën liçensën GPL dhe përmban një përjashtim të veçantë, "
+"ju jepet e drejta të lidhni ose përndryshe të kombinoni këtë program me programet "
+"OPAL, OpenH323 dhe PWLIB, e të shpërndani kombinimin, pa aplikuar kërkesat e "
+"GNU GPL tek programet OPAL, OpenH323 dhe PWLIB, duke ndjekur kërkesat e "
+"GNU GPL për të gjithë pjesën tjetër të software të kombinuar në këtë menyrë."
 
-#: ../src/gui/main.cpp:903
+# (pofilter) credits: checks for messages containing translation credits instead of normal translations.
+#. Translators: Please write translator credits here, and
+#. * separate names with \n
+#: ../src/gui/callbacks.cpp:185
+msgid "translator-credits"
+msgstr ""
+"Laurent Dhima <laurenti@alblinux.net>\n"
+"Elian Myftiu <elian@alblinux.net>\n"
+"Jonita Prifti <jonita@jonita.net>"
+
+# (pofilter) doublespacing: checks for bad double-spaces by comparing to original
+#: ../src/gui/callbacks.cpp:190
+msgid ""
+"Ekiga is full-featured SIP and H.323 compatible VoIP, IP-Telephony and "
+"Videoconferencing application that allows you to make audio and video calls "
+"to remote users with SIP and H.323 hardware or software."
+msgstr ""
+"Ekiga është një aplikativ VoIP me karakteristika të plota SIP dhe  H.323 "
+"kompatibël, Telefoni-IP dhe VideoKonferencë që bën të mundur biseda audio-"
+"vizive me përdorues në largësi me hardware apo software SIP dhe H.323."
+
+#: ../src/gui/dialpad.cpp:59
+msgid "abc"
+msgstr "abc"
+
+#: ../src/gui/dialpad.cpp:60
+msgid "def"
+msgstr "def"
+
+#: ../src/gui/dialpad.cpp:61
+msgid "ghi"
+msgstr "ghi"
+
+#: ../src/gui/dialpad.cpp:62
+msgid "jkl"
+msgstr "jkl"
+
+#: ../src/gui/dialpad.cpp:63
+msgid "mno"
+msgstr "mno"
+
+#: ../src/gui/dialpad.cpp:64
+msgid "pqrs"
+msgstr "pqrs"
+
+#: ../src/gui/dialpad.cpp:65
+msgid "tuv"
+msgstr "tuv"
+
+#: ../src/gui/dialpad.cpp:66
+msgid "wxyz"
+msgstr "wxyz"
+
+#. Translators: Is displayed once an account "%s" is registered.
+#: ../src/gui/main.cpp:609
+#, c-format
+msgid "Registered %s"
+msgstr "U regjistrua %s"
+
+#. Translators: Is displayed once an account "%s" is unregistered.
+#: ../src/gui/main.cpp:615
+#, c-format
+msgid "Unregistered %s"
+msgstr "U çregjistrua %s"
+
+#: ../src/gui/main.cpp:620
+#, c-format
+msgid "Could not unregister %s"
+msgstr "I pamundur çregjistrimi i %s"
+
+#: ../src/gui/main.cpp:624
+#, c-format
+msgid "Could not register %s"
+msgstr "I pamundur regjistrimi i %s"
+
+#: ../src/gui/main.cpp:684
+#, c-format
+msgid "A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d"
+msgstr "A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d"
+
+#: ../src/gui/main.cpp:722
+msgid "Connected with"
+msgstr "Lidhur me"
+
+#: ../src/gui/main.cpp:752 ../src/gui/main.cpp:2289
+msgid "Standby"
+msgstr "Në pritje"
+
+#: ../src/gui/main.cpp:813
+msgid "Call on hold"
+msgstr "Telefonata u mbajt"
+
+#: ../src/gui/main.cpp:826
+msgid "Call retrieved"
+msgstr "Telefonata u rekuperua"
+
+#: ../src/gui/main.cpp:845
+msgid "Missed call from"
+msgstr "Telefonatë e humbur nga"
+
+#: ../src/gui/main.cpp:990 ../src/gui/misc.cpp:94
+msgid "Error"
+msgstr "Gabim"
+
+#: ../src/gui/main.cpp:1121
+msgid "added video input device "
+msgstr "ispozitivi i videos në hyrje u shtua "
+
+#: ../src/gui/main.cpp:1134
+msgid "removed video input device "
+msgstr "dispozitivi i videos në hyrje u hoq "
+
+#: ../src/gui/main.cpp:1149
+#, c-format
+msgid "Error while accessing video device %s"
+msgstr "Gabim gjatë hyrjes në dispozitivin video %s"
+
+#: ../src/gui/main.cpp:1152
+msgid ""
+"A moving logo will be transmitted during calls. Notice that you can always "
+"transmit a given image or the moving logo by choosing \"Picture\" as video "
+"plugin and \"Moving logo\" or \"Static picture\" as device."
+msgstr ""
+"Një stemë në lëvizje do të transmetohet gjatë telefonatave. Ki parasysh "
+"që mund të transmetosh gjithmonë një figurë të caktuar apo stemën në "
+"lëvizje duke zgjedhur \"Figurë\" si plugin video dhe \"Stemë e lëvizshme\" "
+"ose \"Figurë statike\" si dispozitiv."
+
+# (pofilter) doublespacing: checks for bad double-spaces by comparing to original
+#: ../src/gui/main.cpp:1156
+msgid ""
+"There was an error while opening the device. In case it is a pluggable "
+"device it may be sufficient to reconnect it. If not, or if it still is not "
+"accessible, please check your permissions and make sure that the appropriate "
+"driver is loaded."
+msgstr ""
+"U ndesh një gabim gjatë hapjes së dispozitivit. Në rast se kemi të bëjme me "
+"një dispozitiv të heqshëm, mjafton ta rilidhni. Nëse jo, apo vazhdon të "
+"jetë i paarritshëm, verifikoni të drejtat dhe sigurohuni që të jetë ngarkuar "
+"driver-i i duhur."
+
+#: ../src/gui/main.cpp:1160
+msgid "Your video driver doesn't support the requested video format."
+msgstr "Driveri juaj video nuk suporton formatin e kërkuar video."
+
+#: ../src/gui/main.cpp:1164
+msgid "Could not open the chosen channel."
+msgstr "E pamundur hapja e kanalit të zgjedhur."
+
+#: ../src/gui/main.cpp:1168
+msgid ""
+"Your driver doesn't seem to support any of the color formats supported by "
+"Ekiga.\n"
+" Please check your kernel driver documentation in order to determine which "
+"Palette is supported."
+msgstr ""
+"Driveri yt mesa duket nuk suporton formatet e ngjyrave të suportuara nga "
+"Ekiga.\n"
+" Të lutem lexo dokumentimet e kernelit tënd për të përcaktuar cila paletë "
+"funksionon."
+
+#: ../src/gui/main.cpp:1172
+msgid "Error while setting the frame rate."
+msgstr "Gabim gjatë caktimit të numrit të frame."
+
+#: ../src/gui/main.cpp:1176
+msgid "Error while setting the frame size."
+msgstr "Gabim gjatë caktimit të madhësisë së frame."
+
+#: ../src/gui/main.cpp:1181 ../src/gui/main.cpp:1282 ../src/gui/main.cpp:1395
+msgid "Unknown error."
+msgstr "Gabim i panjohur."
+
+#: ../src/gui/main.cpp:1235
+msgid "added audio input device "
+msgstr "dispozitivi audio në hyrje u shtua "
+
+#: ../src/gui/main.cpp:1251
+msgid "removed audio input device "
+msgstr "dispozitivi audio në hyrje u hoq "
+
+#: ../src/gui/main.cpp:1266
+#, c-format
+msgid "Error while opening audio input device %s"
+msgstr "Gabim gjatë hapjes së dispozitivit audio në hyrje %s"
+
+#: ../src/gui/main.cpp:1269
+msgid "Only silence will be transmitted."
+msgstr "Do të transmetohet vetëm heshtje."
+
+#: ../src/gui/main.cpp:1273
+msgid ""
+"Unable to open the selected audio device for recording. In case it is a "
+"pluggable device it may be sufficient to reconnect it. If not, or if it "
+"still is not accessible, please check your audio setup, the permissions and "
+"that the device is not busy."
+msgstr ""
+"E pamundur hapja e dispozitivit të zgjedhur audio për të regjistruar. Në "
+"rast se kemi të bëjme me një dispozitiv të heqshëm, mjafton ta rilidhni. "
+"Nëse jo, apo vazhdon të jetë i paarritshëm, verifikoni konfigurimin audio, "
+"të drejtat dhe që dispozitivi të mos jetë i zënë."
+
+# (pofilter) endwhitespace: checks whether whitespace at the end of the strings matches
+#: ../src/gui/main.cpp:1277
+msgid ""
+"The selected audio device was successfully opened but it is impossible to "
+"read data from this device. In case it is a pluggable device it may be "
+"sufficient to reconnect it. If not, or if it still is not accessible, please "
+"check your audio setup."
+msgstr ""
+"Dispozitivi i zgjedhur audio u hap me sukses por është i pamundur "
+"leximi i të dhënave nga ky dispozitiv. Në rast se kemi të bëjme me "
+"një dispozitiv të heqshëm, mjafton ta rilidhni. Nëse jo, apo vazhdon të "
+"jetë e pamundur hyrja në të, verifikoni konfigurimin audio."
+
+#: ../src/gui/main.cpp:1345
+msgid "added audio output device "
+msgstr "dispozitivi i zërit në dalje u shtua "
+
+#: ../src/gui/main.cpp:1360
+msgid "removed audio output device "
+msgstr "dispozitivi i zërit në dalje u hoq "
+
+#: ../src/gui/main.cpp:1379
+#, c-format
+msgid "Error while opening audio output device %s"
+msgstr "Gabim gjatë hapjes së dispozitivit audio në dalje %s"
+
+#: ../src/gui/main.cpp:1382
+msgid "No incoming sound will be played."
+msgstr "Nuk do të riprodhohet asnjë tingull në ardhje."
+
+#: ../src/gui/main.cpp:1386
+msgid ""
+"Unable to open the selected audio device for playing. In case it is a "
+"pluggable device it may be sufficient to reconnect it. If not, or if it "
+"still is not accessible, please check your audio setup, the permissions and "
+"that the device is not busy."
+msgstr ""
+"E pamundur hapja e dispozitivit të zgjedhur audio për të riprodhuar. Në "
+"rast se kemi të bëjme me një dispozitiv të heqshëm, mjafton ta rilidhni. "
+"Nëse jo, apo vazhdon të jetë e pamundur hyrja në të, verifiko konfigurimin "
+"audio, të drejtat dhe që dispozitivi të mos jetë duke u përdorur nga programe "
+"të tjerë."
+
+# (pofilter) endwhitespace: checks whether whitespace at the end of the strings matches
+#: ../src/gui/main.cpp:1390
+msgid ""
+"The selected audio device was successfully opened but it is impossible to "
+"write data from this device. In case it is a pluggable device it may be "
+"sufficient to reconnect it. If not, or if it still is not accessible, please "
+"check your audio setup."
+msgstr ""
+"Dispozitivi i zgjedhur audio u hap me sukses por është i pamundur "
+"shkrimi i të dhënave nga ky dispozitiv. Në rast se kemi të bëjme me "
+"një dispozitiv të heqshëm, mjafton ta rilidhni. Nëse jo, apo vazhdon të "
+"jetë e pamundur hyrja në të, verifikoni konfigurimin audio."
+
+#: ../src/gui/main.cpp:1610
+msgid "Enter a URI on the left, and click this button to place a call"
+msgstr ""
+"Shkruaj një adresë URI në të majtë, dhe kliko këtë buton për të "
+"kryer një telefonatë"
+
+#: ../src/gui/main.cpp:1691
+msgid "_Chat"
+msgstr "_Chat"
+
+#: ../src/gui/main.cpp:1693
 msgid "Ca_ll"
-msgstr "Thi_rr"
+msgstr "Te_lefonatë"
 
-#: ../src/gui/main.cpp:903 ../src/gui/statusicon.cpp:100
+#: ../src/gui/main.cpp:1693
 msgid "Place a new call"
-msgstr "Kryej një thirrje të re"
+msgstr "Kryej një telefonatë të re"
 
-#: ../src/gui/main.cpp:906 ../src/gui/statusicon.cpp:103
+#: ../src/gui/main.cpp:1696
 msgid "_Hang up"
 msgstr "_Mbylle"
 
-#: ../src/gui/main.cpp:907 ../src/gui/statusicon.cpp:104
+#: ../src/gui/main.cpp:1697
 msgid "Terminate the current call"
-msgstr "Përfundo thirrjen e tanishme"
+msgstr "Përfundo telefonatën e tanishme"
 
-#: ../src/gui/main.cpp:913 ../src/gui/statusicon.cpp:110
-msgid "_Available"
-msgstr "_I lirë"
+#: ../src/gui/main.cpp:1703
+msgid "A_dd Contact"
+msgstr "Sh_to kontaktin"
 
-#: ../src/gui/main.cpp:914 ../src/gui/statusicon.cpp:111
-msgid "Display a popup to accept the call"
-msgstr "Hap një dritare popup për të pranuar thirrjen"
+#: ../src/gui/main.cpp:1703
+msgid "Add a contact to the roster"
+msgstr "Shto një kontakt në listë"
 
-#: ../src/gui/main.cpp:919 ../src/gui/statusicon.cpp:116
-msgid "Aut_o Answer"
-msgstr "Përgjigj_u automatikisht"
+#: ../src/gui/main.cpp:1707
+msgid "_Find Contacts"
+msgstr "_Gjej kontakte"
 
-#: ../src/gui/main.cpp:920 ../src/gui/statusicon.cpp:117
-msgid "Auto answer calls"
-msgstr "Përgjigju automatikisht thirrjeve"
+#: ../src/gui/main.cpp:1708
+msgid "Find contacts"
+msgstr "Kërko kontakte"
 
-#: ../src/gui/main.cpp:925 ../src/gui/statusicon.cpp:122
-msgid "_Do Not Disturb"
-msgstr "_Mos më shqetëso"
+#: ../src/gui/main.cpp:1715
+msgid "H_old Call"
+msgstr "Vër në pritje telef_onatën"
 
-#: ../src/gui/main.cpp:926 ../src/gui/statusicon.cpp:123
-msgid "Reject calls"
-msgstr "Thirrjet e refuzuara"
-
-#: ../src/gui/main.cpp:931 ../src/gui/statusicon.cpp:128
-msgid "_Forward"
-msgstr "_Vazhdo"
-
-#: ../src/gui/main.cpp:931 ../src/gui/statusicon.cpp:128
-msgid "Forward calls"
-msgstr "Thirrjet e transferuara"
-
-#: ../src/gui/main.cpp:939
-msgid "Speed d_ials"
-msgstr "Telefonata të shpe_jta"
-
-#: ../src/gui/main.cpp:943 ../src/gui/main.cpp:3148
-msgid "_Hold Call"
-msgstr "_Pushim i thirrjes"
-
-#: ../src/gui/main.cpp:943
+#: ../src/gui/main.cpp:1715 ../src/gui/main.cpp:2390
 msgid "Hold the current call"
-msgstr "Ndalon thirrjen e tanishme"
+msgstr "Vë në pritje telefonatën e tanishme"
 
-#: ../src/gui/main.cpp:947
+#: ../src/gui/main.cpp:1719
 msgid "_Transfer Call"
-msgstr "_Transferim i thirrjes"
+msgstr "_Transfero telefonatën"
 
-#: ../src/gui/main.cpp:948
+#: ../src/gui/main.cpp:1720
 msgid "Transfer the current call"
-msgstr "Transferon thirrjen e tanishme"
+msgstr "Transferon telefonatën e tanishme"
 
-#: ../src/gui/main.cpp:955 ../src/gui/main.cpp:3182
+#: ../src/gui/main.cpp:1727 ../src/gui/main.cpp:3223
 msgid "Suspend _Audio"
 msgstr "Pezullo _Audio"
 
-#: ../src/gui/main.cpp:956
+#: ../src/gui/main.cpp:1728
 msgid "Suspend or resume the audio transmission"
 msgstr "Pezullon ose rimerr transmetimin e zërit"
 
-#: ../src/gui/main.cpp:960 ../src/gui/main.cpp:3184
+#: ../src/gui/main.cpp:1732 ../src/gui/main.cpp:3225
 msgid "Suspend _Video"
 msgstr "Pezullo _Video"
 
-#: ../src/gui/main.cpp:961
+#: ../src/gui/main.cpp:1733
 msgid "Suspend or resume the video transmission"
 msgstr "Pezullon ose rimerr transmetimin e videos"
 
-#: ../src/gui/main.cpp:968
-msgid "_Save Current Picture"
-msgstr "_Ruaj figurën e tanishme"
-
-#: ../src/gui/main.cpp:969
-msgid "Save a snapshot of the current video"
-msgstr "Ruan një fotografi të videos së tanishme"
-
-#: ../src/gui/main.cpp:975
+#: ../src/gui/main.cpp:1740
 msgid "Close the Ekiga window"
 msgstr "Mbyll dritaren e Ekiga"
 
-#: ../src/gui/main.cpp:982 ../src/gui/statusicon.cpp:185
-msgid "_Quit"
-msgstr "_Dalja"
+#: ../src/gui/main.cpp:1747 ../src/gui/statusicon.cpp:405
+msgid "Quit"
+msgstr "Dalja"
 
-#: ../src/gui/main.cpp:982 ../src/gui/statusicon.cpp:186
-msgid "Quit Ekiga"
-msgstr "Përfundo Ekiga"
-
-#: ../src/gui/main.cpp:986
-msgid "_Edit"
-msgstr "_Ndrysho"
-
-#: ../src/gui/main.cpp:988
-msgid "_Configuration Druid"
+#: ../src/gui/main.cpp:1753
+msgid "_Configuration Assistant"
 msgstr "Asistenti i _konfigurimit"
 
-#: ../src/gui/main.cpp:989
-msgid "Run the configuration druid"
+#: ../src/gui/main.cpp:1754
+msgid "Run the configuration assistant"
 msgstr "Nis asistentin e konfigurimit"
 
-#: ../src/gui/main.cpp:996
+#: ../src/gui/main.cpp:1761
 msgid "_Accounts"
 msgstr "_Profilet"
 
-#: ../src/gui/main.cpp:997
+#: ../src/gui/main.cpp:1762
 msgid "Edit your accounts"
 msgstr "Ndrysho profilet tuaj"
 
-#: ../src/gui/main.cpp:1002 ../src/gui/statusicon.cpp:152
-msgid "_Preferences"
-msgstr "_Preferimet"
-
-#: ../src/gui/main.cpp:1003 ../src/gui/statusicon.cpp:153
+#: ../src/gui/main.cpp:1768
 msgid "Change your preferences"
 msgstr "Ndrysho preferimet"
 
-#: ../src/gui/main.cpp:1008
+#: ../src/gui/main.cpp:1773
 msgid "_View"
 msgstr "_Shfaq"
 
-#: ../src/gui/main.cpp:1010
-msgid "View _Mode"
-msgstr "_Mënyra e paraqitjes"
+#: ../src/gui/main.cpp:1775
+msgid "Con_tacts"
+msgstr "Kon_takte"
 
-# (pofilter) unchanged: please translate
-#: ../src/gui/main.cpp:1012
-msgid "Softp_hone"
-msgstr "Softp_hone"
+#: ../src/gui/main.cpp:1775
+msgid "View the contacts list"
+msgstr "Shfaq listën e kontakteve"
 
-#: ../src/gui/main.cpp:1013
-msgid "Show the softphone view"
-msgstr "Shfaq paraqitjen soft-telefon"
-
-#: ../src/gui/main.cpp:1018
-msgid "_Videophone"
-msgstr "_Videofon"
-
-#: ../src/gui/main.cpp:1019
-msgid "Show the videophone view"
-msgstr "Shfaq paraqitjen videofon"
-
-#: ../src/gui/main.cpp:1024
-msgid "_Full View"
-msgstr "_Pamje e plotë"
-
-#: ../src/gui/main.cpp:1025
-msgid "View all components"
-msgstr "Shfaq të gjithë përbërësit"
-
-#: ../src/gui/main.cpp:1033
-msgid "_Control Panel"
-msgstr "_Paneli i kontrollit"
-
-#: ../src/gui/main.cpp:1035
+#: ../src/gui/main.cpp:1780
 msgid "_Dialpad"
 msgstr "_Tastiera numerike"
 
-#: ../src/gui/main.cpp:1035
+#: ../src/gui/main.cpp:1780
 msgid "View the dialpad"
 msgstr "Shfaq tastierën e telefonit"
 
-#: ../src/gui/main.cpp:1040
-msgid "_Audio Settings"
-msgstr "Rregullimet _Audio"
+#: ../src/gui/main.cpp:1785
+msgid "_Call History"
+msgstr "Historiku i _telefonatave"
 
-#: ../src/gui/main.cpp:1041
-msgid "View audio settings"
-msgstr "Shfaq parametrat audio"
+#: ../src/gui/main.cpp:1785
+msgid "View the call history"
+msgstr "Shfaq historikun e telefonatave"
 
-#: ../src/gui/main.cpp:1046
-msgid "_Video Settings"
-msgstr "Rregullimet _Video"
+#: ../src/gui/main.cpp:1793
+msgid "_Show Call Panel"
+msgstr "_Shfaq panelin e telefonimit"
 
-#: ../src/gui/main.cpp:1047
-msgid "View video settings"
-msgstr "Shfaq parametrat video"
-
-#: ../src/gui/main.cpp:1052
-msgid "_Statistics"
-msgstr "_Statistika"
-
-#: ../src/gui/main.cpp:1053
-msgid "View audio/video transmission and reception statistics"
-msgstr "Shfaq statistikat e transmetimit dhe të marrjes audio/video"
-
-#: ../src/gui/main.cpp:1061
+#: ../src/gui/main.cpp:1801
 msgid "_Local Video"
 msgstr "Video _lokale"
 
-#: ../src/gui/main.cpp:1062
+#: ../src/gui/main.cpp:1802
 msgid "Local video image"
-msgstr "Figura e videos lokale"
+msgstr "Figura e video-s lokale"
 
-#: ../src/gui/main.cpp:1067
+#: ../src/gui/main.cpp:1807
 msgid "_Remote Video"
 msgstr "Video _remote"
 
-#: ../src/gui/main.cpp:1068
+#: ../src/gui/main.cpp:1808
 msgid "Remote video image"
-msgstr "Figura e videos së korrispondentit"
+msgstr "Figura e video-s së korrispondentit"
 
-#: ../src/gui/main.cpp:1073
-msgid "Both (_Picture-in-Picture)"
-msgstr "Së bashku (_Figurë-në-Figurë)"
+#: ../src/gui/main.cpp:1813
+msgid "_Picture-in-Picture"
+msgstr "_Figurë-në-Figurë"
 
-#: ../src/gui/main.cpp:1074 ../src/gui/main.cpp:1080 ../src/gui/main.cpp:1087
+#: ../src/gui/main.cpp:1814 ../src/gui/main.cpp:1820
 msgid "Both video images"
 msgstr "Së bashku imazhet video"
 
-#: ../src/gui/main.cpp:1079
-msgid "Both (_Side-by-Side)"
-msgstr "Së bashku (_Krah-për-Krah)"
+#: ../src/gui/main.cpp:1819
+msgid "Picture-in-Picture in Separate _Window"
+msgstr "Figurë-në-Figurë në _dritare të veçantë"
 
-#: ../src/gui/main.cpp:1086
-msgid "Both (_Both in New Windows)"
-msgstr "Së bashku (Së _bashku në dritare të reja)"
-
-#: ../src/gui/main.cpp:1095
-msgid "Zoom _In"
-msgstr "Z_madho"
-
-#: ../src/gui/main.cpp:1095 ../src/gui/main.cpp:1573 ../src/gui/main.cpp:1598
+#: ../src/gui/main.cpp:1827
 msgid "Zoom in"
 msgstr "Zmadho"
 
-#: ../src/gui/main.cpp:1099
-msgid "Zoom _Out"
-msgstr "Zv_ogëlo"
-
-#: ../src/gui/main.cpp:1099 ../src/gui/main.cpp:1577 ../src/gui/main.cpp:1602
+#: ../src/gui/main.cpp:1831
 msgid "Zoom out"
 msgstr "Zvogëlo"
 
-#: ../src/gui/main.cpp:1103
-msgid "_Normal Size"
-msgstr "Madhësi _normale"
-
-#: ../src/gui/main.cpp:1103 ../src/gui/main.cpp:1581 ../src/gui/main.cpp:1606
+#: ../src/gui/main.cpp:1835
 msgid "Normal size"
 msgstr "Madhësia e zakonshme"
 
-#: ../src/gui/main.cpp:1109
+#: ../src/gui/main.cpp:1839
 msgid "_Fullscreen"
 msgstr "_Ekran të plotë"
 
-#: ../src/gui/main.cpp:1115
-msgid "_Tools"
-msgstr "_Instrumentë"
+#: ../src/gui/main.cpp:1839
+msgid "Switch to fullscreen"
+msgstr "Kalo në modalitetin me ekran të plotë"
 
-#: ../src/gui/main.cpp:1117 ../src/gui/statusicon.cpp:136
-msgid "Address _Book"
-msgstr "_Rubrika"
-
-#: ../src/gui/main.cpp:1118 ../src/gui/statusicon.cpp:137
-msgid "Open the address book"
-msgstr "Hap rubrikën"
-
-#: ../src/gui/main.cpp:1125
-msgid "C_hat Window"
-msgstr "Dritarja e s_hkrimit"
-
-#: ../src/gui/main.cpp:1126
-msgid "Open the chat window"
-msgstr "Hap dritaren e bisedës me anë të shkrimit"
-
-#: ../src/gui/main.cpp:1131
-msgid "_General History"
-msgstr "Historiku i për_gjithshëm"
-
-#: ../src/gui/main.cpp:1132
-msgid "View the operations history"
-msgstr "Shiko kronollogjinë e veprimeve"
-
-#: ../src/gui/main.cpp:1136
-msgid "_Calls History"
-msgstr "Historiku i _thirrjeve"
-
-#: ../src/gui/main.cpp:1137 ../src/gui/statusicon.cpp:145
-msgid "View the calls history"
-msgstr "Shfaq historikun e thirrjeve"
-
-#: ../src/gui/main.cpp:1144
-msgid "_PC-To-Phone Account"
-msgstr "Profili _PC-në-Telefon"
-
-#: ../src/gui/main.cpp:1145
-msgid "Manage your PC-To-Phone account"
-msgstr "Organizo profilin tuaj PC-Telefon"
-
-#: ../src/gui/main.cpp:1150
+#: ../src/gui/main.cpp:1844
 msgid "_Help"
 msgstr "_Ndihmë"
 
-#: ../src/gui/main.cpp:1152 ../src/gui/statusicon.cpp:161
-#: ../src/gui/statusicon.cpp:172
-msgid "_Contents"
-msgstr "_Përmbajtja"
-
-#: ../src/gui/main.cpp:1153 ../src/gui/statusicon.cpp:162
-#: ../src/gui/statusicon.cpp:173
+#: ../src/gui/main.cpp:1847 ../src/gui/statusicon.cpp:382
+#: ../src/gui/statusicon.cpp:393
 msgid "Get help by reading the Ekiga manual"
 msgstr "Merr ndihmë duke lexuar manualin e Ekiga-s"
 
-#: ../src/gui/main.cpp:1157 ../src/gui/main.cpp:1163
-#: ../src/gui/statusicon.cpp:166 ../src/gui/statusicon.cpp:177
-msgid "_About"
-msgstr "_Informacione"
-
-#: ../src/gui/main.cpp:1158 ../src/gui/main.cpp:1164
-#: ../src/gui/statusicon.cpp:167 ../src/gui/statusicon.cpp:178
+#: ../src/gui/main.cpp:1852 ../src/gui/statusicon.cpp:387
+#: ../src/gui/statusicon.cpp:398
 msgid "View information about Ekiga"
 msgstr "Shiko informacionet mbi Ekiga"
 
-#: ../src/gui/main.cpp:1232
-msgid "Statistics"
-msgstr "Statistika"
+#: ../src/gui/main.cpp:1888
+msgid "Contacts"
+msgstr "Kontakte"
 
 # (pofilter) accelerators: accelerator _ does not occur in original and should not be in translation
 # (pofilter) isreview: Check if the unit has been marked review.
-#: ../src/gui/main.cpp:1315
+#: ../src/gui/main.cpp:1913
 msgid "Dialpad"
 msgstr "Tastiera numerike"
 
-#: ../src/gui/main.cpp:1368
+#: ../src/gui/main.cpp:1949
+msgid "Video Settings"
+msgstr "Rregullimet video"
+
+#: ../src/gui/main.cpp:1977
 msgid "Adjust brightness"
 msgstr "Rregullo ndriçimin"
 
-#: ../src/gui/main.cpp:1390
+#: ../src/gui/main.cpp:1999
 msgid "Adjust whiteness"
 msgstr "Rregullo bardhësinë"
 
-#: ../src/gui/main.cpp:1412
+#: ../src/gui/main.cpp:2021
 msgid "Adjust color"
 msgstr "Rregullo ngjyrën"
 
-#: ../src/gui/main.cpp:1434
+#: ../src/gui/main.cpp:2043
 msgid "Adjust contrast"
 msgstr "Rregullo kontrastin"
 
-# (pofilter) unchanged: please translate
-#: ../src/gui/main.cpp:1440
-msgid "Video"
-msgstr "Video"
+#: ../src/gui/main.cpp:2097
+msgid "Audio Settings"
+msgstr "Rregullimet audio"
 
-#: ../src/gui/main.cpp:1524
-msgid "Audio"
-msgstr "Zëri"
+#: ../src/gui/main.cpp:2323
+msgid "Change the volume of your soundcard"
+msgstr "Ndrysho volumin e skedës audio"
 
-#: ../src/gui/main.cpp:1573 ../src/gui/main.cpp:1598
-msgid "Zoom In"
-msgstr "Zmadho"
+#: ../src/gui/main.cpp:2346
+msgid "Change the color settings of your video device"
+msgstr "Ndrysho rregullimet e ngjyrave të dispozitivit video"
 
-#: ../src/gui/main.cpp:1577 ../src/gui/main.cpp:1602
-msgid "Zoom Out"
-msgstr "Zvogëlo"
+#: ../src/gui/main.cpp:2369
+msgid "Display images from your camera device"
+msgstr "Shfaq figura nga kamera juaj"
 
-#: ../src/gui/main.cpp:1581 ../src/gui/main.cpp:1606
-msgid "Normal Size"
-msgstr "Madhësi normale"
+#: ../src/gui/main.cpp:2421
+msgid "Call history"
+msgstr "Historiku i telefonatës"
 
-#: ../src/gui/main.cpp:1587 ../src/gui/main.cpp:1612
-msgid "Fullscreen"
-msgstr "Ekran të plotë"
-
-#: ../src/gui/main.cpp:1775
-msgid "Notification area not detected"
-msgstr "Nuk është zbuluar zona e njoftimit"
-
-# (pofilter) puncspacing: checks for bad spacing after punctuation
-#: ../src/gui/main.cpp:1775
-msgid ""
-"The notification area is not present in your panel, so Ekiga cannot start "
-"hidden."
-msgstr ""
-"Zona e njoftimit nuk gjendet në panelin tënd , pra Ekiga nuk mund të niset "
-"në mënyrë të padukshme."
-
-#: ../src/gui/main.cpp:2088
-#, c-format
-msgid "Sent DTMF %c"
-msgstr "Dërgo DTMF %c"
-
-#: ../src/gui/main.cpp:2311 ../src/gui/main.cpp:4308
-#, c-format
-msgid "Missed calls: %d - Voice Mails: %s"
-msgstr "Thirrje të humbura: %d - Posta zanore: %s"
-
-#: ../src/gui/main.cpp:3132
+#: ../src/gui/main.cpp:3171
 msgid "_Retrieve Call"
-msgstr "_Rimarrje e thirrjes"
+msgstr "_Rekupero telefonatën"
+
+#: ../src/gui/main.cpp:3184
+msgid "_Hold Call"
+msgstr "_Vër në pritje telefonatën"
 
 # (pofilter) accelerators: accelerator _ is missing from translation
 # (pofilter) isreview: Check if the unit has been marked review.
-#: ../src/gui/main.cpp:3186
+#: ../src/gui/main.cpp:3227
 msgid "Resume _Audio"
 msgstr "Rikthe _zërin"
 
 # (pofilter) accelerators: accelerator _ is missing from translation
 # (pofilter) isreview: Check if the unit has been marked review.
-#: ../src/gui/main.cpp:3188
+#: ../src/gui/main.cpp:3229
 msgid "Resume _Video"
-msgstr "Rinis _videon"
+msgstr "Rikthe _video-n"
 
-#: ../src/gui/main.cpp:3730
-msgid "Out:"
-msgstr "Jashtë:"
+#: ../src/gui/main.cpp:3648
+#, c-format
+msgid "Call Duration: %s\n"
+msgstr "Kohëzgjatja e bisedës: %s\n"
 
-#: ../src/gui/main.cpp:3733
-msgid "In:"
-msgstr "Brenda:"
-
-#: ../src/gui/main.cpp:3757
-msgid "Registered accounts:"
-msgstr "Profilët e regjistruar:"
-
-#: ../src/gui/main.cpp:3882
+#: ../src/gui/main.cpp:3685
 msgid "Transfer call to:"
 msgstr "Transfero thirrjen drejt:"
 
-#: ../src/gui/main.cpp:3883 ../src/gui/main.cpp:3948
+#: ../src/gui/main.cpp:3686
 msgid "Transfer"
 msgstr "Transferimi"
 
-#: ../src/gui/main.cpp:3946
+#: ../src/gui/main.cpp:3748
 msgid "Reject"
 msgstr "Refuzo"
 
-#: ../src/gui/main.cpp:3950
+#: ../src/gui/main.cpp:3750
 msgid "Accept"
 msgstr "Prano"
 
-#: ../src/gui/main.cpp:3957
+#: ../src/gui/main.cpp:3757
 msgid "Incoming call from"
 msgstr "Thirrje në hyrje nga"
 
-#: ../src/gui/main.cpp:3970
-msgid "Remote URL:"
-msgstr "Adresa URL e korrispondentit:"
+#: ../src/gui/main.cpp:3770
+msgid "Remote URI:"
+msgstr "URI remote:"
 
-#: ../src/gui/main.cpp:3982
+#: ../src/gui/main.cpp:3782
 msgid "Remote Application:"
 msgstr "Programi remot:"
 
+#: ../src/gui/main.cpp:3831
+msgid "No"
+msgstr "Jo"
+
+#: ../src/gui/main.cpp:3833
+msgid "Yes"
+msgstr "Po"
+
+#: ../src/gui/main.cpp:3843
+msgid "Detected new audio input device:"
+msgstr "U zbulua një dispozitiv i ri audio në hyrje:"
+
+#: ../src/gui/main.cpp:3846
+msgid "Detected new audio output device:"
+msgstr "U zbulua një dispozitiv i ri audio në dalje:"
+
+#: ../src/gui/main.cpp:3849
+msgid "Detected new video input device:"
+msgstr "U zbulua një dispozitiv i ri video në hyrje:"
+
+#: ../src/gui/main.cpp:3867
+msgid "Do you want to use it as default device?"
+msgstr "Dëshiron ta përdorësh si dispozitivin e paracaktuar?"
+
 # (pofilter) unchanged: please translate
-#. Add the window icon and title
-#: ../src/gui/main.cpp:4050 ../src/gui/main.cpp:4238
+#. Add title
+#: ../src/gui/main.cpp:3925 ../src/gui/main.cpp:4032
 msgid "Ekiga"
 msgstr "Ekiga"
 
-#: ../src/gui/main.cpp:4218
-msgid "Local Video"
-msgstr "Video lokale"
+#: ../src/gui/main.cpp:4228
+#, c-format
+msgid "Missed calls: %d - Voice Mails: %d"
+msgstr "Thirrje të humbura: %d - Posta zanore: %d"
 
-#: ../src/gui/main.cpp:4225
-msgid "Remote Video"
-msgstr "Video remote"
+#: ../src/gui/main.cpp:4387
+#, c-format
+msgid "TX: %dx%d "
+msgstr "TX: %dx%d "
 
-#: ../src/gui/main.cpp:4476
+#: ../src/gui/main.cpp:4390
+#, c-format
+msgid "RX: %dx%d "
+msgstr "RX: %dx%d "
+
+#: ../src/gui/main.cpp:4392
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
 "Late packets: %.1f %%\n"
 "Out of order packets: %.1f %%\n"
-"Jitter buffer: %d ms"
+"Jitter buffer: %d ms%s%s%s"
 msgstr ""
 "Paketa të humbura: %.1f %%\n"
 "Paketa me vonesë: %.1f %%\n"
 "Paketa të çrregullta: %.1f%%\n"
-"Jitter buffer: %d ms"
+"Jitter buffer: %d ms%s%s%s"
 
-# (pofilter) puncspacing: checks for bad spacing after punctuation
-# (pofilter) urls: checks that URLs are not translated
-#: ../src/gui/main.cpp:4575
-#, c-format
-msgid ""
-"Ekiga got an invalid value for the GConf key %s.\n"
-"\n"
-"It probably means that your GConf schemas have not been correctly installed "
-"or the that permissions are not correct.\n"
-"\n"
-"Please check the FAQ (http://www.ekiga.org/), the troubleshooting section of "
-"the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list "
-"archives for more information (http://mail.gnome.org) about this problem."
+#: ../src/gui/main.cpp:4544
+msgid "Prints debug messages in the console (level between 1 and 5)"
+msgstr "Shfaq mesazhet e debug në konsolë (niveli midis 1 dhe 5)"
+
+#: ../src/gui/main.cpp:4549
+msgid "Prints user plane debug messages in the console (level between 1 and 4)"
 msgstr ""
-"Ekiga mori një vlerë të pavlefshme për çelësin GConf %s.\n"
-"\n"
-"Ka mundësi që skemat tuaja GConf të mos jenë instaluar si duhet ose që të "
-"drejtat të mos jenë të sakta.\n"
-"\n"
-"Të lutem kontrollo FAQ (http://www.ekiga.org/faq.php), seksionin probleme të "
-"sitit GConf (http://www.gnome.org/projects/gconf/) ose arkivin e listës së "
-"mesazheve për më shumë informacione rreth këtij problemi (http://mail.gnome."
-"org)."
+"Shfaq mesazhet e debug të planit të përdoruesit në konsolë (niveli midis 1 "
+"dhe 4)"
 
-# (pofilter) simplecaps: checks the capitalisation of two strings isn't wildly different
-#: ../src/gui/main.cpp:4578
-msgid "Gconf key error"
-msgstr "Gabim kyçi Gconf"
+#: ../src/gui/main.cpp:4554
+msgid "Makes Ekiga call the given URI"
+msgstr "Bën që Ekiga të thërrasë adresën e dhënë URI"
 
-#: ../src/gui/main.cpp:4609 ../src/gui/main.cpp:4628
-msgid "Prints debug messages in the console (level between 1 and 6)"
-msgstr "Shfaq mesazhet e debugimit në konsolë (niveli midis 1 dhe 6)"
-
-#: ../src/gui/main.cpp:4612 ../src/gui/main.cpp:4633
-msgid "Makes Ekiga call the given URL"
-msgstr "Bën që Ekiga të thërrasë adresën e dhënë URL"
-
-#: ../src/gui/main.cpp:4666
+#: ../src/gui/main.cpp:4663
 msgid "No usable audio plugin detected"
 msgstr "Nuk u gjet asnjë plugin audio i përdorshëm"
 
-#: ../src/gui/main.cpp:4666
+#: ../src/gui/main.cpp:4664
 msgid ""
 "Ekiga didn't find any usable audio plugin. Make sure that your installation "
 "is correct."
@@ -3245,66 +2735,61 @@ msgstr ""
 "Ekiga nuk gjeti asnjë plugin zëri të përdorshëm. Sigurohu që instalimi të "
 "jetë korrekt."
 
-#: ../src/gui/misc.cpp:115
-msgid "Error"
-msgstr "Gabim"
+#: ../src/gui/main.cpp:4667
+msgid "No usable audio codecs detected"
+msgstr "Nuk u gjet asnjë kodek audio i përdorshëm"
 
-#: ../src/gui/preferences.cpp:497
-msgid "Bandwidth"
-msgstr "Gjerësia e bandës së rrjetit"
+#: ../src/gui/main.cpp:4668
+msgid ""
+"Ekiga didn't find any usable audio codec. Make sure that your installation "
+"is correct."
+msgstr ""
+"Ekiga nuk gjeti asnjë kodek audio të përdorshëm. Sigurohu që instalimi të "
+"jetë korrekt."
 
-#: ../src/gui/preferences.cpp:505
-msgid "Clock Rate"
-msgstr "Frekuenca orare"
+#: ../src/gui/main.cpp:4674
+msgid "Configuration database corruption"
+msgstr "Korruptim i bazës të së dhënave të konfigurimit"
 
-#: ../src/gui/preferences.cpp:630
-msgid "Personal Information"
-msgstr "Informacione personale"
+# (pofilter) puncspacing: checks for bad spacing after punctuation
+# (pofilter) urls: checks that URLs are not translated
+#: ../src/gui/main.cpp:4675
+#, c-format
+msgid ""
+"Ekiga got an invalid value for the configuration key %s.\n"
+"\n"
+"It probably means that your configuration schemas have not been correctly "
+"installed or that the permissions are not correct.\n"
+"\n"
+"Please check the FAQ (http://www.ekiga.org/), the troubleshooting section of "
+"the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list "
+"archives for more information (http://mail.gnome.org) about this problem."
+msgstr ""
+"Ekiga mori një vlerë të pavlefshme për opsionin e konfigurimit %s.\n"
+"\n"
+"Ka mundësi që skemat tuaja të konfigurimit të mos jenë instaluar si duhet "
+"ose që të drejtat të mos jenë të sakta.\n"
+"\n"
+"Të lutem kontrollo FAQ (http://www.ekiga.org/faq.php), seksionin probleme të "
+"sitit GConf (http://www.gnome.org/projects/gconf/) ose arkivin e listës së "
+"mesazheve për më shumë informacione rreth këtij problemi (http://mail."
+"gnome.org)."
 
-#: ../src/gui/preferences.cpp:633
-msgid "_First name:"
-msgstr "_Emri:"
+#: ../src/gui/preferences.cpp:384
+msgid "_Full name:"
+msgstr "Emri i _plotë:"
 
-#: ../src/gui/preferences.cpp:640
-msgid "Sur_name:"
-msgstr "_Mbiemri:"
-
-#: ../src/gui/preferences.cpp:642
-msgid "Enter your surname"
-msgstr "Shkruaj mbiemrin tënd"
-
-# (pofilter) simplecaps: checks the capitalisation of two strings isn't wildly different
-#: ../src/gui/preferences.cpp:648
-msgid "E-_mail address:"
-msgstr "Adresa E-_mail:"
-
-#: ../src/gui/preferences.cpp:650
-msgid "Enter your e-mail address"
-msgstr "Shkruaj adresën tënde e-mail"
-
-#: ../src/gui/preferences.cpp:655
-msgid "_Comment:"
-msgstr "_Komenti:"
-
-#: ../src/gui/preferences.cpp:657
-msgid "Enter a comment about yourself"
-msgstr "Shkruaj diçka mbi vetveten"
-
-#: ../src/gui/preferences.cpp:662
-msgid "_Location:"
-msgstr "_Vendodhja:"
-
-#: ../src/gui/preferences.cpp:664
-msgid "Enter your country or city"
-msgstr "Shkruaj shtetin ose qytetin tënd"
+#: ../src/gui/preferences.cpp:386
+msgid "Enter your first name"
+msgstr "Shkruaj emrin tënd"
 
 #. Add the update button
-#: ../src/gui/preferences.cpp:669 ../src/gui/preferences.cpp:963
+#: ../src/gui/preferences.cpp:391
 msgid "_Apply"
 msgstr "_Zbato"
 
 # (pofilter) endpunc: checks whether punctuation at the end of the strings match
-#: ../src/gui/preferences.cpp:669
+#: ../src/gui/preferences.cpp:391
 msgid ""
 "Click here to update the users directory you are registered to with the new "
 "First Name, Last Name, E-Mail, Comment and Location"
@@ -3313,244 +2798,165 @@ msgstr ""
 "regjistruar me të dhënat e reja, Emri, Mbiemri, E-mail, Komenti dhe "
 "Vendndodhja."
 
-# (pofilter) acronyms: acronyms should not be translated: GUI
-#: ../src/gui/preferences.cpp:683
-msgid "Ekiga GUI"
-msgstr "Interfaqja grafike e Ekiga"
+#: ../src/gui/preferences.cpp:405
+msgid "User Interface"
+msgstr "Interfaqja e përdoruesit"
 
-#: ../src/gui/preferences.cpp:685
+#: ../src/gui/preferences.cpp:407
 msgid "Start _hidden"
 msgstr "Nis në menyrë të _padukshme"
 
-#: ../src/gui/preferences.cpp:691
+#: ../src/gui/preferences.cpp:409
+msgid "Show offline _contacts"
+msgstr "Shfaq _kontaktet jashtë linje"
+
+#: ../src/gui/preferences.cpp:414
 msgid "Video Display"
 msgstr "Shfaqja e videos"
 
-#: ../src/gui/preferences.cpp:693
+#: ../src/gui/preferences.cpp:416
 msgid "Place windows displaying video _above other windows"
 msgstr "Vendos dritaret që shfaqin videon _mbi dritaret e tjera"
 
-#: ../src/gui/preferences.cpp:706
-msgid "Users Directory"
-msgstr "Directory e përdoruesve"
+#: ../src/gui/preferences.cpp:421
+msgid "Auto Away"
+msgstr "Mungesa automatike"
 
-# (pofilter) endpunc: checks whether punctuation at the end of the strings match
-#. Add all the fields
-#: ../src/gui/preferences.cpp:710
-msgid "Users directory:"
-msgstr "Directory e përdoruesve."
-
-#: ../src/gui/preferences.cpp:710
-msgid "The users directory server to register with"
-msgstr "Serveri i directory të përdoruesve ku duhet të regjistrohesh"
-
-#: ../src/gui/preferences.cpp:712
-msgid "Enable _registering"
-msgstr "Aktivo _regjistrimin"
-
-#: ../src/gui/preferences.cpp:712
-msgid "If enabled, register with the selected users directory"
-msgstr "Nëse aktiv, regjistrohesh me numratorin e zgjedhur të përdoruesve"
-
-#: ../src/gui/preferences.cpp:714
-msgid "_Publish my details in the users directory when registering"
+#: ../src/gui/preferences.cpp:423
+msgid "Timeout after which the user is automatically set as away (in minutes):"
 msgstr ""
-"_Publiko të dhënat personale në numratorin e përdoruesve gjatë regjistrimit"
+"Koha e skadimit mbas së cilës përdoruesi caktohet automatikisht si jo i "
+"pranishëm (në minuta):"
 
-#: ../src/gui/preferences.cpp:714
-msgid ""
-"If enabled, your details are shown to people browsing the users directory. "
-"If disabled, you are not visible to users browsing the users directory, but "
-"they can still use the callto URL to call you."
+#: ../src/gui/preferences.cpp:423
+msgid "Automatically set the user as away after the timeout has elapsed (in minutes)"
 msgstr ""
-"Nëse aktiv, informacionet personale mund të shikohen nga njerëzit që "
-"shfletojnë numratorin e përdoruesve. Nëse jo aktiv, atëhere këto njerëz nuk "
-"të shikojnë në listë, por megjithatë ata mund të bëjnë një thirrje duke "
-"përdorur callto URL."
+"Automatikisht cakto përdoruesin si jo të pranishëm mbasi të jetë plotësuar "
+"koha e skadimit (në minuta)"
 
-#: ../src/gui/preferences.cpp:725
+#: ../src/gui/preferences.cpp:433
 msgid "Call Forwarding"
 msgstr "Transferimi i thirrjes"
 
-#: ../src/gui/preferences.cpp:727
+#: ../src/gui/preferences.cpp:435
 msgid "_Always forward calls to the given host"
-msgstr "Transfero i gjithmonë thirrjet _drejt host të caktuar"
+msgstr "Transfero i gjithmonë telefonatat _drejt host të caktuar"
 
-#: ../src/gui/preferences.cpp:727
+#: ../src/gui/preferences.cpp:435
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the protocol settings"
 msgstr ""
-"Nëse aktiv, të gjitha thirrjet në hyrje do të transferohen drejt host-it të "
+"Nëse aktiv, të gjitha telefonatat në hyrje do të transferohen drejt host-it të "
 "caktuar në rregullimet e protokollit"
 
-#: ../src/gui/preferences.cpp:729
+#: ../src/gui/preferences.cpp:437
 msgid "Forward calls to the given host if _no answer"
-msgstr "Transfero thirrjet drejt host-it të caktuar nëse _nuk ka përgjigje"
+msgstr "Transfero telefonatat drejt host-it të caktuar nëse _nuk ka përgjigje"
 
 # (pofilter) doublewords: The word 'do' is repeated
 # (pofilter) doublespacing: checks for bad double-spaces by comparing to original
-#: ../src/gui/preferences.cpp:729
+#: ../src/gui/preferences.cpp:437
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the protocol settings if you do not answer the call"
 msgstr ""
-"Nëse aktivohet, të gjitha thirrjet në hyrje do do të transferohen drejt  "
+"Nëse aktivizohet, të gjitha telefonatat në hyrje do do të transferohen drejt  "
 "host-it të specifikuar në rregullimet e protokollit nëse nuk i përgjigjesh "
 "thirrjes"
 
-#: ../src/gui/preferences.cpp:731
+#: ../src/gui/preferences.cpp:439
 msgid "Forward calls to the given host if _busy"
-msgstr "Transfero thirrjet tek host i dhënë nëse je i _zënë"
+msgstr "Transfero telefonatat tek host i dhënë nëse je i _zënë"
 
-#: ../src/gui/preferences.cpp:731
+#: ../src/gui/preferences.cpp:439
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the protocol settings if you already are in a call or if you "
 "are in Do Not Disturb mode"
 msgstr ""
-"Nëse aktivohet, të gjitha thirrjet në hyrje do të transferohen drejt host-it "
+"Nëse aktivizohet, të gjitha telefonatat në hyrje do të transferohen drejt host-it "
 "të specifikuar në rregullimet e protokollit nëse jeni i zënë në një bisedë "
 "ose nëse jeni në modalitetin Mos Më Shqetësoni"
 
-#: ../src/gui/preferences.cpp:735 ../src/gui/preferences.cpp:1977
+#: ../src/gui/preferences.cpp:443 ../src/gui/preferences.cpp:1474
 msgid "Call Options"
 msgstr "Opsionet e thirrjes"
 
 #. Add all the fields
-#: ../src/gui/preferences.cpp:738
-msgid "Automatically _clear calls after 30 seconds of inactivity"
-msgstr "_Mbyll thirrjen automatikish mbas 30 sekondash pa aktivitet"
-
-#: ../src/gui/preferences.cpp:740
+#: ../src/gui/preferences.cpp:446
 msgid "Timeout to reject or forward unanswered incoming calls (in seconds):"
 msgstr ""
-"Skadenca kohore për të refuzuar apo transferuar thirrjet në hyrje pa "
+"Skadenca kohore për të refuzuar apo transferuar telefonatat në hyrje pa "
 "përgjigje (në sekonda):"
 
-#: ../src/gui/preferences.cpp:780
+#: ../src/gui/preferences.cpp:478
 msgid "Ekiga Sound Events"
-msgstr "Efektet zanore të Ekiga"
+msgstr "Eventet zanore të Ekiga"
 
-#: ../src/gui/preferences.cpp:829 ../src/gui/preferences.cpp:838
-#: ../src/gui/preferences.cpp:847
+#: ../src/gui/preferences.cpp:527 ../src/gui/preferences.cpp:536
+#: ../src/gui/preferences.cpp:545
 msgid "Event"
-msgstr "Ndodhia"
+msgstr "Eventi"
 
-#: ../src/gui/preferences.cpp:859
+#: ../src/gui/preferences.cpp:557
 msgid "Choose a sound"
 msgstr "Zgjidh një tingull"
 
 # (pofilter) simplecaps: checks the capitalisation of two strings isn't wildly different
-#: ../src/gui/preferences.cpp:865
+#: ../src/gui/preferences.cpp:563
 msgid "Wavefiles"
 msgstr "File Wave"
 
-#: ../src/gui/preferences.cpp:874 ../src/gui/preferences.cpp:893
+#: ../src/gui/preferences.cpp:572 ../src/gui/preferences.cpp:591
 msgid "Play"
-msgstr "Luaj"
+msgstr "Riprodho"
 
-#: ../src/gui/preferences.cpp:907
-msgid "Alternative Output Device"
-msgstr "Dispozitivi alternativ prodhues"
-
-#: ../src/gui/preferences.cpp:913
-msgid "Alternative output device:"
-msgstr "Dispozitivi alternativ prodhues:"
-
-# (pofilter) endpunc: checks whether punctuation at the end of the strings match
-#: ../src/gui/preferences.cpp:913
-msgid "Select an alternative audio output device to use for sound events"
-msgstr ""
-"Zgjidh dispozitivin alternativ të zërit në dalje për tu përdorur për tingujt "
-"e ndodhive."
-
-#: ../src/gui/preferences.cpp:931
-msgid "STUN"
-msgstr "STUN"
-
-#: ../src/gui/preferences.cpp:932
-msgid "IP Translation"
-msgstr "Përkthimi i IP"
-
-#: ../src/gui/preferences.cpp:945
-msgid "Network Interface"
-msgstr "Interfaqja e rrjetit"
-
-#: ../src/gui/preferences.cpp:950
-msgid "Listen on:"
-msgstr "Në pritje në:"
-
-#: ../src/gui/preferences.cpp:957
-msgid "NAT Settings"
-msgstr "Rregullimet e NAT"
-
-#: ../src/gui/preferences.cpp:959
-msgid "NAT Traversal Method:"
-msgstr "Metoda e kalimit NAT:"
-
-#: ../src/gui/preferences.cpp:961
-msgid "STUN Se_rver:"
-msgstr "Se_rveri STUN:"
-
-# (pofilter) endpunc: checks whether punctuation at the end of the strings match
-#: ../src/gui/preferences.cpp:961
-msgid "The STUN server to use for STUN Support."
-msgstr "Serveri STUN për tu përdorur si suport STUN"
-
-#: ../src/gui/preferences.cpp:963
-msgid "Click here to update your NAT settings"
-msgstr "Kliko këtu për të rifreskuar parametrat e NAT"
-
-#: ../src/gui/preferences.cpp:975
+#: ../src/gui/preferences.cpp:612
 msgid "String"
 msgstr "Stringë"
 
 # (pofilter) unchanged: please translate
-#: ../src/gui/preferences.cpp:976
+#: ../src/gui/preferences.cpp:613
 msgid "Tone"
 msgstr "Tone"
 
-#: ../src/gui/preferences.cpp:977 ../src/gui/preferences.cpp:1027
+#: ../src/gui/preferences.cpp:614 ../src/gui/preferences.cpp:663
 msgid "RFC2833"
 msgstr "RFC2833"
 
-#: ../src/gui/preferences.cpp:978
+#: ../src/gui/preferences.cpp:615
 msgid "Q.931"
 msgstr "Q.931"
 
-#: ../src/gui/preferences.cpp:984 ../src/gui/preferences.cpp:1035
+#: ../src/gui/preferences.cpp:621 ../src/gui/preferences.cpp:673
 msgid "Misc Settings"
 msgstr "Rregullime të ndryshme"
 
-#: ../src/gui/preferences.cpp:986
-msgid "Default _gateway:"
-msgstr "_Gateway i prezgjedhur:"
+#: ../src/gui/preferences.cpp:624 ../src/gui/preferences.cpp:678
+msgid "Forward _URI:"
+msgstr "Adresa _URI e transferimit:"
 
-#: ../src/gui/preferences.cpp:989 ../src/gui/preferences.cpp:1040
-msgid "Forward _URL:"
-msgstr "Adresa _URL e transferimit:"
-
-#: ../src/gui/preferences.cpp:998
+#: ../src/gui/preferences.cpp:633
 msgid "Advanced Settings"
 msgstr "Rregullimet e detajuara"
 
 #. The toggles
-#: ../src/gui/preferences.cpp:1001
+#: ../src/gui/preferences.cpp:636
 msgid "Enable H.245 _tunneling"
-msgstr "Aktivo _tunelin H.245"
+msgstr "Aktivizo _tunelin H.245"
 
-#: ../src/gui/preferences.cpp:1003
+#: ../src/gui/preferences.cpp:638
 msgid "Enable _early H.245"
-msgstr "Aktivo H.245 e shp_ejtë"
+msgstr "Aktivizo H.245 e h_ershme"
 
-#: ../src/gui/preferences.cpp:1005
+#: ../src/gui/preferences.cpp:640
 msgid "Enable fast _start procedure"
-msgstr "Aktivo proçedurën e ni_sjes së shpejtë"
+msgstr "Aktivizo proçedurën e ni_sjes së shpejtë"
 
 # (pofilter) endpunc: checks whether punctuation at the end of the strings match
 # (pofilter) doublespacing: checks for bad double-spaces by comparing to original
-#: ../src/gui/preferences.cpp:1005
+#: ../src/gui/preferences.cpp:640
 msgid ""
 "Connection will be established in Fast Start mode. Fast Start is a new way "
 "to start calls faster that was introduced in H.323v2. It is not supported by "
@@ -3558,387 +2964,259 @@ msgid ""
 "versions of Netmeeting."
 msgstr ""
 "Lidhja do të kryhet në modalitetin Nisje e Shpejtë. Nisja e Shpejtë është "
-"një mënyrë e re për të filluar thirrjet më shpejt se në  H.323v2.  Nuk është "
-"e mbështetur nga Netmeeting dhe po të përdoren Nisja e Shpejtë dhe Tunneling "
-"H.245 njëkohësisht disa versione të Netmeeting mund të kenë probleme"
+"një mënyrë e re për të filluar telefonatat më shpejt se në H.323v2. Nuk "
+"suportohet nga Netmeeting dhe po të përdoren Nisja e Shpejtë dhe Tunneling "
+"H.245 njëkohësisht disa versione të Netmeeting mund të kenë probleme."
 
-#: ../src/gui/preferences.cpp:1011 ../src/gui/preferences.cpp:1048
+#: ../src/gui/preferences.cpp:646 ../src/gui/preferences.cpp:686
 msgid "DTMF Mode"
 msgstr "Modaliteti DTMF"
 
-#: ../src/gui/preferences.cpp:1013 ../src/gui/preferences.cpp:1050
+#: ../src/gui/preferences.cpp:648 ../src/gui/preferences.cpp:688
 msgid "_Send DTMF as:"
 msgstr "_Dërgo DTMF si:"
 
-# (pofilter) numbers: checks whether numbers of various forms are consistent between the two strings
-# (pofilter) brackets: translation is missing '(', ')'
-#: ../src/gui/preferences.cpp:1013
-msgid ""
-"This permits to set the mode for DTMFs sending. The values can be \"String"
-"\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (default is \"String"
-"\"). Choosing other values than \"String\" disables the Text Chat."
-msgstr ""
-"Kjo të lejon të caktoni mënyrën për dërgimin e DTMF-ve. Vlerat mund të jenë "
-"\"String\" (0), \"Ton\" (1), \"RFC2833\" (2), \"Q.931\" (e paracaktuar është "
-"\"String\"). Kur zgjidhni vlera të ndryshme nga \"String\" atëhere komunikimi me "
-"shkrim çaktivizohet."
+#: ../src/gui/preferences.cpp:648 ../src/gui/preferences.cpp:688
+msgid "This allows you to set the mode for DTMFs sending."
+msgstr "Kjo ju mundëson përcaktimin e modalitetit për dërgimin e DTMF-ve."
+
+#: ../src/gui/preferences.cpp:664
+msgid "INFO"
+msgstr "INFO"
 
 # (pofilter) endpunc: checks whether punctuation at the end of the strings match
-#: ../src/gui/preferences.cpp:1037
+#: ../src/gui/preferences.cpp:675
 msgid "_Outbound Proxy:"
 msgstr "Proxy në _dalje."
 
-# (pofilter) endpunc: checks whether punctuation at the end of the strings match
-#: ../src/gui/preferences.cpp:1050
-msgid ""
-"This permits to set the mode for DTMFs sending. The value can be \"RFC2833"
-"\" (0) only."
-msgstr ""
-"Kjo lejon caktimin e mënyrës për dërgimin e DTMF-ve. Vlera mund të jetë "
-"vetëm \"RFC2833\" (0)"
+#: ../src/gui/preferences.cpp:716
+msgid "Ringing Device"
+msgstr "Dispozitivi i ziles"
 
-#: ../src/gui/preferences.cpp:1070
-msgid "Audio Plugin"
-msgstr "Plugin i zërit"
+#: ../src/gui/preferences.cpp:716
+msgid "Select the ringing audio device to use"
+msgstr "Zgjidh dispozitivin audio të ziles për tu përdorur"
 
-#: ../src/gui/preferences.cpp:1075
-msgid "Audio plugin:"
-msgstr "Plugin i zërit:"
-
-#: ../src/gui/preferences.cpp:1075
-msgid ""
-"The audio plugin that will be used to detect the devices and manage them."
-msgstr ""
-"Plugin i zërit që do përdoret për të gjetur dhe organizuar dispozitivët."
-
-#: ../src/gui/preferences.cpp:1081 ../src/gui/preferences.cpp:2013
-msgid "Audio Devices"
-msgstr "Dispozitivët audio"
-
-#: ../src/gui/preferences.cpp:1088
+#: ../src/gui/preferences.cpp:718
 msgid "Output device:"
 msgstr "Dispozitivi i daljes:"
 
-#: ../src/gui/preferences.cpp:1095 ../src/gui/preferences.cpp:1168
+#: ../src/gui/preferences.cpp:725 ../src/gui/preferences.cpp:873
 msgid "Input device:"
 msgstr "Dispozitivi i hyrjes:"
 
-#. That button will refresh the devices list
-#: ../src/gui/preferences.cpp:1100 ../src/gui/preferences.cpp:1234
+#. That button will refresh the device list
+#: ../src/gui/preferences.cpp:730 ../src/gui/preferences.cpp:937
 msgid "_Detect devices"
 msgstr "_Zbulo dispozitivët"
 
-#: ../src/gui/preferences.cpp:1100
-msgid "Click here to refresh the devices list"
-msgstr "Kliko këtu për të rifreskuar listën e dispozitivëve"
+#: ../src/gui/preferences.cpp:730 ../src/gui/preferences.cpp:937
+msgid "Click here to refresh the device list."
+msgstr "Kliko këtu për të rifreskuar listën e dispozitivëve."
 
-# (pofilter) unchanged: please translate
-#: ../src/gui/preferences.cpp:1126
-msgid "Normal"
-msgstr "Normal"
-
-#: ../src/gui/preferences.cpp:1127
-msgid "Large"
-msgstr "E madhe"
-
-#: ../src/gui/preferences.cpp:1133
+#: ../src/gui/preferences.cpp:851
 msgid "PAL (Europe)"
-msgstr "PAL (Europa)"
+msgstr "PAL (Europë)"
 
-#: ../src/gui/preferences.cpp:1134
+#: ../src/gui/preferences.cpp:852
 msgid "NTSC (America)"
-msgstr "NTSC (Amerika)"
+msgstr "NTSC (Amerikë)"
 
-#: ../src/gui/preferences.cpp:1135
+#: ../src/gui/preferences.cpp:853
 msgid "SECAM (France)"
 msgstr "SECAM (Francë)"
 
-#: ../src/gui/preferences.cpp:1136
+#: ../src/gui/preferences.cpp:854
 msgid "Auto"
-msgstr "Automatik"
+msgstr "Auto"
 
-#: ../src/gui/preferences.cpp:1152
-msgid "Video Plugin"
-msgstr "Plugin video"
-
-#: ../src/gui/preferences.cpp:1156
-msgid "Video plugin:"
-msgstr "Plugin video:"
-
-#: ../src/gui/preferences.cpp:1162 ../src/gui/preferences.cpp:2017
+#: ../src/gui/preferences.cpp:866
 msgid "Video Devices"
 msgstr "Dispozitivët video"
 
 #. Video Channel
-#: ../src/gui/preferences.cpp:1172
+#: ../src/gui/preferences.cpp:877
 msgid "Channel:"
 msgstr "Kanali:"
 
-#: ../src/gui/preferences.cpp:1175
+#: ../src/gui/preferences.cpp:879
 msgid "Size:"
 msgstr "Madhësia:"
 
-#: ../src/gui/preferences.cpp:1175
-msgid ""
-"Select the transmitted video size: Normal (QCIF 176x144) or Large (CIF "
-"352x288)"
-msgstr ""
-"Zgjidh madhësinë e videos së transmetuar : Normale (QCIF 176x144) ose e "
-"madhe (CIF 352x288)"
+#: ../src/gui/preferences.cpp:879
+msgid "Select the transmitted video size"
+msgstr "Zgjidh madhësinë e video-s së transmetuar"
 
-#: ../src/gui/preferences.cpp:1178
+#: ../src/gui/preferences.cpp:881
 msgid "Format:"
 msgstr "Formati:"
 
 #. The file selector button
-#: ../src/gui/preferences.cpp:1181
+#: ../src/gui/preferences.cpp:884
 msgid "Image:"
 msgstr "Figura:"
 
-#: ../src/gui/preferences.cpp:1184
+#: ../src/gui/preferences.cpp:887
 msgid "Choose a Picture"
 msgstr "Zgjidh një figurë"
 
-#: ../src/gui/preferences.cpp:1188
+#: ../src/gui/preferences.cpp:891
 msgid "Preview"
 msgstr "Pamja e parë"
 
-#: ../src/gui/preferences.cpp:1198
+#: ../src/gui/preferences.cpp:901
 msgid "Images"
 msgstr "Figurat"
 
-#: ../src/gui/preferences.cpp:1234
-msgid "Click here to refresh the devices list."
-msgstr "Kliko këtu për të rifreskuar listën e dispozitivëve."
-
-#: ../src/gui/preferences.cpp:1257
-msgid "Available Audio Codecs"
-msgstr "Kodekë audio në dispozicion"
-
-#: ../src/gui/preferences.cpp:1272
-msgid "Audio Codecs Settings"
-msgstr "Rregullimet e kodekëve audio"
-
-#. Translators: the full sentence is Automatically adjust jitter buffer
-#. between X and Y ms
-#: ../src/gui/preferences.cpp:1276
-msgid "Automatically adjust _jitter buffer between"
-msgstr "Përshtat automatikisht _jitter buffer-in midis"
-
-#: ../src/gui/preferences.cpp:1276
-msgid "and"
-msgstr "dhe"
-
-# (pofilter) unchanged: please translate
-#: ../src/gui/preferences.cpp:1276
-msgid "ms"
-msgstr "ms"
-
-#: ../src/gui/preferences.cpp:1276
-msgid "The minimum jitter buffer size for audio reception (in ms)."
-msgstr "Madhësia e jitter buffer minimum për marrjen e zërit (në ms)."
-
-#: ../src/gui/preferences.cpp:1276
-msgid "The maximum jitter buffer size for audio reception (in ms)."
-msgstr "Madhësia maksimale e jitter buffer për marrjen e zërit (në ms)."
-
-#: ../src/gui/preferences.cpp:1278
-msgid "Enable silence _detection"
-msgstr "Aktivo _zbulimin e heshtjes"
-
-#: ../src/gui/preferences.cpp:1278
-msgid "If enabled, use silence detection with the codecs supporting it."
-msgstr ""
-"Nëse aktivohet, përdoret zbulimi i heshtjes me kodekët që e suportojnë."
-
-#: ../src/gui/preferences.cpp:1280
-msgid "Enable echo can_celation"
-msgstr "Aktivo fshi_rjen e jehonës"
-
-#: ../src/gui/preferences.cpp:1280
-msgid "If enabled, use echo cancelation."
-msgstr "Nëse aktivohet, përdoret fshirja e jehonës."
-
-#: ../src/gui/preferences.cpp:1293 ../src/gui/preferences.cpp:1966
-msgid "General Settings"
-msgstr "Rregullime të përgjithshme"
-
-#: ../src/gui/preferences.cpp:1295
-msgid "Enable _video support"
-msgstr "Aktivo suportin _video"
-
-#: ../src/gui/preferences.cpp:1295
-msgid "If enabled, allows video during calls."
-msgstr "Nëse aktivohet, lejon video gjatë bisedave."
-
-#: ../src/gui/preferences.cpp:1299
-msgid "Bandwidth Control"
-msgstr "Kontrolli i bandës në dispozicion"
-
-#: ../src/gui/preferences.cpp:1301
-msgid "Maximum video _bandwidth (in kB/s):"
-msgstr "Gjerësia maksimale e _bandës video (në kB/s):"
-
-#: ../src/gui/preferences.cpp:1301
-msgid ""
-"The maximum video bandwidth in kbytes/s. The video quality and the number of "
-"transmitted frames per second will be dynamically adjusted above their "
-"minimum during calls to try to minimize the bandwidth to the given value."
-msgstr ""
-"Gjerësia maksimale e bandës në kbytes/s. Cilësia e videos dhe numri i "
-"imazheve të transmetuara për sekondë do të përshtatet në mënyrë dinamike "
-"sipër minimumit gjatë thirrjeve për të minimizuar gjerësinë e bandës rreth "
-"vlerës së dhënë."
-
-#: ../src/gui/preferences.cpp:1306
-msgid "Advanced Quality Settings"
-msgstr "Parametrat e detajuar të cilësisë"
-
-# (pofilter) brackets: translation has extra '(', ')'
-#. Translators: the full sentence is Keep a minimum video quality of X %
-#: ../src/gui/preferences.cpp:1309
-msgid "Frame Rate"
-msgstr "Raporti i figurave (framerate)"
-
-#: ../src/gui/preferences.cpp:1309
-msgid "Picture Quality"
-msgstr "Cilësia e figurave"
-
-#: ../src/gui/preferences.cpp:1309
-msgid ""
-"Choose if you want to favour speed or quality for the transmitted video."
-msgstr ""
-"Zgjidh nëse dëshiron t'i japësh përparësi shpejtësisë apo cilësisë për "
-"videon e transmetuar."
-
-#: ../src/gui/preferences.cpp:1907
-msgid "Play sound for new voice mails"
-msgstr "Tingull kur ka postë të re zanore"
-
-#: ../src/gui/preferences.cpp:1916
-msgid "Play sound for new instant messages"
-msgstr "Tingull kur arrijnë mesazhe të çastit të rinj"
-
-#: ../src/gui/preferences.cpp:1945
-msgid "Ekiga Preferences"
-msgstr "Preferimet e Ekiga"
-
-#: ../src/gui/preferences.cpp:1960
-msgid "General"
-msgstr "Të përgjithshme"
-
-#: ../src/gui/preferences.cpp:1961
-msgid "Personal Data"
-msgstr "Të dhëna personale"
-
-#: ../src/gui/preferences.cpp:1972
-msgid "Directory Settings"
-msgstr "Rregullimet e directory"
-
-#: ../src/gui/preferences.cpp:1982
-msgid "Sound Events"
-msgstr "Efekte zanore"
-
-#: ../src/gui/preferences.cpp:1986
-msgid "Protocols"
-msgstr "Protokolle"
-
-#: ../src/gui/preferences.cpp:1988
-msgid "Network Settings"
-msgstr "Rregullimet e rrjetit"
-
-#: ../src/gui/preferences.cpp:1993
-msgid "SIP Settings"
-msgstr "Rregullimet SIP"
-
-#: ../src/gui/preferences.cpp:1998
-msgid "H.323 Settings"
-msgstr "Rregullimet H.323"
-
-#: ../src/gui/preferences.cpp:2002
+#: ../src/gui/preferences.cpp:961 ../src/gui/preferences.cpp:998
+#: ../src/gui/preferences.cpp:1499 ../src/gui/preferences.cpp:1509
 msgid "Codecs"
 msgstr "Kodekët"
 
-#: ../src/gui/preferences.cpp:2004
-msgid "Audio Codecs"
-msgstr "Kodekët e zërit"
+#: ../src/gui/preferences.cpp:974 ../src/gui/preferences.cpp:1011
+msgid "Settings"
+msgstr "Rregullime"
 
-#: ../src/gui/preferences.cpp:2008
-msgid "Video Codecs"
-msgstr "Kodekët e videos"
+#. Translators: the full sentence is Automatically adjust jitter buffer
+#. between X and Y ms
+#: ../src/gui/preferences.cpp:978
+msgid "Enable silence _detection"
+msgstr "Aktivo _zbulimin e heshtjes"
 
-#: ../src/gui/preferences.cpp:2012
+#: ../src/gui/preferences.cpp:978
+msgid "If enabled, use silence detection with the codecs supporting it."
+msgstr "Nëse aktivizohet, përdoret zbulimi i heshtjes me kodekët që e suportojnë."
+
+#: ../src/gui/preferences.cpp:980
+msgid "Enable echo can_celation"
+msgstr "Aktivo fshi_rjen e jehonës"
+
+#: ../src/gui/preferences.cpp:980
+msgid "If enabled, use echo cancelation."
+msgstr "Nëse aktivizohet, përdoret fshirja e jehonës."
+
+#. Translators: the full sentence is Keep a minimum video quality of X %
+#: ../src/gui/preferences.cpp:1014
+msgid "Picture Quality"
+msgstr "Cilësia e figurave"
+
+#: ../src/gui/preferences.cpp:1014
+msgid ""
+"Choose if you want to guarantee a minimum image quality (possibly leading to "
+"dropped frames in order not to surpass the bitrate limit) or if you prefer "
+"to keep the frame rate."
+msgstr ""
+"Zgjidhni nëse dëshironi të garantoni një cilësi minimum figurash (rreshta në "
+"vend të imazheve të hequr për të mos tejkaluar kufirin e bandës) apo nëse "
+"preferoni të ruani numrin e imazheve të transmetuar."
+
+#: ../src/gui/preferences.cpp:1016
+msgid "Maximum video _bitrate (in kbits/s):"
+msgstr "Maksimumi i _bandës video (në kbits/s):"
+
+#: ../src/gui/preferences.cpp:1016
+msgid ""
+"The maximum video bitrate in kbits/s. The video quality and the effective "
+"frame rate will be dynamically adjusted to keep the bitrate at the given "
+"value."
+msgstr ""
+"Maksimumi i bandës video në kbits/s. Cilësia e videos dhe numri efektiv i "
+"imazheve të transmetuara për sekondë do të përshtatet në mënyrë dinamike "
+"për të mbajtur bandën në vlerën e dhënë."
+
+#: ../src/gui/preferences.cpp:1408
+msgid "Play sound for new voice mails"
+msgstr "Tingull kur ka postë të re zanore"
+
+#: ../src/gui/preferences.cpp:1417
+msgid "Play sound for new instant messages"
+msgstr "Tingull kur arrijnë mesazhe të çastit të rinj"
+
+#: ../src/gui/preferences.cpp:1446
+msgid "Ekiga Preferences"
+msgstr "Preferimet e Ekiga"
+
+#: ../src/gui/preferences.cpp:1464
+msgid "General"
+msgstr "Të përgjithshme"
+
+#: ../src/gui/preferences.cpp:1465
+msgid "Personal Data"
+msgstr "Të dhëna personale"
+
+#: ../src/gui/preferences.cpp:1470
+msgid "General Settings"
+msgstr "Rregullime të përgjithshme"
+
+#: ../src/gui/preferences.cpp:1479
+msgid "Sound Events"
+msgstr "Efekte zanore"
+
+#: ../src/gui/preferences.cpp:1483
+msgid "Protocols"
+msgstr "Protokolle"
+
+#: ../src/gui/preferences.cpp:1485
+msgid "SIP Settings"
+msgstr "Rregullimet SIP"
+
+#: ../src/gui/preferences.cpp:1490
+msgid "H.323 Settings"
+msgstr "Rregullimet H.323"
+
+#: ../src/gui/preferences.cpp:1494
+msgid "Audio"
+msgstr "Zëri"
+
+#: ../src/gui/preferences.cpp:1495 ../src/gui/preferences.cpp:1505
 msgid "Devices"
 msgstr "Dispozitivët"
 
-#: ../src/gui/tools.cpp:174
-msgid "Invalid parameters"
-msgstr "Parametra të pavlefshëm"
+# (pofilter) unchanged: please translate
+#: ../src/gui/preferences.cpp:1504
+msgid "Video"
+msgstr "Video"
 
-#: ../src/gui/tools.cpp:174
-msgid ""
-"Please provide your username and password in order to be able to use the PC-"
-"To-Phone service."
-msgstr ""
-"Të lutem shkruaj emrin dhe fjalëkalimin tënd në mënyrë që të përdorësh "
-"shërbimin PC-në-Telefon."
+#: ../src/gui/statusicon.cpp:303
+#, c-format
+msgid "You have %d message"
+msgid_plural "You have %d messages"
+msgstr[0] "Keni %d mesazh"
+msgstr[1] "Keni %d mesazhe"
 
-#: ../src/gui/tools.cpp:312 ../src/gui/tools.cpp:331
-msgid "PC-To-Phone Settings"
-msgstr "Konfigurimi PC-në-Telefon"
+#: ../src/gui/statusicon.cpp:392
+msgid "_Contents"
+msgstr "_Përmbajtja"
 
-#. Introduction label
-#: ../src/gui/tools.cpp:322
-msgid ""
-"You can make calls to regular phones and cell numbers worldwide using Ekiga. "
-"To enable this, you need to do three things. First create an account at the "
-"URL below. Then enter your account number and password. Finally, activate "
-"the registration below.\n"
-"\n"
-"The service will work only if your account is created using the URL in this "
-"dialog."
-msgstr ""
-"Mund të kryesh thirrje me numra telefonësh normalë dhe celularësh në të "
-"gjithë botën duke përdorur Ekiga. Për të aktivuar këtë funksion duhet të "
-"bësh tre gjëra. Së pari krijo një profil në adresën e mëposhtme URL. Më pas "
-"shkruaj numrin e profilit tuaj dhe fjalëkalimin. Më në fund, aktivo "
-"regjistrimin e ëposhtëm.\n"
-"\n"
-"Shërbimi do të punojë vetëm nëse profili juaj është krijuar duke përdorur "
-"adresën URL në këtë dritare."
+#: ../src/gui/statusicon.cpp:397
+msgid "_About"
+msgstr "_Informacione"
 
-#: ../src/gui/tools.cpp:333
-msgid "Account _number:"
-msgstr "N_umri i profilit:"
+#: ../src/gui/statusmenu.cpp:90
+msgid "Online"
+msgstr "Në linjë"
 
-#: ../src/gui/tools.cpp:350
-msgid "_Password:"
-msgstr "_Fjalëkalimi:"
+#: ../src/gui/statusmenu.cpp:91
+msgid "Away"
+msgstr "Jo i pranishëm"
 
-#: ../src/gui/tools.cpp:369
-msgid "Use PC-To-Phone service"
-msgstr "Përdor shërbimin PC-në-Telefon"
+#: ../src/gui/statusmenu.cpp:92
+msgid "Do Not Disturb"
+msgstr "Mos shqetëso"
 
-#: ../src/gui/tools.cpp:381
-msgid ""
-"Click on one of the following links to get more information about your "
-"existing Ekiga PC-To-Phone account, or to create a new account."
-msgstr ""
-"Kliko një nga adresat e mëposhtme për të marrë më shumë informacione rreth "
-"profilit tuaj Ekiga PC-në-Telefon, ose për të krijuar një profil të ri."
+#: ../src/gui/statusmenu.cpp:512
+msgid "Custom message..."
+msgstr "Mesazhi i personalizuar..."
 
-#: ../src/gui/tools.cpp:389
-msgid "Get an Ekiga PC-To-Phone account"
-msgstr "Krijo një profil Ekiga PC-në-Telefon"
+#: ../src/gui/statusmenu.cpp:626 ../src/gui/statusmenu.cpp:762
+msgid "Custom Message"
+msgstr "Mesazh i personalizuar"
 
-#: ../src/gui/tools.cpp:403
-msgid "Recharge the account"
-msgstr "Ringarko profilin"
+#: ../src/gui/statusmenu.cpp:642
+msgid "Delete custom messages:"
+msgstr "Elemino mesazhet e personalizuar:"
 
-#: ../src/gui/tools.cpp:417
-msgid "Consult the balance history"
-msgstr "Kontrollo kronollogjinë e harxhimeve"
+#: ../src/gui/statusmenu.cpp:783
+msgid "Define a custom message:"
+msgstr "Përcakto një mesazh të personalizuar:"
 
-#: ../src/gui/tools.cpp:431
-msgid "Consult the calls history"
-msgstr "Kontrollo kronollogjinë e bisedave"
