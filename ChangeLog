@@ -1,5 +1,13 @@
 2008-08-19  Damien Sandras  <dsandras@gnome.org>
 
+	* src/endpoints/sip-endpoint.cpp:
+	Only add default targets to call and message if there is no @ and we
+	are dealing with sip uris. Otherwise SIP accounts could be proposed as
+	dial uris for h323 urls.
+
+
+2008-08-19  Damien Sandras  <dsandras@gnome.org>
+
 	* src/endpoints/h323-enpoint.cpp:
 	Only add the dial action if we have an h323 url.
 
