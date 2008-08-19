@@ -58,7 +58,7 @@ using namespace Opal;
 Opal::Call::Call (OpalManager & _manager, Ekiga::ServiceCore & _core)
   : OpalCall (_manager), Ekiga::Call (), core (_core),
     runtime (*dynamic_cast<Ekiga::Runtime*>(core.get ("runtime"))),
-    outgoing(false), jitter(0)
+    outgoing(true), jitter(0)
 {
   re_a_bytes = tr_a_bytes = re_v_bytes = tr_v_bytes = 0.0;
   last_v_tick = last_a_tick = PTime ();
@@ -272,7 +272,7 @@ Opal::Call::parse_info (OpalConnection & connection)
   std::string uri;
 
   uri = (const char *) connection.GetRemotePartyCallbackURL ();
-  if (!uri.empty ())
+  if (remote_uri.empty () && !uri.empty ())
     remote_uri = uri;
 
   if (!PIsDescendant(&connection, OpalPCSSConnection)) {
@@ -460,13 +460,23 @@ Opal::Call::OnAnswerCall (OpalConnection & connection,
 PBoolean
 Opal::Call::OnSetUp (OpalConnection & connection)
 {
+  bool res = OpalCall::OnSetUp (connection);
+
   parse_info (connection);
 
   outgoing = PIsDescendant(&connection, OpalPCSSConnection);
 
   runtime.run_in_main (setup.make_slot ());
 
-  return OpalCall::OnSetUp (connection);
+  return res;
+}
+
+
+void
+Opal::Call::OnNewConnection (OpalConnection & connection)
+{
+  if (remote_uri.empty ())
+    remote_uri = (const char *) connection.GetCall().GetPartyB ();
 }
 
 
@@ -610,6 +620,6 @@ Opal::Call::OnNoAnswerTimeout (PTimer &,
         connection->ForwardCall (forward_uri);
     }
     else
-      Clear (OpalConnection::EndedByAnswerDenied);
+      Clear (OpalConnection::EndedByNoAnswer);
   }
 }

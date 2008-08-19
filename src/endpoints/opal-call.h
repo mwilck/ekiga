@@ -180,6 +180,8 @@ private:
 
     PBoolean OnSetUp (OpalConnection & connection);
 
+    void OnNewConnection (OpalConnection & connection);
+
     PDECLARE_NOTIFIER (PThread, Opal::Call, OnAnswer);
 
 
