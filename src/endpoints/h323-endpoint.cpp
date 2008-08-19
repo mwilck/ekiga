@@ -148,9 +148,11 @@ bool Opal::H323::EndPoint::menu_builder_add_actions (const std::string & /*fulln
   bool populated = false;
   std::string action = _("Call");
 
-  builder.add_action ("call", action, sigc::bind (sigc::mem_fun (this, &EndPoint::on_dial), uri));
-
-  populated = true;
+  if (uri.find ("h323:") == 0) {
+    
+    builder.add_action ("call", action, sigc::bind (sigc::mem_fun (this, &EndPoint::on_dial), uri));
+    populated = true;
+  }
 
   return populated;
 }
@@ -160,7 +162,7 @@ bool Opal::H323::EndPoint::dial (const std::string & uri)
 {
   if (uri.find ("h323:") == 0) {
 
-    new dialer (uri, manager);
+    new Opal::H323::dialer (uri, manager);
 
     return true;
   }
