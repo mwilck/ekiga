@@ -186,7 +186,8 @@ endif
 
 confflags:=--prefix=$(BUILDROOT) --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE)
 confptlib:=--prefix=$(BUILDROOT) --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE) \
-	   --with-directx-dir=$(BUILDROOT)
+	   --with-directx-includedir=$(INCLUDEDIR)/directx \
+	   --disable-qos --disable-vidfile --disable-plugins
 confopal :=--prefix=$(BUILDROOT) --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE) \
 	   --with-ffmpeg-dir=$(FFMPEG_DIR)
 confekiga:= $(confflags) --with-ptlib-dir=$(PTLIB_DIR) --with-opal-dir=$(OPAL_DIR) \
@@ -203,7 +204,7 @@ confffmpeg:=--cross-prefix=i586-mingw32msvc- --enable-shared --enable-memalign-h
 	    --disable-muxers --enable-muxer=h264 --enable-muxer=mpeg4 --enable-muxer=h263 \
 	    --disable-encoders --enable-encoder=mpeg4 --enable-encoder=h263 \
 	    --disable-protocols --disable-bsfs --disable-ffplay --prefix=$(BUILDROOT) \
-            --libdir=$(EKIGA_PREFIX) --extra-ldflags=-Wl,-static --disable-devices --disable-ffmpeg
+            --libdir=$(LIBDIR) --extra-ldflags=-Wl,-static
 #	    --disable-network
 
 confx264:=  --disable-avis-input --prefix=$(BUILDROOT) --host=$(DEB_HOST_GNU_TYPE)
@@ -329,23 +330,23 @@ update-sources::
 	echo --- Getting PTLib $(PTLIB_REV) ...
 	$(SVN) co $(PTLIB_URL) $(SRCDIR)/$(PTLIB_ARCHIVE) -r $(PTLIB_REV)
 
-$(PTLIB_DIR)/configure: binaries $(LIBDIR)/libldap.dll $(INCLUDEDIR)/directx/dsound.h $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(SRCDIR)/$(PTLIB_ARCHIVE) $(EKIGA_WIN32_DIFF_DIR)/ptlib_Makefile.am $(LIBDIR)/libexpat.a $(EKIGA_WIN32_DIFF_DIR)/ptlib_configure.ac $(EKIGA_WIN32_DIFF_DIR)/ptlib_ptlib.pc.in
+$(PTLIB_DIR)/configure: binaries $(LIBDIR)/libldap.dll $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(SRCDIR)/$(PTLIB_ARCHIVE) $(EKIGA_WIN32_DIFF_DIR)/ptlib_Makefile.am $(LIBDIR)/libexpat.a $(EKIGA_WIN32_DIFF_DIR)/ptlib_configure.ac $(EKIGA_WIN32_DIFF_DIR)/ptlib_ptlib.pc.in
 	rm -f $(LIBDIR)/libpt.a
 	rm -rf $(PTLIB_DIR)
 	$(CP) -r $(SRCDIR)/$(PTLIB_ARCHIVE) $(PTLIB_DIR)
-	$(RM) -f $(PTLIB_DIR)/configure.exe $(PTLIB_DIR)/configure $(PTLIB_DIR)/configure.ac $(PTLIB_DIR)/Makefile.in
-	$(CP) -fl $(EKIGA_WIN32_DIFF_DIR)/ptlib_configure.ac $(PTLIB_DIR)/configure.ac
-	$(CP) -fl $(EKIGA_WIN32_DIFF_DIR)/ptlib_Makefile.am $(PTLIB_DIR)/Makefile.am
-	$(CP) -fl $(EKIGA_WIN32_DIFF_DIR)/ptlib_ptlib.pc.in $(PTLIB_DIR)/ptlib.pc.in    
-	touch $(PTLIB_DIR)/make/ptlib-config
-	chmod 777 $(PTLIB_DIR)/make/ptlib-config
-	(cd $(PTLIB_DIR); \
-	sed -i "s#\$${buildroot}#${BUILDROOT}#" ptlib.pc.in; \
-	sed -i "s/\$${PTLIB_VER}/${PTLIB_VER}/" configure.ac; \
-	$(ACLOCAL); autoheader; libtoolize --force; \
-	touch NEWS README AUTHORS ChangeLog unused.h.in; \
-	automake-1.9 -a -c; autoconf; \
-	)
+#	$(RM) -f $(PTLIB_DIR)/configure.exe $(PTLIB_DIR)/configure $(PTLIB_DIR)/configure.ac $(PTLIB_DIR)/Makefile.in
+#	$(CP) -fl $(EKIGA_WIN32_DIFF_DIR)/ptlib_configure.ac $(PTLIB_DIR)/configure.ac
+#	$(CP) -fl $(EKIGA_WIN32_DIFF_DIR)/ptlib_Makefile.am $(PTLIB_DIR)/Makefile.am
+#	$(CP) -fl $(EKIGA_WIN32_DIFF_DIR)/ptlib_ptlib.pc.in $(PTLIB_DIR)/ptlib.pc.in    
+#	touch $(PTLIB_DIR)/make/ptlib-config
+#	chmod 777 $(PTLIB_DIR)/make/ptlib-config
+#	(cd $(PTLIB_DIR); \
+#	sed -i "s#\$${buildroot}#${BUILDROOT}#" ptlib.pc.in; \
+#	sed -i "s/\$${PTLIB_VER}/${PTLIB_VER}/" configure.ac; \
+#	$(ACLOCAL); autoheader; libtoolize --force; \
+#	touch NEWS README AUTHORS ChangeLog unused.h.in; \
+#	automake-1.9 -a -c; autoconf; \
+#	)
 	
 
 $(PTLIB_DIR)/config.status: binaries $(PTLIB_DIR)/configure
@@ -403,6 +404,10 @@ $(FFMPEG_DIR)/config.status: $(SRCDIR)/$(FFMPEG_ARCHIVE)
 	touch $@
 
 $(BINDIR)/avcodec.dll: $(FFMPEG_DIR)/config.status
+	$(MAKE) $(MAKE_LIB_OPTS) -C $(FFMPEG_DIR)/libavutil
+	$(MAKE) $(MAKE_LIB_OPTS) -C $(FFMPEG_DIR)/libavcodec
+	$(MAKE) $(MAKE_LIB_OPTS) -C $(FFMPEG_DIR)/libavformat
+	$(MAKE) $(MAKE_LIB_OPTS) -C $(FFMPEG_DIR)/libavdevice
 	$(MAKE) $(MAKE_LIB_OPTS) -C $(FFMPEG_DIR)
 	$(MAKE) -C $(FFMPEG_DIR) install
 	touch $@
@@ -434,7 +439,7 @@ update-sources::
 	echo --- Getting theora ---
 	$(SVN) co $(THEORA_URL) $(SRCDIR)/$(THEORA_ARCHIVE) -r $(THEORA_VER)
 
-$(THEORA_DIR)/config.status: $(SRCDIR)/$(THEORA_ARCHIVE)
+$(THEORA_DIR)/config.status: $(SRCDIR)/$(THEORA_ARCHIVE) $(LIBDIR)/libogg.a
 	rm -rf $(THEORA_DIR)
 	$(CP) -r $(SRCDIR)/$(THEORA_ARCHIVE) $(THEORA_DIR)
 	(cd $(THEORA_DIR)/; \
@@ -705,7 +710,6 @@ distclean:
 	-$(RM) -rf $(SIGC_DIR)
 	-$(RM) -rf $(SPEEX_DIR)
 	-$(RM) -rf $(EXPAT_DIR)
-	-$(RM) -rf $(DIRECTX_DIR)
 	-$(RM) -rf $(FFMPEG_DIR)
 	-$(RM) -rf $(X264_DIR)
 	-$(RM) -rf $(THEORA_DIR)

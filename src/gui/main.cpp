@@ -688,15 +688,53 @@ static gboolean on_stats_refresh_cb (gpointer self)
                            mw->current_call->get_received_video_bandwidth (),
                            videooutput_stats.tx_fps,
                            videooutput_stats.rx_fps);
-    //gdk_threads_enter ();
     gm_main_window_push_info_message (GTK_WIDGET (self), msg);
     if (mw->current_call)
       gm_main_window_set_call_duration (GTK_WIDGET (self), mw->current_call->get_duration ().c_str ());
-    //gdk_threads_leave ();
-
     g_free (msg);
-  }
 
+    int jitter_quality = 0;
+    gfloat quality_level = 0.0;
+    unsigned int jitter = mw->current_call->get_jitter_size ();
+    double lost = mw->current_call->get_lost_packets ();
+    double late = mw->current_call->get_late_packets ();
+    double out_of_order = mw->current_call->get_out_of_order_packets ();
+
+    /* "arithmetics" for the quality level */
+    /* Thanks Snark for the math hints */
+    if (jitter < 30)
+      jitter_quality = 100;
+    if (jitter >= 30 && jitter < 50)
+      jitter_quality = 100 - (jitter - 30);
+    if (jitter >= 50 && jitter < 100)
+      jitter_quality = 80 - (jitter - 50) * 20 / 50;
+    if (jitter >= 100 && jitter < 150)
+      jitter_quality = 60 - (jitter - 100) * 20 / 50;
+    if (jitter >= 150 && jitter < 200)
+      jitter_quality = 40 - (jitter - 150) * 20 / 50;
+    if (jitter >= 200 && jitter < 300)
+      jitter_quality = 20 - (jitter - 200) * 20 / 100;
+    if (jitter >= 300 || jitter_quality < 0)
+      jitter_quality = 0;
+
+    quality_level = (float) jitter_quality / 100;
+
+    if ( (lost > 0.0) ||
+         (late > 0.0) ||
+         ((out_of_order > 0.0) && quality_level > 0.2) ) {
+      quality_level = 0.2;
+    }
+
+    if ( (lost > 0.02) ||
+         (late > 0.02) ||
+         (out_of_order > 0.02) ) {
+      quality_level = 0;
+    }
+
+    if (mw->qualitymeter)
+      gm_powermeter_set_level (GM_POWERMETER (mw->qualitymeter),
+  			       quality_level);
+  }
   return true;
 }
 
