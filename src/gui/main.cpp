@@ -1611,7 +1611,7 @@ gm_mw_init_uri_toolbar (GtkWidget *main_window)
   completion = gtk_entry_completion_new ();
   gtk_entry_completion_set_model (GTK_ENTRY_COMPLETION (completion), GTK_TREE_MODEL (mw->completion));
   gtk_entry_set_completion (GTK_ENTRY (mw->entry), completion);
-  gtk_entry_completion_set_inline_completion (GTK_ENTRY_COMPLETION (completion), true);
+  gtk_entry_completion_set_inline_completion (GTK_ENTRY_COMPLETION (completion), false);
   gtk_entry_completion_set_text_column (GTK_ENTRY_COMPLETION (completion), 0);
 
   gtk_container_add (GTK_CONTAINER (item), mw->entry);
