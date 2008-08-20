@@ -186,17 +186,6 @@ struct _GmMainWindow
 
 typedef struct _GmMainWindow GmMainWindow;
 
-struct _GmIdleTime
-{
-  gint x;
-  gint y;
-  guint counter;
-  gboolean idle;
-  gchar *last_status;
-};
-
-typedef struct _GmIdleTime GmIdleTime;
-
 
 #define GM_MAIN_WINDOW(x) (GmMainWindow *) (x)
 
@@ -301,9 +290,8 @@ static void gm_mw_init_history (GtkWidget *);
  */
 static void gm_mw_zooms_menu_update_sensitivity (GtkWidget *,
 			      			 unsigned int);
-
-void gm_main_window_toggle_fullscreen (Ekiga::VideoOutputFSToggle toggle,
-                                       GtkWidget   *main_window);
+static void gm_main_window_toggle_fullscreen (Ekiga::VideoOutputFSToggle toggle,
+                                              GtkWidget   *main_window);
 
 static void gm_main_window_show_call_panel (GtkWidget *self);
 
@@ -334,25 +322,6 @@ static void panel_section_changed_nt (gpointer id,
 static void show_call_panel_changed_nt (G_GNUC_UNUSED gpointer id, 
                                         GmConfEntry *entry, 
                                         gpointer data);
-
-
-#ifdef WIN32
-/* DESCRIPTION  :  This callback is a workaround to GTK+ bugs on WIN32.
- *                 It is triggered to change the current control
- *                 panel section.
- * BEHAVIOR     :  Changes the current page selection.
- * PRE          :  /
- */
-static gboolean thread_safe_notebook_set_page (gpointer data);
-
-
-/* DESCRIPTION  :  This callback is a workaround to GTK+ bugs on WIN32.
- *                 It is triggered to update the tooltip in the status bar.
- * BEHAVIOR     :  Updates the tooltip.
- * PRE          :  /
- */
-static gboolean thread_safe_set_stats_tooltip (gpointer data);
-#endif
 
 
 /** Pull a trigger from a Ekiga::Service
@@ -2539,48 +2508,6 @@ show_call_panel_changed_nt (G_GNUC_UNUSED gpointer id,
 }
 
 
-#ifdef WIN32
-static gboolean
-thread_safe_notebook_set_page (gpointer data)
-{
-  GmMainWindow *mw = NULL;
-
-  GtkWidget *main_window = NULL;
-  
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  mw = gm_mw_get_mw (main_window);
-
-  //gdk_threads_enter ();
-  gtk_notebook_set_current_page (GTK_NOTEBOOK (mw->main_notebook), 
-                                 GPOINTER_TO_INT (data));
-  //gdk_threads_leave ();
-
-  return FALSE;
-}
-
-
-static gboolean
-thread_safe_set_stats_tooltip (gpointer data)
-{
-  GmMainWindow *mw = NULL;
-
-  GtkWidget *main_window = NULL;
-  
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  mw = gm_mw_get_mw (main_window);
-
-  //gdk_threads_enter ();
-  gtk_tooltips_set_tip (mw->tips, mw->statusbar_ebox,
-                        (gchar *) data, NULL);
-  g_free ((gchar *) data);
-  //gdk_threads_leave ();
-
-  return FALSE;
-
-}
-#endif
-
-
 static void 
 pull_trigger_cb (GtkWidget * /*widget*/,
                  gpointer data)
@@ -3416,25 +3343,6 @@ gm_main_window_hide_call_panel (GtkWidget *self)
 
 
 void
-gm_main_window_force_redraw ()
-{
-  GtkWidget* main_window = NULL;
-  GmMainWindow *mw = NULL;
-
-  main_window = GnomeMeeting::Process()->GetMainWindow ();
-  g_return_if_fail (main_window != NULL);
-
-  mw = gm_mw_get_mw (main_window);
-  g_return_if_fail (mw != NULL);
-
-  /* Update the whole window */
-  GdkRegion* region = gdk_drawable_get_clip_region (GDK_WINDOW (main_window->window));
-  gdk_window_invalidate_region (GDK_WINDOW (main_window->window), region, TRUE);
-  gdk_window_process_updates (GDK_WINDOW (main_window->window), TRUE);
-}
-
-
-void
 gm_main_window_set_busy (GtkWidget *main_window,
 			 bool busy)
 {
@@ -3488,11 +3396,7 @@ gm_main_window_set_panel_section (GtkWidget *main_window,
 
   g_return_if_fail (mw != NULL);
 
-#ifndef WIN32
   gtk_notebook_set_current_page (GTK_NOTEBOOK (mw->main_notebook), section);
-#else
-  g_idle_add (thread_safe_notebook_set_page, GINT_TO_POINTER (section));
-#endif
   
   menu = gtk_menu_get_widget (mw->main_menu, "dialpad");
   
@@ -4368,13 +4272,8 @@ gm_main_window_update_stats (GtkWidget *main_window,
 
 
   if (mw->statusbar_ebox) {
-
-#ifndef WIN32
     gtk_tooltips_set_tip (mw->tips, GTK_WIDGET (mw->statusbar_ebox), 
                           stats_msg, NULL);
-#else
-    g_idle_add (thread_safe_set_stats_tooltip, g_strdup (stats_msg));
-#endif
   }
   g_free (stats_msg);
 

@@ -409,26 +409,5 @@ void gm_main_window_update_sensitivity (GtkWidget *main_window,
  */
 void gm_main_window_fullscreen_menu_update_sensitivity (bool fullscreen);
 
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Toggles between fullscreen mode and the other settings
- * PRE          :  -1: toggle, 0: off, 1: on
- */
-// void gm_main_window_toggle_fullscreen (FSToggle toggle);
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Forces a redraw of the entire ekiga window
- * PRE          :  /
- */
-void gm_main_window_force_redraw ();
-
-
-/* DESCRIPTION   : /
- * BEHAVIOR      : updates the contact list
- * PRE           : The main window GMObject.
- */
-void gm_main_window_update_contacts_list (GtkWidget *main_window);
-
-
 #endif
 
