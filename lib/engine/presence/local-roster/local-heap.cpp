@@ -333,7 +333,7 @@ Local::Heap::rename_group_form_submitted (std::string old_name,
   try {
     const std::string new_name = result.text ("name");
 
-    if ( !new_name.empty ()) {
+    if ( !new_name.empty () && new_name != old_name) {
 
       for (iterator iter = begin ();
 	   iter != end ();
