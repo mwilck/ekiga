@@ -175,7 +175,7 @@ IT_PROG_INTLTOOL([0.35.0])
 dnl ###############################
 dnl   Mandatory GTK support
 dnl ###############################
-PKG_CHECK_MODULES(GTK, gtk+-2.0 >= 2.10.0)
+PKG_CHECK_MODULES([GTK], [gtk+-2.0 >= 2.10.0])
 AC_SUBST(GTK_CFLAGS)
 AC_SUBST(GTK_LIBS)
 
@@ -183,7 +183,7 @@ AC_SUBST(GTK_LIBS)
 dnl ###############################
 dnl   Mandatory GLIB support
 dnl ###############################
-PKG_CHECK_MODULES(GLIB, glib-2.0 >= 2.8.0 gmodule-2.0 gobject-2.0 gthread-2.0)
+PKG_CHECK_MODULES([GLIB], [glib-2.0 >= 2.8.0 gmodule-2.0 gobject-2.0 gthread-2.0])
 AC_SUBST(GLIB_CFLAGS)
 AC_SUBST(GLIB_LIBS)
 
@@ -191,7 +191,7 @@ AC_SUBST(GLIB_LIBS)
 dnl ###############################
 dnl   Mandatory SIGC++ support
 dnl ###############################
-PKG_CHECK_MODULES(SIGC, sigc++-2.0)
+PKG_CHECK_MODULES([SIGC], [sigc++-2.0])
 AC_SUBST(SIGC_CFLAGS)
 AC_SUBST(SIGC_LIBS)
 
@@ -199,7 +199,7 @@ AC_SUBST(SIGC_LIBS)
 dnl ###############################
 dnl   Mandatory libXML support
 dnl ###############################
-PKG_CHECK_MODULES(XML, libxml-2.0)
+PKG_CHECK_MODULES([XML], [libxml-2.0])
 AC_SUBST(XML_CFLAGS)
 AC_SUBST(XML_LIBS)
 
@@ -213,7 +213,7 @@ if test "x${gm_platform}" != "xmingw" ; then
   AC_ARG_ENABLE(gnome, [  --disable-gnome		Disable GNOME support],,enable_gnome=yes)
   
   if test "x$enable_gnome" = "xyes"; then
-    PKG_CHECK_MODULES(GNOME, libgnome-2.0 >= 2.14.0 libgnomeui-2.0 >= 2.14.0, found_gnome=yes)
+    PKG_CHECK_MODULES([GNOME], [libgnome-2.0 >= 2.14.0 libgnomeui-2.0 >= 2.14.0], [found_gnome=yes])
     AC_SUBST(GNOME_CFLAGS)
     AC_SUBST(GNOME_LIBS)
     GNOME="enabled"
@@ -232,7 +232,7 @@ if test "x${gm_platform}" != "xmingw" ; then
   AC_ARG_ENABLE(gconf, [  --disable-gconf		Disable GConf support],,enable_gconf=yes)
   
   if test "x$enable_gconf" = "xyes"; then
-    PKG_CHECK_MODULES(GCONF, gconf-2.0 >= 2.6.0, found_gconf=yes)
+    PKG_CHECK_MODULES([GCONF], [gconf-2.0 >= 2.6.0], [found_gconf=yes])
     AM_GCONF_SOURCE_2
     AC_SUBST(GCONF_CFLAGS)
     AC_SUBST(GCONF_LIBS)
@@ -257,7 +257,7 @@ if test "x${gm_platform}" != "xmingw" ; then
   AC_ARG_ENABLE(eds, [  --disable-eds			Disable evolution-data-server addressbook support],,enable_eds=yes)
   
   if test "x$enable_eds" = "xyes"; then
-    PKG_CHECK_MODULES(EDS, libebook-1.2, found_eds=yes)
+    PKG_CHECK_MODULES([EDS], [libebook-1.2], [found_eds=yes])
     AC_SUBST(EDS_CFLAGS)
     AC_SUBST(EDS_LIBS)
     EDS="enabled"
@@ -320,25 +320,6 @@ fi
 AM_CONDITIONAL(HAVE_LDAP, test "x$found_ldap" = "xyes")
 
 
-dnl ###############################
-dnl   ESound support
-dnl ###############################
-ESD="disabled"
-
-if test "x${gm_platform}" != "xmingw" ; then
-  AC_ARG_ENABLE(esd, [  --disable-esd			Disable ESound support],,enable_esd=yes)
-
-  if test "x$enable_esd" = "xyes"; then
-    PKG_CHECK_MODULES(ESD, esound >= 0.2.28, found_esd=yes)
-    AC_SUBST(ESD_CFLAGS)
-    AC_SUBST(ESD_LIBS)
-    ESD="enabled"
-    AC_DEFINE(HAVE_ESD,1,[ESound support])
-  fi
-fi
-
-AM_CONDITIONAL(HAVE_ESD, test "x$found_esd" = "xyes")
-
 AM_PROG_AS
 
 dnl ###############################
@@ -398,19 +379,12 @@ dnl ###############################
 dnl Checks for Xv extension
 dnl ###############################
 XV="disabled"
-
-if test "x${gm_platform}" = "xlinux" ; then
-  AC_ARG_ENABLE(xv, [  --disable-xv			Disable XVideo hardware acceleration],,enable_xv=yes)
-
-  if test "x${enable_xv}" = "xyes" ; then
-    AC_CHECK_LIB(Xv, XvPutImage, xv_libs="yes", xv_libs="no")
-    if test "x${xv_libs}" != "xno"; then
-      XV_LIBS="-lXv"
-      AC_SUBST(XV_LIBS)
-      XV="enabled"
-      AC_DEFINE(HAVE_XV,1,[XVideo support])
-    fi
-  fi
+AC_ARG_ENABLE(xv, [  --disable-xv			Disable XVideo hardware acceleration],,enable_xv=yes)  
+if test "x$enable_xv" = "xyes"; then
+  PKG_CHECK_MODULES([XV], [xv], [XV="enabled"], [XV="disabled"])
+  AC_SUBST(XV_CFLAGS)
+  AC_SUBST(XV_LIBS)
+  AC_DEFINE(HAVE_XV,1,[XVideo support])
 fi
 
 AM_CONDITIONAL(HAVE_XV, test "x$XV" = "xenabled")
@@ -453,7 +427,7 @@ if test "x${gm_platform}" != "xmingw" ; then
   AC_ARG_ENABLE(dbus-service, [  --disable-dbus-service 	Disable DBUS service installation],,enable_dbus_service=yes)
 
   if test "x$enable_dbus" = "xyes"; then
-    PKG_CHECK_MODULES(DBUS, dbus-1 >= 0.36 dbus-glib-1 >= 0.36, found_dbus=yes)
+    PKG_CHECK_MODULES([DBUS], [dbus-1 >= 0.36 dbus-glib-1 >= 0.36], [found_dbus=yes])
     AC_SUBST(DBUS_CFLAGS)
     AC_SUBST(DBUS_LIBS)
     DBUS="enabled"
@@ -493,7 +467,7 @@ if test "x${gm_platform}" != "xmingw" ; then
   AC_ARG_ENABLE(avahi, [  --disable-avahi		Disable mDNS support],,enable_avahi=yes)
 
   if test "x$enable_avahi" = "xyes"; then
-    PKG_CHECK_MODULES(AVAHI, avahi-client >= 0.6 avahi-glib >= 0.6, found_avahi=yes)
+    PKG_CHECK_MODULES([AVAHI], [avahi-client >= 0.6 avahi-glib >= 0.6], [found_avahi=yes])
     AC_SUBST(AVAHI_CFLAGS)
     AC_SUBST(AVAHI_LIBS)
     AVAHI="enabled"
@@ -531,7 +505,7 @@ AM_CONDITIONAL(HAVE_GNOME_DOC_UTILS, test "x${enable_gdu}" = "xyes")
 dnl ###########################################################################
 dnl PTLib Headers and Libraries
 dnl ###########################################################################
-PKG_CHECK_MODULES(PTLIB, ptlib >= ${PTLIB_REC_VERSION})
+PKG_CHECK_MODULES([PTLIB], [ptlib >= ${PTLIB_REC_VERSION}])
 AC_SUBST(PTLIB_CFLAGS)
 AC_SUBST(PTLIB_LIBS)
                   
@@ -539,7 +513,7 @@ AC_SUBST(PTLIB_LIBS)
 dnl ###########################################################################
 dnl Opal Headers and Libraries
 dnl ###########################################################################
-PKG_CHECK_MODULES(OPAL, opal >= ${OPAL_REC_VERSION})
+PKG_CHECK_MODULES([OPAL], [opal >= ${OPAL_REC_VERSION}])
 AC_SUBST(OPAL_CFLAGS)
 AC_SUBST(OPAL_LIBS)
 
@@ -668,13 +642,10 @@ if test "x${gm_platform}" != "xmingw" ; then
 echo "                   GNOME support  :  $GNOME"
 echo "                   GConf support  :  $GCONF"
 echo "   Evolution-Data-Server support  :  $EDS"
-echo "                  Esound support  :  $ESD"
 fi
 echo "                    LDAP support  :  $LDAP"
 echo ""
-if test "x${gm_platform}" = "xlinux" ; then
 echo "                  XVideo support  :  $XV"
-fi
 if test "x${gm_platform}" = "xmingw" ; then
 echo "                 DirectX support  :  $DX"
 fi
