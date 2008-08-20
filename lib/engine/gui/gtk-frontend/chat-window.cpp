@@ -139,7 +139,7 @@ on_close_button_clicked (GtkButton* button,
 
   gtk_notebook_remove_page (GTK_NOTEBOOK (self->priv->notebook), num);
 
-  if (num == 0) 
+  if (gtk_notebook_get_n_pages (GTK_NOTEBOOK (self->priv->notebook)) == 0)
     gtk_widget_hide (GTK_WIDGET (self));
 }
 
@@ -153,7 +153,7 @@ on_escaped (GtkWidget */*widget*/,
   num = gtk_notebook_get_current_page (GTK_NOTEBOOK (self->priv->notebook));
   gtk_notebook_remove_page (GTK_NOTEBOOK (self->priv->notebook), num);
 
-  if (num == 0) 
+  if (gtk_notebook_get_n_pages (GTK_NOTEBOOK (self->priv->notebook)) == 0)
     gtk_widget_hide (GTK_WIDGET (self));
 }
 
