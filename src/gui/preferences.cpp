@@ -414,13 +414,6 @@ gm_pw_init_interface_page (GtkWidget *prefs_window,
                                 _("Video Display"), 1, 2);
 
   gnome_prefs_toggle_new (subsection, _("Place windows displaying video _above other windows"), VIDEO_DISPLAY_KEY "stay_on_top", _("Place windows displaying video above other windows during calls"), 0);
-  
-  /* Auto Away */
-  subsection =
-    gnome_prefs_subsection_new (prefs_window, container, 
-                                _("Auto Away"), 1, 2);
-
-  gnome_prefs_spin_new (subsection, _("Timeout after which the user is automatically set as away (in minutes):"), PERSONAL_DATA_KEY "auto_away_timeout", _("Automatically set the user as away after the timeout has elapsed (in minutes)"), 1.0, 60.0, 1.0, 1, NULL, true);
 }
 
 static void

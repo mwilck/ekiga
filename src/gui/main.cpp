@@ -355,13 +355,6 @@ static gboolean thread_safe_set_stats_tooltip (gpointer data);
 #endif
 
 
-/* DESCRIPTION  :  This callback is triggered every 5 seconds.
- * BEHAVIOR     :  Checks if the user has to be set as away or not.
- * PRE          :  /
- */
-static gboolean motion_detection_cb (gpointer data);
-
-
 /** Pull a trigger from a Ekiga::Service
  *
  * @param data is a pointer to the Ekiga::Trigger
@@ -2588,65 +2581,6 @@ thread_safe_set_stats_tooltip (gpointer data)
 #endif
 
 
-static gboolean
-motion_detection_cb (gpointer data)
-{
-  GmIdleTime *idle = NULL;
-
-  GtkWidget *main_window = NULL;
-  
-  GdkModifierType mask;
-  gint x, y;
-  gint timeout = 0;
-  gchar *status = NULL;
-                  
-  idle = (GmIdleTime *) data;
-
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-  gdk_window_get_pointer (GDK_WINDOW (GTK_WIDGET (main_window)->window), 
-                          &x, &y, &mask);
-
-  //gdk_threads_enter ();
-  timeout = gm_conf_get_int (PERSONAL_DATA_KEY "auto_away_timeout");
-  status = gm_conf_get_string (PERSONAL_DATA_KEY "short_status");
-  //gdk_threads_leave ();
-
-  if (x != idle->x && y != idle->y) {
-    
-    idle->x = x;
-    idle->y = y;
-    idle->counter = 0;
-
-    if (idle->idle == TRUE) {
-      
-      gm_conf_set_string (PERSONAL_DATA_KEY "short_status", idle->last_status);
-      idle->idle = FALSE;
-      g_free (idle->last_status);
-    }
-  }
-  else
-    idle->counter++;
-
-  if (status && strcmp ("online", status)) {
-    g_free (status);
-    return TRUE;
-  }
-  
-  if ((idle->counter > (unsigned) (timeout * 12)) && !idle->idle) {
-
-    idle->idle = TRUE;
-
-    //gdk_threads_enter ();
-    idle->last_status = g_strdup (status);
-    gm_conf_set_string (PERSONAL_DATA_KEY "short_status", "away");
-    //gdk_threads_leave ();
-  }
-  g_free (status);
-
-  return TRUE;
-}
-
-
 static void 
 pull_trigger_cb (GtkWidget * /*widget*/,
                  gpointer data)
@@ -4092,13 +4026,6 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   g_signal_connect (G_OBJECT (window), "expose-event", 
 		    GTK_SIGNAL_FUNC (video_window_expose_cb), NULL);
   
-  /* Idle for motion notify events */
-  g_timeout_add_full (G_PRIORITY_DEFAULT_IDLE,
-                      5000, 
-                      motion_detection_cb, 
-                      (gpointer) g_new0 (GmIdleTime, 1), 
-                      (GDestroyNotify) g_free);
-
   /* New Display Engine signals */
   Ekiga::VideoOutputCore *videooutput_core = dynamic_cast<Ekiga::VideoOutputCore *> (mw->core.get ("videooutput-core"));
 
