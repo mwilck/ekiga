@@ -80,10 +80,9 @@ Opal::Call::Call (OpalManager & _manager, Ekiga::ServiceCore & _core)
 void
 Opal::Call::hangup ()
 {
-  if (!is_outgoing () && !IsEstablished ())
-    Clear (OpalConnection::EndedByAnswerDenied);
-  else
-    Clear ();
+  PThread::Create (PCREATE_NOTIFIER (OnHangup), NULL,
+                   PThread::AutoDeleteThread, PThread::NormalPriority,
+                   "Opal::Call Answer Thread");
 }
 
 
@@ -597,6 +596,16 @@ Opal::Call::OnAnswer (PThread &, INT /*param*/)
       PDownCast (OpalPCSSConnection, &(*connection))->AcceptIncoming ();
     }
   }
+}
+
+
+void
+Opal::Call::OnHangup (PThread &, INT /*param*/)
+{
+  if (!is_outgoing () && !IsEstablished ())
+    Clear (OpalConnection::EndedByAnswerDenied);
+  else
+    Clear ();
 }
 
 

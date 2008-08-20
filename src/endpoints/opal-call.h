@@ -184,6 +184,8 @@ private:
 
     PDECLARE_NOTIFIER (PThread, Opal::Call, OnAnswer);
 
+    PDECLARE_NOTIFIER (PThread, Opal::Call, OnHangup);
+
 
     /*
      * Helper methods
