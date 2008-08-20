@@ -3317,8 +3317,11 @@ gm_main_window_show_call_panel (GtkWidget *self)
 
   mw = gm_mw_get_mw (GTK_WIDGET (self));
 
-  gtk_window_get_size (GTK_WINDOW (self), &mw->x, &mw->y);
-  gtk_widget_show_all (gtk_paned_get_child2 (GTK_PANED (mw->hpaned)));
+  if (!GTK_WIDGET_VISIBLE (gtk_paned_get_child2 (GTK_PANED (mw->hpaned)))) {
+
+    gtk_window_get_size (GTK_WINDOW (self), &mw->x, &mw->y);
+    gtk_widget_show_all (gtk_paned_get_child2 (GTK_PANED (mw->hpaned)));
+  }
 }
 
 
@@ -3329,16 +3332,19 @@ gm_main_window_hide_call_panel (GtkWidget *self)
 
   mw = gm_mw_get_mw (GTK_WIDGET (self));
 
-  if (mw->x == 0 && mw->y == 0) {
+  if (GTK_WIDGET_VISIBLE (gtk_paned_get_child2 (GTK_PANED (mw->hpaned)))) {
 
-    GtkRequisition req;
-    gtk_window_get_size (GTK_WINDOW (self), &mw->x, &mw->y);
-    gtk_widget_size_request (GTK_WIDGET (gtk_paned_get_child1 (GTK_PANED (mw->hpaned))), &req);
-    mw->x = req.width;
+    if (mw->x == 0 && mw->y == 0) {
+
+      GtkRequisition req;
+      gtk_window_get_size (GTK_WINDOW (self), &mw->x, &mw->y);
+      gtk_widget_size_request (GTK_WIDGET (gtk_paned_get_child1 (GTK_PANED (mw->hpaned))), &req);
+      mw->x = req.width;
+    }
+
+    gtk_widget_hide (gtk_paned_get_child2 (GTK_PANED (mw->hpaned)));
+    gtk_window_resize (GTK_WINDOW (self), mw->x, mw->y);
   }
-
-  gtk_widget_hide (gtk_paned_get_child2 (GTK_PANED (mw->hpaned)));
-  gtk_window_resize (GTK_WINDOW (self), mw->x, mw->y);
 }
 
 
