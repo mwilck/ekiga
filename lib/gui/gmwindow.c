@@ -50,6 +50,8 @@
  */
 struct _GmWindowPrivate
 {
+  GtkAccelGroup *accel;
+  gboolean hide_on_esc;
   const gchar *key;
   int x;
   int y;
@@ -57,7 +59,7 @@ struct _GmWindowPrivate
   int height;
 };
 
-enum { GM_WINDOW_KEY = 1 };
+enum { GM_WINDOW_KEY = 1, GM_HIDE_ON_ESC = 2 };
 
 static GObjectClass *parent_class = NULL;
 
@@ -118,6 +120,9 @@ gm_window_get_property (GObject *obj,
     g_value_set_string (value, self->priv->key);
     break;
 
+  case GM_HIDE_ON_ESC:
+    g_value_set_boolean (value, self->priv->hide_on_esc);
+
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (obj, prop_id, spec);
     break;
@@ -143,6 +148,15 @@ gm_window_set_property (GObject *obj,
     g_free ((gchar *) self->priv->key);
     str = g_value_get_string (value);
     self->priv->key = g_strdup (str ? str : "");
+    break;
+
+  case GM_HIDE_ON_ESC:
+    self->priv->hide_on_esc = g_value_get_boolean (value);
+    if (!self->priv->hide_on_esc)
+      gtk_accel_group_disconnect_key (self->priv->accel, GDK_Escape, (GdkModifierType) 0);
+    else
+      gtk_accel_group_connect (self->priv->accel, GDK_Escape, (GdkModifierType) 0, GTK_ACCEL_LOCKED,
+                               g_cclosure_new_swap (G_CALLBACK (gtk_widget_hide), (gpointer) self, NULL));
     break;
 
   default:
@@ -171,6 +185,10 @@ gm_window_class_init (gpointer g_class,
   spec = g_param_spec_string ("key", "Key", "Key", 
                               NULL, (GParamFlags) G_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, GM_WINDOW_KEY, spec); 
+
+  spec = g_param_spec_boolean ("hide_on_esc", "Hide on Escape", "Hide on Escape", 
+                               TRUE, (GParamFlags) G_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, GM_HIDE_ON_ESC, spec); 
 }
 
 
@@ -180,18 +198,16 @@ gm_window_init (GTypeInstance *instance,
 {
   GmWindow *self = NULL;
 
-  GtkAccelGroup *accel = NULL;
-
   (void) g_class; /* -Wextra */
 
   self = GM_WINDOW (instance);
   self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, GM_WINDOW_TYPE, GmWindowPrivate);
   self->priv->key = g_strdup ("");
+  self->priv->hide_on_esc = TRUE;
 
-  accel = gtk_accel_group_new ();
-  gtk_window_add_accel_group (GTK_WINDOW (self), accel);
-  g_object_unref (accel);
-  gtk_accel_group_connect (accel, GDK_Escape, (GdkModifierType) 0, GTK_ACCEL_LOCKED,
+  self->priv->accel = gtk_accel_group_new ();
+  gtk_window_add_accel_group (GTK_WINDOW (self), self->priv->accel);
+  gtk_accel_group_connect (self->priv->accel, GDK_Escape, (GdkModifierType) 0, GTK_ACCEL_LOCKED,
                            g_cclosure_new_swap (G_CALLBACK (gtk_widget_hide), (gpointer) self, NULL));
 
   g_signal_connect (G_OBJECT (self), "delete_event",
