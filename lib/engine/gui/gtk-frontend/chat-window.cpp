@@ -37,6 +37,8 @@
 
 #include "config.h"
 
+#include <gdk/gdkkeysyms.h>
+
 #include "chat-window.h"
 #include "simple-chat-page.h"
 #include "multiple-chat-page.h"
@@ -69,6 +71,9 @@ static void update_unread (ChatWindow* self);
 
 static void on_close_button_clicked (GtkButton* button,
 				     gpointer data);
+
+static void on_escaped (GtkWidget *widget,
+                        gpointer data);
 
 static void on_switch_page (GtkNotebook* notebook,
 			    GtkNotebookPage* page,
@@ -132,10 +137,24 @@ on_close_button_clicked (GtkButton* button,
   page = (GtkWidget*)g_object_get_data (G_OBJECT (button), "page-widget");
   num = gtk_notebook_page_num (GTK_NOTEBOOK (self->priv->notebook), page);
 
-  if (num != -1) {
+  gtk_notebook_remove_page (GTK_NOTEBOOK (self->priv->notebook), num);
 
-    gtk_notebook_remove_page (GTK_NOTEBOOK (self->priv->notebook), num);
-  }
+  if (num == 0) 
+    gtk_widget_hide (GTK_WIDGET (self));
+}
+
+static void
+on_escaped (GtkWidget */*widget*/,
+            gpointer data)
+{
+  ChatWindow* self = (ChatWindow*)data;
+  gint num = 0;
+
+  num = gtk_notebook_get_current_page (GTK_NOTEBOOK (self->priv->notebook));
+  gtk_notebook_remove_page (GTK_NOTEBOOK (self->priv->notebook), num);
+
+  if (num == 0) 
+    gtk_widget_hide (GTK_WIDGET (self));
 }
 
 static void
@@ -433,16 +452,24 @@ chat_window_new (Ekiga::ChatCore& core,
 		 const std::string key)
 {
   ChatWindow* result = NULL;
+  GtkAccelGroup *accel = NULL;
 
   result = (ChatWindow*)g_object_new (CHAT_WINDOW_TYPE,
-				      "key", key.c_str (),
-				      NULL);
+                                      "key", key.c_str (), 
+                                      "hide_on_esc", FALSE, 
+                                      NULL);
 
   result->priv = new ChatWindowPrivate (core);
 
   result->priv->notebook = gtk_notebook_new ();
   gtk_container_add (GTK_CONTAINER (result), result->priv->notebook);
   gtk_widget_show (result->priv->notebook);
+
+  accel = gtk_accel_group_new ();
+  gtk_window_add_accel_group (GTK_WINDOW (result), accel);
+  gtk_accel_group_connect (accel, GDK_Escape, (GdkModifierType) 0, GTK_ACCEL_LOCKED,
+                           g_cclosure_new_swap (G_CALLBACK (on_escaped), (gpointer) result, NULL));
+  g_object_unref (accel);
 
   g_signal_connect (result, "focus-in-event",
 		    G_CALLBACK (on_focus_in_event), result);

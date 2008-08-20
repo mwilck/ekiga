@@ -1,5 +1,13 @@
 2008-08-20  Damien Sandras  <dsandras@gnome.org>
 
+	* lib/engine/gui/gtk-frontend/chat-window.cpp:
+	When closing the last tab, hide the window. Fixes bug reported by
+	Fabrice.
+	When pressing Escape, close the current tab. Hide the window if there
+	are no more tabs. (Bug #547715).
+
+2008-08-20  Damien Sandras  <dsandras@gnome.org>
+
 	* lib/gui/gmwindow.c:
 	Added new property allowing to disable the hide action when Escape is
 	pressed.
