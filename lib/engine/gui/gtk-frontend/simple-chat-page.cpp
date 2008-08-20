@@ -58,7 +58,6 @@ on_message_notice_event (G_GNUC_UNUSED GtkWidget* widget,
 static void
 simple_chat_page_dispose (GObject *obj)
 {
-
   parent_class->dispose (obj);
 }
 
@@ -95,7 +94,7 @@ simple_chat_page_class_init (gpointer g_class,
     g_signal_new ("message-notice-event",
 		  G_OBJECT_CLASS_TYPE (gobject_class),
 		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (ChatAreaClass, message_notice_event),
+		  G_STRUCT_OFFSET (SimpleChatPageClass, message_notice_event),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
