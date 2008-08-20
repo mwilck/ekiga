@@ -109,15 +109,19 @@ opal_init (Ekiga::ServiceCore &core,
   // Add the bank of accounts when the CallManager is ready
   call_manager->ready.connect (sigc::bind (sigc::ptr_fun (on_call_manager_ready_cb), &core));
 
-  if (contact_core != NULL) 
+  if (contact_core != NULL) { 
+
     contact_core->add_contact_decorator (*sip_manager);
+    contact_core->add_contact_decorator (*h323_manager);
+  }
   else
     return false;
 
   if (presence_core != NULL) {
 
     presence_core->add_presentity_decorator (*sip_manager);
-    presence_core->add_supported_uri (sigc::ptr_fun (is_supported_address));
+    presence_core->add_presentity_decorator (*h323_manager);
+    presence_core->add_supported_uri (sigc::ptr_fun (is_supported_address)); //FIXME
 
     presence_core->add_presence_fetcher (*sip_manager);
     presence_core->add_presence_publisher (*sip_manager);

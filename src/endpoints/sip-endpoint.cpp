@@ -219,9 +219,11 @@ bool Opal::Sip::EndPoint::menu_builder_add_actions (const std::string& fullname,
   std::list<std::string> uris;
   std::list<std::string> accounts;
 
-  if ((uri.find ("sip:") == 0 || uri.find (":") == string::npos) 
-      && uri.find ("@") == string::npos) {
-    
+  if (!(uri.find ("sip:") == 0 || uri.find (":") == string::npos))
+    return false;
+
+  if (uri.find ("@") == string::npos) {
+
     Opal::Bank *bank = dynamic_cast<Opal::Bank*> (core.get ("opal-account-store"));
 
     if (bank) {
