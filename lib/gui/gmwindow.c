@@ -112,7 +112,8 @@ gm_window_get_property (GObject *obj,
 {
   GmWindow *self = NULL;
 
-  self = GM_WINDOW (self);
+  self = GM_WINDOW (obj);
+  self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, GM_WINDOW_TYPE, GmWindowPrivate);
 
   switch (prop_id) {
 
@@ -122,6 +123,7 @@ gm_window_get_property (GObject *obj,
 
   case GM_HIDE_ON_ESC:
     g_value_set_boolean (value, self->priv->hide_on_esc);
+    break;
 
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (obj, prop_id, spec);
