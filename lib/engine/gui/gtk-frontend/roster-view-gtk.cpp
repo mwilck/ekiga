@@ -709,9 +709,6 @@ tree_model_filter_hide_show_offline (GtkTreeModel *model,
 
   self = ROSTER_VIEW_GTK (data);
 
-  if (self->priv->show_offline_contacts)
-    return TRUE;
-
   gtk_tree_model_get (model, iter,
 		      COLUMN_TYPE, &column_type,
 		      -1);
@@ -719,25 +716,36 @@ tree_model_filter_hide_show_offline (GtkTreeModel *model,
   switch (column_type) {
 
   case TYPE_PRESENTITY:
-    gtk_tree_model_get (model, iter,
-			COLUMN_OFFLINE, &result,
-			-1);
+
+    if (self->priv->show_offline_contacts)
+      result = TRUE;
+    else
+      gtk_tree_model_get (model, iter,
+			  COLUMN_OFFLINE, &result,
+			  -1);
     break;
 
   case TYPE_GROUP:
-    result = FALSE;
-    if (gtk_tree_model_iter_nth_child (model, &child_iter, iter, 0)) {
+    if (self->priv->show_offline_contacts)
+      result = TRUE;
+    else {
 
-      do {
+      if (gtk_tree_model_iter_nth_child (model, &child_iter, iter, 0)) {
 
-	gtk_tree_model_get (model, &child_iter,
-			    COLUMN_OFFLINE, &result,
-			    -1);
-      } while (!result && gtk_tree_model_iter_next (model, &child_iter));
+	do {
+
+	  gtk_tree_model_get (model, &child_iter,
+			      COLUMN_OFFLINE, &result,
+			      -1);
+	} while (!result && gtk_tree_model_iter_next (model, &child_iter));
+      }
     }
     break;
 
   case TYPE_HEAP:
+    result = TRUE; // FIXME for 548750: gtk_tree_model_iter_has_child (model, iter);
+    break;
+
   default:
     result = TRUE;
   }
