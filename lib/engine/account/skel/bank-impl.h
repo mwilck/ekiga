@@ -293,8 +293,6 @@ Ekiga::BankImpl<T>::add_account (T &account)
 {
   add_object (account);
 
-  account_core->subscribe_account (account);
-
   account.questions.add_handler (questions.make_slot ());
   account.trigger_saving.connect (sigc::mem_fun (this, &Ekiga::BankImpl<T>::save));
   account.registration_event.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::BankImpl<T>::on_registration_event), &account));
