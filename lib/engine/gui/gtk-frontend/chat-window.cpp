@@ -295,7 +295,10 @@ on_simple_chat_added (ChatWindow* self,
   gtk_button_set_relief (GTK_BUTTON (close_button), GTK_RELIEF_NONE);
   gtk_button_set_focus_on_click (GTK_BUTTON (close_button), FALSE);
   close_image = gtk_image_new_from_stock (GTK_STOCK_CLOSE, GTK_ICON_SIZE_MENU);
+  gtk_widget_set_size_request (GTK_WIDGET (close_image), 12, 12);
+  gtk_widget_set_size_request (GTK_WIDGET (close_button), 16, 16);
   gtk_container_add (GTK_CONTAINER (close_button), close_image);
+  gtk_container_set_border_width (GTK_CONTAINER (close_button), 0);
   g_object_set_data (G_OBJECT (close_button), "page-widget", page);
   g_signal_connect (close_button, "clicked",
 		    G_CALLBACK (on_close_button_clicked), self);
