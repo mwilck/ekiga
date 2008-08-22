@@ -796,7 +796,7 @@ gnome_prefs_string_option_menu_remove (GtkWidget *option_menu,
   if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (model), &iter)) {
     do {
       gchar *value_string = NULL;
-      GValue value = { 0, };
+      GValue value = { 0, {{0}, {0}} };
       gtk_tree_model_get_value (GTK_TREE_MODEL (model), &iter, 0, &value);
       value_string = (gchar *) g_value_get_string (&value);
       if (g_ascii_strcasecmp  (value_string, option) == 0) {
