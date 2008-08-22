@@ -36,7 +36,6 @@
  */
 
 #include <iostream>
-#include <sstream>
 
 #include "config.h"
 
@@ -388,12 +387,13 @@ void
 Evolution::Contact::remove_action ()
 {
   Ekiga::FormRequestSimple request;
-  std::stringstream strm;
+  gchar* instructions = NULL;
 
   request.title (_("Remove contact"));
 
-  strm << _("Are you sure you want to remove ") << get_name () << " " << _("from the address book ?");
-  request.instructions (strm.str ());
+  instructions = g_strdup_printf (_("Are you sure you want to remove %s from the addressbook?"), get_name ().c_str ());
+  request.instructions (instructions);
+  g_free (instructions);
 
   request.submitted.connect (sigc::mem_fun (this,
 					    &Evolution::Contact::on_remove_form_submitted));

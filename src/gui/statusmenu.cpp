@@ -270,8 +270,6 @@ static void
 status_menu_option_changed (GtkComboBox *box,
                             gpointer data)
 {
-  std::stringstream conf_status;
-
   GtkTreeIter iter;
   
   int i = 0;
@@ -740,7 +738,6 @@ static void
 status_menu_new_status_message_dialog_run (StatusMenu *self,
                                            int option)
 {
-  std::stringstream conf_status;
   gchar *short_status = NULL;
   gchar *long_status = NULL;
 

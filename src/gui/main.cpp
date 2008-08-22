@@ -717,14 +717,15 @@ static void on_established_call_cb (Ekiga::CallManager & /*manager*/,
                                     gpointer self)
 {
   GmMainWindow *mw = gm_mw_get_mw (GTK_WIDGET (self));
-  std::stringstream info;
+  gchar* info = NULL;
 
-  info << _("Connected with") << " " << call.get_remote_party_name ();
+  info = g_strdup_printf (_("Connected with %s"),
+			  call.get_remote_party_name ().c_str ());
 
   gm_main_window_set_call_url (GTK_WIDGET (self), call.get_remote_uri ().c_str());
   gm_main_window_set_stay_on_top (GTK_WIDGET (self), gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top"));
-  gm_main_window_set_status (GTK_WIDGET (self), info.str ().c_str ());
-  gm_main_window_flash_message (GTK_WIDGET (self), "%s", info.str ().c_str ());
+  gm_main_window_set_status (GTK_WIDGET (self), info);
+  gm_main_window_flash_message (GTK_WIDGET (self), "%s", info);
   if (!gm_conf_get_bool (USER_INTERFACE_KEY "main_window/show_call_panel"))
     gm_main_window_show_call_panel (GTK_WIDGET (self));
   gm_main_window_update_calling_state (GTK_WIDGET (self), Connected);
@@ -737,6 +738,8 @@ static void on_established_call_cb (Ekiga::CallManager & /*manager*/,
 
   audiooutput_core->stop_play_event("incoming_call_sound");
   audiooutput_core->stop_play_event("ring_tone_sound");
+
+  g_free (info);
 }
 
 
@@ -839,15 +842,17 @@ static void on_missed_call_cb (Ekiga::CallManager & /*manager*/,
   audiooutput_core->stop_play_event("incoming_call_sound");
   audiooutput_core->stop_play_event("ring_tone_sound");
 
-  std::stringstream info;
+  gchar* info = NULL;
 
   mw->missed_calls++;
-  info << _("Missed call from") << " " << call.get_remote_party_name ();
+  info = g_strdup_printf (_("Missed call from %s"),
+			  call.get_remote_party_name ().c_str ());
 
   gm_main_window_push_message (GTK_WIDGET (self), 
                                mw->missed_calls,
                                mw->total_mwi);
-  gm_main_window_flash_message (GTK_WIDGET (self), "%s", info.str ().c_str ());
+  gm_main_window_flash_message (GTK_WIDGET (self), "%s", info);
+  g_free (info);
 }
 
 
@@ -1118,8 +1123,12 @@ on_videoinput_device_added_cb (const Ekiga::VideoInputDevice & device, bool isDe
   g_return_if_fail (self != NULL);
   mw = gm_mw_get_mw (GTK_WIDGET (self));
   g_return_if_fail (mw != NULL);
-  std::string message = _("added video input device ") + device.GetString();
-  gm_main_window_flash_message (GTK_WIDGET (self), "%s", message.c_str ());
+  gchar* message = NULL;
+
+  message = g_strdup_printf (_("Added video input device %s"),
+			       device.GetString().c_str ());
+  gm_main_window_flash_message (GTK_WIDGET (self), "%s", message);
+  g_free (message);
   if (!isDesired && !mw->current_call) 
     gm_main_window_add_device_dialog_show (GTK_WIDGET (self), device, VideoInput);
 }
@@ -1131,8 +1140,12 @@ on_videoinput_device_removed_cb (const Ekiga::VideoInputDevice & device, bool, g
   g_return_if_fail (self != NULL);
   mw = gm_mw_get_mw (GTK_WIDGET (self));
   g_return_if_fail (mw != NULL);
-  std::string message = _("removed video input device ") + device.GetString();
-  gm_main_window_flash_message (GTK_WIDGET (self), "%s", message.c_str ());
+  gchar* message = NULL;
+
+  message = g_strdup_printf (_("Removed video input device %s"),
+			     device.GetString().c_str ());
+  gm_main_window_flash_message (GTK_WIDGET (self), "%s", message);
+  g_free (message);
 }
 
 void 
@@ -1232,8 +1245,12 @@ on_audioinput_device_added_cb (const Ekiga::AudioInputDevice & device,
   g_return_if_fail (self != NULL);
   mw = gm_mw_get_mw (GTK_WIDGET (self));
   g_return_if_fail (mw != NULL);
-  std::string message = _("added audio input device ") + device.GetString();
-  gm_main_window_flash_message (GTK_WIDGET (self), "%s", message.c_str ());
+  gchar* message = NULL;
+
+  message = g_strdup_printf (_("Added audio input device %s"),
+			     device.GetString().c_str ());
+  gm_main_window_flash_message (GTK_WIDGET (self), "%s", message);
+  g_free (message);
   if (!isDesired  && !mw->current_call)
     gm_main_window_add_device_dialog_show (GTK_WIDGET (self), device,  AudioInput);
     
@@ -1248,8 +1265,12 @@ on_audioinput_device_removed_cb (const Ekiga::AudioInputDevice & device,
   g_return_if_fail (self != NULL);
   mw = gm_mw_get_mw (GTK_WIDGET (self));
   g_return_if_fail (mw != NULL);
-  std::string message = _("removed audio input device ") + device.GetString();
-  gm_main_window_flash_message (GTK_WIDGET (self), "%s", message.c_str ());
+  gchar* message = NULL;
+
+  message = g_strdup_printf (_("Removed audio input device %s"),
+			     device.GetString().c_str ());
+  gm_main_window_flash_message (GTK_WIDGET (self), "%s", message);
+  g_free (message);
 }
 
 void 
@@ -1357,8 +1378,12 @@ on_audiooutput_device_removed_cb (const Ekiga::AudioOutputDevice & device,
   g_return_if_fail (self != NULL);
   mw = gm_mw_get_mw (GTK_WIDGET (self));
   g_return_if_fail (mw != NULL);
-  std::string message = _("removed audio output device ") + device.GetString();
-  gm_main_window_flash_message (GTK_WIDGET (self), "%s", message.c_str ());
+  gchar* message = NULL;
+
+  message = g_strdup_printf (_("Removed audio output device %s"),
+			     device.GetString().c_str ());
+  gm_main_window_flash_message (GTK_WIDGET (self), "%s", message);
+  g_free (message);
 }
 
 void 

@@ -538,6 +538,7 @@ OPENLDAP::Book::refresh_result ()
   LDAPMessage *msg_entry = NULL;
   LDAPMessage *msg_result = NULL;
   OPENLDAP::Contact *contact = NULL;
+  gchar* c_status = NULL;
 
   result = ldap_result (ldap_context, LDAP_RES_ANY, LDAP_MSG_ALL,
 			&timeout, &msg_entry);
@@ -586,9 +587,11 @@ OPENLDAP::Book::refresh_result ()
     msg_result = ldap_next_message (ldap_context, msg_result);
   } while (msg_result != NULL);
 
-  std::stringstream strm;
-  strm << nbr;
-  status = std::string (strm.str ()) + " " + std::string (ngettext ("user found", "users found", nbr));
+  c_status = g_strdup_printf (ngettext ("%d user found",
+					"%d users found", nbr), nbr);
+  status = c_status;
+  g_free (c_status);
+
   updated.emit ();
 
   (void)ldap_msgfree (msg_entry);

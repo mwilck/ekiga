@@ -36,7 +36,6 @@
  */
 
 #include <iostream>
-#include <sstream>
 #include <string>
 
 #include "config.h"
@@ -69,6 +68,7 @@ Evolution::Book::on_view_contacts_added (GList *econtacts)
 {
   EContact *econtact = NULL;
   int nbr = 0;
+  gchar* c_status = NULL;
 
   for (; econtacts != NULL; econtacts = g_list_next (econtacts)) {
 
@@ -83,9 +83,11 @@ Evolution::Book::on_view_contacts_added (GList *econtacts)
     }
   }
 
-  std::stringstream strm;
-  strm << nbr;
-  status = std::string (strm.str ()) + " " + std::string (ngettext ("user found", "users found", nbr));
+  c_status = g_strdup_printf (ngettext ("%d user found", "%d users found", nbr),
+			      nbr);
+  status = c_status;
+  g_free (c_status);
+
   updated.emit ();
 }
 
