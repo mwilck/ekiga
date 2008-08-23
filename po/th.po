@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ekiga\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-22 11:33+0700\n"
-"PO-Revision-Date: 2008-08-22 11:30+0700\n"
+"POT-Creation-Date: 2008-08-23 21:30+0700\n"
+"PO-Revision-Date: 2008-08-23 21:34+0700\n"
 "Last-Translator: Theppitak Karoonboonyanan <thep@linux.thai.net>\n"
 "Language-Team: Thai <thai-l10n@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -404,7 +404,7 @@ msgstr "เลือกอุปกรณ์ภาพขาเข้าที่
 msgid "Show offline contacts"
 msgstr "แสดงผู้ติดต่อที่ออฟไลน์"
 
-#: ekiga.schemas.in.in.h:86 src/gui/main.cpp:1793
+#: ekiga.schemas.in.in.h:86 src/gui/main.cpp:1818
 msgid "Show the call panel"
 msgstr "แสดงแผงเรียกสาย"
 
@@ -839,30 +839,30 @@ msgstr "สายที่โอน"
 msgid "Missed"
 msgstr "ไม่ได้รับ"
 
-#: lib/engine/addressbook/evolution/evolution-contact.cpp:235
+#: lib/engine/addressbook/evolution/evolution-contact.cpp:234
 #: lib/engine/presence/local-roster/local-presentity.cpp:194
-#: src/endpoints/opal-account.cpp:306 src/gui/main.cpp:1751
+#: src/endpoints/opal-account.cpp:306 src/gui/main.cpp:1776
 msgid "_Edit"
 msgstr "แ_ก้ไข"
 
-#: lib/engine/addressbook/evolution/evolution-contact.cpp:237
+#: lib/engine/addressbook/evolution/evolution-contact.cpp:236
 #: lib/engine/addressbook/ldap/ldap-book.cpp:312
 #: lib/engine/presence/local-roster/local-presentity.cpp:196
 #: src/endpoints/opal-account.cpp:308
 msgid "_Remove"
 msgstr "เ_อาออก"
 
-#: lib/engine/addressbook/evolution/evolution-contact.cpp:326
+#: lib/engine/addressbook/evolution/evolution-contact.cpp:325
 msgid "Edit contact"
 msgstr "แก้ไขข้อมูลผู้ติดต่อ"
 
-#: lib/engine/addressbook/evolution/evolution-contact.cpp:328
-#: lib/engine/addressbook/evolution/evolution-book.cpp:311
+#: lib/engine/addressbook/evolution/evolution-contact.cpp:327
+#: lib/engine/addressbook/evolution/evolution-book.cpp:313
 #: src/endpoints/opal-account.cpp:349
 msgid "Please update the following fields:"
 msgstr "กรุณาปรับข้อมูลต่อไปนี้:"
 
-#: lib/engine/addressbook/evolution/evolution-contact.cpp:330
+#: lib/engine/addressbook/evolution/evolution-contact.cpp:329
 #: lib/engine/presence/local-roster/local-presentity.cpp:221
 #: lib/engine/presence/local-roster/local-heap.cpp:168
 #: lib/engine/presence/local-roster/local-heap.cpp:315
@@ -871,67 +871,63 @@ msgstr "กรุณาปรับข้อมูลต่อไปนี้:"
 msgid "Name:"
 msgstr "ชื่อ:"
 
-#: lib/engine/addressbook/evolution/evolution-contact.cpp:339
-#: lib/engine/addressbook/evolution/evolution-book.cpp:314
+#: lib/engine/addressbook/evolution/evolution-contact.cpp:338
+#: lib/engine/addressbook/evolution/evolution-book.cpp:316
 msgid "VoIP _URI:"
 msgstr "_URI สำหรับ VoIP:"
 
-#: lib/engine/addressbook/evolution/evolution-contact.cpp:340
-#: lib/engine/addressbook/evolution/evolution-book.cpp:315
+#: lib/engine/addressbook/evolution/evolution-contact.cpp:339
+#: lib/engine/addressbook/evolution/evolution-book.cpp:317
 msgid "_Home phone:"
 msgstr "โทรศัพท์_บ้าน:"
 
-#: lib/engine/addressbook/evolution/evolution-contact.cpp:341
-#: lib/engine/addressbook/evolution/evolution-book.cpp:316
+#: lib/engine/addressbook/evolution/evolution-contact.cpp:340
+#: lib/engine/addressbook/evolution/evolution-book.cpp:318
 msgid "_Office phone:"
 msgstr "โทรศัพท์_ที่ทำงาน:"
 
-#: lib/engine/addressbook/evolution/evolution-contact.cpp:342
-#: lib/engine/addressbook/evolution/evolution-book.cpp:317
+#: lib/engine/addressbook/evolution/evolution-contact.cpp:341
+#: lib/engine/addressbook/evolution/evolution-book.cpp:319
 msgid "_Cell phone:"
 msgstr "โทรศัพท์_มือถือ:"
 
-#: lib/engine/addressbook/evolution/evolution-contact.cpp:343
-#: lib/engine/addressbook/evolution/evolution-book.cpp:318
+#: lib/engine/addressbook/evolution/evolution-contact.cpp:342
+#: lib/engine/addressbook/evolution/evolution-book.cpp:320
 msgid "_Pager:"
 msgstr "เ_พจเจอร์:"
 
-#: lib/engine/addressbook/evolution/evolution-contact.cpp:393
+#: lib/engine/addressbook/evolution/evolution-contact.cpp:392
 msgid "Remove contact"
 msgstr "ลบข้อมูลผู้ติดต่อ"
 
-#: lib/engine/addressbook/evolution/evolution-contact.cpp:395
-msgid "Are you sure you want to remove "
-msgstr "ยืนยันที่จะลบ "
+#: lib/engine/addressbook/evolution/evolution-contact.cpp:394
+#, c-format
+msgid "Are you sure you want to remove %s from the addressbook?"
+msgstr "ยืนยันที่จะลบ %s ออกจากสมุดที่อยู่หรือไม่?"
 
-#: lib/engine/addressbook/evolution/evolution-contact.cpp:395
-msgid "from the address book ?"
-msgstr "ออกจากสมุดที่อยู่หรือไม่?"
-
-# Translator TODO: File bug against this. It should be "%d user(s) found",
 # to be able to reorder
-#: lib/engine/addressbook/evolution/evolution-book.cpp:88
-#: lib/engine/addressbook/ldap/ldap-book.cpp:591
-#, fuzzy
-msgid "user found"
-msgid_plural "users found"
+#: lib/engine/addressbook/evolution/evolution-book.cpp:86
+#: lib/engine/addressbook/ldap/ldap-book.cpp:590
+#, c-format
+msgid "%d user found"
+msgid_plural "%d users found"
 msgstr[0] "พบผู้ใช้ %d คน"
 
-#: lib/engine/addressbook/evolution/evolution-book.cpp:257
+#: lib/engine/addressbook/evolution/evolution-book.cpp:259
 #: lib/engine/addressbook/ldap/ldap-book.cpp:309
 msgid "_Refresh"
 msgstr "_ปรับข้อมูล"
 
-#: lib/engine/addressbook/evolution/evolution-book.cpp:260
+#: lib/engine/addressbook/evolution/evolution-book.cpp:262
 msgid "New _Contact"
 msgstr "ผู้ติดต่อใ_หม่"
 
-#: lib/engine/addressbook/evolution/evolution-book.cpp:309
+#: lib/engine/addressbook/evolution/evolution-book.cpp:311
 #: lib/engine/presence/local-roster/local-heap.cpp:109
 msgid "New contact"
 msgstr "ผู้ติดต่อใหม่"
 
-#: lib/engine/addressbook/evolution/evolution-book.cpp:313
+#: lib/engine/addressbook/evolution/evolution-book.cpp:315
 #: lib/engine/addressbook/ldap/ldap-source.cpp:157
 msgid "_Name:"
 msgstr "_ชื่อ:"
@@ -949,7 +945,7 @@ msgid "Create LDAP directory"
 msgstr "สร้างสารบบ LDAP"
 
 #: lib/engine/addressbook/ldap/ldap-source.cpp:155
-#: lib/engine/addressbook/ldap/ldap-book.cpp:607
+#: lib/engine/addressbook/ldap/ldap-book.cpp:610
 msgid "Please edit the following fields"
 msgstr "กรุณาแก้ไขข้อมูลต่อไปนี้"
 
@@ -966,22 +962,22 @@ msgid "_Base DN:"
 msgstr "DN ฐา_น:"
 
 #: lib/engine/addressbook/ldap/ldap-source.cpp:164
-#: lib/engine/addressbook/ldap/ldap-book.cpp:623
+#: lib/engine/addressbook/ldap/ldap-book.cpp:626
 msgid "_Subtree"
 msgstr "ข้อมูล_กิ่งย่อย"
 
 #: lib/engine/addressbook/ldap/ldap-source.cpp:165
-#: lib/engine/addressbook/ldap/ldap-book.cpp:624
+#: lib/engine/addressbook/ldap/ldap-book.cpp:627
 msgid "Single _Level"
 msgstr "_ระดับเดียว"
 
 #: lib/engine/addressbook/ldap/ldap-source.cpp:166
-#: lib/engine/addressbook/ldap/ldap-book.cpp:625
+#: lib/engine/addressbook/ldap/ldap-book.cpp:628
 msgid "_Scope"
 msgstr "_ขอบเขต"
 
 #: lib/engine/addressbook/ldap/ldap-source.cpp:169
-#: lib/engine/addressbook/ldap/ldap-book.cpp:628
+#: lib/engine/addressbook/ldap/ldap-book.cpp:631
 msgid "Call _Attribute"
 msgstr "_ลักษณะการเรียกสาย:"
 
@@ -1020,7 +1016,7 @@ msgstr "ไม่สามารถเชื่อมต่อไปยังเ
 
 #. patience == 0
 #: lib/engine/addressbook/ldap/ldap-book.cpp:515
-#: lib/engine/addressbook/ldap/ldap-book.cpp:562
+#: lib/engine/addressbook/ldap/ldap-book.cpp:563
 msgid "Could not search"
 msgstr "ไม่สามารถค้นหา"
 
@@ -1028,27 +1024,27 @@ msgstr "ไม่สามารถค้นหา"
 msgid "Waiting for search results"
 msgstr "กำลังรอผลการค้นหา"
 
-#: lib/engine/addressbook/ldap/ldap-book.cpp:605
+#: lib/engine/addressbook/ldap/ldap-book.cpp:608
 msgid "Edit LDAP directory"
 msgstr "แก้ไขสารบบ LDAP"
 
-#: lib/engine/addressbook/ldap/ldap-book.cpp:609
+#: lib/engine/addressbook/ldap/ldap-book.cpp:612
 msgid "_Name"
 msgstr "_ชื่อ"
 
-#: lib/engine/addressbook/ldap/ldap-book.cpp:610
+#: lib/engine/addressbook/ldap/ldap-book.cpp:613
 msgid "_Hostname"
 msgstr "ชื่อโฮ_สต์"
 
-#: lib/engine/addressbook/ldap/ldap-book.cpp:616
+#: lib/engine/addressbook/ldap/ldap-book.cpp:619
 msgid "_Port"
 msgstr "_พอร์ต"
 
-#: lib/engine/addressbook/ldap/ldap-book.cpp:618
+#: lib/engine/addressbook/ldap/ldap-book.cpp:621
 msgid "_Base DN"
 msgstr "DN ฐา_น"
 
-#: lib/engine/addressbook/ldap/ldap-book.cpp:630
+#: lib/engine/addressbook/ldap/ldap-book.cpp:633
 msgid "_Password"
 msgstr "_รหัสผ่าน"
 
@@ -1113,7 +1109,7 @@ msgid "You say:\n"
 msgstr "คุณกล่าว:\n"
 
 #: lib/engine/gui/gtk-frontend/call-history-view-gtk.cpp:163
-#: src/gui/statusmenu.cpp:547
+#: src/gui/statusmenu.cpp:545
 msgid "Clear"
 msgstr "ล้าง"
 
@@ -2094,50 +2090,48 @@ msgstr "ไม่สามารถลงทะเบียน %s"
 msgid "A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d"
 msgstr "ส:%.1f/%.1f   ภ:%.1f/%.1f   FPS:%d/%d"
 
-# Translator TODO: File bug against this. We need format string here.
 #: src/gui/main.cpp:722
-#, fuzzy
-msgid "Connected with"
+#, c-format
+msgid "Connected with %s"
 msgstr "เชื่อมต่อกับ %s แล้ว"
 
-#: src/gui/main.cpp:752 src/gui/main.cpp:2289
+#: src/gui/main.cpp:755 src/gui/main.cpp:2314
 msgid "Standby"
 msgstr "รอรับสาย"
 
-#: src/gui/main.cpp:813
+#: src/gui/main.cpp:816
 msgid "Call on hold"
 msgstr "กำลังถือสายรอ"
 
-#: src/gui/main.cpp:826
+#: src/gui/main.cpp:829
 msgid "Call retrieved"
 msgstr "ดึงสายเรียกแล้ว"
 
-#: src/gui/main.cpp:845
-msgid "Missed call from"
-msgstr "สายไม่ได้รับจาก"
+#: src/gui/main.cpp:848
+#, c-format
+msgid "Missed call from %s"
+msgstr "สายไม่ได้รับจาก %s"
 
-#: src/gui/main.cpp:990 src/gui/misc.cpp:94
+#: src/gui/main.cpp:995 src/gui/misc.cpp:94
 msgid "Error"
 msgstr "ข้อผิดพลาด"
 
-# Translator TODO: File bug against this. We need format string here.
-#: src/gui/main.cpp:1121
-#, fuzzy
-msgid "added video input device "
+#: src/gui/main.cpp:1128
+#, c-format
+msgid "Added video input device %s"
 msgstr "เพิ่มอุปกรณ์ภาพขาเข้า %s แล้ว"
 
-# Translator TODO: File bug against this. We need format string here.
-#: src/gui/main.cpp:1134
-#, fuzzy
-msgid "removed video input device "
+#: src/gui/main.cpp:1145
+#, c-format
+msgid "Removed video input device %s"
 msgstr "ลบอุปกรณ์ภาพขาเข้า %s แล้ว"
 
-#: src/gui/main.cpp:1149
+#: src/gui/main.cpp:1162
 #, c-format
 msgid "Error while accessing video device %s"
 msgstr "เกิดข้อผิดพลาดขณะเข้าถึงอุปกรณ์วีดิทัศน์ %s"
 
-#: src/gui/main.cpp:1152
+#: src/gui/main.cpp:1165
 msgid ""
 "A moving logo will be transmitted during calls. Notice that you can always "
 "transmit a given image or the moving logo by choosing \"Picture\" as video "
@@ -2147,7 +2141,7 @@ msgstr ""
 "หรือภาพโลโก้เคลื่อนไหว โดยเลือกปลั๊กอินภาพเป็น \"Picture\" และเลือกอุปกรณ์เป็น \"Moving "
 "logo\" หรือ \"Static picture\""
 
-#: src/gui/main.cpp:1156
+#: src/gui/main.cpp:1169
 msgid ""
 "There was an error while opening the device. In case it is a pluggable "
 "device it may be sufficient to reconnect it. If not, or if it still is not "
@@ -2158,15 +2152,15 @@ msgstr ""
 "หรือถ้าเสียบใหม่แล้วยังใช้ไม่ได้ ก็กรุณาตรวจสอบสิทธิ์ของคุณ และตรวจสอบให้แน่ใจ "
 "ว่าได้โหลดไดรเวอร์ที่เหมาะสมแล้ว"
 
-#: src/gui/main.cpp:1160
+#: src/gui/main.cpp:1173
 msgid "Your video driver doesn't support the requested video format."
 msgstr "ไดรเวอร์วีดิทัศน์ของคุณไม่รองรับฟอร์แมตวีดิทัศน์ที่ร้องขอ"
 
-#: src/gui/main.cpp:1164
+#: src/gui/main.cpp:1177
 msgid "Could not open the chosen channel."
 msgstr "ไม่สามารถเปิดช่องสัญญาณที่เลือกได้"
 
-#: src/gui/main.cpp:1168
+#: src/gui/main.cpp:1181
 msgid ""
 "Your driver doesn't seem to support any of the color formats supported by "
 "Ekiga.\n"
@@ -2176,40 +2170,40 @@ msgstr ""
 "ดูเหมือนว่าไดรเวอร์ของคุณจะไม่รองรับฟอร์แมตสีใดๆ ที่ Ekiga รองรับเลย\n"
 " กรุณาตรวจสอบเอกสารของไดรเวอร์ของเคอร์เนล เพื่อพิจารณาหาจานสีที่รองรับ"
 
-#: src/gui/main.cpp:1172
+#: src/gui/main.cpp:1185
 msgid "Error while setting the frame rate."
 msgstr "เกิดข้อผิดพลาดขณะตั้งอัตราเฟรมภาพ"
 
-#: src/gui/main.cpp:1176
+#: src/gui/main.cpp:1189
 msgid "Error while setting the frame size."
 msgstr "เกิดข้อผิดพลาดขณะตั้งขนาดเฟรมภาพ"
 
-#: src/gui/main.cpp:1181 src/gui/main.cpp:1282 src/gui/main.cpp:1395
+#: src/gui/main.cpp:1194 src/gui/main.cpp:1303 src/gui/main.cpp:1420
 msgid "Unknown error."
 msgstr "เกิดข้อผิดพลาดไม่ทราบสาเหตุ"
 
 # Translator TODO: File bug against this. We need format string here.
-#: src/gui/main.cpp:1235
-#, fuzzy
-msgid "added audio input device "
+#: src/gui/main.cpp:1250
+#, c-format
+msgid "Added audio input device %s"
 msgstr "เพิ่มอุปกรณ์เสียงขาเข้า %s แล้ว"
 
 # Translator TODO: File bug against this. We need format string here.
-#: src/gui/main.cpp:1251
-#, fuzzy
-msgid "removed audio input device "
+#: src/gui/main.cpp:1270
+#, c-format
+msgid "Removed audio input device %s"
 msgstr "ลบอุปกรณ์เสียงขาเข้า %s แล้ว"
 
-#: src/gui/main.cpp:1266
+#: src/gui/main.cpp:1287
 #, c-format
 msgid "Error while opening audio input device %s"
 msgstr "เกิดข้อผิดพลาดขณะเปิดอุปกรณ์เสียงขาเข้า %s"
 
-#: src/gui/main.cpp:1269
+#: src/gui/main.cpp:1290
 msgid "Only silence will be transmitted."
 msgstr "จะส่งเฉพาะเสียงเงียบไปเท่านั้น"
 
-#: src/gui/main.cpp:1273
+#: src/gui/main.cpp:1294
 msgid ""
 "Unable to open the selected audio device for recording. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
@@ -2220,7 +2214,7 @@ msgstr ""
 "แค่เสียบใหม่ก็อาจจะใช้ได้ แต่ถ้าไม่ใช่ หรือถ้าเสียบใหม่แล้วยังใช้ไม่ได้ "
 "ก็กรุณาตรวจสอบการตั้งค่าระบบเสียง การกำหนดสิทธิ์ และตรวจดูว่าอุปกรณ์ไม่ได้ใช้งานอยู่"
 
-#: src/gui/main.cpp:1277
+#: src/gui/main.cpp:1298
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "read data from this device. In case it is a pluggable device it may be "
@@ -2232,27 +2226,26 @@ msgstr ""
 "ก็กรุณาตรวจสอบการตั้งค่าระบบเสียงของคุณ"
 
 # Translator TODO: File bug against this. We need format string here.
-#: src/gui/main.cpp:1345
+#: src/gui/main.cpp:1366
 #, fuzzy
 msgid "added audio output device "
 msgstr "เพิ่มอุปกรณ์เสียงขาออก %s แล้ว"
 
-# Translator TODO: File bug against this. We need format string here.
-#: src/gui/main.cpp:1360
-#, fuzzy
-msgid "removed audio output device "
+#: src/gui/main.cpp:1383
+#, c-format
+msgid "Removed audio output device %s"
 msgstr "ลบอุปกรณ์เสียงขาออก %s แล้ว"
 
-#: src/gui/main.cpp:1379
+#: src/gui/main.cpp:1404
 #, c-format
 msgid "Error while opening audio output device %s"
 msgstr "เกิดข้อผิดพลาดขณะเปิดอุปกรณ์เสียงขาออก %s"
 
-#: src/gui/main.cpp:1382
+#: src/gui/main.cpp:1407
 msgid "No incoming sound will be played."
 msgstr "จะไม่มีการเล่นเสียงขาเข้า"
 
-#: src/gui/main.cpp:1386
+#: src/gui/main.cpp:1411
 msgid ""
 "Unable to open the selected audio device for playing. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
@@ -2263,7 +2256,7 @@ msgstr ""
 "แค่เสียบใหม่ก็อาจจะใช้ได้ แต่ถ้าไม่ใช่ หรือถ้าเสียบใหม่แล้วยังใช้ไม่ได้ "
 "ก็กรุณาตรวจสอบการตั้งค่าระบบเสียง การกำหนดสิทธิ์ และตรวจดูว่าอุปกรณ์ไม่ได้ใช้งานอยู่"
 
-#: src/gui/main.cpp:1390
+#: src/gui/main.cpp:1415
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "write data from this device. In case it is a pluggable device it may be "
@@ -2274,342 +2267,342 @@ msgstr ""
 "แค่เสียบใหม่ก็อาจจะใช้ได้ แต่ถ้าไม่ใช่ หรือถ้าเสียบใหม่แล้วยังใช้ไม่ได้ "
 "ก็กรุณาตรวจสอบการตั้งค่าระบบเสียงของคุณ"
 
-#: src/gui/main.cpp:1610
+#: src/gui/main.cpp:1635
 msgid "Enter a URI on the left, and click this button to place a call"
 msgstr "ป้อน URI ในช่องทางซ้าย แล้วกดปุ่มนี้เพื่อเรียกสาย"
 
-#: src/gui/main.cpp:1691
+#: src/gui/main.cpp:1716
 msgid "_Chat"
 msgstr "_สนทนา"
 
-#: src/gui/main.cpp:1693
+#: src/gui/main.cpp:1718
 msgid "Ca_ll"
 msgstr "เ_รียก"
 
-#: src/gui/main.cpp:1693
+#: src/gui/main.cpp:1718
 msgid "Place a new call"
 msgstr "เรียกสายสายใหม่"
 
-#: src/gui/main.cpp:1696
+#: src/gui/main.cpp:1721
 msgid "_Hang up"
 msgstr "_วางสาย"
 
-#: src/gui/main.cpp:1697
+#: src/gui/main.cpp:1722
 msgid "Terminate the current call"
 msgstr "ยุติการเรียกสายปัจจุบัน"
 
-#: src/gui/main.cpp:1703
+#: src/gui/main.cpp:1728
 msgid "A_dd Contact"
 msgstr "เ_พิ่มผู้ติดต่อ"
 
-#: src/gui/main.cpp:1703
+#: src/gui/main.cpp:1728
 msgid "Add a contact to the roster"
 msgstr "เพิ่มผู้ติดต่อในบัญชีรายชื่อ"
 
-#: src/gui/main.cpp:1707
+#: src/gui/main.cpp:1732
 msgid "_Find Contacts"
 msgstr "_หาผู้ติดต่อ"
 
-#: src/gui/main.cpp:1708
+#: src/gui/main.cpp:1733
 msgid "Find contacts"
 msgstr "หาผู้ติดต่อ"
 
-#: src/gui/main.cpp:1715
+#: src/gui/main.cpp:1740
 msgid "H_old Call"
 msgstr "_ถือสาย"
 
-#: src/gui/main.cpp:1715 src/gui/main.cpp:2390
+#: src/gui/main.cpp:1740 src/gui/main.cpp:2415
 msgid "Hold the current call"
 msgstr "ถือสายปัจจุบันค้างไว้"
 
-#: src/gui/main.cpp:1719
+#: src/gui/main.cpp:1744
 msgid "_Transfer Call"
 msgstr "โอนสา_ย"
 
-#: src/gui/main.cpp:1720
+#: src/gui/main.cpp:1745
 msgid "Transfer the current call"
 msgstr "โอนการเรียกเข้าปัจจุบัน"
 
-#: src/gui/main.cpp:1727 src/gui/main.cpp:3122
+#: src/gui/main.cpp:1752 src/gui/main.cpp:3147
 msgid "Suspend _Audio"
 msgstr "หยุดเสีย_ง"
 
-#: src/gui/main.cpp:1728
+#: src/gui/main.cpp:1753
 msgid "Suspend or resume the audio transmission"
 msgstr "หยุดหรือเปิดการส่งสัญญาณเสียง"
 
-#: src/gui/main.cpp:1732 src/gui/main.cpp:3124
+#: src/gui/main.cpp:1757 src/gui/main.cpp:3149
 msgid "Suspend _Video"
 msgstr "หยุด_ภาพ"
 
-#: src/gui/main.cpp:1733
+#: src/gui/main.cpp:1758
 msgid "Suspend or resume the video transmission"
 msgstr "หยุดหรือส่งสัญญาณภาพ"
 
-#: src/gui/main.cpp:1740
+#: src/gui/main.cpp:1765
 msgid "Close the Ekiga window"
 msgstr "ปิดหน้าต่าง Ekiga"
 
-#: src/gui/main.cpp:1747 src/gui/statusicon.cpp:418
+#: src/gui/main.cpp:1772 src/gui/statusicon.cpp:418
 msgid "Quit"
 msgstr "ออก"
 
-#: src/gui/main.cpp:1753
+#: src/gui/main.cpp:1778
 msgid "_Configuration Assistant"
 msgstr "เครื่องมือช่วย_ตั้งค่า"
 
-#: src/gui/main.cpp:1754
+#: src/gui/main.cpp:1779
 msgid "Run the configuration assistant"
 msgstr "เรียกเครื่องมือช่วยตั้งค่า"
 
-#: src/gui/main.cpp:1761
+#: src/gui/main.cpp:1786
 msgid "_Accounts"
 msgstr "_บัญชี"
 
-#: src/gui/main.cpp:1762
+#: src/gui/main.cpp:1787
 msgid "Edit your accounts"
 msgstr "แก้ไขบัญชีของคุณ"
 
-#: src/gui/main.cpp:1768
+#: src/gui/main.cpp:1793
 msgid "Change your preferences"
 msgstr "เปลี่ยนค่าปรับแต่ง"
 
-#: src/gui/main.cpp:1773
+#: src/gui/main.cpp:1798
 msgid "_View"
 msgstr "มุ_มมอง"
 
-#: src/gui/main.cpp:1775
+#: src/gui/main.cpp:1800
 msgid "Con_tacts"
 msgstr "ผู้_ติดต่อ"
 
-#: src/gui/main.cpp:1775
+#: src/gui/main.cpp:1800
 msgid "View the contacts list"
 msgstr "ดูรายชื่อผู้ติดต่อ"
 
-#: src/gui/main.cpp:1780
+#: src/gui/main.cpp:1805
 msgid "_Dialpad"
 msgstr "แ_ป้นโทรศัพท์"
 
-#: src/gui/main.cpp:1780
+#: src/gui/main.cpp:1805
 msgid "View the dialpad"
 msgstr "แสดงแป้นโทรศัพท์"
 
-#: src/gui/main.cpp:1785
+#: src/gui/main.cpp:1810
 msgid "_Call History"
 msgstr "_ประวัติการเรียกสาย"
 
-#: src/gui/main.cpp:1785
+#: src/gui/main.cpp:1810
 msgid "View the call history"
 msgstr "ดูประวัติการเรียกสาย"
 
-#: src/gui/main.cpp:1793
+#: src/gui/main.cpp:1818
 msgid "_Show Call Panel"
 msgstr "แ_สดงแผงเรียกสาย"
 
-#: src/gui/main.cpp:1801
+#: src/gui/main.cpp:1826
 msgid "_Local Video"
 msgstr "ภาพจากเครื่อง_นี้"
 
-#: src/gui/main.cpp:1802
+#: src/gui/main.cpp:1827
 msgid "Local video image"
 msgstr "ภาพจากเครื่องนี้"
 
-#: src/gui/main.cpp:1807
+#: src/gui/main.cpp:1832
 msgid "_Remote Video"
 msgstr "ภาพ_ฝั่งโน้น"
 
-#: src/gui/main.cpp:1808
+#: src/gui/main.cpp:1833
 msgid "Remote video image"
 msgstr "ภาพจากเครื่องฝั่งโน้น"
 
-#: src/gui/main.cpp:1813
+#: src/gui/main.cpp:1838
 msgid "_Picture-in-Picture"
 msgstr "_ภาพซ้อนในภาพ"
 
-#: src/gui/main.cpp:1814 src/gui/main.cpp:1820
+#: src/gui/main.cpp:1839 src/gui/main.cpp:1845
 msgid "Both video images"
 msgstr "ภาพของทั้งสองฝ่าย"
 
-#: src/gui/main.cpp:1819
+#: src/gui/main.cpp:1844
 msgid "Picture-in-Picture in Separate _Window"
 msgstr "ภาพซ้อนในภาพในหน้าต่างแ_ยก"
 
-#: src/gui/main.cpp:1827
+#: src/gui/main.cpp:1852
 msgid "Zoom in"
 msgstr "ซูมเข้า"
 
-#: src/gui/main.cpp:1831
+#: src/gui/main.cpp:1856
 msgid "Zoom out"
 msgstr "ซูมออก"
 
-#: src/gui/main.cpp:1835
+#: src/gui/main.cpp:1860
 msgid "Normal size"
 msgstr "ขนาดปกติ"
 
-#: src/gui/main.cpp:1839
+#: src/gui/main.cpp:1864
 msgid "_Fullscreen"
 msgstr "เ_ต็มจอ"
 
-#: src/gui/main.cpp:1839
+#: src/gui/main.cpp:1864
 msgid "Switch to fullscreen"
 msgstr "เปลี่ยนไปแสดงแบบเต็มจอ"
 
-#: src/gui/main.cpp:1844
+#: src/gui/main.cpp:1869
 msgid "_Help"
 msgstr "_วิธีใช้"
 
-#: src/gui/main.cpp:1847 src/gui/statusicon.cpp:395
+#: src/gui/main.cpp:1872 src/gui/statusicon.cpp:395
 #: src/gui/statusicon.cpp:406
 msgid "Get help by reading the Ekiga manual"
 msgstr "อ่านวิธีใช้จากคู่มือของ Ekiga"
 
-#: src/gui/main.cpp:1852 src/gui/statusicon.cpp:400
+#: src/gui/main.cpp:1877 src/gui/statusicon.cpp:400
 #: src/gui/statusicon.cpp:411
 msgid "View information about Ekiga"
 msgstr "ดูข้อมูลเกี่ยวกับ Ekiga"
 
-#: src/gui/main.cpp:1888
+#: src/gui/main.cpp:1913
 msgid "Contacts"
 msgstr "ผู้ติดต่อ"
 
-#: src/gui/main.cpp:1913
+#: src/gui/main.cpp:1938
 msgid "Dialpad"
 msgstr "แป้นโทรศัพท์"
 
-#: src/gui/main.cpp:1949
+#: src/gui/main.cpp:1974
 msgid "Video Settings"
 msgstr "ค่าตั้งระบบภาพ"
 
-#: src/gui/main.cpp:1977
+#: src/gui/main.cpp:2002
 msgid "Adjust brightness"
 msgstr "ปรับความสว่าง"
 
-#: src/gui/main.cpp:1999
+#: src/gui/main.cpp:2024
 msgid "Adjust whiteness"
 msgstr "ปรับความขาว"
 
-#: src/gui/main.cpp:2021
+#: src/gui/main.cpp:2046
 msgid "Adjust color"
 msgstr "ปรับสี"
 
-#: src/gui/main.cpp:2043
+#: src/gui/main.cpp:2068
 msgid "Adjust contrast"
 msgstr "ปรับความคมชัด"
 
-#: src/gui/main.cpp:2097
+#: src/gui/main.cpp:2122
 msgid "Audio Settings"
 msgstr "ค่าตั้งระบบเสียง"
 
-#: src/gui/main.cpp:2323
+#: src/gui/main.cpp:2348
 msgid "Change the volume of your soundcard"
 msgstr "ปรับความดังของการ์ดเสียงของคุณ"
 
-#: src/gui/main.cpp:2346
+#: src/gui/main.cpp:2371
 msgid "Change the color settings of your video device"
 msgstr "ปรับค่าสีของอุปกรณ์แสดงผลของคุณ"
 
-#: src/gui/main.cpp:2369
+#: src/gui/main.cpp:2394
 msgid "Display images from your camera device"
 msgstr "แสดงภาพจากกล้องของคุณ"
 
-#: src/gui/main.cpp:2421
+#: src/gui/main.cpp:2446
 msgid "Call history"
 msgstr "ประวัติการเรียกสาย"
 
-#: src/gui/main.cpp:3070
+#: src/gui/main.cpp:3095
 msgid "_Retrieve Call"
 msgstr "_คุยสายต่อ"
 
-#: src/gui/main.cpp:3083
+#: src/gui/main.cpp:3108
 msgid "_Hold Call"
 msgstr "_ถือสาย"
 
-#: src/gui/main.cpp:3126
+#: src/gui/main.cpp:3151
 msgid "Resume _Audio"
 msgstr "เปิดเสีย_งกลับคืน"
 
-#: src/gui/main.cpp:3128
+#: src/gui/main.cpp:3153
 msgid "Resume _Video"
 msgstr "เปิด_ภาพกลับคืน"
 
-#: src/gui/main.cpp:3530
+#: src/gui/main.cpp:3555
 #, c-format
 msgid "Call Duration: %s\n"
 msgstr "ระยะเวลาการติดต่อ: %s\n"
 
-#: src/gui/main.cpp:3567
+#: src/gui/main.cpp:3592
 msgid "Transfer call to:"
 msgstr "โอนสายไปยัง:"
 
-#: src/gui/main.cpp:3568
+#: src/gui/main.cpp:3593
 msgid "Transfer"
 msgstr "โอนสาย"
 
-#: src/gui/main.cpp:3630
+#: src/gui/main.cpp:3655
 msgid "Reject"
 msgstr "ปฏิเสธ"
 
-#: src/gui/main.cpp:3632
+#: src/gui/main.cpp:3657
 msgid "Accept"
 msgstr "รับสาย"
 
-#: src/gui/main.cpp:3639
+#: src/gui/main.cpp:3664
 msgid "Incoming call from"
 msgstr "สายเรียกเข้าจาก"
 
-#: src/gui/main.cpp:3652
+#: src/gui/main.cpp:3677
 msgid "Remote URI:"
 msgstr "URI ผู้เรียก:"
 
-#: src/gui/main.cpp:3664
+#: src/gui/main.cpp:3689
 msgid "Remote Application:"
 msgstr "โปรแกรมผู้เรียก:"
 
-#: src/gui/main.cpp:3713
+#: src/gui/main.cpp:3738
 msgid "No"
 msgstr "ไม่"
 
-#: src/gui/main.cpp:3715
+#: src/gui/main.cpp:3740
 msgid "Yes"
 msgstr "ใช่"
 
-#: src/gui/main.cpp:3725
+#: src/gui/main.cpp:3750
 msgid "Detected new audio input device:"
 msgstr "ตรวจพบอุปกรณ์เสียงเข้าตัวใหม่:"
 
-#: src/gui/main.cpp:3728
+#: src/gui/main.cpp:3753
 msgid "Detected new audio output device:"
 msgstr "ตรวจพบอุปกรณ์เสียงออกตัวใหม่:"
 
-#: src/gui/main.cpp:3731
+#: src/gui/main.cpp:3756
 msgid "Detected new video input device:"
 msgstr "ตรวจพบอุปกรณ์รับภาพตัวใหม่:"
 
-#: src/gui/main.cpp:3749
+#: src/gui/main.cpp:3774
 msgid "Do you want to use it as default device?"
 msgstr "คุณต้องการใช้อุปกรณ์นี้เป็นอุปกรณ์ปริยายหรือไม่?"
 
 #. Add title
-#: src/gui/main.cpp:3807 src/gui/main.cpp:3914
+#: src/gui/main.cpp:3832 src/gui/main.cpp:3939
 msgid "Ekiga"
 msgstr "Ekiga"
 
-#: src/gui/main.cpp:4103
+#: src/gui/main.cpp:4128
 #, c-format
 msgid "Missed calls: %d - Voice Mails: %d"
 msgstr "สายไม่ได้รับ: %d - เมลเสียง: %d"
 
-#: src/gui/main.cpp:4262
+#: src/gui/main.cpp:4287
 #, c-format
 msgid "TX: %dx%d "
 msgstr "TX: %dx%d "
 
-#: src/gui/main.cpp:4265
+#: src/gui/main.cpp:4290
 #, c-format
 msgid "RX: %dx%d "
 msgstr "RX: %dx%d "
 
-#: src/gui/main.cpp:4267
+#: src/gui/main.cpp:4292
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -2622,45 +2615,45 @@ msgstr ""
 "แพ็กเก็ตเสีย: %.1f %%\n"
 "บัฟเฟอร์กันกระตุก: %d ms%s%s%s"
 
-#: src/gui/main.cpp:4414
+#: src/gui/main.cpp:4439
 msgid "Prints debug messages in the console (level between 1 and 5)"
 msgstr "พิมพ์ข้อความดีบั๊กออกทางคอนโซล (ระดับตั้งแต่ 1 ถึง 5)"
 
-#: src/gui/main.cpp:4419
+#: src/gui/main.cpp:4444
 msgid "Prints user plane debug messages in the console (level between 1 and 4)"
 msgstr "พิมพ์ข้อความดีบั๊กในระดับผู้ใช้ออกทางคอนโซล (ระดับตั้งแต่ 1 ถึง 4)"
 
-#: src/gui/main.cpp:4424
+#: src/gui/main.cpp:4449
 msgid "Makes Ekiga call the given URI"
 msgstr "สั่งให้ Ekiga เรียกไปยัง URI ที่กำหนด"
 
-#: src/gui/main.cpp:4533
+#: src/gui/main.cpp:4558
 msgid "No usable audio plugin detected"
 msgstr "ไม่พบปลั๊กอินเสียงที่ใช้การได้"
 
-#: src/gui/main.cpp:4534
+#: src/gui/main.cpp:4559
 msgid ""
 "Ekiga didn't find any usable audio plugin. Make sure that your installation "
 "is correct."
 msgstr ""
 "Ekiga ไม่พบปลั๊กอินเสียงใดๆ ที่ใช้การได้  กรุณาตรวจสอบให้แน่ใจ ว่าได้ติดตั้งไว้ถูกต้องหรือไม่"
 
-#: src/gui/main.cpp:4537
+#: src/gui/main.cpp:4562
 msgid "No usable audio codecs detected"
 msgstr "ไม่พบตัวอ่าน/ลงรหัสเสียงที่ใช้การได้"
 
-#: src/gui/main.cpp:4538
+#: src/gui/main.cpp:4563
 msgid ""
 "Ekiga didn't find any usable audio codec. Make sure that your installation "
 "is correct."
 msgstr ""
 "Ekiga ไม่พบตัวอ่าน/ลงรหัสเสียงใดๆ ที่ใช้การได้  กรุณาตรวจสอบให้แน่ใจ ว่าได้ติดตั้งไว้ถูกต้อง"
 
-#: src/gui/main.cpp:4544
+#: src/gui/main.cpp:4569
 msgid "Configuration database corruption"
 msgstr "ฐานข้อมูลค่าตั้งเสียหาย"
 
-#: src/gui/main.cpp:4545
+#: src/gui/main.cpp:4570
 #, c-format
 msgid ""
 "Ekiga got an invalid value for the configuration key %s.\n"
@@ -3072,21 +3065,27 @@ msgstr "ไม่อยู่"
 msgid "Do Not Disturb"
 msgstr "ห้ามรบกวน"
 
-#: src/gui/statusmenu.cpp:512
+#: src/gui/statusmenu.cpp:510
 msgid "Custom message..."
 msgstr "ข้อความกำหนดเอง..."
 
-#: src/gui/statusmenu.cpp:626 src/gui/statusmenu.cpp:762
+#: src/gui/statusmenu.cpp:624 src/gui/statusmenu.cpp:759
 msgid "Custom Message"
 msgstr "ข้อความกำหนดเอง"
 
-#: src/gui/statusmenu.cpp:642
+#: src/gui/statusmenu.cpp:640
 msgid "Delete custom messages:"
 msgstr "ลบข้อความที่กำหนดไว้:"
 
-#: src/gui/statusmenu.cpp:783
+#: src/gui/statusmenu.cpp:780
 msgid "Define a custom message:"
 msgstr "กำหนดข้อความ:"
+
+#~ msgid "Are you sure you want to remove "
+#~ msgstr "ยืนยันที่จะลบ "
+
+#~ msgid "from the address book ?"
+#~ msgstr "ออกจากสมุดที่อยู่หรือไม่?"
 
 #~ msgid "Auto Away Timeout"
 #~ msgstr "กำหนดเวลาไม่อยู่อัตโนมัติ"
@@ -3846,9 +3845,6 @@ msgstr "กำหนดข้อความ:"
 #~ "Please make sure to provide at least a full name or an URL for the "
 #~ "contact."
 #~ msgstr "กรุณาตรวจสอบให้แน่ใจว่าได้กรอกชื่อเต็มหรือ URL ของผู้ติดต่อเป็นอย่างน้อย"
-
-#~ msgid "Are you sure you want to delete %s from %s?"
-#~ msgstr "ยืนยันที่จะลบ %s ออกจาก %s หรือไม่?"
 
 #~ msgid "Edit an address book"
 #~ msgstr "แก้ไขสมุดที่อยู่"
