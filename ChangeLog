@@ -1,5 +1,16 @@
 2008-08-25  Julien Puydt  <jpuydt@gnome.org>
 
+	* lib/toolbox/toolbox-internal.h:
+	* lib/toolbox/toolbox-internal.c: Pushed the gtk+ implementation as a
+	fallback one.
+	* lib/toolbox/toolbox-gtk.c: Made it use the fallback (itself
+	previously).
+	* lib/toolbox/toolbox-gnome.c: Made it fallback on the fallback, which
+	fixes #538307.
+	* Makefile.am: Made the new code compile&link.
+
+2008-08-25  Julien Puydt  <jpuydt@gnome.org>
+
 	* lib/engine/gui/gtk-frontend/chat-area.cpp: Clicking on a link tries
 	to open it, which fixed #548751.
 	* lib/engine/gui/gtk-frontend/Makefile.am: Added the lib/ directory to
