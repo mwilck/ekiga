@@ -45,6 +45,8 @@ libgmwidgets_la_SOURCES =	\
 	gm-text-anchored-tag.h \
 	gm-text-smiley.c \
 	gm-text-smiley.h \
+	gm-text-extlink.c \
+	gm-text-extlink.h \
 	gm-text-buffer-enhancer.c \
 	gm-text-buffer-enhancer.h
 
