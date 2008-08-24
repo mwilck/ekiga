@@ -1,3 +1,11 @@
+2008-08-25  Julien Puydt  <jpuydt@gnome.org>
+
+	* lib/gui/gm-text-extlink.h:
+	* lib/gui/gm-text-extlink.c: New code to detect external link in chat
+	text.
+	* lib/gui/Makefile.am: Compile&link in previous.
+	* lib/engine/gui/gtk-frontend/chat-area.cpp: Made use of previous.
+
 2008-08-24  Julien Puydt  <jpuydt@gnome.org>
 
 	* src/gui/main.cpp: Fixed forgotten case of bug #548950.
