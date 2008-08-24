@@ -318,11 +318,18 @@ Opal::Call::OnEstablished (OpalConnection & connection)
 
     RTP_Session *audio_session = PDownCast (OpalRTPConnection, &connection)->GetSession (OpalMediaFormat::DefaultAudioSessionID);
     RTP_Session *video_session = PDownCast (OpalRTPConnection, &connection)->GetSession (OpalMediaFormat::DefaultVideoSessionID);
-    if (audio_session)
-      audio_session->SetIgnorePayloadTypeChanges (TRUE);
 
-    if (video_session)
+    if (audio_session) {
+      audio_session->SetIgnorePayloadTypeChanges (TRUE);
+      audio_session->SetRxStatisticsInterval(50);
+      audio_session->SetTxStatisticsInterval(50);
+    }
+
+    if (video_session) {
       video_session->SetIgnorePayloadTypeChanges (TRUE);
+      video_session->SetRxStatisticsInterval(50);
+      video_session->SetTxStatisticsInterval(50);
+    }
   }
   
   return OpalCall::OnEstablished (connection);
