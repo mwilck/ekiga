@@ -1363,8 +1363,11 @@ on_audiooutput_device_added_cb (const Ekiga::AudioOutputDevice & device,
   g_return_if_fail (self != NULL);
   mw = gm_mw_get_mw (GTK_WIDGET (self));
   g_return_if_fail (mw != NULL);
-  std::string message = _("added audio output device ") + device.GetString();
-  gm_main_window_flash_message (GTK_WIDGET (self), "%s", message.c_str ());
+  gchar* message = NULL;
+
+  message = g_strdup_printf (_("Added audio output device %s"), device.GetString().c_str ());
+  gm_main_window_flash_message (GTK_WIDGET (self), "%s", message);
+  g_free (message);
   if (!isDesired && !mw->current_call)
     gm_main_window_add_device_dialog_show (GTK_WIDGET (self), device, AudioOutput);
 }
