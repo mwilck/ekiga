@@ -35,6 +35,7 @@
  */
 
 #include "toolbox.h"
+#include "toolbox-internal.h"
 
 #include <gnome.h>
 
@@ -43,5 +44,6 @@ gm_open_uri (const gchar *uri)
 {
   g_return_if_fail (uri != NULL);
 
-  gnome_url_show (uri, NULL);
+  if ( !gnome_url_show (uri, NULL))
+    gm_open_uri_fallback (uri);
 }

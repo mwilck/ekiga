@@ -1,6 +1,6 @@
 
 /* Ekiga -- A VoIP and Video-Conferencing application
- * Copyright (C) 2000-2006 Damien Sandras
+ * Copyright (C) 2000-2008 Damien Sandras
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,20 +27,46 @@
 
 
 /*
- *                         toolbox-gtk.c  -  description
+ *                         toolbox-internal.h  -  description 
  *                         ------------------------------------------
- *   begin                : Dec 2005
- *   copyright            : (C) 2005 by Julien Puydt
- *   description          : Various helper functions -- gtk implementation
+ *   begin                : Aug 2008
+ *   copyright            : (C) 2008 by Julien Puydt
+ *   description          : Declaration of internal-use functions
  */
 
-#include "toolbox.h"
 #include "toolbox-internal.h"
 
 void
-gm_open_uri (const gchar *uri)
+gm_open_uri_fallback (const gchar *uri)
 {
-  g_return_if_fail (uri != NULL);
+  gchar *commandline = NULL;
+  gboolean success = FALSE;
 
-  gm_open_uri_fallback (uri);
+  if (!success && g_getenv("KDE_FULL_SESSION") != NULL) {
+
+    commandline = g_strdup_printf ("kfmclient exec %s", uri);
+    success = g_spawn_command_line_async (commandline, NULL);
+    g_free (commandline);
+  }
+
+  if (!success) {
+
+    commandline = g_strdup_printf ("sensible-browser %s", uri);
+    success = g_spawn_command_line_async (commandline, NULL);
+    g_free (commandline);
+  }
+
+  if (!success) {
+
+    commandline = g_strdup_printf ("firefox %s", uri);
+    success = g_spawn_command_line_async (commandline, NULL);
+    g_free (commandline);
+  }
+
+  if (!success) {
+
+    commandline = g_strdup_printf ("konqueror %s", uri);
+    success = g_spawn_command_line_async (commandline, NULL);
+    g_free (commandline);
+  }
 }

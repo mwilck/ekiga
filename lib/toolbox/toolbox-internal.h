@@ -1,6 +1,6 @@
 
 /* Ekiga -- A VoIP and Video-Conferencing application
- * Copyright (C) 2000-2006 Damien Sandras
+ * Copyright (C) 2000-2008 Damien Sandras
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,20 +27,21 @@
 
 
 /*
- *                         toolbox-gtk.c  -  description
+ *                         toolbox-internal.h  -  description 
  *                         ------------------------------------------
- *   begin                : Dec 2005
- *   copyright            : (C) 2005 by Julien Puydt
- *   description          : Various helper functions -- gtk implementation
+ *   begin                : Aug 2008
+ *   copyright            : (C) 2008 by Julien Puydt
+ *   description          : Declaration of internal-use functions
  */
 
-#include "toolbox.h"
-#include "toolbox-internal.h"
+#include <glib.h>
 
-void
-gm_open_uri (const gchar *uri)
-{
-  g_return_if_fail (uri != NULL);
+G_BEGIN_DECLS
 
-  gm_open_uri_fallback (uri);
-}
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Allows to open an uri in a browser
+ * PRE		: Requires a non-NULL uri, but doesn't check
+ */
+void gm_open_uri_fallback (const gchar *uri);
+
+G_END_DECLS
