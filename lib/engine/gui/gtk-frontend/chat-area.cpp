@@ -42,6 +42,7 @@
 #include "gm-text-buffer-enhancer.h"
 #include "gm-text-anchored-tag.h"
 #include "gm-text-smiley.h"
+#include "gm-text-extlink.h"
 #include "gm-smileys.h"
 
 #include <string.h>
@@ -496,6 +497,7 @@ chat_area_init (GTypeInstance* instance,
   ChatArea* self = NULL;
   GtkTextBuffer* buffer = NULL;
   GmTextBufferEnhancerHelperIFace* helper = NULL;
+  GtkTextTag* tag = NULL;
   GtkTextIter iter;
   GtkWidget *frame = NULL;
   GtkWidget *sep = NULL;
@@ -548,6 +550,14 @@ chat_area_init (GTypeInstance* instance,
   /* then we want to enhance this display */
 
   self->priv->enhancer = gm_text_buffer_enhancer_new (buffer);
+
+  tag = gtk_text_buffer_create_tag (buffer, "external-link",
+				    "foreground", "blue",
+				    "underline", PANGO_UNDERLINE_SINGLE,
+				    NULL);
+  helper = gm_text_extlink_new ("\\<(http[s]?|[s]?ftp)://[^[:blank:]]+\\>", tag);
+  gm_text_buffer_enhancer_add_helper (self->priv->enhancer, helper);
+  g_object_unref (helper);
 
   helper = gm_text_smiley_new ();
   gm_text_buffer_enhancer_add_helper (self->priv->enhancer, helper);
