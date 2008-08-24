@@ -43,7 +43,9 @@
 #include "gm-text-anchored-tag.h"
 #include "gm-text-smiley.h"
 #include "gm-text-extlink.h"
+
 #include "gm-smileys.h"
+#include "toolbox/toolbox.h"
 
 #include <string.h>
 #include <stdarg.h>
@@ -123,6 +125,12 @@ static void gm_chat_area_define_simple_text_tag (GtkTextBuffer*,
 						 ...);
 
 /* declaration of callbacks */
+
+static void on_extlink_tag_event (GtkTextTag* tag,
+				  GObject* textview,
+				  GdkEvent* event,
+				  GtkTextIter* iter,
+				  gpointer data);
 
 static void on_smiley_activated (GtkMenuItem *item,
 				 gpointer data);
@@ -235,6 +243,33 @@ chat_area_add_message (ChatArea* self,
 }
 
 /* implementation of callbacks */
+
+static void
+on_extlink_tag_event (GtkTextTag* tag,
+		      G_GNUC_UNUSED GObject* textview,
+		      GdkEvent* event,
+		      GtkTextIter* iter,
+		      G_GNUC_UNUSED gpointer data)
+{
+  if (event->type == GDK_BUTTON_PRESS && event->button.button == 1) {
+
+    gchar* link = NULL;
+    GtkTextIter* start = gtk_text_iter_copy (iter);
+    GtkTextIter* end = gtk_text_iter_copy (iter);
+
+    gtk_text_iter_backward_to_tag_toggle (start, tag);
+    gtk_text_iter_forward_to_tag_toggle (end, tag);
+
+    link = gtk_text_buffer_get_slice (gtk_text_iter_get_buffer (iter),
+				      start, end, FALSE);
+
+    gm_open_uri (link);
+
+    g_free (link);
+    gtk_text_iter_free (end);
+    gtk_text_iter_free (start);
+  }
+}
 
 static void
 on_smiley_activated (GtkMenuItem *item,
@@ -555,6 +590,8 @@ chat_area_init (GTypeInstance* instance,
 				    "foreground", "blue",
 				    "underline", PANGO_UNDERLINE_SINGLE,
 				    NULL);
+  g_signal_connect (G_OBJECT (tag), "event",
+		    G_CALLBACK (on_extlink_tag_event), NULL);
   helper = gm_text_extlink_new ("\\<(http[s]?|[s]?ftp)://[^[:blank:]]+\\>", tag);
   gm_text_buffer_enhancer_add_helper (self->priv->enhancer, helper);
   g_object_unref (helper);
