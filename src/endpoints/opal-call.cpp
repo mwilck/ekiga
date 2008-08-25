@@ -58,7 +58,7 @@ using namespace Opal;
 Opal::Call::Call (OpalManager & _manager, Ekiga::ServiceCore & _core)
   : OpalCall (_manager), Ekiga::Call (), core (_core),
     runtime (*dynamic_cast<Ekiga::Runtime*>(core.get ("runtime"))),
-    outgoing(true), jitter(0)
+    call_setup(false),outgoing(true),jitter(0)
 {
   re_a_bytes = tr_a_bytes = re_v_bytes = tr_v_bytes = 0.0;
   last_v_tick = last_a_tick = PTime ();
@@ -76,6 +76,10 @@ Opal::Call::Call (OpalManager & _manager, Ekiga::ServiceCore & _core)
   NoAnswerTimer.SetNotifier (PCREATE_NOTIFIER (OnNoAnswerTimeout));
 }
 
+
+Opal::Call::~Call ()
+{
+}
 
 void
 Opal::Call::hangup ()
@@ -260,6 +264,13 @@ Opal::Call::get_start_time () const
 }
 
 
+bool 
+Opal::Call::is_outgoing () const
+{
+  return outgoing; 
+}
+
+
 void
 Opal::Call::parse_info (OpalConnection & connection)
 {
@@ -268,11 +279,16 @@ Opal::Call::parse_info (OpalConnection & connection)
   std::string::size_type idx;
   std::string party_name;
   std::string app;
-  std::string uri;
 
-  uri = (const char *) connection.GetRemotePartyCallbackURL ();
-  if (remote_uri.empty () && !uri.empty ())
-    remote_uri = uri;
+  if (PIsDescendant(&connection, OpalPCSSConnection)) {
+
+    outgoing = connection.IsOriginating ();
+
+    if (outgoing)
+      remote_uri = (const char *) connection.GetCall().GetPartyB ();
+    else
+      remote_uri = (const char *) connection.GetRemotePartyCallbackURL ();
+  }
 
   if (!PIsDescendant(&connection, OpalPCSSConnection)) {
 
@@ -336,116 +352,116 @@ Opal::Call::OnEstablished (OpalConnection & connection)
 }
 
 
-void
+void 
 Opal::Call::OnReleased (OpalConnection & connection)
+{
+  parse_info (connection);
+
+  OpalCall::OnReleased (connection);
+}
+
+
+void
+Opal::Call::OnCleared ()
 {
   std::string reason;
 
   NoAnswerTimer.Stop (false);
 
-  /** TODO
-   * the Call could be destroyed before the signal callback has been executed
-   * maybe create a copy constructor
-   */
-  if (!PIsDescendant(&connection, OpalPCSSConnection)) {
+  OpalCall::OnCleared ();
 
-    parse_info (connection);
+  // TODO find a better way than that
+  while (!call_setup)
+    PThread::Current ()->Sleep (100);
 
-    if (!IsEstablished ()
-        && !is_outgoing ()
-        && connection.GetCallEndReason () != OpalConnection::EndedByAnswerDenied) {
+  if (!IsEstablished ()
+      && !is_outgoing ()
+      && GetCallEndReason () != OpalConnection::EndedByAnswerDenied) {
 
-      runtime.run_in_main (missed.make_slot ());
-    }
-    else {
-
-      switch (connection.GetCallEndReason ()) {
-
-      case OpalConnection::EndedByLocalUser :
-        reason = _("Local user cleared the call");
-        break;
-      case OpalConnection::EndedByNoAccept :
-        reason = _("Local user rejected the call");
-        break;
-      case OpalConnection::EndedByAnswerDenied :
-        reason = _("Local user rejected the call");
-        break;
-      case OpalConnection::EndedByRemoteUser :
-        reason = _("Remote user cleared the call");
-        break;
-      case OpalConnection::EndedByRefusal :
-        reason = _("Remote user rejected the call");
-        break;
-      case OpalConnection::EndedByCallerAbort :
-        reason = _("Remote user has stopped calling");
-        break;
-      case OpalConnection::EndedByTransportFail :
-        reason = _("Abnormal call termination");
-        break;
-      case OpalConnection::EndedByConnectFail :
-        reason = _("Could not connect to remote host");
-        break;
-      case OpalConnection::EndedByGatekeeper :
-        reason = _("The Gatekeeper cleared the call");
-        break;
-      case OpalConnection::EndedByNoUser :
-        reason = _("User not found");
-        break;
-      case OpalConnection::EndedByNoBandwidth :
-        reason = _("Insufficient bandwidth");
-        break;
-      case OpalConnection::EndedByCapabilityExchange :
-        reason = _("No common codec");
-        break;
-      case OpalConnection::EndedByCallForwarded :
-        reason = _("Call forwarded");
-        break;
-      case OpalConnection::EndedBySecurityDenial :
-        reason = _("Security check failed");
-        break;
-      case OpalConnection::EndedByLocalBusy :
-        reason = _("Local user is busy");
-        break;
-      case OpalConnection::EndedByLocalCongestion :
-        reason = _("Congested link to remote party");
-        break;
-      case OpalConnection::EndedByRemoteBusy :
-        reason = _("Remote user is busy");
-        break;
-      case OpalConnection::EndedByRemoteCongestion :
-        reason = _("Congested link to remote party");
-        break;
-      case OpalConnection::EndedByHostOffline :
-        reason = _("Remote host is offline");
-        break;
-      case OpalConnection::EndedByTemporaryFailure :
-      case OpalConnection::EndedByUnreachable :
-      case OpalConnection::EndedByNoEndPoint :
-      case OpalConnection::EndedByNoAnswer :
-        if (connection.IsOriginating ())
-          reason = _("Remote user is not available");
-        else
-          reason = _("Local user is not available");
-        break;
-
-      case OpalConnection::EndedByQ931Cause:
-      case OpalConnection::EndedByDurationLimit:
-      case OpalConnection::EndedByInvalidConferenceID:
-      case OpalConnection::EndedByNoDialTone:
-      case OpalConnection::EndedByNoRingBackTone:
-      case OpalConnection::EndedByOutOfService:
-      case OpalConnection::EndedByAcceptingCallWaiting:
-      case OpalConnection::EndedWithQ931Code:
-      case OpalConnection::NumCallEndReasons:
-      default :
-        reason = _("Call completed");
-      }
-
-      runtime.run_in_main (sigc::bind (cleared.make_slot (), reason));
-    }
+    runtime.run_in_main (missed.make_slot ());
   }
+  else {
 
-  OpalCall::OnReleased (connection);
+    switch (GetCallEndReason ()) {
+
+    case OpalConnection::EndedByLocalUser :
+      reason = _("Local user cleared the call");
+      break;
+    case OpalConnection::EndedByNoAccept :
+      reason = _("Local user rejected the call");
+      break;
+    case OpalConnection::EndedByAnswerDenied :
+      reason = _("Local user rejected the call");
+      break;
+    case OpalConnection::EndedByRemoteUser :
+      reason = _("Remote user cleared the call");
+      break;
+    case OpalConnection::EndedByRefusal :
+      reason = _("Remote user rejected the call");
+      break;
+    case OpalConnection::EndedByCallerAbort :
+      reason = _("Remote user has stopped calling");
+      break;
+    case OpalConnection::EndedByTransportFail :
+      reason = _("Abnormal call termination");
+      break;
+    case OpalConnection::EndedByConnectFail :
+      reason = _("Could not connect to remote host");
+      break;
+    case OpalConnection::EndedByGatekeeper :
+      reason = _("The Gatekeeper cleared the call");
+      break;
+    case OpalConnection::EndedByNoUser :
+      reason = _("User not found");
+      break;
+    case OpalConnection::EndedByNoBandwidth :
+      reason = _("Insufficient bandwidth");
+      break;
+    case OpalConnection::EndedByCapabilityExchange :
+      reason = _("No common codec");
+      break;
+    case OpalConnection::EndedByCallForwarded :
+      reason = _("Call forwarded");
+      break;
+    case OpalConnection::EndedBySecurityDenial :
+      reason = _("Security check failed");
+      break;
+    case OpalConnection::EndedByLocalBusy :
+      reason = _("Local user is busy");
+      break;
+    case OpalConnection::EndedByLocalCongestion :
+      reason = _("Congested link to remote party");
+      break;
+    case OpalConnection::EndedByRemoteBusy :
+      reason = _("Remote user is busy");
+      break;
+    case OpalConnection::EndedByRemoteCongestion :
+      reason = _("Congested link to remote party");
+      break;
+    case OpalConnection::EndedByHostOffline :
+      reason = _("Remote host is offline");
+      break;
+    case OpalConnection::EndedByTemporaryFailure :
+    case OpalConnection::EndedByUnreachable :
+    case OpalConnection::EndedByNoEndPoint :
+    case OpalConnection::EndedByNoAnswer :
+      reason = _("User is not available");
+      break;
+    case OpalConnection::EndedByQ931Cause:
+    case OpalConnection::EndedByDurationLimit:
+    case OpalConnection::EndedByInvalidConferenceID:
+    case OpalConnection::EndedByNoDialTone:
+    case OpalConnection::EndedByNoRingBackTone:
+    case OpalConnection::EndedByOutOfService:
+    case OpalConnection::EndedByAcceptingCallWaiting:
+    case OpalConnection::EndedWithQ931Code:
+    case OpalConnection::NumCallEndReasons:
+    default :
+      reason = _("Call completed");
+    }
+
+    runtime.run_in_main (sigc::bind (cleared.make_slot (), reason));
+  }
 }
 
 
@@ -456,8 +472,6 @@ Opal::Call::OnAnswerCall (OpalConnection & connection,
   remote_party_name = (const char *) caller;
 
   parse_info (connection);
-
-  outgoing = false;
 
   return OpalCall::OnAnswerCall (connection, caller);
 }
@@ -470,25 +484,17 @@ Opal::Call::OnSetUp (OpalConnection & connection)
 
   parse_info (connection);
 
-  outgoing = PIsDescendant(&connection, OpalPCSSConnection);
-
   runtime.run_in_main (setup.make_slot ());
+  call_setup = true;
 
   return res;
 }
 
 
-void
-Opal::Call::OnNewConnection (OpalConnection & connection)
-{
-  if (remote_uri.empty ())
-    remote_uri = (const char *) connection.GetCall().GetPartyB ();
-}
-
-
-void Opal::Call::OnHold (OpalConnection & /*connection*/, 
-                         bool /*from_remote*/, 
-                         bool on_hold)
+void 
+Opal::Call::OnHold (OpalConnection & /*connection*/, 
+                    bool /*from_remote*/, 
+                    bool on_hold)
 {
   if (on_hold)
     runtime.run_in_main (held.make_slot ());

@@ -166,6 +166,7 @@ struct _GmMainWindow
   GdkGC* video_widget_gc;
 #endif
 
+  unsigned int calling_state;
   unsigned int missed_calls;
   unsigned int total_mwi;
   bool audio_transmission_active;
@@ -637,7 +638,7 @@ static gboolean on_stats_refresh_cb (gpointer self)
 
   GmMainWindow *mw = gm_mw_get_mw (GTK_WIDGET (self));
   
-  if (mw->current_call) {
+  if (mw->calling_state == Connected && mw->current_call) {
 
     Ekiga::VideoOutputStats videooutput_stats;
     Ekiga::VideoOutputCore *videooutput_core = dynamic_cast<Ekiga::VideoOutputCore *> (mw->core.get ("videooutput-core"));
@@ -651,8 +652,7 @@ static gboolean on_stats_refresh_cb (gpointer self)
                            videooutput_stats.tx_fps,
                            videooutput_stats.rx_fps);
     gm_main_window_push_info_message (GTK_WIDGET (self), msg);
-    if (mw->current_call)
-      gm_main_window_set_call_duration (GTK_WIDGET (self), mw->current_call->get_duration ().c_str ());
+    gm_main_window_set_call_duration (GTK_WIDGET (self), mw->current_call->get_duration ().c_str ());
     g_free (msg);
 
     int jitter_quality = 0;
@@ -1129,7 +1129,7 @@ on_videoinput_device_added_cb (const Ekiga::VideoInputDevice & device, bool isDe
 			       device.GetString().c_str ());
   gm_main_window_flash_message (GTK_WIDGET (self), "%s", message);
   g_free (message);
-  if (!isDesired && !mw->current_call) 
+  if (!isDesired && mw->calling_state == Standby && !mw->current_call) 
     gm_main_window_add_device_dialog_show (GTK_WIDGET (self), device, VideoInput);
 }
 
@@ -1251,7 +1251,7 @@ on_audioinput_device_added_cb (const Ekiga::AudioInputDevice & device,
 			     device.GetString().c_str ());
   gm_main_window_flash_message (GTK_WIDGET (self), "%s", message);
   g_free (message);
-  if (!isDesired  && !mw->current_call)
+  if (!isDesired  && mw->calling_state == Standby && !mw->current_call)
     gm_main_window_add_device_dialog_show (GTK_WIDGET (self), device,  AudioInput);
     
 }
@@ -1368,7 +1368,7 @@ on_audiooutput_device_added_cb (const Ekiga::AudioOutputDevice & device,
   message = g_strdup_printf (_("Added audio output device %s"), device.GetString().c_str ());
   gm_main_window_flash_message (GTK_WIDGET (self), "%s", message);
   g_free (message);
-  if (!isDesired && !mw->current_call)
+  if (!isDesired && mw->calling_state == Standby && !mw->current_call)
     gm_main_window_add_device_dialog_show (GTK_WIDGET (self), device, AudioOutput);
 }
 
@@ -1522,7 +1522,7 @@ place_call_cb (GtkWidget * /*widget*/,
 
   mw = gm_mw_get_mw (GTK_WIDGET (data));
 
-  if (!mw->current_call) {
+  if (mw->calling_state == Standby && !mw->current_call) {
 
     size_t pos;
 
@@ -1537,6 +1537,8 @@ place_call_cb (GtkWidget * /*widget*/,
       mw->accounts.remove (host);
       mw->accounts.push_front (host);
     }
+
+    gm_main_window_update_calling_state (GTK_WIDGET (data), Calling);
   }
 }
 
@@ -3261,6 +3263,8 @@ gm_main_window_update_calling_state (GtkWidget *main_window,
     default:
       break;
     }
+
+  mw->calling_state = calling_state;
 }
 
 

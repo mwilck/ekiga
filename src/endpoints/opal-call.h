@@ -60,7 +60,7 @@ public:
 
     Call (OpalManager & _manager, Ekiga::ServiceCore & _core);
 
-    ~Call () { };
+    ~Call ();
 
     /*
      * Call Management
@@ -148,7 +148,7 @@ public:
     /* Implementation of inherited methods
     */
 
-    bool is_outgoing () const { return outgoing; }
+    bool is_outgoing () const;
     double get_received_audio_bandwidth () const { return re_a_bw; }
     double get_transmitted_audio_bandwidth () const { return tr_a_bw; }
     double get_received_video_bandwidth () const { return re_v_bw; }
@@ -176,11 +176,11 @@ private:
 
     void OnReleased (OpalConnection & connection);
 
+    void OnCleared ();
+
     OpalConnection::AnswerCallResponse OnAnswerCall (OpalConnection & connection, const PString & caller);
 
     PBoolean OnSetUp (OpalConnection & connection);
-
-    void OnNewConnection (OpalConnection & connection);
 
     PDECLARE_NOTIFIER (PThread, Opal::Call, OnAnswer);
 
@@ -205,13 +205,13 @@ private:
     Ekiga::Runtime & runtime;
 
 
+    bool call_setup;
+    bool outgoing;
     std::string remote_party_name;
     std::string remote_uri;
     std::string remote_application;
 
     std::string forward_uri;
-
-    bool outgoing;
 
     double re_a_bw;
     double tr_a_bw;
