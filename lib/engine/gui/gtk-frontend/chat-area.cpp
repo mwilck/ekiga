@@ -126,6 +126,12 @@ static void gm_chat_area_define_simple_text_tag (GtkTextBuffer*,
 
 /* declaration of callbacks */
 
+static void on_open_link_activate (GtkMenuItem* item,
+				   gpointer data);
+
+static void on_copy_link_activate (GtkMenuItem* item,
+				   gpointer data);
+
 static void on_extlink_tag_event (GtkTextTag* tag,
 				  GObject* textview,
 				  GdkEvent* event,
@@ -212,7 +218,7 @@ chat_area_add_notice (ChatArea* self,
   g_free (str);
 
   mark = gtk_text_buffer_get_mark (buffer, "current-position");
-  gtk_text_view_scroll_to_mark (GTK_TEXT_VIEW (self->priv->text_view), mark, 
+  gtk_text_view_scroll_to_mark (GTK_TEXT_VIEW (self->priv->text_view), mark,
                                 0.0, FALSE, 0,0);
 
   g_signal_emit (self, signals[MESSAGE_NOTICE_EVENT], 0);
@@ -236,7 +242,7 @@ chat_area_add_message (ChatArea* self,
   g_free (str);
 
   mark = gtk_text_buffer_get_mark (buffer, "current-position");
-  gtk_text_view_scroll_to_mark (GTK_TEXT_VIEW (self->priv->text_view), mark, 
+  gtk_text_view_scroll_to_mark (GTK_TEXT_VIEW (self->priv->text_view), mark,
                                 0.0, FALSE, 0,0);
 
   g_signal_emit (self, signals[MESSAGE_NOTICE_EVENT], 0);
@@ -245,13 +251,37 @@ chat_area_add_message (ChatArea* self,
 /* implementation of callbacks */
 
 static void
+on_open_link_activate (G_GNUC_UNUSED GtkMenuItem* item,
+		       gpointer data)
+{
+  gchar* link = NULL;
+
+  link = (gchar*)g_object_get_data (G_OBJECT (data), "link");
+
+  gm_open_uri (link);
+}
+
+static void
+on_copy_link_activate (G_GNUC_UNUSED GtkMenuItem* item,
+		       gpointer data)
+{
+  gchar* link = NULL;
+  GtkClipboard* clipboard = NULL;
+
+  clipboard = gtk_clipboard_get (GDK_SELECTION_CLIPBOARD);
+  link = (gchar*)g_object_get_data (G_OBJECT (data), "link");
+
+  gtk_clipboard_set_text (clipboard, link, -1);
+}
+
+static void
 on_extlink_tag_event (GtkTextTag* tag,
 		      G_GNUC_UNUSED GObject* textview,
 		      GdkEvent* event,
 		      GtkTextIter* iter,
 		      G_GNUC_UNUSED gpointer data)
 {
-  if (event->type == GDK_BUTTON_PRESS && event->button.button == 1) {
+  if (event->type == GDK_BUTTON_PRESS) {
 
     gchar* link = NULL;
     GtkTextIter* start = gtk_text_iter_copy (iter);
@@ -263,7 +293,33 @@ on_extlink_tag_event (GtkTextTag* tag,
     link = gtk_text_buffer_get_slice (gtk_text_iter_get_buffer (iter),
 				      start, end, FALSE);
 
-    gm_open_uri (link);
+    if (event->button.button == 1) {
+
+      gm_open_uri (link);
+    } else if (event->button.button == 3) {
+
+      GtkWidget* menu = NULL;
+      GtkWidget* menu_item = NULL;
+
+      menu = gtk_menu_new ();
+      g_object_set_data_full (G_OBJECT (menu), "link",
+			      g_strdup (link), g_free);
+
+      menu_item = gtk_menu_item_new_with_label (_("Open link in browser"));
+      g_signal_connect_after (G_OBJECT (menu_item), "activate",
+			      G_CALLBACK (on_open_link_activate), menu);
+      gtk_widget_show (menu_item);
+      gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
+
+      menu_item = gtk_menu_item_new_with_label (_("Copy link"));
+      g_signal_connect_after (G_OBJECT (menu_item), "activate",
+			      G_CALLBACK (on_copy_link_activate), menu);
+      gtk_widget_show (menu_item);
+      gtk_menu_shell_append (GTK_MENU_SHELL (menu), menu_item);
+
+      gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL,
+		      event->button.button, event->button.time);
+    }
 
     g_free (link);
     gtk_text_iter_free (end);
@@ -337,7 +393,7 @@ on_font_changed (GtkButton* button,
     closing_tag = "</u>";
     tags = "<u></u>";
   }
-    
+
 
   buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (self->priv->message));
   if (gtk_text_buffer_get_selection_bounds (buffer, &start, &end)) {
@@ -346,7 +402,7 @@ on_font_changed (GtkButton* button,
     gtk_text_buffer_insert (buffer, &start, opening_tag, -1);
     gtk_text_buffer_get_iter_at_mark (buffer, &end, mark);
     gtk_text_buffer_insert (buffer, &end, closing_tag, -1);
-  } 
+  }
   else {
 
     gtk_text_buffer_get_iter_at_mark (buffer, &end, gtk_text_buffer_get_insert (buffer));
@@ -356,7 +412,7 @@ on_font_changed (GtkButton* button,
   gtk_widget_grab_focus (self->priv->message);
 }
 
-static gboolean 
+static gboolean
 message_activated_cb (G_GNUC_UNUSED GtkWidget *w,
                       GdkEventKey *key,
                       gpointer data)
@@ -748,7 +804,7 @@ chat_area_init (GTypeInstance* instance,
   gtk_box_pack_start (GTK_BOX (vbox), sep, FALSE, FALSE, 0);
 
   self->priv->message = gtk_text_view_new ();
-  gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (self->priv->message), 
+  gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (self->priv->message),
                                GTK_WRAP_WORD_CHAR);
   gtk_text_view_set_cursor_visible  (GTK_TEXT_VIEW (self->priv->message), true);
   g_signal_connect (GTK_OBJECT (self->priv->message), "key-press-event",
