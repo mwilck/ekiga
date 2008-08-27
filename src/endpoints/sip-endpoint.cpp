@@ -863,7 +863,7 @@ void Opal::Sip::EndPoint::OnRegistrationFailed (const PString & _aor,
     break;
 
   case SIP_PDU::Failure_SIPVersionNotSupported:
-    info = _("SIP version not supp.");
+    info = _("SIP version not supported");
     break;
 
   case SIP_PDU::Failure_MessageTooLarge:
