@@ -132,11 +132,11 @@ static void on_open_link_activate (GtkMenuItem* item,
 static void on_copy_link_activate (GtkMenuItem* item,
 				   gpointer data);
 
-static void on_extlink_tag_event (GtkTextTag* tag,
-				  GObject* textview,
-				  GdkEvent* event,
-				  GtkTextIter* iter,
-				  gpointer data);
+static gboolean on_extlink_tag_event (GtkTextTag* tag,
+				      GObject* textview,
+				      GdkEvent* event,
+				      GtkTextIter* iter,
+				      gpointer data);
 
 static void on_smiley_activated (GtkMenuItem *item,
 				 gpointer data);
@@ -274,14 +274,18 @@ on_copy_link_activate (G_GNUC_UNUSED GtkMenuItem* item,
   gtk_clipboard_set_text (clipboard, link, -1);
 }
 
-static void
+static gboolean
 on_extlink_tag_event (GtkTextTag* tag,
 		      G_GNUC_UNUSED GObject* textview,
 		      GdkEvent* event,
 		      GtkTextIter* iter,
 		      G_GNUC_UNUSED gpointer data)
 {
-  if (event->type == GDK_BUTTON_PRESS) {
+  gboolean result = FALSE;
+
+  switch (event->type) {
+
+  case GDK_BUTTON_PRESS: {
 
     gchar* link = NULL;
     GtkTextIter* start = gtk_text_iter_copy (iter);
@@ -293,10 +297,14 @@ on_extlink_tag_event (GtkTextTag* tag,
     link = gtk_text_buffer_get_slice (gtk_text_iter_get_buffer (iter),
 				      start, end, FALSE);
 
-    if (event->button.button == 1) {
+    switch (event->button.button) {
+
+    case 1:
 
       gm_open_uri (link);
-    } else if (event->button.button == 3) {
+      break;
+
+    case 3: {
 
       GtkWidget* menu = NULL;
       GtkWidget* menu_item = NULL;
@@ -319,12 +327,62 @@ on_extlink_tag_event (GtkTextTag* tag,
 
       gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL,
 		      event->button.button, event->button.time);
+      break;
+    }
+
+    default:
+      break; // nothing
     }
 
     g_free (link);
     gtk_text_iter_free (end);
     gtk_text_iter_free (start);
+    result = TRUE;
+    break;
   }
+
+  case GDK_ENTER_NOTIFY:
+  case GDK_LEAVE_NOTIFY:
+  case GDK_BUTTON_RELEASE:
+  case GDK_NOTHING:
+  case GDK_DELETE:
+  case GDK_DESTROY:
+  case GDK_EXPOSE:
+  case GDK_MOTION_NOTIFY:
+  case GDK_2BUTTON_PRESS:
+  case GDK_3BUTTON_PRESS:
+  case GDK_KEY_PRESS:
+  case GDK_KEY_RELEASE:
+  case GDK_FOCUS_CHANGE:
+  case GDK_CONFIGURE:
+  case GDK_MAP:
+  case GDK_UNMAP:
+  case GDK_PROPERTY_NOTIFY:
+  case GDK_SELECTION_NOTIFY:
+  case GDK_SELECTION_REQUEST:
+  case GDK_SELECTION_CLEAR:
+  case GDK_PROXIMITY_IN:
+  case GDK_PROXIMITY_OUT:
+  case GDK_NO_EXPOSE:
+  case GDK_VISIBILITY_NOTIFY:
+  case GDK_CLIENT_EVENT:
+  case GDK_DROP_FINISHED:
+  case GDK_DROP_START:
+  case GDK_DRAG_STATUS:
+  case GDK_DRAG_ENTER:
+  case GDK_DRAG_MOTION:
+  case GDK_DRAG_LEAVE:
+  case GDK_SCROLL:
+  case GDK_WINDOW_STATE:
+  case GDK_SETTING:
+  case GDK_OWNER_CHANGE:
+  case GDK_GRAB_BROKEN:
+  default:
+    result = FALSE; // nothing
+    break; // nothing
+  }
+
+  return result;
 }
 
 static void
