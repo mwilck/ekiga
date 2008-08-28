@@ -126,6 +126,10 @@ static void gm_chat_area_define_simple_text_tag (GtkTextBuffer*,
 
 /* declaration of callbacks */
 
+static gboolean on_motion_notify_event (GtkWidget* widget,
+					GdkEventMotion* event,
+					gpointer data);
+
 static void on_open_link_activate (GtkMenuItem* item,
 				   gpointer data);
 
@@ -249,6 +253,50 @@ chat_area_add_message (ChatArea* self,
 }
 
 /* implementation of callbacks */
+
+static gboolean
+on_motion_notify_event (GtkWidget* widget,
+			GdkEventMotion* event,
+			G_GNUC_UNUSED gpointer data)
+{
+  gboolean result = FALSE;
+  GdkModifierType state; 
+  gint xwin = 0;
+  gint ywin = 0;
+  gint xbuf = 0;
+  gint ybuf = 0;
+  GtkTextIter iter;
+  GSList* tags = NULL;
+  GSList* tmp_tags = NULL;
+  GtkTextTag* tag = NULL;
+  GdkCursor* cursor = NULL;
+
+  gdk_window_get_pointer (event->window, &xwin, &ywin, &state);
+  gtk_text_view_window_to_buffer_coords (GTK_TEXT_VIEW (widget),
+					 GTK_TEXT_WINDOW_WIDGET,
+					 xwin, ywin,
+					 &xbuf, &ybuf);
+  gtk_text_view_get_iter_at_location (GTK_TEXT_VIEW (widget),
+				      &iter, xbuf, ybuf);
+  tags = gtk_text_iter_get_tags (&iter);
+  for (tmp_tags = tags;
+       tmp_tags != NULL;
+       tmp_tags = g_slist_next (tmp_tags)) {
+
+    tag = GTK_TEXT_TAG (tmp_tags->data);
+    cursor = (GdkCursor*)g_object_get_data (G_OBJECT (tag), "cursor");
+    gdk_window_set_cursor (event->window, cursor);
+    if (cursor != NULL) {
+
+      result = TRUE;
+      break;
+    }
+  }
+
+  g_slist_free (tags);
+
+  return result;
+}
 
 static void
 on_open_link_activate (G_GNUC_UNUSED GtkMenuItem* item,
@@ -668,6 +716,8 @@ chat_area_init (GTypeInstance* instance,
      GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
 
   self->priv->text_view = gtk_text_view_new ();
+  g_signal_connect (G_OBJECT (self->priv->text_view), "motion-notify-event",
+		    G_CALLBACK (on_motion_notify_event), NULL);
   buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (self->priv->text_view));
 
   gtk_text_view_set_editable (GTK_TEXT_VIEW (self->priv->text_view), FALSE);
@@ -706,6 +756,11 @@ chat_area_init (GTypeInstance* instance,
 				    NULL);
   g_signal_connect (G_OBJECT (tag), "event",
 		    G_CALLBACK (on_extlink_tag_event), NULL);
+  {
+    GdkCursor* cursor = gdk_cursor_new (GDK_HAND2);
+    g_object_set_data_full (G_OBJECT (tag), "cursor", cursor,
+			    (GDestroyNotify)gdk_cursor_unref);
+  }
   helper = gm_text_extlink_new ("\\<(http[s]?|[s]?ftp)://[^[:blank:]]+\\>", tag);
   gm_text_buffer_enhancer_add_helper (self->priv->enhancer, helper);
   g_object_unref (helper);
