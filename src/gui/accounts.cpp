@@ -507,6 +507,7 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
   GtkWidget *frame = NULL;
   GtkWidget *hbox = NULL;
 
+  GtkTreeModel *model = NULL;
   GtkCellRenderer *renderer = NULL;
   GtkListStore *list_store = NULL;
   GtkTreeViewColumn *column = NULL;
@@ -579,6 +580,7 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
 						     NULL);
   gtk_tree_view_column_set_fixed_width (GTK_TREE_VIEW_COLUMN (column), 25);
   gtk_tree_view_append_column (GTK_TREE_VIEW (aw->accounts_list), column);
+  gtk_tree_view_column_set_sort_column_id (column, COLUMN_ACCOUNT_ENABLED);
   g_signal_connect (G_OBJECT (renderer), "toggled",
   		    G_CALLBACK (account_toggled_cb),
   		    (gpointer) window);
@@ -600,10 +602,13 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
     gtk_tree_view_column_set_resizable (GTK_TREE_VIEW_COLUMN (column), TRUE);
     gtk_tree_view_column_set_sizing (GTK_TREE_VIEW_COLUMN (column),
 				     GTK_TREE_VIEW_COLUMN_AUTOSIZE);
-    if (i == COLUMN_ACCOUNT_ACCOUNT_NAME)
-      gtk_tree_view_column_set_sort_column_id (column,
-					       COLUMN_ACCOUNT_ACCOUNT_NAME);
+    gtk_tree_view_column_set_sort_column_id (column, i);
   }
+
+  model = gtk_tree_view_get_model (GTK_TREE_VIEW (aw->accounts_list));
+  gtk_tree_sortable_set_sort_column_id (GTK_TREE_SORTABLE (model),
+                                        COLUMN_ACCOUNT_ENABLED,
+                                        GTK_SORT_DESCENDING);
 
   g_signal_connect (G_OBJECT (aw->accounts_list), "event_after",
 		    G_CALLBACK (account_clicked_cb), window);
