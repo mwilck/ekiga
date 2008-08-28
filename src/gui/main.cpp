@@ -3639,6 +3639,8 @@ gm_main_window_incoming_call_dialog_show (GtkWidget *main_window,
 {
   GmMainWindow *mw = NULL;
   
+  GdkPixbuf *pixbuf = NULL;
+
   GtkWidget *label = NULL;
   GtkWidget *vbox = NULL;
   GtkWidget *b1 = NULL;
@@ -3676,6 +3678,12 @@ gm_main_window_incoming_call_dialog_show (GtkWidget *main_window,
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
   g_free (msg);
 
+  pixbuf = gtk_widget_render_icon (GTK_WIDGET (incoming_call_popup),
+				   GM_STOCK_PHONE_PICK_UP_16,
+				   GTK_ICON_SIZE_MENU, NULL);
+  gtk_window_set_icon (GTK_WINDOW (incoming_call_popup), pixbuf);
+  g_object_unref (pixbuf);
+
   if (utf8_url) {
     
     label = gtk_label_new (NULL);
@@ -3701,8 +3709,9 @@ gm_main_window_incoming_call_dialog_show (GtkWidget *main_window,
     g_free (msg);
   }
 
-  
-  gtk_window_set_title (GTK_WINDOW (incoming_call_popup), utf8_name);
+  msg = g_strdup_printf (_("Call from %s"), (const char*) utf8_name);
+  gtk_window_set_title (GTK_WINDOW (incoming_call_popup), msg);
+  g_free (msg);
   gtk_window_set_modal (GTK_WINDOW (incoming_call_popup), TRUE);
   gtk_window_set_keep_above (GTK_WINDOW (incoming_call_popup), TRUE);
   gtk_window_set_urgency_hint (GTK_WINDOW (main_window), TRUE);
