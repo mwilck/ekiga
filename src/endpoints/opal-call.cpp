@@ -280,7 +280,7 @@ Opal::Call::parse_info (OpalConnection & connection)
   std::string party_name;
   std::string app;
 
-  if (PIsDescendant(&connection, OpalPCSSConnection)) {
+  if (!PIsDescendant(&connection, OpalPCSSConnection)) {
 
     outgoing = connection.IsOriginating ();
 
