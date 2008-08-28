@@ -27,12 +27,6 @@ libgmwidgets_la_SOURCES =	\
 	gmstatusbar.h		\
 	gmstockicons.c		\
 	gmstockicons.h		\
-	gmtextbufferaddon.c	\
-	gmtextbufferaddon.h	\
-	gmtexttagaddon.c	\
-	gmtexttagaddon.h	\
-	gmtextviewaddon.c	\
-	gmtextviewaddon.h	\
 	gmpowermeter.c		\
 	gmpowermeter.h		\
 	gmcellrendererexpander.c  \
