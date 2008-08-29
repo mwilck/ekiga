@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ekiga.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-26 20:50+0000\n"
-"PO-Revision-Date: 2008-08-26 23:09+0200\n"
+"POT-Creation-Date: 2008-08-28 20:44+0000\n"
+"PO-Revision-Date: 2008-08-29 10:11+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -1140,20 +1140,20 @@ msgstr "_Acción"
 msgid "Category"
 msgstr "Categoría"
 
-#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:237
+#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:241
 #: ../lib/engine/gui/gtk-frontend/chat-window-page.cpp:968
 msgid "says:"
 msgstr "dice:"
 
-#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:308
+#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:364
 msgid "Open link in browser"
 msgstr "Abrir el enlace en el navegador"
 
-#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:314
+#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:370
 msgid "Copy link"
 msgstr "Copiar el enlace"
 
-#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:765
+#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:878
 msgid "_Smile..."
 msgstr "E_moticono..."
 
@@ -1741,8 +1741,8 @@ msgid "Server timeout"
 msgstr "Expiró el tiempo de conexión del servidor"
 
 #: ../src/endpoints/sip-endpoint.cpp:866
-msgid "SIP version not supp."
-msgstr "No se soporta la versión SIP"
+msgid "SIP version not supported"
+msgstr "La versión SIP no está soportada"
 
 #: ../src/endpoints/sip-endpoint.cpp:870
 msgid "Message too large"
@@ -2648,71 +2648,76 @@ msgstr "Transferir la llamada a:"
 msgid "Transfer"
 msgstr "Transferir"
 
-#: ../src/gui/main.cpp:3662
+#: ../src/gui/main.cpp:3664
 msgid "Reject"
 msgstr "Rechazar"
 
-#: ../src/gui/main.cpp:3664
+#: ../src/gui/main.cpp:3666
 msgid "Accept"
 msgstr "Aceptar"
 
-#: ../src/gui/main.cpp:3671
+#: ../src/gui/main.cpp:3673
 msgid "Incoming call from"
 msgstr "Llamada entrante de"
 
-#: ../src/gui/main.cpp:3684
+#: ../src/gui/main.cpp:3692
 msgid "Remote URI:"
 msgstr "URI remota:"
 
-#: ../src/gui/main.cpp:3696
+#: ../src/gui/main.cpp:3704
 msgid "Remote Application:"
 msgstr "Aplicación remota:"
 
-#: ../src/gui/main.cpp:3745
+#: ../src/gui/main.cpp:3712
+#, c-format
+msgid "Call from %s"
+msgstr "Llamada de %s"
+
+#: ../src/gui/main.cpp:3754
 msgid "No"
 msgstr "No"
 
-#: ../src/gui/main.cpp:3747
+#: ../src/gui/main.cpp:3756
 msgid "Yes"
 msgstr "Sí"
 
-#: ../src/gui/main.cpp:3757
+#: ../src/gui/main.cpp:3766
 msgid "Detected new audio input device:"
 msgstr "Se detectó un nuevo dispositivo de entrada de sonido:"
 
-#: ../src/gui/main.cpp:3760
+#: ../src/gui/main.cpp:3769
 msgid "Detected new audio output device:"
 msgstr "Se detectó un nuevo dispositivo de salida de sonido:"
 
-#: ../src/gui/main.cpp:3763
+#: ../src/gui/main.cpp:3772
 msgid "Detected new video input device:"
 msgstr "Se detectó un nuevo dispositivo de entrada de vídeo:"
 
-#: ../src/gui/main.cpp:3781
+#: ../src/gui/main.cpp:3790
 msgid "Do you want to use it as default device?"
 msgstr "¿Quiere usarlo como el dispositivo predeterminado?"
 
 #. Add title
-#: ../src/gui/main.cpp:3839 ../src/gui/main.cpp:3946
+#: ../src/gui/main.cpp:3848 ../src/gui/main.cpp:3955
 msgid "Ekiga"
 msgstr "Ekiga"
 
-#: ../src/gui/main.cpp:4135
+#: ../src/gui/main.cpp:4144
 #, c-format
 msgid "Missed calls: %d - Voice Mails: %d"
 msgstr "Llamadas perdidas: %d - Correos de voz: %d"
 
-#: ../src/gui/main.cpp:4294
+#: ../src/gui/main.cpp:4303
 #, c-format
 msgid "TX: %dx%d "
 msgstr "TX: %dx%d "
 
-#: ../src/gui/main.cpp:4297
+#: ../src/gui/main.cpp:4306
 #, c-format
 msgid "RX: %dx%d "
 msgstr "RX: %dx%d "
 
-#: ../src/gui/main.cpp:4299
+#: ../src/gui/main.cpp:4308
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -2725,25 +2730,25 @@ msgstr ""
 "Paquetes desordenados: %.1f %%\n"
 "Búfer de jitter: %d ms%s%s%s"
 
-#: ../src/gui/main.cpp:4446
+#: ../src/gui/main.cpp:4455
 msgid "Prints debug messages in the console (level between 1 and 5)"
 msgstr "Imprime mensajes de depuración en la consola (nivel entre 1 y 5)"
 
-#: ../src/gui/main.cpp:4451
+#: ../src/gui/main.cpp:4460
 msgid "Prints user plane debug messages in the console (level between 1 and 4)"
 msgstr ""
 "Imprime mensajes de depuración del plano del usuario en la consola (nivel "
 "entre 1 y 4)"
 
-#: ../src/gui/main.cpp:4456
+#: ../src/gui/main.cpp:4465
 msgid "Makes Ekiga call the given URI"
 msgstr "Hace que Ekiga llame al URI dado"
 
-#: ../src/gui/main.cpp:4565
+#: ../src/gui/main.cpp:4574
 msgid "No usable audio plugin detected"
 msgstr "No se detectó ningún complemento de sonido utilizable"
 
-#: ../src/gui/main.cpp:4566
+#: ../src/gui/main.cpp:4575
 msgid ""
 "Ekiga didn't find any usable audio plugin. Make sure that your installation "
 "is correct."
@@ -2751,11 +2756,11 @@ msgstr ""
 "Ekiga no encontró ningún complemento de sonido utilizable. Por favor, "
 "asegúrese de que su instalación es correcta."
 
-#: ../src/gui/main.cpp:4569
+#: ../src/gui/main.cpp:4578
 msgid "No usable audio codecs detected"
 msgstr "No se detectó ningún complemento de sonido utilizable"
 
-#: ../src/gui/main.cpp:4570
+#: ../src/gui/main.cpp:4579
 msgid ""
 "Ekiga didn't find any usable audio codec. Make sure that your installation "
 "is correct."
@@ -2763,11 +2768,11 @@ msgstr ""
 "Ekiga no encontró ningún complemento de sonido utilizable. Asegúrese de que "
 "su instalación es correcta."
 
-#: ../src/gui/main.cpp:4576
+#: ../src/gui/main.cpp:4585
 msgid "Configuration database corruption"
 msgstr "Corrupción de la base de datos de configuración"
 
-#: ../src/gui/main.cpp:4577
+#: ../src/gui/main.cpp:4586
 #, c-format
 msgid ""
 "Ekiga got an invalid value for the configuration key %s.\n"
