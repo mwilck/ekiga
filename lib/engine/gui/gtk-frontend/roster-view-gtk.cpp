@@ -185,6 +185,19 @@ static gint on_view_clicked (GtkWidget *tree_view,
 			     GdkEventButton *event,
 			     gpointer data);
 
+/* DESCRIPTION : Helpers for the next function
+ */
+
+static gboolean presentity_hide_show_offline (RosterViewGtk* self,
+					      GtkTreeModel* model,
+					      GtkTreeIter* iter);
+static gboolean group_hide_show_offline (RosterViewGtk* self,
+					 GtkTreeModel* model,
+					 GtkTreeIter* iter);
+static gboolean heap_hide_show_offline (RosterViewGtk* self,
+					GtkTreeModel* model,
+					GtkTreeIter* iter);
+
 /* DESCRIPTION : Called to decide whether to show a line ; used to hide/show
  *               offline contacts on demand.
  * BEHAVIOUR   : Returns TRUE if the line should be shown.
@@ -698,13 +711,67 @@ on_view_clicked (GtkWidget *tree_view,
 }
 
 static gboolean
+presentity_hide_show_offline (RosterViewGtk* self,
+			      GtkTreeModel* model,
+			      GtkTreeIter* iter)
+{
+  gboolean result = FALSE;
+
+  if (self->priv->show_offline_contacts)
+    result = TRUE;
+  else
+    gtk_tree_model_get (model, iter,
+			COLUMN_OFFLINE, &result,
+			-1);
+
+  return result;
+}
+
+static gboolean
+group_hide_show_offline (RosterViewGtk* self,
+			 GtkTreeModel* model,
+			 GtkTreeIter* iter)
+{
+  gboolean result;
+  GtkTreeIter child_iter;
+
+  if (self->priv->show_offline_contacts)
+    result = TRUE;
+  else {
+
+    if (gtk_tree_model_iter_nth_child (model, &child_iter, iter, 0)) {
+
+      do {
+
+	gtk_tree_model_get (model, &child_iter,
+			    COLUMN_OFFLINE, &result,
+			    -1);
+      } while (!result && gtk_tree_model_iter_next (model, &child_iter));
+    }
+  }
+
+  return result;
+}
+
+static gboolean
+heap_hide_show_offline (G_GNUC_UNUSED RosterViewGtk* self,
+			G_GNUC_UNUSED GtkTreeModel* model,
+			G_GNUC_UNUSED GtkTreeIter* iter)
+{
+  gboolean result;
+
+  result = TRUE;//FIXME for 548750: gtk_tree_model_iter_has_child (model, iter);
+
+  return result;
+}
+
+static gboolean
 tree_model_filter_hide_show_offline (GtkTreeModel *model,
 				     GtkTreeIter *iter,
 				     gpointer data)
 {
   gboolean result = FALSE;
   RosterViewGtk *self = NULL;
-  GtkTreeIter child_iter;
   gint column_type;
 
   self = ROSTER_VIEW_GTK (data);
@@ -717,33 +784,17 @@ tree_model_filter_hide_show_offline (GtkTreeModel *model,
 
   case TYPE_PRESENTITY:
 
-    if (self->priv->show_offline_contacts)
-      result = TRUE;
-    else
-      gtk_tree_model_get (model, iter,
-			  COLUMN_OFFLINE, &result,
-			  -1);
+    result = presentity_hide_show_offline (self, model, iter);
     break;
 
   case TYPE_GROUP:
-    if (self->priv->show_offline_contacts)
-      result = TRUE;
-    else {
 
-      if (gtk_tree_model_iter_nth_child (model, &child_iter, iter, 0)) {
-
-	do {
-
-	  gtk_tree_model_get (model, &child_iter,
-			      COLUMN_OFFLINE, &result,
-			      -1);
-	} while (!result && gtk_tree_model_iter_next (model, &child_iter));
-      }
-    }
+    result = group_hide_show_offline (self, model, iter);
     break;
 
   case TYPE_HEAP:
-    result = TRUE; // FIXME for 548750: gtk_tree_model_iter_has_child (model, iter);
+
+    result = heap_hide_show_offline (self, model, iter);
     break;
 
   default:
@@ -1522,4 +1573,3 @@ gm_marshal_VOID__POINTER_STRING (GClosure     *closure,
             (gchar*)(param_values + 2)->data[0].v_pointer,
             data2);
 }
-
