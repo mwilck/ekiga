@@ -105,17 +105,9 @@ namespace Ekiga
   {
   public:
 
-    PresencePublisher (Ekiga::ServiceCore &);
-    virtual ~PresencePublisher () {};
+    virtual ~PresencePublisher () {}
 
-    virtual void publish (const PersonalDetails & details) = 0;
-
-  private:
-    void on_personal_details_updated (PersonalDetails &details);
-    void on_registration_event (const Ekiga::Account & account,
-                                Ekiga::AccountCore::RegistrationState state,
-                                std::string /*info*/,
-                                Ekiga::PersonalDetails *details);
+    virtual void publish (const PersonalDetails& details) = 0;
   };
 
   /** Core object for the presence support.
@@ -149,7 +141,7 @@ namespace Ekiga
 
     /** The constructor.
      */
-    PresenceCore () {}
+    PresenceCore (ServiceCore& core);
 
     /** The destructor.
      */
@@ -275,11 +267,15 @@ namespace Ekiga
 
     void add_presence_publisher (PresencePublisher &publisher);
 
-    void publish (const PersonalDetails & details);
-
   private:
 
     std::set<PresencePublisher *> presence_publishers;
+    void publish (const PersonalDetails* details);
+    void on_personal_details_updated (PersonalDetails &details);
+    void on_registration_event (const Ekiga::Account & account,
+				Ekiga::AccountCore::RegistrationState state,
+                                std::string info,
+                                Ekiga::PersonalDetails *details);
 
     /*** API to control which uri are supported by runtime ***/
   public:

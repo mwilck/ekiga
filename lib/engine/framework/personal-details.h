@@ -80,7 +80,7 @@ namespace Ekiga
 
     void set_long_status (const std::string & long_status);
 
-    sigc::signal<void, PersonalDetails &> updated;
+    sigc::signal<void> updated;
 
   private:
     std::string display_name;

@@ -105,8 +105,8 @@ engine_init (int argc,
   /* VideoInputCore depends on VideoOutputCore and must this              *
    * be constructed thereafter                                      */
 
-  Ekiga::PresenceCore *presence_core = new Ekiga::PresenceCore;
   Ekiga::AccountCore *account_core = new Ekiga::AccountCore;
+  Ekiga::PresenceCore *presence_core = NULL;
   Ekiga::ContactCore *contact_core = new Ekiga::ContactCore;
   Ekiga::CallCore *call_core = new Ekiga::CallCore;
   Ekiga::ChatCore *chat_core = new Ekiga::ChatCore;
@@ -127,7 +127,6 @@ engine_init (int argc,
   core->add (*runtime);
   core->add (*account_core);
   core->add (*contact_core);
-  core->add (*presence_core);
   core->add (*call_core);
   core->add (*chat_core);
   core->add (*videooutput_core);
@@ -140,6 +139,9 @@ engine_init (int argc,
     delete core;
     return;
   }
+
+  presence_core = new Ekiga::PresenceCore (*core);
+  core->add (*presence_core);
 
 #ifndef WIN32
   if (!videooutput_x_init (*core, &argc, &argv)) {

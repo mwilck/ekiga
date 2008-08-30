@@ -347,10 +347,10 @@ statusicon_blink_cb (gpointer data)
 
 
 static void
-personal_details_updated_cb (Ekiga::PersonalDetails & details,
-                             gpointer self)
+personal_details_updated_cb (StatusIcon* self,
+			     Ekiga::PersonalDetails* details)
 {
-  statusicon_set_status (STATUSICON (self), details.get_short_status ());
+  statusicon_set_status (self, details->get_short_status ());
 }
 
 
@@ -550,8 +550,7 @@ statusicon_new (Ekiga::ServiceCore & core)
   GtkWidget *chat_window = GTK_WIDGET (frontend->get_chat_window ());
 
   statusicon_set_status (self, details->get_short_status ());
-  conn = details->updated.connect (sigc::bind (sigc::ptr_fun (personal_details_updated_cb), 
-                                               (gpointer) self));
+  conn = details->updated.connect (sigc::bind (sigc::ptr_fun (personal_details_updated_cb), self, details));
   self->priv->connections.push_back (conn);
 
   conn = call_core->established_call.connect (sigc::bind (sigc::ptr_fun (established_call_cb), 

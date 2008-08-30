@@ -40,44 +40,16 @@
 #include "personal-details.h"
 
 
-Ekiga::PresencePublisher::PresencePublisher (Ekiga::ServiceCore & core)
+Ekiga::PresenceCore::PresenceCore (Ekiga::ServiceCore& core)
 {
   Ekiga::AccountCore *account_core = dynamic_cast <Ekiga::AccountCore *> (core.get ("account-core"));
   Ekiga::PersonalDetails *details = dynamic_cast <Ekiga::PersonalDetails *> (core.get ("personal-details"));
 
   if (details)
-    details->updated.connect (sigc::mem_fun (this, &Ekiga::PresencePublisher::on_personal_details_updated));
+    details->updated.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresenceCore::publish), details));
   if (account_core)
-    account_core->registration_event.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresencePublisher::on_registration_event), details));
+    account_core->registration_event.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresenceCore::on_registration_event), details));
 }
-
-
-void Ekiga::PresencePublisher::on_personal_details_updated (Ekiga::PersonalDetails &details)
-{
-  this->publish (details);
-}
-
-
-void Ekiga::PresencePublisher::on_registration_event (const Ekiga::Account & /*account*/,
-                                                      Ekiga::AccountCore::RegistrationState state,
-                                                      std::string /*info*/,
-                                                      Ekiga::PersonalDetails *details)
-{
-  switch (state) {
-  case Ekiga::AccountCore::Registered:
-    if (details)
-      this->publish (*details);
-    break;
-
-  case Ekiga::AccountCore::Unregistered:
-  case Ekiga::AccountCore::UnregistrationFailed:
-  case Ekiga::AccountCore::RegistrationFailed:
-  case Ekiga::AccountCore::Processing:
-  default:
-    break;
-  }
-}
-
 
 Ekiga::PresenceCore::~PresenceCore ()
 {
@@ -213,13 +185,13 @@ void Ekiga::PresenceCore::add_presence_publisher (PresencePublisher &publisher)
   presence_publishers.insert (&publisher);
 }
 
-void Ekiga::PresenceCore::publish (const PersonalDetails & details) 
+void Ekiga::PresenceCore::publish (const PersonalDetails* details) 
 {
   for (std::set<PresencePublisher *>::iterator iter
 	 = presence_publishers.begin ();
        iter != presence_publishers.end ();
        iter++)
-    (*iter)->publish (details);
+    (*iter)->publish (*details);
 }
 
 bool
@@ -240,4 +212,14 @@ void
 Ekiga::PresenceCore::add_supported_uri (sigc::slot<bool,std::string> tester)
 {
   uri_testers.insert (tester);
+}
+
+void
+Ekiga::PresenceCore::on_registration_event (const Ekiga::Account& /*account*/,
+					    Ekiga::AccountCore::RegistrationState state,
+					    std::string /*info*/,
+					    Ekiga::PersonalDetails *details)
+{
+  if (state == Ekiga::AccountCore::Registered)
+    publish (details);
 }

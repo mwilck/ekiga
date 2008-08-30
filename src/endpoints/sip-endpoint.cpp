@@ -142,8 +142,7 @@ namespace Opal {
 Opal::Sip::EndPoint::EndPoint (Opal::CallManager & _manager, 
                                Ekiga::ServiceCore & _core, 
                                unsigned _listen_port)
-:   SIPEndPoint (_manager), 
-    Ekiga::PresencePublisher (_core), 
+:   SIPEndPoint (_manager),
     manager (_manager), 
     core (_core),
     presence_core (*(dynamic_cast<Ekiga::PresenceCore *> (core.get ("presence-core")))),

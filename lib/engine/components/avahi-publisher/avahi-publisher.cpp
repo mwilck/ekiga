@@ -99,8 +99,7 @@ avahi_entry_group_callback (AvahiEntryGroup *group,
 
 /* Implementation of the class */
 PresencePublisher::PresencePublisher (Ekiga::ServiceCore & _core)
-: Ekiga::PresencePublisher (_core),
-  core (_core)
+: core (_core)
 {
   /* Create the GLIB Adaptor */
   glib_poll = avahi_glib_poll_new (NULL, G_PRIORITY_DEFAULT);
