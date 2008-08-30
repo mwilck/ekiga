@@ -1,3 +1,20 @@
+2008-08-30  Julien Puydt  <jpuydt@gnome.org>
+
+	* lib/engine/components/avahi-publisher/avahi-publisher-main.cpp:
+	* lib/engine/components/avahi-publisher/avahi-publisher.cpp:
+	* lib/engine/components/gmconf-personal-details/gmconf-personal-details-main.cpp:
+	* lib/engine/components/gmconf-personal-details/gmconf-personal-details.cpp:
+	* lib/engine/components/gmconf-personal-details/gmconf-personal-details.h:
+	* lib/engine/engine.cpp:
+	* lib/engine/framework/Makefile.am:
+	* lib/engine/framework/personal-details.cpp:
+	* lib/engine/framework/personal-details.h:
+	* lib/engine/presence/skel/presence-core.cpp:
+	* lib/engine/presence/skel/presence-core.h:
+	* src/endpoints/sip-endpoint.cpp:
+	* src/gui/statusicon.cpp: Cleaned the PersonalDetails and
+	PresencePublisher apis a bit, and made the rest cope.
+
 2008-08-29  Julien Puydt  <jpuydt@gnome.org>
 
 	* lib/engine/gui/gtk-frontend/roster-view-gtk.cpp: Made code clearer.
