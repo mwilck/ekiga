@@ -473,6 +473,7 @@ bool Opal::Sip::EndPoint::set_listen_port (unsigned port)
   unsigned udp_min, udp_max;
 
   interface.protocol = "udp";
+  interface.voip_protocol = "sip";
   interface.interface = "*";
 
   manager.get_udp_ports (udp_min, udp_max);

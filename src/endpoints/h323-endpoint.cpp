@@ -220,6 +220,7 @@ unsigned Opal::H323::EndPoint::get_dtmf_mode () const
 bool Opal::H323::EndPoint::set_listen_port (unsigned port)
 {
   interface.protocol = "tcp";
+  interface.voip_protocol = "h323";
   interface.interface = "*";
 
   if (port > 0) {
