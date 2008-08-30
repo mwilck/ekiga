@@ -41,14 +41,42 @@
 
 namespace Gmconf
 {
-  class PersonalDetails 
-    : public Ekiga::PersonalDetails
+  class PersonalDetails: public Ekiga::Service,
+			 public Ekiga::PersonalDetails
   {
   public:
 
     PersonalDetails ();
 
     virtual ~PersonalDetails () {};
+
+    /*** Service Implementation ***/
+  public:
+
+    const std::string get_name () const
+    { return "personal-details"; }
+
+    const std::string get_description () const
+    { return "\tPersonal details management object (using gmconf)"; }
+
+    /*** PersonalDetails Implementation ***/
+  public:
+
+    const std::string get_display_name () const;
+
+    const std::string get_short_status () const;
+
+    const std::string get_long_status () const;
+
+    void set_display_name (const std::string display_name);
+
+    void set_short_status (const std::string short_status);
+
+    void set_long_status (const std::string long_status);
+
+    /*** public but only to be called by C callbacks ***/
+  public:
+    void something_changed ();
   };
 };
 

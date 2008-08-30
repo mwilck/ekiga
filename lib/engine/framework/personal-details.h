@@ -43,49 +43,26 @@
 
 namespace Ekiga
 {
-  class PersonalDetails 
-    : public Service
+  class PersonalDetails
   {
   public:
-    PersonalDetails () { };
+    PersonalDetails () {}
 
     virtual ~PersonalDetails () {}
 
+    virtual const std::string get_display_name () const = 0;
 
-    /*** Service Implementation ***/
-  public:
-    /** Returns the name of the service.
-     * @return The service name.
-     */
-    const std::string get_name () const
-    { return "personal-details"; }
+    virtual const std::string get_short_status () const = 0;
 
-    /** Returns the description of the service.
-     * @return The service description.
-     */
-    const std::string get_description () const
-    { return "\tPersonal details management object"; }
+    virtual const std::string get_long_status () const = 0;
 
+    virtual void set_display_name (const std::string display_name) = 0;
 
-    /*** PersonalDetails API ***/
-    const std::string & get_display_name () const;
+    virtual void set_short_status (const std::string short_status) = 0;
 
-    const std::string & get_short_status () const;
-
-    const std::string & get_long_status () const;
-
-    void set_display_name (const std::string & display_name);
-
-    void set_short_status (const std::string & short_status);
-
-    void set_long_status (const std::string & long_status);
+    virtual void set_long_status (const std::string long_status) = 0;
 
     sigc::signal<void> updated;
-
-  private:
-    std::string display_name;
-    std::string short_status;
-    std::string long_status;
   };
 };
 

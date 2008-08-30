@@ -44,11 +44,19 @@ gmconf_personal_details_init (Ekiga::ServiceCore &core,
                               int * /*argc*/,
                               char ** /*argv*/[])
 {
-  Ekiga::PersonalDetails *personal_details = NULL;
+  bool result = false;
+  Ekiga::PersonalDetails* personal_details = NULL;
+  Gmconf::PersonalDetails* gmconf_details = NULL;
 
-  personal_details = new Gmconf::PersonalDetails ();
-  
-  core.add (*personal_details);
+  personal_details
+    = dynamic_cast<Ekiga::PersonalDetails*>(core.get ("personal-details"));
 
-  return true;
+  if (personal_details == NULL) {
+
+    gmconf_details = new Gmconf::PersonalDetails ();
+    core.add (*gmconf_details);
+    result = true;
+  }
+
+  return result;
 }
