@@ -45,10 +45,20 @@ avahi_publisher_init (Ekiga::ServiceCore &core,
                       int* /*argc*/,
                       char* */*argv*/[])
 {
-  Ekiga::Service *service = NULL;
+  bool result = false;
+  Ekiga::PresenceCore* presence_core = NULL;
 
-  service = new Avahi::PresencePublisher (core);
-  core.add (*service);
+  presence_core
+    = dynamic_cast<Ekiga::PresenceCore*>(core.get ("presence-core"));
 
-  return true;
+  if (presence_core != NULL) {
+
+    Avahi::PresencePublisher* publisher = NULL;
+    publisher = new Avahi::PresencePublisher (core);
+    presence_core->add_presence_publisher (*publisher);
+    core.add (*publisher);
+    result = true;
+  }
+
+  return result;
 }
