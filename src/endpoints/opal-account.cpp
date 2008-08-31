@@ -329,7 +329,7 @@ bool Opal::Account::populate_menu (Ekiga::MenuBuilder &builder)
     url.str ("");
     url << str.str () << "&act=ch";
     builder.add_action ("history", 
-                        _("Consult the calls history"),
+                        _("Consult the call history"),
                         sigc::bind (sigc::mem_fun (this, &Opal::Account::on_consult), url.str ()));
   }
 

@@ -77,7 +77,7 @@ void Opal::Bank::new_account (Account::Type t,
   switch (t) {
 
   case Opal::Account::Ekiga:
-    request.link (_("Get an ekiga.net SIP account"), "http://www.ekiga.net");
+    request.link (_("Get an Ekiga.net SIP account"), "http://www.ekiga.net");
     request.hidden ("name", "Ekiga.net");
     request.hidden ("host", "ekiga.net");
     request.text ("user", _("User:"), username);
@@ -91,9 +91,9 @@ void Opal::Bank::new_account (Account::Type t,
                   "https://www.diamondcard.us/exec/voip-login?act=sgn&spo=ekiga");
     request.hidden ("name", "Ekiga Call Out");
     request.hidden ("host", "sip.diamondcard.us");
-    request.text ("user", _("User:"), username);
+    request.text ("user", _("Account ID:"), username);
     request.hidden ("authentication_user", username);
-    request.private_text ("password", _("Password:"), password);
+    request.private_text ("password", _("PIN Code:"), password);
     request.hidden ("timeout", "3600");
     break;
 
