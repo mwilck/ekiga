@@ -1,6 +1,6 @@
 
 /* Ekiga -- A VoIP and Video-Conferencing application
- * Copyright (C) 2000-2006 Damien Sandras
+ * Copyright (C) 2000-2008 Damien Sandras
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,269 +27,261 @@
 
 
 /*
- *                         avahi_publish.cpp  -  description
+ *                         avahi-publisher.cpp  -  description
  *                         ------------------------------------
- *   begin                : Sun Aug 21 2005
- *   copyright            : (C) 2005 by Sebastien Estienne 
- *                          (C) 2008 by Damien Sandras
- *   description          : This file contains the Avahi zeroconf publisher. 
+ *   begin                : Sat Aug 30 2008
+ *   copyright            : (C) 2008 by Julien Puydt
+ *   description          : Avahi publisher implementation
  *
  */
-
-
-#include <iostream>
-#include <sstream>
 
 #include "config.h"
 
 #include "avahi-publisher.h"
-#include "personal-details.h"
 
-#include "call-core.h"
-#include "call-manager.h"
+/* here are the avahi C callbacks */
 
-using namespace Avahi;
-
-
-/* Glib callback */
-static gboolean on_disconnect (gpointer data);
-
-
-/* Avahi callbacks */
-static void avahi_client_callback (AvahiClient *client, 
-                                   AvahiClientState state, 
-                                   void *data); 
-
-static void avahi_entry_group_callback (AvahiEntryGroup *group, 
-                                        AvahiEntryGroupState state, 
-                                        void *data);
-
-
-/* Implementation of the callbacks */
-static gboolean
-on_disconnect (gpointer data)
+static void
+client_cb (AvahiClient* client,
+	   AvahiClientState state,
+	   Avahi::PresencePublisher* publisher)
 {
-  if (data != NULL)
-    ((PresencePublisher *) data)->disconnect ();
-  
-  return FALSE;
+  publisher->client_callback (client, state);
 }
 
-
-static void 
-avahi_client_callback (AvahiClient *client,
-                       AvahiClientState state, 
-                       void *data) 
+static void
+entry_group_cb (AvahiEntryGroup* group,
+		AvahiEntryGroupState state,
+		Avahi::PresencePublisher* publisher)
 {
-  if (data != NULL)
-    ((PresencePublisher *) data)->client_callback (client, state);
+  publisher->entry_group_callback (group, state);
 }
 
+/* here is the real code of the Avahi::PresencePublisher implementation */
 
-static void 
-avahi_entry_group_callback (AvahiEntryGroup *group, 
-                            AvahiEntryGroupState state, 
-                            void *data) 
+Avahi::PresencePublisher::PresencePublisher (Ekiga::ServiceCore& core_,
+					     Ekiga::PersonalDetails& details_,
+					     Ekiga::CallCore& call_core_):
+  core(core_), details(details_), call_core(call_core_),
+  client(NULL), group(NULL)
 {
-  if (data != NULL)
-    ((PresencePublisher *) data)->entry_group_callback (group, state);
-}
-
-
-
-/* Implementation of the class */
-PresencePublisher::PresencePublisher (Ekiga::ServiceCore & _core)
-: core (_core)
-{
-  /* Create the GLIB Adaptor */
+  name = avahi_strdup (PACKAGE_NAME " " PACKAGE_VERSION);
   glib_poll = avahi_glib_poll_new (NULL, G_PRIORITY_DEFAULT);
-  poll_api = avahi_glib_poll_get (glib_poll);
-  
-  name = NULL;
-  client = NULL;
-  group = NULL;
-  text_record = NULL;
+  create_client ();
 }
 
-
-PresencePublisher::~PresencePublisher()
+Avahi::PresencePublisher::~PresencePublisher ()
 {
-  if (text_record) {
-    avahi_string_list_free (text_record);
-    text_record = NULL;
-  }
+  free_client ();
 
-  if (group) {
+  avahi_glib_poll_free (glib_poll);
+
+  avahi_free (name);
+}
+
+void
+Avahi::PresencePublisher::publish (G_GNUC_UNUSED const Ekiga::PersonalDetails& details_)
+{
+  if (group != NULL) {
+
+    Ekiga::CallManager::InterfaceList interfaces;
+    AvahiStringList* txt_record = NULL;
+    int ret;
+
+    txt_record = prepare_txt_record ();
+    for (Ekiga::CallCore::const_iterator iter = call_core.begin ();
+	 iter != call_core.end ();
+	 ++iter) {
+
+      Ekiga::CallManager::InterfaceList ints = (*iter)->get_interfaces ();
+      interfaces.insert (interfaces.begin (), ints.begin (), ints.end ());
+
+    }
+
+    for (Ekiga::CallManager::InterfaceList::const_iterator iter = interfaces.begin ();
+	 iter != interfaces.end ();
+	 ++iter) {
+
+      gchar *typ = NULL;
+
+      typ = g_strdup_printf ("_%s._%s",
+			     iter->voip_protocol.c_str (),
+			     iter->protocol.c_str ());
+
+      /* FIXME: no collision checking here */
+      avahi_entry_group_update_service_txt_strlst (group, AVAHI_IF_UNSPEC,
+						   AVAHI_PROTO_UNSPEC,
+						   (AvahiPublishFlags)0,
+						   name, typ, NULL,
+						   txt_record);
+
+    }
+
+    avahi_string_list_free (txt_record);
+    ret = avahi_entry_group_commit (group);
+  }
+}
+
+void
+Avahi::PresencePublisher::create_client ()
+{
+  free_client ();
+  // don't get the client there : wait what we'll get from the callback
+  avahi_client_new (avahi_glib_poll_get (glib_poll), AVAHI_CLIENT_NO_FAIL,
+		    (AvahiClientCallback)client_cb, this, NULL);
+}
+
+void
+Avahi::PresencePublisher::free_client ()
+{
+  if (client != NULL) {
+
+    avahi_client_free (client);
+    client = NULL;
+  }
+}
+
+void
+Avahi::PresencePublisher::client_callback (AvahiClient* client_,
+					   AvahiClientState state)
+{
+  if (client_ == NULL)
+    return;
+
+  client = client_;
+
+  switch (state) {
+
+  case AVAHI_CLIENT_FAILURE:
+
+    if (avahi_client_errno (client) == AVAHI_ERR_DISCONNECTED) {
+
+      free_client ();
+      create_client ();
+    }
+    break;
+  case AVAHI_CLIENT_S_RUNNING:
+
+    register_services ();
+    break;
+
+  case AVAHI_CLIENT_S_REGISTERING:
+  case AVAHI_CLIENT_S_COLLISION:
+  case AVAHI_CLIENT_CONNECTING:
+  default:
+    break; // nothing
+  }
+}
+
+void
+Avahi::PresencePublisher::register_services ()
+{
+  remove_services ();
+
+  avahi_entry_group_new (client,
+			 (AvahiEntryGroupCallback)entry_group_cb, this);
+}
+
+void
+Avahi::PresencePublisher::remove_services ()
+{
+  if (group != NULL) {
+
     avahi_entry_group_free (group);
     group = NULL;
   }
-  
-  if (client) {
-    avahi_client_free (client);
-    client = NULL;
-  }
-  
-  if (glib_poll) {
-    avahi_glib_poll_free (glib_poll);
-    glib_poll = NULL;
-  }
+}
 
-  if (name) {
+void
+Avahi::PresencePublisher::entry_group_callback (AvahiEntryGroup* group_,
+						AvahiEntryGroupState state)
+{
+  if (group_ == NULL)
+    return;
+
+  group = group_;
+
+  switch (state) {
+
+  case AVAHI_ENTRY_GROUP_COLLISION: {
+
+    gchar *new_name = NULL;
+
+    new_name = avahi_alternative_service_name (name);
     g_free (name);
-    name = NULL;
+    name = new_name;
+    add_services ();
+  }
+    break;
+
+  case AVAHI_ENTRY_GROUP_UNCOMMITED:
+
+    add_services ();
+    break;
+
+  case AVAHI_ENTRY_GROUP_REGISTERING:
+  case AVAHI_ENTRY_GROUP_ESTABLISHED:
+  case AVAHI_ENTRY_GROUP_FAILURE:
+  default:
+    break; // nothing
   }
 }
 
-
-void PresencePublisher::publish (const Ekiga::PersonalDetails & details)
+void
+Avahi::PresencePublisher::add_services ()
 {
-  std::string short_status;
-  int error = 0;
+  Ekiga::CallManager::InterfaceList interfaces;
+  AvahiStringList* txt_record = NULL;
+  int ret;
 
-  if (text_record) {
-    avahi_string_list_free (text_record);
-    text_record = NULL;
+  for (Ekiga::CallCore::const_iterator iter = call_core.begin ();
+       iter != call_core.end ();
+       ++iter) {
+
+    Ekiga::CallManager::InterfaceList ints = (*iter)->get_interfaces ();
+    interfaces.insert (interfaces.begin (), ints.begin (), ints.end ());
+
   }
 
-  if (name) {
-    g_free (name); 
-    name = NULL;
+  txt_record = prepare_txt_record ();
+
+  for (Ekiga::CallManager::InterfaceList::const_iterator iter = interfaces.begin ();
+       iter != interfaces.end ();
+       ++iter) {
+
+    gchar *typ = NULL;
+
+    typ = g_strdup_printf ("_%s._%s",
+			   iter->voip_protocol.c_str (),
+			   iter->protocol.c_str ());
+
+    /* FIXME: no collision checking here */
+    ret = avahi_entry_group_add_service_strlst (group, AVAHI_IF_UNSPEC,
+						AVAHI_PROTO_UNSPEC,
+						(AvahiPublishFlags)0,
+						name, typ,
+						NULL, NULL,
+						iter->port, txt_record);
   }
-
-  Ekiga::CallCore *call_core = dynamic_cast<Ekiga::CallCore *> (core.get ("call-core"));
-  if (call_core) {
-
-    to_publish.clear ();
-    Ekiga::CallCore::const_iterator it;
-    for (it = call_core->begin (); it != call_core->end (); it++)
-     to_publish = (*it)->get_interfaces ();
-  }
-
-  name = g_strdup (details.get_display_name ().c_str ());
-  short_status = "presence-" + details.get_short_status ();
-  text_record = avahi_string_list_add_printf (text_record, "presence=%s", short_status.c_str ());
-  text_record = avahi_string_list_add_printf (text_record, "status=%s", details.get_long_status ().c_str ());
-  text_record = avahi_string_list_add (text_record, "software=Ekiga/" PACKAGE_VERSION);
-
-  if (client && group) {
-
-    avahi_entry_group_reset (group);
-    if (avahi_client_get_state(client) == AVAHI_CLIENT_S_RUNNING)
-      connect ();
-  }
-  else {
-
-    /* Allocate a new client */
-    if (name) {
-
-      client = avahi_client_new (poll_api, (AvahiClientFlags) 0, avahi_client_callback, this, &error);
-      if (client)
-        group = avahi_entry_group_new (client, avahi_entry_group_callback, this);
-    }
-  }
+  avahi_string_list_free (txt_record);
+  ret = avahi_entry_group_commit (group);
 }
 
-
-bool PresencePublisher::connect () 
+AvahiStringList*
+Avahi::PresencePublisher::prepare_txt_record ()
 {
-  bool success = true;
-  int ret = 0;
+  AvahiStringList* result = NULL;
 
-  if (group != NULL) {
+  result = avahi_string_list_add_printf (result,
+					 "presence=%s",
+					 details.get_short_status ().c_str ());
 
-    Ekiga::CallManager::InterfaceList::const_iterator it;
-    for (it = to_publish.begin (); it != to_publish.end (); it++) {
+  result = avahi_string_list_add_printf (result,
+					 "status=%s",
+					 details.get_long_status ().c_str ());
+  result = avahi_string_list_add_printf (result,
+					 "display_name=%s",
+					 details.get_display_name ().c_str ());
 
-      std::stringstream srv;
-      srv << "_" << (*it).voip_protocol << "._" << (*it).protocol;
-
-      ret = avahi_entry_group_add_service_strlst (group,
-                                                  AVAHI_IF_UNSPEC,
-                                                  AVAHI_PROTO_UNSPEC,
-                                                  (AvahiPublishFlags) 0,
-                                                  name,
-                                                  srv.str ().c_str (),
-                                                  NULL,
-                                                  NULL,
-                                                  (*it).port,
-                                                  text_record);
-      if (ret >= 0) {
-
-        /* Commit changes */
-        ret = avahi_entry_group_commit (group);
-        if (ret < 0) 
-          success = false;
-      }
-      else {
-        success = false;
-      }
-    }
-  }
-
-  return success;
+  return result;
 }
-
-
-void PresencePublisher::disconnect ()
-{
-  if (client) {
-    avahi_client_free (client);
-    client = NULL;
-  }
-
-  group = NULL;
-}
-
-
-void PresencePublisher::client_callback (AvahiClient *_client, 
-                                         AvahiClientState state)
-{
-  /* Called whenever the client or server state changes */
-  if (state == AVAHI_CLIENT_S_RUNNING) {
-   
-    /* The server has startup successfully and registered its host
-     * name on the network, so it's time to create our services */
-    connect ();
-  }
-  else {
-    
-    if (state == AVAHI_CLIENT_S_COLLISION) {
-   
-      /* Let's drop our registered services. When the server is back
-       * in AVAHI_SERVER_RUNNING state we will register them
-       * again with the new host name. */
-      if (group)
-	avahi_entry_group_reset (group);
-
-    } else if (state == AVAHI_CLIENT_FAILURE) {
-
-      if (avahi_client_errno (_client) == AVAHI_ERR_DISCONNECTED) {
-
-	g_timeout_add (60000, on_disconnect, this);
-      }
-    }
-  }
-}
-
-
-void PresencePublisher::entry_group_callback (AvahiEntryGroup *_group,
-                                              AvahiEntryGroupState state)
-{
-  char *n = NULL;
-  
-  /* Called whenever the entry group state changes */
-  if (state == AVAHI_ENTRY_GROUP_COLLISION) {
-
-    /* A service name collision happened. Let's pick a new name */
-    n = avahi_alternative_service_name (name);
-    avahi_free (name);
-    name = n;
-  }
-
-  /* And recreate the services */
-  group = _group;
-  client = avahi_entry_group_get_client (group);
-
-  connect ();
-}
-

@@ -1,6 +1,6 @@
 
 /* Ekiga -- A VoIP and Video-Conferencing application
- * Copyright (C) 2000-2006 Damien Sandras
+ * Copyright (C) 2000-2008 Damien Sandras
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,81 +27,77 @@
 
 
 /*
- *                         avahi_publish.h  -  description
+ *                         avahi-publisher.h  -  description
  *                         ------------------------------------
  *   begin                : Sun Aug 21 2005
- *   copyright            : (C) 2005 by Sebastien Estienne 
- *   description          : This file contains the Avahi zeroconf publisher. 
+ *   copyright            : (C) 2005 by Sebastien Estienne
+ *                          (C) 2008 by Julien Puydt
+ *   description          : Avahi publisher declaration
  *
  */
 
+#ifndef __AVAHI_PUBLISHER_H__
+#define __AVAHI_PUBLISHER_H__
 
-#ifndef _AVAHI_PUBLISHER_H_
-#define _AVAHI_PUBLISHER_H_
-
-#include <avahi-client/client.h>
-#include <avahi-client/publish.h>
-#include <avahi-common/alternative.h>
-#include <avahi-common/malloc.h>
-#include <avahi-common/error.h>
-#include <avahi-common/timeval.h>
-#include <avahi-glib/glib-watch.h>
-
-#include "presence-core.h"
 #include "services.h"
-
+#include "personal-details.h"
+#include "presence-core.h"
 #include "call-manager.h"
 
-namespace Ekiga {
-  class PersonalDetails;
-}
+#include <avahi-common/alternative.h>
+#include <avahi-common/error.h>
+#include <avahi-common/malloc.h>
+#include <avahi-common/strlst.h>
+#include <avahi-client/client.h>
+#include <avahi-client/publish.h>
+#include <avahi-glib/glib-watch.h>
 
 namespace Avahi
 {
-  class PresencePublisher 
-    : public Ekiga::PresencePublisher,
-      public Ekiga::Service
+  class PresencePublisher: public Ekiga::Service,
+			   public Ekiga::PresencePublisher
   {
 public:
-    PresencePublisher (Ekiga::ServiceCore & core);
+
+    PresencePublisher (Ekiga::ServiceCore& core,
+		       Ekiga::PersonalDetails& details,
+		       Ekiga::CallCore& call_core);
+
     ~PresencePublisher ();
 
-    
-    /*** Service API ***/
     const std::string get_name () const
       { return "avahi-presence-publisher"; }
 
     const std::string get_description () const
       { return "\tObject bringing in Avahi presence publishing"; }
 
-    
-    /*** PresencePublisher API ***/
     void publish (const Ekiga::PersonalDetails & details);
 
-
-    /*** Avahi::PresencePublisher API ***/
-    bool connect (); 
-    void disconnect ();
-
-    void client_callback (AvahiClient *client, 
-                          AvahiClientState state);
-
-    void entry_group_callback (AvahiEntryGroup *group, 
-                               AvahiEntryGroupState state);
+    /* public only to be called by C callbacks... */
+    void client_callback (AvahiClient* client,
+			  AvahiClientState state);
+    void entry_group_callback (AvahiEntryGroup* group,
+			       AvahiEntryGroupState state);
 
 private:
-    Ekiga::ServiceCore & core;
+
+    Ekiga::ServiceCore& core;
+    Ekiga::PersonalDetails& details;
+    Ekiga::CallCore& call_core;
+
+    AvahiGLibPoll* glib_poll;
+
+    void create_client ();
+    void free_client ();
     AvahiClient *client;
-    AvahiEntryGroup *group;
 
-    char *name;                    /* Srv Record */
-    uint16_t port;                 /* port number of Srv Record */
-    AvahiStringList *text_record;  /* H323 Txt Record */
+    void register_services ();
+    void add_services ();
+    void remove_services ();
+    AvahiEntryGroup* group;
+    gchar* name;
 
-    AvahiGLibPoll *glib_poll;
-    const AvahiPoll *poll_api;
-
-    Ekiga::CallManager::InterfaceList to_publish;
+    AvahiStringList* prepare_txt_record ();;
   };
 };
 #endif

@@ -47,14 +47,22 @@ avahi_publisher_init (Ekiga::ServiceCore &core,
 {
   bool result = false;
   Ekiga::PresenceCore* presence_core = NULL;
+  Ekiga::CallCore* call_core = NULL;
+  Ekiga::PersonalDetails* details = NULL;
 
   presence_core
     = dynamic_cast<Ekiga::PresenceCore*>(core.get ("presence-core"));
+  call_core
+    = dynamic_cast<Ekiga::CallCore*>(core.get ("call-core"));
+  details
+    = dynamic_cast<Ekiga::PersonalDetails*>(core.get ("personal-details"));
 
-  if (presence_core != NULL) {
+  if (presence_core != NULL
+      && call_core != NULL
+      && details != NULL) {
 
     Avahi::PresencePublisher* publisher = NULL;
-    publisher = new Avahi::PresencePublisher (core);
+    publisher = new Avahi::PresencePublisher (core, *details, *call_core);
     presence_core->add_presence_publisher (*publisher);
     core.add (*publisher);
     result = true;
