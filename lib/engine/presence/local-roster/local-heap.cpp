@@ -85,6 +85,15 @@ Local::Heap::Heap (Ekiga::ServiceCore &_core): core (_core), doc (NULL)
     doc = xmlNewDoc (BAD_CAST "1.0");
     root = xmlNewDocNode (doc, NULL, BAD_CAST "list", NULL);
     xmlDocSetRootElement (doc, root);
+
+    {
+      // add 500 and 501 at ekiga.net in this case!
+      std::set<std::string> groups;
+
+      groups.insert (_("Services"));
+      add (_("Echo test"), "500@ekiga.net", groups);
+      add (_("Conference room"), "501@ekiga.net", groups);
+    }
   }
 }
 
