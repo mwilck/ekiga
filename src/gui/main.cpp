@@ -59,6 +59,7 @@
 #include "gmpowermeter.h"
 #include "gmconfwidgets.h"
 #include "trigger.h"
+#include "menu-builder-gtk.h"
 
 #include "platform/gm-platform.h"
 
@@ -302,6 +303,15 @@ void
 gm_main_window_clear_signal_levels (GtkWidget *main_window);
 
 /* Callbacks */
+/* DESCRIPTION  :  This callback is called when the user selects a presentity
+ *                 in the roster
+ * BEHAVIOR     :  Populates the Chat->Contact submenu
+ * PRE          :  /
+ */
+static void on_presentity_selected (GtkWidget* view,
+				    Ekiga::Presentity* presentity,
+				    gpointer data);
+
 
 /* DESCRIPTION  :  This callback is called when the control panel 
  *                 section key changes.
@@ -1740,6 +1750,13 @@ gm_mw_init_menu (GtkWidget *main_window)
 
       GTK_MENU_SEPARATOR,
 
+      GTK_MENU_ENTRY("contact", _("_Contact"),
+		     _("Act on selected contact"),
+		     GTK_STOCK_EXECUTE, 'c',
+		     NULL, NULL, FALSE),
+
+      GTK_MENU_SEPARATOR,
+
       GTK_MENU_ENTRY("hold_call", _("H_old Call"), _("Hold the current call"),
 		     NULL, GDK_h, 
 		     GTK_SIGNAL_FUNC (hold_current_call_cb), main_window,
@@ -1904,6 +1921,7 @@ gm_mw_init_contacts_list (GtkWidget *main_window)
 
   GtkFrontend *gtk_frontend = NULL;
   Ekiga::ServiceCore *services = NULL;
+  GtkWidget* roster_view = NULL;
 
   g_return_if_fail (main_window != NULL);
   mw = gm_mw_get_mw (main_window);
@@ -1914,8 +1932,11 @@ gm_mw_init_contacts_list (GtkWidget *main_window)
   gtk_frontend = dynamic_cast<GtkFrontend *>(services->get ("gtk-frontend"));
 
   label = gtk_label_new (_("Contacts"));
+  roster_view = GTK_WIDGET (gtk_frontend->get_roster_view ());
   gtk_notebook_append_page (GTK_NOTEBOOK (mw->main_notebook),
-			    GTK_WIDGET (gtk_frontend->get_roster_view ()), label);
+			    roster_view, label);
+  g_signal_connect (G_OBJECT (roster_view), "presentity-selected",
+		    G_CALLBACK (on_presentity_selected), mw);
 }
 
 
@@ -2486,6 +2507,41 @@ gnomemeeting_tray_hack_cb (G_GNUC_UNUSED gpointer data)
   //gdk_threads_leave ();
 
   return FALSE;
+}
+
+
+static void
+on_presentity_selected (G_GNUC_UNUSED GtkWidget* view,
+			Ekiga::Presentity* presentity,
+			gpointer data)
+{
+  GmMainWindow *mw = (GmMainWindow*)data;
+  GtkWidget* menu = NULL;
+
+  g_return_if_fail (mw != NULL);
+
+  menu = gtk_menu_get_widget (mw->main_menu, "contact");
+
+  g_return_if_fail (menu != NULL);
+
+  if (presentity != NULL) {
+
+    MenuBuilderGtk builder;
+    gtk_widget_set_sensitive (menu, TRUE);
+    if (presentity->populate_menu (builder)) {
+
+      gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu), builder.menu);
+      gtk_widget_show_all (builder.menu);
+    } else {
+
+    gtk_widget_set_sensitive (menu, FALSE);
+      g_object_unref (builder.menu);
+    }
+  } else {
+
+    gtk_widget_set_sensitive (menu, FALSE);
+    gtk_menu_item_remove_submenu (GTK_MENU_ITEM (menu));
+  }
 }
 
 
