@@ -245,10 +245,10 @@ Avahi::Heap::ResolverCallback (AvahiServiceResolver *resolver,
 			       AvahiProtocol /*protocol*/,
 			       AvahiResolverEvent event,
 			       const char * /*name*/,
-			       const char * /*type*/,
+			       const char * typ,
 			       const char * /*domain*/,
-			       const char * /*host_name*/,
-			       const AvahiAddress *address,
+			       const char* host_name,
+			       const AvahiAddress */*address*/,
 			       uint16_t port,
 			       AvahiStringList *txt,
 			       AvahiLookupResultFlags /*flags*/)
@@ -258,7 +258,6 @@ Avahi::Heap::ResolverCallback (AvahiServiceResolver *resolver,
   std::string presence;
   std::string status;
   bool already_known = false;
-  char good_address[AVAHI_ADDRESS_STR_MAX];
   gchar *url = NULL;
   Presentity *presentity = NULL;
   AvahiStringList *txt_tmp = NULL;
@@ -308,13 +307,18 @@ Avahi::Heap::ResolverCallback (AvahiServiceResolver *resolver,
       if (already_known == false) {
 
 	/* ok, this is a new contact */
-	avahi_address_snprint (good_address, sizeof (good_address), address);
-	url = g_strdup_printf ("sip:%s:%d", good_address, port);
-	presentity = new Presentity (core, name, url);
-	presentity->set_status (status);
-	presentity->set_presence (presence);
-	add_presentity (*presentity);
-	g_free (url);
+	gchar** broken = NULL;
+	broken = g_strsplit_set (typ, "._", 0);
+	if (broken != NULL && broken[0] != NULL && broken[1] != NULL) {
+
+	  url = g_strdup_printf ("%s:%s:%d", broken[1], host_name, port);
+	  presentity = new Presentity (core, name, url);
+	  presentity->set_status (status);
+	  presentity->set_presence (presence);
+	  add_presentity (*presentity);
+	  g_free (url);
+	}
+	g_strfreev (broken);
       }
       break;
     case AVAHI_RESOLVER_FAILURE:
