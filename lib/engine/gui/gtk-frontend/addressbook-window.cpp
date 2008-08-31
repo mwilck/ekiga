@@ -364,7 +364,7 @@ on_book_selection_changed (GtkTreeSelection *selection,
   else {
 
     gtk_widget_set_sensitive (self->priv->menu_item_view, FALSE);
-    gtk_menu_item_remove_submenu (GTK_MENU_ITEM (self->priv->menu_item_view));
+    gtk_menu_item_set_submenu (GTK_MENU_ITEM (self->priv->menu_item_view), NULL);
   }
 }
 
@@ -491,7 +491,7 @@ addressbook_window_remove_book (AddressBookWindow *self,
 
   gtk_notebook_set_current_page (GTK_NOTEBOOK (self->priv->notebook), 0);
   gtk_widget_set_sensitive (self->priv->menu_item_view, FALSE);
-  gtk_menu_item_remove_submenu (GTK_MENU_ITEM (self->priv->menu_item_view));
+  gtk_menu_item_set_submenu (GTK_MENU_ITEM (self->priv->menu_item_view), NULL);
 
   store = gtk_tree_view_get_model (GTK_TREE_VIEW (self->priv->tree_view));
 
