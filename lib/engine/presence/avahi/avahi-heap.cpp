@@ -311,7 +311,7 @@ Avahi::Heap::ResolverCallback (AvahiServiceResolver *resolver,
 	broken = g_strsplit_set (typ, "._", 0);
 	if (broken != NULL && broken[0] != NULL && broken[1] != NULL) {
 
-	  url = g_strdup_printf ("%s:%s:%d", broken[1], host_name, port);
+	  url = g_strdup_printf ("%s:neighbour@%s:%d", broken[1], host_name, port);
 	  presentity = new Presentity (core, name, url);
 	  presentity->set_status (status);
 	  presentity->set_presence (presence);
