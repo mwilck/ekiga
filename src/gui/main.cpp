@@ -1742,9 +1742,9 @@ gm_mw_init_menu (GtkWidget *main_window)
 		     GTK_STOCK_ADD, 'n', 
 		     GTK_SIGNAL_FUNC (pull_trigger_cb), local_cluster_trigger, true),
 
-      GTK_MENU_THEME_ENTRY("address_book", _("_Find Contacts"),
+      GTK_MENU_THEME_ENTRY("address_book", _("Address _Book"),
 			   _("Find contacts"),
- 			   GTK_STOCK_FIND, 'f',
+ 			   GM_ICON_ADDRESSBOOK, 'b',
 			   GTK_SIGNAL_FUNC (show_widget_cb),
 			   (gpointer) addressbook_window, TRUE),
 

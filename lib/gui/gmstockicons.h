@@ -77,6 +77,7 @@ G_BEGIN_DECLS
 #define GM_STOCK_PHONE_HANG_UP_24    "gm_phone_up_stock_24"
 #define GM_STOCK_PHONE_PICK_UP_24    "gm_phone_pick_up_stock_24"
 
+#define GM_STOCK_ADDRESSBOOK          "stock_addressbook"
 
 void gnomemeeting_stock_icons_init (void);
 

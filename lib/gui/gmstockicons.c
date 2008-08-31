@@ -82,6 +82,8 @@ gnomemeeting_stock_icons_init (void)
 		{ GM_STOCK_PHONE_PICK_UP_16, gm_phone_pick_up_stock_data_16},
 		{ GM_STOCK_PHONE_HANG_UP_24, gm_phone_hang_up_stock_data_24},
 		{ GM_STOCK_PHONE_PICK_UP_24, gm_phone_pick_up_stock_data_24},
+
+	        { GM_STOCK_ADDRESSBOOK, gm_addressbook_16_stock_data },
 	};
 
         typedef struct 
@@ -94,6 +96,7 @@ gnomemeeting_stock_icons_init (void)
 	static const GmThemeIcon theme_builtins[] =
 	{
 		{ GM_ICON_ADD_CONTACT, 24, gm_add_contact_24_stock_data},
+	        { GM_ICON_ADDRESSBOOK, 16, gm_addressbook_16_stock_data },
 	        { GM_ICON_ADDRESSBOOK, 24, gm_addressbook_24_stock_data },
 	        { GM_ICON_AUDIO_VOLUME_HIGH, 16, gm_audio_volume_high_16_stock_data },
 		{ GM_ICON_BRIGHTNESS, 16, gm_brightness_16_stock_data},

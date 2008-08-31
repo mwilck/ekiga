@@ -15,6 +15,7 @@ IMAGES_FILES= \
 	16x16/audio-volume-high.png \
 	16x16/camera-video.png \
 	16x16/media-playback-pause.png \
+	16x16/stock_addressbook.png \
 	16x16/stock_brightness.png \
 	16x16/stock_channel-blue.png \
 	16x16/stock_color.png \
@@ -47,6 +48,7 @@ IMAGES_FILES= \
 
 IMAGES= \
 	gm_add_contact_24_stock_data $(srcdir)/24x24/contact-new.png \
+	gm_addressbook_16_stock_data $(srcdir)/16x16/stock_addressbook.png \
 	gm_addressbook_24_stock_data $(srcdir)/24x24/stock_addressbook.png \
 	gm_audio_volume_high_16_stock_data $(srcdir)/16x16/audio-volume-high.png \
 	gm_brightness_16_stock_data $(srcdir)/16x16/stock_brightness.png \
