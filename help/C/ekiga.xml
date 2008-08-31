@@ -2,8 +2,8 @@
 <!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
 "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
 <!ENTITY app "Ekiga">
-<!ENTITY appversion "2.00">
-<!ENTITY manrevision "2.00">
+<!ENTITY appversion "3.00">
+<!ENTITY manrevision "3.00">
 ]>
 <!-- Begin -->
 
@@ -11,7 +11,7 @@
 <articleinfo>
 <title><application>&app;</application> Manual &manrevision; </title>
 
-<copyright><year>2003-2006</year><holder>Damien Sandras</holder></copyright>
+<copyright><year>2003-2008</year><holder>Damien Sandras</holder></copyright>
 <copyright><year>2003-2004</year><holder>Matthias Redlich</holder></copyright>
 <copyright><year>2003-2004</year><holder>Christopher Warner</holder></copyright>
 <!-- translators: uncomment this:
@@ -25,11 +25,15 @@
 
 <revhistory>
 <revision> 
-<revnumber>&app; Manual 2.0</revnumber> 
-<date>2006-01-22</date> 
+<revnumber>&app; Manual 3.0</revnumber> 
+<date>2008-08-31</date> 
 <revdescription> 
 <para role="author">Damien Sandras</para> 
 </revdescription> 
+</revision>
+<revision>
+<revnumber>&app; Manual 2.0</revnumber> 
+<date>2006-01-22</date> 
 </revision>
 </revhistory>
 
@@ -47,11 +51,11 @@
 </publisher>
 
 <authorgroup>
-<author>
+<author role="maintainer">
 <firstname>Damien</firstname>
 <surname>Sandras</surname>
 </author>
-<author role="maintainer">
+<author>
 <firstname>Christopher</firstname>
 <surname>Warner</surname>
 <othername> zanee </othername>
@@ -93,7 +97,7 @@ conferencing, with support for many audio and video codecs.</para>
 </para>
 
 <para>
-Ekiga is able to use modern Voice over IP protocols like SIP, and H.323. It supports all major features defined by those protocols like <emphasis>call hold</emphasis>, <emphasis>call transfer</emphasis>, <emphasis>call forwarding</emphasis>, ... It also supports basic <emphasis>instant messaging</emphasis>, and has advanced support for <emphasis>NAT traversal</emphasis>.
+Ekiga is able to use modern Voice over IP protocols like SIP, and H.323. It supports all major features defined by those protocols like <emphasis>call hold</emphasis>, <emphasis>call transfer</emphasis>, <emphasis>call forwarding</emphasis>, ... It also supports <emphasis>instant messaging</emphasis>, and <emphasis>presence</emphasis>. It also has advanced support for <emphasis>NAT traversal</emphasis>.
 Ekiga supports the best <emphasis>free</emphasis> audio and video codecs, and has wideband support for a superior audio quality, together with echo cancellation.
 </para>
 </section>
@@ -155,17 +159,36 @@ This information is displayed when connecting to other audio/video applications.
 </section>
 
 
-<section><title>ekiga.net Account</title>
+<section><title>Ekiga.net Account</title>
 <figure>
 <title/>
 <graphic fileref="figures/config_d3.png"></graphic>
 </figure>
 
 <para>
-ekiga.net is a free SIP services platform provided to <application>&app;</application> users.
+Ekiga.net is a free SIP services platform provided to <application>&app;</application> users.
 If you want to call other users and to be callable, you need a SIP address. You can get one from <ulink url="http://www.ekiga.net" type="http">http://www.ekiga.net</ulink>. 
-ekiga.net also offers additional services like conference rooms, voice mail or online white pages. Please see <ulink url="http://www.ekiga.net" type="http">http://www.ekiga.net</ulink> for more information.
+Ekiga.net also offers additional services like conference rooms, voice mail or online white pages. Please see <ulink url="http://www.ekiga.net" type="http">http://www.ekiga.net</ulink> for more information.
 </para>
+
+<para>
+Just follow the link given in the dialog to get an account if you do not have one, then fill in your username and password.
+Please press 'Forward' after having entered all required information to continue.
+</para>
+</section>
+
+
+<section><title>Ekiga Call Out Account</title>
+<figure>
+<title/>
+<graphic fileref="figures/config_d4.png"></graphic>
+</figure>
+
+<para><application>&app;</application> can be used with several Internet Telephony Service Providers. Those providers will allow calling real phones from your computer using <application>&app;</application> at interesting rates. We are recommending you to use the default <application>&app;</application> provider.</para>
+
+<para>If you want to create an account and use it to call your friends and family using regular phones at interesting rates, simply create an account using the "Get an Ekiga Call Out account" link. Once the account has been created, you will receive a login and a password by e-mail. Simply enter them in the dialog, and you are ready to call regular phones using <application>&app;</application></para> 
+
+<para>With the default setup, you can simply use sip:3210444555 and choose sip.diamondcard.us to call the real phone number +3210444555, 32 is the country code, 10444555 is the number to call. We encourage you putting your favorite phone numbers in the address book.</para>
 
 <para>
 Just follow the link given in the dialog to get an account if you do not have one, then fill in your username and password.
@@ -177,36 +200,16 @@ Please press 'Forward' after having entered all required information to continue
 <section><title>Connection Type</title>
 <figure>
 <title/>
-<graphic fileref="figures/config_d4.png"></graphic>
+<graphic fileref="figures/config_d5.png"></graphic>
 </figure>
 
 <para>
 <application>&app;</application> supports several audio and video codecs. It includes codecs with excellent quality as well as codecs with medium to good quality. The higher the quality of a codec, the more bandwidth it requires. Moreover, video codecs can adapt their quality to the available bandwidth. This option is necessary in the initial configuration of <application>&app;</application> so that it chooses the optimal codec suited to your network connection and so that it adjusts the video quality settings.
 If your connection type is not mentioned in the list you should select the one closest to your network connection and adjust <application>&app;</application> manually with the preferences window (codecs section) later on.
 </para>	
-</section>
-
-
-<section><title>NAT Type</title>
-<figure>
-<title/>
-<graphic fileref="figures/config_d5.png"></graphic>
-</figure>
 
 <para>
-<application>&app;</application> has extended support for NAT. The NAT Type detection page will allow you to detect which type of NAT you are using (if any) and help configuring <application>&app;</application> appropriately. Clicking on the detection button will bring a popup indicating which type of NAT was detected and automatically configure <application>&app;</application> to transparently cross your router. In most of the cases, it will be totally transparent. Please refer to the <application>&app;</application> <ulink url="http://www.ekiga.org" type="http">FAQ</ulink> for more information.	
-</para>
-</section>
-
-
-<section><title>Audio Manager</title>
-<figure>
-<title/>
-<graphic fileref="figures/config_d6.png"></graphic>
-</figure>
-
-<para>
-The Audio manager manages everything audio. It is dependant on the operating system on which <application>&app;</application> is running, and some operating systems offer different alternatives.
+When done, continue on with the Configuration.
 </para>
 </section>
 
@@ -214,27 +217,16 @@ The Audio manager manages everything audio. It is dependant on the operating sys
 <section><title>Audio Devices</title>
 <figure>
 <title/>
-<graphic fileref="figures/config_d7.png"></graphic>
+<graphic fileref="figures/config_d6.png"></graphic>
 </figure>
 
 <para>
-<application>&app;</application> requires audio devices to play and record sound. The audio output device ouputs the incoming sound stream during a call. Please select the device that your headset or speakers are connected to. The audio input device is where your microphone is connected to. These settings might be the
-same as the settings for the audio player if you have only one soundcard. But please note that it is also possible to record sound via another device (e.g. internal microphone in a webcam) too.
-It is generally recommended that you test your settings after having selected all the appropriate devices. Please press the 'Test Settings' button on the right.
-If this test was successful you can continue on to the next page in the Configuration Assistant. 
-Otherwise you should change your devices and test your configuration again until you have a setup that works for you.
+<application>&app;</application> requires audio devices to play and record sound. The audio output device ouputs the incoming sound stream during a call. Please select the device that your headset or speakers are connected to. The audio input device is where your microphone is connected to. These settings might be the same as the settings for the audio player if you have only one soundcard. But please note that it is also possible to record sound via another device (e.g. internal microphone in a webcam) too.
+This section also allows you to choose the ringing device. This device can be different from the audio output device. It allows you hearing the incoming call ringing sound event in your speakers, while having your headset connected for calls. 
 </para>
-</section>
-
-
-<section><title>Video Manager</title>
-<figure>
-<title/>
-<graphic fileref="figures/config_d8.png"></graphic>
-</figure>
 
 <para>
-Please select the Video Manager from the list. It can be Video4Linux to manage webcams, or AVC / DC for Firewire cameras, or any other choice depending on the operating system on which <application>&app;</application> is running.
+When done, continue on with the Configuration.
 </para>
 </section>
 
@@ -242,7 +234,7 @@ Please select the Video Manager from the list. It can be Video4Linux to manage w
 <section><title>Video Devices</title>
 <figure>
 <title/>
-<graphic fileref="figures/config_d9.png"></graphic>
+<graphic fileref="figures/config_d7.png"></graphic>
 </figure>
 
 <para>
@@ -252,7 +244,7 @@ This step is optional and concerns users with video devices (e.g. webcams) only.
 <para>If you have a webcam or video device in the list you may select it here.</para>
 
 <para>
-Please hit the "Test Settings" button to ensure that your device works with <application>&app;</application>, if so, continue on with the Configuration.
+When done, continue on with the Configuration.
 </para>
 </section>
 
@@ -260,7 +252,7 @@ Please hit the "Test Settings" button to ensure that your device works with <app
 <section><title>Configuration Complete</title>
 <figure>
 <title/>
-<graphic fileref="figures/config_d10.png"></graphic>
+<graphic fileref="figures/config_d8.png"></graphic>
 </figure>
 
 <para>
@@ -292,17 +284,21 @@ If everything is correct please press the 'Apply' button to save the configurati
 
 <para>You can use the online address book of <application>&app;</application> to find the SIP addresses of other <application>&app;</application> users. It is of course possible to call users who are using another provider than ekiga.net. You can actually call any user using SIP software or hardware, and registered to any public SIP provider</para>
 
-<para>If you know the URI address of the party that you wish to call, you may enter that URI into the sip: input box at the top of the screen and press the Connect button; eg: sip:foo@ekiga.net and pressing the Connect button would call the user at that address. With the default setup, you can simply type sip:foo to call user foo@ekiga.net.</para>
+<para>If you know the URI address of the party that you wish to call, you may enter that URI into the sip: input box at the top of the screen and press the Connect button; eg: sip:foo@ekiga.net and pressing the Connect button would call the user at that address.</para>
+
+<para>It is also possible to call contacts using the address book, the call history or the roster. You can add contacts you call frequently to your roster, and watch their presence information in order to know when they are available. Please refer to the appropriate section of the manual for full explanations.</para>
 
 <tip><title>Tip</title><para><application>&app;</application> also supports H.323 and as such can call any H.323 software or hardware. Please refer to the section related to URIs to learn more about the various types of URIs that can be used to call remote H.323  and SIP users.</para></tip>
 </section>
 
 <section><title>From computer to real phones (PC-To-Phone)</title>
-<para><application>&app;</application> can be used with several Internet Telephony Service Providers. Those providers will allow calling real phones from your computer using <application>&app;</application> at interesting rates. We are recommending you to use the default <application>&app;</application> provider.</para>
+<para><application>&app;</application> can be used with several Internet Telephony Service Providers. Those providers will allow calling real phones from your computer using <application>&app;</application> at interesting rates. We are recommending you to use the default <application>&app;</application> provider. You can get an account using the links in the configuration assistant as described above.</para>
 
-<para>If you want to create an account and use it to call your friends and family using regular phones at interesting rates, simply go in the Tools menu, and select the "PC-To-Phone Account" menu item. A dialog will appear allowing you to create an account using the "Get an Ekiga PC-to-Phone account". Once the account has been created, you will receive a login and a password by e-mail. Simply enter them in the dialog, enable "Use PC-To-Phone service", and you are ready to call regular phones using <application>&app;</application></para> 
+<para>With the default setup, you can simply use sip:3210444555 and select sip.diamondcard.us in the list to call the real phone number +3210444555, 32 is the country code, 10444555 is the number to call.</para>
 
-<para>With the default setup, you can simply use sip:003210444555 to call the real phone number 003210444555, 00 is the international dialing code, 32 is the country code, 10444555 is the number to call.</para>
+<para>You can also dial real phone numbers from the address book. If the phone number of the contact you want to call is stored in the address book, simply select Action -> Call [Ekiga Call Out] when the contact is highlighted. It will dial the phone number of the contact using the Ekiga Call Out account.</para>
+
+<tip><title>Tip</title><para><application>&app;</application> also supports connecting to H.323 and SIP PBX systems. If the PBX at your office supports those protocols, you will be able to call real phones and be called from real phones after having connected to the PBX. Please ask for the settings to your administrator.</para></tip>
 </section>
 
 <section><title>From real phone to computer (Phone-To-PC)</title>
@@ -313,106 +309,176 @@ If everything is correct please press the 'Apply' button to save the configurati
 
 </section>
 
+
+<section id="ekiga-manage-contacts">
+<title>Managing Contacts</title>
+<section><title>Adding contacts to the roster</title>
+
+<graphic fileref="figures/roster.png"></graphic>
+
+<para>
+<application>&app;</application> allows you to add the contacts you dial the most in the roster. It allows to call them or start a chat conversation with your friends without having to remember their URI.
+If supported by the service, <application>&app;</application> will display <emphasis>extended presence information</emphasis> about your friends.
+Ekiga.net supports publishing presence information for its users. Software PBX systems like <ulink url="http://www.asterisk.org" type="http">Asterisk</ulink> can report if an user is on the phone or not, and <application>&app;</application> will display that information in its roster. 
+</para>
+
+<para>
+You can thus use <application>&app;</application> to monitor lines on your PBX.
+</para>
+
+<para>
+<application>&app;</application> is also able to detect other <application>&app;</application> users on the LAN using the Bonjour technology popularized by Apple (tm) and to display them in the roster. That supposes you have a local mDNSResponder daemon running on your computer. 
+</para>
+
+<para>
+To add a contact to the roster, select Chat->Add Contact, and fill in the required fields. If the service managing the URI you entered for the contact is able to publish presence status, Ekiga will automatically display it.
+</para>
+
+<para>
+If you do not know the VoIP URI of a contact, you might try searching for him using the Ekiga.net online directory. To do so, select Chat -> Address Book, and start searching using the 'Search Filter' feature.
+</para>
+
+<tip><title>Tip</title><para>You can organise your contacts in groups in the roster.</para></tip>
+
+<section><title>Managing contacts</title>
+
+<graphic fileref="figures/addressbook_d1.png"></graphic>
+
+<para>
+<application>&app;</application> allows you looking for contacts using various sources like the <ulink url="http://www.novell.com/products/evolution" type="http">Novell Evolution</ulink> address book, an LDAP directory or the Ekiga.net contact directory. You can use the result of your search to start a chat, call the contact, or simply add him to your roster if you have frequent calls with him. To start looking for contacts, select Chat -> Address Book in the menu.
+To your left there will be a list dialog showing the LDAP directories as well as a list of local Address Books. The defaults are the <application>&app;</application> white pages, and the personal address book from <ulink url="http://www.novell.com/products/evolution" type="http">Novell Evolution</ulink>. Support for more contact sources is possible. 
+</para>
+
+<para>
+<application>&app;</application> is able to browse any LDAP directory and use a specific attribute as calling URI. For example, you could have an LDAP directory in your company, with a specific attribute containing the local extensions of all your colleagues. <application>&app;</application> is able to use such an LDAP directory. Simply select in Address Book -> Add an LDAP Address Book, and fill in the required details. You can then right-click on the contact and call him using the call attribute as VoIP URI.
+</para>
+
+<para>
+To refresh the list of users for a specific address book, simply click the Find button. It will search for all users in that address book. You can contact people by double clicking on their highlighted field. You can also message them by right-clicking or by choosing the appropriate action in the Action menu of the window.
+</para>
+
+<para>
+In certain cases you will want to search specifically for a person name, or his or her call URI in the <application>&app;</application> white pages. The address book window allows you to apply filters when searching for contacts. 
+</para>
+
+<tip><title>Tip</title><para>The <application>&app;</application> white pages will allow you to look for users in your region. It returns a limited number of results corresponding to your search. You can then add him to your personal roster to call him later.</para></tip>
+</section>
+
+<section><title>Editing contacts</title>
+
+<graphic fileref="figures/addressbook_d2.png"></graphic>
+
+<para>
+Local address books provided by Novell Evolution allow you adding new contacts, or editing existing contacts. Each different address book allows a different set of features depending on what makes sense for the address book in question. To discover what features are possible, simply select the address book and consult the Action menu. 
+</para>
+
+<para>
+To add a contact to one of your local address books, simply select the address book you wish to add the contact to and select Action -> New Contact. The option of adding a New Contact will appear and you may now enter his name and VoIP URI as well as other settings. After complete select 'OK' and now your contact has been added. You can only add contacts to local address books. The contact parameters can be changed at any time by selecting Action -> Properties when the contact is highlighted. He can also be deleted by selecting Action -> Remove.
+</para>
+
+<para>
+You can also add a contact from the white pages (or any other local or remote address book) to the roster by selecting Action -> Add to local roster when the contact is highlighted.
+</para>
+
+<para>
+Finally, you can edit the groups your users belong to using the Action -> Properties dialog when the contact is highlighted.
+</para>
+</section>
+
+</section>
+
 <section id="ekiga-sending-instant-messages">
 <title>Sending instant messages</title>
 
 <graphic fileref="figures/chat_d1.png"></graphic>
 
 <para>
-<application>&app;</application> allows you to send instant messages to remote users provided that you know their URI. You can by opening the chat window by selecting Tools -> Chat Window. To send a text message to an user, simply enter his SIP address in the URI field, enter your text message, and click on Send. You can later decide to call that user by clicking on Call User.
+<application>&app;</application> allows you to send instant messages to remote users provided that you know their URI. 
 </para>
 
 <para>
-You can also use the white pages described later to send instant messages to online users. To do this, simply highlight an user, and select Contact -> Send Message. The chat window will appear and allow you to do a conversation with the selected remote user.
+You can send instant messages from the roster, from the call history or from the address book. From the roster or from the call history, simply select Contact -> Message in the main window when a contact is highlighted. From the address book window, simply select Action -> Message when the contact is highlighted. A window pops up, enter your text message, and hit the Enter key. 
 </para>
 
-<tip><title>Tip</title><para>You can also exchanges text messages with H.323 <application>&app;</application> users, but only while being in a call. To do this, simply click on the new tab icon, and a new tab will automatically be created allowing a conversation with the user you are in a call with.</para></tip>
-
+<tip><title>Tip</title><para>You can not exchange text messages with all protocols. <application>&app;</application> will only display the Message menun item when the protocol associated with the user permits it.</para></tip>
 </section>
+
+
+<section id="ekiga-changing-status">
+<title>Updating his own status</title>
+
+<graphic fileref="figures/status.png"></graphic>
+
+<para>
+<application>&app;</application> allows you to publish your status to other users.
+</para>
+
+<para>
+There are three categories of status messages : online, away and do not disturb. Each of them allows you to specify a more complete status information. Simply select Custom message in the status menu at the bottom of the main window. You can then define your extended status message that will be published using all available protocols supporting it.
+</para>
+
+<tip><title>Tip</title><para>Many servers will not accept to relay your extended presence information. To make sure that this feature is available with the server you are using or with the PBX you are connected to, please ask your administrator. Please note that Ekiga.net will publish your presence information.</para></tip>
+</section>
+
 
 <section id="ekiga-manage-calls">
 <title>Managing Calls</title>
 
-<section><title>Understanding the statistics</title>
+<section><title>Forwarding incoming calls</title>
+<para>
+<application>&app;</application> supports different policies for unanswered incoming calls. Per default it displays a 
+popup window which allows you to decide whether you want to refuse or accept the request for 
+an incoming call. If you do not answer the call in the required time, or if you are busy, or if you do not want to receive any call, <application>&app;</application> can forward the call to another party.
+</para>
 
-<graphic fileref="figures/stats.png"></graphic>
-
-<para>To view the statistics, please select the Statistics tab in the control panel.</para>
-
-<para>The statistic visualizes the network traffic caused by <application>&app;</application>. It draws a graph for each RTP stream. This means that - if audio and video are enabled in <application>&app;</application> and the client of the remote party - you will see four different graphs. (incoming audio stream, incoming video stream, outgoing audio stream, outgoing video stream)</para>
-
-<itemizedlist>
-<listitem>
-<para>Lost packets: The percentage of lost packets, ie of packets from the remote user that you did not receive. A too high packets loss during the reception can result in voice and/or video distortion and is usually caused by a bad network provider or by settings requiring much bandwidth.</para>
-</listitem>
-
-<listitem>
-<para>Late packets: The percentage of late packets, ie of packets from the remote user that you received but too late to be taken into account, <application>&app;</application> being sending and receiving real-time video and audio.</para>
-</listitem>
-
-<listitem>
-<para>Round-trip delay: The required time for a packet to arrive at its destination and come back. You can see the Round-Trip delay during a call as a connection quality indicator together with the Lost and Late packets statistics.</para>
-</listitem>
-
-<listitem>
-<para>Jitter buffer: The Jitter buffer is the buffer where received sound packets are accumulated. When the buffer is full, then the sound is played. If your network is of bad quality, then you need a big jitter buffer, ie a big delay before sound is played back, because you need more time before being able to play audio back.</para>
-</listitem>
-</itemizedlist>
-</section>
-
-<section><title>Adjusting the audio and video settings</title>
-
-<para>Your audio and video settings can be adjusted through the control panel while you are in a call. If you want to change the audio input or output devices during a call, simply select the Audio tab in the panel. The brightness, whiteness, color and contrast of your video input device are changed via the Video tab.</para>
+<para>
+Notice that you need to specify an URI where to forward calls in the preferences to be able to activate that option. Open the preferences window by choosing Edit -> Preferences in the main window and select Call Options on the left. You will now see the appropriate section. It contains three checkboxes for the three cases described above. The URI of the party the calls shall be forwarded to can be configured separate in SIP Settings for SIP and accordingly in H.323 Settings for H.323.
+</para>
 </section>
 
 <section><title>Controlling the call</title>
-
 <para><application>&app;</application> supports several actions which can be performed when in a call. These actions enable you to control active sessions.</para>
 
 <itemizedlist>
 <listitem>
-<para>Ending a call: The communication to the remote user can be ended by selecting Call->Disconnect.</para>
+<para>Ending a call: The communication to the remote user can be ended by selecting Chat -> Hang up.</para>
 </listitem>
 
 <listitem>
-<para>Holding a call: You can hold a remote party call by selecting Call->Hold. This effectively pauses Video and Audio transmission, to continue transmission again you select Call->Retrieve Call and Video and Audio Transmission will begin again.</para>
+<para>Holding a call: You can hold a remote party call by selecting Chat -> Hold Call. This effectively pauses Video and Audio transmission, to continue transmission again you select Chat -> Retrieve Call and Video and Audio Transmission will begin again.</para>
 </listitem>
 
 <listitem>
-<para>Mute Audio: This effectively prevents all Audio communication to your respective party.</para>
+<para>Suspend Audio: This effectively prevents all Audio communication to your respective party when selecting Chat -> Suspend Audio.</para>
 </listitem>
 
 <listitem>
-<para>Suspend Video: This effectively prevents all Video transmission to your respective party.</para>
+<para>Suspend Video: This effectively prevents all Video transmission to your respective party when selecting Chat -> Suspend Video.</para>
 </listitem>
 
 <listitem>
-<para>Transferring the remote party: You can transfer the remote user to another H.323 or CALLTO URI by using the appropriate menu entry in the Call menu or by double-clicking on an user in your address book, or in the calls history.</para>
+<para>Transferring the remote party: You can transfer the remote user to another user by selecting Chat -> Transfer Call. It is also possible to transfer an active call by right-clicking and choosing the transfer action when a contact is highlighted in the roster, in the address book or in the call history. Double-clicking or selecting the Contact menu in the main window or the Action menu in the Address Book window and choosing the transfer action will also work.</para>
 </listitem>
 </itemizedlist>
 
-<tip><title>Tip</title><para>All URIs supported by <application>&app;</application> (SIP, H.323, CALLTO and Speed Dials) can be used for call transfer.</para></tip>
+<tip><title>Tip</title><para>All URIs supported by <application>&app;</application> can be used for call transfer if the protocol supports it.</para></tip>
 </section>
 
-<section><title>Taking a snapshot</title>
+<section><title>Adjusting the audio and video settings</title>
+<para>
+Your audio and video settings can be adjusted through the call panel while you are in a call. If you want to change the audio or video settings during a call, simply show the Call Panel by select View -> Show Call Panel in the menu. The audio volume, but also the brightness, whiteness, color and contrast of your video input device can be changed to achieve the best quality.
+</para>
 
-<para>While in a call you can take a snapshot of the remote party via Call -> Save Current Picture. A PNG-file will be saved in the current directory. The filename consists of three parts: the save_prefix, date and current time. (e.g. <application>&app;</application>-snap-2003_06_19-024316.png).</para>
+<para>
+You can also change your audio and video devices during a call. Simply go in the preferences window by selecting Edit -> Preferences in the menu, and adjust your devices in the appropriate section.
+</para>
 </section>
 
-<section><title>Watching calls execution using the history windows</title>
+<section><title>Checking the call history</title>
 
-<para>History windows in <application>&app;</application> are comparable to logfiles. They keep chronological track of actions performed by <application>&app;</application> and provide additional information to the user.</para>
-</section>
+<graphic fileref="figures/call_history.png"></graphic>
 
-<section><title>General History</title>
-
-<para>The General History window keeps track of many operations which are mainly performed in the background. It displays information about audio and video devices, calls, codecs and other details. The latest operations can be found at the bottom, older entries are shown on the top. You can access this information by opening 
-Tools->Generic History.</para>
-</section>
-
-<section><title>Calls History</title>
-
-<para>The Calls History window stores information (date, duration, URI, Software, Remote user) about all outgoing and incoming calls. They are divided into three groups - Received calls, Placed calls and Unanswered calls.
+<para>The Call History stores information (date, duration, URI, Remote user) about all outgoing and incoming calls. They are divided into three groups - received calls, placed calls and missed calls. You can consult the call history by selecting View -> Call History in the menu.
 <itemizedlist>
 <listitem>
 <para>
@@ -428,106 +494,13 @@ Placed calls keeps track of all attempts - succesful or not - to call another us
 
 <listitem>
 <para>
-Unanswered calls shows incoming calls which timed out or were rejected (if Do Not Disturb is enabled, for instance) by <application>&app;</application>.
+Missed calls shows incoming calls which timed out.
 </para>
 </listitem>
 </itemizedlist>
 </para>
 
-<tip><title>Tip</title><para>Double-clicking on a row in the Calls History will call back the selected user or transfer any active call to that user. Notice that you can also drag and drop entries from the Calls History into the Address Book to store contact information.</para></tip>
-
-<para>
-This information can be accessed by opening Tools->Calls History and by switching between the three tabs.
-</para>
-</section>
-
-</section>
-
-<section id="ekiga-manage-contacts">
-<title>Managing Contacts</title>
-<section><title>Managing my contacts with the Address Book</title>
-<para>
-The Address Book is a feature which allows you to find users to call and/or to save locally your list of persons that you call on a regular basis. It respectively loads the list of users from the LDAP directory and will store locally their addresses and associated speed dials (if any).
-</para>
-</section>
-
-<section><title>Basics of the Address Book</title>
-<para>
-To open the Address Book, select Tools -> Address Book and the <application>&app;</application> Addressbook window should appear. To your left there will be a list dialog showing the ILS and LDAP servers as well as a list of local Address Books. The defaults are the <application>&app;</application> white pages, the contacts near you, and the personal address book from <ulink url="http://www.novell.com/products/evolution" type="http">Novell Evolution</ulink>.
-</para>
-
-<para>
-<application>&app;</application> is able to use several types of address books, allowing to search for remote contacts, and bookmark local contacts. The most common address book type is the LDAP directory where you can find information about registered users. <application>&app;</application> is able to browse any LDAP directory and use a specific attribute as calling URI. For example, you could have an LDAP directory in your company, with a specific attribute containing the local extensions of all your colleagues. <application>&app;</application> is able to use such an LDAP directory. Simply select in File -> New Address Book, and choose remote LDAP as type.
-</para>
-
-<para>
-<application>&app;</application> is also able to detect other <application>&app;</application> users on the LAN using the Bonjour technology popularized by Apple (tm). That supposes you have a local mDNSResponder daemon running on your computer. Finally, <application>&app;</application> is able to bookmark contacts in the local address book, shared with the <ulink url="http://www.novell.com/products/evolution" type="http">Novell Evolution</ulink> suite.
-</para>
-
-<para>
-To refresh the list of users for a specific address book, simply click the Find button. It will search for all users in that address book. You can contact people by double clicking on their highlighted field. You can also Drag-and-Drop to call a specific party by selecting the highlighted field and dragging it into the Main Window.
-</para>
-
-<para>
-In certain cases you will want to search specifically for a person name, his or her call URI, or the location in the <application>&app;</application> white pages. The address book window allows you to apply filters when searching for contacts. 
-</para>
-
-<tip><title>Tip</title><para>The <application>&app;</application> white pages will allow you to look for users in your region. It returns a limited number of results corresponding to your search. If the user is associated to a red icon, it means that he is online. If he is associated to a greyed out icon, it means he is offline. You can then add him to your personal address book to call him later.</para></tip>
-</section>
-
-<section><title>Managing remote and local contacts</title>
-<para>
-To add an address book, select File -> New Address Book. A dialog will appear. You then select the type of address book you want to add. The type can be Local, or remote LDAP or remote ILS. Enter the server name. Enter the name, the various parameters and select 'OK' and the new address book should now appear in the address books list. If you do not know what parameters to use for a remote LDAP address book, please ask them to your administrator. The address book parameters can be changed at any time by selecting File -> Properties when the address book is highlighted. It can also be deleted by selecting File -> Delete.
-</para>
-
-<para>
-To add a contact to one of your local address books, simply select the address book you wish to add the contact and select Contact -> New Contact. The option of adding a New Contact will appear and you may now enter his name and VoIP URI as well as other settings. After complete select 'OK' and now your contact has been added. You can only add contacts to local address books. The contact parameters can be changed at any time by selecting File -> Properties when the contact is highlighted. He can also be deleted by selecting File -> Delete.
-</para>
-
-<para>
-You can also add a contact from the white pages (or any other local or remote address book) by selecting the highlighted contact and dragging him to the specific local address book you wish to add him to or by selecting Contact -> Add Contact to Address Book when selecting that contact.
-</para>
-
-<para>
-Finally, you can edit the groups your users belong to using the User Properties dialog from the main menu or from the right-click menu, or using drag-and-drop between groups.
-</para>
-</section>
-
-</section>
-
-<section id="ekiga-manage-incoming-calls">
-<title>Managing Incoming Calls</title>
-<section><title>Managing incoming calls</title>
-
-<para><application>&app;</application> supports different policies for incoming calls. Per default it displays a 
-popup window which allows you to decide whether you want to refuse or accept the request for 
-an incoming call. Furthermore <application>&app;</application> offers three modes that override
-this behaviour: Busy mode, Free for Chat and Forward. They can be activated from the
-the Call menu.</para>
-
-<section><title>Busy mode</title>
-
-<para>If this mode is enabled <application>&app;</application> refuses all incoming requests and only allows outgoing 
-calls. You are not able to receive any call and do not notice if another user tries to contact you except when looking at the Calls History.</para>
-
-<para>This mode can be enabled by selecting Call -> Busy in the main window.</para>
-</section>
-
-<section><title>Free for Chat mode</title>
-
-<para>If this behavior is activated <application>&app;</application> accepts all incoming calls. It does not display a 
-popup window but tries to establish the connection to the remote party immediately.</para>
-
-<para>This mode can be enabled by selecting Call -> Free For Chat in the main window menu.</para>
-</section>
-
-<section><title>Forward</title>
-
-<para><application>&app;</application> has the ability to forward calls to another host. Which allows you to configure <application>&app;</application> to forward all incoming calls to a specified URI. Furthermore it is able to forward calls interactively when you do not answer the call after a configurable amount of time or when you are busy.
-</para>
-
-<para>Call Forwarding can be configured by selecting Call -> Forward in the main menu or through the preferences window. Notice that you need to specify an URI where to forward calls in the preferences to be able to activate that option. Open the preferences window by choosing Edit -> Preferences in the main window and select Call Options on the left. You will now see the appropriate section. It contains three checkboxes for the three cases described above. The IP address/hostname of the host the calls shall be forwarded to can be configured separate in SIP Settings for SIP and accordingly in H323 Settings for H323.
-</para>
+<tip><title>Tip</title><para>Double-clicking on a row in the Calls History will call back the selected user or transfer any active call to that user. Notice that you can also add the contact to your roster by selecting Chat -> Contact -> Add to local roster in the main menu when the call is highlighted.</para></tip>
 </section>
 
 </section>
@@ -545,8 +518,44 @@ popup window but tries to establish the connection to the remote party immediate
 <graphic fileref="figures/accounts_d1.png"></graphic>
 
 <para>
-You can open the accounts window by selecting Edit -> Accounts. This will open the Accounts Window. The Accounts Window will allow you to add SIP and H.323 accounts and to register to them.
-An account descibes the user login and password parameters to register to SIP and H.323 services. Those <emphasis>services</emphasis> can be an Internet Telephony Service provider (like ekiga.net), or an IPBX (like CISCO, Nortel, or Asterisk).
+You can open the accounts window by selecting Edit -> Accounts. This will open the Accounts Window. The Accounts Window will allow you to add Ekiga.net, Ekiga Call Out, SIP and H.323 accounts and to register to them.
+An account describes the user login and password parameters to register to SIP and H.323 services. Those <emphasis>services</emphasis> can be an Internet Telephony Service provider (like ekiga.net), or an IPBX (like CISCO, Nortel, or Asterisk).
+</para>
+</section>
+
+<section><title>Adding an Ekiga.net account</title>
+
+<graphic fileref="figures/accounts_ekiga_net.png"></graphic>
+
+<para>
+To add an Ekiga.net account, simply select Account -> Add an Ekiga.net Account in the menu. A dialog will appear and allow you to enter several parameters:
+<itemizedlist>
+<listitem><para><emphasis>User:</emphasis> You can enter your login.</para></listitem>
+<listitem><para><emphasis>Password:</emphasis> You can enter your password.</para></listitem>
+</itemizedlist>
+</para>
+
+<para>
+Ekiga.net is a free SIP services platform provided to <application>&app;</application> users.
+If you want to call other users and to be callable, you need a SIP address. You can get one from <ulink url="http://www.ekiga.net" type="http">http://www.ekiga.net</ulink>. 
+Ekiga.net also offers additional services like conference rooms, voice mail or online white pages. Please see <ulink url="http://www.ekiga.net" type="http">http://www.ekiga.net</ulink> for more information.
+</para>
+</section>
+
+<section><title>Adding an Ekiga Call Out account</title>
+
+<graphic fileref="figures/accounts_ekiga_call_out.png"></graphic>
+
+<para>
+To add an Ekiga Call Out account, simply select Account -> Add an Ekiga Call Out Account in the menu. A dialog will appear and allow you to enter several parameters:
+<itemizedlist>
+<listitem><para><emphasis>Account ID:</emphasis> You can enter your account ID.</para></listitem>
+<listitem><para><emphasis>PIN Code:</emphasis> You can enter your PIN code.</para></listitem>
+</itemizedlist>
+
+If you do not have an Ekiga Call Out account yet, you can subscribe for one using the 'Get an Ekiga.net Call Out account' link in the dialog.
+As described above, this service will allow you calling normal phones worldwide at interesting rates.
+Once the account has been added, you can recharge it, consult the balance history or the call history by selecting the appropriate menu item in the Account menu of the window when the account is highlighted.
 </para>
 </section>
 
@@ -555,26 +564,17 @@ An account descibes the user login and password parameters to register to SIP an
 <graphic fileref="figures/accounts_sip.png"></graphic>
 
 <para>
-To add a SIP account, simply click on the Add button. A dialog will appear and allow you to enter several parameters:
+To add a SIP account, simply select Account -> Add a SIP Account in the menu. A dialog will appear and allow you to enter several parameters:
 <itemizedlist>
-<listitem><para><emphasis>Account Name:</emphasis> You can enter the account name.</para></listitem>
-<listitem><para><emphasis>Protocol:</emphasis> You can choose SIP.</para></listitem>
+<listitem><para><emphasis>Name:</emphasis> You can enter the account name.</para></listitem>
 <listitem><para><emphasis>Registrar:</emphasis> The registrar to which you want to register. This is usually an IP address or an host name that will be given to you by your Internet Telephony Service Provider, or by your administrator if you are trying to register to a SIP IPBX.</para></listitem>
 <listitem><para><emphasis>User:</emphasis> You can enter your login.</para></listitem>
-<listitem><para><emphasis>Password:</emphasis> You can enter your password</para></listitem>
-</itemizedlist>
-
-<tip><title>Tip</title><para><application>&app;</application> will do a best guess concerning the identity that will be used when calling out. Sometimes, you will need to force that identity. You can do this by specifying the identity in the user field. e.g.: dsandras@ekiga.net to force dsandras@ekiga.net to be used as outgoing identity for that account.</para></tip>
-</para>
-
-<para>
-You can also control some advanced parameters. Like the Registrar, User and Password, they will be given to you by the ITSP you are using or by your administrator. Those parameters are:
-<itemizedlist>
-<listitem><para><emphasis>Authentication Login:</emphasis> If it is different from the user parameter you provided above. In that case, the user field will be used to control the outgoing identity for the account you are adding, while the login will be used during the authentication phase.</para></listitem>
-<listitem><para><emphasis>Realm/Domain:</emphasis> It is globally unique and dependant on the ITSP or the IPBX. It is generally identical to the registrar domain.</para></listitem>
-<listitem><para><emphasis>Registration Timeout:</emphasis> The timeout after which the registration should be updated.</para></listitem>
+<listitem><para><emphasis>Authentication User:</emphasis> If it is different from the user parameter you provided above. In that case, the user field will be used to control the outgoing identity for the account you are adding, while the login will be used during the authentication phase.</para></listitem>
+<listitem><para><emphasis>Password:</emphasis> You can enter your password.</para></listitem>
+<listitem><para><emphasis>Timeout:</emphasis> The timeout after which the registration should be refreshed.</para></listitem>
 </itemizedlist>
 </para>
+
 </section>
 
 <section><title>Adding an H.323 account</title>
@@ -582,23 +582,17 @@ You can also control some advanced parameters. Like the Registrar, User and Pass
 <graphic fileref="figures/accounts_h323.png"></graphic>
 
 <para>
-To add an H.323 account, simply click on the Add button. A dialog will appear and allow you to enter several parameters:
+To add an H.323 account, simply select Account -> Add an H.323 Account in the menu. A dialog will appear and allow you to enter several parameters:
 <itemizedlist>
-<listitem><para><emphasis>Account Name:</emphasis> You can enter the account name.</para></listitem>
-<listitem><para><emphasis>Protocol:</emphasis> You can choose H.323.</para></listitem>
+<listitem><para><emphasis>Name:</emphasis> You can enter the account name.</para></listitem>
 <listitem><para><emphasis>Gatekeeper:</emphasis> The gatekeeper to which you want to register. This is usually an IP address or an host name that will be given to you by your Internet Telephony Service Provider, or by your administrator if you are trying to register to an H.323 IPBX.</para></listitem>
 <listitem><para><emphasis>User:</emphasis> You can enter your login.</para></listitem>
-<listitem><para><emphasis>Password:</emphasis> You can enter your password</para></listitem>
-</itemizedlist>
-</para>
-
-<para>
-You can also control some advanced parameters. Those parameters are:
-<itemizedlist>
-<listitem><para><emphasis>Gatekeeper ID:</emphasis> The gatekeeper ID, if any.</para></listitem>
+<listitem><para><emphasis>Authentication User:</emphasis> If it is different from the user parameter you provided above. In that case, the user field will be used to control the outgoing identity for the account you are adding, while the login will be used during the authentication phase.</para></listitem>
+<listitem><para><emphasis>Password:</emphasis> You can enter your password.</para></listitem>
 <listitem><para><emphasis>Registration Timeout:</emphasis> The timeout after which the registration should be updated.</para></listitem>
 </itemizedlist>
 </para>
+
 </section>
 
 </section>
@@ -629,20 +623,6 @@ You can also control some advanced parameters. Those parameters are:
 </para>
 </section>
 
-<section><title>CALLTO URIs</title>
-<para>Callto URIs are formatted as such "callto:[user@][host[:port]]"</para>
-
-<para>Callto URIs and H.323 URIs are formatted exactly the same except however callto URIs also support ILS lookups directly: <emphasis>callto:ils_server/user_mail.</emphasis></para>
-
-<para>For example, calling <emphasis>callto:ils.seconix.com/joe.user@somedomain.com</emphasis> will look for the user with the joe.user@somedomain.com email address on the ILS server ils.seconix.com and proceed to initate a call.</para>
-</section>
-</section>
-
-<section><title>Speed dials</title>
-<para>
-<application>&app;</application> is able to associate speed dials with URIs using the address book. You can thus for example associate the speed dial <emphasis>1</emphasis> to the URI <emphasis>sip:600000@ekiga.net</emphasis>. That speed dial can then be used as URI. For example, calling <emphasis>sip:1#</emphasis> will call <emphasis>sip:600000@ekiga.net</emphasis> provided that both are associated together in the address book.
-</para>
-
 </section>
 
 
@@ -657,18 +637,39 @@ You can also control some advanced parameters. Those parameters are:
 </section>
 
 
+<section id="ekiga-monitoring-lines">
+<title>Monitoring lines</title>
+
+<graphic fileref="figures/monitoring_lines.png"></graphic>
+
+<para><application>&app;</application> can connect to PBX systems supporting the SIP protocol. In that case, it is able to indicate if the line associated with an user is in use or not. Please refer to the documentation of your PBX to enable that feature.</para>
+
+<para>To enable that feature on <application>&app;</application>, simply add the contact with his URI in the roster. If the server supports publishing presence information, <application>&app;</application> will automatically publish your own presence information and display the presence of contacts in your roster.</para>
+</section>
+
 <section id="ekiga-audio-codecs">
 <title>Managing Codecs</title>
-<graphic fileref="figures/audio_codecs.png"></graphic>
 
 <section><title>Audio Codecs</title>
+
+<graphic fileref="figures/audio_codecs.png"></graphic>
+
 <para>
 The <application>&app;</application> audio codecs table in the preferences permits you to change the codecs order as well as disabling the codecs you don't want to use. Each codec has strong and weak points. For example, G.711 will give the best voice quality but will use the most bandwidth while SPEEX will give an average voice quality but requiring a very low bandwidth usage. Notice that there are two versions of SPEEX, one of them is SPEEX WideBand. You can see that to the 16 kHz clock rate.</para>
 </section>
 
+<section><title>Video Codecs</title>
+
+<graphic fileref="figures/video_codecs.png"></graphic>
+
+<para>
+The <application>&app;</application> video codecs table in the preferences permits you to change the codecs order as well as disabling the codecs you don't want to use. <application>&app;</application> supports codecs like H.261, H.263, H.263+, H.264, MPEG-4 or Theora.</para>
+</section>
+
+
 <section><title>Reordering the codecs</title>
 <para>
-When you reorder the codecs, you are reordering the local capabilities table, ie the codecs you will use for sending. You will always transmit audio using the first codec in the table that is in common with the remote user. The remote user will transmit audio using the first codec in his table that is common with you.</para>
+When you reorder the codecs, you are reordering the local capabilities table, ie the codecs you will use for sending. You will always transmit audio and video using the first codec in the corresponding table that is in common with the remote user. The remote user will transmit audio and video using the first codec in his table that is common with you.</para>
 </section>
 
 <section><title>Forcing the use of a specific codec</title>
@@ -698,11 +699,9 @@ The main port listening for incoming connections in <application>&app;</applicat
 
 <para>1. The "listen_port" value is the port <application>&app;</application> will listen for incoming connections on. It is different for SIP and H.323.</para>
 
-<para>2. The "rtp_port_range" value is the range of UDP ports that <application>&app;</application> will use for RTP (audio and video communication channels). <application>&app;</application> needs to be restarted for the new values to take effect.</para>
+<para>2. The "udp_port_range" value is the range of UDP ports that <application>&app;</application> will use for SIP signalling or when registering to H.323 gatekeepers. It is also used for RTP (audio and video communication channels).</para>
 
-<para>3. The "udp_port_range" value is the range of UDP ports that <application>&app;</application> will use for SIP signalling or when registering to H.323 gatekeepers.</para>
-
-<para>4. The "tcp_port_range" value is the range of TCP ports beside the listen_port that <application>&app;</application> will use for the H.245 channel with the H.323 protocol. That port range is not used by SIP. It is not used either when H.245 Tunneling is enabled, which is in general always the case, except when calling old H.323 implementations like Netmeeting.</para>
+<para>3. The "tcp_port_range" value is the range of TCP ports beside the listen_port that <application>&app;</application> will use for the H.245 channel with the H.323 protocol. That port range is not used by SIP. It is not used either when H.245 Tunneling is enabled, which is in general always the case, except when calling old H.323 implementations like Netmeeting.</para>
 </section>
 </section>
 
@@ -726,9 +725,6 @@ The main port listening for incoming connections in <application>&app;</applicat
 <title>Controlling the H.323 Settings</title>
 
 <section><title>Misc Settings</title>
-<para><emphasis>Default gateway</emphasis></para>
-<para>The default gateway is the H.323 gateway to use when doing calls. For example, if you are calling <emphasis>h323:123443</emphasis> with a default gateway set to <emphasis>foo</emphasis>, gateway foo will dial 123443 on your behalve. Usually, you will be registered to a gatekeeper, and gateway is not used.</para>
-
 <para><emphasis>Forward URI</emphasis></para>
 <para>The URI to which H.323 incoming calls should be forwarded if configured in the preferences.</para>
 
