@@ -244,7 +244,7 @@ Avahi::Heap::ResolverCallback (AvahiServiceResolver *resolver,
 			       AvahiIfIndex /*interface*/,
 			       AvahiProtocol /*protocol*/,
 			       AvahiResolverEvent event,
-			       const char *name,
+			       const char * /*name*/,
 			       const char * /*type*/,
 			       const char * /*domain*/,
 			       const char * /*host_name*/,
@@ -253,6 +253,7 @@ Avahi::Heap::ResolverCallback (AvahiServiceResolver *resolver,
 			       AvahiStringList *txt,
 			       AvahiLookupResultFlags /*flags*/)
 {
+  std::string name;
   std::string software;
   std::string presence;
   std::string status;
@@ -276,7 +277,9 @@ Avahi::Heap::ResolverCallback (AvahiServiceResolver *resolver,
 
 	    std::string key (ckey);
 	    std::string value (cvalue);
-	    if (key == "presence") 
+	    if (key == "display_name")
+	      name = value;
+	    else if (key == "presence") 
               presence = value;
             else if (key == "status") 
               status = value;
