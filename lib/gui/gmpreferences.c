@@ -57,7 +57,6 @@ typedef struct _GnomePrefsWindow {
   GtkWidget *section_label;
   GtkWidget *sections_tree_view;
   GtkTreeIter iter;
-  GtkTooltips *tips;
   int last_page;
   
 } GnomePrefsWindow;
@@ -188,7 +187,7 @@ gnome_prefs_entry_new (GtkWidget *table,
 
   gpw = (GnomePrefsWindow *) g_object_get_data (G_OBJECT (table), "gpw");
   if (gpw && tooltip)
-    gtk_tooltips_set_tip (gpw->tips, entry, tooltip, NULL);
+    gtk_widget_set_tooltip_text (entry, tooltip);
 
   gtk_widget_show_all (table);
   
@@ -230,7 +229,7 @@ gnome_prefs_toggle_new (GtkWidget *table,
 
   gpw = (GnomePrefsWindow *) g_object_get_data (G_OBJECT (table), "gpw");
   if (gpw && tooltip)
-    gtk_tooltips_set_tip (gpw->tips, toggle, tooltip, NULL);
+    gtk_widget_set_tooltip_text (toggle, tooltip);
 
   g_signal_connect (G_OBJECT (toggle), "toggled",
 		    G_CALLBACK (toggle_changed), (gpointer) conf_key);
@@ -307,7 +306,7 @@ gnome_prefs_scale_new (GtkWidget *table,
 
   gpw = (GnomePrefsWindow *) g_object_get_data (G_OBJECT (table), "gpw");
   if (gpw && tooltip)
-    gtk_tooltips_set_tip (gpw->tips, hscale, tooltip, NULL);
+    gtk_widget_set_tooltip_text (hscale, tooltip);
 
   g_signal_connect (G_OBJECT (adj), "value-changed",
 		    G_CALLBACK (adjustment_changed),
@@ -403,7 +402,7 @@ gnome_prefs_spin_new (GtkWidget *table,
 
   gpw = (GnomePrefsWindow *) g_object_get_data (G_OBJECT (table), "gpw");
   if (gpw && tooltip)
-    gtk_tooltips_set_tip (gpw->tips, spin_button, tooltip, NULL);
+    gtk_widget_set_tooltip_text (spin_button, tooltip);
 
   g_signal_connect (G_OBJECT (adj), "value-changed",
 		    G_CALLBACK (adjustment_changed),
@@ -495,8 +494,8 @@ gnome_prefs_range_new (GtkWidget *table,
 
   gpw = (GnomePrefsWindow *) g_object_get_data (G_OBJECT (table), "gpw");
   if (gpw && spin1_tooltip && spin2_tooltip) {
-    gtk_tooltips_set_tip (gpw->tips, spin_button1, spin1_tooltip, NULL);
-    gtk_tooltips_set_tip (gpw->tips, spin_button2, spin2_tooltip, NULL);
+    gtk_widget_set_tooltip_text (spin_button1, spin1_tooltip);
+    gtk_widget_set_tooltip_text (spin_button2, spin2_tooltip);
   }
   
 
@@ -590,7 +589,7 @@ gnome_prefs_int_option_menu_new (GtkWidget *table,
                                                                                
   gpw = (GnomePrefsWindow *) g_object_get_data (G_OBJECT (table), "gpw");
   if (gpw && tooltip)
-    gtk_tooltips_set_tip (gpw->tips, option_menu, tooltip, NULL);
+    gtk_widget_set_tooltip_text (option_menu, tooltip);
 
   g_signal_connect (GTK_COMBO_BOX (option_menu), 
 		    "changed", G_CALLBACK (int_option_menu_changed),
@@ -686,7 +685,7 @@ gnome_prefs_string_option_menu_new (GtkWidget *table,
                                                                                
   gpw = (GnomePrefsWindow *) g_object_get_data (G_OBJECT (table), "gpw");
   if (gpw && tooltip)
-    gtk_tooltips_set_tip (gpw->tips, option_menu, tooltip, NULL);
+    gtk_widget_set_tooltip_text (option_menu, tooltip);
 
   g_signal_connect (GTK_COMBO_BOX (option_menu), 
 		    "changed", G_CALLBACK (string_option_menu_changed),
@@ -931,10 +930,6 @@ gnome_prefs_window_new (const gchar *logo_name)
   hbox = gtk_hbox_new (FALSE, 6);
   gtk_container_set_border_width (GTK_CONTAINER (hbox), 6);
   gtk_container_add (GTK_CONTAINER (dialog_vbox), hbox);
-
-
-  /* The tooltips */
-  gpw->tips = gtk_tooltips_new ();
 
 
   /* Build the TreeView on the left */

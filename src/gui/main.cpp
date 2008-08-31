@@ -130,7 +130,6 @@ struct _GmMainWindow
 
   GtkListStore *completion;
 
-  GtkTooltips *tips;
   GtkAccelGroup *accel;
 
   GtkWidget *main_menu;
@@ -1444,7 +1443,6 @@ gm_mw_destroy (gpointer m)
 
   gtk_widget_destroy (mw->audio_settings_window);
   gtk_widget_destroy (mw->video_settings_window);
-  g_object_unref (mw->tips);
 
   delete ((GmMainWindow *) mw);
 }
@@ -1636,8 +1634,8 @@ gm_mw_init_uri_toolbar (GtkWidget *main_window)
   gtk_container_set_border_width (GTK_CONTAINER (mw->connect_button), 0);
   gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
 
-  gtk_tooltips_set_tip (mw->tips, GTK_WIDGET (mw->connect_button), 
-			_("Enter a URI on the left, and click this button to place a call"), NULL);
+  gtk_widget_set_tooltip_text (GTK_WIDGET (mw->connect_button),
+			       _("Enter a URI on the left, and click this button to place a call"));
   
   gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, -1);
 
@@ -2003,8 +2001,7 @@ gm_mw_video_settings_window_new (GtkWidget *main_window)
   gtk_box_pack_start (GTK_BOX (hbox), hscale_brightness, TRUE, TRUE, 2);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 3);
 
-  gtk_tooltips_set_tip (mw->tips, hscale_brightness,
-			_("Adjust brightness"), NULL);
+  gtk_widget_set_tooltip_text (hscale_brightness, _("Adjust brightness"));
 
   g_signal_connect (G_OBJECT (mw->adj_brightness), "value-changed",
 		    G_CALLBACK (video_settings_changed_cb), 
@@ -2025,8 +2022,7 @@ gm_mw_video_settings_window_new (GtkWidget *main_window)
   gtk_box_pack_start (GTK_BOX (hbox), hscale_whiteness, TRUE, TRUE, 2);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 3);
 
-  gtk_tooltips_set_tip (mw->tips, hscale_whiteness,
-			_("Adjust whiteness"), NULL);
+  gtk_widget_set_tooltip_text (hscale_whiteness, _("Adjust whiteness"));
 
   g_signal_connect (G_OBJECT (mw->adj_whiteness), "value-changed",
 		    G_CALLBACK (video_settings_changed_cb), 
@@ -2047,8 +2043,7 @@ gm_mw_video_settings_window_new (GtkWidget *main_window)
   gtk_box_pack_start (GTK_BOX (hbox), hscale_colour, TRUE, TRUE, 2);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 3);
 
-  gtk_tooltips_set_tip (mw->tips, hscale_colour,
-			_("Adjust color"), NULL);
+  gtk_widget_set_tooltip_text (hscale_colour, _("Adjust color"));
 
   g_signal_connect (G_OBJECT (mw->adj_colour), "value-changed",
 		    G_CALLBACK (video_settings_changed_cb), 
@@ -2069,8 +2064,7 @@ gm_mw_video_settings_window_new (GtkWidget *main_window)
   gtk_box_pack_start (GTK_BOX (hbox), hscale_contrast, TRUE, TRUE, 2);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 3);
 
-  gtk_tooltips_set_tip (mw->tips, hscale_contrast,
-			_("Adjust contrast"), NULL);
+  gtk_widget_set_tooltip_text (hscale_contrast, _("Adjust contrast"));
 
   g_signal_connect (G_OBJECT (mw->adj_contrast), "value-changed",
 		    G_CALLBACK (video_settings_changed_cb), 
@@ -2349,9 +2343,8 @@ gm_mw_init_call (GtkWidget *main_window)
   gtk_widget_show (button);
   gtk_toolbar_insert (GTK_TOOLBAR (toolbar), 
 		      GTK_TOOL_ITEM (item), -1);
-  gtk_tool_item_set_tooltip (GTK_TOOL_ITEM (item), mw->tips,
-			     _("Change the volume of your soundcard"), 
-			     NULL);
+  gtk_tool_item_set_tooltip_text (GTK_TOOL_ITEM (item),
+				  _("Change the volume of your soundcard"));
 
   gtk_widget_set_size_request (GTK_WIDGET (button), 28, 28);
 
@@ -2372,9 +2365,8 @@ gm_mw_init_call (GtkWidget *main_window)
   gtk_widget_show (button);
   gtk_toolbar_insert (GTK_TOOLBAR (toolbar), 
 		      GTK_TOOL_ITEM (item), -1);
-  gtk_tool_item_set_tooltip (GTK_TOOL_ITEM (item), mw->tips,
-			     _("Change the color settings of your video device"), 
-			     NULL);
+  gtk_tool_item_set_tooltip_text (GTK_TOOL_ITEM (item),
+				   _("Change the color settings of your video device"));
 
   g_signal_connect (G_OBJECT (button), "clicked",
 		    G_CALLBACK (show_window_cb),
@@ -2395,9 +2387,8 @@ gm_mw_init_call (GtkWidget *main_window)
   gtk_widget_show (mw->preview_button);
   gtk_toolbar_insert (GTK_TOOLBAR (toolbar), 
 		      GTK_TOOL_ITEM (item), -1);
-  gtk_tool_item_set_tooltip (GTK_TOOL_ITEM (item), mw->tips,
-			     _("Display images from your camera device"), 
-			     NULL);
+  gtk_tool_item_set_tooltip_text (GTK_TOOL_ITEM (item),
+				  _("Display images from your camera device"));
 
   g_signal_connect (G_OBJECT (mw->preview_button), "toggled",
 		    G_CALLBACK (toolbar_toggle_button_changed_cb),
@@ -2416,8 +2407,8 @@ gm_mw_init_call (GtkWidget *main_window)
   gtk_widget_show (mw->hold_button);
   gtk_toolbar_insert (GTK_TOOLBAR (toolbar), 
 		      GTK_TOOL_ITEM (item), -1);
-  gtk_tool_item_set_tooltip (GTK_TOOL_ITEM (item), mw->tips,
-                             _("Hold the current call"), NULL);
+  gtk_tool_item_set_tooltip_text (GTK_TOOL_ITEM (item),
+				  _("Hold the current call"));
   gtk_widget_set_sensitive (GTK_WIDGET (mw->hold_button), FALSE);
 
   g_signal_connect (G_OBJECT (mw->hold_button), "clicked",
@@ -2961,7 +2952,7 @@ url_changed_cb (GtkEditable  *e,
     }
   }
 
-  gtk_tooltips_set_tip (mw->tips, GTK_WIDGET (e), tip_text, NULL);
+  gtk_widget_set_tooltip_text (GTK_WIDGET (e), tip_text);
 }
 
 
@@ -3871,9 +3862,7 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   mw->video_widget_gc = NULL;
 #endif
 
-  /* Tooltips and accelerators */
-  mw->tips = gtk_tooltips_new ();
-  g_object_ref_sink (mw->tips);
+  /* Accelerators */
   mw->accel = gtk_accel_group_new ();
   gtk_window_add_accel_group (GTK_WINDOW (window), mw->accel);
   g_object_unref (mw->accel);
@@ -4319,8 +4308,7 @@ gm_main_window_update_stats (GtkWidget *main_window,
 
 
   if (mw->statusbar_ebox) {
-    gtk_tooltips_set_tip (mw->tips, GTK_WIDGET (mw->statusbar_ebox), 
-                          stats_msg, NULL);
+    gtk_widget_set_tooltip_text (GTK_WIDGET (mw->statusbar_ebox), stats_msg);
   }
   g_free (stats_msg);
 
