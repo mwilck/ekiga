@@ -914,9 +914,7 @@ create_audio_devices_page (EkigaAssistant *assistant)
   gtk_box_pack_start (GTK_BOX (vbox), assistant->priv->audio_ringer, FALSE, FALSE, 0);
 
   label = gtk_label_new (NULL);
-  text = g_strdup_printf ("<i>%s</i>", _("The audio ringing device is the device "
-                          " managed by the audio manager that will be used to "
-                          "play the ringing sound."));
+  text = g_strdup_printf ("<i>%s</i>", _("The audio ringing device is the device that will be used to play the ringing sound on incoming calls."));
   gtk_label_set_markup (GTK_LABEL (label), text);
   g_free (text);
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
@@ -935,9 +933,7 @@ create_audio_devices_page (EkigaAssistant *assistant)
   gtk_box_pack_start (GTK_BOX (vbox), assistant->priv->audio_player, FALSE, FALSE, 0);
 
   label = gtk_label_new (NULL);
-  text = g_strdup_printf ("<i>%s</i>", _("The audio output device is the device "
-                          " managed by the audio manager that will be used to "
-                          "play audio."));
+  text = g_strdup_printf ("<i>%s</i>", _("The audio output device is the device that will be used to play audio during calls."));
   gtk_label_set_markup (GTK_LABEL (label), text);
   g_free (text);
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
@@ -956,9 +952,7 @@ create_audio_devices_page (EkigaAssistant *assistant)
   gtk_box_pack_start (GTK_BOX (vbox), assistant->priv->audio_recorder, FALSE, FALSE, 0);
 
   label = gtk_label_new (NULL);
-  text = g_strdup_printf ("<i>%s</i>", _("The audio input device is the device "
-                          "managed by the audio manager that will be used to "
-                          "record your voice."));
+  text = g_strdup_printf ("<i>%s</i>", _("The audio input device is the device that will be used to record your voice during calls."));
   gtk_label_set_markup (GTK_LABEL (label), text);
   g_free (text);
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
@@ -1058,9 +1052,7 @@ create_video_devices_page (EkigaAssistant *assistant)
   gtk_box_pack_start (GTK_BOX (vbox), assistant->priv->video_device, FALSE, FALSE, 0);
 
   label = gtk_label_new (NULL);
-  text = g_strdup_printf ("<i>%s</i>", _("The video manager is the plugin that "
-                          "will manage your video devices, Video4Linux is the "
-                          "most common choice if you own a webcam."));
+  text = g_strdup_printf ("<i>%s</i>", _("The video input device is the device that will be used to capture video during calls."));
   gtk_label_set_markup (GTK_LABEL (label), text);
   g_free (text);
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
