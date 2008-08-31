@@ -42,7 +42,7 @@
 Avahi::Presentity::Presentity (Ekiga::PresenceCore &_core,
 			       std::string _name,
 			       std::string _url):
-  core(_core), name(_name), url (_url)
+  core(_core), name(_name), presence("unknown"), url (_url)
 {
   groups.insert (_("Neighbours"));
 }

@@ -39,6 +39,12 @@
 
 #include "avahi-publisher.h"
 
+/* anytime there's a line like :
+ * ret = avahi_...
+ * then it's possible to get debug information with a line like :
+ * g_print ("Error in avahi code: %s\n", avahi_strerror (ret));
+ */
+
 /* here are the avahi C callbacks */
 
 static void
@@ -109,12 +115,11 @@ Avahi::PresencePublisher::publish (G_GNUC_UNUSED const Ekiga::PersonalDetails& d
 			     iter->protocol.c_str ());
 
       /* FIXME: no collision checking here */
-      avahi_entry_group_update_service_txt_strlst (group, AVAHI_IF_UNSPEC,
-						   AVAHI_PROTO_UNSPEC,
-						   (AvahiPublishFlags)0,
-						   name, typ, NULL,
-						   txt_record);
-
+      ret =avahi_entry_group_update_service_txt_strlst (group, AVAHI_IF_UNSPEC,
+							AVAHI_PROTO_UNSPEC,
+							(AvahiPublishFlags)0,
+							name, typ, NULL,
+							txt_record);
     }
 
     avahi_string_list_free (txt_record);
@@ -275,7 +280,6 @@ Avahi::PresencePublisher::prepare_txt_record ()
   result = avahi_string_list_add_printf (result,
 					 "presence=%s",
 					 details.get_short_status ().c_str ());
-
   result = avahi_string_list_add_printf (result,
 					 "status=%s",
 					 details.get_long_status ().c_str ());
