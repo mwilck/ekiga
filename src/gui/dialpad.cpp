@@ -156,6 +156,7 @@ ekiga_dialpad_init (EkigaDialpad *dialpad)
 
   gtk_table_set_col_spacings (GTK_TABLE (dialpad), 2);
   gtk_table_set_row_spacings (GTK_TABLE (dialpad), 2);
+  gtk_table_set_homogeneous (GTK_TABLE (dialpad), true);
 
   /* Create the buttons */
   for (i = 0; i < G_N_ELEMENTS (keys_info); i++) {
