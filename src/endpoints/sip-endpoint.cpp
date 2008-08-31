@@ -271,18 +271,18 @@ bool Opal::Sip::EndPoint::menu_builder_add_actions (const std::string& fullname,
     std::stringstream forward_action;
     if (!(*ita).empty ()) {
       call_action << _("Call") << " [" << (*ita) << "]";
-      forward_action << _("Forward") << " [" << (*ita) << "]";
+      forward_action << _("Transfer") << " [" << (*ita) << "]";
     }
     else {
       call_action << _("Call");
-      forward_action << _("Forward");
+      forward_action << _("Transfer");
     }
 
     if (0 == GetConnectionCount ())
       builder.add_action ("call", call_action.str (),
                           sigc::bind (sigc::mem_fun (this, &Opal::Sip::EndPoint::on_dial), (*it)));
     else 
-      builder.add_action ("forward", forward_action.str (),
+      builder.add_action ("transfer", forward_action.str (),
                           sigc::bind (sigc::mem_fun (this, &Opal::Sip::EndPoint::on_forward), (*it)));
 
     ita++;
