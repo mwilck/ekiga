@@ -24,7 +24,7 @@ liblocal_roster_la_SOURCES = \
 	$(local_roster_dir)/local-roster-bridge.cpp
 
 liblocal_roster_la_LIBADD = \
-	$(top_srcdir)/lib/engine/addressbook/skel/libgmaddressbook.la \
-	$(top_srcdir)/lib/engine/presence/skel/libgmpresence.la
+	$(top_builddir)/lib/engine/addressbook/skel/libgmaddressbook.la \
+	$(top_builddir)/lib/engine/presence/skel/libgmpresence.la
 
 liblocal_roster_la_LDFLAGS = -export-dynamic -no-undefined $(XML_LIBS) $(SIGC_LIBS) $(GLIB_LIBS) $(GTK_LIBS)
