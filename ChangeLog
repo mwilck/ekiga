@@ -11,11 +11,20 @@
 
 2008-08-31  Julien Puydt  <jpuydt@gnome.org>
 
-	 * lib/engine/componentsvahi-publishervahi-publisher-main.cpp:
-	 * lib/engine/componentsvahi-publishervahi-publisher.cpp:
-	 * lib/engine/componentsvahi-publishervahi-publisher.h:
-	 * lib/engine/presencevahivahi-heap.cpp:
-	 * lib/engine/presencevahivahi-presentity.cpp: Rewrote the avahi
+	* lib/engine/gui/gtk-core/gtk-core.cpp:
+	* lib/engine/gui/gtk-frontend/chat-window-page.cpp:
+	* lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:
+	* lib/engine/presence/local-roster/local-presentity.cpp:
+	* src/endpoints/sip-endpoint.cpp:
+	* src/endpoints/sip-presentity.cpp: Fixed bug #550018.
+
+2008-08-31  Julien Puydt  <jpuydt@gnome.org>
+
+	* lib/engine/componentsvahi-publishervahi-publisher-main.cpp:
+	* lib/engine/componentsvahi-publishervahi-publisher.cpp:
+	* lib/engine/componentsvahi-publishervahi-publisher.h:
+	* lib/engine/presencevahivahi-heap.cpp:
+	* lib/engine/presencevahivahi-presentity.cpp: Rewrote the avahi
 	publisher and make the avahi presence code cope with it. Still not
 	perfect yet.
 
