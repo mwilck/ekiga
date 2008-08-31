@@ -274,7 +274,7 @@ Opal::Call::is_outgoing () const
 void
 Opal::Call::parse_info (OpalConnection & connection)
 {
-  char special_chars [] = "([@";
+  char special_chars [] = "([;=";
   int i = 0;
   std::string::size_type idx;
   std::string party_name;
@@ -288,9 +288,6 @@ Opal::Call::parse_info (OpalConnection & connection)
       remote_uri = (const char *) connection.GetCall().GetPartyB ();
     else
       remote_uri = (const char *) connection.GetRemotePartyCallbackURL ();
-  }
-
-  if (!PIsDescendant(&connection, OpalPCSSConnection)) {
 
     party_name = (const char *) connection.GetRemotePartyName ();
     app = (const char *) connection.GetRemoteApplication ();
@@ -313,6 +310,9 @@ Opal::Call::parse_info (OpalConnection & connection)
       if (idx != std::string::npos)
         remote_application = remote_application.substr (0, idx);
 
+      idx = remote_uri.find_first_of (special_chars [i]);
+      if (idx != std::string::npos)
+        remote_uri = remote_uri.substr (0, idx);
       i++;
     }
   }
