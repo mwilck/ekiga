@@ -48,31 +48,31 @@ Gtk::Core::Core ()
   gnomemeeting_stock_icons_init ();
 
   icon_set = gtk_icon_factory_lookup_default (GM_STOCK_STATUS_ONLINE);
-  gtk_icon_factory_add (factory, "presence-online", icon_set);
+  gtk_icon_factory_add (factory, "online", icon_set);
   gtk_icon_set_unref (icon_set);
 
   icon_set = gtk_icon_factory_lookup_default (GM_STOCK_STATUS_OFFLINE);
-  gtk_icon_factory_add (factory, "presence-offline", icon_set);
+  gtk_icon_factory_add (factory, "offline", icon_set);
   gtk_icon_set_unref (icon_set);
 
   icon_set = gtk_icon_factory_lookup_default (GM_STOCK_STATUS_UNKNOWN);
-  gtk_icon_factory_add (factory, "presence-unknown", icon_set);
+  gtk_icon_factory_add (factory, "unknown", icon_set);
   gtk_icon_set_unref (icon_set);
 
   icon_set = gtk_icon_factory_lookup_default (GM_STOCK_STATUS_AWAY);
-  gtk_icon_factory_add (factory, "presence-away", icon_set);
+  gtk_icon_factory_add (factory, "away", icon_set);
   gtk_icon_set_unref (icon_set);
 
   icon_set = gtk_icon_factory_lookup_default (GM_STOCK_STATUS_DND);
-  gtk_icon_factory_add (factory, "presence-dnd", icon_set);
+  gtk_icon_factory_add (factory, "dnd", icon_set);
   gtk_icon_set_unref (icon_set);
 
   icon_set = gtk_icon_factory_lookup_default (GM_STOCK_STATUS_INACALL);
-  gtk_icon_factory_add (factory, "presence-inacall", icon_set);
+  gtk_icon_factory_add (factory, "inacall", icon_set);
   gtk_icon_set_unref (icon_set);
 
   icon_set = gtk_icon_factory_lookup_default (GM_STOCK_STATUS_FREEFORCHAT);
-  gtk_icon_factory_add (factory, "presence-freeforchat", icon_set);
+  gtk_icon_factory_add (factory, "freeforchat", icon_set);
   gtk_icon_set_unref (icon_set);
 
   icon_set = gtk_icon_factory_lookup_default (GTK_STOCK_ADD);

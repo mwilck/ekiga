@@ -50,7 +50,7 @@
  */
 Local::Presentity::Presentity (Ekiga::ServiceCore &_core,
 			       xmlNodePtr _node) :
-  core(_core), node(_node), name_node(NULL), presence("presence-unknown")
+  core(_core), node(_node), name_node(NULL), presence("unknown")
 {
   xmlChar *xml_str = NULL;
 
@@ -102,7 +102,7 @@ Local::Presentity::Presentity (Ekiga::ServiceCore &_core,
 			       const std::string _uri,
 			       const std::set<std::string> _groups) :
   core(_core), name_node(NULL), name(_name), uri(_uri),
-  presence("presence-unknown"), groups(_groups)
+  presence("unknown"), groups(_groups)
 {
   presence_core = dynamic_cast<Ekiga::PresenceCore*>(core.get ("presence-core"));
 
@@ -254,7 +254,7 @@ Local::Presentity::edit_presentity_form_submitted (Ekiga::Form &result)
 
       presence_core->unfetch_presence (uri);
       uri = new_uri;
-      presence = "presence-unknown";
+      presence = "unknown";
       presence_core->fetch_presence (uri);
       xmlSetProp (node, (const xmlChar*)"uri", (const xmlChar*)uri.c_str ());
     }

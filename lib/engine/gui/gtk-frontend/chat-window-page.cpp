@@ -526,7 +526,7 @@ on_presentity_removed (G_GNUC_UNUSED Ekiga::Cluster &cluster,
   if (presentity.get_uri () == self->priv->uri) {
 
     gtk_image_set_from_stock (GTK_IMAGE (self->priv->tab_image), 
-                              "presence-unknown",
+                              "unknown",
                               GTK_ICON_SIZE_MENU);
     gtk_label_set_text (GTK_LABEL (self->priv->tab_label_name),
                         presentity.get_name ().c_str ());
@@ -799,7 +799,7 @@ chat_window_page_new (Ekiga::ServiceCore & core,
 
   align = gtk_alignment_new (0.0, 0.5, 0.0, 0.0);
   self->priv->tab_image = gtk_image_new ();
-  gtk_image_set_from_stock (GTK_IMAGE (self->priv->tab_image), "presence-unknown", GTK_ICON_SIZE_MENU);
+  gtk_image_set_from_stock (GTK_IMAGE (self->priv->tab_image), "unknown", GTK_ICON_SIZE_MENU);
   gtk_container_add (GTK_CONTAINER (align), self->priv->tab_image);
   gtk_box_pack_start (GTK_BOX (self->priv->tab), align, FALSE, FALSE, 0);
 

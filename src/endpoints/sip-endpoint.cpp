@@ -1056,24 +1056,24 @@ Opal::Sip::EndPoint::OnPresenceInfoReceived (const PString & user,
   PCaselessString s = note;
 
   std::string status;
-  std::string presence = "presence-unknown";
+  std::string presence = "unknown";
 
   if (b.Find ("Closed") != P_MAX_INDEX)
-    presence = "presence-offline";
+    presence = "offline";
   else
-    presence = "presence-online";
+    presence = "online";
 
   if (s.Find ("Away") != P_MAX_INDEX)
-    presence = "presence-away";
+    presence = "away";
   else if (s.Find ("On the phone") != P_MAX_INDEX
            || s.Find ("Ringing") != P_MAX_INDEX) 
-    presence = "presence-inacall";
+    presence = "inacall";
   else if (s.Find ("dnd") != P_MAX_INDEX
            || s.Find ("Do Not Disturb") != P_MAX_INDEX) 
-    presence = "presence-dnd";
+    presence = "dnd";
 
   else if (s.Find ("Free For Chat") != P_MAX_INDEX) 
-    presence = "presence-freeforchat";
+    presence = "freeforchat";
 
   if ((j = s.Find (" - ")) != P_MAX_INDEX)
     status = (const char *) note.Mid (j + 3);

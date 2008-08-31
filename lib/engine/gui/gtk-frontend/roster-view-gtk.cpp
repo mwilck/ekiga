@@ -939,8 +939,8 @@ on_presentity_added (Ekiga::Cluster &/*cluster*/,
 
   roster_view_gtk_find_iter_for_heap (self, heap, &heap_iter);
 
-  active = presentity.get_presence () != "presence-offline";
-  away = presentity.get_presence () == "presence-away";
+  active = presentity.get_presence () != "offline";
+  away = presentity.get_presence () == "away";
 
   for (std::set<std::string>::const_iterator group = groups.begin ();
        group != groups.end ();
