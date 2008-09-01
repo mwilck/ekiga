@@ -3,14 +3,15 @@
 # Copyright (C) 2003-2005 Free Software Foundation, Inc.
 # Tommi Vainikainen <Tommi.Vainikainen@iki.fi>, 2003-2005.
 # Ilkka Tuohela <hile@iki.fi>, 2005-2008.
+# Timo Jyrinki <timo.jyrinki@iki.fi>, 2008.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: ekiga\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-27 12:13+0300\n"
-"PO-Revision-Date: 2008-08-27 12:00+0300\n"
-"Last-Translator: Ilkka Tuohela <hile@iki.fi>\n"
+"POT-Creation-Date: 2008-09-01 16:14+0300\n"
+"PO-Revision-Date: 2008-09-01 17:09+0300\n"
+"Last-Translator: Timo Jyrinki <timo.jyrinki@iki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -168,7 +169,7 @@ msgstr "Siirrä puhelut annetulle koneelle varattuna oltaessa"
 msgid "Forward calls to the given host if no answer"
 msgstr "Siirrä puhelut annetulle koneelle jos ei vastata"
 
-#: ../ekiga.schemas.in.in.h:30 ../src/gui/preferences.cpp:1007
+#: ../ekiga.schemas.in.in.h:30 ../src/gui/preferences.cpp:1009
 msgid "Frame Rate"
 msgstr "Kehysnopeus"
 
@@ -292,7 +293,7 @@ msgstr "GSM-koodekilla jokaisessa paketissa lähetettävien kehyksien määrä"
 
 #: ../ekiga.schemas.in.in.h:56
 msgid "Outbound Proxy"
-msgstr "Lähtevien välimuisti"
+msgstr "Lähtevien välipalvelin"
 
 #: ../ekiga.schemas.in.in.h:57
 msgid "Output device type"
@@ -303,15 +304,15 @@ msgid "Place windows displaying video above other windows during calls"
 msgstr ""
 "Aseta videota näyttävät ikkunat muiden ikkunoiden päälle soittojen ajaksi"
 
-#: ../ekiga.schemas.in.in.h:59 ../src/gui/preferences.cpp:1392
+#: ../ekiga.schemas.in.in.h:59 ../src/gui/preferences.cpp:1394
 msgid "Play busy tone"
 msgstr "Soita varattu-ääni"
 
-#: ../ekiga.schemas.in.in.h:60 ../src/gui/preferences.cpp:1383
+#: ../ekiga.schemas.in.in.h:60 ../src/gui/preferences.cpp:1385
 msgid "Play ring tone"
 msgstr "Soita hälytysääni"
 
-#: ../ekiga.schemas.in.in.h:61 ../src/gui/preferences.cpp:1374
+#: ../ekiga.schemas.in.in.h:61 ../src/gui/preferences.cpp:1376
 msgid "Play sound on incoming calls"
 msgstr "Soita ääni uusien puheluiden saapuessa"
 
@@ -420,7 +421,7 @@ msgstr ""
 msgid "Show offline contacts"
 msgstr "Näytä poissaolevat tuttavat"
 
-#: ../ekiga.schemas.in.in.h:86 ../src/gui/main.cpp:1823
+#: ../ekiga.schemas.in.in.h:86 ../src/gui/main.cpp:1838
 msgid "Show the call panel"
 msgstr "Näytä soittopaneeli"
 
@@ -476,7 +477,7 @@ msgstr "TCP-porttiväli"
 
 #: ../ekiga.schemas.in.in.h:98
 msgid "Temporal Spatial Trade Off"
-msgstr ""
+msgstr "Ajallisavaruudellinen kompromissi"
 
 #: ../ekiga.schemas.in.in.h:99
 msgid "The Audio Codecs List"
@@ -852,7 +853,7 @@ msgstr "Videomuoto"
 msgid "Video image"
 msgstr "Videokuva"
 
-#: ../ekiga.schemas.in.in.h:163 ../src/gui/assistant.cpp:1051
+#: ../ekiga.schemas.in.in.h:163 ../src/gui/assistant.cpp:1045
 msgid "Video input device"
 msgstr "Videon syötelaite"
 
@@ -889,7 +890,7 @@ msgstr "Vastaamatta"
 
 #: ../lib/engine/addressbook/evolution/evolution-contact.cpp:234
 #: ../lib/engine/presence/local-roster/local-presentity.cpp:194
-#: ../src/endpoints/opal-account.cpp:306 ../src/gui/main.cpp:1781
+#: ../src/endpoints/opal-account.cpp:306 ../src/gui/main.cpp:1796
 msgid "_Edit"
 msgstr "_Muokkaa"
 
@@ -912,8 +913,8 @@ msgstr "Ole hyvä ja päivitä seuraavat kentät:"
 
 #: ../lib/engine/addressbook/evolution/evolution-contact.cpp:329
 #: ../lib/engine/presence/local-roster/local-presentity.cpp:221
-#: ../lib/engine/presence/local-roster/local-heap.cpp:168
-#: ../lib/engine/presence/local-roster/local-heap.cpp:315
+#: ../lib/engine/presence/local-roster/local-heap.cpp:177
+#: ../lib/engine/presence/local-roster/local-heap.cpp:324
 #: ../src/endpoints/opal-account.cpp:351 ../src/endpoints/opal-bank.cpp:101
 #: ../src/endpoints/opal-bank.cpp:111
 msgid "Name:"
@@ -971,7 +972,7 @@ msgid "New _Contact"
 msgstr "Uusi _tuttava"
 
 #: ../lib/engine/addressbook/evolution/evolution-book.cpp:311
-#: ../lib/engine/presence/local-roster/local-heap.cpp:109
+#: ../lib/engine/presence/local-roster/local-heap.cpp:118
 msgid "New contact"
 msgstr "Uusi tuttava"
 
@@ -1102,37 +1103,38 @@ msgstr "_Salasana"
 msgid "_Find"
 msgstr "_Etsi"
 
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:659
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:660
 msgid "Address Book"
 msgstr "Osoitekirja"
 
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:673
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:680
+#: ../src/gui/main.cpp:1745
 msgid "Address _Book"
 msgstr "_Osoitekirja"
 
 #. This will add static and dynamic actions
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:682
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:689
 msgid "_Action"
 msgstr "_Toiminto"
 
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:727
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:734
 msgid "Category"
 msgstr "Luokka"
 
-#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:237
+#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:241
 #: ../lib/engine/gui/gtk-frontend/chat-window-page.cpp:968
 msgid "says:"
 msgstr "sanoo:"
 
-#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:308
+#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:364
 msgid "Open link in browser"
 msgstr "Avaa linkki selaimessa"
 
-#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:314
+#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:370
 msgid "Copy link"
 msgstr "Kopioi linkki"
 
-#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:765
+#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:878
 msgid "_Smile..."
 msgstr "_Hymyile..."
 
@@ -1144,7 +1146,7 @@ msgid "Chat Window"
 msgstr "Keskusteluikkuna"
 
 #: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:628
-#: ../src/gui/assistant.cpp:1261
+#: ../src/gui/assistant.cpp:1253
 msgid "Full Name"
 msgstr "Koko nimi"
 
@@ -1152,8 +1154,8 @@ msgstr "Koko nimi"
 msgid "_Search Filter:"
 msgstr "_Hakusuodatin:"
 
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:916
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:950
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:967
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1001
 msgid "Unsorted"
 msgstr "Ei järjestetty"
 
@@ -1187,8 +1189,8 @@ msgstr ""
 "Täytä tämä kaavake, jos haluat vaihtaa tietoja ekigan sisäisessä nimilistassa"
 
 #: ../lib/engine/presence/local-roster/local-presentity.cpp:222
-#: ../lib/engine/presence/local-roster/local-heap.cpp:177
-#: ../lib/engine/presence/local-roster/local-heap.cpp:179
+#: ../lib/engine/presence/local-roster/local-heap.cpp:186
+#: ../lib/engine/presence/local-roster/local-heap.cpp:188
 msgid "Address:"
 msgstr "Osoite:"
 
@@ -1197,49 +1199,61 @@ msgid "Choose groups:"
 msgstr "Valitse ryhmät:"
 
 #: ../lib/engine/presence/local-roster/local-roster-bridge.cpp:94
-#: ../lib/engine/presence/local-roster/local-heap.cpp:165
+#: ../lib/engine/presence/local-roster/local-heap.cpp:174
 msgid "Add to local roster"
 msgstr "Lisää paikalliseen nimilistaan"
 
-#: ../lib/engine/presence/local-roster/local-heap.cpp:102
+#: ../lib/engine/presence/local-roster/local-heap.cpp:93
+msgid "Services"
+msgstr "Palvelut"
+
+#: ../lib/engine/presence/local-roster/local-heap.cpp:94
+msgid "Echo test"
+msgstr "Kaikutesti"
+
+#: ../lib/engine/presence/local-roster/local-heap.cpp:95
+msgid "Conference room"
+msgstr "Neuvotteluhuone"
+
+#: ../lib/engine/presence/local-roster/local-heap.cpp:111
 msgid "Local roster"
 msgstr "Paikallinen nimilista"
 
-#: ../lib/engine/presence/local-roster/local-heap.cpp:119
+#: ../lib/engine/presence/local-roster/local-heap.cpp:128
 msgid "Rename"
 msgstr "Nimeä uudestaan"
 
-#: ../lib/engine/presence/local-roster/local-heap.cpp:166
+#: ../lib/engine/presence/local-roster/local-heap.cpp:175
 msgid ""
 "Please fill in this form to add a new contact to ekiga's internal roster"
 msgstr ""
 "Lisää uusi tuttava ekigan sisäiseen nimilistaan täyttämällä tämä lomake"
 
-#: ../lib/engine/presence/local-roster/local-heap.cpp:183
+#: ../lib/engine/presence/local-roster/local-heap.cpp:192
 msgid "Put contact in groups:"
 msgstr "Lisää tuttava ryhmiin:"
 
-#: ../lib/engine/presence/local-roster/local-heap.cpp:286
+#: ../lib/engine/presence/local-roster/local-heap.cpp:295
 msgid "You supplied an unsupported address"
 msgstr "Antamasi osoitemuoto ei ole tuettu"
 
-#: ../lib/engine/presence/local-roster/local-heap.cpp:288
+#: ../lib/engine/presence/local-roster/local-heap.cpp:297
 msgid "You already have a contact with this address!"
 msgstr "Tälle osoitteelle on jo aikaisempi tuttava!"
 
-#: ../lib/engine/presence/local-roster/local-heap.cpp:313
+#: ../lib/engine/presence/local-roster/local-heap.cpp:322
 msgid "Rename group"
 msgstr "Nimeä ryhmä uudestaan"
 
-#: ../lib/engine/presence/local-roster/local-heap.cpp:314
+#: ../lib/engine/presence/local-roster/local-heap.cpp:323
 msgid "Please edit this group name"
 msgstr "Muokkaa ryhmän nimeä"
 
-#: ../lib/gui/codecsbox.cpp:479
+#: ../lib/gui/codecsbox.cpp:476
 msgid "Move selected codec priority upwards"
 msgstr "Kasvata valitun koodekin tärkeysjärjestystä"
 
-#: ../lib/gui/codecsbox.cpp:490
+#: ../lib/gui/codecsbox.cpp:486
 msgid "Move selected codec priority downwards"
 msgstr "Pienennä valitun koodekin tärkeysjärjestystä"
 
@@ -1308,8 +1322,8 @@ msgstr ""
 "kirjoittaa dataa tähän laitteeseen. Tarkista ääniasetuksesi."
 
 #: ../src/devices/audio.cpp:476 ../src/devices/audio.cpp:477
-#: ../src/gui/assistant.cpp:1126 ../src/gui/assistant.cpp:1149
-#: ../src/gui/assistant.cpp:1172 ../src/gui/preferences.cpp:745
+#: ../src/gui/assistant.cpp:1118 ../src/gui/assistant.cpp:1141
+#: ../src/gui/assistant.cpp:1164 ../src/gui/preferences.cpp:745
 #: ../src/gui/preferences.cpp:769 ../src/gui/preferences.cpp:792
 msgid "No device found"
 msgstr "Laitetta ei löydy"
@@ -1330,25 +1344,25 @@ msgstr ""
 "kaiuttimista neljän sekunnin viiveellä."
 
 #: ../src/endpoints/h323-endpoint.cpp:149
-#: ../src/endpoints/sip-endpoint.cpp:274 ../src/endpoints/sip-endpoint.cpp:278
+#: ../src/endpoints/sip-endpoint.cpp:273 ../src/endpoints/sip-endpoint.cpp:277
 msgid "Call"
 msgstr "Soita"
 
-#: ../src/endpoints/h323-endpoint.cpp:313
+#: ../src/endpoints/h323-endpoint.cpp:314
 msgid "Duplicate alias"
 msgstr "Kahdennettu alias"
 
-#: ../src/endpoints/h323-endpoint.cpp:316
+#: ../src/endpoints/h323-endpoint.cpp:317
 msgid "Bad username/password"
 msgstr "Virheellinen käyttäjätunnus tai salasana"
 
-#: ../src/endpoints/h323-endpoint.cpp:319
+#: ../src/endpoints/h323-endpoint.cpp:320
 #: ../src/endpoints/sip-endpoint.cpp:891
 msgid "Transport error"
 msgstr "Siirtovirhe"
 
-#: ../src/endpoints/h323-endpoint.cpp:330
-#: ../src/endpoints/h323-endpoint.cpp:335
+#: ../src/endpoints/h323-endpoint.cpp:331
+#: ../src/endpoints/h323-endpoint.cpp:336
 #: ../src/endpoints/sip-endpoint.cpp:898
 msgid "Failed"
 msgstr "Epäonnistui"
@@ -1383,8 +1397,8 @@ msgstr "Lataa tiliä"
 msgid "Consult the balance history"
 msgstr "Selaa tilihistoriaa"
 
-#: ../src/endpoints/opal-account.cpp:332 ../src/gui/assistant.cpp:688
-msgid "Consult the calls history"
+#: ../src/endpoints/opal-account.cpp:332
+msgid "Consult the call history"
 msgstr "Selaa puheluhistoriaa"
 
 #: ../src/endpoints/opal-account.cpp:347 ../src/endpoints/opal-bank.cpp:74
@@ -1400,8 +1414,7 @@ msgid "Gatekeeper:"
 msgstr "Porttivahti:"
 
 #: ../src/endpoints/opal-account.cpp:356 ../src/endpoints/opal-bank.cpp:83
-#: ../src/endpoints/opal-bank.cpp:94 ../src/endpoints/opal-bank.cpp:103
-#: ../src/endpoints/opal-bank.cpp:113
+#: ../src/endpoints/opal-bank.cpp:103 ../src/endpoints/opal-bank.cpp:113
 msgid "User:"
 msgstr "Käyttäjä:"
 
@@ -1410,8 +1423,7 @@ msgid "Authentication User:"
 msgstr "Kirjautumiskäyttäjä:"
 
 #: ../src/endpoints/opal-account.cpp:359 ../src/endpoints/opal-bank.cpp:85
-#: ../src/endpoints/opal-bank.cpp:96 ../src/endpoints/opal-bank.cpp:105
-#: ../src/endpoints/opal-bank.cpp:115
+#: ../src/endpoints/opal-bank.cpp:105 ../src/endpoints/opal-bank.cpp:115
 msgid "Password:"
 msgstr "Salasana:"
 
@@ -1446,7 +1458,7 @@ msgstr "Lisää Ekiga.net -tili"
 
 #: ../src/endpoints/opal-bank.cpp:57
 msgid "_Add an Ekiga Call Out Account"
-msgstr "_Lisää Ekigan ulossoitto-tili"
+msgstr "_Lisää Ekigan ulossoittotili"
 
 #: ../src/endpoints/opal-bank.cpp:59
 msgid "_Add a SIP Account"
@@ -1461,12 +1473,20 @@ msgid "Please update the following fields."
 msgstr "Ole hyvä ja päivitä seuraavat kentät."
 
 #: ../src/endpoints/opal-bank.cpp:80 ../src/gui/assistant.cpp:540
-msgid "Get an ekiga.net SIP account"
-msgstr "Hanki ekiga.netin SIP-tunnus"
+msgid "Get an Ekiga.net SIP account"
+msgstr "Hanki Ekiga.netin SIP-tili"
 
 #: ../src/endpoints/opal-bank.cpp:90 ../src/gui/assistant.cpp:652
 msgid "Get an Ekiga Call Out account"
 msgstr "Hanki Ekigan ulossoittotili"
+
+#: ../src/endpoints/opal-bank.cpp:94
+msgid "Account ID:"
+msgstr "Tilin tunniste:"
+
+#: ../src/endpoints/opal-bank.cpp:96
+msgid "PIN Code:"
+msgstr "PIN-koodi:"
 
 #: ../src/endpoints/opal-call.cpp:388
 msgid "Local user cleared the call"
@@ -1544,11 +1564,12 @@ msgstr "Käyttäjä ei ole saatavilla"
 msgid "Call completed"
 msgstr "Puhelu päättynyt"
 
-#: ../src/endpoints/sip-endpoint.cpp:275 ../src/endpoints/sip-endpoint.cpp:279
-msgid "Forward"
-msgstr "Uudelleenohjaa"
+#: ../src/endpoints/sip-endpoint.cpp:274 ../src/endpoints/sip-endpoint.cpp:278
+#: ../src/gui/main.cpp:3647
+msgid "Transfer"
+msgstr "Siirrä puhelu"
 
-#: ../src/endpoints/sip-endpoint.cpp:299 ../src/endpoints/sip-endpoint.cpp:301
+#: ../src/endpoints/sip-endpoint.cpp:298 ../src/endpoints/sip-endpoint.cpp:300
 msgid "Message"
 msgstr "Viesti"
 
@@ -1713,7 +1734,7 @@ msgid "Server timeout"
 msgstr "Palvelimen aikakatkaisu"
 
 #: ../src/endpoints/sip-endpoint.cpp:866
-msgid "SIP version not supp."
+msgid "SIP version not supported"
 msgstr "SIP-versio ei ole tuettu"
 
 #: ../src/endpoints/sip-endpoint.cpp:870
@@ -1760,27 +1781,27 @@ msgstr "Ei voitu rekisteröidä"
 msgid "Processing..."
 msgstr "Käsitellään..."
 
-#: ../src/gui/accounts.cpp:521
+#: ../src/gui/accounts.cpp:522
 msgid "Account Name"
 msgstr "Tilin nimi:"
 
-#: ../src/gui/accounts.cpp:522
+#: ../src/gui/accounts.cpp:523
 msgid "Voice Mails"
 msgstr "Ääniviestit"
 
-#: ../src/gui/accounts.cpp:523
+#: ../src/gui/accounts.cpp:524
 msgid "Status"
 msgstr "Tila"
 
-#: ../src/gui/accounts.cpp:534 ../src/gui/accounts.cpp:572
+#: ../src/gui/accounts.cpp:535 ../src/gui/accounts.cpp:573
 msgid "Accounts"
 msgstr "Tilit"
 
-#: ../src/gui/accounts.cpp:549
+#: ../src/gui/accounts.cpp:550
 msgid "Account"
 msgstr "Tili"
 
-#: ../src/gui/accounts.cpp:575 ../src/gui/preferences.cpp:508
+#: ../src/gui/accounts.cpp:576 ../src/gui/preferences.cpp:508
 msgid "A"
 msgstr "A"
 
@@ -1792,7 +1813,7 @@ msgid ""
 "Once you have completed these steps, you can always change them later by "
 "selecting Preferences in the Edit menu."
 msgstr ""
-"Tämä on Ekigan ohjattu asetusten apulainen. Seuraavissa kohdissa määritetään "
+"Tämä on Ekigan ohjattu asetusten teko. Seuraavissa kohdissa määritetään "
 "Ekigan asetukset kyselemällä muutamia yksinkertaisia kysymyksiä.\n"
 "\n"
 "Kun olet läpäissyt nämä vaiheet, voit aina myöhemmin muuttaa asetuksia "
@@ -1821,7 +1842,7 @@ msgstr ""
 
 #: ../src/gui/assistant.cpp:503
 msgid "Ekiga.net Account"
-msgstr "Ekiga.net -tili"
+msgstr "Ekiga.net-tili"
 
 #: ../src/gui/assistant.cpp:505
 msgid "Please enter your username:"
@@ -1855,7 +1876,7 @@ msgstr "En halua rekisteröityä ekiga.net palveluun"
 
 #: ../src/gui/assistant.cpp:617
 msgid "Ekiga Call Out Account"
-msgstr "ekiga.net -ulossoittotili"
+msgstr "Ekigan ulossoittotili"
 
 #: ../src/gui/assistant.cpp:619
 msgid "Please enter your account ID:"
@@ -1884,11 +1905,15 @@ msgstr ""
 "- Syötä tilisi tunniste ja PIN-koodi.\n"
 "Palvelu toimii ainoastaan jos rekisteröidyt käyttäen alla olevaa osoitetta.\n"
 
+#: ../src/gui/assistant.cpp:688
+msgid "Consult the calls history"
+msgstr "Selaa puheluhistoriaa"
+
 #: ../src/gui/assistant.cpp:698
 msgid "I do not want to sign up for the Ekiga Call Out service"
 msgstr "En halua rekisteröityä Ekigan ulossoittopalveluun"
 
-#: ../src/gui/assistant.cpp:767 ../src/gui/assistant.cpp:1272
+#: ../src/gui/assistant.cpp:767 ../src/gui/assistant.cpp:1264
 msgid "Connection Type"
 msgstr "Yhteystyyppi"
 
@@ -1941,55 +1966,54 @@ msgstr "Valitse äänimerkkien toistolaite:"
 
 #: ../src/gui/assistant.cpp:917
 msgid ""
-"The audio ringing device is the device  managed by the audio manager that "
-"will be used to play the ringing sound."
+"The audio ringing device is the device that will be used to play the ringing "
+"sound on incoming calls."
 msgstr ""
-"Äänihälytyslaite on äänenhallinnan hallitsema laite, jota käytetään "
-"soittoäänen soittamiseen."
+"Äänihälytyslaite on laite, jota käytetään soittoäänen soittamiseen "
+"puheluiden tullessa."
 
 #. ---
-#: ../src/gui/assistant.cpp:930
+#: ../src/gui/assistant.cpp:928
 msgid "Please choose the audio output device:"
 msgstr "Valitse äänisoitinlaite:"
 
-#: ../src/gui/assistant.cpp:938
+#: ../src/gui/assistant.cpp:936
 msgid ""
-"The audio output device is the device  managed by the audio manager that "
-"will be used to play audio."
+"The audio output device is the device that will be used to play audio during "
+"calls."
 msgstr ""
-"Äänisoitinlaite on äänenhallinnan hallitsema laite, jota käytetään puheen ja "
-"äänen toistamiseen."
+"Äänisoitinlaite on laite, jota käytetään äänen toistamiseen puheluiden "
+"aikana."
 
 #. ---
-#: ../src/gui/assistant.cpp:951
+#: ../src/gui/assistant.cpp:947
 msgid "Please choose the audio input device:"
 msgstr "Valitse äänen syötelaite:"
 
-#: ../src/gui/assistant.cpp:959
+#: ../src/gui/assistant.cpp:955
 msgid ""
-"The audio input device is the device managed by the audio manager that will "
-"be used to record your voice."
+"The audio input device is the device that will be used to record your voice "
+"during calls."
 msgstr ""
-"Äänen syötelaite on äänenhallinnan hallitsema laite, jota käytetään äänen "
-"nauhoittamiseen."
+"Äänen syötelaite on laite, jota käytetään äänen nauhoittamiseen."
 
-#: ../src/gui/assistant.cpp:1053
+#: ../src/gui/assistant.cpp:1047
 msgid "Please choose your video input device:"
 msgstr "Valitse videon syötelaite:"
 
-#: ../src/gui/assistant.cpp:1061
+#: ../src/gui/assistant.cpp:1055
 msgid ""
-"The video manager is the plugin that will manage your video devices, "
-"Video4Linux is the most common choice if you own a webcam."
+"The video input device is the device that will be used to capture video "
+"during calls."
 msgstr ""
-"Videonhallinta on liitännäinen, joka hallitsee videolaitteita, Video4Linux "
-"on yleisin valinta, jos sinulla on web-kamera."
+"Videon syötelaite on laite, jota käytetään videon kaappaamiseen puheluiden "
+"aikana."
 
-#: ../src/gui/assistant.cpp:1203
+#: ../src/gui/assistant.cpp:1195
 msgid "Configuration Complete"
 msgstr "Asennus päättynyt"
 
-#: ../src/gui/assistant.cpp:1205
+#: ../src/gui/assistant.cpp:1197
 msgid ""
 "You have now finished the Ekiga configuration. All the settings can be "
 "changed in the Ekiga preferences. Enjoy!"
@@ -1997,35 +2021,35 @@ msgstr ""
 "Ekigan asetusten määrittely on nyt valmis. Kaikkia asetuksia voi muuttaa "
 "ekigan asetuksista."
 
-#: ../src/gui/assistant.cpp:1212
+#: ../src/gui/assistant.cpp:1204
 msgid "Configuration summary:"
 msgstr "Yhteenveto asetuksista:"
 
-#: ../src/gui/assistant.cpp:1282
+#: ../src/gui/assistant.cpp:1274
 msgid "Audio Ringing Device"
 msgstr "Äänimerkkien toistolaite"
 
-#: ../src/gui/assistant.cpp:1291
+#: ../src/gui/assistant.cpp:1283
 msgid "Audio Output Device"
 msgstr "Äänen toistolaite"
 
-#: ../src/gui/assistant.cpp:1300
+#: ../src/gui/assistant.cpp:1292
 msgid "Audio Input Device"
 msgstr "Äänen syöttölaite"
 
-#: ../src/gui/assistant.cpp:1309
+#: ../src/gui/assistant.cpp:1301
 msgid "Video Input Device"
 msgstr "Videokuvan syöttölaite"
 
-#: ../src/gui/assistant.cpp:1322
+#: ../src/gui/assistant.cpp:1314
 msgid "SIP URI"
 msgstr "SIP-URI"
 
-#: ../src/gui/assistant.cpp:1334
+#: ../src/gui/assistant.cpp:1326
 msgid "Ekiga Call Out"
-msgstr "Ekiga-ulossoitto"
+msgstr "Ekigan ulossoitto"
 
-#: ../src/gui/assistant.cpp:1376
+#: ../src/gui/assistant.cpp:1368
 #, c-format
 msgid "Ekiga Configuration Assistant (%d of %d)"
 msgstr "Ekigan ohjattu asennus - sivu %d/%d"
@@ -2090,6 +2114,7 @@ msgstr ""
 #: ../src/gui/callbacks.cpp:185
 msgid "translator-credits"
 msgstr ""
+"Timo Jyrinki, 2008\n"
 "Ilkka Tuohela, 2005-2008\n"
 "Tommi Vainikainen, 2003-2005\n"
 "\n"
@@ -2138,74 +2163,74 @@ msgid "wxyz"
 msgstr "wxyz"
 
 #. Translators: Is displayed once an account "%s" is registered.
-#: ../src/gui/main.cpp:572
+#: ../src/gui/main.cpp:581
 #, c-format
 msgid "Registered %s"
 msgstr "Rekisteröitiin %s"
 
 #. Translators: Is displayed once an account "%s" is unregistered.
-#: ../src/gui/main.cpp:578
+#: ../src/gui/main.cpp:587
 #, c-format
 msgid "Unregistered %s"
 msgstr "Peruttiin rekisteröinti %s"
 
-#: ../src/gui/main.cpp:583
+#: ../src/gui/main.cpp:592
 #, c-format
 msgid "Could not unregister %s"
 msgstr "Palvelun %s rekisteröintiä ei voitu perua"
 
-#: ../src/gui/main.cpp:587
+#: ../src/gui/main.cpp:596
 #, c-format
 msgid "Could not register %s"
 msgstr "Palvelua %s ei voitu rekisteröidä"
 
-#: ../src/gui/main.cpp:647
+#: ../src/gui/main.cpp:656
 #, c-format
 msgid "A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d"
 msgstr "A:%.1f/%.1f V:%.1f/%.1f   FPS:%d/%d"
 
-#: ../src/gui/main.cpp:722
+#: ../src/gui/main.cpp:731
 #, c-format
 msgid "Connected with %s"
 msgstr "Yhdistetty palveluun %s"
 
-#: ../src/gui/main.cpp:755 ../src/gui/main.cpp:2319
+#: ../src/gui/main.cpp:764 ../src/gui/main.cpp:2334
 msgid "Standby"
 msgstr "Valmiustila"
 
-#: ../src/gui/main.cpp:816
+#: ../src/gui/main.cpp:825
 msgid "Call on hold"
 msgstr "Puhelu odottamassa"
 
-#: ../src/gui/main.cpp:829
+#: ../src/gui/main.cpp:838
 msgid "Call retrieved"
 msgstr "Puhelu noudettu"
 
-#: ../src/gui/main.cpp:848
+#: ../src/gui/main.cpp:857
 #, c-format
 msgid "Missed call from %s"
 msgstr "Vastaamaton puhelu käyttäjältä %s"
 
-#: ../src/gui/main.cpp:995 ../src/gui/misc.cpp:94
+#: ../src/gui/main.cpp:1004 ../src/gui/misc.cpp:94
 msgid "Error"
 msgstr "Virhe"
 
-#: ../src/gui/main.cpp:1128
+#: ../src/gui/main.cpp:1137
 #, c-format
 msgid "Added video input device %s"
 msgstr "lisättiin videon syötelaite %s"
 
-#: ../src/gui/main.cpp:1145
+#: ../src/gui/main.cpp:1154
 #, c-format
 msgid "Removed video input device %s"
 msgstr "Poistettiin videon syötelait %se"
 
-#: ../src/gui/main.cpp:1162
+#: ../src/gui/main.cpp:1171
 #, c-format
 msgid "Error while accessing video device %s"
 msgstr "Virhe avattaessa videolaitetta %s"
 
-#: ../src/gui/main.cpp:1165
+#: ../src/gui/main.cpp:1174
 msgid ""
 "A moving logo will be transmitted during calls. Notice that you can always "
 "transmit a given image or the moving logo by choosing \"Picture\" as video "
@@ -2215,7 +2240,7 @@ msgstr ""
 "lähettää valitun kuvan tai liikkuvan logon valitsemalla videoliitännäiseksi "
 "\"Kuva\"  ja laitteeksi \"Liikkuva logo\" tai \"Kiinteä kuva\"."
 
-#: ../src/gui/main.cpp:1169
+#: ../src/gui/main.cpp:1178
 msgid ""
 "There was an error while opening the device. In case it is a pluggable "
 "device it may be sufficient to reconnect it. If not, or if it still is not "
@@ -2226,15 +2251,15 @@ msgstr ""
 "että sen irrottaa ja liittää uudestaan. Jos laite on kiinteä tai tämä ei "
 "auta, tarkista oikeudet ja varmista että asiaankuuluvat ajurit on ladattu."
 
-#: ../src/gui/main.cpp:1173
+#: ../src/gui/main.cpp:1182
 msgid "Your video driver doesn't support the requested video format."
 msgstr "Videoajuri ei tue pyydettyä videomuotoa."
 
-#: ../src/gui/main.cpp:1177
+#: ../src/gui/main.cpp:1186
 msgid "Could not open the chosen channel."
 msgstr "Valitun kanavan avaaminen ei onnistunut."
 
-#: ../src/gui/main.cpp:1181
+#: ../src/gui/main.cpp:1190
 msgid ""
 "Your driver doesn't seem to support any of the color formats supported by "
 "Ekiga.\n"
@@ -2244,38 +2269,38 @@ msgstr ""
 "Ajuri ei näytä tukevan mitään Ekigan tukemista värimuodoista.\n"
 "Tarkista ytimen ajurin ohjeista, mitä paletteja ajurisi tukee."
 
-#: ../src/gui/main.cpp:1185
+#: ../src/gui/main.cpp:1194
 msgid "Error while setting the frame rate."
 msgstr "Virhe asetettaessa kehysnopeutta."
 
-#: ../src/gui/main.cpp:1189
+#: ../src/gui/main.cpp:1198
 msgid "Error while setting the frame size."
 msgstr "Virhe asetettaessa kehyskokoa."
 
-#: ../src/gui/main.cpp:1194 ../src/gui/main.cpp:1303 ../src/gui/main.cpp:1423
+#: ../src/gui/main.cpp:1203 ../src/gui/main.cpp:1312 ../src/gui/main.cpp:1432
 msgid "Unknown error."
 msgstr "Tuntematon virhe."
 
-#: ../src/gui/main.cpp:1250
+#: ../src/gui/main.cpp:1259
 #, c-format
 msgid "Added audio input device %s"
 msgstr "Lisättiin äänen syötelaite %s"
 
-#: ../src/gui/main.cpp:1270
+#: ../src/gui/main.cpp:1279
 #, c-format
 msgid "Removed audio input device %s"
 msgstr "Poistettiin äänen syötelaite %s"
 
-#: ../src/gui/main.cpp:1287
+#: ../src/gui/main.cpp:1296
 #, c-format
 msgid "Error while opening audio input device %s"
 msgstr "Virhe avattaessa äänen syötelaitetta %s"
 
-#: ../src/gui/main.cpp:1290
+#: ../src/gui/main.cpp:1299
 msgid "Only silence will be transmitted."
 msgstr "Vain hiljaisuutta lähetetään."
 
-#: ../src/gui/main.cpp:1294
+#: ../src/gui/main.cpp:1303
 msgid ""
 "Unable to open the selected audio device for recording. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
@@ -2287,7 +2312,7 @@ msgstr ""
 "on kiinteä tai tämä ei auta, tarkista oikeudet ja varmista että "
 "asiaankuuluvat ajurit on ladattu."
 
-#: ../src/gui/main.cpp:1298
+#: ../src/gui/main.cpp:1307
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "read data from this device. In case it is a pluggable device it may be "
@@ -2299,26 +2324,26 @@ msgstr ""
 "uudestaan. Jos laite on kiinteä tai tämä ei auta, tarkista oikeudet ja "
 "varmista että asiaankuuluvat ajurit on ladattu."
 
-#: ../src/gui/main.cpp:1368
+#: ../src/gui/main.cpp:1377
 #, c-format
 msgid "Added audio output device %s"
 msgstr "Lisättiin äänen toistolaite %s"
 
-#: ../src/gui/main.cpp:1386
+#: ../src/gui/main.cpp:1395
 #, c-format
 msgid "Removed audio output device %s"
 msgstr "Poistettiin äänen toistolaite %s"
 
-#: ../src/gui/main.cpp:1407
+#: ../src/gui/main.cpp:1416
 #, c-format
 msgid "Error while opening audio output device %s"
 msgstr "Virhe avattaessa äänen toistolaitetta %s"
 
-#: ../src/gui/main.cpp:1410
+#: ../src/gui/main.cpp:1419
 msgid "No incoming sound will be played."
 msgstr "Saapuvaa ääntä ei voida toistaa."
 
-#: ../src/gui/main.cpp:1414
+#: ../src/gui/main.cpp:1423
 msgid ""
 "Unable to open the selected audio device for playing. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
@@ -2330,7 +2355,7 @@ msgstr ""
 "on kiinteä tai tämä ei auta, tarkista oikeudet ja varmista että "
 "asiaankuuluvat ajurit on ladattu."
 
-#: ../src/gui/main.cpp:1418
+#: ../src/gui/main.cpp:1427
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "write data from this device. In case it is a pluggable device it may be "
@@ -2342,342 +2367,347 @@ msgstr ""
 "liittää uudestaan. Jos laite on kiinteä tai tämä ei auta, tarkista oikeudet "
 "ja varmista että asiaankuuluvat ajurit on ladattu."
 
-#: ../src/gui/main.cpp:1640
+#: ../src/gui/main.cpp:1648
 msgid "Enter a URI on the left, and click this button to place a call"
 msgstr "Syötä URL vasemmalle ja soita puhelu napsauttamalla tästä"
 
-#: ../src/gui/main.cpp:1721
+#: ../src/gui/main.cpp:1729
 msgid "_Chat"
 msgstr "_Juttele"
 
-#: ../src/gui/main.cpp:1723
+#: ../src/gui/main.cpp:1731
 msgid "Ca_ll"
 msgstr "_Soita"
 
-#: ../src/gui/main.cpp:1723
+#: ../src/gui/main.cpp:1731
 msgid "Place a new call"
 msgstr "Soita uusi puhelu"
 
-#: ../src/gui/main.cpp:1726
+#: ../src/gui/main.cpp:1734
 msgid "_Hang up"
 msgstr "K_atkaise"
 
-#: ../src/gui/main.cpp:1727
+#: ../src/gui/main.cpp:1735
 msgid "Terminate the current call"
 msgstr "Katkaise nykyinen puhelu"
 
-#: ../src/gui/main.cpp:1733
+#: ../src/gui/main.cpp:1741
 msgid "A_dd Contact"
 msgstr "_Lisää tuttava"
 
-#: ../src/gui/main.cpp:1733
+#: ../src/gui/main.cpp:1741
 msgid "Add a contact to the roster"
 msgstr "Lisää tuttava nimilistaan"
 
-#: ../src/gui/main.cpp:1737
-msgid "_Find Contacts"
-msgstr "_Etsi tuttavia"
-
-#: ../src/gui/main.cpp:1738
+#: ../src/gui/main.cpp:1746
 msgid "Find contacts"
 msgstr "Etsi tuttavia"
 
-#: ../src/gui/main.cpp:1745
+#: ../src/gui/main.cpp:1753
+msgid "_Contact"
+msgstr "_Tuttava"
+
+#: ../src/gui/main.cpp:1754
+msgid "Act on selected contact"
+msgstr "Tee valitulle tuttavalle"
+
+#: ../src/gui/main.cpp:1760
 msgid "H_old Call"
 msgstr "Puhelu _pitoon"
 
-#: ../src/gui/main.cpp:1745 ../src/gui/main.cpp:2420
+#: ../src/gui/main.cpp:1760 ../src/gui/main.cpp:2432
 msgid "Hold the current call"
 msgstr "Pidätä nykyistä puhelua"
 
-#: ../src/gui/main.cpp:1749
+#: ../src/gui/main.cpp:1764
 msgid "_Transfer Call"
 msgstr "_Siirrä puhelu"
 
-#: ../src/gui/main.cpp:1750
+#: ../src/gui/main.cpp:1765
 msgid "Transfer the current call"
 msgstr "Siirrä nykyinen puhelu"
 
-#: ../src/gui/main.cpp:1757 ../src/gui/main.cpp:3152
+#: ../src/gui/main.cpp:1772 ../src/gui/main.cpp:3199
 msgid "Suspend _Audio"
 msgstr "Vaienna _ääni"
 
-#: ../src/gui/main.cpp:1758
+#: ../src/gui/main.cpp:1773
 msgid "Suspend or resume the audio transmission"
 msgstr "Vaienna tai palauta äänen lähetys"
 
-#: ../src/gui/main.cpp:1762 ../src/gui/main.cpp:3154
+#: ../src/gui/main.cpp:1777 ../src/gui/main.cpp:3201
 msgid "Suspend _Video"
 msgstr "Vaienna _video"
 
-#: ../src/gui/main.cpp:1763
+#: ../src/gui/main.cpp:1778
 msgid "Suspend or resume the video transmission"
 msgstr "Vaienna tai palauta videon lähetys"
 
-#: ../src/gui/main.cpp:1770
+#: ../src/gui/main.cpp:1785
 msgid "Close the Ekiga window"
 msgstr "Sulje Ekiga-ikkuna"
 
-#: ../src/gui/main.cpp:1777 ../src/gui/statusicon.cpp:418
+#: ../src/gui/main.cpp:1792 ../src/gui/statusicon.cpp:418
 msgid "Quit"
 msgstr "Sulje"
 
-#: ../src/gui/main.cpp:1783
+#: ../src/gui/main.cpp:1798
 msgid "_Configuration Assistant"
-msgstr "_Ohjattu asennus"
+msgstr "_Ohjattu asetusten teko"
 
-#: ../src/gui/main.cpp:1784
+#: ../src/gui/main.cpp:1799
 msgid "Run the configuration assistant"
-msgstr "Suorita ohjattu asennus"
+msgstr "Suorita ohjattu asetusten teko"
 
-#: ../src/gui/main.cpp:1791
+#: ../src/gui/main.cpp:1806
 msgid "_Accounts"
 msgstr "_Tilit"
 
-#: ../src/gui/main.cpp:1792
+#: ../src/gui/main.cpp:1807
 msgid "Edit your accounts"
 msgstr "Muokkaa tilejäsi"
 
-#: ../src/gui/main.cpp:1798
+#: ../src/gui/main.cpp:1813
 msgid "Change your preferences"
 msgstr "Muuta asetuksiasi"
 
-#: ../src/gui/main.cpp:1803
+#: ../src/gui/main.cpp:1818
 msgid "_View"
 msgstr "_Näytä"
 
-#: ../src/gui/main.cpp:1805
+#: ../src/gui/main.cpp:1820
 msgid "Con_tacts"
 msgstr "_Tuttavat"
 
-#: ../src/gui/main.cpp:1805
+#: ../src/gui/main.cpp:1820
 msgid "View the contacts list"
 msgstr "Näytä luettelo tuttavista"
 
-#: ../src/gui/main.cpp:1810
+#: ../src/gui/main.cpp:1825
 msgid "_Dialpad"
 msgstr "Valinta_levy"
 
-#: ../src/gui/main.cpp:1810
+#: ../src/gui/main.cpp:1825
 msgid "View the dialpad"
 msgstr "Näytä valintalevy"
 
-#: ../src/gui/main.cpp:1815
+#: ../src/gui/main.cpp:1830
 msgid "_Call History"
 msgstr "_Puheluhistoria"
 
-#: ../src/gui/main.cpp:1815
+#: ../src/gui/main.cpp:1830
 msgid "View the call history"
 msgstr "Näytä puheluhistoria"
 
-#: ../src/gui/main.cpp:1823
+#: ../src/gui/main.cpp:1838
 msgid "_Show Call Panel"
 msgstr "_Näytä soittopaneeli"
 
-#: ../src/gui/main.cpp:1831
+#: ../src/gui/main.cpp:1846
 msgid "_Local Video"
 msgstr "_Paikallinen video"
 
-#: ../src/gui/main.cpp:1832
+#: ../src/gui/main.cpp:1847
 msgid "Local video image"
 msgstr "Paikallinen videokuva"
 
-#: ../src/gui/main.cpp:1837
+#: ../src/gui/main.cpp:1852
 msgid "_Remote Video"
 msgstr "_Etävideo"
 
-#: ../src/gui/main.cpp:1838
+#: ../src/gui/main.cpp:1853
 msgid "Remote video image"
 msgstr "Etävideokuva"
 
-#: ../src/gui/main.cpp:1843
+#: ../src/gui/main.cpp:1858
 msgid "_Picture-in-Picture"
 msgstr "_Kuva-kuvassa"
 
-#: ../src/gui/main.cpp:1844 ../src/gui/main.cpp:1850
+#: ../src/gui/main.cpp:1859 ../src/gui/main.cpp:1865
 msgid "Both video images"
 msgstr "Molemmat videokuvat"
 
-#: ../src/gui/main.cpp:1849
+#: ../src/gui/main.cpp:1864
 msgid "Picture-in-Picture in Separate _Window"
 msgstr "Kuva-kuvassa _erillisessä ikkunassa"
 
-#: ../src/gui/main.cpp:1857
+#: ../src/gui/main.cpp:1872
 msgid "Zoom in"
 msgstr "Lähennä"
 
-#: ../src/gui/main.cpp:1861
+#: ../src/gui/main.cpp:1876
 msgid "Zoom out"
 msgstr "Loitonna"
 
-#: ../src/gui/main.cpp:1865
+#: ../src/gui/main.cpp:1880
 msgid "Normal size"
 msgstr "Peruskoko"
 
-#: ../src/gui/main.cpp:1869
+#: ../src/gui/main.cpp:1884
 msgid "_Fullscreen"
 msgstr "_Kokoruutu"
 
-#: ../src/gui/main.cpp:1869
+#: ../src/gui/main.cpp:1884
 msgid "Switch to fullscreen"
 msgstr "Vaihda kokoruutuun"
 
-#: ../src/gui/main.cpp:1874
+#: ../src/gui/main.cpp:1889
 msgid "_Help"
 msgstr "O_hje"
 
-#: ../src/gui/main.cpp:1877 ../src/gui/statusicon.cpp:395
+#: ../src/gui/main.cpp:1892 ../src/gui/statusicon.cpp:395
 #: ../src/gui/statusicon.cpp:406
 msgid "Get help by reading the Ekiga manual"
 msgstr "Hanki apua lukemalla Ekigan opaskirjaa"
 
-#: ../src/gui/main.cpp:1882 ../src/gui/statusicon.cpp:400
+#: ../src/gui/main.cpp:1897 ../src/gui/statusicon.cpp:400
 #: ../src/gui/statusicon.cpp:411
 msgid "View information about Ekiga"
 msgstr "Katso tietoja Ekigasta"
 
-#: ../src/gui/main.cpp:1918
+#: ../src/gui/main.cpp:1934
 msgid "Contacts"
 msgstr "Tuttavat"
 
-#: ../src/gui/main.cpp:1943
+#: ../src/gui/main.cpp:1962
 msgid "Dialpad"
 msgstr "Valintalevy"
 
-#: ../src/gui/main.cpp:1979
+#: ../src/gui/main.cpp:1998
 msgid "Video Settings"
 msgstr "Videoasetukset"
 
-#: ../src/gui/main.cpp:2007
+#: ../src/gui/main.cpp:2025
 msgid "Adjust brightness"
 msgstr "Säädä kirkkautta"
 
-#: ../src/gui/main.cpp:2029
+#: ../src/gui/main.cpp:2046
 msgid "Adjust whiteness"
 msgstr "Säädä valkoisuutta"
 
-#: ../src/gui/main.cpp:2051
+#: ../src/gui/main.cpp:2067
 msgid "Adjust color"
 msgstr "Säädä värejä"
 
-#: ../src/gui/main.cpp:2073
+#: ../src/gui/main.cpp:2088
 msgid "Adjust contrast"
 msgstr "Säädä kontrastia"
 
-#: ../src/gui/main.cpp:2127
+#: ../src/gui/main.cpp:2142
 msgid "Audio Settings"
 msgstr "Ääniasetukset"
 
-#: ../src/gui/main.cpp:2353
+#: ../src/gui/main.cpp:2368
 msgid "Change the volume of your soundcard"
 msgstr "Muuta äänenvoimakkuutta äänikortilla"
 
-#: ../src/gui/main.cpp:2376
+#: ../src/gui/main.cpp:2390
 msgid "Change the color settings of your video device"
 msgstr "Muuta väriasetuksia videolaitteella"
 
-#: ../src/gui/main.cpp:2399
+#: ../src/gui/main.cpp:2412
 msgid "Display images from your camera device"
 msgstr "Näytä kuvaa kameralaitteeltasi"
 
-#: ../src/gui/main.cpp:2451
+#: ../src/gui/main.cpp:2463
 msgid "Call history"
 msgstr "Puheluhistoria"
 
-#: ../src/gui/main.cpp:3100
+#: ../src/gui/main.cpp:3147
 msgid "_Retrieve Call"
 msgstr "_Palauta puhelu"
 
-#: ../src/gui/main.cpp:3113
+#: ../src/gui/main.cpp:3160
 msgid "_Hold Call"
 msgstr "Puhelu _pitoon"
 
-#: ../src/gui/main.cpp:3156
+#: ../src/gui/main.cpp:3203
 msgid "Resume _Audio"
 msgstr "Palauta _ääni"
 
-#: ../src/gui/main.cpp:3158
+#: ../src/gui/main.cpp:3205
 msgid "Resume _Video"
 msgstr "Palauta _video"
 
-#: ../src/gui/main.cpp:3562
+#: ../src/gui/main.cpp:3609
 #, c-format
 msgid "Call Duration: %s\n"
 msgstr "Puhelun kesto: %s\n"
 
-#: ../src/gui/main.cpp:3599
+#: ../src/gui/main.cpp:3646
 msgid "Transfer call to:"
 msgstr "Siirretään puhelu:"
 
-#: ../src/gui/main.cpp:3600
-msgid "Transfer"
-msgstr "Siirrä puhelu"
-
-#: ../src/gui/main.cpp:3662
+#: ../src/gui/main.cpp:3711
 msgid "Reject"
 msgstr "Hylkää"
 
-#: ../src/gui/main.cpp:3664
+#: ../src/gui/main.cpp:3713
 msgid "Accept"
 msgstr "Hyväksy"
 
-#: ../src/gui/main.cpp:3671
+#: ../src/gui/main.cpp:3720
 msgid "Incoming call from"
 msgstr "Tuleva puhelu käyttäjältä"
 
-#: ../src/gui/main.cpp:3684
+#: ../src/gui/main.cpp:3739
 msgid "Remote URI:"
 msgstr "Etä-URI:"
 
-#: ../src/gui/main.cpp:3696
+#: ../src/gui/main.cpp:3751
 msgid "Remote Application:"
 msgstr "Etäsovellus:"
 
-#: ../src/gui/main.cpp:3745
+#: ../src/gui/main.cpp:3759
+#, c-format
+msgid "Call from %s"
+msgstr "Puhelu käyttäjältä %s"
+
+#: ../src/gui/main.cpp:3801
 msgid "No"
 msgstr "Ei"
 
-#: ../src/gui/main.cpp:3747
+#: ../src/gui/main.cpp:3803
 msgid "Yes"
 msgstr "Kyllä"
 
-#: ../src/gui/main.cpp:3757
+#: ../src/gui/main.cpp:3813
 msgid "Detected new audio input device:"
 msgstr "Havaittiin uusi äänen syötelaite:"
 
-#: ../src/gui/main.cpp:3760
+#: ../src/gui/main.cpp:3816
 msgid "Detected new audio output device:"
 msgstr "Havaittiin uusi äänen toistolaite:"
 
-#: ../src/gui/main.cpp:3763
+#: ../src/gui/main.cpp:3819
 msgid "Detected new video input device:"
 msgstr "Havaittiin uusi videon syöttölaite:"
 
-#: ../src/gui/main.cpp:3781
+#: ../src/gui/main.cpp:3837
 msgid "Do you want to use it as default device?"
 msgstr "Haluatko käyttää tätä oletuslaitteena?"
 
 #. Add title
-#: ../src/gui/main.cpp:3839 ../src/gui/main.cpp:3946
+#: ../src/gui/main.cpp:3895 ../src/gui/main.cpp:4000
 msgid "Ekiga"
 msgstr "Ekiga"
 
-#: ../src/gui/main.cpp:4135
+#: ../src/gui/main.cpp:4189
 #, c-format
 msgid "Missed calls: %d - Voice Mails: %d"
 msgstr "Vastaamattomia puheluita: %d - Ääniviestejä: %d"
 
-#: ../src/gui/main.cpp:4294
+#: ../src/gui/main.cpp:4348
 #, c-format
 msgid "TX: %dx%d "
 msgstr "TX: %dx%d "
 
-#: ../src/gui/main.cpp:4297
+#: ../src/gui/main.cpp:4351
 #, c-format
 msgid "RX: %dx%d "
 msgstr "RX: %dx%d "
 
-#: ../src/gui/main.cpp:4299
+#: ../src/gui/main.cpp:4353
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -2690,24 +2720,24 @@ msgstr ""
 "Väärässä järjestyksessä olleet paketit: %.1f %%\n"
 "Värinäpuskuri: %d ms %s%s%s"
 
-#: ../src/gui/main.cpp:4446
+#: ../src/gui/main.cpp:4499
 msgid "Prints debug messages in the console (level between 1 and 5)"
 msgstr "Tulostaa vianetsintäviestit konsoliin (taso väliltä 1 ja 5)"
 
-#: ../src/gui/main.cpp:4451
+#: ../src/gui/main.cpp:4504
 msgid "Prints user plane debug messages in the console (level between 1 and 4)"
 msgstr ""
 "Tulostaa käyttäjätason vianetsintäviestit konsoliin (taso väliltä 1 ja 4)"
 
-#: ../src/gui/main.cpp:4456
+#: ../src/gui/main.cpp:4509
 msgid "Makes Ekiga call the given URI"
 msgstr "Saa Ekigan soittamaan annettuun URI:iin"
 
-#: ../src/gui/main.cpp:4565
+#: ../src/gui/main.cpp:4618
 msgid "No usable audio plugin detected"
 msgstr "Käyttökelpoista ääniliitännäistä ei havaittu"
 
-#: ../src/gui/main.cpp:4566
+#: ../src/gui/main.cpp:4619
 msgid ""
 "Ekiga didn't find any usable audio plugin. Make sure that your installation "
 "is correct."
@@ -2715,11 +2745,11 @@ msgstr ""
 "Ekiga ei löytänyt yhtään käyttökelpoista ääniliitännäistä. Varmista, että "
 "asennus on tehty oikein."
 
-#: ../src/gui/main.cpp:4569
+#: ../src/gui/main.cpp:4622
 msgid "No usable audio codecs detected"
 msgstr "Käyttökelpoisia äänikoodekkeja ei havaittu"
 
-#: ../src/gui/main.cpp:4570
+#: ../src/gui/main.cpp:4623
 msgid ""
 "Ekiga didn't find any usable audio codec. Make sure that your installation "
 "is correct."
@@ -2727,11 +2757,11 @@ msgstr ""
 "Ekiga ei löytänyt yhtään käyttökelpoista ääniliitännäistä. Varmista, että "
 "asennus on tehty oikein."
 
-#: ../src/gui/main.cpp:4576
+#: ../src/gui/main.cpp:4629
 msgid "Configuration database corruption"
 msgstr "Asetustietokanta on vioittunut"
 
-#: ../src/gui/main.cpp:4577
+#: ../src/gui/main.cpp:4630
 #, c-format
 msgid ""
 "Ekiga got an invalid value for the configuration key %s.\n"
@@ -2835,7 +2865,7 @@ msgstr ""
 "määritellylle koneelle, jos puhut jo puhelua tai sinua ei sovi häiritä (Älä "
 "häiritse -tila)"
 
-#: ../src/gui/preferences.cpp:436 ../src/gui/preferences.cpp:1467
+#: ../src/gui/preferences.cpp:436 ../src/gui/preferences.cpp:1469
 msgid "Call Options"
 msgstr "Puheluasetukset"
 
@@ -2889,7 +2919,7 @@ msgstr "Lisäasetukset"
 
 #: ../src/gui/preferences.cpp:617 ../src/gui/preferences.cpp:671
 msgid "Forward _URI:"
-msgstr "Uudelleenohjaa _URI:"
+msgstr "Uudelleenohjaus-_URI:"
 
 #: ../src/gui/preferences.cpp:626
 msgid "Advanced Settings"
@@ -3019,12 +3049,12 @@ msgstr "Esikatselu"
 msgid "Images"
 msgstr "Kuvat"
 
-#: ../src/gui/preferences.cpp:954 ../src/gui/preferences.cpp:991
-#: ../src/gui/preferences.cpp:1492 ../src/gui/preferences.cpp:1502
+#: ../src/gui/preferences.cpp:954 ../src/gui/preferences.cpp:993
+#: ../src/gui/preferences.cpp:1494 ../src/gui/preferences.cpp:1504
 msgid "Codecs"
 msgstr "Koodekit"
 
-#: ../src/gui/preferences.cpp:967 ../src/gui/preferences.cpp:1004
+#: ../src/gui/preferences.cpp:967 ../src/gui/preferences.cpp:1006
 msgid "Settings"
 msgstr "Asetukset"
 
@@ -3036,7 +3066,7 @@ msgstr "Käytä _hiljaisuudentunnistusta"
 
 #: ../src/gui/preferences.cpp:971
 msgid "If enabled, use silence detection with the codecs supporting it."
-msgstr "Käytetäänkö hiljaisuudentunnistusta, jos kodekki tukee sitä."
+msgstr "Käytetäänkö hiljaisuudentunnistusta, jos koodekki tukee sitä."
 
 #: ../src/gui/preferences.cpp:973
 msgid "Enable echo can_celation"
@@ -3046,12 +3076,20 @@ msgstr "Ota kaiun_poisto käyttöön"
 msgid "If enabled, use echo cancelation."
 msgstr "Käytetään kaiunpoistoa, jos tämä on asetettu."
 
+#: ../src/gui/preferences.cpp:975
+msgid "Maximum _jitter buffer (in ms):"
+msgstr "Suurin _värinäpuskuri (millisekunneissa):"
+
+#: ../src/gui/preferences.cpp:975
+msgid "The maximum jitter buffer size for audio reception (in ms)."
+msgstr "Suurin värinäpuskurikoko äänen vastaanotossa (millisekunteina)."
+
 #. Translators: the full sentence is Keep a minimum video quality of X %
-#: ../src/gui/preferences.cpp:1007
+#: ../src/gui/preferences.cpp:1009
 msgid "Picture Quality"
 msgstr "Kuvanlaatu"
 
-#: ../src/gui/preferences.cpp:1007
+#: ../src/gui/preferences.cpp:1009
 msgid ""
 "Choose if you want to guarantee a minimum image quality (possibly leading to "
 "dropped frames in order not to surpass the bitrate limit) or if you prefer "
@@ -3061,11 +3099,11 @@ msgstr ""
 "puuttuviin ruutuihin, jotta sallittua bittinopeutta ei ylitetä) vai haluatko "
 "säilyttää saman ruutunopeuden."
 
-#: ../src/gui/preferences.cpp:1009
+#: ../src/gui/preferences.cpp:1011
 msgid "Maximum video _bitrate (in kbits/s):"
 msgstr "Suurin videon _bittinopeus (kbit/s):"
 
-#: ../src/gui/preferences.cpp:1009
+#: ../src/gui/preferences.cpp:1011
 msgid ""
 "The maximum video bitrate in kbits/s. The video quality and the effective "
 "frame rate will be dynamically adjusted to keep the bitrate at the given "
@@ -3075,55 +3113,55 @@ msgstr ""
 "lähetettävien ruutujen määrää sekunnissa säädetään dynaamisesti jotta "
 "saavutetaan haluttu siirtokaista."
 
-#: ../src/gui/preferences.cpp:1401
+#: ../src/gui/preferences.cpp:1403
 msgid "Play sound for new voice mails"
 msgstr "Soita ääni uuden ääniviestin saapuessa"
 
-#: ../src/gui/preferences.cpp:1410
+#: ../src/gui/preferences.cpp:1412
 msgid "Play sound for new instant messages"
 msgstr "Soita ääni uuden pikaviestin saapuessa"
 
-#: ../src/gui/preferences.cpp:1439
+#: ../src/gui/preferences.cpp:1441
 msgid "Ekiga Preferences"
 msgstr "Ekigan asetukset"
 
-#: ../src/gui/preferences.cpp:1457
+#: ../src/gui/preferences.cpp:1459
 msgid "General"
 msgstr "Yleinen"
 
-#: ../src/gui/preferences.cpp:1458
+#: ../src/gui/preferences.cpp:1460
 msgid "Personal Data"
 msgstr "Henkilökohtaiset tiedot"
 
-#: ../src/gui/preferences.cpp:1463
+#: ../src/gui/preferences.cpp:1465
 msgid "General Settings"
 msgstr "Yleiset asetukset"
 
-#: ../src/gui/preferences.cpp:1472
+#: ../src/gui/preferences.cpp:1474
 msgid "Sound Events"
 msgstr "Äänitapahtumat"
 
-#: ../src/gui/preferences.cpp:1476
+#: ../src/gui/preferences.cpp:1478
 msgid "Protocols"
 msgstr "Protokollat"
 
-#: ../src/gui/preferences.cpp:1478
+#: ../src/gui/preferences.cpp:1480
 msgid "SIP Settings"
 msgstr "SIP-asetukset"
 
-#: ../src/gui/preferences.cpp:1483
+#: ../src/gui/preferences.cpp:1485
 msgid "H.323 Settings"
 msgstr "H.323-asetukset"
 
-#: ../src/gui/preferences.cpp:1487
+#: ../src/gui/preferences.cpp:1489
 msgid "Audio"
 msgstr "Ääni"
 
-#: ../src/gui/preferences.cpp:1488 ../src/gui/preferences.cpp:1498
+#: ../src/gui/preferences.cpp:1490 ../src/gui/preferences.cpp:1500
 msgid "Devices"
 msgstr "Laitteet"
 
-#: ../src/gui/preferences.cpp:1497
+#: ../src/gui/preferences.cpp:1499
 msgid "Video"
 msgstr "Video"
 
@@ -3169,6 +3207,19 @@ msgstr "Poista omat viestit:"
 #: ../src/gui/statusmenu.cpp:780
 msgid "Define a custom message:"
 msgstr "Määrittele oma viesti:"
+
+#~ msgid "Forward"
+#~ msgstr "Uudelleenohjaa"
+
+#~ msgid ""
+#~ "The video manager is the plugin that will manage your video devices, "
+#~ "Video4Linux is the most common choice if you own a webcam."
+#~ msgstr ""
+#~ "Videonhallinta on liitännäinen, joka hallitsee videolaitteita, "
+#~ "Video4Linux on yleisin valinta, jos sinulla on web-kamera."
+
+#~ msgid "_Find Contacts"
+#~ msgstr "_Etsi tuttavia"
 
 #~ msgid "Auto Away Timeout"
 #~ msgstr "Automaattisen poissaolon aikaviive"
