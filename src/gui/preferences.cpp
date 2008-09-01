@@ -383,7 +383,7 @@ gm_pw_init_general_page (GtkWidget *prefs_window,
   entry =
     gnome_prefs_entry_new (subsection, _("_Full name:"),
                            PERSONAL_DATA_KEY "full_name",
-                           _("Enter your first name"), 0, false);
+                           _("Enter your full name"), 0, false);
   gtk_widget_set_size_request (GTK_WIDGET (entry), 250, -1);
   gtk_entry_set_max_length (GTK_ENTRY (entry), 65);
 
