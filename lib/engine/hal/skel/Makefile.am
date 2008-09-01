@@ -11,7 +11,6 @@ INCLUDES = \
 
 libgmhal_la_SOURCES = \
 	$(hal_dir)/hal-manager.h	\
-	$(hal_dir)/hal-info.h		\
 	$(hal_dir)/hal-core.h		\
 	$(hal_dir)/hal-core.cpp
 

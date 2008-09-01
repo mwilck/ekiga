@@ -22,7 +22,6 @@ WIN32_DIST = \
 	win32/ico/ekiga-uninstall.ico					\
 	win32/diff/opal_opal.pc.in				\
 	win32/diff/ptlib_Makefile.am				\
-	win32/diff/ptlib_vfw.patch				\
 	win32/diff/opal_configure.ac				\
 	win32/diff/opal_Makefile.am				\
 	win32/diff/ptlib_configure.ac				\

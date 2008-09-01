@@ -22,8 +22,6 @@ libgmframework_la_SOURCES = \
 	$(framework_dir)/form-visitor.h \
 	$(framework_dir)/gmconf-bridge.h \
 	$(framework_dir)/gmconf-bridge.cpp \
-	$(framework_dir)/map-key-reference-iterator.h \
-	$(framework_dir)/map-key-const-reference-iterator.h \
 	$(framework_dir)/runtime.h \
 	$(framework_dir)/menu-builder.h \
 	$(framework_dir)/menu-builder.cpp \

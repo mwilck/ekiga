@@ -164,7 +164,6 @@ ekiga_LDADD = \
 
 EXTRA_DIST = \
 	$(service_in_files)		\
-	@PACKAGE_NAME@.server		\
 	components/dbus-stub.xml	\
 	components/dbus-helper-stub.xml
 
