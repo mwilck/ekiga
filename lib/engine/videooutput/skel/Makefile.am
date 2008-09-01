@@ -11,6 +11,7 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/engine/videooutput/skel
 
 libgmvideooutput_la_SOURCES = \
+	$(videooutput_dir)/videooutput-info.h		\
 	$(videooutput_dir)/videooutput-manager.h	\
 	$(videooutput_dir)/videooutput-core.h		\
 	$(videooutput_dir)/videooutput-core.cpp         \
