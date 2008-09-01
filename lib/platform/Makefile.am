@@ -3,7 +3,7 @@ noinst_LTLIBRARIES = libgmplatform.la
 INCLUDES = -I$(top_srcdir)/lib \
            $(EKIGA_LIB_CFLAGS)
 
-libgmplatform_la_SOURCES = 
+libgmplatform_la_SOURCES = gm-platform.h
 
 if WIN32
 libgmplatform_la_SOURCES += platform-win32.c winpaths.h
