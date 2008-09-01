@@ -151,7 +151,7 @@ hara_kiri (gpointer data)
 {
   GMainLoop *loop = (GMainLoop *)data;
 
-  g_main_quit (loop);
+  g_main_loop_quit (loop);
 
   return FALSE;
 }
