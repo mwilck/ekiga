@@ -59,8 +59,8 @@ ConfBridge::ConfBridge (Ekiga::Service & _service)
   keys.push_back (AUDIO_CODECS_KEY "enable_silence_detection");
   keys.push_back (AUDIO_CODECS_KEY "enable_echo_cancelation");
 
-  keys.push_back (AUDIO_CODECS_KEY "list");
-  keys.push_back (VIDEO_CODECS_KEY "list");
+  keys.push_back (AUDIO_CODECS_KEY "media_list");
+  keys.push_back (VIDEO_CODECS_KEY "media_list");
 
   keys.push_back (AUDIO_CODECS_KEY "minimum_jitter_buffer");
   keys.push_back (AUDIO_CODECS_KEY "maximum_jitter_buffer");
@@ -171,23 +171,23 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
   // 
   // Audio & video codecs
   //
-  else if (key == AUDIO_CODECS_KEY "list"
-           || key == VIDEO_CODECS_KEY "list") {
+  else if (key == AUDIO_CODECS_KEY "media_list"
+           || key == VIDEO_CODECS_KEY "media_list") {
 
     // This is a bit longer, we are not sure the list stored in the 
     // configuration is complete, and it could also contain unsupported codecs
     GSList *audio_codecs = NULL;
     GSList *video_codecs = NULL;
 
-    if (key == AUDIO_CODECS_KEY "list") {
+    if (key == AUDIO_CODECS_KEY "media_list") {
 
       audio_codecs = gm_conf_entry_get_list (entry);
-      video_codecs = gm_conf_get_string_list (VIDEO_CODECS_KEY "list");
+      video_codecs = gm_conf_get_string_list (VIDEO_CODECS_KEY "media_list");
     }
     else {
 
       video_codecs = gm_conf_entry_get_list (entry);
-      audio_codecs = gm_conf_get_string_list (AUDIO_CODECS_KEY "list");
+      audio_codecs = gm_conf_get_string_list (AUDIO_CODECS_KEY "media_list");
     }
 
     Ekiga::CodecList codecs;
@@ -209,7 +209,7 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
     if (a_codecs != codecs.get_audio_list ()) {
 
       audio_codecs = codecs.get_audio_list ().gslist ();
-      gm_conf_set_string_list (AUDIO_CODECS_KEY "list", audio_codecs);
+      gm_conf_set_string_list (AUDIO_CODECS_KEY "media_list", audio_codecs);
       g_slist_foreach (audio_codecs, (GFunc) g_free, NULL);
       g_slist_free (audio_codecs);
     }
@@ -217,7 +217,7 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
     if (v_codecs != codecs.get_video_list ()) {
 
       video_codecs = codecs.get_video_list ().gslist ();
-      gm_conf_set_string_list (VIDEO_CODECS_KEY "list", video_codecs);
+      gm_conf_set_string_list (VIDEO_CODECS_KEY "media_list", video_codecs);
       g_slist_foreach (video_codecs, (GFunc) g_free, NULL);
       g_slist_free (video_codecs);
     }

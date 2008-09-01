@@ -168,37 +168,15 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/codecs/audio/list</key>
-      <applyto>/apps/@PACKAGE_NAME@/codecs/audio/list</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/codecs/audio/media_list</key>
+      <applyto>/apps/@PACKAGE_NAME@/codecs/audio/media_list</applyto>
       <owner>Ekiga</owner>
       <type>list</type>
       <list_type>string</list_type>
-      <default>[Speex*16000*1*H.323 SIP*1,iLBC*8000*1*H.323 SIP*1,gsm*8000*1*H.323 SIP*1,Speex*8000*1*H.323 SIP*1,PCMU*8000*1*H.323 SIP*1,PCMA*8000*1*H.323 SIP*1,G726-16*8000*1*H.323 SIP*1,G726-24*8000*1*H.323 SIP*1,G726-32*8000*1*H.323 SIP*1,G726-40*8000*1*H.323 SIP*1,ms-gsm*8000*1*H.323*1]</default>
+      <default>[Speex*16000*1*H.323 SIP*1,iLBC*8000*1*H.323 SIP*1,PCMU*8000*1*H.323 SIP*1,PCMA*8000*1*H.323 SIP*1,gsm*8000*1*H.323 SIP*0,Speex*8000*1*H.323 SIP*0,G726-16*8000*1*H.323 SIP*0,G726-24*8000*1*H.323 SIP*0,G726-32*8000*1*H.323 SIP*0,G726-40*8000*1*H.323 SIP*0,ms-gsm*8000*1*H.323*0]</default>
       <locale name="C">
 	<short>The Audio Codecs List</short>
 	<long>The audio codecs list</long>
-      </locale>
-    </schema>
-    <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/codecs/audio/gsm_frames</key>
-      <applyto>/apps/@PACKAGE_NAME@/codecs/audio/gsm_frames</applyto>
-      <owner>Ekiga</owner>
-      <type>int</type>
-      <default>4</default>
-      <locale name="C">
-	<short>Number of frames for GSM</short>
-	<long>Number of frames transmitted in each packet for the GSM codec</long>
-      </locale>
-    </schema>
-    <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/codecs/audio/g711_frames</key>
-      <applyto>/apps/@PACKAGE_NAME@/codecs/audio/g711_frames</applyto>
-      <owner>Ekiga</owner>
-      <type>int</type>
-      <default>30</default>
-      <locale name="C">
-	<short>Number of frames for G.711</short>
-	<long>Number of frames transmitted in each packet for the G.711 codec</long>
       </locale>
     </schema>
     <schema>	
@@ -986,8 +964,8 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/codecs/video/list</key>
-      <applyto>/apps/@PACKAGE_NAME@/codecs/video/list</applyto>
+      <key>/schemas/apps/@PACKAGE_NAME@/codecs/video/media_list</key>
+      <applyto>/apps/@PACKAGE_NAME@/codecs/video/media_list</applyto>
       <owner>Ekiga</owner>
       <type>list</type>
       <list_type>string</list_type>

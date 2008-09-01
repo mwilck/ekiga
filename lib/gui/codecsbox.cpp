@@ -562,9 +562,9 @@ codecs_box_set_property (GObject *obj,
   }
 
   if (self->priv->type == Ekiga::Call::Audio)
-    list = gm_conf_get_string_list ("/apps/ekiga/codecs/audio/list");
+    list = gm_conf_get_string_list ("/apps/ekiga/codecs/audio/media_list");
   else if (self->priv->type == Ekiga::Call::Video)
-    list = gm_conf_get_string_list ("/apps/ekiga/codecs/video/list");
+    list = gm_conf_get_string_list ("/apps/ekiga/codecs/video/media_list");
 
   codecs_box_set_codecs (self, list);
 
@@ -572,9 +572,9 @@ codecs_box_set_property (GObject *obj,
   g_slist_free (list);
 
   if (self->priv->type == Ekiga::Call::Audio)
-    gm_conf_notifier_add ("/apps/ekiga/codecs/audio/list", codecs_list_changed_nt, GTK_WIDGET (self));
+    gm_conf_notifier_add ("/apps/ekiga/codecs/audio/media_list", codecs_list_changed_nt, GTK_WIDGET (self));
   else
-    gm_conf_notifier_add ("/apps/ekiga/codecs/video/list", codecs_list_changed_nt, GTK_WIDGET (self));
+    gm_conf_notifier_add ("/apps/ekiga/codecs/video/media_list", codecs_list_changed_nt, GTK_WIDGET (self));
 }
 
 

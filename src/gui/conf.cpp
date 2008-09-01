@@ -267,7 +267,6 @@ gnomemeeting_conf_init ()
 void 
 gnomemeeting_conf_upgrade ()
 {
-  GSList *codecs = NULL;
   gchar *conf_url = NULL;
 
   int version = 0;
@@ -323,18 +322,4 @@ gnomemeeting_conf_upgrade ()
     gm_conf_set_string (NAT_KEY "public_ip_detector", 
 			"http://ekiga.net/ip/");
   g_free (conf_url);
-
-  /* Upgrade the audio codecs list */
-  codecs = g_slist_append (codecs, g_strdup ("106|16000|20800=1"));
-  codecs = g_slist_append (codecs, g_strdup ("107|8000|13333=1"));
-  codecs = g_slist_append (codecs, g_strdup ("3|8000|13200=1"));
-  codecs = g_slist_append (codecs, g_strdup ("96|8000|12800=1"));
-  codecs = g_slist_append (codecs, g_strdup ("105|8000|8000=1"));
-  codecs = g_slist_append (codecs, g_strdup ("0|8000|64000=1"));
-  codecs = g_slist_append (codecs, g_strdup ("8|8000|64000=1"));
-  codecs = g_slist_append (codecs, g_strdup ("112|8000|16000=1"));
-  codecs = g_slist_append (codecs, g_strdup ("110|8000|32000=1"));
-  gm_conf_set_string_list (AUDIO_CODECS_KEY "list", codecs);
-  g_slist_foreach (codecs, (GFunc) g_free, NULL);
-  g_slist_free (codecs);
 }
