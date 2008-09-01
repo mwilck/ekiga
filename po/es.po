@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ekiga.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-31 15:19+0000\n"
-"PO-Revision-Date: 2008-08-31 18:17+0200\n"
+"POT-Creation-Date: 2008-08-31 18:41+0000\n"
+"PO-Revision-Date: 2008-09-01 06:05+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -1123,20 +1123,21 @@ msgstr "_Contraseña"
 msgid "_Find"
 msgstr "_Buscar"
 
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:659
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:660
 msgid "Address Book"
 msgstr "Libreta de direcciones"
 
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:673
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:680
+#: ../src/gui/main.cpp:1745
 msgid "Address _Book"
 msgstr "Li_breta de direcciones"
 
 #. This will add static and dynamic actions
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:682
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:689
 msgid "_Action"
 msgstr "_Acción"
 
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:727
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:734
 msgid "Category"
 msgstr "Categoría"
 
@@ -1423,8 +1424,8 @@ msgstr "Recargar la cuenta"
 msgid "Consult the balance history"
 msgstr "Muestra el histórico de balance"
 
-#: ../src/endpoints/opal-account.cpp:332 ../src/gui/assistant.cpp:688
-msgid "Consult the calls history"
+#: ../src/endpoints/opal-account.cpp:332
+msgid "Consult the call history"
 msgstr "Consultar el histórico de llamadas"
 
 #: ../src/endpoints/opal-account.cpp:347 ../src/endpoints/opal-bank.cpp:74
@@ -1440,8 +1441,7 @@ msgid "Gatekeeper:"
 msgstr "Gatekeeper:"
 
 #: ../src/endpoints/opal-account.cpp:356 ../src/endpoints/opal-bank.cpp:83
-#: ../src/endpoints/opal-bank.cpp:94 ../src/endpoints/opal-bank.cpp:103
-#: ../src/endpoints/opal-bank.cpp:113
+#: ../src/endpoints/opal-bank.cpp:103 ../src/endpoints/opal-bank.cpp:113
 msgid "User:"
 msgstr "Usuario:"
 
@@ -1450,8 +1450,7 @@ msgid "Authentication User:"
 msgstr "Usuario para autenticación:"
 
 #: ../src/endpoints/opal-account.cpp:359 ../src/endpoints/opal-bank.cpp:85
-#: ../src/endpoints/opal-bank.cpp:96 ../src/endpoints/opal-bank.cpp:105
-#: ../src/endpoints/opal-bank.cpp:115
+#: ../src/endpoints/opal-bank.cpp:105 ../src/endpoints/opal-bank.cpp:115
 msgid "Password:"
 msgstr "Contraseña:"
 
@@ -1501,12 +1500,20 @@ msgid "Please update the following fields."
 msgstr "Actualice los siguientes campos."
 
 #: ../src/endpoints/opal-bank.cpp:80 ../src/gui/assistant.cpp:540
-msgid "Get an ekiga.net SIP account"
-msgstr "Obtener una cuenta SIP de ekiga.net"
+msgid "Get an Ekiga.net SIP account"
+msgstr "Obtener una cuenta SIP de Ekiga.net"
 
 #: ../src/endpoints/opal-bank.cpp:90 ../src/gui/assistant.cpp:652
 msgid "Get an Ekiga Call Out account"
 msgstr "Obtener una cuenta de Ekiga Call out"
+
+#: ../src/endpoints/opal-bank.cpp:94
+msgid "Account ID:"
+msgstr "ID de la cuenta:"
+
+#: ../src/endpoints/opal-bank.cpp:96
+msgid "PIN Code:"
+msgstr "Código PIN:"
 
 #: ../src/endpoints/opal-call.cpp:388
 msgid "Local user cleared the call"
@@ -1925,6 +1932,10 @@ msgstr ""
 "* Después introduzca su número de cuenta y número PIN.\n"
 "El servicio sólo funcionará si su cuenta se crea usando la URL en este "
 "diálogo.\n"
+
+#: ../src/gui/assistant.cpp:688
+msgid "Consult the calls history"
+msgstr "Consultar el histórico de llamadas"
 
 #: ../src/gui/assistant.cpp:698
 msgid "I do not want to sign up for the Ekiga Call Out service"
@@ -2421,10 +2432,6 @@ msgstr "Aña_dir contacto"
 #: ../src/gui/main.cpp:1741
 msgid "Add a contact to the roster"
 msgstr "Añadir contacto a la lista"
-
-#: ../src/gui/main.cpp:1745
-msgid "_Find Contacts"
-msgstr "_Buscar contactos"
 
 #: ../src/gui/main.cpp:1746
 msgid "Find contacts"
@@ -3241,6 +3248,9 @@ msgstr "Borrar mensajes personalizados:"
 #: ../src/gui/statusmenu.cpp:780
 msgid "Define a custom message:"
 msgstr "Definir un mensaje personalizado:"
+
+#~ msgid "_Find Contacts"
+#~ msgstr "_Buscar contactos"
 
 #~ msgid "Forward"
 #~ msgstr "Reenviar"
