@@ -53,7 +53,8 @@ namespace Opal {
 
   class Call
     : public OpalCall,
-    public Ekiga::Call
+      public Ekiga::Call,
+      public sigc::trackable
   {
 
 public:
@@ -248,6 +249,10 @@ private:
     unsigned too_late_v;
     unsigned out_of_order_v;
     unsigned total_v;
+
+private:
+    void on_cleared_call (std::string);
+    void on_missed_call ();
   };
 };
 

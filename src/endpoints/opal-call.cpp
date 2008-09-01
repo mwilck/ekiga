@@ -54,7 +54,6 @@
 
 using namespace Opal;
 
-
 Opal::Call::Call (OpalManager & _manager, Ekiga::ServiceCore & _core)
   : OpalCall (_manager), Ekiga::Call (), core (_core),
     runtime (*dynamic_cast<Ekiga::Runtime*>(core.get ("runtime"))),
@@ -368,8 +367,6 @@ Opal::Call::OnCleared ()
 
   NoAnswerTimer.Stop (false);
 
-  OpalCall::OnCleared ();
-
   // TODO find a better way than that
   while (!call_setup)
     PThread::Current ()->Sleep (100);
@@ -480,14 +477,15 @@ Opal::Call::OnAnswerCall (OpalConnection & connection,
 PBoolean
 Opal::Call::OnSetUp (OpalConnection & connection)
 {
-  bool res = OpalCall::OnSetUp (connection);
-
   parse_info (connection);
 
   runtime.run_in_main (setup.make_slot ());
   call_setup = true;
 
-  return res;
+  cleared.connect (sigc::mem_fun (this, &Opal::Call::on_cleared_call));
+  missed.connect (sigc::mem_fun (this, &Opal::Call::on_missed_call));
+
+  return OpalCall::OnSetUp (connection);
 }
 
 
@@ -644,4 +642,18 @@ Opal::Call::OnNoAnswerTimeout (PTimer &,
     else
       Clear (OpalConnection::EndedByNoAnswer);
   }
+}
+
+
+void
+Opal::Call::on_cleared_call (std::string /*reason*/)
+{
+  OpalCall::OnCleared ();
+}
+
+
+void
+Opal::Call::on_missed_call ()
+{
+  OpalCall::OnCleared ();
 }
