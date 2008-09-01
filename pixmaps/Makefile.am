@@ -12,6 +12,17 @@ nobase_dist_icon_DATA = \
 
 
 IMAGES_FILES= \
+	48x48/multimedia-headset.png \
+	22x22/multimedia-headset.png \
+	22x22/multimedia-headset.svg \
+	128x128/multimedia-headset.png \
+	128x128/multimedia-headset.svg \
+	16x16/multimedia-headset.png \
+	16x16/multimedia-headset.svg \
+	scalable/multimedia-headset.svg \
+	32x32/multimedia-headset.png \
+	32x32/multimedia-headset.svg \
+	256x256/multimedia-headset.png \
 	16x16/audio-volume-high.png \
 	16x16/camera-video.png \
 	16x16/media-playback-pause.png \
