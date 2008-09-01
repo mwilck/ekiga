@@ -143,17 +143,15 @@ components/dbus-stub.h: components/dbus-stub.xml
 endif
 
 if INSTALL_DBUS_SERVICE
+
+%.service: %.service.in
+	$(MKDIR_P) components # this is ugly...
+	sed -e "s#\@bindir\@#@bindir@#" $< > $@
+
 servicedir = $(datadir)/dbus-1/services
-service_in_files = \
-	components/org.ekiga.Ekiga.service.in \
-	components/org.ekiga.Helper.service.in
-service_DATA = $(service_in_files:.service.in=.service)
+service_DATA = components/org.ekiga.Ekiga.service components/org.ekiga.Helper.service
+service_in_files = $(service_DATA:.service=.service.in)
 
-components/org.ekiga.Ekiga.service: components/org.ekiga.Ekiga.service.in
-	(cd $(srcdir) && sed -e 's#\@bindir\@#@bindir@#' $<) > $@
-
-components/org.ekiga.Helper.service: components/org.ekiga.Helper.service.in
-	(cd $(srcdir) && sed -e 's#\@bindir\@#@bindir@#' $<) > $@
 endif
 
 AM_CXXFLAGS = $(GTK_CFLAGS) $(GLIB_CFLAGS) $(GNOME_CFLAGS) $(DBUS_CFLAGS) $(BONOBO_CFLAGS) $(OPAL_CFLAGS) $(PTLIB_CFLAGS) $(SIGC_CFLAGS) $(XML_CFLAGS)

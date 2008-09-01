@@ -86,7 +86,7 @@ IMAGES= \
 	gm_phone_pick_up_stock_data_16 $(srcdir)/16x16/phone-pick-up.png 
 
 
-noinst_DATA = inlines.h
+noinst_SOURCES = inlines.h
 
 EXTRA_DIST= $(IMAGES_FILES)
 
