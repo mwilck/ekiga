@@ -1,4 +1,4 @@
-AC_INIT(ekiga, 2.9.0, http://bugzilla.gnome.org/enter_bug.cgi?product=ekiga)
+AC_INIT(ekiga, 2.9.90, http://bugzilla.gnome.org/enter_bug.cgi?product=ekiga)
 AC_CANONICAL_TARGET
 AC_PREREQ(2.53)
 AC_CONFIG_SRCDIR(src/gui/main.cpp)
@@ -16,9 +16,9 @@ dnl ###########################################################################
 MAJOR_VERSION=2
 MINOR_VERSION=9
 BUILD_TYPE=ReleaseCode
-BUILD_NUMBER=0
+BUILD_NUMBER=90
 
-SCHEMA_AGE=61
+SCHEMA_AGE=62
 
 PTLIB_REC_VERSION="2.3.0"
 OPAL_REC_VERSION="3.3.0"
@@ -569,7 +569,7 @@ dnl ###########################################################################
 AC_OUTPUT(
 Makefile
 Doxyfile
-src/ekiga-config-tool
+src/AC_PACKAGE_NAME-config-tool
 AC_PACKAGE_NAME.schemas.in
 AC_PACKAGE_NAME.desktop.in
 lib/Makefile
