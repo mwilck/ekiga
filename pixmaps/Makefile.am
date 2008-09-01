@@ -55,7 +55,12 @@ IMAGES_FILES= \
 	24x24/phone-hang-up.png \
 	24x24/phone-pick-up.png \
 	16x16/phone-hang-up.png \
-	16x16/phone-pick-up.png 
+	16x16/phone-pick-up.png \
+	gm_powermeter_default_00.xpm \
+	gm_powermeter_default_01.xpm \
+	gm_powermeter_default_02.xpm \
+	gm_powermeter_default_03.xpm \
+	gm_powermeter_default_04.xpm
 
 
 IMAGES= \
@@ -98,7 +103,7 @@ IMAGES= \
 	gm_phone_pick_up_stock_data_16 $(srcdir)/16x16/phone-pick-up.png 
 
 
-noinst_SOURCES = inlines.h
+noinst_DATA = inlines.h
 
 EXTRA_DIST= $(IMAGES_FILES)
 
