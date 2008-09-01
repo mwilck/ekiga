@@ -212,9 +212,9 @@ codec_toggled_cb (G_GNUC_UNUSED GtkCellRendererToggle *cell,
   /* Update the gmconf key */
   codecs_data = codecs_box_to_gm_conf_list (self);
   if (self->priv->type == Ekiga::Call::Audio)
-    gm_conf_set_string_list ("/apps/ekiga/codecs/audio/list", codecs_data);
+    gm_conf_set_string_list ("/apps/ekiga/codecs/audio/media_list", codecs_data);
   else if (self->priv->type == Ekiga::Call::Video)
-    gm_conf_set_string_list ("/apps/ekiga/codecs/video/list", codecs_data);
+    gm_conf_set_string_list ("/apps/ekiga/codecs/video/media_list", codecs_data);
   g_slist_foreach (codecs_data, (GFunc) g_free, NULL);
   g_slist_free (codecs_data);
 }
@@ -274,9 +274,9 @@ codec_moved_cb (GtkWidget *widget,
   /* Update the gmconf key */
   codecs_data = codecs_box_to_gm_conf_list (self);
   if (self->priv->type == Ekiga::Call::Audio)
-    gm_conf_set_string_list ("/apps/ekiga/codecs/audio/list", codecs_data);
+    gm_conf_set_string_list ("/apps/ekiga/codecs/audio/media_list", codecs_data);
   else if (self->priv->type == Ekiga::Call::Video)
-    gm_conf_set_string_list ("/apps/ekiga/codecs/video/list", codecs_data);
+    gm_conf_set_string_list ("/apps/ekiga/codecs/video/media_list", codecs_data);
   g_slist_foreach (codecs_data, (GFunc) g_free, NULL);
   g_slist_free (codecs_data);
 }
