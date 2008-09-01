@@ -497,6 +497,16 @@ Opal::Call::OnSetUp (OpalConnection & connection)
 }
 
 
+PBoolean
+Opal::Call::OnAlerting (OpalConnection & connection)
+{
+  if (!PIsDescendant(&connection, OpalPCSSConnection))
+    runtime.emit_signal_in_main (ringing);
+
+  return OpalCall::OnAlerting (connection);
+}
+
+
 void 
 Opal::Call::OnHold (OpalConnection & /*connection*/, 
                     bool /*from_remote*/, 

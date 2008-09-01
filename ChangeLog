@@ -1,5 +1,14 @@
 2008-09-01  Damien Sandras  <dsandras@gnome.org>
 
+	* src/endpoints/opal-call.cpp:
+	* src/endpoints/pcss.cpp:
+	* src/endpoints/opal-call.h:
+	Moved the alerting notification (ringing) from pcss.cpp to the
+	Opal::Call object. That removes the ugly hack and we can make use of
+	emit_signal_in_main instead.
+
+2008-09-01  Damien Sandras  <dsandras@gnome.org>
+
 	* lib/engine/framework/runtime.h:
 	* src/endpoints/opal-call.cpp:
 	Added emit_signal_in_main to fix thread-safety problem with signals in

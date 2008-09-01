@@ -183,6 +183,8 @@ private:
 
     PBoolean OnSetUp (OpalConnection & connection);
 
+    PBoolean OnAlerting (OpalConnection & connection);
+
     PDECLARE_NOTIFIER (PThread, Opal::Call, OnAnswer);
 
     PDECLARE_NOTIFIER (PThread, Opal::Call, OnHangup);
