@@ -42,9 +42,6 @@
 #include "gmwindow.h"
 #include "chat-core.h"
 
-/* FIXME: remove the following line to begin killing the old code */
-#include "chat-window-old.h"
-
 G_BEGIN_DECLS
 
 typedef struct _ChatWindow ChatWindow;
