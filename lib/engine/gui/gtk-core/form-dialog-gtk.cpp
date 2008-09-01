@@ -683,7 +683,7 @@ FormDialog::instructions (const std::string _instructions)
 
   widget = gtk_label_new (NULL);
   label_text = g_strdup_printf ("<i>%s</i>", _instructions.c_str());
-  gtk_label_set_markup (GTK_LABEL (widget), label_text);
+  gtk_label_set_markup_with_mnemonic (GTK_LABEL (widget), label_text);
   g_free (label_text);
 
   gtk_label_set_line_wrap (GTK_LABEL (widget), TRUE);
@@ -709,7 +709,7 @@ FormDialog::link (const std::string _link,
   label = gtk_label_new (NULL);
   label_text = g_strdup_printf ("<span foreground=\"blue\"><u>%s</u></span>",
                                 _link.c_str ());
-  gtk_label_set_markup (GTK_LABEL (label), label_text);
+  gtk_label_set_markup_with_mnemonic (GTK_LABEL (label), label_text);
   g_free (label_text);
 
   gtk_container_add (GTK_CONTAINER (widget), label);
@@ -735,8 +735,8 @@ FormDialog::error (const std::string _error)
 #if GTK_CHECK_VERSION(2,10,0)
     gtk_label_set_line_wrap_mode (GTK_LABEL (widget), PANGO_WRAP_WORD);
 #endif
-    gtk_label_set_markup (GTK_LABEL (widget),
-			  ("<span foreground=\"red\">" + _error + "</span>").c_str ());
+    gtk_label_set_markup_with_mnemonic (GTK_LABEL (widget),
+					("<span foreground=\"red\">" + _error + "</span>").c_str ());
     gtk_container_add (GTK_CONTAINER (preamble), widget);
   }
 }
@@ -833,7 +833,7 @@ FormDialog::private_text (const std::string name,
   gtk_size_group_add_widget (labels_group, label);
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   label_text = g_strdup_printf ("<b>%s</b>", description.c_str());
-  gtk_label_set_markup (GTK_LABEL (label), label_text);
+  gtk_label_set_markup_with_mnemonic (GTK_LABEL (label), label_text);
   g_free (label_text);
 
   widget = gtk_entry_new ();
@@ -873,7 +873,7 @@ FormDialog::multi_text (const std::string name,
   rows++;
   gtk_table_resize (GTK_TABLE (fields), rows, 2);
 
-  label = gtk_label_new (description.c_str ());
+  label = gtk_label_new_with_mnemonic (description.c_str ());
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
 #if GTK_CHECK_VERSION(2,10,0)
   gtk_label_set_line_wrap_mode (GTK_LABEL (label), PANGO_WRAP_WORD);
@@ -915,7 +915,7 @@ FormDialog::single_choice (const std::string name,
   rows++;
   gtk_table_resize (GTK_TABLE (fields), rows, 2);
 
-  label = gtk_label_new (description.c_str ());
+  label = gtk_label_new_with_mnemonic (description.c_str ());
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
 #if GTK_CHECK_VERSION(2,10,0)
   gtk_label_set_line_wrap_mode (GTK_LABEL (label), PANGO_WRAP_WORD);
@@ -980,7 +980,7 @@ FormDialog::multiple_choice (const std::string name,
   label = gtk_label_new (NULL);
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   label_text = g_strdup_printf ("<b>%s</b>", description.c_str());
-  gtk_label_set_markup (GTK_LABEL (label), label_text);
+  gtk_label_set_markup_with_mnemonic (GTK_LABEL (label), label_text);
   g_free (label_text);
 
   gtk_table_attach (GTK_TABLE (fields), label,
@@ -1080,7 +1080,7 @@ FormDialog::editable_set (const std::string name,
   label = gtk_label_new (NULL);
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   label_text = g_strdup_printf ("<b>%s</b>", description.c_str());
-  gtk_label_set_markup (GTK_LABEL (label), label_text);
+  gtk_label_set_markup_with_mnemonic (GTK_LABEL (label), label_text);
   g_free (label_text);
 
   gtk_table_attach (GTK_TABLE (fields), label,

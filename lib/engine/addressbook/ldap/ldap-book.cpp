@@ -623,8 +623,8 @@ OPENLDAP::Book::edit ()
   {
     std::map<std::string, std::string> choices;
 
-    choices["sub"] = _("_Subtree");
-    choices["single"] = _("Single _Level");
+    choices["sub"] = _("Subtree");
+    choices["single"] = _("Single Level");
     request.single_choice ("scope", _("_Scope"), scope, choices);
   }
 
