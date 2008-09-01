@@ -334,7 +334,7 @@ Opal::Call::OnEstablished (OpalConnection & connection)
   if (!PIsDescendant(&connection, OpalPCSSConnection)) {
 
     parse_info (connection);
-    runtime.run_in_main (established.make_slot ());
+    runtime.emit_signal_in_main (established);
   }
 
   if (PIsDescendant(&connection, OpalRTPConnection)) {
@@ -383,7 +383,7 @@ Opal::Call::OnCleared ()
       && !is_outgoing ()
       && GetCallEndReason () != OpalConnection::EndedByAnswerDenied) {
 
-    runtime.run_in_main (missed.make_slot ());
+    runtime.emit_signal_in_main (missed);
   }
   else {
 
@@ -465,7 +465,7 @@ Opal::Call::OnCleared ()
       reason = _("Call completed");
     }
 
-    runtime.run_in_main (sigc::bind (cleared.make_slot (), reason));
+    runtime.emit_signal_in_main (cleared, reason);
   }
 }
 
@@ -487,7 +487,7 @@ Opal::Call::OnSetUp (OpalConnection & connection)
 {
   parse_info (connection);
 
-  runtime.run_in_main (setup.make_slot ());
+  runtime.emit_signal_in_main (setup);
   call_setup = true;
 
   cleared.connect (sigc::mem_fun (this, &Opal::Call::on_cleared_call));
@@ -503,9 +503,9 @@ Opal::Call::OnHold (OpalConnection & /*connection*/,
                     bool on_hold)
 {
   if (on_hold)
-    runtime.run_in_main (held.make_slot ());
+    runtime.emit_signal_in_main (held);
   else
-    runtime.run_in_main (retrieved.make_slot ());
+    runtime.emit_signal_in_main (retrieved);
 }
 
 

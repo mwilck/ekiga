@@ -1,5 +1,12 @@
 2008-09-01  Damien Sandras  <dsandras@gnome.org>
 
+	* lib/engine/framework/runtime.h:
+	* src/endpoints/opal-call.cpp:
+	Added emit_signal_in_main to fix thread-safety problem with signals in
+	trackable objects thanks to Snark. Use the new method where needed.
+
+2008-09-01  Damien Sandras  <dsandras@gnome.org>
+
 	* src/gui/main.cpp:
 	Make sure the right completion mechanism is being used.
 
