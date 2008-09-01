@@ -51,6 +51,7 @@ IMAGES_FILES= \
 	status-freeforchat.png \
 	status-dnd.png \
 	status-inacall.png \
+	ekiga-logo.png \
 	24x24/phone-hang-up.png \
 	24x24/phone-pick-up.png \
 	16x16/phone-hang-up.png \
