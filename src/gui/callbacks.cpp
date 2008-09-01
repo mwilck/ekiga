@@ -62,6 +62,7 @@
 #undef _
 #undef N_
 #include <gnome.h>
+#include <libbonobo.h>
 #endif
 
 

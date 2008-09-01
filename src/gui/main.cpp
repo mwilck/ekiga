@@ -81,6 +81,7 @@
 #undef _
 #undef N_
 #include <gnome.h>
+#include <libbonobo.h>
 #endif
 
 #if defined(P_FREEBSD) || defined (P_MACOSX)
@@ -2540,7 +2541,7 @@ on_presentity_selected (G_GNUC_UNUSED GtkWidget* view,
   } else {
 
     gtk_widget_set_sensitive (menu, FALSE);
-    gtk_menu_item_remove_submenu (GTK_MENU_ITEM (menu));
+    gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu), NULL);
   }
 }
 
