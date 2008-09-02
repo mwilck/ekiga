@@ -73,7 +73,7 @@ namespace Ekiga
 
     ~ServiceCore ();
 
-    void add (Service &service);
+    bool add (Service &service);
 
     Service *get (const std::string name);
 

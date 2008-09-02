@@ -45,11 +45,22 @@ Ekiga::ServiceCore::~ServiceCore ()
     delete *iter;
 }
 
-void
+bool
 Ekiga::ServiceCore::add (Service &service)
 {
-  services.push_front (&service);
-  service_added (service);
+  bool result = false;
+
+  if (get (service.get_name ()) == NULL) {
+
+    services.push_front (&service);
+    service_added (service);
+    result = true;
+  } else {
+
+    result = false;
+  }
+
+  return result;
 }
 
 Ekiga::Service *
