@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnomemeeting\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-30 19:59+0000\n"
+"POT-Creation-Date: 2008-08-31 18:41+0000\n"
 "PO-Revision-Date: 2005-07-26 20:52+0300\n"
 "Last-Translator: Yair Hershkovitz <yairhr@gmail.com>\n"
 "Language-Team: Hebrew\n"
@@ -421,7 +421,7 @@ msgstr ""
 msgid "Show offline contacts"
 msgstr "Show offline contacts"
 
-#: ../ekiga.schemas.in.in.h:86 ../src/gui/main.cpp:1823
+#: ../ekiga.schemas.in.in.h:86 ../src/gui/main.cpp:1838
 msgid "Show the call panel"
 msgstr "הצג את לוח השיחות"
 
@@ -850,7 +850,7 @@ msgstr "Video format"
 msgid "Video image"
 msgstr "Video image"
 
-#: ../ekiga.schemas.in.in.h:163 ../src/gui/assistant.cpp:1051
+#: ../ekiga.schemas.in.in.h:163 ../src/gui/assistant.cpp:1045
 msgid "Video input device"
 msgstr "Video input device"
 
@@ -886,7 +886,7 @@ msgstr "לא נענו"
 
 #: ../lib/engine/addressbook/evolution/evolution-contact.cpp:234
 #: ../lib/engine/presence/local-roster/local-presentity.cpp:194
-#: ../src/endpoints/opal-account.cpp:306 ../src/gui/main.cpp:1781
+#: ../src/endpoints/opal-account.cpp:306 ../src/gui/main.cpp:1796
 msgid "_Edit"
 msgstr " _ערוך"
 
@@ -909,8 +909,8 @@ msgstr "נא לעדכן את השדות הבאים:"
 
 #: ../lib/engine/addressbook/evolution/evolution-contact.cpp:329
 #: ../lib/engine/presence/local-roster/local-presentity.cpp:221
-#: ../lib/engine/presence/local-roster/local-heap.cpp:168
-#: ../lib/engine/presence/local-roster/local-heap.cpp:315
+#: ../lib/engine/presence/local-roster/local-heap.cpp:177
+#: ../lib/engine/presence/local-roster/local-heap.cpp:324
 #: ../src/endpoints/opal-account.cpp:351 ../src/endpoints/opal-bank.cpp:101
 #: ../src/endpoints/opal-bank.cpp:111
 msgid "Name:"
@@ -969,7 +969,7 @@ msgid "New _Contact"
 msgstr "איש קשר _חדש"
 
 #: ../lib/engine/addressbook/evolution/evolution-book.cpp:311
-#: ../lib/engine/presence/local-roster/local-heap.cpp:109
+#: ../lib/engine/presence/local-roster/local-heap.cpp:118
 msgid "New contact"
 msgstr "איש קשר חדש"
 
@@ -984,8 +984,7 @@ msgstr "הוסף ספר כתובות LDAP"
 
 #: ../lib/engine/addressbook/ldap/ldap-source.cpp:142
 msgid "Add the Ekiga.net Directory"
-msgstr ""
-"הוסף את ספריית ה-Ekiga.net"
+msgstr "הוסף את ספריית ה-Ekiga.net"
 
 #: ../lib/engine/addressbook/ldap/ldap-source.cpp:153
 msgid "Create LDAP directory"
@@ -1025,9 +1024,8 @@ msgstr ""
 
 #: ../lib/engine/addressbook/ldap/ldap-source.cpp:169
 #: ../lib/engine/addressbook/ldap/ldap-book.cpp:631
-#, fuzzy
 msgid "Call _Attribute"
-msgstr "הגדרות החיפוש:"
+msgstr "_תכונות שיחה"
 
 #: ../lib/engine/addressbook/ldap/ldap-source.cpp:170
 msgid "Password"
@@ -1046,9 +1044,8 @@ msgid "Refreshing"
 msgstr "מרענן"
 
 #: ../lib/engine/addressbook/ldap/ldap-book.cpp:387
-#, fuzzy
 msgid "Could not initialize server"
-msgstr "לא ניתן ליצור קשר עם השרת"
+msgstr "לא ניתן לאתחל את השרת"
 
 #: ../lib/engine/addressbook/ldap/ldap-book.cpp:420
 msgid "Could not contact server"
@@ -1102,20 +1099,21 @@ msgstr "_סיסמה:"
 msgid "_Find"
 msgstr "_חפש"
 
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:659
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:660
 msgid "Address Book"
 msgstr "ספר כתובות"
 
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:673
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:680
+#: ../src/gui/main.cpp:1745
 msgid "Address _Book"
 msgstr "ספר _כתובות"
 
 #. This will add static and dynamic actions
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:682
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:689
 msgid "_Action"
 msgstr "_פעולה:"
 
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:727
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:734
 msgid "Category"
 msgstr "קטגוריה"
 
@@ -1144,7 +1142,7 @@ msgid "Chat Window"
 msgstr "חלון שיחה"
 
 #: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:628
-#: ../src/gui/assistant.cpp:1261
+#: ../src/gui/assistant.cpp:1253
 msgid "Full Name"
 msgstr "שם מלא"
 
@@ -1186,8 +1184,8 @@ msgid ""
 msgstr ""
 
 #: ../lib/engine/presence/local-roster/local-presentity.cpp:222
-#: ../lib/engine/presence/local-roster/local-heap.cpp:177
-#: ../lib/engine/presence/local-roster/local-heap.cpp:179
+#: ../lib/engine/presence/local-roster/local-heap.cpp:186
+#: ../lib/engine/presence/local-roster/local-heap.cpp:188
 msgid "Address:"
 msgstr "כתובת:"
 
@@ -1196,52 +1194,64 @@ msgid "Choose groups:"
 msgstr "בחר קבוצות:"
 
 #: ../lib/engine/presence/local-roster/local-roster-bridge.cpp:94
-#: ../lib/engine/presence/local-roster/local-heap.cpp:165
+#: ../lib/engine/presence/local-roster/local-heap.cpp:174
 #, fuzzy
 msgid "Add to local roster"
 msgstr "נכשל בנסיון לעבד קובץ XML"
 
-#: ../lib/engine/presence/local-roster/local-heap.cpp:102
+#: ../lib/engine/presence/local-roster/local-heap.cpp:93
+msgid "Services"
+msgstr "שירותים"
+
+#: ../lib/engine/presence/local-roster/local-heap.cpp:94
+msgid "Echo test"
+msgstr "בדיקת הד"
+
+#: ../lib/engine/presence/local-roster/local-heap.cpp:95
+msgid "Conference room"
+msgstr "חדר ועידה"
+
+#: ../lib/engine/presence/local-roster/local-heap.cpp:111
 #, fuzzy
 msgid "Local roster"
 msgstr "אנשי קשר מקומיים"
 
-#: ../lib/engine/presence/local-roster/local-heap.cpp:119
+#: ../lib/engine/presence/local-roster/local-heap.cpp:128
 msgid "Rename"
 msgstr "שנה שם"
 
-#: ../lib/engine/presence/local-roster/local-heap.cpp:166
+#: ../lib/engine/presence/local-roster/local-heap.cpp:175
 msgid ""
 "Please fill in this form to add a new contact to ekiga's internal roster"
 msgstr ""
 
-#: ../lib/engine/presence/local-roster/local-heap.cpp:183
+#: ../lib/engine/presence/local-roster/local-heap.cpp:192
 msgid "Put contact in groups:"
 msgstr ""
 
-#: ../lib/engine/presence/local-roster/local-heap.cpp:286
+#: ../lib/engine/presence/local-roster/local-heap.cpp:295
 msgid "You supplied an unsupported address"
-msgstr ""
+msgstr "הכתובת שסופקה אינה נתמכת"
 
-#: ../lib/engine/presence/local-roster/local-heap.cpp:288
+#: ../lib/engine/presence/local-roster/local-heap.cpp:297
 msgid "You already have a contact with this address!"
 msgstr ""
 
-#: ../lib/engine/presence/local-roster/local-heap.cpp:313
+#: ../lib/engine/presence/local-roster/local-heap.cpp:322
 msgid "Rename group"
 msgstr "שנה שם קבוצה"
 
-#: ../lib/engine/presence/local-roster/local-heap.cpp:314
+#: ../lib/engine/presence/local-roster/local-heap.cpp:323
 msgid "Please edit this group name"
 msgstr "נא לערוך את שם קבוצה זאת"
 
-#: ../lib/gui/codecsbox.cpp:479
+#: ../lib/gui/codecsbox.cpp:476
 msgid "Move selected codec priority upwards"
-msgstr ""
+msgstr "העלה את עדיפות המקודד"
 
-#: ../lib/gui/codecsbox.cpp:490
+#: ../lib/gui/codecsbox.cpp:486
 msgid "Move selected codec priority downwards"
-msgstr ""
+msgstr "הורד את עדיפות המקודד"
 
 #: ../lib/gui/gmdialog.c:474
 msgid "Do not show this dialog again"
@@ -1308,16 +1318,15 @@ msgstr ""
 "אנא בדקו הגדרות אודיו."
 
 #: ../src/devices/audio.cpp:476 ../src/devices/audio.cpp:477
-#: ../src/gui/assistant.cpp:1126 ../src/gui/assistant.cpp:1149
-#: ../src/gui/assistant.cpp:1172 ../src/gui/preferences.cpp:745
+#: ../src/gui/assistant.cpp:1118 ../src/gui/assistant.cpp:1141
+#: ../src/gui/assistant.cpp:1164 ../src/gui/preferences.cpp:745
 #: ../src/gui/preferences.cpp:769 ../src/gui/preferences.cpp:792
 msgid "No device found"
 msgstr "לא נמצא התקן"
 
 #: ../src/devices/audio.cpp:488
-#, fuzzy
 msgid "Audio test running"
-msgstr "הגדרות אודיו"
+msgstr "בדיקת שמע פעילה"
 
 #: ../src/devices/audio.cpp:495
 #, c-format
@@ -1378,9 +1387,9 @@ msgstr "טען את החשבון"
 msgid "Consult the balance history"
 msgstr "התייעץ עם היסטוריית המאזן"
 
-#: ../src/endpoints/opal-account.cpp:332 ../src/gui/assistant.cpp:688
-msgid "Consult the calls history"
-msgstr "התייעץ עם היסטוריית השיחות"
+#: ../src/endpoints/opal-account.cpp:332
+msgid "Consult the call history"
+msgstr "התייעץ בהיסטוריית השיחות"
 
 #: ../src/endpoints/opal-account.cpp:347 ../src/endpoints/opal-bank.cpp:74
 msgid "Edit account"
@@ -1396,8 +1405,7 @@ msgid "Gatekeeper:"
 msgstr "Gatekeeper:"
 
 #: ../src/endpoints/opal-account.cpp:356 ../src/endpoints/opal-bank.cpp:83
-#: ../src/endpoints/opal-bank.cpp:94 ../src/endpoints/opal-bank.cpp:103
-#: ../src/endpoints/opal-bank.cpp:113
+#: ../src/endpoints/opal-bank.cpp:103 ../src/endpoints/opal-bank.cpp:113
 msgid "User:"
 msgstr "משתמש:"
 
@@ -1406,8 +1414,7 @@ msgid "Authentication User:"
 msgstr ""
 
 #: ../src/endpoints/opal-account.cpp:359 ../src/endpoints/opal-bank.cpp:85
-#: ../src/endpoints/opal-bank.cpp:96 ../src/endpoints/opal-bank.cpp:105
-#: ../src/endpoints/opal-bank.cpp:115
+#: ../src/endpoints/opal-bank.cpp:105 ../src/endpoints/opal-bank.cpp:115
 msgid "Password:"
 msgstr "סיסמה:"
 
@@ -1430,7 +1437,7 @@ msgstr "לא צויין שן מארח לרישום."
 
 #: ../src/endpoints/opal-account.cpp:400 ../src/endpoints/opal-bank.cpp:159
 msgid "You did not supply a user name for that account."
-msgstr ""
+msgstr "לא סופק שם משתמש עבור חשבון זה."
 
 #: ../src/endpoints/opal-account.cpp:402 ../src/endpoints/opal-bank.cpp:161
 msgid "The timeout should have a bigger value."
@@ -1450,21 +1457,28 @@ msgstr "הוסף ח_שבון SIP"
 
 #: ../src/endpoints/opal-bank.cpp:61
 msgid "_Add an H.323 Account"
-msgstr ""
-"הוסף חשבון _H.323"
+msgstr "הוסף חשבון _H.323"
 
 #: ../src/endpoints/opal-bank.cpp:75
 msgid "Please update the following fields."
 msgstr "נא לעדכן את השדות הבאים:"
 
 #: ../src/endpoints/opal-bank.cpp:80 ../src/gui/assistant.cpp:540
-msgid "Get an ekiga.net SIP account"
-msgstr "פתח חשבון SIP ב-ekiga.net"
+msgid "Get an Ekiga.net SIP account"
+msgstr "קבל חשבון SIP ב-Ekiga.net"
 
 #: ../src/endpoints/opal-bank.cpp:90 ../src/gui/assistant.cpp:652
-#, fuzzy
 msgid "Get an Ekiga Call Out account"
-msgstr "פתח חשבון Ekiga PC-To-Phone"
+msgstr ""
+"קבל חשבון שיחות יוצאות של Ekiga"
+
+#: ../src/endpoints/opal-bank.cpp:94
+msgid "Account ID:"
+msgstr "מזהה חשבון:"
+
+#: ../src/endpoints/opal-bank.cpp:96
+msgid "PIN Code:"
+msgstr "קוד סודי:"
 
 #: ../src/endpoints/opal-call.cpp:388
 msgid "Local user cleared the call"
@@ -1543,7 +1557,8 @@ msgid "Call completed"
 msgstr "שיחה הסתיימה"
 
 #: ../src/endpoints/sip-endpoint.cpp:274 ../src/endpoints/sip-endpoint.cpp:278
-msgid "Forward"
+#: ../src/gui/main.cpp:3647
+msgid "Transfer"
 msgstr "העבר"
 
 #: ../src/endpoints/sip-endpoint.cpp:298 ../src/endpoints/sip-endpoint.cpp:300
@@ -1616,9 +1631,8 @@ msgid "Method not allowed"
 msgstr ""
 
 #: ../src/endpoints/sip-endpoint.cpp:770
-#, fuzzy
 msgid "Proxy auth. required"
-msgstr "נדרש תשלום"
+msgstr "הזדהות מתווך נדרשת"
 
 #: ../src/endpoints/sip-endpoint.cpp:774
 msgid "Length required"
@@ -1638,7 +1652,7 @@ msgstr "סוג המדיה לא נתמך"
 
 #: ../src/endpoints/sip-endpoint.cpp:790
 msgid "Unsupported URI scheme"
-msgstr ""
+msgstr "סוג כתובת לא נתמך"
 
 #: ../src/endpoints/sip-endpoint.cpp:794
 msgid "Bad extension"
@@ -1650,7 +1664,7 @@ msgstr "נדרשת הרחבה"
 
 #: ../src/endpoints/sip-endpoint.cpp:802
 msgid "Interval too brief"
-msgstr ""
+msgstr "המרווח קצר מדי"
 
 #: ../src/endpoints/sip-endpoint.cpp:806
 msgid "Loop detected"
@@ -1666,7 +1680,7 @@ msgstr "הכתובת אינה מלאה"
 
 #: ../src/endpoints/sip-endpoint.cpp:818
 msgid "Ambiguous"
-msgstr ""
+msgstr "דו משמעי"
 
 #: ../src/endpoints/sip-endpoint.cpp:822
 msgid "Busy Here"
@@ -1685,9 +1699,8 @@ msgid "Bad event"
 msgstr "אירוע לא תקין"
 
 #: ../src/endpoints/sip-endpoint.cpp:838
-#, fuzzy
 msgid "Request pending"
-msgstr "שיטת רישום"
+msgstr "בקשה ממתינה"
 
 #: ../src/endpoints/sip-endpoint.cpp:842
 msgid "Undecipherable"
@@ -1702,9 +1715,8 @@ msgid "Not implemented"
 msgstr "לא ממומש"
 
 #: ../src/endpoints/sip-endpoint.cpp:854
-#, fuzzy
 msgid "Bad gateway"
-msgstr "השתמש בשער"
+msgstr ""
 
 #: ../src/endpoints/sip-endpoint.cpp:858
 msgid "Service unavailable"
@@ -1847,9 +1859,8 @@ msgid "I do not want to sign up for the ekiga.net free service"
 msgstr "אני לא מעוניין להרשם לשירות החינמי של ekiga.net"
 
 #: ../src/gui/assistant.cpp:617
-#, fuzzy
 msgid "Ekiga Call Out Account"
-msgstr "חשבון ekiga.net"
+msgstr "חשבון שיחות יוצאות של Ekiga"
 
 #: ../src/gui/assistant.cpp:619
 msgid "Please enter your account ID:"
@@ -1860,7 +1871,6 @@ msgid "Please enter your PIN code:"
 msgstr "נא להכניס הקוד שלך:"
 
 #: ../src/gui/assistant.cpp:638
-#, fuzzy
 msgid ""
 "You can make calls to regular phones and cell numbers worldwide using "
 "Ekiga.\n"
@@ -1871,17 +1881,22 @@ msgid ""
 "The service will work only if your account is created using the URL in this "
 "dialog.\n"
 msgstr ""
-"בעזרת Ekiga ניתן לבצע שיחות לטלפונים רגילים וסלולריים בכל העולם. כדי לאפשר "
-"זאת עליך לעשות שלשה דברים. ראשית, פתח חשבון בכתובת שמופיעה למטה. לאחר מכן "
-"הכנס את מזהה החשבון ואת הקוד הסודי שלך. לבסוף, הפעל את הרישום למטה.\n"
+"בעזרת Ekiga באפשרותך לבצע שיחות לטלפונים רגילים וסלולריים בכל העולם.\n"
 "\n"
-"אנא וודא/י שהנך משתמש בקישור למטה ליצירת החשבון אחרת הואן לא יעבוד."
+" כדי לאפשר זאת עליך לעשות שני דברים:\n"
+" - ראשית, עליך לקנות חשבון בכתובת שמתחת.\n"
+" - לאחר מכן הכנס את מזהה החשבון ואת הקוד הסודי שלך.\n"
+"השירות יעבוד אך ורק עם החשבון נוצר בעזרת הכתובת שבחלון זה.\n"
+
+#: ../src/gui/assistant.cpp:688
+msgid "Consult the calls history"
+msgstr "התייעץ עם היסטוריית השיחות"
 
 #: ../src/gui/assistant.cpp:698
 msgid "I do not want to sign up for the Ekiga Call Out service"
 msgstr "אני לא מעוניין להרשם לשירות החינמי של Ekiga.net"
 
-#: ../src/gui/assistant.cpp:767 ../src/gui/assistant.cpp:1272
+#: ../src/gui/assistant.cpp:767 ../src/gui/assistant.cpp:1264
 msgid "Connection Type"
 msgstr "סוג החיבור"
 
@@ -1900,13 +1915,11 @@ msgstr "ISDN"
 
 #: ../src/gui/assistant.cpp:797
 msgid "DSL/Cable (128 kbit/s uplink)"
-msgstr ""
-"‏DSL/כבלים (מהירות יוצאת 128 kbit/s‏)"
+msgstr "‏DSL/כבלים (מהירות יוצאת 128 kbit/s‏)"
 
 #: ../src/gui/assistant.cpp:802
 msgid "DSL/Cable (512 kbit/s uplink)"
-msgstr ""
-"‏DSL/כבלים (מהירות יוצאת 512 kbit/s‏)"
+msgstr "‏DSL/כבלים (מהירות יוצאת 512 kbit/s‏)"
 
 #: ../src/gui/assistant.cpp:807
 msgid "LAN"
@@ -1934,93 +1947,85 @@ msgid "Please choose the audio ringing device:"
 msgstr "בחר את התקן הצילצול:"
 
 #: ../src/gui/assistant.cpp:917
-#, fuzzy
 msgid ""
-"The audio ringing device is the device  managed by the audio manager that "
-"will be used to play the ringing sound."
+"The audio ringing device is the device that will be used to play the ringing "
+"sound on incoming calls."
 msgstr ""
-"התקן יציאת האודיו היינו ההתקן אשר מנוהל על ידי מנהל האודיו אשר ישמש להשמעת "
-"אודיו."
+"התקן הצלצול הוא ההתקן אשר ישמש להשמעת צליל הצלצול עבור שיחות נכנסות"
 
 #. ---
-#: ../src/gui/assistant.cpp:930
+#: ../src/gui/assistant.cpp:928
 msgid "Please choose the audio output device:"
 msgstr "נא לבחור את התקן פלט האדיו:"
 
-#: ../src/gui/assistant.cpp:938
-#, fuzzy
+#: ../src/gui/assistant.cpp:936
 msgid ""
-"The audio output device is the device  managed by the audio manager that "
-"will be used to play audio."
+"The audio output device is the device that will be used to play audio during "
+"calls."
 msgstr ""
-"התקן יציאת האודיו היינו ההתקן אשר מנוהל על ידי מנהל האודיו אשר ישמש להשמעת "
-"אודיו."
+"התקן יציאת השמע הוא ההתקן אשר ישמש להשמעת הקול במהלך שיחות."
 
 #. ---
-#: ../src/gui/assistant.cpp:951
+#: ../src/gui/assistant.cpp:947
 msgid "Please choose the audio input device:"
 msgstr "נא לבחור את התקן קלט האדיו:"
 
-#: ../src/gui/assistant.cpp:959
+#: ../src/gui/assistant.cpp:955
 msgid ""
-"The audio input device is the device managed by the audio manager that will "
-"be used to record your voice."
-msgstr "התקן האודיו הוא ההתקן אשר מנוהל על ידי מנהל האודיו אשר יקליט את קולך."
+"The audio input device is the device that will be used to record your voice "
+"during calls."
+msgstr "התקן כניסת השמע הוא ההתקן אשר ישמש להקלטת קולך במהלך שיחות."
 
-#: ../src/gui/assistant.cpp:1053
+#: ../src/gui/assistant.cpp:1047
 msgid "Please choose your video input device:"
 msgstr "בחר את התקן קלט הוידאו:"
 
-#: ../src/gui/assistant.cpp:1061
+#: ../src/gui/assistant.cpp:1055
 msgid ""
-"The video manager is the plugin that will manage your video devices, "
-"Video4Linux is the most common choice if you own a webcam."
+"The video input device is the device that will be used to capture video "
+"during calls."
 msgstr ""
-"מנהל הוידאו הוא תוסף אשר מנהל את התקני הוידאו שלך, Video4Linux היא הבחירה "
-"הנפוצה אם ברשותך מצלמת אינטרנט."
+"התקן כניסת הוידאו הוא ההתקן אשר ישתמש ללכידת וידאו במהלך שיחות."
 
-#: ../src/gui/assistant.cpp:1203
+#: ../src/gui/assistant.cpp:1195
 msgid "Configuration Complete"
 msgstr "ההגדרות הסתיימו"
 
-#: ../src/gui/assistant.cpp:1205
+#: ../src/gui/assistant.cpp:1197
 msgid ""
 "You have now finished the Ekiga configuration. All the settings can be "
 "changed in the Ekiga preferences. Enjoy!"
 msgstr "סיימת להגדיר את Ekiga. ניתן לשנות את ההגדרות מתפריט העדפות Ekiga."
 
-#: ../src/gui/assistant.cpp:1212
+#: ../src/gui/assistant.cpp:1204
 msgid "Configuration summary:"
 msgstr "סיכום ההגדרות:"
 
-#: ../src/gui/assistant.cpp:1282
+#: ../src/gui/assistant.cpp:1274
 msgid "Audio Ringing Device"
 msgstr "התקן צלצול"
 
-#: ../src/gui/assistant.cpp:1291
-#, fuzzy
+#: ../src/gui/assistant.cpp:1283
 msgid "Audio Output Device"
-msgstr "Audio output device"
+msgstr "התקן יציאת שמע"
 
-#: ../src/gui/assistant.cpp:1300
-#, fuzzy
+#: ../src/gui/assistant.cpp:1292
 msgid "Audio Input Device"
-msgstr "Audio input device"
+msgstr "התקן כניסת שמע"
 
-#: ../src/gui/assistant.cpp:1309
-#, fuzzy
+#: ../src/gui/assistant.cpp:1301
 msgid "Video Input Device"
-msgstr "Video input device"
+msgstr "התקן כניסת וידאו"
 
-#: ../src/gui/assistant.cpp:1322
+#: ../src/gui/assistant.cpp:1314
 msgid "SIP URI"
 msgstr "כתובת SIP"
 
-#: ../src/gui/assistant.cpp:1334
+#: ../src/gui/assistant.cpp:1326
 msgid "Ekiga Call Out"
 msgstr ""
 
-#: ../src/gui/assistant.cpp:1376
+#: ../src/gui/assistant.cpp:1368
 #, c-format
 msgid "Ekiga Configuration Assistant (%d of %d)"
 msgstr "אשף ההגדרות של Ekiga‏ (%d מתוך %d)"
@@ -2135,187 +2140,183 @@ msgid "wxyz"
 msgstr "סעפ"
 
 #. Translators: Is displayed once an account "%s" is registered.
-#: ../src/gui/main.cpp:572
-#, fuzzy, c-format
+#: ../src/gui/main.cpp:581
+#, c-format
 msgid "Registered %s"
-msgstr "רשום ל-%s"
+msgstr ""
+"‏%s נרשם"
 
 #. Translators: Is displayed once an account "%s" is unregistered.
-#: ../src/gui/main.cpp:578
-#, fuzzy, c-format
-msgid "Unregistered %s"
-msgstr "לא רשום"
-
-#: ../src/gui/main.cpp:583
-#, fuzzy, c-format
-msgid "Could not unregister %s"
-msgstr "אל תירשם"
-
 #: ../src/gui/main.cpp:587
-#, fuzzy, c-format
-msgid "Could not register %s"
-msgstr "אל תירשם"
+#, c-format
+msgid "Unregistered %s"
+msgstr ""
+"‏%s בוטל"
 
-#: ../src/gui/main.cpp:647
+#: ../src/gui/main.cpp:592
+#, c-format
+msgid "Could not unregister %s"
+msgstr "נכשל בביטול %s"
+
+#: ../src/gui/main.cpp:596
+#, c-format
+msgid "Could not register %s"
+msgstr "נכשל ברישום %s"
+
+#: ../src/gui/main.cpp:656
 #, c-format
 msgid "A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d"
 msgstr "A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d"
 
-#: ../src/gui/main.cpp:722
+#: ../src/gui/main.cpp:731
 #, c-format
 msgid "Connected with %s"
 msgstr "מחובר עם %s"
 
-#: ../src/gui/main.cpp:755 ../src/gui/main.cpp:2319
+#: ../src/gui/main.cpp:764 ../src/gui/main.cpp:2334
 msgid "Standby"
 msgstr "המתנה"
 
-#: ../src/gui/main.cpp:816
+#: ../src/gui/main.cpp:825
 msgid "Call on hold"
 msgstr "השיחה בהמתנה"
 
-#: ../src/gui/main.cpp:829
-#, fuzzy
+#: ../src/gui/main.cpp:838
 msgid "Call retrieved"
-msgstr "שיחה נדחתה"
+msgstr "שיחה התקבלה"
 
-#: ../src/gui/main.cpp:848
+#: ../src/gui/main.cpp:857
 #, c-format
 msgid "Missed call from %s"
-msgstr ""
-"שיחה שלא נענתה מ-%s"
+msgstr "שיחה שלא נענתה מ-%s"
 
-#: ../src/gui/main.cpp:995 ../src/gui/misc.cpp:94
+#: ../src/gui/main.cpp:1004 ../src/gui/misc.cpp:94
 msgid "Error"
 msgstr "שגיאה"
 
-#: ../src/gui/main.cpp:1128
+#: ../src/gui/main.cpp:1137
 #, fuzzy, c-format
 msgid "Added video input device %s"
 msgstr "Audio input device"
 
-#: ../src/gui/main.cpp:1145
+#: ../src/gui/main.cpp:1154
 #, fuzzy, c-format
 msgid "Removed video input device %s"
 msgstr "Video input device"
 
-#: ../src/gui/main.cpp:1162
-#, fuzzy, c-format
+#: ../src/gui/main.cpp:1171
+#, c-format
 msgid "Error while accessing video device %s"
-msgstr "שגיאה בזמן פתיחת התקן הוידאו %s"
+msgstr "שגיאה בזמן גישה להתקן הוידאו %s"
 
-#: ../src/gui/main.cpp:1165
-#, fuzzy
+#: ../src/gui/main.cpp:1174
 msgid ""
 "A moving logo will be transmitted during calls. Notice that you can always "
 "transmit a given image or the moving logo by choosing \"Picture\" as video "
 "plugin and \"Moving logo\" or \"Static picture\" as device."
 msgstr ""
-"סמל זז של GnomeMeeting יועבר בזמן שיחות. שים לב שניתן להעביר תמונה נתונה או "
-"לוגו זז של GnomeMeeting על ידי בחירה של \"Picture\" כתוסף הוידאו ו"
-"\"MovingLogo\" או \"StaticPicture\" בתור ההתקן"
+"סמליל זז ישלח במהלך שיחות. שים לב שבאפשרותך תמיד לשלוח תמונה כלשהיא או את הסמליל הזז על ידי בחירת \"תמונה\" כתוסף וידאו ו-\"סמליל זז\" או \"תמונה קבועה\""
+" כהתקן."
 
-#: ../src/gui/main.cpp:1169
-#, fuzzy
+#: ../src/gui/main.cpp:1178
 msgid ""
 "There was an error while opening the device. In case it is a pluggable "
 "device it may be sufficient to reconnect it. If not, or if it still is not "
 "accessible, please check your permissions and make sure that the appropriate "
 "driver is loaded."
-msgstr "ארעה שגיאה בזמן פתיחת ההתקן. בדק/י הרשאות וודא שמנהל ההתקן הנכון נטען."
+msgstr ""
+"ארעה שגיאה במהלך פתיחת ההתקן. במקרה ומדובר בהתקן נשלף אפשר לנסת לנתק ולחבר אותו מחדש. אם לא, או אם הוא עדיין אינו נגיש, נסה לבדוק את ההרשאות שלך "
+"וודא שמנהל ההתקן הנחוץ טעון."
 
-#: ../src/gui/main.cpp:1173
+#: ../src/gui/main.cpp:1182
 msgid "Your video driver doesn't support the requested video format."
 msgstr "מנהל ההתקן של הוידאו שלך לא תומך בפורמט הוידאו הרצוי."
 
-#: ../src/gui/main.cpp:1177
+#: ../src/gui/main.cpp:1186
 msgid "Could not open the chosen channel."
 msgstr "לא ניתן לפתוח את הערוץ הנבחר."
 
-#: ../src/gui/main.cpp:1181
-#, fuzzy
+#: ../src/gui/main.cpp:1190
 msgid ""
 "Your driver doesn't seem to support any of the color formats supported by "
 "Ekiga.\n"
 " Please check your kernel driver documentation in order to determine which "
 "Palette is supported."
 msgstr ""
-"מנהל ההתקן שלך לא תומך בפורמט הצבעים שנתמכים על ידי GnomeMeeting.\n"
-" אנא בדוק את תיעוד ליבת מנהל ההתקן כדי לקבוע איזה פלטת צבעים נתמכת."
+"מנהל ההתקן שלך לא תומך בתצורת הצבעים שנתמכים על ידי Ekiga.‏\n"
+"אנא בדוק את תיעוד מנהל ההתקן כדי לקבוע איזה פלטת צבעים נתמכת."
 
-#: ../src/gui/main.cpp:1185
+#: ../src/gui/main.cpp:1194
 msgid "Error while setting the frame rate."
 msgstr "שגיאה בזמן קביעת קצב הפריים."
 
-#: ../src/gui/main.cpp:1189
+#: ../src/gui/main.cpp:1198
 msgid "Error while setting the frame size."
 msgstr "שגיאה בזמן קביעת גודל הפריים."
 
-#: ../src/gui/main.cpp:1194 ../src/gui/main.cpp:1303 ../src/gui/main.cpp:1423
+#: ../src/gui/main.cpp:1203 ../src/gui/main.cpp:1312 ../src/gui/main.cpp:1432
 msgid "Unknown error."
 msgstr "‏שגיאה לא ידועה."
 
-#: ../src/gui/main.cpp:1250
+#: ../src/gui/main.cpp:1259
 #, fuzzy, c-format
 msgid "Added audio input device %s"
 msgstr "Audio input device"
 
-#: ../src/gui/main.cpp:1270
+#: ../src/gui/main.cpp:1279
 #, fuzzy, c-format
 msgid "Removed audio input device %s"
 msgstr "Audio input device"
 
-#: ../src/gui/main.cpp:1287
+#: ../src/gui/main.cpp:1296
 #, c-format
 msgid "Error while opening audio input device %s"
 msgstr "שגיאה בזמן פתיחת התקן קלט השמע %s"
 
-#: ../src/gui/main.cpp:1290
+#: ../src/gui/main.cpp:1299
 msgid "Only silence will be transmitted."
 msgstr ""
 
-#: ../src/gui/main.cpp:1294
-#, fuzzy
+#: ../src/gui/main.cpp:1303
 msgid ""
 "Unable to open the selected audio device for recording. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
 "still is not accessible, please check your audio setup, the permissions and "
 "that the device is not busy."
 msgstr ""
-"לא אפשרי לפתוח את התקן השמע הנבחר (%s) להקלטה. אנא בדוק את הגדרות השמע  שלך, "
-"את ההרשאות ושההתקן אינו תפוס."
+"לא ניתן לפתוח את התקן השמע הנבחר להקלטה. במידה ומדובר בהתקן נשלף אפשר לנסות לנתק ולחבר אותו מחדש. אם לא, או אם הוא עדיין אינו נגיש, "
+"נסה לבדוק את הגדרות השמע, ההרשאות ושההתקן אינו עסוק."
 
-#: ../src/gui/main.cpp:1298
-#, fuzzy
+#: ../src/gui/main.cpp:1307
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "read data from this device. In case it is a pluggable device it may be "
 "sufficient to reconnect it. If not, or if it still is not accessible, please "
 "check your audio setup."
 msgstr ""
-"התקן האודיו הנבחר (%s) נפתח בהצלחה אבל זה בלתי אפשרי לקרוא מידע מההתקן. אנא "
-"בדקו הגדרות אודיו."
+"התקו השמע הנבחר נפתח בהצלחה אולם לא ניתן לקרוא ממנו. במידה ומדובר בהתקן נשלף אפשר לנסות לנתק ולחבר אותו מחדש. אם לא, או אם הוא עדיין אינו נגיש, "
+"נסה לבדוק את הגדרות השמע."
 
-#: ../src/gui/main.cpp:1368
+#: ../src/gui/main.cpp:1377
 #, fuzzy, c-format
 msgid "Added audio output device %s"
 msgstr "Audio output device"
 
-#: ../src/gui/main.cpp:1386
+#: ../src/gui/main.cpp:1395
 #, fuzzy, c-format
 msgid "Removed audio output device %s"
 msgstr "Alternative audio output device"
 
-#: ../src/gui/main.cpp:1407
-#, fuzzy, c-format
+#: ../src/gui/main.cpp:1416
+#, c-format
 msgid "Error while opening audio output device %s"
-msgstr "שגיאה בזמן פתיחת התקן הוידאו %s"
+msgstr "שגיאה בזמן פתיחת התקן יציאת השמע %s"
 
-#: ../src/gui/main.cpp:1410
+#: ../src/gui/main.cpp:1419
 msgid "No incoming sound will be played."
 msgstr "לא ינוגן צליל עבור שיחה נכנסת."
 
-#: ../src/gui/main.cpp:1414
+#: ../src/gui/main.cpp:1423
 #, fuzzy
 msgid ""
 "Unable to open the selected audio device for playing. In case it is a "
@@ -2326,7 +2327,7 @@ msgstr ""
 "לא אפשרי לפתוח את התקן האודיו הנבחר (%s) לניגון. אנא בדוק את הגדרות האודיו "
 "שלך, ההרשאות ושההתקן לא תפוס."
 
-#: ../src/gui/main.cpp:1418
+#: ../src/gui/main.cpp:1427
 #, fuzzy
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
@@ -2337,353 +2338,350 @@ msgstr ""
 "התקן האודיו הנבחר (%s) נפתח בהצלחה אבל זה בלתי אפשרי לכתוב מידע אל ההתקן. "
 "אנא בדקו הגדרות אודיו."
 
-#: ../src/gui/main.cpp:1640
+#: ../src/gui/main.cpp:1648
 msgid "Enter a URI on the left, and click this button to place a call"
 msgstr "הכנס כתובת  בצד שמאל, ולחץ על כפתורזה כדי להתקשר"
 
-#: ../src/gui/main.cpp:1721
+#: ../src/gui/main.cpp:1729
 #, fuzzy
 msgid "_Chat"
 msgstr "_שוחח"
 
-#: ../src/gui/main.cpp:1723
+#: ../src/gui/main.cpp:1731
 msgid "Ca_ll"
 msgstr "הת_קשר"
 
-#: ../src/gui/main.cpp:1723
+#: ../src/gui/main.cpp:1731
 msgid "Place a new call"
 msgstr "שיחה חדשה"
 
-#: ../src/gui/main.cpp:1726
+#: ../src/gui/main.cpp:1734
 msgid "_Hang up"
 msgstr "_נתק"
 
-#: ../src/gui/main.cpp:1727
+#: ../src/gui/main.cpp:1735
 msgid "Terminate the current call"
 msgstr "נתק את השיחה הנוכחית"
 
-#: ../src/gui/main.cpp:1733
+#: ../src/gui/main.cpp:1741
 msgid "A_dd Contact"
 msgstr "_הוסף איש קשר"
 
-#: ../src/gui/main.cpp:1733
+#: ../src/gui/main.cpp:1741
 #, fuzzy
 msgid "Add a contact to the roster"
 msgstr "הוסף איש קשר לס_פר הכתובות"
 
-#: ../src/gui/main.cpp:1737
-msgid "_Find Contacts"
-msgstr "חפש _אנשי קשר"
-
-#: ../src/gui/main.cpp:1738
+#: ../src/gui/main.cpp:1746
 msgid "Find contacts"
 msgstr "חפש אנשי קשר"
 
-#: ../src/gui/main.cpp:1745
+#: ../src/gui/main.cpp:1753
+msgid "_Contact"
+msgstr "_איש קשר"
+
+#: ../src/gui/main.cpp:1754
+msgid "Act on selected contact"
+msgstr "פעל על איש הקשר הנבחר"
+
+#: ../src/gui/main.cpp:1760
 #, fuzzy
 msgid "H_old Call"
 msgstr "_החזק שיחה"
 
-#: ../src/gui/main.cpp:1745 ../src/gui/main.cpp:2420
+#: ../src/gui/main.cpp:1760 ../src/gui/main.cpp:2432
 msgid "Hold the current call"
 msgstr "החזק שיחה נוכחית"
 
-#: ../src/gui/main.cpp:1749
+#: ../src/gui/main.cpp:1764
 msgid "_Transfer Call"
 msgstr "_שליחת שיחה"
 
-#: ../src/gui/main.cpp:1750
+#: ../src/gui/main.cpp:1765
 msgid "Transfer the current call"
 msgstr "שלח את השיחה הנוכחית"
 
-#: ../src/gui/main.cpp:1757 ../src/gui/main.cpp:3152
+#: ../src/gui/main.cpp:1772 ../src/gui/main.cpp:3199
 msgid "Suspend _Audio"
 msgstr "השתק _קול"
 
-#: ../src/gui/main.cpp:1758
+#: ../src/gui/main.cpp:1773
 msgid "Suspend or resume the audio transmission"
 msgstr "השתק או חדש שליחת אודיו"
 
-#: ../src/gui/main.cpp:1762 ../src/gui/main.cpp:3154
+#: ../src/gui/main.cpp:1777 ../src/gui/main.cpp:3201
 msgid "Suspend _Video"
 msgstr "השהה _וידאו"
 
-#: ../src/gui/main.cpp:1763
+#: ../src/gui/main.cpp:1778
 msgid "Suspend or resume the video transmission"
 msgstr "הפעל או חדש שליחת וידאו"
 
-#: ../src/gui/main.cpp:1770
+#: ../src/gui/main.cpp:1785
 msgid "Close the Ekiga window"
 msgstr "סגור את חלון ה-Ekiga"
 
-#: ../src/gui/main.cpp:1777 ../src/gui/statusicon.cpp:418
+#: ../src/gui/main.cpp:1792 ../src/gui/statusicon.cpp:418
 msgid "Quit"
 msgstr "יציאה"
 
-#: ../src/gui/main.cpp:1783
+#: ../src/gui/main.cpp:1798
 msgid "_Configuration Assistant"
 msgstr "א_שף ההגדרות"
 
-#: ../src/gui/main.cpp:1784
+#: ../src/gui/main.cpp:1799
 msgid "Run the configuration assistant"
 msgstr "הרץ את אשף ההגדרות"
 
-#: ../src/gui/main.cpp:1791
+#: ../src/gui/main.cpp:1806
 msgid "_Accounts"
 msgstr "_חשבונות"
 
-#: ../src/gui/main.cpp:1792
+#: ../src/gui/main.cpp:1807
 msgid "Edit your accounts"
 msgstr "ערוך את החשבונות שלך"
 
-#: ../src/gui/main.cpp:1798
+#: ../src/gui/main.cpp:1813
 msgid "Change your preferences"
 msgstr "שנה את ההגדרות שלך"
 
-#: ../src/gui/main.cpp:1803
+#: ../src/gui/main.cpp:1818
 msgid "_View"
 msgstr "_תצוגה"
 
-#: ../src/gui/main.cpp:1805
+#: ../src/gui/main.cpp:1820
 msgid "Con_tacts"
 msgstr "א_נשי קשר"
 
-#: ../src/gui/main.cpp:1805
+#: ../src/gui/main.cpp:1820
 msgid "View the contacts list"
 msgstr "הצג רשימת אנשי הקשר"
 
-#: ../src/gui/main.cpp:1810
+#: ../src/gui/main.cpp:1825
 msgid "_Dialpad"
 msgstr "_מקשי חיוג"
 
-#: ../src/gui/main.cpp:1810
+#: ../src/gui/main.cpp:1825
 msgid "View the dialpad"
 msgstr "הצג מקשי חיוג"
 
-#: ../src/gui/main.cpp:1815
+#: ../src/gui/main.cpp:1830
 msgid "_Call History"
 msgstr "היסטורית _שיחות"
 
-#: ../src/gui/main.cpp:1815
+#: ../src/gui/main.cpp:1830
 msgid "View the call history"
 msgstr "הצג את היסטוריית השיחות"
 
-#: ../src/gui/main.cpp:1823
+#: ../src/gui/main.cpp:1838
 msgid "_Show Call Panel"
 msgstr "הצג את _לוח השיחות"
 
-#: ../src/gui/main.cpp:1831
+#: ../src/gui/main.cpp:1846
 msgid "_Local Video"
 msgstr "וידאו _מקומי"
 
-#: ../src/gui/main.cpp:1832
+#: ../src/gui/main.cpp:1847
 msgid "Local video image"
 msgstr "תמונת וידאו מקומית"
 
-#: ../src/gui/main.cpp:1837
+#: ../src/gui/main.cpp:1852
 msgid "_Remote Video"
 msgstr "וידאו מ_רוחק"
 
-#: ../src/gui/main.cpp:1838
+#: ../src/gui/main.cpp:1853
 msgid "Remote video image"
 msgstr "תמונת וידאו מרוחקת"
 
-#: ../src/gui/main.cpp:1843
+#: ../src/gui/main.cpp:1858
 msgid "_Picture-in-Picture"
 msgstr "תמונה-בתוך-תמונה_"
 
-#: ../src/gui/main.cpp:1844 ../src/gui/main.cpp:1850
+#: ../src/gui/main.cpp:1859 ../src/gui/main.cpp:1865
 msgid "Both video images"
 msgstr "שתי תמונות הוידאו"
 
-#: ../src/gui/main.cpp:1849
+#: ../src/gui/main.cpp:1864
 msgid "Picture-in-Picture in Separate _Window"
 msgstr "תמונה-בתוך-תמונה ב_חלון נפרד"
 
-#: ../src/gui/main.cpp:1857
+#: ../src/gui/main.cpp:1872
 msgid "Zoom in"
 msgstr "התקרב"
 
-#: ../src/gui/main.cpp:1861
+#: ../src/gui/main.cpp:1876
 msgid "Zoom out"
 msgstr "התרחק"
 
-#: ../src/gui/main.cpp:1865
+#: ../src/gui/main.cpp:1880
 msgid "Normal size"
 msgstr "גודל נורמאלי"
 
-#: ../src/gui/main.cpp:1869
+#: ../src/gui/main.cpp:1884
 msgid "_Fullscreen"
 msgstr "מ_סך מלא"
 
-#: ../src/gui/main.cpp:1869
+#: ../src/gui/main.cpp:1884
 msgid "Switch to fullscreen"
 msgstr "החלף למסך מלא"
 
-#: ../src/gui/main.cpp:1874
+#: ../src/gui/main.cpp:1889
 msgid "_Help"
 msgstr "_עזרה"
 
-#: ../src/gui/main.cpp:1877 ../src/gui/statusicon.cpp:395
+#: ../src/gui/main.cpp:1892 ../src/gui/statusicon.cpp:395
 #: ../src/gui/statusicon.cpp:406
 msgid "Get help by reading the Ekiga manual"
 msgstr "השג עזרה על ידי קריאת מדריך Ekiga"
 
-#: ../src/gui/main.cpp:1882 ../src/gui/statusicon.cpp:400
+#: ../src/gui/main.cpp:1897 ../src/gui/statusicon.cpp:400
 #: ../src/gui/statusicon.cpp:411
 msgid "View information about Ekiga"
 msgstr "הצג מידע אודות Ekiga"
 
-#: ../src/gui/main.cpp:1918
+#: ../src/gui/main.cpp:1934
 msgid "Contacts"
 msgstr "אנשי קשר"
 
-#: ../src/gui/main.cpp:1943
+#: ../src/gui/main.cpp:1962
 msgid "Dialpad"
 msgstr "לוח חיוג"
 
-#: ../src/gui/main.cpp:1979
+#: ../src/gui/main.cpp:1998
 msgid "Video Settings"
 msgstr "הגדרות וידאו"
 
-#: ../src/gui/main.cpp:2007
+#: ../src/gui/main.cpp:2025
 msgid "Adjust brightness"
 msgstr "התאם בהירות"
 
-#: ../src/gui/main.cpp:2029
+#: ../src/gui/main.cpp:2046
 msgid "Adjust whiteness"
 msgstr "התאם לובן"
 
-#: ../src/gui/main.cpp:2051
+#: ../src/gui/main.cpp:2067
 msgid "Adjust color"
 msgstr "התאם צבע"
 
-#: ../src/gui/main.cpp:2073
+#: ../src/gui/main.cpp:2088
 msgid "Adjust contrast"
 msgstr "התאם ניגוד"
 
-#: ../src/gui/main.cpp:2127
+#: ../src/gui/main.cpp:2142
 msgid "Audio Settings"
 msgstr "הגדרות אודיו"
 
-#: ../src/gui/main.cpp:2353
+#: ../src/gui/main.cpp:2368
 msgid "Change the volume of your soundcard"
 msgstr "שנה את עוצמת השמע"
 
-#: ../src/gui/main.cpp:2376
+#: ../src/gui/main.cpp:2390
 msgid "Change the color settings of your video device"
 msgstr "שנה את הגדרות הצבע של התקן הוידאו שלך"
 
-#: ../src/gui/main.cpp:2399
+#: ../src/gui/main.cpp:2412
 msgid "Display images from your camera device"
 msgstr "הצג תמונות מתוך התקן המצלמה שלך"
 
-#: ../src/gui/main.cpp:2451
+#: ../src/gui/main.cpp:2463
 msgid "Call history"
 msgstr "היסטורית שיחות"
 
-#: ../src/gui/main.cpp:3100
+#: ../src/gui/main.cpp:3147
 msgid "_Retrieve Call"
 msgstr "_קבל שיחה"
 
-#: ../src/gui/main.cpp:3113
+#: ../src/gui/main.cpp:3160
 msgid "_Hold Call"
 msgstr "_החזק שיחה"
 
-#: ../src/gui/main.cpp:3156
+#: ../src/gui/main.cpp:3203
 msgid "Resume _Audio"
 msgstr "המשך _קול"
 
-#: ../src/gui/main.cpp:3158
+#: ../src/gui/main.cpp:3205
 msgid "Resume _Video"
 msgstr "המשך _וידאו"
 
-#: ../src/gui/main.cpp:3562
+#: ../src/gui/main.cpp:3609
 #, c-format
 msgid "Call Duration: %s\n"
 msgstr "משך השיחה: %s\n"
 
-#: ../src/gui/main.cpp:3599
+#: ../src/gui/main.cpp:3646
 msgid "Transfer call to:"
 msgstr "העבר שיחה אל:"
 
-#: ../src/gui/main.cpp:3600
-msgid "Transfer"
-msgstr "העבר"
-
-#: ../src/gui/main.cpp:3664
+#: ../src/gui/main.cpp:3711
 msgid "Reject"
 msgstr "דחה"
 
-#: ../src/gui/main.cpp:3666
+#: ../src/gui/main.cpp:3713
 msgid "Accept"
 msgstr "קבל"
 
-#: ../src/gui/main.cpp:3673
+#: ../src/gui/main.cpp:3720
 msgid "Incoming call from"
 msgstr "שיחה נכנסת מ"
 
-#: ../src/gui/main.cpp:3692
+#: ../src/gui/main.cpp:3739
 msgid "Remote URI:"
 msgstr "‏כתובת מרוחקת:"
 
-#: ../src/gui/main.cpp:3704
+#: ../src/gui/main.cpp:3751
 msgid "Remote Application:"
 msgstr "תוכנה מרוחקת"
 
-#: ../src/gui/main.cpp:3712
+#: ../src/gui/main.cpp:3759
 #, c-format
 msgid "Call from %s"
 msgstr "שיחה מ %s"
 
-#: ../src/gui/main.cpp:3754
+#: ../src/gui/main.cpp:3801
 msgid "No"
 msgstr "לא"
 
-#: ../src/gui/main.cpp:3756
+#: ../src/gui/main.cpp:3803
 msgid "Yes"
 msgstr "כן"
 
-#: ../src/gui/main.cpp:3766
-#, fuzzy
+#: ../src/gui/main.cpp:3813
 msgid "Detected new audio input device:"
-msgstr "נא לבחור את התקן קלט האדיו:"
+msgstr "התקו כניסת שמע חדש זוהה:"
 
-#: ../src/gui/main.cpp:3769
-#, fuzzy
+#: ../src/gui/main.cpp:3816
 msgid "Detected new audio output device:"
-msgstr "נא לבחור את התקן פלט האדיו:"
+msgstr "התקו יציאת שמע חדש זוהה:"
 
-#: ../src/gui/main.cpp:3772
-#, fuzzy
+#: ../src/gui/main.cpp:3819
 msgid "Detected new video input device:"
-msgstr "בחר את התקן קלט הוידאו:"
+msgstr "התקו כניסת וידאו חדש זוהה:"
 
-#: ../src/gui/main.cpp:3790
+#: ../src/gui/main.cpp:3837
 msgid "Do you want to use it as default device?"
-msgstr ""
+msgstr "האם להשתמש בו כהתקן ברירתה המחדל?"
 
 #. Add title
-#: ../src/gui/main.cpp:3848 ../src/gui/main.cpp:3955
+#: ../src/gui/main.cpp:3895 ../src/gui/main.cpp:4000
 msgid "Ekiga"
 msgstr "‏Ekiga"
 
-#: ../src/gui/main.cpp:4144
+#: ../src/gui/main.cpp:4189
 #, c-format
 msgid "Missed calls: %d - Voice Mails: %d"
 msgstr "שיחות שלא נענו: %d - הודעות קוליות: %d"
 
-#: ../src/gui/main.cpp:4303
+#: ../src/gui/main.cpp:4348
 #, c-format
 msgid "TX: %dx%d "
 msgstr ""
 
-#: ../src/gui/main.cpp:4306
+#: ../src/gui/main.cpp:4351
 #, c-format
 msgid "RX: %dx%d "
 msgstr ""
 
-#: ../src/gui/main.cpp:4308
+#: ../src/gui/main.cpp:4353
 #, fuzzy, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -2696,47 +2694,47 @@ msgstr ""
 "עיכוב מחזור טעות: %d ms\n"
 "Jitter buffer: %d ms"
 
-#: ../src/gui/main.cpp:4455
+#: ../src/gui/main.cpp:4499
 #, fuzzy
 msgid "Prints debug messages in the console (level between 1 and 5)"
 msgstr "הצג הודעות debug במסוף (רמה מ1 עד 6)"
 
-#: ../src/gui/main.cpp:4460
+#: ../src/gui/main.cpp:4504
 #, fuzzy
 msgid "Prints user plane debug messages in the console (level between 1 and 4)"
 msgstr "הצג הודעות debug במסוף (רמה מ1 עד 6)"
 
-#: ../src/gui/main.cpp:4465
+#: ../src/gui/main.cpp:4509
 msgid "Makes Ekiga call the given URI"
 msgstr "גורם ל-Ekiga להתקשר לכתובת שצוינה"
 
-#: ../src/gui/main.cpp:4574
+#: ../src/gui/main.cpp:4618
 msgid "No usable audio plugin detected"
 msgstr "לא נתגלה תוסף שמע שמיש"
 
-#: ../src/gui/main.cpp:4575
+#: ../src/gui/main.cpp:4619
 #, fuzzy
 msgid ""
 "Ekiga didn't find any usable audio plugin. Make sure that your installation "
 "is correct."
 msgstr "‏‏GnomeMeeting לא מוצא שום תוסף אודיו שמיש. וודא שההתקנה נכונה."
 
-#: ../src/gui/main.cpp:4578
+#: ../src/gui/main.cpp:4622
 msgid "No usable audio codecs detected"
 msgstr "לא התגלו מקודדי שמע שמישים"
 
-#: ../src/gui/main.cpp:4579
+#: ../src/gui/main.cpp:4623
 msgid ""
 "Ekiga didn't find any usable audio codec. Make sure that your installation "
 "is correct."
 msgstr "‏‏Ekiga לא מצאה תוסף שמע שמיש. וודא שההתקנה נכונה."
 
-#: ../src/gui/main.cpp:4585
+#: ../src/gui/main.cpp:4629
 #, fuzzy
 msgid "Configuration database corruption"
 msgstr "אשף ההגדרות"
 
-#: ../src/gui/main.cpp:4586
+#: ../src/gui/main.cpp:4630
 #, c-format
 msgid ""
 "Ekiga got an invalid value for the configuration key %s.\n"
@@ -2866,7 +2864,7 @@ msgstr "בחר צליל"
 
 #: ../src/gui/preferences.cpp:556
 msgid "Wavefiles"
-msgstr ""
+msgstr "קבצי Wave"
 
 #: ../src/gui/preferences.cpp:565 ../src/gui/preferences.cpp:584
 msgid "Play"
@@ -3002,9 +3000,8 @@ msgid "Size:"
 msgstr "גודל:"
 
 #: ../src/gui/preferences.cpp:872
-#, fuzzy
 msgid "Select the transmitted video size"
-msgstr "בחר את התקן האודיו היוצא לשימוש"
+msgstr "בחר את גודל הוידאו שנשלח"
 
 #: ../src/gui/preferences.cpp:874
 msgid "Format:"
@@ -3144,8 +3141,9 @@ msgstr "התקנים"
 msgid "Video"
 msgstr "וידאו"
 
-#: ../src/gui/statusicon.cpp:303
 # c-format
+#: ../src/gui/statusicon.cpp:303
+#, c-format
 msgid "You have %d message"
 msgid_plural "You have %d messages"
 msgstr[0] "יש לך הודעה אחת"
@@ -3186,6 +3184,19 @@ msgstr "מחק הודעות מותאמות אישית:"
 #: ../src/gui/statusmenu.cpp:780
 msgid "Define a custom message:"
 msgstr "הגדר הודעה מותאמת אישית:"
+
+#~ msgid "Forward"
+#~ msgstr "העבר"
+
+#~ msgid ""
+#~ "The video manager is the plugin that will manage your video devices, "
+#~ "Video4Linux is the most common choice if you own a webcam."
+#~ msgstr ""
+#~ "מנהל הוידאו הוא תוסף אשר מנהל את התקני הוידאו שלך, Video4Linux היא הבחירה "
+#~ "הנפוצה אם ברשותך מצלמת אינטרנט."
+
+#~ msgid "_Find Contacts"
+#~ msgstr "חפש _אנשי קשר"
 
 #~ msgid "Auto Away Timeout"
 #~ msgstr "Auto Away Timeout"
@@ -3243,12 +3254,6 @@ msgstr "הגדר הודעה מותאמת אישית:"
 
 #~ msgid "PC-To-Phone Settings"
 #~ msgstr "הגדרות PC-To-Phone"
-
-#~ msgid "Account _ID:"
-#~ msgstr "_מזהה חשבון:"
-
-#~ msgid "_PIN code:"
-#~ msgstr "_קוד סודי:"
 
 #~ msgid "Use PC-To-Phone service"
 #~ msgstr "השתמש בשירות PC-To-Phone"
@@ -4306,12 +4311,6 @@ msgstr "הגדר הודעה מותאמת אישית:"
 
 #~ msgid "Video Devices - page %d/%d"
 #~ msgstr "התקני הוידאו - דף %d/%d"
-
-#~ msgid ""
-#~ "The video input device is the device managed by the video manager that "
-#~ "will be used to capture video."
-#~ msgstr ""
-#~ "התקן הוידאו הוא ההתקן אשר מנוהל על ידי מנהל הוידאו אשר ישתמש ללכידת וידאו."
 
 #~ msgid "General History"
 #~ msgstr "היסטוריית שיחות כללית"
