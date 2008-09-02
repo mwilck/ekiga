@@ -3056,10 +3056,8 @@ main_window_focus_event_cb (GtkWidget *main_window,
 			    G_GNUC_UNUSED GdkEventFocus *event,
 			    G_GNUC_UNUSED gpointer user_data)
 {
-#if GTK_MINOR_VERSION >= 8
   if (gtk_window_get_urgency_hint (GTK_WINDOW (main_window)))
       gtk_window_set_urgency_hint (GTK_WINDOW (main_window), FALSE);
-#endif
 
   return FALSE;
 }

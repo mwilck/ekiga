@@ -687,9 +687,7 @@ FormDialog::instructions (const std::string _instructions)
   g_free (label_text);
 
   gtk_label_set_line_wrap (GTK_LABEL (widget), TRUE);
-#if GTK_CHECK_VERSION(2,10,0)
   gtk_label_set_line_wrap_mode (GTK_LABEL (widget), PANGO_WRAP_WORD);
-#endif
   gtk_box_pack_start (GTK_BOX (preamble), widget, FALSE, FALSE, 0);
 
   submitter = new InstructionsSubmitter (_instructions);
@@ -732,9 +730,7 @@ FormDialog::error (const std::string _error)
 
     widget = gtk_label_new (NULL);
     gtk_label_set_line_wrap (GTK_LABEL (widget), TRUE);
-#if GTK_CHECK_VERSION(2,10,0)
     gtk_label_set_line_wrap_mode (GTK_LABEL (widget), PANGO_WRAP_WORD);
-#endif
     gtk_label_set_markup_with_mnemonic (GTK_LABEL (widget),
 					("<span foreground=\"red\">" + _error + "</span>").c_str ());
     gtk_container_add (GTK_CONTAINER (preamble), widget);
@@ -875,9 +871,7 @@ FormDialog::multi_text (const std::string name,
 
   label = gtk_label_new_with_mnemonic (description.c_str ());
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-#if GTK_CHECK_VERSION(2,10,0)
   gtk_label_set_line_wrap_mode (GTK_LABEL (label), PANGO_WRAP_WORD);
-#endif
   gtk_table_attach_defaults (GTK_TABLE (fields), label,
 			     0, 2, rows -1, rows);
   rows++;
@@ -917,9 +911,7 @@ FormDialog::single_choice (const std::string name,
 
   label = gtk_label_new_with_mnemonic (description.c_str ());
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-#if GTK_CHECK_VERSION(2,10,0)
   gtk_label_set_line_wrap_mode (GTK_LABEL (label), PANGO_WRAP_WORD);
-#endif
 
   model = gtk_list_store_new (SingleChoiceSubmitter::COLUMN_NUMBER,
 			      G_TYPE_STRING, G_TYPE_STRING);
