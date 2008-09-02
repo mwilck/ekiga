@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: ekiga HEAD\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-08-24 18:05+0000\n"
-"PO-Revision-Date: 2008-08-25 18:02+0300\n"
+"PO-Revision-Date: 2008-09-02 09:22+0300\n"
 "Last-Translator: Ivar Smolin <okul@linux.ee>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
 "MIME-Version: 1.0\n"
@@ -1311,9 +1311,8 @@ msgid "Consult the calls history"
 msgstr ""
 
 #: ../src/endpoints/opal-account.cpp:347 ../src/endpoints/opal-bank.cpp:74
-#, fuzzy
 msgid "Edit account"
-msgstr "Sinu kontode redigeerimine"
+msgstr "Konto redigeerimine"
 
 #: ../src/endpoints/opal-account.cpp:353 ../src/endpoints/opal-bank.cpp:112
 msgid "Registrar:"
@@ -1383,18 +1382,16 @@ msgid "_Add an H.323 Account"
 msgstr ""
 
 #: ../src/endpoints/opal-bank.cpp:75
-#, fuzzy
 msgid "Please update the following fields."
-msgstr "Palun uuenda järgnevaid välju:"
+msgstr "Palun uuenda järgnevaid välju."
 
 #: ../src/endpoints/opal-bank.cpp:80 ../src/gui/assistant.cpp:540
 msgid "Get an ekiga.net SIP account"
 msgstr "Hangi omale ekiga.net SIP-konto"
 
 #: ../src/endpoints/opal-bank.cpp:90 ../src/gui/assistant.cpp:652
-#, fuzzy
 msgid "Get an Ekiga Call Out account"
-msgstr "Ekiga Arvutist-Telefonile konto hankimine"
+msgstr "Ekiga väljahelistamise konto hankimine"
 
 #: ../src/endpoints/opal-call.cpp:365
 msgid "Local user cleared the call"
@@ -1644,7 +1641,6 @@ msgid "Service unavailable"
 msgstr "Teenus pole saadaval"
 
 #: ../src/endpoints/sip-endpoint.cpp:862
-#, fuzzy
 msgid "Server timeout"
 msgstr "Serveri ajapiirang"
 
@@ -1654,16 +1650,15 @@ msgstr ""
 
 #: ../src/endpoints/sip-endpoint.cpp:870
 msgid "Message too large"
-msgstr ""
+msgstr "Sõnum on liiga suur"
 
 #: ../src/endpoints/sip-endpoint.cpp:874
 msgid "Busy everywhere"
 msgstr ""
 
 #: ../src/endpoints/sip-endpoint.cpp:878
-#, fuzzy
 msgid "Decline"
-msgstr "Kustuta"
+msgstr ""
 
 #: ../src/endpoints/sip-endpoint.cpp:882
 msgid "Does not exist anymore"
@@ -1686,9 +1681,8 @@ msgid "Unregistered"
 msgstr "Registreeritmata"
 
 #: ../src/gui/accounts.cpp:173
-#, fuzzy
 msgid "Could not unregister"
-msgstr "Gruppi pole võimalik kustutada"
+msgstr ""
 
 #: ../src/gui/accounts.cpp:179
 #, fuzzy
@@ -1919,9 +1913,8 @@ msgstr ""
 "on kõige üldisem valik Video4Linux."
 
 #: ../src/gui/assistant.cpp:1203
-#, fuzzy
 msgid "Configuration Complete"
-msgstr "Seadistused on valmis - %d. samm %d'st"
+msgstr "Seadistused on valmis"
 
 #: ../src/gui/assistant.cpp:1205
 msgid ""
@@ -2088,14 +2081,12 @@ msgid "Standby"
 msgstr "Ooterežiim"
 
 #: ../src/gui/main.cpp:816
-#, fuzzy
 msgid "Call on hold"
 msgstr "Kõne on ootel"
 
 #: ../src/gui/main.cpp:829
-#, fuzzy
 msgid "Call retrieved"
-msgstr "Kõne on edasi suunatud"
+msgstr ""
 
 #: ../src/gui/main.cpp:848
 #, fuzzy, c-format
@@ -2107,14 +2098,14 @@ msgid "Error"
 msgstr "Viga"
 
 #: ../src/gui/main.cpp:1128
-#, fuzzy, c-format
+#, c-format
 msgid "Added video input device %s"
-msgstr "Audiosisendi seade"
+msgstr "Videosisendi seade %s lisatud"
 
 #: ../src/gui/main.cpp:1145
-#, fuzzy, c-format
+#, c-format
 msgid "Removed video input device %s"
-msgstr "Videosisendi seade"
+msgstr "Videosisendi seade %s eemaldatud"
 
 #: ../src/gui/main.cpp:1162
 #, fuzzy, c-format
@@ -2168,23 +2159,23 @@ msgid "Unknown error."
 msgstr "Tundmatu viga."
 
 #: ../src/gui/main.cpp:1250
-#, fuzzy, c-format
+#, c-format
 msgid "Added audio input device %s"
-msgstr "Audiosisendi seade"
+msgstr "Audiosisendi seade %s lisatud"
 
 #: ../src/gui/main.cpp:1270
-#, fuzzy, c-format
+#, c-format
 msgid "Removed audio input device %s"
-msgstr "Audiosisendi seade"
+msgstr "Audiosisendi seade %s eemaldatud"
 
 #: ../src/gui/main.cpp:1287
-#, fuzzy, c-format
+#, c-format
 msgid "Error while opening audio input device %s"
-msgstr "Viga videoseadme %s avamisel"
+msgstr "Viga audiosisendi seadme %s avamisel"
 
 #: ../src/gui/main.cpp:1290
 msgid "Only silence will be transmitted."
-msgstr ""
+msgstr "Üle kantakse ainult vaikust."
 
 #: ../src/gui/main.cpp:1294
 #, fuzzy
@@ -2207,23 +2198,23 @@ msgid ""
 msgstr ""
 
 #: ../src/gui/main.cpp:1368
-#, fuzzy, c-format
+#, c-format
 msgid "Added audio output device %s"
-msgstr "Audioväljundi seade"
+msgstr "Audioväljundi seade %s lisatud"
 
 #: ../src/gui/main.cpp:1386
-#, fuzzy, c-format
+#, c-format
 msgid "Removed audio output device %s"
-msgstr "Alternatiivne audioväljundi seade"
+msgstr "Audioväljundi seade %s eemaldatud"
 
 #: ../src/gui/main.cpp:1407
-#, fuzzy, c-format
+#, c-format
 msgid "Error while opening audio output device %s"
-msgstr "Viga videoseadme %s avamisel"
+msgstr "Viga audioväljundi seadme %s avamisel"
 
 #: ../src/gui/main.cpp:1410
 msgid "No incoming sound will be played."
-msgstr ""
+msgstr "Sissetulevat heli ei esitata."
 
 #: ../src/gui/main.cpp:1414
 #, fuzzy
@@ -2252,9 +2243,8 @@ msgstr ""
 "Sisesta vasakul asuvasse lahtrisse URL ja helistamiseks vajuta sellele nupule"
 
 #: ../src/gui/main.cpp:1719
-#, fuzzy
 msgid "_Chat"
-msgstr "_Helista"
+msgstr ""
 
 #: ../src/gui/main.cpp:1721
 msgid "Ca_ll"
@@ -2551,32 +2541,28 @@ msgid "Remote Application:"
 msgstr "Kaugrakendus:"
 
 #: ../src/gui/main.cpp:3741
-#, fuzzy
 msgid "No"
-msgstr "Puudub"
+msgstr "Ei"
 
 #: ../src/gui/main.cpp:3743
 msgid "Yes"
-msgstr ""
+msgstr "Jah"
 
 #: ../src/gui/main.cpp:3753
-#, fuzzy
 msgid "Detected new audio input device:"
-msgstr "Palun vali audiosisendi seade:"
+msgstr "Tuvastati uus audiosisendi seade:"
 
 #: ../src/gui/main.cpp:3756
-#, fuzzy
 msgid "Detected new audio output device:"
-msgstr "Palun vali audioväljundi seade:"
+msgstr "Tuvastati uus audioväljundi seade:"
 
 #: ../src/gui/main.cpp:3759
-#, fuzzy
 msgid "Detected new video input device:"
-msgstr "Palun vali videosisendi seade:"
+msgstr "Tuvastati uus videosisendi seade:"
 
 #: ../src/gui/main.cpp:3777
 msgid "Do you want to use it as default device?"
-msgstr ""
+msgstr "Kas sa soovid seda vaikimisi seadmena kasutada?"
 
 #. Add title
 #: ../src/gui/main.cpp:3835 ../src/gui/main.cpp:3942
@@ -2612,14 +2598,13 @@ msgstr ""
 "Värinapuhver: %d ms%s%s%s"
 
 #: ../src/gui/main.cpp:4442
-#, fuzzy
 msgid "Prints debug messages in the console (level between 1 and 5)"
-msgstr "Silumisteadete väljastamine konsoolile (tasemega 1-6)"
+msgstr "Silumisteadete väljastamine konsoolile (tasemega 1-5)"
 
 #: ../src/gui/main.cpp:4447
 #, fuzzy
 msgid "Prints user plane debug messages in the console (level between 1 and 4)"
-msgstr "Silumisteadete väljastamine konsoolile (tasemega 1-6)"
+msgstr "Kasutaja silumisteadete väljastamine konsoolile (tasemega 1-4)"
 
 #: ../src/gui/main.cpp:4452
 msgid "Makes Ekiga call the given URI"
@@ -2847,12 +2832,11 @@ msgstr "_Väljuvate kõnede proksi:"
 
 #: ../src/gui/preferences.cpp:709
 msgid "Ringing Device"
-msgstr ""
+msgstr "Helinaseade"
 
 #: ../src/gui/preferences.cpp:709
-#, fuzzy
 msgid "Select the ringing audio device to use"
-msgstr "Kasutatava audiosisendi seadme valimine"
+msgstr "Helisemiseks kasutatava audioseadme valimine"
 
 #: ../src/gui/preferences.cpp:711
 msgid "Output device:"
