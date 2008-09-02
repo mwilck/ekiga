@@ -79,13 +79,13 @@ pixops_scale_nearest (guchar        *dest_buf,
 		      int            render_y1,
 		      int            dest_rowstride,
 		      int            dest_channels,
-		      gboolean       dest_has_alpha,
+		      G_GNUC_UNUSED gboolean       dest_has_alpha,
 		      const guchar  *src_buf,
 		      int            src_width,
 		      int            src_height,
 		      int            src_rowstride,
 		      int            src_channels,
-		      gboolean       src_has_alpha,
+		      G_GNUC_UNUSED gboolean       src_has_alpha,
 		      double         scale_x,
 		      double         scale_y)
 {
@@ -253,7 +253,7 @@ pixops_composite_color_nearest (guchar        *dest_buf,
 				int            render_y1,
 				int            dest_rowstride,
 				int            dest_channels,
-				gboolean       dest_has_alpha,
+				G_GNUC_UNUSED gboolean       dest_has_alpha,
 				const guchar  *src_buf,
 				int            src_width,
 				int            src_height,
@@ -375,9 +375,18 @@ pixops_composite_color_nearest (guchar        *dest_buf,
 #undef INNER_LOOP
 
 static void
-composite_pixel (guchar *dest, int dest_x, int dest_channels, int dest_has_alpha,
-		 int src_has_alpha, int check_size, guint32 color1, guint32 color2,
-		 guint r, guint g, guint b, guint a)
+composite_pixel (guchar *dest,
+		 G_GNUC_UNUSED int dest_x,
+		 G_GNUC_UNUSED int dest_channels,
+		 int dest_has_alpha,
+		 G_GNUC_UNUSED int src_has_alpha,
+		 G_GNUC_UNUSED int check_size,
+		 G_GNUC_UNUSED guint32 color1,
+		 G_GNUC_UNUSED guint32 color2,
+		 guint r,
+		 guint g,
+		 guint b,
+		 guint a)
 {
   if (dest_has_alpha)
     {
@@ -409,11 +418,23 @@ composite_pixel (guchar *dest, int dest_x, int dest_channels, int dest_has_alpha
 }
 
 static guchar *
-composite_line (int *weights, int n_x, int n_y,
-		guchar *dest, int dest_x, guchar *dest_end, int dest_channels, int dest_has_alpha,
-		guchar **src, int src_channels, gboolean src_has_alpha,
-		int x_init, int x_step, int src_width,
-		int check_size, guint32 color1, guint32 color2)
+composite_line (int *weights,
+		int n_x,
+		int n_y,
+		guchar *dest,
+		G_GNUC_UNUSED int dest_x,
+		guchar *dest_end,
+		int dest_channels,
+		int dest_has_alpha,
+		guchar **src,
+		int src_channels,
+		gboolean src_has_alpha,
+		int x_init,
+		int x_step,
+		G_GNUC_UNUSED int src_width,
+		G_GNUC_UNUSED int check_size,
+		G_GNUC_UNUSED guint32 color1,
+		G_GNUC_UNUSED guint32 color2)
 {
   int x = x_init;
   int i, j;
@@ -485,11 +506,23 @@ composite_line (int *weights, int n_x, int n_y,
 }
 
 static guchar *
-composite_line_22_4a4 (int *weights, int n_x, int n_y,
-		       guchar *dest, int dest_x, guchar *dest_end, int dest_channels, int dest_has_alpha,
-		       guchar **src, int src_channels, gboolean src_has_alpha,
-		       int x_init, int x_step, int src_width,
-		       int check_size, guint32 color1, guint32 color2)
+composite_line_22_4a4 (int *weights,
+		       G_GNUC_UNUSED int n_x, 
+		       G_GNUC_UNUSED int n_y,
+		       guchar *dest,
+		       G_GNUC_UNUSED int dest_x,
+		       guchar *dest_end,
+		       G_GNUC_UNUSED int dest_channels,
+		       G_GNUC_UNUSED int dest_has_alpha,
+		       guchar **src,
+		       int src_channels,
+		       gboolean src_has_alpha,
+		       int x_init,
+		       int x_step,
+		       G_GNUC_UNUSED int src_width,
+		       G_GNUC_UNUSED int check_size,
+		       G_GNUC_UNUSED guint32 color1,
+		       G_GNUC_UNUSED guint32 color2)
 {
   int x = x_init;
   guchar *src0 = src[0];
@@ -553,11 +586,23 @@ composite_line_22_4a4 (int *weights, int n_x, int n_y,
 
 #ifdef USE_MMX
 static guchar *
-composite_line_22_4a4_mmx_stub (int *weights, int n_x, int n_y,
-				guchar *dest, int dest_x, guchar *dest_end, int dest_channels, int dest_has_alpha,
-				guchar **src, int src_channels, gboolean src_has_alpha,
-				int x_init, int x_step, int src_width,
-				int check_size, guint32 color1, guint32 color2)
+composite_line_22_4a4_mmx_stub (int *weights,
+				G_GNUC_UNUSED int n_x,
+				G_GNUC_UNUSED int n_y,
+				guchar *dest,
+				G_GNUC_UNUSED int dest_x,
+				guchar *dest_end, 
+				G_GNUC_UNUSED int dest_channels,
+				G_GNUC_UNUSED int dest_has_alpha,
+				guchar **src,
+				G_GNUC_UNUSED int src_channels, 
+				G_GNUC_UNUSED gboolean src_has_alpha,
+				int x_init,
+				int x_step,
+				G_GNUC_UNUSED int src_width,
+				G_GNUC_UNUSED int check_size,
+				G_GNUC_UNUSED guint32 color1,
+				G_GNUC_UNUSED guint32 color2)
 {
   guint32 mmx_weights[16][8];
   int j;
@@ -579,9 +624,18 @@ composite_line_22_4a4_mmx_stub (int *weights, int n_x, int n_y,
 #endif /* USE_MMX */
 
 static void
-composite_pixel_color (guchar *dest, int dest_x, int dest_channels, int dest_has_alpha,
-		       int src_has_alpha, int check_size, guint32 color1, guint32 color2,
-		       guint r, guint g, guint b, guint a)
+composite_pixel_color (guchar *dest,
+		       int dest_x,
+		       int dest_channels,
+		       int dest_has_alpha,
+		       G_GNUC_UNUSED int src_has_alpha,
+		       int check_size,
+		       guint32 color1,
+		       guint32 color2,
+		       guint r,
+		       guint g,
+		       guint b,
+		       guint a)
 {
   int dest_r, dest_g, dest_b;
   int check_shift = get_check_shift (check_size);
@@ -610,11 +664,23 @@ composite_pixel_color (guchar *dest, int dest_x, int dest_channels, int dest_has
 }
 
 static guchar *
-composite_line_color (int *weights, int n_x, int n_y,
-		      guchar *dest, int dest_x, guchar *dest_end, int dest_channels, int dest_has_alpha,
-		      guchar **src, int src_channels, gboolean src_has_alpha,
-		      int x_init, int x_step, int src_width,
-		      int check_size, guint32 color1, guint32 color2)
+composite_line_color (int *weights,
+		      int n_x,
+		      int n_y,
+		      guchar *dest,
+		      int dest_x,
+		      guchar *dest_end,
+		      int dest_channels,
+		      int dest_has_alpha,
+		      guchar **src,
+		      int src_channels,
+		      gboolean src_has_alpha,
+		      int x_init,
+		      int x_step,
+		      G_GNUC_UNUSED int src_width,
+		      int check_size,
+		      guint32 color1,
+		      guint32 color2)
 {
   int x = x_init;
   int i, j;
@@ -691,11 +757,23 @@ composite_line_color (int *weights, int n_x, int n_y,
 
 #ifdef USE_MMX
 static guchar *
-composite_line_color_22_4a4_mmx_stub (int *weights, int n_x, int n_y,
-				      guchar *dest, int dest_x, guchar *dest_end, int dest_channels, int dest_has_alpha,
-				      guchar **src, int src_channels, gboolean src_has_alpha,
-				      int x_init, int x_step, int src_width,
-				      int check_size, guint32 color1, guint32 color2)
+composite_line_color_22_4a4_mmx_stub (int *weights,
+				      G_GNUC_UNUSED int n_x,
+				      G_GNUC_UNUSED int n_y,
+				      guchar *dest,
+				      int dest_x,
+				      guchar *dest_end,
+				      G_GNUC_UNUSED int dest_channels,
+				      G_GNUC_UNUSED int dest_has_alpha,
+				      guchar **src,
+				      G_GNUC_UNUSED int src_channels,
+				      G_GNUC_UNUSED gboolean src_has_alpha,
+				      int x_init,
+				      int x_step,
+				      G_GNUC_UNUSED int src_width,
+				      int check_size,
+				      guint32 color1,
+				      guint32 color2)
 {
   guint32 mmx_weights[16][8];
   int check_shift = get_check_shift (check_size);
@@ -725,9 +803,18 @@ composite_line_color_22_4a4_mmx_stub (int *weights, int n_x, int n_y,
 #endif /* USE_MMX */
 
 static void
-scale_pixel (guchar *dest, int dest_x, int dest_channels, int dest_has_alpha,
-	     int src_has_alpha, int check_size, guint32 color1, guint32 color2,
-	     guint r, guint g, guint b, guint a)
+scale_pixel (guchar *dest,
+	     G_GNUC_UNUSED int dest_x,
+	     G_GNUC_UNUSED int dest_channels,
+	     int dest_has_alpha,
+	     int src_has_alpha,
+	     G_GNUC_UNUSED int check_size,
+	     G_GNUC_UNUSED guint32 color1,
+	     G_GNUC_UNUSED guint32 color2,
+	     guint r,
+	     guint g,
+	     guint b,
+	     guint a)
 {
   if (src_has_alpha)
     {
@@ -758,11 +845,23 @@ scale_pixel (guchar *dest, int dest_x, int dest_channels, int dest_has_alpha,
 }
 
 static guchar *
-scale_line (int *weights, int n_x, int n_y,
-	    guchar *dest, int dest_x, guchar *dest_end, int dest_channels, int dest_has_alpha,
-	    guchar **src, int src_channels, gboolean src_has_alpha,
-	    int x_init, int x_step, int src_width,
-	    int check_size, guint32 color1, guint32 color2)
+scale_line (int *weights,
+	    int n_x,
+	    int n_y,
+	    guchar *dest,
+	    G_GNUC_UNUSED int dest_x,
+	    guchar *dest_end,
+	    int dest_channels,
+	    int dest_has_alpha,
+	    guchar **src,
+	    int src_channels,
+	    gboolean src_has_alpha,
+	    int x_init,
+	    int x_step,
+	    G_GNUC_UNUSED int src_width,
+	    G_GNUC_UNUSED int check_size,
+	    G_GNUC_UNUSED guint32 color1,
+	    G_GNUC_UNUSED guint32 color2)
 {
   int x = x_init;
   int i, j;
@@ -849,11 +948,23 @@ scale_line (int *weights, int n_x, int n_y,
 
 #ifdef USE_MMX 
 static guchar *
-scale_line_22_33_mmx_stub (int *weights, int n_x, int n_y,
-			   guchar *dest, int dest_x, guchar *dest_end, int dest_channels, int dest_has_alpha,
-			   guchar **src, int src_channels, gboolean src_has_alpha,
-			   int x_init, int x_step, int src_width,
-			   int check_size, guint32 color1, guint32 color2)
+scale_line_22_33_mmx_stub (int *weights,
+			   G_GNUC_UNUSED int n_x,
+			   G_GNUC_UNUSED int n_y,
+			   guchar *dest,
+			   G_GNUC_UNUSED int dest_x,
+			   guchar *dest_end,
+			   G_GNUC_UNUSED int dest_channels,
+			   G_GNUC_UNUSED int dest_has_alpha,
+			   guchar **src,
+			   G_GNUC_UNUSED int src_channels,
+			   G_GNUC_UNUSED gboolean src_has_alpha,
+			   int x_init,
+			   int x_step,
+			   G_GNUC_UNUSED int src_width,
+			   G_GNUC_UNUSED int check_size,
+			   G_GNUC_UNUSED guint32 color1,
+			   G_GNUC_UNUSED guint32 color2)
 {
   guint32 mmx_weights[16][8];
   int j;
@@ -875,11 +986,23 @@ scale_line_22_33_mmx_stub (int *weights, int n_x, int n_y,
 #endif /* USE_MMX */
 
 static guchar *
-scale_line_22_33 (int *weights, int n_x, int n_y,
-		  guchar *dest, int dest_x, guchar *dest_end, int dest_channels, int dest_has_alpha,
-		  guchar **src, int src_channels, gboolean src_has_alpha,
-		  int x_init, int x_step, int src_width,
-		  int check_size, guint32 color1, guint32 color2)
+scale_line_22_33 (int *weights,
+		  G_GNUC_UNUSED int n_x,
+		  G_GNUC_UNUSED int n_y,
+		  guchar *dest,
+		  G_GNUC_UNUSED int dest_x,
+		  guchar *dest_end,
+		  G_GNUC_UNUSED int dest_channels,
+		  G_GNUC_UNUSED int dest_has_alpha,
+		  guchar **src,
+		  G_GNUC_UNUSED int src_channels,
+		  G_GNUC_UNUSED gboolean src_has_alpha,
+		  int x_init,
+		  int x_step,
+		  G_GNUC_UNUSED int src_width,
+		  G_GNUC_UNUSED int check_size,
+		  G_GNUC_UNUSED guint32 color1,
+		  G_GNUC_UNUSED guint32 color2)
 {
   int x = x_init;
   guchar *src0 = src[0];
@@ -1381,6 +1504,9 @@ make_weights (PixopsFilter     *filter,
       bilinear_box_make_weights (&filter->x, scale_x);
       bilinear_box_make_weights (&filter->y, scale_y);
       break;
+
+    default:
+      break;
     }
 }
 
@@ -1593,7 +1719,7 @@ void
   g_return_if_fail (!(src_channels == 3 && src_has_alpha));
   g_return_if_fail (!(src_has_alpha && !dest_has_alpha));
 
-  if (scale_x == 0 || scale_y == 0)
+  if (scale_x == 0.0 || scale_y == 0.0)
     return;
 
   if (interp_type == PIXOPS_INTERP_NEAREST)

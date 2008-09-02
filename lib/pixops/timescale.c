@@ -86,6 +86,8 @@ dump_array (double times[3][3][4])
 	      case 2:
 		printf("4a ");
 		break;
+	      default:
+		break;
 	      }
 	  else
 	    printf("   ");
@@ -106,6 +108,8 @@ dump_array (double times[3][3][4])
 	      break;
 	    case PIXOPS_INTERP_HYPER:
 	      printf ("  HYPER\n");
+	      break;
+	    default:
 	      break;
 	    }
 	}
@@ -189,6 +193,8 @@ int main (int argc, char **argv)
 		break;
 	      case PIXOPS_INTERP_HYPER:
 		printf ("PIXOPS_INTERP_HYPER\n");
+		break;
+	      default:
 		break;
 	      }
 
