@@ -145,7 +145,8 @@ static void on_clicked_show_heap_menu (Ekiga::Heap* heap,
 static void on_clicked_show_heap_group_menu (Ekiga::Heap* heap,
 					     const std::string name,
 					     GdkEventButton* event);
-static void on_clicked_show_presentity_menu (Ekiga::Presentity* presentity,
+static void on_clicked_show_presentity_menu (Ekiga::Heap* heap,
+					     Ekiga::Presentity* presentity,
 					     GdkEventButton* event);
 
 static void on_clicked_fold (RosterViewGtk* self,
@@ -427,13 +428,23 @@ on_clicked_show_heap_group_menu (Ekiga::Heap* heap,
 }
 
 static void
-on_clicked_show_presentity_menu (Ekiga::Presentity* presentity,
+on_clicked_show_presentity_menu (Ekiga::Heap* heap,
+				 Ekiga::Presentity* presentity,
 				 GdkEventButton* event)
 {
+  Ekiga::TemporaryMenuBuilder temp;
   MenuBuilderGtk builder;
-  presentity->populate_menu (builder);
-  if (!builder.empty ()) {
 
+  heap->populate_menu (temp);
+  presentity->populate_menu (builder);
+
+  if (!temp.empty ()) {
+
+    builder.add_separator ();
+    temp.populate_menu (builder);
+  }
+
+  if (!builder.empty ()) {
     gtk_widget_show_all (builder.menu);
     gtk_menu_popup (GTK_MENU (builder.menu), NULL, NULL,
 		    NULL, NULL, event->button, event->time);
@@ -694,7 +705,7 @@ on_view_clicked (GtkWidget *tree_view,
       case TYPE_PRESENTITY:
 
 	if (event->type == GDK_BUTTON_PRESS && event->button == 3)
-	  on_clicked_show_presentity_menu (presentity, event);
+	  on_clicked_show_presentity_menu (heap, presentity, event);
 	if (event->type == GDK_2BUTTON_PRESS)
 	  on_clicked_trigger_presentity (presentity);
 	break;
@@ -953,6 +964,7 @@ on_presentity_added (Ekiga::Cluster &/*cluster*/,
     gtk_tree_store_set (self->priv->store, &iter,
 			COLUMN_TYPE, TYPE_PRESENTITY,
 			COLUMN_OFFLINE, active,
+			COLUMN_HEAP, &heap,
 			COLUMN_PRESENTITY, &presentity,
 			COLUMN_NAME, presentity.get_name ().c_str (),
 			COLUMN_STATUS, presentity.get_status ().c_str (),
@@ -969,6 +981,7 @@ on_presentity_added (Ekiga::Cluster &/*cluster*/,
     gtk_tree_store_set (self->priv->store, &iter,
 			COLUMN_TYPE, TYPE_PRESENTITY,
 			COLUMN_OFFLINE, active,
+			COLUMN_HEAP, &heap,
 			COLUMN_PRESENTITY, &presentity,
 			COLUMN_NAME, presentity.get_name ().c_str (),
 			COLUMN_STATUS, presentity.get_status ().c_str (),

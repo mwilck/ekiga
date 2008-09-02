@@ -356,8 +356,18 @@ on_contact_clicked (GtkWidget *tree_view,
 
 	if (event->type == GDK_BUTTON_PRESS && event->button == 3) {
 
+	  Ekiga::TemporaryMenuBuilder temp;
 	  MenuBuilderGtk builder;
+
+	  BOOK_VIEW_GTK (data)->priv->book.populate_menu (temp);
 	  contact->populate_menu (builder);
+
+	  if (!temp.empty ()) {
+
+	    builder.add_separator ();
+	    temp.populate_menu (builder);
+	  }
+
 	  if (!builder.empty ()) {
 
 	    gtk_widget_show_all (builder.menu);
