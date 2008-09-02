@@ -13,6 +13,8 @@ INCLUDEDIR:=$(BUILDROOT)/include
 LIBDIR    := $(BUILDROOT)/lib
 BINDIR    := $(BUILDROOT)/bin
 
+export PKG_CONFIG_LIBDIR:=$(LIBDIR)
+
 export DEB_BUILD_GNU_TYPE:=$(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
 export DEB_HOST_GNU_TYPE:="i586-pc-mingw32"
 
@@ -460,15 +462,6 @@ update-sources::
 $(OPAL_DIR)/configure: binaries $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(LIBDIR)/libpt.a $(SRCDIR)/$(OPAL_ARCHIVE) $(EKIGA_WIN32_DIFF_DIR)/opal_configure.ac $(EKIGA_WIN32_DIFF_DIR)/opal_Makefile.am $(EKIGA_WIN32_DIFF_DIR)/opal_opal.pc.in $(BINDIR)/avcodec.dll $(LIBDIR)/libx264.a $(LIBDIR)/libtheora.a
 	rm -rf $(OPAL_DIR) $(LIBDIR)/libopal.a
 	$(CP) -r $(SRCDIR)/$(OPAL_ARCHIVE) $(OPAL_DIR)
-	$(RM) -f $(OPAL_DIR)/configure.exe $(OPAL_DIR)/configure $(OPAL_DIR)/configure.ac $(OPAL_DIR)/Makefile.in
-	$(CP) -fl $(EKIGA_WIN32_DIFF_DIR)/opal_configure.ac $(OPAL_DIR)/configure.ac
-	$(CP) -fl $(EKIGA_WIN32_DIFF_DIR)/opal_Makefile.am $(OPAL_DIR)/Makefile.am
-	$(CP) -fl $(EKIGA_WIN32_DIFF_DIR)/opal_opal.pc.in $(OPAL_DIR)/opal.pc.in
-	(cd opal; \
-	sed -i "s/\$${OPAL_VER}/${OPAL_VER}/" configure.ac; \
-	$(ACLOCAL); autoheader; libtoolize --force; \
-	touch NEWS README AUTHORS ChangeLog unused.h.in; \
-	automake-1.9 -a -c; autoconf )
 
 $(OPAL_DIR)/config.status: binaries $(OPAL_DIR)/configure
 	rm -f $(LIBDIR)/libopal.a
