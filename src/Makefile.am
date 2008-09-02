@@ -145,7 +145,7 @@ endif
 if INSTALL_DBUS_SERVICE
 
 %.service: %.service.in
-	$(MKDIR_P) components # this is ugly...
+	$(mkdir_p) components # this is ugly...
 	sed -e "s#\@bindir\@#@bindir@#" $< > $@
 
 servicedir = $(datadir)/dbus-1/services
