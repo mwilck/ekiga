@@ -325,7 +325,7 @@ void Opal::Sip::EndPoint::fetch (const std::string _uri)
     // We are registered yet
     if (std::find (domains.begin (), domains.end (), domain) != domains.end ()) {
 
-      Subscribe (SIPSubscribe::Presence, 1800, PString (_uri.c_str ()));
+      Subscribe (SIPSubscribe::Presence, 500, PString (_uri.c_str ()));
       subscribed_uris.push_back (_uri);
     }
     else {
@@ -553,7 +553,7 @@ unsigned Opal::Sip::EndPoint::get_nat_binding_delay ()
 
 bool Opal::Sip::EndPoint::subscribe (const Opal::Account & account)
 {
-  if (account.get_protocol_name () != "SIP")
+  if (account.get_protocol_name () != "SIP" || account.is_active ())
     return false;
 
   new subscriber (account, *this);
@@ -563,7 +563,7 @@ bool Opal::Sip::EndPoint::subscribe (const Opal::Account & account)
 
 bool Opal::Sip::EndPoint::unsubscribe (const Opal::Account & account)
 {
-  if (account.get_protocol_name () != "SIP")
+  if (account.get_protocol_name () != "SIP" || !account.is_active ())
     return false;
 
   new subscriber (account, *this);
@@ -664,7 +664,7 @@ void Opal::Sip::EndPoint::OnRegistered (const PString & _aor,
         found = (*iter).find (server, 0);
         if (found != string::npos) {
 
-          Subscribe (SIPSubscribe::Presence, 0, PString ((*iter).c_str ()));
+          Unsubscribe (SIPSubscribe::Presence, PString ((*iter).c_str ()));
           to_subscribe_uris.push_back (*iter);
           subscribed_uris.remove (*iter++);
         }

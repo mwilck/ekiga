@@ -1,5 +1,13 @@
 2008-09-03  Damien Sandras  <dsandras@gnome.org>
 
+	* src/endpoints/sip-endpoint.cpp:
+	* src/endpoints/h323-endpoint.cpp:
+	* lib/engine/account/skel/account-core.h:
+	Prevent registering when not unregistered and prevent unregistering
+	when not registered. More logical behavior in case of failure.
+
+2008-09-03  Damien Sandras  <dsandras@gnome.org>
+
 	* lib/engine/protocol/skel/call-protocol-manager.h:
 	* lib/engine/protocol/skel/call-manager.h:
 	Added missing virtual keyword to destructor.

@@ -259,7 +259,7 @@ bool Ekiga::AccountCore::unsubscribe_account (const T &account)
 
     Ekiga::AccountSubscriberImpl<T> *subscriber = dynamic_cast<Ekiga::AccountSubscriberImpl<T> *> (*iter);
     if (subscriber)
-      if (subscriber->subscribe (account))
+      if (subscriber->unsubscribe (account))
         return true;
   }
 
