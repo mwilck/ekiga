@@ -1754,7 +1754,7 @@ gm_mw_init_menu (GtkWidget *main_window)
 
       GTK_MENU_ENTRY("contact", _("_Contact"),
 		     _("Act on selected contact"),
-		     GTK_STOCK_EXECUTE, 'c',
+		     GTK_STOCK_EXECUTE, 0,
 		     NULL, NULL, FALSE),
 
       GTK_MENU_SEPARATOR,
