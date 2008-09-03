@@ -230,9 +230,6 @@ public:
 template<class T>
 bool Ekiga::AccountCore::subscribe_account (const T &account)
 {
-  if (!account.is_enabled ())
-    return false;
-
   for (subscriber_iterator iter = account_subscribers.begin ();
        iter != account_subscribers.end ();
        iter++) {
@@ -250,9 +247,6 @@ bool Ekiga::AccountCore::subscribe_account (const T &account)
 template<class T>
 bool Ekiga::AccountCore::unsubscribe_account (const T &account)
 {
-  if (account.is_enabled ())
-    return false;
-
   for (subscriber_iterator iter = account_subscribers.begin ();
        iter != account_subscribers.end ();
        iter++) {
