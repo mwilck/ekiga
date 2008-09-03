@@ -157,6 +157,9 @@ static gboolean message_activated_cb (GtkWidget *w,
 
 static void on_chat_removed (ChatArea* self);
 
+static void on_chat_area_show (GtkWidget*,
+			       gpointer);
+
 /* implementation of internal api */
 
 static void
@@ -553,6 +556,16 @@ on_chat_removed (ChatArea* self)
   gtk_widget_hide (self->priv->message);
 }
 
+static void on_chat_area_show (GtkWidget* widget,
+                               G_GNUC_UNUSED gpointer data)
+{
+  ChatArea* self = NULL;
+
+  self = (ChatArea*)widget;
+
+  gtk_widget_grab_focus (self->priv->message);
+}
+
 /* GObject code */
 
 static void
@@ -927,6 +940,10 @@ chat_area_init (GTypeInstance* instance,
 
   gtk_widget_set_size_request (GTK_WIDGET (vbox), 175, -1);
   gtk_widget_show_all (vbox);
+
+  g_signal_connect (G_OBJECT (self), "show",
+		    G_CALLBACK (on_chat_area_show), NULL);
+  gtk_widget_grab_focus (self->priv->message);
 }
 
 
