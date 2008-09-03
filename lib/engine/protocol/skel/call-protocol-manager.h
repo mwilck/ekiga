@@ -71,7 +71,7 @@ namespace Ekiga
 
       /* The destructor
        */
-      ~CallProtocolManager () {};
+      virtual ~CallProtocolManager () {};
 
 
       /*                 

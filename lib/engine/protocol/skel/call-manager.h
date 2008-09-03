@@ -65,7 +65,7 @@ namespace Ekiga
 
       /* The destructor
        */
-      ~CallManager () {}
+      virtual ~CallManager () {}
 
       /** Add a CallProtocolManager to the CallManager.
        * @param The manager to be added.
