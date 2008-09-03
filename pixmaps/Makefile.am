@@ -60,7 +60,8 @@ IMAGES_FILES= \
 	gm_powermeter_default_01.xpm \
 	gm_powermeter_default_02.xpm \
 	gm_powermeter_default_03.xpm \
-	gm_powermeter_default_04.xpm
+	gm_powermeter_default_04.xpm \
+	icon.h
 
 
 IMAGES= \

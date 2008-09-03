@@ -26,6 +26,8 @@ libgmhal_dbus_la_SOURCES += \
 	$(hal_dir)/hal-v4l-helper.c
 endif
 
+EXTRA_DIST = hal-marshal.list
+
 # forces the HAVE :
 BUILT_SOURCES = hal-marshal.h hal-marshal.c
 

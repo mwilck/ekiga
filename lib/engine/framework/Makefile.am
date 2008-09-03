@@ -13,6 +13,7 @@ libgmframework_la_SOURCES = \
 	$(framework_dir)/services.h \
 	$(framework_dir)/lister.h \
 	$(framework_dir)/chain-of-responsibility.h \
+	$(framework_dir)/device-def.h \
 	$(framework_dir)/form-builder.h \
 	$(framework_dir)/form-dumper.h \
 	$(framework_dir)/form.h \
