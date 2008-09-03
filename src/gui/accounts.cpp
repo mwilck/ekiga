@@ -314,6 +314,8 @@ account_toggled_cb (G_GNUC_UNUSED GtkCellRendererToggle *cell,
   GtkTreeSelection *selection = NULL;
   GtkTreeIter iter;
 
+  bool fixed = false;
+
   Ekiga::Account *account = NULL;
 
   aw = gm_aw_get_aw (GTK_WIDGET (data));
@@ -327,11 +329,24 @@ account_toggled_cb (G_GNUC_UNUSED GtkCellRendererToggle *cell,
   if (gtk_tree_model_get_iter (model, &iter, path)) {
 
     gtk_tree_model_get (model, &iter,
+                        COLUMN_ACCOUNT_ENABLED, &fixed,
                         COLUMN_ACCOUNT, &account,
                         -1);
 
-    bool enabled = account->is_enabled ();
-    enabled ? account->disable () : account->enable ();
+    if (fixed) {
+
+      if (account->is_active ()) {
+        account->disable ();
+      }
+    }
+    else if (!account->is_active ()) {
+      account->enable ();
+    }
+
+    gtk_list_store_set (GTK_LIST_STORE (model), &iter,
+                        COLUMN_ACCOUNT_ENABLED, fixed^1,
+                        COLUMN_ACCOUNT_ERROR_MESSAGE, "",
+                        -1);
   }
 
   gtk_tree_path_free (path);
@@ -507,7 +522,6 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
   GtkWidget *frame = NULL;
   GtkWidget *hbox = NULL;
 
-  GtkTreeModel *model = NULL;
   GtkCellRenderer *renderer = NULL;
   GtkListStore *list_store = NULL;
   GtkTreeViewColumn *column = NULL;
@@ -604,11 +618,6 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
 				     GTK_TREE_VIEW_COLUMN_AUTOSIZE);
     gtk_tree_view_column_set_sort_column_id (column, i);
   }
-
-  model = gtk_tree_view_get_model (GTK_TREE_VIEW (aw->accounts_list));
-  gtk_tree_sortable_set_sort_column_id (GTK_TREE_SORTABLE (model),
-                                        COLUMN_ACCOUNT_ENABLED,
-                                        GTK_SORT_DESCENDING);
 
   g_signal_connect (G_OBJECT (aw->accounts_list), "event_after",
 		    G_CALLBACK (account_clicked_cb), window);
