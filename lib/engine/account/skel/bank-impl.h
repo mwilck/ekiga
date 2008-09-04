@@ -296,7 +296,6 @@ Ekiga::BankImpl<T>::add_account (T &account)
   account.questions.add_handler (questions.make_slot ());
   account.trigger_saving.connect (sigc::mem_fun (this, &Ekiga::BankImpl<T>::save));
   account.registration_event.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::BankImpl<T>::on_registration_event), &account));
-  account.removed.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::BankImpl<T>::remove_account), account));
 }
 
 
