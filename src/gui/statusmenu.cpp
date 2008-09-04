@@ -85,11 +85,11 @@ enum MessageType
   TYPE_CLEAR               // Clear custom message(s)
 };
 
-const char* statuses[] = 
+const gchar *statuses [] = 
 { 
-  _("Online"), 
-  _("Away"), 
-  _("Do Not Disturb") 
+  N_("Online"), 
+  N_("Away"), 
+  N_("Do Not Disturb") 
 };
 
 const char* status_types_names[] = 
@@ -489,6 +489,7 @@ status_menu_populate (StatusMenu *self)
 
   for (int i = 0 ; i < NUM_STATUS_TYPES ; i++) {
 
+    statuses [i] = gettext (statuses [i]);
     custom_status = gm_conf_get_string_list (status_types_keys[i]);
     liter = custom_status;
 
