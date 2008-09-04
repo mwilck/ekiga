@@ -40,6 +40,7 @@
 #include <string>
 #include <sstream>
 #include <sys/time.h>
+#include <string.h>
 
 #include <ldap.h>
 #include <glib.h>
