@@ -1535,19 +1535,24 @@ place_call_cb (GtkWidget * /*widget*/,
 
     size_t pos;
 
+    gm_main_window_update_calling_state (GTK_WIDGET (data), Calling);
     call_core = dynamic_cast<Ekiga::CallCore*> (mw->core.get ("call-core"));
     uri = gm_main_window_get_call_url (GTK_WIDGET (data));
-    call_core->dial (uri);
+    if (call_core->dial (uri)) {
 
-    pos = uri.find ("@");
-    if (pos != std::string::npos) {
+      pos = uri.find ("@");
+      if (pos != std::string::npos) {
 
-      std::string host = uri.substr (pos + 1);
-      mw->accounts.remove (host);
-      mw->accounts.push_front (host);
+        std::string host = uri.substr (pos + 1);
+        mw->accounts.remove (host);
+        mw->accounts.push_front (host);
+      }
+
     }
-
-    gm_main_window_update_calling_state (GTK_WIDGET (data), Calling);
+    else {
+      gm_main_window_flash_message (GTK_WIDGET (data), _("Could not connect to remote host"));
+      gm_main_window_update_calling_state (GTK_WIDGET (data), Standby);
+    }
   }
 }
 
