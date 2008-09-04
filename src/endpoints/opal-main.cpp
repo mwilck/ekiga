@@ -47,14 +47,30 @@
 
 #include "manager.h"
 #include "ekiga.h"
+
+#ifdef HAVE_SIP
 #include "sip-endpoint.h"
+#endif
+
+#ifdef HAVE_H323
 #include "h323-endpoint.h"
+#endif
 
 
 static bool
 is_supported_address (const std::string uri)
 {
-  return (uri.find ("sip:") == 0 || uri.find ("h323:") == 0);
+#ifdef HAVE_H323
+  if (uri.find ("h323:") == 0)
+    return true;
+#endif
+
+#ifdef HAVE_SIP
+  if (uri.find ("sip:") == 0)
+    return true;
+#endif
+
+  return false;
 }
 
 
@@ -82,8 +98,6 @@ opal_init (Ekiga::ServiceCore &core,
   Ekiga::AccountCore *account_core = NULL;
 
   bool result = true;
-  unsigned sip_port = gm_conf_get_int (SIP_KEY "listen_port");
-  unsigned h323_port = gm_conf_get_int (H323_KEY "listen_port");
 
   contact_core = dynamic_cast<Ekiga::ContactCore *> (core.get ("contact-core"));
   presence_core = dynamic_cast<Ekiga::PresenceCore *> (core.get ("presence-core"));
@@ -92,16 +106,22 @@ opal_init (Ekiga::ServiceCore &core,
   account_core = dynamic_cast<Ekiga::AccountCore *> (core.get ("account-core"));
 
   CallManager *call_manager = new CallManager (core);
-  Sip::EndPoint *sip_manager = new Sip::EndPoint (*call_manager, core, sip_port);
-  H323::EndPoint *h323_manager = new H323::EndPoint (*call_manager, core, h323_port);
 
+#ifdef HAVE_SIP
+  unsigned sip_port = gm_conf_get_int (SIP_KEY "listen_port");
+  Sip::EndPoint *sip_manager = new Sip::EndPoint (*call_manager, core, sip_port);
   call_manager->add_protocol_manager (*sip_manager);
+  account_core->add_account_subscriber (*sip_manager);
+#endif
+
+#ifdef HAVE_H323
+  unsigned h323_port = gm_conf_get_int (H323_KEY "listen_port");
+  H323::EndPoint *h323_manager = new H323::EndPoint (*call_manager, core, h323_port);
   call_manager->add_protocol_manager (*h323_manager);
+  account_core->add_account_subscriber (*h323_manager);
+#endif
 
   call_core->add_manager (*call_manager);
-
-  account_core->add_account_subscriber (*sip_manager);
-  account_core->add_account_subscriber (*h323_manager);
 
   new ConfBridge (*call_manager);
   call_manager->start ();
@@ -111,25 +131,30 @@ opal_init (Ekiga::ServiceCore &core,
 
   if (contact_core != NULL) { 
 
+#ifdef HAVE_SIP
     contact_core->add_contact_decorator (*sip_manager);
+#endif
+#ifdef HAVE_H323
     contact_core->add_contact_decorator (*h323_manager);
+#endif
   }
   else
     return false;
 
   if (presence_core != NULL) {
 
+#ifdef HAVE_SIP
     presence_core->add_presentity_decorator (*sip_manager);
-    presence_core->add_presentity_decorator (*h323_manager);
-    presence_core->add_supported_uri (sigc::ptr_fun (is_supported_address)); //FIXME
-
     presence_core->add_presence_fetcher (*sip_manager);
     presence_core->add_presence_publisher (*sip_manager);
+#endif
+#ifdef HAVE_H323
+    presence_core->add_presentity_decorator (*h323_manager);
+#endif
+    presence_core->add_supported_uri (sigc::ptr_fun (is_supported_address)); //FIXME
   }
-  else {
-
+  else
     return false;
-  }
 
   return result;
 }

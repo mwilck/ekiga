@@ -1,5 +1,13 @@
 2008-09-04  Damien Sandras  <dsandras@gnome.org>
 
+	* src/endpoints/opal-main.cpp:
+	* src/endpoints/opal-gmconf-bridge.cpp:
+	* src/Makefile.am:
+	* configure.ac:
+	Allow compiling without H.323 support or without SIP support.
+
+2008-09-04  Damien Sandras  <dsandras@gnome.org>
+
 	* src/gui/main.cpp:
 	Report when a call fails because the URI is not supported.
 
@@ -53,6 +61,7 @@
 
 	* lib/pixops/pixops.c, lib/pixops/timescale.c:
 	Fixed some uncritical compiler warnings.
+
 
 2008-09-02  Jan Schampera <jan.schampera@unix.net>
 

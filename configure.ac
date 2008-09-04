@@ -517,6 +517,24 @@ PKG_CHECK_MODULES([OPAL], [opal >= ${OPAL_REC_VERSION}])
 AC_SUBST(OPAL_CFLAGS)
 AC_SUBST(OPAL_LIBS)
 
+H323=`$PKG_CONFIG --variable=h323 opal`  
+if test "x$H323" = "x1"; then
+  H323="enabled"
+  AC_DEFINE(HAVE_H323,1,[H323 support])
+else
+  H323="disabled"
+fi
+AM_CONDITIONAL(HAVE_H323, test "x${H323}" = "xenabled")
+
+SIP=`$PKG_CONFIG --variable=sip opal`  
+if test "x$SIP" = "x1"; then
+  SIP="enabled"
+  AC_DEFINE(HAVE_SIP,1,[SIP support])
+else
+  SIP="disabled"
+fi
+AM_CONDITIONAL(HAVE_SIP, test "x${SIP}" = "xenabled")
+
 
 dnl #########################################################################
 dnl  Support for internationalization
@@ -649,6 +667,9 @@ echo "                  XVideo support  :  $XV"
 if test "x${gm_platform}" = "xmingw" ; then
 echo "                 DirectX support  :  $DX"
 fi
+echo ""
+echo "                   H.323 support  :  $H323"
+echo "                     SIP support  :  $SIP"
 echo ""
 if test "x${gm_platform}" != "xmingw" ; then
 echo "                    DBUS support  :  $DBUS"

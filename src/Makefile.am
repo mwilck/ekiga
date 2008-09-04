@@ -93,18 +93,8 @@ ekiga_SOURCES +=				\
 	endpoints/ekiga.cpp			\
 	endpoints/manager.h			\
 	endpoints/manager.cpp			\
-	endpoints/h323-endpoint.h		\
-	endpoints/h323-endpoint.cpp		\
 	endpoints/pcss.h			\
 	endpoints/pcss.cpp			\
-	endpoints/sip-presentity.h		\
-	endpoints/sip-presentity.cpp		\
-	endpoints/sip-chat-simple.h		\
-	endpoints/sip-chat-simple.cpp		\
-	endpoints/sip-dialect.h			\
-	endpoints/sip-dialect.cpp		\
-	endpoints/sip-endpoint.h		\
-	endpoints/sip-endpoint.cpp		\
 	endpoints/opal-account.h		\
 	endpoints/opal-account.cpp		\
 	endpoints/opal-bank.h			\
@@ -117,6 +107,24 @@ ekiga_SOURCES +=				\
 	endpoints/opal-gmconf-bridge.cpp	\
 	endpoints/opal-main.h			\
 	endpoints/opal-main.cpp
+
+if HAVE_H323
+ekiga_SOURCES +=		\
+	endpoints/h323-endpoint.h		\
+	endpoints/h323-endpoint.cpp
+endif
+
+if HAVE_SIP
+ekiga_SOURCES +=		\
+	endpoints/sip-presentity.h		\
+	endpoints/sip-presentity.cpp		\
+	endpoints/sip-chat-simple.h		\
+	endpoints/sip-chat-simple.cpp		\
+	endpoints/sip-dialect.h			\
+	endpoints/sip-dialect.cpp		\
+	endpoints/sip-endpoint.h		\
+	endpoints/sip-endpoint.cpp
+endif
 
 if HAVE_DBUS 
 ekiga_SOURCES +=		\

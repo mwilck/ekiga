@@ -226,6 +226,7 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
   //
   // SIP related keys
   // 
+#ifdef HAVE_SIP
   else if (key.find (SIP_KEY) != string::npos) {
 
     Opal::Sip::EndPoint *sip_manager = dynamic_cast<Opal::Sip::EndPoint *> (manager.get_protocol_manager ("sip"));
@@ -253,10 +254,12 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
       }
     }
   }
+#endif
 
   //
   // H.323 keys
   //
+#ifdef HAVE_H323
   else if (key.find (SIP_KEY) != string::npos) {
 
     Opal::H323::EndPoint *h323_manager = dynamic_cast<Opal::H323::EndPoint *> (manager.get_protocol_manager ("h323"));
@@ -286,6 +289,7 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
       }
     }
   }
+#endif
   
 
   //
