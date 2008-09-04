@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: ekiga HEAD\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-08-24 18:05+0000\n"
-"PO-Revision-Date: 2008-09-02 09:22+0300\n"
+"PO-Revision-Date: 2008-09-04 07:01+0300\n"
 "Last-Translator: Ivar Smolin <okul@linux.ee>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
 "MIME-Version: 1.0\n"
@@ -151,15 +151,15 @@ msgstr "Sisesta siia oma täisnimi"
 
 #: ../ekiga.schemas.in.in.h:27
 msgid "Forward calls to host"
-msgstr ""
+msgstr "Kõnede edasisuunamine hostile"
 
 #: ../ekiga.schemas.in.in.h:28
 msgid "Forward calls to the given host if busy"
-msgstr ""
+msgstr "Kõnede edasisuunamine valitud hostile, kui ollakse hõivatud"
 
 #: ../ekiga.schemas.in.in.h:29
 msgid "Forward calls to the given host if no answer"
-msgstr ""
+msgstr "Kõnede edasisuunamine valitud hostile, kui ei vastata"
 
 #: ../ekiga.schemas.in.in.h:30 ../src/gui/preferences.cpp:1007
 msgid "Frame Rate"
@@ -594,8 +594,9 @@ msgid ""
 "bandwidth to the given value"
 msgstr ""
 "Video suurim läbilaskevõime ühikuga kilobaite sekundi kohta. Video kvaliteet "
-"ja sekundis ülekantavate kaadrite arvu reguleeritakse kõne ajal "
-"dünaamiliselt video vähima võimaliku ja siintoodud väärtuse vahel."
+"ja sekundis ülekantavate kaadrite arvu (mis sõltub valitud koodekist) "
+"reguleeritakse kõne ajal dünaamiliselt video vähima võimaliku ja siintoodud "
+"väärtuse vahel."
 
 #: ../ekiga.schemas.in.in.h:124
 msgid "The maximum jitter buffer size for audio reception (in ms)"
@@ -1040,7 +1041,7 @@ msgstr "_Parool"
 
 #: ../lib/engine/addressbook/skel/contact-core.cpp:57
 msgid "_Find"
-msgstr ""
+msgstr "_Otsi"
 
 #: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:659
 msgid "Address Book"
@@ -1105,7 +1106,7 @@ msgstr ""
 
 #: ../lib/engine/presence/avahi/avahi-presentity.cpp:47
 msgid "Neighbours"
-msgstr ""
+msgstr "Naabrid"
 
 #: ../lib/engine/presence/local-roster/local-presentity.cpp:218
 msgid "Edit roster element"
@@ -1279,7 +1280,7 @@ msgstr ""
 #: ../src/endpoints/h323-endpoint.cpp:335
 #: ../src/endpoints/sip-endpoint.cpp:898
 msgid "Failed"
-msgstr ""
+msgstr "Tõrge"
 
 #: ../src/endpoints/manager.cpp:101
 msgid ""
@@ -1330,7 +1331,7 @@ msgstr "Kasutaja:"
 
 #: ../src/endpoints/opal-account.cpp:358 ../src/endpoints/opal-bank.cpp:114
 msgid "Authentication User:"
-msgstr ""
+msgstr "Kasutaja autentimine:"
 
 #: ../src/endpoints/opal-account.cpp:359 ../src/endpoints/opal-bank.cpp:85
 #: ../src/endpoints/opal-bank.cpp:96 ../src/endpoints/opal-bank.cpp:105
@@ -1344,13 +1345,12 @@ msgid "Timeout:"
 msgstr "Ajapiirang:"
 
 #: ../src/endpoints/opal-account.cpp:361 ../src/endpoints/opal-bank.cpp:119
-#, fuzzy
 msgid "Enable Account"
-msgstr "Kontod"
+msgstr "Konto lubamine"
 
 #: ../src/endpoints/opal-account.cpp:396 ../src/endpoints/opal-bank.cpp:155
 msgid "You did not supply a name for that account."
-msgstr ""
+msgstr "Sa ei määranud sellele kontole nime"
 
 #: ../src/endpoints/opal-account.cpp:398 ../src/endpoints/opal-bank.cpp:157
 msgid "You did not supply a host to register to."
@@ -1358,16 +1358,15 @@ msgstr ""
 
 #: ../src/endpoints/opal-account.cpp:400 ../src/endpoints/opal-bank.cpp:159
 msgid "You did not supply a user name for that account."
-msgstr ""
+msgstr "Sa ei määranud sellele kontole kasutajanime"
 
 #: ../src/endpoints/opal-account.cpp:402 ../src/endpoints/opal-bank.cpp:161
 msgid "The timeout should have a bigger value."
-msgstr ""
+msgstr "Ajapiiranguks peaks olema suurem väärtus"
 
 #: ../src/endpoints/opal-bank.cpp:55
-#, fuzzy
 msgid "_Add an Ekiga.net Account"
-msgstr "Hangi omale ekiga.net SIP-konto"
+msgstr "_Lisa Ekiga.net konto"
 
 #: ../src/endpoints/opal-bank.cpp:57
 msgid "_Add an Ekiga Call Out Account"
@@ -1515,7 +1514,7 @@ msgstr ""
 
 #: ../src/endpoints/sip-endpoint.cpp:738
 msgid "Illegal status code"
-msgstr ""
+msgstr "Lubamatu olekukood"
 
 #: ../src/endpoints/sip-endpoint.cpp:742
 msgid "Multiple choices"
@@ -1530,23 +1529,20 @@ msgid "Moved temporarily"
 msgstr ""
 
 #: ../src/endpoints/sip-endpoint.cpp:754
-#, fuzzy
 msgid "Use proxy"
-msgstr "Kasutaja kataloog"
+msgstr "Proxy kasutamine"
 
 #: ../src/endpoints/sip-endpoint.cpp:758
-#, fuzzy
 msgid "Alternative service"
-msgstr "Alternatiivne väljundseade"
+msgstr "Alternatiivne teenus"
 
 #: ../src/endpoints/sip-endpoint.cpp:762
-#, fuzzy
 msgid "Not found"
-msgstr "Kasutajat ei leitud"
+msgstr "Ei leitud"
 
 #: ../src/endpoints/sip-endpoint.cpp:766
 msgid "Method not allowed"
-msgstr ""
+msgstr "Meetod pole lubatud"
 
 #: ../src/endpoints/sip-endpoint.cpp:770
 msgid "Proxy auth. required"
@@ -1678,20 +1674,19 @@ msgstr "Registreeritud"
 
 #: ../src/gui/accounts.cpp:169
 msgid "Unregistered"
-msgstr "Registreeritmata"
+msgstr ""
 
 #: ../src/gui/accounts.cpp:173
 msgid "Could not unregister"
 msgstr ""
 
 #: ../src/gui/accounts.cpp:179
-#, fuzzy
 msgid "Could not register"
-msgstr "Gruppi pole võimalik kustutada"
+msgstr "Registreerimine pole võimalik"
 
 #: ../src/gui/accounts.cpp:185
 msgid "Processing..."
-msgstr ""
+msgstr "Töötlemine..."
 
 #: ../src/gui/accounts.cpp:521
 msgid "Account Name"
@@ -1862,17 +1857,14 @@ msgid "Audio Devices"
 msgstr "Audioseadmed"
 
 #: ../src/gui/assistant.cpp:909
-#, fuzzy
 msgid "Please choose the audio ringing device:"
-msgstr "Palun vali audiosisendi seade:"
+msgstr ""
 
 #: ../src/gui/assistant.cpp:917
-#, fuzzy
 msgid ""
 "The audio ringing device is the device  managed by the audio manager that "
 "will be used to play the ringing sound."
 msgstr ""
-"Audio väljundseade on audiohalduri poolt hallatav helide esitamise seade."
 
 #. ---
 #: ../src/gui/assistant.cpp:930
@@ -1880,7 +1872,6 @@ msgid "Please choose the audio output device:"
 msgstr "Palun vali audioväljundi seade:"
 
 #: ../src/gui/assistant.cpp:938
-#, fuzzy
 msgid ""
 "The audio output device is the device  managed by the audio manager that "
 "will be used to play audio."
@@ -1900,9 +1891,8 @@ msgstr ""
 "Audio väljundseade on audiohalduri poolt hallatav hääle salvestamise seade."
 
 #: ../src/gui/assistant.cpp:1053
-#, fuzzy
 msgid "Please choose your video input device:"
-msgstr "Palun vali videosisendi seade:"
+msgstr "Palun vali oma videosisendi seade:"
 
 #: ../src/gui/assistant.cpp:1061
 msgid ""
@@ -1951,9 +1941,9 @@ msgid "Ekiga Call Out"
 msgstr ""
 
 #: ../src/gui/assistant.cpp:1376
-#, fuzzy, c-format
+#, c-format
 msgid "Ekiga Configuration Assistant (%d of %d)"
-msgstr "Seadistusabiline - 1. samm %d'st"
+msgstr "Seadistusabiline (%d. samm %d'st)"
 
 #: ../src/gui/callbacks.cpp:129
 msgid "Contributors:"
@@ -1974,6 +1964,10 @@ msgid ""
 "Software Foundation; either version 2 of the License, or (at your option) "
 "any later version. "
 msgstr ""
+"See programm on vaba tarkvara. Te võite seda edasi levitada ja/või muuta "
+"vastavalt GNU Üldise Avaliku Litsentsi tingimustele, nagu need on Vaba "
+"Tarkvara Fondi poolt avaldatud; kas Litsentsi versioon number 2 või "
+"(vastavalt Teie valikule) ükskõik milline hilisem versioon. "
 
 #: ../src/gui/callbacks.cpp:166
 msgid ""
@@ -1984,6 +1978,12 @@ msgid ""
 "License along with this program; if not, write to the Free Software "
 "Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA."
 msgstr ""
+"Seda programmi levitatakse lootuses, et see on kasulik, kuid ILMA IGASUGUSE "
+"GARANTIITA; isegi KESKMISE/TAVALISE KVALITEEDIGARANTIITA või SOBIVUSELE "
+"TEATUD KINDLAKS EESMÄRGIKS. Üksikasjade suhtes vaata GNU Üldist Avalikku "
+"Litsentsi. Te peaks olema saanud GNU Üldise Avaliku Litsentsi koopia koos "
+"selle programmiga; kui ei, siis võtke ühendust Free Software Foundation'iga, "
+"51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA."
 
 #: ../src/gui/callbacks.cpp:173
 msgid ""
@@ -2014,57 +2014,57 @@ msgstr ""
 
 #: ../src/gui/dialpad.cpp:59
 msgid "abc"
-msgstr ""
+msgstr "abc"
 
 #: ../src/gui/dialpad.cpp:60
 msgid "def"
-msgstr ""
+msgstr "def"
 
 #: ../src/gui/dialpad.cpp:61
 msgid "ghi"
-msgstr ""
+msgstr "ghi"
 
 #: ../src/gui/dialpad.cpp:62
 msgid "jkl"
-msgstr ""
+msgstr "jkl"
 
 #: ../src/gui/dialpad.cpp:63
 msgid "mno"
-msgstr ""
+msgstr "mno"
 
 #: ../src/gui/dialpad.cpp:64
 msgid "pqrs"
-msgstr ""
+msgstr "pqrs"
 
 #: ../src/gui/dialpad.cpp:65
 msgid "tuv"
-msgstr ""
+msgstr "tuv"
 
 #: ../src/gui/dialpad.cpp:66
 msgid "wxyz"
-msgstr ""
+msgstr "wxyz"
 
 #. Translators: Is displayed once an account "%s" is registered.
 #: ../src/gui/main.cpp:571
-#, fuzzy, c-format
+#, c-format
 msgid "Registered %s"
-msgstr "Registreeritud isikule %s"
+msgstr "Konto %s on registreeritud"
 
 #. Translators: Is displayed once an account "%s" is unregistered.
 #: ../src/gui/main.cpp:577
-#, fuzzy, c-format
+#, c-format
 msgid "Unregistered %s"
-msgstr "Registreeritmata"
+msgstr "Konto %s registreering on eemaldatud"
 
 #: ../src/gui/main.cpp:582
-#, fuzzy, c-format
+#, c-format
 msgid "Could not unregister %s"
-msgstr "Registreeritmata"
+msgstr "Konto %s registreeringu eemaldamine pole võimalik"
 
 #: ../src/gui/main.cpp:586
-#, fuzzy, c-format
+#, c-format
 msgid "Could not register %s"
-msgstr "Registreeritmata"
+msgstr "Konto %s registreerimine pole võimalik"
 
 #: ../src/gui/main.cpp:646
 #, c-format
@@ -2108,9 +2108,9 @@ msgid "Removed video input device %s"
 msgstr "Videosisendi seade %s eemaldatud"
 
 #: ../src/gui/main.cpp:1162
-#, fuzzy, c-format
+#, c-format
 msgid "Error while accessing video device %s"
-msgstr "Viga videoseadme %s avamisel"
+msgstr "Viga videoseadmele %s ligipääsul"
 
 #: ../src/gui/main.cpp:1165
 msgid ""
@@ -2120,15 +2120,15 @@ msgid ""
 msgstr ""
 
 #: ../src/gui/main.cpp:1169
-#, fuzzy
 msgid ""
 "There was an error while opening the device. In case it is a pluggable "
 "device it may be sufficient to reconnect it. If not, or if it still is not "
 "accessible, please check your permissions and make sure that the appropriate "
 "driver is loaded."
 msgstr ""
-"Seadme avamisel tekkis viga. Palun kontrolli oma pääsuõigusi ja veendu, et "
-"seadmele on laaditud õige draiver."
+"Seadme avamisel tekkis viga. Kui see on irdseade, siis võibolla aitab seadme "
+"uuesti ühendamine. Kui see on püsivalt ühendatud seade, siis palun kontrolli "
+"oma pääsuõigusi ja veendu, et seadmele on laaditud õige draiver."
 
 #: ../src/gui/main.cpp:1173
 msgid "Your video driver doesn't support the requested video format."
@@ -2178,16 +2178,16 @@ msgid "Only silence will be transmitted."
 msgstr "Üle kantakse ainult vaikust."
 
 #: ../src/gui/main.cpp:1294
-#, fuzzy
 msgid ""
 "Unable to open the selected audio device for recording. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
 "still is not accessible, please check your audio setup, the permissions and "
 "that the device is not busy."
 msgstr ""
-"Valitud audioseadet (%s) pole võimalik salvestamiseks avada. Palun kontrolli "
-"oma audiosätteid, pääsuõiguseid ja seda, kas seade pole mõne teise programmi "
-"poolt hõivatud."
+"Valitud audioseadet pole võimalik salvestamiseks avada. Kui see on irdseade, "
+"siis võibolla aitab seadme uuesti ühendamine. Kui see ei aita või kui "
+"tegemist pole irdseadmega, siis palun kontrolli oma audiosätteid ja "
+"pääsuõigusi ning veendu, et seade pole hõivatud."
 
 #: ../src/gui/main.cpp:1298
 msgid ""
@@ -2196,6 +2196,10 @@ msgid ""
 "sufficient to reconnect it. If not, or if it still is not accessible, please "
 "check your audio setup."
 msgstr ""
+"Valitud audioseade avati edukalt, kui sellest pole võimalik andmeid lugeda. "
+"Kui see on irdseade, siis võibolla aitab seadme uuesti ühendamine. Kui see "
+"ei aita või kui tegemist pole irdseadmega, siis palun kontrolli oma "
+"audiosätteid."
 
 #: ../src/gui/main.cpp:1368
 #, c-format
@@ -2217,16 +2221,16 @@ msgid "No incoming sound will be played."
 msgstr "Sissetulevat heli ei esitata."
 
 #: ../src/gui/main.cpp:1414
-#, fuzzy
 msgid ""
 "Unable to open the selected audio device for playing. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
 "still is not accessible, please check your audio setup, the permissions and "
 "that the device is not busy."
 msgstr ""
-"Valitud audioseadet (%s) pole võimalik audio esitamiseks avada. Palun "
-"kontrolli oma audiosätteid, pääsuõiguseid ja seda, kas seade pole mõne teise "
-"programmi poolt hõivatud."
+"Valitud audioseadet pole võimalik audio esitamiseks avada. Kui see on "
+"irdseade, siis võibolla aitab seadme uuesti ühendamine. Kui see ei aita või "
+"kui tegemist pole irdseadmega, siis palun kontrolli oma audiosätteid ja "
+"pääsuõigusi ning veendu, et seade pole hõivatud."
 
 #: ../src/gui/main.cpp:1418
 msgid ""
@@ -2237,10 +2241,9 @@ msgid ""
 msgstr ""
 
 #: ../src/gui/main.cpp:1638
-#, fuzzy
 msgid "Enter a URI on the left, and click this button to place a call"
 msgstr ""
-"Sisesta vasakul asuvasse lahtrisse URL ja helistamiseks vajuta sellele nupule"
+"Sisesta vasakul asuvasse lahtrisse URI ja helistamiseks vajuta sellele nupule"
 
 #: ../src/gui/main.cpp:1719
 msgid "_Chat"
@@ -2268,27 +2271,24 @@ msgid "A_dd Contact"
 msgstr "_Helista kontaktile"
 
 #: ../src/gui/main.cpp:1731
-#, fuzzy
 msgid "Add a contact to the roster"
-msgstr "Kontakti lisamine nimekirja"
+msgstr "Kontakti lisamine röstrisse"
 
 #: ../src/gui/main.cpp:1735
-#, fuzzy
 msgid "_Find Contacts"
-msgstr "_Helista kontaktile"
+msgstr "_Otsi kontakte"
 
 #: ../src/gui/main.cpp:1736
 msgid "Find contacts"
-msgstr ""
+msgstr "Kontaktide otsimine"
 
 #: ../src/gui/main.cpp:1743
-#, fuzzy
 msgid "H_old Call"
-msgstr "_Helista"
+msgstr "Pane kõne _ootele"
 
 #: ../src/gui/main.cpp:1743 ../src/gui/main.cpp:2418
 msgid "Hold the current call"
-msgstr ""
+msgstr "Kõne ootelepanek"
 
 #: ../src/gui/main.cpp:1747
 msgid "_Transfer Call"
@@ -2323,14 +2323,12 @@ msgid "Quit"
 msgstr "Lõpeta"
 
 #: ../src/gui/main.cpp:1781
-#, fuzzy
 msgid "_Configuration Assistant"
-msgstr "Esmakorde seadistamise abiline"
+msgstr "_Seadistusabiline"
 
 #: ../src/gui/main.cpp:1782
-#, fuzzy
 msgid "Run the configuration assistant"
-msgstr "Esmakorde seadistamise abiline"
+msgstr "Seadistusabilise käivitamine"
 
 #: ../src/gui/main.cpp:1789
 msgid "_Accounts"
@@ -2365,19 +2363,16 @@ msgid "View the dialpad"
 msgstr "Numbriklahvistiku vaatamine"
 
 #: ../src/gui/main.cpp:1813
-#, fuzzy
 msgid "_Call History"
-msgstr "_Kõnede ajalugu"
+msgstr "Kõnede _ajalugu"
 
 #: ../src/gui/main.cpp:1813
-#, fuzzy
 msgid "View the call history"
 msgstr "Kõnede ajaloo vaatamine"
 
 #: ../src/gui/main.cpp:1821
-#, fuzzy
 msgid "_Show Call Panel"
-msgstr "_Juhtpaneel"
+msgstr "Näita kõnede _paneeli"
 
 #: ../src/gui/main.cpp:1829
 msgid "_Local Video"
@@ -2396,18 +2391,16 @@ msgid "Remote video image"
 msgstr "Võrgust tulev videopilt"
 
 #: ../src/gui/main.cpp:1841
-#, fuzzy
 msgid "_Picture-in-Picture"
-msgstr "Pilt-pildis"
+msgstr "_Pilt-pildis"
 
 #: ../src/gui/main.cpp:1842 ../src/gui/main.cpp:1848
 msgid "Both video images"
 msgstr "Mõlemad videopildid"
 
 #: ../src/gui/main.cpp:1847
-#, fuzzy
 msgid "Picture-in-Picture in Separate _Window"
-msgstr "Pilt-pildis"
+msgstr "Pilt-pildis _eraldi aknas"
 
 #: ../src/gui/main.cpp:1855
 msgid "Zoom in"
