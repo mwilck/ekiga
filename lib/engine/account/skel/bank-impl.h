@@ -303,7 +303,6 @@ template<typename T>
 void
 Ekiga::BankImpl<T>::remove_account (T &account)
 {
-  account_core->unsubscribe_account (account);
   remove_object (account);
 }
 

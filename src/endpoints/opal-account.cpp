@@ -284,7 +284,11 @@ bool Opal::Account::is_active () const
 
 void Opal::Account::remove ()
 {
+  enabled = false;
   dead = true;
+
+  Ekiga::AccountCore *account_core = dynamic_cast<Ekiga::AccountCore*>(core.get ("account-core"));
+  account_core->unsubscribe_account (*this);
 
   trigger_saving.emit ();
 

@@ -194,6 +194,5 @@ void Opal::Bank::add (Account::Type t,
                       unsigned timeout)
 {
   Opal::Account *account = new Opal::Account (core, t, name, host, user, auth_user, password, enabled, timeout);
-
   add_account (*account);
 }

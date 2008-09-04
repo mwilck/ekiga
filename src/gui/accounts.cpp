@@ -333,15 +333,10 @@ account_toggled_cb (G_GNUC_UNUSED GtkCellRendererToggle *cell,
                         COLUMN_ACCOUNT, &account,
                         -1);
 
-    if (fixed) {
-
-      if (account->is_active ()) {
-        account->disable ();
-      }
-    }
-    else if (!account->is_active ()) {
+    if (fixed)
+      account->disable ();
+    else 
       account->enable ();
-    }
 
     gtk_list_store_set (GTK_LIST_STORE (model), &iter,
                         COLUMN_ACCOUNT_ENABLED, fixed^1,
