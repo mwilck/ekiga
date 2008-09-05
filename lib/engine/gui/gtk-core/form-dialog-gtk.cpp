@@ -797,13 +797,13 @@ FormDialog::text (const std::string name,
 
   gtk_table_attach (GTK_TABLE (fields), label,
                     0, 1, rows - 1, rows,
-                    (GtkAttachOptions) (GTK_FILL),
-                    (GtkAttachOptions) (GTK_FILL),
+                    (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
+                    (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
                     0, 0);
   gtk_table_attach (GTK_TABLE (fields), widget,
 		    1, 2, rows - 1, rows,
-                    (GtkAttachOptions) (GTK_FILL),
-                    (GtkAttachOptions) (GTK_FILL),
+                    (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
+                    (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
                     0, 0);
 
   submitter = new TextSubmitter (name, description, widget);
@@ -841,13 +841,13 @@ FormDialog::private_text (const std::string name,
 
   gtk_table_attach (GTK_TABLE (fields), label,
                     0, 1, rows - 1, rows,
-                    (GtkAttachOptions) (GTK_FILL),
-                    (GtkAttachOptions) (GTK_FILL),
+                    (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
+                    (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
                     0, 0);
   gtk_table_attach (GTK_TABLE (fields), widget,
 		    1, 2, rows - 1, rows,
-                    (GtkAttachOptions) (GTK_FILL),
-                    (GtkAttachOptions) (GTK_FILL),
+                    (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
+                    (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
                     0, 0);
 
   submitter = new PrivateTextSubmitter (name, description, widget);
@@ -977,8 +977,8 @@ FormDialog::multiple_choice (const std::string name,
 
   gtk_table_attach (GTK_TABLE (fields), label,
                     0, 2, rows - 1, rows,
-                    (GtkAttachOptions) (GTK_FILL),
-                    (GtkAttachOptions) (GTK_FILL),
+                    (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
+                    (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
                     0, 0);
 
   /* The GtkListStore containing the choices */
@@ -1034,8 +1034,8 @@ FormDialog::multiple_choice (const std::string name,
   gtk_table_resize (GTK_TABLE (fields), rows, 2);
   gtk_table_attach (GTK_TABLE (fields), frame,
                     0, 2, rows - 1, rows,
-                    (GtkAttachOptions) (GTK_FILL),
-                    (GtkAttachOptions) (GTK_FILL),
+                    (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
+                    (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
                     0, 0);
 
   submitter = new MultipleChoiceSubmitter (name, description, choices, tree_view);
@@ -1077,8 +1077,8 @@ FormDialog::editable_set (const std::string name,
 
   gtk_table_attach (GTK_TABLE (fields), label,
                     0, 2, rows - 1, rows,
-                    (GtkAttachOptions) (GTK_FILL),
-                    (GtkAttachOptions) (GTK_FILL),
+                    (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
+                    (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
                     0, 0);
 
   /* The GtkListStore containing the values */
@@ -1143,8 +1143,8 @@ FormDialog::editable_set (const std::string name,
   gtk_table_resize (GTK_TABLE (fields), rows, 2);
   gtk_table_attach (GTK_TABLE (fields), frame,
                     0, 2, rows - 1, rows,
-                    (GtkAttachOptions) (GTK_FILL),
-                    (GtkAttachOptions) (GTK_FILL),
+                    (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
+                    (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
                     0, 0);
 
   hbox = gtk_hbox_new (FALSE, 2);
@@ -1165,8 +1165,8 @@ FormDialog::editable_set (const std::string name,
   gtk_table_resize (GTK_TABLE (fields), rows, 2);
   gtk_table_attach (GTK_TABLE (fields), hbox,
 		    0, 2, rows - 1, rows,
-		    (GtkAttachOptions) (GTK_FILL),
-		    (GtkAttachOptions) (GTK_FILL),
+		    (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
+		    (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
 		    0, 0);
 
   submitter = new EditableSetSubmitter (name, description, tree_view);
