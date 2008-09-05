@@ -50,10 +50,13 @@ GtkWidget* multiple_chat_page_new (Ekiga::MultipleChat& chat);
 /* GObject boilerplate */
 
 typedef struct _MultipleChatPage MultipleChatPage;
+typedef struct _MultipleChatPagePrivate MultipleChatPagePrivate;
 typedef struct _MultipleChatPageClass MultipleChatPageClass;
 
 struct _MultipleChatPage {
   GtkHBox parent;
+
+  MultipleChatPagePrivate* priv;
 };
 
 struct _MultipleChatPageClass {

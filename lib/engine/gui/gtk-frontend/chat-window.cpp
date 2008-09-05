@@ -179,6 +179,8 @@ on_switch_page (G_GNUC_UNUSED GtkNotebook* notebook,
 		     GUINT_TO_POINTER (0));
 
   update_unread (self);
+
+  gtk_widget_grab_focus (page);
 }
 
 static gboolean
@@ -351,7 +353,6 @@ on_some_chat_user_requested (ChatWindow* self,
   gtk_widget_show (GTK_WIDGET (self));
   gtk_window_present (GTK_WINDOW (self));
 }
-
 
 /* GObject code */
 

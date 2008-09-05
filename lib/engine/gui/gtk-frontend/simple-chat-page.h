@@ -50,10 +50,13 @@ GtkWidget* simple_chat_page_new (Ekiga::SimpleChat& chat);
 /* GObject boilerplate */
 
 typedef struct _SimpleChatPage SimpleChatPage;
+typedef struct _SimpleChatPagePrivate SimpleChatPagePrivate;
 typedef struct _SimpleChatPageClass SimpleChatPageClass;
 
 struct _SimpleChatPage {
   GtkVBox parent;
+
+  SimpleChatPagePrivate* priv;
 };
 
 struct _SimpleChatPageClass {

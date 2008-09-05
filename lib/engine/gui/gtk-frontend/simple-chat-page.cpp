@@ -39,6 +39,10 @@
 #include "presentity-view.h"
 #include "chat-area.h"
 
+struct _SimpleChatPagePrivate {
+  GtkWidget* area;
+};
+
 enum {
   MESSAGE_NOTICE_EVENT,
   LAST_SIGNAL
@@ -47,6 +51,20 @@ enum {
 static guint signals[LAST_SIGNAL] = { 0 };
 
 static GObjectClass *parent_class = NULL;
+
+static void on_page_grab_focus (GtkWidget*,
+				gpointer);
+
+static void on_page_grab_focus (GtkWidget* widget,
+                                G_GNUC_UNUSED gpointer data)
+{
+  SimpleChatPage* self = NULL;
+
+  self = (SimpleChatPage*)widget;
+
+  if (self->priv->area)
+    gtk_widget_grab_focus (self->priv->area);
+}
 
 static void
 on_message_notice_event (G_GNUC_UNUSED GtkWidget* widget,
@@ -58,6 +76,12 @@ on_message_notice_event (G_GNUC_UNUSED GtkWidget* widget,
 static void
 simple_chat_page_dispose (GObject *obj)
 {
+  SimpleChatPage* self = NULL;
+
+  self = (SimpleChatPage*)obj;
+
+  self->priv->area = NULL;
+
   parent_class->dispose (obj);
 }
 
@@ -75,6 +99,12 @@ simple_chat_page_init (GTypeInstance* instance,
   SimpleChatPage* self = NULL;
 
   self = (SimpleChatPage*)instance;
+
+  self->priv = g_new (SimpleChatPagePrivate, 1);
+  self->priv->area = NULL;
+
+  g_signal_connect (G_OBJECT (self), "grab-focus",
+		    G_CALLBACK (on_page_grab_focus), NULL);
 }
 
 static void
@@ -146,6 +176,7 @@ simple_chat_page_new (Ekiga::SimpleChat& chat)
   gtk_widget_show (presentity_view);
 
   area = chat_area_new (chat);
+  result->priv->area = area;
   gtk_box_pack_start (GTK_BOX (result), area,
 		      TRUE, TRUE, 2);
   gtk_widget_show (area);

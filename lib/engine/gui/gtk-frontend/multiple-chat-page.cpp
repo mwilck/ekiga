@@ -38,11 +38,34 @@
 #include "multiple-chat-page.h"
 #include "chat-area.h"
 
+struct _MultipleChatPagePrivate {
+  GtkWidget* area;
+};
+
 static GObjectClass *parent_class = NULL;
+
+static void on_page_grab_focus (GtkWidget*,
+				gpointer);
+
+static void on_page_grab_focus (GtkWidget* widget,
+				G_GNUC_UNUSED gpointer data)
+{
+  MultipleChatPage* self = NULL;
+
+  self = (MultipleChatPage*)widget;
+
+  if (self->priv->area)
+    gtk_widget_grab_focus (self->priv->area);
+}
 
 static void
 multiple_chat_page_dispose (GObject *obj)
 {
+  MultipleChatPage* self = NULL;
+
+  self = (MultipleChatPage*)obj;
+
+  self->priv->area = NULL;
 
   parent_class->dispose (obj);
 }
@@ -61,6 +84,12 @@ multiple_chat_page_init (GTypeInstance* instance,
   MultipleChatPage* self = NULL;
 
   self = (MultipleChatPage*)instance;
+
+  self->priv = g_new (MultipleChatPagePrivate, 1);
+  self->priv->area = NULL;
+
+  g_signal_connect (G_OBJECT (self), "grab-focus",
+                    G_CALLBACK (on_page_grab_focus), NULL);
 }
 
 static void
@@ -112,6 +141,7 @@ multiple_chat_page_new (Ekiga::MultipleChat& chat)
   result = (MultipleChatPage*)g_object_new (TYPE_MULTIPLE_CHAT_PAGE, NULL);
 
   area = chat_area_new (chat);
+  result->priv->area = area;
   gtk_box_pack_start (GTK_BOX (result), area,
 		      TRUE,TRUE, 2);
   gtk_widget_show (area);

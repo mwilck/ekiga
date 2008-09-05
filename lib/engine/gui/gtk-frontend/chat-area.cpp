@@ -157,8 +157,12 @@ static gboolean message_activated_cb (GtkWidget *w,
 
 static void on_chat_removed (ChatArea* self);
 
-static void on_chat_area_show (GtkWidget*,
-			       gpointer);
+static void on_chat_area_grab_focus (GtkWidget*,
+				     gpointer);
+
+static gboolean on_chat_area_focus (GtkWidget*,
+				    GtkDirectionType,
+				    gpointer);
 
 /* implementation of internal api */
 
@@ -556,14 +560,29 @@ on_chat_removed (ChatArea* self)
   gtk_widget_hide (self->priv->message);
 }
 
-static void on_chat_area_show (GtkWidget* widget,
-                               G_GNUC_UNUSED gpointer data)
+static void
+on_chat_area_grab_focus (GtkWidget* widget,
+			 G_GNUC_UNUSED gpointer data)
 {
   ChatArea* self = NULL;
 
   self = (ChatArea*)widget;
 
   gtk_widget_grab_focus (self->priv->message);
+}
+
+static gboolean
+on_chat_area_focus (GtkWidget* widget,
+		    G_GNUC_UNUSED GtkDirectionType direction,
+		    G_GNUC_UNUSED gpointer data)
+{
+  ChatArea* self = NULL;
+
+  self = (ChatArea*)widget;
+
+  gtk_widget_grab_focus (self->priv->message);
+
+  return TRUE;
 }
 
 /* GObject code */
@@ -941,8 +960,10 @@ chat_area_init (GTypeInstance* instance,
   gtk_widget_set_size_request (GTK_WIDGET (vbox), 175, -1);
   gtk_widget_show_all (vbox);
 
-  g_signal_connect (G_OBJECT (self), "show",
-		    G_CALLBACK (on_chat_area_show), NULL);
+  g_signal_connect (G_OBJECT (self), "focus",
+		    G_CALLBACK (on_chat_area_focus), NULL);
+  g_signal_connect (G_OBJECT (self), "grab-focus",
+		    G_CALLBACK (on_chat_area_grab_focus), self->priv->message);
   gtk_widget_grab_focus (self->priv->message);
 }
 
