@@ -37,6 +37,8 @@
 
 #include <cstdlib>
 
+#include "config.h"
+
 #include "avahi-heap.h"
 
 static void
@@ -124,7 +126,7 @@ Avahi::Heap::~Heap ()
 const std::string
 Avahi::Heap::get_name () const
 {
-  return "Network neighbours";
+  return _("Network neighbours");
 }
 
 bool
