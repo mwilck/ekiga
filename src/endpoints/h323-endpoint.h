@@ -127,7 +127,7 @@ namespace Opal {
       PMutex gk_name_mutex;
       PString gk_name;
 
-      Ekiga::CallProtocolManager::Interface interface;
+      Ekiga::CallProtocolManager::Interface iface;
 
       std::string protocol_name;
       std::string uri_prefix;

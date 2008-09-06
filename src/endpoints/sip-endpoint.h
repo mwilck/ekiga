@@ -182,7 +182,7 @@ namespace Opal {
       Ekiga::Runtime & runtime;
       Ekiga::AccountCore & account_core;
 
-      Ekiga::CallProtocolManager::Interface interface;
+      Ekiga::CallProtocolManager::Interface iface;
 
       std::string protocol_name;
       std::string uri_prefix;

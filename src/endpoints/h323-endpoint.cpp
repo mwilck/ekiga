@@ -219,9 +219,9 @@ unsigned Opal::H323::EndPoint::get_dtmf_mode () const
 
 bool Opal::H323::EndPoint::set_listen_port (unsigned port)
 {
-  interface.protocol = "tcp";
-  interface.voip_protocol = "h323";
-  interface.interface = "*";
+  iface.protocol = "tcp";
+  iface.voip_protocol = "h323";
+  iface.iface = "*";
 
   if (port > 0) {
 
@@ -231,7 +231,7 @@ bool Opal::H323::EndPoint::set_listen_port (unsigned port)
     str << "tcp$*:" << port;
     if (StartListeners (PStringArray (str.str ()))) {
 
-      interface.port = port;
+      iface.port = port;
       return true;
     }
   }
@@ -242,7 +242,7 @@ bool Opal::H323::EndPoint::set_listen_port (unsigned port)
 
 const Ekiga::CallProtocolManager::Interface & Opal::H323::EndPoint::get_listen_interface () const
 {
-  return interface;
+  return iface;
 }
 
 

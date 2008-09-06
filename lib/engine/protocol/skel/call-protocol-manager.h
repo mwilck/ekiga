@@ -59,7 +59,7 @@ namespace Ekiga
       public:
           std::string voip_protocol;
           std::string protocol;
-          std::string interface;
+          std::string iface;
           bool publish;
           unsigned port;
         };
