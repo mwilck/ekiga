@@ -987,11 +987,10 @@ void Opal::Sip::EndPoint::OnReceivedMESSAGE (G_GNUC_UNUSED OpalTransport & trans
     msgData.SetAt (SIPURL (from).AsString (), val);
 
     SIPURL uri = from;
-    uri.Sanitise (SIPURL::FromURI);
+    uri.Sanitise (SIPURL::RequestURI);
     std::string display_name = (const char *) uri.GetDisplayName ();
     std::string message_uri = (const char *) uri.AsString ();
     std::string _message = (const char *) pdu.GetEntityBody ();
-
 
     runtime.run_in_main (sigc::bind (sigc::ptr_fun (push_message_in_main), dialect, message_uri, display_name, _message));
   }
