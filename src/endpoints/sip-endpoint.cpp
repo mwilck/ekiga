@@ -325,7 +325,7 @@ void Opal::Sip::EndPoint::fetch (const std::string _uri)
     // We are registered yet
     if (std::find (domains.begin (), domains.end (), domain) != domains.end ()) {
 
-      Subscribe (SIPSubscribe::Presence, 500, PString (_uri.c_str ()));
+      Subscribe (SIPSubscribe::Presence, 300, PString (_uri.c_str ()));
       subscribed_uris.push_back (_uri);
     }
     else {
@@ -649,7 +649,7 @@ void Opal::Sip::EndPoint::OnRegistered (const PString & _aor,
         found = (*iter).find (server, 0);
         if (found != string::npos) {
 
-          Subscribe (SIPSubscribe::Presence, 500, PString ((*iter).c_str ()));
+          Subscribe (SIPSubscribe::Presence, 300, PString ((*iter).c_str ()));
           subscribed_uris.push_back (*iter);
           to_subscribe_uris.remove (*iter++);
         }
