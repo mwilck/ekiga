@@ -482,45 +482,40 @@ on_font_changed (GtkButton* button,
   GtkTextIter start;
   GtkTextIter end;
 
-  const char* opening_tag = NULL;
-  const char* closing_tag = NULL;
-  const char* tags = NULL;
+  const gchar* opening_tag = NULL;
+  const gchar* closing_tag = NULL;
+  gchar* tags = NULL;
 
   self = (ChatArea*)data;
 
-  if (!strcmp (gtk_button_get_label (GTK_BUTTON (button)), GTK_STOCK_BOLD)) {
-
-    opening_tag = "<b>";
-    closing_tag = "</b>";
-    tags = "<b></b>";
-  }
-  else if (!strcmp (gtk_button_get_label (GTK_BUTTON (button)), GTK_STOCK_ITALIC)) {
-
-    opening_tag = "<i>";
-    closing_tag = "</i>";
-    tags = "<i></i>";
-  }
-  else if (!strcmp (gtk_button_get_label (GTK_BUTTON (button)), GTK_STOCK_UNDERLINE)) {
-
-    opening_tag = "<u>";
-    closing_tag = "</u>";
-    tags = "<u></u>";
-  }
-
+  /* FIXME it's somehow dangerous to not check if we have these associations
+   * set for the button object?
+   * -Jan */
+  opening_tag = (const gchar*) g_object_get_data (G_OBJECT (button),
+						  "gm_open_tag");
+  closing_tag = (const gchar*) g_object_get_data (G_OBJECT (button),
+						  "gm_close_tag");
+  tags = g_strdup_printf ("%s%s", opening_tag, closing_tag);
 
   buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (self->priv->message));
   if (gtk_text_buffer_get_selection_bounds (buffer, &start, &end)) {
 
-    mark = gtk_text_buffer_create_mark (buffer, "end", &end, false);
+    /* FIXME we need to avoid that the closing_tag is part of the selection
+     * after this */
+    mark = gtk_text_buffer_create_mark (buffer, "end", &end, FALSE);
     gtk_text_buffer_insert (buffer, &start, opening_tag, -1);
     gtk_text_buffer_get_iter_at_mark (buffer, &end, mark);
     gtk_text_buffer_insert (buffer, &end, closing_tag, -1);
   }
   else {
 
+    /* FIXME we need to place the insertion mark between the tags after this, and also
+     * clear the selection that occurs */
     gtk_text_buffer_get_iter_at_mark (buffer, &end, gtk_text_buffer_get_insert (buffer));
     gtk_text_buffer_insert (buffer, &end, tags, -1);
   }
+
+  g_free (tags);
 
   gtk_widget_grab_focus (self->priv->message);
 }
@@ -923,7 +918,12 @@ chat_area_init (GTypeInstance* instance,
 		      FALSE, TRUE, 2);
   gtk_widget_show (button);
 
+  /* the BOLD button */
   button = gtk_button_new_from_stock (GTK_STOCK_BOLD);
+  g_object_set_data_full (G_OBJECT (button), "gm_open_tag",
+			  (gpointer) "<b>", NULL);
+  g_object_set_data_full (G_OBJECT (button), "gm_close_tag",
+			  (gpointer) "</b>", NULL);
   gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
   gtk_button_set_focus_on_click (GTK_BUTTON (button), FALSE);
   g_signal_connect (G_OBJECT (button), "clicked",
@@ -932,7 +932,12 @@ chat_area_init (GTypeInstance* instance,
 		      FALSE, TRUE, 2);
   gtk_widget_show (button);
 
+  /* the ITALIC button */
   button = gtk_button_new_from_stock (GTK_STOCK_ITALIC);
+  g_object_set_data_full (G_OBJECT (button), "gm_open_tag",
+			  (gpointer) "<i>", NULL);
+  g_object_set_data_full (G_OBJECT (button), "gm_close_tag",
+			  (gpointer) "</i>", NULL);
   gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
   gtk_button_set_focus_on_click (GTK_BUTTON (button), FALSE);
   g_signal_connect (G_OBJECT (button), "clicked",
@@ -941,7 +946,12 @@ chat_area_init (GTypeInstance* instance,
 		      FALSE, TRUE, 2);
   gtk_widget_show (button);
 
+  /* the UNDERLINE button */
   button = gtk_button_new_from_stock (GTK_STOCK_UNDERLINE);
+  g_object_set_data_full (G_OBJECT (button), "gm_open_tag",
+			  (gpointer) "<u>", NULL);
+  g_object_set_data_full (G_OBJECT (button), "gm_close_tag",
+			  (gpointer) "</u>", NULL);
   gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
   gtk_button_set_focus_on_click (GTK_BUTTON (button), FALSE);
   g_signal_connect (G_OBJECT (button), "clicked",
