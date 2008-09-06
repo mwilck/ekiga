@@ -104,13 +104,13 @@ GMVideoOutputManager_dx::setup_frame_display ()
 
   close_frame_display ();
 
-  current_frame.accel = VO_ACCEL_NONE;
+  current_frame.accel = Ekiga::VO_ACCEL_NONE;
 
   switch (current_frame.mode) {
   case Ekiga::VO_MODE_LOCAL:
     PTRACE(4, "GMVideoOutputManager_DX\tOpening :VO_MODE_LOCAL display with image of " << current_frame.local_width << "x" << current_frame.local_height);
     dxWindow = new DXWindow();
-    current_frame.accel = (VideoOutputAccel) dxWindow->Init (local_display_info.hwnd,
+    current_frame.accel = (Ekiga::VideoOutputAccel) dxWindow->Init (local_display_info.hwnd,
                           local_display_info.x,
                           local_display_info.y,
                             (int) (current_frame.local_width * current_frame.zoom / 100), 
@@ -130,7 +130,7 @@ GMVideoOutputManager_dx::setup_frame_display ()
   case Ekiga::VO_MODE_REMOTE:
     PTRACE(4, "GMVideoOutputManager_DX\tOpening VO_MODE_REMOTE display with image of " << current_frame.remote_width << "x" << current_frame.remote_height);
     dxWindow = new DXWindow();
-    current_frame.accel = (VideoOutputAccel) dxWindow->Init (local_display_info.hwnd,
+    current_frame.accel = (Ekiga::VideoOutputAccel) dxWindow->Init (local_display_info.hwnd,
                           local_display_info.x,
                           local_display_info.y,
                           (int) (current_frame.remote_width * current_frame.zoom / 100), 
@@ -154,7 +154,7 @@ GMVideoOutputManager_dx::setup_frame_display ()
             << current_frame.local_width << "x" << current_frame.local_height << "(local) and " 
 	    << current_frame.remote_width << "x" << current_frame.remote_height << "(remote)");
     dxWindow = new DXWindow();
-    current_frame.accel = (VideoOutputAccel) dxWindow->Init ((current_frame.mode == Ekiga::VO_MODE_PIP) ? local_display_info.hwnd : NULL,
+    current_frame.accel = (Ekiga::VideoOutputAccel) dxWindow->Init ((current_frame.mode == Ekiga::VO_MODE_PIP) ? local_display_info.hwnd : NULL,
                           (current_frame.mode == Ekiga::VO_MODE_PIP) ? local_display_info.x : 0,
                           (current_frame.mode == Ekiga::VO_MODE_PIP) ? local_display_info.y : 0,
                           (int) (current_frame.remote_width * current_frame.zoom  / 100), 

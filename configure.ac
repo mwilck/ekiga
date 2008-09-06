@@ -399,10 +399,10 @@ if test "x${gm_platform}" = "xmingw" ; then
   AC_ARG_WITH(directx-dir, [  --with-directx-dir=PFX		Location of DirectDraw], with_directx_dir="$withval", with_directx_dir=".")
 
   dnl Check for the includes presence
-  AC_MSG_CHECKING(for DirectX includes in ${with_directx_dir}/include)
+  AC_MSG_CHECKING(for DirectX includes in ${with_directx_dir})
   AC_MSG_RESULT()
-  if test -d ${with_directx_dir}/include; then
-    DX_CFLAGS="-I${with_directx_dir}/include"
+  if test -d ${with_directx_dir}; then
+    DX_CFLAGS="-I${with_directx_dir}"
     DX_LIBS="$EKIGA_LIBS -lddraw"
     AC_SUBST(DX_LIBS)
     AC_SUBST(DX_CFLAGS)
