@@ -390,7 +390,7 @@ void Opal::Sip::EndPoint::publish (const Ekiga::PersonalDetails & details)
     data += "</tuple>\r\n";
     data += "</presence>\r\n";
 
-    Publish (to, data, 500); // TODO: allow to change the 500 
+    Publish (to, data, 300); // TODO: allow to change the 500 
   }
 }
 
