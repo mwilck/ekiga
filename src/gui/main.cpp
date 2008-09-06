@@ -3812,16 +3812,20 @@ gm_main_window_add_device_dialog_show (GtkWidget *main_window,
   vbox = GTK_DIALOG (add_device_popup)->vbox;
 
   std::string msg;
+  std::string title;
 
   switch (deviceType) {
     case AudioInput:
       msg = _("Detected new audio input device:");
+      title = _("Audio Devices");
       break;
     case AudioOutput:
       msg = _("Detected new audio output device:");
+      title = _("Audio Devices");
       break;
     case VideoInput:
       msg = _("Detected new video input device:");
+      title = _("Video Devices");
       break;
     default:
       break;
@@ -3846,7 +3850,7 @@ gm_main_window_add_device_dialog_show (GtkWidget *main_window,
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
 
-  gtk_window_set_title (GTK_WINDOW (add_device_popup), "New device");
+  gtk_window_set_title (GTK_WINDOW (add_device_popup), title.c_str ());
   gtk_window_set_modal (GTK_WINDOW (add_device_popup), TRUE);
   gtk_window_set_keep_above (GTK_WINDOW (add_device_popup), TRUE);
   gtk_window_set_urgency_hint (GTK_WINDOW (main_window), TRUE);
