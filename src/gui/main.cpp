@@ -4285,7 +4285,6 @@ gm_main_window_append_call_url (GtkWidget *main_window,
   }
 
   gtk_editable_insert_text (GTK_EDITABLE (mw->entry), url, strlen (url), &pos);
-  gtk_widget_grab_focus (GTK_WIDGET (mw->entry));
   gtk_editable_select_region (GTK_EDITABLE (mw->entry), -1, -1);
 }
 
