@@ -126,7 +126,7 @@ Avahi::Heap::~Heap ()
 const std::string
 Avahi::Heap::get_name () const
 {
-  return _("Network neighbours");
+  return _("Neighbours");
 }
 
 bool
