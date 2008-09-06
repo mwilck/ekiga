@@ -590,14 +590,26 @@ void Opal::Sip::EndPoint::ShutDown ()
 void Opal::Sip::EndPoint::Register (const Opal::Account & account)
 {
   std::stringstream aor;
+  std::string host = account.get_host ();
+  std::string::size_type loc = host.find (":", 0);
+  if (loc != std::string::npos)
+    host = host.substr (0, loc);
 
-  aor << account.get_username () << "@" << account.get_host ();
-  if (!SIPEndPoint::Register (account.get_host (),
-                              account.get_username (),
-                              account.get_authentication_username (),
-                              account.get_password (),
-                              PString::Empty (), 
-                              (account.is_enabled () ? account.get_timeout () : 0)))
+  if (account.get_username ().find ("@") == std::string::npos) 
+    aor << account.get_username () << "@" << host;
+  else
+    aor << account.get_username ();
+
+  SIPRegister::Params params;
+  params.m_addressOfRecord = aor.str ();
+  params.m_registrarAddress = account.get_host ();
+  params.m_authID = account.get_authentication_username ();
+  params.m_password = account.get_password ();
+  params.m_expire = (account.is_enabled () ? account.get_timeout () : 0);
+  params.m_minRetryTime = 0;
+  params.m_maxRetryTime = 0;
+
+  if (!SIPEndPoint::Register (params))
     OnRegistrationFailed (aor.str (), SIP_PDU::MaxStatusCode, account.is_enabled ());
 }
 
