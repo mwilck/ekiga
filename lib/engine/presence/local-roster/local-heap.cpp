@@ -91,8 +91,8 @@ Local::Heap::Heap (Ekiga::ServiceCore &_core): core (_core), doc (NULL)
       std::set<std::string> groups;
 
       groups.insert (_("Services"));
-      add (_("Echo test"), "500@ekiga.net", groups);
-      add (_("Conference room"), "501@ekiga.net", groups);
+      add (_("Echo test"), "sip:500@ekiga.net", groups);
+      add (_("Conference room"), "sip:501@ekiga.net", groups);
     }
   }
 }
