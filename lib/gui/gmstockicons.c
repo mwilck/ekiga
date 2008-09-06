@@ -77,6 +77,7 @@ gnomemeeting_stock_icons_init (void)
 		{ GM_STOCK_CALL_PLACED, gm_call_placed_stock_data},
 		{ GM_STOCK_CALL_MISSED, gm_call_missed_stock_data},
 		{ GM_STOCK_CALL_RECEIVED, gm_call_received_stock_data},
+		{ GM_STOCK_CALL_TRANSFER, gm_call_transfer_stock_data},
 
 		{ GM_STOCK_PHONE_HANG_UP_16, gm_phone_hang_up_stock_data_16},
 		{ GM_STOCK_PHONE_PICK_UP_16, gm_phone_pick_up_stock_data_16},

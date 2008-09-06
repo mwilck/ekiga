@@ -44,6 +44,7 @@ IMAGES_FILES= \
 	call-placed.png \
 	call-missed.png \
 	call-received.png \
+	call-transfer.png \
 	status-online.png \
 	status-offline.png \
 	status-unknown.png \
@@ -92,6 +93,7 @@ IMAGES= \
 	gm_call_placed_stock_data $(srcdir)/call-placed.png \
 	gm_call_received_stock_data $(srcdir)/call-received.png \
 	gm_call_missed_stock_data $(srcdir)/call-missed.png \
+	gm_call_transfer_stock_data $(srcdir)/call-transfer.png \
 	gm_status_online_stock_data $(srcdir)/status-online.png \
 	gm_status_offline_stock_data $(srcdir)/status-offline.png \
 	gm_status_unknown_stock_data $(srcdir)/status-unknown.png \

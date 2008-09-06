@@ -166,7 +166,7 @@ namespace Opal {
       void on_dial (std::string uri);
       void on_message (std::string uri,
 		       std::string name);
-      void on_forward (std::string uri);
+      void on_transfer (std::string uri);
 
       PMutex msgDataMutex;
       msgDict msgData;

@@ -1,5 +1,18 @@
 2008-09-06  Damien Sandras  <dsandras@gnome.org>
 
+	* pixmaps/call-transfer.png:
+	* pixmaps/Makefile.am:
+	* src/endpoints/sip-endpoint.cpp:
+	* src/endpoints/sip-endpoint.h:
+	* lib/gui/gmstockicons.c:
+	* lib/gui/gmstockicons.h:
+	* lib/engine/gui/gtk-core/gtk-core.cpp:
+	Added icon for transfer action. Renamed forward methods into transfer
+	methods, let's not confuse forwarding a call and transferring a call
+	in the API.
+
+2008-09-06  Damien Sandras  <dsandras@gnome.org>
+
 	* src/gui/main.cpp:
 	Fixed #545590.
 

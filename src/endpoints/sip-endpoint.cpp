@@ -268,22 +268,22 @@ bool Opal::Sip::EndPoint::menu_builder_add_actions (const std::string& fullname,
        it++) {
 
     std::stringstream call_action;
-    std::stringstream forward_action;
+    std::stringstream transfer_action;
     if (!(*ita).empty ()) {
       call_action << _("Call") << " [" << (*ita) << "]";
-      forward_action << _("Transfer") << " [" << (*ita) << "]";
+      transfer_action << _("Transfer") << " [" << (*ita) << "]";
     }
     else {
       call_action << _("Call");
-      forward_action << _("Transfer");
+      transfer_action << _("Transfer");
     }
 
     if (0 == GetConnectionCount ())
       builder.add_action ("call", call_action.str (),
                           sigc::bind (sigc::mem_fun (this, &Opal::Sip::EndPoint::on_dial), (*it)));
     else 
-      builder.add_action ("transfer", forward_action.str (),
-                          sigc::bind (sigc::mem_fun (this, &Opal::Sip::EndPoint::on_forward), (*it)));
+      builder.add_action ("transfer", transfer_action.str (),
+                          sigc::bind (sigc::mem_fun (this, &Opal::Sip::EndPoint::on_transfer), (*it)));
 
     ita++;
   }
@@ -1112,7 +1112,7 @@ void Opal::Sip::EndPoint::on_message (std::string uri,
   dialect->start_chat_with (uri, name);
 }
 
-void Opal::Sip::EndPoint::on_forward (std::string uri)
+void Opal::Sip::EndPoint::on_transfer (std::string uri)
 {
   PStringList connections = GetAllConnections ();
   /* FIXME : we don't handle several connections here */

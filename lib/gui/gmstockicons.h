@@ -64,6 +64,7 @@ G_BEGIN_DECLS
 #define GM_STOCK_CALL_PLACED      "gm_call_placed_stock"
 #define GM_STOCK_CALL_MISSED      "gm_call_missed_stock"
 #define GM_STOCK_CALL_RECEIVED    "gm_call_received_stock"
+#define GM_STOCK_CALL_TRANSFER    "gm_call_transfer_stock"
 
 #define GM_STOCK_STATUS_ONLINE "gm_status_online_stock"
 #define GM_STOCK_STATUS_OFFLINE "gm_status_offline_stock"
