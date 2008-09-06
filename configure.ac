@@ -106,6 +106,8 @@ case $target_os in
 
   mingw* )
     gm_platform="mingw"
+    CFLAGS="$CFLAGS -DSTATIC_LIBS_USED"
+    CXXFLAGS="$CXXFLAGS -DSTATIC_LIBS_USED"
     win32=1
     ;;
 

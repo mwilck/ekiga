@@ -71,13 +71,13 @@ EKIGA_WIN32_DIFF_DIR := $(EKIGA_WIN32_DIR)/diff
 EKIGA_INSTALLER_DIR := $(BUILDROOT)/nsisinstaller
 EKIGA_INSTALLER := ekiga-setup-${EKIGA_VER}.exe
 
-OPAL_VER:= 3.3.0
+OPAL_VER:= 3.3.1
 OPAL_REV:= HEAD
-OPAL_URL:= https://opalvoip.svn.sourceforge.net/svnroot/opalvoip/opal/trunk
+OPAL_URL:= https://opalvoip.svn.sourceforge.net/svnroot/opalvoip/opal/branches/autoconf
 OPAL_ARCHIVE := opal
 OPAL_DIR:= $(BUILDROOT)/opal
 
-PTLIB_VER:= 2.3.0
+PTLIB_VER:= 2.3.1
 PTLIB_REV:= HEAD
 PTLIB_URL:= https://opalvoip.svn.sourceforge.net/svnroot/opalvoip/ptlib/trunk
 PTLIB_DIR:= $(BUILDROOT)/ptlib
@@ -98,34 +98,34 @@ SPEEX_DIR := $(BUILDROOT)/speex-$(SPEEX_VER)
 SPEEX_ARCHIVE := speex-$(SPEEX_VER).tar.gz
 SPEEX_URL := http://downloads.us.xiph.org/releases/speex
 
-GTK_VER := 2.10.11
-GTK_URL := http://ftp.gtk.org/pub/gtk/v2.10/win32
+GTK_VER := 2.12.11
+GTK_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/gtk+/2.12
 GTK_ARCHIVE := gtk+-dev-$(GTK_VER).zip
-GTK_BIN_VER := 2.10.11
-GTK_BIN_ARCHIVE := gtk+-$(GTK_BIN_VER)-setup.zip 	 
-GTK_INSTALLER_URL := http://www.mirrorservice.org/sites/download.sourceforge.net/pub/sourceforge/g/gi/gimp-win
-GTK_BIN_EXE := gtk+-$(GTK_BIN_VER)-setup.exe
 
-GLIB_VER := 2.12.4
-GLIB_URL := http://ftp.gtk.org/pub/glib/2.12/win32
-GLIB_ARCHIVE := glib-dev-$(GLIB_VER).zip
+GTK_BIN_VER := 2.12.11
+GTK_INSTALLER_URL := http://mesh.dl.sourceforge.net/gtk-win
+GTK_BIN_EXE := gtk2-runtime-2.12.11-2008-07-25-ash.exe
 
-ATK_VER := 1.12.2
+GLIB_VER := 2.18.0-2
+GLIB_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/glib/2.18
+GLIB_ARCHIVE := glib-dev_$(GLIB_VER)_win32.zip
+
+ATK_VER := 1.22.0
+ATK_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/atk/1.22
 ATK_ARCHIVE := atk-dev-$(ATK_VER).zip
-ATK_URL := $(GTK_URL)/dependencies
 
-CAIRO_VER := 1.4.6
+CAIRO_VER := 1.6.4-2
+CAIRO_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies
 CAIRO_ARCHIVE := cairo-dev-$(CAIRO_VER).zip
-CAIRO_URL := $(GTK_URL)
+
+PANGO_VER := 1.20.5
+PANGO_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/pango/1.20
+PANGO_ARCHIVE := pango-dev-$(PANGO_VER).zip
 
 XML2_VER := 2.6.26
 XML2_DIR := libxml2-$(XML2_VER)
 XML2_URL := ftp://xmlsoft.org/libxml2
 XML2_ARCHIVE := libxml2-$(XML2_VER).tar.gz
-
-PANGO_VER := 1.10.3
-PANGO_URL := http://ftp.gtk.org/pub/gtk/v2.8/win32
-PANGO_ARCHIVE := pango-dev-$(PANGO_VER).zip
 
 LIBPNG_VER := 1.2.8
 GNUWIN32_URL := http://mesh.dl.sourceforge.net/gnuwin32
@@ -146,8 +146,11 @@ SIGC_ARCHIVE := libsigc++-$(SIGC_VER).tar.gz
 SIGC_DIR := libsigc++-$(SIGC_VER)
 
 GIMP_URL := http://www.gimp.org/~tml/gimp/win32
-GETTEXT_VER := 0.14.5
-GETTEXT_ARCHIVE := gettext-dev-$(GETTEXT_VER).zip
+
+GETTEXT_VER := 0.17-1
+GETTEXT_URL :=http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies
+GETTEXT_ARCHIVE := gettext-runtime-dev-$(GETTEXT_VER).zip
+
 ICONV_VER := 1.9.1
 ICONV_ARCHIVE := libiconv-$(ICONV_VER).bin.woe32.zip
 
@@ -191,9 +194,9 @@ confptlib:=--prefix=$(BUILDROOT) --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST
 	   --with-directx-includedir=$(INCLUDEDIR)/directx \
 	   --disable-qos --disable-vidfile --disable-plugins
 confopal :=--prefix=$(BUILDROOT) --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE) \
-	   --with-ffmpeg-dir=$(FFMPEG_DIR)
-confekiga:= $(confflags) --with-ptlib-dir=$(PTLIB_DIR) --with-opal-dir=$(OPAL_DIR) \
-	    --with-directx-dir=$(BUILDROOT) --prefix=$(EKIGA_PREFIX) \
+	   --with-ffmpeg-dir=$(FFMPEG_DIR) --disable-ffmpeg-h263
+confekiga:= $(confflags) \
+	    --with-directx-dir=$(BUILDROOT)/directx --prefix=$(EKIGA_PREFIX) \
 	    --bindir=$(EKIGA_PREFIX) --datadir=$(EKIGA_PREFIX) \
 	    --sysconfdir=$(EKIGA_PREFIX) --libdir=$(EKIGA_PREFIX) --disable-gnome \
 	    --disable-dbus --disable-avahi --disable-esd --with-ldap-dir=$(OPENLDAP_DIR)
@@ -417,6 +420,7 @@ $(BINDIR)/avcodec.dll: $(FFMPEG_DIR)/config.status
 ### x264
 update-sources:: 
 	echo --- Getting x264 ---
+	rm -rf $(SRCDIR)/$(X264_ARCHIVE)
 	$(GIT) clone $(X264_URL) $(SRCDIR)/$(X264_ARCHIVE)
 	echo "Updated to revision $(X264_VER)"
 	touch $(SRCDIR)/$(X264_ARCHIVE)
@@ -526,13 +530,14 @@ $(LIBDIR)/libpng.a: $(SRCDIR)/libpng-$(LIBPNG_VER)-bin.zip $(SRCDIR)/libpng-$(LI
 	unzip -u $(SRCDIR)/libpng-$(LIBPNG_VER)-bin.zip -d $(BUILDROOT)
 	unzip -u $(SRCDIR)/libpng-$(LIBPNG_VER)-dep.zip -d $(BUILDROOT)
 	unzip -u $(SRCDIR)/libpng-$(LIBPNG_VER)-lib.zip -d $(BUILDROOT)
-	#sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' lib/pkgconfig/libpng*.pc
+	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' lib/pkgconfig/libpng*.pc
+	ln -s -f libpng.pc lib/pkgconfig/libpng12.pc
 	touch $@
 
 ### libintl
 update-sources::
 	echo --- Getting Gettext ...
-	$(WGET) -P $(SRCDIR) $(GIMP_URL)/$(GETTEXT_ARCHIVE)
+	$(WGET) -P $(SRCDIR) $(GETTEXT_URL)/$(GETTEXT_ARCHIVE)
 
 $(LIBDIR)/libintl.a: $(SRCDIR)/$(GETTEXT_ARCHIVE)
 	unzip -u $(SRCDIR)/$(GETTEXT_ARCHIVE) -d $(BUILDROOT)
