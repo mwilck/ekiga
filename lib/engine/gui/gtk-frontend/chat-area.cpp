@@ -543,6 +543,11 @@ message_activated_cb (G_GNUC_UNUSED GtkWidget *w,
     buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (self->priv->message));
     gtk_text_buffer_get_start_iter (GTK_TEXT_BUFFER (buffer), &start_iter);
     gtk_text_buffer_get_end_iter (GTK_TEXT_BUFFER (buffer), &end_iter);
+
+    /* if nothing to send - send nothing ;-) */
+    if (gtk_text_iter_get_offset (&end_iter) == 0)
+      return TRUE;
+
     body = gtk_text_buffer_get_text (GTK_TEXT_BUFFER (buffer), &start_iter, &end_iter, TRUE);
 
     if (self->priv->chat->send_message (body))
