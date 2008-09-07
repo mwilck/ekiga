@@ -240,7 +240,7 @@ bool Opal::H323::EndPoint::set_listen_port (unsigned port)
 }
 
 
-const Ekiga::CallProtocolManager::Interface & Opal::H323::EndPoint::get_listen_iface () const
+const Ekiga::CallProtocolManager::Interface & Opal::H323::EndPoint::get_listen_interface () const
 {
   return listen_iface;
 }
@@ -362,10 +362,10 @@ void Opal::H323::EndPoint::Register (const Opal::Account & account)
 
 bool Opal::H323::EndPoint::UseGatekeeper (const PString & address,
                                           const PString & domain,
-                                          const PString & listen_iface)
+                                          const PString & iface)
 {
   bool result = 
-    H323EndPoint::UseGatekeeper (address, domain, listen_iface);
+    H323EndPoint::UseGatekeeper (address, domain, iface);
 
   PWaitAndSignal m(gk_name_mutex);
 

@@ -507,7 +507,7 @@ bool Opal::Sip::EndPoint::set_listen_port (unsigned port)
 }
 
 
-const Ekiga::CallProtocolManager::Interface & Opal::Sip::EndPoint::get_listen_iface () const
+const Ekiga::CallProtocolManager::Interface & Opal::Sip::EndPoint::get_listen_interface () const
 {
   return listen_iface;
 }
