@@ -267,9 +267,10 @@ static void sound_event_toggled_cb (GtkCellRendererToggle *cell,
  * BEHAVIOR     :  Update of the config database.
  * PRE          :  /
  */
+/*
 static void image_filename_browse_cb (GtkWidget *widget,
 				      gpointer data);
-
+*/
 
 /* DESCRIPTION  :  This callback is called when the user selected a file
  *                 for a sound event
@@ -285,9 +286,10 @@ static void audioev_filename_browse_cb (GtkWidget *widget,
  * BEHAVIOR     :  Update of the file-selector's image.
  * PRE          :  /
  */
+/*
 static void image_filename_browse_preview_cb (GtkWidget *selector,
                                               gpointer data);
-
+*/
 
 /* DESCRIPTION  :  This callback is called by the preview-play button of the
  * 		   selected audio file in the audio file selector.
@@ -815,15 +817,15 @@ gm_pw_init_video_devices_page (GtkWidget *prefs_window,
 {
   GmPreferencesWindow *pw = NULL;
 
-  GtkWidget *label = NULL;
+  //GtkWidget *label = NULL;
   GtkWidget *subsection = NULL;
 
-  GtkWidget *button = NULL;
+  //GtkWidget *button = NULL;
 
-  gchar *conf_image = NULL;
-  GtkFileFilter *filefilter = NULL;
-  GtkWidget *preview_image = NULL;
-  GtkWidget *preview_image_frame = NULL;
+  //gchar *conf_image = NULL;
+  //GtkFileFilter *filefilter = NULL;
+  //GtkWidget *preview_image = NULL;
+  //GtkWidget *preview_image_frame = NULL;
 
   PStringArray devs;
 
@@ -874,6 +876,7 @@ gm_pw_init_video_devices_page (GtkWidget *prefs_window,
   gnome_prefs_int_option_menu_new (subsection, _("Format:"), video_format, VIDEO_DEVICES_KEY "format", _("Select the format for video cameras (does not apply to most USB cameras)"), 2);
 
   /* The file selector button */
+  /* FIXME disabled for now
   label = gtk_label_new (_("Image:"));
 
   button = 
@@ -925,7 +928,7 @@ gm_pw_init_video_devices_page (GtkWidget *prefs_window,
   g_signal_connect_after (G_OBJECT (button), "selection-changed",
                           G_CALLBACK (image_filename_browse_cb),
                           (gpointer) VIDEO_DEVICES_KEY "image");
-
+  */
   /* That button will refresh the device list */
   gm_pw_add_update_button (prefs_window, container, GTK_STOCK_REFRESH, _("_Detect devices"), GTK_SIGNAL_FUNC (refresh_devices_list_cb), _("Click here to refresh the device list."), 1, prefs_window);
 
@@ -1041,6 +1044,7 @@ personal_data_update_cb (G_GNUC_UNUSED GtkWidget *widget,
 }
 
 
+/*
 static void
 image_filename_browse_cb (GtkWidget *b,
 			  gpointer data)
@@ -1061,12 +1065,9 @@ image_filename_browse_cb (GtkWidget *b,
   g_free (filename);
   g_free (current_filename);
 
-  /* On the very first time, when we only set the file name from the GMC
-   * the update-preview signal isn't sent. We do it manually here on the
-   * "selection-changed" */
   g_signal_emit_by_name (G_OBJECT (b), "update-preview");
 }
-
+*/
 
 static void
 audioev_filename_browse_cb (GtkWidget *b,
@@ -1198,6 +1199,7 @@ sound_event_toggled_cb (G_GNUC_UNUSED GtkCellRendererToggle *cell,
 }
 
 
+/*
 static void
 image_filename_browse_preview_cb (GtkWidget *selector,
 				  gpointer data)
@@ -1212,11 +1214,9 @@ image_filename_browse_preview_cb (GtkWidget *selector,
 
   filename =
     gtk_file_chooser_get_preview_filename (GTK_FILE_CHOOSER (selector));
-  /* no filename? try next method */
   if (!filename)
     filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (selector));
 
-  /* FIXME: still no luck? take from config */
   if (!filename)
     filename = gm_conf_get_string (VIDEO_DEVICES_KEY "image");
 
@@ -1234,6 +1234,7 @@ image_filename_browse_preview_cb (GtkWidget *selector,
   gtk_file_chooser_set_preview_widget_active (GTK_FILE_CHOOSER (selector),
 					      TRUE);
 }
+*/
 
 
 static void
