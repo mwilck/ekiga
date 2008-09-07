@@ -219,9 +219,9 @@ unsigned Opal::H323::EndPoint::get_dtmf_mode () const
 
 bool Opal::H323::EndPoint::set_listen_port (unsigned port)
 {
-  listen_interface.protocol = "tcp";
-  listen_interface.voip_protocol = "h323";
-  listen_interface.id = "*";
+  listen_iface.protocol = "tcp";
+  listen_iface.voip_protocol = "h323";
+  listen_iface.id = "*";
 
   if (port > 0) {
 
@@ -231,7 +231,7 @@ bool Opal::H323::EndPoint::set_listen_port (unsigned port)
     str << "tcp$*:" << port;
     if (StartListeners (PStringArray (str.str ()))) {
 
-      listen_interface.port = port;
+      listen_iface.port = port;
       return true;
     }
   }
@@ -240,9 +240,9 @@ bool Opal::H323::EndPoint::set_listen_port (unsigned port)
 }
 
 
-const Ekiga::CallProtocolManager::Interface & Opal::H323::EndPoint::get_listen_interface () const
+const Ekiga::CallProtocolManager::Interface & Opal::H323::EndPoint::get_listen_iface () const
 {
-  return listen_interface;
+  return listen_iface;
 }
 
 
@@ -362,10 +362,10 @@ void Opal::H323::EndPoint::Register (const Opal::Account & account)
 
 bool Opal::H323::EndPoint::UseGatekeeper (const PString & address,
                                           const PString & domain,
-                                          const PString & listen_interface)
+                                          const PString & listen_iface)
 {
   bool result = 
-    H323EndPoint::UseGatekeeper (address, domain, listen_interface);
+    H323EndPoint::UseGatekeeper (address, domain, listen_iface);
 
   PWaitAndSignal m(gk_name_mutex);
 

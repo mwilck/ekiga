@@ -472,9 +472,9 @@ bool Opal::Sip::EndPoint::set_listen_port (unsigned port)
 {
   unsigned udp_min, udp_max;
 
-  listen_interface.protocol = "udp";
-  listen_interface.voip_protocol = "sip";
-  listen_interface.id = "*";
+  listen_iface.protocol = "udp";
+  listen_iface.voip_protocol = "sip";
+  listen_iface.id = "*";
 
   manager.get_udp_ports (udp_min, udp_max);
 
@@ -492,7 +492,7 @@ bool Opal::Sip::EndPoint::set_listen_port (unsigned port)
 
         if (StartListeners (PStringArray (str.str ()))) {
 
-          listen_interface.port = port;
+          listen_iface.port = port;
           return true;
         }
 
@@ -500,16 +500,16 @@ bool Opal::Sip::EndPoint::set_listen_port (unsigned port)
       }
     }
     else
-      listen_interface.port = port;
+      listen_iface.port = port;
   }
 
   return false;
 }
 
 
-const Ekiga::CallProtocolManager::Interface & Opal::Sip::EndPoint::get_listen_interface () const
+const Ekiga::CallProtocolManager::Interface & Opal::Sip::EndPoint::get_listen_iface () const
 {
-  return listen_interface;
+  return listen_iface;
 }
 
 
