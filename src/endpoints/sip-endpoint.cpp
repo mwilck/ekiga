@@ -1106,17 +1106,18 @@ void Opal::Sip::EndPoint::on_dial (std::string uri)
   manager.dial (uri);
 }
 
+
 void Opal::Sip::EndPoint::on_message (std::string uri,
                                       std::string name)
 {
   dialect->start_chat_with (uri, name);
 }
 
+
 void Opal::Sip::EndPoint::on_transfer (std::string uri)
 {
-  PStringList connections = GetAllConnections ();
-  /* FIXME : we don't handle several connections here */
-  PSafePtr<OpalConnection> connection = GetConnectionWithLock (connections[0]);
-
-  connection->ForwardCall (uri);
+  /* FIXME : we don't handle several calls here */
+  for (PSafePtr<OpalConnection> connection(connectionsActive, PSafeReference); connection != NULL; ++connection)
+    if (!PIsDescendant(&(*connection), OpalPCSSConnection))
+      connection->TransferConnection (uri);
 }
