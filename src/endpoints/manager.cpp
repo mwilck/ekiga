@@ -163,7 +163,7 @@ void CallManager::start ()
   new StunDetector ("stun.voxgratia.org", *this, queue);
 
   patience = 3;
-  runtime.run_in_main (sigc::mem_fun (this, &CallManager::HandleSTUNResult), 3);
+  runtime.run_in_main (sigc::mem_fun (this, &CallManager::HandleSTUNResult), 1);
 }
 
 
