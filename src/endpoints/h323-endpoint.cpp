@@ -146,11 +146,15 @@ bool Opal::H323::EndPoint::menu_builder_add_actions (const std::string & /*fulln
                                                      Ekiga::MenuBuilder & builder)
 {
   bool populated = false;
-  std::string action = _("Call");
 
   if (uri.find ("h323:") == 0) {
     
-    builder.add_action ("call", action, sigc::bind (sigc::mem_fun (this, &EndPoint::on_dial), uri));
+    if (0 == GetConnectionCount ())
+      builder.add_action ("call", _("Call"),
+                          sigc::bind (sigc::mem_fun (this, &Opal::H323::EndPoint::on_dial), uri));
+    else 
+      builder.add_action ("transfer", _("Transfer"),
+                          sigc::bind (sigc::mem_fun (this, &Opal::H323::EndPoint::on_transfer), uri));
     populated = true;
   }
 
@@ -429,4 +433,13 @@ bool Opal::H323::EndPoint::OnIncomingConnection (OpalConnection & connection,
 void Opal::H323::EndPoint::on_dial (std::string uri)
 {
   manager.dial (uri);
+}
+
+
+void Opal::H323::EndPoint::on_transfer (std::string uri)
+{
+  /* FIXME : we don't handle several calls here */
+  for (PSafePtr<OpalConnection> connection(connectionsActive, PSafeReference); connection != NULL; ++connection)
+    if (!PIsDescendant(&(*connection), OpalPCSSConnection))
+      connection->TransferConnection (uri);
 }

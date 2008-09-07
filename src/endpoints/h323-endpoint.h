@@ -115,9 +115,9 @@ namespace Opal {
                                  unsigned options,
                                  OpalConnection::StringOptions *str_options);
 
-
-  private:
       void on_dial (std::string uri);
+
+      void on_transfer (std::string uri);
 
       CallManager & manager;
       Ekiga::ServiceCore & core;
