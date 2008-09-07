@@ -160,6 +160,10 @@ private:
 
     void GetAllowedFormats (OpalMediaFormatList & full_list);
 
+    void HandleSTUNResult ();
+
+    void ReportSTUNError (const std::string error);
+
     /* The various related endpoints */
     GMPCSSEndpoint *pcssEP;
 
@@ -171,6 +175,10 @@ private:
     Ekiga::Runtime & runtime;
     Ekiga::CodecList codecs; 
     Ekiga::CallCore *call_core;
+
+    /* used to get the STUNDetector results */
+    GAsyncQueue* queue;
+    uint patience;
 
     std::string display_name;
     unsigned reject_delay;

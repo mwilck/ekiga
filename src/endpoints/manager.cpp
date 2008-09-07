@@ -51,12 +51,6 @@
 #include "call-manager.h"
 #include "form-request-simple.h"
 
-static void
-manager_ready_in_main (Ekiga::CallManager* manager)
-{
-  manager->ready.emit ();
-}
-
 static  bool same_codec_desc (Ekiga::CodecDescription a, Ekiga::CodecDescription b)
 { 
   return (a.name == b.name && a.rate == b.rate); 
@@ -69,60 +63,37 @@ class StunDetector : public PThread
 
 public:
 
-  StunDetector (const std::string & _server, 
-                Ekiga::CallCore & _core,
-                Opal::CallManager & _manager,
-                Ekiga::Runtime & _runtime) 
+  StunDetector (const std::string & _server,
+		Opal::CallManager& _manager,
+                GAsyncQueue* _queue) 
     : PThread (1000, AutoDeleteThread), 
       server (_server),
-      core (_core),
       manager (_manager),
-      runtime (_runtime)
+      queue (_queue)
   {
+    g_async_queue_ref (queue);
     this->Resume ();
   };
 
   ~StunDetector ()
   {
-    if (!nat_error.empty ()) {
-      while (!core.errors.handle_request (nat_error)) {
-        PThread::Current ()->Sleep (100);
-      }
-    }
+    g_async_queue_unref (queue);
   }
   
   void Main () 
   {
-    PSTUNClient::NatTypes type = manager.SetSTUNServer (server);
-    if (type == PSTUNClient::SymmetricNat 
-        || type == PSTUNClient::BlockedNat 
-        || type == PSTUNClient::PartialBlockedNat) {
+    PSTUNClient::NatTypes* result = NULL;
 
-      nat_error =  _("Ekiga did not manage to configure your network settings automatically. You can"
-                     " still use it, but you need to configure your network settings manually.\n\n"
-                     "Please see http://wiki.ekiga.org/index.php/Enable_port_forwarding_manually for"
-                     " instructions");
+    result = (PSTUNClient::NatTypes*)g_malloc0 (sizeof (PSTUNClient::NatTypes));
+    *result = manager.SetSTUNServer (server);
 
-
-    }
-    else {
-
-      for (Ekiga::CallManager::iterator iter = manager.begin ();
-           iter != manager.end ();
-           iter++) 
-        (*iter)->set_listen_port ((*iter)->get_listen_interface ().port);
-    }
-
-    runtime.run_in_main (sigc::bind (sigc::ptr_fun (manager_ready_in_main),
-				     &manager));
+    g_async_queue_push (queue, result);
   };
 
 private:
   const std::string server;
-  Ekiga::CallCore & core;
   Opal::CallManager & manager;
-  Ekiga::Runtime & runtime;
-  std::string nat_error;
+  GAsyncQueue* queue;
 };
 
 
@@ -171,19 +142,28 @@ CallManager::CallManager (Ekiga::ServiceCore & _core)
 
   //
   call_core = dynamic_cast<Ekiga::CallCore *> (core.get ("call-core"));
+
+
+  // used to communicate with the StunDetector
+  queue = g_async_queue_new_full (g_free);
 }
 
 
 CallManager::~CallManager ()
 {
   ClearAllCalls (OpalConnection::EndedByLocalUser, false);
+
+  g_async_queue_unref (queue);
 }
 
 
 void CallManager::start ()
 {
   // Ready
-  new StunDetector ("stun.voxgratia.org", *call_core, *this, runtime);
+  new StunDetector ("stun.voxgratia.org", *this, queue);
+
+  patience = 3;
+  runtime.run_in_main (sigc::mem_fun (this, &CallManager::HandleSTUNResult), 3);
 }
 
 
@@ -710,3 +690,65 @@ void CallManager::GetAllowedFormats (OpalMediaFormatList & full_list)
   }
 }
 
+void
+CallManager::HandleSTUNResult ()
+{
+  PSTUNClient::NatTypes* result = NULL;
+
+  result = (PSTUNClient::NatTypes*)g_async_queue_try_pop (queue);
+
+  if (result != NULL || patience == 0) {
+
+    if (patience == 0
+	|| *result == PSTUNClient::SymmetricNat
+	|| *result == PSTUNClient::BlockedNat
+	|| *result == PSTUNClient::PartialBlockedNat) {
+
+      ReportSTUNError (_("Ekiga did not manage to configure your network settings automatically. You can"
+			 " still use it, but you need to configure your network settings manually.\n\n"
+			 "Please see http://wiki.ekiga.org/index.php/Enable_port_forwarding_manually for"
+			 " instructions"));
+    } else {
+
+    for (Ekiga::CallManager::iterator iter = begin ();
+	 iter != end ();
+	 ++iter) 
+      (*iter)->set_listen_port ((*iter)->get_listen_interface ().port);
+    }
+
+    ready.emit ();
+
+  } else {
+
+    if (patience == 3) {
+
+      patience--;
+      runtime.run_in_main (sigc::mem_fun (this,
+					  &CallManager::HandleSTUNResult),
+			   12);
+    } else if (patience == 2) {
+
+      patience--;
+      runtime.run_in_main (sigc::mem_fun (this,
+					  &CallManager::HandleSTUNResult),
+			   21);
+    } else if (patience == 1) {
+
+      patience--;
+      runtime.run_in_main (sigc::mem_fun (this,
+					  &CallManager::HandleSTUNResult),
+			   30);
+    }
+  }
+}
+
+void
+CallManager::ReportSTUNError (const std::string error)
+{
+  // notice we're in for an infinite loop if nobody ever reports to the user!
+  if ( !call_core->errors.handle_request (error))
+    runtime.run_in_main (sigc::bind (sigc::mem_fun (this,
+						    &CallManager::ReportSTUNError),
+				     error),
+			 10);
+}
