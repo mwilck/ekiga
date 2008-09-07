@@ -748,6 +748,7 @@ static void on_cleared_call_cb (Ekiga::CallManager & /*manager*/,
     gm_main_window_hide_call_panel (GTK_WIDGET (self));
   gm_main_window_clear_stats (GTK_WIDGET (self));
   gm_main_window_update_logo_have_window (GTK_WIDGET (self));
+  gm_main_window_push_message (GTK_WIDGET (self), NULL);
   gm_main_window_flash_message (GTK_WIDGET (self), "%s", reason.c_str ());
 
   if (mw->current_call && mw->current_call->get_id () == call.get_id ()) {
