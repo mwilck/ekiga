@@ -51,7 +51,6 @@ void CallCore::add_manager (CallManager &manager)
   managers.insert (&manager);
   manager_added.emit (manager);
 
-  manager.mwi_event.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_mwi_event), &manager));
   manager.ready.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_manager_ready), &manager));
 }
 
@@ -172,12 +171,6 @@ void CallCore::on_stream_paused (std::string name, Call::StreamType type, Call *
 void CallCore::on_stream_resumed (std::string name, Call::StreamType type, Call *call, CallManager *manager)
 {
   stream_resumed.emit (*manager, *call, name, type);
-}
-
-
-void CallCore::on_mwi_event (std::string account, std::string info, CallManager *manager)
-{
-  mwi_event.emit (*manager, account, info);
 }
 
 

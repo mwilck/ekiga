@@ -154,10 +154,6 @@ private:
 
     void OnClosedMediaStream (const OpalMediaStream &);
 
-    void OnMWIReceived (const PString & party,
-                        MessageWaitingType type,
-                        const PString & info);
-
     void GetAllowedFormats (OpalMediaFormatList & full_list);
 
     void HandleSTUNResult ();

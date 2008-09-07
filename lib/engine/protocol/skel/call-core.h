@@ -144,11 +144,6 @@ namespace Ekiga
       sigc::signal<void, CallManager &, Call &, std::string, Call::StreamType> stream_paused;
       sigc::signal<void, CallManager &, Call &, std::string, Call::StreamType> stream_resumed;
 
-
-      /*** Accounts ***/
-      // TODO Should move too
-      sigc::signal<void, CallManager &, std::string, std::string> mwi_event;
-
       /*** Misc ***/
       sigc::signal<void, CallManager &> manager_ready;
       sigc::signal<void> ready;
@@ -175,8 +170,6 @@ namespace Ekiga
       void on_im_sent (std::string, std::string, CallManager *manager);
       void on_im_received (std::string, std::string, std::string, CallManager *manager);
       void on_new_chat (std::string, std::string, CallManager *manager);
-
-      void on_mwi_event (std::string, std::string, CallManager *manager);
 
       void on_manager_ready (CallManager *manager);
       

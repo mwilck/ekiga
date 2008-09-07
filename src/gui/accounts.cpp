@@ -42,6 +42,7 @@
 #include "account.h"
 #include "bank.h"
 #include "account-core.h"
+#include "audiooutput-core.h"
 
 #include "callbacks.h"
 #include "misc.h"
@@ -151,11 +152,79 @@ gm_aw_get_aw (GtkWidget *accounts_window)
 }
 
 
+bool
+gm_accounts_window_update_account_state (GtkWidget *accounts_window,
+					 gboolean refreshing,
+                                         const Ekiga::Account & _account,
+					 const gchar *status,
+					 const gchar *voicemails)
+{
+  GtkTreeModel *model = NULL;
+
+  GtkTreeIter iter;
+
+  Ekiga::Account *account = NULL;
+  GmAccountsWindow *aw = NULL;
+
+  gchar *error = NULL;
+  gchar *mwi = NULL;
+
+  bool status_modified = false;
+  bool mwi_modified = false;
+
+  g_return_val_if_fail (accounts_window != NULL, false);
+
+  aw = gm_aw_get_aw (accounts_window);
+
+  model = gtk_tree_view_get_model (GTK_TREE_VIEW (aw->accounts_list));
+
+  if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (model), &iter)){
+
+    do {
+
+      gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
+			  COLUMN_ACCOUNT, &account,
+			  -1);
+
+      if (account == &_account) {
+
+        gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
+                            COLUMN_ACCOUNT_ERROR_MESSAGE, &error,
+                            COLUMN_ACCOUNT_VOICEMAILS, &mwi,
+                            -1);
+
+	gtk_list_store_set (GTK_LIST_STORE (model), &iter,
+			    COLUMN_ACCOUNT_STATE, refreshing, -1);
+	if (status) {
+
+	  gtk_list_store_set (GTK_LIST_STORE (model), &iter,
+			      COLUMN_ACCOUNT_ERROR_MESSAGE, status, -1);
+          status_modified = (error == NULL) || strcmp (status, error);
+        }
+	if (voicemails) {
+
+	  gtk_list_store_set (GTK_LIST_STORE (model), &iter,
+			      COLUMN_ACCOUNT_VOICEMAILS, voicemails, -1);
+          mwi_modified = (mwi == NULL) || strcmp (voicemails, mwi);
+        }
+      
+        g_free (error);
+        g_free (mwi);
+      }
+
+    } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (model), &iter));
+  }
+
+  return (status_modified || mwi_modified);
+}
+
+
 /* Engine callbacks */
-static void on_registration_event (const Ekiga::Account & account,
-                                   Ekiga::AccountCore::RegistrationState state,
-                                   std::string info,
-                                   gpointer window)
+static void 
+on_registration_event (const Ekiga::Account & account,
+                       Ekiga::AccountCore::RegistrationState state,
+                       std::string info,
+                       gpointer window)
 {
   bool is_processing = false;
   std::string status;
@@ -188,8 +257,33 @@ static void on_registration_event (const Ekiga::Account & account,
     break;
   }
 
-  gm_accounts_window_update_account_state (GTK_WIDGET (window), is_processing, 
-                                           account, status.c_str (), NULL); 
+  gm_accounts_window_update_account_state (GTK_WIDGET (window), is_processing, account, status.c_str (), NULL); 
+}
+
+
+static void 
+on_mwi_event (const Ekiga::Account & account,
+              std::string mwi,
+              gpointer self)
+{
+  GmAccountsWindow *aw = NULL;
+
+  aw = gm_aw_get_aw (GTK_WIDGET (self));
+  Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (aw->core.get ("audiooutput-core"));
+
+  if (gm_accounts_window_update_account_state (GTK_WIDGET (self), false, account, NULL, mwi.c_str ())) {
+
+    std::string::size_type loc = mwi.find ("/", 0);
+    if (loc != std::string::npos) {
+
+      std::stringstream new_messages;
+      int i;
+      new_messages << mwi.substr (0, loc);
+      new_messages >> i;
+      if (i > 0)
+        audiooutput_core->play_event ("new_voicemail_sound");
+    }
+  }
 }
 
 
@@ -666,52 +760,7 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
   account_core->account_removed.connect (sigc::bind (sigc::ptr_fun (on_account_removed), window));
   account_core->questions.add_handler (sigc::bind (sigc::ptr_fun (on_handle_questions), (gpointer) window));
   account_core->registration_event.connect (sigc::bind (sigc::ptr_fun (on_registration_event), (gpointer) window));
+  account_core->mwi_event.connect (sigc::bind (sigc::ptr_fun (on_mwi_event), (gpointer) window));
   
   return window;
 }
-
-
-void
-gm_accounts_window_update_account_state (GtkWidget *accounts_window,
-					 gboolean refreshing,
-                                         const Ekiga::Account & _account,
-					 const gchar *status,
-					 const gchar *voicemails)
-{
-  GtkTreeModel *model = NULL;
-
-  GtkTreeIter iter;
-
-  Ekiga::Account *account = NULL;
-  GmAccountsWindow *aw = NULL;
-
-  g_return_if_fail (accounts_window != NULL);
-
-  aw = gm_aw_get_aw (accounts_window);
-
-  model = gtk_tree_view_get_model (GTK_TREE_VIEW (aw->accounts_list));
-
-  if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (model), &iter)){
-
-    do {
-
-      gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
-			  COLUMN_ACCOUNT, &account,
-			  -1);
-
-      if (account == &_account) {
-
-	gtk_list_store_set (GTK_LIST_STORE (model), &iter,
-			    COLUMN_ACCOUNT_STATE, refreshing, -1);
-	if (status)
-	  gtk_list_store_set (GTK_LIST_STORE (model), &iter,
-			      COLUMN_ACCOUNT_ERROR_MESSAGE, status, -1);
-	if (voicemails)
-	  gtk_list_store_set (GTK_LIST_STORE (model), &iter,
-			      COLUMN_ACCOUNT_VOICEMAILS, voicemails, -1);
-      }
-
-    } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (model), &iter));
-  }
-}
-

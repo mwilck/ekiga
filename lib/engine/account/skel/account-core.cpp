@@ -90,6 +90,7 @@ void Ekiga::AccountCore::add_bank (Bank &bank)
 
   bank.questions.add_handler (questions.make_slot ());
   bank.registration_event.connect (sigc::mem_fun (this, &Ekiga::AccountCore::on_registration_event));
+  bank.mwi_event.connect (sigc::mem_fun (this, &Ekiga::AccountCore::on_mwi_event));
 }
 
 
@@ -125,4 +126,11 @@ void Ekiga::AccountCore::on_registration_event (const Ekiga::Account *account,
                                                 const std::string & info)
 {
   registration_event.emit (*account, state, info);
+}
+
+
+void Ekiga::AccountCore::on_mwi_event (const Ekiga::Account *account,
+                                       const std::string & info)
+{
+  mwi_event.emit (*account, info);
 }

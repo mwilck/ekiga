@@ -187,6 +187,12 @@ namespace Ekiga
     sigc::signal<void, Ekiga::AccountCore::RegistrationState, std::string> registration_event;
 
 
+    /** This signal is emitted when there is a new message waiting indication
+     * @param: mwi is the message waiting indication
+     */
+    sigc::signal<void, std::string> mwi_event;
+
+
     /** This chain allows the Account to present forms to the user
      */
     ChainOfResponsibility<FormRequest*> questions;

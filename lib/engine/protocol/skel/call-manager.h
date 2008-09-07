@@ -193,19 +193,6 @@ namespace Ekiga
        */
       virtual unsigned get_reject_delay () const = 0;
 
-
-      /*
-       * ACCOUNT INDICATIONS
-       */
-
-      /** This signal is emitted when there is a new message waiting indication
-       * @param: account is the voicemail account
-       *         mwi is the message waiting indication
-       */
-      sigc::signal<void, std::string, std::string> mwi_event;
-      //FIXME
-
-
       /*
        * MISC
        */

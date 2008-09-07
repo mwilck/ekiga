@@ -81,7 +81,6 @@
 #undef _
 #undef N_
 #include <gnome.h>
-#include <libbonobo.h>
 #endif
 
 #if defined(P_FREEBSD) || defined (P_MACOSX)
@@ -168,8 +167,6 @@ struct _GmMainWindow
 #endif
 
   unsigned int calling_state;
-  unsigned int missed_calls;
-  unsigned int total_mwi;
   bool audio_transmission_active;
   bool audio_reception_active;
   bool video_transmission_active;
@@ -512,8 +509,7 @@ static void toolbar_toggle_button_changed_cb (GtkWidget *,
 
 
 /* DESCRIPTION  :  This callback is called when the status bar is clicked.
- * BEHAVIOR     :  Clear all info message, not normal messages. Reset the
- * 		   endpoint missed calls number.
+ * BEHAVIOR     :  Clear all info message, not normal messages.
  * PRE          :  The main window GMObject.
  */
 static gboolean statusbar_clicked_cb (GtkWidget *,
@@ -540,23 +536,6 @@ static void audio_volume_window_hidden_cb (GtkWidget *widget,
 /* 
  * Engine Callbacks 
  */
-static void on_mwi_event_cb (G_GNUC_UNUSED Ekiga::CallManager & manager,
-                             G_GNUC_UNUSED std::string account,
-                             G_GNUC_UNUSED std::string mwi,
-                             gpointer self)
-{
-  GmMainWindow *mw = NULL;
-
-  g_return_if_fail (GTK_WIDGET (self) != NULL);
-  mw = gm_mw_get_mw (GTK_WIDGET (self));
-  g_return_if_fail (mw != NULL);
-
-  gm_main_window_push_message (GTK_WIDGET (self),
-                               mw->missed_calls,
-                               mw->total_mwi);
-}
-
-
 static void on_ready_cb (gpointer self)
 {
   gm_main_window_set_busy (GTK_WIDGET (self), false);
@@ -769,9 +748,6 @@ static void on_cleared_call_cb (Ekiga::CallManager & /*manager*/,
     gm_main_window_hide_call_panel (GTK_WIDGET (self));
   gm_main_window_clear_stats (GTK_WIDGET (self));
   gm_main_window_update_logo_have_window (GTK_WIDGET (self));
-  gm_main_window_push_message (GTK_WIDGET (self), 
-                               mw->missed_calls,
-                               mw->total_mwi);
   gm_main_window_flash_message (GTK_WIDGET (self), "%s", reason.c_str ());
 
   if (mw->current_call && mw->current_call->get_id () == call.get_id ()) {
@@ -853,15 +829,9 @@ static void on_missed_call_cb (Ekiga::CallManager & /*manager*/,
   audiooutput_core->stop_play_event("ring_tone_sound");
 
   gchar* info = NULL;
-
-  mw->missed_calls++;
   info = g_strdup_printf (_("Missed call from %s"),
 			  call.get_remote_party_name ().c_str ());
-
-  gm_main_window_push_message (GTK_WIDGET (self), 
-                               mw->missed_calls,
-                               mw->total_mwi);
-  gm_main_window_flash_message (GTK_WIDGET (self), "%s", info);
+  gm_main_window_push_message (GTK_WIDGET (self), "%s", info);
   g_free (info);
 }
 
@@ -3034,8 +3004,6 @@ statusbar_clicked_cb (G_GNUC_UNUSED GtkWidget *widget,
 		      G_GNUC_UNUSED GdkEventButton *event,
 		      gpointer data)
 {
-  gchar *info = NULL;
-
   GmMainWindow *mw = NULL;
 
   g_return_val_if_fail (data != NULL, TRUE);
@@ -3044,13 +3012,7 @@ statusbar_clicked_cb (G_GNUC_UNUSED GtkWidget *widget,
 
   g_return_val_if_fail (GTK_WIDGET (data), TRUE);
 
-  mw->missed_calls = 0;
-
-  gm_main_window_push_message (GTK_WIDGET (data), 
-                               mw->missed_calls, 
-                               mw->total_mwi);
-  g_free (info);
-
+  gm_main_window_push_message (GTK_WIDGET (data), NULL);
 
   return FALSE;
 }
@@ -3917,7 +3879,6 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   mw->levelmeter_timeout_id = -1;
   mw->x = 0;
   mw->y = 0;
-  mw->missed_calls = mw->total_mwi = 0;
   mw->audio_transmission_active = mw->audio_reception_active 
     = mw->video_transmission_active = mw->video_reception_active = false;
   g_object_set_data_full (G_OBJECT (window), "GMObject", 
@@ -4108,9 +4069,6 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   conn = account_core->registration_event.connect (sigc::bind (sigc::ptr_fun (on_registration_event), (gpointer) window));
   mw->connections.push_back (conn);
 
-  conn = call_core->mwi_event.connect (sigc::bind (sigc::ptr_fun (on_mwi_event_cb), (gpointer) window));
-  mw->connections.push_back (conn);
-
   conn = call_core->ready.connect (sigc::bind (sigc::ptr_fun (on_ready_cb), (gpointer) window));
   mw->connections.push_back (conn);
 
@@ -4183,21 +4141,6 @@ gm_main_window_flash_message (GtkWidget *main_window,
   vsnprintf (buffer, 1024, msg, args);
   gm_statusbar_flash_message (GM_STATUSBAR (mw->statusbar), "%s", buffer);
   va_end (args);
-}
-
-
-void 
-gm_main_window_push_message (GtkWidget *main_window, 
-			     unsigned int missed,
-			     unsigned int mwi)
-{
-  gchar *info = NULL;
-  
-  g_return_if_fail (main_window != NULL);
-  
-  info = g_strdup_printf (_("Missed calls: %d - Voice Mails: %d"), missed, mwi);
-  gm_main_window_push_info_message (main_window, "%s", info);
-  g_free (info);
 }
 
 

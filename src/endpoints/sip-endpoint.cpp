@@ -931,6 +931,15 @@ void Opal::Sip::EndPoint::OnRegistrationFailed (const PString & _aor,
 }
 
 
+void Opal::Sip::EndPoint::OnMWIReceived (const PString & party, OpalManager::MessageWaitingType /*type*/, const PString & info)
+{
+  /* Signal */
+  Ekiga::Account *account = account_core.find_account (party);
+  if (account)
+    runtime.run_in_main (sigc::bind (account->mwi_event.make_slot (), info));
+}
+
+
 bool Opal::Sip::EndPoint::OnIncomingConnection (OpalConnection &connection,
                                                 unsigned options,
                                                 OpalConnection::StringOptions * stroptions)

@@ -1,5 +1,29 @@
 2008-09-07  Damien Sandras  <dsandras@gnome.org>
 
+	* src/endpoints/sip-endpoint.cpp:
+	* src/endpoints/manager.cpp:
+	* src/endpoints/sip-endpoint.h:
+	* src/endpoints/manager.h:
+	* src/gui/accounts.cpp:
+	* src/gui/main.cpp:
+	* src/gui/accounts.h:
+	* lib/engine/account/skel/bank-impl.h:
+	* lib/engine/account/skel/bank.h:
+	* lib/engine/account/skel/account.h:
+	* lib/engine/account/skel/account-core.cpp:
+	* lib/engine/account/skel/account-core.h:
+	* lib/engine/protocol/skel/call-core.cpp:
+	* lib/engine/protocol/skel/call-core.h:
+	* lib/engine/protocol/skel/call-manager.h:
+	Moved the mwi_event where it should belong, ie to the AccountCore.
+	Dropped bonobo.h include.
+	Resurrected display of voicemail waiting indications with the
+	associated sound event in the accounts window.
+	Cleaned unuseful notifications from the statusbar, we have a tray icon
+	for that.
+
+2008-09-07  Damien Sandras  <dsandras@gnome.org>
+
 	* src/endpoints/h323-endpoint.h:
 	* src/endpoints/h323-endpoint.cpp:
 	Added call transfer support.

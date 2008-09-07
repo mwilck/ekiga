@@ -51,20 +51,4 @@
  */
 GtkWidget *gm_accounts_window_new (Ekiga::ServiceCore &core);
 
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Update the account corresponding to the given domain, and
- * 		   username with the given status message. Enables or not
- * 		   the refreshing state for that account (see below for
- * 		   the implications).
- * PRE          :  /
- */
-//FIXME private
-void gm_accounts_window_update_account_state (GtkWidget *accounts_window,
-					      gboolean refreshing,
-                                              const Ekiga::Account & account,
-					      const gchar *status,
-					      const gchar *voicemails);
-
-
 #endif

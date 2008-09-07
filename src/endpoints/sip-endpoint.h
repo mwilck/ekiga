@@ -144,6 +144,10 @@ namespace Opal {
                                  SIP_PDU::StatusCodes reason,
                                  bool wasRegistering);
 
+      void OnMWIReceived (const PString & party, 
+                          OpalManager::MessageWaitingType type, 
+                          const PString & info);
+
       bool OnIncomingConnection (OpalConnection &connection,
                                  unsigned options,
                                  OpalConnection::StringOptions * stroptions);
