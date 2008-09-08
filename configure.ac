@@ -484,21 +484,16 @@ dnl ###############################
 dnl   Gnome-Doc-Utils
 dnl ###############################
 GDU="disabled"
+GNOME_DOC_INIT
 if test "x${gm_platform}" != "xmingw" ; then
   AC_ARG_ENABLE(gdu, [  --disable-gdu			Disable GNOME-Doc-Utils support],,enable_gdu=yes)
-
   if test "x$enable_gdu" = "xyes"; then
-GNOME_DOC_INIT
     AC_PATH_PROG(SK_CONFIG,scrollkeeper-config,no)
     if test "x$SK_CONFIG" = "xno"; then
       AC_MSG_ERROR(Couldn't find scrollkeeper-config. Please install the scrollkeeper package: http://scrollkeeper.sourceforge.net)
     fi
     GDU="enabled"
-  else
-    GNOME_DOC_INIT(,,[:])
   fi
-else
-  GNOME_DOC_INIT(,,[:])
 fi
 
 AM_CONDITIONAL(HAVE_GNOME_DOC_UTILS, test "x${enable_gdu}" = "xyes")
