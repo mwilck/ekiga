@@ -89,6 +89,8 @@ ConfBridge::ConfBridge (Ekiga::Service & _service)
   keys.push_back (H323_KEY "dtmf_mode");
   keys.push_back (H323_KEY "forward_host"); 
 
+  keys.push_back (NAT_KEY "stun_server");
+
   load (keys);
 }
 
@@ -138,6 +140,14 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
     manager.get_video_options (options);
     options.maximum_received_bitrate = gm_conf_entry_get_int (entry);
     manager.set_video_options (options);
+  }
+
+  //
+  // NAT Key
+  //
+  else if (key == NAT_KEY "stun_server") {
+
+    manager.set_stun_server (gm_conf_entry_get_string (entry));
   }
 
 

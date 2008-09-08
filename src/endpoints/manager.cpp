@@ -160,7 +160,7 @@ CallManager::~CallManager ()
 void CallManager::start ()
 {
   // Ready
-  new StunDetector ("stun.voxgratia.org", *this, queue);
+  new StunDetector (stun_server, *this, queue);
 
   patience = 3;
   runtime.run_in_main (sigc::mem_fun (this, &CallManager::HandleSTUNResult), 1);
@@ -482,6 +482,13 @@ void CallManager::get_tcp_ports (unsigned & min_port,
 }
 
 
+void CallManager::set_stun_server (const std::string & server)
+{
+  stun_server = server;
+  start ();
+}
+
+
 bool CallManager::dial (const std::string & uri)
 {
   for (CallManager::iterator iter = begin ();
@@ -712,7 +719,7 @@ CallManager::HandleSTUNResult ()
       patience--;
       runtime.run_in_main (sigc::mem_fun (this,
 					  &CallManager::HandleSTUNResult),
-			   12);
+			   3);
     } else if (patience == 2) {
 
       patience--;

@@ -124,7 +124,6 @@ opal_init (Ekiga::ServiceCore &core,
   call_core->add_manager (*call_manager);
 
   new ConfBridge (*call_manager);
-  call_manager->start ();
 
   // Add the bank of accounts when the CallManager is ready
   call_manager->ready.connect (sigc::bind (sigc::ptr_fun (on_call_manager_ready_cb), &core));

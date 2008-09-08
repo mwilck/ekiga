@@ -125,6 +125,7 @@ public:
     void get_tcp_ports (unsigned & min_port, 
                         unsigned & max_port) const;
 
+    void set_stun_server (const std::string & server);
 
     /**/
     struct VideoOptions 
@@ -177,6 +178,7 @@ private:
     uint patience;
 
     std::string display_name;
+    std::string stun_server;
     unsigned reject_delay;
     bool forward_on_busy;
     bool unconditional_forward;
