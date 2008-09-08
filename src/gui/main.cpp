@@ -719,7 +719,8 @@ static void on_established_call_cb (Ekiga::CallManager & /*manager*/,
 			  call.get_remote_party_name ().c_str ());
 
   gm_main_window_set_call_url (GTK_WIDGET (self), call.get_remote_uri ().c_str());
-  gm_main_window_set_stay_on_top (GTK_WIDGET (self), gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top"));
+  if (gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top"))
+    gm_main_window_set_stay_on_top (GTK_WIDGET (self), TRUE);
   gm_main_window_set_status (GTK_WIDGET (self), info);
   gm_main_window_flash_message (GTK_WIDGET (self), "%s", info);
   if (!gm_conf_get_bool (USER_INTERFACE_KEY "main_window/show_call_panel"))
@@ -746,7 +747,8 @@ static void on_cleared_call_cb (Ekiga::CallManager & /*manager*/,
 {
   GmMainWindow *mw = gm_mw_get_mw (GTK_WIDGET (self));
 
-  gm_main_window_set_stay_on_top (GTK_WIDGET (self), FALSE);
+  if (gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top"))
+    gm_main_window_set_stay_on_top (GTK_WIDGET (self), FALSE);
   gm_main_window_update_calling_state (GTK_WIDGET (self), Standby);
   gm_main_window_set_status (GTK_WIDGET (self), _("Standby"));
   gm_main_window_set_call_duration (GTK_WIDGET (self), NULL);
