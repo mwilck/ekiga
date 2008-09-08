@@ -41,7 +41,6 @@ G_BEGIN_DECLS
 
 /* Icon theme builtins */
 #define GM_ICON_ADD_CONTACT                "contact-new"
-#define GM_ICON_ADDRESSBOOK                "stock_addressbook"
 #define GM_ICON_AUDIO_VOLUME_HIGH          "audio-volume-high"
 #define GM_ICON_BRIGHTNESS                 "stock_brightness"
 #define GM_ICON_CAMERA_VIDEO               "camera-video"
@@ -53,6 +52,7 @@ G_BEGIN_DECLS
 #define GM_ICON_MICROPHONE                 "audio-input-microphone"
 #define GM_ICON_SYSTEM_SEARCH              "system-search"
 #define GM_ICON_WHITENESS                  "stock_channel-blue"
+#define GM_ICON_ADDRESSBOOK                "stock_addressbook"
 
 /* True stock icons */
 #define GM_STOCK_COLOR_BRIGHTNESS_CONTRAST   "gm_color_brightness_contrast_stock"
@@ -77,8 +77,6 @@ G_BEGIN_DECLS
 #define GM_STOCK_PHONE_PICK_UP_16    "gm_phone_pick_up_stock_16"
 #define GM_STOCK_PHONE_HANG_UP_24    "gm_phone_up_stock_24"
 #define GM_STOCK_PHONE_PICK_UP_24    "gm_phone_pick_up_stock_24"
-
-#define GM_STOCK_ADDRESSBOOK          "stock_addressbook"
 
 void gnomemeeting_stock_icons_init (void);
 

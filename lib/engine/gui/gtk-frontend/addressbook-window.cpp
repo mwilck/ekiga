@@ -644,7 +644,6 @@ addressbook_window_new (Ekiga::ContactCore &core)
 
   sigc::connection conn;
 
-  GdkPixbuf *pixbuf = NULL;
   GtkWidget *menu_bar = NULL;
   GtkWidget *frame = NULL;
   GtkWidget *vbox = NULL;
@@ -660,11 +659,7 @@ addressbook_window_new (Ekiga::ContactCore &core)
   gtk_window_set_title (GTK_WINDOW (self), _("Address Book"));
   gtk_window_set_position (GTK_WINDOW (self), GTK_WIN_POS_CENTER);
 
-  pixbuf = gtk_widget_render_icon (GTK_WIDGET (self),
-				   GM_ICON_ADDRESSBOOK,
-				   GTK_ICON_SIZE_MENU, NULL);
-  gtk_window_set_icon (GTK_WINDOW (self), pixbuf);
-  g_object_unref (pixbuf);
+  gtk_window_set_icon_name (GTK_WINDOW (self), GM_ICON_ADDRESSBOOK);
 
   /* Start building the window */
   vbox = gtk_vbox_new (FALSE, 2);
