@@ -161,6 +161,7 @@ struct _GmMainWindow
   GtkWidget *hold_button;
   GtkWidget *transfer_call_popup;
   GtkWidget *status_option_menu;
+  Ekiga::Presentity* presentity;
 
 #ifndef WIN32
   GdkGC* video_widget_gc;
@@ -296,9 +297,10 @@ static void gm_main_window_show_call_panel (GtkWidget *self);
 
 static void gm_main_window_hide_call_panel (GtkWidget *self);
 
+void gm_main_window_clear_signal_levels (GtkWidget *main_window);
 
-void
-gm_main_window_clear_signal_levels (GtkWidget *main_window);
+void gm_main_window_selected_presentity_build_menu (GtkWidget *main_window);
+
 
 /* Callbacks */
 /* DESCRIPTION  :  This callback is called when the user selects a presentity
@@ -1923,7 +1925,7 @@ gm_mw_init_contacts_list (GtkWidget *main_window)
   gtk_notebook_append_page (GTK_NOTEBOOK (mw->main_notebook),
 			    roster_view, label);
   g_signal_connect (G_OBJECT (roster_view), "presentity-selected",
-		    G_CALLBACK (on_presentity_selected), mw);
+		    G_CALLBACK (on_presentity_selected), main_window);
 }
 
 
@@ -2500,35 +2502,15 @@ gnomemeeting_tray_hack_cb (G_GNUC_UNUSED gpointer data)
 static void
 on_presentity_selected (G_GNUC_UNUSED GtkWidget* view,
 			Ekiga::Presentity* presentity,
-			gpointer data)
+			gpointer self)
 {
-  GmMainWindow *mw = (GmMainWindow*)data;
-  GtkWidget* menu = NULL;
+  GmMainWindow *mw = gm_mw_get_mw (GTK_WIDGET (self));
 
   g_return_if_fail (mw != NULL);
 
-  menu = gtk_menu_get_widget (mw->main_menu, "contact");
+  mw->presentity = presentity;
 
-  g_return_if_fail (menu != NULL);
-
-  if (presentity != NULL) {
-
-    MenuBuilderGtk builder;
-    gtk_widget_set_sensitive (menu, TRUE);
-    if (presentity->populate_menu (builder)) {
-
-      gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu), builder.menu);
-      gtk_widget_show_all (builder.menu);
-    } else {
-
-    gtk_widget_set_sensitive (menu, FALSE);
-      g_object_unref (builder.menu);
-    }
-  } else {
-
-    gtk_widget_set_sensitive (menu, FALSE);
-    gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu), NULL);
-  }
+  gm_main_window_selected_presentity_build_menu (GTK_WIDGET (self));
 }
 
 
@@ -3231,7 +3213,7 @@ gm_main_window_update_calling_state (GtkWidget *main_window,
 
   g_return_if_fail (mw!= NULL);
 
-
+  gm_main_window_selected_presentity_build_menu (main_window);
   switch (calling_state)
     {
     case Standby:
@@ -3459,6 +3441,41 @@ gm_main_window_clear_signal_levels (GtkWidget *main_window)
 
   gtk_levelmeter_clear (GTK_LEVELMETER (mw->output_signal));
   gtk_levelmeter_clear (GTK_LEVELMETER (mw->input_signal));
+}
+
+void 
+gm_main_window_selected_presentity_build_menu (GtkWidget *main_window)
+{
+  GmMainWindow *mw = NULL;
+  GtkWidget* menu = NULL;
+
+  g_return_if_fail (main_window != NULL);
+
+  mw = gm_mw_get_mw (main_window);
+
+  g_return_if_fail (mw != NULL);
+
+  menu = gtk_menu_get_widget (mw->main_menu, "contact");
+  if (mw->presentity != NULL) {
+
+    MenuBuilderGtk builder;
+    gtk_widget_set_sensitive (menu, TRUE);
+    if (mw->presentity->populate_menu (builder)) {
+
+      gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu), builder.menu);
+      gtk_widget_show_all (builder.menu);
+    } 
+    else {
+
+      gtk_widget_set_sensitive (menu, FALSE);
+      g_object_unref (builder.menu);
+    }
+  } 
+  else {
+
+    gtk_widget_set_sensitive (menu, FALSE);
+    gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu), NULL);
+  }
 }
 
 void 
@@ -3913,6 +3930,7 @@ gm_main_window_new (Ekiga::ServiceCore & core)
 
   /* The GMObject data */
   mw = new GmMainWindow (core);
+  mw->presentity = NULL;
   mw->transfer_call_popup = NULL;
   mw->current_call = NULL;
   mw->timeout_id = -1;
