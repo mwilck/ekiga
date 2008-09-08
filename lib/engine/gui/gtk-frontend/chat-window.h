@@ -62,6 +62,9 @@ struct _ChatWindowClass
   /* this is the "unread-count" signal */
   void (*unread_count) (ChatWindow* self,
 			guint unread_count);
+
+  /* this is the "unread-alert" signal */
+  void (*unread_alert) (ChatWindow* self);
 };
 
 #define CHAT_WINDOW_TYPE (chat_window_get_type ())

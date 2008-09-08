@@ -1,3 +1,13 @@
+2008-09-08  Jan Schampera <jan.schampera@unix.net>
+
+	* lib/engine/gui/gtk-frontend/chat-window.cpp,
+	lib/engine/gui/gtk-frontend/chat-window.h:
+	Introduce "unread-alert" signal, which is fired when a new
+	message arrives which is not readable by the user.
+
+	* src/gui/main.cpp:
+	Use the above signal to generate a sound event.
+
 2008-09-07  Damien Sandras  <dsandras@gnome.org>
 
 	* src/gui/main.cpp:

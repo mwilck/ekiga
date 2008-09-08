@@ -310,6 +310,13 @@ static void on_presentity_selected (GtkWidget* view,
 				    Ekiga::Presentity* presentity,
 				    gpointer data);
 
+/* DESCRIPTION  :  This callback is called when the chat window alerts about
+ *                 unread messages
+ * BEHAVIOR     :  Plays a sound (if enabled)
+ * PRE          :  /
+ */
+static void on_chat_unread_alert (GtkWidget*,
+				  gpointer);
 
 /* DESCRIPTION  :  This callback is called when the control panel 
  *                 section key changes.
@@ -2523,6 +2530,23 @@ on_presentity_selected (G_GNUC_UNUSED GtkWidget* view,
 }
 
 
+static void
+on_chat_unread_alert (G_GNUC_UNUSED GtkWidget* widget,
+		      G_GNUC_UNUSED gpointer data)
+{
+  if (!gm_conf_get_bool (SOUND_EVENTS_KEY "enable_new_message_sound"))
+    return;
+
+  Ekiga::ServiceCore *core = GnomeMeeting::Process ()->GetServiceCore ();
+  Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (core->get ("audiooutput-core"));
+
+  std::string file_name_string = gm_conf_get_string (SOUND_EVENTS_KEY "new_message_sound");
+
+  if (!file_name_string.empty ())
+    audiooutput_core->play_file(file_name_string);
+}
+
+
 static void 
 panel_section_changed_nt (G_GNUC_UNUSED gpointer id, 
                           GmConfEntry *entry, 
@@ -3857,7 +3881,20 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   PanelSection section = DIALPAD;
 
   sigc::connection conn;
-  
+
+  Ekiga::ServiceCore *services = NULL;
+  GtkFrontend *gtk_frontend = NULL;
+  GtkWidget *chat_window = NULL;
+
+  /* initialize the callback to play IM message sound */
+
+  services = GnomeMeeting::Process ()->GetServiceCore ();
+  gtk_frontend = dynamic_cast<GtkFrontend *>(services->get ("gtk-frontend"));
+  chat_window = GTK_WIDGET (gtk_frontend->get_chat_window ());
+
+  g_signal_connect (chat_window, "unread-alert",
+		    G_CALLBACK (on_chat_unread_alert), NULL);
+
   /* The Top-level window */
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   g_object_set_data_full (G_OBJECT (window), "window_name",

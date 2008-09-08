@@ -56,6 +56,7 @@ struct _ChatWindowPrivate
 
 enum {
   UNREAD_COUNT,
+  UNREAD_ALERT,
   LAST_SIGNAL
 };
 
@@ -256,6 +257,8 @@ on_message_notice_event (GtkWidget* page,
     txt = g_strdup_printf ("[%d] %s", unread_count, base_title);
     gtk_label_set_text (GTK_LABEL (label), txt);
     g_free (txt);
+
+    g_signal_emit (self, signals[UNREAD_ALERT], 0, NULL);
   }
 
   update_unread (self);
@@ -407,6 +410,15 @@ chat_window_class_init (gpointer g_class,
 		  g_cclosure_marshal_VOID__UINT,
 		  G_TYPE_NONE, 1,
 		  G_TYPE_UINT);
+
+  signals[UNREAD_ALERT] =
+    g_signal_new ("unread-alert",
+		  G_OBJECT_CLASS_TYPE (gobject_class),
+		  G_SIGNAL_RUN_LAST,
+		  G_STRUCT_OFFSET (ChatWindowClass, unread_alert),
+		  NULL, NULL,
+		  g_cclosure_marshal_VOID__VOID,
+		  G_TYPE_NONE, 0);
 
   /* FIXME: is it useful? */
   chat_window_class = (ChatWindowClass*)g_class;
