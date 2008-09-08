@@ -933,6 +933,11 @@ void Opal::Sip::EndPoint::OnRegistrationFailed (const PString & _aor,
 
 void Opal::Sip::EndPoint::OnMWIReceived (const PString & party, OpalManager::MessageWaitingType /*type*/, const PString & info)
 {
+  std::string mwi = info;
+  std::transform (mwi.begin(), mwi.end(), mwi.begin(), ::tolower);
+  if (mwi == "no")
+    mwi = "0/0";
+
   /* Signal */
   Ekiga::Account *account = account_core.find_account (party);
   if (account)
