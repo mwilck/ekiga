@@ -127,13 +127,13 @@ engine_init (int argc,
   core->add (*runtime);
   core->add (*account_core);
   core->add (*contact_core);
-  core->add (*call_core);
   core->add (*chat_core);
   core->add (*videooutput_core);
   core->add (*videoinput_core);
   core->add (*audiooutput_core);
   core->add (*audioinput_core);
   core->add (*hal_core);
+  core->add (*call_core);
 
   if (!gmconf_personal_details_init (*core, &argc, &argv)) {
     delete core;

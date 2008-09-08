@@ -155,5 +155,7 @@ opal_init (Ekiga::ServiceCore &core,
   else
     return false;
 
+  core.add (*call_manager);
+
   return result;
 }

@@ -1,4 +1,14 @@
+2008-09-08  Damien Sandras  <dsandras@gnome.org>
+
+	* src/endpoints/opal-main.cpp:
+	* src/endpoints/manager.h:
+	* lib/engine/engine.cpp:
+	Fixed crash on exit when being in a call due to a memory leak. The
+	OPAL component is now again a service to ensure autodeletion. 
+	Fixes #551421.
+
 2008-09-08  Jan Schampera <jan.schampera@unix.net>
+
 	* src/gui/main.cpp:
 	Do not touch the WM stay-on-top hint when we're not configured to do
 	so. Fixes #438375 in some way.

@@ -70,7 +70,7 @@ public:
 
     CallManager (Ekiga::ServiceCore & _core);
 
-    ~CallManager ();
+    virtual ~CallManager ();
 
     /**/
     void start ();
