@@ -261,6 +261,21 @@ namespace Ekiga
   private:
 
     std::set<PresenceFetcher *> presence_fetchers;
+    void on_presence_received (const std::string uri,
+			       const std::string presence);
+    void on_status_received (const std::string uri,
+			     const std::string status);
+    struct uri_info
+    {
+      uri_info (): count(0), presence("unknown"), status("")
+      { }
+
+      int count;
+      std::string presence;
+      std::string status;
+    };
+
+    std::map<std::string, uri_info> uri_infos;
 
     /* help publishing presence */
   public:

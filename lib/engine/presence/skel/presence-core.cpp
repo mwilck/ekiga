@@ -157,30 +157,66 @@ void
 Ekiga::PresenceCore::add_presence_fetcher (PresenceFetcher &fetcher)
 {
   presence_fetchers.insert (&fetcher);
-  fetcher.presence_received.connect (presence_received.make_slot ());
-  fetcher.status_received.connect (status_received.make_slot ());
+  fetcher.presence_received.connect (sigc::mem_fun (this,
+						    &Ekiga::PresenceCore::on_presence_received));
+  fetcher.status_received.connect (sigc::mem_fun (this,
+						  &Ekiga::PresenceCore::on_status_received));
+  for (std::map<std::string, uri_info>::const_iterator iter
+	 = uri_infos.begin ();
+       iter != uri_infos.end ();
+       ++iter)
+    fetcher.fetch (iter->first);
 }
 
 void
 Ekiga::PresenceCore::fetch_presence (const std::string uri)
 {
+  uri_infos[uri].count++;
+
   for (std::set<PresenceFetcher *>::iterator iter
 	 = presence_fetchers.begin ();
        iter != presence_fetchers.end ();
        iter++)
     (*iter)->fetch (uri);
+
+  presence_received.emit (uri, uri_infos[uri].presence);
+  status_received.emit (uri, uri_infos[uri].status);
 }
 
 void Ekiga::PresenceCore::unfetch_presence (const std::string uri)
 {
-  for (std::set<PresenceFetcher *>::iterator iter
-	 = presence_fetchers.begin ();
-       iter != presence_fetchers.end ();
-       iter++)
-    (*iter)->unfetch (uri);
+  uri_infos[uri].count--;
+
+  if (uri_infos[uri].count <= 0) {
+
+    uri_infos.erase (uri_infos.find (uri));
+
+    for (std::set<PresenceFetcher *>::iterator iter
+	   = presence_fetchers.begin ();
+	 iter != presence_fetchers.end ();
+	 iter++)
+      (*iter)->unfetch (uri);
+  }
 }
 
-void Ekiga::PresenceCore::add_presence_publisher (PresencePublisher &publisher)
+void
+Ekiga::PresenceCore::on_presence_received (const std::string uri,
+					   const std::string presence)
+{
+  uri_infos[uri].presence = presence;
+  presence_received.emit (uri, presence);
+}
+
+void
+Ekiga::PresenceCore::on_status_received (const std::string uri,
+					 const std::string status)
+{
+  uri_infos[uri].status = status;
+  status_received.emit (uri, status);
+}
+
+void
+Ekiga::PresenceCore::add_presence_publisher (PresencePublisher &publisher)
 {
   presence_publishers.insert (&publisher);
 }
