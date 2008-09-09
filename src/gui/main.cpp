@@ -3710,6 +3710,7 @@ gm_main_window_incoming_call_dialog_show (GtkWidget *main_window,
   const char *utf8_name = call.get_remote_party_name ().c_str ();
   const char *utf8_app = call.get_remote_application ().c_str ();
   const char *utf8_url = call.get_remote_uri ().c_str ();
+  const char *utf8_local = call.get_local_party_name ().c_str ();
 
   g_return_if_fail (main_window);
   
@@ -3760,6 +3761,19 @@ gm_main_window_incoming_call_dialog_show (GtkWidget *main_window,
     label = gtk_label_new (NULL);
     msg = g_strdup_printf ("<b>%s</b> %s",
 			   _("Remote Application:"), utf8_app);
+    gtk_label_set_markup (GTK_LABEL (label), msg);
+    gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
+    gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 2);
+    gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
+    g_free (msg);
+  }
+
+  if (utf8_local) {
+    
+    label = gtk_label_new (NULL);
+    msg =
+      g_strdup_printf ("<b>%s</b> %s",
+		       _("Account ID:"), utf8_local);
     gtk_label_set_markup (GTK_LABEL (label), msg);
     gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
     gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 2);
