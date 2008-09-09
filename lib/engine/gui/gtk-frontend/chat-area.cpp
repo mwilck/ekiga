@@ -902,7 +902,7 @@ chat_area_init (GTypeInstance* instance,
   smiley_button = gtk_image_new_from_icon_name ("face-smile", GTK_ICON_SIZE_BUTTON);
 
   smiley_chooser_button = gm_smiley_chooser_button_new ();
-  gtk_button_set_label (GTK_BUTTON(smiley_chooser_button), _("Smile..."));
+  gtk_button_set_label (GTK_BUTTON(smiley_chooser_button), _("_Smile..."));
   gtk_button_set_image (GTK_BUTTON(smiley_chooser_button), smiley_button);
   gtk_button_set_relief (GTK_BUTTON(smiley_chooser_button), GTK_RELIEF_NONE);
   gtk_button_set_focus_on_click (GTK_BUTTON (smiley_chooser_button), FALSE);
