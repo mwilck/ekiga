@@ -694,6 +694,13 @@ static gboolean on_stats_refresh_cb (gpointer self)
     if (mw->qualitymeter)
       gm_powermeter_set_level (GM_POWERMETER (mw->qualitymeter),
   			       quality_level);
+
+    gm_main_window_update_stats (GTK_WIDGET (self), lost, late, out_of_order, jitter, 
+                                 0, 0, 0, 0,
+                                 videooutput_stats.rx_width,
+                                 videooutput_stats.rx_height,
+                                 videooutput_stats.tx_width,
+                                 videooutput_stats.tx_height);
   }
   return true;
 }
