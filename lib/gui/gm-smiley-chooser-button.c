@@ -654,7 +654,7 @@ static void gm_smiley_chooser_build_view (GmSmileyChooserButton* self)
   g_object_ref_sink (G_OBJECT (priv->popup_window));
   g_signal_connect (G_OBJECT (priv->popup_window), "button-press-event",
 		    G_CALLBACK (on_popup_button_press_event), self);
-  gtk_window_set_title (GTK_WINDOW (priv->popup_window), _("Smile!"));
+//  gtk_window_set_title (GTK_WINDOW (priv->popup_window), _("Smile!"));
   gtk_window_set_type_hint (GTK_WINDOW (priv->popup_window),
 			    GDK_WINDOW_TYPE_HINT_UTILITY);
   gtk_window_set_skip_taskbar_hint (GTK_WINDOW (priv->popup_window), TRUE);
@@ -662,7 +662,8 @@ static void gm_smiley_chooser_build_view (GmSmileyChooserButton* self)
   gtk_window_set_decorated (GTK_WINDOW (priv->popup_window), FALSE);
 
   /* the frame */
-  priv->frame = gtk_frame_new (_("Smile!"));
+//  priv->frame = gtk_frame_new (_("Smile!"));
+  priv->frame = gtk_frame_new (NULL);
   g_object_ref_sink (G_OBJECT (priv->frame));
 
   /* compute the number of available smileys */
