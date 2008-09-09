@@ -17,6 +17,8 @@ libgmpresence_la_SOURCES = \
 	$(presence_dir)/cluster.h		\
 	$(presence_dir)/cluster-impl.h		\
 	$(presence_dir)/uri-presentity.h	\
+	$(presence_dir)/proxy-presentity.cpp	\
+	$(presence_dir)/proxy-presentity.h	\
 	$(presence_dir)/uri-presentity.cpp	\
 	$(presence_dir)/presence-core.h		\
 	$(presence_dir)/presence-core.cpp
