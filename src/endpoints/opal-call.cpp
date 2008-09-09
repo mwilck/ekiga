@@ -46,6 +46,7 @@
 #include <opal/manager.h>
 #include <opal/rtpconn.h>
 #include <opal/pcss.h>
+#include <sip/sippdu.h>
 
 #include "config.h"
 
@@ -219,6 +220,13 @@ Opal::Call::get_id () const
 
 
 const std::string
+Opal::Call::get_local_party_name () const
+{
+  return local_party_name;
+}
+
+
+const std::string
 Opal::Call::get_remote_party_name () const
 {
   return remote_party_name;
@@ -277,7 +285,8 @@ Opal::Call::parse_info (OpalConnection & connection)
   char special_chars [] = "([;=";
   int i = 0;
   std::string::size_type idx;
-  std::string party_name;
+  std::string l_party_name;
+  std::string r_party_name;
   std::string app;
 
   if (!PIsDescendant(&connection, OpalPCSSConnection)) {
@@ -289,14 +298,17 @@ Opal::Call::parse_info (OpalConnection & connection)
     else
       remote_uri = (const char *) connection.GetRemotePartyCallbackURL ();
 
-    party_name = (const char *) connection.GetRemotePartyName ();
+    l_party_name = (const char *) connection.GetCalledPartyURL ();
+    r_party_name = (const char *) connection.GetRemotePartyName ();
     app = (const char *) connection.GetRemoteProductInfo ().AsString ();
     start_time = connection.GetConnectionStartTime ();
     if (!start_time.IsValid ())
       start_time = PTime ();
 
-    if (!party_name.empty ())
-      remote_party_name = party_name;
+    if (!l_party_name.empty ())
+      local_party_name = (const char *) SIPURL (l_party_name).GetUserName ();
+    if (!r_party_name.empty ())
+      remote_party_name = r_party_name;
     if (!app.empty ())
       remote_application = app;
 

@@ -112,6 +112,11 @@ namespace Ekiga
        */
       virtual const std::string get_id () const = 0;
 
+      /** Return the local party name
+       * @return: the local party name
+       */
+      virtual const std::string get_local_party_name () const = 0;
+
       /** Return the remote party name
        * @return: the remote party name
        */

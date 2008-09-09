@@ -115,6 +115,11 @@ public:
      */
     const std::string get_id () const;
 
+    /** Return the local party name
+     * @return: the local party name
+     */
+    const std::string get_local_party_name () const;
+
     /** Return the remote party name
      * @return: the remote party name
      */
@@ -210,6 +215,7 @@ private:
 
     bool call_setup;
     bool outgoing;
+    std::string local_party_name;
     std::string remote_party_name;
     std::string remote_uri;
     std::string remote_application;
