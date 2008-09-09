@@ -53,13 +53,13 @@
 #include "opal-account.h"
 
 static void
-presence_status_in_main (Ekiga::PresenceCore* core,
+presence_status_in_main (Ekiga::PresenceFetcher* fetcher,
                          std::string uri,
                          std::string presence,
                          std::string status)
 {
-  core->presence_received.emit (uri, presence);
-  core->status_received.emit (uri, status);
+  fetcher->presence_received.emit (uri, presence);
+  fetcher->status_received.emit (uri, status);
 }
 
 static void
@@ -1111,7 +1111,7 @@ Opal::Sip::EndPoint::OnPresenceInfoReceived (const PString & user,
    * TODO
    * Wouldn't it be convenient to emit the signal and have the presence core listen to it ?
    */
-  runtime.run_in_main (sigc::bind (sigc::ptr_fun (presence_status_in_main), &presence_core, _uri, presence, status));
+  runtime.run_in_main (sigc::bind (sigc::ptr_fun (presence_status_in_main), this, _uri, presence, status));
 }
 
 
