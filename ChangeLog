@@ -1,3 +1,15 @@
+2008-09-09  Jan Schampera <jan.schampera@unix.net>
+
+	* configure.ac:
+	Use a C99 capable compiler.
+
+	* lib/gui/Makefile.am, lib/gui/gm-smiley-chooser-button.h,
+	lib/gui/gm-smiley-chooser-button.c:
+	Added a new button type to select a smiley from a set of smileys.
+
+	* lib/engine/gui/gtk-frontend/chat-area.cpp:
+	Use the new button in the chat area.
+
 2008-09-09  Matthias Schneider  <ma30002000@yahoo.de>
 
 	* src/gui/main.cpp:
