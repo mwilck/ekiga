@@ -36,7 +36,7 @@
  */
 
 #include "sip-chat-simple.h"
-
+#include "uri-presentity.h"
 #include "personal-details.h"
 
 SIP::SimpleChat::SimpleChat (Ekiga::ServiceCore& core_,
@@ -45,7 +45,7 @@ SIP::SimpleChat::SimpleChat (Ekiga::ServiceCore& core_,
 			     sigc::slot<bool, std::string> sender_)
   : core(core_), sender(sender_)
 {
-  presentity = new Presentity (core, name, uri);
+  presentity = new Ekiga::URIPresentity (core, name, uri);
 }
 
 SIP::SimpleChat::~SimpleChat ()

@@ -39,7 +39,7 @@
 #define __SIP_CHAT_SIMPLE_H__
 
 #include "chat-simple.h"
-#include "sip-presentity.h"
+#include "services.h"
 
 namespace SIP
 {
@@ -76,7 +76,7 @@ namespace SIP
     Ekiga::ServiceCore& core;
     sigc::slot<bool, std::string> sender;
     std::list<Ekiga::ChatObserver*> observers;
-    Presentity *presentity;
+    Ekiga::Presentity *presentity;
   };
 };
 

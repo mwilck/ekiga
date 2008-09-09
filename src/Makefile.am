@@ -116,8 +116,6 @@ endif
 
 if HAVE_SIP
 ekiga_SOURCES +=		\
-	endpoints/sip-presentity.h		\
-	endpoints/sip-presentity.cpp		\
 	endpoints/sip-chat-simple.h		\
 	endpoints/sip-chat-simple.cpp		\
 	endpoints/sip-dialect.h			\
