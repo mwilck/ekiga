@@ -263,15 +263,6 @@ gboolean gm_main_window_transfer_dialog_run (GtkWidget *main_window,
 					     const char *u);
 
 
-/* DESCRIPTION   :  /
- * BEHAVIOR      : Creates a new incoming call popup and show it 
- * 		   as modal dialog.
- * PRE           : The main window GMObject and the incoming call.
- */
-void gm_main_window_incoming_call_dialog_show (GtkWidget *main_window,
-                                               Ekiga::Call & call);
-
-
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Builds the main window and adds the popup to the image.
  * PRE          :  Accels.

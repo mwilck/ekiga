@@ -83,6 +83,10 @@
 #include <gnome.h>
 #endif
 
+#ifdef HAVE_NOTIFY
+#include <libnotify/notify.h>
+#endif
+
 #if defined(P_FREEBSD) || defined (P_MACOSX)
 #include <libintl.h>
 #endif
@@ -300,6 +304,14 @@ static void gm_main_window_hide_call_panel (GtkWidget *self);
 void gm_main_window_clear_signal_levels (GtkWidget *main_window);
 
 void gm_main_window_selected_presentity_build_menu (GtkWidget *main_window);
+
+void gm_main_window_incoming_call_dialog_show (GtkWidget *main_window,
+                                               Ekiga::Call & call);
+
+#ifdef HAVE_NOTIFY
+void gm_main_window_incoming_call_notify (GtkWidget *main_window, 
+                                          Ekiga::Call & call);
+#endif
 
 
 /* Callbacks */
@@ -606,7 +618,11 @@ static void on_setup_call_cb (Ekiga::CallManager & /*manager*/,
 
   if (!call.is_outgoing ()) {
     audiooutput_core->start_play_event("incoming_call_sound", 6000, 256);
+#ifdef HAVE_NOTIFY
+    gm_main_window_incoming_call_notify (GTK_WIDGET (self), call);
+#else
     gm_main_window_incoming_call_dialog_show (GTK_WIDGET (self), call);
+#endif
   }
   else {
     gm_main_window_update_calling_state (GTK_WIDGET (self), Calling);
@@ -797,19 +813,27 @@ static void on_cleared_incoming_call_cb (std::string /*reason*/,
   audiooutput_core->stop_play_event("incoming_call_sound");
   audiooutput_core->stop_play_event("ring_tone_sound");
 
+#ifdef HAVE_NOTIFY
+  notify_notification_close (NOTIFY_NOTIFICATION (self), NULL);
+#else
   gtk_widget_destroy (GTK_WIDGET (self));
+#endif
 }
 
 
 static void on_missed_incoming_call_cb (gpointer self)
 {
+#ifdef HAVE_NOTIFY
+  notify_notification_close (NOTIFY_NOTIFICATION (self), NULL);
+#else
   gtk_widget_destroy (GTK_WIDGET (self));
+#endif
 }
 
-void 
-gm_main_window_add_device_dialog_show (GtkWidget *main_window,
-                                       const Ekiga::Device & device,
-                                       DeviceType deviceType);
+
+void gm_main_window_add_device_dialog_show (GtkWidget *main_window,
+                                            const Ekiga::Device & device,
+                                            DeviceType deviceType);
 
 static void on_held_call_cb (Ekiga::CallManager & /*manager*/,
                              Ekiga::Call & /*call*/,
@@ -3485,6 +3509,199 @@ gm_main_window_selected_presentity_build_menu (GtkWidget *main_window)
   }
 }
 
+
+void gm_main_window_incoming_call_dialog_show (GtkWidget *main_window,
+                                               Ekiga::Call & call)
+{
+  GmMainWindow *mw = NULL;
+  
+  GdkPixbuf *pixbuf = NULL;
+
+  GtkWidget *label = NULL;
+  GtkWidget *vbox = NULL;
+  GtkWidget *b1 = NULL;
+  GtkWidget *b2 = NULL;
+  GtkWidget *incoming_call_popup = NULL;
+
+  gchar *msg = NULL;
+
+  // FIXME could the call become invalid ?
+  const char *utf8_name = call.get_remote_party_name ().c_str ();
+  const char *utf8_app = call.get_remote_application ().c_str ();
+  const char *utf8_url = call.get_remote_uri ().c_str ();
+  const char *utf8_local = call.get_local_party_name ().c_str ();
+
+  g_return_if_fail (main_window);
+  
+  mw = gm_mw_get_mw (main_window);
+  
+  g_return_if_fail (mw != NULL);
+
+  incoming_call_popup = gtk_dialog_new ();
+  b2 = gtk_dialog_add_button (GTK_DIALOG (incoming_call_popup),
+			      _("Reject"), 0);
+  b1 = gtk_dialog_add_button (GTK_DIALOG (incoming_call_popup),
+			      _("Accept"), 2);
+
+  gtk_dialog_set_default_response (GTK_DIALOG (incoming_call_popup), 2);
+
+  vbox = GTK_DIALOG (incoming_call_popup)->vbox;
+
+  msg = g_strdup_printf ("%s <i>%s</i>", _("Incoming call from"), (const char*) utf8_name);
+  label = gtk_label_new (NULL);
+  gtk_label_set_markup (GTK_LABEL (label), msg);
+  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 10);
+  gtk_misc_set_alignment (GTK_MISC (label), 0.5, 0.0);
+  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
+  g_free (msg);
+
+  pixbuf = gtk_widget_render_icon (GTK_WIDGET (incoming_call_popup),
+				   GM_STOCK_PHONE_PICK_UP_16,
+				   GTK_ICON_SIZE_MENU, NULL);
+  gtk_window_set_icon (GTK_WINDOW (incoming_call_popup), pixbuf);
+  g_object_unref (pixbuf);
+
+  if (utf8_url) {
+    
+    label = gtk_label_new (NULL);
+    msg = g_strdup_printf ("<b>%s</b> <span foreground=\"blue\"><u>%s</u></span>",
+                           _("Remote URI:"), utf8_url);
+    gtk_label_set_markup (GTK_LABEL (label), msg);
+    gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
+    gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 2);
+    gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
+    g_free (msg);
+  }
+
+  if (utf8_app) {
+
+    label = gtk_label_new (NULL);
+    msg = g_strdup_printf ("<b>%s</b> %s",
+			   _("Remote Application:"), utf8_app);
+    gtk_label_set_markup (GTK_LABEL (label), msg);
+    gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
+    gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 2);
+    gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
+    g_free (msg);
+  }
+
+  if (utf8_local) {
+    
+    label = gtk_label_new (NULL);
+    msg =
+      g_strdup_printf ("<b>%s</b> %s",
+		       _("Account ID:"), utf8_local);
+    gtk_label_set_markup (GTK_LABEL (label), msg);
+    gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
+    gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 2);
+    gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
+    g_free (msg);
+  }
+
+  msg = g_strdup_printf (_("Call from %s"), (const char*) utf8_name);
+  gtk_window_set_title (GTK_WINDOW (incoming_call_popup), msg);
+  g_free (msg);
+  gtk_window_set_modal (GTK_WINDOW (incoming_call_popup), TRUE);
+  gtk_window_set_keep_above (GTK_WINDOW (incoming_call_popup), TRUE);
+  gtk_window_set_urgency_hint (GTK_WINDOW (main_window), TRUE);
+  gtk_window_set_transient_for (GTK_WINDOW (incoming_call_popup),
+				GTK_WINDOW (main_window));
+
+  gtk_widget_show_all (incoming_call_popup);
+
+  g_signal_connect (G_OBJECT (incoming_call_popup), "delete_event",
+                    G_CALLBACK (gtk_widget_hide_on_delete), NULL);
+  g_signal_connect (G_OBJECT (incoming_call_popup), "response",
+                    GTK_SIGNAL_FUNC (incoming_call_response_cb), &call);
+
+  call.cleared.connect (sigc::bind (sigc::ptr_fun (on_cleared_incoming_call_cb),
+                                    (gpointer) incoming_call_popup));
+  call.missed.connect (sigc::bind (sigc::ptr_fun (on_missed_incoming_call_cb), 
+                                   (gpointer) incoming_call_popup));
+}
+
+
+#ifdef HAVE_NOTIFY
+static void
+notify_action_cb (NotifyNotification *notification,
+                  gchar *action,
+                  gpointer data)
+{
+  Ekiga::Call *call = (Ekiga::Call *) data;
+
+  notify_notification_close (notification, NULL);
+
+  if (call) {
+
+    if (!strcmp (action, "accept"))
+      call->answer ();
+    else
+      call->hangup ();
+  }
+}
+
+
+void gm_main_window_incoming_call_notify (GtkWidget *main_window,
+                                          Ekiga::Call & call)
+{
+  NotifyNotification *notify = NULL;
+  
+  GtkStatusIcon *statusicon = NULL;
+  GdkPixbuf *pixbuf = NULL;
+
+  gchar *uri = NULL;
+  gchar *app = NULL;
+  gchar *account = NULL;
+  gchar *body = NULL;
+  gchar *title = NULL;
+
+  statusicon = GTK_STATUS_ICON (GnomeMeeting::Process ()->GetStatusicon ());
+
+  // FIXME could the call become invalid ?
+  const char *utf8_name = call.get_remote_party_name ().c_str ();
+  const char *utf8_app = call.get_remote_application ().c_str ();
+  const char *utf8_url = call.get_remote_uri ().c_str ();
+  const char *utf8_local = call.get_local_party_name ().c_str ();
+
+  title = g_strdup_printf ("%s %s", _("Incoming call from"), (const char*) utf8_name);
+
+  if (utf8_url)
+    uri = g_strdup_printf ("<b>%s</b> %s", _("Remote URI:"), utf8_url);
+  if (utf8_app)
+    app = g_strdup_printf ("<b>%s</b> %s", _("Remote Application:"), utf8_app);
+  if (utf8_local)
+    account = g_strdup_printf ("<b>%s</b> %s", _("Account ID:"), utf8_local);
+
+  body = g_strdup_printf ("%s\n%s\n%s", uri, app, account);
+  
+  notify = notify_notification_new (title, body, NULL, NULL);
+  pixbuf = gtk_widget_render_icon (GTK_WIDGET (main_window),
+				   GM_STOCK_PHONE_PICK_UP_24,
+				   GTK_ICON_SIZE_SMALL_TOOLBAR, NULL);
+  notify_notification_add_action (notify, "accept", _("Accept"), notify_action_cb, &call, NULL);
+  notify_notification_add_action (notify, "reject", _("Reject"), notify_action_cb, &call, NULL);
+  notify_notification_set_timeout (notify, NOTIFY_EXPIRES_NEVER);
+  notify_notification_set_icon_from_pixbuf (notify, pixbuf);
+  notify_notification_attach_to_status_icon (notify, statusicon);
+  if (!notify_notification_show (notify, NULL))
+    gm_main_window_incoming_call_dialog_show (main_window, call);
+  else {
+    call.cleared.connect (sigc::bind (sigc::ptr_fun (on_cleared_incoming_call_cb),
+                                      (gpointer) notify));
+    call.missed.connect (sigc::bind (sigc::ptr_fun (on_missed_incoming_call_cb), 
+                                     (gpointer) notify));
+  }
+
+  g_object_unref (pixbuf);
+
+  g_free (uri);
+  g_free (app);
+  g_free (account);
+  g_free (title);
+  g_free (body);
+}
+#endif
+
 void 
 gm_main_window_set_panel_section (GtkWidget *main_window,
                                   int section)
@@ -3697,118 +3914,6 @@ gm_main_window_transfer_dialog_run (GtkWidget *main_window,
   return (answer == GTK_RESPONSE_ACCEPT);
 }
 
-
-void 
-gm_main_window_incoming_call_dialog_show (GtkWidget *main_window,
-                                          Ekiga::Call & call)
-{
-  GmMainWindow *mw = NULL;
-  
-  GdkPixbuf *pixbuf = NULL;
-
-  GtkWidget *label = NULL;
-  GtkWidget *vbox = NULL;
-  GtkWidget *b1 = NULL;
-  GtkWidget *b2 = NULL;
-  GtkWidget *incoming_call_popup = NULL;
-
-  gchar *msg = NULL;
-  // FIXME the call could be come invalid
-  const char *utf8_name = call.get_remote_party_name ().c_str ();
-  const char *utf8_app = call.get_remote_application ().c_str ();
-  const char *utf8_url = call.get_remote_uri ().c_str ();
-  const char *utf8_local = call.get_local_party_name ().c_str ();
-
-  g_return_if_fail (main_window);
-  
-  mw = gm_mw_get_mw (main_window);
-  
-  g_return_if_fail (mw != NULL);
-
-  incoming_call_popup = gtk_dialog_new ();
-  b2 = gtk_dialog_add_button (GTK_DIALOG (incoming_call_popup),
-			      _("Reject"), 0);
-  b1 = gtk_dialog_add_button (GTK_DIALOG (incoming_call_popup),
-			      _("Accept"), 2);
-
-  gtk_dialog_set_default_response (GTK_DIALOG (incoming_call_popup), 2);
-
-  vbox = GTK_DIALOG (incoming_call_popup)->vbox;
-
-  msg = g_strdup_printf ("%s <i>%s</i>",
-			 _("Incoming call from"), (const char*) utf8_name);
-  label = gtk_label_new (NULL);
-  gtk_label_set_markup (GTK_LABEL (label), msg);
-  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 10);
-  gtk_misc_set_alignment (GTK_MISC (label), 0.5, 0.0);
-  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-  g_free (msg);
-
-  pixbuf = gtk_widget_render_icon (GTK_WIDGET (incoming_call_popup),
-				   GM_STOCK_PHONE_PICK_UP_16,
-				   GTK_ICON_SIZE_MENU, NULL);
-  gtk_window_set_icon (GTK_WINDOW (incoming_call_popup), pixbuf);
-  g_object_unref (pixbuf);
-
-  if (utf8_url) {
-    
-    label = gtk_label_new (NULL);
-    msg =
-      g_strdup_printf ("<b>%s</b> <span foreground=\"blue\"><u>%s</u></span>",
-		       _("Remote URI:"), utf8_url);
-    gtk_label_set_markup (GTK_LABEL (label), msg);
-    gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-    gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 2);
-    gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
-    g_free (msg);
-  }
-
-  if (utf8_app) {
-
-    label = gtk_label_new (NULL);
-    msg = g_strdup_printf ("<b>%s</b> %s",
-			   _("Remote Application:"), utf8_app);
-    gtk_label_set_markup (GTK_LABEL (label), msg);
-    gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-    gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 2);
-    gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
-    g_free (msg);
-  }
-
-  if (utf8_local) {
-    
-    label = gtk_label_new (NULL);
-    msg =
-      g_strdup_printf ("<b>%s</b> %s",
-		       _("Account ID:"), utf8_local);
-    gtk_label_set_markup (GTK_LABEL (label), msg);
-    gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-    gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 2);
-    gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.0);
-    g_free (msg);
-  }
-
-  msg = g_strdup_printf (_("Call from %s"), (const char*) utf8_name);
-  gtk_window_set_title (GTK_WINDOW (incoming_call_popup), msg);
-  g_free (msg);
-  gtk_window_set_modal (GTK_WINDOW (incoming_call_popup), TRUE);
-  gtk_window_set_keep_above (GTK_WINDOW (incoming_call_popup), TRUE);
-  gtk_window_set_urgency_hint (GTK_WINDOW (main_window), TRUE);
-  gtk_window_set_transient_for (GTK_WINDOW (incoming_call_popup),
-				GTK_WINDOW (main_window));
-
-  gtk_widget_show_all (incoming_call_popup);
-
-  g_signal_connect (G_OBJECT (incoming_call_popup), "delete_event",
-                    G_CALLBACK (gtk_widget_hide_on_delete), NULL);
-  g_signal_connect (G_OBJECT (incoming_call_popup), "response",
-                    GTK_SIGNAL_FUNC (incoming_call_response_cb), &call);
-
-  call.cleared.connect (sigc::bind (sigc::ptr_fun (on_cleared_incoming_call_cb),
-                                    (gpointer) incoming_call_popup));
-  call.missed.connect (sigc::bind (sigc::ptr_fun (on_missed_incoming_call_cb), 
-                                   (gpointer) incoming_call_popup));
-}
 
 void 
 gm_main_window_add_device_dialog_show (GtkWidget *main_window,
@@ -4563,6 +4668,10 @@ main (int argc,
   g_option_context_free (context);
 #endif
 
+#ifdef HAVE_NOTIFY
+  notify_init (PACKAGE_NAME);
+#endif
+
 #ifndef WIN32
   char* text_label =  g_strdup_printf ("%d", debug_level);
   setenv ("PTLIB_TRACE_CODECS", text_label, TRUE);
@@ -4714,6 +4823,10 @@ main (int argc,
 
   /* deinitialize platform-specific code */
   gm_platform_shutdown ();
+
+#ifdef HAVE_NOTIFY
+  notify_uninit ();
+#endif
 
   return 0;
 }

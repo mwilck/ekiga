@@ -271,6 +271,26 @@ AM_CONDITIONAL(HAVE_EDS, test "x$found_eds" = "xyes")
 
 
 dnl ###############################
+dnl   NOTIFY support
+dnl ###############################
+NOTIFY="disabled"
+
+if test "x${gm_platform}" != "xmingw" ; then
+  AC_ARG_ENABLE(notify, [  --disable-notify			Disable libnotify support],,enable_notify=yes)
+  
+  if test "x$enable_notify" = "xyes"; then
+    PKG_CHECK_MODULES([NOTIFY], [libnotify], [found_notify=yes])
+    AC_SUBST(NOTIFY_CFLAGS)
+    AC_SUBST(NOTIFY_LIBS)
+    NOTIFY="enabled"
+    AC_DEFINE(HAVE_NOTIFY,1,[NOTIFY support])
+  fi
+fi
+
+AM_CONDITIONAL(HAVE_NOTIFY, test "x$found_notify" = "xyes")
+
+
+dnl ###############################
 dnl   LDAP support
 dnl ###############################
 LDAP="disabled"
@@ -657,6 +677,7 @@ if test "x${gm_platform}" != "xmingw" ; then
 echo "                   GNOME support  :  $GNOME"
 echo "                   GConf support  :  $GCONF"
 echo "   Evolution-Data-Server support  :  $EDS"
+echo "                  NOTIFY support  :  $NOTIFY"
 fi
 echo "                    LDAP support  :  $LDAP"
 echo ""
