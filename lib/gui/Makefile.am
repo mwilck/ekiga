@@ -42,7 +42,9 @@ libgmwidgets_la_SOURCES =	\
 	gm-text-extlink.c \
 	gm-text-extlink.h \
 	gm-text-buffer-enhancer.c \
-	gm-text-buffer-enhancer.h
+	gm-text-buffer-enhancer.h \
+	gm-smiley-chooser-button.c \
+	gm-smiley-chooser-button.h
 
 
 if !WIN32
@@ -76,7 +78,7 @@ INCLUDES +=						\
 endif
 
 AM_CXXFLAGS = $(GTK_CFLAGS) $(GLIB_CFLAGS) $(OPAL_CFLAGS) $(PTLIB_CFLAGS) $(XV_CFLAGS) $(DX_CFLAGS) $(SIGC_CFLAGS) -I ../../lib/engine/protocol/skel/ -I ../../lib/engine/framework/
-AM_CFLAGS = $(GTK_CFLAGS) $(GLIB_CFLAGS) $(GNOME_CFLAGS) 
+AM_CFLAGS = $(GTK_CFLAGS) $(GLIB_CFLAGS) $(GNOME_CFLAGS)
 AM_LIBS = $(GTK_LIBS) $(GLIB_LIBS) $(OPAL_LIBS) $(PTLIB_LIBS) $(XV_LIBS) $(DX_LIBS) $(GNOME_LIBS) $(SIGC_LIBS)
 
 libgmwidgets_la_LDFLAGS = -export-dynamic

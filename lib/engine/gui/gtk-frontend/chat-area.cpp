@@ -43,6 +43,7 @@
 #include "gm-text-anchored-tag.h"
 #include "gm-text-smiley.h"
 #include "gm-text-extlink.h"
+#include "gm-smiley-chooser-button.h"
 
 #include "gm-smileys.h"
 #include "toolbox/toolbox.h"
@@ -142,11 +143,9 @@ static gboolean on_extlink_tag_event (GtkTextTag* tag,
 				      GtkTextIter* iter,
 				      gpointer data);
 
-static void on_smiley_activated (GtkMenuItem *item,
-				 gpointer data);
-
-static void on_smiley_clicked (GtkButton* button,
-			       gpointer data);
+static void on_smiley_selected (GmSmileyChooserButton*,
+				gpointer,
+				gpointer);
 
 static void on_font_changed (GtkButton* button,
                              gpointer data);
@@ -441,8 +440,9 @@ on_extlink_tag_event (GtkTextTag* tag,
 }
 
 static void
-on_smiley_activated (GtkMenuItem *item,
-		     gpointer data)
+on_smiley_selected (G_GNUC_UNUSED GmSmileyChooserButton* smiley_chooser_button,
+		    gpointer characters,
+		    gpointer data)
 {
   const gchar* text = NULL;
   ChatArea* self = NULL;
@@ -451,25 +451,12 @@ on_smiley_activated (GtkMenuItem *item,
 
   self = (ChatArea*)data;
 
-  /* FIXME: that will break when gtk+ will change... */
-  text = gtk_label_get_text (GTK_LABEL(GTK_BIN(GTK_MENU_ITEM (item))->child));
+  text = g_strdup ((gchar*) characters);
 
   buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (self->priv->message));
   gtk_text_buffer_get_iter_at_mark (buffer, &iter, gtk_text_buffer_get_insert (buffer));
   gtk_text_buffer_insert (buffer, &iter, text, -1);
   gtk_widget_grab_focus (self->priv->message);
-}
-
-static void
-on_smiley_clicked (G_GNUC_UNUSED GtkButton* button,
-		   gpointer data)
-{
-  ChatArea* self = NULL;
-
-  self = (ChatArea*)data;
-
-  gtk_menu_popup (GTK_MENU (self->priv->smiley_menu),
-		  NULL, NULL, NULL, NULL, 0, 0);
 }
 
 static void
@@ -892,34 +879,8 @@ chat_area_init (GTypeInstance* instance,
   GtkWidget* vbox = NULL;
   GtkWidget* bbox = NULL;
   GtkWidget* button = NULL;
-  const gchar** smileys = gm_get_smileys ();
-  gint smiley;
-  GdkPixbuf* pixbuf = NULL;
-  GtkWidget* image = NULL;
-  GtkWidget* smiley_item = NULL;
-  GtkWidget* smiley_button = NULL;
-
-  /* we need to build a nice menu for smileys */
-  self->priv->smiley_menu = gtk_menu_new ();
-  g_object_ref (self->priv->smiley_menu);
-  for (smiley = 0;
-       smileys[smiley] != NULL;
-       smiley = smiley + 2) {
-
-    smiley_item = gtk_image_menu_item_new_with_label (smileys[smiley]);
-    pixbuf = gtk_icon_theme_load_icon (gtk_icon_theme_get_default (),
-				       smileys[smiley + 1], 16,
-				       (GtkIconLookupFlags)0, NULL);
-    image = gtk_image_new_from_pixbuf (pixbuf);
-    gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (smiley_item),
-				   image);
-    gtk_widget_show_all (smiley_item);
-    gtk_menu_shell_append (GTK_MENU_SHELL (self->priv->smiley_menu),
-			   smiley_item);
-
-    g_signal_connect (G_OBJECT (smiley_item), "activate",
-		      G_CALLBACK (on_smiley_activated), self);
-  }
+  GtkWidget* smiley_button;
+  GtkWidget* smiley_chooser_button = NULL;
 
   frame = gtk_frame_new (NULL);
   vbox = gtk_vbox_new (FALSE, 2);
@@ -938,16 +899,17 @@ chat_area_init (GTypeInstance* instance,
 		      FALSE, FALSE, 2);
   gtk_widget_show (bbox);
 
-  button = gtk_button_new_with_mnemonic (_("_Smile..."));
-  gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
   smiley_button = gtk_image_new_from_icon_name ("face-smile", GTK_ICON_SIZE_BUTTON);
-  gtk_button_set_image (GTK_BUTTON(button), smiley_button);
-  gtk_button_set_focus_on_click (GTK_BUTTON (button), FALSE);
-  g_signal_connect (G_OBJECT (button), "clicked",
-		    G_CALLBACK (on_smiley_clicked), self);
-  gtk_box_pack_start (GTK_BOX (bbox), button,
+
+  smiley_chooser_button = gm_smiley_chooser_button_new ();
+  gtk_button_set_label (GTK_BUTTON(smiley_chooser_button), _("Smile..."));
+  gtk_button_set_image (GTK_BUTTON(smiley_chooser_button), smiley_button);
+  gtk_button_set_relief (GTK_BUTTON(smiley_chooser_button), GTK_RELIEF_NONE);
+  gtk_button_set_focus_on_click (GTK_BUTTON (smiley_chooser_button), FALSE);
+  g_signal_connect (G_OBJECT (smiley_chooser_button), "smiley_selected",
+		    G_CALLBACK (on_smiley_selected), self);
+  gtk_box_pack_start (GTK_BOX (bbox), smiley_chooser_button,
 		      FALSE, TRUE, 2);
-  gtk_widget_show (button);
 
   /* the BOLD button */
   button = gtk_button_new_from_stock (GTK_STOCK_BOLD);
