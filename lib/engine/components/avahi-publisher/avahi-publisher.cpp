@@ -71,7 +71,7 @@ Avahi::PresencePublisher::PresencePublisher (Ekiga::ServiceCore& core_,
   core(core_), details(details_), call_core(call_core_),
   client(NULL), group(NULL)
 {
-  name = avahi_strdup (PACKAGE_NAME " " PACKAGE_VERSION);
+  name = avahi_strdup (details.get_display_name ().c_str ());
   glib_poll = avahi_glib_poll_new (NULL, G_PRIORITY_DEFAULT);
   create_client ();
 }
@@ -115,11 +115,12 @@ Avahi::PresencePublisher::publish (G_GNUC_UNUSED const Ekiga::PersonalDetails& d
 			     iter->protocol.c_str ());
 
       /* FIXME: no collision checking here */
-      ret =avahi_entry_group_update_service_txt_strlst (group, AVAHI_IF_UNSPEC,
-							AVAHI_PROTO_UNSPEC,
-							(AvahiPublishFlags)0,
-							name, typ, NULL,
-							txt_record);
+      ret =
+	avahi_entry_group_update_service_txt_strlst (group, AVAHI_IF_UNSPEC,
+						     AVAHI_PROTO_UNSPEC,
+						     (AvahiPublishFlags)0,
+						     name, typ, NULL,
+						     txt_record);
     }
   }
 }
@@ -281,8 +282,8 @@ Avahi::PresencePublisher::prepare_txt_record ()
 					 "status=%s",
 					 details.get_long_status ().c_str ());
   result = avahi_string_list_add_printf (result,
-					 "display_name=%s",
-					 details.get_display_name ().c_str ());
+					 "software=%s %s",
+					 PACKAGE_NAME, PACKAGE_VERSION);
 
   return result;
 }

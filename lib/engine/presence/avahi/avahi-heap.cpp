@@ -112,14 +112,14 @@ Avahi::Heap::Heap (Ekiga::PresenceCore &_core): core(_core)
 
 Avahi::Heap::~Heap ()
 {
- if (browser != NULL)
-   avahi_service_browser_free (browser);
+  if (browser != NULL)
+    avahi_service_browser_free (browser);
 
- if (client != NULL)
-   avahi_client_free (client);
+  if (client != NULL)
+    avahi_client_free (client);
 
- if (poll != NULL)
-   avahi_glib_poll_free (poll);
+  if (poll != NULL)
+    avahi_glib_poll_free (poll);
 }
 
 
@@ -154,11 +154,11 @@ Avahi::Heap::ClientCallback (AvahiClient *_client,
     /* bad, bad: free the client and try to get another one... but
      * won't I tax the box?
      */
-   if (client != NULL)
-    avahi_client_free (client);
-   client = NULL;
-   ; // FIXME: better error reporting
-   break;
+    if (client != NULL)
+      avahi_client_free (client);
+    client = NULL;
+    ; // FIXME: better error reporting
+    break;
   case AVAHI_CLIENT_S_RUNNING:
     /* this may not be the final valid browser pointer...
      * we'll take what our callback gets
@@ -201,40 +201,40 @@ Avahi::Heap::BrowserCallback (AvahiServiceBrowser *_browser,
 
   switch (event) {
 
-    case AVAHI_BROWSER_NEW:
-      /* this may not be the final valid resolver pointer...
-       * we'll take what our callback gets
-       */
-      resolver = avahi_service_resolver_new (client, interface, protocol,
-					     name, type, domain,
-					     AVAHI_PROTO_UNSPEC,
-					     (AvahiLookupFlags)0,
-					     avahi_resolver_callback, this);
-      /* if (resolver == NULL) FIXME: better error reporting */
-      break;
+  case AVAHI_BROWSER_NEW:
+    /* this may not be the final valid resolver pointer...
+     * we'll take what our callback gets
+     */
+    resolver = avahi_service_resolver_new (client, interface, protocol,
+					   name, type, domain,
+					   AVAHI_PROTO_UNSPEC,
+					   (AvahiLookupFlags)0,
+					   avahi_resolver_callback, this);
+    /* if (resolver == NULL) FIXME: better error reporting */
+    break;
 
-    case AVAHI_BROWSER_REMOVE:
-      for (iterator iter = begin () ;
-	   !found && iter != end ();
-	   iter++)
-	if ((*iter).get_name () == name) {
+  case AVAHI_BROWSER_REMOVE:
+    for (iterator iter = begin () ;
+	 !found && iter != end ();
+	 iter++)
+      if ((*iter).get_name () == name) {
 
-	  found = true;
-	  (*iter).removed.emit ();
-	}
-      break;
-    case AVAHI_BROWSER_CACHE_EXHAUSTED:
-      // FIXME: do I care?
-      break;
-    case AVAHI_BROWSER_ALL_FOR_NOW:
-      // FIXME: do I care?
-      break;
-    case AVAHI_BROWSER_FAILURE:
-      if (browser != NULL)
-	avahi_service_browser_free (browser);
-      browser = NULL;
-      ; // FIXME: better error reporting
-      break;
+	found = true;
+	(*iter).removed.emit ();
+      }
+    break;
+  case AVAHI_BROWSER_CACHE_EXHAUSTED:
+    // FIXME: do I care?
+    break;
+  case AVAHI_BROWSER_ALL_FOR_NOW:
+    // FIXME: do I care?
+    break;
+  case AVAHI_BROWSER_FAILURE:
+    if (browser != NULL)
+      avahi_service_browser_free (browser);
+    browser = NULL;
+    ; // FIXME: better error reporting
+    break;
   default:
     /* shouldn't happen */
     break;
@@ -242,11 +242,11 @@ Avahi::Heap::BrowserCallback (AvahiServiceBrowser *_browser,
 }
 
 void
-Avahi::Heap::ResolverCallback (AvahiServiceResolver *resolver,
+Avahi::Heap::ResolverCallback (AvahiServiceResolver */*resolver*/,
 			       AvahiIfIndex /*interface*/,
 			       AvahiProtocol /*protocol*/,
 			       AvahiResolverEvent event,
-			       const char * /*name*/,
+			       const char * name_,
 			       const char * typ,
 			       const char * /*domain*/,
 			       const char* host_name,
@@ -266,72 +266,68 @@ Avahi::Heap::ResolverCallback (AvahiServiceResolver *resolver,
 
   switch (event) {
 
-    case AVAHI_RESOLVER_FOUND:
-      for (txt_tmp = txt;  txt_tmp != NULL; txt_tmp = txt_tmp->next) {
+  case AVAHI_RESOLVER_FOUND:
+    name = name_;
+    for (txt_tmp = txt;  txt_tmp != NULL; txt_tmp = txt_tmp->next) {
 
-	char *ckey = NULL;
-	char *cvalue = NULL;
-	size_t size;
-	if (avahi_string_list_get_pair (txt_tmp, &ckey, &cvalue, &size) >= 0) {
+      char *ckey = NULL;
+      char *cvalue = NULL;
+      size_t size;
+      if (avahi_string_list_get_pair (txt_tmp, &ckey, &cvalue, &size) >= 0) {
 
-	  if (ckey != NULL && cvalue != NULL) {
+	if (ckey != NULL && cvalue != NULL) {
 
-	    std::string key (ckey);
-	    std::string value (cvalue);
-	    if (key == "display_name")
-	      name = value;
-	    else if (key == "presence") 
-              presence = value;
-            else if (key == "status") 
-              status = value;
-            else if (key == "software")
-	      software = value;
-	  }
-	  if (ckey != NULL) free (ckey);
-	  if (cvalue != NULL) free (cvalue);
+	  std::string key (ckey);
+	  std::string value (cvalue);
+	  if (key == "presence")
+	    presence = value;
+	  else if (key == "status")
+	    status = value;
+	  else if (key == "software")
+	    software = value;
 	}
+	if (ckey != NULL) free (ckey);
+	if (cvalue != NULL) free (cvalue);
       }
+    }
 
-      for (iterator iter = begin ();
-	   iter != end ();
-	   iter++) {
+    for (iterator iter = begin ();
+	 iter != end ();
+	 iter++) {
 
-        // FIXME never called
-	if ((*iter).get_name () == name) {
+      // FIXME never called
+      if ((*iter).get_name () == name) {
 
-	  /* known contact has been updated */
-          (*iter).set_status (status);
-	  (*iter).set_presence (presence);
-	  (*iter).updated.emit ();
-          already_known = true;
-	}
+	/* known contact has been updated */
+	(*iter).set_status (status);
+	(*iter).set_presence (presence);
+	(*iter).updated.emit ();
+	already_known = true;
       }
-      if (already_known == false) {
+    }
+    if (already_known == false) {
 
-	/* ok, this is a new contact */
-	gchar** broken = NULL;
-	broken = g_strsplit_set (typ, "._", 0);
-	if (broken != NULL && broken[0] != NULL && broken[1] != NULL) {
+      /* ok, this is a new contact */
+      gchar** broken = NULL;
+      broken = g_strsplit_set (typ, "._", 0);
+      if (broken != NULL && broken[0] != NULL && broken[1] != NULL) {
 
-	  url = g_strdup_printf ("%s:neighbour@%s:%d", broken[1], host_name, port);
-	  presentity = new Presentity (core, name, url);
-	  presentity->set_status (status);
-	  presentity->set_presence (presence);
-	  add_presentity (*presentity);
-	  g_free (url);
-	}
-	g_strfreev (broken);
+	url = g_strdup_printf ("%s:neighbour@%s:%d", broken[1], host_name, port);
+	presentity = new Presentity (core, name, url);
+	presentity->set_status (status);
+	presentity->set_presence (presence);
+	add_presentity (*presentity);
+	g_free (url);
       }
-      break;
-    case AVAHI_RESOLVER_FAILURE:
+      g_strfreev (broken);
+    }
+    break;
+  case AVAHI_RESOLVER_FAILURE:
 
-      ; /* FIXME: better error reporting */
-      break;
+    /* FIXME: better error reporting */
+    break;
   default:
     /* shouldn't happen */
     break;
   }
-
-  if (resolver != NULL)
-    avahi_service_resolver_free (resolver);
 }
