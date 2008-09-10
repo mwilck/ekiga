@@ -121,9 +121,6 @@ Avahi::PresencePublisher::publish (G_GNUC_UNUSED const Ekiga::PersonalDetails& d
 							name, typ, NULL,
 							txt_record);
     }
-
-    avahi_string_list_free (txt_record);
-    ret = avahi_entry_group_commit (group);
   }
 }
 
