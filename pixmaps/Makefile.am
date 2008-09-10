@@ -8,7 +8,9 @@ nobase_dist_icon_DATA = \
 	22x22/apps/@PACKAGE_NAME@.png \
 	32x32/apps/@PACKAGE_NAME@.png \
 	48x48/apps/@PACKAGE_NAME@.png \
-	72x72/apps/@PACKAGE_NAME@.png
+	64x64/apps/@PACKAGE_NAME@.png \
+	72x72/apps/@PACKAGE_NAME@.png \
+	128x128/apps/@PACKAGE_NAME@.png
 
 
 IMAGES_FILES= \
