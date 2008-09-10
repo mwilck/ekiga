@@ -220,16 +220,6 @@ static void refresh_devices_list_cb (GtkWidget *widget,
 
 
 /* DESCRIPTION  :  This callback is called when the user clicks
- *                 on the Update button of the Personal data Settings.
- * BEHAVIOR     :  Updates the values and register to the gatekeeper to
- * 		   update the new values.
- * PRE          :  /
- */
-static void personal_data_update_cb (GtkWidget *widget,
-				     gpointer data);
-
-
-/* DESCRIPTION  :  This callback is called when the user clicks
  *                 on a sound event in the list.
  * BEHAVIOR     :  It udpates the GtkFileChooser's filename to the config
  *                 value for the key corresponding to the currently
@@ -388,9 +378,6 @@ gm_pw_init_general_page (GtkWidget *prefs_window,
                            _("Enter your full name"), 0, false);
   gtk_widget_set_size_request (GTK_WIDGET (entry), 250, -1);
   gtk_entry_set_max_length (GTK_ENTRY (entry), 65);
-
-  /* Add the update button */
-  gm_pw_add_update_button (prefs_window, container, GTK_STOCK_APPLY, _("_Apply"), GTK_SIGNAL_FUNC (personal_data_update_cb), _("Click here to update the users directory you are registered to with the new First Name, Last Name, E-Mail, Comment and Location"), 0, prefs_window);
 }
 
 
@@ -1033,14 +1020,7 @@ static void
 personal_data_update_cb (G_GNUC_UNUSED GtkWidget *widget,
 			 G_GNUC_UNUSED gpointer data)
 {
-  // TODO
-  GtkWidget *dialog = gtk_message_dialog_new (GTK_WINDOW (data),
-                                              GTK_DIALOG_DESTROY_WITH_PARENT,
-                                              GTK_MESSAGE_ERROR,
-                                              GTK_BUTTONS_CLOSE,
-                                              "Please restart Ekiga. This button does not work yet in the SVN version. Sorry for the inconvenience, this will be fixed shortly.");
-  gtk_dialog_run (GTK_DIALOG (dialog));
-  gtk_widget_destroy (dialog);
+  gm_conf_set_string (PERSONAL_DATA_KEY "full_name", "online");
 }
 
 
