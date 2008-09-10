@@ -605,6 +605,9 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
   GtkWidget *window = NULL;
 
   GtkWidget *menu_bar = NULL;
+  GtkWidget *menu_item = NULL;
+  GtkWidget *menu = NULL;
+  GtkWidget *item = NULL;
   GtkWidget *event_box = NULL;
   GtkWidget *scroll_window = NULL;
 
@@ -649,12 +652,18 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
   gtk_window_add_accel_group (GTK_WINDOW (window), aw->accel);
   g_object_unref (aw->accel);
 
-  aw->menu_item_core = 
-    gtk_menu_item_new_with_mnemonic (_("Account"));
-  gtk_menu_shell_append (GTK_MENU_SHELL (menu_bar),
-                         aw->menu_item_core);
+  aw->menu_item_core = gtk_menu_item_new_with_mnemonic (_("_Accounts"));
+  gtk_menu_shell_append (GTK_MENU_SHELL (menu_bar), aw->menu_item_core);
   g_object_ref (aw->menu_item_core);
 
+  menu_item = gtk_menu_item_new_with_mnemonic (_("_Help"));
+  gtk_menu_shell_append (GTK_MENU_SHELL (menu_bar), menu_item);
+
+  menu = gtk_menu_new ();
+  gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu_item), menu);
+  item = gtk_image_menu_item_new_from_stock (GTK_STOCK_HELP, NULL);
+  gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+  g_signal_connect (G_OBJECT (item), "activate", G_CALLBACK (help_cb), NULL);
 
   /* The accounts list store */
   list_store = gtk_list_store_new (COLUMN_ACCOUNT_NUMBER,
@@ -666,8 +675,7 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
 				   G_TYPE_STRING,  /* Error Message */  
 				   G_TYPE_INT);    /* State */
 
-  aw->accounts_list = 
-    gtk_tree_view_new_with_model (GTK_TREE_MODEL (list_store));
+  aw->accounts_list = gtk_tree_view_new_with_model (GTK_TREE_MODEL (list_store));
   g_object_unref (list_store);
   gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (aw->accounts_list), TRUE);
   gtk_tree_view_set_reorderable (GTK_TREE_VIEW (aw->accounts_list), TRUE);
@@ -711,7 +719,6 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
   g_signal_connect (G_OBJECT (aw->accounts_list), "event_after",
 		    G_CALLBACK (account_clicked_cb), window);
   
-
   /* The scrolled window with the accounts list store */
   scroll_window = gtk_scrolled_window_new (FALSE, FALSE);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scroll_window), 
@@ -720,7 +727,7 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
 
   event_box = gtk_event_box_new ();
   hbox = gtk_hbox_new (FALSE, 4);
-  gtk_container_set_border_width (GTK_CONTAINER (hbox), 4);
+  gtk_container_set_border_width (GTK_CONTAINER (hbox), 12);
   gtk_container_add (GTK_CONTAINER (event_box), hbox);
 
   frame = gtk_frame_new (NULL);
