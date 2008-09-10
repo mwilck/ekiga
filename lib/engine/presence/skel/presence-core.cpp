@@ -173,11 +173,14 @@ Ekiga::PresenceCore::fetch_presence (const std::string uri)
 {
   uri_infos[uri].count++;
 
-  for (std::set<PresenceFetcher *>::iterator iter
-	 = presence_fetchers.begin ();
-       iter != presence_fetchers.end ();
-       iter++)
-    (*iter)->fetch (uri);
+  if (uri_infos[uri].count == 1) {
+
+    for (std::set<PresenceFetcher *>::iterator iter
+	   = presence_fetchers.begin ();
+	 iter != presence_fetchers.end ();
+	 iter++)
+      (*iter)->fetch (uri);
+  }
 
   presence_received.emit (uri, uri_infos[uri].presence);
   status_received.emit (uri, uri_infos[uri].status);
