@@ -617,7 +617,7 @@ static void on_setup_call_cb (Ekiga::CallManager & /*manager*/,
   Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (mw->core.get ("audiooutput-core"));
 
   if (!call.is_outgoing ()) {
-    audiooutput_core->start_play_event("incoming_call_sound", 3000, 256);
+    audiooutput_core->start_play_event("incoming_call_sound", 4000, 256);
 #ifdef HAVE_NOTIFY
     gm_main_window_incoming_call_notify (GTK_WIDGET (self), call);
 #else
