@@ -1016,14 +1016,6 @@ refresh_devices_list_cb (G_GNUC_UNUSED GtkWidget *widget,
 }
 
 
-static void 
-personal_data_update_cb (G_GNUC_UNUSED GtkWidget *widget,
-			 G_GNUC_UNUSED gpointer data)
-{
-  gm_conf_set_string (PERSONAL_DATA_KEY "full_name", "online");
-}
-
-
 /*
 static void
 image_filename_browse_cb (GtkWidget *b,
