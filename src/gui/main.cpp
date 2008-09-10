@@ -3695,6 +3695,7 @@ void gm_main_window_incoming_call_notify (GtkWidget *main_window,
   notify_notification_add_action (notify, "accept", _("Accept"), notify_action_cb, &call, NULL);
   notify_notification_add_action (notify, "reject", _("Reject"), notify_action_cb, &call, NULL);
   notify_notification_set_timeout (notify, NOTIFY_EXPIRES_NEVER);
+  notify_notification_set_urgency (notify, NOTIFY_URGENCY_CRITICAL);
   notify_notification_attach_to_status_icon (notify, statusicon);
   if (!notify_notification_show (notify, NULL))
     gm_main_window_incoming_call_dialog_show (main_window, call);
