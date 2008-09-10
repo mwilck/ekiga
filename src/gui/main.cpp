@@ -3641,13 +3641,30 @@ notify_action_cb (NotifyNotification *notification,
 }
 
 
+static void
+closed_cb (NotifyNotification* /*notify*/, 
+           gpointer main_window)
+{
+  GmMainWindow *mw = NULL;
+
+  g_return_if_fail (main_window != NULL);
+
+  mw = gm_mw_get_mw (GTK_WIDGET (main_window));
+
+  g_return_if_fail (mw != NULL);
+
+  Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (mw->core.get ("audiooutput-core"));
+  if (audiooutput_core) 
+    audiooutput_core->stop_play_event ("incoming_call_sound");
+}
+
+
 void gm_main_window_incoming_call_notify (GtkWidget *main_window,
                                           Ekiga::Call & call)
 {
   NotifyNotification *notify = NULL;
   
   GtkStatusIcon *statusicon = NULL;
-  GdkPixbuf *pixbuf = NULL;
 
   gchar *uri = NULL;
   gchar *app = NULL;
@@ -3674,14 +3691,10 @@ void gm_main_window_incoming_call_notify (GtkWidget *main_window,
 
   body = g_strdup_printf ("%s\n%s\n%s", uri, app, account);
   
-  notify = notify_notification_new (title, body, NULL, NULL);
-  pixbuf = gtk_widget_render_icon (GTK_WIDGET (main_window),
-				   GM_STOCK_PHONE_PICK_UP_24,
-				   GTK_ICON_SIZE_SMALL_TOOLBAR, NULL);
+  notify = notify_notification_new (title, body, GM_ICON_LOGO, NULL);
   notify_notification_add_action (notify, "accept", _("Accept"), notify_action_cb, &call, NULL);
   notify_notification_add_action (notify, "reject", _("Reject"), notify_action_cb, &call, NULL);
   notify_notification_set_timeout (notify, NOTIFY_EXPIRES_NEVER);
-  notify_notification_set_icon_from_pixbuf (notify, pixbuf);
   notify_notification_attach_to_status_icon (notify, statusicon);
   if (!notify_notification_show (notify, NULL))
     gm_main_window_incoming_call_dialog_show (main_window, call);
@@ -3692,7 +3705,7 @@ void gm_main_window_incoming_call_notify (GtkWidget *main_window,
                                      (gpointer) notify));
   }
 
-  g_object_unref (pixbuf);
+  g_signal_connect (notify, "closed", G_CALLBACK (closed_cb), main_window);
 
   g_free (uri);
   g_free (app);
