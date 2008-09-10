@@ -664,6 +664,7 @@ void CallManager::GetAllowedFormats (OpalMediaFormatList & full_list)
   std::list<std::string> black_list;
    
   black_list.push_back ("GSM-AMR");
+  black_list.push_back ("Linear-16-Stereo-48kHz");
   black_list.push_back ("LPC-10");
   black_list.push_back ("SpeexIETFNarrow-11k");
   black_list.push_back ("SpeexIETFNarrow-15k");
