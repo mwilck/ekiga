@@ -408,7 +408,7 @@ account_toggled_cb (G_GNUC_UNUSED GtkCellRendererToggle *cell,
   GtkTreeSelection *selection = NULL;
   GtkTreeIter iter;
 
-  bool fixed = false;
+  gboolean fixed = false;
 
   Ekiga::Account *account = NULL;
 
