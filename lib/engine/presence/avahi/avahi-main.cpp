@@ -78,7 +78,7 @@ avahi_init (Ekiga::ServiceCore &core,
 
   if (presence_core != NULL) {
 
-    cluster = new Avahi::Cluster (*presence_core);
+    cluster = new Avahi::Cluster (core);
     service = new Avahi::Service (cluster);
     core.add (*service);
     presence_core->add_cluster (*cluster);

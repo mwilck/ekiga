@@ -87,7 +87,7 @@ avahi_resolver_callback (AvahiServiceResolver *resolver,
 }
 
 
-Avahi::Heap::Heap (Ekiga::PresenceCore &_core): core(_core)
+Avahi::Heap::Heap (Ekiga::ServiceCore &_core): core(_core)
 {
   const AvahiPoll *poll_api = NULL;
   int error;
@@ -261,7 +261,7 @@ Avahi::Heap::ResolverCallback (AvahiServiceResolver */*resolver*/,
   std::string status;
   bool already_known = false;
   gchar *url = NULL;
-  Presentity *presentity = NULL;
+  Ekiga::URIPresentity *presentity = NULL;
   AvahiStringList *txt_tmp = NULL;
 
   switch (event) {
@@ -295,13 +295,11 @@ Avahi::Heap::ResolverCallback (AvahiServiceResolver */*resolver*/,
 	 iter != end ();
 	 iter++) {
 
-      // FIXME never called
       if ((*iter).get_name () == name) {
 
 	/* known contact has been updated */
-	(*iter).set_status (status);
-	(*iter).set_presence (presence);
-	(*iter).updated.emit ();
+	presence_received.emit ((*iter).get_uri (), presence);
+	status_received.emit ((*iter).get_uri (), status);
 	already_known = true;
       }
     }
@@ -313,9 +311,9 @@ Avahi::Heap::ResolverCallback (AvahiServiceResolver */*resolver*/,
       if (broken != NULL && broken[0] != NULL && broken[1] != NULL) {
 
 	url = g_strdup_printf ("%s:neighbour@%s:%d", broken[1], host_name, port);
-	presentity = new Presentity (core, name, url);
-	presentity->set_status (status);
-	presentity->set_presence (presence);
+	presentity = new Ekiga::URIPresentity (core, name, url);
+	status_received.emit (url, status);
+	presence_received.emit (url, presence);
 	add_presentity (*presentity);
 	g_free (url);
       }

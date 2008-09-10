@@ -10,8 +10,6 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/engine/presence/skel
 
 libgmavahi_la_SOURCES = \
-	$(avahi_dir)/avahi-presentity.h \
-	$(avahi_dir)/avahi-presentity.cpp \
 	$(avahi_dir)/avahi-heap.h \
 	$(avahi_dir)/avahi-heap.cpp \
 	$(avahi_dir)/avahi-cluster.h \

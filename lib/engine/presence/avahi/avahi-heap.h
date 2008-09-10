@@ -40,7 +40,7 @@
 
 #include "presence-core.h"
 #include "heap-impl.h"
-#include "avahi-presentity.h"
+#include "uri-presentity.h"
 
 #include <avahi-client/client.h>
 #include <avahi-client/lookup.h>
@@ -57,11 +57,13 @@ namespace Avahi
  * @{
  */
 
-  class Heap: public Ekiga::HeapImpl<Presentity>
+  class Heap:
+    public Ekiga::PresenceFetcher,
+    public Ekiga::HeapImpl<Ekiga::URIPresentity>
   {
   public:
 
-    Heap (Ekiga::PresenceCore &_core);
+    Heap (Ekiga::ServiceCore &_core);
 
     ~Heap ();
 
@@ -71,6 +73,10 @@ namespace Avahi
 
     bool populate_menu_for_group (const std::string name,
 				  Ekiga::MenuBuilder& builder);
+
+    /* the PresenceFetcher interface : we don't do what we're told ;-) */
+    void fetch (std::string) {}
+    void unfetch (std::string) {}
 
     /* these should be private but are called from C code */
 
@@ -101,7 +107,7 @@ namespace Avahi
 
   private:
 
-    Ekiga::PresenceCore &core;
+    Ekiga::ServiceCore &core;
     AvahiGLibPoll *poll;
     AvahiClient *client;
     AvahiServiceBrowser *browser;

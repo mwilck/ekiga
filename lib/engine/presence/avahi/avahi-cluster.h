@@ -55,7 +55,7 @@ namespace Avahi
   {
   public:
 
-    Cluster (Ekiga::PresenceCore &_core);
+    Cluster (Ekiga::ServiceCore &_core);
 
     ~Cluster ();
 
@@ -65,7 +65,7 @@ namespace Avahi
 
   private:
 
-    Ekiga::PresenceCore &core;
+    Ekiga::ServiceCore &core;
     Heap *heap;
   };
 

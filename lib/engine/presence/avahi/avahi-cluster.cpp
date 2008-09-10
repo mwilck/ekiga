@@ -37,11 +37,18 @@
 
 #include "avahi-cluster.h"
 
-Avahi::Cluster::Cluster (Ekiga::PresenceCore &_core): core(_core)
+Avahi::Cluster::Cluster (Ekiga::ServiceCore &_core): core(_core)
 {
-  heap = new Heap (_core);
+  Ekiga::PresenceCore* presence_core = NULL;
+
+  heap = new Heap (core);
 
   add_heap (*heap);
+
+  presence_core
+    = dynamic_cast<Ekiga::PresenceCore*>(core.get ("presence-core"));
+  /* don't check the dynamic cast: it has been checked already by avahi-main!*/
+  presence_core->add_presence_fetcher (*heap);
 }
 
 Avahi::Cluster::~Cluster ()

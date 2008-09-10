@@ -1,5 +1,18 @@
 2008-09-10  Julien Puydt  <jpuydt@gnome.org>
 
+	* lib/engine/presence/avahi/avahi-presentity.h:
+	* lib/engine/presence/avahi/avahi-presentity.cpp: Removed.
+	* lib/engine/presence/avahi/Makefile.am: Don't compile the removed.
+	* lib/engine/presence/avahi/avahi-heap.h:
+	* lib/engine/presence/avahi/avahi-heap.cpp: Use Ekiga::URIPresentity,
+	and be an Ekiga::PresenceFetcher, fixing #551411.
+	* lib/engine/presence/avahi/avahi-cluster.h:
+	* lib/engine/presence/avahi/avahi-cluster.cpp:
+	* lib/engine/presence/avahi/avahi-main.cpp: Push Ekiga::ServiceCore
+	instead of Ekiga::PresenceCore to the cluster, heap and presentities.
+
+2008-09-10  Julien Puydt  <jpuydt@gnome.org>
+
 	* lib/engine/presence/avahi/avahi-heap.cpp:
 	* lib/engine/components/avahi-publisher/avahi-publisher.cpp: Made the
 	avahi code compatible with 2.0 (except presence), and fixed #551608.
