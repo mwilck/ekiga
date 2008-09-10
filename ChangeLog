@@ -1,5 +1,13 @@
 2008-09-10  Julien Puydt  <jpuydt@gnome.org>
 
+	* lib/engine/presence/skel/uri-presentity.h:
+	* lib/engine/presence/skel/uri-presentity.cpp: Added the possibility
+	to set groups.
+	* lib/engine/presence/avahi/avahi-heap.cpp:
+	* src/endpoints/sip-chat-simple.cpp: Made them use the new feature.
+
+2008-09-10  Julien Puydt  <jpuydt@gnome.org>
+
 	* lib/engine/presence/avahi/avahi-presentity.h:
 	* lib/engine/presence/avahi/avahi-presentity.cpp: Removed.
 	* lib/engine/presence/avahi/Makefile.am: Don't compile the removed.

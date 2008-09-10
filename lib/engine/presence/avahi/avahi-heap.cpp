@@ -310,8 +310,11 @@ Avahi::Heap::ResolverCallback (AvahiServiceResolver */*resolver*/,
       broken = g_strsplit_set (typ, "._", 0);
       if (broken != NULL && broken[0] != NULL && broken[1] != NULL) {
 
+	std::set<std::string> groups;
+
+	groups.insert (_("Neighbours"));
 	url = g_strdup_printf ("%s:neighbour@%s:%d", broken[1], host_name, port);
-	presentity = new Ekiga::URIPresentity (core, name, url);
+	presentity = new Ekiga::URIPresentity (core, name, url, groups);
 	status_received.emit (url, status);
 	presence_received.emit (url, presence);
 	add_presentity (*presentity);

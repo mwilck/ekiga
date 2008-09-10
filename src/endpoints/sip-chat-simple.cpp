@@ -45,7 +45,8 @@ SIP::SimpleChat::SimpleChat (Ekiga::ServiceCore& core_,
 			     sigc::slot<bool, std::string> sender_)
   : core(core_), sender(sender_)
 {
-  presentity = new Ekiga::URIPresentity (core, name, uri);
+  presentity = new Ekiga::URIPresentity (core, name, uri,
+					 std::set<std::string>());
 }
 
 SIP::SimpleChat::~SimpleChat ()

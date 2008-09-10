@@ -69,7 +69,8 @@ namespace Ekiga
      */
     URIPresentity (Ekiga::ServiceCore& _core,
 		   std::string name_,
-		   std::string uri_);
+		   std::string uri_,
+		   std::set<std::string> groups_);
 
     ~URIPresentity ();
 
@@ -102,6 +103,7 @@ namespace Ekiga
     std::string name;
     std::string uri;
     std::string presence;
+    std::set<std::string> groups;
     std::string status;
     std::string avatar;
 
@@ -110,8 +112,6 @@ namespace Ekiga
 
     void on_status_received (std::string uri_,
 			     std::string status_);
-
-    std::set<std::string> groups;
   };
 
   /**

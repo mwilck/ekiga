@@ -37,8 +37,9 @@
 
 Ekiga::URIPresentity::URIPresentity (Ekiga::ServiceCore &_core,
 				     std::string name_,
-				     std::string uri_)
-  : core(_core), name(name_), uri(uri_), presence("unknown")
+				     std::string uri_,
+				     std::set<std::string> groups_)
+  : core(_core), name(name_), uri(uri_), presence("unknown"), groups(groups_)
 {
   presence_core = dynamic_cast<Ekiga::PresenceCore*>(core.get ("presence-core"));
   presence_core->presence_received.connect (sigc::mem_fun (this, &Ekiga::URIPresentity::on_presence_received));
