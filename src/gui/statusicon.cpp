@@ -272,7 +272,10 @@ statusicon_activated_cb (G_GNUC_UNUSED GtkStatusIcon *icon,
     if (!gnomemeeting_window_is_visible (window))
       gnomemeeting_window_show (window);
     else
-      gnomemeeting_window_hide (window);
+      if (gtk_window_has_toplevel_focus (GTK_WINDOW (window)))
+	gnomemeeting_window_hide (window);
+      else
+	gtk_window_present (GTK_WINDOW (window));
   }
   else {
 
