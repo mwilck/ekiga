@@ -124,7 +124,7 @@ void GMVideoOutputManager::set_frame_data (const char* data,
 					   unsigned width,
 					   unsigned height,
 					   bool local,
-					   int /*devices_nbr*/)
+					   int devices_nbr)
 { 
   Ekiga::DisplayInfo local_display_info;
 
@@ -154,6 +154,13 @@ void GMVideoOutputManager::set_frame_data (const char* data,
   /* If there is only one device open, ignore the setting, and 
    * display what we can actually display.
    */
+  if (devices_nbr <= 1) {
+    if (!local)
+      local_display_info.mode = Ekiga::VO_MODE_REMOTE;
+    else 
+      local_display_info.mode = Ekiga::VO_MODE_LOCAL;
+  }
+  
   if (local_frame_received && !remote_frame_received)
       local_display_info.mode = Ekiga::VO_MODE_LOCAL;
   
