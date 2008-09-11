@@ -96,21 +96,27 @@ Gmconf::PersonalDetails::PersonalDetails ()
 			  long_status_changed_nt, this);
 
   str = gm_conf_get_string ("/apps/ekiga/general/personal_data/full_name");
-  if (str != NULL)
+  if (str != NULL) {
+
     display_name = str;
-  else
+    g_free (str);
+  } else
     display_name = "";
 
   str = gm_conf_get_string ("/apps/ekiga/general/personal_data/short_status");
-  if (str != NULL)
+  if (str != NULL) {
+
     short_status = str;
-  else
+    g_free (str);
+  } else
     short_status = "";
 
   str = gm_conf_get_string ("/apps/ekiga/general/personal_data/long_status");
-  if (str != NULL)
+  if (str != NULL) {
+
     long_status = str;
-  else
+    g_free (str);
+  } else
     long_status = "";
 }
 

@@ -717,6 +717,9 @@ CallManager::HandleSTUNResult ()
 
     ready.emit ();
 
+    if (result != NULL)
+      g_free (result);
+
   } else {
 
       patience--;
