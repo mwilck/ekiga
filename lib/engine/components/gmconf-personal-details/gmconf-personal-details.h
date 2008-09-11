@@ -76,12 +76,17 @@ namespace Gmconf
 
     /*** public but only to be called by C callbacks ***/
   public:
-    void something_changed ();
+    void display_name_changed (std::string val);
+    void short_status_changed (std::string val);
+    void long_status_changed (std::string val);
 
   private:
-    void* full_name_notifier;
+    void* display_name_notifier;
     void* short_status_notifier;
     void* long_status_notifier;
+    std::string display_name;
+    std::string short_status;
+    std::string long_status;
   };
 };
 
