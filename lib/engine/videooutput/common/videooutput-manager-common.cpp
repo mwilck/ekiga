@@ -96,8 +96,8 @@ GMVideoOutputManager::Main ()
 
     if (initialised_thread) {
       var_mutex.Wait ();
-        do_sync = first_frame_received;
-        if (first_frame_received)
+        do_sync = local_frame_received | remote_frame_received;
+        if (do_sync)
           sync_required = redraw();
       var_mutex.Signal ();
       if (do_sync)
@@ -124,29 +124,13 @@ void GMVideoOutputManager::set_frame_data (const char* data,
 					   unsigned width,
 					   unsigned height,
 					   bool local,
-					   int devices_nbr)
+					   int /*devices_nbr*/)
 { 
   Ekiga::DisplayInfo local_display_info;
 
   get_display_info(local_display_info);
 
   var_mutex.Wait();
-
-  /* If there is only one device open, ignore the setting, and 
-   * display what we can actually display.
-   */
-  if (devices_nbr <= 1) {
-
-    if (!local)
-      local_display_info.mode = Ekiga::VO_MODE_REMOTE;
-    else 
-      local_display_info.mode = Ekiga::VO_MODE_LOCAL;
-  }
-
-  current_frame.mode = local_display_info.mode;
-  current_frame.zoom = local_display_info.zoom; 
-  current_frame.both_streams_active = (devices_nbr == 2);
-  first_frame_received = true;
 
   if (local) {
 
@@ -155,11 +139,7 @@ void GMVideoOutputManager::set_frame_data (const char* data,
     current_frame.local_width = width;
     current_frame.local_height= height;
     memcpy (lframeStore.GetPointer(), data, (width * height * 3) >> 1);
-
-    if (update_required.local) {
-      PTRACE(3, "GMVideoOutputManager\tSkipped earlier local frame");
-    }
-    update_required.local = true;
+    local_frame_received = true;
   }
   else {
 
@@ -168,6 +148,30 @@ void GMVideoOutputManager::set_frame_data (const char* data,
     current_frame.remote_width = width;
     current_frame.remote_height= height;
     memcpy (rframeStore.GetPointer(), data, (width * height * 3) >> 1);
+    remote_frame_received = true;
+  }
+
+  /* If there is only one device open, ignore the setting, and 
+   * display what we can actually display.
+   */
+  if (local_frame_received && !remote_frame_received)
+      local_display_info.mode = Ekiga::VO_MODE_LOCAL;
+  
+  if (!local_frame_received && remote_frame_received)
+      local_display_info.mode = Ekiga::VO_MODE_REMOTE;
+
+  current_frame.mode = local_display_info.mode;
+  current_frame.zoom = local_display_info.zoom; 
+  current_frame.both_streams_active = local_frame_received & remote_frame_received;
+
+  if (local) {
+
+    if (update_required.local) {
+      PTRACE(3, "GMVideoOutputManager\tSkipped earlier local frame");
+    }
+    update_required.local = true;
+  }
+  else {
 
     if (update_required.remote) {
       PTRACE(3, "GMVideoOutputManager\tSkipped earlier remote frame");
@@ -215,7 +219,8 @@ void GMVideoOutputManager::init()
 
   /* Initialisation */
   video_disabled = false;
-  first_frame_received = false;
+  local_frame_received = false;
+  remote_frame_received = false;
   update_required.local = false;
   update_required.remote = false;
 

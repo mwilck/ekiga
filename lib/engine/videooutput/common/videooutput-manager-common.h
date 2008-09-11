@@ -237,7 +237,8 @@
     FrameInfo last_frame;
     FrameInfo current_frame;
     
-    bool first_frame_received;
+    bool local_frame_received;
+    bool remote_frame_received;
     bool video_disabled;
 
     UpdateRequired update_required;
