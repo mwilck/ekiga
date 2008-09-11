@@ -94,7 +94,7 @@ PVideoOutputDevice_EKIGA::~PVideoOutputDevice_EKIGA()
   PWaitAndSignal m(videoDisplay_mutex);
 
   if (is_active)
-    devices_nbr = PMAX (0, devices_nbr-1);
+    devices_nbr--;
   if (devices_nbr == 0) {
     videooutput_core.stop();
   }
@@ -153,7 +153,7 @@ bool PVideoOutputDevice_EKIGA::SetFrameData (unsigned x,
   /* Device is now open */
   if (!is_active) {
     is_active = TRUE;
-    devices_nbr = PMIN (2, devices_nbr+1);
+    devices_nbr++;
   }
   videooutput_core.set_frame_data((const char*) data, width, height, (device_id == LOCAL), devices_nbr);
 

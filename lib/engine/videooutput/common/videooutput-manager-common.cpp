@@ -155,21 +155,28 @@ void GMVideoOutputManager::set_frame_data (const char* data,
    * display what we can actually display.
    */
   if (devices_nbr <= 1) {
-    if (!local)
-      local_display_info.mode = Ekiga::VO_MODE_REMOTE;
-    else 
+    if (local) {
       local_display_info.mode = Ekiga::VO_MODE_LOCAL;
-  }
-  
-  if (local_frame_received && !remote_frame_received)
-      local_display_info.mode = Ekiga::VO_MODE_LOCAL;
-  
-  if (!local_frame_received && remote_frame_received)
+      remote_frame_received = false;
+    }
+    else {
       local_display_info.mode = Ekiga::VO_MODE_REMOTE;
+      local_frame_received = false;
+    }
 
+    current_frame.both_streams_active = false;;
+  } else {
+  
+    if (local_frame_received && !remote_frame_received)
+        local_display_info.mode = Ekiga::VO_MODE_LOCAL;
+  
+    if (!local_frame_received && remote_frame_received)
+        local_display_info.mode = Ekiga::VO_MODE_REMOTE;
+
+    current_frame.both_streams_active = local_frame_received & remote_frame_received;
+  }
   current_frame.mode = local_display_info.mode;
   current_frame.zoom = local_display_info.zoom; 
-  current_frame.both_streams_active = local_frame_received & remote_frame_received;
 
   if (local) {
 

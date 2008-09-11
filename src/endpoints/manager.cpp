@@ -166,7 +166,7 @@ void CallManager::start ()
   // Ready
   new StunDetector (stun_server, *this, queue);
 
-  patience = 3;
+  patience = 20;
   runtime.run_in_main (sigc::mem_fun (this, &CallManager::HandleSTUNResult), 1);
 }
 
@@ -719,25 +719,10 @@ CallManager::HandleSTUNResult ()
 
   } else {
 
-    if (patience == 3) {
-
       patience--;
       runtime.run_in_main (sigc::mem_fun (this,
 					  &CallManager::HandleSTUNResult),
-			   3);
-    } else if (patience == 2) {
-
-      patience--;
-      runtime.run_in_main (sigc::mem_fun (this,
-					  &CallManager::HandleSTUNResult),
-			   21);
-    } else if (patience == 1) {
-
-      patience--;
-      runtime.run_in_main (sigc::mem_fun (this,
-					  &CallManager::HandleSTUNResult),
-			   30);
-    }
+			   1);
   }
 }
 

@@ -176,6 +176,9 @@ class PVideoInputDevice_EKIGA : public PVideoInputDevice
 
   virtual PStringArray GetDeviceNames() const;
 
+  static int devices_nbr;
+  bool is_active;
+  
 protected:
   Ekiga::ServiceCore & core;
   Ekiga::VideoInputCore & videoinput_core;

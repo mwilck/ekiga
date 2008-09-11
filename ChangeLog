@@ -1,5 +1,16 @@
 2008-09-11  Matthias Schneider  <ma30002000@yahoo.de>
 
+	* src/devices/videoinput.cpp:
+	* src/devices/videooutput.cpp:
+	* src/devices/videoinput.h:
+	* src/endpoints/manager.cpp:
+	* lib/engine/videooutput/common/videooutput-manager-common.cpp:
+	Finally fixed reinvite video completely. Reference counting
+	is also needed in the stub video input device. 
+	Improved STUN timers.
+
+2008-09-11  Matthias Schneider  <ma30002000@yahoo.de>
+
 	* lib/engine/videooutput/common/videooutput-manager-common.cpp:
 	Fix preview window mixup with remote window due to last commit.
 

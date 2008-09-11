@@ -66,11 +66,13 @@ class PVideoInputDevice_EKIGA_PluginServiceDescriptor
 
 PCREATE_PLUGIN(EKIGA, PVideoInputDevice, &PVideoInputDevice_EKIGA_descriptor);
 
+int PVideoInputDevice_EKIGA::devices_nbr = 0;
 
 PVideoInputDevice_EKIGA::PVideoInputDevice_EKIGA (Ekiga::ServiceCore & _core)
 : core (_core), videoinput_core (*(dynamic_cast<Ekiga::VideoInputCore *> (_core.get ("videoinput-core"))))
 {
   opened = false;
+  is_active = false;
 }
 
 
@@ -84,8 +86,14 @@ PVideoInputDevice_EKIGA::Open (const PString &/*name*/,
 			       bool start_immediate)
 {
   if (start_immediate) {
-    videoinput_core.set_stream_config(frameWidth, frameHeight, frameRate);
-    videoinput_core.start_stream();
+    if (!is_active) {
+      if (devices_nbr == 0) {
+        videoinput_core.set_stream_config(frameWidth, frameHeight, frameRate);
+        videoinput_core.start_stream();
+      }
+      is_active = true;
+      devices_nbr++;
+    }
   }
   opened = true;
 
@@ -103,7 +111,12 @@ PVideoInputDevice_EKIGA::IsOpen ()
 bool
 PVideoInputDevice_EKIGA::Close ()
 {
-  videoinput_core.stop_stream();
+  if (is_active) {
+    devices_nbr--;
+    if (devices_nbr==0)
+      videoinput_core.stop_stream();
+    is_active = false;
+  }
   opened = false;
 
   return true;
@@ -113,8 +126,14 @@ PVideoInputDevice_EKIGA::Close ()
 bool
 PVideoInputDevice_EKIGA::Start ()
 {
-  videoinput_core.set_stream_config(frameWidth, frameHeight, frameRate);
-  videoinput_core.start_stream();
+  if (!is_active) {
+    if (devices_nbr == 0) {
+      videoinput_core.set_stream_config(frameWidth, frameHeight, frameRate);
+      videoinput_core.start_stream();
+    }
+    is_active = true;
+    devices_nbr++;
+  }
 
   return true;
 }
