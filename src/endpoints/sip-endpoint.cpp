@@ -979,7 +979,7 @@ bool Opal::Sip::EndPoint::OnIncomingConnection (OpalConnection &connection,
 }
 
 
-void Opal::Sip::EndPoint::OnReceivedMESSAGE (G_GNUC_UNUSED OpalTransport & transport,
+bool Opal::Sip::EndPoint::OnReceivedMESSAGE (OpalTransport & transport,
                                              SIP_PDU & pdu)
 {
   PString *last = NULL;
@@ -1008,6 +1008,8 @@ void Opal::Sip::EndPoint::OnReceivedMESSAGE (G_GNUC_UNUSED OpalTransport & trans
 
     runtime.run_in_main (sigc::bind (sigc::ptr_fun (push_message_in_main), dialect, message_uri, display_name, _message));
   }
+
+  return SIPEndPoint::OnReceivedMESSAGE (transport, pdu);
 }
 
 

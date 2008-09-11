@@ -156,7 +156,7 @@ namespace Opal {
                                            const PString & basic,
                                            const PString & note);
 
-      virtual void OnReceivedMESSAGE (OpalTransport & transport,
+      virtual bool OnReceivedMESSAGE (OpalTransport & transport,
                                       SIP_PDU & pdu);
 
       void OnMessageFailed (const SIPURL & messageUrl,
