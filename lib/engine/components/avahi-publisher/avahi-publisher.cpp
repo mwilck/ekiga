@@ -71,7 +71,10 @@ Avahi::PresencePublisher::PresencePublisher (Ekiga::ServiceCore& core_,
   core(core_), details(details_), call_core(call_core_),
   client(NULL), group(NULL)
 {
-  name = avahi_strdup (details.get_display_name ().c_str ());
+  display_name = details.get_display_name ();
+  details.updated.connect (sigc::mem_fun (this,
+					  &Avahi::PresencePublisher::on_details_updated));
+  name = avahi_strdup (display_name.c_str ());
   glib_poll = avahi_glib_poll_new (NULL, G_PRIORITY_DEFAULT);
   create_client ();
 }
@@ -286,4 +289,18 @@ Avahi::PresencePublisher::prepare_txt_record ()
 					 PACKAGE_NAME, PACKAGE_VERSION);
 
   return result;
+}
+
+void
+Avahi::PresencePublisher::on_details_updated ()
+{
+  if (display_name != details.get_display_name ()) {
+
+    display_name = details.get_display_name ();
+    remove_services ();
+    avahi_free (name);
+    name = avahi_strdup (display_name.c_str ());
+    avahi_entry_group_new (client,
+			   (AvahiEntryGroupCallback)entry_group_cb, this);
+  }
 }

@@ -95,9 +95,11 @@ private:
     void add_services ();
     void remove_services ();
     AvahiEntryGroup* group;
+    std::string display_name;
     gchar* name;
 
-    AvahiStringList* prepare_txt_record ();;
+    AvahiStringList* prepare_txt_record ();
+    void on_details_updated ();
   };
 };
 #endif
