@@ -48,7 +48,7 @@ namespace Gmconf
 
     PersonalDetails ();
 
-    virtual ~PersonalDetails () {};
+    virtual ~PersonalDetails ();
 
     /*** Service Implementation ***/
   public:
@@ -77,6 +77,11 @@ namespace Gmconf
     /*** public but only to be called by C callbacks ***/
   public:
     void something_changed ();
+
+  private:
+    void* full_name_notifier;
+    void* short_status_notifier;
+    void* long_status_notifier;
   };
 };
 

@@ -51,12 +51,22 @@ something_changed_nt (G_GNUC_UNUSED gpointer id,
 
 Gmconf::PersonalDetails::PersonalDetails ()
 {
-  gm_conf_notifier_add ("/apps/ekiga/general/personal_data/full_name",
-                        something_changed_nt, this);
-  gm_conf_notifier_add ("/apps/ekiga/general/personal_data/short_status",
-                        something_changed_nt, this);
-  gm_conf_notifier_add ("/apps/ekiga/general/personal_data/long_status",
-                        something_changed_nt, this);
+  full_name_notifier
+    = gm_conf_notifier_add ("/apps/ekiga/general/personal_data/full_name",
+			    something_changed_nt, this);
+  short_status_notifier
+    = gm_conf_notifier_add ("/apps/ekiga/general/personal_data/short_status",
+			    something_changed_nt, this);
+  long_status_notifier
+  = gm_conf_notifier_add ("/apps/ekiga/general/personal_data/long_status",
+			  something_changed_nt, this);
+}
+
+Gmconf::PersonalDetails::~PersonalDetails ()
+{
+  gm_conf_notifier_remove (full_name_notifier);
+  gm_conf_notifier_remove (short_status_notifier);
+  gm_conf_notifier_remove (long_status_notifier);
 }
 
 const std::string
