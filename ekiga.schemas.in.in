@@ -1,4 +1,4 @@
-<!-- Remeber to increment SCHEMA_AGE in configure.in if you add any new
+<!-- Remember to increment SCHEMA_AGE in configure.in if you add any new
      schema to this file -->
 <gconfschemafile>
   <schemalist>
@@ -166,6 +166,27 @@
 	<short>Contact long status</short>
 	<long>The long status information</long>
       </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/personal_data/away_custom_status</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/personal_data/away_custom_status</applyto>
+      <type>list</type>
+      <list_type>string</list_type>
+      <default>[]</default>
+    </schema>
+    <schema>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/personal_data/dnd_custom_status</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/personal_data/dnd_custom_status</applyto>
+      <type>list</type>
+      <list_type>string</list_type>
+      <default>[]</default>
+    </schema>
+    <schema>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/personal_data/online_custom_status</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/personal_data/online_custom_status</applyto>
+      <type>list</type>
+      <list_type>string</list_type>
+      <default>[]</default>
     </schema>
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/codecs/audio/media_list</key>
@@ -368,6 +389,12 @@
       </locale>
     </schema>
     <schema>
+      <key>/schemas/apps/@PACKAGE_NAME@/protocols/interface</key>
+      <applyto>/apps/@PACKAGE_NAME@/protocols/interface</applyto>
+      <owner>Ekiga</owner>
+      <type>string</type>
+    </schema>
+    <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/protocols/sip/listen_port</key>
       <applyto>/apps/@PACKAGE_NAME@/protocols/sip/listen_port</applyto>
       <owner>Ekiga</owner>
@@ -553,6 +580,13 @@
 	<short>The STUN Server</short>
 	<long>The STUN server to use for STUN Support. STUN is a technology that permits passage through some types of NAT gateway</long>
       </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/nat/public_ip_detector</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/nat/public_ip_detector</applyto>
+      <owner>Ekiga</owner>
+      <type>string</type>
+      <default>http://ekiga.net/ip/</default>
     </schema>
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/protocols/sip/binding_timeout</key>
@@ -1052,6 +1086,18 @@
 	<short>LDAP servers</short>
 	<long>List of configured LDAP servers</long>
       </locale>
+    </schema>
+    <schema>
+      <key>/schemas/apps/@PACKAGE_NAME@/contacts/call_history</key>
+      <applyto>/apps/@PACKAGE_NAME@/contacts/call_history</applyto>
+      <owner>Ekiga</owner>
+      <type>string</type>
+    </schema>
+    <schema>
+      <key>/schemas/apps/@PACKAGE_NAME@/contacts/roster</key>
+      <applyto>/apps/@PACKAGE_NAME@/contacts/roster</applyto>
+      <owner>Ekiga</owner>
+      <type>string</type>
     </schema>
     <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/general/kind_of_net</key>
