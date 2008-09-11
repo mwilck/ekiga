@@ -184,7 +184,7 @@ statusicon_finalize (GObject *obj)
        iter++)
     iter->disconnect ();
 
-  g_free (self->priv);
+  delete self->priv;
 
   parent_class->finalize (obj);
 }
