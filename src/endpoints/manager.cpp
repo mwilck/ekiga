@@ -145,7 +145,11 @@ CallManager::CallManager (Ekiga::ServiceCore & _core)
 
 
   // used to communicate with the StunDetector
+#if GLIB_CHECK_VERSION(2,16,0)
   queue = g_async_queue_new_full (g_free);
+#else
+  queue = g_async_queue_new ();
+#endif
 }
 
 
