@@ -96,7 +96,7 @@ case $target_os in
     gm_platform="linux"
     ;;
 
-  FreeBSD* | freebsd* )
+  FreeBSD* | freebsd* | NetBSD* | netbsd* )
     gm_platform="freebsd"
     ;;
 
@@ -112,7 +112,7 @@ case $target_os in
     ;;
 
   *)
-    AC_MSG_ERROR([Only Linux, FreeBSD, Solaris and Mac OS X are supported. Please contact the author to know how you can add more OS types.])
+    AC_MSG_ERROR([Only Linux, FreeBSD, NetBSD, Solaris and Mac OS X are supported. Please contact the author to know how you can add more OS types.])
     ;;
 esac
 AC_MSG_RESULT([yes])
@@ -132,7 +132,7 @@ case $target_os in
     ARCH_OPAL_LIBS="-lpt -lopal -ldl -lpthread"
     ;;
 
-  FreeBSD* | freebsd* )
+  FreeBSD* | freebsd* | NetBSD* | netbsd* )
     ARCH_PTLIB_CFLAGS="-DPTRACING -DNDEBUG -Os -g"
     ARCH_OPAL_LIBS="-lpt -lopal -lpthread"
     ;;
