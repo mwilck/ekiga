@@ -7,12 +7,12 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: help.HEAD.es\n"
-"POT-Creation-Date: 2008-09-01 04:23+0000\n"
-"PO-Revision-Date: 2008-09-09 11:03+0200\n"
+"POT-Creation-Date: 2008-09-12 12:06+0000\n"
+"PO-Revision-Date: 2008-09-12 17:07+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type:  text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 "X-Generator: KBabel 1.11.4\n"
@@ -333,7 +333,6 @@ msgstr ""
 "de <application>Ekiga</application>."
 
 #: C/ekiga.xml:189(para)
-#, fuzzy
 msgid ""
 "If you want to create an account and use it to call your friends and family "
 "using regular phones at interesting rates, simply create an account using "
@@ -343,13 +342,11 @@ msgid ""
 "<application>Ekiga</application>"
 msgstr ""
 "Si quiere crear una cuenta y usarla para llamar a sus amigos y familia "
-"usando teléfonos normales a tarifas interesantes, simplemente vaya al menú "
-"Herramientas, y seleccione el elemento de menú  «Cuenta PC-To-Phone». "
-"Aparecerá un diálogo permitiéndole crear una cuenta usando «Obtener una "
-"cuenta Ekiga PC-to-Phone». Una vez que se ha creado la cuenta, recibirá un "
-"usuario y contraseña por correo-e. Simplemente introdúzcalos en el diálogo, "
-"active «Usar servicio PC-To-Phone» y está preparado para llamar a los "
-"teléfonos normales usando <application>Ekiga</application>"
+"usando teléfonos normales a tarifas interesantes, simplemente cree una "
+"cuenta usando el enlace «Obtener una cuenta Ekiga Call Out». Una vez que haya "
+"creado la cuenta recibirá un usuario y contraseña por correo-e. Simplemente "
+"introdúzcalos en el diálogoy estará preparado para llamar a los teléfonos "
+"normales usando <application>Ekiga</application>."
 
 #: C/ekiga.xml:191(para)
 msgid ""
@@ -604,6 +601,11 @@ msgid ""
 "It will dial the phone number of the contact using the Ekiga Call Out "
 "account."
 msgstr ""
+"También puede llamar a números de teléfono reales desde la libreta de "
+"direcciones. Si el número de teléfono del contacto al que quiere llamar está "
+"almacenado en la libreta de direcciones, simplemente seleccione Acción -&gt; "
+"Llamar [Ekiga Call Out] cuando el contacto esté resaltado. Llamará al número "
+"de teléfono del contacto usando la cuenta de Ekiga Call Out."
 
 #: C/ekiga.xml:301(para)
 msgid ""
@@ -612,6 +614,10 @@ msgid ""
 "able to call real phones and be called from real phones after having "
 "connected to the PBX. Please ask for the settings to your administrator."
 msgstr ""
+"<application>Ekiga</application> también soporta conexión con sistemas H.323 "
+"y SIP PBX. Si el PBX de su oficina soporta esos protocolos podrá llamar a "
+"números de teléfono reales y recibir llamadas de teléfonos normales después "
+"de conectarse al PBX. Consulte los ajustes a su administrador."
 
 #: C/ekiga.xml:304(title)
 msgid "From real phone to computer (Phone-To-PC)"
@@ -663,11 +669,12 @@ msgid ""
 msgstr ""
 
 #: C/ekiga.xml:325(para)
-#, fuzzy
 msgid ""
 "You can thus use <application>Ekiga</application> to monitor lines on your "
 "PBX."
-msgstr "Acerca de <application>Ekiga</application>"
+msgstr ""
+"Puede usar <application>Ekiga</application> para monitorizar líneas de su "
+"PBX."
 
 #: C/ekiga.xml:329(para)
 #, fuzzy
@@ -691,6 +698,10 @@ msgid ""
 "required fields. If the service managing the URI you entered for the contact "
 "is able to publish presence status, Ekiga will automatically display it."
 msgstr ""
+"Para añadir un contacto a la lista de contactos seleccione Chat -&gt; Añadir "
+"contacto y rellene los campos requeridos. Si el servicio que gestiona el URI "
+"que ha introducido para el contacto es capaz de publicar el estado de "
+"presencia, Ekiga lo mostrará automáticamente."
 
 #: C/ekiga.xml:337(para)
 msgid ""
@@ -698,15 +709,18 @@ msgid ""
 "him using the Ekiga.net online directory. To do so, select Chat -&gt; "
 "Address Book, and start searching using the 'Search Filter' feature."
 msgstr ""
+"Si no sabe el URI VoIP de un contacto puede probar a buscarlo usando el "
+"directorio en línea de Ekiga.net. Para ello, seleccione Chat -&gt; Libreta "
+"de direcciones y comience a buscar usando la característica «Filtro de "
+"búsqueda»."
 
 #: C/ekiga.xml:341(para)
 msgid "You can organise your contacts in groups in the roster."
-msgstr ""
+msgstr "Puede organizar sus contactos en grupos en la lista de contactos."
 
 #: C/ekiga.xml:343(title)
-#, fuzzy
 msgid "Managing contacts"
-msgstr "Gestión de contactos"
+msgstr "Gestionar contactos"
 
 #: C/ekiga.xml:347(para)
 msgid ""
@@ -776,7 +790,6 @@ msgstr ""
 "filtros cuando busca contactos."
 
 #: C/ekiga.xml:364(para)
-#, fuzzy
 msgid ""
 "The <application>Ekiga</application> white pages will allow you to look for "
 "users in your region. It returns a limited number of results corresponding "
@@ -785,10 +798,8 @@ msgid ""
 msgstr ""
 "Las páginas blancas de <application>Ekiga</application> le permitirán buscar "
 "usuarios en su región. Devuelve un número limitado de resultados "
-"correspondientes a su búsqueda. Si el usuario está asociado a un icono rojo, "
-"significa que está conectado. Si está asociado a un icono gris, significa "
-"que está desconectado. Puede añadirlo a su libro personal de direcciones "
-"para llamarlo más tarde."
+"correspondientes a su búsqueda. Puede añadirlo a su libro personal de "
+"direcciones para llamarlo más tarde."
 
 #: C/ekiga.xml:367(title)
 msgid "Editing contacts"
@@ -826,16 +837,14 @@ msgstr ""
 "esté resaltado. Él también puede borrarse seleccionado Archivo -&gt; Borrar."
 
 #: C/ekiga.xml:379(para)
-#, fuzzy
 msgid ""
 "You can also add a contact from the white pages (or any other local or "
 "remote address book) to the roster by selecting Action -&gt; Add to local "
 "roster when the contact is highlighted."
 msgstr ""
 "También puede añadir un contacto desde las páginas blancas (o cualquier otra "
-"libreta de direcciones remota o local) seleccionando el contacto resaltado y "
-"arrastrándole al grupo específico al que desee añadirle o seleccionado "
-"Contacto -&gt; Añadir contacto a libreta cuando se selecciona ese contacto."
+"libreta de direcciones remota o local) a la lista de contactos seleccionando "
+"Acción -&gt; Añadir a la lista local cuando el contacto está resaltado."
 
 #: C/ekiga.xml:383(para)
 #, fuzzy
