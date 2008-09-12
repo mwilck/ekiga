@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: help.HEAD.es\n"
 "POT-Creation-Date: 2008-09-12 12:06+0000\n"
-"PO-Revision-Date: 2008-09-12 17:07+0200\n"
+"PO-Revision-Date: 2008-09-12 20:35+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -398,7 +398,6 @@ msgid "Audio Devices"
 msgstr "Dispositivos de sonido"
 
 #: C/ekiga.xml:223(para)
-#, fuzzy
 msgid ""
 "<application>Ekiga</application> requires audio devices to play and record "
 "sound. The audio output device ouputs the incoming sound stream during a "
@@ -412,20 +411,18 @@ msgid ""
 "ringing sound event in your speakers, while having your headset connected "
 "for calls."
 msgstr ""
-"<application>Ekiga</application> requiere dispositivos de audio para "
-"reproducir y grabar audio. El dispositivo de salida de audio produce el "
-"flujo de audio de entrada durante una llamada. Por favor seleccione el "
-"dispositivo al que sus cascos altavoces estén conectados. El dispositivo de "
-"entrada de audio es donde su micrófono está conectado. Estas propiedades "
-"deben ser las mismas que las propiedades del reproductor de música si tiene "
-"una sola tarjeta de audio. Pero por favor note que  también es posible "
-"grabar audio por medio de otro dispositivo (ej. micrófono interno en una "
-"webcam). Generalmente es recomendable que pruebe su configuración  después "
-"de haber seleccionado todos los dispositivos apropiados. Por favor pulse el "
-"botón «Probar esta configuración» a la derecha. Si esta prueba tiene éxito "
-"puede continuar en la página siguiente del «Asistente de configuración». En "
-"otro caso debería cambiar sus dispositivos y probar su configuración otra "
-"vez hasta que tenga una configuración que funcione para usted."
+"<application>Ekiga</application> requiere dispositivos de sonido para "
+"reproducir y grabar sonido. El dispositivo de salida de sonido produce el "
+"flujo de sonido de entrada durante una llamada. Por favor seleccione el "
+"dispositivo al que sus cascos o altavoces estén conectados. El dispositivo "
+"de entrada de sonido es donde su micrófono está conectado. Estos ajustes "
+"deben ser los mismos que los ajustes del reproductor de música, si tiene una "
+"sola tarjeta de sonido. Pero note que también es posible grabar sonido por "
+"medio de otro dispositivo (ej. micrófono interno en una cámara web). Esta "
+"sección también le permite elegir el dispositivo de llamada. Este "
+"dispositivo puede ser diferente del dispositivo de salida de sonido. Le "
+"permite oír el sonido de llamadas entrantes en sus altavoces, mientras tiene "
+"sus cascos conectados para las llamadas"
 
 #: C/ekiga.xml:234(title)
 msgid "Video Devices"
@@ -548,6 +545,11 @@ msgid ""
 "available. Please refer to the appropriate section of the manual for full "
 "explanations."
 msgstr ""
+"También es posible llamar a contactos usando la libreta de direcciones, el "
+"histórico de llamadas o la lista de contactos. Puede añadir a su lista de "
+"contactos a los que llame recientemente y ver su información de presencia "
+"para saber cuándo están disponibles. Consulte la sección apropiada del "
+"manual para una completa explicación."
 
 #: C/ekiga.xml:291(para)
 msgid ""
@@ -582,16 +584,15 @@ msgstr ""
 "enlaces en el asistente de configuración descrito anteriormente."
 
 #: C/ekiga.xml:297(para)
-#, fuzzy
 msgid ""
 "With the default setup, you can simply use sip:3210444555 and select sip."
 "diamondcard.us in the list to call the real phone number +3210444555, 32 is "
 "the country code, 10444555 is the number to call."
 msgstr ""
-"Con la configuración predeterminada, puede simplemente usar sip:003210444555 "
-"para llamar al número de teléfono real 003210444555, 00 es el código de "
-"marcado internacional, 32 es el código del país, 10444555 es el número al "
-"que llamar."
+"Con la configuración predeterminada puede simplemente usar sip:3210444555 y "
+"seleccionar sip.diamondcard.us en la lista para llamar al número de teléfono "
+"real +3210444555, 32 es el código del país, 10444555 es el número al que "
+"llamar."
 
 #: C/ekiga.xml:299(para)
 msgid ""
@@ -667,6 +668,16 @@ msgid ""
 "report if an user is on the phone or not, and <application>Ekiga</"
 "application> will display that information in its roster."
 msgstr ""
+"<application>Ekiga</application> le permite añadir los contactos a los que "
+"más llama a la lista de contactos. Le permite llamarlos o iniciar una "
+"conversación de chat con sus amigos sin dejar de recordar su URI. Si está "
+"soportado por el servicio, <application>Ekiga</application> mostrará "
+"<emphasis>información de presencia extendida</emphasis> acerca de sus "
+"amigos. Ekiga.net soporta publicación de presencia para sus usuarios. "
+"Sistemas de software PBX como <ulink url=\"http://www.asterisk.org\" type="
+"\"http\">Asterisk</ulink> pueden informar de si un usuario está o no al "
+"teléfono y <application>Ekiga</application> mostrará esa información en su "
+"lista de contactos."
 
 #: C/ekiga.xml:325(para)
 msgid ""
@@ -677,7 +688,6 @@ msgstr ""
 "PBX."
 
 #: C/ekiga.xml:329(para)
-#, fuzzy
 msgid ""
 "<application>Ekiga</application> is also able to detect other "
 "<application>Ekiga</application> users on the LAN using the Bonjour "
@@ -685,12 +695,9 @@ msgid ""
 "supposes you have a local mDNSResponder daemon running on your computer."
 msgstr ""
 "<application>Ekiga</application> también puede detectar otros usuarios de "
-"<application>Ekiga</application> en la LAN usando la tecnología Bonjour "
-"popularizada por Apple (tm). Eso supone que tenga un demonio mDNSResponder "
-"local funcionando en su equipo. Finalmente, <application>Ekiga</application> "
-"puede marcar contactos en el libro de direcciones local, compartiéndolo con "
-"<ulink url=\"http://www.novell.com/products/evolution\" type=\"http\">Novell "
-"Evolution</ulink>."
+"<application>Ekiga</application> en la red local (LAN) usando la tecnología "
+"Bonjour popularizada por Apple (tm) y mostrarlos en la lista de contactos. "
+"Eso supone que tenga un demonio mDNSResponder local funcionando en su equipo."
 
 #: C/ekiga.xml:333(para)
 msgid ""
@@ -737,9 +744,21 @@ msgid ""
 "products/evolution\" type=\"http\">Novell Evolution</ulink>. Support for "
 "more contact sources is possible."
 msgstr ""
+"<application>Ekiga</application> le permite buscar contactos usando varias "
+"fuentes como la libreta de direcciones de <ulink url=\"http://www.novell.com/"
+"products/evolution\" type=\"http\">Novell Evolution</ulink>, un directorio "
+"LDAP o el directorio de contactos de Ekiga.net. Puede usar el resultado de "
+"sus búsquedas para iniciar un chat, llamar al contacto o simplemente "
+"añadirle a su lista de contactos si le llama frecuentemente. Para comenzar a "
+"buscar contactos seleccione Chat -&gt; Libreta de direcciones en el menú. A "
+"su izquierda habrá una lista de diálogos mostrando los directorios LDAP así "
+"como la lista de libretas de directorios locales. Las fuentes "
+"predeterminadas son las páginas blancas de <application>Ekiga</application> "
+"y las libretas de direcciones de <ulink url=\"http://www.novell.com/products/"
+"evolution\" type=\"http\">Novell Evolution</ulink>. Es posible soporte para "
+"más fuentes de contactos."
 
 #: C/ekiga.xml:352(para)
-#, fuzzy
 msgid ""
 "<application>Ekiga</application> is able to browse any LDAP directory and "
 "use a specific attribute as calling URI. For example, you could have an LDAP "
@@ -749,20 +768,16 @@ msgid ""
 "LDAP Address Book, and fill in the required details. You can then right-"
 "click on the contact and call him using the call attribute as VoIP URI."
 msgstr ""
-"<application>Ekiga</application> puede usar diferentes tipos de libretas de "
-"direcciones, permitiéndole buscar múltiples contactos, y marcar los "
-"contactos locales. El tipo de libro de direcciones más común es el "
-"directorio LDAP donde puede encontrar información acerca de los usuarios "
-"registrados. <application>Ekiga</application> también puede examinar "
-"cualquier directorio LDAP y usar un atributo específico como URI de llamada. "
-"Por ejemplo, puede tener un directorio LDAP en su empresa, con un atributo "
-"específico conteniendo las extensiones locales de todos sus colegas. "
-"<application>Ekiga</application> es capaz de usar dicho directorio LDAP. "
-"Simplemente seleccione en Archivo -&gt; Nueva libreta de direcciones y elija "
-"LDAP como tipo."
+"<application>Ekiga</application> puede buscar en un directorio LDAP y usar "
+"atributos específicos para llamar a un URI. Por ejemplo, puede tener un "
+"directorio LDAP en su empresa, con atributos específicos que contengan las "
+"extensiones locales de todos sus compañeros de trabajo. <application>Ekiga</"
+"application> es capaz de usar tal directorio LDAP. Simplemente seleccione en "
+"Libreta de direcciones -&gt; Añadir una libreta de direcciones LDAP y "
+"rellene los detalles requeridos. Después puede pulsar con el botón derecho "
+"sobre el contacto y llamarle usando el atributo de llamada como VoIP URI."
 
 #: C/ekiga.xml:356(para)
-#, fuzzy
 msgid ""
 "To refresh the list of users for a specific address book, simply click the "
 "Find button. It will search for all users in that address book. You can "
@@ -772,22 +787,21 @@ msgid ""
 msgstr ""
 "Para refrescar la lista de usuarios para una libreta de direcciones "
 "específica, simplemente pulse en el botón Buscar. Buscará todos los usuarios "
-"en esa libreta de direcciones. Puede  contactar con la gente  pulsando dos "
-"veces en su campo resaltado. Puede también arrastrar y soltar para llamar a "
-"un interlocutor específico seleccionando el campo resaltado y arrastrándolo "
-"a la «Ventana principal»."
+"en esa libreta de direcciones. Puede contactar con la gente pulsando dos "
+"veces en su campo resaltado. También pueden enviarles un mensaje pulsando "
+"con el botón derecho del ratón y eligiendo la acción apropiada en el menú "
+"Acción de la ventana."
 
 #: C/ekiga.xml:360(para)
-#, fuzzy
 msgid ""
 "In certain cases you will want to search specifically for a person name, or "
 "his or her call URI in the <application>Ekiga</application> white pages. The "
 "address book window allows you to apply filters when searching for contacts."
 msgstr ""
-"En ciertos casos querrá buscar específicamente un nombre de persona, su URI "
-"de llamada, o su ubicación en las páginas blancas de <application>Ekiga</"
-"application>. La ventana de la libreta de direcciones le permite aplicar "
-"filtros cuando busca contactos."
+"En ciertos casos querrá buscar específicamente un nombre de persona o su URI "
+"de llamada en las páginas blancas de <application>Ekiga</application>. La "
+"ventana de la libreta de direcciones le permite aplicar filtros cuando busca "
+"contactos."
 
 #: C/ekiga.xml:364(para)
 msgid ""
@@ -813,6 +827,12 @@ msgid ""
 "in question. To discover what features are possible, simply select the "
 "address book and consult the Action menu."
 msgstr ""
+"Las libretas de direcciones locales proporcionadas por Novell Evolution le "
+"permiten añadir contactos nuevos o editar contactos existentes. Cada libreta "
+"de direcciones diferente permite un conjunto diferente de características "
+"que tienen sentido para la libreta de direcciones en particular. Para saber "
+"qué características con posibles, simplemente seleccione la libreta de "
+"direcciones y consulte el menú Acción."
 
 #: C/ekiga.xml:375(para)
 #, fuzzy
@@ -847,14 +867,12 @@ msgstr ""
 "Acción -&gt; Añadir a la lista local cuando el contacto está resaltado."
 
 #: C/ekiga.xml:383(para)
-#, fuzzy
 msgid ""
 "Finally, you can edit the groups your users belong to using the Action -&gt; "
 "Properties dialog when the contact is highlighted."
 msgstr ""
 "Finalmente, puede editar los grupos a los que sus usuarios pertenecen usando "
-"el diálogo de Propiedades del Usuario desde el menú principal o desde el "
-"menú del botón derecho del ratón o usando arrastrar y soltar entre grupos."
+"el diálogo Acción -&gt; Propiedades cuando el contacto está resaltado."
 
 #: C/ekiga.xml:391(title)
 msgid "Sending instant messages"
@@ -893,11 +911,12 @@ msgid "Updating his own status"
 msgstr "Actualizar su propio estado"
 
 #: C/ekiga.xml:412(para)
-#, fuzzy
 msgid ""
 "<application>Ekiga</application> allows you to publish your status to other "
 "users."
-msgstr "Manual de <application>Ekiga</application> 2.00"
+msgstr ""
+"<application>Ekiga</application> le permite publicar su estado a otros "
+"usuarios."
 
 #: C/ekiga.xml:416(para)
 msgid ""
@@ -921,9 +940,8 @@ msgid "Managing Calls"
 msgstr "Gestión de llamadas"
 
 #: C/ekiga.xml:427(title)
-#, fuzzy
 msgid "Forwarding incoming calls"
-msgstr "Gestión de llamadas entrantes"
+msgstr "Desvío de llamadas entrantes"
 
 #: C/ekiga.xml:428(para)
 #, fuzzy
@@ -979,13 +997,12 @@ msgstr ""
 "sesiones activas."
 
 #: C/ekiga.xml:444(para)
-#, fuzzy
 msgid ""
 "Ending a call: The communication to the remote user can be ended by "
 "selecting Chat -&gt; Hang up."
 msgstr ""
 "Terminar una llamada: La comunicación a un usuario remoto puede ser "
-"terminada seleccionando Llamar-&gt;Desconectar."
+"terminada seleccionando Chat-&gt;Colgar."
 
 #: C/ekiga.xml:448(para)
 #, fuzzy
@@ -1064,6 +1081,10 @@ msgid ""
 "the preferences window by selecting Edit -&gt; Preferences in the menu, and "
 "adjust your devices in the appropriate section."
 msgstr ""
+"También puede cambiar sus dispositivos de sonido y vídeo durante una "
+"llamada. Simplemente vaya a las preferencias seleccionando Editar -&gt; "
+"Preferencias en el menú, y ajustando sus dispositivos en la sección "
+"apropiada."
 
 #: C/ekiga.xml:477(title)
 msgid "Checking the call history"
