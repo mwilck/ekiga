@@ -1107,8 +1107,6 @@ on_videoinput_device_opened_cb (Ekiga::VideoInputManager & /* manager */,
                                 Ekiga::VideoInputSettings & settings,
                                 gpointer self)
 {
-  gm_main_window_update_sensitivity (GTK_WIDGET (self), TRUE, FALSE, TRUE);
-
   GmMainWindow *mw = NULL;
   g_return_if_fail (self != NULL);
   mw = gm_mw_get_mw (GTK_WIDGET (self));
@@ -1132,8 +1130,6 @@ on_videoinput_device_closed_cb (Ekiga::VideoInputManager & /* manager */, Ekiga:
   g_return_if_fail (self != NULL);
   mw = gm_mw_get_mw (GTK_WIDGET (self));
   g_return_if_fail (mw != NULL);
-
-  gtk_widget_set_sensitive (GTK_WIDGET (mw->video_settings_frame), FALSE);
 
   gm_main_window_update_sensitivity (GTK_WIDGET (self), TRUE, FALSE, FALSE);
   gm_main_window_update_logo_have_window (GTK_WIDGET (self));
@@ -2722,6 +2718,7 @@ video_window_expose_cb (GtkWidget *main_window,
     return FALSE;
 
   display_info.xdisplay = GDK_DISPLAY ();
+  gdk_flush();
 #endif
   display_info.widget_info_set = TRUE;
 
