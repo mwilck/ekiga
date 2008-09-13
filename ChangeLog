@@ -1,3 +1,10 @@
+2008-09-13  Damien Sandras  <dsandras@gnome.org>
+
+	* src/gui/statusmenu.cpp:
+	Don't show the clear menu entry if there is nothing to clear
+	- #551924. When all custom messages have been cleared, automatically 
+	close the dialog. 
+
 2008-09-13  Jan Schampera <jan.schampera@unix.net>
 
 	* lib/engine/gui/gtk-frontend/chat-area.cpp:
@@ -25,7 +32,7 @@
 
 2008-09-11  Matthias Schneider  <ma30002000@yahoo.de>
 
-        * src/gui/main.cpp:
+	* src/gui/main.cpp:
 	* lib/gui/xwindow.cpp:
 	* lib/gui/xwindow.h:
 	* lib/gui/xvwindow.cpp:

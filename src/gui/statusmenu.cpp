@@ -197,9 +197,11 @@ short_status_message_changed (gpointer id,
  * taken from the GmConf keys used by the StatusMenu.
  *
  * @param self is the StatusMenu
+ * @param custom_status_array is the list of custom messages
  */
 static void
-status_menu_populate (StatusMenu *self);
+status_menu_populate (StatusMenu *self,
+                      GSList *custom_status_array [NUM_STATUS_TYPES]);
 
 
 /** This function updates the default active status in the StatusMenu.
@@ -346,86 +348,25 @@ status_menu_option_changed (GtkComboBox *box,
 static void
 status_menu_custom_messages_changed (gpointer /*id*/,
                                      GmConfEntry *entry,
-                                     gpointer data)
+                                     gpointer self)
 {
-  GtkTreePath *type_path = NULL;
-  GtkTreeIter iter;
-  GdkPixbuf* icon = NULL;
-  int i = 0;
-  int category_option = 0;
-  int option = 0;
-  bool valid = false;
-  gchar *type_path_str = NULL;
-  StatusMenu *self = STATUS_MENU (data);
   std::string key = gm_conf_entry_get_key (entry);
-  GSList *list = gm_conf_entry_get_list (entry);
-  GSList *liter = list;
+  GSList *current = gm_conf_entry_get_list (entry);
+  GSList *custom_status_array [NUM_STATUS_TYPES];
 
-  if (key == PERSONAL_DATA_KEY "online_custom_status") {
-
-    category_option = TYPE_CUSTOM_ONLINE_NEW;
-    option = TYPE_CUSTOM_ONLINE;
-  }
-  else if (key == PERSONAL_DATA_KEY "away_custom_status") {
-
-    category_option = TYPE_CUSTOM_AWAY_NEW;
-    option = TYPE_CUSTOM_AWAY;
-  }
-  else if (key == PERSONAL_DATA_KEY "dnd_custom_status") {
-
-    category_option = TYPE_CUSTOM_DND_NEW;
-    option = TYPE_CUSTOM_DND;
-  }
-
-  // Remove old entries
-  valid = gtk_tree_model_get_iter_first (GTK_TREE_MODEL (self->priv->list_store), &iter);
-  while (valid) {
-
-    gtk_tree_model_get (GTK_TREE_MODEL (self->priv->list_store), &iter, COL_MESSAGE_TYPE, &i, -1); 
-
-    if (i == category_option) {
-
-      // Remember the path of the category first item
-      if (!type_path_str) {
-
-        type_path = gtk_tree_model_get_path (GTK_TREE_MODEL (self->priv->list_store), &iter);
-        type_path_str = gtk_tree_path_to_string (type_path);
-        gtk_tree_path_free (type_path);
-        type_path = NULL;
-      }
-    }
-
-    if (i == option) 
-      valid = gtk_list_store_remove (GTK_LIST_STORE (self->priv->list_store), &iter);
+  for (int i = 0 ; i < NUM_STATUS_TYPES ; i++) {
+    if (key == status_types_keys [i])
+      custom_status_array [i] = current;
     else
-      valid = gtk_tree_model_iter_next (GTK_TREE_MODEL (self->priv->list_store), &iter);
-  };
-
-  // Add the new items
-  if (type_path_str 
-      && gtk_tree_model_get_iter_from_string (GTK_TREE_MODEL (self->priv->list_store), &iter, type_path_str)) {
-
-    icon = gtk_widget_render_icon (GTK_WIDGET (self),
-                                   stock_status [option - NUM_STATUS_TYPES - 1],
-                                   GTK_ICON_SIZE_MENU, NULL);
-    while (liter) {
-
-      gtk_list_store_insert_after (GTK_LIST_STORE (self->priv->list_store), &iter, &iter);
-      gtk_list_store_set (GTK_LIST_STORE (self->priv->list_store), &iter,
-                          COL_ICON, icon, 
-                          COL_MESSAGE, (char*) (liter->data), 
-                          COL_MESSAGE_TYPE, option,
-                          COL_SEPARATOR, false, 
-                          -1); 
-
-      liter = g_slist_next (liter);
-    }
-  
-    g_object_unref (icon);
+      custom_status_array [i] = gm_conf_get_string_list (status_types_keys [i]);
   }
 
-  g_slist_foreach (list, (GFunc) g_free, NULL);
-  g_slist_free (list);
+  status_menu_populate (STATUS_MENU (self), custom_status_array);
+
+  for (int i = 0 ; i < NUM_STATUS_TYPES ; i++) {
+    g_slist_foreach (custom_status_array [i], (GFunc) g_free, NULL);
+    g_slist_free (custom_status_array [i]);
+  }
 }
 
 
@@ -480,17 +421,21 @@ short_status_message_changed (gpointer /*id*/,
  * Static methods
  */
 static void
-status_menu_populate (StatusMenu *self)
+status_menu_populate (StatusMenu *self,
+                      GSList *custom_status_array [NUM_STATUS_TYPES])
 {
+  gboolean has_custom_messages = false;
   GSList *custom_status = NULL;
   GSList *liter = NULL;
   GtkTreeIter iter;
   GdkPixbuf* icon = NULL;
 
+  gtk_list_store_clear (GTK_LIST_STORE (self->priv->list_store));
+
   for (int i = 0 ; i < NUM_STATUS_TYPES ; i++) {
 
     statuses [i] = gettext (statuses [i]);
-    custom_status = gm_conf_get_string_list (status_types_keys[i]);
+    custom_status = custom_status_array [i];
     liter = custom_status;
 
     icon = gtk_widget_render_icon (GTK_WIDGET (self),
@@ -524,30 +469,39 @@ status_menu_populate (StatusMenu *self)
                           -1); 
 
       liter = g_slist_next (liter);
+      has_custom_messages = true;
     }
+
+    if (i < NUM_STATUS_TYPES - 1) {
+      gtk_list_store_append (GTK_LIST_STORE (self->priv->list_store), &iter);
+      gtk_list_store_set (GTK_LIST_STORE (self->priv->list_store), &iter,
+                          COL_SEPARATOR, true, 
+                          -1); 
+    }
+
+    g_object_unref (icon);
+  }
+
+  /* Clear message */
+  if (has_custom_messages) {
 
     gtk_list_store_append (GTK_LIST_STORE (self->priv->list_store), &iter);
     gtk_list_store_set (GTK_LIST_STORE (self->priv->list_store), &iter,
                         COL_SEPARATOR, true, 
                         -1); 
 
-    g_slist_foreach (custom_status, (GFunc) g_free, NULL);
-    g_slist_free (custom_status);
+    icon = gtk_widget_render_icon (GTK_WIDGET (self),
+                                   GTK_STOCK_CLEAR,
+                                   GTK_ICON_SIZE_MENU, NULL);
+    gtk_list_store_append (GTK_LIST_STORE (self->priv->list_store), &iter);
+    gtk_list_store_set (GTK_LIST_STORE (self->priv->list_store), &iter,
+                        COL_ICON, icon,
+                        COL_MESSAGE, _("Clear"), 
+                        COL_MESSAGE_TYPE, TYPE_CLEAR,
+                        COL_SEPARATOR, false, 
+                        -1); 
     g_object_unref (icon);
   }
-
-  /* Clear message */
-  icon = gtk_widget_render_icon (GTK_WIDGET (self),
-                                 GTK_STOCK_CLEAR,
-                                 GTK_ICON_SIZE_MENU, NULL);
-  gtk_list_store_append (GTK_LIST_STORE (self->priv->list_store), &iter);
-  gtk_list_store_set (GTK_LIST_STORE (self->priv->list_store), &iter,
-                      COL_ICON, icon,
-                      COL_MESSAGE, _("Clear"), 
-                      COL_MESSAGE_TYPE, TYPE_CLEAR,
-                      COL_SEPARATOR, false, 
-                      -1); 
-  g_object_unref (icon);
 }
 
 
@@ -607,6 +561,7 @@ status_menu_clear_status_message_dialog_run (StatusMenu *self)
   GSList *conf_list [3] = { NULL, NULL, NULL };
   GtkWidget *dialog = NULL;
   GtkWidget *vbox = NULL;
+  GtkWidget *frame = NULL;
   GtkWidget *tree_view = NULL;
 
   GdkPixbuf *pixbuf = NULL;
@@ -619,7 +574,6 @@ status_menu_clear_status_message_dialog_run (StatusMenu *self)
   bool close = false;
   int response = 0;
   int i = 0;
-  int current_option = 0;
   gchar *message = NULL;
 
   dialog = gtk_dialog_new_with_buttons (_("Custom Message"),
@@ -663,7 +617,10 @@ status_menu_clear_status_message_dialog_run (StatusMenu *self)
                                        "text", 1,
                                        NULL);
   gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
-  gtk_box_pack_start (GTK_BOX (vbox), tree_view, FALSE, FALSE, 2);
+
+  frame = gtk_frame_new (NULL);
+  gtk_container_add (GTK_CONTAINER (frame), tree_view);
+  gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 2);
 
   if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (self->priv->list_store), &iter)) {
 
@@ -702,6 +659,10 @@ status_menu_clear_status_message_dialog_run (StatusMenu *self)
           selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (tree_view));
           if (gtk_tree_selection_get_selected (selection, NULL, &iter)) 
             gtk_list_store_remove (GTK_LIST_STORE (list_store), &iter);
+          if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (list_store), &iter)) 
+            gtk_tree_selection_select_iter (selection, &iter);
+          else
+            close = true;
         break;
 
         case GTK_RESPONSE_CLOSE:
@@ -717,8 +678,7 @@ status_menu_clear_status_message_dialog_run (StatusMenu *self)
       gtk_tree_model_get (GTK_TREE_MODEL (list_store), &iter,
                           1, &message,
                           2, &i, -1);
-      conf_list[i - NUM_STATUS_TYPES - 1] = 
-        g_slist_append (conf_list[i - NUM_STATUS_TYPES - 1], g_strdup (message));
+      conf_list[i - NUM_STATUS_TYPES - 1] = g_slist_append (conf_list[i - NUM_STATUS_TYPES - 1], g_strdup (message));
       g_free (message);
     } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (list_store), &iter));
   }
@@ -729,7 +689,9 @@ status_menu_clear_status_message_dialog_run (StatusMenu *self)
     g_slist_free (conf_list[j]);
   }
 
-  status_menu_set_option (self, status_types_names[current_option], statuses[current_option]);
+  // Reset current config
+  gm_conf_set_string (PERSONAL_DATA_KEY "short_status", "online");
+  gm_conf_set_string (PERSONAL_DATA_KEY "long_status", "");
 
   gtk_widget_destroy (dialog);
 }
@@ -839,6 +801,7 @@ static void
 status_menu_init (StatusMenu *self)
 {
   GtkCellRenderer *renderer = NULL;
+  GSList *custom_status_array [NUM_STATUS_TYPES];
 
   self->priv = new StatusMenuPrivate;
 
@@ -865,7 +828,15 @@ status_menu_init (StatusMenu *self)
                 "ellipsize-set", true, 
                 "ellipsize", PANGO_ELLIPSIZE_END, NULL);
 
-  status_menu_populate (self);
+  for (int i = 0 ; i < NUM_STATUS_TYPES ; i++)
+    custom_status_array [i] = gm_conf_get_string_list (status_types_keys [i]);
+
+  status_menu_populate (self, custom_status_array);
+  
+  for (int i = 0 ; i < NUM_STATUS_TYPES ; i++) {
+    g_slist_foreach (custom_status_array [i], (GFunc) g_free, 0);
+    g_slist_free (custom_status_array [i]);
+  }
 
   gtk_combo_box_set_active (GTK_COMBO_BOX (self), 0);
 
