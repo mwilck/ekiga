@@ -93,10 +93,11 @@ PVideoOutputDevice_EKIGA::~PVideoOutputDevice_EKIGA()
 {
   PWaitAndSignal m(videoDisplay_mutex);
 
-  if (is_active)
+  if (is_active) {
     devices_nbr--;
-  if (devices_nbr == 0) {
-    videooutput_core.stop();
+    if (devices_nbr==0)
+      videooutput_core.stop();
+    is_active = false;
   }
 }
 
@@ -148,13 +149,14 @@ bool PVideoOutputDevice_EKIGA::SetFrameData (unsigned x,
   if (!endFrame)
     return FALSE;
 
-  if (devices_nbr == 0)
-    videooutput_core.start();
-  /* Device is now open */
   if (!is_active) {
+    if (devices_nbr == 0) {
+      videooutput_core.start();
+    }
     is_active = TRUE;
     devices_nbr++;
   }
+
   videooutput_core.set_frame_data((const char*) data, width, height, (device_id == LOCAL), devices_nbr);
 
   return TRUE;

@@ -1,5 +1,15 @@
 2008-09-11  Matthias Schneider  <ma30002000@yahoo.de>
 
+	* src/devices/videooutput.cpp:
+	* src/gui/main.cpp:
+	Fix reference counting in video output device
+	(when coming out of a re-invited call whith 
+	preview enabled it did not show the preview
+	video anymore). Also fix the quality meter
+	which was updated twice with different values.
+
+2008-09-11  Matthias Schneider  <ma30002000@yahoo.de>
+
 	* lib/gui/xwindow.cpp:
 	One more useful trace.
 
