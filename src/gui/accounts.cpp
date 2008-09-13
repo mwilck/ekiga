@@ -684,6 +684,11 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
   atk_object_set_name (aobj, _("Accounts"));
 
   renderer = gtk_cell_renderer_toggle_new ();
+  /* Translators:
+   * The following string "A" means "activated" or "active". It's a column
+   * description in the list of configured accounts, it shows if an account
+   * is activated or not (a status the user can choose).
+   */
   column = gtk_tree_view_column_new_with_attributes (_("A"),
 						     renderer,
 						     "active", 
