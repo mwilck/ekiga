@@ -571,11 +571,19 @@ status_menu_clear_status_message_dialog_run (StatusMenu *self)
   GtkTreeViewColumn *column = NULL;
   GtkWidget *label = NULL;
 
+  bool found = false;
   bool close = false;
   int response = 0;
   int i = 0;
   gchar *message = NULL;
+  gchar *short_status = NULL;
+  gchar *long_status = NULL;
+  
+  // Current status
+  short_status = gm_conf_get_string (PERSONAL_DATA_KEY "short_status");
+  long_status = gm_conf_get_string (PERSONAL_DATA_KEY "long_status");
 
+  // Build the dialog
   dialog = gtk_dialog_new_with_buttons (_("Custom Message"),
                                         self->priv->parent,
                                         (GtkDialogFlags) (GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT),
@@ -635,7 +643,6 @@ status_menu_clear_status_message_dialog_run (StatusMenu *self)
                             COL_ICON, &pixbuf, 
                             COL_MESSAGE, &message,
 			    -1);
-
         gtk_list_store_append (GTK_LIST_STORE (list_store), &liter);
         gtk_list_store_set (GTK_LIST_STORE (list_store), &liter, 
                             COL_ICON, pixbuf, 
@@ -649,6 +656,11 @@ status_menu_clear_status_message_dialog_run (StatusMenu *self)
     } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (self->priv->list_store), &iter));
   }
 
+  // Select the first iter
+  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (tree_view));
+  if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (list_store), &iter)) 
+    gtk_tree_selection_select_iter (selection, &iter);
+
   gtk_widget_show_all (dialog);
   while (!close) {
     response = gtk_dialog_run (GTK_DIALOG (dialog));
@@ -656,7 +668,6 @@ status_menu_clear_status_message_dialog_run (StatusMenu *self)
     switch (response)
       {
         case GTK_RESPONSE_APPLY:
-          selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (tree_view));
           if (gtk_tree_selection_get_selected (selection, NULL, &iter)) 
             gtk_list_store_remove (GTK_LIST_STORE (list_store), &iter);
           if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (list_store), &iter)) 
@@ -678,6 +689,9 @@ status_menu_clear_status_message_dialog_run (StatusMenu *self)
       gtk_tree_model_get (GTK_TREE_MODEL (list_store), &iter,
                           1, &message,
                           2, &i, -1);
+      if (long_status && message && !strcmp (long_status, message))
+        found = true;
+
       conf_list[i - NUM_STATUS_TYPES - 1] = g_slist_append (conf_list[i - NUM_STATUS_TYPES - 1], g_strdup (message));
       g_free (message);
     } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (list_store), &iter));
@@ -689,9 +703,14 @@ status_menu_clear_status_message_dialog_run (StatusMenu *self)
     g_slist_free (conf_list[j]);
   }
 
-  // Reset current config
-  gm_conf_set_string (PERSONAL_DATA_KEY "short_status", "online");
-  gm_conf_set_string (PERSONAL_DATA_KEY "long_status", "");
+  if (!found) {
+    // Reset current config
+    gm_conf_set_string (PERSONAL_DATA_KEY "short_status", "online");
+    gm_conf_set_string (PERSONAL_DATA_KEY "long_status", "");
+  }
+  else {
+    status_menu_set_option (STATUS_MENU (self), short_status, long_status);
+  }
 
   gtk_widget_destroy (dialog);
 }

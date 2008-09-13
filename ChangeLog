@@ -1,6 +1,12 @@
 2008-09-13  Damien Sandras  <dsandras@gnome.org>
 
 	* src/gui/statusmenu.cpp:
+	When we clear the current custom status, switch back to online.
+	Otherwise, make sure the current custom status stays active.
+
+2008-09-13  Damien Sandras  <dsandras@gnome.org>
+
+	* src/gui/statusmenu.cpp:
 	Don't show the clear menu entry if there is nothing to clear
 	- #551924. When all custom messages have been cleared, automatically 
 	close the dialog. 
