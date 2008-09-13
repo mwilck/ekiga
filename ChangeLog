@@ -1,14 +1,28 @@
+2008-09-11  Matthias Schneider  <ma30002000@yahoo.de>
+
+        * src/gui/main.cpp:
+	* lib/gui/xwindow.cpp:
+	* lib/gui/xwindow.h:
+	* lib/gui/xvwindow.cpp:
+	Fix a rare crash when using SHM over a remote X connection.
+	X explicitly tells us we can use SHM (which IS supported
+	by the X server) but does not tell us attach will crash since
+	client and server do not even have shared memory since they are 
+	different systems. Thus me must catch the X error on XShmAttach
+	to see if we can use it or not.
+
 2008-09-13  Jan Schampera <jan.schampera@unix.net>
 
 	* src/gui/accounts.cpp:
 	Added a comment to help translators a bit.
 
 2008-09-11  Matthias Schneider  <ma30002000@yahoo.de>
+
 	* src/gui/main.cpp:
 	Do not enable "suspend video" when only in preview mode.
 	Fix problem of GC not yet synchnroized with X server
 	when using it.
-	
+
 2008-09-12  Julien Puydt  <jpuydt@gnome.org>
 
 	* configure.ac: Applied patch from Jared D. McNeill to support NetBSD.

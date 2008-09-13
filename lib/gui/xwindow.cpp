@@ -85,6 +85,15 @@ struct xFormatsentry {
   {NULL, 0, 0, 0, 0, 0, 0}
 };
 
+#ifdef HAVE_SHM
+bool XWindow::_shmError = false;
+
+static void catchXShmError(Display * , XErrorEvent * )
+{
+  XWindow::_shmError = true;
+}
+#endif
+
 XWindow::XWindow()
 {
   // initialize class variables
@@ -1065,18 +1074,26 @@ void XWindow::ShmAttach(int imageWidth, int imageHeight)
     _XShmInfo.readOnly = False;
 
     // Attaching the shared memory to the display
-    if (!XShmAttach (_display, &_XShmInfo)) {
+    XErrorHandler oldHandler = XSetErrorHandler((XErrorHandler) catchXShmError);
+    Status status = XShmAttach (_display, &_XShmInfo);
+    XSync(_display, False);
+    XSetErrorHandler((XErrorHandler) oldHandler);
+
+    if ( (status != True) || (_shmError) ) {
       XDestroyImage(_XImage);
       _XImage = NULL;
-      if (_XShmInfo.shmaddr != ((char *) -1))
+      if (_XShmInfo.shmaddr != ((char *) -1)) {
         shmdt(_XShmInfo.shmaddr);
+      }
       PTRACE(1, "X11\t  XShmAttach failed");
+      if ( (status == True) && (_shmError) ) {
+        PTRACE(1, "X11\t  X server supports SHM but apparently we are remotely connected...");
+      }
       _useShm = false;
     } 
   } 
 
   if (_useShm) {
-    XSync(_display, False);
     shmctl(_XShmInfo.shmid, IPC_RMID, 0);
   }
 }

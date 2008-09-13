@@ -40,14 +40,18 @@
 
 #include <ptlib/object.h>
 
-#ifdef HAVE_SHM
-#include <sys/shm.h>
-#include <sys/ipc.h>
-#endif
-
 #define GUID_I420_PLANAR 0x30323449
 #define GUID_YV12_PLANAR 0x32315659
 
+#ifdef HAVE_SHM
+#include <sys/shm.h>
+#include <sys/ipc.h>
+
+static void catchXShmError(Display * , XErrorEvent * )
+{
+  XWindow::_shmError = true;
+}
+#endif
 
 XVWindow::XVWindow()
 {
@@ -703,18 +707,26 @@ void XVWindow::ShmAttach(int imageWidth, int imageHeight)
       _XShmInfo[i].readOnly = False;
   
       // Attaching the shared memory to the display
-      if (!XShmAttach (_display, &_XShmInfo[i])) {
+      XErrorHandler oldHandler = XSetErrorHandler((XErrorHandler) catchXShmError);
+      Status status = XShmAttach (_display, &_XShmInfo[i]);
+      XSync(_display, False);
+      XSetErrorHandler((XErrorHandler) oldHandler);
+
+      if ( (status != True) || (_shmError) ) {
         XFree (_XVImage[i]);
         _XVImage[i] = NULL;
-        if (_XShmInfo[i].shmaddr != ((char *) -1))
+        if (_XShmInfo[i].shmaddr != ((char *) -1)) {
           shmdt(_XShmInfo[i].shmaddr);
+        }
         PTRACE(1, "XVideo\t  XShmAttach failed");
+        if ( (status == True) && (_shmError) ) {
+          PTRACE(1, "XVideo\t  X server supports SHM but apparently we are remotely connected...");
+        }
         _useShm = false;
       } 
     } 
   
     if (_useShm) {
-      XSync(_display, False);
       shmctl(_XShmInfo[i].shmid, IPC_RMID, 0);
     }
   }

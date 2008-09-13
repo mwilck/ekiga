@@ -130,6 +130,10 @@ public:
   virtual void RegisterSlave (XWindow *slave) { _slave = slave; };
 
   virtual void SetSwScalingAlgo (unsigned int algorithm) { _scalingAlgorithm = algorithm; };
+
+#ifdef HAVE_SHM
+  static bool _shmError;
+#endif
 protected:
   Display *_display;
   Window _rootWindow;

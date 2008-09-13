@@ -2713,11 +2713,12 @@ video_window_expose_cb (GtkWidget *main_window,
     return FALSE;
 
   display_info.gc = GDK_GC_XGC(mw->video_widget_gc);
+  display_info.xdisplay = GDK_GC_XDISPLAY (mw->video_widget_gc);
+
   display_info.window = GDK_WINDOW_XWINDOW (mw->main_video_image->window);
   if (display_info.window == 0)  //FIXME: Should be None
     return FALSE;
 
-  display_info.xdisplay = GDK_DISPLAY ();
   gdk_flush();
 #endif
   display_info.widget_info_set = TRUE;
