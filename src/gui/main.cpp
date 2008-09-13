@@ -35,6 +35,7 @@
  *                          build the main window.
  */
 
+#include "revision.h"
 
 #include "config.h"
 
@@ -4574,10 +4575,6 @@ main (int argc,
 #endif
 
   /* Globals */
-#ifdef HAVE_ESD
-  setenv ("ESD_NO_SPAWN", "1", 1);
-#endif
-
 #ifndef WIN32
   if (!XInitThreads ())
     exit (1);
@@ -4676,6 +4673,9 @@ main (int argc,
     PTrace::Initialise (PMAX (PMIN (5, debug_level), 0), NULL,
 			PTrace::Timestamp | PTrace::Thread
 			| PTrace::Blocks | PTrace::DateAndTime);
+#ifdef EKIGA_REVISION
+  PTRACE(1, "Ekiga SVN revision: " << EKIGA_REVISION);
+#endif
 
 #ifdef HAVE_DBUS
   if (!ekiga_dbus_claim_ownership ()) {
