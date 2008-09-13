@@ -150,6 +150,8 @@ CallManager::CallManager (Ekiga::ServiceCore & _core)
 #else
   queue = g_async_queue_new ();
 #endif
+
+  PInterfaceMonitor::GetInstance().SetRefreshInterval (15000);
 }
 
 
