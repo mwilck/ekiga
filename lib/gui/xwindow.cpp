@@ -165,6 +165,7 @@ XWindow::~XWindow()
 
   if (_XWindow) {
 
+    PTRACE(4, "X11\tUnmapping and destroying Window with ID " << _XWindow);
     XUnmapWindow (_display, _XWindow);
     XDestroyWindow (_display, _XWindow);
     XFlush (_display);
