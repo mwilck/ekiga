@@ -244,7 +244,7 @@ chat_area_add_message (ChatArea* self,
   GtkTextBuffer* buffer = NULL;
   GtkTextIter iter;
 
-  str = g_strdup_printf ("<i>%s %s</i> %s\n", from, _("says:"), txt);
+  str = g_strdup_printf ("<b><i>%s %s</i></b>\n%s\n", from, _("says:"), txt);
   buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (self->priv->text_view));
   gtk_text_buffer_get_end_iter (buffer, &iter);
   gm_text_buffer_enhancer_insert_text (self->priv->enhancer, &iter,
