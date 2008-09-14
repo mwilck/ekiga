@@ -464,7 +464,7 @@ void
 XWindow::Sync()
 {
   XLockDisplay(_display);
-  XSync (_display, false);
+  XSync (_display, False);
   XUnlockDisplay(_display);
 }
 
@@ -547,7 +547,7 @@ XWindow::ToggleFullscreen ()
   XLockDisplay (_display);
   XMapRaised (_display, _XWindow);
   XRaiseWindow (_display, _XWindow);
-  XFlush (_display);
+  XSync (_display, False);
   XUnlockDisplay (_display);
 
   _state.fullscreen = !_state.fullscreen;
@@ -606,7 +606,7 @@ XWindow::GetWindow (int *x,
   SetDecoration (false);
 
   XLockDisplay (_display);
-  XSync (_display,false); 
+  XSync (_display, False); 
   XGetGeometry (_display, _XWindow, &root, &oldx, &oldy, windowWidth, windowHeight, &ud, &ud);
   XTranslateCoordinates (_display, _XWindow, root, oldx, oldy, x, y, &_dw);
   XUnlockDisplay (_display);
@@ -635,7 +635,7 @@ XWindow::CreateAtomsAndWindow(GC gc,
   XA_NET_WM_STATE_STAYS_ON_TOP = XInternAtom (_display, "_NET_WM_STATE_STAYS_ON_TOP", False);
   XA_NET_WM_STATE_BELOW = XInternAtom (_display, "_NET_WM_STATE_BELOW", False);
 
-  XSync (_display, false);
+  XSync (_display, False);
 
   if (!checkDepth()) 
     return false;

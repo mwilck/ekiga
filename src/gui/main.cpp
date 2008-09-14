@@ -1053,8 +1053,8 @@ on_size_changed_cb (Ekiga::VideoOutputManager & /* manager */, unsigned width, u
   gtk_widget_size_request (GTK_WIDGET (mw->main_video_image), &req);
   gtk_window_get_size (GTK_WINDOW (self), &x, &y);
   gtk_widget_set_size_request (GTK_WIDGET (mw->main_video_image), width, height);
-  gtk_window_resize (GTK_WINDOW (self), x + (width - req.width), y + (height - req.height));
-
+  gtk_window_resize (GTK_WINDOW (self), width, height);
+  
   GdkRectangle rect;
   rect.x = mw->main_video_image->allocation.x;
   rect.y = mw->main_video_image->allocation.y;
