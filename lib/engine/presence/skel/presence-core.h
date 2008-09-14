@@ -220,6 +220,11 @@ namespace Ekiga
      */
     void add_presentity_decorator (PresentityDecorator &decorator);
 
+    /** Removes a decorator from the pool of presentity decorators.
+     * @param The presentity decorator.
+     */
+    void remove_presentity_decorator (PresentityDecorator& decorator);
+
     /** Populates a menu with the actions available on a given uri.
      * @param The uri for which the decoration is needed.
      * @param The builder to populate.
@@ -230,7 +235,7 @@ namespace Ekiga
 
   private:
 
-    std::list<PresentityDecorator *> presentity_decorators;
+    std::list<PresentityDecorator*> presentity_decorators;
 
     /*** API to help presentities get presence ***/
   public:
@@ -239,6 +244,11 @@ namespace Ekiga
      * @param The presence fetcher.
      */
     void add_presence_fetcher (PresenceFetcher &fetcher);
+
+    /** Removes a fetcher from the pool of presentce fetchers.
+     * @param The presence fetcher.
+     */
+    void remove_presence_fetcher (PresenceFetcher &fetcher);
 
     /** Tells the PresenceCore that someone is interested in presence
      * information for the given uri.
@@ -260,7 +270,7 @@ namespace Ekiga
 
   private:
 
-    std::set<PresenceFetcher *> presence_fetchers;
+    std::list<PresenceFetcher*> presence_fetchers;
     void on_presence_received (const std::string uri,
 			       const std::string presence);
     void on_status_received (const std::string uri,
@@ -281,10 +291,11 @@ namespace Ekiga
   public:
 
     void add_presence_publisher (PresencePublisher &publisher);
+    void remove_presence_publisher (PresencePublisher& publisher);
 
   private:
 
-    std::set<PresencePublisher *> presence_publishers;
+    std::list<PresencePublisher*> presence_publishers;
     void publish (const PersonalDetails* details);
     void on_personal_details_updated (PersonalDetails &details);
     void on_registration_event (const Ekiga::Account & account,

@@ -135,6 +135,12 @@ Ekiga::PresenceCore::add_presentity_decorator (PresentityDecorator &decorator)
   presentity_decorators.push_back (&decorator);
 }
 
+void
+Ekiga::PresenceCore::remove_presentity_decorator (PresentityDecorator& decorator)
+{
+  presentity_decorators.remove (&decorator);
+}
+
 bool
 Ekiga::PresenceCore::populate_presentity_menu (Presentity& presentity,
 					       const std::string uri,
@@ -156,7 +162,7 @@ Ekiga::PresenceCore::populate_presentity_menu (Presentity& presentity,
 void
 Ekiga::PresenceCore::add_presence_fetcher (PresenceFetcher &fetcher)
 {
-  presence_fetchers.insert (&fetcher);
+  presence_fetchers.push_back (&fetcher);
   fetcher.presence_received.connect (sigc::mem_fun (this,
 						    &Ekiga::PresenceCore::on_presence_received));
   fetcher.status_received.connect (sigc::mem_fun (this,
@@ -169,13 +175,20 @@ Ekiga::PresenceCore::add_presence_fetcher (PresenceFetcher &fetcher)
 }
 
 void
+Ekiga::PresenceCore::remove_presence_fetcher (PresenceFetcher& fetcher)
+{
+  presence_fetchers.remove (&fetcher);
+  // FIXME: unconnect the signals!
+}
+
+void
 Ekiga::PresenceCore::fetch_presence (const std::string uri)
 {
   uri_infos[uri].count++;
 
   if (uri_infos[uri].count == 1) {
 
-    for (std::set<PresenceFetcher *>::iterator iter
+    for (std::list<PresenceFetcher*>::iterator iter
 	   = presence_fetchers.begin ();
 	 iter != presence_fetchers.end ();
 	 iter++)
@@ -194,7 +207,7 @@ void Ekiga::PresenceCore::unfetch_presence (const std::string uri)
 
     uri_infos.erase (uri_infos.find (uri));
 
-    for (std::set<PresenceFetcher *>::iterator iter
+    for (std::list<PresenceFetcher*>::iterator iter
 	   = presence_fetchers.begin ();
 	 iter != presence_fetchers.end ();
 	 iter++)
@@ -221,12 +234,18 @@ Ekiga::PresenceCore::on_status_received (const std::string uri,
 void
 Ekiga::PresenceCore::add_presence_publisher (PresencePublisher &publisher)
 {
-  presence_publishers.insert (&publisher);
+  presence_publishers.push_back (&publisher);
+}
+
+void
+Ekiga::PresenceCore::remove_presence_publisher (PresencePublisher& publisher)
+{
+  presence_publishers.remove (&publisher);
 }
 
 void Ekiga::PresenceCore::publish (const PersonalDetails* details) 
 {
-  for (std::set<PresencePublisher *>::iterator iter
+  for (std::list<PresencePublisher*>::iterator iter
 	 = presence_publishers.begin ();
        iter != presence_publishers.end ();
        iter++)

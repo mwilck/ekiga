@@ -73,6 +73,9 @@ is_supported_address (const std::string uri)
   return false;
 }
 
+/* FIXME: add here an Ekiga::Service which will add&remove publishers,
+ * decorators and fetchers
+ */
 
 using namespace Opal;
 

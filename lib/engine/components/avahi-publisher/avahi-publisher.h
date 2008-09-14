@@ -54,8 +54,7 @@
 
 namespace Avahi
 {
-  class PresencePublisher: public Ekiga::Service,
-			   public Ekiga::PresencePublisher
+  class PresencePublisher: public Ekiga::PresencePublisher
   {
 public:
 
@@ -64,12 +63,6 @@ public:
 		       Ekiga::CallCore& call_core);
 
     ~PresencePublisher ();
-
-    const std::string get_name () const
-      { return "avahi-presence-publisher"; }
-
-    const std::string get_description () const
-      { return "\tObject bringing in Avahi presence publishing"; }
 
     void publish (const Ekiga::PersonalDetails & details);
 
