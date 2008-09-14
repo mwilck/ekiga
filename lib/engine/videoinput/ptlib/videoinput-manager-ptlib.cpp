@@ -215,12 +215,6 @@ void GMVideoInputManager_ptlib::set_contrast (unsigned contrast)
 bool GMVideoInputManager_ptlib::has_device(const std::string & source, const std::string & device_name, unsigned capabilities, Ekiga::VideoInputDevice & device)
 {
   if (source == "video4linux") {
-    if (capabilities & 0x01) {
-      device.type = DEVICE_TYPE;
-      device.source = "V4L";
-      device.name = device_name;
-      return true;
-    }
     if (capabilities & 0x02) {
       device.type = DEVICE_TYPE;
       device.source = "V4L2";
