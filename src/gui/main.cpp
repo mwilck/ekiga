@@ -55,6 +55,7 @@
 #include "gmconnectbutton.h"
 #include "gmstockicons.h"
 #include "gmconf.h"
+#include "gmwindow.h"
 #include "gmmenuaddon.h"
 #include "gmlevelmeter.h"
 #include "gmpowermeter.h"
@@ -140,9 +141,6 @@ struct _GmMainWindow
 
   GtkWidget *main_menu;
   GtkWidget *main_toolbar;
-
-  int x;
-  int y;
 
   GtkWidget *window_vbox;
 
@@ -746,8 +744,7 @@ static void on_cleared_call_cb (Ekiga::CallManager & /*manager*/,
     gm_main_window_hide_call_panel (GTK_WIDGET (self));
   gm_main_window_clear_stats (GTK_WIDGET (self));
   gm_main_window_update_logo_have_window (GTK_WIDGET (self));
-  gm_main_window_push_message (GTK_WIDGET (self), NULL);
-  gm_main_window_flash_message (GTK_WIDGET (self), "%s", reason.c_str ());
+  gm_main_window_push_message (GTK_WIDGET (self), "%s", reason.c_str ());
 
   if (mw->current_call && mw->current_call->get_id () == call.get_id ()) {
 
@@ -1037,9 +1034,8 @@ on_videooutput_device_closed_cb (Ekiga::VideoOutputManager & /* manager */, gpoi
   gtk_menu_section_set_sensitive (mw->main_menu, "fullscreen", TRUE);
 
   gtk_menu_section_set_sensitive (mw->main_menu, "zoom_in", FALSE);
-
-//  gm_main_window_update_logo_have_window (GTK_WIDGET (self));
 }
+
 
 void 
 on_fullscreen_mode_changed_cb (Ekiga::VideoOutputManager & /* manager */, Ekiga::VideoOutputFSToggle toggle,  gpointer self)
@@ -1051,8 +1047,13 @@ void
 on_size_changed_cb (Ekiga::VideoOutputManager & /* manager */, unsigned width, unsigned height,  gpointer self)
 {
   GmMainWindow *mw = gm_mw_get_mw (GTK_WIDGET (self));
+  GtkRequisition req;
+  int x, y;
 
-  gtk_widget_set_size_request (mw->main_video_image, width, height);
+  gtk_widget_size_request (GTK_WIDGET (mw->main_video_image), &req);
+  gtk_window_get_size (GTK_WINDOW (self), &x, &y);
+  gtk_widget_set_size_request (GTK_WIDGET (mw->main_video_image), width, height);
+  gtk_window_resize (GTK_WINDOW (self), x + (width - req.width), y + (height - req.height));
 
   GdkRectangle rect;
   rect.x = mw->main_video_image->allocation.x;
@@ -1061,8 +1062,6 @@ on_size_changed_cb (Ekiga::VideoOutputManager & /* manager */, unsigned width, u
   rect.height = mw->main_video_image->allocation.height;
 
   gdk_window_invalidate_rect (GDK_WINDOW (GTK_WIDGET (self)->window), &rect , TRUE);
-
-  gtk_window_resize (GTK_WINDOW (self), width + 50, mw->y ? mw->y : (int) height);
 }
 
 void
@@ -2230,7 +2229,7 @@ gm_mw_init_call (GtkWidget *main_window)
 
   GtkWidget *frame = NULL;
   GtkWidget *event_box = NULL;
-  GtkWidget *table = NULL;
+  GtkWidget *vbox = NULL;
 
   GtkWidget *toolbar = NULL;
   GtkWidget *button = NULL;
@@ -2250,8 +2249,8 @@ gm_mw_init_call (GtkWidget *main_window)
   event_box = gtk_event_box_new ();
   gtk_widget_modify_bg (event_box, GTK_STATE_PRELIGHT, &white);
   gtk_widget_modify_bg (event_box, GTK_STATE_NORMAL, &white);
-  table = gtk_table_new (3, 4, FALSE);
-  gtk_container_add (GTK_CONTAINER (event_box), table);
+  vbox = gtk_vbox_new (0, FALSE);
+  gtk_container_add (GTK_CONTAINER (event_box), vbox);
   gtk_container_add (GTK_CONTAINER (frame), event_box);
 
   /* The frame that contains the video */
@@ -2262,17 +2261,7 @@ gm_mw_init_call (GtkWidget *main_window)
   mw->main_video_image = gtk_image_new ();
   gtk_container_set_border_width (GTK_CONTAINER (mw->video_frame), 0);
   gtk_container_add (GTK_CONTAINER (mw->video_frame), mw->main_video_image);
-
-  gtk_widget_set_size_request (GTK_WIDGET (mw->main_video_image), 
-			       GM_QCIF_WIDTH, 
-			       GM_QCIF_HEIGHT); 
-
-  gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (mw->video_frame), 
-		    0, 4, 0, 1,
-		    (GtkAttachOptions) GTK_EXPAND,
-		    (GtkAttachOptions) GTK_EXPAND,
-		    0, 0);
-
+  gtk_box_pack_start (GTK_BOX (vbox), mw->video_frame, true, true, 20);
 
   /* The frame that contains information about the call */
   /* Text buffer */
@@ -2317,12 +2306,7 @@ gm_mw_init_call (GtkWidget *main_window)
 
   alignment = gtk_alignment_new (0.0, 0.0, 1.0, 0.0);
   gtk_container_add (GTK_CONTAINER (alignment), mw->info_text);
-
-  gtk_table_attach (GTK_TABLE (table), alignment,
-		    0, 4, 1, 2,
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    0, 0);
+  gtk_box_pack_start (GTK_BOX (vbox), alignment, true, true, 0);
   
   /* The toolbar */
   toolbar = gtk_toolbar_new ();
@@ -2346,9 +2330,6 @@ gm_mw_init_call (GtkWidget *main_window)
 		      GTK_TOOL_ITEM (item), -1);
   gtk_tool_item_set_tooltip_text (GTK_TOOL_ITEM (item),
 				  _("Change the volume of your soundcard"));
-
-  gtk_widget_set_size_request (GTK_WIDGET (button), 28, 28);
-
   g_signal_connect (G_OBJECT (button), "clicked",
 		    G_CALLBACK (show_window_cb),
 		    (gpointer) mw->audio_settings_window);
@@ -2378,7 +2359,7 @@ gm_mw_init_call (GtkWidget *main_window)
   mw->preview_button = gtk_toggle_button_new ();
   gtk_button_set_relief (GTK_BUTTON (mw->preview_button), GTK_RELIEF_NONE);
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (mw->preview_button),
-								gm_conf_get_bool (VIDEO_DEVICES_KEY "enable_preview"));
+                                gm_conf_get_bool (VIDEO_DEVICES_KEY "enable_preview"));
   image = gtk_image_new_from_icon_name (GM_ICON_CAMERA_VIDEO, 
                                         GTK_ICON_SIZE_MENU);
   gtk_container_add (GTK_CONTAINER (mw->preview_button), image);
@@ -2415,12 +2396,10 @@ gm_mw_init_call (GtkWidget *main_window)
   g_signal_connect (G_OBJECT (mw->hold_button), "clicked",
 		    G_CALLBACK (hold_current_call_cb), main_window); 
 
-  gtk_table_attach (GTK_TABLE (table), toolbar,
-		    1, 3, 2, 3,
-		    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
-		    (GtkAttachOptions) (GTK_FILL),
-		    2, 2);
-  
+  alignment = gtk_alignment_new (0.0, 0.0, 1.0, 0.0);
+  gtk_container_add (GTK_CONTAINER (alignment), toolbar);
+  gtk_box_pack_start (GTK_BOX (vbox), alignment, false, false, 10);
+
   gtk_paned_pack2 (GTK_PANED (mw->hpaned), frame, true, true);
 }  
 
@@ -2826,7 +2805,7 @@ window_closed_cb (G_GNUC_UNUSED GtkWidget *widget,
   if (!gtk_status_icon_is_embedded (GTK_STATUS_ICON (statusicon)))
     quit_callback (NULL, data);
   else 
-    gnomemeeting_window_hide (GTK_WIDGET (data));
+    gtk_widget_hide (GTK_WIDGET (data));
 
   return (TRUE);
 }  
@@ -3366,8 +3345,6 @@ gm_main_window_show_call_panel (GtkWidget *self)
   mw = gm_mw_get_mw (GTK_WIDGET (self));
 
   if (!GTK_WIDGET_VISIBLE (gtk_paned_get_child2 (GTK_PANED (mw->hpaned)))) {
-
-    gtk_window_get_size (GTK_WINDOW (self), &mw->x, &mw->y);
     gtk_widget_show_all (gtk_paned_get_child2 (GTK_PANED (mw->hpaned)));
   }
 }
@@ -3377,21 +3354,18 @@ static void
 gm_main_window_hide_call_panel (GtkWidget *self)
 {
   GmMainWindow *mw = NULL;
+  GtkRequisition req;
+  int x, y = 0;
 
   mw = gm_mw_get_mw (GTK_WIDGET (self));
 
   if (GTK_WIDGET_VISIBLE (gtk_paned_get_child2 (GTK_PANED (mw->hpaned)))) {
 
-    if (mw->x == 0 && mw->y == 0) {
-
-      GtkRequisition req;
-      gtk_window_get_size (GTK_WINDOW (self), &mw->x, &mw->y);
-      gtk_widget_size_request (GTK_WIDGET (gtk_paned_get_child1 (GTK_PANED (mw->hpaned))), &req);
-      mw->x = req.width;
-    }
-
+    gtk_widget_size_request (gtk_paned_get_child2 (GTK_PANED (mw->hpaned)), &req);
+    gtk_window_get_size (GTK_WINDOW (self), &x, &y);
     gtk_widget_hide (gtk_paned_get_child2 (GTK_PANED (mw->hpaned)));
-    gtk_window_resize (GTK_WINDOW (self), mw->x, mw->y);
+    x = x - req.width;
+    gtk_window_resize (GTK_WINDOW (self), x, y);
   }
 }
 
@@ -4008,7 +3982,6 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   GtkWidget *chat_window = NULL;
 
   /* initialize the callback to play IM message sound */
-
   services = GnomeMeeting::Process ()->GetServiceCore ();
   gtk_frontend = dynamic_cast<GtkFrontend *>(services->get ("gtk-frontend"));
   chat_window = GTK_WIDGET (gtk_frontend->get_chat_window ());
@@ -4017,14 +3990,9 @@ gm_main_window_new (Ekiga::ServiceCore & core)
 		    G_CALLBACK (on_chat_unread_alert), NULL);
 
   /* The Top-level window */
-  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  g_object_set_data_full (G_OBJECT (window), "window_name",
-			  g_strdup ("main_window"), g_free);
-
+  window = gm_window_new_with_key (USER_INTERFACE_KEY "main_window");
   gtk_window_set_title (GTK_WINDOW (window), 
 			_("Ekiga"));
-  gtk_window_set_position (GTK_WINDOW (window), 
-			   GTK_WIN_POS_CENTER);
 
   g_signal_connect (G_OBJECT (window), "focus-in-event",
 		    GTK_SIGNAL_FUNC (main_window_focus_event_cb), NULL);
@@ -4037,8 +4005,6 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   mw->current_call = NULL;
   mw->timeout_id = -1;
   mw->levelmeter_timeout_id = -1;
-  mw->x = 0;
-  mw->y = 0;
   mw->audio_transmission_active = mw->audio_reception_active 
     = mw->video_transmission_active = mw->video_reception_active = false;
   g_object_set_data_full (G_OBJECT (window), "GMObject", 
@@ -4085,7 +4051,6 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   gm_mw_init_contacts_list (window);
   gm_mw_init_dialpad (window);
   gtk_paned_pack1 (GTK_PANED (mw->hpaned), mw->main_notebook, true, true);
-  gtk_widget_set_size_request (mw->main_notebook, 210, -1);
 
   gm_mw_init_call (window);
   gm_mw_init_history (window);
@@ -4126,29 +4091,19 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   g_signal_connect (G_OBJECT (mw->statusbar_ebox), "button-press-event",
 		    GTK_SIGNAL_FUNC (statusbar_clicked_cb), window);
  
-  /* Add title */
   gtk_window_set_title (GTK_WINDOW (window), _("Ekiga"));
-
   gtk_widget_realize (window);
-  gtk_window_set_resizable (GTK_WINDOW (window), TRUE);
-
+  gm_main_window_update_logo_have_window (window);
   g_signal_connect_after (G_OBJECT (mw->main_notebook), "switch-page",
 			  G_CALLBACK (panel_section_changed_cb), 
 			  window);
 
-  
-  /* Display the logo */
-  gm_main_window_update_logo_have_window (window);
-
-  
   /* if the user tries to close the window : delete_event */
   g_signal_connect (G_OBJECT (window), "delete_event",
 		    G_CALLBACK (window_closed_cb), 
 		    (gpointer) window);
-
   g_signal_connect (G_OBJECT (window), "show", 
 		    GTK_SIGNAL_FUNC (video_window_shown_cb), window);
-
   g_signal_connect (G_OBJECT (window), "expose-event", 
 		    GTK_SIGNAL_FUNC (video_window_expose_cb), NULL);
   
@@ -4721,7 +4676,7 @@ main (int argc,
 
       /* Show the main window */
       if (!gm_conf_get_bool (USER_INTERFACE_KEY "start_hidden")) 
-        gnomemeeting_window_show (main_window);
+        gtk_widget_show (main_window);
       else
         g_timeout_add (15000, (GtkFunction) gnomemeeting_tray_hack_cb, NULL);
     }
