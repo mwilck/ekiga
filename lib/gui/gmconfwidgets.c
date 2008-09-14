@@ -404,7 +404,7 @@ string_option_menu_changed_nt (G_GNUC_UNUSED gpointer cid,
 				     0, 0, NULL,
 				     (gpointer) string_option_menu_changed,
 				     NULL);
-    if (gtk_combo_box_get_active (GTK_COMBO_BOX (data)) != cpt)
+    if (cpt != count && gtk_combo_box_get_active (GTK_COMBO_BOX (data)) != cpt)
       gtk_combo_box_set_active (GTK_COMBO_BOX (data), cpt);
     g_signal_handlers_unblock_matched (G_OBJECT (e),
 				       G_SIGNAL_MATCH_FUNC,
