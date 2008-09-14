@@ -1,6 +1,12 @@
 2008-09-14  Damien Sandras  <dsandras@gnome.org>
 
 	* src/gui/main.cpp:
+	Move the important part of the error when opening a device at the
+	beginning of the error message, fixes #511128.
+
+2008-09-14  Damien Sandras  <dsandras@gnome.org>
+
+	* src/gui/main.cpp:
 	When using the dialpad to enter an URL, insert the digit at the cursor
 	position and not at the end of the URL, fixes #471805.
 

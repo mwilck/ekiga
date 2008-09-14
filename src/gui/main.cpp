@@ -1150,32 +1150,32 @@ on_videoinput_device_error_cb (Ekiga::VideoInputManager & /* manager */,
   switch (error_code) {
 
     case Ekiga::VI_ERROR_DEVICE:
-      dialog_msg = g_strconcat (tmp_msg, "\n\n", _("There was an error while opening the device. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your permissions and make sure that the appropriate driver is loaded."), NULL);
+      dialog_msg = g_strconcat (_("There was an error while opening the device. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your permissions and make sure that the appropriate driver is loaded."), "\n\n", tmp_msg, NULL);
       break;
 
     case Ekiga::VI_ERROR_FORMAT:
-      dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Your video driver doesn't support the requested video format."), NULL);
+      dialog_msg = g_strconcat (_("Your video driver doesn't support the requested video format."), "\n\n", tmp_msg, NULL);
       break;
 
     case Ekiga::VI_ERROR_CHANNEL:
-      dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Could not open the chosen channel."), NULL);
+      dialog_msg = g_strconcat (_("Could not open the chosen channel."), "\n\n", tmp_msg, NULL);
       break;
 
     case Ekiga::VI_ERROR_COLOUR:
-      dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Your driver doesn't seem to support any of the color formats supported by Ekiga.\n Please check your kernel driver documentation in order to determine which Palette is supported."), NULL);
+      dialog_msg = g_strconcat (_("Your driver doesn't seem to support any of the color formats supported by Ekiga.\n Please check your kernel driver documentation in order to determine which Palette is supported."), "\n\n", tmp_msg, NULL);
       break;
 
     case Ekiga::VI_ERROR_FPS:
-      dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Error while setting the frame rate."), NULL);
+      dialog_msg = g_strconcat (_("Error while setting the frame rate."), "\n\n", tmp_msg, NULL);
       break;
 
     case Ekiga::VI_ERROR_SCALE:
-      dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Error while setting the frame size."), NULL);
+      dialog_msg = g_strconcat (_("Error while setting the frame size."), "\n\n", tmp_msg, NULL);
       break;
 
     case Ekiga::VI_ERROR_NONE:
     default:
-      dialog_msg = g_strconcat (tmp_msg, "\n\n", _("Unknown error."), NULL);
+      dialog_msg = g_strconcat (_("Unknown error."), "\n\n", tmp_msg, NULL);
       break;
   }
 
