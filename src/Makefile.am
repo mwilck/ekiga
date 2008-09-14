@@ -162,7 +162,16 @@ endif
 
 SVN_REVISION=$(shell head ../.svn/entries -n11 2>/dev/null | tail -n1)
 CACHED_REVISION=$(shell cat revision.h 2>/dev/null | cut -c24-)
-$(shell if test "x$(SVN_REVISION)" != "x$(CACHED_REVISION)"; then echo "#define EKIGA_REVISION $(SVN_REVISION)" > revision.h; fi)
+
+$(shell if test -e "../.svn/entries"; then \
+          if test "x$(SVN_REVISION)" != "x$(CACHED_REVISION)"; then \
+            echo "#define EKIGA_REVISION $(SVN_REVISION)" > revision.h; \
+          fi \
+        else \
+          if !(test -e "./revision.h"); then\
+            echo "#define EKIGA_REVISION \"unknown\"" > revision.h; \
+          fi \
+        fi)
 
 AM_CXXFLAGS = $(GTK_CFLAGS) $(GLIB_CFLAGS) $(GNOME_CFLAGS) $(DBUS_CFLAGS) $(BONOBO_CFLAGS) $(OPAL_CFLAGS) $(PTLIB_CFLAGS) $(SIGC_CFLAGS) $(XML_CFLAGS) $(NOTIFY_CFLAGS)
 AM_LIBS = $(GTK_LIBS) $(GLIB_LIBS) $(GNOME_LIBS) $(DBUS_LIBS) $(BONOBO_LIBS) $(OPAL_LIBS) $(PTLIB_LIBS) $(SIGC_LIBS) $(XML_LIBS) $(NOTIFY_LIBS)
