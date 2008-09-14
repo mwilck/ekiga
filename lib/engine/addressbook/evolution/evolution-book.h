@@ -45,8 +45,6 @@
 
 #include "evolution-contact.h"
 
-class Wrapper;
-
 namespace Evolution
 {
 
@@ -99,7 +97,6 @@ namespace Evolution
     Ekiga::ServiceCore &services;
     EBook *book;
     EBookView *view;
-    Wrapper *self;
 
     std::string status;
     std::string search_filter;

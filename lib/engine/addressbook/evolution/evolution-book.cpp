@@ -45,16 +45,6 @@
 #include "evolution-book.h"
 #include "evolution-contact.h"
 
-/* this structure is so that when we give ourself to a C callback,
- * the object lives long enough
- */
-struct Wrapper
-{
-  Wrapper (Evolution::Book &_book): book(_book) {}
-
-  Evolution::Book &book;
-};
-
 static void
 on_view_contacts_added_c (EBook * /*ebook*/,
 			  GList *contacts,
@@ -118,7 +108,7 @@ on_view_contacts_changed_c (EBook */*ebook*/,
 			    GList *econtacts,
 			    gpointer data)
 {
-  ((Evolution::Book *)data)->on_view_contacts_changed (econtacts);
+  ((Evolution::Book*)data)->on_view_contacts_changed (econtacts);
 }
 
 void
@@ -146,7 +136,7 @@ on_book_view_obtained_c (EBook */*book*/,
 			 EBookView *view,
 			 gpointer data)
 {
-  ((Wrapper *)data)->book.on_book_view_obtained (status, view);
+  ((Evolution::Book*)data)->on_book_view_obtained (status, view);
 }
 
 void
@@ -182,14 +172,13 @@ on_book_opened_c (EBook */*book*/,
 		  EBookStatus _status,
 		  gpointer data)
 {
-  ((Wrapper *)data)->book.on_book_opened (_status);
+  ((Evolution::Book*)data)->on_book_opened (_status);
 }
 
 void
 Evolution::Book::on_book_opened (EBookStatus _status)
 {
   EBookQuery *query = NULL;
-  self = new Wrapper (*this);
 
   if (_status == E_BOOK_ERROR_OK) {
 
@@ -201,7 +190,7 @@ Evolution::Book::on_book_opened (EBookStatus _status)
                                        search_filter.c_str ());
 
     (void)e_book_async_get_book_view (book, query, NULL, 100,
-				      on_book_view_obtained_c, self);
+				      on_book_view_obtained_c, this);
 
     e_book_query_unref (query);
 
@@ -217,8 +206,6 @@ Evolution::Book::Book (Ekiga::ServiceCore &_services,
 		       EBook *_book)
   : services(_services), book(_book), view(NULL)
 {
-  self = new Wrapper (*this);
-
   g_object_ref (book);
 
   refresh ();
@@ -230,8 +217,6 @@ Evolution::Book::~Book ()
     g_object_unref (book);
   if (view != NULL)
     g_object_unref (view);
-
-  delete self;
 }
 
 const std::string
@@ -297,10 +282,10 @@ Evolution::Book::refresh ()
 
   /* we go */
   if (e_book_is_opened (book)) 
-    on_book_opened_c (book, E_BOOK_ERROR_OK, self);
+    on_book_opened_c (book, E_BOOK_ERROR_OK, this);
   else 
     e_book_async_open (book, TRUE,
-                       on_book_opened_c, self);
+                       on_book_opened_c, this);
 }
 
 void
