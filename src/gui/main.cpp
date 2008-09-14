@@ -2231,7 +2231,7 @@ gm_mw_init_call (GtkWidget *main_window)
 
   GtkWidget *frame = NULL;
   GtkWidget *event_box = NULL;
-  GtkWidget *vbox = NULL;
+  GtkWidget *table = NULL;
 
   GtkWidget *toolbar = NULL;
   GtkWidget *button = NULL;
@@ -2251,8 +2251,8 @@ gm_mw_init_call (GtkWidget *main_window)
   event_box = gtk_event_box_new ();
   gtk_widget_modify_bg (event_box, GTK_STATE_PRELIGHT, &white);
   gtk_widget_modify_bg (event_box, GTK_STATE_NORMAL, &white);
-  vbox = gtk_vbox_new (0, FALSE);
-  gtk_container_add (GTK_CONTAINER (event_box), vbox);
+  table = gtk_table_new (3, 4, FALSE);
+  gtk_container_add (GTK_CONTAINER (event_box), table);
   gtk_container_add (GTK_CONTAINER (frame), event_box);
 
   /* The frame that contains the video */
@@ -2263,7 +2263,11 @@ gm_mw_init_call (GtkWidget *main_window)
   mw->main_video_image = gtk_image_new ();
   gtk_container_set_border_width (GTK_CONTAINER (mw->video_frame), 0);
   gtk_container_add (GTK_CONTAINER (mw->video_frame), mw->main_video_image);
-  gtk_box_pack_start (GTK_BOX (vbox), mw->video_frame, true, true, 20);
+  gtk_table_attach (GTK_TABLE (table), GTK_WIDGET (mw->video_frame),       
+                    0, 4, 0, 1,         
+                    (GtkAttachOptions) GTK_EXPAND,      
+                    (GtkAttachOptions) GTK_EXPAND,      
+                    24, 24);
 
   /* The frame that contains information about the call */
   /* Text buffer */
@@ -2308,7 +2312,11 @@ gm_mw_init_call (GtkWidget *main_window)
 
   alignment = gtk_alignment_new (0.0, 0.0, 1.0, 0.0);
   gtk_container_add (GTK_CONTAINER (alignment), mw->info_text);
-  gtk_box_pack_start (GTK_BOX (vbox), alignment, true, true, 0);
+  gtk_table_attach (GTK_TABLE (table), alignment,
+                    0, 4, 1, 2,         
+                    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+                    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+                    0, 0);
   
   /* The toolbar */
   toolbar = gtk_toolbar_new ();
@@ -2400,7 +2408,11 @@ gm_mw_init_call (GtkWidget *main_window)
 
   alignment = gtk_alignment_new (0.0, 0.0, 1.0, 0.0);
   gtk_container_add (GTK_CONTAINER (alignment), toolbar);
-  gtk_box_pack_start (GTK_BOX (vbox), alignment, false, false, 10);
+  gtk_table_attach (GTK_TABLE (table), alignment,
+                    1, 3, 2, 3,         
+                    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+                    (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+                    0, 0);
 
   gtk_paned_pack2 (GTK_PANED (mw->hpaned), frame, true, true);
 }  
