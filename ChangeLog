@@ -1,5 +1,14 @@
 2008-09-14  Damien Sandras  <dsandras@gnome.org>
 
+	* lib/gui/gmpreferences.c:
+	Fixed #552241. When a device is unplugged, it is marked as insensitive
+	if it was the active device, or completely removed. When a device is
+	added, we check it was not already in the list. When we start Ekiga
+	and the device in the prefs is not present, we display it as
+	insensitive.
+
+2008-09-14  Damien Sandras  <dsandras@gnome.org>
+
 	* lib/gui/gmconfwidgets.c:
 	Do no try setting invalid options as default.
 

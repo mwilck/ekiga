@@ -44,7 +44,8 @@
 
 enum {
   COLUMN_STRING_RAW = 0, /* must be zero because it's used in gmconfwidgets */
-  COLUMN_STRING_TRANSLATED
+  COLUMN_STRING_TRANSLATED,
+  COLUMN_SENSITIVE,
 };
 
 static void tree_selection_changed_cb (GtkTreeSelection *,
@@ -567,7 +568,7 @@ gnome_prefs_int_option_menu_new (GtkWidget *table,
   g_object_set (G_OBJECT (renderer), 
                 "ellipsize-set", TRUE, 
                 "ellipsize", PANGO_ELLIPSIZE_END, 
-                "width-chars", 30, NULL);
+                "width-chars", 45, NULL);
   gtk_label_set_mnemonic_widget (GTK_LABEL (label), option_menu);
 
   history = gm_conf_get_int (conf_key);
@@ -640,7 +641,10 @@ gnome_prefs_string_option_menu_new (GtkWidget *table,
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);                         
   gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
 
-  list_store = gtk_list_store_new (2, G_TYPE_STRING, G_TYPE_STRING);
+  list_store = gtk_list_store_new (3, 
+                                   G_TYPE_STRING, 
+                                   G_TYPE_STRING, 
+                                   G_TYPE_BOOLEAN);
   option_menu = gtk_combo_box_new_with_model (GTK_TREE_MODEL (list_store));
   if (!writable)
     gtk_widget_set_sensitive (GTK_WIDGET (option_menu), FALSE);
@@ -648,33 +652,43 @@ gnome_prefs_string_option_menu_new (GtkWidget *table,
   gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (option_menu), renderer, FALSE);
   gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (option_menu), renderer,
                                   "text", COLUMN_STRING_TRANSLATED,
+                                  "sensitive", COLUMN_SENSITIVE,
                                   NULL);
   g_object_set (G_OBJECT (renderer), 
                 "ellipsize-set", TRUE, 
                 "ellipsize", PANGO_ELLIPSIZE_END, 
-                "width-chars", 35, NULL);
+                "width-chars", 45, NULL);
   gtk_label_set_mnemonic_widget (GTK_LABEL (label), option_menu);
 
   conf_string = gm_conf_get_string (conf_key);
   while (options [cpt]) {
 
-    if (conf_string != NULL)
-      if (!strcmp (conf_string, options [cpt]))
-	history = cpt;
+    if (conf_string && !strcmp (conf_string, options [cpt]))
+      history = cpt;
 
     gtk_list_store_append (GTK_LIST_STORE (list_store), &iter);
     gtk_list_store_set (GTK_LIST_STORE (list_store), &iter,
                         COLUMN_STRING_RAW, options [cpt],
                         COLUMN_STRING_TRANSLATED, gettext (options [cpt]),
+                        COLUMN_SENSITIVE, TRUE,
                         -1);
     cpt++;
   }
 
   if (history == -1) {
 
-    if (options [0])
-      gm_conf_set_string (conf_key, options [0]);
-    history = 0;
+    if (conf_string && strcmp (conf_string, "")) {
+
+      gtk_list_store_append (GTK_LIST_STORE (list_store), &iter);
+      gtk_list_store_set (GTK_LIST_STORE (list_store), &iter,
+                          COLUMN_STRING_RAW, conf_string,
+                          COLUMN_STRING_TRANSLATED, gettext (conf_string),
+                          COLUMN_SENSITIVE, FALSE, 
+                          -1);
+      history = cpt;
+    }
+    else
+      history = --cpt;
   }
 
   gtk_combo_box_set_active (GTK_COMBO_BOX (option_menu), history);
@@ -734,25 +748,34 @@ gnome_prefs_string_option_menu_update (GtkWidget *option_menu,
     gtk_list_store_append (GTK_LIST_STORE (model), &iter);
     gtk_list_store_set (GTK_LIST_STORE (model), &iter, 
                         COLUMN_STRING_RAW, options [cpt],
-                        COLUMN_STRING_TRANSLATED, options_string, -1);
-
+                        COLUMN_STRING_TRANSLATED, options_string,
+                        COLUMN_SENSITIVE, TRUE, 
+                        -1);
     g_free (options_string);
     cpt++;
   }
 
-
   if (history == -1) {
     
-    history = 0;
+    if (conf_string && strcmp (conf_string, "")) {
 
-    if (options [0])
-      gm_conf_set_string (conf_key, options [0]);
+      gtk_list_store_append (GTK_LIST_STORE (model), &iter);
+      gtk_list_store_set (GTK_LIST_STORE (model), &iter,
+                          COLUMN_STRING_RAW, conf_string,
+                          COLUMN_STRING_TRANSLATED, gettext (conf_string),
+                          COLUMN_SENSITIVE, FALSE, 
+                          -1);
+      history = cpt;
+    }
+    else
+      history = --cpt;
   }
 
   gtk_combo_box_set_active (GTK_COMBO_BOX (option_menu), history);
   
   g_free (conf_string); 
 }
+
 
 void
 gnome_prefs_string_option_menu_add (GtkWidget *option_menu,
@@ -762,16 +785,42 @@ gnome_prefs_string_option_menu_add (GtkWidget *option_menu,
   GtkTreeModel *model = NULL;
   GtkTreeIter iter;
   gchar *option_string = NULL;
+  gboolean found = FALSE;
 
   if (!option)
     return;
 
   model = gtk_combo_box_get_model (GTK_COMBO_BOX (option_menu));
   option_string = g_locale_to_utf8 (option, -1, NULL, NULL, NULL);
-  gtk_list_store_append (GTK_LIST_STORE (model), &iter);
-  gtk_list_store_set (GTK_LIST_STORE (model), &iter, 
-                             COLUMN_STRING_RAW, option,
-                            COLUMN_STRING_TRANSLATED, option_string, -1);
+
+  if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (model), &iter)) {
+
+    do {
+      gchar *value_string = NULL;
+      GValue value = { 0, {{0}, {0}} };
+      gtk_tree_model_get_value (GTK_TREE_MODEL (model), &iter, 0, &value);
+      value_string = (gchar *) g_value_get_string (&value);
+      if (g_ascii_strcasecmp  (value_string, option) == 0) {
+        gtk_list_store_set (GTK_LIST_STORE (model), &iter, 
+                            COLUMN_SENSITIVE, TRUE,
+                            -1);
+        g_value_unset(&value);
+        found = TRUE;
+        break;
+      }
+      g_value_unset(&value);
+
+    } while (gtk_tree_model_iter_next(GTK_TREE_MODEL (model), &iter));
+  }
+
+  if (!found) {
+    gtk_list_store_append (GTK_LIST_STORE (model), &iter);
+    gtk_list_store_set (GTK_LIST_STORE (model), &iter, 
+                        COLUMN_STRING_RAW, option,
+                        COLUMN_STRING_TRANSLATED, option_string, 
+                        COLUMN_SENSITIVE, TRUE,
+                        -1);
+  }
   if (active == TRUE)
     gtk_combo_box_set_active_iter (GTK_COMBO_BOX (option_menu), &iter);
   g_free (option_string);
@@ -786,24 +835,38 @@ gnome_prefs_string_option_menu_remove (GtkWidget *option_menu,
 {
   GtkTreeModel *model = NULL;
   GtkTreeIter iter;
+  int cpt = 0;
+  int active = 0;
 
   if (!option)
     return;
 
   model = gtk_combo_box_get_model (GTK_COMBO_BOX (option_menu));
+  active = gtk_combo_box_get_active (GTK_COMBO_BOX (option_menu));
 
   if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (model), &iter)) {
+
     do {
       gchar *value_string = NULL;
       GValue value = { 0, {{0}, {0}} };
       gtk_tree_model_get_value (GTK_TREE_MODEL (model), &iter, 0, &value);
       value_string = (gchar *) g_value_get_string (&value);
       if (g_ascii_strcasecmp  (value_string, option) == 0) {
-        gtk_list_store_remove (GTK_LIST_STORE (model), &iter);
+
+        if (cpt == active) {
+          gtk_list_store_set (GTK_LIST_STORE (model), &iter, 
+                              COLUMN_SENSITIVE, FALSE,
+                              -1);
+        }
+        else {
+          gtk_list_store_remove (GTK_LIST_STORE (model), &iter);
+        }
         g_value_unset(&value);
         break;
       }
       g_value_unset(&value);
+      cpt++;
+
     } while (gtk_tree_model_iter_next(GTK_TREE_MODEL (model), &iter));
   }
 }
