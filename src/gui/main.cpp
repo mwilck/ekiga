@@ -4338,14 +4338,13 @@ gm_main_window_append_call_url (GtkWidget *main_window,
 
   g_return_if_fail (mw != NULL && url != NULL);
  
-  if (gtk_editable_get_selection_bounds (GTK_EDITABLE (mw->entry), NULL, NULL)) {
-
+  if (gtk_editable_get_selection_bounds (GTK_EDITABLE (mw->entry), NULL, NULL)) 
     gtk_editable_delete_selection (GTK_EDITABLE (mw->entry));
-    pos = gtk_editable_get_position (GTK_EDITABLE (mw->entry));
-  }
 
+  pos = gtk_editable_get_position (GTK_EDITABLE (mw->entry));
   gtk_editable_insert_text (GTK_EDITABLE (mw->entry), url, strlen (url), &pos);
   gtk_editable_select_region (GTK_EDITABLE (mw->entry), -1, -1);
+  gtk_editable_set_position (GTK_EDITABLE (mw->entry), pos);
 }
 
 
