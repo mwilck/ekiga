@@ -534,23 +534,30 @@ PKG_CHECK_MODULES([OPAL], [opal >= ${OPAL_REC_VERSION}])
 AC_SUBST(OPAL_CFLAGS)
 AC_SUBST(OPAL_LIBS)
 
+dnl The =1 checks are here only for backward compatibility
 H323=`$PKG_CONFIG --variable=h323 opal`  
 if test "x$H323" = "x1"; then
-  H323="enabled"
-  AC_DEFINE(HAVE_H323,1,[H323 support])
+  H323="yes"
 else
-  H323="disabled"
+  H323=`$PKG_CONFIG --variable=OPAL_H323 opal`  
 fi
-AM_CONDITIONAL(HAVE_H323, test "x${H323}" = "xenabled")
+
+if test "x$H323" = "xyes"; then
+  AC_DEFINE(HAVE_H323,1,[H323 support])
+fi
+AM_CONDITIONAL(HAVE_H323, test "x${H323}" = "xyes")
 
 SIP=`$PKG_CONFIG --variable=sip opal`  
 if test "x$SIP" = "x1"; then
-  SIP="enabled"
-  AC_DEFINE(HAVE_SIP,1,[SIP support])
+  SIP="yes"
 else
-  SIP="disabled"
+  SIP=`$PKG_CONFIG --variable=OPAL_SIP opal`
 fi
-AM_CONDITIONAL(HAVE_SIP, test "x${SIP}" = "xenabled")
+
+if test "x$SIP" = "xyes"; then
+  AC_DEFINE(HAVE_SIP,1,[SIP support])
+fi
+AM_CONDITIONAL(HAVE_SIP, test "x${SIP}" = "xyes")
 
 
 dnl #########################################################################
