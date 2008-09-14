@@ -1432,7 +1432,7 @@ ekiga_assistant_apply (GtkAssistant *gtkassistant)
   /* Hide the druid and show the main Ekiga window */
   gtk_widget_hide (GTK_WIDGET (assistant));
   gtk_assistant_set_current_page (gtkassistant, 0);
-  gnomemeeting_window_show (main_window);
+  gtk_widget_show (main_window);
 
   /* Update the version number */
   gm_conf_set_int (GENERAL_KEY "version", schema_version);
@@ -1448,7 +1448,7 @@ ekiga_assistant_cancel (GtkAssistant *gtkassistant)
 
   gtk_widget_hide (GTK_WIDGET (gtkassistant));
   gtk_assistant_set_current_page (gtkassistant, 0);
-  gnomemeeting_window_show (main_window);
+  gtk_widget_show (main_window);
 }
 
 
