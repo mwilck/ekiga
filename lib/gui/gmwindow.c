@@ -412,3 +412,30 @@ gm_window_set_key (GmWindow *window,
 
   g_object_set (GM_WINDOW (window), "key", key, NULL);
 }
+
+
+void 
+gm_window_get_size (GmWindow *self,
+                    int *x,
+                    int *y)
+{
+  gchar *conf_key_size = NULL;
+  gchar *size = NULL;
+  gchar **couple = NULL;
+
+  g_return_if_fail (self != NULL);
+
+  conf_key_size = g_strdup_printf ("%s/size", self->priv->key);
+  size = gm_conf_get_string (conf_key_size);
+  if (size)
+    couple = g_strsplit (size, ",", 0);
+
+  if (x && couple && couple [0])
+    *x = atoi (couple [0]);
+  if (y && couple && couple [1])
+    *y = atoi (couple [1]);
+
+  g_free (conf_key_size);
+  g_free (size);
+  g_strfreev (couple);
+}

@@ -105,6 +105,15 @@ void gm_window_set_key (GmWindow *window,
                         const char *key);
 
 
+/** Return the size of the GmWindow.
+ * @param window is the GmWindow
+ * @param x is the width
+ * @param y is the height
+ */
+void gm_window_get_size (GmWindow *window,
+                         int *x,
+                         int *y);
+
 G_END_DECLS
 
 #endif
