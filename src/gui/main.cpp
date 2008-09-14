@@ -625,7 +625,8 @@ static void on_setup_call_cb (Ekiga::CallManager & /*manager*/,
   }
   else {
     gm_main_window_update_calling_state (GTK_WIDGET (self), Calling);
-    gm_main_window_set_call_url (GTK_WIDGET (self), call.get_remote_uri ().c_str());
+    if (!call.get_remote_uri ().empty ())
+      gm_main_window_set_call_url (GTK_WIDGET (self), call.get_remote_uri ().c_str());
     mw->current_call = &call;
   }
 }
@@ -705,7 +706,8 @@ static void on_established_call_cb (Ekiga::CallManager & /*manager*/,
   info = g_strdup_printf (_("Connected with %s"),
 			  call.get_remote_party_name ().c_str ());
 
-  gm_main_window_set_call_url (GTK_WIDGET (self), call.get_remote_uri ().c_str());
+  if (!call.get_remote_uri ().empty ())
+    gm_main_window_set_call_url (GTK_WIDGET (self), call.get_remote_uri ().c_str());
   if (gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top"))
     gm_main_window_set_stay_on_top (GTK_WIDGET (self), TRUE);
   gm_main_window_set_status (GTK_WIDGET (self), info);
