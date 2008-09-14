@@ -6,20 +6,21 @@
 # Stefan Brüns <lurchi@kawo1.rwrh-aachen.de>, 2001-2004, 2006.
 # Hendrik Richter <hendrikr@gnome.org>, 2005, 2006, 2007, 2008.
 # Philipp Kerling <k.philipp@gmail.com>, 2008.
+# Jochen Skulj <jochen@jochenskulj.de>, 2008.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Ekiga 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-11 09:24+0200\n"
-"PO-Revision-Date: 2008-09-11 21:31+0200\n"
-"Last-Translator: Hendrik Richter <hendrikr@gnome.org>\n"
+"POT-Creation-Date: 2008-09-14 20:48+0200\n"
+"PO-Revision-Date: 2008-09-14 15:07+0100\n"
+"Last-Translator: Jochen Skulj <jochen@jochenskulj.de>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11\n"
-"Plural-Forms:  nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../ekiga.desktop.in.in.h:1
 msgid "Ekiga Softphone"
@@ -43,10 +44,15 @@ msgid ""
 "hardware support is not available. If this is set to false, Ekiga will not "
 "try to open the PIP if hardware support is not available."
 msgstr ""
+"Ekiga erlauben, auf die softwaremäßige Skalierung der Bild-in-Bild-"
+"Darstellung zurückzugreifen, wenn keine Hardware-Unterstützung verfügbar "
+"ist. Wenn dieser Schlüssel nicht gesetzt ist, wird Ekiga nicht versuchen, "
+"die Bild-in-Bild-Darstellung zu öffnen, wenn keine Hardware-Unterstützung "
+"verfügbar ist."
 
 #: ../ekiga.schemas.in.in.h:3
 msgid "Allow picture-in-picture software scaling"
-msgstr ""
+msgstr "Softwaremäßige Bild-in-Bild-Skalierung verwenden"
 
 #: ../ekiga.schemas.in.in.h:4
 msgid "Alternative audio output device"
@@ -81,9 +87,8 @@ msgid "Calls history"
 msgstr "Anrufchronik"
 
 #: ../ekiga.schemas.in.in.h:11
-#, fuzzy
 msgid "Change the main window panel section"
-msgstr "Inhalt für Kontrollleiste ändern"
+msgstr "Leistenbereich des Hauptfenster ändern"
 
 #: ../ekiga.schemas.in.in.h:12
 msgid ""
@@ -99,13 +104,12 @@ msgstr ""
 "Versionen von Netmeeting zum Abstürzen bringen"
 
 #: ../ekiga.schemas.in.in.h:13
-#, fuzzy
 msgid "Contact long status"
-msgstr "%s wird kontaktiert …"
+msgstr "Ausführlicher Kontaktstatus"
 
 #: ../ekiga.schemas.in.in.h:14
 msgid "Contact short status"
-msgstr ""
+msgstr "Kurzer Kontakstatus"
 
 #: ../ekiga.schemas.in.in.h:15
 msgid "Country code"
@@ -116,9 +120,8 @@ msgid "DTMF sending"
 msgstr "DTMF-Übertragung"
 
 #: ../ekiga.schemas.in.in.h:17
-#, fuzzy
 msgid "Disable video hardware acceleration"
-msgstr "Echo-Unterdrückung deaktiviert"
+msgstr "Hardware-Videobeschleunigung deaktivieren"
 
 #: ../ekiga.schemas.in.in.h:18
 msgid "Display a popup window when receiving a call"
@@ -225,9 +228,9 @@ msgstr ""
 "Wenn aktiviert, wird Videoübertragung während der Verbindung unterstützt"
 
 #: ../ekiga.schemas.in.in.h:38 ../src/gui/preferences.cpp:398
-#, fuzzy
 msgid "If enabled, offline contacts will be shown in the roster"
-msgstr "Wenn aktiviert, werden ankommende Anrufe automatisch abgelehnt."
+msgstr ""
+"Wenn aktiviert, werden abgemeldete Kontakte in der Kontaktliste angezeigt."
 
 #: ../ekiga.schemas.in.in.h:39
 msgid "If enabled, use echo cancelation"
@@ -249,12 +252,11 @@ msgstr "LDAP-Server"
 
 #: ../ekiga.schemas.in.in.h:43
 msgid "List of configured LDAP servers"
-msgstr ""
+msgstr "Liste der konfigurierten LDAP-Server"
 
 #: ../ekiga.schemas.in.in.h:44
-#, fuzzy
 msgid "List of folded groups in the roster"
-msgstr "Liste der Programmautoren"
+msgstr "Liste der eingeklappten Gruppen der Kontaktliste"
 
 #: ../ekiga.schemas.in.in.h:45
 msgid "Listen port"
@@ -265,14 +267,12 @@ msgid "Local video window size"
 msgstr "Größe des lokalen Videofensters"
 
 #: ../ekiga.schemas.in.in.h:47
-#, fuzzy
 msgid "Maximum RX video bitrate"
-msgstr "Maximale Videobandbreite"
+msgstr "Maximale RX Video-Bitrate"
 
 #: ../ekiga.schemas.in.in.h:48
-#, fuzzy
 msgid "Maximum TX video bitrate"
-msgstr "Maximale Videobandbreite"
+msgstr "Maximale TX Video-Bitrate"
 
 #: ../ekiga.schemas.in.in.h:49
 msgid "Maximum jitter buffer"
@@ -332,9 +332,8 @@ msgid "Position on the screen of the address book window"
 msgstr "Position des Adressbuch-Fensters auf dem Bildschirm"
 
 #: ../ekiga.schemas.in.in.h:63
-#, fuzzy
 msgid "Position on the screen of the audio settings window"
-msgstr "Position des Hauptfensters auf dem Bildschirm"
+msgstr "Position des Fensters für die Audio-Einstellungen auf dem Bildschirm"
 
 #: ../ekiga.schemas.in.in.h:64
 msgid "Position on the screen of the chat window"
@@ -357,9 +356,8 @@ msgid "Position on the screen of the preferences window"
 msgstr "Position des Einstellungs-Fenster auf dem Bildschirm"
 
 #: ../ekiga.schemas.in.in.h:69
-#, fuzzy
 msgid "Position on the screen of the video settings window"
-msgstr "Position des Protokollfensters auf dem Bildschirm"
+msgstr "Position des Fensters für Video-Einstellungen auf dem Bildschirm"
 
 #: ../ekiga.schemas.in.in.h:70
 msgid "Registration timeout"
@@ -377,9 +375,10 @@ msgstr "Größe des Videofensters der Gegenseite"
 msgid "Revision of the schema file"
 msgstr "Revision der Schema-Datei"
 
+# CHECK
 #: ../ekiga.schemas.in.in.h:74
 msgid "Roster view saving group status"
-msgstr ""
+msgstr "Kontaktlistenansicht speichert Gruppenstatus"
 
 #: ../ekiga.schemas.in.in.h:75
 msgid "Select an alternative audio output device to use for sound events."
@@ -420,11 +419,11 @@ msgstr ""
 
 #: ../ekiga.schemas.in.in.h:81
 msgid "Show offline contacts"
-msgstr ""
+msgstr "Abgemeldete Kontakte anzeigen"
 
-#: ../ekiga.schemas.in.in.h:82 ../src/gui/main.cpp:1858
+#: ../ekiga.schemas.in.in.h:82 ../src/gui/main.cpp:1817
 msgid "Show the call panel"
-msgstr ""
+msgstr "Anrufleiste anzeigen"
 
 #: ../ekiga.schemas.in.in.h:83
 msgid "Size of the PC-To-Phone window"
@@ -435,9 +434,8 @@ msgid "Size of the address book window"
 msgstr "Größe des Adressbuch-Fensters"
 
 #: ../ekiga.schemas.in.in.h:85
-#, fuzzy
 msgid "Size of the audio settings window"
-msgstr "Größe des Protokollfensters"
+msgstr "Größe des Fensters für die Audio-Einstellungen"
 
 #: ../ekiga.schemas.in.in.h:86
 msgid "Size of the chat window"
@@ -452,13 +450,12 @@ msgid "Size of the preferences window"
 msgstr "Größe des Einstellungen-Fensters"
 
 #: ../ekiga.schemas.in.in.h:89
-#, fuzzy
 msgid "Size of the video settings window"
-msgstr "Größe des Protokollfensters"
+msgstr "Größe des Fensters für die Video-Einstellungen"
 
 #: ../ekiga.schemas.in.in.h:90
 msgid "Specify the software scaling algorithm"
-msgstr ""
+msgstr "Algorithmus zur Software-Skalierung festlegen"
 
 #: ../ekiga.schemas.in.in.h:91
 msgid ""
@@ -466,6 +463,9 @@ msgid ""
 "neighbor with box filter, 2: bilinear filtering, 3: hyperbolic filtering. "
 "Does not apply on windows systems."
 msgstr ""
+"Legt den Algorithmus zur Software-Skalierung fest: 0: nahester Nachbar, 1: "
+"nahester Nachbar mit Box-Filter, 2: bilinearer Filter, 2: hyperbolischer "
+"Filter. Dies wird nicht auf Windows-Systemen angewandt"
 
 #: ../ekiga.schemas.in.in.h:92
 msgid "Start hidden"
@@ -475,9 +475,10 @@ msgstr "Versteckt starten"
 msgid "TCP port range"
 msgstr "TCP-Port-Bereich"
 
+# CHECK
 #: ../ekiga.schemas.in.in.h:94
 msgid "Temporal Spatial Trade Off"
-msgstr ""
+msgstr "Temporärer räumlicher Ausgleich"
 
 #: ../ekiga.schemas.in.in.h:95
 msgid "The Audio Codecs List"
@@ -502,25 +503,23 @@ msgid "The STUN Server"
 msgstr "STUN-Server"
 
 #: ../ekiga.schemas.in.in.h:99
-#, fuzzy
 msgid ""
 "The STUN server to use for STUN Support. STUN is a technology that permits "
 "passage through some types of NAT gateway"
 msgstr ""
-"Der Server für STUN-Unterstützung. STUN ist ein Verfahren, das es "
-"ermöglicht, durch einige NAT-Gateways hindurch eine Verbindung aufzubauen"
+"Der STUN-Server zum Einsatz der STUN-Unterstützung. STUN ist ein Verfahren, "
+"das es ermöglicht, durch einige NAT-Gateways hindurch eine Verbindung "
+"aufzubauen"
 
 #: ../ekiga.schemas.in.in.h:100
-#, fuzzy
 msgid "The Video Codecs List"
-msgstr "Liste der Audio-Codecs"
+msgstr "Liste der Video-Codecs"
 
 #: ../ekiga.schemas.in.in.h:101
 msgid "The accounts list"
 msgstr "Die Konten-Liste"
 
 #: ../ekiga.schemas.in.in.h:102
-#, fuzzy
 msgid "The audio codecs list"
 msgstr "Liste der Audio-Codecs"
 
@@ -566,22 +565,20 @@ msgid "The default video view"
 msgstr "Die Voreinstellung für die Videoansicht"
 
 #: ../ekiga.schemas.in.in.h:110
-#, fuzzy
 msgid ""
 "The default video view (0: Local, 1: Remote, 2: Both layered, 3: Both with "
 "local video in a separate window, 4: Both)"
 msgstr ""
 "Die voreingestellte Videoansicht (0: Lokal, 1: Gegenseite, 2: Beide "
-"zusammen, 3: Beide, lokales in zusätzlichem Fenster, 4: Beide)"
+"zusammen, 3: Beide, lokales in eigenem Fenster, 4: Beide)"
 
 #: ../ekiga.schemas.in.in.h:111
 msgid "The dial tone sound"
 msgstr "Klang für den Wählton"
 
 #: ../ekiga.schemas.in.in.h:112
-#, fuzzy
 msgid "The history of the 100 last calls"
-msgstr "Die Chronik der letzten 100 getätigten Anrufe"
+msgstr "Die Chronik der letzten 100 Anrufe"
 
 #: ../ekiga.schemas.in.in.h:113 ../src/gui/preferences.cpp:606
 #: ../src/gui/preferences.cpp:660
@@ -608,9 +605,8 @@ msgid "The list of accounts to which Ekiga should register"
 msgstr "Die Liste der Konten, für die Ekiga eine Anmeldung vornehmen soll"
 
 #: ../ekiga.schemas.in.in.h:117
-#, fuzzy
 msgid "The long status information"
-msgstr "Kontakt-Informationen bearbeiten"
+msgstr "Die ausführlichen Statusinformationen"
 
 #: ../ekiga.schemas.in.in.h:118
 msgid ""
@@ -618,18 +614,21 @@ msgid ""
 "peer endpoint that can adjust (if it supports it) its TX bitrate if it is "
 "above the signaled value"
 msgstr ""
+"Die maximale RX Video-Bitrate in kbit/s. Dieser Wert wird an den beteiligten "
+"Endpunkt übertragen, der (sofern unterstützt) seine TX Bitrate anpassen "
+"kann, falls diese über dem übertragenden Wert liegt"
 
 #: ../ekiga.schemas.in.in.h:119
-#, fuzzy
 msgid ""
 "The maximum TX video bitrate in kbit/s. The video quality and the number of "
 "transmitted frames per second (depends on selected codec) will be "
 "dynamically adjusted above their minimum during calls to try to minimize the "
 "bandwidth to the given value"
 msgstr ""
-"Die maximale Bandbreite für Video in kByte/s. Die Videoqualität und Bildrate "
-"wird während der Verbindung dynamisch an einen Wert oberhalb des Minimums "
-"angepasst, um nach Möglichkeit die Bandbreite auf diesen Wert zu beschränken"
+"Die maximale TX Video-Bitrate in kbit/s.  Die Videoqualität und die Anzahl "
+"der übertragenden Bilder pro Sekunde (abhängig vom gewählten Codec) wird "
+"dynamisch während eines Anrufes über ihre Minimalwerte angepasst, um zu "
+"versuchen, die Bandbreite auf den gegebenen Wert zu minimieren"
 
 #: ../ekiga.schemas.in.in.h:120
 msgid "The maximum jitter buffer size for audio reception (in ms)"
@@ -643,6 +642,10 @@ msgid ""
 "in case a minimum quality was configure via a TSTO value smaller than 31 and "
 "the bitrate selected is not sufficient to support this minimum quality"
 msgstr ""
+"Das Maximum der übertragenden Bildrate in Bilder/s. Diese Rate wird "
+"möglicherweise nicht erreicht, wenn eine minimale Qualität durch einen TSTO-"
+"Wert unter 31 konfiguriert wurde und die ausgewählte Bitrate nicht "
+"ausreichend ist, um diese minimale Qualität zu erreichen."
 
 #: ../ekiga.schemas.in.in.h:122
 msgid "The new instant message sound"
@@ -694,16 +697,14 @@ msgstr ""
 "wird. An das Präfix wird eine fortlaufende Nummer angehängt."
 
 #: ../ekiga.schemas.in.in.h:130
-#, fuzzy
 msgid ""
 "The range of TCP ports that Ekiga will use for the H.323 H.245 channel. This "
 "port range has no effect if both participants to the conference are using "
 "H.245 Tunneling."
 msgstr ""
 "Der Bereich von TCP-Ports, der von Ekiga für den H.245-Kanal von H.323 "
-"verwendet wird. Ekiga muss neu gestartet werden, damit Änderungen wirksam "
-"werden. Dieser Port-Bereich hat keine Auswirkungen, wenn beide Teilnehmer "
-"der Konferenz H.245-Tunnelung verwenden."
+"verwendet wird. Dieser Port-Bereich hat keine Auswirkungen, wenn beide "
+"Teilnehmer der Konferenz H.245-Tunneling verwenden."
 
 #: ../ekiga.schemas.in.in.h:131
 msgid "The range of UDP ports that Ekiga will use."
@@ -773,45 +774,43 @@ msgstr ""
 "auszuwählen)"
 
 #: ../ekiga.schemas.in.in.h:144
-#, fuzzy
 msgid "The video codecs list"
-msgstr "Liste der Audio-Codecs"
+msgstr "Die Liste der Video-Codecs"
 
 #: ../ekiga.schemas.in.in.h:145
-#, fuzzy
 msgid "The video view before having switched to fullscreen"
-msgstr "Die Bildbreite für den Vollbild-Modus."
+msgstr "Die Video-Ansicht, bevor in das Vollbild umgeschaltet wurde"
 
+# CHECK
 #: ../ekiga.schemas.in.in.h:146
 msgid ""
 "The video view before having switched to fullscreen (same values as "
 "video_view)"
 msgstr ""
+"Die Video-Ansicht, bevor in das Vollbild umgeschaltet wurde (dieselben Werte "
+"wie video_view)"
 
 #: ../ekiga.schemas.in.in.h:147
 msgid "The zoom value"
 msgstr "Der Vergrößerungsfaktor"
 
 #: ../ekiga.schemas.in.in.h:148
-#, fuzzy
 msgid ""
 "The zoom value in percent to apply to images displayed in the main GUI (can "
 "be 50, 100, or 200)"
 msgstr ""
-"Der Vergrößerungsfaktor, der für Bilder im Hauptfenster gelten soll "
-"(Mögliche Werte sind 0.50, 1.00 oder 2.00)"
+"Der Vergrößerungsfaktor in Prozent, der für Bilder im Hauptfenster gelten "
+"soll (Mögliche Werte sind 50, 100 oder 200)"
 
 #: ../ekiga.schemas.in.in.h:149
-#, fuzzy
 msgid ""
 "This allows you to set the mode for sending DTMFs. The values can be "
 "\"RFC2833\" (0), \"INFO\" (1)"
 msgstr ""
-"Dies erlaubt es, den Modus für DTMF-Übertragung festzulegen. Einziger "
-"möglicher Wert ist »RFC2833« (0)"
+"Dies erlaubt es, den Modus für DTMF-Übertragung festzulegen. Möglicher Werte "
+"sind »RFC2833« (0), »INFO« (1)"
 
 #: ../ekiga.schemas.in.in.h:150
-#, fuzzy
 msgid ""
 "This allows you to set the mode for sending DTMFs. The values can be \"String"
 "\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (default is \"String"
@@ -823,7 +822,6 @@ msgstr ""
 "wird der Text-Chat deaktiviert"
 
 #: ../ekiga.schemas.in.in.h:151 ../src/gui/preferences.cpp:618
-#, fuzzy
 msgid ""
 "This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages "
 "are encapsulated into the H.225 channel (port 1720). This saves one TCP "
@@ -833,7 +831,7 @@ msgid ""
 msgstr ""
 "Hiermit wird der H.245-Tunnelmodus aktiviert. Im H.245-Tunnelmodus werden "
 "H.245-Nachrichten im H.225-Kanal (Port 1720) eingekapselt. Dadurch wird "
-"während eins Anrufes eine TCP-Verbindung weniger benötigt. H.245-Tunnel "
+"während eines Anrufes eine TCP-Verbindung weniger benötigt. H.245-Tunnel "
 "wurden mit H.323v2 eingeführt, Netmeeting unterstützt diese nicht. Die "
 "Benutzung des Schnellstartmodus zusammen mit H.245-Tunneln kann einige "
 "Versionen von Netmeeting zum Abstürzen bringen."
@@ -847,6 +845,8 @@ msgid ""
 "This key disables DirectX (on win32) and XVideo (on Linux) video hardware "
 "acceleration"
 msgstr ""
+"Dieser Schlüssel deaktiviert die Hardware-Videobescheunigung durch DirectX "
+"(unter Windows) und XVideo (unter Linux)"
 
 #: ../ekiga.schemas.in.in.h:154
 msgid "UDP port range"
@@ -886,25 +886,26 @@ msgid ""
 "order to keep a minimum level of (spatial) quality for all frames. 0: "
 "Highest minimal quality, 31: lowest minimal quality"
 msgstr ""
+"Legt fest, ob die maximale Bildrate erhalten werden soll oder "
+"möglicherweise gesenkt werden kann, um ein minimales (räumliches) "
+"Qualitätsniveau für alle Bilder zu erhalten. 0: höchste Minimalqualität, 31: "
+"niedrigste Minimalqualität"
 
 #: ../lib/engine/addressbook/call-history/history-contact.cpp:148
-#, fuzzy
 msgid "Received"
-msgstr "Angenommene Anrufe"
+msgstr "Angenommen"
 
 #: ../lib/engine/addressbook/call-history/history-contact.cpp:151
-#, fuzzy
 msgid "Placed"
-msgstr "Getätigte Anrufe"
+msgstr "Getätigt"
 
 #: ../lib/engine/addressbook/call-history/history-contact.cpp:154
-#, fuzzy
 msgid "Missed"
-msgstr "Versäumte Anrufe"
+msgstr "Versäumt"
 
 #: ../lib/engine/addressbook/evolution/evolution-contact.cpp:234
 #: ../lib/engine/presence/local-roster/local-presentity.cpp:194
-#: ../src/endpoints/opal-account.cpp:310 ../src/gui/main.cpp:1816
+#: ../src/endpoints/opal-account.cpp:310 ../src/gui/main.cpp:1775
 msgid "_Edit"
 msgstr "_Bearbeiten"
 
@@ -912,9 +913,8 @@ msgstr "_Bearbeiten"
 #: ../lib/engine/addressbook/ldap/ldap-book.cpp:313
 #: ../lib/engine/presence/local-roster/local-presentity.cpp:196
 #: ../src/endpoints/opal-account.cpp:312
-#, fuzzy
 msgid "_Remove"
-msgstr "_Umbenennen"
+msgstr "_Entfernen"
 
 #: ../lib/engine/addressbook/evolution/evolution-contact.cpp:325
 msgid "Edit contact"
@@ -937,51 +937,45 @@ msgstr "Name:"
 
 #: ../lib/engine/addressbook/evolution/evolution-contact.cpp:338
 #: ../lib/engine/addressbook/evolution/evolution-book.cpp:316
-#, fuzzy
 msgid "VoIP _URI:"
-msgstr "VoIP-URL:"
+msgstr "VoIP-_Adresse:"
 
 #: ../lib/engine/addressbook/evolution/evolution-contact.cpp:339
 #: ../lib/engine/addressbook/evolution/evolution-book.cpp:317
-#, fuzzy
 msgid "_Home phone:"
-msgstr "_Videofon"
+msgstr "_Privat:"
 
 #: ../lib/engine/addressbook/evolution/evolution-contact.cpp:340
 #: ../lib/engine/addressbook/evolution/evolution-book.cpp:318
-#, fuzzy
 msgid "_Office phone:"
-msgstr "_Videofon"
+msgstr "_Geschäftlich:"
 
 #: ../lib/engine/addressbook/evolution/evolution-contact.cpp:341
 #: ../lib/engine/addressbook/evolution/evolution-book.cpp:319
-#, fuzzy
 msgid "_Cell phone:"
-msgstr "_Videofon"
+msgstr "_Mobiltelefon:"
 
 #: ../lib/engine/addressbook/evolution/evolution-contact.cpp:342
 #: ../lib/engine/addressbook/evolution/evolution-book.cpp:320
-#, fuzzy
 msgid "_Pager:"
-msgstr "Bild:"
+msgstr "_Pager:"
 
 #: ../lib/engine/addressbook/evolution/evolution-contact.cpp:392
-#, fuzzy
 msgid "Remove contact"
-msgstr "Entfernte Kontakte"
+msgstr "Kontakt entfernen"
 
 #: ../lib/engine/addressbook/evolution/evolution-contact.cpp:394
-#, fuzzy, c-format
+#, c-format
 msgid "Are you sure you want to remove %s from the addressbook?"
-msgstr "Sind sie sicher, dass Sie »%s [%s]« aus dieser Gruppe löschen wollen?"
+msgstr "Sind sie sicher, dass Sie %s aus dem Adressbuch löschen möchten?"
 
 #: ../lib/engine/addressbook/evolution/evolution-book.cpp:86
 #: ../lib/engine/addressbook/ldap/ldap-book.cpp:591
-#, fuzzy, c-format
+#, c-format
 msgid "%d user found"
 msgid_plural "%d users found"
-msgstr[0] "Benutzer nicht gefunden"
-msgstr[1] "Benutzer nicht gefunden"
+msgstr[0] "%d Benutzer nicht gefunden"
+msgstr[1] "%d Benutzer nicht gefunden"
 
 #: ../lib/engine/addressbook/evolution/evolution-book.cpp:259
 #: ../lib/engine/addressbook/ldap/ldap-book.cpp:310
@@ -995,7 +989,7 @@ msgstr "Neuer _Kontakt"
 #: ../lib/engine/addressbook/evolution/evolution-book.cpp:311
 #: ../lib/engine/presence/local-roster/local-heap.cpp:118
 msgid "New contact"
-msgstr "Neuer _Kontakt"
+msgstr "Neuer Kontakt"
 
 #: ../lib/engine/addressbook/evolution/evolution-book.cpp:315
 #: ../lib/engine/addressbook/ldap/ldap-source.cpp:157
@@ -1046,9 +1040,8 @@ msgstr "Berei_ch"
 
 #: ../lib/engine/addressbook/ldap/ldap-source.cpp:169
 #: ../lib/engine/addressbook/ldap/ldap-book.cpp:632
-#, fuzzy
 msgid "Call _Attribute"
-msgstr "Such-Attribut:"
+msgstr "Anruf_attribute"
 
 #: ../lib/engine/addressbook/ldap/ldap-source.cpp:170
 msgid "Password"
@@ -1067,35 +1060,31 @@ msgid "Refreshing"
 msgstr "Aktualisieren"
 
 #: ../lib/engine/addressbook/ldap/ldap-book.cpp:388
-#, fuzzy
 msgid "Could not initialize server"
-msgstr "Liste der Benutzer, die Online sind, konnte nicht geholt werden"
+msgstr "Server konnte nicht initialisiert werden"
 
 #: ../lib/engine/addressbook/ldap/ldap-book.cpp:421
-#, fuzzy
 msgid "Could not contact server"
-msgstr "Verbindung zum LDAP-Server »%s« fehlgeschlagen: %d"
+msgstr "Server konnte nicht verbunden werden"
 
 #: ../lib/engine/addressbook/ldap/ldap-book.cpp:429
-#, fuzzy
 msgid "Contacted server"
-msgstr "Kontakte in meiner Umgebung"
+msgstr "Verbundene Server"
 
 #. patience == 0
 #: ../lib/engine/addressbook/ldap/ldap-book.cpp:466
-#, fuzzy
 msgid "Could not connect to server"
-msgstr "Verbindung mit Gegenseite konnte nicht hergestellt werden"
+msgstr "Verbindung zum Server konnte nicht hergestellt werden"
 
 #. patience == 0
 #: ../lib/engine/addressbook/ldap/ldap-book.cpp:516
 #: ../lib/engine/addressbook/ldap/ldap-book.cpp:564
 msgid "Could not search"
-msgstr ""
+msgstr "Konnte nicht gesucht werden"
 
 #: ../lib/engine/addressbook/ldap/ldap-book.cpp:524
 msgid "Waiting for search results"
-msgstr ""
+msgstr "Auf Suchergebnisse wird gewartet"
 
 #: ../lib/engine/addressbook/ldap/ldap-book.cpp:609
 msgid "Edit LDAP directory"
@@ -1138,7 +1127,7 @@ msgid "Address Book"
 msgstr "Adressbuch"
 
 #: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:675
-#: ../src/gui/main.cpp:1765
+#: ../src/gui/main.cpp:1724
 msgid "Address _Book"
 msgstr "_Adressbuch"
 
@@ -1166,7 +1155,7 @@ msgstr "Link-Adresse kopieren"
 
 #: ../lib/engine/gui/gtk-frontend/chat-area.cpp:905
 msgid "_Smile..."
-msgstr ""
+msgstr "_Lächeln …"
 
 #. The window
 #. we can't do much here since we get the Chat as reference...
@@ -1181,9 +1170,8 @@ msgid "Full Name"
 msgstr "Voller Name"
 
 #: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:649
-#, fuzzy
 msgid "_Search Filter:"
-msgstr "Such-Attribut:"
+msgstr "_Suchfilter:"
 
 #: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:979
 #: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1014
@@ -1211,13 +1199,15 @@ msgstr "Nachbarn"
 
 #: ../lib/engine/presence/local-roster/local-presentity.cpp:218
 msgid "Edit roster element"
-msgstr ""
+msgstr "Kontaktlistenelement bearbeiten"
 
 #: ../lib/engine/presence/local-roster/local-presentity.cpp:219
 msgid ""
 "Please fill in this form to change an existing element of ekiga's internal "
 "roster"
 msgstr ""
+"Bitte füllen Sie dieses Formular aus, um ein bestehendes Element der "
+"internen Ekiga-Kontaktliste zu bearbeiten"
 
 #: ../lib/engine/presence/local-roster/local-presentity.cpp:222
 #: ../lib/engine/presence/local-roster/local-heap.cpp:186
@@ -1231,9 +1221,8 @@ msgstr "Gruppen auswählen"
 
 #: ../lib/engine/presence/local-roster/local-roster-bridge.cpp:94
 #: ../lib/engine/presence/local-roster/local-heap.cpp:174
-#, fuzzy
 msgid "Add to local roster"
-msgstr "Benutzer konnte nicht erreicht werden"
+msgstr "Zur lokalen Kontaktliste hinzufügen"
 
 #: ../lib/engine/presence/local-roster/local-heap.cpp:93
 msgid "Services"
@@ -1241,16 +1230,15 @@ msgstr "Dienste"
 
 #: ../lib/engine/presence/local-roster/local-heap.cpp:94
 msgid "Echo test"
-msgstr ""
+msgstr "Echo-Test"
 
 #: ../lib/engine/presence/local-roster/local-heap.cpp:95
 msgid "Conference room"
 msgstr "Konferenzraum"
 
 #: ../lib/engine/presence/local-roster/local-heap.cpp:111
-#, fuzzy
 msgid "Local roster"
-msgstr "Lokale Kontakte"
+msgstr "Lokale Kontaktliste"
 
 #: ../lib/engine/presence/local-roster/local-heap.cpp:128
 msgid "Rename"
@@ -1260,35 +1248,36 @@ msgstr "Umbenennen"
 msgid ""
 "Please fill in this form to add a new contact to ekiga's internal roster"
 msgstr ""
+"Bitte füllen Sie dieses Formular aus, um einen neuen Kontakt zu Ekigas "
+"interne Kontaktliste hinzuzufügen"
 
 #: ../lib/engine/presence/local-roster/local-heap.cpp:192
 msgid "Put contact in groups:"
-msgstr ""
+msgstr "Kontakt in Gruppen einfügen:"
 
 #: ../lib/engine/presence/local-roster/local-heap.cpp:295
 msgid "You supplied an unsupported address"
-msgstr ""
+msgstr "Sie haben eine nicht unterstützte Adresse angegeben"
 
 #: ../lib/engine/presence/local-roster/local-heap.cpp:297
 msgid "You already have a contact with this address!"
-msgstr ""
+msgstr "Sie haben bereits einen Kontakt mit dieser Adresse"
 
 #: ../lib/engine/presence/local-roster/local-heap.cpp:322
 msgid "Rename group"
 msgstr "Gruppe umbenennen"
 
 #: ../lib/engine/presence/local-roster/local-heap.cpp:323
-#, fuzzy
 msgid "Please edit this group name"
-msgstr "Tragen Sie Ihren Benutzer-Namen ein:"
+msgstr "Bitte bearbeiten Sie diesen Gruppennamen"
 
 #: ../lib/gui/codecsbox.cpp:476
 msgid "Move selected codec priority upwards"
-msgstr ""
+msgstr "Priorität des ausgewählten Codecs erhöhen"
 
 #: ../lib/gui/codecsbox.cpp:486
 msgid "Move selected codec priority downwards"
-msgstr ""
+msgstr "Priorität des ausgewählten Codecs verringern"
 
 #: ../lib/gui/gmdialog.c:474
 msgid "Do not show this dialog again"
@@ -1364,12 +1353,11 @@ msgid "No device found"
 msgstr "Kein Gerät gefunden"
 
 #: ../src/devices/audio.cpp:488
-#, fuzzy
 msgid "Audio test running"
-msgstr "_Audio-Einstellungen"
+msgstr "Audio-Test läuft"
 
 #: ../src/devices/audio.cpp:495
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Ekiga is now recording from %s and playing back to %s. Please say \"1, 2, 3, "
 "Ekiga rocks!\" in your microphone. You should hear yourself from the "
@@ -1381,13 +1369,12 @@ msgstr ""
 
 #: ../src/endpoints/h323-endpoint.cpp:153
 #: ../src/endpoints/sip-endpoint.cpp:273 ../src/endpoints/sip-endpoint.cpp:277
-#, fuzzy
 msgid "Call"
-msgstr "An_ruf"
+msgstr "Anruf"
 
 #: ../src/endpoints/h323-endpoint.cpp:156
 #: ../src/endpoints/sip-endpoint.cpp:274 ../src/endpoints/sip-endpoint.cpp:278
-#: ../src/gui/main.cpp:3896
+#: ../src/gui/main.cpp:3857
 msgid "Transfer"
 msgstr "Weiterleiten"
 
@@ -1410,7 +1397,7 @@ msgstr "Übertragungsfehler"
 msgid "Failed"
 msgstr "Gescheitert"
 
-#: ../src/endpoints/manager.cpp:702
+#: ../src/endpoints/manager.cpp:706
 msgid ""
 "Ekiga did not manage to configure your network settings automatically. You "
 "can still use it, but you need to configure your network settings manually.\n"
@@ -1418,6 +1405,12 @@ msgid ""
 "Please see http://wiki.ekiga.org/index.php/Enable_port_forwarding_manually "
 "for instructions"
 msgstr ""
+"Ekiga konnte die Netzwerkeinstellungen nicht automatisch konfigurieren. Sie "
+"können das Programm dennoch verwenden, aber müssen Ihre "
+"Netzwerkeinstellungen manuell konfigurieren\n"
+"\n"
+"Weitere Anweisungen dazu sind unter ttp://wiki.ekiga.org/index.php/"
+"Enable_port_forwarding_manually zu finden"
 
 #: ../src/endpoints/opal-account.cpp:302
 msgid "_Disable"
@@ -1436,9 +1429,8 @@ msgid "Consult the balance history"
 msgstr "Den Verlauf des Kontostandes anzeigen"
 
 #: ../src/endpoints/opal-account.cpp:336
-#, fuzzy
 msgid "Consult the call history"
-msgstr "Die Anrufchronik anzeigen"
+msgstr "Die Anrufchronik abfragen"
 
 #: ../src/endpoints/opal-account.cpp:351 ../src/endpoints/opal-bank.cpp:74
 msgid "Edit account"
@@ -1481,7 +1473,7 @@ msgstr "Sie haben keinen Namen für dieses Konto angegeben."
 
 #: ../src/endpoints/opal-account.cpp:402 ../src/endpoints/opal-bank.cpp:157
 msgid "You did not supply a host to register to."
-msgstr ""
+msgstr "Sie haben keinen Host angegeben, um sich bei diesem zu anzumelden"
 
 #: ../src/endpoints/opal-account.cpp:404 ../src/endpoints/opal-bank.cpp:159
 msgid "You did not supply a user name for that account."
@@ -1489,15 +1481,16 @@ msgstr "Sie haben keinen Benutzernamen für dieses Konto angegeben."
 
 #: ../src/endpoints/opal-account.cpp:406 ../src/endpoints/opal-bank.cpp:161
 msgid "The timeout should have a bigger value."
-msgstr ""
+msgstr "Die Wartezeit sollte größer sein."
 
 #: ../src/endpoints/opal-bank.cpp:55
 msgid "_Add an Ekiga.net Account"
 msgstr "ekiga.net-Konto _hinzufügen"
 
+# CHECK: Übersetzung »PC zu Telefon« für »Call Out« korrekt?
 #: ../src/endpoints/opal-bank.cpp:57
 msgid "_Add an Ekiga Call Out Account"
-msgstr ""
+msgstr "Ekiga »PC zu Telefon«-Konto _hinzufügen"
 
 #: ../src/endpoints/opal-bank.cpp:59
 msgid "_Add a SIP Account"
@@ -1516,19 +1509,17 @@ msgid "Get an Ekiga.net SIP account"
 msgstr "Ein ekiga.net SIP-Konto anlegen"
 
 #: ../src/endpoints/opal-bank.cpp:90 ../src/gui/assistant.cpp:652
-#, fuzzy
 msgid "Get an Ekiga Call Out account"
 msgstr "»PC zu Telefon«-Konto für Ekiga erstellen"
 
-#: ../src/endpoints/opal-bank.cpp:94 ../src/gui/main.cpp:3593
-#: ../src/gui/main.cpp:3690
-#, fuzzy
+#: ../src/endpoints/opal-bank.cpp:94 ../src/gui/main.cpp:3554
+#: ../src/gui/main.cpp:3651
 msgid "Account ID:"
-msgstr "Konto-Bezeichnung:"
+msgstr "Konto-ID:"
 
 #: ../src/endpoints/opal-bank.cpp:96
 msgid "PIN Code:"
-msgstr ""
+msgstr "PIN-Code:"
 
 #: ../src/endpoints/opal-call.cpp:398
 msgid "Local user cleared the call"
@@ -1554,7 +1545,7 @@ msgstr "Gegenseite ruft nicht mehr an"
 msgid "Abnormal call termination"
 msgstr "Verbindung wurde aufgrund eines Fehlers beendet"
 
-#: ../src/endpoints/opal-call.cpp:419 ../src/gui/main.cpp:1566
+#: ../src/endpoints/opal-call.cpp:419 ../src/gui/main.cpp:1525
 msgid "Could not connect to remote host"
 msgstr "Verbindung mit Gegenseite konnte nicht hergestellt werden"
 
@@ -1599,18 +1590,16 @@ msgid "Remote host is offline"
 msgstr "Gegenseite ist offline"
 
 #: ../src/endpoints/opal-call.cpp:458
-#, fuzzy
 msgid "User is not available"
-msgstr "Lokaler Benutzer ist beschäftigt"
+msgstr "Benutzer ist nicht verfügbar"
 
 #: ../src/endpoints/opal-call.cpp:470
 msgid "Call completed"
 msgstr "Verbindung beendet"
 
 #: ../src/endpoints/sip-endpoint.cpp:298 ../src/endpoints/sip-endpoint.cpp:300
-#, fuzzy
 msgid "Message"
-msgstr "_Nachricht schicken"
+msgstr "Nachricht"
 
 #: ../src/endpoints/sip-endpoint.cpp:718
 msgid "Bad request"
@@ -1622,7 +1611,7 @@ msgstr "Kostenpflichtig"
 
 #: ../src/endpoints/sip-endpoint.cpp:726
 msgid "Unauthorized"
-msgstr ""
+msgstr "Nicht autorisiert"
 
 #: ../src/endpoints/sip-endpoint.cpp:730
 msgid "Forbidden"
@@ -1641,185 +1630,166 @@ msgid "Temporarily unavailable"
 msgstr "Zeitweilig nicht verfügbar"
 
 #: ../src/endpoints/sip-endpoint.cpp:746
-#, fuzzy
 msgid "Not acceptable"
 msgstr "Nicht annehmbar"
 
 #: ../src/endpoints/sip-endpoint.cpp:750
 msgid "Illegal status code"
-msgstr ""
+msgstr "Illegaler Status-Code"
 
 #: ../src/endpoints/sip-endpoint.cpp:754
 msgid "Multiple choices"
-msgstr ""
+msgstr "Mehrfachauswahl"
 
 #: ../src/endpoints/sip-endpoint.cpp:758
 msgid "Moved permanently"
-msgstr ""
+msgstr "Dauerhaft verschoben"
 
 #: ../src/endpoints/sip-endpoint.cpp:762
 msgid "Moved temporarily"
-msgstr ""
+msgstr "Temporär verschoben"
 
 #: ../src/endpoints/sip-endpoint.cpp:766
-#, fuzzy
 msgid "Use proxy"
-msgstr "Benutzerverzeichnis"
+msgstr "Proxy verwenden"
 
 #: ../src/endpoints/sip-endpoint.cpp:770
-#, fuzzy
 msgid "Alternative service"
-msgstr "Alternatives Ausgabe-Gerät"
+msgstr "Alternativer Dienst"
 
 #: ../src/endpoints/sip-endpoint.cpp:774
-#, fuzzy
 msgid "Not found"
-msgstr "Benutzer nicht gefunden"
+msgstr "Nicht gefunden"
 
 #: ../src/endpoints/sip-endpoint.cpp:778
 msgid "Method not allowed"
-msgstr ""
+msgstr "Methode nicht zulässig"
 
+# CHECK
 #: ../src/endpoints/sip-endpoint.cpp:782
-#, fuzzy
 msgid "Proxy auth. required"
-msgstr "Kostenpflichtig"
+msgstr "Proxy-Auth. erforderlich"
 
 #: ../src/endpoints/sip-endpoint.cpp:786
-#, fuzzy
 msgid "Length required"
-msgstr "Kostenpflichtig"
+msgstr "Länge erforderlich"
 
+# CHECK
 #: ../src/endpoints/sip-endpoint.cpp:790
 msgid "Request entity too big"
-msgstr ""
+msgstr "Anfrageeinheit zu groß"
 
 #: ../src/endpoints/sip-endpoint.cpp:794
-#, fuzzy
 msgid "Request URI too long"
-msgstr "Anforderung in Ordnung"
+msgstr "Anfrageadresse zu lang"
 
 #: ../src/endpoints/sip-endpoint.cpp:798
 msgid "Unsupported media type"
-msgstr ""
+msgstr "Nicht unterstützter Medientyp"
 
 #: ../src/endpoints/sip-endpoint.cpp:802
 msgid "Unsupported URI scheme"
-msgstr ""
+msgstr "Nicht unterstütztes Adressenschema"
 
 #: ../src/endpoints/sip-endpoint.cpp:806
 msgid "Bad extension"
-msgstr ""
+msgstr "Falsche Erweiterung"
 
 #: ../src/endpoints/sip-endpoint.cpp:810
-#, fuzzy
 msgid "Extension required"
-msgstr "Kostenpflichtig"
+msgstr "Erweiterung erforderlich"
 
 #: ../src/endpoints/sip-endpoint.cpp:814
 msgid "Interval too brief"
-msgstr ""
+msgstr "Intervall zu kurz"
 
 #: ../src/endpoints/sip-endpoint.cpp:818
-#, fuzzy
 msgid "Loop detected"
-msgstr "Automatisch zurückgewiesen"
+msgstr "Loop entdeckt"
 
 #: ../src/endpoints/sip-endpoint.cpp:822
 msgid "Too many hops"
-msgstr ""
+msgstr "Zu viele Hops"
 
 #: ../src/endpoints/sip-endpoint.cpp:826
-#, fuzzy
 msgid "Address incomplete"
-msgstr "Adressbuch"
+msgstr "Adresse unvollständig"
 
 #: ../src/endpoints/sip-endpoint.cpp:830
 msgid "Ambiguous"
-msgstr ""
+msgstr "Nicht eindeutig"
 
 #: ../src/endpoints/sip-endpoint.cpp:834
 msgid "Busy Here"
-msgstr ""
+msgstr "Hier beschäftigt"
 
 #: ../src/endpoints/sip-endpoint.cpp:838
 msgid "Request terminated"
-msgstr ""
+msgstr "Anfrage abgebrochen"
 
 #: ../src/endpoints/sip-endpoint.cpp:842
-#, fuzzy
 msgid "Not acceptable here"
-msgstr "Nicht annehmbar"
+msgstr "Hier nicht annehmbar"
 
 #: ../src/endpoints/sip-endpoint.cpp:846
-#, fuzzy
 msgid "Bad event"
-msgstr "Ungültige Anfrage"
+msgstr "Ungültiges Ereignis"
 
 #: ../src/endpoints/sip-endpoint.cpp:850
-#, fuzzy
 msgid "Request pending"
-msgstr "Anforderung in Ordnung"
+msgstr "Wartende Anfrage"
 
 #: ../src/endpoints/sip-endpoint.cpp:854
 msgid "Undecipherable"
-msgstr ""
+msgstr "Nicht entzifferbar"
 
 #: ../src/endpoints/sip-endpoint.cpp:858
-#, fuzzy
 msgid "Internal server error"
-msgstr "Ungültiger Server- oder Gruppenname"
+msgstr "Interner Server-Fehler"
 
 #: ../src/endpoints/sip-endpoint.cpp:862
 msgid "Not implemented"
-msgstr ""
+msgstr "Nicht implementiert"
 
 #: ../src/endpoints/sip-endpoint.cpp:866
-#, fuzzy
 msgid "Bad gateway"
-msgstr "Standard-_Gateway:"
+msgstr "Ungültiges Gateway"
 
 #: ../src/endpoints/sip-endpoint.cpp:870
-#, fuzzy
 msgid "Service unavailable"
-msgstr "Zeitweilig nicht verfügbar"
+msgstr "Dienst nicht verfügbar"
 
 #: ../src/endpoints/sip-endpoint.cpp:874
-#, fuzzy
 msgid "Server timeout"
-msgstr "Kein Zeitlimit für Rufannahme"
+msgstr "Wartezeit für Server abgelaufen"
 
 #: ../src/endpoints/sip-endpoint.cpp:878
 msgid "SIP version not supported"
-msgstr ""
+msgstr "SIP-Version nicht unterstützt"
 
 #: ../src/endpoints/sip-endpoint.cpp:882
 msgid "Message too large"
-msgstr ""
+msgstr "Benachrichtigung zu lang"
 
 #: ../src/endpoints/sip-endpoint.cpp:886
 msgid "Busy everywhere"
-msgstr ""
+msgstr "Anderswo beschäftigt"
 
 #: ../src/endpoints/sip-endpoint.cpp:890
-#, fuzzy
 msgid "Decline"
-msgstr "Löschen"
+msgstr "Ablehnen"
 
 #: ../src/endpoints/sip-endpoint.cpp:894
-#, fuzzy
 msgid "Does not exist anymore"
-msgstr "Bitte nicht stören"
+msgstr "Besteht nicht mehr"
 
 #: ../src/endpoints/sip-endpoint.cpp:898
-#, fuzzy
 msgid "Globally not acceptable"
-msgstr "Nicht annehmbar"
+msgstr "Überall nicht annehmbar"
 
-#: ../src/endpoints/sip-endpoint.cpp:1024
-#, fuzzy
+#: ../src/endpoints/sip-endpoint.cpp:1026
 msgid "Could not send message"
-msgstr "Nachricht abschicken"
+msgstr "Nachricht konnte nicht abgeschickt werden"
 
 #: ../src/gui/accounts.cpp:234
 msgid "Registered"
@@ -1831,16 +1801,15 @@ msgstr "Abgemeldet"
 
 #: ../src/gui/accounts.cpp:242
 msgid "Could not unregister"
-msgstr ""
+msgstr "Abmelden nicht möglich"
 
 #: ../src/gui/accounts.cpp:248
-#, fuzzy
 msgid "Could not register"
-msgstr "Bitte nicht stören"
+msgstr "Anmelden nicht möglich"
 
 #: ../src/gui/accounts.cpp:254
 msgid "Processing..."
-msgstr ""
+msgstr "Verarbeitung läuft …"
 
 #: ../src/gui/accounts.cpp:628
 msgid "Account Name"
@@ -1858,15 +1827,20 @@ msgstr "Status"
 msgid "Accounts"
 msgstr "Konten"
 
-#: ../src/gui/accounts.cpp:655 ../src/gui/main.cpp:1826
+#: ../src/gui/accounts.cpp:655 ../src/gui/main.cpp:1785
 msgid "_Accounts"
 msgstr "_Konten"
 
-#: ../src/gui/accounts.cpp:659 ../src/gui/main.cpp:1909
+#: ../src/gui/accounts.cpp:659 ../src/gui/main.cpp:1868
 msgid "_Help"
 msgstr "_Hilfe"
 
-#: ../src/gui/accounts.cpp:687 ../src/gui/preferences.cpp:497
+#. Translators:
+#. * The following string "A" means "activated" or "active". It's a column
+#. * description in the list of configured accounts, it shows if an account
+#. * is activated or not (a status the user can choose).
+#.
+#: ../src/gui/accounts.cpp:692 ../src/gui/preferences.cpp:497
 msgid "A"
 msgstr "A"
 
@@ -1887,7 +1861,7 @@ msgstr ""
 
 #: ../src/gui/assistant.cpp:266
 msgid "Welcome in Ekiga"
-msgstr ""
+msgstr "Willkommen bei Ekiga"
 
 #: ../src/gui/assistant.cpp:300 ../src/gui/preferences.cpp:373
 msgid "Personal Information"
@@ -1907,9 +1881,8 @@ msgstr ""
 "Videokonferenz-Software benutzt."
 
 #: ../src/gui/assistant.cpp:503
-#, fuzzy
 msgid "Ekiga.net Account"
-msgstr "ekiga.net Konto – Seite %d/%d"
+msgstr "ekiga.net Konto"
 
 #: ../src/gui/assistant.cpp:505
 msgid "Please enter your username:"
@@ -1942,22 +1915,19 @@ msgid "I do not want to sign up for the ekiga.net free service"
 msgstr "Ich möchte mich nicht beim kostenlosen ekiga.net Dienst anmelden"
 
 #: ../src/gui/assistant.cpp:617
-#, fuzzy
 msgid "Ekiga Call Out Account"
-msgstr "ekiga.net Konto – Seite %d/%d"
+msgstr "Ekiga »PC zu Telefon«-Konto"
 
 #: ../src/gui/assistant.cpp:619
-#, fuzzy
 msgid "Please enter your account ID:"
-msgstr "Tragen Sie Ihren Benutzer-Namen ein:"
+msgstr "Tragen Sie Ihre Kontonummer ein:"
 
 #: ../src/gui/assistant.cpp:627
-#, fuzzy
 msgid "Please enter your PIN code:"
-msgstr "Tragen Sie Ihr Passwort ein:"
+msgstr "Tragen Sie Ihre PIN ein:"
 
+# CHECK: ich erkenne hier keine drei Schritte, sondern nur zwei. Bug melden?
 #: ../src/gui/assistant.cpp:638
-#, fuzzy
 msgid ""
 "You can make calls to regular phones and cell numbers worldwide using "
 "Ekiga.\n"
@@ -1969,23 +1939,22 @@ msgid ""
 "dialog.\n"
 msgstr ""
 "Sie können mit Ekiga Anrufe zu normalen Telefonen und Mobiltelefonen "
-"weltweit durchführen. Um dieses Merkmal zu aktivieren müssen Sie die "
-"folgenden drei Schritte befolgen: Zuerst erstellen Sie ein Konto über die "
-"untenstehende URL. Danach geben Sie hier die Kontonummer sowie die PIN ein. "
-"Abschließend aktivieren Sie darunter die Benutzung für den Ekiga »PC zu "
-"Telefon«-Dienst.\n"
+"weltweit durchführen.\n"
 "\n"
-"Dieser Dienst funktioniert nur, wenn die untenstehende URL für die "
-"Erstellung ihres Kontos verwenden wird."
+"Um dieses Merkmal zu aktivieren müssen Sie die folgenden drei Schritte "
+"befolgen:\n"
+"- Zuerst erwerben Sie ein Konto über die unten stehende Adresse.\n"
+"- Danach geben Sie hier die Kontonummer sowie die PIN ein.\n"
+"Dieser Dienst funktioniert nur, wenn die unten stehende Adresse für die "
+"Erstellung ihres Kontos verwenden wurde.\n"
 
 #: ../src/gui/assistant.cpp:688
 msgid "Consult the calls history"
 msgstr "Die Anrufchronik anzeigen"
 
 #: ../src/gui/assistant.cpp:698
-#, fuzzy
 msgid "I do not want to sign up for the Ekiga Call Out service"
-msgstr "Ich möchte mich nicht beim kostenlosen ekiga.net Dienst anmelden"
+msgstr "Ich möchte mich nicht beim »PC zu Telefon«-Dienst anmelden"
 
 #: ../src/gui/assistant.cpp:767 ../src/gui/assistant.cpp:1264
 msgid "Connection Type"
@@ -2006,16 +1975,15 @@ msgstr "ISDN"
 
 #: ../src/gui/assistant.cpp:797
 msgid "DSL/Cable (128 kbit/s uplink)"
-msgstr ""
+msgstr "DSL/Kabel (128 kbit/s Uplink)"
 
 #: ../src/gui/assistant.cpp:802
 msgid "DSL/Cable (512 kbit/s uplink)"
-msgstr ""
+msgstr "DSL/Kabel (512 kbit/s Uplink)"
 
 #: ../src/gui/assistant.cpp:807
-#, fuzzy
 msgid "LAN"
-msgstr "T1/LAN"
+msgstr "LAN"
 
 #: ../src/gui/assistant.cpp:812
 msgid "Keep current settings"
@@ -2031,115 +1999,106 @@ msgstr ""
 "Qualitätseinstellungen zu wählen, die Ekiga während einer Verbindung "
 "benutzt. Sie können diese Einstellungen später individuell anpassen."
 
-#: ../src/gui/assistant.cpp:907 ../src/gui/main.cpp:3966
-#: ../src/gui/main.cpp:3970 ../src/gui/preferences.cpp:690
+#: ../src/gui/assistant.cpp:907 ../src/gui/main.cpp:3927
+#: ../src/gui/main.cpp:3931 ../src/gui/preferences.cpp:690
 msgid "Audio Devices"
 msgstr "Audiogeräte"
 
 #: ../src/gui/assistant.cpp:909
-#, fuzzy
 msgid "Please choose the audio ringing device:"
-msgstr "Bitte wählen Sie das Gerät für die Aufnahme:"
+msgstr "Bitte wählen Sie das Gerät für den Klingelton:"
 
 #: ../src/gui/assistant.cpp:917
-#, fuzzy
 msgid ""
 "The audio ringing device is the device that will be used to play the ringing "
 "sound on incoming calls."
 msgstr ""
-"Das Wiedergabe-Gerät ist das Gerät, das verwendet wird, um Audio "
-"abzuspielen. Es wird vom Audio-Manager verwaltet."
+"Das Gerät für den Klinelton ist das Gerät, das verwendet wird, um bei "
+"eingehenden Anrufen einen Klingelton abzuspielen."
 
 #. ---
 #: ../src/gui/assistant.cpp:928
 msgid "Please choose the audio output device:"
-msgstr "Bitte wählen Sie das Gerät für die Wiedergabe:"
+msgstr "Bitte wählen Sie das Gerät für die Audio-Wiedergabe:"
 
 #: ../src/gui/assistant.cpp:936
-#, fuzzy
 msgid ""
 "The audio output device is the device that will be used to play audio during "
 "calls."
 msgstr ""
-"Das Wiedergabe-Gerät ist das Gerät, das verwendet wird, um Audio "
-"abzuspielen. Es wird vom Audio-Manager verwaltet."
+"Das Gerät für die Audio-Wiedergabe ist das Gerät, das verwendet wird, um "
+"Audio während eines Anrufs abzuspielen."
 
 #. ---
 #: ../src/gui/assistant.cpp:947
 msgid "Please choose the audio input device:"
-msgstr "Bitte wählen Sie das Gerät für die Aufnahme:"
+msgstr "Bitte wählen Sie das Gerät für die Audio-Aufnahme:"
 
 #: ../src/gui/assistant.cpp:955
-#, fuzzy
 msgid ""
 "The audio input device is the device that will be used to record your voice "
 "during calls."
 msgstr ""
-"Das Aufnahme-Gerät ist das Gerät, das verwendet wird, um Ihre Stimme "
-"aufzuzeichnen. Es wird vom Audio-Manager verwaltet."
+"Das Gerät für die Audio-Aufnahme ist das Gerät, das verwendet wird, um Ihre "
+"Stimme während eines Anrufes aufzuzeichnen."
 
 #: ../src/gui/assistant.cpp:1047
-#, fuzzy
 msgid "Please choose your video input device:"
-msgstr "Bitte wählen Sie ein Gerät für die Aufnahme:"
+msgstr "Bitte wählen Sie ein Gerät für die Video-Aufnahme:"
 
 #: ../src/gui/assistant.cpp:1055
-#, fuzzy
 msgid ""
 "The video input device is the device that will be used to capture video "
 "during calls."
 msgstr ""
-"Das Aufnahme-Gerät ist das Gerät, das verwendet wird, um Video aufzuzeichnen."
+"Das Gerät für die Video-Aufnahme ist das Gerät, das verwendet wird, um das "
+"Video-Bild während eines Anrufes aufzuzeichnen."
 
 #: ../src/gui/assistant.cpp:1195
-#, fuzzy
 msgid "Configuration Complete"
-msgstr "Konfiguration vollständig – Seite %d/%d"
+msgstr "Konfiguration vollständig"
 
 #: ../src/gui/assistant.cpp:1197
 msgid ""
 "You have now finished the Ekiga configuration. All the settings can be "
 "changed in the Ekiga preferences. Enjoy!"
 msgstr ""
+"Sie haben die Konfiguration von Ekiga jetzt abgeschlossen. Alle "
+"Einstellungen können im Einstellungen-Dialog von Ekiga geändert werden. Viel "
+"Vergnügen!"
 
 #: ../src/gui/assistant.cpp:1204
-#, fuzzy
 msgid "Configuration summary:"
-msgstr "Konfigurations-Druide"
+msgstr "Konfigurationszusammenfassung"
 
 #: ../src/gui/assistant.cpp:1274
-#, fuzzy
 msgid "Audio Ringing Device"
-msgstr "Gerät für Audioaufnahme"
+msgstr "Gerät für Audio-Klingelton"
 
 #: ../src/gui/assistant.cpp:1283
-#, fuzzy
 msgid "Audio Output Device"
-msgstr "Gerät für Audiowiedergabe"
+msgstr "Gerät für Audio-Wiedergabe"
 
 #: ../src/gui/assistant.cpp:1292
-#, fuzzy
 msgid "Audio Input Device"
-msgstr "Gerät für Audioaufnahme"
+msgstr "Gerät für Audio-Aufnahme"
 
 #: ../src/gui/assistant.cpp:1301
-#, fuzzy
 msgid "Video Input Device"
-msgstr "Gerät für Video-Aufzeichnung"
+msgstr "Gerät für Video-Aufnahme"
 
 #: ../src/gui/assistant.cpp:1314
-#, fuzzy
 msgid "SIP URI"
-msgstr "VoIP-URL"
+msgstr "SIP-URI"
 
 #: ../src/gui/assistant.cpp:1326
 msgid "Ekiga Call Out"
-msgstr ""
+msgstr "Ekiga »PC zu Telefon«"
 
 #: ../src/gui/assistant.cpp:1368
-#, fuzzy, c-format
+#, c-format
 msgid "Ekiga Configuration Assistant (%d of %d)"
-msgstr "Konfigurations-Assistent – Seite 1/%d"
+msgstr "Ekiga Konfigurations-Assistent – (%d von %d)"
 
 #: ../src/gui/callbacks.cpp:130
 msgid "Contributors:"
@@ -2218,108 +2177,107 @@ msgstr ""
 
 #: ../src/gui/dialpad.cpp:59
 msgid "abc"
-msgstr ""
+msgstr "abc"
 
 #: ../src/gui/dialpad.cpp:60
 msgid "def"
-msgstr ""
+msgstr "def"
 
 #: ../src/gui/dialpad.cpp:61
 msgid "ghi"
-msgstr ""
+msgstr "ghi"
 
 #: ../src/gui/dialpad.cpp:62
 msgid "jkl"
-msgstr ""
+msgstr "jkl"
 
 #: ../src/gui/dialpad.cpp:63
 msgid "mno"
-msgstr ""
+msgstr "mno"
 
 #: ../src/gui/dialpad.cpp:64
 msgid "pqrs"
-msgstr ""
+msgstr "pqrs"
 
 #: ../src/gui/dialpad.cpp:65
 msgid "tuv"
-msgstr ""
+msgstr "tuv"
 
 #: ../src/gui/dialpad.cpp:66
 msgid "wxyz"
-msgstr ""
+msgstr "wxyz"
 
 #. Translators: Is displayed once an account "%s" is registered.
 #: ../src/gui/main.cpp:582
-#, fuzzy, c-format
+#, c-format
 msgid "Registered %s"
-msgstr "Bei %s angemeldet"
+msgstr "%s angemeldet"
 
 #. Translators: Is displayed once an account "%s" is unregistered.
 #: ../src/gui/main.cpp:588
-#, fuzzy, c-format
+#, c-format
 msgid "Unregistered %s"
-msgstr "Abgemeldet"
+msgstr "%s abgemeldet"
 
 #: ../src/gui/main.cpp:593
-#, fuzzy, c-format
+#, c-format
 msgid "Could not unregister %s"
-msgstr "Verbindung mit Gegenseite konnte nicht hergestellt werden"
+msgstr "%s konnte nicht abgemeldet werden"
 
 #: ../src/gui/main.cpp:597
-#, fuzzy, c-format
+#, c-format
 msgid "Could not register %s"
-msgstr "Liste der Benutzer, die Online sind, konnte nicht geholt werden"
+msgstr "%s konnte nicht abgemeldet werden"
 
 #: ../src/gui/main.cpp:661
 #, c-format
 msgid "A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d"
-msgstr ""
+msgstr "A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d"
 
-#: ../src/gui/main.cpp:743
-#, fuzzy, c-format
+#: ../src/gui/main.cpp:706
+#, c-format
 msgid "Connected with %s"
 msgstr "Verbunden mit %s"
 
-#: ../src/gui/main.cpp:778 ../src/gui/main.cpp:2354
+#: ../src/gui/main.cpp:741 ../src/gui/main.cpp:2313
 msgid "Standby"
 msgstr "Bereit"
 
-#: ../src/gui/main.cpp:845
-#, fuzzy
+#: ../src/gui/main.cpp:808
 msgid "Call on hold"
-msgstr "Verbindungs-Einstellungen"
+msgstr "Wartender Anruf"
 
-#: ../src/gui/main.cpp:858
-#, fuzzy
+#: ../src/gui/main.cpp:821
 msgid "Call retrieved"
-msgstr "Anruf weitergeleitet"
+msgstr "Anruf zurückgeholt"
 
-#: ../src/gui/main.cpp:875
-#, fuzzy, c-format
+#: ../src/gui/main.cpp:838
+#, c-format
 msgid "Missed call from %s"
-msgstr "Chronik für entgangene Anrufe"
+msgstr "Entgangener Anruf von %s"
 
-#: ../src/gui/main.cpp:1018 ../src/gui/misc.cpp:94
+#: ../src/gui/main.cpp:981 ../src/gui/misc.cpp:94
 msgid "Error"
 msgstr "Fehler"
 
-#: ../src/gui/main.cpp:1151
-#, fuzzy, c-format
+# CHECK
+#: ../src/gui/main.cpp:1110
+#, c-format
 msgid "Added video input device %s"
-msgstr "Gerät für Audioaufnahme"
+msgstr "Gerät für Audio-Aufnahme %s hinzugefügt"
 
-#: ../src/gui/main.cpp:1168
-#, fuzzy, c-format
+# CHECK
+#: ../src/gui/main.cpp:1127
+#, c-format
 msgid "Removed video input device %s"
-msgstr "Gerät für Video-Aufzeichnung"
+msgstr "Gerät für Video-Aufnahme %s entfernt"
 
-#: ../src/gui/main.cpp:1185
-#, fuzzy, c-format
+#: ../src/gui/main.cpp:1144
+#, c-format
 msgid "Error while accessing video device %s"
-msgstr "Fehler beim Öffnen des Videogerätes %s"
+msgstr "Fehler beim Zugriff auf das Video-Gerät %s"
 
-#: ../src/gui/main.cpp:1188
-#, fuzzy
+#: ../src/gui/main.cpp:1147
 msgid ""
 "A moving logo will be transmitted during calls. Notice that you can always "
 "transmit a given image or the moving logo by choosing \"Picture\" as video "
@@ -2330,27 +2288,28 @@ msgstr ""
 "übertragen werden kann, indem »Bild« als Video-Plugin und »MovingLogo« oder "
 "»StaticPicture« als Gerät gewählt wird."
 
-#: ../src/gui/main.cpp:1192
-#, fuzzy
+#: ../src/gui/main.cpp:1151
 msgid ""
 "There was an error while opening the device. In case it is a pluggable "
 "device it may be sufficient to reconnect it. If not, or if it still is not "
 "accessible, please check your permissions and make sure that the appropriate "
 "driver is loaded."
 msgstr ""
-"Beim Öffnen des Gerätes ist ein Fehler aufgetreten. Bitte überprüfen sie die "
-"Berechtigungen und stellen Sie sicher, dass der entsprechende Treiber "
-"geladen wurde."
+"Beim Öffnen des Gerätes ist ein Fehler aufgetreten. Im Fall von "
+"einsteckbaren Geräten kann es ausreichend sein, das Gerät neu zu verbinden. "
+"Wenn dies nicht der Fall ist und auf das Gerät weiterhin nicht zugegriffen "
+"werden kann, überprüfen Sie bitte die Berechtigungen und stellen Sie sicher, "
+"dass der entsprechende Treiber geladen wurde."
 
-#: ../src/gui/main.cpp:1196
+#: ../src/gui/main.cpp:1155
 msgid "Your video driver doesn't support the requested video format."
 msgstr "Videogerät unterstützt angefordertes Videoformat nicht."
 
-#: ../src/gui/main.cpp:1200
+#: ../src/gui/main.cpp:1159
 msgid "Could not open the chosen channel."
 msgstr "Ausgewählter Kanal konnte nicht geöffnet werden."
 
-#: ../src/gui/main.cpp:1204
+#: ../src/gui/main.cpp:1163
 msgid ""
 "Your driver doesn't seem to support any of the color formats supported by "
 "Ekiga.\n"
@@ -2362,467 +2321,451 @@ msgstr ""
 " In der Dokumentation für den Kerneltreiber kann überprüft werden, welche "
 "Palette unterstützt wird."
 
-#: ../src/gui/main.cpp:1208
+#: ../src/gui/main.cpp:1167
 msgid "Error while setting the frame rate."
 msgstr "Fehler beim Setzen der Bildrate."
 
-#: ../src/gui/main.cpp:1212
+#: ../src/gui/main.cpp:1171
 msgid "Error while setting the frame size."
 msgstr "Fehler beim Setzen der Bildgröße."
 
-#: ../src/gui/main.cpp:1217 ../src/gui/main.cpp:1326 ../src/gui/main.cpp:1446
-#, fuzzy
+#: ../src/gui/main.cpp:1176 ../src/gui/main.cpp:1285 ../src/gui/main.cpp:1405
 msgid "Unknown error."
-msgstr "Unbekannter NAT-Typ"
+msgstr "Unbekannter Fehler"
 
-#: ../src/gui/main.cpp:1273
-#, fuzzy, c-format
+# CHECK
+#: ../src/gui/main.cpp:1232
+#, c-format
 msgid "Added audio input device %s"
-msgstr "Gerät für Audioaufnahme"
+msgstr "Gerät für Audio-Aufnahme %s hinzugefügt"
 
-#: ../src/gui/main.cpp:1293
-#, fuzzy, c-format
+# CHECK
+#: ../src/gui/main.cpp:1252
+#, c-format
 msgid "Removed audio input device %s"
-msgstr "Gerät für Audioaufnahme"
+msgstr "Gerät für Audio-Aufnahme %s entfernt"
 
-#: ../src/gui/main.cpp:1310
-#, fuzzy, c-format
+#: ../src/gui/main.cpp:1269
+#, c-format
 msgid "Error while opening audio input device %s"
-msgstr "Fehler beim Öffnen des Videogerätes %s"
+msgstr "Fehler beim Öffnen des Gerätes für Audio-Aufnahme %s"
 
-#: ../src/gui/main.cpp:1313
+# CHECK
+#: ../src/gui/main.cpp:1272
 msgid "Only silence will be transmitted."
-msgstr ""
+msgstr "Nur Geräuschlosigkeit wird übertragen."
 
-#: ../src/gui/main.cpp:1317
-#, fuzzy
+#: ../src/gui/main.cpp:1276
 msgid ""
 "Unable to open the selected audio device for recording. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
 "still is not accessible, please check your audio setup, the permissions and "
 "that the device is not busy."
 msgstr ""
-"Das gewählte Audiogerät (%s) konnte nicht für die Aufnahme geöffnet werden. "
-"Bitte überprüfen Sie die Audio-Einstellungen, die Berechtigungen und ob das "
-"Gerät bereits verwendet wird."
+"Das gewählte Gerät für Audio-Aufnahme konnte nicht für die Aufnahme geöffnet "
+"werden. Im Fall von einsteckbaren Geräten kann es ausreichend sein, das "
+"Gerät neu zu verbinden. Wenn dies nicht der Fall ist und auf das Gerät "
+"weiterhin nicht zugegriffen werden kann, überprüfen Sie bitte die Audio-"
+"Einstellungen, die Berechtigungen und ob das Gerät bereits verwendet wird."
 
-#: ../src/gui/main.cpp:1321
-#, fuzzy
+#: ../src/gui/main.cpp:1280
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "read data from this device. In case it is a pluggable device it may be "
 "sufficient to reconnect it. If not, or if it still is not accessible, please "
 "check your audio setup."
 msgstr ""
-"Das gewählte Audiogerät (%s) wurde erfolgreich geöffnet, es konnten jedoch "
-"keine Daten gelesen werden. Bitte überprüfen Sie die Audio-Einstellungen."
+"Das gewählte Audiogerät wurde erfolgreich geöffnet, es konnten jedoch keine "
+"Daten gelesen werden. Im Fall von einsteckbaren Geräten kann es ausreichend "
+"sein, das Gerät neu zu verbinden. Wenn dies nicht der Fall ist und auf das "
+"Gerät weiterhin nicht zugegriffen werden kann, überprüfen Sie bitte die "
+"Audio-Einstellungen."
 
-#: ../src/gui/main.cpp:1391
-#, fuzzy, c-format
+# CHECK
+#: ../src/gui/main.cpp:1350
+#, c-format
 msgid "Added audio output device %s"
-msgstr "Gerät für Audiowiedergabe"
+msgstr "Gerät für Audio-Wiedergabe %s hinzugefügt"
 
-#: ../src/gui/main.cpp:1409
-#, fuzzy, c-format
+# CHECK
+#: ../src/gui/main.cpp:1368
+#, c-format
 msgid "Removed audio output device %s"
-msgstr "Alternatives Gerät für Audiowiedergabe"
+msgstr "Gerät für Audio-Wiedergabe %s entfernt"
 
-#: ../src/gui/main.cpp:1430
-#, fuzzy, c-format
+#: ../src/gui/main.cpp:1389
+#, c-format
 msgid "Error while opening audio output device %s"
-msgstr "Fehler beim Öffnen des Videogerätes %s"
+msgstr "Fehler beim Öffnen des Gerätes für Audio-Wiedergabe %s"
 
-#: ../src/gui/main.cpp:1433
+#: ../src/gui/main.cpp:1392
 msgid "No incoming sound will be played."
-msgstr ""
+msgstr "Bei eingehenden Anrufen wird kein Klang abgespielt."
 
-#: ../src/gui/main.cpp:1437
-#, fuzzy
+#: ../src/gui/main.cpp:1396
 msgid ""
 "Unable to open the selected audio device for playing. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
 "still is not accessible, please check your audio setup, the permissions and "
 "that the device is not busy."
 msgstr ""
-"Das gewählte Audiogerät (%s) konnte nicht für die Wiedergabe geöffnet "
-"werden. Bitte überprüfen Sie die Audio-Einstellungen, die Berechtigungen und "
-"ob das Gerät bereits verwendet wird."
+"Das gewählte Gerät für Audio-Wiedergabe konnte nicht für die Wiedergabe "
+"geöffnet werden. Im Fall von einsteckbaren Geräten kann es ausreichend sein, "
+"das Gerät neu zu verbinden. Wenn dies nicht der Fall ist und auf das Gerät "
+"weiterhin nicht zugegriffen werden kann, überprüfen Sie bitte die Audio-"
+"Einstellungen, die Berechtigungen und ob das Gerät bereits verwendet wird."
 
-#: ../src/gui/main.cpp:1441
-#, fuzzy
+#: ../src/gui/main.cpp:1400
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "write data from this device. In case it is a pluggable device it may be "
 "sufficient to reconnect it. If not, or if it still is not accessible, please "
 "check your audio setup."
 msgstr ""
-"Das gewählten Audiogerät (%s) wurde erfolgreich geöffnet, es konnten jedoch "
-"keine Daten gesendet werden. Bitte überprüfen Sie die Audio-Einstellungen."
+"Das gewählte Audiogerät wurde erfolgreich geöffnet, es konnten jedoch keine "
+"Daten gesendet werden. Im Fall von einsteckbaren Geräten kann es ausreichend "
+"sein, das Gerät neu zu verbinden. Wenn dies nicht der Fall ist und auf das "
+"Gerät weiterhin nicht zugegriffen werden kann, überprüfen Sie bitte die "
+"Audio-Einstellungen."
 
-#: ../src/gui/main.cpp:1668
-#, fuzzy
+#: ../src/gui/main.cpp:1627
 msgid "Enter a URI on the left, and click this button to place a call"
 msgstr ""
-"Geben Sie links eine URL an und klicken sie dann auf diesen Knopf, um eine "
-"Verbindung herzustellen"
+"Geben Sie links eine Adresse an und klicken Sie dann auf diesen Knopf, um "
+"eine Verbindung herzustellen"
 
-#: ../src/gui/main.cpp:1749
-#, fuzzy
+#: ../src/gui/main.cpp:1708
 msgid "_Chat"
-msgstr "_Kontakt"
+msgstr "_Chat"
 
-#: ../src/gui/main.cpp:1751
+#: ../src/gui/main.cpp:1710
 msgid "Ca_ll"
 msgstr "An_ruf"
 
-#: ../src/gui/main.cpp:1751
+#: ../src/gui/main.cpp:1710
 msgid "Place a new call"
 msgstr "Einen neuen Anruf tätigen"
 
-#: ../src/gui/main.cpp:1754
+#: ../src/gui/main.cpp:1713
 msgid "_Hang up"
 msgstr "_Auflegen"
 
-#: ../src/gui/main.cpp:1755
+#: ../src/gui/main.cpp:1714
 msgid "Terminate the current call"
 msgstr "Die aktuelle Verbindung beenden"
 
-#: ../src/gui/main.cpp:1761
-#, fuzzy
+#: ../src/gui/main.cpp:1720
 msgid "A_dd Contact"
-msgstr "Kontakt _anrufen"
+msgstr "Kontakt _hinzufügen"
 
-#: ../src/gui/main.cpp:1761
-#, fuzzy
+#: ../src/gui/main.cpp:1720
 msgid "Add a contact to the roster"
-msgstr "Kontakt zum Adressbuch _hinzufügen"
+msgstr "Kontakt zur Kontaktliste hinzufügen"
 
-#: ../src/gui/main.cpp:1766
-#, fuzzy
+# CHECK: Oder »Kontakt suchen«?
+#: ../src/gui/main.cpp:1725
 msgid "Find contacts"
-msgstr "Neuer _Kontakt"
+msgstr "Kontakt finden"
 
-#: ../src/gui/main.cpp:1773
-#, fuzzy
+#: ../src/gui/main.cpp:1732
 msgid "_Contact"
 msgstr "_Kontakt"
 
-#: ../src/gui/main.cpp:1774
+# CHECK: Übersetzung bestimmt falsch, aber was bedeutet der String?
+#: ../src/gui/main.cpp:1733
 msgid "Act on selected contact"
-msgstr ""
+msgstr "Mit ausgewählten Kontakt agieren"
 
-#: ../src/gui/main.cpp:1780
-#, fuzzy
+#: ../src/gui/main.cpp:1739
 msgid "H_old Call"
 msgstr "Verbindung _halten"
 
-#: ../src/gui/main.cpp:1780 ../src/gui/main.cpp:2452
+#: ../src/gui/main.cpp:1739 ../src/gui/main.cpp:2411
 msgid "Hold the current call"
 msgstr "Aktuelle Verbindung halten"
 
-#: ../src/gui/main.cpp:1784
+#: ../src/gui/main.cpp:1743
 msgid "_Transfer Call"
 msgstr "Anruf _weiterleiten"
 
-#: ../src/gui/main.cpp:1785
+#: ../src/gui/main.cpp:1744
 msgid "Transfer the current call"
 msgstr "Den aktuellen Anruf weiterleiten"
 
-#: ../src/gui/main.cpp:1792 ../src/gui/main.cpp:3206
+#: ../src/gui/main.cpp:1751 ../src/gui/main.cpp:3167
 msgid "Suspend _Audio"
 msgstr "_Audio abschalten"
 
-#: ../src/gui/main.cpp:1793
+#: ../src/gui/main.cpp:1752
 msgid "Suspend or resume the audio transmission"
 msgstr "Audioübertragung anhalten oder fortsetzen"
 
-#: ../src/gui/main.cpp:1797 ../src/gui/main.cpp:3208
+#: ../src/gui/main.cpp:1756 ../src/gui/main.cpp:3169
 msgid "Suspend _Video"
 msgstr "_Video anhalten"
 
-#: ../src/gui/main.cpp:1798
+#: ../src/gui/main.cpp:1757
 msgid "Suspend or resume the video transmission"
 msgstr "Videoübertragung anhalten oder fortsetzen"
 
-#: ../src/gui/main.cpp:1805
+#: ../src/gui/main.cpp:1764
 msgid "Close the Ekiga window"
 msgstr "Ekiga-Fenster schließen"
 
-#: ../src/gui/main.cpp:1812 ../src/gui/statusicon.cpp:419
-#, fuzzy
+#: ../src/gui/main.cpp:1771 ../src/gui/statusicon.cpp:422
 msgid "Quit"
-msgstr "_Beenden"
+msgstr "Beenden"
 
-#: ../src/gui/main.cpp:1818
-#, fuzzy
+#: ../src/gui/main.cpp:1777
 msgid "_Configuration Assistant"
-msgstr "Konfigurations-Assistent für den ersten Start"
+msgstr "Konfigurations-Assistent"
 
-#: ../src/gui/main.cpp:1819
-#, fuzzy
+#: ../src/gui/main.cpp:1778
 msgid "Run the configuration assistant"
-msgstr "Konfigurations-Druiden starten"
+msgstr "Konfigurations-Assistenten starten"
 
-#: ../src/gui/main.cpp:1827
+#: ../src/gui/main.cpp:1786
 msgid "Edit your accounts"
 msgstr "Konten bearbeiten"
 
-#: ../src/gui/main.cpp:1833
+#: ../src/gui/main.cpp:1792
 msgid "Change your preferences"
 msgstr "Ihre Einstellungen ändern"
 
-#: ../src/gui/main.cpp:1838
+#: ../src/gui/main.cpp:1797
 msgid "_View"
 msgstr "_Ansicht"
 
-#: ../src/gui/main.cpp:1840
-#, fuzzy
+#: ../src/gui/main.cpp:1799
 msgid "Con_tacts"
-msgstr "_Kontakt"
+msgstr "_Kontakte"
 
-#: ../src/gui/main.cpp:1840
-#, fuzzy
+#: ../src/gui/main.cpp:1799
 msgid "View the contacts list"
-msgstr "Die Anrufchronik anzeigen"
+msgstr "Liste der Kontakte anzeigen"
 
-#: ../src/gui/main.cpp:1845
+#: ../src/gui/main.cpp:1804
 msgid "_Dialpad"
 msgstr "_Wähltastatur"
 
-#: ../src/gui/main.cpp:1845
+#: ../src/gui/main.cpp:1804
 msgid "View the dialpad"
 msgstr "Wähltastatur anzeigen"
 
-#: ../src/gui/main.cpp:1850
-#, fuzzy
+#: ../src/gui/main.cpp:1809
 msgid "_Call History"
-msgstr "Anrufchronik"
+msgstr "_Anrufchronik"
 
-#: ../src/gui/main.cpp:1850
-#, fuzzy
+#: ../src/gui/main.cpp:1809
 msgid "View the call history"
 msgstr "Die Anrufchronik anzeigen"
 
-#: ../src/gui/main.cpp:1858
+#: ../src/gui/main.cpp:1817
 msgid "_Show Call Panel"
-msgstr ""
+msgstr "_Anrufleiste anzeigen"
 
-#: ../src/gui/main.cpp:1866
-#, fuzzy
+#: ../src/gui/main.cpp:1825
 msgid "_Local Video"
-msgstr "Lokales Videobild"
+msgstr "_Lokales Video"
 
-#: ../src/gui/main.cpp:1867
+#: ../src/gui/main.cpp:1826
 msgid "Local video image"
 msgstr "Lokales Videobild"
 
-#: ../src/gui/main.cpp:1872
-#, fuzzy
+#: ../src/gui/main.cpp:1831
 msgid "_Remote Video"
-msgstr "Videobild der Gegenseite"
+msgstr "_Video der Gegenseite"
 
-#: ../src/gui/main.cpp:1873
+#: ../src/gui/main.cpp:1832
 msgid "Remote video image"
 msgstr "Videobild der Gegenseite"
 
-#: ../src/gui/main.cpp:1878
-#, fuzzy
+#: ../src/gui/main.cpp:1837
 msgid "_Picture-in-Picture"
-msgstr "Beide (Bild-in-Bild)"
+msgstr "_Bild-in-Bild"
 
-#: ../src/gui/main.cpp:1879 ../src/gui/main.cpp:1885
+#: ../src/gui/main.cpp:1838 ../src/gui/main.cpp:1844
 msgid "Both video images"
 msgstr "Beide Videobilder"
 
-#: ../src/gui/main.cpp:1884
-#, fuzzy
+#: ../src/gui/main.cpp:1843
 msgid "Picture-in-Picture in Separate _Window"
-msgstr "Beide (Bild-in-Bild)"
+msgstr "Bild-in-Bild in eigenem _Fenster"
 
-#: ../src/gui/main.cpp:1892
+#: ../src/gui/main.cpp:1851
 msgid "Zoom in"
 msgstr "Vergrößern"
 
-#: ../src/gui/main.cpp:1896
+#: ../src/gui/main.cpp:1855
 msgid "Zoom out"
 msgstr "Verkleinern"
 
-#: ../src/gui/main.cpp:1900
+#: ../src/gui/main.cpp:1859
 msgid "Normal size"
 msgstr "Normale Größe"
 
-#: ../src/gui/main.cpp:1904
-#, fuzzy
+#: ../src/gui/main.cpp:1863
 msgid "_Fullscreen"
-msgstr "Vollbild"
+msgstr "_Vollbild"
 
-#: ../src/gui/main.cpp:1904
+#: ../src/gui/main.cpp:1863
 msgid "Switch to fullscreen"
 msgstr "In den Vollbildmodus wechseln"
 
-#: ../src/gui/main.cpp:1912 ../src/gui/statusicon.cpp:396
-#: ../src/gui/statusicon.cpp:407
+#: ../src/gui/main.cpp:1871 ../src/gui/statusicon.cpp:399
+#: ../src/gui/statusicon.cpp:410
 msgid "Get help by reading the Ekiga manual"
 msgstr "Das Ekiga-Handbuch lesen, um Hilfe zu finden"
 
-#: ../src/gui/main.cpp:1917 ../src/gui/statusicon.cpp:401
-#: ../src/gui/statusicon.cpp:412
+#: ../src/gui/main.cpp:1876 ../src/gui/statusicon.cpp:404
+#: ../src/gui/statusicon.cpp:415
 msgid "View information about Ekiga"
 msgstr "Informationen über Ekiga ansehen"
 
-#: ../src/gui/main.cpp:1954
-#, fuzzy
+#: ../src/gui/main.cpp:1913
 msgid "Contacts"
-msgstr "_Kontakt"
+msgstr "_Kontakte"
 
-#: ../src/gui/main.cpp:1982
+#: ../src/gui/main.cpp:1941
 msgid "Dialpad"
 msgstr "Wähltastatur"
 
-#: ../src/gui/main.cpp:2018
-#, fuzzy
+#: ../src/gui/main.cpp:1977
 msgid "Video Settings"
-msgstr "_Video-Einstellungen"
+msgstr "Video-Einstellungen"
 
-#: ../src/gui/main.cpp:2045
+#: ../src/gui/main.cpp:2004
 msgid "Adjust brightness"
 msgstr "Helligkeit einstellen"
 
-#: ../src/gui/main.cpp:2066
+#: ../src/gui/main.cpp:2025
 msgid "Adjust whiteness"
 msgstr "Gammawert einstellen"
 
-#: ../src/gui/main.cpp:2087
+#: ../src/gui/main.cpp:2046
 msgid "Adjust color"
 msgstr "Farbe einstellen"
 
-#: ../src/gui/main.cpp:2108
+#: ../src/gui/main.cpp:2067
 msgid "Adjust contrast"
 msgstr "Kontrast einstellen"
 
-#: ../src/gui/main.cpp:2162
-#, fuzzy
+#: ../src/gui/main.cpp:2121
 msgid "Audio Settings"
-msgstr "_Audio-Einstellungen"
+msgstr "Audio-Einstellungen"
 
-#: ../src/gui/main.cpp:2388
+#: ../src/gui/main.cpp:2347
 msgid "Change the volume of your soundcard"
-msgstr ""
+msgstr "Lautstärke Ihrer Sound-Karte ändern"
 
-#: ../src/gui/main.cpp:2410
+#: ../src/gui/main.cpp:2369
 msgid "Change the color settings of your video device"
-msgstr ""
+msgstr "Farbeinstellungen Ihrer Grafikkarte ändern"
 
-#: ../src/gui/main.cpp:2432
+#: ../src/gui/main.cpp:2391
 msgid "Display images from your camera device"
 msgstr "Bilder von der eigenen Kamera anzeigen"
 
-#: ../src/gui/main.cpp:2483
-#, fuzzy
+#: ../src/gui/main.cpp:2442
 msgid "Call history"
 msgstr "Anrufchronik"
 
-#: ../src/gui/main.cpp:3154
+#: ../src/gui/main.cpp:3115
 msgid "_Retrieve Call"
 msgstr "Verbindung _fortsetzen"
 
-#: ../src/gui/main.cpp:3167
+#: ../src/gui/main.cpp:3128
 msgid "_Hold Call"
 msgstr "Verbindung _halten"
 
-#: ../src/gui/main.cpp:3210
+#: ../src/gui/main.cpp:3171
 msgid "Resume _Audio"
 msgstr "_Audio anhalten"
 
-#: ../src/gui/main.cpp:3212
+#: ../src/gui/main.cpp:3173
 msgid "Resume _Video"
 msgstr "_Video fortsetzen"
 
-#: ../src/gui/main.cpp:3542 ../src/gui/main.cpp:3696
+#: ../src/gui/main.cpp:3503 ../src/gui/main.cpp:3657
 msgid "Reject"
 msgstr "Zurückweisen"
 
-#: ../src/gui/main.cpp:3544 ../src/gui/main.cpp:3695
+#: ../src/gui/main.cpp:3505 ../src/gui/main.cpp:3656
 msgid "Accept"
 msgstr "Annehmen"
 
-#: ../src/gui/main.cpp:3550 ../src/gui/main.cpp:3683
+#: ../src/gui/main.cpp:3511 ../src/gui/main.cpp:3644
 msgid "Incoming call from"
 msgstr "Eingehender Anruf von"
 
-#: ../src/gui/main.cpp:3568 ../src/gui/main.cpp:3686
-#, fuzzy
+#: ../src/gui/main.cpp:3529 ../src/gui/main.cpp:3647
 msgid "Remote URI:"
-msgstr "URL der Gegenseite:"
+msgstr "Adresse der Gegenseite:"
 
-#: ../src/gui/main.cpp:3580 ../src/gui/main.cpp:3688
+#: ../src/gui/main.cpp:3541 ../src/gui/main.cpp:3649
 msgid "Remote Application:"
 msgstr "Programm der Gegenseite:"
 
-#: ../src/gui/main.cpp:3601
+#: ../src/gui/main.cpp:3562
 #, c-format
 msgid "Call from %s"
 msgstr "Anruf von %s"
 
 # missing accelerator
-#: ../src/gui/main.cpp:3858
-#, fuzzy, c-format
+#: ../src/gui/main.cpp:3819
+#, c-format
 msgid "Call Duration: %s\n"
-msgstr "Verbindungsdauer"
+msgstr "Verbindungsdauer: %s\n"
 
-#: ../src/gui/main.cpp:3895
+#: ../src/gui/main.cpp:3856
 msgid "Transfer call to:"
 msgstr "Anruf weiterleiten an:"
 
-#: ../src/gui/main.cpp:3952
-#, fuzzy
+#: ../src/gui/main.cpp:3913
 msgid "No"
-msgstr "Keine"
+msgstr "Nein"
 
-#: ../src/gui/main.cpp:3954
+#: ../src/gui/main.cpp:3915
 msgid "Yes"
-msgstr ""
+msgstr "Ja"
 
-#: ../src/gui/main.cpp:3965
-#, fuzzy
+#: ../src/gui/main.cpp:3926
 msgid "Detected new audio input device:"
-msgstr "Bitte wählen Sie das Gerät für die Aufnahme:"
+msgstr "Neues Gerät für Audio-Aufnahme erkannt:"
 
-#: ../src/gui/main.cpp:3969
-#, fuzzy
+#: ../src/gui/main.cpp:3930
 msgid "Detected new audio output device:"
-msgstr "Bitte wählen Sie das Gerät für die Wiedergabe:"
+msgstr "Neues Gerät für Audio-Wiedergabe erkannt:"
 
-#: ../src/gui/main.cpp:3973
-#, fuzzy
+#: ../src/gui/main.cpp:3934
 msgid "Detected new video input device:"
-msgstr "Bitte wählen Sie ein Gerät für die Aufnahme:"
+msgstr "Neues Gerät für Video-Aufnahme erkannt:"
 
-#: ../src/gui/main.cpp:3974 ../src/gui/preferences.cpp:848
+#: ../src/gui/main.cpp:3935 ../src/gui/preferences.cpp:848
 msgid "Video Devices"
 msgstr "Videogeräte"
 
-#: ../src/gui/main.cpp:3992
+#: ../src/gui/main.cpp:3953
 msgid "Do you want to use it as default device?"
-msgstr ""
+msgstr "Möchten Sie dieses als vorgegebenes Gerät verwenden?"
 
 #. Add title
-#: ../src/gui/main.cpp:4063 ../src/gui/main.cpp:4168
+#: ../src/gui/main.cpp:4024 ../src/gui/main.cpp:4129
 msgid "Ekiga"
 msgstr "Ekiga"
 
-#: ../src/gui/main.cpp:4497
+#: ../src/gui/main.cpp:4458
 #, c-format
 msgid "TX: %dx%d "
-msgstr ""
+msgstr "TX: %dx%d "
 
-#: ../src/gui/main.cpp:4500
+#: ../src/gui/main.cpp:4461
 #, c-format
 msgid "RX: %dx%d "
-msgstr ""
+msgstr "RX: %dx%d "
 
-#: ../src/gui/main.cpp:4502
-#, fuzzy, c-format
+#: ../src/gui/main.cpp:4463
+#, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
 "Late packets: %.1f %%\n"
@@ -2832,28 +2775,29 @@ msgstr ""
 "Verlorene Pakete: %.1f %%\n"
 "Verspätete Pakete: %.1f %%\n"
 "Pakete in falscher Folge: %.1f %%\n"
-"Jitter-Puffer: %d ms"
+"Jitter-Puffer: %d ms%s%s%s"
 
-#: ../src/gui/main.cpp:4648
-#, fuzzy
+#: ../src/gui/main.cpp:4615
 msgid "Prints debug messages in the console (level between 1 and 5)"
-msgstr "Debug-Meldungen in der Konsole ausgeben (Stufe zwischen 1 und 6)"
+msgstr ""
+"Fehleranalysemeldungen in der Konsole ausgeben (Stufe zwischen 1 und 5)"
 
-#: ../src/gui/main.cpp:4653
-#, fuzzy
+# CHECK
+#: ../src/gui/main.cpp:4620
 msgid "Prints user plane debug messages in the console (level between 1 and 4)"
-msgstr "Debug-Meldungen in der Konsole ausgeben (Stufe zwischen 1 und 6)"
+msgstr ""
+"Fehleranalysemeldungen der Benutzerebene in der Konsole ausgeben (Stufe "
+"zwischen 1 und 4)"
 
-#: ../src/gui/main.cpp:4658
-#, fuzzy
+#: ../src/gui/main.cpp:4625
 msgid "Makes Ekiga call the given URI"
-msgstr "Lässt Ekiga die angegebene URL anrufen"
+msgstr "Lässt Ekiga die angegebene Adresse anrufen"
 
-#: ../src/gui/main.cpp:4771
+#: ../src/gui/main.cpp:4738
 msgid "No usable audio plugin detected"
 msgstr "Kein verwendbares Audio-Plugin gefunden"
 
-#: ../src/gui/main.cpp:4772
+#: ../src/gui/main.cpp:4739
 msgid ""
 "Ekiga didn't find any usable audio plugin. Make sure that your installation "
 "is correct."
@@ -2861,27 +2805,25 @@ msgstr ""
 "Ekiga konnte kein verwendbares Audio-Plugin finden. Stellen Sie sicher, dass "
 "Ihre Installation korrekt ist."
 
-#: ../src/gui/main.cpp:4775
-#, fuzzy
+#: ../src/gui/main.cpp:4742
 msgid "No usable audio codecs detected"
-msgstr "Kein verwendbares Audio-Plugin gefunden"
+msgstr "Kein verwendbares Audio-Codecs gefunden"
 
-#: ../src/gui/main.cpp:4776
-#, fuzzy
+#: ../src/gui/main.cpp:4743
 msgid ""
 "Ekiga didn't find any usable audio codec. Make sure that your installation "
 "is correct."
 msgstr ""
-"Ekiga konnte kein verwendbares Audio-Plugin finden. Stellen Sie sicher, dass "
+"Ekiga konnte kein verwendbares Audio-Codec finden. Stellen Sie sicher, dass "
 "Ihre Installation korrekt ist."
 
-#: ../src/gui/main.cpp:4782
-#, fuzzy
+# CHECK
+#: ../src/gui/main.cpp:4749
 msgid "Configuration database corruption"
-msgstr "Konfigurations-Druide"
+msgstr "Konfigurationsdatenbank ist beschädigt"
 
-#: ../src/gui/main.cpp:4783
-#, fuzzy, c-format
+#: ../src/gui/main.cpp:4750
+#, c-format
 msgid ""
 "Ekiga got an invalid value for the configuration key %s.\n"
 "\n"
@@ -2892,26 +2834,24 @@ msgid ""
 "the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list "
 "archives for more information (http://mail.gnome.org) about this problem."
 msgstr ""
-"Ekiga wurde ein ungültiger Wert für den GConf-Schlüssel »%s« "
+"Ekiga wurde ein ungültiger Wert für den Konfigurationsschlüssel »%s« "
 "zurückgeliefert.\n"
 "\n"
-"Dies könnte bedeuten, dass Ihre GConf-Schemata nicht richtig installiert "
-"wurden oder die Rechte nicht korrekt sind.\n"
+"Dies könnte bedeuten, dass Ihre Konfigurationsschemata nicht richtig "
+"installiert wurden oder die Rechte nicht korrekt sind.\n"
 "\n"
-"Bitte schauen Sie in der FAQ (http://www.ekiga.org/), im Troubleshooting-"
+"Bitte sehen Sie in der FAQ (http://www.ekiga.org/), im Troubleshooting-"
 "Abschnitt der GConf-Seite (http://www.gnome.org/projects/gconf/) oder im "
 "Mailinglisten-Archiv (http://mail.gnome.org) nach, um Lösungen für dieses "
 "Problem zu finden."
 
 #: ../src/gui/preferences.cpp:376
-#, fuzzy
 msgid "_Full name:"
-msgstr "_Vorname:"
+msgstr "_Voller Name:"
 
 #: ../src/gui/preferences.cpp:394
-#, fuzzy
 msgid "User Interface"
-msgstr "Netzwerk-Interface"
+msgstr "Benutzerschnittstelle"
 
 #: ../src/gui/preferences.cpp:396
 msgid "Start _hidden"
@@ -2919,7 +2859,7 @@ msgstr "_Versteckt starten"
 
 #: ../src/gui/preferences.cpp:398
 msgid "Show offline _contacts"
-msgstr ""
+msgstr "Abgemeldete _Kontakte anzeigen"
 
 #: ../src/gui/preferences.cpp:403
 msgid "Video Display"
@@ -3026,9 +2966,8 @@ msgid "Misc Settings"
 msgstr "Verschiedene Einstellungen"
 
 #: ../src/gui/preferences.cpp:606 ../src/gui/preferences.cpp:660
-#, fuzzy
 msgid "Forward _URI:"
-msgstr "_Weiterleitungs-Adresse:"
+msgstr "_Weiterleitungsadresse:"
 
 #: ../src/gui/preferences.cpp:615
 msgid "Advanced Settings"
@@ -3069,15 +3008,12 @@ msgid "_Send DTMF as:"
 msgstr "_DTMF übertragen als:"
 
 #: ../src/gui/preferences.cpp:630 ../src/gui/preferences.cpp:670
-#, fuzzy
 msgid "This allows you to set the mode for DTMFs sending."
-msgstr ""
-"Dies erlaubt es, den Modus für DTMF-Übertragung festzulegen. Einziger "
-"möglicher Wert ist »RFC2833« (0)"
+msgstr "Dies erlaubt es, den Modus für DTMF-Übertragung festzulegen."
 
 #: ../src/gui/preferences.cpp:646
 msgid "INFO"
-msgstr ""
+msgstr "INFO"
 
 #: ../src/gui/preferences.cpp:657
 msgid "_Outbound Proxy:"
@@ -3085,12 +3021,11 @@ msgstr "_Ausgangs-Proxy:"
 
 #: ../src/gui/preferences.cpp:698
 msgid "Ringing Device"
-msgstr ""
+msgstr "Gerät für Klingelton"
 
 #: ../src/gui/preferences.cpp:698
-#, fuzzy
 msgid "Select the ringing audio device to use"
-msgstr "Wählen Sie das Audioaufnahme-Gerät"
+msgstr "Wählen Sie das Gerät für den Klingelton"
 
 #: ../src/gui/preferences.cpp:700
 msgid "Output device:"
@@ -3161,7 +3096,6 @@ msgid "_Detect devices"
 msgstr "Geräte _suchen"
 
 #: ../src/gui/preferences.cpp:712 ../src/gui/preferences.cpp:920
-#, fuzzy
 msgid "Click here to refresh the device list."
 msgstr "Hier klicken, um die Geräteliste zu aktualisieren."
 
@@ -3191,9 +3125,8 @@ msgid "Size:"
 msgstr "Größe:"
 
 #: ../src/gui/preferences.cpp:861
-#, fuzzy
 msgid "Select the transmitted video size"
-msgstr "Wählen Sie das Audiowiedergabe-Gerät"
+msgstr "Wählen Sie die übertragende Video-Größe"
 
 #: ../src/gui/preferences.cpp:863
 msgid "Format:"
@@ -3205,9 +3138,8 @@ msgid "Codecs"
 msgstr "Codecs"
 
 #: ../src/gui/preferences.cpp:957 ../src/gui/preferences.cpp:996
-#, fuzzy
 msgid "Settings"
-msgstr "NAT-Einstellungen"
+msgstr "Einstellungen"
 
 #. Translators: the full sentence is Automatically adjust jitter buffer
 #. between X and Y ms
@@ -3230,9 +3162,8 @@ msgid "If enabled, use echo cancelation."
 msgstr "Wenn aktiviert, automatische Echo-Unterdrückung verwenden."
 
 #: ../src/gui/preferences.cpp:965
-#, fuzzy
 msgid "Maximum _jitter buffer (in ms):"
-msgstr "Jitter-Puffer-Maximalgröße:"
+msgstr "_Jitter-Puffer-Maximalgröße (in ms):"
 
 #: ../src/gui/preferences.cpp:965
 msgid "The maximum jitter buffer size for audio reception (in ms)."
@@ -3251,22 +3182,23 @@ msgid ""
 "dropped frames in order not to surpass the bitrate limit) or if you prefer "
 "to keep the frame rate."
 msgstr ""
+"Wählen Sie, ob Sie eine minimale Bildqualität garantieren möchten (das kann "
+"möglicherweise dazu führen, dass Frames übersprungen werden, um die "
+"Obergrenze der Bitrate nicht zu übersteigen) oder ob Sie möchten, dass die "
+"Frame-Rate erhalten bleibt."
 
 #: ../src/gui/preferences.cpp:1001
-#, fuzzy
 msgid "Maximum video _bitrate (in kbits/s):"
 msgstr "Maximale Video_bandbreite (in kB/s):"
 
 #: ../src/gui/preferences.cpp:1001
-#, fuzzy
 msgid ""
 "The maximum video bitrate in kbits/s. The video quality and the effective "
 "frame rate will be dynamically adjusted to keep the bitrate at the given "
 "value."
 msgstr ""
 "Die maximale Bandbreite für Video in kByte/s. Die Videoqualität und Bildrate "
-"wird während der Verbindung dynamisch an einen Wert oberhalb des Minimums "
-"angepasst, um nach Möglichkeit die Bandbreite auf diesen Wert zu beschränken."
+"wird während der dynamisch an den gegebenen Wert angepasst."
 
 #: ../src/gui/preferences.cpp:1376
 msgid "Play sound for new voice mails"
@@ -3320,49 +3252,48 @@ msgstr "Geräte"
 msgid "Video"
 msgstr "Video"
 
-#: ../src/gui/statusicon.cpp:304
-#, fuzzy, c-format
+#: ../src/gui/statusicon.cpp:307
+#, c-format
 msgid "You have %d message"
 msgid_plural "You have %d messages"
-msgstr[0] "Nachricht abschicken"
-msgstr[1] "Nachricht abschicken"
+msgstr[0] "Sie haben %d Nachricht"
+msgstr[1] "Sie haben %d Nachrichten"
 
-#: ../src/gui/statusicon.cpp:406
+#: ../src/gui/statusicon.cpp:409
 msgid "_Contents"
 msgstr "_Inhalt"
 
-#: ../src/gui/statusicon.cpp:411
+#: ../src/gui/statusicon.cpp:414
 msgid "_About"
 msgstr "_Über"
 
 #: ../src/gui/statusmenu.cpp:90
 msgid "Online"
-msgstr ""
+msgstr "Verbunden"
 
 #: ../src/gui/statusmenu.cpp:91
 msgid "Away"
-msgstr ""
+msgstr "Abwesend"
 
 #: ../src/gui/statusmenu.cpp:92
-#, fuzzy
 msgid "Do Not Disturb"
-msgstr "_Nicht stören"
+msgstr "Nicht stören"
 
 #: ../src/gui/statusmenu.cpp:511
 msgid "Custom message..."
-msgstr ""
+msgstr "Angepasste Nachricht …"
 
 #: ../src/gui/statusmenu.cpp:625 ../src/gui/statusmenu.cpp:760
 msgid "Custom Message"
-msgstr ""
+msgstr "Angepasste Nachricht"
 
 #: ../src/gui/statusmenu.cpp:641
 msgid "Delete custom messages:"
-msgstr ""
+msgstr "Angepasste Nachricht löschen:"
 
 #: ../src/gui/statusmenu.cpp:781
 msgid "Define a custom message:"
-msgstr ""
+msgstr "Angepasste Nachricht bearbeiten:"
 
 #~ msgid "Gateway/proxy host"
 #~ msgstr "Gatekeeper/Proxy-Rechner"
@@ -4343,1299 +4274,3 @@ msgstr ""
 
 #~ msgid "Remote User"
 #~ msgstr "Gegenseite"
-
-# missing accelerator
-#~ msgid "Call End Reason"
-#~ msgstr "Ursache für Verbindungsende"
-
-#~ msgid "Hang _up"
-#~ msgstr "_Auflegen"
-
-#~ msgid "Call this user"
-#~ msgstr "Diesen Benutzer anrufen"
-
-#~ msgid "_Open URL"
-#~ msgstr "URI _öffnen"
-
-# missing accelerator
-#~ msgid "_Copy Equation"
-#~ msgstr "Gleichung _kopieren"
-
-#~ msgid "You"
-#~ msgstr "Du"
-
-#~ msgid "New Remote User"
-#~ msgstr "Neuer entfernter Benutzer"
-
-#~ msgid "Changing this setting will only affect new calls"
-#~ msgstr "Diese Änderung beeinflusst nur neue Anrufe"
-
-#~ msgid ""
-#~ "Ekiga cannot apply one or more changes to the current call. Your new "
-#~ "settings will take effect for the next call."
-#~ msgstr ""
-#~ "Eine oder mehrere Einstellungen können von Ekiga nicht für die aktuelle "
-#~ "Verbindung verändert werden. Die neuen Einstellungen werden erst bei der "
-#~ "nächsten Verbindung wirksam."
-
-#~ msgid "H.245 Tunneling disabled"
-#~ msgstr "H.245-Tunnel deaktiviert"
-
-#~ msgid "H.245 Tunneling enabled"
-#~ msgstr "H.245-Tunnel aktiviert"
-
-#~ msgid "Early H.245 disabled"
-#~ msgstr "Frühzeitige Verwendung von H.245 deaktiviert"
-
-#~ msgid "Early H.245 enabled"
-#~ msgstr "Frühzeitige Verwendung von H.245 aktiviert"
-
-#~ msgid "Fast Start disabled"
-#~ msgstr "Schnelles Starten deaktiviert"
-
-#~ msgid "Fast Start enabled"
-#~ msgstr "Schnelles Starten aktiviert"
-
-#~ msgid "Enabled silence detection"
-#~ msgstr "Sprechpausenerkennung eingeschaltet"
-
-#~ msgid "Disabled silence detection"
-#~ msgstr "Sprechpausenerkennung abgeschaltet"
-
-#~ msgid "Enabled echo cancelation"
-#~ msgstr "Echo-Unterdrückung aktiviert"
-
-#~ msgid "Personal Information - page %d/%d"
-#~ msgstr "Persönliche Daten – Seite %d/%d"
-
-#~ msgid "Connection Type - page %d/%d"
-#~ msgstr "Verbindungstyp – Seite %d/%d"
-
-#~ msgid "NAT Type - page %d/%d"
-#~ msgstr "NAT-Typ – Seite %d/%d"
-
-#~ msgid "Click here to detect your NAT Type:"
-#~ msgstr "Hier klicken, um den NAT-Typ zu erkennen:"
-
-#~ msgid "Detect NAT Type"
-#~ msgstr "NAT-Typ erkennen"
-
-#~ msgid ""
-#~ "The NAT type detection will permit to assist you in configuring your NAT "
-#~ "router to be able to do calls with Ekiga."
-#~ msgstr ""
-#~ "Die Erkennung des NAT-Typs dient dazu, bei der Einrichtung eines NAT-"
-#~ "Routers zu helfen, so dass Ekiga für Anrufe verwendet werden kann."
-
-#~ msgid "Audio Manager - page %d/%d"
-#~ msgstr "Audio-Manager – Seite %d/%d"
-
-#~ msgid "Please choose your audio manager:"
-#~ msgstr "Bitte wählen Sie einen Audio-Manager:"
-
-#~ msgid ""
-#~ "The audio manager is the plugin that will manage your audio devices. "
-#~ "WindowsMultimedia is probably the best choice when available."
-#~ msgstr ""
-#~ "Der Audio-Manager ist das Plugin, das für die Verwaltung der Audio-Geräte "
-#~ "verwendet wird, nach Möglichkeit sollte »WindowsMultimedia« verwendet "
-#~ "werden."
-
-#~ msgid ""
-#~ "The audio manager is the plugin that will manage your audio devices. ALSA "
-#~ "is probably the best choice when available."
-#~ msgstr ""
-#~ "Der Audio-Manager ist das Plugin, das für die Verwaltung der Audio-Geräte "
-#~ "verwendet wird, nach Möglichkeit sollte »ALSA« verwendet werden."
-
-#~ msgid "Audio Devices - page %d/%d"
-#~ msgstr "Audiogeräte – Seite %d/%d"
-
-#~ msgid "Test Settings"
-#~ msgstr "Einstellungen testen"
-
-#~ msgid "Video Manager - page %d/%d"
-#~ msgstr "Video-Manager – Seite %d/%d"
-
-#~ msgid "Please choose your video manager:"
-#~ msgstr "Bitte wählen Sie einen Video-Manager:"
-
-#~ msgid "Video Devices - page %d/%d"
-#~ msgstr "Videogeräte – Seite %d/%d"
-
-#~ msgid ""
-#~ "You have now finished the Ekiga configuration. All the settings can be "
-#~ "changed in the Ekiga preferences. Enjoy!\n"
-#~ "\n"
-#~ "\n"
-#~ "Configuration summary:\n"
-#~ "\n"
-#~ "Username: %s\n"
-#~ "Connection type: %s\n"
-#~ "Audio manager: %s\n"
-#~ "Audio player: %s\n"
-#~ "Audio recorder: %s\n"
-#~ "Video manager: %s\n"
-#~ "Video input: %s\n"
-#~ "SIP URL: %s\n"
-#~ msgstr ""
-#~ "Sie haben die Ekiga-Konfiguration abgeschlossen. Alle Einstellungen "
-#~ "können in den Ekiga-Einstellungen geändert werden. Viel Spaß!\n"
-#~ "\n"
-#~ "\n"
-#~ "Zusammenfassung:\n"
-#~ "\n"
-#~ "Benutzername: %s\n"
-#~ "Verbindungstyp: %s\n"
-#~ "Audioplugin: %s\n"
-#~ "Audiowiedergabe: %s\n"
-#~ "Audioaufnahme: %s\n"
-#~ "Videoplugin: %s\n"
-#~ "Videoquelle: %s\n"
-#~ "SIP-URL: %s\n"
-
-#~ msgid "General History"
-#~ msgstr "Allgemeine Chronik"
-
-#~ msgid "Open text chat"
-#~ msgstr "Chat-Fenster öffnen"
-
-#~ msgid "Change the view mode"
-#~ msgstr "Ansichtsmodus einstellen"
-
-#~ msgid "Open address book"
-#~ msgstr "Adressbuch öffnen"
-
-#~ msgid ""
-#~ "Audio transmission status. During a call, click here to suspend or resume "
-#~ "the audio transmission."
-#~ msgstr ""
-#~ "Status der Audioübertragung. Während einer Verbindung hier klicken, um "
-#~ "die Audioübertragung anzuhalten oder fortzusetzen."
-
-#~ msgid ""
-#~ "Video transmission status. During a call, click here to suspend or resume "
-#~ "the video transmission."
-#~ msgstr ""
-#~ "Status der Videoübertragung. Während einer Verbindung hier klicken, um "
-#~ "die Videoübertragung anzuhalten oder fortzusetzen."
-
-# missing accelerator
-#~ msgid "C_all"
-#~ msgstr "An_ruf"
-
-#~ msgid "_Available"
-#~ msgstr "_Verfügbar"
-
-#~ msgid "Display a popup to accept the call"
-#~ msgstr "Popup-Fenster anzeigen, um Anruf entgegenzunehmen"
-
-#~ msgid "Auto answer calls"
-#~ msgstr "Anrufe automatisch beantworten"
-
-#~ msgid "Reject calls"
-#~ msgstr "Anrufe ablehnen"
-
-#~ msgid "_Forward"
-#~ msgstr "_Weiterleiten"
-
-#~ msgid "Forward calls"
-#~ msgstr "Anrufe weiterleiten"
-
-#~ msgid "Speed dials"
-#~ msgstr "Kurzwahlen"
-
-#~ msgid "_Save Current Picture"
-#~ msgstr "Aktuelles Bild _sichern"
-
-#~ msgid "Save a snapshot of the current video"
-#~ msgstr "Einen Schnappschuss des aktuellen Videobildes sichern"
-
-#~ msgid "Quit Ekiga"
-#~ msgstr "Ekiga beenden"
-
-#~ msgid "_Preferences"
-#~ msgstr "_Einstellungen"
-
-#~ msgid "View _Mode"
-#~ msgstr "Ansichts_modus"
-
-#~ msgid "Softp_hone"
-#~ msgstr "_Softfon"
-
-#~ msgid "Show the softphone view"
-#~ msgstr "Softfon-Ansicht zeigen"
-
-#~ msgid "Show the videophone view"
-#~ msgstr "Videofon-Ansicht"
-
-#~ msgid "View all components"
-#~ msgstr "Alle Komponenten anzeigen"
-
-#~ msgid "Control Panel"
-#~ msgstr "Kontrollleiste"
-
-#~ msgid "View audio settings"
-#~ msgstr "Audio-Einstellungen betrachten"
-
-#~ msgid "View video settings"
-#~ msgstr "Video-Einstellungen betrachten"
-
-#~ msgid "Statistics"
-#~ msgstr "Statistik"
-
-#~ msgid "View audio/video transmission and reception statistics"
-#~ msgstr "Statistik für Audio-/Videoübertragung und -Empfang betrachten"
-
-#~ msgid "Both (Side-by-Side)"
-#~ msgstr "Beide (Nebeneinander)"
-
-#~ msgid "Both (Both in New Windows)"
-#~ msgstr "Beide (beide in neuen Fenstern)"
-
-#~ msgid "Zoom In"
-#~ msgstr "Vergrößern"
-
-#~ msgid "Zoom Out"
-#~ msgstr "Verkleinern"
-
-#~ msgid "Normal Size"
-#~ msgstr "Normale Größe"
-
-#~ msgid "Open the address book"
-#~ msgstr "Das Adressbuch öffnen"
-
-#~ msgid "C_hat Window"
-#~ msgstr "_Chat-Fenster"
-
-#~ msgid "Open the chat window"
-#~ msgstr "Chat-Fenster öffnen"
-
-#~ msgid "View the operations history"
-#~ msgstr "Die Operationschronik anzeigen"
-
-#~ msgid "Notification area not detected"
-#~ msgstr "Benachrichtigungs-Bereich nicht gefunden"
-
-#~ msgid ""
-#~ "The notification area is not present in your panel, so Ekiga cannot start "
-#~ "hidden."
-#~ msgstr ""
-#~ "Der Benachrichtigungsbereich ist nicht in der Kontrollleiste vorhanden, "
-#~ "deswegen kann das Hauptfenster von Ekiga beim Starten nicht versteckt "
-#~ "werden."
-
-#~ msgid "Sent DTMF %c"
-#~ msgstr "DTMF %c übertragen"
-
-#~ msgid "Out:"
-#~ msgstr "Aus:"
-
-#~ msgid "In:"
-#~ msgstr "Ein:"
-
-#~ msgid "Registered accounts:"
-#~ msgstr "Angemeldete Konten:"
-
-#~ msgid "Gconf key error"
-#~ msgstr "Fehler bei GConf-Schlüssel"
-
-#~ msgid "Bandwidth"
-#~ msgstr "Bandbreite"
-
-#~ msgid "Clock Rate"
-#~ msgstr "Abtastrate"
-
-#~ msgid "Sur_name:"
-#~ msgstr "_Nachname:"
-
-#~ msgid "Enter your surname"
-#~ msgstr "Tragen Sie Ihren Nachnamen ein"
-
-#~ msgid "E-_mail address:"
-#~ msgstr "_E-Mail-Adresse:"
-
-#~ msgid "Enter your e-mail address"
-#~ msgstr "Tragen Sie Ihre E-Mail-Adresse ein"
-
-#~ msgid "_Comment:"
-#~ msgstr "_Kommentar:"
-
-#~ msgid "Enter a comment about yourself"
-#~ msgstr "Hier kann ein Kommentar über einen selbst eingetragen werden"
-
-#~ msgid "Enter your country or city"
-#~ msgstr "Tragen Sie Ihr Land oder ihre Stadt ein"
-
-#~ msgid "Ekiga GUI"
-#~ msgstr "Ekiga Oberfläche"
-
-#~ msgid "Users Directory"
-#~ msgstr "Benutzerverzeichnis"
-
-#~ msgid "Users directory:"
-#~ msgstr "Benutzerverzeichnis:"
-
-#~ msgid "The users directory server to register with"
-#~ msgstr ""
-#~ "Das Benutzerverzeichnis, an dem eine Anmeldung vorgenommen werden soll"
-
-#~ msgid "Enable _registering"
-#~ msgstr "_Anmeldung aktivieren"
-
-#~ msgid "If enabled, register with the selected users directory"
-#~ msgstr ""
-#~ "Wenn aktiviert, wird eine Anmeldung am ausgewählten Benutzerverzeichnis "
-#~ "vorgenommen"
-
-#~ msgid "_Publish my details in the users directory when registering"
-#~ msgstr ""
-#~ "_Informationen über mich nach der Anmeldung im Benutzer-Verzeichnis "
-#~ "anzeigen"
-
-#~ msgid ""
-#~ "If enabled, your details are shown to people browsing the users "
-#~ "directory. If disabled, you are not visible to users browsing the users "
-#~ "directory, but they can still use the callto URL to call you."
-#~ msgstr ""
-#~ "Wenn aktiviert, werden Ihre Anmeldungsdaten Personen gezeigt, die das "
-#~ "Benutzerverzeichnis durchsuchen. Wenn deaktiviert, sind Sie für diese "
-#~ "Personen unsichtbar, Sie können jedoch weiterhin über die »callto«-URL "
-#~ "erreicht werden."
-
-#~ msgid "Automatically _clear calls after 30 seconds of inactivity"
-#~ msgstr "_Verbindungen automatisch nach 30 Sekunden Inaktivität beenden"
-
-#~ msgid "Alternative output device:"
-#~ msgstr "Alternatives Ausgabe-Gerät:"
-
-#~ msgid "Select an alternative audio output device to use for sound events"
-#~ msgstr "Wählen Sie das Gerät, über das der Klingelton wiedergegeben wird"
-
-#~ msgid "STUN"
-#~ msgstr "STUN"
-
-#~ msgid "IP Translation"
-#~ msgstr "IP-Adressübersetzung"
-
-#~ msgid "Listen on:"
-#~ msgstr "Überwachter Port:"
-
-#~ msgid "NAT Traversal Method:"
-#~ msgstr "NAT-Durchquerungs-Methode:"
-
-#~ msgid "STUN Se_rver:"
-#~ msgstr "STUN-_Server:"
-
-#~ msgid "The STUN server to use for STUN Support."
-#~ msgstr "Der STUN-Server für STUN-Unterstützung."
-
-#~ msgid "Click here to update your NAT settings"
-#~ msgstr "Hier klicken, um die NAT-Einstellungen zu aktualisieren"
-
-#~ msgid ""
-#~ "This permits to set the mode for DTMFs sending. The values can be \"String"
-#~ "\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (default is \"String"
-#~ "\"). Choosing other values than \"String\" disables the Text Chat."
-#~ msgstr ""
-#~ "Dies erlaubt es, den Modus für DTMF-Übertragung festzulegen. Mögliche "
-#~ "Werte sind »Zeichenkette« (0), »Ton« (1), »RFC2833« (2) oder »Q.931« (3) "
-#~ "(Vorgabewert ist »Zeichenkette«). Wenn ein anderer Wert als »Zeichenkette« "
-#~ "gewählt wird, wird der Text-Chat deaktiviert."
-
-#~ msgid ""
-#~ "This permits to set the mode for DTMFs sending. The value can be \"RFC2833"
-#~ "\" (0) only."
-#~ msgstr ""
-#~ "Dies erlaubt es, den Modus für DTMF-Übertragung festzulegen. Einziger "
-#~ "möglicher Wert ist »RFC2833« (0)."
-
-#~ msgid "Audio Plugin"
-#~ msgstr "Audio-Plugin"
-
-#~ msgid "Audio plugin:"
-#~ msgstr "Audio-Plugin:"
-
-#~ msgid ""
-#~ "The audio plugin that will be used to detect the devices and manage them."
-#~ msgstr ""
-#~ "Das Audio-Plugin, das für die Erkennung und Verwaltung der Geräte "
-#~ "verwendet wird."
-
-#~ msgid "Click here to refresh the devices list"
-#~ msgstr "Hier klicken, um die Geräteliste zu aktualisieren"
-
-#~ msgid "Normal"
-#~ msgstr "Normal"
-
-#~ msgid "Large"
-#~ msgstr "Groß"
-
-#~ msgid "Video Plugin"
-#~ msgstr "Video-Plugin"
-
-#~ msgid "Video plugin:"
-#~ msgstr "Video-Plugin:"
-
-#~ msgid ""
-#~ "Select the transmitted video size: Normal (QCIF 176x144) or Large (CIF "
-#~ "352x288)"
-#~ msgstr ""
-#~ "Wählen sie die zu übertragende Videogröße aus: Normal (QCIF 176x144) oder "
-#~ "Groß (CIF 352x288)"
-
-#~ msgid "Available Audio Codecs"
-#~ msgstr "Verfügbare Audio-Codecs"
-
-#~ msgid "Audio Codecs Settings"
-#~ msgstr "Audio-Codec-Einstellungen"
-
-#~ msgid "Automatically adjust _jitter buffer between"
-#~ msgstr "_Jitter-Puffer automatisch einstellen zwischen"
-
-#~ msgid "and"
-#~ msgstr "und"
-
-#~ msgid "ms"
-#~ msgstr "ms"
-
-#~ msgid "The minimum jitter buffer size for audio reception (in ms)."
-#~ msgstr ""
-#~ "Die minimale Größe des Jitter-Puffers, um den Audiodaten beim Empfang "
-#~ "verzögert werden (in Millisekunden)."
-
-#~ msgid "Enable _video support"
-#~ msgstr "Video-Unterstützung _aktivieren"
-
-#~ msgid "If enabled, allows video during calls."
-#~ msgstr ""
-#~ "Wenn aktiviert, wird während der Verbindung Videoübertragung aktiviert."
-
-#~ msgid "Bandwidth Control"
-#~ msgstr "Bandbreitenkontrolle"
-
-#~ msgid "Advanced Quality Settings"
-#~ msgstr "Erweiterte Einstellungen für Qualität"
-
-#~ msgid "Directory Settings"
-#~ msgstr "Verzeichnis-Einstellungen"
-
-#~ msgid "Network Settings"
-#~ msgstr "Netzwerk-Einstellungen"
-
-#~ msgid "Audio Codecs"
-#~ msgstr "Audio-Codecs"
-
-#~ msgid "Video Codecs"
-#~ msgstr "Video-Codecs"
-
-#~ msgid "Account _number:"
-#~ msgstr "_Kontonummer:"
-
-#~ msgid "_Call user"
-#~ msgstr "Benutzer _anrufen"
-
-#~ msgid ""
-#~ "Your username and password are used to register to the ekiga.net SIP "
-#~ "service. It will provide you a SIP address that you can give to your "
-#~ "friends and family so that they can call you."
-#~ msgstr ""
-#~ "Ihr Benutzername und Passwort werden für die Anmeldung beim ekiga.net SIP-"
-#~ "Dienst verwendet. Dieser stellt ihnen eine SIP-Adresse zur Verfügung, die "
-#~ "Sie an Ihre Freunde und Familie weitergeben können, damit diese Sie "
-#~ "anrufen können."
-
-#~ msgid "SIP Outbound Proxy"
-#~ msgstr "SIP Ausgangs-Proxy"
-
-#~ msgid "_Connect"
-#~ msgstr "_Verbinden"
-
-#~ msgid "Work"
-#~ msgstr "Arbeit"
-
-#~ msgid "Family"
-#~ msgstr "Familie"
-
-#~ msgid "Welcome to GnomeMeeting 1.00!"
-#~ msgstr "Willkommen zu GnomeMeeting 1.00!"
-
-#~ msgid ""
-#~ "Congratulations, you have just successfully launched GnomeMeeting 1.00 "
-#~ "for the first time.\n"
-#~ "GnomeMeeting is the leading VoIP, videoconferencing and telephony "
-#~ "software for Unix.\n"
-#~ "\n"
-#~ "Thanks to all of you who have helped us along the road to our golden 1.00 "
-#~ "release!\n"
-#~ "\n"
-#~ "The GnomeMeeting Team."
-#~ msgstr ""
-#~ "Gratulation, Sie haben gerade erfolgreich GnomeMeeting 1.00 das erste Mal "
-#~ "gestartet.\n"
-#~ "GnomeMeeting ist die führende VoIP- (Voice over IP), Videokonferenz- und "
-#~ "Telefon-Software für Unix.\n"
-#~ "\n"
-#~ "Dank gilt all denen, die uns auf dem Weg zu unserer goldenen 1.00 Version "
-#~ "geholfen haben!\n"
-#~ "\n"
-#~ "Das GnomeMeeting-Team."
-
-#~ msgid ""
-#~ "Another user already exists with the same alias, please use another alias."
-#~ msgstr ""
-#~ "Ein anderer Benutzer existiert bereits mit diesem Alias, bitte benutzen "
-#~ "sie einen anderen Alias."
-
-#~ msgid ""
-#~ "You are not allowed to register to the gatekeeper. Please check your "
-#~ "login, password and firewall."
-#~ msgstr ""
-#~ "Es ist Ihnen nicht erlaubt, sich an diesem Gatekeeper anzumelden. Bitte "
-#~ "überprüfen Sie Ihr Login, Ihr Passwort und die Firewall-Konfiguration."
-
-#~ msgid "No gatekeeper corresponding to your options has been found."
-#~ msgstr ""
-#~ "Es wurde kein Gatekeeper gefunden, der Ihren Einstellungen entspricht."
-
-#~ msgid "Error while registering with gatekeeper"
-#~ msgstr "Fehler beim Anmelden am Gatekeeper"
-
-#~ msgid "Cannot contact the users directory"
-#~ msgstr "Verbindung zum Benutzerverzeichnis konnte nicht hergestellt werden"
-
-#~ msgid ""
-#~ "Failed to contact the users directory %s:%d. The directory is probably "
-#~ "currently overloaded, please try again later."
-#~ msgstr ""
-#~ "Verbindung zum Benutzerverzeichnis %s:%d konnte nicht hergestellt werden. "
-#~ "Es könnte momentan überlastet sein, bitte versuchen Sie es später noch "
-#~ "einmal."
-
-#~ msgid "Cannot contact the user directory"
-#~ msgstr "Verbindung zum Benutzerverzeichnis konnte nicht hergestellt werden"
-
-#~ msgid "Failed to bind to user directory: %s."
-#~ msgstr "Anbindung an das Benutzerverzeichnis fehlgeschlagen: %s."
-
-#~ msgid "Unregistered from the users directory %s."
-#~ msgstr "Vom Benutzerverzeichnis %s abgemeldet."
-
-#~ msgid "Error while registering to %s"
-#~ msgstr "Fehler beim Anmelden bei %s"
-
-#~ msgid "Failed to set time limit on LDAP operations"
-#~ msgstr "Zeitlimit für LDAP-Operationen konnte nicht gesetzt werden"
-
-#~ msgid "Failed to contact to LDAP server %s: %s"
-#~ msgstr "Verbindung zum LDAP-Server %s fehlgeschlagen: %s"
-
-#~ msgid "Fetching online users list from %s"
-#~ msgstr "Benutzerinformationen von %s werden geholt"
-
-#~ msgid "Connection to %s lost"
-#~ msgstr "Verbindung zu %s verloren"
-
-#~ msgid "Search completed: %d user(s) found on %s"
-#~ msgstr "Suche abgeschlossen: %d Benutzer auf %s gefunden"
-
-#~ msgid "Groups:"
-#~ msgstr "Gruppen:"
-
-#~ msgid "Invalid user name or URL"
-#~ msgstr "Benutzername oder URL ungültig"
-
-#~ msgid ""
-#~ "Please provide a valid name and URL for the contact you want to add to "
-#~ "the address book."
-#~ msgstr ""
-#~ "Bitte geben sie einen gültigen Namen und eine URL für den Kontakt an, den "
-#~ "Sie zum Adressbuch hinzufügen möchten."
-
-#~ msgid "Invalid group"
-#~ msgstr "Ungültige Gruppe"
-
-#~ msgid "You have to select a group to which you want to add your contact."
-#~ msgstr ""
-#~ "Sie müssen eine Gruppe auswählen, zu der Sie den Kontakt hinzufügen "
-#~ "möchten."
-
-#~ msgid "Invalid speed dial"
-#~ msgstr "Ungültige Kurzwahl"
-
-#~ msgid "Invalid URL"
-#~ msgstr "Ungültige URL"
-
-#~ msgid ""
-#~ "Another contact with the same URL already exists in the address book."
-#~ msgstr ""
-#~ "Ein anderer Kontakt mit der gleichen URL existiert bereits im Adressbuch."
-
-#~ msgid "Add %s to Address Book"
-#~ msgstr "%s zum Adressbuch hinzufügen"
-
-#~ msgid "_Tranfer Call to Contact"
-#~ msgstr "Anruf zu Kontakt _weiterleiten"
-
-#~ msgid "Add a New Server"
-#~ msgstr "Einen neuen Server hinzufügen"
-
-#~ msgid "Enter the server name:"
-#~ msgstr "Servernamen eintragen:"
-
-#~ msgid ""
-#~ "Sorry but there is already a server with the same name in the address "
-#~ "book."
-#~ msgstr ""
-#~ "Leider existiert schon ein Server mit dem selben Namen im Adressbuch."
-
-#~ msgid "Add a New Group"
-#~ msgstr "Neue Gruppe hinzufügen"
-
-#~ msgid "Enter the group name:"
-#~ msgstr "Gruppennamen eintragen:"
-
-#~ msgid ""
-#~ "Sorry but there is already a group with the same name in the address book."
-#~ msgstr ""
-#~ "Leider existiert schon eine Gruppe mit dem selben Namen im Adressbuch."
-
-#~ msgid "Please enter a new name for server %s:"
-#~ msgstr "Bitte geben Sie einen neuen Namen für den Server %s ein:"
-
-#~ msgid "Please enter a new name for group %s:"
-#~ msgstr "Bitte geben Sie einen neuen Namen für die Gruppe %s ein:"
-
-#~ msgid "New Group"
-#~ msgstr "Neue Gruppe"
-
-#~ msgid "New _Server"
-#~ msgstr "Neuer _Server"
-
-#~ msgid "New _Group"
-#~ msgstr "Neue _Gruppe"
-
-#~ msgid "V"
-#~ msgstr "V"
-
-#~ msgid "IP"
-#~ msgstr "IP"
-
-#~ msgid "First name contains"
-#~ msgstr "Vorname enthält"
-
-#~ msgid "Servers"
-#~ msgstr "Verzeichnisse"
-
-#~ msgid "Groups"
-#~ msgstr "Gruppen"
-
-#~ msgid "Sent dtmf %c"
-#~ msgstr "DTMF %c gesendet"
-
-#~ msgid "Free for Cha_t"
-#~ msgstr "Bereit für _Gespräch"
-
-#~ msgid "_Busy"
-#~ msgstr "_Besetzt"
-
-#~ msgid "View/Hide the status bar"
-#~ msgstr "Statusleiste ein-/ausblenden"
-
-#~ msgid "Both (Local Video Incrusted)"
-#~ msgstr "Beide (lokales Videobild verkleinert)"
-
-#~ msgid "Both (Local Video in New Window)"
-#~ msgstr "Beide (lokales Videobild in neuem Fenster)"
-
-#~ msgid "_About GnomeMeeting"
-#~ msgstr "Über GnomeMeeting"
-
-#~ msgid "Codec Information"
-#~ msgstr "Codec-Informationen"
-
-#~ msgid "Use a fullscreen size of"
-#~ msgstr "Vollbild-Größe:"
-
-#~ msgid "by"
-#~ msgstr "zu"
-
-#~ msgid "pixels"
-#~ msgstr "Bildpunkte"
-
-#~ msgid "The image height for fullscreen."
-#~ msgstr "Die Bildhöhe für den Vollbild-Modus."
-
-#~ msgid "NAT/PAT Router Support"
-#~ msgstr "NAT-/PAT-Router-Unterstützung"
-
-#~ msgid "Info"
-#~ msgstr "Info"
-
-#~ msgid "Keep a minimum video _quality of"
-#~ msgstr "Minimale _Sendequalität für Video:"
-
-#~ msgid ""
-#~ "The minimum transmitted video quality to keep when trying to minimize the "
-#~ "used bandwidth:  choose 100% on a LAN for the best quality, 1% being the "
-#~ "worst quality"
-#~ msgstr ""
-#~ "Die minimal zu übertragende Qualität des Bildes, die bei "
-#~ "Bandbreitenanpassung verwendet werden soll. In einem LAN sollte 100% für "
-#~ "die höchste Qualität ausgewählt werden, 1% steht für die geringste "
-#~ "Qualität"
-
-#~ msgid "%"
-#~ msgstr "%"
-
-#~ msgid "Transmit at least"
-#~ msgstr "Übertrage mindestens "
-
-#~ msgid "_frames per second"
-#~ msgstr "_Bilder pro Sekunde"
-
-#~ msgid "Unanswered Calls"
-#~ msgstr "Unbeantwortete Anrufe"
-
-#~ msgid "Buy a card"
-#~ msgstr "Eine Karte kaufen"
-
-#~ msgid "Consult my account details"
-#~ msgstr "Konto-Details anzeigen"
-
-#~ msgid "Failed to restart the video channel"
-#~ msgstr "Übertragungs-Kanal für Video konnte nicht neu gestartet werden"
-
-#~ msgid ""
-#~ "You have changed a video device related setting during a call. That "
-#~ "requires to restart the video transmission channel, but it failed."
-#~ msgstr ""
-#~ "Sie haben eine Einstellung des Videogerätes während einer Verbindung "
-#~ "geändert. Hierfür muss der Übertragungs-Kanal neu gestartet werden, dies "
-#~ "ist jedoch fehlgeschlagen."
-
-#~ msgid "Play or not the busy tone sound"
-#~ msgstr "Besetztton abspielen"
-
-#~ msgid "Play or not the incoming call sound"
-#~ msgstr "Klang bei eingehendem Anruf abspielen"
-
-#~ msgid "Play or not the ring tone sound"
-#~ msgstr "Freizeichen abspielen"
-
-#~ msgid "Position on the screen of the general history window"
-#~ msgstr "Position des Fensters für die allgemeine Chronik auf dem Bildschirm"
-
-#~ msgid "Size of the general history window"
-#~ msgstr "Größe des Fensters für die allgemeine Chronik"
-
-#~ msgid "Enabled Silence Detection"
-#~ msgstr "Sprechpausenerkennung eingeschaltet"
-
-#~ msgid "transmission"
-#~ msgstr "Übertragung"
-
-#~ msgid "reception"
-#~ msgstr "Empfang"
-
-#~ msgid "Test those settings"
-#~ msgstr "Diese Einstellungen testen"
-
-#~ msgid "recording"
-#~ msgstr "Aufnahme"
-
-#~ msgid "playing"
-#~ msgstr "Wiedergabe"
-
-#~ msgid "GnomeMeeting Address Book"
-#~ msgstr "GnomeMeeting-Adressbuch"
-
-#~ msgid "Please choose the video image"
-#~ msgstr "Bitte wählen Sie das Videobild"
-
-#~ msgid "Calls Clearing"
-#~ msgstr "Beenden von Anrufen"
-
-#~ msgid "Couldn't compile http/ftp regex!"
-#~ msgstr ""
-#~ "Regulärer Ausdruck für http/ftp konnte nicht zusammengesetzt werden!"
-
-#~ msgid "Couldn't compile smiley regex!"
-#~ msgstr "Regulärer Ausdruck für Smileys konnte nicht zusammengesetzt werden."
-
-#~ msgid "Couldn't compile latex regex!"
-#~ msgstr "Regulärer Ausdruck für LaTex konnte nicht zusammengesetzt werden!"
-
-#~ msgid "Local video window height"
-#~ msgstr "Höhe des lokalen Videofensters"
-
-#~ msgid "Maximum bandwidth available for the endpoint"
-#~ msgstr "Maximale Bandbreite, die für den Endpunkt zur Verfügung steht"
-
-#~ msgid "Number of entries to store in history boxes"
-#~ msgstr "Anzahl der zu merkenden Einträge für Chronik-Listen"
-
-#~ msgid "Received Video Quality Hint"
-#~ msgstr "Empfangsqualität für Video"
-
-#~ msgid "Remote video window height"
-#~ msgstr "Höhe des Videofensters der Gegenseite"
-
-#~ msgid "Open Link"
-#~ msgstr "Verknüpfung öffnen"
-
-#~ msgid "Forward call to:"
-#~ msgstr "Anrufe an Rechner weiterleiten:"
-
-#~ msgid "Internationalisation Maintainer:"
-#~ msgstr "Betreuer für Internationalisierung:"
-
-#~ msgid ""
-#~ "GnomeMeeting is a full-featured H.323\n"
-#~ "video conferencing application."
-#~ msgstr ""
-#~ "GnomeMeeting ist eine komplette\n"
-#~ "H.323-Videokonferenz-Anwendung."
-
-#~ msgid "Remote user is not running GnomeMeeting"
-#~ msgstr "Gegenseite verwendet nicht GnomeMeeting"
-
-#~ msgid "View the details of your account"
-#~ msgstr "Details Ihres Kontos ansehen"
-
-#~ msgid "Maximum Bandwidth"
-#~ msgstr "Maximale Bandbreite"
-
-#~ msgid "Maximum available bandwidth:"
-#~ msgstr "Maximal verfügbare Bandbreite:"
-
-#~ msgid "kbps"
-#~ msgstr "kB/s"
-
-#~ msgid "Choose a file to play"
-#~ msgstr "Wählen Sie die abzuspielende Datei aus"
-
-#~ msgid "User Input Capabilities"
-#~ msgstr "Eingabemöglichkeiten"
-
-#~ msgid "Audio player mixer"
-#~ msgstr "Audioausgabe-Mixer"
-
-#~ msgid "Audio recorder"
-#~ msgstr "Audioaufnahme"
-
-#~ msgid "Audio recorder mixer"
-#~ msgstr "Audioaufnahme-Mixer"
-
-#~ msgid "Color Format for the video palette"
-#~ msgstr "Farb-Format für die Videopalette"
-
-#~ msgid ""
-#~ "If enabled, GnomeMeeting will play a sound when receiving an incoming "
-#~ "call (the sound to play is chosen in the Gnome Control Center)."
-#~ msgstr ""
-#~ "Wenn aktiviert, wird GnomeMeeting bei ankommenden Anrufen einen Klang "
-#~ "abspielen (Der Klang kann im GNOME-Kontrollzentrum ausgewählt werden)."
-
-#~ msgid "If enabled, incoming calls will be automatically answered."
-#~ msgstr ""
-#~ "Wenn aktiviert, werden ankommende Anrufe automatisch entgegengenommen."
-
-#~ msgid "Select the audio recorder device to use."
-#~ msgstr "Tragen Sie das Audioaufnahme-Gerät ein."
-
-#~ msgid "Select the mixer to use to change the volume of the audio player."
-#~ msgstr ""
-#~ "Wählen Sie den Audio-Lautstärkeregler, der für die Einstellung der "
-#~ "Ausgabe-Lautstärke verwendet werden soll."
-
-#~ msgid "Select the mixer to use to change the volume of the audio recorder."
-#~ msgstr ""
-#~ "Audio-Lautstärkeregler, der für die Einstellung der Aufnahme-Lautstärke "
-#~ "verwendet werden soll."
-
-#~ msgid "gnomemeeting"
-#~ msgstr "GnomeMeeting"
-
-#~ msgid "Started New Logical Channel..."
-#~ msgstr "Neuer logischer Kanal wurde gestartet …"
-
-#~ msgid "Enabled silence detection for %s"
-#~ msgstr "Sprechpausenerkennung aktiviert für %s"
-
-#~ msgid "Disabled silence detection for %s"
-#~ msgstr "Sprechpausenerkennung deaktiviert für %s"
-
-#~ msgid "Receiving %s"
-#~ msgstr "%s wird empfangen"
-
-#~ msgid "Requesting remote to send video quality: %d%%"
-#~ msgstr ""
-#~ "Gegenseite wird aufgefordert, folgende Videoqualität zu senden: %d%%"
-
-#~ msgid "Other"
-#~ msgstr "Andere"
-
-#~ msgid ""
-#~ "Please enter your first name and surname, they will be used when "
-#~ "connecting to other audio/video conferencing software.\n"
-#~ "\n"
-#~ "Your e-mail address is used to provide you with a callto address that "
-#~ "your friends can use to call you without knowing your IP address.\n"
-#~ "\n"
-#~ "No information is made public unless you allow it to be published on the "
-#~ "directory of online GnomeMeeting users."
-#~ msgstr ""
-#~ "Bitte tragen Sie Ihren Vor- und Nachnamen ein, diese werden bei einer "
-#~ "Verbindung zu anderer Software für Audio- oder Videokonferenzen "
-#~ "verwendet.\n"
-#~ "\n"
-#~ "Ihre E-Mail-Adresse wird verwendet, um für Sie eine »callto«-Adresse zur "
-#~ "Verfügung zu stellen, mit der Ihre Freunde Sie unabhängig von Ihrer IP-"
-#~ "Adresse erreichen können.\n"
-#~ "\n"
-#~ "Keinerlei Information wird öffentlich zugänglich gemacht, außer Sie "
-#~ "aktivieren die Veröffentlichung im Verzeichnis für GnomeMeeting-Benutzer, "
-#~ "die Online sind."
-
-#~ msgid "Callto URL"
-#~ msgstr "Callto-URL"
-
-#~ msgid "Directory of Online GnomeMeeting Users"
-#~ msgstr "Verzeichnis der GnomeMeeting-Benutzer, die »Online« sind"
-
-#~ msgid "Publish my information on the directory of online GnomeMeeting users"
-#~ msgstr ""
-#~ "Meine Daten im Verzeichnis der GnomeMeeting-Benutzer veröffentlichen"
-
-#~ msgid ""
-#~ "Please select your network connection type. This is used to set default "
-#~ "video settings for your bandwidth. It is possible to change these "
-#~ "defaults later."
-#~ msgstr ""
-#~ "Hier kann der eigene Verbindungstyp angeben werden. Diese Angabe wird "
-#~ "verwendet, um der Bandbreite entsprechende Grundeinstellungen "
-#~ "vorzunehmen. Es ist möglich, diese Einstellungen später zu verändern."
-
-#~ msgid "DSL/Cable"
-#~ msgstr "DSL/Kabelmodem"
-
-#~ msgid ""
-#~ "Please choose the audio devices to use during the GnomeMeeting session. "
-#~ "You can also choose to use a Quicknet device instead of the soundcard, "
-#~ "but the \"Test Audio\" button will only work for soundcards. Notice that "
-#~ "some webcams models have an internal microphone that can be used with "
-#~ "GnomeMeeting."
-#~ msgstr ""
-#~ "Bitte wählen Sie die Audiogeräte aus, die während der GnomeMeeting-"
-#~ "Sitzung verwendet werden sollen. Alternativ kann ein Quicknet-Gerät statt "
-#~ "einer Soundkarte ausgewählt werden, der »Audio testen«-Knopf funktioniert "
-#~ "jedoch nur für Soundkarten. Einige Webcams verfügen über ein internes "
-#~ "Mikrofon, das mit GnomeMeeting verwendet werden kann."
-
-#~ msgid "Audio player mixer:"
-#~ msgstr "Audioausgabe-Mixer:"
-
-#~ msgid "Audio recorder:"
-#~ msgstr "Audioaufnahme:"
-
-#~ msgid "Audio recorder mixer:"
-#~ msgstr "Audioaufnahme-Mixer:"
-
-#~ msgid "Test Audio"
-#~ msgstr "Audio testen"
-
-#~ msgid ""
-#~ "Please choose the video device to use during the GnomeMeeting session. "
-#~ "Click on the \"Test Video\" button to check if your setup is correct and "
-#~ "if your driver is supported by GnomeMeeting. You can only test the "
-#~ "correctness of your driver if the selected device is not already in use."
-#~ msgstr ""
-#~ "Bitte wählen Sie das Videogerät aus, das während der GnomeMeeting-Sitzung "
-#~ "verwendet werden soll. Klicken Sie auf den »Video testen«-Knopf, um die "
-#~ "Einstellung zu überprüfen und um festzustellen, ob der Treiber von "
-#~ "GnomeMeeting unterstützt wird. Der Test kann nur durchgeführt werden, "
-#~ "wenn das Gerät nicht bereits verwendet wird."
-
-#~ msgid "Video device:"
-#~ msgstr "Videogerät:"
-
-#~ msgid ""
-#~ "Enter the video device to use. Using an invalid video device for video "
-#~ "transmission will transmit a test picture."
-#~ msgstr ""
-#~ "Videogerät, das verwendet werden soll, eintragen. Bei Benutzung eines "
-#~ "falschen Gerätes wird ein Testbild übertragen."
-
-#~ msgid "Test Video"
-#~ msgstr "Video testen"
-
-#~ msgid "PC-To-Phone Setup - page %d/%d"
-#~ msgstr "Einstellungen für »PC zu Telefon« - Seite %d/%d"
-
-#~ msgid "Register to the MicroTelco service"
-#~ msgstr "Beim MicroTelco-Dienst anmelden"
-
-#~ msgid "Set Audio recorder device to %s"
-#~ msgstr "Audioaufnahme-Gerät auf %s setzen"
-
-#~ msgid "Enabling H.245 Tunnelling"
-#~ msgstr "H.245-Tunnel wird aktiviert"
-
-#~ msgid "Disabling H.245 Tunnelling"
-#~ msgstr "H.245-Tunnel wird deaktiviert"
-
-#~ msgid "Enabling Fast Start"
-#~ msgstr "Schnellstart wird aktiviert"
-
-#~ msgid "Disabling Fast Start"
-#~ msgstr "Schnellstart wird aktiviert"
-
-#~ msgid "Parse error"
-#~ msgstr "Interpretationsfehler"
-
-#~ msgid ""
-#~ "There was an error while processing the registering to the user "
-#~ "directory: %d %s."
-#~ msgstr ""
-#~ "Ein Fehler ist bei der Anmeldung am Benutzerverzeichnis aufgetreten: %d %"
-#~ "s."
-
-#~ msgid "Failed to contact the user directory %s:%d."
-#~ msgstr "Verbindung zum LDAP-Server »%s« fehlgeschlagen: %d."
-
-#~ msgid "Successfully registered to %s."
-#~ msgstr "Erfolgreich bei %s angemeldet"
-
-#~ msgid "Successfully unregistered from %s."
-#~ msgstr "Erfolgreich von %s abgemeldet"
-
-#~ msgid ""
-#~ "GnomeMeeting didn't find any usable sound devices. You need to install "
-#~ "and setup a soundcard or a Quicknet card in order to be able to use "
-#~ "GnomeMeeting. Please check your driver settings and permissions."
-#~ msgstr ""
-#~ "GnomeMeeting hat keine verwendbaren Audio-Geräte gefunden. Sie müssen "
-#~ "eine Sounkarte oder »Quicknet«-Karte installieren und einrichten, um "
-#~ "GnomeMeeting benutzen zu können. Bitte überprüfen sie die "
-#~ "Treibereinstellungen und Berechtigungen."
-
-#~ msgid "Local Video Image"
-#~ msgstr "Lokales Videobild"
-
-#~ msgid "Remote Video Image"
-#~ msgstr "Videobild der Gegenseite"
-
-#~ msgid "Both Video Images"
-#~ msgstr "Beide Videobilder"
-
-#~ msgid "Both (Local and Remote Video in New Windows)"
-#~ msgstr "Beide (lokales Videobild und das der Gegenseite in neuem Fenster)"
-
-#~ msgid "Do not disturb (reject incoming calls)"
-#~ msgstr "Nicht stören (Anrufe abweisen)"
-
-#~ msgid ""
-#~ "Call from %s\n"
-#~ "using %s"
-#~ msgstr ""
-#~ "Anruf von %s\n"
-#~ "%s wird verwendet"
-
-#~ msgid "Okay"
-#~ msgstr "Zufriedenstellend"
-
-#~ msgid "Good Quality"
-#~ msgstr "Gute Qualität"
-
-#~ msgid "Excellent Quality"
-#~ msgstr "Hervorragende Qualität"
-
-#~ msgid "Behavior"
-#~ msgstr "Verhalten"
-
-#~ msgid "_Automatically answer calls"
-#~ msgstr "_Anrufe automatisch beantworten"
-
-#~ msgid "Do _not disturb"
-#~ msgstr "Bitte _nicht stören"
-
-#~ msgid "Display a po_pup window when receiving a call"
-#~ msgstr "_Popup-Fenster bei eingehendem Anruf"
-
-#~ msgid "Enable bilinear _filtering on displayed video"
-#~ msgstr "Bilinearen _Filter für dargestelltes Video aktivieren"
-
-#~ msgid "User Input Capabilities _type:"
-#~ msgstr "Art der _Eingabemöglichkeit:"
-
-#~ msgid "Failed to open the audio device"
-#~ msgstr "Das Audiogerät kann nicht geöffnet werden"
-
-#~ msgid ""
-#~ "GnomeMeeting is now playing what it is recording with a 5 seconds delay. "
-#~ "If you don't hear yourself with the delay, you will have to fix your "
-#~ "audio setup and probably install a full-duplex driver before calling "
-#~ "other GnomeMeeting users.\n"
-#~ "\n"
-#~ "Recording and playing... Please talk."
-#~ msgstr ""
-#~ "GnomeMeeting spielt jetzt mit einer Verzögerung von 5 Sekunden das ab, "
-#~ "was aufgenommen wird. Wenn Sie sich selber nicht mit dieser Verzögerung "
-#~ "hören, müssen Sie Ihre Audio-Einstellungen korrigieren und gegebenenfalls "
-#~ "einen vollduplexfähigen Treiber installieren, bevor sie andere "
-#~ "GnomeMeeting-Benutzer anrufen können.\n"
-#~ "\n"
-#~ "Aufnahme und Wiedergabe läuft ... Bitte sprechen."
-
-#~ msgid "Given calls"
-#~ msgstr "Getätigte Anrufe"
-
-#~ msgid "Video Device Opened"
-#~ msgstr "Videogerät geöffnet"
-
-#~ msgid "Video Device Closed"
-#~ msgstr "Videogerät geschlossen"
-
-#~ msgid "Tests OK!"
-#~ msgstr "Überprüfung erfolgreich abgeschlossen!"
-
-#~ msgid "Browse..."
-#~ msgstr "Auswählen …"
-
-#~ msgid ""
-#~ "You chose to NOT use the GnomeMeeting ILS directory. Other users will not "
-#~ "be able to contact you if you don't register to a directory service."
-#~ msgstr ""
-#~ "Das GnomeMeeting-ILS-Verzeichnis soll NICHT verwendet werden. Andere "
-#~ "Benutzer können nur Kontakt zu jemandem aufnehmen, der bei einem "
-#~ "Verzeichnis angemeldet ist."
-
-#~ msgid "callto URL:"
-#~ msgstr "callto-URL:"
-
-#~ msgid "Edit this user information"
-#~ msgstr "Informationen zu diesem Benutzer bearbeiten"
-
-#~ msgid "Delete this user"
-#~ msgstr "Diesen Benutzer löschen"
-
-# missing accelerator
-#~ msgid "Callto"
-#~ msgstr "Callto"
-
-#~ msgid ""
-#~ "GnomeMeeting can't be used without audio devices. Please install a "
-#~ "soundcard or a Quicknet card."
-#~ msgstr ""
-#~ "GnomeMeeting kann ohne Audiogeräte nicht verwendet werden. Bitte "
-#~ "installieren Sie eine Soundkarte oder eine Quicknet-Karte."
-
-#~ msgid ""
-#~ "GnomeMeeting just installed an URL handler for callto:// URLs. callto "
-#~ "URLs are an easy way to call people on the internet using GnomeMeeting. "
-#~ "They are now available to all GNOME programs able to cope with URLs. You "
-#~ "can for example create an URL launcher on the GNOME panel of the form "
-#~ "\"callto://ils.seconix.com/me@foo.com\" to call the person registered on "
-#~ "the ILS server ils.seconix.com with the me@foo.com e-mail address."
-#~ msgstr ""
-#~ "Es wurde gerade eine URL-Handler für »callto://«-URLs von GnomeMeeting "
-#~ "eingerichtet. »callto«-URLs stellen eine einfache Möglichkeit dar, "
-#~ "jemanden mit GnomeMeeting über das Internet anzurufen. Sie stehen allen "
-#~ "Gnome-Programmen zur Verfügung, die mit URLs zurechtkommen. Es kann z.B. "
-#~ "ein URL-Starter im Gnome-Panel mit der Adresse »callto://ils.seconix.com/"
-#~ "ich@foo.de« erstellt werden, um die Person, die am ILS-Server »ils.seconix."
-#~ "com« mit der E-Mail-Adresse »ich@foo.de« registriert ist, anzurufen."
-
-#~ msgid ""
-#~ "Could not start the listener thread. You will not be able to receive "
-#~ "incoming calls."
-#~ msgstr ""
-#~ "Listener-Thread konnte nicht gestartet werden. Es können keine Anrufe "
-#~ "entgegengenommen werden."
-
-#~ msgid "Disconnect"
-#~ msgstr "Verbindung beenden"
-
-#~ msgid "E-mail address:"
-#~ msgstr "E-Mail-Adresse:"
-
-#~ msgid "Fullscreen width:"
-#~ msgstr "Vollbild-Breite:"
-
-#~ msgid "Fullscreen height:"
-#~ msgstr "Vollbild-Höhe:"
-
-#~ msgid "Minimum jitter buffer:"
-#~ msgstr "Jitter-Puffer-Minimalgröße:"
-
-#~ msgid "Minimum transmitted video quality:"
-#~ msgstr "Minimale Sendequalität für Video:"
-
-#~ msgid "Minimum transmitted FPS:"
-#~ msgstr "Minimal übertragene Bilder/s:"
-
-#~ msgid "H.323 Advanced"
-#~ msgstr "Erweiterte H.323-Einstellungen"
-
-#~ msgid "Speaker phone enabled"
-#~ msgstr "Freisprecheinrichtung aktiviert"
-
-#~ msgid "Speaker phone disabled"
-#~ msgstr "Freisprecheinrichtung deaktiviert"
-
-#~ msgid "Make a text chat with your friend"
-#~ msgstr "Mit einem Freund chatten"
-
-#~ msgid "Display the control panel"
-#~ msgstr "Kontrollleiste anzeigen"
-
-#~ msgid ""
-#~ "Click here to activate the speaker phone device of your Quicknet card."
-#~ msgstr ""
-#~ "Hier klicken, um die Freisprecheinrichtung einer Quicknet-Karte zu "
-#~ "aktivieren."
-
-#~ msgid "Audio Channel:  Sending"
-#~ msgstr "Audiokanal:  Senden"
-
-#~ msgid "Audio Channel:  Paused"
-#~ msgstr "Audiokanal:  Angehalten"
-
-#~ msgid "Video Channel:  Sending"
-#~ msgstr "Videokanal:  Senden"
-
-#~ msgid "This call ended abnormally"
-#~ msgstr "Verbindung wurde unerwartet beendet"
-
-#~ msgid "Remote party could not be reached"
-#~ msgstr "Gegenseite konnte nicht erreicht werden"
-
-#~ msgid "Call duration: %.2ld:%.2ld:%.2ld"
-#~ msgstr "Verbindungsdauer: %.2ld:%.2ld:%.2ld"
-
-#~ msgid ""
-#~ "Sent/Received:\n"
-#~ "Lost/Late Packets:\n"
-#~ "Round trip delay:\n"
-#~ "Jitter Buffer:"
-#~ msgstr ""
-#~ "Gesendet/Empfangen:\n"
-#~ "Verlorene/Verspätete Pakete:\n"
-#~ "Verzögerung hin und zurück:\n"
-#~ "Jitter-Puffer:"
-
-#~ msgid "Error while registering with Gatekeeper at %s."
-#~ msgstr "Fehler beim Anmelden am Gatekeeper %s."
-
-#~ msgid "_Video Mute"
-#~ msgstr "V_ideo abschalten"
-
-#~ msgid "Find friends on the ILS directory service"
-#~ msgstr "Freunde im Benutzerverzeichnis suchen"
-
-#~ msgid "Searching for user"
-#~ msgstr "Person wird gesucht"
-
-#~ msgid "Error while connecting to ILS directory"
-#~ msgstr "Fehler beim Verbindungsaufbau zum ILS-Verzeichnis"
