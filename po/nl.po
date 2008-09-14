@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Ekiga\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-09 09:45+0200\n"
-"PO-Revision-Date: 2008-09-09 02:09+0200\n"
+"POT-Creation-Date: 2008-09-14 15:09+0200\n"
+"PO-Revision-Date: 2008-09-14 01:42+0200\n"
 "Last-Translator: Tino Meinen <a.t.meinen@chello.nl> \n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
 "MIME-Version: 1.0\n"
@@ -48,12 +48,17 @@ msgid "0: 56Kbps, 1: ISDN, 2:DSL, 3: LAN, 4: Custom"
 msgstr "0: 56Kbps, 1: ISDN, 2: DSL, 3: LAN, 4: Aangepast"
 
 # PIP picture-in-picture
+# Allows ipv Allow
 #: ../ekiga.schemas.in.in.h:2
 msgid ""
 "Allow Ekiga to fall back to software scaling the picture-in-picture if "
 "hardware support is not available. If this is set to false, Ekiga will not "
 "try to open the PIP if hardware support is not available."
 msgstr ""
+"Geeft Ekiga de mogelijkheid terug te vallen op softwarematig schalen van het "
+"Beeld-In-Beeld (PIP) wanneer hardwarematige ondersteuning niet beschikbaar "
+"is. Wanneer dit niet aangevinkt is zal Ekiga niet trachten het Beeld-In-"
+"Beeld te openen wanneer dit niet door de hardware ondersteund wordt."
 
 #: ../ekiga.schemas.in.in.h:3
 msgid "Allow picture-in-picture software scaling"
@@ -66,7 +71,7 @@ msgstr "Alternatief audioweergaveapparaat"
 
 #: ../ekiga.schemas.in.in.h:5
 msgid "Always forward calls to the given host"
-msgstr "Oproepen altijd doorsturen naar gegeven server"
+msgstr "Oproepen altijd doorsturen naar opgegeven server"
 
 #: ../ekiga.schemas.in.in.h:6
 msgid "Audio input device"
@@ -80,7 +85,7 @@ msgstr "Audioweergaveapparaat"
 msgid "Automatic echo cancellation"
 msgstr "Automatische echo-onderdrukking"
 
-#: ../ekiga.schemas.in.in.h:9 ../src/gui/preferences.cpp:441
+#: ../ekiga.schemas.in.in.h:9 ../src/gui/preferences.cpp:428
 msgid ""
 "Automatically reject or forward incoming calls if no answer is given after "
 "the specified amount of time (in seconds)"
@@ -111,11 +116,11 @@ msgstr ""
 
 #: ../ekiga.schemas.in.in.h:13
 msgid "Contact long status"
-msgstr ""
+msgstr "Uitgebreide status van contact"
 
 #: ../ekiga.schemas.in.in.h:14
 msgid "Contact short status"
-msgstr ""
+msgstr "Korte status van contact"
 
 #: ../ekiga.schemas.in.in.h:15
 msgid "Country code"
@@ -137,11 +142,11 @@ msgstr "Een popup-venster tonen bij het ontvangen van een oproep"
 
 #: ../ekiga.schemas.in.in.h:19
 msgid "Enable 'Fast Start'"
-msgstr "'Snelstart' inschakelen"
+msgstr "‘Snelstart’ inschakelen"
 
 #: ../ekiga.schemas.in.in.h:20
 msgid "Enable H.245 tunneling"
-msgstr "H.245-_tunnel inschakelen"
+msgstr "H.245-tunnel inschakelen"
 
 #: ../ekiga.schemas.in.in.h:21
 msgid "Enable early H.245"
@@ -169,7 +174,7 @@ msgstr ""
 "Geef het aantal seconden wachttijd voordat Ekiga moet proberen de NAT-"
 "binding te vernieuwen bij het gebruik van STUN"
 
-#: ../ekiga.schemas.in.in.h:26 ../src/gui/preferences.cpp:388
+#: ../ekiga.schemas.in.in.h:26 ../src/gui/preferences.cpp:378
 msgid "Enter your full name"
 msgstr "Vul uw volledige naam in"
 
@@ -186,7 +191,7 @@ msgid "Forward calls to the given host if no answer"
 msgstr "Stuur oproepen door naar de gegeven server bij geen antwoord"
 
 # vloeiende beelden/beeldsnelhied/beeldfrequentie
-#: ../ekiga.schemas.in.in.h:30 ../src/gui/preferences.cpp:1012
+#: ../ekiga.schemas.in.in.h:30 ../src/gui/preferences.cpp:999
 msgid "Frame Rate"
 msgstr "Beeldsnelheid"
 
@@ -194,7 +199,7 @@ msgstr "Beeldsnelheid"
 msgid "Full name"
 msgstr "Volledige naam"
 
-#: ../ekiga.schemas.in.in.h:32 ../src/gui/preferences.cpp:409
+#: ../ekiga.schemas.in.in.h:32 ../src/gui/preferences.cpp:396
 msgid ""
 "If enabled, Ekiga will start hidden provided that the notification area is "
 "present in the GNOME panel"
@@ -239,7 +244,7 @@ msgid "If enabled, allows video during calls"
 msgstr ""
 "Als dit aangevinkt is, kunt u tijdens een gesprek videobeelden ontvangen"
 
-#: ../ekiga.schemas.in.in.h:38 ../src/gui/preferences.cpp:411
+#: ../ekiga.schemas.in.in.h:38 ../src/gui/preferences.cpp:398
 msgid "If enabled, offline contacts will be shown in the roster"
 msgstr ""
 "Als dit aangevinkt is, worden ook offline contacten getoond in het adresboek"
@@ -309,25 +314,25 @@ msgstr "Uitgaande proxy"
 msgid "Output device type"
 msgstr "Type afspeelapparaat"
 
-#: ../ekiga.schemas.in.in.h:54 ../src/gui/preferences.cpp:418
+#: ../ekiga.schemas.in.in.h:54 ../src/gui/preferences.cpp:405
 msgid "Place windows displaying video above other windows during calls"
 msgstr ""
 "Plaats vensters die videobeelden weergeven tijdens gesprekken boven andere "
 "vensters"
 
 # Geluid voor bezette lijn/Bezettoon afspelen/
-#: ../ekiga.schemas.in.in.h:55 ../src/gui/preferences.cpp:1395
+#: ../ekiga.schemas.in.in.h:55 ../src/gui/preferences.cpp:1367
 msgid "Play busy tone"
 msgstr "Geluid bij bezette lijn"
 
 # dit is de toon die je hoort als je iemand aan het bellen bent
 # Beltoon afspelen/Geluid bij beltoon
-#: ../ekiga.schemas.in.in.h:56 ../src/gui/preferences.cpp:1386
+#: ../ekiga.schemas.in.in.h:56 ../src/gui/preferences.cpp:1358
 msgid "Play ring tone"
 msgstr "Geluid bij opbellen"
 
 # play sound is hier: het afspeelgeluid, niet geluid afspelen
-#: ../ekiga.schemas.in.in.h:57 ../src/gui/preferences.cpp:1377
+#: ../ekiga.schemas.in.in.h:57 ../src/gui/preferences.cpp:1349
 msgid "Play sound on incoming calls"
 msgstr "Geluid bij binnenkomende oproepen"
 
@@ -404,18 +409,17 @@ msgstr "Status van adresboekweergave opslaggroep"
 
 #: ../ekiga.schemas.in.in.h:75
 msgid "Select an alternative audio output device to use for sound events."
-msgstr ""
-"Kies een alternatief apparaat voor de weergave van geluidsgebeurtenissen."
+msgstr "Kies een alternatief apparaat voor de weergave van geluidsacties."
 
-#: ../ekiga.schemas.in.in.h:76 ../src/gui/preferences.cpp:720
+#: ../ekiga.schemas.in.in.h:76 ../src/gui/preferences.cpp:707
 msgid "Select the audio input device to use"
 msgstr "Kies het te gebruiken apparaat voor audio-opname"
 
-#: ../ekiga.schemas.in.in.h:77 ../src/gui/preferences.cpp:713
+#: ../ekiga.schemas.in.in.h:77 ../src/gui/preferences.cpp:700
 msgid "Select the audio output device to use"
 msgstr "Kies het te gebruiken apparaat voor audioweergave"
 
-#: ../ekiga.schemas.in.in.h:78 ../src/gui/preferences.cpp:876
+#: ../ekiga.schemas.in.in.h:78 ../src/gui/preferences.cpp:863
 msgid ""
 "Select the format for video cameras (does not apply to most USB cameras)"
 msgstr ""
@@ -430,7 +434,7 @@ msgstr ""
 "Kies de te verzenden videogrootte: Klein (QCIF 176x144) of Groot (CIF "
 "352x288)"
 
-#: ../ekiga.schemas.in.in.h:80 ../src/gui/preferences.cpp:868
+#: ../ekiga.schemas.in.in.h:80 ../src/gui/preferences.cpp:855
 msgid ""
 "Select the video input device to use. If an error occurs when using this "
 "device a test picture will be transmitted."
@@ -442,7 +446,7 @@ msgstr ""
 msgid "Show offline contacts"
 msgstr "Offline contacten tonen"
 
-#: ../ekiga.schemas.in.in.h:82 ../src/gui/main.cpp:1827
+#: ../ekiga.schemas.in.in.h:82 ../src/gui/main.cpp:1817
 msgid "Show the call panel"
 msgstr "Het oproeppaneel tonen"
 
@@ -484,6 +488,9 @@ msgid ""
 "neighbor with box filter, 2: bilinear filtering, 3: hyperbolic filtering. "
 "Does not apply on windows systems."
 msgstr ""
+"Specificeer het schalingsalgoritme: 0: dichstbijzijnde buur, 1: "
+"dichtstbijzijnde buur met boxfilter, 2: bilineaire filter, 3: hyperbolische "
+"filter. Is niet van toepassing op windows-systemen."
 
 #: ../ekiga.schemas.in.in.h:92
 msgid "Start hidden"
@@ -491,11 +498,11 @@ msgstr "Verborgen starten"
 
 #: ../ekiga.schemas.in.in.h:93
 msgid "TCP port range"
-msgstr "Bereik TCP-poorten"
+msgstr "TCP-poortenbereik"
 
 #: ../ekiga.schemas.in.in.h:94
 msgid "Temporal Spatial Trade Off"
-msgstr ""
+msgstr "Tijd-ruimte afweging"
 
 #: ../ekiga.schemas.in.in.h:95
 msgid "The Audio Codecs List"
@@ -512,7 +519,7 @@ msgstr ""
 "versterkingscompensatie moduleert het volume om de beste kwaliteit te "
 "krijgen."
 
-#: ../ekiga.schemas.in.in.h:97 ../src/gui/preferences.cpp:670
+#: ../ekiga.schemas.in.in.h:97 ../src/gui/preferences.cpp:657
 msgid "The SIP Outbound Proxy to use for outgoing calls"
 msgstr "De SIP uitgaande proxy die gebruikt wordt voor uitgaande oproepen"
 
@@ -604,8 +611,8 @@ msgstr "Het beltoongeluid"
 msgid "The history of the 100 last calls"
 msgstr "De historie van de 100 laatst geplaatste oproepen"
 
-#: ../ekiga.schemas.in.in.h:113 ../src/gui/preferences.cpp:619
-#: ../src/gui/preferences.cpp:673
+#: ../ekiga.schemas.in.in.h:113 ../src/gui/preferences.cpp:606
+#: ../src/gui/preferences.cpp:660
 msgid "The host where calls should be forwarded if call forwarding is enabled"
 msgstr ""
 "De server waar oproepen naar doorgestuurd moeten worden indien het "
@@ -618,7 +625,7 @@ msgid ""
 "The image to transmit if \"Picture\" is selected as video plugin or if the "
 "opening of the device fails. Leave blank to use the default Ekiga logo."
 msgstr ""
-"Het beeld dat verzonden wordt wanneer \"Afbeelding\" als videoplugin is "
+"Het beeld dat verzonden wordt wanneer ‘Afbeelding’ als videoplugin is "
 "gekozen of als het openen van het apparaat mislukt. Als u dit leeg laat "
 "wordt het standaard Ekiga-logo gebruiket."
 
@@ -632,9 +639,8 @@ msgid "The list of accounts to which Ekiga should register"
 msgstr "De lijst met abonnementen waar Ekiga zich zal aanmelden"
 
 #: ../ekiga.schemas.in.in.h:117
-#, fuzzy
 msgid "The long status information"
-msgstr "De contactinformatie bewerken"
+msgstr "De uitgebreide statusinformatie"
 
 #: ../ekiga.schemas.in.in.h:118
 msgid ""
@@ -642,9 +648,12 @@ msgid ""
 "peer endpoint that can adjust (if it supports it) its TX bitrate if it is "
 "above the signaled value"
 msgstr ""
+"De maximum RX (ontvangst) videobandbreedte in kbit/s. Deze waarde wordt "
+"doorgegeven aan het peer-eindpunt die daarmee (indien het het ondersteund) "
+"zijn TX (verzend) bandbreedte kan aanpassen wanneer het boven deze waarde "
+"ligt."
 
 #: ../ekiga.schemas.in.in.h:119
-#, fuzzy
 msgid ""
 "The maximum TX video bitrate in kbit/s. The video quality and the number of "
 "transmitted frames per second (depends on selected codec) will be "
@@ -652,8 +661,9 @@ msgid ""
 "bandwidth to the given value"
 msgstr ""
 "De maximale videobandbreedte in kbytes/s. De videokwaliteit en het aantal "
-"verzonden frames per seconde worden tijdens gesprekken automatisch aangepast "
-"boven het minimum om de bandbreedte te beperken tot de gegeven waarde."
+"verzonden frames per seconde (is afhankelijk van de geselecteerde codec) "
+"worden tijdens gesprekken automatisch aangepast boven het minimum om de "
+"bandbreedte te beperken tot de gegeven waarde."
 
 #: ../ekiga.schemas.in.in.h:120
 msgid "The maximum jitter buffer size for audio reception (in ms)"
@@ -665,6 +675,10 @@ msgid ""
 "in case a minimum quality was configure via a TSTO value smaller than 31 and "
 "the bitrate selected is not sufficient to support this minimum quality"
 msgstr ""
+"De maximum beeldfrequentie voor verzenden in beelden/s. Deze frequentie "
+"wordt mogelijk niet gehaald wanneer een minimum kwaliteit ingesteld is via "
+"een TSTO-waarde die kleiner is dan 31 en wanneer de geselecteerde "
+"bandbreedte niet voldoende is om deze minumum kwaliteit te onderhouden."
 
 # instant message/expresbericht
 #: ../ekiga.schemas.in.in.h:122
@@ -716,17 +730,16 @@ msgstr ""
 "Het te gebruiken voorvoegsel bij het opslaan van plaatjes van een "
 "conversatie. Het voorvoegsel wordt gevolgd door het afbeeldingsnummer."
 
+# 'The range' hoeft niet vertaald te worden, het wordt in de tweede zin gebruik.
 #: ../ekiga.schemas.in.in.h:130
-#, fuzzy
 msgid ""
 "The range of TCP ports that Ekiga will use for the H.323 H.245 channel. This "
 "port range has no effect if both participants to the conference are using "
 "H.245 Tunneling."
 msgstr ""
-"Het bereik van de TCP-poorten die Ekiga kan gebruiken voor het H.323 H.245-"
-"kanaal. Ekiga dient opnieuw opgestart te worden om de nieuwe waarden te "
-"kunnen gebruiken. Het poortbereik geeft geen invloed als beide deelnemers "
-"aan de conferentie gebruik maken van H.245-tunnels."
+"De TCP-poorten die Ekiga kan gebruiken voor het H.323 H.245-kanaal. Dit "
+"poortenbereik geeft geen invloed wanneer beide deelnemers aan de conferentie "
+"gebruik maken van H.245-tunnels."
 
 #: ../ekiga.schemas.in.in.h:131
 msgid "The range of UDP ports that Ekiga will use."
@@ -737,9 +750,8 @@ msgid "The save prefix"
 msgstr "Het opslag-voorvoegsel"
 
 #: ../ekiga.schemas.in.in.h:133
-#, fuzzy
 msgid "The short status information"
-msgstr "De contactinformatie bewerken"
+msgstr "De korte statusinformatie"
 
 #: ../ekiga.schemas.in.in.h:134
 msgid "The size of the local video window"
@@ -749,38 +761,41 @@ msgstr "De grootte van het venster voor lokale video"
 msgid "The size of the remote video window"
 msgstr "De grootte van het venster voor video op afstand"
 
+# indien aangevinkt
 #: ../ekiga.schemas.in.in.h:136
 msgid ""
 "The sound that will be played at the end of calls or when calling somebody "
 "who is busy, if enabled"
 msgstr ""
-"Het gekozen geluid dat wordt afgespeeld aan het einde van gesprekken of als "
-"iemand bezet is, indien ingeschakeld."
+"Het geluid dat afgespeeld wordt aan het einde van gesprekken of als iemand "
+"bezet is, indien ingeschakeld."
 
+# indien aangevinkt
 #: ../ekiga.schemas.in.in.h:137
 msgid "The sound that will be played on incoming calls, if enabled"
 msgstr ""
-"Het geluid dat wordt afgespeeld bij binnenkomende oproepen, indien "
+"Het geluid dat afgespeeld wordt bij binnenkomende oproepen, indien "
 "ingeschakeld."
 
+# indien aangevinkt
 #: ../ekiga.schemas.in.in.h:138
 msgid "The sound that will be played when calling somebody, if enabled"
 msgstr ""
-"Het geluid dat wordt afgespeeld tijdens het bellen van iemand, indien "
+"Het geluid dat afgespeeld wordt tijdens het bellen van iemand, indien "
 "ingeschakeld"
 
 #: ../ekiga.schemas.in.in.h:139
 msgid ""
 "The sound that will be played when there is a new instant message, if enabled"
 msgstr ""
-"Het geluid dat wordt afgespeeld wanneer er een nieuw expresbericht is "
+"Het geluid dat afgespeeld wordt wanneer er een nieuw expresbericht is "
 "ontvangen, indien ingeschakeld"
 
 #: ../ekiga.schemas.in.in.h:140
 msgid ""
 "The sound that will be played when there is a new voice mail, if enabled"
 msgstr ""
-"Het geluid dat wordt afgespeeld wanneer er een nieuwe voice-mail is "
+"Het geluid dat afgespeeld wordt wanneer er een nieuwe voice-mail is "
 "ontvangen, indien ingeschakeld."
 
 # registrar: one who registers; a recorder, a keeper of records
@@ -796,7 +811,7 @@ msgstr ""
 msgid "The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)"
 msgstr "De tweeletterige landcode van uw land (bijv.: NL, BE, UK, FR, …)"
 
-#: ../ekiga.schemas.in.in.h:143 ../src/gui/preferences.cpp:872
+#: ../ekiga.schemas.in.in.h:143 ../src/gui/preferences.cpp:859
 msgid "The video channel number to use (to select camera, tv or other sources)"
 msgstr ""
 "Het nummer van het te gebruiken videokanaal (om camera, tv of andere bronnen "
@@ -839,19 +854,17 @@ msgstr ""
 "Mogelijke waarden zijn ‘RFC2833’ (0), of ‘INFO’ (1)"
 
 #: ../ekiga.schemas.in.in.h:150
-#, fuzzy
 msgid ""
 "This allows you to set the mode for sending DTMFs. The values can be \"String"
 "\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (default is \"String"
 "\"). Choosing other values than \"String\" disables the Text Chat"
 msgstr ""
 "Hiermee kan de modus ingesteld worden voor het verzenden van DTMFs. De "
-"mogelijk waardes zijn: \"tekenreeks\" (0), toon (1), RFC2833 (2), Q.931 (3), "
-"(standaard is \"tekenreeks\"). Bij een andere waarde dan \"tekenreeks\", "
-"wordt tekstchat uitgeschakeld"
+"mogelijk waardes zijn: ‘tekenreeks’ (0), ‘toon’ (1), ‘RFC2833’ (2), "
+"‘Q.931’ (3), (standaard is ‘tekenreeks’). Bij een andere waarde dan "
+"‘tekenreeks’, wordt tekstchat uitgeschakeld"
 
-#: ../ekiga.schemas.in.in.h:151 ../src/gui/preferences.cpp:631
-#, fuzzy
+#: ../ekiga.schemas.in.in.h:151 ../src/gui/preferences.cpp:618
 msgid ""
 "This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages "
 "are encapsulated into the H.225 channel (port 1720). This saves one TCP "
@@ -859,13 +872,13 @@ msgid ""
 "Netmeeting does not support it. Using both Fast Start and H.245 Tunneling "
 "can crash some versions of Netmeeting."
 msgstr ""
-"Dit schakelt de H.245-tunnel modus in. In H.245-tunnel modus worden H.245-"
-"berichten verpakt in het H.225-kanaal (poort 1720). Hierdoor wordt één-t TCP-"
-"verbinding tijdens oproepen gespaard. H.245-tunnels zijn mogelijk vanaf "
-"H.323v2, maar Netmeeting ondersteunt dit niet. Bij gebruik van snelstart en "
-"H.245-tunnel modus kunnen sommige versies van Netmeeting crashen."
+"Dit schakelt de H.245-tunnelmodus in. In H.245-tunnelmodus worden H.245-"
+"berichten verpakt in het H.225-kanaal (poort 1720). Dit bespaart één TCP-"
+"verbinding gedurende de oproep. H.245-tunnels zijn mogelijk vanaf H.323v2, "
+"maar Netmeeting ondersteunt dit niet. Bij gebruik van snelstart en H.245-"
+"tunnelmodus kunnen sommige versies van Netmeeting crashen."
 
-#: ../ekiga.schemas.in.in.h:152 ../src/gui/preferences.cpp:633
+#: ../ekiga.schemas.in.in.h:152 ../src/gui/preferences.cpp:620
 msgid "This enables H.245 early in the setup"
 msgstr "De schakelt H.245 vroegtijdig in tijdens de initialisatie"
 
@@ -915,6 +928,10 @@ msgid ""
 "order to keep a minimum level of (spatial) quality for all frames. 0: "
 "Highest minimal quality, 31: lowest minimal quality"
 msgstr ""
+"Of de voorkeur gegeven wordt om de maximale beeldfrequentie aan te houden, "
+"of om deze te verlagen teneinde een minimaal (ruimtelijk) kwaliteitsniveau "
+"voor alle frames te behouden. 0: hoogste minimale kwaliteit, 31: laagste "
+"minimale kwaliteit"
 
 # ontvangen oproepen
 #: ../lib/engine/addressbook/call-history/history-contact.cpp:148
@@ -925,13 +942,14 @@ msgstr "Ontvangen"
 msgid "Placed"
 msgstr "Geplaatst"
 
+# gemiste/gemist (oproepen gemist/gemiste oproepen)
 #: ../lib/engine/addressbook/call-history/history-contact.cpp:154
 msgid "Missed"
-msgstr "Gemiste"
+msgstr "Gemist"
 
 #: ../lib/engine/addressbook/evolution/evolution-contact.cpp:234
 #: ../lib/engine/presence/local-roster/local-presentity.cpp:194
-#: ../src/endpoints/opal-account.cpp:310 ../src/gui/main.cpp:1785
+#: ../src/endpoints/opal-account.cpp:310 ../src/gui/main.cpp:1775
 msgid "_Edit"
 msgstr "Be_werken"
 
@@ -1177,7 +1195,7 @@ msgid "Address Book"
 msgstr "Adresboek"
 
 #: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:675
-#: ../src/gui/main.cpp:1734
+#: ../src/gui/main.cpp:1724
 msgid "Address _Book"
 msgstr "_Adresboek"
 
@@ -1190,20 +1208,20 @@ msgstr "_Actie"
 msgid "Category"
 msgstr "Categorie"
 
-#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:248
+#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:247
 #: ../lib/engine/gui/gtk-frontend/chat-window-page.cpp:968
 msgid "says:"
 msgstr "zegt:"
 
-#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:371
+#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:370
 msgid "Open link in browser"
 msgstr "Verwijzing openen in browser"
 
-#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:377
+#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:376
 msgid "Copy link"
 msgstr "Verwijzing kopiëren"
 
-#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:941
+#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:905
 msgid "_Smile..."
 msgstr "_Smiley…"
 
@@ -1242,12 +1260,12 @@ msgstr "U zegt:\n"
 
 # oproep/gesprek wissen
 #: ../lib/engine/gui/gtk-frontend/call-history-view-gtk.cpp:163
-#: ../src/gui/statusmenu.cpp:546
+#: ../src/gui/statusmenu.cpp:499
 msgid "Clear"
 msgstr "Wissen"
 
-#: ../lib/engine/presence/avahi/avahi-presentity.cpp:47
 #: ../lib/engine/presence/avahi/avahi-heap.cpp:129
+#: ../lib/engine/presence/avahi/avahi-heap.cpp:315
 msgid "Neighbours"
 msgstr "Buren"
 
@@ -1379,7 +1397,7 @@ msgid ""
 "The selected audio device (%s) was successfully opened but it is impossible "
 "to read data from this device. Please check your audio setup."
 msgstr ""
-"Het geselecteerde audioapparaat (%s) is correct geopend maar het is niet "
+"Het geselecteerde audioapparaat (%s) kon geopend worden maar het is niet "
 "mogelijk om gegevens uit te lezen. Controleer uw audioinstellingen."
 
 #: ../src/devices/audio.cpp:321
@@ -1396,14 +1414,14 @@ msgid ""
 "The selected audio device (%s) was successfully opened but it is impossible "
 "to write data to this device. Please check your audio setup."
 msgstr ""
-"Het geselecteerde audioapparaat (%s) is correct geopend maar het is niet "
+"Het geselecteerde audioapparaat (%s) kon geopend worden maar het is niet "
 "mogelijk om er gegevens naar weg te schrijven. Controleer uw "
 "audioinstellingen."
 
 #: ../src/devices/audio.cpp:476 ../src/devices/audio.cpp:477
 #: ../src/gui/assistant.cpp:1118 ../src/gui/assistant.cpp:1141
-#: ../src/gui/assistant.cpp:1164 ../src/gui/preferences.cpp:747
-#: ../src/gui/preferences.cpp:771 ../src/gui/preferences.cpp:794
+#: ../src/gui/assistant.cpp:1164 ../src/gui/preferences.cpp:734
+#: ../src/gui/preferences.cpp:758 ../src/gui/preferences.cpp:781
 msgid "No device found"
 msgstr "Geen apparaat gevonden"
 
@@ -1431,7 +1449,7 @@ msgstr "Opbellen"
 # Overdragen/doorverbinden
 #: ../src/endpoints/h323-endpoint.cpp:156
 #: ../src/endpoints/sip-endpoint.cpp:274 ../src/endpoints/sip-endpoint.cpp:278
-#: ../src/gui/main.cpp:3658
+#: ../src/gui/main.cpp:3832
 msgid "Transfer"
 msgstr "Doorverbinden"
 
@@ -1456,7 +1474,7 @@ msgstr "Overdrachtsfout"
 msgid "Failed"
 msgstr "Mislukt"
 
-#: ../src/endpoints/manager.cpp:701
+#: ../src/endpoints/manager.cpp:708
 msgid ""
 "Ekiga did not manage to configure your network settings automatically. You "
 "can still use it, but you need to configure your network settings manually.\n"
@@ -1575,7 +1593,8 @@ msgstr "Een Ekiga.net SIP-abonnement aanvragen"
 msgid "Get an Ekiga Call Out account"
 msgstr "Een Ekiga PC-naar-telefoon abonnement aanvragen"
 
-#: ../src/endpoints/opal-bank.cpp:94
+#: ../src/endpoints/opal-bank.cpp:94 ../src/gui/main.cpp:3529
+#: ../src/gui/main.cpp:3626
 msgid "Account ID:"
 msgstr "Abonnement-ID:"
 
@@ -1583,84 +1602,84 @@ msgstr "Abonnement-ID:"
 msgid "PIN Code:"
 msgstr "PIN-code:"
 
-#: ../src/endpoints/opal-call.cpp:386
+#: ../src/endpoints/opal-call.cpp:398
 msgid "Local user cleared the call"
 msgstr "Gesprekspartner heeft het gesprek gestopt"
 
-#: ../src/endpoints/opal-call.cpp:389 ../src/endpoints/opal-call.cpp:392
+#: ../src/endpoints/opal-call.cpp:401 ../src/endpoints/opal-call.cpp:404
 msgid "Local user rejected the call"
 msgstr "Gesprekspartner heeft de oproep geweigerd"
 
-#: ../src/endpoints/opal-call.cpp:395
+#: ../src/endpoints/opal-call.cpp:407
 msgid "Remote user cleared the call"
 msgstr "Gesprekspartner heeft het gesprek gestopt"
 
-#: ../src/endpoints/opal-call.cpp:398
+#: ../src/endpoints/opal-call.cpp:410
 msgid "Remote user rejected the call"
 msgstr "Gesprekspartner heeft de oproep geweigerd"
 
-#: ../src/endpoints/opal-call.cpp:401
+#: ../src/endpoints/opal-call.cpp:413
 msgid "Remote user has stopped calling"
 msgstr "Gespreksparter heeft de oproep afgebroken"
 
-#: ../src/endpoints/opal-call.cpp:404
+#: ../src/endpoints/opal-call.cpp:416
 msgid "Abnormal call termination"
 msgstr "Abnormale beëindiging van het gesprek"
 
-#: ../src/endpoints/opal-call.cpp:407 ../src/gui/main.cpp:1535
+#: ../src/endpoints/opal-call.cpp:419 ../src/gui/main.cpp:1525
 msgid "Could not connect to remote host"
 msgstr "Er kon geen verbinding gemaakt worden met de andere partij"
 
-#: ../src/endpoints/opal-call.cpp:410
+#: ../src/endpoints/opal-call.cpp:422
 msgid "The Gatekeeper cleared the call"
 msgstr "De Gatekeeper heeft het gesprek gestopt"
 
 # gesprekspartner
-#: ../src/endpoints/opal-call.cpp:413
+#: ../src/endpoints/opal-call.cpp:425
 msgid "User not found"
 msgstr "Gebruiker niet gevonden"
 
 # Te weinig/Ontoereikende/Te kort/
-#: ../src/endpoints/opal-call.cpp:416
+#: ../src/endpoints/opal-call.cpp:428
 msgid "Insufficient bandwidth"
 msgstr "Ontoereikende bandbreedte"
 
-#: ../src/endpoints/opal-call.cpp:419
+#: ../src/endpoints/opal-call.cpp:431
 msgid "No common codec"
 msgstr "Geen gemeenschappelijk codec"
 
 # gesprek/oproep
-#: ../src/endpoints/opal-call.cpp:422
+#: ../src/endpoints/opal-call.cpp:434
 msgid "Call forwarded"
 msgstr "Oproep doorgestuurd"
 
 # is mislukt/heeft gefaald
-#: ../src/endpoints/opal-call.cpp:425
+#: ../src/endpoints/opal-call.cpp:437
 msgid "Security check failed"
 msgstr "Beveiligingscontrole is mislukt"
 
-#: ../src/endpoints/opal-call.cpp:428
+#: ../src/endpoints/opal-call.cpp:440
 msgid "Local user is busy"
 msgstr "Gesprekspartner is bezet"
 
-#: ../src/endpoints/opal-call.cpp:431 ../src/endpoints/opal-call.cpp:437
+#: ../src/endpoints/opal-call.cpp:443 ../src/endpoints/opal-call.cpp:449
 msgid "Congested link to remote party"
 msgstr "Te drukke verbinding naar gesprekspartner"
 
-#: ../src/endpoints/opal-call.cpp:434
+#: ../src/endpoints/opal-call.cpp:446
 msgid "Remote user is busy"
 msgstr "Gesprekspartnet is bezet"
 
-#: ../src/endpoints/opal-call.cpp:440
+#: ../src/endpoints/opal-call.cpp:452
 msgid "Remote host is offline"
 msgstr "Gesprekspartner is offline"
 
 # bezet/niet beschikbaar
-#: ../src/endpoints/opal-call.cpp:446
+#: ../src/endpoints/opal-call.cpp:458
 msgid "User is not available"
 msgstr "Gesprekspartner is niet beschikbaar"
 
-#: ../src/endpoints/opal-call.cpp:458
+#: ../src/endpoints/opal-call.cpp:470
 msgid "Call completed"
 msgstr "Gesprek afgerond"
 
@@ -1869,7 +1888,7 @@ msgstr "Bestaat niet meer"
 msgid "Globally not acceptable"
 msgstr "Nergens acceptabel"
 
-#: ../src/endpoints/sip-endpoint.cpp:1024
+#: ../src/endpoints/sip-endpoint.cpp:1026
 msgid "Could not send message"
 msgstr "Kon bericht niet versturen"
 
@@ -1896,29 +1915,38 @@ msgid "Processing..."
 msgstr "Verwerken…"
 
 # abonnementsnaam/accountnaam/naam van abonnement
-#: ../src/gui/accounts.cpp:625
+#: ../src/gui/accounts.cpp:628
 msgid "Account Name"
 msgstr "Abonnementnaam"
 
-#: ../src/gui/accounts.cpp:626
+#: ../src/gui/accounts.cpp:629
 msgid "Voice Mails"
 msgstr "Voice-mails"
 
-#: ../src/gui/accounts.cpp:627
+#: ../src/gui/accounts.cpp:630
 msgid "Status"
 msgstr "Status"
 
-#: ../src/gui/accounts.cpp:638 ../src/gui/accounts.cpp:676
+#: ../src/gui/accounts.cpp:641 ../src/gui/accounts.cpp:684
 msgid "Accounts"
 msgstr "Abonnementen"
 
-#: ../src/gui/accounts.cpp:653
-msgid "Account"
-msgstr "Abonnement"
+#: ../src/gui/accounts.cpp:655 ../src/gui/main.cpp:1785
+msgid "_Accounts"
+msgstr "_Abonnementen"
+
+#: ../src/gui/accounts.cpp:659 ../src/gui/main.cpp:1868
+msgid "_Help"
+msgstr "_Hulp"
 
 # a staat voor 'actief' (staat als kolomkop bij de vinkjes)
 # beter om hier niets te hebben staan.
-#: ../src/gui/accounts.cpp:679 ../src/gui/preferences.cpp:510
+#. Translators:
+#. * The following string "A" means "activated" or "active". It's a column
+#. * description in the list of configured accounts, it shows if an account
+#. * is activated or not (a status the user can choose).
+#.
+#: ../src/gui/accounts.cpp:692 ../src/gui/preferences.cpp:497
 msgid "A"
 msgstr " "
 
@@ -1930,17 +1958,17 @@ msgid ""
 "Once you have completed these steps, you can always change them later by "
 "selecting Preferences in the Edit menu."
 msgstr ""
-"Dit is de configuratiehulp van Ekiga. In de volgende stappen wordt Ekiga "
+"Dit is de configuratiehulp van Ekiga. In een paar stappen wordt Ekiga "
 "geconfigureerd aan de hand van enkele eenvoudige vragen.\n"
 "\n"
-"Na het voltooien van deze stappen kunt u de instellingen altijd later nog "
-"wijzigen via 'Voorkeuren' in het menu 'Bewerken'. "
+"Na het doorlopen van deze stappen kunt u de instellingen altijd later nog "
+"wijzigen via ‘Voorkeuren’ in het menu ‘Bewerken’. "
 
 #: ../src/gui/assistant.cpp:266
 msgid "Welcome in Ekiga"
 msgstr "Welkom bij Ekiga"
 
-#: ../src/gui/assistant.cpp:300 ../src/gui/preferences.cpp:383
+#: ../src/gui/assistant.cpp:300 ../src/gui/preferences.cpp:373
 msgid "Personal Information"
 msgstr "Persoonlijke gegevens"
 
@@ -2075,37 +2103,35 @@ msgstr ""
 "kwaliteitsinstellingen tijdens gesprekken te gebruiken. U kunt deze "
 "instellingen later nog afzonderlijk bijstellen in het voorkeurenvenster."
 
-#: ../src/gui/assistant.cpp:907 ../src/gui/main.cpp:3826
-#: ../src/gui/main.cpp:3830 ../src/gui/preferences.cpp:703
+#: ../src/gui/assistant.cpp:907 ../src/gui/main.cpp:3902
+#: ../src/gui/main.cpp:3906 ../src/gui/preferences.cpp:690
 msgid "Audio Devices"
 msgstr "Audioapparaten"
 
 #: ../src/gui/assistant.cpp:909
 msgid "Please choose the audio ringing device:"
-msgstr "Kies het audioapparaat voor het belgeluid:"
+msgstr "Kies het audioapparaat voor beltonen:"
 
 #: ../src/gui/assistant.cpp:917
-#, fuzzy
 msgid ""
 "The audio ringing device is the device that will be used to play the ringing "
 "sound on incoming calls."
 msgstr ""
-"Het audio-afspeelapparaat is het apparaat dat, beheerd door de "
-"audiobeheerder, gebruikt zal worden voor het afspelen van audio."
+"Het beltoonapparaat is het apparaat dat bij binnenkomende gesprekken de "
+"beltoon zal afspelen."
 
 #. ---
 #: ../src/gui/assistant.cpp:928
 msgid "Please choose the audio output device:"
-msgstr "Kies het audio-afspeelapparaat:"
+msgstr "Kies het audioweergaveapparaat:"
 
 #: ../src/gui/assistant.cpp:936
-#, fuzzy
 msgid ""
 "The audio output device is the device that will be used to play audio during "
 "calls."
 msgstr ""
-"Het audio-afspeelapparaat is het apparaat dat, beheerd door de "
-"audiobeheerder, gebruikt zal worden voor het afspelen van audio."
+"Het audioweergaveapparaat is het apparaat dat het geluid van de gesprekkan "
+"zal weergeven."
 
 #. ---
 #: ../src/gui/assistant.cpp:947
@@ -2117,8 +2143,8 @@ msgid ""
 "The audio input device is the device that will be used to record your voice "
 "during calls."
 msgstr ""
-"Het audio-opnameapparaat is het apparaat dat tijdens gesprekken gebruikt zal "
-"worden voor het opnemen van uw stem."
+"Het audio-opnameapparaat is het apparaat dat tijdens gesprekken het geluid "
+"van uw stem zal opnemen."
 
 #: ../src/gui/assistant.cpp:1047
 msgid "Please choose your video input device:"
@@ -2129,8 +2155,8 @@ msgid ""
 "The video input device is the device that will be used to capture video "
 "during calls."
 msgstr ""
-"Het video-opnameapparaat is het apparaat dat tijdens gesprekken gebruikt zal "
-"worden voor het opnemen van video."
+"Het video-opnameapparaat is het apparaat dat tijdens gesprekken de "
+"videobeelden zal opnemen."
 
 #: ../src/gui/assistant.cpp:1195
 msgid "Configuration Complete"
@@ -2148,9 +2174,10 @@ msgstr ""
 msgid "Configuration summary:"
 msgstr "Configuratieoverzicht:"
 
+# Audioapparaat voor beltonen/beltoonapparaat
 #: ../src/gui/assistant.cpp:1274
 msgid "Audio Ringing Device"
-msgstr "Audioapparaat voor belgeluid"
+msgstr "Beltoonapparaat"
 
 #: ../src/gui/assistant.cpp:1283
 msgid "Audio Output Device"
@@ -2197,6 +2224,10 @@ msgid ""
 "Software Foundation; either version 2 of the License, or (at your option) "
 "any later version. "
 msgstr ""
+"Dit programma is vrije software; u mag het opnieuw uitgeven en/of aanpassen "
+"onder de voorwaarden van de GNU General Public License die gepubliceerd is "
+"door de Free Software Foundation; ofwel versie 2 van de licentie, of (naar "
+"uw keuze) een latere versie."
 
 #: ../src/gui/callbacks.cpp:167
 msgid ""
@@ -2207,7 +2238,15 @@ msgid ""
 "License along with this program; if not, write to the Free Software "
 "Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA."
 msgstr ""
+"Dit programma wordt verspreid in de hoop dat het nuttig zal zijn, maar er is "
+"geen enkele garantie; zelf niet een geimpliceerde garantie van "
+"verkoopbaarheid of geschiktheid voor een bepaald doel. Zie de GNU General "
+"Public License voor meer details. U moet een kopie van de GNU General Public "
+"License samen met dit programma hebben ontvangen; zo niet, schrijf dan naar "
+"de Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA "
+"02110-1301, USA."
 
+# follow/meet the requirements
 #: ../src/gui/callbacks.cpp:174
 msgid ""
 "Ekiga is licensed under the GPL license and as a special exception, you have "
@@ -2217,6 +2256,12 @@ msgid ""
 "long as you do follow the requirements of the GNU GPL for all the rest of "
 "the software thus combined."
 msgstr ""
+"Ekiga wordt uitgegeven onder de GPL licentie met als speciale uitzondering "
+"dat u toestemming heeft dit programma te linken of op andere wijze te "
+"combineren met de programma's OPAL, OpenH323 en PWLIB, en de combinatie te "
+"verspreiden, zonder de vereisten van de GNU GPL toe te passen op de OPAL, "
+"OpenH323 en PWLIB programma's, zolang u maar wel de vereisyen van de GNU GPL "
+"toepast op de rest van de gecombineerde software."
 
 #. Translators: Please write translator credits here, and
 #. * separate names with \n
@@ -2272,77 +2317,77 @@ msgid "wxyz"
 msgstr "wxyz"
 
 #. Translators: Is displayed once an account "%s" is registered.
-#: ../src/gui/main.cpp:570
+#: ../src/gui/main.cpp:581
 #, c-format
 msgid "Registered %s"
 msgstr "%s is aangemeld"
 
 #. Translators: Is displayed once an account "%s" is unregistered.
-#: ../src/gui/main.cpp:576
+#: ../src/gui/main.cpp:587
 #, c-format
 msgid "Unregistered %s"
 msgstr "%s is afgemeld"
 
-#: ../src/gui/main.cpp:581
+#: ../src/gui/main.cpp:592
 #, c-format
 msgid "Could not unregister %s"
 msgstr "Kon %s niet afmelden"
 
-#: ../src/gui/main.cpp:585
+#: ../src/gui/main.cpp:596
 #, c-format
 msgid "Could not register %s"
 msgstr "Kon %s niet aanmelden"
 
 # Audio~Video~Frames per Seconde
-#: ../src/gui/main.cpp:645
+#: ../src/gui/main.cpp:660
 #, c-format
 msgid "A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d"
 msgstr "A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d"
 
-#: ../src/gui/main.cpp:720
+#: ../src/gui/main.cpp:705
 #, c-format
 msgid "Connected with %s"
 msgstr "Verbonden met %s"
 
-#: ../src/gui/main.cpp:755 ../src/gui/main.cpp:2323
+#: ../src/gui/main.cpp:740 ../src/gui/main.cpp:2303
 msgid "Standby"
 msgstr "Standby"
 
 # op wacht/in de wacht
-#: ../src/gui/main.cpp:814
+#: ../src/gui/main.cpp:806
 msgid "Call on hold"
 msgstr "Gesprek in de wacht"
 
 # gesprek opgehaald/oproep opgehaald
-#: ../src/gui/main.cpp:827
+#: ../src/gui/main.cpp:819
 msgid "Call retrieved"
 msgstr "Oproep opgehaald"
 
-#: ../src/gui/main.cpp:844
+#: ../src/gui/main.cpp:836
 #, c-format
 msgid "Missed call from %s"
 msgstr "Oproep gemist van %s"
 
-#: ../src/gui/main.cpp:987 ../src/gui/misc.cpp:94
+#: ../src/gui/main.cpp:979 ../src/gui/misc.cpp:94
 msgid "Error"
 msgstr "Fout"
 
-#: ../src/gui/main.cpp:1120
+#: ../src/gui/main.cpp:1110
 #, c-format
 msgid "Added video input device %s"
 msgstr "Video-opnameapparaat %s toegevoegd"
 
-#: ../src/gui/main.cpp:1137
+#: ../src/gui/main.cpp:1127
 #, c-format
 msgid "Removed video input device %s"
 msgstr "Video-opnameapparaat %s verwijderd"
 
-#: ../src/gui/main.cpp:1154
+#: ../src/gui/main.cpp:1144
 #, c-format
 msgid "Error while accessing video device %s"
 msgstr "Er is een fout opgetreden bij het benaderen van videoapparaat %s"
 
-#: ../src/gui/main.cpp:1157
+#: ../src/gui/main.cpp:1147
 msgid ""
 "A moving logo will be transmitted during calls. Notice that you can always "
 "transmit a given image or the moving logo by choosing \"Picture\" as video "
@@ -2353,28 +2398,32 @@ msgstr ""
 "voor ‘Afbeelding’ als videoplugin, en ‘Bewegend Logo’ of ‘Vaste afbeelding’ "
 "als apparaat."
 
-#: ../src/gui/main.cpp:1161
-#, fuzzy
+# geladen is/gebruikt wordt
+#: ../src/gui/main.cpp:1151
 msgid ""
 "There was an error while opening the device. In case it is a pluggable "
 "device it may be sufficient to reconnect it. If not, or if it still is not "
 "accessible, please check your permissions and make sure that the appropriate "
 "driver is loaded."
 msgstr ""
-"Er is een fout opgetreden tijdens het openen van het apparaat. Controleer de "
-"rechten en zorg ervoor dat het juiste aansturingsprogramma is geladen."
+"Er is een fout opgetreden bij het openen van het apparaat. Wanneer het een "
+"extern apparaat is dat op uw computer aangesloten werd (pluggable device) "
+"kan het probleem mogelijk verholpen worden door het apparaat opnieuw aan te "
+"sluiten. Als dit het probleem niet verhelpt, of als het een intern apparaat "
+"is, controleer dan de toegangsrechten en zorg dat het juiste stuurprogramma "
+"geladen is."
 
-#: ../src/gui/main.cpp:1165
+#: ../src/gui/main.cpp:1155
 msgid "Your video driver doesn't support the requested video format."
 msgstr ""
 "Het gewenste videoformaat wordt niet ondersteund door het video-"
 "aansturingsprogramma"
 
-#: ../src/gui/main.cpp:1169
+#: ../src/gui/main.cpp:1159
 msgid "Could not open the chosen channel."
 msgstr "Het gekozen kanaal kan niet geopend worden."
 
-#: ../src/gui/main.cpp:1173
+#: ../src/gui/main.cpp:1163
 msgid ""
 "Your driver doesn't seem to support any of the color formats supported by "
 "Ekiga.\n"
@@ -2386,452 +2435,454 @@ msgstr ""
 " Raadpleeg de documentatie van het gebruikte kernel-stuurprogramma om te "
 "bepalen welk pallet ondersteund wordt."
 
-#: ../src/gui/main.cpp:1177
+#: ../src/gui/main.cpp:1167
 msgid "Error while setting the frame rate."
 msgstr "Fout tijdens het instellen van de beeldsnelheid."
 
-#: ../src/gui/main.cpp:1181
+#: ../src/gui/main.cpp:1171
 msgid "Error while setting the frame size."
 msgstr "Fout tijdens het instellen van de beeldgrootte."
 
-#: ../src/gui/main.cpp:1186 ../src/gui/main.cpp:1295 ../src/gui/main.cpp:1415
+#: ../src/gui/main.cpp:1176 ../src/gui/main.cpp:1285 ../src/gui/main.cpp:1405
 msgid "Unknown error."
 msgstr "Onbekende fout."
 
-#: ../src/gui/main.cpp:1242
+#: ../src/gui/main.cpp:1232
 #, c-format
 msgid "Added audio input device %s"
 msgstr "Audio-opname apparaat %s toegevoegd"
 
-#: ../src/gui/main.cpp:1262
+#: ../src/gui/main.cpp:1252
 #, c-format
 msgid "Removed audio input device %s"
 msgstr "Audio-opname apparaat %s verwijderd"
 
-#: ../src/gui/main.cpp:1279
+#: ../src/gui/main.cpp:1269
 #, c-format
 msgid "Error while opening audio input device %s"
 msgstr "Er is een fout opgetreden bij het openen van audio-invoerapparaat %s"
 
 # de ontvangst zal geluidsloos zijn
-#: ../src/gui/main.cpp:1282
+#: ../src/gui/main.cpp:1272
 msgid "Only silence will be transmitted."
 msgstr "Er zal geen geluid worden verzonden."
 
-#: ../src/gui/main.cpp:1286
-#, fuzzy
+#: ../src/gui/main.cpp:1276
 msgid ""
 "Unable to open the selected audio device for recording. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
 "still is not accessible, please check your audio setup, the permissions and "
 "that the device is not busy."
 msgstr ""
-"Het is niet mogelijk om het geselecteerde audioapparaat (%s) voor opname te "
-"openen. Controleer uw audioinstellingen, de rechten en of het apparaat niet "
-"bezet is."
+"Het is niet mogelijk om het geselecteerde audioapparaat voor opname te "
+"openen. Wanneer het een extern apparaat is dat op uw computer aangesloten "
+"werd (pluggable device) kan het probleem mogelijk verholpen worden door het "
+"apparaat opnieuw aan te sluiten. Als dit het probleem niet verhelpt, of als "
+"het een intern apparaat is, controleer dan uw audioinstellingen, de "
+"toegangsrechten, en of het apparaat niet bezet is."
 
-#: ../src/gui/main.cpp:1290
-#, fuzzy
+#: ../src/gui/main.cpp:1280
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "read data from this device. In case it is a pluggable device it may be "
 "sufficient to reconnect it. If not, or if it still is not accessible, please "
 "check your audio setup."
 msgstr ""
-"Het geselecteerde audioapparaat (%s) is correct geopend maar het is niet "
-"mogelijk om gegevens uit te lezen. Controleer uw audioinstellingen."
+"Het geselecteerde audioapparaat kon geopend worden maar het is niet mogelijk "
+"om er gegevens uit te lezen. Wanneer het een extern apparaat is dat op uw "
+"computer aangesloten werd (pluggable device) kan het probleem mogelijk "
+"verholpen worden door het apparaat opnieuw aan te sluiten. Als dit het "
+"probleem niet verhelpt, of als het een intern apparaat is, controleer dan uw "
+"audioinstellingen."
 
-#: ../src/gui/main.cpp:1360
+#: ../src/gui/main.cpp:1350
 #, c-format
 msgid "Added audio output device %s"
 msgstr "Audioweergaveapparaat %s toegevoegd"
 
 # audio-uitgang/ audio weergave-apparaat
-#: ../src/gui/main.cpp:1378
+#: ../src/gui/main.cpp:1368
 #, c-format
 msgid "Removed audio output device %s"
 msgstr "Audioweergaveapparaat %s toegevoegd"
 
-#: ../src/gui/main.cpp:1399
+#: ../src/gui/main.cpp:1389
 #, c-format
 msgid "Error while opening audio output device %s"
-msgstr "Er is een fout opgetreden bij het openen van audio-uitvoerapparaat %s"
+msgstr "Er is een fout opgetreden bij het openen van audioweergaveapparaat %s"
 
-#: ../src/gui/main.cpp:1402
+#: ../src/gui/main.cpp:1392
 msgid "No incoming sound will be played."
 msgstr "Binnekomend geluid wordt niet afgespeeld."
 
-#: ../src/gui/main.cpp:1406
-#, fuzzy
+# aan te sluiten/in te pluggen
+#: ../src/gui/main.cpp:1396
 msgid ""
 "Unable to open the selected audio device for playing. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
 "still is not accessible, please check your audio setup, the permissions and "
 "that the device is not busy."
 msgstr ""
-"Het is niet mogelijk om het geselecteerde audioapparaat (%s) voor afspelen "
-"te openen. Controleer uw audioinstellingen, de rechten en of het apparaat "
-"niet bezet is."
+"Het is niet mogelijk om het geselecteerde audioapparaat voor geluidsweergave "
+"te openen. Wanneer het een extern apparaat is dat op uw computer aangesloten "
+"werd (pluggable device) kan het probleem mogelijk verholpen worden door het "
+"apparaat opnieuw aan te sluiten. Als dit het probleem niet verhelpt, of als "
+"het een intern apparaat is, controleer dan uw audioinstellingen, de "
+"toegangsrechten, en of het apparaat niet bezet is."
 
-#: ../src/gui/main.cpp:1410
-#, fuzzy
+# BUG: write data from this device->to this device
+#: ../src/gui/main.cpp:1400
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "write data from this device. In case it is a pluggable device it may be "
 "sufficient to reconnect it. If not, or if it still is not accessible, please "
 "check your audio setup."
 msgstr ""
-"Het geselecteerde audioapparaat (%s) is correct geopend maar het is niet "
-"mogelijk om er gegevens naar weg te schrijven. Controleer uw "
+"Het geselecteerde audioapparaat kon geopend worden maar het is niet mogelijk "
+"om er gegevens naar weg te schrijven. Wanneer het een extern apparaat is dat "
+"op uw computer aangesloten werd (pluggable device) kan het probleem mogelijk "
+"verholpen worden door het apparaat opnieuw aan te sluiten. Als dit het "
+"probleem niet verhelpt, of als het een intern apparaat is, controleer dan uw "
 "audioinstellingen."
 
-#: ../src/gui/main.cpp:1637
+#: ../src/gui/main.cpp:1627
 msgid "Enter a URI on the left, and click this button to place a call"
 msgstr "Vul links een URI in en klik op deze knop om te bellen"
 
-#: ../src/gui/main.cpp:1718
+#: ../src/gui/main.cpp:1708
 msgid "_Chat"
 msgstr "_Chatten"
 
-#: ../src/gui/main.cpp:1720
+#: ../src/gui/main.cpp:1710
 msgid "Ca_ll"
 msgstr "O_pbellen"
 
-#: ../src/gui/main.cpp:1720
+#: ../src/gui/main.cpp:1710
 msgid "Place a new call"
 msgstr "Iemand opbellen"
 
-#: ../src/gui/main.cpp:1723
+#: ../src/gui/main.cpp:1713
 msgid "_Hang up"
 msgstr "Op_hangen"
 
 # afbreken/beeindigen
-#: ../src/gui/main.cpp:1724
+#: ../src/gui/main.cpp:1714
 msgid "Terminate the current call"
 msgstr "Het huidige gesprek beëindigen"
 
-#: ../src/gui/main.cpp:1730
+#: ../src/gui/main.cpp:1720
 msgid "A_dd Contact"
 msgstr "Contact _toevoegen"
 
-#: ../src/gui/main.cpp:1730
+#: ../src/gui/main.cpp:1720
 msgid "Add a contact to the roster"
 msgstr "Een contact toevoegen aan het adresboek"
 
-#: ../src/gui/main.cpp:1735
+#: ../src/gui/main.cpp:1725
 msgid "Find contacts"
 msgstr "Contacten zoeken"
 
-#: ../src/gui/main.cpp:1742
+#: ../src/gui/main.cpp:1732
 msgid "_Contact"
 msgstr "_Contact"
 
-#: ../src/gui/main.cpp:1743
+#: ../src/gui/main.cpp:1733
 msgid "Act on selected contact"
 msgstr "Actie ondernemen bij geselecteerde contact"
 
-#: ../src/gui/main.cpp:1749
+#: ../src/gui/main.cpp:1739
 msgid "H_old Call"
 msgstr "Gesprek in de _wacht"
 
-#: ../src/gui/main.cpp:1749 ../src/gui/main.cpp:2421
+#: ../src/gui/main.cpp:1739 ../src/gui/main.cpp:2393
 msgid "Hold the current call"
 msgstr "De huidige oproep in wachtstand zetten"
 
 # overdragen/doorverbinden
-#: ../src/gui/main.cpp:1753
+#: ../src/gui/main.cpp:1743
 msgid "_Transfer Call"
 msgstr "Gesprek _doorverbinden"
 
-#: ../src/gui/main.cpp:1754
+#: ../src/gui/main.cpp:1744
 msgid "Transfer the current call"
 msgstr "Het huidige gesprek doorverbinden"
 
 # schorsen/pauzeren
-#: ../src/gui/main.cpp:1761 ../src/gui/main.cpp:3175
+#: ../src/gui/main.cpp:1751 ../src/gui/main.cpp:3147
 msgid "Suspend _Audio"
 msgstr "_Audio pauzeren"
 
-#: ../src/gui/main.cpp:1762
+#: ../src/gui/main.cpp:1752
 msgid "Suspend or resume the audio transmission"
 msgstr "Geluidsoverdracht onderdrukken of hervatten"
 
-#: ../src/gui/main.cpp:1766 ../src/gui/main.cpp:3177
+#: ../src/gui/main.cpp:1756 ../src/gui/main.cpp:3149
 msgid "Suspend _Video"
 msgstr "_Video pauzeren"
 
-#: ../src/gui/main.cpp:1767
+#: ../src/gui/main.cpp:1757
 msgid "Suspend or resume the video transmission"
 msgstr "Video-overdracht onderdrukken of hervatten"
 
-#: ../src/gui/main.cpp:1774
+#: ../src/gui/main.cpp:1764
 msgid "Close the Ekiga window"
 msgstr "Het Ekiga-venster sluiten"
 
-#: ../src/gui/main.cpp:1781 ../src/gui/statusicon.cpp:419
+#: ../src/gui/main.cpp:1771 ../src/gui/statusicon.cpp:426
 msgid "Quit"
 msgstr "Afsluiten"
 
 # assistent/hulp
-#: ../src/gui/main.cpp:1787
+#: ../src/gui/main.cpp:1777
 msgid "_Configuration Assistant"
 msgstr "_Configuratiehulp"
 
-#: ../src/gui/main.cpp:1788
+#: ../src/gui/main.cpp:1778
 msgid "Run the configuration assistant"
 msgstr "De configuratiehulp doorlopen"
 
-#: ../src/gui/main.cpp:1795
-msgid "_Accounts"
-msgstr "_Abonnementen"
-
 # wijzigen/bewerken
-#: ../src/gui/main.cpp:1796
+#: ../src/gui/main.cpp:1786
 msgid "Edit your accounts"
 msgstr "Uw abonnementen bewerken"
 
-#: ../src/gui/main.cpp:1802
+#: ../src/gui/main.cpp:1792
 msgid "Change your preferences"
 msgstr "Uw voorkeuren wijzigen"
 
-#: ../src/gui/main.cpp:1807
+#: ../src/gui/main.cpp:1797
 msgid "_View"
 msgstr "Beel_d"
 
-#: ../src/gui/main.cpp:1809
+#: ../src/gui/main.cpp:1799
 msgid "Con_tacts"
 msgstr "C_ontacten"
 
-#: ../src/gui/main.cpp:1809
+#: ../src/gui/main.cpp:1799
 msgid "View the contacts list"
 msgstr "De contactenlijst weergeven"
 
-#: ../src/gui/main.cpp:1814
+#: ../src/gui/main.cpp:1804
 msgid "_Dialpad"
 msgstr "_Kiestoetsen"
 
-#: ../src/gui/main.cpp:1814
+#: ../src/gui/main.cpp:1804
 msgid "View the dialpad"
 msgstr "De kiestoetsen weergeven"
 
-#: ../src/gui/main.cpp:1819
+#: ../src/gui/main.cpp:1809
 msgid "_Call History"
 msgstr "_Oproepgeschiedenis"
 
-#: ../src/gui/main.cpp:1819
+#: ../src/gui/main.cpp:1809
 msgid "View the call history"
 msgstr "Oproepgeschiedenis tonen"
 
-#: ../src/gui/main.cpp:1827
+#: ../src/gui/main.cpp:1817
 msgid "_Show Call Panel"
 msgstr "_Oproeppaneel tonen"
 
-#: ../src/gui/main.cpp:1835
+#: ../src/gui/main.cpp:1825
 msgid "_Local Video"
 msgstr "_Lokale video"
 
 # lokaal videobeeld
-#: ../src/gui/main.cpp:1836
+#: ../src/gui/main.cpp:1826
 msgid "Local video image"
 msgstr "Lokale videobeeld"
 
-#: ../src/gui/main.cpp:1841
+#: ../src/gui/main.cpp:1831
 msgid "_Remote Video"
 msgstr "_Video van gesprekspartner"
 
-#: ../src/gui/main.cpp:1842
+#: ../src/gui/main.cpp:1832
 msgid "Remote video image"
 msgstr "Videobeeld van gesprekspartner"
 
-#: ../src/gui/main.cpp:1847
+#: ../src/gui/main.cpp:1837
 msgid "_Picture-in-Picture"
 msgstr "_Beeld-in-beeld"
 
-#: ../src/gui/main.cpp:1848 ../src/gui/main.cpp:1854
+#: ../src/gui/main.cpp:1838 ../src/gui/main.cpp:1844
 msgid "Both video images"
 msgstr "Beide videobeelden"
 
 # afgescheiden/afzonderlijk
-#: ../src/gui/main.cpp:1853
+#: ../src/gui/main.cpp:1843
 msgid "Picture-in-Picture in Separate _Window"
 msgstr "Beeld-in-beeld in afzonderlijk _venster"
 
-#: ../src/gui/main.cpp:1861
+#: ../src/gui/main.cpp:1851
 msgid "Zoom in"
 msgstr "Inzoomen"
 
-#: ../src/gui/main.cpp:1865
+#: ../src/gui/main.cpp:1855
 msgid "Zoom out"
 msgstr "Uitzoomen"
 
-#: ../src/gui/main.cpp:1869
+#: ../src/gui/main.cpp:1859
 msgid "Normal size"
 msgstr "Normale grootte"
 
-#: ../src/gui/main.cpp:1873
+#: ../src/gui/main.cpp:1863
 msgid "_Fullscreen"
 msgstr "_Volledig scherm"
 
-#: ../src/gui/main.cpp:1873
+#: ../src/gui/main.cpp:1863
 msgid "Switch to fullscreen"
 msgstr "Op volledig scherm overschakelen"
 
-#: ../src/gui/main.cpp:1878
-msgid "_Help"
-msgstr "_Hulp"
-
 # help uzelf door het lezen
-#: ../src/gui/main.cpp:1881 ../src/gui/statusicon.cpp:396
-#: ../src/gui/statusicon.cpp:407
+#: ../src/gui/main.cpp:1871 ../src/gui/statusicon.cpp:403
+#: ../src/gui/statusicon.cpp:414
 msgid "Get help by reading the Ekiga manual"
 msgstr "Help uzelf door de Ekiga-handleiding te lezen"
 
-#: ../src/gui/main.cpp:1886 ../src/gui/statusicon.cpp:401
-#: ../src/gui/statusicon.cpp:412
+#: ../src/gui/main.cpp:1876 ../src/gui/statusicon.cpp:408
+#: ../src/gui/statusicon.cpp:419
 msgid "View information about Ekiga"
 msgstr "Informatie over Ekiga bekijken"
 
-#: ../src/gui/main.cpp:1923
+#: ../src/gui/main.cpp:1913
 msgid "Contacts"
 msgstr "Contacten"
 
-#: ../src/gui/main.cpp:1951
+#: ../src/gui/main.cpp:1941
 msgid "Dialpad"
 msgstr "Kiestoetsen"
 
-#: ../src/gui/main.cpp:1987
+#: ../src/gui/main.cpp:1977
 msgid "Video Settings"
 msgstr "Video-instellingen"
 
-#: ../src/gui/main.cpp:2014
+#: ../src/gui/main.cpp:2004
 msgid "Adjust brightness"
 msgstr "Helderheid aanpassen"
 
-#: ../src/gui/main.cpp:2035
+#: ../src/gui/main.cpp:2025
 msgid "Adjust whiteness"
 msgstr "Witheid aanpassen"
 
-#: ../src/gui/main.cpp:2056
+#: ../src/gui/main.cpp:2046
 msgid "Adjust color"
 msgstr "Kleur aanpassen"
 
-#: ../src/gui/main.cpp:2077
+#: ../src/gui/main.cpp:2067
 msgid "Adjust contrast"
 msgstr "Contrast aanpassen"
 
-#: ../src/gui/main.cpp:2131
+#: ../src/gui/main.cpp:2121
 msgid "Audio Settings"
 msgstr "Audio-instellingen"
 
-#: ../src/gui/main.cpp:2357
+#: ../src/gui/main.cpp:2332
 msgid "Change the volume of your soundcard"
 msgstr "Het geluidsvolume van uw geluidskaart wijzigen"
 
-#: ../src/gui/main.cpp:2379
+#: ../src/gui/main.cpp:2351
 msgid "Change the color settings of your video device"
 msgstr "De kleurinstellingen van uw videoapparaat wijzigen"
 
-#: ../src/gui/main.cpp:2401
+#: ../src/gui/main.cpp:2373
 msgid "Display images from your camera device"
 msgstr "Beelden van uw camera weergeven"
 
-#: ../src/gui/main.cpp:2452
+#: ../src/gui/main.cpp:2422
 msgid "Call history"
 msgstr "Oproepgeschiedenis"
 
-#: ../src/gui/main.cpp:3123
+#: ../src/gui/main.cpp:3095
 msgid "_Retrieve Call"
 msgstr "_Oproep afluisteren"
 
-#: ../src/gui/main.cpp:3136
+#: ../src/gui/main.cpp:3108
 msgid "_Hold Call"
 msgstr "Gesprek in _wachtstand"
 
-#: ../src/gui/main.cpp:3179
+#: ../src/gui/main.cpp:3151
 msgid "Resume _Audio"
 msgstr "_Audio hervatten"
 
-#: ../src/gui/main.cpp:3181
+#: ../src/gui/main.cpp:3153
 msgid "Resume _Video"
 msgstr "_Video hervatten"
 
-#: ../src/gui/main.cpp:3620
+#: ../src/gui/main.cpp:3478 ../src/gui/main.cpp:3632
+msgid "Reject"
+msgstr "Weigeren"
+
+#: ../src/gui/main.cpp:3480 ../src/gui/main.cpp:3631
+msgid "Accept"
+msgstr "Accepteren"
+
+# afkomstig van
+#: ../src/gui/main.cpp:3486 ../src/gui/main.cpp:3619
+msgid "Incoming call from"
+msgstr "Binnenkomende oproep van"
+
+#: ../src/gui/main.cpp:3504 ../src/gui/main.cpp:3622
+msgid "Remote URI:"
+msgstr "URI op afstand:"
+
+#: ../src/gui/main.cpp:3516 ../src/gui/main.cpp:3624
+msgid "Remote Application:"
+msgstr "Toepassing op afstand:"
+
+#: ../src/gui/main.cpp:3537
+#, c-format
+msgid "Call from %s"
+msgstr "Oproep van %s"
+
+#: ../src/gui/main.cpp:3794
 #, c-format
 msgid "Call Duration: %s\n"
 msgstr "Gespreksduur: %s\n"
 
 # overzetten/doorverbinden
-#: ../src/gui/main.cpp:3657
+#: ../src/gui/main.cpp:3831
 msgid "Transfer call to:"
 msgstr "Gesprek doorverbinden naar:"
 
-#: ../src/gui/main.cpp:3722
-msgid "Reject"
-msgstr "Weigeren"
-
-#: ../src/gui/main.cpp:3724
-msgid "Accept"
-msgstr "Accepteren"
-
-# afkomstig van
-#: ../src/gui/main.cpp:3731
-msgid "Incoming call from"
-msgstr "Binnenkomende oproep van"
-
-#: ../src/gui/main.cpp:3750
-msgid "Remote URI:"
-msgstr "URI op afstand:"
-
-#: ../src/gui/main.cpp:3762
-msgid "Remote Application:"
-msgstr "Toepassing op afstand:"
-
-#: ../src/gui/main.cpp:3770
-#, c-format
-msgid "Call from %s"
-msgstr "Oproep van %s"
-
-#: ../src/gui/main.cpp:3812
+#: ../src/gui/main.cpp:3888
 msgid "No"
 msgstr "Nee"
 
-#: ../src/gui/main.cpp:3814
+#: ../src/gui/main.cpp:3890
 msgid "Yes"
 msgstr "Ja"
 
-#: ../src/gui/main.cpp:3825
+#: ../src/gui/main.cpp:3901
 msgid "Detected new audio input device:"
 msgstr "Nieuw audio-opnameapparaat gedetecteerd:"
 
-#: ../src/gui/main.cpp:3829
+#: ../src/gui/main.cpp:3905
 msgid "Detected new audio output device:"
-msgstr "Nieuw audio-afspeelapparaat gedetecteerd:"
+msgstr "Nieuw audioweergaveapparaat gedetecteerd:"
 
-#: ../src/gui/main.cpp:3833
+#: ../src/gui/main.cpp:3909
 msgid "Detected new video input device:"
 msgstr "Nieuw video-opnameapparaat gedetecteerd:"
 
-#: ../src/gui/main.cpp:3834 ../src/gui/preferences.cpp:861
+#: ../src/gui/main.cpp:3910 ../src/gui/preferences.cpp:848
 msgid "Video Devices"
 msgstr "Videoapparaten"
 
-#: ../src/gui/main.cpp:3852
+#: ../src/gui/main.cpp:3928
 msgid "Do you want to use it as default device?"
 msgstr "Wilt u het als standaardapparaat gebruiken?"
 
-#. Add title
-#: ../src/gui/main.cpp:3923 ../src/gui/main.cpp:4028
+#: ../src/gui/main.cpp:3995 ../src/gui/main.cpp:4094
 msgid "Ekiga"
 msgstr "Ekiga"
 
 # verzonden
-#: ../src/gui/main.cpp:4357
+#: ../src/gui/main.cpp:4414
 #, c-format
 msgid "TX: %dx%d "
 msgstr "TX: %dx%d "
 
 # ontvangen
-#: ../src/gui/main.cpp:4360
+#: ../src/gui/main.cpp:4417
 #, c-format
 msgid "RX: %dx%d "
 msgstr "RX: %dx%d "
@@ -2840,7 +2891,7 @@ msgstr "RX: %dx%d "
 # (bij pakketten die in de verkeerde volgorde aankomen, zijn er dus pakketten
 # die te vroeg aankomen (er worden dan pakketten heen en weer gezonden
 # voor correctie)
-#: ../src/gui/main.cpp:4362
+#: ../src/gui/main.cpp:4419
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -2853,26 +2904,26 @@ msgstr ""
 "Vervroegde paketten: %.1f %%\n"
 "Jitter-buffer: %d ms%s%s%s"
 
-#: ../src/gui/main.cpp:4508
+#: ../src/gui/main.cpp:4567
 msgid "Prints debug messages in the console (level between 1 and 5)"
 msgstr "Drukt debug-berichten op de console af (niveau tussen 1 en 5)"
 
 # Engelse bug: plane ipv plain?
 # leesbare berichten?
-#: ../src/gui/main.cpp:4513
+#: ../src/gui/main.cpp:4572
 msgid "Prints user plane debug messages in the console (level between 1 and 4)"
 msgstr ""
 "Drukt eenvoudige debug-berichten op de console af (niveau tussen 1 en 4)"
 
-#: ../src/gui/main.cpp:4518
+#: ../src/gui/main.cpp:4577
 msgid "Makes Ekiga call the given URI"
 msgstr "Laat Ekiga de gegeven URI oproepen"
 
-#: ../src/gui/main.cpp:4627
+#: ../src/gui/main.cpp:4693
 msgid "No usable audio plugin detected"
 msgstr "Geen bruikbare audioplugin gevonden"
 
-#: ../src/gui/main.cpp:4628
+#: ../src/gui/main.cpp:4694
 msgid ""
 "Ekiga didn't find any usable audio plugin. Make sure that your installation "
 "is correct."
@@ -2880,11 +2931,11 @@ msgstr ""
 "Ekiga heeft geen bruikbare audioplugin kunnen vinden. Controleer of uw "
 "installatie juist is."
 
-#: ../src/gui/main.cpp:4631
+#: ../src/gui/main.cpp:4697
 msgid "No usable audio codecs detected"
 msgstr "Geen bruikbare audiocodecs gevonden"
 
-#: ../src/gui/main.cpp:4632
+#: ../src/gui/main.cpp:4698
 msgid ""
 "Ekiga didn't find any usable audio codec. Make sure that your installation "
 "is correct."
@@ -2892,12 +2943,12 @@ msgstr ""
 "Ekiga heeft geen bruikbare audiocodec kunnen vinden. Controleer of uw "
 "installatie juist is."
 
-#: ../src/gui/main.cpp:4638
+#: ../src/gui/main.cpp:4704
 msgid "Configuration database corruption"
 msgstr "Configuratiedatabase is beschadigd"
 
-#: ../src/gui/main.cpp:4639
-#, fuzzy, c-format
+#: ../src/gui/main.cpp:4705
+#, c-format
 msgid ""
 "Ekiga got an invalid value for the configuration key %s.\n"
 "\n"
@@ -2918,53 +2969,39 @@ msgstr ""
 "nieuwsgroeparchieven (http://mail.gnome.org) voor meer informatie over dit "
 "probleem."
 
-#: ../src/gui/preferences.cpp:386
+#: ../src/gui/preferences.cpp:376
 msgid "_Full name:"
 msgstr "_Volledige naam:"
 
-#. Add the update button
-#: ../src/gui/preferences.cpp:393
-msgid "_Apply"
-msgstr "_Toepassen"
-
-#: ../src/gui/preferences.cpp:393
-msgid ""
-"Click here to update the users directory you are registered to with the new "
-"First Name, Last Name, E-Mail, Comment and Location"
-msgstr ""
-"Klik hier om de wijzigingen aan de opgegeven voor- en achternaam, e-mail, "
-"opmerking en locatie door te geven aan de gebruikerslijst waar u bent "
-"aangemeld."
-
-#: ../src/gui/preferences.cpp:407
+#: ../src/gui/preferences.cpp:394
 msgid "User Interface"
 msgstr "Gebruikersinterface"
 
-#: ../src/gui/preferences.cpp:409
+#: ../src/gui/preferences.cpp:396
 msgid "Start _hidden"
 msgstr "_Verborgen starten"
 
-#: ../src/gui/preferences.cpp:411
+#: ../src/gui/preferences.cpp:398
 msgid "Show offline _contacts"
 msgstr "Offline _contacten tonen"
 
-#: ../src/gui/preferences.cpp:416
+#: ../src/gui/preferences.cpp:403
 msgid "Video Display"
 msgstr "Videoweergave"
 
-#: ../src/gui/preferences.cpp:418
+#: ../src/gui/preferences.cpp:405
 msgid "Place windows displaying video _above other windows"
 msgstr "Vensters met videobeelden _boven andere vensters plaatsen"
 
-#: ../src/gui/preferences.cpp:428
+#: ../src/gui/preferences.cpp:415
 msgid "Call Forwarding"
 msgstr "Oproep doorsturen"
 
-#: ../src/gui/preferences.cpp:430
+#: ../src/gui/preferences.cpp:417
 msgid "_Always forward calls to the given host"
 msgstr "Oproepen _altijd doorsturen naar opgegeven computer"
 
-#: ../src/gui/preferences.cpp:430
+#: ../src/gui/preferences.cpp:417
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the protocol settings"
@@ -2972,11 +3009,11 @@ msgstr ""
 "Als dit aangevinkt is, worden alle binnenkomende oproepen doorgestuurd naar "
 "de host die aangegeven is bij de protocolinstellingen"
 
-#: ../src/gui/preferences.cpp:432
+#: ../src/gui/preferences.cpp:419
 msgid "Forward calls to the given host if _no answer"
 msgstr "Oproepen doorsturen naar de opgegeven computer bij _geen antwoord"
 
-#: ../src/gui/preferences.cpp:432
+#: ../src/gui/preferences.cpp:419
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the protocol settings if you do not answer the call"
@@ -2985,11 +3022,11 @@ msgstr ""
 "de host die aangegeven is bij de protocolinstellingen, als u de oproep niet "
 "beantwoordt"
 
-#: ../src/gui/preferences.cpp:434
+#: ../src/gui/preferences.cpp:421
 msgid "Forward calls to the given host if _busy"
 msgstr "Oproepen doorsturen naar de opgegeven server indien _bezet"
 
-#: ../src/gui/preferences.cpp:434
+#: ../src/gui/preferences.cpp:421
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the protocol settings if you already are in a call or if you "
@@ -2999,81 +3036,81 @@ msgstr ""
 "de host die aangegeven is bij de protocolinstellingen, als u al in gesprek "
 "bent of in 'Niet-storen' modus."
 
-#: ../src/gui/preferences.cpp:438 ../src/gui/preferences.cpp:1470
+#: ../src/gui/preferences.cpp:425 ../src/gui/preferences.cpp:1442
 msgid "Call Options"
 msgstr "Gespreksopties"
 
 # tijdslimiet voor het doorsturen van 
 #. Add all the fields
-#: ../src/gui/preferences.cpp:441
+#: ../src/gui/preferences.cpp:428
 msgid "Timeout to reject or forward unanswered incoming calls (in seconds):"
 msgstr ""
 "Tijdslimiet voor het weigeren of doorsturen van binnenkomende oproepen (in "
 "seconden):"
 
-#: ../src/gui/preferences.cpp:473
+#: ../src/gui/preferences.cpp:460
 msgid "Ekiga Sound Events"
 msgstr "Ekiga actiegeluidjes"
 
-#: ../src/gui/preferences.cpp:522 ../src/gui/preferences.cpp:531
-#: ../src/gui/preferences.cpp:540
+#: ../src/gui/preferences.cpp:509 ../src/gui/preferences.cpp:518
+#: ../src/gui/preferences.cpp:527
 msgid "Event"
 msgstr "Gebeurtenis"
 
-#: ../src/gui/preferences.cpp:552
+#: ../src/gui/preferences.cpp:539
 msgid "Choose a sound"
 msgstr "Kies een geluid"
 
-#: ../src/gui/preferences.cpp:558
+#: ../src/gui/preferences.cpp:545
 msgid "Wavefiles"
 msgstr "Wave-bestanden"
 
-#: ../src/gui/preferences.cpp:567 ../src/gui/preferences.cpp:586
+#: ../src/gui/preferences.cpp:554 ../src/gui/preferences.cpp:573
 msgid "Play"
 msgstr "Afspelen"
 
-#: ../src/gui/preferences.cpp:607
+#: ../src/gui/preferences.cpp:594
 msgid "String"
 msgstr "Tekenreeks"
 
-#: ../src/gui/preferences.cpp:608
+#: ../src/gui/preferences.cpp:595
 msgid "Tone"
 msgstr "Toon"
 
-#: ../src/gui/preferences.cpp:609 ../src/gui/preferences.cpp:658
+#: ../src/gui/preferences.cpp:596 ../src/gui/preferences.cpp:645
 msgid "RFC2833"
 msgstr "RFC2833"
 
-#: ../src/gui/preferences.cpp:610
+#: ../src/gui/preferences.cpp:597
 msgid "Q.931"
 msgstr "Q.931"
 
-#: ../src/gui/preferences.cpp:616 ../src/gui/preferences.cpp:668
+#: ../src/gui/preferences.cpp:603 ../src/gui/preferences.cpp:655
 msgid "Misc Settings"
 msgstr "Overige instellingen"
 
-#: ../src/gui/preferences.cpp:619 ../src/gui/preferences.cpp:673
+#: ../src/gui/preferences.cpp:606 ../src/gui/preferences.cpp:660
 msgid "Forward _URI:"
 msgstr "Doorschakel-_URI:"
 
-#: ../src/gui/preferences.cpp:628
+#: ../src/gui/preferences.cpp:615
 msgid "Advanced Settings"
 msgstr "Geavanceerde instellingen"
 
 #. The toggles
-#: ../src/gui/preferences.cpp:631
+#: ../src/gui/preferences.cpp:618
 msgid "Enable H.245 _tunneling"
 msgstr "H.245-_tunnel inschakelen"
 
-#: ../src/gui/preferences.cpp:633
+#: ../src/gui/preferences.cpp:620
 msgid "Enable _early H.245"
 msgstr "_Vroegtijdig H.245 inschakelen"
 
-#: ../src/gui/preferences.cpp:635
+#: ../src/gui/preferences.cpp:622
 msgid "Enable fast _start procedure"
 msgstr "_Snelstart-procedure inschakelen"
 
-#: ../src/gui/preferences.cpp:635
+#: ../src/gui/preferences.cpp:622
 msgid ""
 "Connection will be established in Fast Start mode. Fast Start is a new way "
 "to start calls faster that was introduced in H.323v2. It is not supported by "
@@ -3086,40 +3123,40 @@ msgstr ""
 "snelstart en H.245-tunnel modus kunnen sommige versies van Netmeeting "
 "crashen."
 
-#: ../src/gui/preferences.cpp:641 ../src/gui/preferences.cpp:681
+#: ../src/gui/preferences.cpp:628 ../src/gui/preferences.cpp:668
 msgid "DTMF Mode"
 msgstr "DTMF-modus"
 
-#: ../src/gui/preferences.cpp:643 ../src/gui/preferences.cpp:683
+#: ../src/gui/preferences.cpp:630 ../src/gui/preferences.cpp:670
 msgid "_Send DTMF as:"
 msgstr "_DTMF verzenden als:"
 
-#: ../src/gui/preferences.cpp:643 ../src/gui/preferences.cpp:683
+#: ../src/gui/preferences.cpp:630 ../src/gui/preferences.cpp:670
 msgid "This allows you to set the mode for DTMFs sending."
 msgstr "Hiermee kan de modus ingesteld worden voor het verzenden van DTMFs."
 
-#: ../src/gui/preferences.cpp:659
+#: ../src/gui/preferences.cpp:646
 msgid "INFO"
 msgstr "INFO"
 
-#: ../src/gui/preferences.cpp:670
+#: ../src/gui/preferences.cpp:657
 msgid "_Outbound Proxy:"
 msgstr "_Uitgaande proxy:"
 
 # Beltoonapparaat/Afspeelapparaat belgeluid
-#: ../src/gui/preferences.cpp:711
+#: ../src/gui/preferences.cpp:698
 msgid "Ringing Device"
 msgstr "Beltoonapparaat"
 
-#: ../src/gui/preferences.cpp:711
+#: ../src/gui/preferences.cpp:698
 msgid "Select the ringing audio device to use"
 msgstr "Kies het audioapparaat dat de beltonen laat horen"
 
-#: ../src/gui/preferences.cpp:713
+#: ../src/gui/preferences.cpp:700
 msgid "Output device:"
 msgstr "Afspeelapparaat:"
 
-#: ../src/gui/preferences.cpp:720 ../src/gui/preferences.cpp:868
+#: ../src/gui/preferences.cpp:707 ../src/gui/preferences.cpp:855
 msgid "Input device:"
 msgstr "Opnameapparaat:"
 
@@ -3179,95 +3216,95 @@ msgstr "Opnameapparaat:"
 #. (gpointer) VIDEO_DEVICES_KEY "image");
 #.
 #. That button will refresh the device list
-#: ../src/gui/preferences.cpp:725 ../src/gui/preferences.cpp:933
+#: ../src/gui/preferences.cpp:712 ../src/gui/preferences.cpp:920
 msgid "_Detect devices"
 msgstr "Apparaten _opsporen"
 
-#: ../src/gui/preferences.cpp:725 ../src/gui/preferences.cpp:933
+#: ../src/gui/preferences.cpp:712 ../src/gui/preferences.cpp:920
 msgid "Click here to refresh the device list."
 msgstr "Klik hier om de apparatenlijst te vernieuwen."
 
-#: ../src/gui/preferences.cpp:846
+#: ../src/gui/preferences.cpp:833
 msgid "PAL (Europe)"
 msgstr "PAL (Europa)"
 
-#: ../src/gui/preferences.cpp:847
+#: ../src/gui/preferences.cpp:834
 msgid "NTSC (America)"
 msgstr "NTSC (Amerika)"
 
-#: ../src/gui/preferences.cpp:848
+#: ../src/gui/preferences.cpp:835
 msgid "SECAM (France)"
 msgstr "SECAM (Frankrijk)"
 
-#: ../src/gui/preferences.cpp:849
+#: ../src/gui/preferences.cpp:836
 msgid "Auto"
 msgstr "Automatisch"
 
 #. Video Channel
-#: ../src/gui/preferences.cpp:872
+#: ../src/gui/preferences.cpp:859
 msgid "Channel:"
 msgstr "Kanaal:"
 
 # Beeldgrootte/afmetingen/grootte
-#: ../src/gui/preferences.cpp:874
+#: ../src/gui/preferences.cpp:861
 msgid "Size:"
 msgstr "Beeldgroote:"
 
-#: ../src/gui/preferences.cpp:874
+#: ../src/gui/preferences.cpp:861
 msgid "Select the transmitted video size"
 msgstr "Kies de grootte van het videobeeld dat verzonden wordt"
 
 # dit staat bij de keuze voor PAL SECAM of NTSC, en wordt het kleursysteem
 # genoemd: zie http://nl.wikipedia.org/wiki/Televisiesysteem
-#: ../src/gui/preferences.cpp:876
+#: ../src/gui/preferences.cpp:863
 msgid "Format:"
 msgstr "Kleursysteem:"
 
-#: ../src/gui/preferences.cpp:957 ../src/gui/preferences.cpp:996
-#: ../src/gui/preferences.cpp:1495 ../src/gui/preferences.cpp:1505
+#: ../src/gui/preferences.cpp:944 ../src/gui/preferences.cpp:983
+#: ../src/gui/preferences.cpp:1467 ../src/gui/preferences.cpp:1477
 msgid "Codecs"
 msgstr "Codecs"
 
-#: ../src/gui/preferences.cpp:970 ../src/gui/preferences.cpp:1009
+#: ../src/gui/preferences.cpp:957 ../src/gui/preferences.cpp:996
 msgid "Settings"
 msgstr "Instellingen"
 
 #. Translators: the full sentence is Automatically adjust jitter buffer
 #. between X and Y ms
-#: ../src/gui/preferences.cpp:974
+#: ../src/gui/preferences.cpp:961
 msgid "Enable silence _detection"
 msgstr "Stilte_detectie inschakelen"
 
 # die dit ondersteunen/waarbij dat mogelijk is
-#: ../src/gui/preferences.cpp:974
+#: ../src/gui/preferences.cpp:961
 msgid "If enabled, use silence detection with the codecs supporting it."
 msgstr ""
 "Als dit aangevinkt is, wordt er stiltedetectie gebruikt bij die codecs "
 "waarbij dat mogelijk is."
 
 # echo onderdrukken/echo-onderdrukking inschakelen
-#: ../src/gui/preferences.cpp:976
+#: ../src/gui/preferences.cpp:963
 msgid "Enable echo can_celation"
 msgstr "_Echo-onderdrukking inschakelen:"
 
-#: ../src/gui/preferences.cpp:976
+#: ../src/gui/preferences.cpp:963
 msgid "If enabled, use echo cancelation."
 msgstr "Indien dit ingeschakeld is, wordt echo onderdrukt."
 
-#: ../src/gui/preferences.cpp:978
+#: ../src/gui/preferences.cpp:965
 msgid "Maximum _jitter buffer (in ms):"
 msgstr "Maximum _jitter-buffer (in ms):"
 
-#: ../src/gui/preferences.cpp:978
+#: ../src/gui/preferences.cpp:965
 msgid "The maximum jitter buffer size for audio reception (in ms)."
 msgstr "De maximumgrootte van de jitter-buffer voor audio-ontvangst (in ms)."
 
 #. Translators: the full sentence is Keep a minimum video quality of X %
-#: ../src/gui/preferences.cpp:1012
+#: ../src/gui/preferences.cpp:999
 msgid "Picture Quality"
 msgstr "Beeldkwaliteit"
 
-#: ../src/gui/preferences.cpp:1012
+#: ../src/gui/preferences.cpp:999
 msgid ""
 "Choose if you want to guarantee a minimum image quality (possibly leading to "
 "dropped frames in order not to surpass the bitrate limit) or if you prefer "
@@ -3277,91 +3314,89 @@ msgstr ""
 "leidend tot uitgevallen frames om de bandbreedte niet te overschrijden) of "
 "dat u de huidige huidige framesnelheid wilt behouden."
 
-#: ../src/gui/preferences.cpp:1014
+#: ../src/gui/preferences.cpp:1001
 msgid "Maximum video _bitrate (in kbits/s):"
 msgstr "Maximale video_bandbreedte (in kbits/s):"
 
-#: ../src/gui/preferences.cpp:1014
-#, fuzzy
+#: ../src/gui/preferences.cpp:1001
 msgid ""
 "The maximum video bitrate in kbits/s. The video quality and the effective "
 "frame rate will be dynamically adjusted to keep the bitrate at the given "
 "value."
 msgstr ""
-"De maximale videobandbreedte in kbits/s. De videokwaliteit en het aantal "
-"verzonden frames per seconde (afhankelijk van de codec) worden tijdens "
-"gesprekken automatisch aangepast boven het minimum om de bandbreedte te "
-"beperken tot de gegeven waarde."
+"De maximale videobandbreedte in kbits/s. De videokwaliteit en het effectieve "
+"aantal frames per seconde zullen dynamisch worden aangepast om de "
+"bandbreedte op de gegeven waarde te houden."
 
 # play sound is hier: het afspeelgeluid, niet geluid afspelen
-#: ../src/gui/preferences.cpp:1404
+#: ../src/gui/preferences.cpp:1376
 msgid "Play sound for new voice mails"
 msgstr "Geluid bij binnenkomende voice-mails"
 
 # play sound is hier: het afspeelgeluid, niet geluid afspelen
-#: ../src/gui/preferences.cpp:1413
+#: ../src/gui/preferences.cpp:1385
 msgid "Play sound for new instant messages"
 msgstr "Geluid bij binnenkomende expresberichten"
 
-#: ../src/gui/preferences.cpp:1442
+#: ../src/gui/preferences.cpp:1414
 msgid "Ekiga Preferences"
 msgstr "Ekiga voorkeuren"
 
 #  All the notebook pages
-#: ../src/gui/preferences.cpp:1460
+#: ../src/gui/preferences.cpp:1432
 msgid "General"
 msgstr "Algemeen"
 
-#: ../src/gui/preferences.cpp:1461
+#: ../src/gui/preferences.cpp:1433
 msgid "Personal Data"
 msgstr "Persoonlijke gegevens"
 
-#: ../src/gui/preferences.cpp:1466
+#: ../src/gui/preferences.cpp:1438
 msgid "General Settings"
 msgstr "Algemene instellingen"
 
 # geluiden/geluidjes/geluidsgebeurtenissen
 # Geluiden is het beste, als titel voor deze instelling
-#: ../src/gui/preferences.cpp:1475
+#: ../src/gui/preferences.cpp:1447
 msgid "Sound Events"
 msgstr "Geluiden"
 
-#: ../src/gui/preferences.cpp:1479
+#: ../src/gui/preferences.cpp:1451
 msgid "Protocols"
 msgstr "Protocollen"
 
-#: ../src/gui/preferences.cpp:1481
+#: ../src/gui/preferences.cpp:1453
 msgid "SIP Settings"
 msgstr "SIP-instellingen"
 
-#: ../src/gui/preferences.cpp:1486
+#: ../src/gui/preferences.cpp:1458
 msgid "H.323 Settings"
 msgstr "H.323-instellingen"
 
-#: ../src/gui/preferences.cpp:1490
+#: ../src/gui/preferences.cpp:1462
 msgid "Audio"
 msgstr "Audio"
 
-#: ../src/gui/preferences.cpp:1491 ../src/gui/preferences.cpp:1501
+#: ../src/gui/preferences.cpp:1463 ../src/gui/preferences.cpp:1473
 msgid "Devices"
 msgstr "Apparaten"
 
-#: ../src/gui/preferences.cpp:1500
+#: ../src/gui/preferences.cpp:1472
 msgid "Video"
 msgstr "Video"
 
-#: ../src/gui/statusicon.cpp:304
+#: ../src/gui/statusicon.cpp:311
 #, c-format
 msgid "You have %d message"
 msgid_plural "You have %d messages"
 msgstr[0] "U heeft %d bericht"
 msgstr[1] "U heeft %d berichten"
 
-#: ../src/gui/statusicon.cpp:406
+#: ../src/gui/statusicon.cpp:413
 msgid "_Contents"
 msgstr "In_houd"
 
-#: ../src/gui/statusicon.cpp:411
+#: ../src/gui/statusicon.cpp:418
 msgid "_About"
 msgstr "I_nfo"
 
@@ -3379,21 +3414,36 @@ msgid "Do Not Disturb"
 msgstr "Niet storen"
 
 # Aangepast/Zelfgemaakt  bericht/mededeling/melding
-#: ../src/gui/statusmenu.cpp:511
+#: ../src/gui/statusmenu.cpp:456
 msgid "Custom message..."
 msgstr "Zelfgemaakt bericht…"
 
-#: ../src/gui/statusmenu.cpp:625 ../src/gui/statusmenu.cpp:760
+#. Build the dialog
+#: ../src/gui/statusmenu.cpp:587 ../src/gui/statusmenu.cpp:741
 msgid "Custom Message"
 msgstr "Zelfgemaakt bericht"
 
-#: ../src/gui/statusmenu.cpp:641
+#: ../src/gui/statusmenu.cpp:603
 msgid "Delete custom messages:"
 msgstr "Zelfgemaakte berichten verwijderen:"
 
-#: ../src/gui/statusmenu.cpp:781
+#: ../src/gui/statusmenu.cpp:762
 msgid "Define a custom message:"
 msgstr "Zelfgemaakt bericht opstellen:"
+
+#~ msgid "Account"
+#~ msgstr "Abonnement"
+
+#~ msgid "_Apply"
+#~ msgstr "_Toepassen"
+
+#~ msgid ""
+#~ "Click here to update the users directory you are registered to with the "
+#~ "new First Name, Last Name, E-Mail, Comment and Location"
+#~ msgstr ""
+#~ "Klik hier om de wijzigingen aan de opgegeven voor- en achternaam, e-mail, "
+#~ "opmerking en locatie door te geven aan de gebruikerslijst waar u bent "
+#~ "aangemeld."
 
 #~ msgid "Gateway/proxy host"
 #~ msgstr "Gateway/proxy-server"
@@ -3987,16 +4037,6 @@ msgstr "Zelfgemaakt bericht opstellen:"
 
 #~ msgid "Opening video device %s with plugin %s"
 #~ msgstr "Bezig met openen van videoapparaat %s met behulp van plugin %s"
-
-#~ msgid "Successfully opened video device %s, channel %d"
-#~ msgstr "Videoapparaat %s, kanaal %d is succesvol geopend"
-
-#~ msgid "Couldn't open the video device"
-#~ msgstr "Het videoapparaat kan niet geopend worden"
-
-#~ msgid "Opened the video device using the \"Picture\" video plugin"
-#~ msgstr ""
-#~ "Het videoapparaat is met behulp van de \"Afbeelding\"-videoplugin geopend"
 
 #~ msgid "Picture"
 #~ msgstr "Afbeelding"
@@ -5550,9 +5590,6 @@ msgstr "Zelfgemaakt bericht opstellen:"
 
 #~ msgid "Gateway / Proxy Settings"
 #~ msgstr "Gatekeeper / proxy instellingen"
-
-#~ msgid "The type of NAT was successfully detected"
-#~ msgstr "Het type NAT is succesvol gedetecteerd"
 
 #~ msgid "_Pin:"
 #~ msgstr "_Pin:"
