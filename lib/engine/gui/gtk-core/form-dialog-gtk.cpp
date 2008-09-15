@@ -900,6 +900,7 @@ FormDialog::single_choice (const std::string name,
 			   const std::map<std::string, std::string> choices)
 {
   GtkWidget *label = NULL;
+  gchar* label_text = NULL;
   GtkListStore *model = NULL;
   GtkWidget *widget = NULL;
   GtkCellRenderer *renderer = NULL;
@@ -909,7 +910,10 @@ FormDialog::single_choice (const std::string name,
   rows++;
   gtk_table_resize (GTK_TABLE (fields), rows, 2);
 
-  label = gtk_label_new_with_mnemonic (description.c_str ());
+  label = gtk_label_new (NULL);
+  label_text = g_strdup_printf ("<b>%s</b>", description.c_str ());
+  gtk_label_set_markup_with_mnemonic (GTK_LABEL (label), label_text);
+  g_free (label_text);
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
   gtk_label_set_line_wrap_mode (GTK_LABEL (label), PANGO_WRAP_WORD);
 
