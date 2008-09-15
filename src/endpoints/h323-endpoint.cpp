@@ -315,6 +315,7 @@ void Opal::H323::EndPoint::Register (const Opal::Account & account)
         switch (gatekeeper->GetRegistrationFailReason ()) {
 
         case H323Gatekeeper::DuplicateAlias :
+          // Translators : The alias we are registering already exists : failure
           info = _("Duplicate alias");
           break;
         case H323Gatekeeper::SecurityDenied :
