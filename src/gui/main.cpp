@@ -2243,7 +2243,6 @@ gm_mw_init_call (GtkWidget *main_window)
   GtkWidget *table = NULL;
 
   GtkWidget *toolbar = NULL;
-  GtkWidget *button = NULL;
   GtkToolItem *item = NULL;
 
   GtkWidget *image = NULL;
