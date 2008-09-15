@@ -403,7 +403,7 @@ dnl ###############################
 XV="disabled"
 AC_ARG_ENABLE(xv, [  --disable-xv			Disable XVideo hardware acceleration],,enable_xv=yes)  
 if test "x$enable_xv" = "xyes"; then
-  PKG_CHECK_MODULES([XV], [xv], [XV="enabled"], [XV="disabled"])
+  PKG_CHECK_MODULES([XV], [xv], [XV="enabled"])
   AC_SUBST(XV_CFLAGS)
   AC_SUBST(XV_LIBS)
   AC_DEFINE(HAVE_XV,1,[XVideo support])
