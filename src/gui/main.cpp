@@ -1114,6 +1114,7 @@ on_videoinput_device_added_cb (const Ekiga::VideoInputDevice & device, bool isDe
   g_return_if_fail (mw != NULL);
   gchar* message = NULL;
 
+  /* Translators: This is a hotplug status */
   message = g_strdup_printf (_("Added video input device %s"),
 			       device.GetString().c_str ());
   gm_main_window_flash_message (GTK_WIDGET (self), "%s", message);
@@ -1131,6 +1132,7 @@ on_videoinput_device_removed_cb (const Ekiga::VideoInputDevice & device, bool, g
   g_return_if_fail (mw != NULL);
   gchar* message = NULL;
 
+  /* Translators: This is a hotplug status */
   message = g_strdup_printf (_("Removed video input device %s"),
 			     device.GetString().c_str ());
   gm_main_window_flash_message (GTK_WIDGET (self), "%s", message);
@@ -1238,6 +1240,7 @@ on_audioinput_device_added_cb (const Ekiga::AudioInputDevice & device,
   g_return_if_fail (mw != NULL);
   gchar* message = NULL;
 
+  /* Translators: This is a hotplug status */
   message = g_strdup_printf (_("Added audio input device %s"),
 			     device.GetString().c_str ());
   gm_main_window_flash_message (GTK_WIDGET (self), "%s", message);
@@ -1258,6 +1261,7 @@ on_audioinput_device_removed_cb (const Ekiga::AudioInputDevice & device,
   g_return_if_fail (mw != NULL);
   gchar* message = NULL;
 
+  /* Translators: This is a hotplug status */
   message = g_strdup_printf (_("Removed audio input device %s"),
 			     device.GetString().c_str ());
   gm_main_window_flash_message (GTK_WIDGET (self), "%s", message);
