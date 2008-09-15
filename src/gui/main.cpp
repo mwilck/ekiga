@@ -127,11 +127,13 @@ struct _GmMainWindow
   GtkWidget *audio_input_volume_frame;
   GtkWidget *audio_output_volume_frame;
   GtkWidget *audio_settings_window;
+  GtkWidget *audio_settings_button;
 
   GtkObject *adj_whiteness;
   GtkObject *adj_brightness;
   GtkObject *adj_colour;
   GtkObject *adj_contrast;
+  GtkWidget *video_settings_button;
   GtkWidget *video_settings_frame;
   GtkWidget *video_settings_window;
 
@@ -1078,6 +1080,7 @@ on_videoinput_device_opened_cb (Ekiga::VideoInputManager & /* manager */,
   g_return_if_fail (mw != NULL);
 
   gtk_widget_set_sensitive (GTK_WIDGET (mw->video_settings_frame),  settings.modifyable ? TRUE : FALSE);
+  gtk_widget_set_sensitive (GTK_WIDGET (mw->video_settings_button),  settings.modifyable ? TRUE : FALSE);
   GTK_ADJUSTMENT (mw->adj_whiteness)->value = settings.whiteness;
   GTK_ADJUSTMENT (mw->adj_brightness)->value = settings.brightness;
   GTK_ADJUSTMENT (mw->adj_colour)->value = settings.colour;
@@ -1098,6 +1101,8 @@ on_videoinput_device_closed_cb (Ekiga::VideoInputManager & /* manager */, Ekiga:
 
   gm_main_window_update_sensitivity (GTK_WIDGET (self), TRUE, FALSE, FALSE);
   gm_main_window_update_logo_have_window (GTK_WIDGET (self));
+
+  gtk_widget_set_sensitive (GTK_WIDGET (mw->video_settings_button),  FALSE);
 }
 
 void 
@@ -1200,6 +1205,7 @@ on_audioinput_device_opened_cb (Ekiga::AudioInputManager & /* manager */,
   g_return_if_fail (mw != NULL);
 
   gtk_widget_set_sensitive (GTK_WIDGET (mw->audio_input_volume_frame), settings.modifyable ? TRUE : FALSE);
+  gtk_widget_set_sensitive (GTK_WIDGET (mw->audio_settings_button), settings.modifyable ? TRUE : FALSE);
   GTK_ADJUSTMENT (mw->adj_input_volume)->value = settings.volume;
   
   gtk_widget_queue_draw (GTK_WIDGET (mw->audio_input_volume_frame));
@@ -1217,6 +1223,7 @@ on_audioinput_device_closed_cb (Ekiga::AudioInputManager & /* manager */,
   mw = gm_mw_get_mw (GTK_WIDGET (self));
   g_return_if_fail (mw != NULL);
 
+  gtk_widget_set_sensitive (GTK_WIDGET (mw->audio_settings_button), FALSE);
   gtk_widget_set_sensitive (GTK_WIDGET (mw->audio_input_volume_frame), FALSE);
 }
 
@@ -1313,6 +1320,7 @@ on_audiooutput_device_opened_cb (Ekiga::AudioOutputManager & /*manager*/,
   mw = gm_mw_get_mw (GTK_WIDGET (self));
   g_return_if_fail (mw != NULL);
 
+  gtk_widget_set_sensitive (GTK_WIDGET (mw->audio_settings_button), settings.modifyable ? TRUE : FALSE);
   gtk_widget_set_sensitive (GTK_WIDGET (mw->audio_output_volume_frame), settings.modifyable ? TRUE : FALSE);
   GTK_ADJUSTMENT (mw->adj_output_volume)->value = settings.volume;
 
@@ -1335,6 +1343,7 @@ on_audiooutput_device_closed_cb (Ekiga::AudioOutputManager & /*manager*/,
   mw = gm_mw_get_mw (GTK_WIDGET (self));
   g_return_if_fail (mw != NULL);
 
+  gtk_widget_set_sensitive (GTK_WIDGET (mw->audio_settings_button), FALSE);
   gtk_widget_set_sensitive (GTK_WIDGET (mw->audio_output_volume_frame), FALSE);
 }
 
@@ -2327,34 +2336,36 @@ gm_mw_init_call (GtkWidget *main_window)
 
   /* Audio Volume */
   item = gtk_tool_item_new ();
-  button = gtk_button_new ();
-  gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
+  mw->audio_settings_button = gtk_button_new ();
+  gtk_button_set_relief (GTK_BUTTON (mw->audio_settings_button), GTK_RELIEF_NONE);
   image = gtk_image_new_from_icon_name (GM_ICON_AUDIO_VOLUME_HIGH,
                                         GTK_ICON_SIZE_MENU);
-  gtk_container_add (GTK_CONTAINER (button), image);
-  gtk_container_add (GTK_CONTAINER (item), button);
+  gtk_container_add (GTK_CONTAINER (mw->audio_settings_button), image);
+  gtk_container_add (GTK_CONTAINER (item), mw->audio_settings_button);
   gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
   
-  gtk_widget_show (button);
+  gtk_widget_show (mw->audio_settings_button);
+  gtk_widget_set_sensitive (mw->audio_settings_button, FALSE);
   gtk_toolbar_insert (GTK_TOOLBAR (toolbar), 
 		      GTK_TOOL_ITEM (item), -1);
   gtk_tool_item_set_tooltip_text (GTK_TOOL_ITEM (item),
 				  _("Change the volume of your soundcard"));
-  g_signal_connect (G_OBJECT (button), "clicked",
+  g_signal_connect (G_OBJECT (mw->audio_settings_button), "clicked",
 		    G_CALLBACK (show_window_cb),
 		    (gpointer) mw->audio_settings_window);
   
   /* Video Settings */
   item = gtk_tool_item_new ();
-  button = gtk_button_new ();
-  gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
+  mw->video_settings_button = gtk_button_new ();
+  gtk_button_set_relief (GTK_BUTTON (mw->video_settings_button), GTK_RELIEF_NONE);
   image = gtk_image_new_from_stock (GM_STOCK_COLOR_BRIGHTNESS_CONTRAST,
                                     GTK_ICON_SIZE_MENU);
-  gtk_container_add (GTK_CONTAINER (button), image);
-  gtk_container_add (GTK_CONTAINER (item), button);
+  gtk_container_add (GTK_CONTAINER (mw->video_settings_button), image);
+  gtk_container_add (GTK_CONTAINER (item), mw->video_settings_button);
   gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
   
-  gtk_widget_show (button);
+  gtk_widget_show (mw->video_settings_button);
+  gtk_widget_set_sensitive (mw->video_settings_button, FALSE);
   gtk_toolbar_insert (GTK_TOOLBAR (toolbar), 
 		      GTK_TOOL_ITEM (item), -1);
   gtk_tool_item_set_tooltip_text (GTK_TOOL_ITEM (item),
