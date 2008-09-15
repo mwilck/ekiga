@@ -1259,7 +1259,7 @@ roster_view_gtk_dispose (GObject *obj)
 					  NULL,	/* closure */
 					  NULL,	/* func */
 					  view); /* data */
-    gtk_tree_store_clear (view->priv->store);
+    //   gtk_tree_store_clear (view->priv->store);
 
     g_slist_foreach (view->priv->folded_groups, (GFunc) g_free, NULL);
     g_slist_free (view->priv->folded_groups);
