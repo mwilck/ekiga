@@ -2371,7 +2371,7 @@ gm_mw_init_call (GtkWidget *main_window)
   gtk_tool_item_set_tooltip_text (GTK_TOOL_ITEM (item),
 				   _("Change the color settings of your video device"));
 
-  g_signal_connect (G_OBJECT (button), "clicked",
+  g_signal_connect (G_OBJECT (mw->video_settings_button), "clicked",
 		    G_CALLBACK (show_window_cb),
 		    (gpointer) mw->video_settings_window);
 
