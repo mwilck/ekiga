@@ -1282,6 +1282,8 @@ on_audioinput_device_error_cb (Ekiga::AudioInputManager & /* manager */,
   g_strdup_printf (_("Error while opening audio input device %s"),
                    (const char *) device.name.c_str());
 
+  /* Translators: This happens when there is an error with audio input:
+   * Nothing ("silence") will be transmitted */
   tmp_msg = g_strdup (_("Only silence will be transmitted."));
   switch (error_code) {
 
