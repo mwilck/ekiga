@@ -432,14 +432,14 @@ GMVideoOutputManager_x::close_frame_display ()
   if (lxWindow) 
     lxWindow->RegisterMaster (NULL);
 
-  if (rxWindow) {
-    delete rxWindow;
-    rxWindow = NULL;
-  }
-
   if (lxWindow) {
     delete lxWindow;
     lxWindow = NULL;
+  }
+
+  if (rxWindow) {
+    delete rxWindow;
+    rxWindow = NULL;
   }
 }
 
