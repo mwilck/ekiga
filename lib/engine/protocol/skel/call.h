@@ -40,6 +40,8 @@
 
 #include <sigc++/sigc++.h>
 #include <time.h>
+#include <string>
+#include <sstream>
 
 namespace Ekiga
 {

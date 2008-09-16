@@ -43,9 +43,6 @@
 #include <glib-object.h>
 #include <gtk/gtk.h>
 
-#include <ptlib.h>
-#include <opal/manager.h>
-
 #include "call.h"
 
 

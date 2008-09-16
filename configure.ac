@@ -518,19 +518,22 @@ fi
 
 AM_CONDITIONAL(HAVE_GNOME_DOC_UTILS, test "x${enable_gdu}" = "xyes")
 
-
+                                                                                  
 dnl ###########################################################################
-dnl PTLib Headers and Libraries
+dnl PTLib + OPAL Headers and Libraries
 dnl ###########################################################################
 PKG_CHECK_MODULES([PTLIB], [ptlib >= ${PTLIB_REC_VERSION}])
+PKG_CHECK_MODULES([OPAL], [opal >= ${OPAL_REC_VERSION}])
+
+AC_ARG_ENABLE([debug],
+              [AC_HELP_STRING([--enable-debug],[Link to debug versions of opal and ptlib (opal_d and ptlib_d)])],
+              [if test "x$enableval" = xyes; then 
+                 OPAL_LIBS=`$PKG_CONFIG opal --define-variable=suffix=_d --libs`
+                 PTLIB_LIBS=`$PKG_CONFIG ptlib --define-variable=suffix=_d --libs`
+              fi])
+
 AC_SUBST(PTLIB_CFLAGS)
 AC_SUBST(PTLIB_LIBS)
-                  
-
-dnl ###########################################################################
-dnl Opal Headers and Libraries
-dnl ###########################################################################
-PKG_CHECK_MODULES([OPAL], [opal >= ${OPAL_REC_VERSION}])
 AC_SUBST(OPAL_CFLAGS)
 AC_SUBST(OPAL_LIBS)
 
