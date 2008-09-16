@@ -508,8 +508,8 @@ update_offline_count (RosterViewGtk* self,
   GtkTreeIter loop_iter;
   gint total = 0;
   gint offline_count = 0;
-  gboolean offline;
   gint column_type;
+  Ekiga::Presentity* presentity = NULL;
   gchar *size = NULL;
 
   model = GTK_TREE_MODEL (self->priv->store);
@@ -519,10 +519,12 @@ update_offline_count (RosterViewGtk* self,
     do {
 
       gtk_tree_model_get (model, &loop_iter,
-			  COLUMN_OFFLINE, &offline,
 			  COLUMN_TYPE, &column_type,
+			  COLUMN_PRESENTITY, &presentity,
 			  -1);
-      if (column_type == TYPE_PRESENTITY && !offline)
+      if (column_type == TYPE_PRESENTITY
+	  && (presentity->get_presence () == "offline"
+	      || presentity->get_presence () == "unknown"))
 	offline_count++;
     } while (gtk_tree_model_iter_next (model, &loop_iter));
   }
