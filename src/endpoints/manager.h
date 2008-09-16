@@ -175,7 +175,7 @@ private:
 
     /* used to get the STUNDetector results */
     GAsyncQueue* queue;
-    uint patience;
+    unsigned int patience;
 
     std::string display_name;
     std::string stun_server;

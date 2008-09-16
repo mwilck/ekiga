@@ -58,6 +58,7 @@ export CXXFLAGS:=-I$(INCLUDEDIR) $(MACH_FLAGS) -DPTRACING
 export LDFLAGS:=-L$(LIBDIR)  $(MACH_FLAGS)
 export PKG_CONFIG_PATH:=$(LIBDIR)/pkgconfig
 export PATH:=$(BINDIR):$(PATH)
+export LDD:=$(BUILDROOT)/$(HOST_TOOL_PREFIX)-ldd.sh
 
 
 EKIGA_VER = 2.9
@@ -71,13 +72,13 @@ EKIGA_WIN32_DIFF_DIR := $(EKIGA_WIN32_DIR)/diff
 EKIGA_INSTALLER_DIR := $(BUILDROOT)/nsisinstaller
 EKIGA_INSTALLER := ekiga-setup-${EKIGA_VER}.exe
 
-OPAL_VER:= 3.3.1
+OPAL_VER:= 3.3.2
 OPAL_REV:= HEAD
-OPAL_URL:= https://opalvoip.svn.sourceforge.net/svnroot/opalvoip/opal/branches/autoconf
+OPAL_URL:= https://opalvoip.svn.sourceforge.net/svnroot/opalvoip/opal/trunk
 OPAL_ARCHIVE := opal
 OPAL_DIR:= $(BUILDROOT)/opal
 
-PTLIB_VER:= 2.3.1
+PTLIB_VER:= 2.3.2
 PTLIB_REV:= HEAD
 PTLIB_URL:= https://opalvoip.svn.sourceforge.net/svnroot/opalvoip/ptlib/trunk
 PTLIB_DIR:= $(BUILDROOT)/ptlib
@@ -199,7 +200,8 @@ confekiga:= $(confflags) \
 	    --with-directx-dir=$(BUILDROOT)/directx --prefix=$(EKIGA_PREFIX) \
 	    --bindir=$(EKIGA_PREFIX) --datadir=$(EKIGA_PREFIX) \
 	    --sysconfdir=$(EKIGA_PREFIX) --libdir=$(EKIGA_PREFIX) --disable-gnome \
-	    --disable-dbus --disable-avahi --disable-esd --with-ldap-dir=$(OPENLDAP_DIR)
+	    --disable-dbus --disable-avahi --disable-xv --with-ldap-dir=$(OPENLDAP_DIR) \
+	    --enable-static-libs
 
 confffmpeg:=--cross-prefix=i586-mingw32msvc- --enable-shared --enable-memalign-hack \
 	    --enable-cross-compile --disable-ffserver --target-os=mingw32 \
@@ -336,32 +338,18 @@ update-sources::
 	$(SVN) co $(PTLIB_URL) $(SRCDIR)/$(PTLIB_ARCHIVE) -r $(PTLIB_REV)
 
 $(PTLIB_DIR)/configure: binaries $(LIBDIR)/libldap.dll $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(SRCDIR)/$(PTLIB_ARCHIVE) $(EKIGA_WIN32_DIFF_DIR)/ptlib_Makefile.am $(LIBDIR)/libexpat.a $(EKIGA_WIN32_DIFF_DIR)/ptlib_configure.ac $(EKIGA_WIN32_DIFF_DIR)/ptlib_ptlib.pc.in
-	rm -f $(LIBDIR)/libpt.a
+	rm -f $(LIBDIR)/libpt_s.a
 	rm -rf $(PTLIB_DIR)
-	$(CP) -r $(SRCDIR)/$(PTLIB_ARCHIVE) $(PTLIB_DIR)
-#	$(RM) -f $(PTLIB_DIR)/configure.exe $(PTLIB_DIR)/configure $(PTLIB_DIR)/configure.ac $(PTLIB_DIR)/Makefile.in
-#	$(CP) -fl $(EKIGA_WIN32_DIFF_DIR)/ptlib_configure.ac $(PTLIB_DIR)/configure.ac
-#	$(CP) -fl $(EKIGA_WIN32_DIFF_DIR)/ptlib_Makefile.am $(PTLIB_DIR)/Makefile.am
-#	$(CP) -fl $(EKIGA_WIN32_DIFF_DIR)/ptlib_ptlib.pc.in $(PTLIB_DIR)/ptlib.pc.in    
-#	touch $(PTLIB_DIR)/make/ptlib-config
-#	chmod 777 $(PTLIB_DIR)/make/ptlib-config
-#	(cd $(PTLIB_DIR); \
-#	sed -i "s#\$${buildroot}#${BUILDROOT}#" ptlib.pc.in; \
-#	sed -i "s/\$${PTLIB_VER}/${PTLIB_VER}/" configure.ac; \
-#	$(ACLOCAL); autoheader; libtoolize --force; \
-#	touch NEWS README AUTHORS ChangeLog unused.h.in; \
-#	automake-1.9 -a -c; autoconf; \
-#	)
-	
+	$(CP) -r $(SRCDIR)/$(PTLIB_ARCHIVE) $(PTLIB_DIR)	
 
 $(PTLIB_DIR)/config.status: binaries $(PTLIB_DIR)/configure
-	rm -f $(LIBDIR)/libpt.a
+	rm -f $(LIBDIR)/libpt_s.a
 	(cd $(PTLIB_DIR)/;./configure $(confptlib) )
 
-$(LIBDIR)/libpt.a: binaries $(PTLIB_DIR)/config.status
+$(LIBDIR)/libpt_s.a: binaries $(PTLIB_DIR)/config.status
 	$(MAKE) $(MAKEOPTS) -C $(PTLIB_DIR)
 	$(MAKE) -C $(PTLIB_DIR) install
-	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' $(LIBDIR)/pkgconfig/ptlib.pc
+#	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' $(LIBDIR)/pkgconfig/ptlib.pc
 
 ### libogg
 update-sources::
@@ -463,21 +451,21 @@ update-sources::
 	echo --- Getting OPAL $(OPAL_REV)...
 	$(SVN) co $(OPAL_URL) $(SRCDIR)/$(OPAL_ARCHIVE) -r $(OPAL_REV)
 
-$(OPAL_DIR)/configure: binaries $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(LIBDIR)/libpt.a $(SRCDIR)/$(OPAL_ARCHIVE) $(EKIGA_WIN32_DIFF_DIR)/opal_configure.ac $(EKIGA_WIN32_DIFF_DIR)/opal_Makefile.am $(EKIGA_WIN32_DIFF_DIR)/opal_opal.pc.in $(BINDIR)/avcodec.dll $(LIBDIR)/libx264.a $(LIBDIR)/libtheora.a
-	rm -rf $(OPAL_DIR) $(LIBDIR)/libopal.a
+$(OPAL_DIR)/configure: binaries $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(LIBDIR)/libpt_s.a $(SRCDIR)/$(OPAL_ARCHIVE) $(EKIGA_WIN32_DIFF_DIR)/opal_configure.ac $(EKIGA_WIN32_DIFF_DIR)/opal_Makefile.am $(EKIGA_WIN32_DIFF_DIR)/opal_opal.pc.in $(BINDIR)/avcodec.dll $(LIBDIR)/libx264.a $(LIBDIR)/libtheora.a
+	rm -rf $(OPAL_DIR) $(LIBDIR)/libopal_s.a
 	$(CP) -r $(SRCDIR)/$(OPAL_ARCHIVE) $(OPAL_DIR)
 
 $(OPAL_DIR)/config.status: binaries $(OPAL_DIR)/configure
-	rm -f $(LIBDIR)/libopal.a
+	rm -f $(LIBDIR)/libopal_s.a
 	(cd $(OPAL_DIR)/; CXXFLAGS="$(CXXFLAGS) -DPTRACING" ; \
 	./configure $(confopal) \
 	)
 
-$(LIBDIR)/libopal.a: binaries $(OPAL_DIR)/config.status
-	rm -f $(LIBDIR)/libopal.a
+$(LIBDIR)/libopal_s.a: binaries $(OPAL_DIR)/config.status
+	rm -f $(LIBDIR)/libopal_s.a
 	$(MAKE) $(MAKEOPTS) -C $(OPAL_DIR) 
 	$(MAKE) -C $(OPAL_DIR) install 
-	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' $(LIBDIR)/pkgconfig/opal*.pc
+#	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' $(LIBDIR)/pkgconfig/opal*.pc
 	
 ### libgtk
 update-sources::
@@ -494,8 +482,8 @@ update-sources::
 	echo --- Getting GTK2+ Runtime Library ... 	 
 	$(WGET) -P $(SRCDIR) $(GTK_INSTALLER_URL)/$(GTK_BIN_EXE) 	 
 
-$(LIBDIR)/$(GTK_BIN_EXE): $(SRCDIR)/$(GTK_BIN_EXE) 	
-	$(CP) $(SRCDIR)/$(GTK_BIN_EXE)  $(LIBDIR)
+$(LIBDIR)/gtk+-$(GTK_BIN_VER)-setup.exe: $(SRCDIR)/$(GTK_BIN_EXE)
+	$(CP) $(SRCDIR)/$(GTK_BIN_EXE)  $(LIBDIR)/gtk+-$(GTK_BIN_VER)-setup.exe
 	touch $@
 
 ### libglib
@@ -599,7 +587,7 @@ $(EKIGA_DIR)/autogen.sh: binaries $(SRCDIR)/$(EKIGA_ARCHIVE)
 	$(CP) -r $(SRCDIR)/$(EKIGA_ARCHIVE) $(EKIGA_DIR)
 	touch $@
 
-$(EKIGA_DIR)/config.status: binaries $(EKIGA_DIR)/autogen.sh $(LIBDIR)/libpt.a $(LIBDIR)/libopal.a \
+$(EKIGA_DIR)/config.status: binaries $(EKIGA_DIR)/autogen.sh $(LIBDIR)/libpt_s.a $(LIBDIR)/libopal_s.a \
 	$(LIBDIR)/pkgconfig/gtk+-2.0.pc $(LIBDIR)/pkgconfig/atk-2.0.pc $(LIBDIR)/pkgconfig/glib-2.0.pc \
 	$(LIBDIR)/libpng.a $(LIBDIR)/pkgconfig/pango32.pc $(LIBDIR)/pkgconfig/cairo.pc $(LIBDIR)/libxml2.a \
 	$(LIBDIR)/libintl.a $(LIBDIR)/libiconv.a $(LIBDIR)/libsigc++.a
@@ -618,10 +606,12 @@ $(TARGETDIR)/zips: binaries $(EKIGA_DIR)/src/ekiga.exe
 	mkdir $(TARGETDIR)
 	make -C ekiga install
 	mkdir -p $(EKIGA_PREFIX)/plugins
-	for plugin in $(OPAL_DIR)/.libs/*.dll; do \
+	for plugin in $(LIBDIR)/opal*/codecs/audio/*; do \
 	        install -m 755 $$plugin $(EKIGA_PREFIX)/plugins ;\
 	done
-	install -m 755 $(OPAL_DIR)/libH264_pwplugin_helper.exe $(EKIGA_PREFIX)/plugins
+	for plugin in $(LIBDIR)/opal*/codecs/video/*; do \
+	        install -m 755 $$plugin $(EKIGA_PREFIX)/plugins ;\
+	done
 	for lib in libexpat-1.dll liblber.dll libldap.dll libxml2-2.dll libspeex-1.dll; do \
 	        install -m 755 $(BINDIR)/$$lib $(EKIGA_PREFIX) ;\
 	done
@@ -678,7 +668,7 @@ $(NSISPLUGIN_DIR)/Processes.dll: $(SRCDIR)/Processes.zip
 	unzip -u -j $(SRCDIR)/Processes.zip setup-processes/bin/Processes.dll -d $(NSISPLUGIN_DIR)
 	touch $@
 
-$(TARGETDIR)/$(EKIGA_INSTALLER): $(TARGETDIR)/zips $(LIBDIR)/$(GTK_BIN_EXE) $(NSISPLUGIN_DIR)/SystemLocal.dll $(NSISPLUGIN_DIR)/Processes.dll
+$(TARGETDIR)/$(EKIGA_INSTALLER): $(TARGETDIR)/zips $(LIBDIR)/gtk+-$(GTK_BIN_VER)-setup.exe $(NSISPLUGIN_DIR)/SystemLocal.dll $(NSISPLUGIN_DIR)/Processes.dll
 	(makensis -DEKIGA_VERSION=$(EKIGA_VER) -DEKIGA_DIR=$(EKIGA_DIR) -DBUILDROOT=$(BUILDROOT) \
 	 -DINSTALLER_DIR=$(EKIGA_INSTALLER_DIR) -DLIB_DIR=$(LIBDIR) -DTARGET_DIR=$(TARGETDIR) \
 	 -DCROSS_COMPILING=true -DWITH_GTK=true -DGTK_VERSION=$(GTK_BIN_VER) \

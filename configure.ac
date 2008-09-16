@@ -402,11 +402,13 @@ dnl Checks for Xv extension
 dnl ###############################
 XV="disabled"
 AC_ARG_ENABLE(xv, [  --disable-xv			Disable XVideo hardware acceleration],,enable_xv=yes)  
-if test "x$enable_xv" = "xyes"; then
-  PKG_CHECK_MODULES([XV], [xv], [XV="enabled"])
+if test "x${gm_platform}" != "mingw" -a "x$enable_xv" = "xyes"; then
+  PKG_CHECK_MODULES([XV], [xv], 
+                    [AC_DEFINE(HAVE_XV,1,[XVideo support])
+                     XV="enabled"
+                    ])
   AC_SUBST(XV_CFLAGS)
   AC_SUBST(XV_LIBS)
-  AC_DEFINE(HAVE_XV,1,[XVideo support])
 fi
 
 AM_CONDITIONAL(HAVE_XV, test "x$XV" = "xenabled")
@@ -504,7 +506,11 @@ dnl ###############################
 dnl   Gnome-Doc-Utils
 dnl ###############################
 GDU="disabled"
-GNOME_DOC_INIT
+if test "x${gm_platform}" = "xmingw" ; then
+  GNOME_DOC_INIT_ARG=:
+fi
+
+GNOME_DOC_INIT(,,[$GNOME_DOC_INIT_ARG])
 if test "x${gm_platform}" != "xmingw" ; then
   AC_ARG_ENABLE(gdu, [  --disable-gdu			Disable GNOME-Doc-Utils support],,enable_gdu=yes)
   if test "x$enable_gdu" = "xyes"; then
@@ -525,12 +531,24 @@ dnl ###########################################################################
 PKG_CHECK_MODULES([PTLIB], [ptlib >= ${PTLIB_REC_VERSION}])
 PKG_CHECK_MODULES([OPAL], [opal >= ${OPAL_REC_VERSION}])
 
+SUFFIX=
 AC_ARG_ENABLE([debug],
               [AC_HELP_STRING([--enable-debug],[Link to debug versions of opal and ptlib (opal_d and ptlib_d)])],
-              [if test "x$enableval" = xyes; then 
-                 OPAL_LIBS=`$PKG_CONFIG opal --define-variable=suffix=_d --libs`
-                 PTLIB_LIBS=`$PKG_CONFIG ptlib --define-variable=suffix=_d --libs`
+              [if test "x$enableval" = "xyes"; then 
+                SUFFIX="_d"
               fi])
+
+AC_ARG_ENABLE([static-libs],
+              [AC_HELP_STRING([--enable-static-libs],[Link to opal and ptlib static libraries])],
+              [if test "x$enableval" = "xyes"; then 
+                SUFFIX="${SUFFIX}_s"
+               fi
+              ])
+
+if test "x$SUFFIX" != x; then 
+    OPAL_LIBS=`$PKG_CONFIG opal --define-variable=suffix=$SUFFIX --libs`
+    PTLIB_LIBS=`$PKG_CONFIG ptlib --define-variable=suffix=$SUFFIX --libs`
+fi
 
 AC_SUBST(PTLIB_CFLAGS)
 AC_SUBST(PTLIB_LIBS)

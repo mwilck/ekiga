@@ -333,7 +333,7 @@ Section $(EKIGA_SECTION_TITLE) SecEkiga
     File /r "${TARGET_DIR}\Ekiga\ekiga"
     File /r "${TARGET_DIR}\Ekiga\sounds"
     File /r "${TARGET_DIR}\Ekiga\help"
-    File /r "${TARGET_DIR}\Ekiga\lib\locale"
+    File /r "${TARGET_DIR}\Ekiga\share\locale"
     File /r "${TARGET_DIR}\Ekiga\plugins"
 
     IfFileExists "$INSTDIR\ekiga.exe" 0 new_installation
