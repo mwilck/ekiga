@@ -7,9 +7,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: ekiga 2.9.0\n"
+"Project-Id-Version: ekiga 2.9.90\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-21 19:01+0800\n"
+"POT-Creation-Date: 2008-09-18 10:03+0800\n"
 "PO-Revision-Date: 2008-08-09 12:02+0800\n"
 "Last-Translator: Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>\n"
 "Language-Team: Chinese (Taiwan) <community@linuxhall.org>\n"
@@ -67,7 +67,7 @@ msgstr "音訊輸出裝置"
 msgid "Automatic echo cancellation"
 msgstr "自動取消回應"
 
-#: ../ekiga.schemas.in.in.h:9 ../src/gui/preferences.cpp:439
+#: ../ekiga.schemas.in.in.h:9 ../src/gui/preferences.cpp:428
 msgid ""
 "Automatically reject or forward incoming calls if no answer is given after "
 "the specified amount of time (in seconds)"
@@ -146,7 +146,7 @@ msgid ""
 "binding when STUN is being used"
 msgstr "輸入在使用 STUN 時，Ekiga 應在多少秒後更新 NAT 連結的時間，"
 
-#: ../ekiga.schemas.in.in.h:26
+#: ../ekiga.schemas.in.in.h:26 ../src/gui/preferences.cpp:378
 msgid "Enter your full name"
 msgstr "輸入您的全名"
 
@@ -162,7 +162,7 @@ msgstr "忙線時轉駁來電至指定的主機"
 msgid "Forward calls to the given host if no answer"
 msgstr "無應答時轉駁來電至指定的主機"
 
-#: ../ekiga.schemas.in.in.h:30 ../src/gui/preferences.cpp:1007
+#: ../ekiga.schemas.in.in.h:30 ../src/gui/preferences.cpp:999
 msgid "Frame Rate"
 msgstr "幀率"
 
@@ -170,7 +170,7 @@ msgstr "幀率"
 msgid "Full name"
 msgstr "全名"
 
-#: ../ekiga.schemas.in.in.h:32 ../src/gui/preferences.cpp:407
+#: ../ekiga.schemas.in.in.h:32 ../src/gui/preferences.cpp:396
 msgid ""
 "If enabled, Ekiga will start hidden provided that the notification area is "
 "present in the GNOME panel"
@@ -207,7 +207,7 @@ msgstr "如啟用，所有您沒有接聽的電話都會轉駁到下面所指定
 msgid "If enabled, allows video during calls"
 msgstr "如啟用此項，允許通話時接收視訊"
 
-#: ../ekiga.schemas.in.in.h:38 ../src/gui/preferences.cpp:409
+#: ../ekiga.schemas.in.in.h:38 ../src/gui/preferences.cpp:398
 msgid "If enabled, offline contacts will be shown in the roster"
 msgstr "如果啟用，離線連絡人會顯示在名冊中"
 
@@ -266,183 +266,159 @@ msgid "No answer timeout"
 msgstr "沒有接聽逾時"
 
 #: ../ekiga.schemas.in.in.h:52
-msgid "Number of frames for G.711"
-msgstr "G.711 幀數"
-
-#: ../ekiga.schemas.in.in.h:53
-msgid "Number of frames for GSM"
-msgstr "GSM 幀數"
-
-#: ../ekiga.schemas.in.in.h:54
-msgid "Number of frames transmitted in each packet for the G.711 codec"
-msgstr "G.711 編碼解碼器中每個封包傳送的幀數目"
-
-#: ../ekiga.schemas.in.in.h:55
-msgid "Number of frames transmitted in each packet for the GSM codec"
-msgstr "GSM 編碼解碼器中每個封包傳送的幀數目"
-
-#: ../ekiga.schemas.in.in.h:56
 msgid "Outbound Proxy"
 msgstr "Outbound Proxy"
 
-#: ../ekiga.schemas.in.in.h:57
+#: ../ekiga.schemas.in.in.h:53
 msgid "Output device type"
 msgstr "輸出裝置類型"
 
-#: ../ekiga.schemas.in.in.h:58 ../src/gui/preferences.cpp:416
+#: ../ekiga.schemas.in.in.h:54 ../src/gui/preferences.cpp:405
 msgid "Place windows displaying video above other windows during calls"
 msgstr "正在通話時，將視訊畫面視窗置於其它的視窗上"
 
-#: ../ekiga.schemas.in.in.h:59 ../src/gui/preferences.cpp:1392
+#: ../ekiga.schemas.in.in.h:55 ../src/gui/preferences.cpp:1367
 msgid "Play busy tone"
 msgstr "播放忙線音"
 
-#: ../ekiga.schemas.in.in.h:60 ../src/gui/preferences.cpp:1383
+#: ../ekiga.schemas.in.in.h:56 ../src/gui/preferences.cpp:1358
 msgid "Play ring tone"
 msgstr "播放鈐聲"
 
-#: ../ekiga.schemas.in.in.h:61 ../src/gui/preferences.cpp:1374
+#: ../ekiga.schemas.in.in.h:57 ../src/gui/preferences.cpp:1349
 msgid "Play sound on incoming calls"
 msgstr "來電時播放音效"
 
-#: ../ekiga.schemas.in.in.h:62
+#: ../ekiga.schemas.in.in.h:58
 msgid "Play sound on new message"
 msgstr "收到新訊息時播放音效"
 
-#: ../ekiga.schemas.in.in.h:63
+#: ../ekiga.schemas.in.in.h:59
 msgid "Play sound on new voice mail"
 msgstr "收到新留言時播放音效"
 
-#: ../ekiga.schemas.in.in.h:64
+#: ../ekiga.schemas.in.in.h:60
 msgid "Position of the local video window"
 msgstr "本機視訊畫面視窗的位置"
 
-#: ../ekiga.schemas.in.in.h:65
-msgid "Position on the screen of the PC-To-Phone window"
-msgstr "PC-To-Phone 視窗在螢幕中的位置"
-
-#: ../ekiga.schemas.in.in.h:66
+#: ../ekiga.schemas.in.in.h:61
 msgid "Position on the screen of the address book window"
 msgstr "通訊錄視窗在螢幕中的位置"
 
-#: ../ekiga.schemas.in.in.h:67
+#: ../ekiga.schemas.in.in.h:62
 msgid "Position on the screen of the audio settings window"
 msgstr "音訊設定視窗在螢幕中的位置"
 
-#: ../ekiga.schemas.in.in.h:68
+#: ../ekiga.schemas.in.in.h:63
 msgid "Position on the screen of the chat window"
 msgstr "聊天視窗在螢幕中的位置"
 
-#: ../ekiga.schemas.in.in.h:69
+#: ../ekiga.schemas.in.in.h:64
 msgid "Position on the screen of the druid window"
 msgstr "首次設定精靈視窗在螢幕中位置"
 
-#: ../ekiga.schemas.in.in.h:70
+#: ../ekiga.schemas.in.in.h:65
 msgid "Position on the screen of the log window"
 msgstr "記錄視窗的螢幕位置"
 
-#: ../ekiga.schemas.in.in.h:71
+#: ../ekiga.schemas.in.in.h:66
 msgid "Position on the screen of the main window"
 msgstr "主視窗在螢幕中的位置"
 
-#: ../ekiga.schemas.in.in.h:72
+#: ../ekiga.schemas.in.in.h:67
 msgid "Position on the screen of the preferences window"
 msgstr "偏好設定視窗在螢幕中的位置"
 
-#: ../ekiga.schemas.in.in.h:73
+#: ../ekiga.schemas.in.in.h:68
 msgid "Position on the screen of the video settings window"
 msgstr "視訊設定視窗在螢幕中的位置"
 
-#: ../ekiga.schemas.in.in.h:74
+#: ../ekiga.schemas.in.in.h:69
 msgid "Registration timeout"
 msgstr "註冊逾時"
 
-#: ../ekiga.schemas.in.in.h:75
+#: ../ekiga.schemas.in.in.h:70
 msgid "Remote video window position"
 msgstr "遠端視訊畫面視窗的位置"
 
-#: ../ekiga.schemas.in.in.h:76
+#: ../ekiga.schemas.in.in.h:71
 msgid "Remote video window size"
 msgstr "遠端視訊畫面視窗的太小"
 
-#: ../ekiga.schemas.in.in.h:77
+#: ../ekiga.schemas.in.in.h:72
 msgid "Revision of the schema file"
 msgstr "設置檔的版本"
 
-#: ../ekiga.schemas.in.in.h:78
+#: ../ekiga.schemas.in.in.h:73
 msgid "Roster view saving group status"
 msgstr "名冊模式儲存群組狀態"
 
-#: ../ekiga.schemas.in.in.h:79
+#: ../ekiga.schemas.in.in.h:74
 msgid "Select an alternative audio output device to use for sound events."
 msgstr "選擇鈐聲事件所使用的其它音訊輸出裝置。"
 
-#: ../ekiga.schemas.in.in.h:80 ../src/gui/preferences.cpp:718
+#: ../ekiga.schemas.in.in.h:75 ../src/gui/preferences.cpp:707
 msgid "Select the audio input device to use"
 msgstr "選取使用的音訊輸入裝置"
 
-#: ../ekiga.schemas.in.in.h:81 ../src/gui/preferences.cpp:711
+#: ../ekiga.schemas.in.in.h:76 ../src/gui/preferences.cpp:700
 msgid "Select the audio output device to use"
 msgstr "選擇使用的音訊輸出裝置"
 
-#: ../ekiga.schemas.in.in.h:82 ../src/gui/preferences.cpp:874
+#: ../ekiga.schemas.in.in.h:77 ../src/gui/preferences.cpp:863
 msgid ""
 "Select the format for video cameras (does not apply to most USB cameras)"
 msgstr "選擇視訊攝影機的格式（大部份的 USB 攝影機不適用）"
 
-#: ../ekiga.schemas.in.in.h:83
+#: ../ekiga.schemas.in.in.h:78
 msgid ""
 "Select the transmitted video size: Small (QCIF 176x144) or Large (CIF "
 "352x288)"
 msgstr "選取傳送視訊的大小：小 (QCIF 176x144) 或 大 (CIF 352x288)"
 
-#: ../ekiga.schemas.in.in.h:84 ../src/gui/preferences.cpp:866
+#: ../ekiga.schemas.in.in.h:79 ../src/gui/preferences.cpp:855
 msgid ""
 "Select the video input device to use. If an error occurs when using this "
 "device a test picture will be transmitted."
 msgstr "選取使用的視訊裝置。如果使用此裝置時發生錯誤，會傳送一張測試用的圖片。"
 
-#: ../ekiga.schemas.in.in.h:85
+#: ../ekiga.schemas.in.in.h:80
 msgid "Show offline contacts"
 msgstr "顯示離線連絡人"
 
-#: ../ekiga.schemas.in.in.h:86 ../src/gui/main.cpp:1793
+#: ../ekiga.schemas.in.in.h:81 ../src/gui/main.cpp:1834
 msgid "Show the call panel"
 msgstr "顯示撥號面板"
 
-#: ../ekiga.schemas.in.in.h:87
-msgid "Size of the PC-To-Phone window"
-msgstr "電腦對電話視窗的大小"
-
-#: ../ekiga.schemas.in.in.h:88
+#: ../ekiga.schemas.in.in.h:82
 msgid "Size of the address book window"
 msgstr "通訊錄視窗的大小"
 
-#: ../ekiga.schemas.in.in.h:89
+#: ../ekiga.schemas.in.in.h:83
 msgid "Size of the audio settings window"
 msgstr "音訊設定視窗的大小"
 
-#: ../ekiga.schemas.in.in.h:90
+#: ../ekiga.schemas.in.in.h:84
 msgid "Size of the chat window"
 msgstr "聊天視窗的大小"
 
-#: ../ekiga.schemas.in.in.h:91
+#: ../ekiga.schemas.in.in.h:85
 msgid "Size of the druid window"
 msgstr "設定精靈視窗的大小"
 
-#: ../ekiga.schemas.in.in.h:92
+#: ../ekiga.schemas.in.in.h:86
 msgid "Size of the preferences window"
 msgstr "偏好設定視窗的大小"
 
-#: ../ekiga.schemas.in.in.h:93
+#: ../ekiga.schemas.in.in.h:87
 msgid "Size of the video settings window"
 msgstr "視訊設定視窗的大小"
 
-#: ../ekiga.schemas.in.in.h:94
+#: ../ekiga.schemas.in.in.h:88
 msgid "Specify the software scaling algorithm"
 msgstr "指定軟體縮放演算法"
 
-#: ../ekiga.schemas.in.in.h:95
+#: ../ekiga.schemas.in.in.h:89
 msgid ""
 "Specify the software scaling algorithm: 0: nearest neighbor, 1: nearest "
 "neighbor with box filter, 2: bilinear filtering, 3: hyperbolic filtering. "
@@ -451,23 +427,23 @@ msgstr ""
 "指定軟體縮放演算法：0: 最近鄰居法, 1: 最近鄰居法及方塊過濾, 2: 雙線性過濾, "
 "3: 雙曲線過濾。請勿在視窗系統套用。"
 
-#: ../ekiga.schemas.in.in.h:96
+#: ../ekiga.schemas.in.in.h:90
 msgid "Start hidden"
 msgstr "啟動時自動隱藏"
 
-#: ../ekiga.schemas.in.in.h:97
+#: ../ekiga.schemas.in.in.h:91
 msgid "TCP port range"
 msgstr "TCP 連接埠範圍"
 
-#: ../ekiga.schemas.in.in.h:98
+#: ../ekiga.schemas.in.in.h:92
 msgid "Temporal Spatial Trade Off"
 msgstr ""
 
-#: ../ekiga.schemas.in.in.h:99
+#: ../ekiga.schemas.in.in.h:93
 msgid "The Audio Codecs List"
 msgstr "音訊編碼解碼器列表"
 
-#: ../ekiga.schemas.in.in.h:100
+#: ../ekiga.schemas.in.in.h:94
 msgid ""
 "The Automatic Echo Cancellation level: Off, Low, Medium, High, Automatic "
 "Gain Compensation. Choosing Automatic Gain Compensation modulates the volume "
@@ -476,67 +452,67 @@ msgstr ""
 "自動取消回應等級：關閉，低，中，高及自動增益補償。選擇自動增益補償將自動取得"
 "最佳品質。"
 
-#: ../ekiga.schemas.in.in.h:101 ../src/gui/preferences.cpp:668
+#: ../ekiga.schemas.in.in.h:95 ../src/gui/preferences.cpp:657
 msgid "The SIP Outbound Proxy to use for outgoing calls"
 msgstr "打出電話使用的 SIP Outbound Proxy"
 
-#: ../ekiga.schemas.in.in.h:102
+#: ../ekiga.schemas.in.in.h:96
 msgid "The STUN Server"
 msgstr "STUN 伺服器"
 
-#: ../ekiga.schemas.in.in.h:103
+#: ../ekiga.schemas.in.in.h:97
 msgid ""
 "The STUN server to use for STUN Support. STUN is a technology that permits "
 "passage through some types of NAT gateway"
 msgstr ""
 "STUN 支援所使用的 STUN 伺服器。STUN 是一種可以用來穿透某類 NAT 閘道器的技術"
 
-#: ../ekiga.schemas.in.in.h:104
+#: ../ekiga.schemas.in.in.h:98
 msgid "The Video Codecs List"
 msgstr "音訊編碼解碼器清單"
 
-#: ../ekiga.schemas.in.in.h:105
+#: ../ekiga.schemas.in.in.h:99
 msgid "The accounts list"
 msgstr "帳號清單"
 
-#: ../ekiga.schemas.in.in.h:106
+#: ../ekiga.schemas.in.in.h:100
 msgid "The audio codecs list"
 msgstr "音效 codec 清單"
 
-#: ../ekiga.schemas.in.in.h:107
+#: ../ekiga.schemas.in.in.h:101
 msgid "The busy tone sound"
 msgstr "忙線音"
 
-#: ../ekiga.schemas.in.in.h:108
+#: ../ekiga.schemas.in.in.h:102
 msgid ""
 "The chosen sound will be played at the end of calls or calling somebody who "
 "is busy, if enabled"
 msgstr "如啟用，所選的聲音會在通話結束或致電的人正在忙碌時播放"
 
-#: ../ekiga.schemas.in.in.h:109
+#: ../ekiga.schemas.in.in.h:103
 msgid "The chosen sound will be played on incoming calls, if enabled"
 msgstr "如啟用，所選的音效會在來電時播放"
 
-#: ../ekiga.schemas.in.in.h:110
+#: ../ekiga.schemas.in.in.h:104
 msgid ""
 "The chosen sound will be played when a new instant message is received, if "
 "enabled"
 msgstr "如啟用，所選的音效會在收到新的即時訊息時播放"
 
-#: ../ekiga.schemas.in.in.h:111
+#: ../ekiga.schemas.in.in.h:105
 msgid ""
 "The chosen sound will be played when a new voice mail is received, if enabled"
 msgstr "如啟用，所選的音效會在收到新留言時播放"
 
-#: ../ekiga.schemas.in.in.h:112
+#: ../ekiga.schemas.in.in.h:106
 msgid "The chosen sound will be played when calling somebody, if enabled"
 msgstr "如啟用，所選的音效會在致電某人時播放"
 
-#: ../ekiga.schemas.in.in.h:113
+#: ../ekiga.schemas.in.in.h:107
 msgid "The default video view"
 msgstr "預設的視訊畫面顯示模式"
 
-#: ../ekiga.schemas.in.in.h:114
+#: ../ekiga.schemas.in.in.h:108
 msgid ""
 "The default video view (0: Local, 1: Remote, 2: Both layered, 3: Both with "
 "local video in a separate window, 4: Both)"
@@ -544,20 +520,20 @@ msgstr ""
 "預設的視訊畫面顯示模式（0：本機，1：遠端，2：兩者（子母視窗），3：兩者（在兩"
 "個分開的本機視窗），4：兩者）"
 
-#: ../ekiga.schemas.in.in.h:115
+#: ../ekiga.schemas.in.in.h:109
 msgid "The dial tone sound"
 msgstr "撥號聲音"
 
-#: ../ekiga.schemas.in.in.h:116
+#: ../ekiga.schemas.in.in.h:110
 msgid "The history of the 100 last calls"
 msgstr "最近 100 個電話記錄"
 
-#: ../ekiga.schemas.in.in.h:117 ../src/gui/preferences.cpp:617
-#: ../src/gui/preferences.cpp:671
+#: ../ekiga.schemas.in.in.h:111 ../src/gui/preferences.cpp:606
+#: ../src/gui/preferences.cpp:660
 msgid "The host where calls should be forwarded if call forwarding is enabled"
 msgstr "如果啟用了來電轉駁，那麼轉駁至那裡的主機"
 
-#: ../ekiga.schemas.in.in.h:118
+#: ../ekiga.schemas.in.in.h:112
 msgid ""
 "The image to transmit if \"Picture\" is selected as video plugin or if the "
 "opening of the device fails. Leave blank to use the default Ekiga logo."
@@ -565,19 +541,19 @@ msgstr ""
 "當視訊外掛程式設定為“Picture”或開啟裝置失敗時所傳送的圖片。如果使用預設的 "
 "Ekiga 圖型則使它空白即可。"
 
-#: ../ekiga.schemas.in.in.h:119
+#: ../ekiga.schemas.in.in.h:113
 msgid "The incoming call sound"
 msgstr "來電的聲音"
 
-#: ../ekiga.schemas.in.in.h:120
+#: ../ekiga.schemas.in.in.h:114
 msgid "The list of accounts to which Ekiga should register"
 msgstr "Ekiga 需要註冊的帳號清單"
 
-#: ../ekiga.schemas.in.in.h:121
+#: ../ekiga.schemas.in.in.h:115
 msgid "The long status information"
 msgstr "詳細狀態資訊"
 
-#: ../ekiga.schemas.in.in.h:122
+#: ../ekiga.schemas.in.in.h:116
 msgid ""
 "The maximum RX video bitrate in kbit/s. This value will be signaled to the "
 "peer endpoint that can adjust (if it supports it) its TX bitrate if it is "
@@ -586,7 +562,7 @@ msgstr ""
 "RX 視訊最大位元率(kbit/s)。若通信兩端的 TX 位元率高於此數值時，它會發出信號要"
 "求調整(如果有支援此功能)"
 
-#: ../ekiga.schemas.in.in.h:123
+#: ../ekiga.schemas.in.in.h:117
 msgid ""
 "The maximum TX video bitrate in kbit/s. The video quality and the number of "
 "transmitted frames per second (depends on selected codec) will be "
@@ -596,11 +572,11 @@ msgstr ""
 "最大的 TX 視訊頻寬（以 kbit/s 計算)。視訊的質素及每秒傳送的幀數(依據選擇的解"
 "碼器)會以指定數值作為底線，動態地調整來達致使用最小的頻寬。"
 
-#: ../ekiga.schemas.in.in.h:124
+#: ../ekiga.schemas.in.in.h:118
 msgid "The maximum jitter buffer size for audio reception (in ms)"
 msgstr "接收音訊時用的抗抖動緩衝大小的最大值（毫秒）"
 
-#: ../ekiga.schemas.in.in.h:125
+#: ../ekiga.schemas.in.in.h:119
 msgid ""
 "The maximum transmitted frame rate in frames/s. This rate may not be reached "
 "in case a minimum quality was configure via a TSTO value smaller than 31 and "
@@ -609,15 +585,15 @@ msgstr ""
 "最大幀傳輸率(格/秒)。這個速率不一定能達到，像是設定最低品質的 TSTO 數值小於 "
 "31 時，選擇的位元率就不足以支援這個最低品質 "
 
-#: ../ekiga.schemas.in.in.h:126
+#: ../ekiga.schemas.in.in.h:120
 msgid "The new instant message sound"
 msgstr "新即時訊息播放的音效"
 
-#: ../ekiga.schemas.in.in.h:127
+#: ../ekiga.schemas.in.in.h:121
 msgid "The new voice mail sound"
 msgstr "接收到新留言時的音效"
 
-#: ../ekiga.schemas.in.in.h:128
+#: ../ekiga.schemas.in.in.h:122
 msgid ""
 "The output device type is the type of device connected to your Quicknet "
 "card. It can be either a POTS (Plain Old Telephone System) or a headset."
@@ -625,33 +601,33 @@ msgstr ""
 "輸出裝置是連接到您的 Quicknet 插卡上的裝置類型。它可以是一個 POTS（傳統電話系"
 "統）或是耳機。"
 
-#: ../ekiga.schemas.in.in.h:129
+#: ../ekiga.schemas.in.in.h:123
 msgid ""
 "The port to listen to for incoming connections. Ekiga needs to be restarted "
 "for the new value to take effect"
 msgstr "監聽撥入連線的埠。需要重新啟動 Ekiga 以使新的設定生效"
 
-#: ../ekiga.schemas.in.in.h:130
+#: ../ekiga.schemas.in.in.h:124
 msgid ""
 "The port to listen to for incoming connections. Ekiga needs to be restarted "
 "for the new value to take effect."
 msgstr "監聽撥入連線的埠。需要重新啟動 Ekiga 以使新的設定生效。"
 
-#: ../ekiga.schemas.in.in.h:131
+#: ../ekiga.schemas.in.in.h:125
 msgid "The position of the local video window"
 msgstr "本機視訊畫面視窗的位置"
 
-#: ../ekiga.schemas.in.in.h:132
+#: ../ekiga.schemas.in.in.h:126
 msgid "The position of the remote video window"
 msgstr "遠端視訊畫面視窗的位置"
 
-#: ../ekiga.schemas.in.in.h:133
+#: ../ekiga.schemas.in.in.h:127
 msgid ""
 "The prefix that will be used to save pictures of the conversation. That "
 "prefix is followed by the snapshot number."
 msgstr "交談時所儲存的圖片的前置名稱。前置後面是快照的號碼。"
 
-#: ../ekiga.schemas.in.in.h:134
+#: ../ekiga.schemas.in.in.h:128
 msgid ""
 "The range of TCP ports that Ekiga will use for the H.323 H.245 channel. This "
 "port range has no effect if both participants to the conference are using "
@@ -660,94 +636,94 @@ msgstr ""
 "Ekiga 給 H.323 H.245 通道所使用的 TCP 通訊埠的範圍。如果對話雙方都沒有使用 "
 "H.245 穿隧技術，則通訊埠的範圍不會有任何影響。"
 
-#: ../ekiga.schemas.in.in.h:135
+#: ../ekiga.schemas.in.in.h:129
 msgid "The range of UDP ports that Ekiga will use."
 msgstr "Ekiga 要使用的 UDP 連接埠範圍。"
 
-#: ../ekiga.schemas.in.in.h:136
+#: ../ekiga.schemas.in.in.h:130
 msgid "The save prefix"
 msgstr "儲存文件前置名稱"
 
-#: ../ekiga.schemas.in.in.h:137
+#: ../ekiga.schemas.in.in.h:131
 msgid "The short status information"
 msgstr "簡短狀態資訊"
 
-#: ../ekiga.schemas.in.in.h:138
+#: ../ekiga.schemas.in.in.h:132
 msgid "The size of the local video window"
 msgstr "本機視訊畫面視窗的大小"
 
-#: ../ekiga.schemas.in.in.h:139
+#: ../ekiga.schemas.in.in.h:133
 msgid "The size of the remote video window"
 msgstr "遠端視訊畫面視窗的大小"
 
-#: ../ekiga.schemas.in.in.h:140
+#: ../ekiga.schemas.in.in.h:134
 msgid ""
 "The sound that will be played at the end of calls or when calling somebody "
 "who is busy, if enabled"
 msgstr "如啟用，音效會在通話結束，或某人忙碌時播放"
 
-#: ../ekiga.schemas.in.in.h:141
+#: ../ekiga.schemas.in.in.h:135
 msgid "The sound that will be played on incoming calls, if enabled"
 msgstr "如啟用，來電時會播放的音效"
 
-#: ../ekiga.schemas.in.in.h:142
+#: ../ekiga.schemas.in.in.h:136
 msgid "The sound that will be played when calling somebody, if enabled"
 msgstr "如啟用，致電某人時會播放的音效"
 
-#: ../ekiga.schemas.in.in.h:143
+#: ../ekiga.schemas.in.in.h:137
 msgid ""
 "The sound that will be played when there is a new instant message, if enabled"
 msgstr "如啟用，收到新的即時訊息時會播放的音效"
 
-#: ../ekiga.schemas.in.in.h:144
+#: ../ekiga.schemas.in.in.h:138
 msgid ""
 "The sound that will be played when there is a new voice mail, if enabled"
 msgstr "如啟用，收到新留言時會播放的音效"
 
-#: ../ekiga.schemas.in.in.h:145
+#: ../ekiga.schemas.in.in.h:139
 msgid ""
 "The time after which Ekiga will renew its registration with the registrar"
 msgstr "在這時間後 Ekiga 使向註冊服務商重新註冊"
 
-#: ../ekiga.schemas.in.in.h:146
+#: ../ekiga.schemas.in.in.h:140
 msgid "The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)"
 msgstr "您的國家/地區代碼（兩個字母，如CN、HK、MO、SG、TW等）。"
 
-#: ../ekiga.schemas.in.in.h:147 ../src/gui/preferences.cpp:870
+#: ../ekiga.schemas.in.in.h:141 ../src/gui/preferences.cpp:859
 msgid "The video channel number to use (to select camera, tv or other sources)"
 msgstr "所使用的視訊通道的號數（選擇攝影機、電視及其它來源）"
 
-#: ../ekiga.schemas.in.in.h:148
+#: ../ekiga.schemas.in.in.h:142
 msgid "The video codecs list"
 msgstr "音訊編碼解碼器清單"
 
-#: ../ekiga.schemas.in.in.h:149
+#: ../ekiga.schemas.in.in.h:143
 msgid "The video view before having switched to fullscreen"
 msgstr "切換至全螢幕前的視訊檢視"
 
-#: ../ekiga.schemas.in.in.h:150
+#: ../ekiga.schemas.in.in.h:144
 msgid ""
 "The video view before having switched to fullscreen (same values as "
 "video_view)"
 msgstr "切換至全螢幕前的視訊檢視(數值等同於 video_view)"
 
-#: ../ekiga.schemas.in.in.h:151
+#: ../ekiga.schemas.in.in.h:145
 msgid "The zoom value"
 msgstr "放大縮小值"
 
-#: ../ekiga.schemas.in.in.h:152
+#: ../ekiga.schemas.in.in.h:146
 msgid ""
 "The zoom value in percent to apply to images displayed in the main GUI (can "
 "be 50, 100, or 200)"
 msgstr "在主視窗所顯示的圖片的放大縮小值（可以是 50，100 或 200）"
 
-#: ../ekiga.schemas.in.in.h:153
+#: ../ekiga.schemas.in.in.h:147
 msgid ""
 "This allows you to set the mode for sending DTMFs. The values can be "
 "\"RFC2833\" (0), \"INFO\" (1)"
 msgstr "在這裡允許設定 DTMF 的傳送模式，數值可以是“RFC2833”(0)，“INFO”(1)"
 
-#: ../ekiga.schemas.in.in.h:154
+#: ../ekiga.schemas.in.in.h:148
 msgid ""
 "This allows you to set the mode for sending DTMFs. The values can be \"String"
 "\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (default is \"String"
@@ -757,7 +733,7 @@ msgstr ""
 "是：“String”(0)，“Tone”(1)，“RFC2833”(2)，“Q.931”(3)（預設是“String”）。選"
 "擇“String”以外的數值會停用文字聊天"
 
-#: ../ekiga.schemas.in.in.h:155 ../src/gui/preferences.cpp:629
+#: ../ekiga.schemas.in.in.h:149 ../src/gui/preferences.cpp:618
 msgid ""
 "This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages "
 "are encapsulated into the H.225 channel (port 1720). This saves one TCP "
@@ -771,49 +747,49 @@ msgstr ""
 "Netmeeting 當機。"
 
 # src/pref_window.cpp:1859
-#: ../ekiga.schemas.in.in.h:156 ../src/gui/preferences.cpp:631
+#: ../ekiga.schemas.in.in.h:150 ../src/gui/preferences.cpp:620
 msgid "This enables H.245 early in the setup"
 msgstr "這會在設定中啟用早期 H.245"
 
-#: ../ekiga.schemas.in.in.h:157
+#: ../ekiga.schemas.in.in.h:151
 msgid ""
 "This key disables DirectX (on win32) and XVideo (on Linux) video hardware "
 "acceleration"
 msgstr "這個鍵值會停用 DirectX (win32 環境)和 XVideo (Linux 環境)視訊硬體加速"
 
-#: ../ekiga.schemas.in.in.h:158
+#: ../ekiga.schemas.in.in.h:152
 msgid "UDP port range"
 msgstr "UDP 通訊埠範圍"
 
-#: ../ekiga.schemas.in.in.h:159
+#: ../ekiga.schemas.in.in.h:153
 msgid "Version"
 msgstr "版本"
 
-#: ../ekiga.schemas.in.in.h:160
+#: ../ekiga.schemas.in.in.h:154
 msgid "Video channel"
 msgstr "視訊通道"
 
-#: ../ekiga.schemas.in.in.h:161
+#: ../ekiga.schemas.in.in.h:155
 msgid "Video format"
 msgstr "視訊格式"
 
-#: ../ekiga.schemas.in.in.h:162
+#: ../ekiga.schemas.in.in.h:156
 msgid "Video image"
 msgstr "視訊圖片"
 
-#: ../ekiga.schemas.in.in.h:163 ../src/gui/assistant.cpp:1051
+#: ../ekiga.schemas.in.in.h:157 ../src/gui/assistant.cpp:1045
 msgid "Video input device"
 msgstr "視訊輸入裝置"
 
-#: ../ekiga.schemas.in.in.h:164
+#: ../ekiga.schemas.in.in.h:158
 msgid "Video preview"
 msgstr "視訊圖片預覽"
 
-#: ../ekiga.schemas.in.in.h:165
+#: ../ekiga.schemas.in.in.h:159
 msgid "Video size"
 msgstr "視訊圖片大小"
 
-#: ../ekiga.schemas.in.in.h:166
+#: ../ekiga.schemas.in.in.h:160
 msgid ""
 "Whether to prefer to sustain the max. frame rate or lower it possibly in "
 "order to keep a minimum level of (spatial) quality for all frames. 0: "
@@ -835,96 +811,94 @@ msgstr "播放"
 msgid "Missed"
 msgstr "未接"
 
-#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:235
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:234
 #: ../lib/engine/presence/local-roster/local-presentity.cpp:194
-#: ../src/endpoints/opal-account.cpp:306 ../src/gui/main.cpp:1751
+#: ../src/endpoints/opal-account.cpp:310 ../src/gui/main.cpp:1792
 msgid "_Edit"
 msgstr "編輯(_E)"
 
-#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:237
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:312
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:236
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:313
 #: ../lib/engine/presence/local-roster/local-presentity.cpp:196
-#: ../src/endpoints/opal-account.cpp:308
+#: ../src/endpoints/opal-account.cpp:312
 msgid "_Remove"
 msgstr "移除(_R)"
 
-#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:326
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:325
 msgid "Edit contact"
 msgstr "編輯連絡人"
 
-#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:328
-#: ../lib/engine/addressbook/evolution/evolution-book.cpp:311
-#: ../src/endpoints/opal-account.cpp:349
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:327
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:298
+#: ../src/endpoints/opal-account.cpp:353
 msgid "Please update the following fields:"
 msgstr "請更新下列欄位:"
 
-#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:330
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:329
 #: ../lib/engine/presence/local-roster/local-presentity.cpp:221
-#: ../lib/engine/presence/local-roster/local-heap.cpp:168
-#: ../lib/engine/presence/local-roster/local-heap.cpp:315
-#: ../src/endpoints/opal-account.cpp:351 ../src/endpoints/opal-bank.cpp:101
+#: ../lib/engine/presence/local-roster/local-heap.cpp:177
+#: ../lib/engine/presence/local-roster/local-heap.cpp:324
+#: ../src/endpoints/opal-account.cpp:355 ../src/endpoints/opal-bank.cpp:101
 #: ../src/endpoints/opal-bank.cpp:111
 msgid "Name:"
 msgstr "名稱："
 
-#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:339
-#: ../lib/engine/addressbook/evolution/evolution-book.cpp:314
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:338
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:301
 msgid "VoIP _URI:"
 msgstr "VoIP _URI:"
 
-#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:340
-#: ../lib/engine/addressbook/evolution/evolution-book.cpp:315
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:339
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:302
 msgid "_Home phone:"
 msgstr "家中電話(_H):"
 
-#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:341
-#: ../lib/engine/addressbook/evolution/evolution-book.cpp:316
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:340
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:303
 msgid "_Office phone:"
 msgstr "公司電話(_O):"
 
-#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:342
-#: ../lib/engine/addressbook/evolution/evolution-book.cpp:317
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:341
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:304
 msgid "_Cell phone:"
 msgstr "手機(_C):"
 
-#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:343
-#: ../lib/engine/addressbook/evolution/evolution-book.cpp:318
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:342
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:305
 msgid "_Pager:"
 msgstr "呼叫器(_P):"
 
-#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:393
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:392
 msgid "Remove contact"
 msgstr "移除連絡人"
 
-#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:395
-msgid "Are you sure you want to remove "
-msgstr "確定要移除"
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:394
+#, c-format
+msgid "Are you sure you want to remove %s from the addressbook?"
+msgstr "確定要從通訊錄中移除 %s？"
 
-#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:395
-msgid "from the address book ?"
-msgstr "於此通訊錄？"
-
-#: ../lib/engine/addressbook/evolution/evolution-book.cpp:88
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:76
 #: ../lib/engine/addressbook/ldap/ldap-book.cpp:591
-msgid "user found"
-msgid_plural "users found"
-msgstr[0] "個使用者已找到"
+#, c-format
+msgid "%d user found"
+msgid_plural "%d users found"
+msgstr[0] "已找到 %d 個使用者"
 
-#: ../lib/engine/addressbook/evolution/evolution-book.cpp:257
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:309
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:244
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:310
 msgid "_Refresh"
 msgstr "重新整理(_R)"
 
-#: ../lib/engine/addressbook/evolution/evolution-book.cpp:260
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:247
 msgid "New _Contact"
 msgstr "新增連絡人(_C)"
 
-#: ../lib/engine/addressbook/evolution/evolution-book.cpp:309
-#: ../lib/engine/presence/local-roster/local-heap.cpp:109
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:296
+#: ../lib/engine/presence/local-roster/local-heap.cpp:118
 msgid "New contact"
 msgstr "新增連絡人"
 
-#: ../lib/engine/addressbook/evolution/evolution-book.cpp:313
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:300
 #: ../lib/engine/addressbook/ldap/ldap-source.cpp:157
 msgid "_Name:"
 msgstr "名稱(_N):"
@@ -942,7 +916,7 @@ msgid "Create LDAP directory"
 msgstr "建立 LDAP 使用者目錄"
 
 #: ../lib/engine/addressbook/ldap/ldap-source.cpp:155
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:607
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:611
 msgid "Please edit the following fields"
 msgstr "請編輯下列欄位:"
 
@@ -959,23 +933,21 @@ msgid "_Base DN:"
 msgstr "基本 _DN:"
 
 #: ../lib/engine/addressbook/ldap/ldap-source.cpp:164
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:623
 msgid "_Subtree"
 msgstr "子目錄(_S)"
 
 #: ../lib/engine/addressbook/ldap/ldap-source.cpp:165
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:624
 msgid "Single _Level"
 msgstr "同一層(_L)"
 
 #: ../lib/engine/addressbook/ldap/ldap-source.cpp:166
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:625
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:629
 msgid "_Scope"
 msgstr "範圍(_S)"
 
 # src/ldap_window.cpp:476
 #: ../lib/engine/addressbook/ldap/ldap-source.cpp:169
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:628
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:632
 msgid "Call _Attribute"
 msgstr "通話屬性(_A)"
 
@@ -987,64 +959,72 @@ msgstr "密碼"
 msgid "Ekiga.net Directory"
 msgstr "Ekiga.net 目錄"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:314
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:315
 msgid "_Properties"
 msgstr "屬性(_P)"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:379
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:380
 msgid "Refreshing"
 msgstr "重新整理中"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:387
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:388
 msgid "Could not initialize server"
 msgstr "無法初始化伺服器"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:420
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:421
 msgid "Could not contact server"
 msgstr "無法連接遠端主機"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:428
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:429
 msgid "Contacted server"
 msgstr "已連接的伺服器"
 
 #. patience == 0
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:465
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:466
 msgid "Could not connect to server"
 msgstr "無法連線至伺服器"
 
 #. patience == 0
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:515
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:562
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:516
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:564
 msgid "Could not search"
 msgstr "無法搜尋"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:523
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:524
 msgid "Waiting for search results"
 msgstr "等待搜尋結果"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:605
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:609
 msgid "Edit LDAP directory"
 msgstr "編輯 LDAP 使用者目錄"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:609
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:613
 msgid "_Name"
 msgstr "名稱(_N)"
 
 # src/main_window.cpp:600
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:610
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:614
 msgid "_Hostname"
 msgstr "主機名稱(_H):"
 
 # src/pref_window.cpp:1958
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:616
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:620
 msgid "_Port"
 msgstr "連接埠(_P)"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:618
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:622
 msgid "_Base DN"
 msgstr "基本 _DN"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:630
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:627
+msgid "Subtree"
+msgstr "子目錄"
+
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:628
+msgid "Single Level"
+msgstr "同一層"
+
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:634
 msgid "_Password"
 msgstr "密碼(_P)"
 
@@ -1056,47 +1036,56 @@ msgstr "尋找(_F)"
 msgid "Address Book"
 msgstr "通訊錄"
 
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:673
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:675
+#: ../src/gui/main.cpp:1741
 msgid "Address _Book"
 msgstr "通訊錄(_B)"
 
 #. This will add static and dynamic actions
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:682
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:684
 msgid "_Action"
 msgstr "動作(_A):"
 
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:727
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:729
 msgid "Category"
 msgstr "分類"
 
-#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:222
+#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:247
 #: ../lib/engine/gui/gtk-frontend/chat-window-page.cpp:968
 msgid "says:"
 msgstr "說："
 
-#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:662
+#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:370
+msgid "Open link in browser"
+msgstr "在瀏覽器中開啟連結"
+
+#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:376
+msgid "Copy link"
+msgstr "複製連結"
+
+#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:905
 msgid "_Smile..."
 msgstr "微笑(_S)..."
 
 #. The window
 #. we can't do much here since we get the Chat as reference...
 #: ../lib/engine/gui/gtk-frontend/chat-window-old.cpp:562
-#: ../lib/engine/gui/gtk-frontend/chat-window.cpp:417
+#: ../lib/engine/gui/gtk-frontend/chat-window.cpp:433
 msgid "Chat Window"
 msgstr "聊天視窗"
 
-#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:628
-#: ../src/gui/assistant.cpp:1261
+#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:638
+#: ../src/gui/assistant.cpp:1253
 msgid "Full Name"
 msgstr "全名"
 
 # src/ldap_window.cpp:476
-#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:639
+#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:649
 msgid "_Search Filter:"
 msgstr "搜尋過濾條件(_S):"
 
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:908
-#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:942
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:981
+#: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1016
 msgid "Unsorted"
 msgstr "未排序"
 
@@ -1110,11 +1099,12 @@ msgid "You say:\n"
 msgstr "您說：\n"
 
 #: ../lib/engine/gui/gtk-frontend/call-history-view-gtk.cpp:163
-#: ../src/gui/statusmenu.cpp:547
+#: ../src/gui/statusmenu.cpp:499
 msgid "Clear"
 msgstr "清除"
 
-#: ../lib/engine/presence/avahi/avahi-presentity.cpp:47
+#: ../lib/engine/presence/avahi/avahi-heap.cpp:129
+#: ../lib/engine/presence/avahi/avahi-heap.cpp:315
 msgid "Neighbours"
 msgstr "鄰居"
 
@@ -1129,8 +1119,8 @@ msgid ""
 msgstr "請填好這個表單以改變現有的 ekiga 內部名單"
 
 #: ../lib/engine/presence/local-roster/local-presentity.cpp:222
-#: ../lib/engine/presence/local-roster/local-heap.cpp:177
-#: ../lib/engine/presence/local-roster/local-heap.cpp:179
+#: ../lib/engine/presence/local-roster/local-heap.cpp:186
+#: ../lib/engine/presence/local-roster/local-heap.cpp:188
 msgid "Address:"
 msgstr "位址:"
 
@@ -1139,48 +1129,60 @@ msgid "Choose groups:"
 msgstr "選擇群組:"
 
 #: ../lib/engine/presence/local-roster/local-roster-bridge.cpp:94
-#: ../lib/engine/presence/local-roster/local-heap.cpp:165
+#: ../lib/engine/presence/local-roster/local-heap.cpp:174
 msgid "Add to local roster"
 msgstr "加入至本地端名冊"
 
-#: ../lib/engine/presence/local-roster/local-heap.cpp:102
+#: ../lib/engine/presence/local-roster/local-heap.cpp:93
+msgid "Services"
+msgstr "服務"
+
+#: ../lib/engine/presence/local-roster/local-heap.cpp:94
+msgid "Echo test"
+msgstr "回音測試"
+
+#: ../lib/engine/presence/local-roster/local-heap.cpp:95
+msgid "Conference room"
+msgstr "會議室"
+
+#: ../lib/engine/presence/local-roster/local-heap.cpp:111
 msgid "Local roster"
 msgstr "本地端名冊"
 
-#: ../lib/engine/presence/local-roster/local-heap.cpp:119
+#: ../lib/engine/presence/local-roster/local-heap.cpp:128
 msgid "Rename"
 msgstr "重新命名"
 
-#: ../lib/engine/presence/local-roster/local-heap.cpp:166
+#: ../lib/engine/presence/local-roster/local-heap.cpp:175
 msgid ""
 "Please fill in this form to add a new contact to ekiga's internal roster"
 msgstr "請填好這個表單以便加入新的連絡人到 ekiga 內部名單"
 
-#: ../lib/engine/presence/local-roster/local-heap.cpp:183
+#: ../lib/engine/presence/local-roster/local-heap.cpp:192
 msgid "Put contact in groups:"
 msgstr "將連絡人置於群組:"
 
-#: ../lib/engine/presence/local-roster/local-heap.cpp:286
+#: ../lib/engine/presence/local-roster/local-heap.cpp:295
 msgid "You supplied an unsupported address"
 msgstr "您輸入的是不支援的位址"
 
-#: ../lib/engine/presence/local-roster/local-heap.cpp:288
+#: ../lib/engine/presence/local-roster/local-heap.cpp:297
 msgid "You already have a contact with this address!"
 msgstr "您已經有使用這個位址的連絡人了！"
 
-#: ../lib/engine/presence/local-roster/local-heap.cpp:313
+#: ../lib/engine/presence/local-roster/local-heap.cpp:322
 msgid "Rename group"
 msgstr "重新命名群組"
 
-#: ../lib/engine/presence/local-roster/local-heap.cpp:314
+#: ../lib/engine/presence/local-roster/local-heap.cpp:323
 msgid "Please edit this group name"
 msgstr "請編輯這個群組名稱"
 
-#: ../lib/gui/codecsbox.cpp:479
+#: ../lib/gui/codecsbox.cpp:477
 msgid "Move selected codec priority upwards"
 msgstr "將選定的 codec 優先權提高"
 
-#: ../lib/gui/codecsbox.cpp:490
+#: ../lib/gui/codecsbox.cpp:487
 msgid "Move selected codec priority downwards"
 msgstr "將選定的 codec 優先權降低"
 
@@ -1248,9 +1250,9 @@ msgstr ""
 "所選擇的音訊裝置 (%s) 開啟成功，但無法寫入資料到裝置中，請檢查您的音訊設定。"
 
 #: ../src/devices/audio.cpp:476 ../src/devices/audio.cpp:477
-#: ../src/gui/assistant.cpp:1126 ../src/gui/assistant.cpp:1149
-#: ../src/gui/assistant.cpp:1172 ../src/gui/preferences.cpp:745
-#: ../src/gui/preferences.cpp:769 ../src/gui/preferences.cpp:792
+#: ../src/gui/assistant.cpp:1118 ../src/gui/assistant.cpp:1141
+#: ../src/gui/assistant.cpp:1164 ../src/gui/preferences.cpp:734
+#: ../src/gui/preferences.cpp:758 ../src/gui/preferences.cpp:781
 msgid "No device found"
 msgstr "找不到任何裝置"
 
@@ -1268,31 +1270,38 @@ msgstr ""
 "Ekiga 現在正從 %s 錄音，並以 %s 播放。請對麥克風說“1 2 3”。應該可以在 4 秒後"
 "聽到您的錄音。"
 
-#: ../src/endpoints/h323-endpoint.cpp:149
-#: ../src/endpoints/sip-endpoint.cpp:274 ../src/endpoints/sip-endpoint.cpp:278
+#: ../src/endpoints/h323-endpoint.cpp:153
+#: ../src/endpoints/sip-endpoint.cpp:273 ../src/endpoints/sip-endpoint.cpp:277
 msgid "Call"
 msgstr "通話"
 
-#: ../src/endpoints/h323-endpoint.cpp:313
+#: ../src/endpoints/h323-endpoint.cpp:156
+#: ../src/endpoints/sip-endpoint.cpp:274 ../src/endpoints/sip-endpoint.cpp:278
+#: ../src/gui/main.cpp:3862
+msgid "Transfer"
+msgstr "轉送"
+
+#. Translators : The alias we are registering already exists : failure
+#: ../src/endpoints/h323-endpoint.cpp:319
 msgid "Duplicate alias"
 msgstr "重複的別名"
 
-#: ../src/endpoints/h323-endpoint.cpp:316
+#: ../src/endpoints/h323-endpoint.cpp:322
 msgid "Bad username/password"
 msgstr "錯誤的使用者名稱/密碼"
 
-#: ../src/endpoints/h323-endpoint.cpp:319
-#: ../src/endpoints/sip-endpoint.cpp:891
+#: ../src/endpoints/h323-endpoint.cpp:325
+#: ../src/endpoints/sip-endpoint.cpp:904
 msgid "Transport error"
 msgstr "轉送錯誤"
 
-#: ../src/endpoints/h323-endpoint.cpp:330
-#: ../src/endpoints/h323-endpoint.cpp:335
-#: ../src/endpoints/sip-endpoint.cpp:898
+#: ../src/endpoints/h323-endpoint.cpp:336
+#: ../src/endpoints/h323-endpoint.cpp:341
+#: ../src/endpoints/sip-endpoint.cpp:911
 msgid "Failed"
 msgstr "失敗"
 
-#: ../src/endpoints/manager.cpp:101
+#: ../src/endpoints/manager.cpp:708
 msgid ""
 "Ekiga did not manage to configure your network settings automatically. You "
 "can still use it, but you need to configure your network settings manually.\n"
@@ -1306,76 +1315,74 @@ msgstr ""
 "請查閱 http://wiki.ekiga.org/index.php/Enable_port_forwarding_manually 以取得"
 "指示"
 
-#: ../src/endpoints/opal-account.cpp:298
+#: ../src/endpoints/opal-account.cpp:302
 msgid "_Disable"
 msgstr "停用(_D)"
 
-#: ../src/endpoints/opal-account.cpp:301
+#: ../src/endpoints/opal-account.cpp:305
 msgid "_Enable"
 msgstr "啟用(_E)"
 
-#: ../src/endpoints/opal-account.cpp:322 ../src/gui/assistant.cpp:664
+#: ../src/endpoints/opal-account.cpp:326 ../src/gui/assistant.cpp:664
 msgid "Recharge the account"
 msgstr "為帳號加值"
 
-#: ../src/endpoints/opal-account.cpp:327 ../src/gui/assistant.cpp:676
+#: ../src/endpoints/opal-account.cpp:331 ../src/gui/assistant.cpp:676
 msgid "Consult the balance history"
 msgstr "查閱結算記錄"
 
-#: ../src/endpoints/opal-account.cpp:332 ../src/gui/assistant.cpp:688
-msgid "Consult the calls history"
+#: ../src/endpoints/opal-account.cpp:336
+msgid "Consult the call history"
 msgstr "查閱通話記錄"
 
-#: ../src/endpoints/opal-account.cpp:347 ../src/endpoints/opal-bank.cpp:74
+#: ../src/endpoints/opal-account.cpp:351 ../src/endpoints/opal-bank.cpp:74
 msgid "Edit account"
 msgstr "編輯帳號"
 
-#: ../src/endpoints/opal-account.cpp:353 ../src/endpoints/opal-bank.cpp:112
+#: ../src/endpoints/opal-account.cpp:357 ../src/endpoints/opal-bank.cpp:112
 msgid "Registrar:"
 msgstr "註冊服務商："
 
-#: ../src/endpoints/opal-account.cpp:355 ../src/endpoints/opal-bank.cpp:102
+#: ../src/endpoints/opal-account.cpp:359 ../src/endpoints/opal-bank.cpp:102
 msgid "Gatekeeper:"
 msgstr "閘道管理員："
 
-#: ../src/endpoints/opal-account.cpp:356 ../src/endpoints/opal-bank.cpp:83
-#: ../src/endpoints/opal-bank.cpp:94 ../src/endpoints/opal-bank.cpp:103
-#: ../src/endpoints/opal-bank.cpp:113
+#: ../src/endpoints/opal-account.cpp:360 ../src/endpoints/opal-bank.cpp:83
+#: ../src/endpoints/opal-bank.cpp:103 ../src/endpoints/opal-bank.cpp:113
 msgid "User:"
 msgstr "使用者："
 
-#: ../src/endpoints/opal-account.cpp:358 ../src/endpoints/opal-bank.cpp:114
+#: ../src/endpoints/opal-account.cpp:362 ../src/endpoints/opal-bank.cpp:114
 msgid "Authentication User:"
 msgstr "驗證使用者:"
 
-#: ../src/endpoints/opal-account.cpp:359 ../src/endpoints/opal-bank.cpp:85
-#: ../src/endpoints/opal-bank.cpp:96 ../src/endpoints/opal-bank.cpp:105
-#: ../src/endpoints/opal-bank.cpp:115
+#: ../src/endpoints/opal-account.cpp:363 ../src/endpoints/opal-bank.cpp:85
+#: ../src/endpoints/opal-bank.cpp:105 ../src/endpoints/opal-bank.cpp:115
 msgid "Password:"
 msgstr "密碼："
 
-#: ../src/endpoints/opal-account.cpp:360 ../src/endpoints/opal-bank.cpp:106
+#: ../src/endpoints/opal-account.cpp:364 ../src/endpoints/opal-bank.cpp:106
 #: ../src/endpoints/opal-bank.cpp:116
 msgid "Timeout:"
 msgstr "逾時時間:"
 
-#: ../src/endpoints/opal-account.cpp:361 ../src/endpoints/opal-bank.cpp:119
+#: ../src/endpoints/opal-account.cpp:365 ../src/endpoints/opal-bank.cpp:119
 msgid "Enable Account"
 msgstr "啟用帳號"
 
-#: ../src/endpoints/opal-account.cpp:396 ../src/endpoints/opal-bank.cpp:155
+#: ../src/endpoints/opal-account.cpp:400 ../src/endpoints/opal-bank.cpp:155
 msgid "You did not supply a name for that account."
 msgstr "您沒有提供該帳號的名稱。"
 
-#: ../src/endpoints/opal-account.cpp:398 ../src/endpoints/opal-bank.cpp:157
+#: ../src/endpoints/opal-account.cpp:402 ../src/endpoints/opal-bank.cpp:157
 msgid "You did not supply a host to register to."
 msgstr "您沒有提供該要註冊的主機。"
 
-#: ../src/endpoints/opal-account.cpp:400 ../src/endpoints/opal-bank.cpp:159
+#: ../src/endpoints/opal-account.cpp:404 ../src/endpoints/opal-bank.cpp:159
 msgid "You did not supply a user name for that account."
 msgstr "您沒有提供該帳號的使用者名稱。"
 
-#: ../src/endpoints/opal-account.cpp:402 ../src/endpoints/opal-bank.cpp:161
+#: ../src/endpoints/opal-account.cpp:406 ../src/endpoints/opal-bank.cpp:161
 msgid "The timeout should have a bigger value."
 msgstr "逾時時間應該使用更大的數值。"
 
@@ -1400,333 +1407,345 @@ msgid "Please update the following fields."
 msgstr "請更新下列欄位:。"
 
 #: ../src/endpoints/opal-bank.cpp:80 ../src/gui/assistant.cpp:540
-msgid "Get an ekiga.net SIP account"
-msgstr "取得 ekiga.net SIP 帳號"
+msgid "Get an Ekiga.net SIP account"
+msgstr "取得 Ekiga.net SIP 帳號"
 
 #: ../src/endpoints/opal-bank.cpp:90 ../src/gui/assistant.cpp:652
 msgid "Get an Ekiga Call Out account"
 msgstr "取得 Ekiga Call Out 帳號"
 
-#: ../src/endpoints/opal-call.cpp:358
+#: ../src/endpoints/opal-bank.cpp:94 ../src/gui/main.cpp:3559
+#: ../src/gui/main.cpp:3656
+msgid "Account ID:"
+msgstr "帳號 ID:"
+
+#: ../src/endpoints/opal-bank.cpp:96
+msgid "PIN Code:"
+msgstr "PIN 碼:"
+
+#: ../src/endpoints/opal-call.cpp:398
 msgid "Local user cleared the call"
 msgstr "本機使用者已清除通話"
 
-#: ../src/endpoints/opal-call.cpp:361 ../src/endpoints/opal-call.cpp:364
+#: ../src/endpoints/opal-call.cpp:401 ../src/endpoints/opal-call.cpp:404
 msgid "Local user rejected the call"
 msgstr "本機使用者拒絕接聽來電"
 
-#: ../src/endpoints/opal-call.cpp:367
+#: ../src/endpoints/opal-call.cpp:407
 msgid "Remote user cleared the call"
 msgstr "遠端使用者已清除通話"
 
-#: ../src/endpoints/opal-call.cpp:370
+#: ../src/endpoints/opal-call.cpp:410
 msgid "Remote user rejected the call"
 msgstr "遠端使用者拒絕通話"
 
-#: ../src/endpoints/opal-call.cpp:373
+#: ../src/endpoints/opal-call.cpp:413
 msgid "Remote user has stopped calling"
 msgstr "遠端使用者已停止通話"
 
-#: ../src/endpoints/opal-call.cpp:376
+#: ../src/endpoints/opal-call.cpp:416
 msgid "Abnormal call termination"
 msgstr "不正常終止通話"
 
-#: ../src/endpoints/opal-call.cpp:379
+#: ../src/endpoints/opal-call.cpp:419 ../src/gui/main.cpp:1542
 msgid "Could not connect to remote host"
 msgstr "無法連接遠端主機"
 
-#: ../src/endpoints/opal-call.cpp:382
+#: ../src/endpoints/opal-call.cpp:422
 msgid "The Gatekeeper cleared the call"
 msgstr "閘道管理員已清除通話"
 
-#: ../src/endpoints/opal-call.cpp:385
+#: ../src/endpoints/opal-call.cpp:425
 msgid "User not found"
 msgstr "找不到使用者"
 
-#: ../src/endpoints/opal-call.cpp:388
+#: ../src/endpoints/opal-call.cpp:428
 msgid "Insufficient bandwidth"
 msgstr "頻寬不足"
 
-#: ../src/endpoints/opal-call.cpp:391
+#: ../src/endpoints/opal-call.cpp:431
 msgid "No common codec"
 msgstr "沒有通用的編碼解碼器"
 
-#: ../src/endpoints/opal-call.cpp:394
+#: ../src/endpoints/opal-call.cpp:434
 msgid "Call forwarded"
 msgstr "來電已轉駁"
 
-#: ../src/endpoints/opal-call.cpp:397
+#: ../src/endpoints/opal-call.cpp:437
 msgid "Security check failed"
 msgstr "安全性檢查失敗"
 
-#: ../src/endpoints/opal-call.cpp:400
+#: ../src/endpoints/opal-call.cpp:440
 msgid "Local user is busy"
 msgstr "本機使用者現正忙碌"
 
-#: ../src/endpoints/opal-call.cpp:403 ../src/endpoints/opal-call.cpp:409
+#: ../src/endpoints/opal-call.cpp:443 ../src/endpoints/opal-call.cpp:449
 msgid "Congested link to remote party"
 msgstr "遠端使用者線路擁塞"
 
-#: ../src/endpoints/opal-call.cpp:406
+#: ../src/endpoints/opal-call.cpp:446
 msgid "Remote user is busy"
 msgstr "遠端使用者現正忙碌"
 
-#: ../src/endpoints/opal-call.cpp:412
+#: ../src/endpoints/opal-call.cpp:452
 msgid "Remote host is offline"
 msgstr "遠端主機不在線上"
 
-#: ../src/endpoints/opal-call.cpp:419
-msgid "Remote user is not available"
-msgstr "遠端使用者現正不在"
+#: ../src/endpoints/opal-call.cpp:458
+msgid "User is not available"
+msgstr "使用者現正不在"
 
-#: ../src/endpoints/opal-call.cpp:421
-msgid "Local user is not available"
-msgstr "本機使用者現正不在"
-
-#: ../src/endpoints/opal-call.cpp:434
+#: ../src/endpoints/opal-call.cpp:470
 msgid "Call completed"
 msgstr "通話完成"
 
-#: ../src/endpoints/sip-endpoint.cpp:275 ../src/endpoints/sip-endpoint.cpp:279
-msgid "Forward"
-msgstr "轉接"
-
-#: ../src/endpoints/sip-endpoint.cpp:299 ../src/endpoints/sip-endpoint.cpp:301
+#: ../src/endpoints/sip-endpoint.cpp:298 ../src/endpoints/sip-endpoint.cpp:300
 msgid "Message"
 msgstr "訊息"
 
-#: ../src/endpoints/sip-endpoint.cpp:706
+#: ../src/endpoints/sip-endpoint.cpp:718
 msgid "Bad request"
 msgstr "錯誤要求"
 
-#: ../src/endpoints/sip-endpoint.cpp:710
+#: ../src/endpoints/sip-endpoint.cpp:722
 msgid "Payment required"
 msgstr "須要付帳"
 
-#: ../src/endpoints/sip-endpoint.cpp:714
+#: ../src/endpoints/sip-endpoint.cpp:726
 msgid "Unauthorized"
 msgstr "未驗證"
 
-#: ../src/endpoints/sip-endpoint.cpp:718
+#: ../src/endpoints/sip-endpoint.cpp:730
 msgid "Forbidden"
 msgstr "被禁止"
 
-#: ../src/endpoints/sip-endpoint.cpp:722
+#: ../src/endpoints/sip-endpoint.cpp:734
 msgid "Timeout"
 msgstr "逾時"
 
-#: ../src/endpoints/sip-endpoint.cpp:726
+#: ../src/endpoints/sip-endpoint.cpp:738
 msgid "Conflict"
 msgstr "衝突"
 
-#: ../src/endpoints/sip-endpoint.cpp:730
+#: ../src/endpoints/sip-endpoint.cpp:742
 msgid "Temporarily unavailable"
 msgstr "暫時無法使用"
 
-#: ../src/endpoints/sip-endpoint.cpp:734
+#: ../src/endpoints/sip-endpoint.cpp:746
 msgid "Not acceptable"
 msgstr "不能接受"
 
-#: ../src/endpoints/sip-endpoint.cpp:738
+#: ../src/endpoints/sip-endpoint.cpp:750
 msgid "Illegal status code"
 msgstr "不合法的狀態代碼"
 
-#: ../src/endpoints/sip-endpoint.cpp:742
+#: ../src/endpoints/sip-endpoint.cpp:754
 msgid "Multiple choices"
 msgstr "多重選擇"
 
-#: ../src/endpoints/sip-endpoint.cpp:746
+#: ../src/endpoints/sip-endpoint.cpp:758
 msgid "Moved permanently"
 msgstr "永久移動"
 
-#: ../src/endpoints/sip-endpoint.cpp:750
+#: ../src/endpoints/sip-endpoint.cpp:762
 msgid "Moved temporarily"
 msgstr "暫時移動"
 
-#: ../src/endpoints/sip-endpoint.cpp:754
+#: ../src/endpoints/sip-endpoint.cpp:766
 msgid "Use proxy"
 msgstr "使用代理伺服器"
 
-#: ../src/endpoints/sip-endpoint.cpp:758
+#: ../src/endpoints/sip-endpoint.cpp:770
 msgid "Alternative service"
 msgstr "替代的服務"
 
-#: ../src/endpoints/sip-endpoint.cpp:762
+#: ../src/endpoints/sip-endpoint.cpp:774
 msgid "Not found"
 msgstr "沒有找到"
 
-#: ../src/endpoints/sip-endpoint.cpp:766
+#: ../src/endpoints/sip-endpoint.cpp:778
 msgid "Method not allowed"
 msgstr "這個方法是不允許的"
 
-#: ../src/endpoints/sip-endpoint.cpp:770
+#: ../src/endpoints/sip-endpoint.cpp:782
 msgid "Proxy auth. required"
 msgstr "代理伺服器需要驗證"
 
-#: ../src/endpoints/sip-endpoint.cpp:774
+#: ../src/endpoints/sip-endpoint.cpp:786
 msgid "Length required"
 msgstr "要求長度"
 
-#: ../src/endpoints/sip-endpoint.cpp:778
+#: ../src/endpoints/sip-endpoint.cpp:790
 msgid "Request entity too big"
 msgstr "要求項目太大"
 
-#: ../src/endpoints/sip-endpoint.cpp:782
+#: ../src/endpoints/sip-endpoint.cpp:794
 msgid "Request URI too long"
 msgstr "要求 URI 太長"
 
-#: ../src/endpoints/sip-endpoint.cpp:786
+#: ../src/endpoints/sip-endpoint.cpp:798
 msgid "Unsupported media type"
 msgstr "不支援的媒體類型"
 
-#: ../src/endpoints/sip-endpoint.cpp:790
+#: ../src/endpoints/sip-endpoint.cpp:802
 msgid "Unsupported URI scheme"
 msgstr "不支援的 URI 結構"
 
-#: ../src/endpoints/sip-endpoint.cpp:794
+#. Translators : The extension we are trying to register does not exist
+#: ../src/endpoints/sip-endpoint.cpp:807
 msgid "Bad extension"
 msgstr "錯誤的延伸檔名"
 
-#: ../src/endpoints/sip-endpoint.cpp:798
+#: ../src/endpoints/sip-endpoint.cpp:811
 msgid "Extension required"
 msgstr "需要擴充功能"
 
-#: ../src/endpoints/sip-endpoint.cpp:802
+#: ../src/endpoints/sip-endpoint.cpp:815
 msgid "Interval too brief"
 msgstr "間隔太短"
 
-#: ../src/endpoints/sip-endpoint.cpp:806
+#: ../src/endpoints/sip-endpoint.cpp:819
 msgid "Loop detected"
 msgstr "偵測到廻圈"
 
-#: ../src/endpoints/sip-endpoint.cpp:810
+#: ../src/endpoints/sip-endpoint.cpp:823
 msgid "Too many hops"
 msgstr ""
 
-#: ../src/endpoints/sip-endpoint.cpp:814
+#: ../src/endpoints/sip-endpoint.cpp:827
 msgid "Address incomplete"
 msgstr "位址不完整"
 
-#: ../src/endpoints/sip-endpoint.cpp:818
+#: ../src/endpoints/sip-endpoint.cpp:831
 msgid "Ambiguous"
 msgstr ""
 
-#: ../src/endpoints/sip-endpoint.cpp:822
+#: ../src/endpoints/sip-endpoint.cpp:835
 msgid "Busy Here"
 msgstr ""
 
-#: ../src/endpoints/sip-endpoint.cpp:826
+#: ../src/endpoints/sip-endpoint.cpp:839
 msgid "Request terminated"
 msgstr "要求已終止"
 
-#: ../src/endpoints/sip-endpoint.cpp:830
+#: ../src/endpoints/sip-endpoint.cpp:843
 msgid "Not acceptable here"
 msgstr "這裡不能接受"
 
-#: ../src/endpoints/sip-endpoint.cpp:834
+#: ../src/endpoints/sip-endpoint.cpp:847
 msgid "Bad event"
 msgstr "錯誤的事件"
 
-#: ../src/endpoints/sip-endpoint.cpp:838
+#: ../src/endpoints/sip-endpoint.cpp:851
 #, fuzzy
 msgid "Request pending"
 msgstr "要求已終止"
 
-#: ../src/endpoints/sip-endpoint.cpp:842
+#: ../src/endpoints/sip-endpoint.cpp:855
 msgid "Undecipherable"
 msgstr "無法解譯的"
 
-#: ../src/endpoints/sip-endpoint.cpp:846
+#: ../src/endpoints/sip-endpoint.cpp:859
 msgid "Internal server error"
 msgstr "內部的伺服器錯誤"
 
-#: ../src/endpoints/sip-endpoint.cpp:850
+#: ../src/endpoints/sip-endpoint.cpp:863
 msgid "Not implemented"
 msgstr "未實作"
 
-#: ../src/endpoints/sip-endpoint.cpp:854
+#: ../src/endpoints/sip-endpoint.cpp:867
 msgid "Bad gateway"
 msgstr "錯誤的閘道器"
 
-#: ../src/endpoints/sip-endpoint.cpp:858
+#: ../src/endpoints/sip-endpoint.cpp:871
 msgid "Service unavailable"
 msgstr "服務無法使用"
 
-#: ../src/endpoints/sip-endpoint.cpp:862
+#: ../src/endpoints/sip-endpoint.cpp:875
 msgid "Server timeout"
 msgstr "伺服器逾時"
 
-#: ../src/endpoints/sip-endpoint.cpp:866
-msgid "SIP version not supp."
-msgstr "不支援此 SIP 版本。"
+#: ../src/endpoints/sip-endpoint.cpp:879
+msgid "SIP version not supported"
+msgstr "不支援此 SIP 版本"
 
-#: ../src/endpoints/sip-endpoint.cpp:870
+#: ../src/endpoints/sip-endpoint.cpp:883
 msgid "Message too large"
 msgstr "訊息太大"
 
-#: ../src/endpoints/sip-endpoint.cpp:874
+#: ../src/endpoints/sip-endpoint.cpp:887
 msgid "Busy everywhere"
 msgstr ""
 
-#: ../src/endpoints/sip-endpoint.cpp:878
+#: ../src/endpoints/sip-endpoint.cpp:891
 msgid "Decline"
 msgstr "拒絕"
 
-#: ../src/endpoints/sip-endpoint.cpp:882
+#: ../src/endpoints/sip-endpoint.cpp:895
 msgid "Does not exist anymore"
 msgstr "不再存在"
 
-#: ../src/endpoints/sip-endpoint.cpp:886
+#: ../src/endpoints/sip-endpoint.cpp:899
 msgid "Globally not acceptable"
 msgstr "全域無法接受"
 
-#: ../src/endpoints/sip-endpoint.cpp:999
+#: ../src/endpoints/sip-endpoint.cpp:1027
 msgid "Could not send message"
 msgstr "無法傳送訊息"
 
-#: ../src/gui/accounts.cpp:165
+#: ../src/gui/accounts.cpp:234
 msgid "Registered"
 msgstr "已註冊"
 
 # src/pref_window.cpp:2113
-#: ../src/gui/accounts.cpp:169
+#: ../src/gui/accounts.cpp:238
 msgid "Unregistered"
 msgstr "已取消註冊"
 
-#: ../src/gui/accounts.cpp:173
+#: ../src/gui/accounts.cpp:242
 msgid "Could not unregister"
 msgstr "無法取消註冊"
 
-#: ../src/gui/accounts.cpp:179
+#: ../src/gui/accounts.cpp:248
 msgid "Could not register"
 msgstr "無法註冊"
 
-#: ../src/gui/accounts.cpp:185
+#: ../src/gui/accounts.cpp:254
 msgid "Processing..."
 msgstr "處理中..."
 
-#: ../src/gui/accounts.cpp:521
+#: ../src/gui/accounts.cpp:628
 msgid "Account Name"
 msgstr "帳號名稱"
 
-#: ../src/gui/accounts.cpp:522
+#: ../src/gui/accounts.cpp:629
 msgid "Voice Mails"
 msgstr "語音信箱"
 
-#: ../src/gui/accounts.cpp:523
+#: ../src/gui/accounts.cpp:630
 msgid "Status"
 msgstr "狀態"
 
 # src/menu.cpp:383
-#: ../src/gui/accounts.cpp:534 ../src/gui/accounts.cpp:572
+#: ../src/gui/accounts.cpp:641 ../src/gui/accounts.cpp:684
 msgid "Accounts"
 msgstr "帳號"
 
-#: ../src/gui/accounts.cpp:549
-msgid "Account"
-msgstr "帳號"
+# src/menu.cpp:383
+#: ../src/gui/accounts.cpp:655 ../src/gui/main.cpp:1802
+msgid "_Accounts"
+msgstr "帳號(_A)"
 
-#: ../src/gui/accounts.cpp:575 ../src/gui/preferences.cpp:508
+#: ../src/gui/accounts.cpp:659 ../src/gui/main.cpp:1885
+msgid "_Help"
+msgstr "求助(_H)"
+
+#. Translators:
+#. * The following string "A" means "activated" or "active". It's a column
+#. * description in the list of configured accounts, it shows if an account
+#. * is activated or not (a status the user can choose).
+#.
+#: ../src/gui/accounts.cpp:692 ../src/gui/preferences.cpp:497
 msgid "A"
 msgstr "音訊"
 
@@ -1746,7 +1765,7 @@ msgstr ""
 msgid "Welcome in Ekiga"
 msgstr "歡迎使用 Ekiga"
 
-#: ../src/gui/assistant.cpp:300 ../src/gui/preferences.cpp:381
+#: ../src/gui/assistant.cpp:300 ../src/gui/preferences.cpp:373
 msgid "Personal Information"
 msgstr "個人資料"
 
@@ -1823,11 +1842,15 @@ msgstr ""
 "- 接著輸入您的帳號 ID 及 PIN 碼。\n"
 "服務只會在帳號以本對話視窗中的 URL 建立後才能使用。\n"
 
+#: ../src/gui/assistant.cpp:688
+msgid "Consult the calls history"
+msgstr "查閱通話記錄"
+
 #: ../src/gui/assistant.cpp:698
 msgid "I do not want to sign up for the Ekiga Call Out service"
 msgstr "我不想登記 Ekiga Call Out 服務"
 
-#: ../src/gui/assistant.cpp:767 ../src/gui/assistant.cpp:1272
+#: ../src/gui/assistant.cpp:767 ../src/gui/assistant.cpp:1264
 msgid "Connection Type"
 msgstr "連線類型"
 
@@ -1869,7 +1892,8 @@ msgstr ""
 "連線類型會決定 Ekiga 該連線類型下取得最佳品質的設定。\n"
 "您可以稍後在偏好設定中獨立地修改這設定。"
 
-#: ../src/gui/assistant.cpp:907 ../src/gui/preferences.cpp:701
+#: ../src/gui/assistant.cpp:907 ../src/gui/main.cpp:3932
+#: ../src/gui/main.cpp:3936 ../src/gui/preferences.cpp:690
 msgid "Audio Devices"
 msgstr "音訊裝置"
 
@@ -1879,49 +1903,47 @@ msgstr "請選擇音效響鈴裝置："
 
 #: ../src/gui/assistant.cpp:917
 msgid ""
-"The audio ringing device is the device  managed by the audio manager that "
-"will be used to play the ringing sound."
-msgstr "音效響鈴裝置是由音訊管理程式所管理，用來播放音效。"
+"The audio ringing device is the device that will be used to play the ringing "
+"sound on incoming calls."
+msgstr "音效響鈴裝置是用來播放來電鈴聲音效的裝置。"
 
 #. ---
-#: ../src/gui/assistant.cpp:930
+#: ../src/gui/assistant.cpp:928
 msgid "Please choose the audio output device:"
 msgstr "請選擇音訊輸出裝置："
 
-#: ../src/gui/assistant.cpp:938
+#: ../src/gui/assistant.cpp:936
 msgid ""
-"The audio output device is the device  managed by the audio manager that "
-"will be used to play audio."
-msgstr "音訊輸出裝置是由音訊管理程式所管理，用來播放音效。"
+"The audio output device is the device that will be used to play audio during "
+"calls."
+msgstr "音訊輸出裝置是在通話時用來播放聲音的裝置。"
 
 #. ---
-#: ../src/gui/assistant.cpp:951
+#: ../src/gui/assistant.cpp:947
 msgid "Please choose the audio input device:"
 msgstr "請選擇音訊輸入裝置："
 
-#: ../src/gui/assistant.cpp:959
+#: ../src/gui/assistant.cpp:955
 msgid ""
-"The audio input device is the device managed by the audio manager that will "
-"be used to record your voice."
-msgstr "音訊輸入裝置是由音訊管理程式所管理，用作錄音"
+"The audio input device is the device that will be used to record your voice "
+"during calls."
+msgstr "音訊輸入裝置是在通話時用來收錄您聲音的裝置。"
 
-#: ../src/gui/assistant.cpp:1053
+#: ../src/gui/assistant.cpp:1047
 msgid "Please choose your video input device:"
 msgstr "請選擇您的視訊輸入裝置："
 
-#: ../src/gui/assistant.cpp:1061
+#: ../src/gui/assistant.cpp:1055
 msgid ""
-"The video manager is the plugin that will manage your video devices, "
-"Video4Linux is the most common choice if you own a webcam."
-msgstr ""
-"視訊管理程式是用作管理您的視訊裝置的外掛程式。\n"
-"如果您有網路攝影機，Video4Linux 是最常用的選擇。"
+"The video input device is the device that will be used to capture video "
+"during calls."
+msgstr "視訊輸入裝置是在通話時用來擷取視訊的裝置。"
 
-#: ../src/gui/assistant.cpp:1203
+#: ../src/gui/assistant.cpp:1195
 msgid "Configuration Complete"
 msgstr "設定完成"
 
-#: ../src/gui/assistant.cpp:1205
+#: ../src/gui/assistant.cpp:1197
 msgid ""
 "You have now finished the Ekiga configuration. All the settings can be "
 "changed in the Ekiga preferences. Enjoy!"
@@ -1929,52 +1951,52 @@ msgstr ""
 "您現在已經完成 Ekiga 組態設定。所有的設定值都能在 Ekiga 偏好設定中變更。請儘"
 "情享受！"
 
-#: ../src/gui/assistant.cpp:1212
+#: ../src/gui/assistant.cpp:1204
 msgid "Configuration summary:"
 msgstr "組態摘要:"
 
-#: ../src/gui/assistant.cpp:1282
+#: ../src/gui/assistant.cpp:1274
 msgid "Audio Ringing Device"
 msgstr "音效響鈴裝置"
 
-#: ../src/gui/assistant.cpp:1291
+#: ../src/gui/assistant.cpp:1283
 msgid "Audio Output Device"
 msgstr "音效輸出裝置"
 
-#: ../src/gui/assistant.cpp:1300
+#: ../src/gui/assistant.cpp:1292
 msgid "Audio Input Device"
 msgstr "音效輸入裝置"
 
-#: ../src/gui/assistant.cpp:1309
+#: ../src/gui/assistant.cpp:1301
 msgid "Video Input Device"
 msgstr "視訊輸入裝置"
 
-#: ../src/gui/assistant.cpp:1322
+#: ../src/gui/assistant.cpp:1314
 msgid "SIP URI"
 msgstr "SIP URI"
 
-#: ../src/gui/assistant.cpp:1334
+#: ../src/gui/assistant.cpp:1326
 msgid "Ekiga Call Out"
 msgstr "Ekiga Call Out"
 
-#: ../src/gui/assistant.cpp:1376
+#: ../src/gui/assistant.cpp:1368
 #, c-format
 msgid "Ekiga Configuration Assistant (%d of %d)"
 msgstr "Ekiga 組態助理 (%d / %d)"
 
-#: ../src/gui/callbacks.cpp:129
+#: ../src/gui/callbacks.cpp:130
 msgid "Contributors:"
 msgstr "貢獻者："
 
-#: ../src/gui/callbacks.cpp:139
+#: ../src/gui/callbacks.cpp:140
 msgid "Artwork:"
 msgstr "美工："
 
-#: ../src/gui/callbacks.cpp:146
+#: ../src/gui/callbacks.cpp:147
 msgid "See AUTHORS file for full credits"
 msgstr "參看 AUTHORS 檔案中完整的鳴謝資料"
 
-#: ../src/gui/callbacks.cpp:162
+#: ../src/gui/callbacks.cpp:163
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -1985,7 +2007,7 @@ msgstr ""
 "的 GNU 通用公共許可證條款 (GNU General Public License) 第二版來修改和重新發佈"
 "這一程式，或者自由選擇使用任何更新的版本。"
 
-#: ../src/gui/callbacks.cpp:166
+#: ../src/gui/callbacks.cpp:167
 msgid ""
 "This program is distributed in the hope that it will be useful, but WITHOUT "
 "ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
@@ -1999,7 +2021,7 @@ msgstr ""
 "GNU 通用公共許可證的副本。如果還沒有，寫信給：Free Software Foundation, "
 "Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA."
 
-#: ../src/gui/callbacks.cpp:173
+#: ../src/gui/callbacks.cpp:174
 msgid ""
 "Ekiga is licensed under the GPL license and as a special exception, you have "
 "permission to link or otherwise combine this program with the programs OPAL, "
@@ -2014,7 +2036,7 @@ msgstr ""
 
 #. Translators: Please write translator credits here, and
 #. * separate names with \n
-#: ../src/gui/callbacks.cpp:185
+#: ../src/gui/callbacks.cpp:186
 msgid "translator-credits"
 msgstr ""
 "如對翻譯有任何意見，請送一封電子郵件給\n"
@@ -2025,7 +2047,7 @@ msgstr ""
 "Chung-Yen Chang <candyz at linux.org.tw>, 2002-03\n"
 "Abel Cheung <abel@oaka.org>, 2001"
 
-#: ../src/gui/callbacks.cpp:190
+#: ../src/gui/callbacks.cpp:191
 msgid ""
 "Ekiga is full-featured SIP and H.323 compatible VoIP, IP-Telephony and "
 "Videoconferencing application that allows you to make audio and video calls "
@@ -2068,71 +2090,77 @@ msgstr "wxyz"
 
 # src/pref_window.cpp:2113
 #. Translators: Is displayed once an account "%s" is registered.
-#: ../src/gui/main.cpp:571
+#: ../src/gui/main.cpp:583
 #, c-format
 msgid "Registered %s"
 msgstr "已註冊到 %s"
 
 # src/pref_window.cpp:2113
 #. Translators: Is displayed once an account "%s" is unregistered.
-#: ../src/gui/main.cpp:577
+#: ../src/gui/main.cpp:589
 #, c-format
 msgid "Unregistered %s"
 msgstr "已取消註冊 %s"
 
-#: ../src/gui/main.cpp:582
+#: ../src/gui/main.cpp:594
 #, c-format
 msgid "Could not unregister %s"
 msgstr "無法取消註冊 %s"
 
-#: ../src/gui/main.cpp:586
+#: ../src/gui/main.cpp:598
 #, c-format
 msgid "Could not register %s"
 msgstr "無法註冊 %s"
 
-#: ../src/gui/main.cpp:646
+#: ../src/gui/main.cpp:663
 #, c-format
 msgid "A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d"
 msgstr "A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d"
 
-#: ../src/gui/main.cpp:722
-msgid "Connected with"
-msgstr "連線至"
+#: ../src/gui/main.cpp:708
+#, c-format
+msgid "Connected with %s"
+msgstr "與 %s 連線"
 
-#: ../src/gui/main.cpp:752 ../src/gui/main.cpp:2289
+#: ../src/gui/main.cpp:744 ../src/gui/main.cpp:2323
 msgid "Standby"
 msgstr "備用"
 
-#: ../src/gui/main.cpp:813
+#: ../src/gui/main.cpp:810
 msgid "Call on hold"
 msgstr "保留通話"
 
-#: ../src/gui/main.cpp:826
+#: ../src/gui/main.cpp:823
 msgid "Call retrieved"
 msgstr "來電已收到"
 
-#: ../src/gui/main.cpp:845
-msgid "Missed call from"
-msgstr "未接來電為"
+#: ../src/gui/main.cpp:840
+#, c-format
+msgid "Missed call from %s"
+msgstr "來自 %s 的未接來電"
 
-#: ../src/gui/main.cpp:990 ../src/gui/misc.cpp:94
+#: ../src/gui/main.cpp:983 ../src/gui/misc.cpp:94
 msgid "Error"
 msgstr "錯誤"
 
-#: ../src/gui/main.cpp:1121
-msgid "added video input device "
-msgstr "加入的視訊輸入裝置"
+#. Translators: This is a hotplug status
+#: ../src/gui/main.cpp:1118
+#, c-format
+msgid "Added video input device %s"
+msgstr "加入的視訊輸入裝置 %s"
 
-#: ../src/gui/main.cpp:1134
-msgid "removed video input device "
-msgstr "移除的視訊輸入裝置"
+#. Translators: This is a hotplug status
+#: ../src/gui/main.cpp:1136
+#, c-format
+msgid "Removed video input device %s"
+msgstr "移除的視訊輸入裝置 %s"
 
-#: ../src/gui/main.cpp:1149
+#: ../src/gui/main.cpp:1153
 #, c-format
 msgid "Error while accessing video device %s"
 msgstr "開啟視訊裝置 %s 時發生錯誤"
 
-#: ../src/gui/main.cpp:1152
+#: ../src/gui/main.cpp:1156
 msgid ""
 "A moving logo will be transmitted during calls. Notice that you can always "
 "transmit a given image or the moving logo by choosing \"Picture\" as video "
@@ -2142,7 +2170,7 @@ msgstr ""
 "訊外掛程式選擇為「Picture」，並且將裝置選擇為「Moving logo」或「Static "
 "picture」。"
 
-#: ../src/gui/main.cpp:1156
+#: ../src/gui/main.cpp:1160
 msgid ""
 "There was an error while opening the device. In case it is a pluggable "
 "device it may be sufficient to reconnect it. If not, or if it still is not "
@@ -2152,15 +2180,15 @@ msgstr ""
 "當開啟該裝置時發生錯誤。如果它是外接式裝置，可以再重新連接看看。如果不是，或"
 "者重新連接後仍無法使用，請檢查您的權限並確定已載入合適的驅動程式。"
 
-#: ../src/gui/main.cpp:1160
+#: ../src/gui/main.cpp:1164
 msgid "Your video driver doesn't support the requested video format."
 msgstr "此視訊驅動程式不支援所要求的視訊格式。"
 
-#: ../src/gui/main.cpp:1164
+#: ../src/gui/main.cpp:1168
 msgid "Could not open the chosen channel."
 msgstr "無法開啟所選的通道。"
 
-#: ../src/gui/main.cpp:1168
+#: ../src/gui/main.cpp:1172
 msgid ""
 "Your driver doesn't seem to support any of the color formats supported by "
 "Ekiga.\n"
@@ -2170,36 +2198,42 @@ msgstr ""
 "您的驅動程式不支援任何 Ekiga 所支援的彩色格式。\n"
 "請檢查您的核心驅動程式文件以確定該調色板是得到支援。"
 
-#: ../src/gui/main.cpp:1172
+#: ../src/gui/main.cpp:1176
 msgid "Error while setting the frame rate."
 msgstr "設定幀率時發生錯誤。"
 
-#: ../src/gui/main.cpp:1176
+#: ../src/gui/main.cpp:1180
 msgid "Error while setting the frame size."
 msgstr "設定幀尺寸時發生錯誤。"
 
-#: ../src/gui/main.cpp:1181 ../src/gui/main.cpp:1282 ../src/gui/main.cpp:1395
+#: ../src/gui/main.cpp:1185 ../src/gui/main.cpp:1300 ../src/gui/main.cpp:1422
 msgid "Unknown error."
 msgstr "不明的錯誤。"
 
-#: ../src/gui/main.cpp:1235
-msgid "added audio input device "
-msgstr "加入的音訊輸入裝置"
+#. Translators: This is a hotplug status
+#: ../src/gui/main.cpp:1244
+#, c-format
+msgid "Added audio input device %s"
+msgstr "加入的音訊輸入裝置 %s"
 
-#: ../src/gui/main.cpp:1251
-msgid "removed audio input device "
-msgstr "移除的音訊輸入裝置"
+#. Translators: This is a hotplug status
+#: ../src/gui/main.cpp:1265
+#, c-format
+msgid "Removed audio input device %s"
+msgstr "移除的音訊輸入裝置 %s"
 
-#: ../src/gui/main.cpp:1266
+#: ../src/gui/main.cpp:1282
 #, c-format
 msgid "Error while opening audio input device %s"
 msgstr "開啟音效輸入裝置 %s 時發生錯誤"
 
-#: ../src/gui/main.cpp:1269
+#. Translators: This happens when there is an error with audio input:
+#. * Nothing ("silence") will be transmitted
+#: ../src/gui/main.cpp:1287
 msgid "Only silence will be transmitted."
 msgstr ""
 
-#: ../src/gui/main.cpp:1273
+#: ../src/gui/main.cpp:1291
 msgid ""
 "Unable to open the selected audio device for recording. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
@@ -2209,7 +2243,7 @@ msgstr ""
 "無法開啟所選擇的音訊裝置來錄音。如果它是外接式裝置，可以再重新連接看看。如果"
 "不是，或者重新連接後仍無法使用，請檢查你的音訊設定，權限及裝置並不是使用中。"
 
-#: ../src/gui/main.cpp:1277
+#: ../src/gui/main.cpp:1295
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "read data from this device. In case it is a pluggable device it may be "
@@ -2219,24 +2253,26 @@ msgstr ""
 "所選擇的音訊裝置開啟成功，但無法在這裝置中讀取資料。如果它是外接式裝置，可以"
 "再重新連接看看。如果不是，或者重新連接後仍無法使用，請檢查你的音訊設定。"
 
-#: ../src/gui/main.cpp:1345
-msgid "added audio output device "
-msgstr "加入的音訊輸出裝置"
+#: ../src/gui/main.cpp:1367
+#, c-format
+msgid "Added audio output device %s"
+msgstr "加入的音訊輸出裝置 %s"
 
-#: ../src/gui/main.cpp:1360
-msgid "removed audio output device "
-msgstr "移除的音訊輸出裝置"
+#: ../src/gui/main.cpp:1385
+#, c-format
+msgid "Removed audio output device %s"
+msgstr "移除的音訊輸出裝置 %s"
 
-#: ../src/gui/main.cpp:1379
+#: ../src/gui/main.cpp:1406
 #, c-format
 msgid "Error while opening audio output device %s"
 msgstr "開啟音效輸出裝置 %s 時發生錯誤"
 
-#: ../src/gui/main.cpp:1382
+#: ../src/gui/main.cpp:1409
 msgid "No incoming sound will be played."
 msgstr "沒有要播放的來電音效。"
 
-#: ../src/gui/main.cpp:1386
+#: ../src/gui/main.cpp:1413
 msgid ""
 "Unable to open the selected audio device for playing. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
@@ -2246,7 +2282,7 @@ msgstr ""
 "無法開啟所選擇的音訊裝置來播放。如果它是外接式裝置，可以再重新連接看看。如果"
 "不是，或者重新連接後仍無法使用，請檢查你的音訊設定，權限及裝置不是使用中。"
 
-#: ../src/gui/main.cpp:1390
+#: ../src/gui/main.cpp:1417
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "write data from this device. In case it is a pluggable device it may be "
@@ -2256,345 +2292,339 @@ msgstr ""
 "所選擇的音訊裝置開啟成功，但無法寫入資料到裝置中。如果它是外接式裝置，可以再"
 "重新連接看看。如果不是，或者重新連接後仍無法使用，請檢查您的音訊設定。"
 
-#: ../src/gui/main.cpp:1610
+#: ../src/gui/main.cpp:1644
 msgid "Enter a URI on the left, and click this button to place a call"
 msgstr "先在左邊輸入要致電的 URI，接著按本按鍵來打出電話"
 
-#: ../src/gui/main.cpp:1691
+#: ../src/gui/main.cpp:1725
 msgid "_Chat"
 msgstr "聊天(_C)"
 
-#: ../src/gui/main.cpp:1693
+#: ../src/gui/main.cpp:1727
 msgid "Ca_ll"
 msgstr "通話(_L)"
 
-#: ../src/gui/main.cpp:1693
+#: ../src/gui/main.cpp:1727
 msgid "Place a new call"
 msgstr "打出新電話"
 
-#: ../src/gui/main.cpp:1696
+#: ../src/gui/main.cpp:1730
 msgid "_Hang up"
 msgstr "掛線(_H)"
 
-#: ../src/gui/main.cpp:1697
+#: ../src/gui/main.cpp:1731
 msgid "Terminate the current call"
 msgstr "中斷目前的通話"
 
-#: ../src/gui/main.cpp:1703
+#: ../src/gui/main.cpp:1737
 msgid "A_dd Contact"
 msgstr "加入連絡人(_D)"
 
-#: ../src/gui/main.cpp:1703
+#: ../src/gui/main.cpp:1737
 msgid "Add a contact to the roster"
 msgstr "將連絡人加入名冊"
 
-#: ../src/gui/main.cpp:1707
-msgid "_Find Contacts"
-msgstr "尋找連絡人(_F)"
-
-#: ../src/gui/main.cpp:1708
+#: ../src/gui/main.cpp:1742
 msgid "Find contacts"
 msgstr "尋找連絡人"
 
-#: ../src/gui/main.cpp:1715
+#: ../src/gui/main.cpp:1749
+msgid "_Contact"
+msgstr "連絡人(_C)"
+
+#: ../src/gui/main.cpp:1750
+msgid "Act on selected contact"
+msgstr ""
+
+#: ../src/gui/main.cpp:1756
 msgid "H_old Call"
 msgstr "保留通話(_O)"
 
-#: ../src/gui/main.cpp:1715 ../src/gui/main.cpp:2390
+#: ../src/gui/main.cpp:1756 ../src/gui/main.cpp:2419
 msgid "Hold the current call"
 msgstr "保留目前的通話"
 
-#: ../src/gui/main.cpp:1719
+#: ../src/gui/main.cpp:1760
 msgid "_Transfer Call"
 msgstr "轉送來電(_T)"
 
-#: ../src/gui/main.cpp:1720
+#: ../src/gui/main.cpp:1761
 msgid "Transfer the current call"
 msgstr "轉送目前的通話"
 
-#: ../src/gui/main.cpp:1727 ../src/gui/main.cpp:3122
+#: ../src/gui/main.cpp:1768 ../src/gui/main.cpp:3177
 msgid "Suspend _Audio"
 msgstr "暫停音訊(_A)"
 
-#: ../src/gui/main.cpp:1728
+#: ../src/gui/main.cpp:1769
 msgid "Suspend or resume the audio transmission"
 msgstr "暫停或恢復音訊傳送"
 
-#: ../src/gui/main.cpp:1732 ../src/gui/main.cpp:3124
+#: ../src/gui/main.cpp:1773 ../src/gui/main.cpp:3179
 msgid "Suspend _Video"
 msgstr "暫停視訊(_V)"
 
-#: ../src/gui/main.cpp:1733
+#: ../src/gui/main.cpp:1774
 msgid "Suspend or resume the video transmission"
 msgstr "暫停或恢復視訊傳送"
 
-#: ../src/gui/main.cpp:1740
+#: ../src/gui/main.cpp:1781
 msgid "Close the Ekiga window"
 msgstr "關閉 Ekiga 視窗"
 
-#: ../src/gui/main.cpp:1747 ../src/gui/statusicon.cpp:418
+#: ../src/gui/main.cpp:1788 ../src/gui/statusicon.cpp:426
 msgid "Quit"
 msgstr "離開"
 
-#: ../src/gui/main.cpp:1753
+#: ../src/gui/main.cpp:1794
 msgid "_Configuration Assistant"
 msgstr "組態助理(_C)"
 
-#: ../src/gui/main.cpp:1754
+#: ../src/gui/main.cpp:1795
 msgid "Run the configuration assistant"
 msgstr "執行組態助理"
 
-# src/menu.cpp:383
-#: ../src/gui/main.cpp:1761
-msgid "_Accounts"
-msgstr "帳號(_A)"
-
-#: ../src/gui/main.cpp:1762
+#: ../src/gui/main.cpp:1803
 msgid "Edit your accounts"
 msgstr "編輯您的帳號"
 
-#: ../src/gui/main.cpp:1768
+#: ../src/gui/main.cpp:1809
 msgid "Change your preferences"
 msgstr "修改偏好設定"
 
-#: ../src/gui/main.cpp:1773
+#: ../src/gui/main.cpp:1814
 msgid "_View"
 msgstr "顯示(_V)"
 
-#: ../src/gui/main.cpp:1775
+#: ../src/gui/main.cpp:1816
 msgid "Con_tacts"
 msgstr "連絡人(_T)"
 
-#: ../src/gui/main.cpp:1775
+#: ../src/gui/main.cpp:1816
 msgid "View the contacts list"
 msgstr "檢視連絡人清單"
 
-#: ../src/gui/main.cpp:1780
+#: ../src/gui/main.cpp:1821
 msgid "_Dialpad"
 msgstr "撥號盤(_D)"
 
-#: ../src/gui/main.cpp:1780
+#: ../src/gui/main.cpp:1821
 msgid "View the dialpad"
 msgstr "顯示撥號盤"
 
-#: ../src/gui/main.cpp:1785
+#: ../src/gui/main.cpp:1826
 msgid "_Call History"
 msgstr "通話紀錄(_C)"
 
-#: ../src/gui/main.cpp:1785
+#: ../src/gui/main.cpp:1826
 msgid "View the call history"
 msgstr "檢視通話紀錄"
 
-#: ../src/gui/main.cpp:1793
+#: ../src/gui/main.cpp:1834
 msgid "_Show Call Panel"
 msgstr "顯示撥號面板(_S)"
 
-#: ../src/gui/main.cpp:1801
+#: ../src/gui/main.cpp:1842
 msgid "_Local Video"
 msgstr "本地端視訊(_L)"
 
-#: ../src/gui/main.cpp:1802
+#: ../src/gui/main.cpp:1843
 msgid "Local video image"
 msgstr "本機視訊畫面"
 
-#: ../src/gui/main.cpp:1807
+#: ../src/gui/main.cpp:1848
 msgid "_Remote Video"
 msgstr "遠端視訊(_R)"
 
-#: ../src/gui/main.cpp:1808
+#: ../src/gui/main.cpp:1849
 msgid "Remote video image"
 msgstr "遠端視訊畫面"
 
-#: ../src/gui/main.cpp:1813
+#: ../src/gui/main.cpp:1854
 msgid "_Picture-in-Picture"
 msgstr "子母畫面(_P)"
 
-#: ../src/gui/main.cpp:1814 ../src/gui/main.cpp:1820
+#: ../src/gui/main.cpp:1855 ../src/gui/main.cpp:1861
 msgid "Both video images"
 msgstr "本機和遠端的視訊畫面"
 
-#: ../src/gui/main.cpp:1819
+#: ../src/gui/main.cpp:1860
 msgid "Picture-in-Picture in Separate _Window"
 msgstr "以個別視窗顯示子母畫面(_W)"
 
-#: ../src/gui/main.cpp:1827
+#: ../src/gui/main.cpp:1868
 msgid "Zoom in"
 msgstr "放大"
 
-#: ../src/gui/main.cpp:1831
+#: ../src/gui/main.cpp:1872
 msgid "Zoom out"
 msgstr "縮小"
 
-#: ../src/gui/main.cpp:1835
+#: ../src/gui/main.cpp:1876
 msgid "Normal size"
 msgstr "正常大小"
 
-#: ../src/gui/main.cpp:1839
+#: ../src/gui/main.cpp:1880
 msgid "_Fullscreen"
 msgstr "全螢幕(_F)"
 
-#: ../src/gui/main.cpp:1839
+#: ../src/gui/main.cpp:1880
 msgid "Switch to fullscreen"
 msgstr "切換至全螢幕"
 
-#: ../src/gui/main.cpp:1844
-msgid "_Help"
-msgstr "求助(_H)"
-
-#: ../src/gui/main.cpp:1847 ../src/gui/statusicon.cpp:395
-#: ../src/gui/statusicon.cpp:406
+#: ../src/gui/main.cpp:1888 ../src/gui/statusicon.cpp:403
+#: ../src/gui/statusicon.cpp:414
 msgid "Get help by reading the Ekiga manual"
 msgstr "閱讀 Ekiga 手冊以取得幫助"
 
-#: ../src/gui/main.cpp:1852 ../src/gui/statusicon.cpp:400
-#: ../src/gui/statusicon.cpp:411
+#: ../src/gui/main.cpp:1893 ../src/gui/statusicon.cpp:408
+#: ../src/gui/statusicon.cpp:419
 msgid "View information about Ekiga"
 msgstr "顯示有關 Ekiga 的資訊"
 
-#: ../src/gui/main.cpp:1888
+#: ../src/gui/main.cpp:1930
 msgid "Contacts"
 msgstr "連絡人"
 
-#: ../src/gui/main.cpp:1913
+#: ../src/gui/main.cpp:1958
 msgid "Dialpad"
 msgstr "撥號盤"
 
-#: ../src/gui/main.cpp:1949
+#: ../src/gui/main.cpp:1994
 msgid "Video Settings"
 msgstr "視訊設定"
 
-#: ../src/gui/main.cpp:1977
+#: ../src/gui/main.cpp:2021
 msgid "Adjust brightness"
 msgstr "調整亮度"
 
-#: ../src/gui/main.cpp:1999
+#: ../src/gui/main.cpp:2042
 msgid "Adjust whiteness"
 msgstr "調整白平衡"
 
-#: ../src/gui/main.cpp:2021
+#: ../src/gui/main.cpp:2063
 msgid "Adjust color"
 msgstr "調整顏色"
 
-#: ../src/gui/main.cpp:2043
+#: ../src/gui/main.cpp:2084
 msgid "Adjust contrast"
 msgstr "調整對比度"
 
-#: ../src/gui/main.cpp:2097
+#: ../src/gui/main.cpp:2138
 msgid "Audio Settings"
 msgstr "音訊設定"
 
-#: ../src/gui/main.cpp:2323
+#: ../src/gui/main.cpp:2357
 msgid "Change the volume of your soundcard"
 msgstr "調整音效卡的音量"
 
-#: ../src/gui/main.cpp:2346
+#: ../src/gui/main.cpp:2377
 msgid "Change the color settings of your video device"
 msgstr "調整視訊裝置的顏色"
 
-#: ../src/gui/main.cpp:2369
+#: ../src/gui/main.cpp:2399
 msgid "Display images from your camera device"
 msgstr "顯示攝影機所拍攝的圖片"
 
-#: ../src/gui/main.cpp:2421
+#: ../src/gui/main.cpp:2452
 msgid "Call history"
 msgstr "通話紀錄"
 
-#: ../src/gui/main.cpp:3070
+#: ../src/gui/main.cpp:3125
 msgid "_Retrieve Call"
 msgstr "恢復通話(_R)"
 
-#: ../src/gui/main.cpp:3083
+#: ../src/gui/main.cpp:3138
 msgid "_Hold Call"
 msgstr "保留通話(_H)"
 
-#: ../src/gui/main.cpp:3126
+#: ../src/gui/main.cpp:3181
 msgid "Resume _Audio"
 msgstr "恢復音訊(_A)"
 
-#: ../src/gui/main.cpp:3128
+#: ../src/gui/main.cpp:3183
 msgid "Resume _Video"
 msgstr "恢復視訊(_V)"
 
-#: ../src/gui/main.cpp:3530
-#, c-format
-msgid "Call Duration: %s\n"
-msgstr "通話時間：%s\n"
-
-#: ../src/gui/main.cpp:3567
-msgid "Transfer call to:"
-msgstr "轉送通話到："
-
-#: ../src/gui/main.cpp:3568
-msgid "Transfer"
-msgstr "轉送"
-
-#: ../src/gui/main.cpp:3630
+#: ../src/gui/main.cpp:3508 ../src/gui/main.cpp:3662
 msgid "Reject"
 msgstr "拒接"
 
-#: ../src/gui/main.cpp:3632
+#: ../src/gui/main.cpp:3510 ../src/gui/main.cpp:3661
 msgid "Accept"
 msgstr "接受"
 
 # src/endpoint.cpp:467
-#: ../src/gui/main.cpp:3639
+#: ../src/gui/main.cpp:3516 ../src/gui/main.cpp:3649
 msgid "Incoming call from"
 msgstr "來電來自"
 
 # src/menu.cpp:509
-#: ../src/gui/main.cpp:3652
+#: ../src/gui/main.cpp:3534 ../src/gui/main.cpp:3652
 msgid "Remote URI:"
 msgstr "遠端 URI："
 
-#: ../src/gui/main.cpp:3664
+#: ../src/gui/main.cpp:3546 ../src/gui/main.cpp:3654
 msgid "Remote Application:"
 msgstr "遠端程式："
 
-#: ../src/gui/main.cpp:3713
+#: ../src/gui/main.cpp:3567
+#, c-format
+msgid "Call from %s"
+msgstr "%s 來電"
+
+#: ../src/gui/main.cpp:3824
+#, c-format
+msgid "Call Duration: %s\n"
+msgstr "通話時間：%s\n"
+
+#: ../src/gui/main.cpp:3861
+msgid "Transfer call to:"
+msgstr "轉送通話到："
+
+#: ../src/gui/main.cpp:3918
 msgid "No"
 msgstr "否"
 
-#: ../src/gui/main.cpp:3715
+#: ../src/gui/main.cpp:3920
 msgid "Yes"
 msgstr "是"
 
-#: ../src/gui/main.cpp:3725
+#: ../src/gui/main.cpp:3931
 msgid "Detected new audio input device:"
 msgstr "偵測到新的音訊輸入裝置："
 
-#: ../src/gui/main.cpp:3728
+#: ../src/gui/main.cpp:3935
 msgid "Detected new audio output device:"
 msgstr "偵測到新的音訊輸出裝置："
 
-#: ../src/gui/main.cpp:3731
+#: ../src/gui/main.cpp:3939
 msgid "Detected new video input device:"
 msgstr "偵測到新的視訊輸入裝置："
 
-#: ../src/gui/main.cpp:3749
+#: ../src/gui/main.cpp:3940 ../src/gui/preferences.cpp:848
+msgid "Video Devices"
+msgstr "視訊裝置"
+
+#: ../src/gui/main.cpp:3958
 msgid "Do you want to use it as default device?"
 msgstr "是否要用它做為預設的裝置？"
 
-#. Add title
-#: ../src/gui/main.cpp:3807 ../src/gui/main.cpp:3914
+#: ../src/gui/main.cpp:4025 ../src/gui/main.cpp:4124
 msgid "Ekiga"
 msgstr "Ekiga"
 
-#: ../src/gui/main.cpp:4103
-#, c-format
-msgid "Missed calls: %d - Voice Mails: %d"
-msgstr "未接來電：%d - 語音留言：%d"
-
-#: ../src/gui/main.cpp:4262
+#: ../src/gui/main.cpp:4443
 #, c-format
 msgid "TX: %dx%d "
 msgstr "TX: %dx%d "
 
-#: ../src/gui/main.cpp:4265
+#: ../src/gui/main.cpp:4446
 #, c-format
 msgid "RX: %dx%d "
 msgstr "RX: %dx%d "
 
-#: ../src/gui/main.cpp:4267
+#: ../src/gui/main.cpp:4448
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -2607,43 +2637,43 @@ msgstr ""
 "損壞封包：%.1f %%\n"
 "抗抖動緩衝：%d ms%s%s%s"
 
-#: ../src/gui/main.cpp:4414
+#: ../src/gui/main.cpp:4596
 msgid "Prints debug messages in the console (level between 1 and 5)"
 msgstr "在主控台中顯示除錯訊息（等級由 1 至 5）"
 
-#: ../src/gui/main.cpp:4419
+#: ../src/gui/main.cpp:4601
 msgid "Prints user plane debug messages in the console (level between 1 and 4)"
 msgstr "在主控台中顯示使用者層級除錯訊息（等級由 1 至 4）"
 
-#: ../src/gui/main.cpp:4424
+#: ../src/gui/main.cpp:4606
 msgid "Makes Ekiga call the given URI"
 msgstr "使 Ekiga 致電給指定的 URI"
 
-#: ../src/gui/main.cpp:4533
+#: ../src/gui/main.cpp:4722
 msgid "No usable audio plugin detected"
 msgstr "偵測不到可用的音訊外掛程式"
 
-#: ../src/gui/main.cpp:4534
+#: ../src/gui/main.cpp:4723
 msgid ""
 "Ekiga didn't find any usable audio plugin. Make sure that your installation "
 "is correct."
 msgstr "Ekiga 找不到可用的音效外掛程式，請確定程式是否正確安裝。"
 
-#: ../src/gui/main.cpp:4537
+#: ../src/gui/main.cpp:4726
 msgid "No usable audio codecs detected"
 msgstr "偵測不到可用的音訊編碼解碼器"
 
-#: ../src/gui/main.cpp:4538
+#: ../src/gui/main.cpp:4727
 msgid ""
 "Ekiga didn't find any usable audio codec. Make sure that your installation "
 "is correct."
 msgstr "Ekiga 找不到可用的音效編碼解碼器，請確定程式是否安裝正確。"
 
-#: ../src/gui/main.cpp:4544
+#: ../src/gui/main.cpp:4733
 msgid "Configuration database corruption"
 msgstr "設定資料庫損毀"
 
-#: ../src/gui/main.cpp:4545
+#: ../src/gui/main.cpp:4734
 #, c-format
 msgid ""
 "Ekiga got an invalid value for the configuration key %s.\n"
@@ -2663,74 +2693,59 @@ msgstr ""
 "(http://www.gnome.org/projects/gconf/) 或通信論壇存檔 (http://mail.gnome."
 "org) 以取得更多關於這問題的資訊。"
 
-#: ../src/gui/preferences.cpp:384
+#: ../src/gui/preferences.cpp:376
 msgid "_Full name:"
 msgstr "名字(_F):"
 
-#: ../src/gui/preferences.cpp:386
-msgid "Enter your first name"
-msgstr "輸入您的名字"
-
-#. Add the update button
-#: ../src/gui/preferences.cpp:391
-msgid "_Apply"
-msgstr "套用(_A)"
-
-#: ../src/gui/preferences.cpp:391
-msgid ""
-"Click here to update the users directory you are registered to with the new "
-"First Name, Last Name, E-Mail, Comment and Location"
-msgstr "點選此處以更新您所註冊的使用者目錄上新的姓名、電子郵件、備註及位置。"
-
-#: ../src/gui/preferences.cpp:405
+#: ../src/gui/preferences.cpp:394
 msgid "User Interface"
 msgstr "使用者介面"
 
-#: ../src/gui/preferences.cpp:407
+#: ../src/gui/preferences.cpp:396
 msgid "Start _hidden"
 msgstr "啟動時自動隱藏(_H)"
 
-#: ../src/gui/preferences.cpp:409
+#: ../src/gui/preferences.cpp:398
 msgid "Show offline _contacts"
 msgstr "顯示離線連絡人(_C)"
 
-#: ../src/gui/preferences.cpp:414
+#: ../src/gui/preferences.cpp:403
 msgid "Video Display"
 msgstr "視訊畫面"
 
-#: ../src/gui/preferences.cpp:416
+#: ../src/gui/preferences.cpp:405
 msgid "Place windows displaying video _above other windows"
 msgstr "使視訊畫面視窗上於其它的視窗(_A)"
 
-#: ../src/gui/preferences.cpp:426
+#: ../src/gui/preferences.cpp:415
 msgid "Call Forwarding"
 msgstr "來電轉駁"
 
-#: ../src/gui/preferences.cpp:428
+#: ../src/gui/preferences.cpp:417
 msgid "_Always forward calls to the given host"
 msgstr "總是轉駁來電至指定的主機(_A)"
 
-#: ../src/gui/preferences.cpp:428
+#: ../src/gui/preferences.cpp:417
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the protocol settings"
 msgstr "如啟用此選項，所有的來電都會轉駁到在通訊協定設定中指定的主機"
 
-#: ../src/gui/preferences.cpp:430
+#: ../src/gui/preferences.cpp:419
 msgid "Forward calls to the given host if _no answer"
 msgstr "無人接聽時轉駁來電到指定的主機(_N)"
 
-#: ../src/gui/preferences.cpp:430
+#: ../src/gui/preferences.cpp:419
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the protocol settings if you do not answer the call"
 msgstr "如啟用此選項，所有您沒有接聽的來電都會轉駁到在通訊協定設定中指定的主機"
 
-#: ../src/gui/preferences.cpp:432
+#: ../src/gui/preferences.cpp:421
 msgid "Forward calls to the given host if _busy"
 msgstr "忙線時轉駁來電到指定的主機(_B)"
 
-#: ../src/gui/preferences.cpp:432
+#: ../src/gui/preferences.cpp:421
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the protocol settings if you already are in a call or if you "
@@ -2739,80 +2754,80 @@ msgstr ""
 "如啟用此選項，當您正在通話或設定為請勿打擾時，所有來電都會轉駁到在通訊協定設"
 "定中指定的主機"
 
-#: ../src/gui/preferences.cpp:436 ../src/gui/preferences.cpp:1467
+#: ../src/gui/preferences.cpp:425 ../src/gui/preferences.cpp:1442
 msgid "Call Options"
 msgstr "通話選項"
 
 #. Add all the fields
-#: ../src/gui/preferences.cpp:439
+#: ../src/gui/preferences.cpp:428
 msgid "Timeout to reject or forward unanswered incoming calls (in seconds):"
 msgstr "拒絕接聽或轉駁來電的時限（秒）："
 
-#: ../src/gui/preferences.cpp:471
+#: ../src/gui/preferences.cpp:460
 msgid "Ekiga Sound Events"
 msgstr "Ekiga 事件音效"
 
-#: ../src/gui/preferences.cpp:520 ../src/gui/preferences.cpp:529
-#: ../src/gui/preferences.cpp:538
+#: ../src/gui/preferences.cpp:509 ../src/gui/preferences.cpp:518
+#: ../src/gui/preferences.cpp:527
 msgid "Event"
 msgstr "事件"
 
-#: ../src/gui/preferences.cpp:550
+#: ../src/gui/preferences.cpp:539
 msgid "Choose a sound"
 msgstr "選擇音效"
 
-#: ../src/gui/preferences.cpp:556
+#: ../src/gui/preferences.cpp:545
 msgid "Wavefiles"
 msgstr "Wave 檔案"
 
-#: ../src/gui/preferences.cpp:565 ../src/gui/preferences.cpp:584
+#: ../src/gui/preferences.cpp:554 ../src/gui/preferences.cpp:573
 msgid "Play"
 msgstr "播放"
 
 # src/menu.cpp:370 src/menu.cpp:396
-#: ../src/gui/preferences.cpp:605
+#: ../src/gui/preferences.cpp:594
 msgid "String"
 msgstr "字符串"
 
 # src/pref_window.cpp:850
-#: ../src/gui/preferences.cpp:606
+#: ../src/gui/preferences.cpp:595
 msgid "Tone"
 msgstr "撥號音"
 
-#: ../src/gui/preferences.cpp:607 ../src/gui/preferences.cpp:656
+#: ../src/gui/preferences.cpp:596 ../src/gui/preferences.cpp:645
 msgid "RFC2833"
 msgstr "RFC2833"
 
-#: ../src/gui/preferences.cpp:608
+#: ../src/gui/preferences.cpp:597
 msgid "Q.931"
 msgstr "Q.931"
 
-#: ../src/gui/preferences.cpp:614 ../src/gui/preferences.cpp:666
+#: ../src/gui/preferences.cpp:603 ../src/gui/preferences.cpp:655
 msgid "Misc Settings"
 msgstr "其它設定"
 
-#: ../src/gui/preferences.cpp:617 ../src/gui/preferences.cpp:671
+#: ../src/gui/preferences.cpp:606 ../src/gui/preferences.cpp:660
 msgid "Forward _URI:"
 msgstr "轉駁 _URI："
 
-#: ../src/gui/preferences.cpp:626
+#: ../src/gui/preferences.cpp:615
 msgid "Advanced Settings"
 msgstr "進階設定"
 
 #. The toggles
-#: ../src/gui/preferences.cpp:629
+#: ../src/gui/preferences.cpp:618
 msgid "Enable H.245 _tunneling"
 msgstr "啟用 _H.245 穿隧技術"
 
-#: ../src/gui/preferences.cpp:631
+#: ../src/gui/preferences.cpp:620
 msgid "Enable _early H.245"
 msgstr "啟用早期 H.245 穿隧技術(_E)"
 
-#: ../src/gui/preferences.cpp:633
+#: ../src/gui/preferences.cpp:622
 msgid "Enable fast _start procedure"
 msgstr "啟用快速啟動(_S)"
 
-#: ../src/gui/preferences.cpp:633
+#: ../src/gui/preferences.cpp:622
 msgid ""
 "Connection will be established in Fast Start mode. Fast Start is a new way "
 "to start calls faster that was introduced in H.323v2. It is not supported by "
@@ -2823,138 +2838,180 @@ msgstr ""
 "Netmeeting 不支援它，同時使用快速啟動和 H.245 穿隧模式會使某些版本的 "
 "Netmeeting 當機。"
 
-#: ../src/gui/preferences.cpp:639 ../src/gui/preferences.cpp:679
+#: ../src/gui/preferences.cpp:628 ../src/gui/preferences.cpp:668
 msgid "DTMF Mode"
 msgstr "DTMF 模式"
 
-#: ../src/gui/preferences.cpp:641 ../src/gui/preferences.cpp:681
+#: ../src/gui/preferences.cpp:630 ../src/gui/preferences.cpp:670
 msgid "_Send DTMF as:"
 msgstr "傳送 _DTMF 為："
 
-#: ../src/gui/preferences.cpp:641 ../src/gui/preferences.cpp:681
+#: ../src/gui/preferences.cpp:630 ../src/gui/preferences.cpp:670
 msgid "This allows you to set the mode for DTMFs sending."
 msgstr "在這裡允許設定 DTMF 的傳送模式。"
 
-#: ../src/gui/preferences.cpp:657
+#: ../src/gui/preferences.cpp:646
 msgid "INFO"
 msgstr "INFO"
 
-#: ../src/gui/preferences.cpp:668
+#: ../src/gui/preferences.cpp:657
 msgid "_Outbound Proxy:"
 msgstr "_Outbound Proxy:"
 
-#: ../src/gui/preferences.cpp:709
+#: ../src/gui/preferences.cpp:698
 msgid "Ringing Device"
 msgstr "響鈴裝置"
 
-#: ../src/gui/preferences.cpp:709
+#: ../src/gui/preferences.cpp:698
 msgid "Select the ringing audio device to use"
 msgstr "選擇要使用的音效響鈴裝置"
 
-#: ../src/gui/preferences.cpp:711
+#: ../src/gui/preferences.cpp:700
 msgid "Output device:"
 msgstr "輸出裝置："
 
-#: ../src/gui/preferences.cpp:718 ../src/gui/preferences.cpp:866
+#: ../src/gui/preferences.cpp:707 ../src/gui/preferences.cpp:855
 msgid "Input device:"
 msgstr "輸入裝置："
 
 #. That button will refresh the device list
-#: ../src/gui/preferences.cpp:723 ../src/gui/preferences.cpp:930
+#. The file selector button
+#. FIXME disabled for now
+#. label = gtk_label_new (_("Image:"));
+#.
+#. button =
+#. gtk_file_chooser_button_new_with_backend (_("Choose a Picture"),
+#. GTK_FILE_CHOOSER_ACTION_OPEN,
+#. FILECHOOSER_BACKEND);
+#.
+#. preview_image_frame = gtk_frame_new (_("Preview"));
+#. preview_image = gtk_image_new ();
+#. gtk_container_add (GTK_CONTAINER (preview_image_frame), preview_image);
+#. gtk_widget_set_size_request (preview_image, 256, 256);
+#. gtk_widget_show (preview_image);
+#. gtk_file_chooser_set_preview_widget (GTK_FILE_CHOOSER (button),
+#. preview_image_frame);
+#.
+#.
+#. filefilter = gtk_file_filter_new ();
+#. gtk_file_filter_set_name (filefilter, _("Images"));
+#. gtk_file_filter_add_pixbuf_formats (filefilter);
+#. gtk_file_chooser_add_filter (GTK_FILE_CHOOSER (button), filefilter);
+#.
+#. g_signal_connect (G_OBJECT (button), "update-preview",
+#. G_CALLBACK (image_filename_browse_preview_cb),
+#. (gpointer) preview_image);
+#.
+#. conf_image = gm_conf_get_string (VIDEO_DEVICES_KEY "image");
+#. if (!conf_image || (!strcmp (conf_image, ""))) {
+#. g_free (conf_image);
+#. conf_image = NULL;
+#. }
+#.
+#. if (conf_image)
+#. gtk_file_chooser_set_filename (GTK_FILE_CHOOSER (button), conf_image);
+#. g_free (conf_image);
+#.
+#. gtk_table_attach (GTK_TABLE (subsection), button, 1, 2, 4, 5,
+#. (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+#. (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
+#. 0, GNOMEMEETING_PAD_SMALL);
+#.
+#. gtk_table_attach (GTK_TABLE (subsection), label, 0, 1, 4, 5,
+#. (GtkAttachOptions) (GTK_FILL),
+#. (GtkAttachOptions) (GTK_FILL),
+#. 0, 0);
+#.
+#. gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+#. gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
+#.
+#. g_signal_connect_after (G_OBJECT (button), "selection-changed",
+#. G_CALLBACK (image_filename_browse_cb),
+#. (gpointer) VIDEO_DEVICES_KEY "image");
+#.
+#. That button will refresh the device list
+#: ../src/gui/preferences.cpp:712 ../src/gui/preferences.cpp:920
 msgid "_Detect devices"
 msgstr "偵測裝置(_D)"
 
-#: ../src/gui/preferences.cpp:723 ../src/gui/preferences.cpp:930
+#: ../src/gui/preferences.cpp:712 ../src/gui/preferences.cpp:920
 msgid "Click here to refresh the device list."
 msgstr "按此處來更新裝置清單。"
 
-#: ../src/gui/preferences.cpp:844
+#: ../src/gui/preferences.cpp:833
 msgid "PAL (Europe)"
 msgstr "PAL（歐洲）"
 
-#: ../src/gui/preferences.cpp:845
+#: ../src/gui/preferences.cpp:834
 msgid "NTSC (America)"
 msgstr "NTSC（美國）"
 
-#: ../src/gui/preferences.cpp:846
+#: ../src/gui/preferences.cpp:835
 msgid "SECAM (France)"
 msgstr "SECAM（法國）"
 
-#: ../src/gui/preferences.cpp:847
+#: ../src/gui/preferences.cpp:836
 msgid "Auto"
 msgstr "自動"
 
-#: ../src/gui/preferences.cpp:859
-msgid "Video Devices"
-msgstr "視訊裝置"
-
 #. Video Channel
-#: ../src/gui/preferences.cpp:870
+#: ../src/gui/preferences.cpp:859
 msgid "Channel:"
 msgstr "通道："
 
-#: ../src/gui/preferences.cpp:872
+#: ../src/gui/preferences.cpp:861
 msgid "Size:"
 msgstr "大小："
 
-#: ../src/gui/preferences.cpp:872
+#: ../src/gui/preferences.cpp:861
 msgid "Select the transmitted video size"
 msgstr "選擇傳送的視訊大小"
 
-#: ../src/gui/preferences.cpp:874
+#: ../src/gui/preferences.cpp:863
 msgid "Format:"
 msgstr "格式："
 
-#. The file selector button
-#: ../src/gui/preferences.cpp:877
-msgid "Image:"
-msgstr "圖片："
-
-#: ../src/gui/preferences.cpp:880
-msgid "Choose a Picture"
-msgstr "選擇圖片"
-
-#: ../src/gui/preferences.cpp:884
-msgid "Preview"
-msgstr "預覽"
-
-#: ../src/gui/preferences.cpp:894
-msgid "Images"
-msgstr "圖片"
-
-#: ../src/gui/preferences.cpp:954 ../src/gui/preferences.cpp:991
-#: ../src/gui/preferences.cpp:1492 ../src/gui/preferences.cpp:1502
+#: ../src/gui/preferences.cpp:944 ../src/gui/preferences.cpp:983
+#: ../src/gui/preferences.cpp:1467 ../src/gui/preferences.cpp:1477
 msgid "Codecs"
 msgstr "編碼解碼器："
 
-#: ../src/gui/preferences.cpp:967 ../src/gui/preferences.cpp:1004
+#: ../src/gui/preferences.cpp:957 ../src/gui/preferences.cpp:996
 msgid "Settings"
 msgstr "設定值"
 
 #. Translators: the full sentence is Automatically adjust jitter buffer
 #. between X and Y ms
-#: ../src/gui/preferences.cpp:971
+#: ../src/gui/preferences.cpp:961
 msgid "Enable silence _detection"
 msgstr "啟用靜音探測(_D)"
 
-#: ../src/gui/preferences.cpp:971
+#: ../src/gui/preferences.cpp:961
 msgid "If enabled, use silence detection with the codecs supporting it."
 msgstr "如啟用此選項，則使用編碼解碼器支援的靜音探測。"
 
-#: ../src/gui/preferences.cpp:973
+#: ../src/gui/preferences.cpp:963
 msgid "Enable echo can_celation"
 msgstr "啟用回音消除功能(_C)"
 
-#: ../src/gui/preferences.cpp:973
+#: ../src/gui/preferences.cpp:963
 msgid "If enabled, use echo cancelation."
 msgstr "如啟用此項，使用回音消除功能。"
 
+#: ../src/gui/preferences.cpp:965
+msgid "Maximum _jitter buffer (in ms):"
+msgstr "抗抖動緩衝的最大值[毫秒](_J):"
+
+#: ../src/gui/preferences.cpp:965
+msgid "The maximum jitter buffer size for audio reception (in ms)."
+msgstr "接收音訊時用的抗抖動緩衝大小的最大值（毫秒）。"
+
 #. Translators: the full sentence is Keep a minimum video quality of X %
-#: ../src/gui/preferences.cpp:1007
+#: ../src/gui/preferences.cpp:999
 msgid "Picture Quality"
 msgstr "圖片質素"
 
-#: ../src/gui/preferences.cpp:1007
+#: ../src/gui/preferences.cpp:999
 msgid ""
 "Choose if you want to guarantee a minimum image quality (possibly leading to "
 "dropped frames in order not to surpass the bitrate limit) or if you prefer "
@@ -2964,11 +3021,11 @@ msgstr ""
 "率。"
 
 # src/pref_window.cpp:1554
-#: ../src/gui/preferences.cpp:1009
+#: ../src/gui/preferences.cpp:1001
 msgid "Maximum video _bitrate (in kbits/s):"
 msgstr "最大視訊頻寬(k_bits/秒):"
 
-#: ../src/gui/preferences.cpp:1009
+#: ../src/gui/preferences.cpp:1001
 msgid ""
 "The maximum video bitrate in kbits/s. The video quality and the effective "
 "frame rate will be dynamically adjusted to keep the bitrate at the given "
@@ -2977,70 +3034,70 @@ msgstr ""
 "最大的視訊頻寬（以 kbits/s 計算）。視訊的質素及每秒傳送的幀數會以指定數值作為"
 "底線，動態地調整來達致使用最小的頻寬。"
 
-#: ../src/gui/preferences.cpp:1401
+#: ../src/gui/preferences.cpp:1376
 msgid "Play sound for new voice mails"
 msgstr "收到新留言時播放音效"
 
-#: ../src/gui/preferences.cpp:1410
+#: ../src/gui/preferences.cpp:1385
 msgid "Play sound for new instant messages"
 msgstr "收到新即時訊息時播放音效"
 
-#: ../src/gui/preferences.cpp:1439
+#: ../src/gui/preferences.cpp:1414
 msgid "Ekiga Preferences"
 msgstr "Ekiga 偏好設定"
 
-#: ../src/gui/preferences.cpp:1457
+#: ../src/gui/preferences.cpp:1432
 msgid "General"
 msgstr "一般選項"
 
-#: ../src/gui/preferences.cpp:1458
+#: ../src/gui/preferences.cpp:1433
 msgid "Personal Data"
 msgstr "個人資料"
 
-#: ../src/gui/preferences.cpp:1463
+#: ../src/gui/preferences.cpp:1438
 msgid "General Settings"
 msgstr "一般設定"
 
-#: ../src/gui/preferences.cpp:1472
+#: ../src/gui/preferences.cpp:1447
 msgid "Sound Events"
 msgstr "事件音效"
 
-#: ../src/gui/preferences.cpp:1476
+#: ../src/gui/preferences.cpp:1451
 msgid "Protocols"
 msgstr "通訊協定"
 
-#: ../src/gui/preferences.cpp:1478
+#: ../src/gui/preferences.cpp:1453
 msgid "SIP Settings"
 msgstr "SIP 設定"
 
-#: ../src/gui/preferences.cpp:1483
+#: ../src/gui/preferences.cpp:1458
 msgid "H.323 Settings"
 msgstr "H.323 設定"
 
-#: ../src/gui/preferences.cpp:1487
+#: ../src/gui/preferences.cpp:1462
 msgid "Audio"
 msgstr "音訊"
 
-#: ../src/gui/preferences.cpp:1488 ../src/gui/preferences.cpp:1498
+#: ../src/gui/preferences.cpp:1463 ../src/gui/preferences.cpp:1473
 msgid "Devices"
 msgstr "裝置設定："
 
-#: ../src/gui/preferences.cpp:1497
+#: ../src/gui/preferences.cpp:1472
 msgid "Video"
 msgstr "視訊"
 
-#: ../src/gui/statusicon.cpp:303
+#: ../src/gui/statusicon.cpp:311
 #, c-format
 msgid "You have %d message"
 msgid_plural "You have %d messages"
 msgstr[0] "您有 %d 封訊息"
 
-#: ../src/gui/statusicon.cpp:405
+#: ../src/gui/statusicon.cpp:413
 msgid "_Contents"
 msgstr "內容(_C)"
 
 # src/menu.cpp:383
-#: ../src/gui/statusicon.cpp:410
+#: ../src/gui/statusicon.cpp:418
 msgid "_About"
 msgstr "關於(_A)"
 
@@ -3056,21 +3113,144 @@ msgstr "離開"
 msgid "Do Not Disturb"
 msgstr "請勿打擾"
 
-#: ../src/gui/statusmenu.cpp:512
+#: ../src/gui/statusmenu.cpp:456
 msgid "Custom message..."
 msgstr "自訂訊息..."
 
-#: ../src/gui/statusmenu.cpp:626 ../src/gui/statusmenu.cpp:762
+#. Build the dialog
+#: ../src/gui/statusmenu.cpp:587 ../src/gui/statusmenu.cpp:741
 msgid "Custom Message"
 msgstr "自訂訊息"
 
-#: ../src/gui/statusmenu.cpp:642
+#: ../src/gui/statusmenu.cpp:603
 msgid "Delete custom messages:"
 msgstr "刪除自訂訊息:"
 
-#: ../src/gui/statusmenu.cpp:783
+#: ../src/gui/statusmenu.cpp:762
 msgid "Define a custom message:"
 msgstr "定義自訂訊息:"
+
+#~ msgid "Number of frames for G.711"
+#~ msgstr "G.711 幀數"
+
+#~ msgid "Number of frames for GSM"
+#~ msgstr "GSM 幀數"
+
+#~ msgid "Number of frames transmitted in each packet for the G.711 codec"
+#~ msgstr "G.711 編碼解碼器中每個封包傳送的幀數目"
+
+#~ msgid "Number of frames transmitted in each packet for the GSM codec"
+#~ msgstr "GSM 編碼解碼器中每個封包傳送的幀數目"
+
+#~ msgid "Position on the screen of the PC-To-Phone window"
+#~ msgstr "PC-To-Phone 視窗在螢幕中的位置"
+
+#~ msgid "Size of the PC-To-Phone window"
+#~ msgstr "電腦對電話視窗的大小"
+
+#~ msgid "Are you sure you want to remove "
+#~ msgstr "確定要移除"
+
+#~ msgid "from the address book ?"
+#~ msgstr "於此通訊錄？"
+
+#~ msgid "user found"
+#~ msgid_plural "users found"
+#~ msgstr[0] "個使用者已找到"
+
+#~ msgid "Get an ekiga.net SIP account"
+#~ msgstr "取得 ekiga.net SIP 帳號"
+
+#~ msgid "Remote user is not available"
+#~ msgstr "遠端使用者現正不在"
+
+#~ msgid "Local user is not available"
+#~ msgstr "本機使用者現正不在"
+
+#~ msgid "Forward"
+#~ msgstr "轉接"
+
+#~ msgid "SIP version not supp."
+#~ msgstr "不支援此 SIP 版本。"
+
+#~ msgid "Account"
+#~ msgstr "帳號"
+
+#~ msgid ""
+#~ "The audio ringing device is the device  managed by the audio manager that "
+#~ "will be used to play the ringing sound."
+#~ msgstr "音效響鈴裝置是由音訊管理程式所管理，用來播放音效。"
+
+#~ msgid ""
+#~ "The audio output device is the device  managed by the audio manager that "
+#~ "will be used to play audio."
+#~ msgstr "音訊輸出裝置是由音訊管理程式所管理，用來播放音效。"
+
+#~ msgid ""
+#~ "The audio input device is the device managed by the audio manager that "
+#~ "will be used to record your voice."
+#~ msgstr "音訊輸入裝置是由音訊管理程式所管理，用作錄音"
+
+#~ msgid ""
+#~ "The video manager is the plugin that will manage your video devices, "
+#~ "Video4Linux is the most common choice if you own a webcam."
+#~ msgstr ""
+#~ "視訊管理程式是用作管理您的視訊裝置的外掛程式。\n"
+#~ "如果您有網路攝影機，Video4Linux 是最常用的選擇。"
+
+#~ msgid "Connected with"
+#~ msgstr "連線至"
+
+#~ msgid "Missed call from"
+#~ msgstr "未接來電為"
+
+#~ msgid "added video input device "
+#~ msgstr "加入的視訊輸入裝置"
+
+#~ msgid "removed video input device "
+#~ msgstr "移除的視訊輸入裝置"
+
+#~ msgid "added audio input device "
+#~ msgstr "加入的音訊輸入裝置"
+
+#~ msgid "removed audio input device "
+#~ msgstr "移除的音訊輸入裝置"
+
+#~ msgid "added audio output device "
+#~ msgstr "加入的音訊輸出裝置"
+
+#~ msgid "removed audio output device "
+#~ msgstr "移除的音訊輸出裝置"
+
+#~ msgid "_Find Contacts"
+#~ msgstr "尋找連絡人(_F)"
+
+#~ msgid "Missed calls: %d - Voice Mails: %d"
+#~ msgstr "未接來電：%d - 語音留言：%d"
+
+#~ msgid "Enter your first name"
+#~ msgstr "輸入您的名字"
+
+#~ msgid "_Apply"
+#~ msgstr "套用(_A)"
+
+#~ msgid ""
+#~ "Click here to update the users directory you are registered to with the "
+#~ "new First Name, Last Name, E-Mail, Comment and Location"
+#~ msgstr ""
+#~ "點選此處以更新您所註冊的使用者目錄上新的姓名、電子郵件、備註及位置。"
+
+#~ msgid "Image:"
+#~ msgstr "圖片："
+
+#~ msgid "Choose a Picture"
+#~ msgstr "選擇圖片"
+
+#~ msgid "Preview"
+#~ msgstr "預覽"
+
+#~ msgid "Images"
+#~ msgstr "圖片"
 
 #~ msgid "Auto Away Timeout"
 #~ msgstr "自動離開時間"
