@@ -2834,11 +2834,11 @@ window_closed_cb (G_GNUC_UNUSED GtkWidget *widget,
 
   if (!gtk_status_icon_is_embedded (GTK_STATUS_ICON (statusicon)))
     quit_callback (NULL, data);
-  else 
+  else
     gtk_widget_hide (GTK_WIDGET (data));
 
   return (TRUE);
-}  
+}
 
 
 static void
@@ -4121,7 +4121,6 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   g_signal_connect (G_OBJECT (mw->statusbar_ebox), "button-press-event",
 		    GTK_SIGNAL_FUNC (statusbar_clicked_cb), window);
  
-  gtk_window_set_title (GTK_WINDOW (window), _("Ekiga"));
   gtk_widget_realize (window);
   gm_main_window_update_logo_have_window (window);
   g_signal_connect_after (G_OBJECT (mw->main_notebook), "switch-page",

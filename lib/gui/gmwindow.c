@@ -63,6 +63,9 @@ enum { GM_WINDOW_KEY = 1, GM_HIDE_ON_ESC = 2 };
 
 static GObjectClass *parent_class = NULL;
 
+static gboolean
+gm_window_delete_event (GtkWidget *w,
+			gpointer data);
 
 static void
 gm_window_show (GtkWidget *w,
@@ -213,7 +216,7 @@ gm_window_init (GTypeInstance *instance,
                            g_cclosure_new_swap (G_CALLBACK (gtk_widget_hide), (gpointer) self, NULL));
 
   g_signal_connect (G_OBJECT (self), "delete_event",
-		    G_CALLBACK (gtk_widget_hide_on_delete), NULL);
+		    G_CALLBACK (gm_window_delete_event), NULL);
 
   g_signal_connect (G_OBJECT (self), "show",
                     G_CALLBACK (gm_window_show), self);
@@ -258,6 +261,15 @@ gm_window_get_type ()
 /* 
  * Our own stuff
  */
+
+static gboolean
+gm_window_delete_event (GtkWidget *w,
+                        G_GNUC_UNUSED gpointer data)
+{
+  gtk_widget_hide (w);
+  return FALSE;
+}
+
 
 static void
 gm_window_show (GtkWidget *w,
