@@ -667,7 +667,7 @@ static gboolean on_stats_refresh_cb (gpointer self)
                            mw->current_call->get_received_video_bandwidth (),
                            videooutput_stats.tx_fps,
                            videooutput_stats.rx_fps);
-    gm_main_window_push_info_message (GTK_WIDGET (self), msg);
+    gm_main_window_flash_message (GTK_WIDGET (self), msg);
     gm_main_window_set_call_duration (GTK_WIDGET (self), mw->current_call->get_duration ().c_str ());
     g_free (msg);
 
