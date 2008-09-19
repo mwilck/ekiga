@@ -86,7 +86,7 @@ gm_text_buffer_enhancer_helper_check (GmTextBufferEnhancerHelperIFace* self,
 				      gint* start,
 				      gint* length)
 {
-  return GM_TEXT_BUFFER_ENHANCER_HELPER_IFACE_GET_CLASS (self)->do_check (self, full_text, from, start, length);
+  GM_TEXT_BUFFER_ENHANCER_HELPER_IFACE_GET_CLASS (self)->do_check (self, full_text, from, start, length);
 }
 
 void
