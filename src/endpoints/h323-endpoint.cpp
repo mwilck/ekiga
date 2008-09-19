@@ -80,7 +80,7 @@ namespace Opal {
   public:
 
       subscriber (const Opal::Account & _account,
-                  Opal::H323::EndPoint::EndPoint & _manager) 
+                  Opal::H323::EndPoint& _manager) 
         : PThread (1000, AutoDeleteThread),
         account (_account),
         manager (_manager) 
@@ -95,7 +95,7 @@ namespace Opal {
 
   private:
       const Opal::Account & account;
-      Opal::H323::EndPoint::EndPoint & manager;
+      Opal::H323::EndPoint& manager;
     };
   };
 };
