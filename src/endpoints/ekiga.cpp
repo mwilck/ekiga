@@ -266,8 +266,8 @@ void GnomeMeeting::BuildGUI ()
   gtk_window_set_default_icon_name (GM_ICON_LOGO);
   accounts_window = gm_accounts_window_new (*service_core);
 
-  main_window = gm_main_window_new (*service_core);
   statusicon = statusicon_new (*service_core);
+  main_window = gm_main_window_new (*service_core);
 
   /* GM is started */
   PTRACE (1, "Ekiga version "

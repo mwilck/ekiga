@@ -1577,6 +1577,22 @@ toggle_call_cb (GtkWidget *widget,
 }
 
 
+static void
+on_status_icon_embedding_change (G_GNUC_UNUSED GObject obj,
+				 G_GNUC_UNUSED GParamSpec param,
+				 G_GNUC_UNUSED gpointer data)
+{
+  GtkWidget *main_window = NULL;
+  GtkStatusIcon *status_icon = NULL;
+
+  status_icon = GTK_STATUS_ICON (GnomeMeeting::Process ()->GetStatusicon ());
+  main_window = GnomeMeeting::Process ()->GetMainWindow ();
+
+  /* force the main window to show if no status icon for the user */
+  if (!gtk_status_icon_is_embedded (GTK_STATUS_ICON (status_icon)))
+    gtk_widget_show (main_window);
+}
+
 static GtkWidget *
 gm_mw_init_uri_toolbar (GtkWidget *main_window)
 {
@@ -4003,6 +4019,8 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   
   GtkWidget *status_toolbar = NULL;
 
+  GtkStatusIcon *status_icon = NULL;
+
   PanelSection section = DIALPAD;
 
   sigc::connection conn;
@@ -4258,6 +4276,11 @@ gm_main_window_new (Ekiga::ServiceCore & core)
 
   gm_conf_notifier_add (USER_INTERFACE_KEY "main_window/show_call_panel",
 			show_call_panel_changed_nt, window);
+
+  /* Track status icon embed changes */
+  status_icon = GTK_STATUS_ICON (GnomeMeeting::Process ()->GetStatusicon ());
+  g_signal_connect (G_OBJECT (status_icon), "notify::embedded",
+		    G_CALLBACK (on_status_icon_embedding_change), NULL);
 
   /* Until we are ready, nothing possible  */
   gm_main_window_set_busy (window, true);
