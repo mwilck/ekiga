@@ -1055,7 +1055,7 @@ SIPURL Opal::Sip::EndPoint::GetRegisteredPartyName (const SIPURL & host)
       Ekiga::Account *account = account_core.find_account ("ekiga.net");
 
       if (account)
-        return SIPURL ("\"" + GetDefaultDisplayName () + "\" <" + account->get_aor () + ">");
+        return SIPURL ("\"" + GetDefaultDisplayName () + "\" <" + PString(account->get_aor ()) + ">");
     }
   }
 
