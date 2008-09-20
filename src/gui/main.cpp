@@ -2446,7 +2446,7 @@ gm_mw_init_call (GtkWidget *main_window)
                     (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
                     0, 0);
 
-  gtk_paned_pack2 (GTK_PANED (mw->hpaned), frame, true, true);
+  gtk_paned_pack2 (GTK_PANED (mw->hpaned), frame, true, false);
 }  
 
 static void
