@@ -4098,7 +4098,7 @@ gm_main_window_new (Ekiga::ServiceCore & core)
 
   gm_mw_init_contacts_list (window);
   gm_mw_init_dialpad (window);
-  gtk_paned_pack1 (GTK_PANED (mw->hpaned), mw->main_notebook, true, true);
+  gtk_paned_pack1 (GTK_PANED (mw->hpaned), mw->main_notebook, true, false);
 
   gm_mw_init_call (window);
   gm_mw_init_history (window);
