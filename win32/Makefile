@@ -192,7 +192,7 @@ endif
 
 confflags:=--prefix=$(BUILDROOT) --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE)
 confptlib:=--prefix=$(BUILDROOT) --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE) \
-	   --with-directx-includedir=$(INCLUDEDIR)/directx \
+	   --with-directx-includedir=$(BUILDROOT)/directx \
 	   --disable-qos --disable-vidfile --disable-plugins
 confopal :=--prefix=$(BUILDROOT) --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE) \
 	   --with-ffmpeg-dir=$(FFMPEG_DIR) --disable-ffmpeg-h263
