@@ -1,8 +1,0 @@
-prefix=${buildroot}
-incdir=${prefix}/include
-libdir=${prefix}/lib
-Name: ptlib
-Description: Portable Text Library
-Version: @VERSION@
-Cflags: -I${incdir}
-Libs: -L${libdir} -lpt @LIBS@
