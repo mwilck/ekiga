@@ -28,7 +28,6 @@ WIN32_DIST = \
 	win32/diff/ptlib_pwlib.pc.in				\
 	ekiga.rc						\
 	win32/Makefile						\
-	win32/README.win32					\
 	win32/nsisinstaller/ekiga.nsi				\
 	win32/nsisinstaller/language_files/hungarian.nsh	\
 	win32/nsisinstaller/language_files/english.nsh		\
@@ -40,9 +39,6 @@ WIN32_DIST = \
 EXTRA_DIST = \
 	$(DESKTOP_IN_FILES)					\
 	$(DESKTOP_FILES)					\
-	intltool-extract.in					\
-	intltool-merge.in 					\
-	intltool-update.in					\
 	gnome-doc-utils.make					\
 	FAQ							\
 	README							\
