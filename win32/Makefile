@@ -72,15 +72,15 @@ EKIGA_WIN32_DIFF_DIR := $(EKIGA_WIN32_DIR)/diff
 EKIGA_INSTALLER_DIR := $(BUILDROOT)/nsisinstaller
 EKIGA_INSTALLER := ekiga-setup-${EKIGA_VER}.exe
 
-OPAL_VER:= 3.3.2
+OPAL_VER:= 3.4.1
 OPAL_REV:= HEAD
-OPAL_URL:= https://opalvoip.svn.sourceforge.net/svnroot/opalvoip/opal/trunk
+OPAL_URL:= https://opalvoip.svn.sourceforge.net/svnroot/opalvoip/opal/tags/v3_4_1
 OPAL_ARCHIVE := opal
 OPAL_DIR:= $(BUILDROOT)/opal
 
-PTLIB_VER:= 2.3.2
+PTLIB_VER:= 2.4.1
 PTLIB_REV:= HEAD
-PTLIB_URL:= https://opalvoip.svn.sourceforge.net/svnroot/opalvoip/ptlib/trunk
+PTLIB_URL:= https://opalvoip.svn.sourceforge.net/svnroot/opalvoip/ptlib/tags/v2_4_1
 PTLIB_DIR:= $(BUILDROOT)/ptlib
 PTLIB_ARCHIVE := ptlib
 
