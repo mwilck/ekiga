@@ -1,3 +1,0 @@
-man_MANS = @PACKAGE_NAME@.1
-
-EXTRA_DIST = $(man_MANS)
