@@ -139,8 +139,11 @@ GST::VideoInputManager::open (unsigned width,
 
       result = true;
     }
-  } else
+  } else {
+
+    g_error_free (error);
     result = false;
+  }
 
   g_free (command);
 
