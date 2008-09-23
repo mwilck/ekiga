@@ -2,7 +2,7 @@ noinst_LTLIBRARIES = libgmvideoinput.la
 
 videoinput_dir = $(top_srcdir)/lib/engine/videoinput/skel
 
-AM_CXXFLAGS = $(SIGC_CFLAGS) $(GLIB_CFLAGS)
+AM_CXXFLAGS = $(SIGC_CFLAGS) $(GLIB_CFLAGS) $(PTLIB_CFLAGS)
 
 INCLUDES = \
 	-I$(top_srcdir)/lib/gmconf \
@@ -20,4 +20,4 @@ libgmvideoinput_la_SOURCES = \
 	$(videoinput_dir)/videoinput-gmconf-bridge.h \
 	$(videoinput_dir)/videoinput-gmconf-bridge.cpp
 
-libgmvideoinput_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(GLIB_LIBS)
+libgmvideoinput_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(GLIB_LIBS) $(PTLIB_CFLAGS)

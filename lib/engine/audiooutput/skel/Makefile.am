@@ -2,7 +2,7 @@ noinst_LTLIBRARIES = libgmaudiooutput.la
 
 audiooutput_dir = $(top_srcdir)/lib/engine/audiooutput/skel
 
-AM_CXXFLAGS = $(SIGC_CFLAGS) $(GLIB_CFLAGS)
+AM_CXXFLAGS = $(SIGC_CFLAGS) $(GLIB_CFLAGS) $(PTLIB_CFLAGS)
 
 INCLUDES = \
 	-I$(top_srcdir)/lib/gmconf \
@@ -22,4 +22,4 @@ libgmaudiooutput_la_SOURCES = \
 	$(audiooutput_dir)/audiooutput-gmconf-bridge.h \
 	$(audiooutput_dir)/audiooutput-gmconf-bridge.cpp
 
-libgmaudiooutput_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(GLIB_LIBS)
+libgmaudiooutput_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(GLIB_LIBS) $(PTLIB_LIBS)

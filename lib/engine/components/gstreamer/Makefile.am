@@ -2,7 +2,7 @@ noinst_LTLIBRARIES = libgmgstreamer.la
 
 gstreamer_dir = $(top_srcdir)/lib/engine/components/gstreamer/
 
-AM_CXXFLAGS = $(SIGC_CFLAGS) $(GSTREAMER_CFLAGS)
+AM_CXXFLAGS = $(SIGC_CFLAGS) $(GSTREAMER_CFLAGS) $(PTLIB_CFLAGS)
 
 INCLUDES = 						\
 	-I$(top_srcdir)/lib/gmconf			\
@@ -17,4 +17,4 @@ libgmgstreamer_la_SOURCES = \
 	$(gstreamer_dir)/gst-videoinput.h \
 	$(gstreamer_dir)/gst-videoinput.cpp
 
-libgmgstreamer_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(GSTREAMER_LIBS) -lgstapp-0.10
+libgmgstreamer_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(GSTREAMER_LIBS) -lgstapp-0.10 $(PTLIB_LIBS)
