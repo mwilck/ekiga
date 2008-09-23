@@ -205,19 +205,47 @@ void
 GST::VideoInputManager::detect_devices ()
 {
   devices_by_name.clear ();
-  devices_by_name["Video test"] = "videotestsrc";
+  detect_videotestsrc_devices ();
   detect_v4l2src_devices ();
   detect_dv1394src_devices ();
 }
 
 void
-GST::VideoInputManager::detect_v4l2src_devices ()
+GST::VideoInputManager::detect_videotestsrc_devices ()
 {
   GstElement* elt = NULL;
 
-  elt = gst_element_factory_make ("v4l2src", "v4l2srcpresencetest");
+  elt = gst_element_factory_make ("videotestsrc", "videotestsrcpresencetest");
 
   if (elt != NULL) {
+
+    devices_by_name["Video test"] = "videotestsrc";
+    gst_object_unref (GST_OBJECT (elt));
+  }
+}
+
+void
+GST::VideoInputManager::detect_v4l2src_devices ()
+{
+  bool problem = false;
+  GstElement* elt = NULL;
+
+  elt = gst_element_factory_make ("videoscale", "videoscalepresencetest");
+  if (elt == NULL)
+    problem = true;
+  else
+    gst_object_unref (elt);
+
+  elt = gst_element_factory_make ("ffmpegcolorspace",
+				  "ffmpegcolorspacepresencetest");
+  if (elt == NULL)
+    problem = true;
+  else
+    gst_object_unref (elt);
+
+  elt = gst_element_factory_make ("v4l2src", "v4l2srcpresencetest");
+
+  if (elt != NULL && problem == false) {
 
     GstPropertyProbe* probe = NULL;
     const GParamSpec* pspec = NULL;
@@ -248,18 +276,33 @@ GST::VideoInputManager::detect_v4l2src_devices ()
 
       gst_element_set_state (elt, GST_STATE_NULL);
     }
-    gst_object_unref (GST_OBJECT (elt));
   }
+  if (elt != NULL)
+    gst_object_unref (GST_OBJECT (elt));
 }
 
 void
 GST::VideoInputManager::detect_dv1394src_devices ()
 {
+  bool problem = false;
   GstElement* elt = NULL;
+
+  elt = gst_element_factory_make ("decodebin", "decodebinpresencetest");
+  if (elt == NULL)
+    problem = true;
+  else
+    gst_object_unref (elt);
+
+  elt = gst_element_factory_make ("ffmpegcolorspace",
+				  "ffmpegcolorspacepresencetest");
+  if (elt == NULL)
+    problem = true;
+  else
+    gst_object_unref (elt);
 
   elt = gst_element_factory_make ("dv1394src", "dv1394srcpresencetest");
 
-  if (elt != NULL) {
+  if (elt != NULL && problem == false) {
 
     GstPropertyProbe* probe = NULL;
     const GParamSpec* pspec = NULL;
@@ -290,6 +333,7 @@ GST::VideoInputManager::detect_dv1394src_devices ()
 
       gst_element_set_state (elt, GST_STATE_NULL);
     }
-    gst_object_unref (GST_OBJECT (elt));
   }
+  if (elt != NULL)
+    gst_object_unref (GST_OBJECT (elt));
 }

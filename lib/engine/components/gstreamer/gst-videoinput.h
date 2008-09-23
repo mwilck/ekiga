@@ -74,6 +74,7 @@ namespace GST
   private:
 
     void detect_devices ();
+    void detect_videotestsrc_devices ();
     void detect_v4l2src_devices ();
     void detect_dv1394src_devices ();
 
