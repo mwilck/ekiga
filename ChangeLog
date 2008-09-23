@@ -34,6 +34,13 @@ tag EKIGA_3_0_0
 
 2008-09-18  Julien Puydt  <jpuydt@gnome.org>
 
+	* lib/engine/presence/avahi/avahi-heap.h:
+	* lib/engine/presence/avahi/avahi-heap.cpp: Made it possible to have
+	several browsers in the avahi browsing code, paving the way to a proper
+	fix for bug #530617.
+
+2008-09-18  Julien Puydt  <jpuydt@gnome.org>
+
 	* lib/engine/presence/local-roster/local-heap.cpp: Fixed bug #548276.
 
 2008-09-16  Julien Puydt  <jpuydt@gnome.org>

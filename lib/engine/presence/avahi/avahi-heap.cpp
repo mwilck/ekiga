@@ -95,7 +95,6 @@ Avahi::Heap::Heap (Ekiga::ServiceCore &_core): core(_core)
   /* let's make sure those are sanely initialized */
   poll = NULL;
   client = NULL;
-  browser = NULL;
 
   avahi_set_allocator (avahi_glib_allocator ());
   poll = avahi_glib_poll_new (NULL, G_PRIORITY_DEFAULT);
@@ -112,9 +111,6 @@ Avahi::Heap::Heap (Ekiga::ServiceCore &_core): core(_core)
 
 Avahi::Heap::~Heap ()
 {
-  if (browser != NULL)
-    avahi_service_browser_free (browser);
-
   if (client != NULL)
     avahi_client_free (client);
 
@@ -163,13 +159,13 @@ Avahi::Heap::ClientCallback (AvahiClient *_client,
     /* this may not be the final valid browser pointer...
      * we'll take what our callback gets
      */
-    browser = avahi_service_browser_new (client,
-					 AVAHI_IF_UNSPEC,
-					 AVAHI_PROTO_UNSPEC,
-					 "_sip._udp", NULL,
-					 (AvahiLookupFlags)0,
-					 avahi_browser_callback,
-					 this);
+    avahi_service_browser_new (client,
+			       AVAHI_IF_UNSPEC,
+			       AVAHI_PROTO_UNSPEC,
+			       "_sip._udp", NULL,
+			       (AvahiLookupFlags)0,
+			       avahi_browser_callback,
+			       this);
     /* if (browser == NULL) FIXME: better error reporting */
     break;
   case AVAHI_CLIENT_CONNECTING:
@@ -184,7 +180,7 @@ Avahi::Heap::ClientCallback (AvahiClient *_client,
 }
 
 void
-Avahi::Heap::BrowserCallback (AvahiServiceBrowser *_browser,
+Avahi::Heap::BrowserCallback (AvahiServiceBrowser *browser,
 			      AvahiIfIndex interface,
 			      AvahiProtocol protocol,
 			      AvahiBrowserEvent event,
@@ -195,9 +191,6 @@ Avahi::Heap::BrowserCallback (AvahiServiceBrowser *_browser,
 {
   AvahiServiceResolver *resolver = NULL;
   bool found = false;
-
-  /* this is the good browser pointer */
-  browser = _browser;
 
   switch (event) {
 
@@ -230,7 +223,6 @@ Avahi::Heap::BrowserCallback (AvahiServiceBrowser *_browser,
     // FIXME: do I care?
     break;
   case AVAHI_BROWSER_FAILURE:
-    if (browser != NULL)
       avahi_service_browser_free (browser);
     browser = NULL;
     ; // FIXME: better error reporting
@@ -242,7 +234,7 @@ Avahi::Heap::BrowserCallback (AvahiServiceBrowser *_browser,
 }
 
 void
-Avahi::Heap::ResolverCallback (AvahiServiceResolver */*resolver*/,
+Avahi::Heap::ResolverCallback (AvahiServiceResolver *resolver,
 			       AvahiIfIndex /*interface*/,
 			       AvahiProtocol /*protocol*/,
 			       AvahiResolverEvent event,
@@ -325,6 +317,7 @@ Avahi::Heap::ResolverCallback (AvahiServiceResolver */*resolver*/,
     break;
   case AVAHI_RESOLVER_FAILURE:
 
+    avahi_service_resolver_free (resolver);
     /* FIXME: better error reporting */
     break;
   default:

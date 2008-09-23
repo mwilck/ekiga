@@ -110,7 +110,6 @@ namespace Avahi
     Ekiga::ServiceCore &core;
     AvahiGLibPoll *poll;
     AvahiClient *client;
-    AvahiServiceBrowser *browser;
   };
 
 /**
