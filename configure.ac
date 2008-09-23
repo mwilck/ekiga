@@ -503,6 +503,23 @@ AM_CONDITIONAL(HAVE_AVAHI, test "x$found_avahi" = "xyes")
 
 
 dnl ###############################
+dnl    GStreamer Support
+dnl ###############################
+GSTREAMER="disabled"
+
+AC_ARG_ENABLE(gstreamer, [  --enable-gstreamer            Enable GStreamer support],enable_gstreamer=yes,)
+
+if test "x$enable_gstreamer" = "xyes"; then
+  PKG_CHECK_MODULES([GSTREAMER], [gstreamer-plugins-base-0.10 gstreamer-interfaces-0.10], [found_gstreamer=yes])
+  AC_SUBST(GSTREAMER_CFLAGS)
+  AC_SUBST(GSTREAMER_LIBS)
+  GSTREAMER="enabled"
+  AC_DEFINE(HAVE_GSTREAMER,1,[GStreamer support])
+fi
+
+AM_CONDITIONAL(HAVE_GSTREAMER, test "x$found_gstreamer" = "xyes")
+
+dnl ###############################
 dnl   Gnome-Doc-Utils
 dnl ###############################
 GDU="disabled"
@@ -690,6 +707,7 @@ lib/engine/gui/gtk-frontend/Makefile
 lib/engine/components/Makefile
 lib/engine/components/gmconf-personal-details/Makefile
 lib/engine/components/avahi-publisher/Makefile
+lib/engine/components/gstreamer/Makefile
 )
 
 
@@ -722,6 +740,7 @@ echo "                    DBUS support  :  $DBUS"
 echo "            DBUS service support  :  $DBUS_SERVICE"
 echo "             mDNS/DNS-SD support  :  $AVAHI"
 fi
+echo "               GStreamer support  :  $GSTREAMER"
 echo ""
 echo "                         OS Type  :  $target_os"
 echo "                    Machine Type  :  $target_cpu"
