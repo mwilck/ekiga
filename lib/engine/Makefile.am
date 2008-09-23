@@ -24,7 +24,8 @@ INCLUDES = 								\
 	-I$(top_srcdir)/lib/engine/audiooutput/skel			\
 	-I$(top_srcdir)/lib/engine/hal/skel				\
 	-I$(top_srcdir)/lib/engine/components/gmconf-personal-details	\
-	-I$(top_srcdir)/lib/engine/components/avahi-publisher
+	-I$(top_srcdir)/lib/engine/components/avahi-publisher		\
+	-I$(top_srcdir)/lib/engine/components/gstreamer
 
 # XVideo/X
 if !WIN32
@@ -127,6 +128,10 @@ endif
 
 if HAVE_LDAP
 libekiga_engine_la_LIBADD += addressbook/ldap/libgmldap.la
+endif
+
+if HAVE_GSTREAMER
+libekiga_engine_la_LIBADD += components/gstreamer/libgmgstreamer.la
 endif
 
 #### FIXME should be removed at a later stage

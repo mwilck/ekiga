@@ -93,6 +93,9 @@
 #include "ldap-main.h"
 #endif
 
+#ifdef HAVE_GSTREAMER
+#include "gst-main.h"
+#endif
 
 void
 engine_init (int argc,
@@ -161,6 +164,10 @@ engine_init (int argc,
     delete core;
     return;
   }
+
+#ifdef HAVE_GSTREAMER
+  (void)gstreamer_init (*core, &argc, &argv);
+#endif
 
   if (!audioinput_null_init (*core, &argc, &argv)) {
     delete core;
