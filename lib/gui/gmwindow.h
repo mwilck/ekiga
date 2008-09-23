@@ -114,6 +114,18 @@ void gm_window_get_size (GmWindow *window,
                          int *x,
                          int *y);
 
+/** Set if the GmWindow should hide on a delete-event or just relay the event
+ * @param window is the GmWindow
+ * @param hode_on_delete TRUE to just hide, FALSE to relay
+ */
+void gm_window_set_hide_on_delete (GmWindow *window,
+				   gboolean hide_on_delete);
+
+/** Check if the GmWindow will hide or event-relay on a delete-event
+ * @param window is the GmWindow
+ */
+gboolean gm_window_get_hide_on_delete (GmWindow *window);		    
+
 G_END_DECLS
 
 #endif

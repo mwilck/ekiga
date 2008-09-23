@@ -661,9 +661,6 @@ addressbook_window_new (Ekiga::ContactCore &core)
 
   gtk_window_set_icon_name (GTK_WINDOW (self), GM_ICON_ADDRESSBOOK);
 
-  g_signal_connect (G_OBJECT (self), "delete-event",
-		    G_CALLBACK (gtk_widget_hide_on_delete), NULL);
-
   /* Start building the window */
   vbox = gtk_vbox_new (FALSE, 2);
 

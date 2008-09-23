@@ -2848,10 +2848,10 @@ window_closed_cb (G_GNUC_UNUSED GtkWidget *widget,
   statusicon = GTK_STATUS_ICON (GnomeMeeting::Process ()->GetStatusicon ());
   mw = gm_mw_get_mw (GTK_WIDGET (main_window));
 
+  /* Hide in any case, but quit program when we don't have a status menu */
+  gtk_widget_hide (GTK_WIDGET (data));
   if (!gtk_status_icon_is_embedded (GTK_STATUS_ICON (statusicon)))
     quit_callback (NULL, data);
-  else
-    gtk_widget_hide (GTK_WIDGET (data));
 
   return (TRUE);
 }
@@ -4039,6 +4039,7 @@ gm_main_window_new (Ekiga::ServiceCore & core)
 
   /* The Top-level window */
   window = gm_window_new_with_key (USER_INTERFACE_KEY "main_window");
+  gm_window_set_hide_on_delete (GM_WINDOW (window), FALSE);
   gtk_window_set_title (GTK_WINDOW (window), 
 			_("Ekiga"));
 

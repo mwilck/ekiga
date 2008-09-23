@@ -52,6 +52,7 @@ struct _GmWindowPrivate
 {
   GtkAccelGroup *accel;
   gboolean hide_on_esc;
+  gboolean hide_on_delete;
   const gchar *key;
   int x;
   int y;
@@ -59,7 +60,11 @@ struct _GmWindowPrivate
   int height;
 };
 
-enum { GM_WINDOW_KEY = 1, GM_HIDE_ON_ESC = 2 };
+enum {
+  GM_WINDOW_KEY = 1,
+  GM_HIDE_ON_ESC = 2,
+  GM_HIDE_ON_DELETE = 3
+};
 
 static GObjectClass *parent_class = NULL;
 
@@ -128,6 +133,10 @@ gm_window_get_property (GObject *obj,
     g_value_set_boolean (value, self->priv->hide_on_esc);
     break;
 
+  case GM_HIDE_ON_DELETE:
+    g_value_set_boolean (value, self->priv->hide_on_delete);
+    break;
+
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (obj, prop_id, spec);
     break;
@@ -164,6 +173,10 @@ gm_window_set_property (GObject *obj,
                                g_cclosure_new_swap (G_CALLBACK (gtk_widget_hide), (gpointer) self, NULL));
     break;
 
+  case GM_HIDE_ON_DELETE:
+    self->priv->hide_on_delete = g_value_get_boolean (value);
+    break;
+
   default:
     G_OBJECT_WARN_INVALID_PROPERTY_ID (obj, prop_id, spec);
     break;
@@ -194,6 +207,10 @@ gm_window_class_init (gpointer g_class,
   spec = g_param_spec_boolean ("hide_on_esc", "Hide on Escape", "Hide on Escape", 
                                TRUE, (GParamFlags) G_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, GM_HIDE_ON_ESC, spec); 
+
+  spec = g_param_spec_boolean ("hide_on_delete", "Hide on delete-event", "Hide on delete-event (or just relay the event)",
+			       TRUE, (GParamFlags) G_PARAM_READWRITE);
+  g_object_class_install_property (gobject_class, GM_HIDE_ON_DELETE, spec);
 }
 
 
@@ -209,6 +226,7 @@ gm_window_init (GTypeInstance *instance,
   self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self, GM_WINDOW_TYPE, GmWindowPrivate);
   self->priv->key = g_strdup ("");
   self->priv->hide_on_esc = TRUE;
+  self->priv->hide_on_delete = TRUE;
 
   self->priv->accel = gtk_accel_group_new ();
   gtk_window_add_accel_group (GTK_WINDOW (self), self->priv->accel);
@@ -266,8 +284,16 @@ static gboolean
 gm_window_delete_event (GtkWidget *w,
                         G_GNUC_UNUSED gpointer data)
 {
-  gtk_widget_hide (w);
-  return FALSE;
+  GmWindow* self = NULL;
+
+  self = GM_WINDOW (w);
+
+  if (self->priv->hide_on_delete) {
+    gtk_widget_hide (w);
+    return TRUE;
+  } else {
+    return FALSE;
+  }
 }
 
 
@@ -451,3 +477,23 @@ gm_window_get_size (GmWindow *self,
   g_free (size);
   g_strfreev (couple);
 }
+
+void
+gm_window_set_hide_on_delete (GmWindow *window,
+			      gboolean hide_on_delete)
+{
+  g_return_if_fail (window != NULL);
+  g_return_if_fail (IS_GM_WINDOW (window));
+
+  g_object_set (GM_WINDOW (window), "hide_on_delete", hide_on_delete, NULL);
+}
+
+gboolean
+gm_window_get_hide_on_delete (GmWindow *window)
+{
+  g_return_val_if_fail (window != NULL, FALSE);
+  g_return_val_if_fail (IS_GM_WINDOW (window), FALSE);
+
+  return window->priv->hide_on_delete;
+}
+
