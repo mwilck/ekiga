@@ -107,13 +107,9 @@ namespace Ekiga
        * Requires the device to be opened.
        * Returns false if reading the device fails. Also sends a GUI callback to the main thread in that case.
        * @param data a pointer to the frame buffer that is to be filled. The memory has to be allocated already.
-       * @param width returns the actual width of the frame read.
-       * @param height returns the actual height of the frame read.
        * @return false if the reading failed.
        */
-      virtual bool get_frame_data (char * data,
-                                   unsigned & width,
-                                   unsigned & height) = 0;
+      virtual bool get_frame_data (char * data) = 0;
 
       virtual void set_image_data (unsigned /* width */, unsigned /* height */, const char* /*data*/ ) {};
 

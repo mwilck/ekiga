@@ -49,6 +49,8 @@ VideoInputCore::VideoPreviewManager::VideoPreviewManager (VideoInputCore& _video
     videoinput_core (_videoinput_core),
   videooutput_core (_videooutput_core)
 {
+  width = 176;
+  height = 144;;
   end_thread = false;
   frame = NULL;
   // Since windows does not like to restart a thread that 
@@ -63,9 +65,11 @@ VideoInputCore::VideoPreviewManager::~VideoPreviewManager ()
     stop();
 }
 
-void VideoInputCore::VideoPreviewManager::start (unsigned width, unsigned height)
+void VideoInputCore::VideoPreviewManager::start (unsigned _width, unsigned _height)
 {
   PTRACE(4, "PreviewManager\tStarting Preview");
+  width = _width;
+  height = _height;
   end_thread = false;
   frame = (char*) malloc (unsigned (width * height * 3 / 2));
 
@@ -97,11 +101,9 @@ void VideoInputCore::VideoPreviewManager::Main ()
   if (!frame)
     return;
     
-  unsigned width = 176;
-  unsigned height = 144;;
   while (!end_thread) {
 
-    videoinput_core.get_frame_data(frame, width, height);
+    videoinput_core.get_frame_data(frame);
     videooutput_core.set_frame_data(frame, width, height, true, 1);
 
     // We have to sleep some time outside the mutex lock
@@ -366,14 +368,12 @@ void VideoInputCore::stop_stream ()
   stream_config.active = false;
 }
 
-void VideoInputCore::get_frame_data (char *data,
-                                   unsigned & width,
-                                   unsigned & height)
+void VideoInputCore::get_frame_data (char *data)
 {
   PWaitAndSignal m(core_mutex);
 
   if (current_manager) {
-    if (!current_manager->get_frame_data(data, width, height)) {
+    if (!current_manager->get_frame_data(data)) {
 
       internal_close();
 
@@ -386,7 +386,7 @@ void VideoInputCore::get_frame_data (char *data,
         internal_open(stream_config.width, stream_config.height, stream_config.fps);
 
       if (current_manager)
-        current_manager->get_frame_data(data, width, height); // the default device must always return true
+        current_manager->get_frame_data(data); // the default device must always return true
     }
     internal_apply_settings();
   }

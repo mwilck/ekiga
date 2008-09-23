@@ -160,18 +160,13 @@ void GMVideoInputManager_ptlib::close()
   runtime.run_in_main (sigc::bind (device_closed.make_slot (), current_state.device));
 }
 
-bool GMVideoInputManager_ptlib::get_frame_data (char *data,
-                                                unsigned & width,
-                                                unsigned & height)
+bool GMVideoInputManager_ptlib::get_frame_data (char *data)
 {
   bool ret = false;
   if (!current_state.opened) {
     PTRACE(1, "GMVideoInputManager_ptlib\tTrying to get frame from closed device");
     return false;
   }
-
-  width = current_state.width;
-  height = current_state.height;
 
   PINDEX I = 0;
 

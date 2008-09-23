@@ -63,9 +63,7 @@ namespace GST
 
     void close ();
 
-    bool get_frame_data (char* data,
-			 unsigned& width,
-			 unsigned& height);
+    bool get_frame_data (char* data);
 
     bool has_device (const std::string& source,
 		     const std::string& device_name,

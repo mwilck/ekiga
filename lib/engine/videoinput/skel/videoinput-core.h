@@ -261,12 +261,8 @@ namespace Ekiga
        * get_frame_data() always returns a frame.
        * In case a new brightness, whiteness, etc. has bee set, it will be applied here.
        * @param data a pointer to the frame buffer that is to be filled. The memory has to be allocated already.
-       * @param width returns the actual width of the frame read.
-       * @param height returns the actual height of the frame read.
        */
-      void get_frame_data (char *data,
-                           unsigned & width,
-                           unsigned & height);
+      void get_frame_data (char *data);
 
 
       /** See vidinput-manager.h for the API
@@ -346,7 +342,7 @@ private:
         * @param width the frame width in pixels of the preview video.
         * @param height the frame width in pixels of the preview video.
         */
-        virtual void start(unsigned width, unsigned height);
+        virtual void start(unsigned _width, unsigned _height);
 
         /** Stop the preview thread.
         * Stop the thread represented by the Main() function. Blocks until the thread has terminated.
@@ -363,6 +359,8 @@ private:
 
         VideoInputCore  & videoinput_core;
         VideoOutputCore & videooutput_core;
+        unsigned width;
+        unsigned height;
       };
 
       /** Class for storing the device configuration.

@@ -178,11 +178,9 @@ bool
 PVideoInputDevice_EKIGA::GetFrameData (BYTE *frame,
 				       PINDEX *i)
 {
-  unsigned width;
-  unsigned height;
-  videoinput_core.get_frame_data((char*)frame, width, height);
+  videoinput_core.get_frame_data((char*)frame);
 
-  *i = width * height * 3 / 2;
+  *i = frameWidth * frameHeight * 3 / 2;
  
   return true;
 }
@@ -191,11 +189,9 @@ PVideoInputDevice_EKIGA::GetFrameData (BYTE *frame,
 bool PVideoInputDevice_EKIGA::GetFrameDataNoDelay (BYTE *frame,
 						   PINDEX *i)
 {
-  unsigned width;
-  unsigned height;
-  videoinput_core.get_frame_data((char*)frame, width, height);
+  videoinput_core.get_frame_data((char*)frame);
 
-  *i = width * height * 3 / 2;
+  *i = frameWidth * frameHeight * 3 / 2;
   return true;
 }
 

@@ -160,9 +160,7 @@ GST::VideoInputManager::close ()
 }
 
 bool
-GST::VideoInputManager::get_frame_data (char* data,
-					unsigned& width,
-					unsigned& height)
+GST::VideoInputManager::get_frame_data (char* data)
 {
   bool result = false;
   GstBuffer* buffer = NULL;
@@ -186,9 +184,6 @@ GST::VideoInputManager::get_frame_data (char* data,
     }
     g_object_unref (sink);
   }
-
-  width = current_state.width;
-  height = current_state.height;
 
   return result;
 }
