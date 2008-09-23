@@ -2,7 +2,7 @@ noinst_LTLIBRARIES = libgmaudioinput-ptlib.la
 
 audioinput_dir = $(top_srcdir)/lib/engine/audioinput/ptlib
 
-AM_CXXFLAGS = $(SIGC_CFLAGS) $(GLIB_CFLAGS)
+AM_CXXFLAGS = $(SIGC_CFLAGS) $(GLIB_CFLAGS) $(PTLIB_CFLAGS)
 
 INCLUDES = \
 	-I$(top_srcdir)/lib/gmconf \
@@ -19,4 +19,4 @@ libgmaudioinput_ptlib_la_SOURCES = \
 	$(audioinput_dir)/audioinput-main-ptlib.h \
 	$(audioinput_dir)/audioinput-main-ptlib.cpp 
 
-libgmaudioinput_ptlib_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(GLIB_LIBS)
+libgmaudioinput_ptlib_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(GLIB_LIBS) $(PTLIB_LIBS)

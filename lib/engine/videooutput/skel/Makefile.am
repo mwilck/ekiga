@@ -2,7 +2,7 @@ noinst_LTLIBRARIES = libgmvideooutput.la
 
 videooutput_dir = $(top_srcdir)/lib/engine/videooutput/skel
 
-AM_CXXFLAGS = $(SIGC_CFLAGS) $(GLIB_CFLAGS)
+AM_CXXFLAGS = $(SIGC_CFLAGS) $(GLIB_CFLAGS) $(PTLIB_CFLAGS)
 
 INCLUDES = \
 	-I$(top_srcdir)/lib/gmconf \
@@ -18,4 +18,4 @@ libgmvideooutput_la_SOURCES = \
 	$(videooutput_dir)/videooutput-gmconf-bridge.h  \
 	$(videooutput_dir)/videooutput-gmconf-bridge.cpp
 
-libgmvideooutput_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(GLIB_LIBS)
+libgmvideooutput_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(GLIB_LIBS) $(PTLIB_LIBS)
