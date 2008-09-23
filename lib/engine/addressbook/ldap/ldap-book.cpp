@@ -310,9 +310,9 @@ OPENLDAP::Book::populate_menu (Ekiga::MenuBuilder &builder)
   builder.add_action ("refresh", _("_Refresh"),
 		      sigc::mem_fun (this, &OPENLDAP::Book::refresh));
   builder.add_separator ();
-  builder.add_action ("remove", _("_Remove"),
+  builder.add_action ("remove", _("_Remove addressbook"),
 		      sigc::mem_fun (this, &OPENLDAP::Book::remove));
-  builder.add_action ("properties", _("_Properties"),
+  builder.add_action ("properties", _("Addressbook _properties"),
 		      sigc::mem_fun (this, &OPENLDAP::Book::edit));
 
   return true;
