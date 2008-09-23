@@ -439,12 +439,9 @@ addressbook_window_add_book (AddressBookWindow *self,
 
   g_signal_connect (view, "updated", G_CALLBACK (on_view_updated), self);
 
-  if (book.get_type () == "remote")
-    icon = gtk_widget_render_icon (GTK_WIDGET (self->priv->tree_view), 
-                                   GM_STOCK_REMOTE_CONTACT, GTK_ICON_SIZE_MENU, NULL); 
-  else
-    icon = gtk_widget_render_icon (GTK_WIDGET (self->priv->tree_view), 
-                                   GM_STOCK_LOCAL_CONTACT, GTK_ICON_SIZE_MENU, NULL); 
+  icon = gtk_widget_render_icon (GTK_WIDGET (self->priv->tree_view),
+				 book.get_icon ().c_str (),
+				 GTK_ICON_SIZE_MENU, NULL); 
 
   store = gtk_tree_view_get_model (GTK_TREE_VIEW (self->priv->tree_view));
   gtk_tree_store_append (GTK_TREE_STORE (store), &iter, NULL);

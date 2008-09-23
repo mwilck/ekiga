@@ -74,7 +74,8 @@ namespace Evolution
 
     const std::string get_status () const;
 
-    const std::string get_type () const;
+    const std::string get_icon () const
+    { return "local-object"; }
 
     void refresh ();
 

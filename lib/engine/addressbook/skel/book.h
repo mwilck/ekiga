@@ -91,15 +91,15 @@ namespace Ekiga {
     virtual const std::string get_status () const = 0;
 
     
-    /** Get the type of the Book.
-     * The type is a string and could be something like 'local' or
-     * 'remote'. 
+    /** Get the icon for the Book.
+     * The icon is a string and could be something like "local-object"
+     * or "remote-object"
      *
      * This function is purely virtual and should be implemented by
      * the descendant of the Ekiga::Book, ie BookImpl or one
      * of its descendant.
      */
-    virtual const std::string get_type () const = 0;
+    virtual const std::string get_icon () const = 0;
 
 
     /*

@@ -164,12 +164,6 @@ History::Book::get_status () const
   return ""; // nothing special here
 }
 
-const std::string
-History::Book::get_type () const
-{
-  return "history"; 
-}
-
 void
 History::Book::set_search_filter (std::string /*filter*/)
 {

@@ -67,8 +67,8 @@ namespace KAB
     const std::string get_status () const
     { return "---"; }
 
-    const std::string get_type () const
-    { return "FIXME"; }
+    const std::string get_icon () const
+    { return "local-object"; }
 
     void set_search_filter (std::string)
     {}
