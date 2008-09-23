@@ -41,7 +41,7 @@
 #include "services.h"
 
 bool gstreamer_init (Ekiga::ServiceCore &services,
-		     int *argc,
-		     char **argv[]);
+		     int* argc,
+		     char** argv[]);
 
 #endif

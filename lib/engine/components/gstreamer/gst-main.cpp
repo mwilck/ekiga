@@ -35,15 +35,29 @@
  *
  */
 
+#include "videoinput-core.h"
 #include "gst-main.h"
-#include "gst/gst.h"
+#include "gst-videoinput.h"
 
 bool
-gstreamer_init (G_GNUC_UNUSED Ekiga::ServiceCore &services,
-		int *argc,
-		char **argv[])
+gstreamer_init (Ekiga::ServiceCore& core,
+		int* argc,
+		char** argv[])
 {
-  gst_init (argc, argv);
+  bool result = false;
+  Ekiga::VideoInputCore* videoinput_core = NULL;
 
-  return true;
+  videoinput_core
+    = dynamic_cast<Ekiga::VideoInputCore*>(core.get ("videoinput-core"));
+
+  if (videoinput_core != NULL) {
+
+    GST::VideoInputManager* manager = new GST::VideoInputManager ();
+
+    gst_init (argc, argv);
+    videoinput_core->add_manager (*manager);
+    result = true;
+  }
+
+  return result;
 }

@@ -5,10 +5,16 @@ gstreamer_dir = $(top_srcdir)/lib/engine/components/gstreamer/
 AM_CXXFLAGS = $(SIGC_CFLAGS) $(GSTREAMER_CFLAGS)
 
 INCLUDES = 						\
-	-I$(top_srcdir)/lib/engine/framework
+	-I$(top_srcdir)/lib/gmconf			\
+	-I$(top_srcdir)/lib/engine/framework		\
+	-I$(top_srcdir)/lib/engine/videoinput/skel	\
+	-I$(top_srcdir)/lib/engine/videooutput/skel	\
+	-I$(top_srcdir)/lib/engine/hal/skel
 
 libgmgstreamer_la_SOURCES = \
 	$(gstreamer_dir)/gst-main.h \
-	$(gstreamer_dir)/gst-main.cpp
+	$(gstreamer_dir)/gst-main.cpp \
+	$(gstreamer_dir)/gst-videoinput.h \
+	$(gstreamer_dir)/gst-videoinput.cpp
 
-libgmgstreamer_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(GSTREAMER_LIBS)
+libgmgstreamer_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(GSTREAMER_LIBS) -lgstapp-0.10
