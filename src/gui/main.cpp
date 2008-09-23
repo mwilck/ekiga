@@ -4462,9 +4462,13 @@ gm_main_window_update_stats (GtkWidget *main_window,
   g_return_if_fail (mw != NULL);
 
   if ((tr_width > 0) && (tr_height > 0))
+    /* Translators:
+     * TX is a common abbreviation for "transmit" */
     stats_msg_tr = g_strdup_printf (_("TX: %dx%d "), tr_width, tr_height);
 
-  if ((re_width > 0) && (re_height > 0)) 
+  if ((re_width > 0) && (re_height > 0))
+    /* Translators:
+     * RX is a common abbreviation for "receive" */
     stats_msg_re = g_strdup_printf (_("RX: %dx%d "), re_width, re_height);
 
   stats_msg = g_strdup_printf (_("Lost packets: %.1f %%\nLate packets: %.1f %%\nOut of order packets: %.1f %%\nJitter buffer: %d ms%s%s%s"), 

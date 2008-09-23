@@ -359,6 +359,9 @@ void Opal::Account::edit ()
     request.text ("host", _("Gatekeeper:"), get_host ());
   request.text ("user", _("User:"), get_username ());
   if (get_protocol_name () == "SIP")
+    /* Translators:
+     * SIP knows two usernames: The name for the client ("User") and the name
+     * for the authentication procedure ("Authentication User") */
     request.text ("authentication_user", _("Authentication User:"), get_authentication_username ());
   request.private_text ("password", _("Password:"), get_password ());
   request.text ("timeout", _("Timeout:"), str.str ());
