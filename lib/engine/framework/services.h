@@ -87,6 +87,27 @@ namespace Ekiga
 
   };
 
+  class BasicService: public Service
+  {
+  public:
+
+    BasicService (const std::string name_,
+		  const std::string description_):
+      name(name_), description(description_)
+    {}
+
+    const std::string get_name () const
+    { return name; }
+
+    const std::string get_description () const
+    { return description; }
+
+  private:
+
+    std::string name;
+    std::string description;
+  };
+
 /**
  * @}
  */
