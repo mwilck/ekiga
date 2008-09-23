@@ -84,8 +84,6 @@ namespace Ekiga
 
     const std::set<std::string> get_groups () const;
 
-    const std::string get_uri () const;
-
     /** Populates the given Ekiga::MenuBuilder with the actions.
      * @param: A MenuBuilder.
      */

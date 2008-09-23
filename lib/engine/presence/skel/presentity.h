@@ -86,11 +86,6 @@ namespace Ekiga
      */
     virtual const std::set<std::string> get_groups () const = 0;
 
-    /** Returns the uri of the Presentity.
-     * @return The presentity's uri.
-     */
-    virtual const std::string get_uri () const = 0;
-
     /** Populates a menu with the actions possible on the Presentity.
      * @param The builder to populate.
      */

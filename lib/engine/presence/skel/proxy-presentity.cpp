@@ -76,12 +76,6 @@ Ekiga::ProxyPresentity::get_groups () const
   return presentity.get_groups ();
 }
 
-const std::string
-Ekiga::ProxyPresentity::get_uri () const
-{
-  return presentity.get_uri ();
-}
-
 bool
 Ekiga::ProxyPresentity::populate_menu (Ekiga::MenuBuilder &builder)
 {

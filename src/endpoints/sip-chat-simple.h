@@ -77,6 +77,7 @@ namespace SIP
     sigc::slot<bool, std::string> sender;
     std::list<Ekiga::ChatObserver*> observers;
     Ekiga::Presentity *presentity;
+    std::string uri;
   };
 };
 
