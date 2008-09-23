@@ -241,9 +241,6 @@ Evolution::Book::get_ebook () const
 bool
 Evolution::Book::populate_menu (Ekiga::MenuBuilder &builder)
 {
-  builder.add_action ("refresh", _("_Refresh"),
-		      sigc::mem_fun (this, &Evolution::Book::refresh));
-  builder.add_separator ();
   builder.add_action ("new", _("New _Contact"),
 		      sigc::mem_fun (this,
 				     &Evolution::Book::new_contact_action));
