@@ -57,7 +57,7 @@ namespace KAB
   public:
 
     Contact (Ekiga::ContactCore &_core,
-	     const KABC::Addressee *addressee);
+	     KABC::Addressee *addressee);
 
     ~Contact ();
 
@@ -73,11 +73,9 @@ namespace KAB
 
   private:
 
-    Ekiga::ContactCore &core;
-    std::string name;
+    Ekiga::ContactCore& core;
+    KABC::Addressee& addressee;
     std::set<std::string> groups;
-    std::map<std::string,std::string> uris;
-
   };
 
 /**

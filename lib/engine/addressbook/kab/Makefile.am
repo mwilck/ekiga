@@ -4,13 +4,13 @@ else
 noinst_LTLIBRARIES = libgmkab.la
 endif
 
-kab_dir = $(top_srcdir)/addressbook/kab
+kab_dir = $(top_srcdir)/lib/engine/addressbook/kab
 
-AM_CPPFLAGS = $(KAB_CFLAGS)
+AM_CPPFLAGS = $(SIGC_CFLAGS) $(KAB_CFLAGS)
 
 INCLUDES = \
-	-I$(top_srcdir)/framework \
-	-I$(top_srcdir)/addressbook/skel
+	-I$(top_srcdir)/lib/engine/framework \
+	-I$(top_srcdir)/lib/engine/addressbook/skel
 
 libgmkab_la_SOURCES = \
 	$(kab_dir)/kab-contact.h \
@@ -23,6 +23,6 @@ libgmkab_la_SOURCES = \
 	$(kab_dir)/kab-main.cpp
 
 libgmkab_la_LIBADD = \
-	$(top_builddir)/addressbook/skel/libgmaddressbook.la
+	$(top_builddir)/lib/engine/addressbook/skel/libgmaddressbook.la
 
 libgmkab_la_LDFLAGS = -export-dynamic -no-undefined $(KAB_LIBS)

@@ -13,6 +13,7 @@ INCLUDES = 								\
 	-I$(top_srcdir)/lib/engine/addressbook/skel			\
 	-I$(top_srcdir)/lib/engine/addressbook/call-history		\
 	-I$(top_srcdir)/lib/engine/addressbook/evolution		\
+	-I$(top_srcdir)/lib/engine/addressbook/kab			\
 	-I$(top_srcdir)/lib/engine/addressbook/ldap			\
 	-I$(top_srcdir)/lib/engine/account/skel				\
 	-I$(top_srcdir)/lib/engine/presence/skel			\
@@ -25,7 +26,8 @@ INCLUDES = 								\
 	-I$(top_srcdir)/lib/engine/hal/skel				\
 	-I$(top_srcdir)/lib/engine/components/gmconf-personal-details	\
 	-I$(top_srcdir)/lib/engine/components/avahi-publisher		\
-	-I$(top_srcdir)/lib/engine/components/gstreamer
+	-I$(top_srcdir)/lib/engine/components/gstreamer			\
+	-I$(top_srcdir)/lib/engine/components/kde
 
 # XVideo/X
 if !WIN32
@@ -40,7 +42,7 @@ INCLUDES +=                                             \
 	-I$(top_srcdir)/lib/engine/videooutput/common   \
 	-I$(top_srcdir)/lib/engine/videooutput/dx
 endif
-		
+
 # Default Input Devices
 INCLUDES +=                                             \
 	-I$(top_srcdir)/lib/engine/videoinput/mlogo	\
@@ -132,6 +134,14 @@ endif
 
 if HAVE_GSTREAMER
 libekiga_engine_la_LIBADD += components/gstreamer/libgmgstreamer.la
+endif
+
+if HAVE_KDE
+libekiga_engine_la_LIBADD += components/kde/libgmkde.la
+endif
+
+if HAVE_KAB
+libekiga_engine_la_LIBADD += addressbook/kab/libgmkab.la
 endif
 
 #### FIXME should be removed at a later stage

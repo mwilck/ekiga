@@ -97,13 +97,21 @@
 #include "gst-main.h"
 #endif
 
+#ifdef HAVE_KDE
+#include "kde-main.h"
+#endif
+
+#ifdef HAVE_KAB
+#include "kab-main.h"
+#endif
+
 void
 engine_init (int argc,
              char *argv [],
              Ekiga::Runtime *runtime,
              Ekiga::ServiceCore * &core)
 {
-  core = new Ekiga::ServiceCore; 
+  core = new Ekiga::ServiceCore;
 
   /* VideoInputCore depends on VideoOutputCore and must this              *
    * be constructed thereafter                                      */
@@ -115,7 +123,7 @@ engine_init (int argc,
   Ekiga::ChatCore *chat_core = new Ekiga::ChatCore;
   Ekiga::VideoOutputCore *videooutput_core = new Ekiga::VideoOutputCore;
   Ekiga::VideoInputCore *videoinput_core = new Ekiga::VideoInputCore(*runtime, *videooutput_core);
-  Ekiga::AudioOutputCore *audiooutput_core = new Ekiga::AudioOutputCore(*runtime);  
+  Ekiga::AudioOutputCore *audiooutput_core = new Ekiga::AudioOutputCore(*runtime);
   Ekiga::AudioInputCore *audioinput_core = new Ekiga::AudioInputCore(*runtime, *audiooutput_core);
   Ekiga::HalCore *hal_core = new Ekiga::HalCore;
 
@@ -126,7 +134,7 @@ engine_init (int argc,
    * - The runtime should be destroyed last since other core        *
    *   components may still call runtime functions until destroyed  *
    *   (e.g. VideoOutputCore).                                          */
-   
+
   core->add (*runtime);
   core->add (*account_core);
   core->add (*contact_core);
@@ -211,7 +219,7 @@ engine_init (int argc,
     delete core;
     return;
   }
-  
+
   if (!avahi_publisher_init (*core, &argc, &argv)) {
     delete core;
     return;
@@ -230,6 +238,14 @@ engine_init (int argc,
     delete core;
     return;
   }
+#endif
+
+#ifdef HAVE_KDE
+  (void)kde_init (*core, &argc, &argv);
+#endif
+
+#ifdef HAVE_KAB
+  (void)kab_init (*core, &argc, &argv);
 #endif
 
   if (!history_init (*core, &argc, &argv)) {

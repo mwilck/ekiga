@@ -6,4 +6,8 @@ if HAVE_GSTREAMER
 GSTREAMER_DIR = gstreamer
 endif
 
-SUBDIRS = gmconf-personal-details $(AVAHI_DIR) $(GSTREAMER_DIR)
+if HAVE_KDE
+KDE_DIR = kde
+endif
+
+SUBDIRS = gmconf-personal-details $(AVAHI_DIR) $(GSTREAMER_DIR) $(KDE_DIR)

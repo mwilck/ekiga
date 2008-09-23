@@ -69,16 +69,16 @@ kab_init (Ekiga::ServiceCore &core,
 	  char **/*argv*/[])
 {
   bool result = false;
-  Ekiga::Service *kde_core = NULL;
+  //Ekiga::Service *kde_core = NULL;
   Ekiga::ContactCore *contact_core = NULL;
   KAB::Source *source = NULL;
   KAB::Service *service = NULL;
 
   contact_core = dynamic_cast<Ekiga::ContactCore*>(core.get ("contact-core"));
 
-  kde_core = core.get ("kde-core"); // we only care if it's there
+  //kde_core = core.get ("kde-core"); // we only care if it's there
 
-  if (contact_core != NULL && kde_core != NULL) {
+  if (contact_core != NULL ) {//&& kde_core != NULL) {
 
     source = new KAB::Source (*contact_core);
     service = new KAB::Service (source);

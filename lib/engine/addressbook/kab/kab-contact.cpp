@@ -39,43 +39,27 @@
 
 #include "kab-contact.h"
 
-KAB::Contact::Contact (Ekiga::ContactCore &_core,
-		       const KABC::Addressee *addressee)
-  : core(_core)
+KAB::Contact::Contact (Ekiga::ContactCore& _core,
+		       KABC::Addressee* addressee_)
+  : core(_core), addressee(*addressee_)
 {
-  name = addressee->formattedName ().utf8 ();
-
-  QStringList categories = addressee->categories ();
+  QStringList categories = addressee.categories ();
   for (QStringList::const_iterator iter = categories.begin ();
        iter != categories.end ();
        iter++) {
 
-    groups.insert ((*iter).utf8 ().data ());
-  }
-
-  QValueList<KABC::PhoneNumber> phoneNumbers = addressee->phoneNumbers ();
-  for (QValueListConstIterator<KABC::PhoneNumber> iter = phoneNumbers.begin ();
-       iter != phoneNumbers.end ();
-       iter++) {
-
-    std::string precision;
-
-    precision = (*iter).typeLabel ().utf8 ();
-    uris[precision] = std::string ((*iter).number ().utf8 ().data ());
+    groups.insert ((*iter).toUtf8 ().data ());
   }
 }
 
 KAB::Contact::~Contact ()
 {
-#ifdef __GNUC__
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
-#endif
 }
 
 const std::string
 KAB::Contact::get_name () const
 {
-  return name;
+  return addressee.formattedName ().toUtf8 ().constData ();
 }
 
 const std::set<std::string>
@@ -84,20 +68,26 @@ KAB::Contact::get_groups () const
   return groups;
 }
 
-const std::map<std::string, std::string>
-KAB::Contact::get_uris () const
-{
-  return uris;
-}
-
 bool
 KAB::Contact::populate_menu (Ekiga::MenuBuilder &builder)
 {
+  bool result = false;
+
   /* FIXME: add here the specific actions we want to allow
    * (before or after the uri-specific actions)
    */
 
-  return core.populate_contact_menu (*this, builder);
+  KABC::PhoneNumber::List phoneNumbers = addressee.phoneNumbers ();
+  for (KABC::PhoneNumber::List::const_iterator iter = phoneNumbers.begin ();
+       iter != phoneNumbers.end ();
+       iter++) {
+
+    std::string precision = (*iter).typeLabel ().toUtf8 ().constData ();
+    result = result || core.populate_contact_menu (*this,
+						   (*iter).number ().toUtf8 ().constData (), builder);
+  }
+
+  return result;
 }
 
 bool

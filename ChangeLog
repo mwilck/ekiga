@@ -1,3 +1,42 @@
+2008-09-22  Julien Puydt  <jpuydt@gnome.org>
+
+	* configure.ac:
+	* lib/engine/Makefile.am:
+	* lib/engine/addressbook/Makefile.am:
+	* lib/engine/addressbook/kab/Makefile.am:
+	* lib/engine/addressbook/kab/kab-book.cpp:
+	* lib/engine/addressbook/kab/kab-book.h:
+	* lib/engine/addressbook/kab/kab-contact.cpp:
+	* lib/engine/addressbook/kab/kab-contact.h:
+	* lib/engine/addressbook/kab/kab-main.cpp:
+	* lib/engine/addressbook/kab/kab-source.cpp:
+	* lib/engine/addressbook/kab/kab-source.h:
+	* lib/engine/components/Makefile.am:
+	* lib/engine/components/kde/Makefile.am:
+	* lib/engine/components/kde/kde-main.h:
+	* lib/engine/components/kde/kde-main.cpp:
+	* lib/engine/engine.cpp: Fixed bug #552909 -- that was hard!
+
+2008-09-18  Julien Puydt  <jpuydt@gnome.org>
+
+	* lib/engine/presence/avahi/avahi-heap.h:
+	* lib/engine/presence/avahi/avahi-heap.cpp: Made it possible to have
+	several browsers in the avahi browsing code, paving the way to a proper
+	fix for bug #530617.
+
+2008-09-18  Julien Puydt  <jpuydt@gnome.org>
+
+	* lib/engine/presence/local-roster/local-heap.cpp: Fixed bug #548276.
+
+2008-09-16  Julien Puydt  <jpuydt@gnome.org>
+
+	* lib/engine/presence/skel/presentity.h:
+	* lib/engine/presence/skel/proxy-presentity.h:
+	* lib/engine/presence/skel/proxy-presentity.cpp:
+	* src/endpoints/sip-chat-simple.h:
+	* src/endpoints/sip-chat-simple.cpp: Got rid of the get_uri method in
+	the base Ekiga::Presentity class, fixing bug #552547.
+
 tag EKIGA_3_0_0
 
 2008-09-22  Damien Sandras  <dsandras@gnome.org>
@@ -31,26 +70,6 @@ tag EKIGA_3_0_0
 
 	* src/gui/main.cpp, src/endpoints/ekiga.cpp:
 	Make hidden main window appear if status icon is lost under runtime.
-
-2008-09-18  Julien Puydt  <jpuydt@gnome.org>
-
-	* lib/engine/presence/avahi/avahi-heap.h:
-	* lib/engine/presence/avahi/avahi-heap.cpp: Made it possible to have
-	several browsers in the avahi browsing code, paving the way to a proper
-	fix for bug #530617.
-
-2008-09-18  Julien Puydt  <jpuydt@gnome.org>
-
-	* lib/engine/presence/local-roster/local-heap.cpp: Fixed bug #548276.
-
-2008-09-16  Julien Puydt  <jpuydt@gnome.org>
-
-	* lib/engine/presence/skel/presentity.h:
-	* lib/engine/presence/skel/proxy-presentity.h:
-	* lib/engine/presence/skel/proxy-presentity.cpp:
-	* src/endpoints/sip-chat-simple.h:
-	* src/endpoints/sip-chat-simple.cpp: Got rid of the get_uri method in
-	the base Ekiga::Presentity class, fixing bug #552547.
 
 2008-09-19  Julien Puydt  <jpuydt@gnome.org>
 

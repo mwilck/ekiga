@@ -52,7 +52,7 @@ namespace KAB
  */
 
   class Book:
-    public Ekiga::BookImpl<Contact, Ekiga::delete_contact_management<Contact> >
+    public Ekiga::BookImpl<Contact>
   {
   public:
 
@@ -63,6 +63,15 @@ namespace KAB
     const std::string get_name () const;
 
     bool populate_menu (Ekiga::MenuBuilder &builder);
+
+    const std::string get_status () const
+    { return "---"; }
+
+    const std::string get_type () const
+    { return "FIXME"; }
+
+    void set_search_filter (std::string)
+    {}
 
   private:
 

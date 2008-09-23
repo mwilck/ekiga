@@ -1,6 +1,6 @@
 
 /* Ekiga -- A VoIP and Video-Conferencing application
- * Copyright (C) 2000-2007 Damien Sandras
+ * Copyright (C) 2000-2008 Damien Sandras
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,32 +27,35 @@
 
 
 /*
- *                         kab-source.cpp  -  description
+ *                         kde-main.cpp  -  description
  *                         ------------------------------------------
- *   begin                : written in 2007 by Julien Puydt
- *   copyright            : (c) 2007 by Julien Puydt
- *   description          : implementation of the KDE source
+ *   begin                : written in 2008 by Damien Sandras
+ *   copyright            : (c) 2008 by Julien Puydt
+ *   description          : code to make ekiga a KApplication
  *
  */
 
-#include <iostream>
+#include "config.h"
+#include "services.h"
 
-#include "kab-source.h"
-
-KAB::Source::Source (Ekiga::ContactCore &_core): core(_core)
-{
-  KAB::Book *book = new KAB::Book (core);
-
-  add_book (*book);
-}
-
-KAB::Source::~Source ()
-{
-}
+#include <kaboutdata.h>
+#include <kapplication.h>
+#include <kcmdlineargs.h>
 
 bool
-KAB::Source::populate_menu (Ekiga::MenuBuilder &/*builder*/)
+kde_init (Ekiga::ServiceCore& services,
+	  int* /*argc*/,
+	  char** /*argv*/[])
 {
-  /* FIXME: to implement */
-  return false;
+  KAboutData about(PACKAGE, PACKAGE, ki18n("PACKAGE_NAME"), PACKAGE_VERSION,
+		   ki18n("VoIP application"),
+		   KAboutData::License_Custom,
+		   ki18n("Copyright (c) 2008 Developers"));
+
+  KCmdLineArgs::init (&about);
+  new KApplication (false);
+  services.add (*new Ekiga::BasicService ("kde-core",
+					  "KDE support"));
+
+  return true;
 }

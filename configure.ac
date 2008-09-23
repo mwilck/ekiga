@@ -7,7 +7,7 @@ AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
 AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
 
-
+AC_LANG(C++)
 
 dnl ###########################################################################
 dnl   Definitions
@@ -520,6 +520,68 @@ fi
 AM_CONDITIONAL(HAVE_GSTREAMER, test "x$found_gstreamer" = "xyes")
 
 dnl ###############################
+dnl  KDE support
+dnl ###############################
+KDE="disabled"
+
+AC_ARG_ENABLE(kab, [  --enable-de                  Enable KDE support],enable_kde=yes,)
+
+if test "x$enable_kde" = "xyes"; then
+  found_kde=yes
+  KDE_CFLAGS="-I/usr/include/qt4"
+  KDE_LIBS="-lQtCore"
+  CPPFLAGS_save="$CPPFLAGS"
+  LIBS_save="$LIBS"
+  CPPFLAGS="$CPPFLAGS $KDE_CFLAGS"
+  LIBS="$LIBS $KDE_LIBS"
+  AC_CHECK_HEADER(kapplication.h,,found_kde=no)
+  CPPFLAGS="$CPPFLAGS_save"
+  LIBS="$LIBS_save"
+  if test "x$found_kde" = "xno"; then
+    AC_MSG_ERROR(We need this header!)
+  fi
+  AC_SUBST(KDE_CFLAGS)
+  AC_SUBST(KDE_LIBS)
+  KDE="enabled"
+  AC_DEFINE(HAVE_KDE,1,[KDE support])
+fi
+
+AM_CONDITIONAL(HAVE_KDE, test "x$found_kde" = "xyes")
+
+dnl ###############################
+dnl  KAddressBook support
+dnl ###############################
+KAB="disabled"
+
+AC_ARG_ENABLE(kab, [  --enable-kab                  Enable KAddressBook support],enable_kab=yes,)
+
+if test "x$enable_kab" = "xyes"; then
+
+  if test "x$found_kde" != "xyes"; then
+    AC_MSG_ERROR(No kab without kde: --enable-kde)
+  fi
+  found_kab=yes
+  KAB_CFLAGS="-I/usr/include/qt4"
+  KAB_LIBS="-lQtCore -lkabc"
+  CPPFLAGS_save="$CPPFLAGS"
+  LIBS_save="$LIBS"
+  CPPFLAGS="$CPPFLAGS $KAB_CFLAGS"
+  LIBS="$LIBS $KAB_LIBS"
+  AC_CHECK_HEADER(kabc/addressee.h,,found_kab=no)
+  CPPFLAGS="$CPPFLAGS_save"
+  LIBS="$LIBS_save"
+  if test "x$found_kab" = "xno"; then
+    AC_MSG_ERROR(We need this header!)
+  fi
+  AC_SUBST(KAB_CFLAGS)
+  AC_SUBST(KAB_LIBS)
+  KAB="enabled"
+  AC_DEFINE(HAVE_KAB,1,[KAddressBook support])
+fi
+
+AM_CONDITIONAL(HAVE_KAB, test "x$found_kab" = "xyes")
+
+dnl ###############################
 dnl   Gnome-Doc-Utils
 dnl ###############################
 GDU="disabled"
@@ -671,6 +733,7 @@ lib/engine/addressbook/Makefile
 lib/engine/addressbook/call-history/Makefile
 lib/engine/addressbook/evolution/Makefile
 lib/engine/addressbook/ldap/Makefile
+lib/engine/addressbook/kab/Makefile
 lib/engine/addressbook/skel/Makefile
 lib/engine/chat/Makefile
 lib/engine/chat/echo/Makefile
@@ -708,6 +771,7 @@ lib/engine/components/Makefile
 lib/engine/components/gmconf-personal-details/Makefile
 lib/engine/components/avahi-publisher/Makefile
 lib/engine/components/gstreamer/Makefile
+lib/engine/components/kde/Makefile
 )
 
 
@@ -741,6 +805,8 @@ echo "            DBUS service support  :  $DBUS_SERVICE"
 echo "             mDNS/DNS-SD support  :  $AVAHI"
 fi
 echo "               GStreamer support  :  $GSTREAMER"
+echo "            KAddressBook support  :  $KAB"
+echo "                     KDE support  :  $KDE"
 echo ""
 echo "                         OS Type  :  $target_os"
 echo "                    Machine Type  :  $target_cpu"

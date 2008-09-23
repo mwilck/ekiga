@@ -60,9 +60,6 @@ KAB::Book::Book (Ekiga::ContactCore &_core): core(_core)
 
 KAB::Book::~Book ()
 {
-#ifdef __GNUC__
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
-#endif
 }
 
 const std::string
