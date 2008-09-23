@@ -158,6 +158,13 @@ Local::Heap::existing_groups () const
     result.insert (groups.begin (), groups.end ());
   }
 
+  result.insert (_("Family"));
+  result.insert (_("Friend"));
+  result.insert (_("Associate"));
+  result.insert (_("Assistant"));
+  result.insert (_("Supervisor"));
+  result.insert (_("Self"));
+
   return result;
 }
 
