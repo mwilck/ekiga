@@ -95,10 +95,14 @@ GST::VideoInputManager::set_device (const Ekiga::VideoInputDevice& device,
   return result;
 }
 
+/* FIXME: in this function, all fps-related code is commented out...
+ * and I(Snark) have no clue how to make it work. gstreamer-devel doesn't seem
+ * to either since I got no answer to my questions.
+ */
 bool
 GST::VideoInputManager::open (unsigned width,
 			      unsigned height,
-			      unsigned fps)
+			      unsigned /*fps*/)
 {
   bool result;
   gchar* command = NULL;
@@ -109,11 +113,10 @@ GST::VideoInputManager::open (unsigned width,
 			     " caps=video/x-raw-yuv"
 			     ",format=(fourcc)I420"
 			     ",width=%d,height=%d"
-			     ",framerate=%d"
+			     //",framerate=%d"
 			     " name=ekiga_sink",
 			     devices_by_name[current_state.device.name].c_str (),
-			     width, height, fps);
-  g_print ("Trying to open new pipeline: %s\n", command);
+			     width, height);//, fps);
   pipeline = gst_parse_launch (command, &error);
 
   if (error == NULL) {
@@ -141,14 +144,12 @@ GST::VideoInputManager::open (unsigned width,
   g_free (command);
 
   current_state.opened = result;
-  g_print ("Opening %s\n", result?"success":"failure");
   return result;
 }
 
 void
 GST::VideoInputManager::close ()
 {
-  g_print ("%s\n", __PRETTY_FUNCTION__);
   if (pipeline != NULL) {
 
     g_object_unref (pipeline);
@@ -159,8 +160,8 @@ GST::VideoInputManager::close ()
 
 bool
 GST::VideoInputManager::get_frame_data (char* data,
-					G_GNUC_UNUSED unsigned& width,
-					G_GNUC_UNUSED unsigned& height)
+					unsigned& width,
+					unsigned& height)
 {
   bool result = false;
   GstBuffer* buffer = NULL;
@@ -176,12 +177,17 @@ GST::VideoInputManager::get_frame_data (char* data,
 
     if (buffer != NULL) {
 
-      memcpy (data, GST_BUFFER_DATA (buffer), GST_BUFFER_SIZE (buffer));
+      uint size = MIN (GST_BUFFER_SIZE (buffer),
+		       current_state.width * current_state.height * 3 / 2);
+      memcpy (data, GST_BUFFER_DATA (buffer), size);
       result = true;
       gst_buffer_unref (buffer);
     }
     g_object_unref (sink);
   }
+
+  width = current_state.width;
+  height = current_state.height;
 
   return result;
 }
@@ -233,7 +239,8 @@ GST::VideoInputManager::detect_v4l2src_devices ()
 	g_object_set_property (G_OBJECT (elt), "device", device);
 
 	g_object_get (G_OBJECT (elt), "device-name", &name, NULL);
-	descr = g_strdup_printf ("v4l2src device=%s",
+	descr = g_strdup_printf ("v4l2src device=%s"
+				 " ! videoscale ! ffmpegcolorspace",
 				 g_value_get_string (device));
 	devices_by_name[name] = descr;
 	g_free (descr);
