@@ -117,6 +117,7 @@ GST::VideoInputManager::open (unsigned width,
 			     " name=ekiga_sink",
 			     devices_by_name[current_state.device.name].c_str (),
 			     width, height);//, fps);
+  g_print ("Pipeline: %s\n", command);
   pipeline = gst_parse_launch (command, &error);
 
   if (error == NULL) {
@@ -287,6 +288,12 @@ GST::VideoInputManager::detect_dv1394src_devices ()
   bool problem = false;
   GstElement* elt = NULL;
 
+  elt = gst_element_factory_make ("videoscale", "videoscalepresencetest");
+  if (elt == NULL)
+    problem = true;
+  else
+    gst_object_unref (elt);
+
   elt = gst_element_factory_make ("decodebin", "decodebinpresencetest");
   if (elt == NULL)
     problem = true;
@@ -325,6 +332,7 @@ GST::VideoInputManager::detect_dv1394src_devices ()
 	g_object_get (G_OBJECT (elt), "device-name", &name, NULL);
 	descr = g_strdup_printf ("dv1394src guid=%Ld"
 				 " ! decodebin"
+				 " ! videoscale"
 				 " ! ffmpegcolorspace",
 				 g_value_get_uint64 (guid));
 	devices_by_name[name] = descr;
