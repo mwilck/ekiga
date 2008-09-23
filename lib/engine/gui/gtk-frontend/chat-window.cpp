@@ -477,6 +477,9 @@ chat_window_new (Ekiga::ChatCore& core,
 
   result->priv = new ChatWindowPrivate (core);
 
+  g_signal_connect (G_OBJECT (result), "delete-event",
+		    G_CALLBACK (gtk_widget_hide_on_delete), NULL);
+
   result->priv->notebook = gtk_notebook_new ();
   gtk_container_add (GTK_CONTAINER (result), result->priv->notebook);
   gtk_widget_show (result->priv->notebook);
