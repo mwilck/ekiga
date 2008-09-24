@@ -137,6 +137,9 @@ GST::VideoInputManager::open (unsigned width,
       result = false;
     } else {
 
+      Ekiga::VideoInputSettings settings;
+      settings.modifyable = false;
+      device_opened.emit (current_state.device, settings);
       result = true;
     }
   } else {
@@ -156,6 +159,7 @@ GST::VideoInputManager::close ()
 {
   if (pipeline != NULL) {
 
+    device_closed.emit (current_state.device);
     g_object_unref (pipeline);
     pipeline = NULL;
   }
