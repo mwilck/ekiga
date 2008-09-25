@@ -510,7 +510,21 @@ GSTREAMER="disabled"
 AC_ARG_ENABLE(gstreamer, [  --enable-gstreamer            Enable GStreamer support],enable_gstreamer=yes,)
 
 if test "x$enable_gstreamer" = "xyes"; then
-  PKG_CHECK_MODULES([GSTREAMER], [gstreamer-plugins-base-0.10 gstreamer-interfaces-0.10], [found_gstreamer=yes])
+  found_gstreamer=yes
+  PKG_CHECK_MODULES([GSTREAMER], [gstreamer-plugins-base-0.10 gstreamer-interfaces-0.10])
+  CPPFLAGS_save="$CPPFLAGS"
+  CPPFLAGS="$CPPFLAGS $GSTREAMER_CFLAGS"
+  AC_CHECK_HEADER(gst/app/gstappsink.h,,found_gstreamer=no)
+  CPPFLAGS="$CPPFLAGS_save"
+  LIBS_save="$LIBS"
+  LIBS="$LIBS $GSTREAMER_LIBS"
+  AC_CHECK_LIB(gstapp-0.10,gst_app_sink_pull_buffer,,found_gstreamer=no)
+  LIBS="$LIBS_save"
+
+  if test "x$found_gstreamer" = "xno"; then
+    AC_MSG_ERROR([You asked for GStreamer, but we didn't find what we need])
+  fi
+  GSTREAMER_LIBS="$GSTREAMER_LIBS -lgstapp-0.10"
   AC_SUBST(GSTREAMER_CFLAGS)
   AC_SUBST(GSTREAMER_LIBS)
   GSTREAMER="enabled"

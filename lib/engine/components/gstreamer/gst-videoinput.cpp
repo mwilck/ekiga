@@ -27,7 +27,7 @@
 
 
 /*
- *                         gst-videoinput.h  -  description
+ *                         gst-videoinput.cpp  -  description
  *                         ------------------------------------
  *   begin                : Wed 17 September 2008
  *   copyright            : (C) 2008 by Julien Puydt
