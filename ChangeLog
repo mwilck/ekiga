@@ -1,3 +1,10 @@
+2008-09-25  Matthias Schneider  <ma30002000@yahoo.de>
+	
+	* lib/engine/audioinput/skel/audioinput-core.cpp:
+	* lib/engine/audiooutput/skel/audiooutput-core.cpp:
+	* lib/engine/videoinput/skel/videoinput-core.cpp:
+	Fix message box when device was unplugged in out-of-call state (#552262)
+
 2008-09-23  Damien Sandras  <dsandras@gnome.org>
 
 	* src/gui/callbacks.cpp:
@@ -22,9 +29,6 @@
 	- Correctly hide addressbook and chat window when the user clicks
 	close
 	- various string/typo/translator comment fixes
-
->>>>>>> .r7081
-tag EKIGA_3_0_0
 
 2008-09-22  Damien Sandras  <dsandras@gnome.org>
 
