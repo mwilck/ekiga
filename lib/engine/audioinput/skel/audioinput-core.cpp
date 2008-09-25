@@ -250,7 +250,7 @@ void AudioInputCore::remove_device (const std::string & source, const std::strin
        iter++) {
      if ((*iter)->has_device (source, device_name, device)) {
 
-       if ( current_device == device) {
+       if ( ( current_device == device) && (preview_config.active || stream_config.active) ) {
 
             AudioInputDevice new_device;
             new_device.type = AUDIO_INPUT_FALLBACK_DEVICE_TYPE;

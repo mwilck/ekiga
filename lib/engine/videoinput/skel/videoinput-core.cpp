@@ -244,7 +244,7 @@ void VideoInputCore::remove_device (const std::string & source, const std::strin
        iter != managers.end ();
        iter++) {
      if ((*iter)->has_device (source, device_name, capabilities, device)) {
-       if ( current_device == device ) {
+       if ( (current_device == device) && (preview_config.active || stream_config.active) ) {
 
             VideoInputDevice new_device;
             new_device.type   = VIDEO_INPUT_FALLBACK_DEVICE_TYPE;

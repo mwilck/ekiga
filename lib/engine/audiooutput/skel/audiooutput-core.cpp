@@ -225,7 +225,7 @@ void AudioOutputCore::remove_device (const std::string & sink, const std::string
        iter != managers.end ();
        iter++) {
      if ((*iter)->has_device (sink, device_name, device)) {
-       if (device == current_device[primary]) {
+       if ( (device == current_device[primary]) && (current_primary_config.active) ) {
 
          AudioOutputDevice new_device;
          new_device.type   = AUDIO_OUTPUT_FALLBACK_DEVICE_TYPE;
