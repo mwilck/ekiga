@@ -35,6 +35,8 @@
  *
  */
 
+#include "config.h"
+
 #include "gst-videoinput.h"
 
 #include <gst/interfaces/propertyprobe.h>
@@ -222,7 +224,7 @@ GST::VideoInputManager::detect_videotestsrc_devices ()
 
   if (elt != NULL) {
 
-    devices_by_name["Video test"] = "videotestsrc";
+    devices_by_name[_("Video test")] = "videotestsrc";
     gst_object_unref (GST_OBJECT (elt));
   }
 }
