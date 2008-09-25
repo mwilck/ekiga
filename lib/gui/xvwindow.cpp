@@ -220,7 +220,6 @@ XVWindow::Init (Display* dp,
     _XVImage[i]->data = (char*) malloc(_XVImage[i]->data_size);
   }
 
-    XSync(_display, False);
     PTRACE(1, "XVideo\tNot using SHM extension");
 #ifdef HAVE_SHM
   }
@@ -229,6 +228,7 @@ XVWindow::Init (Display* dp,
   }
 #endif
 
+  XSync(_display, False);
 
   _isInitialized = true;
   XUnlockDisplay (_display);
