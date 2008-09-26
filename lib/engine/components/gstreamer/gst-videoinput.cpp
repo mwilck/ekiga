@@ -134,6 +134,7 @@ GST::VideoInputManager::open (unsigned width,
 
     if (current != GST_STATE_PLAYING) {
 
+      gst_element_set_state (pipeline, GST_STATE_NULL);
       gst_object_unref (GST_OBJECT (pipeline));
       pipeline = NULL;
       result = false;
@@ -279,6 +280,7 @@ GST::VideoInputManager::detect_v4l2src_devices ()
 	g_free (descr);
       }
 
+      g_value_array_free (array);
       gst_element_set_state (elt, GST_STATE_NULL);
     }
   }
@@ -343,6 +345,7 @@ GST::VideoInputManager::detect_dv1394src_devices ()
 	g_free (descr);
       }
 
+      g_value_array_free (array);
       gst_element_set_state (elt, GST_STATE_NULL);
     }
   }

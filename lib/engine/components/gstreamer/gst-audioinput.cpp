@@ -136,6 +136,7 @@ GST::AudioInputManager::open (unsigned channels,
 		      NULL);
 	settings.volume = (unsigned)(255*val);
 	settings.modifyable = true;
+	g_object_unref (volume);
       } else {
 
 	settings.modifyable = false;
@@ -225,6 +226,7 @@ GST::AudioInputManager::set_volume (unsigned valu)
     g_object_set (G_OBJECT (volume),
 		  "volume", valf,
 		  NULL);
+    g_object_unref (volume);
   }
 }
 
@@ -294,6 +296,7 @@ GST::AudioInputManager::detect_alsasrc_devices ()
 	g_free (name);
 	g_free (descr);
       }
+      g_value_array_free (array);
     }
     
     gst_element_set_state (elt, GST_STATE_NULL);
