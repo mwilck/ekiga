@@ -190,4 +190,4 @@ EXTRA_DIST = \
 CLEANFILES = \
 	$(service_DATA)
 
-DISTCLEANFILES = src/revision.h
+DISTCLEANFILES = revision.h

@@ -106,9 +106,7 @@ IMAGES= \
 
 noinst_DATA = inlines.h
 
-BUILD_SOURCES = inlines.h
-
-CLEANFILES = inlines.h
+DISTCLEANFILES = inlines.h
 
 EXTRA_DIST= $(IMAGES_FILES)
 
