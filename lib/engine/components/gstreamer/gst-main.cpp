@@ -35,9 +35,9 @@
  *
  */
 
-#include "videoinput-core.h"
 #include "gst-main.h"
 #include "gst-videoinput.h"
+#include "gst-audioinput.h"
 
 bool
 gstreamer_init (Ekiga::ServiceCore& core,
@@ -46,16 +46,22 @@ gstreamer_init (Ekiga::ServiceCore& core,
 {
   bool result = false;
   Ekiga::VideoInputCore* videoinput_core = NULL;
+  Ekiga::AudioInputCore* audioinput_core = NULL;
 
   videoinput_core
     = dynamic_cast<Ekiga::VideoInputCore*>(core.get ("videoinput-core"));
 
-  if (videoinput_core != NULL) {
+  audioinput_core
+    = dynamic_cast<Ekiga::AudioInputCore*>(core.get ("audioinput-core"));
 
-    GST::VideoInputManager* manager = new GST::VideoInputManager ();
+  if (videoinput_core != NULL && audioinput_core != NULL) {
+
+    GST::VideoInputManager* video = new GST::VideoInputManager ();
+    GST::AudioInputManager* audio = new GST::AudioInputManager ();
 
     gst_init (argc, argv);
-    videoinput_core->add_manager (*manager);
+    videoinput_core->add_manager (*video);
+    audioinput_core->add_manager (*audio);
     result = true;
   }
 
