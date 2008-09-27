@@ -1414,7 +1414,7 @@ on_audiooutput_device_error_cb (Ekiga::AudioOutputManager & /*manager */,
       break;
 
     case Ekiga::AO_ERROR_WRITE:
-      dialog_msg = g_strconcat (tmp_msg, "\n\n", _("The selected audio device was successfully opened but it is impossible to write data to this device. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your audio setup."), NULL);
+      dialog_msg = g_strconcat (tmp_msg, "\n\n", _("The selected audio device was successfully opened but it is impossible to write data from this device. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your audio setup."), NULL);
       break;
 
     case Ekiga::AO_ERROR_NONE:

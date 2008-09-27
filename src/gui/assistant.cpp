@@ -636,7 +636,7 @@ create_ekiga_out_page (EkigaAssistant *assistant)
   label = gtk_label_new (NULL);
   text = g_strdup_printf ("<i>%s</i>",
                           _("You can make calls to regular phones and cell numbers worldwide using Ekiga.\n\n"
-                            "To enable this, you need to do two things:\n"
+                            "To enable this, you need to do three things:\n"
                             "- First buy an account at the URL below.\n"
                             "- Then enter your account ID and PIN code.\n"
                             "The service will work only if your account is created using the URL in this dialog.\n"));

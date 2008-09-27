@@ -779,7 +779,7 @@ void Opal::Sip::EndPoint::OnRegistrationFailed (const PString & _aor,
     break;
 
   case SIP_PDU::Failure_ProxyAuthenticationRequired:
-    info = _("Proxy authentication required");
+    info = _("Proxy auth. required");
     break;
 
   case SIP_PDU::Failure_LengthRequired:
