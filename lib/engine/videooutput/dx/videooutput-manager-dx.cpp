@@ -233,8 +233,10 @@ GMVideoOutputManager_dx::display_pip_frames (const char *local_frame,
     runtime.run_in_main (sigc::bind (fullscreen_mode_changed.make_slot (), Ekiga::VO_FS_OFF));
 
   if (dxWindow) {
-    if (update_required.remote || (!update_required.remote && !update_required.local))
+    if (update_required.remote || (!update_required.remote && !update_required.local)) {
       dxWindow->PutFrame ((uint8_t *) remote_frame, rf_width, rf_height, false);
+      dxWindow->PutFrame ((uint8_t *) local_frame, lf_width, lf_height, true);      
+    }
       
     if (update_required.local  || (!update_required.remote && !update_required.local))
       dxWindow->PutFrame ((uint8_t *) local_frame, lf_width, lf_height, true);      
