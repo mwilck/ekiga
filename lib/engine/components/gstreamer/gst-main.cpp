@@ -36,6 +36,10 @@
  */
 
 #include "gst-main.h"
+
+#include "videoinput-core.h"
+#include "audioinput-core.h"
+
 #include "gst-videoinput.h"
 #include "gst-audioinput.h"
 

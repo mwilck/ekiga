@@ -39,7 +39,10 @@
 #define __GST_AUDIOINPUT_H__
 
 #include "audioinput-manager.h"
+
 #include <gst/gst.h>
+
+#include <map>
 
 namespace GST
 {

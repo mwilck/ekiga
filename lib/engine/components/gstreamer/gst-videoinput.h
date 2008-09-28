@@ -40,6 +40,7 @@
 
 #include "videoinput-manager.h"
 #include <gst/gst.h>
+#include <map>
 
 namespace GST
 {

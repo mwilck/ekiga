@@ -42,6 +42,8 @@
 #include <gst/interfaces/propertyprobe.h>
 #include <gst/app/gstappsink.h>
 
+#include <string.h>
+
 GST::AudioInputManager::AudioInputManager ()
 {
   detect_devices ();

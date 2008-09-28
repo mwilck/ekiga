@@ -42,6 +42,8 @@
 #include <gst/interfaces/propertyprobe.h>
 #include <gst/app/gstappsink.h>
 
+#include <string.h>
+
 GST::VideoInputManager::VideoInputManager (): pipeline(NULL)
 {
   detect_devices (); // or we won't recognize the devices we'll be asked to use
