@@ -34,8 +34,8 @@
  *
  */
 
-#include "audiooutput-core.h"
 #include "audiooutput-scheduler.h"
+#include "audiooutput-core.h"
 #include "config.h"
 
 using namespace Ekiga;

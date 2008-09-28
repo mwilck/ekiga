@@ -39,7 +39,6 @@
 #include <math.h>
 
 #include "audioinput-core.h"
-#include "audioinput-manager.h"
 
 using namespace Ekiga;
 

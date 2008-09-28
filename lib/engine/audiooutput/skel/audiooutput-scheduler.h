@@ -38,7 +38,8 @@
 #define __AUDIOOUTPUT_SCHEDULER_H__
 
 #include "services.h"
-#include "audiooutput-core.h"
+
+#include "audiooutput-info.h"
 
 #include <glib.h>
 #include <vector>
@@ -49,6 +50,8 @@
 
 namespace Ekiga
 {
+  class AudioOutputCore;
+
   typedef struct AudioEvent {
     std::string name;
     bool is_file_name;
@@ -64,14 +67,12 @@ namespace Ekiga
     AudioOutputPS ps;
   } EventFileName;
 
-  class AudioOutputCore;
-
   class AudioEventScheduler : public PThread
   {
     PCLASSINFO(AudioEventScheduler, PThread);
 
   public:
-    AudioEventScheduler(AudioOutputCore& _audio_output_core);
+    AudioEventScheduler(Ekiga::AudioOutputCore& _audio_output_core);
     ~AudioEventScheduler();
     void add_event_to_queue(const std::string & name, bool is_file_name, unsigned interval, unsigned repetitions);
     void remove_event_from_queue(const std::string & name);
@@ -97,7 +98,7 @@ namespace Ekiga
     PMutex event_file_list_mutex;
     std::vector <EventFileName> event_file_list;
 
-    AudioOutputCore& audio_output_core;
+    Ekiga::AudioOutputCore& audio_output_core;
   };
 };
 #endif

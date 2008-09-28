@@ -38,7 +38,10 @@
 #ifndef __VIDEOINPUT_MANAGER_H__
 #define __VIDEOINPUT_MANAGER_H__
 
-#include "videoinput-core.h"
+#include <vector>
+#include <sigc++/sigc++.h>
+
+#include "videoinput-info.h"
 
 namespace Ekiga
 {

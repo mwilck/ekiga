@@ -38,15 +38,11 @@
 
 #include "services.h"
 #include "runtime.h"
-#include "audiooutput-core.h"
 #include "hal-core.h"
-#include "audiooutput-gmconf-bridge.h"
-#include "audiooutput-info.h"
-#include "audiooutput-scheduler.h"
 
-#include <sigc++/sigc++.h>
-#include <glib.h>
-#include <set>
+#include "audiooutput-manager.h"
+#include "audiooutput-gmconf-bridge.h"
+#include "audiooutput-scheduler.h"
 
 #include "ptbuildopts.h"
 #include "ptlib.h"
@@ -61,9 +57,6 @@ namespace Ekiga
  * @defgroup audiooutput
  * @{
  */
-
-   class AudioOutputManager;
-   class AudioOutputCore;
 
   /** Core object for the audio output support
    * The audio output core abstracts all functionality related to audio output

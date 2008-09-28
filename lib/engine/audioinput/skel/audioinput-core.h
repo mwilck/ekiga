@@ -39,14 +39,11 @@
 
 #include "services.h"
 #include "runtime.h"
+
+#include "audioinput-manager.h"
 #include "audiooutput-core.h"
 #include "hal-core.h"
 #include "audioinput-gmconf-bridge.h"
-#include "audioinput-info.h"
-
-#include <sigc++/sigc++.h>
-#include <glib.h>
-#include <set>
 
 #include "ptbuildopts.h"
 #include "ptlib.h"
@@ -57,9 +54,6 @@
 
 namespace Ekiga
 {
-  class AudioInputManager;
-  class AudioInputCore;
-
 /**
  * @defgroup audioinput
  * @{

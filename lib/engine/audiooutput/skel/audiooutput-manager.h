@@ -35,10 +35,13 @@
  */
 
 
-#ifndef __AUDIOINPUT_MANAGER_H__
-#define __AUDIOINPUT_MANAGER_H__
+#ifndef __AUDIOOUTPUT_MANAGER_H__
+#define __AUDIOOUTPUT_MANAGER_H__
 
-#include "audiooutput-core.h"
+#include <vector>
+#include <sigc++/sigc++.h>
+
+#include "audiooutput-info.h"
 
 namespace Ekiga
 {

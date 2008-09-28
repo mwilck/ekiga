@@ -38,7 +38,9 @@
 #ifndef __VIDEOOUTPUT_MANAGER_H__
 #define __VIDEOOUTPUT_MANAGER_H__
 
-#include "videooutput-core.h"
+#include <sigc++/sigc++.h>
+
+#include "videooutput-info.h"
 
 namespace Ekiga
 {

@@ -38,7 +38,6 @@
 #define __AUDIOINPUT_INFO_H__
 
 #include "device-def.h"
-#include <string>
 
 namespace Ekiga
 {

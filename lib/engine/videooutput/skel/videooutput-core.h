@@ -40,7 +40,7 @@
 #include "services.h"
 
 #include "videooutput-gmconf-bridge.h"
-#include "videooutput-info.h"
+#include "videooutput-manager.h"
 
 #include <sigc++/sigc++.h>
 #include <set>
@@ -58,8 +58,6 @@ namespace Ekiga
  * @defgroup videooutput
  * @{
  */
-
-  class VideoOutputManager;
 
   /** Core object for the video display support
    *

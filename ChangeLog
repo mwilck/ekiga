@@ -1,3 +1,16 @@
+2008-09-28  Julien Puydt  <jpuydt@gnome.org>
+
+	* lib/engine/audioinput/skel/audioinput-core.h:
+	* lib/engine/audioinput/skel/audioinput-core.cpp:
+	* lib/engine/audioinput/skel/audioinput-manager.h:
+	* lib/engine/audiooutput/skel/audiooutput-core.h:
+	* lib/engine/audiooutput/skel/audiooutput-manager.h:
+	* lib/engine/videoinput/skel/videoinput-core.h:
+	* lib/engine/videoinput/skel/videoinput-manager.h:
+	* lib/engine/videooutput/skel/videooutput-core.h:
+	* lib/engine/videooutput/skel/videooutput-manager.h: Fixed circular
+	includes, which allows removing strange forward declarations.
+
 2008-09-26  Julien Puydt  <jpuydt@gnome.org>
 
 	* lib/engine/components/gstreamer/gst-videoinput.cpp:

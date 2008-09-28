@@ -41,8 +41,8 @@
 #include "runtime.h"
 #include "videooutput-core.h"
 #include "hal-core.h"
+#include "videoinput-manager.h"
 #include "videoinput-gmconf-bridge.h"
-#include "videoinput-info.h"
 
 #include <sigc++/sigc++.h>
 #include <glib.h>
@@ -61,9 +61,6 @@ namespace Ekiga
  * @defgroup videoinput
  * @{
  */
-
-  class VideoInputManager;
-  class VideoInputCore;
 
   /** Core object for the video input support
    * The video input core abstracts all functionality related to video input
