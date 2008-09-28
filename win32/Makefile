@@ -193,7 +193,8 @@ endif
 confflags:=--prefix=$(BUILDROOT) --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE)
 confptlib:=--prefix=$(BUILDROOT) --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE) \
 	   --with-directx-includedir=$(BUILDROOT)/directx \
-	   --disable-qos --disable-vidfile --disable-plugins
+	   --disable-qos --disable-vidfile --disable-alsa --disable-esd --disable-oss --disable-sunaudio \
+	   --disable-v4l --disable-v4l2 --disable-bsdvideo --disable-avc --disable-dc
 confopal :=--prefix=$(BUILDROOT) --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE) \
 	   --with-ffmpeg-dir=$(FFMPEG_DIR) --disable-ffmpeg-h263
 confekiga:= $(confflags) \
@@ -347,9 +348,13 @@ $(PTLIB_DIR)/config.status: binaries $(PTLIB_DIR)/configure
 	(cd $(PTLIB_DIR)/;./configure $(confptlib) )
 
 $(LIBDIR)/libpt_s.a: binaries $(PTLIB_DIR)/config.status
+ifeq ($(DEBUG),1)
+	$(MAKE) $(MAKEOPTS) DEBUG=1 debug -C $(PTLIB_DIR)
+	$(MAKE) DEBUG=1 -C $(PTLIB_DIR) install
+else
 	$(MAKE) $(MAKEOPTS) -C $(PTLIB_DIR)
 	$(MAKE) -C $(PTLIB_DIR) install
-#	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' $(LIBDIR)/pkgconfig/ptlib.pc
+endif
 
 ### libogg
 update-sources::
@@ -457,9 +462,11 @@ $(OPAL_DIR)/configure: binaries $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(LIBDIR
 
 $(OPAL_DIR)/config.status: binaries $(OPAL_DIR)/configure
 	rm -f $(LIBDIR)/libopal_s.a
-	(cd $(OPAL_DIR)/; CXXFLAGS="$(CXXFLAGS) -DPTRACING" ; \
-	./configure $(confopal) \
-	)
+ifeq ($(DEBUG),1)
+	(cd $(OPAL_DIR)/; ./configure $(confopal) --enable-debug )
+else
+	(cd $(OPAL_DIR)/; ./configure $(confopal)  )
+endif
 
 $(LIBDIR)/libopal_s.a: binaries $(OPAL_DIR)/config.status
 	rm -f $(LIBDIR)/libopal_s.a
@@ -592,9 +599,11 @@ $(EKIGA_DIR)/config.status: binaries $(EKIGA_DIR)/autogen.sh $(LIBDIR)/libpt_s.a
 	$(LIBDIR)/libpng.a $(LIBDIR)/pkgconfig/pango32.pc $(LIBDIR)/pkgconfig/cairo.pc $(LIBDIR)/libxml2.a \
 	$(LIBDIR)/libintl.a $(LIBDIR)/libiconv.a $(LIBDIR)/libsigc++.a
 	rm -f $(EKIGA_DIR)/src/ekiga.exe
-	(cd $(EKIGA_DIR)/; ACLOCAL_FLAGS="-I $(BUILDROOT)/share/aclocal" \
-	./autogen.sh $(confekiga) )
-
+ifeq ($(DEBUG),1)
+	(cd $(EKIGA_DIR)/; ACLOCAL_FLAGS="-I $(BUILDROOT)/share/aclocal"; ./autogen.sh $(confekiga) --enable-debug )
+else
+	(cd $(EKIGA_DIR)/; ACLOCAL_FLAGS="-I $(BUILDROOT)/share/aclocal"; ./autogen.sh $(confekiga) )
+endif
 $(EKIGA_DIR)/src/ekiga.exe: binaries $(EKIGA_DIR)/config.status
 	$(WINDRES) $(EKIGA_DIR)/ekiga.rc $(EKIGA_DIR)/ekiga_rc.o -I $(INCLUDEDIR)
 	$(MAKE) $(MAKEOPTS) -C $(EKIGA_DIR)
