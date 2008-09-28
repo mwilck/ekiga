@@ -351,8 +351,10 @@ private:
         char* frame;
 
         bool end_thread;
+        bool pause_thread;
         PMutex     thread_ended;
-        PSyncPoint thread_created;
+        PSyncPoint thread_paused;
+        PSyncPoint run_thread;
 
         VideoInputCore  & videoinput_core;
         VideoOutputCore & videooutput_core;

@@ -51,18 +51,22 @@ VideoInputCore::VideoPreviewManager::VideoPreviewManager (VideoInputCore& _video
 {
   width = 176;
   height = 144;;
+  pause_thread = true;
   end_thread = false;
   frame = NULL;
   // Since windows does not like to restart a thread that 
   // was never started, we do so here
   this->Resume ();
-  PWaitAndSignal m(thread_ended);
+  thread_paused.Wait();
 }
 
 VideoInputCore::VideoPreviewManager::~VideoPreviewManager ()
 {
-  if (!end_thread)
+  if (!pause_thread)
     stop();
+  end_thread = true;
+  run_thread.Signal();
+  thread_ended.Wait();
 }
 
 void VideoInputCore::VideoPreviewManager::start (unsigned _width, unsigned _height)
@@ -74,17 +78,15 @@ void VideoInputCore::VideoPreviewManager::start (unsigned _width, unsigned _heig
   frame = (char*) malloc (unsigned (width * height * 3 / 2));
 
   videooutput_core.start();
-  this->Restart ();
-  thread_created.Wait ();
+  pause_thread = false;
+  run_thread.Signal();
 }
 
 void VideoInputCore::VideoPreviewManager::stop ()
 {
   PTRACE(4, "PreviewManager\tStopping Preview");
-  end_thread = true;
-
-  /* Wait for the Main () method to be terminated */
-  PWaitAndSignal m(thread_ended);
+  pause_thread = true;
+  thread_paused.Wait();
 
   if (frame) {
     free (frame);
@@ -96,20 +98,24 @@ void VideoInputCore::VideoPreviewManager::stop ()
 void VideoInputCore::VideoPreviewManager::Main ()
 {
   PWaitAndSignal m(thread_ended);
-  thread_created.Signal ();
 
-  if (!frame)
-    return;
     
   while (!end_thread) {
 
-    videoinput_core.get_frame_data(frame);
-    videooutput_core.set_frame_data(frame, width, height, true, 1);
+    thread_paused.Signal ();
+    run_thread.Wait ();
+    
+    while (!pause_thread) {
+      if (frame) {
+        videoinput_core.get_frame_data(frame);
+        videooutput_core.set_frame_data(frame, width, height, true, 1);
+      }
+      // We have to sleep some time outside the mutex lock
+      // to give other threads time to get the mutex
+      // It will be taken into account by PAdaptiveDelay
+      Current()->Sleep (5);
+    }
 
-    // We have to sleep some time outside the mutex lock
-    // to give other threads time to get the mutex
-    // It will be taken into account by PAdaptiveDelay
-    Current()->Sleep (5);
   }
 }
 
