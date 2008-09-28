@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ekiga\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-23 17:43+0000\n"
-"PO-Revision-Date: 2008-09-23 21:14+0100\n"
+"POT-Creation-Date: 2008-09-28 11:41+0200\n"
+"PO-Revision-Date: 2008-09-28 11:42+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "MIME-Version: 1.0\n"
@@ -714,6 +714,7 @@ msgid "_Edit"
 msgstr "_Redigera"
 
 #: ../lib/engine/addressbook/evolution/evolution-contact.cpp:236
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:313
 #: ../lib/engine/presence/local-roster/local-presentity.cpp:196
 #: ../src/endpoints/opal-account.cpp:312
 msgid "_Remove"
@@ -855,13 +856,9 @@ msgstr "Lösenord"
 msgid "Ekiga.net Directory"
 msgstr "Ekiga.net-katalog"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:313
-msgid "_Remove addressbook"
-msgstr "_Ta bort adressbok"
-
 #: ../lib/engine/addressbook/ldap/ldap-book.cpp:315
-msgid "Addressbook _properties"
-msgstr "Egenskaper fö_r adressbok"
+msgid "_Properties"
+msgstr "_Egenskaper"
 
 #: ../lib/engine/addressbook/ldap/ldap-book.cpp:380
 msgid "Refreshing"
@@ -934,17 +931,17 @@ msgstr "_Sök"
 msgid "Address Book"
 msgstr "Adressbok"
 
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:678
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:675
 #: ../src/gui/main.cpp:1757
 msgid "Address _Book"
 msgstr "Adress_bok"
 
 #. This will add static and dynamic actions
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:687
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:684
 msgid "_Action"
 msgstr "_Åtgärd"
 
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:732
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:729
 msgid "Category"
 msgstr "Kategori"
 
@@ -1472,7 +1469,7 @@ msgid "Method not allowed"
 msgstr "Metoden tillåts inte"
 
 #: ../src/endpoints/sip-endpoint.cpp:782
-msgid "Proxy authentication required"
+msgid "Proxy auth. required"
 msgstr "Proxyautentisering krävs"
 
 #: ../src/endpoints/sip-endpoint.cpp:786
@@ -1723,7 +1720,7 @@ msgstr "Ange din PIN-kod:"
 msgid ""
 "You can make calls to regular phones and cell numbers worldwide using Ekiga.\n"
 "\n"
-"To enable this, you need to do two things:\n"
+"To enable this, you need to do three things:\n"
 "- First buy an account at the URL below.\n"
 "- Then enter your account ID and PIN code.\n"
 "The service will work only if your account is created using the URL in this dialog.\n"
@@ -1731,7 +1728,7 @@ msgstr ""
 "Du kan ringa till vanliga telefoner och mobiltelefoner över hela världen genom\n"
 "att använda Ekiga.\n"
 "\n"
-"För att aktivera denna funktion måste du göra två saker:\n"
+"För att aktivera denna funktion måste du göra tre saker:\n"
 "- Köp först ett konto via nedanstående URL.\n"
 "- Ange sedan din användaridentitet och PIN-kod.\n"
 "Tjänsten kommer endast att fungera om ditt konto har skapats via URL:en i denna dialog.\n"
@@ -1872,25 +1869,25 @@ msgstr "Bidragsgivare:"
 msgid "Artwork:"
 msgstr "Grafik:"
 
-#: ../src/gui/callbacks.cpp:147
+#: ../src/gui/callbacks.cpp:148
 msgid "See AUTHORS file for full credits"
 msgstr "Se filen AUTHORS för mer information"
 
-#: ../src/gui/callbacks.cpp:163
+#: ../src/gui/callbacks.cpp:164
 msgid "This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version. "
 msgstr "Detta program är fri programvara. Du kan distribuera det och/eller modifiera det under villkoren i GNU General Public License, publicerad av Free Software Foundation, antingen version 2 eller (om du så vill) någon senare version."
 
-#: ../src/gui/callbacks.cpp:167
+#: ../src/gui/callbacks.cpp:168
 msgid "This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA."
 msgstr "Detta program distribueras i hopp om att det ska vara användbart, men UTAN NÅGON SOM HELST GARANTI, även utan underförstådd garanti om SÄLJBARHET eller LÄMPLIGHET FÖR NÅGOT SPECIELLT ÄNDAMÅL. Se GNU General Public License för ytterligare information. Du bör ha fått en kopia av GNU General Public License tillsammans med detta program. Om inte, skriv till Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA."
 
-#: ../src/gui/callbacks.cpp:174
+#: ../src/gui/callbacks.cpp:175
 msgid "Ekiga is licensed under the GPL license and as a special exception, you have permission to link or otherwise combine this program with the programs OPAL, OpenH323 and PWLIB, and distribute the combination, without applying the requirements of the GNU GPL to the OPAL, OpenH323 and PWLIB programs, as long as you do follow the requirements of the GNU GPL for all the rest of the software thus combined."
 msgstr "Ekiga är licensierad under licensen GPL och som ett special undantag har du tillåtelse att länka eller annars kombinera detta program med programmen OPAL, OpenH323 och PWLIB, samt att distribuera kombinationen, utan att tillämpa kraven för GNU GPL till programmen OPAL, OpenH323 och PWLIB, så länge som du följer kraven för GNU GPL för resten av programvaran härigenom kombinerad."
 
 #. Translators: Please write translator credits here, and
 #. * separate names with \n
-#: ../src/gui/callbacks.cpp:186
+#: ../src/gui/callbacks.cpp:187
 msgid "translator-credits"
 msgstr ""
 "Daniel Nylander\n"
@@ -1899,7 +1896,7 @@ msgstr ""
 "Skicka synpunkter på översättningen till\n"
 "tp-sv@listor.tp-sv.se"
 
-#: ../src/gui/callbacks.cpp:191
+#: ../src/gui/callbacks.cpp:192
 msgid "Ekiga is full-featured SIP and H.323 compatible VoIP, IP-Telephony and Videoconferencing application that allows you to make audio and video calls to remote users with SIP and H.323 hardware or software."
 msgstr "Ekiga är ett komplett SIP- och H.323-kompatibelt program för VoIP, IP-telefoni och videokonferens som låter dig göra röst- och videosamtal till fjärranvändare med SIP och H.323-hårdvara eller -programvara."
 
@@ -2101,7 +2098,7 @@ msgid "Unable to open the selected audio device for playing. In case it is a plu
 msgstr "Omöjligt att öppna den valda ljudenheten för uppspelning. Om detta är en flyttbar enhet kan det räcka med att koppla från den och sedan ansluta den igen. Om inte, eller om den fortfarande inte är åtkomlig, kontrollera din ljudkonfiguration, rättigheterna och att enheten inte är upptagen."
 
 #: ../src/gui/main.cpp:1417
-msgid "The selected audio device was successfully opened but it is impossible to write data to this device. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your audio setup."
+msgid "The selected audio device was successfully opened but it is impossible to write data from this device. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your audio setup."
 msgstr "Den valda ljudenheten kunde öppnas men det är omöjligt att skriva data till denna enhet. Om detta är en flyttbar enhet kan det räcka med att koppla från den och sedan ansluta den igen. Om inte, eller om den fortfarande inte är åtkomlig, kontrollera din ljudkonfiguration."
 
 #: ../src/gui/main.cpp:1660
@@ -2433,25 +2430,25 @@ msgstr "Videoenheter"
 msgid "Do you want to use it as default device?"
 msgstr "Vill du använda den som standardenhet?"
 
-#: ../src/gui/main.cpp:4043
+#: ../src/gui/main.cpp:4044
 msgid "Ekiga"
 msgstr "Ekiga"
 
 #. Translators:
 #. * TX is a common abbreviation for "transmit"
-#: ../src/gui/main.cpp:4467
+#: ../src/gui/main.cpp:4468
 #, c-format
 msgid "TX: %dx%d "
 msgstr "Ut: %dx%d "
 
 #. Translators:
 #. * RX is a common abbreviation for "receive"
-#: ../src/gui/main.cpp:4472
+#: ../src/gui/main.cpp:4473
 #, c-format
 msgid "RX: %dx%d "
 msgstr "In: %dx%d "
 
-#: ../src/gui/main.cpp:4474
+#: ../src/gui/main.cpp:4475
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -2464,39 +2461,39 @@ msgstr ""
 "Paket i fel ordning: %.1f %%\n"
 "Jitterbuffert: %d ms%s%s%s"
 
-#: ../src/gui/main.cpp:4622
+#: ../src/gui/main.cpp:4623
 msgid "Prints debug messages in the console (level between 1 and 5)"
 msgstr "Skriver ut felsökningsmeddelanden i konsollen (nivå mellan 1 och 5)"
 
-#: ../src/gui/main.cpp:4627
+#: ../src/gui/main.cpp:4628
 msgid "Prints user plane debug messages in the console (level between 1 and 4)"
 msgstr "Skriver ut felsökningsmeddelanden på användarnivå på konsollen (nivå mellan 1 och 4)"
 
-#: ../src/gui/main.cpp:4632
+#: ../src/gui/main.cpp:4633
 msgid "Makes Ekiga call the given URI"
 msgstr "Gör så att Ekiga ringer den angivna uri:en"
 
-#: ../src/gui/main.cpp:4748
+#: ../src/gui/main.cpp:4749
 msgid "No usable audio plugin detected"
 msgstr "Ingen användbar ljudinsticksmodul hittades"
 
-#: ../src/gui/main.cpp:4749
+#: ../src/gui/main.cpp:4750
 msgid "Ekiga didn't find any usable audio plugin. Make sure that your installation is correct."
 msgstr "Ekiga hittade ingen användbar ljudinsticksmodul. Försäkra dig om att din installation är korrekt."
 
-#: ../src/gui/main.cpp:4752
+#: ../src/gui/main.cpp:4753
 msgid "No usable audio codecs detected"
 msgstr "Inga användbara ljudkodekar hittades"
 
-#: ../src/gui/main.cpp:4753
+#: ../src/gui/main.cpp:4754
 msgid "Ekiga didn't find any usable audio codec. Make sure that your installation is correct."
 msgstr "Ekiga hittade ingen användbar ljudkodek. Försäkra dig om att din installation är korrekt."
 
-#: ../src/gui/main.cpp:4759
+#: ../src/gui/main.cpp:4760
 msgid "Configuration database corruption"
 msgstr "Konfigurationsdatabasen är skadad"
 
-#: ../src/gui/main.cpp:4760
+#: ../src/gui/main.cpp:4761
 #, c-format
 msgid ""
 "Ekiga got an invalid value for the configuration key %s.\n"
@@ -2936,12 +2933,14 @@ msgstr "Ta bort anpassade meddelanden:"
 msgid "Define a custom message:"
 msgstr "Definiera ett anpassat meddelande:"
 
+#~ msgid "_Remove addressbook"
+#~ msgstr "_Ta bort adressbok"
+#~ msgid "Addressbook _properties"
+#~ msgstr "Egenskaper fö_r adressbok"
 #~ msgid "Position on the screen of the PC-To-Phone window"
 #~ msgstr "Position på skärmen för PC-To-Phone-fönstret"
 #~ msgid "Size of the PC-To-Phone window"
 #~ msgstr "Storlek på PC-To-Phone-fönstret"
-#~ msgid "_Properties"
-#~ msgstr "_Egenskaper"
 #~ msgid "Account"
 #~ msgstr "Konto"
 #~ msgid "Missed calls: %d - Voice Mails: %d"
