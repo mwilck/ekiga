@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ekiga\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-24 09:40+0000\n"
-"PO-Revision-Date: 2008-09-24 17:45+0100\n"
+"POT-Creation-Date: 2008-09-28 04:04+0000\n"
+"PO-Revision-Date: 2008-09-28 10:17+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -712,6 +712,7 @@ msgid "_Edit"
 msgstr "_Urejanje"
 
 #: ../lib/engine/addressbook/evolution/evolution-contact.cpp:236
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:313
 #: ../lib/engine/presence/local-roster/local-presentity.cpp:196
 #: ../src/endpoints/opal-account.cpp:312
 msgid "_Remove"
@@ -855,13 +856,9 @@ msgstr "Geslo"
 msgid "Ekiga.net Directory"
 msgstr "ekiga.net imenik"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:313
-msgid "_Remove addressbook"
-msgstr "_Odstrani imenik"
-
 #: ../lib/engine/addressbook/ldap/ldap-book.cpp:315
-msgid "Addressbook _properties"
-msgstr "Lastnosti imenika"
+msgid "_Properties"
+msgstr "_Lastnosti"
 
 #: ../lib/engine/addressbook/ldap/ldap-book.cpp:380
 msgid "Refreshing"
@@ -1472,8 +1469,8 @@ msgid "Method not allowed"
 msgstr "Način ni dovoljen"
 
 #: ../src/endpoints/sip-endpoint.cpp:782
-msgid "Proxy authentication required"
-msgstr "Zahtevana je overitev namestniškega strežnika"
+msgid "Proxy auth. required"
+msgstr "Zahtevana overitev namestniškega strežnika"
 
 #: ../src/endpoints/sip-endpoint.cpp:786
 msgid "Length required"
@@ -1723,7 +1720,7 @@ msgstr "Prosim, vnesite vašo PIN kodo:"
 msgid ""
 "You can make calls to regular phones and cell numbers worldwide using Ekiga.\n"
 "\n"
-"To enable this, you need to do two things:\n"
+"To enable this, you need to do three things:\n"
 "- First buy an account at the URL below.\n"
 "- Then enter your account ID and PIN code.\n"
 "The service will work only if your account is created using the URL in this dialog.\n"
@@ -2096,7 +2093,7 @@ msgid "Unable to open the selected audio device for playing. In case it is a plu
 msgstr "Ni mogoče odpreti izbrane zvočne naprave za predvajanje. V primeru, da je napravo mogoče priklopiti od zunaj, je morda dovolj, da jo ponovno povežete.  V primeru, da naprave še vedno ni mogoče uporabljati, preverite vaše zvočne nastavitve, dovoljenja in ali je naprava zasedena."
 
 #: ../src/gui/main.cpp:1417
-msgid "The selected audio device was successfully opened but it is impossible to write data to this device. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your audio setup."
+msgid "The selected audio device was successfully opened but it is impossible to write data from this device. In case it is a pluggable device it may be sufficient to reconnect it. If not, or if it still is not accessible, please check your audio setup."
 msgstr "Izbrana zvočna naprava je bila uspešno odprta, vendar nanjo ni mogoče pisati podatkov. V primeru, da je napravo mogoče priklopiti od zunaj, je morda dovolj, da jo ponovno povežete. V primeru, da naprave še vedno ni mogoče priklopiti, preverite vaše zvočne nastavitve."
 
 #: ../src/gui/main.cpp:1660
@@ -2933,12 +2930,14 @@ msgstr "Izbriši sporočilo po meri:"
 msgid "Define a custom message:"
 msgstr "Določi sporočilo po meri:"
 
+#~ msgid "_Remove addressbook"
+#~ msgstr "_Odstrani imenik"
+#~ msgid "Addressbook _properties"
+#~ msgstr "Lastnosti imenika"
 #~ msgid "Position on the screen of the PC-To-Phone window"
 #~ msgstr "Položaj okna PC-telefon na zaslonu"
 #~ msgid "Size of the PC-To-Phone window"
 #~ msgstr "Velikost okna PC-telefon"
-#~ msgid "_Properties"
-#~ msgstr "_Lastnosti"
 #~ msgid "Account"
 #~ msgstr "Račun"
 #~ msgid "_Apply"
