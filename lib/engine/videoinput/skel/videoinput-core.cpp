@@ -49,18 +49,22 @@ VideoInputCore::VideoPreviewManager::VideoPreviewManager (VideoInputCore& _video
     videoinput_core (_videoinput_core),
   videooutput_core (_videooutput_core)
 {
+  pause_thread = true;
   end_thread = false;
   frame = NULL;
   // Since windows does not like to restart a thread that 
   // was never started, we do so here
   this->Resume ();
-  PWaitAndSignal m(thread_ended);
+  thread_paused.Wait();
 }
 
 VideoInputCore::VideoPreviewManager::~VideoPreviewManager ()
 {
-  if (!end_thread)
+  if (!pause_thread)
     stop();
+  end_thread = true;
+  run_thread.Signal();
+  thread_ended.Wait();
 }
 
 void VideoInputCore::VideoPreviewManager::start (unsigned width, unsigned height)
@@ -70,17 +74,15 @@ void VideoInputCore::VideoPreviewManager::start (unsigned width, unsigned height
   frame = (char*) malloc (unsigned (width * height * 3 / 2));
 
   videooutput_core.start();
-  this->Restart ();
-  thread_created.Wait ();
+  pause_thread = false;
+  run_thread.Signal();
 }
 
 void VideoInputCore::VideoPreviewManager::stop ()
 {
   PTRACE(4, "PreviewManager\tStopping Preview");
-  end_thread = true;
-
-  /* Wait for the Main () method to be terminated */
-  PWaitAndSignal m(thread_ended);
+  pause_thread = true;
+  thread_paused.Wait();
 
   if (frame) {
     free (frame);
@@ -92,22 +94,24 @@ void VideoInputCore::VideoPreviewManager::stop ()
 void VideoInputCore::VideoPreviewManager::Main ()
 {
   PWaitAndSignal m(thread_ended);
-  thread_created.Signal ();
 
-  if (!frame)
-    return;
-    
   unsigned width = 176;
   unsigned height = 144;;
   while (!end_thread) {
 
-    videoinput_core.get_frame_data(frame, width, height);
-    videooutput_core.set_frame_data(frame, width, height, true, 1);
+    thread_paused.Signal ();
+    run_thread.Wait ();
 
-    // We have to sleep some time outside the mutex lock
-    // to give other threads time to get the mutex
-    // It will be taken into account by PAdaptiveDelay
-    Current()->Sleep (5);
+    while (!pause_thread) {
+      if (frame) {
+        videoinput_core.get_frame_data(frame, width, height);
+        videooutput_core.set_frame_data(frame, width, height, true, 1);
+      }
+      // We have to sleep some time outside the mutex lock
+      // to give other threads time to get the mutex
+      // It will be taken into account by PAdaptiveDelay
+      Current()->Sleep (5);
+    }
   }
 }
 

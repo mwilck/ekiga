@@ -1,6 +1,13 @@
 2008-09-28  Matthias Schneider  <ma30002000@yahoo.de>
 	
-	* lib/engine/videooutput/dx/videooutput-manager-dx.cpp;
+	* lib/engine/videoinput/skel/videoinput-core.h:
+	* lib/engine/videoinput/skel/videoinput-core.cpp:
+	Keep the preview thread for the lifetime of Ekiga.
+	Windows does not like rapid deletion and recreation of threads.
+
+2008-09-28  Matthias Schneider  <ma30002000@yahoo.de>
+	
+	* lib/engine/videooutput/dx/videooutput-manager-dx.cpp:
 	Fix flickering of PIP on windows.
 
 2008-09-27  Jan Schampera <jan.schampera@web.de>
