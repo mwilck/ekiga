@@ -514,11 +514,15 @@ if test "x$enable_gstreamer" = "xyes"; then
   PKG_CHECK_MODULES([GSTREAMER], [gstreamer-plugins-base-0.10 gstreamer-interfaces-0.10])
   CPPFLAGS_save="$CPPFLAGS"
   CPPFLAGS="$CPPFLAGS $GSTREAMER_CFLAGS"
+  AC_CHECK_HEADER(gst/app/gstappbuffer.h,,found_gstreamer=no)
   AC_CHECK_HEADER(gst/app/gstappsink.h,,found_gstreamer=no)
+  AC_CHECK_HEADER(gst/app/gstappsrc.h,,found_gstreamer=no)
   CPPFLAGS="$CPPFLAGS_save"
   LIBS_save="$LIBS"
   LIBS="$LIBS $GSTREAMER_LIBS"
+  AC_CHECK_LIB(gstapp-0.10,gst_app_buffer_new,,found_gstreamer=no)
   AC_CHECK_LIB(gstapp-0.10,gst_app_sink_pull_buffer,,found_gstreamer=no)
+  AC_CHECK_LIB(gstapp-0.10,gst_app_src_push_buffer,,found_gstreamer=no)
   LIBS="$LIBS_save"
 
   if test "x$found_gstreamer" = "xno"; then

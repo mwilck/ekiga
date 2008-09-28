@@ -39,9 +39,12 @@
 
 #include "videoinput-core.h"
 #include "audioinput-core.h"
+#include "audiooutput-core.h"
 
 #include "gst-videoinput.h"
 #include "gst-audioinput.h"
+#include "gst-audiooutput.h"
+#include "gst-videoinput.h"
 
 bool
 gstreamer_init (Ekiga::ServiceCore& core,
@@ -49,23 +52,31 @@ gstreamer_init (Ekiga::ServiceCore& core,
 		char** argv[])
 {
   bool result = false;
-  Ekiga::VideoInputCore* videoinput_core = NULL;
   Ekiga::AudioInputCore* audioinput_core = NULL;
-
-  videoinput_core
-    = dynamic_cast<Ekiga::VideoInputCore*>(core.get ("videoinput-core"));
+  Ekiga::AudioOutputCore* audiooutput_core = NULL;
+  Ekiga::VideoInputCore* videoinput_core = NULL;
 
   audioinput_core
     = dynamic_cast<Ekiga::AudioInputCore*>(core.get ("audioinput-core"));
 
-  if (videoinput_core != NULL && audioinput_core != NULL) {
+  audiooutput_core
+    = dynamic_cast<Ekiga::AudioOutputCore*>(core.get ("audiooutput-core"));
+
+  videoinput_core
+    = dynamic_cast<Ekiga::VideoInputCore*>(core.get ("videoinput-core"));
+
+  if (audioinput_core != NULL
+      && audiooutput_core != NULL
+      && videoinput_core != NULL) {
 
     GST::VideoInputManager* video = new GST::VideoInputManager ();
-    GST::AudioInputManager* audio = new GST::AudioInputManager ();
+    GST::AudioInputManager* audioin = new GST::AudioInputManager ();
+    GST::AudioOutputManager* audioout = new GST::AudioOutputManager ();
 
     gst_init (argc, argv);
+    audioinput_core->add_manager (*audioin);
+    audiooutput_core->add_manager (*audioout);
     videoinput_core->add_manager (*video);
-    audioinput_core->add_manager (*audio);
     result = true;
   }
 

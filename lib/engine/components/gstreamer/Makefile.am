@@ -19,6 +19,8 @@ libgmgstreamer_la_SOURCES = \
 	$(gstreamer_dir)/gst-videoinput.h \
 	$(gstreamer_dir)/gst-videoinput.cpp \
 	$(gstreamer_dir)/gst-audioinput.h \
-	$(gstreamer_dir)/gst-audioinput.cpp
+	$(gstreamer_dir)/gst-audioinput.cpp \
+	$(gstreamer_dir)/gst-audiooutput.h \
+	$(gstreamer_dir)/gst-audiooutput.cpp
 
 libgmgstreamer_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(GSTREAMER_LIBS) $(PTLIB_LIBS)
