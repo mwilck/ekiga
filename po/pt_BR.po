@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ekiga\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-25 15:14-0400\n"
-"PO-Revision-Date: 2008-09-25 13:48-0300\n"
+"POT-Creation-Date: 2008-09-27 21:37+0000\n"
+"PO-Revision-Date: 2008-09-27 21:17-0300\n"
 "Last-Translator: Vladimir Melo <vladimirmelo.psi@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-l10n-br@listas.cipsga.org.br>\n"
 "MIME-Version: 1.0\n"
@@ -890,6 +890,7 @@ msgid "_Edit"
 msgstr "_Editar"
 
 #: ../lib/engine/addressbook/evolution/evolution-contact.cpp:236
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:313
 #: ../lib/engine/presence/local-roster/local-presentity.cpp:196
 #: ../src/endpoints/opal-account.cpp:312
 msgid "_Remove"
@@ -1030,13 +1031,9 @@ msgstr "Senha"
 msgid "Ekiga.net Directory"
 msgstr "Diretório do Ekiga.net"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:313
-msgid "_Remove addressbook"
-msgstr "_Remover catálogo de endereços"
-
 #: ../lib/engine/addressbook/ldap/ldap-book.cpp:315
-msgid "Addressbook _properties"
-msgstr "_Propriedades de catálogo de endereços"
+msgid "_Properties"
+msgstr "_Propriedades"
 
 #: ../lib/engine/addressbook/ldap/ldap-book.cpp:380
 msgid "Refreshing"
@@ -1654,7 +1651,7 @@ msgid "Method not allowed"
 msgstr "Método não permitido"
 
 #: ../src/endpoints/sip-endpoint.cpp:782
-msgid "Proxy authentication required"
+msgid "Proxy auth. required"
 msgstr "Autenticação de proxy requerida"
 
 #: ../src/endpoints/sip-endpoint.cpp:786
@@ -1917,7 +1914,7 @@ msgid ""
 "You can make calls to regular phones and cell numbers worldwide using "
 "Ekiga.\n"
 "\n"
-"To enable this, you need to do two things:\n"
+"To enable this, you need to do three things:\n"
 "- First buy an account at the URL below.\n"
 "- Then enter your account ID and PIN code.\n"
 "The service will work only if your account is created using the URL in this "
@@ -1926,7 +1923,7 @@ msgstr ""
 "Você pode realizar chamadas para telefones normais e celulares em todo o "
 "mundo usando o Ekiga.\n"
 "\n"
-"Para habilitar isso, você precisa fazer duas coisas:\n"
+"Para habilitar isso, você precisa fazer três coisas:\n"
 "- Primeiro comprar uma conta na URL abaixo.\n"
 "- Então digitar o seu ID da conta e código PIN.\n"
 "O serviço funcionará apenas se sua conta for criada usando a URL nesta caixa "
@@ -2405,7 +2402,7 @@ msgstr ""
 #: ../src/gui/main.cpp:1417
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
-"write data to this device. In case it is a pluggable device it may be "
+"write data from this device. In case it is a pluggable device it may be "
 "sufficient to reconnect it. If not, or if it still is not accessible, please "
 "check your audio setup."
 msgstr ""
@@ -3269,14 +3266,17 @@ msgstr "Excluir mensagens personalizadas:"
 msgid "Define a custom message:"
 msgstr "Definir uma mensagem personalizada:"
 
+#~ msgid "_Remove addressbook"
+#~ msgstr "_Remover catálogo de endereços"
+
+#~ msgid "Addressbook _properties"
+#~ msgstr "_Propriedades de catálogo de endereços"
+
 #~ msgid "Position on the screen of the PC-To-Phone window"
 #~ msgstr "Posição na tela da janela PC-To-Phone"
 
 #~ msgid "Size of the PC-To-Phone window"
 #~ msgstr "Tamanho da janela PC-To-Phone"
-
-#~ msgid "_Properties"
-#~ msgstr "_Propriedades"
 
 #~ msgid "Account"
 #~ msgstr "Conta"
