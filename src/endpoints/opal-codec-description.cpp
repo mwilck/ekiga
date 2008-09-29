@@ -54,7 +54,7 @@ CodecDescription::CodecDescription (OpalMediaFormat & format)
 {
   name = (const char *) format.GetEncodingName ();
   rate = format.GetClockRate ();
-  audio = (format.GetDefaultSessionID () == OpalMediaFormat::DefaultAudioSessionID);
+  audio = (format.GetMediaType () == OpalMediaType::Audio ());
   if (format.IsValidForProtocol ("SIP"))
     protocols.push_back ("SIP");
   if (format.IsValidForProtocol ("H.323"))

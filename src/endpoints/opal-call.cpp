@@ -163,7 +163,7 @@ Opal::Call::toggle_stream_pause (StreamType type)
 
   if (connection != NULL) {
 
-    stream = connection->GetMediaStream ((type == Audio)?OpalMediaFormat::DefaultAudioSessionID:OpalMediaFormat::DefaultVideoSessionID, false);
+    stream = connection->GetMediaStream ((type == Audio) ? OpalMediaType::Audio () : OpalMediaType::Video (), false);
     if (stream != NULL) {
 
       stream_name = std::string ((const char *) stream->GetMediaFormat ().GetEncodingName ());
@@ -334,6 +334,9 @@ Opal::Call::parse_info (OpalConnection & connection)
 PBoolean
 Opal::Call::OnEstablished (OpalConnection & connection)
 {
+  RTP_Session *session = NULL; 
+  OpalMediaStreamPtr stream;
+
   NoAnswerTimer.Stop (false);
 
   if (!PIsDescendant(&connection, OpalPCSSConnection)) {
@@ -344,19 +347,28 @@ Opal::Call::OnEstablished (OpalConnection & connection)
 
   if (PIsDescendant(&connection, OpalRTPConnection)) {
 
-    RTP_Session *audio_session = PDownCast (OpalRTPConnection, &connection)->GetSession (OpalMediaFormat::DefaultAudioSessionID);
-    RTP_Session *video_session = PDownCast (OpalRTPConnection, &connection)->GetSession (OpalMediaFormat::DefaultVideoSessionID);
+    stream = connection.GetMediaStream (OpalMediaType::Audio (), false);
+    if (stream != NULL) {
 
-    if (audio_session) {
-      audio_session->SetIgnorePayloadTypeChanges (TRUE);
-      audio_session->SetRxStatisticsInterval(50);
-      audio_session->SetTxStatisticsInterval(50);
+      session = PDownCast (OpalRTPConnection, &connection)->GetSession (stream->GetSessionID ());
+      if (session) {
+      
+        session->SetIgnorePayloadTypeChanges (TRUE);
+        session->SetRxStatisticsInterval(50);
+        session->SetTxStatisticsInterval(50);
+      }
     }
 
-    if (video_session) {
-      video_session->SetIgnorePayloadTypeChanges (TRUE);
-      video_session->SetRxStatisticsInterval(50);
-      video_session->SetTxStatisticsInterval(50);
+    stream = connection.GetMediaStream (OpalMediaType::Video (), false);
+    if (stream != NULL) { 
+
+      session = PDownCast (OpalRTPConnection, &connection)->GetSession (stream->GetSessionID ());
+      if (session) {
+
+        session->SetIgnorePayloadTypeChanges (TRUE);
+        session->SetRxStatisticsInterval(50);
+        session->SetTxStatisticsInterval(50);
+      }
     }
   }
   
@@ -527,7 +539,7 @@ Opal::Call::OnHold (OpalConnection & /*connection*/,
 void
 Opal::Call::OnOpenMediaStream (OpalMediaStream & stream)
 {
-  StreamType type = (stream.GetSessionID () == OpalMediaFormat::DefaultAudioSessionID) ? Audio : Video;
+  StreamType type = (stream.GetMediaFormat().GetMediaType() == OpalMediaType::Audio ()) ? Audio : Video;
   bool is_transmitting = false;
   std::string stream_name;
 
@@ -542,7 +554,7 @@ Opal::Call::OnOpenMediaStream (OpalMediaStream & stream)
 void
 Opal::Call::OnClosedMediaStream (OpalMediaStream & stream)
 {
-  StreamType type = (stream.GetSessionID () == OpalMediaFormat::DefaultAudioSessionID) ? Audio : Video;
+  StreamType type = (stream.GetMediaFormat().GetMediaType() == OpalMediaType::Audio ()) ? Audio : Video;
   bool is_transmitting = false;
   std::string stream_name;
 
@@ -560,7 +572,8 @@ Opal::Call::OnRTPStatistics (const OpalConnection & /* connection */,
 {
   PWaitAndSignal m(stats_mutex); // The stats are computed from two different threads
 
-  if (session.GetSessionID () == OpalMediaFormat::DefaultAudioSessionID) {
+  if (session.IsAudio ()) {
+
     PTimeInterval t = PTime () - last_a_tick;
     if (t.GetMilliSeconds () < 500)
       return;
