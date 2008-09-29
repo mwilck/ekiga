@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ekiga\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-25 06:10+0300\n"
-"PO-Revision-Date: 2008-09-25 06:02+0300\n"
+"POT-Creation-Date: 2008-09-29 06:46+0300\n"
+"PO-Revision-Date: 2008-09-29 06:40+0300\n"
 "Last-Translator: Timo Jyrinki <timo.jyrinki@iki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -871,6 +871,7 @@ msgid "_Edit"
 msgstr "_Muokkaa"
 
 #: ../lib/engine/addressbook/evolution/evolution-contact.cpp:236
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:313
 #: ../lib/engine/presence/local-roster/local-presentity.cpp:196
 #: ../src/endpoints/opal-account.cpp:312
 msgid "_Remove"
@@ -1012,13 +1013,9 @@ msgstr "Salasana"
 msgid "Ekiga.net Directory"
 msgstr "Ekiga.net -hakemisto"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:313
-msgid "_Remove addressbook"
-msgstr "_Poista osoitekirja"
-
 #: ../lib/engine/addressbook/ldap/ldap-book.cpp:315
-msgid "Addressbook _properties"
-msgstr "Osoitekirjan _ominaisuudet"
+msgid "_Properties"
+msgstr "_Ominaisuudet"
 
 #: ../lib/engine/addressbook/ldap/ldap-book.cpp:380
 msgid "Refreshing"
@@ -1630,7 +1627,7 @@ msgid "Method not allowed"
 msgstr "Menetelmä ei ole sallittu"
 
 #: ../src/endpoints/sip-endpoint.cpp:782
-msgid "Proxy authentication required"
+msgid "Proxy auth. required"
 msgstr "Välipalvelin vaatii todentamisen"
 
 #: ../src/endpoints/sip-endpoint.cpp:786
@@ -1893,7 +1890,7 @@ msgid ""
 "You can make calls to regular phones and cell numbers worldwide using "
 "Ekiga.\n"
 "\n"
-"To enable this, you need to do two things:\n"
+"To enable this, you need to do three things:\n"
 "- First buy an account at the URL below.\n"
 "- Then enter your account ID and PIN code.\n"
 "The service will work only if your account is created using the URL in this "
@@ -1905,8 +1902,8 @@ msgstr ""
 "Voit ottaa tämän toiminnon käyttöön seuraavasti:\n"
 "- Osta käyttäjätili alla olevasta osoitteesta.\n"
 "- Syötä tilisi tunniste ja PIN-koodi.\n"
-"Palvelu toimii ainoastaan, jos rekisteröidyt käyttäen alla olevaa "
-"osoitetta.\n"
+"Palvelu toimii ainoastaan, jos rekisteröidyt käyttäen tässä ikkunassa "
+"olevaa osoitetta.\n"
 
 #: ../src/gui/assistant.cpp:688
 msgid "Consult the calls history"
@@ -2367,7 +2364,7 @@ msgstr ""
 #: ../src/gui/main.cpp:1417
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
-"write data to this device. In case it is a pluggable device it may be "
+"write data from this device. In case it is a pluggable device it may be "
 "sufficient to reconnect it. If not, or if it still is not accessible, please "
 "check your audio setup."
 msgstr ""
@@ -3229,6 +3226,12 @@ msgstr "Poista omat viestit:"
 msgid "Define a custom message:"
 msgstr "Määrittele oma viesti:"
 
+#~ msgid "_Remove addressbook"
+#~ msgstr "_Poista osoitekirja"
+
+#~ msgid "Addressbook _properties"
+#~ msgstr "Osoitekirjan _ominaisuudet"
+
 #~ msgid "Family"
 #~ msgstr "Perhe"
 
@@ -3252,9 +3255,6 @@ msgstr "Määrittele oma viesti:"
 
 #~ msgid "Size of the PC-To-Phone window"
 #~ msgstr "PC-To-Phone-ikkunan koko"
-
-#~ msgid "_Properties"
-#~ msgstr "_Ominaisuudet"
 
 #~ msgid "Number of frames for G.711"
 #~ msgstr "G.711-kehyksien määrä"
