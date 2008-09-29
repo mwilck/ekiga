@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ekiga.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-23 17:43+0000\n"
-"PO-Revision-Date: 2008-09-24 06:37+0200\n"
+"POT-Creation-Date: 2008-09-27 21:37+0000\n"
+"PO-Revision-Date: 2008-09-29 18:03+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -893,6 +893,7 @@ msgid "_Edit"
 msgstr "_Editar"
 
 #: ../lib/engine/addressbook/evolution/evolution-contact.cpp:236
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:313
 #: ../lib/engine/presence/local-roster/local-presentity.cpp:196
 #: ../src/endpoints/opal-account.cpp:312
 msgid "_Remove"
@@ -1033,13 +1034,9 @@ msgstr "Contraseña"
 msgid "Ekiga.net Directory"
 msgstr "Directorio Ekiga.net"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:313
-msgid "_Remove addressbook"
-msgstr "_Quitar libreta de direcciones"
-
 #: ../lib/engine/addressbook/ldap/ldap-book.cpp:315
-msgid "Addressbook _properties"
-msgstr "_Propiedades de la libreta de direcciones"
+msgid "_Properties"
+msgstr "_Propiedades"
 
 #: ../lib/engine/addressbook/ldap/ldap-book.cpp:380
 msgid "Refreshing"
@@ -1112,17 +1109,17 @@ msgstr "_Buscar"
 msgid "Address Book"
 msgstr "Libreta de direcciones"
 
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:678
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:675
 #: ../src/gui/main.cpp:1757
 msgid "Address _Book"
 msgstr "Li_breta de direcciones"
 
 #. This will add static and dynamic actions
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:687
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:684
 msgid "_Action"
 msgstr "_Acción"
 
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:732
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:729
 msgid "Category"
 msgstr "Categoría"
 
@@ -1657,7 +1654,7 @@ msgid "Method not allowed"
 msgstr "Método no permitido"
 
 #: ../src/endpoints/sip-endpoint.cpp:782
-msgid "Proxy authentication required"
+msgid "Proxy auth. required"
 msgstr "El proxy requiere autenticación"
 
 #: ../src/endpoints/sip-endpoint.cpp:786
@@ -1920,7 +1917,7 @@ msgid ""
 "You can make calls to regular phones and cell numbers worldwide using "
 "Ekiga.\n"
 "\n"
-"To enable this, you need to do two things:\n"
+"To enable this, you need to do three things:\n"
 "- First buy an account at the URL below.\n"
 "- Then enter your account ID and PIN code.\n"
 "The service will work only if your account is created using the URL in this "
@@ -1930,7 +1927,7 @@ msgstr ""
 "usando Ekiga. \n"
 "\n"
 "Para activar esto, necesita hacer tres cosas:\n"
-"* Primero crear una cuenta usando la URL de abajo.\n"
+"* Primero comprar una cuenta usando la URL de abajo.\n"
 "* Después introduzca su número de cuenta y número PIN.\n"
 "El servicio sólo funcionará si su cuenta se crea usando el URL en este "
 "diálogo.\n"
@@ -2094,11 +2091,11 @@ msgstr "Colaboradores:"
 msgid "Artwork:"
 msgstr "Ilustraciones:"
 
-#: ../src/gui/callbacks.cpp:147
+#: ../src/gui/callbacks.cpp:148
 msgid "See AUTHORS file for full credits"
 msgstr "Vea el archivo AUTHORS para los créditos completos"
 
-#: ../src/gui/callbacks.cpp:163
+#: ../src/gui/callbacks.cpp:164
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -2110,7 +2107,7 @@ msgstr ""
 "la Free Software Foundation; ya sea la versión 2 de la Licencia, o (a su "
 "elección) cualquier versión posterior."
 
-#: ../src/gui/callbacks.cpp:167
+#: ../src/gui/callbacks.cpp:168
 msgid ""
 "This program is distributed in the hope that it will be useful, but WITHOUT "
 "ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
@@ -2127,7 +2124,7 @@ msgstr ""
 "Software Foundation, Inc, 51 Franklin Street, Fifth Floor, Boston, MA 02110-"
 "1301 EE. UU."
 
-#: ../src/gui/callbacks.cpp:174
+#: ../src/gui/callbacks.cpp:175
 msgid ""
 "Ekiga is licensed under the GPL license and as a special exception, you have "
 "permission to link or otherwise combine this program with the programs OPAL, "
@@ -2145,14 +2142,14 @@ msgstr ""
 
 #. Translators: Please write translator credits here, and
 #. * separate names with \n
-#: ../src/gui/callbacks.cpp:186
+#: ../src/gui/callbacks.cpp:187
 msgid "translator-credits"
 msgstr ""
 "Jorge González <jorgegonz@svn.gnome.org>\n"
 "Francisco Javier F. Serrador <serrador@cvs.gnome.org>\n"
 "María Majadas <maria.majadas@hispalinux.es>"
 
-#: ../src/gui/callbacks.cpp:191
+#: ../src/gui/callbacks.cpp:192
 msgid ""
 "Ekiga is full-featured SIP and H.323 compatible VoIP, IP-Telephony and "
 "Videoconferencing application that allows you to make audio and video calls "
@@ -2400,7 +2397,7 @@ msgstr ""
 #: ../src/gui/main.cpp:1417
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
-"write data to this device. In case it is a pluggable device it may be "
+"write data from this device. In case it is a pluggable device it may be "
 "sufficient to reconnect it. If not, or if it still is not accessible, please "
 "check your audio setup."
 msgstr ""
@@ -2726,25 +2723,25 @@ msgstr "Dispositivos de vídeo"
 msgid "Do you want to use it as default device?"
 msgstr "¿Quiere usarlo como el dispositivo predeterminado?"
 
-#: ../src/gui/main.cpp:4043
+#: ../src/gui/main.cpp:4044
 msgid "Ekiga"
 msgstr "Ekiga"
 
 #. Translators:
 #. * TX is a common abbreviation for "transmit"
-#: ../src/gui/main.cpp:4467
+#: ../src/gui/main.cpp:4468
 #, c-format
 msgid "TX: %dx%d "
 msgstr "TX: %dx%d "
 
 #. Translators:
 #. * RX is a common abbreviation for "receive"
-#: ../src/gui/main.cpp:4472
+#: ../src/gui/main.cpp:4473
 #, c-format
 msgid "RX: %dx%d "
 msgstr "RX: %dx%d "
 
-#: ../src/gui/main.cpp:4474
+#: ../src/gui/main.cpp:4475
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -2757,25 +2754,25 @@ msgstr ""
 "Paquetes desordenados: %.1f %%\n"
 "Búfer de jitter: %d ms%s%s%s"
 
-#: ../src/gui/main.cpp:4622
+#: ../src/gui/main.cpp:4623
 msgid "Prints debug messages in the console (level between 1 and 5)"
 msgstr "Imprime mensajes de depuración en la consola (nivel entre 1 y 5)"
 
-#: ../src/gui/main.cpp:4627
+#: ../src/gui/main.cpp:4628
 msgid "Prints user plane debug messages in the console (level between 1 and 4)"
 msgstr ""
 "Imprime mensajes de depuración del plano del usuario en la consola (nivel "
 "entre 1 y 4)"
 
-#: ../src/gui/main.cpp:4632
+#: ../src/gui/main.cpp:4633
 msgid "Makes Ekiga call the given URI"
 msgstr "Hace que Ekiga llame al URI dado"
 
-#: ../src/gui/main.cpp:4748
+#: ../src/gui/main.cpp:4749
 msgid "No usable audio plugin detected"
 msgstr "No se detectó ningún complemento de sonido utilizable"
 
-#: ../src/gui/main.cpp:4749
+#: ../src/gui/main.cpp:4750
 msgid ""
 "Ekiga didn't find any usable audio plugin. Make sure that your installation "
 "is correct."
@@ -2783,11 +2780,11 @@ msgstr ""
 "Ekiga no encontró ningún complemento de sonido utilizable. Por favor, "
 "asegúrese de que su instalación es correcta."
 
-#: ../src/gui/main.cpp:4752
+#: ../src/gui/main.cpp:4753
 msgid "No usable audio codecs detected"
 msgstr "No se detectó ningún complemento de sonido utilizable"
 
-#: ../src/gui/main.cpp:4753
+#: ../src/gui/main.cpp:4754
 msgid ""
 "Ekiga didn't find any usable audio codec. Make sure that your installation "
 "is correct."
@@ -2795,11 +2792,11 @@ msgstr ""
 "Ekiga no encontró ningún complemento de sonido utilizable. Asegúrese de que "
 "su instalación es correcta."
 
-#: ../src/gui/main.cpp:4759
+#: ../src/gui/main.cpp:4760
 msgid "Configuration database corruption"
 msgstr "Corrupción de la base de datos de configuración"
 
-#: ../src/gui/main.cpp:4760
+#: ../src/gui/main.cpp:4761
 #, c-format
 msgid ""
 "Ekiga got an invalid value for the configuration key %s.\n"
@@ -3269,14 +3266,17 @@ msgstr "Borrar mensajes personalizados:"
 msgid "Define a custom message:"
 msgstr "Definir un mensaje personalizado:"
 
+#~ msgid "_Remove addressbook"
+#~ msgstr "_Quitar libreta de direcciones"
+
+#~ msgid "Addressbook _properties"
+#~ msgstr "_Propiedades de la libreta de direcciones"
+
 #~ msgid "Position on the screen of the PC-To-Phone window"
 #~ msgstr "Posición en la pantalla de la ventana PC-To-Phone"
 
 #~ msgid "Size of the PC-To-Phone window"
 #~ msgstr "Tamaño de la ventana PC-To-Phone"
-
-#~ msgid "_Properties"
-#~ msgstr "_Propiedades"
 
 #~ msgid "Account"
 #~ msgstr "Cuenta"
