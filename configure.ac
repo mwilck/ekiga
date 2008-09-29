@@ -16,7 +16,7 @@ dnl ###########################################################################
 MAJOR_VERSION=3
 MINOR_VERSION=0
 BUILD_TYPE=ReleaseCode
-BUILD_NUMBER=0
+BUILD_NUMBER=1
 
 SCHEMA_AGE=62
 
