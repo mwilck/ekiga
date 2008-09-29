@@ -106,6 +106,10 @@ IMAGES= \
 
 noinst_DATA = inlines.h
 
+BUILD_SOURCES = inlines.h
+
+CLEANFILES = inlines.h
+
 EXTRA_DIST= $(IMAGES_FILES)
 
 inlines.h: $(IMAGE_FILES) $(nobase_dist_icon_DATA) Makefile.am

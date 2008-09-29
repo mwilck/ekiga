@@ -28,6 +28,8 @@ INCLUDES = \
 	$(GNOME_INCLUDEDIR)				\
 	-DSCHEMA_AGE=@SCHEMA_AGE@ 
 
+BUILT_SOURCES = src/revision.h
+
 # XVideo/X
 if !WIN32
 INCLUDES +=                   				\
@@ -139,7 +141,7 @@ ekiga_helper_SOURCES = 		\
 
 ekiga_helper_LDADD = $(DBUS_LIBS)
 
-BUILT_SOURCES = components/dbus-helper-stub.h components/dbus-stub.h
+BUILT_SOURCES += components/dbus-helper-stub.h components/dbus-stub.h
 
 components/dbus-helper-stub.h: components/dbus-helper-stub.xml
 	$(LIBTOOL) --mode=execute dbus-binding-tool --prefix=helper --mode=glib-server --output=$@ $^
@@ -163,6 +165,7 @@ endif
 SVN_REVISION=$(shell head ../.svn/entries -n11 2>/dev/null | tail -n1)
 CACHED_REVISION=$(shell cat revision.h 2>/dev/null | cut -c24-)
 
+src/revision.h:
 $(shell if test -e "../.svn/entries"; then \
           if test "x$(SVN_REVISION)" != "x$(CACHED_REVISION)"; then \
             echo "#define EKIGA_REVISION $(SVN_REVISION)" > revision.h; \
@@ -186,3 +189,5 @@ EXTRA_DIST = \
 
 CLEANFILES = \
 	$(service_DATA)
+
+DISTCLEANFILES = src/revision.h

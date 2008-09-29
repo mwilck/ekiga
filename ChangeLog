@@ -1,5 +1,19 @@
 2008-09-29  Damien Sandras  <dsandras@gnome.org>
 
+	* pixmaps/Makefile.am:
+	* src/devices/audio.cpp:
+	* src/devices/audio.h:
+	* src/Makefile.am:
+	* lib/engine/gui/gtk-frontend/chat-window-page.cpp:
+	* lib/engine/gui/gtk-frontend/chat-window-old.cpp:
+	* lib/engine/gui/gtk-frontend/chat-window-page.h:
+	* lib/engine/gui/gtk-frontend/chat-window-old.h:
+	* Makefile.am:
+	* po/POTFILES.in:
+	Backport from TRUNK to fix make distcheck. Also fixes #553813.
+
+2008-09-29  Damien Sandras  <dsandras@gnome.org>
+
 	* src/endpoints/opal-call.cpp:
 	* src/endpoints/manager.cpp:
 	* src/endpoints/opal-codec-description.cpp:
