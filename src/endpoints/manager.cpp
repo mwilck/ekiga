@@ -246,13 +246,15 @@ void CallManager::set_maximum_jitter (unsigned max_val)
       PSafePtr<OpalRTPConnection> connection = PSafePtrCast<OpalConnection, OpalRTPConnection> (call->GetConnection (i));
       if (connection) {
 
-        RTP_Session *session = 
-          connection->GetSession (OpalMediaFormat::DefaultAudioSessionID);
+        OpalMediaStreamPtr stream = connection->GetMediaStream (OpalMediaType::Audio (), false);
+        if (stream != NULL) {
 
-        if (session != NULL) {
+          RTP_Session *session = connection->GetSession (stream->GetSessionID ());
+          if (session != NULL) {
 
-          unsigned units = session->GetJitterTimeUnits ();
-          session->SetJitterBufferSize (20 * units, max_val * units, units);
+            unsigned units = session->GetJitterTimeUnits ();
+            session->SetJitterBufferSize (20 * units, max_val * units, units);
+          }
         }
       }
     }
@@ -516,7 +518,7 @@ void CallManager::set_video_options (const CallManager::VideoOptions & options)
   for (int i = 0 ; i < media_formats_list.GetSize () ; i++) {
 
     OpalMediaFormat media_format = media_formats_list [i];
-    if (media_format.GetDefaultSessionID () == OpalMediaFormat::DefaultVideoSessionID) {
+    if (media_format.GetMediaType() == OpalMediaType::Video ()) {
 
       media_format.SetOptionInteger (OpalVideoFormat::FrameWidthOption (), 
                                      Ekiga::VideoSizes [options.size].width);  
@@ -571,12 +573,10 @@ void CallManager::set_video_options (const CallManager::VideoOptions & options)
          i < 2;
          i++) {
 
-      PSafePtr<OpalConnection> connection = call->GetConnection (i);
+      PSafePtr<OpalRTPConnection> connection = PSafePtrCast<OpalConnection, OpalRTPConnection> (call->GetConnection (i));
       if (connection) {
 
-        OpalMediaStream *stream = 
-          connection->GetMediaStream (OpalMediaFormat::DefaultVideoSessionID, false); 
-
+        OpalMediaStreamPtr stream = connection->GetMediaStream (OpalMediaType::Video (), false);
         if (stream != NULL) {
 
           OpalMediaFormat mediaFormat = stream->GetMediaFormat ();
@@ -601,7 +601,7 @@ void CallManager::get_video_options (CallManager::VideoOptions & options) const
   for (int i = 0 ; i < media_formats_list.GetSize () ; i++) {
 
     OpalMediaFormat media_format = media_formats_list [i];
-    if (media_format.GetDefaultSessionID () == OpalMediaFormat::DefaultVideoSessionID) {
+    if (media_format.GetMediaType () == OpalMediaType::Video ()) {
 
       int j = 0;
       for (j = 0; j < NB_VIDEO_SIZES; j++) {
