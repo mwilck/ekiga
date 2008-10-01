@@ -53,6 +53,8 @@ static void catchXShmError(Display * , XErrorEvent * )
 }
 #endif
 
+std::set <XvPortID> XVWindow::grabbedPorts;
+
 XVWindow::XVWindow()
 {
   // initialize class variables
@@ -100,6 +102,7 @@ XVWindow::~XVWindow()
   if (_XVPort) {
 
     XvUngrabPort (_display, _XVPort, CurrentTime);
+    grabbedPorts.erase(_XVPort);
     _XVPort = 0;
   }
 
@@ -400,6 +403,12 @@ XVWindow::FindXVPort ()
 
       for (candidateXVPort = xvainfo [i].base_id ; candidateXVPort < (xvainfo [i].base_id + xvainfo [i].num_ports) ; ++candidateXVPort) {
 
+        if (grabbedPorts.find(candidateXVPort) != grabbedPorts.end()) {
+          PTRACE(4, "XVideo\tPort " << candidateXVPort << " already grabbed by ourselves");
+          ++busyPorts;
+          continue;
+        }
+
         if (PTrace::CanTrace (4)) 
           DumpCapabilities (candidateXVPort);
 
@@ -425,7 +434,8 @@ XVWindow::FindXVPort ()
 
             PTRACE(4, "XVideo\tGrabbed Port: " << candidateXVPort);
             XvFreeAdaptorInfo (xvainfo);
-
+            grabbedPorts.insert(candidateXVPort);
+            
             return candidateXVPort;
           } 
           else {

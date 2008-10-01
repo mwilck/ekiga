@@ -39,6 +39,7 @@
 #define XVWINDOW_H
 
 #include <stdint.h>
+#include <set>
 #include "config.h"
 
 #include <X11/Xlib.h>
@@ -143,6 +144,8 @@ private:
 #ifdef HAVE_SHM  
   virtual void ShmAttach(int imageWidth, int imageHeight);
 #endif
+
+  static std::set <XvPortID> grabbedPorts;
 };
 
 #endif //XVWINDOW_H
