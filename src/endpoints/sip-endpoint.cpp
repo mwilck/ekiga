@@ -1086,10 +1086,10 @@ Opal::Sip::EndPoint::OnPresenceInfoReceived (const PString & user,
   std::string status;
   std::string presence = "unknown";
 
-  if (b.Find ("Closed") != P_MAX_INDEX)
-    presence = "offline";
-  else
+  if (b.Find ("Open") != P_MAX_INDEX)
     presence = "online";
+  else
+    presence = "offline";
 
   if (s.Find ("Away") != P_MAX_INDEX)
     presence = "away";
