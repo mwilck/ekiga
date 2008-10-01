@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.24\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-23 22:49+0100\n"
-"PO-Revision-Date: 2008-09-23 22:50+0000\n"
+"POT-Creation-Date: 2008-10-01 23:25+0100\n"
+"PO-Revision-Date: 2008-10-01 23:30+0000\n"
 "Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
 "Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -881,6 +881,7 @@ msgid "_Edit"
 msgstr "_Editar"
 
 #: ../lib/engine/addressbook/evolution/evolution-contact.cpp:236
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:313
 #: ../lib/engine/presence/local-roster/local-presentity.cpp:196
 #: ../src/endpoints/opal-account.cpp:312
 msgid "_Remove"
@@ -1021,13 +1022,9 @@ msgstr "Senha"
 msgid "Ekiga.net Directory"
 msgstr "Directório Ekiga.net"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:313
-msgid "_Remove addressbook"
-msgstr "_Remover o livro de endereços"
-
 #: ../lib/engine/addressbook/ldap/ldap-book.cpp:315
-msgid "Addressbook _properties"
-msgstr "_Propriedades do livro de endereços"
+msgid "_Properties"
+msgstr "_Propriedades"
 
 #: ../lib/engine/addressbook/ldap/ldap-book.cpp:380
 msgid "Refreshing"
@@ -1114,8 +1111,21 @@ msgstr "_Acção"
 msgid "Category"
 msgstr "Categoria"
 
+#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:638
+#: ../src/gui/assistant.cpp:1253
+msgid "Full Name"
+msgstr "Nome Completo"
+
+#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:649
+msgid "_Search Filter:"
+msgstr "_Filtro de Procura:"
+
+#: ../lib/engine/gui/gtk-frontend/call-history-view-gtk.cpp:163
+#: ../src/gui/statusmenu.cpp:499
+msgid "Clear"
+msgstr "Limpar"
+
 #: ../lib/engine/gui/gtk-frontend/chat-area.cpp:247
-#: ../lib/engine/gui/gtk-frontend/chat-window-page.cpp:968
 msgid "says:"
 msgstr "diz:"
 
@@ -1131,40 +1141,15 @@ msgstr "Copiar o link"
 msgid "_Smile..."
 msgstr "_Risonho..."
 
-#. The window
 #. we can't do much here since we get the Chat as reference...
-#: ../lib/engine/gui/gtk-frontend/chat-window-old.cpp:562
 #: ../lib/engine/gui/gtk-frontend/chat-window.cpp:433
 msgid "Chat Window"
 msgstr "Janela de Diálogo"
-
-#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:638
-#: ../src/gui/assistant.cpp:1253
-msgid "Full Name"
-msgstr "Nome Completo"
-
-#: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:649
-msgid "_Search Filter:"
-msgstr "_Filtro de Procura:"
 
 #: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:981
 #: ../lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:1016
 msgid "Unsorted"
 msgstr "Não ordenado"
-
-#: ../lib/engine/gui/gtk-frontend/chat-window-page.cpp:752
-msgid "_Send"
-msgstr "_Enviar"
-
-#: ../lib/engine/gui/gtk-frontend/chat-window-page.cpp:963
-#, c-format
-msgid "You say:\n"
-msgstr "Eu digo:\n"
-
-#: ../lib/engine/gui/gtk-frontend/call-history-view-gtk.cpp:163
-#: ../src/gui/statusmenu.cpp:499
-msgid "Clear"
-msgstr "Limpar"
 
 #: ../lib/engine/presence/avahi/avahi-heap.cpp:129
 #: ../lib/engine/presence/avahi/avahi-heap.cpp:315
@@ -1256,92 +1241,6 @@ msgstr "Mover abaixo a prioridade do codec seleccionado"
 #: ../lib/gui/gmdialog.c:474
 msgid "Do not show this dialog again"
 msgstr "Não apresentar novamente esta janela"
-
-#: ../src/devices/audio.cpp:281
-msgid "Opening device for playing"
-msgstr "A abrir dispositivo para reprodução"
-
-#: ../src/devices/audio.cpp:283
-msgid "Opening device for recording"
-msgstr "A abrir dispositivo para gravação"
-
-#: ../src/devices/audio.cpp:294 ../src/devices/audio.cpp:296
-msgid "Failed to open the device"
-msgstr "Falha ao abrir o dispositivo"
-
-#: ../src/devices/audio.cpp:294
-#, c-format
-msgid ""
-"Impossible to open the selected audio device (%s) for recording. Please "
-"check your audio setup, the permissions and that the device is not busy."
-msgstr ""
-"Impossível abrir o dispositivo de som seleccionado (%s) para gravação. "
-"Verifique as suas configurações audio, as permissões e se o dispositivo está "
-"ou não ocupado."
-
-#: ../src/devices/audio.cpp:296
-#, c-format
-msgid ""
-"Impossible to open the selected audio device (%s) for playing. Please check "
-"your audio setup, the permissions and that the device is not busy."
-msgstr ""
-"Impossível abrir o dispositivo de som seleccionado (%s) para reprodução. "
-"Verifique as suas configurações audio, as permissões e se o dispositivo está "
-"ou não ocupado."
-
-#: ../src/devices/audio.cpp:312 ../src/devices/audio.cpp:381
-msgid "Cannot use the audio device"
-msgstr "Incapaz de utilizar o dispositivo audio"
-
-#: ../src/devices/audio.cpp:312
-#, c-format
-msgid ""
-"The selected audio device (%s) was successfully opened but it is impossible "
-"to read data from this device. Please check your audio setup."
-msgstr ""
-"O dispositivo audio seleccionado (%s) foi aberto com sucesso mas é "
-"impossível ler dados deste dispositivo. Verifique as suas configurações "
-"audio."
-
-#: ../src/devices/audio.cpp:321
-msgid "Recording your voice"
-msgstr "A gravar a sua voz"
-
-#: ../src/devices/audio.cpp:360
-msgid "Recording and playing back"
-msgstr "A gravar e reproduzir"
-
-#: ../src/devices/audio.cpp:381
-#, c-format
-msgid ""
-"The selected audio device (%s) was successfully opened but it is impossible "
-"to write data to this device. Please check your audio setup."
-msgstr ""
-"O dispositivo de audio seleccionado (%s) foi aberto com sucesso mas é "
-"impossível escrever dados neste dispositivo. Verifique as suas configurações "
-"audio."
-
-#: ../src/devices/audio.cpp:476 ../src/devices/audio.cpp:477
-#: ../src/gui/assistant.cpp:1118 ../src/gui/assistant.cpp:1141
-#: ../src/gui/assistant.cpp:1164 ../src/gui/preferences.cpp:734
-#: ../src/gui/preferences.cpp:758 ../src/gui/preferences.cpp:781
-msgid "No device found"
-msgstr "Nenhum dispositivo encontrado"
-
-#: ../src/devices/audio.cpp:488
-msgid "Audio test running"
-msgstr "A executar o teste de audio"
-
-#: ../src/devices/audio.cpp:495
-#, c-format
-msgid ""
-"Ekiga is now recording from %s and playing back to %s. Please say \"1, 2, 3, "
-"Ekiga rocks!\" in your microphone. You should hear yourself from the "
-"speakers after a four-second delay."
-msgstr ""
-"O Ekiga está agora a gravar de %s e a reproduzir para %s. Diga \"1, 2, 3, "
-"Ekiga é o melhor!\" no seu microfone. Deverá conseguir ouvir-se nas colunas "
-"de som, após uma espera de 4 segundos."
 
 #: ../src/endpoints/h323-endpoint.cpp:153
 #: ../src/endpoints/sip-endpoint.cpp:273 ../src/endpoints/sip-endpoint.cpp:277
@@ -1500,79 +1399,79 @@ msgstr "ID de Conta:"
 msgid "PIN Code:"
 msgstr "Código PIN:"
 
-#: ../src/endpoints/opal-call.cpp:398
+#: ../src/endpoints/opal-call.cpp:410
 msgid "Local user cleared the call"
 msgstr "Utilizador local limpou a chamada"
 
-#: ../src/endpoints/opal-call.cpp:401 ../src/endpoints/opal-call.cpp:404
+#: ../src/endpoints/opal-call.cpp:413 ../src/endpoints/opal-call.cpp:416
 msgid "Local user rejected the call"
 msgstr "Utilizador local rejeitou a chamada"
 
-#: ../src/endpoints/opal-call.cpp:407
+#: ../src/endpoints/opal-call.cpp:419
 msgid "Remote user cleared the call"
 msgstr "Utilizador remoto limpou a chamada"
 
-#: ../src/endpoints/opal-call.cpp:410
+#: ../src/endpoints/opal-call.cpp:422
 msgid "Remote user rejected the call"
 msgstr "Utilizador remoto rejeitou a chamada"
 
-#: ../src/endpoints/opal-call.cpp:413
+#: ../src/endpoints/opal-call.cpp:425
 msgid "Remote user has stopped calling"
 msgstr "Utilizador remoto parou de chamar"
 
-#: ../src/endpoints/opal-call.cpp:416
+#: ../src/endpoints/opal-call.cpp:428
 msgid "Abnormal call termination"
 msgstr "Terminação anormal da chamada"
 
-#: ../src/endpoints/opal-call.cpp:419 ../src/gui/main.cpp:1542
+#: ../src/endpoints/opal-call.cpp:431 ../src/gui/main.cpp:1542
 msgid "Could not connect to remote host"
 msgstr "Incapaz de se ligar à máquina remota"
 
-#: ../src/endpoints/opal-call.cpp:422
+#: ../src/endpoints/opal-call.cpp:434
 msgid "The Gatekeeper cleared the call"
 msgstr "O Guardião limpou a chamada"
 
-#: ../src/endpoints/opal-call.cpp:425
+#: ../src/endpoints/opal-call.cpp:437
 msgid "User not found"
 msgstr "Utilizador não encontrado"
 
-#: ../src/endpoints/opal-call.cpp:428
+#: ../src/endpoints/opal-call.cpp:440
 msgid "Insufficient bandwidth"
 msgstr "Largura de banda insuficiente"
 
-#: ../src/endpoints/opal-call.cpp:431
+#: ../src/endpoints/opal-call.cpp:443
 msgid "No common codec"
 msgstr "Nenhum codec comum"
 
-#: ../src/endpoints/opal-call.cpp:434
+#: ../src/endpoints/opal-call.cpp:446
 msgid "Call forwarded"
 msgstr "Chamada reencaminhada"
 
-#: ../src/endpoints/opal-call.cpp:437
+#: ../src/endpoints/opal-call.cpp:449
 msgid "Security check failed"
 msgstr "Falha na validação de segurança"
 
-#: ../src/endpoints/opal-call.cpp:440
+#: ../src/endpoints/opal-call.cpp:452
 msgid "Local user is busy"
 msgstr "Utilizador local está ocupado"
 
-#: ../src/endpoints/opal-call.cpp:443 ../src/endpoints/opal-call.cpp:449
+#: ../src/endpoints/opal-call.cpp:455 ../src/endpoints/opal-call.cpp:461
 msgid "Congested link to remote party"
 msgstr "Ligação para entidade remota congestionada"
 
-#: ../src/endpoints/opal-call.cpp:446
+#: ../src/endpoints/opal-call.cpp:458
 msgid "Remote user is busy"
 msgstr "Utilizador remoto está ocupado"
 
-#: ../src/endpoints/opal-call.cpp:452
+#: ../src/endpoints/opal-call.cpp:464
 msgid "Remote host is offline"
 msgstr "Utilizador remoto está desligado"
 
-#: ../src/endpoints/opal-call.cpp:458
+#: ../src/endpoints/opal-call.cpp:470
 msgid "User is not available"
 msgstr "Utilizador não está disponível"
 
-#: ../src/endpoints/opal-call.cpp:470
+#: ../src/endpoints/opal-call.cpp:482
 msgid "Call completed"
 msgstr "Chamada terminada"
 
@@ -1645,7 +1544,7 @@ msgid "Method not allowed"
 msgstr "Método não permitido"
 
 #: ../src/endpoints/sip-endpoint.cpp:782
-msgid "Proxy authentication required"
+msgid "Proxy auth. required"
 msgstr "Necessária autenticação na proxy"
 
 #: ../src/endpoints/sip-endpoint.cpp:786
@@ -1908,7 +1807,7 @@ msgid ""
 "You can make calls to regular phones and cell numbers worldwide using "
 "Ekiga.\n"
 "\n"
-"To enable this, you need to do two things:\n"
+"To enable this, you need to do three things:\n"
 "- First buy an account at the URL below.\n"
 "- Then enter your account ID and PIN code.\n"
 "The service will work only if your account is created using the URL in this "
@@ -2028,6 +1927,12 @@ msgid ""
 msgstr ""
 "O dispositivo de entrada vídeo é o dispositivo que será utilizado para "
 "capturar vídeo durante as chamadas."
+
+#: ../src/gui/assistant.cpp:1118 ../src/gui/assistant.cpp:1141
+#: ../src/gui/assistant.cpp:1164 ../src/gui/preferences.cpp:734
+#: ../src/gui/preferences.cpp:758 ../src/gui/preferences.cpp:781
+msgid "No device found"
+msgstr "Nenhum dispositivo encontrado"
 
 #: ../src/gui/assistant.cpp:1195
 msgid "Configuration Complete"
@@ -2385,7 +2290,7 @@ msgstr ""
 #: ../src/gui/main.cpp:1417
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
-"write data to this device. In case it is a pluggable device it may be "
+"write data from this device. In case it is a pluggable device it may be "
 "sufficient to reconnect it. If not, or if it still is not accessible, please "
 "check your audio setup."
 msgstr ""
@@ -3251,14 +3156,85 @@ msgstr "Apagar mensagens personalizadas:"
 msgid "Define a custom message:"
 msgstr "Definir uma mensagem personalizada:"
 
+#~ msgid "_Remove addressbook"
+#~ msgstr "_Remover o livro de endereços"
+
+#~ msgid "Addressbook _properties"
+#~ msgstr "_Propriedades do livro de endereços"
+
+#~ msgid "_Send"
+#~ msgstr "_Enviar"
+
+#~ msgid "You say:\n"
+#~ msgstr "Eu digo:\n"
+
+#~ msgid "Opening device for playing"
+#~ msgstr "A abrir dispositivo para reprodução"
+
+#~ msgid "Opening device for recording"
+#~ msgstr "A abrir dispositivo para gravação"
+
+#~ msgid "Failed to open the device"
+#~ msgstr "Falha ao abrir o dispositivo"
+
+#~ msgid ""
+#~ "Impossible to open the selected audio device (%s) for recording. Please "
+#~ "check your audio setup, the permissions and that the device is not busy."
+#~ msgstr ""
+#~ "Impossível abrir o dispositivo de som seleccionado (%s) para gravação. "
+#~ "Verifique as suas configurações audio, as permissões e se o dispositivo "
+#~ "está ou não ocupado."
+
+#~ msgid ""
+#~ "Impossible to open the selected audio device (%s) for playing. Please "
+#~ "check your audio setup, the permissions and that the device is not busy."
+#~ msgstr ""
+#~ "Impossível abrir o dispositivo de som seleccionado (%s) para reprodução. "
+#~ "Verifique as suas configurações audio, as permissões e se o dispositivo "
+#~ "está ou não ocupado."
+
+#~ msgid "Cannot use the audio device"
+#~ msgstr "Incapaz de utilizar o dispositivo audio"
+
+#~ msgid ""
+#~ "The selected audio device (%s) was successfully opened but it is "
+#~ "impossible to read data from this device. Please check your audio setup."
+#~ msgstr ""
+#~ "O dispositivo audio seleccionado (%s) foi aberto com sucesso mas é "
+#~ "impossível ler dados deste dispositivo. Verifique as suas configurações "
+#~ "audio."
+
+#~ msgid "Recording your voice"
+#~ msgstr "A gravar a sua voz"
+
+#~ msgid "Recording and playing back"
+#~ msgstr "A gravar e reproduzir"
+
+#~ msgid ""
+#~ "The selected audio device (%s) was successfully opened but it is "
+#~ "impossible to write data to this device. Please check your audio setup."
+#~ msgstr ""
+#~ "O dispositivo de audio seleccionado (%s) foi aberto com sucesso mas é "
+#~ "impossível escrever dados neste dispositivo. Verifique as suas "
+#~ "configurações audio."
+
+#~ msgid "Audio test running"
+#~ msgstr "A executar o teste de audio"
+
+#~ msgid ""
+#~ "Ekiga is now recording from %s and playing back to %s. Please say \"1, 2, "
+#~ "3, Ekiga rocks!\" in your microphone. You should hear yourself from the "
+#~ "speakers after a four-second delay."
+#~ msgstr ""
+#~ "O Ekiga está agora a gravar de %s e a reproduzir para %s. Diga \"1, 2, 3, "
+#~ "Ekiga é o melhor!\" no seu microfone. Deverá conseguir ouvir-se nas "
+#~ "colunas de som, após uma espera de 4 segundos."
+
 #~ msgid "Position on the screen of the PC-To-Phone window"
 #~ msgstr "Posição no ecrã da janela PC-To-Phone"
 
 #~ msgid "Size of the PC-To-Phone window"
 #~ msgstr "Tamanho da janela de PC-To-Phone"
-
-#~ msgid "_Properties"
-#~ msgstr "_Propriedades"
 
 #~ msgid "Account"
 #~ msgstr "Conta"
