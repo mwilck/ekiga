@@ -99,14 +99,10 @@ GST::VideoInputManager::set_device (const Ekiga::VideoInputDevice& device,
   return result;
 }
 
-/* FIXME: in this function, all fps-related code is commented out...
- * and I(Snark) have no clue how to make it work. gstreamer-devel doesn't seem
- * to either since I got no answer to my questions.
- */
 bool
 GST::VideoInputManager::open (unsigned width,
 			      unsigned height,
-			      unsigned /*fps*/)
+			      unsigned fps)
 {
   bool result;
   gchar* command = NULL;
@@ -117,10 +113,10 @@ GST::VideoInputManager::open (unsigned width,
 			     " caps=video/x-raw-yuv"
 			     ",format=(fourcc)I420"
 			     ",width=%d,height=%d"
-			     //",framerate=%d"
+			     ",framerate=(fraction)%d/1"
 			     " name=ekiga_sink",
 			     devices_by_name[current_state.device.name].c_str (),
-			     width, height);//, fps);
+			     width, height, fps);
   g_print ("Pipeline: %s\n", command);
   pipeline = gst_parse_launch (command, &error);
 
