@@ -11,7 +11,7 @@ KDE_DIR = kde
 endif
 
 if HAVE_XCAP
-XCAP_DIR = xcap
+XCAP_DIRS = xcap resource-list
 endif
 
 SUBDIRS = \
@@ -19,4 +19,4 @@ SUBDIRS = \
 	$(AVAHI_DIR) \
 	$(GSTREAMER_DIR) \
 	$(KDE_DIR) \
-	$(XCAP_DIR)
+	$(XCAP_DIRS)

@@ -610,10 +610,11 @@ AC_ARG_ENABLE(xcap, [  --enable-xcap                Enable XCAP support],enable_
 
 if test "x$enable_xcap" = "xyes"; then
    PKG_CHECK_MODULES([SOUP], [libsoup-2.4])
-   found_xcap="yes"
+   found_xcap=yes
    XCAP="enabled"
    AC_SUBST(SOUP_CFLAGS)
    AC_SUBST(SOUP_LIBS)
+  AC_DEFINE(HAVE_XCAP,1,[XCAP support])
 fi
 
 AM_CONDITIONAL(HAVE_XCAP, test "x$found_xcap" = "xyes")
@@ -809,6 +810,7 @@ lib/engine/components/gmconf-personal-details/Makefile
 lib/engine/components/avahi-publisher/Makefile
 lib/engine/components/gstreamer/Makefile
 lib/engine/components/kde/Makefile
+lib/engine/components/resource-list/Makefile
 lib/engine/components/xcap/Makefile
 )
 

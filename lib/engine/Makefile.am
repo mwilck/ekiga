@@ -28,6 +28,7 @@ INCLUDES = 								\
 	-I$(top_srcdir)/lib/engine/components/avahi-publisher		\
 	-I$(top_srcdir)/lib/engine/components/gstreamer			\
 	-I$(top_srcdir)/lib/engine/components/kde			\
+	-I$(top_srcdir)/lib/engine/components/resource-list		\
 	-I$(top_srcdir)/lib/engine/components/xcap
 
 # XVideo/X
@@ -146,7 +147,9 @@ libekiga_engine_la_LIBADD += addressbook/kab/libgmkab.la
 endif
 
 if HAVE_XCAP
-libekiga_engine_la_LIBADD += components/xcap/libgmxcap.la
+libekiga_engine_la_LIBADD += \
+	components/xcap/libgmxcap.la \
+	components/resource-list/libgmresource_list.la
 endif
 
 #### FIXME should be removed at a later stage

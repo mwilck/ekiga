@@ -107,6 +107,7 @@
 
 #ifdef HAVE_XCAP
 #include "xcap-main.h"
+#include "resource-list-main.h"
 #endif
 
 void
@@ -254,6 +255,10 @@ engine_init (int argc,
 
 #ifdef HAVE_KAB
   (void)kab_init (*core, &argc, &argv);
+#endif
+
+#ifdef HAVE_XCAP
+  resource_list_init (*core, &argc, &argv);
 #endif
 
   if (!history_init (*core, &argc, &argv)) {
