@@ -80,10 +80,17 @@ Ekiga::PresenceCore::visit_clusters (sigc::slot<bool, Cluster &> visitor)
 }
 
 bool
-Ekiga::PresenceCore::populate_menu (MenuBuilder &/*builder*/)
+Ekiga::PresenceCore::populate_menu (MenuBuilder &builder)
 {
-  // FIXME: to implement
-  return false;
+  bool populated = false;
+
+  for (std::set<Cluster*>::iterator iter = clusters.begin ();
+       iter != clusters.end ();
+       ++iter)
+    if ((*iter)->populate_menu (builder))
+      populated = true;
+
+  return populated;
 }
 
 void Ekiga::PresenceCore::on_heap_added (Heap &heap,

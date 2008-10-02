@@ -33,6 +33,8 @@
  *
  */
 
+#include "config.h"
+
 #include <iostream>
 
 #include "local-cluster.h"
@@ -73,10 +75,11 @@ Local::Cluster::existing_groups () const
 }
 
 bool
-Local::Cluster::populate_menu (Ekiga::MenuBuilder &)
+Local::Cluster::populate_menu (Ekiga::MenuBuilder& builder)
 {
-  // FIXME to implement
-  return false;
+  builder.add_action ("new", _("New contact"),
+		      sigc::bind (sigc::mem_fun (heap, &Local::Heap::new_presentity), "", ""));
+  return true;
 }
 
 void

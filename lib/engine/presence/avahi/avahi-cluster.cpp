@@ -64,6 +64,6 @@ Avahi::Cluster::visit_heaps (sigc::slot<bool, Heap &> visitor)
 bool
 Avahi::Cluster::populate_menu (Ekiga::MenuBuilder &/*builder*/)
 {
-  /* FIXME */
+  /* nothing */
   return false;
 }
