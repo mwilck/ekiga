@@ -457,7 +457,7 @@ update-sources::
 	echo --- Getting OPAL $(OPAL_REV)...
 	$(SVN) co $(OPAL_URL) $(SRCDIR)/$(OPAL_ARCHIVE) -r $(OPAL_REV)
 
-$(OPAL_DIR)/configure: binaries $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(LIBDIR)/libpt_s.a $(SRCDIR)/$(OPAL_ARCHIVE) $(EKIGA_WIN32_DIFF_DIR)/opal_configure.ac $(EKIGA_WIN32_DIFF_DIR)/opal_Makefile.am $(EKIGA_WIN32_DIFF_DIR)/opal_opal.pc.in $(BINDIR)/avcodec.dll $(LIBDIR)/libx264.a $(LIBDIR)/libtheora.a
+$(OPAL_DIR)/configure: binaries $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(LIBDIR)/libpt_s.a $(SRCDIR)/$(OPAL_ARCHIVE) $(BINDIR)/avcodec.dll $(LIBDIR)/libx264.a $(LIBDIR)/libtheora.a
 	rm -rf $(OPAL_DIR) $(LIBDIR)/libopal_s.a
 	$(CP) -r $(SRCDIR)/$(OPAL_ARCHIVE) $(OPAL_DIR)
 
@@ -644,8 +644,6 @@ endif
 		fi \
 	done
 	(cd $(TARGETDIR)/;zip -9r ekiga.zip Ekiga )
-	zip -9r $(TARGETDIR)/ekiga_build.zip Makefile $(EKIGA_WIN32_DIFF_DIR)/* ico/*
-	tar cfvz $(TARGETDIR)/ekiga_build.tgz Makefile $(EKIGA_WIN32_DIFF_DIR)/* ico/*
 	touch $@
 
 #### README about NSIS installer ####
