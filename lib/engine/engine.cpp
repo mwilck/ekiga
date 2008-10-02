@@ -105,6 +105,10 @@
 #include "kab-main.h"
 #endif
 
+#ifdef HAVE_XCAP
+#include "xcap-main.h"
+#endif
+
 void
 engine_init (int argc,
              char *argv [],
@@ -159,6 +163,10 @@ engine_init (int argc,
     delete core;
     return;
   }
+#endif
+
+#ifdef HAVE_XCAP
+  xcap_init (*core);
 #endif
 
 #ifdef HAVE_DX

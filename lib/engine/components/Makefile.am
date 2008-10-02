@@ -10,4 +10,13 @@ if HAVE_KDE
 KDE_DIR = kde
 endif
 
-SUBDIRS = gmconf-personal-details $(AVAHI_DIR) $(GSTREAMER_DIR) $(KDE_DIR)
+if HAVE_XCAP
+XCAP_DIR = xcap
+endif
+
+SUBDIRS = \
+	gmconf-personal-details \
+	$(AVAHI_DIR) \
+	$(GSTREAMER_DIR) \
+	$(KDE_DIR) \
+	$(XCAP_DIR)

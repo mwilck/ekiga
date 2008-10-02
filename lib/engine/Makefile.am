@@ -27,7 +27,8 @@ INCLUDES = 								\
 	-I$(top_srcdir)/lib/engine/components/gmconf-personal-details	\
 	-I$(top_srcdir)/lib/engine/components/avahi-publisher		\
 	-I$(top_srcdir)/lib/engine/components/gstreamer			\
-	-I$(top_srcdir)/lib/engine/components/kde
+	-I$(top_srcdir)/lib/engine/components/kde			\
+	-I$(top_srcdir)/lib/engine/components/xcap
 
 # XVideo/X
 if !WIN32
@@ -142,6 +143,10 @@ endif
 
 if HAVE_KAB
 libekiga_engine_la_LIBADD += addressbook/kab/libgmkab.la
+endif
+
+if HAVE_XCAP
+libekiga_engine_la_LIBADD += components/xcap/libgmxcap.la
 endif
 
 #### FIXME should be removed at a later stage

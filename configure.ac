@@ -602,6 +602,23 @@ fi
 AM_CONDITIONAL(HAVE_KAB, test "x$found_kab" = "xyes")
 
 dnl ###############################
+dnl   XCAP support
+dnl ###############################
+XCAP="disabled"
+
+AC_ARG_ENABLE(xcap, [  --enable-xcap                Enable XCAP support],enable_xcap=yes,)
+
+if test "x$enable_xcap" = "xyes"; then
+   PKG_CHECK_MODULES([SOUP], [libsoup-2.4])
+   found_xcap="yes"
+   XCAP="enabled"
+   AC_SUBST(SOUP_CFLAGS)
+   AC_SUBST(SOUP_LIBS)
+fi
+
+AM_CONDITIONAL(HAVE_XCAP, test "x$found_xcap" = "xyes")
+
+dnl ###############################
 dnl   Gnome-Doc-Utils
 dnl ###############################
 GDU="disabled"
@@ -792,6 +809,7 @@ lib/engine/components/gmconf-personal-details/Makefile
 lib/engine/components/avahi-publisher/Makefile
 lib/engine/components/gstreamer/Makefile
 lib/engine/components/kde/Makefile
+lib/engine/components/xcap/Makefile
 )
 
 
@@ -827,6 +845,7 @@ fi
 echo "               GStreamer support  :  $GSTREAMER"
 echo "            KAddressBook support  :  $KAB"
 echo "                     KDE support  :  $KDE"
+echo "                    XCAP support  :  $XCAP"
 echo ""
 echo "                         OS Type  :  $target_os"
 echo "                    Machine Type  :  $target_cpu"
