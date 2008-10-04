@@ -965,7 +965,7 @@ chat_area_init (GTypeInstance* instance,
   gtk_box_pack_start (GTK_BOX (vbox), self->priv->message,
 		      TRUE, TRUE, 2);
 
-  gtk_widget_set_size_request (GTK_WIDGET (vbox), 175, -1);
+  gtk_widget_set_size_request (GTK_WIDGET (self->priv->message), 155, -1);
   gtk_widget_show_all (vbox);
 
   g_signal_connect (G_OBJECT (self), "focus",
