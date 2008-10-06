@@ -61,15 +61,15 @@ GST::VideoInputManager::get_devices (std::vector<Ekiga::VideoInputDevice>& devic
 {
   detect_devices ();
 
-  for (std::map<std::string, std::string>::const_iterator iter
+  for (std::map<std::pair<std::string, std::string>, std::string>::const_iterator iter
 	 = devices_by_name.begin ();
        iter != devices_by_name.end ();
        ++iter) {
 
     Ekiga::VideoInputDevice device;
     device.type = "GStreamer";
-    device.source = "GStreamer";
-    device.name = iter->first;
+    device.source = iter->first.first;
+    device.name = iter->first.second;
     devices.push_back (device);
   }
 }
@@ -82,8 +82,7 @@ GST::VideoInputManager::set_device (const Ekiga::VideoInputDevice& device,
   bool result = false;
 
   if (device.type == "GStreamer"
-      && device.source == "GStreamer"
-      && devices_by_name.find (device.name) != devices_by_name.end ()) {
+      && devices_by_name.find (std::pair<std::string, std::string>(device.source, device.name)) != devices_by_name.end ()) {
 
     current_state.opened = false;
     current_state.width = 320;
@@ -115,7 +114,7 @@ GST::VideoInputManager::open (unsigned width,
 			     ",width=%d,height=%d"
 			     ",framerate=(fraction)%d/1"
 			     " name=ekiga_sink",
-			     devices_by_name[current_state.device.name].c_str (),
+			     devices_by_name[std::pair<std::string,std::string>(current_state.device.source, current_state.device.name)].c_str (),
 			     width, height, fps);
   g_print ("Pipeline: %s\n", command);
   pipeline = gst_parse_launch (command, &error);
@@ -197,12 +196,12 @@ GST::VideoInputManager::get_frame_data (char* data)
 }
 
 bool
-GST::VideoInputManager::has_device (G_GNUC_UNUSED const std::string& source,
+GST::VideoInputManager::has_device (const std::string& source,
 				    const std::string& device_name,
 				    G_GNUC_UNUSED unsigned capabilities,
 				    G_GNUC_UNUSED Ekiga::VideoInputDevice& device)
 {
-  return (devices_by_name.find (device_name) != devices_by_name.end ());
+  return (devices_by_name.find (std::pair<std::string,std::string> (source, device_name)) != devices_by_name.end ());
 }
 
 void
@@ -223,7 +222,7 @@ GST::VideoInputManager::detect_videotestsrc_devices ()
 
   if (elt != NULL) {
 
-    devices_by_name[_("Video test")] = "videotestsrc";
+    devices_by_name[std::pair<std::string,std::string>(_("Video test"),_("Video test"))] = "videotestsrc";
     gst_object_unref (GST_OBJECT (elt));
   }
 }
@@ -274,7 +273,7 @@ GST::VideoInputManager::detect_v4l2src_devices ()
 	descr = g_strdup_printf ("v4l2src device=%s"
 				 " ! videoscale ! ffmpegcolorspace",
 				 g_value_get_string (device));
-	devices_by_name[name] = descr;
+	devices_by_name[std::pair<std::string,std::string>("V4L",name)] = descr;
 	g_free (descr);
       }
 
@@ -339,7 +338,7 @@ GST::VideoInputManager::detect_dv1394src_devices ()
 				 " ! videoscale"
 				 " ! ffmpegcolorspace",
 				 g_value_get_uint64 (guid));
-	devices_by_name[name] = descr;
+	devices_by_name[std::pair<std::string,std::string>("DV",name)] = descr;
 	g_free (descr);
       }
 

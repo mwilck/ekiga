@@ -84,7 +84,7 @@ namespace GST
 
     /* we take a user-readable name, and get the string describing
      * the actual device */
-    std::map<std::string, std::string> devices_by_name;
+    std::map<std::pair<std::string, std::string>, std::string> devices_by_name;
 
     GstElement* pipeline;
   };

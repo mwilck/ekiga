@@ -58,15 +58,15 @@ GST::AudioInputManager::get_devices (std::vector<Ekiga::AudioInputDevice>& devic
 {
   detect_devices ();
 
-  for (std::map<std::string, std::string>::const_iterator iter
+  for (std::map<std::pair<std::string, std::string>, std::string>::const_iterator iter
 	 = devices_by_name.begin ();
        iter != devices_by_name.end ();
        ++iter) {
 
     Ekiga::AudioInputDevice device;
     device.type = "GStreamer";
-    device.source = "GStreamer";
-    device.name = iter->first;
+    device.source = iter->first.first;
+    device.name = iter->first.second;
     devices.push_back (device);
   }
 }
@@ -77,8 +77,7 @@ GST::AudioInputManager::set_device (const Ekiga::AudioInputDevice& device)
   bool result = false;
 
   if (device.type == "GStreamer"
-      && device.source == "GStreamer"
-      && devices_by_name.find (device.name) != devices_by_name.end ()) {
+      && devices_by_name.find (std::pair<std::string, std::string>(device.source, device.name)) != devices_by_name.end ()) {
 
     current_state.opened = false;
     current_state.device = device;
@@ -103,7 +102,7 @@ GST::AudioInputManager::open (unsigned channels,
 			     ",channels=%d"
 			     ",width=%d"
 			     " name=ekiga_sink",
-			     devices_by_name[current_state.device.name].c_str (),
+			     devices_by_name[std::pair<std::string,std::string>(current_state.device.source, current_state.device.name)].c_str (),
 			     samplerate, channels, bits_per_sample);
   g_print ("Pipeline: %s\n", command);
   pipeline = gst_parse_launch (command, &error);
@@ -233,11 +232,11 @@ GST::AudioInputManager::set_volume (unsigned valu)
 }
 
 bool
-GST::AudioInputManager::has_device (const std::string& /*source*/,
+GST::AudioInputManager::has_device (const std::string& source,
 				    const std::string& device_name,
 				    Ekiga::AudioInputDevice& /*device*/)
 {
-  return (devices_by_name.find (device_name) != devices_by_name.end ());
+  return (devices_by_name.find (std::pair<std::string,std::string>(source, device_name)) != devices_by_name.end ());
 }
 
 void
@@ -257,7 +256,7 @@ GST::AudioInputManager::detect_audiotestsrc_devices ()
 
   if (elt != NULL) {
 
-    devices_by_name[_("Audio test")] = "audiotestsrc name=ekiga_volume";
+    devices_by_name[std::pair<std::string,std::string>(_("Audio test"),_("Audio test"))] = "audiotestsrc name=ekiga_volume";
     gst_object_unref (GST_OBJECT (elt));
   }
 }
@@ -294,7 +293,7 @@ GST::AudioInputManager::detect_alsasrc_devices ()
 	descr = g_strdup_printf ("alsasrc device=%s ! volume name=ekiga_volume",
 				 g_value_get_string (device));
 
-	devices_by_name[name] = descr;
+	devices_by_name[std::pair<std::string,std::string>("ALSA", name)] = descr;
 	g_free (name);
 	g_free (descr);
       }
