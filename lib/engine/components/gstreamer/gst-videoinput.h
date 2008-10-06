@@ -76,6 +76,7 @@ namespace GST
     void detect_videotestsrc_devices ();
     void detect_v4l2src_devices ();
     void detect_dv1394src_devices ();
+    void detect_crazy_devices ();
 
     /* we take a user-readable name, and get the string describing
      * the actual device */

@@ -211,6 +211,7 @@ GST::VideoInputManager::detect_devices ()
   detect_videotestsrc_devices ();
   detect_v4l2src_devices ();
   detect_dv1394src_devices ();
+  detect_crazy_devices ();
 }
 
 void
@@ -348,4 +349,37 @@ GST::VideoInputManager::detect_dv1394src_devices ()
   }
   if (elt != NULL)
     gst_object_unref (GST_OBJECT (elt));
+}
+
+void
+GST::VideoInputManager::detect_crazy_devices ()
+{
+  GstElement* goom = NULL;
+  GstElement* audiotest = NULL;
+  GstElement* ffmpeg = NULL;
+  GstElement* scale = NULL;
+  GstElement* ximage = NULL;
+
+  goom = gst_element_factory_make ("goom", "goompresencetest");
+  audiotest = gst_element_factory_make ("audiotestsrc", "audiotestsrcpresencetest");
+  ffmpeg = gst_element_factory_make ("ffmpegcolorspace", "ffmpegcolorspacepresencetest");
+  scale = gst_element_factory_make ("videoscale", "videoscalepresencetest");
+  ximage = gst_element_factory_make ("ximagesrc", "ximagesrcpresencetest");
+
+  if (goom != NULL && audiotest != NULL && ffmpeg != NULL)
+    devices_by_name[std::pair<std::string,std::string>(_("Crazy"), _("Goom"))] = "audiotestsrc ! goom ! ffmpegcolorspace";
+
+  if (ximage != NULL && ffmpeg != NULL)
+    devices_by_name[std::pair<std::string,std::string>(_("Crazy"),_("Screencast"))] = "ximagesrc ! videoscale ! ffmpegcolorspace";
+
+  if (goom != NULL)
+    gst_object_unref (goom);
+  if (audiotest != NULL)
+    gst_object_unref (audiotest);
+  if (scale != NULL)
+    gst_object_unref (scale);
+  if (ffmpeg != NULL)
+    gst_object_unref (ffmpeg);
+  if (ximage != NULL)
+    gst_object_unref (ximage);
 }
