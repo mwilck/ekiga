@@ -430,7 +430,7 @@ OPENLDAP::Book::refresh_start ()
   updated.emit ();
 
   patience = 3;
-  runtime.run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_bound), 3);
+  runtime.run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_bound), 0);
 }
 
 void
@@ -526,7 +526,7 @@ OPENLDAP::Book::refresh_bound ()
   }
 
   patience = 3;
-  runtime.run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_result), 3);
+  runtime.run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_result), 0);
 
 }
 
