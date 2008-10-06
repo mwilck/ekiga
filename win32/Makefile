@@ -123,7 +123,7 @@ PANGO_VER := 1.20.5
 PANGO_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/pango/1.20
 PANGO_ARCHIVE := pango-dev-$(PANGO_VER).zip
 
-XML2_VER := 2.6.26
+XML2_VER := 2.6.32
 XML2_DIR := libxml2-$(XML2_VER)
 XML2_URL := ftp://xmlsoft.org/libxml2
 XML2_ARCHIVE := libxml2-$(XML2_VER).tar.gz
@@ -342,7 +342,6 @@ $(PTLIB_DIR)/configure: binaries $(LIBDIR)/libldap.dll $(LIBDIR)/libogg.a $(LIBD
 	rm -f $(LIBDIR)/libpt_s.a
 	rm -rf $(PTLIB_DIR)
 	$(CP) -r $(SRCDIR)/$(PTLIB_ARCHIVE) $(PTLIB_DIR)	
-	(cd $(PTLIB_DIR)/; patch -p0 < ../diff/ptlib_makefile.patch )
 
 $(PTLIB_DIR)/config.status: binaries $(PTLIB_DIR)/configure
 	rm -f $(LIBDIR)/libpt_s.a
