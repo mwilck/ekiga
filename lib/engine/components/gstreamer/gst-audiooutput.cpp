@@ -182,11 +182,22 @@ GST::AudioOutputManager::close (Ekiga::AudioOutputPS ps)
 }
 
 void
-GST::AudioOutputManager::set_buffer_size (Ekiga::AudioOutputPS /*ps*/,
-					  unsigned /*buffer_size*/,
+GST::AudioOutputManager::set_buffer_size (Ekiga::AudioOutputPS ps,
+					  unsigned buffer_size,
 					  unsigned /*num_buffers*/)
 {
-  // FIXME: do I care?
+  unsigned ii = (ps == Ekiga::primary)?0:1;
+  GstElement* src = NULL;
+
+  src = gst_bin_get_by_name (GST_BIN (pipeline[ii]), "ekiga_src");
+
+  if (src != NULL) {
+
+    g_object_set (G_OBJECT (src),
+		  "blocksize", buffer_size,
+		  NULL);
+    g_object_unref (src);
+  }
 }
 
 bool

@@ -178,7 +178,18 @@ void
 GST::AudioInputManager::set_buffer_size (unsigned /*buffer_size*/,
 					 unsigned /*num_buffers*/)
 {
-  // FIXME: do I care?
+// FIXME: this is bug #554168 -- GstAppSink doesn't have "blocksize" yet!
+//   GstElement* sink = NULL;
+
+//   sink = gst_bin_get_by_name (GST_BIN (pipeline), "ekiga_sink");
+
+//   if (sink != NULL) {
+
+//     g_object_set (G_OBJECT (sink),
+// 		  "blocksize", buffer_size,
+// 		  NULL);
+//     g_object_unref (sink);
+//   }
 }
 
 bool
