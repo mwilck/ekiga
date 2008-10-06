@@ -48,9 +48,9 @@
 #include "ptbuildopts.h"
 #include "ptlib.h"
 
-#define AUDIO_INPUT_FALLBACK_DEVICE_TYPE   "NULL"
-#define AUDIO_INPUT_FALLBACK_DEVICE_SOURCE "NULL"
-#define AUDIO_INPUT_FALLBACK_DEVICE_NAME   "NULL"
+#define AUDIO_INPUT_FALLBACK_DEVICE_TYPE   "Ekiga"
+#define AUDIO_INPUT_FALLBACK_DEVICE_SOURCE "Ekiga"
+#define AUDIO_INPUT_FALLBACK_DEVICE_NAME   "SILENT"
 
 namespace Ekiga
 {
