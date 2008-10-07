@@ -80,10 +80,11 @@ avahi_resolver_callback (AvahiServiceResolver *resolver,
 			 AvahiLookupResultFlags flags,
 			 void *data)
 {
-  ((Avahi::Heap *)data)->ResolverCallback (resolver, interface, protocol,
-					   event, name, type, domain,
-					   host_name, address, port,
-					   txt, flags);
+  if (!(flags & AVAHI_LOOKUP_RESULT_LOCAL))
+    ((Avahi::Heap *)data)->ResolverCallback (resolver, interface, protocol,
+                                             event, name, type, domain,
+                                             host_name, address, port,
+                                             txt, flags);
 }
 
 
