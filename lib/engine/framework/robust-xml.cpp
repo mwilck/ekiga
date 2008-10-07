@@ -35,6 +35,20 @@
 
 #include "robust-xml.h"
 
+std::string
+robust_xmlEscape (xmlDocPtr doc,
+		  const std::string& value)
+{
+  xmlChar* escaped =  xmlEncodeEntitiesReentrant (doc,
+						  BAD_CAST value.c_str ());
+
+  std::string result((const char*)escaped);
+
+  xmlFree (escaped);
+
+  return result;
+}
+
 void
 robust_xmlNodeSetContent (xmlNodePtr parent,
 			  xmlNodePtr* child,
@@ -45,10 +59,11 @@ robust_xmlNodeSetContent (xmlNodePtr parent,
 
     *child = xmlNewChild (parent, NULL,
 			  BAD_CAST name.c_str (),
-			  BAD_CAST value.c_str ());
+			  BAD_CAST robust_xmlEscape (parent->doc,
+						     value).c_str ());
   } else {
 
-    xmlNodeSetContent (*child, xmlEncodeSpecialChars ((*child)->doc,
-						      BAD_CAST value.c_str ()));
+    xmlNodeSetContent (*child, BAD_CAST robust_xmlEscape (parent->doc,
+							  value).c_str ());
   }
 }

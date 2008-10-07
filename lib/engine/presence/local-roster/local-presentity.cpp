@@ -109,13 +109,16 @@ Local::Presentity::Presentity (Ekiga::ServiceCore &_core,
   node = xmlNewNode (NULL, BAD_CAST "entry");
   xmlSetProp (node, BAD_CAST "uri", BAD_CAST uri.c_str ());
   name_node = xmlNewChild (node, NULL,
-			   BAD_CAST "name", BAD_CAST name.c_str ());
+			   BAD_CAST "name",
+			   BAD_CAST robust_xmlEscape (node->doc,
+						      name).c_str ());
   for (std::set<std::string>::const_iterator iter = groups.begin ();
        iter != groups.end ();
        iter++)
     group_nodes[*iter] = xmlNewChild (node, NULL,
 				      BAD_CAST "group",
-				      BAD_CAST iter->c_str ());
+				      BAD_CAST robust_xmlEscape (node->doc,
+								 *iter).c_str ());
 }
 
 
@@ -285,7 +288,7 @@ Local::Presentity::edit_presentity_form_submitted (Ekiga::Form &result)
       if (std::find (groups.begin (), groups.end (), *iter) == groups.end ())
 	future_group_nodes[*iter] = xmlNewChild (node, NULL,
 						 BAD_CAST "group",
-						 BAD_CAST iter->c_str ());
+						 BAD_CAST robust_xmlEscape (node->doc, *iter).c_str ());
     }
 
     // ok, now we know our groups

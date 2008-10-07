@@ -38,6 +38,8 @@
 #include <iostream>
 #include <glib.h>
 
+#include "robust-xml.h"
+
 #include "history-contact.h"
 
 
@@ -112,7 +114,8 @@ History::Contact::Contact (Ekiga::ServiceCore &_core,
 
   xmlSetProp (node, BAD_CAST "uri", BAD_CAST uri.c_str ());
   xmlNewChild (node, NULL,
-	       BAD_CAST "name", BAD_CAST name.c_str ());
+	       BAD_CAST "name",
+	       BAD_CAST robust_xmlEscape (node->doc, name).c_str ());
 
   tmp = g_strdup_printf ("%lu", call_start);
   xmlNewChild (node, NULL,
