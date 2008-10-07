@@ -618,6 +618,7 @@ static void on_setup_call_cb (Ekiga::CallManager & /*manager*/,
   Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (mw->core.get ("audiooutput-core"));
 
   if (!call.is_outgoing ()) {
+    gm_main_window_update_calling_state (GTK_WIDGET (self), Called);
     audiooutput_core->start_play_event("incoming_call_sound", 4000, 256);
 #ifdef HAVE_NOTIFY
     gm_main_window_incoming_call_notify (GTK_WIDGET (self), call);
@@ -3258,6 +3259,7 @@ gm_main_window_update_calling_state (GtkWidget *main_window,
       if (mw->transfer_call_popup) 
 	gtk_dialog_response (GTK_DIALOG (mw->transfer_call_popup),
 			     GTK_RESPONSE_REJECT);
+
       break;
 
 
@@ -3271,7 +3273,7 @@ gm_main_window_update_calling_state (GtkWidget *main_window,
       /* Update the connect button */
       gm_connect_button_set_connected (GM_CONNECT_BUTTON (mw->connect_button),
 				       TRUE);
-      
+
       break;
 
 
@@ -3287,6 +3289,7 @@ gm_main_window_update_calling_state (GtkWidget *main_window,
       /* Update the connect button */
       gm_connect_button_set_connected (GM_CONNECT_BUTTON (mw->connect_button),
 				       TRUE);
+
       break;
 
 
@@ -3298,7 +3301,7 @@ gm_main_window_update_calling_state (GtkWidget *main_window,
       /* Update the connect button */
       gm_connect_button_set_connected (GM_CONNECT_BUTTON (mw->connect_button),
 				       FALSE);
-      
+
       break;
 
     default:
