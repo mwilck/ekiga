@@ -39,6 +39,13 @@
 #include <string>
 #include <libxml/tree.h>
 
+/* Returns a correctly escaped string for use as a node content
+ * @param doc The doc for which the string is meant
+ * @param value The raw string to escape
+ */
+std::string robust_xmlEscape (xmlDocPtr doc,
+			      const std::string& value);
+
 /* Sets the content of a node to a given value, creating the node if needed.
  * @param parent The parent node of the node whose value should be set
  * @param child The node whose value should be set, or NULL if needs creating

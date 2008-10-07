@@ -37,9 +37,11 @@
 
 #include "config.h"
 
-#include "rl-heap.h"
-
 #include <iostream>
+
+#include "robust-xml.h"
+
+#include "rl-heap.h"
 
 RL::Heap::Heap (Ekiga::ServiceCore& core_,
 		xmlNodePtr node_):
@@ -65,7 +67,9 @@ RL::Heap::Heap (Ekiga::ServiceCore& core_,
   if (uri == NULL)
     uri = xmlNewChild (node, NULL, BAD_CAST "uri", BAD_CAST "");
   if (name == NULL)
-    name = xmlNewChild (node, NULL, BAD_CAST "name", BAD_CAST (_("Unnamed")));
+    name = xmlNewChild (node, NULL, BAD_CAST "name",
+			BAD_CAST robust_xmlEscape(node->doc,
+						  _("Unnamed")).c_str ());
   if (username == NULL)
     username = xmlNewChild (node, NULL, BAD_CAST "username", BAD_CAST "");
   if (password == NULL)
@@ -83,17 +87,27 @@ RL::Heap::Heap (Ekiga::ServiceCore& core_,
 {
   node = xmlNewNode (NULL, BAD_CAST "entry");
   uri = xmlNewChild (node, NULL,
-		     BAD_CAST "uri", BAD_CAST uri_.c_str ());
+		     BAD_CAST "uri",
+		     BAD_CAST robust_xmlEscape (node->doc,
+						uri_).c_str ());
   username = xmlNewChild (node, NULL,
-			  BAD_CAST "username", BAD_CAST username_.c_str ());
+			  BAD_CAST "username",
+			  BAD_CAST robust_xmlEscape (node->doc,
+						     username_).c_str ());
   password = xmlNewChild (node, NULL,
-			  BAD_CAST "password", BAD_CAST password_.c_str ());
+			  BAD_CAST "password",
+			  BAD_CAST robust_xmlEscape (node->doc,
+						     password_).c_str ());
   if ( !name_.empty ())
     name = xmlNewChild (node, NULL,
-			BAD_CAST "name", BAD_CAST name_.c_str ());
+			BAD_CAST "name",
+			BAD_CAST robust_xmlEscape (node->doc,
+						   name_).c_str ());
   else
     name = xmlNewChild (node, NULL,
-			BAD_CAST "name", BAD_CAST _("Unnamed"));
+			BAD_CAST "name",
+			BAD_CAST robust_xmlEscape (node->doc,
+						   _("Unnamed")).c_str ());
   update ();
 }
 

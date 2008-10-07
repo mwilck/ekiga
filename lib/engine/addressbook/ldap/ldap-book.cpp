@@ -264,10 +264,14 @@ OPENLDAP::Book::Book (Ekiga::ServiceCore &_core,
   node = xmlNewNode (NULL, BAD_CAST "server");
 
   name_node = xmlNewChild (node, NULL,
-			   BAD_CAST "name", BAD_CAST name.c_str ());
+			   BAD_CAST "name",
+			   BAD_CAST robust_xmlEscape (node->doc,
+						      name).c_str ());
 
   hostname_node = xmlNewChild (node, NULL,
-			       BAD_CAST "hostname", BAD_CAST hostname.c_str ());
+			       BAD_CAST "hostname",
+			       BAD_CAST robust_xmlEscape (node->doc,
+							  hostname).c_str ());
 
   { // Snark hates C++ -- and there isn't only a reason for it -- but many
     std::stringstream strm;
@@ -280,18 +284,24 @@ OPENLDAP::Book::Book (Ekiga::ServiceCore &_core,
   }
 
   base_node = xmlNewChild (node, NULL,
-			   BAD_CAST "base", BAD_CAST base.c_str ());
+			   BAD_CAST "base",
+			   BAD_CAST robust_xmlEscape (node->doc,
+						      base).c_str ());
 
   scope_node = xmlNewChild (node, NULL,
-			    BAD_CAST "scope", BAD_CAST scope.c_str ());
+			    BAD_CAST "scope",
+			    BAD_CAST robust_xmlEscape (node->doc,
+						       scope).c_str ());
 
   call_attribute_node = xmlNewChild (node, NULL,
 				     BAD_CAST "call_attribute",
-				     BAD_CAST call_attribute.c_str ());
+				     BAD_CAST robust_xmlEscape (node->doc,
+								call_attribute).c_str ());
 
   password_node = xmlNewChild (node, NULL,
 			       BAD_CAST "password",
-			       BAD_CAST password.c_str ());
+			       BAD_CAST robust_xmlEscape (node->doc,
+							  password).c_str ());
 }
 
 OPENLDAP::Book::~Book ()
