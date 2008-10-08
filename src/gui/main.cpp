@@ -115,6 +115,14 @@ struct deviceStruct {
   DeviceType deviceType;
 };
 
+G_DEFINE_TYPE (EkigaMainWindow, ekiga_main_window, GM_WINDOW_TYPE);
+
+struct _EkigaMainWindowPrivate
+{
+  Ekiga::ServiceCore *core;
+};
+
+
 /* Declarations */
 struct _GmMainWindow
 {
@@ -4013,6 +4021,32 @@ gm_main_window_add_device_dialog_show (GtkWidget *main_window,
                          (GConnectFlags) 0);
 }
 
+static void
+ekiga_main_window_init (EkigaMainWindow *mw)
+{
+  mw->priv = G_TYPE_INSTANCE_GET_PRIVATE (mw, EKIGA_TYPE_MAIN_WINDOW,
+                                          EkigaMainWindowPrivate);
+}
+
+static void
+ekiga_main_window_class_init (EkigaMainWindowClass *klass)
+{
+  g_type_class_add_private (klass, sizeof (EkigaMainWindowPrivate));
+}
+
+GtkWidget *
+ekiga_main_window_new (Ekiga::ServiceCore *core)
+{
+  EkigaMainWindow *mw;
+
+  mw = EKIGA_MAIN_WINDOW (g_object_new (EKIGA_TYPE_MAIN_WINDOW, NULL));
+  mw->priv->core = core;
+
+  gm_window_set_key (GM_WINDOW (mw), USER_INTERFACE_KEY "main_window");
+
+  return GTK_WIDGET (mw);
+}
+
 GtkWidget *
 gm_main_window_new (Ekiga::ServiceCore & core)
 {
@@ -4041,7 +4075,7 @@ gm_main_window_new (Ekiga::ServiceCore & core)
 		    G_CALLBACK (on_chat_unread_alert), NULL);
 
   /* The Top-level window */
-  window = gm_window_new_with_key (USER_INTERFACE_KEY "main_window");
+  window = ekiga_main_window_new (&core);
   gm_window_set_hide_on_delete (GM_WINDOW (window), FALSE);
   gtk_window_set_title (GTK_WINDOW (window), 
 			_("Ekiga"));

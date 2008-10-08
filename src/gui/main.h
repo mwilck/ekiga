@@ -46,6 +46,32 @@
 #include "services.h"
 #include "call.h"
 
+#include "lib/gui/gmwindow.h"
+
+G_BEGIN_DECLS
+
+#define EKIGA_TYPE_MAIN_WINDOW               (ekiga_main_window_get_type ())
+#define EKIGA_MAIN_WINDOW(obj)               (G_TYPE_CHECK_INSTANCE_CAST ((obj), EKIGA_TYPE_MAIN_WINDOW, EkigaMainWindow))
+#define EKIGA_MAIN_WINDOW_CLASS(klass)       (G_TYPE_CHECK_CLASS_CAST ((klass), EKIGA_TYPE_MAIN_WINDOW, EkigaMainWindowClass))
+#define EKIGA_IS_MAIN_WINDOW(obj)            (G_TYPE_CHECK_INSTANCE_TYPE ((obj), EKIGA_TYPE_MAIN_WINDOW))
+#define EKIGA_IS_MAIN_WINDOW_CLASS(klass)    (G_TYPE_CHECK_CLASS_TYPE ((klass), EKIGA_TYPE_MAIN_WINDOW))
+
+typedef struct _EkigaMainWindowPrivate       EkigaMainWindowPrivate;
+typedef struct _EkigaMainWindow              EkigaMainWindow;
+
+struct _EkigaMainWindow {
+  GmWindow                parent;
+  EkigaMainWindowPrivate *priv;
+};
+
+typedef GmWindowClass EkigaMainWindowClass;
+
+GType        ekiga_main_window_get_type   ();
+GtkWidget   *ekiga_main_window_new        (Ekiga::ServiceCore *core);
+
+G_END_DECLS
+
+
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Press the given dialpad key.
