@@ -187,7 +187,7 @@ struct _EkigaMainWindowPrivate
   std::string received_video_codec;
   std::string received_audio_codec;
 
-  std::list<std::string> accounts;
+  std::list<std::string> *accounts;
   Ekiga::Presentity* presentity;
 
   std::vector<sigc::connection> *connections;
@@ -506,13 +506,13 @@ static void on_registration_event (const Ekiga::Account & account,
   case Ekiga::AccountCore::Registered:
     /* Translators: Is displayed once an account "%s" is registered. */
     msg = g_strdup_printf (_("Registered %s"), aor.c_str ()); 
-    mw->priv->accounts.push_back (account.get_host ());
+    mw->priv->accounts->push_back (account.get_host ());
     break;
 
   case Ekiga::AccountCore::Unregistered:
     /* Translators: Is displayed once an account "%s" is unregistered. */
     msg = g_strdup_printf (_("Unregistered %s"), aor.c_str ());
-    mw->priv->accounts.remove (account.get_host ());
+    mw->priv->accounts->remove (account.get_host ());
     break;
 
   case Ekiga::AccountCore::UnregistrationFailed:
@@ -1380,8 +1380,8 @@ place_call_cb (GtkWidget * /*widget*/,
       if (pos != std::string::npos) {
 
         std::string host = uri.substr (pos + 1);
-        mw->priv->accounts.remove (host);
-        mw->priv->accounts.push_front (host);
+        mw->priv->accounts->remove (host);
+        mw->priv->accounts->push_front (host);
       }
 
     }
@@ -2102,8 +2102,8 @@ url_changed_cb (GtkEditable *e,
 
     gtk_list_store_clear (mw->priv->completion);
 
-    for (std::list<std::string>::iterator it = mw->priv->accounts.begin ();
-         it != mw->priv->accounts.end ();
+    for (std::list<std::string>::iterator it = mw->priv->accounts->begin ();
+         it != mw->priv->accounts->end ();
          it++) {
 
       entry = g_strdup_printf ("%s@%s", tip_text, it->c_str ());
@@ -3627,6 +3627,8 @@ ekiga_main_window_init (EkigaMainWindow *mw)
 #ifndef WIN32
   mw->priv->video_widget_gc = NULL;
 #endif
+
+  mw->priv->accounts = new std::list<std::string> ();
 }
 
 static GObject *
@@ -3661,6 +3663,9 @@ ekiga_main_window_finalize (GObject *gobject)
 
   if (mw->priv->connections)
     delete mw->priv->connections;
+
+  if (mw->priv->accounts)
+    delete mw->priv->accounts;
 
   G_OBJECT_CLASS (ekiga_main_window_parent_class)->finalize (gobject);
 }
