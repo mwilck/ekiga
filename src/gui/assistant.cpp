@@ -157,8 +157,10 @@ update_combo_box (GtkComboBox         *combo_box,
                   const gchar * const *options,
                   const gchar         *default_value)
 {
-  int i;
+  GtkTreeIter iter;
   GtkTreeModel *model;
+
+  int i;
   int selected;
 
   g_return_if_fail (options != NULL);
@@ -171,7 +173,11 @@ update_combo_box (GtkComboBox         *combo_box,
     if (default_value && strcmp (options[i], default_value) == 0)
       selected = i;
 
-    gtk_combo_box_append_text (combo_box, options[i]);
+    gtk_list_store_append (GTK_LIST_STORE (model), &iter);
+    gtk_list_store_set (GTK_LIST_STORE (model), &iter,
+                        0, options [i],
+                        1, true, 
+                        -1);
   }
 
   gtk_combo_box_set_active(combo_box, selected);
@@ -181,32 +187,85 @@ static void
 add_combo_box (GtkComboBox         *combo_box,
                const gchar         *option)
 {
-  g_return_if_fail (option != NULL);
-  gtk_combo_box_append_text (combo_box, option);
+  GtkTreeModel *model = NULL;
+  GtkTreeIter iter;
+
+  gchar *option_string = NULL;
+  gboolean found = FALSE;
+  
+  if (!option)
+    return;
+
+  model = gtk_combo_box_get_model (combo_box);
+  option_string = g_locale_to_utf8 (option, -1, NULL, NULL, NULL);
+
+  if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (model), &iter)) {
+
+    do {
+      gchar *value_string = NULL;
+      GValue value = { 0, {{0}, {0}} };
+      gtk_tree_model_get_value (GTK_TREE_MODEL (model), &iter, 0, &value);
+      value_string = (gchar *) g_value_get_string (&value);
+      if (g_ascii_strcasecmp  (value_string, option) == 0) {
+        gtk_list_store_set (GTK_LIST_STORE (model), &iter, 
+                            1, TRUE,
+                            -1);
+        g_value_unset(&value);
+        found = TRUE;
+        break;
+      }
+      g_value_unset(&value);
+
+    } while (gtk_tree_model_iter_next(GTK_TREE_MODEL (model), &iter));
+  }
+
+  if (!found) {
+    gtk_list_store_append (GTK_LIST_STORE (model), &iter);
+    gtk_list_store_set (GTK_LIST_STORE (model), &iter, 
+                        0, option,
+                        1, TRUE,
+                        -1);
+  }
+
+  g_free (option_string);
 }
 
 static void
 remove_combo_box (GtkComboBox         *combo_box,
                   const gchar         *option)
 {
-  GtkTreeModel *model = NULL;
+  GtkTreeModel *model;
   GtkTreeIter iter;
+  int cpt = 0;
+  int active;
 
   g_return_if_fail (option != NULL);
   model = gtk_combo_box_get_model (combo_box);
+  active = gtk_combo_box_get_active (GTK_COMBO_BOX (combo_box));
+
   if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (model), &iter)) {
+
     do {
       gchar *value_string = NULL;
-      GValue value;
-      g_value_init (&value, G_TYPE_STRING);
+      GValue value = { 0, {{0}, {0}} };
       gtk_tree_model_get_value (GTK_TREE_MODEL (model), &iter, 0, &value);
       value_string = (gchar *) g_value_get_string (&value);
       if (g_ascii_strcasecmp  (value_string, option) == 0) {
-        gtk_list_store_remove (GTK_LIST_STORE (model), &iter);
+
+        if (cpt == active) {
+          gtk_list_store_set (GTK_LIST_STORE (model), &iter, 
+                              1, FALSE,
+                              -1);
+        }
+        else {
+          gtk_list_store_remove (GTK_LIST_STORE (model), &iter);
+        }
         g_value_unset(&value);
         break;
       }
       g_value_unset(&value);
+      cpt++;
+
     } while (gtk_tree_model_iter_next(GTK_TREE_MODEL (model), &iter));
   }
 }
@@ -900,8 +959,12 @@ apply_connection_type_page (EkigaAssistant *assistant)
 static void
 create_audio_devices_page (EkigaAssistant *assistant)
 {
+  GtkListStore *model;
   GtkWidget *vbox;
   GtkWidget *label;
+
+  GtkCellRenderer *renderer;
+  
   gchar *text;
 
   vbox = create_page (assistant, _("Audio Devices"), GTK_ASSISTANT_PAGE_CONTENT);
@@ -910,7 +973,19 @@ create_audio_devices_page (EkigaAssistant *assistant)
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
 
-  assistant->priv->audio_ringer = gtk_combo_box_new_text ();
+  model = gtk_list_store_new (2, G_TYPE_STRING, G_TYPE_BOOLEAN);
+  assistant->priv->audio_ringer = gtk_combo_box_new_with_model (GTK_TREE_MODEL (model));
+  renderer = gtk_cell_renderer_text_new ();
+  gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (assistant->priv->audio_ringer), renderer, FALSE);
+  gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (assistant->priv->audio_ringer), renderer,
+                                  "text", 0,
+                                  "sensitive", 1,
+                                  NULL);
+  g_object_set (G_OBJECT (renderer), 
+                "ellipsize-set", TRUE, 
+                "ellipsize", PANGO_ELLIPSIZE_END, 
+                "width-chars", 45, NULL);
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label), assistant->priv->audio_ringer);
   gtk_box_pack_start (GTK_BOX (vbox), assistant->priv->audio_ringer, FALSE, FALSE, 0);
 
   label = gtk_label_new (NULL);
@@ -929,7 +1004,19 @@ create_audio_devices_page (EkigaAssistant *assistant)
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
 
-  assistant->priv->audio_player = gtk_combo_box_new_text ();
+  model = gtk_list_store_new (2, G_TYPE_STRING, G_TYPE_BOOLEAN);
+  assistant->priv->audio_player = gtk_combo_box_new_with_model (GTK_TREE_MODEL (model));
+  renderer = gtk_cell_renderer_text_new ();
+  gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (assistant->priv->audio_player), renderer, FALSE);
+  gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (assistant->priv->audio_player), renderer,
+                                  "text", 0,
+                                  "sensitive", 1,
+                                  NULL);
+  g_object_set (G_OBJECT (renderer), 
+                "ellipsize-set", TRUE, 
+                "ellipsize", PANGO_ELLIPSIZE_END, 
+                "width-chars", 45, NULL);
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label), assistant->priv->audio_player);
   gtk_box_pack_start (GTK_BOX (vbox), assistant->priv->audio_player, FALSE, FALSE, 0);
 
   label = gtk_label_new (NULL);
@@ -948,7 +1035,19 @@ create_audio_devices_page (EkigaAssistant *assistant)
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
 
-  assistant->priv->audio_recorder = gtk_combo_box_new_text ();
+  model = gtk_list_store_new (2, G_TYPE_STRING, G_TYPE_BOOLEAN);
+  assistant->priv->audio_recorder = gtk_combo_box_new_with_model (GTK_TREE_MODEL (model));
+  renderer = gtk_cell_renderer_text_new ();
+  gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (assistant->priv->audio_recorder), renderer, FALSE);
+  gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (assistant->priv->audio_recorder), renderer,
+                                  "text", 0,
+                                  "sensitive", 1,
+                                  NULL);
+  g_object_set (G_OBJECT (renderer), 
+                "ellipsize-set", TRUE, 
+                "ellipsize", PANGO_ELLIPSIZE_END, 
+                "width-chars", 45, NULL);
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label), assistant->priv->audio_recorder);
   gtk_box_pack_start (GTK_BOX (vbox), assistant->priv->audio_recorder, FALSE, FALSE, 0);
 
   label = gtk_label_new (NULL);
@@ -1038,6 +1137,8 @@ apply_audio_devices_page (EkigaAssistant *assistant)
 static void
 create_video_devices_page (EkigaAssistant *assistant)
 {
+  GtkListStore *model;
+  GtkCellRenderer *renderer;
   GtkWidget *vbox;
   GtkWidget *label;
   gchar *text;
@@ -1048,7 +1149,19 @@ create_video_devices_page (EkigaAssistant *assistant)
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
 
-  assistant->priv->video_device = gtk_combo_box_new_text ();
+  model = gtk_list_store_new (2, G_TYPE_STRING, G_TYPE_BOOLEAN);
+  assistant->priv->video_device = gtk_combo_box_new_with_model (GTK_TREE_MODEL (model));
+  renderer = gtk_cell_renderer_text_new ();
+  gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (assistant->priv->video_device), renderer, FALSE);
+  gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (assistant->priv->video_device), renderer,
+                                  "text", 0,
+                                  "sensitive", 1,
+                                  NULL);
+  g_object_set (G_OBJECT (renderer), 
+                "ellipsize-set", TRUE, 
+                "ellipsize", PANGO_ELLIPSIZE_END, 
+                "width-chars", 45, NULL);
+  gtk_label_set_mnemonic_widget (GTK_LABEL (label), assistant->priv->video_device);
   gtk_box_pack_start (GTK_BOX (vbox), assistant->priv->video_device, FALSE, FALSE, 0);
 
   label = gtk_label_new (NULL);
