@@ -4339,12 +4339,6 @@ main (int argc,
   }
 #endif
 
-  /* Configuration database initialization */
-#ifdef HAVE_GCONF
-  if (!gnomemeeting_conf_check ()) 
-    error = 3;
-#endif
-
   /* Init gm_conf */
   gm_conf_watch ();
 
@@ -4395,16 +4389,6 @@ main (int argc,
       title = g_strdup (_("No usable audio codecs detected"));
       msg = g_strdup (_("Ekiga didn't find any usable audio codec. Make sure that your installation is correct."));
       break;
-#ifdef HAVE_GCONF
-    case 3:
-      {
-	gchar *key_name = g_strdup ("\"/apps/" PACKAGE_NAME "/general/gconf_test_age\"");
-	title = g_strdup (_("Configuration database corruption"));
-	msg = g_strdup_printf (_("Ekiga got an invalid value for the configuration key %s.\n\nIt probably means that your configuration schemas have not been correctly installed or that the permissions are not correct.\n\nPlease check the FAQ (http://www.ekiga.org/), the troubleshooting section of the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list archives for more information (http://mail.gnome.org) about this problem."), key_name);
-	g_free (key_name);
-      }
-      break;
-#endif
     default:
       break;
     }

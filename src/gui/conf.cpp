@@ -169,21 +169,6 @@ network_settings_changed_nt (G_GNUC_UNUSED gpointer id,
 
 
 /* The functions */
-gboolean 
-gnomemeeting_conf_check ()
-{
-  int conf_test = -1;
-  
-  /* Check the config is ok */
-  conf_test = gm_conf_get_int (GENERAL_KEY "gconf_test_age");
-  
-  if (conf_test != SCHEMA_AGE) 
-    return FALSE;
-
-  return TRUE;
-}
-
-
 void
 gnomemeeting_conf_init ()
 {
