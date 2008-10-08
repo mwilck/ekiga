@@ -3,6 +3,34 @@
 	* src/gui/assistant.cpp:
 	Fixed report #555075.
 
+2008-10-08  Steve Frécinaux  <code@istique.net>
+
+	* src/gui/dialpad.cpp:
+	Remove pre-2.10 #define since we depend on Gtk+ 2.12
+
+2008-10-08  Steve Frécinaux  <code@istique.net>
+
+	* src/gui/conf.cpp:
+	* src/gui/main.cpp:
+	* src/gui/main.h:
+	Reimplementation of the main window as a GObject
+
+	Everything has been rewritten using the EkigaMainWindow object as a
+	base and store.
+	Note that we still use gm_main_window_new as a "proxy" for a few things
+	that are not directly bound to the window, but it should go.
+
+2008-10-08  Steve Frécinaux  <code@istique.net>
+
+	* src/gui/main.h:
+	* src/gui/main.cpp:
+	Add a new EkigaMainWindow GObject.
+
+2008-10-08  Steve Frécinaux  <code@istique.net>
+
+	* src/gui/statusicon.cpp: Use GTK stock icon for about icon instead of
+	libgnome's
+
 2008-10-07  Damien Sandras  <dsandras@gnome.org>
 
 	* lib/engine/presence/avahi/avahi-heap.cpp:
