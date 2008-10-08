@@ -52,13 +52,6 @@
 #include <sigc++/sigc++.h>
 #include <vector>
 
-#ifdef HAVE_GNOME
-#undef _
-#undef N_
-#include <gnome.h>
-#include <libbonobo.h>
-#endif
-
 #include "services.h"
 #include "gtk-frontend.h"
 #include "personal-details.h"
@@ -398,7 +391,6 @@ statusicon_build_menu ()
 
   static MenuEntry menu [] =
     {
-#ifdef HAVE_GNOME
       GTK_MENU_ENTRY("help", NULL,
                      _("Get help by reading the Ekiga manual"),
                      GTK_STOCK_HELP, GDK_F1,
@@ -406,21 +398,10 @@ statusicon_build_menu ()
 
       GTK_MENU_ENTRY("about", NULL,
 		     _("View information about Ekiga"),
-		     GNOME_STOCK_ABOUT, 'a',
+		     GTK_STOCK_ABOUT, 0,
 		     GTK_SIGNAL_FUNC (about_callback), (gpointer) main_window,
 		     TRUE),
-#else
-      GTK_MENU_ENTRY("help", _("_Contents"),
-                     _("Get help by reading the Ekiga manual"),
-                     GTK_STOCK_HELP, GDK_F1,
-                     NULL, NULL, FALSE),
 
-      GTK_MENU_ENTRY("about", _("_About"),
-		     _("View information about Ekiga"),
-		     NULL, 'a',
-		     GTK_SIGNAL_FUNC (about_callback), (gpointer) main_window,
-		     TRUE),
-#endif
       GTK_MENU_SEPARATOR,
 
       GTK_MENU_ENTRY("quit", NULL, _("Quit"),
