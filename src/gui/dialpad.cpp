@@ -39,11 +39,6 @@
 #include <cstring>
 #include <iostream>
 
-/* Make this flag available with GTK+ 2.10 */
-#ifndef G_PARAM_SPEC_STATIC_STRINGS
-#define	G_PARAM_STATIC_STRINGS (G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB)
-#endif
-
 struct const_key_info
 {
   const char *number;
