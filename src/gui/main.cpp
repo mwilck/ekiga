@@ -187,10 +187,10 @@ struct _EkigaMainWindowPrivate
   std::string received_video_codec;
   std::string received_audio_codec;
 
-  std::list<std::string> *accounts;
+  std::list<std::string> accounts;
   Ekiga::Presentity* presentity;
 
-  std::vector<sigc::connection> *connections;
+  std::vector<sigc::connection> connections;
 };
 
 /* properties */
@@ -506,13 +506,13 @@ static void on_registration_event (const Ekiga::Account & account,
   case Ekiga::AccountCore::Registered:
     /* Translators: Is displayed once an account "%s" is registered. */
     msg = g_strdup_printf (_("Registered %s"), aor.c_str ()); 
-    mw->priv->accounts->push_back (account.get_host ());
+    mw->priv->accounts.push_back (account.get_host ());
     break;
 
   case Ekiga::AccountCore::Unregistered:
     /* Translators: Is displayed once an account "%s" is unregistered. */
     msg = g_strdup_printf (_("Unregistered %s"), aor.c_str ());
-    mw->priv->accounts->remove (account.get_host ());
+    mw->priv->accounts.remove (account.get_host ());
     break;
 
   case Ekiga::AccountCore::UnregistrationFailed:
@@ -1380,8 +1380,8 @@ place_call_cb (GtkWidget * /*widget*/,
       if (pos != std::string::npos) {
 
         std::string host = uri.substr (pos + 1);
-        mw->priv->accounts->remove (host);
-        mw->priv->accounts->push_front (host);
+        mw->priv->accounts.remove (host);
+        mw->priv->accounts.push_front (host);
       }
 
     }
@@ -2102,8 +2102,8 @@ url_changed_cb (GtkEditable *e,
 
     gtk_list_store_clear (mw->priv->completion);
 
-    for (std::list<std::string>::iterator it = mw->priv->accounts->begin ();
-         it != mw->priv->accounts->end ();
+    for (std::list<std::string>::iterator it = mw->priv->accounts.begin ();
+         it != mw->priv->accounts.end ();
          it++) {
 
       entry = g_strdup_printf ("%s@%s", tip_text, it->c_str ());
@@ -3607,8 +3607,7 @@ ekiga_main_window_init_gui (EkigaMainWindow *mw)
 static void
 ekiga_main_window_init (EkigaMainWindow *mw)
 {
-  mw->priv = G_TYPE_INSTANCE_GET_PRIVATE (mw, EKIGA_TYPE_MAIN_WINDOW,
-                                          EkigaMainWindowPrivate);
+  mw->priv = new EkigaMainWindowPrivate ();
 
   /* Accelerators */
   mw->priv->accel = gtk_accel_group_new ();
@@ -3627,8 +3626,6 @@ ekiga_main_window_init (EkigaMainWindow *mw)
 #ifndef WIN32
   mw->priv->video_widget_gc = NULL;
 #endif
-
-  mw->priv->accounts = new std::list<std::string> ();
 }
 
 static GObject *
@@ -3661,11 +3658,7 @@ ekiga_main_window_finalize (GObject *gobject)
   gtk_widget_destroy (mw->priv->audio_settings_window);
   gtk_widget_destroy (mw->priv->video_settings_window);
 
-  if (mw->priv->connections)
-    delete mw->priv->connections;
-
-  if (mw->priv->accounts)
-    delete mw->priv->accounts;
+  delete mw->priv;
 
   G_OBJECT_CLASS (ekiga_main_window_parent_class)->finalize (gobject);
 }
@@ -3816,8 +3809,6 @@ ekiga_main_window_class_init (EkigaMainWindowClass *klass)
                                                          (GParamFlags)
                                                          (G_PARAM_READWRITE |
                                                           G_PARAM_CONSTRUCT_ONLY)));
-
-  g_type_class_add_private (klass, sizeof (EkigaMainWindowPrivate));
 }
 
 static void
@@ -3826,78 +3817,75 @@ ekiga_main_window_connect_engine_signals (EkigaMainWindow *mw)
   sigc::connection conn;
 
   g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
-  g_return_if_fail (mw->priv->connections == NULL);
-
-  mw->priv->connections = new std::vector<sigc::connection>();
 
   /* New Display Engine signals */
   Ekiga::VideoOutputCore *videooutput_core = dynamic_cast<Ekiga::VideoOutputCore *> (mw->priv->core->get ("videooutput-core"));
 
   conn = videooutput_core->device_opened.connect (sigc::bind (sigc::ptr_fun (on_videooutput_device_opened_cb), (gpointer) mw));
-  mw->priv->connections->push_back (conn);
+  mw->priv->connections.push_back (conn);
 
   conn = videooutput_core->device_closed.connect (sigc::bind (sigc::ptr_fun (on_videooutput_device_closed_cb), (gpointer) mw));
-  mw->priv->connections->push_back (conn);
+  mw->priv->connections.push_back (conn);
 
   conn = videooutput_core->size_changed.connect (sigc::bind (sigc::ptr_fun (on_size_changed_cb), (gpointer) mw));
-  mw->priv->connections->push_back (conn);
+  mw->priv->connections.push_back (conn);
 
   conn = videooutput_core->fullscreen_mode_changed.connect (sigc::bind (sigc::ptr_fun (on_fullscreen_mode_changed_cb), (gpointer) mw));
-  mw->priv->connections->push_back (conn);
+  mw->priv->connections.push_back (conn);
 
   /* New VideoInput Engine signals */
   Ekiga::VideoInputCore *videoinput_core = dynamic_cast<Ekiga::VideoInputCore *> (mw->priv->core->get ("videoinput-core"));
 
   conn = videoinput_core->device_opened.connect (sigc::bind (sigc::ptr_fun (on_videoinput_device_opened_cb), (gpointer) mw));
-  mw->priv->connections->push_back (conn);
+  mw->priv->connections.push_back (conn);
 
   conn = videoinput_core->device_closed.connect (sigc::bind (sigc::ptr_fun (on_videoinput_device_closed_cb), (gpointer) mw));
-  mw->priv->connections->push_back (conn);
+  mw->priv->connections.push_back (conn);
 
   conn = videoinput_core->device_added.connect (sigc::bind (sigc::ptr_fun (on_videoinput_device_added_cb), (gpointer) mw));
-  mw->priv->connections->push_back (conn);
+  mw->priv->connections.push_back (conn);
 
   conn = videoinput_core->device_removed.connect (sigc::bind (sigc::ptr_fun (on_videoinput_device_removed_cb), (gpointer) mw));
-  mw->priv->connections->push_back (conn);
+  mw->priv->connections.push_back (conn);
 
   conn = videoinput_core->device_error.connect (sigc::bind (sigc::ptr_fun (on_videoinput_device_error_cb), (gpointer) mw));
-  mw->priv->connections->push_back (conn);
+  mw->priv->connections.push_back (conn);
 
   /* New AudioInput Engine signals */
   Ekiga::AudioInputCore *audioinput_core = dynamic_cast<Ekiga::AudioInputCore *> (mw->priv->core->get ("audioinput-core"));
 
   conn = audioinput_core->device_opened.connect (sigc::bind (sigc::ptr_fun (on_audioinput_device_opened_cb), (gpointer) mw));
-  mw->priv->connections->push_back (conn);
+  mw->priv->connections.push_back (conn);
 
   conn = audioinput_core->device_closed.connect (sigc::bind (sigc::ptr_fun (on_audioinput_device_closed_cb), (gpointer) mw));
-  mw->priv->connections->push_back (conn);
+  mw->priv->connections.push_back (conn);
 
   conn = audioinput_core->device_added.connect (sigc::bind (sigc::ptr_fun (on_audioinput_device_added_cb), (gpointer) mw));
-  mw->priv->connections->push_back (conn);
+  mw->priv->connections.push_back (conn);
 
   conn = audioinput_core->device_removed.connect (sigc::bind (sigc::ptr_fun (on_audioinput_device_removed_cb), (gpointer) mw));
-  mw->priv->connections->push_back (conn);
+  mw->priv->connections.push_back (conn);
 
   conn = audioinput_core->device_error.connect (sigc::bind (sigc::ptr_fun (on_audioinput_device_error_cb), (gpointer) mw));
-  mw->priv->connections->push_back (conn);
+  mw->priv->connections.push_back (conn);
 
   /* New AudioOutput Engine signals */
   Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (mw->priv->core->get ("audiooutput-core"));
 
   conn = audiooutput_core->device_opened.connect (sigc::bind (sigc::ptr_fun (on_audiooutput_device_opened_cb), (gpointer) mw));
-  mw->priv->connections->push_back (conn);
+  mw->priv->connections.push_back (conn);
 
   conn = audiooutput_core->device_closed.connect (sigc::bind (sigc::ptr_fun (on_audiooutput_device_closed_cb), (gpointer) mw));
-  mw->priv->connections->push_back (conn);
+  mw->priv->connections.push_back (conn);
 
   conn = audiooutput_core->device_added.connect (sigc::bind (sigc::ptr_fun (on_audiooutput_device_added_cb), (gpointer) mw));
-  mw->priv->connections->push_back (conn);
+  mw->priv->connections.push_back (conn);
 
   conn = audiooutput_core->device_removed.connect (sigc::bind (sigc::ptr_fun (on_audiooutput_device_removed_cb), (gpointer) mw));
-  mw->priv->connections->push_back (conn);
+  mw->priv->connections.push_back (conn);
 
   conn = audiooutput_core->device_error.connect (sigc::bind (sigc::ptr_fun (on_audiooutput_device_error_cb), (gpointer) mw));
-  mw->priv->connections->push_back (conn);
+  mw->priv->connections.push_back (conn);
     
   /* New Call Engine signals */
   Ekiga::CallCore *call_core = dynamic_cast<Ekiga::CallCore *> (mw->priv->core->get ("call-core"));
@@ -3905,46 +3893,46 @@ ekiga_main_window_connect_engine_signals (EkigaMainWindow *mw)
 
   /* Engine Signals callbacks */
   conn = account_core->registration_event.connect (sigc::bind (sigc::ptr_fun (on_registration_event), (gpointer) mw));
-  mw->priv->connections->push_back (conn);
+  mw->priv->connections.push_back (conn);
 
   conn = call_core->ready.connect (sigc::bind (sigc::ptr_fun (on_ready_cb), (gpointer) mw));
-  mw->priv->connections->push_back (conn);
+  mw->priv->connections.push_back (conn);
 
   conn = call_core->setup_call.connect (sigc::bind (sigc::ptr_fun (on_setup_call_cb), (gpointer) mw));
-  mw->priv->connections->push_back (conn);
+  mw->priv->connections.push_back (conn);
 
   conn = call_core->ringing_call.connect (sigc::bind (sigc::ptr_fun (on_ringing_call_cb), (gpointer) mw));
-  mw->priv->connections->push_back (conn);
+  mw->priv->connections.push_back (conn);
   
   conn = call_core->established_call.connect (sigc::bind (sigc::ptr_fun (on_established_call_cb), (gpointer) mw));
-  mw->priv->connections->push_back (conn);
+  mw->priv->connections.push_back (conn);
   
   conn = call_core->cleared_call.connect (sigc::bind (sigc::ptr_fun (on_cleared_call_cb), (gpointer) mw));
-  mw->priv->connections->push_back (conn);
+  mw->priv->connections.push_back (conn);
   
   conn = call_core->held_call.connect (sigc::bind (sigc::ptr_fun (on_held_call_cb), (gpointer) mw));
-  mw->priv->connections->push_back (conn);
+  mw->priv->connections.push_back (conn);
   
   conn = call_core->retrieved_call.connect (sigc::bind (sigc::ptr_fun (on_retrieved_call_cb), (gpointer) mw));
-  mw->priv->connections->push_back (conn);
+  mw->priv->connections.push_back (conn);
   
   conn = call_core->missed_call.connect (sigc::bind (sigc::ptr_fun (on_missed_call_cb), (gpointer) mw));
-  mw->priv->connections->push_back (conn);
+  mw->priv->connections.push_back (conn);
   
   conn = call_core->stream_opened.connect (sigc::bind (sigc::ptr_fun (on_stream_opened_cb), (gpointer) mw));
-  mw->priv->connections->push_back (conn);
+  mw->priv->connections.push_back (conn);
   
   conn = call_core->stream_closed.connect (sigc::bind (sigc::ptr_fun (on_stream_closed_cb), (gpointer) mw));
-  mw->priv->connections->push_back (conn);
+  mw->priv->connections.push_back (conn);
 
   conn = call_core->stream_paused.connect (sigc::bind (sigc::ptr_fun (on_stream_paused_cb), (gpointer) mw));
-  mw->priv->connections->push_back (conn);
+  mw->priv->connections.push_back (conn);
 
   conn = call_core->stream_resumed.connect (sigc::bind (sigc::ptr_fun (on_stream_resumed_cb), (gpointer) mw));
-  mw->priv->connections->push_back (conn);
+  mw->priv->connections.push_back (conn);
 
   conn = call_core->errors.add_handler (sigc::bind (sigc::ptr_fun (on_handle_errors), (gpointer) mw));
-  mw->priv->connections->push_back (conn);
+  mw->priv->connections.push_back (conn);
 }
 
 GtkWidget *

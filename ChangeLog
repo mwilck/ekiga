@@ -1,5 +1,11 @@
 2008-10-08  Steve Frécinaux  <code@istique.net>
 
+	* src/gui/main.cpp: Do not use the glib private struct stuff and
+	revert to using 'new' to allocate the private data structure since
+	the glib way is too much of a hassle with C++ constructs.
+
+2008-10-08  Steve Frécinaux  <code@istique.net>
+
 	* src/gui/main.cpp:
 	Fix crash with registered accounts.
 
