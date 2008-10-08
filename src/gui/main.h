@@ -85,14 +85,14 @@ void gm_main_window_press_dialpad (GtkWidget *main_window,
  * BEHAVIOR     :  Return the video widget in which we can display.
  * PRE          :  The main window GMObject.
  */
-GtkWidget *gm_main_window_get_video_widget (GtkWidget *main_window);
+GtkWidget *ekiga_main_window_get_video_widget (EkigaMainWindow *main_window);
 
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Displays the gnomemeeting logo in the video window.
  * PRE          :  The main window GMObject.
  */
-void gm_main_window_update_logo_have_window (GtkWidget *main_window);
+void ekiga_main_window_update_logo_have_window (EkigaMainWindow *main_window);
 
 
 /* DESCRIPTION  :  /
@@ -106,8 +106,8 @@ void gm_main_window_update_logo ();
  * 		   following the call is on hold (TRUE) or not (FALSE).
  * PRE          :  The main window GMObject.
  */
-void gm_main_window_set_call_hold (GtkWidget *main_window,
-                                   bool is_on_hold);
+void ekiga_main_window_set_call_hold (EkigaMainWindow *main_window,
+                                      bool is_on_hold);
 
 
 /* DESCRIPTION  :  /
@@ -117,9 +117,9 @@ void gm_main_window_set_call_hold (GtkWidget *main_window,
  * 		   item.
  * PRE          :  The main window GMObject.
  */
-void gm_main_window_set_channel_pause (GtkWidget *main_window,
-				       gboolean pause,
-				       gboolean is_video);
+void ekiga_main_window_set_channel_pause (EkigaMainWindow *main_window,
+					  gboolean pause,
+					  gboolean is_video);
 
 
 /* DESCRIPTION  :  /
@@ -138,8 +138,8 @@ void gm_main_window_set_channel_pause (GtkWidget *main_window,
  * PRE          :  The main window GMObject.
  * 		   A valid GMH323Endpoint calling state.
  */
-void gm_main_window_update_calling_state (GtkWidget *main_window,
-					  unsigned calling_state);
+void ekiga_main_window_update_calling_state (EkigaMainWindow *mw,
+					     unsigned calling_state);
 
 
 
@@ -149,7 +149,7 @@ void gm_main_window_update_calling_state (GtkWidget *main_window,
  * PRE          :  The main window GMObject.
  * 		   The first parameter is TRUE if we are busy.
  */
-void gm_main_window_set_busy (GtkWidget *main_window,
+void ekiga_main_window_set_busy (EkigaMainWindow *main_window,
 			      bool busy);
 
 
@@ -215,17 +215,9 @@ void gm_main_window_get_video_sliders_values (GtkWidget *main_window,
  * 		   and in the main window.
  * PRE          :  The main window GMObject and a valid section.
  */
-void gm_main_window_set_panel_section (GtkWidget *main_window,
-                                       int section);
+void ekiga_main_window_set_panel_section (EkigaMainWindow *main_window,
+                                          int section);
 
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Set the status for the main window.
- * PRE          :  The main window GMObject and a valid incoming call mode.
- */
-void gm_main_window_set_status (GtkWidget *main_window,
-                                std::string short_status,
-                                std::string long_status);
 
 
 /* DESCRIPTION  :  /
@@ -237,27 +229,27 @@ void gm_main_window_set_status (GtkWidget *main_window,
  * 		   the transmitted video codec,
  * 		   the received video codec(if any).
  */
-void gm_main_window_set_call_info (GtkWidget *main_window,
-				   const char *tr_audio_codec,
-				   const char *re_audio_codec,
-				   const char *tr_video_codec,
-				   const char *re_video_codec);
+void ekiga_main_window_set_call_info (EkigaMainWindow *main_window,
+				      const char *tr_audio_codec,
+				      const char *re_audio_codec,
+				      const char *tr_video_codec,
+				      const char *re_video_codec);
 
 
 /* DESCRIPTION   :  /
  * BEHAVIOR      : Sets the current call duration (as a string) in the GUI.
  * PRE           : The main window GMObject.
  */
-void gm_main_window_set_call_duration (GtkWidget *main_window,
-                                       const char *duration);
+void ekiga_main_window_set_call_duration (EkigaMainWindow *main_window,
+                                          const char *duration);
 
 
 /* DESCRIPTION   :  /
  * BEHAVIOR      : Sets the current status in the GUI.
  * PRE           : The main window GMObject.
  */
-void gm_main_window_set_status (GtkWidget *main_window,
-				const char *status);
+void ekiga_main_window_set_status (EkigaMainWindow *main_window,
+				   const char *status);
 
 
 /* DESCRIPTION  :  /
@@ -284,9 +276,9 @@ void gm_main_window_urls_history_update (GtkWidget *main_window);
  * PRE          :  The main window GMObject, the parent window, the URL
  * 		   to put in the dialog as default.
  */
-gboolean gm_main_window_transfer_dialog_run (GtkWidget *main_window,
-					     GtkWidget *parent_window,
-					     const char *u);
+gboolean ekiga_main_window_transfer_dialog_run (EkigaMainWindow *main_window,
+					        GtkWidget *parent_window,
+					        const char *u);
 
 
 /* DESCRIPTION  :  /
@@ -301,20 +293,9 @@ GtkWidget *gm_main_window_new (Ekiga::ServiceCore & core);
  *                 Removes the previous message.
  * PRE           : The main window GMObject, followed by printf syntax format.
  */
-void gm_main_window_flash_message (GtkWidget *main_window,
-				   const char *msg,
-				   ...) G_GNUC_PRINTF(2,3);
-
-
-/* DESCRIPTION   :  /
- * BEHAVIOR      : Displays a message on the statusbar indicating the number
- * 		   of missed calls and voice mails.
- * PRE           : The main window GMObject, followed by the number of missed
- * 		   calls and the number of voice mails.
- */
-void gm_main_window_push_message (GtkWidget *main_window,
-				  unsigned int missed,
-				  unsigned int mwi);
+void ekiga_main_window_flash_message (EkigaMainWindow *main_window,
+				      const char *msg,
+				      ...) G_GNUC_PRINTF(2,3);
 
 
 /* DESCRIPTION   :  /
@@ -322,9 +303,9 @@ void gm_main_window_push_message (GtkWidget *main_window,
  *                 Removes the previous message.
  * PRE           : The main window GMObject, followed by printf syntax format.
  */
-void gm_main_window_push_message (GtkWidget *main_window,
-				  const char *msg,
-				  ...) G_GNUC_PRINTF(2,3);
+void ekiga_main_window_push_message (EkigaMainWindow *main_window,
+				     const char *msg,
+				     ...) G_GNUC_PRINTF(2,3);
 
 
 /* DESCRIPTION   :  /
@@ -332,16 +313,16 @@ void gm_main_window_push_message (GtkWidget *main_window,
  * 		   is only cleared when the user clicks on it.
  * PRE           : The main window GMObject, followed by printf syntax format.
  */
-void gm_main_window_push_info_message (GtkWidget *main_window,
-				       const char *msg,
-				       ...) G_GNUC_PRINTF(2,3);
+void ekiga_main_window_push_info_message (EkigaMainWindow *main_window,
+					  const char *msg,
+					  ...) G_GNUC_PRINTF(2,3);
 
 /* DESCRIPTION   :  /
  * BEHAVIOR      : Sets the given URL as called URL.
  * PRE           : The main window GMObject.
  */
-void gm_main_window_set_call_url (GtkWidget *main_window,
-				  const char *url);
+void ekiga_main_window_set_call_url (EkigaMainWindow *mw,
+				     const char *url);
 
 
 /* DESCRIPTION   :  /
@@ -349,22 +330,22 @@ void gm_main_window_set_call_url (GtkWidget *main_window,
  * 		   current selection if any.
  * PRE           : The main window GMObject.
  */
-void gm_main_window_append_call_url (GtkWidget *main_window,
-				     const char *url);
+void ekiga_main_window_append_call_url (EkigaMainWindow *mw,
+					const char *url);
 
 
 /* DESCRIPTION   :  /
  * BEHAVIOR      : Returns the currently called URL in the URL bar.
  * PRE           : The main window GMObject.
  */
-const char *gm_main_window_get_call_url (GtkWidget *main_window);
+const char *ekiga_main_window_get_call_url (EkigaMainWindow *main_window);
 
 
 /* DESCRIPTION   :  /
  * BEHAVIOR      : Clears the stats area in the control panel. 
  * PRE           : The main window GMObject.
  */
-void gm_main_window_clear_stats (GtkWidget *main_window);
+void ekiga_main_window_clear_stats (EkigaMainWindow *main_window);
 
 
 /* DESCRIPTION   :  /
@@ -373,34 +354,30 @@ void gm_main_window_clear_stats (GtkWidget *main_window);
  * 		   video bytes received, transmitted, audio bytes received,
  * 		   transmitted. All >= 0.
  */
-void gm_main_window_update_stats (GtkWidget *main_window,
-				  float lost,
-				  float late,
-				  float out_of_order,
-				  int jitter,
-				  float new_video_octets_received,
-				  float new_video_octets_transmitted,
-				  float new_audio_octets_received,
-				  float new_audio_octets_transmitted,
-				  unsigned int re_width,
-				  unsigned int re_height,
-				  unsigned int tr_width,
-				  unsigned int tr_height);
+void ekiga_main_window_update_stats (EkigaMainWindow *main_window,
+				     float lost,
+				     float late,
+				     float out_of_order,
+				     int jitter,
+				     unsigned int re_width,
+				     unsigned int re_height,
+				     unsigned int tr_width,
+				     unsigned int tr_height);
 
 
 /* DESCRIPTION   :  /
  * BEHAVIOR      : Returns the currently displayed picture as a pixbuf.
  * PRE           : The main window GMObject.
  */
-GdkPixbuf *gm_main_window_get_current_picture (GtkWidget *main_window);
+GdkPixbuf *ekiga_main_window_get_current_picture (EkigaMainWindow *main_window);
 
 
 /* DESCRIPTION   :  /
  * BEHAVIOR      : Returns the currently displayed picture as a pixbuf.
  * PRE           : The main window GMObject.
  */
-void gm_main_window_set_stay_on_top (GtkWidget *main_window,
-				     gboolean stay_on_top);
+void ekiga_main_window_set_stay_on_top (EkigaMainWindow *mw,
+				        gboolean stay_on_top);
 
 
 /* DESCRIPTION  :  /
@@ -414,10 +391,10 @@ void gm_main_window_set_stay_on_top (GtkWidget *main_window,
  *                 if we are transmitting audio (or video), the third is TRUE
  *                 if we are receiving audio (or video).
  */
-void gm_main_window_update_sensitivity (GtkWidget *main_window,
-					bool is_video,
-					bool is_receiving,
-					bool is_transmitting);
+void ekiga_main_window_update_sensitivity (EkigaMainWindow *main_window,
+					   bool is_video,
+					   bool is_receiving,
+					   bool is_transmitting);
 
 
 /* DESCRIPTION   :  /

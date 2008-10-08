@@ -144,7 +144,7 @@ stay_on_top_changed_nt (G_GNUC_UNUSED gpointer id,
 
     val = gm_conf_entry_get_bool (entry);
 
-    gm_main_window_set_stay_on_top (GTK_WIDGET (data), val);
+    ekiga_main_window_set_stay_on_top (EKIGA_MAIN_WINDOW (data), val);
 
     //gdk_threads_leave ();
   }
