@@ -672,8 +672,8 @@ static void on_cleared_call_cb (Ekiga::CallManager & /*manager*/,
   if (!gm_conf_get_bool (USER_INTERFACE_KEY "main_window/show_call_panel"))
     ekiga_main_window_hide_call_panel (mw);
   ekiga_main_window_clear_stats (mw);
-  ekiga_main_window_update_logo_have_window (mw);
   ekiga_main_window_push_message (mw, "%s", reason.c_str ());
+  ekiga_main_window_update_logo_have_window (mw);
 
   if (mw->priv->current_call && mw->priv->current_call->get_id () == call.get_id ()) {
 
@@ -952,25 +952,61 @@ on_fullscreen_mode_changed_cb (Ekiga::VideoOutputManager & /* manager */, Ekiga:
   gm_main_window_toggle_fullscreen (toggle, GTK_WIDGET (self));
 }
 
-void 
-on_size_changed_cb (Ekiga::VideoOutputManager & /* manager */, unsigned width, unsigned height,  gpointer self)
+static void
+ekiga_main_window_set_video_size (EkigaMainWindow *mw, int width, int height)
+{
+  int pw, ph;
+  GtkWidget *panel;
+
+  g_return_if_fail (width > 0 && height > 0);
+
+  gtk_widget_get_size_request (mw->priv->main_video_image, &pw, &ph);
+
+  /* No size requisition yet
+   * It's our first call so we silently set the new requisition and exit...
+   */
+  if (pw == -1) {
+    gtk_widget_set_size_request (mw->priv->main_video_image, width, height);
+    return;
+  }
+
+  /* Do some kind of filtering here. We often get duplicate "size-changed" events...
+   * Note that we currently only bother about the width of the video.
+   */
+  if (pw == width)
+    return;
+
+  panel = gtk_paned_get_child2 (GTK_PANED (mw->priv->hpaned));
+  if (GTK_WIDGET_VISIBLE (panel)) {
+    int x, y;
+    int rw, pos;
+    GtkRequisition req;
+
+    gtk_window_get_size (GTK_WINDOW (mw), &x, &y);
+    pos = gtk_paned_get_position (GTK_PANED (mw->priv->hpaned));
+
+    rw = x - panel->allocation.width;
+
+    gtk_widget_set_size_request (mw->priv->main_video_image, width, height);
+    gtk_widget_size_request (panel, &req);
+
+    gtk_window_resize (GTK_WINDOW (mw), rw + req.width, y);
+    gtk_paned_set_position (GTK_PANED (mw->priv->hpaned), pos);
+  }
+  else {
+    gtk_widget_set_size_request (mw->priv->main_video_image, width, height);
+  }
+
+  gdk_window_invalidate_rect (GTK_WIDGET (mw)->window,
+                              &(GTK_WIDGET (mw)->allocation), TRUE);
+}
+
+static void 
+on_size_changed_cb (Ekiga::VideoOutputManager & /* manager */, unsigned width, unsigned height, gpointer self)
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
-  GtkRequisition req;
-  int x, y;
 
-  gtk_widget_size_request (mw->priv->main_video_image, &req);
-  gtk_window_get_size (GTK_WINDOW (mw), &x, &y);
-  gtk_widget_set_size_request (mw->priv->main_video_image, width, height);
-  gtk_window_resize (GTK_WINDOW (mw), width, height);
-  
-  GdkRectangle rect;
-  rect.x = mw->priv->main_video_image->allocation.x;
-  rect.y = mw->priv->main_video_image->allocation.y;
-  rect.width = mw->priv->main_video_image->allocation.width;
-  rect.height = mw->priv->main_video_image->allocation.height;
-
-  gdk_window_invalidate_rect (GTK_WIDGET (mw)->window, &rect, TRUE);
+  ekiga_main_window_set_video_size (EKIGA_MAIN_WINDOW (mw), width, height);
 }
 
 void
@@ -2176,16 +2212,7 @@ ekiga_main_window_update_logo_have_window (EkigaMainWindow *mw)
 		"pixel-size", 72,
 		NULL);
   
-  gtk_widget_set_size_request (GTK_WIDGET (mw->priv->main_video_image),
-                               GM_QCIF_WIDTH, GM_QCIF_HEIGHT);
-
-  GdkRectangle rect;
-  rect.x = mw->priv->main_video_image->allocation.x;
-  rect.y = mw->priv->main_video_image->allocation.y;
-  rect.width = mw->priv->main_video_image->allocation.width;
-  rect.height = mw->priv->main_video_image->allocation.height;
-
-  gdk_window_invalidate_rect (GTK_WIDGET (mw)->window, &rect , TRUE);
+  ekiga_main_window_set_video_size (mw, GM_QCIF_WIDTH, GM_QCIF_HEIGHT);
 }
 
 
@@ -2419,26 +2446,27 @@ gm_main_window_toggle_fullscreen (Ekiga::VideoOutputFSToggle toggle,
 static void 
 ekiga_main_window_show_call_panel (EkigaMainWindow *mw)
 {
+  int x, y = 0;
   GtkWidget *call_panel = gtk_paned_get_child2 (GTK_PANED (mw->priv->hpaned));
-  if (!GTK_WIDGET_VISIBLE (call_panel))
+
+  if (!GTK_WIDGET_VISIBLE (call_panel)) {
+    gtk_window_get_size (GTK_WINDOW (mw), &x, &y);
     gtk_widget_show_all (call_panel);
+    gtk_window_resize (GTK_WINDOW (mw), x + call_panel->allocation.width, y);
+  }
 }
 
 
 static void 
 ekiga_main_window_hide_call_panel (EkigaMainWindow *mw)
 {
-  GtkRequisition req;
   int x, y = 0;
-
   GtkWidget *call_panel = gtk_paned_get_child2 (GTK_PANED (mw->priv->hpaned));
 
   if (GTK_WIDGET_VISIBLE (call_panel)) {
-
-    gtk_widget_size_request (call_panel, &req);
     gtk_window_get_size (GTK_WINDOW (mw), &x, &y);
     gtk_widget_hide (call_panel);
-    x = x - req.width;
+    x = x - call_panel->allocation.width;
     gtk_window_resize (GTK_WINDOW (mw), x, y);
   }
 }
@@ -3412,7 +3440,7 @@ ekiga_main_window_init_call_panel (EkigaMainWindow *mw)
                     (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
                     (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
                     0, 0);
-  
+ 
   /* The toolbar */
   toolbar = gtk_toolbar_new ();
   gtk_widget_modify_bg (toolbar, GTK_STATE_PRELIGHT, &white);
