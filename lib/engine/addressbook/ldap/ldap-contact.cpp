@@ -30,6 +30,7 @@
  *                         ldap-contact.cpp  -  description
  *                         ------------------------------------------
  *   begin                : written in 2007 by Julien Puydt
+ *                        : completed in 2008 by Howard Chu
  *   copyright            : (c) 2007 by Julien Puydt
  *   description          : implementation of a LDAP contact
  *
@@ -38,12 +39,12 @@
 #include <iostream>
 
 #include "ldap-contact.h"
-
+#include "menu-builder-tools.h"
 
 OPENLDAP::Contact::Contact (Ekiga::ServiceCore &_core,
 			    const std::string _name,
-			    const std::string _uri)
-  : core(_core), name(_name), uri(_uri)
+			    const std::map<std::string, std::string> _uris)
+  : core(_core), name(_name), uris(_uris)
 {
 }
 
@@ -73,7 +74,20 @@ OPENLDAP::Contact::populate_menu (Ekiga::MenuBuilder &builder)
    * (before or after the uri-specific actions)
    */
 
-  return contact_core->populate_contact_menu (*this, uri, builder);
+  Ekiga::TemporaryMenuBuilder tmp_builder;
+
+  bool result = false;
+  for (std::map<std::string, std::string>::const_iterator iter
+    = uris.begin ();
+    iter != uris.end ();
+    iter++) {
+      if (contact_core->populate_contact_menu (*this, iter->second, tmp_builder)) {
+	  builder.add_ghost ("", iter->first);
+	  tmp_builder.populate_menu (builder);
+	  result = true;
+    }
+  }
+  return result;
 }
 
 bool

@@ -40,6 +40,8 @@
 #include "ldap-main.h"
 #include "ldap-source.h"
 
+#include <sasl/sasl.h>
+
 bool
 ldap_init (Ekiga::ServiceCore &core,
 	   int */*argc*/,
@@ -56,6 +58,7 @@ ldap_init (Ekiga::ServiceCore &core,
     service = new OPENLDAP::Source (core);
     core.add (*service);
     contact_core->add_source (*service);
+    sasl_client_init (NULL);
     result = true;
   }
 

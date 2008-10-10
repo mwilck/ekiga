@@ -30,6 +30,7 @@
  *                         ldap-book.cpp  -  description
  *                         ------------------------------------------
  *   begin                : written in 2007 by Julien Puydt
+ *                        : completed in 2008 by Howard Chu
  *   copyright            : (c) 2007 by Julien Puydt
  *   description          : implementation of a LDAP book
  *
@@ -42,13 +43,13 @@
 #include <sys/time.h>
 #include <string.h>
 
-#include <ldap.h>
 #include <glib.h>
 
 #include "config.h"
 
+#include <sasl/sasl.h>
+
 #include "ldap-book.h"
-#include "form-request-simple.h"
 #include "robust-xml.h"
 
 /* little helper function... can probably be made more complete */
@@ -73,54 +74,51 @@ fix_to_utf8 (const std::string str)
 }
 
 /* parses a message to construct a nice contact */
-static OPENLDAP::Contact *
-parse_result (Ekiga::ServiceCore &core,
-	      struct ldap *context,
+OPENLDAP::Contact *
+OPENLDAP::Book::parse_result (
 	      LDAPMessage *message)
 {
   OPENLDAP::Contact *result = NULL;
   BerElement *ber = NULL;
-  char *attribute = NULL;
-  struct berval **values = NULL;
-  std::string name;
-  std::string call_address;
+  struct berval bv, *bvals;
+  std::string username;
+  std::map<std::string, std::string> call_addresses;
+  char **attributes = bookinfo.urld->lud_attrs;
+  int i, rc;
 
-  attribute = ldap_first_attribute (context, message, &ber);
+  /* skip past entry DN */
+  rc = ldap_get_dn_ber (ldap_context, message, &ber, &bv);
 
-  while (attribute != NULL) {
-
-    if (strncmp("givenName",attribute, 9) == 0) {
-
-      values = ldap_get_values_len (context, message, attribute);
-      if (values[0] != NULL) {
-	name = std::string (values[0]->bv_val, values[0]->bv_len);
-        ldap_value_free_len (values);
+  while (rc == LDAP_SUCCESS) {
+    rc = ldap_get_attribute_ber (ldap_context, message, ber, &bv, &bvals);
+    if (bv.bv_val == NULL) break;
+    if (!strcasecmp(bv.bv_val, attributes[0])) {
+      username = std::string (bvals[0].bv_val, bvals[0].bv_len);
+    } else {
+      for (i=1; attributes[i]; i++) {
+        if (!strcasecmp(bv.bv_val,attributes[i]) && bvals && bvals[0].bv_val ) {
+	  call_addresses[attributes[i]] =
+	    /* FIXME: next line is annoying */
+	  	std::string ("sip:") +
+		  std::string (bvals[0].bv_val, bvals[0].bv_len);
+        }
       }
     }
-    if (strncmp ("telephoneNumber", attribute, 15) == 0) {
-
-      values = ldap_get_values_len (context, message, attribute);
-      if (values[0] != NULL) {
-	call_address = std::string (values[0]->bv_val, values[0]->bv_len);
-        ldap_value_free_len (values);
-      }
+    if (bvals) ber_memfree(bvals);
     }
-    ldap_memfree (attribute);
-    attribute = ldap_next_attribute (context, message, ber);
-  }
+
   ber_free (ber, 0);
 
-  if (!name.empty () && !call_address.empty ()) {
+  if (!username.empty () && !call_addresses.empty()) {
 
-    result = new OPENLDAP::Contact (core, fix_to_utf8 (name),
-				    /* FIXME: next line is annoying */
-				    std::string ("sip:") + call_address);
+    result = new OPENLDAP::Contact (core, fix_to_utf8 (username), call_addresses);
   }
 
   return result;
 }
 
 
+#if 0  /* seems to be unused / unneeded */
 /* this allows us to do the refreshing in a thread: we put all needed
  * data in this structure, let everything happen elsewhere, then push back
  * into the main thread
@@ -130,17 +128,17 @@ struct RefreshData
 
   RefreshData (Ekiga::ServiceCore &_core,
 	       const std::string _name,
-	       const std::string _hostname,
-	       int _port,
+	       const std::string _uri,
 	       const std::string _base,
 	       const std::string _scope,
 	       const std::string _call_attribute,
+	       const std::string _authcID,
 	       const std::string _password,
 	       const std::string _search_string,
 	       sigc::slot<void, std::vector<OPENLDAP::Contact *> > _publish_results):
-    core(_core), name(_name), hostname(_hostname), port(_port),
+    core(_core), name(_name), uri(_uri),
     base(_base), scope(_scope), call_attribute(_call_attribute),
-    password(_password), search_string(_search_string),
+    authcID(_authcID), password(_password), search_string(_search_string),
     error(false), publish_results (_publish_results)
   {
   }
@@ -148,11 +146,11 @@ struct RefreshData
   /* search data */
   Ekiga::ServiceCore &core;
   std::string name;
-  std::string hostname;
-  int port;
+  std::string uri;
   std::string base;
   std::string scope;
   std::string call_attribute;
+  std::string authcID;
   std::string password;
   std::string search_string;
 
@@ -164,19 +162,35 @@ struct RefreshData
   /* callback */
   sigc::slot<void, std::vector<OPENLDAP::Contact *> > publish_results;
 };
+#endif
 
 /* actual implementation */
 
 OPENLDAP::Book::Book (Ekiga::ServiceCore &_core,
 		      xmlNodePtr _node):
-  core(_core), node(_node), name_node(NULL), hostname_node(NULL),
-  port_node(NULL), base_node(NULL), scope_node(NULL), call_attribute_node(NULL),
-  password_node(NULL), ldap_context(NULL), patience(0),
+  saslform(NULL), core(_core), node(_node),
+  name_node(NULL), uri_node(NULL), authcID_node(NULL), password_node(NULL),
+  ldap_context(NULL), patience(0),
   runtime (*(dynamic_cast<Ekiga::Runtime *>(core.get ("runtime"))))
 {
   xmlChar *xml_str;
+  bool upgrade_config = false;
+
+  /* for previous config */
+  std::string hostname="", port="", base="", scope="", call_attribute="";
+  xmlNodePtr hostname_node = NULL, port_node = NULL, base_node = NULL,
+    scope_node = NULL, call_attribute_node = NULL;
 
   contact_core = dynamic_cast<Ekiga::ContactCore *>(core.get ("contact-core"));
+
+  bookinfo.name = "";
+  bookinfo.uri = "";
+  bookinfo.authcID = "";
+  bookinfo.password = "";
+  bookinfo.saslMech = "";
+  bookinfo.urld = NULL;
+  bookinfo.sasl = false;
+  bookinfo.starttls = false;
 
   for (xmlNodePtr child = node->children ;
        child != NULL;
@@ -188,9 +202,19 @@ OPENLDAP::Book::Book (Ekiga::ServiceCore &_core,
       if (xmlStrEqual (BAD_CAST ("name"), child->name)) {
 
 	xml_str = xmlNodeGetContent (child);
-	name = (const char *)xml_str;
-	name_node = child;
+	bookinfo.name = (const char *)xml_str;
 	xmlFree (xml_str);
+	name_node = child;
+	continue;
+      }
+
+      if (xmlStrEqual (BAD_CAST ("uri"), child->name)) {
+
+	xml_str = xmlNodeGetContent (child);
+	bookinfo.uri = (const char *)xml_str;
+	xmlFree (xml_str);
+	uri_node = child;
+	continue;
       }
 
       if (xmlStrEqual (BAD_CAST ("hostname"), child->name)) {
@@ -199,14 +223,17 @@ OPENLDAP::Book::Book (Ekiga::ServiceCore &_core,
 	hostname = (const char *)xml_str;
 	hostname_node = child;
 	xmlFree (xml_str);
+	upgrade_config = true;
+	continue;
       }
-
       if (xmlStrEqual (BAD_CAST ("port"), child->name)) {
 
 	xml_str = xmlNodeGetContent (child);
-	port = std::atoi ((const char *)xml_str);
+	port = (const char *)xml_str;
 	port_node = child;
 	xmlFree (xml_str);
+	upgrade_config = true;
+	continue;
       }
 
       if (xmlStrEqual (BAD_CAST ("base"), child->name)) {
@@ -215,6 +242,8 @@ OPENLDAP::Book::Book (Ekiga::ServiceCore &_core,
 	base = (const char *)xml_str;
 	base_node = child;
 	xmlFree (xml_str);
+	upgrade_config = true;
+	continue;
       }
 
       if (xmlStrEqual (BAD_CAST ("scope"), child->name)) {
@@ -223,6 +252,8 @@ OPENLDAP::Book::Book (Ekiga::ServiceCore &_core,
 	scope = (const char *)xml_str;
 	scope_node = child;
 	xmlFree (xml_str);
+	upgrade_config = true;
+	continue;
       }
 
       if (xmlStrEqual (BAD_CAST ("call_attribute"), child->name)) {
@@ -231,87 +262,146 @@ OPENLDAP::Book::Book (Ekiga::ServiceCore &_core,
 	call_attribute = (const char *)xml_str;
 	call_attribute_node = child;
 	xmlFree (xml_str);
+	upgrade_config = true;
+	continue;
+      }
+
+      if (xmlStrEqual (BAD_CAST ("authcID"), child->name)) {
+
+	xml_str = xmlNodeGetContent (child);
+	bookinfo.authcID = (const char *)xml_str;
+	authcID_node = child;
+	xmlFree (xml_str);
+	continue;
       }
 
       if (xmlStrEqual (BAD_CAST ("password"), child->name)) {
 
 	xml_str = xmlNodeGetContent (child);
-	password = (const char *)xml_str;
+	bookinfo.password = (const char *)xml_str;
 	password_node = child;
 	xmlFree (xml_str);
+	continue;
       }
     }
   }
+  if (upgrade_config) {
+    if (!uri_node) {
+      LDAPURLDesc *url_tmp = NULL;
+      char *url_str;
+      std::string new_uri;
+      if (hostname.empty())
+        hostname="localhost";
+      new_uri = std::string("ldap://") + hostname;
+      if (!port.empty())
+        new_uri += std::string(":") + port;
+      new_uri += "/?" + call_attribute + "?" +
+        scope;
+      ldap_url_parse (new_uri.c_str(), &url_tmp);
+      url_tmp->lud_dn = (char *)base.c_str();
+      url_str = ldap_url_desc2str (url_tmp);
+      bookinfo.uri = std::string(url_str);
+      ldap_memfree (url_str);
+      robust_xmlNodeSetContent (node, &uri_node, "uri", bookinfo.uri);
+      url_tmp->lud_dn = NULL;
+      ldap_free_urldesc (url_tmp);
+    }
+    if (hostname_node) {
+	xmlUnlinkNode (hostname_node);
+        xmlFreeNode (hostname_node);
+    }
+    if (port_node) {
+	xmlUnlinkNode (port_node);
+        xmlFreeNode (port_node);
+    }
+    if (base_node) {
+	xmlUnlinkNode (base_node);
+        xmlFreeNode (base_node);
+    }
+    if (scope_node) {
+	xmlUnlinkNode (scope_node);
+        xmlFreeNode (scope_node);
+    }
+    if (call_attribute_node) {
+	xmlUnlinkNode (call_attribute_node);
+        xmlFreeNode (call_attribute_node);
+    }
+    trigger_saving.emit ();
+  }
+  OPENLDAP::BookInfoParse (bookinfo);
 }
 
 OPENLDAP::Book::Book (Ekiga::ServiceCore &_core,
-		      const std::string _name,
-		      const std::string _hostname,
-		      int _port,
-		      const std::string _base,
-		      const std::string _scope,
-		      const std::string _call_attribute,
-		      const std::string _password):
-  core(_core), name(_name), name_node(NULL),
-  hostname(_hostname), hostname_node(NULL), port(_port), port_node(NULL),
-  base(_base), base_node(NULL), scope(_scope), scope_node(NULL),
-  call_attribute(_call_attribute), call_attribute_node(NULL),
-  password (_password), password_node(NULL), ldap_context(NULL), patience(0),
+		      OPENLDAP::BookInfo _bookinfo):
+  saslform(NULL), core(_core), name_node(NULL),
+  uri_node(NULL), authcID_node(NULL), password_node(NULL),
+  ldap_context(NULL), patience(0),
   runtime (*(dynamic_cast<Ekiga::Runtime *>(core.get ("runtime"))))
 {
   contact_core = dynamic_cast<Ekiga::ContactCore *>(core.get ("contact-core"));
 
   node = xmlNewNode (NULL, BAD_CAST "server");
 
+  bookinfo = _bookinfo;
+
   name_node = xmlNewChild (node, NULL,
 			   BAD_CAST "name",
 			   BAD_CAST robust_xmlEscape (node->doc,
-						      name).c_str ());
+						      bookinfo.name).c_str ());
 
-  hostname_node = xmlNewChild (node, NULL,
-			       BAD_CAST "hostname",
+  uri_node = xmlNewChild (node, NULL,
+			       BAD_CAST "uri",
 			       BAD_CAST robust_xmlEscape (node->doc,
-							  hostname).c_str ());
+							  bookinfo.uri).c_str ());
 
-  { // Snark hates C++ -- and there isn't only a reason for it -- but many
-    std::stringstream strm;
-    std::string port_string;
-    strm << port;
-    strm >> port_string;
-    port_node = xmlNewChild (node, NULL,
-			     BAD_CAST "port",
-			     BAD_CAST port_string.c_str ());
-  }
-
-  base_node = xmlNewChild (node, NULL,
-			   BAD_CAST "base",
-			   BAD_CAST robust_xmlEscape (node->doc,
-						      base).c_str ());
-
-  scope_node = xmlNewChild (node, NULL,
-			    BAD_CAST "scope",
-			    BAD_CAST robust_xmlEscape (node->doc,
-						       scope).c_str ());
-
-  call_attribute_node = xmlNewChild (node, NULL,
-				     BAD_CAST "call_attribute",
-				     BAD_CAST robust_xmlEscape (node->doc,
-								call_attribute).c_str ());
+  authcID_node = xmlNewChild (node, NULL,
+			       BAD_CAST "authcID",
+			       BAD_CAST robust_xmlEscape (node->doc,
+			       		bookinfo.authcID).c_str ());
 
   password_node = xmlNewChild (node, NULL,
 			       BAD_CAST "password",
 			       BAD_CAST robust_xmlEscape (node->doc,
-							  password).c_str ());
+							  bookinfo.password).c_str ());
+  OPENLDAP::BookInfoParse (bookinfo);
 }
 
 OPENLDAP::Book::~Book ()
 {
+  if (bookinfo.urld) ldap_free_urldesc(bookinfo.urld);
+}
+
+void
+OPENLDAP::BookInfoParse (struct BookInfo &info)
+{
+  LDAPURLDesc *url_tmp;
+  std::string uri;
+  size_t pos;
+
+  ldap_url_parse (info.uri.c_str(), &url_tmp);
+  if (url_tmp->lud_exts) {
+    for (int i=0; url_tmp->lud_exts[i]; i++) {
+      if (!strcasecmp(url_tmp->lud_exts[i], "StartTLS")) {
+        info.starttls = true;
+      } else if (!strncasecmp(url_tmp->lud_exts[i], "SASL", 4)) {
+        info.sasl = true;
+	if (url_tmp->lud_exts[i][4] == '=')
+	  info.saslMech = std::string(url_tmp->lud_exts[i]+5);
+      }
+    }
+  }
+  info.urld = url_tmp;
+  pos = info.uri.find ('/', strlen(info.urld->lud_scheme) + 3);
+  if (pos != std::string::npos)
+    info.uri_host = info.uri.substr (0,pos);
+  else
+    info.uri_host = info.uri;
 }
 
 const std::string
 OPENLDAP::Book::get_name () const
 {
-  return name;
+  return bookinfo.name;
 }
 
 bool
@@ -374,19 +464,195 @@ OPENLDAP::Book::get_node ()
 }
 
 void
+OPENLDAP::Book::on_sasl_form_submitted (Ekiga::Form &result)
+{
+  result.visit (*saslform);
+}
+
+extern "C" {
+
+typedef struct interctx {
+  OPENLDAP::Book *book;
+  std::string authcID;
+  std::string password;
+  std::list<std::string> results;
+} interctx;
+
+static int
+book_saslinter(LDAP *ld, unsigned flags __attribute__((unused)),
+  void *def, void *inter)
+{
+  sasl_interact_t *in = (sasl_interact_t *)inter;
+  interctx *ctx = (interctx *)def;
+  struct berval p;
+  int i, nprompts = 0;
+
+  /* Fill in the prompts we have info for; count
+   * how many we're missing.
+   */
+  for (;in->id != SASL_CB_LIST_END;in++)
+  {
+    p.bv_val = NULL;
+    switch(in->id)
+    {
+      case SASL_CB_GETREALM:
+        ldap_get_option(ld, LDAP_OPT_X_SASL_REALM, &p.bv_val);
+        if (p.bv_val) p.bv_len = strlen(p.bv_val);
+        break;
+      case SASL_CB_AUTHNAME:
+	p.bv_len = ctx->authcID.length();
+	if (p.bv_len)
+          p.bv_val = (char *)ctx->authcID.c_str();
+        break;
+      case SASL_CB_USER:
+        /* If there was a default authcID, just ignore the authzID */
+        if (ctx->authcID.length()) {
+	  p.bv_val = (char *)"";
+	  p.bv_len = 0;
+	}
+	break;
+      case SASL_CB_PASS:
+	p.bv_len = ctx->password.length();
+	if (p.bv_len)
+          p.bv_val = (char *)ctx->password.c_str();
+        break;
+      default:
+        break;
+    }
+    if (p.bv_val)
+    {
+      in->result = p.bv_val;
+      in->len = p.bv_len;
+    } else
+    {
+      nprompts++;
+      in->result = NULL;
+    }
+  }
+
+  /* If there are missing items, try to get them all in one dialog */
+  if (nprompts) {
+    Ekiga::FormRequestSimple request;
+    Ekiga::FormBuilder result;
+    std::string prompt;
+    std::string ctxt = "";
+    char resbuf[32];
+
+    request.title (_("LDAP SASL Interaction"));
+
+    for (i=0, in = (sasl_interact_t *)inter;
+      in->id != SASL_CB_LIST_END;in++)
+    {
+      bool noecho = false, challenge = false;
+
+      if (in->result) continue;
+
+      /* Give each dialog item a unique name */
+      sprintf(resbuf, "res%02x", i);
+      i++;
+
+      /* Check for prompts that need special handling */
+      switch(in->id)
+      {
+      case SASL_CB_PASS:
+        noecho = true;
+	break;
+      case SASL_CB_NOECHOPROMPT:
+        noecho = true;
+        challenge = true;
+	break;
+      case SASL_CB_ECHOPROMPT:
+        challenge = true;
+	break;
+      default:
+        break;
+      }
+
+      /* accumulate any challenge strings */
+      if (challenge && in->challenge) {
+        ctxt += std::string (_("Challenge: ")) +
+	  std::string (in->challenge) +"\n";
+      }
+
+      /* use the provided prompt text, or our default? */
+      if (in->prompt)
+        prompt = std::string (in->prompt);
+      else
+        prompt = std::string (_("Interact"));
+
+      /* private text or not? */
+      if (noecho) {
+        request.private_text (std::string (resbuf), prompt, "");
+      } else {
+        std::string dflt;
+	if (in->defresult)
+	  dflt = std::string (in->defresult);
+	else
+	  dflt = "";
+	request.text (std::string(resbuf), prompt, dflt);
+      }
+    }
+
+    /* If we had any challenge text, set it now */
+    if (!ctxt.empty())
+      request.instructions (ctxt);
+
+    /* Save a pointer for storing the form result */
+    ctx->book->saslform = &result;
+    request.submitted.connect (sigc::mem_fun (ctx->book,
+					    &OPENLDAP::Book::on_sasl_form_submitted));
+    if (!ctx->book->questions.handle_request (&request)) {
+      return LDAP_LOCAL_ERROR;
+    }
+
+    /* Extract answers from the result form */
+    for (i=0, in = (sasl_interact_t *)inter;
+      in->id != SASL_CB_LIST_END;in++)
+    {
+      bool noecho = false;
+
+      if (in->result) continue;
+
+      sprintf(resbuf, "res%02x", i);
+      i++;
+      switch(in->id)
+      {
+      case SASL_CB_PASS:
+      case SASL_CB_NOECHOPROMPT:
+        noecho = true;
+	break;
+      default:
+        break;
+      }
+      if (noecho)
+        prompt = result.private_text (std::string (resbuf));
+      else
+        prompt = result.text (std::string (resbuf));
+
+      /* Save the answers so they don't disappear before our
+       * caller can see them; return the saved copies.
+       */
+      ctx->results.push_back (prompt);
+      in->result = ctx->results.back().c_str();
+      in->len = ctx->results.back().length();
+    }
+  }
+  return LDAP_SUCCESS;
+}
+
+} /* extern "C" */
+
+void
 OPENLDAP::Book::refresh_start ()
 {
   int msgid = -1;
   int result = LDAP_SUCCESS;
   int ldap_version = LDAP_VERSION3;
-  char *ldap_uri = NULL;
 
   status = std::string (_("Refreshing"));
   updated.emit ();
 
-  ldap_uri = g_strdup_printf ("ldap://%s:%d", hostname.c_str (), port);
-  result = ldap_initialize (&ldap_context, ldap_uri);
-  g_free (ldap_uri);
+  result = ldap_initialize (&ldap_context, bookinfo.uri_host.c_str());
   if (result != LDAP_SUCCESS) {
 
     status = std::string (_("Could not initialize server"));
@@ -400,29 +666,56 @@ OPENLDAP::Book::refresh_start ()
   (void)ldap_set_option (ldap_context,
 			 LDAP_OPT_PROTOCOL_VERSION, &ldap_version);
 
-  if (password.empty ()) {
+  if (bookinfo.starttls) {
+    result = ldap_start_tls_s (ldap_context, NULL, NULL);
+    if (result != LDAP_SUCCESS) {
+      status = std::string (_("LDAP Error: ")) +
+        std::string (ldap_err2string (result));
+      updated.emit ();
+      ldap_unbind_ext (ldap_context, NULL, NULL);
+      ldap_context = NULL;
+      return;
+    }
+  }
 
-    result = ldap_sasl_bind (ldap_context, NULL,
-			     LDAP_SASL_SIMPLE, NULL,
-			     NULL, NULL,
-			     &msgid);
+  if (bookinfo.sasl) {
+    interctx ctx;
+    
+    ctx.book = this;
+    ctx.authcID = bookinfo.authcID;
+    ctx.password = bookinfo.password;
+    result = ldap_sasl_interactive_bind_s (ldap_context, NULL,
+      bookinfo.saslMech.c_str(), NULL, NULL, LDAP_SASL_QUIET,
+      book_saslinter, &ctx);
+
   } else {
+    /* Simple Bind */
+    if (bookinfo.password.empty ()) {
+      struct berval bv={0,NULL};
 
-    struct berval passwd = { 0, NULL };
-    passwd.bv_val = g_strdup (password.c_str ());
-    passwd.bv_len = strlen (password.c_str ());
+      result = ldap_sasl_bind (ldap_context, NULL,
+			       LDAP_SASL_SIMPLE, &bv,
+			       NULL, NULL,
+			       &msgid);
+    } else {
 
-    result = ldap_sasl_bind (ldap_context, NULL,
-			     LDAP_SASL_SIMPLE, &passwd,
-			     NULL, NULL,
-			     &msgid);
+      struct berval passwd = { 0, NULL };
+      passwd.bv_val = g_strdup (bookinfo.password.c_str ());
+      passwd.bv_len = bookinfo.password.length();
 
-    g_free (passwd.bv_val);
+      result = ldap_sasl_bind (ldap_context, bookinfo.authcID.c_str(),
+			       LDAP_SASL_SIMPLE, &passwd,
+			       NULL, NULL,
+			       &msgid);
+
+      g_free (passwd.bv_val);
+    }
   }
 
   if (result != LDAP_SUCCESS) {
 
-    status = std::string (_("Could not contact server"));
+    status = std::string (_("LDAP Error: ")) +
+      std::string (ldap_err2string (result));
     updated.emit ();
 
     ldap_unbind_ext (ldap_context, NULL, NULL);
@@ -444,10 +737,12 @@ OPENLDAP::Book::refresh_bound ()
   struct timeval timeout = { 1, 0}; /* block 1s */
   LDAPMessage *msg_entry = NULL;
   int msgid;
-  std::vector<std::string> attributes_vector;
-  char **attributes = NULL;
-  int iscope = LDAP_SCOPE_SUBTREE;
-  std::string filter;
+  std::string filter, fterm;
+  const char *fstr;
+  size_t pos;
+
+  if (bookinfo.sasl)
+    goto sasl_bound;
 
   result = ldap_result (ldap_context, LDAP_RES_ANY, LDAP_MSG_ALL,
 			&timeout, &msg_entry);
@@ -481,39 +776,34 @@ OPENLDAP::Book::refresh_bound ()
   }
   (void) ldap_msgfree (msg_entry);
 
-  attributes_vector.push_back ("givenname");
-  attributes_vector.push_back (call_attribute);
+sasl_bound:
+  if (!search_filter.empty ()) {
+    if (search_filter[0] == '(' &&
+        search_filter[search_filter.length()-1] == ')') {
+      fstr = search_filter.c_str();
+      goto do_search;
+    }
+    fterm = "*" + search_filter + "*";
+  } else {
+    fterm = "*";
+  }
+  filter = std::string (bookinfo.urld->lud_filter);
+  pos = 0;
+  while ((pos=filter.find('$', pos)) != std::string::npos) {
+    filter.replace (pos, 1, fterm);
+    pos += fterm.length();
+  }
+  fstr = filter.c_str();
 
-  if (scope == "sub")
-    iscope = LDAP_SCOPE_SUBTREE;
-  else
-    iscope = LDAP_SCOPE_ONELEVEL;
-
-  attributes = (char **)malloc ((attributes_vector.size ()+1)*sizeof(char *));
-  for (unsigned int i = 0; i < attributes_vector.size (); i++)
-    attributes[i] = strdup (attributes_vector[i].c_str ());
-  attributes[attributes_vector.size ()] = NULL;// don't ask how I remembered...
-
-  /* FIXME: http://bugzilla.gnome.org/show_bug.cgi?id=424459
-   * here things should be done with givenname=..., but for this bug
-   */
-  if (!search_filter.empty ())
-    filter = "(cn=*" + search_filter + "*)";
-  else
-    filter = "(cn=*)";
-
+do_search:
   msgid = ldap_search_ext (ldap_context,
-			   base.c_str (),
-			   iscope,
-			   filter.c_str (),
-			   attributes,
+			   bookinfo.urld->lud_dn,
+			   bookinfo.urld->lud_scope,
+			   fstr,
+			   bookinfo.urld->lud_attrs,
 			   0, /* attrsonly */
 			   NULL, NULL,
 			   NULL, 0, &msgid);
-
-  for (unsigned int i = 0; i < attributes_vector.size (); i++)
-    free (attributes[i]);
-  free (attributes);
 
   if (msgid == -1) {
 
@@ -583,7 +873,7 @@ OPENLDAP::Book::refresh_result ()
 
     if (ldap_msgtype (msg_result) == LDAP_RES_SEARCH_ENTRY) {
 
-      contact = parse_result (core, ldap_context, msg_result);
+      contact = parse_result (msg_result);
       if (contact != NULL) {
 	add_contact (*contact);
         nbr++;
@@ -606,36 +896,66 @@ OPENLDAP::Book::refresh_result ()
 }
 
 void
+OPENLDAP::BookForm (Ekiga::FormRequestSimple &request, struct BookInfo &info,
+  std::string title)
+{
+  std::string callAttr = "";
+
+  request.title (title);
+
+  request.instructions (_("Please edit the following fields"));
+
+  request.text ("name", _("Book _Name"), info.name);
+  request.text ("uri", _("Server _URI"), info.uri_host);
+  request.text ("base", _("_Base DN"), info.urld->lud_dn);
+
+  {
+    std::map<std::string, std::string> choices;
+    std::string scopes[]= {"base","one","sub"};
+
+    choices["sub"] = _("Subtree");
+    choices["onelevel"] = _("Single Level");
+    request.single_choice ("scope", _("_Search Scope"),
+      scopes[info.urld->lud_scope], choices);
+  }
+
+  /* attrs[0] is the name attribute */
+  for (int i=1; info.urld->lud_attrs[i]; i++) {
+    if (i>1) callAttr += ",";
+    callAttr += std::string(info.urld->lud_attrs[i]);
+  }
+  request.text ("nameAttr", _("_DisplayName Attribute"), info.urld->lud_attrs[0]);
+  request.text ("callAttr", _("Call _Attributes"), callAttr);
+  request.text ("filter", _("_Filter Template"), info.urld->lud_filter);
+
+  request.text ("authcID", _("Bind _ID"), info.authcID);
+  request.private_text ("password", _("_Password"), info.password);
+  request.boolean ("startTLS", _("Use TLS"), info.starttls);
+  request.boolean ("sasl", _("Use SASL"), info.sasl);
+  {
+    std::map<std::string, std::string> mechs;
+    const char **mechlist;
+
+    mechlist = sasl_global_listmech();
+
+    mechs[""] = "<default>";
+    if (mechlist) {
+      for (int i=0; mechlist[i]; i++) {
+        std::string mech = std::string(mechlist[i]);
+        mechs[mech] = mech;
+      }
+    }
+    request.single_choice ("saslMech", _("SASL _Mechanism"),
+      info.saslMech, mechs);
+  }
+}
+
+void
 OPENLDAP::Book::edit ()
 {
   Ekiga::FormRequestSimple request;
 
-  request.title (_("Edit LDAP directory"));
-
-  request.instructions (_("Please edit the following fields"));
-
-  request.text ("name", _("_Name"), name);
-  request.text ("hostname", _("_Hostname"), hostname);
-  { // Snark hates C++ -- and there isn't only a reason for it -- but many
-    std::stringstream strm;
-    std::string port_string;
-    strm << port;
-    strm >> port_string;
-    request.text ("port", _("_Port"), port_string);
-  }
-  request.text ("base", _("_Base DN"), base);
-
-  {
-    std::map<std::string, std::string> choices;
-
-    choices["sub"] = _("Subtree");
-    choices["single"] = _("Single Level");
-    request.single_choice ("scope", _("_Scope"), scope, choices);
-  }
-
-  request.text ("call-attribute", _("Call _Attribute"), call_attribute);
-
-  request.private_text ("password", _("_Password"), password);
+  OPENLDAP::BookForm (request, bookinfo, std::string(_("Edit LDAP directory")));
 
   request.submitted.connect (sigc::mem_fun (this,
 					    &OPENLDAP::Book::on_edit_form_submitted));
@@ -650,42 +970,130 @@ OPENLDAP::Book::edit ()
   }
 }
 
+int
+OPENLDAP::BookFormInfo (Ekiga::Form &result, struct BookInfo &bookinfo,
+  std::string &errmsg)
+{
+  LDAPURLDesc *url_base = NULL, *url_host = NULL;
+  char *url_str;
+
+  std::string name = result.text ("name");
+  std::string uri = result.text ("uri");
+  std::string nameAttr = result.text ("nameAttr");
+  std::string callAttr = result.text ("callAttr");
+  std::string filter = result.text ("filter");
+
+  errmsg = "";
+
+  if (name.empty())
+    errmsg += _("Please provide a Book Name for this directory\n");
+
+  if (uri.empty())
+    errmsg += _("Please provide a Server URI\n");
+
+  if (nameAttr.empty())
+    errmsg += _("Please provide a DisplayName Attribute\n");
+
+  if (callAttr.empty())
+    errmsg += _("Please provide a Call Attribute\n");
+
+  if (ldap_url_parse (uri.c_str(), &url_host))
+    errmsg += _("Invalid Server URI\n");
+
+  if (!errmsg.empty()) {
+    return -1;
+  }
+
+  if (filter.empty())
+    filter = "(cn=$)";
+
+  bookinfo.name = name;
+  std::string base = result.text ("base");
+  std::string new_bits = "ldap:///?" +
+    result.text ("nameAttr") + "," +
+    result.text ("callAttr") + "?" +
+    result.single_choice ("scope") + "?" +
+    result.text ("filter");
+  bookinfo.authcID = result.text ("authcID");
+  bookinfo.password = result.private_text ("password");
+  bookinfo.starttls = result.boolean ("startTLS");
+  bookinfo.sasl = result.boolean ("sasl");
+  bookinfo.saslMech = result.single_choice ("saslMech");
+
+  if (bookinfo.sasl || bookinfo.starttls) {
+    new_bits += "?";
+    if (bookinfo.starttls)
+      new_bits += "StartTLS";
+    if (bookinfo.sasl) {
+      if (bookinfo.starttls)
+        new_bits += ",";
+      new_bits += "SASL";
+      if (!bookinfo.saslMech.empty())
+        new_bits += "=" + bookinfo.saslMech;
+    }
+  }
+
+  ldap_url_parse (new_bits.c_str(), &url_base);
+  url_host->lud_dn = ldap_strdup (base.c_str());
+  url_host->lud_attrs = url_base->lud_attrs;
+  url_host->lud_scope = url_base->lud_scope;
+  url_host->lud_filter = url_base->lud_filter;
+  if (!url_host->lud_exts) {
+    url_host->lud_exts = url_base->lud_exts;
+    url_base->lud_exts = NULL;
+  }
+  url_base->lud_attrs = NULL;
+  url_base->lud_filter = NULL;
+  ldap_free_urldesc (url_base);
+
+  if (bookinfo.urld) ldap_free_urldesc (bookinfo.urld);
+  bookinfo.urld = url_host;
+  url_str = ldap_url_desc2str (url_host);
+  bookinfo.uri = std::string(url_str);
+  ldap_memfree (url_str);
+
+  {
+    size_t pos;
+    pos = bookinfo.uri.find ('/', strlen(url_host->lud_scheme) + 3);
+    if (pos != std::string::npos)
+      bookinfo.uri_host = bookinfo.uri.substr (0,pos);
+    else
+      bookinfo.uri_host = bookinfo.uri;
+  }
+  return 0;
+}
+
 void
 OPENLDAP::Book::on_edit_form_submitted (Ekiga::Form &result)
 {
   try {
+    std::string errmsg;
+    if (OPENLDAP::BookFormInfo (result, bookinfo, errmsg)) {
+      Ekiga::FormRequestSimple request;
 
-    std::string new_name = result.text ("name");
-    std::string new_hostname = result.text ("hostname");
-    std::string new_port_string = result.text ("port");
-    std::string new_base = result.text ("base");
-    std::string new_scope = result.single_choice ("scope");
-    std::string new_call_attribute = result.text ("call-attribute");
-    std::string new_password = result.private_text ("password");
-    int new_port = std::atoi (new_port_string.c_str ());
+      result.visit (request);
+      request.error (errmsg);
+      request.submitted.connect (sigc::mem_fun (this,
+					    &OPENLDAP::Book::on_edit_form_submitted));
 
-    name = new_name;
-    robust_xmlNodeSetContent (node, &name_node, "name", name);
+      if (!questions.handle_request (&request)) {
 
-    hostname = new_hostname;
-    robust_xmlNodeSetContent (node, &hostname_node, "hostname", hostname);
+        // FIXME: better error reporting
+#ifdef __GNUC__
+        std::cout << "Unhandled form request in "
+	          << __PRETTY_FUNCTION__ << std::endl;
+#endif
+      }
+      return;
+    }
 
-    port = new_port;
-    robust_xmlNodeSetContent (node, &port_node, "port", new_port_string);
+    robust_xmlNodeSetContent (node, &name_node, "name", bookinfo.name);
 
-    base = new_base;
-    robust_xmlNodeSetContent (node, &base_node, "base", base);
+    robust_xmlNodeSetContent (node, &uri_node, "uri", bookinfo.uri);
 
-    scope = new_scope;
-    robust_xmlNodeSetContent (node, &scope_node, "scope", scope);
+    robust_xmlNodeSetContent (node, &authcID_node, "authcID", bookinfo.authcID);
 
-    call_attribute = new_call_attribute;
-    robust_xmlNodeSetContent (node, &call_attribute_node,
-			      "call_attribute", call_attribute);
-
-    password = new_password;
-    robust_xmlNodeSetContent (node, &password_node, "password", password);
-
+    robust_xmlNodeSetContent (node, &password_node, "password", bookinfo.password);
     updated.emit ();
     trigger_saving.emit ();
 

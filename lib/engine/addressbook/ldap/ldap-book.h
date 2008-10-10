@@ -30,6 +30,7 @@
  *                         ldap-book.h  -  description
  *                         ------------------------------------------
  *   begin                : written in 2007 by Julien Puydt
+ *                        : completed in 2008 by Howard Chu
  *   copyright            : (c) 2007 by Julien Puydt
  *   description          : declaration of a LDAP book
  *
@@ -44,11 +45,34 @@
 #include "runtime.h"
 #include "book-impl.h"
 #include "form.h"
+#include "form-request-simple.h"
 
 #include "ldap-contact.h"
 
+#include <ldap.h>
+
 namespace OPENLDAP
 {
+
+  struct BookInfo {
+    std::string name;
+    std::string uri;
+    std::string uri_host;
+    std::string authcID;
+    std::string password;
+    std::string saslMech;
+    LDAPURLDesc *urld;
+    bool sasl;
+    bool starttls;
+  };
+
+  void BookForm (Ekiga::FormRequestSimple &req, struct BookInfo &info,
+  	std::string title );
+
+  int BookFormInfo (Ekiga::Form &result, struct BookInfo &info,
+  	std::string &errmsg);
+
+  void BookInfoParse (struct BookInfo &info);
 
 /**
  * @addtogroup contacts
@@ -65,13 +89,7 @@ namespace OPENLDAP
 	  xmlNodePtr node);
 
     Book (Ekiga::ServiceCore &_core,
-	  const std::string _name,
-	  const std::string _hostname,
-	  int _port,
-	  const std::string _base,
-	  const std::string _scope,
-	  const std::string _call_attribute,
-	  const std::string _password);
+    	  OPENLDAP::BookInfo _bookinfo);
 
     ~Book ();
 
@@ -94,11 +112,19 @@ namespace OPENLDAP
 
     sigc::signal<void> trigger_saving;
 
+    /* public for access from C */
+    void on_sasl_form_submitted (Ekiga::Form &);
+    Ekiga::FormBuilder *saslform;
+
   private:
 
     void refresh_start ();
     void refresh_bound ();
     void refresh_result ();
+
+    OPENLDAP::Contact *parse_result(struct ldapmsg *);
+
+    void parse_uri();
 
     void edit ();
     void on_edit_form_submitted (Ekiga::Form &);
@@ -107,26 +133,12 @@ namespace OPENLDAP
     Ekiga::ContactCore *contact_core;
     xmlNodePtr node;
 
-    std::string name;
     xmlNodePtr name_node;
-
-    std::string hostname;
-    xmlNodePtr hostname_node;
-
-    int port;
-    xmlNodePtr port_node;
-
-    std::string base;
-    xmlNodePtr base_node;
-
-    std::string scope;
-    xmlNodePtr scope_node;
-
-    std::string call_attribute;
-    xmlNodePtr call_attribute_node;
-
-    std::string password;
+    xmlNodePtr uri_node;
+    xmlNodePtr authcID_node;
     xmlNodePtr password_node;
+
+    struct BookInfo bookinfo;
 
     struct ldap *ldap_context;
     unsigned int patience;

@@ -30,6 +30,7 @@
  *                         ldap-contact.h  -  description
  *                         ------------------------------------------
  *   begin                : written in 2007 by Julien Puydt
+ *                        : completed in 2008 by Howard Chu
  *   copyright            : (c) 2007 by Julien Puydt
  *   description          : declaration of a LDAP contact
  *
@@ -55,7 +56,7 @@ namespace OPENLDAP
 
     Contact (Ekiga::ServiceCore &_core,
 	     const std::string _name,
-	     const std::string _uri);
+    	     const std::map<std::string, std::string> _uris);
 
     ~Contact ();
 
@@ -72,8 +73,7 @@ namespace OPENLDAP
     Ekiga::ServiceCore &core;
 
     std::string name;
-
-    std::string uri;
+    std::map<std::string, std::string> uris;
   };
 
 /**

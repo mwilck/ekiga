@@ -30,6 +30,7 @@
  *                         ldap-source.h  -  description
  *                         ------------------------------------------
  *   begin                : written in 2007 by Julien Puydt
+ *                        : completed in 2008 by Howard Chu
  *   copyright            : (c) 2007 by Julien Puydt
  *   description          : interface of a LDAP source
  *
@@ -77,15 +78,11 @@ namespace OPENLDAP
     Ekiga::ServiceCore &core;
     xmlDocPtr doc;
 
+    struct BookInfo bookinfo;
+
     void add (xmlNodePtr node);
 
-    void add (const std::string name,
-	      const std::string hostname,
-	      int port,
-	      const std::string base,
-	      const std::string scope,
-	      const std::string call_attribute,
-	      const std::string password);
+    void add ();
 
     void common_add (Book &book);
 

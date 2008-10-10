@@ -30,6 +30,7 @@
  *                         ldap-source.cpp  -  description
  *                         ------------------------------------------
  *   begin                : written in 2007 by Julien Puydt
+ *                        : completed in 2008 by Howard Chu
  *   copyright            : (c) 2007 by Julien Puydt
  *   description          : implementation of a LDAP source
  *
@@ -42,7 +43,6 @@
 #include "config.h"
 
 #include "gmconf.h"
-#include "form-request-simple.h"
 
 #include "ldap-source.h"
 
@@ -105,20 +105,13 @@ OPENLDAP::Source::add (xmlNodePtr node)
 }
 
 void
-OPENLDAP::Source::add (const std::string name,
-		       const std::string hostname,
-		       int port,
-		       const std::string base,
-		       const std::string scope,
-		       const std::string call_attribute,
-		       const std::string password)
+OPENLDAP::Source::add ()
 {
   Book *book = NULL;
   xmlNodePtr root;
 
   root = xmlDocGetRootElement (doc);
-  book = new Book (core, name, hostname, port, base,
-		   scope, call_attribute, password);
+  book = new Book (core, bookinfo);
 
   xmlAddChild (root, book->get_node ());
 
@@ -150,24 +143,17 @@ OPENLDAP::Source::new_book ()
 {
   Ekiga::FormRequestSimple request;
 
-  request.title (_("Create LDAP directory"));
+  bookinfo.name = "";
+  bookinfo.uri = "ldap://localhost/dc=net?cn,telephoneNumber?sub?(cn=$)",
+  bookinfo.authcID = "";
+  bookinfo.password = "";
+  bookinfo.saslMech = "";
+  bookinfo.urld = NULL;
+  bookinfo.sasl = false;
+  bookinfo.starttls = false;
 
-  request.instructions (_("Please edit the following fields"));
-
-  request.text ("name", _("_Name:"), "");
-  request.text ("hostname", _("_Hostname:"), "");
-  request.text ("port", _("_Port:"), "389");
-  request.text ("base", _("_Base DN:"), "dc=net");
-  {
-    std::map<std::string, std::string> choices;
-
-    choices["sub"] = _("_Subtree");
-    choices["single"] = _("Single _Level");
-    request.single_choice ("scope", _("_Scope"), "sub", choices);
-  }
-
-  request.text ("call-attribute", _("Call _Attribute"), "telephoneNumber");
-  request.private_text ("password", _("Password"), "");
+  OPENLDAP::BookInfoParse (bookinfo);
+  OPENLDAP::BookForm (request, bookinfo, _("Create LDAP directory"));
 
   request.submitted.connect (sigc::mem_fun (this,
 					    &OPENLDAP::Source::on_new_book_form_submitted));
@@ -185,12 +171,17 @@ OPENLDAP::Source::new_book ()
 void
 OPENLDAP::Source::new_ekiga_net_book ()
 {
-  add (_("Ekiga.net Directory"),
-       "ekiga.net", 389,
-       "dc=ekiga,dc=net",
-       "sub",
-       "telephoneNumber", 
-       "");
+  bookinfo.name = _("Ekiga.net Directory");
+  bookinfo.uri =
+    "ldap://ekiga.net/dc=ekiga,dc=net?cn,telephoneNumber?sub?(cn=$)";
+  bookinfo.authcID = "";
+  bookinfo.password = "";
+  bookinfo.saslMech = "";
+  bookinfo.urld = NULL;
+  bookinfo.sasl = false;
+  bookinfo.starttls = false;
+
+  add ();
   save ();
 }
 
@@ -198,17 +189,28 @@ void
 OPENLDAP::Source::on_new_book_form_submitted (Ekiga::Form &result)
 {
   try {
+    std::string errmsg;
 
-    std::string name = result.text ("name");
-    std::string hostname = result.text ("hostname");
-    std::string port_string = result.text ("port");
-    std::string base = result.text ("base");
-    std::string scope = result.single_choice ("scope");
-    std::string call_attribute = result.text ("call-attribute");
-    std::string password = result.private_text ("password");
-    int port = atoi (port_string.c_str ());
+    if (OPENLDAP::BookFormInfo (result, bookinfo, errmsg)) {
+      Ekiga::FormRequestSimple request;
 
-    add (name, hostname, port, base, scope, call_attribute, password);
+      result.visit (request);
+      request.error (errmsg);
+      request.submitted.connect (sigc::mem_fun (this,
+					    &OPENLDAP::Source::on_new_book_form_submitted));
+
+      if (!questions.handle_request (&request)) {
+
+        // FIXME: better error reporting
+#ifdef __GNUC__
+        std::cout << "Unhandled form request in "
+	          << __PRETTY_FUNCTION__ << std::endl;
+#endif
+      }
+      return;
+    }
+
+    add ();
     save ();
 
   } catch (Ekiga::Form::not_found) {
