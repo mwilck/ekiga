@@ -61,6 +61,9 @@ namespace Ekiga
 
     void instructions (const std::string );
 
+    void link (const std::string link,
+                       const std::string uri);
+
     void error (const std::string );
 
     void hidden (const std::string name,
@@ -94,7 +97,8 @@ namespace Ekiga
 
     void editable_set (const std::string name,
 		       const std::string description,
-		       const std::set<std::string> values);
+		       const std::set<std::string> values,
+		       const std::set<std::string> proposed_values);
   private:
 
     std::ostream &out;

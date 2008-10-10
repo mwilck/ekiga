@@ -58,6 +58,12 @@ Ekiga::FormDumper::instructions (const std::string _instructions)
 }
 
 void
+Ekiga::FormDumper::link (const std::string _link, const std::string _uri)
+{
+  out << "Link: " << _link << " , Uri: " << _uri << std::endl;
+}
+
+void
 Ekiga::FormDumper::error (const std::string _error)
 {
   out << "Error: " << _error << std::endl;
@@ -156,13 +162,19 @@ Ekiga::FormDumper::multiple_choice (const std::string name,
 void
 Ekiga::FormDumper::editable_set (const std::string name,
 				 const std::string description,
-				 const std::set<std::string> values)
+				 const std::set<std::string> values,
+				 const std::set<std::string> proposed_values)
 {
   out << "Editable list " << name << ":" << std::endl
       << description << std::endl
       << "where current set is :" << std::endl;
   for (std::set<std::string>::const_iterator iter = values.begin ();
        iter != values.end ();
+       iter++)
+    out << *iter << std::endl;
+  out << "with proposed set of :" << std::endl;
+  for (std::set<std::string>::const_iterator iter = proposed_values.begin ();
+       iter != proposed_values.end ();
        iter++)
     out << *iter << std::endl;
 }
