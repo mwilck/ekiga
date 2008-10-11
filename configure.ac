@@ -329,6 +329,9 @@ if test "x$enable_ldap" = "xyes"; then
   	AC_MSG_ERROR(You need the LDAP library to compile Ekiga with LDAP support)
   fi
 
+  dnl Checking for libsasl2
+  AC_CHECK_HEADER(sasl/sasl.h,,AC_MSG_ERROR([*** libsasl2 headers not found]))
+
   dnl Checking for libresolv
   if test ${gm_platform} = "linux" ; then
   	AC_CHECK_LIB(resolv, res_gethostbyaddr, [LIBS="-lresolv $LIBS"], AC_MSG_ERROR([*** libresolv not found.]), -lresolv)
