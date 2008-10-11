@@ -63,7 +63,7 @@ export LDD:=$(BUILDROOT)/$(HOST_TOOL_PREFIX)-ldd.sh
 
 EKIGA_VER = 2.9
 EKIGA_REV = HEAD
-EKIGA_URL = http://svn.gnome.org/svn/ekiga/trunk
+EKIGA_URL = http://svn.gnome.org/svn/ekiga/branches/gnome-2-24
 EKIGA_ARCHIVE := ekiga
 EKIGA_DIR = $(BUILDROOT)/ekiga
 EKIGA_PREFIX:= $(TARGETDIR)/Ekiga
@@ -472,7 +472,6 @@ $(LIBDIR)/libopal_s.a: binaries $(OPAL_DIR)/config.status
 	rm -f $(LIBDIR)/libopal_s.a
 	$(MAKE) $(MAKEOPTS) -C $(OPAL_DIR) 
 	$(MAKE) -C $(OPAL_DIR) install 
-#	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' $(LIBDIR)/pkgconfig/opal*.pc
 	
 ### libgtk
 update-sources::
