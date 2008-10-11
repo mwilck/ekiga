@@ -680,7 +680,7 @@ OPENLDAP::Book::refresh_start ()
 
   if (bookinfo.sasl) {
     interctx ctx;
-    
+
     ctx.book = this;
     ctx.authcID = bookinfo.authcID;
     ctx.password = bookinfo.password;
@@ -787,7 +787,10 @@ sasl_bound:
   } else {
     fterm = "*";
   }
-  filter = std::string (bookinfo.urld->lud_filter);
+  if (bookinfo.urld->lud_filter != NULL)
+    filter = std::string (bookinfo.urld->lud_filter);
+  else
+    filter="";
   pos = 0;
   while ((pos=filter.find('$', pos)) != std::string::npos) {
     filter.replace (pos, 1, fterm);
@@ -926,7 +929,10 @@ OPENLDAP::BookForm (Ekiga::FormRequestSimple &request, struct BookInfo &info,
   }
   request.text ("nameAttr", _("_DisplayName Attribute"), info.urld->lud_attrs[0]);
   request.text ("callAttr", _("Call _Attributes"), callAttr);
-  request.text ("filter", _("_Filter Template"), info.urld->lud_filter);
+  if (info.urld->lud_filter != NULL)
+    request.text ("filter", _("_Filter Template"), info.urld->lud_filter);
+  else
+    request.text ("filter", _("_Filter Template"), "");
 
   request.text ("authcID", _("Bind _ID"), info.authcID);
   request.private_text ("password", _("_Password"), info.password);
