@@ -1,3 +1,9 @@
+2008-10-12  Damien Sandras  <dsandras@gnome.org>
+
+	* src/endpoints/opal-codec-description.cpp:
+	Ignore OPAL codecs with empty format names. Prevents
+	SetMediaFormatOrder loop.
+
 2008-10-12  Matthias Schneider  <ma30002000@yahoo.de>
 
 	* lib/engine/audiooutput/skel/audiooutput-core.cpp:
