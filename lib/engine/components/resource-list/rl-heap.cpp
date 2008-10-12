@@ -281,8 +281,11 @@ RL::Heap::parse_entry (xmlNodePtr entry,
 
   {
     xmlChar* str = xmlGetProp (entry, BAD_CAST "uri");
-    if (str != NULL)
+    if (str != NULL) {
+
       entry_uri = g_strdup ((const gchar*)str);
+      xmlFree (str);
+    }
   }
 
   for (xmlNodePtr child = entry->children; child != NULL; child = child->next)

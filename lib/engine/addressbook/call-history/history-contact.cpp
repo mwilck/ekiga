@@ -53,14 +53,18 @@ History::Contact::Contact (Ekiga::ServiceCore &_core,
     = dynamic_cast<Ekiga::ContactCore*>(core.get ("contact-core"));
 
   xml_str = xmlGetProp (node, (const xmlChar *)"type");
-  if (xml_str != NULL)
+  if (xml_str != NULL) {
+
     m_type = (call_type)(xml_str[0] - '0'); // FIXME: I don't like it!
-  xmlFree (xml_str);
+    xmlFree (xml_str);
+  }
 
   xml_str = xmlGetProp (node, (const xmlChar *)"uri");
-  if (xml_str != NULL)
+  if (xml_str != NULL) {
+
     uri = (const char *)xml_str;
-  xmlFree (xml_str);
+    xmlFree (xml_str);
+  }
 
   for (xmlNodePtr child = node->children ;
        child != NULL ;

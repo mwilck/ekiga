@@ -57,9 +57,11 @@ Local::Presentity::Presentity (Ekiga::ServiceCore &_core,
   presence_core = dynamic_cast<Ekiga::PresenceCore*>(core.get ("presence-core"));
 
   xml_str = xmlGetProp (node, (const xmlChar *)"uri");
-  if (xml_str != NULL)
+  if (xml_str != NULL) {
+
     uri = (const char *)xml_str;
-  xmlFree (xml_str);
+    xmlFree (xml_str);
+  }
 
   for (xmlNodePtr child = node->children ;
        child != NULL ;

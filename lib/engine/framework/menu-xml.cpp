@@ -97,6 +97,7 @@ Ekiga::MenuXML::populate (MenuBuilder &builder)
 		populate_item (core, builder, child, true);
 	      if (xmlStrEqual (BAD_CAST "internal", attr))
 		populate_item (core, builder, child, false);
+	      xmlFree (attr);
 	    }
 	  }
 	  if (xmlStrEqual (BAD_CAST "separator", child->name))
