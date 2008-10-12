@@ -297,7 +297,7 @@ OPENLDAP::Book::Book (Ekiga::ServiceCore &_core,
       new_uri = std::string("ldap://") + hostname;
       if (!port.empty())
         new_uri += std::string(":") + port;
-      new_uri += "/?cn" + call_attribute + "?" + scope;
+      new_uri += "/?cn," + call_attribute + "?" + scope;
       ldap_url_parse (new_uri.c_str(), &url_tmp);
       url_tmp->lud_dn = (char *)base.c_str();
       url_str = ldap_url_desc2str (url_tmp);
