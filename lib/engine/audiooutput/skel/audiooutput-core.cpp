@@ -474,16 +474,17 @@ void AudioOutputCore::internal_play(AudioOutputPS ps, const char* buffer, unsign
 {
   unsigned long pos = 0;
   unsigned bytes_written = 0;
+  unsigned buffer_size = (unsigned)((float)sample_rate/25);
 
   if (!internal_open ( ps, channels, sample_rate, bps))
     return;
 
   if (current_manager[ps]) {
-    current_manager[ps]->set_buffer_size (ps, 320, 4);
+    current_manager[ps]->set_buffer_size (ps, buffer_size, 4);
     do {
-      if (!current_manager[ps]->set_frame_data(ps, buffer+pos, std::min((unsigned)320, (unsigned) (len - pos)), bytes_written))
+      if (!current_manager[ps]->set_frame_data(ps, buffer+pos, std::min(buffer_size, (unsigned) (len - pos)), bytes_written))
         break;
-      pos += 320;
+      pos += buffer_size;
     } while (pos < len);
   }
 
