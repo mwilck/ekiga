@@ -84,6 +84,11 @@ namespace Ekiga {
     VO_ACCEL_NO_VIDEO
   } VideoOutputAccel;
 
+  enum VideoOutputErrorCodes {
+    VO_ERROR_NONE = 0,
+    VO_ERROR,
+  };
+
 
   typedef struct {
     unsigned rx_fps;

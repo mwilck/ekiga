@@ -109,6 +109,11 @@ namespace Ekiga
        */
       sigc::signal<void> device_closed;
 
+      /** This signal is emitted when an error occurs when opening a video output device.
+       * @param error_code the video output device error code.
+       */
+      sigc::signal<void, VideoOutputErrorCodes> device_error;
+
       /** This signal is emitted when a manager switches autonomously into or out of fullscreen mode.
        * Some managers like DX and XV  allow the user to switch between FS
        * by pressing a key or clicking a mouse button on top of the video. In order to

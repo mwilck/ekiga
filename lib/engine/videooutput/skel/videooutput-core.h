@@ -168,6 +168,7 @@ namespace Ekiga
        */
       sigc::signal<void, VideoOutputManager &, VideoOutputAccel, VideoOutputMode, unsigned, bool> device_opened;
       sigc::signal<void, VideoOutputManager &> device_closed;
+      sigc::signal<void, VideoOutputManager &, VideoOutputErrorCodes> device_error;
       sigc::signal<void, VideoOutputManager &, VideoOutputFSToggle> fullscreen_mode_changed;
       sigc::signal<void, VideoOutputManager &, unsigned, unsigned> size_changed;
 
@@ -175,6 +176,7 @@ namespace Ekiga
   private:
       void on_device_opened (VideoOutputAccel videooutput_accel, VideoOutputMode mode, unsigned zoom, bool both_streams, VideoOutputManager *manager);
       void on_device_closed (VideoOutputManager *manager);
+      void on_device_error (VideoOutputErrorCodes error_code, VideoOutputManager *manager);
       void on_size_changed ( unsigned width, unsigned height, VideoOutputManager *manager);
       void on_fullscreen_mode_changed (VideoOutputFSToggle toggle, VideoOutputManager *manager);
 

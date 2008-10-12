@@ -1041,6 +1041,13 @@ on_videooutput_device_closed_cb (Ekiga::VideoOutputManager & /* manager */, gpoi
   gtk_menu_section_set_sensitive (mw->main_menu, "zoom_in", FALSE);
 }
 
+void 
+on_videooutput_device_error_cb (Ekiga::VideoOutputManager & /* manager */, 
+                                Ekiga::VideoOutputErrorCodes error_code, 
+                                gpointer self)
+{
+  PTRACE(1, "Error opening the output device");
+}
 
 void 
 on_fullscreen_mode_changed_cb (Ekiga::VideoOutputManager & /* manager */, Ekiga::VideoOutputFSToggle toggle,  gpointer self)
@@ -4165,6 +4172,9 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   mw->connections.push_back (conn);
 
   conn = videooutput_core->device_closed.connect (sigc::bind (sigc::ptr_fun (on_videooutput_device_closed_cb), (gpointer) window));
+  mw->connections.push_back (conn);
+
+  conn = videooutput_core->device_error.connect (sigc::bind (sigc::ptr_fun (on_videooutput_device_error_cb), (gpointer) window));
   mw->connections.push_back (conn);
 
   conn = videooutput_core->size_changed.connect (sigc::bind (sigc::ptr_fun (on_size_changed_cb), (gpointer) window));

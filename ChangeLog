@@ -1,3 +1,15 @@
+2008-10-12  Matthias Schneider  <ma30002000@yahoo.de>
+
+	* src/gui/main.cpp:
+	* lib/engine/videooutput/x/videooutput-manager-x.cpp:
+	* lib/engine/videooutput/dx/videooutput-manager-dx.cpp:
+	* lib/engine/videooutput/skel/videooutput-core.h:
+	* lib/engine/videooutput/skel/videooutput-manager.h:
+	* lib/engine/videooutput/skel/videooutput-info.h:
+	* lib/engine/videooutput/skel/videooutput-core.cpp:
+	Add signal when unable to open any video output.
+	Do not crash on windows in that case.
+
 2008-10-12  Damien Sandras  <dsandras@gnome.org>
 
          * src/endpoints/manager.cpp:
