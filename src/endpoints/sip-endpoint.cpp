@@ -589,6 +589,7 @@ void Opal::Sip::EndPoint::ShutDown ()
 
 void Opal::Sip::EndPoint::Register (const Opal::Account & account)
 {
+  PString _aor;
   std::stringstream aor;
   std::string host = account.get_host ();
   std::string::size_type loc = host.find (":", 0);
@@ -609,7 +610,7 @@ void Opal::Sip::EndPoint::Register (const Opal::Account & account)
   params.m_minRetryTime = 0;
   params.m_maxRetryTime = 0;
 
-  if (!SIPEndPoint::Register (params))
+  if (!SIPEndPoint::Register (params, _aor))
     OnRegistrationFailed (aor.str (), SIP_PDU::MaxStatusCode, account.is_enabled ());
 }
 
@@ -1041,7 +1042,7 @@ SIPURL Opal::Sip::EndPoint::GetRegisteredPartyName (const SIPURL & host)
   PSafePtr<SIPHandler> info = activeSIPHandlers.FindSIPHandlerByDomain(host.GetHostName (), SIP_PDU::Method_REGISTER, PSafeReadOnly);
   if (info != NULL) {
 
-    return SIPURL ("\"" + GetDefaultDisplayName () + "\" <" + info->GetTargetAddress ().AsString () + ">");
+    return SIPURL ("\"" + GetDefaultDisplayName () + "\" <" + info->GetAddressOfRecord ().AsString () + ">");
   }
   else {
 
