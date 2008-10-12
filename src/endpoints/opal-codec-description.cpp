@@ -71,6 +71,9 @@ CodecList::CodecList (OpalMediaFormatList & list)
 
       Ekiga::CodecDescription desc = Opal::CodecDescription (list [i]);
 
+      if (desc.name.empty ())
+        continue;
+
       Ekiga::CodecList::iterator it = 
         search_n ((*this).begin (), (*this).end (), 1, desc, same_codec_desc);
       if (it == (*this).end ()) 
