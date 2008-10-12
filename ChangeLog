@@ -12,6 +12,12 @@
 
 2008-10-12  Damien Sandras  <dsandras@gnome.org>
 
+        * lib/engine/account/skel/account-core.cpp:
+        * lib/engine/account/skel/account-core.h:
+        Do not use a reference. It is preferable to copy the string.
+
+2008-10-12  Damien Sandras  <dsandras@gnome.org>
+
          * src/endpoints/manager.cpp:
          Remove redundant PTRACE.
 
