@@ -97,7 +97,7 @@ conferencing, with support for many audio and video codecs.</para>
 </para>
 
 <para>
-Ekiga is able to use modern Voice over IP protocols like SIP, and H.323. It supports all major features defined by those protocols like <emphasis>call hold</emphasis>, <emphasis>call transfer</emphasis>, <emphasis>call forwarding</emphasis>, ... It also supports <emphasis>instant messaging</emphasis>, and <emphasis>presence</emphasis>. It also has advanced support for <emphasis>NAT traversal</emphasis>.
+Ekiga is able to use modern Voice over IP protocols like SIP and H.323. It supports all major features defined by those protocols like <emphasis>call hold</emphasis>, <emphasis>call transfer</emphasis>, <emphasis>call forwarding</emphasis>, ... It also supports <emphasis>instant messaging</emphasis>, and <emphasis>presence</emphasis>. It also has advanced support for <emphasis>NAT traversal</emphasis>.
 Ekiga supports the best <emphasis>free</emphasis> audio and video codecs, and has wideband support for a superior audio quality, together with echo cancellation.
 </para>
 </section>
@@ -120,7 +120,7 @@ H.323 was originally created to provide a mechanism for transporting multimedia 
 <title>Getting Started</title>
 <para>
 When starting <application>&app;</application> for the first time the configuration assistant will show automatically. The Configuration Assistant is a step-by-step questionnaire that will guide you through all the steps involved in creating the basic configuration you will need to operate <application>&app;</application>.
-You should go through all of these steps properly, otherwise the assistant will re-appear (when it has not been completed) or <application>&app;</application> will not function appropriately (if some of your answers have not been correct).
+You should go through all of these steps properly, otherwise the assistant will re-appear (when it has not been completed) or <application>&app;</application> will not function appropriately (if some of your answers were not correct).
 You may run the Configuration Assistant at any time from the Edit menu.
 </para>
 
@@ -184,15 +184,15 @@ Please press 'Forward' after having entered all required information to continue
 <graphic fileref="figures/config_d4.png"></graphic>
 </figure>
 
-<para><application>&app;</application> can be used with several Internet Telephony Service Providers. Those providers will allow calling real phones from your computer using <application>&app;</application> at interesting rates. We are recommending you to use the default <application>&app;</application> provider.</para>
+<para><application>&app;</application> can be used with several Internet Telephony Service Providers. Those providers will allow calling real phones from your computer using <application>&app;</application> at interesting rates. We recommend you use the default <application>&app;</application> provider.</para>
 
 <para>If you want to create an account and use it to call your friends and family using regular phones at interesting rates, simply create an account using the "Get an Ekiga Call Out account" link. Once the account has been created, you will receive a login and a password by e-mail. Simply enter them in the dialog, and you are ready to call regular phones using <application>&app;</application></para> 
 
-<para>With the default setup, you can simply use sip:3210444555 and choose sip.diamondcard.us to call the real phone number +3210444555, 32 is the country code, 10444555 is the number to call. We encourage you putting your favorite phone numbers in the address book.</para>
+<para>With the default setup, you can simply use sip:3210444555 and choose sip.diamondcard.us to call the real phone number +3210444555, 32 is the country code, 10444555 is the number to call. We encourage you to put your favorite phone numbers in the address book.</para>
 
 <para>
 Just follow the link given in the dialog to get an account if you do not have one, then fill in your username and password.
-Please press 'Forward' after having entered all required information to continue.
+Please press 'Forward' after entering all required information to continue.
 </para>
 </section>
 
@@ -221,8 +221,8 @@ When done, continue on with the Configuration.
 </figure>
 
 <para>
-<application>&app;</application> requires audio devices to play and record sound. The audio output device ouputs the incoming sound stream during a call. Please select the device that your headset or speakers are connected to. The audio input device is where your microphone is connected to. These settings might be the same as the settings for the audio player if you have only one soundcard. But please note that it is also possible to record sound via another device (e.g. internal microphone in a webcam) too.
-This section also allows you to choose the ringing device. This device can be different from the audio output device. It allows you hearing the incoming call ringing sound event in your speakers, while having your headset connected for calls. 
+<application>&app;</application> requires audio devices to play and record sound. The audio output device ouputs the incoming sound stream during a call. Please select the device that your headset or speakers are connected to. The audio input device is what your microphone is connected to. These settings might be the same as the settings for the audio player if you have only one soundcard. But please note that it is also possible to record sound via another device (e.g. internal microphone in a webcam) too.
+This section also allows you to choose the ringing device. This device can be different from the audio output device. It allows you to hear the incoming call ringing sound event in your speakers, while having your headset connected for calls. 
 </para>
 
 <para>
@@ -292,13 +292,13 @@ If everything is correct please press the 'Apply' button to save the configurati
 </section>
 
 <section><title>From computer to real phones (PC-To-Phone)</title>
-<para><application>&app;</application> can be used with several Internet Telephony Service Providers. Those providers will allow calling real phones from your computer using <application>&app;</application> at interesting rates. We are recommending you to use the default <application>&app;</application> provider. You can get an account using the links in the configuration assistant as described above.</para>
+<para><application>&app;</application> can be used with several Internet Telephony Service Providers. Those providers will allow calling real phones from your computer using <application>&app;</application> at interesting rates. We recommend you use the default <application>&app;</application> provider. You can get an account using the links in the configuration assistant as described above.</para>
 
 <para>With the default setup, you can simply use sip:3210444555 and select sip.diamondcard.us in the list to call the real phone number +3210444555, 32 is the country code, 10444555 is the number to call.</para>
 
 <para>You can also dial real phone numbers from the address book. If the phone number of the contact you want to call is stored in the address book, simply select Action -> Call [Ekiga Call Out] when the contact is highlighted. It will dial the phone number of the contact using the Ekiga Call Out account.</para>
 
-<tip><title>Tip</title><para><application>&app;</application> also supports connecting to H.323 and SIP PBX systems. If the PBX at your office supports those protocols, you will be able to call real phones and be called from real phones after having connected to the PBX. Please ask for the settings to your administrator.</para></tip>
+<tip><title>Tip</title><para><application>&app;</application> also supports connecting to H.323 and SIP PBX systems. If the PBX at your office supports those protocols, you will be able to call real phones and be called from real phones after having connected to the PBX. Please ask for the settings from your administrator.</para></tip>
 </section>
 
 <section><title>From real phone to computer (Phone-To-PC)</title>
@@ -319,7 +319,7 @@ If everything is correct please press the 'Apply' button to save the configurati
 <para>
 <application>&app;</application> allows you to add the contacts you dial the most in the roster. It allows to call them or start a chat conversation with your friends without having to remember their URI.
 If supported by the service, <application>&app;</application> will display <emphasis>extended presence information</emphasis> about your friends.
-Ekiga.net supports publishing presence information for its users. Software PBX systems like <ulink url="http://www.asterisk.org" type="http">Asterisk</ulink> can report if an user is on the phone or not, and <application>&app;</application> will display that information in its roster. 
+Ekiga.net supports publishing presence information for its users. Software PBX systems like <ulink url="http://www.asterisk.org" type="http">Asterisk</ulink> can report if a user is on the phone or not, and <application>&app;</application> will display that information in its roster. 
 </para>
 
 <para>
@@ -327,7 +327,7 @@ You can thus use <application>&app;</application> to monitor lines on your PBX.
 </para>
 
 <para>
-<application>&app;</application> is also able to detect other <application>&app;</application> users on the LAN using the Bonjour technology popularized by Apple (tm) and to display them in the roster. That supposes you have a local mDNSResponder daemon running on your computer. 
+<application>&app;</application> is also able to detect other <application>&app;</application> users on the LAN using the Bonjour technology popularized by Apple (tm) and to display them in the roster. That supposes you have a local mDNSResponder daemon running on your computer. On Linux systems this service will usually be provided by Avahi.
 </para>
 
 <para>
@@ -345,12 +345,16 @@ If you do not know the VoIP URI of a contact, you might try searching for him us
 <graphic fileref="figures/addressbook_d1.png"></graphic>
 
 <para>
-<application>&app;</application> allows you looking for contacts using various sources like the <ulink url="http://www.novell.com/products/evolution" type="http">Novell Evolution</ulink> address book, an LDAP directory or the Ekiga.net contact directory. You can use the result of your search to start a chat, call the contact, or simply add him to your roster if you have frequent calls with him. To start looking for contacts, select Chat -> Address Book in the menu.
+<application>&app;</application> allows you to look for contacts using various sources like the <ulink url="http://www.novell.com/products/evolution" type="http">Novell Evolution</ulink> address book, an LDAP directory or the Ekiga.net contact directory. You can use the result of your search to start a chat, call the contact, or simply add him to your roster if you have frequent calls with him. To start looking for contacts, select Chat -> Address Book in the menu.
 To your left there will be a list dialog showing the LDAP directories as well as a list of local Address Books. The defaults are the <application>&app;</application> white pages, and the personal address book from <ulink url="http://www.novell.com/products/evolution" type="http">Novell Evolution</ulink>. Support for more contact sources is possible. 
 </para>
 
 <para>
-<application>&app;</application> is able to browse any LDAP directory and use a specific attribute as calling URI. For example, you could have an LDAP directory in your company, with a specific attribute containing the local extensions of all your colleagues. <application>&app;</application> is able to use such an LDAP directory. Simply select in Address Book -> Add an LDAP Address Book, and fill in the required details. You can then right-click on the contact and call him using the call attribute as VoIP URI.
+<application>&app;</application> is able to browse any LDAP directory and use any attribute as the calling URI. For example, you could have an LDAP directory in your company, with a specific attribute containing the local extensions of all your colleagues. <application>&app;</application> is able to use such an LDAP directory. Simply select in Address Book -> Add an LDAP Address Book, and fill in the required details. You can then right-click on the contact and call him using the call attribute as VoIP URI.
+</para>
+
+<para>
+The LDAP Address Book supports a range of settings to allow it to work with any LDAPv3 directory. It allows you to choose the attribute to use for displaying a contact's name in the address book as well as a list of attributes for callng info. E.g., if the directory uses the LDAP inetOrgPerson schema you can configure the Address Book to retrieve the homePhone, mobile, and pager attributes make those values available for calling or messaging. You can also customize a Filter Template for the default LDAP search filter, and override the default filter at any time if you need to perform a more specialized search. The browser also supports all security options for LDAP including ldaps:// (LDAP over SSL), StartTLS, and SASL authentication. 
 </para>
 
 <para>
@@ -358,10 +362,10 @@ To refresh the list of users for a specific address book, simply click the Find 
 </para>
 
 <para>
-In certain cases you will want to search specifically for a person name, or his or her call URI in the <application>&app;</application> white pages. The address book window allows you to apply filters when searching for contacts. 
+In certain cases you will want to search specifically for a person name, or his or her call URI in the <application>&app;</application> white pages. The address book window allows you to apply filters when searching for contacts. When searching an LDAP directory, entering a simple name in the Search Filter field will perform an LDAP Substring search using the configured Filter Template. If you need to perform a more specialized search you can enter a complete LDAP Filter string, and it will be used instead of the configured Filter Template.
 </para>
 
-<tip><title>Tip</title><para>The <application>&app;</application> white pages will allow you to look for users in your region. It returns a limited number of results corresponding to your search. You can then add him to your personal roster to call him later.</para></tip>
+<tip><title>Tip</title><para>The <application>&app;</application> white pages will allow you to look for users in your region. It returns a limited number of results corresponding to your search. You can then add them to your personal roster to call them later.</para></tip>
 </section>
 
 <section><title>Editing contacts</title>
@@ -369,7 +373,7 @@ In certain cases you will want to search specifically for a person name, or his 
 <graphic fileref="figures/addressbook_d2.png"></graphic>
 
 <para>
-Local address books provided by Novell Evolution allow you adding new contacts, or editing existing contacts. Each different address book allows a different set of features depending on what makes sense for the address book in question. To discover what features are possible, simply select the address book and consult the Action menu. 
+Local address books provided by Novell Evolution allow you to add new contacts, or to edit existing contacts. Each different address book allows a different set of features depending on what makes sense for the address book in question. To discover what features are possible, simply select the address book and consult the Action menu. 
 </para>
 
 <para>
@@ -400,7 +404,7 @@ Finally, you can edit the groups your users belong to using the Action -> Proper
 You can send instant messages from the roster, from the call history or from the address book. From the roster or from the call history, simply select Contact -> Message in the main window when a contact is highlighted. From the address book window, simply select Action -> Message when the contact is highlighted. A window pops up, enter your text message, and hit the Enter key. 
 </para>
 
-<tip><title>Tip</title><para>You can not exchange text messages with all protocols. <application>&app;</application> will only display the Message menun item when the protocol associated with the user permits it.</para></tip>
+<tip><title>Tip</title><para>You can not exchange text messages with all protocols. <application>&app;</application> will only display the Message menu item when the protocol associated with the user permits it.</para></tip>
 </section>
 
 
@@ -417,7 +421,7 @@ You can send instant messages from the roster, from the call history or from the
 There are three categories of status messages : online, away and do not disturb. Each of them allows you to specify a more complete status information. Simply select Custom message in the status menu at the bottom of the main window. You can then define your extended status message that will be published using all available protocols supporting it.
 </para>
 
-<tip><title>Tip</title><para>Many servers will not accept to relay your extended presence information. To make sure that this feature is available with the server you are using or with the PBX you are connected to, please ask your administrator. Please note that Ekiga.net will publish your presence information.</para></tip>
+<tip><title>Tip</title><para>Many servers will not support relaying your extended presence information. To make sure that this feature is available with the server you are using or with the PBX you are connected to, please ask your administrator. Please note that Ekiga.net will publish your presence information.</para></tip>
 </section>
 
 
@@ -432,7 +436,7 @@ an incoming call. If you do not answer the call in the required time, or if you 
 </para>
 
 <para>
-Notice that you need to specify an URI where to forward calls in the preferences to be able to activate that option. Open the preferences window by choosing Edit -> Preferences in the main window and select Call Options on the left. You will now see the appropriate section. It contains three checkboxes for the three cases described above. The URI of the party the calls shall be forwarded to can be configured separate in SIP Settings for SIP and accordingly in H.323 Settings for H.323.
+Notice that you need to specify an URI where to forward calls in the preferences to be able to activate that option. Open the preferences window by choosing Edit -> Preferences in the main window and select Call Options on the left. You will now see the appropriate section. It contains three checkboxes for the three cases described above. The URI of the party the calls shall be forwarded to can be configured separately in SIP Settings for SIP and accordingly in H.323 Settings for H.323.
 </para>
 </section>
 
@@ -445,7 +449,7 @@ Notice that you need to specify an URI where to forward calls in the preferences
 </listitem>
 
 <listitem>
-<para>Holding a call: You can hold a remote party call by selecting Chat -> Hold Call. This effectively pauses Video and Audio transmission, to continue transmission again you select Chat -> Retrieve Call and Video and Audio Transmission will begin again.</para>
+<para>Holding a call: You can hold a remote party call by selecting Chat -> Hold Call. This effectively pauses Video and Audio transmission; to continue transmission again you select Chat -> Retrieve Call and Video and Audio Transmission will begin again.</para>
 </listitem>
 
 <listitem>
@@ -488,7 +492,7 @@ Received calls contains all incoming calls which were accepted by <application>&
 
 <listitem>
 <para>
-Placed calls keeps track of all attempts - succesful or not - to call another user.
+Placed calls keeps track of all attempts - successful or not - to call another user.
 </para>
 </listitem>
 
@@ -538,7 +542,7 @@ To add an Ekiga.net account, simply select Account -> Add an Ekiga.net Account i
 <para>
 Ekiga.net is a free SIP services platform provided to <application>&app;</application> users.
 If you want to call other users and to be callable, you need a SIP address. You can get one from <ulink url="http://www.ekiga.net" type="http">http://www.ekiga.net</ulink>. 
-Ekiga.net also offers additional services like conference rooms, voice mail or online white pages. Please see <ulink url="http://www.ekiga.net" type="http">http://www.ekiga.net</ulink> for more information.
+Ekiga.net also offers additional services like conference rooms, voice mail and online white pages. Please see <ulink url="http://www.ekiga.net" type="http">http://www.ekiga.net</ulink> for more information.
 </para>
 </section>
 
@@ -556,7 +560,7 @@ To add an Ekiga Call Out account, simply select Account -> Add an Ekiga Call Out
 
 <para>
 If you do not have an Ekiga Call Out account yet, you can subscribe for one using the 'Get an Ekiga.net Call Out account' link in the dialog.
-As described above, this service will allow you calling normal phones worldwide at interesting rates.
+As described above, this service will allow you to call normal phones worldwide at interesting rates.
 Once the account has been added, you can recharge it, consult the balance history or the call history by selecting the appropriate menu item in the Account menu of the window when the account is highlighted.
 </para>
 </section>
@@ -587,7 +591,7 @@ To add a SIP account, simply select Account -> Add a SIP Account in the menu. A 
 To add an H.323 account, simply select Account -> Add an H.323 Account in the menu. A dialog will appear and allow you to enter several parameters:
 <itemizedlist>
 <listitem><para><emphasis>Name:</emphasis> You can enter the account name.</para></listitem>
-<listitem><para><emphasis>Gatekeeper:</emphasis> The gatekeeper to which you want to register. This is usually an IP address or an host name that will be given to you by your Internet Telephony Service Provider, or by your administrator if you are trying to register to an H.323 IPBX.</para></listitem>
+<listitem><para><emphasis>Gatekeeper:</emphasis> The gatekeeper to which you want to register. This is usually an IP address or a host name that will be given to you by your Internet Telephony Service Provider, or by your administrator if you are trying to register to an H.323 IPBX.</para></listitem>
 <listitem><para><emphasis>User:</emphasis> You can enter your login.</para></listitem>
 <listitem><para><emphasis>Authentication User:</emphasis> If it is different from the user parameter you provided above. In that case, the user field will be used to control the outgoing identity for the account you are adding, while the login will be used during the authentication phase.</para></listitem>
 <listitem><para><emphasis>Password:</emphasis> You can enter your password.</para></listitem>
@@ -631,11 +635,11 @@ To add an H.323 account, simply select Account -> Add an H.323 Account in the me
 <section id="ekiga-video-bandwidth">
 <title>Controlling the Video Bandwidth</title>
 
-<para><application>&app;</application> is using a best-effort algorithm to maintain a low bandwidth when transmitting video. You can adjust the video quality settings following you prefer to have a good frame rate, or a good picture quality. It will permit <application>&app;</application> to dynamically adjust the video bandwidth and the number of transmitted images per second during a call while trying to respect the requested video bandwidth.</para>
+<para><application>&app;</application> uses a best-effort algorithm to maintain a low bandwidth when transmitting video. You can adjust the video quality settings depending on whether you prefer to have a good frame rate, or a good picture quality. It will permit <application>&app;</application> to dynamically adjust the video bandwidth and the number of transmitted images per second during a call while trying to respect the requested video bandwidth.</para>
 
-<para>Notice that the algorithm is a best-effort algorithm, which means that if you specify too low video bandwidth settings, it can be impossible to respect them. However, if the video bandwidth permits to transmit with a better quality, or faster than the requested values, then <application>&app;</application> will dynamically increase them so that the quality and the framerate are always the best possible.</para>
+<para>Notice that the algorithm is a best-effort algorithm, which means that if your video bandwidth settings are too low, it can be impossible to respect them. However, if the video bandwidth permits to transmit with a better quality, or faster than the requested values, then <application>&app;</application> will dynamically increase them so that the quality and the framerate are always the best possible.</para>
 
-<para>Choosing a higher framerate and a lower quality will have the same result in terms of video bandwidth than choosing a higher quality with a lower framerate. It depends if you prefer using your bandwidth to transmit more lower quality images or fewer big quality images.</para>
+<para>Choosing a higher framerate and a lower quality will have the same result in terms of video bandwidth as choosing a higher quality with a lower framerate. The choice depends on if you prefer using your bandwidth to transmit more lower quality images or fewer high quality images.</para>
 </section>
 
 
@@ -644,7 +648,7 @@ To add an H.323 account, simply select Account -> Add an H.323 Account in the me
 
 <graphic fileref="figures/monitoring_lines.png"></graphic>
 
-<para><application>&app;</application> can connect to PBX systems supporting the SIP protocol. In that case, it is able to indicate if the line associated with an user is in use or not. Please refer to the documentation of your PBX to enable that feature.</para>
+<para><application>&app;</application> can connect to PBX systems supporting the SIP protocol. In that case, it is able to indicate if the line associated with a user is in use or not. Please refer to the documentation of your PBX to enable that feature.</para>
 
 <para>To enable that feature on <application>&app;</application>, simply add the contact with his URI in the roster. If the server supports publishing presence information, <application>&app;</application> will automatically publish your own presence information and display the presence of contacts in your roster.</para>
 </section>
@@ -657,7 +661,7 @@ To add an H.323 account, simply select Account -> Add an H.323 Account in the me
 <graphic fileref="figures/audio_codecs.png"></graphic>
 
 <para>
-The <application>&app;</application> audio codecs table in the preferences permits you to change the codecs order as well as disabling the codecs you don't want to use. Each codec has strong and weak points. For example, G.711 will give the best voice quality but will use the most bandwidth while SPEEX will give an average voice quality but requiring a very low bandwidth usage. Notice that there are two versions of SPEEX, one of them is SPEEX WideBand. You can see that to the 16 kHz clock rate.</para>
+The <application>&app;</application> audio codecs table in the preferences permits you to change the codec order as well as disabling the codecs you don't want to use. Each codec has strong and weak points. For example, G.711 will give the best voice quality but will use the most bandwidth while SPEEX will give an average voice quality but requiring a very low bandwidth usage. Notice that there are two versions of SPEEX; one of them is SPEEX WideBand, which has a 16 kHz clock rate.</para>
 </section>
 
 <section><title>Video Codecs</title>
@@ -665,7 +669,7 @@ The <application>&app;</application> audio codecs table in the preferences permi
 <graphic fileref="figures/video_codecs.png"></graphic>
 
 <para>
-The <application>&app;</application> video codecs table in the preferences permits you to change the codecs order as well as disabling the codecs you don't want to use. <application>&app;</application> supports codecs like H.261, H.263+, H.264, MPEG-4 or Theora.</para>
+The <application>&app;</application> video codecs table in the preferences permits you to change the codec order as well as disabling the codecs you don't want to use. <application>&app;</application> supports codecs like H.261, H.263+, H.264, MPEG-4 or Theora.</para>
 </section>
 
 
@@ -676,12 +680,12 @@ When you reorder the codecs, you are reordering the local capabilities table, ie
 
 <section><title>Forcing the use of a specific codec</title>
 <para>
-You can force the use of a specific codec by disabling all other codecs, but it will result in failed calls if the remote user doesn't allow that specific codec. The best is to put your prefered codecs at the top of the list so that you always transmit with them if the remote user allows it and to disable the codecs that you don't want to use for transmission and reception.</para>
+You can force the use of a specific codec by disabling all other codecs, but it will result in failed calls if the remote user doesn't support that specific codec. The best approach is to put your preferred codecs at the top of the list so that you always transmit with them if the remote user allows it and to disable the codecs that you don't want to use for transmission and reception.</para>
 </section>
 
 <section><title>Adjusting the jitter buffer</title>
 <para>
-You can adjust the delay to wait before playing the sound buffers that you have received using the jitter buffer adjustment. If there is too much packets loss, the delay required to have received all packets could be so important that it will exceed the jitter buffer. In such a case, the sound you are receiving will be of bad quality. A solution to that problem would be to increase the maximum limit of the jitter buffer to a few seconds, resulting in a big delay but in an improved voice quality. Notice that the jitter buffer will readapt itself to the lowest delay allowing for optimum transmission, and that a bad voice quality in reception is not due to a too low jitter buffer value, but to bad internet connection quality.
+You can adjust the delay to wait before playing the sound buffers that you have received using the jitter buffer adjustment. If there is too much packet loss, the delay required to have received all packets could be so important that it will exceed the jitter buffer. In such a case, the sound you are receiving will be of bad quality. A solution to that problem would be to increase the maximum limit of the jitter buffer to a few seconds, resulting in a big delay but in an improved voice quality. Notice that the jitter buffer will readapt itself to the lowest delay allowing for optimum transmission, and that a bad voice quality in reception is not due to a too low jitter buffer value, but to bad internet connection quality.
 </para>
 </section>
 
@@ -693,17 +697,17 @@ You can adjust the delay to wait before playing the sound buffers that you have 
 
 <section><title>The listen ports</title>
 <para>
-The main port listening for incoming connections in <application>&app;</application> for SIP is port 5060 (UDP), while 1720 (TCP) is used by H.323. To change those ports you need to load "gconf-editor". Open gconf-editor, select apps from the left hand side menu and then select <application>&app;</application>, Protocols. Then select "sip" or "h323", it should give you a list in the corresponding window to your right. Select listen_port and change it to your desired value. You can also change the UDP/RTP port ranges.
+The main port used to listen for incoming connections in <application>&app;</application> for SIP is port 5060 (UDP), while 1720 (TCP) is used by H.323. To change those ports you need to load "gconf-editor". Open gconf-editor, select apps from the left hand side menu and then select <application>&app;</application>, Protocols. Then select "sip" or "h323", it should give you a list in the corresponding window to your right. Select listen_port and change it to your desired value. You can also change the UDP/RTP port ranges.
 </para>
 </section>
 
 <section><title>Explanation of the port ranges</title>
 
-<para>1. The "listen_port" value is the port <application>&app;</application> will listen for incoming connections on. It is different for SIP and H.323.</para>
+<para>1. The "listen_port" value is the port <application>&app;</application> will use to listen for incoming connections. It is different for SIP and H.323.</para>
 
 <para>2. The "udp_port_range" value is the range of UDP ports that <application>&app;</application> will use for SIP signalling or when registering to H.323 gatekeepers. It is also used for RTP (audio and video communication channels).</para>
 
-<para>3. The "tcp_port_range" value is the range of TCP ports beside the listen_port that <application>&app;</application> will use for the H.245 channel with the H.323 protocol. That port range is not used by SIP. It is not used either when H.245 Tunneling is enabled, which is in general always the case, except when calling old H.323 implementations like Netmeeting.</para>
+<para>3. The "tcp_port_range" value is the range of TCP ports beside the listen_port that <application>&app;</application> will use for the H.245 channel with the H.323 protocol. That port range is not used by SIP. It is also not used when H.245 Tunneling is enabled, which is generally the case, except when calling old H.323 implementations like Netmeeting.</para>
 </section>
 </section>
 
@@ -715,7 +719,7 @@ The main port listening for incoming connections in <application>&app;</applicat
 
 <section><title>Misc Settings</title>
 <para><emphasis>Outbound Proxy</emphasis></para>
-<para>The outbound proxy is the SIP proxy that will relay your calls. The behavior of a SIP proxy is similar to the behavior of an HTTP proxy, ie some entity that issues the requests on your behalve and proxies the streams.</para>
+<para>The outbound proxy is the SIP proxy that will relay your calls. The behavior of a SIP proxy is similar to the behavior of an HTTP proxy, i.e. some entity that issues the requests on your behalf and proxies the streams.</para>
 
 <para><emphasis>Forward URI</emphasis></para>
 <para>The URI to which SIP incoming calls should be forwarded if configured in the preferences.</para>
@@ -741,7 +745,7 @@ The main port listening for incoming connections in <application>&app;</applicat
 
 <para><emphasis>Early H.245</emphasis></para>
 
-<para>This enables H.245 early in the setup and permits to achieve faster call initiation.</para>
+<para>This enables H.245 early in the setup and permits achieving faster call initiation.</para>
 
 <para><emphasis>Fast Start</emphasis></para>
 
