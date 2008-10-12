@@ -961,6 +961,8 @@ on_videooutput_device_error_cb (Ekiga::VideoOutputManager & /* manager */,
   tmp_msg = g_strdup (_("No video will be displayed during this call."));
   switch (error_code) {
 
+    case Ekiga::VO_ERROR_NONE:
+      break;
     case Ekiga::VO_ERROR:
     default:
 #ifdef WIN32  
@@ -3889,8 +3891,8 @@ ekiga_main_window_connect_engine_signals (EkigaMainWindow *mw)
   conn = videooutput_core->device_closed.connect (sigc::bind (sigc::ptr_fun (on_videooutput_device_closed_cb), (gpointer) mw));
   mw->priv->connections.push_back (conn);
 
-  conn = videooutput_core->device_error.connect (sigc::bind (sigc::ptr_fun (on_videooutput_device_error_cb), (gpointer) window));
-  mw->connections.push_back (conn);
+  conn = videooutput_core->device_error.connect (sigc::bind (sigc::ptr_fun (on_videooutput_device_error_cb), (gpointer) mw));
+  mw->priv->connections.push_back (conn);
 
   conn = videooutput_core->size_changed.connect (sigc::bind (sigc::ptr_fun (on_size_changed_cb), (gpointer) mw));
   mw->priv->connections.push_back (conn);

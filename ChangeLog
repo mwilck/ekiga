@@ -1,3 +1,19 @@
+2008-10-12  Damien Sandras  <dsandras@gnome.org>
+
+        * src/gui/main.cpp:
+        Fixed previous commit.
+
+2008-10-12  Damien Sandras  <dsandras@gnome.org>
+
+        * src/endpoints/manager.cpp:
+        Remove redundant PTRACE.
+
+2008-10-12  Damien Sandras  <dsandras@gnome.org>
+
+	* src/endpoints/opal-codec-description.cpp:
+	Ignore OPAL codecs with empty format names. Prevents
+	SetMediaFormatOrder loop.
+
 2008-10-12  Matthias Schneider  <ma30002000@yahoo.de>
 
 	* src/gui/main.cpp:
@@ -17,7 +33,7 @@
 
 2008-10-12  Julien Puydt  <jpuydt@gnome.org>
 
- 	* lib/engine/addressbook/call-history/history-contact.cpp:
+	* lib/engine/addressbook/call-history/history-contact.cpp:
 	* lib/engine/components/resource-list/rl-heap.cpp:
 	* lib/engine/framework/menu-xml.cpp:
 	* lib/engine/presence/local-roster/local-presentity.cpp: Fixed leaks
