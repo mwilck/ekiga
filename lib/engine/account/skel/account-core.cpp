@@ -123,7 +123,7 @@ void Ekiga::AccountCore::add_account_subscriber (AccountSubscriber &subscriber)
 
 void Ekiga::AccountCore::on_registration_event (const Ekiga::Account *account,
                                                 Ekiga::AccountCore::RegistrationState state,
-                                                const std::string & info)
+                                                const std::string info)
 {
   registration_event.emit (*account, state, info);
 }

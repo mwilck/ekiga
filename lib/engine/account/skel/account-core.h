@@ -205,7 +205,7 @@ namespace Ekiga
     typedef std::set<AccountSubscriber *>::const_iterator subscriber_const_iterator;
     void on_registration_event (const Ekiga::Account *account,
                                 Ekiga::AccountCore::RegistrationState state,
-                                const std::string & info);
+                                const std::string info);
     void on_mwi_event (const Ekiga::Account *account,
                        const std::string & info);
   };
