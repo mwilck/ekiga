@@ -286,7 +286,9 @@ OPENLDAP::Book::Book (Ekiga::ServiceCore &_core,
     }
   }
   if (upgrade_config) {
+
     if (!uri_node) {
+
       LDAPURLDesc *url_tmp = NULL;
       char *url_str;
       std::string new_uri;
@@ -295,8 +297,7 @@ OPENLDAP::Book::Book (Ekiga::ServiceCore &_core,
       new_uri = std::string("ldap://") + hostname;
       if (!port.empty())
         new_uri += std::string(":") + port;
-      new_uri += "/?" + call_attribute + "?" +
-        scope;
+      new_uri += "/?cn" + call_attribute + "?" + scope;
       ldap_url_parse (new_uri.c_str(), &url_tmp);
       url_tmp->lud_dn = (char *)base.c_str();
       url_str = ldap_url_desc2str (url_tmp);
@@ -307,22 +308,27 @@ OPENLDAP::Book::Book (Ekiga::ServiceCore &_core,
       ldap_free_urldesc (url_tmp);
     }
     if (hostname_node) {
+
 	xmlUnlinkNode (hostname_node);
         xmlFreeNode (hostname_node);
     }
     if (port_node) {
+
 	xmlUnlinkNode (port_node);
         xmlFreeNode (port_node);
     }
     if (base_node) {
+
 	xmlUnlinkNode (base_node);
         xmlFreeNode (base_node);
     }
     if (scope_node) {
+
 	xmlUnlinkNode (scope_node);
         xmlFreeNode (scope_node);
     }
     if (call_attribute_node) {
+
 	xmlUnlinkNode (call_attribute_node);
         xmlFreeNode (call_attribute_node);
     }
