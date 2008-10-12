@@ -911,6 +911,8 @@ FormDialog::single_choice (const std::string name,
   gtk_table_resize (GTK_TABLE (fields), rows, 2);
 
   label = gtk_label_new (NULL);
+  gtk_size_group_add_widget (labels_group, label);
+  gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
   label_text = g_strdup_printf ("<b>%s</b>", description.c_str ());
   gtk_label_set_markup_with_mnemonic (GTK_LABEL (label), label_text);
   g_free (label_text);
@@ -939,10 +941,16 @@ FormDialog::single_choice (const std::string name,
       gtk_combo_box_set_active_iter (GTK_COMBO_BOX (widget), &iter);
   }
 
-  gtk_table_attach_defaults (GTK_TABLE (fields), label,
-			     0, 1, rows -1, rows);
-  gtk_table_attach_defaults (GTK_TABLE (fields), widget,
-			     1, 2, rows -1, rows);
+  gtk_table_attach (GTK_TABLE (fields), label,
+		    0, 1, rows -1, rows,
+		    (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
+		    (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
+		    0,0);
+  gtk_table_attach (GTK_TABLE (fields), widget,
+		    1, 2, rows -1, rows,
+		    (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
+		    (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
+		    0,0);
 
   submitter = new SingleChoiceSubmitter (name, description, choices, widget);
   submitters.push_back (submitter);
