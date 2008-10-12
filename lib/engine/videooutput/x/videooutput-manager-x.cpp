@@ -419,7 +419,12 @@ GMVideoOutputManager_x::setup_frame_display ()
   }
 
   last_frame.both_streams_active = current_frame.both_streams_active;
-  runtime.run_in_main (sigc::bind (device_opened.make_slot (), current_frame.accel, current_frame.mode, current_frame.zoom, current_frame.both_streams_active));
+  if (video_disabled) {
+    runtime.run_in_main (sigc::bind (device_error.make_slot (), Ekiga::VO_ERROR));
+  }
+  else {
+    runtime.run_in_main (sigc::bind (device_opened.make_slot (), current_frame.accel, current_frame.mode, current_frame.zoom, current_frame.both_streams_active));
+  }
 }
 
 void

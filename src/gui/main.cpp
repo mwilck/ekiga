@@ -946,6 +946,39 @@ on_videooutput_device_closed_cb (Ekiga::VideoOutputManager & /* manager */, gpoi
   gtk_menu_section_set_sensitive (mw->priv->main_menu, "zoom_in", FALSE);
 }
 
+void 
+on_videooutput_device_error_cb (Ekiga::VideoOutputManager & /* manager */, 
+                                Ekiga::VideoOutputErrorCodes error_code, 
+                                gpointer self)
+{
+  gchar *dialog_title = NULL;
+  gchar *dialog_msg = NULL;
+  gchar *tmp_msg = NULL;
+
+  dialog_title =
+  g_strdup_printf (_("Error while initializing video output"));
+
+  tmp_msg = g_strdup (_("No video will be displayed during this call."));
+  switch (error_code) {
+
+    case Ekiga::VO_ERROR:
+    default:
+#ifdef WIN32  
+      dialog_msg = g_strconcat (_("There was an error opening initializing the video output. Please verify that no other applicating is using the accelerated video output."), "\n\n", tmp_msg, NULL);
+#else
+      dialog_msg = g_strconcat (_("There was an error opening initializing the video output. Please verify that you are using a color depth of 24 or 32 bits per pixel."), "\n\n", tmp_msg, NULL);
+#endif      
+      break;
+  }
+
+  gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (GTK_WIDGET (self)),
+                                         "show_device_warnings",
+                                         dialog_title,
+                                         "%s", dialog_msg);
+  g_free (dialog_msg);
+  g_free (dialog_title);
+  g_free (tmp_msg);
+}
 
 void 
 on_fullscreen_mode_changed_cb (Ekiga::VideoOutputManager & /* manager */, Ekiga::VideoOutputFSToggle toggle,  gpointer self)
@@ -3855,6 +3888,9 @@ ekiga_main_window_connect_engine_signals (EkigaMainWindow *mw)
 
   conn = videooutput_core->device_closed.connect (sigc::bind (sigc::ptr_fun (on_videooutput_device_closed_cb), (gpointer) mw));
   mw->priv->connections.push_back (conn);
+
+  conn = videooutput_core->device_error.connect (sigc::bind (sigc::ptr_fun (on_videooutput_device_error_cb), (gpointer) window));
+  mw->connections.push_back (conn);
 
   conn = videooutput_core->size_changed.connect (sigc::bind (sigc::ptr_fun (on_size_changed_cb), (gpointer) mw));
   mw->priv->connections.push_back (conn);

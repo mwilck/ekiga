@@ -89,6 +89,7 @@ void VideoOutputCore::add_manager (VideoOutputManager &manager)
 
   manager.device_opened.connect (sigc::bind (sigc::mem_fun (this, &VideoOutputCore::on_device_opened), &manager));
   manager.device_closed.connect (sigc::bind (sigc::mem_fun (this, &VideoOutputCore::on_device_closed), &manager));
+  manager.device_error.connect (sigc::bind (sigc::mem_fun (this, &VideoOutputCore::on_device_error), &manager));
   manager.fullscreen_mode_changed.connect (sigc::bind (sigc::mem_fun (this, &VideoOutputCore::on_fullscreen_mode_changed), &manager));
   manager.size_changed.connect (sigc::bind (sigc::mem_fun (this, &VideoOutputCore::on_size_changed), &manager));
 }
@@ -209,6 +210,11 @@ void VideoOutputCore::on_device_opened (VideoOutputAccel videooutput_accel, Vide
 void VideoOutputCore::on_device_closed ( VideoOutputManager *manager)
 {
   device_closed.emit (*manager);
+}
+
+void VideoOutputCore::on_device_error (VideoOutputErrorCodes error_code, VideoOutputManager *manager)
+{
+  device_error.emit (*manager, error_code);
 }
 
 void VideoOutputCore::on_fullscreen_mode_changed ( VideoOutputFSToggle toggle, VideoOutputManager *manager)
