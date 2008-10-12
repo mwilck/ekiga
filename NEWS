@@ -1,4 +1,5 @@
 Changes since Ekiga 3.00
+- Fix playing of audio files with samplerate != 8000Hz on windows (#555832).
 - Fix overlapping issue of font/smiley buttons (#554529) (Jan Schampera)
 - Fix flickering issues on XV due to the X Server's strange bookkeeping of used ports.
 - Keep the preview thread for the lifetime of Ekiga. Windows does not like rapid deletion and recreation of threads.
