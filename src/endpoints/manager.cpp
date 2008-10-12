@@ -420,10 +420,6 @@ void CallManager::set_codecs (Ekiga::CodecList & _codecs)
   // Update the OpalManager
   SetMediaFormatMask (mask);
   SetMediaFormatOrder (order);
-
-  // Output Mask
-  PTRACE (4, "OPAL\tMediaFormat Mask set to " << setfill (',') << mask << setfill (' '));
-  PTRACE (4, "OPAL\tMediaFormat Order set to " << setfill (',') << order << setfill (' '));
 }
 
 void CallManager::set_forward_on_no_answer (bool enabled)
