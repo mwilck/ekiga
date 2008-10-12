@@ -173,7 +173,7 @@ OPENLDAP::Source::new_ekiga_net_book ()
 {
   bookinfo.name = _("Ekiga.net Directory");
   bookinfo.uri =
-    "ldap://ekiga.net/dc=ekiga,dc=net?cn,telephoneNumber?sub?(cn=$)";
+    "ldap://ekiga.net/dc=ekiga,dc=net?givenName,telephoneNumber?sub?(cn=$)";
   bookinfo.authcID = "";
   bookinfo.password = "";
   bookinfo.saslMech = "";
