@@ -6,6 +6,7 @@ AM_CPPFLAGS = $(XML_CFLAGS) $(SIGC_CFLAGS) $(GLIB_CFLAGS) $(GTK_CFLAGS)
 
 INCLUDES = \
 	-I$(top_srcdir)/lib/gmconf	 		\
+	-I$(top_srcdir)/lib/gmref	 		\
 	-I$(top_srcdir)/lib/engine/framework 		\
 	-I$(top_srcdir)/lib/engine/addressbook/skel	\
 	-I$(top_srcdir)/lib/engine/account/skel		\

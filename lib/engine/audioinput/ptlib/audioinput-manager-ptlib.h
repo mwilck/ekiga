@@ -56,8 +56,7 @@
 
       GMAudioInputManager_ptlib (Ekiga::ServiceCore & core);
 
-      virtual ~GMAudioInputManager_ptlib () {}
-
+      ~GMAudioInputManager_ptlib ();
 
       virtual bool set_device (const Ekiga::AudioInputDevice & device);
 
@@ -79,7 +78,7 @@
 
   protected:
       Ekiga::ServiceCore & core;
-      Ekiga::Runtime & runtime;
+      Ekiga::Runtime* runtime;
       unsigned expectedFrameSize;
 
       PSoundChannel *input_device;

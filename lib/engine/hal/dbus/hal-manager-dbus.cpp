@@ -52,7 +52,7 @@ extern "C" {
 #include "ptlib.h"
 
 HalManager_dbus::HalManager_dbus (Ekiga::ServiceCore & _core)
-:    core (_core), runtime (*(dynamic_cast<Ekiga::Runtime *> (_core.get ("runtime"))))
+:    core (_core)
 {
   PTRACE(4, "HalManager_dbus\tInitialising HAL Manager");
 

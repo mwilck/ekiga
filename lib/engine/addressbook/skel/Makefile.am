@@ -5,7 +5,7 @@ addressbook_dir = $(top_srcdir)/lib/engine/addressbook/skel
 AM_CXXFLAGS = $(SIGC_CFLAGS)
 
 INCLUDES = \
-	-I$(top_srcdir)/lib/engine/include \
+	-I$(top_srcdir)/lib/gmref \
 	-I$(top_srcdir)/lib/engine/framework
 
 libgmaddressbook_la_SOURCES = \

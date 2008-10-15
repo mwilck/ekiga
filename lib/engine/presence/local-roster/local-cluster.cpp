@@ -41,8 +41,7 @@
 
 Local::Cluster::Cluster (Ekiga::ServiceCore &_core): core(_core)
 {
-  presence_core
-    = dynamic_cast<Ekiga::PresenceCore*>(core.get ("presence-core"));
+  gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
 
   heap = new Local::Heap (core);
 
@@ -59,6 +58,8 @@ Local::Cluster::~Cluster ()
 bool
 Local::Cluster::is_supported_uri (const std::string uri) const
 {
+  gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
+
   return presence_core->is_supported_uri (uri);
 }
 

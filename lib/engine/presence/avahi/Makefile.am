@@ -5,6 +5,7 @@ avahi_dir = $(top_srcdir)/lib/engine/presence/avahi
 AM_CPPFLAGS = $(SIGC_CFLAGS) $(AVAHI_CFLAGS)
 
 INCLUDES = \
+	-I$(top_srcdir)/lib/gmref \
 	-I$(top_srcdir)/lib/engine/framework \
 	-I$(top_srcdir)/lib/engine/account/skel \
 	-I$(top_srcdir)/lib/engine/presence/skel

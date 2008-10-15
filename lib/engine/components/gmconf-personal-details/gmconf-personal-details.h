@@ -41,8 +41,7 @@
 
 namespace Gmconf
 {
-  class PersonalDetails: public Ekiga::Service,
-			 public Ekiga::PersonalDetails
+  class PersonalDetails: public Ekiga::PersonalDetails
   {
   public:
 

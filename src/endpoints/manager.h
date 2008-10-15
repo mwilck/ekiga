@@ -169,9 +169,8 @@ private:
     PMutex manager_access_mutex;
 
     Ekiga::ServiceCore & core;
-    Ekiga::Runtime & runtime;
     Ekiga::CodecList codecs; 
-    Ekiga::CallCore *call_core;
+    gmref_ptr<Ekiga::CallCore> call_core; // FIXME: is it threaded in there?
 
     /* used to get the STUNDetector results */
     GAsyncQueue* queue;

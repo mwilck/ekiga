@@ -266,16 +266,14 @@ on_mwi_event (const Ekiga::Account & account,
               std::string mwi,
               gpointer self)
 {
-  GmAccountsWindow *aw = NULL;
-
-  aw = gm_aw_get_aw (GTK_WIDGET (self));
-  Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (aw->core.get ("audiooutput-core"));
-
   if (gm_accounts_window_update_account_state (GTK_WIDGET (self), false, account, NULL, mwi.c_str ())) {
 
     std::string::size_type loc = mwi.find ("/", 0);
     if (loc != std::string::npos) {
 
+      GmAccountsWindow *aw = gm_aw_get_aw (GTK_WIDGET (self));
+      gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core
+	= aw->core.get ("audiooutput-core");
       std::stringstream new_messages;
       int i;
       new_messages << mwi.substr (0, loc);
@@ -306,7 +304,8 @@ populate_menu (GtkWidget *window)
   selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (aw->accounts_list));
   model = gtk_tree_view_get_model (GTK_TREE_VIEW (aw->accounts_list));
 
-  Ekiga::AccountCore *account_core = dynamic_cast<Ekiga::AccountCore *> (aw->core.get ("account-core"));
+  gmref_ptr<Ekiga::AccountCore> account_core
+    = aw->core.get ("account-core");
 
   if (account_core->populate_menu (builder)) {
     item = gtk_separator_menu_item_new ();
@@ -765,7 +764,8 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
   /* Engine Signals callbacks */
   // FIXME sigc::connection conn;
 
-  Ekiga::AccountCore *account_core = dynamic_cast<Ekiga::AccountCore *> (core.get ("account-core"));
+  gmref_ptr<Ekiga::AccountCore> account_core
+    = core.get ("account-core");
   account_core->bank_added.connect (sigc::bind (sigc::ptr_fun (on_bank_added), window));
   account_core->account_added.connect (sigc::bind (sigc::ptr_fun (on_account_added), window));
   account_core->account_updated.connect (sigc::bind (sigc::ptr_fun (on_account_updated), window));

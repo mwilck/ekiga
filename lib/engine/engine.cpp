@@ -121,16 +121,19 @@ engine_init (int argc,
   /* VideoInputCore depends on VideoOutputCore and must this              *
    * be constructed thereafter                                      */
 
-  Ekiga::AccountCore *account_core = new Ekiga::AccountCore;
-  Ekiga::PresenceCore *presence_core = NULL;
-  Ekiga::ContactCore *contact_core = new Ekiga::ContactCore;
-  Ekiga::CallCore *call_core = new Ekiga::CallCore;
-  Ekiga::ChatCore *chat_core = new Ekiga::ChatCore;
-  Ekiga::VideoOutputCore *videooutput_core = new Ekiga::VideoOutputCore;
-  Ekiga::VideoInputCore *videoinput_core = new Ekiga::VideoInputCore(*runtime, *videooutput_core);
-  Ekiga::AudioOutputCore *audiooutput_core = new Ekiga::AudioOutputCore(*runtime);
-  Ekiga::AudioInputCore *audioinput_core = new Ekiga::AudioInputCore(*runtime, *audiooutput_core);
-  Ekiga::HalCore *hal_core = new Ekiga::HalCore;
+  gmref_ptr<Ekiga::AccountCore> account_core = new Ekiga::AccountCore;
+  gmref_ptr<Ekiga::ContactCore> contact_core = new Ekiga::ContactCore;
+  gmref_ptr<Ekiga::CallCore> call_core = new Ekiga::CallCore;
+  gmref_ptr<Ekiga::ChatCore> chat_core = new Ekiga::ChatCore;
+  gmref_ptr<Ekiga::VideoOutputCore> videooutput_core
+    = new Ekiga::VideoOutputCore;
+  gmref_ptr<Ekiga::VideoInputCore> videoinput_core =
+    new Ekiga::VideoInputCore(*runtime, *videooutput_core);
+  gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core
+    = new Ekiga::AudioOutputCore(*runtime);
+  gmref_ptr<Ekiga::AudioInputCore> audioinput_core
+    = new Ekiga::AudioInputCore(*runtime, *audiooutput_core);
+  gmref_ptr<Ekiga::HalCore> hal_core = new Ekiga::HalCore;
 
 
   /* The last item in the following list will be destroyed first.   *
@@ -140,24 +143,25 @@ engine_init (int argc,
    *   components may still call runtime functions until destroyed  *
    *   (e.g. VideoOutputCore).                                          */
 
-  core->add (*runtime);
-  core->add (*account_core);
-  core->add (*contact_core);
-  core->add (*chat_core);
-  core->add (*videooutput_core);
-  core->add (*videoinput_core);
-  core->add (*audiooutput_core);
-  core->add (*audioinput_core);
-  core->add (*hal_core);
-  core->add (*call_core);
+  core->add (runtime);
+  core->add (account_core);
+  core->add (contact_core);
+  core->add (chat_core);
+  core->add (videooutput_core);
+  core->add (videoinput_core);
+  core->add (audiooutput_core);
+  core->add (audioinput_core);
+  core->add (hal_core);
+  core->add (call_core);
 
   if (!gmconf_personal_details_init (*core, &argc, &argv)) {
     delete core;
     return;
   }
 
-  presence_core = new Ekiga::PresenceCore (*core);
-  core->add (*presence_core);
+  gmref_ptr<Ekiga::PresenceCore> presence_core
+    = new Ekiga::PresenceCore (*core);
+  core->add (presence_core);
 
 #ifndef WIN32
   if (!videooutput_x_init (*core, &argc, &argv)) {
@@ -293,12 +297,12 @@ engine_init (int argc,
   audioinput_core->setup_conf_bridge();
 
   sigc::connection conn;
-  conn = hal_core->videoinput_device_added.connect (sigc::mem_fun (videoinput_core, &Ekiga::VideoInputCore::add_device));
-  conn = hal_core->videoinput_device_removed.connect (sigc::mem_fun (videoinput_core, &Ekiga::VideoInputCore::remove_device));
-  conn = hal_core->audiooutput_device_added.connect (sigc::mem_fun (audiooutput_core, &Ekiga::AudioOutputCore::add_device));
-  conn = hal_core->audiooutput_device_removed.connect (sigc::mem_fun (audiooutput_core, &Ekiga::AudioOutputCore::remove_device));
-  conn = hal_core->audioinput_device_added.connect (sigc::mem_fun (audioinput_core, &Ekiga::AudioInputCore::add_device));
-  conn = hal_core->audioinput_device_removed.connect (sigc::mem_fun (audioinput_core, &Ekiga::AudioInputCore::remove_device));
+  conn = hal_core->videoinput_device_added.connect (sigc::mem_fun (*videoinput_core, &Ekiga::VideoInputCore::add_device));
+  conn = hal_core->videoinput_device_removed.connect (sigc::mem_fun (*videoinput_core, &Ekiga::VideoInputCore::remove_device));
+  conn = hal_core->audiooutput_device_added.connect (sigc::mem_fun (*audiooutput_core, &Ekiga::AudioOutputCore::add_device));
+  conn = hal_core->audiooutput_device_removed.connect (sigc::mem_fun (*audiooutput_core, &Ekiga::AudioOutputCore::remove_device));
+  conn = hal_core->audioinput_device_added.connect (sigc::mem_fun (*audioinput_core, &Ekiga::AudioInputCore::add_device));
+  conn = hal_core->audioinput_device_removed.connect (sigc::mem_fun (*audioinput_core, &Ekiga::AudioInputCore::remove_device));
   // std::vector<sigc::connection> connections;
   //connections.push_back (conn);
 }

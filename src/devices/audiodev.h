@@ -92,8 +92,8 @@ public:
   PINDEX storedVolume;
 
   Ekiga::ServiceCore & core;
-  Ekiga::AudioInputCore & audioinput_core;
-  Ekiga::AudioOutputCore & audiooutput_core;
+  gmref_ptr<Ekiga::AudioInputCore> audioinput_core;
+  gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core;
   bool opened;
 };
 

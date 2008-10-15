@@ -39,11 +39,18 @@
 #define DEVICE_NAME   "SILENT"
 
 GMAudioOutputManager_null::GMAudioOutputManager_null (Ekiga::ServiceCore & _core)
-: core (_core),
-  runtime (*(dynamic_cast<Ekiga::Runtime *> (_core.get ("runtime"))))
+: core (_core)
 {
+  gmref_ptr<Ekiga::Runtime> smart = core.get ("runtime");
+  gmref_inc (smart); // take a reference in the main thread
+  runtime = &*smart;
   current_state[Ekiga::primary].opened = false;
   current_state[Ekiga::secondary].opened = false;
+}
+
+GMAudioOutputManager_null::~GMAudioOutputManager_null ()
+{
+  gmref_dec (runtime); // leave a reference in the main thread
 }
 
 void GMAudioOutputManager_null::get_devices(std::vector <Ekiga::AudioOutputDevice> & devices)
@@ -84,7 +91,7 @@ bool GMAudioOutputManager_null::open (Ekiga::AudioOutputPS ps, unsigned channels
   Ekiga::AudioOutputSettings settings;
   settings.volume = 0;
   settings.modifyable = false;
-  runtime.run_in_main (sigc::bind (device_opened.make_slot (), ps, current_state[ps].device, settings));
+  runtime->run_in_main (sigc::bind (device_opened.make_slot (), ps, current_state[ps].device, settings));
 
   return true;
 }
@@ -92,7 +99,7 @@ bool GMAudioOutputManager_null::open (Ekiga::AudioOutputPS ps, unsigned channels
 void GMAudioOutputManager_null::close(Ekiga::AudioOutputPS ps)
 {
   current_state[ps].opened = false;
-  runtime.run_in_main (sigc::bind (device_closed.make_slot (), ps, current_state[ps].device));
+  runtime->run_in_main (sigc::bind (device_closed.make_slot (), ps, current_state[ps].device));
 }
 
 

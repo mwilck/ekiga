@@ -39,47 +39,18 @@
 #include "chat-core.h"
 #include "echo-dialect.h"
 
-namespace Echo
-{
-  class Service: public Ekiga::Service
-  {
-  public:
-
-    Service (Dialect *dialect_): dialect(dialect_)
-    {}
-
-    ~Service ()
-    { delete dialect; }
-
-    const std::string get_name () const
-    { return "echo-dialect"; }
-
-    const std::string get_description () const
-    { return "\tProvides an echo chat for testing purposes"; }
-
-  private:
-
-    Dialect *dialect;
-  };
-};
-
 bool
 echo_init (Ekiga::ServiceCore &core,
 	   int */*argc*/,
 	   char **/*argv*/[])
 {
   bool result = false;
-  Ekiga::ChatCore *chat_core = NULL;
-  Echo::Service *service = NULL;
+  gmref_ptr<Ekiga::ChatCore> chat_core = core.get ("chat-core");
 
-  chat_core
-    = dynamic_cast<Ekiga::ChatCore*>(core.get ("chat-core"));
+  if (chat_core) {
 
-  if (chat_core != NULL) {
-
-    Echo::Dialect* dialect = new Echo::Dialect;
-    service = new Echo::Service (dialect);
-    core.add (*service);
+    gmref_ptr<Echo::Dialect> dialect = new Echo::Dialect;
+    core.add (dialect);
     chat_core->add_dialect (*dialect);
     result = true;
   }

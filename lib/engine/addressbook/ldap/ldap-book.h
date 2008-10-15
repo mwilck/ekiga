@@ -130,7 +130,6 @@ namespace OPENLDAP
     void on_edit_form_submitted (Ekiga::Form &);
 
     Ekiga::ServiceCore &core;
-    Ekiga::ContactCore *contact_core;
     xmlNodePtr node;
 
     xmlNodePtr name_node;
@@ -145,8 +144,6 @@ namespace OPENLDAP
 
     std::string status;
     std::string search_filter;
-
-    Ekiga::Runtime & runtime;
   };
 
 /**

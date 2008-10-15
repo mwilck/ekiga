@@ -45,12 +45,9 @@ videooutput_dx_init (Ekiga::ServiceCore &core,
 	    char **/*argv*/[])
 {
   bool result = false;
-  Ekiga::VideoOutputCore *videooutput_core = NULL;
+  gmref_ptr<Ekiga::VideoOutputCore> videooutput_core = core.get ("videooutput-core");
 
-  videooutput_core
-    = dynamic_cast<Ekiga::VideoOutputCore*>(core.get ("videooutput-core"));
-
-  if (videooutput_core != NULL) {
+  if (videooutput_core) {
 
     GMVideoOutputManager_dx *videooutput_manager = new GMVideoOutputManager_dx(core);
 

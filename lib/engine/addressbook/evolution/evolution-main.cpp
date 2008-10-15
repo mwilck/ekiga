@@ -39,47 +39,18 @@
 #include "contact-core.h"
 #include "evolution-source.h"
 
-namespace Evolution
-{
-  class Service: public Ekiga::Service
-  {
-  public:
-
-    Service (Evolution::Source *_source): source(_source)
-    {}
-
-    ~Service ()
-    { delete source; }
-
-    const std::string get_name () const
-    { return "evolution-source"; }
-
-    const std::string get_description () const
-    { return "\tComponent bringing in gnome addressbooks"; }
-
-  private:
-
-    Evolution::Source *source;
-  };
-};
-
 bool
 evolution_init (Ekiga::ServiceCore &services,
 		int */*argc*/,
 		char **/*argv*/[])
 {
   bool result = false;
-  Ekiga::ContactCore *core = NULL;
-  Evolution::Source *source = NULL;
-  Evolution::Service *service = NULL;
+  gmref_ptr<Ekiga::ContactCore> core = services.get ("contact-core");
 
-  core = dynamic_cast<Ekiga::ContactCore*>(services.get ("contact-core"));
+  if (core) {
 
-  if (core != NULL) {
-
-    source = new Evolution::Source (services);
-    service = new Evolution::Service (source);
-    services.add (*service);
+    gmref_ptr<Evolution::Source> source = new Evolution::Source (services);
+    services.add (source);
     core->add_source (*source);
     result = true;
   }

@@ -47,8 +47,7 @@
 GMPCSSEndpoint::GMPCSSEndpoint (Opal::CallManager & ep,
                                 Ekiga::ServiceCore & _core) 
 :   OpalPCSSEndPoint (ep),
-    core (_core),
-    runtime (*dynamic_cast<Ekiga::Runtime*>(core.get ("runtime")))
+    core (_core)
 {
 #ifdef WIN32
   SetSoundChannelBufferDepth (20);

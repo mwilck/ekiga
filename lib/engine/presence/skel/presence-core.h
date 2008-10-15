@@ -135,7 +135,8 @@ namespace Ekiga
    *         special registering magic?
    */
   class PresenceCore:
-    public Service
+    public Service,
+    public sigc::trackable
   {
   public:
 
@@ -296,12 +297,12 @@ namespace Ekiga
   private:
 
     std::list<PresencePublisher*> presence_publishers;
-    void publish (const PersonalDetails* details);
+    void publish (gmref_ptr<PersonalDetails> details);
     void on_personal_details_updated (PersonalDetails &details);
     void on_registration_event (const Ekiga::Account & account,
 				Ekiga::AccountCore::RegistrationState state,
                                 std::string info,
-                                Ekiga::PersonalDetails *details);
+                                gmref_ptr<Ekiga::PersonalDetails> details);
 
     /*** API to control which uri are supported by runtime ***/
   public:

@@ -717,7 +717,8 @@ void
 gm_prefs_window_get_videoinput_devices_list (Ekiga::ServiceCore *core,
                                         std::vector<std::string> & device_list)
 {
-  Ekiga::VideoInputCore *videoinput_core = dynamic_cast<Ekiga::VideoInputCore *> (core->get ("videoinput-core"));
+  gmref_ptr<Ekiga::VideoInputCore> videoinput_core
+    = core->get ("videoinput-core");
   std::vector <Ekiga::VideoInputDevice> devices;
 
   device_list.clear();
@@ -739,7 +740,8 @@ void
 gm_prefs_window_get_audiooutput_devices_list (Ekiga::ServiceCore *core,
                                         std::vector<std::string> & device_list)
 {
-  Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (core->get ("audiooutput-core"));
+  gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core
+    = core->get ("audiooutput-core");
   std::vector <Ekiga::AudioOutputDevice> devices;
 
   std::string device_string;
@@ -764,7 +766,8 @@ void
 gm_prefs_window_get_audioinput_devices_list (Ekiga::ServiceCore *core,
                                         std::vector<std::string> & device_list)
 {
-  Ekiga::AudioInputCore *audioinput_core = dynamic_cast<Ekiga::AudioInputCore *> (core->get ("audioinput-core"));
+  gmref_ptr<Ekiga::AudioInputCore> audioinput_core
+    = core->get ("audioinput-core");
   std::vector <Ekiga::AudioInputDevice> devices;
 
   device_list.clear();
@@ -1132,7 +1135,8 @@ sound_event_play_cb (G_GNUC_UNUSED GtkWidget *widget,
 
   //FIXME
   Ekiga::ServiceCore *core = GnomeMeeting::Process ()->GetServiceCore (); 
-  Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (core->get ("audiooutput-core"));
+  gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core
+    = core->get ("audiooutput-core");
 
   gchar* file_name = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (data));
   if (file_name) { 
@@ -1217,7 +1221,8 @@ audioev_filename_browse_play_cb (GtkWidget* /* playbutton */,
 
   //FIXME
   Ekiga::ServiceCore *core = GnomeMeeting::Process ()->GetServiceCore (); 
-  Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (core->get ("audiooutput-core"));
+  gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core
+    = core->get ("audiooutput-core");
 
   gchar* file_name = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (data));
   std::string file_name_string = file_name;
@@ -1490,9 +1495,12 @@ gm_prefs_window_new (Ekiga::ServiceCore *core)
 		    G_CALLBACK (delete_window_cb), NULL);
 
   sigc::connection conn;
-  Ekiga::VideoInputCore *videoinput_core = dynamic_cast<Ekiga::VideoInputCore *> (core->get ("videoinput-core"));
-  Ekiga::AudioInputCore *audioinput_core = dynamic_cast<Ekiga::AudioInputCore *> (core->get ("audioinput-core"));
-  Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (core->get ("audiooutput-core"));
+  gmref_ptr<Ekiga::VideoInputCore> videoinput_core
+    = core->get ("videoinput-core");
+  gmref_ptr<Ekiga::AudioInputCore> audioinput_core
+    = core->get ("audioinput-core");
+  gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core
+    = core->get ("audiooutput-core");
 
   conn = videoinput_core->device_added.connect (sigc::bind (sigc::ptr_fun (on_videoinput_device_added_cb), window));
   pw->connections.push_back (conn);

@@ -78,9 +78,19 @@ PCREATE_PLUGIN(EKIGA, PVideoOutputDevice, &PVideoOutputDevice_EKIGA_descriptor);
 
 /* The Methods */
 PVideoOutputDevice_EKIGA::PVideoOutputDevice_EKIGA (Ekiga::ServiceCore & _core)
-: core (_core), videooutput_core (*(dynamic_cast<Ekiga::VideoOutputCore *> (_core.get ("videooutput-core"))))
+: core (_core)
 { 
- PWaitAndSignal m(videoDisplay_mutex);
+  PWaitAndSignal m(videoDisplay_mutex); /* FIXME: if it's really needed
+					 * then we may crash : it's wrong to
+					 * use 'core' from a thread -- mutex
+					 * or not mutex.
+					 */
+
+ {
+   gmref_ptr<Ekiga::VideoOutputCore> smart = core.get ("videooutput-core");
+   gmref_inc (smart); // take a reference in the main thread
+   videooutput_core = &*smart;
+ }
 
   is_active = FALSE;
   
@@ -91,12 +101,17 @@ PVideoOutputDevice_EKIGA::PVideoOutputDevice_EKIGA (Ekiga::ServiceCore & _core)
 
 PVideoOutputDevice_EKIGA::~PVideoOutputDevice_EKIGA()
 {
-  PWaitAndSignal m(videoDisplay_mutex);
+  PWaitAndSignal m(videoDisplay_mutex); /* FIXME: if it's really needed
+					 * then we may crash : it's wrong to
+					 * have played with 'core' from a thread
+					 */
+
+  gmref_dec (videooutput_core); // leave a reference in the main thread
 
   if (is_active) {
     devices_nbr--;
     if (devices_nbr==0)
-      videooutput_core.stop();
+      videooutput_core->stop();
     is_active = false;
   }
 }
@@ -151,13 +166,13 @@ bool PVideoOutputDevice_EKIGA::SetFrameData (unsigned x,
 
   if (!is_active) {
     if (devices_nbr == 0) {
-      videooutput_core.start();
+      videooutput_core->start();
     }
     is_active = TRUE;
     devices_nbr++;
   }
 
-  videooutput_core.set_frame_data((const char*) data, width, height, (device_id == LOCAL), devices_nbr);
+  videooutput_core->set_frame_data((const char*) data, width, height, (device_id == LOCAL), devices_nbr);
 
   return TRUE;
 }

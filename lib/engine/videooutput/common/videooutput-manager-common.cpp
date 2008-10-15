@@ -48,12 +48,16 @@
 /* The functions */
 GMVideoOutputManager::GMVideoOutputManager(Ekiga::ServiceCore & _core)
   : PThread (1000, NoAutoDeleteThread, HighestPriority, "GMVideoOutputManager"),
-    core (_core), runtime (*(dynamic_cast<Ekiga::Runtime *> (_core.get ("runtime"))))
+    core (_core)
 {
+  gmref_ptr<Ekiga::Runtime> smart = core.get ("runtime");
+  gmref_inc (smart); // take a reference on smart in the main thread
+  runtime = &*smart;
 }
 
 GMVideoOutputManager::~GMVideoOutputManager ()
 {
+  gmref_dec (runtime); // leave a reference on smart in the main thread
 }
 
 void GMVideoOutputManager::open ()
@@ -250,8 +254,8 @@ void GMVideoOutputManager::uninit ()
 void GMVideoOutputManager::update_gui_device ()
 {
   last_frame.both_streams_active = current_frame.both_streams_active;
-  runtime.run_in_main (device_closed.make_slot ());
-  runtime.run_in_main (sigc::bind (device_opened.make_slot (), current_frame.accel, current_frame.mode, current_frame.zoom, current_frame.both_streams_active));
+  runtime->run_in_main (device_closed.make_slot ());
+  runtime->run_in_main (sigc::bind (device_opened.make_slot (), current_frame.accel, current_frame.mode, current_frame.zoom, current_frame.both_streams_active));
 
 }
 

@@ -78,7 +78,6 @@ namespace Local
   private:
 
     Ekiga::ServiceCore &core;
-    Ekiga::PresenceCore *presence_core;
     Heap *heap;
 
     void on_presence_received (std::string uri,

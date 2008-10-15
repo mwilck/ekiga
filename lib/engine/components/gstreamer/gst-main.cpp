@@ -52,22 +52,14 @@ gstreamer_init (Ekiga::ServiceCore& core,
 		char** argv[])
 {
   bool result = false;
-  Ekiga::AudioInputCore* audioinput_core = NULL;
-  Ekiga::AudioOutputCore* audiooutput_core = NULL;
-  Ekiga::VideoInputCore* videoinput_core = NULL;
+  gmref_ptr<Ekiga::AudioInputCore> audioinput_core
+    = core.get ("audioinput-core");
+  gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core
+    = core.get ("audiooutput-core");
+  gmref_ptr<Ekiga::VideoInputCore> videoinput_core
+    = core.get ("videoinput-core");
 
-  audioinput_core
-    = dynamic_cast<Ekiga::AudioInputCore*>(core.get ("audioinput-core"));
-
-  audiooutput_core
-    = dynamic_cast<Ekiga::AudioOutputCore*>(core.get ("audiooutput-core"));
-
-  videoinput_core
-    = dynamic_cast<Ekiga::VideoInputCore*>(core.get ("videoinput-core"));
-
-  if (audioinput_core != NULL
-      && audiooutput_core != NULL
-      && videoinput_core != NULL) {
+  if (audioinput_core && audiooutput_core && videoinput_core) {
 
     GST::VideoInputManager* video = new GST::VideoInputManager ();
     GST::AudioInputManager* audioin = new GST::AudioInputManager ();

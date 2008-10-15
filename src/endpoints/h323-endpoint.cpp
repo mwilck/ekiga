@@ -105,13 +105,17 @@ namespace Opal {
 Opal::H323::EndPoint::EndPoint (Opal::CallManager & _manager, Ekiga::ServiceCore & _core, unsigned _listen_port)
         : H323EndPoint (_manager), 
           manager (_manager),
-          core (_core),
-          runtime (*(dynamic_cast<Ekiga::Runtime *> (core.get ("runtime")))),
-          account_core (*(dynamic_cast<Ekiga::AccountCore *> (core.get ("account-core"))))
+          core (_core)
 {
   protocol_name = "h323";
   uri_prefix = "h323:";
   listen_port = _listen_port;
+
+  {
+    gmref_ptr<Ekiga::Runtime> smart = core.get ("runtime");
+    gmref_inc (smart); // take a reference in the main thread
+    runtime = &*smart;
+  }
 
   /* Initial requested bandwidth */
   SetInitialBandwidth (40000);
@@ -341,15 +345,15 @@ void Opal::H323::EndPoint::Register (const Opal::Account & account)
         info = _("Failed");
 
       /* Signal */
-      runtime.run_in_main (sigc::bind (account.registration_event.make_slot (),
-                                       Ekiga::AccountCore::RegistrationFailed,
-                                       info));
+      runtime->run_in_main (sigc::bind (account.registration_event.make_slot (),
+					Ekiga::AccountCore::RegistrationFailed,
+					info));
     }
     else {
 
-      runtime.run_in_main (sigc::bind (account.registration_event.make_slot (),
-                                       Ekiga::AccountCore::Registered,
-                                       std::string ()));
+      runtime->run_in_main (sigc::bind (account.registration_event.make_slot (),
+					Ekiga::AccountCore::Registered,
+					std::string ()));
     }
   }
   else if (unregister && IsRegisteredWithGatekeeper (account.get_host ())) {
@@ -358,9 +362,9 @@ void Opal::H323::EndPoint::Register (const Opal::Account & account)
     RemoveAliasName (account.get_username ());
 
     /* Signal */
-    runtime.run_in_main (sigc::bind (account.registration_event.make_slot (),
-                                     Ekiga::AccountCore::Unregistered,
-                                     std::string ()));
+    runtime->run_in_main (sigc::bind (account.registration_event.make_slot (),
+				      Ekiga::AccountCore::Unregistered,
+				      std::string ()));
   }
 }
 

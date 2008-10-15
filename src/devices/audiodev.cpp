@@ -72,10 +72,10 @@ PCREATE_PLUGIN(EKIGA, PSoundChannel, &PSoundChannel_EKIGA_descriptor);
 
 ///////////////////////////////////////////////////////////////////////////////
 
-PSoundChannel_EKIGA::PSoundChannel_EKIGA (Ekiga::ServiceCore & _core)
-: core (_core), 
-  audioinput_core (*(dynamic_cast<Ekiga::AudioInputCore *> (_core.get ("audioinput-core")))),
-  audiooutput_core (*(dynamic_cast<Ekiga::AudioOutputCore *> (_core.get ("audiooutput-core"))))
+PSoundChannel_EKIGA::PSoundChannel_EKIGA (Ekiga::ServiceCore & _core):
+  core (_core),
+  audioinput_core (core.get ("audioinput-core")),
+  audiooutput_core (core.get ("audiooutput-core"))
 {
   opened = false;
 }
@@ -83,13 +83,13 @@ PSoundChannel_EKIGA::PSoundChannel_EKIGA (Ekiga::ServiceCore & _core)
 
 PSoundChannel_EKIGA::PSoundChannel_EKIGA (const PString & /*_device*/,
                                           Directions dir,
-                                            unsigned numChannels,
-                                            unsigned sampleRate,
-                                            unsigned bitsPerSample,
-                                            Ekiga::ServiceCore & _core)
-: core (_core), 
-  audioinput_core (*(dynamic_cast<Ekiga::AudioInputCore *> (_core.get ("audioinput-core")))),
-  audiooutput_core (*(dynamic_cast<Ekiga::AudioOutputCore *> (_core.get ("audiooutput-core"))))
+					  unsigned numChannels,
+					  unsigned sampleRate,
+					  unsigned bitsPerSample,
+					  Ekiga::ServiceCore & _core):
+  core (_core),
+  audioinput_core (core.get ("audioinput-core")),
+  audiooutput_core (core.get ("audiooutput-core"))
 {
   opened = false;
   Open (device, dir, numChannels, sampleRate, bitsPerSample);
@@ -120,10 +120,10 @@ bool PSoundChannel_EKIGA::Open (const PString & /*_device*/,
   direction = _dir;
 
   if (_dir == Recorder) {
-    audioinput_core.start_stream(_numChannels, _sampleRate, _bitsPerSample);
+    audioinput_core->start_stream(_numChannels, _sampleRate, _bitsPerSample);
   }
   else {
-    audiooutput_core.start (_numChannels, _sampleRate, _bitsPerSample);
+    audiooutput_core->start (_numChannels, _sampleRate, _bitsPerSample);
   }
 
   mNumChannels   = _numChannels;
@@ -141,10 +141,10 @@ bool PSoundChannel_EKIGA::Close()
     return true;
 
   if (direction == Recorder) {
-    audioinput_core.stop_stream();
+    audioinput_core->stop_stream();
   }
   else {
-    audiooutput_core.stop();
+    audiooutput_core->stop();
   }
   opened = false;
   return true;
@@ -156,7 +156,7 @@ bool PSoundChannel_EKIGA::Write (const void *buf, PINDEX len)
   unsigned bytesWritten;
 
   if (direction == Player) {
-    audiooutput_core.set_frame_data((char*)buf, len, bytesWritten);
+    audiooutput_core->set_frame_data((char*)buf, len, bytesWritten);
   }
 
   lastWriteCount = bytesWritten;
@@ -169,7 +169,7 @@ bool PSoundChannel_EKIGA::Read (void * buf, PINDEX len)
   unsigned bytesRead;
 
   if (direction == Recorder) {
-    audioinput_core.get_frame_data((char*)buf, len, bytesRead);
+    audioinput_core->get_frame_data((char*)buf, len, bytesRead);
   }
 
   lastReadCount = bytesRead;
@@ -198,10 +198,10 @@ unsigned PSoundChannel_EKIGA::GetSampleSize() const
 bool PSoundChannel_EKIGA::SetBuffers (PINDEX size, PINDEX count)
 {
   if (direction == Recorder) {
-    audioinput_core.set_stream_buffer_size(size, count);
+    audioinput_core->set_stream_buffer_size(size, count);
   }
   else {
-    audiooutput_core.set_buffer_size(size, count);
+    audiooutput_core->set_buffer_size(size, count);
   }
 
   storedPeriods = count;

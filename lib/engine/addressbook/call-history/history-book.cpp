@@ -84,8 +84,7 @@ History::Book::Book (Ekiga::ServiceCore &_core) :
     xmlDocSetRootElement (doc, root);
   }
 
-  Ekiga::CallCore *call_core
-    = dynamic_cast<Ekiga::CallCore*>(core.get ("call-core"));
+  gmref_ptr<Ekiga::CallCore> call_core = core.get ("call-core");
 
   call_core->missed_call.connect (sigc::mem_fun (this, &History::Book::on_missed_call));
   call_core->cleared_call.connect (sigc::mem_fun (this, &History::Book::on_cleared_call));

@@ -45,16 +45,12 @@ local_roster_init (Ekiga::ServiceCore &core,
 		   char **/*argv*/[])
 {
   bool result = false;
-  Ekiga::PresenceCore *presence_core = NULL;
-  Local::Cluster *cluster = NULL;
+  gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
 
-  presence_core
-    = dynamic_cast<Ekiga::PresenceCore*>(core.get ("presence-core"));
+  if (presence_core) {
 
-  if (presence_core != NULL) {
-
-    cluster = new Local::Cluster (core);
-    core.add (*cluster);
+    gmref_ptr<Local::Cluster> cluster = new Local::Cluster (core);
+    core.add (cluster);
     presence_core->add_cluster (*cluster);
     result = true;
   }

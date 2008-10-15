@@ -52,9 +52,6 @@
 Local::Heap::Heap (Ekiga::ServiceCore &_core): core (_core), doc (NULL)
 {
   xmlNodePtr root;
-
-  presence_core = dynamic_cast<Ekiga::PresenceCore*>(core.get ("presence-core"));
-
   gchar *c_raw = gm_conf_get_string (KEY);
 
   // Build the XML document representing the contacts list from the configuration
@@ -175,6 +172,7 @@ Local::Heap::new_presentity (const std::string name,
 {
   if (!has_presentity_with_uri (uri)) {
 
+    gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
     Ekiga::FormRequestSimple request;
     std::set<std::string> groups = existing_groups ();
 
@@ -248,6 +246,8 @@ Local::Heap::add (const std::string name,
 void
 Local::Heap::common_add (Presentity &presentity)
 {
+  gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
+
   // Add the presentity to this Heap
   add_presentity (presentity);
 
@@ -278,6 +278,7 @@ Local::Heap::new_presentity_form_submitted (Ekiga::Form &result)
 {
   try {
 
+    gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
     const std::string name = result.text ("name");
     const std::string good_uri = result.hidden ("good-uri");
     std::string uri;

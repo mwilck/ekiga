@@ -56,8 +56,7 @@
 
        GMAudioOutputManager_ptlib (Ekiga::ServiceCore & core);
 
-      virtual ~GMAudioOutputManager_ptlib () {}
-
+      ~GMAudioOutputManager_ptlib ();
 
       virtual void get_devices (std::vector <Ekiga::AudioOutputDevice> & devices);
 
@@ -80,7 +79,7 @@
 
     protected:
       Ekiga::ServiceCore & core;
-      Ekiga::Runtime & runtime;
+      Ekiga::Runtime* runtime;
 
       PSoundChannel *output_device[2];
   };

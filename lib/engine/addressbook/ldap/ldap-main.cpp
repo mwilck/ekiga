@@ -48,17 +48,15 @@ ldap_init (Ekiga::ServiceCore &core,
 	   char **/*argv*/[])
 {
   bool result = false;
-  Ekiga::ContactCore *contact_core = NULL;
-  OPENLDAP::Source *service = NULL;
+  gmref_ptr<Ekiga::ContactCore> contact_core = core.get ("contact-core");
+  gmref_ptr<Ekiga::Runtime> runtime = core.get ("runtime");
 
-  contact_core = dynamic_cast<Ekiga::ContactCore*>(core.get ("contact-core"));
+  if (contact_core && runtime) {
 
-  if (contact_core != NULL) {
-
-    service = new OPENLDAP::Source (core);
-    core.add (*service);
+    gmref_ptr<OPENLDAP::Source> service = new OPENLDAP::Source (core);
+    core.add (service);
     contact_core->add_source (*service);
-    sasl_client_init (NULL);
+    sasl_client_init (NULL); // FIXME: shouldn't it be done by the source!?
     result = true;
   }
 

@@ -68,8 +68,7 @@ OPENLDAP::Contact::get_groups () const
 bool
 OPENLDAP::Contact::populate_menu (Ekiga::MenuBuilder &builder)
 {
-  Ekiga::ContactCore *contact_core
-    = dynamic_cast<Ekiga::ContactCore *>(core.get ("contact-core"));
+  gmref_ptr<Ekiga::ContactCore> contact_core = core.get ("contact-core");
   /* FIXME: add here the specific actions we want to allow
    * (before or after the uri-specific actions)
    */

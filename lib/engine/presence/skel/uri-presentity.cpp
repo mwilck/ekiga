@@ -41,7 +41,7 @@ Ekiga::URIPresentity::URIPresentity (Ekiga::ServiceCore &_core,
 				     std::set<std::string> groups_)
   : core(_core), name(name_), uri(uri_), presence("unknown"), groups(groups_)
 {
-  presence_core = dynamic_cast<Ekiga::PresenceCore*>(core.get ("presence-core"));
+  gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
   presence_core->presence_received.connect (sigc::mem_fun (this, &Ekiga::URIPresentity::on_presence_received));
   presence_core->status_received.connect (sigc::mem_fun (this, &Ekiga::URIPresentity::on_status_received));
   presence_core->fetch_presence (uri);
@@ -49,6 +49,7 @@ Ekiga::URIPresentity::URIPresentity (Ekiga::ServiceCore &_core,
 
 Ekiga::URIPresentity::~URIPresentity ()
 {
+  gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
   presence_core->unfetch_presence (uri);
 }
 
@@ -91,6 +92,7 @@ Ekiga::URIPresentity::get_uri () const
 bool
 Ekiga::URIPresentity::populate_menu (Ekiga::MenuBuilder &builder)
 {
+  gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
   return presence_core->populate_presentity_menu (*this, uri, builder);
 }
 

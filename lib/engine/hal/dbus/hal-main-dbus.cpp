@@ -46,12 +46,9 @@ hal_dbus_init (Ekiga::ServiceCore &core,
 	    char **/*argv*/[])
 {
   bool result = false;
-  Ekiga::HalCore *hal_core = NULL;
+  gmref_ptr<Ekiga::HalCore> hal_core = core.get ("hal-core");
 
-  hal_core
-    = dynamic_cast<Ekiga::HalCore*>(core.get ("hal-core"));
-
-  if (hal_core != NULL) {
+  if (hal_core) {
 
     HalManager_dbus *hal_manager = new HalManager_dbus(core);
 

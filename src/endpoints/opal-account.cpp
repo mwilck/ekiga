@@ -250,7 +250,7 @@ void Opal::Account::enable ()
 {
   enabled = true;
 
-  Ekiga::AccountCore *account_core = dynamic_cast<Ekiga::AccountCore*>(core.get ("account-core"));
+  gmref_ptr<Ekiga::AccountCore> account_core = core.get ("account-core");
   account_core->subscribe_account (*this);
 
   updated.emit ();
@@ -262,7 +262,7 @@ void Opal::Account::disable ()
 {
   enabled = false;
 
-  Ekiga::AccountCore *account_core = dynamic_cast<Ekiga::AccountCore*>(core.get ("account-core"));
+  gmref_ptr<Ekiga::AccountCore> account_core = core.get ("account-core");
   account_core->unsubscribe_account (*this);
 
   updated.emit ();
@@ -287,7 +287,7 @@ void Opal::Account::remove ()
   enabled = false;
   dead = true;
 
-  Ekiga::AccountCore *account_core = dynamic_cast<Ekiga::AccountCore*>(core.get ("account-core"));
+  gmref_ptr<Ekiga::AccountCore> account_core = core.get ("account-core");
   account_core->unsubscribe_account (*this);
 
   trigger_saving.emit ();

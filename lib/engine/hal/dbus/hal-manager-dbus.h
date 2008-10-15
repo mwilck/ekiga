@@ -114,7 +114,6 @@ extern "C" {
       void get_string_property (DBusGProxy *proxy, const char * property, std::string & value);
 
       Ekiga::ServiceCore & core;
-      Ekiga::Runtime & runtime;
 
       DBusGConnection * bus;
       DBusGProxy * hal_proxy;

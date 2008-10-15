@@ -6,6 +6,7 @@ AM_CXXFLAGS = $(SIGC_CFLAGS) $(GLIB_CFLAGS) $(XML_CFLAGS)
 
 INCLUDES = \
 	-I$(top_srcdir)/lib/gmconf			\
+	-I$(top_srcdir)/lib/gmref			\
 	-I$(top_srcdir)/lib/engine/include 		\
 	-I$(top_srcdir)/lib/engine/framework
 

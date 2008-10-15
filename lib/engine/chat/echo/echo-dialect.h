@@ -36,12 +36,15 @@
 #ifndef __ECHO_DIALECT_H__
 #define __ECHO_DIALECT_H__
 
+#include "services.h"
 #include "dialect-impl.h"
 #include "echo-simple.h"
 
 namespace Echo
 {
-  class Dialect: public Ekiga::DialectImpl<SimpleChat>
+  class Dialect:
+    public Ekiga::Service,
+    public Ekiga::DialectImpl<SimpleChat>
   {
   public:
     
@@ -50,6 +53,12 @@ namespace Echo
     ~Dialect ();
 
     bool populate_menu (Ekiga::MenuBuilder &builder);
+
+    const std::string get_name () const
+    { return "echo-dialect"; }
+
+    const std::string get_description () const
+    { return "\tProvides an echo chat for testing purposes"; }
 
   private:
 

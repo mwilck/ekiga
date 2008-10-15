@@ -54,8 +54,6 @@ Local::Presentity::Presentity (Ekiga::ServiceCore &_core,
 {
   xmlChar *xml_str = NULL;
 
-  presence_core = dynamic_cast<Ekiga::PresenceCore*>(core.get ("presence-core"));
-
   xml_str = xmlGetProp (node, (const xmlChar *)"uri");
   if (xml_str != NULL) {
 
@@ -106,8 +104,6 @@ Local::Presentity::Presentity (Ekiga::ServiceCore &_core,
   core(_core), name_node(NULL), name(_name), uri(_uri),
   presence("unknown"), groups(_groups)
 {
-  presence_core = dynamic_cast<Ekiga::PresenceCore*>(core.get ("presence-core"));
-
   node = xmlNewNode (NULL, BAD_CAST "entry");
   xmlSetProp (node, BAD_CAST "uri", BAD_CAST uri.c_str ());
   name_node = xmlNewChild (node, NULL,
@@ -190,6 +186,7 @@ bool
 Local::Presentity::populate_menu (Ekiga::MenuBuilder &builder)
 {
   bool populated = false;
+  gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
 
   populated = presence_core->populate_presentity_menu (*this, uri, builder);
 
@@ -215,7 +212,7 @@ Local::Presentity::get_node () const
 void
 Local::Presentity::edit_presentity ()
 {
-  Cluster *cluster = dynamic_cast<Cluster*>(core.get ("local-cluster"));
+  gmref_ptr<Cluster> cluster = core.get ("local-cluster");
   Ekiga::FormRequestSimple request;
 
   std::set<std::string> all_groups = cluster->existing_groups ();
@@ -257,6 +254,7 @@ Local::Presentity::edit_presentity_form_submitted (Ekiga::Form &result)
     name = new_name;
     if (uri != new_uri) {
 
+      gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
       presence_core->unfetch_presence (uri);
       uri = new_uri;
       presence = "unknown";
@@ -351,6 +349,7 @@ Local::Presentity::rename_group (const std::string old_name,
 void
 Local::Presentity::remove ()
 {
+  gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
   presence_core->unfetch_presence (uri);
 
   xmlUnlinkNode (node);

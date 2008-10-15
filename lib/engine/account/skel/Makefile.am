@@ -6,6 +6,7 @@ AM_CPPFLAGS = $(SIGC_CFLAGS) $(GLIB_CFLAGS)
 
 INCLUDES = \
 	-I$(top_srcdir)/lib/gmconf	 		\
+	-I$(top_srcdir)/lib/gmref	 		\
 	-I$(top_srcdir)/lib/engine/include 		\
 	-I$(top_srcdir)/lib/engine/framework
 

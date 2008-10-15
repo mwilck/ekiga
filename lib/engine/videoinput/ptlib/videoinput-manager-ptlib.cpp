@@ -41,12 +41,19 @@
 #define DEVICE_TYPE "PTLIB"
 
 GMVideoInputManager_ptlib::GMVideoInputManager_ptlib (Ekiga::ServiceCore & _core)
-: core (_core), 
-  runtime (*(dynamic_cast<Ekiga::Runtime *> (_core.get ("runtime"))))
+: core (_core)
 {
+  gmref_ptr<Ekiga::Runtime> smart = core.get ("runtime");
+  gmref_inc (smart); // take a reference in the main thread
+  runtime = &*smart;
   current_state.opened = false;
   input_device = NULL;
   expectedFrameSize = 0;
+}
+
+GMVideoInputManager_ptlib::~GMVideoInputManager_ptlib ()
+{
+  gmref_dec (runtime); // leave a reference in the main thread
 }
 
 void GMVideoInputManager_ptlib::get_devices(std::vector <Ekiga::VideoInputDevice> & devices)
@@ -129,7 +136,7 @@ bool GMVideoInputManager_ptlib::open (unsigned width, unsigned height, unsigned 
 
   if (error_code != Ekiga::VI_ERROR_NONE) {
     PTRACE(1, "GMVideoInputManager_ptlib\tEncountered error " << error_code << " while opening device ");
-    runtime.run_in_main (sigc::bind (device_error.make_slot (), current_state.device, error_code));
+    runtime->run_in_main (sigc::bind (device_error.make_slot (), current_state.device, error_code));
     return false;
   }
 
@@ -144,7 +151,7 @@ bool GMVideoInputManager_ptlib::open (unsigned width, unsigned height, unsigned 
   settings.contrast = contrast >> 8;
   settings.modifyable = true;
 
-  runtime.run_in_main (sigc::bind (device_opened.make_slot (), current_state.device, settings));
+  runtime->run_in_main (sigc::bind (device_opened.make_slot (), current_state.device, settings));
 
   return true;
 }
@@ -157,7 +164,7 @@ void GMVideoInputManager_ptlib::close()
     input_device = NULL;
   }
   current_state.opened = false;
-  runtime.run_in_main (sigc::bind (device_closed.make_slot (), current_state.device));
+  runtime->run_in_main (sigc::bind (device_closed.make_slot (), current_state.device));
 }
 
 bool GMVideoInputManager_ptlib::get_frame_data (char *data)

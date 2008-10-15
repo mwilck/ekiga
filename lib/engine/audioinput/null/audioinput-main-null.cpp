@@ -46,12 +46,10 @@ audioinput_null_init (Ekiga::ServiceCore &core,
 	    char **/*argv*/[])
 {
   bool result = false;
-  Ekiga::AudioInputCore *audioinput_core = NULL;
+  gmref_ptr<Ekiga::AudioInputCore> audioinput_core
+    = core.get ("audioinput-core");
 
-  audioinput_core
-    = dynamic_cast<Ekiga::AudioInputCore*>(core.get ("audioinput-core"));
-
-  if (audioinput_core != NULL) {
+  if (audioinput_core) {
 
     GMAudioInputManager_null *audioinput_manager = new GMAudioInputManager_null(core);
 

@@ -76,21 +76,21 @@ GMVideoOutputManager_dx::setup_frame_display ()
     
   get_display_info(local_display_info);
 
-//  runtime.run_in_main (force_redraw.make_slot ()); //FIXME: check
+//  runtime->run_in_main (force_redraw.make_slot ()); //FIXME: check
 
   switch (current_frame.mode) {
   case Ekiga::VO_MODE_LOCAL:
-    runtime.run_in_main (sigc::bind (size_changed.make_slot (), (unsigned) (current_frame.local_width * current_frame.zoom / 100), (unsigned) (current_frame.local_height * current_frame.zoom / 100)));
+    runtime->run_in_main (sigc::bind (size_changed.make_slot (), (unsigned) (current_frame.local_width * current_frame.zoom / 100), (unsigned) (current_frame.local_height * current_frame.zoom / 100)));
     break;
   case Ekiga::VO_MODE_REMOTE:
   case Ekiga::VO_MODE_PIP:
-    runtime.run_in_main (sigc::bind (size_changed.make_slot (), (unsigned) (current_frame.remote_width * current_frame.zoom / 100), (unsigned) (current_frame.remote_height * current_frame.zoom / 100)));
+    runtime->run_in_main (sigc::bind (size_changed.make_slot (), (unsigned) (current_frame.remote_width * current_frame.zoom / 100), (unsigned) (current_frame.remote_height * current_frame.zoom / 100)));
     break;
   case Ekiga::VO_MODE_FULLSCREEN:
-    runtime.run_in_main (sigc::bind (size_changed.make_slot (), 176, 144));
+    runtime->run_in_main (sigc::bind (size_changed.make_slot (), 176, 144));
     break;
   case Ekiga::VO_MODE_PIP_WINDOW:
-    runtime.run_in_main (sigc::bind (size_changed.make_slot (), 176, 144));
+    runtime->run_in_main (sigc::bind (size_changed.make_slot (), 176, 144));
     break;
   case Ekiga::VO_MODE_UNSET:
   default:
@@ -195,21 +195,22 @@ GMVideoOutputManager_dx::setup_frame_display ()
 //     close_frame_display ();
 
   last_frame.both_streams_active = current_frame.both_streams_active;
+
   if (video_disabled) {
     delete dxWindow;
     dxWindow = NULL;
-    runtime.run_in_main (sigc::bind (device_error.make_slot (), Ekiga::VO_ERROR));
+    runtime->run_in_main (sigc::bind (device_error.make_slot (), Ekiga::VO_ERROR));
   }
   else {
     current_frame.accel = Ekiga::VO_ACCEL_ALL; 
-    runtime.run_in_main (sigc::bind (device_opened.make_slot (), current_frame.accel, current_frame.mode, current_frame.zoom, current_frame.both_streams_active));
+    runtime->run_in_main (sigc::bind (device_opened.make_slot (), current_frame.accel, current_frame.mode, current_frame.zoom, current_frame.both_streams_active));
   }
 }
 
 void
 GMVideoOutputManager_dx::close_frame_display ()
 {
-  runtime.run_in_main (device_closed.make_slot ());
+  runtime->run_in_main (device_closed.make_slot ());
 
   if (dxWindow) {
 
@@ -241,7 +242,7 @@ GMVideoOutputManager_dx::display_pip_frames (const char *local_frame,
     dxWindow->ProcessEvents(); 
 
   if (current_frame.mode == Ekiga::VO_MODE_FULLSCREEN && dxWindow && !dxWindow->IsFullScreen ())
-    runtime.run_in_main (sigc::bind (fullscreen_mode_changed.make_slot (), Ekiga::VO_FS_OFF));
+    runtime->run_in_main (sigc::bind (fullscreen_mode_changed.make_slot (), Ekiga::VO_FS_OFF));
 
   if (dxWindow) {
     if (update_required.remote || (!update_required.remote && !update_required.local)) {

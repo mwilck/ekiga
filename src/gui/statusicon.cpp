@@ -276,7 +276,7 @@ statusicon_activated_cb (G_GNUC_UNUSED GtkStatusIcon *icon,
   }
   else {
 
-    GtkFrontend *frontend = dynamic_cast<GtkFrontend*>(self->priv->core.get ("gtk-frontend"));
+    gmref_ptr<GtkFrontend> frontend = self->priv->core.get ("gtk-frontend");
     GtkWidget *w = GTK_WIDGET (frontend->get_chat_window ());
 
     gtk_widget_show (w);
@@ -323,13 +323,12 @@ statusicon_blink_cb (gpointer data)
 {
   StatusIcon *statusicon = STATUSICON (data);
 
-  GtkFrontend *frontend = NULL;
   GtkWidget *chat_window = NULL;
   GdkPixbuf *pixbuf = NULL;
 
   g_return_val_if_fail (data != NULL, false);
 
-  frontend = dynamic_cast<GtkFrontend*>(STATUSICON (data)->priv->core.get ("gtk-frontend"));
+  gmref_ptr<GtkFrontend> frontend = statusicon->priv->core.get ("gtk-frontend");
   // FIXME use main_window here
   chat_window = GTK_WIDGET (frontend->get_chat_window ());
 
@@ -349,7 +348,7 @@ statusicon_blink_cb (gpointer data)
 
 static void
 personal_details_updated_cb (StatusIcon* self,
-			     Ekiga::PersonalDetails* details)
+			     gmref_ptr<Ekiga::PersonalDetails> details)
 {
   statusicon_set_status (self, details->get_short_status ());
 }
@@ -383,10 +382,9 @@ statusicon_build_menu ()
   GtkWidget *main_window = NULL;
 
   Ekiga::ServiceCore *services = NULL;
-  GtkFrontend *gtk_frontend = NULL;
 
   services = GnomeMeeting::Process ()->GetServiceCore ();
-  gtk_frontend = dynamic_cast<GtkFrontend *>(services->get ("gtk-frontend"));
+  gmref_ptr<GtkFrontend> gtk_frontend = services->get ("gtk-frontend");
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
 
   static MenuEntry menu [] =
@@ -452,13 +450,12 @@ void
 statusicon_set_status (StatusIcon *statusicon,
                        const std::string & short_status)
 {
-  GtkFrontend *frontend = NULL;
   GtkWidget *chat_window = NULL;
   GdkPixbuf *pixbuf = NULL;
 
   g_return_if_fail (statusicon != NULL);
 
-  frontend = dynamic_cast<GtkFrontend*>(statusicon->priv->core.get ("gtk-frontend"));
+  gmref_ptr<GtkFrontend> frontend = statusicon->priv->core.get ("gtk-frontend");
   // FIXME use main_window here
   chat_window = GTK_WIDGET (frontend->get_chat_window ());
 
@@ -485,13 +482,12 @@ void
 statusicon_set_inacall (StatusIcon *statusicon,
                         bool inacall)
 {
-  GtkFrontend *frontend = NULL;
   GtkWidget *chat_window = NULL;
   GdkPixbuf *pixbuf = NULL;
 
   g_return_if_fail (statusicon != NULL);
 
-  frontend = dynamic_cast<GtkFrontend*>(statusicon->priv->core.get ("gtk-frontend"));
+  gmref_ptr<GtkFrontend> frontend = statusicon->priv->core.get ("gtk-frontend");
   // FIXME use main_window here
   chat_window = GTK_WIDGET (frontend->get_chat_window ());
 
@@ -533,9 +529,9 @@ statusicon_new (Ekiga::ServiceCore & core)
   self->priv->blink_image = NULL;
   self->priv->unread_messages = false;
 
-  GtkFrontend *frontend = dynamic_cast<GtkFrontend*>(core.get ("gtk-frontend"));
-  Ekiga::PersonalDetails *details = dynamic_cast<Ekiga::PersonalDetails*> (core.get ("personal-details"));
-  Ekiga::CallCore *call_core = dynamic_cast<Ekiga::CallCore*> (core.get ("call-core"));
+  gmref_ptr<GtkFrontend> frontend = core.get ("gtk-frontend");
+  gmref_ptr<Ekiga::PersonalDetails> details = core.get ("personal-details");
+  gmref_ptr<Ekiga::CallCore> call_core = core.get ("call-core");
   GtkWidget *chat_window = GTK_WIDGET (frontend->get_chat_window ());
 
   statusicon_set_status (self, details->get_short_status ());

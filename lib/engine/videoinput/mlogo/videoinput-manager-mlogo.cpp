@@ -42,10 +42,17 @@
 #define DEVICE_NAME   "Moving Logo"
 
 GMVideoInputManager_mlogo::GMVideoInputManager_mlogo (Ekiga::ServiceCore & _core)
-: core (_core),
-  runtime (*(dynamic_cast<Ekiga::Runtime *> (_core.get ("runtime"))))
+: core (_core)
 {
+  gmref_ptr<Ekiga::Runtime> smart = core.get ("runtime");
+  gmref_inc (smart); // keep a reference in the main thread
+  runtime = &*smart;
   current_state.opened  = false;
+}
+
+GMVideoInputManager_mlogo::~GMVideoInputManager_mlogo ()
+{
+  gmref_dec (runtime);
 }
 
 void GMVideoInputManager_mlogo::get_devices(std::vector <Ekiga::VideoInputDevice> & devices)
@@ -103,7 +110,7 @@ bool GMVideoInputManager_mlogo::open (unsigned width, unsigned height, unsigned 
   settings.colour = 127;
   settings.contrast = 127;
   settings.modifyable = false;
-  runtime.run_in_main (sigc::bind (device_opened.make_slot (), current_state.device, settings));
+  runtime->run_in_main (sigc::bind (device_opened.make_slot (), current_state.device, settings));
   
   return true;
 }
@@ -113,7 +120,7 @@ void GMVideoInputManager_mlogo::close()
   PTRACE(4, "GMVideoInputManager_mlogo\tClosing Moving Logo");
   free (background_frame);
   current_state.opened  = false;
-  runtime.run_in_main (sigc::bind (device_closed.make_slot (), current_state.device));
+  runtime->run_in_main (sigc::bind (device_closed.make_slot (), current_state.device));
 }
 
 bool GMVideoInputManager_mlogo::get_frame_data (char *data)

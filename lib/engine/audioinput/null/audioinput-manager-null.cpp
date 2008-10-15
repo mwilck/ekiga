@@ -40,9 +40,17 @@
 
 
 GMAudioInputManager_null::GMAudioInputManager_null (Ekiga::ServiceCore & _core)
-:    core (_core), runtime (*(dynamic_cast<Ekiga::Runtime *> (_core.get ("runtime"))))
+:    core (_core)
 {
+  gmref_ptr<Ekiga::Runtime> smart = core.get ("runtime");
+  gmref_inc (smart); // take a reference in the main thread
+  runtime = &*smart;
   current_state.opened = false;
+}
+
+GMAudioInputManager_null::~GMAudioInputManager_null ()
+{
+  gmref_dec (runtime); // leave a reference in the main thread
 }
 
 void GMAudioInputManager_null::get_devices(std::vector <Ekiga::AudioInputDevice> & devices)
@@ -82,7 +90,7 @@ bool GMAudioInputManager_null::open (unsigned channels, unsigned samplerate, uns
   Ekiga::AudioInputSettings settings;
   settings.volume = 0;
   settings.modifyable = false;
-  runtime.run_in_main (sigc::bind (device_opened.make_slot (), current_state.device, settings));
+  runtime->run_in_main (sigc::bind (device_opened.make_slot (), current_state.device, settings));
 
   return true;
 }
@@ -90,7 +98,7 @@ bool GMAudioInputManager_null::open (unsigned channels, unsigned samplerate, uns
 void GMAudioInputManager_null::close()
 {
   current_state.opened = false;
-  runtime.run_in_main (sigc::bind (device_closed.make_slot (), current_state.device));
+  runtime->run_in_main (sigc::bind (device_closed.make_slot (), current_state.device));
 }
 
 

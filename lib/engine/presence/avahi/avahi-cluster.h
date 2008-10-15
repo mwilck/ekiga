@@ -51,6 +51,7 @@ namespace Avahi
  */
 
   class Cluster:
+    public Ekiga::Service,
     public Ekiga::ClusterImpl<Heap>
   {
   public:
@@ -62,6 +63,14 @@ namespace Avahi
     void visit_heaps (sigc::slot<bool, Heap &> visitor);
 
     bool populate_menu (Ekiga::MenuBuilder &builder);
+
+    /* this is a service */
+    const std::string get_name () const
+    { return "avahi-core"; }
+
+    const std::string get_description () const
+    { return "\tObject getting presence from the network neighbourhood"; }
+
 
   private:
 

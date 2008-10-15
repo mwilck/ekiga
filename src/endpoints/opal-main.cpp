@@ -82,11 +82,11 @@ using namespace Opal;
 void 
 on_call_manager_ready_cb (Ekiga::ServiceCore *core)
 {
-  Ekiga::AccountCore *account_core = dynamic_cast<Ekiga::AccountCore *> (core->get ("account-core"));
-  Opal::Bank *bank = new Bank (*core);
+  gmref_ptr<Ekiga::AccountCore> account_core = core->get ("account-core");
+  gmref_ptr<Opal::Bank> bank = new Bank (*core);
 
   account_core->add_bank (*bank);
-  core->add (*bank);
+  core->add (bank);
 }
 
 bool
@@ -94,21 +94,15 @@ opal_init (Ekiga::ServiceCore &core,
            int * /*argc*/,
            char ** /*argv*/[])
 {
-  Ekiga::ContactCore *contact_core = NULL;
-  Ekiga::PresenceCore *presence_core = NULL;
-  Ekiga::CallCore *call_core = NULL;
-  Ekiga::ChatCore *chat_core = NULL;
-  Ekiga::AccountCore *account_core = NULL;
+  gmref_ptr<Ekiga::ContactCore> contact_core = core.get ("contact-core");
+  gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
+  gmref_ptr<Ekiga::CallCore> call_core = core.get ("call-core");
+  gmref_ptr<Ekiga::ChatCore> chat_core = core.get ("chat-core");
+  gmref_ptr<Ekiga::AccountCore> account_core = core.get ("account-core");
 
   bool result = true;
 
-  contact_core = dynamic_cast<Ekiga::ContactCore *> (core.get ("contact-core"));
-  presence_core = dynamic_cast<Ekiga::PresenceCore *> (core.get ("presence-core"));
-  call_core = dynamic_cast<Ekiga::CallCore *> (core.get ("call-core"));
-  chat_core = dynamic_cast<Ekiga::ChatCore *> (core.get ("chat-core"));
-  account_core = dynamic_cast<Ekiga::AccountCore *> (core.get ("account-core"));
-
-  CallManager *call_manager = new CallManager (core);
+  gmref_ptr<CallManager> call_manager = new CallManager (core);
 
 #ifdef HAVE_SIP
   unsigned sip_port = gm_conf_get_int (SIP_KEY "listen_port");
@@ -126,12 +120,12 @@ opal_init (Ekiga::ServiceCore &core,
 
   call_core->add_manager (*call_manager);
 
-  new ConfBridge (*call_manager);
+  new ConfBridge (*call_manager); // FIXME: isn't that leaked!?
 
   // Add the bank of accounts when the CallManager is ready
   call_manager->ready.connect (sigc::bind (sigc::ptr_fun (on_call_manager_ready_cb), &core));
 
-  if (contact_core != NULL) { 
+  if (contact_core) { 
 
 #ifdef HAVE_SIP
     contact_core->add_contact_decorator (*sip_manager);
@@ -143,7 +137,7 @@ opal_init (Ekiga::ServiceCore &core,
   else
     return false;
 
-  if (presence_core != NULL) {
+  if (presence_core) {
 
 #ifdef HAVE_SIP
     presence_core->add_presentity_decorator (*sip_manager);
@@ -158,7 +152,7 @@ opal_init (Ekiga::ServiceCore &core,
   else
     return false;
 
-  core.add (*call_manager);
+  core.add (call_manager);
 
   return result;
 }

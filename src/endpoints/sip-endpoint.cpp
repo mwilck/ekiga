@@ -46,7 +46,6 @@
 #include "opal-bank.h"
 #include "opal-call.h"
 
-#include "presence-core.h"
 #include "account-core.h"
 #include "chat-core.h"
 #include "personal-details.h"
@@ -144,18 +143,26 @@ Opal::Sip::EndPoint::EndPoint (Opal::CallManager & _manager,
                                unsigned _listen_port)
 :   SIPEndPoint (_manager),
     manager (_manager), 
-    core (_core),
-    presence_core (*(dynamic_cast<Ekiga::PresenceCore *> (core.get ("presence-core")))),
-    runtime (*(dynamic_cast<Ekiga::Runtime *> (core.get ("runtime")))),
-    account_core (*(dynamic_cast<Ekiga::AccountCore *> (core.get ("account-core"))))
+    core (_core)
 {
-  Ekiga::ChatCore* chat_core;
+  gmref_ptr<Ekiga::ChatCore> chat_core = core.get ("chat-core");
+
+  {
+    gmref_ptr<Ekiga::Runtime> smart = core.get ("runtime");
+    gmref_inc (smart); // take a reference in the main thread
+    runtime = &*smart;
+  }
+  {
+    gmref_ptr<Ekiga::AccountCore> smart = core.get ("account-core");
+    gmref_inc (smart); // take a reference in the main thread
+    account_core = &*smart;
+  }
+
 
   protocol_name = "sip";
   uri_prefix = "sip:";
   listen_port = _listen_port;
 
-  chat_core = dynamic_cast<Ekiga::ChatCore *> (core.get ("chat-core"));
   dialect = new SIP::Dialect (core, sigc::mem_fun (this, &Opal::Sip::EndPoint::send_message));
   chat_core->add_dialect (*dialect);
 
@@ -180,7 +187,7 @@ Opal::Sip::EndPoint::EndPoint (Opal::CallManager & _manager,
   /* NAT Binding */
   SetNATBindingRefreshMethod (SIPEndPoint::EmptyRequest);
 
-  Ekiga::PersonalDetails *details = dynamic_cast<Ekiga::PersonalDetails *> (_core.get ("personal-details"));
+  gmref_ptr<Ekiga::PersonalDetails> details = core.get ("personal-details");
   if (details)
     publish (*details);
 }
@@ -188,6 +195,8 @@ Opal::Sip::EndPoint::EndPoint (Opal::CallManager & _manager,
 
 Opal::Sip::EndPoint::~EndPoint ()
 {
+  gmref_dec (runtime); // leave a reference in the main thread
+  gmref_dec (account_core); // leave a reference in the main thread
   delete dialect;
 }
 
@@ -223,7 +232,7 @@ bool Opal::Sip::EndPoint::menu_builder_add_actions (const std::string& fullname,
 
   if (uri.find ("@") == string::npos) {
 
-    Opal::Bank *bank = dynamic_cast<Opal::Bank*> (core.get ("opal-account-store"));
+    gmref_ptr<Opal::Bank> bank = core.get ("opal-account-store");
 
     if (bank) {
 
@@ -692,10 +701,10 @@ void Opal::Sip::EndPoint::OnRegistered (const PString & _aor,
     Subscribe (SIPSubscribe::MessageSummary, 3600, aor);
 
   /* Signal */
-  Ekiga::Account *account = account_core.find_account (strm.str ());
+  Ekiga::Account *account = account_core->find_account (strm.str ());
   if (account)
-    runtime.run_in_main (sigc::bind (account->registration_event.make_slot (),
-                                     was_registering ? Ekiga::AccountCore::Registered : Ekiga::AccountCore::Unregistered,
+    runtime->run_in_main (sigc::bind (account->registration_event.make_slot (),
+				      was_registering ? Ekiga::AccountCore::Registered : Ekiga::AccountCore::Unregistered,
                                      std::string ()));
 }
 
@@ -925,10 +934,10 @@ void Opal::Sip::EndPoint::OnRegistrationFailed (const PString & _aor,
   SIPEndPoint::OnRegistrationFailed (strm.str ().c_str (), r, wasRegistering);
 
   /* Signal */
-  Ekiga::Account *account = account_core.find_account (strm.str ());
+  Ekiga::Account *account = account_core->find_account (strm.str ());
   if (account)
-    runtime.run_in_main (sigc::bind (account->registration_event.make_slot (),
-                                     wasRegistering ? Ekiga::AccountCore::RegistrationFailed : Ekiga::AccountCore::UnregistrationFailed,
+    runtime->run_in_main (sigc::bind (account->registration_event.make_slot (),
+				      wasRegistering ? Ekiga::AccountCore::RegistrationFailed : Ekiga::AccountCore::UnregistrationFailed,
                                      info));
 }
 
@@ -941,9 +950,9 @@ void Opal::Sip::EndPoint::OnMWIReceived (const PString & party, OpalManager::Mes
     mwi = "0/0";
 
   /* Signal */
-  Ekiga::Account *account = account_core.find_account (party);
+  Ekiga::Account *account = account_core->find_account (party);
   if (account)
-    runtime.run_in_main (sigc::bind (account->mwi_event.make_slot (), info));
+    runtime->run_in_main (sigc::bind (account->mwi_event.make_slot (), info));
 }
 
 
@@ -1008,7 +1017,7 @@ bool Opal::Sip::EndPoint::OnReceivedMESSAGE (OpalTransport & transport,
     std::string message_uri = (const char *) uri.AsString ();
     std::string _message = (const char *) pdu.GetEntityBody ();
 
-    runtime.run_in_main (sigc::bind (sigc::ptr_fun (push_message_in_main), dialect, message_uri, display_name, _message));
+    runtime->run_in_main (sigc::bind (sigc::ptr_fun (push_message_in_main), dialect, message_uri, display_name, _message));
   }
 
   return SIPEndPoint::OnReceivedMESSAGE (transport, pdu);
@@ -1023,9 +1032,9 @@ void Opal::Sip::EndPoint::OnMessageFailed (const SIPURL & messageUrl,
   std::string uri = (const char *) to.AsString ();
   std::string display_name = (const char *) to.GetDisplayName ();
 
-  runtime.run_in_main (sigc::bind (sigc::ptr_fun (push_notice_in_main),
-				   dialect, uri, display_name,
-				   _("Could not send message")));
+  runtime->run_in_main (sigc::bind (sigc::ptr_fun (push_notice_in_main),
+				    dialect, uri, display_name,
+				    _("Could not send message")));
 }
 
 
@@ -1053,7 +1062,7 @@ SIPURL Opal::Sip::EndPoint::GetRegisteredPartyName (const SIPURL & host)
      */
     if (host.GetHostAddress ().GetIpAndPort (address, port) && !manager.IsLocalAddress (address)) {
 
-      Ekiga::Account *account = account_core.find_account ("ekiga.net");
+      Ekiga::Account *account = account_core->find_account ("ekiga.net");
 
       if (account)
         return SIPURL ("\"" + GetDefaultDisplayName () + "\" <" + PString(account->get_aor ()) + ">");
@@ -1115,7 +1124,7 @@ Opal::Sip::EndPoint::OnPresenceInfoReceived (const PString & user,
    * TODO
    * Wouldn't it be convenient to emit the signal and have the presence core listen to it ?
    */
-  runtime.run_in_main (sigc::bind (sigc::ptr_fun (presence_status_in_main), this, _uri, presence, status));
+  runtime->run_in_main (sigc::bind (sigc::ptr_fun (presence_status_in_main), this, _uri, presence, status));
 }
 
 

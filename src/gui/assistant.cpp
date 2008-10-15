@@ -627,7 +627,8 @@ create_ekiga_net_page (EkigaAssistant *assistant)
 static void
 prepare_ekiga_net_page (EkigaAssistant *assistant)
 {
-  Ekiga::AccountCore *account_core = dynamic_cast<Ekiga::AccountCore *> (assistant->priv->core->get ("account-core"));
+  gmref_ptr<Ekiga::AccountCore> account_core
+    = assistant->priv->core->get ("account-core");
   Ekiga::Account *account = account_core->find_account ("ekiga.net");
 
   if (account && !account->get_username ().empty ())
@@ -644,11 +645,13 @@ prepare_ekiga_net_page (EkigaAssistant *assistant)
 static void
 apply_ekiga_net_page (EkigaAssistant *assistant)
 {
-  Ekiga::AccountCore *account_core = dynamic_cast<Ekiga::AccountCore *> (assistant->priv->core->get ("account-core"));
+  gmref_ptr<Ekiga::AccountCore> account_core
+    = assistant->priv->core->get ("account-core");
 
   /* Some specific Opal stuff for the Ekiga.net account */
-  Opal::Bank *opal_bank = dynamic_cast<Opal::Bank *> (assistant->priv->core->get ("opal-account-store"));
-  Opal::Account *account = dynamic_cast<Opal::Account *> (account_core->find_account ("ekiga.net"));
+  gmref_ptr<Opal::Bank> opal_bank =
+    assistant->priv->core->get ("opal-account-store");
+  Opal::Account* account = dynamic_cast<Opal::Account*>(account_core->find_account ("ekiga.net"));
 
   bool new_account = (account == NULL);
 
@@ -775,7 +778,8 @@ create_ekiga_out_page (EkigaAssistant *assistant)
 static void
 prepare_ekiga_out_page (EkigaAssistant *assistant)
 {
-  Ekiga::AccountCore *account_core = dynamic_cast<Ekiga::AccountCore *> (assistant->priv->core->get ("account-core"));
+  gmref_ptr<Ekiga::AccountCore> account_core
+    = assistant->priv->core->get ("account-core");
   Ekiga::Account *account = account_core->find_account ("sip.diamondcard.us");
 
   if (account && !account->get_username ().empty ())
@@ -792,11 +796,13 @@ prepare_ekiga_out_page (EkigaAssistant *assistant)
 static void
 apply_ekiga_out_page (EkigaAssistant *assistant)
 {
-  Ekiga::AccountCore *account_core = dynamic_cast<Ekiga::AccountCore *> (assistant->priv->core->get ("account-core"));
+  gmref_ptr<Ekiga::AccountCore> account_core
+    = assistant->priv->core->get ("account-core");
 
   /* Some specific Opal stuff for the Ekiga.net account */
-  Opal::Bank *opal_bank = dynamic_cast<Opal::Bank *> (assistant->priv->core->get ("opal-account-store"));
-  Opal::Account *account = dynamic_cast<Opal::Account *> (account_core->find_account ("sip.diamondcard.us"));
+  gmref_ptr<Opal::Bank> opal_bank
+    = assistant->priv->core->get ("opal-account-store");
+  Opal::Account* account = dynamic_cast<Opal::Account*> (account_core->find_account ("sip.diamondcard.us"));
 
   bool new_account = (account == NULL);
 
@@ -1214,7 +1220,8 @@ void
 get_audiooutput_devices_list (Ekiga::ServiceCore *core,
                                         std::vector<std::string> & device_list)
 {
-  Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (core->get ("audiooutput-core"));
+  gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core
+    = core->get ("audiooutput-core");
   std::vector <Ekiga::AudioOutputDevice> devices;
 
   device_list.clear();
@@ -1237,7 +1244,8 @@ void
 get_audioinput_devices_list (Ekiga::ServiceCore *core,
                                         std::vector<std::string> & device_list)
 {
-  Ekiga::AudioInputCore *audioinput_core = dynamic_cast<Ekiga::AudioInputCore *> (core->get ("audioinput-core"));
+  gmref_ptr<Ekiga::AudioInputCore> audioinput_core
+    = core->get ("audioinput-core");
   std::vector <Ekiga::AudioInputDevice> devices;
 
   device_list.clear();
@@ -1260,7 +1268,8 @@ void
 get_videoinput_devices_list (Ekiga::ServiceCore *core,
                                         std::vector<std::string> & device_list)
 {
-  Ekiga::VideoInputCore *videoinput_core = dynamic_cast<Ekiga::VideoInputCore *> (core->get ("videoinput-core"));
+  gmref_ptr<Ekiga::VideoInputCore> videoinput_core
+    = core->get ("videoinput-core");
   std::vector<Ekiga::VideoInputDevice> devices;
 
   device_list.clear();
@@ -1622,9 +1631,12 @@ ekiga_assistant_new (Ekiga::ServiceCore *core)
                     G_CALLBACK (ekiga_assistant_key_press_cb), NULL);
 
   sigc::connection conn;
-  Ekiga::VideoInputCore *videoinput_core = dynamic_cast<Ekiga::VideoInputCore *> (core->get ("videoinput-core"));
-  Ekiga::AudioInputCore *audioinput_core = dynamic_cast<Ekiga::AudioInputCore *> (core->get ("audioinput-core"));
-  Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (core->get ("audiooutput-core"));
+  gmref_ptr<Ekiga::VideoInputCore> videoinput_core
+    = core->get ("videoinput-core");
+  gmref_ptr<Ekiga::AudioInputCore> audioinput_core
+    = core->get ("audioinput-core");
+  gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core
+    = core->get ("audiooutput-core");
 
   conn = videoinput_core->device_added.connect (sigc::bind (sigc::ptr_fun (on_videoinput_device_added_cb), assistant));
   assistant->priv->connections.push_back (conn);

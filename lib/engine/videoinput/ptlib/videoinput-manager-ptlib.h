@@ -56,8 +56,7 @@
 
       GMVideoInputManager_ptlib (Ekiga::ServiceCore & core);
 
-      virtual ~GMVideoInputManager_ptlib () {}
-
+      ~GMVideoInputManager_ptlib ();
 
       virtual void get_devices(std::vector <Ekiga::VideoInputDevice> & devices);
 
@@ -78,7 +77,7 @@
 
   protected:
       Ekiga::ServiceCore & core;
-      Ekiga::Runtime & runtime;
+      Ekiga::Runtime* runtime;
       unsigned expectedFrameSize;
 
       PVideoInputDevice *input_device;

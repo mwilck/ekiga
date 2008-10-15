@@ -47,10 +47,8 @@ History::Contact::Contact (Ekiga::ServiceCore &_core,
 			   xmlNodePtr _node):
   core(_core), node(_node)
 {
-  xmlChar *xml_str;
-
-  contact_core
-    = dynamic_cast<Ekiga::ContactCore*>(core.get ("contact-core"));
+  xmlChar* xml_str = NULL;
+  gmref_ptr<Ekiga::ContactCore> contact_core = core.get ("contact-core");
 
   xml_str = xmlGetProp (node, (const xmlChar *)"type");
   if (xml_str != NULL) {
@@ -109,10 +107,9 @@ History::Contact::Contact (Ekiga::ServiceCore &_core,
 			   call_type c_t):
   core(_core), name(_name), uri(_uri), call_start(_call_start), call_duration(_call_duration), m_type(c_t)
 {
-  gchar *tmp = NULL;
+  gchar* tmp = NULL;
   std::string callp;
-  contact_core
-    = dynamic_cast<Ekiga::ContactCore*>(core.get ("contact-core"));
+  gmref_ptr<Ekiga::ContactCore> contact_core = core.get ("contact-core");
 
   node = xmlNewNode (NULL, BAD_CAST "entry");
 
@@ -171,6 +168,7 @@ History::Contact::get_groups () const
 bool
 History::Contact::populate_menu (Ekiga::MenuBuilder &builder)
 {
+  gmref_ptr<Ekiga::ContactCore> contact_core = core.get ("contact-core");
   return contact_core->populate_contact_menu (*this, uri, builder);
 }
 

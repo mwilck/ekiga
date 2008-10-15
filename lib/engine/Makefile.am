@@ -4,6 +4,7 @@ noinst_LTLIBRARIES = libekiga_engine.la
 
 INCLUDES = 								\
 	-I$(top_srcdir)/lib/gmconf/	 				\
+	-I$(top_srcdir)/lib/gmref/	 				\
 	-I$(top_srcdir)/lib/engine/	 				\
 	-I$(top_srcdir)/lib/engine/gui/gtk-core				\
 	-I$(top_srcdir)/lib/engine/gui/gtk-frontend			\

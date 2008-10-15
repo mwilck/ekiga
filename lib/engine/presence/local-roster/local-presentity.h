@@ -171,7 +171,6 @@ namespace Local
 
 
     Ekiga::ServiceCore &core;
-    Ekiga::PresenceCore *presence_core;
 
     xmlNodePtr node;
     xmlNodePtr name_node;

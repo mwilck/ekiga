@@ -46,20 +46,13 @@ history_init (Ekiga::ServiceCore &core,
 	      char **/*argv*/[])
 {
   bool result = false;
-  Ekiga::ContactCore *contact_core = NULL;
-  Ekiga::CallCore *call_core = NULL;
-  History::Source *source = NULL;
+  gmref_ptr<Ekiga::ContactCore> contact_core = core.get ("contact-core");
+  gmref_ptr<Ekiga::CallCore> call_core = core.get ("call-core");
 
-  contact_core
-    = dynamic_cast<Ekiga::ContactCore*>(core.get ("contact-core"));
+  if (contact_core && call_core) {
 
-  call_core
-    = dynamic_cast<Ekiga::CallCore*>(core.get ("call-core"));
-
-  if (contact_core != NULL && call_core != NULL) {
-
-    source = new History::Source (core);
-    core.add (*source);
+    gmref_ptr<History::Source> source =  new History::Source (core);
+    core.add (source);
     contact_core->add_source (*source);
     result = true;
   }

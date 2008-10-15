@@ -56,21 +56,36 @@
 
 #include "gmwindow.h"
 
+bool
+gtk_frontend_init (Ekiga::ServiceCore &core,
+		   int * /*argc*/,
+		   char ** /*argv*/[])
+{
+  bool result = false;
+
+  gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
+  gmref_ptr<Ekiga::ContactCore> contact_core = core.get ("contact-core");
+  gmref_ptr<Ekiga::ChatCore> chat_core = core.get ("chat-core");
+  gmref_ptr<History::Source> history_source = core.get ("call-history-store");
+
+  if (presence_core && contact_core && chat_core && history_source) {
+
+    gmref_ptr<GtkFrontend> gtk_frontend = new GtkFrontend (core);
+    core.add (gtk_frontend);
+    result = true;
+  }
+  return result;
+}
+
 
 GtkFrontend::GtkFrontend (Ekiga::ServiceCore &core)
 {
-  sigc::connection conn;
-
-  Ekiga::PresenceCore *presence_core = NULL;
-  Ekiga::ContactCore *contact_core = NULL;
-  Ekiga::ChatCore *chat_core = NULL;
-  History::Source *history_source = NULL;
+  gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
+  gmref_ptr<Ekiga::ContactCore> contact_core = core.get ("contact-core");
+  gmref_ptr<Ekiga::ChatCore> chat_core = core.get ("chat-core");
+  gmref_ptr<History::Source> history_source = core.get ("call-history-store");
   History::Book *history_book = NULL;
 
-  contact_core = dynamic_cast<Ekiga::ContactCore *>(core.get ("contact-core"));
-  presence_core = dynamic_cast<Ekiga::PresenceCore *>(core.get ("presence-core"));
-  chat_core = dynamic_cast<Ekiga::ChatCore *>(core.get ("chat-core"));
-  history_source = dynamic_cast<History::Source*>(core.get ("call-history-store"));
   history_book = history_source->get_book ();
 
   roster_view = roster_view_gtk_new (*presence_core);
@@ -124,16 +139,4 @@ const GtkWidget *
 GtkFrontend::get_call_history_view () const
 {
   return call_history_view;
-}
-
-
-bool
-gtk_frontend_init (Ekiga::ServiceCore &core,
-		   int * /*argc*/,
-		   char ** /*argv*/[])
-{
-  GtkFrontend *gtk_frontend = new GtkFrontend (core);
-  core.add (*gtk_frontend);
-
-  return true;
 }

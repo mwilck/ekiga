@@ -74,26 +74,17 @@ avahi_publisher_init (Ekiga::ServiceCore &core,
                       char* */*argv*/[])
 {
   bool result = false;
-  Ekiga::PresenceCore* presence_core = NULL;
-  Ekiga::CallCore* call_core = NULL;
-  Ekiga::PersonalDetails* details = NULL;
+  gmref_ptr<Ekiga::PresenceCore> presence_core
+    = core.get ("presence-core");
+  gmref_ptr<Ekiga::CallCore> call_core = core.get ("call-core");
+  gmref_ptr<Ekiga::PersonalDetails> details = core.get ("personal-details");
 
-  presence_core
-    = dynamic_cast<Ekiga::PresenceCore*>(core.get ("presence-core"));
-  call_core
-    = dynamic_cast<Ekiga::CallCore*>(core.get ("call-core"));
-  details
-    = dynamic_cast<Ekiga::PersonalDetails*>(core.get ("personal-details"));
-
-  if (presence_core != NULL
-      && call_core != NULL
-      && details != NULL) {
+  if (presence_core && call_core && details) {
 
     Avahi::PresencePublisher* publisher = NULL;
-    Service* service = NULL;
     publisher = new Avahi::PresencePublisher (core, *details, *call_core);
-    service = new Service (*presence_core, publisher);
-    core.add (*service);
+    gmref_ptr<Service> service = new Service (*presence_core, publisher);
+    core.add (service);
     result = true;
   }
 

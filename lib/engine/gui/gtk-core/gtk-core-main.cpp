@@ -48,9 +48,9 @@ gtk_core_init (Ekiga::ServiceCore &core,
 {
   if (gtk_init_check (argc, argv)) {
 
-    Gtk::Core *gtk = new Gtk::Core ();
+    gmref_ptr<Gtk::Core> gtk = new Gtk::Core ();
 
-    core.add (*gtk);
+    core.add (gtk);
 
     return true;
 

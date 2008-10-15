@@ -98,7 +98,6 @@ namespace Ekiga
   private:
 
     Ekiga::ServiceCore &core;
-    Ekiga::PresenceCore *presence_core;
 
     std::string name;
     std::string uri;

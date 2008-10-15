@@ -153,7 +153,6 @@ namespace Ekiga
 
   protected:
     ServiceCore & core;
-    AccountCore *account_core;
 
   private:
     void on_registration_event (Ekiga::AccountCore::RegistrationState, std::string info, Ekiga::Account *account);
@@ -172,9 +171,6 @@ namespace Ekiga
 template<typename T>
 Ekiga::BankImpl<T>::BankImpl (Ekiga::ServiceCore & _core) : core (_core)
 {
-  /* Account Core */
-  account_core = dynamic_cast<Ekiga::AccountCore*> (core.get ("account-core"));
-
   /* this is signal forwarding */
   Lister<T>::object_added.connect (account_added.make_slot ());
   Lister<T>::object_removed.connect (account_removed.make_slot ());
@@ -199,7 +195,6 @@ Ekiga::BankImpl<T>::BankImpl (Ekiga::ServiceCore & _core) : core (_core)
 template<typename T>
 Ekiga::BankImpl<T>::~BankImpl ()
 {
-  account_core->remove_bank (*this);
 }
 
 

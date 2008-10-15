@@ -43,7 +43,7 @@
 
 namespace Ekiga
 {
-  class PersonalDetails
+  class PersonalDetails: public Service
   {
   public:
     PersonalDetails () {}

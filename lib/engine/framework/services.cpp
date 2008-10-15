@@ -39,20 +39,17 @@
 
 Ekiga::ServiceCore::~ServiceCore ()
 {
-  for (std::list<Service *>::iterator iter = services.begin ();
-       iter != services.end ();
-       iter++)
-    delete *iter;
+  services.clear(); // frees the memory, if we're the only to hold references
 }
 
 bool
-Ekiga::ServiceCore::add (Service &service)
+Ekiga::ServiceCore::add (gmref_ptr<Service> service)
 {
   bool result = false;
 
-  if (get (service.get_name ()) == NULL) {
+  if ( !get (service->get_name ())) {
 
-    services.push_front (&service);
+    services.push_front (service);
     service_added (service);
     result = true;
   } else {
@@ -63,19 +60,17 @@ Ekiga::ServiceCore::add (Service &service)
   return result;
 }
 
-Ekiga::Service *
+gmref_ptr<Ekiga::Service>
 Ekiga::ServiceCore::get (const std::string name)
 {
-  Service *result = NULL;
-  bool found = false;
+  gmref_ptr<Service> result;
 
-  for (std::list<Service *>::iterator iter = services.begin ();
-       iter != services.end () && !found;
+  for (std::list<gmref_ptr<Service> >::iterator iter = services.begin ();
+       iter != services.end () && !result;
        iter++)
     if (name == (*iter)->get_name ()) {
 
       result = *iter;
-      found = true;
     }
   return result;
 }
@@ -83,7 +78,7 @@ Ekiga::ServiceCore::get (const std::string name)
 void
 Ekiga::ServiceCore::dump (std::ostream &stream) const
 {
-  for (std::list<Service *>::const_reverse_iterator iter
+  for (std::list<gmref_ptr<Service> >::const_reverse_iterator iter
 	 = services.rbegin ();
        iter != services.rend ();
        iter++)

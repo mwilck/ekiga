@@ -110,20 +110,14 @@ local_roster_bridge_init (Ekiga::ServiceCore &core,
 			  char ** /*argv*/[])
 {
   bool result = false;
-  Ekiga::ContactCore *contact_core = NULL;
-  Local::Cluster *cluster = NULL;
-  Local::ContactDecorator *decorator = NULL;
+  gmref_ptr<Ekiga::ContactCore> contact_core = core.get ("contact-core");
+  gmref_ptr<Local::Cluster> cluster = core.get ("local-cluster");
 
-  contact_core
-    = dynamic_cast<Ekiga::ContactCore*>(core.get ("contact-core"));
+  if (cluster && contact_core) {
 
-  cluster
-    = dynamic_cast<Local::Cluster*>(core.get ("local-cluster"));
-
-  if (cluster != NULL && contact_core != NULL) {
-
-    decorator = new Local::ContactDecorator (*cluster);
-    core.add (*decorator);
+    gmref_ptr<Local::ContactDecorator> decorator
+      = new Local::ContactDecorator (*cluster);
+    core.add (decorator);
     contact_core->add_contact_decorator (*decorator);
     result = true;
   }

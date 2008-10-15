@@ -54,7 +54,9 @@ namespace Evolution
  * @{
  */
 
-  class Source: public Ekiga::SourceImpl<Book>
+  class Source:
+    public Ekiga::Service,
+    public Ekiga::SourceImpl<Book>
   {
   public:
 
@@ -63,6 +65,13 @@ namespace Evolution
     ~Source ();
 
     bool populate_menu (Ekiga::MenuBuilder &builder);
+
+    /* this object is an Ekiga::Service too */
+    const std::string get_name () const
+    { return "evolution-source"; }
+
+    const std::string get_description () const
+    { return "\tComponent bringing in gnome addressbooks"; }
 
     /* those should be private, but need to be called from C */
 

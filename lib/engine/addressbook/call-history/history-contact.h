@@ -96,7 +96,6 @@ namespace History
   private:
 
     Ekiga::ServiceCore &core;
-    Ekiga::ContactCore *contact_core;
 
     xmlNodePtr node;
     std::string name;

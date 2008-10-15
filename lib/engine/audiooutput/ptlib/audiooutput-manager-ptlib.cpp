@@ -41,13 +41,20 @@
 #define DEVICE_TYPE "PTLIB"
 
 GMAudioOutputManager_ptlib::GMAudioOutputManager_ptlib (Ekiga::ServiceCore & _core)
-: core (_core),
-  runtime (*(dynamic_cast<Ekiga::Runtime *> (_core.get ("runtime"))))
+: core (_core)
 {
+  gmref_ptr<Ekiga::Runtime> smart = core.get ("runtime");
+  gmref_inc (smart); // take a reference in the main thread
+  runtime = &*smart;
   current_state[Ekiga::primary].opened = false;
   current_state[Ekiga::secondary].opened = false;
   output_device[Ekiga::primary] = NULL;
   output_device[Ekiga::secondary] = NULL;
+}
+
+GMAudioOutputManager_ptlib::~GMAudioOutputManager_ptlib ()
+{
+  gmref_dec (runtime); // leave a reference in the main thread
 }
 
 void GMAudioOutputManager_ptlib::get_devices(std::vector <Ekiga::AudioOutputDevice> & devices)
@@ -115,7 +122,7 @@ bool GMAudioOutputManager_ptlib::open (Ekiga::AudioOutputPS ps, unsigned channel
 
   if (error_code != Ekiga::AO_ERROR_NONE) {
     PTRACE(1, "GMAudioOutputManager_ptlib\tEncountered error " << error_code << " while opening device[" << ps << "]");
-    runtime.run_in_main (sigc::bind (device_error.make_slot (), ps, current_state[ps].device, error_code));
+    runtime->run_in_main (sigc::bind (device_error.make_slot (), ps, current_state[ps].device, error_code));
     return false;
   }
 
@@ -126,7 +133,7 @@ bool GMAudioOutputManager_ptlib::open (Ekiga::AudioOutputPS ps, unsigned channel
   Ekiga::AudioOutputSettings settings;
   settings.volume = volume;
   settings.modifyable = true;
-  runtime.run_in_main (sigc::bind (device_opened.make_slot (), ps, current_state[ps].device, settings));
+  runtime->run_in_main (sigc::bind (device_opened.make_slot (), ps, current_state[ps].device, settings));
 
   return true;
 }
@@ -139,7 +146,7 @@ void GMAudioOutputManager_ptlib::close(Ekiga::AudioOutputPS ps)
      output_device[ps] = NULL;
   }
   current_state[ps].opened = false;
-  runtime.run_in_main (sigc::bind (device_closed.make_slot (), ps, current_state[ps].device));
+  runtime->run_in_main (sigc::bind (device_closed.make_slot (), ps, current_state[ps].device));
 }
 
 void GMAudioOutputManager_ptlib::set_buffer_size (Ekiga::AudioOutputPS ps, unsigned buffer_size, unsigned num_buffers)
@@ -171,7 +178,7 @@ bool GMAudioOutputManager_ptlib::set_frame_data (Ekiga::AudioOutputPS ps,
     }
     else {
       PTRACE(1, "GMAudioOutputManager_ptlib\tEncountered error while trying to write data");
-      runtime.run_in_main (sigc::bind (device_error.make_slot (), ps, current_state[ps].device, Ekiga::AO_ERROR_WRITE));
+      runtime->run_in_main (sigc::bind (device_error.make_slot (), ps, current_state[ps].device, Ekiga::AO_ERROR_WRITE));
 
     }
   }

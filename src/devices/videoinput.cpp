@@ -68,9 +68,14 @@ PCREATE_PLUGIN(EKIGA, PVideoInputDevice, &PVideoInputDevice_EKIGA_descriptor);
 
 int PVideoInputDevice_EKIGA::devices_nbr = 0;
 
-PVideoInputDevice_EKIGA::PVideoInputDevice_EKIGA (Ekiga::ServiceCore & _core)
-: core (_core), videoinput_core (*(dynamic_cast<Ekiga::VideoInputCore *> (_core.get ("videoinput-core"))))
+PVideoInputDevice_EKIGA::PVideoInputDevice_EKIGA (Ekiga::ServiceCore & _core):
+  core (_core)
 {
+  {
+    gmref_ptr<Ekiga::VideoInputCore> smart = core.get ("videoinput-core");
+    gmref_inc (smart); // take a reference in the main thread
+    videoinput_core = &*smart;
+  }
   opened = false;
   is_active = false;
 }
@@ -79,6 +84,7 @@ PVideoInputDevice_EKIGA::PVideoInputDevice_EKIGA (Ekiga::ServiceCore & _core)
 PVideoInputDevice_EKIGA::~PVideoInputDevice_EKIGA ()
 {
   Close ();
+  gmref_dec (videoinput_core); // leave a reference in the main thread
 }
 
 bool
@@ -88,8 +94,8 @@ PVideoInputDevice_EKIGA::Open (const PString &/*name*/,
   if (start_immediate) {
     if (!is_active) {
       if (devices_nbr == 0) {
-        videoinput_core.set_stream_config(frameWidth, frameHeight, frameRate);
-        videoinput_core.start_stream();
+        videoinput_core->set_stream_config(frameWidth, frameHeight, frameRate);
+        videoinput_core->start_stream();
       }
       is_active = true;
       devices_nbr++;
@@ -114,7 +120,7 @@ PVideoInputDevice_EKIGA::Close ()
   if (is_active) {
     devices_nbr--;
     if (devices_nbr==0)
-      videoinput_core.stop_stream();
+      videoinput_core->stop_stream();
     is_active = false;
   }
   opened = false;
@@ -128,8 +134,8 @@ PVideoInputDevice_EKIGA::Start ()
 {
   if (!is_active) {
     if (devices_nbr == 0) {
-      videoinput_core.set_stream_config(frameWidth, frameHeight, frameRate);
-      videoinput_core.start_stream();
+      videoinput_core->set_stream_config(frameWidth, frameHeight, frameRate);
+      videoinput_core->start_stream();
     }
     is_active = true;
     devices_nbr++;
@@ -178,7 +184,7 @@ bool
 PVideoInputDevice_EKIGA::GetFrameData (BYTE *frame,
 				       PINDEX *i)
 {
-  videoinput_core.get_frame_data((char*)frame);
+  videoinput_core->get_frame_data((char*)frame);
 
   *i = frameWidth * frameHeight * 3 / 2;
  
@@ -189,7 +195,7 @@ PVideoInputDevice_EKIGA::GetFrameData (BYTE *frame,
 bool PVideoInputDevice_EKIGA::GetFrameDataNoDelay (BYTE *frame,
 						   PINDEX *i)
 {
-  videoinput_core.get_frame_data((char*)frame);
+  videoinput_core->get_frame_data((char*)frame);
 
   *i = frameWidth * frameHeight * 3 / 2;
   return true;

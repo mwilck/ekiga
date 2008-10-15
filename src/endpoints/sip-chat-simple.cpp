@@ -86,10 +86,7 @@ bool
 SIP::SimpleChat::send_message (const std::string msg)
 {
   bool result;
-  Ekiga::PersonalDetails* personal = NULL;
-
-  personal
-    = dynamic_cast<Ekiga::PersonalDetails*>(core.get ("personal-details"));
+  gmref_ptr<Ekiga::PersonalDetails> personal = core.get ("personal-details");
   result = sender (msg);
   for (std::list<Ekiga::ChatObserver*>::iterator iter
 	 = observers.begin ();

@@ -205,11 +205,11 @@ Evolution::Contact::remove ()
 bool
 Evolution::Contact::populate_menu (Ekiga::MenuBuilder &builder)
 {
-  Ekiga::ContactCore *core = dynamic_cast<Ekiga::ContactCore *>(services.get ("contact-core"));
+  gmref_ptr<Ekiga::ContactCore> core = services.get ("contact-core");
   bool populated = false;
   std::map<std::string, std::string> uris;
 
-  if (core != NULL) {
+  if (core) {
 
     Ekiga::TemporaryMenuBuilder tmp_builder;
 

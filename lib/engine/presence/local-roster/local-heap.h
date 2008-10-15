@@ -190,7 +190,6 @@ namespace Local
 				      Ekiga::Form& result);
 
     Ekiga::ServiceCore &core;
-    Ekiga::PresenceCore *presence_core;
     xmlDocPtr doc;
   };
 

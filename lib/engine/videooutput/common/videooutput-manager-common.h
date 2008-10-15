@@ -257,7 +257,7 @@
                               from various threads */
   
     Ekiga::ServiceCore & core;
-    Ekiga::Runtime & runtime;
+    Ekiga::Runtime* runtime;
   };
 
 /**

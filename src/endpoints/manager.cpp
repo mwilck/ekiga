@@ -102,8 +102,7 @@ using namespace Opal;
 
 /* The class */
 CallManager::CallManager (Ekiga::ServiceCore & _core)
-: core (_core), 
-  runtime (*(dynamic_cast<Ekiga::Runtime *> (core.get ("runtime"))))
+: core (_core)
 {
   /* Initialise the endpoint paramaters */
   PIPSocket::SetDefaultIpAddressFamilyV4();
@@ -140,9 +139,7 @@ CallManager::CallManager (Ekiga::ServiceCore & _core)
   SetMediaFormatOrder (PStringArray ());
   SetMediaFormatMask (PStringArray ());
 
-  //
-  call_core = dynamic_cast<Ekiga::CallCore *> (core.get ("call-core"));
-
+  call_core = core.get ("call-core");
 
   // used to communicate with the StunDetector
 #if GLIB_CHECK_VERSION(2,16,0)
@@ -169,7 +166,8 @@ void CallManager::start ()
   new StunDetector (stun_server, *this, queue);
 
   patience = 20;
-  runtime.run_in_main (sigc::mem_fun (this, &CallManager::HandleSTUNResult), 1);
+  gmref_ptr<Ekiga::Runtime> runtime = core.get ("runtime");
+  runtime->run_in_main (sigc::mem_fun (this, &CallManager::HandleSTUNResult), 1);
 }
 
 
@@ -721,9 +719,10 @@ CallManager::HandleSTUNResult ()
   } else {
 
       patience--;
-      runtime.run_in_main (sigc::mem_fun (this,
+      gmref_ptr<Ekiga::Runtime> runtime = core.get ("runtime");
+      runtime->run_in_main (sigc::mem_fun (this,
 					  &CallManager::HandleSTUNResult),
-			   1);
+			    1);
   }
 }
 
@@ -731,9 +730,12 @@ void
 CallManager::ReportSTUNError (const std::string error)
 {
   // notice we're in for an infinite loop if nobody ever reports to the user!
-  if ( !call_core->errors.handle_request (error))
-    runtime.run_in_main (sigc::bind (sigc::mem_fun (this,
-						    &CallManager::ReportSTUNError),
-				     error),
-			 10);
+  if ( !call_core->errors.handle_request (error)) {
+
+    gmref_ptr<Ekiga::Runtime> runtime = core.get ("runtime");
+    runtime->run_in_main (sigc::bind (sigc::mem_fun (this,
+						     &CallManager::ReportSTUNError),
+				      error),
+			  10);
+  }
 }

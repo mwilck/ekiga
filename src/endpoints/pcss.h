@@ -61,7 +61,6 @@ public:
 
 private:
   Ekiga::ServiceCore & core;
-  Ekiga::Runtime & runtime;
 };
 
 #endif

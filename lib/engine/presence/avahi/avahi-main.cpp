@@ -39,48 +39,18 @@
 #include "presence-core.h"
 #include "avahi-cluster.h"
 
-namespace Avahi
-{
-  class Service: public Ekiga::Service
-  {
-  public:
-
-    Service (Avahi::Cluster *_cluster): cluster(_cluster)
-    {}
-
-    ~Service ()
-    { delete cluster; }
-
-    const std::string get_name () const
-    { return "avahi-core"; }
-
-    const std::string get_description () const
-    { return "\tObject getting presence from the network neighbourhood"; }
-
-  private:
-
-    Avahi::Cluster *cluster;
-  };
-};
-
 bool
 avahi_init (Ekiga::ServiceCore &core,
 	    int */*argc*/,
 	    char **/*argv*/[])
 {
   bool result = false;
-  Ekiga::PresenceCore *presence_core = NULL;
-  Avahi::Cluster *cluster = NULL;
-  Avahi::Service *service = NULL;
+  gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
 
-  presence_core
-    = dynamic_cast<Ekiga::PresenceCore*>(core.get ("presence-core"));
+  if (presence_core) {
 
-  if (presence_core != NULL) {
-
-    cluster = new Avahi::Cluster (core);
-    service = new Avahi::Service (cluster);
-    core.add (*service);
+    gmref_ptr<Avahi::Cluster> cluster = new Avahi::Cluster (core);
+    core.add (cluster);
     presence_core->add_cluster (*cluster);
     result = true;
   }

@@ -46,12 +46,10 @@ audiooutput_ptlib_init (Ekiga::ServiceCore &core,
 	    char **/*argv*/[])
 {
   bool result = false;
-  Ekiga::AudioOutputCore *audiooutput_core = NULL;
+  gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core
+    = core.get ("audiooutput-core");
 
-  audiooutput_core
-    = dynamic_cast<Ekiga::AudioOutputCore*>(core.get ("audiooutput-core"));
-
-  if (audiooutput_core != NULL) {
+  if (audiooutput_core) {
 
     GMAudioOutputManager_ptlib *audiooutput_manager = new GMAudioOutputManager_ptlib(core);
 

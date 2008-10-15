@@ -541,7 +541,8 @@ static void on_setup_call_cb (Ekiga::CallManager & /*manager*/,
                               gpointer self)
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
-  Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (mw->priv->core->get ("audiooutput-core"));
+  gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core
+    = mw->priv->core->get ("audiooutput-core");
 
   if (!call.is_outgoing ()) {
     ekiga_main_window_update_calling_state (mw, Called);
@@ -566,7 +567,8 @@ static void on_ringing_call_cb (Ekiga::CallManager & /*manager*/,
                                 gpointer self)
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
-  Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (mw->priv->core->get ("audiooutput-core"));
+  gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core
+    = mw->priv->core->get ("audiooutput-core");
 
   if (call.is_outgoing ()) {
     audiooutput_core->start_play_event("ring_tone_sound", 3000, 256);
@@ -584,7 +586,8 @@ static gboolean on_stats_refresh_cb (gpointer self)
   if (mw->priv->calling_state == Connected && mw->priv->current_call) {
 
     Ekiga::VideoOutputStats videooutput_stats;
-    Ekiga::VideoOutputCore *videooutput_core = dynamic_cast<Ekiga::VideoOutputCore *> (mw->priv->core->get ("videooutput-core"));
+    gmref_ptr<Ekiga::VideoOutputCore> videooutput_core
+      = mw->priv->core->get ("videooutput-core");
     videooutput_core->get_videooutput_stats(videooutput_stats);
   
     msg = g_strdup_printf (_("A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d"), 
@@ -616,8 +619,10 @@ static gboolean on_signal_level_refresh_cb (gpointer self)
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
 
-  Ekiga::AudioInputCore *audioinput_core = dynamic_cast<Ekiga::AudioInputCore *> (mw->priv->core->get ("audioinput-core"));
-  Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (mw->priv->core->get ("audiooutput-core"));
+  gmref_ptr<Ekiga::AudioInputCore> audioinput_core
+    = mw->priv->core->get ("audioinput-core");
+  gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core
+    = mw->priv->core->get ("audiooutput-core");
 
   gtk_levelmeter_set_level (GTK_LEVELMETER (mw->priv->output_signal), audiooutput_core->get_average_level());
   gtk_levelmeter_set_level (GTK_LEVELMETER (mw->priv->input_signal), audioinput_core->get_average_level());
@@ -648,7 +653,8 @@ static void on_established_call_cb (Ekiga::CallManager & /*manager*/,
 
   mw->priv->timeout_id = g_timeout_add (1000, on_stats_refresh_cb, self);
 
-  Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (mw->priv->core->get ("audiooutput-core"));
+  gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core
+    = mw->priv->core->get ("audiooutput-core");
 
   audiooutput_core->stop_play_event("incoming_call_sound");
   audiooutput_core->stop_play_event("ring_tone_sound");
@@ -682,7 +688,8 @@ static void on_cleared_call_cb (Ekiga::CallManager & /*manager*/,
     g_source_remove (mw->priv->timeout_id);
     mw->priv->timeout_id = -1;
   }
-  Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (mw->priv->core->get ("audiooutput-core"));
+  gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core
+    = mw->priv->core->get ("audiooutput-core");
 
   audiooutput_core->stop_play_event("incoming_call_sound");
   audiooutput_core->stop_play_event("ring_tone_sound");
@@ -696,7 +703,8 @@ static void on_cleared_incoming_call_cb (std::string /*reason*/,
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (GnomeMeeting::Process ()->GetMainWindow ());
 
-  Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (mw->priv->core->get ("audiooutput-core"));
+  gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core
+    = mw->priv->core->get ("audiooutput-core");
   audiooutput_core->stop_play_event("incoming_call_sound");
   audiooutput_core->stop_play_event("ring_tone_sound");
 
@@ -745,7 +753,8 @@ static void on_missed_call_cb (Ekiga::CallManager & /*manager*/,
                                gpointer self)
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
-  Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (mw->priv->core->get ("audiooutput-core"));
+  gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core
+    = mw->priv->core->get ("audiooutput-core");
 
   audiooutput_core->stop_play_event ("incoming_call_sound");
   audiooutput_core->stop_play_event ("ring_tone_sound");
@@ -1432,7 +1441,6 @@ place_call_cb (GtkWidget * /*widget*/,
                gpointer data)
 {
   std::string uri;
-  Ekiga::CallCore *call_core = NULL;
   EkigaMainWindow *mw = NULL;
 
   g_return_if_fail (EKIGA_IS_MAIN_WINDOW (data));
@@ -1444,7 +1452,7 @@ place_call_cb (GtkWidget * /*widget*/,
     size_t pos;
 
     ekiga_main_window_update_calling_state (mw, Calling);
-    call_core = dynamic_cast<Ekiga::CallCore*> (mw->priv->core->get ("call-core"));
+    gmref_ptr<Ekiga::CallCore> call_core = mw->priv->core->get ("call-core");
     uri = ekiga_main_window_get_call_url (mw);
     if (call_core->dial (uri)) {
 
@@ -1826,7 +1834,8 @@ on_chat_unread_alert (G_GNUC_UNUSED GtkWidget* widget,
     return;
 
   Ekiga::ServiceCore *core = GnomeMeeting::Process ()->GetServiceCore ();
-  Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (core->get ("audiooutput-core"));
+  gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core
+    = core->get ("audiooutput-core");
 
   std::string file_name_string = gm_conf_get_string (SOUND_EVENTS_KEY "new_message_sound");
 
@@ -1949,8 +1958,10 @@ audio_volume_changed_cb (GtkAdjustment * /*adjustment*/,
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (data);
 
-  Ekiga::AudioInputCore *audioinput_core = dynamic_cast<Ekiga::AudioInputCore *> (mw->priv->core->get ("audioinput-core"));
-  Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (mw->priv->core->get ("audiooutput-core"));
+  gmref_ptr<Ekiga::AudioInputCore> audioinput_core
+    = mw->priv->core->get ("audioinput-core");
+  gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core
+    = mw->priv->core->get ("audiooutput-core");
 
   audiooutput_core->set_volume (Ekiga::primary, (unsigned) GTK_ADJUSTMENT (mw->priv->adj_output_volume)->value);
   audioinput_core->set_volume ((unsigned) GTK_ADJUSTMENT (mw->priv->adj_input_volume)->value);
@@ -1962,8 +1973,10 @@ audio_volume_window_shown_cb (GtkWidget * /*widget*/,
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (data);
 
-  Ekiga::AudioInputCore *audioinput_core = dynamic_cast<Ekiga::AudioInputCore *> (mw->priv->core->get ("audioinput-core"));
-  Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (mw->priv->core->get ("audiooutput-core"));
+  gmref_ptr<Ekiga::AudioInputCore> audioinput_core
+    = mw->priv->core->get ("audioinput-core");
+  gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core
+    = mw->priv->core->get ("audiooutput-core");
 
   audioinput_core->set_average_collection (true);
   audiooutput_core->set_average_collection (true);
@@ -1977,8 +1990,10 @@ audio_volume_window_hidden_cb (GtkWidget * /*widget*/,
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (data);
 
-  Ekiga::AudioInputCore *audioinput_core = dynamic_cast<Ekiga::AudioInputCore *> (mw->priv->core->get ("audioinput-core"));
-  Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (mw->priv->core->get ("audiooutput-core"));
+  gmref_ptr<Ekiga::AudioInputCore> audioinput_core
+    = mw->priv->core->get ("audioinput-core");
+  gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core
+    = mw->priv->core->get ("audiooutput-core");
 
   g_source_remove (mw->priv->levelmeter_timeout_id);
   audioinput_core->set_average_collection (false);
@@ -1991,7 +2006,8 @@ video_settings_changed_cb (GtkAdjustment * /*adjustment*/,
 { 
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (data);
 
-  Ekiga::VideoInputCore *videoinput_core = dynamic_cast<Ekiga::VideoInputCore *> (mw->priv->core->get ("videoinput-core"));
+  gmref_ptr<Ekiga::VideoInputCore> videoinput_core
+    = mw->priv->core->get ("videoinput-core");
 
   videoinput_core->set_whiteness ((unsigned) GTK_ADJUSTMENT (mw->priv->adj_whiteness)->value);
   videoinput_core->set_brightness ((unsigned) GTK_ADJUSTMENT (mw->priv->adj_brightness)->value);
@@ -2703,7 +2719,8 @@ closed_cb (NotifyNotification* /*notify*/,
 
   mw = EKIGA_MAIN_WINDOW (main_window);
 
-  Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (mw->priv->core->get ("audiooutput-core"));
+  gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core
+    = mw->priv->core->get ("audiooutput-core");
   if (audiooutput_core) 
     audiooutput_core->stop_play_event ("incoming_call_sound");
 }
@@ -3022,8 +3039,6 @@ static void
 ekiga_main_window_init_menu (EkigaMainWindow *mw)
 {
   Ekiga::ServiceCore *services = NULL;
-  Ekiga::Trigger *local_cluster_trigger = NULL;
-  GtkFrontend *gtk_frontend = NULL;
   
   GtkWidget *addressbook_window = NULL;
   GtkWidget *accounts_window = NULL;
@@ -3035,8 +3050,9 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
   g_return_if_fail (mw != NULL);
 
   services = GnomeMeeting::Process ()->GetServiceCore ();
-  local_cluster_trigger = dynamic_cast<Ekiga::Trigger *>(services->get ("local-cluster"));
-  gtk_frontend = dynamic_cast<GtkFrontend *>(services->get ("gtk-frontend"));
+  gmref_ptr<Ekiga::Trigger> local_cluster_trigger
+    = services->get ("local-cluster");
+  gmref_ptr<GtkFrontend> gtk_frontend = services->get ("gtk-frontend");
   addressbook_window = GTK_WIDGET (gtk_frontend->get_addressbook_window ()); 
   accounts_window = GnomeMeeting::Process ()->GetAccountsWindow ();
 
@@ -3062,7 +3078,7 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
 
       GTK_MENU_ENTRY("add_contact", _("A_dd Contact"), _("Add a contact to the roster"),
 		     GTK_STOCK_ADD, 'n', 
-		     G_CALLBACK (pull_trigger_cb), local_cluster_trigger, true),
+		     G_CALLBACK (pull_trigger_cb), &*local_cluster_trigger, true),
 
       GTK_MENU_THEME_ENTRY("address_book", _("Address _Book"),
 			   _("Find contacts"),
@@ -3333,14 +3349,13 @@ ekiga_main_window_init_contact_list (EkigaMainWindow *mw)
 {
   GtkWidget *label = NULL;
 
-  GtkFrontend *gtk_frontend = NULL;
   Ekiga::ServiceCore *services = NULL;
   GtkWidget* roster_view = NULL;
 
   services = GnomeMeeting::Process ()->GetServiceCore ();
   g_return_if_fail (services != NULL);
 
-  gtk_frontend = dynamic_cast<GtkFrontend *>(services->get ("gtk-frontend"));
+  gmref_ptr<GtkFrontend> gtk_frontend = services->get ("gtk-frontend");
 
   label = gtk_label_new (_("Contacts"));
   roster_view = GTK_WIDGET (gtk_frontend->get_roster_view ());
@@ -3376,12 +3391,11 @@ ekiga_main_window_init_history (EkigaMainWindow *mw)
 {
   Ekiga::ServiceCore *services = NULL;
   GtkWidget *label = NULL;
-  GtkFrontend *gtk_frontend = NULL;
 
   services = GnomeMeeting::Process ()->GetServiceCore ();
   g_return_if_fail (services != NULL);
 
-  gtk_frontend = dynamic_cast<GtkFrontend *>(services->get ("gtk-frontend"));
+  gmref_ptr<GtkFrontend> gtk_frontend = services->get ("gtk-frontend");
 
   label = gtk_label_new (_("Call history"));
   gtk_notebook_append_page (GTK_NOTEBOOK (mw->priv->main_notebook),
@@ -3771,7 +3785,8 @@ ekiga_main_window_expose_event (GtkWidget      *widget,
 
   display_info.widget_info_set = TRUE;
 
-  Ekiga::VideoOutputCore *videooutput_core = dynamic_cast<Ekiga::VideoOutputCore *> (mw->priv->core->get ("videooutput-core"));
+  gmref_ptr<Ekiga::VideoOutputCore> videooutput_core
+    = mw->priv->core->get ("videooutput-core");
   videooutput_core->set_display_info (display_info);
 
   return handled;
@@ -3884,7 +3899,8 @@ ekiga_main_window_connect_engine_signals (EkigaMainWindow *mw)
   g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
 
   /* New Display Engine signals */
-  Ekiga::VideoOutputCore *videooutput_core = dynamic_cast<Ekiga::VideoOutputCore *> (mw->priv->core->get ("videooutput-core"));
+  gmref_ptr<Ekiga::VideoOutputCore> videooutput_core
+    = mw->priv->core->get ("videooutput-core");
 
   conn = videooutput_core->device_opened.connect (sigc::bind (sigc::ptr_fun (on_videooutput_device_opened_cb), (gpointer) mw));
   mw->priv->connections.push_back (conn);
@@ -3902,7 +3918,8 @@ ekiga_main_window_connect_engine_signals (EkigaMainWindow *mw)
   mw->priv->connections.push_back (conn);
 
   /* New VideoInput Engine signals */
-  Ekiga::VideoInputCore *videoinput_core = dynamic_cast<Ekiga::VideoInputCore *> (mw->priv->core->get ("videoinput-core"));
+  gmref_ptr<Ekiga::VideoInputCore> videoinput_core
+    = mw->priv->core->get ("videoinput-core");
 
   conn = videoinput_core->device_opened.connect (sigc::bind (sigc::ptr_fun (on_videoinput_device_opened_cb), (gpointer) mw));
   mw->priv->connections.push_back (conn);
@@ -3920,7 +3937,8 @@ ekiga_main_window_connect_engine_signals (EkigaMainWindow *mw)
   mw->priv->connections.push_back (conn);
 
   /* New AudioInput Engine signals */
-  Ekiga::AudioInputCore *audioinput_core = dynamic_cast<Ekiga::AudioInputCore *> (mw->priv->core->get ("audioinput-core"));
+  gmref_ptr<Ekiga::AudioInputCore> audioinput_core
+    = mw->priv->core->get ("audioinput-core");
 
   conn = audioinput_core->device_opened.connect (sigc::bind (sigc::ptr_fun (on_audioinput_device_opened_cb), (gpointer) mw));
   mw->priv->connections.push_back (conn);
@@ -3938,7 +3956,8 @@ ekiga_main_window_connect_engine_signals (EkigaMainWindow *mw)
   mw->priv->connections.push_back (conn);
 
   /* New AudioOutput Engine signals */
-  Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (mw->priv->core->get ("audiooutput-core"));
+  gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core
+    = mw->priv->core->get ("audiooutput-core");
 
   conn = audiooutput_core->device_opened.connect (sigc::bind (sigc::ptr_fun (on_audiooutput_device_opened_cb), (gpointer) mw));
   mw->priv->connections.push_back (conn);
@@ -3956,8 +3975,9 @@ ekiga_main_window_connect_engine_signals (EkigaMainWindow *mw)
   mw->priv->connections.push_back (conn);
     
   /* New Call Engine signals */
-  Ekiga::CallCore *call_core = dynamic_cast<Ekiga::CallCore *> (mw->priv->core->get ("call-core"));
-  Ekiga::AccountCore *account_core = dynamic_cast<Ekiga::AccountCore *> (mw->priv->core->get ("account-core"));
+  gmref_ptr<Ekiga::CallCore> call_core = mw->priv->core->get ("call-core");
+  gmref_ptr<Ekiga::AccountCore> account_core
+    = mw->priv->core->get ("account-core");
 
   /* Engine Signals callbacks */
   conn = account_core->registration_event.connect (sigc::bind (sigc::ptr_fun (on_registration_event), (gpointer) mw));
@@ -4024,12 +4044,11 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   
   GtkStatusIcon *status_icon = NULL;
 
-  GtkFrontend *gtk_frontend = NULL;
   GtkWidget *chat_window = NULL;
 
   /* initialize the callback to play IM message sound */
   /* FIXME: move this to the chat window code */
-  gtk_frontend = dynamic_cast<GtkFrontend *>(core.get ("gtk-frontend"));
+  gmref_ptr<GtkFrontend> gtk_frontend = core.get ("gtk-frontend");
   chat_window = GTK_WIDGET (gtk_frontend->get_chat_window ());
 
   g_signal_connect (chat_window, "unread-alert",
@@ -4424,7 +4443,7 @@ main (int argc,
    */
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (main_window); //TODO no priv here
-  Ekiga::CallCore *call_core = dynamic_cast<Ekiga::CallCore *> (mw->priv->core->get ("call-core"));
+  gmref_ptr<Ekiga::CallCore> call_core = mw->priv->core->get ("call-core");
   if (error == -1) {
 
     if (gm_conf_get_int (GENERAL_KEY "version") 

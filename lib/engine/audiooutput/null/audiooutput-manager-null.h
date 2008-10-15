@@ -55,7 +55,7 @@
 
        GMAudioOutputManager_null (Ekiga::ServiceCore & core);
 
-      virtual ~GMAudioOutputManager_null () {}
+      ~GMAudioOutputManager_null ();
 
       virtual void get_devices (std::vector <Ekiga::AudioOutputDevice> & devices);
 
@@ -74,7 +74,7 @@
 
     protected:
       Ekiga::ServiceCore & core;
-      Ekiga::Runtime & runtime;
+      Ekiga::Runtime* runtime;
 
       PAdaptiveDelay adaptive_delay[2];
   };

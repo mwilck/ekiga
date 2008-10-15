@@ -57,7 +57,7 @@
 
       GMVideoInputManager_mlogo (Ekiga::ServiceCore & core);
 
-      virtual ~GMVideoInputManager_mlogo () {}
+      ~GMVideoInputManager_mlogo ();
 
 
       virtual void get_devices(std::vector <Ekiga::VideoInputDevice> & devices);
@@ -87,7 +87,7 @@
       unsigned increment;
 
       Ekiga::ServiceCore & core;
-      Ekiga::Runtime & runtime;
+      Ekiga::Runtime* runtime;
 
       PAdaptiveDelay adaptive_delay;
   };

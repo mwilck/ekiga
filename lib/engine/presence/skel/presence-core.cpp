@@ -42,8 +42,8 @@
 
 Ekiga::PresenceCore::PresenceCore (Ekiga::ServiceCore& core)
 {
-  Ekiga::AccountCore *account_core = dynamic_cast <Ekiga::AccountCore *> (core.get ("account-core"));
-  Ekiga::PersonalDetails *details = dynamic_cast <Ekiga::PersonalDetails *> (core.get ("personal-details"));
+  gmref_ptr<Ekiga::AccountCore> account_core = core.get ("account-core");
+  gmref_ptr<Ekiga::PersonalDetails> details = core.get ("personal-details");
 
   if (details)
     details->updated.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresenceCore::publish), details));
@@ -114,8 +114,8 @@ Ekiga::PresenceCore::on_heap_removed (Heap &heap, Cluster *cluster)
 
 void
 Ekiga::PresenceCore::on_presentity_added (Heap &heap,
-					       Presentity &presentity,
-					       Cluster *cluster)
+					  Presentity &presentity,
+					  Cluster *cluster)
 {
   presentity_added.emit (*cluster, heap, presentity);
 }
@@ -250,7 +250,7 @@ Ekiga::PresenceCore::remove_presence_publisher (PresencePublisher& publisher)
   presence_publishers.remove (&publisher);
 }
 
-void Ekiga::PresenceCore::publish (const PersonalDetails* details) 
+void Ekiga::PresenceCore::publish (gmref_ptr<PersonalDetails> details) 
 {
   for (std::list<PresencePublisher*>::iterator iter
 	 = presence_publishers.begin ();
@@ -283,7 +283,7 @@ void
 Ekiga::PresenceCore::on_registration_event (const Ekiga::Account& /*account*/,
 					    Ekiga::AccountCore::RegistrationState state,
 					    std::string /*info*/,
-					    Ekiga::PersonalDetails *details)
+					    gmref_ptr<Ekiga::PersonalDetails> details)
 {
   if (state == Ekiga::AccountCore::Registered)
     publish (details);

@@ -3,7 +3,7 @@ SUBDIRS = skel
 if !WIN32
 SUBDIRS += x
 endif
-		
+
 # DirectX
 if HAVE_DX
 SUBDIRS += dx

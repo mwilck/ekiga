@@ -46,12 +46,10 @@ videoinput_ptlib_init (Ekiga::ServiceCore &core,
 	    char **/*argv*/[])
 {
   bool result = false;
-  Ekiga::VideoInputCore *videoinput_core = NULL;
+  gmref_ptr<Ekiga::VideoInputCore> videoinput_core
+    = core.get ("videoinput-core");
 
-  videoinput_core
-    = dynamic_cast<Ekiga::VideoInputCore*>(core.get ("videoinput-core"));
-
-  if (videoinput_core != NULL) {
+  if (videoinput_core) {
 
     GMVideoInputManager_ptlib *videoinput_manager = new GMVideoInputManager_ptlib(core);
 

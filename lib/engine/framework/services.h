@@ -36,12 +36,11 @@
 #ifndef __SERVICES_H__
 #define __SERVICES_H__
 
-/* Ok, the principle is simple : we want to do "foo = new Foo (whatever)"
- * somewhere, and hook it somewhere for the whole program life ; so we give
- * the pointer to a ServiceCore object, which will end it cleanly.
- * Why not use smart pointers? Because it would be nice for debugging purposes
- * to be able to describe what exactly is enabled.
+/* We want to register some named services to a central location : this is
+ * it!
  */
+
+#include "gmref.h"
 
 #include <list>
 #include <string>
@@ -55,7 +54,7 @@ namespace Ekiga
  * @{
  */
 
-  struct Service
+  struct Service: public GmRefCounted
   {
     virtual ~Service () {}
 
@@ -73,17 +72,17 @@ namespace Ekiga
 
     ~ServiceCore ();
 
-    bool add (Service &service);
+    bool add (gmref_ptr<Service> service);
 
-    Service *get (const std::string name);
+    gmref_ptr<Service> get (const std::string name);
 
     void dump (std::ostream &stream) const;
 
-   sigc::signal<void, Service &> service_added;
+    sigc::signal<void, gmref_ptr<Service> > service_added;
 
   private:
 
-    std::list<Service *> services;
+    std::list<gmref_ptr<Service> > services;
 
   };
 

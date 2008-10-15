@@ -39,15 +39,13 @@
 
 Avahi::Cluster::Cluster (Ekiga::ServiceCore &_core): core(_core)
 {
-  Ekiga::PresenceCore* presence_core = NULL;
+  gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
 
   heap = new Heap (core);
 
   add_heap (*heap);
 
-  presence_core
-    = dynamic_cast<Ekiga::PresenceCore*>(core.get ("presence-core"));
-  /* don't check the dynamic cast: it has been checked already by avahi-main!*/
+  /* don't check the cast: it has been checked already by avahi-main!*/
   presence_core->add_presence_fetcher (*heap);
 }
 
