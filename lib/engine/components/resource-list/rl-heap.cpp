@@ -197,8 +197,7 @@ RL::Heap::get_node () const
 void
 RL::Heap::refresh ()
 {
-  XCAP::Core* xcap
-    = dynamic_cast<XCAP::Core*>(core.get ("xcap-core"));
+  gmref_ptr<XCAP::Core> xcap = core.get ("xcap-core");
   std::string root_str;
   std::string username_str;
   std::string password_str;

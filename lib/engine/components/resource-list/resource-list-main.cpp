@@ -46,21 +46,17 @@ resource_list_init (Ekiga::ServiceCore& services,
 		    char** /*argv*/[])
 {
   bool result = false;
-  Ekiga::Service* service = NULL;
+  gmref_ptr<Ekiga::Service> service = services.get ("resource-list");
 
-  service = services.get ("resource-list");
+  if ( !service) {
 
-  if (service == NULL) {
+    gmref_ptr<Ekiga::PresenceCore> core = services.get ("presence-core");
+    gmref_ptr<XCAP::Core> xcap = services.get ("xcap-core");
 
-    Ekiga::PresenceCore* core = NULL;
-    XCAP::Core* xcap = NULL;
+    if (core && xcap) {
 
-    core = dynamic_cast<Ekiga::PresenceCore*>(services.get ("presence-core"));
-    xcap = dynamic_cast<XCAP::Core*>(services.get ("xcap-core"));
-    if (core != NULL && xcap != NULL) {
-
-      RL::Cluster* cluster = new RL::Cluster (services);
-      services.add (*cluster);
+      gmref_ptr<RL::Cluster> cluster = new RL::Cluster (services);
+      services.add (cluster);
       core->add_cluster (*cluster);
       result = true;
     }

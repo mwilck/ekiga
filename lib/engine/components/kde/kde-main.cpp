@@ -54,8 +54,8 @@ kde_init (Ekiga::ServiceCore& services,
 
   KCmdLineArgs::init (&about);
   new KApplication (false);
-  services.add (*new Ekiga::BasicService ("kde-core",
-					  "KDE support"));
+  services.add (new Ekiga::BasicService ("kde-core",
+					 "KDE support"));
 
   return true;
 }

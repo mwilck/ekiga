@@ -51,8 +51,7 @@ RL::Cluster::Cluster (Ekiga::ServiceCore& core_): core(core_), doc(NULL)
 {
   gchar* c_raw = NULL;
 
-  Ekiga::PresenceCore* presence_core
-    = dynamic_cast<Ekiga::PresenceCore*>(core.get ("presence-core"));
+  gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
 
   presence_core->presence_received.connect (sigc::mem_fun (this, &RL::Cluster::on_presence_received));
   presence_core->status_received.connect (sigc::mem_fun (this, &RL::Cluster::on_status_received));

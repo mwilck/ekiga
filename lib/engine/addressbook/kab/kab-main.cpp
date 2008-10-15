@@ -39,50 +39,19 @@
 #include "contact-core.h"
 #include "kab-source.h"
 
-namespace KAB
-{
-  class Service: public Ekiga::Service
-  {
-  public:
-
-    Service (Source *_source): source(_source)
-    {}
-
-    ~Service ()
-    { delete source; }
-
-    const std::string get_name () const
-    { return "kab-source"; }
-
-    const std::string get_description () const
-    { return "\tComponent bringing in KDE's addressbook"; }
-
-  private:
-
-    Source *source;
-  };
-};
-
 bool
 kab_init (Ekiga::ServiceCore &core,
 	  int */*argc*/,
 	  char **/*argv*/[])
 {
   bool result = false;
-  //Ekiga::Service *kde_core = NULL;
-  Ekiga::ContactCore *contact_core = NULL;
-  KAB::Source *source = NULL;
-  KAB::Service *service = NULL;
+  gmref_ptr<Ekiga::Service> kde_core = core.get ("kde-core");
+  gmref_ptr<Ekiga::ContactCore> contact_core = core.get ("contact-core");
 
-  contact_core = dynamic_cast<Ekiga::ContactCore*>(core.get ("contact-core"));
+  if (contact_core && kde_core) {
 
-  //kde_core = core.get ("kde-core"); // we only care if it's there
-
-  if (contact_core != NULL ) {//&& kde_core != NULL) {
-
-    source = new KAB::Source (*contact_core);
-    service = new KAB::Service (source);
-    core.add (*service);
+    gmref_ptr<KAB::Source> source = new KAB::Source (*contact_core);
+    core.add (source);
     contact_core->add_source (*source);
     result = true;
   }

@@ -40,6 +40,7 @@
 
 #include "contact-core.h"
 #include "source-impl.h"
+#include "services.h"
 
 #include "kab-book.h"
 
@@ -52,13 +53,21 @@ namespace KAB
  * @{
  */
 
-  class Source: public Ekiga::SourceImpl<Book>
+  class Source:
+    public Ekiga::Service,
+    public Ekiga::SourceImpl<Book>
   {
   public:
 
     Source (Ekiga::ContactCore &_core);
 
     ~Source ();
+
+    const std::string get_name () const
+    { return "kab-source"; }
+
+    const std::string get_description () const
+    { return "\tComponent bringing in KDE's addressbook"; }
 
     bool populate_menu (Ekiga::MenuBuilder &builder);
 

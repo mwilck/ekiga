@@ -39,7 +39,11 @@
 
 Ekiga::ServiceCore::~ServiceCore ()
 {
-  services.clear(); // frees the memory, if we're the only to hold references
+  /* this frees the memory, if we're the only to hold references,
+   * and frees the last first -- so there's no problem
+   */
+  while (services.begin () != services.end ())
+    services.pop_back ();
 }
 
 bool
