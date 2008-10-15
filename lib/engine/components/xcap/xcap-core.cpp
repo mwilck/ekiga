@@ -37,9 +37,10 @@
 
 #include "config.h"
 
-#include "xcap.h"
+#include "xcap-core.h"
 
 #include <libsoup/soup.h>
+#include <iostream>
 
 /* declaration of XCAP::CoreImpl */
 
@@ -51,7 +52,7 @@ public:
 
   ~CoreImpl ();
 
-  void read (const std::string uri,
+  void read (gmref_ptr<XCAP::Path> path,
 	     sigc::slot<void,XCAP::Core::ResultType,std::string> callback);
 
 private:
@@ -82,7 +83,7 @@ soup_callback (G_GNUC_UNUSED SoupSession* session,
 
   default:
 
-    cb->callback (XCAP::Core::ERROR, _("Some error occured"));
+    cb->callback (XCAP::Core::ERROR, message->reason_phrase);
     break;
   }
 
@@ -103,13 +104,13 @@ XCAP::CoreImpl::~CoreImpl ()
 }
 
 void
-XCAP::CoreImpl::read (const std::string uri,
+XCAP::CoreImpl::read (gmref_ptr<Path> path,
 		      sigc::slot<void, XCAP::Core::ResultType, std::string> callback)
 {
   SoupMessage* message = NULL;
   cb_data* data = NULL;
 
-  message = soup_message_new ("GET", uri.c_str ());
+  message = soup_message_new ("GET", path->to_uri ().c_str ());
   data = new cb_data;
   data->callback = callback;
 
@@ -130,8 +131,9 @@ XCAP::Core::~Core ()
 }
 
 void
-XCAP::Core::read (const std::string uri,
+XCAP::Core::read (gmref_ptr<XCAP::Path> path,
 		  sigc::slot<void, XCAP::Core::ResultType,std::string> callback)
 {
-  impl->read (uri, callback);
+  std::cout << "XCAP trying to read " << path->to_uri () << std::endl;
+  impl->read (path, callback);
 }

@@ -27,48 +27,66 @@
 
 
 /*
- *                         xcap.h  -  description
+ *                         xcap-path.h  -  description
  *                         ------------------------------------
- *   begin                : Mon 29 September 2008
+ *   begin                : Sun 12 October 2008
  *   copyright            : (C) 2008 by Julien Puydt
- *   description          : Interface of the XCAP support code
+ *   description          : Interface of an XCAP path
  *
  */
 
-#ifndef __XCAP_H__
-#define __XCAP_H__
+#ifndef __XCAP_PATH_H__
+#define __XCAP_PATH_H__
 
-#include "services.h"
+#include "gmref.h"
+
+#include <string>
+#include <list>
 
 namespace XCAP
 {
-
-  class CoreImpl; // yes, I'm pimpling!
-
-  class Core: public Ekiga::Service
+  class Path: public GmRefCounted
   {
   public:
 
-    Core ();
+    /* if user is empty, then it's global */
+    Path (std::string root,
+	  std::string application,
+	  std::string user);
 
-    ~Core ();
+    ~Path ();
 
-    typedef enum { SUCCESS, ERROR } ResultType;
+    std::string to_uri () const;
 
-    void read (const std::string uri,
-	       sigc::slot<void,ResultType,std::string> callback);
+    /* this sets what you need to connect to the server */
+    void set_credentials (std::string username,
+			  std::string password);
 
-    /* implementation of the Ekiga::Service api */
+    gmref_ptr<Path> build_child (const std::string name);
 
-    const std::string get_name () const
-    { return "xcap-core"; }
+    gmref_ptr<Path> build_child_with_attribute (const std::string name,
+						const std::string attr,
+						const std::string value);
 
-    const std::string get_description () const
-    { return "Service providing XCAP support"; }
+    gmref_ptr<Path> build_child_with_position (const std::string name,
+					       int position);
 
   private:
 
-    CoreImpl* impl;
+    Path (std::string root,
+	  std::string application,
+	  std::string user,
+	  std::string relative,
+	  std::string username,
+	  std::string password);
+
+    std::string root;
+    std::string application;
+    std::string user;
+    std::string relative;
+
+    std::string username;
+    std::string password;
   };
 };
 

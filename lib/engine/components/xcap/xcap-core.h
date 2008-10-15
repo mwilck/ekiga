@@ -27,23 +27,51 @@
 
 
 /*
- *                         xcap-main.cpp  -  description
+ *                         xcap-core.h  -  description
  *                         ------------------------------------
  *   begin                : Mon 29 September 2008
  *   copyright            : (C) 2008 by Julien Puydt
- *   description          : Code to hook the XCAP code to the engine
+ *   description          : Interface of the XCAP support code
  *
  */
 
-#include "xcap-main.h"
-#include "xcap-core.h"
+#ifndef __XCAP_CORE_H__
+#define __XCAP_CORE_H__
 
-bool
-xcap_init (Ekiga::ServiceCore& core)
+#include "services.h"
+
+#include "xcap-path.h"
+
+namespace XCAP
 {
-  XCAP::Core* xcap = new XCAP::Core ();
 
-  core.add (*xcap);
+  class CoreImpl; // yes, I'm pimpling!
 
-  return true;
-}
+  class Core: public Ekiga::Service
+  {
+  public:
+
+    Core ();
+
+    ~Core ();
+
+    typedef enum { SUCCESS, ERROR } ResultType;
+
+    void read (gmref_ptr<Path>,
+	       sigc::slot<void,ResultType,std::string> callback);
+
+    /* implementation of the Ekiga::Service api */
+
+    const std::string get_name () const
+    { return "xcap-core"; }
+
+    const std::string get_description () const
+    { return "Service providing XCAP support"; }
+
+  private:
+
+    CoreImpl* impl;
+  };
+};
+
+#endif
