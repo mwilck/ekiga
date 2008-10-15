@@ -45,17 +45,33 @@
 #include "presence-core.h"
 
 RL::Entry::Entry (Ekiga::ServiceCore& core_,
-		  const std::string path_,
+		  gmref_ptr<XCAP::Path> path_,
 		  int pos,
 		  const std::string group,
 		  xmlNodePtr node_):
-  core(core_), path(path_), position(pos), doc(NULL),
-  node(node_), name_node(NULL),
+  core(core_), position(pos), doc(NULL), node(node_), name_node(NULL),
   presence("unknown"), status("")
 {
   groups.insert (group);
 
-  refresh ();
+  if (node != NULL) {
+
+    xmlChar* str = xmlGetProp (node, BAD_CAST "name");
+
+    if (str != NULL) {
+
+      path = path_->build_child_with_attribute ("entry", "name",
+						(const char*)str);
+      xmlFree (str);
+    } else {
+
+      path = path_->build_child_with_position ("entry", position);
+    }
+    parse ();
+  } else {
+
+    path = path_;
+  }
 }
 
 RL::Entry::~Entry ()
@@ -137,13 +153,8 @@ RL::Entry::populate_menu (Ekiga::MenuBuilder& builder)
 void
 RL::Entry::refresh ()
 {
-  if (node != NULL)
-    parse ();
-  else {
-
-    /* FIXME: here we should fetch the document, then parse it
-     */
-  }
+  /* FIXME: here we should fetch the document, then parse it */
+  std::cout << "Refreshing on " << path << std::endl;
 }
 
 void

@@ -38,6 +38,7 @@
 #include "config.h"
 
 #include <glib.h>
+#include <iostream>
 
 #include "robust-xml.h"
 
@@ -45,31 +46,53 @@
 
 RL::Heap::Heap (Ekiga::ServiceCore& core_,
 		xmlNodePtr node_):
-  core(core_), node(node_), uri(NULL),
-  username(NULL), password(NULL), name(NULL), doc(NULL)
+  core(core_),
+  node(node_), name(NULL),
+  root(NULL), user(NULL),
+  username(NULL), password(NULL),
+  doc(NULL)
 {
   for (xmlNodePtr child = node->children; child != NULL; child = child->next) {
 
     if (child->type == XML_ELEMENT_NODE
 	&& child->name != NULL) {
 
-      if (xmlStrEqual (BAD_CAST ("uri"), child->name))
-	uri = child;
-      if (xmlStrEqual (BAD_CAST ("username"), child->name))
-	username = child;
-      if (xmlStrEqual (BAD_CAST ("password"), child->name))
-	password = child;
-      if (xmlStrEqual (BAD_CAST ("name"), child->name))
+      if (xmlStrEqual (BAD_CAST ("name"), child->name)) {
+
 	name = child;
+	continue;
+      }
+      if (xmlStrEqual (BAD_CAST ("root"), child->name)) {
+
+	root = child;
+	continue;
+      }
+      if (xmlStrEqual (BAD_CAST ("user"), child->name)) {
+
+	user = child;
+	continue;
+      }
+      if (xmlStrEqual (BAD_CAST ("username"), child->name)) {
+
+	username = child;
+	continue;
+      }
+      if (xmlStrEqual (BAD_CAST ("password"), child->name)) {
+
+	password = child;
+	continue;
+      }
     }
   }
 
-  if (uri == NULL)
-    uri = xmlNewChild (node, NULL, BAD_CAST "uri", BAD_CAST "");
   if (name == NULL)
     name = xmlNewChild (node, NULL, BAD_CAST "name",
 			BAD_CAST robust_xmlEscape(node->doc,
 						  _("Unnamed")).c_str ());
+  if (root == NULL)
+    root = xmlNewChild (node, NULL, BAD_CAST "root", BAD_CAST "");
+  if (user == NULL)
+    user = xmlNewChild (node, NULL, BAD_CAST "user", BAD_CAST "");
   if (username == NULL)
     username = xmlNewChild (node, NULL, BAD_CAST "username", BAD_CAST "");
   if (password == NULL)
@@ -80,24 +103,17 @@ RL::Heap::Heap (Ekiga::ServiceCore& core_,
 
 RL::Heap::Heap (Ekiga::ServiceCore& core_,
 		const std::string name_,
-		const std::string uri_,
+		const std::string root_,
+		const std::string user_,
 		const std::string username_,
 		const std::string password_):
-  core(core_), node(NULL), uri(NULL), username(NULL), password(NULL), name(NULL)
+  core(core_),
+  node(NULL), name(NULL),
+  root(NULL), user(NULL),
+  username(NULL), password(NULL),
+  doc(NULL)
 {
   node = xmlNewNode (NULL, BAD_CAST "entry");
-  uri = xmlNewChild (node, NULL,
-		     BAD_CAST "uri",
-		     BAD_CAST robust_xmlEscape (node->doc,
-						uri_).c_str ());
-  username = xmlNewChild (node, NULL,
-			  BAD_CAST "username",
-			  BAD_CAST robust_xmlEscape (node->doc,
-						     username_).c_str ());
-  password = xmlNewChild (node, NULL,
-			  BAD_CAST "password",
-			  BAD_CAST robust_xmlEscape (node->doc,
-						     password_).c_str ());
   if ( !name_.empty ())
     name = xmlNewChild (node, NULL,
 			BAD_CAST "name",
@@ -108,6 +124,22 @@ RL::Heap::Heap (Ekiga::ServiceCore& core_,
 			BAD_CAST "name",
 			BAD_CAST robust_xmlEscape (node->doc,
 						   _("Unnamed")).c_str ());
+  root = xmlNewChild (node, NULL,
+		      BAD_CAST "root",
+		      BAD_CAST robust_xmlEscape (node->doc,
+						root_).c_str ());
+  user = xmlNewChild (node, NULL,
+		      BAD_CAST "user",
+		      BAD_CAST robust_xmlEscape (node->doc,
+						 user_).c_str ());
+  username = xmlNewChild (node, NULL,
+			  BAD_CAST "username",
+			  BAD_CAST robust_xmlEscape (node->doc,
+						     username_).c_str ());
+  password = xmlNewChild (node, NULL,
+			  BAD_CAST "password",
+			  BAD_CAST robust_xmlEscape (node->doc,
+						     password_).c_str ());
   refresh ();
 }
 
@@ -126,21 +158,6 @@ RL::Heap::get_name () const
     result = (const char*)str;
   else
     result = _("Unnamed");
-
-  xmlFree (str);
-
-  return result;
-}
-
-const std::string
-RL::Heap::get_uri () const
-{
-  std::string result;
-  xmlChar* str = xmlNodeGetContent (uri);
-  if (str != NULL)
-    result = (const char*)str;
-  else
-    result = "";
 
   xmlFree (str);
 
@@ -182,6 +199,35 @@ RL::Heap::refresh ()
 {
   XCAP::Core* xcap
     = dynamic_cast<XCAP::Core*>(core.get ("xcap-core"));
+  std::string root_str;
+  std::string username_str;
+  std::string password_str;
+  std::string user_str;
+
+  {
+    xmlChar* str = xmlNodeGetContent (root);
+    if (str != NULL)
+      root_str = (const char*)str;
+  }
+  {
+    xmlChar* str = xmlNodeGetContent (user);
+    if (str != NULL)
+      user_str = (const char*)str;
+  }
+  {
+    xmlChar* str = xmlNodeGetContent (username);
+    if (str != NULL)
+      username_str = (const char*)str;
+  }
+  {
+    xmlChar* str = xmlNodeGetContent (password);
+    if (str != NULL)
+      password_str = (const char*)str;
+  }
+  gmref_ptr<XCAP::Path> path(new XCAP::Path (root_str, "resource-lists",
+					     user_str));
+  path->set_credentials (username_str, password_str);
+  path = path->build_child ("resource-lists");
 
   for (std::list<gmref_ptr<List> >::iterator iter = lists.begin ();
        iter != lists.end ();
@@ -193,8 +239,7 @@ RL::Heap::refresh ()
     xmlFreeDoc (doc);
   doc = NULL;
 
-  xcap->read (get_uri (),
-	      sigc::mem_fun (this, &RL::Heap::on_document_received));
+  xcap->read (path, sigc::mem_fun (this, &RL::Heap::on_document_received));
 }
 
 void
@@ -209,6 +254,7 @@ RL::Heap::on_document_received (XCAP::Core::ResultType result,
     break;
   case XCAP::Core::ERROR:
 
+    std::cout << "XCAP error: " << value << std::endl;
     // FIXME: do something
     break;
   default:
@@ -222,9 +268,9 @@ RL::Heap::parse_doc (std::string raw)
 {
   doc = xmlRecoverMemory (raw.c_str (), raw.length ());
 
-  xmlNodePtr root = xmlDocGetRootElement (doc);
+  xmlNodePtr doc_root = xmlDocGetRootElement (doc);
 
-  if (root == NULL) {
+  if (doc_root == NULL) {
 
     // FIXME: warn the user somehow?
     xmlFreeDoc (doc);
@@ -232,12 +278,43 @@ RL::Heap::parse_doc (std::string raw)
   } else {
 
     int pos = 1;
+    std::string root_str;
+    std::string user_str;
+    std::string username_str;
+    std::string password_str;
+
+    {
+      xmlChar* str = xmlNodeGetContent (root);
+      if (str != NULL)
+	root_str = (const char*)str;
+    }
+    {
+      xmlChar* str = xmlNodeGetContent (user);
+      if (str != NULL)
+	user_str = (const char*)str;
+    }
+    {
+      xmlChar* str = xmlNodeGetContent (username);
+      if (str != NULL)
+	username_str = (const char*)str;
+    }
+    {
+      xmlChar* str = xmlNodeGetContent (password);
+      if (str != NULL)
+	password_str = (const char*)str;
+    }
+
+    gmref_ptr<XCAP::Path> path(new XCAP::Path (root_str, "resource-lists",
+					       user_str));
+    path->set_credentials (username_str, password_str);
+    path = path->build_child ("resource-lists");
+
     for (xmlNodePtr child = root->children; child != NULL; child = child->next)
       if (child->type == XML_ELEMENT_NODE
 	  && child->name != NULL
 	  && xmlStrEqual (BAD_CAST ("list"), child->name)) {
 
-	gmref_ptr<List> list(new List (core, get_uri (), pos, "", child));
+	gmref_ptr<List> list(new List (core, path, pos, "", child));
 	list->entry_added.connect (sigc::mem_fun (this, &RL::Heap::on_entry_added));
 	list->entry_updated.connect (sigc::mem_fun (this, &RL::Heap::on_entry_updated));
 	list->entry_removed.connect (sigc::mem_fun (this, &RL::Heap::on_entry_removed));

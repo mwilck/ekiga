@@ -47,7 +47,7 @@ class RL::ListImpl
 public: // no need to make anything private
 
   ListImpl (Ekiga::ServiceCore& core_,
-	    const std::string path_,
+	    gmref_ptr<XCAP::Path> path_,
 	    int pos,
 	    const std::string group_,
 	    xmlNodePtr node_);
@@ -78,7 +78,7 @@ public: // no need to make anything private
 
   Ekiga::ServiceCore& core;
 
-  std::string path;
+  gmref_ptr<XCAP::Path> path;
   int position;
 
   std::string group;
@@ -110,7 +110,7 @@ public: // no need to make anything private
 /* implementation of the List class */
 
 RL::List::List (Ekiga::ServiceCore& core_,
-		const std::string path_,
+		gmref_ptr<XCAP::Path> path_,
 		int pos,
 		const std::string group_,
 		xmlNodePtr node_)
@@ -119,6 +119,7 @@ RL::List::List (Ekiga::ServiceCore& core_,
   impl->entry_added.connect (entry_added.make_slot ());
   impl->entry_updated.connect (entry_updated.make_slot ());
   impl->entry_removed.connect (entry_removed.make_slot ());
+  impl->parse ();
 }
 
 RL::List::~List ()
@@ -173,11 +174,11 @@ RL::List::visit_presentities (sigc::slot<bool, Ekiga::Presentity&> visitor)
 /* implementation of the ListImpl class */
 
 RL::ListImpl::ListImpl (Ekiga::ServiceCore& core_,
-			const std::string path_,
+			gmref_ptr<XCAP::Path> path_,
 			int pos,
 			const std::string group_,
 			xmlNodePtr node_):
-  core(core_), path(path_), position(pos), group(group_), doc(NULL), node(node_)
+  core(core_), position(pos), group(group_), doc(NULL), node(node_)
 {
   {
     gchar* raw = NULL;
@@ -195,9 +196,26 @@ RL::ListImpl::ListImpl (Ekiga::ServiceCore& core_,
 
   }
 
-  display_name = position_name; // refresh will set better
+  display_name = position_name; // will be set to better when we get the data
 
-  refresh ();
+  if (node != NULL) {
+
+    xmlChar* str = xmlGetProp (node, BAD_CAST "name");
+
+    if (str != NULL) {
+
+      path = path_->build_child_with_attribute ("list", "name",
+						(const char*)str);
+      xmlFree (str);
+    } else {
+
+      path = path_->build_child_with_position ("list", position);
+    }
+    parse ();
+  } else {
+
+    path = path_;
+  }
 }
 
 RL::ListImpl::~ListImpl ()
@@ -285,21 +303,15 @@ RL::ListImpl::refresh ()
 {
   flush ();
 
-  if (node)
-    parse ();
-  else {
-
-    /* FIXME:
-     * - fetch the document
-     * - call parse
-     */
-  }
+  /* FIXME:
+   * - fetch the document
+   * - call parse
+   */
 }
 
 void
 RL::ListImpl::parse ()
 {
-  std::string my_path = compute_path ();
   int list_pos = 1;
   int entry_pos = 1;
 
@@ -327,7 +339,7 @@ RL::ListImpl::parse ()
 	&& child->name != NULL
 	&& xmlStrEqual (BAD_CAST "list", child->name)) {
 
-      gmref_ptr<List> list = new List (core, my_path,
+      gmref_ptr<List> list = new List (core, path,
 				       list_pos, display_name, child);
       list->entry_added.connect (entry_added.make_slot ());
       lists.push_back (list);
@@ -340,7 +352,7 @@ RL::ListImpl::parse ()
 	&& child->name != NULL
 	&& xmlStrEqual (BAD_CAST "entry", child->name)) {
 
-      gmref_ptr<Entry> entry = new Entry (core, my_path,
+      gmref_ptr<Entry> entry = new Entry (core, path,
 					  entry_pos, display_name, child);
       std::list<sigc::connection> conns;
       conns.push_back (entry->updated.connect (sigc::bind (entry_updated.make_slot (), entry)));
@@ -351,30 +363,6 @@ RL::ListImpl::parse ()
       continue;
     }
   }
-}
-
-std::string
-RL::ListImpl::compute_path () const
-{
-  std::string result;
-  gchar* raw = NULL;
-  xmlChar* str = xmlGetProp (node, BAD_CAST "name");
-
-  if (str != NULL) {
-
-    raw = g_strdup_printf ("%s/list[@name=\"%s\"]",
-			   path.c_str (), str);
-    xmlFree (str);
-  } else {
-
-    raw = g_strdup_printf ("%s/list[%d]", path.c_str (), position);
-  }
-
-  result = raw;
-
-  g_free (raw);
-
-  return result;
 }
 
 void

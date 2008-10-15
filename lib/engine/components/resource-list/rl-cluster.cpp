@@ -86,7 +86,7 @@ RL::Cluster::Cluster (Ekiga::ServiceCore& core_): core(core_), doc(NULL)
     doc = xmlNewDoc (BAD_CAST "1.0");
     xmlNodePtr root = xmlNewDocNode (doc, NULL, BAD_CAST "list", NULL);
     xmlDocSetRootElement (doc, root);
-    add ("http://localhost/test.rl", "", "", "XCAP Test"); // FIXME: remove
+    add ("http://localhost:443", "test", "", "", "XCAP Test"); // FIXME: remove
   }
 }
 
@@ -101,7 +101,7 @@ RL::Cluster::populate_menu (Ekiga::MenuBuilder& builder)
 {
   builder.add_action ("new", _("New resource list"),
 		      sigc::bind (sigc::mem_fun (this, &RL::Cluster::new_heap),
-				  "", "", "", ""));
+				  "", "", "", "", ""));
   return true;
 }
 
@@ -117,9 +117,10 @@ void
 RL::Cluster::add (const std::string uri,
 		  const std::string username,
 		  const std::string password,
+		  const std::string user,
 		  const std::string name)
 {
-  Heap* heap = new Heap (core, name, uri, username, password);
+  Heap* heap = new Heap (core, name, uri, username, password, user);
   xmlNodePtr root = xmlDocGetRootElement (doc);
 
   xmlAddChild (root, heap->get_node ());
@@ -155,7 +156,8 @@ void
 RL::Cluster::new_heap (const std::string name,
 		       const std::string uri,
 		       const std::string username,
-		       const std::string password)
+		       const std::string password,
+		       const std::string user)
 {
   Ekiga::FormRequestSimple request;
 
@@ -166,6 +168,7 @@ RL::Cluster::new_heap (const std::string name,
   request.text ("uri", _("Address:"), uri);
   request.text ("username", _("Username:"), username);
   request.private_text ("password", _("Password:"), password);
+  request.text ("user", _("User:"), user);
 
   request.submitted.connect (sigc::mem_fun (this, &RL::Cluster::on_new_heap_form_submitted));
 
@@ -188,8 +191,9 @@ RL::Cluster::on_new_heap_form_submitted (Ekiga::Form& result)
     const std::string uri = result.text ("uri");
     const std::string username = result.text ("username");
     const std::string password = result.private_text ("password");
+    const std::string user = result.text ("user");
 
-    add (name, uri, username, password);
+    add (name, uri, username, password, user);
   } catch (Ekiga::Form::not_found) {
 
 #ifdef __GNUC__

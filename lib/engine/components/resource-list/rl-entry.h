@@ -38,10 +38,9 @@
 #ifndef __RL_ENTRY_H__
 #define __RL_ENTRY_H__
 
-#include "gmref.h"
-
 #include "services.h"
 #include "presentity.h"
+#include "xcap-path.h"
 
 #include <libxml/tree.h>
 
@@ -54,7 +53,7 @@ namespace RL {
   public:
 
     Entry (Ekiga::ServiceCore& core_,
-	   const std::string path_,
+	   gmref_ptr<XCAP::Path> path_,
 	   int pos,
 	   const std::string group,
 	   xmlNodePtr node_);
@@ -94,7 +93,7 @@ namespace RL {
   private:
     Ekiga::ServiceCore& core;
 
-    std::string path;
+    gmref_ptr<XCAP::Path> path;
     int position;
 
     std::set<std::string> groups;

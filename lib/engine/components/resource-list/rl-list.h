@@ -39,12 +39,6 @@
 #ifndef __RL_LIST_H__
 #define __RL_LIST_H__
 
-#include "gmref.h"
-
-#include "services.h"
-
-#include <libxml/tree.h>
-
 #include "rl-entry.h"
 
 namespace RL
@@ -56,7 +50,7 @@ namespace RL
   public:
 
     List (Ekiga::ServiceCore& core_,
-	  const std::string path_,
+	  gmref_ptr<XCAP::Path> path_,
 	  int pos,
 	  const std::string group_,
 	  xmlNodePtr node_);

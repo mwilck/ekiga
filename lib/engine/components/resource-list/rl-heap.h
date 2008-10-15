@@ -41,7 +41,7 @@
 #include "gmref.h"
 
 #include "heap.h"
-#include "xcap.h"
+#include "xcap-core.h"
 
 #include <libxml/tree.h>
 
@@ -56,9 +56,19 @@ namespace RL {
     Heap (Ekiga::ServiceCore& core_,
 	  xmlNodePtr node);
 
+    /* name: the name of the Heap in the GUI
+     * root: the XCAP root address
+     * user: the user as XCAP user
+     * username: the username on the HTTP server
+     * password: the password on the HTTP server
+     *
+     * Don't complain to me(Snark) it's complex : read RFC4825 and cry with me
+     *
+     */
     Heap (Ekiga::ServiceCore& core_,
 	  const std::string name_,
-	  const std::string uri_,
+	  const std::string root_,
+	  const std::string user_,
 	  const std::string username_,
 	  const std::string password_);
 
@@ -88,16 +98,15 @@ namespace RL {
     Ekiga::ServiceCore& core;
 
     xmlNodePtr node;
-    xmlNodePtr uri;
+    xmlNodePtr name;
+    xmlNodePtr root;
+    xmlNodePtr user;
     xmlNodePtr username;
     xmlNodePtr password;
-    xmlNodePtr name;
 
     xmlDocPtr doc;
 
     std::list<gmref_ptr<List> > lists;
-
-    const std::string get_uri () const;
 
     void refresh ();
 
