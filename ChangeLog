@@ -1,5 +1,22 @@
 2008-10-15  Julien Puydt  <jpuydt@gnome.org>
 
+	* lib/engine/addressbook/kab/Makefile.am:
+	* lib/engine/addressbook/kab/kab-main.cpp:
+	* lib/engine/addressbook/kab/kab-source.h:
+	* lib/engine/components/kde/Makefile.am:
+	* lib/engine/components/kde/kde-main.cpp:
+	* lib/engine/components/resource-list/resource-list-main.cpp:
+	* lib/engine/components/resource-list/rl-cluster.cpp:
+	* lib/engine/components/resource-list/rl-entry-ref.cpp:
+	* lib/engine/components/resource-list/rl-entry.cpp:
+	* lib/engine/components/resource-list/rl-heap.cpp:
+	* lib/engine/components/xcap/xcap-main.cpp: I forgot those optional
+	directories when transitioning to gmref_ptr to manage services.
+	* lib/engine/framework/services.cpp: Made the freeing follow a certain
+	order.
+
+2008-10-15  Julien Puydt  <jpuydt@gnome.org>
+
 	* lib/engine/Makefile.am:
 	* lib/engine/account/skel/Makefile.am:
 	* lib/engine/account/skel/bank-impl.h:
