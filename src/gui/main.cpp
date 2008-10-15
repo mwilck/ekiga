@@ -2555,6 +2555,7 @@ ekiga_main_window_selected_presentity_build_menu (EkigaMainWindow *mw)
     else {
 
       gtk_widget_set_sensitive (menu, FALSE);
+      g_object_ref_sink (builder.menu);
       g_object_unref (builder.menu);
     }
   } 
