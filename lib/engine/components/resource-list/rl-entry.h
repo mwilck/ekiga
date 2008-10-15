@@ -27,88 +27,87 @@
 
 
 /*
- *                         rl-heap.h  -  description
+ *                         rl-entry.h  -  description
  *                         ------------------------------------------
  *   begin                : written in 2008 by Julien Puydt
  *   copyright            : (c) 2008 by Julien Puydt
- *   description          : resource-list heap declaration
+ *   description          : resource-list entry class
  *
  */
 
-#ifndef __RL_HEAP_H__
-#define __RL_HEAP_H__
+#ifndef __RL_ENTRY_H__
+#define __RL_ENTRY_H__
 
 #include "gmref.h"
 
-#include "heap.h"
-#include "xcap.h"
+#include "services.h"
+#include "presentity.h"
 
 #include <libxml/tree.h>
 
-#include "rl-list.h"
-
 namespace RL {
 
-  class Heap: public Ekiga::Heap
+  class Entry:
+    public GmRefCounted,
+    public Ekiga::Presentity
   {
   public:
 
-    Heap (Ekiga::ServiceCore& core_,
-	  xmlNodePtr node);
+    Entry (Ekiga::ServiceCore& core_,
+	   const std::string path_,
+	   int pos,
+	   const std::string group,
+	   xmlNodePtr node_);
 
-    Heap (Ekiga::ServiceCore& core_,
-	  const std::string name_,
-	  const std::string uri_,
-	  const std::string username_,
-	  const std::string password_);
+    ~Entry ();
 
-    ~Heap ();
+    /* the part of the interface which helps the list manage this element */
 
-    const std::string get_name () const;
+    bool is_positional () const;
 
-    void visit_presentities (sigc::slot<bool, Ekiga::Presentity&> visitor);
-
-    bool populate_menu (Ekiga::MenuBuilder& builder);
-
-    bool populate_menu_for_group (std::string group,
-				  Ekiga::MenuBuilder& builder);
-
-    xmlNodePtr get_node () const;
-
-    void push_presence (const std::string uri,
-			const std::string presence);
-
-    void push_status (const std::string uri,
-		      const std::string status);
-
-    sigc::signal<void> trigger_saving;
-
-  private:
-
-    Ekiga::ServiceCore& core;
-
-    xmlNodePtr node;
-    xmlNodePtr uri;
-    xmlNodePtr username;
-    xmlNodePtr password;
-    xmlNodePtr name;
-
-    xmlDocPtr doc;
-
-    std::list<gmref_ptr<List> > lists;
+    /* needed so presence can be pushed into this presentity */
 
     const std::string get_uri () const;
 
+    void set_presence (const std::string presence_);
+
+    void set_status (const std::string status_);
+
+    /* Ekiga::Presentity interface */
+
+    const std::string get_name () const;
+
+    const std::string get_presence () const
+    { return presence; }
+
+    const std::string get_status () const
+    { return status; }
+
+    const std::string get_avatar () const
+    { return ""; }
+
+    const std::set<std::string> get_groups () const
+    { return groups; }
+
+    bool populate_menu (Ekiga::MenuBuilder& builder);
+
+  private:
+    Ekiga::ServiceCore& core;
+
+    std::string path;
+    int position;
+
+    std::set<std::string> groups;
+
+    xmlDocPtr doc;
+    xmlNodePtr node;
+    xmlNodePtr name_node;
+
+    std::string presence;
+    std::string status;
+
     void refresh ();
-
-    void on_document_received (XCAP::Core::ResultType result,
-			       std::string doc);
-
-    void parse_doc (std::string doc);
-
-    void on_entry_added (gmref_ptr<Entry> entry);
-    void on_entry_updated (gmref_ptr<Entry> entry);
-    void on_entry_removed (gmref_ptr<Entry> entry);
+    void parse ();
   };
 };
 

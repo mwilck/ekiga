@@ -1,4 +1,5 @@
 
+
 /* Ekiga -- A VoIP and Video-Conferencing application
  * Copyright (C) 2000-2008 Damien Sandras
  *
@@ -27,36 +28,55 @@
 
 
 /*
- *                         rl-presentity.h  -  description
+ *                         rl-entry-ref.h  -  description
  *                         ------------------------------------------
  *   begin                : written in 2008 by Julien Puydt
  *   copyright            : (c) 2008 by Julien Puydt
- *   description          : resource-list presentity interface
+ *   description          : resource-list entry-ref class
  *
  */
 
-#ifndef __RL_PRESENTITY_H__
-#define __RL_PRESENTITY_H__
+#ifndef __RL_ENTRY_REF_H__
+#define __RL_ENTRY_REF_H__
+
+#include "gmref.h"
 
 #include "services.h"
 #include "presentity.h"
 
+#include <libxml/tree.h>
+
 namespace RL {
 
-  class Presentity: public Ekiga::Presentity
+  class EntryRef:
+    public GmRefCounted,
+    public Ekiga::Presentity
   {
   public:
 
-    Presentity (Ekiga::ServiceCore& core_,
-		std::string name_,
-		std::string uri_);
+    EntryRef (Ekiga::ServiceCore& core_,
+	      const std::string path_,
+	      int pos,
+	      const std::string group,
+	      xmlNodePtr node_);
 
-    ~Presentity ();
+    ~EntryRef ();
 
-    void add_group (std::string group);
+    /* the part of the interface which helps the list manage this element */
 
-    const std::string get_name () const
-    { return name; }
+    bool is_positional () const;
+
+    /* needed so presence can be pushed into this presentity */
+
+    const std::string get_uri () const;
+
+    void set_presence (const std::string presence_);
+
+    void set_status (const std::string status_);
+
+    /* Ekiga::Presentity interface */
+
+    const std::string get_name () const;
 
     const std::string get_presence () const
     { return presence; }
@@ -72,21 +92,25 @@ namespace RL {
 
     bool populate_menu (Ekiga::MenuBuilder& builder);
 
-    const std::string get_uri () const
-    { return uri; }
-
-    void set_presence (const std::string presence_);
-
-    void set_status (const std::string status_);
-
   private:
     Ekiga::ServiceCore& core;
 
-    std::string name;
-    std::string uri;
+    std::string path;
+    int position;
+
+    std::set<std::string> groups;
+
+    xmlDocPtr doc;
+    xmlNodePtr node;
+
+    xmlDocPtr link_doc;
+    xmlNodePtr link_node;
+    xmlNodePtr name_node;
+
     std::string presence;
     std::string status;
-    std::set<std::string> groups;
+
+    void refresh ();
   };
 };
 

@@ -1,4 +1,5 @@
 
+
 /* Ekiga -- A VoIP and Video-Conferencing application
  * Copyright (C) 2000-2008 Damien Sandras
  *
@@ -27,88 +28,76 @@
 
 
 /*
- *                         rl-heap.h  -  description
+ *                         rl-list.h  -  description
  *                         ------------------------------------------
  *   begin                : written in 2008 by Julien Puydt
  *   copyright            : (c) 2008 by Julien Puydt
- *   description          : resource-list heap declaration
+ *   description          : resource-list list class
  *
  */
 
-#ifndef __RL_HEAP_H__
-#define __RL_HEAP_H__
+#ifndef __RL_LIST_H__
+#define __RL_LIST_H__
 
 #include "gmref.h"
 
-#include "heap.h"
-#include "xcap.h"
+#include "services.h"
 
 #include <libxml/tree.h>
 
-#include "rl-list.h"
+#include "rl-entry.h"
 
-namespace RL {
+namespace RL
+{
+  class ListImpl; // pimpling : both it and external need to know each other
 
-  class Heap: public Ekiga::Heap
+  class List: public GmRefCounted
   {
   public:
 
-    Heap (Ekiga::ServiceCore& core_,
-	  xmlNodePtr node);
+    List (Ekiga::ServiceCore& core_,
+	  const std::string path_,
+	  int pos,
+	  const std::string group_,
+	  xmlNodePtr node_);
 
-    Heap (Ekiga::ServiceCore& core_,
-	  const std::string name_,
-	  const std::string uri_,
-	  const std::string username_,
-	  const std::string password_);
+    ~List ();
 
-    ~Heap ();
 
-    const std::string get_name () const;
+    /* the part of the interface which helps the list manage this element */
 
-    void visit_presentities (sigc::slot<bool, Ekiga::Presentity&> visitor);
+    bool is_positional () const;
 
-    bool populate_menu (Ekiga::MenuBuilder& builder);
+    bool has_name (const std::string name) const;
 
-    bool populate_menu_for_group (std::string group,
-				  Ekiga::MenuBuilder& builder);
+    /* we need to push presence&status down */
 
-    xmlNodePtr get_node () const;
-
-    void push_presence (const std::string uri,
+    void push_presence (const std::string uri_,
 			const std::string presence);
 
-    void push_status (const std::string uri,
+    void push_status (const std::string uri_,
 		      const std::string status);
 
-    sigc::signal<void> trigger_saving;
+    /* make the world know what we have */
+    bool visit_presentities (sigc::slot<bool, Ekiga::Presentity&> visitor);
+
+    sigc::signal<void, gmref_ptr<Entry> > entry_added;
+    sigc::signal<void, gmref_ptr<Entry> > entry_updated;
+    sigc::signal<void, gmref_ptr<Entry> > entry_removed;
+
+    /* this method orders the list to get rid of all its children */
+    void flush ();
+
+    /* this method makes the list publish what it has
+     * (it needs a method to be done, because we fetch on creation,
+     *  which means the owner may not have had the time to connect to
+     *  our signals yet)
+     */
+    void publish ();
 
   private:
 
-    Ekiga::ServiceCore& core;
-
-    xmlNodePtr node;
-    xmlNodePtr uri;
-    xmlNodePtr username;
-    xmlNodePtr password;
-    xmlNodePtr name;
-
-    xmlDocPtr doc;
-
-    std::list<gmref_ptr<List> > lists;
-
-    const std::string get_uri () const;
-
-    void refresh ();
-
-    void on_document_received (XCAP::Core::ResultType result,
-			       std::string doc);
-
-    void parse_doc (std::string doc);
-
-    void on_entry_added (gmref_ptr<Entry> entry);
-    void on_entry_updated (gmref_ptr<Entry> entry);
-    void on_entry_removed (gmref_ptr<Entry> entry);
+    ListImpl *impl;
   };
 };
 

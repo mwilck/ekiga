@@ -6,6 +6,7 @@ AM_CXXFLAGS = $(SIGC_CFLAGS) $(GLIB_CFLAGS) $(XML_CFLAGS)
 
 INCLUDES = 						\
 	-I$(top_srcdir)/lib/gmconf			\
+	-I$(top_srcdir)/lib/gmref			\
 	-I$(top_srcdir)/lib/engine/framework		\
 	-I$(top_srcdir)/lib/engine/presence/skel	\
 	-I$(top_srcdir)/lib/engine/account/skel		\
@@ -14,8 +15,12 @@ INCLUDES = 						\
 libgmresource_list_la_SOURCES = \
 	$(resource_list_dir)/resource-list-main.h \
 	$(resource_list_dir)/resource-list-main.cpp \
-	$(resource_list_dir)/rl-presentity.h \
-	$(resource_list_dir)/rl-presentity.cpp \
+	$(resource_list_dir)/rl-entry.h \
+	$(resource_list_dir)/rl-entry.cpp \
+	$(resource_list_dir)/rl-entry-ref.h \
+	$(resource_list_dir)/rl-entry-ref.cpp \
+	$(resource_list_dir)/rl-list.h \
+	$(resource_list_dir)/rl-list.cpp \
 	$(resource_list_dir)/rl-heap.h \
 	$(resource_list_dir)/rl-heap.cpp \
 	$(resource_list_dir)/rl-cluster.h \

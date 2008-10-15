@@ -37,7 +37,7 @@
 
 #include "config.h"
 
-#include <iostream>
+#include <glib.h>
 
 #include "robust-xml.h"
 
@@ -46,7 +46,7 @@
 RL::Heap::Heap (Ekiga::ServiceCore& core_,
 		xmlNodePtr node_):
   core(core_), node(node_), uri(NULL),
-  username(NULL), password(NULL), name(NULL)
+  username(NULL), password(NULL), name(NULL), doc(NULL)
 {
   for (xmlNodePtr child = node->children; child != NULL; child = child->next) {
 
@@ -75,7 +75,7 @@ RL::Heap::Heap (Ekiga::ServiceCore& core_,
   if (password == NULL)
     password = xmlNewChild (node, NULL, BAD_CAST "password", BAD_CAST "");
 
-  update ();
+  refresh ();
 }
 
 RL::Heap::Heap (Ekiga::ServiceCore& core_,
@@ -108,11 +108,13 @@ RL::Heap::Heap (Ekiga::ServiceCore& core_,
 			BAD_CAST "name",
 			BAD_CAST robust_xmlEscape (node->doc,
 						   _("Unnamed")).c_str ());
-  update ();
+  refresh ();
 }
 
 RL::Heap::~Heap ()
 {
+  if (doc != NULL)
+    xmlFreeDoc (doc);
 }
 
 const std::string
@@ -121,7 +123,7 @@ RL::Heap::get_name () const
   std::string result;
   xmlChar* str = xmlNodeGetContent (name);
   if (str != NULL)
-    result = (const gchar*)str;
+    result = (const char*)str;
   else
     result = _("Unnamed");
 
@@ -136,7 +138,7 @@ RL::Heap::get_uri () const
   std::string result;
   xmlChar* str = xmlNodeGetContent (uri);
   if (str != NULL)
-    result = (const gchar*)str;
+    result = (const char*)str;
   else
     result = "";
 
@@ -145,6 +147,16 @@ RL::Heap::get_uri () const
   return result;
 }
 
+void
+RL::Heap::visit_presentities (sigc::slot<bool, Ekiga::Presentity&> visitor)
+{
+  bool go_on = true;
+
+  for (std::list<gmref_ptr<List> >::iterator iter = lists.begin ();
+       go_on && iter != lists.end ();
+       ++iter)
+    go_on = (*iter)->visit_presentities (visitor);
+}
 
 bool
 RL::Heap::populate_menu (Ekiga::MenuBuilder& /*builder*/)
@@ -166,27 +178,38 @@ RL::Heap::get_node () const
 }
 
 void
-RL::Heap::update ()
+RL::Heap::refresh ()
 {
   XCAP::Core* xcap
     = dynamic_cast<XCAP::Core*>(core.get ("xcap-core"));
+
+  for (std::list<gmref_ptr<List> >::iterator iter = lists.begin ();
+       iter != lists.end ();
+       ++iter)
+    (*iter)->flush ();
+  lists.clear ();
+
+  if (doc)
+    xmlFreeDoc (doc);
+  doc = NULL;
+
   xcap->read (get_uri (),
 	      sigc::mem_fun (this, &RL::Heap::on_document_received));
 }
 
 void
 RL::Heap::on_document_received (XCAP::Core::ResultType result,
-				std::string doc)
+				std::string value)
 {
   switch (result) {
 
   case XCAP::Core::SUCCESS:
 
-    parse_doc (doc);
+    parse_doc (value);
     break;
   case XCAP::Core::ERROR:
 
-    std::cout << "Error: " << doc << std::endl;
+    // FIXME: do something
     break;
   default:
     // shouldn't happen
@@ -197,115 +220,32 @@ RL::Heap::on_document_received (XCAP::Core::ResultType result,
 void
 RL::Heap::parse_doc (std::string raw)
 {
-  xmlDocPtr doc = xmlRecoverMemory (raw.c_str (), raw.length ());
+  doc = xmlRecoverMemory (raw.c_str (), raw.length ());
+
   xmlNodePtr root = xmlDocGetRootElement (doc);
 
   if (root == NULL) {
 
     // FIXME: warn the user somehow?
+    xmlFreeDoc (doc);
+    doc = NULL;
   } else {
 
+    int pos = 1;
     for (xmlNodePtr child = root->children; child != NULL; child = child->next)
       if (child->type == XML_ELEMENT_NODE
 	  && child->name != NULL
 	  && xmlStrEqual (BAD_CAST ("list"), child->name)) {
 
-	parse_list (child, NULL);
+	gmref_ptr<List> list(new List (core, get_uri (), pos, "", child));
+	list->entry_added.connect (sigc::mem_fun (this, &RL::Heap::on_entry_added));
+	list->entry_updated.connect (sigc::mem_fun (this, &RL::Heap::on_entry_updated));
+	list->entry_removed.connect (sigc::mem_fun (this, &RL::Heap::on_entry_removed));
+	list->publish ();
+	lists.push_back (list);
+	pos++;
+	continue;
       }
-  }
-  xmlFreeDoc (doc);
-}
-
-void
-RL::Heap::parse_list (xmlNodePtr list,
-		      const gchar* base_name)
-{
-  gchar* display_name = NULL;
-  gchar* unnamed = NULL;
-
-  if (base_name == NULL)
-    unnamed = g_strdup (_("Unnamed"));
-  else
-    unnamed = g_strdup_printf ("%s / %s",
-			       base_name, _("Unnamed"));
-
-  for (xmlNodePtr child = list->children;
-       child != NULL;
-       child = child->next) {
-
-    if (child->type == XML_ELEMENT_NODE
-	&& child->name != NULL) {
-
-      if (xmlStrEqual (BAD_CAST ("display-name"), child->name)) {
-
-	xmlChar* xml_str = xmlNodeGetContent (child);
-	if (xml_str != NULL && display_name == NULL) {
-
-	  if (base_name == NULL)
-	    display_name = g_strdup ((const gchar*)xml_str);
-	  else
-	    display_name = g_strdup_printf ("%s / %s",
-					    base_name, (const gchar*)xml_str);
-	}
-	xmlFree (xml_str);
-      }
-
-      if (xmlStrEqual (BAD_CAST ("list"), child->name)) {
-
-	if (display_name != NULL)
-	  parse_list (child, display_name);
-	else
-	  parse_list (child, unnamed);
-      }
-      if (xmlStrEqual (BAD_CAST ("entry"), child->name)) {
-
-	if (display_name != NULL)
-	  parse_entry (child, display_name);
-	else
-	  parse_entry (child, unnamed);
-      }
-    }
-  }
-
-  g_free (unnamed);
-  g_free (display_name);
-}
-
-void
-RL::Heap::parse_entry (xmlNodePtr entry,
-		       const gchar* group_name)
-{
-  gchar* entry_uri = NULL;
-  std::string display_name = _("Unnamed");
-  Presentity* presentity = NULL;
-
-  {
-    xmlChar* str = xmlGetProp (entry, BAD_CAST "uri");
-    if (str != NULL) {
-
-      entry_uri = g_strdup ((const gchar*)str);
-      xmlFree (str);
-    }
-  }
-
-  for (xmlNodePtr child = entry->children; child != NULL; child = child->next)
-    if (child->type == XML_ELEMENT_NODE
-	&& child->name != NULL
-	&& xmlStrEqual (BAD_CAST ("display-name"), child->name)) {
-
-      xmlChar* xml_str = xmlNodeGetContent (child);
-      if (xml_str != NULL)
-	display_name = (const gchar*)xml_str;
-      xmlFree (xml_str);
-    }
-
-  if (entry_uri != NULL) {
-
-    presentity = new Presentity (core, display_name, entry_uri);
-    if (group_name != NULL)
-      presentity->add_group (group_name);
-    add_presentity (*presentity);
-    g_free (entry_uri);
   }
 }
 
@@ -313,20 +253,36 @@ void
 RL::Heap::push_presence (const std::string uri_,
 			 const std::string presence)
 {
-  for (iterator iter = begin ();
-       iter != end ();
+  for (std::list<gmref_ptr<List> >::iterator iter = lists.begin ();
+       iter != lists.end ();
        ++iter)
-    if (iter->get_uri () == uri_)
-      iter->set_presence (presence);
+    (*iter)->push_presence (uri_, presence);
 }
 
 void
 RL::Heap::push_status (const std::string uri_,
 		       const std::string status)
 {
-  for (iterator iter = begin ();
-       iter != end ();
+  for (std::list<gmref_ptr<List> >::iterator iter = lists.begin ();
+       iter != lists.end ();
        ++iter)
-    if (iter->get_uri () == uri_)
-      iter->set_status (status);
+    (*iter)->push_status (uri_, status);
+}
+
+void
+RL::Heap::on_entry_added (gmref_ptr<Entry> entry)
+{
+  presentity_added.emit (*entry);
+}
+
+void
+RL::Heap::on_entry_updated (gmref_ptr<Entry> entry)
+{
+  presentity_updated.emit (*entry);
+}
+
+void
+RL::Heap::on_entry_removed (gmref_ptr<Entry> entry)
+{
+  presentity_removed.emit (*entry);
 }
