@@ -103,7 +103,7 @@ XCAP::Path::build_child_with_attribute (const std::string name,
 {
   gmref_ptr<Path> result = new Path (root, application, user, relative,
 				     username, password);
-  result->relative = relative + "/" + name +"[" + attr + "=\"" + value + "\"]";
+  result->relative = relative + "/" + name +"%5b@" + attr + "=%22" + value + "%22%5d";
 
   return result;
 }
@@ -117,7 +117,7 @@ XCAP::Path::build_child_with_position (const std::string name,
 				     username, password);
 
   /* notice: Snark hates C++ */
-  stream << name << "[" << position << "]";
+  stream << name << "%5b" << position << "%5d";
   result->relative = relative + "/" + stream.str ();
 
   return result;
