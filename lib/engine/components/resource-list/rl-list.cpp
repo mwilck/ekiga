@@ -295,7 +295,6 @@ RL::ListImpl::parse ()
 
   for (xmlNodePtr child = node->children; child != NULL; child = child->next) {
 
-
     if (child->type == XML_ELEMENT_NODE
 	&& child->name != NULL
 	&& xmlStrEqual (BAD_CAST "display-name", child->name)) {
@@ -310,8 +309,12 @@ RL::ListImpl::parse ()
 	  display_name = (const char*) str;
 	xmlFree (str);
       }
-      continue;
+      break;
     }
+
+  }
+
+  for (xmlNodePtr child = node->children; child != NULL; child = child->next) {
 
     if (child->type == XML_ELEMENT_NODE
 	&& child->name != NULL
