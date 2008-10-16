@@ -85,7 +85,7 @@ RL::Cluster::Cluster (Ekiga::ServiceCore& core_): core(core_), doc(NULL)
     doc = xmlNewDoc (BAD_CAST "1.0");
     xmlNodePtr root = xmlNewDocNode (doc, NULL, BAD_CAST "list", NULL);
     xmlDocSetRootElement (doc, root);
-    add ("http://localhost:443", "test", "", "", "XCAP Test"); // FIXME: remove
+    add ("http://localhost:443", "", "", "test@ekiga.net", "XCAP Test"); // FIXME: remove
   }
 }
 
