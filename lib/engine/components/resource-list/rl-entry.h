@@ -40,7 +40,7 @@
 
 #include "services.h"
 #include "presentity.h"
-#include "xcap-path.h"
+#include "xcap-core.h"
 
 #include <libxml/tree.h>
 
@@ -60,12 +60,7 @@ namespace RL {
 
     ~Entry ();
 
-    /* the part of the interface which helps the list manage this element */
-
-    bool is_positional () const;
-
     /* needed so presence can be pushed into this presentity */
-
     const std::string get_uri () const;
 
     void set_presence (const std::string presence_);
@@ -106,6 +101,8 @@ namespace RL {
     std::string status;
 
     void refresh ();
+    void on_xcap_answer (XCAP::Core::ResultType,
+			 std::string value);
     void parse ();
   };
 };

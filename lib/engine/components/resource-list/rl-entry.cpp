@@ -71,6 +71,7 @@ RL::Entry::Entry (Ekiga::ServiceCore& core_,
   } else {
 
     path = path_;
+    refresh ();
   }
 }
 
@@ -80,22 +81,20 @@ RL::Entry::~Entry ()
     xmlFreeDoc (doc);
 }
 
-bool
-RL::Entry::is_positional () const
-{
-  return get_uri ().empty ();
-}
-
 const std::string
 RL::Entry::get_uri () const
 {
   std::string result;
-  xmlChar* str = xmlGetProp (node, (const xmlChar*) "uri");
 
-  if (str != NULL) {
+  if (node != NULL) {
 
-    result = ((const char*)str);
-    xmlFree (str);
+    xmlChar* str = xmlGetProp (node, (const xmlChar*) "uri");
+
+    if (str != NULL) {
+
+      result = ((const char*)str);
+      xmlFree (str);
+    }
   }
 
   return result;
@@ -120,12 +119,18 @@ const std::string
 RL::Entry::get_name () const
 {
   std::string result;
-  xmlChar* str = xmlNodeGetContent (name_node);
 
-  if (str != NULL) {
+  if (name_node != NULL) {
 
-    result = ((const char*)str);
-    xmlFree (str);
+    xmlChar* str = xmlNodeGetContent (name_node);
+    if (str != NULL) {
+
+      result = ((const char*)str);
+      xmlFree (str);
+    }
+  } else {
+
+    result = _("Unnamed");
   }
 
   return result;
@@ -152,8 +157,42 @@ RL::Entry::populate_menu (Ekiga::MenuBuilder& builder)
 void
 RL::Entry::refresh ()
 {
-  /* FIXME: here we should fetch the document, then parse it */
-  std::cout << "Refreshing on " << path << std::endl;
+  if (doc != NULL)
+    xmlFreeDoc (doc);
+  doc = NULL;
+  node = NULL;
+  name_node = NULL;
+  presence = "unknown";
+  status = _("");
+  updated.emit ();
+
+  gmref_ptr<XCAP::Core> xcap = core.get ("xcap-core");
+  xcap->read (path, sigc::mem_fun (this, &RL::Entry::on_xcap_answer));
+}
+
+void
+RL::Entry::on_xcap_answer (XCAP::Core::ResultType result,
+			   std::string value)
+{
+  if (result != XCAP::Core::SUCCESS) {
+
+    set_status (value);
+
+  } else {
+
+    doc = xmlRecoverMemory (value.c_str (), value.length ());
+    node = xmlDocGetRootElement (doc);
+    if (node == NULL
+	|| node->name == NULL
+	|| !xmlStrEqual (BAD_CAST "entry", node->name)) {
+
+      set_status (_("Invalid server data"));
+    } else {
+
+      parse ();
+      updated.emit ();
+    }
+  }
 }
 
 void
