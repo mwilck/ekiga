@@ -53,11 +53,11 @@ RL::Entry::Entry (Ekiga::ServiceCore& core_,
 
   if (node != NULL) {
 
-    xmlChar* str = xmlGetProp (node, BAD_CAST "name");
+    xmlChar* str = xmlGetProp (node, BAD_CAST "uri");
 
     if (str != NULL) {
 
-      path = path_->build_child_with_attribute ("entry", "name",
+      path = path_->build_child_with_attribute ("entry", "uri",
 						(const char*)str);
       xmlFree (str);
     } else {
