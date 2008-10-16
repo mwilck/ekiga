@@ -66,6 +66,18 @@ XCAP::Path::to_uri () const
   return uri;
 }
 
+const std::string
+XCAP::Path::get_username () const
+{
+  return username;
+}
+
+const std::string
+XCAP::Path::get_password () const
+{
+  return password;
+}
+
 void
 XCAP::Path::set_credentials (std::string username_,
 			     std::string password_)

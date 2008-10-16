@@ -54,23 +54,38 @@ public:
 
   void read (gmref_ptr<XCAP::Path> path,
 	     sigc::slot<void,XCAP::Core::ResultType,std::string> callback);
-
-private:
-
-  SoupSession* session;
 };
 
-/* soup callback */
+/* soup callbacks */
 
 struct cb_data
 {
+  gmref_ptr<XCAP::Path> path;
+  SoupSession* session;
   sigc::slot<void,XCAP::Core::ResultType, std::string> callback;
 };
 
 static void
-soup_callback (G_GNUC_UNUSED SoupSession* session,
-	       SoupMessage* message,
-	       gpointer data)
+authenticate_callback (G_GNUC_UNUSED SoupSession* session,
+		       G_GNUC_UNUSED SoupMessage* message,
+		       SoupAuth* auth,
+		       gboolean retrying,
+		       gpointer data)
+{
+  cb_data* cb = (cb_data*)data;
+
+  if ( !retrying) {
+
+    soup_auth_authenticate (auth,
+			    cb->path->get_username ().c_str (),
+			    cb->path->get_password ().c_str ());
+  }
+}
+
+static void
+result_callback (G_GNUC_UNUSED SoupSession* session,
+		 SoupMessage* message,
+		 gpointer data)
 {
   cb_data* cb = (cb_data*)data;
 
@@ -87,20 +102,18 @@ soup_callback (G_GNUC_UNUSED SoupSession* session,
     break;
   }
 
-  delete (cb_data*)data;
+  g_object_unref (cb->session);
+  delete cb;
 }
 
 /* implementation of XCAP::CoreImpl */
 
 XCAP::CoreImpl::CoreImpl ()
 {
-  session = soup_session_async_new_with_options ("user-agent", "ekiga",
-						 NULL);
 }
 
 XCAP::CoreImpl::~CoreImpl ()
 {
-  g_object_unref (session);
 }
 
 void
@@ -112,10 +125,16 @@ XCAP::CoreImpl::read (gmref_ptr<Path> path,
 
   message = soup_message_new ("GET", path->to_uri ().c_str ());
   data = new cb_data;
+  data->path = path;
+  data->session = soup_session_async_new_with_options ("user-agent", "ekiga",
+						       NULL);
   data->callback = callback;
 
-  soup_session_queue_message (session, message,
-			      soup_callback, data);
+  g_signal_connect (data->session, "authenticate",
+		    G_CALLBACK (authenticate_callback), data);
+
+  soup_session_queue_message (data->session, message,
+			      result_callback, data);
 }
 
 

@@ -58,6 +58,10 @@ namespace XCAP
 
     std::string to_uri () const;
 
+    const std::string get_username () const;
+
+    const std::string get_password () const;
+
     /* this sets what you need to connect to the server */
     void set_credentials (std::string username,
 			  std::string password);
