@@ -186,6 +186,7 @@ RL::Entry::on_xcap_answer (XCAP::Core::ResultType result,
       set_status (_("Invalid server data"));
     } else {
 
+      set_status ("");
       parse ();
       updated.emit ();
     }
