@@ -268,8 +268,11 @@ RL::Heap::parse_doc (std::string raw)
 
   xmlNodePtr doc_root = xmlDocGetRootElement (doc);
 
-  if (doc_root == NULL) {
+  if (doc_root == NULL
+      || doc_root->name == NULL
+      || !xmlStrEqual (BAD_CAST "resource-lists", doc_root->name)) {
 
+    std::cout << "Invalid document in " << __PRETTY_FUNCTION__ << std::endl;
     // FIXME: warn the user somehow?
     xmlFreeDoc (doc);
     doc = NULL;
@@ -307,7 +310,9 @@ RL::Heap::parse_doc (std::string raw)
     path->set_credentials (username_str, password_str);
     path = path->build_child ("resource-lists");
 
-    for (xmlNodePtr child = root->children; child != NULL; child = child->next)
+    for (xmlNodePtr child = doc_root->children;
+	 child != NULL;
+	 child = child->next)
       if (child->type == XML_ELEMENT_NODE
 	  && child->name != NULL
 	  && xmlStrEqual (BAD_CAST ("list"), child->name)) {
@@ -318,6 +323,7 @@ RL::Heap::parse_doc (std::string raw)
 	list->entry_removed.connect (sigc::mem_fun (this, &RL::Heap::on_entry_removed));
 	lists.push_back (list);
 	pos++;
+	list->publish ();
 	continue;
       }
   }
