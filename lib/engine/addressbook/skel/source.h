@@ -37,11 +37,13 @@
 #ifndef __SOURCE_H__
 #define __SOURCE_H__
 
+#include "gmref.h"
+
 #include "book.h"
 
 namespace Ekiga {
 
-  class Source
+  class Source: public virtual GmRefCounted
   {
   public:
 

@@ -55,7 +55,7 @@ ldap_init (Ekiga::ServiceCore &core,
 
     gmref_ptr<OPENLDAP::Source> service = new OPENLDAP::Source (core);
     core.add (service);
-    contact_core->add_source (*service);
+    contact_core->add_source (service);
     sasl_client_init (NULL); // FIXME: shouldn't it be done by the source!?
     result = true;
   }

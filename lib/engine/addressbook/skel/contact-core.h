@@ -100,7 +100,7 @@ namespace Ekiga
     /** Adds a source to the ContactCore service.
      * @param The source to be added.
      */
-    void add_source (Source &source);
+    void add_source (gmref_ptr<Source> source);
 
 
     /** Triggers a callback for all Ekiga::Source sources of the
@@ -148,15 +148,15 @@ namespace Ekiga
 
   private:
 
-    std::set<Source *> sources;
+    std::list<gmref_ptr<Source> > sources;
 
     /* those functions are signal relayers */
-    void on_book_added (Book &book, Source *source);
-    void on_book_removed (Book &book, Source *source);
-    void on_book_updated (Book &book, Source *source);
-    void on_contact_added (Book &book, Contact &contact, Source *source);
-    void on_contact_removed (Book &book, Contact &contact, Source *source);
-    void on_contact_updated (Book &book, Contact &contact, Source *source);
+    void on_book_added (Book &book, gmref_ptr<Source> source);
+    void on_book_removed (Book &book, gmref_ptr<Source> source);
+    void on_book_updated (Book &book, gmref_ptr<Source> source);
+    void on_contact_added (Book &book, Contact &contact, gmref_ptr<Source> source);
+    void on_contact_removed (Book &book, Contact &contact, gmref_ptr<Source> source);
+    void on_contact_updated (Book &book, Contact &contact, gmref_ptr<Source> source);
 
     /*** Contact Helpers ***/
 

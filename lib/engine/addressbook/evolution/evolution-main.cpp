@@ -51,7 +51,7 @@ evolution_init (Ekiga::ServiceCore &services,
 
     gmref_ptr<Evolution::Source> source = new Evolution::Source (services);
     services.add (source);
-    core->add_source (*source);
+    core->add_source (source);
     result = true;
   }
 
