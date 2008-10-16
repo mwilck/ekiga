@@ -101,7 +101,7 @@ namespace Ekiga
     sigc::signal<void, std::string, std::string> status_received;
   };
 
-  class PresencePublisher
+  class PresencePublisher: public virtual GmRefCounted
   {
   public:
 
@@ -281,12 +281,11 @@ namespace Ekiga
     /* help publishing presence */
   public:
 
-    void add_presence_publisher (PresencePublisher &publisher);
-    void remove_presence_publisher (PresencePublisher& publisher);
+    void add_presence_publisher (gmref_ptr<PresencePublisher> publisher);
 
   private:
 
-    std::list<PresencePublisher*> presence_publishers;
+    std::list<gmref_ptr<PresencePublisher> > presence_publishers;
     void publish (gmref_ptr<PersonalDetails> details);
     void on_personal_details_updated (PersonalDetails &details);
     void on_registration_event (const Ekiga::Account & account,

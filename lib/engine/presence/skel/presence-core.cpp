@@ -226,23 +226,17 @@ Ekiga::PresenceCore::on_status_received (const std::string uri,
 }
 
 void
-Ekiga::PresenceCore::add_presence_publisher (PresencePublisher &publisher)
+Ekiga::PresenceCore::add_presence_publisher (gmref_ptr<PresencePublisher> publisher)
 {
-  presence_publishers.push_back (&publisher);
-}
-
-void
-Ekiga::PresenceCore::remove_presence_publisher (PresencePublisher& publisher)
-{
-  presence_publishers.remove (&publisher);
+  presence_publishers.push_back (publisher);
 }
 
 void Ekiga::PresenceCore::publish (gmref_ptr<PersonalDetails> details) 
 {
-  for (std::list<PresencePublisher*>::iterator iter
+  for (std::list<gmref_ptr<PresencePublisher> >::iterator iter
 	 = presence_publishers.begin ();
        iter != presence_publishers.end ();
-       iter++)
+       ++iter)
     (*iter)->publish (*details);
 }
 

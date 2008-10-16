@@ -40,34 +40,6 @@
 
 #include <iostream>
 
-class Service: public Ekiga::Service
-{
-public:
-
-  Service (Ekiga::PresenceCore& core_,
-	   Avahi::PresencePublisher* publisher_):
-    core(core_), publisher(publisher_)
-  {
-    core.add_presence_publisher (*publisher);
-  }
-
-  ~Service ()
-  {
-    core.remove_presence_publisher (*publisher);
-    delete publisher;
-  }
-
-  const std::string get_name () const
-  { return "avahi-presence-publisher"; }
-
-  const std::string get_description () const
-  { return "\tObject bringing in Avahi presence publishing"; }
-
-private:
-  Ekiga::PresenceCore& core;
-  Avahi::PresencePublisher* publisher;
-};
-
 bool
 avahi_publisher_init (Ekiga::ServiceCore &core,
                       int* /*argc*/,
@@ -81,10 +53,10 @@ avahi_publisher_init (Ekiga::ServiceCore &core,
 
   if (presence_core && call_core && details) {
 
-    Avahi::PresencePublisher* publisher = NULL;
-    publisher = new Avahi::PresencePublisher (core, *details, *call_core);
-    gmref_ptr<Service> service = new Service (*presence_core, publisher);
-    core.add (service);
+    gmref_ptr<Avahi::PresencePublisher> publisher
+      = new Avahi::PresencePublisher (core, *details, *call_core);
+    presence_core->add_presence_publisher (publisher);
+    core.add (publisher);
     result = true;
   }
 
