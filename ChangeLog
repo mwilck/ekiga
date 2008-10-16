@@ -1,5 +1,18 @@
 2008-10-16  Julien Puydt  <jpuydt@gnome.org>
 
+	* lib/engine/addressbook/call-history/history-main.cpp:
+	* lib/engine/addressbook/evolution/evolution-main.cpp:
+	* lib/engine/addressbook/kab/kab-main.cpp:
+	* lib/engine/addressbook/ldap/ldap-main.cpp:
+	* lib/engine/addressbook/skel/contact-core.cpp:
+	* lib/engine/addressbook/skel/contact-core.h:
+	* lib/engine/addressbook/skel/source.h:
+	* lib/engine/presence/local-roster/local-roster-bridge.cpp:
+	* src/endpoints/opal-main.cpp: Made use of gmref_ptr for the contact
+	decorators and to manage sources.
+
+2008-10-16  Julien Puydt  <jpuydt@gnome.org>
+
 	* lib/engine/components/avahi-publisher/avahi-publisher-main.cpp:
 	* lib/engine/components/avahi-publisher/avahi-publisher.h:
 	* lib/engine/components/resource-list/rl-entry-ref.h:
