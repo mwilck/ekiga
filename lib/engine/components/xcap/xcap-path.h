@@ -45,7 +45,7 @@
 
 namespace XCAP
 {
-  class Path: public GmRefCounted
+  class Path: public virtual GmRefCounted
   {
   public:
 

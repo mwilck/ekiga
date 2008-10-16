@@ -45,7 +45,7 @@ namespace RL
 {
   class ListImpl; // pimpling : both it and external need to know each other
 
-  class List: public GmRefCounted
+  class List: public virtual GmRefCounted
   {
   public:
 

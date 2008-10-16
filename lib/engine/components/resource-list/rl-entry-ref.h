@@ -49,7 +49,7 @@
 namespace RL {
 
   class EntryRef:
-    public GmRefCounted,
+    public virtual GmRefCounted,
     public Ekiga::Presentity
   {
   public:

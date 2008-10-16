@@ -54,7 +54,7 @@ namespace Ekiga
  * @{
  */
 
-  struct Service: public GmRefCounted
+  struct Service: public virtual GmRefCounted
   {
     virtual ~Service () {}
 
