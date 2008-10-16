@@ -72,6 +72,8 @@ namespace RL
     /* make the world know what we have */
     bool visit_presentities (sigc::slot<bool, Ekiga::Presentity&> visitor);
 
+    void publish () const;
+
     sigc::signal<void, gmref_ptr<Entry> > entry_added;
     sigc::signal<void, gmref_ptr<Entry> > entry_updated;
     sigc::signal<void, gmref_ptr<Entry> > entry_removed;

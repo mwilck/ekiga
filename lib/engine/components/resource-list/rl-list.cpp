@@ -91,6 +91,8 @@ public: // no need to make anything private
   /* make the world know what we have */
   bool visit_presentities (sigc::slot<bool, Ekiga::Presentity&> visitor);
 
+  void publish () const;
+
   sigc::signal<void, gmref_ptr<Entry> > entry_added;
   sigc::signal<void, gmref_ptr<Entry> > entry_updated;
   sigc::signal<void, gmref_ptr<Entry> > entry_removed;
@@ -117,7 +119,6 @@ RL::List::List (Ekiga::ServiceCore& core_,
   impl->entry_added.connect (entry_added.make_slot ());
   impl->entry_updated.connect (entry_updated.make_slot ());
   impl->entry_removed.connect (entry_removed.make_slot ());
-  impl->parse ();
 }
 
 RL::List::~List ()
@@ -155,6 +156,12 @@ bool
 RL::List::visit_presentities (sigc::slot<bool, Ekiga::Presentity&> visitor)
 {
   return impl->visit_presentities (visitor);
+}
+
+void
+RL::List::publish () const
+{
+  impl->publish ();
 }
 
 /* implementation of the ListImpl class */
@@ -313,9 +320,12 @@ RL::ListImpl::parse ()
       gmref_ptr<List> list = new List (core, path,
 				       list_pos, display_name, child);
       list->entry_added.connect (entry_added.make_slot ());
+      list->entry_updated.connect (entry_updated.make_slot ());
+      list->entry_removed.connect (entry_removed.make_slot ());
       lists.push_back (list);
       ordering.push_back (LIST);
       list_pos++;
+      list->publish ();
       continue;
     }
 
@@ -331,6 +341,7 @@ RL::ListImpl::parse ()
       entries.push_back (std::pair<gmref_ptr<Entry>, std::list<sigc::connection> > (entry, conns));
       ordering.push_back (ENTRY);
       entry_pos++;
+      entry_added.emit (entry);
       continue;
     }
   }
@@ -390,4 +401,20 @@ RL::ListImpl::visit_presentities (sigc::slot<bool, Ekiga::Presentity&> visitor)
   }
 
   return go_on;
+}
+
+void
+RL::ListImpl::publish () const
+{
+  for (std::list<gmref_ptr<List> >::const_iterator iter = lists.begin ();
+       iter != lists.end ();
+       ++iter)
+    (*iter)->publish ();
+
+  for (std::list<std::pair<gmref_ptr<Entry>, std::list<sigc::connection> > >::const_iterator iter = entries.begin ();
+       iter != entries.end ();
+       ++iter) {
+
+    entry_added.emit (iter->first);
+  }
 }
