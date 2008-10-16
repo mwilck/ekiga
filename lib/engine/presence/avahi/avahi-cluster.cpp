@@ -46,7 +46,7 @@ Avahi::Cluster::Cluster (Ekiga::ServiceCore &_core): core(_core)
   add_heap (*heap);
 
   /* don't check the cast: it has been checked already by avahi-main!*/
-  presence_core->add_presence_fetcher (*heap);
+  presence_core->add_presence_fetcher (heap);
 }
 
 Avahi::Cluster::~Cluster ()

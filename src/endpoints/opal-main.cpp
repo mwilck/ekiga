@@ -141,7 +141,7 @@ opal_init (Ekiga::ServiceCore &core,
 
 #ifdef HAVE_SIP
     presence_core->add_presentity_decorator (sip_manager);
-    presence_core->add_presence_fetcher (*sip_manager);
+    presence_core->add_presence_fetcher (sip_manager);
     presence_core->add_presence_publisher (*sip_manager);
 #endif
 #ifdef HAVE_H323

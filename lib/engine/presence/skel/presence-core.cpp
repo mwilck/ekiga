@@ -161,25 +161,18 @@ Ekiga::PresenceCore::populate_presentity_menu (Presentity& presentity,
 }
 
 void
-Ekiga::PresenceCore::add_presence_fetcher (PresenceFetcher &fetcher)
+Ekiga::PresenceCore::add_presence_fetcher (gmref_ptr<PresenceFetcher> fetcher)
 {
-  presence_fetchers.push_back (&fetcher);
-  fetcher.presence_received.connect (sigc::mem_fun (this,
-						    &Ekiga::PresenceCore::on_presence_received));
-  fetcher.status_received.connect (sigc::mem_fun (this,
-						  &Ekiga::PresenceCore::on_status_received));
+  presence_fetchers.push_back (fetcher);
+  fetcher->presence_received.connect (sigc::mem_fun (this,
+						     &Ekiga::PresenceCore::on_presence_received));
+  fetcher->status_received.connect (sigc::mem_fun (this,
+						   &Ekiga::PresenceCore::on_status_received));
   for (std::map<std::string, uri_info>::const_iterator iter
 	 = uri_infos.begin ();
        iter != uri_infos.end ();
        ++iter)
-    fetcher.fetch (iter->first);
-}
-
-void
-Ekiga::PresenceCore::remove_presence_fetcher (PresenceFetcher& fetcher)
-{
-  presence_fetchers.remove (&fetcher);
-  // FIXME: unconnect the signals!
+    fetcher->fetch (iter->first);
 }
 
 void
@@ -189,10 +182,10 @@ Ekiga::PresenceCore::fetch_presence (const std::string uri)
 
   if (uri_infos[uri].count == 1) {
 
-    for (std::list<PresenceFetcher*>::iterator iter
+    for (std::list<gmref_ptr<PresenceFetcher> >::iterator iter
 	   = presence_fetchers.begin ();
 	 iter != presence_fetchers.end ();
-	 iter++)
+	 ++iter)
       (*iter)->fetch (uri);
   }
 
@@ -208,10 +201,10 @@ void Ekiga::PresenceCore::unfetch_presence (const std::string uri)
 
     uri_infos.erase (uri_infos.find (uri));
 
-    for (std::list<PresenceFetcher*>::iterator iter
+    for (std::list<gmref_ptr<PresenceFetcher> >::iterator iter
 	   = presence_fetchers.begin ();
 	 iter != presence_fetchers.end ();
-	 iter++)
+	 ++iter)
       (*iter)->unfetch (uri);
   }
 }

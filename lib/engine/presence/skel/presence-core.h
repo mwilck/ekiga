@@ -52,7 +52,7 @@ namespace Ekiga
  */
 
 
-  class PresentityDecorator: public GmRefCounted
+  class PresentityDecorator: public virtual GmRefCounted
   {
   public:
 
@@ -70,7 +70,7 @@ namespace Ekiga
 				MenuBuilder &/*builder*/) = 0;
   };
 
-  class PresenceFetcher
+  class PresenceFetcher: public virtual GmRefCounted
   {
   public:
 
@@ -239,12 +239,7 @@ namespace Ekiga
     /** Adds a fetcher to the pool of presentce fetchers.
      * @param The presence fetcher.
      */
-    void add_presence_fetcher (PresenceFetcher &fetcher);
-
-    /** Removes a fetcher from the pool of presentce fetchers.
-     * @param The presence fetcher.
-     */
-    void remove_presence_fetcher (PresenceFetcher &fetcher);
+    void add_presence_fetcher (gmref_ptr<PresenceFetcher> fetcher);
 
     /** Tells the PresenceCore that someone is interested in presence
      * information for the given uri.
@@ -266,7 +261,7 @@ namespace Ekiga
 
   private:
 
-    std::list<PresenceFetcher*> presence_fetchers;
+    std::list<gmref_ptr<PresenceFetcher> > presence_fetchers;
     void on_presence_received (const std::string uri,
 			       const std::string presence);
     void on_status_received (const std::string uri,
