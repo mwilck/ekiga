@@ -399,8 +399,10 @@ gnomemeeting_progress_dialog (GtkWindow *parent,
   primary_text =
     g_strdup_printf ("<span weight=\"bold\" size=\"larger\">%s</span>",
 		     prim_text);
-  
-  vsnprintf (buffer, 1024, format, args);
+  if (format == NULL)
+    buffer[0] = 0;
+  else 
+    vsnprintf (buffer, 1024, format, args);
 
   dialog_text =
     g_strdup_printf ("%s\n\n%s", primary_text, buffer);
@@ -473,8 +475,12 @@ gnomemeeting_warning_dialog_on_widget (GtkWindow *parent,
   button = 
     gtk_check_button_new_with_label (_("Do not show this dialog again"));
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button), do_not_show);
+
   
-  vsnprintf (buffer, 1024, format, args);
+  if (format == NULL)
+    buffer[0] = 0;
+  else 
+    vsnprintf (buffer, 1024, format, args);
 
   prim_text =
     g_strdup_printf ("<span weight=\"bold\" size=\"larger\">%s</span>",
@@ -541,7 +547,10 @@ gnomemeeting_dialog (GtkWindow *parent,
     g_strdup_printf ("<span weight=\"bold\" size=\"larger\">%s</span>",
 		     prim_text);
   
-  vsnprintf (buffer, 1024, format, args);
+  if (format == NULL)
+    buffer[0] = 0;
+  else 
+    vsnprintf (buffer, 1024, format, args);
 
   dialog_text =
     g_strdup_printf ("%s\n\n%s", primary_text, buffer);

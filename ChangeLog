@@ -1,3 +1,11 @@
+2008-10-16  Matthias Schneider  <ma30002000@yahoo.de>
+	* src/gui/main.cpp:
+	* lib/gui/gmdialog.c:
+	Fix crash on windows when using vsnprintf with a
+	format string = NULL. Happend when clicking the
+	statusline.
+
+
 2008-10-16  Julien Puydt  <jpuydt@gnome.org>
 
 	* lib/engine/components/resource-list/rl-cluster.cpp:

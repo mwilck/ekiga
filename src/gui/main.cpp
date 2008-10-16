@@ -4082,7 +4082,12 @@ ekiga_main_window_flash_message (EkigaMainWindow *mw,
   g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
 
   va_start (args, msg);
-  vsnprintf (buffer, 1024, msg, args);
+
+  if (msg == NULL)
+    buffer[0] = 0;
+  else 
+    vsnprintf (buffer, 1024, msg, args);
+
   gm_statusbar_flash_message (GM_STATUSBAR (mw->priv->statusbar), "%s", buffer);
   va_end (args);
 }
@@ -4099,7 +4104,12 @@ ekiga_main_window_push_message (EkigaMainWindow *mw,
   g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
 
   va_start (args, msg);
-  vsnprintf (buffer, 1024, msg, args);
+
+  if (msg == NULL)
+    buffer[0] = 0;
+  else 
+    vsnprintf (buffer, 1024, msg, args);
+
   gm_statusbar_push_message (GM_STATUSBAR (mw->priv->statusbar), "%s", buffer);
   va_end (args);
 }
