@@ -38,9 +38,9 @@
 #ifndef __RL_CLUSTER_H__
 #define __RL_CLUSTER_H__
 
-#include "rl-heap.h"
-
 #include "cluster-impl.h"
+
+#include "rl-heap.h"
 
 namespace RL {
 

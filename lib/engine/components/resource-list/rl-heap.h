@@ -38,12 +38,7 @@
 #ifndef __RL_HEAP_H__
 #define __RL_HEAP_H__
 
-#include "gmref.h"
-
 #include "heap.h"
-#include "xcap-core.h"
-
-#include <libxml/tree.h>
 
 #include "rl-list.h"
 

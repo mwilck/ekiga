@@ -35,9 +35,6 @@
  *
  */
 
-
-#include <libxml/debugXML.h>
-
 #include "config.h"
 
 #include "rl-entry.h"

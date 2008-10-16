@@ -37,7 +37,6 @@
 
 #include "config.h"
 
-#include <glib.h>
 #include <iostream>
 
 #include "robust-xml.h"

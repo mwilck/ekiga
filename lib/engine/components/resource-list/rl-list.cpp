@@ -38,7 +38,6 @@
 #include "config.h"
 
 #include <glib.h>
-#include <iostream>
 
 #include "rl-list.h"
 
