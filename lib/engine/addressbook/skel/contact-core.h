@@ -48,7 +48,7 @@ namespace Ekiga
  * @{
  */
 
-  class ContactDecorator
+  class ContactDecorator: public virtual GmRefCounted
   {
   public:
 
@@ -162,7 +162,7 @@ namespace Ekiga
 
   public:
 
-    void add_contact_decorator (ContactDecorator &decorator);
+    void add_contact_decorator (gmref_ptr<ContactDecorator> decorator);
 
     /** Create the menu for a given Contact and its actions.
      * @param The Ekiga::Contact for which the actions could be made available.
@@ -175,7 +175,7 @@ namespace Ekiga
 
   private:
 
-    std::list<ContactDecorator *> contact_decorators;
+    std::list<gmref_ptr<ContactDecorator> > contact_decorators;
 
 
     /*** Misc ***/

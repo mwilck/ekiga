@@ -128,10 +128,10 @@ opal_init (Ekiga::ServiceCore &core,
   if (contact_core) { 
 
 #ifdef HAVE_SIP
-    contact_core->add_contact_decorator (*sip_manager);
+    contact_core->add_contact_decorator (sip_manager);
 #endif
 #ifdef HAVE_H323
-    contact_core->add_contact_decorator (*h323_manager);
+    contact_core->add_contact_decorator (h323_manager);
 #endif
   }
   else

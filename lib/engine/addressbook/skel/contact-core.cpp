@@ -147,9 +147,9 @@ Ekiga::ContactCore::on_contact_updated (Book &book,
 
 
 void
-Ekiga::ContactCore::add_contact_decorator (ContactDecorator &decorator)
+Ekiga::ContactCore::add_contact_decorator (gmref_ptr<ContactDecorator> decorator)
 {
-  contact_decorators.push_back (&decorator);
+  contact_decorators.push_back (decorator);
 }
 
 
@@ -160,10 +160,10 @@ Ekiga::ContactCore::populate_contact_menu (Contact &contact,
 {
   bool populated = false;
 
-  for (std::list<ContactDecorator *>::const_iterator iter
+  for (std::list<gmref_ptr<ContactDecorator> >::const_iterator iter
 	 = contact_decorators.begin ();
        iter != contact_decorators.end ();
-       iter++) {
+       ++iter) {
 
     populated = (*iter)->populate_menu (contact, uri, builder) || populated;
   }

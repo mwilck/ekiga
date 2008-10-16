@@ -118,7 +118,7 @@ local_roster_bridge_init (Ekiga::ServiceCore &core,
     gmref_ptr<Local::ContactDecorator> decorator
       = new Local::ContactDecorator (*cluster);
     core.add (decorator);
-    contact_core->add_contact_decorator (*decorator);
+    contact_core->add_contact_decorator (decorator);
     result = true;
   }
 
