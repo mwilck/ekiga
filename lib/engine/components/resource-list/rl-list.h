@@ -57,10 +57,7 @@ namespace RL
 
     ~List ();
 
-
     /* the part of the interface which helps the list manage this element */
-
-    bool is_positional () const;
 
     bool has_name (const std::string name) const;
 

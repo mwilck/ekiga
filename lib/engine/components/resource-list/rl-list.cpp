@@ -53,8 +53,6 @@ public: // no need to make anything private
 
   ~ListImpl ();
 
-  bool is_positional () const;
-
   bool has_name (const std::string name) const;
 
   void push_presence (const std::string uri_,
@@ -139,12 +137,6 @@ RL::List::publish ()
 }
 
 bool
-RL::List::is_positional () const
-{
-  return impl->is_positional ();
-}
-
-bool
 RL::List::has_name (const std::string name) const
 {
   return impl->has_name (name);
@@ -221,21 +213,6 @@ RL::ListImpl::~ListImpl ()
 {
   if (doc != NULL)
     xmlFreeDoc (doc);
-}
-
-bool
-RL::ListImpl::is_positional () const
-{
-  bool result = true;
-  xmlChar* str = xmlGetProp (node, BAD_CAST "name");
-
-  if (str != NULL) {
-
-    result = false;
-    xmlFree (str);
-  }
-
-  return result;
 }
 
 bool

@@ -62,10 +62,6 @@ namespace RL {
 
     ~EntryRef ();
 
-    /* the part of the interface which helps the list manage this element */
-
-    bool is_positional () const;
-
     /* needed so presence can be pushed into this presentity */
 
     const std::string get_uri () const;

@@ -70,12 +70,6 @@ RL::EntryRef::~EntryRef ()
     xmlFreeDoc (doc);
 }
 
-bool
-RL::EntryRef::is_positional () const
-{
-  return true; // FIXME
-}
-
 const std::string
 RL::EntryRef::get_uri () const
 {
