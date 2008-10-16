@@ -1,5 +1,19 @@
 2008-10-16  Julien Puydt  <jpuydt@gnome.org>
 
+	* lib/engine/components/resource-list/rl-cluster.cpp:
+	* lib/engine/components/resource-list/rl-entry.cpp:
+	* lib/engine/components/resource-list/rl-heap.cpp:
+	* lib/engine/components/resource-list/rl-list.cpp:
+	* lib/engine/components/resource-list/rl-list.h:
+	* lib/engine/components/xcap/xcap-core.cpp:
+	* lib/engine/components/xcap/xcap-path.cpp:
+	* lib/engine/components/xcap/xcap-path.h: Fixed small bugs here and
+	there, added basic auth support to XCAP::Core, (bad) URI escaping to
+	XCAP::Path, made the default cluster point to an existing document
+	on the net.
+
+2008-10-16  Julien Puydt  <jpuydt@gnome.org>
+
 	* lib/engine/addressbook/call-history/history-main.cpp:
 	* lib/engine/addressbook/evolution/evolution-main.cpp:
 	* lib/engine/addressbook/kab/kab-main.cpp:
