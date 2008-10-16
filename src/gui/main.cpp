@@ -4319,7 +4319,12 @@ gm_main_window_flash_message (GtkWidget *main_window,
   va_list args;
 
   va_start (args, msg);
-  vsnprintf (buffer, 1024, msg, args);
+
+  if (msg == NULL)
+    buffer[0] = 0;
+  else 
+    vsnprintf (buffer, 1024, msg, args);
+
   gm_statusbar_flash_message (GM_STATUSBAR (mw->statusbar), "%s", buffer);
   va_end (args);
 }
@@ -4341,7 +4346,12 @@ gm_main_window_push_message (GtkWidget *main_window,
   va_list args;
 
   va_start (args, msg);
-  vsnprintf (buffer, 1024, msg, args);
+
+  if (msg == NULL)
+    buffer[0] = 0;
+  else 
+    vsnprintf (buffer, 1024, msg, args);
+
   gm_statusbar_push_message (GM_STATUSBAR (mw->statusbar), "%s", buffer);
   va_end (args);
 }
