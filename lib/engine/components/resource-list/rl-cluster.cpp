@@ -85,7 +85,7 @@ RL::Cluster::Cluster (Ekiga::ServiceCore& core_): core(core_), doc(NULL)
     doc = xmlNewDoc (BAD_CAST "1.0");
     xmlNodePtr root = xmlNewDocNode (doc, NULL, BAD_CAST "list", NULL);
     xmlDocSetRootElement (doc, root);
-    add ("http://localhost:443", "", "", "test@ekiga.net", "XCAP Test"); // FIXME: remove
+    add ("https://xcap.sipthor.net/xcap-root", "alice", "123", "alice@example.com", "XCAP Test"); // FIXME: remove
   }
 }
 
@@ -119,7 +119,7 @@ RL::Cluster::add (const std::string uri,
 		  const std::string user,
 		  const std::string name)
 {
-  Heap* heap = new Heap (core, name, uri, username, password, user);
+  Heap* heap = new Heap (core, name, uri, user, username, password);
   xmlNodePtr root = xmlDocGetRootElement (doc);
 
   xmlAddChild (root, heap->get_node ());
