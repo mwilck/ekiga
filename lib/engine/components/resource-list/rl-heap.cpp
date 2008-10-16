@@ -316,7 +316,6 @@ RL::Heap::parse_doc (std::string raw)
 	list->entry_added.connect (sigc::mem_fun (this, &RL::Heap::on_entry_added));
 	list->entry_updated.connect (sigc::mem_fun (this, &RL::Heap::on_entry_updated));
 	list->entry_removed.connect (sigc::mem_fun (this, &RL::Heap::on_entry_removed));
-	list->publish ();
 	lists.push_back (list);
 	pos++;
 	continue;

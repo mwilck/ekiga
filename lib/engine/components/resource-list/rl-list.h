@@ -79,13 +79,6 @@ namespace RL
     /* this method orders the list to get rid of all its children */
     void flush ();
 
-    /* this method makes the list publish what it has
-     * (it needs a method to be done, because we fetch on creation,
-     *  which means the owner may not have had the time to connect to
-     *  our signals yet)
-     */
-    void publish ();
-
   private:
 
     ListImpl *impl;

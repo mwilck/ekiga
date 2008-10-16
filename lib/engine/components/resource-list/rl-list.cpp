@@ -61,13 +61,14 @@ public: // no need to make anything private
   void push_status (const std::string uri_,
 		    const std::string status);
 
-  void publish ();
-
   std::string compute_path () const;
 
   void flush ();
 
   void refresh ();
+
+  void on_xcap_answer (XCAP::Core::ResultType result,
+		       std::string value);
 
   void parse ();
 
@@ -130,12 +131,6 @@ RL::List::flush ()
   return impl->flush ();
 }
 
-void
-RL::List::publish ()
-{
-  return impl->publish ();
-}
-
 bool
 RL::List::has_name (const std::string name) const
 {
@@ -184,7 +179,6 @@ RL::ListImpl::ListImpl (Ekiga::ServiceCore& core_,
     }
     position_name = raw;
     g_free (raw);
-
   }
 
   display_name = position_name; // will be set to better when we get the data
@@ -206,6 +200,7 @@ RL::ListImpl::ListImpl (Ekiga::ServiceCore& core_,
   } else {
 
     path = path_;
+    refresh ();
   }
 }
 
@@ -244,34 +239,12 @@ RL::ListImpl::flush ()
       conn_iter->disconnect ();
   }
   entries.clear ();
-}
 
-void
-RL::ListImpl::publish ()
-{
-  std::list<gmref_ptr<List> >::const_iterator list_iter = lists.begin ();
-  std::list<std::pair<gmref_ptr<Entry>, std::list<sigc::connection> > >::const_iterator entry_iter = entries.begin ();
-
-  for (std::list<ChildType>::const_iterator iter = ordering.begin ();
-       iter != ordering.end ();
-       ++iter) {
-
-    switch (*iter) {
-
-    case LIST:
-      (*list_iter)->publish ();
-      ++list_iter;
-      break;
-
-    case ENTRY:
-      entry_added.emit (entry_iter->first);
-      ++entry_iter;
-      break;
-
-    default:
-      break;// nothing
-    }
-  }
+  if (doc != NULL)
+    xmlFreeDoc (doc);
+  doc = NULL;
+  node = NULL;
+  name_node = NULL;
 }
 
 void
@@ -279,10 +252,32 @@ RL::ListImpl::refresh ()
 {
   flush ();
 
-  /* FIXME:
-   * - fetch the document
-   * - call parse
-   */
+  gmref_ptr<XCAP::Core> xcap = core.get ("xcap-core");
+  xcap->read (path, sigc::mem_fun (this, &RL::ListImpl::on_xcap_answer));
+}
+
+void
+RL::ListImpl::on_xcap_answer (XCAP::Core::ResultType result,
+			      std::string value)
+{
+  if (result != XCAP::Core::SUCCESS) {
+
+    // FIXME: how to properly tell the user?
+
+  } else {
+
+    doc = xmlRecoverMemory (value.c_str (), value.length ());
+    node = xmlDocGetRootElement (doc);
+    if (node == NULL
+	|| node->name == NULL
+	|| !xmlStrEqual (BAD_CAST "list", node->name)) {
+
+      // FIXME : how to properly tell the user?
+    } else {
+
+      parse ();
+    }
+  }
 }
 
 void
