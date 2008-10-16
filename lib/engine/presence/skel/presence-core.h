@@ -52,7 +52,7 @@ namespace Ekiga
  */
 
 
-  class PresentityDecorator
+  class PresentityDecorator: public GmRefCounted
   {
   public:
 
@@ -219,12 +219,7 @@ namespace Ekiga
     /** Adds a decorator to the pool of presentity decorators.
      * @param The presentity decorator.
      */
-    void add_presentity_decorator (PresentityDecorator &decorator);
-
-    /** Removes a decorator from the pool of presentity decorators.
-     * @param The presentity decorator.
-     */
-    void remove_presentity_decorator (PresentityDecorator& decorator);
+    void add_presentity_decorator (gmref_ptr<PresentityDecorator> decorator);
 
     /** Populates a menu with the actions available on a given uri.
      * @param The uri for which the decoration is needed.
@@ -236,7 +231,7 @@ namespace Ekiga
 
   private:
 
-    std::list<PresentityDecorator*> presentity_decorators;
+    std::list<gmref_ptr<PresentityDecorator> > presentity_decorators;
 
     /*** API to help presentities get presence ***/
   public:
