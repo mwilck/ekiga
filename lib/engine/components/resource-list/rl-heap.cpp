@@ -40,6 +40,7 @@
 #include <iostream>
 
 #include "robust-xml.h"
+#include "form-request-simple.h"
 
 #include "rl-heap.h"
 
@@ -175,9 +176,13 @@ RL::Heap::visit_presentities (sigc::slot<bool, Ekiga::Presentity&> visitor)
 }
 
 bool
-RL::Heap::populate_menu (Ekiga::MenuBuilder& /*builder*/)
+RL::Heap::populate_menu (Ekiga::MenuBuilder& builder)
 {
-  return false; // FIXME
+  builder.add_action ("refresh", _("_Refresh contact list"),
+		      sigc::mem_fun (this, &RL::Heap::refresh));
+  builder.add_action ("properties", _("Contact list _properties"),
+		      sigc::mem_fun (this, &RL::Heap::edit));
+  return true;
 }
 
 bool
@@ -365,4 +370,83 @@ void
 RL::Heap::on_entry_removed (gmref_ptr<Entry> entry)
 {
   presentity_removed.emit (*entry);
+}
+
+void
+RL::Heap::edit ()
+{
+  Ekiga::FormRequestSimple request;
+  std::string name_str;
+  std::string root_str;
+  std::string username_str;
+  std::string password_str;
+  std::string user_str;
+
+  {
+    xmlChar* str = xmlNodeGetContent (root);
+    if (str != NULL)
+      root_str = (const char*)str;
+  }
+  {
+    xmlChar* str = xmlNodeGetContent (user);
+    if (str != NULL)
+      user_str = (const char*)str;
+  }
+  {
+    xmlChar* str = xmlNodeGetContent (username);
+    if (str != NULL)
+      username_str = (const char*)str;
+  }
+  {
+    xmlChar* str = xmlNodeGetContent (password);
+    if (str != NULL)
+      password_str = (const char*)str;
+  }
+
+  request.title (_("Edit contact list properties"));
+
+  request.instructions (_("Please edit the following fields (no identifier"
+			  " means global)"));
+
+  request.text ("name", _("Contact list's name"), get_name ());
+  request.text ("root", _("Document root"), root_str);
+  request.text ("user", _("Identifier"), user_str);
+  request.text ("username", _("Server username"), username_str);
+  request.private_text ("password", _("Server password"), password_str);
+
+  request.submitted.connect (sigc::mem_fun (this,
+					    &RL::Heap::on_edit_form_submitted));
+  if (!questions.handle_request (&request)) {
+
+    // FIXME: better error reporting
+#ifdef __GNUC__
+    std::cout << "Unhandled form request in "
+	      << __PRETTY_FUNCTION__ << std::endl;
+#endif
+  }
+}
+
+void
+RL::Heap::on_edit_form_submitted (Ekiga::Form& result)
+{
+  try {
+
+    std::string name_str = result.text ("name");
+    std::string root_str = result.text ("root");
+    std::string user_str = result.text ("user");
+    std::string username_str = result.text ("username");
+    std::string password_str = result.private_text ("password");
+
+    robust_xmlNodeSetContent (node, &name, "name", name_str);
+    robust_xmlNodeSetContent (node, &root, "root", root_str);
+    robust_xmlNodeSetContent (node, &user, "user", user_str);
+    robust_xmlNodeSetContent (node, &username, "username", username_str);
+    robust_xmlNodeSetContent (node, &password, "password", password_str);
+
+    updated.emit ();
+    refresh ();
+  } catch (Ekiga::Form::not_found) {
+
+    std::cerr << "Invalid result form" << std::endl; // FIXME: do better
+  }
 }

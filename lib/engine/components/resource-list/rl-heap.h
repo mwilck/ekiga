@@ -113,6 +113,9 @@ namespace RL {
     void on_entry_added (gmref_ptr<Entry> entry);
     void on_entry_updated (gmref_ptr<Entry> entry);
     void on_entry_removed (gmref_ptr<Entry> entry);
+
+    void edit ();
+    void on_edit_form_submitted (Ekiga::Form& result);
   };
 };
 
