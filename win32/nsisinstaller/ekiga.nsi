@@ -23,15 +23,11 @@ var ALREADY_INSTALLED
 
 Name $name
 ;SetCompressor /SOLID lzma
-!ifdef WITH_GTK
 OutFile "${TARGET_DIR}/ekiga-setup-${EKIGA_VERSION}.exe"
-!else
 ;!ifdef DEBUG
 ;OutFile "ekiga-setup-${EKIGA_VERSION}-debug.exe"
 ;!else
-OutFile "${TARGET_DIR}/ekiga-setup-${EKIGA_VERSION}-nogtk.exe"
 ;!endif
-!endif
 
 ; ===========================
 ; Includes
@@ -335,6 +331,9 @@ Section $(EKIGA_SECTION_TITLE) SecEkiga
     File /r "${TARGET_DIR}\Ekiga\help"
     File /r "${TARGET_DIR}\Ekiga\share\locale"
     File /r "${TARGET_DIR}\Ekiga\plugins"
+    File /r "${TARGET_DIR}\Ekiga\etc"
+    File /r "${TARGET_DIR}\Ekiga\lib"
+    File /r "${TARGET_DIR}\Ekiga\share"
 
     IfFileExists "$INSTDIR\ekiga.exe" 0 new_installation
     StrCpy $ALREADY_INSTALLED 1
