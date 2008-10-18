@@ -1,4 +1,6 @@
 Changes since Ekiga 3.00
+- Windows: use theora 1.0rc1 and speex 1.2rc1, fixes crash when echo cancellation is active
+- Windows: do not use GTK runtime package, bring our own libraries instead.
 - Fix crash on windows when using vsnprintf with a format string = NULL. Happend when clicking the statusline.
 - Fix crash on windows when the only available accelerated surface is already taken.
 - Fix playing of audio files with samplerate != 8000Hz on windows (#555832).

@@ -94,49 +94,24 @@ OGG_DIR := $(BUILDROOT)/libogg-$(OGG_VER)
 OGG_ARCHIVE := libogg-$(OGG_VER).tar.gz
 OGG_URL := http://downloads.xiph.org/releases/ogg
 
-SPEEX_VER := 1.1.12
+SPEEX_VER := 1.2rc1
 SPEEX_DIR := $(BUILDROOT)/speex-$(SPEEX_VER)
 SPEEX_ARCHIVE := speex-$(SPEEX_VER).tar.gz
 SPEEX_URL := http://downloads.us.xiph.org/releases/speex
 
 GTK_VER := 2.12.11
 GTK_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/gtk+/2.12
-GTK_ARCHIVE := gtk+-dev-$(GTK_VER).zip
-
-GTK_BIN_VER := 2.12.11
-GTK_INSTALLER_URL := http://mesh.dl.sourceforge.net/gtk-win
-GTK_BIN_EXE := gtk2-runtime-2.12.11-2008-07-25-ash.exe
-
-GLIB_VER := 2.18.0-2
-GLIB_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/glib/2.18
-GLIB_ARCHIVE := glib-dev_$(GLIB_VER)_win32.zip
-
-ATK_VER := 1.22.0
-ATK_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/atk/1.22
-ATK_ARCHIVE := atk-dev-$(ATK_VER).zip
-
-CAIRO_VER := 1.6.4-2
-CAIRO_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies
-CAIRO_ARCHIVE := cairo-dev-$(CAIRO_VER).zip
-
-PANGO_VER := 1.20.5
-PANGO_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/pango/1.20
-PANGO_ARCHIVE := pango-dev-$(PANGO_VER).zip
+GTK_ARCHIVE := gtk+-bundle-$(GTK_VER).zip
 
 XML2_VER := 2.6.32
 XML2_DIR := libxml2-$(XML2_VER)
 XML2_URL := ftp://xmlsoft.org/libxml2
 XML2_ARCHIVE := libxml2-$(XML2_VER).tar.gz
 
-LIBPNG_VER := 1.2.8
-GNUWIN32_URL := http://mesh.dl.sourceforge.net/gnuwin32
-
 EXPAT_VER = 2.0.0
 EXPAT_DIR = $(BUILDROOT)/expat-$(EXPAT_VER)
 EXPAT_ARCHIVE := expat-$(EXPAT_VER).tar.gz
 EXPAT_URL := http://kent.dl.sourceforge.net/sourceforge/expat
-
-LIBINTL_VER := 0.14.4
 
 REGEX_DIR := $(BUILDROOT)/regex
 REGEX_ARCHIVE := regex
@@ -147,10 +122,6 @@ SIGC_ARCHIVE := libsigc++-$(SIGC_VER).tar.gz
 SIGC_DIR := libsigc++-$(SIGC_VER)
 
 GIMP_URL := http://www.gimp.org/~tml/gimp/win32
-
-GETTEXT_VER := 0.17-1
-GETTEXT_URL :=http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies
-GETTEXT_ARCHIVE := gettext-runtime-dev-$(GETTEXT_VER).zip
 
 ICONV_VER := 1.9.1
 ICONV_ARCHIVE := libiconv-$(ICONV_VER).bin.woe32.zip
@@ -165,10 +136,10 @@ X264_URL := git://git.videolan.org/x264.git
 X264_DIR := $(BUILDROOT)/x264
 X264_ARCHIVE := x264
 
-THEORA_VER := 13809
-THEORA_URL := http://svn.xiph.org/trunk/theora
-THEORA_DIR := $(BUILDROOT)/theora
-THEORA_ARCHIVE := theora
+THEORA_VER := 1.0RC1
+THEORA_DIR := $(BUILDROOT)/libtheora-$(THEORA_VER)
+THEORA_ARCHIVE := libtheora-$(THEORA_VER).zip
+THEORA_URL := http://downloads.us.xiph.org/releases/theora
 
 NSIS_VER := 2.29
 NSIS_URL := http://mesh.dl.sourceforge.net/nsis
@@ -217,7 +188,8 @@ confffmpeg:=--cross-prefix=i586-mingw32msvc- --enable-shared --enable-memalign-h
 
 confx264:=  --disable-avis-input --prefix=$(BUILDROOT) --host=$(DEB_HOST_GNU_TYPE)
 
-conftheora:=--host=$(DEB_HOST_GNU_TYPE) --prefix=$(BUILDROOT) --disable-vorbistest --disable-sdltest --disable-examples
+conftheora:=--prefix=$(BUILDROOT) --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE) \
+            --disable-vorbistest --disable-sdltest --disable-examples
 
 all: binaries $(TARGETDIR)/$(EKIGA_INSTALLER)
 	@echo "Built on $(shell date)"
@@ -342,10 +314,12 @@ $(PTLIB_DIR)/configure: binaries $(LIBDIR)/libldap.dll $(LIBDIR)/libogg.a $(LIBD
 	rm -f $(LIBDIR)/libpt_s.a
 	rm -rf $(PTLIB_DIR)
 	$(CP) -r $(SRCDIR)/$(PTLIB_ARCHIVE) $(PTLIB_DIR)	
+	touch $@
 
 $(PTLIB_DIR)/config.status: binaries $(PTLIB_DIR)/configure
 	rm -f $(LIBDIR)/libpt_s.a
 	(cd $(PTLIB_DIR)/;./configure $(confptlib) )
+	touch $@
 
 $(LIBDIR)/libpt_s.a: binaries $(PTLIB_DIR)/config.status
 ifeq ($(DEBUG),1)
@@ -355,6 +329,7 @@ else
 	$(MAKE) $(MAKEOPTS) -C $(PTLIB_DIR)
 	$(MAKE) -C $(PTLIB_DIR) install
 endif
+	touch $@
 
 ### libogg
 update-sources::
@@ -378,7 +353,7 @@ update-sources::
 	$(WGET) -P $(SRCDIR) $(SPEEX_URL)/$(SPEEX_ARCHIVE)
 
 $(SPEEX_DIR)/config.status: binaries $(SRCDIR)/$(SPEEX_ARCHIVE)
-	rm -f $(LIBDIR)/_ibspeex.a
+	rm -f $(LIBDIR)/libspeex.a
 	tar xfz $(SRCDIR)/$(SPEEX_ARCHIVE) -C $(BUILDROOT)
 	(cd $(SPEEX_DIR)/;LDFLAGS="$$LDFLAGS -no-undefined" ./configure $(confflags) \
 	)
@@ -434,15 +409,15 @@ $(LIBDIR)/libx264.a: $(X264_DIR)/config.status
 	touch $@
 
 ### theora
-update-sources::
-	echo --- Getting theora ---
-	$(SVN) co $(THEORA_URL) $(SRCDIR)/$(THEORA_ARCHIVE) -r $(THEORA_VER)
+update-sources:: 
+	echo --- Getting theoras ...
+	$(WGET) -P $(SRCDIR) $(THEORA_URL)/$(THEORA_ARCHIVE)
 
-$(THEORA_DIR)/config.status: $(SRCDIR)/$(THEORA_ARCHIVE) $(LIBDIR)/libogg.a
-	rm -rf $(THEORA_DIR)
-	$(CP) -r $(SRCDIR)/$(THEORA_ARCHIVE) $(THEORA_DIR)
-	(cd $(THEORA_DIR)/; \
-	CC=$(REALCC) LD=$(LD) AR=$(AR) RANLIB=$(RANLIB) ./autogen.sh $(conftheora); )
+$(THEORA_DIR)/config.status: binaries $(SRCDIR)/$(THEORA_ARCHIVE)
+	rm -f $(THEORA_DIR)
+	unzip -u $(SRCDIR)/$(THEORA_ARCHIVE) -d $(BUILDROOT)
+	(cd $(THEORA_DIR)/;./configure $(conftheora) \
+	)
 	touch $@
 
 $(LIBDIR)/libtheora.a: $(THEORA_DIR)/config.status
@@ -459,6 +434,7 @@ update-sources::
 $(OPAL_DIR)/configure: binaries $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(LIBDIR)/libpt_s.a $(SRCDIR)/$(OPAL_ARCHIVE) $(BINDIR)/avcodec.dll $(LIBDIR)/libx264.a $(LIBDIR)/libtheora.a
 	rm -rf $(OPAL_DIR) $(LIBDIR)/libopal_s.a
 	$(CP) -r $(SRCDIR)/$(OPAL_ARCHIVE) $(OPAL_DIR)
+	touch $@
 
 $(OPAL_DIR)/config.status: binaries $(OPAL_DIR)/configure
 	rm -f $(LIBDIR)/libopal_s.a
@@ -467,12 +443,14 @@ ifeq ($(DEBUG),1)
 else
 	(cd $(OPAL_DIR)/; ./configure $(confopal)  )
 endif
+	touch $@
 
 $(LIBDIR)/libopal_s.a: binaries $(OPAL_DIR)/config.status
 	rm -f $(LIBDIR)/libopal_s.a
 	$(MAKE) $(MAKEOPTS) -C $(OPAL_DIR) 
 	$(MAKE) -C $(OPAL_DIR) install 
-	
+	touch $@
+
 ### libgtk
 update-sources::
 	echo --- Getting GTK2+ ...
@@ -480,61 +458,12 @@ update-sources::
 
 $(LIBDIR)/pkgconfig/gtk+-2.0.pc: $(SRCDIR)/$(GTK_ARCHIVE)
 	unzip -u $(SRCDIR)/$(GTK_ARCHIVE) -d $(BUILDROOT)
-	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' $(LIBDIR)/pkgconfig/g*.pc
-	touch $@
-
-### GTK Runtime 	 
-update-sources::
-	echo --- Getting GTK2+ Runtime Library ... 	 
-	$(WGET) -P $(SRCDIR) $(GTK_INSTALLER_URL)/$(GTK_BIN_EXE) 	 
-
-$(LIBDIR)/gtk+-$(GTK_BIN_VER)-setup.exe: $(SRCDIR)/$(GTK_BIN_EXE)
-	$(CP) $(SRCDIR)/$(GTK_BIN_EXE)  $(LIBDIR)/gtk+-$(GTK_BIN_VER)-setup.exe
-	touch $@
-
-### libglib
-update-sources::
-	echo --- Getting GLib ...
-	$(WGET) -P $(SRCDIR) $(GLIB_URL)/$(GLIB_ARCHIVE)
-
-$(LIBDIR)/pkgconfig/glib-2.0.pc: $(SRCDIR)/$(GLIB_ARCHIVE)
-	unzip -u $(SRCDIR)/$(GLIB_ARCHIVE) -d $(BUILDROOT)
 	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' $(LIBDIR)/pkgconfig/g*.pc $(BINDIR)/glib-gettextize
-	chmod +x $(BINDIR)/glib-gettextize
-	touch $@
-
-### atk
-update-sources:: 
-	echo --- Getting ATK ...
-	$(WGET) -P  $(SRCDIR) $(ATK_URL)/$(ATK_ARCHIVE)
-
-$(LIBDIR)/pkgconfig/atk-2.0.pc: $(SRCDIR)/$(ATK_ARCHIVE)
-	unzip -u $(SRCDIR)/$(ATK_ARCHIVE) -d $(BUILDROOT)
 	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' $(LIBDIR)/pkgconfig/atk*.pc
-	touch $@
+	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' $(LIBDIR)/pkgconfig/libpng*.pc
+	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' $(LIBDIR)/pkgconfig/pango*.pc
+	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' $(LIBDIR)/pkgconfig/cairo*.pc
 
-### libpng
-update-sources::
-	echo --- Getting PNG ...
-	$(WGET) -P $(SRCDIR) $(GNUWIN32_URL)/libpng-$(LIBPNG_VER)-bin.zip
-	$(WGET) -P $(SRCDIR) $(GNUWIN32_URL)/libpng-$(LIBPNG_VER)-dep.zip
-	$(WGET) -P $(SRCDIR) $(GNUWIN32_URL)/libpng-$(LIBPNG_VER)-lib.zip
-
-$(LIBDIR)/libpng.a: $(SRCDIR)/libpng-$(LIBPNG_VER)-bin.zip $(SRCDIR)/libpng-$(LIBPNG_VER)-dep.zip $(SRCDIR)/libpng-$(LIBPNG_VER)-lib.zip
-	unzip -u $(SRCDIR)/libpng-$(LIBPNG_VER)-bin.zip -d $(BUILDROOT)
-	unzip -u $(SRCDIR)/libpng-$(LIBPNG_VER)-dep.zip -d $(BUILDROOT)
-	unzip -u $(SRCDIR)/libpng-$(LIBPNG_VER)-lib.zip -d $(BUILDROOT)
-	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' lib/pkgconfig/libpng*.pc
-	ln -s -f libpng.pc lib/pkgconfig/libpng12.pc
-	touch $@
-
-### libintl
-update-sources::
-	echo --- Getting Gettext ...
-	$(WGET) -P $(SRCDIR) $(GETTEXT_URL)/$(GETTEXT_ARCHIVE)
-
-$(LIBDIR)/libintl.a: $(SRCDIR)/$(GETTEXT_ARCHIVE)
-	unzip -u $(SRCDIR)/$(GETTEXT_ARCHIVE) -d $(BUILDROOT)
 	touch $@
 
 ### libiconv
@@ -545,26 +474,6 @@ update-sources::
 $(LIBDIR)/libiconv.a: $(SRCDIR)/$(ICONV_ARCHIVE)
 	unzip -u $(SRCDIR)/$(ICONV_ARCHIVE) -d $(BUILDROOT)
 	$(RM) -f README.libiconv
-	touch $@
-
-### pango
-update-sources:: 
-	echo --- Getting Pango ...
-	$(WGET) -P $(SRCDIR) $(PANGO_URL)/$(PANGO_ARCHIVE)
-
-$(LIBDIR)/pkgconfig/pango32.pc: $(SRCDIR)/$(PANGO_ARCHIVE)
-	unzip -u $(SRCDIR)/$(PANGO_ARCHIVE) -d $(BUILDROOT)
-	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' $(LIBDIR)/pkgconfig/pango*.pc
-	touch $@
-
-### cairo
-update-sources::
-	echo --- Getting Cairo ...
-	$(WGET) -P $(SRCDIR) $(CAIRO_URL)/$(CAIRO_ARCHIVE)
-
-$(LIBDIR)/pkgconfig/cairo.pc: $(SRCDIR)/$(CAIRO_ARCHIVE)
-	unzip -u $(SRCDIR)/$(CAIRO_ARCHIVE) -d $(BUILDROOT)
-	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' $(LIBDIR)/pkgconfig/cairo*.pc
 	touch $@
 
 ### libxml2
@@ -594,37 +503,42 @@ $(EKIGA_DIR)/autogen.sh: binaries $(SRCDIR)/$(EKIGA_ARCHIVE)
 	touch $@
 
 $(EKIGA_DIR)/config.status: binaries $(EKIGA_DIR)/autogen.sh $(LIBDIR)/libpt_s.a $(LIBDIR)/libopal_s.a \
-	$(LIBDIR)/pkgconfig/gtk+-2.0.pc $(LIBDIR)/pkgconfig/atk-2.0.pc $(LIBDIR)/pkgconfig/glib-2.0.pc \
-	$(LIBDIR)/libpng.a $(LIBDIR)/pkgconfig/pango32.pc $(LIBDIR)/pkgconfig/cairo.pc $(LIBDIR)/libxml2.a \
-	$(LIBDIR)/libintl.a $(LIBDIR)/libiconv.a $(LIBDIR)/libsigc++.a
+	$(LIBDIR)/pkgconfig/gtk+-2.0.pc $(LIBDIR)/libxml2.a $(LIBDIR)/libiconv.a $(LIBDIR)/libsigc++.a
 	rm -f $(EKIGA_DIR)/src/ekiga.exe
 ifeq ($(DEBUG),1)
 	(cd $(EKIGA_DIR)/; ACLOCAL_FLAGS="-I $(BUILDROOT)/share/aclocal"; ./autogen.sh $(confekiga) --enable-debug )
 else
 	(cd $(EKIGA_DIR)/; ACLOCAL_FLAGS="-I $(BUILDROOT)/share/aclocal"; ./autogen.sh $(confekiga) )
 endif
+	touch $@
+
 $(EKIGA_DIR)/src/ekiga.exe: binaries $(EKIGA_DIR)/config.status
 	$(WINDRES) $(EKIGA_DIR)/ekiga.rc $(EKIGA_DIR)/ekiga_rc.o -I $(INCLUDEDIR)
 	$(MAKE) $(MAKEOPTS) -C $(EKIGA_DIR)
 	$(MAKE) $(MAKEOPTS) -C $(EKIGA_DIR)/help
+	touch $@
 
 $(TARGETDIR)/zips: binaries $(EKIGA_DIR)/src/ekiga.exe
 	-$(RM) -rf $(TARGETDIR)
-	
-	mkdir $(TARGETDIR)
 	make -C ekiga install
 	mkdir -p $(EKIGA_PREFIX)/plugins
+	unzip -u -j $(SRCDIR)/$(GTK_ARCHIVE) "bin/*.dll" -d $(EKIGA_PREFIX) ;\
+	unzip -u $(SRCDIR)/$(GTK_ARCHIVE) "etc/*" -d $(EKIGA_PREFIX) ;\
+	unzip -u $(SRCDIR)/$(GTK_ARCHIVE) "lib/*.dll" -d $(EKIGA_PREFIX) ;\
+	unzip -u $(SRCDIR)/$(GTK_ARCHIVE) "share/glib*" -d $(EKIGA_PREFIX) ; \
+	unzip -u $(SRCDIR)/$(GTK_ARCHIVE) "share/locale/*" -d $(EKIGA_PREFIX) ; \
+	unzip -u $(SRCDIR)/$(GTK_ARCHIVE) "share/themes/*" -d $(EKIGA_PREFIX) ; \
+	
 	for plugin in $(LIBDIR)/opal*/codecs/audio/*; do \
 	        install -m 755 $$plugin $(EKIGA_PREFIX)/plugins ;\
 	done
 	for plugin in $(LIBDIR)/opal*/codecs/video/*; do \
 	        install -m 755 $$plugin $(EKIGA_PREFIX)/plugins ;\
 	done
-	for lib in libexpat-1.dll liblber.dll libldap.dll libxml2-2.dll libspeex-1.dll; do \
+	for lib in libexpat-1.dll liblber.dll libldap.dll libxml2-2.dll libogg-0.dll libspeex-1.dll \
+	           libspeexdsp-1.dll libtheora-0.dll avcodec.dll; do \
 	        install -m 755 $(BINDIR)/$$lib $(EKIGA_PREFIX) ;\
 	done
-	install -m 755 $(BINDIR)/avcodec.dll $(EKIGA_PREFIX)
-	install -m 755 $(BINDIR)/libogg-0.dll $(EKIGA_PREFIX)
 	install -m 755  $(SIGC_DIR)/sigc++/.libs/libsigc-2.0-0.dll $(EKIGA_PREFIX)
 ifeq ($(DEBUG),0) 	 
 	$(STRIP) $(EKIGA_PREFIX)/*.dll
@@ -674,10 +588,10 @@ $(NSISPLUGIN_DIR)/Processes.dll: $(SRCDIR)/Processes.zip
 	unzip -u -j $(SRCDIR)/Processes.zip setup-processes/bin/Processes.dll -d $(NSISPLUGIN_DIR)
 	touch $@
 
-$(TARGETDIR)/$(EKIGA_INSTALLER): $(TARGETDIR)/zips $(LIBDIR)/gtk+-$(GTK_BIN_VER)-setup.exe $(NSISPLUGIN_DIR)/SystemLocal.dll $(NSISPLUGIN_DIR)/Processes.dll
+$(TARGETDIR)/$(EKIGA_INSTALLER): $(TARGETDIR)/zips  $(NSISPLUGIN_DIR)/SystemLocal.dll $(NSISPLUGIN_DIR)/Processes.dll
 	(makensis -DEKIGA_VERSION=$(EKIGA_VER) -DEKIGA_DIR=$(EKIGA_DIR) -DBUILDROOT=$(BUILDROOT) \
 	 -DINSTALLER_DIR=$(EKIGA_INSTALLER_DIR) -DLIB_DIR=$(LIBDIR) -DTARGET_DIR=$(TARGETDIR) \
-	 -DCROSS_COMPILING=true -DWITH_GTK=true -DGTK_VERSION=$(GTK_BIN_VER) \
+	 -DCROSS_COMPILING=true -DGTK_VERSION=undefined\
 	 -DNSISSYSTEMDIR=$(NSISSYTEM_DIR) -DNSISPLUGINDIR=$(NSISPLUGIN_DIR) \
 	 $(EKIGA_INSTALLER_DIR)/ekiga.nsi )
 	touch $@
