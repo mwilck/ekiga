@@ -1,3 +1,15 @@
+2008-10-19  Julien Puydt  <jpuydt@gnome.org>
+
+	* lib/engine/components/xcap/xcap-core.cpp:
+	* lib/engine/components/xcap/xcap-core.h: Got rid of the
+	XCAP::Core::ResultType enum in favor of a bool, fixing bug #555868.
+	* lib/engine/components/resource-list/rl-entry.cpp:
+	* lib/engine/components/resource-list/rl-entry.h:
+	* lib/engine/components/resource-list/rl-heap.cpp:
+	* lib/engine/components/resource-list/rl-heap.h:
+	* lib/engine/components/resource-list/rl-list.cpp: Made it cope with
+	the change.
+
 2008-10-17  Julien Puydt  <jpuydt@gnome.org>
 
 	* lib/engine/components/resource-list/rl-heap.h:
