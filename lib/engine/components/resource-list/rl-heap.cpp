@@ -246,23 +246,16 @@ RL::Heap::refresh ()
 }
 
 void
-RL::Heap::on_document_received (XCAP::Core::ResultType result,
+RL::Heap::on_document_received (bool error,
 				std::string value)
 {
-  switch (result) {
+  if (error) {
 
-  case XCAP::Core::SUCCESS:
+    // FIXME: do something
+    std::cout << "XCAP error: " << value << std::endl;
+  } else {
 
     parse_doc (value);
-    break;
-  case XCAP::Core::ERROR:
-
-    std::cout << "XCAP error: " << value << std::endl;
-    // FIXME: do something
-    break;
-  default:
-    // shouldn't happen
-    break;
   }
 }
 

@@ -168,10 +168,10 @@ RL::Entry::refresh ()
 }
 
 void
-RL::Entry::on_xcap_answer (XCAP::Core::ResultType result,
+RL::Entry::on_xcap_answer (bool error,
 			   std::string value)
 {
-  if (result != XCAP::Core::SUCCESS) {
+  if (error) {
 
     set_status (value);
 

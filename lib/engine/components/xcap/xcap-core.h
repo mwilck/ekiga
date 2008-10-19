@@ -55,10 +55,14 @@ namespace XCAP
 
     ~Core ();
 
-    typedef enum { SUCCESS, ERROR } ResultType;
-
+    /* The callbacks gets a boolean and a string :
+     * - if the boolean is false, there was no error and the string is the
+     * document you wanted ;
+     * - if the boolean is true, there was an error and the string is the
+     * error message.
+     */
     void read (gmref_ptr<Path>,
-	       sigc::slot<void,ResultType,std::string> callback);
+	       sigc::slot<void,bool,std::string> callback);
 
     /* implementation of the Ekiga::Service api */
 

@@ -53,7 +53,7 @@ public:
   ~CoreImpl ();
 
   void read (gmref_ptr<XCAP::Path> path,
-	     sigc::slot<void,XCAP::Core::ResultType,std::string> callback);
+	     sigc::slot<void,bool,std::string> callback);
 };
 
 /* soup callbacks */
@@ -62,7 +62,7 @@ struct cb_data
 {
   gmref_ptr<XCAP::Path> path;
   SoupSession* session;
-  sigc::slot<void,XCAP::Core::ResultType, std::string> callback;
+  sigc::slot<void,bool, std::string> callback;
 };
 
 static void
@@ -93,12 +93,12 @@ result_callback (G_GNUC_UNUSED SoupSession* session,
 
   case SOUP_STATUS_OK:
 
-    cb->callback (XCAP::Core::SUCCESS, message->response_body->data);
+    cb->callback (false, message->response_body->data);
     break;
 
   default:
 
-    cb->callback (XCAP::Core::ERROR, message->reason_phrase);
+    cb->callback (true, message->reason_phrase);
     break;
   }
 
@@ -118,7 +118,7 @@ XCAP::CoreImpl::~CoreImpl ()
 
 void
 XCAP::CoreImpl::read (gmref_ptr<Path> path,
-		      sigc::slot<void, XCAP::Core::ResultType, std::string> callback)
+		      sigc::slot<void, bool, std::string> callback)
 {
   SoupMessage* message = NULL;
   cb_data* data = NULL;
@@ -151,7 +151,7 @@ XCAP::Core::~Core ()
 
 void
 XCAP::Core::read (gmref_ptr<XCAP::Path> path,
-		  sigc::slot<void, XCAP::Core::ResultType,std::string> callback)
+		  sigc::slot<void, bool,std::string> callback)
 {
   std::cout << "XCAP trying to read " << path->to_uri () << std::endl;
   impl->read (path, callback);

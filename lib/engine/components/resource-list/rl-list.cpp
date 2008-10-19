@@ -67,7 +67,7 @@ public: // no need to make anything private
 
   void refresh ();
 
-  void on_xcap_answer (XCAP::Core::ResultType result,
+  void on_xcap_answer (bool error,
 		       std::string value);
 
   void parse ();
@@ -264,10 +264,10 @@ RL::ListImpl::refresh ()
 }
 
 void
-RL::ListImpl::on_xcap_answer (XCAP::Core::ResultType result,
+RL::ListImpl::on_xcap_answer (bool error,
 			      std::string value)
 {
-  if (result != XCAP::Core::SUCCESS) {
+  if (error) {
 
     // FIXME: how to properly tell the user?
 

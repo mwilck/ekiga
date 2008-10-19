@@ -105,7 +105,7 @@ namespace RL {
 
     void refresh ();
 
-    void on_document_received (XCAP::Core::ResultType result,
+    void on_document_received (bool error,
 			       std::string doc);
 
     void parse_doc (std::string doc);

@@ -101,7 +101,7 @@ namespace RL {
     std::string status;
 
     void refresh ();
-    void on_xcap_answer (XCAP::Core::ResultType,
+    void on_xcap_answer (bool error,
 			 std::string value);
     void parse ();
   };
