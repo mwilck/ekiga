@@ -37,23 +37,28 @@
 
 #include "form-request-simple.h"
 
-Ekiga::FormRequestSimple::FormRequestSimple ()
+Ekiga::FormRequestSimple::FormRequestSimple (sigc::slot<void, bool, Form&> callback_): callback(callback_)
 {
   // nothing
 }
 
 Ekiga::FormRequestSimple::~FormRequestSimple ()
 {
+  if (!answered)
+    cancel ();
 }
 
 void
 Ekiga::FormRequestSimple::cancel ()
 {
-  cancelled.emit ();
+  Ekiga::EmptyForm empty;
+  answered = true;
+  callback (false, empty);
 }
 
 void
 Ekiga::FormRequestSimple::submit (Ekiga::Form &form)
 {
-  submitted.emit (form);
+  answered = true;
+  callback (true, form);
 }

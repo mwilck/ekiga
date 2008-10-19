@@ -18,6 +18,7 @@ libgmframework_la_SOURCES = \
 	$(framework_dir)/form-builder.h \
 	$(framework_dir)/form-dumper.h \
 	$(framework_dir)/form.h \
+	$(framework_dir)/form.cpp \
 	$(framework_dir)/form-request.h \
 	$(framework_dir)/form-request-simple.h \
 	$(framework_dir)/robust-xml.h \

@@ -82,7 +82,8 @@ namespace RL {
 		   const std::string password,
 		   const std::string user);
 
-    void on_new_heap_form_submitted (Ekiga::Form& result);
+    void on_new_heap_form_submitted (bool submitted,
+				     Ekiga::Form& result);
 
     void on_presence_received (std::string uri,
 			       std::string presence);

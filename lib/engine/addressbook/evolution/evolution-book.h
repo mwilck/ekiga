@@ -93,7 +93,8 @@ namespace Evolution
     void set_econtact_attribute_value (EContact *contact,
 				       const std::string subtype,
 				       const std::string value) const;
-    void on_new_contact_form_submitted (Ekiga::Form &result);
+    void on_new_contact_form_submitted (bool submitted,
+					Ekiga::Form &result);
 
     Ekiga::ServiceCore &services;
     EBook *book;

@@ -69,7 +69,7 @@ void Opal::Bank::new_account (Account::Type t,
                               std::string username,
                               std::string password)
 {
-  Ekiga::FormRequestSimple request;
+  Ekiga::FormRequestSimple request(sigc::bind (sigc::mem_fun (this, &Opal::Bank::on_new_account_form_submitted), t));
 
   request.title (_("Edit account"));
   request.instructions (_("Please update the following fields."));
@@ -118,10 +118,8 @@ void Opal::Bank::new_account (Account::Type t,
   }
   request.boolean ("enabled", _("Enable Account"), true);
 
-  request.submitted.connect (sigc::bind (sigc::mem_fun (this, &Opal::Bank::on_new_account_form_submitted), t));
-
   if (!username.empty () && !password.empty ())
-    request.submitted.emit (request);
+    request.submit (request);
   else
     if (!questions.handle_request (&request)) {
 #ifdef __GNUC__
@@ -132,12 +130,16 @@ void Opal::Bank::new_account (Account::Type t,
 }
 
 
-void Opal::Bank::on_new_account_form_submitted (Ekiga::Form &result,
+void Opal::Bank::on_new_account_form_submitted (bool submitted,
+						Ekiga::Form &result,
                                                 Account::Type t)
 {
+  if (!submitted)
+    return;
+
   try {
 
-    Ekiga::FormRequestSimple request;
+    Ekiga::FormRequestSimple request(sigc::bind (sigc::mem_fun (this, &Opal::Bank::on_new_account_form_submitted) ,t));
 
     std::string error;
     std::string new_name = (t == Opal::Account::SIP || t == Opal::Account::H323) ? result.text ("name") : result.hidden ("name");
@@ -162,7 +164,6 @@ void Opal::Bank::on_new_account_form_submitted (Ekiga::Form &result,
 
     if (!error.empty ()) {
       request.error (error);
-      request.submitted.connect (sigc::bind (sigc::mem_fun (this, &Opal::Bank::on_new_account_form_submitted) ,t));
 
       if (!questions.handle_request (&request)) {
 #ifdef __GNUC__

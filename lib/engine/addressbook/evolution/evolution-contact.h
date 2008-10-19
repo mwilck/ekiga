@@ -104,11 +104,13 @@ namespace Evolution
 
     void edit_action ();
 
-    void on_edit_form_submitted (Ekiga::Form &result);
+    void on_edit_form_submitted (bool submitted,
+				 Ekiga::Form &result);
 
     void remove_action ();
 
-    void on_remove_form_submitted (Ekiga::Form &result);
+    void on_remove_form_submitted (bool submitted,
+				   Ekiga::Form &result);
   };
 
 /**

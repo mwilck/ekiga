@@ -320,7 +320,8 @@ Evolution::Contact::set_attribute_value (unsigned int attr_type,
 void
 Evolution::Contact::edit_action ()
 {
-  Ekiga::FormRequestSimple request;
+  Ekiga::FormRequestSimple request(sigc::mem_fun (this,
+						  &Evolution::Contact::on_edit_form_submitted));;
 
   request.title (_("Edit contact"));
 
@@ -342,9 +343,6 @@ Evolution::Contact::edit_action ()
     request.text ("pager", _("_Pager:"), pager_uri);
   }
 
-  request.submitted.connect (sigc::mem_fun (this,
-					    &Evolution::Contact::on_edit_form_submitted));
-
   if (!questions.handle_request (&request)) {
 
     // FIXME: better error reporting
@@ -356,8 +354,12 @@ Evolution::Contact::edit_action ()
 }
 
 void
-Evolution::Contact::on_edit_form_submitted (Ekiga::Form &result)
+Evolution::Contact::on_edit_form_submitted (bool submitted,
+					    Ekiga::Form &result)
 {
+  if (!submitted)
+    return;
+
   try {
 
     std::string name = result.text ("name");
@@ -386,7 +388,8 @@ Evolution::Contact::on_edit_form_submitted (Ekiga::Form &result)
 void
 Evolution::Contact::remove_action ()
 {
-  Ekiga::FormRequestSimple request;
+  Ekiga::FormRequestSimple request(sigc::mem_fun (this,
+						  &Evolution::Contact::on_remove_form_submitted));;
   gchar* instructions = NULL;
 
   request.title (_("Remove contact"));
@@ -394,9 +397,6 @@ Evolution::Contact::remove_action ()
   instructions = g_strdup_printf (_("Are you sure you want to remove %s from the addressbook?"), get_name ().c_str ());
   request.instructions (instructions);
   g_free (instructions);
-
-  request.submitted.connect (sigc::mem_fun (this,
-					    &Evolution::Contact::on_remove_form_submitted));
 
   if (!questions.handle_request (&request)) {
 
@@ -409,7 +409,9 @@ Evolution::Contact::remove_action ()
 }
 
 void
-Evolution::Contact::on_remove_form_submitted (Ekiga::Form& /*result*/)
+Evolution::Contact::on_remove_form_submitted (bool submitted,
+					      Ekiga::Form& /*result*/)
 {
-  remove ();
+  if (submitted)
+    remove ();
 }

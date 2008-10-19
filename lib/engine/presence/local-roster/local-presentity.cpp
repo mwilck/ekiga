@@ -213,7 +213,7 @@ void
 Local::Presentity::edit_presentity ()
 {
   gmref_ptr<Cluster> cluster = core.get ("local-cluster");
-  Ekiga::FormRequestSimple request;
+  Ekiga::FormRequestSimple request(sigc::mem_fun (this, &Local::Presentity::edit_presentity_form_submitted));
 
   std::set<std::string> all_groups = cluster->existing_groups ();
 
@@ -225,8 +225,6 @@ Local::Presentity::edit_presentity ()
 
   request.editable_set ("groups", _("Choose groups:"),
 			groups, all_groups);
-
-  request.submitted.connect (sigc::mem_fun (this, &Local::Presentity::edit_presentity_form_submitted));
 
   if (!questions.handle_request (&request)) {
 
@@ -240,8 +238,12 @@ Local::Presentity::edit_presentity ()
 
 
 void
-Local::Presentity::edit_presentity_form_submitted (Ekiga::Form &result)
+Local::Presentity::edit_presentity_form_submitted (bool submitted,
+						   Ekiga::Form &result)
 {
+  if (!submitted)
+    return;
+
   try {
 
     /* we first fetch all data before making any change, so if there's

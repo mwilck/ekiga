@@ -113,7 +113,7 @@ namespace OPENLDAP
     sigc::signal<void> trigger_saving;
 
     /* public for access from C */
-    void on_sasl_form_submitted (Ekiga::Form &);
+    void on_sasl_form_submitted (bool, Ekiga::Form &);
     Ekiga::FormBuilder *saslform;
 
   private:
@@ -127,7 +127,8 @@ namespace OPENLDAP
     void parse_uri();
 
     void edit ();
-    void on_edit_form_submitted (Ekiga::Form &);
+    void on_edit_form_submitted (bool submitted,
+				 Ekiga::Form &form);
 
     Ekiga::ServiceCore &core;
     xmlNodePtr node;

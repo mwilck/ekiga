@@ -282,7 +282,8 @@ Evolution::Book::refresh ()
 void
 Evolution::Book::new_contact_action ()
 {
-  Ekiga::FormRequestSimple request;
+  Ekiga::FormRequestSimple request(sigc::mem_fun (this,
+						  &Evolution::Book::on_new_contact_form_submitted));
 
   request.title (_("New contact"));
 
@@ -294,9 +295,6 @@ Evolution::Book::new_contact_action ()
   request.text ("work", _("_Office phone:"), "");
   request.text ("cell", _("_Cell phone:"), "");
   request.text ("pager", _("_Pager:"), "");
-
-  request.submitted.connect (sigc::mem_fun (this,
-					    &Evolution::Book::on_new_contact_form_submitted));
 
   if (!questions.handle_request (&request)) {
 
@@ -325,8 +323,12 @@ Evolution::Book::set_econtact_attribute_value (EContact *econtact,
 }
 
 void
-Evolution::Book::on_new_contact_form_submitted (Ekiga::Form &result)
+Evolution::Book::on_new_contact_form_submitted (bool submitted,
+						Ekiga::Form &result)
 {
+  if ( !submitted)
+    return;
+
   try {
     EContact *econtact = NULL;
 

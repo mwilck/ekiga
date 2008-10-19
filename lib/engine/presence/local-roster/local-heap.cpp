@@ -173,7 +173,7 @@ Local::Heap::new_presentity (const std::string name,
   if (!has_presentity_with_uri (uri)) {
 
     gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
-    Ekiga::FormRequestSimple request;
+    Ekiga::FormRequestSimple request(sigc::mem_fun (this, &Local::Heap::new_presentity_form_submitted));
     std::set<std::string> groups = existing_groups ();
 
     request.title (_("Add to local roster"));
@@ -196,8 +196,6 @@ Local::Heap::new_presentity (const std::string name,
     request.editable_set ("groups",
 			  _("Put contact in groups:"),
 			  std::set<std::string>(), groups);
-
-    request.submitted.connect (sigc::mem_fun (this, &Local::Heap::new_presentity_form_submitted));
 
     if (!questions.handle_request (&request)) {
 
@@ -274,8 +272,12 @@ Local::Heap::save () const
 
 
 void
-Local::Heap::new_presentity_form_submitted (Ekiga::Form &result)
+Local::Heap::new_presentity_form_submitted (bool submitted,
+					    Ekiga::Form &result)
 {
+  if (!submitted)
+    return;
+
   try {
 
     gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
@@ -296,14 +298,14 @@ Local::Heap::new_presentity_form_submitted (Ekiga::Form &result)
       save ();
     } else {
 
-      Ekiga::FormRequestSimple request;
+      Ekiga::FormRequestSimple request(sigc::mem_fun (this, &Local::Heap::new_presentity_form_submitted));
 
       result.visit (request);
       if (!presence_core->is_supported_uri (uri))
 	request.error (_("You supplied an unsupported address"));
       else
 	request.error (_("You already have a contact with this address!"));
-      request.submitted.connect (sigc::mem_fun (this, &Local::Heap::new_presentity_form_submitted));
+
       if (!questions.handle_request (&request)) {
 
 	// FIXME: better error handling
@@ -325,13 +327,11 @@ Local::Heap::new_presentity_form_submitted (Ekiga::Form &result)
 void
 Local::Heap::on_rename_group (std::string name)
 {
-  Ekiga::FormRequestSimple request;
+  Ekiga::FormRequestSimple request(sigc::bind<0>(sigc::mem_fun (this, &Local::Heap::rename_group_form_submitted), name));
 
   request.title (_("Rename group"));
   request.instructions (_("Please edit this group name"));
   request.text ("name", _("Name:"), name);
-
-  request.submitted.connect (sigc::bind<0>(sigc::mem_fun (this, &Local::Heap::rename_group_form_submitted), name));
 
   if (!questions.handle_request (&request)) {
 
@@ -345,8 +345,12 @@ Local::Heap::on_rename_group (std::string name)
 
 void
 Local::Heap::rename_group_form_submitted (std::string old_name,
+					  bool submitted,
 					  Ekiga::Form& result)
 {
+  if (!submitted)
+    return;
+
   try {
     const std::string new_name = result.text ("name");
 

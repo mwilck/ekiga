@@ -110,7 +110,8 @@ public:
     sigc::signal<void> trigger_saving;
  
 private:
-    void on_edit_form_submitted (Ekiga::Form &result);
+    void on_edit_form_submitted (bool submitted,
+				 Ekiga::Form &result);
     void on_consult (const std::string url);
     
     // Triggered for our own event

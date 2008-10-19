@@ -177,7 +177,8 @@ namespace Local
      * It does error checking and adds the Presentity to the
      * Heap if everything is valid.
      */
-    void new_presentity_form_submitted (Ekiga::Form &form);
+    void new_presentity_form_submitted (bool submitted,
+					Ekiga::Form &form);
 
     /** Triggered when the user decides to rename a group.
      * @param The group name
@@ -187,6 +188,7 @@ namespace Local
     /**
      */
     void rename_group_form_submitted (std::string old_name,
+				      bool submitted,
 				      Ekiga::Form& result);
 
     Ekiga::ServiceCore &core;

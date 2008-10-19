@@ -158,7 +158,7 @@ RL::Cluster::new_heap (const std::string name,
 		       const std::string password,
 		       const std::string user)
 {
-  Ekiga::FormRequestSimple request;
+  Ekiga::FormRequestSimple request(sigc::mem_fun (this, &RL::Cluster::on_new_heap_form_submitted));
 
   request.title (_("Add new resource-list"));
   request.instructions (_("Please fill in this form to add a new "
@@ -168,8 +168,6 @@ RL::Cluster::new_heap (const std::string name,
   request.text ("username", _("Username:"), username);
   request.private_text ("password", _("Password:"), password);
   request.text ("user", _("User:"), user);
-
-  request.submitted.connect (sigc::mem_fun (this, &RL::Cluster::on_new_heap_form_submitted));
 
   if (!questions.handle_request (&request)) {
 
@@ -182,8 +180,12 @@ RL::Cluster::new_heap (const std::string name,
 }
 
 void
-RL::Cluster::on_new_heap_form_submitted (Ekiga::Form& result)
+RL::Cluster::on_new_heap_form_submitted (bool submitted,
+					 Ekiga::Form& result)
 {
+  if (!submitted)
+    return;
+
   try {
 
     const std::string name = result.text ("name");

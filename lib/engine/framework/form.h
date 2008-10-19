@@ -63,7 +63,7 @@ namespace Ekiga
       const char* what() const throw() { return "form field not found"; }
 
       const std::string name;
-      
+
     };
 
     virtual ~Form () {}
@@ -90,6 +90,33 @@ namespace Ekiga
 /**
  * @}
  */
+
+  class EmptyForm: public Form
+  {
+  public:
+
+    EmptyForm ();
+
+    ~EmptyForm ();
+
+    void visit (FormVisitor &visitor) const;
+
+    const std::string hidden (const std::string name) const;
+
+    bool boolean (const std::string name) const;
+
+    const std::string text (const std::string name) const;
+
+    const std::string private_text (const std::string name) const;
+
+    const std::string multi_text (const std::string name) const;
+
+    const std::string single_choice (const std::string name) const;
+
+    const std::set<std::string> multiple_choice (const std::string name) const;
+
+    const std::set<std::string> editable_set (const std::string name) const;
+  };
 
 };
 

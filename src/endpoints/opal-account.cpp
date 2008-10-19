@@ -343,7 +343,7 @@ bool Opal::Account::populate_menu (Ekiga::MenuBuilder &builder)
 
 void Opal::Account::edit ()
 {
-  Ekiga::FormRequestSimple request;
+  Ekiga::FormRequestSimple request(sigc::mem_fun (this, &Opal::Account::on_edit_form_submitted));
   std::stringstream str;
 
   str << get_timeout ();
@@ -367,8 +367,6 @@ void Opal::Account::edit ()
   request.text ("timeout", _("Timeout:"), str.str ());
   request.boolean ("enabled", _("Enable Account"), enabled);
 
-  request.submitted.connect (sigc::mem_fun (this, &Opal::Account::on_edit_form_submitted));
-
   if (!questions.handle_request (&request)) {
 
     // FIXME: better error reporting
@@ -380,13 +378,14 @@ void Opal::Account::edit ()
 }
 
 
-void Opal::Account::on_edit_form_submitted (Ekiga::Form &result)
+void Opal::Account::on_edit_form_submitted (bool submitted,
+					    Ekiga::Form &result)
 {
+  if (!submitted)
+    return;
+
   try {
 
-    Ekiga::FormRequestSimple request;
-
-    std::string error;
     std::string new_name = result.text ("name");
     std::string new_host = result.text ("host");
     std::string new_user = result.text ("user");
@@ -396,8 +395,7 @@ void Opal::Account::on_edit_form_submitted (Ekiga::Form &result)
     std::string new_password = result.private_text ("password");
     bool new_enabled = result.boolean ("enabled");
     unsigned new_timeout = atoi (result.text ("timeout").c_str ());
-
-    result.visit (request);
+    std::string error;
 
     if (new_name.empty ()) 
       error = _("You did not supply a name for that account.");
@@ -409,8 +407,10 @@ void Opal::Account::on_edit_form_submitted (Ekiga::Form &result)
       error = _("The timeout should have a bigger value.");
 
     if (!error.empty ()) {
+
+      Ekiga::FormRequestSimple request(sigc::mem_fun (this, &Opal::Account::on_edit_form_submitted));
+      result.visit (request);
       request.error (error);
-      request.submitted.connect (sigc::mem_fun (this, &Opal::Account::on_edit_form_submitted));
 
       if (!questions.handle_request (&request)) {
 #ifdef __GNUC__

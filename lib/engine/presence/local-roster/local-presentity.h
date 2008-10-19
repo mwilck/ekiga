@@ -167,7 +167,8 @@ namespace Local
      * private 'trigger_saving' signal to trigger saving
      * from the Local::Heap.
      */
-    void edit_presentity_form_submitted (Ekiga::Form &result);
+    void edit_presentity_form_submitted (bool submitted,
+					 Ekiga::Form &result);
 
 
     Ekiga::ServiceCore &core;

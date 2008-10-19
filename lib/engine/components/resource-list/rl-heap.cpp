@@ -368,7 +368,9 @@ RL::Heap::on_entry_removed (gmref_ptr<Entry> entry)
 void
 RL::Heap::edit ()
 {
-  Ekiga::FormRequestSimple request;
+  Ekiga::FormRequestSimple request(sigc::mem_fun (this,
+						  &RL::Heap::on_edit_form_submitted));
+
   std::string name_str;
   std::string root_str;
   std::string username_str;
@@ -407,8 +409,6 @@ RL::Heap::edit ()
   request.text ("username", _("Server username"), username_str);
   request.private_text ("password", _("Server password"), password_str);
 
-  request.submitted.connect (sigc::mem_fun (this,
-					    &RL::Heap::on_edit_form_submitted));
   if (!questions.handle_request (&request)) {
 
     // FIXME: better error reporting
@@ -420,8 +420,12 @@ RL::Heap::edit ()
 }
 
 void
-RL::Heap::on_edit_form_submitted (Ekiga::Form& result)
+RL::Heap::on_edit_form_submitted (bool submitted,
+				  Ekiga::Form& result)
 {
+  if (!submitted)
+    return;
+
   try {
 
     std::string name_str = result.text ("name");

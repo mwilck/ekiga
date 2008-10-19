@@ -71,7 +71,9 @@ public:
                       std::string password = "");
 
 private:
-    void on_new_account_form_submitted (Ekiga::Form & form, Account::Type t);
+    void on_new_account_form_submitted (bool submitted,
+					Ekiga::Form& form,
+					Account::Type t);
 
     void add (Account::Type t,
               std::string name, 

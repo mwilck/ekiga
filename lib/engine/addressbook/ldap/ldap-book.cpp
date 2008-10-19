@@ -464,8 +464,12 @@ OPENLDAP::Book::get_node ()
 }
 
 void
-OPENLDAP::Book::on_sasl_form_submitted (Ekiga::Form &result)
+OPENLDAP::Book::on_sasl_form_submitted (bool submitted,
+					Ekiga::Form &result)
 {
+  if (!submitted)
+    return;
+
   result.visit (*saslform);
 }
 
@@ -532,7 +536,8 @@ book_saslinter(LDAP *ld, unsigned flags __attribute__((unused)),
 
   /* If there are missing items, try to get them all in one dialog */
   if (nprompts) {
-    Ekiga::FormRequestSimple request;
+    Ekiga::FormRequestSimple request(sigc::mem_fun (ctx->book,
+						    &OPENLDAP::Book::on_sasl_form_submitted));
     Ekiga::FormBuilder result;
     std::string prompt;
     std::string ctxt = "";
@@ -599,8 +604,6 @@ book_saslinter(LDAP *ld, unsigned flags __attribute__((unused)),
 
     /* Save a pointer for storing the form result */
     ctx->book->saslform = &result;
-    request.submitted.connect (sigc::mem_fun (ctx->book,
-					    &OPENLDAP::Book::on_sasl_form_submitted));
     if (!ctx->book->questions.handle_request (&request)) {
       return LDAP_LOCAL_ERROR;
     }
@@ -909,8 +912,9 @@ OPENLDAP::Book::refresh_result ()
 }
 
 void
-OPENLDAP::BookForm (Ekiga::FormRequestSimple &request, struct BookInfo &info,
-  std::string title)
+OPENLDAP::BookForm (Ekiga::FormRequestSimple &request,
+		    struct BookInfo &info,
+		    std::string title)
 {
   std::string callAttr = "";
 
@@ -969,12 +973,10 @@ OPENLDAP::BookForm (Ekiga::FormRequestSimple &request, struct BookInfo &info,
 void
 OPENLDAP::Book::edit ()
 {
-  Ekiga::FormRequestSimple request;
+  Ekiga::FormRequestSimple request(sigc::mem_fun (this,
+						  &OPENLDAP::Book::on_edit_form_submitted));
 
   OPENLDAP::BookForm (request, bookinfo, std::string(_("Edit LDAP directory")));
-
-  request.submitted.connect (sigc::mem_fun (this,
-					    &OPENLDAP::Book::on_edit_form_submitted));
 
   if (!questions.handle_request (&request)) {
 
@@ -987,8 +989,9 @@ OPENLDAP::Book::edit ()
 }
 
 int
-OPENLDAP::BookFormInfo (Ekiga::Form &result, struct BookInfo &bookinfo,
-  std::string &errmsg)
+OPENLDAP::BookFormInfo (Ekiga::Form &result,
+			struct BookInfo &bookinfo,
+			std::string &errmsg)
 {
   LDAPURLDesc *url_base = NULL, *url_host = NULL;
   char *url_str;
@@ -1080,17 +1083,20 @@ OPENLDAP::BookFormInfo (Ekiga::Form &result, struct BookInfo &bookinfo,
 }
 
 void
-OPENLDAP::Book::on_edit_form_submitted (Ekiga::Form &result)
+OPENLDAP::Book::on_edit_form_submitted (bool submitted,
+					Ekiga::Form &result)
 {
+  if (!submitted)
+    return;
+
   try {
     std::string errmsg;
     if (OPENLDAP::BookFormInfo (result, bookinfo, errmsg)) {
-      Ekiga::FormRequestSimple request;
+      Ekiga::FormRequestSimple request(sigc::mem_fun (this,
+						      &OPENLDAP::Book::on_edit_form_submitted));
 
       result.visit (request);
       request.error (errmsg);
-      request.submitted.connect (sigc::mem_fun (this,
-					    &OPENLDAP::Book::on_edit_form_submitted));
 
       if (!questions.handle_request (&request)) {
 

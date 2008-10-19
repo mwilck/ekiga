@@ -54,7 +54,12 @@ namespace Ekiga
   {
   public:
 
-    FormRequestSimple ();
+    /* the callbacks gets two informations :
+     * - a boolean, which is true if something was submitted, and false if
+     * the request was cancelled ;
+     * - a form, which contains the submitted answer (or is empty otherwise)
+     */
+    FormRequestSimple (sigc::slot<void, bool, Form&> callback_);
 
     ~FormRequestSimple ();
 
@@ -62,8 +67,10 @@ namespace Ekiga
 
     void submit (Form &);
 
-    sigc::signal<void> cancelled;
-    sigc::signal<void, Form &> submitted;
+  private:
+
+    bool answered;
+    sigc::slot<void,bool,Form&> callback;
 
   };
 
