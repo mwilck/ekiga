@@ -1,5 +1,34 @@
 2008-10-19  Julien Puydt  <jpuydt@gnome.org>
 
+	* lib/engine/framework/Makefile.am:
+	* lib/engine/framework/form-request-simple.cpp:
+	* lib/engine/framework/form-request-simple.h:
+	* lib/engine/framework/form.cpp:
+	* lib/engine/framework/form.h: Fixed bug #556867, by making
+	Ekiga::FormRequestSimple always return ; added Ekiga::EmptyForm too.
+	* lib/engine/addressbook/evolution/evolution-book.cpp:
+	* lib/engine/addressbook/evolution/evolution-book.h:
+	* lib/engine/addressbook/evolution/evolution-contact.cpp:
+	* lib/engine/addressbook/evolution/evolution-contact.h:
+	* lib/engine/addressbook/ldap/ldap-book.cpp:
+	* lib/engine/addressbook/ldap/ldap-book.h:
+	* lib/engine/addressbook/ldap/ldap-source.cpp:
+	* lib/engine/addressbook/ldap/ldap-source.h:
+	* lib/engine/components/resource-list/rl-cluster.cpp:
+	* lib/engine/components/resource-list/rl-cluster.h:
+	* lib/engine/components/resource-list/rl-heap.cpp:
+	* lib/engine/components/resource-list/rl-heap.h:
+	* lib/engine/presence/local-roster/local-heap.cpp:
+	* lib/engine/presence/local-roster/local-heap.h:
+	* lib/engine/presence/local-roster/local-presentity.cpp:
+	* lib/engine/presence/local-roster/local-presentity.h:
+	* src/endpoints/opal-account.cpp:
+	* src/endpoints/opal-account.h:
+	* src/endpoints/opal-bank.cpp:
+	* src/endpoints/opal-bank.h: Made it cope with the change.
+
+2008-10-19  Julien Puydt  <jpuydt@gnome.org>
+
 	* lib/engine/components/xcap/xcap-core.cpp:
 	* lib/engine/components/xcap/xcap-core.h: Got rid of the
 	XCAP::Core::ResultType enum in favor of a bool, fixing bug #555868.
