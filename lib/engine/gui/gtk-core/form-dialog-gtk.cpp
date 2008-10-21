@@ -1,8 +1,8 @@
 
 /*
  * Ekiga -- A VoIP and Video-Conferencing application
- * Copyright (C) 2000-2007 Damien Sandras
-
+ * Copyright (C) 2000-2008 Damien Sandras
+ *
  * This program is free software; you can  redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or (at
@@ -28,7 +28,7 @@
  *                         form-dialog.cpp  -  description
  *                         ------------------------------------------
  *   begin                : written in 2007 by Julien Puydt
- *   copyright            : (c) 2007 by Julien Puydt
+ *   copyright            : (c) 2007-2008 by Julien Puydt
  *   description          : implementation of a gtk+ representation of forms
  *
  */
@@ -103,9 +103,9 @@ editable_set_choice_toggled_cb (GtkCellRendererToggle *cell,
 /** Called when a link in a Form is clicked.
  * Open the URI.
  *
- * @param: The URI to open. 
+ * @param: The URI to open.
  */
-static void 
+static void
 link_clicked_cb (GtkWidget *widget,
                  gpointer data);
 
@@ -186,8 +186,10 @@ public:
 
   BooleanSubmitter (const std::string _name,
 		    const std::string _description,
+		    bool _advanced,
 		    GtkWidget *_widget): name(_name),
 					 description(_description),
+					 advanced(_advanced),
 					 widget(_widget)
   { }
 
@@ -197,13 +199,15 @@ public:
   void submit (Ekiga::FormBuilder &builder)
   {
     builder.boolean (name, description,
-		     gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget)));
+		     gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget)),
+		     advanced);
   }
 
 private:
 
   const std::string name;
   const std::string description;
+  bool advanced;
   GtkWidget *widget;
 };
 
@@ -214,8 +218,10 @@ public:
 
   TextSubmitter (const std::string _name,
 		 const std::string _description,
+		 bool _advanced,
 		 GtkWidget *_widget): name(_name),
 				      description(_description),
+				      advanced(_advanced),
 				      widget(_widget)
   { }
 
@@ -225,13 +231,15 @@ public:
   void submit (Ekiga::FormBuilder &builder)
   {
     builder.text (name, description,
-		  gtk_entry_get_text (GTK_ENTRY (widget)));
+		  gtk_entry_get_text (GTK_ENTRY (widget)),
+		  advanced);
   }
 
 private:
 
   const std::string name;
   const std::string description;
+  bool advanced;
   GtkWidget *widget;
 };
 
@@ -242,8 +250,10 @@ public:
 
   PrivateTextSubmitter (const std::string _name,
 			const std::string _description,
+			bool _advanced,
 			GtkWidget *_widget): name(_name),
 					     description(_description),
+					     advanced(_advanced),
 					     widget(_widget)
   { }
 
@@ -253,13 +263,15 @@ public:
   void submit (Ekiga::FormBuilder &builder)
   {
     builder.private_text (name, description,
-			  gtk_entry_get_text (GTK_ENTRY (widget)));
+			  gtk_entry_get_text (GTK_ENTRY (widget)),
+			  advanced);
   }
 
 private:
 
   const std::string name;
   const std::string description;
+  bool advanced;
   GtkWidget *widget;
 };
 
@@ -270,8 +282,10 @@ public:
 
   MultiTextSubmitter (const std::string _name,
 		      const std::string _description,
+		      bool _advanced,
 		      GtkTextBuffer *_buffer): name(_name),
 					       description(_description),
+					       advanced(_advanced),
 					       buffer(_buffer)
   { }
 
@@ -287,13 +301,15 @@ public:
     gtk_text_buffer_get_end_iter (buffer, &end);
     builder.multi_text (name, description,
 			gtk_text_buffer_get_text (buffer,
-						  &start, &end, FALSE));
+						  &start, &end, FALSE),
+			advanced);
   }
 
 private:
 
   const std::string name;
   const std::string description;
+  bool advanced;
   GtkTextBuffer *buffer;
 };
 
@@ -305,9 +321,11 @@ public:
   SingleChoiceSubmitter (const std::string _name,
 			 const std::string _description,
 			 const std::map<std::string, std::string> _choices,
+			 bool _advanced,
 			 GtkWidget *_combo): name(_name),
 					     description(_description),
 					     choices(_choices),
+					     advanced(_advanced),
 					     combo(_combo)
   { }
 
@@ -332,7 +350,8 @@ public:
     gtk_tree_model_get (model, &iter, COLUMN_VALUE, &cvalue, -1);
 
     builder.single_choice (name, description,
-			   std::string (cvalue), choices);
+			   std::string (cvalue), choices,
+			   advanced);
 
     g_free (cvalue);
   }
@@ -342,6 +361,7 @@ private:
   const std::string name;
   const std::string description;
   const std::map<std::string, std::string> choices;
+  bool advanced;
   GtkWidget *combo;
 };
 
@@ -353,9 +373,10 @@ public:
   MultipleChoiceSubmitter (const std::string _name,
 			   const std::string _description,
 			   const std::map<std::string, std::string> _choices,
+			   bool _advanced,
 			   GtkWidget *_tree_view):
     name(_name), description(_description),
-    choices(_choices), tree_view (_tree_view)
+    choices(_choices), advanced(_advanced), tree_view (_tree_view)
   { }
 
   ~MultipleChoiceSubmitter ()
@@ -403,7 +424,7 @@ public:
       } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (model), &iter));
     }
 
-    builder.multiple_choice (name, description, values, choices);
+    builder.multiple_choice (name, description, values, choices, advanced);
   }
 
 private:
@@ -411,6 +432,7 @@ private:
   const std::string name;
   const std::string description;
   std::map<std::string, std::string> choices;
+  bool advanced;
   GtkWidget *tree_view;
 };
 
@@ -421,8 +443,9 @@ public:
 
   EditableSetSubmitter (const std::string _name,
 			const std::string _description,
+			bool _advanced,
 			GtkWidget *_tree_view):
-    name(_name), description(_description), tree_view(_tree_view)
+    name(_name), description(_description), advanced(_advanced), tree_view(_tree_view)
   { }
 
   ~EditableSetSubmitter ()
@@ -466,13 +489,14 @@ public:
       } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (model), &iter));
     }
 
-    builder.editable_set (name, description, values, proposed_values);
+    builder.editable_set (name, description, values, proposed_values, advanced);
   }
 
 private:
 
   const std::string name;
   const std::string description;
+  bool advanced;
   GtkWidget *tree_view;
 };
 
@@ -587,7 +611,7 @@ multiple_choice_choice_toggled_cb (G_GNUC_UNUSED GtkCellRendererToggle *cell,
 }
 
 
-static void 
+static void
 link_clicked_cb (GtkWidget * /*widget*/,
                  gpointer data)
 {
@@ -751,7 +775,8 @@ FormDialog::hidden (const std::string name,
 void
 FormDialog::boolean (const std::string name,
 		     const std::string description,
-		     bool value)
+		     bool value,
+		     bool advanced)
 {
   GtkWidget *widget = NULL;
   BooleanSubmitter *submitter = NULL;
@@ -764,14 +789,15 @@ FormDialog::boolean (const std::string name,
   gtk_table_attach_defaults (GTK_TABLE (fields), widget,
 			     0, 2, rows -1, rows);
 
-  submitter = new BooleanSubmitter (name, description, widget);
+  submitter = new BooleanSubmitter (name, description, advanced, widget);
   submitters.push_back (submitter);
 }
 
 void
 FormDialog::text (const std::string name,
 		  const std::string description,
-		  const std::string value)
+		  const std::string value,
+		  bool advanced)
 {
   GtkWidget *label = NULL;
   GtkWidget *widget = NULL;
@@ -806,7 +832,7 @@ FormDialog::text (const std::string name,
                     (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
                     0, 0);
 
-  submitter = new TextSubmitter (name, description, widget);
+  submitter = new TextSubmitter (name, description, advanced, widget);
   submitters.push_back (submitter);
 }
 
@@ -814,7 +840,8 @@ FormDialog::text (const std::string name,
 void
 FormDialog::private_text (const std::string name,
 			  const std::string description,
-			  const std::string value)
+			  const std::string value,
+			  bool advanced)
 {
   GtkWidget *label = NULL;
   GtkWidget *widget = NULL;
@@ -850,7 +877,7 @@ FormDialog::private_text (const std::string name,
                     (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
                     0, 0);
 
-  submitter = new PrivateTextSubmitter (name, description, widget);
+  submitter = new PrivateTextSubmitter (name, description, advanced, widget);
   submitters.push_back (submitter);
 }
 
@@ -858,7 +885,8 @@ FormDialog::private_text (const std::string name,
 void
 FormDialog::multi_text (const std::string name,
 			const std::string description,
-			const std::string value)
+			const std::string value,
+			bool advanced)
 {
   GtkWidget *label = NULL;
   GtkWidget *scroller = NULL;
@@ -888,7 +916,7 @@ FormDialog::multi_text (const std::string name,
   gtk_table_attach_defaults (GTK_TABLE (fields), scroller,
 			     0, 2, rows -1, rows);
 
-  submitter = new MultiTextSubmitter (name, description, buffer);
+  submitter = new MultiTextSubmitter (name, description, advanced, buffer);
   submitters.push_back (submitter);
 }
 
@@ -897,7 +925,8 @@ void
 FormDialog::single_choice (const std::string name,
 			   const std::string description,
 			   const std::string value,
-			   const std::map<std::string, std::string> choices)
+			   const std::map<std::string, std::string> choices,
+			   bool advanced)
 {
   GtkWidget *label = NULL;
   gchar* label_text = NULL;
@@ -952,7 +981,8 @@ FormDialog::single_choice (const std::string name,
 		    (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
 		    0,0);
 
-  submitter = new SingleChoiceSubmitter (name, description, choices, widget);
+  submitter = new SingleChoiceSubmitter (name, description, choices,
+					 advanced, widget);
   submitters.push_back (submitter);
 }
 
@@ -961,7 +991,8 @@ void
 FormDialog::multiple_choice (const std::string name,
 			     const std::string description,
 			     const std::set<std::string> values,
-			     const std::map<std::string, std::string> choices)
+			     const std::map<std::string, std::string> choices,
+			     bool advanced)
 {
   GtkWidget *label = NULL;
   GtkWidget *scroll = NULL;
@@ -1050,7 +1081,8 @@ FormDialog::multiple_choice (const std::string name,
                     (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
                     0, 0);
 
-  submitter = new MultipleChoiceSubmitter (name, description, choices, tree_view);
+  submitter = new MultipleChoiceSubmitter (name, description,
+					   choices, advanced, tree_view);
   submitters.push_back (submitter);
 }
 
@@ -1058,7 +1090,8 @@ void
 FormDialog::editable_set (const std::string name,
 			  const std::string description,
 			  const std::set<std::string> values,
-			  const std::set<std::string> proposed_values)
+			  const std::set<std::string> proposed_values,
+			  bool advanced)
 {
   GtkWidget *label = NULL;
   GtkWidget *scroll = NULL;
@@ -1181,7 +1214,7 @@ FormDialog::editable_set (const std::string name,
 		    (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
 		    0, 0);
 
-  submitter = new EditableSetSubmitter (name, description, tree_view);
+  submitter = new EditableSetSubmitter (name, description, advanced, tree_view);
   submitters.push_back (submitter);
 }
 

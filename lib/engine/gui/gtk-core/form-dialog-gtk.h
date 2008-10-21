@@ -78,34 +78,41 @@ public:
 
   void boolean (const std::string name,
 		const std::string description,
-		bool value);
+		bool value,
+		bool advanced);
 
   void text (const std::string name,
 	     const std::string description,
-	     const std::string value);
+	     const std::string value,
+	     bool advanced);
 
   void private_text (const std::string name,
 		     const std::string description,
-		     const std::string value);
+		     const std::string value,
+		     bool advanced);
 
   void multi_text (const std::string name,
 		   const std::string description,
-		   const std::string value);
+		   const std::string value,
+		   bool advanced);
 
   void single_choice (const std::string name,
 		      const std::string description,
 		      const std::string value,
-		      const std::map<std::string, std::string> choices);
+		      const std::map<std::string, std::string> choices,
+		      bool advanced);
 
   void multiple_choice (const std::string name,
 			const std::string description,
 			const std::set<std::string> values,
-			const std::map<std::string, std::string> choices);
+			const std::map<std::string, std::string> choices,
+			bool advanced);
 
   void editable_set (const std::string name,
 		     const std::string description,
 		     const std::set<std::string> values,
-		     const std::set<std::string> proposed_values);
+		     const std::set<std::string> proposed_values,
+		     bool advanced);
 
   /* those are public only to be called from C code */
 
