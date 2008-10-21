@@ -54,14 +54,52 @@ public:
 
   void read (gmref_ptr<XCAP::Path> path,
 	     sigc::slot<void,bool,std::string> callback);
+
+  /* public to be used by C callbacks */
+
+
+  /* The memory management is a little complex, here is how it works :
+   *
+   * W
+   *
+   * There are two kinds of live SOUP sessions :
+   * - the old sessions : we have to keep them around because we can't unref
+   * a SOUP session from result_callback, so we need to keep it
+   * around for later ;
+   * - the pending ones : we keep them around to be able to cancel them if
+   * we destroy the core (and cancelling calls result_callback with an
+   * error -- the sessions get pushed from pending to old) ;
+   *
+   * So the problem of freeing the SOUP sessions becomes one is reduced to
+   * that of freeing the old sessions :
+   * - in the read method, we check this old_sessions list and unref any old
+   * session we find : ok ;
+   * - in the destructor, we check the old_sesssions list and unref any old
+   * session we find.
+   *
+   * That means if you launch a thousand reads fast then nothing,
+   * we will end up with a thousand SOUP sessions in old_sessions. But any
+   * subsequent read will clear them all.
+   *
+   * If you launch a thousand reads not fast enough, the last reads will
+   * already find the first sessions and get rid of them.
+   *
+   * In short this code guarantees :
+   * - the number of old sessions can't really grow if we have reads from time
+   * to time  ;
+   * - all the sessions will get freed eventually -- no leak!
+   */
+  std::list<SoupSession*> pending_sessions;
+  std::list<SoupSession*> old_sessions;
+  void clear_old_sessions ();
 };
 
 /* soup callbacks */
 
 struct cb_data
 {
+  XCAP::CoreImpl* core;
   gmref_ptr<XCAP::Path> path;
-  SoupSession* session;
   sigc::slot<void,bool, std::string> callback;
 };
 
@@ -83,7 +121,7 @@ authenticate_callback (G_GNUC_UNUSED SoupSession* session,
 }
 
 static void
-result_callback (G_GNUC_UNUSED SoupSession* session,
+result_callback (SoupSession* session,
 		 SoupMessage* message,
 		 gpointer data)
 {
@@ -102,7 +140,9 @@ result_callback (G_GNUC_UNUSED SoupSession* session,
     break;
   }
 
-  g_object_unref (cb->session);
+  cb->core->pending_sessions.remove (session);
+  cb->core->old_sessions.push_back (session);
+
   delete cb;
 }
 
@@ -114,27 +154,55 @@ XCAP::CoreImpl::CoreImpl ()
 
 XCAP::CoreImpl::~CoreImpl ()
 {
+  /* we loop like this because aborting calls result_callback, and hence
+   * makes the current iterator invalid : it gets pushed to the old sessions
+   * list!
+   */
+  while (pending_sessions.begin () != pending_sessions.end ())
+    soup_session_abort (*pending_sessions.begin ());
+
+  /* now all pending sessions have been made old, so we can do that: */
+  clear_old_sessions ();
+}
+
+void
+XCAP::CoreImpl::clear_old_sessions ()
+{
+  for (std::list<SoupSession*>::iterator iter = old_sessions.begin ();
+       iter != old_sessions.end ();
+       ++iter) {
+
+    soup_session_abort (*iter); // needed ?
+    g_object_unref (*iter);
+  }
+  old_sessions.clear ();
 }
 
 void
 XCAP::CoreImpl::read (gmref_ptr<Path> path,
 		      sigc::slot<void, bool, std::string> callback)
 {
+  SoupSession* session = NULL;
   SoupMessage* message = NULL;
   cb_data* data = NULL;
 
+  clear_old_sessions ();
+
+  /* all of this is freed in the result callback */
+  session = soup_session_async_new_with_options ("user-agent", "ekiga", NULL);
   message = soup_message_new ("GET", path->to_uri ().c_str ());
   data = new cb_data;
+  data->core = this;
   data->path = path;
-  data->session = soup_session_async_new_with_options ("user-agent", "ekiga",
-						       NULL);
   data->callback = callback;
 
-  g_signal_connect (data->session, "authenticate",
+  g_signal_connect (session, "authenticate",
 		    G_CALLBACK (authenticate_callback), data);
 
-  soup_session_queue_message (data->session, message,
+  soup_session_queue_message (session, message,
 			      result_callback, data);
+
+  pending_sessions.push_back (session);
 }
 
 
