@@ -79,7 +79,8 @@ Ekiga::FormDumper::hidden (const std::string name,
 void
 Ekiga::FormDumper::boolean (const std::string name,
 			    const std::string description,
-			    bool value)
+			    bool value,
+			    bool advanced)
 {
   out << "Boolean field " << name
       << " (default value: ";
@@ -88,48 +89,62 @@ Ekiga::FormDumper::boolean (const std::string name,
   else
     out << "false";
   out << "):" << std::endl
-      << description << std::endl;
+      << description
+      << (advanced?"[advanced]":"")
+      << std::endl;
 }
 
 void
 Ekiga::FormDumper::text (const std::string name,
 			 const std::string description,
-			 const std::string value)
+			 const std::string value,
+			 bool advanced)
 {
   out << "Text field " << name
       << " (default value: " << value << "): " << std::endl
-      << description << std::endl;
+      << description
+      << (advanced?"[advanced]":"")
+      << std::endl;
 }
 
 void
 Ekiga::FormDumper::private_text (const std::string name,
 				 const std::string description,
-				 const std::string value)
+				 const std::string value,
+				 bool advanced)
 {
   out << "Private text field " << name
       << " (default value: " << value << "): " << std::endl
-      << description << std::endl;
+      << description
+      << (advanced?"[advanced]":"")
+      << std::endl;
 }
 
 void
 Ekiga::FormDumper::multi_text (const std::string name,
 			       const std::string description,
-			       const std::string value)
+			       const std::string value,
+			       bool advanced)
 {
   out << "Multiline text field " << name
       << " (default value: " << value << "): " << std::endl
-      << description << std::endl;
+      << description
+      << (advanced?"[advanced]":"")
+      << std::endl;
 }
 
 void
 Ekiga::FormDumper::single_choice (const std::string name,
 				  const std::string description,
 				  const std::string value,
-				  const std::map<std::string, std::string> choices)
+				  const std::map<std::string, std::string> choices,
+				  bool advanced)
 {
   out << "Single choice list " << name
       << " (default choice: " << value << "): " << std::endl
-      << description << std::endl
+      << description
+      << (advanced?"[advanced]":"")
+      << std::endl
       << "where choices are :" << std::endl;
   for (std::map<std::string, std::string>::const_iterator iter = choices.begin ();
        iter != choices.end ();
@@ -141,10 +156,13 @@ void
 Ekiga::FormDumper::multiple_choice (const std::string name,
 				    const std::string description,
 				    const std::set<std::string> values,
-				    const std::map<std::string, std::string> choices)
+				    const std::map<std::string, std::string> choices,
+				    bool advanced)
 {
   out << "Multiple choice list " << name << ":" << std::endl
-      << description << std::endl
+      << description
+      << (advanced?"[advanced]":"")
+      << std::endl
       << "where choices are :" << std::endl;
   for (std::map<std::string, std::string>::const_iterator iter = choices.begin ();
        iter != choices.end ();
@@ -163,10 +181,12 @@ void
 Ekiga::FormDumper::editable_set (const std::string name,
 				 const std::string description,
 				 const std::set<std::string> values,
-				 const std::set<std::string> proposed_values)
+				 const std::set<std::string> proposed_values,
+				 bool advanced)
 {
   out << "Editable list " << name << ":" << std::endl
-      << description << std::endl
+      << description
+      << (advanced?"[advanced]":"")
       << "where current set is :" << std::endl;
   for (std::set<std::string>::const_iterator iter = values.begin ();
        iter != values.end ();

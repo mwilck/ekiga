@@ -90,34 +90,41 @@ namespace Ekiga
 
     void boolean (const std::string name,
 		  const std::string description,
-		  bool value);
+		  bool value,
+		  bool advanced = false);
 
     void text (const std::string text,
 	       const std::string description,
-	       const std::string value);
+	       const std::string value,
+	       bool advanced = false);
 
     void private_text (const std::string text,
 		       const std::string description,
-		       const std::string value);
+		       const std::string value,
+		       bool advanced = false);
 
     void multi_text (const std::string text,
 		     const std::string description,
-		     const std::string value);
+		     const std::string value,
+		     bool advanced = false);
 
     void single_choice (const std::string name,
 			const std::string description,
 			const std::string value,
-			const std::map<std::string, std::string> choices);
+			const std::map<std::string, std::string> choices,
+			bool advanced = false);
 
     void multiple_choice (const std::string name,
 			  const std::string description,
 			  const std::set<std::string> values,
-			  const std::map<std::string, std::string> choices);
+			  const std::map<std::string, std::string> choices,
+			  bool advanced = false);
 
     void editable_set (const std::string name,
 		       const std::string description,
 		       const std::set<std::string> values,
-		       const std::set<std::string> proposed_values);
+		       const std::set<std::string> proposed_values,
+		       bool advanced = false);
   private:
 
     struct HiddenField
@@ -128,47 +135,54 @@ namespace Ekiga
 
       const std::string name;
       const std::string value;
+      bool advanced;
     };
 
     struct BooleanField
     {
       BooleanField (const std::string _name,
 		    const std::string _description,
-		    bool _value): name(_name), description(_description),
-				  value(_value)
+		    bool _value,
+		    bool _advanced): name(_name), description(_description),
+				     value(_value), advanced(_advanced)
       {}
 
       const std::string name;
       const std::string description;
       bool value;
+      bool advanced;
     };
 
     struct TextField
     {
       TextField (const std::string _name,
 		 const std::string _description,
-		 const std::string _value): name(_name),
-					    description(_description),
-					    value(_value)
+		 const std::string _value,
+		 bool _advanced): name(_name),
+				  description(_description),
+				  value(_value), advanced(_advanced)
       {}
 
       const std::string name;
       const std::string description;
       const std::string value;
+      bool advanced;
     };
 
     struct MultiTextField
     {
       MultiTextField (const std::string _name,
 		      const std::string _description,
-		      const std::string _value): name(_name),
-						 description(_description),
-						 value(_value)
+		      const std::string _value,
+		      bool _advanced): name(_name),
+				       description(_description),
+				       value(_value), advanced(_advanced)
       {}
 
       const std::string name;
       const std::string description;
       const std::string value;
+      bool advanced;
     };
 
     struct SingleChoiceField
@@ -176,15 +190,17 @@ namespace Ekiga
       SingleChoiceField (const std::string _name,
 			 const std::string _description,
 			 const std::string _value,
-			 const std::map<std::string, std::string> _choices):
+			 const std::map<std::string, std::string> _choices,
+			 bool _advanced):
 	name(_name), description(_description),
-	value(_value), choices(_choices)
+	value(_value), choices(_choices), advanced(_advanced)
       {}
 
       const std::string name;
       const std::string description;
       const std::string value;
       const std::map<std::string, std::string> choices;
+      bool advanced;
     };
 
 
@@ -193,15 +209,17 @@ namespace Ekiga
       MultipleChoiceField (const std::string _name,
 			   const std::string _description,
 			   const std::set<std::string> _values,
-			   const std::map<std::string, std::string> _choices):
+			   const std::map<std::string, std::string> _choices,
+			   bool _advanced):
 	name(_name), description(_description),
-	values(_values), choices(_choices)
+	values(_values), choices(_choices), advanced(_advanced)
       {}
 
       const std::string name;
       const std::string description;
       const std::set<std::string> values;
       const std::map<std::string, std::string> choices;
+      bool advanced;
     };
 
     struct EditableSetField
@@ -209,15 +227,17 @@ namespace Ekiga
       EditableSetField (const std::string _name,
 			const std::string _description,
 			const std::set<std::string> _values,
-			const std::set<std::string> _proposed_values):
+			const std::set<std::string> _proposed_values,
+			bool _advanced):
 	name(_name), description(_description),
-	values(_values), proposed_values(_proposed_values)
+	values(_values), proposed_values(_proposed_values), advanced(_advanced)
       {}
 
       const std::string name;
       const std::string description;
       const std::set<std::string> values;
       const std::set<std::string> proposed_values;
+      bool advanced;
     };
 
     typedef enum {

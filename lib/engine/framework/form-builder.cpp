@@ -74,13 +74,15 @@ Ekiga::FormBuilder::visit (Ekiga::FormVisitor &visitor) const
 
       visitor.boolean (iter_bool->name,
 		       iter_bool->description,
-		       iter_bool->value);
+		       iter_bool->value,
+		       iter_bool->advanced);
       iter_bool++;
       break;
 
     case TEXT:
 
-      visitor.text (iter_text->name, iter_text->description, iter_text->value);
+      visitor.text (iter_text->name, iter_text->description,
+		    iter_text->value, iter_text->advanced);
       iter_text++;
       break;
 
@@ -88,7 +90,8 @@ Ekiga::FormBuilder::visit (Ekiga::FormVisitor &visitor) const
 
       visitor.private_text (iter_private_text->name,
 			    iter_private_text->description,
-			    iter_private_text->value);
+			    iter_private_text->value,
+			    iter_private_text->advanced);
       iter_private_text++;
       break;
 
@@ -96,7 +99,8 @@ Ekiga::FormBuilder::visit (Ekiga::FormVisitor &visitor) const
 
       visitor.multi_text (iter_multi_text->name,
 			  iter_multi_text->description,
-			  iter_multi_text->value);
+			  iter_multi_text->value,
+			  iter_multi_text->advanced);
       iter_multi_text++;
       break;
 
@@ -105,7 +109,8 @@ Ekiga::FormBuilder::visit (Ekiga::FormVisitor &visitor) const
       visitor.single_choice (iter_single_choice->name,
 			     iter_single_choice->description,
 			     iter_single_choice->value,
-			     iter_single_choice->choices);
+			     iter_single_choice->choices,
+			     iter_single_choice->advanced);
       iter_single_choice++;
       break;
 
@@ -114,7 +119,8 @@ Ekiga::FormBuilder::visit (Ekiga::FormVisitor &visitor) const
       visitor.multiple_choice (iter_multiple_choice->name,
 			       iter_multiple_choice->description,
 			       iter_multiple_choice->values,
-			       iter_multiple_choice->choices);
+			       iter_multiple_choice->choices,
+			       iter_multiple_choice->advanced);
       iter_multiple_choice++;
       break;
 
@@ -123,7 +129,8 @@ Ekiga::FormBuilder::visit (Ekiga::FormVisitor &visitor) const
       visitor.editable_set (iter_editable_set->name,
 			    iter_editable_set->description,
 			    iter_editable_set->values,
-			    iter_editable_set->proposed_values);
+			    iter_editable_set->proposed_values,
+			    iter_editable_set->advanced);
       iter_editable_set++;
       break;
 
@@ -265,36 +272,40 @@ Ekiga::FormBuilder::hidden (const std::string name,
 void
 Ekiga::FormBuilder::boolean (const std::string name,
 			     const std::string description,
-			     bool value)
+			     bool value,
+			     bool advanced)
 {
-  booleans.push_back (BooleanField (name, description, value));
+  booleans.push_back (BooleanField (name, description, value, advanced));
   ordering.push_back (BOOLEAN);
 }
 
 void
 Ekiga::FormBuilder::text (const std::string name,
 			  const std::string description,
-			  const std::string value)
+			  const std::string value,
+			  bool advanced)
 {
-  texts.push_back (TextField (name, description, value));
+  texts.push_back (TextField (name, description, value, advanced));
   ordering.push_back (TEXT);
 }
 
 void
 Ekiga::FormBuilder::private_text (const std::string name,
 				  const std::string description,
-				  const std::string value)
+				  const std::string value,
+				  bool advanced)
 {
-  private_texts.push_back (TextField (name, description, value));
+  private_texts.push_back (TextField (name, description, value, advanced));
   ordering.push_back (PRIVATE_TEXT);
 }
 
 void
 Ekiga::FormBuilder::multi_text (const std::string name,
 				const std::string description,
-				const std::string value)
+				const std::string value,
+				bool advanced)
 {
-  multi_texts.push_back (MultiTextField (name, description, value));
+  multi_texts.push_back (MultiTextField (name, description, value, advanced));
   ordering.push_back (MULTI_TEXT);
 }
 
@@ -302,9 +313,11 @@ void
 Ekiga::FormBuilder::single_choice (const std::string name,
 				   const std::string description,
 				   const std::string value,
-				   const std::map<std::string, std::string> choices)
+				   const std::map<std::string, std::string> choices,
+				   bool advanced)
 {
-  single_choices.push_back (SingleChoiceField (name, description, value, choices));
+  single_choices.push_back (SingleChoiceField (name, description,
+					       value, choices, advanced));
   ordering.push_back (SINGLE_CHOICE);
 }
 
@@ -312,10 +325,11 @@ void
 Ekiga::FormBuilder::multiple_choice (const std::string name,
 				     const std::string description,
 				     const std::set<std::string> values,
-				     const std::map<std::string, std::string> choices)
+				     const std::map<std::string, std::string> choices,
+				     bool advanced)
 {
   multiple_choices.push_back (MultipleChoiceField (name, description,
-						   values, choices));
+						   values, choices, advanced));
   ordering.push_back (MULTIPLE_CHOICE);
 }
 
@@ -323,9 +337,10 @@ void
 Ekiga::FormBuilder::editable_set (const std::string name,
 				  const std::string description,
 				  const std::set<std::string> values,
-				  const std::set<std::string> proposed_values)
+				  const std::set<std::string> proposed_values,
+				  bool advanced)
 {
-  editable_sets.push_back (EditableSetField (name, description,
-					     values, proposed_values));
+  editable_sets.push_back (EditableSetField (name, description, values,
+					     proposed_values, advanced));
   ordering.push_back (EDITABLE_SET);
 }

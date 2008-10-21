@@ -61,26 +61,30 @@ namespace Ekiga
     virtual void link (const std::string link,
                        const std::string uri) = 0;
 
-    virtual void error (const std::string error) = 0;
+    virtual void error (const std::string msg) = 0;
 
     virtual void hidden (const std::string name,
 			 const std::string value) = 0;
 
     virtual void boolean (const std::string name,
 			  const std::string description,
-			  bool value) = 0;
+			  bool value,
+			  bool advanced) = 0;
 
     virtual void text (const std::string name,
 		       const std::string description,
-		       const std::string value) = 0;
+		       const std::string value,
+		       bool advanced) = 0;
 
     virtual void private_text (const std::string name,
 			       const std::string description,
-			       const std::string value) = 0;
+			       const std::string value,
+			       bool advanced) = 0;
 
     virtual void multi_text (const std::string name,
 			     const std::string description,
-			     const std::string value) = 0;
+			     const std::string value,
+			     bool advanced) = 0;
 
     virtual void single_choice (const std::string name,
 				const std::string description,
@@ -88,7 +92,8 @@ namespace Ekiga
 				/* pairs (value, name),
 				 * where value is internal and name shown to
 				 * the user (hence translated) */
-				const std::map<std::string, std::string> choices) = 0;
+				const std::map<std::string,std::string> choices,
+				bool advanced) = 0;
 
     virtual void multiple_choice (const std::string name,
 				  const std::string description,
@@ -96,12 +101,14 @@ namespace Ekiga
 				  /* pairs (value, name),
 				   * where value is internal and name shown to
 				   * the user (hence translated) */
-				  const std::map<std::string, std::string> choices) = 0;
+				  const std::map<std::string,std::string> choices,
+				  bool advanced) = 0;
 
     virtual void editable_set (const std::string name,
 			       const std::string description,
 			       const std::set<std::string> values,
-			       const std::set<std::string> proposed_values) = 0;
+			       const std::set<std::string> proposed_values,
+			       bool advanced) = 0;
   };
 
 /**
