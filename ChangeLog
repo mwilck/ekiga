@@ -1,5 +1,16 @@
 2008-10-21  Julien Puydt  <jpuydt@gnome.org>
 
+	* lib/engine/framework/form-builder.cpp:
+	* lib/engine/framework/form-builder.h:
+	* lib/engine/framework/form-dumper.cpp:
+	* lib/engine/framework/form-dumper.h:
+	* lib/engine/framework/form-visitor.h:
+	* lib/engine/gui/gtk-core/form-dialog-gtk.cpp:
+	* lib/engine/gui/gtk-core/form-dialog-gtk.h: Added support for advanced
+	form fields (fixing bug #556324).
+
+2008-10-21  Julien Puydt  <jpuydt@gnome.org>
+
 	* lib/engine/components/xcap/xcap-core.cpp: Fixed XCAP::Core crashes
 	(bug #557128)... was much harder than anticipated, but required no api
 	change.
