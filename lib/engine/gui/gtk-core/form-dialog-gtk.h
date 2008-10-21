@@ -122,13 +122,18 @@ public:
 
 private:
 
+  void grow_fields (bool advanced);
+
   Ekiga::FormRequest &request;
   GtkWidget *window;
   GtkWidget *preamble;
   GtkWidget *fields;
+  GtkWidget* expander;
+  GtkWidget* advanced_fields;
   GtkSizeGroup *labels_group;
   GtkSizeGroup *options_group;
   unsigned int rows;
+  unsigned int advanced_rows;
   std::list<Submitter *> submitters;
 };
 

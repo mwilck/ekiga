@@ -33,6 +33,8 @@
  *
  */
 
+#include "config.h"
+
 #include <algorithm>
 #include <cstring>
 #include <iostream>
@@ -625,6 +627,7 @@ FormDialog::FormDialog (Ekiga::FormRequest &_request,
   GtkWidget *vbox = NULL;
 
   rows = 0;
+  advanced_rows = 0;
 
   window = gtk_dialog_new_with_buttons (NULL, GTK_WINDOW (NULL),
                                         GTK_DIALOG_MODAL,
@@ -641,6 +644,7 @@ FormDialog::FormDialog (Ekiga::FormRequest &_request,
   vbox = gtk_vbox_new (FALSE, 0);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 6);
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG (window)->vbox), vbox, FALSE, FALSE, 0);
+  gtk_widget_show (vbox);
 
   preamble = gtk_vbox_new (FALSE, 0);
   gtk_box_pack_start (GTK_BOX (vbox), preamble, FALSE, FALSE, 0);
@@ -649,6 +653,13 @@ FormDialog::FormDialog (Ekiga::FormRequest &_request,
   gtk_table_set_row_spacings (GTK_TABLE (fields), 2);
   gtk_table_set_col_spacings (GTK_TABLE (fields), 2);
   gtk_box_pack_start (GTK_BOX (vbox), fields, FALSE, FALSE, 3);
+
+  advanced_fields = gtk_table_new (0, 2, FALSE);
+  gtk_table_set_row_spacings (GTK_TABLE (advanced_fields), 2);
+  gtk_table_set_col_spacings (GTK_TABLE (advanced_fields), 2);
+  expander = gtk_expander_new (_("Advanced"));
+  gtk_container_add (GTK_CONTAINER (expander), advanced_fields);
+  gtk_box_pack_start (GTK_BOX (vbox), expander, FALSE, FALSE, 3);
 
   labels_group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
   options_group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
@@ -671,7 +682,11 @@ FormDialog::~FormDialog ()
 void
 FormDialog::run ()
 {
-  gtk_widget_show_all (window);
+  gtk_widget_show_all (preamble);
+  gtk_widget_show_all (fields);
+  if (advanced_rows > 0)
+    gtk_widget_show_all (expander);
+  gtk_widget_show (window);
   switch (gtk_dialog_run (GTK_DIALOG (window))) {
 
   case GTK_RESPONSE_ACCEPT:
@@ -781,13 +796,19 @@ FormDialog::boolean (const std::string name,
   GtkWidget *widget = NULL;
   BooleanSubmitter *submitter = NULL;
 
-  rows++;
-  gtk_table_resize (GTK_TABLE (fields), rows, 2);
+  grow_fields (advanced);
 
   widget = gtk_check_button_new_with_label (description.c_str ());
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget), value);
-  gtk_table_attach_defaults (GTK_TABLE (fields), widget,
-			     0, 2, rows -1, rows);
+  if (advanced) {
+
+    gtk_table_attach_defaults (GTK_TABLE (advanced_fields), widget,
+			       0, 2, advanced_rows -1, advanced_rows);
+  } else {
+
+    gtk_table_attach_defaults (GTK_TABLE (fields), widget,
+			       0, 2, rows -1, rows);
+  }
 
   submitter = new BooleanSubmitter (name, description, advanced, widget);
   submitters.push_back (submitter);
@@ -805,8 +826,7 @@ FormDialog::text (const std::string name,
 
   gchar *label_text = NULL;
 
-  rows++;
-  gtk_table_resize (GTK_TABLE (fields), rows, 2);
+  grow_fields (advanced);
 
   label = gtk_label_new (NULL);
   gtk_size_group_add_widget (labels_group, label);
@@ -821,16 +841,31 @@ FormDialog::text (const std::string name,
   gtk_size_group_add_widget (options_group, widget);
   gtk_entry_set_text (GTK_ENTRY (widget), value.c_str ());
 
-  gtk_table_attach (GTK_TABLE (fields), label,
-                    0, 1, rows - 1, rows,
-                    (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
-                    (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
-                    0, 0);
-  gtk_table_attach (GTK_TABLE (fields), widget,
-		    1, 2, rows - 1, rows,
-                    (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
-                    (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
-                    0, 0);
+  if (advanced) {
+
+    gtk_table_attach (GTK_TABLE (advanced_fields), label,
+		      0, 1, advanced_rows - 1, advanced_rows,
+		      (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
+		      (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
+		      0, 0);
+    gtk_table_attach (GTK_TABLE (advanced_fields), widget,
+		      1, 2, advanced_rows - 1, advanced_rows,
+		      (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
+		      (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
+		      0, 0);
+  } else {
+
+    gtk_table_attach (GTK_TABLE (fields), label,
+		      0, 1, rows - 1, rows,
+		      (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
+		      (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
+		      0, 0);
+    gtk_table_attach (GTK_TABLE (fields), widget,
+		      1, 2, rows - 1, rows,
+		      (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
+		      (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
+		      0, 0);
+  }
 
   submitter = new TextSubmitter (name, description, advanced, widget);
   submitters.push_back (submitter);
@@ -849,8 +884,7 @@ FormDialog::private_text (const std::string name,
 
   gchar *label_text = NULL;
 
-  rows++;
-  gtk_table_resize (GTK_TABLE (fields), rows, 2);
+  grow_fields (advanced);
 
   label = gtk_label_new (NULL);
   gtk_size_group_add_widget (labels_group, label);
@@ -866,16 +900,31 @@ FormDialog::private_text (const std::string name,
   gtk_size_group_add_widget (options_group, widget);
   gtk_entry_set_text (GTK_ENTRY (widget), value.c_str ());
 
-  gtk_table_attach (GTK_TABLE (fields), label,
-                    0, 1, rows - 1, rows,
-                    (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
-                    (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
-                    0, 0);
-  gtk_table_attach (GTK_TABLE (fields), widget,
-		    1, 2, rows - 1, rows,
-                    (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
-                    (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
-                    0, 0);
+  if (advanced) {
+
+    gtk_table_attach (GTK_TABLE (advanced_fields), label,
+		      0, 1, advanced_rows - 1, advanced_rows,
+		      (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
+		      (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
+		      0, 0);
+    gtk_table_attach (GTK_TABLE (advanced_fields), widget,
+		      1, 2, advanced_rows - 1, advanced_rows,
+		      (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
+		      (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
+		      0, 0);
+  } else {
+
+    gtk_table_attach (GTK_TABLE (fields), label,
+		      0, 1, rows - 1, rows,
+		      (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
+		      (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
+		      0, 0);
+    gtk_table_attach (GTK_TABLE (fields), widget,
+		      1, 2, rows - 1, rows,
+		      (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
+		      (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
+		      0, 0);
+  }
 
   submitter = new PrivateTextSubmitter (name, description, advanced, widget);
   submitters.push_back (submitter);
@@ -894,16 +943,22 @@ FormDialog::multi_text (const std::string name,
   GtkTextBuffer *buffer = NULL;
   MultiTextSubmitter *submitter = NULL;
 
-  rows++;
-  gtk_table_resize (GTK_TABLE (fields), rows, 2);
+  grow_fields (advanced);
 
   label = gtk_label_new_with_mnemonic (description.c_str ());
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
   gtk_label_set_line_wrap_mode (GTK_LABEL (label), PANGO_WRAP_WORD);
-  gtk_table_attach_defaults (GTK_TABLE (fields), label,
-			     0, 2, rows -1, rows);
-  rows++;
-  gtk_table_resize (GTK_TABLE (fields), rows, 2);
+  if (advanced) {
+
+    gtk_table_attach_defaults (GTK_TABLE (advanced_fields), label,
+			       0, 2, advanced_rows -1, advanced_rows);
+  } else {
+
+    gtk_table_attach_defaults (GTK_TABLE (fields), label,
+			       0, 2, rows -1, rows);
+  }
+
+  grow_fields (advanced);
 
   widget = gtk_text_view_new ();
   buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (widget));
@@ -913,8 +968,16 @@ FormDialog::multi_text (const std::string name,
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scroller),
 				  GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
   gtk_container_add (GTK_CONTAINER (scroller), widget);
-  gtk_table_attach_defaults (GTK_TABLE (fields), scroller,
-			     0, 2, rows -1, rows);
+
+  if (advanced) {
+
+    gtk_table_attach_defaults (GTK_TABLE (advanced_fields), scroller,
+			       0, 2, advanced_rows -1, advanced_rows);
+  } else {
+
+    gtk_table_attach_defaults (GTK_TABLE (fields), scroller,
+			       0, 2, rows -1, rows);
+  }
 
   submitter = new MultiTextSubmitter (name, description, advanced, buffer);
   submitters.push_back (submitter);
@@ -936,8 +999,7 @@ FormDialog::single_choice (const std::string name,
   GtkTreeIter iter;
   SingleChoiceSubmitter *submitter = NULL;
 
-  rows++;
-  gtk_table_resize (GTK_TABLE (fields), rows, 2);
+  grow_fields (advanced);
 
   label = gtk_label_new (NULL);
   gtk_size_group_add_widget (labels_group, label);
@@ -970,16 +1032,31 @@ FormDialog::single_choice (const std::string name,
       gtk_combo_box_set_active_iter (GTK_COMBO_BOX (widget), &iter);
   }
 
-  gtk_table_attach (GTK_TABLE (fields), label,
-		    0, 1, rows -1, rows,
-		    (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
-		    (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
-		    0,0);
-  gtk_table_attach (GTK_TABLE (fields), widget,
-		    1, 2, rows -1, rows,
-		    (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
-		    (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
-		    0,0);
+  if (advanced) {
+
+    gtk_table_attach (GTK_TABLE (advanced_fields), label,
+		      0, 1, advanced_rows -1, advanced_rows,
+		      (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
+		      (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
+		      0,0);
+    gtk_table_attach (GTK_TABLE (advanced_fields), widget,
+		      1, 2, advanced_rows -1, advanced_rows,
+		      (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
+		      (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
+		      0,0);
+  } else {
+
+    gtk_table_attach (GTK_TABLE (fields), label,
+		      0, 1, rows -1, rows,
+		      (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
+		      (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
+		      0,0);
+    gtk_table_attach (GTK_TABLE (fields), widget,
+		      1, 2, rows -1, rows,
+		      (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
+		      (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
+		      0,0);
+  }
 
   submitter = new SingleChoiceSubmitter (name, description, choices,
 					 advanced, widget);
@@ -1008,8 +1085,7 @@ FormDialog::multiple_choice (const std::string name,
 
   MultipleChoiceSubmitter *submitter = NULL;
 
-  rows++;
-  gtk_table_resize (GTK_TABLE (fields), rows, 2);
+  grow_fields (advanced);
 
   /* The label */
   label = gtk_label_new (NULL);
@@ -1017,12 +1093,6 @@ FormDialog::multiple_choice (const std::string name,
   label_text = g_strdup_printf ("<b>%s</b>", description.c_str());
   gtk_label_set_markup_with_mnemonic (GTK_LABEL (label), label_text);
   g_free (label_text);
-
-  gtk_table_attach (GTK_TABLE (fields), label,
-                    0, 2, rows - 1, rows,
-                    (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
-                    (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
-                    0, 0);
 
   /* The GtkListStore containing the choices */
   tree_view = gtk_tree_view_new ();
@@ -1073,13 +1143,31 @@ FormDialog::multiple_choice (const std::string name,
                         -1);
   }
 
-  rows++;
-  gtk_table_resize (GTK_TABLE (fields), rows, 2);
-  gtk_table_attach (GTK_TABLE (fields), frame,
-                    0, 2, rows - 1, rows,
-                    (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
-                    (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
-                    0, 0);
+  if (advanced) {
+
+    gtk_table_attach (GTK_TABLE (advanced_fields), label,
+		      0, 2, advanced_rows - 1, advanced_rows,
+		      (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
+		      (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
+		      0, 0);
+    gtk_table_attach (GTK_TABLE (advanced_fields), frame,
+		      0, 2, advanced_rows - 1, advanced_rows,
+		      (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
+		      (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
+		      0, 0);
+  } else {
+
+    gtk_table_attach (GTK_TABLE (fields), label,
+		      0, 2, rows - 1, rows,
+		      (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
+		      (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
+		      0, 0);
+    gtk_table_attach (GTK_TABLE (fields), frame,
+		      0, 2, rows - 1, rows,
+		      (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
+		      (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
+		      0, 0);
+  }
 
   submitter = new MultipleChoiceSubmitter (name, description,
 					   choices, advanced, tree_view);
@@ -1110,8 +1198,7 @@ FormDialog::editable_set (const std::string name,
 
   EditableSetSubmitter *submitter = NULL;
 
-  rows++;
-  gtk_table_resize (GTK_TABLE (fields), rows, 2);
+  grow_fields (advanced);
 
   /* The label */
   label = gtk_label_new (NULL);
@@ -1119,12 +1206,6 @@ FormDialog::editable_set (const std::string name,
   label_text = g_strdup_printf ("<b>%s</b>", description.c_str());
   gtk_label_set_markup_with_mnemonic (GTK_LABEL (label), label_text);
   g_free (label_text);
-
-  gtk_table_attach (GTK_TABLE (fields), label,
-                    0, 2, rows - 1, rows,
-                    (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
-                    (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
-                    0, 0);
 
   /* The GtkListStore containing the values */
   list_store = gtk_list_store_new (EditableSetSubmitter::COLUMN_NUMBER,
@@ -1184,13 +1265,31 @@ FormDialog::editable_set (const std::string name,
     }
   }
 
-  rows++;
-  gtk_table_resize (GTK_TABLE (fields), rows, 2);
-  gtk_table_attach (GTK_TABLE (fields), frame,
-                    0, 2, rows - 1, rows,
-                    (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
-                    (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
-                    0, 0);
+  if (advanced) {
+
+    gtk_table_attach (GTK_TABLE (advanced_fields), label,
+		      0, 2, advanced_rows - 1, advanced_rows,
+		      (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
+		      (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
+		      0, 0);
+    gtk_table_attach (GTK_TABLE (advanced_fields), frame,
+		      0, 2, advanced_rows - 1, advanced_rows,
+		      (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
+		      (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
+		      0, 0);
+  } else {
+
+    gtk_table_attach (GTK_TABLE (fields), label,
+		      0, 2, rows - 1, rows,
+		      (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
+		      (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
+		      0, 0);
+    gtk_table_attach (GTK_TABLE (fields), frame,
+		      0, 2, rows - 1, rows,
+		      (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
+		      (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
+		      0, 0);
+  }
 
   hbox = gtk_hbox_new (FALSE, 2);
   entry = gtk_entry_new ();
@@ -1206,13 +1305,24 @@ FormDialog::editable_set (const std::string name,
 		    (GCallback) editable_set_add_value_clicked_cb,
 		    (gpointer) entry);
 
-  rows++;
-  gtk_table_resize (GTK_TABLE (fields), rows, 2);
-  gtk_table_attach (GTK_TABLE (fields), hbox,
-		    0, 2, rows - 1, rows,
-		    (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
-		    (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
-		    0, 0);
+
+  grow_fields (advanced);
+
+  if (advanced) {
+
+    gtk_table_attach (GTK_TABLE (advanced_fields), hbox,
+		      0, 2, advanced_rows - 1, advanced_rows,
+		      (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
+		      (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
+		      0, 0);
+  } else {
+
+    gtk_table_attach (GTK_TABLE (fields), hbox,
+		      0, 2, rows - 1, rows,
+		      (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
+		      (GtkAttachOptions) (GTK_FILL|GTK_EXPAND),
+		      0, 0);
+  }
 
   submitter = new EditableSetSubmitter (name, description, advanced, tree_view);
   submitters.push_back (submitter);
@@ -1238,4 +1348,18 @@ FormDialog::cancel ()
 {
   gtk_widget_hide_all (GTK_WIDGET (window));
   request.cancel ();
+}
+
+void
+FormDialog::grow_fields (bool advanced)
+{
+  if (advanced) {
+
+    advanced_rows++;
+    gtk_table_resize (GTK_TABLE (advanced_fields), advanced_rows, 2);
+  } else {
+
+    rows++;
+    gtk_table_resize (GTK_TABLE (fields), rows, 2);
+  }
 }
