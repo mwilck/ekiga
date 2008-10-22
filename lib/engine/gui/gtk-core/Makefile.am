@@ -20,6 +20,8 @@ libgmgtk_core_la_SOURCES = \
 	$(gtk_core_dir)/menu-builder-gtk.cpp \
 	$(gtk_core_dir)/form-dialog-gtk.h \
 	$(gtk_core_dir)/form-dialog-gtk.cpp \
+	$(gtk_core_dir)/gm-refcounted-boxed.h \
+	$(gtk_core_dir)/gm-refcounted-boxed.cpp \
 	$(gtk_core_dir)/gtk-core.h \
 	$(gtk_core_dir)/gtk-core.cpp \
 	$(gtk_core_dir)/gtk-core-main.h \
