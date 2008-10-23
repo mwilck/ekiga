@@ -440,6 +440,7 @@ RL::Heap::on_edit_form_submitted (bool submitted,
     robust_xmlNodeSetContent (node, &username, "username", username_str);
     robust_xmlNodeSetContent (node, &password, "password", password_str);
 
+    trigger_saving.emit ();
     updated.emit ();
     refresh ();
   } catch (Ekiga::Form::not_found) {
