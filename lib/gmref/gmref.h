@@ -78,6 +78,8 @@ public:
 
   bool operator!=(const gmref_ptr<T>& other) const;
 
+  bool operator<(const gmref_ptr<T>& other) const;
+
 private:
 
   template<typename Tprim> friend class gmref_ptr;
@@ -181,6 +183,13 @@ bool
 gmref_ptr<T>::operator!=(const gmref_ptr<T>& other) const
 {
   return !operator==(other);
+}
+
+template<typename T>
+bool
+gmref_ptr<T>::operator<(const gmref_ptr<T>& other) const
+{
+  return obj < other.obj;
 }
 
 template<typename T>
