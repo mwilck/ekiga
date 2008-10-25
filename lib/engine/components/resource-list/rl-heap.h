@@ -102,6 +102,7 @@ namespace RL {
     xmlNodePtr password;
 
     xmlDocPtr doc;
+    xmlNodePtr list_node;
 
     std::map<gmref_ptr<Presentity>, std::list<sigc::connection> > presentities;
 
@@ -116,6 +117,11 @@ namespace RL {
     void edit ();
     void on_edit_form_submitted (bool submitted,
 				 Ekiga::Form& result);
+
+    void new_entry ();
+    void on_new_entry_form_submitted (bool submitted,
+				      Ekiga::Form& result);
+    void new_entry_result (std::string error);
 
     void on_presentity_updated (gmref_ptr<Presentity> presentity);
     void on_presentity_removed (gmref_ptr<Presentity> presentity);

@@ -51,14 +51,14 @@ RL::Heap::Heap (Ekiga::ServiceCore& services_,
   node(node_), name(NULL),
   root(NULL), user(NULL),
   username(NULL), password(NULL),
-  doc(NULL)
+  doc(NULL), list_node(NULL)
 {
   {
     xmlChar* xml_str = NULL;
 
     xml_str = xmlGetProp (node, BAD_CAST "writable");
     if (xml_str != NULL)
-	xmlFree (xml_str);
+      xmlFree (xml_str);
     else {
       xmlSetProp (node, BAD_CAST "writable", BAD_CAST "0");
     }
@@ -124,7 +124,7 @@ RL::Heap::Heap (Ekiga::ServiceCore& services_,
   node(NULL), name(NULL),
   root(NULL), user(NULL),
   username(NULL), password(NULL),
-  doc(NULL)
+  doc(NULL), list_node(NULL)
 {
   node = xmlNewNode (NULL, BAD_CAST "entry");
   if (writable_)
@@ -145,7 +145,7 @@ RL::Heap::Heap (Ekiga::ServiceCore& services_,
   root = xmlNewChild (node, NULL,
 		      BAD_CAST "root",
 		      BAD_CAST robust_xmlEscape (node->doc,
-						root_).c_str ());
+						 root_).c_str ());
   user = xmlNewChild (node, NULL,
 		      BAD_CAST "user",
 		      BAD_CAST robust_xmlEscape (node->doc,
@@ -197,6 +197,8 @@ RL::Heap::visit_presentities (sigc::slot<bool, Ekiga::Presentity&> visitor)
 bool
 RL::Heap::populate_menu (Ekiga::MenuBuilder& builder)
 {
+  builder.add_action ("add", _("_Add a new contact"),
+		      sigc::mem_fun (this, &RL::Heap::new_entry));
   builder.add_action ("refresh", _("_Refresh contact list"),
 		      sigc::mem_fun (this, &RL::Heap::refresh));
   builder.add_action ("properties", _("Contact list _properties"),
@@ -323,6 +325,7 @@ RL::Heap::parse_list (xmlNodePtr list)
   std::string password_str;
   bool writable = false;
 
+  list_node = list;
   {
     xmlChar* str = xmlNodeGetContent (root);
     if (str != NULL)
@@ -515,6 +518,133 @@ RL::Heap::on_edit_form_submitted (bool submitted,
 
     std::cerr << "Invalid result form" << std::endl; // FIXME: do better
   }
+}
+
+void
+RL::Heap::new_entry ()
+{
+  Ekiga::FormRequestSimple request(sigc::mem_fun (this, &RL::Heap::on_new_entry_form_submitted));
+
+  request.title (_("Add a remote contact"));
+  request.instructions (_("Please fill in this form to create a new "
+			  "contact on a remote server"));
+
+  std::set<std::string> all_groups;
+  for (std::map<gmref_ptr<Presentity>,std::list<sigc::connection> >::iterator
+	 iter = presentities.begin ();
+       iter != presentities.end ();
+       ++iter) {
+
+    std::set<std::string> groups = iter->first->get_groups ();
+    all_groups.insert (groups.begin (), groups.end ());
+  }
+
+  request.text ("name", _("Name:"), "");
+  request.text ("uri", _("Address:"), "");
+  request.editable_set ("groups", _("Choose groups:"),
+			std::set<std::string>(), all_groups);
+
+  if (!questions.handle_request (&request)) {
+
+    // FIXME: better error reporting
+#ifdef __GNUC__
+    std::cout << "Unhandled form request in "
+	      << __PRETTY_FUNCTION__ << std::endl;
+#endif
+  }
+}
+
+void
+RL::Heap::on_new_entry_form_submitted (bool submitted,
+				       Ekiga::Form& result)
+{
+  if (!submitted)
+    return;
+
+  try {
+
+    std::string entry_name = result.text ("name");
+    std::string entry_uri = result.text ("uri");
+    std::set<std::string> entry_groups = result.editable_set ("groups");
+
+    xmlNodePtr entry_node = xmlNewChild (list_node, NULL,
+					 BAD_CAST "entry", NULL);
+    xmlSetProp (entry_node, BAD_CAST "uri",
+		BAD_CAST robust_xmlEscape (doc, entry_uri).c_str ());
+    xmlNewChild (entry_node, NULL, BAD_CAST "display-name",
+		 BAD_CAST robust_xmlEscape (doc, entry_name).c_str ());
+    xmlNsPtr ns = xmlSearchNsByHref (doc, entry_node,
+				     BAD_CAST "http://www.ekiga.org");
+    if (ns == NULL) {
+
+      // FIXME: we should handle the case, even if it shouldn't happen
+    }
+
+    for (std::set<std::string>::const_iterator iter = entry_groups.begin ();
+	 iter != entry_groups.end ();
+	 ++iter) {
+
+      xmlNewChild (entry_node, ns, BAD_CAST "group",
+		   BAD_CAST robust_xmlEscape (doc, *iter).c_str ());
+    }
+
+    xmlBufferPtr buffer = xmlBufferCreate ();
+    int res = xmlNodeDump (buffer, doc, entry_node, 0, 0);
+
+    if (res >= 0) {
+
+      std::string root_str;
+      std::string username_str;
+      std::string password_str;
+      std::string user_str;
+
+      {
+	xmlChar* str = xmlNodeGetContent (root);
+	if (str != NULL)
+	  root_str = (const char*)str;
+      }
+      {
+	xmlChar* str = xmlNodeGetContent (user);
+	if (str != NULL)
+	  user_str = (const char*)str;
+      }
+      {
+	xmlChar* str = xmlNodeGetContent (username);
+	if (str != NULL)
+	  username_str = (const char*)str;
+      }
+      {
+	xmlChar* str = xmlNodeGetContent (password);
+	if (str != NULL)
+	  password_str = (const char*)str;
+      }
+      gmref_ptr<XCAP::Path> path(new XCAP::Path (root_str, "resource-lists",
+						 user_str));
+      path->set_credentials (username_str, password_str);
+      path = path->build_child ("resource-lists");
+      path = path->build_child_with_attribute ("entry", "uri", entry_uri);
+      gmref_ptr<XCAP::Core> xcap(services.get ("xcap-core"));
+      xcap->write (path, "application/xcap-el+xml",
+		   (const char*)xmlBufferContent (buffer),
+		   sigc::mem_fun (this,
+				  &RL::Heap::new_entry_result));
+    }
+    xmlBufferFree (buffer);
+  } catch (Ekiga::Form::not_found exc) {
+
+    std::cerr << "Invalid result form" << std::endl; // FIXME: do better
+  }
+}
+
+void
+RL::Heap::new_entry_result (std::string error)
+{
+  if ( !error.empty ()) {
+
+    std::cout << "XCAP Error: " << error << std::endl;
+  }
+
+  refresh ();
 }
 
 void
