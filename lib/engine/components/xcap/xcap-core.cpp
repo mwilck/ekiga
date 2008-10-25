@@ -54,13 +54,16 @@ public:
 
   void read (gmref_ptr<XCAP::Path> path,
 	     sigc::slot<void,bool,std::string> callback);
+  void write (gmref_ptr<Path>,
+	      const std::string content_type,
+	      const std::string content,
+	      sigc::slot<void,std::string> callback);
+  void erase (gmref_ptr<Path>,
+	      sigc::slot<void,std::string> callback);
 
   /* public to be used by C callbacks */
 
-
   /* The memory management is a little complex, here is how it works :
-   *
-   * W
    *
    * There are two kinds of live SOUP sessions :
    * - the old sessions : we have to keep them around because we can't unref
@@ -101,6 +104,7 @@ struct cb_data
   XCAP::CoreImpl* core;
   gmref_ptr<XCAP::Path> path;
   sigc::slot<void,bool, std::string> callback;
+  bool is_read;
 };
 
 static void
@@ -131,7 +135,10 @@ result_callback (SoupSession* session,
 
   case SOUP_STATUS_OK:
 
-    cb->callback (false, message->response_body->data);
+    if (cb->is_read)
+      cb->callback (false, message->response_body->data);
+    else
+      cb->callback (false, "");
     break;
 
   default:
@@ -190,11 +197,74 @@ XCAP::CoreImpl::read (gmref_ptr<Path> path,
 
   /* all of this is freed in the result callback */
   session = soup_session_async_new_with_options ("user-agent", "ekiga", NULL);
-  message = soup_message_new ("GET", path->to_uri ().c_str ());
+  message = soup_message_new (SOUP_METHOD_GET, path->to_uri ().c_str ());
   data = new cb_data;
   data->core = this;
   data->path = path;
   data->callback = callback;
+  data->is_read = true;
+
+  g_signal_connect (session, "authenticate",
+		    G_CALLBACK (authenticate_callback), data);
+
+  soup_session_queue_message (session, message,
+			      result_callback, data);
+
+  pending_sessions.push_back (session);
+}
+
+void
+XCAP::CoreImpl::write (gmref_ptr<Path> path,
+		       const std::string content_type,
+		       const std::string content,
+		       sigc::slot<void,std::string> callback)
+{
+  SoupSession* session = NULL;
+  SoupMessage* message = NULL;
+  cb_data* data = NULL;
+
+  clear_old_sessions ();
+
+  /* all of this is freed in the result callback */
+  session = soup_session_async_new_with_options ("user-agent", "ekiga", NULL);
+  message = soup_message_new (SOUP_METHOD_PUT, path->to_uri ().c_str ());
+  soup_message_set_request (message, content_type.c_str (),
+			    SOUP_MEMORY_COPY,
+			    content.c_str (), content.length ());
+
+  data = new cb_data;
+  data->core = this;
+  data->path = path;
+  data->callback = sigc::hide<0>(callback);
+  data->is_read = false;
+
+  g_signal_connect (session, "authenticate",
+		    G_CALLBACK (authenticate_callback), data);
+
+  soup_session_queue_message (session, message,
+			      result_callback, data);
+
+  pending_sessions.push_back (session);
+}
+
+void
+XCAP::CoreImpl::erase (gmref_ptr<Path> path,
+		       sigc::slot<void,std::string> callback)
+{
+  SoupSession* session = NULL;
+  SoupMessage* message = NULL;
+  cb_data* data = NULL;
+
+  clear_old_sessions ();
+
+  /* all of this is freed in the result callback */
+  session = soup_session_async_new_with_options ("user-agent", "ekiga", NULL);
+  message = soup_message_new (SOUP_METHOD_DELETE, path->to_uri ().c_str ());
+  data = new cb_data;
+  data->core = this;
+  data->path = path;
+  data->callback = sigc::hide<0>(callback);
+  data->is_read = false;
 
   g_signal_connect (session, "authenticate",
 		    G_CALLBACK (authenticate_callback), data);
@@ -223,4 +293,22 @@ XCAP::Core::read (gmref_ptr<XCAP::Path> path,
 {
   std::cout << "XCAP trying to read " << path->to_uri () << std::endl;
   impl->read (path, callback);
+}
+
+void
+XCAP::Core::write (gmref_ptr<Path> path,
+		   const std::string content_type,
+		   const std::string content,
+		   sigc::slot<void,std::string> callback)
+{
+  std::cout << "XCAP trying to write " << path->to_uri () << std::endl;
+  impl->write (path, content_type, content, callback);
+}
+
+void
+XCAP::Core::erase (gmref_ptr<Path> path,
+		   sigc::slot<void,std::string> callback)
+{
+  std::cout << "XCAP trying to erase " << path->to_uri () << std::endl;
+  impl->erase (path, callback);
 }

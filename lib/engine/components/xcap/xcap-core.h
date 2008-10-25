@@ -55,7 +55,7 @@ namespace XCAP
 
     ~Core ();
 
-    /* The callbacks gets a boolean and a string :
+    /* The callback gets a boolean and a string :
      * - if the boolean is false, there was no error and the string is the
      * document you wanted ;
      * - if the boolean is true, there was an error and the string is the
@@ -63,6 +63,22 @@ namespace XCAP
      */
     void read (gmref_ptr<Path>,
 	       sigc::slot<void,bool,std::string> callback);
+
+    /* the callback gets only a string :
+     * - if the string is empty, all went well ;
+     * - if it's not, then it's the error message.
+     */
+    void write (gmref_ptr<Path>,
+		const std::string content_type,
+		const std::string content,
+		sigc::slot<void,std::string> callback);
+
+    /* the callback gets only a string :
+     * - if the string is empty, all went well ;
+     * - if it's not, then it's the error message.
+     */
+    void erase (gmref_ptr<Path>,
+		sigc::slot<void,std::string> callback);
 
     /* implementation of the Ekiga::Service api */
 
