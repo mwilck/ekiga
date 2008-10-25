@@ -301,7 +301,11 @@ XCAP::Core::write (gmref_ptr<Path> path,
 		   const std::string content,
 		   sigc::slot<void,std::string> callback)
 {
-  std::cout << "XCAP trying to write " << path->to_uri () << std::endl;
+  std::cout << "XCAP trying to write"
+	    << " (" << content_type << "):"
+	    << content << std::endl
+	    << "to:" << std::endl
+	    << path->to_uri () << std::endl;
   impl->write (path, content_type, content, callback);
 }
 
