@@ -311,7 +311,7 @@ RL::Presentity::save (bool reload)
   if (result >= 0) {
 
     gmref_ptr<XCAP::Core> xcap(services.get ("xcap-core"));
-    xcap->write (path, "application/resource-lists+xml",
+    xcap->write (path, "application/xcap-el+xml",
 		 (const char*)xmlBufferContent (buffer),
 		 sigc::bind (sigc::mem_fun (this,
 					    &RL::Presentity::save_result),
