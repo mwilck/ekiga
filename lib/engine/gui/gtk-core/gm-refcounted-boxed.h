@@ -40,6 +40,39 @@
 
 #define GM_TYPE_REFCOUNTED (gm_refcounted_boxed_get_type ())
 
+/* What does this code do?
+ *
+ * The basic idea is that it's possible to make gtk+ behave well with our
+ * own reference counting, when we give it some GmRefCounted objects.
+ *
+ * Here is an example ; you create a store with a column containing GmRefCounted
+ * objects :
+ *
+ * store = gtk_list_store_new (1, GM_TYPE_REFCOUNTED);
+ *
+ * later on you do :
+ *
+ * {
+ *   gmref_ptr<Foo> foo(new Foo(data));
+ *   gtk_list_store_set (store, &iter, 0, &*foo, -1);
+ * }
+ *
+ * Here foo gets out of scope at the second } and should be freed...
+ * it isn't, because we told gtk+ that column was GM_TYPE_REFCOUNTED, so it
+ * incremented the reference count automatically... and will decrease it when
+ * that position in the store is cleared.
+ *
+ * There's something to beware though : gtk+ will give you ownership of what
+ * you get out of the GtkTreeModel, so you'll have to gmref_dec after use,
+ * like this :
+ *
+ * GmRefCounted* foo = NULL;
+ * gtk_tree_model_get (model, &iter, 0, &foo, -1);
+ * do_something (foo);
+ * gmref_dec (foo);
+ *
+ */
+
 GType gm_refcounted_boxed_get_type () G_GNUC_CONST;
 
 #endif
