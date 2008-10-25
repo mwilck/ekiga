@@ -40,7 +40,7 @@
 
 #include "heap.h"
 
-#include "rl-list.h"
+#include "rl-presentity.h"
 
 namespace RL {
 
@@ -48,7 +48,7 @@ namespace RL {
   {
   public:
 
-    Heap (Ekiga::ServiceCore& core_,
+    Heap (Ekiga::ServiceCore& services_,
 	  xmlNodePtr node);
 
     /* name: the name of the Heap in the GUI
@@ -56,6 +56,7 @@ namespace RL {
      * user: the user as XCAP user
      * username: the username on the HTTP server
      * password: the password on the HTTP server
+     * writable: whether we have write rights on the server
      *
      * Don't complain to me(Snark) it's complex : read RFC4825 and cry with me
      *
@@ -65,7 +66,8 @@ namespace RL {
 	  const std::string root_,
 	  const std::string user_,
 	  const std::string username_,
-	  const std::string password_);
+	  const std::string password_,
+	  bool writable_);
 
     ~Heap ();
 
@@ -90,7 +92,7 @@ namespace RL {
 
   private:
 
-    Ekiga::ServiceCore& core;
+    Ekiga::ServiceCore& services;
 
     xmlNodePtr node;
     xmlNodePtr name;
@@ -101,7 +103,7 @@ namespace RL {
 
     xmlDocPtr doc;
 
-    std::list<gmref_ptr<List> > lists;
+    std::map<gmref_ptr<Presentity>, std::list<sigc::connection> > presentities;
 
     void refresh ();
 
@@ -109,14 +111,14 @@ namespace RL {
 			       std::string doc);
 
     void parse_doc (std::string doc);
-
-    void on_entry_added (gmref_ptr<Entry> entry);
-    void on_entry_updated (gmref_ptr<Entry> entry);
-    void on_entry_removed (gmref_ptr<Entry> entry);
+    void parse_list (xmlNodePtr node);
 
     void edit ();
     void on_edit_form_submitted (bool submitted,
 				 Ekiga::Form& result);
+
+    void on_presentity_updated (gmref_ptr<Presentity> presentity);
+    void on_presentity_removed (gmref_ptr<Presentity> presentity);
   };
 };
 

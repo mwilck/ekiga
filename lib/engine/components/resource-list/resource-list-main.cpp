@@ -38,6 +38,7 @@
 
 #include "resource-list-main.h"
 #include "presence-core.h"
+#include "xcap-core.h"
 #include "rl-cluster.h"
 
 bool

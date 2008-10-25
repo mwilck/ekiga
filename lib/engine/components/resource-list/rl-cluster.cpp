@@ -85,7 +85,7 @@ RL::Cluster::Cluster (Ekiga::ServiceCore& core_): core(core_), doc(NULL)
     doc = xmlNewDoc (BAD_CAST "1.0");
     xmlNodePtr root = xmlNewDocNode (doc, NULL, BAD_CAST "list", NULL);
     xmlDocSetRootElement (doc, root);
-    add ("https://xcap.sipthor.net/xcap-root", "alice", "123", "alice@example.com", "XCAP Test"); // FIXME: remove
+    add ("https://xcap.sipthor.net/xcap-root", "alice", "123", "alice@example.com", "XCAP Test", false); // FIXME: remove
   }
 }
 
@@ -100,7 +100,7 @@ RL::Cluster::populate_menu (Ekiga::MenuBuilder& builder)
 {
   builder.add_action ("new", _("New resource list"),
 		      sigc::bind (sigc::mem_fun (this, &RL::Cluster::new_heap),
-				  "", "", "", "", ""));
+				  "", "", "", "", "", false));
   return true;
 }
 
@@ -117,9 +117,10 @@ RL::Cluster::add (const std::string uri,
 		  const std::string username,
 		  const std::string password,
 		  const std::string user,
-		  const std::string name)
+		  const std::string name,
+		  bool writable)
 {
-  Heap* heap = new Heap (core, name, uri, user, username, password);
+  Heap* heap = new Heap (core, name, uri, user, username, password, writable);
   xmlNodePtr root = xmlDocGetRootElement (doc);
 
   xmlAddChild (root, heap->get_node ());
@@ -156,7 +157,8 @@ RL::Cluster::new_heap (const std::string name,
 		       const std::string uri,
 		       const std::string username,
 		       const std::string password,
-		       const std::string user)
+		       const std::string user,
+		       bool writable)
 {
   Ekiga::FormRequestSimple request(sigc::mem_fun (this, &RL::Cluster::on_new_heap_form_submitted));
 
@@ -165,6 +167,7 @@ RL::Cluster::new_heap (const std::string name,
 			  "contact list to ekiga's remote roster"));
   request.text ("name", _("Name:"), name);
   request.text ("uri", _("Address:"), uri);
+  request.boolean ("writable", _("Writable:"), writable);
   request.text ("username", _("Username:"), username);
   request.private_text ("password", _("Password:"), password);
   request.text ("user", _("User:"), user);
@@ -193,8 +196,9 @@ RL::Cluster::on_new_heap_form_submitted (bool submitted,
     const std::string username = result.text ("username");
     const std::string password = result.private_text ("password");
     const std::string user = result.text ("user");
+    bool writable = result.boolean ("writable");
 
-    add (name, uri, username, password, user);
+    add (name, uri, username, password, user, writable);
   } catch (Ekiga::Form::not_found) {
 
 #ifdef __GNUC__

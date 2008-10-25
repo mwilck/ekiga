@@ -72,7 +72,8 @@ namespace RL {
 	      const std::string username,
 	      const std::string password,
 	      const std::string user,
-	      const std::string name);
+	      const std::string name,
+	      bool writable);
     void common_add (Heap& heap);
     void save () const;
 
@@ -80,7 +81,8 @@ namespace RL {
 		   const std::string uri,
 		   const std::string username,
 		   const std::string password,
-		   const std::string user);
+		   const std::string user,
+		   bool writable);
 
     void on_new_heap_form_submitted (bool submitted,
 				     Ekiga::Form& result);

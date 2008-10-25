@@ -41,17 +41,29 @@
 
 #include "robust-xml.h"
 #include "form-request-simple.h"
+#include "xcap-core.h"
 
 #include "rl-heap.h"
 
-RL::Heap::Heap (Ekiga::ServiceCore& core_,
+RL::Heap::Heap (Ekiga::ServiceCore& services_,
 		xmlNodePtr node_):
-  core(core_),
+  services(services_),
   node(node_), name(NULL),
   root(NULL), user(NULL),
   username(NULL), password(NULL),
   doc(NULL)
 {
+  {
+    xmlChar* xml_str = NULL;
+
+    xml_str = xmlGetProp (node, BAD_CAST "writable");
+    if (xml_str != NULL)
+	xmlFree (xml_str);
+    else {
+      xmlSetProp (node, BAD_CAST "writable", BAD_CAST "0");
+    }
+  }
+
   for (xmlNodePtr child = node->children; child != NULL; child = child->next) {
 
     if (child->type == XML_ELEMENT_NODE
@@ -101,19 +113,25 @@ RL::Heap::Heap (Ekiga::ServiceCore& core_,
   refresh ();
 }
 
-RL::Heap::Heap (Ekiga::ServiceCore& core_,
+RL::Heap::Heap (Ekiga::ServiceCore& services_,
 		const std::string name_,
 		const std::string root_,
 		const std::string user_,
 		const std::string username_,
-		const std::string password_):
-  core(core_),
+		const std::string password_,
+		bool writable_):
+  services(services_),
   node(NULL), name(NULL),
   root(NULL), user(NULL),
   username(NULL), password(NULL),
   doc(NULL)
 {
   node = xmlNewNode (NULL, BAD_CAST "entry");
+  if (writable_)
+    xmlSetProp (node, BAD_CAST "writable", BAD_CAST "1");
+  else
+    xmlSetProp (node, BAD_CAST "writable", BAD_CAST "0");
+
   if ( !name_.empty ())
     name = xmlNewChild (node, NULL,
 			BAD_CAST "name",
@@ -169,10 +187,11 @@ RL::Heap::visit_presentities (sigc::slot<bool, Ekiga::Presentity&> visitor)
 {
   bool go_on = true;
 
-  for (std::list<gmref_ptr<List> >::iterator iter = lists.begin ();
-       go_on && iter != lists.end ();
+  for (std::map<gmref_ptr<Presentity>,std::list<sigc::connection> >::iterator
+	 iter = presentities.begin ();
+       go_on && iter != presentities.end ();
        ++iter)
-    go_on = (*iter)->visit_presentities (visitor);
+    go_on = visitor (*iter->first);
 }
 
 bool
@@ -201,7 +220,7 @@ RL::Heap::get_node () const
 void
 RL::Heap::refresh ()
 {
-  gmref_ptr<XCAP::Core> xcap = core.get ("xcap-core");
+  gmref_ptr<XCAP::Core> xcap(services.get ("xcap-core"));
   std::string root_str;
   std::string username_str;
   std::string password_str;
@@ -232,11 +251,16 @@ RL::Heap::refresh ()
   path->set_credentials (username_str, password_str);
   path = path->build_child ("resource-lists");
 
-  for (std::list<gmref_ptr<List> >::iterator iter = lists.begin ();
-       iter != lists.end ();
-       ++iter)
-    (*iter)->flush ();
-  lists.clear ();
+  while (presentities.begin () != presentities.end ()) {
+
+    presentities.begin()->first->removed.emit ();
+    for (std::list<sigc::connection>::iterator iter2
+	   = presentities.begin()->second.begin ();
+	 iter2 != presentities.begin()->second.end ();
+	 ++iter2)
+      iter2->disconnect ();
+    presentities.erase (presentities.begin()->first);
+  }
 
   if (doc)
     xmlFreeDoc (doc);
@@ -276,37 +300,6 @@ RL::Heap::parse_doc (std::string raw)
     doc = NULL;
   } else {
 
-    int pos = 1;
-    std::string root_str;
-    std::string user_str;
-    std::string username_str;
-    std::string password_str;
-
-    {
-      xmlChar* str = xmlNodeGetContent (root);
-      if (str != NULL)
-	root_str = (const char*)str;
-    }
-    {
-      xmlChar* str = xmlNodeGetContent (user);
-      if (str != NULL)
-	user_str = (const char*)str;
-    }
-    {
-      xmlChar* str = xmlNodeGetContent (username);
-      if (str != NULL)
-	username_str = (const char*)str;
-    }
-    {
-      xmlChar* str = xmlNodeGetContent (password);
-      if (str != NULL)
-	password_str = (const char*)str;
-    }
-
-    gmref_ptr<XCAP::Path> path(new XCAP::Path (root_str, "resource-lists",
-					       user_str));
-    path->set_credentials (username_str, password_str);
-    path = path->build_child ("resource-lists");
 
     for (xmlNodePtr child = doc_root->children;
 	 child != NULL;
@@ -315,67 +308,20 @@ RL::Heap::parse_doc (std::string raw)
 	  && child->name != NULL
 	  && xmlStrEqual (BAD_CAST ("list"), child->name)) {
 
-	gmref_ptr<List> list(new List (core, path, pos, "", child));
-	list->entry_added.connect (sigc::mem_fun (this, &RL::Heap::on_entry_added));
-	list->entry_updated.connect (sigc::mem_fun (this, &RL::Heap::on_entry_updated));
-	list->entry_removed.connect (sigc::mem_fun (this, &RL::Heap::on_entry_removed));
-	lists.push_back (list);
-	pos++;
-	list->publish ();
-	continue;
+	parse_list (child);
+	break; // read only one!
       }
   }
 }
 
 void
-RL::Heap::push_presence (const std::string uri_,
-			 const std::string presence)
+RL::Heap::parse_list (xmlNodePtr list)
 {
-  for (std::list<gmref_ptr<List> >::iterator iter = lists.begin ();
-       iter != lists.end ();
-       ++iter)
-    (*iter)->push_presence (uri_, presence);
-}
-
-void
-RL::Heap::push_status (const std::string uri_,
-		       const std::string status)
-{
-  for (std::list<gmref_ptr<List> >::iterator iter = lists.begin ();
-       iter != lists.end ();
-       ++iter)
-    (*iter)->push_status (uri_, status);
-}
-
-void
-RL::Heap::on_entry_added (gmref_ptr<Entry> entry)
-{
-  presentity_added.emit (*entry);
-}
-
-void
-RL::Heap::on_entry_updated (gmref_ptr<Entry> entry)
-{
-  presentity_updated.emit (*entry);
-}
-
-void
-RL::Heap::on_entry_removed (gmref_ptr<Entry> entry)
-{
-  presentity_removed.emit (*entry);
-}
-
-void
-RL::Heap::edit ()
-{
-  Ekiga::FormRequestSimple request(sigc::mem_fun (this,
-						  &RL::Heap::on_edit_form_submitted));
-
-  std::string name_str;
   std::string root_str;
+  std::string user_str;
   std::string username_str;
   std::string password_str;
-  std::string user_str;
+  bool writable = false;
 
   {
     xmlChar* str = xmlNodeGetContent (root);
@@ -397,6 +343,122 @@ RL::Heap::edit ()
     if (str != NULL)
       password_str = (const char*)str;
   }
+  {
+    xmlChar* str = xmlGetProp (node, BAD_CAST "writable");
+    if (str != NULL) {
+
+      if (xmlStrEqual (str, BAD_CAST "1"))
+	writable = true;
+      xmlFree (str);
+    }
+  }
+
+  gmref_ptr<XCAP::Path> path(new XCAP::Path (root_str, "resource-lists",
+					     user_str));
+  path->set_credentials (username_str, password_str);
+  path = path->build_child ("resource-lists");
+  path = path->build_child ("list");
+
+  for (xmlNodePtr child = list->children;
+       child != NULL;
+       child = child->next)
+    if (child->type == XML_ELEMENT_NODE
+	&& child->name != NULL
+	&& xmlStrEqual (BAD_CAST ("entry"), child->name)) {
+
+      gmref_ptr<Presentity> presentity(new Presentity (services, path, child, writable));
+      std::list<sigc::connection> conns;
+      conns.push_back (presentity->updated.connect (sigc::bind (sigc::mem_fun (this, &RL::Heap::on_presentity_updated),presentity)));
+      conns.push_back (presentity->removed.connect (sigc::bind(sigc::mem_fun (this, &RL::Heap::on_presentity_removed),presentity)));
+      conns.push_back (presentity->questions.connect (questions.make_slot()));
+      presentities[presentity]=conns;
+      presentity_added.emit (*presentity);
+      continue;
+    }
+}
+
+void
+RL::Heap::push_presence (const std::string uri_,
+			 const std::string presence)
+{
+  for (std::map<gmref_ptr<Presentity>,std::list<sigc::connection> >::iterator
+	 iter = presentities.begin ();
+       iter != presentities.end ();
+       ++iter) {
+
+    if (iter->first->get_uri () == uri_)
+      iter->first->set_presence (presence);
+  }
+}
+
+void
+RL::Heap::push_status (const std::string uri_,
+		       const std::string status)
+{
+  for (std::map<gmref_ptr<Presentity>,std::list<sigc::connection> >::iterator
+	 iter = presentities.begin ();
+       iter != presentities.end ();
+       ++iter) {
+
+    if (iter->first->get_uri () == uri_)
+      iter->first->set_status (status);
+  }
+}
+
+void
+RL::Heap::edit ()
+{
+  Ekiga::FormRequestSimple request(sigc::mem_fun (this,
+						  &RL::Heap::on_edit_form_submitted));
+
+  std::string name_str;
+  std::string root_str;
+  std::string username_str;
+  std::string password_str;
+  std::string user_str;
+  bool writable = false;
+
+  {
+    xmlChar* str = xmlNodeGetContent (root);
+    if (str != NULL) {
+
+      root_str = (const char*)str;
+      xmlFree (str);
+    }
+  }
+  {
+    xmlChar* str = xmlNodeGetContent (user);
+    if (str != NULL) {
+
+      user_str = (const char*)str;
+      xmlFree (str);
+    }
+  }
+  {
+    xmlChar* str = xmlNodeGetContent (username);
+    if (str != NULL) {
+
+      username_str = (const char*)str;
+      xmlFree (str);
+    }
+  }
+  {
+    xmlChar* str = xmlNodeGetContent (password);
+    if (str != NULL) {
+
+      password_str = (const char*)str;
+      xmlFree (str);
+    }
+  }
+  {
+    xmlChar* str = xmlGetProp (node, BAD_CAST "writable");
+    if (str != NULL) {
+
+      if (xmlStrEqual (str, BAD_CAST "1"))
+	writable = true;
+      xmlFree (str);
+    }
+  }
 
   request.title (_("Edit contact list properties"));
 
@@ -406,6 +468,7 @@ RL::Heap::edit ()
   request.text ("name", _("Contact list's name"), get_name ());
   request.text ("root", _("Document root"), root_str);
   request.text ("user", _("Identifier"), user_str);
+  request.boolean ("writable", _("Writable"), writable);
   request.text ("username", _("Server username"), username_str);
   request.private_text ("password", _("Server password"), password_str);
 
@@ -433,7 +496,12 @@ RL::Heap::on_edit_form_submitted (bool submitted,
     std::string user_str = result.text ("user");
     std::string username_str = result.text ("username");
     std::string password_str = result.private_text ("password");
+    bool writable = result.boolean ("writable");
 
+    if (writable)
+      xmlSetProp (node, BAD_CAST "writable", BAD_CAST "1");
+    else
+      xmlSetProp (node, BAD_CAST "writable", BAD_CAST "0");
     robust_xmlNodeSetContent (node, &name, "name", name_str);
     robust_xmlNodeSetContent (node, &root, "root", root_str);
     robust_xmlNodeSetContent (node, &user, "user", user_str);
@@ -447,4 +515,16 @@ RL::Heap::on_edit_form_submitted (bool submitted,
 
     std::cerr << "Invalid result form" << std::endl; // FIXME: do better
   }
+}
+
+void
+RL::Heap::on_presentity_updated (gmref_ptr<Presentity> presentity)
+{
+  presentity_updated.emit (*presentity);
+}
+
+void
+RL::Heap::on_presentity_removed (gmref_ptr<Presentity> presentity)
+{
+  presentity_removed.emit (*presentity);
 }
