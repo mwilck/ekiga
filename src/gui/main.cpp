@@ -143,9 +143,14 @@ struct _EkigaMainWindowPrivate
   GtkWidget *qualitymeter;
 
   /* Call panel */
+  GtkWidget *call_panel_frame;
   GtkWidget *video_frame;
   GtkWidget *main_video_image;
   GtkWidget *info_text;
+  GtkTextTag *status_tag;
+  GtkTextTag *codecs_tag;
+  GtkTextTag *call_duration_tag;
+  GtkWidget *call_panel_toolbar;
   GtkWidget *preview_button;
   GtkWidget *hold_button;
   GtkWidget *audio_settings_button;
@@ -3407,27 +3412,21 @@ ekiga_main_window_init_history (EkigaMainWindow *mw)
 static void 
 ekiga_main_window_init_call_panel (EkigaMainWindow *mw)
 {
-  GtkWidget *frame = NULL;
   GtkWidget *event_box = NULL;
   GtkWidget *table = NULL;
 
-  GtkWidget *toolbar = NULL;
   GtkToolItem *item = NULL;
 
   GtkWidget *image = NULL;
   GtkWidget *alignment = NULL;
 
-  GdkColor white;
-  gdk_color_parse ("white", &white);
-
   /* The main table */
-  frame = gtk_frame_new (NULL);
+  mw->priv->call_panel_frame = gtk_frame_new (NULL);
+  gtk_frame_set_shadow_type (GTK_FRAME (mw->priv->call_panel_frame), GTK_SHADOW_IN);
   event_box = gtk_event_box_new ();
-  gtk_widget_modify_bg (event_box, GTK_STATE_PRELIGHT, &white);
-  gtk_widget_modify_bg (event_box, GTK_STATE_NORMAL, &white);
   table = gtk_table_new (3, 4, FALSE);
   gtk_container_add (GTK_CONTAINER (event_box), table);
-  gtk_container_add (GTK_CONTAINER (frame), event_box);
+  gtk_container_add (GTK_CONTAINER (mw->priv->call_panel_frame), event_box);
 
   /* The frame that contains the video */
   mw->priv->video_frame = gtk_frame_new (NULL);
@@ -3448,10 +3447,6 @@ ekiga_main_window_init_call_panel (EkigaMainWindow *mw)
   GtkTextBuffer *buffer = NULL;
   
   mw->priv->info_text = gtk_text_view_new ();
-  gtk_widget_modify_bg (mw->priv->info_text, GTK_STATE_PRELIGHT, &white);
-  gtk_widget_modify_bg (mw->priv->info_text, GTK_STATE_NORMAL, &white);
-  gtk_widget_modify_bg (mw->priv->info_text, GTK_STATE_INSENSITIVE, &white);
-
   gtk_text_view_set_editable (GTK_TEXT_VIEW (mw->priv->info_text), FALSE);
   gtk_widget_set_sensitive (GTK_WIDGET (mw->priv->info_text), FALSE);
   gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (mw->priv->info_text),
@@ -3460,25 +3455,23 @@ ekiga_main_window_init_call_panel (EkigaMainWindow *mw)
   buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (mw->priv->info_text));
   gtk_text_view_set_cursor_visible  (GTK_TEXT_VIEW (mw->priv->info_text), FALSE);
 
-  gtk_text_buffer_create_tag (buffer, "status",
-			      "foreground", "black", 
-                              "paragraph-background", "white",
-                              "justification", GTK_JUSTIFY_CENTER,
-                              "weight", PANGO_WEIGHT_BOLD,
-                              "scale", 1.2,
-                              NULL);
-  gtk_text_buffer_create_tag (buffer, "codecs",
-                              "justification", GTK_JUSTIFY_RIGHT,
-                              "stretch", PANGO_STRETCH_CONDENSED,
-			      "foreground", "darkgray", 
-                              "paragraph-background", "white",
-			      NULL);
-  gtk_text_buffer_create_tag (buffer, "call-duration",
-			      "foreground", "black", 
-                              "paragraph-background", "white",
-			      "justification", GTK_JUSTIFY_CENTER,
-                              "weight", PANGO_WEIGHT_BOLD,
-			      NULL);
+  mw->priv->status_tag =
+    gtk_text_buffer_create_tag (buffer, "status",
+                                "justification", GTK_JUSTIFY_CENTER,
+                                "weight", PANGO_WEIGHT_BOLD,
+                                "scale", 1.2,
+                                NULL);
+  mw->priv->codecs_tag =
+    gtk_text_buffer_create_tag (buffer, "codecs",
+                                "justification", GTK_JUSTIFY_RIGHT,
+                                "stretch", PANGO_STRETCH_CONDENSED,
+                                NULL);
+
+  mw->priv->call_duration_tag =
+    gtk_text_buffer_create_tag (buffer, "call-duration",
+                                "justification", GTK_JUSTIFY_CENTER,
+                                "weight", PANGO_WEIGHT_BOLD,
+                                NULL);
 
   ekiga_main_window_set_status (mw, _("Standby"));
   ekiga_main_window_set_call_duration (mw, NULL);
@@ -3493,11 +3486,9 @@ ekiga_main_window_init_call_panel (EkigaMainWindow *mw)
                     0, 0);
  
   /* The toolbar */
-  toolbar = gtk_toolbar_new ();
-  gtk_widget_modify_bg (toolbar, GTK_STATE_PRELIGHT, &white);
-  gtk_widget_modify_bg (toolbar, GTK_STATE_NORMAL, &white);
-  gtk_toolbar_set_style (GTK_TOOLBAR (toolbar), GTK_TOOLBAR_ICONS);
-  gtk_toolbar_set_show_arrow (GTK_TOOLBAR (toolbar), FALSE);
+  mw->priv->call_panel_toolbar = gtk_toolbar_new ();
+  gtk_toolbar_set_style (GTK_TOOLBAR (mw->priv->call_panel_toolbar), GTK_TOOLBAR_ICONS);
+  gtk_toolbar_set_show_arrow (GTK_TOOLBAR (mw->priv->call_panel_toolbar), FALSE);
 
   /* Audio Volume */
   item = gtk_tool_item_new ();
@@ -3511,7 +3502,7 @@ ekiga_main_window_init_call_panel (EkigaMainWindow *mw)
   
   gtk_widget_show (mw->priv->audio_settings_button);
   gtk_widget_set_sensitive (mw->priv->audio_settings_button, FALSE);
-  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), 
+  gtk_toolbar_insert (GTK_TOOLBAR (mw->priv->call_panel_toolbar),
 		      GTK_TOOL_ITEM (item), -1);
   gtk_tool_item_set_tooltip_text (GTK_TOOL_ITEM (item),
 				  _("Change the volume of your soundcard"));
@@ -3531,7 +3522,7 @@ ekiga_main_window_init_call_panel (EkigaMainWindow *mw)
   
   gtk_widget_show (mw->priv->video_settings_button);
   gtk_widget_set_sensitive (mw->priv->video_settings_button, FALSE);
-  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), 
+  gtk_toolbar_insert (GTK_TOOLBAR (mw->priv->call_panel_toolbar),
 		      GTK_TOOL_ITEM (item), -1);
   gtk_tool_item_set_tooltip_text (GTK_TOOL_ITEM (item),
 				   _("Change the color settings of your video device"));
@@ -3553,7 +3544,7 @@ ekiga_main_window_init_call_panel (EkigaMainWindow *mw)
   gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
   
   gtk_widget_show (mw->priv->preview_button);
-  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), 
+  gtk_toolbar_insert (GTK_TOOLBAR (mw->priv->call_panel_toolbar),
 		      GTK_TOOL_ITEM (item), -1);
   gtk_tool_item_set_tooltip_text (GTK_TOOL_ITEM (item),
 				  _("Display images from your camera device"));
@@ -3573,7 +3564,7 @@ ekiga_main_window_init_call_panel (EkigaMainWindow *mw)
   gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
   
   gtk_widget_show (mw->priv->hold_button);
-  gtk_toolbar_insert (GTK_TOOLBAR (toolbar), 
+  gtk_toolbar_insert (GTK_TOOLBAR (mw->priv->call_panel_toolbar),
 		      GTK_TOOL_ITEM (item), -1);
   gtk_tool_item_set_tooltip_text (GTK_TOOL_ITEM (item),
 				  _("Hold the current call"));
@@ -3583,15 +3574,59 @@ ekiga_main_window_init_call_panel (EkigaMainWindow *mw)
 		    G_CALLBACK (hold_current_call_cb), mw);
 
   alignment = gtk_alignment_new (0.0, 0.0, 1.0, 0.0);
-  gtk_container_add (GTK_CONTAINER (alignment), toolbar);
+  gtk_container_add (GTK_CONTAINER (alignment), mw->priv->call_panel_toolbar);
   gtk_table_attach (GTK_TABLE (table), alignment,
                     1, 3, 2, 3,         
                     (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
                     (GtkAttachOptions) (GTK_FILL | GTK_EXPAND),
                     0, 0);
 
-  gtk_paned_pack2 (GTK_PANED (mw->priv->hpaned), frame, true, false);
-}  
+  gtk_paned_pack2 (GTK_PANED (mw->priv->hpaned), mw->priv->call_panel_frame, true, false);
+}
+
+static void
+ekiga_main_window_style_notify (GtkWidget *widget)
+{
+  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (widget);
+  GtkStyle *style = gtk_widget_get_style (widget);
+  GdkColor *bgcolor = &style->light[GTK_STATE_NORMAL];
+  GtkWidget *w;
+
+  /**
+   * We defer setting the custom colors till the "notify::style" signal is
+   * emitted. The reason is the style settings are not set correctly before
+   * and so we'd get wrong colors.
+   * Also, this signal allows us to keep the colors fine when the user changes
+   * his theme from the gnome capplet.
+   */
+
+  gtk_widget_modify_bg (mw->priv->call_panel_frame, GTK_STATE_PRELIGHT, bgcolor);
+  gtk_widget_modify_bg (mw->priv->call_panel_frame, GTK_STATE_NORMAL, bgcolor);
+
+  w = gtk_bin_get_child (GTK_BIN (mw->priv->call_panel_frame));
+  gtk_widget_modify_bg (w, GTK_STATE_PRELIGHT, bgcolor);
+  gtk_widget_modify_bg (w, GTK_STATE_NORMAL, bgcolor);
+
+  gtk_widget_modify_bg (mw->priv->info_text, GTK_STATE_PRELIGHT, bgcolor);
+  gtk_widget_modify_bg (mw->priv->info_text, GTK_STATE_NORMAL, bgcolor);
+  gtk_widget_modify_bg (mw->priv->info_text, GTK_STATE_INSENSITIVE, bgcolor);
+  gtk_widget_modify_base (mw->priv->info_text, GTK_STATE_PRELIGHT, bgcolor);
+  gtk_widget_modify_base (mw->priv->info_text, GTK_STATE_NORMAL, bgcolor);
+  gtk_widget_modify_base (mw->priv->info_text, GTK_STATE_INSENSITIVE, bgcolor);
+
+  g_object_set (mw->priv->status_tag,
+                "foreground-gdk", &style->text[GTK_STATE_NORMAL],
+                NULL);
+  g_object_set (mw->priv->codecs_tag,
+                "foreground-gdk", &style->text_aa[GTK_STATE_NORMAL],
+                NULL);
+  g_object_set (mw->priv->call_duration_tag,
+                "foreground-gdk", &style->text[GTK_STATE_NORMAL],
+                NULL);
+
+  gtk_widget_modify_bg (mw->priv->call_panel_toolbar, GTK_STATE_PRELIGHT, bgcolor);
+  gtk_widget_modify_bg (mw->priv->call_panel_toolbar, GTK_STATE_NORMAL, bgcolor);
+}
 
 static void
 ekiga_main_window_init_gui (EkigaMainWindow *mw)
@@ -3667,6 +3702,9 @@ ekiga_main_window_init_gui (EkigaMainWindow *mw)
   g_signal_connect (G_OBJECT (mw->priv->statusbar_ebox), "button-press-event",
 		    GTK_SIGNAL_FUNC (statusbar_clicked_cb), mw);
  
+  g_signal_connect (mw, "notify::style",
+                    G_CALLBACK (ekiga_main_window_style_notify), NULL);
+
   gtk_widget_realize (GTK_WIDGET (mw));
   ekiga_main_window_update_logo_have_window (mw);
   g_signal_connect_after (G_OBJECT (mw->priv->main_notebook), "switch-page",
