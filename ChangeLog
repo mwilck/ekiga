@@ -1,3 +1,9 @@
+2008-10-26  Damien Sandras  <dsandras@gnome.org>
+
+        * src/endpoints/opal-call.cpp, src/endpoints/opal-call.h:
+        Do not answer or hangup calls in a separate thread, or cancelling an 
+        outgoing call before it gets established won't work.
+
 2008-10-26  Steve Frécinaux  <code@istique.net>
 
 	* src/gui/main.cpp: Do not hardcode white background for the call

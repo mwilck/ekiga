@@ -90,18 +90,31 @@ Opal::Call::~Call ()
 void
 Opal::Call::hangup ()
 {
-  PThread::Create (PCREATE_NOTIFIER (OnHangup), NULL,
-                   PThread::AutoDeleteThread, PThread::NormalPriority,
-                   "Opal::Call Answer Thread");
+  if (!is_outgoing () && !IsEstablished ())
+    Clear (OpalConnection::EndedByAnswerDenied);
+  else
+    Clear ();
 }
 
 
 void
 Opal::Call::answer ()
 {
-  PThread::Create (PCREATE_NOTIFIER (OnAnswer), NULL,
-                   PThread::AutoDeleteThread, PThread::NormalPriority,
-                   "Opal::Call Answer Thread");
+  PSafePtr<OpalConnection> connection = NULL;
+  int i = 0;
+
+  if (!is_outgoing () && !IsEstablished ()) {
+
+    do {
+
+      connection = GetConnection (i);
+      i++;
+    }  while (!PIsDescendant(&(*connection), OpalPCSSConnection));
+
+    if (PIsDescendant(&(*connection), OpalPCSSConnection)) {
+      PDownCast (OpalPCSSConnection, &(*connection))->AcceptIncoming ();
+    }
+  }
 }
 
 
@@ -627,37 +640,6 @@ Opal::Call::OnRTPStatistics (const OpalConnection & /* connection */,
   lost_packets = (lost_a + lost_v) / max ((unsigned long)(total_a + total_v), (unsigned long) 1);
   late_packets = (too_late_a + too_late_v) / max ((unsigned long)(total_a + total_v), (unsigned long) 1);
   out_of_order_packets = (out_of_order_a + out_of_order_v) / max ((unsigned long)(total_a + total_v), (unsigned long) 1);
-}
-
-
-void
-Opal::Call::OnAnswer (PThread &, INT /*param*/)
-{
-  PSafePtr<OpalConnection> connection = NULL;
-  int i = 0;
-
-  if (!is_outgoing () && !IsEstablished ()) {
-
-    do {
-
-      connection = GetConnection (i);
-      i++;
-    }  while (!PIsDescendant(&(*connection), OpalPCSSConnection));
-
-    if (PIsDescendant(&(*connection), OpalPCSSConnection)) {
-      PDownCast (OpalPCSSConnection, &(*connection))->AcceptIncoming ();
-    }
-  }
-}
-
-
-void
-Opal::Call::OnHangup (PThread &, INT /*param*/)
-{
-  if (!is_outgoing () && !IsEstablished ())
-    Clear (OpalConnection::EndedByAnswerDenied);
-  else
-    Clear ();
 }
 
 
