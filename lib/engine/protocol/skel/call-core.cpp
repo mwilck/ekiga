@@ -205,6 +205,5 @@ void CallCore::on_manager_ready (CallManager *manager)
 
 void CallCore::on_call_removed (gmref_ptr<Call> call)
 {
-  std::cout << "on_call_removed " << std::endl << std::flush;
   remove_call (call);
 }
