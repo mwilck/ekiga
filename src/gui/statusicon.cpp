@@ -127,12 +127,12 @@ statusicon_set_inacall (StatusIcon *widget,
 
 static void 
 established_call_cb (Ekiga::CallManager & manager,
-                     Ekiga::Call & call,
+                     gmref_ptr<Ekiga::Call>  call,
                      gpointer self);
 
 static void 
 cleared_call_cb (Ekiga::CallManager & manager,
-                 Ekiga::Call & call,
+                 gmref_ptr<Ekiga::Call>  call,
                  std::string reason,
                  gpointer self);
 
@@ -356,7 +356,7 @@ personal_details_updated_cb (StatusIcon* self,
 
 static void 
 established_call_cb (Ekiga::CallManager & /*manager*/,
-                     Ekiga::Call & /*call*/,
+                     gmref_ptr<Ekiga::Call>  /*call*/,
                      gpointer self)
 {
   statusicon_set_inacall (STATUSICON (self), true);
@@ -365,7 +365,7 @@ established_call_cb (Ekiga::CallManager & /*manager*/,
 
 static void 
 cleared_call_cb (Ekiga::CallManager & /*manager*/,
-                 Ekiga::Call & /*call*/,
+                 gmref_ptr<Ekiga::Call>  /*call*/,
                  std::string /*reason*/,
                  gpointer self)
 {

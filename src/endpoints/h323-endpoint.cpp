@@ -48,31 +48,6 @@ namespace Opal {
 
   namespace H323 {
 
-    class dialer : public PThread
-    {
-      PCLASSINFO(dialer, PThread);
-
-  public:
-
-      dialer (const std::string & uri, Opal::CallManager & _manager) 
-        : PThread (1000, AutoDeleteThread), 
-        dial_uri (uri),
-        manager (_manager) 
-      {
-        this->Resume ();
-      };
-
-      void Main () 
-        {
-          PString token;
-          manager.SetUpCall ("pc:*", dial_uri, token);
-        };
-
-  private:
-      const std::string dial_uri;
-      Opal::CallManager & manager;
-    };
-
     class subscriber : public PThread
     {
       PCLASSINFO(subscriber, PThread);
@@ -170,7 +145,8 @@ bool Opal::H323::EndPoint::dial (const std::string & uri)
 {
   if (uri.find ("h323:") == 0) {
 
-    new Opal::H323::dialer (uri, manager);
+    PString token;
+    manager.SetUpCall("pc:*", uri, token);
 
     return true;
   }

@@ -38,10 +38,13 @@
 #ifndef __CALL_H__
 #define __CALL_H__
 
+#include "gmref.h"
+
 #include <sigc++/sigc++.h>
 #include <time.h>
 #include <string>
 #include <sstream>
+#include <iostream>
 
 namespace Ekiga
 {
@@ -55,7 +58,7 @@ namespace Ekiga
    * Everything is handled asynchronously and signaled through the
    * Ekiga::CallManager
    */
-  class Call
+  class Call : public virtual GmRefCounted
     {
 
   public:
@@ -64,7 +67,7 @@ namespace Ekiga
         {
         }
 
-      virtual ~Call () {};
+      virtual ~Call () { };
 
       enum StreamType { Audio, Video };
 
@@ -257,6 +260,10 @@ namespace Ekiga
        */
       sigc::signal<void, std::string, StreamType> stream_resumed;
 
+      /** This signal is emitted when the Call is removed.
+       */
+      sigc::signal<void> removed;
+     
     };
 
 /**

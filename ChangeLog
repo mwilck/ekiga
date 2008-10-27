@@ -1,4 +1,27 @@
-2008-10-26  Damien Sandras  <dsandras@gnome.org>
+2008-10-27  Damien Sandras  <dsandras@gnome.org>
+
+        * src/endpoints/sip-endpoint.cpp:
+        * src/endpoints/manager.cpp:
+        * src/endpoints/sip-endpoint.h:
+        * src/endpoints/manager.h:
+        * src/endpoints/h323-endpoint.cpp:
+        * src/gui/main.cpp:
+        * src/gui/statusicon.cpp:
+        * lib/gui/Makefile.am:
+        * lib/engine/addressbook/call-history/history-book.h:
+        * lib/engine/addressbook/call-history/history-book.cpp:
+        * lib/engine/protocol/skel/call.h:
+        * lib/engine/protocol/skel/call-core.cpp:
+        * lib/engine/protocol/skel/call-core.h:
+        Use gmref memory management for the Ekiga::Call objects. The principle is 
+        simple, OPAL does not free OpalCall objects itself. When the Opal component 
+        thinks the object should be deleted, it emits the "removed" signal on the 
+        Opal::Call object, which triggers the disconnection of signals and the 
+        automatic deletion when the ref count reaches zero.
+        It fixes, among others, potential problems due to the OpalCall object being
+        deleted too early by OPAL and still being accessed by the GUI.
+
+2008-10-27  Damien Sandras  <dsandras@gnome.org>
 
         * src/endpoints/opal-call.cpp, src/endpoints/opal-call.h:
         Do not answer or hangup calls in a separate thread, or cancelling an 

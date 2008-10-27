@@ -133,8 +133,6 @@ namespace Opal {
 
 
       /* OPAL Methods */
-      void ShutDown ();
-
       void Register (const Opal::Account & account);
 
       void OnRegistered (const PString & aor,

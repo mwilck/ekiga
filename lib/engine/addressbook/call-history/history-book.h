@@ -99,10 +99,10 @@ namespace History
     void common_add (Contact &contact);
 
     void on_missed_call (Ekiga::CallManager &manager,
-			 Ekiga::Call &call);
+			 gmref_ptr<Ekiga::Call> call);
 
     void on_cleared_call (Ekiga::CallManager &manager,
-			  Ekiga::Call &call,
+			  gmref_ptr<Ekiga::Call> call,
 			  std::string message);
 
     Ekiga::ServiceCore &core;

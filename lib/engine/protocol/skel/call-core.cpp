@@ -92,85 +92,104 @@ bool CallCore::dial (const std::string uri)
 }
 
 
-void CallCore::add_call (Call *call, CallManager *manager)
+void CallCore::add_call (gmref_ptr<Call> call, CallManager *manager)
 {
-  call->ringing.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_ringing_call), call, manager));
-  call->setup.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_setup_call), call, manager));
-  call->missed.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_missed_call), call, manager));
-  call->cleared.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_cleared_call), call, manager));
-  call->established.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_established_call), call, manager));
-  call->held.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_held_call), call, manager));
-  call->retrieved.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_retrieved_call), call, manager));
-  call->stream_opened.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_stream_opened), call, manager));
-  call->stream_closed.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_stream_closed), call, manager));
-  call->stream_paused.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_stream_paused), call, manager));
-  call->stream_resumed.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_stream_resumed), call, manager));
+  std::list<sigc::connection> conns;
+
+  conns.push_back (call->ringing.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_ringing_call), call, manager)));
+  conns.push_back (call->setup.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_setup_call), call, manager)));
+  conns.push_back (call->missed.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_missed_call), call, manager)));
+  conns.push_back (call->cleared.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_cleared_call), call, manager)));
+  conns.push_back (call->established.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_established_call), call, manager)));
+  conns.push_back (call->held.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_held_call), call, manager)));
+  conns.push_back (call->retrieved.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_retrieved_call), call, manager)));
+  conns.push_back (call->stream_opened.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_stream_opened), call, manager)));
+  conns.push_back (call->stream_closed.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_stream_closed), call, manager)));
+  conns.push_back (call->stream_paused.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_stream_paused), call, manager)));
+  conns.push_back (call->stream_resumed.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_stream_resumed), call, manager)));
+  conns.push_back (call->removed.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_call_removed), call)));
+
+  calls[call->get_id ()] = conns;
 }
 
 
-void CallCore::on_ringing_call (Call *call, CallManager *manager)
+void CallCore::remove_call (gmref_ptr<Call> call)
 {
-  ringing_call.emit (*manager, *call);
+  while (calls.begin () != calls.end ()) {
+
+    for (std::list<sigc::connection>::iterator iter2 = calls.begin()->second.begin ();
+         iter2 != calls.begin()->second.end ();
+	 ++iter2)
+      iter2->disconnect ();
+
+    calls.erase (calls.begin()->first);
+  }
 }
 
 
-void CallCore::on_setup_call (Call *call, CallManager *manager)
+void CallCore::on_ringing_call (gmref_ptr<Call> call, CallManager *manager)
 {
-  setup_call.emit (*manager, *call);
+  ringing_call.emit (*manager, call);
 }
 
 
-void CallCore::on_missed_call (Call *call, CallManager *manager)
+void CallCore::on_setup_call (gmref_ptr<Call> call, CallManager *manager)
 {
-  missed_call.emit (*manager, *call);
+  setup_call.emit (*manager, call);
 }
 
 
-void CallCore::on_cleared_call (std::string reason, Call *call, CallManager *manager)
+void CallCore::on_missed_call (gmref_ptr<Call> call, CallManager *manager)
 {
-  cleared_call.emit (*manager, *call, reason);
+  missed_call.emit (*manager, call);
 }
 
 
-void CallCore::on_established_call (Call *call, CallManager *manager)
+void CallCore::on_cleared_call (std::string reason, gmref_ptr<Call> call, CallManager *manager)
 {
-  established_call.emit (*manager, *call);
+  cleared_call.emit (*manager, call, reason); 
 }
 
 
-void CallCore::on_held_call (Call *call, CallManager *manager)
+void CallCore::on_established_call (gmref_ptr<Call> call, CallManager *manager)
 {
-  held_call.emit (*manager, *call);
+  established_call.emit (*manager, call);
 }
 
 
-void CallCore::on_retrieved_call (Call *call, CallManager *manager)
+void CallCore::on_held_call (gmref_ptr<Call> call, CallManager *manager)
 {
-  retrieved_call.emit (*manager, *call);
+  held_call.emit (*manager, call);
 }
 
 
-void CallCore::on_stream_opened (std::string name, Call::StreamType type, bool is_transmitting, Call *call, CallManager *manager)
+void CallCore::on_retrieved_call (gmref_ptr<Call> call, CallManager *manager)
 {
-  stream_opened.emit (*manager, *call, name, type, is_transmitting);
+  retrieved_call.emit (*manager, call);
 }
 
 
-void CallCore::on_stream_closed (std::string name, Call::StreamType type, bool is_transmitting, Call *call, CallManager *manager)
+void CallCore::on_stream_opened (std::string name, Call::StreamType type, bool is_transmitting, gmref_ptr<Call> call, CallManager *manager)
 {
-  stream_closed.emit (*manager, *call, name, type, is_transmitting);
+  stream_opened.emit (*manager, call, name, type, is_transmitting);
 }
 
 
-void CallCore::on_stream_paused (std::string name, Call::StreamType type, Call *call, CallManager *manager)
+void CallCore::on_stream_closed (std::string name, Call::StreamType type, bool is_transmitting, gmref_ptr<Call> call, CallManager *manager)
 {
-  stream_paused.emit (*manager, *call, name, type);
+  stream_closed.emit (*manager, call, name, type, is_transmitting);
 }
 
 
-void CallCore::on_stream_resumed (std::string name, Call::StreamType type, Call *call, CallManager *manager)
+void CallCore::on_stream_paused (std::string name, Call::StreamType type, gmref_ptr<Call> call, CallManager *manager)
 {
-  stream_resumed.emit (*manager, *call, name, type);
+  stream_paused.emit (*manager, call, name, type);
+}
+
+
+void CallCore::on_stream_resumed (std::string name, Call::StreamType type, gmref_ptr<Call> call, CallManager *manager)
+{
+  stream_resumed.emit (*manager, call, name, type);
 }
 
 
@@ -181,4 +200,11 @@ void CallCore::on_manager_ready (CallManager *manager)
 
   if (nr_ready >= managers.size ())
     ready.emit ();
+}
+
+
+void CallCore::on_call_removed (gmref_ptr<Call> call)
+{
+  std::cout << "on_call_removed " << std::endl << std::flush;
+  remove_call (call);
 }

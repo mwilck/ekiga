@@ -149,6 +149,7 @@ public:
 
 private:
     OpalCall *CreateCall ();
+    void DestroyCall (OpalCall *);
 
     bool OnOpenMediaStream (OpalConnection &,
                             OpalMediaStream &);
@@ -168,6 +169,7 @@ private:
        variables */
     PMutex manager_access_mutex;
 
+    Ekiga::Runtime *runtime;
     Ekiga::ServiceCore & core;
     Ekiga::CodecList codecs; 
     gmref_ptr<Ekiga::CallCore> call_core; // FIXME: is it threaded in there?

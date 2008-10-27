@@ -83,32 +83,6 @@ namespace Opal {
 
   namespace Sip {
 
-    class dialer : public PThread
-    {
-      PCLASSINFO(dialer, PThread);
-
-  public:
-
-      dialer (const std::string & uri, Opal::CallManager & _manager) 
-        : PThread (1000, AutoDeleteThread), 
-        dial_uri (uri),
-        manager (_manager) 
-      {
-        this->Resume ();
-      };
-
-      void Main () 
-        {
-          PString token;
-          manager.SetUpCall ("pc:*", dial_uri, token);
-        };
-
-  private:
-      const std::string dial_uri;
-      Opal::CallManager & manager;
-    };
-
-
     class subscriber : public PThread
     {
       PCLASSINFO(subscriber, PThread);
@@ -429,7 +403,8 @@ bool Opal::Sip::EndPoint::dial (const std::string & uri)
     else
       ustr << uri;
 
-    new Opal::Sip::dialer (ustr.str (), manager);
+    PString token;
+    manager.SetUpCall("pc:*", ustr.str(), token);
 
     return true;
   }
@@ -577,22 +552,6 @@ bool Opal::Sip::EndPoint::unsubscribe (const Opal::Account & account)
 
   new subscriber (account, *this);
   return true;
-}
-
-
-void Opal::Sip::EndPoint::ShutDown ()
-{
-  listeners.RemoveAll ();
-
-  for (PSafePtr<SIPTransaction> transaction(transactions, PSafeReference);      transaction != NULL; ++transaction)
-    transaction->WaitForCompletion();
-
-  while (activeSIPHandlers.GetSize() > 0) {
-    PSafePtr<SIPHandler> handler = activeSIPHandlers;
-    activeSIPHandlers.Remove(handler);
-  }
-
-  SIPEndPoint::ShutDown ();
 }
 
 

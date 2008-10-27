@@ -140,6 +140,11 @@ CallManager::CallManager (Ekiga::ServiceCore & _core)
   SetMediaFormatMask (PStringArray ());
 
   call_core = core.get ("call-core");
+  {
+    gmref_ptr<Ekiga::Runtime> smart = core.get ("runtime");
+    gmref_inc (smart); // take a reference in the main thread
+    runtime = &*smart;
+  }
 
   // used to communicate with the StunDetector
 #if GLIB_CHECK_VERSION(2,16,0)
@@ -154,9 +159,10 @@ CallManager::CallManager (Ekiga::ServiceCore & _core)
 
 CallManager::~CallManager ()
 {
-  ClearAllCalls (OpalConnection::EndedByLocalUser, false);
+  ClearAllCalls (OpalConnection::EndedByLocalUser, true);
 
   g_async_queue_unref (queue);
+  gmref_dec (runtime);
 }
 
 
@@ -166,7 +172,6 @@ void CallManager::start ()
   new StunDetector (stun_server, *this, queue);
 
   patience = 20;
-  gmref_ptr<Ekiga::Runtime> runtime = core.get ("runtime");
   runtime->run_in_main (sigc::mem_fun (this, &CallManager::HandleSTUNResult), 1);
 }
 
@@ -623,12 +628,21 @@ void CallManager::get_video_options (CallManager::VideoOptions & options) const
 
 OpalCall *CallManager::CreateCall ()
 {
-  Ekiga::Call *call = NULL;
+  gmref_ptr<Ekiga::Call> call = NULL;
 
-  call = new Opal::Call (*this, core);
+  call = gmref_ptr<Ekiga::Call> (new Opal::Call (*this, core));
   call_core->add_call (call, this);
 
-  return dynamic_cast<OpalCall *> (call);
+  return dynamic_cast<OpalCall *> (&*call);
+}
+
+
+void
+CallManager::DestroyCall (OpalCall *_call)
+{
+  Ekiga::Call *call = dynamic_cast<Ekiga::Call *> (_call);
+
+  runtime->emit_signal_in_main(call->removed);
 }
 
 
@@ -719,7 +733,6 @@ CallManager::HandleSTUNResult ()
   } else {
 
       patience--;
-      gmref_ptr<Ekiga::Runtime> runtime = core.get ("runtime");
       runtime->run_in_main (sigc::mem_fun (this,
 					  &CallManager::HandleSTUNResult),
 			    1);
@@ -732,7 +745,6 @@ CallManager::ReportSTUNError (const std::string error)
   // notice we're in for an infinite loop if nobody ever reports to the user!
   if ( !call_core->errors.handle_request (error)) {
 
-    gmref_ptr<Ekiga::Runtime> runtime = core.get ("runtime");
     runtime->run_in_main (sigc::bind (sigc::mem_fun (this,
 						     &CallManager::ReportSTUNError),
 				      error),

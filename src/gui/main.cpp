@@ -181,7 +181,7 @@ struct _EkigaMainWindowPrivate
   GtkWidget *transfer_call_popup;
 
   /* Calls */
-  Ekiga::Call *current_call;
+  gmref_ptr<Ekiga::Call> current_call;
   unsigned timeout_id;
   unsigned calling_state;
   bool audio_transmission_active;
@@ -250,11 +250,11 @@ void ekiga_main_window_clear_signal_levels (EkigaMainWindow *mw);
 static void ekiga_main_window_selected_presentity_build_menu (EkigaMainWindow *mw);
 
 static void ekiga_main_window_incoming_call_dialog_show (EkigaMainWindow *mw,
-                                                      Ekiga::Call & call);
+                                                      gmref_ptr<Ekiga::Call>  call);
 
 #ifdef HAVE_NOTIFY
 static void ekiga_main_window_incoming_call_notify (EkigaMainWindow *mw,
-                                                    Ekiga::Call & call);
+                                                    gmref_ptr<Ekiga::Call>  call);
 #endif
 
 
@@ -542,14 +542,14 @@ static void on_registration_event (const Ekiga::Account & account,
 
 
 static void on_setup_call_cb (Ekiga::CallManager & /*manager*/,
-                              Ekiga::Call & call,
+                              gmref_ptr<Ekiga::Call>  call,
                               gpointer self)
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
   gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core
     = mw->priv->core->get ("audiooutput-core");
 
-  if (!call.is_outgoing ()) {
+  if (!call->is_outgoing ()) {
     ekiga_main_window_update_calling_state (mw, Called);
     audiooutput_core->start_play_event ("incoming_call_sound", 4000, 256);
 #ifdef HAVE_NOTIFY
@@ -560,22 +560,22 @@ static void on_setup_call_cb (Ekiga::CallManager & /*manager*/,
   }
   else {
     ekiga_main_window_update_calling_state (mw, Calling);
-    if (!call.get_remote_uri ().empty ())
-      ekiga_main_window_set_call_url (mw, call.get_remote_uri ().c_str());
-    mw->priv->current_call = &call;
+    if (!call->get_remote_uri ().empty ())
+      ekiga_main_window_set_call_url (mw, call->get_remote_uri ().c_str());
+    mw->priv->current_call = call;
   }
 }
 
 
 static void on_ringing_call_cb (Ekiga::CallManager & /*manager*/,
-                                Ekiga::Call & call,
+                                gmref_ptr<Ekiga::Call>  call,
                                 gpointer self)
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
   gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core
     = mw->priv->core->get ("audiooutput-core");
 
-  if (call.is_outgoing ()) {
+  if (call->is_outgoing ()) {
     audiooutput_core->start_play_event("ring_tone_sound", 3000, 256);
   }
 }
@@ -635,17 +635,17 @@ static gboolean on_signal_level_refresh_cb (gpointer self)
 }
 
 static void on_established_call_cb (Ekiga::CallManager & /*manager*/,
-                                    Ekiga::Call & call,
+                                    gmref_ptr<Ekiga::Call>  call,
                                     gpointer self)
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
   gchar* info = NULL;
 
   info = g_strdup_printf (_("Connected with %s"),
-			  call.get_remote_party_name ().c_str ());
+			  call->get_remote_party_name ().c_str ());
 
-  if (!call.get_remote_uri ().empty ())
-    ekiga_main_window_set_call_url (mw, call.get_remote_uri ().c_str());
+  if (!call->get_remote_uri ().empty ())
+    ekiga_main_window_set_call_url (mw, call->get_remote_uri ().c_str());
   if (gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top"))
     ekiga_main_window_set_stay_on_top (mw, TRUE);
   ekiga_main_window_set_status (mw, info);
@@ -654,7 +654,7 @@ static void on_established_call_cb (Ekiga::CallManager & /*manager*/,
     ekiga_main_window_show_call_panel (mw);
   ekiga_main_window_update_calling_state (mw, Connected);
 
-  mw->priv->current_call = &call;
+  mw->priv->current_call = call;
 
   mw->priv->timeout_id = g_timeout_add (1000, on_stats_refresh_cb, self);
 
@@ -669,7 +669,7 @@ static void on_established_call_cb (Ekiga::CallManager & /*manager*/,
 
 
 static void on_cleared_call_cb (Ekiga::CallManager & /*manager*/,
-                                Ekiga::Call & call,
+                                gmref_ptr<Ekiga::Call>  call,
                                 std::string reason, 
                                 gpointer self)
 {
@@ -687,8 +687,7 @@ static void on_cleared_call_cb (Ekiga::CallManager & /*manager*/,
   ekiga_main_window_push_message (mw, "%s", reason.c_str ());
   ekiga_main_window_update_logo_have_window (mw);
 
-  if (mw->priv->current_call && mw->priv->current_call->get_id () == call.get_id ()) {
-
+  if (mw->priv->current_call && mw->priv->current_call->get_id () == call->get_id ()) {
     mw->priv->current_call = NULL;
     g_source_remove (mw->priv->timeout_id);
     mw->priv->timeout_id = -1;
@@ -732,7 +731,7 @@ static void on_missed_incoming_call_cb (gpointer self)
 
 
 static void on_held_call_cb (Ekiga::CallManager & /*manager*/,
-                             Ekiga::Call & /*call*/,
+                             gmref_ptr<Ekiga::Call>  /*call*/,
                              gpointer self)
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
@@ -743,7 +742,7 @@ static void on_held_call_cb (Ekiga::CallManager & /*manager*/,
 
 
 static void on_retrieved_call_cb (Ekiga::CallManager & /*manager*/,
-                                  Ekiga::Call & /*call*/,
+                                  gmref_ptr<Ekiga::Call>  /*call*/,
                                   gpointer self)
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
@@ -754,7 +753,7 @@ static void on_retrieved_call_cb (Ekiga::CallManager & /*manager*/,
 
 
 static void on_missed_call_cb (Ekiga::CallManager & /*manager*/,
-                               Ekiga::Call & call,
+                               gmref_ptr<Ekiga::Call>  call,
                                gpointer self)
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
@@ -766,14 +765,14 @@ static void on_missed_call_cb (Ekiga::CallManager & /*manager*/,
 
   gchar* info = NULL;
   info = g_strdup_printf (_("Missed call from %s"),
-			  call.get_remote_party_name ().c_str ());
+			  call->get_remote_party_name ().c_str ());
   ekiga_main_window_push_message (mw, "%s", info);
   g_free (info);
 }
 
 
 static void on_stream_opened_cb (Ekiga::CallManager & /*manager*/,
-                                 Ekiga::Call & /* call */,
+                                 gmref_ptr<Ekiga::Call>  /* call */,
                                  std::string name,
                                  Ekiga::Call::StreamType type,
                                  bool is_transmitting,
@@ -822,7 +821,7 @@ static void on_stream_opened_cb (Ekiga::CallManager & /*manager*/,
 
 
 static void on_stream_closed_cb (Ekiga::CallManager & /*manager*/,
-                                 Ekiga::Call & /* call */,
+                                 gmref_ptr<Ekiga::Call>  /* call */,
                                  std::string name,
                                  Ekiga::Call::StreamType type,
                                  bool is_transmitting,
@@ -871,7 +870,7 @@ static void on_stream_closed_cb (Ekiga::CallManager & /*manager*/,
 
 
 static void on_stream_paused_cb (Ekiga::CallManager & /*manager*/,
-                                 Ekiga::Call & /*call*/,
+                                 gmref_ptr<Ekiga::Call>  /*call*/,
                                  std::string /*name*/,
                                  Ekiga::Call::StreamType type,
                                  gpointer self)
@@ -881,7 +880,7 @@ static void on_stream_paused_cb (Ekiga::CallManager & /*manager*/,
 
 
 static void on_stream_resumed_cb (Ekiga::CallManager & /*manager*/,
-                                  Ekiga::Call & /*call*/,
+                                  gmref_ptr<Ekiga::Call>  /*call*/,
                                   std::string /*name*/,
                                   Ekiga::Call::StreamType type,
                                   gpointer self)
@@ -972,7 +971,7 @@ on_videooutput_device_error_cb (Ekiga::VideoOutputManager & /* manager */,
   dialog_title =
   g_strdup_printf (_("Error while initializing video output"));
 
-  tmp_msg = g_strdup (_("No video will be displayed during this call."));
+  tmp_msg = g_strdup (_("No video will be displayed during this call->"));
   switch (error_code) {
 
     case Ekiga::VO_ERROR_NONE:
@@ -1484,11 +1483,8 @@ hangup_call_cb (GtkWidget * /*widget*/,
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (data);
 
-  if (mw->priv->current_call) {
-
+  if (mw->priv->current_call)
     mw->priv->current_call->hangup ();
-    mw->priv->current_call = NULL;
-  }
 }
 
 
@@ -2590,7 +2586,7 @@ ekiga_main_window_selected_presentity_build_menu (EkigaMainWindow *mw)
 
 static void
 ekiga_main_window_incoming_call_dialog_show (EkigaMainWindow *mw,
-                                             Ekiga::Call & call)
+                                             gmref_ptr<Ekiga::Call>  call)
 {
   GdkPixbuf *pixbuf = NULL;
 
@@ -2603,10 +2599,10 @@ ekiga_main_window_incoming_call_dialog_show (EkigaMainWindow *mw,
   gchar *msg = NULL;
 
   // FIXME could the call become invalid ?
-  const char *utf8_name = call.get_remote_party_name ().c_str ();
-  const char *utf8_app = call.get_remote_application ().c_str ();
-  const char *utf8_url = call.get_remote_uri ().c_str ();
-  const char *utf8_local = call.get_local_party_name ().c_str ();
+  const char *utf8_name = call->get_remote_party_name ().c_str ();
+  const char *utf8_app = call->get_remote_application ().c_str ();
+  const char *utf8_url = call->get_remote_uri ().c_str ();
+  const char *utf8_local = call->get_local_party_name ().c_str ();
 
   g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
 
@@ -2687,9 +2683,9 @@ ekiga_main_window_incoming_call_dialog_show (EkigaMainWindow *mw,
   g_signal_connect (G_OBJECT (incoming_call_popup), "response",
                     GTK_SIGNAL_FUNC (incoming_call_response_cb), &call);
 
-  call.cleared.connect (sigc::bind (sigc::ptr_fun (on_cleared_incoming_call_cb),
+  call->cleared.connect (sigc::bind (sigc::ptr_fun (on_cleared_incoming_call_cb),
                                     (gpointer) incoming_call_popup));
-  call.missed.connect (sigc::bind (sigc::ptr_fun (on_missed_incoming_call_cb), 
+  call->missed.connect (sigc::bind (sigc::ptr_fun (on_missed_incoming_call_cb), 
                                    (gpointer) incoming_call_popup));
 }
 
@@ -2732,7 +2728,7 @@ closed_cb (NotifyNotification* /*notify*/,
 
 static void
 ekiga_main_window_incoming_call_notify (EkigaMainWindow *mw,
-                                        Ekiga::Call & call)
+                                        gmref_ptr<Ekiga::Call>  call)
 {
   NotifyNotification *notify = NULL;
   
@@ -2747,10 +2743,10 @@ ekiga_main_window_incoming_call_notify (EkigaMainWindow *mw,
   statusicon = GTK_STATUS_ICON (GnomeMeeting::Process ()->GetStatusicon ());
 
   // FIXME could the call become invalid ?
-  const char *utf8_name = call.get_remote_party_name ().c_str ();
-  const char *utf8_app = call.get_remote_application ().c_str ();
-  const char *utf8_url = call.get_remote_uri ().c_str ();
-  const char *utf8_local = call.get_local_party_name ().c_str ();
+  const char *utf8_name = call->get_remote_party_name ().c_str ();
+  const char *utf8_app = call->get_remote_application ().c_str ();
+  const char *utf8_url = call->get_remote_uri ().c_str ();
+  const char *utf8_local = call->get_local_party_name ().c_str ();
 
   title = g_strdup_printf ("%s %s", _("Incoming call from"), (const char*) utf8_name);
 
@@ -2773,9 +2769,9 @@ ekiga_main_window_incoming_call_notify (EkigaMainWindow *mw,
     ekiga_main_window_incoming_call_dialog_show (mw, call);
   }
   else {
-    call.cleared.connect (sigc::bind (sigc::ptr_fun (on_cleared_incoming_call_cb),
+    call->cleared.connect (sigc::bind (sigc::ptr_fun (on_cleared_incoming_call_cb),
                                       (gpointer) notify));
-    call.missed.connect (sigc::bind (sigc::ptr_fun (on_missed_incoming_call_cb), 
+    call->missed.connect (sigc::bind (sigc::ptr_fun (on_missed_incoming_call_cb), 
                                      (gpointer) notify));
   }
 

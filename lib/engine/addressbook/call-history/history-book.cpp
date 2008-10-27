@@ -201,23 +201,23 @@ History::Book::clear ()
 
 void
 History::Book::on_missed_call (Ekiga::CallManager &/*manager*/,
-			       Ekiga::Call &call)
+			       gmref_ptr<Ekiga::Call> call)
 {
-  add (call.get_remote_party_name (),
-       call.get_remote_uri (),
-       call.get_start_time (),
-       call.get_duration (),
+  add (call->get_remote_party_name (),
+       call->get_remote_uri (),
+       call->get_start_time (),
+       call->get_duration (),
        MISSED);
 }
 
 void
 History::Book::on_cleared_call (Ekiga::CallManager &/*manager*/,
-				Ekiga::Call &call,
+				gmref_ptr<Ekiga::Call> call,
 				std::string /*message*/)
 {
-  add (call.get_remote_party_name (),
-       call.get_remote_uri (),
-       call.get_start_time (),
-       call.get_duration (),
-       (call.is_outgoing ()?PLACED:RECEIVED));
+  add (call->get_remote_party_name (),
+       call->get_remote_uri (),
+       call->get_start_time (),
+       call->get_duration (),
+       (call->is_outgoing ()?PLACED:RECEIVED));
 }

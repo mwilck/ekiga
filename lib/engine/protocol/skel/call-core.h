@@ -41,6 +41,7 @@
 #include "chain-of-responsibility.h"
 #include "services.h"
 #include "call.h"
+#include "gmref.h"
 
 #include <sigc++/sigc++.h>
 #include <set>
@@ -95,7 +96,12 @@ namespace Ekiga
        * @param call is the call to be added.
        * @param manager is the CallManager handling it.
        */
-      void add_call (Call *call, CallManager *manager);
+      void add_call (gmref_ptr<Call> call, CallManager *manager);
+
+      /** Remove a call handled by the CallCore serice.
+       * @param call is the call to be removed.
+       */
+      void remove_call (gmref_ptr<Call> call);
 
       /** Adds a CallManager to the CallCore service.
        * @param The manager to be added.
@@ -132,17 +138,17 @@ namespace Ekiga
       
       /** See call.h for the API
        */
-      sigc::signal<void, CallManager &, Call &> ringing_call;
-      sigc::signal<void, CallManager &, Call &> setup_call;
-      sigc::signal<void, CallManager &, Call &> missed_call;
-      sigc::signal<void, CallManager &, Call &, std::string> cleared_call;
-      sigc::signal<void, CallManager &, Call &> established_call;
-      sigc::signal<void, CallManager &, Call &> held_call;
-      sigc::signal<void, CallManager &, Call &> retrieved_call;
-      sigc::signal<void, CallManager &, Call &, std::string, Call::StreamType, bool> stream_opened;
-      sigc::signal<void, CallManager &, Call &, std::string, Call::StreamType, bool> stream_closed;
-      sigc::signal<void, CallManager &, Call &, std::string, Call::StreamType> stream_paused;
-      sigc::signal<void, CallManager &, Call &, std::string, Call::StreamType> stream_resumed;
+      sigc::signal<void, CallManager &, gmref_ptr<Call> > ringing_call;
+      sigc::signal<void, CallManager &, gmref_ptr<Call> > setup_call;
+      sigc::signal<void, CallManager &, gmref_ptr<Call> > missed_call;
+      sigc::signal<void, CallManager &, gmref_ptr<Call>, std::string> cleared_call;
+      sigc::signal<void, CallManager &, gmref_ptr<Call> > established_call;
+      sigc::signal<void, CallManager &, gmref_ptr<Call> > held_call;
+      sigc::signal<void, CallManager &, gmref_ptr<Call> > retrieved_call;
+      sigc::signal<void, CallManager &, gmref_ptr<Call>, std::string, Call::StreamType, bool> stream_opened;
+      sigc::signal<void, CallManager &, gmref_ptr<Call>, std::string, Call::StreamType, bool> stream_closed;
+      sigc::signal<void, CallManager &, gmref_ptr<Call>, std::string, Call::StreamType> stream_paused;
+      sigc::signal<void, CallManager &, gmref_ptr<Call>, std::string, Call::StreamType> stream_resumed;
 
       /*** Misc ***/
       sigc::signal<void, CallManager &> manager_ready;
@@ -153,18 +159,18 @@ namespace Ekiga
       ChainOfResponsibility<std::string> errors;
 
   private:
-      void on_new_call (Call *call, CallManager *manager);
-      void on_ringing_call (Call *call, CallManager *manager);
-      void on_setup_call (Call *call, CallManager *manager);
-      void on_missed_call (Call *call, CallManager *manager);
-      void on_cleared_call (std::string, Call *call, CallManager *manager);
-      void on_established_call (Call *call, CallManager *manager);
-      void on_held_call (Call *call, CallManager *manager);
-      void on_retrieved_call (Call *call, CallManager *manager);
-      void on_stream_opened (std::string name, Call::StreamType type, bool is_transmitting, Call *call, CallManager *manager);
-      void on_stream_closed (std::string name, Call::StreamType type, bool is_transmitting, Call *call, CallManager *manager);
-      void on_stream_paused (std::string name, Call::StreamType type, Call *call, CallManager *manager);
-      void on_stream_resumed (std::string name, Call::StreamType type, Call *call, CallManager *manager);
+      void on_new_call (gmref_ptr<Call> call, CallManager *manager);
+      void on_ringing_call (gmref_ptr<Call> call, CallManager *manager);
+      void on_setup_call (gmref_ptr<Call> call, CallManager *manager);
+      void on_missed_call (gmref_ptr<Call> call, CallManager *manager);
+      void on_cleared_call (std::string, gmref_ptr<Call> call, CallManager *manager);
+      void on_established_call (gmref_ptr<Call> call, CallManager *manager);
+      void on_held_call (gmref_ptr<Call> call, CallManager *manager);
+      void on_retrieved_call (gmref_ptr<Call> call, CallManager *manager);
+      void on_stream_opened (std::string name, Call::StreamType type, bool is_transmitting, gmref_ptr<Call> call, CallManager *manager);
+      void on_stream_closed (std::string name, Call::StreamType type, bool is_transmitting, gmref_ptr<Call> call, CallManager *manager);
+      void on_stream_paused (std::string name, Call::StreamType type, gmref_ptr<Call> call, CallManager *manager);
+      void on_stream_resumed (std::string name, Call::StreamType type, gmref_ptr<Call> call, CallManager *manager);
 
       void on_im_failed (std::string, std::string, CallManager *manager);
       void on_im_sent (std::string, std::string, CallManager *manager);
@@ -172,8 +178,12 @@ namespace Ekiga
       void on_new_chat (std::string, std::string, CallManager *manager);
 
       void on_manager_ready (CallManager *manager);
+
+      void on_call_removed (gmref_ptr<Call> call);
+
       
       std::set<CallManager *> managers;
+      std::map<std::string, std::list<sigc::connection> > calls;
       unsigned nr_ready;
     };
 
