@@ -61,7 +61,7 @@ export PATH:=$(BINDIR):$(PATH)
 export LDD:=$(BUILDROOT)/$(HOST_TOOL_PREFIX)-ldd.sh
 
 
-EKIGA_VER = 2.9
+EKIGA_VER = 3.0.1
 EKIGA_REV = HEAD
 EKIGA_URL = http://svn.gnome.org/svn/ekiga/branches/gnome-2-24
 EKIGA_ARCHIVE := ekiga
@@ -431,12 +431,12 @@ update-sources::
 	echo --- Getting OPAL $(OPAL_REV)...
 	$(SVN) co $(OPAL_URL) $(SRCDIR)/$(OPAL_ARCHIVE) -r $(OPAL_REV)
 
-$(OPAL_DIR)/configure: binaries $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(LIBDIR)/libpt_s.a $(SRCDIR)/$(OPAL_ARCHIVE) $(BINDIR)/avcodec.dll $(LIBDIR)/libx264.a $(LIBDIR)/libtheora.a
+$(OPAL_DIR)/configure: binaries 
 	rm -rf $(OPAL_DIR) $(LIBDIR)/libopal_s.a
 	$(CP) -r $(SRCDIR)/$(OPAL_ARCHIVE) $(OPAL_DIR)
 	touch $@
 
-$(OPAL_DIR)/config.status: binaries $(OPAL_DIR)/configure
+$(OPAL_DIR)/config.status: binaries $(OPAL_DIR)/configure $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(LIBDIR)/libpt_s.a $(SRCDIR)/$(OPAL_ARCHIVE) $(BINDIR)/avcodec.dll $(LIBDIR)/libx264.a $(LIBDIR)/libtheora.a
 	rm -f $(LIBDIR)/libopal_s.a
 ifeq ($(DEBUG),1)
 	(cd $(OPAL_DIR)/; ./configure $(confopal) --enable-debug )
