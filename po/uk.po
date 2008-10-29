@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ekiga\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-29 02:57+0000\n"
+"POT-Creation-Date: 2008-10-29 01:05+0000\n"
 "PO-Revision-Date: 2008-10-29 02:57-0000\n"
 "Last-Translator: Maxim V. Dziumanenko <dziumanenko@gmail.com>\n"
 "Language-Team: Ukrainian <linux@linux.org.ua>\n"
@@ -169,7 +169,7 @@ msgstr "Переадресовувати виклики на вказану ма
 msgid "Forward calls to the given host if no answer"
 msgstr "Переадресовувати виклики на вказану машину, якщо немає відповіді"
 
-#: ../ekiga.schemas.in.in.h:30 ../src/gui/preferences.cpp:1002
+#: ../ekiga.schemas.in.in.h:30 ../src/gui/preferences.cpp:999
 msgid "Frame Rate"
 msgstr "Частота кадрів"
 
@@ -287,15 +287,15 @@ msgstr "Тип пристрою виводу"
 msgid "Place windows displaying video above other windows during calls"
 msgstr "При викликах розміщувати вікна, що показують відео, над іншими вікнами"
 
-#: ../ekiga.schemas.in.in.h:55 ../src/gui/preferences.cpp:1372
+#: ../ekiga.schemas.in.in.h:55 ../src/gui/preferences.cpp:1367
 msgid "Play busy tone"
 msgstr "Відтворювати тон \"зайнято\""
 
-#: ../ekiga.schemas.in.in.h:56 ../src/gui/preferences.cpp:1363
+#: ../ekiga.schemas.in.in.h:56 ../src/gui/preferences.cpp:1358
 msgid "Play ring tone"
 msgstr "Відтворювати тон дзвінка"
 
-#: ../ekiga.schemas.in.in.h:57 ../src/gui/preferences.cpp:1354
+#: ../ekiga.schemas.in.in.h:57 ../src/gui/preferences.cpp:1349
 msgid "Play sound on incoming calls"
 msgstr "Відтворювати звук при вхідних дзвінках"
 
@@ -377,7 +377,7 @@ msgstr "Вкажіть пристрій вводу звуку"
 msgid "Select the audio output device to use"
 msgstr "Вкажіть пристрій відтворення звуку"
 
-#: ../ekiga.schemas.in.in.h:77 ../src/gui/preferences.cpp:866
+#: ../ekiga.schemas.in.in.h:77 ../src/gui/preferences.cpp:863
 msgid ""
 "Select the format for video cameras (does not apply to most USB cameras)"
 msgstr ""
@@ -391,7 +391,7 @@ msgstr ""
 "Виберіть розмір відео, що передається: малий (QCIF 176x144) чи великий (CIF "
 "352x288)."
 
-#: ../ekiga.schemas.in.in.h:79 ../src/gui/preferences.cpp:858
+#: ../ekiga.schemas.in.in.h:79 ../src/gui/preferences.cpp:855
 msgid ""
 "Select the video input device to use. If an error occurs when using this "
 "device a test picture will be transmitted."
@@ -403,7 +403,7 @@ msgstr ""
 msgid "Show offline contacts"
 msgstr "Показувати контакти не у мережі"
 
-#: ../ekiga.schemas.in.in.h:81 ../src/gui/main.cpp:3177
+#: ../ekiga.schemas.in.in.h:81 ../src/gui/main.cpp:1858
 msgid "Show the call panel"
 msgstr "Показати панель виклику"
 
@@ -730,7 +730,7 @@ msgstr ""
 msgid "The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)"
 msgstr "Дві літери коду вашої країни (тобто UA, BE, FR, DE, ...)."
 
-#: ../ekiga.schemas.in.in.h:141 ../src/gui/preferences.cpp:862
+#: ../ekiga.schemas.in.in.h:141 ../src/gui/preferences.cpp:859
 msgid "The video channel number to use (to select camera, tv or other sources)"
 msgstr "Номер відеоканалу (камера, ТБ чи інше джерело)"
 
@@ -827,7 +827,7 @@ msgstr "Формат відео"
 msgid "Video image"
 msgstr "Відео"
 
-#: ../ekiga.schemas.in.in.h:157 ../src/gui/assistant.cpp:1152
+#: ../ekiga.schemas.in.in.h:157 ../src/gui/assistant.cpp:1146
 msgid "Video input device"
 msgstr "Пристрій вводу відео"
 
@@ -850,85 +850,86 @@ msgstr ""
 "забезпечувати найвищу якість зображення, 31: надавати перевагу частоті "
 "кадрів."
 
-#: ../lib/engine/addressbook/call-history/history-contact.cpp:152
+#: ../lib/engine/addressbook/call-history/history-contact.cpp:151
 msgid "Received"
 msgstr "Отримані"
 
-#: ../lib/engine/addressbook/call-history/history-contact.cpp:155
+#: ../lib/engine/addressbook/call-history/history-contact.cpp:154
 msgid "Placed"
 msgstr "Набрані"
 
-#: ../lib/engine/addressbook/call-history/history-contact.cpp:158
+#: ../lib/engine/addressbook/call-history/history-contact.cpp:157
 msgid "Missed"
 msgstr "Пропущені"
 
 #: ../lib/engine/addressbook/evolution/evolution-contact.cpp:234
-#: ../lib/engine/presence/local-roster/local-presentity.cpp:196
-#: ../src/endpoints/opal-account.cpp:310 ../src/gui/main.cpp:3135
+#: ../lib/engine/presence/local-roster/local-presentity.cpp:197
+#: ../src/endpoints/opal-account.cpp:310 ../src/gui/main.cpp:1816
 msgid "_Edit"
 msgstr "_Правка"
 
 #: ../lib/engine/addressbook/evolution/evolution-contact.cpp:236
-#: ../lib/engine/presence/local-roster/local-presentity.cpp:198
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:323
+#: ../lib/engine/presence/local-roster/local-presentity.cpp:199
 #: ../src/endpoints/opal-account.cpp:312
 msgid "_Remove"
 msgstr "В_идалити"
 
-#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:326
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:325
 msgid "Edit contact"
 msgstr "Редагування контакту"
 
-#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:328
-#: ../lib/engine/addressbook/evolution/evolution-book.cpp:290
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:327
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:298
 #: ../src/endpoints/opal-account.cpp:353
 msgid "Please update the following fields:"
 msgstr "Заповніть наступні поля:"
 
-#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:330
-#: ../lib/engine/presence/local-roster/local-presentity.cpp:223
-#: ../lib/engine/presence/local-roster/local-heap.cpp:182
-#: ../lib/engine/presence/local-roster/local-heap.cpp:334
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:329
+#: ../lib/engine/presence/local-roster/local-presentity.cpp:224
+#: ../lib/engine/presence/local-roster/local-heap.cpp:177
+#: ../lib/engine/presence/local-roster/local-heap.cpp:324
 #: ../src/endpoints/opal-account.cpp:355 ../src/endpoints/opal-bank.cpp:101
 #: ../src/endpoints/opal-bank.cpp:111
 msgid "Name:"
 msgstr "Ім'я:"
 
-#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:339
-#: ../lib/engine/addressbook/evolution/evolution-book.cpp:293
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:338
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:301
 msgid "VoIP _URI:"
 msgstr "VoIP _URL:"
 
-#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:340
-#: ../lib/engine/addressbook/evolution/evolution-book.cpp:294
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:339
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:302
 msgid "_Home phone:"
 msgstr "_Домашній телефон:"
 
-#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:341
-#: ../lib/engine/addressbook/evolution/evolution-book.cpp:295
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:340
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:303
 msgid "_Office phone:"
 msgstr "_Офісний телефон"
 
-#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:342
-#: ../lib/engine/addressbook/evolution/evolution-book.cpp:296
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:341
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:304
 msgid "_Cell phone:"
 msgstr "_Мобільний телефон"
 
-#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:343
-#: ../lib/engine/addressbook/evolution/evolution-book.cpp:297
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:342
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:305
 msgid "_Pager:"
 msgstr "_Пейджер:"
 
-#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:395
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:392
 msgid "Remove contact"
 msgstr "Видалення контакту"
 
-#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:397
+#: ../lib/engine/addressbook/evolution/evolution-contact.cpp:394
 #, c-format
 msgid "Are you sure you want to remove %s from the addressbook?"
 msgstr "Ви дійсно бажаєте видалити обліковий запис %s з адресної книги?"
 
 #: ../lib/engine/addressbook/evolution/evolution-book.cpp:76
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:901
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:601
 #, c-format
 msgid "%d user found"
 msgid_plural "%d users found"
@@ -937,224 +938,170 @@ msgstr[1] "Знайдено %d користувача"
 msgstr[2] "Знайдено %d користувачів"
 
 #: ../lib/engine/addressbook/evolution/evolution-book.cpp:244
-msgid "New _Contact"
-msgstr "_Створити контакт"
-
-#: ../lib/engine/addressbook/evolution/evolution-book.cpp:288
-#: ../lib/engine/presence/local-roster/local-heap.cpp:115
-msgid "New contact"
-msgstr "Створення контакту"
-
-#: ../lib/engine/addressbook/evolution/evolution-book.cpp:292
-msgid "_Name:"
-msgstr "_Ім'я:"
-
-#: ../lib/engine/addressbook/ldap/ldap-source.cpp:132
-msgid "Add an LDAP Address Book"
-msgstr "Додати адресну книгу LDAP"
-
-#: ../lib/engine/addressbook/ldap/ldap-source.cpp:135
-msgid "Add the Ekiga.net Directory"
-msgstr "Додати каталог користувачів Ekiga.net"
-
-#: ../lib/engine/addressbook/ldap/ldap-source.cpp:157
-msgid "Create LDAP directory"
-msgstr "Створити каталог LDAP"
-
-#: ../lib/engine/addressbook/ldap/ldap-source.cpp:172
-msgid "Ekiga.net Directory"
-msgstr "Каталог користувачів LDAP"
-
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:410
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:320
 msgid "_Refresh"
 msgstr "_Оновити"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:413
-msgid "_Remove addressbook"
-msgstr "В_идалити адресну книгу"
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:247
+msgid "New _Contact"
+msgstr "_Створити контакт"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:415
-msgid "Addressbook _properties"
-msgstr "В_ластивості адресної книги"
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:296
+#: ../lib/engine/presence/local-roster/local-heap.cpp:118
+msgid "New contact"
+msgstr "Створення контакту"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:546
-msgid "LDAP SASL Interaction"
-msgstr "Взаємодія LDAP з SASL"
+#: ../lib/engine/addressbook/evolution/evolution-book.cpp:300
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:157
+msgid "_Name:"
+msgstr "_Ім'я:"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:578
-msgid "Challenge: "
-msgstr "Виклик: "
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:139
+msgid "Add an LDAP Address Book"
+msgstr "Додати адресну книгу LDAP"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:586
-msgid "Interact"
-msgstr "Взаємодія"
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:142
+msgid "Add the Ekiga.net Directory"
+msgstr "Додати каталог користувачів Ekiga.net"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:655
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:153
+msgid "Create LDAP directory"
+msgstr "Створити каталог LDAP"
+
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:155
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:621
+msgid "Please edit the following fields"
+msgstr "Відредагуйте наступні поля"
+
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:158
+msgid "_Hostname:"
+msgstr "В_узол:"
+
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:159
+msgid "_Port:"
+msgstr "_Порт:"
+
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:160
+msgid "_Base DN:"
+msgstr "_Базова DN:"
+
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:164
+msgid "_Subtree"
+msgstr "_Дерево"
+
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:165
+msgid "Single _Level"
+msgstr "_Один рівень"
+
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:166
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:639
+msgid "_Scope"
+msgstr "_Вигляд"
+
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:169
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:642
+msgid "Call _Attribute"
+msgstr "_Атрибут виклику"
+
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:170
+msgid "Password"
+msgstr "Пароль"
+
+#: ../lib/engine/addressbook/ldap/ldap-source.cpp:188
+msgid "Ekiga.net Directory"
+msgstr "Каталог користувачів LDAP"
+
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:325
+msgid "_Properties"
+msgstr "В_ластивості"
+
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:390
 msgid "Refreshing"
 msgstr "Оновлення"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:661
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:398
 msgid "Could not initialize server"
 msgstr "Не вдається ініціалізувати сервер"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:675
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:720
-msgid "LDAP Error: "
-msgstr "Помилка LDAP: "
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:431
+msgid "Could not contact server"
+msgstr "Не вдається з'єднатись з сервером"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:729
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:439
 msgid "Contacted server"
 msgstr "Сервер, що відповів"
 
 #. patience == 0
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:772
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:476
 msgid "Could not connect to server"
 msgstr "Не вдається з'єднатись з сервером"
 
 #. patience == 0
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:820
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:874
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:526
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:574
 msgid "Could not search"
 msgstr "Не вдається запустити пошук"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:828
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:534
 msgid "Waiting for search results"
 msgstr "Очікування результатів пошуку"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:923
-msgid "Please edit the following fields"
-msgstr "Відредагуйте наступні поля"
-
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:925
-msgid "Book _Name"
-msgstr "_Назва книги"
-
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:926
-msgid "Server _URI"
-msgstr "_URI сервера"
-
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:927
-msgid "_Base DN"
-msgstr "_Базова DN:"
-
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:933
-msgid "Subtree"
-msgstr "Дерево"
-
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:934
-msgid "Single Level"
-msgstr "Один рівень"
-
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:935
-msgid "_Search Scope"
-msgstr "Область по_шуку:"
-
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:944
-msgid "_DisplayName Attribute"
-msgstr "Атрибут _ВизначногоІмені (DN)"
-
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:945
-msgid "Call _Attributes"
-msgstr "_Атрибут виклику"
-
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:947
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:949
-msgid "_Filter Template"
-msgstr "Шаблон _фільтру"
-
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:951
-msgid "Bind _ID"
-msgstr "_Ідентифікатор прив'язки"
-
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:952
-msgid "_Password"
-msgstr "_Пароль"
-
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:953
-msgid "Use TLS"
-msgstr "Використовувати TLS"
-
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:954
-msgid "Use SASL"
-msgstr "Використовувати SASL"
-
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:968
-msgid "SASL _Mechanism"
-msgstr "_Механізм SASL"
-
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:979
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:619
 msgid "Edit LDAP directory"
 msgstr "Редагувати каталог на сервері LDAP"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:1008
-msgid "Please provide a Book Name for this directory\n"
-msgstr "Вкажіть назву книги для цього каталогу\n"
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:623
+msgid "_Name"
+msgstr "_Ім'я:"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:1011
-msgid "Please provide a Server URI\n"
-msgstr "Вкажіть URI сервера\n"
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:624
+msgid "_Hostname"
+msgstr "_Назва вузла"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:1014
-msgid "Please provide a DisplayName Attribute\n"
-msgstr "Вкажіть атрибут ВизначногоІмені (DN)\n"
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:630
+msgid "_Port"
+msgstr "_Порт"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:1017
-msgid "Please provide a Call Attribute\n"
-msgstr "Вкажіть атрибут виклику\n"
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:632
+msgid "_Base DN"
+msgstr "_Базова DN:"
 
-#: ../lib/engine/addressbook/ldap/ldap-book.cpp:1020
-msgid "Invalid Server URI\n"
-msgstr "Неправильний URI сервера\n"
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:637
+msgid "Subtree"
+msgstr "Дерево"
+
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:638
+msgid "Single Level"
+msgstr "Один рівень"
+
+#: ../lib/engine/addressbook/ldap/ldap-book.cpp:644
+msgid "_Password"
+msgstr "_Пароль"
 
 #: ../lib/engine/addressbook/skel/contact-core.cpp:57
 msgid "_Find"
 msgstr "З_найти"
 
-#: ../lib/engine/components/gstreamer/gst-audioinput.cpp:270
-msgid "Audio test"
-msgstr "Перевірка звуку"
-
-#: ../lib/engine/components/gstreamer/gst-audiooutput.cpp:282
-msgid "Silent"
-msgstr "Тихо"
-
-#: ../lib/engine/components/gstreamer/gst-videoinput.cpp:226
-msgid "Video test"
-msgstr "Перевірка відео"
-
-#: ../lib/engine/components/gstreamer/gst-videoinput.cpp:370
-#: ../lib/engine/components/gstreamer/gst-videoinput.cpp:373
-msgid "Crazy"
-msgstr "Скажений"
-
-#: ../lib/engine/components/gstreamer/gst-videoinput.cpp:370
-msgid "Goom"
-msgstr "В'язкий"
-
-#: ../lib/engine/components/gstreamer/gst-videoinput.cpp:373
-msgid "Screencast"
-msgstr "Екранна копія"
-
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:656
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:659
 msgid "Address Book"
 msgstr "Адресна книга"
 
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:672
-#: ../src/gui/main.cpp:3084
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:675
+#: ../src/gui/main.cpp:1765
 msgid "Address _Book"
 msgstr "_Адресна книга"
 
 #. This will add static and dynamic actions
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:681
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:684
 msgid "_Action"
 msgstr "Д_ія"
 
-#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:726
+#: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:729
 msgid "Category"
 msgstr "Категорія"
 
 #: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:638
-#: ../src/gui/assistant.cpp:1375
+#: ../src/gui/assistant.cpp:1366
 msgid "Full Name"
 msgstr "Повне ім'я"
 
@@ -1193,103 +1140,79 @@ msgstr "Вікно розмови"
 msgid "Unsorted"
 msgstr "Без сортування"
 
-#: ../lib/engine/presence/avahi/avahi-heap.cpp:126
-#: ../lib/engine/presence/avahi/avahi-heap.cpp:308
+#: ../lib/engine/presence/avahi/avahi-heap.cpp:130
+#: ../lib/engine/presence/avahi/avahi-heap.cpp:316
 msgid "Neighbours"
 msgstr "Сусіди"
 
-#: ../lib/engine/presence/local-roster/local-presentity.cpp:220
+#: ../lib/engine/presence/local-roster/local-presentity.cpp:221
 msgid "Edit roster element"
 msgstr "Редагувати елемент списку"
 
-#: ../lib/engine/presence/local-roster/local-presentity.cpp:221
+#: ../lib/engine/presence/local-roster/local-presentity.cpp:222
 msgid ""
 "Please fill in this form to change an existing element of ekiga's internal "
 "roster"
 msgstr ""
 "Заповніть цю форму для зміни існуючого елементу локального списку ekiga"
 
-#: ../lib/engine/presence/local-roster/local-presentity.cpp:224
-#: ../lib/engine/presence/local-roster/local-heap.cpp:191
-#: ../lib/engine/presence/local-roster/local-heap.cpp:193
+#: ../lib/engine/presence/local-roster/local-presentity.cpp:225
+#: ../lib/engine/presence/local-roster/local-heap.cpp:186
+#: ../lib/engine/presence/local-roster/local-heap.cpp:188
 msgid "Address:"
 msgstr "Адреса:"
 
-#: ../lib/engine/presence/local-roster/local-presentity.cpp:226
+#: ../lib/engine/presence/local-roster/local-presentity.cpp:227
 msgid "Choose groups:"
 msgstr "Виберіть групи:"
 
 #: ../lib/engine/presence/local-roster/local-roster-bridge.cpp:94
-#: ../lib/engine/presence/local-roster/local-heap.cpp:179
+#: ../lib/engine/presence/local-roster/local-heap.cpp:174
 msgid "Add to local roster"
 msgstr "Додати до локальних контактів"
 
-#: ../lib/engine/presence/local-roster/local-heap.cpp:90
+#: ../lib/engine/presence/local-roster/local-heap.cpp:93
 msgid "Services"
 msgstr "Служби"
 
-#: ../lib/engine/presence/local-roster/local-heap.cpp:91
+#: ../lib/engine/presence/local-roster/local-heap.cpp:94
 msgid "Echo test"
 msgstr "Перевірка дзвінка"
 
-#: ../lib/engine/presence/local-roster/local-heap.cpp:92
+#: ../lib/engine/presence/local-roster/local-heap.cpp:95
 msgid "Conference room"
 msgstr "Кімната конференцій"
 
-#: ../lib/engine/presence/local-roster/local-heap.cpp:108
+#: ../lib/engine/presence/local-roster/local-heap.cpp:111
 msgid "Local roster"
 msgstr "Локальні контакти"
 
-#: ../lib/engine/presence/local-roster/local-heap.cpp:125
+#: ../lib/engine/presence/local-roster/local-heap.cpp:128
 msgid "Rename"
 msgstr "Перейменувати"
 
-#: ../lib/engine/presence/local-roster/local-heap.cpp:158
-msgid "Family"
-msgstr "Родина"
-
-#: ../lib/engine/presence/local-roster/local-heap.cpp:159
-msgid "Friend"
-msgstr "Друзі"
-
-#: ../lib/engine/presence/local-roster/local-heap.cpp:160
-msgid "Associate"
-msgstr "Пов'язати"
-
-#: ../lib/engine/presence/local-roster/local-heap.cpp:161
-msgid "Assistant"
-msgstr "Помічник"
-
-#: ../lib/engine/presence/local-roster/local-heap.cpp:162
-msgid "Supervisor"
-msgstr "Супервізор"
-
-#: ../lib/engine/presence/local-roster/local-heap.cpp:163
-msgid "Self"
-msgstr "Я сам"
-
-#: ../lib/engine/presence/local-roster/local-heap.cpp:180
+#: ../lib/engine/presence/local-roster/local-heap.cpp:175
 msgid ""
 "Please fill in this form to add a new contact to ekiga's internal roster"
 msgstr "Заповніть форму та додайте новий контакт до локального списку"
 
-#: ../lib/engine/presence/local-roster/local-heap.cpp:197
+#: ../lib/engine/presence/local-roster/local-heap.cpp:192
 msgid "Put contact in groups:"
 msgstr "Додати контакт до групи:"
 
-#: ../lib/engine/presence/local-roster/local-heap.cpp:305
+#: ../lib/engine/presence/local-roster/local-heap.cpp:295
 msgid "You supplied an unsupported address"
 msgstr "Ви вказали непідтримувану адресу"
 
-#: ../lib/engine/presence/local-roster/local-heap.cpp:307
+#: ../lib/engine/presence/local-roster/local-heap.cpp:297
 msgid "You already have a contact with this address!"
 msgstr "Вже є контакт з такою адресою!"
 
-#: ../lib/engine/presence/local-roster/local-heap.cpp:332
+#: ../lib/engine/presence/local-roster/local-heap.cpp:322
 msgid "Rename group"
 msgstr "Перейменувати групу"
 
-#: ../lib/engine/presence/local-roster/local-heap.cpp:333
+#: ../lib/engine/presence/local-roster/local-heap.cpp:323
 msgid "Please edit this group name"
 msgstr "Вкажіть назву групи"
 
@@ -1305,38 +1228,38 @@ msgstr "Перемістити виділений кодек у менш прі�
 msgid "Do not show this dialog again"
 msgstr "Не показувати це вікно знову"
 
-#: ../src/endpoints/h323-endpoint.cpp:132
-#: ../src/endpoints/sip-endpoint.cpp:256 ../src/endpoints/sip-endpoint.cpp:260
+#: ../src/endpoints/h323-endpoint.cpp:153
+#: ../src/endpoints/sip-endpoint.cpp:273 ../src/endpoints/sip-endpoint.cpp:277
 msgid "Call"
 msgstr "Виклик"
 
-#: ../src/endpoints/h323-endpoint.cpp:135
-#: ../src/endpoints/sip-endpoint.cpp:257 ../src/endpoints/sip-endpoint.cpp:261
-#: ../src/gui/main.cpp:2909
+#: ../src/endpoints/h323-endpoint.cpp:156
+#: ../src/endpoints/sip-endpoint.cpp:274 ../src/endpoints/sip-endpoint.cpp:278
+#: ../src/gui/main.cpp:3888
 msgid "Transfer"
 msgstr "Передача"
 
 #. Translators : The alias we are registering already exists : failure
-#: ../src/endpoints/h323-endpoint.cpp:299
+#: ../src/endpoints/h323-endpoint.cpp:319
 msgid "Duplicate alias"
 msgstr "Назва вже існує"
 
-#: ../src/endpoints/h323-endpoint.cpp:302
+#: ../src/endpoints/h323-endpoint.cpp:322
 msgid "Bad username/password"
 msgstr "Некоректне ім'я користувача/пароль"
 
-#: ../src/endpoints/h323-endpoint.cpp:305
-#: ../src/endpoints/sip-endpoint.cpp:873
+#: ../src/endpoints/h323-endpoint.cpp:325
+#: ../src/endpoints/sip-endpoint.cpp:904
 msgid "Transport error"
 msgstr "Помилка зв'язку"
 
-#: ../src/endpoints/h323-endpoint.cpp:316
-#: ../src/endpoints/h323-endpoint.cpp:321
-#: ../src/endpoints/sip-endpoint.cpp:880
+#: ../src/endpoints/h323-endpoint.cpp:336
+#: ../src/endpoints/h323-endpoint.cpp:341
+#: ../src/endpoints/sip-endpoint.cpp:911
 msgid "Failed"
 msgstr "Не вдається"
 
-#: ../src/endpoints/manager.cpp:714
+#: ../src/endpoints/manager.cpp:704
 msgid ""
 "Ekiga did not manage to configure your network settings automatically. You "
 "can still use it, but you need to configure your network settings manually.\n"
@@ -1358,11 +1281,11 @@ msgstr "В_имкнути"
 msgid "_Enable"
 msgstr "_Увімкнути"
 
-#: ../src/endpoints/opal-account.cpp:326 ../src/gui/assistant.cpp:726
+#: ../src/endpoints/opal-account.cpp:326 ../src/gui/assistant.cpp:723
 msgid "Recharge the account"
 msgstr "Оплатити послугу"
 
-#: ../src/endpoints/opal-account.cpp:331 ../src/gui/assistant.cpp:738
+#: ../src/endpoints/opal-account.cpp:331 ../src/gui/assistant.cpp:735
 msgid "Consult the balance history"
 msgstr "Показати зміну балансу"
 
@@ -1408,19 +1331,19 @@ msgstr "Затримка:"
 msgid "Enable Account"
 msgstr "Увімкнути обліковий запис"
 
-#: ../src/endpoints/opal-account.cpp:401 ../src/endpoints/opal-bank.cpp:157
+#: ../src/endpoints/opal-account.cpp:403 ../src/endpoints/opal-bank.cpp:155
 msgid "You did not supply a name for that account."
 msgstr "Не вказано назву облікового запису"
 
-#: ../src/endpoints/opal-account.cpp:403 ../src/endpoints/opal-bank.cpp:159
+#: ../src/endpoints/opal-account.cpp:405 ../src/endpoints/opal-bank.cpp:157
 msgid "You did not supply a host to register to."
 msgstr "Не вказано назву сервера для реєстрації."
 
-#: ../src/endpoints/opal-account.cpp:405 ../src/endpoints/opal-bank.cpp:161
+#: ../src/endpoints/opal-account.cpp:407 ../src/endpoints/opal-bank.cpp:159
 msgid "You did not supply a user name for that account."
 msgstr "Не вказано ім'я користувача у цьому обліковому записі."
 
-#: ../src/endpoints/opal-account.cpp:407 ../src/endpoints/opal-bank.cpp:163
+#: ../src/endpoints/opal-account.cpp:409 ../src/endpoints/opal-bank.cpp:161
 msgid "The timeout should have a bigger value."
 msgstr "Значення затримки надто мале."
 
@@ -1448,12 +1371,12 @@ msgstr "Заповніть наступні поля."
 msgid "Get an Ekiga.net SIP account"
 msgstr "Отримати обліковий запис SIP на сервері ekiga.net"
 
-#: ../src/endpoints/opal-bank.cpp:90 ../src/gui/assistant.cpp:714
+#: ../src/endpoints/opal-bank.cpp:90 ../src/gui/assistant.cpp:711
 msgid "Get an Ekiga Call Out account"
 msgstr "Отримати обліковий запис Call Out для Ekiga"
 
-#: ../src/endpoints/opal-bank.cpp:94 ../src/gui/main.cpp:2662
-#: ../src/gui/main.cpp:2758
+#: ../src/endpoints/opal-bank.cpp:94 ../src/gui/main.cpp:3585
+#: ../src/gui/main.cpp:3682
 msgid "Account ID:"
 msgstr "Ідентифікатор:"
 
@@ -1461,272 +1384,272 @@ msgstr "Ідентифікатор:"
 msgid "PIN Code:"
 msgstr "PIN-код:"
 
-#: ../src/endpoints/opal-call.cpp:428
+#: ../src/endpoints/opal-call.cpp:410
 msgid "Local user cleared the call"
 msgstr "Локальний користувач перервав виклик"
 
-#: ../src/endpoints/opal-call.cpp:431 ../src/endpoints/opal-call.cpp:434
+#: ../src/endpoints/opal-call.cpp:413 ../src/endpoints/opal-call.cpp:416
 msgid "Local user rejected the call"
 msgstr "Локальний користувач відмовився від виклику"
 
-#: ../src/endpoints/opal-call.cpp:437
+#: ../src/endpoints/opal-call.cpp:419
 msgid "Remote user cleared the call"
 msgstr "Віддалений користувач перервав виклик"
 
-#: ../src/endpoints/opal-call.cpp:440
+#: ../src/endpoints/opal-call.cpp:422
 msgid "Remote user rejected the call"
 msgstr "Віддалений користувач відмовився від виклику"
 
-#: ../src/endpoints/opal-call.cpp:443
+#: ../src/endpoints/opal-call.cpp:425
 msgid "Remote user has stopped calling"
 msgstr "Віддалений користувач припинив викликати"
 
-#: ../src/endpoints/opal-call.cpp:446
+#: ../src/endpoints/opal-call.cpp:428
 msgid "Abnormal call termination"
 msgstr "Ненормальне завершення виклику"
 
-#: ../src/endpoints/opal-call.cpp:449 ../src/gui/main.cpp:1473
+#: ../src/endpoints/opal-call.cpp:431 ../src/gui/main.cpp:1550
 msgid "Could not connect to remote host"
 msgstr "Не вдається підключитися до віддаленого вузла"
 
-#: ../src/endpoints/opal-call.cpp:452
+#: ../src/endpoints/opal-call.cpp:434
 msgid "The Gatekeeper cleared the call"
 msgstr "Вузол Gatekeeper перервав виклик"
 
-#: ../src/endpoints/opal-call.cpp:455
+#: ../src/endpoints/opal-call.cpp:437
 msgid "User not found"
 msgstr "Користувача не знайдено"
 
-#: ../src/endpoints/opal-call.cpp:458
+#: ../src/endpoints/opal-call.cpp:440
 msgid "Insufficient bandwidth"
 msgstr "Недостатня смуга пропускання"
 
-#: ../src/endpoints/opal-call.cpp:461
+#: ../src/endpoints/opal-call.cpp:443
 msgid "No common codec"
 msgstr "Немає спільного кодеку"
 
-#: ../src/endpoints/opal-call.cpp:464
+#: ../src/endpoints/opal-call.cpp:446
 msgid "Call forwarded"
 msgstr "Виклик переадресовано"
 
-#: ../src/endpoints/opal-call.cpp:467
+#: ../src/endpoints/opal-call.cpp:449
 msgid "Security check failed"
 msgstr "Помилка перевірки безпеки"
 
-#: ../src/endpoints/opal-call.cpp:470
+#: ../src/endpoints/opal-call.cpp:452
 msgid "Local user is busy"
 msgstr "Локальний користувач зайнятий"
 
-#: ../src/endpoints/opal-call.cpp:473 ../src/endpoints/opal-call.cpp:479
+#: ../src/endpoints/opal-call.cpp:455 ../src/endpoints/opal-call.cpp:461
 msgid "Congested link to remote party"
 msgstr "Завантажений канал до віддаленого абонента"
 
-#: ../src/endpoints/opal-call.cpp:476
+#: ../src/endpoints/opal-call.cpp:458
 msgid "Remote user is busy"
 msgstr "Віддалений користувач зайнятий"
 
-#: ../src/endpoints/opal-call.cpp:482
+#: ../src/endpoints/opal-call.cpp:464
 msgid "Remote host is offline"
 msgstr "Віддалений вузол вимкнений"
 
-#: ../src/endpoints/opal-call.cpp:488
+#: ../src/endpoints/opal-call.cpp:470
 msgid "User is not available"
 msgstr "Користувач недоступний"
 
-#: ../src/endpoints/opal-call.cpp:500
+#: ../src/endpoints/opal-call.cpp:482
 msgid "Call completed"
 msgstr "Виклик завершено"
 
-#: ../src/endpoints/sip-endpoint.cpp:281 ../src/endpoints/sip-endpoint.cpp:283
+#: ../src/endpoints/sip-endpoint.cpp:298 ../src/endpoints/sip-endpoint.cpp:300
 msgid "Message"
 msgstr "Повідомлення"
 
-#: ../src/endpoints/sip-endpoint.cpp:687
+#: ../src/endpoints/sip-endpoint.cpp:718
 msgid "Bad request"
 msgstr "Неправильний запит"
 
-#: ../src/endpoints/sip-endpoint.cpp:691
+#: ../src/endpoints/sip-endpoint.cpp:722
 msgid "Payment required"
 msgstr "Потрібна оплата"
 
-#: ../src/endpoints/sip-endpoint.cpp:695
+#: ../src/endpoints/sip-endpoint.cpp:726
 msgid "Unauthorized"
 msgstr "Не дозволено"
 
-#: ../src/endpoints/sip-endpoint.cpp:699
+#: ../src/endpoints/sip-endpoint.cpp:730
 msgid "Forbidden"
 msgstr "Заборонено"
 
-#: ../src/endpoints/sip-endpoint.cpp:703
+#: ../src/endpoints/sip-endpoint.cpp:734
 msgid "Timeout"
 msgstr "Час вийшов"
 
-#: ../src/endpoints/sip-endpoint.cpp:707
+#: ../src/endpoints/sip-endpoint.cpp:738
 msgid "Conflict"
 msgstr "Конфлікт"
 
-#: ../src/endpoints/sip-endpoint.cpp:711
+#: ../src/endpoints/sip-endpoint.cpp:742
 msgid "Temporarily unavailable"
 msgstr "Тимчасова недоступно"
 
-#: ../src/endpoints/sip-endpoint.cpp:715
+#: ../src/endpoints/sip-endpoint.cpp:746
 msgid "Not acceptable"
 msgstr "Неприпустимо"
 
-#: ../src/endpoints/sip-endpoint.cpp:719
+#: ../src/endpoints/sip-endpoint.cpp:750
 msgid "Illegal status code"
 msgstr "Некоректний код статусу"
 
-#: ../src/endpoints/sip-endpoint.cpp:723
+#: ../src/endpoints/sip-endpoint.cpp:754
 msgid "Multiple choices"
 msgstr "Можливі варіанти"
 
-#: ../src/endpoints/sip-endpoint.cpp:727
+#: ../src/endpoints/sip-endpoint.cpp:758
 msgid "Moved permanently"
 msgstr "Переміщено"
 
-#: ../src/endpoints/sip-endpoint.cpp:731
+#: ../src/endpoints/sip-endpoint.cpp:762
 msgid "Moved temporarily"
 msgstr "Тимчасово переміщено"
 
-#: ../src/endpoints/sip-endpoint.cpp:735
+#: ../src/endpoints/sip-endpoint.cpp:766
 msgid "Use proxy"
 msgstr "Використовувати проксі"
 
-#: ../src/endpoints/sip-endpoint.cpp:739
+#: ../src/endpoints/sip-endpoint.cpp:770
 msgid "Alternative service"
 msgstr "Альтернативна служба"
 
-#: ../src/endpoints/sip-endpoint.cpp:743
+#: ../src/endpoints/sip-endpoint.cpp:774
 msgid "Not found"
 msgstr "Не знайдено"
 
-#: ../src/endpoints/sip-endpoint.cpp:747
+#: ../src/endpoints/sip-endpoint.cpp:778
 msgid "Method not allowed"
 msgstr "Метод заборонено"
 
-#: ../src/endpoints/sip-endpoint.cpp:751
-msgid "Proxy authentication required"
-msgstr "Потрібна автентифікація проксі"
+#: ../src/endpoints/sip-endpoint.cpp:782
+msgid "Proxy auth. required"
+msgstr "Потрібна автентифікація на проксі-сервері"
 
-#: ../src/endpoints/sip-endpoint.cpp:755
+#: ../src/endpoints/sip-endpoint.cpp:786
 msgid "Length required"
 msgstr "Потрібна довжина"
 
-#: ../src/endpoints/sip-endpoint.cpp:759
+#: ../src/endpoints/sip-endpoint.cpp:790
 msgid "Request entity too big"
 msgstr "Запит надто великий"
 
-#: ../src/endpoints/sip-endpoint.cpp:763
+#: ../src/endpoints/sip-endpoint.cpp:794
 msgid "Request URI too long"
 msgstr "URI запиту надто довга"
 
-#: ../src/endpoints/sip-endpoint.cpp:767
+#: ../src/endpoints/sip-endpoint.cpp:798
 msgid "Unsupported media type"
 msgstr "Спосіб передачі не підтримується"
 
-#: ../src/endpoints/sip-endpoint.cpp:771
+#: ../src/endpoints/sip-endpoint.cpp:802
 msgid "Unsupported URI scheme"
 msgstr "Схема URI не підтримується"
 
 #. Translators : The extension we are trying to register does not exist
-#: ../src/endpoints/sip-endpoint.cpp:776
+#: ../src/endpoints/sip-endpoint.cpp:807
 msgid "Bad extension"
 msgstr "Розширення не підтримується"
 
-#: ../src/endpoints/sip-endpoint.cpp:780
+#: ../src/endpoints/sip-endpoint.cpp:811
 msgid "Extension required"
 msgstr "Вимагається доповнення URI"
 
-#: ../src/endpoints/sip-endpoint.cpp:784
+#: ../src/endpoints/sip-endpoint.cpp:815
 msgid "Interval too brief"
 msgstr "Інтервал надто малий"
 
-#: ../src/endpoints/sip-endpoint.cpp:788
+#: ../src/endpoints/sip-endpoint.cpp:819
 msgid "Loop detected"
 msgstr "Виявлено цикл"
 
-#: ../src/endpoints/sip-endpoint.cpp:792
+#: ../src/endpoints/sip-endpoint.cpp:823
 msgid "Too many hops"
 msgstr "Надто багато вузлів комутації"
 
-#: ../src/endpoints/sip-endpoint.cpp:796
+#: ../src/endpoints/sip-endpoint.cpp:827
 msgid "Address incomplete"
 msgstr "Адреса неточна"
 
-#: ../src/endpoints/sip-endpoint.cpp:800
+#: ../src/endpoints/sip-endpoint.cpp:831
 msgid "Ambiguous"
 msgstr "Надлишковий"
 
-#: ../src/endpoints/sip-endpoint.cpp:804
+#: ../src/endpoints/sip-endpoint.cpp:835
 msgid "Busy Here"
 msgstr "Зайнято"
 
-#: ../src/endpoints/sip-endpoint.cpp:808
+#: ../src/endpoints/sip-endpoint.cpp:839
 msgid "Request terminated"
 msgstr "Запит відхилено"
 
-#: ../src/endpoints/sip-endpoint.cpp:812
+#: ../src/endpoints/sip-endpoint.cpp:843
 msgid "Not acceptable here"
 msgstr "Неприпустимо"
 
-#: ../src/endpoints/sip-endpoint.cpp:816
+#: ../src/endpoints/sip-endpoint.cpp:847
 msgid "Bad event"
 msgstr "Неправильна подія"
 
-#: ../src/endpoints/sip-endpoint.cpp:820
+#: ../src/endpoints/sip-endpoint.cpp:851
 msgid "Request pending"
 msgstr "Запит оброблено"
 
-#: ../src/endpoints/sip-endpoint.cpp:824
+#: ../src/endpoints/sip-endpoint.cpp:855
 msgid "Undecipherable"
 msgstr "Не піддається аналізу"
 
-#: ../src/endpoints/sip-endpoint.cpp:828
+#: ../src/endpoints/sip-endpoint.cpp:859
 msgid "Internal server error"
 msgstr "Внутрішня помилка сервера"
 
-#: ../src/endpoints/sip-endpoint.cpp:832
+#: ../src/endpoints/sip-endpoint.cpp:863
 msgid "Not implemented"
 msgstr "Не підтримується"
 
-#: ../src/endpoints/sip-endpoint.cpp:836
+#: ../src/endpoints/sip-endpoint.cpp:867
 msgid "Bad gateway"
 msgstr "Некоректний шлюз"
 
-#: ../src/endpoints/sip-endpoint.cpp:840
+#: ../src/endpoints/sip-endpoint.cpp:871
 msgid "Service unavailable"
 msgstr "Служба недоступна"
 
-#: ../src/endpoints/sip-endpoint.cpp:844
+#: ../src/endpoints/sip-endpoint.cpp:875
 msgid "Server timeout"
 msgstr "Перевищено час очікування"
 
-#: ../src/endpoints/sip-endpoint.cpp:848
+#: ../src/endpoints/sip-endpoint.cpp:879
 msgid "SIP version not supported"
 msgstr "Версія SIP не підтримується"
 
-#: ../src/endpoints/sip-endpoint.cpp:852
+#: ../src/endpoints/sip-endpoint.cpp:883
 msgid "Message too large"
 msgstr "Повідомлення надто велике"
 
-#: ../src/endpoints/sip-endpoint.cpp:856
+#: ../src/endpoints/sip-endpoint.cpp:887
 msgid "Busy everywhere"
 msgstr "Всюди зайнято"
 
-#: ../src/endpoints/sip-endpoint.cpp:860
+#: ../src/endpoints/sip-endpoint.cpp:891
 msgid "Decline"
 msgstr "Відхилено"
 
-#: ../src/endpoints/sip-endpoint.cpp:864
+#: ../src/endpoints/sip-endpoint.cpp:895
 msgid "Does not exist anymore"
 msgstr "Більше не існує"
 
-#: ../src/endpoints/sip-endpoint.cpp:868
+#: ../src/endpoints/sip-endpoint.cpp:899
 msgid "Globally not acceptable"
 msgstr "Неприпустимо всюди"
 
-#: ../src/endpoints/sip-endpoint.cpp:996
+#: ../src/endpoints/sip-endpoint.cpp:1027
 msgid "Could not send message"
 msgstr "Не вдається надіслати повідомлення"
 
@@ -1750,27 +1673,27 @@ msgstr "Не вдається зареєструватися"
 msgid "Processing..."
 msgstr "Обробка..."
 
-#: ../src/gui/accounts.cpp:627
+#: ../src/gui/accounts.cpp:628
 msgid "Account Name"
 msgstr "Обліковий запис"
 
-#: ../src/gui/accounts.cpp:628
+#: ../src/gui/accounts.cpp:629
 msgid "Voice Mails"
 msgstr "Голосова пошта"
 
-#: ../src/gui/accounts.cpp:629
+#: ../src/gui/accounts.cpp:630
 msgid "Status"
 msgstr "Стан"
 
-#: ../src/gui/accounts.cpp:640 ../src/gui/accounts.cpp:683
+#: ../src/gui/accounts.cpp:641 ../src/gui/accounts.cpp:684
 msgid "Accounts"
 msgstr "Облікові записи"
 
-#: ../src/gui/accounts.cpp:654 ../src/gui/main.cpp:3145
+#: ../src/gui/accounts.cpp:655 ../src/gui/main.cpp:1826
 msgid "_Accounts"
 msgstr "_Облікові записи"
 
-#: ../src/gui/accounts.cpp:658 ../src/gui/main.cpp:3228
+#: ../src/gui/accounts.cpp:659 ../src/gui/main.cpp:1909
 msgid "_Help"
 msgstr "_Довідка"
 
@@ -1779,7 +1702,7 @@ msgstr "_Довідка"
 #. * description in the list of configured accounts, it shows if an account
 #. * is activated or not (a status the user can choose).
 #.
-#: ../src/gui/accounts.cpp:691 ../src/gui/preferences.cpp:497
+#: ../src/gui/accounts.cpp:692 ../src/gui/preferences.cpp:497
 msgid "A"
 msgstr "А"
 
@@ -1853,24 +1776,24 @@ msgstr ""
 msgid "I do not want to sign up for the ekiga.net free service"
 msgstr "Я не хочу підписуватись на безкоштовний сервіс ekiga.net"
 
-#: ../src/gui/assistant.cpp:679
+#: ../src/gui/assistant.cpp:676
 msgid "Ekiga Call Out Account"
 msgstr "Обліковий запис Ekiga Call Out"
 
-#: ../src/gui/assistant.cpp:681
+#: ../src/gui/assistant.cpp:678
 msgid "Please enter your account ID:"
 msgstr "Введіть ідентифікатор:"
 
-#: ../src/gui/assistant.cpp:689
+#: ../src/gui/assistant.cpp:686
 msgid "Please enter your PIN code:"
 msgstr "Введіть PIN-код:"
 
-#: ../src/gui/assistant.cpp:700
+#: ../src/gui/assistant.cpp:697
 msgid ""
 "You can make calls to regular phones and cell numbers worldwide using "
 "Ekiga.\n"
 "\n"
-"To enable this, you need to do two things:\n"
+"To enable this, you need to do three things:\n"
 "- First buy an account at the URL below.\n"
 "- Then enter your account ID and PIN code.\n"
 "The service will work only if your account is created using the URL in this "
@@ -1886,48 +1809,48 @@ msgstr ""
 "Переконайтесь, що ви використовуєте наведене нижче посилання для отримання "
 "облікового запису, у іншому випадку послуга не буде працювати.\n"
 
-#: ../src/gui/assistant.cpp:750
+#: ../src/gui/assistant.cpp:747
 msgid "Consult the calls history"
 msgstr "Переглянути журнал викликів"
 
-#: ../src/gui/assistant.cpp:760
+#: ../src/gui/assistant.cpp:757
 msgid "I do not want to sign up for the Ekiga Call Out service"
 msgstr "Я не хочу підписуватись на сервіс ekiga.net"
 
-#: ../src/gui/assistant.cpp:832 ../src/gui/assistant.cpp:1386
+#: ../src/gui/assistant.cpp:826 ../src/gui/assistant.cpp:1377
 msgid "Connection Type"
 msgstr "Тип з'єднання"
 
 #. The connection type
-#: ../src/gui/assistant.cpp:835
+#: ../src/gui/assistant.cpp:829
 msgid "Please choose your connection type:"
 msgstr "Виберіть тип з'єднання:"
 
-#: ../src/gui/assistant.cpp:852
+#: ../src/gui/assistant.cpp:846
 msgid "56k Modem"
 msgstr "Модем 56К"
 
-#: ../src/gui/assistant.cpp:857
+#: ../src/gui/assistant.cpp:851
 msgid "ISDN"
 msgstr "ISDN"
 
-#: ../src/gui/assistant.cpp:862
+#: ../src/gui/assistant.cpp:856
 msgid "DSL/Cable (128 kbit/s uplink)"
 msgstr "Кабель/DSL (128 Кбіт/c)"
 
-#: ../src/gui/assistant.cpp:867
+#: ../src/gui/assistant.cpp:861
 msgid "DSL/Cable (512 kbit/s uplink)"
 msgstr "Кабель/DSL (512 Кбіт/с)"
 
-#: ../src/gui/assistant.cpp:872
+#: ../src/gui/assistant.cpp:866
 msgid "LAN"
 msgstr "Локальна мережа"
 
-#: ../src/gui/assistant.cpp:877
+#: ../src/gui/assistant.cpp:871
 msgid "Keep current settings"
 msgstr "Зберегти поточні параметри"
 
-#: ../src/gui/assistant.cpp:882
+#: ../src/gui/assistant.cpp:876
 msgid ""
 "The connection type will permit determining the best quality settings that "
 "Ekiga will use during calls. You can later change the settings individually "
@@ -1937,16 +1860,16 @@ msgstr ""
 "використовувати при викликах. Пізніше ви зможете змінити ці параметри в меню "
 "параметрів."
 
-#: ../src/gui/assistant.cpp:976 ../src/gui/main.cpp:2974
-#: ../src/gui/main.cpp:2978 ../src/gui/preferences.cpp:690
+#: ../src/gui/assistant.cpp:970 ../src/gui/main.cpp:3958
+#: ../src/gui/main.cpp:3962 ../src/gui/preferences.cpp:690
 msgid "Audio Devices"
 msgstr "Звукові пристрої"
 
-#: ../src/gui/assistant.cpp:978
+#: ../src/gui/assistant.cpp:972
 msgid "Please choose the audio ringing device:"
 msgstr "Виберіть пристрій для дзвінка:"
 
-#: ../src/gui/assistant.cpp:998
+#: ../src/gui/assistant.cpp:992
 msgid ""
 "The audio ringing device is the device that will be used to play the ringing "
 "sound on incoming calls."
@@ -1954,11 +1877,11 @@ msgstr ""
 "Пристрій дзвінка використовується для виводу сповіщення про вхідний виклик."
 
 #. ---
-#: ../src/gui/assistant.cpp:1009
+#: ../src/gui/assistant.cpp:1003
 msgid "Please choose the audio output device:"
 msgstr "Виберіть пристрій виводу звуку:"
 
-#: ../src/gui/assistant.cpp:1029
+#: ../src/gui/assistant.cpp:1023
 msgid ""
 "The audio output device is the device that will be used to play audio during "
 "calls."
@@ -1966,39 +1889,39 @@ msgstr ""
 "Пристрій виводу звуку використовується для виводу звуку під час розмови."
 
 #. ---
-#: ../src/gui/assistant.cpp:1040
+#: ../src/gui/assistant.cpp:1034
 msgid "Please choose the audio input device:"
 msgstr "Виберіть пристрій вводу звуку:"
 
-#: ../src/gui/assistant.cpp:1060
+#: ../src/gui/assistant.cpp:1054
 msgid ""
 "The audio input device is the device that will be used to record your voice "
 "during calls."
 msgstr ""
 "Пристрій вводу звуку використовується для запису голосу під час розмови."
 
-#: ../src/gui/assistant.cpp:1154
+#: ../src/gui/assistant.cpp:1148
 msgid "Please choose your video input device:"
 msgstr "Виберіть пристрій вводу відео:"
 
-#: ../src/gui/assistant.cpp:1174
+#: ../src/gui/assistant.cpp:1168
 msgid ""
 "The video input device is the device that will be used to capture video "
 "during calls."
 msgstr ""
 "Пристрій вводу відео використовується для вводу зображення під час дзвінка."
 
-#: ../src/gui/assistant.cpp:1238 ../src/gui/assistant.cpp:1262
-#: ../src/gui/assistant.cpp:1286 ../src/gui/preferences.cpp:735
-#: ../src/gui/preferences.cpp:760 ../src/gui/preferences.cpp:784
+#: ../src/gui/assistant.cpp:1231 ../src/gui/assistant.cpp:1254
+#: ../src/gui/assistant.cpp:1277 ../src/gui/preferences.cpp:734
+#: ../src/gui/preferences.cpp:758 ../src/gui/preferences.cpp:781
 msgid "No device found"
 msgstr "Пристрій не знайдено."
 
-#: ../src/gui/assistant.cpp:1317
+#: ../src/gui/assistant.cpp:1308
 msgid "Configuration Complete"
 msgstr "Налаштовування завершене"
 
-#: ../src/gui/assistant.cpp:1319
+#: ../src/gui/assistant.cpp:1310
 msgid ""
 "You have now finished the Ekiga configuration. All the settings can be "
 "changed in the Ekiga preferences. Enjoy!"
@@ -2006,35 +1929,35 @@ msgstr ""
 "Налаштовування Ekiga завершена. Всі параметри можна змінити у діалозі "
 "налаштовування Ekiga."
 
-#: ../src/gui/assistant.cpp:1326
+#: ../src/gui/assistant.cpp:1317
 msgid "Configuration summary:"
 msgstr "Зведення параметрів:"
 
-#: ../src/gui/assistant.cpp:1396
+#: ../src/gui/assistant.cpp:1387
 msgid "Audio Ringing Device"
 msgstr "Пристрій дзвінка"
 
-#: ../src/gui/assistant.cpp:1405
+#: ../src/gui/assistant.cpp:1396
 msgid "Audio Output Device"
 msgstr "Пристрій виводу звуку"
 
-#: ../src/gui/assistant.cpp:1414
+#: ../src/gui/assistant.cpp:1405
 msgid "Audio Input Device"
 msgstr "Пристрій вводу звуку"
 
-#: ../src/gui/assistant.cpp:1423
+#: ../src/gui/assistant.cpp:1414
 msgid "Video Input Device"
 msgstr "Пристрій вводу відео"
 
-#: ../src/gui/assistant.cpp:1436
+#: ../src/gui/assistant.cpp:1427
 msgid "SIP URI"
 msgstr "SIP URI"
 
-#: ../src/gui/assistant.cpp:1448
+#: ../src/gui/assistant.cpp:1439
 msgid "Ekiga Call Out"
 msgstr "Ekiga Call Out"
 
-#: ../src/gui/assistant.cpp:1490
+#: ../src/gui/assistant.cpp:1481
 #, c-format
 msgid "Ekiga Configuration Assistant (%d of %d)"
 msgstr "Помічник налаштовування (сторінка %d з %d)"
@@ -2043,15 +1966,15 @@ msgstr "Помічник налаштовування (сторінка %d з %d
 msgid "Contributors:"
 msgstr "Розробники:"
 
-#: ../src/gui/callbacks.cpp:141
+#: ../src/gui/callbacks.cpp:140
 msgid "Artwork:"
 msgstr "Дизайн:"
 
-#: ../src/gui/callbacks.cpp:149
+#: ../src/gui/callbacks.cpp:148
 msgid "See AUTHORS file for full credits"
 msgstr "Повний список авторів у файлі AUTHORS"
 
-#: ../src/gui/callbacks.cpp:165
+#: ../src/gui/callbacks.cpp:164
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -2062,7 +1985,7 @@ msgstr ""
 "викладених у GNU General Public License що видана Free Software Foundation; "
 "або версії 2 ліцензії, або (на ваше розсуд довільної старшої версії."
 
-#: ../src/gui/callbacks.cpp:169
+#: ../src/gui/callbacks.cpp:168
 msgid ""
 "This program is distributed in the hope that it will be useful, but WITHOUT "
 "ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
@@ -2071,14 +1994,14 @@ msgid ""
 "License along with this program; if not, write to the Free Software "
 "Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA."
 msgstr ""
-"Програма поширюється зі сподіванням, що буде корисною, але "
-"БЕЗ ЖОДНИХ ГАРАНТІЙ; не гарантується навіть ПРИДАТНІСТЬ та ВІДПОВІДНІСТЬ БУДЬ-ЯКИМ"
-"ВИМОГАМ. Для отримання додаткової інформації ознайомтесь з GNU "
-"General Public License. Ви мали б отримати з програмою копію GNU General Public License. Якщо"
-"цього не сталося, напишіть до Free Software Foundation, Inc., 51 "
-"Franklin St, Fifth Floor, Boston, MA 02111-1307, USA."
+"Програма поширюється зі сподіванням, що буде корисною, але БЕЗ ЖОДНИХ "
+"ГАРАНТІЙ; не гарантується навіть ПРИДАТНІСТЬ та ВІДПОВІДНІСТЬ БУДЬ-"
+"ЯКИМВИМОГАМ. Для отримання додаткової інформації ознайомтесь з GNU General "
+"Public License. Ви мали б отримати з програмою копію GNU General Public "
+"License. Якщоцього не сталося, напишіть до Free Software Foundation, Inc., "
+"51 Franklin St, Fifth Floor, Boston, MA 02111-1307, USA."
 
-#: ../src/gui/callbacks.cpp:176
+#: ../src/gui/callbacks.cpp:175
 msgid ""
 "Ekiga is licensed under the GPL license and as a special exception, you have "
 "permission to link or otherwise combine this program with the programs OPAL, "
@@ -2087,21 +2010,21 @@ msgid ""
 "long as you do follow the requirements of the GNU GPL for all the rest of "
 "the software thus combined."
 msgstr ""
-"Ekiga поширюється під ліцензією GPL зі спеціальними винятками, що полягають у тому, "
-"що дозволено компонувати чи іншим чином використовувати цю програму з бібліотеками "
-"OPAL, OpenH323 та PWLIB та поширювати комбінацію без урахування вимог ліцензії "
-"GPL по відношенню до бібліотек OPAL, OpenH323 та PWLIB, якщо "
-"інші вимоги ліцензії GPL виконуються."
+"Ekiga поширюється під ліцензією GPL зі спеціальними винятками, що полягають "
+"у тому, що дозволено компонувати чи іншим чином використовувати цю програму "
+"з бібліотеками OPAL, OpenH323 та PWLIB та поширювати комбінацію без "
+"урахування вимог ліцензії GPL по відношенню до бібліотек OPAL, OpenH323 та "
+"PWLIB, якщо інші вимоги ліцензії GPL виконуються."
 
 #. Translators: Please write translator credits here, and
 #. * separate names with \n
-#: ../src/gui/callbacks.cpp:188
+#: ../src/gui/callbacks.cpp:187
 msgid "translator-credits"
 msgstr ""
 "Юрій Сирота <yuriy@beer.com>\n"
 "Максим Дзюманенко <dziumanenko@gmail.com>"
 
-#: ../src/gui/callbacks.cpp:193
+#: ../src/gui/callbacks.cpp:192
 msgid ""
 "Ekiga is full-featured SIP and H.323 compatible VoIP, IP-Telephony and "
 "Videoconferencing application that allows you to make audio and video calls "
@@ -2111,134 +2034,109 @@ msgstr ""
 "та IP-телефонії, що дозволяє з'єднуватись з іншими користувачами, які "
 "використовують програмне чи апаратне забезпечення SIP чи H.323."
 
-#: ../src/gui/dialpad.cpp:54
+#: ../src/gui/dialpad.cpp:59
 msgid "abc"
 msgstr "abc"
 
-#: ../src/gui/dialpad.cpp:55
+#: ../src/gui/dialpad.cpp:60
 msgid "def"
 msgstr "def"
 
-#: ../src/gui/dialpad.cpp:56
+#: ../src/gui/dialpad.cpp:61
 msgid "ghi"
 msgstr "ghi"
 
-#: ../src/gui/dialpad.cpp:57
+#: ../src/gui/dialpad.cpp:62
 msgid "jkl"
 msgstr "jkl"
 
-#: ../src/gui/dialpad.cpp:58
+#: ../src/gui/dialpad.cpp:63
 msgid "mno"
 msgstr "mno"
 
-#: ../src/gui/dialpad.cpp:59
+#: ../src/gui/dialpad.cpp:64
 msgid "pqrs"
 msgstr "pqrs"
 
-#: ../src/gui/dialpad.cpp:60
+#: ../src/gui/dialpad.cpp:65
 msgid "tuv"
 msgstr "tuv"
 
-#: ../src/gui/dialpad.cpp:61
+#: ../src/gui/dialpad.cpp:66
 msgid "wxyz"
 msgstr "wxyz"
 
 #. Translators: Is displayed once an account "%s" is registered.
-#: ../src/gui/main.cpp:514
+#: ../src/gui/main.cpp:583
 #, c-format
 msgid "Registered %s"
 msgstr "%s зареєстрований"
 
 #. Translators: Is displayed once an account "%s" is unregistered.
-#: ../src/gui/main.cpp:520
+#: ../src/gui/main.cpp:589
 #, c-format
 msgid "Unregistered %s"
 msgstr "Реєстрацію %s скасовано"
 
-#: ../src/gui/main.cpp:525
+#: ../src/gui/main.cpp:594
 #, c-format
 msgid "Could not unregister %s"
 msgstr "Не вдається скасувати реєстрацію %s"
 
-#: ../src/gui/main.cpp:529
+#: ../src/gui/main.cpp:598
 #, c-format
 msgid "Could not register %s"
 msgstr "Не вдається зареєструвати %s"
 
-#: ../src/gui/main.cpp:598
+#: ../src/gui/main.cpp:664
 #, c-format
 msgid "A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d"
 msgstr "Звук:%.1f/%.1f  Відео:%.1f/%.1f  Кадри:%d/%d"
 
-#: ../src/gui/main.cpp:644
+#: ../src/gui/main.cpp:709
 #, c-format
 msgid "Connected with %s"
 msgstr "З'єднано з %s"
 
-#: ../src/gui/main.cpp:681 ../src/gui/main.cpp:3472
+#: ../src/gui/main.cpp:745 ../src/gui/main.cpp:2347
 msgid "Standby"
 msgstr "Очікування"
 
-#: ../src/gui/main.cpp:740
+#: ../src/gui/main.cpp:811
 msgid "Call on hold"
 msgstr "Виклик утримується"
 
-#: ../src/gui/main.cpp:751
+#: ../src/gui/main.cpp:824
 msgid "Call retrieved"
 msgstr "Виклик прийнято"
 
-#: ../src/gui/main.cpp:767
+#: ../src/gui/main.cpp:841
 #, c-format
 msgid "Missed call from %s"
 msgstr "Пропущений виклик від %s"
 
-#: ../src/gui/main.cpp:902 ../src/gui/misc.cpp:94
+#: ../src/gui/main.cpp:984 ../src/gui/misc.cpp:94
 msgid "Error"
 msgstr "Помилка"
 
-#: ../src/gui/main.cpp:972
-#, c-format
-msgid "Error while initializing video output"
-msgstr "Помилка під час ініціалізації виводу відео"
-
-#: ../src/gui/main.cpp:974
-msgid "No video will be displayed during this call->"
-msgstr "Під час цього дзвінка відео не буде виводитись->"
-
-#: ../src/gui/main.cpp:982
-msgid ""
-"There was an error opening initializing the video output. Please verify that "
-"no other applicating is using the accelerated video output."
-msgstr ""
-"Помилка при відкриванні виводу відео. Перевірте, що інші програми не "
-"використовуються вивід відео з апаратним прискоренням."
-
-#: ../src/gui/main.cpp:984
-msgid ""
-"There was an error opening initializing the video output. Please verify that "
-"you are using a color depth of 24 or 32 bits per pixel."
-msgstr ""
-"Помилка при відкриванні виводу відео. Перевірте, що встановлено глибину "
-"кольору 24 або 32 біт на точку."
-
 #. Translators: This is a hotplug status
-#: ../src/gui/main.cpp:1099
+#: ../src/gui/main.cpp:1126
 #, c-format
 msgid "Added video input device %s"
 msgstr "Додано пристрій вводу відео %s"
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main.cpp:1111
+#: ../src/gui/main.cpp:1144
 #, c-format
 msgid "Removed video input device %s"
 msgstr "Видалено пристрій вводу відео %s"
 
-#: ../src/gui/main.cpp:1128
+#: ../src/gui/main.cpp:1161
 #, c-format
 msgid "Error while accessing video device %s"
 msgstr "Не вдається отримати доступ до пристрою захоплення відео %s"
 
-#: ../src/gui/main.cpp:1131
+#: ../src/gui/main.cpp:1164
 msgid ""
 "A moving logo will be transmitted during calls. Notice that you can always "
 "transmit a given image or the moving logo by choosing \"Picture\" as video "
@@ -2248,7 +2146,7 @@ msgstr ""
 "можете передавати вибране зображення чи емблему, вибравши у якості пристрою"
 "\"Picture\" як модуль відео, та \"Moving logo\" або \"Static picture\"."
 
-#: ../src/gui/main.cpp:1135
+#: ../src/gui/main.cpp:1168
 msgid ""
 "There was an error while opening the device. In case it is a pluggable "
 "device it may be sufficient to reconnect it. If not, or if it still is not "
@@ -2259,15 +2157,15 @@ msgstr ""
 "від'єднаний, його повторне підключення може допомогти вирішити проблему. У "
 "іншому разі перевірте права доступу до пристрою та роботу драйвера."
 
-#: ../src/gui/main.cpp:1139
+#: ../src/gui/main.cpp:1172
 msgid "Your video driver doesn't support the requested video format."
 msgstr "Ваш відеодрайвер не підтримує потрібний формат відео."
 
-#: ../src/gui/main.cpp:1143
+#: ../src/gui/main.cpp:1176
 msgid "Could not open the chosen channel."
 msgstr "Не вдається відкрити вказаний канал."
 
-#: ../src/gui/main.cpp:1147
+#: ../src/gui/main.cpp:1180
 msgid ""
 "Your driver doesn't seem to support any of the color formats supported by "
 "Ekiga.\n"
@@ -2278,42 +2176,42 @@ msgstr ""
 "Ekiga.\n"
 "Подивіться в документації драйвера ядра, яка саме палітра підтримується."
 
-#: ../src/gui/main.cpp:1151
+#: ../src/gui/main.cpp:1184
 msgid "Error while setting the frame rate."
 msgstr "Помилка встановлення частоти кадрів."
 
-#: ../src/gui/main.cpp:1155
+#: ../src/gui/main.cpp:1188
 msgid "Error while setting the frame size."
 msgstr "Помилка встановлення розміру кадру."
 
-#: ../src/gui/main.cpp:1160 ../src/gui/main.cpp:1262 ../src/gui/main.cpp:1377
+#: ../src/gui/main.cpp:1193 ../src/gui/main.cpp:1308 ../src/gui/main.cpp:1430
 msgid "Unknown error."
 msgstr "Невідома помилка."
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main.cpp:1210
+#: ../src/gui/main.cpp:1252
 #, c-format
 msgid "Added audio input device %s"
 msgstr "Додано пристрій вводу звуку %s"
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main.cpp:1227
+#: ../src/gui/main.cpp:1273
 #, c-format
 msgid "Removed audio input device %s"
 msgstr "Видалено пристрій вводу звуку %s"
 
-#: ../src/gui/main.cpp:1244
+#: ../src/gui/main.cpp:1290
 #, c-format
 msgid "Error while opening audio input device %s"
 msgstr "Не вдається відкрити пристрій вводу звуку %s"
 
 #. Translators: This happens when there is an error with audio input:
 #. * Nothing ("silence") will be transmitted
-#: ../src/gui/main.cpp:1249
+#: ../src/gui/main.cpp:1295
 msgid "Only silence will be transmitted."
 msgstr "Співрозмовники нічого не почують."
 
-#: ../src/gui/main.cpp:1253
+#: ../src/gui/main.cpp:1299
 msgid ""
 "Unable to open the selected audio device for recording. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
@@ -2325,7 +2223,7 @@ msgstr ""
 "проблему. У іншому разі перевірте параметри звуку, права доступу до пристрою "
 "та перевірте, що інші програми не займають пристрій."
 
-#: ../src/gui/main.cpp:1257
+#: ../src/gui/main.cpp:1303
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "read data from this device. In case it is a pluggable device it may be "
@@ -2336,26 +2234,26 @@ msgstr ""
 "від'єднаний, його повторне підключення може допомогти вирішити проблему. У "
 "іншому разі перевірте параметри звуку."
 
-#: ../src/gui/main.cpp:1324
+#: ../src/gui/main.cpp:1375
 #, c-format
 msgid "Added audio output device %s"
 msgstr "Додано пристрій виводу звуку %s"
 
-#: ../src/gui/main.cpp:1340
+#: ../src/gui/main.cpp:1393
 #, c-format
 msgid "Removed audio output device %s"
 msgstr "Видалено пристрій виводу звуку %s"
 
-#: ../src/gui/main.cpp:1361
+#: ../src/gui/main.cpp:1414
 #, c-format
 msgid "Error while opening audio output device %s"
 msgstr "Помилка при відкривання пристрою виводу звуку %s"
 
-#: ../src/gui/main.cpp:1364
+#: ../src/gui/main.cpp:1417
 msgid "No incoming sound will be played."
 msgstr "Вхідний дзвінок не буде чутно."
 
-#: ../src/gui/main.cpp:1368
+#: ../src/gui/main.cpp:1421
 msgid ""
 "Unable to open the selected audio device for playing. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
@@ -2367,10 +2265,10 @@ msgstr ""
 "проблему. У іншому разі перевірте параметри звуку, права доступу, та "
 "переконайтесь, що пристрій не зайнятий."
 
-#: ../src/gui/main.cpp:1372
+#: ../src/gui/main.cpp:1425
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
-"write data to this device. In case it is a pluggable device it may be "
+"write data from this device. In case it is a pluggable device it may be "
 "sufficient to reconnect it. If not, or if it still is not accessible, please "
 "check your audio setup."
 msgstr ""
@@ -2378,340 +2276,340 @@ msgstr ""
 "вдалося. Якщо пристрій може бути від'єднаний, його повторне підключення може "
 "допомогти вирішити проблему. У іншому разі перевірте параметри звуку."
 
-#: ../src/gui/main.cpp:1546
-msgid "Video Settings"
-msgstr "Параметри відео"
-
-#: ../src/gui/main.cpp:1573
-msgid "Adjust brightness"
-msgstr "Налаштовування яскравості"
-
-#: ../src/gui/main.cpp:1594
-msgid "Adjust whiteness"
-msgstr "Налаштовування рівня білого"
-
-#: ../src/gui/main.cpp:1615
-msgid "Adjust color"
-msgstr "Налаштовування кольору"
-
-#: ../src/gui/main.cpp:1636
-msgid "Adjust contrast"
-msgstr "Налаштовування контрастності"
-
-#: ../src/gui/main.cpp:1682
-msgid "Audio Settings"
-msgstr "Параметри звуку"
-
-#: ../src/gui/main.cpp:2286
-msgid "_Retrieve Call"
-msgstr "_Прийняти виклик"
-
-#: ../src/gui/main.cpp:2299
-msgid "_Hold Call"
-msgstr "_Утримувати виклик"
-
-#: ../src/gui/main.cpp:2331 ../src/gui/main.cpp:3111
-msgid "Suspend _Audio"
-msgstr "Призупинити передавання зву_ку"
-
-#: ../src/gui/main.cpp:2333 ../src/gui/main.cpp:3116
-msgid "Suspend _Video"
-msgstr "Призупинити передавання в_ідео"
-
-#: ../src/gui/main.cpp:2335
-msgid "Resume _Audio"
-msgstr "Відновити передавання зву_ку"
-
-#: ../src/gui/main.cpp:2337
-msgid "Resume _Video"
-msgstr "Відновити передавання _відео"
-
-#: ../src/gui/main.cpp:2611 ../src/gui/main.cpp:2764
-msgid "Reject"
-msgstr "Відкинути"
-
-#: ../src/gui/main.cpp:2613 ../src/gui/main.cpp:2763
-msgid "Accept"
-msgstr "Прийняти"
-
-#: ../src/gui/main.cpp:2619 ../src/gui/main.cpp:2751
-msgid "Incoming call from"
-msgstr "Вхідний виклик від"
-
-#: ../src/gui/main.cpp:2637 ../src/gui/main.cpp:2754
-msgid "Remote URI:"
-msgstr "Віддалений URI:"
-
-#: ../src/gui/main.cpp:2649 ../src/gui/main.cpp:2756
-msgid "Remote Application:"
-msgstr "Віддалена програма:"
-
-#: ../src/gui/main.cpp:2670
-#, c-format
-msgid "Call from %s"
-msgstr "Виклик від %s"
-
-#: ../src/gui/main.cpp:2877
-#, c-format
-msgid "Call Duration: %s\n"
-msgstr "Тривалість виклику: %s\n"
-
-#: ../src/gui/main.cpp:2908
-msgid "Transfer call to:"
-msgstr "Переадресовувати виклик на:"
-
-#: ../src/gui/main.cpp:2960
-msgid "No"
-msgstr "Ні"
-
-#: ../src/gui/main.cpp:2962
-msgid "Yes"
-msgstr "Так"
-
-#: ../src/gui/main.cpp:2973
-msgid "Detected new audio input device:"
-msgstr "Виберіть пристрій вводу звуку:"
-
-#: ../src/gui/main.cpp:2977
-msgid "Detected new audio output device:"
-msgstr "Виберіть пристрій виводу звуку:"
-
-#: ../src/gui/main.cpp:2981
-msgid "Detected new video input device:"
-msgstr "Виберіть пристрій вводу відео:"
-
-#: ../src/gui/main.cpp:2982 ../src/gui/preferences.cpp:851
-msgid "Video Devices"
-msgstr "Відеопристрої"
-
-#: ../src/gui/main.cpp:3000
-msgid "Do you want to use it as default device?"
-msgstr "Використовувати цей пристрій типово?"
-
-#: ../src/gui/main.cpp:3068
-msgid "_Chat"
-msgstr "_Написати"
-
-#: ../src/gui/main.cpp:3070
-msgid "Ca_ll"
-msgstr "_Виклик"
-
-#: ../src/gui/main.cpp:3070
-msgid "Place a new call"
-msgstr "Зробити новий виклик"
-
-#: ../src/gui/main.cpp:3073
-msgid "_Hang up"
-msgstr "Відкл_ючити"
-
-#: ../src/gui/main.cpp:3074
-msgid "Terminate the current call"
-msgstr "Завершити поточний виклик"
-
-#: ../src/gui/main.cpp:3080
-msgid "A_dd Contact"
-msgstr "_Додати контакт"
-
-#: ../src/gui/main.cpp:3080
-msgid "Add a contact to the roster"
-msgstr "Додати контакт до списку"
-
-#: ../src/gui/main.cpp:3085
-msgid "Find contacts"
-msgstr "Знайти контакти"
-
-#: ../src/gui/main.cpp:3092
-msgid "_Contact"
-msgstr "_Контакт"
-
-#: ../src/gui/main.cpp:3093
-msgid "Act on selected contact"
-msgstr "Дії для виділеного контакту"
-
-#: ../src/gui/main.cpp:3099
-msgid "H_old Call"
-msgstr "_Утримувати виклик"
-
-#: ../src/gui/main.cpp:3099 ../src/gui/main.cpp:3566
-msgid "Hold the current call"
-msgstr "Утримувати поточний виклик"
-
-#: ../src/gui/main.cpp:3103
-msgid "_Transfer Call"
-msgstr "П_ереадресувати виклик"
-
-#: ../src/gui/main.cpp:3104
-msgid "Transfer the current call"
-msgstr "Переадресувати поточний виклик"
-
-#: ../src/gui/main.cpp:3112
-msgid "Suspend or resume the audio transmission"
-msgstr "Призупинити чи продовжити передавання звуку"
-
-#: ../src/gui/main.cpp:3117
-msgid "Suspend or resume the video transmission"
-msgstr "Призупинити чи продовжити передавання відео"
-
-#: ../src/gui/main.cpp:3124
-msgid "Close the Ekiga window"
-msgstr "Закрити вікно Ekiga"
-
-#: ../src/gui/main.cpp:3131 ../src/gui/statusicon.cpp:405
-msgid "Quit"
-msgstr "Вийти"
-
-#: ../src/gui/main.cpp:3137
-msgid "_Configuration Assistant"
-msgstr "Помічник _налаштовування"
-
-#: ../src/gui/main.cpp:3138
-msgid "Run the configuration assistant"
-msgstr "Запустити помічник налаштовування"
-
-#: ../src/gui/main.cpp:3146
-msgid "Edit your accounts"
-msgstr "Правка вашого облікового запису"
-
-#: ../src/gui/main.cpp:3152
-msgid "Change your preferences"
-msgstr "Змінити параметри користувача"
-
-#: ../src/gui/main.cpp:3157
-msgid "_View"
-msgstr "_Вигляд"
-
-#: ../src/gui/main.cpp:3159
-msgid "Con_tacts"
-msgstr "_Контакти"
-
-#: ../src/gui/main.cpp:3159
-msgid "View the contacts list"
-msgstr "Показати список контактів"
-
-#: ../src/gui/main.cpp:3164
-msgid "_Dialpad"
-msgstr "Панель _набору номера"
-
-#: ../src/gui/main.cpp:3164
-msgid "View the dialpad"
-msgstr "Показати панель набору номера"
-
-#: ../src/gui/main.cpp:3169
-msgid "_Call History"
-msgstr "_Історія викликів"
-
-#: ../src/gui/main.cpp:3169
-msgid "View the call history"
-msgstr "Показати історію викликів"
-
-#: ../src/gui/main.cpp:3177
-msgid "_Show Call Panel"
-msgstr "Панель _керування"
-
-#: ../src/gui/main.cpp:3185
-msgid "_Local Video"
-msgstr "_Локальне відео"
-
-#: ../src/gui/main.cpp:3186
-msgid "Local video image"
-msgstr "Локальне відеозображення"
-
-#: ../src/gui/main.cpp:3191
-msgid "_Remote Video"
-msgstr "_Віддалене відео"
-
-#: ../src/gui/main.cpp:3192
-msgid "Remote video image"
-msgstr "Віддалене відеозображення"
-
-#: ../src/gui/main.cpp:3197
-msgid "_Picture-in-Picture"
-msgstr "Ка_ртинка-у-картинці"
-
-#: ../src/gui/main.cpp:3198 ../src/gui/main.cpp:3204
-msgid "Both video images"
-msgstr "Обидва відеозображення"
-
-#: ../src/gui/main.cpp:3203
-msgid "Picture-in-Picture in Separate _Window"
-msgstr "Картинка-у-картинці у окремому _вікні"
-
-#: ../src/gui/main.cpp:3211
-msgid "Zoom in"
-msgstr "Збільшити"
-
-#: ../src/gui/main.cpp:3215
-msgid "Zoom out"
-msgstr "Зменшити"
-
-#: ../src/gui/main.cpp:3219
-msgid "Normal size"
-msgstr "Звичайний розмір"
-
-#: ../src/gui/main.cpp:3223
-msgid "_Fullscreen"
-msgstr "На весь _екран"
-
-#: ../src/gui/main.cpp:3223
-msgid "Switch to fullscreen"
-msgstr "Перейти в повноекранний режим"
-
-#: ../src/gui/main.cpp:3231 ../src/gui/statusicon.cpp:393
-msgid "Get help by reading the Ekiga manual"
-msgstr "Отримати довідку з посібника Ekiga"
-
-#: ../src/gui/main.cpp:3236 ../src/gui/statusicon.cpp:398
-msgid "View information about Ekiga"
-msgstr "Перегляд інформації про Ekiga"
-
-#: ../src/gui/main.cpp:3310
+#: ../src/gui/main.cpp:1668
 msgid "Enter a URI on the left, and click this button to place a call"
 msgstr ""
 "Введіть ліворуч URI для виклику та натисніть цю кнопку для виконання виклику"
 
-#: ../src/gui/main.cpp:3361
+#: ../src/gui/main.cpp:1749
+msgid "_Chat"
+msgstr "_Написати"
+
+#: ../src/gui/main.cpp:1751
+msgid "Ca_ll"
+msgstr "_Виклик"
+
+#: ../src/gui/main.cpp:1751
+msgid "Place a new call"
+msgstr "Зробити новий виклик"
+
+#: ../src/gui/main.cpp:1754
+msgid "_Hang up"
+msgstr "Відкл_ючити"
+
+#: ../src/gui/main.cpp:1755
+msgid "Terminate the current call"
+msgstr "Завершити поточний виклик"
+
+#: ../src/gui/main.cpp:1761
+msgid "A_dd Contact"
+msgstr "_Додати контакт"
+
+#: ../src/gui/main.cpp:1761
+msgid "Add a contact to the roster"
+msgstr "Додати контакт до списку"
+
+#: ../src/gui/main.cpp:1766
+msgid "Find contacts"
+msgstr "Знайти контакти"
+
+#: ../src/gui/main.cpp:1773
+msgid "_Contact"
+msgstr "_Контакт"
+
+#: ../src/gui/main.cpp:1774
+msgid "Act on selected contact"
+msgstr "Дії для виділеного контакту"
+
+#: ../src/gui/main.cpp:1780
+msgid "H_old Call"
+msgstr "_Утримувати виклик"
+
+#: ../src/gui/main.cpp:1780 ../src/gui/main.cpp:2443
+msgid "Hold the current call"
+msgstr "Утримувати поточний виклик"
+
+#: ../src/gui/main.cpp:1784
+msgid "_Transfer Call"
+msgstr "П_ереадресувати виклик"
+
+#: ../src/gui/main.cpp:1785
+msgid "Transfer the current call"
+msgstr "Переадресувати поточний виклик"
+
+#: ../src/gui/main.cpp:1792 ../src/gui/main.cpp:3201
+msgid "Suspend _Audio"
+msgstr "Призупинити передавання зву_ку"
+
+#: ../src/gui/main.cpp:1793
+msgid "Suspend or resume the audio transmission"
+msgstr "Призупинити чи продовжити передавання звуку"
+
+#: ../src/gui/main.cpp:1797 ../src/gui/main.cpp:3203
+msgid "Suspend _Video"
+msgstr "Призупинити передавання в_ідео"
+
+#: ../src/gui/main.cpp:1798
+msgid "Suspend or resume the video transmission"
+msgstr "Призупинити чи продовжити передавання відео"
+
+#: ../src/gui/main.cpp:1805
+msgid "Close the Ekiga window"
+msgstr "Закрити вікно Ekiga"
+
+#: ../src/gui/main.cpp:1812 ../src/gui/statusicon.cpp:407
+msgid "Quit"
+msgstr "Вийти"
+
+#: ../src/gui/main.cpp:1818
+msgid "_Configuration Assistant"
+msgstr "Помічник _налаштовування"
+
+#: ../src/gui/main.cpp:1819
+msgid "Run the configuration assistant"
+msgstr "Запустити помічник налаштовування"
+
+#: ../src/gui/main.cpp:1827
+msgid "Edit your accounts"
+msgstr "Правка вашого облікового запису"
+
+#: ../src/gui/main.cpp:1833
+msgid "Change your preferences"
+msgstr "Змінити параметри користувача"
+
+#: ../src/gui/main.cpp:1838
+msgid "_View"
+msgstr "_Вигляд"
+
+#: ../src/gui/main.cpp:1840
+msgid "Con_tacts"
+msgstr "_Контакти"
+
+#: ../src/gui/main.cpp:1840
+msgid "View the contacts list"
+msgstr "Показати список контактів"
+
+#: ../src/gui/main.cpp:1845
+msgid "_Dialpad"
+msgstr "Панель _набору номера"
+
+#: ../src/gui/main.cpp:1845
+msgid "View the dialpad"
+msgstr "Показати панель набору номера"
+
+#: ../src/gui/main.cpp:1850
+msgid "_Call History"
+msgstr "_Історія викликів"
+
+#: ../src/gui/main.cpp:1850
+msgid "View the call history"
+msgstr "Показати історію викликів"
+
+#: ../src/gui/main.cpp:1858
+msgid "_Show Call Panel"
+msgstr "Панель _керування"
+
+#: ../src/gui/main.cpp:1866
+msgid "_Local Video"
+msgstr "_Локальне відео"
+
+#: ../src/gui/main.cpp:1867
+msgid "Local video image"
+msgstr "Локальне відеозображення"
+
+#: ../src/gui/main.cpp:1872
+msgid "_Remote Video"
+msgstr "_Віддалене відео"
+
+#: ../src/gui/main.cpp:1873
+msgid "Remote video image"
+msgstr "Віддалене відеозображення"
+
+#: ../src/gui/main.cpp:1878
+msgid "_Picture-in-Picture"
+msgstr "Ка_ртинка-у-картинці"
+
+#: ../src/gui/main.cpp:1879 ../src/gui/main.cpp:1885
+msgid "Both video images"
+msgstr "Обидва відеозображення"
+
+#: ../src/gui/main.cpp:1884
+msgid "Picture-in-Picture in Separate _Window"
+msgstr "Картинка-у-картинці у окремому _вікні"
+
+#: ../src/gui/main.cpp:1892
+msgid "Zoom in"
+msgstr "Збільшити"
+
+#: ../src/gui/main.cpp:1896
+msgid "Zoom out"
+msgstr "Зменшити"
+
+#: ../src/gui/main.cpp:1900
+msgid "Normal size"
+msgstr "Звичайний розмір"
+
+#: ../src/gui/main.cpp:1904
+msgid "_Fullscreen"
+msgstr "На весь _екран"
+
+#: ../src/gui/main.cpp:1904
+msgid "Switch to fullscreen"
+msgstr "Перейти в повноекранний режим"
+
+#: ../src/gui/main.cpp:1912 ../src/gui/statusicon.cpp:395
+msgid "Get help by reading the Ekiga manual"
+msgstr "Отримати довідку з посібника Ekiga"
+
+#: ../src/gui/main.cpp:1917 ../src/gui/statusicon.cpp:400
+msgid "View information about Ekiga"
+msgstr "Перегляд інформації про Ekiga"
+
+#: ../src/gui/main.cpp:1954
 msgid "Contacts"
 msgstr "Контакти"
 
-#: ../src/gui/main.cpp:3384
+#: ../src/gui/main.cpp:1982
 msgid "Dialpad"
 msgstr "Панель набору номера"
 
-#: ../src/gui/main.cpp:3401
-msgid "Call history"
-msgstr "Історія викликів"
+#: ../src/gui/main.cpp:2018
+msgid "Video Settings"
+msgstr "Параметри відео"
 
-#: ../src/gui/main.cpp:3504
+#: ../src/gui/main.cpp:2045
+msgid "Adjust brightness"
+msgstr "Налаштовування яскравості"
+
+#: ../src/gui/main.cpp:2066
+msgid "Adjust whiteness"
+msgstr "Налаштовування рівня білого"
+
+#: ../src/gui/main.cpp:2087
+msgid "Adjust color"
+msgstr "Налаштовування кольору"
+
+#: ../src/gui/main.cpp:2108
+msgid "Adjust contrast"
+msgstr "Налаштовування контрастності"
+
+#: ../src/gui/main.cpp:2162
+msgid "Audio Settings"
+msgstr "Параметри звуку"
+
+#: ../src/gui/main.cpp:2381
 msgid "Change the volume of your soundcard"
 msgstr "Змінити гучність звукової плати"
 
-#: ../src/gui/main.cpp:3524
+#: ../src/gui/main.cpp:2401
 msgid "Change the color settings of your video device"
 msgstr "Змінити параметри кольорів відео-пристрою"
 
-#: ../src/gui/main.cpp:3546
+#: ../src/gui/main.cpp:2423
 msgid "Display images from your camera device"
 msgstr "Показувати зображення з вашої камери"
 
-#: ../src/gui/main.cpp:3634
+#: ../src/gui/main.cpp:2476
+msgid "Call history"
+msgstr "Історія викликів"
+
+#: ../src/gui/main.cpp:3149
+msgid "_Retrieve Call"
+msgstr "_Прийняти виклик"
+
+#: ../src/gui/main.cpp:3162
+msgid "_Hold Call"
+msgstr "_Утримувати виклик"
+
+#: ../src/gui/main.cpp:3205
+msgid "Resume _Audio"
+msgstr "Відновити передавання зву_ку"
+
+#: ../src/gui/main.cpp:3207
+msgid "Resume _Video"
+msgstr "Відновити передавання _відео"
+
+#: ../src/gui/main.cpp:3534 ../src/gui/main.cpp:3688
+msgid "Reject"
+msgstr "Відкинути"
+
+#: ../src/gui/main.cpp:3536 ../src/gui/main.cpp:3687
+msgid "Accept"
+msgstr "Прийняти"
+
+#: ../src/gui/main.cpp:3542 ../src/gui/main.cpp:3675
+msgid "Incoming call from"
+msgstr "Вхідний виклик від"
+
+#: ../src/gui/main.cpp:3560 ../src/gui/main.cpp:3678
+msgid "Remote URI:"
+msgstr "Віддалений URI:"
+
+#: ../src/gui/main.cpp:3572 ../src/gui/main.cpp:3680
+msgid "Remote Application:"
+msgstr "Віддалена програма:"
+
+#: ../src/gui/main.cpp:3593
+#, c-format
+msgid "Call from %s"
+msgstr "Виклик від %s"
+
+#: ../src/gui/main.cpp:3850
+#, c-format
+msgid "Call Duration: %s\n"
+msgstr "Тривалість виклику: %s\n"
+
+#: ../src/gui/main.cpp:3887
+msgid "Transfer call to:"
+msgstr "Переадресовувати виклик на:"
+
+#: ../src/gui/main.cpp:3944
+msgid "No"
+msgstr "Ні"
+
+#: ../src/gui/main.cpp:3946
+msgid "Yes"
+msgstr "Так"
+
+#: ../src/gui/main.cpp:3957
+msgid "Detected new audio input device:"
+msgstr "Виберіть пристрій вводу звуку:"
+
+#: ../src/gui/main.cpp:3961
+msgid "Detected new audio output device:"
+msgstr "Виберіть пристрій виводу звуку:"
+
+#: ../src/gui/main.cpp:3965
+msgid "Detected new video input device:"
+msgstr "Виберіть пристрій вводу відео:"
+
+#: ../src/gui/main.cpp:3966 ../src/gui/preferences.cpp:848
+msgid "Video Devices"
+msgstr "Відеопристрої"
+
+#: ../src/gui/main.cpp:3984
+msgid "Do you want to use it as default device?"
+msgstr "Використовувати цей пристрій типово?"
+
+#: ../src/gui/main.cpp:4054
 msgid "Ekiga"
 msgstr "Ekiga"
 
 #. Translators:
 #. * TX is a common abbreviation for "transmit"
-#: ../src/gui/main.cpp:4248
+#: ../src/gui/main.cpp:4491
 #, c-format
 msgid "TX: %dx%d "
 msgstr "Передача: %dx%d "
 
 #. Translators:
 #. * RX is a common abbreviation for "receive"
-#: ../src/gui/main.cpp:4253
+#: ../src/gui/main.cpp:4496
 #, c-format
 msgid "RX: %dx%d "
 msgstr "Прийом: %dx%d "
 
-#: ../src/gui/main.cpp:4255
+#: ../src/gui/main.cpp:4498
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -2724,23 +2622,23 @@ msgstr ""
 "Пакетів не у послідовності: %.1f %%\n"
 "Буферизація: %d мс%s%s%s"
 
-#: ../src/gui/main.cpp:4392
+#: ../src/gui/main.cpp:4646
 msgid "Prints debug messages in the console (level between 1 and 5)"
 msgstr "Виводити налагоджувальну інформацію на консоль (рівні від 1 до 5)"
 
-#: ../src/gui/main.cpp:4397
+#: ../src/gui/main.cpp:4651
 msgid "Prints user plane debug messages in the console (level between 1 and 4)"
 msgstr "Виводити налагоджувальну інформацію на консоль (рівні від 1 до 4)"
 
-#: ../src/gui/main.cpp:4402
+#: ../src/gui/main.cpp:4656
 msgid "Makes Ekiga call the given URI"
 msgstr "Викликати даний URI використовуючи Ekiga"
 
-#: ../src/gui/main.cpp:4518
+#: ../src/gui/main.cpp:4772
 msgid "No usable audio plugin detected"
 msgstr "Не вдалось знайти підтримуваний модуль звуку"
 
-#: ../src/gui/main.cpp:4519
+#: ../src/gui/main.cpp:4773
 msgid ""
 "Ekiga didn't find any usable audio plugin. Make sure that your installation "
 "is correct."
@@ -2748,11 +2646,11 @@ msgstr ""
 "Ekiga не може знайти жодного відповідного модулю звуку. Переконайтесь, що "
 "програма встановлена коректно."
 
-#: ../src/gui/main.cpp:4522
+#: ../src/gui/main.cpp:4776
 msgid "No usable audio codecs detected"
 msgstr "Не вдалось знайти підтримуваний модуль звуку"
 
-#: ../src/gui/main.cpp:4523
+#: ../src/gui/main.cpp:4777
 msgid ""
 "Ekiga didn't find any usable audio codec. Make sure that your installation "
 "is correct."
@@ -2760,11 +2658,11 @@ msgstr ""
 "Ekiga не може знайти жодного відповідного модулю звуку. Переконайтесь, що "
 "програма встановлена коректно."
 
-#: ../src/gui/main.cpp:4529
+#: ../src/gui/main.cpp:4783
 msgid "Configuration database corruption"
 msgstr "Пошкоджена база даних конфігурації"
 
-#: ../src/gui/main.cpp:4530
+#: ../src/gui/main.cpp:4784
 #, c-format
 msgid ""
 "Ekiga got an invalid value for the configuration key %s.\n"
@@ -2851,7 +2749,7 @@ msgstr ""
 "вказаний у розділі \"протоколи\", якщо активний інший виклик (лінія зайнята) "
 "чи ви знаходитесь в режимі \"Не турбувати\"."
 
-#: ../src/gui/preferences.cpp:425 ../src/gui/preferences.cpp:1447
+#: ../src/gui/preferences.cpp:425 ../src/gui/preferences.cpp:1442
 msgid "Call Options"
 msgstr "Параметри викликів"
 
@@ -2966,7 +2864,7 @@ msgstr "Вкажіть пристрій дзвінка"
 msgid "Output device:"
 msgstr "Пристрій виводу:"
 
-#: ../src/gui/preferences.cpp:707 ../src/gui/preferences.cpp:858
+#: ../src/gui/preferences.cpp:707 ../src/gui/preferences.cpp:855
 msgid "Input device:"
 msgstr "Пристрій вводу:"
 
@@ -3026,90 +2924,90 @@ msgstr "Пристрій вводу:"
 #. (gpointer) VIDEO_DEVICES_KEY "image");
 #.
 #. That button will refresh the device list
-#: ../src/gui/preferences.cpp:712 ../src/gui/preferences.cpp:923
+#: ../src/gui/preferences.cpp:712 ../src/gui/preferences.cpp:920
 msgid "_Detect devices"
 msgstr "_Пошук пристроїв"
 
-#: ../src/gui/preferences.cpp:712 ../src/gui/preferences.cpp:923
+#: ../src/gui/preferences.cpp:712 ../src/gui/preferences.cpp:920
 msgid "Click here to refresh the device list."
 msgstr "Натисніть, щоб оновити перелік пристроїв."
 
-#: ../src/gui/preferences.cpp:836
+#: ../src/gui/preferences.cpp:833
 msgid "PAL (Europe)"
 msgstr "PAL (Європа)"
 
-#: ../src/gui/preferences.cpp:837
+#: ../src/gui/preferences.cpp:834
 msgid "NTSC (America)"
 msgstr "NTSC (Америка)"
 
-#: ../src/gui/preferences.cpp:838
+#: ../src/gui/preferences.cpp:835
 msgid "SECAM (France)"
 msgstr "SECAM (Франція)"
 
-#: ../src/gui/preferences.cpp:839
+#: ../src/gui/preferences.cpp:836
 msgid "Auto"
 msgstr "Авто"
 
 #. Video Channel
-#: ../src/gui/preferences.cpp:862
+#: ../src/gui/preferences.cpp:859
 msgid "Channel:"
 msgstr "Канал:"
 
-#: ../src/gui/preferences.cpp:864
+#: ../src/gui/preferences.cpp:861
 msgid "Size:"
 msgstr "Розмір:"
 
-#: ../src/gui/preferences.cpp:864
+#: ../src/gui/preferences.cpp:861
 msgid "Select the transmitted video size"
 msgstr "Вкажіть розмір відео, що передається"
 
-#: ../src/gui/preferences.cpp:866
+#: ../src/gui/preferences.cpp:863
 msgid "Format:"
 msgstr "Формат:"
 
-#: ../src/gui/preferences.cpp:947 ../src/gui/preferences.cpp:986
-#: ../src/gui/preferences.cpp:1472 ../src/gui/preferences.cpp:1482
+#: ../src/gui/preferences.cpp:944 ../src/gui/preferences.cpp:983
+#: ../src/gui/preferences.cpp:1467 ../src/gui/preferences.cpp:1477
 msgid "Codecs"
 msgstr "Кодеки"
 
-#: ../src/gui/preferences.cpp:960 ../src/gui/preferences.cpp:999
+#: ../src/gui/preferences.cpp:957 ../src/gui/preferences.cpp:996
 msgid "Settings"
 msgstr "Параметри"
 
 #. Translators: the full sentence is Automatically adjust jitter buffer
 #. between X and Y ms
-#: ../src/gui/preferences.cpp:964
+#: ../src/gui/preferences.cpp:961
 msgid "Enable silence _detection"
 msgstr "Увімкнути виявлення _мовчання"
 
-#: ../src/gui/preferences.cpp:964
+#: ../src/gui/preferences.cpp:961
 msgid "If enabled, use silence detection with the codecs supporting it."
 msgstr ""
 "Якщо увімкнено, використовувати виявлення мовчання для кодеків, що функцію "
 "кодеку."
 
-#: ../src/gui/preferences.cpp:966
+#: ../src/gui/preferences.cpp:963
 msgid "Enable echo can_celation"
 msgstr "Увімкнути зни_ження відлуння"
 
-#: ../src/gui/preferences.cpp:966
+#: ../src/gui/preferences.cpp:963
 msgid "If enabled, use echo cancelation."
 msgstr "Якщо увімкнено, використовувати зниження відлуння."
 
-#: ../src/gui/preferences.cpp:968
+#: ../src/gui/preferences.cpp:965
 msgid "Maximum _jitter buffer (in ms):"
 msgstr "Максимальна за_тримка (у мс)"
 
-#: ../src/gui/preferences.cpp:968
+#: ../src/gui/preferences.cpp:965
 msgid "The maximum jitter buffer size for audio reception (in ms)."
 msgstr "Максимальний розмір буфера прийому звуку (в мс)."
 
 #. Translators: the full sentence is Keep a minimum video quality of X %
-#: ../src/gui/preferences.cpp:1002
+#: ../src/gui/preferences.cpp:999
 msgid "Picture Quality"
 msgstr "Якість зображення"
 
-#: ../src/gui/preferences.cpp:1002
+#: ../src/gui/preferences.cpp:999
 msgid ""
 "Choose if you want to guarantee a minimum image quality (possibly leading to "
 "dropped frames in order not to surpass the bitrate limit) or if you prefer "
@@ -3119,11 +3017,11 @@ msgstr ""
 "призведе до втрат пакетів через обмежений канал) або треба зберігати частоту "
 "кадрів, за рахунок якості ущерб."
 
-#: ../src/gui/preferences.cpp:1004
+#: ../src/gui/preferences.cpp:1001
 msgid "Maximum video _bitrate (in kbits/s):"
 msgstr "Максимальна _смуга пропускання відео (у кбіт/с):"
 
-#: ../src/gui/preferences.cpp:1004
+#: ../src/gui/preferences.cpp:1001
 msgid ""
 "The maximum video bitrate in kbits/s. The video quality and the effective "
 "frame rate will be dynamically adjusted to keep the bitrate at the given "
@@ -3133,55 +3031,55 @@ msgstr ""
 "відео і кількість кадрів на секунду буде автоматично регулюватися таким "
 "чином, щоб мінімізувати смугу пропускання до вказаного значення."
 
-#: ../src/gui/preferences.cpp:1381
+#: ../src/gui/preferences.cpp:1376
 msgid "Play sound for new voice mails"
 msgstr "Відтворювати звук при отриманні голосової пошти"
 
-#: ../src/gui/preferences.cpp:1390
+#: ../src/gui/preferences.cpp:1385
 msgid "Play sound for new instant messages"
 msgstr "Відтворювати звук при отриманні повідомлень"
 
-#: ../src/gui/preferences.cpp:1419
+#: ../src/gui/preferences.cpp:1414
 msgid "Ekiga Preferences"
 msgstr "П_араметри Ekiga"
 
-#: ../src/gui/preferences.cpp:1437
+#: ../src/gui/preferences.cpp:1432
 msgid "General"
 msgstr "Загальне"
 
-#: ../src/gui/preferences.cpp:1438
+#: ../src/gui/preferences.cpp:1433
 msgid "Personal Data"
 msgstr "Особисті дані"
 
-#: ../src/gui/preferences.cpp:1443
+#: ../src/gui/preferences.cpp:1438
 msgid "General Settings"
 msgstr "Загальні параметри"
 
-#: ../src/gui/preferences.cpp:1452
+#: ../src/gui/preferences.cpp:1447
 msgid "Sound Events"
 msgstr "Звукові події"
 
-#: ../src/gui/preferences.cpp:1456
+#: ../src/gui/preferences.cpp:1451
 msgid "Protocols"
 msgstr "Протоколи"
 
-#: ../src/gui/preferences.cpp:1458
+#: ../src/gui/preferences.cpp:1453
 msgid "SIP Settings"
 msgstr "Параметри SIP"
 
-#: ../src/gui/preferences.cpp:1463
+#: ../src/gui/preferences.cpp:1458
 msgid "H.323 Settings"
 msgstr "Параметри H.323"
 
-#: ../src/gui/preferences.cpp:1467
+#: ../src/gui/preferences.cpp:1462
 msgid "Audio"
 msgstr "Звук"
 
-#: ../src/gui/preferences.cpp:1468 ../src/gui/preferences.cpp:1478
+#: ../src/gui/preferences.cpp:1463 ../src/gui/preferences.cpp:1473
 msgid "Devices"
 msgstr "Пристрої"
 
-#: ../src/gui/preferences.cpp:1477
+#: ../src/gui/preferences.cpp:1472
 msgid "Video"
 msgstr "Зображення"
 
@@ -3221,3 +3119,116 @@ msgstr "Видаліть стан:"
 #: ../src/gui/statusmenu.cpp:762
 msgid "Define a custom message:"
 msgstr "Вкажіть стан:"
+
+#~ msgid "_Remove addressbook"
+#~ msgstr "В_идалити адресну книгу"
+
+#~ msgid "Addressbook _properties"
+#~ msgstr "В_ластивості адресної книги"
+
+#~ msgid "LDAP SASL Interaction"
+#~ msgstr "Взаємодія LDAP з SASL"
+
+#~ msgid "Challenge: "
+#~ msgstr "Виклик: "
+
+#~ msgid "Interact"
+#~ msgstr "Взаємодія"
+
+#~ msgid "LDAP Error: "
+#~ msgstr "Помилка LDAP: "
+
+#~ msgid "Book _Name"
+#~ msgstr "_Назва книги"
+
+#~ msgid "Server _URI"
+#~ msgstr "_URI сервера"
+
+#~ msgid "_DisplayName Attribute"
+#~ msgstr "Атрибут _ВизначногоІмені (DN)"
+
+#~ msgid "_Filter Template"
+#~ msgstr "Шаблон _фільтру"
+
+#~ msgid "Bind _ID"
+#~ msgstr "_Ідентифікатор прив'язки"
+
+#~ msgid "Use TLS"
+#~ msgstr "Використовувати TLS"
+
+#~ msgid "Use SASL"
+#~ msgstr "Використовувати SASL"
+
+#~ msgid "SASL _Mechanism"
+#~ msgstr "_Механізм SASL"
+
+#~ msgid "Please provide a Book Name for this directory\n"
+#~ msgstr "Вкажіть назву книги для цього каталогу\n"
+
+#~ msgid "Please provide a Server URI\n"
+#~ msgstr "Вкажіть URI сервера\n"
+
+#~ msgid "Please provide a DisplayName Attribute\n"
+#~ msgstr "Вкажіть атрибут ВизначногоІмені (DN)\n"
+
+#~ msgid "Please provide a Call Attribute\n"
+#~ msgstr "Вкажіть атрибут виклику\n"
+
+#~ msgid "Invalid Server URI\n"
+#~ msgstr "Неправильний URI сервера\n"
+
+#~ msgid "Audio test"
+#~ msgstr "Перевірка звуку"
+
+#~ msgid "Silent"
+#~ msgstr "Тихо"
+
+#~ msgid "Video test"
+#~ msgstr "Перевірка відео"
+
+#~ msgid "Crazy"
+#~ msgstr "Скажений"
+
+#~ msgid "Goom"
+#~ msgstr "В'язкий"
+
+#~ msgid "Screencast"
+#~ msgstr "Екранна копія"
+
+#~ msgid "Family"
+#~ msgstr "Родина"
+
+#~ msgid "Friend"
+#~ msgstr "Друзі"
+
+#~ msgid "Associate"
+#~ msgstr "Пов'язати"
+
+#~ msgid "Assistant"
+#~ msgstr "Помічник"
+
+#~ msgid "Supervisor"
+#~ msgstr "Супервізор"
+
+#~ msgid "Self"
+#~ msgstr "Я сам"
+
+#~ msgid "Error while initializing video output"
+#~ msgstr "Помилка під час ініціалізації виводу відео"
+
+#~ msgid "No video will be displayed during this call->"
+#~ msgstr "Під час цього дзвінка відео не буде виводитись->"
+
+#~ msgid ""
+#~ "There was an error opening initializing the video output. Please verify "
+#~ "that no other applicating is using the accelerated video output."
+#~ msgstr ""
+#~ "Помилка при відкриванні виводу відео. Перевірте, що інші програми не "
+#~ "використовуються вивід відео з апаратним прискоренням."
+
+#~ msgid ""
+#~ "There was an error opening initializing the video output. Please verify "
+#~ "that you are using a color depth of 24 or 32 bits per pixel."
+#~ msgstr ""
+#~ "Помилка при відкриванні виводу відео. Перевірте, що встановлено глибину "
+#~ "кольору 24 або 32 біт на точку."
