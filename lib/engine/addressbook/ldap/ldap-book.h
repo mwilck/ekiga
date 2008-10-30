@@ -122,7 +122,7 @@ namespace OPENLDAP
     void refresh_bound ();
     void refresh_result ();
 
-    OPENLDAP::Contact *parse_result(struct ldapmsg *);
+    gmref_ptr<Contact> parse_result(struct ldapmsg *);
 
     void parse_uri();
 

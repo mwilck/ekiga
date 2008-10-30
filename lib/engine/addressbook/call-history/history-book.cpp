@@ -105,10 +105,7 @@ History::Book::get_name () const
 void
 History::Book::add (xmlNodePtr node)
 {
-  Contact *contact = NULL;
-
-  contact = new Contact (core, node);
-  common_add (*contact);
+  add_contact (new Contact (core, node));
 }
 
 void
@@ -118,27 +115,20 @@ History::Book::add (const std::string & name,
                     const std::string & call_duration,
 		    const call_type c_t)
 {
-  Contact *contact = NULL;
-  xmlNodePtr root = NULL;
 
   if ( !uri.empty ()) {
 
-    root = xmlDocGetRootElement (doc);
+    xmlNodePtr root = xmlDocGetRootElement (doc);
 
-    contact = new Contact (core, name, uri, call_start, call_duration, c_t);
+    gmref_ptr<Contact> contact = new Contact (core, name, uri,
+					      call_start, call_duration, c_t);
 
     xmlAddChild (root, contact->get_node ());
 
     save ();
 
-    common_add (*contact);
+    add_contact (contact);
   }
-}
-
-void
-History::Book::common_add (Contact &contact)
-{
-  add_contact (contact);
 }
 
 bool
@@ -186,8 +176,7 @@ History::Book::clear ()
 {
   xmlNodePtr root = NULL;
 
-  while (begin () != end ())
-    remove_contact (*begin ());
+  remove_all_objects ();
 
   if (doc != NULL)
     xmlFreeDoc (doc);

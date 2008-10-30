@@ -41,9 +41,7 @@
 
 KAB::Source::Source (Ekiga::ContactCore &_core): core(_core)
 {
-  KAB::Book *book = new KAB::Book (core);
-
-  add_book (*book);
+  add_book (new KAB::Book (core));
 }
 
 KAB::Source::~Source ()

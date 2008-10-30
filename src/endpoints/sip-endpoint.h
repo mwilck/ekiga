@@ -77,7 +77,7 @@ namespace Opal {
       ~EndPoint ();
 
       /* ContactDecorator and PresentityDecorator */
-      bool populate_menu (Ekiga::Contact &contact,
+      bool populate_menu (gmref_ptr<Ekiga::Contact> contact,
 			  const std::string uri,
                           Ekiga::MenuBuilder &builder);
 

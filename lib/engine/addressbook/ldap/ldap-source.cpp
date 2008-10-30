@@ -97,32 +97,27 @@ OPENLDAP::Source::~Source ()
 void
 OPENLDAP::Source::add (xmlNodePtr node)
 {
-  Book *book = NULL;
-
-  book = new Book (core, node);
-
-  common_add (*book);
+  common_add (new Book (core, node));
 }
 
 void
 OPENLDAP::Source::add ()
 {
-  Book *book = NULL;
   xmlNodePtr root;
 
   root = xmlDocGetRootElement (doc);
-  book = new Book (core, bookinfo);
+  gmref_ptr<Book> book = new Book (core, bookinfo);
 
   xmlAddChild (root, book->get_node ());
 
-  common_add (*book);
+  common_add (book);
 }
 
 void
-OPENLDAP::Source::common_add (Book &book)
+OPENLDAP::Source::common_add (gmref_ptr<Book> book)
 {
-  book.trigger_saving.connect (sigc::mem_fun (this,
-					      &OPENLDAP::Source::save));
+  book->trigger_saving.connect (sigc::mem_fun (this,
+					       &OPENLDAP::Source::save));
   add_book (book);
 }
 

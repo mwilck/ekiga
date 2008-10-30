@@ -104,11 +104,11 @@ Opal::H323::EndPoint::EndPoint (Opal::CallManager & _manager, Ekiga::ServiceCore
 }
 
 
-bool Opal::H323::EndPoint::populate_menu (Ekiga::Contact &contact,
+bool Opal::H323::EndPoint::populate_menu (gmref_ptr<Ekiga::Contact> contact,
                                           std::string uri,
                                           Ekiga::MenuBuilder &builder)
 {
-  return menu_builder_add_actions (contact.get_name (), uri, builder);
+  return menu_builder_add_actions (contact->get_name (), uri, builder);
 }
 
 

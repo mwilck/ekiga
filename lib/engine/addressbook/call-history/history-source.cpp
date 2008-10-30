@@ -41,7 +41,7 @@ History::Source::Source (Ekiga::ServiceCore &_core): core(_core)
 {
   book = new Book (core);
 
-  add_book (*book);
+  add_book (book);
 }
 
 History::Source::~Source ()
@@ -63,7 +63,7 @@ History::Source::populate_menu (Ekiga::MenuBuilder &)
   return false;
 }
 
-History::Book*
+gmref_ptr<History::Book>
 History::Source::get_book () const
 {
   return book;

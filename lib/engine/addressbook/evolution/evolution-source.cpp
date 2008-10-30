@@ -57,15 +57,15 @@ void
 Evolution::Source::add_group (ESourceGroup *group)
 {
   GSList *sources = NULL;
-  ESource *source = NULL;
-  ESource *s = NULL;
-  gchar *uri = NULL;
-  EBook *ebook = NULL;
-  Evolution::Book *book = NULL;
 
   sources = e_source_group_peek_sources (group);
 
   for ( ; sources != NULL; sources = g_slist_next (sources)) {
+
+    ESource *source = NULL;
+    ESource *s = NULL;
+    gchar *uri = NULL;
+    EBook *ebook = NULL;
 
     source = E_SOURCE (sources->data);
 
@@ -80,12 +80,11 @@ Evolution::Source::add_group (ESourceGroup *group)
     ebook = e_book_new (s, NULL);
     g_object_unref (s);
 
-    book = new Evolution::Book (services, ebook);
+    gmref_ptr<Book> book = new Evolution::Book (services, ebook);
 
     g_object_unref (ebook);
 
-    add_book (*book);
-
+    add_book (book);
   }
 }
 
@@ -117,7 +116,7 @@ Evolution::Source::remove_group (ESourceGroup *group)
 	 iter != end ();
 	 iter++) {
 
-      book_ebook = iter->get_ebook ();
+      book_ebook = (*iter)->get_ebook ();
 
       book_source = e_book_get_source (book_ebook);
 
@@ -126,7 +125,7 @@ Evolution::Source::remove_group (ESourceGroup *group)
       if (book_group == group) {
 
 	found = TRUE;
-	iter->removed.emit ();
+	(*iter)->removed.emit ();
       }
     }
 

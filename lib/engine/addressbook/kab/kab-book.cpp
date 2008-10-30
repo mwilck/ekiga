@@ -45,7 +45,6 @@
 KAB::Book::Book (Ekiga::ContactCore &_core): core(_core)
 {
   KABC::AddressBook *kab = KABC::StdAddressBook::self ();
-  Contact *contact = NULL;
 
   kab->load (); // FIXME: turn async!
 
@@ -53,8 +52,7 @@ KAB::Book::Book (Ekiga::ContactCore &_core): core(_core)
        iter != kab->end ();
        iter++) {
 
-    contact = new Contact (core, &(*iter));
-    add_contact (*contact);
+    add_contact (new Contact (core, &(*iter)));
   }
 }
 

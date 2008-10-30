@@ -70,12 +70,12 @@ namespace History
 
     const std::set<std::string> existing_groups () const;
 
-    Book *get_book () const;
+    gmref_ptr<Book> get_book () const;
 
   private:
 
     Ekiga::ServiceCore &core;
-    Book *book;
+    gmref_ptr<Book> book;
 
   };
 

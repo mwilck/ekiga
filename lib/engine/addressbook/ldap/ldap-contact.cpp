@@ -80,7 +80,7 @@ OPENLDAP::Contact::populate_menu (Ekiga::MenuBuilder &builder)
     = uris.begin ();
     iter != uris.end ();
     iter++) {
-      if (contact_core->populate_contact_menu (*this, iter->second, tmp_builder)) {
+      if (contact_core->populate_contact_menu (this, iter->second, tmp_builder)) {
 	  builder.add_ghost ("", iter->first);
 	  tmp_builder.populate_menu (builder);
 	  result = true;

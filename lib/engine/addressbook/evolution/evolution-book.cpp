@@ -66,9 +66,10 @@ Evolution::Book::on_view_contacts_added (GList *econtacts)
 
     if (e_contact_get_const (econtact, E_CONTACT_FULL_NAME) != NULL) {
 
-      Evolution::Contact *contact =  new Evolution::Contact (services, book, econtact);
+      gmref_ptr<Contact> contact =  new Evolution::Contact (services, book,
+							    econtact);
 
-      add_contact (*contact);
+      add_contact (contact);
       nbr++;
     }
   }
@@ -96,7 +97,7 @@ Evolution::Book::on_view_contacts_removed (GList *ids)
     for (iterator iter = begin ();
 	 iter != end ();
 	 iter++)
-      if (iter->get_id () == (gchar *)ids->data) {
+      if ((*iter)->get_id () == (gchar *)ids->data) {
 
 	remove_contact (*iter);
 	break; // will do the loop on ids, but stop using iter which is invalid
@@ -124,9 +125,9 @@ Evolution::Book::on_view_contacts_changed (GList *econtacts)
 	 iter != end ();
 	 iter++)
 
-      if (iter->get_id()
+      if ((*iter)->get_id()
 	  == (const gchar *)e_contact_get_const (econtact, E_CONTACT_UID))
-	iter->update_econtact (econtact);
+	(*iter)->update_econtact (econtact);
   }
 }
 
