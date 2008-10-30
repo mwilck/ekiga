@@ -373,6 +373,7 @@ RL::Heap::parse_list (xmlNodePtr list)
       std::list<sigc::connection> conns;
       conns.push_back (presentity->updated.connect (sigc::bind (sigc::mem_fun (this, &RL::Heap::on_presentity_updated),presentity)));
       conns.push_back (presentity->removed.connect (sigc::bind(sigc::mem_fun (this, &RL::Heap::on_presentity_removed),presentity)));
+      conns.push_back (presentity->trigger_reload.connect (sigc::mem_fun (this, &RL::Heap::refresh)));
       conns.push_back (presentity->questions.connect (questions.make_slot()));
       presentities[presentity]=conns;
       presentity_added.emit (*presentity);
