@@ -1,7 +1,7 @@
 #!/usr/bin/make -f
 
 SILENT := 0
-DEBUG := 1
+DEBUG := 0
 MAKEFLAGS:=
 MAKEOPTS:=$(MAKEFLAGS)
 MAKE_LIB_OPTS:=$(MAKEFLAGS)
@@ -24,7 +24,7 @@ HOST_TOOL_PREFIX:=i586-mingw32msvc
 
 REALCC:=$(HOST_TOOL_PREFIX)-gcc
 REALCXX:=$(HOST_TOOL_PREFIX)-g++
-CONCURRENCY:=1
+CONCURRENCY:=6
 
 MACH_FLAGS:=-march=pentium-mmx
 OPTI_FLAGS:=-O3 -fomit-frame-pointer
@@ -522,12 +522,6 @@ $(TARGETDIR)/zips: binaries $(EKIGA_DIR)/src/ekiga.exe
 	-$(RM) -rf $(TARGETDIR)
 	make -C ekiga install
 	mkdir -p $(EKIGA_PREFIX)/plugins
-	unzip -u -j $(SRCDIR)/$(GTK_ARCHIVE) "bin/*.dll" -d $(EKIGA_PREFIX) ;\
-	unzip -u $(SRCDIR)/$(GTK_ARCHIVE) "etc/*" -d $(EKIGA_PREFIX) ;\
-	unzip -u $(SRCDIR)/$(GTK_ARCHIVE) "lib/*.dll" -d $(EKIGA_PREFIX) ;\
-	unzip -u $(SRCDIR)/$(GTK_ARCHIVE) "share/glib*" -d $(EKIGA_PREFIX) ; \
-	unzip -u $(SRCDIR)/$(GTK_ARCHIVE) "share/locale/*" -d $(EKIGA_PREFIX) ; \
-	unzip -u $(SRCDIR)/$(GTK_ARCHIVE) "share/themes/*" -d $(EKIGA_PREFIX) ; \
 	
 	for plugin in $(LIBDIR)/opal*/codecs/audio/*; do \
 	        install -m 755 $$plugin $(EKIGA_PREFIX)/plugins ;\
@@ -540,10 +534,19 @@ $(TARGETDIR)/zips: binaries $(EKIGA_DIR)/src/ekiga.exe
 	        install -m 755 $(BINDIR)/$$lib $(EKIGA_PREFIX) ;\
 	done
 	install -m 755  $(SIGC_DIR)/sigc++/.libs/libsigc-2.0-0.dll $(EKIGA_PREFIX)
+
 ifeq ($(DEBUG),0) 	 
 	$(STRIP) $(EKIGA_PREFIX)/*.dll
 	$(STRIP) $(EKIGA_PREFIX)/*.exe; 
 endif
+
+	unzip -u -j $(SRCDIR)/$(GTK_ARCHIVE) "bin/*.dll" -d $(EKIGA_PREFIX) ;\
+	unzip -u $(SRCDIR)/$(GTK_ARCHIVE) "etc/*" -d $(EKIGA_PREFIX) ;\
+	unzip -u $(SRCDIR)/$(GTK_ARCHIVE) "lib/*.dll" -d $(EKIGA_PREFIX) ;\
+	unzip -u $(SRCDIR)/$(GTK_ARCHIVE) "share/glib*" -d $(EKIGA_PREFIX) ; \
+	unzip -u $(SRCDIR)/$(GTK_ARCHIVE) "share/locale/*" -d $(EKIGA_PREFIX) ; \
+	unzip -u $(SRCDIR)/$(GTK_ARCHIVE) "share/themes/*" -d $(EKIGA_PREFIX) ; \
+
 	for lc in C $(DOC_LINGUAS); do \
 		mkdir -p $(EKIGA_PREFIX)/help/$$lc; \
 		if test -f $(EKIGA_DIR)/help/$$lc/ekiga.xml; then \
