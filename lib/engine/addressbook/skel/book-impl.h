@@ -37,7 +37,7 @@
 #ifndef __BOOK_IMPL_H__
 #define __BOOK_IMPL_H__
 
-#include "lister.h"
+#include "reflister.h"
 #include "book.h"
 
 
@@ -74,13 +74,13 @@ namespace Ekiga
   class BookImpl:
     public Book,
     public sigc::trackable,
-    protected Lister<ContactType>
+    protected RefLister<ContactType>
   {
 
   public:
 
-    typedef typename Lister<ContactType>::iterator iterator;
-    typedef typename Lister<ContactType>::const_iterator const_iterator;
+    //    typedef typename Lister<ContactType>::iterator iterator;
+    //typedef typename Lister<ContactType>::const_iterator const_iterator;
 
     /** The constructor
      */
@@ -95,25 +95,25 @@ namespace Ekiga
      * @param The callback (the return value means "go on" and allows
      *  stopping the visit)
      */
-    void visit_contacts (sigc::slot<bool, Contact &> visitor);
+    void visit_contacts (sigc::slot<bool, gmref_ptr<Contact> > visitor);
 
   protected:
 
     /** Returns an iterator to the first Contact of the collection
      */
-    iterator begin ();
+    //    iterator begin ();
 
     /** Returns an iterator to the last Contact of the collection
      */
-    iterator end ();
+    //iterator end ();
 
     /** Returns a const iterator to the first Contact of the collection
      */
-    const_iterator begin () const;
+    //const_iterator begin () const;
 
     /** Returns a const iterator to the last Contact of the collection
      */
-    const_iterator end () const;
+    //const_iterator end () const;
 
     /** Adds a contact to the Ekiga::Book.
      * @param: The contact to be added.
@@ -122,7 +122,7 @@ namespace Ekiga
      * when the contact has been updated and the Ekiga::Book 'contact_removed' signal
      * will be emitted when the contact has been removed from the Ekiga::Book.
      */
-    void add_contact (ContactType &contact);
+    void add_contact (gmref_ptr<ContactType> contact);
 
 
     /** Removes a contact from the Ekiga::Book.
@@ -130,7 +130,7 @@ namespace Ekiga
      * @return: The Ekiga::Book 'contact_removed' signal is emitted when the contact
      * has been removed.
      */
-    void remove_contact (ContactType &contact);
+    void remove_contact (gmref_ptr<ContactType> contact);
 
   };
 
@@ -147,9 +147,9 @@ template<typename ContactType>
 Ekiga::BookImpl<ContactType>::BookImpl ()
 {
   /* this is signal forwarding */
-  Lister<ContactType>::object_added.connect (contact_added.make_slot ());
-  Lister<ContactType>::object_removed.connect (contact_removed.make_slot ());
-  Lister<ContactType>::object_updated.connect (contact_updated.make_slot ());
+  RefLister<ContactType>::object_added.connect (contact_added.make_slot ());
+  RefLister<ContactType>::object_removed.connect (contact_removed.make_slot ());
+  RefLister<ContactType>::object_updated.connect (contact_updated.make_slot ());
 }
 
 
@@ -161,56 +161,56 @@ Ekiga::BookImpl<ContactType>::~BookImpl ()
 
 template<typename ContactType>
 void
-Ekiga::BookImpl<ContactType>::visit_contacts (sigc::slot<bool, Contact &> visitor)
+Ekiga::BookImpl<ContactType>::visit_contacts (sigc::slot<bool, gmref_ptr<Contact> > visitor)
 {
-  Lister<ContactType>::visit_objects (visitor);
+  RefLister<ContactType>::visit_objects (visitor);
 }
 
 
-template<typename ContactType>
-typename Ekiga::BookImpl<ContactType>::iterator
-Ekiga::BookImpl<ContactType>::begin ()
-{
-  return Lister<ContactType>::begin ();
-}
+// template<typename ContactType>
+// typename Ekiga::BookImpl<ContactType>::iterator
+// Ekiga::BookImpl<ContactType>::begin ()
+// {
+//   return Lister<ContactType>::begin ();
+// }
 
 
-template<typename ContactType>
-typename Ekiga::BookImpl<ContactType>::iterator
-Ekiga::BookImpl<ContactType>::end ()
-{
-  return Lister<ContactType>::end ();
-}
+// template<typename ContactType>
+// typename Ekiga::BookImpl<ContactType>::iterator
+// Ekiga::BookImpl<ContactType>::end ()
+// {
+//   return Lister<ContactType>::end ();
+// }
 
 
-template<typename ContactType>
-typename Ekiga::BookImpl<ContactType>::const_iterator
-Ekiga::BookImpl<ContactType>::begin () const
-{
-  return Lister<ContactType>::begin ();
-}
+// template<typename ContactType>
+// typename Ekiga::BookImpl<ContactType>::const_iterator
+// Ekiga::BookImpl<ContactType>::begin () const
+// {
+//   return Lister<ContactType>::begin ();
+// }
 
 
-template<typename ContactType>
-typename Ekiga::BookImpl<ContactType>::const_iterator
-Ekiga::BookImpl<ContactType>::end () const
-{
-  return Lister<ContactType>::end ();
-}
+// template<typename ContactType>
+// typename Ekiga::BookImpl<ContactType>::const_iterator
+// Ekiga::BookImpl<ContactType>::end () const
+// {
+//   return Lister<ContactType>::end ();
+// }
 
 
 template<typename ContactType>
 void
-Ekiga::BookImpl<ContactType>::add_contact (ContactType &contact)
+Ekiga::BookImpl<ContactType>::add_contact (gmref_ptr<ContactType> contact)
 {
-  contact.questions.add_handler (questions.make_slot ());
+  contact->questions.add_handler (questions.make_slot ());
   add_object (contact);
 }
 
 
 template<typename ContactType>
 void
-Ekiga::BookImpl<ContactType>::remove_contact (ContactType &contact)
+Ekiga::BookImpl<ContactType>::remove_contact (gmref_ptr<ContactType> contact)
 {
   remove_object (contact);
 }

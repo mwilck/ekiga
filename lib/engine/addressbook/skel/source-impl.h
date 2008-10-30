@@ -38,9 +38,7 @@
 #ifndef __SOURCE_IMPL_H__
 #define __SOURCE_IMPL_H__
 
-#include <vector>
-
-#include "lister.h"
+#include "reflister.h"
 #include "source.h"
 
 
@@ -82,13 +80,13 @@ namespace Ekiga
   class SourceImpl:
     public Source,
     public sigc::trackable,
-    protected Lister<BookType>
+    protected RefLister<BookType>
   {
 
   public:
 
-    typedef typename Lister<BookType>::iterator iterator;
-    typedef typename Lister<BookType>::const_iterator const_iterator;
+    //typedef typename Lister<BookType>::iterator iterator;
+    //typedef typename Lister<BookType>::const_iterator const_iterator;
 
     /** The constructor
      */
@@ -103,7 +101,7 @@ namespace Ekiga
      * @param The callback (the return value means "go on" and allows
      *  stopping the visit)
      */
-    void visit_books (sigc::slot<bool, Book &> visitor);
+    void visit_books (sigc::slot<bool, gmref_ptr<Book> > visitor);
 
   protected:
 
@@ -115,7 +113,7 @@ namespace Ekiga
      * 'book_removed' signal will be emitted when the Ekiga::Book has been
      * removed from the Ekiga::Source.
      */
-    void add_book (BookType &book);
+    void add_book (gmref_ptr<BookType> book);
 
 
     /** Removes a book from the Ekiga::Source.
@@ -123,7 +121,7 @@ namespace Ekiga
      * @return: The Ekiga::Source 'book_removed' signal is emitted when the
      * Ekiga::Book has been removed.
      */
-    void remove_book (BookType &book);
+    void remove_book (gmref_ptr<BookType> book);
 
 
   private:
@@ -133,7 +131,7 @@ namespace Ekiga
      * Ekiga::Book.
      * @param: The Book to remove.
      */
-    void common_removal_steps (BookType &book);
+    void common_removal_steps (gmref_ptr<BookType> book);
 
 
     /** This callback is triggered when the 'updated' signal is emitted on an
@@ -141,7 +139,7 @@ namespace Ekiga
      * Ekiga::Book.
      * @param: The updated book.
      */
-    void on_book_updated (BookType *book);
+    void on_book_updated (gmref_ptr<BookType> book);
 
 
     /** This callback is triggered when the 'removed' signal is emitted on an
@@ -149,35 +147,7 @@ namespace Ekiga
      * and takes care of the deletion of the book.
      * @param: The removed book.
      */
-    void on_book_removed (BookType *book);
-
-
-    /** This callback is triggered when the 'contact_added' signal is emitted
-     * on an Ekiga::Book in this source. Emits the Ekiga::Source
-     * 'contact_added' signal.
-     * @param: The contact and the book
-     */
-    void on_contact_added (Contact &contact,
-			   BookType *book);
-
-
-    /** This callback is triggered when the 'contact_removed' signal is emitted
-     * on an Ekiga::Book in this source. Emits the Ekiga::Source
-     * 'contact_removed' signal.
-     * @param: The contact and the book
-     */
-    void on_contact_removed (Contact &contact,
-			     BookType *book);
-
-
-    /** This callback is triggered when the 'contact_updated' signal is emitted
-     * on an Ekiga::Book in this source. Emits the Ekiga::Source
-     * 'contact_updated' signal.
-     * @param: The contact and the book
-     */
-    void on_contact_updated (Contact &contact,
-			     BookType *book);
-
+    void on_book_removed (gmref_ptr<BookType> book);
   };
 
   /**
@@ -194,9 +164,9 @@ template<typename BookType>
 Ekiga::SourceImpl<BookType>::SourceImpl ()
 {
   /* signal forwarding */
-  Lister<BookType>::object_added.connect (book_added.make_slot ());
-  Lister<BookType>::object_removed.connect (book_removed.make_slot ());
-  Lister<BookType>::object_updated.connect (book_updated.make_slot ());
+  RefLister<BookType>::object_added.connect (book_added.make_slot ());
+  RefLister<BookType>::object_removed.connect (book_removed.make_slot ());
+  RefLister<BookType>::object_updated.connect (book_updated.make_slot ());
 }
 
 template<typename BookType>
@@ -207,60 +177,33 @@ Ekiga::SourceImpl<BookType>::~SourceImpl ()
 
 template<typename BookType>
 void
-Ekiga::SourceImpl<BookType>::visit_books (sigc::slot<bool, Book &> visitor)
+Ekiga::SourceImpl<BookType>::visit_books (sigc::slot<bool, gmref_ptr<Book> > visitor)
 {
-  Lister<BookType>::visit_objects (visitor);
+  RefLister<BookType>::visit_objects (visitor);
 }
 
 
 template<typename BookType>
 void
-Ekiga::SourceImpl<BookType>::add_book (BookType &book)
+Ekiga::SourceImpl<BookType>::add_book (gmref_ptr<BookType> book)
 {
-  book.contact_added.connect (sigc::bind (sigc::mem_fun (this, &SourceImpl::on_contact_added), &book));
-
-  book.contact_removed.connect (sigc::bind (sigc::mem_fun (this, &SourceImpl::on_contact_removed), &book));
-
-  book.contact_updated.connect (sigc::bind (sigc::mem_fun (this, &SourceImpl::on_contact_updated), &book));
-
-  book.questions.add_handler (questions.make_slot ());
-
   add_object (book);
+
+  add_connection (book, book->contact_added.connect (sigc::bind<0> (contact_added.make_slot (), book)));
+
+  add_connection (book, book->contact_removed.connect (sigc::bind<0> (contact_removed.make_slot (), book)));
+
+  add_connection (book, book->contact_updated.connect (sigc::bind<0> (contact_updated.make_slot (), book)));
+
+  add_connection (book, book->questions.add_handler (questions.make_slot ()));
 }
 
 
 template<typename BookType>
 void
-Ekiga::SourceImpl<BookType>::remove_book (BookType &book)
+Ekiga::SourceImpl<BookType>::remove_book (gmref_ptr<BookType> book)
 {
   remove_object (book);
-}
-
-
-template<typename BookType>
-void
-Ekiga::SourceImpl<BookType>::on_contact_added (Contact &contact,
-					       BookType *book)
-{
-  contact_added.emit (*book, contact);
-}
-
-
-template<typename BookType>
-void
-Ekiga::SourceImpl<BookType>::on_contact_removed (Contact &contact,
-						 BookType *book)
-{
-  contact_removed.emit (*book, contact);
-}
-
-
-template<typename BookType>
-void
-Ekiga::SourceImpl<BookType>::on_contact_updated (Contact &contact,
-						 BookType *book)
-{
-  contact_updated.emit (*book, contact);
 }
 
 #endif

@@ -73,78 +73,26 @@ void
 Ekiga::ContactCore::add_source (gmref_ptr<Source> source)
 {
   sources.push_back (source);
-  source_added.emit (*source);
-  source->book_added.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::ContactCore::on_book_added), source));
-  source->book_removed.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::ContactCore::on_book_removed), source));
-  source->book_updated.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::ContactCore::on_book_updated), source));
-  source->contact_added.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::ContactCore::on_contact_added), source));
-  source->contact_removed.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::ContactCore::on_contact_removed), source));
-  source->contact_updated.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::ContactCore::on_contact_updated), source));
+  source_added.emit (source);
+  source->book_added.connect (sigc::bind<0> (book_added.make_slot (), source));
+  source->book_removed.connect (sigc::bind<0> (book_removed.make_slot (), source));
+  source->book_updated.connect (sigc::bind<0> (book_updated.make_slot (), source));
+  source->contact_added.connect (sigc::bind<0> (contact_added.make_slot (), source));
+  source->contact_removed.connect (sigc::bind<0> (contact_removed.make_slot (), source));
+  source->contact_updated.connect (sigc::bind<0> (contact_updated.make_slot (), source));
   source->questions.add_handler (questions.make_slot ());
 }
 
 void
-Ekiga::ContactCore::visit_sources (sigc::slot<bool, Source &> visitor)
+Ekiga::ContactCore::visit_sources (sigc::slot<bool, gmref_ptr<Source> > visitor)
 {
   bool go_on = true;
 
   for (std::list<gmref_ptr<Source> >::iterator iter = sources.begin ();
        iter != sources.end () && go_on;
        ++iter)
-    go_on = visitor (*(*iter));
+    go_on = visitor (*iter);
 }
-
-
-void
-Ekiga::ContactCore::on_book_added (Book &book,
-				   gmref_ptr<Source> source)
-{
-  book_added.emit (*source, book);
-}
-
-
-void
-Ekiga::ContactCore::on_book_removed (Book &book,
-				     gmref_ptr<Source> source)
-{
-  book_removed.emit (*source, book);
-}
-
-
-void
-Ekiga::ContactCore::on_book_updated (Book &book,
-				     gmref_ptr<Source> source)
-{
-  book_updated.emit (*source, book);
-}
-
-
-void
-Ekiga::ContactCore::on_contact_added (Book &book,
-				      Contact &contact,
-				      gmref_ptr<Source> source)
-{
-  contact_added.emit (*source, book, contact);
-}
-
-
-void
-Ekiga::ContactCore::on_contact_removed (Book &book,
-					Contact &contact,
-					gmref_ptr<Source> source)
-{
-  contact_removed.emit (*source, book, contact);
-}
-
-
-void
-Ekiga::ContactCore::on_contact_updated (Book &book,
-					Contact &contact,
-					gmref_ptr<Source> source)
-{
-  contact_updated.emit (*source, book, contact);
-}
-
 
 void
 Ekiga::ContactCore::add_contact_decorator (gmref_ptr<ContactDecorator> decorator)
@@ -154,7 +102,7 @@ Ekiga::ContactCore::add_contact_decorator (gmref_ptr<ContactDecorator> decorator
 
 
 bool
-Ekiga::ContactCore::populate_contact_menu (Contact &contact,
+Ekiga::ContactCore::populate_contact_menu (gmref_ptr<Contact> contact,
 					   const std::string uri,
 					   MenuBuilder &builder)
 {

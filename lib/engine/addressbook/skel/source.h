@@ -37,8 +37,6 @@
 #ifndef __SOURCE_H__
 #define __SOURCE_H__
 
-#include "gmref.h"
-
 #include "book.h"
 
 namespace Ekiga {
@@ -59,7 +57,7 @@ namespace Ekiga {
      * @param The callback (the return value means "go on" and allows
      *  stopping the visit)
      */
-    virtual void visit_books (sigc::slot<bool, Book &>) = 0;
+    virtual void visit_books (sigc::slot<bool, gmref_ptr<Book> >) = 0;
 
 
     /** Create the menu for that source and its actions.
@@ -72,32 +70,32 @@ namespace Ekiga {
 
     /** This signal is emitted when a Book has been added to the Source.
      */
-    sigc::signal<void, Book &> book_added;
+    sigc::signal<void, gmref_ptr<Book> > book_added;
     
     
     /** This signal is emitted when a Book has been updated in the Source.
      */
-    sigc::signal<void, Book &> book_updated;
+    sigc::signal<void, gmref_ptr<Book> > book_updated;
     
     
     /** This signal is emitted when a Book has been removed in the Source.
      */
-    sigc::signal<void, Book &> book_removed;
+    sigc::signal<void, gmref_ptr<Book> > book_removed;
 
     /** This signal is emitted when a Contact has been added to a book in
      *  this source.
      */
-    sigc::signal<void, Book &, Contact &> contact_added;
+    sigc::signal<void, gmref_ptr<Book>, gmref_ptr<Contact> > contact_added;
 
     /** This signal is emitted when a Contact has been removed from a book in
      *  this source.
      */
-    sigc::signal<void, Book &, Contact &> contact_removed;
+    sigc::signal<void, gmref_ptr<Book>, gmref_ptr<Contact> > contact_removed;
 
     /** This signal is emitted when a Contact has been updated in a book in
      *  this source
      */
-    sigc::signal<void, Book &, Contact &> contact_updated;
+    sigc::signal<void, gmref_ptr<Book>, gmref_ptr<Contact> > contact_updated;
 
     /** This chain allows the Source to present forms to the user
      */

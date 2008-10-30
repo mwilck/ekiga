@@ -41,6 +41,7 @@
 #include <map>
 #include <string>
 
+#include "gmref.h"
 #include "chain-of-responsibility.h"
 #include "form-request.h"
 #include "menu-builder.h"
@@ -53,7 +54,7 @@ namespace Ekiga
  * @{
  */
 
-  class Contact
+  class Contact: public virtual GmRefCounted
   {
   public:
 
