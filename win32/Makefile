@@ -1,7 +1,7 @@
 #!/usr/bin/make -f
 
 SILENT := 0
-DEBUG := 0
+DEBUG := 1
 MAKEFLAGS:=
 MAKEOPTS:=$(MAKEFLAGS)
 MAKE_LIB_OPTS:=$(MAKEFLAGS)
@@ -24,7 +24,7 @@ HOST_TOOL_PREFIX:=i586-mingw32msvc
 
 REALCC:=$(HOST_TOOL_PREFIX)-gcc
 REALCXX:=$(HOST_TOOL_PREFIX)-g++
-CONCURRENCY:=6
+CONCURRENCY:=1
 
 MACH_FLAGS:=-march=pentium-mmx
 OPTI_FLAGS:=-O3 -fomit-frame-pointer
