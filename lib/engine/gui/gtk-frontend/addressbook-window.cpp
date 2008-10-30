@@ -38,6 +38,7 @@
 
 #include "gmstockicons.h"
 
+#include "gm-refcounted-boxed.h"
 #include "addressbook-window.h"
 #include "book-view-gtk.h"
 #include "menu-builder-gtk.h"
@@ -95,7 +96,7 @@ static void on_core_updated (gpointer data);
  * BEHAVIOR     : 
  * PRE          : The given GtkWidget pointer must be an SearchBook GObject.
  */
-static void on_source_added (Ekiga::Source &source,
+static void on_source_added (gmref_ptr<Ekiga::Source> source,
 			     gpointer data);
 
 
@@ -103,8 +104,8 @@ static void on_source_added (Ekiga::Source &source,
  * BEHAVIOR     : 
  * PRE          : The given GtkWidget pointer must be an SearchBook GObject.
  */
-static bool visit_books (Ekiga::Book &book,
-			 Ekiga::Source *source,
+static bool visit_books (gmref_ptr<Ekiga::Book> book,
+			 gmref_ptr<Ekiga::Source> source,
 			 gpointer data);
 
 
@@ -113,8 +114,8 @@ static bool visit_books (Ekiga::Book &book,
  * BEHAVIOR     : Add a view of the Book in the AddressBookWindow.
  * PRE          : The given GtkWidget pointer must be an SearchBook GObject.
  */
-static void on_book_added (Ekiga::Source &source,
-			   Ekiga::Book &book,
+static void on_book_added (gmref_ptr<Ekiga::Source> source,
+			   gmref_ptr<Ekiga::Book> book,
                            gpointer data);
 
 
@@ -123,8 +124,8 @@ static void on_book_added (Ekiga::Source &source,
  * BEHAVIOR     : Remove the view of the Book from the AddressBookWindow.
  * PRE          : The given GtkWidget pointer must be an SearchBook GObject.
  */
-static void on_book_removed (Ekiga::Source &source,
-			     Ekiga::Book &book,
+static void on_book_removed (gmref_ptr<Ekiga::Source> source,
+			     gmref_ptr<Ekiga::Book> book,
                              gpointer data);
 
 
@@ -133,8 +134,8 @@ static void on_book_removed (Ekiga::Source &source,
  * BEHAVIOR     : Update the Book in the AddressBookWindow.
  * PRE          : The given GtkWidget pointer must be an SearchBook GObject.
  */
-static void on_book_updated (Ekiga::Source &source,
-			     Ekiga::Book &book,
+static void on_book_updated (gmref_ptr<Ekiga::Source> source,
+			     gmref_ptr<Ekiga::Book> book,
                              gpointer data);
 
 /* DESCRIPTION  : Called when the ContactCore has a form request
@@ -186,7 +187,7 @@ static gint on_book_clicked (GtkWidget *tree_view,
  * PRE          : /
  */
 static void addressbook_window_add_book (AddressBookWindow * self,
-                                         Ekiga::Book &book);
+                                         gmref_ptr<Ekiga::Book> book);
 
 
 /* DESCRIPTION  : /
@@ -195,7 +196,7 @@ static void addressbook_window_add_book (AddressBookWindow * self,
  * PRE          : /
  */
 static void addressbook_window_update_book (AddressBookWindow *self,
-                                            Ekiga::Book &book);
+                                            gmref_ptr<Ekiga::Book> book);
 
 
 /* DESCRIPTION  : /
@@ -203,7 +204,7 @@ static void addressbook_window_update_book (AddressBookWindow *self,
  * PRE          : /
  */
 static void addressbook_window_remove_book (AddressBookWindow *self,
-                                            Ekiga::Book &book);
+                                            gmref_ptr<Ekiga::Book> book);
 
 
 /* DESCRIPTION  : /
@@ -214,7 +215,7 @@ static void addressbook_window_remove_book (AddressBookWindow *self,
  * PRE          : /
  */
 static gboolean find_iter_for_book (AddressBookWindow *addressbook_window,
-                                    Ekiga::Book &book,
+                                    gmref_ptr<Ekiga::Book> book,
                                     GtkTreeIter *iter);
 
 
@@ -250,27 +251,27 @@ on_core_updated (gpointer data)
 
 
 static void
-on_source_added (Ekiga::Source &source,
+on_source_added (gmref_ptr<Ekiga::Source> source,
 		 gpointer data)
 {
-  source.visit_books (sigc::bind (sigc::ptr_fun (visit_books),
-				  &source, data));
+  source->visit_books (sigc::bind (sigc::ptr_fun (visit_books),
+				   source, data));
 }
 
 
-static bool visit_books (Ekiga::Book &book,
-			 Ekiga::Source *source,
+static bool visit_books (gmref_ptr<Ekiga::Book> book,
+			 gmref_ptr<Ekiga::Source> source,
 			 gpointer data)
 {
-  on_book_added (*source, book, data);
+  on_book_added (source, book, data);
 
   return true;
 }
 
 
 static void
-on_book_added (Ekiga::Source &/*source*/,
-	       Ekiga::Book &book,
+on_book_added (gmref_ptr<Ekiga::Source> /*source*/,
+	       gmref_ptr<Ekiga::Book> book,
                gpointer data)
 {
   addressbook_window_add_book (ADDRESSBOOK_WINDOW (data), book);
@@ -278,8 +279,8 @@ on_book_added (Ekiga::Source &/*source*/,
 
 
 static void
-on_book_removed (Ekiga::Source &/*source*/,
-		 Ekiga::Book &book,
+on_book_removed (gmref_ptr<Ekiga::Source> /*source*/,
+		 gmref_ptr<Ekiga::Book> book,
                  gpointer data)
 {
   addressbook_window_remove_book (ADDRESSBOOK_WINDOW (data), book);
@@ -287,8 +288,8 @@ on_book_removed (Ekiga::Source &/*source*/,
 
 
 static void
-on_book_updated (Ekiga::Source &/*source*/,
-		 Ekiga::Book &book,
+on_book_updated (gmref_ptr<Ekiga::Source> /*source*/,
+		 gmref_ptr<Ekiga::Book> book,
                  gpointer data)
 {
   addressbook_window_update_book (ADDRESSBOOK_WINDOW (data), book);
@@ -408,6 +409,7 @@ on_book_clicked (GtkWidget *tree_view,
                               (gpointer) menu_builder.menu);
           }
           g_object_ref_sink (G_OBJECT (menu_builder.menu));
+	  gmref_dec (book_iter);
         }
         gtk_tree_path_free (path);
       }
@@ -421,7 +423,7 @@ on_book_clicked (GtkWidget *tree_view,
 /* Implementation of the private functions */
 static void
 addressbook_window_add_book (AddressBookWindow *self,
-                             Ekiga::Book &book)
+                             gmref_ptr<Ekiga::Book> book)
 {
   GtkTreeIter iter;
   GtkTreeModel *store = NULL;
@@ -440,15 +442,15 @@ addressbook_window_add_book (AddressBookWindow *self,
   g_signal_connect (view, "updated", G_CALLBACK (on_view_updated), self);
 
   icon = gtk_widget_render_icon (GTK_WIDGET (self->priv->tree_view),
-				 book.get_icon ().c_str (),
+				 book->get_icon ().c_str (),
 				 GTK_ICON_SIZE_MENU, NULL); 
 
   store = gtk_tree_view_get_model (GTK_TREE_VIEW (self->priv->tree_view));
   gtk_tree_store_append (GTK_TREE_STORE (store), &iter, NULL);
   gtk_tree_store_set (GTK_TREE_STORE (store), &iter,
                       COLUMN_PIXBUF, icon, 
-                      COLUMN_NAME, book.get_name ().c_str (),
-                      COLUMN_BOOK_POINTER, &book, 
+                      COLUMN_NAME, book->get_name ().c_str (),
+                      COLUMN_BOOK_POINTER, &*book, 
                       COLUMN_VIEW, view,
                       -1);
 
@@ -464,7 +466,7 @@ addressbook_window_add_book (AddressBookWindow *self,
 
 static void
 addressbook_window_update_book (AddressBookWindow *self,
-                                Ekiga::Book &book)
+                                gmref_ptr<Ekiga::Book> book)
 {
   GtkTreeIter iter;
   GtkTreeModel *store = NULL;
@@ -472,14 +474,14 @@ addressbook_window_update_book (AddressBookWindow *self,
   store = gtk_tree_view_get_model (GTK_TREE_VIEW (self->priv->tree_view));
   if (find_iter_for_book (self, book, &iter))
     gtk_tree_store_set (GTK_TREE_STORE (store), &iter,
-                        COLUMN_NAME, book.get_name ().c_str (),
+                        COLUMN_NAME, book->get_name ().c_str (),
                         -1);
 }
 
 
 static void
 addressbook_window_remove_book (AddressBookWindow *self,
-                                Ekiga::Book &book)
+                                gmref_ptr<Ekiga::Book> book)
 {
   GtkTreeIter iter;
   gint page = -1;
@@ -516,7 +518,7 @@ addressbook_window_remove_book (AddressBookWindow *self,
 
 static gboolean
 find_iter_for_book (AddressBookWindow *self,
-                    Ekiga::Book &book,
+                    gmref_ptr<Ekiga::Book> book,
                     GtkTreeIter *iter)
 {
   Ekiga::Book *book_iter = NULL;
@@ -532,8 +534,13 @@ find_iter_for_book (AddressBookWindow *self,
                           COLUMN_BOOK_POINTER, &book_iter,
                           -1);
 
-      if (&book == book_iter)
+      if (&*book == book_iter) {
+
+	gmref_dec (book_iter);
         break;
+      }
+
+      gmref_dec (book_iter);
 
       if (!gtk_tree_model_iter_next (store, iter))
         return FALSE;
@@ -701,7 +708,7 @@ addressbook_window_new (Ekiga::ContactCore &core)
   store = gtk_tree_store_new (NUM_COLUMNS,
                               GDK_TYPE_PIXBUF,
                               G_TYPE_STRING,
-                              G_TYPE_POINTER,
+                              GM_TYPE_REFCOUNTED,
                               G_TYPE_OBJECT);
   self->priv->tree_view = gtk_tree_view_new_with_model (GTK_TREE_MODEL (store));
   g_object_unref (store);

@@ -43,6 +43,7 @@
 #include "book-view-gtk.h"
 
 #include "gmstockicons.h"
+#include "gm-refcounted-boxed.h"
 #include "menu-builder-tools.h"
 #include "menu-builder-gtk.h"
 
@@ -57,53 +58,42 @@ public:
   /* Watch the Book for changes,
    * connect the signals
    */
-  void watch_book (Ekiga::Book &book);
+  void watch_book (gmref_ptr<Ekiga::Book> book);
 
   /* Repopulate the book */
-  void repopulate (Ekiga::Book &book);
+  void repopulate (gmref_ptr<Ekiga::Book> book);
 
   /* signals emitted by this centralizer and of interest
    * for our GObject
    */
-  sigc::signal<void, Ekiga::Contact &> contact_added;
-  sigc::signal<void, Ekiga::Contact &> contact_updated;
-  sigc::signal<void, Ekiga::Contact &> contact_removed;
+  sigc::signal<void, gmref_ptr<Ekiga::Contact> > contact_added;
+  sigc::signal<void, gmref_ptr<Ekiga::Contact> > contact_updated;
+  sigc::signal<void, gmref_ptr<Ekiga::Contact> > contact_removed;
   sigc::signal<void> updated;
-
-private:
-
-  void on_contact_added (Ekiga::Contact &contact);
 };
 
 
-void SignalCentralizer::watch_book (Ekiga::Book &book)
+void SignalCentralizer::watch_book (gmref_ptr<Ekiga::Book> book)
 {
-  book.contact_added.connect (contact_added.make_slot ());
-  book.contact_updated.connect (contact_updated.make_slot ());
-  book.contact_removed.connect (contact_removed.make_slot ());
-  book.updated.connect (updated.make_slot ());
+  book->contact_added.connect (contact_added.make_slot ());
+  book->contact_updated.connect (contact_updated.make_slot ());
+  book->contact_removed.connect (contact_removed.make_slot ());
+  book->updated.connect (updated.make_slot ());
   repopulate (book);
 }
 
 
-void SignalCentralizer::repopulate (Ekiga::Book &book)
+void SignalCentralizer::repopulate (gmref_ptr<Ekiga::Book> book)
 {
-  book.visit_contacts (sigc::bind_return (sigc::mem_fun (this, &SignalCentralizer::on_contact_added), true));
+  book->visit_contacts (sigc::bind_return (contact_added.make_slot (), true));
 }
-
-
-void SignalCentralizer::on_contact_added (Ekiga::Contact &contact)
-{
-  contact_added.emit (contact);
-}
-
 
 /*
  * The Book View
  */
 struct _BookViewGtkPrivate
 {
-  _BookViewGtkPrivate (Ekiga::Book &_book) : book (_book) { }
+  _BookViewGtkPrivate (gmref_ptr<Ekiga::Book> book_) : book (book_) { }
 
   SignalCentralizer centralizer;
   GtkTreeView *tree_view;
@@ -112,17 +102,17 @@ struct _BookViewGtkPrivate
   GtkWidget *statusbar;
   GtkWidget *scrolled_window;
 
-  Ekiga::Book &book;
+  gmref_ptr<Ekiga::Book> book;
 };
 
 
-enum
-  {
-    COLUMN_CONTACT_POINTER,
-    COLUMN_PIXBUF,
-    COLUMN_NAME,
-    COLUMN_NUMBER
-  };
+enum {
+
+  COLUMN_CONTACT_POINTER,
+  COLUMN_PIXBUF,
+  COLUMN_NAME,
+  COLUMN_NUMBER
+};
 
 static GObjectClass *parent_class = NULL;
 
@@ -136,7 +126,7 @@ static GObjectClass *parent_class = NULL;
  * BEHAVIOR     : Update the BookView.
  * PRE          : The gpointer must point to the BookViewGtk GObject.
  */
-static void on_contact_added (Ekiga::Contact &contact,
+static void on_contact_added (gmref_ptr<Ekiga::Contact> contact,
 			      gpointer data);
 
 
@@ -144,7 +134,7 @@ static void on_contact_added (Ekiga::Contact &contact,
  * BEHAVIOR     : Update the BookView.
  * PRE          : The gpointer must point to the BookViewGtk GObject.
  */
-static void on_contact_updated (Ekiga::Contact &contact,
+static void on_contact_updated (gmref_ptr<Ekiga::Contact> contact,
 				gpointer data);
 
 
@@ -159,7 +149,7 @@ static void on_updated (gpointer data);
  * BEHAVIOR     : Update the BookView.
  * PRE          : The gpointer must point to the BookViewGtk GObject.
  */
-static void on_contact_removed (Ekiga::Contact &contact,
+static void on_contact_removed (gmref_ptr<Ekiga::Contact> contact,
 				gpointer data);
 
 
@@ -207,7 +197,7 @@ static gint on_contact_clicked (GtkWidget *tree_view,
  */
 static void
 book_view_gtk_add_contact (BookViewGtk *self,
-                           Ekiga::Contact &contact);
+                           gmref_ptr<Ekiga::Contact> contact);
 
 
 /* DESCRIPTION  : /
@@ -216,7 +206,7 @@ book_view_gtk_add_contact (BookViewGtk *self,
  */
 static void
 book_view_gtk_update_contact (BookViewGtk *self,
-                              Ekiga::Contact &contact,
+                              gmref_ptr<Ekiga::Contact> contact,
                               GtkTreeIter *iter);
 
 
@@ -226,7 +216,7 @@ book_view_gtk_update_contact (BookViewGtk *self,
  */
 static void
 book_view_gtk_remove_contact (BookViewGtk *self,
-                              Ekiga::Contact &contact);
+                              gmref_ptr<Ekiga::Contact> contact);
 
 
 /* DESCRIPTION  : /
@@ -236,14 +226,14 @@ book_view_gtk_remove_contact (BookViewGtk *self,
  */
 static gboolean
 book_view_gtk_find_iter_for_contact (BookViewGtk *view,
-                                     Ekiga::Contact &contact,
+                                     gmref_ptr<Ekiga::Contact> contact,
                                      GtkTreeIter *iter);
 
 
 
 /* Implementation of the callbacks */
 static void
-on_contact_added (Ekiga::Contact &contact,
+on_contact_added (gmref_ptr<Ekiga::Contact> contact,
 		  gpointer data)
 {
   book_view_gtk_add_contact (BOOK_VIEW_GTK (data), contact);
@@ -251,7 +241,7 @@ on_contact_added (Ekiga::Contact &contact,
 
 
 static void
-on_contact_updated (Ekiga::Contact &contact,
+on_contact_updated (gmref_ptr<Ekiga::Contact> contact,
 		    gpointer data)
 {
   BookViewGtk *view = NULL;
@@ -272,7 +262,7 @@ on_updated (gpointer data)
 
   view = BOOK_VIEW_GTK (data);
 
-  std::string status = view->priv->book.get_status ();
+  std::string status = view->priv->book->get_status ();
 
   gtk_statusbar_pop (GTK_STATUSBAR (view->priv->statusbar), 0);
   gtk_statusbar_push (GTK_STATUSBAR (view->priv->statusbar), 0, status.c_str ());
@@ -284,7 +274,7 @@ on_updated (gpointer data)
 
 
 static void
-on_contact_removed (Ekiga::Contact &contact,
+on_contact_removed (gmref_ptr<Ekiga::Contact> contact,
 		    gpointer data)
 {
   BookViewGtk *view = NULL;
@@ -307,15 +297,13 @@ on_entry_activated_cb (GtkWidget *entry,
                        gpointer data)
 {
   GdkCursor *cursor = NULL;
-
-  Ekiga::Book &book = BOOK_VIEW_GTK (data)->priv->book;
   const char *entry_text = gtk_entry_get_text (GTK_ENTRY (entry));
 
   cursor = gdk_cursor_new (GDK_WATCH);
   gdk_window_set_cursor (GTK_WIDGET (data)->window, cursor);
   gdk_cursor_unref (cursor);
 
-  book.set_search_filter (entry_text);
+  BOOK_VIEW_GTK (data)->priv->book->set_search_filter (entry_text);
 }
 
 
@@ -337,7 +325,6 @@ on_contact_clicked (GtkWidget *tree_view,
   GtkTreePath *path = NULL;
   GtkTreeIter iter;
   GtkTreeModel *model = NULL;
-  Ekiga::Contact *contact = NULL;
 
   if (gtk_tree_view_get_path_at_pos (GTK_TREE_VIEW (tree_view),
 				     (gint) event->x, (gint) event->y,
@@ -348,6 +335,7 @@ on_contact_clicked (GtkWidget *tree_view,
 
     if (gtk_tree_model_get_iter (model, &iter, path)) {
 
+      Ekiga::Contact *contact = NULL;
       gtk_tree_model_get (model, &iter,
 			  COLUMN_CONTACT_POINTER, &contact,
 			  -1);
@@ -359,7 +347,7 @@ on_contact_clicked (GtkWidget *tree_view,
 	  Ekiga::TemporaryMenuBuilder temp;
 	  MenuBuilderGtk builder;
 
-	  BOOK_VIEW_GTK (data)->priv->book.populate_menu (temp);
+	  BOOK_VIEW_GTK (data)->priv->book->populate_menu (temp);
 	  contact->populate_menu (builder);
 
 	  if (!temp.empty ()) {
@@ -384,6 +372,7 @@ on_contact_clicked (GtkWidget *tree_view,
 
 	  contact->populate_menu (builder);
 	}
+	gmref_dec (contact);
       }
     }
     gtk_tree_path_free (path);
@@ -396,7 +385,7 @@ on_contact_clicked (GtkWidget *tree_view,
 /* Implementation of the static functions */
 static void
 book_view_gtk_add_contact (BookViewGtk *self,
-                           Ekiga::Contact &contact)
+                           gmref_ptr<Ekiga::Contact> contact)
 {
   GtkTreeModel *model = NULL;
   GtkListStore *store = NULL;
@@ -406,14 +395,14 @@ book_view_gtk_add_contact (BookViewGtk *self,
   store = GTK_LIST_STORE (model);
 
   gtk_list_store_append (store, &iter);
-  gtk_list_store_set (store, &iter, COLUMN_CONTACT_POINTER, &contact, -1);
+  gtk_list_store_set (store, &iter, COLUMN_CONTACT_POINTER, &*contact, -1);
   book_view_gtk_update_contact (self, contact, &iter);
 }
 
 
 static void
 book_view_gtk_update_contact (BookViewGtk *self,
-			      Ekiga::Contact &contact,
+			      gmref_ptr<Ekiga::Contact> contact,
 			      GtkTreeIter *iter)
 {
   GdkPixbuf *icon = NULL;
@@ -425,7 +414,7 @@ book_view_gtk_update_contact (BookViewGtk *self,
 
   gtk_list_store_set (store, iter,
                       COLUMN_PIXBUF, icon,
-		      COLUMN_NAME, contact.get_name ().c_str (),
+		      COLUMN_NAME, contact->get_name ().c_str (),
 		      -1);
   g_object_unref (icon);
 
@@ -436,7 +425,7 @@ book_view_gtk_update_contact (BookViewGtk *self,
 
 static void
 book_view_gtk_remove_contact (BookViewGtk *self,
-                              Ekiga::Contact &contact)
+                              gmref_ptr<Ekiga::Contact> contact)
 {
   GtkTreeModel *model = NULL;
   GtkListStore *store = NULL;
@@ -455,11 +444,10 @@ book_view_gtk_remove_contact (BookViewGtk *self,
 
 static gboolean
 book_view_gtk_find_iter_for_contact (BookViewGtk *view,
-                                     Ekiga::Contact &contact,
+                                     gmref_ptr<Ekiga::Contact> contact,
                                      GtkTreeIter *iter)
 {
   GtkTreeModel *model = NULL;
-  Ekiga::Contact *iter_contact = NULL;
   gboolean found = FALSE;
 
   model = gtk_tree_view_get_model (view->priv->tree_view);
@@ -468,12 +456,14 @@ book_view_gtk_find_iter_for_contact (BookViewGtk *view,
 
     do {
 
+      Ekiga::Contact *iter_contact = NULL;
       gtk_tree_model_get (model, iter,
                           COLUMN_CONTACT_POINTER, &iter_contact,
                           -1);
-      if (iter_contact == &contact)
+      if (iter_contact == &*contact)
         found = TRUE;
-
+      
+      gmref_dec (iter_contact);
     } while (!found && gtk_tree_model_iter_next (model, iter));
   }
 
@@ -571,7 +561,7 @@ book_view_gtk_get_type ()
 
 /* public methods implementation */
 GtkWidget *
-book_view_gtk_new (Ekiga::Book &book)
+book_view_gtk_new (gmref_ptr<Ekiga::Book> book)
 {
   BookViewGtk *result = NULL;
 
@@ -613,7 +603,7 @@ book_view_gtk_new (Ekiga::Book &book)
 		    G_CALLBACK (on_contact_clicked), result);
 
   store = gtk_list_store_new (COLUMN_NUMBER,
-			      G_TYPE_POINTER,
+			      GM_TYPE_REFCOUNTED,
                               GDK_TYPE_PIXBUF,
                               G_TYPE_STRING);
 
@@ -688,7 +678,7 @@ book_view_gtk_populate_menu (BookViewGtk *self,
   GtkWidget *item = NULL;
   MenuBuilderGtk builder (menu);
 
-  self->priv->book.populate_menu (builder);
+  self->priv->book->populate_menu (builder);
 
   selection = gtk_tree_view_get_selection (self->priv->tree_view);
 
@@ -701,6 +691,7 @@ book_view_gtk_populate_menu (BookViewGtk *self,
       item = gtk_separator_menu_item_new ();
       gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
       contact->populate_menu (builder);
+      gmref_dec (contact);
     }
   }
 }

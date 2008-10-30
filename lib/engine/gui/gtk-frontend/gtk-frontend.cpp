@@ -84,12 +84,10 @@ GtkFrontend::GtkFrontend (Ekiga::ServiceCore &core)
   gmref_ptr<Ekiga::ContactCore> contact_core = core.get ("contact-core");
   gmref_ptr<Ekiga::ChatCore> chat_core = core.get ("chat-core");
   gmref_ptr<History::Source> history_source = core.get ("call-history-store");
-  History::Book *history_book = NULL;
-
-  history_book = history_source->get_book ();
+  gmref_ptr<History::Book> history_book = history_source->get_book ();
 
   roster_view = roster_view_gtk_new (*presence_core);
-  call_history_view = call_history_view_gtk_new (*history_book);
+  call_history_view = call_history_view_gtk_new (history_book);
   addressbook_window =
     addressbook_window_new_with_key (*contact_core, "/apps/ekiga/general/user_interface/addressbook_window");
   chat_window =

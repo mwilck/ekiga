@@ -68,7 +68,7 @@ destroy_connections (gpointer data,
 
 /* react to a new call being inserted in history */
 static void
-on_contact_added (Ekiga::Contact &contact,
+on_contact_added (gmref_ptr<Ekiga::Contact> contact,
 		  GtkListStore *store)
 {
   time_t t;
@@ -77,12 +77,10 @@ on_contact_added (Ekiga::Contact &contact,
   std::stringstream info;
   const gchar *id = NULL;
 
-  History::Contact *hcontact = NULL;
+  gmref_ptr<History::Contact> hcontact = contact;
   GtkTreeIter iter;
 
-  hcontact = dynamic_cast<History::Contact*>(&contact);
-
-  if (hcontact != NULL) {
+  if (hcontact) {
 
     switch (hcontact->get_type ()) {
 
@@ -119,9 +117,9 @@ on_contact_added (Ekiga::Contact &contact,
 
   gtk_list_store_prepend (store, &iter);
   gtk_list_store_set (store, &iter,
-		      COLUMN_CONTACT, &contact,
+		      COLUMN_CONTACT, &*contact,
 		      COLUMN_PIXBUF, id,
-		      COLUMN_NAME, contact.get_name ().c_str (),
+		      COLUMN_NAME, contact->get_name ().c_str (),
 		      COLUMN_INFO, info.str ().c_str (),
 		      -1);
 }
@@ -190,7 +188,7 @@ on_clicked (GtkWidget *tree,
 /* public api */
 
 GtkWidget *
-call_history_view_gtk_new (History::Book &book)
+call_history_view_gtk_new (gmref_ptr<History::Book> book)
 {
   GtkWidget *result = NULL;
   std::list<sigc::connection> *conns = NULL;
@@ -248,13 +246,13 @@ call_history_view_gtk_new (History::Book &book)
 		    G_CALLBACK (on_clicked), &book);
 
   /* connect to the signals */
-  connection = book.cleared.connect (sigc::bind (sigc::ptr_fun (gtk_list_store_clear), store));
+  connection = book->cleared.connect (sigc::bind (sigc::ptr_fun (gtk_list_store_clear), store));
   conns->push_front (connection);
-  connection = book.contact_added.connect (sigc::bind (sigc::ptr_fun (on_contact_added), store));
+  connection = book->contact_added.connect (sigc::bind (sigc::ptr_fun (on_contact_added), store));
   conns->push_front (connection);
 
   /* populate */
-  book.visit_contacts (sigc::bind_return(sigc::bind (sigc::ptr_fun (on_contact_added), store), true));
+  book->visit_contacts (sigc::bind_return(sigc::bind (sigc::ptr_fun (on_contact_added), store), true));
 
   return result;
 }

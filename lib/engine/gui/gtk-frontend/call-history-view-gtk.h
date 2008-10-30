@@ -41,6 +41,6 @@
 #include <gtk/gtk.h>
 #include "history-book.h"
 
-GtkWidget *call_history_view_gtk_new (History::Book &book);
+GtkWidget *call_history_view_gtk_new (gmref_ptr<History::Book> book);
 
 #endif

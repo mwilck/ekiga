@@ -47,7 +47,7 @@ typedef struct _BookViewGtkClass BookViewGtkClass;
 
 /* public api */
 
-GtkWidget *book_view_gtk_new (Ekiga::Book &book);
+GtkWidget *book_view_gtk_new (gmref_ptr<Ekiga::Book> book);
 
 void book_view_gtk_populate_menu (BookViewGtk *, GtkWidget *);
 
