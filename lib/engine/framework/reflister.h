@@ -37,10 +37,11 @@
 #ifndef __REFLISTER_H__
 #define __REFLISTER_H__
 
-#include "gmref.h"
 #include <sigc++/sigc++.h>
 #include <list>
-#include <map>
+
+#include "gmref.h"
+#include "map-key-iterator.h"
 
 namespace Ekiga
 {
@@ -50,6 +51,7 @@ namespace Ekiga
   protected:
 
     typedef std::map<gmref_ptr<ObjectType>,std::list<sigc::connection> > container_type;
+    typedef Ekiga::map_key_iterator<container_type> iterator;
 
     void visit_objects (sigc::slot<bool, gmref_ptr<ObjectType> > visitor);
 
@@ -59,6 +61,11 @@ namespace Ekiga
 			 sigc::connection connection);
 
     void remove_object (gmref_ptr<ObjectType> obj);
+
+    void remove_all_objects ();
+
+    iterator begin ();
+    iterator end ();
 
     sigc::signal<void, gmref_ptr<ObjectType> > object_added;
     sigc::signal<void, gmref_ptr<ObjectType> > object_removed;
@@ -113,6 +120,29 @@ Ekiga::RefLister<ObjectType>::remove_object (gmref_ptr<ObjectType> obj)
     iter->disconnect ();
   objects.erase (objects.find (obj));
   object_removed.emit (obj);
+}
+
+template<typename ObjectType>
+void
+Ekiga::RefLister<ObjectType>::remove_all_objects ()
+{
+  /* iterators get invalidated as we go, hence the strange loop */
+  while (objects.begin () != objects.end ())
+    remove_object (objects.begin ()->first);
+}
+
+template<typename ObjectType>
+typename Ekiga::RefLister<ObjectType>::iterator
+Ekiga::RefLister<ObjectType>::begin ()
+{
+  return iterator (objects.begin ());
+}
+
+template<typename ObjectType>
+typename Ekiga::RefLister<ObjectType>::iterator
+Ekiga::RefLister<ObjectType>::end ()
+{
+  return iterator (objects.end ());
 }
 
 #endif
