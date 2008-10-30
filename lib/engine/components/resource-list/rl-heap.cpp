@@ -622,6 +622,7 @@ RL::Heap::on_new_entry_form_submitted (bool submitted,
 						 user_str));
       path->set_credentials (username_str, password_str);
       path = path->build_child ("resource-lists");
+      path = path->build_child ("list");
       path = path->build_child_with_attribute ("entry", "uri", entry_uri);
       gmref_ptr<XCAP::Core> xcap(services.get ("xcap-core"));
       xcap->write (path, "application/xcap-el+xml",
