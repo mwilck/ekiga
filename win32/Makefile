@@ -603,6 +603,7 @@ clean:
 	-$(RM) -rf $(TARGETDIR)
 
 distclean:
+	-$(RM) -rf $(TARGETDIR)
 	-$(RM) -rf $(OPENLDAP_DIR)
 	-$(RM) -rf $(BUILDROOT)/share/
 	-$(RM) -rf $(BINDIR)
@@ -626,6 +627,8 @@ distclean:
 	-$(RM) -rf $(THEORA_DIR)
 	-$(RM) -rf make
 	-$(RM) -f binaries
+
+srclean:
 	-$(RM) -rf $(SRCDIR)/*
 
 .PHONY: clean distclean update update-sources
