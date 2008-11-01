@@ -14,9 +14,7 @@
 ; ===========================
 ; Global Variables
 var name
-var GTK_FOLDER
 var STARTUP_RUN_KEY
-var ISSILENT
 var ALREADY_INSTALLED
 ; ===========================
 ; Configuration
@@ -50,10 +48,6 @@ OutFile "${TARGET_DIR}/ekiga-setup-${EKIGA_VERSION}.exe"
 !define HKLM_APP_PATHS_KEY			"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\ekiga.exe"
 !define EKIGA_REG_LANG				"Installer Language"
 !define EKIGA_STARTUP_RUN_KEY			"SOFTWARE\Microsoft\Windows\CurrentVersion\Run"
-!define GTK_REG_KEY				"SOFTWARE\GTK\2.0"
-!define GTK_DEFAULT_INSTALL_PATH		"$COMMONFILES\GTK\2.0"
-!define GTK_RUNTIME_INSTALLER			"gtk+-${GTK_VERSION}-setup.exe"
-!define GTK_UNINSTALLER_BIN                     "unins000.exe"
 
 ; ===========================
 ; Modern UI configuration
@@ -71,9 +65,6 @@ OutFile "${TARGET_DIR}/ekiga-setup-${EKIGA_VERSION}.exe"
 ; ===========================
 ; Pages
 
-!ifndef WITH_GTK
-  !define MUI_PAGE_CUSTOMFUNCTION_PRE		preWelcomePage
-!endif
 !insertmacro MUI_PAGE_WELCOME
 
 ; Alter License section
@@ -81,10 +72,6 @@ OutFile "${TARGET_DIR}/ekiga-setup-${EKIGA_VERSION}.exe"
 !define MUI_LICENSEPAGE_TEXT_BOTTOM		$(EKIGA_LICENSE_BOTTOM_TEXT)
 
 !insertmacro MUI_PAGE_COMPONENTS
-
-; GTK+ install dir page
-!define MUI_PAGE_CUSTOMFUNCTION_PRE		preGtkDirPage
-!define MUI_PAGE_CUSTOMFUNCTION_LEAVE		postGtkDirPage
 
 ; Ekiga install dir page
 !insertmacro MUI_PAGE_DIRECTORY
@@ -112,15 +99,6 @@ OutFile "${TARGET_DIR}/ekiga-setup-${EKIGA_VERSION}.exe"
 !insertmacro EKIGA_MACRO_INCLUDE_LANGFILE "HUNGARIAN"		"${INSTALLER_DIR}/language_files/hungarian.nsh"
 !insertmacro EKIGA_MACRO_INCLUDE_LANGFILE "FRENCH"		"${INSTALLER_DIR}/language_files/french.nsh"
 !insertmacro EKIGA_MACRO_INCLUDE_LANGFILE "ENGLISH"		"${INSTALLER_DIR}/language_files/english.nsh"
-
-!macro VersionCheckV5 Ver1 Ver2 OutVar
-Push "${Ver1}"
-Push "${Ver2}"
-Call VersionCheckV5
-Pop "${OutVar}"
-!macroend
-
-!define VersionCheckV5 "!insertmacro VersionCheckV5"
 
 ; ===========================
 ; Sections
@@ -190,93 +168,6 @@ Section -SecUninstallOldEkiga
         done:
 SectionEnd
 
-
-
-!ifdef WITH_GTK
-Section $(GTK_SECTION_TITLE) SecGtk
-  SectionIn 1 RO
-
-  Call CheckUserInstallRights
-  Pop $R1
-
-  SetOutPath $TEMP
-  SetOverwrite on
-  File ${LIB_DIR}\${GTK_RUNTIME_INSTALLER}
-  SetOverwrite off
-
-  ; This keeps track whether we install GTK+ or not..
-  StrCpy $R5 "0"
-
-  Call DoWeNeedGtk
-  Pop $R0
-  Pop $R6
-
-  StrCmp $R0 "0" have_gtk
-  StrCmp $R0 "1" upgrade_gtk
-  StrCmp $R0 "2" no_gtk no_gtk
-
-  no_gtk:
-    StrCmp $R1 "NONE" gtk_no_install_rights
-    ClearErrors
-    ExecWait '"$TEMP\${GTK_RUNTIME_INSTALLER}" /L=$LANGUAGE $ISSILENT /DIR="$GTK_FOLDER" /IGNOREERRORS'
-    Goto gtk_install_cont
-
-  upgrade_gtk:
-    StrCpy $GTK_FOLDER $R6
-    MessageBox MB_YESNO $(GTK_UPGRADE_PROMPT) /SD IDYES IDNO done
-    ClearErrors
-    ExecWait '"$TEMP\${GTK_RUNTIME_INSTALLER}" /L=$LANGUAGE $ISSILENT /DIR="$GTK_FOLDER" /IGNOREERRORS'
-    Goto gtk_install_cont
-
-  gtk_install_cont:
-    IfErrors gtk_install_error
-    StrCpy $R5 "1"  ; marker that says we installed...
-    Goto done
- 
-  gtk_install_error:
-    Call DoWeNeedGtk
-    Pop $R0
-    StrCmp $R0 "0" done exit_on_error
-    
-  exit_on_error:
-    ;Delete "$TEMP\gtk-runtime.exe"
-    MessageBox MB_YESNO $(GTK_INSTALL_ERROR) IDYES docontinue IDNO doexit
-    
-  doexit:
-    Quit
-    
-  docontinue:
-    Goto done
- 
-  have_gtk:
-    StrCpy $GTK_FOLDER $R6
-    StrCmp $R1 "NONE" done ; If we have no rights.. can't re-install..
-    Goto done
-
-  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  ; end got_install rights
-
-  gtk_no_install_rights:
-    ; Install GTK+ to Ekiga install dir
-    StrCpy $GTK_FOLDER $INSTDIR
-    ClearErrors
-    ExecWait '"$TEMP\${GTK_RUNTIME_INSTALLER}" /L=$LANGUAGE $ISSILENT /DIR="$GTK_FOLDER" /IGNOREERRORS'
-    IfErrors gtk_install_error
-    SetOverwrite on
-    ClearErrors
-    CopyFiles /FILESONLY "$GTK_FOLDER\bin\*.dll" "$GTK_FOLDER"
-    SetOverwrite off
-    IfErrors gtk_install_error
-    Delete "$GTK_FOLDER\bin\*.dll"
-    Goto done
-    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-    ; end gtk_no_install_rights
-
-  done:
-    Delete "$TEMP\${GTK_RUNTIME_INSTALLER}"
-SectionEnd ; end of GTK+ section
-!endif
-
 ;--------------------------------
 ;Ekiga Install Section
 
@@ -289,13 +180,11 @@ Section $(EKIGA_SECTION_TITLE) SecEkiga
 
   ; Get GTK+ lib dir if we have it..
 
-  StrCmp $R0 "NONE" ekiga_none
+  StrCmp $R0 "NONE" ekiga_install_files
   StrCmp $R0 "HKLM" ekiga_hklm ekiga_hkcu
 
   ekiga_hklm:
-    ReadRegStr $R1 HKLM ${GTK_REG_KEY} "Path"
     WriteRegStr HKLM "${HKLM_APP_PATHS_KEY}" "" "$INSTDIR\ekiga.exe"
-    WriteRegStr HKLM "${HKLM_APP_PATHS_KEY}" "Path" "$R1\bin"
     WriteRegStr HKLM ${EKIGA_REG_KEY} "" "$INSTDIR"
     WriteRegStr HKLM ${EKIGA_REG_KEY} "Version" "${EKIGA_VERSION}"
     WriteRegStr HKLM "${EKIGA_UNINSTALL_KEY}" "DisplayName" $(EKIGA_UNINSTALL_DESC)
@@ -305,19 +194,11 @@ Section $(EKIGA_SECTION_TITLE) SecEkiga
     Goto ekiga_install_files
 
   ekiga_hkcu:
-    ReadRegStr $R1 HKCU ${GTK_REG_KEY} "Path"
-    StrCmp $R1 "" 0 ekiga_hkcu1
-    ReadRegStr $R1 HKLM ${GTK_REG_KEY} "Path"
-
-  ekiga_hkcu1:
     WriteRegStr HKCU ${EKIGA_REG_KEY} "" "$INSTDIR"
     WriteRegStr HKCU ${EKIGA_REG_KEY} "Version" "${EKIGA_VERSION}"
     WriteRegStr HKCU "${EKIGA_UNINSTALL_KEY}" "DisplayName" $(EKIGA_UNINSTALL_DESC)
     WriteRegStr HKCU "${EKIGA_UNINSTALL_KEY}" "UninstallString" "$INSTDIR\${EKIGA_UNINST_EXE}"
     Goto ekiga_install_files
-
-  ekiga_none:
-    ReadRegStr $R1 HKLM ${GTK_REG_KEY} "Path"
 
   ekiga_install_files:
     SetOutPath "$INSTDIR"
@@ -361,8 +242,6 @@ Section $(EKIGA_SECTION_TITLE) SecEkiga
 
     SetOutPath "$INSTDIR"
 
-    IfFileExists "$GTK_FOLDER\${GTK_UNINSTALLER_BIN}" 0 done
-    ExecWait "$GTK_FOLDER\${GTK_UNINSTALLER_BIN} /gtksetup"
   done:
 SectionEnd ; end of default Ekiga section
 
@@ -487,12 +366,6 @@ Function .onInit
   Call RunCheck
 
   StrCpy $name "Ekiga"
-
-  StrCpy $ISSILENT "/NOUI"
-
-  ; GTK installer has two silent states.. one with Message boxes, one without
-  ; If ekiga installer was run silently, we want to supress gtk installer msg boxes.
-  StrCpy $ISSILENT "/SILENT"
 
   ${GetParameters} $R0
   ClearErrors
@@ -664,253 +537,11 @@ Function VerifyDir
     Pop $1
 FunctionEnd
 
-
-;
-; Usage:
-; Call DoWeNeedGtk
-; First Pop:
-;   0 - We have the correct version
-;       Second Pop: Key where Version was found
-;   1 - We have an old version that needs to be upgraded
-;       Second Pop: HKLM or HKCU depending on where GTK was found.
-;   2 - We don't have Gtk+ at all
-;       Second Pop: "NONE, HKLM or HKCU" depending on our rights..
-;
-Function DoWeNeedGtk
-  ; Logic should be:
-  ; - Check what user rights we have (HKLM or HKCU)
-  ;   - If HKLM rights..
-  ;     - Only check HKLM key for GTK+
-  ;       - If installed to HKLM, check it and return.
-  ;   - If HKCU rights..
-  ;     - First check HKCU key for GTK+
-  ;       - if good or bad exists stop and ret.
-  ;     - If no hkcu gtk+ install, check HKLM
-  ;       - If HKLM ver exists but old, return as if no ver exits.
-  ;   - If no rights
-  ;     - Check HKLM
-  Push $0
-  Push $2
-  Push $3
-  Push $4
-  Push $5
-
-  Call CheckUserInstallRights
-  Pop $3
-  StrCmp $3 "HKLM" check_hklm
-  StrCmp $3 "HKCU" check_hkcu check_hklm
-  check_hkcu:
-    ReadRegStr $0 HKCU ${GTK_REG_KEY} "Version"
-    StrCpy $5 "HKCU"
-    StrCmp $0 "" check_hklm have_gtk
-
-  check_hklm:
-    ReadRegStr $0 HKLM ${GTK_REG_KEY} "Version"
-    StrCpy $5 "HKLM"
-    StrCmp $0 "" no_gtk have_gtk
-
-
-  have_gtk:
-    ; GTK+ is already installed.. check version.
-    ${VersionCheckV5} ${GTK_VERSION} $0 "$2"
-    IntCmp $2 1  bad_version good_version good_version
-
-  bad_version:
-    ; Bad version. If hklm ver and we have hkcu or no rights.. return no gtk
-    StrCmp $3 "NONE" no_gtk  ; if no rights.. can't upgrade
-    StrCmp $3 "HKCU" 0 upgrade_gtk ; if HKLM can upgrade..
-    StrCmp $5 "HKLM" no_gtk upgrade_gtk ; have hkcu rights.. if found hklm ver can't upgrade..
-
-  upgrade_gtk:
-    StrCpy $2 "1"
-    Push $5
-    Push $2
-    Goto done
-
-  good_version:
-    StrCmp $5 "HKLM" have_hklm_gtk have_hkcu_gtk
-
-  have_hkcu_gtk:
-    ; Have HKCU version
-    ReadRegStr $4 HKCU ${GTK_REG_KEY} "Path"
-    Goto good_version_cont
-
-      have_hklm_gtk:
-        ReadRegStr $4 HKLM ${GTK_REG_KEY} "Path"
-        Goto good_version_cont
-
-    good_version_cont:
-      StrCpy $2 "0"
-      Push $4  ; The path to existing GTK+
-      Push $2
-      Goto done
-
-  no_gtk:
-    StrCpy $2 "2"
-    Push $3 ; our rights
-    Push $2
-    Goto done
-
-  done:
-  ; The top two items on the stack are what we want to return
-  Exch 5
-  Pop $0
-  Exch 5
-  Pop $2
-  Pop $5
-  Pop $4
-  Pop $3
-FunctionEnd
-
-Function preGtkDirPage
-  Push $R0
-  Push $R1
-  Call DoWeNeedGtk
-  Pop $R0
-  Pop $R1
-
-  StrCmp $R0 "0" have_gtk
-  StrCmp $R0 "1" upgrade_gtk
-  StrCmp $R0 "2" no_gtk no_gtk
-
-
-  ; Don't show dir selector.. Upgrades are done to existing path..
-  have_gtk:
-  upgrade_gtk:
-    Abort
-
-  no_gtk:
-    StrCmp $R1 "NONE" 0 no_gtk_cont
-      ; Got no install rights..
-      Abort
-    no_gtk_cont:
-      ; Suggest path..
-      StrCmp $R1 "HKCU" 0 hklm1
-        ${GetParent} $SMPROGRAMS $R0
-        ${GetParent} $R0 $R0
-        StrCpy $R0 "$R0\GTK\2.0"
-        Goto got_path
-      hklm1:
-        StrCpy $R0 "${GTK_DEFAULT_INSTALL_PATH}"
-
-   got_path:
-     StrCpy $name "GTK+ ${GTK_VERSION}"
-     StrCpy $GTK_FOLDER $R0
-     Pop $R1
-     Pop $R0
-FunctionEnd
-
-Function postGtkDirPage
-  Push $R0
-  StrCpy $name "Ekiga ${EKIGA_VERSION}"
-  Push $GTK_FOLDER
-  Call VerifyDir
-  Pop $R0
-  StrCmp $R0 "0" 0 done
-    MessageBox MB_OK "Destination path cannot be opened" /SD IDOK
-    Abort
-  done:
-  Pop $R0
-FunctionEnd
-
-!ifndef WITH_GTK
-Function preWelcomePage
-  ; If this installer dosn't have GTK, check whether we need it.
-  ; We do this here an not in .onInit because language change in
-  ; .onInit doesn't take effect until it is finished.
-    Push $R0
-    Call DoWeNeedGtk
-    Pop $R0
-    Pop $GTK_FOLDER
-
-    StrCmp $R0 "0" have_gtk need_gtk
-    need_gtk:
-      MessageBox MB_OK $(GTK_INSTALLER_NEEDED) /SD IDOK
-      Quit
-    have_gtk:
-    Pop $R0
-FunctionEnd
-!endif
-
-
-; VersionCheckV5
-;Source: http://nsis.sourceforge.net/VersionCheckNew:_Compare_version_numbers
-Function VersionCheckV5
-Exch $R0 ; second version number
-Exch
-Exch $R1 ; first version number
-Push $R2
-Push $R3
-Push $R4
-Push $R5 ; second version part
-Push $R6 ; first version part
-
-StrCpy $R1 $R1.
-StrCpy $R0 $R0.
-
-Next: StrCmp $R0$R1 "" 0 +3
-StrCpy $R0 0
-Goto Done
-
-StrCmp $R0 "" 0 +2
-StrCpy $R0 0.
-StrCmp $R1 "" 0 +2
-StrCpy $R1 0.
-
-StrCpy $R2 0
-IntOp $R2 $R2 + 1
-StrCpy $R4 $R1 1 $R2
-StrCmp $R4 . 0 -2
-StrCpy $R6 $R1 $R2
-IntOp $R2 $R2 + 1
-StrCpy $R1 $R1 "" $R2
-
-StrCpy $R2 0
-IntOp $R2 $R2 + 1
-StrCpy $R4 $R0 1 $R2
-StrCmp $R4 . 0 -2
-StrCpy $R5 $R0 $R2
-IntOp $R2 $R2 + 1
-StrCpy $R0 $R0 "" $R2
-
-IntCmp $R5 0 Compare
-IntCmp $R6 0 Compare
-
-StrCpy $R3 0
-StrCpy $R4 $R6 1 $R3
-IntOp $R3 $R3 + 1
-StrCmp $R4 0 -2
-
-StrCpy $R2 0
-StrCpy $R4 $R5 1 $R2
-IntOp $R2 $R2 + 1
-StrCmp $R4 0 -2
-
-IntCmp $R3 $R2 0 +2 +4
-Compare: IntCmp 1$R5 1$R6 Next 0 +3
-
-StrCpy $R0 1
-Goto Done
-StrCpy $R0 2
-
-Done:
-Pop $R6
-Pop $R5
-Pop $R4
-Pop $R3
-Pop $R2
-Pop $R1
-Exch $R0 ; output
-FunctionEnd
 ;--------------------------------
 ;Descriptions
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
   !insertmacro MUI_DESCRIPTION_TEXT ${SecEkiga} \
         $(EKIGA_SECTION_DESCRIPTION)
-!ifdef WITH_GTK
-  !insertmacro MUI_DESCRIPTION_TEXT ${SecGtk} \
-        $(GTK_SECTION_DESCRIPTION)
-!endif
   !insertmacro MUI_DESCRIPTION_TEXT ${SecStartup} \
         "Will launch ekiga when windows Starts"
   !insertmacro MUI_DESCRIPTION_TEXT ${SecShortcuts} \
