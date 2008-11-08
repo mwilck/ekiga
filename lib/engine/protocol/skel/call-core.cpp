@@ -46,12 +46,12 @@
 using namespace Ekiga;
 
 
-void CallCore::add_manager (CallManager &manager)
+void CallCore::add_manager (gmref_ptr<CallManager> manager)
 {
-  managers.insert (&manager);
+  managers.insert (manager);
   manager_added.emit (manager);
 
-  manager.ready.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_manager_ready), &manager));
+  manager->ready.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_manager_ready), manager));
 }
 
 
@@ -81,7 +81,7 @@ CallCore::const_iterator CallCore::end () const
 
 bool CallCore::dial (const std::string uri)
 {
-  for (std::set<CallManager *>::iterator iter = managers.begin ();
+  for (std::set<gmref_ptr<CallManager> >::iterator iter = managers.begin ();
        iter != managers.end ();
        iter++) {
     if ((*iter)->dial (uri))
@@ -92,7 +92,7 @@ bool CallCore::dial (const std::string uri)
 }
 
 
-void CallCore::add_call (gmref_ptr<Call> call, CallManager *manager)
+void CallCore::add_call (gmref_ptr<Call> call, gmref_ptr<CallManager> manager)
 {
   std::list<sigc::connection> conns;
 
@@ -115,87 +115,84 @@ void CallCore::add_call (gmref_ptr<Call> call, CallManager *manager)
 
 void CallCore::remove_call (gmref_ptr<Call> call)
 {
-  while (calls.begin () != calls.end ()) {
+  for (std::list<sigc::connection>::iterator iter2 = calls [call->get_id ()].begin ();
+       iter2 != calls [call->get_id ()].end ();
+       ++iter2)
+    iter2->disconnect ();
 
-    for (std::list<sigc::connection>::iterator iter2 = calls.begin()->second.begin ();
-         iter2 != calls.begin()->second.end ();
-	 ++iter2)
-      iter2->disconnect ();
-
-    calls.erase (calls.begin()->first);
-  }
+  calls.erase (call->get_id ());
 }
 
 
-void CallCore::on_ringing_call (gmref_ptr<Call> call, CallManager *manager)
+void CallCore::on_ringing_call (gmref_ptr<Call> call, gmref_ptr<CallManager> manager)
 {
-  ringing_call.emit (*manager, call);
+  ringing_call.emit (manager, call);
 }
 
 
-void CallCore::on_setup_call (gmref_ptr<Call> call, CallManager *manager)
+void CallCore::on_setup_call (gmref_ptr<Call> call, gmref_ptr<CallManager> manager)
 {
-  setup_call.emit (*manager, call);
+  setup_call.emit (manager, call);
 }
 
 
-void CallCore::on_missed_call (gmref_ptr<Call> call, CallManager *manager)
+void CallCore::on_missed_call (gmref_ptr<Call> call, gmref_ptr<CallManager> manager)
 {
-  missed_call.emit (*manager, call);
+  missed_call.emit (manager, call);
 }
 
 
-void CallCore::on_cleared_call (std::string reason, gmref_ptr<Call> call, CallManager *manager)
+void CallCore::on_cleared_call (std::string reason, gmref_ptr<Call> call, gmref_ptr<CallManager> manager)
 {
-  cleared_call.emit (*manager, call, reason); 
+  cleared_call.emit (manager, call, reason); 
 }
 
 
-void CallCore::on_established_call (gmref_ptr<Call> call, CallManager *manager)
+void CallCore::on_established_call (gmref_ptr<Call> call, gmref_ptr<CallManager> manager)
 {
-  established_call.emit (*manager, call);
+  established_call.emit (manager, call);
 }
 
 
-void CallCore::on_held_call (gmref_ptr<Call> call, CallManager *manager)
+void CallCore::on_held_call (gmref_ptr<Call> call, gmref_ptr<CallManager> manager)
 {
-  held_call.emit (*manager, call);
+  held_call.emit (manager, call);
 }
 
 
-void CallCore::on_retrieved_call (gmref_ptr<Call> call, CallManager *manager)
+void CallCore::on_retrieved_call (gmref_ptr<Call> call, gmref_ptr<CallManager> manager)
 {
-  retrieved_call.emit (*manager, call);
+  retrieved_call.emit (manager, call);
 }
 
 
-void CallCore::on_stream_opened (std::string name, Call::StreamType type, bool is_transmitting, gmref_ptr<Call> call, CallManager *manager)
+void CallCore::on_stream_opened (std::string name, Call::StreamType type, bool is_transmitting, gmref_ptr<Call> call, gmref_ptr<CallManager> manager)
 {
-  stream_opened.emit (*manager, call, name, type, is_transmitting);
+  stream_opened.emit (manager, call, name, type, is_transmitting);
 }
 
 
-void CallCore::on_stream_closed (std::string name, Call::StreamType type, bool is_transmitting, gmref_ptr<Call> call, CallManager *manager)
+void CallCore::on_stream_closed (std::string name, Call::StreamType type, bool is_transmitting, gmref_ptr<Call> call, gmref_ptr<CallManager> manager)
 {
-  stream_closed.emit (*manager, call, name, type, is_transmitting);
+  stream_closed.emit (manager, call, name, type, is_transmitting);
 }
 
 
-void CallCore::on_stream_paused (std::string name, Call::StreamType type, gmref_ptr<Call> call, CallManager *manager)
+void CallCore::on_stream_paused (std::string name, Call::StreamType type, gmref_ptr<Call> call, gmref_ptr<CallManager> manager)
 {
-  stream_paused.emit (*manager, call, name, type);
+  stream_paused.emit (manager, call, name, type);
 }
 
 
-void CallCore::on_stream_resumed (std::string name, Call::StreamType type, gmref_ptr<Call> call, CallManager *manager)
+void CallCore::on_stream_resumed (std::string name, Call::StreamType type, gmref_ptr<Call> call, gmref_ptr<CallManager> manager)
 {
-  stream_resumed.emit (*manager, call, name, type);
+  stream_resumed.emit (manager, call, name, type);
 }
 
 
-void CallCore::on_manager_ready (CallManager *manager)
+void CallCore::on_manager_ready (gmref_ptr<CallManager> manager)
 {
-  manager_ready.emit (*manager);
+  manager_ready.emit (manager);
   nr_ready++;
 
   if (nr_ready >= managers.size ())

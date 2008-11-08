@@ -541,7 +541,7 @@ static void on_registration_event (const Ekiga::Account & account,
 }
 
 
-static void on_setup_call_cb (Ekiga::CallManager & /*manager*/,
+static void on_setup_call_cb (gmref_ptr<Ekiga::CallManager>  /*manager*/,
                               gmref_ptr<Ekiga::Call>  call,
                               gpointer self)
 {
@@ -567,7 +567,7 @@ static void on_setup_call_cb (Ekiga::CallManager & /*manager*/,
 }
 
 
-static void on_ringing_call_cb (Ekiga::CallManager & /*manager*/,
+static void on_ringing_call_cb (gmref_ptr<Ekiga::CallManager>  /*manager*/,
                                 gmref_ptr<Ekiga::Call>  call,
                                 gpointer self)
 {
@@ -634,7 +634,7 @@ static gboolean on_signal_level_refresh_cb (gpointer self)
   return true;
 }
 
-static void on_established_call_cb (Ekiga::CallManager & /*manager*/,
+static void on_established_call_cb (gmref_ptr<Ekiga::CallManager>  /*manager*/,
                                     gmref_ptr<Ekiga::Call>  call,
                                     gpointer self)
 {
@@ -668,7 +668,7 @@ static void on_established_call_cb (Ekiga::CallManager & /*manager*/,
 }
 
 
-static void on_cleared_call_cb (Ekiga::CallManager & /*manager*/,
+static void on_cleared_call_cb (gmref_ptr<Ekiga::CallManager>  /*manager*/,
                                 gmref_ptr<Ekiga::Call>  call,
                                 std::string reason, 
                                 gpointer self)
@@ -730,7 +730,7 @@ static void on_missed_incoming_call_cb (gpointer self)
 }
 
 
-static void on_held_call_cb (Ekiga::CallManager & /*manager*/,
+static void on_held_call_cb (gmref_ptr<Ekiga::CallManager>  /*manager*/,
                              gmref_ptr<Ekiga::Call>  /*call*/,
                              gpointer self)
 {
@@ -741,7 +741,7 @@ static void on_held_call_cb (Ekiga::CallManager & /*manager*/,
 }
 
 
-static void on_retrieved_call_cb (Ekiga::CallManager & /*manager*/,
+static void on_retrieved_call_cb (gmref_ptr<Ekiga::CallManager>  /*manager*/,
                                   gmref_ptr<Ekiga::Call>  /*call*/,
                                   gpointer self)
 {
@@ -752,7 +752,7 @@ static void on_retrieved_call_cb (Ekiga::CallManager & /*manager*/,
 }
 
 
-static void on_missed_call_cb (Ekiga::CallManager & /*manager*/,
+static void on_missed_call_cb (gmref_ptr<Ekiga::CallManager>  /*manager*/,
                                gmref_ptr<Ekiga::Call>  call,
                                gpointer self)
 {
@@ -771,7 +771,7 @@ static void on_missed_call_cb (Ekiga::CallManager & /*manager*/,
 }
 
 
-static void on_stream_opened_cb (Ekiga::CallManager & /*manager*/,
+static void on_stream_opened_cb (gmref_ptr<Ekiga::CallManager>  /*manager*/,
                                  gmref_ptr<Ekiga::Call>  /* call */,
                                  std::string name,
                                  Ekiga::Call::StreamType type,
@@ -820,7 +820,7 @@ static void on_stream_opened_cb (Ekiga::CallManager & /*manager*/,
 }
 
 
-static void on_stream_closed_cb (Ekiga::CallManager & /*manager*/,
+static void on_stream_closed_cb (gmref_ptr<Ekiga::CallManager>  /*manager*/,
                                  gmref_ptr<Ekiga::Call>  /* call */,
                                  std::string name,
                                  Ekiga::Call::StreamType type,
@@ -869,7 +869,7 @@ static void on_stream_closed_cb (Ekiga::CallManager & /*manager*/,
 }
 
 
-static void on_stream_paused_cb (Ekiga::CallManager & /*manager*/,
+static void on_stream_paused_cb (gmref_ptr<Ekiga::CallManager>  /*manager*/,
                                  gmref_ptr<Ekiga::Call>  /*call*/,
                                  std::string /*name*/,
                                  Ekiga::Call::StreamType type,
@@ -879,7 +879,7 @@ static void on_stream_paused_cb (Ekiga::CallManager & /*manager*/,
 }
 
 
-static void on_stream_resumed_cb (Ekiga::CallManager & /*manager*/,
+static void on_stream_resumed_cb (gmref_ptr<Ekiga::CallManager>  /*manager*/,
                                   gmref_ptr<Ekiga::Call>  /*call*/,
                                   std::string /*name*/,
                                   Ekiga::Call::StreamType type,

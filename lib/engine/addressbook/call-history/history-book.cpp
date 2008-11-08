@@ -189,7 +189,7 @@ History::Book::clear ()
 }
 
 void
-History::Book::on_missed_call (Ekiga::CallManager &/*manager*/,
+History::Book::on_missed_call (gmref_ptr<Ekiga::CallManager> /*manager*/,
 			       gmref_ptr<Ekiga::Call> call)
 {
   add (call->get_remote_party_name (),
@@ -200,7 +200,7 @@ History::Book::on_missed_call (Ekiga::CallManager &/*manager*/,
 }
 
 void
-History::Book::on_cleared_call (Ekiga::CallManager &/*manager*/,
+History::Book::on_cleared_call (gmref_ptr<Ekiga::CallManager> /*manager*/,
 				gmref_ptr<Ekiga::Call> call,
 				std::string /*message*/)
 {

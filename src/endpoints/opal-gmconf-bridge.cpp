@@ -239,7 +239,7 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
 #ifdef HAVE_SIP
   else if (key.find (SIP_KEY) != string::npos) {
 
-    Opal::Sip::EndPoint *sip_manager = dynamic_cast<Opal::Sip::EndPoint *> (manager.get_protocol_manager ("sip"));
+    gmref_ptr<Opal::Sip::EndPoint> sip_manager = manager.get_protocol_manager ("sip");
     if (sip_manager) {
 
       if (key == SIP_KEY "outbound_proxy_host") {
@@ -272,7 +272,7 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
 #ifdef HAVE_H323
   else if (key.find (SIP_KEY) != string::npos) {
 
-    Opal::H323::EndPoint *h323_manager = dynamic_cast<Opal::H323::EndPoint *> (manager.get_protocol_manager ("h323"));
+    gmref_ptr<Opal::H323::EndPoint> h323_manager = manager.get_protocol_manager ("h323");
     if (h323_manager) {
 
       if (key == H323_KEY "enable_h245_tunneling") {

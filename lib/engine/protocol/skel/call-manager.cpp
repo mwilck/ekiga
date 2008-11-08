@@ -43,14 +43,14 @@
 using namespace Ekiga;
 
 
-void CallManager::add_protocol_manager (CallProtocolManager &manager)
+void CallManager::add_protocol_manager (gmref_ptr<CallProtocolManager> manager)
 {
-  managers.insert (&manager);
+  managers.insert (manager);
   manager_added.emit (manager);
 }
 
 
-CallProtocolManager* CallManager::get_protocol_manager (const std::string &protocol) const
+gmref_ptr<CallProtocolManager> CallManager::get_protocol_manager (const std::string &protocol) const
 {
   for (CallManager::iterator iter = begin ();
        iter != end ();

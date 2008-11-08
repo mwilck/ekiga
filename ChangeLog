@@ -1,3 +1,20 @@
+2008-11-08  Damien Sandras  <dsandras@gnome.org>
+
+        * src/endpoints/manager.cpp:
+        * src/endpoints/opal-main.cpp:
+        * src/endpoints/opal-gmconf-bridge.cpp:
+        * src/gui/main.cpp:
+        * src/gui/statusicon.cpp:
+        * lib/engine/addressbook/call-history/history-book.h:
+        * lib/engine/addressbook/call-history/history-book.cpp:
+        * lib/engine/protocol/skel/call-core.cpp:
+        * lib/engine/protocol/skel/call-manager.cpp:
+        * lib/engine/protocol/skel/call-core.h:
+        * lib/engine/protocol/skel/call-protocol-manager.h:
+        * lib/engine/protocol/skel/call-manager.h:
+        Prevent crash on exit using gmref_ptr for the CallProtocolManager
+        and for the CallManager.
+
 2008-10-30  Julien Puydt  <jpuydt@gnome.org>
 
 	* lib/engine/components/resource-list/rl-heap.cpp: Two fixes so the

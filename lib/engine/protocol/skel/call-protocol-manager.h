@@ -49,77 +49,76 @@ namespace Ekiga
  * @{:
  */
 
-  class CallProtocolManager
+  class CallProtocolManager: public virtual GmRefCounted
+  {
+
+    public:
+    class Interface
     {
-
-  public:
-
-      class Interface
-        {
-      public:
-          std::string voip_protocol;
-          std::string protocol;
-          std::string id;
-          bool publish;
-          unsigned port;
-        };
-
-
-      /* The constructor
-       */
-      CallProtocolManager () {};
-
-      /* The destructor
-       */
-      virtual ~CallProtocolManager () {};
-
-
-      /*                 
-       * CALL MANAGEMENT 
-       */               
-
-      /** Create a call based on the remote uri given as parameter
-       * @param: An uri
-       * @return: true if a Ekiga::Call could be created
-       */
-      virtual bool dial (const std::string & uri) = 0; 
-
-
-      /*
-       * PROTOCOL INFORMATION
-       */
-
-      /** Return the protocol name
-       * @return the protocol name
-       */
-      virtual const std::string & get_protocol_name () const = 0;
-
-
-      /*
-       * MISC
-       */
-
-      /** Return the listen interface
-       * @return the interface on which we are accepting calls. Generally,
-       * under the form protocol:IP:port.
-       */
-      virtual const Interface & get_listen_interface () const = 0;
-
-      /** Set the DTMF mode to use to send DTMFs
-       * @param mode is the desired DTMF mode
-       */
-      virtual void set_dtmf_mode (unsigned mode) = 0;
-
-      /** Return the current DTMF mode
-       * @return the desired DTMF mode
-       */
-      virtual unsigned get_dtmf_mode () const = 0;
-
-      /** Set the port to listen to for incoming calls
-       * @param port is the port on which we should bind
-       */
-      virtual bool set_listen_port (unsigned port) = 0;
+        public:
+        std::string voip_protocol;
+        std::string protocol;
+        std::string id;
+        bool publish;
+        unsigned port;
     };
+
+
+    /* The constructor
+     */
+    CallProtocolManager () {};
+
+    /* The destructor
+     */
+    virtual ~CallProtocolManager () {};
+
+
+    /*                 
+     * CALL MANAGEMENT 
+     */               
+
+    /** Create a call based on the remote uri given as parameter
+     * @param: An uri
+     * @return: true if a Ekiga::Call could be created
+     */
+    virtual bool dial (const std::string & uri) = 0; 
+
+
+    /*
+     * PROTOCOL INFORMATION
+     */
+
+    /** Return the protocol name
+     * @return the protocol name
+     */
+    virtual const std::string & get_protocol_name () const = 0;
+
+
+    /*
+     * MISC
+     */
+
+    /** Return the listen interface
+     * @return the interface on which we are accepting calls. Generally,
+     * under the form protocol:IP:port.
+     */
+    virtual const Interface & get_listen_interface () const = 0;
+
+    /** Set the DTMF mode to use to send DTMFs
+     * @param mode is the desired DTMF mode
+     */
+    virtual void set_dtmf_mode (unsigned mode) = 0;
+
+    /** Return the current DTMF mode
+     * @return the desired DTMF mode
+     */
+    virtual unsigned get_dtmf_mode () const = 0;
+
+    /** Set the port to listen to for incoming calls
+     * @param port is the port on which we should bind
+     */
+    virtual bool set_listen_port (unsigned port) = 0;
+  };
 
 /**
  * @}
