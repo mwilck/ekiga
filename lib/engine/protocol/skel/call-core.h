@@ -75,7 +75,7 @@ namespace Ekiga
 
       /** The destructor
        */
-      ~CallCore () { }
+      ~CallCore ();
 
 
       /*** Service Implementation ***/
@@ -185,7 +185,8 @@ namespace Ekiga
 
       
       std::set<gmref_ptr<CallManager> > managers;
-      std::map<std::string, std::list<sigc::connection> > calls;
+      std::list<sigc::connection> manager_connections;
+      std::map<std::string, std::list<sigc::connection> > call_connections;
       unsigned nr_ready;
     };
 

@@ -46,12 +46,19 @@
 using namespace Ekiga;
 
 
+CallCore::~CallCore ()
+{
+  std::cout << "Deleting callcore" << std::endl << std::flush;
+  manager_connections.clear ();
+}
+
+
 void CallCore::add_manager (gmref_ptr<CallManager> manager)
 {
   managers.insert (manager);
   manager_added.emit (manager);
 
-  manager->ready.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_manager_ready), manager));
+  manager_connections.push_back (manager->ready.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_manager_ready), manager)));
 }
 
 
@@ -109,18 +116,18 @@ void CallCore::add_call (gmref_ptr<Call> call, gmref_ptr<CallManager> manager)
   conns.push_back (call->stream_resumed.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_stream_resumed), call, manager)));
   conns.push_back (call->removed.connect (sigc::bind (sigc::mem_fun (this, &CallCore::on_call_removed), call)));
 
-  calls[call->get_id ()] = conns;
+  call_connections [call->get_id ()] = conns;
 }
 
 
 void CallCore::remove_call (gmref_ptr<Call> call)
 {
-  for (std::list<sigc::connection>::iterator iter2 = calls [call->get_id ()].begin ();
-       iter2 != calls [call->get_id ()].end ();
+  for (std::list<sigc::connection>::iterator iter2 = call_connections [call->get_id ()].begin ();
+       iter2 != call_connections [call->get_id ()].end ();
        ++iter2)
     iter2->disconnect ();
 
-  calls.erase (call->get_id ());
+  call_connections.erase (call->get_id ());
 }
 
 

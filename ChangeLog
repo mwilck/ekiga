@@ -1,5 +1,13 @@
 2008-11-08  Damien Sandras  <dsandras@gnome.org>
 
+        * lib/engine/protocol/skel/call-core.cpp:
+        * lib/engine/protocol/skel/call-core.h:
+        Added comment for callcore destruction to monitor it. Disconnect signals
+        relaed to the CallManager in order to allow destruction of gmref_ptr 
+        services.
+
+2008-11-08  Damien Sandras  <dsandras@gnome.org>
+
         * src/endpoints/manager.cpp:
         * src/endpoints/opal-main.cpp:
         * src/endpoints/opal-gmconf-bridge.cpp:
