@@ -652,6 +652,8 @@ on_selection_changed (GtkTreeSelection* selection,
     }
 
     g_free (name);
+    gmref_dec (heap);
+    gmref_dec (presentity);
   } else {
 
     g_signal_emit (self, signals[PRESENTITY_SELECTED_SIGNAL], 0, NULL);
@@ -718,6 +720,8 @@ on_view_clicked (GtkWidget *tree_view,
 	break; // shouldn't happen
       }
       g_free (name);
+      gmref_dec (heap);
+      gmref_dec (presentity);
     }
     gtk_tree_path_free (path);
   }

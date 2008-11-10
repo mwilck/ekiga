@@ -278,7 +278,7 @@ Local::Heap::common_add (gmref_ptr<Presentity> presentity)
   presence_core->fetch_presence (presentity->get_uri ());
 
   // Connect the Local::Presentity signals.
-  presentity->trigger_saving.connect (sigc::mem_fun (this, &Local::Heap::save));
+  add_connection (presentity, presentity->trigger_saving.connect (sigc::mem_fun (this, &Local::Heap::save)));
 }
 
 
