@@ -94,16 +94,6 @@ class GnomeMeeting : public PProcess
 
   
   /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Detects the available interfaces.
-   *                 Returns FALSE if none is is detected, TRUE
-   *                 otherwise. 
-   *                 Updates the preferences window.
-   * PRE          :  /
-   */
-  bool DetectInterfaces ();
-
-  
-  /* DESCRIPTION  :  /
    * BEHAVIOR     :  Returns a pointer to the GmWindow structure
    *                 of widgets.
    * PRE          :  /
@@ -162,30 +152,13 @@ class GnomeMeeting : public PProcess
    */
   void BuildGUI ();
 
-  
-  /* DESCRIPTION  : / 
-   * BEHAVIOR     : Returns the list of detected interfaces. 
-   * 		    That doesn't force a redetection. Use DetectInterfaces 
-   * 		    for that.
-   * PRE          : /
-   */
-  PStringArray GetInterfaces ();
-
  private:
   
   Ekiga::ServiceCore *service_core;
 
-  PThread *audio_tester;
-
-  PMutex at_access_mutex;
   PMutex ep_var_mutex;
   PMutex dev_access_mutex;
-  PMutex iface_access_mutex;
   int call_number;
-
-
-  /* Detected interfaces */
-  PStringArray interfaces;
 
 
   /* The different components of the GUI */

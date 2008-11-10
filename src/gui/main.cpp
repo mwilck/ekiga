@@ -4477,7 +4477,6 @@ main (int argc,
 
   GnomeMeeting::Process ()->InitEngine ();
   GnomeMeeting::Process ()->BuildGUI ();
-  GnomeMeeting::Process ()->DetectInterfaces ();
   
   /* Add depreciated notifiers */
   gnomemeeting_conf_init ();
