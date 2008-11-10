@@ -1,3 +1,40 @@
+2008-11-10  Julien Puydt  <jpuydt@gnome.org>
+
+	* lib/engine/presence/skel/cluster-impl.h:
+	* lib/engine/presence/skel/cluster.h:
+	* lib/engine/presence/skel/heap-impl.h:
+	* lib/engine/presence/skel/heap.h:
+	* lib/engine/presence/skel/presence-core.cpp:
+	* lib/engine/presence/skel/presence-core.h:
+	* lib/engine/presence/skel/presentity.h:
+	* lib/engine/presence/skel/uri-presentity.cpp: The presence stack skel
+	now uses gmref_ptr, which fixes bug #557403.
+	* lib/engine/chat/echo/echo-presentity.h:
+	* lib/engine/chat/echo/echo-simple.cpp:
+	* lib/engine/chat/echo/echo-simple.h:
+	* lib/engine/chat/skel/chat-multiple.h:
+	* lib/engine/chat/skel/chat-simple.h:
+	* lib/engine/gui/gtk-frontend/presentity-view.cpp:
+	* lib/engine/gui/gtk-frontend/presentity-view.h:
+	* lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:
+	* lib/engine/presence/avahi/avahi-cluster.cpp:
+	* lib/engine/presence/avahi/avahi-cluster.h:
+	* lib/engine/presence/avahi/avahi-heap.cpp:
+	* lib/engine/presence/avahi/avahi-main.cpp:
+	* lib/engine/presence/local-roster/local-cluster.cpp:
+	* lib/engine/presence/local-roster/local-cluster.h:
+	* lib/engine/presence/local-roster/local-heap.cpp:
+	* lib/engine/presence/local-roster/local-heap.h:
+	* lib/engine/presence/local-roster/local-presentity.cpp:
+	* lib/engine/presence/local-roster/local-roster-bridge.cpp:
+	* lib/engine/presence/local-roster/local-roster-main.cpp:
+	* src/endpoints/h323-endpoint.cpp:
+	* src/endpoints/h323-endpoint.h:
+	* src/endpoints/sip-chat-simple.cpp:
+	* src/endpoints/sip-chat-simple.h:
+	* src/endpoints/sip-endpoint.cpp:
+	* src/endpoints/sip-endpoint.h: Follow the skel.
+
 2008-11-08  Damien Sandras  <dsandras@gnome.org>
 
         * src/endpoints/ekiga.cpp:
