@@ -129,29 +129,29 @@ Local::Heap::populate_menu_for_group (const std::string name,
 
 
 bool
-Local::Heap::has_presentity_with_uri (const std::string uri) const
+Local::Heap::has_presentity_with_uri (const std::string uri)
 {
   bool result = false;
 
-  for (const_iterator iter = begin ();
+  for (iterator iter = begin ();
        iter != end () && result != true;
        iter++)
-    result = (iter->get_uri () == uri);
+    result = ((*iter)->get_uri () == uri);
 
   return result;
 }
 
 
 const std::set<std::string>
-Local::Heap::existing_groups () const
+Local::Heap::existing_groups ()
 {
   std::set<std::string> result;
 
-  for (const_iterator iter = begin ();
+  for (iterator iter = begin ();
        iter != end ();
        iter++) {
 
-    std::set<std::string> groups = iter->get_groups ();
+    std::set<std::string> groups = (*iter)->get_groups ();
     result.insert (groups.begin (), groups.end ());
   }
 
@@ -209,17 +209,43 @@ Local::Heap::new_presentity (const std::string name,
 }
 
 
+void
+Local::Heap::push_presence (const std::string uri,
+			    const std::string presence)
+{
+  for (iterator iter = begin ();
+       iter != end ();
+       ++iter) {
+
+    if ((*iter)->get_uri () == uri)
+      (*iter)->set_presence (presence);
+  }
+}
+
+void
+Local::Heap::push_status (const std::string uri,
+			  const std::string status)
+{
+  for (iterator iter = begin ();
+       iter != end ();
+       ++iter) {
+
+    if ((*iter)->get_uri () == uri)
+      (*iter)->set_status (status);
+  }
+}
+
+
+
 /*
  * Private API
  */
 void
 Local::Heap::add (xmlNodePtr node)
 {
-  Presentity *presentity = NULL;
+  gmref_ptr<Presentity> presentity = new Presentity (core, node);
 
-  presentity = new Presentity (core, node);
-
-  common_add (*presentity);
+  common_add (presentity);
 }
 
 
@@ -228,21 +254,20 @@ Local::Heap::add (const std::string name,
 		  const std::string uri,
 		  const std::set<std::string> groups)
 {
-  Presentity *presentity = NULL;
   xmlNodePtr root = NULL;
 
   root = xmlDocGetRootElement (doc);
-  presentity = new Presentity (core, name, uri, groups);
+  gmref_ptr<Presentity> presentity = new Presentity (core, name, uri, groups);
 
   xmlAddChild (root, presentity->get_node ());
 
   save ();
-  common_add (*presentity);
+  common_add (presentity);
 }
 
 
 void
-Local::Heap::common_add (Presentity &presentity)
+Local::Heap::common_add (gmref_ptr<Presentity> presentity)
 {
   gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
 
@@ -250,10 +275,10 @@ Local::Heap::common_add (Presentity &presentity)
   add_presentity (presentity);
 
   // Fetch presence
-  presence_core->fetch_presence (presentity.get_uri ());
+  presence_core->fetch_presence (presentity->get_uri ());
 
   // Connect the Local::Presentity signals.
-  presentity.trigger_saving.connect (sigc::mem_fun (this, &Local::Heap::save));
+  presentity->trigger_saving.connect (sigc::mem_fun (this, &Local::Heap::save));
 }
 
 
@@ -360,7 +385,7 @@ Local::Heap::rename_group_form_submitted (std::string old_name,
 	   iter != end ();
 	   ++iter) {
 
-	iter->rename_group (old_name, new_name);
+	(*iter)->rename_group (old_name, new_name);
       }
     }
   } catch (Ekiga::Form::not_found) {

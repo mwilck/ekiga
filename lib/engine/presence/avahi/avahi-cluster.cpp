@@ -43,7 +43,7 @@ Avahi::Cluster::Cluster (Ekiga::ServiceCore &_core): core(_core)
 
   heap = new Heap (core);
 
-  add_heap (*heap);
+  add_heap (heap);
 
   /* don't check the cast: it has been checked already by avahi-main!*/
   presence_core->add_presence_fetcher (heap);
@@ -51,12 +51,6 @@ Avahi::Cluster::Cluster (Ekiga::ServiceCore &_core): core(_core)
 
 Avahi::Cluster::~Cluster ()
 {
-}
-
-void
-Avahi::Cluster::visit_heaps (sigc::slot<bool, Heap &> visitor)
-{
-  (void)visitor (*heap);
 }
 
 bool

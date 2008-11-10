@@ -36,6 +36,7 @@
 #ifndef __ECHO_PRESENTITY__
 #define __ECHO_PRESENTITY__
 
+#include "gmref.h"
 #include "presentity.h"
 
 namespace Echo

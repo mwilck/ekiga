@@ -108,13 +108,13 @@ namespace Local
      * @param: A string representing an uri.
      * @return: TRUE if that uri is already present in the Heap.
      */
-    bool has_presentity_with_uri (const std::string uri) const;
+    bool has_presentity_with_uri (const std::string uri);
 
 
     /** Returns the list of all groups already in used in the Heap.
      * @return: A list of groups.
      */
-    const std::set<std::string> existing_groups () const;
+    const std::set<std::string> existing_groups ();
 
 
     /** This function should be called when a new presentity has
@@ -126,6 +126,15 @@ namespace Local
     void new_presentity (const std::string name,
 			 const std::string uri);
 
+
+    /**
+     *  These functions are called by the Local::Cluster to push
+     * presence&status information down.
+     */
+    void push_presence (const std::string uri,
+			const std::string presence);
+    void push_status (const std::string uri,
+		      const std::string status);
 
   private:
 
@@ -163,7 +172,7 @@ namespace Local
      * signal it would like to trigger saving or
      * removing of the Presentity from the Heap.
      */
-    void common_add (Presentity &presentity);
+    void common_add (gmref_ptr<Presentity> presentity);
 
 
     /** Save the XML Document in the GmConf key.

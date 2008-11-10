@@ -60,8 +60,6 @@ namespace Avahi
 
     ~Cluster ();
 
-    void visit_heaps (sigc::slot<bool, Heap &> visitor);
-
     bool populate_menu (Ekiga::MenuBuilder &builder);
 
     /* this is a service */
@@ -75,7 +73,7 @@ namespace Avahi
   private:
 
     Ekiga::ServiceCore &core;
-    Heap *heap;
+    gmref_ptr<Heap> heap;
   };
 
 /**

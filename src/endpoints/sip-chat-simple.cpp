@@ -52,7 +52,6 @@ SIP::SimpleChat::SimpleChat (Ekiga::ServiceCore& core_,
 SIP::SimpleChat::~SimpleChat ()
 {
   presentity->removed.emit ();
-  delete presentity;
 }
 
 const std::string
@@ -116,10 +115,10 @@ SIP::SimpleChat::receive_notice (const std::string msg)
     (*iter)->notice (msg);
 }
 
-Ekiga::Presentity&
+gmref_ptr<Ekiga::Presentity>
 SIP::SimpleChat::get_presentity () const
 {
-  return *presentity;
+  return presentity;
 }
 
 bool

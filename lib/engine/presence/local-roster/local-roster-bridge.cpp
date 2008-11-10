@@ -54,7 +54,7 @@ namespace Local
   {
   public:
 
-    ContactDecorator (Cluster &_cluster): cluster(_cluster)
+    ContactDecorator (gmref_ptr<Cluster> _cluster): cluster(_cluster)
     {}
 
     ~ContactDecorator ()
@@ -73,7 +73,7 @@ namespace Local
 
   private:
 
-    Cluster &cluster;
+    gmref_ptr<Cluster> cluster;
   };
 };
 
@@ -85,14 +85,14 @@ Local::ContactDecorator::populate_menu (gmref_ptr<Ekiga::Contact> contact,
 {
   bool populated = false;
 
-  if (cluster.is_supported_uri (uri)) {
+  if (cluster->is_supported_uri (uri)) {
 
-    Heap& heap = cluster.get_heap ();
+    gmref_ptr<Heap> heap = cluster->get_heap ();
 
-    if (!heap.has_presentity_with_uri (uri)) {
+    if (!heap->has_presentity_with_uri (uri)) {
 
       builder.add_action ("add", _("Add to local roster"),
-			  sigc::bind (sigc::mem_fun (heap, &Local::Heap::new_presentity),
+			  sigc::bind (sigc::mem_fun (&*heap, &Local::Heap::new_presentity),
 				      contact->get_name (), uri));
       populated = true;
     }
@@ -116,7 +116,7 @@ local_roster_bridge_init (Ekiga::ServiceCore &core,
   if (cluster && contact_core) {
 
     gmref_ptr<Local::ContactDecorator> decorator
-      = new Local::ContactDecorator (*cluster);
+      = new Local::ContactDecorator (cluster);
     core.add (decorator);
     contact_core->add_contact_decorator (decorator);
     result = true;

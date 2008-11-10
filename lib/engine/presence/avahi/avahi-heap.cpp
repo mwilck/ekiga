@@ -211,10 +211,10 @@ Avahi::Heap::BrowserCallback (AvahiServiceBrowser *browser,
     for (iterator iter = begin () ;
 	 !found && iter != end ();
 	 iter++)
-      if ((*iter).get_name () == name) {
+      if ((*iter)->get_name () == name) {
 
 	found = true;
-	(*iter).removed.emit ();
+	(*iter)->removed.emit ();
       }
     break;
   case AVAHI_BROWSER_CACHE_EXHAUSTED:
@@ -254,7 +254,6 @@ Avahi::Heap::ResolverCallback (AvahiServiceResolver *resolver,
   std::string status;
   bool already_known = false;
   gchar *url = NULL;
-  Ekiga::URIPresentity *presentity = NULL;
   AvahiStringList *txt_tmp = NULL;
 
   switch (event) {
@@ -288,11 +287,11 @@ Avahi::Heap::ResolverCallback (AvahiServiceResolver *resolver,
 	 iter != end ();
 	 iter++) {
 
-      if ((*iter).get_name () == name) {
+      if ((*iter)->get_name () == name) {
 
 	/* known contact has been updated */
-	presence_received.emit ((*iter).get_uri (), presence);
-	status_received.emit ((*iter).get_uri (), status);
+	presence_received.emit ((*iter)->get_uri (), presence);
+	status_received.emit ((*iter)->get_uri (), status);
 	already_known = true;
       }
     }
@@ -307,10 +306,11 @@ Avahi::Heap::ResolverCallback (AvahiServiceResolver *resolver,
 
 	groups.insert (_("Neighbours"));
 	url = g_strdup_printf ("%s:neighbour@%s:%d", broken[1], host_name, port);
-	presentity = new Ekiga::URIPresentity (core, name, url, groups);
+	gmref_ptr<Ekiga::URIPresentity> presentity
+	  = new Ekiga::URIPresentity (core, name, url, groups);
 	status_received.emit (url, status);
 	presence_received.emit (url, presence);
-	add_presentity (*presentity);
+	add_presentity (presentity);
 	g_free (url);
       }
       g_strfreev (broken);

@@ -183,11 +183,11 @@ bool Opal::Sip::EndPoint::populate_menu (gmref_ptr<Ekiga::Contact> contact,
 }
 
 
-bool Opal::Sip::EndPoint::populate_menu (Ekiga::Presentity& presentity,
+bool Opal::Sip::EndPoint::populate_menu (gmref_ptr<Ekiga::Presentity> presentity,
                                          const std::string uri,
-                                         Ekiga::MenuBuilder & builder)
+                                         Ekiga::MenuBuilder& builder)
 {
-  return menu_builder_add_actions (presentity.get_name (), uri, builder);
+  return menu_builder_add_actions (presentity->get_name (), uri, builder);
 }
 
 

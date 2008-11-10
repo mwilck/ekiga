@@ -37,6 +37,8 @@
 #ifndef __CHAT_MULTIPLE_H__
 #define __CHAT_MULTIPLE_H__
 
+#include "gmref.h"
+
 #include "chat.h"
 #include "heap.h"
 
@@ -55,7 +57,7 @@ namespace Ekiga
     /** Returns the Heap associated with the MultipleChat.
      * @return The MultipleChat's Heap
      */
-    virtual Heap& get_heap () const = 0;
+    virtual gmref_ptr<Heap> get_heap () const = 0;
   };
 
 };

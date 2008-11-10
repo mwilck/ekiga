@@ -81,7 +81,7 @@ namespace Opal {
 			  const std::string uri,
                           Ekiga::MenuBuilder &builder);
 
-      bool populate_menu (Ekiga::Presentity& presentity,
+      bool populate_menu (gmref_ptr<Ekiga::Presentity> presentity,
 			  const std::string uri,
                           Ekiga::MenuBuilder & builder);
 

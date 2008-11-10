@@ -67,7 +67,7 @@ namespace SIP
 
     void receive_notice (const std::string msg);
 
-    Ekiga::Presentity &get_presentity () const;
+    gmref_ptr<Ekiga::Presentity> get_presentity () const;
 
     bool populate_menu (Ekiga::MenuBuilder& builder);
 
@@ -76,7 +76,7 @@ namespace SIP
     Ekiga::ServiceCore& core;
     sigc::slot<bool, std::string> sender;
     std::list<Ekiga::ChatObserver*> observers;
-    Ekiga::Presentity *presentity;
+    gmref_ptr<Ekiga::Presentity> presentity;
     std::string uri;
   };
 };

@@ -43,17 +43,15 @@ Echo::SimpleChat::SimpleChat (): presentity(new Presentity ())
 
 Echo::SimpleChat::~SimpleChat ()
 {
-  delete presentity;
-
 #ifdef __GNUC__
   std::cout << __PRETTY_FUNCTION__ << std::endl;
 #endif
 }
 
-Ekiga::Presentity&
+gmref_ptr<Ekiga::Presentity>
 Echo::SimpleChat::get_presentity () const
 {
-  return *presentity;
+  return presentity;
 }
 
 bool

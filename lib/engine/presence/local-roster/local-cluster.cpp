@@ -48,7 +48,7 @@ Local::Cluster::Cluster (Ekiga::ServiceCore &_core): core(_core)
   presence_core->presence_received.connect (sigc::mem_fun (this, &Local::Cluster::on_presence_received));
   presence_core->status_received.connect (sigc::mem_fun (this, &Local::Cluster::on_status_received));
 
-  add_heap (*heap);
+  add_heap (heap);
 }
 
 Local::Cluster::~Cluster ()
@@ -79,27 +79,26 @@ bool
 Local::Cluster::populate_menu (Ekiga::MenuBuilder& builder)
 {
   builder.add_action ("new", _("New contact"),
-		      sigc::bind (sigc::mem_fun (heap, &Local::Heap::new_presentity), "", ""));
+		      sigc::mem_fun (this, &Local::Cluster::on_new_presentity));
+
   return true;
+}
+
+void
+Local::Cluster::on_new_presentity ()
+{
+  heap->new_presentity ("", "");
 }
 
 void
 Local::Cluster::on_presence_received (std::string uri,
 				      std::string presence)
 {
-  for (Local::Heap::iterator iter = heap->begin ();
-       iter != heap->end ();
-       iter++)
-    if (uri == iter->get_uri ())
-      iter->set_presence (presence);
+  heap->push_presence (uri, presence);
 }
 
 void Local::Cluster::on_status_received (std::string uri,
 					 std::string status)
 {
-  for (Local::Heap::iterator iter = heap->begin ();
-       iter != heap->end ();
-       iter++)
-    if (uri == iter->get_uri ())
-      iter->set_status (status);
+  heap->push_status (uri, status);
 }

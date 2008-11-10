@@ -37,6 +37,8 @@
 #ifndef __CHAT_SIMPLE_H__
 #define __CHAT_SIMPLE_H__
 
+#include "gmref.h"
+
 #include "chat.h"
 #include "presentity.h"
 
@@ -55,7 +57,7 @@ namespace Ekiga
     /** Returns the Presentity associated with the SimpleChat.
      * @return The SimpleChat's Presentity.
      */
-    virtual Presentity &get_presentity () const = 0;
+    virtual gmref_ptr<Presentity> get_presentity () const = 0;
   };
 
 };
