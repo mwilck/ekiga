@@ -65,7 +65,7 @@ namespace Ekiga
      * @param The uri for which actions could be made available.
      * @param A MenuBuilder object to populate.
      */
-    virtual bool populate_menu (Presentity& /*presentity*/,
+    virtual bool populate_menu (gmref_ptr<Presentity> /*presentity*/,
 				const std::string /*uri*/,
 				MenuBuilder &/*builder*/) = 0;
   };
@@ -168,50 +168,50 @@ namespace Ekiga
     /** Adds a cluster to the PresenceCore service.
      * @param The cluster to be added.
      */
-    void add_cluster (Cluster &cluster);
+    void add_cluster (gmref_ptr<Cluster> cluster);
 
     /** Triggers a callback for all Ekiga::Cluster clusters of the
      * PresenceCore service.
      * @param The callback (the return value means "go on" and allows
      *  stopping the visit)
      */
-    void visit_clusters (sigc::slot<bool, Cluster &> visitor);
+    void visit_clusters (sigc::slot<bool, gmref_ptr<Cluster> > visitor);
 
     /** This signal is emitted when an Ekiga::Cluster has been added
      * to the PresenceCore Service.
      */
-    sigc::signal<void, Cluster &> cluster_added;
+    sigc::signal<void, gmref_ptr<Cluster> > cluster_added;
 
     /** Those signals are forwarding the heap_added, heap_updated
      * and heap_removed from the given Cluster.
      *
      */
-    sigc::signal<void, Cluster &, Heap &> heap_added;
-    sigc::signal<void, Cluster &, Heap &> heap_updated;
-    sigc::signal<void, Cluster &, Heap &> heap_removed;
+    sigc::signal<void, gmref_ptr<Cluster> , gmref_ptr<Heap> > heap_added;
+    sigc::signal<void, gmref_ptr<Cluster> , gmref_ptr<Heap> > heap_updated;
+    sigc::signal<void, gmref_ptr<Cluster> , gmref_ptr<Heap> > heap_removed;
 
     /** Those signals are forwarding the presentity_added, presentity_updated
      * and presentity_removed from the given Heap of the given Cluster.
      */
-    sigc::signal<void, Cluster &, Heap &, Presentity &> presentity_added;
-    sigc::signal<void, Cluster &, Heap &, Presentity &> presentity_updated;
-    sigc::signal<void, Cluster &, Heap &, Presentity &> presentity_removed;
+    sigc::signal<void, gmref_ptr<Cluster> , gmref_ptr<Heap> , gmref_ptr<Presentity> > presentity_added;
+    sigc::signal<void, gmref_ptr<Cluster> , gmref_ptr<Heap> , gmref_ptr<Presentity> > presentity_updated;
+    sigc::signal<void, gmref_ptr<Cluster> , gmref_ptr<Heap> , gmref_ptr<Presentity> > presentity_removed;
 
   private:
 
-    std::set<Cluster *> clusters;
-    void on_heap_added (Heap &heap, Cluster *cluster);
-    void on_heap_updated (Heap &heap, Cluster *cluster);
-    void on_heap_removed (Heap &heap, Cluster *cluster);
-    void on_presentity_added (Heap &heap,
-			      Presentity &presentity,
-			      Cluster *cluster);
-    void on_presentity_updated (Heap &heap,
-				Presentity &presentity,
-				Cluster *cluster);
-    void on_presentity_removed (Heap &heap,
-				Presentity &presentity,
-				Cluster *cluster);
+    std::set<gmref_ptr<Cluster> > clusters;
+    void on_heap_added (gmref_ptr<Heap> heap, gmref_ptr<Cluster> cluster);
+    void on_heap_updated (gmref_ptr<Heap> heap, gmref_ptr<Cluster> cluster);
+    void on_heap_removed (gmref_ptr<Heap> heap, gmref_ptr<Cluster> cluster);
+    void on_presentity_added (gmref_ptr<Heap> heap,
+			      gmref_ptr<Presentity> presentity,
+			      gmref_ptr<Cluster> cluster);
+    void on_presentity_updated (gmref_ptr<Heap> heap,
+				gmref_ptr<Presentity> presentity,
+				gmref_ptr<Cluster> cluster);
+    void on_presentity_removed (gmref_ptr<Heap> heap,
+				gmref_ptr<Presentity> presentity,
+				gmref_ptr<Cluster> cluster);
 
     /*** API to act on presentities ***/
   public:
@@ -225,7 +225,7 @@ namespace Ekiga
      * @param The uri for which the decoration is needed.
      * @param The builder to populate.
      */
-    bool populate_presentity_menu (Presentity& presentity,
+    bool populate_presentity_menu (gmref_ptr<Presentity> presentity,
 				   const std::string uri,
 				   MenuBuilder &builder);
 

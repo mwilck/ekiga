@@ -56,27 +56,27 @@ Ekiga::PresenceCore::~PresenceCore ()
 }
 
 void
-Ekiga::PresenceCore::add_cluster (Cluster &cluster)
+Ekiga::PresenceCore::add_cluster (gmref_ptr<Cluster> cluster)
 {
-  clusters.insert (&cluster);
+  clusters.insert (cluster);
   cluster_added.emit (cluster);
-  cluster.heap_added.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresenceCore::on_heap_added), &cluster));
-  cluster.heap_updated.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresenceCore::on_heap_updated), &cluster));
-  cluster.heap_removed.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresenceCore::on_heap_removed), &cluster));
-  cluster.presentity_added.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresenceCore::on_presentity_added), &cluster));
-  cluster.presentity_updated.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresenceCore::on_presentity_updated), &cluster));
-  cluster.presentity_removed.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresenceCore::on_presentity_removed), &cluster));
-  cluster.questions.add_handler (questions.make_slot ());
+  cluster->heap_added.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresenceCore::on_heap_added), cluster));
+  cluster->heap_updated.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresenceCore::on_heap_updated), cluster));
+  cluster->heap_removed.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresenceCore::on_heap_removed), cluster));
+  cluster->presentity_added.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresenceCore::on_presentity_added), cluster));
+  cluster->presentity_updated.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresenceCore::on_presentity_updated), cluster));
+  cluster->presentity_removed.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresenceCore::on_presentity_removed), cluster));
+  cluster->questions.add_handler (questions.make_slot ());
 }
 
 void
-Ekiga::PresenceCore::visit_clusters (sigc::slot<bool, Cluster &> visitor)
+Ekiga::PresenceCore::visit_clusters (sigc::slot<bool, gmref_ptr<Cluster> > visitor)
 {
   bool go_on = true;
-  for (std::set<Cluster *>::iterator iter = clusters.begin ();
+  for (std::set<gmref_ptr<Cluster> >::iterator iter = clusters.begin ();
        iter != clusters.end () && go_on;
        iter++)
-    go_on = visitor (*(*iter));
+    go_on = visitor (*iter);
 }
 
 bool
@@ -84,7 +84,7 @@ Ekiga::PresenceCore::populate_menu (MenuBuilder &builder)
 {
   bool populated = false;
 
-  for (std::set<Cluster*>::iterator iter = clusters.begin ();
+  for (std::set<gmref_ptr<Cluster> >::iterator iter = clusters.begin ();
        iter != clusters.end ();
        ++iter)
     if ((*iter)->populate_menu (builder))
@@ -93,47 +93,47 @@ Ekiga::PresenceCore::populate_menu (MenuBuilder &builder)
   return populated;
 }
 
-void Ekiga::PresenceCore::on_heap_added (Heap &heap,
-					 Cluster *cluster)
+void Ekiga::PresenceCore::on_heap_added (gmref_ptr<Heap> heap,
+					 gmref_ptr<Cluster> cluster)
 {
-  heap_added.emit (*cluster, heap);
+  heap_added.emit (cluster, heap);
 }
 
 void
-Ekiga::PresenceCore::on_heap_updated (Heap &heap,
-				      Cluster *cluster)
+Ekiga::PresenceCore::on_heap_updated (gmref_ptr<Heap> heap,
+				      gmref_ptr<Cluster> cluster)
 {
-  heap_updated.emit (*cluster, heap);
+  heap_updated.emit (cluster, heap);
 }
 
 void
-Ekiga::PresenceCore::on_heap_removed (Heap &heap, Cluster *cluster)
+Ekiga::PresenceCore::on_heap_removed (gmref_ptr<Heap> heap, gmref_ptr<Cluster> cluster)
 {
-  heap_removed.emit (*cluster, heap);
+  heap_removed.emit (cluster, heap);
 }
 
 void
-Ekiga::PresenceCore::on_presentity_added (Heap &heap,
-					  Presentity &presentity,
-					  Cluster *cluster)
+Ekiga::PresenceCore::on_presentity_added (gmref_ptr<Heap> heap,
+					  gmref_ptr<Presentity> presentity,
+					  gmref_ptr<Cluster> cluster)
 {
-  presentity_added.emit (*cluster, heap, presentity);
+  presentity_added.emit (cluster, heap, presentity);
 }
 
 void
-Ekiga::PresenceCore::on_presentity_updated (Heap &heap,
-					    Presentity &presentity,
-					    Cluster *cluster)
+Ekiga::PresenceCore::on_presentity_updated (gmref_ptr<Heap> heap,
+					    gmref_ptr<Presentity> presentity,
+					    gmref_ptr<Cluster> cluster)
 {
-  presentity_updated (*cluster, heap, presentity);
+  presentity_updated (cluster, heap, presentity);
 }
 
 void
-Ekiga::PresenceCore::on_presentity_removed (Heap &heap,
-					    Presentity &presentity,
-					    Cluster *cluster)
+Ekiga::PresenceCore::on_presentity_removed (gmref_ptr<Heap> heap,
+					    gmref_ptr<Presentity> presentity,
+					    gmref_ptr<Cluster> cluster)
 {
-  presentity_removed.emit (*cluster, heap, presentity);
+  presentity_removed.emit (cluster, heap, presentity);
 }
 
 void
@@ -143,7 +143,7 @@ Ekiga::PresenceCore::add_presentity_decorator (gmref_ptr<PresentityDecorator> de
 }
 
 bool
-Ekiga::PresenceCore::populate_presentity_menu (Presentity& presentity,
+Ekiga::PresenceCore::populate_presentity_menu (gmref_ptr<Presentity> presentity,
 					       const std::string uri,
 					       MenuBuilder &builder)
 {

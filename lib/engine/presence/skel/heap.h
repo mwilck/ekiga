@@ -38,6 +38,8 @@
 #ifndef __HEAP_H__
 #define __HEAP_H__
 
+#include "gmref.h"
+
 #include "presentity.h"
 
 namespace Ekiga
@@ -48,7 +50,7 @@ namespace Ekiga
  * @{
  */
 
-  class Heap
+  class Heap: public virtual GmRefCounted
   {
 
   public:
@@ -66,7 +68,7 @@ namespace Ekiga
      * @param The callback user to know about presentities (the return value
      * means "go on" and allows stopping the visit)
      */
-    virtual void visit_presentities (sigc::slot<bool, Presentity &>) = 0;
+    virtual void visit_presentities (sigc::slot<bool, gmref_ptr<Presentity> >) = 0;
 
     /** Populates a menu with the actions possible on the Heap.
      * @param The builder to populate.
@@ -95,15 +97,15 @@ namespace Ekiga
 
     /** This signal is emitted  when a Presentity has been added to the Heap.
      */
-    sigc::signal<void, Presentity &> presentity_added;
+    sigc::signal<void, gmref_ptr<Presentity> > presentity_added;
 
     /** This signal is emitted when a Presentity has been updated in the Heap.
      */
-    sigc::signal<void, Presentity &> presentity_updated;
+    sigc::signal<void, gmref_ptr<Presentity> > presentity_updated;
 
     /** This signal is emitted when a Presentity has been removed from the Heap.
      */
-    sigc::signal<void, Presentity &> presentity_removed;
+    sigc::signal<void, gmref_ptr<Presentity> > presentity_removed;
 
     /** This chain allows the Heap to present forms to the user
      */

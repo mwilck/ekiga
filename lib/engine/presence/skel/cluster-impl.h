@@ -38,7 +38,7 @@
 
 #include <vector>
 
-#include "lister.h"
+#include "reflister.h"
 #include "cluster.h"
 
 namespace Ekiga
@@ -69,35 +69,35 @@ namespace Ekiga
   class ClusterImpl:
     public Cluster,
     public sigc::trackable,
-    protected Lister<HeapType>
+    protected RefLister<HeapType>
   {
 
   public:
 
-    typedef typename Lister<HeapType>::iterator iterator;
-    typedef typename Lister<HeapType>::const_iterator const_iterator;
+    //typedef typename Lister<HeapType>::iterator iterator;
+    //typedef typename Lister<HeapType>::const_iterator const_iterator;
 
     ClusterImpl ();
 
     virtual ~ClusterImpl ();
 
-    void visit_heaps (sigc::slot<bool, Heap &> visitor);
+    void visit_heaps (sigc::slot<bool, gmref_ptr<Heap> > visitor);
 
   protected:
 
-    void add_heap (HeapType &heap);
+    void add_heap (gmref_ptr<HeapType> heap);
 
-    void remove_heap (HeapType &heap);
+    void remove_heap (gmref_ptr<HeapType> heap);
 
   private:
 
-    void common_removal_steps (HeapType &heap);
+    void common_removal_steps (gmref_ptr<HeapType> heap);
 
-    void on_presentity_added (Presentity &presentity, HeapType *heap);
+    void on_presentity_added (gmref_ptr<Presentity> presentity, gmref_ptr<HeapType> heap);
 
-    void on_presentity_updated (Presentity &presentity, HeapType *heap);
+    void on_presentity_updated (gmref_ptr<Presentity> presentity, gmref_ptr<HeapType> heap);
 
-    void on_presentity_removed (Presentity &presentity, HeapType *heap);
+    void on_presentity_removed (gmref_ptr<Presentity> presentity, gmref_ptr<HeapType> heap);
   };
 
 /**
@@ -112,9 +112,9 @@ template<typename HeapType>
 Ekiga::ClusterImpl<HeapType>::ClusterImpl ()
 {
   /* signal forwarding */
-  Lister<HeapType>::object_added.connect (heap_added.make_slot ());
-  Lister<HeapType>::object_removed.connect (heap_removed.make_slot ());
-  Lister<HeapType>::object_updated.connect (heap_updated.make_slot ());
+  RefLister<HeapType>::object_added.connect (heap_added.make_slot ());
+  RefLister<HeapType>::object_removed.connect (heap_removed.make_slot ());
+  RefLister<HeapType>::object_updated.connect (heap_updated.make_slot ());
 }
 
 template<typename HeapType>
@@ -124,52 +124,52 @@ Ekiga::ClusterImpl<HeapType>::~ClusterImpl ()
 
 template<typename HeapType>
 void
-Ekiga::ClusterImpl<HeapType>::visit_heaps (sigc::slot<bool, Heap &> visitor)
+Ekiga::ClusterImpl<HeapType>::visit_heaps (sigc::slot<bool, gmref_ptr<Heap> > visitor)
 {
-  Lister<HeapType>::visit_objects (visitor);
+  RefLister<HeapType>::visit_objects (visitor);
 }
 
 template<typename HeapType>
 void
-Ekiga::ClusterImpl<HeapType>::add_heap (HeapType &heap)
+Ekiga::ClusterImpl<HeapType>::add_heap (gmref_ptr<HeapType> heap)
 {
-  heap.presentity_added.connect (sigc::bind (sigc::mem_fun (this, &ClusterImpl::on_presentity_added), &heap));
+  heap->presentity_added.connect (sigc::bind (sigc::mem_fun (this, &ClusterImpl::on_presentity_added), heap));
 
-  heap.presentity_updated.connect (sigc::bind (sigc::mem_fun (this, &ClusterImpl::on_presentity_updated), &heap));
+  heap->presentity_updated.connect (sigc::bind (sigc::mem_fun (this, &ClusterImpl::on_presentity_updated), heap));
 
-  heap.presentity_removed.connect (sigc::bind (sigc::mem_fun (this, &ClusterImpl::on_presentity_removed), &heap));
+  heap->presentity_removed.connect (sigc::bind (sigc::mem_fun (this, &ClusterImpl::on_presentity_removed), heap));
 
-  heap.questions.add_handler (questions.make_slot ());
+  heap->questions.add_handler (questions.make_slot ());
 
   add_object (heap);
 }
 
 template<typename HeapType>
 void
-Ekiga::ClusterImpl<HeapType>::remove_heap (HeapType &heap)
+Ekiga::ClusterImpl<HeapType>::remove_heap (gmref_ptr<HeapType> heap)
 {
   remove_object (heap);
 }
 
 template<typename HeapType>
 void
-Ekiga::ClusterImpl<HeapType>::on_presentity_added (Presentity &presentity, HeapType *heap)
+Ekiga::ClusterImpl<HeapType>::on_presentity_added (gmref_ptr<Presentity> presentity, gmref_ptr<HeapType> heap)
 {
-  presentity_added.emit (*heap, presentity);
+  presentity_added.emit (heap, presentity);
 }
 
 template<typename HeapType>
 void
-Ekiga::ClusterImpl<HeapType>::on_presentity_updated (Presentity &presentity, HeapType *heap)
+Ekiga::ClusterImpl<HeapType>::on_presentity_updated (gmref_ptr<Presentity> presentity, gmref_ptr<HeapType> heap)
 {
-  presentity_updated.emit (*heap, presentity);
+  presentity_updated.emit (heap, presentity);
 }
 
 template<typename HeapType>
 void
-Ekiga::ClusterImpl<HeapType>::on_presentity_removed (Presentity &presentity, HeapType *heap)
+Ekiga::ClusterImpl<HeapType>::on_presentity_removed (gmref_ptr<Presentity> presentity, gmref_ptr<HeapType> heap)
 {
-  presentity_removed.emit (*heap, presentity);
+  presentity_removed.emit (heap, presentity);
 }
 
 #endif

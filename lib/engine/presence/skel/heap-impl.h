@@ -37,7 +37,7 @@
 #ifndef __HEAP_IMPL_H__
 #define __HEAP_IMPL_H__
 
-#include "lister.h"
+#include "reflister.h"
 #include "heap.h"
 
 namespace Ekiga
@@ -67,33 +67,33 @@ namespace Ekiga
   class HeapImpl:
     public Heap,
     public sigc::trackable,
-    protected Lister<PresentityType>
+    protected RefLister<PresentityType>
   {
 
   public:
 
-    typedef typename Lister<PresentityType>::iterator iterator;
-    typedef typename Lister<PresentityType>::const_iterator const_iterator;
+    //typedef typename Lister<PresentityType>::iterator iterator;
+    //typedef typename Lister<PresentityType>::const_iterator const_iterator;
 
     HeapImpl ();
 
     ~HeapImpl ();
 
-    void visit_presentities (sigc::slot<bool, Presentity &> visitor);
+    void visit_presentities (sigc::slot<bool, gmref_ptr<Presentity> > visitor);
 
-    const_iterator begin () const;
+    //const_iterator begin () const;
 
-    iterator begin ();
+    //iterator begin ();
 
-    const_iterator end () const;
+    //const_iterator end () const;
 
-    iterator end ();
+    //iterator end ();
 
   protected:
 
-    void add_presentity (PresentityType &presentity);
+    void add_presentity (gmref_ptr<PresentityType> presentity);
 
-    void remove_presentity (PresentityType &presentity);
+    void remove_presentity (gmref_ptr<PresentityType> presentity);
   };
 
 /**
@@ -107,9 +107,9 @@ template<typename PresentityType>
 Ekiga::HeapImpl<PresentityType>::HeapImpl ()
 {
   /* this is signal forwarding */
-  Lister<PresentityType>::object_added.connect (presentity_added.make_slot ());
-  Lister<PresentityType>::object_removed.connect (presentity_removed.make_slot ());
-  Lister<PresentityType>::object_updated.connect (presentity_updated.make_slot ());
+  RefLister<PresentityType>::object_added.connect (presentity_added.make_slot ());
+  RefLister<PresentityType>::object_removed.connect (presentity_removed.make_slot ());
+  RefLister<PresentityType>::object_updated.connect (presentity_updated.make_slot ());
 }
 
 
@@ -120,51 +120,51 @@ Ekiga::HeapImpl<PresentityType>::~HeapImpl ()
 
 template<typename PresentityType>
 void
-Ekiga::HeapImpl<PresentityType>::visit_presentities (sigc::slot<bool, Presentity &> visitor)
+Ekiga::HeapImpl<PresentityType>::visit_presentities (sigc::slot<bool, gmref_ptr<Presentity> > visitor)
 {
-  Lister<PresentityType>::visit_objects (visitor);
+  RefLister<PresentityType>::visit_objects (visitor);
 }
 
-template<typename PresentityType>
-typename Ekiga::HeapImpl<PresentityType>::iterator
-Ekiga::HeapImpl<PresentityType>::begin ()
-{
-  return Lister<PresentityType>::begin ();
-}
+// template<typename PresentityType>
+// typename Ekiga::HeapImpl<PresentityType>::iterator
+// Ekiga::HeapImpl<PresentityType>::begin ()
+// {
+//   return Lister<PresentityType>::begin ();
+// }
 
-template<typename PresentityType>
-typename Ekiga::HeapImpl<PresentityType>::iterator
-Ekiga::HeapImpl<PresentityType>::end ()
-{
-  return Lister<PresentityType>::end ();
-}
+// template<typename PresentityType>
+// typename Ekiga::HeapImpl<PresentityType>::iterator
+// Ekiga::HeapImpl<PresentityType>::end ()
+// {
+//   return Lister<PresentityType>::end ();
+// }
 
-template<typename PresentityType>
-typename Ekiga::HeapImpl<PresentityType>::const_iterator
-Ekiga::HeapImpl<PresentityType>::begin () const
-{
-  return Lister<PresentityType>::begin ();
-}
+// template<typename PresentityType>
+// typename Ekiga::HeapImpl<PresentityType>::const_iterator
+// Ekiga::HeapImpl<PresentityType>::begin () const
+// {
+//   return Lister<PresentityType>::begin ();
+// }
 
-template<typename PresentityType>
-typename Ekiga::HeapImpl<PresentityType>::const_iterator
-Ekiga::HeapImpl<PresentityType>::end () const
-{
-  return Lister<PresentityType>::end ();
-}
+// template<typename PresentityType>
+// typename Ekiga::HeapImpl<PresentityType>::const_iterator
+// Ekiga::HeapImpl<PresentityType>::end () const
+// {
+//   return Lister<PresentityType>::end ();
+// }
 
 template<typename PresentityType>
 void
-Ekiga::HeapImpl<PresentityType>::add_presentity (PresentityType &presentity)
+Ekiga::HeapImpl<PresentityType>::add_presentity (gmref_ptr<PresentityType> presentity)
 {
-  presentity.questions.add_handler (questions.make_slot ());
+  presentity->questions.add_handler (questions.make_slot ());
 
   add_object (presentity);
 }
 
 template<typename PresentityType>
 void
-Ekiga::HeapImpl<PresentityType>::remove_presentity (PresentityType &presentity)
+Ekiga::HeapImpl<PresentityType>::remove_presentity (gmref_ptr<PresentityType> presentity)
 {
   remove_object (presentity);
 }

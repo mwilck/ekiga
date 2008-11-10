@@ -47,7 +47,7 @@ namespace Ekiga
  * @{
  */
 
-  class Cluster
+  class Cluster: public virtual GmRefCounted
   {
 
   public:
@@ -59,7 +59,7 @@ namespace Ekiga
     /** Get the list of Heaps by visiting them with a callback.
      * @param The callback used to know about heaps.
      */
-    virtual void visit_heaps (sigc::slot<bool, Heap &>) = 0;
+    virtual void visit_heaps (sigc::slot<bool, gmref_ptr<Heap> >) = 0;
 
     /** Populates a menu with the actions possible on the Cluster.
      * @param The builder to populate.
@@ -70,16 +70,16 @@ namespace Ekiga
      * from the Cluster.
      * @param The Heap in question.
      */
-    sigc::signal<void, Heap &> heap_added;
-    sigc::signal<void, Heap &> heap_removed;
+    sigc::signal<void, gmref_ptr<Heap> > heap_added;
+    sigc::signal<void, gmref_ptr<Heap> > heap_removed;
 
     /** Those signals are forwarded from the given Heap
      * @param The Heap in question.
      */
-    sigc::signal<void, Heap &> heap_updated;
-    sigc::signal<void, Heap &, Presentity &> presentity_added;
-    sigc::signal<void, Heap &, Presentity &> presentity_updated;
-    sigc::signal<void, Heap &, Presentity &> presentity_removed;
+    sigc::signal<void, gmref_ptr<Heap> > heap_updated;
+    sigc::signal<void, gmref_ptr<Heap> , gmref_ptr<Presentity> > presentity_added;
+    sigc::signal<void, gmref_ptr<Heap> , gmref_ptr<Presentity> > presentity_updated;
+    sigc::signal<void, gmref_ptr<Heap> , gmref_ptr<Presentity> > presentity_removed;
 
     /** This chain allows the Cluster to present forms to the user.
      */
