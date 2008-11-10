@@ -41,7 +41,7 @@ class PresentityViewHelper;
 
 struct _PresentityViewPrivate
 {
-  Ekiga::Presentity* presentity;
+  gmref_ptr<Ekiga::Presentity> presentity;
   sigc::connection updated_conn;
   sigc::connection removed_conn;
 
@@ -66,7 +66,7 @@ static void on_presentity_removed (PresentityView* self);
 /* declaration of internal api */
 
 static void presentity_view_set_presentity (PresentityView* self,
-					    Ekiga::Presentity* presentity);
+					    gmref_ptr<Ekiga::Presentity> presentity);
 
 static void presentity_view_unset_presentity (PresentityView* self);
 
@@ -105,9 +105,9 @@ on_presentity_removed (PresentityView* self)
 
 static void
 presentity_view_set_presentity (PresentityView* self,
-				Ekiga::Presentity* presentity)
+				gmref_ptr<Ekiga::Presentity> presentity)
 {
-  g_return_if_fail (self->priv->presentity == NULL);
+  g_return_if_fail ( !self->priv->presentity);
 
   self->priv->presentity = presentity;
   self->priv->updated_conn = self->priv->presentity->updated.connect (sigc::bind (sigc::ptr_fun (on_presentity_updated), self));
@@ -200,7 +200,6 @@ presentity_view_init (GTypeInstance* instance,
   self = (PresentityView*)instance;
 
   self->priv = new PresentityViewPrivate;
-  self->priv->presentity = NULL;
 
   self->priv->presence_image = gtk_image_new ();
   gtk_box_pack_start (GTK_BOX (self), self->priv->presence_image,
@@ -250,9 +249,9 @@ presentity_view_get_type ()
 /* public api */
 
 GtkWidget*
-presentity_view_new (Ekiga::Presentity& presentity)
+presentity_view_new (gmref_ptr<Ekiga::Presentity> presentity)
 {
   return (GtkWidget*)g_object_new (TYPE_PRESENTITY_VIEW,
-				   "presentity", &presentity,
+				   "presentity", &*presentity,
 				   NULL);
 }
