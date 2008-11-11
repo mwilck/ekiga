@@ -507,7 +507,7 @@ gnomemeeting_warning_dialog_on_widget (GtkWindow *parent,
   gnomemeeting_threads_dialog_show_all (dialog);
 
   g_signal_connect_data (GTK_OBJECT (dialog), "response",
-			 GTK_SIGNAL_FUNC (warning_dialog_destroyed_cb),
+			 G_CALLBACK (warning_dialog_destroyed_cb),
 			 (gpointer) g_strdup (key),
 			 (GClosureNotify) g_free,
 			 (GConnectFlags) 0);

@@ -117,7 +117,7 @@ static GtkWidget *gm_pw_add_update_button (GtkWidget *prefs_window,
 					   GtkWidget *box,
 					   const char *stock_id,
 					   const char *label,
-					   GtkSignalFunc func,
+					   GCallback func,
 					   gchar *tooltip,
 					   gfloat valign,
 					   gpointer data);
@@ -327,7 +327,7 @@ gm_pw_add_update_button (G_GNUC_UNUSED GtkWidget *prefs_window,
                          GtkWidget *box,
                          const char *stock_id,
                          const char *label,
-                         GtkSignalFunc func,
+                         GCallback func,
                          G_GNUC_UNUSED gchar *tooltip,
                          gfloat valign,
                          gpointer data)
@@ -709,7 +709,7 @@ gm_pw_init_audio_devices_page (GtkWidget *prefs_window,
 
 
   /* That button will refresh the device list */
-  gm_pw_add_update_button (prefs_window, container, GTK_STOCK_REFRESH, _("_Detect devices"), GTK_SIGNAL_FUNC (refresh_devices_list_cb), _("Click here to refresh the device list."), 1, prefs_window);
+  gm_pw_add_update_button (prefs_window, container, GTK_STOCK_REFRESH, _("_Detect devices"), G_CALLBACK (refresh_devices_list_cb), _("Click here to refresh the device list."), 1, prefs_window);
 }
 
 
@@ -920,7 +920,7 @@ gm_pw_init_video_devices_page (GtkWidget *prefs_window,
                           (gpointer) VIDEO_DEVICES_KEY "image");
   */
   /* That button will refresh the device list */
-  gm_pw_add_update_button (prefs_window, container, GTK_STOCK_REFRESH, _("_Detect devices"), GTK_SIGNAL_FUNC (refresh_devices_list_cb), _("Click here to refresh the device list."), 1, prefs_window);
+  gm_pw_add_update_button (prefs_window, container, GTK_STOCK_REFRESH, _("_Detect devices"), G_CALLBACK (refresh_devices_list_cb), _("Click here to refresh the device list."), 1, prefs_window);
 
   for (i=0; i< NB_VIDEO_SIZES; i++) {
 

@@ -392,19 +392,19 @@ statusicon_build_menu ()
       GTK_MENU_ENTRY("help", NULL,
                      _("Get help by reading the Ekiga manual"),
                      GTK_STOCK_HELP, GDK_F1,
-                     GTK_SIGNAL_FUNC (help_cb), NULL, TRUE),
+                     G_CALLBACK (help_cb), NULL, TRUE),
 
       GTK_MENU_ENTRY("about", NULL,
 		     _("View information about Ekiga"),
 		     GTK_STOCK_ABOUT, 0,
-		     GTK_SIGNAL_FUNC (about_callback), (gpointer) main_window,
+		     G_CALLBACK (about_callback), (gpointer) main_window,
 		     TRUE),
 
       GTK_MENU_SEPARATOR,
 
       GTK_MENU_ENTRY("quit", NULL, _("Quit"),
 		     GTK_STOCK_QUIT, 'Q',
-		     GTK_SIGNAL_FUNC (quit_callback),
+		     G_CALLBACK (quit_callback),
 		     main_window, TRUE),
 
       GTK_MENU_END

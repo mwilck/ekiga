@@ -391,10 +391,10 @@ gtk_build_menu (GtkWidget *menubar,
       g_object_set_data (G_OBJECT (menu [i].widget),
 			 "statusbar", statusbar);
       g_signal_connect (G_OBJECT (menu [i].widget),
-			"select", GTK_SIGNAL_FUNC (menu_item_selected), 
+			"select", G_CALLBACK (menu_item_selected), 
 			(gpointer) menu [i].tooltip);
       g_signal_connect (G_OBJECT (menu [i].widget),
-			"deselect", GTK_SIGNAL_FUNC (menu_item_selected), 
+			"deselect", G_CALLBACK (menu_item_selected), 
 			NULL);
     }
     g_free (menu_name);

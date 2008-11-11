@@ -164,7 +164,7 @@ on_clicked (GtkWidget *tree,
 	gtk_menu_popup (GTK_MENU (builder.menu), NULL, NULL,
 			NULL, NULL, event->button, event->time);
 	g_signal_connect (G_OBJECT (builder.menu), "hide",
-			  GTK_SIGNAL_FUNC (g_object_unref),
+			  G_CALLBACK (g_object_unref),
 			  (gpointer) builder.menu);
 	g_object_ref_sink (G_OBJECT (builder.menu));
       }

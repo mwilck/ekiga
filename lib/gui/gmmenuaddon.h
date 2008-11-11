@@ -70,7 +70,7 @@ typedef struct _MenuEntry {
   gboolean stock_is_theme;
   guint accel;
   MenuEntryType type;
-  GtkSignalFunc func;
+  GCallback func;
   GClosureNotify clofunc;
   gpointer data;
   GtkWidget *widget;

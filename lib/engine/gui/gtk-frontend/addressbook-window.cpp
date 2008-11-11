@@ -240,7 +240,7 @@ on_core_updated (gpointer data)
   item = gtk_image_menu_item_new_from_stock (GTK_STOCK_CLOSE, self->priv->accel);
   gtk_menu_shell_append (GTK_MENU_SHELL (menu_builder.menu), item);
   g_signal_connect_swapped (G_OBJECT (item), "activate",
-                            GTK_SIGNAL_FUNC (gtk_widget_hide),
+                            G_CALLBACK (gtk_widget_hide),
                             (gpointer) self);
 
   gtk_menu_item_set_submenu (GTK_MENU_ITEM (self->priv->menu_item_core),
@@ -405,7 +405,7 @@ on_book_clicked (GtkWidget *tree_view,
                             NULL, NULL, NULL, NULL,
                             event->button, event->time);
             g_signal_connect (G_OBJECT (menu_builder.menu), "hide",
-                              GTK_SIGNAL_FUNC (g_object_unref),
+                              G_CALLBACK (g_object_unref),
                               (gpointer) menu_builder.menu);
           }
           g_object_ref_sink (G_OBJECT (menu_builder.menu));

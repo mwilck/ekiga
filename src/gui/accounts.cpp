@@ -326,7 +326,7 @@ populate_menu (GtkWidget *window)
   item = gtk_image_menu_item_new_from_stock (GTK_STOCK_CLOSE, aw->accel);
   gtk_menu_shell_append (GTK_MENU_SHELL (builder.menu), item);
   g_signal_connect_swapped (G_OBJECT (item), "activate",
-                            GTK_SIGNAL_FUNC (gtk_widget_hide),
+                            G_CALLBACK (gtk_widget_hide),
                             (gpointer) window);
 
   gtk_menu_item_set_submenu (GTK_MENU_ITEM (aw->menu_item_core),
@@ -380,7 +380,7 @@ account_clicked_cb (G_GNUC_UNUSED GtkWidget *w,
             gtk_menu_popup (GTK_MENU (builder.menu), NULL, NULL,
                             NULL, NULL, event->button, event->time);
             g_signal_connect (G_OBJECT (builder.menu), "hide",
-                              GTK_SIGNAL_FUNC (g_object_unref),
+                              G_CALLBACK (g_object_unref),
                               (gpointer) builder.menu);
           }
           g_object_ref_sink (G_OBJECT (builder.menu));

@@ -1771,10 +1771,10 @@ gm_mw_audio_settings_window_new (EkigaMainWindow *mw)
 		    G_CALLBACK (delete_window_cb), NULL);
 
   g_signal_connect (G_OBJECT (window), "show", 
-                    GTK_SIGNAL_FUNC (audio_volume_window_shown_cb), mw);
+                    G_CALLBACK (audio_volume_window_shown_cb), mw);
 
   g_signal_connect (G_OBJECT (window), "hide", 
-                    GTK_SIGNAL_FUNC (audio_volume_window_hidden_cb), mw);
+                    G_CALLBACK (audio_volume_window_hidden_cb), mw);
 
   return window;
 }
@@ -2681,7 +2681,7 @@ ekiga_main_window_incoming_call_dialog_show (EkigaMainWindow *mw,
   g_signal_connect (G_OBJECT (incoming_call_popup), "delete_event",
                     G_CALLBACK (gtk_widget_hide_on_delete), NULL);
   g_signal_connect (G_OBJECT (incoming_call_popup), "response",
-                    GTK_SIGNAL_FUNC (incoming_call_response_cb), &call);
+                    G_CALLBACK (incoming_call_response_cb), &call);
 
   call->cleared.connect (sigc::bind (sigc::ptr_fun (on_cleared_incoming_call_cb),
                                     (gpointer) incoming_call_popup));
@@ -3017,7 +3017,7 @@ ekiga_main_window_add_device_dialog_show (EkigaMainWindow *mw,
 //  g_signal_connect (G_OBJECT (add_device_popup), "delete_event",
 //                    G_CALLBACK (gtk_widget_hide_on_delete), NULL);
 //  g_signal_connect (G_OBJECT (add_device_popup), "response",
-//                    GTK_SIGNAL_FUNC (add_device_response_cb), &device);
+//                    G_CALLBACK (add_device_response_cb), &device);
 
   deviceStruct* device_struct = g_new(deviceStruct, 1);
   snprintf (device_struct->name, sizeof (device_struct->name), "%s", (device.GetString()).c_str());
@@ -3696,7 +3696,7 @@ ekiga_main_window_init_gui (EkigaMainWindow *mw)
   gtk_widget_show_all (mw->priv->statusbar_ebox);
 
   g_signal_connect (G_OBJECT (mw->priv->statusbar_ebox), "button-press-event",
-		    GTK_SIGNAL_FUNC (statusbar_clicked_cb), mw);
+		    G_CALLBACK (statusbar_clicked_cb), mw);
  
   g_signal_connect (mw, "notify::style",
                     G_CALLBACK (ekiga_main_window_style_notify), NULL);
