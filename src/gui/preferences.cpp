@@ -61,11 +61,7 @@
 #include "platform/winpaths.h"
 #endif
 
-#ifdef HAVE_GNOME
-#define FILECHOOSER_BACKEND "gnome-vfs"
-#else
 #define FILECHOOSER_BACKEND "gtk+"
-#endif
 
 
 typedef struct _GmPreferencesWindow
