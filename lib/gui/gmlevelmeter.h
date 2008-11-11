@@ -40,7 +40,7 @@
 #define __GTK_LEVELMETER_H__
 
 #include <gdk/gdk.h>
-#include <gtk/gtkwidget.h>
+#include <gtk/gtk.h>
 
 #include <stdlib.h>
 

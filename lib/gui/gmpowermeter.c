@@ -26,7 +26,7 @@
  */
 
 
-#include <gtk/gtkimage.h>
+#include <gtk/gtk.h>
 #include <math.h>
 
 #include "gmpowermeter.h"

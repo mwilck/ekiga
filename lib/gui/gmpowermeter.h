@@ -49,8 +49,7 @@
 #define __GM_POWERMETER_H__
 
 #include <glib.h>
-#include <gtk/gtkimage.h>
-#include <gdk/gdkpixbuf.h>
+#include <gtk/gtk.h>
 
 G_BEGIN_DECLS
 

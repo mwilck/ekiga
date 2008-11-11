@@ -41,7 +41,7 @@
 #ifndef __GM_CELL_RENDERER_BITEXT_H__
 #define __GM_CELL_RENDERER_BITEXT_H__
 
-#include <gtk/gtkcellrenderertext.h>
+#include <gtk/gtk.h>
 
 G_BEGIN_DECLS typedef struct _GmCellRendererBitext GmCellRendererBitext;
 typedef struct _GmCellRendererBitextClass GmCellRendererBitextClass;

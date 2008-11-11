@@ -1,3 +1,22 @@
+2008-11-11  Steve Frécinaux  <code@istique.net>
+
+	* lib/gui/gm-cell-renderer-bitext.h:
+	* lib/gui/gmcellrendererexpander.c:
+	* lib/gui/gmcellrendererexpander.h:
+	* lib/gui/gmlevelmeter.h:
+	* lib/gui/gmpowermeter.c:
+	* lib/gui/gmpowermeter.h:
+	Clean up GLib and GTK+ includes
+
+	GTK+ is moving toward a model where it is only allowed to include the
+	'toplevel' headers <glib.h>, <gdk/gdk.h>, <gdk-pixbuf/gdk-pixbuf.h> and
+	<gtk/gtk.h> can be directly included.
+
+	Now Ekiga compiles with
+	make CFLAGS+="-DG_DISABLE_SINGLE_INCLUDES
+		      -DGDK_PIXBUF_DISABLE_SINGLE_INCLUDES
+		      -DGTK_DISABLE_SINGLE_INCLUDES"
+
 2008-11-11  Damien Sandras  <dsandras@gnome.org>
 
         * src/endpoints/sip-endpoint.cpp:
