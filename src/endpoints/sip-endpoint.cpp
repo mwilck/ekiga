@@ -161,9 +161,7 @@ Opal::Sip::EndPoint::EndPoint (Opal::CallManager & _manager,
   /* NAT Binding */
   SetNATBindingRefreshMethod (SIPEndPoint::EmptyRequest);
 
-  gmref_ptr<Ekiga::PersonalDetails> details = core.get ("personal-details");
-  if (details)
-    publish (*details);
+
 }
 
 
