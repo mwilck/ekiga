@@ -1,3 +1,13 @@
+2008-11-11  Steve Frécinaux  <code@istique.net>
+
+	* lib/gui/gmlevelmeter.h:
+	* lib/gui/gmlevelmeter.c:
+	* src/gui/main.cpp:
+	Update GmLevelMeter not to use deprecated stuff.
+	- use GObject::finalize instead of GtkObject::destroy
+	- use G_DEFINE_TYPE
+	- Hijack GtkOrientation instead of having our own copy of it
+
 2008-11-11  Damien Sandras  <dsandras@gnome.org>
 
         * src/endpoints/sip-endpoint.cpp:

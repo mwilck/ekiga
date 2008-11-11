@@ -629,8 +629,8 @@ static gboolean on_signal_level_refresh_cb (gpointer self)
   gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core
     = mw->priv->core->get ("audiooutput-core");
 
-  gtk_levelmeter_set_level (GTK_LEVELMETER (mw->priv->output_signal), audiooutput_core->get_average_level());
-  gtk_levelmeter_set_level (GTK_LEVELMETER (mw->priv->input_signal), audioinput_core->get_average_level());
+  gm_level_meter_set_level (GM_LEVEL_METER (mw->priv->output_signal), audiooutput_core->get_average_level());
+  gm_level_meter_set_level (GM_LEVEL_METER (mw->priv->input_signal), audioinput_core->get_average_level());
   return true;
 }
 
@@ -1708,7 +1708,7 @@ gm_mw_audio_settings_window_new (EkigaMainWindow *mw)
   gtk_scale_set_draw_value (GTK_SCALE (hscale_play), FALSE);
   gtk_box_pack_start (GTK_BOX (small_vbox), hscale_play, TRUE, TRUE, 0);
 
-  mw->priv->output_signal = gtk_levelmeter_new ();
+  mw->priv->output_signal = gm_level_meter_new ();
   gtk_box_pack_start (GTK_BOX (small_vbox), mw->priv->output_signal, TRUE, TRUE, 0);
   gtk_box_pack_start (GTK_BOX (hbox), small_vbox, TRUE, TRUE, 2);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 3);
@@ -1744,7 +1744,7 @@ gm_mw_audio_settings_window_new (EkigaMainWindow *mw)
   gtk_scale_set_draw_value (GTK_SCALE (hscale_rec), FALSE);
   gtk_box_pack_start (GTK_BOX (small_vbox), hscale_rec, TRUE, TRUE, 0);
 
-  mw->priv->input_signal = gtk_levelmeter_new ();
+  mw->priv->input_signal = gm_level_meter_new ();
   gtk_box_pack_start (GTK_BOX (small_vbox), mw->priv->input_signal, TRUE, TRUE, 0);
   gtk_box_pack_start (GTK_BOX (hbox), small_vbox, TRUE, TRUE, 2);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 3);
@@ -2551,8 +2551,8 @@ ekiga_main_window_clear_signal_levels (EkigaMainWindow *mw)
 {
   g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
 
-  gtk_levelmeter_clear (GTK_LEVELMETER (mw->priv->output_signal));
-  gtk_levelmeter_clear (GTK_LEVELMETER (mw->priv->input_signal));
+  gm_level_meter_clear (GM_LEVEL_METER (mw->priv->output_signal));
+  gm_level_meter_clear (GM_LEVEL_METER (mw->priv->input_signal));
 }
 
 static void

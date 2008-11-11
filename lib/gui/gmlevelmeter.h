@@ -36,8 +36,8 @@
  */
 
 
-#ifndef __GTK_LEVELMETER_H__
-#define __GTK_LEVELMETER_H__
+#ifndef __GM_LEVEL_METER_H__
+#define __GM_LEVEL_METER_H__
 
 #include <gdk/gdk.h>
 #include <gtk/gtk.h>
@@ -47,28 +47,23 @@
 
 G_BEGIN_DECLS
 
-#define GTK_LEVELMETER(obj) GTK_CHECK_CAST (obj, gtk_levelmeter_get_type (), GtkLevelMeter)
-#define GTK_LEVELMETER_CLASS(klass) GTK_CHECK_CLASS_CAST (klass, gtk_levelmeter_get_type (), GtkLevelMeterClass)
-#define GTK_IS_LEVELMETER(obj) GTK_CHECK_TYPE (obj, gtk_levelmeter_get_type ())
+#define GM_TYPE_LEVEL_METER         (gm_level_meter_get_type ())
+#define GM_LEVEL_METER(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), GM_TYPE_LEVEL_METER, GmLevelMeter))
+#define GM_LEVEL_METER_CLASS(k)     (G_TYPE_CHECK_CLASS_CAST((k), GM_TYPE_LEVEL_METER, GmLevelMeterClass))
+#define GM_IS_LEVEL_METER(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), GM_TYPE_LEVEL_METER))
+#define GM_IS_LEVEL_METER_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), GM_TYPE_LEVEL_METER))
+#define GM_LEVEL_METER_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), GM_TYPE_LEVEL_METER, GmLevelMeterClass))
+
+typedef struct _GmLevelMeter GmLevelMeter;
+typedef struct _GmLevelMeterClass GmLevelMeterClass;
 
 
-typedef struct _GtkLevelMeter GtkLevelMeter;
-typedef struct _GtkLevelMeterClass GtkLevelMeterClass;
-
-
-typedef enum
-{
-  GTK_METER_LEFT_TO_RIGHT,
-  GTK_METER_BOTTOM_TO_TOP
-} GtkLevelMeterOrientation;
-
-
-struct _GtkLevelMeter
+struct _GmLevelMeter
 {
   GtkWidget widget;
 
   /* Orientation of the level meter */
-  GtkLevelMeterOrientation orientation;
+  GtkOrientation orientation;
 
   /* show a peak indicator */
   gboolean showPeak;
@@ -93,13 +88,15 @@ struct _GtkLevelMeter
 };
 
 
-struct _GtkLevelMeterClass
+struct _GmLevelMeterClass
 {
   GtkWidgetClass parent_class;
 };
 
 
-struct _GtkLevelMeterColorEntry
+typedef struct _GmLevelMeterColorEntry GmLevelMeterColorEntry;
+
+struct _GmLevelMeterColorEntry
 {
   GdkColor color;
   gfloat stopvalue;
@@ -107,34 +104,31 @@ struct _GtkLevelMeterColorEntry
 };
 
 
-typedef struct _GtkLevelMeterColorEntry GtkLevelMeterColorEntry;
-
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Creates a new VU meter
  * PRE          :  /
  */
-GtkWidget *gtk_levelmeter_new (void);
+GtkWidget *gm_level_meter_new (void);
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Get the GType 
  * PRE          :  /
  */
-GType gtk_levelmeter_get_type (void);
+GType gm_level_meter_get_type (void);
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Set new values for level.
  * PRE          :  Level should be between 0.0 and 1.0,
  *                 lower/higher values are clamped.
  */
-void gtk_levelmeter_set_level (GtkLevelMeter *, 
-			       gfloat);
-
+void gm_level_meter_set_level (GmLevelMeter *meter, 
+                               gfloat level);
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Clear the GtkLevelMeter.
  * PRE          :  /
  */
-void gtk_levelmeter_clear (GtkLevelMeter *);
+void gm_level_meter_clear (GmLevelMeter *meter);
 
 
 /* DESCRIPTION  :  /
@@ -146,9 +140,9 @@ void gtk_levelmeter_clear (GtkLevelMeter *);
  *                 of the array is stored, so the array given as an argument
  *                 can be deleted after the function call.
  */
-void gtk_levelmeter_set_colors (GtkLevelMeter *,
-				GArray *);
+void gm_levelmeter_set_colors (GmLevelMeter *meter,
+                               GArray *colors);
 
 G_END_DECLS
 
-#endif /* __GTK_LEVELMETER_H__ */
+#endif /* __GM_LEVEL_METER_H__ */
