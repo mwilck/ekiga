@@ -1,5 +1,17 @@
 2008-11-12  Steve Frécinaux  <code@istique.net>
 
+	* configure.ac:
+	* lib/gui/gmdialog.c:
+	* lib/toolbox/toolbox-gtk.c:
+	* src/gui/callbacks.cpp:
+	Get rid of libgnome when compiled against gtk+ >= 2.13
+
+	libgnome was used for help display (now superseeded by gtk_show_uri) and
+	for the GtkFileChooser backend through gnomevfs (now superseeded by GIO
+	at the Glib level). So it is safe to drop libgnome once and for all.
+
+2008-11-12  Steve Frécinaux  <code@istique.net>
+
 	* src/gui/main.cpp: Get rid of GnomeProgram.
 
 2008-11-12  Steve Frécinaux  <code@istique.net>

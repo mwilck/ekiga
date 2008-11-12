@@ -55,10 +55,6 @@
 #define vsnprintf _vsnprintf
 #endif
 
-#ifdef HAVE_GNOME
-#include <gnome.h>
-#endif
-
 #include "config.h"
 
 

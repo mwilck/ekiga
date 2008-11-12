@@ -36,11 +36,21 @@
 
 #include "toolbox.h"
 #include "toolbox-internal.h"
+#include <gtk/gtk.h>
 
 void
 gm_open_uri (const gchar *uri)
 {
+  GError *error = NULL;
+
   g_return_if_fail (uri != NULL);
 
+#if GTK_CHECK_VERSION(2,13,1)
+  if (!gtk_show_uri (NULL, uri, GDK_CURRENT_TIME, &error)) {
+    g_error_free (error);
+    gm_open_uri_fallback (uri);
+  }
+#else
   gm_open_uri_fallback (uri);
+#endif
 }

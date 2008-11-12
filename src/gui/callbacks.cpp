@@ -59,10 +59,7 @@
 #endif
 
 #ifdef HAVE_GNOME
-#undef _
-#undef N_
 #include <gnome.h>
-#include <libbonobo.h>
 #endif
 
 
@@ -130,6 +127,7 @@ about_callback (G_GNUC_UNUSED GtkWidget *widget,
       N_("Contributors:"),
       "Howard Chu <hyc@symas.com>",
       "Yannick Defais <sevmek@free.fr>",
+      "Steve Fr\303\251cinaux <code@istique.net>",
       "Kilian Krause <kk@verfaction.de>", 
       "Vincent Luba <luba@novacom.be>",
       "Julien Puydt <julien.puydt@laposte.net>",
@@ -217,10 +215,6 @@ void
 help_cb (G_GNUC_UNUSED GtkWidget *widget,
 	 G_GNUC_UNUSED gpointer data)
 {
-#ifdef HAVE_GNOME
-  GError *err = NULL;
-  gnome_help_display (PACKAGE_NAME ".xml", NULL, &err);
-#else
 #ifdef WIN32
   gchar *locale, *loc_ , *index_path;
   int hinst = 0;
@@ -256,7 +250,33 @@ help_cb (G_GNUC_UNUSED GtkWidget *widget,
 			DATA_DIR, SW_SHOWNORMAL);
     g_free (index_path);
   }
+#else /* !WIN32 */
+  GError *err = NULL;
+  gboolean success = FALSE;
+
+#ifdef HAVE_GNOME
+  success = gnome_help_display (PACKAGE_NAME ".xml", NULL, &err);
+#elif GTK_CHECK_VERSION(2, 13, 1)
+  success = gtk_show_uri (NULL, "ghelp:" PACKAGE_NAME, GDK_CURRENT_TIME, &err);
+#else
+  success = FALSE;
+  err = g_error_new_literal (g_quark_from_static_string ("ekiga"),
+                             0,
+			     _("Help display is not supported by your GTK+ version"));
 #endif
+
+  if (!success) {
+    GtkWidget *d;
+    d = gtk_message_dialog_new (GTK_WINDOW (GnomeMeeting::Process ()->GetMainWindow ()), 
+                                (GtkDialogFlags) (GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT),
+                                GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE, 
+                                "%s", _("Unable to open help file."));
+    gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (d),
+                                              "%s", err->message);
+    g_signal_connect (d, "response", G_CALLBACK (gtk_widget_destroy), NULL);
+    gtk_window_present (GTK_WINDOW (d));
+    g_error_free (err);
+  }
 #endif
 }
 

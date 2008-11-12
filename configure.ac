@@ -214,12 +214,14 @@ GNOME="disabled"
 if test "x${gm_platform}" != "xmingw" ; then
   AC_ARG_ENABLE(gnome, [  --disable-gnome		Disable GNOME support],,enable_gnome=yes)
   
-  if test "x$enable_gnome" = "xyes"; then
-    PKG_CHECK_MODULES([GNOME], [libgnome-2.0 >= 2.14.0 libgnomeui-2.0 >= 2.14.0], [found_gnome=yes])
-    AC_SUBST(GNOME_CFLAGS)
-    AC_SUBST(GNOME_LIBS)
-    GNOME="enabled"
-    AC_DEFINE(HAVE_GNOME,1,[GNOME support])
+  if $PKG_CONFIG --max-version 2.13.1 gtk+-2.0; then
+    if test "x$enable_gnome" = "xyes"; then
+      PKG_CHECK_MODULES([GNOME], [libgnome-2.0 >= 2.14.0 libgnomeui-2.0 >= 2.14.0], [found_gnome=yes])
+      AC_SUBST(GNOME_CFLAGS)
+      AC_SUBST(GNOME_LIBS)
+      GNOME="enabled"
+      AC_DEFINE(HAVE_GNOME,1,[GNOME support])
+    fi
   fi
 fi
 AM_CONDITIONAL(HAVE_GNOME, test "x$found_gnome" = "xyes")
