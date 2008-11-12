@@ -80,12 +80,6 @@
 #include <gdk/gdkwin32.h>
 #endif
 
-#ifdef HAVE_GNOME
-#undef _
-#undef N_
-#include <gnome.h>
-#endif
-
 #ifdef HAVE_NOTIFY
 #include <libnotify/notify.h>
 #endif
@@ -4347,9 +4341,6 @@ main (int argc,
   int debug_level = 0;
   int debug_level_up = 0;
   int error = -1;
-#ifdef HAVE_GNOME
-  GnomeProgram *program;
-#endif
 
   /* Globals */
 #ifndef WIN32
@@ -4411,20 +4402,10 @@ main (int argc,
   context = g_option_context_new (NULL);
   g_option_context_add_main_entries (context, arguments, PACKAGE_NAME);
   g_option_context_set_help_enabled (context, TRUE);
-  
-  /* GNOME Initialisation */
-#ifdef HAVE_GNOME
-  program = gnome_program_init (PACKAGE_NAME, VERSION,
-			        LIBGNOMEUI_MODULE, argc, argv,
-			        GNOME_PARAM_GOPTION_CONTEXT, context,
-			        GNOME_PARAM_HUMAN_READABLE_NAME, "ekiga",
-			        GNOME_PARAM_APP_DATADIR, DATA_DIR,
-			        (void *) NULL);
-#else
+
   g_option_context_add_group (context, gtk_get_option_group (TRUE));
   g_option_context_parse (context, &argc, &argv, NULL);
   g_option_context_free (context);
-#endif
 
 #ifdef HAVE_NOTIFY
   notify_init (PACKAGE_NAME);
@@ -4576,10 +4557,6 @@ main (int argc,
   /* Save and shutdown the configuration */
   gm_conf_save ();
   gm_conf_shutdown ();
-
-#ifdef HAVE_GNOME
-  g_object_unref (program);
-#endif
 
   /* deinitialize platform-specific code */
   gm_platform_shutdown ();
