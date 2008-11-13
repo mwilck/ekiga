@@ -551,6 +551,7 @@ static void on_setup_call_cb (gmref_ptr<Ekiga::CallManager>  /*manager*/,
 #else
     ekiga_main_window_incoming_call_dialog_show (mw, call);
 #endif
+    mw->current_call = &call;
   }
   else {
     ekiga_main_window_update_calling_state (mw, Calling);
@@ -955,8 +956,8 @@ on_videooutput_device_closed_cb (Ekiga::VideoOutputManager & /* manager */, gpoi
 
 void 
 on_videooutput_device_error_cb (Ekiga::VideoOutputManager & /* manager */, 
-                                Ekiga::VideoOutputErrorCodes error_code, 
-                                gpointer self)
+                                Ekiga::VideoOutputErrorCodes /* error_code */, 
+                                gpointer /*self*/)
 {
   gchar *dialog_title = NULL;
   gchar *dialog_msg = NULL;
@@ -1468,6 +1469,8 @@ place_call_cb (GtkWidget * /*widget*/,
       ekiga_main_window_update_calling_state (mw, Standby);
     }
   }
+  else if (mw->calling_state == Called && mw->current_call)
+    mw->current_call->answer ();
 }
 
 
@@ -1489,10 +1492,14 @@ toggle_call_cb (GtkWidget *widget,
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (data);
   GmConnectButton *button = GM_CONNECT_BUTTON (mw->priv->connect_button);
 
-  if (mw->priv->current_call && gm_connect_button_get_connected (button))
+  if (gm_connect_button_get_connected (GM_CONNECT_BUTTON (mw->connect_button)))
     hangup_call_cb (widget, data);
-  else if (!mw->priv->current_call && !gm_connect_button_get_connected (button))
-    place_call_cb (widget, data);
+  else if (!gm_connect_button_get_connected (GM_CONNECT_BUTTON (mw->connect_button))) {
+    if (!mw->current_call)
+      place_call_cb (widget, data);
+    else
+      mw->current_call->answer ();
+  }
 }
 
 
@@ -2411,7 +2418,7 @@ ekiga_main_window_update_calling_state (EkigaMainWindow *mw,
 
       /* Update the connect button */
       gm_connect_button_set_connected (GM_CONNECT_BUTTON (mw->priv->connect_button),
-				       FALSE);
+ 				       TRUE);
       
       break;
 
@@ -2710,6 +2717,7 @@ closed_cb (NotifyNotification* /*notify*/,
 {
   EkigaMainWindow *mw;
 
+  std::cout << main_window << std::endl << std::flush;
   g_return_if_fail (main_window != NULL);
 
   mw = EKIGA_MAIN_WINDOW (main_window);
