@@ -625,6 +625,7 @@ static void on_setup_call_cb (Ekiga::CallManager & /*manager*/,
 #else
     gm_main_window_incoming_call_dialog_show (GTK_WIDGET (self), call);
 #endif
+    mw->current_call = &call;
   }
   else {
     gm_main_window_update_calling_state (GTK_WIDGET (self), Calling);
@@ -1043,8 +1044,8 @@ on_videooutput_device_closed_cb (Ekiga::VideoOutputManager & /* manager */, gpoi
 
 void 
 on_videooutput_device_error_cb (Ekiga::VideoOutputManager & /* manager */, 
-                                Ekiga::VideoOutputErrorCodes error_code, 
-                                gpointer self)
+                                Ekiga::VideoOutputErrorCodes /* error_code */, 
+                                gpointer /*self*/)
 {
   PTRACE(1, "Error opening the output device");
 }
@@ -1551,6 +1552,8 @@ place_call_cb (GtkWidget * /*widget*/,
       gm_main_window_update_calling_state (GTK_WIDGET (data), Standby);
     }
   }
+  else if (mw->calling_state == Called && mw->current_call)
+    mw->current_call->answer ();
 }
 
 
@@ -1578,10 +1581,14 @@ toggle_call_cb (GtkWidget *widget,
 
   mw = gm_mw_get_mw (GTK_WIDGET (data));
 
-  if (mw->current_call && gm_connect_button_get_connected (GM_CONNECT_BUTTON (mw->connect_button)))
+  if (gm_connect_button_get_connected (GM_CONNECT_BUTTON (mw->connect_button)))
     hangup_call_cb (widget, data);
-  else if (!mw->current_call && !gm_connect_button_get_connected (GM_CONNECT_BUTTON (mw->connect_button)))
-    place_call_cb (widget, data);
+  else if (!gm_connect_button_get_connected (GM_CONNECT_BUTTON (mw->connect_button))) {
+    if (!mw->current_call)
+      place_call_cb (widget, data);
+    else
+      mw->current_call->answer ();
+  }
 }
 
 
@@ -3307,7 +3314,7 @@ gm_main_window_update_calling_state (GtkWidget *main_window,
 
       /* Update the connect button */
       gm_connect_button_set_connected (GM_CONNECT_BUTTON (mw->connect_button),
-				       FALSE);
+				       TRUE);
 
       break;
 
