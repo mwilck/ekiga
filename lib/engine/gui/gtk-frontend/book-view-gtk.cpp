@@ -48,54 +48,12 @@
 #include "menu-builder-gtk.h"
 
 /*
- * The signals centralizer relays signals from the Book to
- * the GObject and dies with it.
- */
-class SignalCentralizer: public sigc::trackable
-{
-public:
-
-  /* Watch the Book for changes,
-   * connect the signals
-   */
-  void watch_book (gmref_ptr<Ekiga::Book> book);
-
-  /* Repopulate the book */
-  void repopulate (gmref_ptr<Ekiga::Book> book);
-
-  /* signals emitted by this centralizer and of interest
-   * for our GObject
-   */
-  sigc::signal<void, gmref_ptr<Ekiga::Contact> > contact_added;
-  sigc::signal<void, gmref_ptr<Ekiga::Contact> > contact_updated;
-  sigc::signal<void, gmref_ptr<Ekiga::Contact> > contact_removed;
-  sigc::signal<void> updated;
-};
-
-
-void SignalCentralizer::watch_book (gmref_ptr<Ekiga::Book> book)
-{
-  book->contact_added.connect (contact_added.make_slot ());
-  book->contact_updated.connect (contact_updated.make_slot ());
-  book->contact_removed.connect (contact_removed.make_slot ());
-  book->updated.connect (updated.make_slot ());
-  repopulate (book);
-}
-
-
-void SignalCentralizer::repopulate (gmref_ptr<Ekiga::Book> book)
-{
-  book->visit_contacts (sigc::bind_return (contact_added.make_slot (), true));
-}
-
-/*
  * The Book View
  */
 struct _BookViewGtkPrivate
 {
   _BookViewGtkPrivate (gmref_ptr<Ekiga::Book> book_) : book (book_) { }
 
-  SignalCentralizer centralizer;
   GtkTreeView *tree_view;
   GtkWidget *vbox;
   GtkWidget *entry;
@@ -103,6 +61,7 @@ struct _BookViewGtkPrivate
   GtkWidget *scrolled_window;
 
   gmref_ptr<Ekiga::Book> book;
+  std::list<sigc::connection> connections;
 };
 
 
@@ -409,8 +368,8 @@ book_view_gtk_update_contact (BookViewGtk *self,
   GtkListStore *store = NULL;
 
   store = GTK_LIST_STORE (gtk_tree_view_get_model (self->priv->tree_view));
-  icon = gtk_widget_render_icon (GTK_WIDGET (self->priv->tree_view), 
-                                 GM_STOCK_STATUS_UNKNOWN, GTK_ICON_SIZE_MENU, NULL); 
+  icon = gtk_widget_render_icon (GTK_WIDGET (self->priv->tree_view),
+                                 GM_STOCK_STATUS_UNKNOWN, GTK_ICON_SIZE_MENU, NULL);
 
   gtk_list_store_set (store, iter,
                       COLUMN_PIXBUF, icon,
@@ -462,7 +421,7 @@ book_view_gtk_find_iter_for_contact (BookViewGtk *view,
                           -1);
       if (iter_contact == &*contact)
         found = TRUE;
-      
+
       gmref_dec (iter_contact);
     } while (!found && gtk_tree_model_iter_next (model, iter));
   }
@@ -478,6 +437,12 @@ book_view_gtk_dispose (GObject *obj)
   BookViewGtk *view = NULL;
 
   view = BOOK_VIEW_GTK (obj);
+
+  for (std::list<sigc::connection>::iterator iter
+	 = view->priv->connections.begin ();
+       iter != view->priv->connections.end ();
+       ++iter)
+    iter->disconnect ();
 
   if (view->priv->tree_view) {
 
@@ -651,14 +616,15 @@ book_view_gtk_new (gmref_ptr<Ekiga::Book> book)
   result->priv->statusbar = gtk_statusbar_new ();
   gtk_box_pack_start (GTK_BOX (result->priv->vbox), result->priv->statusbar, FALSE, TRUE, 0);
 
+  /* connect to the signals */
+  result->priv->connections.push_back (book->contact_added.connect (sigc::bind (sigc::ptr_fun (on_contact_added), (gpointer)result)));
+  result->priv->connections.push_back (book->contact_updated.connect (sigc::bind (sigc::ptr_fun (on_contact_updated), (gpointer)result)));
+  result->priv->connections.push_back (book->contact_removed.connect (sigc::bind (sigc::ptr_fun (on_contact_removed), (gpointer)result)));
+  result->priv->connections.push_back (book->updated.connect (sigc::bind (sigc::ptr_fun (on_updated), (gpointer)result)));
 
-  /* Relay signals */
-  result->priv->centralizer.contact_added.connect (sigc::bind (sigc::ptr_fun (on_contact_added), (gpointer)result));
-  result->priv->centralizer.contact_updated.connect (sigc::bind (sigc::ptr_fun (on_contact_updated), (gpointer)result));
-  result->priv->centralizer.contact_removed.connect (sigc::bind (sigc::ptr_fun (on_contact_removed), (gpointer)result));
-  result->priv->centralizer.updated.connect (sigc::bind (sigc::ptr_fun (on_updated), (gpointer)result));
 
-  result->priv->centralizer.watch_book (book);
+  /* populate */
+  book->visit_contacts (sigc::bind_return (sigc::bind (sigc::ptr_fun (on_contact_added), (gpointer)result),true));
 
   return (GtkWidget *) result;
 }
