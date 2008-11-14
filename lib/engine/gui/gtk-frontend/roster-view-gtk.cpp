@@ -183,9 +183,9 @@ static void on_selection_changed (GtkTreeSelection* selection,
  * BEHAVIOR     : Update the menu and displays it as a popup.
  * PRE          : The gpointer must point to the RosterViewGtk GObject.
  */
-static gint on_view_clicked (GtkWidget *tree_view,
-			     GdkEventButton *event,
-			     gpointer data);
+static gint on_view_event_after (GtkWidget *tree_view,
+			         GdkEventButton *event,
+			         gpointer data);
 
 /* DESCRIPTION : Helpers for the next function
  */
@@ -663,14 +663,17 @@ on_selection_changed (GtkTreeSelection* selection,
 }
 
 static gint
-on_view_clicked (GtkWidget *tree_view,
-		 GdkEventButton *event,
-		 gpointer data)
+on_view_event_after (GtkWidget *tree_view,
+		     GdkEventButton *event,
+		     gpointer data)
 {
   RosterViewGtk *self = NULL;
   GtkTreeModel *model = NULL;
   GtkTreePath *path = NULL;
   GtkTreeIter iter;
+
+  if (event->type != GDK_BUTTON_PRESS && event->type != GDK_2BUTTON_PRESS)
+    return FALSE;
 
   self = ROSTER_VIEW_GTK (data);
   model = gtk_tree_view_get_model (self->priv->tree_view);
@@ -717,6 +720,7 @@ on_view_clicked (GtkWidget *tree_view,
 	break;
       default:
 
+	g_assert_not_reached ();
 	break; // shouldn't happen
       }
       g_free (name);
@@ -1520,7 +1524,7 @@ roster_view_gtk_new (Ekiga::PresenceCore &core)
   g_signal_connect (G_OBJECT (selection), "changed",
 		    G_CALLBACK (on_selection_changed), self);
   g_signal_connect (G_OBJECT (self->priv->tree_view), "event-after",
-		    G_CALLBACK (on_view_clicked), self);
+		    G_CALLBACK (on_view_event_after), self);
 
 
   /* Relay signals */
