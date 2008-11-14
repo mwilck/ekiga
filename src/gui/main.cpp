@@ -551,7 +551,7 @@ static void on_setup_call_cb (gmref_ptr<Ekiga::CallManager>  /*manager*/,
 #else
     ekiga_main_window_incoming_call_dialog_show (mw, call);
 #endif
-    mw->current_call = &call;
+    mw->priv->current_call = call;
   }
   else {
     ekiga_main_window_update_calling_state (mw, Calling);
@@ -956,17 +956,13 @@ on_videooutput_device_closed_cb (Ekiga::VideoOutputManager & /* manager */, gpoi
 
 void 
 on_videooutput_device_error_cb (Ekiga::VideoOutputManager & /* manager */, 
-                                Ekiga::VideoOutputErrorCodes /* error_code */, 
-                                gpointer /*self*/)
+                                Ekiga::VideoOutputErrorCodes error_code,
+                                gpointer self)
 {
-  gchar *dialog_title = NULL;
+  const gchar *dialog_title =  _("Error while initializing video output");
+  const gchar *tmp_msg = _("No video will be displayed during this call->");
   gchar *dialog_msg = NULL;
-  gchar *tmp_msg = NULL;
 
-  dialog_title =
-  g_strdup_printf (_("Error while initializing video output"));
-
-  tmp_msg = g_strdup (_("No video will be displayed during this call->"));
   switch (error_code) {
 
     case Ekiga::VO_ERROR_NONE:
@@ -981,13 +977,11 @@ on_videooutput_device_error_cb (Ekiga::VideoOutputManager & /* manager */,
       break;
   }
 
-  gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (GTK_WIDGET (self)),
+  gnomemeeting_warning_dialog_on_widget (GTK_WINDOW (self),
                                          "show_device_warnings",
                                          dialog_title,
                                          "%s", dialog_msg);
   g_free (dialog_msg);
-  g_free (dialog_title);
-  g_free (tmp_msg);
 }
 
 void 
@@ -1469,8 +1463,8 @@ place_call_cb (GtkWidget * /*widget*/,
       ekiga_main_window_update_calling_state (mw, Standby);
     }
   }
-  else if (mw->calling_state == Called && mw->current_call)
-    mw->current_call->answer ();
+  else if (mw->priv->calling_state == Called && mw->priv->current_call)
+    mw->priv->current_call->answer ();
 }
 
 
@@ -1492,13 +1486,13 @@ toggle_call_cb (GtkWidget *widget,
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (data);
   GmConnectButton *button = GM_CONNECT_BUTTON (mw->priv->connect_button);
 
-  if (gm_connect_button_get_connected (GM_CONNECT_BUTTON (mw->connect_button)))
+  if (gm_connect_button_get_connected (GM_CONNECT_BUTTON (mw->priv->connect_button)))
     hangup_call_cb (widget, data);
-  else if (!gm_connect_button_get_connected (GM_CONNECT_BUTTON (mw->connect_button))) {
-    if (!mw->current_call)
+  else if (!gm_connect_button_get_connected (GM_CONNECT_BUTTON (mw->priv->connect_button))) {
+    if (!mw->priv->current_call)
       place_call_cb (widget, data);
     else
-      mw->current_call->answer ();
+      mw->priv->current_call->answer ();
   }
 }
 
