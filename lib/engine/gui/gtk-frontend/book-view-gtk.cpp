@@ -331,7 +331,7 @@ on_contact_clicked (GtkWidget *tree_view,
 
 	  contact->populate_menu (builder);
 	}
-	gmref_dec (contact);
+	//gmref_dec (contact);
       }
     }
     gtk_tree_path_free (path);
@@ -422,7 +422,7 @@ book_view_gtk_find_iter_for_contact (BookViewGtk *view,
       if (iter_contact == &*contact)
         found = TRUE;
 
-      gmref_dec (iter_contact);
+      //gmref_dec (iter_contact);
     } while (!found && gtk_tree_model_iter_next (model, iter));
   }
 
@@ -657,7 +657,7 @@ book_view_gtk_populate_menu (BookViewGtk *self,
       item = gtk_separator_menu_item_new ();
       gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
       contact->populate_menu (builder);
-      gmref_dec (contact);
+      //gmref_dec (contact);
     }
   }
 }
