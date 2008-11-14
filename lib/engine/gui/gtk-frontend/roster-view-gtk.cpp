@@ -875,7 +875,7 @@ on_cluster_added (gmref_ptr<Ekiga::Cluster> cluster,
 		  gpointer data)
 {
   cluster->visit_heaps (sigc::bind (sigc::ptr_fun (visit_heaps),
-				    &*cluster, data));
+				    cluster, data));
 }
 
 static bool
@@ -1260,6 +1260,12 @@ roster_view_gtk_dispose (GObject *obj)
 
   view = ROSTER_VIEW_GTK (obj);
 
+  for (std::vector<sigc::connection>::iterator iter
+	 = view->priv->connections.begin ();
+       iter != view->priv->connections.end ();
+       iter++)
+    iter->disconnect ();
+
   if (view->priv->tree_view) {
 
     g_signal_handlers_disconnect_matched (gtk_tree_view_get_selection (view->priv->tree_view),
@@ -1289,12 +1295,6 @@ roster_view_gtk_finalize (GObject *obj)
   RosterViewGtk *view = NULL;
 
   view = (RosterViewGtk *)obj;
-
-  for (std::vector<sigc::connection>::iterator iter
-	 = view->priv->connections.begin ();
-       iter != view->priv->connections.end ();
-       iter++)
-    iter->disconnect ();
 
   delete view->priv;
 
@@ -1525,26 +1525,26 @@ roster_view_gtk_new (Ekiga::PresenceCore &core)
 
   /* Relay signals */
   conn = core.cluster_added.connect (sigc::bind (sigc::ptr_fun (on_cluster_added),
-						 (gpointer) self));
+ 						 (gpointer) self));
   self->priv->connections.push_back (conn);
   conn = core.heap_added.connect (sigc::bind (sigc::ptr_fun (on_heap_added),
-					      (gpointer) self));
+ 					      (gpointer) self));
   self->priv->connections.push_back (conn);
   conn = core.heap_updated.connect (sigc::bind (sigc::ptr_fun (on_heap_updated),
-						(gpointer) self));
+ 						(gpointer) self));
   self->priv->connections.push_back (conn);
   conn = core.heap_removed.connect (sigc::bind (sigc::ptr_fun (on_heap_removed),
-						(gpointer) self));
+ 						(gpointer) self));
 
   self->priv->connections.push_back (conn);
   conn = core.presentity_added.connect (sigc::bind (sigc::ptr_fun (on_presentity_added),
-						    (gpointer) self));
+ 						    (gpointer) self));
   self->priv->connections.push_back (conn);
   conn = core.presentity_updated.connect (sigc::bind (sigc::ptr_fun (on_presentity_updated),
-						      self));
+ 						      self));
   self->priv->connections.push_back (conn);
   conn = core.presentity_removed.connect (sigc::bind (sigc::ptr_fun (on_presentity_removed),
-						      (gpointer) self));
+ 						      (gpointer) self));
   self->priv->connections.push_back (conn);
   conn = core.questions.add_handler (sigc::bind (sigc::ptr_fun (on_handle_questions), (gpointer) self));
   self->priv->connections.push_back (conn);
