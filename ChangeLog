@@ -1,3 +1,11 @@
+2008-11-14  Julien Puydt  <jpuydt@gnome.org>
+
+	* lib/engine/framework/reflister.h: Added a much needed destructor (!),
+	to prevent leaks.
+	* lib/engine/gui/gtk-frontend/book-view-gtk.cpp:
+	* lib/engine/gui/gtk-frontend/roster-view-gtk.cpp: Made them disconnect
+	callbacks in dispose instead of finalize, to prevent crashes.
+
 2008-11-14  Steve Frécinaux  <code@istique.net>
 
 	* src/gui/main.cpp: Fix compilation.
