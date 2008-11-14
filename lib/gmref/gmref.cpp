@@ -38,34 +38,25 @@
 
 #include <map>
 
-static std::map<GmRefCounted*, int> refcounts;
-
 void
 gmref_init ()
 {
-  /* the goal is to prevent the static initialization fiasco */
-  refcounts.clear ();
 }
 
 void
 gmref_inc (GmRefCounted* obj)
 {
-  std::map<GmRefCounted*, int>::iterator iter = refcounts.find (obj);
-  if (iter == refcounts.end ()) {
-
-    refcounts[obj] = 1;
-  } else
-    refcounts[obj]++;
+  if (obj != 0)
+    obj->count++;
 }
 
 void
 gmref_dec (GmRefCounted* obj)
 {
-  refcounts[obj]--;
+  if (obj != 0) {
 
-  if (refcounts[obj] <= 0) {
-
-    refcounts.erase (obj);
-    delete obj;
+    obj->count--;
+    if (obj->count <= 0)
+      delete obj;
   }
 }

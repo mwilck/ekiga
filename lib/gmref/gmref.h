@@ -40,8 +40,13 @@
 /* base class */
 struct GmRefCounted
 {
+  GmRefCounted (): count(0)
+  {}
+
   virtual ~GmRefCounted ()
   {}
+
+  int count;
 };
 
 
