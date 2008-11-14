@@ -53,6 +53,8 @@ namespace Ekiga
     typedef std::map<gmref_ptr<ObjectType>,std::list<sigc::connection> > container_type;
     typedef Ekiga::map_key_iterator<container_type> iterator;
 
+    virtual ~RefLister ();
+
     void visit_objects (sigc::slot<bool, gmref_ptr<ObjectType> > visitor);
 
     void add_object (gmref_ptr<ObjectType> obj);
@@ -76,6 +78,12 @@ namespace Ekiga
   };
 
 };
+
+template<typename ObjectType>
+Ekiga::RefLister<ObjectType>::~RefLister ()
+{
+  remove_all_objects ();
+}
 
 template<typename ObjectType>
 void
@@ -104,7 +112,7 @@ Ekiga::RefLister<ObjectType>::add_object (gmref_ptr<ObjectType> obj)
 template<typename ObjectType>
 void
 Ekiga::RefLister<ObjectType>::add_connection (gmref_ptr<ObjectType> obj,
-				  sigc::connection connection)
+					      sigc::connection connection)
 {
   objects[obj].push_back (connection);
 }
