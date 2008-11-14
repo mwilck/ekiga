@@ -1,3 +1,16 @@
+2008-11-14  Julien Puydt  <jpuydt@gnome.org>
+
+	* lib/engine/addressbook/skel/book-impl.h:
+	* lib/engine/addressbook/skel/source-impl.h:
+	* lib/engine/presence/skel/cluster-impl.h:
+	* lib/engine/presence/skel/heap-impl.h:
+	* lib/engine/presence/skel/presence-core.h:
+	* lib/engine/presence/skel/uri-presentity.h: Removed useless "public
+	sigc::trackable".
+	* lib/gmref/gmref.cpp:
+	* lib/gmref/gmref.h: Pushed the reference counts in the objects
+	themselves.
+
 2008-11-14  Steve Frécinaux  <code@istique.net>
 
 	* lib/engine/gui/gtk-frontend/roster-view-gtk.cpp: Rename on_view_clicked to
