@@ -68,7 +68,6 @@ namespace Ekiga
   template<typename HeapType = Heap>
   class ClusterImpl:
     public Cluster,
-    public sigc::trackable,
     protected RefLister<HeapType>
   {
 

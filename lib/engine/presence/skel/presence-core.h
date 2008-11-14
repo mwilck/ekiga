@@ -135,8 +135,7 @@ namespace Ekiga
    *         special registering magic?
    */
   class PresenceCore:
-    public Service,
-    public sigc::trackable
+    public Service
   {
   public:
 

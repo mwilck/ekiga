@@ -79,7 +79,6 @@ namespace Ekiga
   template<typename BookType = Book>
   class SourceImpl:
     public Source,
-    public sigc::trackable,
     protected RefLister<BookType>
   {
 

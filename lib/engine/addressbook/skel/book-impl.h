@@ -73,7 +73,6 @@ namespace Ekiga
   template<typename ContactType = Contact>
   class BookImpl:
     public Book,
-    public sigc::trackable,
     protected RefLister<ContactType>
   {
 
