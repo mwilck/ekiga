@@ -60,3 +60,12 @@ gmref_dec (GmRefCounted* obj)
       delete obj;
   }
 }
+
+int
+gmref_count (GmRefCounted* obj)
+{
+  if (obj != 0)
+    return obj->count;
+  else
+    return -1;
+}

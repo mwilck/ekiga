@@ -63,6 +63,7 @@ private:
 void gmref_init ();
 void gmref_inc (GmRefCounted* obj);
 void gmref_dec (GmRefCounted* obj);
+int gmref_count (GmRefCounted* obj);
 
 /* reference-counted pointer class */
 
