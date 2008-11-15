@@ -65,7 +65,7 @@ int
 gmref_count (GmRefCounted* obj)
 {
   if (obj != 0)
-    return obj->count;
+    return obj->refcount;
   else
     return -1;
 }
