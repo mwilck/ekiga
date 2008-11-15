@@ -35,50 +35,45 @@
  */
 
 #include <glib.h>
+#include <iostream>
 
 #include "gmconf.h"
 #include "gmconf-personal-details.h"
 
 static void
 display_name_changed_nt (G_GNUC_UNUSED gpointer id,
-			 GmConfEntry* entry,
-			 gpointer data)
+                         GmConfEntry* entry,
+                         gpointer data)
 {
   Gmconf::PersonalDetails *details = (Gmconf::PersonalDetails *) data;
   const gchar* val = gm_conf_entry_get_string (entry);
 
   if (val != NULL)
     details->display_name_changed (val);
-  else
-    details->display_name_changed ("");
 }
 
 static void
-short_status_changed_nt (G_GNUC_UNUSED gpointer id,
-			 GmConfEntry* entry,
-			 gpointer data)
+presence_changed_nt (G_GNUC_UNUSED gpointer id,
+                     GmConfEntry* entry,
+                     gpointer data)
 {
   Gmconf::PersonalDetails *details = (Gmconf::PersonalDetails *) data;
   const gchar* val = gm_conf_entry_get_string (entry);
 
   if (val != NULL)
-    details->short_status_changed (val);
-  else
-    details->short_status_changed ("");
+    details->presence_changed (val);
 }
 
 static void
-long_status_changed_nt (G_GNUC_UNUSED gpointer id,
-			GmConfEntry* entry,
-			gpointer data)
+status_changed_nt (G_GNUC_UNUSED gpointer id,
+                   GmConfEntry* entry,
+                   gpointer data)
 {
   Gmconf::PersonalDetails *details = (Gmconf::PersonalDetails *) data;
   const gchar* val = gm_conf_entry_get_string (entry);
 
   if (val != NULL)
-    details->long_status_changed (val);
-  else
-    details->long_status_changed ("");
+    details->status_changed (val);
 }
 
 Gmconf::PersonalDetails::PersonalDetails ()
@@ -87,13 +82,13 @@ Gmconf::PersonalDetails::PersonalDetails ()
 
   display_name_notifier
     = gm_conf_notifier_add ("/apps/ekiga/general/personal_data/full_name",
-			    display_name_changed_nt, this);
-  short_status_notifier
+                            display_name_changed_nt, this);
+  presence_notifier
     = gm_conf_notifier_add ("/apps/ekiga/general/personal_data/short_status",
-			    short_status_changed_nt, this);
-  long_status_notifier
-  = gm_conf_notifier_add ("/apps/ekiga/general/personal_data/long_status",
-			  long_status_changed_nt, this);
+                            presence_changed_nt, this);
+  status_notifier
+    = gm_conf_notifier_add ("/apps/ekiga/general/personal_data/long_status",
+                            status_changed_nt, this);
 
   str = gm_conf_get_string ("/apps/ekiga/general/personal_data/full_name");
   if (str != NULL) {
@@ -106,25 +101,25 @@ Gmconf::PersonalDetails::PersonalDetails ()
   str = gm_conf_get_string ("/apps/ekiga/general/personal_data/short_status");
   if (str != NULL) {
 
-    short_status = str;
+    presence = str;
     g_free (str);
   } else
-    short_status = "";
+    presence = "";
 
   str = gm_conf_get_string ("/apps/ekiga/general/personal_data/long_status");
   if (str != NULL) {
 
-    long_status = str;
+    status = str;
     g_free (str);
   } else
-    long_status = "";
+    status = "";
 }
 
 Gmconf::PersonalDetails::~PersonalDetails ()
 {
   gm_conf_notifier_remove (display_name_notifier);
-  gm_conf_notifier_remove (short_status_notifier);
-  gm_conf_notifier_remove (long_status_notifier);
+  gm_conf_notifier_remove (presence_notifier);
+  gm_conf_notifier_remove (status_notifier);
 }
 
 const std::string
@@ -134,36 +129,49 @@ Gmconf::PersonalDetails::get_display_name () const
 }
 
 const std::string
-Gmconf::PersonalDetails::get_short_status () const
+Gmconf::PersonalDetails::get_presence () const
 {
-  return short_status;
+  return presence;
 }
 
 const std::string
-Gmconf::PersonalDetails::get_long_status () const
+Gmconf::PersonalDetails::get_status () const
 {
-  return long_status;
+  return status;
 }
 
 void
 Gmconf::PersonalDetails::set_display_name (const std::string display_name_)
 {
   gm_conf_set_string ("/apps/ekiga/general/personal_data/full_name",
-		      display_name_.c_str ());
+                      display_name_.c_str ());
 }
 
 void
-Gmconf::PersonalDetails::set_short_status (const std::string short_status_)
+Gmconf::PersonalDetails::set_presence (const std::string presence_)
 {
   gm_conf_set_string ("/apps/ekiga/general/personal_data/short_status",
-		      short_status_.c_str ());
+                      presence_.c_str ());
 }
 
 void
-Gmconf::PersonalDetails::set_long_status (const std::string long_status_)
+Gmconf::PersonalDetails::set_status (const std::string status_)
 {
   gm_conf_set_string ("/apps/ekiga/general/personal_data/long_status",
-		      long_status_.c_str ());
+                      status_.c_str ());
+}
+
+void
+Gmconf::PersonalDetails::set_presence_info (const std::string _presence,
+                                            const std::string _status)
+{
+  presence = _presence;
+  status = _status;
+
+  set_presence (_presence);
+  set_status (_status);
+
+  updated.emit ();
 }
 
 void
@@ -174,15 +182,19 @@ Gmconf::PersonalDetails::display_name_changed (std::string val)
 }
 
 void
-Gmconf::PersonalDetails::short_status_changed (std::string val)
+Gmconf::PersonalDetails::presence_changed (std::string val)
 {
-  short_status = val;
-  updated.emit ();
+  if (presence != val) {
+    presence = val;
+    updated.emit ();
+  }
 }
 
 void
-Gmconf::PersonalDetails::long_status_changed (std::string val)
+Gmconf::PersonalDetails::status_changed (std::string val)
 {
-  long_status = val;
-  updated.emit ();
+  if (status != val) {
+    status = val;
+    updated.emit ();
+  }
 }

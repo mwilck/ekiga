@@ -63,29 +63,32 @@ namespace Gmconf
 
     const std::string get_display_name () const;
 
-    const std::string get_short_status () const;
+    const std::string get_presence () const;
 
-    const std::string get_long_status () const;
+    const std::string get_status () const;
 
     void set_display_name (const std::string display_name);
 
-    void set_short_status (const std::string short_status);
+    void set_presence (const std::string presence);
 
-    void set_long_status (const std::string long_status);
+    void set_status (const std::string status);
+
+    void set_presence_info (const std::string presence, 
+                            const std::string status);
 
     /*** public but only to be called by C callbacks ***/
   public:
     void display_name_changed (std::string val);
-    void short_status_changed (std::string val);
-    void long_status_changed (std::string val);
+    void presence_changed (std::string val);
+    void status_changed (std::string val);
 
   private:
     void* display_name_notifier;
-    void* short_status_notifier;
-    void* long_status_notifier;
+    void* presence_notifier;
+    void* status_notifier;
     std::string display_name;
-    std::string short_status;
-    std::string long_status;
+    std::string presence;
+    std::string status;
   };
 };
 

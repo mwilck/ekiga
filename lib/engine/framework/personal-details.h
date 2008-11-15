@@ -52,15 +52,18 @@ namespace Ekiga
 
     virtual const std::string get_display_name () const = 0;
 
-    virtual const std::string get_short_status () const = 0;
+    virtual const std::string get_presence () const = 0;
 
-    virtual const std::string get_long_status () const = 0;
+    virtual const std::string get_status () const = 0;
 
     virtual void set_display_name (const std::string display_name) = 0;
 
-    virtual void set_short_status (const std::string short_status) = 0;
+    virtual void set_presence (const std::string presence) = 0;
 
-    virtual void set_long_status (const std::string long_status) = 0;
+    virtual void set_status (const std::string status) = 0;
+
+    virtual void set_presence_info (const std::string presence,
+                                    const std::string status) = 0;
 
     sigc::signal<void> updated;
   };

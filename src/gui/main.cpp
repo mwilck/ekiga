@@ -1484,7 +1484,6 @@ toggle_call_cb (GtkWidget *widget,
                 gpointer data)
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (data);
-  GmConnectButton *button = GM_CONNECT_BUTTON (mw->priv->connect_button);
 
   if (gm_connect_button_get_connected (GM_CONNECT_BUTTON (mw->priv->connect_button)))
     hangup_call_cb (widget, data);
@@ -3328,7 +3327,7 @@ ekiga_main_window_init_status_toolbar (EkigaMainWindow *mw)
   gtk_toolbar_set_show_arrow (GTK_TOOLBAR (mw->priv->status_toolbar), FALSE);
 
   item = gtk_tool_item_new ();
-  mw->priv->status_option_menu = status_menu_new (); 
+  mw->priv->status_option_menu = status_menu_new (*mw->priv->core); 
   status_menu_set_parent_window (STATUS_MENU (mw->priv->status_option_menu), 
                                  GTK_WINDOW (mw));
   gtk_container_add (GTK_CONTAINER (item), mw->priv->status_option_menu);

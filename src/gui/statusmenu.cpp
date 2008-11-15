@@ -48,6 +48,8 @@
 #include "config.h"
 #include "statusmenu.h"
 
+#include "personal-details.h"
+
 #include "gmconf.h"
 #include "gmstockicons.h"
 
@@ -56,6 +58,9 @@
 
 struct _StatusMenuPrivate
 {
+  gmref_ptr<Ekiga::PersonalDetails> personal_details;
+  std::vector<sigc::connection> connections;
+
   GtkListStore *list_store; // List store storing the menu
   GtkWindow    *parent;     // Parent window
 };
@@ -161,32 +166,14 @@ status_menu_custom_messages_changed (gpointer id,
                                      gpointer data);
 
 
-/** This notifier is triggered when the long status message is modified. 
+/** This callback is triggered when the user details are modified.
  *
  * It updates the StatusMenu content with the new value as current choice.
  *
- * @param id is the GmConf notifier id
- * @param entry is the GmConfEntry for which the notification was triggered
- * @param data is a pointer to the StatusMenu
+ * @param self is a pointer to the StatusMenu
  */
 static void
-long_status_message_changed (gpointer id,
-                             GmConfEntry *entry,
-                             gpointer data);
-
-
-/** This notifier is triggered when the short status message is modified. 
- *
- * It updates the StatusMenu content with the new value as current choice.
- *
- * @param id is the GmConf notifier id
- * @param entry is the GmConfEntry for which the notification was triggered
- * @param data is a pointer to the StatusMenu
- */
-static void
-short_status_message_changed (gpointer id,
-                              GmConfEntry *entry,
-                              gpointer data);
+on_details_updated (StatusMenu *self);
 
 
 /**
@@ -207,13 +194,13 @@ status_menu_populate (StatusMenu *self,
 /** This function updates the default active status in the StatusMenu.
  *
  * @param self is the StatusMenu
- * @param short_status is the short status of the current status
- * @param long_status is the long status description of the current status
+ * @param presence is the short status of the current status
+ * @param status is the long status description of the current status
  */
 static void
 status_menu_set_option (StatusMenu *self,
-                        const char *short_status,
-                        const char *long_status);
+                        const std::string & presence,
+                        const std::string & status);
 
 
 /** This function presents a popup allowing to remove some of the user defined
@@ -245,8 +232,6 @@ static GObjectClass *parent_class = NULL;
 static void status_menu_class_init (gpointer g_class,
                                     gpointer class_data);
 
-static void status_menu_init (StatusMenu *);
-
 static void status_menu_dispose (GObject *obj);
 
 static void status_menu_finalize (GObject *obj);
@@ -273,7 +258,7 @@ status_menu_option_changed (GtkComboBox *box,
                             gpointer data)
 {
   GtkTreeIter iter;
-  
+
   int i = 0;
   gchar* status = NULL;
 
@@ -291,33 +276,27 @@ status_menu_option_changed (GtkComboBox *box,
     switch (i)
       {
       case TYPE_ONLINE:
-        gm_conf_set_string (PERSONAL_DATA_KEY "short_status", "online");
-        gm_conf_set_string (PERSONAL_DATA_KEY "long_status", "");
+        self->priv->personal_details->set_presence_info ("online", "");
         break;
 
       case TYPE_AWAY:
-        gm_conf_set_string (PERSONAL_DATA_KEY "short_status", "away");
-        gm_conf_set_string (PERSONAL_DATA_KEY "long_status", "");
+        self->priv->personal_details->set_presence_info ("away", "");
         break;
 
       case TYPE_DND:
-        gm_conf_set_string (PERSONAL_DATA_KEY "short_status", "dnd");
-        gm_conf_set_string (PERSONAL_DATA_KEY "long_status", "");
+        self->priv->personal_details->set_presence_info ("dnd", "");
         break;
 
       case TYPE_CUSTOM_ONLINE:
-        gm_conf_set_string (PERSONAL_DATA_KEY "short_status", "online");
-        gm_conf_set_string (PERSONAL_DATA_KEY "long_status", status);
+        self->priv->personal_details->set_presence_info ("online", status);
         break;
 
       case TYPE_CUSTOM_AWAY:
-        gm_conf_set_string (PERSONAL_DATA_KEY "short_status", "away");
-        gm_conf_set_string (PERSONAL_DATA_KEY "long_status", status);
+        self->priv->personal_details->set_presence_info ("away", status);
         break;
 
       case TYPE_CUSTOM_DND:
-        gm_conf_set_string (PERSONAL_DATA_KEY "short_status", "dnd");
-        gm_conf_set_string (PERSONAL_DATA_KEY "long_status", status);
+        self->priv->personal_details->set_presence_info ("dnd", status);
         break;
 
       case TYPE_CUSTOM_ONLINE_NEW:
@@ -371,50 +350,10 @@ status_menu_custom_messages_changed (gpointer /*id*/,
 
 
 static void
-long_status_message_changed (gpointer /*id*/,
-                             GmConfEntry *entry,
-                             gpointer data)
+on_details_updated (StatusMenu *self)
 {
-  StatusMenu* self = STATUS_MENU (data);
-  const char* long_status = NULL;
-  char* short_status = NULL;
-
-  g_return_if_fail (self != NULL);
-
-  short_status = gm_conf_get_string (PERSONAL_DATA_KEY "short_status");
-  long_status = gm_conf_entry_get_string (entry);
-
-  if (short_status == NULL)
-    short_status = g_strdup ("");
-
-  status_menu_set_option (self, short_status, long_status);
-
-  g_free (short_status);
+  status_menu_set_option (self, self->priv->personal_details->get_presence (), self->priv->personal_details->get_status ());
 }
-
-
-static void
-short_status_message_changed (gpointer /*id*/,
-                              GmConfEntry *entry,
-                              gpointer data)
-{
-  StatusMenu* self = STATUS_MENU (data);
-  const char* short_status = NULL;
-  char* long_status = NULL;
-
-  g_return_if_fail (self != NULL);
-
-  short_status = gm_conf_entry_get_string (entry);
-  long_status = gm_conf_get_string (PERSONAL_DATA_KEY "long_status");
-
-  if (long_status == NULL)
-    long_status = g_strdup ("");
-
-  status_menu_set_option (self, short_status, long_status);
-
-  g_free (long_status);
-}
-
 
 
 /*
@@ -502,43 +441,45 @@ status_menu_populate (StatusMenu *self,
                         -1); 
     g_object_unref (icon);
   }
+
+  status_menu_set_option (self, self->priv->personal_details->get_presence (), self->priv->personal_details->get_status ());
 }
 
 
 static void
 status_menu_set_option (StatusMenu *self,
-                        const char *short_status,
-                        const char *long_status)
+                        const std::string & presence,
+                        const std::string & status)
 {
   GtkTreeIter iter;
 
   bool valid = false;
-  gchar *status = NULL;
+  gchar *sstatus = NULL;
   int i = 0;
   int cpt = 0;
 
-  g_return_if_fail (short_status != NULL && long_status != NULL);
+  g_return_if_fail (!presence.empty ());
 
   valid = gtk_tree_model_get_iter_first (GTK_TREE_MODEL (self->priv->list_store), &iter);
   while (valid) {
 
     gtk_tree_model_get (GTK_TREE_MODEL (self->priv->list_store), &iter, 
                         COL_MESSAGE_TYPE, &i,
-                        COL_MESSAGE, &status, -1); 
+                        COL_MESSAGE, &sstatus, -1); 
 
     // Check if it is a custom status message and if it is in the list
     if (i == TYPE_CUSTOM_ONLINE || i == TYPE_CUSTOM_AWAY || i == TYPE_CUSTOM_DND) {
-      if (!strcmp (status_types_names[i - NUM_STATUS_TYPES - 1], short_status) && !strcmp (long_status, status))
+      if (presence == status_types_names[i - NUM_STATUS_TYPES - 1] && status == sstatus)
         break;
     }
 
     // Long status empty, the user did not set a custom message
     if (i == TYPE_ONLINE || i == TYPE_AWAY || i == TYPE_DND) {
-      if (long_status && !strcmp(long_status, "") && !strcmp (status_types_names[i], short_status)) 
+      if (status.empty () && presence == status_types_names[i]) 
         break;
     }
 
-    g_free (status);
+    g_free (sstatus);
 
     cpt++;
     valid = gtk_tree_model_iter_next (GTK_TREE_MODEL (self->priv->list_store), &iter);
@@ -547,8 +488,8 @@ status_menu_set_option (StatusMenu *self,
   if (valid) {
     gtk_combo_box_set_active (GTK_COMBO_BOX (self), cpt);
 
-    if (status)
-      g_free (status);
+    if (sstatus)
+      g_free (sstatus);
   }
 }
 
@@ -576,12 +517,12 @@ status_menu_clear_status_message_dialog_run (StatusMenu *self)
   int response = 0;
   int i = 0;
   gchar *message = NULL;
-  gchar *short_status = NULL;
-  gchar *long_status = NULL;
-  
+  gchar *presence = NULL;
+  gchar *status = NULL;
+
   // Current status
-  short_status = gm_conf_get_string (PERSONAL_DATA_KEY "short_status");
-  long_status = gm_conf_get_string (PERSONAL_DATA_KEY "long_status");
+  presence = gm_conf_get_string (PERSONAL_DATA_KEY "short_status");
+  status = gm_conf_get_string (PERSONAL_DATA_KEY "long_status");
 
   // Build the dialog
   dialog = gtk_dialog_new_with_buttons (_("Custom Message"),
@@ -642,13 +583,13 @@ status_menu_clear_status_message_dialog_run (StatusMenu *self)
         gtk_tree_model_get (GTK_TREE_MODEL (self->priv->list_store), &iter,
                             COL_ICON, &pixbuf, 
                             COL_MESSAGE, &message,
-			    -1);
+                            -1);
         gtk_list_store_append (GTK_LIST_STORE (list_store), &liter);
         gtk_list_store_set (GTK_LIST_STORE (list_store), &liter, 
                             COL_ICON, pixbuf, 
                             COL_MESSAGE, message,
                             COL_MESSAGE_TYPE, i,
-			    -1);
+                            -1);
         g_free (message);
         g_object_unref (pixbuf);
       }
@@ -667,17 +608,17 @@ status_menu_clear_status_message_dialog_run (StatusMenu *self)
 
     switch (response)
       {
-        case GTK_RESPONSE_APPLY:
-          if (gtk_tree_selection_get_selected (selection, NULL, &iter)) 
-            gtk_list_store_remove (GTK_LIST_STORE (list_store), &iter);
-          if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (list_store), &iter)) 
-            gtk_tree_selection_select_iter (selection, &iter);
-          else
-            close = true;
+      case GTK_RESPONSE_APPLY:
+        if (gtk_tree_selection_get_selected (selection, NULL, &iter)) 
+          gtk_list_store_remove (GTK_LIST_STORE (list_store), &iter);
+        if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (list_store), &iter)) 
+          gtk_tree_selection_select_iter (selection, &iter);
+        else
+          close = true;
         break;
 
-        case GTK_RESPONSE_CLOSE:
-        default:
+      case GTK_RESPONSE_CLOSE:
+      default:
         close = true;
       }
   }
@@ -689,7 +630,7 @@ status_menu_clear_status_message_dialog_run (StatusMenu *self)
       gtk_tree_model_get (GTK_TREE_MODEL (list_store), &iter,
                           1, &message,
                           2, &i, -1);
-      if (long_status && message && !strcmp (long_status, message))
+      if (status && message && !strcmp (status, message))
         found = true;
 
       conf_list[i - NUM_STATUS_TYPES - 1] = g_slist_append (conf_list[i - NUM_STATUS_TYPES - 1], g_strdup (message));
@@ -705,11 +646,7 @@ status_menu_clear_status_message_dialog_run (StatusMenu *self)
 
   if (!found) {
     // Reset current config
-    gm_conf_set_string (PERSONAL_DATA_KEY "short_status", "online");
-    gm_conf_set_string (PERSONAL_DATA_KEY "long_status", "");
-  }
-  else {
-    status_menu_set_option (STATUS_MENU (self), short_status, long_status);
+    self->priv->personal_details->set_presence_info ("online", "");
   }
 
   gtk_widget_destroy (dialog);
@@ -720,8 +657,8 @@ static void
 status_menu_new_status_message_dialog_run (StatusMenu *self,
                                            int option)
 {
-  gchar *short_status = NULL;
-  gchar *long_status = NULL;
+  gchar *presence = NULL;
+  gchar *status = NULL;
 
   GSList *clist = NULL;
   GtkWidget *dialog = NULL;
@@ -735,8 +672,8 @@ status_menu_new_status_message_dialog_run (StatusMenu *self,
 
   const char *message = NULL;
 
-  short_status = gm_conf_get_string (PERSONAL_DATA_KEY "short_status");
-  long_status = gm_conf_get_string (PERSONAL_DATA_KEY "long_status");
+  presence = gm_conf_get_string (PERSONAL_DATA_KEY "short_status");
+  status = gm_conf_get_string (PERSONAL_DATA_KEY "long_status");
 
   dialog = gtk_dialog_new_with_buttons (_("Custom Message"),
                                         self->priv->parent,
@@ -777,25 +714,24 @@ status_menu_new_status_message_dialog_run (StatusMenu *self,
     if (strcmp (message, "")) { 
       clist = g_slist_append (clist, g_strdup (message));
       gm_conf_set_string_list (status_types_keys[option - NUM_STATUS_TYPES - 1], clist);
-      gm_conf_set_string (PERSONAL_DATA_KEY "long_status", message);
-      gm_conf_set_string (PERSONAL_DATA_KEY "short_status", status_types_names[option - NUM_STATUS_TYPES - 1]);
+      self->priv->personal_details->set_presence_info (status_types_names[option - NUM_STATUS_TYPES - 1], message);
     }
     else {
-      status_menu_set_option (self, short_status, long_status);
+      status_menu_set_option (self, presence, status);
     }
     g_slist_foreach (clist, (GFunc) g_free, NULL);
     g_slist_free (clist);
     break;
 
   default:
-    status_menu_set_option (self, short_status, long_status);
+    status_menu_set_option (self, presence, status);
     break;
   }
 
   gtk_widget_destroy (dialog);
 
-  g_free (short_status);
-  g_free (long_status);
+  g_free (presence);
+  g_free (status);
 }
 
 
@@ -813,72 +749,6 @@ status_menu_class_init (gpointer g_class,
   gobject_class = (GObjectClass *) g_class;
   gobject_class->dispose = status_menu_dispose;
   gobject_class->finalize = status_menu_finalize;
-}
-
-
-static void
-status_menu_init (StatusMenu *self)
-{
-  GtkCellRenderer *renderer = NULL;
-  GSList *custom_status_array [NUM_STATUS_TYPES];
-
-  self->priv = new StatusMenuPrivate;
-
-  self->priv->parent = NULL;
-  self->priv->list_store = gtk_list_store_new (NUM_COLUMNS,
-                                               GDK_TYPE_PIXBUF,
-                                               G_TYPE_STRING,
-                                               G_TYPE_INT,
-                                               G_TYPE_BOOLEAN);
-
-  gtk_combo_box_set_model (GTK_COMBO_BOX (self),
-                           GTK_TREE_MODEL (self->priv->list_store));
-  g_object_unref (self->priv->list_store);
-
-  renderer = gtk_cell_renderer_pixbuf_new ();
-  gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (self), renderer, FALSE);
-  gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (self), renderer,
-                                  "pixbuf", COL_ICON, NULL);
-
-  renderer = gtk_cell_renderer_text_new ();
-  gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (self), renderer, FALSE);
-  gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (self), renderer, "text", COL_MESSAGE, NULL);
-  g_object_set (renderer, "width", 130, 
-                "ellipsize-set", true, 
-                "ellipsize", PANGO_ELLIPSIZE_END, NULL);
-
-  for (int i = 0 ; i < NUM_STATUS_TYPES ; i++)
-    custom_status_array [i] = gm_conf_get_string_list (status_types_keys [i]);
-
-  status_menu_populate (self, custom_status_array);
-  
-  for (int i = 0 ; i < NUM_STATUS_TYPES ; i++) {
-    g_slist_foreach (custom_status_array [i], (GFunc) g_free, 0);
-    g_slist_free (custom_status_array [i]);
-  }
-
-  gtk_combo_box_set_active (GTK_COMBO_BOX (self), 0);
-
-  gtk_combo_box_set_row_separator_func (GTK_COMBO_BOX (self),
-                                        (GtkTreeViewRowSeparatorFunc) status_menu_row_is_separator,
-                                        NULL, NULL);
-  gtk_container_set_border_width (GTK_CONTAINER (self), 0);
-
-  g_signal_connect (G_OBJECT (self), "changed",
-                    G_CALLBACK (status_menu_option_changed), self);
-
-  gm_conf_notifier_add (PERSONAL_DATA_KEY "online_custom_status", 
-                        status_menu_custom_messages_changed, self);
-  gm_conf_notifier_add (PERSONAL_DATA_KEY "away_custom_status", 
-                        status_menu_custom_messages_changed, self);
-  gm_conf_notifier_add (PERSONAL_DATA_KEY "dnd_custom_status", 
-                        status_menu_custom_messages_changed, self);
-
-  gm_conf_notifier_add (PERSONAL_DATA_KEY "long_status", 
-                        long_status_message_changed, self);
-  gm_conf_notifier_add (PERSONAL_DATA_KEY "short_status", 
-                        short_status_message_changed, self);
-  gm_conf_notifier_trigger (PERSONAL_DATA_KEY "short_status");
 }
 
 
@@ -921,7 +791,7 @@ status_menu_get_type (void)
         NULL,
         sizeof (StatusMenu),
         0,
-        (GInstanceInitFunc) status_menu_init,
+        NULL,
         NULL
       };
 
@@ -936,9 +806,73 @@ status_menu_get_type (void)
 
 
 GtkWidget *
-status_menu_new ()
+status_menu_new (Ekiga::ServiceCore & core)
 {
-  return GTK_WIDGET (STATUS_MENU (g_object_new (STATUS_MENU_TYPE, NULL)));
+  StatusMenu *self = NULL;
+
+  sigc::connection conn;
+  GtkCellRenderer *renderer = NULL;
+  GSList *custom_status_array [NUM_STATUS_TYPES];
+
+  self = (StatusMenu *) g_object_new (STATUS_MENU_TYPE, NULL);
+  self->priv = new StatusMenuPrivate ();
+
+  self->priv->personal_details = core.get ("personal-details");
+  self->priv->parent = NULL;
+  self->priv->list_store = gtk_list_store_new (NUM_COLUMNS,
+                                               GDK_TYPE_PIXBUF,
+                                               G_TYPE_STRING,
+                                               G_TYPE_INT,
+                                               G_TYPE_BOOLEAN);
+
+  gtk_combo_box_set_model (GTK_COMBO_BOX (self),
+                           GTK_TREE_MODEL (self->priv->list_store));
+  g_object_unref (self->priv->list_store);
+
+  renderer = gtk_cell_renderer_pixbuf_new ();
+  gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (self), renderer, FALSE);
+  gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (self), renderer,
+                                  "pixbuf", COL_ICON, NULL);
+
+  renderer = gtk_cell_renderer_text_new ();
+  gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (self), renderer, FALSE);
+  gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (self), renderer, "text", COL_MESSAGE, NULL);
+  g_object_set (renderer, "width", 130, 
+                "ellipsize-set", true, 
+                "ellipsize", PANGO_ELLIPSIZE_END, NULL);
+
+  for (int i = 0 ; i < NUM_STATUS_TYPES ; i++)
+    custom_status_array [i] = gm_conf_get_string_list (status_types_keys [i]);
+
+  status_menu_populate (self, custom_status_array);
+
+  for (int i = 0 ; i < NUM_STATUS_TYPES ; i++) {
+    g_slist_foreach (custom_status_array [i], (GFunc) g_free, 0);
+    g_slist_free (custom_status_array [i]);
+  }
+
+  gtk_combo_box_set_active (GTK_COMBO_BOX (self), 0);
+
+  gtk_combo_box_set_row_separator_func (GTK_COMBO_BOX (self),
+                                        (GtkTreeViewRowSeparatorFunc) status_menu_row_is_separator,
+                                        NULL, NULL);
+  gtk_container_set_border_width (GTK_CONTAINER (self), 0);
+  status_menu_set_option (self, self->priv->personal_details->get_presence (), self->priv->personal_details->get_status ());
+
+  g_signal_connect (G_OBJECT (self), "changed",
+                    G_CALLBACK (status_menu_option_changed), self);
+
+  gm_conf_notifier_add (PERSONAL_DATA_KEY "online_custom_status", 
+                        status_menu_custom_messages_changed, self);
+  gm_conf_notifier_add (PERSONAL_DATA_KEY "away_custom_status", 
+                        status_menu_custom_messages_changed, self);
+  gm_conf_notifier_add (PERSONAL_DATA_KEY "dnd_custom_status", 
+                        status_menu_custom_messages_changed, self);
+
+  conn = self->priv->personal_details->updated.connect (sigc::bind (sigc::ptr_fun (on_details_updated), self)); 
+  self->priv->connections.push_back (conn);
+
+  return GTK_WIDGET (self);
 }
 
 
