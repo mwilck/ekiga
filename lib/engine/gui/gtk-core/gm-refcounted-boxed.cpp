@@ -41,6 +41,7 @@ static GmRefCounted*
 gmrefcounted_boxed_copy (GmRefCounted* obj)
 {
   gmref_inc (obj);
+  g_print ("%s, %p -> %d\n", __PRETTY_FUNCTION__, obj, gmref_count (obj));
   return obj;
 }
 

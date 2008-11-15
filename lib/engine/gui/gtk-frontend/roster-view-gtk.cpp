@@ -912,6 +912,8 @@ on_heap_updated (gmref_ptr<Ekiga::Cluster> /*cluster*/,
 
   roster_view_gtk_find_iter_for_heap (self, heap, &iter);
 
+  g_print ("%s, %p -> %d\n", __PRETTY_FUNCTION__, &*heap, gmref_count (&*heap));
+
   gtk_tree_store_set (self->priv->store, &iter,
 		      COLUMN_TYPE, TYPE_HEAP,
 		      COLUMN_HEAP, &*heap,
