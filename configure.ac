@@ -14,7 +14,7 @@ dnl   Definitions
 dnl ###########################################################################
 
 MAJOR_VERSION=3
-MINOR_VERSION=0
+MINOR_VERSION=1
 BUILD_TYPE=ReleaseCode
 BUILD_NUMBER=0
 
