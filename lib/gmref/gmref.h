@@ -38,15 +38,23 @@
 #define __GMREF_H__
 
 /* base class */
-struct GmRefCounted
+class GmRefCounted
 {
-  GmRefCounted (): count(0)
+public:
+  GmRefCounted (): refcount(0)
   {}
 
   virtual ~GmRefCounted ()
   {}
 
-  int count;
+  int get_refcount ()
+  { return refcount; }
+
+private:
+  int refcount;
+
+  friend void gmref_inc (GmRefCounted* obj);
+  friend void gmref_dec (GmRefCounted* obj);
 };
 
 

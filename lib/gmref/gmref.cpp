@@ -47,7 +47,7 @@ void
 gmref_inc (GmRefCounted* obj)
 {
   if (obj != 0)
-    obj->count++;
+    obj->refcount++;
 }
 
 void
@@ -55,8 +55,8 @@ gmref_dec (GmRefCounted* obj)
 {
   if (obj != 0) {
 
-    obj->count--;
-    if (obj->count <= 0)
+    obj->refcount--;
+    if (obj->refcount <= 0)
       delete obj;
   }
 }

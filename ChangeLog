@@ -1,3 +1,10 @@
+2008-11-15  Steve Frécinaux  <code@istique.net>
+
+	* lib/gmref/gmref.cpp:
+	* lib/gmref/gmref.h:
+	Rename the "count" field to "refcount" and ensure the field can only be
+	accessed through the gmref_inc and gmref_dec functions.
+
 2008-11-14  Julien Puydt  <jpuydt@gnome.org>
 
 	* lib/engine/gui/gtk-frontend/book-view-gtk.cpp:
