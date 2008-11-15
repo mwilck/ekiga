@@ -286,10 +286,10 @@ Avahi::PresencePublisher::prepare_txt_record ()
 
   result = avahi_string_list_add_printf (result,
 					 "presence=%s",
-					 details.get_short_status ().c_str ());
+					 details.get_presence ().c_str ());
   result = avahi_string_list_add_printf (result,
 					 "status=%s",
-					 details.get_long_status ().c_str ());
+					 details.get_status ().c_str ());
   result = avahi_string_list_add_printf (result,
 					 "software=%s %s",
 					 PACKAGE_NAME, PACKAGE_VERSION);

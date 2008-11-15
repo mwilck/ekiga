@@ -47,7 +47,7 @@
 #include <opal/manager.h>
 
 #include "call.h"
-
+#include "services.h"
 
 /** This implements a StatusMenu.
  */
@@ -83,7 +83,7 @@ GType status_menu_get_type (void);
 
 /** Create a new StatusMenu 
  */
-GtkWidget *status_menu_new ();
+GtkWidget *status_menu_new (Ekiga::ServiceCore & core);
 
 
 /** Set parent window for a StatusMenu 

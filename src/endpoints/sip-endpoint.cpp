@@ -349,8 +349,8 @@ void Opal::Sip::EndPoint::unfetch (const std::string uri)
 void Opal::Sip::EndPoint::publish (const Ekiga::PersonalDetails & details)
 {
   std::string hostname = (const char *) PIPSocket::GetHostName ();
-  std::string short_status = ((Ekiga::PersonalDetails &) (details)).get_short_status ();
-  std::string long_status = ((Ekiga::PersonalDetails &) (details)).get_long_status ();
+  std::string presence = ((Ekiga::PersonalDetails &) (details)).get_presence ();
+  std::string status = ((Ekiga::PersonalDetails &) (details)).get_status ();
 
   for (std::list<std::string>::iterator it = aors.begin ();
        it != aors.end ();
@@ -370,10 +370,10 @@ void Opal::Sip::EndPoint::publish (const Ekiga::PersonalDetails & details)
     data += "\">\r\n";
 
     data += "<note>";
-    data += short_status.c_str ();
-    if (!long_status.empty ()) {
+    data += presence.c_str ();
+    if (!status.empty ()) {
       data += " - ";
-      data += long_status.c_str ();
+      data += status.c_str ();
     }
     data += "</note>\r\n";
 
@@ -390,7 +390,7 @@ void Opal::Sip::EndPoint::publish (const Ekiga::PersonalDetails & details)
     data += "</tuple>\r\n";
     data += "</presence>\r\n";
 
-    Publish (to, data, 300); // TODO: allow to change the 500 
+    Publish (to, data, 60); // TODO: allow to change the 500 
   }
 }
 

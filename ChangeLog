@@ -1,3 +1,23 @@
+2008-11-15  Damien Sandras  <dsandras@gnome.org>
+
+         * src/endpoints/sip-endpoint.cpp:
+         * src/gui/statusmenu.cpp:
+         * src/gui/statusmenu.h:
+         * src/gui/main.cpp:
+         * src/gui/statusicon.cpp:
+         * lib/engine/components/avahi-publisher/avahi-publisher.cpp:
+         * lib/engine/components/gmconf-personal-details/gmconf-personal-details.h:
+         * lib/engine/components/gmconf-personal-details/gmconf-personal-details.cpp:
+         * lib/engine/framework/personal-details.h:
+         Large rework of the PersonalDetails class so that the short_status and
+         long_status can be set at once. The GmConf notifiers are only 
+         triggering the updated signal when there was an update. Rewrite of the
+         StatusMenu Gtk widget so that it deals with the PersonalDetails service
+         and not directly with the GmConf keys. Renamed short_status into
+         presence and long_status into status to match the naming of 
+         presentities. All of this prevent publishing partial, duplicate or 
+         incorrect status information to the SIP server.
+
 2008-11-13  Damien Sandras  <dsandras@gnome.org>
 
         * src/gui/main.cpp:

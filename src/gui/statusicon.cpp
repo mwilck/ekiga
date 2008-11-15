@@ -119,7 +119,7 @@ statusicon_stop_blinking (StatusIcon *icon);
 
 static void
 statusicon_set_status (StatusIcon *widget,
-                       const std::string & short_status);
+                       const std::string & presence);
 
 static void
 statusicon_set_inacall (StatusIcon *widget,
@@ -351,7 +351,7 @@ static void
 personal_details_updated_cb (StatusIcon* self,
 			     Ekiga::PersonalDetails* details)
 {
-  statusicon_set_status (self, details->get_short_status ());
+  statusicon_set_status (self, details->get_presence ());
 }
 
 
@@ -450,7 +450,7 @@ statusicon_stop_blinking (StatusIcon *self)
 
 void
 statusicon_set_status (StatusIcon *statusicon,
-                       const std::string & short_status)
+                       const std::string & presence)
 {
   GtkFrontend *frontend = NULL;
   GtkWidget *chat_window = NULL;
@@ -463,11 +463,11 @@ statusicon_set_status (StatusIcon *statusicon,
   chat_window = GTK_WIDGET (frontend->get_chat_window ());
 
   /* Update the status icon */
-  if (short_status == "away")
+  if (presence == "away")
     pixbuf = gtk_widget_render_icon (chat_window, GM_STOCK_STATUS_AWAY, 
                                      GTK_ICON_SIZE_MENU, NULL); 
 
-  else if (short_status == "dnd")
+  else if (presence == "dnd")
     pixbuf = gtk_widget_render_icon (chat_window, GM_STOCK_STATUS_DND, 
                                      GTK_ICON_SIZE_MENU, NULL); 
   else
@@ -477,7 +477,7 @@ statusicon_set_status (StatusIcon *statusicon,
   gtk_status_icon_set_from_pixbuf (GTK_STATUS_ICON (statusicon), pixbuf);
   g_object_unref (pixbuf);
 
-  statusicon->priv->status = short_status;
+  statusicon->priv->status = presence;
 }
 
 
@@ -538,7 +538,7 @@ statusicon_new (Ekiga::ServiceCore & core)
   Ekiga::CallCore *call_core = dynamic_cast<Ekiga::CallCore*> (core.get ("call-core"));
   GtkWidget *chat_window = GTK_WIDGET (frontend->get_chat_window ());
 
-  statusicon_set_status (self, details->get_short_status ());
+  statusicon_set_status (self, details->get_presence ());
   conn = details->updated.connect (sigc::bind (sigc::ptr_fun (personal_details_updated_cb), self, details));
   self->priv->connections.push_back (conn);
 
