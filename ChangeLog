@@ -1,6 +1,17 @@
 2008-11-15  Damien Sandras  <dsandras@gnome.org>
 
          * src/endpoints/sip-endpoint.cpp:
+         * src/endpoints/sip-endpoint.h:
+         Fixed various problems with the initial notifications and empty ping back
+         notifications.
+         If we receive an initial notification with no status information,
+         then the user is offline. If we receive a notification with an empty
+         body then do not update the user status to offline or unknown because
+         it is just a ping from the server indicating no status change.
+
+2008-11-15  Damien Sandras  <dsandras@gnome.org>
+
+         * src/endpoints/sip-endpoint.cpp:
          * src/gui/statusmenu.cpp:
          * src/gui/statusmenu.h:
          * src/gui/main.cpp:

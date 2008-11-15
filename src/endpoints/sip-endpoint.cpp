@@ -390,7 +390,7 @@ void Opal::Sip::EndPoint::publish (const Ekiga::PersonalDetails & details)
     data += "</tuple>\r\n";
     data += "</presence>\r\n";
 
-    Publish (to, data, 60); // TODO: allow to change the 500 
+    Publish (to, data, 500); // TODO: allow to change the 500 
   }
 }
 
@@ -1083,41 +1083,49 @@ Opal::Sip::EndPoint::OnPresenceInfoReceived (const PString & user,
   PCaselessString b = basic;
   PCaselessString s = note;
 
-  std::string status;
   std::string presence = "unknown";
+  std::string status;
 
-  if (basic.IsEmpty () && note.IsEmpty ())
-    return;
+  if (!basic.IsEmpty () && !note.IsEmpty ()) {
 
-  if (b.Find ("Open") != P_MAX_INDEX)
-    presence = "online";
-  else
-    presence = "offline";
-
-  if (s.Find ("Away") != P_MAX_INDEX)
-    presence = "away";
-  else if (s.Find ("On the phone") != P_MAX_INDEX
-           || s.Find ("Ringing") != P_MAX_INDEX) 
-    presence = "inacall";
-  else if (s.Find ("dnd") != P_MAX_INDEX
-           || s.Find ("Do Not Disturb") != P_MAX_INDEX) 
-    presence = "dnd";
-
-  else if (s.Find ("Free For Chat") != P_MAX_INDEX) 
-    presence = "freeforchat";
-
-  if ((j = s.Find (" - ")) != P_MAX_INDEX)
-    status = (const char *) note.Mid (j + 3);
+    if (b.Find ("Open") != P_MAX_INDEX)
+      presence = "online";
+    else
+      presence = "offline";
+  
+    if (s.Find ("Away") != P_MAX_INDEX)
+      presence = "away";
+    else if (s.Find ("On the phone") != P_MAX_INDEX
+             || s.Find ("Ringing") != P_MAX_INDEX) 
+      presence = "inacall";
+    else if (s.Find ("dnd") != P_MAX_INDEX
+             || s.Find ("Do Not Disturb") != P_MAX_INDEX) 
+      presence = "dnd";
+  
+    else if (s.Find ("Free For Chat") != P_MAX_INDEX) 
+      presence = "freeforchat";
+  
+    if ((j = s.Find (" - ")) != P_MAX_INDEX)
+      status = (const char *) note.Mid (j + 3);
+  }
 
   SIPURL sip_uri = SIPURL (user);
   sip_uri.Sanitise (SIPURL::ExternalURI);
   std::string _uri = sip_uri.AsString ();
+  std::string old_presence = uri_presences[_uri];
+  
+  // If first notification, and no information, then we are offline
+  if (presence == "unknown" && old_presence.empty ())
+    presence = "offline";
 
-  /**
-   * TODO
-   * Wouldn't it be convenient to emit the signal and have the presence core listen to it ?
-   */
-  runtime.run_in_main (sigc::bind (sigc::ptr_fun (presence_status_in_main), this, _uri, presence, status));
+  // If presence change, then signal it to the various components
+  // If presence is unknown (notification with empty body), and it is not the 
+  // first notification, and we can conclude it is a ping back from the server 
+  // to indicate the presence status did not change, hence we do nothing.
+  if (presence != "unknown" && old_presence != presence) {
+    uri_presences[_uri] = presence;
+    runtime->run_in_main (sigc::bind (sigc::ptr_fun (presence_status_in_main), this, _uri, presence, status));
+  }
 }
 
 

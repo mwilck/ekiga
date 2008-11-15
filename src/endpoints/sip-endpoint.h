@@ -196,6 +196,8 @@ namespace Opal {
       unsigned listen_port;
 
       SIP::Dialect *dialect;
+
+      std::map<std::string, std::string> uri_presences;
     };
   };
 };
