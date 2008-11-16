@@ -527,7 +527,7 @@ update_offline_count (RosterViewGtk* self,
 	  && (presentity->get_presence () == "offline"
 	      || presentity->get_presence () == "unknown"))
 	offline_count++;
-      //gmref_dec (presentity);
+      gmref_dec (presentity);
     } while (gtk_tree_model_iter_next (model, &loop_iter));
   }
 
@@ -652,8 +652,8 @@ on_selection_changed (GtkTreeSelection* selection,
     }
 
     g_free (name);
-    //gmref_dec (heap);
-    //gmref_dec (presentity);
+    gmref_dec (heap);
+    gmref_dec (presentity);
   } else {
 
     g_signal_emit (self, signals[PRESENTITY_SELECTED_SIGNAL], 0, NULL);
@@ -724,8 +724,8 @@ on_view_event_after (GtkWidget *tree_view,
 	break; // shouldn't happen
       }
       g_free (name);
-      //gmref_dec (heap);
-      //gmref_dec (presentity);
+      gmref_dec (heap);
+      gmref_dec (presentity);
     }
     gtk_tree_path_free (path);
   }
@@ -911,8 +911,6 @@ on_heap_updated (gmref_ptr<Ekiga::Cluster> /*cluster*/,
   GtkTreeIter iter;
 
   roster_view_gtk_find_iter_for_heap (self, heap, &iter);
-
-  g_print ("%s, %p -> %d\n", __PRETTY_FUNCTION__, &*heap, gmref_count (&*heap));
 
   gtk_tree_store_set (self->priv->store, &iter,
 		      COLUMN_TYPE, TYPE_HEAP,
@@ -1117,7 +1115,7 @@ roster_view_gtk_find_iter_for_heap (RosterViewGtk *view,
       gtk_tree_model_get (model, iter, COLUMN_HEAP, &iter_heap, -1);
       if (iter_heap == &*heap)
 	found = TRUE;
-      //gmref_dec (iter_heap);
+      gmref_dec (iter_heap);
     } while (!found && gtk_tree_model_iter_next (model, iter));
   }
 
@@ -1182,7 +1180,7 @@ roster_view_gtk_find_iter_for_presentity (RosterViewGtk *view,
       gtk_tree_model_get (model, iter, COLUMN_PRESENTITY, &iter_presentity, -1);
       if (iter_presentity == &*presentity)
 	found = TRUE;
-      //gmref_dec (iter_presentity);
+      gmref_dec (iter_presentity);
     } while (!found && gtk_tree_model_iter_next (model, iter));
   }
 
