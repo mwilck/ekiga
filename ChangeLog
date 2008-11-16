@@ -1,3 +1,14 @@
+2008-11-16  Julien Puydt  <jpuydt@gnome.org>
+
+	* lib/engine/gui/gtk-frontend/book-view-gtk.cpp:
+	* lib/engine/gui/gtk-frontend/roster-view-gtk.cpp: Added back the gmref_dec
+	code, and removed log printing.
+	* lib/engine/gui/gtk-core/gm-refcounted-boxed.cpp: Remove log printing.
+	* lib/gmref/gmref.cpp: Don't free memory : leak but don't
+	crash -- that will let others work on ekiga while I settle
+	the problem.
+	* lib/gmref/gmref.h: Simplified gmref_ptr.
+
 2008-11-15  Damien Sandras  <dsandras@gnome.org>
 
         * src/endpoints/sip-endpoint.cpp:
