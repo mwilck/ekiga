@@ -99,7 +99,6 @@ private:
   template<typename Tprim> friend void gmref_dec (gmref_ptr<Tprim> ptr);
 
   void reset ();
-  void inc ();
 
   T* obj;
 };
@@ -122,25 +121,22 @@ void gmref_dec (gmref_ptr<T> ptr)
 /* implementation of the templates */
 
 template<typename T>
-gmref_ptr<T>::gmref_ptr (T* obj_ = 0)
+gmref_ptr<T>::gmref_ptr (T* obj_ = 0): obj(obj_)
 {
-  obj = obj_;
-  inc ();
+  gmref_inc (obj);
 }
 
 template<typename T>
-gmref_ptr<T>::gmref_ptr (const gmref_ptr<T>& ptr)
+gmref_ptr<T>::gmref_ptr (const gmref_ptr<T>& ptr): obj(ptr.obj)
 {
-  obj = ptr.obj;
-  inc ();
+  gmref_inc (obj);
 }
 
 template<typename T>
 template<typename Tprim>
-gmref_ptr<T>::gmref_ptr (const gmref_ptr<Tprim>& ptr)
+gmref_ptr<T>::gmref_ptr (const gmref_ptr<Tprim>& ptr): obj(dynamic_cast<T*>(ptr.obj))
 {
-  obj = dynamic_cast<T*>(ptr.obj);
-  inc ();
+  gmref_inc (obj);
 }
 
 template<typename T>
@@ -157,7 +153,7 @@ gmref_ptr<T>::operator= (const gmref_ptr<T>& other)
 
     reset ();
     obj = other.obj;
-    inc ();
+    gmref_inc (obj);
   }
 
   return *this;
@@ -208,17 +204,8 @@ template<typename T>
 void
 gmref_ptr<T>::reset ()
 {
-  if (obj != 0)
-    gmref_dec (obj);
+  gmref_dec (obj);
   obj = 0;
-}
-
-template<typename T>
-void
-gmref_ptr<T>::inc ()
-{
-  if (obj != 0)
-    gmref_inc (obj);
 }
 
 #endif
