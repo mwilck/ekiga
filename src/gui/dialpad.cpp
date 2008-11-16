@@ -32,9 +32,10 @@
  *   description          : Dial pad widget.
  */
 
-#include "config.h"
 #include "dialpad.h"
+
 #include <gdk/gdkkeysyms.h>
+#include <glib/gi18n.h>
 
 #include <cstring>
 #include <iostream>

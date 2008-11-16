@@ -46,12 +46,12 @@
 #include "gmdialog.h"
 #include "gmconf.h"
 
-
-
 #ifndef WIN32
 #include <gdk/gdkx.h>
 #include <X11/Xlib.h>
 #endif
+
+#include <glib/gi18n.h>
 
 
 /* The functions */
@@ -75,63 +75,6 @@ gnomemeeting_button_new (const char *lbl,
   return button;
 }
 
-
-
-/* This function overrides from a pwlib function */
-#ifndef STATIC_LIBS_USED
-static gboolean
-assert_error_msg (gpointer data)
-{
-  GtkWidget *main_window = NULL;
-
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-
-  
-  //gdk_threads_enter ();
-  std::cout << "FIXME" << std::endl << std::flush;
-  //FIXME Should use a signal in the runtime.
-  gnomemeeting_error_dialog (GTK_WINDOW (main_window), 
-			     _("Error"),
-			     "%s", (gchar *) data);
-  //gdk_threads_leave ();
-
-  return FALSE;
-}
-
-
-void 
-PAssertFunc (G_GNUC_UNUSED const char *file,
-	     G_GNUC_UNUSED int line,
-	     G_GNUC_UNUSED const char *className,
-	     const char *msg)
-{
-  g_idle_add_full (G_PRIORITY_HIGH, assert_error_msg, g_strdup (msg), g_free);
-}
-#endif
-
-
-
-PString
-gnomemeeting_pstring_cut (PString s)
-{
-  PString s2 = s;
-
-  if (s.IsEmpty ())
-    return s2;
-
-  PINDEX bracket = s2.Find('[');                                          
-                                                                               
-  if (bracket != P_MAX_INDEX)                                                
-    s2 = s2.Left (bracket);                                            
-
-  bracket = s2.Find('(');                                                 
-                                                                               
-  if (bracket != P_MAX_INDEX)                                                
-    s2 = s2.Left (bracket);     
-
-  return s2.Trim ();
-}
-    
 
 /* Stolen from GDK */
 #ifndef WIN32

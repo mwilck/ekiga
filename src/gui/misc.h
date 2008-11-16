@@ -40,7 +40,7 @@
 #ifndef _MISC_H_
 #define _MISC_H_
 
-#include "common.h"
+#include <gtk/gtk.h>
 
 
 /* DESCRIPTION  :  / 
@@ -51,15 +51,6 @@
 GtkWidget *
 gnomemeeting_button_new (const char *label,
 			 GtkWidget *pixmap);
-
-
-/* DESCRIPTION   :  /
- * BEHAVIOR      : Takes a PString and returns the Left part before a [ or a (.
- * PRE           : An non-empty PString.
- */
-PString 
-gnomemeeting_pstring_cut (PString s);
-
 
 
 void gdk_window_set_always_on_top (GdkWindow *window, 

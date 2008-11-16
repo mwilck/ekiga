@@ -721,18 +721,6 @@ else
   AC_DEFINE_UNQUOTED(PACKAGE_LOCALE_DIR, "${prefix}/${DATADIRNAME}/locale",[fix])
 fi
 
-AH_BOTTOM(
-#ifndef _
-#include <libintl.h>
-#define _(x) gettext(x)
-#ifdef gettext_noop
-#define N_(String) gettext_noop (String)
-#else
-#define N_(String) (String)
-#endif
-#endif
-)
-
 
 dnl ###########################################################################
 dnl  Data and configuration directories for the system

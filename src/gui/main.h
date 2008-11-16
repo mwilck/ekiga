@@ -39,10 +39,6 @@
 #ifndef _MAIN_INTERFACE_H
 #define _MAIN_INTERFACE_H
 
-#include "config.h"
-
-#include "common.h"
-
 #include "services.h"
 #include "call.h"
 

@@ -40,11 +40,7 @@
 #ifndef __STATUS_MENU_H
 #define __STATUS_MENU_H
 
-#include <glib-object.h>
 #include <gtk/gtk.h>
-
-#include <ptlib.h>
-#include <opal/manager.h>
 
 #include "call.h"
 #include "services.h"

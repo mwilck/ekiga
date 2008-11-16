@@ -1,6 +1,61 @@
 2008-11-16  Damien Sandras  <dsandras@gnome.org>
 
         * src/endpoints/h323-endpoint.h:
+        * src/endpoints/opal-call.cpp:
+        * src/endpoints/opal-bank.cpp:
+        * src/endpoints/opal-call.h:
+        * src/endpoints/sip-endpoint.cpp:
+        * src/endpoints/opal-call-manager.cpp:
+        * src/endpoints/opal-main.cpp:
+        * src/endpoints/sip-endpoint.h:
+        * src/endpoints/opal-call-manager.h:
+        * src/endpoints/opal-account.cpp:
+        * src/endpoints/pcss-endpoint.cpp:
+        * src/endpoints/opal-gmconf-bridge.cpp:
+        * src/endpoints/h323-endpoint.cpp:
+        * src/gui/dialpad.cpp:
+        * src/gui/misc.h:
+        * src/gui/statusicon.h:
+        * src/gui/statusmenu.cpp:
+        * src/gui/assistant.cpp:
+        * src/gui/statusmenu.h:
+        * src/gui/accounts.cpp:
+        * src/gui/accounts.h:
+        * src/gui/main.cpp:
+        * src/gui/main.h:
+        * src/gui/misc.cpp:
+        * src/gui/statusicon.cpp:
+        * configure.ac:
+        * lib/gui/codecsbox.h:
+        * lib/gui/gmdialog.c:
+        * lib/engine/gui/gtk-frontend/call-history-view-gtk.cpp:
+        * lib/engine/gui/gtk-frontend/addressbook-window.cpp:
+        * lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:
+        * lib/engine/gui/gtk-frontend/chat-window.cpp:
+        * lib/engine/gui/gtk-frontend/book-view-gtk.cpp:
+        * lib/engine/gui/gtk-frontend/chat-area.cpp:
+        * lib/engine/gui/gtk-core/form-dialog-gtk.cpp:
+        * lib/engine/addressbook/ldap/ldap-book.h:
+        * lib/engine/addressbook/evolution/Makefile.am:
+        * lib/engine/addressbook/evolution/evolution-book.cpp:
+        * lib/engine/addressbook/evolution/evolution-contact.cpp:
+        * lib/engine/addressbook/call-history/Makefile.am:
+        * lib/engine/addressbook/call-history/history-contact.cpp:
+        * lib/engine/addressbook/skel/contact-core.cpp:
+        * lib/engine/addressbook/skel/Makefile.am:
+        * lib/engine/presence/local-roster/local-presentity.cpp:
+        * lib/engine/presence/local-roster/local-roster-bridge.cpp:
+        * lib/engine/presence/local-roster/local-heap.cpp:
+        * lib/engine/presence/local-roster/Makefile.am:
+        * lib/engine/presence/local-roster/local-cluster.cpp:
+        * lib/engine/presence/avahi/avahi-heap.cpp:
+        Cleanup : only include common.h and config.h when absolutely
+        needed. Use glib/gi18n.h for i18n and not our custom definitions in
+        config.h.
+
+2008-11-16  Damien Sandras  <dsandras@gnome.org>
+
+        * src/endpoints/h323-endpoint.h:
         * src/endpoints/pcss.cpp:
         * src/endpoints/manager.cpp:
         * src/endpoints/opal-call-manager.cpp

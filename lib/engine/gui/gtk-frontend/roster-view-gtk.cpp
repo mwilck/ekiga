@@ -38,6 +38,7 @@
 #include <algorithm>
 #include <iostream>
 #include <vector>
+#include <glib/gi18n.h>
 
 #include "gm-refcounted-boxed.h"
 #include "gm-cell-renderer-bitext.h"

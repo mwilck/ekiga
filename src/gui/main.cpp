@@ -66,6 +66,7 @@
 
 #include "platform/gm-platform.h"
 
+#include <glib/gi18n.h>
 #include <gdk/gdkkeysyms.h>
 
 #ifdef HAVE_DBUS

@@ -37,6 +37,8 @@
 #include <iostream>
 #include <sigc++/sigc++.h>
 
+#include "config.h"
+
 #include "gmconf.h"
 
 #include "opal-gmconf-bridge.h"

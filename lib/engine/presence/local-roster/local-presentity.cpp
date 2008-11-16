@@ -36,8 +36,7 @@
 #include <algorithm>
 #include <iostream>
 #include <set>
-
-#include "config.h"
+#include <glib/gi18n.h>
 
 #include "form-request-simple.h"
 #include "local-cluster.h"

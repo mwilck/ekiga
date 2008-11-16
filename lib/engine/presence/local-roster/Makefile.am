@@ -2,7 +2,7 @@ noinst_LTLIBRARIES = liblocal-roster.la
 
 local_roster_dir = $(top_srcdir)/lib/engine/presence/local-roster
 
-AM_CPPFLAGS = $(XML_CFLAGS) $(SIGC_CFLAGS) $(GLIB_CFLAGS) $(GTK_CFLAGS)
+AM_CPPFLAGS = $(XML_CFLAGS) $(SIGC_CFLAGS) $(GLIB_CFLAGS)
 
 INCLUDES = \
 	-I$(top_srcdir)/lib/gmconf	 		\
@@ -28,4 +28,4 @@ liblocal_roster_la_LIBADD = \
 	$(top_builddir)/lib/engine/addressbook/skel/libgmaddressbook.la \
 	$(top_builddir)/lib/engine/presence/skel/libgmpresence.la
 
-liblocal_roster_la_LDFLAGS = -export-dynamic -no-undefined $(XML_LIBS) $(SIGC_LIBS) $(GLIB_LIBS) $(GTK_LIBS)
+liblocal_roster_la_LDFLAGS = -export-dynamic -no-undefined $(XML_LIBS) $(SIGC_LIBS) $(GLIB_LIBS)

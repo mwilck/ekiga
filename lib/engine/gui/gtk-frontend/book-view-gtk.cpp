@@ -35,10 +35,10 @@
  *
  */
 
-#include "config.h"
 
 #include <algorithm>
 #include <iostream>
+#include <glib/gi18n.h>
 
 #include "book-view-gtk.h"
 

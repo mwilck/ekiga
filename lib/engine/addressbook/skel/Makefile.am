@@ -2,7 +2,7 @@ noinst_LTLIBRARIES = libgmaddressbook.la
 
 addressbook_dir = $(top_srcdir)/lib/engine/addressbook/skel
 
-AM_CXXFLAGS = $(SIGC_CFLAGS)
+AM_CXXFLAGS = $(SIGC_CFLAGS) $(GLIB_CFLAGS)
 
 INCLUDES = \
 	-I$(top_srcdir)/lib/gmref \
@@ -17,4 +17,4 @@ libgmaddressbook_la_SOURCES = \
 	$(addressbook_dir)/contact-core.h		\
 	$(addressbook_dir)/contact-core.cpp
 
-libgmaddressbook_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS)
+libgmaddressbook_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(GLIB_LIBS)

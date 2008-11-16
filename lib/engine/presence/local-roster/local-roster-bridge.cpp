@@ -36,8 +36,7 @@
  */
 
 #include <iostream>
-
-#include "config.h"
+#include <glib/gi18n.h>
 
 #include "local-roster-bridge.h"
 #include "contact-core.h"

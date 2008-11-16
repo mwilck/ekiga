@@ -36,6 +36,7 @@
 #include "config.h"
 
 #include <iostream>
+#include <glib/gi18n.h>
 
 #include "local-cluster.h"
 

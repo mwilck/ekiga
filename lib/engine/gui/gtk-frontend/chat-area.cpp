@@ -36,7 +36,6 @@
  *
  */
 
-#include "config.h"
 
 #include "chat-area.h"
 #include "gm-text-buffer-enhancer.h"
@@ -51,6 +50,7 @@
 #include <string.h>
 #include <stdarg.h>
 
+#include <glib/gi18n.h>
 #include <gdk/gdkkeysyms.h>
 
 class ChatAreaHelper;

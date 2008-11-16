@@ -36,8 +36,7 @@
  */
 
 #include <algorithm>
-
-#include "config.h"
+#include <glib/gi18n.h>
 
 #include "opal-call-manager.h"
 

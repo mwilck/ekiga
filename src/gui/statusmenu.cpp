@@ -36,25 +36,17 @@
  */
 
 
-/*
- * The StatusMenu can be seen as an extended preferences window. 
- * It can thus directly react to GMConf key changes and write in the GMConf 
- * database.
- *
- * It does not need to listen to sigc++ signals to react to key changes.
- *
- */
 
-#include "config.h"
 #include "statusmenu.h"
 
+#include "common.h"
 #include "personal-details.h"
 
 #include "gmconf.h"
 #include "gmstockicons.h"
 
-#include "common.h"
-
+#include <glib/gi18n.h>
+#include <vector>
 
 struct _StatusMenuPrivate
 {

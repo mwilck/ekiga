@@ -40,9 +40,7 @@
 #include <iostream>
 #include <sstream>
 
-#include "config.h"
-
-#include "common.h"
+#include <glib/gi18n.h>
 
 #include "menu-builder.h"
 

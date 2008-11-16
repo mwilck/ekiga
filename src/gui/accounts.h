@@ -39,7 +39,10 @@
 #ifndef _ACCOUNTS_H_
 #define _ACCOUNTS_H_
 
-#include "common.h"
+#include <glib.h>
+#include <glib/gi18n.h>
+#include <gtk/gtk.h>
+
 #include "services.h"
 #include "account.h"
 

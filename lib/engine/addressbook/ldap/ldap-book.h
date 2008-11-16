@@ -41,6 +41,7 @@
 
 #include <vector>
 #include <libxml/tree.h>
+#include <glib/gi18n.h>
 
 #include "runtime.h"
 #include "book-impl.h"

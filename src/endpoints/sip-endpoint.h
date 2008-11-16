@@ -39,10 +39,7 @@
 #ifndef _SIP_ENDPOINT_H_
 #define _SIP_ENDPOINT_H_
 
-
-#include "config.h"
-
-#include "common.h"
+#include <opal/opal.h>
 
 #include "presence-core.h"
 #include "call-manager.h"

@@ -39,7 +39,16 @@
 #ifndef _ENDPOINT_H_
 #define _ENDPOINT_H_
 
-#include "config.h"
+#include <opal/buildopts.h>
+#include <ptbuildopts.h>
+
+#include <ptlib.h>
+
+#include <opal/manager.h>
+#include <opal/pcss.h>
+
+#include <h323/h323.h>
+#include <sip/sip.h>
 
 #include "common.h"
 

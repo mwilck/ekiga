@@ -41,9 +41,10 @@
 #include <algorithm>
 #include <sstream>
 
-#include "config.h"
-
-#include "common.h"
+#include <glib/gi18n.h>
+#include <ptlib.h>
+#include <opal/opal.h>
+#include <ptclib/guid.h>
 
 #include "opal-account.h"
 #include "form-request-simple.h"

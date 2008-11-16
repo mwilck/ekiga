@@ -37,8 +37,7 @@
 
 #include <iostream>
 #include <string>
-
-#include "config.h"
+#include <glib/gi18n.h>
 
 #include "form-request-simple.h"
 

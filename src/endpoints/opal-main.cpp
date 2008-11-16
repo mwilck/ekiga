@@ -35,6 +35,8 @@
  *
  */
 
+#include "config.h"
+
 #include "opal-main.h"
 #include "bank.h"
 #include "contact-core.h"

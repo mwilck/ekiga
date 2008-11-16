@@ -38,6 +38,7 @@
 #include <sstream>
 #include <iostream>
 #include <iomanip>
+#include <glib/gi18n.h>
 
 #include "call-history-view-gtk.h"
 

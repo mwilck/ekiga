@@ -35,6 +35,7 @@
 
 #include <iostream>
 #include <set>
+#include <glib/gi18n.h>
 
 #include "config.h"
 

@@ -36,7 +36,7 @@
  *                          build the druid.
  */
 
-#include "config.h"
+#include <glib/gi18n.h>
 
 #include "framework/services.h"
 #include "account-core.h"

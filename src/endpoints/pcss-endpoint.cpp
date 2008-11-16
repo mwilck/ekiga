@@ -36,7 +36,7 @@
  */
 
 
-#include "common.h"
+#include "config.h"
 
 #include "pcss-endpoint.h"
 #include "opal-call-manager.h"

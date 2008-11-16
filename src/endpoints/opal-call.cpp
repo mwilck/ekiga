@@ -38,17 +38,10 @@
 #include <cctype>
 #include <algorithm>
 
-#include <opal/buildopts.h>
-#include <ptbuildopts.h>
-
-#include <ptlib.h>
-
-#include <opal/manager.h>
-#include <opal/rtpconn.h>
+#include <glib/gi18n.h>
+#include <opal/opal.h>
 #include <opal/pcss.h>
 #include <sip/sippdu.h>
-
-#include "config.h"
 
 #include "opal-call.h"
 #include "call.h"

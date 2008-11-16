@@ -35,8 +35,6 @@
  *   			    manipulate accounts.
  */
 
-#include "config.h"
-
 #include "accounts.h"
 
 #include "account.h"

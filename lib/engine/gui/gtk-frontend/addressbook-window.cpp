@@ -35,6 +35,7 @@
 #include <iostream>
 #include <map>
 #include <vector>
+#include <glib/gi18n.h>
 
 #include "gmstockicons.h"
 

@@ -24,4 +24,4 @@ libcall_history_la_SOURCES = \
 libcall_history_la_LIBADD = \
 	$(top_builddir)/lib/engine/addressbook/skel/libgmaddressbook.la
 
-libcall_history_la_LDFLAGS = -export-dynamic -no-undefined
+libcall_history_la_LDFLAGS = -export-dynamic -no-undefined $(XML_LIBS) $(SIGC_LIBS) $(GLIB_LIBS)

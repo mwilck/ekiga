@@ -34,11 +34,9 @@
  *
  */
 
-#include <opal/buildopts.h>
-#include <ptbuildopts.h>
 
-#include <ptlib.h>
-#include <opal/manager.h>
+#include <opal/opal.h>
+#include <opal/call.h>
 
 #include "runtime.h"
 #include "services.h"

@@ -38,9 +38,9 @@
 #ifndef _STATUSICON_H_
 #define _STATUSICON_H_
 
-#include "common.h"
 #include "services.h"
 
+#include <gtk/gtk.h>
 
 G_BEGIN_DECLS
 

@@ -39,9 +39,7 @@
 #ifndef _H323_ENDPOINT_H_
 #define _H323_ENDPOINT_H_
 
-#include "config.h"
-
-#include "common.h"
+#include <opal/opal.h>
 
 #include "call-core.h"
 #include "account-core.h"
