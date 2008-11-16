@@ -37,6 +37,7 @@
 #include "toolbox.h"
 #include "toolbox-internal.h"
 
+#undef GTK_DISABLE_DEPRECATED
 #include <gnome.h>
 
 void

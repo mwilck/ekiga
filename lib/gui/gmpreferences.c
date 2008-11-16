@@ -41,6 +41,8 @@
 #include "gmconfwidgets.h"
 
 #include <string.h>
+#include <libintl.h>
+#include <gdk/gdkcolor.h>
 
 enum {
   COLUMN_STRING_RAW = 0, /* must be zero because it's used in gmconfwidgets */
