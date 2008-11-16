@@ -56,8 +56,8 @@ gmref_dec (GmRefCounted* obj)
   if (obj != 0) {
 
     obj->refcount--;
-    if (obj->refcount <= 0)
-      delete obj;
+    //if (obj->refcount <= 0)
+    //  delete obj;
   }
 }
 
