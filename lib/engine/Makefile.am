@@ -29,6 +29,7 @@ INCLUDES = 								\
 	-I$(top_srcdir)/lib/engine/components/avahi-publisher		\
 	-I$(top_srcdir)/lib/engine/components/gstreamer			\
 	-I$(top_srcdir)/lib/engine/components/kde			\
+	-I$(top_srcdir)/lib/engine/components/opal	                \
 	-I$(top_srcdir)/lib/engine/components/resource-list		\
 	-I$(top_srcdir)/lib/engine/components/xcap
 
@@ -87,6 +88,7 @@ libekiga_engine_la_LIBADD = \
 	$(top_builddir)/lib/engine/audiooutput/skel/libgmaudiooutput.la					\
 	$(top_builddir)/lib/engine/hal/skel/libgmhal.la							\
 	$(top_builddir)/lib/engine/components/gmconf-personal-details/libgmconfpersonaldetails.la	\
+	$(top_builddir)/lib/engine/components/opal/libopal.la                                           \
 	$(AM_LIBS)
 
 # Default Input Devices

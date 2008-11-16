@@ -47,6 +47,19 @@
 #include "sip-endpoint.h"
 #include "h323-endpoint.h"
 
+#define AUDIO_DEVICES_KEY "/apps/" PACKAGE_NAME "/devices/audio/"
+#define VIDEO_DEVICES_KEY "/apps/" PACKAGE_NAME "/devices/video/"
+#define PERSONAL_DATA_KEY "/apps/" PACKAGE_NAME "/general/personal_data/"
+#define CALL_OPTIONS_KEY "/apps/" PACKAGE_NAME "/general/call_options/"
+#define NAT_KEY "/apps/" PACKAGE_NAME "/general/nat/"
+#define PROTOCOLS_KEY "/apps/" PACKAGE_NAME "/protocols/"
+#define H323_KEY "/apps/" PACKAGE_NAME "/protocols/h323/"
+#define SIP_KEY "/apps/" PACKAGE_NAME "/protocols/sip/"
+#define PORTS_KEY "/apps/" PACKAGE_NAME "/protocols/ports/"
+#define CALL_FORWARDING_KEY "/apps/" PACKAGE_NAME "/protocols/call_forwarding/"
+#define AUDIO_CODECS_KEY "/apps/" PACKAGE_NAME "/codecs/audio/"
+#define VIDEO_CODECS_KEY  "/apps/" PACKAGE_NAME "/codecs/video/"
+
 using namespace Opal;
 
 

@@ -50,10 +50,12 @@
 
 #ifdef HAVE_SIP
 #include "sip-endpoint.h"
+#define SIP_KEY "/apps/" PACKAGE_NAME "/protocols/sip/"
 #endif
 
 #ifdef HAVE_H323
 #include "h323-endpoint.h"
+#define H323_KEY "/apps/" PACKAGE_NAME "/protocols/h323/"
 #endif
 
 

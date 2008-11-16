@@ -19,6 +19,7 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/engine/hal/skel		\
 	-I$(top_srcdir)/lib/engine/framework		\
 	-I$(top_srcdir)/lib/engine/gui/gtk-core		\
+	-I$(top_srcdir)/lib/engine/components/opal	\
 	-I$(top_srcdir)/src				\
 	-I$(top_srcdir)/src/clients/			\
 	-I$(top_srcdir)/src/components/			\
@@ -93,39 +94,7 @@ ekiga_SOURCES +=			\
 # Endpoints 
 ekiga_SOURCES +=				\
 	ekiga.h			                \
-	ekiga.cpp			        \
-	endpoints/opal-call-manager.h		\
-	endpoints/opal-call-manager.cpp		\
-	endpoints/pcss-endpoint.h		\
-	endpoints/pcss-endpoint.cpp		\
-	endpoints/opal-account.h		\
-	endpoints/opal-account.cpp		\
-	endpoints/opal-bank.h			\
-	endpoints/opal-bank.cpp			\
-	endpoints/opal-call.h			\
-	endpoints/opal-call.cpp			\
-	endpoints/opal-codec-description.h	\
-	endpoints/opal-codec-description.cpp	\
-	endpoints/opal-gmconf-bridge.h		\
-	endpoints/opal-gmconf-bridge.cpp	\
-	endpoints/opal-main.h			\
-	endpoints/opal-main.cpp
-
-if HAVE_H323
-ekiga_SOURCES +=		\
-	endpoints/h323-endpoint.h		\
-	endpoints/h323-endpoint.cpp
-endif
-
-if HAVE_SIP
-ekiga_SOURCES +=		\
-	endpoints/sip-chat-simple.h		\
-	endpoints/sip-chat-simple.cpp		\
-	endpoints/sip-dialect.h			\
-	endpoints/sip-dialect.cpp		\
-	endpoints/sip-endpoint.h		\
-	endpoints/sip-endpoint.cpp
-endif
+	ekiga.cpp
 
 if HAVE_DBUS 
 ekiga_SOURCES +=		\

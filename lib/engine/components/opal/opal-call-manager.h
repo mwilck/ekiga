@@ -50,8 +50,6 @@
 #include <h323/h323.h>
 #include <sip/sip.h>
 
-#include "common.h"
-
 #include "gmconf-bridge.h"
 #include "runtime.h"
 #include "contact-core.h"

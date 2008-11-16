@@ -39,10 +39,11 @@
 #ifndef _PCSS_ENDPOINT_H_
 #define _PCSS_ENDPOINT_H_
 
-#include "common.h"
-
 #include "services.h"
 #include "runtime.h"
+
+#include <opal/opal.h>
+#include <opal/pcss.h>
 
 namespace Opal {
   class CallManager;

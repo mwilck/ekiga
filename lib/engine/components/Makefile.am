@@ -14,9 +14,10 @@ if HAVE_XCAP
 XCAP_DIRS = xcap resource-list
 endif
 
-SUBDIRS = \
+SUBDIRS =                       \
 	gmconf-personal-details \
-	$(AVAHI_DIR) \
-	$(GSTREAMER_DIR) \
-	$(KDE_DIR) \
+        opal                    \
+	$(AVAHI_DIR)            \
+	$(GSTREAMER_DIR)        \
+	$(KDE_DIR)              \
 	$(XCAP_DIRS)
