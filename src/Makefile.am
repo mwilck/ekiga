@@ -92,8 +92,8 @@ ekiga_SOURCES +=			\
 
 # Endpoints 
 ekiga_SOURCES +=				\
-	endpoints/ekiga.h			\
-	endpoints/ekiga.cpp			\
+	ekiga.h			                \
+	ekiga.cpp			        \
 	endpoints/opal-call-manager.h		\
 	endpoints/opal-call-manager.cpp		\
 	endpoints/pcss-endpoint.h		\
