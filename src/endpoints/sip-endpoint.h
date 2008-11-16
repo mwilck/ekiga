@@ -44,14 +44,18 @@
 
 #include "common.h"
 
-#include "manager.h"
 #include "presence-core.h"
 #include "call-manager.h"
 #include "call-protocol-manager.h"
 #include "account-core.h"
 #include "opal-account.h"
 #include "sip-dialect.h"
+#include "call-core.h"
+#include "contact-core.h"
+#include "runtime.h"
+#include "services.h"
 
+#include "opal-call-manager.h"
 
 PDICTIONARY (msgDict, PString, PString);
 

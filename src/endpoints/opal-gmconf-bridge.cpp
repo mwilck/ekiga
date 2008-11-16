@@ -38,9 +38,10 @@
 #include <sigc++/sigc++.h>
 
 #include "gmconf.h"
-#include "opal-gmconf-bridge.h"
 
-#include "manager.h"
+#include "opal-gmconf-bridge.h"
+#include "opal-call-manager.h"
+
 #include "sip-endpoint.h"
 #include "h323-endpoint.h"
 

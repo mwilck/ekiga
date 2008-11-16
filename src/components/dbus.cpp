@@ -49,7 +49,6 @@
 #include "callbacks.h"
 #include "misc.h"
 #include "accounts.h"
-#include "manager.h"
 
 #include "call-core.h"
 

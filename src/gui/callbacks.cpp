@@ -40,9 +40,10 @@
 #include "config.h"
 
 #include "callbacks.h"
-#include "ekiga.h"
 #include "main.h"
 #include "misc.h"
+
+#include "ekiga.h"
 
 #include "gmentrydialog.h"
 #include "gmconf.h"

@@ -94,10 +94,10 @@ ekiga_SOURCES +=			\
 ekiga_SOURCES +=				\
 	endpoints/ekiga.h			\
 	endpoints/ekiga.cpp			\
-	endpoints/manager.h			\
-	endpoints/manager.cpp			\
-	endpoints/pcss.h			\
-	endpoints/pcss.cpp			\
+	endpoints/opal-call-manager.h		\
+	endpoints/opal-call-manager.cpp		\
+	endpoints/pcss-endpoint.h		\
+	endpoints/pcss-endpoint.cpp		\
 	endpoints/opal-account.h		\
 	endpoints/opal-account.cpp		\
 	endpoints/opal-bank.h			\

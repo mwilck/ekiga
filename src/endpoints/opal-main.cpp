@@ -44,9 +44,7 @@
 #include "opal-gmconf-bridge.h"
 #include "opal-account.h"
 #include "opal-bank.h"
-
-#include "manager.h"
-#include "ekiga.h"
+#include "opal-call-manager.h"
 
 #ifdef HAVE_SIP
 #include "sip-endpoint.h"

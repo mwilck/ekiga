@@ -42,7 +42,6 @@
 #include "config.h"
 
 #include "common.h"
-#include "manager.h"
 
 #include "services.h"
 #include "runtime-glib.h"

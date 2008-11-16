@@ -39,7 +39,6 @@
 #define _STATUSICON_H_
 
 #include "common.h"
-#include "manager.h"
 #include "services.h"
 
 

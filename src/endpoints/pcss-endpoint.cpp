@@ -38,8 +38,8 @@
 
 #include "common.h"
 
-#include "pcss.h"
-#include "manager.h"
+#include "pcss-endpoint.h"
+#include "opal-call-manager.h"
 
 #include "call.h"
 

@@ -49,11 +49,6 @@
 #include "main.h"
 #include "preferences.h"
 
-#include "manager.h"
-#include "sip-endpoint.h"
-#include "h323-endpoint.h"
-#include "ekiga.h"
-
 #include "gmconf.h"
 #include "gmdialog.h"
 

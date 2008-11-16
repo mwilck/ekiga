@@ -45,10 +45,6 @@
 
 #include "conf.h"
 
-#include "h323-endpoint.h"
-#include "sip-endpoint.h"
-#include "manager.h"
-
 #include "ekiga.h"
 #include "preferences.h"
 #include "assistant.h"

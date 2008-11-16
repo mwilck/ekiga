@@ -39,9 +39,9 @@
 
 #include "config.h"
 
-#include "manager.h"
+#include "opal-call-manager.h"
 
-#include "pcss.h"
+#include "pcss-endpoint.h"
 
 #include "call-core.h"
 #include "opal-call.h"
