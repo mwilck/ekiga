@@ -1079,7 +1079,8 @@ Opal::Sip::EndPoint::OnPresenceInfoReceived (const PString & user,
   SIPURL sip_uri = SIPURL (user);
   sip_uri.Sanitise (SIPURL::ExternalURI);
   std::string _uri = sip_uri.AsString ();
-  std::string old_presence = uri_presences[_uri];
+  std::string old_presence = uri_presences[_uri].first;
+  std::string old_status = uri_presences[_uri].second;
 
   // If first notification, and no information, then we are offline
   if (presence == "unknown" && old_presence.empty ())
@@ -1089,8 +1090,8 @@ Opal::Sip::EndPoint::OnPresenceInfoReceived (const PString & user,
   // If presence is unknown (notification with empty body), and it is not the 
   // first notification, and we can conclude it is a ping back from the server 
   // to indicate the presence status did not change, hence we do nothing.
-  if (presence != "unknown" && old_presence != presence) {
-    uri_presences[_uri] = presence;
+  if (presence != "unknown" && (old_presence != presence || old_status != status)) {
+    uri_presences[_uri] = std::pair<std::string, std::string> (presence, status);
     runtime->run_in_main (sigc::bind (sigc::ptr_fun (presence_status_in_main), this, _uri, presence, status));
   }
 }
