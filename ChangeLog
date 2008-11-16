@@ -1,5 +1,12 @@
 2008-11-15  Damien Sandras  <dsandras@gnome.org>
 
+        * src/endpoints/sip-endpoint.cpp:
+        * src/endpoints/sip-endpoint.h:
+        Fixed bug in previous commit. The presence information was not modified if
+        the presence itself remained the same.
+
+2008-11-15  Damien Sandras  <dsandras@gnome.org>
+
          * src/endpoints/sip-endpoint.cpp:
          * src/endpoints/sip-endpoint.h:
          Fixed various problems with the initial notifications and empty ping back
