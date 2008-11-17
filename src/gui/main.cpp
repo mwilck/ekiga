@@ -1705,8 +1705,7 @@ gm_mw_init_status_toolbar (GtkWidget *main_window)
   gtk_toolbar_set_show_arrow (GTK_TOOLBAR (toolbar), FALSE);
 
   item = gtk_tool_item_new ();
-  mw->status_option_menu = status_menu_new (); 
-  mw->priv->status_option_menu = status_menu_new (*mw->priv->core); 
+  mw->status_option_menu = status_menu_new (*mw->core); 
   status_menu_set_parent_window (STATUS_MENU (mw->status_option_menu), 
                                  GTK_WINDOW (main_window));
   gtk_container_add (GTK_CONTAINER (item), mw->status_option_menu);
