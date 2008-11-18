@@ -70,13 +70,15 @@ class gmref_ptr
 {
 public:
 
-  explicit gmref_ptr (T* obj_);
-
-  gmref_ptr (const gmref_ptr<T>& ptr);
-
-  template<typename Tprim> gmref_ptr (const gmref_ptr<Tprim>& ptr);
+  gmref_ptr ();
 
   ~gmref_ptr ();
+
+  explicit gmref_ptr (T* obj_);
+
+  gmref_ptr (const gmref_ptr& ptr);
+
+  template<typename Tprim> gmref_ptr (const gmref_ptr<Tprim>& ptr);
 
   gmref_ptr& operator= (const gmref_ptr& other);
 
@@ -84,44 +86,47 @@ public:
 
   T& operator* () const;
 
+  T* get () const;
+
+  void reset ();
+
   operator bool () const;
-
-  bool operator==(const gmref_ptr& other) const;
-
-  bool operator!=(const gmref_ptr& other) const;
-
-  bool operator<(const gmref_ptr& other) const;
 
 private:
 
   template<typename Tprim> friend class gmref_ptr;
-  template<typename Tprim> friend void gmref_inc (gmref_ptr<Tprim> ptr);
-  template<typename Tprim> friend void gmref_dec (gmref_ptr<Tprim> ptr);
-
-  void reset ();
 
   T* obj;
 };
 
-/* extended api */
+template<typename T> bool operator==(const gmref_ptr<T>& a,
+				     const gmref_ptr<T>& b);
 
-template<typename T>
-void gmref_inc (gmref_ptr<T> ptr)
-{
-  gmref_inc (ptr.obj);
-}
+template<typename T> bool operator!=(const gmref_ptr<T>& a,
+				     const gmref_ptr<T>& b);
 
-template<typename T>
-void gmref_dec (gmref_ptr<T> ptr)
-{
-  gmref_dec (ptr.obj);
-}
+template<typename T> bool operator<(const gmref_ptr<T>& a,
+				    const gmref_ptr<T>& b);
 
+
+template<typename T> void gmref_inc (const gmref_ptr<T>& obj);
+template<typename T> void gmref_dec (const gmref_ptr<T>& obj);
 
 /* implementation of the templates */
 
 template<typename T>
-gmref_ptr<T>::gmref_ptr (T* obj_ = 0): obj(obj_)
+gmref_ptr<T>::gmref_ptr (): obj(0)
+{
+}
+
+template<typename T>
+gmref_ptr<T>::~gmref_ptr ()
+{
+  reset ();
+}
+
+template<typename T>
+gmref_ptr<T>::gmref_ptr (T* obj_): obj(obj_)
 {
   gmref_inc (obj);
 }
@@ -137,12 +142,6 @@ template<typename Tprim>
 gmref_ptr<T>::gmref_ptr (const gmref_ptr<Tprim>& ptr): obj(dynamic_cast<T*>(ptr.obj))
 {
   gmref_inc (obj);
-}
-
-template<typename T>
-gmref_ptr<T>::~gmref_ptr ()
-{
-  reset ();
 }
 
 template<typename T>
@@ -174,30 +173,16 @@ gmref_ptr<T>::operator* () const
 }
 
 template<typename T>
+T*
+gmref_ptr<T>::get () const
+{
+  return obj;
+}
+
+template<typename T>
 gmref_ptr<T>::operator bool () const
 {
   return obj != 0;
-}
-
-template<typename T>
-bool
-gmref_ptr<T>::operator==(const gmref_ptr<T>& other) const
-{
-  return obj == other.obj;
-}
-
-template<typename T>
-bool
-gmref_ptr<T>::operator!=(const gmref_ptr<T>& other) const
-{
-  return !operator==(other);
-}
-
-template<typename T>
-bool
-gmref_ptr<T>::operator<(const gmref_ptr<T>& other) const
-{
-  return obj < other.obj;
 }
 
 template<typename T>
@@ -206,6 +191,41 @@ gmref_ptr<T>::reset ()
 {
   gmref_dec (obj);
   obj = 0;
+}
+
+template<typename T>
+bool
+operator==(const gmref_ptr<T>& a,
+	   const gmref_ptr<T>& b)
+{
+  return a.get () == b.get ();
+}
+
+template<typename T>
+bool operator!=(const gmref_ptr<T>& a,
+		const gmref_ptr<T>& b)
+{
+  return !operator==(a, b);
+}
+
+template<typename T>
+bool
+operator<(const gmref_ptr<T>& a,
+	  const gmref_ptr<T>& b)
+{
+  return a.get () < b.get ();
+}
+
+template<typename T>
+void gmref_inc (const gmref_ptr<T>& obj)
+{
+  gmref_inc (obj.get ());
+}
+
+template<typename T>
+void gmref_dec (const gmref_ptr<T>& obj)
+{
+  gmref_dec (obj.get ());
 }
 
 #endif
