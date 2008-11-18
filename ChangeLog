@@ -1,5 +1,44 @@
 2008-11-18  Julien Puydt  <jpuydt@gnome.org>
 
+	* lib/engine/addressbook/call-history/history-book.cpp:
+	* lib/engine/addressbook/call-history/history-contact.cpp:
+	* lib/engine/addressbook/call-history/history-main.cpp:
+	* lib/engine/addressbook/call-history/history-source.cpp:
+	* lib/engine/addressbook/evolution/evolution-book.cpp:
+	* lib/engine/addressbook/evolution/evolution-contact.cpp:
+	* lib/engine/addressbook/evolution/evolution-main.cpp:
+	* lib/engine/addressbook/evolution/evolution-source.cpp:
+	* lib/engine/addressbook/ldap/ldap-book.cpp:
+	* lib/engine/addressbook/ldap/ldap-contact.cpp:
+	* lib/engine/addressbook/ldap/ldap-main.cpp:
+	* lib/engine/addressbook/ldap/ldap-source.cpp:
+	* lib/engine/chat/echo/echo-main.cpp:
+	* lib/engine/components/avahi-publisher/avahi-publisher-main.cpp:
+	* lib/engine/components/gmconf-personal-details/gmconf-personal-details-main.cpp:
+	* lib/engine/components/opal/opal-call-manager.cpp:
+	* lib/engine/components/opal/opal-main.cpp:
+	* lib/engine/components/opal/sip-chat-simple.cpp:
+	* lib/engine/engine.cpp:
+	* lib/engine/gui/gtk-core/gtk-core-main.cpp:
+	* lib/engine/gui/gtk-frontend/gtk-frontend.cpp:
+	* lib/engine/gui/gtk-frontend/presentity-view.cpp:
+	* lib/engine/gui/gtk-frontend/roster-view-gtk.cpp:
+	* lib/engine/presence/avahi/avahi-cluster.cpp:
+	* lib/engine/presence/avahi/avahi-heap.cpp:
+	* lib/engine/presence/avahi/avahi-main.cpp:
+	* lib/engine/presence/local-roster/local-cluster.cpp:
+	* lib/engine/presence/local-roster/local-heap.cpp:
+	* lib/engine/presence/local-roster/local-presentity.cpp:
+	* lib/engine/presence/local-roster/local-roster-bridge.cpp:
+	* lib/engine/presence/local-roster/local-roster-main.cpp:
+	* lib/engine/presence/skel/uri-presentity.cpp:
+	* lib/engine/protocol/skel/call-manager.cpp:
+	* lib/gmref/gmref.h:
+	* src/gui/main.cpp: Made conversions from a pointer to a gmref_ptr explicit, since
+	it is the norm...
+
+2008-11-18  Julien Puydt  <jpuydt@gnome.org>
+
 	* lib/engine/framework/reflister.h: Don't do something which emits
 	signals at shutdown : if we're closing, then nobody's listening anyway!
 
