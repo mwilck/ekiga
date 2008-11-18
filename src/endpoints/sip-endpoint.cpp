@@ -1125,7 +1125,7 @@ Opal::Sip::EndPoint::OnPresenceInfoReceived (const PString & user,
   // to indicate the presence status did not change, hence we do nothing.
   if (presence != "unknown" && (old_presence != presence || old_status != status)) {
     uri_presences[_uri] = std::pair<std::string, std::string> (presence, status);
-    runtime->run_in_main (sigc::bind (sigc::ptr_fun (presence_status_in_main), this, _uri, presence, status));
+    runtime.run_in_main (sigc::bind (sigc::ptr_fun (presence_status_in_main), this, _uri, presence, status));
   }
 }
 

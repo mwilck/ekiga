@@ -58,7 +58,9 @@
 
 struct _StatusMenuPrivate
 {
-  gmref_ptr<Ekiga::PersonalDetails> personal_details;
+  _StatusMenuPrivate (Ekiga::PersonalDetails & d) : personal_details (d) {};
+
+  Ekiga::PersonalDetails & personal_details;
   std::vector<sigc::connection> connections;
 
   GtkListStore *list_store; // List store storing the menu
@@ -276,27 +278,27 @@ status_menu_option_changed (GtkComboBox *box,
     switch (i)
       {
       case TYPE_ONLINE:
-        self->priv->personal_details->set_presence_info ("online", "");
+        self->priv->personal_details.set_presence_info ("online", "");
         break;
 
       case TYPE_AWAY:
-        self->priv->personal_details->set_presence_info ("away", "");
+        self->priv->personal_details.set_presence_info ("away", "");
         break;
 
       case TYPE_DND:
-        self->priv->personal_details->set_presence_info ("dnd", "");
+        self->priv->personal_details.set_presence_info ("dnd", "");
         break;
 
       case TYPE_CUSTOM_ONLINE:
-        self->priv->personal_details->set_presence_info ("online", status);
+        self->priv->personal_details.set_presence_info ("online", status);
         break;
 
       case TYPE_CUSTOM_AWAY:
-        self->priv->personal_details->set_presence_info ("away", status);
+        self->priv->personal_details.set_presence_info ("away", status);
         break;
 
       case TYPE_CUSTOM_DND:
-        self->priv->personal_details->set_presence_info ("dnd", status);
+        self->priv->personal_details.set_presence_info ("dnd", status);
         break;
 
       case TYPE_CUSTOM_ONLINE_NEW:
@@ -352,7 +354,7 @@ status_menu_custom_messages_changed (gpointer /*id*/,
 static void
 on_details_updated (StatusMenu *self)
 {
-  status_menu_set_option (self, self->priv->personal_details->get_presence (), self->priv->personal_details->get_status ());
+  status_menu_set_option (self, self->priv->personal_details.get_presence (), self->priv->personal_details.get_status ());
 }
 
 
@@ -442,7 +444,7 @@ status_menu_populate (StatusMenu *self,
     g_object_unref (icon);
   }
 
-  status_menu_set_option (self, self->priv->personal_details->get_presence (), self->priv->personal_details->get_status ());
+  status_menu_set_option (self, self->priv->personal_details.get_presence (), self->priv->personal_details.get_status ());
 }
 
 
@@ -646,7 +648,7 @@ status_menu_clear_status_message_dialog_run (StatusMenu *self)
 
   if (!found) {
     // Reset current config
-    self->priv->personal_details->set_presence_info ("online", "");
+    self->priv->personal_details.set_presence_info ("online", "");
   }
 
   gtk_widget_destroy (dialog);
@@ -714,7 +716,7 @@ status_menu_new_status_message_dialog_run (StatusMenu *self,
     if (strcmp (message, "")) { 
       clist = g_slist_append (clist, g_strdup (message));
       gm_conf_set_string_list (status_types_keys[option - NUM_STATUS_TYPES - 1], clist);
-      self->priv->personal_details->set_presence_info (status_types_names[option - NUM_STATUS_TYPES - 1], message);
+      self->priv->personal_details.set_presence_info (status_types_names[option - NUM_STATUS_TYPES - 1], message);
     }
     else {
       status_menu_set_option (self, presence, status);
@@ -809,15 +811,16 @@ GtkWidget *
 status_menu_new (Ekiga::ServiceCore & core)
 {
   StatusMenu *self = NULL;
+  Ekiga::PersonalDetails *details = NULL;
 
   sigc::connection conn;
   GtkCellRenderer *renderer = NULL;
   GSList *custom_status_array [NUM_STATUS_TYPES];
 
   self = (StatusMenu *) g_object_new (STATUS_MENU_TYPE, NULL);
-  self->priv = new StatusMenuPrivate ();
+  details = dynamic_cast<Ekiga::PersonalDetails*> (core.get ("personal-details"));
+  self->priv = new StatusMenuPrivate (*details);
 
-  self->priv->personal_details = core.get ("personal-details");
   self->priv->parent = NULL;
   self->priv->list_store = gtk_list_store_new (NUM_COLUMNS,
                                                GDK_TYPE_PIXBUF,
@@ -857,7 +860,7 @@ status_menu_new (Ekiga::ServiceCore & core)
                                         (GtkTreeViewRowSeparatorFunc) status_menu_row_is_separator,
                                         NULL, NULL);
   gtk_container_set_border_width (GTK_CONTAINER (self), 0);
-  status_menu_set_option (self, self->priv->personal_details->get_presence (), self->priv->personal_details->get_status ());
+  status_menu_set_option (self, self->priv->personal_details.get_presence (), self->priv->personal_details.get_status ());
 
   g_signal_connect (G_OBJECT (self), "changed",
                     G_CALLBACK (status_menu_option_changed), self);
@@ -869,7 +872,7 @@ status_menu_new (Ekiga::ServiceCore & core)
   gm_conf_notifier_add (PERSONAL_DATA_KEY "dnd_custom_status", 
                         status_menu_custom_messages_changed, self);
 
-  conn = self->priv->personal_details->updated.connect (sigc::bind (sigc::ptr_fun (on_details_updated), self)); 
+  conn = self->priv->personal_details.updated.connect (sigc::bind (sigc::ptr_fun (on_details_updated), self)); 
   self->priv->connections.push_back (conn);
 
   return GTK_WIDGET (self);
