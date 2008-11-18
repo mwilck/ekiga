@@ -173,7 +173,7 @@ void AudioInputCore::add_manager (AudioInputManager &manager)
 }
 
 
-void AudioInputCore::visit_managers (sigc::slot<bool, AudioInputManager &> visitor)
+void AudioInputCore::visit_managers (sigc::slot1<bool, AudioInputManager &> visitor)
 {
   yield = true;
   PWaitAndSignal m(core_mutex);

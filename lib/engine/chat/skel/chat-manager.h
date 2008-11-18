@@ -76,26 +76,26 @@ namespace Ekiga
        * @param: uri    : where the message could not be sent
        *         error  : a string describing the error that occured
        */
-      sigc::signal<void, const std::string, const std::string> im_failed;
+      sigc::signal2<void, const std::string, const std::string> im_failed;
 
       /** This signal is emitted when a message has been received
        * @param: display_name: the display name of the sender
        *         uri         : the uri of the sender
        *         message     : the message sent by the sender
        */
-      sigc::signal<void, const std::string, const std::string, const std::string> im_received;
+      sigc::signal3<void, const std::string, const std::string, const std::string> im_received;
 
       /** This signal is emitted when a message has been sent
        * @param: uri    : where the message has been sent
        *         message: the message that was sent
        */
-      sigc::signal<void, const std::string, const std::string> im_sent;
+      sigc::signal2<void, const std::string, const std::string> im_sent;
 
       /** This signal is emitted when a chat conversation should be initiated
        * @param: uri            : the remote party
        *         display_name   : the display name
        */
-      sigc::signal<void, const std::string, const std::string> new_chat;
+      sigc::signal2<void, const std::string, const std::string> new_chat;
     };
 
 /**

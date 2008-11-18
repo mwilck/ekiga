@@ -53,13 +53,13 @@ public:
   ~CoreImpl ();
 
   void read (gmref_ptr<XCAP::Path> path,
-	     sigc::slot<void,bool,std::string> callback);
+	     sigc::slot2<void,bool,std::string> callback);
   void write (gmref_ptr<Path>,
 	      const std::string content_type,
 	      const std::string content,
-	      sigc::slot<void,std::string> callback);
+	      sigc::slot1<void,std::string> callback);
   void erase (gmref_ptr<Path>,
-	      sigc::slot<void,std::string> callback);
+	      sigc::slot1<void,std::string> callback);
 
   /* public to be used by C callbacks */
 
@@ -103,7 +103,7 @@ struct cb_data
 {
   XCAP::CoreImpl* core;
   gmref_ptr<XCAP::Path> path;
-  sigc::slot<void,bool, std::string> callback;
+  sigc::slot2<void,bool, std::string> callback;
   bool is_read;
 };
 
@@ -187,7 +187,7 @@ XCAP::CoreImpl::clear_old_sessions ()
 
 void
 XCAP::CoreImpl::read (gmref_ptr<Path> path,
-		      sigc::slot<void, bool, std::string> callback)
+		      sigc::slot2<void, bool, std::string> callback)
 {
   SoupSession* session = NULL;
   SoupMessage* message = NULL;
@@ -217,7 +217,7 @@ void
 XCAP::CoreImpl::write (gmref_ptr<Path> path,
 		       const std::string content_type,
 		       const std::string content,
-		       sigc::slot<void,std::string> callback)
+		       sigc::slot1<void,std::string> callback)
 {
   SoupSession* session = NULL;
   SoupMessage* message = NULL;
@@ -249,7 +249,7 @@ XCAP::CoreImpl::write (gmref_ptr<Path> path,
 
 void
 XCAP::CoreImpl::erase (gmref_ptr<Path> path,
-		       sigc::slot<void,std::string> callback)
+		       sigc::slot1<void,std::string> callback)
 {
   SoupSession* session = NULL;
   SoupMessage* message = NULL;
@@ -289,7 +289,7 @@ XCAP::Core::~Core ()
 
 void
 XCAP::Core::read (gmref_ptr<XCAP::Path> path,
-		  sigc::slot<void, bool,std::string> callback)
+		  sigc::slot2<void, bool,std::string> callback)
 {
   std::cout << "XCAP trying to read " << path->to_uri () << std::endl;
   impl->read (path, callback);
@@ -299,7 +299,7 @@ void
 XCAP::Core::write (gmref_ptr<Path> path,
 		   const std::string content_type,
 		   const std::string content,
-		   sigc::slot<void,std::string> callback)
+		   sigc::slot1<void,std::string> callback)
 {
   std::cout << "XCAP trying to write"
 	    << " (" << content_type << "):"
@@ -311,7 +311,7 @@ XCAP::Core::write (gmref_ptr<Path> path,
 
 void
 XCAP::Core::erase (gmref_ptr<Path> path,
-		   sigc::slot<void,std::string> callback)
+		   sigc::slot1<void,std::string> callback)
 {
   std::cout << "XCAP trying to erase " << path->to_uri () << std::endl;
   impl->erase (path, callback);

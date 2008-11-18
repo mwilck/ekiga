@@ -47,7 +47,7 @@ Ekiga::ShortMenuBuilder::ShortMenuBuilder (MenuBuilder &builder_)
 void
 Ekiga::ShortMenuBuilder::add_action (const std::string icon,
 				     const std::string label,
-				     sigc::slot<void> callback)
+				     sigc::slot0<void> callback)
 {
   if (active)
     builder.add_action (icon, label, callback);
@@ -78,7 +78,7 @@ Ekiga::TriggerMenuBuilder::TriggerMenuBuilder ()
 void
 Ekiga::TriggerMenuBuilder::add_action (const std::string /*icon*/,
 				       const std::string /*label*/,
-				       sigc::slot<void> callback)
+				       sigc::slot0<void> callback)
 {
   if (active) {
 
@@ -108,7 +108,7 @@ public:
 
   TemporaryMenuBuilderHelperAction (const std::string icon_,
 				    const std::string label_,
-				    sigc::slot<void> callback_):
+				    sigc::slot0<void> callback_):
     icon(icon_), label(label_), callback(callback_)
   {
   }
@@ -123,7 +123,7 @@ private:
 
   std::string icon;
   std::string label;
-  sigc::slot<void> callback;
+  sigc::slot0<void> callback;
 };
 
 class TemporaryMenuBuilderHelperSeparator:
@@ -178,7 +178,7 @@ Ekiga::TemporaryMenuBuilder::~TemporaryMenuBuilder ()
 void
 Ekiga::TemporaryMenuBuilder::add_action (const std::string icon,
 					 const std::string label,
-					 sigc::slot<void> callback)
+					 sigc::slot0<void> callback)
 {
   TemporaryMenuBuilderHelperAction* helper = NULL;
 

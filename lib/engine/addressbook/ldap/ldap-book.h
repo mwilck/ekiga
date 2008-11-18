@@ -111,7 +111,7 @@ namespace OPENLDAP
 
     xmlNodePtr get_node ();
 
-    sigc::signal<void> trigger_saving;
+    sigc::signal0<void> trigger_saving;
 
     /* public for access from C */
     void on_sasl_form_submitted (bool, Ekiga::Form &);

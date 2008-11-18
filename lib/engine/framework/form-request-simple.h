@@ -59,7 +59,7 @@ namespace Ekiga
      * the request was cancelled ;
      * - a form, which contains the submitted answer (or is empty otherwise)
      */
-    FormRequestSimple (sigc::slot<void, bool, Form&> callback_);
+    FormRequestSimple (sigc::slot2<void, bool, Form&> callback_);
 
     ~FormRequestSimple ();
 
@@ -70,7 +70,7 @@ namespace Ekiga
   private:
 
     bool answered;
-    sigc::slot<void,bool,Form&> callback;
+    sigc::slot2<void,bool,Form&> callback;
 
   };
 

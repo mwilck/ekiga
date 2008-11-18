@@ -78,7 +78,7 @@ namespace Ekiga
 
     void dump (std::ostream &stream) const;
 
-    sigc::signal<void, gmref_ptr<Service> > service_added;
+    sigc::signal1<void, gmref_ptr<Service> > service_added;
 
   private:
 

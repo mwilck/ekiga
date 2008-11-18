@@ -87,7 +87,7 @@ namespace History
 
     void clear ();
 
-    sigc::signal<void> cleared;
+    sigc::signal0<void> cleared;
 
   private:
 

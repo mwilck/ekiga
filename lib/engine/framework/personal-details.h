@@ -65,7 +65,7 @@ namespace Ekiga
     virtual void set_presence_info (const std::string presence,
                                     const std::string status) = 0;
 
-    sigc::signal<void> updated;
+    sigc::signal0<void> updated;
   };
 };
 

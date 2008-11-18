@@ -70,13 +70,13 @@ namespace RL
 		      const std::string status);
 
     /* make the world know what we have */
-    bool visit_presentities (sigc::slot<bool, Ekiga::Presentity&> visitor);
+    bool visit_presentities (sigc::slot1<bool, Ekiga::Presentity&> visitor);
 
     void publish () const;
 
-    sigc::signal<void, gmref_ptr<Entry> > entry_added;
-    sigc::signal<void, gmref_ptr<Entry> > entry_updated;
-    sigc::signal<void, gmref_ptr<Entry> > entry_removed;
+    sigc::signal1<void, gmref_ptr<Entry> > entry_added;
+    sigc::signal1<void, gmref_ptr<Entry> > entry_updated;
+    sigc::signal1<void, gmref_ptr<Entry> > entry_removed;
 
     /* this method orders the list to get rid of all its children */
     void flush ();

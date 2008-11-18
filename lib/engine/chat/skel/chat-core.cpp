@@ -50,7 +50,7 @@ Ekiga::ChatCore::add_dialect (Dialect& dialect)
 }
 
 void
-Ekiga::ChatCore::visit_dialects (sigc::slot<bool, Dialect&> visitor)
+Ekiga::ChatCore::visit_dialects (sigc::slot1<bool, Dialect&> visitor)
 {
   bool go_on = true;
 

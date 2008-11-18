@@ -85,7 +85,7 @@ Ekiga::ContactCore::add_source (gmref_ptr<Source> source)
 }
 
 void
-Ekiga::ContactCore::visit_sources (sigc::slot<bool, gmref_ptr<Source> > visitor)
+Ekiga::ContactCore::visit_sources (sigc::slot1<bool, gmref_ptr<Source> > visitor)
 {
   bool go_on = true;
 

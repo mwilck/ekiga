@@ -96,7 +96,7 @@ namespace Ekiga
     /** This signal is emitted when a Ekiga::CallProtocolManager has been
      * added to the CallManager.
      */
-    sigc::signal<void, gmref_ptr<CallProtocolManager> > manager_added;
+    sigc::signal1<void, gmref_ptr<CallProtocolManager> > manager_added;
 
 
     /*                 
@@ -199,7 +199,7 @@ namespace Ekiga
     /*
      * MISC
      */
-    sigc::signal<void> ready;
+    sigc::signal0<void> ready;
 
     private:
     std::set<gmref_ptr<CallProtocolManager> > managers;

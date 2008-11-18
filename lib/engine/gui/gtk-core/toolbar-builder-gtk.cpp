@@ -41,10 +41,10 @@
 
 struct Action
 {
-  Action (sigc::slot<void> _callback): callback (_callback)
+  Action (sigc::slot0<void> _callback): callback (_callback)
   {}
 
-  sigc::slot<void> callback;
+  sigc::slot0<void> callback;
 };
 
 static void
@@ -71,7 +71,7 @@ on_item_clicked (GtkToolButton *button,
 void
 ToolbarBuilderGtk::add_action (const std::string icon,
 			       const std::string label,
-			       sigc::slot<void> callback)
+			       sigc::slot0<void> callback)
 {
   Action *action = new Action (callback);
   GtkToolItem *item = NULL;

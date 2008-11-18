@@ -73,7 +73,7 @@ void HalCore::add_manager (HalManager &manager)
 }
 
 
-void HalCore::visit_managers (sigc::slot<bool, HalManager &> visitor)
+void HalCore::visit_managers (sigc::slot1<bool, HalManager &> visitor)
 {
   bool go_on = true;
 

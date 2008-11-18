@@ -49,7 +49,7 @@ namespace SIP
     SimpleChat (Ekiga::ServiceCore& core,
 		std::string name,
 		std::string uri,
-		sigc::slot<bool, std::string> sender_);
+		sigc::slot1<bool, std::string> sender_);
 
     ~SimpleChat ();
 
@@ -74,7 +74,7 @@ namespace SIP
   private:
 
     Ekiga::ServiceCore& core;
-    sigc::slot<bool, std::string> sender;
+    sigc::slot1<bool, std::string> sender;
     std::list<Ekiga::ChatObserver*> observers;
     gmref_ptr<Ekiga::Presentity> presentity;
     std::string uri;

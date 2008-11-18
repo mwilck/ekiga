@@ -109,31 +109,31 @@ namespace Ekiga
      * @param The callback (the return value means "go on" and allows
      *  stopping the visit)
      */
-    void visit_banks (sigc::slot<bool, Bank &> visitor);
+    void visit_banks (sigc::slot1<bool, Bank &> visitor);
 
 
     /** This signal is emitted when a bank has been added to the core
      */
-    sigc::signal<void, Bank &> bank_added;
+    sigc::signal1<void, Bank &> bank_added;
 
     /** This signal is emitted when a bank has been removed from the core
      */
-    sigc::signal<void, Bank &> bank_removed;
+    sigc::signal1<void, Bank &> bank_removed;
 
     /** This signal is emitted when a account has been added to one of
      * the banks
      */
-    sigc::signal<void, Account &> account_added;
+    sigc::signal1<void, Account &> account_added;
 
     /** This signal is emitted when a account has been removed from one of
      * the banks
      */
-    sigc::signal<void, Account &> account_removed;
+    sigc::signal1<void, Account &> account_removed;
 
     /** This signal is emitted when a account has been updated in one of
      * the banks
      */
-    sigc::signal<void, Account &> account_updated;
+    sigc::signal1<void, Account &> account_updated;
 
   private:
 
@@ -165,7 +165,7 @@ namespace Ekiga
     /** This signal is emitted when the AccountCore Service has been
      * updated.
      */
-    sigc::signal<void> updated;
+    sigc::signal0<void> updated;
 
 
     /** This chain allows the AccountCore to present forms to the user
@@ -178,14 +178,14 @@ namespace Ekiga
      *         state is the state
      *         info contains information about the registration status
      */
-    sigc::signal<void, const Ekiga::Account &, Ekiga::AccountCore::RegistrationState, std::string> registration_event;
+    sigc::signal3<void, const Ekiga::Account &, Ekiga::AccountCore::RegistrationState, std::string> registration_event;
 
 
     /** This signal is emitted when there is a new message waiting event
      * @param: account is the account 
      *         info contains information about the indication 
      */
-    sigc::signal<void, const Ekiga::Account &, std::string> mwi_event;
+    sigc::signal2<void, const Ekiga::Account &, std::string> mwi_event;
 
 
     /*** Account Subscriber API ***/

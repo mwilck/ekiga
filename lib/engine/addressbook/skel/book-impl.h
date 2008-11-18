@@ -94,7 +94,7 @@ namespace Ekiga
      * @param The callback (the return value means "go on" and allows
      *  stopping the visit)
      */
-    void visit_contacts (sigc::slot<bool, gmref_ptr<Contact> > visitor);
+    void visit_contacts (sigc::slot1<bool, gmref_ptr<Contact> > visitor);
 
   protected:
 
@@ -160,7 +160,7 @@ Ekiga::BookImpl<ContactType>::~BookImpl ()
 
 template<typename ContactType>
 void
-Ekiga::BookImpl<ContactType>::visit_contacts (sigc::slot<bool, gmref_ptr<Contact> > visitor)
+Ekiga::BookImpl<ContactType>::visit_contacts (sigc::slot1<bool, gmref_ptr<Contact> > visitor)
 {
   RefLister<ContactType>::visit_objects (visitor);
 }

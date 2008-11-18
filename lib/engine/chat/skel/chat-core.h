@@ -95,12 +95,12 @@ namespace Ekiga
      * @param The callback (the return value means "go on" and allows stopping
      * the visit)
      */
-    void visit_dialects (sigc::slot<bool, Dialect&> visitor);
+    void visit_dialects (sigc::slot1<bool, Dialect&> visitor);
 
     /** This signal is emitted when an Ekiga::Dialect has been added to
      * the ChatCore service.
      */
-    sigc::signal<void, Dialect&> dialect_added;
+    sigc::signal1<void, Dialect&> dialect_added;
 
   private:
 
@@ -116,7 +116,7 @@ namespace Ekiga
 
     /** This signal is emitted when the ChatCore service has been updated.
      */
-    sigc::signal<void> updated;
+    sigc::signal0<void> updated;
 
     /** This chain allows the ChatCore to present forms to the user
      */

@@ -62,7 +62,7 @@ namespace XCAP
      * error message.
      */
     void read (gmref_ptr<Path>,
-	       sigc::slot<void,bool,std::string> callback);
+	       sigc::slot2<void,bool,std::string> callback);
 
     /* the callback gets only a string :
      * - if the string is empty, all went well ;
@@ -71,14 +71,14 @@ namespace XCAP
     void write (gmref_ptr<Path>,
 		const std::string content_type,
 		const std::string content,
-		sigc::slot<void,std::string> callback);
+		sigc::slot1<void,std::string> callback);
 
     /* the callback gets only a string :
      * - if the string is empty, all went well ;
      * - if it's not, then it's the error message.
      */
     void erase (gmref_ptr<Path>,
-		sigc::slot<void,std::string> callback);
+		sigc::slot1<void,std::string> callback);
 
     /* implementation of the Ekiga::Service api */
 

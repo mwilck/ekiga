@@ -95,7 +95,7 @@ void VideoOutputCore::add_manager (VideoOutputManager &manager)
 }
 
 
-void VideoOutputCore::visit_managers (sigc::slot<bool, VideoOutputManager &> visitor)
+void VideoOutputCore::visit_managers (sigc::slot1<bool, VideoOutputManager &> visitor)
 {
   bool go_on = true;
 

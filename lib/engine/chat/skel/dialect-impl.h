@@ -61,13 +61,13 @@ namespace Ekiga
      * @param: The callback (the return value means "go on" and allows
      * stopping the visit)
      */
-    void visit_simple_chats (sigc::slot<bool, SimpleChat&> visitor);
+    void visit_simple_chats (sigc::slot1<bool, SimpleChat&> visitor);
 
     /** Triggers a callback for all multiple chats of the Dialect.
      * @param: The callback (the return value means "go on" and allows
      * stopping the visit)
      */
-    void visit_multiple_chats (sigc::slot<bool, MultipleChat&> visitor);
+    void visit_multiple_chats (sigc::slot1<bool, MultipleChat&> visitor);
 
   protected:
 
@@ -129,14 +129,14 @@ Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::~DialectImpl ()
 
 template<typename SimpleChatType, typename MultipleChatType>
 void
-Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::visit_simple_chats (sigc::slot<bool, SimpleChat&> visitor)
+Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::visit_simple_chats (sigc::slot1<bool, SimpleChat&> visitor)
 {
   simple_chats.visit_objects (visitor);
 }
 
 template<typename SimpleChatType, typename MultipleChatType>
 void
-Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::visit_multiple_chats (sigc::slot<bool, MultipleChat&> visitor)
+Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::visit_multiple_chats (sigc::slot1<bool, MultipleChat&> visitor)
 {
   multiple_chats.visit_objects (visitor);
 }

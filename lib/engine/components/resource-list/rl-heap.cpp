@@ -183,7 +183,7 @@ RL::Heap::get_name () const
 }
 
 void
-RL::Heap::visit_presentities (sigc::slot<bool, Ekiga::Presentity&> visitor)
+RL::Heap::visit_presentities (sigc::slot1<bool, Ekiga::Presentity&> visitor)
 {
   bool go_on = true;
 

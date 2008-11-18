@@ -37,7 +37,7 @@
 
 #include "form-request-simple.h"
 
-Ekiga::FormRequestSimple::FormRequestSimple (sigc::slot<void, bool, Form&> callback_): callback(callback_)
+Ekiga::FormRequestSimple::FormRequestSimple (sigc::slot2<void, bool, Form&> callback_): callback(callback_)
 {
   // nothing
 }

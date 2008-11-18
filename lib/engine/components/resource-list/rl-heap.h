@@ -73,7 +73,7 @@ namespace RL {
 
     const std::string get_name () const;
 
-    void visit_presentities (sigc::slot<bool, Ekiga::Presentity&> visitor);
+    void visit_presentities (sigc::slot1<bool, Ekiga::Presentity&> visitor);
 
     bool populate_menu (Ekiga::MenuBuilder& builder);
 
@@ -88,7 +88,7 @@ namespace RL {
     void push_status (const std::string uri,
 		      const std::string status);
 
-    sigc::signal<void> trigger_saving;
+    sigc::signal0<void> trigger_saving;
 
   private:
 

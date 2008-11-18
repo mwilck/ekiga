@@ -108,43 +108,43 @@ namespace Ekiga
      * @param The callback (the return value means "go on" and allows
      *  stopping the visit)
      */
-    void visit_sources (sigc::slot<bool, gmref_ptr<Source> > visitor);
+    void visit_sources (sigc::slot1<bool, gmref_ptr<Source> > visitor);
 
 
     /** This signal is emitted when a Ekiga::Source has been
      * added to the ContactCore Service.
      */
-    sigc::signal<void, gmref_ptr<Source> > source_added;
+    sigc::signal1<void, gmref_ptr<Source> > source_added;
 
     /** This signal is emitted when a book has been added to one of
      * the sources
      */
-    sigc::signal<void, gmref_ptr<Source>, gmref_ptr<Book> > book_added;
+    sigc::signal2<void, gmref_ptr<Source>, gmref_ptr<Book> > book_added;
 
     /** This signal is emitted when a book has been removed from one of
      * the sources
      */
-    sigc::signal<void, gmref_ptr<Source>, gmref_ptr<Book> > book_removed;
+    sigc::signal2<void, gmref_ptr<Source>, gmref_ptr<Book> > book_removed;
 
     /** This signal is emitted when a book has been updated in one of
      * the sources
      */
-    sigc::signal<void, gmref_ptr<Source>, gmref_ptr<Book> > book_updated;
+    sigc::signal2<void, gmref_ptr<Source>, gmref_ptr<Book> > book_updated;
 
     /** This signal is emitted when a contact has been added to one of
      * the book of one of the sources
      */
-    sigc::signal<void, gmref_ptr<Source>, gmref_ptr<Book>, gmref_ptr<Contact> > contact_added;
+    sigc::signal3<void, gmref_ptr<Source>, gmref_ptr<Book>, gmref_ptr<Contact> > contact_added;
 
     /** This signal is emitted when a contact has been removed from one of
      * the book of one of the sources
      */
-    sigc::signal<void, gmref_ptr<Source>, gmref_ptr<Book>, gmref_ptr<Contact> > contact_removed;
+    sigc::signal3<void, gmref_ptr<Source>, gmref_ptr<Book>, gmref_ptr<Contact> > contact_removed;
 
     /** This signal is emitted when a contact has been updated in one of
      * the book of one of the sources
      */
-    sigc::signal<void, gmref_ptr<Source>, gmref_ptr<Book>, gmref_ptr<Contact> > contact_updated;
+    sigc::signal3<void, gmref_ptr<Source>, gmref_ptr<Book>, gmref_ptr<Contact> > contact_updated;
 
   private:
 
@@ -182,7 +182,7 @@ namespace Ekiga
     /** This signal is emitted when the ContactCore Service has been
      * updated.
      */
-    sigc::signal<void> updated;
+    sigc::signal0<void> updated;
 
 
     /** This chain allows the ContactCore to present forms to the user

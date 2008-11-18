@@ -89,7 +89,7 @@ namespace Ekiga
      * @param The callback (the return value means "go on" and allows
      *  stopping the visit)
      */
-    void visit_objects (sigc::slot<bool, ObjectType &> visitor);
+    void visit_objects (sigc::slot1<bool, ObjectType &> visitor);
 
     /** Returns a const iterator to the first object of the collection.
      */
@@ -133,9 +133,9 @@ namespace Ekiga
     /** Signals emitted by this object
      *
      */
-    sigc::signal<void, ObjectType &> object_added;
-    sigc::signal<void, ObjectType &> object_removed;
-    sigc::signal<void, ObjectType &> object_updated;
+    sigc::signal1<void, ObjectType &> object_added;
+    sigc::signal1<void, ObjectType &> object_removed;
+    sigc::signal1<void, ObjectType &> object_updated;
 
   private:
 
@@ -199,7 +199,7 @@ Ekiga::Lister<ObjectType>::~Lister ()
 
 template<typename ObjectType>
 void
-Ekiga::Lister<ObjectType>::visit_objects (sigc::slot<bool, ObjectType &> visitor)
+Ekiga::Lister<ObjectType>::visit_objects (sigc::slot1<bool, ObjectType &> visitor)
 {
   bool go_on = true;
   for (unsigned int ii = 0;

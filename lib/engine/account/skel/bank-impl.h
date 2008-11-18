@@ -99,7 +99,7 @@ namespace Ekiga
      * @param The callback (the return value means "go on" and allows
      *  stopping the visit)
      */
-    void visit_accounts (sigc::slot<bool, Account &> visitor);
+    void visit_accounts (sigc::slot1<bool, Account &> visitor);
 
     /** Find the account with the given address of record in the Bank
      * @param aor is the address of record of the Account or the host to search 
@@ -222,7 +222,7 @@ Ekiga::BankImpl<T>::save () const
 
 template<typename T>
 void
-Ekiga::BankImpl<T>::visit_accounts (sigc::slot<bool, Account &> visitor)
+Ekiga::BankImpl<T>::visit_accounts (sigc::slot1<bool, Account &> visitor)
 {
   Lister<T>::visit_objects (visitor);
 }

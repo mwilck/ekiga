@@ -125,7 +125,7 @@ namespace Ekiga
       /** This signal is emitted when a Ekiga::CallManager has been
        * added to the CallCore Service.
        */
-      sigc::signal<void, gmref_ptr<CallManager> > manager_added;
+      sigc::signal1<void, gmref_ptr<CallManager> > manager_added;
 
 
       /*** Call Management ***/                 
@@ -140,21 +140,21 @@ namespace Ekiga
       
       /** See call.h for the API
        */
-      sigc::signal<void, gmref_ptr<CallManager> , gmref_ptr<Call> > ringing_call;
-      sigc::signal<void, gmref_ptr<CallManager> , gmref_ptr<Call> > setup_call;
-      sigc::signal<void, gmref_ptr<CallManager> , gmref_ptr<Call> > missed_call;
-      sigc::signal<void, gmref_ptr<CallManager> , gmref_ptr<Call>, std::string> cleared_call;
-      sigc::signal<void, gmref_ptr<CallManager> , gmref_ptr<Call> > established_call;
-      sigc::signal<void, gmref_ptr<CallManager> , gmref_ptr<Call> > held_call;
-      sigc::signal<void, gmref_ptr<CallManager> , gmref_ptr<Call> > retrieved_call;
-      sigc::signal<void, gmref_ptr<CallManager> , gmref_ptr<Call>, std::string, Call::StreamType, bool> stream_opened;
-      sigc::signal<void, gmref_ptr<CallManager> , gmref_ptr<Call>, std::string, Call::StreamType, bool> stream_closed;
-      sigc::signal<void, gmref_ptr<CallManager> , gmref_ptr<Call>, std::string, Call::StreamType> stream_paused;
-      sigc::signal<void, gmref_ptr<CallManager> , gmref_ptr<Call>, std::string, Call::StreamType> stream_resumed;
+      sigc::signal2<void, gmref_ptr<CallManager> , gmref_ptr<Call> > ringing_call;
+      sigc::signal2<void, gmref_ptr<CallManager> , gmref_ptr<Call> > setup_call;
+      sigc::signal2<void, gmref_ptr<CallManager> , gmref_ptr<Call> > missed_call;
+      sigc::signal3<void, gmref_ptr<CallManager> , gmref_ptr<Call>, std::string> cleared_call;
+      sigc::signal2<void, gmref_ptr<CallManager> , gmref_ptr<Call> > established_call;
+      sigc::signal2<void, gmref_ptr<CallManager> , gmref_ptr<Call> > held_call;
+      sigc::signal2<void, gmref_ptr<CallManager> , gmref_ptr<Call> > retrieved_call;
+      sigc::signal5<void, gmref_ptr<CallManager> , gmref_ptr<Call>, std::string, Call::StreamType, bool> stream_opened;
+      sigc::signal5<void, gmref_ptr<CallManager> , gmref_ptr<Call>, std::string, Call::StreamType, bool> stream_closed;
+      sigc::signal4<void, gmref_ptr<CallManager> , gmref_ptr<Call>, std::string, Call::StreamType> stream_paused;
+      sigc::signal4<void, gmref_ptr<CallManager> , gmref_ptr<Call>, std::string, Call::StreamType> stream_resumed;
 
       /*** Misc ***/
-      sigc::signal<void, gmref_ptr<CallManager> > manager_ready;
-      sigc::signal<void> ready;
+      sigc::signal1<void, gmref_ptr<CallManager> > manager_ready;
+      sigc::signal0<void> ready;
 
       /** This chain allows the CallCore to report errors to the user
        */

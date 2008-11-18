@@ -107,7 +107,7 @@ public:
 
     const std::string as_string () const;
 
-    sigc::signal<void> trigger_saving;
+    sigc::signal0<void> trigger_saving;
  
 private:
     void on_edit_form_submitted (bool submitted,

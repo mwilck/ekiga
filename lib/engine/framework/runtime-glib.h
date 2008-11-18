@@ -62,7 +62,7 @@ namespace Ekiga
 
     void quit ();
 
-    void run_in_main (sigc::slot<void> action,
+    void run_in_main (sigc::slot0<void> action,
                       unsigned int seconds);
 
   private:

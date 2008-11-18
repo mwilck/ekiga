@@ -70,7 +70,7 @@ Ekiga::PresenceCore::add_cluster (gmref_ptr<Cluster> cluster)
 }
 
 void
-Ekiga::PresenceCore::visit_clusters (sigc::slot<bool, gmref_ptr<Cluster> > visitor)
+Ekiga::PresenceCore::visit_clusters (sigc::slot1<bool, gmref_ptr<Cluster> > visitor)
 {
   bool go_on = true;
   for (std::set<gmref_ptr<Cluster> >::iterator iter = clusters.begin ();
@@ -245,7 +245,7 @@ Ekiga::PresenceCore::is_supported_uri (const std::string uri) const
 {
   bool result = false;
 
-  for (std::set<sigc::slot<bool, std::string> >::const_iterator iter
+  for (std::set<sigc::slot1<bool, std::string> >::const_iterator iter
 	 = uri_testers.begin ();
        iter != uri_testers.end () && result == false;
        iter++)
@@ -255,7 +255,7 @@ Ekiga::PresenceCore::is_supported_uri (const std::string uri) const
 }
 
 void
-Ekiga::PresenceCore::add_supported_uri (sigc::slot<bool,std::string> tester)
+Ekiga::PresenceCore::add_supported_uri (sigc::slot1<bool,std::string> tester)
 {
   uri_testers.insert (tester);
 }

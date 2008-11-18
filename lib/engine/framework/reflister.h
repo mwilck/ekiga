@@ -55,7 +55,7 @@ namespace Ekiga
 
     virtual ~RefLister ();
 
-    void visit_objects (sigc::slot<bool, gmref_ptr<ObjectType> > visitor);
+    void visit_objects (sigc::slot1<bool, gmref_ptr<ObjectType> > visitor);
 
     void add_object (gmref_ptr<ObjectType> obj);
 
@@ -69,9 +69,9 @@ namespace Ekiga
     iterator begin ();
     iterator end ();
 
-    sigc::signal<void, gmref_ptr<ObjectType> > object_added;
-    sigc::signal<void, gmref_ptr<ObjectType> > object_removed;
-    sigc::signal<void, gmref_ptr<ObjectType> > object_updated;
+    sigc::signal1<void, gmref_ptr<ObjectType> > object_added;
+    sigc::signal1<void, gmref_ptr<ObjectType> > object_removed;
+    sigc::signal1<void, gmref_ptr<ObjectType> > object_updated;
 
   private:
     container_type objects;
@@ -87,7 +87,7 @@ Ekiga::RefLister<ObjectType>::~RefLister ()
 
 template<typename ObjectType>
 void
-Ekiga::RefLister<ObjectType>::visit_objects (sigc::slot<bool, gmref_ptr<ObjectType> > visitor)
+Ekiga::RefLister<ObjectType>::visit_objects (sigc::slot1<bool, gmref_ptr<ObjectType> > visitor)
 {
   bool go_on = true;
   for (typename container_type::iterator iter = objects.begin ();

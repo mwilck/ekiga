@@ -110,15 +110,15 @@ namespace Ekiga
 
     /** This signal is emitted when the Chat has been updated.
      */
-    sigc::signal<void> updated;
+    sigc::signal0<void> updated;
 
     /** This signal is emitted when the user requested to see this Chat
      */
-    sigc::signal<void> user_requested;
+    sigc::signal0<void> user_requested;
 
     /** This signal is emitted when the Chat has been removed.
      */
-    sigc::signal<void> removed;
+    sigc::signal0<void> removed;
 
     /** Feed possible actions on this Chat to the given MenuBuilder
      * @param A MenuBuilder object to populate.

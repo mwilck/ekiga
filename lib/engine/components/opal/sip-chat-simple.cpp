@@ -42,7 +42,7 @@
 SIP::SimpleChat::SimpleChat (Ekiga::ServiceCore& core_,
 			     std::string name,
 			     std::string uri_,
-			     sigc::slot<bool, std::string> sender_)
+			     sigc::slot1<bool, std::string> sender_)
   : core(core_), sender(sender_), uri(uri_)
 {
   presentity = gmref_ptr<Ekiga::URIPresentity> (new Ekiga::URIPresentity (core, name, uri,

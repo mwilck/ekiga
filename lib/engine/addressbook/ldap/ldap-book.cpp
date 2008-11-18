@@ -134,7 +134,7 @@ struct RefreshData
 	       const std::string _authcID,
 	       const std::string _password,
 	       const std::string _search_string,
-	       sigc::slot<void, std::vector<OPENLDAP::Contact *> > _publish_results):
+	       sigc::slot1<void, std::vector<OPENLDAP::Contact *> > _publish_results):
     core(_core), name(_name), uri(_uri),
     base(_base), scope(_scope), call_attribute(_call_attribute),
     authcID(_authcID), password(_password), search_string(_search_string),
@@ -159,7 +159,7 @@ struct RefreshData
   std::string error_message;
 
   /* callback */
-  sigc::slot<void, std::vector<OPENLDAP::Contact *> > publish_results;
+  sigc::slot1<void, std::vector<OPENLDAP::Contact *> > publish_results;
 };
 #endif
 

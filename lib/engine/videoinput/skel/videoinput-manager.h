@@ -158,18 +158,18 @@ namespace Ekiga
        * @param device the video input device that was opened.
        * @param config the current video input device configuration (current brightness, colour, etc.).
        */
-      sigc::signal<void, VideoInputDevice, VideoInputSettings> device_opened;
+      sigc::signal2<void, VideoInputDevice, VideoInputSettings> device_opened;
 
       /** This signal is emitted when a video input device is closed.
        * @param device the video input device that was closed.
        */
-      sigc::signal<void, VideoInputDevice> device_closed;
+      sigc::signal1<void, VideoInputDevice> device_closed;
 
       /** This signal is emitted when an error occurs when opening a video input device.
        * @param device the video input device that caused the error.
        * @param error_code the video input device error code.
        */
-      sigc::signal<void, VideoInputDevice, VideoInputErrorCodes> device_error;
+      sigc::signal2<void, VideoInputDevice, VideoInputErrorCodes> device_error;
 
   protected:  
       typedef struct ManagerState {

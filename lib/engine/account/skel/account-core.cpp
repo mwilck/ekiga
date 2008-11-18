@@ -104,7 +104,7 @@ void Ekiga::AccountCore::remove_bank (Bank &bank)
 }
 
 
-void Ekiga::AccountCore::visit_banks (sigc::slot<bool, Bank &> visitor)
+void Ekiga::AccountCore::visit_banks (sigc::slot1<bool, Bank &> visitor)
 {
   bool go_on = true;
 

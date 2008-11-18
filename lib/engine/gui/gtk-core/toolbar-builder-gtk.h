@@ -54,7 +54,7 @@ public:
 
   void add_action (const std::string icon,
 		   const std::string label,
-		   sigc::slot<void> callback);
+		   sigc::slot0<void> callback);
 
   void add_separator ();
 

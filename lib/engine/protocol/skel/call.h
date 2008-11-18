@@ -200,69 +200,69 @@ namespace Ekiga
 
       /* Signal emitted when the call is established
        */
-      sigc::signal<void> established;
+      sigc::signal0<void> established;
 
       /* Signal emitted when an established call is cleared
        * @param: a string describing why the call was cleared
        */
-      sigc::signal<void, std::string> cleared;
+      sigc::signal1<void, std::string> cleared;
 
       /* Signal emitted when the call is missed, ie cleared
        * without having been established
        */
-      sigc::signal<void> missed;
+      sigc::signal0<void> missed;
 
       /* Signal emitted when the call is forwarded
        */
-      sigc::signal<void> forwarded;
+      sigc::signal0<void> forwarded;
 
       /* Signal emitted when the call is held
        */
-      sigc::signal<void> held;
+      sigc::signal0<void> held;
 
       /* Signal emitted when the call is retrieved
        */
-      sigc::signal<void> retrieved;
+      sigc::signal0<void> retrieved;
 
       /* Signal emitted when the call is being setup
        */
-      sigc::signal<void> setup;
+      sigc::signal0<void> setup;
 
       /* Signal emitted when the remote party is ringing
        */
-      sigc::signal<void> ringing;
+      sigc::signal0<void> ringing;
 
       /* Signal emitted when a stream is opened
        * @param the stream name
        * @param the stream type
        * @param transmission or reception
        */
-      sigc::signal<void, std::string, StreamType, bool> stream_opened;
+      sigc::signal3<void, std::string, StreamType, bool> stream_opened;
 
       /* Signal emitted when a stream is closed
        * @param the stream name
        * @param the stream type
        * @param transmission or reception
        */
-      sigc::signal<void, std::string, StreamType, bool> stream_closed;
+      sigc::signal3<void, std::string, StreamType, bool> stream_closed;
 
       /* Signal emitted when a transmitted stream is paused
        * @param the stream name
        * @param the stream type
        * @param transmission or reception
        */
-      sigc::signal<void, std::string, StreamType> stream_paused;
+      sigc::signal2<void, std::string, StreamType> stream_paused;
 
       /* Signal emitted when a transmitted stream is resumed
        * @param the stream name
        * @param the stream type
        * @param transmission or reception
        */
-      sigc::signal<void, std::string, StreamType> stream_resumed;
+      sigc::signal2<void, std::string, StreamType> stream_resumed;
 
       /** This signal is emitted when the Call is removed.
        */
-      sigc::signal<void> removed;
+      sigc::signal0<void> removed;
      
     };
 

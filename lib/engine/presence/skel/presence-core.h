@@ -97,8 +97,8 @@ namespace Ekiga
      * presence information about an uri it was required to handle.
      * The information is given as a pair of strings (uri, data).
      */
-    sigc::signal<void, std::string, std::string> presence_received;
-    sigc::signal<void, std::string, std::string> status_received;
+    sigc::signal2<void, std::string, std::string> presence_received;
+    sigc::signal2<void, std::string, std::string> status_received;
   };
 
   class PresencePublisher: public virtual GmRefCounted
@@ -174,27 +174,27 @@ namespace Ekiga
      * @param The callback (the return value means "go on" and allows
      *  stopping the visit)
      */
-    void visit_clusters (sigc::slot<bool, gmref_ptr<Cluster> > visitor);
+    void visit_clusters (sigc::slot1<bool, gmref_ptr<Cluster> > visitor);
 
     /** This signal is emitted when an Ekiga::Cluster has been added
      * to the PresenceCore Service.
      */
-    sigc::signal<void, gmref_ptr<Cluster> > cluster_added;
+    sigc::signal1<void, gmref_ptr<Cluster> > cluster_added;
 
     /** Those signals are forwarding the heap_added, heap_updated
      * and heap_removed from the given Cluster.
      *
      */
-    sigc::signal<void, gmref_ptr<Cluster> , gmref_ptr<Heap> > heap_added;
-    sigc::signal<void, gmref_ptr<Cluster> , gmref_ptr<Heap> > heap_updated;
-    sigc::signal<void, gmref_ptr<Cluster> , gmref_ptr<Heap> > heap_removed;
+    sigc::signal2<void, gmref_ptr<Cluster> , gmref_ptr<Heap> > heap_added;
+    sigc::signal2<void, gmref_ptr<Cluster> , gmref_ptr<Heap> > heap_updated;
+    sigc::signal2<void, gmref_ptr<Cluster> , gmref_ptr<Heap> > heap_removed;
 
     /** Those signals are forwarding the presentity_added, presentity_updated
      * and presentity_removed from the given Heap of the given Cluster.
      */
-    sigc::signal<void, gmref_ptr<Cluster> , gmref_ptr<Heap> , gmref_ptr<Presentity> > presentity_added;
-    sigc::signal<void, gmref_ptr<Cluster> , gmref_ptr<Heap> , gmref_ptr<Presentity> > presentity_updated;
-    sigc::signal<void, gmref_ptr<Cluster> , gmref_ptr<Heap> , gmref_ptr<Presentity> > presentity_removed;
+    sigc::signal3<void, gmref_ptr<Cluster> , gmref_ptr<Heap> , gmref_ptr<Presentity> > presentity_added;
+    sigc::signal3<void, gmref_ptr<Cluster> , gmref_ptr<Heap> , gmref_ptr<Presentity> > presentity_updated;
+    sigc::signal3<void, gmref_ptr<Cluster> , gmref_ptr<Heap> , gmref_ptr<Presentity> > presentity_removed;
 
   private:
 
@@ -255,8 +255,8 @@ namespace Ekiga
     /** Those signals are emitted whenever information has been received
      * about an uri ; the information is a pair of strings (uri, information).
      */
-    sigc::signal<void, std::string, std::string> presence_received;
-    sigc::signal<void, std::string, std::string> status_received;
+    sigc::signal2<void, std::string, std::string> presence_received;
+    sigc::signal2<void, std::string, std::string> status_received;
 
   private:
 
@@ -304,11 +304,11 @@ namespace Ekiga
     /** Adds an uri tester to the PresenceCore
      * @param The tester
      */
-    void add_supported_uri (sigc::slot<bool,std::string> tester);
+    void add_supported_uri (sigc::slot1<bool,std::string> tester);
 
   private:
 
-    std::set<sigc::slot<bool, std::string> > uri_testers;
+    std::set<sigc::slot1<bool, std::string> > uri_testers;
 
     /*** Misc ***/
   public:

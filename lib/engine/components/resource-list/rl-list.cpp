@@ -89,13 +89,13 @@ public: // no need to make anything private
   std::string display_name;
 
   /* make the world know what we have */
-  bool visit_presentities (sigc::slot<bool, Ekiga::Presentity&> visitor);
+  bool visit_presentities (sigc::slot1<bool, Ekiga::Presentity&> visitor);
 
   void publish () const;
 
-  sigc::signal<void, gmref_ptr<Entry> > entry_added;
-  sigc::signal<void, gmref_ptr<Entry> > entry_updated;
-  sigc::signal<void, gmref_ptr<Entry> > entry_removed;
+  sigc::signal1<void, gmref_ptr<Entry> > entry_added;
+  sigc::signal1<void, gmref_ptr<Entry> > entry_updated;
+  sigc::signal1<void, gmref_ptr<Entry> > entry_removed;
 
 
   /* data for its children */
@@ -153,7 +153,7 @@ RL::List::push_status (const std::string uri_,
 }
 
 bool
-RL::List::visit_presentities (sigc::slot<bool, Ekiga::Presentity&> visitor)
+RL::List::visit_presentities (sigc::slot1<bool, Ekiga::Presentity&> visitor)
 {
   return impl->visit_presentities (visitor);
 }
@@ -387,7 +387,7 @@ RL::ListImpl::push_status (const std::string uri_,
 }
 
 bool
-RL::ListImpl::visit_presentities (sigc::slot<bool, Ekiga::Presentity&> visitor)
+RL::ListImpl::visit_presentities (sigc::slot1<bool, Ekiga::Presentity&> visitor)
 {
   bool go_on = true;
 

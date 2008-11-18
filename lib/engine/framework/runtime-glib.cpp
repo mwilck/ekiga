@@ -41,12 +41,12 @@
 
 struct message
 {
-  message (sigc::slot<void> _action,
+  message (sigc::slot0<void> _action,
 	   unsigned int _seconds): action(_action),
 				   seconds(_seconds)
   {}
 
-  sigc::slot<void> action;
+  sigc::slot0<void> action;
   unsigned int seconds;
 };
 
@@ -153,7 +153,7 @@ Ekiga::GlibRuntime::quit ()
 }
 
 void
-Ekiga::GlibRuntime::run_in_main (sigc::slot<void> action,
+Ekiga::GlibRuntime::run_in_main (sigc::slot0<void> action,
 				 unsigned int seconds)
 {
   g_async_queue_push (queue, (gpointer)(new struct message (action, seconds)));

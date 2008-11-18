@@ -100,7 +100,7 @@ void AudioOutputCore::add_manager (AudioOutputManager &manager)
   manager.device_closed.connect (sigc::bind (sigc::mem_fun (this, &AudioOutputCore::on_device_closed), &manager));
 }
 
-void AudioOutputCore::visit_managers (sigc::slot<bool, AudioOutputManager &> visitor)
+void AudioOutputCore::visit_managers (sigc::slot1<bool, AudioOutputManager &> visitor)
 {
   yield = true;
   PWaitAndSignal m_pri(core_mutex[primary]);

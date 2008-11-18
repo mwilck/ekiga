@@ -147,18 +147,18 @@ namespace Ekiga
        * @param device the audio input device that was opened.
        * @param config the current audio input device configuration (current volume, etc.).
        */
-      sigc::signal<void, AudioInputDevice, AudioInputSettings> device_opened;
+      sigc::signal2<void, AudioInputDevice, AudioInputSettings> device_opened;
 
       /** This signal is emitted when an audio input device is closed.
        * @param device the audio input device that was closed.
        */
-      sigc::signal<void, AudioInputDevice> device_closed;
+      sigc::signal1<void, AudioInputDevice> device_closed;
 
       /** This signal is emitted when an error occurs when opening a audio input device.
        * @param device the audio input device that caused the error.
        * @param error_code the audio input device error code.
        */
-      sigc::signal<void, AudioInputDevice, AudioInputErrorCodes> device_error;
+      sigc::signal2<void, AudioInputDevice, AudioInputErrorCodes> device_error;
 
 
   protected:  

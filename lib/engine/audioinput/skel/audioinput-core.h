@@ -133,12 +133,12 @@ namespace Ekiga
       /** Triggers a callback for all Ekiga::AudioInputManager sources of the
        * AudioInputCore service.
        */
-      void visit_managers (sigc::slot<bool, AudioInputManager &> visitor);
+      void visit_managers (sigc::slot1<bool, AudioInputManager &> visitor);
 
       /** This signal is emitted when a Ekiga::AudioInputManager has been
        * added to the AudioInputCore Service.
        */
-      sigc::signal<void, AudioInputManager &> manager_added;
+      sigc::signal1<void, AudioInputManager &> manager_added;
 
 
       /*** AudioInput Device Management ***/
@@ -256,23 +256,23 @@ namespace Ekiga
 
       /** See audioinput-manager.h for the API
        */
-      sigc::signal<void, AudioInputManager &, AudioInputDevice &, AudioInputSettings&> device_opened;
-      sigc::signal<void, AudioInputManager &, AudioInputDevice &> device_closed;
-      sigc::signal<void, AudioInputManager &, AudioInputDevice &, AudioInputErrorCodes> device_error;
+      sigc::signal3<void, AudioInputManager &, AudioInputDevice &, AudioInputSettings&> device_opened;
+      sigc::signal2<void, AudioInputManager &, AudioInputDevice &> device_closed;
+      sigc::signal3<void, AudioInputManager &, AudioInputDevice &, AudioInputErrorCodes> device_error;
 
       /** This signal is emitted when an audio device input has been added to the system.
        * This signal will be emitted if add_device was called with a device name and
        * a manager claimed support for this device.
        * @param device the audio input device that was added.
        */
-      sigc::signal<void, AudioInputDevice, bool> device_added;
+      sigc::signal2<void, AudioInputDevice, bool> device_added;
 
       /** This signal is emitted when an audio input device has been removed from the system.
        * This signal will be emitted if remove_device was called with a device name and
        * a manager claimed support for this device.
        * @param device the audio input device that was removed.
        */
-      sigc::signal<void, AudioInputDevice, bool> device_removed;
+      sigc::signal2<void, AudioInputDevice, bool> device_removed;
 
   private:
       void on_device_opened (AudioInputDevice device,  

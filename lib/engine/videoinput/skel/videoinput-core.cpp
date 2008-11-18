@@ -183,7 +183,7 @@ void VideoInputCore::add_manager (VideoInputManager &manager)
 }
 
 
-void VideoInputCore::visit_managers (sigc::slot<bool, VideoInputManager &> visitor)
+void VideoInputCore::visit_managers (sigc::slot1<bool, VideoInputManager &> visitor)
 {
   PWaitAndSignal m(core_mutex);
   bool go_on = true;

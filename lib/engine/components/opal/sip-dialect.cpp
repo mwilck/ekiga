@@ -40,7 +40,7 @@
 #include "sip-dialect.h"
 
 SIP::Dialect::Dialect (Ekiga::ServiceCore& core_,
-		       sigc::slot<bool, std::string, std::string> sender_)
+		       sigc::slot2<bool, std::string, std::string> sender_)
   : core(core_), sender(sender_)
 {
 }

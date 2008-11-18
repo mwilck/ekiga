@@ -48,7 +48,7 @@ namespace SIP
   public:
     Dialect (Ekiga::ServiceCore& core_,
 	     /* the strings are : uri then msg */
-	     sigc::slot<bool, std::string, std::string> sender_);
+	     sigc::slot2<bool, std::string, std::string> sender_);
 
     ~Dialect ();
 
@@ -68,7 +68,7 @@ namespace SIP
   private:
     Ekiga::ServiceCore& core;
     /* the strings are : uri then msg */
-    sigc::slot<bool, std::string, std::string> sender;
+    sigc::slot2<bool, std::string, std::string> sender;
 
     SimpleChat* open_chat_with (std::string uri,
 				std::string name,

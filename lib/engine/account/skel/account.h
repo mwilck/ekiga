@@ -171,12 +171,12 @@ namespace Ekiga
 
     /** This signal is emitted when the Account has been updated.
      */
-    sigc::signal<void> updated;
+    sigc::signal0<void> updated;
 
 
     /** This signal is emitted when the Account has been removed.
      */
-    sigc::signal<void> removed;
+    sigc::signal0<void> removed;
 
 
     /** This signal is emitted when there is a new registration event for 
@@ -184,13 +184,13 @@ namespace Ekiga
      * @param: state is the state
      *         info contains information about the registration status
      */
-    sigc::signal<void, Ekiga::AccountCore::RegistrationState, std::string> registration_event;
+    sigc::signal2<void, Ekiga::AccountCore::RegistrationState, std::string> registration_event;
 
 
     /** This signal is emitted when there is a new message waiting indication
      * @param: mwi is the message waiting indication
      */
-    sigc::signal<void, std::string> mwi_event;
+    sigc::signal1<void, std::string> mwi_event;
 
 
     /** This chain allows the Account to present forms to the user
