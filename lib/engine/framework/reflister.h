@@ -82,7 +82,7 @@ namespace Ekiga
 template<typename ObjectType>
 Ekiga::RefLister<ObjectType>::~RefLister ()
 {
-  remove_all_objects ();
+  objects.clear ();
 }
 
 template<typename ObjectType>
