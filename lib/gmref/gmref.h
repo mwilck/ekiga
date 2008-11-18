@@ -78,7 +78,7 @@ public:
 
   ~gmref_ptr ();
 
-  gmref_ptr<T>& operator= (const gmref_ptr<T>& other);
+  gmref_ptr& operator= (const gmref_ptr& other);
 
   T* operator-> () const;
 
@@ -86,11 +86,11 @@ public:
 
   operator bool () const;
 
-  bool operator==(const gmref_ptr<T>& other) const;
+  bool operator==(const gmref_ptr& other) const;
 
-  bool operator!=(const gmref_ptr<T>& other) const;
+  bool operator!=(const gmref_ptr& other) const;
 
-  bool operator<(const gmref_ptr<T>& other) const;
+  bool operator<(const gmref_ptr& other) const;
 
 private:
 
