@@ -97,7 +97,7 @@ OPENLDAP::Source::~Source ()
 void
 OPENLDAP::Source::add (xmlNodePtr node)
 {
-  common_add (new Book (core, node));
+  common_add (gmref_ptr<Book>(new Book (core, node)));
 }
 
 void
@@ -106,7 +106,7 @@ OPENLDAP::Source::add ()
   xmlNodePtr root;
 
   root = xmlDocGetRootElement (doc);
-  gmref_ptr<Book> book = new Book (core, bookinfo);
+  gmref_ptr<Book> book (new Book (core, bookinfo));
 
   xmlAddChild (root, book->get_node ());
 

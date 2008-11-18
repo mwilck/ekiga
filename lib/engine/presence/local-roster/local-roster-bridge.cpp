@@ -86,7 +86,7 @@ Local::ContactDecorator::populate_menu (gmref_ptr<Ekiga::Contact> contact,
 
   if (cluster->is_supported_uri (uri)) {
 
-    gmref_ptr<Heap> heap = cluster->get_heap ();
+    gmref_ptr<Heap> heap(cluster->get_heap ());
 
     if (!heap->has_presentity_with_uri (uri)) {
 
@@ -114,8 +114,7 @@ local_roster_bridge_init (Ekiga::ServiceCore &core,
 
   if (cluster && contact_core) {
 
-    gmref_ptr<Local::ContactDecorator> decorator
-      = new Local::ContactDecorator (cluster);
+    gmref_ptr<Local::ContactDecorator> decorator (new Local::ContactDecorator (cluster));
     core.add (decorator);
     contact_core->add_contact_decorator (decorator);
     result = true;

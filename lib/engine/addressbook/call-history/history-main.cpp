@@ -51,7 +51,7 @@ history_init (Ekiga::ServiceCore &core,
 
   if (contact_core && call_core) {
 
-    gmref_ptr<History::Source> source =  new History::Source (core);
+    gmref_ptr<History::Source> source (new History::Source (core));
     core.add (source);
     contact_core->add_source (source);
     result = true;

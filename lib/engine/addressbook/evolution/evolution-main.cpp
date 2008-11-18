@@ -49,7 +49,7 @@ evolution_init (Ekiga::ServiceCore &services,
 
   if (core) {
 
-    gmref_ptr<Evolution::Source> source = new Evolution::Source (services);
+    gmref_ptr<Evolution::Source> source (new Evolution::Source (services));
     services.add (source);
     core->add_source (source);
     result = true;

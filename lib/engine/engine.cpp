@@ -113,7 +113,7 @@
 void
 engine_init (int argc,
              char *argv [],
-             Ekiga::Runtime *runtime,
+             Ekiga::Runtime* runtime,
              Ekiga::ServiceCore * &core)
 {
   core = new Ekiga::ServiceCore;
@@ -121,19 +121,15 @@ engine_init (int argc,
   /* VideoInputCore depends on VideoOutputCore and must this              *
    * be constructed thereafter                                      */
 
-  gmref_ptr<Ekiga::AccountCore> account_core = new Ekiga::AccountCore;
-  gmref_ptr<Ekiga::ContactCore> contact_core = new Ekiga::ContactCore;
-  gmref_ptr<Ekiga::CallCore> call_core = new Ekiga::CallCore;
-  gmref_ptr<Ekiga::ChatCore> chat_core = new Ekiga::ChatCore;
-  gmref_ptr<Ekiga::VideoOutputCore> videooutput_core
-    = new Ekiga::VideoOutputCore;
-  gmref_ptr<Ekiga::VideoInputCore> videoinput_core =
-    new Ekiga::VideoInputCore(*runtime, *videooutput_core);
-  gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core
-    = new Ekiga::AudioOutputCore(*runtime);
-  gmref_ptr<Ekiga::AudioInputCore> audioinput_core
-    = new Ekiga::AudioInputCore(*runtime, *audiooutput_core);
-  gmref_ptr<Ekiga::HalCore> hal_core = new Ekiga::HalCore;
+  gmref_ptr<Ekiga::AccountCore> account_core (new Ekiga::AccountCore);
+  gmref_ptr<Ekiga::ContactCore> contact_core (new Ekiga::ContactCore);
+  gmref_ptr<Ekiga::CallCore> call_core (new Ekiga::CallCore);
+  gmref_ptr<Ekiga::ChatCore> chat_core (new Ekiga::ChatCore);
+  gmref_ptr<Ekiga::VideoOutputCore> videooutput_core (new Ekiga::VideoOutputCore);
+  gmref_ptr<Ekiga::VideoInputCore> videoinput_core (new Ekiga::VideoInputCore(*runtime, *videooutput_core));
+  gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core (new Ekiga::AudioOutputCore(*runtime));
+  gmref_ptr<Ekiga::AudioInputCore> audioinput_core (new Ekiga::AudioInputCore(*runtime, *audiooutput_core));
+  gmref_ptr<Ekiga::HalCore> hal_core (new Ekiga::HalCore);
 
 
   /* The last item in the following list will be destroyed first.   *
@@ -143,7 +139,7 @@ engine_init (int argc,
    *   components may still call runtime functions until destroyed  *
    *   (e.g. VideoOutputCore).                                          */
 
-  core->add (runtime);
+  core->add (gmref_ptr<Ekiga::Runtime>(runtime));
   core->add (account_core);
   core->add (contact_core);
   core->add (chat_core);
@@ -159,8 +155,7 @@ engine_init (int argc,
     return;
   }
 
-  gmref_ptr<Ekiga::PresenceCore> presence_core
-    = new Ekiga::PresenceCore (*core);
+  gmref_ptr<Ekiga::PresenceCore> presence_core (new Ekiga::PresenceCore (*core));
   core->add (presence_core);
 
 #ifndef WIN32

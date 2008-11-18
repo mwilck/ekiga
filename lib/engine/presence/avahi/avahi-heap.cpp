@@ -305,8 +305,7 @@ Avahi::Heap::ResolverCallback (AvahiServiceResolver *resolver,
 
 	groups.insert (_("Neighbours"));
 	url = g_strdup_printf ("%s:neighbour@%s:%d", broken[1], host_name, port);
-	gmref_ptr<Ekiga::URIPresentity> presentity
-	  = new Ekiga::URIPresentity (core, name, url, groups);
+	gmref_ptr<Ekiga::URIPresentity> presentity (new Ekiga::URIPresentity (core, name, url, groups));
 	status_received.emit (url, status);
 	presence_received.emit (url, presence);
 	add_presentity (presentity);

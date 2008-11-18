@@ -49,7 +49,7 @@ local_roster_init (Ekiga::ServiceCore &core,
 
   if (presence_core) {
 
-    gmref_ptr<Local::Cluster> cluster = new Local::Cluster (core);
+    gmref_ptr<Local::Cluster> cluster (new Local::Cluster (core));
     core.add (cluster);
     presence_core->add_cluster (cluster);
     result = true;

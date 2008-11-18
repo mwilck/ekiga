@@ -629,10 +629,10 @@ void CallManager::get_video_options (CallManager::VideoOptions & options) const
 
 OpalCall *CallManager::CreateCall ()
 {
-  gmref_ptr<Ekiga::Call> call = new Opal::Call (*this, core);
-  call_core->add_call (call, this);
+  gmref_ptr<Opal::Call> call (new Opal::Call (*this, core));
+  call_core->add_call (call, gmref_ptr<CallManager>(this));
 
-  return dynamic_cast<OpalCall *> (&*call);
+  return &*call;
 }
 
 

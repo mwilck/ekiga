@@ -70,7 +70,7 @@ class gmref_ptr
 {
 public:
 
-  gmref_ptr (T* obj_);
+  explicit gmref_ptr (T* obj_);
 
   gmref_ptr (const gmref_ptr<T>& ptr);
 

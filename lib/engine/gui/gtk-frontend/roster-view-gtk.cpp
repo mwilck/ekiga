@@ -703,21 +703,24 @@ on_view_event_after (GtkWidget *tree_view,
 	if (event->type == GDK_BUTTON_PRESS && event->button == 1 && name)
 	  on_clicked_fold (self, path, name);
 	if (event->type == GDK_BUTTON_PRESS && event->button == 3)
-	  on_clicked_show_heap_menu (heap, event);
+	  on_clicked_show_heap_menu (gmref_ptr<Ekiga::Heap>(heap), event);
 	break;
       case TYPE_GROUP:
 
 	if (event->type == GDK_BUTTON_PRESS && event->button == 1 && name)
 	  on_clicked_fold (self, path, name);
 	if (event->type == GDK_BUTTON_PRESS && event->button == 3)
-	  on_clicked_show_heap_group_menu (heap, name, event);
+	  on_clicked_show_heap_group_menu (gmref_ptr<Ekiga::Heap>(heap),
+					   name, event);
 	break;
       case TYPE_PRESENTITY:
 
 	if (event->type == GDK_BUTTON_PRESS && event->button == 3)
-	  on_clicked_show_presentity_menu (heap, presentity, event);
+	  on_clicked_show_presentity_menu (gmref_ptr<Ekiga::Heap>(heap),
+					   gmref_ptr<Ekiga::Presentity>(presentity),
+					   event);
 	if (event->type == GDK_2BUTTON_PRESS)
-	  on_clicked_trigger_presentity (presentity);
+	  on_clicked_trigger_presentity (gmref_ptr<Ekiga::Presentity>(presentity));
 	break;
       default:
 

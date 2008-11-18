@@ -49,7 +49,7 @@ avahi_init (Ekiga::ServiceCore &core,
 
   if (presence_core) {
 
-    gmref_ptr<Avahi::Cluster> cluster = new Avahi::Cluster (core);
+    gmref_ptr<Avahi::Cluster> cluster (new Avahi::Cluster (core));
     core.add (cluster);
     presence_core->add_cluster (cluster);
     result = true;

@@ -80,7 +80,7 @@ Evolution::Source::add_group (ESourceGroup *group)
     ebook = e_book_new (s, NULL);
     g_object_unref (s);
 
-    gmref_ptr<Book> book = new Evolution::Book (services, ebook);
+    gmref_ptr<Book> book (new Evolution::Book (services, ebook));
 
     g_object_unref (ebook);
 

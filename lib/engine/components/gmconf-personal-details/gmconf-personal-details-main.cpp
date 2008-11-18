@@ -50,8 +50,7 @@ gmconf_personal_details_init (Ekiga::ServiceCore &core,
 
   if ( !personal_details) {
 
-    Gmconf::PersonalDetails* gmconf_details
-      = new Gmconf::PersonalDetails ();
+    gmref_ptr<Gmconf::PersonalDetails> gmconf_details (new Gmconf::PersonalDetails ());
     core.add (gmconf_details);
     result = true;
   }

@@ -44,7 +44,7 @@ Local::Cluster::Cluster (Ekiga::ServiceCore &_core): core(_core)
 {
   gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
 
-  heap = new Heap (core);
+  heap = gmref_ptr<Heap> (new Heap (core));
 
   presence_core->presence_received.connect (sigc::mem_fun (this, &Local::Cluster::on_presence_received));
   presence_core->status_received.connect (sigc::mem_fun (this, &Local::Cluster::on_status_received));

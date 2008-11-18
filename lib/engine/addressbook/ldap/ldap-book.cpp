@@ -110,7 +110,7 @@ OPENLDAP::Book::parse_result (LDAPMessage* message)
 
   if (!username.empty () && !call_addresses.empty()) {
 
-    result = new Contact (core, fix_to_utf8 (username), call_addresses);
+    result = gmref_ptr<Contact>(new Contact (core, fix_to_utf8 (username), call_addresses));
   }
 
   return result;

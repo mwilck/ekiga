@@ -684,7 +684,7 @@ static void on_cleared_call_cb (gmref_ptr<Ekiga::CallManager>  /*manager*/,
   ekiga_main_window_update_logo_have_window (mw);
 
   if (mw->priv->current_call && mw->priv->current_call->get_id () == call->get_id ()) {
-    mw->priv->current_call = NULL;
+    mw->priv->current_call = gmref_ptr<Ekiga::Call>(0);
     g_source_remove (mw->priv->timeout_id);
     mw->priv->timeout_id = -1;
   }
@@ -3725,7 +3725,7 @@ ekiga_main_window_init (EkigaMainWindow *mw)
 
   mw->priv->presentity = NULL;
   mw->priv->transfer_call_popup = NULL;
-  mw->priv->current_call = NULL;
+  mw->priv->current_call = gmref_ptr<Ekiga::Call>(0);
   mw->priv->timeout_id = -1;
   mw->priv->levelmeter_timeout_id = -1;
   mw->priv->audio_transmission_active = false;

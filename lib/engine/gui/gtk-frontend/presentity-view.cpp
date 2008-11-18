@@ -121,7 +121,7 @@ presentity_view_unset_presentity (PresentityView* self)
 {
   if (self->priv->presentity) {
 
-    self->priv->presentity = NULL;
+    self->priv->presentity = gmref_ptr<Ekiga::Presentity>(0);
     self->priv->updated_conn.disconnect ();
     self->priv->removed_conn.disconnect ();
   }
@@ -159,7 +159,7 @@ presentity_view_set_property (GObject* obj,
 
   case PRESENTITY_VIEW_PROP_PRESENTITY:
     presentity = (Ekiga::Presentity*)g_value_get_pointer (value);
-    presentity_view_set_presentity (self, presentity);
+    presentity_view_set_presentity (self, gmref_ptr<Ekiga::Presentity>(presentity));
 
     break;
 

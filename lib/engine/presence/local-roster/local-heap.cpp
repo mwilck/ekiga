@@ -244,7 +244,7 @@ Local::Heap::push_status (const std::string uri,
 void
 Local::Heap::add (xmlNodePtr node)
 {
-  gmref_ptr<Presentity> presentity = new Presentity (core, node);
+  gmref_ptr<Presentity> presentity (new Presentity (core, node));
 
   common_add (presentity);
 }
@@ -258,7 +258,7 @@ Local::Heap::add (const std::string name,
   xmlNodePtr root = NULL;
 
   root = xmlDocGetRootElement (doc);
-  gmref_ptr<Presentity> presentity = new Presentity (core, name, uri, groups);
+  gmref_ptr<Presentity> presentity (new Presentity (core, name, uri, groups));
 
   xmlAddChild (root, presentity->get_node ());
 

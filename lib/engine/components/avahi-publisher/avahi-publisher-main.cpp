@@ -53,8 +53,7 @@ avahi_publisher_init (Ekiga::ServiceCore &core,
 
   if (presence_core && call_core && details) {
 
-    gmref_ptr<Avahi::PresencePublisher> publisher
-      = new Avahi::PresencePublisher (core, *details, *call_core);
+    gmref_ptr<Avahi::PresencePublisher> publisher (new Avahi::PresencePublisher (core, *details, *call_core));
     presence_core->add_presence_publisher (publisher);
     core.add (publisher);
     result = true;

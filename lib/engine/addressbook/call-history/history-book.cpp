@@ -105,7 +105,7 @@ History::Book::get_name () const
 void
 History::Book::add (xmlNodePtr node)
 {
-  add_contact (new Contact (core, node));
+  add_contact (gmref_ptr<Contact>(new Contact (core, node)));
 }
 
 void
@@ -120,8 +120,8 @@ History::Book::add (const std::string & name,
 
     xmlNodePtr root = xmlDocGetRootElement (doc);
 
-    gmref_ptr<Contact> contact = new Contact (core, name, uri,
-					      call_start, call_duration, c_t);
+    gmref_ptr<Contact> contact(new Contact (core, name, uri,
+					    call_start, call_duration, c_t));
 
     xmlAddChild (root, contact->get_node ());
 

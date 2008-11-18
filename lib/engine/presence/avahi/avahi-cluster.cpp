@@ -39,7 +39,7 @@
 
 Avahi::Cluster::Cluster (Ekiga::ServiceCore &_core): core(_core)
 {
-  heap = new Heap (core);
+  heap = gmref_ptr<Heap>(new Heap (core));
 
   add_heap (heap);
 

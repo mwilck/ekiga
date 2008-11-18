@@ -65,8 +65,8 @@ Evolution::Book::on_view_contacts_added (GList *econtacts)
 
     if (e_contact_get_const (econtact, E_CONTACT_FULL_NAME) != NULL) {
 
-      gmref_ptr<Contact> contact =  new Evolution::Contact (services, book,
-							    econtact);
+      gmref_ptr<Contact> contact(new Evolution::Contact (services, book,
+							 econtact));
 
       add_contact (contact);
       nbr++;

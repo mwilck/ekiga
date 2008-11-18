@@ -70,7 +70,7 @@ gtk_frontend_init (Ekiga::ServiceCore &core,
 
   if (presence_core && contact_core && chat_core && history_source) {
 
-    gmref_ptr<GtkFrontend> gtk_frontend = new GtkFrontend (core);
+    gmref_ptr<GtkFrontend> gtk_frontend (new GtkFrontend (core));
     core.add (gtk_frontend);
     result = true;
   }

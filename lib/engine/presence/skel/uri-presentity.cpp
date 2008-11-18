@@ -93,7 +93,8 @@ bool
 Ekiga::URIPresentity::populate_menu (Ekiga::MenuBuilder &builder)
 {
   gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
-  return presence_core->populate_presentity_menu (this, uri, builder);
+  return presence_core->populate_presentity_menu (gmref_ptr<Presentity>(this),
+						  uri, builder);
 }
 
 void

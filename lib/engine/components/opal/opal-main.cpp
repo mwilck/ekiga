@@ -85,7 +85,7 @@ void
 on_call_manager_ready_cb (Ekiga::ServiceCore *core)
 {
   gmref_ptr<Ekiga::AccountCore> account_core = core->get ("account-core");
-  gmref_ptr<Opal::Bank> bank = new Bank (*core);
+  gmref_ptr<Opal::Bank> bank (new Bank (*core));
 
   account_core->add_bank (*bank);
   core->add (bank);
@@ -104,18 +104,18 @@ opal_init (Ekiga::ServiceCore &core,
 
   bool result = true;
 
-  gmref_ptr<CallManager> call_manager = new CallManager (core);
+  gmref_ptr<CallManager> call_manager (new CallManager (core));
 
 #ifdef HAVE_SIP
   unsigned sip_port = gm_conf_get_int (SIP_KEY "listen_port");
-  gmref_ptr<Sip::EndPoint> sip_manager = new Sip::EndPoint (*call_manager, core, sip_port);
+  gmref_ptr<Sip::EndPoint> sip_manager (new Sip::EndPoint (*call_manager, core, sip_port));
   call_manager->add_protocol_manager (sip_manager);
   account_core->add_account_subscriber (*sip_manager);
 #endif
 
 #ifdef HAVE_H323
   unsigned h323_port = gm_conf_get_int (H323_KEY "listen_port");
-  gmref_ptr<H323::EndPoint> h323_manager = new H323::EndPoint (*call_manager, core, h323_port);
+  gmref_ptr<H323::EndPoint> h323_manager (new H323::EndPoint (*call_manager, core, h323_port));
   call_manager->add_protocol_manager (h323_manager);
   account_core->add_account_subscriber (*h323_manager);
 #endif
