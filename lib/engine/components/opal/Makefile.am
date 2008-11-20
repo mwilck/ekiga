@@ -22,41 +22,41 @@ INCLUDES = 					        \
 	-I$(top_srcdir)/lib/engine/framework
 
 # Endpoints 
-libopal_la_SOURCES = 			\
-	opal-call-manager.h		\
-	opal-call-manager.cpp		\
-	pcss-endpoint.h		        \
-	pcss-endpoint.cpp		\
-	opal-account.h		        \
-	opal-account.cpp		\
-	opal-bank.h			\
-	opal-bank.cpp			\
-	opal-call.h			\
-	opal-call.cpp			\
-	opal-codec-description.h	\
-	opal-codec-description.cpp	\
-	opal-gmconf-bridge.h		\
-	opal-gmconf-bridge.cpp	        \
-	opal-main.h			\
-	opal-main.cpp
+libopal_la_SOURCES = \
+	$(opal_dir)/opal-call-manager.h \
+	$(opal_dir)/opal-call-manager.cpp \
+	$(opal_dir)/pcss-endpoint.h \
+	$(opal_dir)/pcss-endpoint.cpp \
+	$(opal_dir)/opal-account.h \
+	$(opal_dir)/opal-account.cpp \
+	$(opal_dir)/opal-bank.h \
+	$(opal_dir)/opal-bank.cpp \
+	$(opal_dir)/opal-call.h \
+	$(opal_dir)/opal-call.cpp \
+	$(opal_dir)/opal-codec-description.h \
+	$(opal_dir)/opal-codec-description.cpp \
+	$(opal_dir)/opal-gmconf-bridge.h \
+	$(opal_dir)/opal-gmconf-bridge.cpp \
+	$(opal_dir)/opal-main.h \
+	$(opal_dir)/opal-main.cpp
 
 if HAVE_H323
-libopal_la_SOURCES += 			\
-	h323-endpoint.h		        \
-	h323-endpoint.cpp
+libopal_la_SOURCES += \
+	$(opal_dir)/h323-endpoint.h \
+	$(opal_dir)/h323-endpoint.cpp
 endif
 
 if HAVE_SIP
-libopal_la_SOURCES += 			\
-	sip-chat-simple.h		\
-	sip-chat-simple.cpp		\
-	sip-dialect.h			\
-	sip-dialect.cpp		        \
-	sip-endpoint.h		        \
-	sip-endpoint.cpp
+libopal_la_SOURCES += \
+	$(opal_dir)/sip-chat-simple.h \
+	$(opal_dir)/sip-chat-simple.cpp \
+	$(opal_dir)/sip-dialect.h \
+	$(opal_dir)/sip-dialect.cpp \
+	$(opal_dir)/sip-endpoint.h \
+	$(opal_dir)/sip-endpoint.cpp
 endif
 
-libopal_la_LIBADD = 						\
+libopal_la_LIBADD = \
 	$(top_builddir)/lib/engine/framework/libgmframework.la
 
 libopal_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(GLIB_LIBS) $(OPAL_LIBS) $(PTLIB_LIBS)
