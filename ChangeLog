@@ -1,3 +1,12 @@
+2008-11-20  Julien Puydt  <jpuydt@gnome.org>
+
+	* lib/engine/gui/gtk-frontend/addressbook-window.cpp:
+	* lib/engine/gui/gtk-frontend/book-view-gtk.cpp:
+	* lib/engine/gui/gtk-frontend/roster-view-gtk.cpp: Kicked reference
+	counting out of the GUI : no more crash!
+	* lib/gmref/gmref.cpp: Re-enabled freeing memory.
+	* lib/gmref/gmref.h: Cosmetic changes.
+
 2008-11-18  Julien Puydt  <jpuydt@gnome.org>
 
 	* lib/engine/account/skel/account-core.cpp:
