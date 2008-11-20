@@ -47,21 +47,13 @@ public:
   virtual ~GmRefCounted ()
   {}
 
+  void reference () const { ++refcount; }
+
+  void unreference () const { if (--refcount == 0) delete this; }
+
 private:
-  int refcount;
-
-  friend void gmref_inc (GmRefCounted* obj);
-  friend void gmref_dec (GmRefCounted* obj);
-  friend int gmref_count (GmRefCounted* obj);
+  mutable int refcount;
 };
-
-
-/* base api */
-
-void gmref_init ();
-void gmref_inc (GmRefCounted* obj);
-void gmref_dec (GmRefCounted* obj);
-int gmref_count (GmRefCounted* obj);
 
 /* reference-counted pointer class */
 
@@ -110,10 +102,6 @@ template<typename T> bool operator!=(const gmref_ptr<T>& a,
 template<typename T> bool operator<(const gmref_ptr<T>& a,
 				    const gmref_ptr<T>& b);
 
-
-template<typename T> void gmref_inc (const gmref_ptr<T>& obj);
-template<typename T> void gmref_dec (const gmref_ptr<T>& obj);
-
 /* implementation of the templates */
 
 template<typename T>
@@ -130,20 +118,23 @@ gmref_ptr<T>::~gmref_ptr ()
 template<typename T>
 gmref_ptr<T>::gmref_ptr (T* obj_): obj(obj_)
 {
-  gmref_inc (obj);
+  if (obj != 0)
+    obj->reference ();
 }
 
 template<typename T>
 gmref_ptr<T>::gmref_ptr (const gmref_ptr<T>& ptr): obj(ptr.obj)
 {
-  gmref_inc (obj);
+  if (obj != 0)
+    obj->reference ();
 }
 
 template<typename T>
 template<typename Tprim>
 gmref_ptr<T>::gmref_ptr (const gmref_ptr<Tprim>& ptr): obj(dynamic_cast<T*>(ptr.obj))
 {
-  gmref_inc (obj);
+  if (obj != 0)
+    obj->reference ();
 }
 
 template<typename T>
@@ -196,7 +187,8 @@ template<typename T>
 void
 gmref_ptr<T>::reset ()
 {
-  gmref_dec (obj);
+  if (obj != 0)
+    obj->unreference ();
   obj = 0;
 }
 
@@ -221,18 +213,6 @@ operator<(const gmref_ptr<T>& a,
 	  const gmref_ptr<T>& b)
 {
   return a.get () < b.get ();
-}
-
-template<typename T>
-void gmref_inc (const gmref_ptr<T>& obj)
-{
-  gmref_inc (obj.get ());
-}
-
-template<typename T>
-void gmref_dec (const gmref_ptr<T>& obj)
-{
-  gmref_dec (obj.get ());
 }
 
 #endif

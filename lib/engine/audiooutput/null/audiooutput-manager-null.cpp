@@ -42,7 +42,7 @@ GMAudioOutputManager_null::GMAudioOutputManager_null (Ekiga::ServiceCore & _core
 : core (_core)
 {
   gmref_ptr<Ekiga::Runtime> smart = core.get ("runtime");
-  gmref_inc (smart); // take a reference in the main thread
+  smart->reference (); // take a reference in the main thread
   runtime = &*smart;
   current_state[Ekiga::primary].opened = false;
   current_state[Ekiga::secondary].opened = false;
@@ -50,7 +50,7 @@ GMAudioOutputManager_null::GMAudioOutputManager_null (Ekiga::ServiceCore & _core
 
 GMAudioOutputManager_null::~GMAudioOutputManager_null ()
 {
-  gmref_dec (runtime); // leave a reference in the main thread
+  runtime->unreference (); // leave a reference in the main thread
 }
 
 void GMAudioOutputManager_null::get_devices(std::vector <Ekiga::AudioOutputDevice> & devices)

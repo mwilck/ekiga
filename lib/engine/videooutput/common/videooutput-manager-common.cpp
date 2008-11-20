@@ -51,13 +51,13 @@ GMVideoOutputManager::GMVideoOutputManager(Ekiga::ServiceCore & _core)
     core (_core)
 {
   gmref_ptr<Ekiga::Runtime> smart = core.get ("runtime");
-  gmref_inc (smart); // take a reference on smart in the main thread
+  smart->reference (); // take a reference on smart in the main thread
   runtime = &*smart;
 }
 
 GMVideoOutputManager::~GMVideoOutputManager ()
 {
-  gmref_dec (runtime); // leave a reference on smart in the main thread
+  runtime->unreference (); // leave a reference on smart in the main thread
 }
 
 void GMVideoOutputManager::open ()

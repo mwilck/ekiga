@@ -67,6 +67,7 @@ namespace Opal {
   public:
       EndPoint (CallManager &_manager, Ekiga::ServiceCore & core, unsigned listen_port);
 
+      ~EndPoint ();
 
       /* ContactDecorator and PresentityDecorator */
       bool populate_menu (gmref_ptr<Ekiga::Contact> contact,

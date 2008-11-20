@@ -88,7 +88,7 @@ Opal::H323::EndPoint::EndPoint (Opal::CallManager & _manager, Ekiga::ServiceCore
 
   {
     gmref_ptr<Ekiga::Runtime> smart = core.get ("runtime");
-    gmref_inc (smart); // take a reference in the main thread
+    smart->reference (); // take a reference in the main thread
     runtime = &*smart;
   }
 
@@ -103,6 +103,10 @@ Opal::H323::EndPoint::EndPoint (Opal::CallManager & _manager, Ekiga::ServiceCore
   manager.AddRouteEntry("pc:.* = h323:<da>");
 }
 
+Opal::H323::EndPoint::~EndPoint ()
+{
+  runtime->unreference ();
+}
 
 bool Opal::H323::EndPoint::populate_menu (gmref_ptr<Ekiga::Contact> contact,
                                           std::string uri,

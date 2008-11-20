@@ -4364,9 +4364,6 @@ main (int argc,
   /* initialize platform-specific code */
   gm_platform_init ();
 
-  /* Memory management helpers */
-  gmref_init ();
-
   /* Configuration backend initialization */
   gm_conf_init ();
 

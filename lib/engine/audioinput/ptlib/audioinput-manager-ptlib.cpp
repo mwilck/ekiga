@@ -45,7 +45,7 @@ GMAudioInputManager_ptlib::GMAudioInputManager_ptlib (Ekiga::ServiceCore & _core
 : core (_core)
 {
   gmref_ptr<Ekiga::Runtime> smart = core.get ("runtime");
-  gmref_inc (smart); // take a reference in the main thread
+  smart->reference (); // take a reference in the main thread
   runtime = &*smart;
   current_state.opened = false;
   input_device = NULL;
@@ -54,7 +54,7 @@ GMAudioInputManager_ptlib::GMAudioInputManager_ptlib (Ekiga::ServiceCore & _core
 
 GMAudioInputManager_ptlib::~GMAudioInputManager_ptlib ()
 {
-  gmref_dec (runtime); // leave a reference in the main thread
+  runtime->unreference (); // leave a reference in the main thread
 }
 
 void GMAudioInputManager_ptlib::get_devices(std::vector <Ekiga::AudioInputDevice> & devices)

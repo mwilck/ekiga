@@ -45,14 +45,14 @@ GMVideoInputManager_mlogo::GMVideoInputManager_mlogo (Ekiga::ServiceCore & _core
 : core (_core)
 {
   gmref_ptr<Ekiga::Runtime> smart = core.get ("runtime");
-  gmref_inc (smart); // keep a reference in the main thread
+  smart->reference (); // keep a reference in the main thread
   runtime = &*smart;
   current_state.opened  = false;
 }
 
 GMVideoInputManager_mlogo::~GMVideoInputManager_mlogo ()
 {
-  gmref_dec (runtime);
+  runtime->unreference ();
 }
 
 void GMVideoInputManager_mlogo::get_devices(std::vector <Ekiga::VideoInputDevice> & devices)

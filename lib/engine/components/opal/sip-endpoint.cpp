@@ -125,12 +125,12 @@ Opal::Sip::EndPoint::EndPoint (Opal::CallManager & _manager,
 
   {
     gmref_ptr<Ekiga::Runtime> smart = core.get ("runtime");
-    gmref_inc (smart); // take a reference in the main thread
+    smart->reference (); // take a reference in the main thread
     runtime = &*smart;
   }
   {
     gmref_ptr<Ekiga::AccountCore> smart = core.get ("account-core");
-    gmref_inc (smart); // take a reference in the main thread
+    smart->reference (); // take a reference in the main thread
     account_core = &*smart;
   }
 
@@ -169,8 +169,8 @@ Opal::Sip::EndPoint::EndPoint (Opal::CallManager & _manager,
 
 Opal::Sip::EndPoint::~EndPoint ()
 {
-  gmref_dec (runtime); // leave a reference in the main thread
-  gmref_dec (account_core); // leave a reference in the main thread
+  runtime->unreference (); // leave a reference in the main thread
+  account_core->unreference (); // leave a reference in the main thread
   delete dialect;
 }
 

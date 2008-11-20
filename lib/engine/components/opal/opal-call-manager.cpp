@@ -141,7 +141,7 @@ CallManager::CallManager (Ekiga::ServiceCore & _core)
   call_core = core.get ("call-core");
   {
     gmref_ptr<Ekiga::Runtime> smart = core.get ("runtime");
-    gmref_inc (smart); // take a reference in the main thread
+    smart->reference (); // take a reference in the main thread
     runtime = &*smart;
   }
 
@@ -161,7 +161,7 @@ CallManager::~CallManager ()
   ClearAllCalls (OpalConnection::EndedByLocalUser, true);
 
   g_async_queue_unref (queue);
-  gmref_dec (runtime);
+  runtime->unreference ();
 
   std::cout << "bye callmanager" << std::endl << std::flush;
 }

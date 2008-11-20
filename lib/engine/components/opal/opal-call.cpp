@@ -54,7 +54,7 @@ Opal::Call::Call (OpalManager & _manager, Ekiga::ServiceCore & _core)
 {
   {
     gmref_ptr<Ekiga::Runtime> smart = core.get ("runtime");
-    gmref_inc (smart); // take a reference in the main thread
+    smart->reference (); // take a reference in the main thread
     runtime = &*smart;
   }
   re_a_bytes = tr_a_bytes = re_v_bytes = tr_v_bytes = 0.0;
@@ -76,7 +76,7 @@ Opal::Call::Call (OpalManager & _manager, Ekiga::ServiceCore & _core)
 
 Opal::Call::~Call ()
 {
-  gmref_dec (runtime); // leave a reference in the main thead
+  runtime->unreference (); // leave a reference in the main thead
 }
 
 

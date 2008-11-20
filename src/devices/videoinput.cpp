@@ -73,7 +73,7 @@ PVideoInputDevice_EKIGA::PVideoInputDevice_EKIGA (Ekiga::ServiceCore & _core):
 {
   {
     gmref_ptr<Ekiga::VideoInputCore> smart = core.get ("videoinput-core");
-    gmref_inc (smart); // take a reference in the main thread
+    smart->reference (); // take a reference in the main thread
     videoinput_core = &*smart;
   }
   opened = false;
@@ -84,7 +84,7 @@ PVideoInputDevice_EKIGA::PVideoInputDevice_EKIGA (Ekiga::ServiceCore & _core):
 PVideoInputDevice_EKIGA::~PVideoInputDevice_EKIGA ()
 {
   Close ();
-  gmref_dec (videoinput_core); // leave a reference in the main thread
+  videoinput_core->unreference (); // leave a reference in the main thread
 }
 
 bool
