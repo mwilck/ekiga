@@ -88,6 +88,8 @@ public:
 
   T* get () const;
 
+  void swap (gmref_ptr& other);
+
   void reset ();
 
   operator bool () const;
@@ -148,12 +150,8 @@ template<typename T>
 gmref_ptr<T>&
 gmref_ptr<T>::operator= (const gmref_ptr<T>& other)
 {
-  if (this != &other) {
-
-    reset ();
-    obj = other.obj;
-    gmref_inc (obj);
-  }
+  gmref_ptr<T> temp(other);
+  this->swap (temp);
 
   return *this;
 }
@@ -177,6 +175,15 @@ T*
 gmref_ptr<T>::get () const
 {
   return obj;
+}
+
+template<typename T>
+void
+gmref_ptr<T>::swap (gmref_ptr<T>& other)
+{
+  T* temp = obj;
+  obj = other.obj;
+  other.obj = temp;
 }
 
 template<typename T>
