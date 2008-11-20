@@ -40,7 +40,6 @@
 #include <vector>
 #include <glib/gi18n.h>
 
-#include "gm-refcounted-boxed.h"
 #include "gm-cell-renderer-bitext.h"
 #include "gmcellrendererexpander.h"
 #include "gmstockicons.h"
@@ -528,7 +527,6 @@ update_offline_count (RosterViewGtk* self,
 	  && (presentity->get_presence () == "offline"
 	      || presentity->get_presence () == "unknown"))
 	offline_count++;
-      gmref_dec (presentity);
     } while (gtk_tree_model_iter_next (model, &loop_iter));
   }
 
@@ -653,8 +651,6 @@ on_selection_changed (GtkTreeSelection* selection,
     }
 
     g_free (name);
-    gmref_dec (heap);
-    gmref_dec (presentity);
   } else {
 
     g_signal_emit (self, signals[PRESENTITY_SELECTED_SIGNAL], 0, NULL);
@@ -728,8 +724,6 @@ on_view_event_after (GtkWidget *tree_view,
 	break; // shouldn't happen
       }
       g_free (name);
-      gmref_dec (heap);
-      gmref_dec (presentity);
     }
     gtk_tree_path_free (path);
   }
@@ -1119,7 +1113,6 @@ roster_view_gtk_find_iter_for_heap (RosterViewGtk *view,
       gtk_tree_model_get (model, iter, COLUMN_HEAP, &iter_heap, -1);
       if (iter_heap == &*heap)
 	found = TRUE;
-      gmref_dec (iter_heap);
     } while (!found && gtk_tree_model_iter_next (model, iter));
   }
 
@@ -1184,7 +1177,6 @@ roster_view_gtk_find_iter_for_presentity (RosterViewGtk *view,
       gtk_tree_model_get (model, iter, COLUMN_PRESENTITY, &iter_presentity, -1);
       if (iter_presentity == &*presentity)
 	found = TRUE;
-      gmref_dec (iter_presentity);
     } while (!found && gtk_tree_model_iter_next (model, iter));
   }
 
@@ -1424,8 +1416,8 @@ roster_view_gtk_new (Ekiga::PresenceCore &core)
 
   self->priv->store = gtk_tree_store_new (COLUMN_NUMBER,
                                           G_TYPE_INT,         // type
-                                          GM_TYPE_REFCOUNTED, // heap
-                                          GM_TYPE_REFCOUNTED, // presentity
+                                          G_TYPE_POINTER,     // heap
+                                          G_TYPE_POINTER,     // presentity
                                           G_TYPE_STRING,      // name
                                           G_TYPE_STRING,      // status
                                           G_TYPE_STRING,      // presence

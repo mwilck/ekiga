@@ -39,7 +39,6 @@
 
 #include "gmstockicons.h"
 
-#include "gm-refcounted-boxed.h"
 #include "addressbook-window.h"
 #include "book-view-gtk.h"
 #include "menu-builder-gtk.h"
@@ -410,7 +409,6 @@ on_book_clicked (GtkWidget *tree_view,
                               (gpointer) menu_builder.menu);
           }
           g_object_ref_sink (G_OBJECT (menu_builder.menu));
-	  gmref_dec (book_iter);
         }
         gtk_tree_path_free (path);
       }
@@ -537,11 +535,8 @@ find_iter_for_book (AddressBookWindow *self,
 
       if (&*book == book_iter) {
 
-	gmref_dec (book_iter);
         break;
       }
-
-      gmref_dec (book_iter);
 
       if (!gtk_tree_model_iter_next (store, iter))
         return FALSE;
@@ -709,7 +704,7 @@ addressbook_window_new (Ekiga::ContactCore &core)
   store = gtk_tree_store_new (NUM_COLUMNS,
                               GDK_TYPE_PIXBUF,
                               G_TYPE_STRING,
-                              GM_TYPE_REFCOUNTED,
+                              G_TYPE_POINTER,
                               G_TYPE_OBJECT);
   self->priv->tree_view = gtk_tree_view_new_with_model (GTK_TREE_MODEL (store));
   g_object_unref (store);
