@@ -5,7 +5,6 @@ protocol_dir = $(top_srcdir)/lib/engine/protocol/skel
 AM_CPPFLAGS = $(SIGC_CFLAGS) $(GLIB_CFLAGS)
 
 INCLUDES = \
-	-I$(top_srcdir)/lib/gmref \
 	-I$(top_srcdir)/lib/engine/framework
 
 libgmprotocol_la_SOURCES = \

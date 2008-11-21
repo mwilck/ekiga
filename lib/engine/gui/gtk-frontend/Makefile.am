@@ -7,7 +7,6 @@ AM_CPPFLAGS = $(XML_CFLAGS) $(SIGC_CFLAGS) $(GTK_CFLAGS)
 INCLUDES = \
 	-I$(top_srcdir)/lib/ 					\
 	-I$(top_srcdir)/lib/gmconf 				\
-	-I$(top_srcdir)/lib/gmref 				\
 	-I$(top_srcdir)/lib/gui 				\
 	-I$(top_srcdir)/lib/engine/framework 			\
 	-I$(top_srcdir)/lib/engine/chat/skel 			\

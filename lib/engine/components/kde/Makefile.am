@@ -5,7 +5,6 @@ kde_dir = $(top_srcdir)/lib/engine/components/kde
 AM_CXXFLAGS = $(SIGC_CFLAGS) $(KDE_CFLAGS)
 
 INCLUDES = \
-	-I$(top_srcdir)/lib/gmref \
 	-I$(top_srcdir)/lib/engine/framework
 
 libgmkde_la_SOURCES = \

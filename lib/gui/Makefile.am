@@ -68,6 +68,7 @@ endif
 INCLUDES =						\
 	-I$(top_srcdir)/lib/gmconf			\
 	-I$(top_srcdir)/lib				\
+	-I$(top_srcdir)/lib/engine/framework		\
 	-I$(top_srcdir)/lib/engine/protocol/skel	\
 	-I$(top_srcdir)					\
 	-I$(top_builddir)
@@ -77,8 +78,8 @@ INCLUDES +=						\
 	-I$(top_srcdir)/lib/pixops
 endif
 
-AM_CXXFLAGS = $(GTK_CFLAGS) $(GLIB_CFLAGS) $(OPAL_CFLAGS) $(PTLIB_CFLAGS) $(XV_CFLAGS) $(DX_CFLAGS) $(SIGC_CFLAGS) -I ../../lib/engine/protocol/skel/ -I ../../lib/engine/framework/ -I ../../lib/gmref/
 AM_CFLAGS = $(GTK_CFLAGS) $(GLIB_CFLAGS) $(GNOME_CFLAGS)
+AM_CXXFLAGS = $(GTK_CFLAGS) $(GLIB_CFLAGS) $(OPAL_CFLAGS) $(PTLIB_CFLAGS) $(XV_CFLAGS) $(DX_CFLAGS) $(SIGC_CFLAGS)
 AM_LIBS = $(GTK_LIBS) $(GLIB_LIBS) $(OPAL_LIBS) $(PTLIB_LIBS) $(XV_LIBS) $(DX_LIBS) $(GNOME_LIBS) $(SIGC_LIBS)
 
 libgmwidgets_la_LDFLAGS = -export-dynamic

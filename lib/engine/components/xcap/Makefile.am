@@ -5,7 +5,6 @@ xcap_dir = $(top_srcdir)/lib/engine/components/xcap/
 AM_CXXFLAGS = $(SIGC_CFLAGS) $(SOUP_CFLAGS)
 
 INCLUDES = \
-	-I$(top_srcdir)/lib/gmref \
 	-I$(top_srcdir)/lib/engine/framework
 
 libgmxcap_la_SOURCES = \

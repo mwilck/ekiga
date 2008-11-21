@@ -5,7 +5,6 @@ echochat_dir = $(top_srcdir)/lib/engine/chat/echo
 AM_CXXFLAGS = $(SIGC_CFLAGS)
 
 INCLUDES = \
-	-I$(top_srcdir)/lib/gmref \
 	-I$(top_srcdir)/lib/engine/framework \
 	-I$(top_srcdir)/lib/engine/presence/skel \
 	-I$(top_srcdir)/lib/engine/chat/skel

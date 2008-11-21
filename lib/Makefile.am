@@ -1,4 +1,4 @@
-SUBDIRS = gmconf gmref gui toolbox platform
+SUBDIRS = gmconf gui toolbox platform
 
 if !WIN32
 SUBDIRS += pixops
@@ -23,7 +23,6 @@ INCLUDES =						\
 libekiga_la_LDFLAGS = -export-dynamic
 libekiga_la_LIBADD = \
 	gmconf/libgmconf.la \
-	gmref/libgmref.la \
 	gui/libgmwidgets.la \
 	toolbox/libtoolbox.la \
 	platform/libgmplatform.la

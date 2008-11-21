@@ -9,7 +9,6 @@ kab_dir = $(top_srcdir)/lib/engine/addressbook/kab
 AM_CPPFLAGS = $(SIGC_CFLAGS) $(KAB_CFLAGS)
 
 INCLUDES = \
-	-I$(top_srcdir)/lib/gmref \
 	-I$(top_srcdir)/lib/engine/framework \
 	-I$(top_srcdir)/lib/engine/addressbook/skel
 

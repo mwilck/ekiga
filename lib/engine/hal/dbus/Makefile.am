@@ -7,7 +7,6 @@ AM_CXXFLAGS = $(SIGC_CFLAGS) $(GLIB_CFLAGS) $(DBUS_CFLAGS) $(PTLIB_CFLAGS)
 AM_CFLAGS = $(GLIB_CFLAGS) $(DBUS_CFLAGS)
 
 INCLUDES = \
-	-I$(top_srcdir)/lib/gmref \
 	-I$(top_srcdir)/lib/engine/framework \
 	-I$(top_srcdir)/lib/engine/hal/skel \
 	-I$(top_srcdir)/lib/engine/hal/dbus

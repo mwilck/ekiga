@@ -749,7 +749,6 @@ AC_PACKAGE_NAME.schemas.in
 AC_PACKAGE_NAME.desktop.in
 lib/Makefile
 lib/gmconf/Makefile
-lib/gmref/Makefile
 lib/gui/Makefile
 lib/pixops/Makefile
 lib/toolbox/Makefile

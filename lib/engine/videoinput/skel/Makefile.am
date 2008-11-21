@@ -6,8 +6,6 @@ AM_CXXFLAGS = $(SIGC_CFLAGS) $(GLIB_CFLAGS) $(PTLIB_CFLAGS)
 
 INCLUDES = \
 	-I$(top_srcdir)/lib/gmconf \
-	-I$(top_srcdir)/lib/gmref \
-	-I$(top_srcdir)/lib/engine/include \
 	-I$(top_srcdir)/lib/engine/framework \
 	-I$(top_srcdir)/lib/engine/videooutput/skel \
 	-I$(top_srcdir)/lib/engine/videoinput/skel \

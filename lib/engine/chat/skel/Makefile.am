@@ -5,7 +5,6 @@ chat_dir = $(top_srcdir)/lib/engine/chat/skel
 AM_CPPFLAGS = $(SIGC_CFLAGS) $(GLIB_CFLAGS)
 
 INCLUDES = \
-	-I$(top_srcdir)/lib/gmref \
 	-I$(top_srcdir)/lib/engine/framework \
 	-I$(top_srcdir)/lib/engine/presence/skel
 

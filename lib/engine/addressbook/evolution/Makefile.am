@@ -5,7 +5,6 @@ evolution_dir = $(top_srcdir)/lib/engine/addressbook/evolution
 AM_CXXFLAGS = $(SIGC_CFLAGS) $(EDS_CFLAGS) $(GLIB_CFLAGS)
 
 INCLUDES = \
-	-I$(top_srcdir)/lib/gmref \
 	-I$(top_srcdir)/lib/engine/framework \
 	-I$(top_srcdir)/lib/engine/addressbook/skel
 
