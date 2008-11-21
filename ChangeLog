@@ -1,3 +1,53 @@
+2008-11-21  Julien Puydt  <jpuydt@gnome.org>
+
+	* configure.ac:
+	* lib/Makefile.am:
+	* lib/engine/Makefile.am:
+	* lib/engine/account/skel/Makefile.am:
+	* lib/engine/addressbook/call-history/Makefile.am:
+	* lib/engine/addressbook/evolution/Makefile.am:
+	* lib/engine/addressbook/kab/Makefile.am:
+	* lib/engine/addressbook/ldap/Makefile.am:
+	* lib/engine/addressbook/skel/Makefile.am:
+	* lib/engine/audioinput/null/Makefile.am:
+	* lib/engine/audioinput/ptlib/Makefile.am:
+	* lib/engine/audioinput/skel/Makefile.am:
+	* lib/engine/audiooutput/null/Makefile.am:
+	* lib/engine/audiooutput/ptlib/Makefile.am:
+	* lib/engine/audiooutput/skel/Makefile.am:
+	* lib/engine/chat/echo/Makefile.am:
+	* lib/engine/chat/skel/Makefile.am:
+	* lib/engine/components/avahi-publisher/Makefile.am:
+	* lib/engine/components/gmconf-personal-details/Makefile.am:
+	* lib/engine/components/gstreamer/Makefile.am:
+	* lib/engine/components/kde/Makefile.am:
+	* lib/engine/components/opal/Makefile.am:
+	* lib/engine/components/resource-list/Makefile.am:
+	* lib/engine/components/xcap/Makefile.am:
+	* lib/engine/framework/Makefile.am:
+	* lib/engine/framework/gmref.h:
+	* lib/engine/gui/gtk-core/Makefile.am:
+	* lib/engine/gui/gtk-core/gm-refcounted-boxed.cpp:
+	* lib/engine/gui/gtk-core/gm-refcounted-boxed.h:
+	* lib/engine/gui/gtk-frontend/Makefile.am:
+	* lib/engine/hal/dbus/Makefile.am:
+	* lib/engine/hal/skel/Makefile.am:
+	* lib/engine/presence/avahi/Makefile.am:
+	* lib/engine/presence/local-roster/Makefile.am:
+	* lib/engine/presence/skel/Makefile.am:
+	* lib/engine/protocol/skel/Makefile.am:
+	* lib/engine/videoinput/mlogo/Makefile.am:
+	* lib/engine/videoinput/ptlib/Makefile.am:
+	* lib/engine/videoinput/skel/Makefile.am:
+	* lib/engine/videooutput/dx/Makefile.am:
+	* lib/engine/videooutput/skel/Makefile.am:
+	* lib/engine/videooutput/x/Makefile.am:
+	* lib/gmref/Makefile.am:
+	* lib/gmref/gmref.cpp:
+	* lib/gmref/gmref.h:
+	* lib/gui/Makefile.am:
+	* src/Makefile.am: Moved gmref.h to lib/engine/framework.
+
 2008-11-20  Julien Puydt  <jpuydt@gnome.org>
 
 	* lib/engine/components/opal/Makefile.am: Made it handle out-of-tree
