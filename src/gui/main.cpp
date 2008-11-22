@@ -2691,7 +2691,7 @@ notify_action_cb (NotifyNotification *notification,
                   gchar *action,
                   gpointer data)
 {
-  Ekiga::Call *call = (Ekiga::Call *) data;
+  gmref_ptr<Ekiga::Call> call = gmref_ptr<Ekiga::Call> (*(gmref_ptr<Ekiga::Call> *) data);
 
   notify_notification_close (notification, NULL);
 
@@ -2711,7 +2711,6 @@ closed_cb (NotifyNotification* /*notify*/,
 {
   EkigaMainWindow *mw;
 
-  std::cout << main_window << std::endl << std::flush;
   g_return_if_fail (main_window != NULL);
 
   mw = EKIGA_MAIN_WINDOW (main_window);
@@ -2738,7 +2737,6 @@ ekiga_main_window_incoming_call_notify (EkigaMainWindow *mw,
 
   statusicon = GTK_STATUS_ICON (GnomeMeeting::Process ()->GetStatusicon ());
 
-  // FIXME could the call become invalid ?
   const char *utf8_name = call->get_remote_party_name ().c_str ();
   const char *utf8_app = call->get_remote_application ().c_str ();
   const char *utf8_url = call->get_remote_uri ().c_str ();
