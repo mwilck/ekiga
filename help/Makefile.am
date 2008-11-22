@@ -20,8 +20,6 @@ DOC_FIGURES = figures/lumi.png        \
               figures/config_d7.png   \
               figures/config_d8.png   \
               figures/call_d1.png     \
-              figures/call_d2.png     \
-              figures/stats.png       \
               figures/accounts_d1.png    \
               figures/accounts_sip.png   \
               figures/accounts_h323.png  \
