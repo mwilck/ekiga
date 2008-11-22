@@ -19,8 +19,6 @@ DOC_FIGURES = figures/lumi.png        \
               figures/config_d6.png   \
               figures/config_d7.png   \
               figures/config_d8.png   \
-              figures/config_d9.png   \
-              figures/config_d10.png  \
               figures/call_d1.png     \
               figures/call_d2.png     \
               figures/stats.png       \
