@@ -2689,18 +2689,18 @@ ekiga_main_window_incoming_call_dialog_show (EkigaMainWindow *mw,
 static void
 notify_action_cb (NotifyNotification *notification,
                   gchar *action,
-                  gpointer data)
+                  gpointer main_window)
 {
-  gmref_ptr<Ekiga::Call> call = gmref_ptr<Ekiga::Call> (*(gmref_ptr<Ekiga::Call> *) data);
+  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (main_window);
 
   notify_notification_close (notification, NULL);
 
-  if (call) {
+  if (mw->priv->current_call) {
 
     if (!strcmp (action, "accept"))
-      call->answer ();
+      mw->priv->current_call->answer ();
     else
-      call->hangup ();
+      mw->priv->current_call->hangup ();
   }
 }
 
@@ -2754,8 +2754,8 @@ ekiga_main_window_incoming_call_notify (EkigaMainWindow *mw,
   body = g_strdup_printf ("%s\n%s\n%s", uri, app, account);
   
   notify = notify_notification_new (title, body, GM_ICON_LOGO, NULL);
-  notify_notification_add_action (notify, "accept", _("Accept"), notify_action_cb, &call, NULL);
-  notify_notification_add_action (notify, "reject", _("Reject"), notify_action_cb, &call, NULL);
+  notify_notification_add_action (notify, "accept", _("Accept"), notify_action_cb, mw, NULL);
+  notify_notification_add_action (notify, "reject", _("Reject"), notify_action_cb, mw, NULL);
   notify_notification_set_timeout (notify, NOTIFY_EXPIRES_NEVER);
   notify_notification_set_urgency (notify, NOTIFY_URGENCY_CRITICAL);
   notify_notification_attach_to_status_icon (notify, statusicon);
