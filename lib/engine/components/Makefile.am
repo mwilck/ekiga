@@ -35,6 +35,7 @@ SUBDIRS =                       \
 	gmconf-personal-details \
         local-roster            \
         opal                    \
+        ptlib                   \
 	$(AVAHI_DIR)            \
 	$(GSTREAMER_DIR)        \
 	$(KDE_DIR)              \

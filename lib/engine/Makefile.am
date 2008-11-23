@@ -29,6 +29,7 @@ INCLUDES = 								\
 	-I$(top_srcdir)/lib/engine/components/gstreamer			\
 	-I$(top_srcdir)/lib/engine/components/kde			\
 	-I$(top_srcdir)/lib/engine/components/opal	                \
+	-I$(top_srcdir)/lib/engine/components/ptlib	                \
 	-I$(top_srcdir)/lib/engine/components/resource-list		\
 	-I$(top_srcdir)/lib/engine/components/xcap
 
@@ -99,8 +100,7 @@ libekiga_engine_la_LIBADD += \
 # PTLIB Input Devices
 libekiga_engine_la_LIBADD += \
 	$(top_builddir)/lib/engine/videoinput/ptlib/libgmvideoinput-ptlib.la \
-	$(top_builddir)/lib/engine/audioinput/ptlib/libgmaudioinput-ptlib.la \
-	$(top_builddir)/lib/engine/audiooutput/ptlib/libgmaudiooutput-ptlib.la
+	$(top_builddir)/lib/engine/components/ptlib/libgmptlib.la
 
 # DBus/HALd
 if HAVE_DBUS

@@ -788,11 +788,10 @@ lib/engine/videoinput/ptlib/Makefile
 lib/engine/audioinput/Makefile
 lib/engine/audioinput/skel/Makefile
 lib/engine/audioinput/null/Makefile
-lib/engine/audioinput/ptlib/Makefile
+lib/engine/components/ptlib/Makefile
 lib/engine/audiooutput/Makefile
 lib/engine/audiooutput/skel/Makefile
 lib/engine/audiooutput/null/Makefile
-lib/engine/audiooutput/ptlib/Makefile
 lib/engine/hal/Makefile
 lib/engine/hal/skel/Makefile
 lib/engine/hal/dbus/Makefile

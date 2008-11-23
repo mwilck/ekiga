@@ -1,1 +1,1 @@
-SUBDIRS = skel null ptlib
+SUBDIRS = skel null
