@@ -37,25 +37,15 @@
 #ifndef __GMREF_H__
 #define __GMREF_H__
 
-/* base class */
-class GmRefCounted
-{
-public:
-  GmRefCounted (): refcount(0)
-  {}
-
-  virtual ~GmRefCounted ()
-  {}
-
-  void reference () const { ++refcount; }
-
-  void unreference () const { if (--refcount == 0) delete this; }
-
-private:
-  mutable int refcount;
-};
-
-/* reference-counted pointer class */
+/* This is a reference-counted pointer class ; all it asks to the wrapped
+ * object is a pair of reference/unreference methods.
+ *
+ * This class is thread-safe in the weak sense : you can use gmref_ptr from
+ * any thread -- as long as you don't cross the thread boundary with a same
+ * instance.
+ *
+ * See later down for an helper to implement refcounted objects.
+ */
 
 template<typename T>
 class gmref_ptr
@@ -101,6 +91,25 @@ template<typename T> bool operator!=(const gmref_ptr<T>& a,
 
 template<typename T> bool operator<(const gmref_ptr<T>& a,
 				    const gmref_ptr<T>& b);
+
+/* base class for a reference counted object : serves mostly
+ */
+class GmRefCounted
+{
+public:
+  GmRefCounted (): refcount(0)
+  {}
+
+  virtual ~GmRefCounted ()
+  {}
+
+  void reference () const { ++refcount; }
+
+  void unreference () const { if (--refcount == 0) delete this; }
+
+private:
+  mutable int refcount;
+};
 
 /* implementation of the templates */
 
