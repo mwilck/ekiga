@@ -1,1 +1,1 @@
-SUBDIRS = skel mlogo ptlib
+SUBDIRS = skel mlogo

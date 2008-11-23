@@ -784,7 +784,6 @@ lib/engine/videooutput/dx/Makefile
 lib/engine/videoinput/Makefile
 lib/engine/videoinput/skel/Makefile
 lib/engine/videoinput/mlogo/Makefile
-lib/engine/videoinput/ptlib/Makefile
 lib/engine/audioinput/Makefile
 lib/engine/audioinput/skel/Makefile
 lib/engine/audioinput/null/Makefile

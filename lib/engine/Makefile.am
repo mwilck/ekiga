@@ -99,7 +99,6 @@ libekiga_engine_la_LIBADD += \
 
 # PTLIB Input Devices
 libekiga_engine_la_LIBADD += \
-	$(top_builddir)/lib/engine/videoinput/ptlib/libgmvideoinput-ptlib.la \
 	$(top_builddir)/lib/engine/components/ptlib/libgmptlib.la
 
 # DBus/HALd
