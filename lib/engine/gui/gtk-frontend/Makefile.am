@@ -14,7 +14,7 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/engine/protocol/skel 		\
 	-I$(top_srcdir)/lib/engine/account/skel 		\
 	-I$(top_srcdir)/lib/engine/addressbook/skel 		\
-	-I$(top_srcdir)/lib/engine/addressbook/call-history 	\
+	-I$(top_srcdir)/lib/engine/components/call-history 	\
 	-I$(top_srcdir)/lib/engine/gui/gtk-core 
 
 libgmgtk_frontend_la_SOURCES = \

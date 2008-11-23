@@ -763,10 +763,9 @@ lib/engine/Makefile
 lib/engine/account/Makefile
 lib/engine/account/skel/Makefile
 lib/engine/addressbook/Makefile
-lib/engine/addressbook/call-history/Makefile
-lib/engine/addressbook/evolution/Makefile
-lib/engine/addressbook/ldap/Makefile
-lib/engine/addressbook/kab/Makefile
+lib/engine/components/call-history/Makefile
+lib/engine/components/ldap/Makefile
+lib/engine/components/kab/Makefile
 lib/engine/addressbook/skel/Makefile
 lib/engine/chat/Makefile
 lib/engine/chat/echo/Makefile
@@ -808,6 +807,7 @@ lib/engine/components/kde/Makefile
 lib/engine/components/resource-list/Makefile
 lib/engine/components/xcap/Makefile
 lib/engine/components/opal/Makefile
+lib/engine/components/evolution/Makefile
 )
 
 

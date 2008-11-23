@@ -1,6 +1,6 @@
 noinst_LTLIBRARIES = libgmldap.la
 
-ldap_dir = $(top_srcdir)/lib/engine/addressbook/ldap
+ldap_dir = $(top_srcdir)/lib/engine/components/ldap
 
 AM_CPPFLAGS = $(LDAP_CFLAGS) $(SIGC_CFLAGS) $(GLIB_CFLAGS) $(XML_CFLAGS)
 

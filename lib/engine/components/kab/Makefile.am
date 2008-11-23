@@ -4,7 +4,7 @@ else
 noinst_LTLIBRARIES = libgmkab.la
 endif
 
-kab_dir = $(top_srcdir)/lib/engine/addressbook/kab
+kab_dir = $(top_srcdir)/lib/engine/components/kab
 
 AM_CPPFLAGS = $(SIGC_CFLAGS) $(KAB_CFLAGS)
 

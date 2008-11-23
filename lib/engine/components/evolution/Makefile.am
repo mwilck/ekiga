@@ -1,6 +1,6 @@
 noinst_LTLIBRARIES = libgmevolution.la
 
-evolution_dir = $(top_srcdir)/lib/engine/addressbook/evolution
+evolution_dir = $(top_srcdir)/lib/engine/components/evolution
 
 AM_CXXFLAGS = $(SIGC_CFLAGS) $(EDS_CFLAGS) $(GLIB_CFLAGS)
 

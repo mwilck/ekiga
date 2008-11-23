@@ -1,3 +1,15 @@
+if HAVE_LDAP
+LDAP_DIR = ldap
+endif
+
+if HAVE_KAB
+KAB_DIR = kab
+endif
+
+if HAVE_EDS
+EDS_DIR = evolution
+endif
+
 if HAVE_AVAHI
 AVAHI_DIR = avahi-publisher
 endif
@@ -15,9 +27,13 @@ XCAP_DIRS = xcap resource-list
 endif
 
 SUBDIRS =                       \
+	call-history	        \
 	gmconf-personal-details \
         opal                    \
 	$(AVAHI_DIR)            \
 	$(GSTREAMER_DIR)        \
 	$(KDE_DIR)              \
+	$(EDS_DIR) 	        \
+	$(LDAP_DIR)	        \
+	$(KAB_DIR)              \
 	$(XCAP_DIRS)

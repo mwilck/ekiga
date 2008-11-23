@@ -11,10 +11,10 @@ INCLUDES = 								\
 	-I$(top_srcdir)/lib/engine/chat/skel				\
 	-I$(top_srcdir)/lib/engine/protocol/skel			\
 	-I$(top_srcdir)/lib/engine/addressbook/skel			\
-	-I$(top_srcdir)/lib/engine/addressbook/call-history		\
-	-I$(top_srcdir)/lib/engine/addressbook/evolution		\
-	-I$(top_srcdir)/lib/engine/addressbook/kab			\
-	-I$(top_srcdir)/lib/engine/addressbook/ldap			\
+	-I$(top_srcdir)/lib/engine/components/call-history		\
+	-I$(top_srcdir)/lib/engine/components/evolution		        \
+	-I$(top_srcdir)/lib/engine/components/kab			\
+	-I$(top_srcdir)/lib/engine/components/ldap			\
 	-I$(top_srcdir)/lib/engine/account/skel				\
 	-I$(top_srcdir)/lib/engine/presence/skel			\
 	-I$(top_srcdir)/lib/engine/presence/avahi			\
@@ -77,7 +77,7 @@ libekiga_engine_la_LIBADD = \
 	$(top_builddir)/lib/engine/protocol/skel/libgmprotocol.la	 				\
 	$(top_builddir)/lib/engine/framework/libgmframework.la 						\
 	$(top_builddir)/lib/engine/addressbook/skel/libgmaddressbook.la 				\
-	$(top_builddir)/lib/engine/addressbook/call-history/libcall-history.la 				\
+	$(top_builddir)/lib/engine/components/call-history/libcall-history.la 				\
 	$(top_builddir)/lib/engine/account/skel/libaccount.la 						\
 	$(top_builddir)/lib/engine/presence/skel/libgmpresence.la 					\
 	$(top_builddir)/lib/engine/presence/local-roster/liblocal-roster.la 				\
@@ -129,11 +129,11 @@ libekiga_engine_la_LIBADD += \
 endif
 
 if HAVE_EDS
-libekiga_engine_la_LIBADD += addressbook/evolution/libgmevolution.la
+libekiga_engine_la_LIBADD += components/evolution/libgmevolution.la
 endif
 
 if HAVE_LDAP
-libekiga_engine_la_LIBADD += addressbook/ldap/libgmldap.la
+libekiga_engine_la_LIBADD += components/ldap/libgmldap.la
 endif
 
 if HAVE_GSTREAMER
@@ -145,7 +145,7 @@ libekiga_engine_la_LIBADD += components/kde/libgmkde.la
 endif
 
 if HAVE_KAB
-libekiga_engine_la_LIBADD += addressbook/kab/libgmkab.la
+libekiga_engine_la_LIBADD += components/kab/libgmkab.la
 endif
 
 if HAVE_XCAP

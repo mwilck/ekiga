@@ -1,6 +1,6 @@
 noinst_LTLIBRARIES = libcall-history.la
 
-call_history_dir = $(top_srcdir)/lib/engine/addressbook/call-history
+call_history_dir = $(top_srcdir)/lib/engine/components/call-history
 
 AM_CPPFLAGS = $(XML_CFLAGS) $(SIGC_CFLAGS) $(GLIB_CFLAGS)
 
