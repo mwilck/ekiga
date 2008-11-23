@@ -17,8 +17,8 @@ INCLUDES = 								\
 	-I$(top_srcdir)/lib/engine/components/ldap			\
 	-I$(top_srcdir)/lib/engine/account/skel				\
 	-I$(top_srcdir)/lib/engine/presence/skel			\
-	-I$(top_srcdir)/lib/engine/presence/avahi			\
-	-I$(top_srcdir)/lib/engine/presence/local-roster		\
+	-I$(top_srcdir)/lib/engine/components/avahi			\
+	-I$(top_srcdir)/lib/engine/components/local-roster		\
 	-I$(top_srcdir)/lib/engine/videooutput/skel			\
 	-I$(top_srcdir)/lib/engine/videoinput/skel			\
 	-I$(top_srcdir)/lib/engine/audioinput/skel			\
@@ -80,7 +80,7 @@ libekiga_engine_la_LIBADD = \
 	$(top_builddir)/lib/engine/components/call-history/libcall-history.la 				\
 	$(top_builddir)/lib/engine/account/skel/libaccount.la 						\
 	$(top_builddir)/lib/engine/presence/skel/libgmpresence.la 					\
-	$(top_builddir)/lib/engine/presence/local-roster/liblocal-roster.la 				\
+	$(top_builddir)/lib/engine/components/local-roster/liblocal-roster.la 				\
 	$(top_builddir)/lib/engine/videooutput/skel/libgmvideooutput.la					\
 	$(top_builddir)/lib/engine/videoinput/skel/libgmvideoinput.la					\
 	$(top_builddir)/lib/engine/audioinput/skel/libgmaudioinput.la					\
@@ -124,7 +124,7 @@ endif
 
 if HAVE_AVAHI
 libekiga_engine_la_LIBADD += \
-	$(top_builddir)/lib/engine/presence/avahi/libgmavahi.la \
+	$(top_builddir)/lib/engine/components/avahi/libgmavahi.la \
 	$(top_builddir)/lib/engine/components/avahi-publisher/libavahipublisher.la
 endif
 

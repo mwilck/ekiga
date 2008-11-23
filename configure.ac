@@ -772,8 +772,8 @@ lib/engine/chat/echo/Makefile
 lib/engine/chat/skel/Makefile
 lib/engine/framework/Makefile
 lib/engine/presence/Makefile
-lib/engine/presence/avahi/Makefile
-lib/engine/presence/local-roster/Makefile
+lib/engine/components/avahi/Makefile
+lib/engine/components/local-roster/Makefile
 lib/engine/presence/skel/Makefile
 lib/engine/protocol/Makefile
 lib/engine/protocol/skel/Makefile

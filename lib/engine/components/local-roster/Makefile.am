@@ -1,6 +1,6 @@
 noinst_LTLIBRARIES = liblocal-roster.la
 
-local_roster_dir = $(top_srcdir)/lib/engine/presence/local-roster
+local_roster_dir = $(top_srcdir)/lib/engine/components/local-roster
 
 AM_CPPFLAGS = $(XML_CFLAGS) $(SIGC_CFLAGS) $(GLIB_CFLAGS)
 

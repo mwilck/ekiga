@@ -1,6 +1,6 @@
 noinst_LTLIBRARIES = libgmavahi.la
 
-avahi_dir = $(top_srcdir)/lib/engine/presence/avahi
+avahi_dir = $(top_srcdir)/lib/engine/components/avahi
 
 AM_CPPFLAGS = $(SIGC_CFLAGS) $(AVAHI_CFLAGS)
 
