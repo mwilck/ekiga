@@ -42,7 +42,7 @@
 #include "services.h"
 #include "call.h"
 
-#include "lib/gui/gmwindow.h"
+#include "gmwindow.h"
 
 G_BEGIN_DECLS
 
