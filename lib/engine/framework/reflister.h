@@ -82,7 +82,17 @@ namespace Ekiga
 template<typename ObjectType>
 Ekiga::RefLister<ObjectType>::~RefLister ()
 {
-  objects.clear ();
+  for (typename container_type::iterator iter = objects.begin ();
+       iter != objects.end ();
+       ++iter) {
+
+    for (std::list<sigc::connection>::iterator conn_iter = iter->second.begin ();
+	 conn_iter != iter->second.end ();
+	 ++conn_iter) {
+
+      conn_iter->disconnect ();
+    }
+  }
 }
 
 template<typename ObjectType>
@@ -100,11 +110,8 @@ template<typename ObjectType>
 void
 Ekiga::RefLister<ObjectType>::add_object (gmref_ptr<ObjectType> obj)
 {
-  std::list<sigc::connection> connections;
-  connections.push_back (obj->updated.connect (sigc::bind (object_updated.make_slot (), obj)));
-  connections.push_back (obj->removed.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::RefLister<ObjectType>::remove_object), obj)));
-
-  objects[obj] = connections;
+  objects[obj].push_back (obj->updated.connect (sigc::bind (object_updated.make_slot (), obj)));
+  objects[obj].push_back (obj->removed.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::RefLister<ObjectType>::remove_object), obj)));
 
   object_added.emit (obj);
 }
