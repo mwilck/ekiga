@@ -37,7 +37,7 @@
 #include <iostream>
 #include <set>
 
-#include "config.h"
+#include <glib/gi18n.h>
 
 #include "form-request-simple.h"
 #include "robust-xml.h"
@@ -193,7 +193,7 @@ RL::Presentity::populate_menu (Ekiga::MenuBuilder &builder)
   bool populated = false;
   gmref_ptr<Ekiga::PresenceCore> presence_core(services.get ("presence-core"));
 
-  populated = presence_core->populate_presentity_menu (*this, uri, builder);
+  populated = presence_core->populate_presentity_menu (gmref_ptr<Presentity> (this), uri, builder);
 
   if (writable) {
 

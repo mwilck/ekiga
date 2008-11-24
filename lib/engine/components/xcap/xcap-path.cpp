@@ -89,8 +89,8 @@ XCAP::Path::set_credentials (std::string username_,
 gmref_ptr<XCAP::Path>
 XCAP::Path::build_child (const std::string name)
 {
-  gmref_ptr<Path> result = new Path (root, application, user,
-				     relative, username, password);
+  gmref_ptr<Path> result (new Path (root, application, user,
+				    relative, username, password));
   result->relative = relative + "/" + name;
 
   return result;
@@ -101,8 +101,8 @@ XCAP::Path::build_child_with_attribute (const std::string name,
 					const std::string attr,
 					const std::string value)
 {
-  gmref_ptr<Path> result = new Path (root, application, user, relative,
-				     username, password);
+  gmref_ptr<Path> result (new Path (root, application, user, relative,
+				    username, password));
   result->relative = relative + "/" + name +"%5b@" + attr + "=%22" + value + "%22%5d";
 
   return result;
@@ -113,8 +113,8 @@ XCAP::Path::build_child_with_position (const std::string name,
 				       int position)
 {
   std::ostringstream stream;
-  gmref_ptr<Path> result = new Path (root, application, user, relative,
-				     username, password);
+  gmref_ptr<Path> result (new Path (root, application, user, relative,
+				    username, password));
 
   /* notice: Snark hates C++ */
   stream << name << "%5b" << position << "%5d";

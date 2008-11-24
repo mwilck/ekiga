@@ -36,6 +36,7 @@
  */
 
 #include "config.h"
+#include <glib/gi18n.h>
 
 #include "rl-cluster.h"
 
@@ -107,9 +108,9 @@ RL::Cluster::populate_menu (Ekiga::MenuBuilder& builder)
 void
 RL::Cluster::add (xmlNodePtr node)
 {
-  Heap* heap = new Heap (core, node);
+  gmref_ptr<Heap> heap (new Heap (core, node));
 
-  common_add (*heap);
+  common_add (heap);
 }
 
 void
@@ -120,23 +121,23 @@ RL::Cluster::add (const std::string uri,
 		  const std::string name,
 		  bool writable)
 {
-  Heap* heap = new Heap (core, name, uri, user, username, password, writable);
+  gmref_ptr<Heap> heap (new Heap (core, name, uri, user, username, password, writable));
   xmlNodePtr root = xmlDocGetRootElement (doc);
 
   xmlAddChild (root, heap->get_node ());
 
   save ();
-  common_add (*heap);
+  common_add (heap);
 }
 
 void
-RL::Cluster::common_add (Heap& heap)
+RL::Cluster::common_add (gmref_ptr<Heap> heap)
 {
   add_heap (heap);
 
   // FIXME: here we should ask for presence for the heap...
 
-  heap.trigger_saving.connect (sigc::mem_fun (this, &RL::Cluster::save));
+  heap->trigger_saving.connect (sigc::mem_fun (this, &RL::Cluster::save));
 }
 
 void
@@ -217,7 +218,7 @@ RL::Cluster::on_presence_received (std::string uri,
        iter != end ();
        ++iter) {
 
-    iter->push_presence (uri, presence);
+    (*iter)->push_presence (uri, presence);
   }
 }
 
@@ -229,6 +230,6 @@ RL::Cluster::on_status_received (std::string uri,
        iter != end ();
        ++iter) {
 
-    iter->push_status (uri, status);
+    (*iter)->push_status (uri, status);
   }
 }

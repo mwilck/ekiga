@@ -35,7 +35,7 @@
  *
  */
 
-#include "config.h"
+#include <glib/gi18n.h>
 
 #include <iostream>
 
@@ -183,7 +183,7 @@ RL::Heap::get_name () const
 }
 
 void
-RL::Heap::visit_presentities (sigc::slot1<bool, Ekiga::Presentity&> visitor)
+RL::Heap::visit_presentities (sigc::slot1<bool, gmref_ptr<Ekiga::Presentity> > visitor)
 {
   bool go_on = true;
 
@@ -191,7 +191,7 @@ RL::Heap::visit_presentities (sigc::slot1<bool, Ekiga::Presentity&> visitor)
 	 iter = presentities.begin ();
        go_on && iter != presentities.end ();
        ++iter)
-    go_on = visitor (*iter->first);
+    go_on = visitor (iter->first);
 }
 
 bool
@@ -371,12 +371,12 @@ RL::Heap::parse_list (xmlNodePtr list)
 
       gmref_ptr<Presentity> presentity(new Presentity (services, path, child, writable));
       std::list<sigc::connection> conns;
-      conns.push_back (presentity->updated.connect (sigc::bind (sigc::mem_fun (this, &RL::Heap::on_presentity_updated),presentity)));
-      conns.push_back (presentity->removed.connect (sigc::bind(sigc::mem_fun (this, &RL::Heap::on_presentity_removed),presentity)));
+      conns.push_back (presentity->updated.connect (sigc::bind (presentity_updated.make_slot (),presentity)));
+      conns.push_back (presentity->removed.connect (sigc::bind(presentity_removed.make_slot (),presentity)));
       conns.push_back (presentity->trigger_reload.connect (sigc::mem_fun (this, &RL::Heap::refresh)));
       conns.push_back (presentity->questions.connect (questions.make_slot()));
       presentities[presentity]=conns;
-      presentity_added.emit (*presentity);
+      presentity_added.emit (presentity);
       continue;
     }
 }
@@ -647,16 +647,4 @@ RL::Heap::new_entry_result (std::string error)
   }
 
   refresh ();
-}
-
-void
-RL::Heap::on_presentity_updated (gmref_ptr<Presentity> presentity)
-{
-  presentity_updated.emit (*presentity);
-}
-
-void
-RL::Heap::on_presentity_removed (gmref_ptr<Presentity> presentity)
-{
-  presentity_removed.emit (*presentity);
 }

@@ -41,7 +41,7 @@
 bool
 xcap_init (Ekiga::ServiceCore& core)
 {
-  gmref_ptr<XCAP::Core> xcap = new XCAP::Core ();
+  gmref_ptr<XCAP::Core> xcap(new XCAP::Core ());
 
   core.add (xcap);
 

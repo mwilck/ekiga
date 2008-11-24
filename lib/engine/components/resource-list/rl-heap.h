@@ -73,7 +73,7 @@ namespace RL {
 
     const std::string get_name () const;
 
-    void visit_presentities (sigc::slot1<bool, Ekiga::Presentity&> visitor);
+    void visit_presentities (sigc::slot1<bool, gmref_ptr<Ekiga::Presentity> > visitor);
 
     bool populate_menu (Ekiga::MenuBuilder& builder);
 
@@ -122,9 +122,6 @@ namespace RL {
     void on_new_entry_form_submitted (bool submitted,
 				      Ekiga::Form& result);
     void new_entry_result (std::string error);
-
-    void on_presentity_updated (gmref_ptr<Presentity> presentity);
-    void on_presentity_removed (gmref_ptr<Presentity> presentity);
   };
 };
 

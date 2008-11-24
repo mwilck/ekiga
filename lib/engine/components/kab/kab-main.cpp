@@ -50,7 +50,7 @@ kab_init (Ekiga::ServiceCore &core,
 
   if (contact_core && kde_core) {
 
-    gmref_ptr<KAB::Source> source = new KAB::Source (*contact_core);
+    gmref_ptr<KAB::Source> source (new KAB::Source (*contact_core));
     core.add (source);
     contact_core->add_source (source);
     result = true;

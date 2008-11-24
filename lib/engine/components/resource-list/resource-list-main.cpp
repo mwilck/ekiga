@@ -56,9 +56,9 @@ resource_list_init (Ekiga::ServiceCore& services,
 
     if (core && xcap) {
 
-      gmref_ptr<RL::Cluster> cluster = new RL::Cluster (services);
+      gmref_ptr<RL::Cluster> cluster (new RL::Cluster (services));
       services.add (cluster);
-      core->add_cluster (*cluster);
+      core->add_cluster (cluster);
       result = true;
     }
   }

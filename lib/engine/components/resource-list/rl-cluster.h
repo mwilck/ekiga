@@ -74,7 +74,7 @@ namespace RL {
 	      const std::string user,
 	      const std::string name,
 	      bool writable);
-    void common_add (Heap& heap);
+    void common_add (gmref_ptr<Heap> heap);
     void save () const;
 
     void new_heap (const std::string name,

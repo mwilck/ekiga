@@ -52,7 +52,7 @@ KAB::Book::Book (Ekiga::ContactCore &_core): core(_core)
        iter != kab->end ();
        iter++) {
 
-    add_contact (new Contact (core, &(*iter)));
+    add_contact (gmref_ptr<Contact> (new Contact (core, &(*iter))));
   }
 }
 
