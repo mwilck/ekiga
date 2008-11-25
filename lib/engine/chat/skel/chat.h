@@ -39,13 +39,15 @@
 #include <string>
 #include <sigc++/sigc++.h>
 
+#include "gmref.h"
+
 #include "chain-of-responsibility.h"
 #include "form-request.h"
 #include "menu-builder.h"
 
 namespace Ekiga
 {
-  class ChatObserver
+  class ChatObserver: public virtual GmRefCounted
   {
   public:
 
@@ -66,7 +68,7 @@ namespace Ekiga
   };
 
 
-  class Chat
+  class Chat: public virtual GmRefCounted
   {
   public:
 
@@ -87,12 +89,12 @@ namespace Ekiga
      * send a few previous messages to the new observer.
      * @param The new observer
      */
-    virtual void connect (ChatObserver &observer) = 0;
+    virtual void connect (gmref_ptr<ChatObserver> observer) = 0;
 
     /** Disconnects the new observer from the Chat
      * @param The observer to disconnect
      */
-    virtual void disconnect (ChatObserver &observer) = 0;
+    virtual void disconnect (gmref_ptr<ChatObserver> observer) = 0;
 
     /** Sends a message through the Chat, or at least attempts to :
      * the two ideas are first that the text entry will get blanked

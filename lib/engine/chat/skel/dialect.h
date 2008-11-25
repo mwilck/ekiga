@@ -43,7 +43,7 @@
 namespace Ekiga
 {
 
-  class Dialect
+  class Dialect: public virtual GmRefCounted
   {
   public:
 
@@ -55,13 +55,13 @@ namespace Ekiga
      * @param: The callback (the return value means "go on" and allows
      * stopping the visit)
      */
-    virtual void visit_simple_chats (sigc::slot1<bool, SimpleChat&> visitor) = 0;
+    virtual void visit_simple_chats (sigc::slot1<bool, gmref_ptr<SimpleChat> > visitor) = 0;
 
     /** Triggers a callback for all multiple chats of the Dialect.
      * @param: The callback (the return value means "go on" and allows
      * stopping the visit)
      */
-    virtual void visit_multiple_chats (sigc::slot1<bool, MultipleChat&> visitor) = 0;
+    virtual void visit_multiple_chats (sigc::slot1<bool, gmref_ptr<MultipleChat> > visitor) = 0;
 
 
     /** Feed possible actions on this Dialect to the given MenuBuilder
@@ -72,12 +72,12 @@ namespace Ekiga
     /** This signal is emitted when an Ekiga::SimpleChat has been added to
      * the dialect.
      */
-    sigc::signal1<void, SimpleChat&> simple_chat_added;
+    sigc::signal1<void, gmref_ptr<SimpleChat> > simple_chat_added;
 
     /** This signal is emitted when an Ekiga::MultipleChat has been added to
      * the dialect.
      */
-    sigc::signal1<void, MultipleChat&> multiple_chat_added;
+    sigc::signal1<void, gmref_ptr<MultipleChat> > multiple_chat_added;
 
     /** This chain allows the Dialect to present forms to the user.
      */

@@ -37,7 +37,8 @@
 #define __DIALECT_IMPL_H__
 
 #include "dialect.h"
-#include "lister.h"
+
+#include "map-key-iterator.h"
 
 namespace Ekiga
 {
@@ -61,59 +62,53 @@ namespace Ekiga
      * @param: The callback (the return value means "go on" and allows
      * stopping the visit)
      */
-    void visit_simple_chats (sigc::slot1<bool, SimpleChat&> visitor);
+    void visit_simple_chats (sigc::slot1<bool, gmref_ptr<SimpleChat> > visitor);
 
     /** Triggers a callback for all multiple chats of the Dialect.
      * @param: The callback (the return value means "go on" and allows
      * stopping the visit)
      */
-    void visit_multiple_chats (sigc::slot1<bool, MultipleChat&> visitor);
+    void visit_multiple_chats (sigc::slot1<bool, gmref_ptr<MultipleChat> > visitor);
 
   protected:
 
     /* More STL-like ways to access the chats within this Ekiga::DialectImpl
      */
-    typedef typename Lister<SimpleChatType>::iterator simple_iterator;
-    typedef typename Lister<SimpleChatType>::const_iterator simple_const_iterator;
-    typedef typename Lister<MultipleChatType>::iterator multiple_iterator;
-    typedef typename Lister<MultipleChatType>::const_iterator multiple_const_iterator;
+    typedef typename Ekiga::map_key_iterator<std::map<gmref_ptr<SimpleChatType>, std::list<sigc::connection> > > simple_iterator;
+    typedef typename Ekiga::map_key_iterator<std::map<gmref_ptr<MultipleChatType>, std::list<sigc::connection> > > multiple_iterator;
 
     simple_iterator simple_begin ();
     simple_iterator simple_end ();
-    simple_const_iterator simple_begin () const;
-    simple_const_iterator simple_end () const;
 
     multiple_iterator multiple_begin ();
     multiple_iterator multiple_end ();
-    multiple_const_iterator multiple_begin () const;
-    multiple_const_iterator multiple_end () const;
 
     /** Adds a SimpleChat to the Ekiga::Dialect.
      * @param The SimpleChat to be added.
      * @return: The Ekiga::Dialect 'simple_chat_added' signal is emitted.
      */
-    void add_simple_chat (SimpleChatType* chat);
+    void add_simple_chat (gmref_ptr<SimpleChatType> chat);
 
     /** Removes a SimpleChat from the Ekiga::Dialect.
      * @param The SimpleChat to be removed.
      */
-    void remove_simple_chat (SimpleChatType* chat);
+    void remove_simple_chat (gmref_ptr<SimpleChatType> chat);
 
     /** Adds a MultipleChat to the Ekiga::Dialect.
      * @param The MultipleChat to be added.
      * @return: The Ekiga::Dialect 'multiple_chat_added' signal is emitted.
      */
-    void add_multiple_chat (MultipleChatType* chat);
+    void add_multiple_chat (gmref_ptr<MultipleChatType> chat);
 
     /** Removes a MultipleChat from the Ekiga::Dialect.
      * @param The MultipleChat to be removed.
      */
-    void remove_multiple_chat (MultipleChatType* chat);
+    void remove_multiple_chat (gmref_ptr<MultipleChatType> chat);
 
   private:
 
-    Lister<SimpleChatType> simple_chats;
-    Lister<MultipleChatType> multiple_chats;
+    std::map<gmref_ptr<SimpleChatType>, std::list<sigc::connection> > simple_chats;
+    std::map<gmref_ptr<MultipleChatType>, std::list<sigc::connection> > multiple_chats;
   };
 };
 
@@ -125,20 +120,56 @@ Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::DialectImpl ()
 template<typename SimpleChatType, typename MultipleChatType>
 Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::~DialectImpl ()
 {
+  for (typename std::map<gmref_ptr<SimpleChatType>,std::list<sigc::connection> >::iterator iter = simple_chats.begin ();
+       iter != simple_chats.end ();
+       iter++) {
+
+    for (std::list<sigc::connection>::iterator conn_iter = iter->second.begin ();
+	 conn_iter != iter->second.end ();
+	 ++conn_iter) {
+
+      conn_iter->disconnect ();
+    }
+  }
+  for (typename std::map<gmref_ptr<MultipleChatType>,std::list<sigc::connection> >::iterator iter = multiple_chats.begin ();
+       iter != multiple_chats.end ();
+       iter++) {
+
+    for (std::list<sigc::connection>::iterator conn_iter = iter->second.begin ();
+	 conn_iter != iter->second.end ();
+	 ++conn_iter) {
+
+      conn_iter->disconnect ();
+    }
+  }
 }
 
 template<typename SimpleChatType, typename MultipleChatType>
 void
-Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::visit_simple_chats (sigc::slot1<bool, SimpleChat&> visitor)
+Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::visit_simple_chats (sigc::slot1<bool, gmref_ptr<SimpleChat> > visitor)
 {
-  simple_chats.visit_objects (visitor);
+  bool go_on = true;
+
+  for (typename std::map<gmref_ptr<SimpleChatType>,std::list<sigc::connection> >::iterator iter = simple_chats.begin ();
+       go_on && iter != simple_chats.end ();
+       iter++) {
+
+    go_on = visitor (iter->first);
+  }
 }
 
 template<typename SimpleChatType, typename MultipleChatType>
 void
-Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::visit_multiple_chats (sigc::slot1<bool, MultipleChat&> visitor)
+Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::visit_multiple_chats (sigc::slot1<bool, gmref_ptr<MultipleChat> > visitor)
 {
-  multiple_chats.visit_objects (visitor);
+  bool go_on = true;
+
+  for (typename std::map<gmref_ptr<MultipleChatType>,std::list<sigc::connection> >::iterator iter = multiple_chats.begin ();
+       go_on && iter != multiple_chats.end ();
+       iter++) {
+
+    go_on = visitor (iter->first);
+  }
 }
 
 template<typename SimpleChatType, typename MultipleChatType>
@@ -156,20 +187,6 @@ Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::simple_end ()
 }
 
 template<typename SimpleChatType, typename MultipleChatType>
-typename Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::simple_const_iterator
-Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::simple_begin () const
-{
-  return simple_const_iterator (simple_chats.begin ());
-}
-
-template<typename SimpleChatType, typename MultipleChatType>
-typename Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::simple_const_iterator
-Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::simple_end () const
-{
-  return simple_const_iterator (simple_chats.end ());
-}
-
-template<typename SimpleChatType, typename MultipleChatType>
 typename Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::multiple_iterator
 Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::multiple_begin ()
 {
@@ -184,45 +201,31 @@ Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::multiple_end ()
 }
 
 template<typename SimpleChatType, typename MultipleChatType>
-typename Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::multiple_const_iterator
-Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::multiple_begin () const
+void
+Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::add_simple_chat (gmref_ptr<SimpleChatType> chat)
 {
-  return multiple_const_iterator (multiple_chats.begin ());
-}
-
-template<typename SimpleChatType, typename MultipleChatType>
-typename Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::multiple_const_iterator
-Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::multiple_end () const
-{
-  return multiple_const_iterator (multiple_chats.end ());
+  simple_chats[chat] = std::list<sigc::connection>();
+  simple_chat_added.emit (chat);
 }
 
 template<typename SimpleChatType, typename MultipleChatType>
 void
-Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::add_simple_chat (SimpleChatType* chat)
-{
-  simple_chats.add_object (*chat);
-  simple_chat_added.emit (*chat);
-}
-
-template<typename SimpleChatType, typename MultipleChatType>
-void
-Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::remove_simple_chat (SimpleChatType* chat)
+Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::remove_simple_chat (gmref_ptr<SimpleChatType> chat)
 {
   /* FIXME */
 }
 
 template<typename SimpleChatType, typename MultipleChatType>
 void
-Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::add_multiple_chat (MultipleChatType* chat)
+Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::add_multiple_chat (gmref_ptr<MultipleChatType> chat)
 {
-  multiple_chats.add_object (*chat);
-  multiple_chat_added.emit (*chat);
+  multiple_chats[chat] = std::list<sigc::connection> ();
+  multiple_chat_added.emit (chat);
 }
 
 template<typename SimpleChatType, typename MultipleChatType>
 void
-Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::remove_multiple_chat (MultipleChatType* chat)
+Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::remove_multiple_chat (gmref_ptr<MultipleChatType> chat)
 {
   /* FIXME */
 }

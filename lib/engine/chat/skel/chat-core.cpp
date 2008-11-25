@@ -42,22 +42,22 @@ Ekiga::ChatCore::~ChatCore ()
 }
 
 void
-Ekiga::ChatCore::add_dialect (Dialect& dialect)
+Ekiga::ChatCore::add_dialect (gmref_ptr<Dialect> dialect)
 {
-  dialects.insert (&dialect);
-  dialect.questions.add_handler (questions.make_slot ());
+  dialects.push_back (dialect);
+  dialect->questions.add_handler (questions.make_slot ());
   dialect_added.emit (dialect);
 }
 
 void
-Ekiga::ChatCore::visit_dialects (sigc::slot1<bool, Dialect&> visitor)
+Ekiga::ChatCore::visit_dialects (sigc::slot1<bool, gmref_ptr<Dialect> > visitor)
 {
   bool go_on = true;
 
-  for (std::set<Dialect*>::iterator iter = dialects.begin ();
+  for (std::list<gmref_ptr<Dialect> >::iterator iter = dialects.begin ();
        iter != dialects.end () && go_on;
        iter++)
-    go_on = visitor (**iter);
+    go_on = visitor (*iter);
 }
 
 bool
@@ -65,7 +65,7 @@ Ekiga::ChatCore::populate_menu (MenuBuilder &builder)
 {
   bool result = false;
 
-  for (std::set<Dialect*>::iterator iter = dialects.begin ();
+  for (std::list<gmref_ptr<Dialect> >::iterator iter = dialects.begin ();
        iter != dialects.end ();
        ++iter)
     result = (*iter)->populate_menu (builder) || result;
