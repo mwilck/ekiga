@@ -45,7 +45,7 @@ G_BEGIN_DECLS
 
 /* public api */
 
-GtkWidget* multiple_chat_page_new (Ekiga::MultipleChat& chat);
+GtkWidget* multiple_chat_page_new (gmref_ptr<Ekiga::MultipleChat> chat);
 
 /* GObject boilerplate */
 

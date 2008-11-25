@@ -88,11 +88,11 @@ static void on_message_notice_event (GtkWidget* page,
 				     gpointer data);
 
 static bool on_dialect_added (ChatWindow* self,
-			      Ekiga::Dialect& dialect);
+			      gmref_ptr<Ekiga::Dialect> dialect);
 static bool on_simple_chat_added (ChatWindow* self,
-				  Ekiga::SimpleChat& chat);
+				  gmref_ptr<Ekiga::SimpleChat> chat);
 static bool on_multiple_chat_added (ChatWindow* self,
-				    Ekiga::MultipleChat& chat);
+				    gmref_ptr<Ekiga::MultipleChat> chat);
 static void on_some_chat_user_requested (ChatWindow* self,
 					 GtkWidget* page);
 
@@ -265,20 +265,20 @@ on_message_notice_event (GtkWidget* page,
 
 static bool
 on_dialect_added (ChatWindow* self,
-		  Ekiga::Dialect& dialect)
+		  gmref_ptr<Ekiga::Dialect> dialect)
 {
-  self->priv->connections.push_front (dialect.simple_chat_added.connect (sigc::hide_return (sigc::bind<0> (sigc::ptr_fun (on_simple_chat_added), self))));
-  self->priv->connections.push_front (dialect.multiple_chat_added.connect (sigc::hide_return (sigc::bind<0> (sigc::ptr_fun (on_multiple_chat_added), self))));
+  self->priv->connections.push_front (dialect->simple_chat_added.connect (sigc::hide_return (sigc::bind<0> (sigc::ptr_fun (on_simple_chat_added), self))));
+  self->priv->connections.push_front (dialect->multiple_chat_added.connect (sigc::hide_return (sigc::bind<0> (sigc::ptr_fun (on_multiple_chat_added), self))));
 
-  dialect.visit_simple_chats (sigc::bind<0> (sigc::ptr_fun (on_simple_chat_added), self));
-  dialect.visit_multiple_chats (sigc::bind<0> (sigc::ptr_fun (on_multiple_chat_added), self));
+  dialect->visit_simple_chats (sigc::bind<0> (sigc::ptr_fun (on_simple_chat_added), self));
+  dialect->visit_multiple_chats (sigc::bind<0> (sigc::ptr_fun (on_multiple_chat_added), self));
 
   return true;
 }
 
 static bool
 on_simple_chat_added (ChatWindow* self,
-		      Ekiga::SimpleChat &chat)
+		      gmref_ptr<Ekiga::SimpleChat> chat)
 {
   GtkWidget* page = NULL;
   GtkWidget* hbox = NULL;
@@ -290,9 +290,9 @@ on_simple_chat_added (ChatWindow* self,
   page = simple_chat_page_new (chat);
   hbox = gtk_hbox_new (FALSE, 2);
 
-  label = gtk_label_new (chat.get_title ().c_str ());
+  label = gtk_label_new (chat->get_title ().c_str ());
   g_object_set_data_full (G_OBJECT (label), "base-title",
-			  g_strdup (chat.get_title ().c_str ()),
+			  g_strdup (chat->get_title ().c_str ()),
 			  g_free);
   
   close_button = gtk_button_new ();
@@ -319,27 +319,27 @@ on_simple_chat_added (ChatWindow* self,
   g_signal_connect (page, "message-notice-event",
 		    G_CALLBACK (on_message_notice_event), self);
 
-  self->priv->connections.push_front (chat.user_requested.connect (sigc::bind (sigc::ptr_fun (on_some_chat_user_requested), self, page)));
+  self->priv->connections.push_front (chat->user_requested.connect (sigc::bind (sigc::ptr_fun (on_some_chat_user_requested), self, page)));
 
   return true;
 }
 
 static bool
 on_multiple_chat_added (ChatWindow* self,
-			Ekiga::MultipleChat &chat)
+			gmref_ptr<Ekiga::MultipleChat> chat)
 {
   GtkWidget* page = NULL;
   GtkWidget* label = NULL;
   gint num;
 
   page = multiple_chat_page_new (chat);
-  label = gtk_label_new (chat.get_title ().c_str ());
+  label = gtk_label_new (chat->get_title ().c_str ());
 
   num = gtk_notebook_append_page (GTK_NOTEBOOK (self->priv->notebook),
 				  page, label);
   gtk_widget_show_all (page);
 
-  self->priv->connections.push_front (chat.user_requested.connect (sigc::bind (sigc::ptr_fun (on_some_chat_user_requested), self, page)));
+  self->priv->connections.push_front (chat->user_requested.connect (sigc::bind (sigc::ptr_fun (on_some_chat_user_requested), self, page)));
 
   return true;
 }

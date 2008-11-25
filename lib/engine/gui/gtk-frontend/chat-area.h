@@ -65,7 +65,7 @@ struct _ChatAreaClass
 
 /* public api */
 
-GtkWidget *chat_area_new (Ekiga::Chat& chat);
+GtkWidget *chat_area_new (gmref_ptr<Ekiga::Chat> chat);
 
 const std::string chat_area_get_title (ChatArea* chat);
 

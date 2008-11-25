@@ -45,7 +45,7 @@ G_BEGIN_DECLS
 
 /* public api */
 
-GtkWidget* simple_chat_page_new (Ekiga::SimpleChat& chat);
+GtkWidget* simple_chat_page_new (gmref_ptr<Ekiga::SimpleChat> chat);
 
 /* GObject boilerplate */
 

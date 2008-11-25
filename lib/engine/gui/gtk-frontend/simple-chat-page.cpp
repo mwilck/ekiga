@@ -162,7 +162,7 @@ simple_chat_page_get_type ()
 /* implementation of the public api */
 
 GtkWidget*
-simple_chat_page_new (Ekiga::SimpleChat& chat)
+simple_chat_page_new (gmref_ptr<Ekiga::SimpleChat> chat)
 {
   SimpleChatPage* result = NULL;
   GtkWidget* presentity_view = NULL;
@@ -170,7 +170,7 @@ simple_chat_page_new (Ekiga::SimpleChat& chat)
 
   result = (SimpleChatPage*)g_object_new (TYPE_SIMPLE_CHAT_PAGE, NULL);
 
-  presentity_view = presentity_view_new (chat.get_presentity ());
+  presentity_view = presentity_view_new (chat->get_presentity ());
   gtk_box_pack_start (GTK_BOX (result), presentity_view,
 		      FALSE, TRUE, 2);
   gtk_widget_show (presentity_view);
