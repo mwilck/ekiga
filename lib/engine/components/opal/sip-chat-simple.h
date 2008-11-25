@@ -57,9 +57,9 @@ namespace SIP
 
     const std::string get_title () const;
 
-    void connect (Ekiga::ChatObserver& observer);
+    void connect (gmref_ptr<Ekiga::ChatObserver> observer);
 
-    void disconnect (Ekiga::ChatObserver& observer);
+    void disconnect (gmref_ptr<Ekiga::ChatObserver> observer);
 
     bool send_message (const std::string msg);
 
@@ -75,7 +75,7 @@ namespace SIP
 
     Ekiga::ServiceCore& core;
     sigc::slot1<bool, std::string> sender;
-    std::list<Ekiga::ChatObserver*> observers;
+    std::list<gmref_ptr<Ekiga::ChatObserver> > observers;
     gmref_ptr<Ekiga::Presentity> presentity;
     std::string uri;
   };

@@ -140,7 +140,8 @@ Opal::Sip::EndPoint::EndPoint (Opal::CallManager & _manager,
   listen_port = _listen_port;
 
   dialect = new SIP::Dialect (core, sigc::mem_fun (this, &Opal::Sip::EndPoint::send_message));
-  chat_core->add_dialect (*dialect);
+  dialect->reference (); // take a reference in the main thread
+  chat_core->add_dialect (gmref_ptr<SIP::Dialect>(dialect));
 
   /* Timeouts */
   SetAckTimeout (PTimeInterval (0, 32));
@@ -171,7 +172,7 @@ Opal::Sip::EndPoint::~EndPoint ()
 {
   runtime->unreference (); // leave a reference in the main thread
   account_core->unreference (); // leave a reference in the main thread
-  delete dialect;
+  dialect->unreference (); // leave a reference in the main thread
 }
 
 

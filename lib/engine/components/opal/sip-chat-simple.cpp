@@ -67,15 +67,15 @@ SIP::SimpleChat::get_title () const
 }
 
 void
-SIP::SimpleChat::connect (Ekiga::ChatObserver& observer)
+SIP::SimpleChat::connect (gmref_ptr<Ekiga::ChatObserver> observer)
 {
-  observers.push_front (&observer);
+  observers.push_front (observer);
 }
 
 void
-SIP::SimpleChat::disconnect (Ekiga::ChatObserver& observer)
+SIP::SimpleChat::disconnect (gmref_ptr<Ekiga::ChatObserver> observer)
 {
-  observers.remove (&observer);
+  observers.remove (observer);
 
   if (observers.empty ())
     removed.emit ();
@@ -87,8 +87,7 @@ SIP::SimpleChat::send_message (const std::string msg)
   bool result;
   gmref_ptr<Ekiga::PersonalDetails> personal = core.get ("personal-details");
   result = sender (msg);
-  for (std::list<Ekiga::ChatObserver*>::iterator iter
-	 = observers.begin ();
+  for (std::list<gmref_ptr<Ekiga::ChatObserver> >::iterator iter = observers.begin ();
        iter != observers.end ();
        ++iter)
     (*iter)->message (personal->get_display_name (), msg);
@@ -98,8 +97,7 @@ SIP::SimpleChat::send_message (const std::string msg)
 void
 SIP::SimpleChat::receive_message (const std::string msg)
 {
-  for (std::list<Ekiga::ChatObserver*>::iterator iter
-	 = observers.begin ();
+  for (std::list<gmref_ptr<Ekiga::ChatObserver> >::iterator iter = observers.begin ();
        iter != observers.end ();
        ++iter)
     (*iter)->message (presentity->get_name (), msg);
@@ -108,8 +106,7 @@ SIP::SimpleChat::receive_message (const std::string msg)
 void
 SIP::SimpleChat::receive_notice (const std::string msg)
 {
-  for (std::list<Ekiga::ChatObserver*>::iterator iter
-	 = observers.begin ();
+  for (std::list<gmref_ptr<Ekiga::ChatObserver> >::iterator iter = observers.begin ();
        iter != observers.end ();
        ++iter)
     (*iter)->notice (msg);

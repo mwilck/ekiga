@@ -70,9 +70,9 @@ namespace SIP
     /* the strings are : uri then msg */
     sigc::slot2<bool, std::string, std::string> sender;
 
-    SimpleChat* open_chat_with (std::string uri,
-				std::string name,
-				bool user_request);
+    gmref_ptr<SimpleChat> open_chat_with (std::string uri,
+					  std::string name,
+					  bool user_request);
   };
 };
 
