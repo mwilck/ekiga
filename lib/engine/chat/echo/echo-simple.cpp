@@ -61,17 +61,17 @@ Echo::SimpleChat::populate_menu (Ekiga::MenuBuilder &/*builder*/)
 }
 
 void
-Echo::SimpleChat::connect (Ekiga::ChatObserver &observer)
+Echo::SimpleChat::connect (gmref_ptr<Ekiga::ChatObserver> observer)
 {
-  observer.notice ("This is just an echo chat : type and see back");
+  observer->notice ("This is just an echo chat : type and see back");
 
-  observers.push_front (&observer);
+  observers.push_front (observer);
 }
 
 void
-Echo::SimpleChat::disconnect (Ekiga::ChatObserver &observer)
+Echo::SimpleChat::disconnect (gmref_ptr<Ekiga::ChatObserver> observer)
 {
-  observers.remove (&observer);
+  observers.remove (observer);
 
   if (observers.empty ())
     removed.emit ();
@@ -80,7 +80,7 @@ Echo::SimpleChat::disconnect (Ekiga::ChatObserver &observer)
 bool
 Echo::SimpleChat::send_message (const std::string msg)
 {
-  for (std::list<Ekiga::ChatObserver*>::iterator iter = observers.begin ();
+  for (std::list<gmref_ptr<Ekiga::ChatObserver> >::iterator iter = observers.begin ();
        iter != observers.end ();
        ++iter)
     (*iter)->message ("Echo", msg);

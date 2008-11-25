@@ -60,7 +60,7 @@ Echo::Dialect::populate_menu (Ekiga::MenuBuilder &builder)
 void
 Echo::Dialect::new_chat ()
 {
-  SimpleChat* chat = new SimpleChat ();
+  gmref_ptr<SimpleChat> chat (new SimpleChat);
   add_simple_chat (chat);
   chat->user_requested.emit ();
 }

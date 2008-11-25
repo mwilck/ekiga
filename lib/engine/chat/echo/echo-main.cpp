@@ -51,7 +51,7 @@ echo_init (Ekiga::ServiceCore &core,
 
     gmref_ptr<Echo::Dialect> dialect (new Echo::Dialect);
     core.add (dialect);
-    chat_core->add_dialect (*dialect);
+    chat_core->add_dialect (dialect);
     result = true;
   }
 

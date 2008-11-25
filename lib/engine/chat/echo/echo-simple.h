@@ -51,9 +51,9 @@ namespace Echo
 
     const std::string get_title() const;
 
-    void connect (Ekiga::ChatObserver &observer);
+    void connect (gmref_ptr<Ekiga::ChatObserver> observer);
 
-    void disconnect (Ekiga::ChatObserver &observer);
+    void disconnect (gmref_ptr<Ekiga::ChatObserver> observer);
 
     bool send_message (const std::string msg);
 
@@ -63,7 +63,7 @@ namespace Echo
 
   private:
 
-    std::list<Ekiga::ChatObserver*> observers;
+    std::list<gmref_ptr<Ekiga::ChatObserver> > observers;
     gmref_ptr<Presentity> presentity;
   };
 };
