@@ -64,12 +64,13 @@ on_authenticate_c (LmConnection* /*unused*/,
 
 /* and here is the C++ code : */
 
-LM::Account::Account (const std::string user_,
+LM::Account::Account (gmref_ptr<Cluster> cluster_,
+		      const std::string user_,
 		      const std::string password_,
 		      const std::string resource_,
 		      const std::string server_,
 		      unsigned port_):
-  user(user_), password(password_), resource(resource_), server(server_), port(port_), connection(0)
+  cluster(cluster_), user(user_), password(password_), resource(resource_), server(server_), port(port_), connection(0)
 {
   connection = lm_connection_new (NULL);
   lm_connection_set_disconnect_function (connection, (LmDisconnectFunction)on_disconnected_c,
@@ -81,7 +82,12 @@ void
 LM::Account::connect ()
 {
   GError *error = NULL;
-
+  {
+    gchar* jid = NULL;
+    jid = g_strdup_printf ("%s@%s/%s", user.c_str (), server.c_str (), resource.c_str ());
+    lm_connection_set_jid (connection, jid);
+    g_free (jid);
+  }
   lm_connection_set_server (connection, server.c_str ());
   if ( !lm_connection_open (connection,
 			    (LmResultFunction)on_connection_opened_c,
@@ -97,6 +103,16 @@ LM::Account::~Account ()
 {
   std::cout << __PRETTY_FUNCTION__ << std::endl;
 
+  if (heap) {
+
+    heap->disconnected ();
+    heap.reset ();
+  }
+
+  if (lm_connection_is_open (connection)) {
+
+    lm_connection_close (connection, NULL);
+  }
   lm_connection_unref (connection);
   connection = 0;
 }
@@ -118,7 +134,11 @@ LM::Account::on_connection_opened (bool result)
 void
 LM::Account::on_disconnected (LmDisconnectReason /*reason*/)
 {
-  std::cout << __PRETTY_FUNCTION__ << std::endl;  // FIXME: to complete
+  if (heap) {
+
+    heap->disconnected ();
+    heap.reset ();
+  }
 }
 
 void
@@ -126,6 +146,8 @@ LM::Account::on_authenticate (bool result)
 {
   if (result) {
 
+    heap = gmref_ptr<Heap> (new Heap (connection));
+    cluster->add_heap (heap);
     std::cout << "Loudmouth authentication succeeded" << std::endl;
   } else {
 

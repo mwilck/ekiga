@@ -47,7 +47,7 @@ namespace LM
     public Ekiga::Service
   {
   public:
-    Bank ();
+    Bank (gmref_ptr<Cluster> cluster_);
 
     ~Bank ();
 
@@ -59,6 +59,7 @@ namespace LM
 
   private:
 
+    gmref_ptr<Cluster> cluster;
     gmref_ptr<Account> account;
   };
 };

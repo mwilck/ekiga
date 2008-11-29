@@ -25,24 +25,26 @@
 
 
 /*
- *                         loudmouth-bank.h  -  description
+ *                         loudmouth-cluster.cpp  -  description
  *                         ------------------------------------------
  *   begin                : written in 2008 by Julien Puydt
  *   copyright            : (c) 2008 by Julien Puydt
- *   description          : implementation of the loudmouth account manager
+ *   description          : implementation of a loudmouth cluster
  *
  */
 
-#include <iostream>
+#include "loudmouth-cluster.h"
 
-#include "loudmouth-bank.h"
-
-LM::Bank::Bank (gmref_ptr<Cluster> cluster_): cluster(cluster_)
+LM::Cluster::Cluster ()
 {
-  account = gmref_ptr<Account>(new Account (cluster, "premier", "premier", "ekiga", "localhost"));
 }
 
-LM::Bank::~Bank ()
+LM::Cluster::~Cluster ()
 {
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
+}
+
+bool
+LM::Cluster::populate_menu (Ekiga::MenuBuilder& /*builder*/)
+{
+  return false;
 }

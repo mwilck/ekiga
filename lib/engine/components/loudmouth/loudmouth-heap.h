@@ -25,24 +25,45 @@
 
 
 /*
- *                         loudmouth-bank.h  -  description
+ *                         loudmouth-heap.h  -  description
  *                         ------------------------------------------
  *   begin                : written in 2008 by Julien Puydt
  *   copyright            : (c) 2008 by Julien Puydt
- *   description          : implementation of the loudmouth account manager
+ *   description          : declaration of a loudmouth heap
  *
  */
 
-#include <iostream>
+#ifndef __LOUDMOUTH_HEAP_H__
+#define __LOUDMOUTH_HEAP_H__
 
-#include "loudmouth-bank.h"
+#include <loudmouth/loudmouth.h>
 
-LM::Bank::Bank (gmref_ptr<Cluster> cluster_): cluster(cluster_)
+#include "heap-impl.h"
+
+namespace LM
 {
-  account = gmref_ptr<Account>(new Account (cluster, "premier", "premier", "ekiga", "localhost"));
-}
+  class Heap:
+    public Ekiga::HeapImpl<Ekiga::Presentity>
+  {
+  public:
+    
+    Heap (LmConnection* connection_);
 
-LM::Bank::~Bank ()
-{
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
-}
+    ~Heap ();
+
+    const std::string get_name () const;
+
+    bool populate_menu (Ekiga::MenuBuilder& builder);
+
+    bool populate_menu_for_group (const std::string group,
+				  Ekiga::MenuBuilder& builder);
+
+    void disconnected ();
+
+  private:
+
+    LmConnection* connection;
+  };
+};
+
+#endif

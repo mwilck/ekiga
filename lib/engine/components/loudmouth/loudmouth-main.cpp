@@ -37,6 +37,9 @@
 
 #include "loudmouth-main.h"
 
+#include "presence-core.h"
+
+#include "loudmouth-cluster.h"
 #include "loudmouth-bank.h"
 
 bool
@@ -45,10 +48,14 @@ loudmouth_init (Ekiga::ServiceCore &services,
 		char **/*argv*/[])
 {
   bool result = false;
+  gmref_ptr<Ekiga::PresenceCore> presence (services.get ("presence-core"));
 
-  { // no test for the deps : too simple to have deps!
-    gmref_ptr<LM::Bank> bank (new LM::Bank);
+  if (presence) {
+
+    gmref_ptr<LM::Cluster> cluster(new LM::Cluster);
+    gmref_ptr<LM::Bank> bank (new LM::Bank (cluster));
     services.add (bank);
+    presence->add_cluster (cluster);
     result = true;
   }
 

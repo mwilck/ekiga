@@ -36,10 +36,9 @@
 #ifndef __LOUDMOUTH_ACCOUNT_H__
 #define __LOUDMOUTH_ACCOUNT_H__
 
-#include <string>
-#include <loudmouth/loudmouth.h>
-
 #include "gmref.h"
+
+#include "loudmouth-cluster.h"
 
 namespace LM
 {
@@ -48,7 +47,8 @@ namespace LM
     public virtual GmRefCounted
   {
   public:
-    Account (const std::string user_,
+    Account (gmref_ptr<Cluster> cluster_,
+	     const std::string user_,
 	     const std::string password_,
 	     const std::string resource_,
 	     const std::string server_,
@@ -67,6 +67,8 @@ namespace LM
 
   private:
 
+    gmref_ptr<Cluster> cluster;
+
     std::string user;
     std::string password;
     std::string resource;
@@ -74,6 +76,8 @@ namespace LM
     unsigned port;
 
     LmConnection* connection;
+
+    gmref_ptr<Heap> heap;
   };
 };
 
