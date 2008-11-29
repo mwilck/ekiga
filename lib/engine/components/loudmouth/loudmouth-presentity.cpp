@@ -115,6 +115,8 @@ LM::Presentity::populate_menu (Ekiga::MenuBuilder& builder)
 {
   builder.add_action ("edit", _("_Edit"),
 		      sigc::mem_fun (this, &LM::Presentity::edit_presentity));
+  builder.add_action ("remove", _("_Remove"),
+		      sigc::mem_fun (this, &LM::Presentity::remove_presentity));
   return true;
 }
 
@@ -197,4 +199,21 @@ LM::Presentity::edit_presentity_form_submitted (bool submitted,
 	      << __PRETTY_FUNCTION__ << std::endl;
 #endif
   }
+}
+
+void
+LM::Presentity::remove_presentity ()
+{
+  LmMessage* message = lm_message_new_with_sub_type (NULL, LM_MESSAGE_TYPE_IQ, LM_MESSAGE_SUB_TYPE_SET);
+  LmMessageNode* query = lm_message_node_add_child (lm_message_get_node (message), "query", NULL);
+  lm_message_node_set_attribute (query, "xmlns", "jabber:iq:roster");
+  LmMessageNode* node = lm_message_node_add_child (query, "item", NULL);
+
+  lm_message_node_set_attributes (node,
+				  "jid", get_jid ().c_str (),
+				  "subscription", "remove",
+				  NULL);
+
+  lm_connection_send (connection, message, NULL);
+  lm_message_unref (message);
 }

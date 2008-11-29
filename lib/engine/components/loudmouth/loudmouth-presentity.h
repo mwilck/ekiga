@@ -79,6 +79,8 @@ namespace LM
 
     void edit_presentity_form_submitted (bool submitted,
 					 Ekiga::Form& result);
+
+    void remove_presentity ();
   };
 };
 
