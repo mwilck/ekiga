@@ -51,9 +51,7 @@ namespace LM
 
     ~Presentity ();
 
-    void update (LmMessageNode* item_);
-
-    const std::string get_jid () const;
+    /* usual presentity stuff */
 
     const std::string get_name () const;
 
@@ -66,6 +64,12 @@ namespace LM
     const std::set<std::string> get_groups () const;
 
     bool populate_menu (Ekiga::MenuBuilder& builder);
+
+    /* special presentity stuff */
+
+    const std::string get_jid () const;
+
+    void update (LmMessageNode* item_);
 
   private:
     LmConnection* connection;

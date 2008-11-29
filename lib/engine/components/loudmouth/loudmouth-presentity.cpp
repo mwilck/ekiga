@@ -57,21 +57,6 @@ LM::Presentity::~Presentity ()
   connection = 0;
 }
 
-void
-LM::Presentity::update (LmMessageNode* item_)
-{
-  lm_message_node_unref (item);
-  item = item_;
-  lm_message_node_ref (item);
-  updated.emit ();
-}
-
-const std::string
-LM::Presentity::get_jid () const
-{
-  return lm_message_node_get_attribute (item, "jid");
-}
-
 const std::string
 LM::Presentity::get_name () const
 {
@@ -126,4 +111,19 @@ bool
 LM::Presentity::populate_menu (Ekiga::MenuBuilder& /*builder*/)
 {
   return false; // FIXME
+}
+
+const std::string
+LM::Presentity::get_jid () const
+{
+  return lm_message_node_get_attribute (item, "jid");
+}
+
+void
+LM::Presentity::update (LmMessageNode* item_)
+{
+  lm_message_node_unref (item);
+  item = item_;
+  lm_message_node_ref (item);
+  updated.emit ();
 }

@@ -138,8 +138,15 @@ LM::Heap::parse_roster (LmMessageNode* query)
 
       if ((*iter)->get_jid () == jid) {
 
-	(*iter)->update (node);
 	found = true;
+	const gchar* subscription = lm_message_node_get_attribute (node, "subscription");
+	if (subscription != NULL && strcmp (subscription, "remove") == 0) {
+
+	  (*iter)->removed.emit ();
+	} else {
+
+	  (*iter)->update (node);
+	}
       }
     }
     if ( !found) {
