@@ -9,6 +9,10 @@ INCLUDES = \
 
 libgmloudmouth_la_SOURCES = \
 	$(loudmouth_dir)/loudmouth-main.h \
-	$(loudmouth_dir)/loudmouth-main.cpp
+	$(loudmouth_dir)/loudmouth-main.cpp \
+	$(loudmouth_dir)/loudmouth-bank.h \
+	$(loudmouth_dir)/loudmouth-bank.cpp \
+	$(loudmouth_dir)/loudmouth-account.h \
+	$(loudmouth_dir)/loudmouth-account.cpp
 
 libgmloudmouth_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(LOUDMOUTH_LIBS)

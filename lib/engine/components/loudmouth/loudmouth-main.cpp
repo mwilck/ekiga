@@ -37,15 +37,20 @@
 
 #include "loudmouth-main.h"
 
+#include "loudmouth-bank.h"
+
 bool
-loudmouth_init (Ekiga::ServiceCore &/*services*/,
+loudmouth_init (Ekiga::ServiceCore &services,
 		int */*argc*/,
 		char **/*argv*/[])
 {
   bool result = false;
 
-  // nothing yet
-  result = true;
+  { // no test for the deps : too simple to have deps!
+    gmref_ptr<LM::Bank> bank (new LM::Bank);
+    services.add (bank);
+    result = true;
+  }
 
   return result;
 }
