@@ -685,6 +685,23 @@ fi
 AM_CONDITIONAL(HAVE_XCAP, test "x$found_xcap" = "xyes")
 
 
+dnl   LOUDMOUTH support
+dnl ###############################
+LOUDMOUTH="disabled"
+
+AC_ARG_ENABLE(loudmouth, [  --enable-loudmouth           Enable Loudmouth support],enable_loudmouth=yes,)
+
+if test "x$enable_loudmouth" = "xyes"; then
+   PKG_CHECK_MODULES([LOUDMOUTH], [loudmouth-1.0])
+   found_loudmouth=yes
+   LOUDMOUTH="enabled"
+   AC_SUBST(LOUDMOUTH_CFLAGS)
+   AC_SUBST(LOUDMOUTH_LIBS)
+  AC_DEFINE(HAVE_LOUDMOUTH,1,[Loudmouth support])
+fi
+
+AM_CONDITIONAL(HAVE_LOUDMOUTH, test "x$found_loudmouth" = "xyes")
+
 dnl ###############################
 dnl   Gnome-Doc-Utils
 dnl ###############################
@@ -845,11 +862,14 @@ lib/engine/gui/Makefile
 lib/engine/gui/gtk-core/Makefile
 lib/engine/gui/gtk-frontend/Makefile
 lib/engine/components/Makefile
-lib/engine/components/gmconf-personal-details/Makefile
 lib/engine/components/avahi-publisher/Makefile
+lib/engine/components/evolution/Makefile
+lib/engine/components/gmconf-personal-details/Makefile
 lib/engine/components/gstreamer/Makefile
 lib/engine/components/kde/Makefile
 lib/engine/components/libnotify/Makefile
+lib/engine/components/loudmouth/Makefile
+lib/engine/components/opal/Makefile
 lib/engine/components/resource-list/Makefile
 lib/engine/components/gnome-session/Makefile
 lib/engine/components/xcap/Makefile
@@ -900,6 +920,7 @@ echo "               GStreamer support  :  $GSTREAMER"
 echo "            KAddressBook support  :  $KAB"
 echo "                     KDE support  :  $KDE"
 echo "                    XCAP support  :  $XCAP"
+echo "                Loudmouth support :  $LOUDMOUTH"
 echo ""
 echo "                         OS Type  :  $target_os"
 echo "                    Machine Type  :  $target_cpu"

@@ -22,8 +22,14 @@ INCLUDES = 								\
 	-I$(top_srcdir)/lib/engine/protocol				\
 	-I$(top_srcdir)/lib/engine/components/gmconf-personal-details	\
 	-I$(top_srcdir)/lib/engine/components/avahi-publisher		\
+	-I$(top_srcdir)/lib/engine/components/call-history		\
+	-I$(top_srcdir)/lib/engine/components/evolution		        \
+	-I$(top_srcdir)/lib/engine/components/gmconf-personal-details	\
 	-I$(top_srcdir)/lib/engine/components/gstreamer			\
+	-I$(top_srcdir)/lib/engine/components/kab			\
 	-I$(top_srcdir)/lib/engine/components/kde			\
+	-I$(top_srcdir)/lib/engine/components/ldap			\
+	-I$(top_srcdir)/lib/engine/components/loudmouth			\
 	-I$(top_srcdir)/lib/engine/components/opal	                \
 	-I$(top_srcdir)/lib/engine/components/ptlib	                \
 	-I$(top_srcdir)/lib/engine/components/call-history		\
@@ -167,6 +173,9 @@ endif
 if HAVE_NOTIFY
 INCLUDES += -I$(top_srcdir)/lib/engine/components/libnotify/
 libekiga_engine_la_LIBADD += components/libnotify/libgmlibnotify.la
+
+if HAVE_LOUDMOUTH
+libekiga_engine_la_LIBADD += components/loudmouth/libgmloudmouth.la
 endif
 
 #### FIXME should be removed at a later stage

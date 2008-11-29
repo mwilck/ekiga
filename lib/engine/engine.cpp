@@ -120,11 +120,14 @@
 #include "resource-list-main.h"
 #endif
 
+#ifdef HAVE_LOUDMOUTH
+#include "loudmouth-main.h"
+#endif
+
 #define DEBUG_STARTUP 0
 
 #if DEBUG_STARTUP
 #include <iostream>
-#endif
 
 static Ekiga::ServiceCore *service_core = NULL;
 
@@ -274,6 +277,10 @@ engine_init (int argc,
   local_roster_init (kickstart);
 
   local_roster_bridge_init (kickstart);
+
+#ifdef HAVE_LOUDMOUTH
+  loudmouth_init (*core, &argc, &argv);
+#endif
 
   plugin_init (kickstart);
 

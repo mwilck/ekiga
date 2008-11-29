@@ -28,7 +28,7 @@ EDS_DIR = evolution
 endif
 
 if HAVE_AVAHI
-AVAHI_DIR = avahi-publisher
+AVAHI_DIR = avahi-publisher avahi
 endif
 
 if HAVE_GSTREAMER
@@ -47,8 +47,8 @@ if HAVE_XCAP
 XCAP_DIRS = xcap resource-list
 endif
 
-if HAVE_AVAHI
-AVAHI_DIR += avahi
+if HAVE_LOUDMOUTH
+LOUDMOUTH_DIR = loudmouth
 endif
 
 SUBDIRS =                       \
@@ -72,4 +72,5 @@ SUBDIRS =                       \
 	$(KAB_DIR)              \
 	$(DX_DIR)               \
 	$(X_DIR)                \
-	$(XCAP_DIRS)
+	$(XCAP_DIRS)		\
+	$(LOUDMOUTH_DIR)
