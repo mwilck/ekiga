@@ -122,7 +122,6 @@ LM::Account::on_connection_opened (bool result)
 {
   if (result) {
 
-    std::cout << "Opened loudmouth connection" << std::endl;
     lm_connection_authenticate (connection, user.c_str (), password.c_str (), resource.c_str (),
 				(LmResultFunction)on_authenticate_c, this, NULL, NULL);
   } else {
@@ -148,7 +147,6 @@ LM::Account::on_authenticate (bool result)
 
     heap = gmref_ptr<Heap> (new Heap (connection));
     cluster->add_heap (heap);
-    std::cout << "Loudmouth authentication succeeded" << std::endl;
   } else {
 
     lm_connection_close (connection, NULL);

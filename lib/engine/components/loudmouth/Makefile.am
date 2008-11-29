@@ -19,6 +19,8 @@ libgmloudmouth_la_SOURCES = \
 	$(loudmouth_dir)/loudmouth-cluster.h \
 	$(loudmouth_dir)/loudmouth-cluster.cpp \
 	$(loudmouth_dir)/loudmouth-heap.h \
-	$(loudmouth_dir)/loudmouth-heap.cpp
+	$(loudmouth_dir)/loudmouth-heap.cpp \
+	$(loudmouth_dir)/loudmouth-presentity.h \
+	$(loudmouth_dir)/loudmouth-presentity.cpp
 
 libgmloudmouth_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(LOUDMOUTH_LIBS)

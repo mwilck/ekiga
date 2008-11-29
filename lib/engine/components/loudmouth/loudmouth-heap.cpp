@@ -34,15 +34,45 @@
  */
 
 #include <iostream>
+#include <string.h>
 
 #include "loudmouth-heap.h"
 
+LmHandlerResult
+iq_handler_c (LmMessageHandler* /*handler*/,
+		      LmConnection* /*connection*/,
+		      LmMessage* message,
+		      LM::Heap* heap)
+{
+  return heap->iq_handler (message);
+}
+
 LM::Heap::Heap (LmConnection* connection_): connection(connection_)
 {
+  lm_connection_ref (connection);
+
+  iq_lm_handler = lm_message_handler_new ((LmHandleMessageFunction)iq_handler_c, this, NULL);
+  lm_connection_register_message_handler (connection, iq_lm_handler, LM_MESSAGE_TYPE_IQ, LM_HANDLER_PRIORITY_NORMAL);
+
+  { // populate the roster
+    LmMessage* roster_request = lm_message_new_with_sub_type (NULL, LM_MESSAGE_TYPE_IQ, LM_MESSAGE_SUB_TYPE_GET);
+    LmMessageNode* node = lm_message_node_add_child (lm_message_get_node (roster_request), "query", NULL);
+    lm_message_node_set_attributes (node, "xmlns", "jabber:iq:roster", NULL);
+    lm_connection_send (connection, roster_request, NULL);
+    lm_message_unref (roster_request);
+  }
 }
 
 LM::Heap::~Heap ()
 {
+  lm_connection_unregister_message_handler (connection, iq_lm_handler, LM_MESSAGE_TYPE_IQ);
+
+  lm_message_handler_unref (iq_lm_handler);
+  iq_lm_handler = 0;
+
+  lm_connection_unref (connection);
+  connection = 0;
+
   std::cout << __PRETTY_FUNCTION__ << std::endl;
 }
 
@@ -69,5 +99,53 @@ LM::Heap::populate_menu_for_group (const std::string /*group*/,
 void
 LM::Heap::disconnected ()
 {
-  // FIXME: do something
+  removed.emit ();
+}
+
+LmHandlerResult
+LM::Heap::iq_handler (LmMessage* message)
+{
+  if (lm_message_get_sub_type (message) == LM_MESSAGE_SUB_TYPE_SET
+      || lm_message_get_sub_type (message) == LM_MESSAGE_SUB_TYPE_RESULT) {
+
+    LmMessageNode* node = lm_message_node_get_child (lm_message_get_node (message), "query");
+    if (node != NULL) {
+
+      const gchar* xmlns = lm_message_node_get_attribute (node, "xmlns");
+      if (xmlns != NULL && strcmp (xmlns, "jabber:iq:roster") == 0) {
+
+	parse_roster (node);
+      }
+    }
+  }
+
+  return LM_HANDLER_RESULT_ALLOW_MORE_HANDLERS;
+}
+
+void
+LM::Heap::parse_roster (LmMessageNode* query)
+{
+  for (LmMessageNode* node = query->children; node != NULL; node = node->next) {
+
+    if (strcmp (node->name, "item") != 0) {
+
+      continue;
+    }
+
+    const gchar* jid = lm_message_node_get_attribute (node, "jid");
+    bool found = false;
+    for (iterator iter = begin (); !found && iter != end (); ++iter) {
+
+      if ((*iter)->get_jid () == jid) {
+
+	(*iter)->update (node);
+	found = true;
+      }
+    }
+    if ( !found) {
+
+      gmref_ptr<Presentity> presentity(new Presentity (connection, node));
+      add_presentity (presentity);
+    }
+  }
 }

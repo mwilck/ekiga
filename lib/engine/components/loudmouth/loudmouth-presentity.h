@@ -25,51 +25,51 @@
 
 
 /*
- *                         loudmouth-heap.h  -  description
+ *                         loudmouth-presentity.h  -  description
  *                         ------------------------------------------
  *   begin                : written in 2008 by Julien Puydt
  *   copyright            : (c) 2008 by Julien Puydt
- *   description          : declaration of a loudmouth heap
+ *   description          : declaration of a loudmouth presentity
  *
  */
 
-#ifndef __LOUDMOUTH_HEAP_H__
-#define __LOUDMOUTH_HEAP_H__
+#ifndef __LOUDMOUTH_PRESENTITY_H__
+#define __LOUDMOUTH_PRESENTITY_H__
 
-#include "heap-impl.h"
-#include "loudmouth-presentity.h"
+#include <loudmouth/loudmouth.h>
+
+#include "presentity.h"
 
 namespace LM
 {
-  class Heap:
-    public Ekiga::HeapImpl<Presentity>
+  class Presentity:
+    public Ekiga::Presentity
   {
   public:
-    
-    Heap (LmConnection* connection_);
+    Presentity (LmConnection* connection_,
+		LmMessageNode* item_);
 
-    ~Heap ();
+    ~Presentity ();
+
+    void update (LmMessageNode* item_);
+
+    const std::string get_jid () const;
 
     const std::string get_name () const;
 
+    const std::string get_presence () const;
+
+    const std::string get_status () const;
+
+    const std::string get_avatar () const;
+
+    const std::set<std::string> get_groups () const;
+
     bool populate_menu (Ekiga::MenuBuilder& builder);
 
-    bool populate_menu_for_group (const std::string group,
-				  Ekiga::MenuBuilder& builder);
-
-    void disconnected ();
-
-    /* public to be accessed by C callbacks */
-
-    LmHandlerResult iq_handler (LmMessage* message);
-
   private:
-
     LmConnection* connection;
-
-    LmMessageHandler* iq_lm_handler;
-
-    void parse_roster (LmMessageNode* query);
+    LmMessageNode* item;
   };
 };
 
