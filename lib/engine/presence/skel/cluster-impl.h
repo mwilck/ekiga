@@ -138,7 +138,7 @@ Ekiga::ClusterImpl<HeapType>::add_heap (gmref_ptr<HeapType> heap)
 
   RefLister<HeapType>::add_connection (heap, heap->presentity_removed.connect (sigc::bind (sigc::mem_fun (this, &ClusterImpl::on_presentity_removed), heap)));
 
-  heap->questions.add_handler (questions.make_slot ());
+  RefLister<HeapType>::add_connection (heap, heap->questions.add_handler (questions.make_slot ()));
 
   add_object (heap);
 }
