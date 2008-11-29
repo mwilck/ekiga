@@ -35,6 +35,9 @@
 
 #include <iostream>
 #include <string.h>
+#include <glib/gi18n.h>
+
+#include "form-request-simple.h"
 
 #include "loudmouth-presentity.h"
 
@@ -108,9 +111,11 @@ LM::Presentity::get_groups () const
 }
 
 bool
-LM::Presentity::populate_menu (Ekiga::MenuBuilder& /*builder*/)
+LM::Presentity::populate_menu (Ekiga::MenuBuilder& builder)
 {
-  return false; // FIXME
+  builder.add_action ("edit", _("_Edit"),
+		      sigc::mem_fun (this, &LM::Presentity::edit_presentity));
+  return true;
 }
 
 const std::string
@@ -126,4 +131,70 @@ LM::Presentity::update (LmMessageNode* item_)
   item = item_;
   lm_message_node_ref (item);
   updated.emit ();
+}
+
+void
+LM::Presentity::edit_presentity ()
+{
+  Ekiga::FormRequestSimple request(sigc::mem_fun (this, &LM::Presentity::edit_presentity_form_submitted));
+
+  request.title (_("Edit roster element"));
+  request.instructions (_("Please fill in this form to change an existing "
+			  "element of the remote roster"));
+  request.text ("name", _("Name:"), get_name ());
+
+  request.editable_set ("groups", _("Choose groups:"),
+			get_groups (), get_groups ());
+
+  if (!questions.handle_request (&request)) {
+
+    // FIXME: better error reporting
+#ifdef __GNUC__
+    std::cout << "Unhandled form request in "
+	      << __PRETTY_FUNCTION__ << std::endl;
+#endif
+  }
+}
+
+void
+LM::Presentity::edit_presentity_form_submitted (bool submitted,
+						Ekiga::Form& result)
+{
+  if (!submitted)
+    return;
+
+  try {
+
+    const std::string name = result.text ("name");
+    const std::set<std::string> groups = result.editable_set ("groups");
+    LmMessage* message = lm_message_new_with_sub_type (NULL, LM_MESSAGE_TYPE_IQ, LM_MESSAGE_SUB_TYPE_SET);
+    LmMessageNode* query = lm_message_node_add_child (lm_message_get_node (message), "query", NULL);
+    lm_message_node_set_attribute (query, "xmlns", "jabber:iq:roster");
+    LmMessageNode* node = lm_message_node_add_child (query, "item", NULL);
+
+    {
+      gchar* escaped = g_markup_escape_text (name.c_str (), -1);
+      lm_message_node_set_attributes (node,
+				      "jid", get_jid ().c_str (),
+				      "name", escaped,
+				      NULL);
+      g_free (escaped);
+    }
+
+    for (std::set<std::string>::const_iterator iter = groups.begin (); iter != groups.end (); ++iter) {
+
+      gchar* escaped = g_markup_escape_text (iter->c_str (), -1);
+      lm_message_node_add_child (node, "group", escaped);
+      g_free (escaped);
+    }
+
+    lm_connection_send (connection, message, NULL);
+    lm_message_unref (message);
+
+  } catch (Ekiga::Form::not_found) {
+#ifdef __GNUC__
+    std::cerr << "Invalid form submitted to "
+	      << __PRETTY_FUNCTION__ << std::endl;
+#endif
+  }
 }

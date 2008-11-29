@@ -74,6 +74,11 @@ namespace LM
   private:
     LmConnection* connection;
     LmMessageNode* item;
+
+    void edit_presentity ();
+
+    void edit_presentity_form_submitted (bool submitted,
+					 Ekiga::Form& result);
   };
 };
 
