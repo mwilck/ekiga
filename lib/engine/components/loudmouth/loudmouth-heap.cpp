@@ -35,6 +35,9 @@
 
 #include <iostream>
 #include <string.h>
+#include <glib/gi18n.h>
+
+#include "form-request-simple.h"
 
 #include "loudmouth-heap.h"
 
@@ -83,9 +86,10 @@ LM::Heap::get_name () const
 }
 
 bool
-LM::Heap::populate_menu (Ekiga::MenuBuilder& /*builder*/)
+LM::Heap::populate_menu (Ekiga::MenuBuilder& builder)
 {
-  return false;
+  builder.add_action ("new", _("New _Contact"), sigc::mem_fun (this, &LM::Heap::add_item));
+  return true;
 }
 
 bool
@@ -154,5 +158,57 @@ LM::Heap::parse_roster (LmMessageNode* query)
       gmref_ptr<Presentity> presentity(new Presentity (connection, node));
       add_presentity (presentity);
     }
+  }
+}
+
+void
+LM::Heap::add_item ()
+{
+  Ekiga::FormRequestSimple request(sigc::mem_fun (this, &LM::Heap::add_item_form_submitted));
+
+  request.title (_("Add a roster element"));
+  request.instructions (_("Please fill in this form to add a new"
+			  "element to the remote roster"));
+  request.text ("jid", _("Identifier:"), _("id@server"));
+
+  if (!questions.handle_request (&request)) {
+
+    // FIXME: better error reporting
+#ifdef __GNUC__
+    std::cout << "Unhandled form request in "
+	      << __PRETTY_FUNCTION__ << std::endl;
+#endif
+  }
+}
+
+void
+LM::Heap::add_item_form_submitted (bool submitted,
+				   Ekiga::Form& result)
+{
+  if ( !submitted)
+    return;
+
+  try {
+
+    const std::string jid = result.text ("jid");
+
+    if ( !jid.empty ()) {
+
+      LmMessage* message = lm_message_new_with_sub_type (NULL, LM_MESSAGE_TYPE_IQ, LM_MESSAGE_SUB_TYPE_SET);
+      LmMessageNode* query = lm_message_node_add_child (lm_message_get_node (message), "query", NULL);
+      lm_message_node_set_attribute (query, "xmlns", "jabber:iq:roster");
+      LmMessageNode* node = lm_message_node_add_child (query, "item", NULL);
+      lm_message_node_set_attributes (node,
+				      "jid", jid.c_str (),
+				      NULL);
+
+      lm_connection_send (connection, message, NULL);
+      lm_message_unref (message);
+    }
+  } catch (Ekiga::Form::not_found) {
+#ifdef __GNUC__
+    std::cerr << "Invalid form submitted to "
+	      << __PRETTY_FUNCTION__ << std::endl;
+#endif
   }
 }

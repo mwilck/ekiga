@@ -70,6 +70,11 @@ namespace LM
     LmMessageHandler* iq_lm_handler;
 
     void parse_roster (LmMessageNode* query);
+
+    void add_item ();
+
+    void add_item_form_submitted (bool submitted,
+				  Ekiga::Form& result);
   };
 };
 
