@@ -48,8 +48,11 @@
 void
 engine_init (int argc,
              char *argv[],
-             Ekiga::Runtime *runtime,
-             Ekiga::ServiceCore *& core);
+             Ekiga::Runtime *runtime);
+
+
+Ekiga::ServiceCore *
+engine_get_service_core ();
 
 /**
  * @}

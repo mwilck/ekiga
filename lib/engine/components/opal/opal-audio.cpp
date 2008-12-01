@@ -39,10 +39,11 @@
 
 #define P_FORCE_STATIC_PLUGIN
 
-#pragma implementation "audiodev.h"
+#pragma implementation "opal-audio.h"
 
-#include "audiodev.h"
-#include "ekiga.h"
+#include "opal-audio.h"
+#include "engine.h"
+
 
 /* Plugin definition */
 class PSoundChannel_EKIGA_PluginServiceDescriptor 
@@ -51,7 +52,7 @@ class PSoundChannel_EKIGA_PluginServiceDescriptor
   public:
     virtual PObject *CreateInstance (int) const 
       {
-	return new PSoundChannel_EKIGA (*(GnomeMeeting::Process ()->GetServiceCore ())); 
+	return new PSoundChannel_EKIGA (*(engine_get_service_core ())); 
       }
     
     

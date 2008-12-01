@@ -72,7 +72,6 @@ GnomeMeeting::GnomeMeeting ()
   
   call_number = 0;
 
-  service_core = NULL;
   assistant_window = NULL;
   prefs_window = NULL;
 }
@@ -114,10 +113,6 @@ GnomeMeeting::Exit ()
     g_object_unref (dbus_component);
   dbus_component = NULL;
 #endif
-
-  if (service_core)
-    delete service_core;
-  service_core = NULL;
 }
 
 
@@ -126,7 +121,7 @@ GnomeMeeting::GetServiceCore ()
 {
   PWaitAndSignal m(ep_var_mutex);
   
-  return service_core;
+  return engine_get_service_core (); 
 }
 
 
@@ -148,7 +143,7 @@ GtkWidget *
 GnomeMeeting::GetPrefsWindow (bool create)
 {
   if (!prefs_window && create)
-    prefs_window = gm_prefs_window_new (service_core);
+    prefs_window = gm_prefs_window_new (GetServiceCore ());
   return prefs_window;
 }
 
@@ -157,7 +152,7 @@ GtkWidget *
 GnomeMeeting::GetAssistantWindow (bool create)
 {
   if (!assistant_window && create)
-    assistant_window = ekiga_assistant_new (service_core);
+    assistant_window = ekiga_assistant_new (GetServiceCore ());
 
   return assistant_window;
 }
@@ -188,10 +183,10 @@ void GnomeMeeting::BuildGUI ()
   
   /* Build the GUI */
   gtk_window_set_default_icon_name (GM_ICON_LOGO);
-  accounts_window = gm_accounts_window_new (*service_core);
+  accounts_window = gm_accounts_window_new (*GetServiceCore ());
 
-  statusicon = statusicon_new (*service_core);
-  main_window = gm_main_window_new (*service_core);
+  statusicon = statusicon_new (*GetServiceCore ());
+  main_window = gm_main_window_new (*GetServiceCore ());
 
   /* GM is started */
   PTRACE (1, "Ekiga version "
@@ -232,8 +227,5 @@ GnomeMeeting::InitEngine ()
   PWaitAndSignal m(ep_var_mutex);
 
   Ekiga::Runtime *runtime = new Ekiga::GlibRuntime;
-  engine_init (1, NULL, runtime, service_core);
-
-  if (!service_core)
-    std::cout << "engine couldn't init!" << std::endl;
+  engine_init (1, NULL, runtime);
 }

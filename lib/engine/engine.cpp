@@ -110,13 +110,15 @@
 #include "resource-list-main.h"
 #endif
 
+
+static Ekiga::ServiceCore *service_core = NULL;
+
 void
 engine_init (int argc,
              char *argv [],
-             Ekiga::Runtime* runtime,
-             Ekiga::ServiceCore * &core)
+             Ekiga::Runtime* runtime)
 {
-  core = new Ekiga::ServiceCore;
+  service_core = new Ekiga::ServiceCore;
 
   /* VideoInputCore depends on VideoOutputCore and must this              *
    * be constructed thereafter                                      */
@@ -139,150 +141,150 @@ engine_init (int argc,
    *   components may still call runtime functions until destroyed  *
    *   (e.g. VideoOutputCore).                                          */
 
-  core->add (gmref_ptr<Ekiga::Runtime>(runtime));
-  core->add (account_core);
-  core->add (contact_core);
-  core->add (chat_core);
-  core->add (videooutput_core);
-  core->add (videoinput_core);
-  core->add (audiooutput_core);
-  core->add (audioinput_core);
-  core->add (hal_core);
-  core->add (call_core);
+  service_core->add (gmref_ptr<Ekiga::Runtime>(runtime));
+  service_core->add (account_core);
+  service_core->add (contact_core);
+  service_core->add (chat_core);
+  service_core->add (videooutput_core);
+  service_core->add (videoinput_core);
+  service_core->add (audiooutput_core);
+  service_core->add (audioinput_core);
+  service_core->add (hal_core);
+  service_core->add (call_core);
 
-  if (!gmconf_personal_details_init (*core, &argc, &argv)) {
-    delete core;
+  if (!gmconf_personal_details_init (*service_core, &argc, &argv)) {
+    delete service_core;
     return;
   }
 
-  gmref_ptr<Ekiga::PresenceCore> presence_core (new Ekiga::PresenceCore (*core));
-  core->add (presence_core);
+  gmref_ptr<Ekiga::PresenceCore> presence_core (new Ekiga::PresenceCore (*service_core));
+  service_core->add (presence_core);
 
 #ifndef WIN32
-  if (!videooutput_x_init (*core, &argc, &argv)) {
-    delete core;
+  if (!videooutput_x_init (*service_core, &argc, &argv)) {
+    delete service_core;
     return;
   }
 #endif
 
 #ifdef HAVE_XCAP
-  xcap_init (*core);
+  xcap_init (*service_core);
 #endif
 
 #ifdef HAVE_DX
-  if (!videooutput_dx_init (*core, &argc, &argv)) {
-    delete core;
+  if (!videooutput_dx_init (*service_core, &argc, &argv)) {
+    delete service_core;
     return;
   }
 #endif
 
-  if (!videoinput_mlogo_init (*core, &argc, &argv)) {
-    delete core;
+  if (!videoinput_mlogo_init (*service_core, &argc, &argv)) {
+    delete service_core;
     return;
   }
 
 #ifdef HAVE_GSTREAMER
-  (void)gstreamer_init (*core, &argc, &argv);
+  (void)gstreamer_init (*service_core, &argc, &argv);
 #endif
 
-  if (!audioinput_null_init (*core, &argc, &argv)) {
-    delete core;
+  if (!audioinput_null_init (*service_core, &argc, &argv)) {
+    delete service_core;
     return;
   }
 
-  if (!audiooutput_null_init (*core, &argc, &argv)) {
-    delete core;
+  if (!audiooutput_null_init (*service_core, &argc, &argv)) {
+    delete service_core;
     return;
   }
 
-  if (!videoinput_ptlib_init (*core, &argc, &argv)) {
-    delete core;
+  if (!videoinput_ptlib_init (*service_core, &argc, &argv)) {
+    delete service_core;
     return;
   }
 
-  if (!audioinput_ptlib_init (*core, &argc, &argv)) {
-    delete core;
+  if (!audioinput_ptlib_init (*service_core, &argc, &argv)) {
+    delete service_core;
     return;
   }
 
-  if (!audiooutput_ptlib_init (*core, &argc, &argv)) {
-    delete core;
+  if (!audiooutput_ptlib_init (*service_core, &argc, &argv)) {
+    delete service_core;
     return;
   }
 
 #ifdef HAVE_DBUS
-  if (!hal_dbus_init (*core, &argc, &argv)) {
-    delete core;
+  if (!hal_dbus_init (*service_core, &argc, &argv)) {
+    delete service_core;
     return;
   }
 #endif
 
-  if (!opal_init (*core, &argc, &argv)) {
-    delete core;
+  if (!opal_init (*service_core, &argc, &argv)) {
+    delete service_core;
     return;
   }
 
 #ifdef HAVE_AVAHI
-  if (!avahi_init (*core, &argc, &argv)) {
-    delete core;
+  if (!avahi_init (*service_core, &argc, &argv)) {
+    delete service_core;
     return;
   }
 
-  if (!avahi_publisher_init (*core, &argc, &argv)) {
-    delete core;
+  if (!avahi_publisher_init (*service_core, &argc, &argv)) {
+    delete service_core;
     return;
   }
 #endif
 
 #ifdef HAVE_EDS
-  if (!evolution_init (*core, &argc, &argv)) {
-    delete core;
+  if (!evolution_init (*service_core, &argc, &argv)) {
+    delete service_core;
     return;
   }
 #endif
 
 #ifdef HAVE_LDAP
-  if (!ldap_init (*core, &argc, &argv)) {
-    delete core;
+  if (!ldap_init (*service_core, &argc, &argv)) {
+    delete service_core;
     return;
   }
 #endif
 
 #ifdef HAVE_KDE
-  (void)kde_init (*core, &argc, &argv);
+  (void)kde_init (*service_core, &argc, &argv);
 #endif
 
 #ifdef HAVE_KAB
-  (void)kab_init (*core, &argc, &argv);
+  (void)kab_init (*service_core, &argc, &argv);
 #endif
 
 #ifdef HAVE_XCAP
-  resource_list_init (*core, &argc, &argv);
+  resource_list_init (*service_core, &argc, &argv);
 #endif
 
-  if (!history_init (*core, &argc, &argv)) {
+  if (!history_init (*service_core, &argc, &argv)) {
 
-    delete core;
+    delete service_core;
     return;
   }
 
-  if (!gtk_core_init (*core, &argc, &argv)) {
-    delete core;
+  if (!gtk_core_init (*service_core, &argc, &argv)) {
+    delete service_core;
     return;
   }
 
-  if (!gtk_frontend_init (*core, &argc, &argv)) {
-    delete core;
+  if (!gtk_frontend_init (*service_core, &argc, &argv)) {
+    delete service_core;
     return;
   }
 
-  if (!local_roster_init (*core, &argc, &argv)) {
-    delete core;
+  if (!local_roster_init (*service_core, &argc, &argv)) {
+    delete service_core;
     return;
   }
 
-  if (!local_roster_bridge_init (*core, &argc, &argv)) {
-    delete core;
+  if (!local_roster_bridge_init (*service_core, &argc, &argv)) {
+    delete service_core;
     return;
   }
 
@@ -300,4 +302,11 @@ engine_init (int argc,
   conn = hal_core->audioinput_device_removed.connect (sigc::mem_fun (*audioinput_core, &Ekiga::AudioInputCore::remove_device));
   // std::vector<sigc::connection> connections;
   //connections.push_back (conn);
+}
+
+
+Ekiga::ServiceCore *
+engine_get_service_core ()
+{
+  return service_core;
 }

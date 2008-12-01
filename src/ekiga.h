@@ -153,8 +153,6 @@ class GnomeMeeting : public PProcess
 
  private:
   
-  Ekiga::ServiceCore *service_core;
-
   PMutex ep_var_mutex;
   PMutex dev_access_mutex;
   int call_number;

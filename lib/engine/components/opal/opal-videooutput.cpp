@@ -35,16 +35,15 @@
  *
  */
 
-
-#include "config.h"
-
 #define P_FORCE_STATIC_PLUGIN 
 
-#include "videooutput.h"
+#include <ptbuildopts.h>
+#include <ptlib.h>
+#include <opal/manager.h>
 
-#include "ekiga.h"
-#include "misc.h"
-#include "main.h"
+#include "opal-videooutput.h"
+#include "engine.h"
+
 
 int PVideoOutputDevice_EKIGA::devices_nbr = 0;
 
@@ -57,7 +56,7 @@ class PVideoOutputDevice_EKIGA_PluginServiceDescriptor
   public:
     virtual PObject *CreateInstance (int) const 
       {
-	return new PVideoOutputDevice_EKIGA (*(GnomeMeeting::Process ()->GetServiceCore ())); 
+	return new PVideoOutputDevice_EKIGA (*(engine_get_service_core ())); 
       }
     
     

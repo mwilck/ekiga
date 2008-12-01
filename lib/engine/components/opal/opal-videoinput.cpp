@@ -38,8 +38,13 @@
 
 #define P_FORCE_STATIC_PLUGIN
 
-#include "videoinput.h"
-#include "ekiga.h"
+#include <ptbuildopts.h>
+#include <ptlib.h>
+#include <opal/manager.h>
+
+#include "opal-videoinput.h"
+#include "engine.h"
+
 
 /* Plugin definition */
 class PVideoInputDevice_EKIGA_PluginServiceDescriptor 
@@ -48,7 +53,7 @@ class PVideoInputDevice_EKIGA_PluginServiceDescriptor
   public:
     virtual PObject *CreateInstance (int) const 
       {
-	return new PVideoInputDevice_EKIGA (*(GnomeMeeting::Process ()->GetServiceCore ())); 
+	return new PVideoInputDevice_EKIGA (*(engine_get_service_core ())); 
       }
     
     

@@ -81,16 +81,6 @@ ekiga_SOURCES +=			\
 	gui/statusmenu.h		\
 	gui/statusmenu.cpp
 
-# Devices 
-ekiga_SOURCES +=			\
-	devices/videoinput.h  	        \
-	devices/videoinput.cpp		\
-	devices/videooutput.h           \
-	devices/videooutput.cpp         \
-	devices/audiodev.h              \
-	devices/audiodev.cpp
-
-
 # Endpoints 
 ekiga_SOURCES +=				\
 	ekiga.h			                \

@@ -101,8 +101,6 @@
 #include "services.h"
 #include "form-dialog-gtk.h"
 
-#include "../devices/videooutput.h"
-
 enum CallingState {Standby, Calling, Connected, Called};
 
 enum DeviceType { AudioInput, AudioOutput, VideoInput} ;

@@ -12,6 +12,7 @@ INCLUDES = 					        \
 	-I$(top_srcdir)/lib/engine/account/skel		\
 	-I$(top_srcdir)/lib/engine/addressbook/skel	\
 	-I$(top_srcdir)/lib/engine/chat/skel		\
+	-I$(top_srcdir)/lib/engine/hal/skel		\
 	-I$(top_srcdir)/lib/engine/presence/skel	\
 	-I$(top_srcdir)/lib/engine/protocol/skel	\
 	-I$(top_srcdir)/lib/engine/videooutput/skel	\
@@ -21,23 +22,29 @@ INCLUDES = 					        \
 	-I$(top_srcdir)/lib/engine/framework
 
 # Endpoints 
-libopal_la_SOURCES = \
-	$(opal_dir)/opal-call-manager.h \
-	$(opal_dir)/opal-call-manager.cpp \
-	$(opal_dir)/pcss-endpoint.h \
-	$(opal_dir)/pcss-endpoint.cpp \
-	$(opal_dir)/opal-account.h \
-	$(opal_dir)/opal-account.cpp \
-	$(opal_dir)/opal-bank.h \
-	$(opal_dir)/opal-bank.cpp \
-	$(opal_dir)/opal-call.h \
-	$(opal_dir)/opal-call.cpp \
-	$(opal_dir)/opal-codec-description.h \
-	$(opal_dir)/opal-codec-description.cpp \
-	$(opal_dir)/opal-gmconf-bridge.h \
-	$(opal_dir)/opal-gmconf-bridge.cpp \
-	$(opal_dir)/opal-main.h \
-	$(opal_dir)/opal-main.cpp
+libopal_la_SOURCES =                            \
+	$(opal_dir)/opal-call-manager.h         \
+	$(opal_dir)/opal-call-manager.cpp       \
+	$(opal_dir)/pcss-endpoint.h             \
+	$(opal_dir)/pcss-endpoint.cpp           \
+	$(opal_dir)/opal-account.h              \
+	$(opal_dir)/opal-account.cpp            \
+	$(opal_dir)/opal-bank.h                 \
+	$(opal_dir)/opal-bank.cpp               \
+	$(opal_dir)/opal-call.h                 \
+	$(opal_dir)/opal-call.cpp               \
+	$(opal_dir)/opal-codec-description.h    \
+	$(opal_dir)/opal-codec-description.cpp  \
+	$(opal_dir)/opal-gmconf-bridge.h        \
+	$(opal_dir)/opal-gmconf-bridge.cpp      \
+	$(opal_dir)/opal-main.h                 \
+	$(opal_dir)/opal-main.cpp               \
+	$(opal_dir)/opal-audio.h                \
+	$(opal_dir)/opal-audio.cpp              \
+	$(opal_dir)/opal-videoinput.h           \
+	$(opal_dir)/opal-videoinput.cpp         \
+	$(opal_dir)/opal-videooutput.h          \
+	$(opal_dir)/opal-videooutput.cpp
 
 if HAVE_H323
 libopal_la_SOURCES += \

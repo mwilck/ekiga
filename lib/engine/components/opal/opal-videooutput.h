@@ -41,7 +41,6 @@
 #define _EKIGA_VIDEO_OUTPUT_H_
 
 #include "videooutput-core.h"
-#include "common.h"
 
 class GMManager;
 
