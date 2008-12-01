@@ -80,6 +80,10 @@ namespace LM
     void edit_presentity_form_submitted (bool submitted,
 					 Ekiga::Form& result);
 
+    void revoke_from ();
+    void ask_to ();
+    void stop_to ();
+
     void remove_presentity ();
   };
 };

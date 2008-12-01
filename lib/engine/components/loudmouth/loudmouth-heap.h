@@ -63,11 +63,15 @@ namespace LM
 
     LmHandlerResult iq_handler (LmMessage* message);
 
+    LmHandlerResult presence_handler (LmMessage* message);
+
   private:
 
     LmConnection* connection;
 
     LmMessageHandler* iq_lm_handler;
+
+    LmMessageHandler* presence_lm_handler;
 
     void parse_roster (LmMessageNode* query);
 
@@ -75,6 +79,11 @@ namespace LM
 
     void add_item_form_submitted (bool submitted,
 				  Ekiga::Form& result);
+
+    void subscribe_from_form_submitted (bool submitted,
+					Ekiga::Form& result);
+
+    gmref_ptr<Presentity> find_item (const std::string jid);
   };
 };
 

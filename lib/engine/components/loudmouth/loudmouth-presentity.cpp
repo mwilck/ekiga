@@ -113,8 +113,34 @@ LM::Presentity::get_groups () const
 bool
 LM::Presentity::populate_menu (Ekiga::MenuBuilder& builder)
 {
+  const gchar* subscription = lm_message_node_get_attribute (item, "subscription");
+  const gchar* ask = lm_message_node_get_attribute (item, "ask");
+
   builder.add_action ("edit", _("_Edit"),
 		      sigc::mem_fun (this, &LM::Presentity::edit_presentity));
+
+  if (strcmp (subscription, "none") == 0) {
+
+    builder.add_action ("ask", _("Ask him/her to see his/her status"), sigc::mem_fun (this, &LM::Presentity::ask_to));
+  }
+  if (strcmp (subscription, "from") == 0) {
+
+    builder.add_action ("revoke", _("Forbid him/her to see my status"), sigc::mem_fun (this, &LM::Presentity::revoke_from));
+    if (ask == NULL)
+      builder.add_action ("ask", _("Ask him/her to see his/her status"), sigc::mem_fun (this, &LM::Presentity::ask_to));
+    else
+      builder.add_ghost ("ask", _("Ask him/her to see his/her status (pending)"));
+  }
+  if (strcmp (subscription, "to") == 0) {
+
+    builder.add_action ("stop", _("Stop getting his/her status"), sigc::mem_fun (this, &LM::Presentity::stop_to));
+  }
+  if (strcmp (subscription, "both") == 0) {
+
+    builder.add_action ("revoke", _("Forbid him/her to see my status"), sigc::mem_fun (this, &LM::Presentity::revoke_from));
+    builder.add_action ("stop", _("Stop getting his/her status"), sigc::mem_fun (this, &LM::Presentity::stop_to));
+  }
+
   builder.add_action ("remove", _("_Remove"),
 		      sigc::mem_fun (this, &LM::Presentity::remove_presentity));
   return true;
@@ -214,6 +240,41 @@ LM::Presentity::remove_presentity ()
 				  "subscription", "remove",
 				  NULL);
 
+  lm_connection_send (connection, message, NULL);
+  lm_message_unref (message);
+}
+
+void
+LM::Presentity::revoke_from ()
+{
+  LmMessage* message = lm_message_new (NULL, LM_MESSAGE_TYPE_PRESENCE);
+  lm_message_node_set_attributes (lm_message_get_node (message),
+				  "to", get_jid ().c_str (),
+				  "type", "unsubscribed",
+				  NULL);
+  lm_connection_send (connection, message, NULL);
+  lm_message_unref (message);
+}
+
+void LM::Presentity::ask_to ()
+{
+  LmMessage* message = lm_message_new (NULL, LM_MESSAGE_TYPE_PRESENCE);
+  lm_message_node_set_attributes (lm_message_get_node (message),
+				  "to", get_jid ().c_str (),
+				  "type", "subscribe",
+				  NULL);
+  lm_connection_send (connection, message, NULL);
+  lm_message_unref (message);
+}
+
+void
+LM::Presentity::stop_to ()
+{
+  LmMessage* message = lm_message_new (NULL, LM_MESSAGE_TYPE_PRESENCE);
+  lm_message_node_set_attributes (lm_message_get_node (message),
+				  "to", get_jid ().c_str (),
+				  "type", "unsubscribe",
+				  NULL);
   lm_connection_send (connection, message, NULL);
   lm_message_unref (message);
 }

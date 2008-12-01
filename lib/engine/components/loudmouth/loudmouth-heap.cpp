@@ -41,13 +41,22 @@
 
 #include "loudmouth-heap.h"
 
-LmHandlerResult
+static LmHandlerResult
 iq_handler_c (LmMessageHandler* /*handler*/,
-		      LmConnection* /*connection*/,
-		      LmMessage* message,
-		      LM::Heap* heap)
+	      LmConnection* /*connection*/,
+	      LmMessage* message,
+	      LM::Heap* heap)
 {
   return heap->iq_handler (message);
+}
+
+static LmHandlerResult
+presence_handler_c (LmMessageHandler* /*handler*/,
+		    LmConnection* /*connection*/,
+		    LmMessage* message,
+		    LM::Heap* heap)
+{
+  return heap->presence_handler (message);
 }
 
 LM::Heap::Heap (LmConnection* connection_): connection(connection_)
@@ -57,6 +66,9 @@ LM::Heap::Heap (LmConnection* connection_): connection(connection_)
   iq_lm_handler = lm_message_handler_new ((LmHandleMessageFunction)iq_handler_c, this, NULL);
   lm_connection_register_message_handler (connection, iq_lm_handler, LM_MESSAGE_TYPE_IQ, LM_HANDLER_PRIORITY_NORMAL);
 
+  presence_lm_handler = lm_message_handler_new ((LmHandleMessageFunction)presence_handler_c, this, NULL);
+  lm_connection_register_message_handler (connection, presence_lm_handler, LM_MESSAGE_TYPE_PRESENCE, LM_HANDLER_PRIORITY_NORMAL);
+
   { // populate the roster
     LmMessage* roster_request = lm_message_new_with_sub_type (NULL, LM_MESSAGE_TYPE_IQ, LM_MESSAGE_SUB_TYPE_GET);
     LmMessageNode* node = lm_message_node_add_child (lm_message_get_node (roster_request), "query", NULL);
@@ -64,14 +76,22 @@ LM::Heap::Heap (LmConnection* connection_): connection(connection_)
     lm_connection_send (connection, roster_request, NULL);
     lm_message_unref (roster_request);
   }
+  { // initial presence push
+    LmMessage* presence_push = lm_message_new (NULL, LM_MESSAGE_TYPE_PRESENCE);
+    lm_connection_send (connection, presence_push, NULL);
+    lm_message_unref (presence_push);
+  }
 }
 
 LM::Heap::~Heap ()
 {
   lm_connection_unregister_message_handler (connection, iq_lm_handler, LM_MESSAGE_TYPE_IQ);
-
   lm_message_handler_unref (iq_lm_handler);
   iq_lm_handler = 0;
+
+  lm_connection_unregister_message_handler (connection, presence_lm_handler, LM_MESSAGE_TYPE_PRESENCE);
+  lm_message_handler_unref (presence_lm_handler);
+  presence_lm_handler = 0;
 
   lm_connection_unref (connection);
   connection = 0;
@@ -126,6 +146,69 @@ LM::Heap::iq_handler (LmMessage* message)
   return LM_HANDLER_RESULT_ALLOW_MORE_HANDLERS;
 }
 
+
+LmHandlerResult
+LM::Heap::presence_handler (LmMessage* message)
+{
+  const gchar* jid = lm_message_node_get_attribute (lm_message_get_node (message), "from");
+  gmref_ptr<Presentity> item = find_item (jid);
+  const gchar* type_attr = lm_message_node_get_attribute (lm_message_get_node (message), "type");
+
+  std::cout << lm_message_node_to_string (lm_message_get_node (message)) << std::endl;
+
+  if (type_attr != NULL && strcmp (type_attr, "subscribe") == 0) {
+
+    Ekiga::FormRequestSimple request (sigc::mem_fun (this, &LM::Heap::subscribe_from_form_submitted));
+    LmMessageNode* status = lm_message_node_find_child (lm_message_get_node (message), "status");
+    gchar* instructions = NULL;
+    std::string name;
+
+    if (item) {
+
+      name = item->get_name ();
+    } else {
+
+      name = jid;
+    }
+
+    request.title (_("Authorization to see your presence"));
+
+    if (status != NULL && lm_message_node_get_value (status) != NULL) {
+
+      instructions = g_strdup_printf (_("%s asks the permission to see your presence, saying: \"%s\"."),
+				      name.c_str (), lm_message_node_get_value (status));
+    } else {
+
+      instructions = g_strdup_printf (_("%s asks the permission to see your presence."), name.c_str ());
+    }
+    request.instructions (instructions);
+    g_free (instructions);
+
+    std::map<std::string, std::string> choices;
+    choices["grant"] = _("grant him/her the permission to see your presence");
+    choices["refuse"] = _("refuse him/her the permission to see your presence");
+    choices["later"] = _("decide later (also close or cancel this dialog)");
+    request.single_choice ("answer", _("Your answer is: "), "grant", choices);
+
+    request.hidden ("jid", jid);
+
+    if (!questions.handle_request (&request)) {
+
+      // FIXME: better error reporting
+#ifdef __GNUC__
+      std::cout << "Unhandled form request in "
+		<< __PRETTY_FUNCTION__ << std::endl;
+#endif
+    }
+  } else {
+
+    // FIXME: the rest of the presence handling comes here!
+  }
+
+  std::cout << lm_message_node_to_string (lm_message_get_node (message)) << std::endl;
+  return LM_HANDLER_RESULT_ALLOW_MORE_HANDLERS;
+}
+
 void
 LM::Heap::parse_roster (LmMessageNode* query)
 {
@@ -169,7 +252,7 @@ LM::Heap::add_item ()
   request.title (_("Add a roster element"));
   request.instructions (_("Please fill in this form to add a new"
 			  "element to the remote roster"));
-  request.text ("jid", _("Identifier:"), _("id@server"));
+  request.text ("jid", _("Identifier:"), _("identifier@server"));
 
   if (!questions.handle_request (&request)) {
 
@@ -191,19 +274,15 @@ LM::Heap::add_item_form_submitted (bool submitted,
   try {
 
     const std::string jid = result.text ("jid");
-
     if ( !jid.empty ()) {
 
-      LmMessage* message = lm_message_new_with_sub_type (NULL, LM_MESSAGE_TYPE_IQ, LM_MESSAGE_SUB_TYPE_SET);
-      LmMessageNode* query = lm_message_node_add_child (lm_message_get_node (message), "query", NULL);
-      lm_message_node_set_attribute (query, "xmlns", "jabber:iq:roster");
-      LmMessageNode* node = lm_message_node_add_child (query, "item", NULL);
-      lm_message_node_set_attributes (node,
-				      "jid", jid.c_str (),
+      LmMessage* subscribe = lm_message_new (NULL, LM_MESSAGE_TYPE_PRESENCE);
+      lm_message_node_set_attributes (lm_message_get_node (subscribe),
+				      "to", jid.c_str (),
+				      "type", "subscribe",
 				      NULL);
-
-      lm_connection_send (connection, message, NULL);
-      lm_message_unref (message);
+      lm_connection_send (connection, subscribe, NULL);
+      lm_message_unref (subscribe);
     }
   } catch (Ekiga::Form::not_found) {
 #ifdef __GNUC__
@@ -211,4 +290,68 @@ LM::Heap::add_item_form_submitted (bool submitted,
 	      << __PRETTY_FUNCTION__ << std::endl;
 #endif
   }
+}
+
+void
+LM::Heap::subscribe_from_form_submitted (bool submitted,
+					 Ekiga::Form& result)
+{
+  if ( !submitted)
+    return;
+
+  try {
+
+    const std::string jid = result.hidden ("jid");
+    const std::string answer = result.single_choice ("answer");
+
+    if (answer == "grant") {
+
+      LmMessage* message = lm_message_new (NULL, LM_MESSAGE_TYPE_PRESENCE);
+      lm_message_node_set_attributes (lm_message_get_node (message),
+				      "to", jid.c_str (),
+				      "type", "subscribed",
+				      NULL);
+      lm_connection_send (connection, message, NULL);
+      lm_message_unref (message);
+      LmMessage* subscribe = lm_message_new (NULL, LM_MESSAGE_TYPE_PRESENCE);
+      lm_message_node_set_attributes (lm_message_get_node (subscribe),
+				      "to", jid.c_str (),
+				      "type", "subscribe",
+				      NULL);
+      lm_connection_send (connection, subscribe, NULL);
+      lm_message_unref (subscribe);
+    } else if (answer == "refuse") {
+
+      LmMessage* message = lm_message_new (NULL, LM_MESSAGE_TYPE_PRESENCE);
+      lm_message_node_set_attributes (lm_message_get_node (message),
+				      "to", jid.c_str (),
+				      "type", "unsubscribed",
+				      NULL);
+      lm_connection_send (connection, message, NULL);
+      lm_message_unref (message);
+    }
+
+  } catch (Ekiga::Form::not_found) {
+#ifdef __GNUC__
+    std::cerr << "Invalid form submitted to "
+	      << __PRETTY_FUNCTION__ << std::endl;
+#endif
+  }
+}
+
+gmref_ptr<LM::Presentity>
+LM::Heap::find_item (const std::string jid)
+{
+  gmref_ptr<Presentity> result;
+
+  for (iterator iter = begin (); iter != end (); ++iter) {
+
+    if ((*iter)->get_jid () == jid) {
+
+      result = *iter;
+      break;
+    }
+  }
+
+  return result;
 }
