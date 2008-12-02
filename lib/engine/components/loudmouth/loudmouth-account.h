@@ -47,7 +47,8 @@ namespace LM
     public virtual GmRefCounted
   {
   public:
-    Account (gmref_ptr<Cluster> cluster_,
+    Account (gmref_ptr<Ekiga::PersonalDetails> details_,
+	     gmref_ptr<Cluster> cluster_,
 	     const std::string user_,
 	     const std::string password_,
 	     const std::string resource_,
@@ -67,6 +68,7 @@ namespace LM
 
   private:
 
+    gmref_ptr<Ekiga::PersonalDetails> details;
     gmref_ptr<Cluster> cluster;
 
     std::string user;

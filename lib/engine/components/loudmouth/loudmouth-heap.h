@@ -37,16 +37,19 @@
 #define __LOUDMOUTH_HEAP_H__
 
 #include "heap-impl.h"
+#include "personal-details.h"
 #include "loudmouth-presentity.h"
 
 namespace LM
 {
   class Heap:
-    public Ekiga::HeapImpl<Presentity>
+    public Ekiga::HeapImpl<Presentity>,
+    public sigc::trackable
   {
   public:
-    
-    Heap (LmConnection* connection_);
+
+    Heap (gmref_ptr<Ekiga::PersonalDetails> details_,
+	  LmConnection* connection_);
 
     ~Heap ();
 
@@ -67,6 +70,8 @@ namespace LM
 
   private:
 
+    gmref_ptr<Ekiga::PersonalDetails> details;
+
     LmConnection* connection;
 
     LmMessageHandler* iq_lm_handler;
@@ -84,6 +89,8 @@ namespace LM
 					Ekiga::Form& result);
 
     gmref_ptr<Presentity> find_item (const std::string jid);
+
+    void on_personal_details_updated ();
   };
 };
 

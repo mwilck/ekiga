@@ -59,8 +59,12 @@ presence_handler_c (LmMessageHandler* /*handler*/,
   return heap->presence_handler (message);
 }
 
-LM::Heap::Heap (LmConnection* connection_): connection(connection_)
+LM::Heap::Heap (gmref_ptr<Ekiga::PersonalDetails> details_,
+		LmConnection* connection_):
+  details(details_), connection(connection_)
 {
+  details->updated.connect (sigc::mem_fun (this, &LM::Heap::on_personal_details_updated));
+
   lm_connection_ref (connection);
 
   iq_lm_handler = lm_message_handler_new ((LmHandleMessageFunction)iq_handler_c, this, NULL);
@@ -81,6 +85,8 @@ LM::Heap::Heap (LmConnection* connection_): connection(connection_)
     lm_connection_send (connection, presence_push, NULL);
     lm_message_unref (presence_push);
   }
+
+  on_personal_details_updated (); // fake, but if we start as dnd, we want it known
 }
 
 LM::Heap::~Heap ()
@@ -365,4 +371,16 @@ LM::Heap::find_item (const std::string jid)
   }
 
   return result;
+}
+
+void
+LM::Heap::on_personal_details_updated ()
+{
+  LmMessage* message = lm_message_new (NULL, LM_MESSAGE_TYPE_PRESENCE);
+
+  lm_message_node_add_child (lm_message_get_node (message), "show", details->get_presence ().c_str ());
+  lm_message_node_add_child (lm_message_get_node (message), "status", details->get_status ().c_str ());
+
+  lm_connection_send (connection, message, NULL);
+  lm_message_unref (message);
 }

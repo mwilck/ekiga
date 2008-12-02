@@ -37,9 +37,11 @@
 
 #include "loudmouth-bank.h"
 
-LM::Bank::Bank (gmref_ptr<Cluster> cluster_): cluster(cluster_)
+LM::Bank::Bank (gmref_ptr<Ekiga::PersonalDetails> details_,
+		gmref_ptr<Cluster> cluster_):
+  details(details_), cluster(cluster_)
 {
-  account = gmref_ptr<Account>(new Account (cluster, "premier", "premier", "ekiga", "localhost"));
+  account = gmref_ptr<Account>(new Account (details, cluster, "premier", "premier", "ekiga", "localhost"));
 }
 
 LM::Bank::~Bank ()

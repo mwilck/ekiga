@@ -38,6 +38,7 @@
 #include "loudmouth-main.h"
 
 #include "presence-core.h"
+#include "personal-details.h"
 
 #include "loudmouth-cluster.h"
 #include "loudmouth-bank.h"
@@ -49,11 +50,12 @@ loudmouth_init (Ekiga::ServiceCore &services,
 {
   bool result = false;
   gmref_ptr<Ekiga::PresenceCore> presence (services.get ("presence-core"));
+  gmref_ptr<Ekiga::PersonalDetails> details (services.get ("personal-details"));
 
-  if (presence) {
+  if (presence && details) {
 
-    gmref_ptr<LM::Cluster> cluster(new LM::Cluster);
-    gmref_ptr<LM::Bank> bank (new LM::Bank (cluster));
+    gmref_ptr<LM::Cluster> cluster(new LM::Cluster ());
+    gmref_ptr<LM::Bank> bank (new LM::Bank (details, cluster));
     services.add (bank);
     presence->add_cluster (cluster);
     result = true;
