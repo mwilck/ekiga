@@ -35,6 +35,7 @@
 
 #include <iostream>
 #include <string.h>
+#include <stdlib.h>
 #include <glib/gi18n.h>
 
 #include "form-request-simple.h"
@@ -76,13 +77,53 @@ LM::Presentity::get_name () const
 const std::string
 LM::Presentity::get_presence () const
 {
-  return "FIXME";
+  std::string result = "offline";
+
+  if ( !infos.empty ()) {
+
+    infos_type::const_iterator iter = infos.begin ();
+    ResourceInfo best = iter->second;
+    ++iter;
+    while (iter != infos.end ()) {
+
+      if (iter->second.priority > best.priority) {
+
+	best = iter->second;
+      }
+    }
+    if (best.presence == "") {
+
+      result = "online";
+    } else {
+
+      result = best.presence;
+    }
+  }
+
+  return result;
 }
 
 const std::string
 LM::Presentity::get_status () const
 {
-  return "FIXME";
+  std::string result = "";
+
+  if ( !infos.empty ()) {
+
+    infos_type::const_iterator iter = infos.begin ();
+    ResourceInfo best = iter->second;
+    ++iter;
+    while (iter != infos.end ()) {
+
+      if (iter->second.priority > best.priority) {
+
+	best = iter->second;
+      }
+    }
+    result = best.status;
+  }
+
+  return result;
 }
 
 const std::string
@@ -158,6 +199,50 @@ LM::Presentity::update (LmMessageNode* item_)
   lm_message_node_unref (item);
   item = item_;
   lm_message_node_ref (item);
+  updated.emit ();
+}
+
+void
+LM::Presentity::push_presence (const std::string resource,
+			       LmMessageNode* presence)
+{
+  if (resource.empty ())
+    return;
+
+  ResourceInfo info;
+
+  LmMessageNode* priority = lm_message_node_find_child (presence, "priority");
+  if (priority != NULL) {
+
+    info.priority = atoi (lm_message_node_get_value (priority));
+
+  } else {
+
+    info.priority = 50;
+  }
+
+  LmMessageNode* status = lm_message_node_find_child (presence, "status");
+  if (status != NULL) {
+
+    info.status = lm_message_node_get_value (status);
+  }
+
+  LmMessageNode* away = lm_message_node_find_child (presence, "show");
+  if (away != NULL) {
+
+    info.presence = lm_message_node_get_value (away);
+  } else {
+
+    info.presence = "online";
+  }
+
+  infos[resource] = info;
+
+  if (info.presence == "unavailable") {
+
+    infos.erase (resource);
+  }
+
   updated.emit ();
 }
 

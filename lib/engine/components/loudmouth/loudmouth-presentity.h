@@ -71,9 +71,23 @@ namespace LM
 
     void update (LmMessageNode* item_);
 
+    void push_presence (const std::string resource,
+			LmMessageNode* presence);
+
   private:
     LmConnection* connection;
     LmMessageNode* item;
+
+    struct ResourceInfo {
+
+      int priority;
+      std::string presence;
+      std::string status;
+    };
+
+    typedef std::map<std::string, ResourceInfo> infos_type;
+
+    infos_type infos;
 
     void edit_presentity ();
 

@@ -150,11 +150,20 @@ LM::Heap::iq_handler (LmMessage* message)
 LmHandlerResult
 LM::Heap::presence_handler (LmMessage* message)
 {
-  const gchar* jid = lm_message_node_get_attribute (lm_message_get_node (message), "from");
-  gmref_ptr<Presentity> item = find_item (jid);
+  const gchar* from_c = lm_message_node_get_attribute (lm_message_get_node (message), "from");
   const gchar* type_attr = lm_message_node_get_attribute (lm_message_get_node (message), "type");
+  std::string base_jid;
+  std::string resource;
 
-  std::cout << lm_message_node_to_string (lm_message_get_node (message)) << std::endl;
+  if (from_c != 0) {
+
+    std::string from (from_c);
+    std::string::size_type index = from.find ('/');
+    base_jid = std::string (from, 0, index);
+    resource = std::string (from, index + 1, std::string::npos);
+  }
+
+  gmref_ptr<Presentity> item = find_item (base_jid);
 
   if (type_attr != NULL && strcmp (type_attr, "subscribe") == 0) {
 
@@ -168,7 +177,7 @@ LM::Heap::presence_handler (LmMessage* message)
       name = item->get_name ();
     } else {
 
-      name = jid;
+      name = base_jid;
     }
 
     request.title (_("Authorization to see your presence"));
@@ -190,7 +199,7 @@ LM::Heap::presence_handler (LmMessage* message)
     choices["later"] = _("decide later (also close or cancel this dialog)");
     request.single_choice ("answer", _("Your answer is: "), "grant", choices);
 
-    request.hidden ("jid", jid);
+    request.hidden ("jid", base_jid);
 
     if (!questions.handle_request (&request)) {
 
@@ -202,10 +211,12 @@ LM::Heap::presence_handler (LmMessage* message)
     }
   } else {
 
-    // FIXME: the rest of the presence handling comes here!
+    if (item) {
+
+      item->push_presence (resource, lm_message_get_node (message));
+    }
   }
 
-  std::cout << lm_message_node_to_string (lm_message_get_node (message)) << std::endl;
   return LM_HANDLER_RESULT_ALLOW_MORE_HANDLERS;
 }
 
