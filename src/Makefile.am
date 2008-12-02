@@ -21,10 +21,7 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/engine/gui/gtk-core		\
 	-I$(top_srcdir)/lib/engine/components/opal	\
 	-I$(top_srcdir)/src				\
-	-I$(top_srcdir)/src/clients/			\
-	-I$(top_srcdir)/src/components/			\
-	-I$(top_srcdir)/src/devices/			\
-	-I$(top_srcdir)/src/endpoints/			\
+	-I$(top_srcdir)/src/dbus-helper/		\
 	-I$(top_srcdir)/src/gui/			\
 	-I$(top_builddir)				\
 	$(GNOME_INCLUDEDIR)				\
@@ -88,36 +85,36 @@ ekiga_SOURCES +=				\
 
 if HAVE_DBUS 
 ekiga_SOURCES +=		\
-	components/dbus-stub.h	\
-	components/dbus.h	\
-	components/dbus.cpp
+	dbus-helper/dbus-stub.h	\
+	dbus-helper/dbus.h	\
+	dbus-helper/dbus.cpp
 
 
 bin_PROGRAMS += ekiga-helper
 
 ekiga_helper_SOURCES = 		\
-	components/dbus-helper-stub.h 	\
-	components/dbus-helper.cpp
+	dbus-helper/dbus-helper-stub.h 	\
+	dbus-helper/dbus-helper.cpp
 
 ekiga_helper_LDADD = $(DBUS_LIBS)
 
-BUILT_SOURCES += components/dbus-helper-stub.h components/dbus-stub.h
+BUILT_SOURCES += dbus-helper/dbus-helper-stub.h dbus-helper/dbus-stub.h
 
-components/dbus-helper-stub.h: components/dbus-helper-stub.xml
+dbus-helper/dbus-helper-stub.h: dbus-helper/dbus-helper-stub.xml
 	$(LIBTOOL) --mode=execute dbus-binding-tool --prefix=helper --mode=glib-server --output=$@ $^
 
-components/dbus-stub.h: components/dbus-stub.xml
+dbus-helper/dbus-stub.h: dbus-helper/dbus-stub.xml
 	$(LIBTOOL) --mode=execute dbus-binding-tool --prefix=ekiga_dbus_component --mode=glib-server --output=$@ $^
 endif
 
 if INSTALL_DBUS_SERVICE
 
 %.service: %.service.in
-	$(mkdir_p) components # this is ugly...
+	$(mkdir_p) dbus-helper # this is ugly...
 	sed -e "s#\@bindir\@#@bindir@#" $< > $@
 
 servicedir = $(datadir)/dbus-1/services
-service_DATA = components/org.ekiga.Ekiga.service components/org.ekiga.Helper.service
+service_DATA = dbus-helper/org.ekiga.Ekiga.service dbus-helper/org.ekiga.Helper.service
 service_in_files = $(service_DATA:.service=.service.in)
 
 endif
@@ -144,8 +141,8 @@ ekiga_LDADD = \
 
 EXTRA_DIST = \
 	$(service_in_files)		\
-	components/dbus-stub.xml	\
-	components/dbus-helper-stub.xml
+	dbus-helper/dbus-stub.xml	\
+	dbus-helper/dbus-helper-stub.xml
 
 CLEANFILES = \
 	$(service_DATA)

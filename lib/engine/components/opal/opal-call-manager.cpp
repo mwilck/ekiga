@@ -105,7 +105,8 @@ CallManager::CallManager (Ekiga::ServiceCore & _core)
 {
   /* Initialise the endpoint paramaters */
   PIPSocket::SetDefaultIpAddressFamilyV4();
-  autoStartTransmitVideo = autoStartReceiveVideo = true;
+  SetAutoStartTransmitVideo (true);
+  SetAutoStartReceiveVideo (true);
   SetUDPPorts (5000, 5100);
   SetTCPPorts (30000, 30100);
   SetRtpIpPorts (5000, 5100);

@@ -70,7 +70,7 @@
 #include <gdk/gdkkeysyms.h>
 
 #ifdef HAVE_DBUS
-#include "components/dbus.h"
+#include "dbus-helper/dbus.h"
 #endif
 
 #ifndef WIN32
