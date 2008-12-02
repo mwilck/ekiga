@@ -291,7 +291,6 @@ void
 XCAP::Core::read (gmref_ptr<XCAP::Path> path,
 		  sigc::slot2<void, bool,std::string> callback)
 {
-  std::cout << "XCAP trying to read " << path->to_uri () << std::endl;
   impl->read (path, callback);
 }
 
@@ -301,11 +300,6 @@ XCAP::Core::write (gmref_ptr<Path> path,
 		   const std::string content,
 		   sigc::slot1<void,std::string> callback)
 {
-  std::cout << "XCAP trying to write"
-	    << " (" << content_type << "):"
-	    << content << std::endl
-	    << "to:" << std::endl
-	    << path->to_uri () << std::endl;
   impl->write (path, content_type, content, callback);
 }
 
@@ -313,6 +307,5 @@ void
 XCAP::Core::erase (gmref_ptr<Path> path,
 		   sigc::slot1<void,std::string> callback)
 {
-  std::cout << "XCAP trying to erase " << path->to_uri () << std::endl;
   impl->erase (path, callback);
 }
