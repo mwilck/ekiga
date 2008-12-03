@@ -82,6 +82,13 @@ class GnomeMeeting : public PProcess
    */
   void InitEngine ();
 
+  
+  /* DESCRIPTION  : / 
+   * BEHAVIOR     : No more vroom.
+   * PRE          : /
+   */
+  void StopEngine ();
+
 
 
   /* DESCRIPTION  :  /

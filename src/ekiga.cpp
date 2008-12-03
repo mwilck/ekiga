@@ -229,3 +229,11 @@ GnomeMeeting::InitEngine ()
   Ekiga::Runtime *runtime = new Ekiga::GlibRuntime;
   engine_init (1, NULL, runtime);
 }
+
+void
+GnomeMeeting::StopEngine ()
+{
+  PWaitAndSignal m(ep_var_mutex);
+
+  engine_stop ();
+}

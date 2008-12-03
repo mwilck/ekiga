@@ -4549,6 +4549,8 @@ main (int argc,
   /* Exit Ekiga */
   GnomeMeeting::Process ()->Exit ();
 
+  GnomeMeeting::Process ()->StopEngine ();
+
   /* Save and shutdown the configuration */
   gm_conf_save ();
   gm_conf_shutdown ();

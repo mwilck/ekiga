@@ -45,14 +45,13 @@
  * @{
  */
 
-void
-engine_init (int argc,
-             char *argv[],
-             Ekiga::Runtime *runtime);
+void engine_init (int argc,
+		  char *argv[],
+		  Ekiga::Runtime *runtime);
 
+Ekiga::ServiceCore* engine_get_service_core ();
 
-Ekiga::ServiceCore *
-engine_get_service_core ();
+void engine_stop ();
 
 /**
  * @}

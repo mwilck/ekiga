@@ -310,3 +310,11 @@ engine_get_service_core ()
 {
   return service_core;
 }
+
+void
+engine_stop ()
+{
+  if (service_core)
+    delete service_core;
+  service_core = NULL;
+}
