@@ -33,6 +33,8 @@
  *
  */
 
+#include <iostream>
+
 #include "loudmouth-chat-simple.h"
 
 LM::SimpleChat::SimpleChat (gmref_ptr<Presentity> presentity_):
@@ -43,6 +45,7 @@ LM::SimpleChat::SimpleChat (gmref_ptr<Presentity> presentity_):
 
 LM::SimpleChat::~SimpleChat ()
 {
+  std::cout << __PRETTY_FUNCTION__ << std::endl;
   presentity->has_chat = false;
 }
 

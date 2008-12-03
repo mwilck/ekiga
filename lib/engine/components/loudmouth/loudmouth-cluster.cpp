@@ -33,6 +33,8 @@
  *
  */
 
+#include <iostream>
+
 #include "loudmouth-cluster.h"
 
 LM::Cluster::Cluster ()
@@ -41,6 +43,7 @@ LM::Cluster::Cluster ()
 
 LM::Cluster::~Cluster ()
 {
+  std::cout << __PRETTY_FUNCTION__ << std::endl;
 }
 
 bool
