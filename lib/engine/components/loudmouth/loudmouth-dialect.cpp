@@ -25,53 +25,64 @@
 
 
 /*
- *                         loudmouth-chat-simple.h  -  description
+ *                         loudmouth-dialect.cpp  -  description
  *                         ------------------------------------------
  *   begin                : written in 2008 by Julien Puydt
  *   copyright            : (c) 2008 by Julien Puydt
- *   description          : declaration of a loudmouth simple chat
+ *   description          : implementation of the loudmouth dialect
  *
  */
 
-#ifndef __LOUDMOUTH_CHAT_SIMPLE_H__
-#define __LOUDMOUTH_CHAT_SIMPLE_H__
+#include <iostream>
 
-#include "chat-simple.h"
+#include "loudmouth-dialect.h"
 
-#include "loudmouth-presentity.h"
-
-namespace LM
+LM::Dialect::Dialect ()
 {
-  class SimpleChat:
-    public Ekiga::SimpleChat
-  {
-  public:
+}
 
-    SimpleChat (gmref_ptr<Presentity> presentity_);
+LM::Dialect::~Dialect ()
+{
+  std::cout << __PRETTY_FUNCTION__ << std::endl;
+}
 
-    ~SimpleChat ();
+void
+LM::Dialect::push_message (gmref_ptr<Presentity> presentity,
+			   const std::string msg)
+{
+  bool found = false;
 
-    const std::string get_title () const;
+  for (simple_iterator iter = simple_begin ();
+       iter != simple_end ();
+       ++iter) {
 
-    void connect (gmref_ptr<Ekiga::ChatObserver> observer);
+    if (presentity == (*iter)->get_presentity ()) {
 
-    void disconnect (gmref_ptr<Ekiga::ChatObserver> observer);
+      (*iter)->got_message (msg);
+      found = true;
+      break;
+    }
+  }
 
-    bool send_message (const std::string msg);
+  if ( !found) {
 
-    bool populate_menu (Ekiga::MenuBuilder& builder);
+    gmref_ptr<SimpleChat> chat(new SimpleChat (presentity));
 
-    gmref_ptr<Ekiga::Presentity> get_presentity () const;
+    add_simple_chat (chat);
+    chat->got_message (msg);
+  }
+}
 
-    /* specific api */
+void
+LM::Dialect::open_chat (gmref_ptr<Presentity> presentity)
+{
+  gmref_ptr<SimpleChat> chat(new SimpleChat (presentity));
+  add_simple_chat (chat);
+  chat->user_requested.emit ();
+}
 
-    void got_message (const std::string msg);
-
-  private:
-
-    gmref_ptr<Presentity> presentity;
-    std::list<gmref_ptr<Ekiga::ChatObserver> > observers;
-  };
-};
-
-#endif
+bool
+LM::Dialect::populate_menu (Ekiga::MenuBuilder& /*builder*/)
+{
+  return false;
+}

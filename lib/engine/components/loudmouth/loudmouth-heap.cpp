@@ -59,9 +59,19 @@ presence_handler_c (LmMessageHandler* /*handler*/,
   return heap->presence_handler (message);
 }
 
+static LmHandlerResult
+message_handler_c (LmMessageHandler* /*handler*/,
+		   LmConnection* /*connection*/,
+		   LmMessage* message,
+		   LM::Heap* heap)
+{
+  return heap->message_handler (message);
+}
+
 LM::Heap::Heap (gmref_ptr<Ekiga::PersonalDetails> details_,
+		gmref_ptr<Dialect> dialect_,
 		LmConnection* connection_):
-  details(details_), connection(connection_)
+  details(details_), dialect(dialect_), connection(connection_)
 {
   details->updated.connect (sigc::mem_fun (this, &LM::Heap::on_personal_details_updated));
 
@@ -72,6 +82,9 @@ LM::Heap::Heap (gmref_ptr<Ekiga::PersonalDetails> details_,
 
   presence_lm_handler = lm_message_handler_new ((LmHandleMessageFunction)presence_handler_c, this, NULL);
   lm_connection_register_message_handler (connection, presence_lm_handler, LM_MESSAGE_TYPE_PRESENCE, LM_HANDLER_PRIORITY_NORMAL);
+
+  message_lm_handler = lm_message_handler_new ((LmHandleMessageFunction)message_handler_c, this, NULL);
+  lm_connection_register_message_handler (connection, message_lm_handler, LM_MESSAGE_TYPE_MESSAGE, LM_HANDLER_PRIORITY_NORMAL);
 
   { // populate the roster
     LmMessage* roster_request = lm_message_new_with_sub_type (NULL, LM_MESSAGE_TYPE_IQ, LM_MESSAGE_SUB_TYPE_GET);
@@ -98,6 +111,10 @@ LM::Heap::~Heap ()
   lm_connection_unregister_message_handler (connection, presence_lm_handler, LM_MESSAGE_TYPE_PRESENCE);
   lm_message_handler_unref (presence_lm_handler);
   presence_lm_handler = 0;
+
+  lm_connection_unregister_message_handler (connection, message_lm_handler, LM_MESSAGE_TYPE_MESSAGE);
+  lm_message_handler_unref (message_lm_handler);
+  message_lm_handler = 0;
 
   lm_connection_unref (connection);
   connection = 0;
@@ -226,6 +243,36 @@ LM::Heap::presence_handler (LmMessage* message)
   return LM_HANDLER_RESULT_ALLOW_MORE_HANDLERS;
 }
 
+LmHandlerResult
+LM::Heap::message_handler (LmMessage* message)
+{
+  const gchar* from_c = lm_message_node_get_attribute (lm_message_get_node (message), "from");
+  const gchar* type_attr = lm_message_node_get_attribute (lm_message_get_node (message), "type");
+  std::string base_jid;
+
+  if (from_c != 0) {
+
+    std::string from (from_c);
+    std::string::size_type index = from.find ('/');
+    base_jid = std::string (from, 0, index);
+  }
+
+  gmref_ptr<Presentity> item = find_item (base_jid);
+
+  if (type_attr == NULL
+      || (type_attr != NULL && strcmp (type_attr, "normal") == 0)
+      || (type_attr != NULL && strcmp (type_attr, "chat") == 0)) {
+
+    LmMessageNode* body = lm_message_node_find_child (lm_message_get_node (message), "body");
+    if (lm_message_node_get_value (body) != NULL) {
+
+      dialect->push_message (item, lm_message_node_get_value (body));
+    }
+  }
+
+  return LM_HANDLER_RESULT_ALLOW_MORE_HANDLERS;
+}
+
 void
 LM::Heap::parse_roster (LmMessageNode* query)
 {
@@ -256,6 +303,7 @@ LM::Heap::parse_roster (LmMessageNode* query)
     if ( !found) {
 
       gmref_ptr<Presentity> presentity(new Presentity (connection, node));
+      presentity->chat_requested.connect (sigc::bind (sigc::mem_fun (this, &LM::Heap::on_chat_requested), presentity));
       add_presentity (presentity);
     }
   }
@@ -383,4 +431,10 @@ LM::Heap::on_personal_details_updated ()
 
   lm_connection_send (connection, message, NULL);
   lm_message_unref (message);
+}
+
+void
+LM::Heap::on_chat_requested (gmref_ptr<Presentity> presentity)
+{
+  dialect->open_chat (presentity);
 }

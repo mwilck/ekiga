@@ -39,6 +39,7 @@
 #include "services.h"
 
 #include "loudmouth-account.h"
+#include "loudmouth-dialect.h"
 
 namespace LM
 {
@@ -48,6 +49,7 @@ namespace LM
   {
   public:
     Bank (gmref_ptr<Ekiga::PersonalDetails> details_,
+	  gmref_ptr<Dialect> dialect_,
 	  gmref_ptr<Cluster> cluster_);
 
     ~Bank ();
@@ -62,6 +64,7 @@ namespace LM
 
     gmref_ptr<Ekiga::PersonalDetails> details;
     gmref_ptr<Cluster> cluster;
+    gmref_ptr<Dialect> dialect;
     gmref_ptr<Account> account;
   };
 };

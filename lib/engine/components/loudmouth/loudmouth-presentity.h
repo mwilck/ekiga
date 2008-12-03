@@ -69,10 +69,16 @@ namespace LM
 
     const std::string get_jid () const;
 
+    LmConnection* get_connection () const;
+
     void update (LmMessageNode* item_);
 
     void push_presence (const std::string resource,
 			LmMessageNode* presence);
+
+    bool has_chat;
+
+    sigc::signal<void> chat_requested;
 
   private:
     LmConnection* connection;

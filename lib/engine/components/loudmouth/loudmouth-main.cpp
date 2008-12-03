@@ -38,6 +38,7 @@
 #include "loudmouth-main.h"
 
 #include "presence-core.h"
+#include "chat-core.h"
 #include "personal-details.h"
 
 #include "loudmouth-cluster.h"
@@ -50,13 +51,16 @@ loudmouth_init (Ekiga::ServiceCore &services,
 {
   bool result = false;
   gmref_ptr<Ekiga::PresenceCore> presence (services.get ("presence-core"));
+  gmref_ptr<Ekiga::ChatCore> chat (services.get ("chat-core"));
   gmref_ptr<Ekiga::PersonalDetails> details (services.get ("personal-details"));
 
-  if (presence && details) {
+  if (presence && chat && details) {
 
-    gmref_ptr<LM::Cluster> cluster(new LM::Cluster ());
-    gmref_ptr<LM::Bank> bank (new LM::Bank (details, cluster));
+    gmref_ptr<LM::Dialect> dialect(new LM::Dialect);
+    gmref_ptr<LM::Cluster> cluster(new LM::Cluster);
+    gmref_ptr<LM::Bank> bank (new LM::Bank (details, dialect, cluster));
     services.add (bank);
+    chat->add_dialect (dialect);
     presence->add_cluster (cluster);
     result = true;
   }

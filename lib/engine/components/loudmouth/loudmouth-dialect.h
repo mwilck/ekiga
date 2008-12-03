@@ -25,52 +25,39 @@
 
 
 /*
- *                         loudmouth-chat-simple.h  -  description
+ *                         loudmouth-dialect.h  -  description
  *                         ------------------------------------------
  *   begin                : written in 2008 by Julien Puydt
  *   copyright            : (c) 2008 by Julien Puydt
- *   description          : declaration of a loudmouth simple chat
+ *   description          : declaration of the loudmouth dialect
  *
  */
 
-#ifndef __LOUDMOUTH_CHAT_SIMPLE_H__
-#define __LOUDMOUTH_CHAT_SIMPLE_H__
+#ifndef __LOUDMOUTH_DIALECT_H__
+#define __LOUDMOUTH_DIALECT_H__
 
-#include "chat-simple.h"
-
-#include "loudmouth-presentity.h"
+#include "dialect-impl.h"
+#include "loudmouth-chat-simple.h"
 
 namespace LM
 {
-  class SimpleChat:
-    public Ekiga::SimpleChat
+  class Dialect:
+    public Ekiga::DialectImpl<SimpleChat>
   {
   public:
 
-    SimpleChat (gmref_ptr<Presentity> presentity_);
+    Dialect ();
 
-    ~SimpleChat ();
-
-    const std::string get_title () const;
-
-    void connect (gmref_ptr<Ekiga::ChatObserver> observer);
-
-    void disconnect (gmref_ptr<Ekiga::ChatObserver> observer);
-
-    bool send_message (const std::string msg);
+    ~Dialect ();
 
     bool populate_menu (Ekiga::MenuBuilder& builder);
 
-    gmref_ptr<Ekiga::Presentity> get_presentity () const;
+    /* specific */
 
-    /* specific api */
+    void push_message (gmref_ptr<Presentity>,
+		       const std::string msg);
 
-    void got_message (const std::string msg);
-
-  private:
-
-    gmref_ptr<Presentity> presentity;
-    std::list<gmref_ptr<Ekiga::ChatObserver> > observers;
+    void open_chat (gmref_ptr<Presentity> presentity);
   };
 };
 

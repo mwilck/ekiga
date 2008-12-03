@@ -182,6 +182,11 @@ LM::Presentity::populate_menu (Ekiga::MenuBuilder& builder)
     builder.add_action ("stop", _("Stop getting his/her status"), sigc::mem_fun (this, &LM::Presentity::stop_to));
   }
 
+  if ( !has_chat) {
+
+    builder.add_action ("chat", _("Start chat"), chat_requested.make_slot ());
+  }
+
   builder.add_action ("remove", _("_Remove"),
 		      sigc::mem_fun (this, &LM::Presentity::remove_presentity));
   return true;
@@ -191,6 +196,12 @@ const std::string
 LM::Presentity::get_jid () const
 {
   return lm_message_node_get_attribute (item, "jid");
+}
+
+LmConnection*
+LM::Presentity::get_connection () const
+{
+  return connection;
 }
 
 void

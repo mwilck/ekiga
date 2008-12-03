@@ -38,7 +38,7 @@
 
 #include "heap-impl.h"
 #include "personal-details.h"
-#include "loudmouth-presentity.h"
+#include "loudmouth-dialect.h"
 
 namespace LM
 {
@@ -49,6 +49,7 @@ namespace LM
   public:
 
     Heap (gmref_ptr<Ekiga::PersonalDetails> details_,
+	  gmref_ptr<Dialect> dialect_,
 	  LmConnection* connection_);
 
     ~Heap ();
@@ -68,15 +69,21 @@ namespace LM
 
     LmHandlerResult presence_handler (LmMessage* message);
 
+    LmHandlerResult message_handler (LmMessage* message);
+
   private:
 
     gmref_ptr<Ekiga::PersonalDetails> details;
+
+    gmref_ptr<Dialect> dialect;
 
     LmConnection* connection;
 
     LmMessageHandler* iq_lm_handler;
 
     LmMessageHandler* presence_lm_handler;
+
+    LmMessageHandler* message_lm_handler;
 
     void parse_roster (LmMessageNode* query);
 
@@ -91,6 +98,8 @@ namespace LM
     gmref_ptr<Presentity> find_item (const std::string jid);
 
     void on_personal_details_updated ();
+
+    void on_chat_requested (gmref_ptr<Presentity> presentity);
   };
 };
 

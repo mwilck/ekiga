@@ -48,6 +48,7 @@ namespace LM
   {
   public:
     Account (gmref_ptr<Ekiga::PersonalDetails> details_,
+	     gmref_ptr<Dialect> dialect_,
 	     gmref_ptr<Cluster> cluster_,
 	     const std::string user_,
 	     const std::string password_,
@@ -69,6 +70,7 @@ namespace LM
   private:
 
     gmref_ptr<Ekiga::PersonalDetails> details;
+    gmref_ptr<Dialect> dialect;
     gmref_ptr<Cluster> cluster;
 
     std::string user;

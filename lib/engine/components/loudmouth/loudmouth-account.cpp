@@ -65,13 +65,14 @@ on_authenticate_c (LmConnection* /*unused*/,
 /* and here is the C++ code : */
 
 LM::Account::Account (gmref_ptr<Ekiga::PersonalDetails> details_,
+		      gmref_ptr<Dialect> dialect_,
 		      gmref_ptr<Cluster> cluster_,
 		      const std::string user_,
 		      const std::string password_,
 		      const std::string resource_,
 		      const std::string server_,
 		      unsigned port_):
-  details(details_), cluster(cluster_), user(user_), password(password_), resource(resource_), server(server_), port(port_), connection(0)
+  details(details_), dialect(dialect_), cluster(cluster_), user(user_), password(password_), resource(resource_), server(server_), port(port_), connection(0)
 {
   connection = lm_connection_new (NULL);
   lm_connection_set_disconnect_function (connection, (LmDisconnectFunction)on_disconnected_c,
@@ -146,7 +147,7 @@ LM::Account::on_authenticate (bool result)
 {
   if (result) {
 
-    heap = gmref_ptr<Heap> (new Heap (details, connection));
+    heap = gmref_ptr<Heap> (new Heap (details, dialect, connection));
     cluster->add_heap (heap);
   } else {
 

@@ -35,17 +35,14 @@
 
 #include "loudmouth-chat-simple.h"
 
-LM::SimpleChat::SimpleChat (LmConnection* connection_,
-			    gmref_ptr<Presentity> presentity_):
-  connection(connection_), presentity(presentity_)
+LM::SimpleChat::SimpleChat (gmref_ptr<Presentity> presentity_):
+  presentity(presentity_)
 {
-  lm_connection_ref (connection);
   presentity->has_chat = true;
 }
 
 LM::SimpleChat::~SimpleChat ()
 {
-  lm_connection_unref (connection);
   presentity->has_chat = false;
 }
 
@@ -72,7 +69,7 @@ LM::SimpleChat::send_message (const std::string msg)
 {
   bool result = false;
 
-  if (lm_connection_is_authenticated (connection)) {
+  if (lm_connection_is_authenticated (presentity->get_connection ())) {
 
     result = true;
     LmMessage* message = lm_message_new (NULL, LM_MESSAGE_TYPE_MESSAGE);
@@ -81,7 +78,7 @@ LM::SimpleChat::send_message (const std::string msg)
 				    "type", "chat",
 				    NULL);
     lm_message_node_add_child (lm_message_get_node (message), "body", msg.c_str ());
-    lm_connection_send (connection, message, NULL);
+    lm_connection_send (presentity->get_connection (), message, NULL);
     lm_message_unref (message);
     for (std::list<gmref_ptr<Ekiga::ChatObserver> >::iterator iter = observers.begin ();
 	 iter != observers.end ();
@@ -92,6 +89,17 @@ LM::SimpleChat::send_message (const std::string msg)
   }
 
   return result;
+}
+
+void
+LM::SimpleChat::got_message (const std::string msg)
+{
+  for (std::list<gmref_ptr<Ekiga::ChatObserver> >::iterator iter = observers.begin ();
+       iter != observers.end ();
+       ++iter) {
+
+    (*iter)->message (presentity->get_name (), msg);
+  }
 }
 
 bool
