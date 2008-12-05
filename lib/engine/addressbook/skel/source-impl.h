@@ -84,8 +84,8 @@ namespace Ekiga
 
   public:
 
-    //typedef typename Lister<BookType>::iterator iterator;
-    //typedef typename Lister<BookType>::const_iterator const_iterator;
+    typedef typename RefLister<BookType>::iterator iterator;
+    typedef typename RefLister<BookType>::const_iterator const_iterator;
 
     /** The constructor
      */
@@ -121,6 +121,25 @@ namespace Ekiga
      * Ekiga::Book has been removed.
      */
     void remove_book (gmref_ptr<BookType> book);
+
+
+  protected:
+
+    /** Returns an iterator to the first Book of the collection
+     */
+    iterator begin ();
+
+    /** Returns an iterator to the last Book of the collection
+     */
+    iterator end ();
+
+    /** Returns a const iterator to the first Book of the collection
+     */
+    const_iterator begin () const;
+
+    /** Returns a const iterator to the last Book of the collection
+     */
+    const_iterator end () const;
 
 
   private:
@@ -203,6 +222,37 @@ void
 Ekiga::SourceImpl<BookType>::remove_book (gmref_ptr<BookType> book)
 {
   remove_object (book);
+}
+
+template<typename BookType>
+typename Ekiga::SourceImpl<BookType>::iterator
+Ekiga::SourceImpl<BookType>::begin ()
+{
+  return RefLister<BookType>::begin ();
+}
+
+
+template<typename BookType>
+typename Ekiga::SourceImpl<BookType>::iterator
+Ekiga::SourceImpl<BookType>::end ()
+{
+  return RefLister<BookType>::end ();
+}
+
+
+template<typename BookType>
+typename Ekiga::SourceImpl<BookType>::const_iterator
+Ekiga::SourceImpl<BookType>::begin () const
+{
+  return RefLister<BookType>::begin ();
+}
+
+
+template<typename BookType>
+typename Ekiga::SourceImpl<BookType>::const_iterator
+Ekiga::SourceImpl<BookType>::end () const
+{
+  return RefLister<BookType>::end ();
 }
 
 #endif

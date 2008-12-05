@@ -78,8 +78,8 @@ namespace Ekiga
 
   public:
 
-    //    typedef typename Lister<ContactType>::iterator iterator;
-    //typedef typename Lister<ContactType>::const_iterator const_iterator;
+    typedef typename RefLister<ContactType>::iterator iterator;
+    typedef typename RefLister<ContactType>::const_iterator const_iterator;
 
     /** The constructor
      */
@@ -100,19 +100,19 @@ namespace Ekiga
 
     /** Returns an iterator to the first Contact of the collection
      */
-    //    iterator begin ();
+    iterator begin ();
 
     /** Returns an iterator to the last Contact of the collection
      */
-    //iterator end ();
+    iterator end ();
 
     /** Returns a const iterator to the first Contact of the collection
      */
-    //const_iterator begin () const;
+    const_iterator begin () const;
 
     /** Returns a const iterator to the last Contact of the collection
      */
-    //const_iterator end () const;
+    const_iterator end () const;
 
     /** Adds a contact to the Ekiga::Book.
      * @param: The contact to be added.
@@ -166,36 +166,36 @@ Ekiga::BookImpl<ContactType>::visit_contacts (sigc::slot1<bool, gmref_ptr<Contac
 }
 
 
-// template<typename ContactType>
-// typename Ekiga::BookImpl<ContactType>::iterator
-// Ekiga::BookImpl<ContactType>::begin ()
-// {
-//   return Lister<ContactType>::begin ();
-// }
+template<typename ContactType>
+typename Ekiga::BookImpl<ContactType>::iterator
+Ekiga::BookImpl<ContactType>::begin ()
+{
+  return RefLister<ContactType>::begin ();
+}
 
 
-// template<typename ContactType>
-// typename Ekiga::BookImpl<ContactType>::iterator
-// Ekiga::BookImpl<ContactType>::end ()
-// {
-//   return Lister<ContactType>::end ();
-// }
+template<typename ContactType>
+typename Ekiga::BookImpl<ContactType>::iterator
+Ekiga::BookImpl<ContactType>::end ()
+{
+  return RefLister<ContactType>::end ();
+}
 
 
-// template<typename ContactType>
-// typename Ekiga::BookImpl<ContactType>::const_iterator
-// Ekiga::BookImpl<ContactType>::begin () const
-// {
-//   return Lister<ContactType>::begin ();
-// }
+template<typename ContactType>
+typename Ekiga::BookImpl<ContactType>::const_iterator
+Ekiga::BookImpl<ContactType>::begin () const
+{
+  return RefLister<ContactType>::begin ();
+}
 
 
-// template<typename ContactType>
-// typename Ekiga::BookImpl<ContactType>::const_iterator
-// Ekiga::BookImpl<ContactType>::end () const
-// {
-//   return Lister<ContactType>::end ();
-// }
+template<typename ContactType>
+typename Ekiga::BookImpl<ContactType>::const_iterator
+Ekiga::BookImpl<ContactType>::end () const
+{
+  return RefLister<ContactType>::end ();
+}
 
 
 template<typename ContactType>
