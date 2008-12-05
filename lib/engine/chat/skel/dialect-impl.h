@@ -39,6 +39,7 @@
 #include "dialect.h"
 
 #include "map-key-iterator.h"
+#include "map-key-const-iterator.h"
 
 namespace Ekiga
 {
@@ -75,13 +76,21 @@ namespace Ekiga
     /* More STL-like ways to access the chats within this Ekiga::DialectImpl
      */
     typedef typename Ekiga::map_key_iterator<std::map<gmref_ptr<SimpleChatType>, std::list<sigc::connection> > > simple_iterator;
+    typedef typename Ekiga::map_key_const_iterator<std::map<gmref_ptr<SimpleChatType>, std::list<sigc::connection> > > simple_const_iterator;
     typedef typename Ekiga::map_key_iterator<std::map<gmref_ptr<MultipleChatType>, std::list<sigc::connection> > > multiple_iterator;
+    typedef typename Ekiga::map_key_const_iterator<std::map<gmref_ptr<MultipleChatType>, std::list<sigc::connection> > > multiple_const_iterator;
 
     simple_iterator simple_begin ();
     simple_iterator simple_end ();
 
+    simple_const_iterator simple_begin () const;
+    simple_const_iterator simple_end () const;
+
     multiple_iterator multiple_begin ();
     multiple_iterator multiple_end ();
+
+    multiple_const_iterator multiple_begin () const;
+    multiple_const_iterator multiple_end () const;
 
     /** Adds a SimpleChat to the Ekiga::Dialect.
      * @param The SimpleChat to be added.
@@ -187,6 +196,20 @@ Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::simple_end ()
 }
 
 template<typename SimpleChatType, typename MultipleChatType>
+typename Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::simple_const_iterator
+Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::simple_begin () const
+{
+  return simple_const_iterator (simple_chats.begin ());
+}
+
+template<typename SimpleChatType, typename MultipleChatType>
+typename Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::simple_const_iterator
+Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::simple_end () const
+{
+  return simple_const_iterator (simple_chats.end ());
+}
+
+template<typename SimpleChatType, typename MultipleChatType>
 typename Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::multiple_iterator
 Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::multiple_begin ()
 {
@@ -198,6 +221,20 @@ typename Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::multiple_iterator
 Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::multiple_end ()
 {
   return multiple_iterator (multiple_chats.end ());
+}
+
+template<typename SimpleChatType, typename MultipleChatType>
+typename Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::multiple_const_iterator
+Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::multiple_begin () const
+{
+  return multiple_const_iterator (multiple_chats.begin ());
+}
+
+template<typename SimpleChatType, typename MultipleChatType>
+typename Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::multiple_const_iterator
+Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::multiple_end () const
+{
+  return multiple_const_iterator (multiple_chats.end ());
 }
 
 template<typename SimpleChatType, typename MultipleChatType>
