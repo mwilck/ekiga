@@ -42,6 +42,7 @@
 
 #include "gmref.h"
 #include "map-key-iterator.h"
+#include "map-key-const-iterator.h"
 
 namespace Ekiga
 {
@@ -52,6 +53,7 @@ namespace Ekiga
 
     typedef std::map<gmref_ptr<ObjectType>,std::list<sigc::connection> > container_type;
     typedef Ekiga::map_key_iterator<container_type> iterator;
+    typedef Ekiga::map_key_const_iterator<container_type> const_iterator;
 
     virtual ~RefLister ();
 
@@ -68,6 +70,9 @@ namespace Ekiga
 
     iterator begin ();
     iterator end ();
+
+    const_iterator begin () const;
+    const_iterator end () const;
 
     sigc::signal1<void, gmref_ptr<ObjectType> > object_added;
     sigc::signal1<void, gmref_ptr<ObjectType> > object_removed;
@@ -158,6 +163,20 @@ typename Ekiga::RefLister<ObjectType>::iterator
 Ekiga::RefLister<ObjectType>::end ()
 {
   return iterator (objects.end ());
+}
+
+template<typename ObjectType>
+typename Ekiga::RefLister<ObjectType>::const_iterator
+Ekiga::RefLister<ObjectType>::begin () const
+{
+  return const_iterator (objects.begin ());
+}
+
+template<typename ObjectType>
+typename Ekiga::RefLister<ObjectType>::const_iterator
+Ekiga::RefLister<ObjectType>::end () const
+{
+  return const_iterator (objects.end ());
 }
 
 #endif
