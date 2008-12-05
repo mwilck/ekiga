@@ -122,6 +122,7 @@ namespace Ekiga
      */
     void remove_book (gmref_ptr<BookType> book);
 
+    using RefLister<BookType>::add_connection;
 
   protected:
 

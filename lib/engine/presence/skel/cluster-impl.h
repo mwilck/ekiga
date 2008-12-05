@@ -88,6 +88,8 @@ namespace Ekiga
 
     void remove_heap (gmref_ptr<HeapType> heap);
 
+    using RefLister<HeapType>::add_connection;
+
     iterator begin ();
     iterator end ();
     const_iterator begin () const;

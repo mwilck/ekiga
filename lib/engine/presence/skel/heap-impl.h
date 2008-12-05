@@ -90,6 +90,8 @@ namespace Ekiga
 
   protected:
 
+    using RefLister<PresentityType>::add_connection;
+
     void add_presentity (gmref_ptr<PresentityType> presentity);
 
     void remove_presentity (gmref_ptr<PresentityType> presentity);

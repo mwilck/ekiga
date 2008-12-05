@@ -131,6 +131,7 @@ namespace Ekiga
      */
     void remove_contact (gmref_ptr<ContactType> contact);
 
+    using RefLister<ContactType>::add_connection;
   };
 
 /**
