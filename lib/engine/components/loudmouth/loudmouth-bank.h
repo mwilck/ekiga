@@ -65,7 +65,13 @@ namespace LM
     gmref_ptr<Ekiga::PersonalDetails> details;
     gmref_ptr<Cluster> cluster;
     gmref_ptr<Dialect> dialect;
-    gmref_ptr<Account> account;
+    std::list<gmref_ptr<Account> > accounts;
+
+    xmlDocPtr doc;
+
+    void add (xmlNodePtr node);
+
+    void save () const;
   };
 };
 

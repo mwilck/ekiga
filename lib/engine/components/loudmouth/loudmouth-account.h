@@ -36,6 +36,8 @@
 #ifndef __LOUDMOUTH_ACCOUNT_H__
 #define __LOUDMOUTH_ACCOUNT_H__
 
+#include <libxml/tree.h>
+
 #include "gmref.h"
 
 #include "loudmouth-cluster.h"
@@ -50,15 +52,15 @@ namespace LM
     Account (gmref_ptr<Ekiga::PersonalDetails> details_,
 	     gmref_ptr<Dialect> dialect_,
 	     gmref_ptr<Cluster> cluster_,
-	     const std::string user_,
-	     const std::string password_,
-	     const std::string resource_,
-	     const std::string server_,
-	     unsigned port_ = 5222);
+	     xmlNodePtr node_);
 
     ~Account ();
 
     void connect ();
+
+    xmlNodePtr get_node () const;
+
+    sigc::signal0<void> trigger_saving;
 
     /* public only to be called by C callbacks */
     void on_connection_opened (bool result);
@@ -72,12 +74,15 @@ namespace LM
     gmref_ptr<Ekiga::PersonalDetails> details;
     gmref_ptr<Dialect> dialect;
     gmref_ptr<Cluster> cluster;
+    xmlNodePtr node;
 
+    std::string name;
     std::string user;
     std::string password;
     std::string resource;
     std::string server;
     unsigned port;
+    bool enable_on_startup;
 
     LmConnection* connection;
 

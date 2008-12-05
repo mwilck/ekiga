@@ -67,17 +67,89 @@ on_authenticate_c (LmConnection* /*unused*/,
 LM::Account::Account (gmref_ptr<Ekiga::PersonalDetails> details_,
 		      gmref_ptr<Dialect> dialect_,
 		      gmref_ptr<Cluster> cluster_,
-		      const std::string user_,
-		      const std::string password_,
-		      const std::string resource_,
-		      const std::string server_,
-		      unsigned port_):
-  details(details_), dialect(dialect_), cluster(cluster_), user(user_), password(password_), resource(resource_), server(server_), port(port_), connection(0)
+		      xmlNodePtr node_):
+  details(details_), dialect(dialect_), cluster(cluster_), node(node_)
 {
+  xmlChar* xml_str = NULL;
+
+  if (node == NULL) {
+
+    // FIXME: change to saner defaults
+    node = xmlNewNode (NULL, BAD_CAST "entry");
+    xmlSetProp (node, BAD_CAST "name", BAD_CAST "Premier");
+    xmlSetProp (node, BAD_CAST "user", BAD_CAST "premier");
+    xmlSetProp (node, BAD_CAST "password", BAD_CAST "premier");
+    xmlSetProp (node, BAD_CAST "resource", BAD_CAST "ekiga");
+    xmlSetProp (node, BAD_CAST "server", BAD_CAST "localhost");
+    xmlSetProp (node, BAD_CAST "port", BAD_CAST "5222");
+    xmlSetProp (node, BAD_CAST "startup", BAD_CAST "true");
+  }
+
+  xml_str = xmlGetProp (node, BAD_CAST "name");
+  if (xml_str != NULL) {
+
+    name = (const char*)xml_str;
+    xmlFree (xml_str);
+  }
+
+  xml_str = xmlGetProp (node, BAD_CAST "user");
+  if (xml_str != NULL) {
+
+    user = (const char*)xml_str;
+    xmlFree (xml_str);
+  }
+
+  xml_str = xmlGetProp (node, BAD_CAST "password");
+  if (xml_str != NULL) {
+
+    password = (const char*)xml_str;
+    xmlFree (xml_str);
+  }
+
+  xml_str = xmlGetProp (node, BAD_CAST "resource");
+  if (xml_str != NULL) {
+
+    resource = (const char*)xml_str;
+    xmlFree (xml_str);
+  }
+
+  xml_str = xmlGetProp (node, BAD_CAST "server");
+  if (xml_str != NULL) {
+
+    server = (const char*)xml_str;
+    xmlFree (xml_str);
+  }
+
+  xml_str = xmlGetProp (node, BAD_CAST "port");
+  if (xml_str != NULL) {
+
+    port = atoi ((const char*)xml_str);
+    xmlFree (xml_str);
+  } else {
+
+    port = 5222;
+  }
+
+  xml_str = xmlGetProp (node, BAD_CAST "startup");
+  if (xml_str != NULL) {
+
+    if (xmlStrEqual (xml_str, BAD_CAST "true")) {
+
+      enable_on_startup = true;
+    } else {
+
+      enable_on_startup = false;
+    }
+    xmlFree (xml_str);
+  }
+
   connection = lm_connection_new (NULL);
   lm_connection_set_disconnect_function (connection, (LmDisconnectFunction)on_disconnected_c,
 					 this, NULL);
-  connect ();
+  if (enable_on_startup) {
+
+    connect ();
+  }
 }
 
 void
@@ -154,4 +226,10 @@ LM::Account::on_authenticate (bool result)
     lm_connection_close (connection, NULL);
     std::cout << "Error authenticating loudmouth account" << std::endl;
   }
+}
+
+xmlNodePtr
+LM::Account::get_node () const
+{
+  return node;
 }

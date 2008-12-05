@@ -35,14 +35,79 @@
 
 #include <iostream>
 
+#include "gmconf.h"
+
+#include "config.h"
+
 #include "loudmouth-bank.h"
+
+#define KEY "/apps/" PACKAGE_NAME "/contacts/jabber"
 
 LM::Bank::Bank (gmref_ptr<Ekiga::PersonalDetails> details_,
 		gmref_ptr<Dialect> dialect_,
 		gmref_ptr<Cluster> cluster_):
-  details(details_), cluster(cluster_), dialect(dialect_)
+  details(details_), cluster(cluster_), dialect(dialect_), doc (NULL)
 {
-  account = gmref_ptr<Account>(new Account (details, dialect, cluster, "premier", "premier", "ekiga", "localhost"));
+  gchar* c_raw = gm_conf_get_string (KEY);
+
+  if (c_raw != NULL) { // we already have it in store
+
+    const std::string raw = c_raw;
+    doc = xmlRecoverMemory (raw.c_str (), raw.length ());
+    xmlNodePtr root = xmlDocGetRootElement (doc);
+    if (root == NULL) {
+
+      root = xmlNewDocNode (doc, NULL, BAD_CAST "list", NULL);
+      xmlDocSetRootElement (doc, root);
+    }
+
+    for (xmlNodePtr child = root->children; child != NULL; child = child->next) {
+
+      if (child->type == XML_ELEMENT_NODE && child->name != NULL && xmlStrEqual (BAD_CAST ("entry"), child->name)) {
+
+	add (child);
+      }
+    }
+    g_free (c_raw);
+
+  } else { // create a new XML document
+
+    doc = xmlNewDoc (BAD_CAST "1.0");
+    xmlNodePtr root = xmlNewDocNode (doc, NULL, BAD_CAST "list", NULL);
+    xmlDocSetRootElement (doc, root);
+    add (NULL);
+  }
+}
+
+void
+LM::Bank::add (xmlNodePtr node)
+{
+  gmref_ptr<Account> account (new Account (details, dialect, cluster, node));
+
+  if (node == NULL) { // that was a new one
+
+    xmlNodePtr root = xmlDocGetRootElement (doc);
+    xmlAddChild (root, account->get_node ());
+
+    save ();
+  }
+
+  // FIXME : we should disconnect those when we die (RefLister-like or sigc::trackable)
+  account->trigger_saving.connect (sigc::mem_fun (this, &LM::Bank::save));
+  accounts.push_back (account);
+}
+
+void
+LM::Bank::save () const
+{
+  xmlChar* buffer = NULL;
+  int size = 0;
+
+  xmlDocDumpMemory (doc, &buffer, &size);
+
+  gm_conf_set_string (KEY, (const char *)buffer);
+
+  xmlFree (buffer);
 }
 
 LM::Bank::~Bank ()

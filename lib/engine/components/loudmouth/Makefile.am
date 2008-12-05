@@ -2,9 +2,10 @@ noinst_LTLIBRARIES = libgmloudmouth.la
 
 loudmouth_dir = $(top_srcdir)/lib/engine/components/loudmouth
 
-AM_CXXFLAGS = $(SIGC_CFLAGS) $(LOUDMOUTH_CFLAGS)
+AM_CXXFLAGS = $(SIGC_CFLAGS) $(XML_CFLAGS) $(LOUDMOUTH_CFLAGS)
 
 INCLUDES = \
+	-I$(top_srcdir)/lib/gmconf \
 	-I$(top_srcdir)/lib/engine/framework \
 	-I$(top_srcdir)/lib/engine/account/skel \
 	-I$(top_srcdir)/lib/engine/presence/skel \
@@ -28,4 +29,4 @@ libgmloudmouth_la_SOURCES = \
 	$(loudmouth_dir)/loudmouth-dialect.h \
 	$(loudmouth_dir)/loudmouth-dialect.cpp
 
-libgmloudmouth_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(LOUDMOUTH_LIBS)
+libgmloudmouth_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(XML_LIBS) $(LOUDMOUTH_LIBS)
