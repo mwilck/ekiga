@@ -139,13 +139,13 @@ template<typename HeapType>
 void
 Ekiga::ClusterImpl<HeapType>::add_heap (gmref_ptr<HeapType> heap)
 {
-  RefLister<HeapType>::add_connection (heap, heap->presentity_added.connect (sigc::bind (sigc::mem_fun (this, &ClusterImpl::on_presentity_added), heap)));
+  add_connection (heap, heap->presentity_added.connect (sigc::bind (sigc::mem_fun (this, &ClusterImpl::on_presentity_added), heap)));
 
-  RefLister<HeapType>::add_connection (heap, heap->presentity_updated.connect (sigc::bind (sigc::mem_fun (this, &ClusterImpl::on_presentity_updated), heap)));
+  add_connection (heap, heap->presentity_updated.connect (sigc::bind (sigc::mem_fun (this, &ClusterImpl::on_presentity_updated), heap)));
 
-  RefLister<HeapType>::add_connection (heap, heap->presentity_removed.connect (sigc::bind (sigc::mem_fun (this, &ClusterImpl::on_presentity_removed), heap)));
+  add_connection (heap, heap->presentity_removed.connect (sigc::bind (sigc::mem_fun (this, &ClusterImpl::on_presentity_removed), heap)));
 
-  RefLister<HeapType>::add_connection (heap, heap->questions.add_handler (questions.make_slot ()));
+  add_connection (heap, heap->questions.add_handler (questions.make_slot ()));
 
   add_object (heap);
 }
