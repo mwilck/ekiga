@@ -73,8 +73,8 @@ namespace Ekiga
 
   public:
 
-    //typedef typename Lister<HeapType>::iterator iterator;
-    //typedef typename Lister<HeapType>::const_iterator const_iterator;
+    typedef typename RefLister<HeapType>::iterator iterator;
+    typedef typename RefLister<HeapType>::const_iterator const_iterator;
 
     ClusterImpl ();
 
@@ -87,6 +87,11 @@ namespace Ekiga
     void add_heap (gmref_ptr<HeapType> heap);
 
     void remove_heap (gmref_ptr<HeapType> heap);
+
+    iterator begin ();
+    iterator end ();
+    const_iterator begin () const;
+    const_iterator end () const;
 
   private:
 
@@ -169,6 +174,34 @@ void
 Ekiga::ClusterImpl<HeapType>::on_presentity_removed (gmref_ptr<Presentity> presentity, gmref_ptr<HeapType> heap)
 {
   presentity_removed.emit (heap, presentity);
+}
+
+template<typename HeapType>
+typename Ekiga::ClusterImpl<HeapType>::iterator
+Ekiga::ClusterImpl<HeapType>::begin ()
+{
+  return RefLister<HeapType>::begin ();
+}
+
+template<typename HeapType>
+typename Ekiga::ClusterImpl<HeapType>::const_iterator
+Ekiga::ClusterImpl<HeapType>::begin () const
+{
+  return RefLister<HeapType>::begin ();
+}
+
+template<typename HeapType>
+typename Ekiga::ClusterImpl<HeapType>::iterator
+Ekiga::ClusterImpl<HeapType>::end ()
+{
+  return RefLister<HeapType>::end ();
+}
+
+template<typename HeapType>
+typename Ekiga::ClusterImpl<HeapType>::const_iterator
+Ekiga::ClusterImpl<HeapType>::end () const
+{
+  return RefLister<HeapType>::end ();
 }
 
 #endif

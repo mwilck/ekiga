@@ -71,8 +71,8 @@ namespace Ekiga
 
   public:
 
-    //typedef typename Lister<PresentityType>::iterator iterator;
-    //typedef typename Lister<PresentityType>::const_iterator const_iterator;
+    typedef typename RefLister<PresentityType>::iterator iterator;
+    typedef typename RefLister<PresentityType>::const_iterator const_iterator;
 
     HeapImpl ();
 
@@ -80,13 +80,13 @@ namespace Ekiga
 
     void visit_presentities (sigc::slot1<bool, gmref_ptr<Presentity> > visitor);
 
-    //const_iterator begin () const;
+    const_iterator begin () const;
 
-    //iterator begin ();
+    iterator begin ();
 
-    //const_iterator end () const;
+    const_iterator end () const;
 
-    //iterator end ();
+    iterator end ();
 
   protected:
 
@@ -124,33 +124,33 @@ Ekiga::HeapImpl<PresentityType>::visit_presentities (sigc::slot1<bool, gmref_ptr
   RefLister<PresentityType>::visit_objects (visitor);
 }
 
-// template<typename PresentityType>
-// typename Ekiga::HeapImpl<PresentityType>::iterator
-// Ekiga::HeapImpl<PresentityType>::begin ()
-// {
-//   return Lister<PresentityType>::begin ();
-// }
+template<typename PresentityType>
+typename Ekiga::HeapImpl<PresentityType>::iterator
+Ekiga::HeapImpl<PresentityType>::begin ()
+{
+  return RefLister<PresentityType>::begin ();
+}
 
-// template<typename PresentityType>
-// typename Ekiga::HeapImpl<PresentityType>::iterator
-// Ekiga::HeapImpl<PresentityType>::end ()
-// {
-//   return Lister<PresentityType>::end ();
-// }
+template<typename PresentityType>
+typename Ekiga::HeapImpl<PresentityType>::iterator
+Ekiga::HeapImpl<PresentityType>::end ()
+{
+  return RefLister<PresentityType>::end ();
+}
 
-// template<typename PresentityType>
-// typename Ekiga::HeapImpl<PresentityType>::const_iterator
-// Ekiga::HeapImpl<PresentityType>::begin () const
-// {
-//   return Lister<PresentityType>::begin ();
-// }
+template<typename PresentityType>
+typename Ekiga::HeapImpl<PresentityType>::const_iterator
+Ekiga::HeapImpl<PresentityType>::begin () const
+{
+  return RefLister<PresentityType>::begin ();
+}
 
-// template<typename PresentityType>
-// typename Ekiga::HeapImpl<PresentityType>::const_iterator
-// Ekiga::HeapImpl<PresentityType>::end () const
-// {
-//   return Lister<PresentityType>::end ();
-// }
+template<typename PresentityType>
+typename Ekiga::HeapImpl<PresentityType>::const_iterator
+Ekiga::HeapImpl<PresentityType>::end () const
+{
+  return RefLister<PresentityType>::end ();
+}
 
 template<typename PresentityType>
 void
