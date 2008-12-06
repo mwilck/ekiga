@@ -367,10 +367,13 @@ GST::VideoInputManager::detect_crazy_devices ()
   ximage = gst_element_factory_make ("ximagesrc", "ximagesrcpresencetest");
 
   if (goom != NULL && audiotest != NULL && ffmpeg != NULL)
-    devices_by_name[std::pair<std::string,std::string>(_("Crazy"), _("Goom"))] = "audiotestsrc ! goom ! ffmpegcolorspace";
+    devices_by_name[std::pair<std::string,std::string>(_("Crazy"), "Goom")] = "audiotestsrc ! goom ! ffmpegcolorspace";
 
-  if (ximage != NULL && ffmpeg != NULL)
+  if (ximage != NULL && ffmpeg != NULL) {
+
+    /* Translators: "Screencast" means the video input device will be your screen -- the other end will see your desktop */
     devices_by_name[std::pair<std::string,std::string>(_("Crazy"),_("Screencast"))] = "ximagesrc ! videoscale ! ffmpegcolorspace";
+  }
 
   if (goom != NULL)
     gst_object_unref (goom);
