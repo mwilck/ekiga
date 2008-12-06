@@ -41,8 +41,14 @@
 #include "opal-gmconf-bridge.h"
 
 #include "manager.h"
+
+#ifdef HAVE_SIP
 #include "sip-endpoint.h"
+#endif
+
+#ifdef HAVE_H323
 #include "h323-endpoint.h"
+#endif
 
 using namespace Opal;
 
