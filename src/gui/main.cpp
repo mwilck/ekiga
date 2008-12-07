@@ -4346,9 +4346,6 @@ main (int argc,
     exit (1);
 #endif
 
-  /* PWLIB initialization */
-  PProcess::PreInitialise (argc, argv, envp);
-  
   /* GTK+ initialization */
   g_type_init ();
   g_thread_init (NULL);
