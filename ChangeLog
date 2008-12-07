@@ -1,5 +1,15 @@
 2008-12-06  Damien Sandras  <dsandras@gnome.org>
 
+        * src/gui/assistant.cpp:
+        * src/gui/main.cpp:
+        * src/gui/conf.cpp:
+        Do not show the assistant after an upgrade for which Ekiga was already
+        successfully setup.
+        Correctly migrate audio & video devices settings, as well as the full 
+        name and the ekiga.net / diamondcard settings. (#561180)
+
+2008-12-06  Damien Sandras  <dsandras@gnome.org>
+
         * src/endpoints/opal-gmconf-bridge.cpp:
         * src/gui/preferences.cpp:
         * src/gui/accounts.cpp:

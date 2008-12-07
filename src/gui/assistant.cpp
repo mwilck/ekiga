@@ -1529,10 +1529,6 @@ ekiga_assistant_apply (GtkAssistant *gtkassistant)
 
   GtkWidget *main_window;
 
-  const int schema_version = MAJOR_VERSION * 1000
-                           + MINOR_VERSION * 10
-                           + BUILD_NUMBER;
-
   apply_personal_data_page (assistant);
   apply_ekiga_net_page (assistant);
   apply_ekiga_out_page (assistant);
@@ -1546,9 +1542,6 @@ ekiga_assistant_apply (GtkAssistant *gtkassistant)
   gtk_widget_hide (GTK_WIDGET (assistant));
   gtk_assistant_set_current_page (gtkassistant, 0);
   gtk_widget_show (main_window);
-
-  /* Update the version number */
-  gm_conf_set_int (GENERAL_KEY "version", schema_version);
 }
 
 
