@@ -998,7 +998,7 @@ void Opal::Sip::EndPoint::OnMessageFailed (const SIPURL & messageUrl,
 }
 
 
-SIPURL Opal::Sip::EndPoint::GetRegisteredPartyName (const SIPURL & host)
+SIPURL Opal::Sip::EndPoint::GetRegisteredPartyName (const SIPURL & host, const OpalTransport & transport)
 {
   PString local_address;
   PIPSocket::Address address;
@@ -1032,15 +1032,7 @@ SIPURL Opal::Sip::EndPoint::GetRegisteredPartyName (const SIPURL & host)
   /* As a last resort, ie not registered to host, no default account or
    * dialog with a local peer, then use the local address 
    */
-  local_address = GetListeners()[0].GetLocalAddress();
-
-  PINDEX j = local_address.Find ('$');
-  if (j != P_MAX_INDEX)
-    local_address = local_address.Mid (j+1);
-  SIPURL myself = 
-    SIPURL ("\"" + GetDefaultDisplayName () + "\" <" + PString ("sip:") + GetDefaultLocalPartyName() + "@" + local_address + ";transport=udp>");
-
-  return myself;
+  return GetDefaultRegisteredPartyName (transport);
 }
 
 

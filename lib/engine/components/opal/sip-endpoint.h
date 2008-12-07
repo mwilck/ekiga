@@ -161,7 +161,7 @@ namespace Opal {
       void OnMessageFailed (const SIPURL & messageUrl,
                             SIP_PDU::StatusCodes reason);
 
-      SIPURL GetRegisteredPartyName (const SIPURL & host);
+      SIPURL GetRegisteredPartyName (const SIPURL & host, const OpalTransport & transport);
 
 
       /* Callbacks */
