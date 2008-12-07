@@ -4322,7 +4322,7 @@ ekiga_main_window_set_stay_on_top (EkigaMainWindow *mw,
 int 
 main (int argc, 
       char ** argv, 
-      char ** envp)
+      char ** /*envp*/)
 {
   GOptionContext *context = NULL;
 
