@@ -318,4 +318,80 @@ gnomemeeting_conf_upgrade ()
     gm_conf_set_string (NAT_KEY "public_ip_detector", 
 			"http://ekiga.net/ip/");
   g_free (conf_url);
+
+  /* New full name key */
+  conf_url = gm_conf_get_string (PERSONAL_DATA_KEY "full_name");
+  if (!conf_url || (conf_url && !strcmp (conf_url, ""))) {
+
+    gchar *fullname = NULL;
+    gchar *firstname = gm_conf_get_string (PERSONAL_DATA_KEY "firstname");
+    gchar *lastname = gm_conf_get_string (PERSONAL_DATA_KEY "lastname");
+
+    if (firstname && lastname && strcmp (firstname, "") && strcmp (lastname, "")) {
+      fullname = g_strdup_printf ("%s %s", firstname, lastname);
+      gm_conf_set_string (PERSONAL_DATA_KEY "firstname", "");
+      gm_conf_set_string (PERSONAL_DATA_KEY "lastname", "");
+      gm_conf_set_string (PERSONAL_DATA_KEY "full_name", fullname);
+      g_free (fullname);
+    }
+    g_free (firstname);
+    g_free (lastname);
+  }
+  g_free (conf_url);
+
+  /* diamondcard is now set at sip.diamondcard.us */
+  GSList *accounts = gm_conf_get_string_list ("/apps/ekiga/protocols/accounts_list");
+  GSList *accounts_iter = accounts;
+  while (accounts_iter) {
+
+    PString acct = (gchar *) accounts_iter->data;
+    acct.Replace ("eugw.ast.diamondcard.us", "sip.diamondcard.us", TRUE);
+    g_free (accounts_iter->data);
+    accounts_iter->data = g_strdup ((const char *) acct);
+    accounts_iter = g_slist_next (accounts_iter);
+  }
+  gm_conf_set_string_list ("/apps/ekiga/protocols/accounts_list", accounts);
+  g_slist_foreach (accounts, (GFunc) g_free, NULL);
+  g_slist_free (accounts);
+
+  /* Audio devices */
+  gchar *plugin = NULL;
+  gchar *device = NULL;
+  gchar *new_device = NULL;
+  plugin = gm_conf_get_string (AUDIO_DEVICES_KEY "plugin");
+  if (plugin && strcmp (plugin, "")) {
+    device = gm_conf_get_string (AUDIO_DEVICES_KEY "input_device");
+    new_device = g_strdup_printf ("%s (PTLIB/%s)", device, plugin);
+    gm_conf_set_string (AUDIO_DEVICES_KEY "plugin", "");
+    gm_conf_set_string (AUDIO_DEVICES_KEY "input_device", new_device);
+    g_free (device);
+    g_free (new_device);
+
+    device = gm_conf_get_string (AUDIO_DEVICES_KEY "output_device");
+    new_device = g_strdup_printf ("%s (PTLIB/%s)", device, plugin);
+    gm_conf_set_string (AUDIO_DEVICES_KEY "plugin", "");
+    gm_conf_set_string (AUDIO_DEVICES_KEY "output_device", new_device);
+    g_free (device);
+    g_free (new_device);
+
+    device = gm_conf_get_string (SOUND_EVENTS_KEY "output_device");
+    new_device = g_strdup_printf ("%s (PTLIB/%s)", device, plugin);
+    gm_conf_set_string (SOUND_EVENTS_KEY "plugin", "");
+    gm_conf_set_string (SOUND_EVENTS_KEY "output_device", new_device);
+    g_free (device);
+    g_free (new_device);
+  }
+  g_free (plugin);
+
+  /* Video devices */
+  plugin = gm_conf_get_string (VIDEO_DEVICES_KEY "plugin");
+  if (plugin && strcmp (plugin, "")) {
+    device = gm_conf_get_string (VIDEO_DEVICES_KEY "input_device");
+    new_device = g_strdup_printf ("%s (PTLIB/%s)", device, plugin);
+    gm_conf_set_string (VIDEO_DEVICES_KEY "plugin", "");
+    gm_conf_set_string (VIDEO_DEVICES_KEY "input_device", new_device);
+    g_free (device);
+    g_free (new_device);
+  }
+  g_free (plugin);
 }

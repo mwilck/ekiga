@@ -4469,8 +4469,17 @@ main (int argc,
         < 1000 * MAJOR_VERSION + 10 * MINOR_VERSION + BUILD_NUMBER) {
 
       gnomemeeting_conf_upgrade ();
-      assistant_window = GnomeMeeting::Process ()->GetAssistantWindow ();
-      gtk_widget_show_all (assistant_window);
+      // Only show the assistant window if version older than 2.00
+      if (gm_conf_get_int (GENERAL_KEY "version") < 2000) {
+        assistant_window = GnomeMeeting::Process ()->GetAssistantWindow ();
+        gtk_widget_show_all (assistant_window);
+      }
+      const int schema_version = MAJOR_VERSION * 1000
+                               + MINOR_VERSION * 10
+                               + BUILD_NUMBER;
+
+      /* Update the version number */
+      gm_conf_set_int (GENERAL_KEY "version", schema_version);
     }
     else {
 

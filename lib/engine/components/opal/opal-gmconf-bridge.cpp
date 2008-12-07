@@ -44,8 +44,13 @@
 #include "opal-gmconf-bridge.h"
 #include "opal-call-manager.h"
 
+#ifdef HAVE_SIP
 #include "sip-endpoint.h"
+#endif 
+
+#ifdef HAVE_H323
 #include "h323-endpoint.h"
+#endif
 
 #define AUDIO_DEVICES_KEY "/apps/" PACKAGE_NAME "/devices/audio/"
 #define VIDEO_DEVICES_KEY "/apps/" PACKAGE_NAME "/devices/video/"
