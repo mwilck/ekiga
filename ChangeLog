@@ -1,5 +1,11 @@
 2008-12-06  Damien Sandras  <dsandras@gnome.org>
 
+        * src/endpoints/sip-endpoint.cpp:
+        Fixed GetRegisteredPartyName so that it uses 
+        GetDefaultRegisteredPartyName when Ekiga.net is not being used.
+
+2008-12-06  Damien Sandras  <dsandras@gnome.org>
+
         * src/gui/assistant.cpp:
         * src/gui/main.cpp:
         * src/gui/conf.cpp:
