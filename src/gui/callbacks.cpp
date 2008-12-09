@@ -61,6 +61,7 @@
 
 #include <glib/gi18n.h>
 
+#undef GTK_DISABLE_DEPRECATED
 #ifdef HAVE_GNOME
 #include <gnome.h>
 #endif
