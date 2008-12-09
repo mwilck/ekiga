@@ -59,7 +59,8 @@
 #define WIN32_HELP_FILE "index.html"
 #endif
 
-#undef GTK_DISABLE_DEPRECATED
+#include <glib/gi18n.h>
+
 #ifdef HAVE_GNOME
 #include <gnome.h>
 #endif
