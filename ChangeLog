@@ -1,5 +1,11 @@
 2008-12-09  Damien Sandras  <dsandras@gnome.org>
 
+        * lib/gui/gmpreferences.cpp:
+        Do not use deprecated gdk_color_white anymore. Dropped useless 
+        gdkcolor.h include as it breaks compilation (reported by Eugen).
+
+2008-12-09  Damien Sandras  <dsandras@gnome.org>
+
         * src/gui/callbacks.cpp:
         Fixed compilation error with --disable-gnome release reported by
         Eugen.

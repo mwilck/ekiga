@@ -42,7 +42,6 @@
 
 #include <string.h>
 #include <libintl.h>
-#include <gdk/gdkcolor.h>
 
 enum {
   COLUMN_STRING_RAW = 0, /* must be zero because it's used in gmconfwidgets */
@@ -982,7 +981,10 @@ gnome_prefs_window_new (const gchar *logo_name)
   gtk_container_add (GTK_CONTAINER (event_box),
 		     GTK_WIDGET (pixmap));
 
-  gdk_color_white (gdk_colormap_get_system (), &cwhite); 
+  cwhite.red   = 0xff * 0x100;
+  cwhite.green = 0xff * 0x100;
+  cwhite.blue  = 0xff * 0x100;
+  gdk_colormap_alloc_color(gdk_colormap_get_system (), &cwhite, FALSE, TRUE);
   gtk_widget_modify_bg (GTK_WIDGET (event_box),
 			GTK_STATE_NORMAL, &cwhite);
 
