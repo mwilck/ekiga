@@ -175,19 +175,18 @@ IT_PROG_INTLTOOL([0.35.0])
 
 
 dnl ###############################
-dnl   Mandatory GTK support
+dnl   Mandatory GTK+ support
 dnl ###############################
 PKG_CHECK_MODULES([GTK], [gtk+-2.0 >= 2.12.0])
-GTK_CFLAGS="$GTK_CFLAGS -DGDK_PIXBUF_DISABLE_DEPRECATED -DGDK_DISABLE_DEPRECATED -DGTK_DISABLE_DEPRECATED -DGDK_PIXBUF_DISABLE_SINGLE_INCLUDES -DGTK_DISABLE_SINGLE_INCLUDES"
+PKG_CHECK_MODULES([GLIB], [glib-2.0 >= 2.8.0 gmodule-2.0 gobject-2.0 gthread-2.0])
+AC_ARG_ENABLE([gtk-debug],
+              [AC_HELP_STRING([--enable-gtk-debug],[Enable GTK+ debug flags)])],
+              [if test "x$enableval" = "xyes"; then 
+                GTK_CFLAGS="$GTK_CFLAGS -DGDK_PIXBUF_DISABLE_DEPRECATED -DGDK_DISABLE_DEPRECATED -DGTK_DISABLE_DEPRECATED -DGDK_PIXBUF_DISABLE_SINGLE_INCLUDES -DGTK_DISABLE_SINGLE_INCLUDES"
+                GLIB_CFLAGS="$GLIB_CFLAGS -DG_DISABLE_SINGLE_INCLUDES"
+              fi])
 AC_SUBST(GTK_CFLAGS)
 AC_SUBST(GTK_LIBS)
-
-
-dnl ###############################
-dnl   Mandatory GLIB support
-dnl ###############################
-PKG_CHECK_MODULES([GLIB], [glib-2.0 >= 2.8.0 gmodule-2.0 gobject-2.0 gthread-2.0])
-GLIB_CFLAGS="$GLIB_CFLAGS -DG_DISABLE_SINGLE_INCLUDES"
 AC_SUBST(GLIB_CFLAGS)
 AC_SUBST(GLIB_LIBS)
 
@@ -657,7 +656,7 @@ PKG_CHECK_MODULES([OPAL], [opal >= ${OPAL_REC_VERSION}])
 
 SUFFIX=
 AC_ARG_ENABLE([debug],
-              [AC_HELP_STRING([--enable-debug],[Link to debug versions of opal and ptlib (opal_d and ptlib_d)])],
+              [AC_HELP_STRING([--enable-opal-debug],[Link to debug versions of opal and ptlib (opal_d and ptlib_d)])],
               [if test "x$enableval" = "xyes"; then 
                 SUFFIX="_d"
               fi])
