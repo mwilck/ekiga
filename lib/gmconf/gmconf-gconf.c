@@ -315,7 +315,10 @@ gm_conf_entry_get_bool (GmConfEntry *entry)
   g_return_val_if_fail (entry != NULL, FALSE);
 
   gconf_entry = (GConfEntry *)entry;
-  return gconf_value_get_bool (gconf_entry->value);
+  if (gconf_entry->value)
+    return gconf_value_get_bool (gconf_entry->value);
+
+  return FALSE;
 }
 
 
@@ -327,7 +330,10 @@ gm_conf_entry_get_int (GmConfEntry *entry)
   g_return_val_if_fail (entry != NULL, 0);
 
   gconf_entry = (GConfEntry *)entry;
-  return gconf_value_get_int (gconf_entry->value);
+  if (gconf_entry->value)
+    return gconf_value_get_int (gconf_entry->value);
+
+  return 0;
 }
 
 
@@ -339,7 +345,10 @@ gm_conf_entry_get_string (GmConfEntry *entry)
   g_return_val_if_fail (entry != NULL, NULL);
 
   gconf_entry = (GConfEntry *)entry;
-  return gconf_value_get_string (gconf_entry->value);
+  if (gconf_entry->value)
+    return gconf_value_get_string (gconf_entry->value);
+
+  return NULL;
 }
 
 
@@ -354,7 +363,8 @@ gm_conf_entry_get_list (GmConfEntry *entry)
 
   gconf_entry = (GConfEntry *)entry;
 
-  it = gconf_value_get_list (gconf_entry->value);
+  if (gconf_entry->value)
+    it = gconf_value_get_list (gconf_entry->value);
   while (it) {
 
     list = g_slist_append (list, g_strdup ((char *) gconf_value_get_string (it->data)));
