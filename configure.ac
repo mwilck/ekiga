@@ -655,7 +655,7 @@ PKG_CHECK_MODULES([PTLIB], [ptlib >= ${PTLIB_REC_VERSION}])
 PKG_CHECK_MODULES([OPAL], [opal >= ${OPAL_REC_VERSION}])
 
 SUFFIX=
-AC_ARG_ENABLE([debug],
+AC_ARG_ENABLE([opal-debug],
               [AC_HELP_STRING([--enable-opal-debug],[Link to debug versions of opal and ptlib (opal_d and ptlib_d)])],
               [if test "x$enableval" = "xyes"; then 
                 SUFFIX="_d"
