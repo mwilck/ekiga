@@ -308,6 +308,12 @@ void on_audiooutput_device_removed_cb (const Ekiga::AudioOutputDevice & device, 
   remove_combo_box (GTK_COMBO_BOX (assistant->priv->audio_ringer),  device_string.c_str());
 }
 
+static void kind_of_net_changed_nt (G_GNUC_UNUSED gpointer id,
+                                         GmConfEntry *, 
+                                         gpointer)
+{
+  gm_conf_set_int (GENERAL_KEY "kind_of_net", NET_CUSTOM);
+}
 
 static void
 create_welcome_page (EkigaAssistant *assistant)
@@ -1645,6 +1651,14 @@ ekiga_assistant_new (Ekiga::ServiceCore *core)
   assistant->priv->connections.push_back (conn);
   conn = audiooutput_core->device_removed.connect (sigc::bind (sigc::ptr_fun (on_audiooutput_device_removed_cb), assistant));
   assistant->priv->connections.push_back (conn);
+
+  /* Notifiers for the VIDEO_CODECS_KEY keys */
+  gm_conf_notifier_add (VIDEO_CODECS_KEY "enable_video",
+			kind_of_net_changed_nt, NULL);	     
+  gm_conf_notifier_add (VIDEO_CODECS_KEY "maximum_video_tx_bitrate", 
+			kind_of_net_changed_nt, NULL);
+  gm_conf_notifier_add (VIDEO_CODECS_KEY "temporal_spatial_tradeoff", 
+			kind_of_net_changed_nt, NULL);
 
   return GTK_WIDGET (assistant);
 }

@@ -64,10 +64,6 @@ static void stay_on_top_changed_nt (gpointer id,
 				    GmConfEntry *entry,
                                     gpointer data);
 
-static void network_settings_changed_nt (gpointer id,
-					 GmConfEntry *entry,
-                                         gpointer data);
-
 
 /* DESCRIPTION  :  This callback is called when the "stay_on_top" 
  *                 config value changes.
@@ -93,23 +89,6 @@ stay_on_top_changed_nt (G_GNUC_UNUSED gpointer id,
 
     //gdk_threads_leave ();
   }
-}
-
-
-/* DESCRIPTION    : This is called when any setting related to the druid 
- *                  network speed selecion changes.
- * BEHAVIOR       : Just writes an entry in the config database registering 
- *                  that fact.
- * PRE            : None
- */
-static void 
-network_settings_changed_nt (G_GNUC_UNUSED gpointer id,
-                             GmConfEntry *, 
-                             gpointer)
-{
-  //gdk_threads_enter ();
-  gm_conf_set_int (GENERAL_KEY "kind_of_net", NET_CUSTOM);
-  //gdk_threads_leave ();
 }
 
 
@@ -152,18 +131,6 @@ gnomemeeting_conf_init ()
   /* Notifiers for the VIDEO_DISPLAY_KEY keys */
   gm_conf_notifier_add (VIDEO_DISPLAY_KEY "stay_on_top", 
 			stay_on_top_changed_nt, main_window);
- 
-  
-  /* Notifiers for the VIDEO_CODECS_KEY keys */
-  gm_conf_notifier_add (VIDEO_CODECS_KEY "enable_video",
-			network_settings_changed_nt, NULL);	     
-
-  gm_conf_notifier_add (VIDEO_CODECS_KEY "maximum_video_tx_bitrate", 
-			network_settings_changed_nt, NULL);
-
-
-  gm_conf_notifier_add (VIDEO_CODECS_KEY "temporal_spatial_tradeoff", 
-			network_settings_changed_nt, NULL);
 }
 
 
