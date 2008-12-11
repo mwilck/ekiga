@@ -697,6 +697,7 @@ static void on_cleared_call_cb (gmref_ptr<Ekiga::CallManager>  /*manager*/,
   audiooutput_core->stop_play_event("ring_tone_sound");
 
   ekiga_main_window_clear_signal_levels (mw);
+
 }
 
 
@@ -766,6 +767,8 @@ static void on_missed_call_cb (gmref_ptr<Ekiga::CallManager>  /*manager*/,
 			  call->get_remote_party_name ().c_str ());
   ekiga_main_window_push_message (mw, "%s", info);
   g_free (info);
+
+  ekiga_main_window_update_calling_state (mw, Standby);
 }
 
 
@@ -4036,7 +4039,7 @@ ekiga_main_window_connect_engine_signals (EkigaMainWindow *mw)
   
   conn = call_core->missed_call.connect (sigc::bind (sigc::ptr_fun (on_missed_call_cb), (gpointer) mw));
   mw->priv->connections.push_back (conn);
-  
+
   conn = call_core->stream_opened.connect (sigc::bind (sigc::ptr_fun (on_stream_opened_cb), (gpointer) mw));
   mw->priv->connections.push_back (conn);
   
