@@ -310,6 +310,7 @@ void Opal::Sip::EndPoint::fetch (const std::string _uri)
     if (std::find (domains.begin (), domains.end (), domain) != domains.end ()) {
 
       Subscribe (SIPSubscribe::Presence, 300, PString (_uri.c_str ()));
+      Subscribe (SIPSubscribe::Dialog, 300, PString (_uri.c_str ()));
       subscribed_uris.push_back (_uri);
     }
     else {
@@ -325,6 +326,7 @@ void Opal::Sip::EndPoint::unfetch (const std::string uri)
   if (std::find (subscribed_uris.begin (), subscribed_uris.end (), uri) != subscribed_uris.end ()) {
 
     Subscribe (SIPSubscribe::Presence, 0, PString (uri.c_str ()));
+    Subscribe (SIPSubscribe::Dialog, 0, PString (uri.c_str ()));
     subscribed_uris.remove (uri);
   }
 }
@@ -632,6 +634,7 @@ void Opal::Sip::EndPoint::OnRegistered (const PString & _aor,
         if (found != string::npos) {
 
           Subscribe (SIPSubscribe::Presence, 300, PString ((*iter).c_str ()));
+          Subscribe (SIPSubscribe::Dialog, 300, PString ((*iter).c_str ()));
           subscribed_uris.push_back (*iter);
           to_subscribe_uris.remove (*iter++);
         }
@@ -647,6 +650,7 @@ void Opal::Sip::EndPoint::OnRegistered (const PString & _aor,
         if (found != string::npos) {
 
           Unsubscribe (SIPSubscribe::Presence, PString ((*iter).c_str ()));
+          Unsubscribe (SIPSubscribe::Dialog, PString ((*iter).c_str ()));
           to_subscribe_uris.push_back (*iter);
           subscribed_uris.remove (*iter++);
         }
