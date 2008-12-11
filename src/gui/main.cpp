@@ -650,7 +650,11 @@ static void on_established_call_cb (gmref_ptr<Ekiga::CallManager>  /*manager*/,
 
   mw->priv->current_call = call;
 
+#if GLIB_CHECK_VERSION (2, 14, 0)
+  mw->priv->timeout_id = g_timeout_add_seconds (1, on_stats_refresh_cb, self);
+#else
   mw->priv->timeout_id = g_timeout_add (1000, on_stats_refresh_cb, self);
+#endif
 
   gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core
     = mw->priv->core->get ("audiooutput-core");
@@ -4484,7 +4488,11 @@ main (int argc,
       if (!gm_conf_get_bool (USER_INTERFACE_KEY "start_hidden")) 
         gtk_widget_show (main_window);
       else
+#if GLIB_CHECK_VERSION (2, 14, 0)
+        g_timeout_add_seconds (15, (GtkFunction) gnomemeeting_tray_hack_cb, NULL);
+#else
         g_timeout_add (15000, (GtkFunction) gnomemeeting_tray_hack_cb, NULL);
+#endif
     }
 
     /* Call the given host if needed */

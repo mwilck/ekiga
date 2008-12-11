@@ -200,8 +200,11 @@ main (G_GNUC_UNUSED int argc,
 
   dbus_g_connection_register_g_object (bus, GM_HELPER_OBJECT, helper);
 
+#if GLIB_CHECK_VERSION (2,14,0)
+  g_timeout_add_seconds (5, hara_kiri, mainloop);
+#else
   g_timeout_add (5000, hara_kiri, mainloop);
-
+#endif
   g_main_loop_run (mainloop);
 
   g_object_unref (helper);

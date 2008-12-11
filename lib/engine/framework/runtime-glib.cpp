@@ -99,9 +99,13 @@ dispatch (GSource *source,
   if (msg->seconds == 0)
     (void)run_later_or_back_in_main_helper ((gpointer)msg);
   else
-    g_timeout_add (1000*msg->seconds,
+#if GLIB_CHECK_VERSION (2, 14, 0)
+    g_timeout_add_seconds (msg->seconds,
+			   run_later_or_back_in_main_helper, (gpointer)msg);
+#else
+    g_timeout_add (1000 * msg->seconds,
 		   run_later_or_back_in_main_helper, (gpointer)msg);
-
+#endif
   return TRUE;
 }
 
