@@ -730,6 +730,8 @@ static void on_established_call_cb (Ekiga::CallManager & /*manager*/,
   audiooutput_core->stop_play_event("ring_tone_sound");
 
   g_free (info);
+
+  ekiga_main_window_update_calling_state (mw, Standby);
 }
 
 
