@@ -234,6 +234,9 @@ static void ekiga_main_window_zooms_menu_update_sensitivity (EkigaMainWindow *ma
 static void gm_main_window_toggle_fullscreen (Ekiga::VideoOutputFSToggle toggle,
                                               GtkWidget   *main_window);
 
+static void ekiga_main_window_set_stay_on_top (EkigaMainWindow *mw,
+                                               gboolean stay_on_top);
+
 static void ekiga_main_window_show_call_panel (EkigaMainWindow *mw);
 
 static void ekiga_main_window_hide_call_panel (EkigaMainWindow *mw);
@@ -288,6 +291,16 @@ static void panel_section_changed_nt (gpointer id,
 static void show_call_panel_changed_nt (G_GNUC_UNUSED gpointer id, 
                                         GmConfEntry *entry, 
                                         gpointer data);
+
+
+/* DESCRIPTION  :  This callback is called when the "stay_on_top" 
+ *                 config value changes.
+ * BEHAVIOR     :  Changes the hint for the video windows.
+ * PRE          :  /
+ */
+static void stay_on_top_changed_nt (G_GNUC_UNUSED gpointer id,
+                                    GmConfEntry *entry, 
+                                    gpointer data);
 
 
 /** Pull a trigger from a Ekiga::Service
@@ -1856,10 +1869,8 @@ panel_section_changed_nt (G_GNUC_UNUSED gpointer id,
   
   if (gm_conf_entry_get_type (entry) == GM_CONF_INT) {
 
-    //gdk_threads_enter ();
     section = gm_conf_entry_get_int (entry);
     ekiga_main_window_set_panel_section (EKIGA_MAIN_WINDOW (data), section);
-    //gdk_threads_leave ();
   }
 }
 
@@ -1873,13 +1884,26 @@ show_call_panel_changed_nt (G_GNUC_UNUSED gpointer id,
 
   if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
 
-    //gdk_threads_enter ();
     if (gm_conf_entry_get_bool (entry)) 
       ekiga_main_window_show_call_panel (EKIGA_MAIN_WINDOW (data));
     else 
       ekiga_main_window_hide_call_panel (EKIGA_MAIN_WINDOW (data));
+  }
+}
 
-    //gdk_threads_leave ();
+static void 
+stay_on_top_changed_nt (G_GNUC_UNUSED gpointer id,
+                        GmConfEntry *entry, 
+                        gpointer data)
+{
+  bool val = false;
+    
+  g_return_if_fail (data != NULL);
+
+  if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
+
+    val = gm_conf_entry_get_bool (entry);
+    ekiga_main_window_set_stay_on_top (EKIGA_MAIN_WINDOW (data), val);
   }
 }
 
@@ -2495,6 +2519,15 @@ gm_main_window_toggle_fullscreen (Ekiga::VideoOutputFSToggle toggle,
   }
 }
 
+static void 
+ekiga_main_window_set_stay_on_top (EkigaMainWindow *mw,
+				   gboolean stay_on_top)
+{
+  g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
+
+  /* Update the stay-on-top attribute */
+  gdk_window_set_always_on_top (GTK_WIDGET (mw)->window, stay_on_top);
+}
 
 static void 
 ekiga_main_window_show_call_panel (EkigaMainWindow *mw)
@@ -3755,9 +3788,11 @@ ekiga_main_window_constructor (GType the_type,
   /* GConf Notifiers */
   gm_conf_notifier_add (USER_INTERFACE_KEY "main_window/panel_section",
                         panel_section_changed_nt, object);
-
   gm_conf_notifier_add (USER_INTERFACE_KEY "main_window/show_call_panel",
                         show_call_panel_changed_nt, object);
+  gm_conf_notifier_add (VIDEO_DISPLAY_KEY "stay_on_top", 
+			stay_on_top_changed_nt, object);
+
 
   return object;
 }
@@ -4314,16 +4349,6 @@ ekiga_main_window_get_current_picture (EkigaMainWindow *mw)
   return gtk_image_get_pixbuf (GTK_IMAGE (mw->priv->main_video_image));
 }
 
-
-void 
-ekiga_main_window_set_stay_on_top (EkigaMainWindow *mw,
-				   gboolean stay_on_top)
-{
-  g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
-
-  /* Update the stay-on-top attribute */
-  gdk_window_set_always_on_top (GTK_WIDGET (mw)->window, stay_on_top);
-}
 
 /* The main () */
 int 

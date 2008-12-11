@@ -60,36 +60,8 @@
 
 
 /* Declarations */
-static void stay_on_top_changed_nt (gpointer id,
-				    GmConfEntry *entry,
-                                    gpointer data);
 
 
-/* DESCRIPTION  :  This callback is called when the "stay_on_top" 
- *                 config value changes.
- * BEHAVIOR     :  Changes the hint for the video windows.
- * PRE          :  /
- */
-static void 
-stay_on_top_changed_nt (G_GNUC_UNUSED gpointer id,
-                        GmConfEntry *entry, 
-                        gpointer data)
-{
-  bool val = false;
-    
-  g_return_if_fail (data != NULL);
-
-  if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
-
-    //gdk_threads_enter ();
-
-    val = gm_conf_entry_get_bool (entry);
-
-    ekiga_main_window_set_stay_on_top (EKIGA_MAIN_WINDOW (data), val);
-
-    //gdk_threads_leave ();
-  }
-}
 
 
 /* The functions */
@@ -128,9 +100,7 @@ gnomemeeting_conf_init ()
    * several actions.
    */
 
-  /* Notifiers for the VIDEO_DISPLAY_KEY keys */
-  gm_conf_notifier_add (VIDEO_DISPLAY_KEY "stay_on_top", 
-			stay_on_top_changed_nt, main_window);
+
 }
 
 
