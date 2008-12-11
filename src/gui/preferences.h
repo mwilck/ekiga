@@ -43,13 +43,6 @@
 #include "common.h"
 #include "framework/services.h"
 
-/* DESCRIPTION  :  / 
- * BEHAVIOR     :  Builds the sound events list of the preferences window. 
- * PRE          :  /
- */
-void gm_prefs_window_sound_events_list_build (GtkWidget *prefs_window); 
-
-
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  It builds the preferences window
  *                 (sections' ctree / Notebook pages) and connect GTK signals

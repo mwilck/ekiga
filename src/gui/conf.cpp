@@ -60,14 +60,6 @@
 
 
 /* Declarations */
-static void manager_changed_nt (gpointer id,
-				GmConfEntry *entry,
-				gpointer data);
-
-static void sound_events_list_changed_nt (gpointer id,
-					  GmConfEntry *entry,
-					  gpointer data);
-
 static void stay_on_top_changed_nt (gpointer id,
 				    GmConfEntry *entry,
                                     gpointer data);
@@ -75,49 +67,6 @@ static void stay_on_top_changed_nt (gpointer id,
 static void network_settings_changed_nt (gpointer id,
 					 GmConfEntry *entry,
                                          gpointer data);
-
-
-/* DESCRIPTION  :  This notifier is called when the config database data
- *                 associated with the audio or video manager changes.
- * BEHAVIOR     :  Updates the devices list for the new manager.
- * PRE          :  /
- */
-static void
-manager_changed_nt (G_GNUC_UNUSED gpointer id,
-		    GmConfEntry *entry,
-		    G_GNUC_UNUSED gpointer data)
-{
-  if (gm_conf_entry_get_type (entry) == GM_CONF_STRING) {
-    //gdk_threads_enter ();
-//     GnomeMeeting::Process ()->DetectDevices (); //FIXME
-    //gdk_threads_leave ();
-  }
-}
-
-
-/* DESCRIPTION  :  This callback is called when something changes in the sound
- *                 events list.
- * BEHAVIOR     :  It updates the events list widget.
- * PRE          :  A pointer to the prefs window GMObject.
- */
-static void
-sound_events_list_changed_nt (G_GNUC_UNUSED gpointer id,
-			      GmConfEntry *entry,
-			      G_GNUC_UNUSED gpointer data)
-{
-  GtkWidget *prefs_window;
-
-  if (gm_conf_entry_get_type (entry) == GM_CONF_STRING
-      || gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
-   
-    prefs_window = GnomeMeeting::Process ()->GetPrefsWindow (false);
-    if (prefs_window) {
-      //gdk_threads_enter ();
-      gm_prefs_window_sound_events_list_build (prefs_window);
-      //gdk_threads_leave ();
-    }
-  }
-}
 
 
 /* DESCRIPTION  :  This callback is called when the "stay_on_top" 
@@ -200,52 +149,10 @@ gnomemeeting_conf_init ()
    * several actions.
    */
 
-  /* Notifiers to AUDIO_DEVICES_KEY */
-  gm_conf_notifier_add (AUDIO_DEVICES_KEY "plugin", 
-			manager_changed_nt, NULL);
-
-  /* Notifiers to VIDEO_DEVICES_KEY */
-  gm_conf_notifier_add (VIDEO_DEVICES_KEY "plugin", 
-			manager_changed_nt, NULL);
-
-
-  
   /* Notifiers for the VIDEO_DISPLAY_KEY keys */
   gm_conf_notifier_add (VIDEO_DISPLAY_KEY "stay_on_top", 
 			stay_on_top_changed_nt, main_window);
-  
-  
-  /* Notifiers for SOUND_EVENTS_KEY keys */
-  gm_conf_notifier_add (SOUND_EVENTS_KEY "enable_incoming_call_sound", 
-			sound_events_list_changed_nt, NULL);
-  
-  gm_conf_notifier_add (SOUND_EVENTS_KEY "incoming_call_sound",
-			sound_events_list_changed_nt, NULL);
-
-  gm_conf_notifier_add (SOUND_EVENTS_KEY "enable_ring_tone_sound", 
-			sound_events_list_changed_nt, NULL);
-  
-  gm_conf_notifier_add (SOUND_EVENTS_KEY "ring_tone_sound", 
-			sound_events_list_changed_nt, NULL);
-  
-  gm_conf_notifier_add (SOUND_EVENTS_KEY "enable_busy_tone_sound", 
-			sound_events_list_changed_nt, NULL);
-  
-  gm_conf_notifier_add (SOUND_EVENTS_KEY "busy_tone_sound",
-			sound_events_list_changed_nt, NULL);
-  
-  gm_conf_notifier_add (SOUND_EVENTS_KEY "enable_new_voicemail_sound", 
-			sound_events_list_changed_nt, NULL);
-  
-  gm_conf_notifier_add (SOUND_EVENTS_KEY "new_voicemail_sound",
-			sound_events_list_changed_nt, NULL);
-
-  gm_conf_notifier_add (SOUND_EVENTS_KEY "enable_new_message_sound",
-			sound_events_list_changed_nt, NULL);
-
-  gm_conf_notifier_add (SOUND_EVENTS_KEY "new_message_sound",
-			sound_events_list_changed_nt, NULL);
-
+ 
   
   /* Notifiers for the VIDEO_CODECS_KEY keys */
   gm_conf_notifier_add (VIDEO_CODECS_KEY "enable_video",
