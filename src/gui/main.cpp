@@ -2464,6 +2464,7 @@ gm_mw_init_call (GtkWidget *main_window)
                     0, 0);
 
   gtk_paned_pack2 (GTK_PANED (mw->hpaned), frame, true, false);
+  gtk_widget_realize (mw->priv->main_video_image);
 }  
 
 static void
