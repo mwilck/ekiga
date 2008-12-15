@@ -80,17 +80,6 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/devices/video/image</key>
-      <applyto>/apps/@PACKAGE_NAME@/devices/video/image</applyto>
-      <owner>Ekiga</owner>
-      <type>string</type>
-      <default></default>
-      <locale name="C">
-	<short>Video image</short>
-	<long>The image to transmit if "Picture" is selected as video plugin or if the opening of the device fails. Leave blank to use the default Ekiga logo.</long>
-      </locale>
-    </schema>
-    <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/devices/video/max_frame_rate</key>
       <applyto>/apps/@PACKAGE_NAME@/devices/video/max_frame_rate</applyto>
       <owner>Ekiga</owner>
@@ -99,39 +88,6 @@
       <locale name="C">
 	<short>Frame Rate</short>
 	<long>The maximum transmitted frame rate in frames/s. This rate may not be reached in case a minimum quality was configure via a TSTO value smaller than 31 and the bitrate selected is not sufficient to support this minimum quality</long>
-      </locale>
-    </schema>
-    <schema>	
-      <key>/schemas/apps/@PACKAGE_NAME@/devices/audio/lid_output_device_type</key>
-      <applyto>/apps/@PACKAGE_NAME@/devices/audio/lid_output_device_type</applyto>
-      <owner>Ekiga</owner>
-      <type>int</type>
-      <default>0</default>
-      <locale name="C">
-	<short>Output device type</short>
-	<long>The output device type is the type of device connected to your Quicknet card. It can be either a POTS (Plain Old Telephone System) or a headset.</long>
-      </locale>
-    </schema>
-    <schema>	
-      <key>/schemas/apps/@PACKAGE_NAME@/devices/audio/lid_echo_cancellation_level</key>
-      <applyto>/apps/@PACKAGE_NAME@/devices/audio/lid_echo_cancellation_level</applyto>
-      <owner>Ekiga</owner>
-      <type>int</type>
-      <default>2</default>
-      <locale name="C">
-	<short>Automatic echo cancellation</short>
-	<long>The Automatic Echo Cancellation level: Off, Low, Medium, High, Automatic Gain Compensation. Choosing Automatic Gain Compensation modulates the volume for best quality.</long>
-      </locale>
-    </schema>
-    <schema>	
-      <key>/schemas/apps/@PACKAGE_NAME@/devices/audio/lid_country_code</key>
-      <applyto>/apps/@PACKAGE_NAME@/devices/audio/lid_country_code</applyto>
-      <owner>Ekiga</owner>
-      <type>string</type>
-      <default>BE</default>
-      <locale name="C">
-	<short>Country code</short>
-	<long>The two-letter country code of your country (e.g.: BE, UK, FR, DE, ...)</long>
       </locale>
     </schema>
     <schema>	
@@ -356,39 +312,6 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/general/save_prefix</key>
-      <applyto>/apps/@PACKAGE_NAME@/general/save_prefix</applyto>
-      <owner>Ekiga</owner>
-      <type>string</type>
-      <default>ekiga-snap-</default>
-      <locale name="C">
-	<short>The save prefix</short>
-	<long>The prefix that will be used to save pictures of the conversation. That prefix is followed by the snapshot number.</long>
-      </locale>
-    </schema>
-    <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/general/version</key>
-      <applyto>/apps/@PACKAGE_NAME@/general/version</applyto>
-      <owner>Ekiga</owner>
-      <type>int</type>
-      <default>9</default>
-      <locale name="C">
-	<short>Version</short>
-	<long>Version</long>
-      </locale>
-    </schema>
-    <schema>	
-      <key>/schemas/apps/@PACKAGE_NAME@/general/gconf_test_age</key>
-      <applyto>/apps/@PACKAGE_NAME@/general/gconf_test_age</applyto>
-      <owner>Ekiga</owner>
-      <type>int</type>
-      <default>@SCHEMA_AGE@</default>
-      <locale name="C">
-	<short>Revision of the schema file</short>
-	<long>Revision of the schema file</long>
-      </locale>
-    </schema>
-    <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/protocols/accounts_list</key>
       <applyto>/apps/@PACKAGE_NAME@/protocols/accounts_list</applyto>
       <owner>Ekiga</owner>
@@ -419,17 +342,6 @@
       <locale name="C">
 	<short>Listen port</short>
 	<long>The port to listen to for incoming connections. Ekiga needs to be restarted for the new value to take effect</long>
-      </locale>
-    </schema>
-    <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/protocols/sip/registrar_registration_timeout</key>
-      <applyto>/apps/@PACKAGE_NAME@/protocols/sip/registrar_registration_timeout</applyto>
-      <owner>Ekiga</owner>
-      <type>int</type>
-      <default>60</default>
-      <locale name="C">
-	<short>Registration timeout</short>
-	<long>The time after which Ekiga will renew its registration with the registrar</long>
       </locale>
     </schema>
     <schema>
@@ -598,17 +510,6 @@
       </locale>
     </schema>
     <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/general/nat/public_ip_detector</key>
-      <applyto>/apps/@PACKAGE_NAME@/general/nat/public_ip_detector</applyto>
-      <owner>Ekiga</owner>
-      <type>string</type>
-      <default>http://ekiga.net/ip/</default>
-      <locale name="C">
-	<short></short>
-	<long></long>
-      </locale>
-    </schema>
-    <schema>
       <key>/schemas/apps/@PACKAGE_NAME@/protocols/sip/binding_timeout</key>
       <applyto>/apps/@PACKAGE_NAME@/protocols/sip/binding_timeout</applyto>
       <owner>Ekiga</owner>
@@ -628,17 +529,6 @@
       <locale name="C">
 	<short>Start hidden</short>
 	<long>If enabled, Ekiga will start hidden provided that the notification area is present in the GNOME panel</long>
-      </locale>
-    </schema>
-    <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/general/user_interface/show_popup</key>
-      <applyto>/apps/@PACKAGE_NAME@/general/user_interface/show_popup</applyto>
-      <owner>Ekiga</owner>
-      <type>bool</type>
-      <default>true</default>
-      <locale name="C">
-	<short>Display a popup window when receiving a call</short>
-	<long>If enabled, a popup window will be displayed when receiving an incoming call</long>
       </locale>
     </schema>
     <schema>	
@@ -1005,17 +895,6 @@
       <locale name="C">
 	<short>The Video Codecs List</short>
 	<long>The video codecs list</long>
-      </locale>
-    </schema>
-    <schema>
-      <key>/schemas/apps/@PACKAGE_NAME@/codecs/video/enable_video</key>
-      <applyto>/apps/@PACKAGE_NAME@/codecs/video/enable_video</applyto>
-      <owner>Ekiga</owner>
-      <type>bool</type>
-      <default>false</default>
-      <locale name="C">
-	<short>Enable video support</short>
-	<long>If enabled, allows video during calls</long>
       </locale>
     </schema>
     <schema>

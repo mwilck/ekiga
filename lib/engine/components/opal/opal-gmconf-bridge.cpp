@@ -83,7 +83,6 @@ ConfBridge::ConfBridge (Ekiga::Service & _service)
   keys.push_back (AUDIO_CODECS_KEY "media_list");
   keys.push_back (VIDEO_CODECS_KEY "media_list");
 
-  keys.push_back (AUDIO_CODECS_KEY "minimum_jitter_buffer");
   keys.push_back (AUDIO_CODECS_KEY "maximum_jitter_buffer");
 
   keys.push_back (VIDEO_CODECS_KEY "maximum_video_tx_bitrate");
@@ -168,7 +167,8 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
   //
   else if (key == NAT_KEY "stun_server") {
 
-    manager.set_stun_server (gm_conf_entry_get_string (entry));
+    const char *stun_server = gm_conf_entry_get_string (entry);
+    manager.set_stun_server (stun_server ? stun_server : "stun.ekiga.net");
   }
 
 

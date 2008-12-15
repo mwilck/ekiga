@@ -84,7 +84,7 @@ Opal::H323::EndPoint::EndPoint (Opal::CallManager & _manager, Ekiga::ServiceCore
 {
   protocol_name = "h323";
   uri_prefix = "h323:";
-  listen_port = _listen_port;
+  listen_port = (_listen_port > 0 ? _listen_port : 1720);
 
   {
     gmref_ptr<Ekiga::Runtime> smart = core.get ("runtime");

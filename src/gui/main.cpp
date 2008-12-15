@@ -3610,6 +3610,7 @@ ekiga_main_window_init_call_panel (EkigaMainWindow *mw)
                     0, 0);
 
   gtk_paned_pack2 (GTK_PANED (mw->priv->hpaned), mw->priv->call_panel_frame, true, false);
+  gtk_widget_realize (mw->priv->main_video_image);
 }
 
 static void
@@ -3828,8 +3829,7 @@ ekiga_main_window_expose_event (GtkWidget      *widget,
   Ekiga::DisplayInfo display_info;
   gboolean handled = FALSE;
 
-  handled = GTK_WIDGET_CLASS (ekiga_main_window_parent_class)->expose_event
-                                                               (widget, event);
+  handled = GTK_WIDGET_CLASS (ekiga_main_window_parent_class)->expose_event (widget, event);
 
   display_info.x = video_widget->allocation.x;
   display_info.y = video_widget->allocation.y;
@@ -3844,8 +3844,8 @@ ekiga_main_window_expose_event (GtkWidget      *widget,
 
   display_info.gc = GDK_GC_XGC (mw->priv->video_widget_gc);
   display_info.xdisplay = GDK_GC_XDISPLAY (mw->priv->video_widget_gc);
-
   display_info.window = GDK_WINDOW_XWINDOW (video_widget->window);
+
   g_return_val_if_fail (display_info.window != 0, handled);
 
   gdk_flush();
@@ -3853,8 +3853,7 @@ ekiga_main_window_expose_event (GtkWidget      *widget,
 
   display_info.widget_info_set = TRUE;
 
-  gmref_ptr<Ekiga::VideoOutputCore> videooutput_core
-    = mw->priv->core->get ("videooutput-core");
+  gmref_ptr<Ekiga::VideoOutputCore> videooutput_core = mw->priv->core->get ("videooutput-core");
   videooutput_core->set_display_info (display_info);
 
   return handled;
@@ -4471,20 +4470,11 @@ main (int argc,
   }
 #endif
 
-  /* Configuration database initialization */
-#ifdef HAVE_GCONF
-  if (!gnomemeeting_conf_check ()) 
-    error = 3;
-#endif
-
   /* Init gm_conf */
   gm_conf_watch ();
 
   GnomeMeeting::Process ()->InitEngine ();
   GnomeMeeting::Process ()->BuildGUI ();
-  
-  /* Add depreciated notifiers */
-  gnomemeeting_conf_init ();
 
   /* Show the window if there is no error, exit with a popup if there
    * is a fatal error.
@@ -4539,16 +4529,6 @@ main (int argc,
       title = g_strdup (_("No usable audio codecs detected"));
       msg = g_strdup (_("Ekiga didn't find any usable audio codec. Make sure that your installation is correct."));
       break;
-#ifdef HAVE_GCONF
-    case 3:
-      {
-	gchar *key_name = g_strdup ("\"/apps/" PACKAGE_NAME "/general/gconf_test_age\"");
-	title = g_strdup (_("Configuration database corruption"));
-	msg = g_strdup_printf (_("Ekiga got an invalid value for the configuration key %s.\n\nIt probably means that your configuration schemas have not been correctly installed or that the permissions are not correct.\n\nPlease check the FAQ (http://www.ekiga.org/), the troubleshooting section of the GConf site (http://www.gnome.org/projects/gconf/) or the mailing list archives for more information (http://mail.gnome.org) about this problem."), key_name);
-	g_free (key_name);
-      }
-      break;
-#endif
     default:
       break;
     }

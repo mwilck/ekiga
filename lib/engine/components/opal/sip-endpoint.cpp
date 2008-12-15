@@ -137,7 +137,7 @@ Opal::Sip::EndPoint::EndPoint (Opal::CallManager & _manager,
 
   protocol_name = "sip";
   uri_prefix = "sip:";
-  listen_port = _listen_port;
+  listen_port = (_listen_port > 0 ? _listen_port : 5060);
 
   dialect = new SIP::Dialect (core, sigc::mem_fun (this, &Opal::Sip::EndPoint::send_message));
   dialect->reference (); // take a reference in the main thread
@@ -528,7 +528,8 @@ const std::string & Opal::Sip::EndPoint::get_outbound_proxy () const
 
 void Opal::Sip::EndPoint::set_nat_binding_delay (unsigned delay)
 {
-  SetNATBindingTimeout (PTimeInterval (0, delay));
+  if (delay > 0)
+    SetNATBindingTimeout (PTimeInterval (0, delay));
 }
 
 

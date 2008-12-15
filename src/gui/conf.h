@@ -50,22 +50,6 @@
 /* The functions */
 
 /* DESCRIPTION  :  /
- * BEHAVIOR     :  Checks if the configuration can been loaded or not.
- *                 Returns FALSE in case of error.
- * PRE          :  /
- */
-gboolean gnomemeeting_conf_check ();
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  This function inits all the notifiers
- *                 that Ekiga uses. 
- * PRE          :  /
- */
-void gnomemeeting_conf_init ();
-
-
-/* DESCRIPTION  :  /
  * BEHAVIOR     :  This function updates the GConf keys from version
  *                 to version.
  * PRE          :  /

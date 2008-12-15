@@ -193,7 +193,8 @@ GtkWidget *gnome_prefs_int_option_menu_new (GtkWidget *,
  *                 The first parameter is the section in which 
  *                 the GtkEntry should be attached. The other parameters are
  *                 the text label, the possible values for the menu, the config
- *                 key, the tooltip, the row where to attach it in the section.
+ *                 key, the tooltip, the row where to attach it in the section and
+ *                 the default value if the conf key is associated to a NULL value.
  * PRE          :  The array ends with NULL. 
  */
 GtkWidget *gnome_prefs_string_option_menu_new (GtkWidget *,
@@ -201,19 +202,22 @@ GtkWidget *gnome_prefs_string_option_menu_new (GtkWidget *,
 					       const gchar **,
 					       const gchar *,
 					       const gchar *,
-					       int);
+					       int,
+                                               const gchar *);
 
 
 /* DESCRIPTION  :  /
  * BEHAVIOR     :  Updates the content of a GtkOptionMenu associated with
  *                 a string config key. The first parameter is the menu,
  *                 the second is the array of possible values, and the
- *                 last one is the config key. 
+ *                 last one is the config key and the default value if the
+ *                 conf key is associated to a NULL value. 
  * PRE          :  The array ends with NULL.
  */
 void gnome_prefs_string_option_menu_update (GtkWidget *,
 					    const gchar **,
-					    const gchar *);
+					    const gchar *,
+                                            const gchar *);
 
 
 

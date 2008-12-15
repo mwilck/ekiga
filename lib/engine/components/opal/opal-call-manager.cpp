@@ -237,7 +237,7 @@ bool CallManager::get_echo_cancellation () const
 void CallManager::set_maximum_jitter (unsigned max_val)
 {
   // Adjust general settings
-  SetAudioJitterDelay (20, PMIN (max_val, 1000));
+  SetAudioJitterDelay (20, PMIN (PMAX (max_val, 20), 1000));
 
   // Adjust setting for all sessions of all connections of all calls
   for (PSafePtr<OpalCall> call = activeCalls;
@@ -319,7 +319,7 @@ bool CallManager::get_silence_detection () const
 
 void CallManager::set_reject_delay (unsigned delay)
 {
-  reject_delay = delay;
+  reject_delay = PMAX (5, delay);
 }
 
 
@@ -526,11 +526,11 @@ void CallManager::set_video_options (const CallManager::VideoOptions & options)
       media_format.SetOptionInteger (OpalVideoFormat::FrameHeightOption (), 
                                      Ekiga::VideoSizes [options.size].height);  
       media_format.SetOptionInteger (OpalVideoFormat::FrameTimeOption (),
-                                     (int) (90000 / options.maximum_frame_rate));
+                                     (int) (90000 / (options.maximum_frame_rate > 0 ? options.maximum_frame_rate : 30)));
       media_format.SetOptionInteger (OpalVideoFormat::MaxBitRateOption (), 
-                                     options.maximum_received_bitrate * 1000);
+                                     (options.maximum_received_bitrate > 0 ? options.maximum_received_bitrate : 4096) * 1000);
       media_format.SetOptionInteger (OpalVideoFormat::TargetBitRateOption (), 
-                                     options.maximum_transmitted_bitrate * 1000);
+                                     (options.maximum_transmitted_bitrate > 0 ? options.maximum_transmitted_bitrate : 48) * 1000);
       media_format.SetOptionInteger (OpalVideoFormat::MinRxFrameWidthOption(), 
                                      160);
       media_format.SetOptionInteger (OpalVideoFormat::MinRxFrameHeightOption(), 
@@ -543,7 +543,7 @@ void CallManager::set_video_options (const CallManager::VideoOptions & options)
                                                           true, OpalMediaOption::NoMerge, 
                                                           options.temporal_spatial_tradeoff));  
       media_format.SetOptionInteger (OpalVideoFormat::TemporalSpatialTradeOffOption(), 
-                                     options.temporal_spatial_tradeoff);  
+                                     (options.temporal_spatial_tradeoff > 0 ? options.temporal_spatial_tradeoff : 31));  
       media_format.AddOption(new OpalMediaOptionUnsigned (OpalVideoFormat::MaxFrameSizeOption (), 
                                                           true, OpalMediaOption::NoMerge, 1400));
       media_format.SetOptionInteger (OpalVideoFormat::MaxFrameSizeOption (), 
@@ -582,9 +582,9 @@ void CallManager::set_video_options (const CallManager::VideoOptions & options)
 
           OpalMediaFormat mediaFormat = stream->GetMediaFormat ();
           mediaFormat.SetOptionInteger (OpalVideoFormat::TemporalSpatialTradeOffOption(),
-                                        options.temporal_spatial_tradeoff);
+                                        (options.temporal_spatial_tradeoff > 0 ? options.temporal_spatial_tradeoff : 31));  
           mediaFormat.SetOptionInteger (OpalVideoFormat::TargetBitRateOption (),
-                                        options.maximum_transmitted_bitrate * 1000);
+                                        (options.maximum_transmitted_bitrate > 0 ? options.maximum_transmitted_bitrate : 48) * 1000);
           mediaFormat.ToNormalisedOptions();
           stream->UpdateMediaFormat (mediaFormat);
         }

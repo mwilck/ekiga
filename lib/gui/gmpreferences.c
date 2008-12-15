@@ -611,7 +611,8 @@ gnome_prefs_string_option_menu_new (GtkWidget *table,
 				    const gchar **options,
 				    const gchar *conf_key,       
 				    const gchar *tooltip,         
-				    int row)       
+				    int row,
+                                    const gchar *default_value)
 {
   GnomePrefsWindow *gpw = NULL;
   
@@ -662,6 +663,8 @@ gnome_prefs_string_option_menu_new (GtkWidget *table,
   gtk_label_set_mnemonic_widget (GTK_LABEL (label), option_menu);
 
   conf_string = gm_conf_get_string (conf_key);
+  if (conf_string == NULL)
+    conf_string = g_strdup (default_value);
   while (options [cpt]) {
 
     if (conf_string && !strcmp (conf_string, options [cpt]))
@@ -719,7 +722,8 @@ gnome_prefs_string_option_menu_new (GtkWidget *table,
 void
 gnome_prefs_string_option_menu_update (GtkWidget *option_menu,
 				       const gchar **options,
-				       const gchar *conf_key)
+				       const gchar *conf_key,
+                                       const gchar *default_value)
 {
   GtkTreeModel *model = NULL;
   GtkTreeIter iter;
@@ -734,6 +738,8 @@ gnome_prefs_string_option_menu_update (GtkWidget *option_menu,
     return;
   
   conf_string = gm_conf_get_string (conf_key);
+  if (conf_string == NULL)
+    conf_string = g_strdup (default_value);
 
   model = gtk_combo_box_get_model (GTK_COMBO_BOX (option_menu));
 

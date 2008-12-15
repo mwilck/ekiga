@@ -141,13 +141,13 @@ set_current_page_complete (GtkAssistant *assistant,
 
 void 
 get_audiooutput_devices_list (Ekiga::ServiceCore *core,
-                                        std::vector<std::string> & device_list);
+                              std::vector<std::string> & device_list);
 void 
 get_audioinput_devices_list (Ekiga::ServiceCore *core,
-                                        std::vector<std::string> & device_list);
+                             std::vector<std::string> & device_list);
 void 
 get_videoinput_devices_list (Ekiga::ServiceCore *core,
-                                        std::vector<std::string> & device_list);
+                             std::vector<std::string> & device_list);
 
 gchar**
 convert_string_list (const std::vector<std::string> & list);
@@ -1089,8 +1089,16 @@ prepare_audio_devices_page (EkigaAssistant *assistant)
   char **array;
 
   ringer = gm_conf_get_string (SOUND_EVENTS_KEY "output_device");
+  if (ringer == NULL)
+    ringer = g_strdup ("Default (PTLIB/ALSA)");
+
   player = gm_conf_get_string (AUDIO_DEVICES_KEY "output_device");
+  if (player == NULL)
+    player = g_strdup ("Default (PTLIB/ALSA)");
+
   recorder = gm_conf_get_string (AUDIO_DEVICES_KEY "input_device");
+  if (recorder == NULL)
+    recorder = g_strdup ("Default (PTLIB/ALSA)");
 
   /* FIXME: We should use DetectDevices, however DetectDevices
    * works only for the currently selected audio and video plugins,
@@ -1202,6 +1210,7 @@ prepare_video_devices_page (EkigaAssistant *assistant)
   update_combo_box (GTK_COMBO_BOX (assistant->priv->video_device),
                     array, current_plugin);
   g_free (array);
+  g_free (current_plugin);
 }
 
 static void
@@ -1224,7 +1233,7 @@ apply_video_devices_page (EkigaAssistant *assistant)
 // FIXME: duplicate to gm_prefs_window_get_video_devices_list
 void 
 get_audiooutput_devices_list (Ekiga::ServiceCore *core,
-                                        std::vector<std::string> & device_list)
+                              std::vector<std::string> & device_list)
 {
   gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core
     = core->get ("audiooutput-core");
@@ -1248,7 +1257,7 @@ get_audiooutput_devices_list (Ekiga::ServiceCore *core,
 
 void 
 get_audioinput_devices_list (Ekiga::ServiceCore *core,
-                                        std::vector<std::string> & device_list)
+                             std::vector<std::string> & device_list)
 {
   gmref_ptr<Ekiga::AudioInputCore> audioinput_core
     = core->get ("audioinput-core");

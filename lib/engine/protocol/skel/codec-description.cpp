@@ -44,7 +44,7 @@
 using namespace Ekiga;
 
 CodecDescription::CodecDescription ()
-: rate (0), active (false), audio (false)
+: rate (0), active (true), audio (false)
 {
 }
 

@@ -1,3 +1,28 @@
+2008-12-15  Damien Sandras  <dsandras@gnome.org>
+
+        * src/gui/main.cpp:
+        Realize widget at the begin to prevent warnings.
+
+        * src/gui/preferences.cpp:
+        * src/gui/statusmenu.cpp:
+        * src/gui/assistant.cpp:
+        * src/gui/conf.cpp:
+        * src/gui/conf.h:
+        * lib/gui/gmpreferences.c:
+        * lib/gui/gmpreferences.h:
+        * lib/engine/components/opal/opal-call-manager.cpp:
+        * lib/engine/components/opal/sip-endpoint.cpp:
+        * lib/engine/components/opal/opal-gmconf-bridge.cpp:
+        * lib/engine/components/opal/h323-endpoint.cpp:
+        * lib/engine/protocol/skel/codec-description.cpp:
+        * ekiga.schemas.in.in:
+        Cleanup GConf keys and KILLED the gconf_test_age key. Default values 
+        are now in the code directly.
+
+2008-12-15  Damien Sandras  <dsandras@gnome.org>
+
+        * src/gui/main.cpp:
+
 2008-12-11  Damien Sandras  <dsandras@gnome.org>
 
         * lib/gmconf/gmconf-gconf.c:

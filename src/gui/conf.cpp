@@ -65,45 +65,6 @@
 
 
 /* The functions */
-gboolean 
-gnomemeeting_conf_check ()
-{
-  int conf_test = -1;
-  
-  /* Check the config is ok */
-  conf_test = gm_conf_get_int (GENERAL_KEY "gconf_test_age");
-  
-  if (conf_test != SCHEMA_AGE) 
-    return FALSE;
-
-  return TRUE;
-}
-
-
-void
-gnomemeeting_conf_init ()
-{
-  GtkWidget *main_window = NULL;
-  
-  main_window = GnomeMeeting::Process ()->GetMainWindow ();
-
-
-  /* There are in general 2 notifiers to attach to each widget :
-   * - the notifier that will update the widget itself to the new key,
-   *   that one is attached when creating the widget.
-   * - the notifier to take an appropriate action, that one is in this file.
-   *   
-   * Notice that there can be more than 2 notifiers for a key, some actions
-   * like updating the ILS server are for example required for
-   * several different key changes, they are thus in a separate notifier when
-   * they can be reused at several places. If not, a same notifier can contain
-   * several actions.
-   */
-
-
-}
-
-
 void 
 gnomemeeting_conf_upgrade ()
 {
@@ -154,13 +115,6 @@ gnomemeeting_conf_upgrade ()
 
     gm_conf_set_bool ("/desktop/gnome/url-handlers/sip/enabled", true);
   }
-  g_free (conf_url);
-
-  /* Upgrade IP detector IP address */
-  conf_url = gm_conf_get_string (NAT_KEY "public_ip_detector");
-  if (conf_url && !strcmp (conf_url, "http://213.193.144.104/ip/"))
-    gm_conf_set_string (NAT_KEY "public_ip_detector", 
-			"http://ekiga.net/ip/");
   g_free (conf_url);
 
   /* New full name key */

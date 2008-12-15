@@ -770,16 +770,16 @@ gm_pw_init_audio_devices_page (GtkWidget *prefs_window,
   gm_prefs_window_get_audiooutput_devices_list (pw->core, device_list);
   array = gm_prefs_window_convert_string_list(device_list);
   pw->sound_events_output = 
-    gnome_prefs_string_option_menu_new (subsection, _("Ringing Device"), (const gchar **)array, SOUND_EVENTS_KEY "output_device", _("Select the ringing audio device to use"), 0);
+    gnome_prefs_string_option_menu_new (subsection, _("Ringing Device"), (const gchar **)array, SOUND_EVENTS_KEY "output_device", _("Select the ringing audio device to use"), 0, "Default (PTLIB/ALSA)");
   pw->audio_player =
-    gnome_prefs_string_option_menu_new (subsection, _("Output device:"), (const gchar **)array, AUDIO_DEVICES_KEY "output_device", _("Select the audio output device to use"), 1);
+    gnome_prefs_string_option_menu_new (subsection, _("Output device:"), (const gchar **)array, AUDIO_DEVICES_KEY "output_device", _("Select the audio output device to use"), 1, "Default (PTLIB/ALSA)");
   g_free (array);
 
   /* The recorder */
   gm_prefs_window_get_audioinput_devices_list (pw->core, device_list);
   array = gm_prefs_window_convert_string_list(device_list);
   pw->audio_recorder =
-    gnome_prefs_string_option_menu_new (subsection, _("Input device:"), (const gchar **)array, AUDIO_DEVICES_KEY "input_device", _("Select the audio input device to use"), 2);
+    gnome_prefs_string_option_menu_new (subsection, _("Input device:"), (const gchar **)array, AUDIO_DEVICES_KEY "input_device", _("Select the audio input device to use"), 2, "Default (PTLIB/ALSA)");
   g_free (array);
 
 
@@ -930,7 +930,7 @@ gm_pw_init_video_devices_page (GtkWidget *prefs_window,
   gm_prefs_window_get_videoinput_devices_list (pw->core, device_list);
   array = gm_prefs_window_convert_string_list(device_list);
   pw->video_device =
-    gnome_prefs_string_option_menu_new (subsection, _("Input device:"), (const gchar **)array, VIDEO_DEVICES_KEY "input_device", _("Select the video input device to use. If an error occurs when using this device a test picture will be transmitted."), 0);
+    gnome_prefs_string_option_menu_new (subsection, _("Input device:"), (const gchar **)array, VIDEO_DEVICES_KEY "input_device", _("Select the video input device to use. If an error occurs when using this device a test picture will be transmitted."), 0, NULL);
   g_free (array);
 
   /* Video Channel */
@@ -986,7 +986,7 @@ gm_pw_init_audio_codecs_page (GtkWidget *prefs_window,
   
   gnome_prefs_toggle_new (subsection, _("Enable echo can_celation"), AUDIO_CODECS_KEY "enable_echo_cancelation", _("If enabled, use echo cancelation."), 1);
 
-  gnome_prefs_spin_new (subsection, _("Maximum _jitter buffer (in ms):"), AUDIO_CODECS_KEY "maximum_jitter_buffer", _("The maximum jitter buffer size for audio reception (in ms)."), 30.0, 2000.0, 50.0, 2, NULL, true);
+  gnome_prefs_spin_new (subsection, _("Maximum _jitter buffer (in ms):"), AUDIO_CODECS_KEY "maximum_jitter_buffer", _("The maximum jitter buffer size for audio reception (in ms)."), 20.0, 2000.0, 50.0, 2, NULL, true);
 }
 
 
@@ -1039,31 +1039,6 @@ refresh_devices_list_cb (G_GNUC_UNUSED GtkWidget *widget,
 
 }
 
-
-/*
-static void
-image_filename_browse_cb (GtkWidget *b,
-			  gpointer data)
-{
-  char *filename = NULL;
-  char *current_filename = NULL;
-
-  g_return_if_fail (data != NULL);
-  filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (b));
-
-  if (filename == NULL)
-    return;
-  
-  current_filename = gm_conf_get_string ((gchar *) data);
-  if (current_filename && strcmp (current_filename, filename))
-    gm_conf_set_string ((gchar *) data, (gchar *) filename);
-
-  g_free (filename);
-  g_free (current_filename);
-
-  g_signal_emit_by_name (G_OBJECT (b), "update-preview");
-}
-*/
 
 static void
 audioev_filename_browse_cb (GtkWidget *b,
@@ -1300,10 +1275,12 @@ gm_prefs_window_update_devices_list (GtkWidget *prefs_window)
   array = gm_prefs_window_convert_string_list(device_list);
   gnome_prefs_string_option_menu_update (pw->audio_player,
  					 (const gchar **)array,
- 					 AUDIO_DEVICES_KEY "output_device");
-   gnome_prefs_string_option_menu_update (pw->sound_events_output,
- 					 (const gchar **)array,
- 					 SOUND_EVENTS_KEY "output_device");
+ 					 AUDIO_DEVICES_KEY "output_device",
+                                         "Default (PTLIB/ALSA)");
+  gnome_prefs_string_option_menu_update (pw->sound_events_output,
+                                         (const gchar **)array,
+                                         SOUND_EVENTS_KEY "output_device",
+                                         "Default (PTLIB/ALSA)");
   g_free (array);
 
   /* The recorder */
@@ -1311,7 +1288,8 @@ gm_prefs_window_update_devices_list (GtkWidget *prefs_window)
   array = gm_prefs_window_convert_string_list(device_list);
   gnome_prefs_string_option_menu_update (pw->audio_recorder,
  					 (const gchar **)array,
- 					 AUDIO_DEVICES_KEY "input_device");
+ 					 AUDIO_DEVICES_KEY "input_device",
+                                         "Default (PTLIB/ALSA)");
   g_free (array);
 
 
@@ -1320,7 +1298,8 @@ gm_prefs_window_update_devices_list (GtkWidget *prefs_window)
   array = gm_prefs_window_convert_string_list(device_list);
   gnome_prefs_string_option_menu_update (pw->video_device,
 					 (const gchar **)array,
-					 VIDEO_DEVICES_KEY "input_device");
+					 VIDEO_DEVICES_KEY "input_device",
+                                         NULL);
   g_free (array);
 }
 
