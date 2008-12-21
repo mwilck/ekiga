@@ -39,6 +39,8 @@
 
 #include "config.h"
 
+#include <glib/gi18n.h>
+
 #include "gmconf.h"
 
 #include "history-book.h"
@@ -135,8 +137,8 @@ bool
 History::Book::populate_menu (Ekiga::MenuBuilder &builder)
 {
   builder.add_action ("clear",
-		      "Clear history", sigc::mem_fun (this,
-					      &History::Book::clear));
+		      _("Clear List"), sigc::mem_fun (this,
+                                                      &History::Book::clear));
   return true;
 }
 

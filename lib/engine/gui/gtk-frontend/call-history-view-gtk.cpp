@@ -159,7 +159,7 @@ on_clicked (GtkWidget *tree,
 	  contact->populate_menu (builder);
 	if (!builder.empty())
 	  builder.add_separator ();
-	builder.add_action ("clear", _("Clear"),
+	builder.add_action ("clear", _("Clear List"),
 			    sigc::mem_fun (book, &History::Book::clear));
 	gtk_widget_show_all (builder.menu);
 	gtk_menu_popup (GTK_MENU (builder.menu), NULL, NULL,
