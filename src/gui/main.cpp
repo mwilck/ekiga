@@ -731,7 +731,7 @@ static void on_established_call_cb (Ekiga::CallManager & /*manager*/,
 
   g_free (info);
 
-  ekiga_main_window_update_calling_state (mw, Standby);
+  gm_main_window_update_calling_state (GTK_WIDGET (self), Standby);
 }
 
 
@@ -2464,7 +2464,7 @@ gm_mw_init_call (GtkWidget *main_window)
                     0, 0);
 
   gtk_paned_pack2 (GTK_PANED (mw->hpaned), frame, true, false);
-  gtk_widget_realize (mw->priv->main_video_image);
+  gtk_widget_realize (mw->main_video_image);
 }  
 
 static void
