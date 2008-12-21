@@ -44,9 +44,11 @@
 #include "opal-videooutput.h"
 #include "engine.h"
 
+namespace OpalLinkerHacks {
+  int loadOpalVideoOutput;
+}
 
 int PVideoOutputDevice_EKIGA::devices_nbr = 0;
-
 
 PMutex PVideoOutputDevice_EKIGA::videoDisplay_mutex;
 /* Plugin definition */

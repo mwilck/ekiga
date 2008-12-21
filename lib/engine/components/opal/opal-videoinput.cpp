@@ -46,6 +46,10 @@
 #include "engine.h"
 
 
+namespace OpalLinkerHacks {
+  int loadOpalVideoInput;
+}
+
 /* Plugin definition */
 class PVideoInputDevice_EKIGA_PluginServiceDescriptor 
 : public PDevicePluginServiceDescriptor

@@ -62,7 +62,4 @@ libopal_la_SOURCES += \
 	$(opal_dir)/sip-endpoint.cpp
 endif
 
-libopal_la_LIBADD = \
-	$(top_builddir)/lib/engine/framework/libgmframework.la
-
 libopal_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(GLIB_LIBS) $(OPAL_LIBS) $(PTLIB_LIBS)

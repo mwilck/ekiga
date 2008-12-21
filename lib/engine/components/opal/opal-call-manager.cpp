@@ -163,8 +163,6 @@ CallManager::~CallManager ()
 
   g_async_queue_unref (queue);
   runtime->unreference ();
-
-  std::cout << "bye callmanager" << std::endl << std::flush;
 }
 
 

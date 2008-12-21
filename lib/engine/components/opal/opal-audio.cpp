@@ -44,6 +44,9 @@
 #include "opal-audio.h"
 #include "engine.h"
 
+namespace OpalLinkerHacks {
+  int loadOpalAudio;
+}
 
 /* Plugin definition */
 class PSoundChannel_EKIGA_PluginServiceDescriptor 
