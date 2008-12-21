@@ -435,6 +435,7 @@ static gboolean on_popup_button_press_event (G_GNUC_UNUSED GtkWidget* widget,
       return FALSE;
       break;
     /* FIXME is that neccesary? Compiler warnings and so... */
+    case GDK_DAMAGE:
     case GDK_NOTHING:
     case GDK_DELETE:
     case GDK_DESTROY:
