@@ -323,6 +323,8 @@ GST::AudioOutputManager::detect_alsasink_devices ()
       g_value_array_free (array);
     }
 
+    devices_by_name[std::pair<std::string,std::string>("ALSA","---")] = "volume name=ekiga_volume ! alsasink";
+
     gst_element_set_state (elt, GST_STATE_NULL);
     gst_object_unref (GST_OBJECT (elt));
   }
