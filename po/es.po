@@ -16,8 +16,8 @@ msgstr ""
 "Project-Id-Version: ekiga.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=ekiga&amp;component=general\n"
-"POT-Creation-Date: 2008-12-17 19:28+0000\n"
-"PO-Revision-Date: 2008-12-18 20:23+0100\n"
+"POT-Creation-Date: 2008-12-21 19:15+0000\n"
+"PO-Revision-Date: 2008-12-26 09:15+0100\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -789,6 +789,11 @@ msgstr "_Buscar"
 msgid "Neighbours"
 msgstr "Vecinos"
 
+#: ../lib/engine/components/call-history/history-book.cpp:140
+#: ../lib/engine/gui/gtk-frontend/call-history-view-gtk.cpp:162
+msgid "Clear List"
+msgstr "Limpiar lista"
+
 #: ../lib/engine/components/call-history/history-contact.cpp:153
 msgid "Received"
 msgstr "Recibidas"
@@ -1417,7 +1422,7 @@ msgstr "El usuario no está disponible"
 msgid "Call completed"
 msgstr "Llamada concluida"
 
-#: ../lib/engine/components/opal/opal-call-manager.cpp:716
+#: ../lib/engine/components/opal/opal-call-manager.cpp:714
 msgid ""
 "Ekiga did not manage to configure your network settings automatically. You "
 "can still use it, but you need to configure your network settings manually.\n"
@@ -1752,11 +1757,6 @@ msgstr "Nombre completo"
 #: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:601
 msgid "_Search Filter:"
 msgstr "Filtro de _búsqueda:"
-
-#: ../lib/engine/gui/gtk-frontend/call-history-view-gtk.cpp:162
-#: ../src/gui/statusmenu.cpp:430
-msgid "Clear"
-msgstr "Limpiar"
 
 #: ../lib/engine/gui/gtk-frontend/chat-area.cpp:247
 msgid "says:"
@@ -3217,6 +3217,10 @@ msgstr "No molestar"
 #: ../src/gui/statusmenu.cpp:387
 msgid "Custom message..."
 msgstr "Mensaje personalizado..."
+
+#: ../src/gui/statusmenu.cpp:430
+msgid "Clear"
+msgstr "Limpiar"
 
 #. Build the dialog
 #: ../src/gui/statusmenu.cpp:521 ../src/gui/statusmenu.cpp:671
