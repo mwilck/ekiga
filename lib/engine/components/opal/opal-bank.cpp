@@ -127,25 +127,6 @@ void Opal::Bank::new_account (Account::Type t,
     }
 }
 
-Opal::Account*
-Opal::Bank::find_account (const std::string aor)
-{
-  for (iterator it = begin (); it != end (); it++) {
-
-    if (aor.find ("@") != std::string::npos) {
-      if (it->get_aor () == aor) {
-        return (&(*it));
-      }
-    }
-    else {
-      if (it->get_host () == aor) {
-        return (&(*it));
-      }
-    }
-  }
-
-  return NULL;
-}
 
 void Opal::Bank::on_new_account_form_submitted (bool submitted,
 						Ekiga::Form &result,

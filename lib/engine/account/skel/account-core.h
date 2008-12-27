@@ -147,6 +147,14 @@ namespace Ekiga
   public:
     typedef enum { Processing, Registered, Unregistered, RegistrationFailed, UnregistrationFailed } RegistrationState;
 
+    /** Find the account with the given address of record in the Bank
+     * @param aor is the address of record of the Account or the host to look 
+     *        for
+     * @return The Ekiga::Account if an Account was found, false otherwise.
+     *         The returned account should not be freed.
+     */
+    Ekiga::Account *find_account (const std::string & aor);
+
 
     /** Create the menu for the AccountCore and its actions.
      * @param A MenuBuilder object to populate.

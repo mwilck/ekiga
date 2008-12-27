@@ -65,6 +65,19 @@ bool Ekiga::AccountCore::populate_menu (MenuBuilder & builder)
 }
 
 
+Ekiga::Account *Ekiga::AccountCore::find_account (const std::string & aor)
+{
+  for (bank_iterator iter = banks.begin ();
+       iter != banks.end ();
+       iter++) {
+    if (Ekiga::Account *account = (*iter)->find_account (aor))
+      return account;
+  }
+
+  return NULL;
+}
+
+
 void Ekiga::AccountCore::add_bank (Bank &bank)
 {
   banks.insert (&bank);

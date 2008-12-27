@@ -101,6 +101,14 @@ namespace Ekiga
      */
     void visit_accounts (sigc::slot1<bool, Account &> visitor);
 
+    /** Find the account with the given address of record in the Bank
+     * @param aor is the address of record of the Account or the host to search 
+     *        for
+     * @return The Account corresponding to the find result
+     *         The returned account should not be freed.
+     */
+    Ekiga::Account *find_account (const std::string & aor);
+
     /** This function be called when a new account has to be added to the Bank.
      */
     void new_account ();
@@ -217,6 +225,29 @@ void
 Ekiga::BankImpl<T>::visit_accounts (sigc::slot1<bool, Account &> visitor)
 {
   Lister<T>::visit_objects (visitor);
+}
+
+
+template<typename T>
+Ekiga::Account *Ekiga::BankImpl<T>::find_account (const std::string & aor)
+{
+  for (typename Ekiga::BankImpl<T>::iterator it = Lister<T>::begin ();
+       it != Lister<T>::end ();
+       it++) {
+
+    if (aor.find ("@") != std::string::npos) {
+      if (it->get_aor () == aor) {
+        return (&(*it));
+      }
+    }
+    else {
+      if (it->get_host () == aor) {
+        return (&(*it));
+      }
+    }
+  }
+
+  return NULL;
 }
 
 

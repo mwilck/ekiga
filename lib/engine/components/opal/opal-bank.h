@@ -70,14 +70,6 @@ public:
                       std::string username = "",
                       std::string password = "");
 
-    /** Find the account with the given address of record in the Bank
-     * @param aor is the address of record of the Account or the host to look 
-     *        for
-     * @return The Ekiga::Account if an Account was found, false otherwise.
-     *         The returned account should not be freed.
-     */
-    Account* find_account (const std::string aor);
-
 private:
     void on_new_account_form_submitted (bool submitted,
 					Ekiga::Form& form,

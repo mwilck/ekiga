@@ -45,8 +45,10 @@
 
 #include "sip-endpoint.h"
 
+#include "opal-bank.h"
 #include "opal-call.h"
 
+#include "account-core.h"
 #include "chat-core.h"
 #include "personal-details.h"
 #include "opal-account.h"
@@ -127,9 +129,9 @@ Opal::Sip::EndPoint::EndPoint (Opal::CallManager & _manager,
     runtime = &*smart;
   }
   {
-    gmref_ptr<Bank> smart = core.get ("opal-account-store");
+    gmref_ptr<Ekiga::AccountCore> smart = core.get ("account-core");
     smart->reference (); // take a reference in the main thread
-    bank = &*smart;
+    account_core = &*smart;
   }
 
 
@@ -169,7 +171,7 @@ Opal::Sip::EndPoint::EndPoint (Opal::CallManager & _manager,
 Opal::Sip::EndPoint::~EndPoint ()
 {
   runtime->unreference (); // leave a reference in the main thread
-  bank->unreference (); // leave a reference in the main thread
+  account_core->unreference (); // leave a reference in the main thread
   dialect->unreference (); // leave a reference in the main thread
 }
 
@@ -204,6 +206,8 @@ bool Opal::Sip::EndPoint::menu_builder_add_actions (const std::string& fullname,
     return false;
 
   if (uri.find ("@") == string::npos) {
+
+    gmref_ptr<Opal::Bank> bank = core.get ("opal-account-store");
 
     if (bank) {
 
@@ -662,7 +666,7 @@ void Opal::Sip::EndPoint::OnRegistered (const PString & _aor,
     Subscribe (SIPSubscribe::MessageSummary, 3600, aor);
 
   /* Signal */
-  Account* account = bank->find_account (strm.str ());
+  Ekiga::Account *account = account_core->find_account (strm.str ());
   if (account)
     runtime->run_in_main (sigc::bind (account->registration_event.make_slot (),
 				      was_registering ? Ekiga::AccountCore::Registered : Ekiga::AccountCore::Unregistered,
@@ -895,7 +899,7 @@ void Opal::Sip::EndPoint::OnRegistrationFailed (const PString & _aor,
   SIPEndPoint::OnRegistrationFailed (strm.str ().c_str (), r, wasRegistering);
 
   /* Signal */
-  Account* account = bank->find_account (strm.str ());
+  Ekiga::Account *account = account_core->find_account (strm.str ());
   if (account)
     runtime->run_in_main (sigc::bind (account->registration_event.make_slot (),
 				      wasRegistering ? Ekiga::AccountCore::RegistrationFailed : Ekiga::AccountCore::UnregistrationFailed,
@@ -911,7 +915,7 @@ void Opal::Sip::EndPoint::OnMWIReceived (const PString & party, OpalManager::Mes
     mwi = "0/0";
 
   /* Signal */
-  Account* account = bank->find_account (party);
+  Ekiga::Account *account = account_core->find_account (party);
   if (account)
     runtime->run_in_main (sigc::bind (account->mwi_event.make_slot (), info));
 }
@@ -1023,7 +1027,7 @@ SIPURL Opal::Sip::EndPoint::GetRegisteredPartyName (const SIPURL & host, const O
      */
     if (host.GetHostAddress ().GetIpAndPort (address, port) && !manager.IsLocalAddress (address)) {
 
-      Account* account = bank->find_account ("ekiga.net");
+      Ekiga::Account *account = account_core->find_account ("ekiga.net");
 
       if (account)
         return SIPURL ("\"" + GetDefaultDisplayName () + "\" <" + PString(account->get_aor ()) + ">");
