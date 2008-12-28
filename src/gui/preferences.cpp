@@ -468,8 +468,9 @@ gm_pw_init_sound_events_page (GtkWidget *prefs_window,
      the file to play. The 4th one contains the key determining if the
      sound event is enabled or not. */
   list_store =
-    gtk_list_store_new (4,
+    gtk_list_store_new (5,
                         G_TYPE_BOOLEAN,
+                        G_TYPE_STRING,
                         G_TYPE_STRING,
                         G_TYPE_STRING,
                         G_TYPE_STRING);
@@ -511,24 +512,6 @@ gm_pw_init_sound_events_page (GtkWidget *prefs_window,
                                                      NULL);
   gtk_tree_view_append_column (GTK_TREE_VIEW (pw->sound_events_list), column);
   gtk_tree_view_column_set_fixed_width (GTK_TREE_VIEW_COLUMN (column), 325);
-
-  renderer = gtk_cell_renderer_text_new ();
-  column = gtk_tree_view_column_new_with_attributes (_("Event"),
-                                                     renderer,
-                                                     "text", 
-                                                     2,
-                                                     NULL);
-  gtk_tree_view_append_column (GTK_TREE_VIEW (pw->sound_events_list), column);
-  gtk_tree_view_column_set_visible (GTK_TREE_VIEW_COLUMN (column), FALSE);
-
-  renderer = gtk_cell_renderer_text_new ();
-  column = gtk_tree_view_column_new_with_attributes (_("Event"),
-                                                     renderer,
-                                                     "text", 
-                                                     3,
-                                                     NULL);
-  gtk_tree_view_append_column (GTK_TREE_VIEW (pw->sound_events_list), column);
-  gtk_tree_view_column_set_visible (GTK_TREE_VIEW_COLUMN (column), FALSE);
 
   hbox = gtk_hbox_new (0, FALSE);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 2);
@@ -573,7 +556,7 @@ gm_pw_init_sound_events_page (GtkWidget *prefs_window,
 
   g_signal_connect (G_OBJECT (button), "clicked",
                     G_CALLBACK (sound_event_play_cb),
-                    (gpointer) fsbutton);
+                    (gpointer) prefs_window);
 
   /* Place it after the signals so that we can make sure they are run if
      required */
@@ -1126,17 +1109,31 @@ static void
 sound_event_play_cb (G_GNUC_UNUSED GtkWidget *widget,
 		     gpointer data)
 {
+  GtkTreeSelection *selection = NULL;
+  GtkTreeModel *model = NULL;
+  GtkTreeIter selected_iter;
+
+  gchar *sound_event = NULL;
+
+  GmPreferencesWindow *pw = NULL;
+  
   g_return_if_fail (data != NULL);
+  pw = gm_pw_get_pw (GTK_WIDGET (data));
+  
+  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (pw->sound_events_list));
 
-  //FIXME
-  Ekiga::ServiceCore *core = GnomeMeeting::Process ()->GetServiceCore (); 
-  Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore *> (core->get ("audiooutput-core"));
+  if (gtk_tree_selection_get_selected (selection, &model, &selected_iter)) {
 
-  gchar* file_name = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (data));
-  if (file_name) { 
-    std::string file_name_string = file_name;
-    audiooutput_core->play_file(file_name_string);
-    g_free (file_name);
+    gtk_tree_model_get (GTK_TREE_MODEL (model), &selected_iter, 4, &sound_event, -1);
+
+    //FIXME
+    Ekiga::ServiceCore *core = GnomeMeeting::Process ()->GetServiceCore (); 
+    gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core = core->get ("audiooutput-core");
+
+    if (sound_event) { 
+      audiooutput_core->play_event(sound_event);
+      g_free (sound_event);
+    }
   }
 }
 
@@ -1347,6 +1344,7 @@ gm_prefs_window_sound_events_list_build (GtkWidget *prefs_window)
 		      1, _("Play sound on incoming calls"),
 		      2, SOUND_EVENTS_KEY "incoming_call_sound",
 		      3, SOUND_EVENTS_KEY "enable_incoming_call_sound",
+                      4, "incoming_call_sound",
 		      -1);
 
   enabled = gm_conf_get_bool (SOUND_EVENTS_KEY "enable_ring_tone_sound");
@@ -1356,6 +1354,7 @@ gm_prefs_window_sound_events_list_build (GtkWidget *prefs_window)
 		      1, _("Play ring tone"),
 		      2, SOUND_EVENTS_KEY "ring_tone_sound",
 		      3, SOUND_EVENTS_KEY "enable_ring_tone_sound",
+                      4, "ring_tone_sound",
 		      -1);
 
   enabled = gm_conf_get_bool (SOUND_EVENTS_KEY "enable_busy_tone_sound");
@@ -1365,6 +1364,7 @@ gm_prefs_window_sound_events_list_build (GtkWidget *prefs_window)
 		      1, _("Play busy tone"),
 		      2, SOUND_EVENTS_KEY "busy_tone_sound",
 		      3, SOUND_EVENTS_KEY "enable_busy_tone_sound",
+		      4, "busy_tone_sound",
 		      -1);
 
   enabled = gm_conf_get_bool (SOUND_EVENTS_KEY "enable_new_voicemail_sound");
@@ -1374,6 +1374,7 @@ gm_prefs_window_sound_events_list_build (GtkWidget *prefs_window)
 		      1, _("Play sound for new voice mails"),
 		      2, SOUND_EVENTS_KEY "new_voicemail_sound",
 		      3, SOUND_EVENTS_KEY "enable_new_voicemail_sound",
+		      4, "new_voicemail_sound",
 		      -1);
   
   enabled = gm_conf_get_bool (SOUND_EVENTS_KEY "enable_new_message_sound");
@@ -1383,6 +1384,7 @@ gm_prefs_window_sound_events_list_build (GtkWidget *prefs_window)
 		      1, _("Play sound for new instant messages"),
 		      2, SOUND_EVENTS_KEY "new_message_sound",
 		      3, SOUND_EVENTS_KEY "enable_new_message_sound",
+		      4, "new_message_sound",
 		      -1);
 
   if (!path)
