@@ -495,12 +495,6 @@ static void ekiga_main_window_add_device_dialog_show (EkigaMainWindow *main_wind
 /* 
  * Engine Callbacks 
  */
-static void on_ready_cb (gpointer self)
-{
-  ekiga_main_window_set_busy (EKIGA_MAIN_WINDOW (self), false);
-}
-
-
 static void on_registration_event (const Ekiga::Account & account,
                                    Ekiga::AccountCore::RegistrationState state,
                                    std::string /*info*/,
@@ -4043,14 +4037,10 @@ ekiga_main_window_connect_engine_signals (EkigaMainWindow *mw)
     
   /* New Call Engine signals */
   gmref_ptr<Ekiga::CallCore> call_core = mw->priv->core->get ("call-core");
-  gmref_ptr<Ekiga::AccountCore> account_core
-    = mw->priv->core->get ("account-core");
+  gmref_ptr<Ekiga::AccountCore> account_core = mw->priv->core->get ("account-core");
 
   /* Engine Signals callbacks */
   conn = account_core->registration_event.connect (sigc::bind (sigc::ptr_fun (on_registration_event), (gpointer) mw));
-  mw->priv->connections.push_back (conn);
-
-  conn = call_core->ready.connect (sigc::bind (sigc::ptr_fun (on_ready_cb), (gpointer) mw));
   mw->priv->connections.push_back (conn);
 
   conn = call_core->setup_call.connect (sigc::bind (sigc::ptr_fun (on_setup_call_cb), (gpointer) mw));
@@ -4130,9 +4120,6 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   status_icon = GTK_STATUS_ICON (GnomeMeeting::Process ()->GetStatusicon ());
   g_signal_connect (G_OBJECT (status_icon), "notify::embedded",
 		    G_CALLBACK (on_status_icon_embedding_change), NULL);
-
-  /* Until we are ready, nothing possible  */
-  ekiga_main_window_set_busy (mw, true);
 
   return window;
 }

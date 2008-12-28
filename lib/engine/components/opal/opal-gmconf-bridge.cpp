@@ -110,6 +110,7 @@ ConfBridge::ConfBridge (Ekiga::Service & _service)
   keys.push_back (H323_KEY "forward_host"); 
 
   keys.push_back (NAT_KEY "stun_server");
+  keys.push_back (NAT_KEY "disable_stun");
 
   load (keys);
 }
@@ -169,6 +170,10 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
 
     const char *stun_server = gm_conf_entry_get_string (entry);
     manager.set_stun_server (stun_server ? stun_server : "stun.ekiga.net");
+  }
+  else if (key == NAT_KEY "disable_stun") {
+
+    manager.set_stun_enabled (!gm_conf_entry_get_bool (entry));
   }
 
 

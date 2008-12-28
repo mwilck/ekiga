@@ -479,6 +479,13 @@ gm_pw_init_interface_page (GtkWidget *prefs_window,
                                 _("Video Display"), 1, 2);
 
   gnome_prefs_toggle_new (subsection, _("Place windows displaying video _above other windows"), VIDEO_DISPLAY_KEY "stay_on_top", _("Place windows displaying video above other windows during calls"), 0);
+
+  /* Network Settings */
+  subsection = gnome_prefs_subsection_new (prefs_window, container, 
+                                           _("Network Settings"), 1, 2);
+
+  gnome_prefs_toggle_new (subsection, _("Disable network _detection"), NAT_KEY "disable_stun", _("Disable the automatic network setup resulting from the STUN test"), 0);
+
 }
 
 static void

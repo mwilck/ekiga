@@ -132,6 +132,7 @@ opal_init (Ekiga::ServiceCore &core,
 
   // Add the bank of accounts when the CallManager is ready
   call_manager->ready.connect (sigc::bind (sigc::ptr_fun (on_call_manager_ready_cb), &core));
+  call_manager->start ();
 
   if (contact_core) { 
 

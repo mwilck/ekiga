@@ -116,6 +116,7 @@ CallManager::CallManager (Ekiga::ServiceCore & _core)
   forward_on_no_answer = false;
   forward_on_busy = false;
   unconditional_forward = false;
+  stun_enabled = false;
 
   // Create video devices
   PVideoDevice::OpenArgs video = GetVideoOutputDevice();
@@ -168,11 +169,15 @@ CallManager::~CallManager ()
 
 void CallManager::start ()
 {
-  // Ready
-  new StunDetector (stun_server, *this, queue);
-
-  patience = 20;
-  runtime->run_in_main (sigc::mem_fun (this, &CallManager::HandleSTUNResult), 1);
+  if (stun_enabled) {
+    
+    // Ready
+    new StunDetector (stun_server, *this, queue);
+    patience = 20;
+    runtime->run_in_main (sigc::mem_fun (this, &CallManager::HandleSTUNResult), 1);
+  }
+  else
+    ready.emit ();
 }
 
 
@@ -492,7 +497,12 @@ void CallManager::get_tcp_ports (unsigned & min_port,
 void CallManager::set_stun_server (const std::string & server)
 {
   stun_server = server;
-  start ();
+}
+
+
+void CallManager::set_stun_enabled (bool enabled)
+{
+  stun_enabled = enabled;
 }
 
 

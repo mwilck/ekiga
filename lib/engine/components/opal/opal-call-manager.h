@@ -133,6 +133,7 @@ public:
                         unsigned & max_port) const;
 
     void set_stun_server (const std::string & server);
+    void set_stun_enabled (bool);
 
     /**/
     struct VideoOptions 
@@ -191,6 +192,7 @@ private:
     bool forward_on_busy;
     bool unconditional_forward;
     bool forward_on_no_answer;
+    bool stun_enabled;
   };
 };
 #endif
