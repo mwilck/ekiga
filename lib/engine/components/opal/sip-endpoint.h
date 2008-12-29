@@ -151,12 +151,14 @@ namespace Opal {
                                  unsigned options,
                                  OpalConnection::StringOptions * stroptions);
 
-      virtual void OnPresenceInfoReceived (const PString & user,
-                                           const PString & basic,
-                                           const PString & note);
+      void OnPresenceInfoReceived (const PString & user,
+                                   const PString & basic,
+                                   const PString & note);
 
-      virtual bool OnReceivedMESSAGE (OpalTransport & transport,
-                                      SIP_PDU & pdu);
+      void OnDialogInfoReceived (const SIPDialogNotification & info);
+
+      bool OnReceivedMESSAGE (OpalTransport & transport,
+                              SIP_PDU & pdu);
 
       void OnMessageFailed (const SIPURL & messageUrl,
                             SIP_PDU::StatusCodes reason);

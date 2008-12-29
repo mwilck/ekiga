@@ -163,8 +163,6 @@ Opal::Sip::EndPoint::EndPoint (Opal::CallManager & _manager,
 
   /* NAT Binding */
   SetNATBindingRefreshMethod (SIPEndPoint::EmptyRequest);
-
-
 }
 
 
@@ -1094,6 +1092,41 @@ Opal::Sip::EndPoint::OnPresenceInfoReceived (const PString & user,
     uri_presences[_uri] = std::pair<std::string, std::string> (presence, status);
     runtime->run_in_main (sigc::bind (sigc::ptr_fun (presence_status_in_main), this, _uri, presence, status));
   }
+}
+
+
+void 
+Opal::Sip::EndPoint::OnDialogInfoReceived (const SIPDialogNotification & info)
+{
+  gchar* status = NULL;
+  PString uri = info.m_entity;
+  PString remote_uri = info.m_remote.m_identity;
+  PString remote_display_name = info.m_remote.m_display.IsEmpty () ? remote_uri : info.m_remote.m_display;
+
+  switch (info.m_state) {
+    case SIPDialogNotification::Proceeding:
+    case SIPDialogNotification::Early:
+      if (!remote_display_name.IsEmpty ())
+        status = g_strdup_printf (_("Incoming call from %s"), (const char *) remote_display_name);
+      else
+        status = g_strdup_printf (_("Incoming call"));
+      break;
+    case SIPDialogNotification::Confirmed:
+      if (!remote_display_name.IsEmpty ())
+        status = g_strdup_printf (_("In a call with %s"), (const char *) remote_display_name);
+      else
+        status = g_strdup_printf (_("In a call"));
+      break;
+    default:
+    case SIPDialogNotification::Trying:
+    case SIPDialogNotification::Terminated:
+      break;
+  }
+
+  if (status)
+    runtime->run_in_main (sigc::bind (sigc::ptr_fun (presence_status_in_main), this, uri, "inacall", status));
+  else
+    runtime->run_in_main (sigc::bind (sigc::ptr_fun (presence_status_in_main), this, uri, uri_presences[uri].first, uri_presences[uri].second));
 }
 
 
