@@ -37,7 +37,6 @@ IMAGES_FILES= \
 	24x24/contact-new.png \
 	24x24/internet-group-chat.png \
 	color-brightness-contrast.png \
-	status-ringing-16.png \
 	local_contact.png \
 	remote_contact.png \
 	message.png \
@@ -52,6 +51,7 @@ IMAGES_FILES= \
 	status-freeforchat.png \
 	status-dnd.png \
 	status-inacall.png \
+	status-ringing.png \
 	ekiga-logo.png \
 	24x24/phone-hang-up.png \
 	24x24/phone-pick-up.png \
@@ -84,7 +84,6 @@ IMAGES= \
 	gm_whiteness_16_stock_data $(srcdir)/16x16/stock_channel-blue.png \
 	gm_color_brightness_contrast_stock_data $(srcdir)/color-brightness-contrast.png \
 	gm_status_freeforchat_stock_data $(srcdir)/status-freeforchat.png \
-	gm_status_ringing_stock_data $(srcdir)/status-ringing-16.png \
 	gm_remote_contact_stock_data $(srcdir)/remote_contact.png \
 	gm_local_contact_stock_data $(srcdir)/local_contact.png \
 	gm_message_stock_data $(srcdir)/message.png \
@@ -97,6 +96,7 @@ IMAGES= \
 	gm_status_unknown_stock_data $(srcdir)/status-unknown.png \
 	gm_status_dnd_stock_data $(srcdir)/status-dnd.png \
 	gm_status_inacall_stock_data_16 $(srcdir)/16x16/multimedia-headset.png \
+	gm_status_ringing_stock_data_16 $(srcdir)/status-ringing.png \
 	gm_status_away_stock_data $(srcdir)/status-away.png \
 	gm_phone_hang_up_stock_data_24 $(srcdir)/24x24/phone-hang-up.png \
 	gm_phone_pick_up_stock_data_24 $(srcdir)/24x24/phone-pick-up.png \

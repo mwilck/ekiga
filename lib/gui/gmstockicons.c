@@ -61,15 +61,13 @@ gnomemeeting_stock_icons_init (void)
 	{
 	        { GM_STOCK_COLOR_BRIGHTNESS_CONTRAST, gm_color_brightness_contrast_stock_data },
 
-		{ GM_STOCK_STATUS_FREEFORCHAT, gm_status_freeforchat_stock_data },
-		{ GM_STOCK_STATUS_RINGING, gm_status_ringing_stock_data },
-
 		{ GM_STOCK_STATUS_ONLINE, gm_status_online_stock_data },
 		{ GM_STOCK_STATUS_OFFLINE, gm_status_offline_stock_data },
 		{ GM_STOCK_STATUS_UNKNOWN, gm_status_unknown_stock_data },
 		{ GM_STOCK_STATUS_AWAY, gm_status_away_stock_data },
 		{ GM_STOCK_STATUS_DND, gm_status_dnd_stock_data },
 		{ GM_STOCK_STATUS_INACALL, gm_status_inacall_stock_data_16 },
+		{ GM_STOCK_STATUS_RINGING, gm_status_ringing_stock_data_16 },
 
 		{ GM_STOCK_REMOTE_OBJECT, gm_remote_contact_stock_data},
 		{ GM_STOCK_LOCAL_OBJECT, gm_local_contact_stock_data},

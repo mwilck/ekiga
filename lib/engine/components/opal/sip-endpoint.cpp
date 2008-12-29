@@ -1060,9 +1060,10 @@ Opal::Sip::EndPoint::OnPresenceInfoReceived (const PString & user,
 
     if (s.Find ("Away") != P_MAX_INDEX)
       presence = "away";
-    else if (s.Find ("On the phone") != P_MAX_INDEX
-             || s.Find ("Ringing") != P_MAX_INDEX) 
+    else if (s.Find ("On the phone") != P_MAX_INDEX)
       presence = "inacall";
+    else if (s.Find ("Ringing") != P_MAX_INDEX)
+      presence = "ringing";
     else if (s.Find ("dnd") != P_MAX_INDEX
              || s.Find ("Do Not Disturb") != P_MAX_INDEX) 
       presence = "dnd";
@@ -1099,6 +1100,7 @@ void
 Opal::Sip::EndPoint::OnDialogInfoReceived (const SIPDialogNotification & info)
 {
   gchar* status = NULL;
+  std::string presence;
   PString uri = info.m_entity;
   PString remote_uri = info.m_remote.m_identity;
   PString remote_display_name = info.m_remote.m_display.IsEmpty () ? remote_uri : info.m_remote.m_display;
@@ -1110,12 +1112,14 @@ Opal::Sip::EndPoint::OnDialogInfoReceived (const SIPDialogNotification & info)
         status = g_strdup_printf (_("Incoming call from %s"), (const char *) remote_display_name);
       else
         status = g_strdup_printf (_("Incoming call"));
+      presence = "ringing";
       break;
     case SIPDialogNotification::Confirmed:
       if (!remote_display_name.IsEmpty ())
         status = g_strdup_printf (_("In a call with %s"), (const char *) remote_display_name);
       else
         status = g_strdup_printf (_("In a call"));
+      presence = "inacall";
       break;
     default:
     case SIPDialogNotification::Trying:
@@ -1124,7 +1128,7 @@ Opal::Sip::EndPoint::OnDialogInfoReceived (const SIPDialogNotification & info)
   }
 
   if (status)
-    runtime->run_in_main (sigc::bind (sigc::ptr_fun (presence_status_in_main), this, uri, "inacall", status));
+    runtime->run_in_main (sigc::bind (sigc::ptr_fun (presence_status_in_main), this, uri, presence, status));
   else
     runtime->run_in_main (sigc::bind (sigc::ptr_fun (presence_status_in_main), this, uri, uri_presences[uri].first, uri_presences[uri].second));
 }

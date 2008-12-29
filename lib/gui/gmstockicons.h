@@ -56,8 +56,6 @@ G_BEGIN_DECLS
 
 /* True stock icons */
 #define GM_STOCK_COLOR_BRIGHTNESS_CONTRAST   "gm_color_brightness_contrast_stock"
-#define GM_STOCK_STATUS_FREEFORCHAT "gm_status_freeforchat_stock"
-#define GM_STOCK_STATUS_RINGING "gm_status_ringing_stock"
 #define GM_STOCK_LOCAL_OBJECT    "local-object"
 #define GM_STOCK_REMOTE_OBJECT   "remote-object"
 #define GM_STOCK_MESSAGE          "gm_message_stock"
@@ -72,6 +70,7 @@ G_BEGIN_DECLS
 #define GM_STOCK_STATUS_AWAY "gm_status_away_stock"
 #define GM_STOCK_STATUS_DND "gm_status_dnd_stock"
 #define GM_STOCK_STATUS_INACALL "gm_status_inacall_stock_16"
+#define GM_STOCK_STATUS_RINGING "gm_status_ringing_stock_16"
 
 #define GM_STOCK_PHONE_HANG_UP_16    "gm_phone_hang_up_stock_16"
 #define GM_STOCK_PHONE_PICK_UP_16    "gm_phone_pick_up_stock_16"

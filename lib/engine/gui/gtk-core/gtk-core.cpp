@@ -71,8 +71,8 @@ Gtk::Core::Core ()
   gtk_icon_factory_add (factory, "inacall", icon_set);
   gtk_icon_set_unref (icon_set);
 
-  icon_set = gtk_icon_factory_lookup_default (GM_STOCK_STATUS_FREEFORCHAT);
-  gtk_icon_factory_add (factory, "freeforchat", icon_set);
+  icon_set = gtk_icon_factory_lookup_default (GM_STOCK_STATUS_RINGING);
+  gtk_icon_factory_add (factory, "ringing", icon_set);
   gtk_icon_set_unref (icon_set);
 
   icon_set = gtk_icon_factory_lookup_default (GTK_STOCK_ADD);

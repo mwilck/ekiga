@@ -1,5 +1,18 @@
 2008-12-29  Damien Sandras  <dsandras@gnome.org>
 
+        * pixmaps/status-ringing-16.png:
+        * pixmaps/status-ringing.png:
+        * pixmaps/Makefile.am:
+        * lib/gui/gmstockicons.c:
+        * lib/gui/gmstockicons.h:
+        * lib/engine/gui/gtk-core/gtk-core.cpp:
+        * lib/engine/components/opal/sip-endpoint.cpp:
+        Added notifications for the ringing state. It allows making the difference
+        between somebody who is receiving an incoming call and somebody who is
+        in a call. Added new icon for that.
+
+2008-12-29  Damien Sandras  <dsandras@gnome.org>
+
         * lib/engine/components/opal/sip-endpoint.h:
         * lib/engine/components/opal/sip-endpoint.cpp:
         Added dialog-info notifications support. This indicates with call servers
