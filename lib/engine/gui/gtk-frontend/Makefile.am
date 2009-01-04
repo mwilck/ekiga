@@ -9,7 +9,7 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/gmconf 				\
 	-I$(top_srcdir)/lib/gui 				\
 	-I$(top_srcdir)/lib/engine/framework 			\
-	-I$(top_srcdir)/lib/engine/chat/skel 			\
+	-I$(top_srcdir)/lib/engine/chat 			\
 	-I$(top_srcdir)/lib/engine/presence 		\
 	-I$(top_srcdir)/lib/engine/protocol 		\
 	-I$(top_srcdir)/lib/engine/account 		\
@@ -41,7 +41,7 @@ libgmgtk_frontend_la_SOURCES = \
 
 libgmgtk_frontend_la_LIBADD = \
 	$(top_builddir)/lib/gui/libgmwidgets.la 			\
-	$(top_builddir)/lib/engine/chat/skel/libgmchat.la 		\
+	$(top_builddir)/lib/engine/chat/libgmchat.la 		\
 	$(top_builddir)/lib/engine/presence/libgmpresence.la 	\
 	$(top_builddir)/lib/engine/addressbook/libgmaddressbook.la \
 	$(top_builddir)/lib/engine/gui/gtk-core/libgmgtk-core.la

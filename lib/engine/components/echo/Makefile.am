@@ -7,7 +7,7 @@ AM_CXXFLAGS = $(SIGC_CFLAGS)
 INCLUDES = \
 	-I$(top_srcdir)/lib/engine/framework \
 	-I$(top_srcdir)/lib/engine/presence \
-	-I$(top_srcdir)/lib/engine/chat/skel
+	-I$(top_srcdir)/lib/engine/chat
 
 libgmechochat_la_SOURCES = \
 	$(echochat_dir)/echo-presentity.h	\

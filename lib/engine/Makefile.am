@@ -8,7 +8,7 @@ INCLUDES = 								\
 	-I$(top_srcdir)/lib/engine/gui/gtk-core				\
 	-I$(top_srcdir)/lib/engine/gui/gtk-frontend			\
 	-I$(top_srcdir)/lib/engine/framework/		 		\
-	-I$(top_srcdir)/lib/engine/chat/skel				\
+	-I$(top_srcdir)/lib/engine/chat				\
 	-I$(top_srcdir)/lib/engine/videooutput			\
 	-I$(top_srcdir)/lib/engine/videoinput/  			\
 	-I$(top_srcdir)/lib/engine/hal/skel				\
@@ -74,7 +74,7 @@ libekiga_engine_la_LDFLAGS = -export-dynamic
 libekiga_engine_la_LIBADD = \
 	$(top_builddir)/lib/engine/gui/gtk-core/libgmgtk-core.la 					\
 	$(top_builddir)/lib/engine/gui/gtk-frontend/libgmgtk-frontend.la 				\
-	$(top_builddir)/lib/engine/chat/skel/libgmchat.la 						\
+	$(top_builddir)/lib/engine/chat/libgmchat.la 						\
 	$(top_builddir)/lib/engine/protocol/libgmprotocol.la	 				        \
 	$(top_builddir)/lib/engine/framework/libgmframework.la 						\
 	$(top_builddir)/lib/engine/addressbook/libgmaddressbook.la 				        \
