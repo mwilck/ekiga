@@ -53,7 +53,10 @@ CodecDescription::CodecDescription (OpalMediaFormat & format)
 : Ekiga::CodecDescription ()
 {
   name = (const char *) format.GetEncodingName ();
-  rate = format.GetClockRate ();
+  if (name == "G722")
+    rate = 16000;
+  else
+    rate = format.GetClockRate ();
   audio = (format.GetMediaType () == OpalMediaType::Audio ());
   if (format.IsValidForProtocol ("SIP"))
     protocols.push_back ("SIP");
