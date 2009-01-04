@@ -1,4 +1,19 @@
                           -*- mode: outline -*-
+* Changes in ekiga 3.1.0
+- Added support for G.722 and CELT audio wideband codecs
+- Added support for SIP dialog-info notifications, it allows being notified of 
+incoming calls for the phones of your colleagues with software like Asterisk
+- Added support to disable STUN detection 
+- Improved LDAP support in the address book, authentication is now possible
+- Killed the gconf_test_age test, Ekiga can now finally work with badly 
+installed GConf schemas
+- More efficient memory handling using gmref_ptr, increases stability
+- Better handling of multiple network interfaces with dynamic addition and removal
+- libgnome is not required anymore when using GTK+ 2.14
+- Many code cleanups, new GObjects, ...
+- Work in progress : XCAP support, Resource List support, 
+GStreamer audio and video capture support, ...
+
 * Changes in ekiga 3.0.1 (2008-10-20)
 ** Windows build
 - Fixed crash when echo cancellation is active
