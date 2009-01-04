@@ -1,7 +1,7 @@
 noinst_LTLIBRARIES = libgmvideooutput-dx.la
 
-videooutput_dir = $(top_srcdir)/lib/engine/videooutput/dx
-common_dir = $(top_srcdir)/lib/engine/videooutput/common
+videooutput_dir = $(top_srcdir)/lib/engine/components/dx-videooutput
+common_dir = $(top_srcdir)/lib/engine/components/common-videooutput
 
 AM_CXXFLAGS = $(SIGC_CFLAGS) $(PTLIB_CFLAGS) $(DX_CFLAGS) $(GLIB_CFLAGS)
 

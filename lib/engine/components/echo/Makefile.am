@@ -1,6 +1,6 @@
 noinst_LTLIBRARIES = libgmechochat.la
 
-echochat_dir = $(top_srcdir)/lib/engine/chat/echo
+echochat_dir = $(top_srcdir)/lib/engine/components/echo
 
 AM_CXXFLAGS = $(SIGC_CFLAGS)
 

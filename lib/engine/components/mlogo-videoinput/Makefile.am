@@ -1,6 +1,6 @@
 noinst_LTLIBRARIES = libgmvideoinput-mlogo.la
 
-videoinput_dir = $(top_srcdir)/lib/engine/videoinput/mlogo
+videoinput_dir = $(top_srcdir)/lib/engine/components/mlogo-videoinput
 
 AM_CXXFLAGS = $(SIGC_CFLAGS) $(GLIB_CFLAGS) $(PTLIB_CFLAGS)
 

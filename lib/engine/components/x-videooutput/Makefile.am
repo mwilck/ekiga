@@ -1,15 +1,15 @@
 noinst_LTLIBRARIES = libgmvideooutput-x.la
 
-videooutput_dir = $(top_srcdir)/lib/engine/videooutput/x
-common_dir = $(top_srcdir)/lib/engine/videooutput/common
+videooutput_dir = $(top_srcdir)/lib/engine/components/x-videooutput
+common_dir = $(top_srcdir)/lib/engine/components/common-videooutput
 
 AM_CXXFLAGS = $(SIGC_CFLAGS) $(PTLIB_CFLAGS) $(GLIB_CFLAGS) $(XV_CFLAGS)
 
 INCLUDES = \
 	-I$(top_srcdir)/lib/gmconf \
 	-I$(top_srcdir)/lib/engine/framework \
-	-I$(top_srcdir)/lib/engine/videooutput \
-	-I$(top_srcdir)/lib/engine/videooutput/common \
+	-I$(top_srcdir)/lib/engine/components/x-videooutput \
+	-I$(top_srcdir)/lib/engine/components/common-videooutput \
 	-I$(top_srcdir)/lib/gui
 
 libgmvideooutput_x_la_SOURCES = \

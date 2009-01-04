@@ -2,6 +2,14 @@ if HAVE_LDAP
 LDAP_DIR = ldap
 endif
 
+if HAVE_DX
+DX_DIR = dx-videooutput
+endif
+
+if !WIN32
+X_DIR = x-videooutput
+endif
+
 if HAVE_KAB
 KAB_DIR = kab
 endif
@@ -34,6 +42,7 @@ SUBDIRS =                       \
 	call-history	        \
 	gmconf-personal-details \
         local-roster            \
+        mlogo-videoinput        \
         null-audioinput         \
         null-audiooutput        \
         opal                    \
@@ -44,4 +53,6 @@ SUBDIRS =                       \
 	$(EDS_DIR) 	        \
 	$(LDAP_DIR)	        \
 	$(KAB_DIR)              \
+	$(DX_DIR)               \
+	$(X_DIR)                \
 	$(XCAP_DIRS)
