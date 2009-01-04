@@ -765,8 +765,6 @@ lib/engine/components/call-history/Makefile
 lib/engine/components/ldap/Makefile
 lib/engine/components/kab/Makefile
 lib/engine/chat/Makefile
-lib/engine/chat/echo/Makefile
-lib/engine/chat/skel/Makefile
 lib/engine/framework/Makefile
 lib/engine/presence/Makefile
 lib/engine/components/avahi/Makefile
@@ -796,6 +794,7 @@ lib/engine/components/mlogo-videoinput/Makefile
 lib/engine/components/x-videooutput/Makefile
 lib/engine/components/dx-videooutput/Makefile
 lib/engine/components/dbus/Makefile
+lib/engine/components/echo/Makefile
 )
 
 
