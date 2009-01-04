@@ -9,7 +9,7 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/gmconf \
 	-I$(top_srcdir)/lib/engine/framework \
 	-I$(top_srcdir)/lib/engine/videooutput \
-	-I$(top_srcdir)/lib/engine/videooutput/common \
+	-I$(top_srcdir)/lib/engine/components/common-videooutput \
 	-I$(top_srcdir)/lib/gui
 
 libgmvideooutput_dx_la_SOURCES = \
