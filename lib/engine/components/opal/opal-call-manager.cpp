@@ -702,8 +702,10 @@ void CallManager::GetAllowedFormats (OpalMediaFormatList & full_list)
   for (PINDEX i = 0 ; i < list.GetSize () ; i++) {
 
     std::list<std::string>::iterator it = find (black_list.begin (), black_list.end (), (const char *) list [i]);
-    if (it == black_list.end ()) 
-      full_list += list [i];
+    if (it == black_list.end ()) {
+      if (list [i].GetMediaType () == OpalMediaType::Audio () || list [i].GetMediaType () == OpalMediaType::Video ())
+        full_list += list [i];
+    }
   }
 }
 
