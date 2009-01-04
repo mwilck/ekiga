@@ -778,8 +778,6 @@ lib/engine/components/ptlib/Makefile
 lib/engine/audioinput/Makefile
 lib/engine/audiooutput/Makefile
 lib/engine/hal/Makefile
-lib/engine/hal/skel/Makefile
-lib/engine/hal/dbus/Makefile
 lib/engine/gui/Makefile
 lib/engine/gui/gtk-core/Makefile
 lib/engine/gui/gtk-frontend/Makefile
@@ -797,6 +795,7 @@ lib/engine/components/null-audiooutput/Makefile
 lib/engine/components/mlogo-videoinput/Makefile
 lib/engine/components/x-videooutput/Makefile
 lib/engine/components/dx-videooutput/Makefile
+lib/engine/components/dbus/Makefile
 )
 
 

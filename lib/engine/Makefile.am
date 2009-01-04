@@ -62,7 +62,7 @@ INCLUDES +=                                             \
 # DBus / HALd
 if HAVE_DBUS
 INCLUDES +=                                             \
-	-I$(top_srcdir)/lib/engine/hal/dbus
+	-I$(top_srcdir)/lib/engine/components/dbus
 endif
 
 libekiga_engine_la_SOURCES = engine.h engine.cpp
