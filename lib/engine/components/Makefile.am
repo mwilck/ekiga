@@ -35,7 +35,7 @@ SUBDIRS =                       \
 	gmconf-personal-details \
         local-roster            \
         null-audioinput         \
-        null-audiooutput        \ 
+        null-audiooutput        \
         opal                    \
         ptlib                   \
 	$(AVAHI_DIR)            \

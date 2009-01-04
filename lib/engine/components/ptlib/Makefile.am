@@ -7,8 +7,8 @@ AM_CXXFLAGS = $(SIGC_CFLAGS) $(GLIB_CFLAGS) $(PTLIB_CFLAGS)
 INCLUDES = \
 	-I$(top_srcdir)/lib/gmconf                      \
 	-I$(top_srcdir)/lib/engine/framework            \
-	-I$(top_srcdir)/lib/engine/audiooutput/skel     \
-	-I$(top_srcdir)/lib/engine/audioinput/skel      \
+	-I$(top_srcdir)/lib/engine/audiooutput     \
+	-I$(top_srcdir)/lib/engine/audioinput      \
 	-I$(top_srcdir)/lib/engine/videoinput/skel      \
 	-I$(top_srcdir)/lib/engine/videooutput/skel     \
 	-I$(top_srcdir)/lib/engine/components/ptlib     \

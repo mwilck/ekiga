@@ -13,8 +13,8 @@ INCLUDES = 								\
 	-I$(top_srcdir)/lib/engine/videoinput/skel			\
 	-I$(top_srcdir)/lib/engine/hal/skel				\
 	-I$(top_srcdir)/lib/engine/account				\
-	-I$(top_srcdir)/lib/engine/audioinput/skel                      \
-	-I$(top_srcdir)/lib/engine/audiooutput/skel                     \
+	-I$(top_srcdir)/lib/engine/audioinput                      \
+	-I$(top_srcdir)/lib/engine/audiooutput                     \
 	-I$(top_srcdir)/lib/engine/addressbook				\
 	-I$(top_srcdir)/lib/engine/presence				\
 	-I$(top_srcdir)/lib/engine/protocol				\
@@ -84,8 +84,8 @@ libekiga_engine_la_LIBADD = \
 	$(top_builddir)/lib/engine/components/local-roster/liblocal-roster.la 				\
 	$(top_builddir)/lib/engine/videooutput/skel/libgmvideooutput.la					\
 	$(top_builddir)/lib/engine/videoinput/skel/libgmvideoinput.la					\
-	$(top_builddir)/lib/engine/audioinput/skel/libgmaudioinput.la					\
-	$(top_builddir)/lib/engine/audiooutput/skel/libgmaudiooutput.la					\
+	$(top_builddir)/lib/engine/audioinput/libgmaudioinput.la					\
+	$(top_builddir)/lib/engine/audiooutput/libgmaudiooutput.la					\
 	$(top_builddir)/lib/engine/hal/skel/libgmhal.la							\
 	$(top_builddir)/lib/engine/components/gmconf-personal-details/libgmconfpersonaldetails.la	\
 	$(top_builddir)/lib/engine/components/opal/libopal.la                                           \
@@ -93,7 +93,7 @@ libekiga_engine_la_LIBADD = \
 
 # Default Input Devices
 libekiga_engine_la_LIBADD += \
-	$(top_builddir)/lib/engine/videoinput/mlogo/libgmvideoinput-mlogo.la                    \ 
+	$(top_builddir)/lib/engine/videoinput/mlogo/libgmvideoinput-mlogo.la                    \
 	$(top_builddir)/lib/engine/components/null-audioinput/libgmaudioinput-null.la           \
 	$(top_builddir)/lib/engine/components/null-audiooutput/libgmaudiooutput-null.la 
 
