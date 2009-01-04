@@ -50,12 +50,13 @@ WIN32_DIST = \
 
 ### Extra dist
 EXTRA_DIST = \
-	$(DESKTOP_IN_IN_FILES)					\
+	$(DESKTOP_IN_FILES)					\
+	$(DESKTOP_FILES)					\
         doc/                                                    \
 	gnome-doc-utils.make					\
 	FAQ							\
 	README							\
-	$(SCHEMAS_IN_IN_FILE)					\
+	$(SCHEMAS_FILE) 					\
 	gnome-doc-utils.make					\
 	lib/gmmarshallers.list					\
 	$(WIN32_DIST)
