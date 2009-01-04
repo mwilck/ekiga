@@ -9,7 +9,7 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/engine/framework \
 	-I$(top_srcdir)/lib/engine/audiooutput \
 	-I$(top_srcdir)/lib/engine/audiooutput/null \
-	-I$(top_srcdir)/lib/engine/hal/skel
+	-I$(top_srcdir)/lib/engine/hal
 
 libgmaudiooutput_null_la_SOURCES = \
 	$(audiooutput_dir)/audiooutput-manager-null.h \

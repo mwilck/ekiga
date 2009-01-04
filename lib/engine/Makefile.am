@@ -11,7 +11,7 @@ INCLUDES = 								\
 	-I$(top_srcdir)/lib/engine/chat				\
 	-I$(top_srcdir)/lib/engine/videooutput			\
 	-I$(top_srcdir)/lib/engine/videoinput/  			\
-	-I$(top_srcdir)/lib/engine/hal/skel				\
+	-I$(top_srcdir)/lib/engine/hal				\
 	-I$(top_srcdir)/lib/engine/account				\
 	-I$(top_srcdir)/lib/engine/audioinput                           \
 	-I$(top_srcdir)/lib/engine/audiooutput                          \
@@ -86,7 +86,7 @@ libekiga_engine_la_LIBADD = \
 	$(top_builddir)/lib/engine/videoinput/libgmvideoinput.la					\
 	$(top_builddir)/lib/engine/audioinput/libgmaudioinput.la					\
 	$(top_builddir)/lib/engine/audiooutput/libgmaudiooutput.la					\
-	$(top_builddir)/lib/engine/hal/skel/libgmhal.la							\
+	$(top_builddir)/lib/engine/hal/libgmhal.la							\
 	$(top_builddir)/lib/engine/components/gmconf-personal-details/libgmconfpersonaldetails.la	\
 	$(top_builddir)/lib/engine/components/opal/libopal.la                                           \
 	$(AM_LIBS)

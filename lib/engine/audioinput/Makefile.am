@@ -9,7 +9,7 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/engine/framework \
 	-I$(top_srcdir)/lib/engine/audiooutput \
 	-I$(top_srcdir)/lib/engine/audioinput \
-	-I$(top_srcdir)/lib/engine/hal/skel
+	-I$(top_srcdir)/lib/engine/hal
 
 libgmaudioinput_la_SOURCES = \
 	$(audioinput_dir)/audioinput-manager.h	\

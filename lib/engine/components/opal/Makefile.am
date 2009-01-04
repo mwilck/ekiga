@@ -12,7 +12,7 @@ INCLUDES = 					        \
 	-I$(top_srcdir)/lib/engine/account		\
 	-I$(top_srcdir)/lib/engine/addressbook	\
 	-I$(top_srcdir)/lib/engine/chat		\
-	-I$(top_srcdir)/lib/engine/hal/skel		\
+	-I$(top_srcdir)/lib/engine/hal		\
 	-I$(top_srcdir)/lib/engine/presence	\
 	-I$(top_srcdir)/lib/engine/protocol	\
 	-I$(top_srcdir)/lib/engine/videooutput	\

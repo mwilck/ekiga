@@ -11,7 +11,7 @@ INCLUDES = 						\
 	-I$(top_srcdir)/lib/engine/videooutput	\
 	-I$(top_srcdir)/lib/engine/audioinput	\
 	-I$(top_srcdir)/lib/engine/audiooutput	\
-	-I$(top_srcdir)/lib/engine/hal/skel
+	-I$(top_srcdir)/lib/engine/hal
 
 libgmgstreamer_la_SOURCES = \
 	$(gstreamer_dir)/gst-main.h \

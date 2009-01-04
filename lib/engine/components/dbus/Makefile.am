@@ -8,7 +8,7 @@ AM_CFLAGS = $(GLIB_CFLAGS) $(DBUS_CFLAGS)
 
 INCLUDES = \
 	-I$(top_srcdir)/lib/engine/framework \
-	-I$(top_srcdir)/lib/engine/hal/skel \
+	-I$(top_srcdir)/lib/engine/hal \
 	-I$(top_srcdir)/lib/engine/hal/dbus
 
 libgmhal_dbus_la_SOURCES = \

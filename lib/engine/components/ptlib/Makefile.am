@@ -12,7 +12,7 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/engine/videoinput      \
 	-I$(top_srcdir)/lib/engine/videooutput     \
 	-I$(top_srcdir)/lib/engine/components/ptlib     \
-	-I$(top_srcdir)/lib/engine/hal/skel
+	-I$(top_srcdir)/lib/engine/hal
 
 libgmptlib_la_SOURCES = \
 	$(ptlib_dir)/audioinput-manager-ptlib.h         \

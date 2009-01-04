@@ -1,12 +1,12 @@
 noinst_LTLIBRARIES = libgmhal.la
 
-hal_dir = $(top_srcdir)/lib/engine/hal/skel
+hal_dir = $(top_srcdir)/lib/engine/hal
 
 AM_CXXFLAGS = $(SIGC_CFLAGS)
 
 INCLUDES = \
 	-I$(top_srcdir)/lib/engine/framework \
-	-I$(top_srcdir)/lib/engine/hal/skel
+	-I$(top_srcdir)/lib/engine/hal
 
 libgmhal_la_SOURCES = \
 	$(hal_dir)/hal-manager.h	\

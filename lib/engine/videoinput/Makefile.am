@@ -9,7 +9,7 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/engine/framework \
 	-I$(top_srcdir)/lib/engine/videooutput \
 	-I$(top_srcdir)/lib/engine/videoinput \
-	-I$(top_srcdir)/lib/engine/hal/skel
+	-I$(top_srcdir)/lib/engine/hal
 
 libgmvideoinput_la_SOURCES = \
 	$(videoinput_dir)/videoinput-manager.h	\

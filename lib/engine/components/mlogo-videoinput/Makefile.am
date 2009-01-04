@@ -11,7 +11,7 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/engine/videooutput \
 	-I$(top_srcdir)/lib/engine/videoinput \
 	-I$(top_srcdir)/lib/engine/videoinput/mlogo \
-	-I$(top_srcdir)/lib/engine/hal/skel
+	-I$(top_srcdir)/lib/engine/hal
 
 libgmvideoinput_mlogo_la_SOURCES = \
 	$(videoinput_dir)/videoinput-manager-mlogo.h \
