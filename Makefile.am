@@ -10,9 +10,9 @@ endif
 @INTLTOOL_DESKTOP_RULE@
 @INTLTOOL_SCHEMAS_RULE@
 
-DESKTOP_IN_IN_FILES=@PACKAGE_NAME@.desktop.in.in
-DESKTOP_IN_FILES=@PACKAGE_NAME@.desktop.in
-DESKTOP_FILES=$(DESKTOP_IN_FILES:.desktop.in=.desktop)
+DESKTOP_IN_FILE=@PACKAGE_NAME@.desktop.in.in
+DESKTOP_FILE=@PACKAGE_NAME@.desktop
+DESKTOP_FILES=$(DESKTOP_IN_FILE:.desktop.in=.desktop)
 
 SCHEMAS_IN_IN_FILE = @PACKAGE_NAME@.schemas.in.in
 SCHEMAS_FILE = @PACKAGE_NAME@.schemas
@@ -50,8 +50,7 @@ WIN32_DIST = \
 
 ### Extra dist
 EXTRA_DIST = \
-	$(DESKTOP_IN_FILES)					\
-	$(DESKTOP_FILES)					\
+	$(DESKTOP_FILE)					        \
         doc/                                                    \
 	gnome-doc-utils.make					\
 	FAQ							\
