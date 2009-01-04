@@ -777,8 +777,6 @@ lib/engine/videooutput/skel/Makefile
 lib/engine/videooutput/x/Makefile
 lib/engine/videooutput/dx/Makefile
 lib/engine/videoinput/Makefile
-lib/engine/videoinput/skel/Makefile
-lib/engine/videoinput/mlogo/Makefile
 lib/engine/components/ptlib/Makefile
 lib/engine/audioinput/Makefile
 lib/engine/audiooutput/Makefile
@@ -799,6 +797,7 @@ lib/engine/components/opal/Makefile
 lib/engine/components/evolution/Makefile
 lib/engine/components/null-audioinput/Makefile
 lib/engine/components/null-audiooutput/Makefile
+lib/engine/components/mlogo-videoinput/Makefile
 )
 
 

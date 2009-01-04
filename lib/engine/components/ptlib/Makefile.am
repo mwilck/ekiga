@@ -9,7 +9,7 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/engine/framework            \
 	-I$(top_srcdir)/lib/engine/audiooutput     \
 	-I$(top_srcdir)/lib/engine/audioinput      \
-	-I$(top_srcdir)/lib/engine/videoinput/skel      \
+	-I$(top_srcdir)/lib/engine/videoinput      \
 	-I$(top_srcdir)/lib/engine/videooutput/skel     \
 	-I$(top_srcdir)/lib/engine/components/ptlib     \
 	-I$(top_srcdir)/lib/engine/hal/skel
