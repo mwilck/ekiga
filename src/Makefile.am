@@ -12,7 +12,7 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/engine/presence	\
 	-I$(top_srcdir)/lib/engine/protocol	\
 	-I$(top_srcdir)/lib/engine/protocol/sip		\
-	-I$(top_srcdir)/lib/engine/videooutput/skel	\
+	-I$(top_srcdir)/lib/engine/videooutput	\
 	-I$(top_srcdir)/lib/engine/videoinput	\
 	-I$(top_srcdir)/lib/engine/audioinput	\
 	-I$(top_srcdir)/lib/engine/audiooutput	\

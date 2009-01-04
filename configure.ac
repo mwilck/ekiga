@@ -773,9 +773,6 @@ lib/engine/components/avahi/Makefile
 lib/engine/components/local-roster/Makefile
 lib/engine/protocol/Makefile
 lib/engine/videooutput/Makefile
-lib/engine/videooutput/skel/Makefile
-lib/engine/videooutput/x/Makefile
-lib/engine/videooutput/dx/Makefile
 lib/engine/videoinput/Makefile
 lib/engine/components/ptlib/Makefile
 lib/engine/audioinput/Makefile
@@ -798,6 +795,8 @@ lib/engine/components/evolution/Makefile
 lib/engine/components/null-audioinput/Makefile
 lib/engine/components/null-audiooutput/Makefile
 lib/engine/components/mlogo-videoinput/Makefile
+lib/engine/components/x-videooutput/Makefile
+lib/engine/components/dx-videooutput/Makefile
 )
 
 

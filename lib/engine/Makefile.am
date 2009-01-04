@@ -9,7 +9,7 @@ INCLUDES = 								\
 	-I$(top_srcdir)/lib/engine/gui/gtk-frontend			\
 	-I$(top_srcdir)/lib/engine/framework/		 		\
 	-I$(top_srcdir)/lib/engine/chat/skel				\
-	-I$(top_srcdir)/lib/engine/videooutput/skel			\
+	-I$(top_srcdir)/lib/engine/videooutput			\
 	-I$(top_srcdir)/lib/engine/videoinput/  			\
 	-I$(top_srcdir)/lib/engine/hal/skel				\
 	-I$(top_srcdir)/lib/engine/account				\
@@ -35,16 +35,16 @@ INCLUDES = 								\
 
 # XVideo/X
 if !WIN32
-INCLUDES +=                                             \
-	-I$(top_srcdir)/lib/engine/videooutput/common   \
-	-I$(top_srcdir)/lib/engine/videooutput/x
+INCLUDES +=                                                             \
+	-I$(top_srcdir)/lib/engine/components/common-videooutput        \
+	-I$(top_srcdir)/lib/engine/components/x-videooutput
 endif
 
 # DirectX
 if HAVE_DX
-INCLUDES +=                                             \
-	-I$(top_srcdir)/lib/engine/videooutput/common   \
-	-I$(top_srcdir)/lib/engine/videooutput/dx
+INCLUDES +=                                                             \
+	-I$(top_srcdir)/lib/engine/components/common-videooutput        \
+	-I$(top_srcdir)/lib/engine/components/dx-videooutput
 endif
 
 # Default Input Devices
@@ -82,7 +82,7 @@ libekiga_engine_la_LIBADD = \
 	$(top_builddir)/lib/engine/account/libaccount.la 						\
 	$(top_builddir)/lib/engine/presence/libgmpresence.la 					        \
 	$(top_builddir)/lib/engine/components/local-roster/liblocal-roster.la 				\
-	$(top_builddir)/lib/engine/videooutput/skel/libgmvideooutput.la					\
+	$(top_builddir)/lib/engine/videooutput/libgmvideooutput.la					\
 	$(top_builddir)/lib/engine/videoinput/libgmvideoinput.la					\
 	$(top_builddir)/lib/engine/audioinput/libgmaudioinput.la					\
 	$(top_builddir)/lib/engine/audiooutput/libgmaudiooutput.la					\
@@ -110,14 +110,14 @@ endif
 # XVideo/X
 if !WIN32
 libekiga_engine_la_LIBADD += \
-	$(top_builddir)/lib/engine/videooutput/x/libgmvideooutput-x.la \
+	$(top_builddir)/lib/engine/components/x-videooutput/libgmvideooutput-x.la \
 	$(top_builddir)/lib/pixops/libpixops.la
 endif
 
 # DirectX
 if HAVE_DX
 libekiga_engine_la_LIBADD += \
-	$(top_builddir)/lib/engine/videooutput/dx/libgmvideooutput-dx.la
+	$(top_builddir)/lib/engine/components/dx-videooutput/libgmvideooutput-dx.la
 endif
 
 

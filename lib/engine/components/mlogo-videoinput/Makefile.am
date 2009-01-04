@@ -8,7 +8,7 @@ INCLUDES = \
 	-I$(top_srcdir)/pixmaps \
 	-I$(top_srcdir)/lib/gmconf \
 	-I$(top_srcdir)/lib/engine/framework \
-	-I$(top_srcdir)/lib/engine/videooutput/skel \
+	-I$(top_srcdir)/lib/engine/videooutput \
 	-I$(top_srcdir)/lib/engine/videoinput \
 	-I$(top_srcdir)/lib/engine/videoinput/mlogo \
 	-I$(top_srcdir)/lib/engine/hal/skel
