@@ -6,7 +6,7 @@ AM_CPPFLAGS = $(SIGC_CFLAGS) $(GLIB_CFLAGS)
 
 INCLUDES = \
 	-I$(top_srcdir)/lib/engine/framework \
-	-I$(top_srcdir)/lib/engine/presence/skel
+	-I$(top_srcdir)/lib/engine/presence
 
 libgmchat_la_SOURCES = \
 	$(chat_dir)/chat-core.h			\

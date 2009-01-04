@@ -9,12 +9,12 @@ INCLUDES = 					        \
 	-I$(top_srcdir)/lib/gmconf			\
 	-I$(top_srcdir)/lib/toolbox/			\
 	-I$(top_srcdir)/lib/engine/			\
-	-I$(top_srcdir)/lib/engine/account/skel		\
-	-I$(top_srcdir)/lib/engine/addressbook/skel	\
+	-I$(top_srcdir)/lib/engine/account		\
+	-I$(top_srcdir)/lib/engine/addressbook	\
 	-I$(top_srcdir)/lib/engine/chat/skel		\
 	-I$(top_srcdir)/lib/engine/hal/skel		\
-	-I$(top_srcdir)/lib/engine/presence/skel	\
-	-I$(top_srcdir)/lib/engine/protocol/skel	\
+	-I$(top_srcdir)/lib/engine/presence	\
+	-I$(top_srcdir)/lib/engine/protocol	\
 	-I$(top_srcdir)/lib/engine/videooutput/skel	\
 	-I$(top_srcdir)/lib/engine/videoinput/skel	\
 	-I$(top_srcdir)/lib/engine/audioinput/skel	\

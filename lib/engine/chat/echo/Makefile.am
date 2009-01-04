@@ -6,7 +6,7 @@ AM_CXXFLAGS = $(SIGC_CFLAGS)
 
 INCLUDES = \
 	-I$(top_srcdir)/lib/engine/framework \
-	-I$(top_srcdir)/lib/engine/presence/skel \
+	-I$(top_srcdir)/lib/engine/presence \
 	-I$(top_srcdir)/lib/engine/chat/skel
 
 libgmechochat_la_SOURCES = \

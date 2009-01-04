@@ -7,8 +7,8 @@ AM_CXXFLAGS = $(SIGC_CFLAGS) $(GLIB_CFLAGS) $(XML_CFLAGS)
 INCLUDES = 						\
 	-I$(top_srcdir)/lib/gmconf			\
 	-I$(top_srcdir)/lib/engine/framework		\
-	-I$(top_srcdir)/lib/engine/presence/skel	\
-	-I$(top_srcdir)/lib/engine/account/skel		\
+	-I$(top_srcdir)/lib/engine/presence	\
+	-I$(top_srcdir)/lib/engine/account		\
 	-I$(top_srcdir)/lib/engine/components/xcap
 
 libgmresource_list_la_SOURCES = \

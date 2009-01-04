@@ -9,8 +9,8 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/gui \
 	-I$(top_srcdir)/lib/engine \
 	-I$(top_srcdir)/lib/engine/framework \
-	-I$(top_srcdir)/lib/engine/presence/skel \
-	-I$(top_srcdir)/lib/engine/addressbook/skel
+	-I$(top_srcdir)/lib/engine/presence \
+	-I$(top_srcdir)/lib/engine/addressbook
 
 libgmgtk_core_la_SOURCES = \
 	$(gtk_core_dir)/toolbar-builder-gtk.h \
@@ -26,7 +26,7 @@ libgmgtk_core_la_SOURCES = \
 
 libgmgtk_core_la_LIBADD = \
 	$(top_builddir)/lib/gui/libgmwidgets.la \
-	$(top_builddir)/lib/engine/presence/skel/libgmpresence.la \
-	$(top_builddir)/lib/engine/addressbook/skel/libgmaddressbook.la
+	$(top_builddir)/lib/engine/presence/libgmpresence.la \
+	$(top_builddir)/lib/engine/addressbook/libgmaddressbook.la
 
 libgmgtk_core_la_LDFLAGS = -export-dynamic -no-undefined $(GTK_LIBS)

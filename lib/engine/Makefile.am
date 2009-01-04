@@ -8,15 +8,10 @@ INCLUDES = 								\
 	-I$(top_srcdir)/lib/engine/gui/gtk-core				\
 	-I$(top_srcdir)/lib/engine/gui/gtk-frontend			\
 	-I$(top_srcdir)/lib/engine/framework/		 		\
-	-I$(top_srcdir)/lib/engine/chat/skel				\
-	-I$(top_srcdir)/lib/engine/protocol/skel			\
-	-I$(top_srcdir)/lib/engine/addressbook/skel			\
 	-I$(top_srcdir)/lib/engine/components/call-history		\
 	-I$(top_srcdir)/lib/engine/components/evolution		        \
 	-I$(top_srcdir)/lib/engine/components/kab			\
 	-I$(top_srcdir)/lib/engine/components/ldap			\
-	-I$(top_srcdir)/lib/engine/account/skel				\
-	-I$(top_srcdir)/lib/engine/presence/skel			\
 	-I$(top_srcdir)/lib/engine/components/avahi			\
 	-I$(top_srcdir)/lib/engine/components/local-roster		\
 	-I$(top_srcdir)/lib/engine/videooutput/skel			\
@@ -75,12 +70,12 @@ libekiga_engine_la_LIBADD = \
 	$(top_builddir)/lib/engine/gui/gtk-core/libgmgtk-core.la 					\
 	$(top_builddir)/lib/engine/gui/gtk-frontend/libgmgtk-frontend.la 				\
 	$(top_builddir)/lib/engine/chat/skel/libgmchat.la 						\
-	$(top_builddir)/lib/engine/protocol/skel/libgmprotocol.la	 				\
+	$(top_builddir)/lib/engine/protocol/libgmprotocol.la	 				\
 	$(top_builddir)/lib/engine/framework/libgmframework.la 						\
-	$(top_builddir)/lib/engine/addressbook/skel/libgmaddressbook.la 				\
+	$(top_builddir)/lib/engine/addressbook/libgmaddressbook.la 				\
 	$(top_builddir)/lib/engine/components/call-history/libcall-history.la 				\
-	$(top_builddir)/lib/engine/account/skel/libaccount.la 						\
-	$(top_builddir)/lib/engine/presence/skel/libgmpresence.la 					\
+	$(top_builddir)/lib/engine/account/libaccount.la 						\
+	$(top_builddir)/lib/engine/presence/libgmpresence.la 					\
 	$(top_builddir)/lib/engine/components/local-roster/liblocal-roster.la 				\
 	$(top_builddir)/lib/engine/videooutput/skel/libgmvideooutput.la					\
 	$(top_builddir)/lib/engine/videoinput/skel/libgmvideoinput.la					\

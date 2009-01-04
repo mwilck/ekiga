@@ -71,7 +71,7 @@ INCLUDES =						\
 	-I$(top_srcdir)/lib/gmconf			\
 	-I$(top_srcdir)/lib				\
 	-I$(top_srcdir)/lib/engine/framework		\
-	-I$(top_srcdir)/lib/engine/protocol/skel	\
+	-I$(top_srcdir)/lib/engine/protocol	\
 	-I$(top_srcdir)					\
 	-I$(top_builddir)
 

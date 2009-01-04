@@ -1,5 +1,101 @@
 2009-01-04  Damien Sandras  <dsandras@gnome.org>
 
+        * src/Makefile.am:
+        * configure.ac:
+        * lib/gui/Makefile.am:
+        * lib/engine/chat/echo/Makefile.am:
+        * lib/engine/chat/skel/Makefile.am:
+        * lib/engine/gui/gtk-frontend/Makefile.am:
+        * lib/engine/gui/gtk-core/Makefile.am:
+        * lib/engine/components/ldap/Makefile.am:
+        * lib/engine/components/avahi-publisher/Makefile.am:
+        * lib/engine/components/evolution/Makefile.am:
+        * lib/engine/components/avahi/Makefile.am:
+        * lib/engine/components/opal/opal-call-manager.cpp:
+        * lib/engine/components/opal/Makefile.am:
+        * lib/engine/components/kab/Makefile.am:
+        * lib/engine/components/resource-list/Makefile.am:
+        * lib/engine/components/local-roster/Makefile.am:
+        * lib/engine/components/call-history/Makefile.am:
+        * lib/engine/account/bank-impl.h:
+        * lib/engine/account/bank.h:
+        * lib/engine/account/account.h:
+        * lib/engine/account/account-core.cpp:
+        * lib/engine/account/account-core.h:
+        * lib/engine/account/Makefile.am:
+        * lib/engine/account/skel:
+        * lib/engine/account/skel/bank-impl.h:
+        * lib/engine/account/skel/bank.h:
+        * lib/engine/account/skel/account.h:
+        * lib/engine/account/skel/account-core.cpp:
+        * lib/engine/account/skel/account-core.h:
+        * lib/engine/account/skel/Makefile.am:
+        * lib/engine/addressbook/book-impl.h:
+        * lib/engine/addressbook/book.h:
+        * lib/engine/addressbook/contact.h:
+        * lib/engine/addressbook/contact-core.cpp:
+        * lib/engine/addressbook/source-impl.h:
+        * lib/engine/addressbook/source.h:
+        * lib/engine/addressbook/contact-core.h:
+        * lib/engine/addressbook/Makefile.am:
+        * lib/engine/addressbook/skel:
+        * lib/engine/addressbook/skel/book-impl.h:
+        * lib/engine/addressbook/skel/book.h:
+        * lib/engine/addressbook/skel/contact.h:
+        * lib/engine/addressbook/skel/contact-core.cpp:
+        * lib/engine/addressbook/skel/source-impl.h:
+        * lib/engine/addressbook/skel/source.h:
+        * lib/engine/addressbook/skel/contact-core.h:
+        * lib/engine/addressbook/skel/Makefile.am:
+        * lib/engine/protocol/codec-description.cpp:
+        * lib/engine/protocol/call.h:
+        * lib/engine/protocol/call-core.cpp:
+        * lib/engine/protocol/call-manager.cpp:
+        * lib/engine/protocol/codec-description.h:
+        * lib/engine/protocol/call-core.h:
+        * lib/engine/protocol/call-protocol-manager.h:
+        * lib/engine/protocol/Makefile.am:
+        * lib/engine/protocol/call-manager.h:
+        * lib/engine/protocol/skel:
+        * lib/engine/protocol/skel/codec-description.cpp:
+        * lib/engine/protocol/skel/call.h:
+        * lib/engine/protocol/skel/call-core.cpp:
+        * lib/engine/protocol/skel/call-manager.cpp:
+        * lib/engine/protocol/skel/codec-description.h:
+        * lib/engine/protocol/skel/call-core.h:
+        * lib/engine/protocol/skel/call-protocol-manager.h:
+        * lib/engine/protocol/skel/Makefile.am:
+        * lib/engine/protocol/skel/call-manager.h:
+        * lib/engine/presence/presence-core.h:
+        * lib/engine/presence/heap-impl.h:
+        * lib/engine/presence/heap.h:
+        * lib/engine/presence/uri-presentity.cpp:
+        * lib/engine/presence/proxy-presentity.cpp:
+        * lib/engine/presence/cluster-impl.h:
+        * lib/engine/presence/cluster.h:
+        * lib/engine/presence/Makefile.am:
+        * lib/engine/presence/uri-presentity.h:
+        * lib/engine/presence/presence-core.cpp:
+        * lib/engine/presence/proxy-presentity.h:
+        * lib/engine/presence/presentity.h:
+        * lib/engine/presence/skel:
+        * lib/engine/presence/skel/presence-core.h:
+        * lib/engine/presence/skel/heap-impl.h:
+        * lib/engine/presence/skel/heap.h:
+        * lib/engine/presence/skel/uri-presentity.cpp:
+        * lib/engine/presence/skel/cluster-impl.h:
+        * lib/engine/presence/skel/proxy-presentity.cpp:
+        * lib/engine/presence/skel/cluster.h:
+        * lib/engine/presence/skel/Makefile.am:
+        * lib/engine/presence/skel/uri-presentity.h:
+        * lib/engine/presence/skel/presence-core.cpp:
+        * lib/engine/presence/skel/proxy-presentity.h:
+        * lib/engine/presence/skel/presentity.h:
+        * lib/engine/Makefile.am:
+        Dropped the skel directory when it did not make sense.
+
+2009-01-04  Damien Sandras  <dsandras@gnome.org>
+
         * lib/engine/components/opal/opal-call-manager.cpp:
         Make sure we do not display non audio and non video codecs.
 

@@ -10,7 +10,7 @@ AM_CPPFLAGS = $(SIGC_CFLAGS) $(KAB_CFLAGS)
 
 INCLUDES = \
 	-I$(top_srcdir)/lib/engine/framework \
-	-I$(top_srcdir)/lib/engine/addressbook/skel
+	-I$(top_srcdir)/lib/engine/addressbook
 
 libgmkab_la_SOURCES = \
 	$(kab_dir)/kab-contact.h \
@@ -23,6 +23,6 @@ libgmkab_la_SOURCES = \
 	$(kab_dir)/kab-main.cpp
 
 libgmkab_la_LIBADD = \
-	$(top_builddir)/lib/engine/addressbook/skel/libgmaddressbook.la
+	$(top_builddir)/lib/engine/addressbook/libgmaddressbook.la
 
 libgmkab_la_LDFLAGS = -export-dynamic -no-undefined $(KAB_LIBS)

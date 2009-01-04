@@ -6,7 +6,7 @@ AM_CXXFLAGS = $(SIGC_CFLAGS) $(EDS_CFLAGS) $(GLIB_CFLAGS)
 
 INCLUDES = \
 	-I$(top_srcdir)/lib/engine/framework \
-	-I$(top_srcdir)/lib/engine/addressbook/skel
+	-I$(top_srcdir)/lib/engine/addressbook
 
 libgmevolution_la_SOURCES = \
 	$(evolution_dir)/evolution-contact.h \
@@ -19,6 +19,6 @@ libgmevolution_la_SOURCES = \
 	$(evolution_dir)/evolution-main.cpp
 
 libgmevolution_la_LIBADD = \
-	$(top_builddir)/lib/engine/addressbook/skel/libgmaddressbook.la
+	$(top_builddir)/lib/engine/addressbook/libgmaddressbook.la
 
 libgmevolution_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(EDS_LIBS) $(GLIB_LIBS)

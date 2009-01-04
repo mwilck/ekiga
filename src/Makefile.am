@@ -6,11 +6,11 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/engine/			\
 	-I$(top_srcdir)/lib/engine/framework		\
 	-I$(top_srcdir)/lib/engine/gui/gtk-frontend	\
-	-I$(top_srcdir)/lib/engine/account/skel		\
-	-I$(top_srcdir)/lib/engine/addressbook/skel	\
+	-I$(top_srcdir)/lib/engine/account		\
+	-I$(top_srcdir)/lib/engine/addressbook	\
 	-I$(top_srcdir)/lib/engine/chat/skel		\
-	-I$(top_srcdir)/lib/engine/presence/skel	\
-	-I$(top_srcdir)/lib/engine/protocol/skel	\
+	-I$(top_srcdir)/lib/engine/presence	\
+	-I$(top_srcdir)/lib/engine/protocol	\
 	-I$(top_srcdir)/lib/engine/protocol/sip		\
 	-I$(top_srcdir)/lib/engine/videooutput/skel	\
 	-I$(top_srcdir)/lib/engine/videoinput/skel	\

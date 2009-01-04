@@ -760,12 +760,10 @@ sounds/Makefile
 help/Makefile
 lib/engine/Makefile
 lib/engine/account/Makefile
-lib/engine/account/skel/Makefile
 lib/engine/addressbook/Makefile
 lib/engine/components/call-history/Makefile
 lib/engine/components/ldap/Makefile
 lib/engine/components/kab/Makefile
-lib/engine/addressbook/skel/Makefile
 lib/engine/chat/Makefile
 lib/engine/chat/echo/Makefile
 lib/engine/chat/skel/Makefile
@@ -773,9 +771,7 @@ lib/engine/framework/Makefile
 lib/engine/presence/Makefile
 lib/engine/components/avahi/Makefile
 lib/engine/components/local-roster/Makefile
-lib/engine/presence/skel/Makefile
 lib/engine/protocol/Makefile
-lib/engine/protocol/skel/Makefile
 lib/engine/videooutput/Makefile
 lib/engine/videooutput/skel/Makefile
 lib/engine/videooutput/x/Makefile

@@ -10,10 +10,10 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/gui 				\
 	-I$(top_srcdir)/lib/engine/framework 			\
 	-I$(top_srcdir)/lib/engine/chat/skel 			\
-	-I$(top_srcdir)/lib/engine/presence/skel 		\
-	-I$(top_srcdir)/lib/engine/protocol/skel 		\
-	-I$(top_srcdir)/lib/engine/account/skel 		\
-	-I$(top_srcdir)/lib/engine/addressbook/skel 		\
+	-I$(top_srcdir)/lib/engine/presence 		\
+	-I$(top_srcdir)/lib/engine/protocol 		\
+	-I$(top_srcdir)/lib/engine/account 		\
+	-I$(top_srcdir)/lib/engine/addressbook 		\
 	-I$(top_srcdir)/lib/engine/components/call-history 	\
 	-I$(top_srcdir)/lib/engine/gui/gtk-core 
 
@@ -42,8 +42,8 @@ libgmgtk_frontend_la_SOURCES = \
 libgmgtk_frontend_la_LIBADD = \
 	$(top_builddir)/lib/gui/libgmwidgets.la 			\
 	$(top_builddir)/lib/engine/chat/skel/libgmchat.la 		\
-	$(top_builddir)/lib/engine/presence/skel/libgmpresence.la 	\
-	$(top_builddir)/lib/engine/addressbook/skel/libgmaddressbook.la \
+	$(top_builddir)/lib/engine/presence/libgmpresence.la 	\
+	$(top_builddir)/lib/engine/addressbook/libgmaddressbook.la \
 	$(top_builddir)/lib/engine/gui/gtk-core/libgmgtk-core.la
 
 libgmgtk_frontend_la_LDFLAGS = -export-dynamic -no-undefined $(GTK_LIBS)

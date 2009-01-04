@@ -7,8 +7,8 @@ AM_CPPFLAGS = $(XML_CFLAGS) $(SIGC_CFLAGS) $(GLIB_CFLAGS)
 INCLUDES = \
 	-I$(top_srcdir)/lib/gmconf \
 	-I$(top_srcdir)/lib/engine/framework \
-	-I$(top_srcdir)/lib/engine/addressbook/skel \
-	-I$(top_srcdir)/lib/engine/protocol/skel
+	-I$(top_srcdir)/lib/engine/addressbook \
+	-I$(top_srcdir)/lib/engine/protocol
 
 libcall_history_la_SOURCES = \
 	$(call_history_dir)/history-contact.h \
@@ -21,6 +21,6 @@ libcall_history_la_SOURCES = \
 	$(call_history_dir)/history-main.cpp
 
 libcall_history_la_LIBADD = \
-	$(top_builddir)/lib/engine/addressbook/skel/libgmaddressbook.la
+	$(top_builddir)/lib/engine/addressbook/libgmaddressbook.la
 
 libcall_history_la_LDFLAGS = -export-dynamic -no-undefined $(XML_LIBS) $(SIGC_LIBS) $(GLIB_LIBS)
