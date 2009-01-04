@@ -1,6 +1,6 @@
 noinst_LTLIBRARIES = libgmaudiooutput-null.la
 
-audiooutput_dir = $(top_srcdir)/lib/engine/audiooutput/null
+audiooutput_dir = $(top_srcdir)/lib/engine/components/null-audiooutput/
 
 AM_CXXFLAGS = $(SIGC_CFLAGS) $(GLIB_CFLAGS) $(PTLIB_CFLAGS)
 

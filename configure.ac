@@ -781,11 +781,9 @@ lib/engine/videoinput/skel/Makefile
 lib/engine/videoinput/mlogo/Makefile
 lib/engine/audioinput/Makefile
 lib/engine/audioinput/skel/Makefile
-lib/engine/audioinput/null/Makefile
 lib/engine/components/ptlib/Makefile
 lib/engine/audiooutput/Makefile
 lib/engine/audiooutput/skel/Makefile
-lib/engine/audiooutput/null/Makefile
 lib/engine/hal/Makefile
 lib/engine/hal/skel/Makefile
 lib/engine/hal/dbus/Makefile
@@ -801,6 +799,8 @@ lib/engine/components/resource-list/Makefile
 lib/engine/components/xcap/Makefile
 lib/engine/components/opal/Makefile
 lib/engine/components/evolution/Makefile
+lib/engine/components/null-audioinput/Makefile
+lib/engine/components/null-audiooutput/Makefile
 )
 
 

@@ -1,1 +1,1 @@
-SUBDIRS = skel null
+SUBDIRS = skel

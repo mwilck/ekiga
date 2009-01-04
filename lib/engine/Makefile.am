@@ -11,10 +11,10 @@ INCLUDES = 								\
 	-I$(top_srcdir)/lib/engine/chat/skel				\
 	-I$(top_srcdir)/lib/engine/videooutput/skel			\
 	-I$(top_srcdir)/lib/engine/videoinput/skel			\
-	-I$(top_srcdir)/lib/engine/audioinput/skel			\
-	-I$(top_srcdir)/lib/engine/audiooutput/skel			\
 	-I$(top_srcdir)/lib/engine/hal/skel				\
 	-I$(top_srcdir)/lib/engine/account				\
+	-I$(top_srcdir)/lib/engine/audioinput/skel                      \
+	-I$(top_srcdir)/lib/engine/audiooutput/skel                     \
 	-I$(top_srcdir)/lib/engine/addressbook				\
 	-I$(top_srcdir)/lib/engine/presence				\
 	-I$(top_srcdir)/lib/engine/protocol				\
@@ -31,7 +31,9 @@ INCLUDES = 								\
 	-I$(top_srcdir)/lib/engine/components/avahi			\
 	-I$(top_srcdir)/lib/engine/components/local-roster		\
 	-I$(top_srcdir)/lib/engine/components/resource-list		\
-	-I$(top_srcdir)/lib/engine/components/xcap
+	-I$(top_srcdir)/lib/engine/components/xcap                      \
+	-I$(top_srcdir)/lib/engine/components/null-audioinput           \
+	-I$(top_srcdir)/lib/engine/components/null-audiooutput
 
 # XVideo/X
 if !WIN32
@@ -49,9 +51,7 @@ endif
 
 # Default Input Devices
 INCLUDES +=                                             \
-	-I$(top_srcdir)/lib/engine/videoinput/mlogo	\
-	-I$(top_srcdir)/lib/engine/audioinput/null      \
-	-I$(top_srcdir)/lib/engine/audiooutput/null
+	-I$(top_srcdir)/lib/engine/videoinput/mlogo
 
 # Default PTLIB Input Devices
 INCLUDES +=                                             \
@@ -75,12 +75,12 @@ libekiga_engine_la_LIBADD = \
 	$(top_builddir)/lib/engine/gui/gtk-core/libgmgtk-core.la 					\
 	$(top_builddir)/lib/engine/gui/gtk-frontend/libgmgtk-frontend.la 				\
 	$(top_builddir)/lib/engine/chat/skel/libgmchat.la 						\
-	$(top_builddir)/lib/engine/protocol/libgmprotocol.la	 				\
+	$(top_builddir)/lib/engine/protocol/libgmprotocol.la	 				        \
 	$(top_builddir)/lib/engine/framework/libgmframework.la 						\
-	$(top_builddir)/lib/engine/addressbook/libgmaddressbook.la 				\
+	$(top_builddir)/lib/engine/addressbook/libgmaddressbook.la 				        \
 	$(top_builddir)/lib/engine/components/call-history/libcall-history.la 				\
 	$(top_builddir)/lib/engine/account/libaccount.la 						\
-	$(top_builddir)/lib/engine/presence/libgmpresence.la 					\
+	$(top_builddir)/lib/engine/presence/libgmpresence.la 					        \
 	$(top_builddir)/lib/engine/components/local-roster/liblocal-roster.la 				\
 	$(top_builddir)/lib/engine/videooutput/skel/libgmvideooutput.la					\
 	$(top_builddir)/lib/engine/videoinput/skel/libgmvideoinput.la					\
@@ -93,9 +93,9 @@ libekiga_engine_la_LIBADD = \
 
 # Default Input Devices
 libekiga_engine_la_LIBADD += \
-	$(top_builddir)/lib/engine/videoinput/mlogo/libgmvideoinput-mlogo.la \
-	$(top_builddir)/lib/engine/audioinput/null/libgmaudioinput-null.la \
-	$(top_builddir)/lib/engine/audiooutput/null/libgmaudiooutput-null.la
+	$(top_builddir)/lib/engine/videoinput/mlogo/libgmvideoinput-mlogo.la                    \ 
+	$(top_builddir)/lib/engine/components/null-audioinput/libgmaudioinput-null.la           \
+	$(top_builddir)/lib/engine/components/null-audiooutput/libgmaudiooutput-null.la 
 
 # PTLIB Input Devices
 libekiga_engine_la_LIBADD += \

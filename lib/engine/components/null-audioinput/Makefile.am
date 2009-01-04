@@ -1,6 +1,6 @@
 noinst_LTLIBRARIES = libgmaudioinput-null.la
 
-audioinput_dir = $(top_srcdir)/lib/engine/audioinput/null
+audioinput_dir = $(top_srcdir)/lib/engine/components/null-audioinput/
 
 AM_CXXFLAGS = $(SIGC_CFLAGS) $(GLIB_CFLAGS) $(PTLIB_CFLAGS)
 
