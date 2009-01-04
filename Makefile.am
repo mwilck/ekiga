@@ -39,6 +39,7 @@ WIN32_DIST = \
 EXTRA_DIST = \
 	$(DESKTOP_IN_FILES)					\
 	$(DESKTOP_FILES)					\
+        doc/                                                    \
 	gnome-doc-utils.make					\
 	FAQ							\
 	README							\
