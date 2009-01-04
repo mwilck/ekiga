@@ -8,23 +8,28 @@ INCLUDES = 								\
 	-I$(top_srcdir)/lib/engine/gui/gtk-core				\
 	-I$(top_srcdir)/lib/engine/gui/gtk-frontend			\
 	-I$(top_srcdir)/lib/engine/framework/		 		\
-	-I$(top_srcdir)/lib/engine/components/call-history		\
-	-I$(top_srcdir)/lib/engine/components/evolution		        \
-	-I$(top_srcdir)/lib/engine/components/kab			\
-	-I$(top_srcdir)/lib/engine/components/ldap			\
-	-I$(top_srcdir)/lib/engine/components/avahi			\
-	-I$(top_srcdir)/lib/engine/components/local-roster		\
+	-I$(top_srcdir)/lib/engine/chat/skel				\
 	-I$(top_srcdir)/lib/engine/videooutput/skel			\
 	-I$(top_srcdir)/lib/engine/videoinput/skel			\
 	-I$(top_srcdir)/lib/engine/audioinput/skel			\
 	-I$(top_srcdir)/lib/engine/audiooutput/skel			\
 	-I$(top_srcdir)/lib/engine/hal/skel				\
+	-I$(top_srcdir)/lib/engine/account				\
+	-I$(top_srcdir)/lib/engine/addressbook				\
+	-I$(top_srcdir)/lib/engine/presence				\
+	-I$(top_srcdir)/lib/engine/protocol				\
 	-I$(top_srcdir)/lib/engine/components/gmconf-personal-details	\
 	-I$(top_srcdir)/lib/engine/components/avahi-publisher		\
 	-I$(top_srcdir)/lib/engine/components/gstreamer			\
 	-I$(top_srcdir)/lib/engine/components/kde			\
 	-I$(top_srcdir)/lib/engine/components/opal	                \
 	-I$(top_srcdir)/lib/engine/components/ptlib	                \
+	-I$(top_srcdir)/lib/engine/components/call-history		\
+	-I$(top_srcdir)/lib/engine/components/evolution		        \
+	-I$(top_srcdir)/lib/engine/components/kab			\
+	-I$(top_srcdir)/lib/engine/components/ldap			\
+	-I$(top_srcdir)/lib/engine/components/avahi			\
+	-I$(top_srcdir)/lib/engine/components/local-roster		\
 	-I$(top_srcdir)/lib/engine/components/resource-list		\
 	-I$(top_srcdir)/lib/engine/components/xcap
 
