@@ -1,6 +1,6 @@
 
 /* Ekiga -- A VoIP and Video-Conferencing application
- * Copyright (C) 2000-2008 Damien Sandras
+ * Copyright (C) 2000-2009 Damien Sandras <dsandras@seconix.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,7 +50,7 @@ kde_init (Ekiga::ServiceCore& services,
   KAboutData about(PACKAGE, PACKAGE, ki18n("PACKAGE_NAME"), PACKAGE_VERSION,
 		   ki18n("VoIP application"),
 		   KAboutData::License_Custom,
-		   ki18n("Copyright (c) 2008 Developers"));
+		   ki18n("Copyright (C) 2000-2009 Damien Sandras <dsandras@seconix.com>
 
   KCmdLineArgs::init (&about);
   new KApplication (false);
