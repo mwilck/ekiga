@@ -1,3 +1,7 @@
+if HAVE_DBUS
+DBUS_DIR = hal-dbus
+endif
+
 if HAVE_LDAP
 LDAP_DIR = ldap
 endif
@@ -48,6 +52,7 @@ SUBDIRS =                       \
         opal                    \
         ptlib                   \
 	$(AVAHI_DIR)            \
+	$(DBUS_DIR)             \
 	$(GSTREAMER_DIR)        \
 	$(KDE_DIR)              \
 	$(EDS_DIR) 	        \

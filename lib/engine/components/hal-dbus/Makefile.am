@@ -1,6 +1,6 @@
 noinst_LTLIBRARIES = libgmhal-dbus.la
 
-hal_dir = $(top_srcdir)/lib/engine/hal/dbus
+hal_dir = $(top_srcdir)/lib/engine/components/hal-dbus
 
 AM_CXXFLAGS = $(SIGC_CFLAGS) $(GLIB_CFLAGS) $(DBUS_CFLAGS) $(PTLIB_CFLAGS)
 

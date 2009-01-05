@@ -62,7 +62,7 @@ INCLUDES +=                                             \
 # DBus / HALd
 if HAVE_DBUS
 INCLUDES +=                                             \
-	-I$(top_srcdir)/lib/engine/components/dbus
+	-I$(top_srcdir)/lib/engine/components/hal-dbus
 endif
 
 libekiga_engine_la_SOURCES = engine.h engine.cpp
@@ -104,7 +104,7 @@ libekiga_engine_la_LIBADD += \
 # DBus/HALd
 if HAVE_DBUS
 libekiga_engine_la_LIBADD += \
-	$(top_builddir)/lib/engine/hal/dbus/libgmhal-dbus.la
+	$(top_builddir)/lib/engine/components/hal-dbus/libgmhal-dbus.la
 endif
 
 # XVideo/X

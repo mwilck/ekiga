@@ -793,7 +793,7 @@ lib/engine/components/null-audiooutput/Makefile
 lib/engine/components/mlogo-videoinput/Makefile
 lib/engine/components/x-videooutput/Makefile
 lib/engine/components/dx-videooutput/Makefile
-lib/engine/components/dbus/Makefile
+lib/engine/components/hal-dbus/Makefile
 lib/engine/components/echo/Makefile
 )
 
