@@ -873,8 +873,6 @@ lib/engine/components/opal/Makefile
 lib/engine/components/resource-list/Makefile
 lib/engine/components/gnome-session/Makefile
 lib/engine/components/xcap/Makefile
-lib/engine/components/opal/Makefile
-lib/engine/components/evolution/Makefile
 lib/engine/components/null-audioinput/Makefile
 lib/engine/components/null-audiooutput/Makefile
 lib/engine/components/mlogo-videoinput/Makefile

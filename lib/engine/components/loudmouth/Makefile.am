@@ -7,9 +7,9 @@ AM_CXXFLAGS = $(SIGC_CFLAGS) $(XML_CFLAGS) $(LOUDMOUTH_CFLAGS)
 INCLUDES = \
 	-I$(top_srcdir)/lib/gmconf \
 	-I$(top_srcdir)/lib/engine/framework \
-	-I$(top_srcdir)/lib/engine/account/skel \
-	-I$(top_srcdir)/lib/engine/presence/skel \
-	-I$(top_srcdir)/lib/engine/chat/skel
+	-I$(top_srcdir)/lib/engine/account \
+	-I$(top_srcdir)/lib/engine/presence \
+	-I$(top_srcdir)/lib/engine/chat
 
 libgmloudmouth_la_SOURCES = \
 	$(loudmouth_dir)/loudmouth-main.h \
