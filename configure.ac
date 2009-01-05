@@ -18,8 +18,6 @@ MINOR_VERSION=1
 BUILD_TYPE=ReleaseCode
 BUILD_NUMBER=0
 
-SCHEMA_AGE=62
-
 PTLIB_REC_VERSION="2.5.2"
 OPAL_REC_VERSION="3.5.2"
 
@@ -27,9 +25,6 @@ AC_DEFINE_UNQUOTED(MAJOR_VERSION, $MAJOR_VERSION,[fix])
 AC_DEFINE_UNQUOTED(MINOR_VERSION, $MINOR_VERSION,[fix])
 AC_DEFINE_UNQUOTED(BUILD_TYPE, $BUILD_TYPE,[fix])
 AC_DEFINE_UNQUOTED(BUILD_NUMBER, $BUILD_NUMBER,[fix])
-
-AC_SUBST(SCHEMA_AGE)
-
 
 dnl ###########################################################################
 dnl   Disable / Enable Main Ekiga Components

@@ -24,8 +24,7 @@ INCLUDES = \
 	-I$(top_srcdir)/src/dbus-helper/		\
 	-I$(top_srcdir)/src/gui/			\
 	-I$(top_builddir)				\
-	$(GNOME_INCLUDEDIR)				\
-	-DSCHEMA_AGE=@SCHEMA_AGE@ 
+	$(GNOME_INCLUDEDIR)
 
 BUILT_SOURCES = src/revision.h
 

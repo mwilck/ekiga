@@ -44,6 +44,7 @@ endif
 
 SUBDIRS =                       \
 	call-history	        \
+        echo                    \
 	gmconf-personal-details \
         local-roster            \
         mlogo-videoinput        \
