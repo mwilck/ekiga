@@ -1128,7 +1128,7 @@ sound_event_play_cb (G_GNUC_UNUSED GtkWidget *widget,
 
     //FIXME
     Ekiga::ServiceCore *core = GnomeMeeting::Process ()->GetServiceCore (); 
-    gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core = core->get ("audiooutput-core");
+    Ekiga::AudioOutputCore *audiooutput_core = dynamic_cast<Ekiga::AudioOutputCore*> (core->get ("audiooutput-core"));
 
     if (sound_event) { 
       audiooutput_core->play_event(sound_event);
