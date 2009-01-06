@@ -61,7 +61,7 @@ EXTRA_DIST = \
 	$(WIN32_DIST)
 
 Applicationsdir = $(datadir)/applications
-Applications_DATA = $(DESKTOP_FILES)
+Applications_DATA = $(DESKTOP_FILE)
 
 
 ### Dist Clear
