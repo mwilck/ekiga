@@ -12,7 +12,6 @@ endif
 
 DESKTOP_IN_FILE=@PACKAGE_NAME@.desktop.in.in
 DESKTOP_FILE=@PACKAGE_NAME@.desktop
-DESKTOP_FILES=$(DESKTOP_IN_FILE:.desktop.in=.desktop)
 
 SCHEMAS_IN_IN_FILE = @PACKAGE_NAME@.schemas.in.in
 SCHEMAS_FILE = @PACKAGE_NAME@.schemas
