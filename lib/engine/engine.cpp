@@ -40,6 +40,7 @@
 #include "engine.h"
 
 #include "services.h"
+#include "kickstart.h"
 
 #include "presence-core.h"
 #include "account-core.h"
@@ -119,6 +120,7 @@ engine_init (int argc,
              Ekiga::Runtime* runtime)
 {
   service_core = new Ekiga::ServiceCore;
+  Ekiga::KickStart kickstart;
 
   /* VideoInputCore depends on VideoOutputCore and must this              *
    * be constructed thereafter                                      */
@@ -237,17 +239,11 @@ engine_init (int argc,
 #endif
 
 #ifdef HAVE_EDS
-  if (!evolution_init (*service_core, &argc, &argv)) {
-    delete service_core;
-    return;
-  }
+  evolution_init (kickstart);
 #endif
 
 #ifdef HAVE_LDAP
-  if (!ldap_init (*service_core, &argc, &argv)) {
-    delete service_core;
-    return;
-  }
+  ldap_init (kickstart);
 #endif
 
 #ifdef HAVE_KDE
@@ -268,6 +264,10 @@ engine_init (int argc,
     return;
   }
 
+  /* FIXME: this one should go away -- but if I don't put it here, the GUI
+   * doesn't work correctly */
+  kickstart.kick (*service_core, &argc, &argv);
+
   if (!gtk_core_init (*service_core, &argc, &argv)) {
     delete service_core;
     return;
@@ -287,6 +287,8 @@ engine_init (int argc,
     delete service_core;
     return;
   }
+
+  kickstart.kick (*service_core, &argc, &argv);
 
   videooutput_core->setup_conf_bridge();
   videoinput_core->setup_conf_bridge();

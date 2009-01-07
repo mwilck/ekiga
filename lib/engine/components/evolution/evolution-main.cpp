@@ -35,25 +35,43 @@
  *
  */
 
-#include "evolution-main.h"
+#include "services.h"
 #include "contact-core.h"
+
+#include "evolution-main.h"
 #include "evolution-source.h"
 
-bool
-evolution_init (Ekiga::ServiceCore &services,
-		int */*argc*/,
-		char **/*argv*/[])
+struct EVOSpark: public Ekiga::Spark
 {
-  bool result = false;
-  gmref_ptr<Ekiga::ContactCore> core = services.get ("contact-core");
+  bool try_initialize_more (Ekiga::ServiceCore &services,
+			    int */*argc*/,
+			    char **/*argv*/[])
+  {
+    gmref_ptr<Ekiga::ContactCore> core = services.get ("contact-core");
 
-  if (core) {
+    if (core) {
 
-    gmref_ptr<Evolution::Source> source (new Evolution::Source (services));
-    services.add (source);
-    core->add_source (source);
-    result = true;
+      gmref_ptr<Evolution::Source> source (new Evolution::Source (services));
+      services.add (source);
+      core->add_source (source);
+      result = true;
+    }
+
+    return result;
   }
 
-  return result;
+  Ekiga::Spark::state get_state () const
+  { return result?FULL:BLANK; }
+
+  const std::string get_name () const
+  { return "EVOLUTION"; }
+
+  bool result;
+};
+
+void
+evolution_init (Ekiga::KickStart& kickstart)
+{
+  gmref_ptr<Ekiga::Spark> spark(new EVOSpark);
+  kickstart.add_spark (spark);
 }

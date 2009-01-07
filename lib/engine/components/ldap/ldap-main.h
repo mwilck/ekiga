@@ -38,16 +38,14 @@
 #ifndef __LDAP_MAIN_H__
 #define __LDAP_MAIN_H__
 
-#include "services.h"
+#include "kickstart.h"
 
 /**
  * @addtogroup contacts
  * @{
  */
 
-bool ldap_init (Ekiga::ServiceCore &core,
-		int *argc,
-		char **argv[]);
+void ldap_init (Ekiga::KickStart& kickstart);
 
 /**
  * @}

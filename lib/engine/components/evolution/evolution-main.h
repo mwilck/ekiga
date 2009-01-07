@@ -38,16 +38,14 @@
 #ifndef __EVOLUTION_MAIN_H__
 #define __EVOLUTION_MAIN_H__
 
-#include "services.h"
+#include "kickstart.h"
 
 /**
  * @addtogroup contacts
  * @{
  */
 
-bool evolution_init (Ekiga::ServiceCore &services,
-		     int *argc,
-		     char **argv[]);
+void evolution_init (Ekiga::KickStart& kickstart);
 
 /**
  * @}

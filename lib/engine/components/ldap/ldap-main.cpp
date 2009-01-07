@@ -35,6 +35,7 @@
  *
  */
 
+#include "services.h"
 #include "contact-core.h"
 
 #include "ldap-main.h"
@@ -42,23 +43,39 @@
 
 #include <sasl/sasl.h>
 
-bool
-ldap_init (Ekiga::ServiceCore &core,
-	   int */*argc*/,
-	   char **/*argv*/[])
+struct LDAPSpark: public Ekiga::Spark
 {
-  bool result = false;
-  gmref_ptr<Ekiga::ContactCore> contact_core = core.get ("contact-core");
-  gmref_ptr<Ekiga::Runtime> runtime = core.get ("runtime");
+  bool try_initialize_more (Ekiga::ServiceCore& core,
+			    int* /*argc*/,
+			    char** /*argv*/[])
+  {
+    gmref_ptr<Ekiga::ContactCore> contact_core = core.get ("contact-core");
+    gmref_ptr<Ekiga::Runtime> runtime = core.get ("runtime");
 
-  if (contact_core && runtime) {
+    if (contact_core && runtime) {
 
-    gmref_ptr<OPENLDAP::Source> service (new OPENLDAP::Source (core));
-    core.add (service);
-    contact_core->add_source (service);
-    sasl_client_init (NULL); // FIXME: shouldn't it be done by the source!?
-    result = true;
+      gmref_ptr<OPENLDAP::Source> service (new OPENLDAP::Source (core));
+      core.add (service);
+      contact_core->add_source (service);
+      sasl_client_init (NULL); // FIXME: shouldn't it be done by the source!?
+      result = true;
+    }
+
+    return result;
   }
 
-  return result;
+  Ekiga::Spark::state get_state () const
+  { return result?FULL:BLANK; }
+
+  const std::string get_name () const
+  { return "LDAP"; }
+
+  bool result;
+};
+
+void
+ldap_init (Ekiga::KickStart& kickstart)
+{
+  gmref_ptr<Ekiga::Spark> spark(new LDAPSpark);
+  kickstart.add_spark (spark);
 }
