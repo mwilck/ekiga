@@ -244,7 +244,7 @@ call_history_view_gtk_new (gmref_ptr<History::Book> book)
   selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (tree));
   gtk_tree_selection_set_mode (selection, GTK_SELECTION_SINGLE);
   g_signal_connect (G_OBJECT (tree), "event-after",
-		    G_CALLBACK (on_clicked), &book);
+		    G_CALLBACK (on_clicked), &(*book));
 
   /* connect to the signals */
   connection = book->cleared.connect (sigc::bind (sigc::ptr_fun (gtk_list_store_clear), store));
