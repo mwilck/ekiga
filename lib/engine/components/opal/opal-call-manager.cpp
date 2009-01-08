@@ -407,7 +407,7 @@ void CallManager::set_codecs (Ekiga::CodecList & _codecs)
            j++) {
 
         if (name == (const char *) all_media_formats [j].GetEncodingName ()
-            && rate == all_media_formats [j].GetClockRate ()) {
+            && (rate == all_media_formats [j].GetClockRate () || name == "G722")) {
 
           // Found something
           order += all_media_formats [j];
