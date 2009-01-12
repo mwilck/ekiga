@@ -39,7 +39,7 @@
 #include <stdint.h>
 #include "config.h"
 
-#include <ptlib/videoio.h>
+#include <ptlib.h>
 #include <ptlib/vconvert.h>
 
 #include <X11/Xlib.h>
