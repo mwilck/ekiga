@@ -730,8 +730,6 @@ static void on_established_call_cb (Ekiga::CallManager & /*manager*/,
   audiooutput_core->stop_play_event("ring_tone_sound");
 
   g_free (info);
-
-  gm_main_window_update_calling_state (GTK_WIDGET (self), Standby);
 }
 
 
@@ -845,6 +843,8 @@ static void on_missed_call_cb (Ekiga::CallManager & /*manager*/,
 			  call.get_remote_party_name ().c_str ());
   gm_main_window_push_message (GTK_WIDGET (self), "%s", info);
   g_free (info);
+
+  gm_main_window_update_calling_state (GTK_WIDGET (self), Standby);
 }
 
 
