@@ -5,6 +5,7 @@
 
 * Changes in ekiga 3.1.0 (2009-01-05)
 - Added support for G.722 and CELT audio wideband codecs
+- Added support for H.263 
 - Added support for SIP dialog-info notifications, it allows being notified of 
 incoming calls for the phones of your colleagues with software like Asterisk
 - Added support to disable STUN detection 
@@ -17,6 +18,20 @@ installed GConf schemas
 - Many code cleanups, new GObjects, ...
 - Work in progress : XCAP support, Resource List support, 
 GStreamer audio and video capture support, ...
+
+* Changes in ekiga 3.0.2 (2009-01-12)
+- Make sure sound events are played through the correct devices. (#564370)
+- Fixed crash on missed call.
+- Do not show the assistant after an upgrade for which Ekiga was already successfully setup.  
+- Added settings migration from Ekiga 2.0.x.
+- Allow answering/rejecting calls from the main window even if we use notifications.
+- Do not try refreshing SUBSCRIBE requests for which the 200 OK contains an expire time of 0. 
+- Fixed sending ACK request to incorrect address when particular types of proxies are being used.
+- Fixed test for CANCEL receipt on INVITE clearing call.
+- Ignore multiple forked CANCEL messages.
+- Fixed issue with registration to a non-standard port.
+- Fixed restarting timers if get pathological response to a transaction with incorrect Cseq header field.
+- Fixed missing route set on SIP commands in a dialog when using outbound proxy.
 
 * Changes in ekiga 3.0.1 (2008-10-20)
 ** Windows build
