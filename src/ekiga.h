@@ -80,7 +80,8 @@ class GnomeMeeting : public PProcess
    * BEHAVIOR     : Vroom.
    * PRE          : /
    */
-  void InitEngine ();
+  void InitEngine (int argc,
+		   char* argv[]);
 
   
   /* DESCRIPTION  : / 

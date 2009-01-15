@@ -222,12 +222,13 @@ void GnomeMeeting::BuildGUI ()
 
 
 void
-GnomeMeeting::InitEngine ()
+GnomeMeeting::InitEngine (int argc,
+			  char* argv[])
 {
   PWaitAndSignal m(ep_var_mutex);
 
   Ekiga::Runtime *runtime = new Ekiga::GlibRuntime;
-  engine_init (1, NULL, runtime);
+  engine_init (argc, argv, runtime);
 }
 
 void

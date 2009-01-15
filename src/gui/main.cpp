@@ -4460,7 +4460,7 @@ main (int argc,
   /* Init gm_conf */
   gm_conf_watch ();
 
-  GnomeMeeting::Process ()->InitEngine ();
+  GnomeMeeting::Process ()->InitEngine (argc, argv);
   GnomeMeeting::Process ()->BuildGUI ();
 
   /* Show the window if there is no error, exit with a popup if there
