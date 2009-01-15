@@ -38,10 +38,8 @@
 #ifndef __KDE_MAIN_H__
 #define __KDE_MAIN_H__
 
-#include "services.h"
+#include "kickstart.h"
 
-bool kde_init (Ekiga::ServiceCore& services,
-	       int* argc,
-	       char** argv[]);
+void kde_init (Ekiga::KickStart& kickstart);
 
 #endif

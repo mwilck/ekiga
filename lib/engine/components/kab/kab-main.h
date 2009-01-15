@@ -38,16 +38,14 @@
 #ifndef __KAB_MAIN_H__
 #define __KAB_MAIN_H__
 
-#include "services.h"
+#include "kickstart.h"
 
 /**
  * @addtogroup contacts
  * @{
  */
 
-bool kab_init (Ekiga::ServiceCore &core,
-	       int *argc,
-	       char **argv[]);
+void kab_init (Ekiga::KickStart& kickstart);
 
 /**
  * @}

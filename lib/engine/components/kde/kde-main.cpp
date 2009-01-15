@@ -36,26 +36,53 @@
  */
 
 #include "config.h"
+
 #include "services.h"
+
+#include "kde-main.h"
 
 #include <kaboutdata.h>
 #include <kapplication.h>
 #include <kcmdlineargs.h>
 
-bool
-kde_init (Ekiga::ServiceCore& services,
-	  int* /*argc*/,
-	  char** /*argv*/[])
+struct KDESpark: public Ekiga::Spark
 {
-  KAboutData about(PACKAGE, PACKAGE, ki18n("PACKAGE_NAME"), PACKAGE_VERSION,
-		   ki18n("VoIP application"),
-		   KAboutData::License_Custom,
-		   ki18n("Copyright (C) 2000-2009 Damien Sandras <dsandras@seconix.com>
+  bool try_initialize_more (Ekiga::ServiceCore& core,
+			    int* /*argc*/,
+			    char** /*argv*/[])
+  {
+    gmref_ptr<Ekiga::Service> kde = core.get ("kde-core");
 
-  KCmdLineArgs::init (&about);
-  new KApplication (false);
-  services.add (gmref_ptr<Ekiga::Service> (new Ekiga::BasicService ("kde-core",
+    if ( !kde) {
+
+      KAboutData about(PACKAGE, PACKAGE, ki18n("PACKAGE_NAME"), PACKAGE_VERSION,
+		       ki18n("VoIP application"),
+		       KAboutData::License_Custom,
+		       ki18n("Copyright (C) 2000-2009 Damien Sandras <dsandras@seconix.com>"));
+
+      KCmdLineArgs::init (&about);
+      new KApplication (false);
+      core.add (gmref_ptr<Ekiga::Service> (new Ekiga::BasicService ("kde-core",
 								    "KDE support")));
+      result = true;
+    }
 
-  return true;
+    return result;
+  }
+
+  Ekiga::Spark::state get_state () const
+  { return result?FULL:BLANK; }
+
+  const std::string get_name () const
+  { return "KDE"; }
+
+  bool result;
+
+};
+
+void
+kde_init (Ekiga::KickStart& kickstart)
+{
+  gmref_ptr<Ekiga::Spark> spark(new KDESpark);
+  kickstart.add_spark (spark);
 }

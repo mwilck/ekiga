@@ -247,11 +247,11 @@ engine_init (int argc,
 #endif
 
 #ifdef HAVE_KDE
-  (void)kde_init (*service_core, &argc, &argv);
+  kde_init (kickstart);
 #endif
 
 #ifdef HAVE_KAB
-  (void)kab_init (*service_core, &argc, &argv);
+  kab_init (kickstart);
 #endif
 
 #ifdef HAVE_XCAP

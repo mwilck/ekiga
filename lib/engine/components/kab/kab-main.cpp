@@ -39,22 +39,39 @@
 #include "contact-core.h"
 #include "kab-source.h"
 
-bool
-kab_init (Ekiga::ServiceCore &core,
-	  int */*argc*/,
-	  char **/*argv*/[])
+struct KABSpark: public Ekiga::Spark
 {
-  bool result = false;
-  gmref_ptr<Ekiga::Service> kde_core = core.get ("kde-core");
-  gmref_ptr<Ekiga::ContactCore> contact_core = core.get ("contact-core");
+  bool try_initialize_more (Ekiga::ServiceCore& core,
+			    int* /*argc*/,
+			    char** /*argv*/[])
+  {
+    gmref_ptr<Ekiga::Service> kde_core = core.get ("kde-core");
+    gmref_ptr<Ekiga::ContactCore> contact_core = core.get ("contact-core");
 
-  if (contact_core && kde_core) {
+    if (contact_core && kde_core) {
 
-    gmref_ptr<KAB::Source> source (new KAB::Source (*contact_core));
-    core.add (source);
-    contact_core->add_source (source);
-    result = true;
+      gmref_ptr<KAB::Source> source (new KAB::Source (*contact_core));
+      core.add (source);
+      contact_core->add_source (source);
+      result = true;
+    }
+
+    return result;
   }
 
-  return result;
+  Ekiga::Spark::state get_state () const
+  { return result?FULL:BLANK; }
+
+  const std::string get_name () const
+  { return "KAB"; }
+
+  bool result;
+
+};
+
+void
+kab_init (Ekiga::KickStart& kickstart)
+{
+  gmref_ptr<Ekiga::Spark> spark(new KABSpark);
+  kickstart.add_spark (spark);
 }
