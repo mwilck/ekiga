@@ -43,6 +43,9 @@
 
 struct EVOSpark: public Ekiga::Spark
 {
+  EVOSpark (): result(false)
+  {}
+
   bool try_initialize_more (Ekiga::ServiceCore &services,
 			    int */*argc*/,
 			    char **/*argv*/[])

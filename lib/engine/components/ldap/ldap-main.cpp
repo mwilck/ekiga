@@ -45,6 +45,9 @@
 
 struct LDAPSpark: public Ekiga::Spark
 {
+  LDAPSpark (): result(false)
+  {}
+
   bool try_initialize_more (Ekiga::ServiceCore& core,
 			    int* /*argc*/,
 			    char** /*argv*/[])

@@ -47,6 +47,9 @@
 
 struct KDESpark: public Ekiga::Spark
 {
+  KDESpark (): result(false)
+  {}
+
   bool try_initialize_more (Ekiga::ServiceCore& core,
 			    int* /*argc*/,
 			    char** /*argv*/[])

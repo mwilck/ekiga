@@ -41,6 +41,9 @@
 
 struct KABSpark: public Ekiga::Spark
 {
+  KABSpark (): result(false)
+  {}
+
   bool try_initialize_more (Ekiga::ServiceCore& core,
 			    int* /*argc*/,
 			    char** /*argv*/[])
