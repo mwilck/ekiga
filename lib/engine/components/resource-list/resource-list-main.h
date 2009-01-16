@@ -39,10 +39,8 @@
 #ifndef __RL_MAIN_H__
 #define __RL_MAIN_H__
 
-#include "services.h"
+#include "kickstart.h"
 
-bool resource_list_init (Ekiga::ServiceCore& services,
-			 int* argc,
-			 char** argv[]);
+void resource_list_init (Ekiga::KickStart& kickstart);
 
 #endif

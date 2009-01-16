@@ -169,10 +169,6 @@ engine_init (int argc,
   }
 #endif
 
-#ifdef HAVE_XCAP
-  xcap_init (*service_core);
-#endif
-
 #ifdef HAVE_DX
   if (!videooutput_dx_init (*service_core, &argc, &argv)) {
     delete service_core;
@@ -255,7 +251,8 @@ engine_init (int argc,
 #endif
 
 #ifdef HAVE_XCAP
-  resource_list_init (*service_core, &argc, &argv);
+  xcap_init (kickstart);
+  resource_list_init (kickstart);
 #endif
 
   if (!history_init (*service_core, &argc, &argv)) {

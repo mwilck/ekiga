@@ -38,12 +38,41 @@
 #include "xcap-main.h"
 #include "xcap-core.h"
 
-bool
-xcap_init (Ekiga::ServiceCore& core)
+struct XCAPSpark: public Ekiga::Spark
 {
-  gmref_ptr<XCAP::Core> xcap(new XCAP::Core ());
+  XCAPSpark (): result(false)
+  {}
 
-  core.add (xcap);
+  bool try_initialize_more (Ekiga::ServiceCore& core,
+			    int* /*argc*/,
+			    char** /*argv*/[])
+  {
+    gmref_ptr<Ekiga::Service> xcap = core.get ("xcap-core");
 
-  return true;
+    if ( !xcap) {
+
+      gmref_ptr<XCAP::Core> xcap(new XCAP::Core ());
+
+      core.add (xcap);
+      result = true;
+    }
+
+    return result;
+  }
+
+  Ekiga::Spark::state get_state () const
+  { return result?FULL:BLANK; }
+
+  const std::string get_name () const
+  { return "XCAP"; }
+
+  bool result;
+};
+
+
+void
+xcap_init (Ekiga::KickStart& kickstart)
+{
+  gmref_ptr<Ekiga::Spark> spark(new XCAPSpark);
+  kickstart.add_spark (spark);
 }

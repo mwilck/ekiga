@@ -41,27 +41,42 @@
 #include "xcap-core.h"
 #include "rl-cluster.h"
 
-bool
-resource_list_init (Ekiga::ServiceCore& services,
-		    int* /*argc*/,
-		    char** /*argv*/[])
+struct RLSpark: public Ekiga::Spark
 {
-  bool result = false;
-  gmref_ptr<Ekiga::Service> service = services.get ("resource-list");
+  RLSpark (): result(false)
+  {}
 
-  if ( !service) {
+  bool try_initialize_more (Ekiga::ServiceCore& core,
+			    int* /*argc*/,
+			    char** /*argv*/[])
+  {
+    gmref_ptr<Ekiga::Service> service = core.get ("resource-list");
+    gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
+    gmref_ptr<XCAP::Core> xcap = core.get ("xcap-core");
 
-    gmref_ptr<Ekiga::PresenceCore> core = services.get ("presence-core");
-    gmref_ptr<XCAP::Core> xcap = services.get ("xcap-core");
+    if ( !service && presence_core && xcap) {
 
-    if (core && xcap) {
-
-      gmref_ptr<RL::Cluster> cluster (new RL::Cluster (services));
-      services.add (cluster);
-      core->add_cluster (cluster);
+      gmref_ptr<RL::Cluster> cluster (new RL::Cluster (core));
+      core.add (cluster);
+      presence_core->add_cluster (cluster);
       result = true;
     }
+
+    return result;
   }
 
-  return result;
+  Ekiga::Spark::state get_state () const
+  { return result?FULL:BLANK; }
+
+  const std::string get_name () const
+  { return "RL"; }
+
+  bool result;
+};
+
+void
+resource_list_init (Ekiga::KickStart& kickstart)
+{
+  gmref_ptr<Ekiga::Spark> spark(new RLSpark);
+  kickstart.add_spark (spark);
 }

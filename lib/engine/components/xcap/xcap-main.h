@@ -38,8 +38,8 @@
 #ifndef __XCAP_MAIN_H__
 #define __XCAP_MAIN_H__
 
-#include "services.h"
+#include "kickstart.h"
 
-bool xcap_init (Ekiga::ServiceCore& core);
+void xcap_init (Ekiga::KickStart& kickstart);
 
 #endif
