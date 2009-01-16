@@ -248,11 +248,7 @@ engine_init (int argc,
   resource_list_init (kickstart);
 #endif
 
-  if (!history_init (*service_core, &argc, &argv)) {
-
-    delete service_core;
-    return;
-  }
+  history_init (kickstart);
 
   /* FIXME: this one should go away -- but if I don't put it here, the GUI
    * doesn't work correctly */

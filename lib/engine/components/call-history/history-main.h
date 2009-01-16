@@ -38,16 +38,14 @@
 #ifndef __HISTORY_MAIN_H__
 #define __HISTORY_MAIN_H__
 
-#include "services.h"
+#include "kickstart.h"
 
 /**
  * @addtogroup contacts
  * @{
  */
 
-bool history_init (Ekiga::ServiceCore &core,
-		   int *argc,
-		   char **argv[]);
+void history_init (Ekiga::KickStart& kickstart);
 
 /**
  * @}

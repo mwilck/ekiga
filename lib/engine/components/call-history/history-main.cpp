@@ -40,22 +40,42 @@
 #include "call-core.h"
 #include "history-source.h"
 
-bool
-history_init (Ekiga::ServiceCore &core,
-	      int */*argc*/,
-	      char **/*argv*/[])
+struct HISTORYSpark: public Ekiga::Spark
 {
-  bool result = false;
-  gmref_ptr<Ekiga::ContactCore> contact_core = core.get ("contact-core");
-  gmref_ptr<Ekiga::CallCore> call_core = core.get ("call-core");
+  HISTORYSpark (): result(false)
+  {}
 
-  if (contact_core && call_core) {
+  bool try_initialize_more (Ekiga::ServiceCore& core,
+			    int* /*argc*/,
+			    char** /*argv*/[])
+  {
+    gmref_ptr<Ekiga::Service> service = core.get ("call-history-store");
+    gmref_ptr<Ekiga::ContactCore> contact_core = core.get ("contact-core");
+    gmref_ptr<Ekiga::CallCore> call_core = core.get ("call-core");
 
-    gmref_ptr<History::Source> source (new History::Source (core));
-    core.add (source);
-    contact_core->add_source (source);
-    result = true;
+    if (contact_core && call_core && !service) {
+
+      gmref_ptr<History::Source> source (new History::Source (core));
+      core.add (source);
+      contact_core->add_source (source);
+      result = true;
+    }
+
+    return result;
   }
 
-  return result;
+  Ekiga::Spark::state get_state () const
+  { return result?FULL:BLANK; }
+
+  const std::string get_name () const
+  { return "HISTORY"; }
+
+  bool result;
+};
+
+void
+history_init (Ekiga::KickStart& kickstart)
+{
+  gmref_ptr<Ekiga::Spark> spark(new HISTORYSpark);
+  kickstart.add_spark (spark);
 }
