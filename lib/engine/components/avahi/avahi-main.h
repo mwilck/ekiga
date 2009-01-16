@@ -38,16 +38,14 @@
 #ifndef __AVAHI_MAIN_H__
 #define __AVAHI_MAIN_H__
 
-#include "services.h"
+#include "kickstart.h"
 
 /**
  * @addtogroup presence
  * @{
  */
 
-bool avahi_init (Ekiga::ServiceCore &core,
-		 int *argc,
-		 char **argv[]);
+void avahi_init (Ekiga::KickStart& kickstart);
 
 /**
  * @}

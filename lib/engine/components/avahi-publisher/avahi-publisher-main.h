@@ -38,16 +38,14 @@
 #ifndef __AVAHI_PUBLISHER_MAIN_H__
 #define __AVAHI_PUBLISHER_MAIN_H__
 
-#include "services.h"
+#include "kickstart.h"
 
 /**
  * @addtogroup presence 
  * @{
  */
 
-bool avahi_publisher_init (Ekiga::ServiceCore &services,
-                           int *argc,
-                           char **argv[]);
+void avahi_publisher_init (Ekiga::KickStart& kickstart);
 
 /**
  * @}

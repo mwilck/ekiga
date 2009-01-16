@@ -38,26 +38,43 @@
 #include "avahi-publisher-main.h"
 #include "avahi-publisher.h"
 
-#include <iostream>
-
-bool
-avahi_publisher_init (Ekiga::ServiceCore &core,
-                      int* /*argc*/,
-                      char* */*argv*/[])
+struct AVAHIPUBSpark: public Ekiga::Spark
 {
-  bool result = false;
-  gmref_ptr<Ekiga::PresenceCore> presence_core
-    = core.get ("presence-core");
-  gmref_ptr<Ekiga::CallCore> call_core = core.get ("call-core");
-  gmref_ptr<Ekiga::PersonalDetails> details = core.get ("personal-details");
+  AVAHIPUBSpark (): result(false)
+  {}
 
-  if (presence_core && call_core && details) {
+  bool try_initialize_more (Ekiga::ServiceCore& core,
+			    int* /*argc*/,
+			    char** /*argv*/[])
+  {
+    gmref_ptr<Ekiga::Service> service = core.get ("avahi-presence-publisher");
+    gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
+    gmref_ptr<Ekiga::CallCore> call_core = core.get ("call-core");
+    gmref_ptr<Ekiga::PersonalDetails> details = core.get ("personal-details");
 
-    gmref_ptr<Avahi::PresencePublisher> publisher (new Avahi::PresencePublisher (core, *details, *call_core));
-    presence_core->add_presence_publisher (publisher);
-    core.add (publisher);
-    result = true;
+    if (presence_core && call_core && details && !service) {
+
+      gmref_ptr<Avahi::PresencePublisher> publisher (new Avahi::PresencePublisher (core, *details, *call_core));
+      presence_core->add_presence_publisher (publisher);
+      core.add (publisher);
+      result = true;
+    }
+
+    return result;
   }
 
-  return result;
+  Ekiga::Spark::state get_state () const
+  { return result?FULL:BLANK; }
+
+  const std::string get_name () const
+  { return "AVAHIPUB"; }
+
+  bool result;
+};
+
+void
+avahi_publisher_init (Ekiga::KickStart& kickstart)
+{
+  gmref_ptr<Ekiga::Spark> spark(new AVAHIPUBSpark);
+  kickstart.add_spark (spark);
 }

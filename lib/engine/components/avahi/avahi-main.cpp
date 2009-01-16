@@ -39,21 +39,41 @@
 #include "presence-core.h"
 #include "avahi-cluster.h"
 
-bool
-avahi_init (Ekiga::ServiceCore &core,
-	    int */*argc*/,
-	    char **/*argv*/[])
+struct AVAHISpark: public Ekiga::Spark
 {
-  bool result = false;
-  gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
+  AVAHISpark (): result(false)
+  {}
 
-  if (presence_core) {
+  bool try_initialize_more (Ekiga::ServiceCore& core,
+			    int* /*argc*/,
+			    char** /*argv*/[])
+  {
+    gmref_ptr<Ekiga::Service> service = core.get ("avahi-core");
+    gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
 
-    gmref_ptr<Avahi::Cluster> cluster (new Avahi::Cluster (core));
-    core.add (cluster);
-    presence_core->add_cluster (cluster);
-    result = true;
+    if ( !service && presence_core) {
+
+      gmref_ptr<Avahi::Cluster> cluster (new Avahi::Cluster (core));
+      core.add (cluster);
+      presence_core->add_cluster (cluster);
+      result = true;
+    }
+
+    return result;
   }
 
-  return result;
+  Ekiga::Spark::state get_state () const
+  { return result?FULL:BLANK; }
+
+  const std::string get_name () const
+  { return "AVAHI"; }
+
+  bool result;
+};
+
+void
+avahi_init (Ekiga::KickStart& kickstart)
+{
+  gmref_ptr<Ekiga::Spark> spark(new AVAHISpark);
+  kickstart.add_spark (spark);
 }

@@ -223,15 +223,8 @@ engine_init (int argc,
   }
 
 #ifdef HAVE_AVAHI
-  if (!avahi_init (*service_core, &argc, &argv)) {
-    delete service_core;
-    return;
-  }
-
-  if (!avahi_publisher_init (*service_core, &argc, &argv)) {
-    delete service_core;
-    return;
-  }
+  avahi_init (kickstart);
+  avahi_publisher_init (kickstart);
 #endif
 
 #ifdef HAVE_EDS
