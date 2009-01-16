@@ -38,10 +38,8 @@
 #ifndef __LOUDMOUTH_MAIN_H__
 #define __LOUDMOUTH_MAIN_H__
 
-#include "services.h"
+#include "kickstart.h"
 
-bool loudmouth_init (Ekiga::ServiceCore &services,
-		     int *argc,
-		     char **argv[]);
+void loudmouth_init (Ekiga::KickStart& kickstart);
 
 #endif

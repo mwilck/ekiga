@@ -44,26 +44,46 @@
 #include "loudmouth-cluster.h"
 #include "loudmouth-bank.h"
 
-bool
-loudmouth_init (Ekiga::ServiceCore &services,
-		int */*argc*/,
-		char **/*argv*/[])
+struct LOUDMOUTHSpark: public Ekiga::Spark
 {
-  bool result = false;
-  gmref_ptr<Ekiga::PresenceCore> presence (services.get ("presence-core"));
-  gmref_ptr<Ekiga::ChatCore> chat (services.get ("chat-core"));
-  gmref_ptr<Ekiga::PersonalDetails> details (services.get ("personal-details"));
+  LOUDMOUTHSpark (): result(false)
+  {}
 
-  if (presence && chat && details) {
+  bool try_initialize_more (Ekiga::ServiceCore& core,
+			    int* /*argc*/,
+			    char** /*argv*/[])
+  {
+    gmref_ptr<Ekiga::Service> service(core.get ("loudmouth-bank"));
+    gmref_ptr<Ekiga::PresenceCore> presence (core.get ("presence-core"));
+    gmref_ptr<Ekiga::ChatCore> chat (core.get ("chat-core"));
+    gmref_ptr<Ekiga::PersonalDetails> details (core.get ("personal-details"));
 
-    gmref_ptr<LM::Dialect> dialect(new LM::Dialect);
-    gmref_ptr<LM::Cluster> cluster(new LM::Cluster);
-    gmref_ptr<LM::Bank> bank (new LM::Bank (details, dialect, cluster));
-    services.add (bank);
-    chat->add_dialect (dialect);
-    presence->add_cluster (cluster);
-    result = true;
+    if ( !service && presence && chat && details) {
+
+      gmref_ptr<LM::Dialect> dialect(new LM::Dialect);
+      gmref_ptr<LM::Cluster> cluster(new LM::Cluster);
+      gmref_ptr<LM::Bank> bank (new LM::Bank (details, dialect, cluster));
+      core.add (bank);
+      chat->add_dialect (dialect);
+      presence->add_cluster (cluster);
+      result = true;
+    }
+
+    return result;
   }
 
-  return result;
+  Ekiga::Spark::state get_state () const
+  { return result?FULL:BLANK; }
+
+  const std::string get_name () const
+  { return "LOUDMOUTH"; }
+
+  bool result;
+};
+
+void
+loudmouth_init (Ekiga::KickStart& kickstart)
+{
+  gmref_ptr<Ekiga::Spark> spark(new LOUDMOUTHSpark);
+  kickstart.add_spark (spark);
 }

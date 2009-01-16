@@ -279,7 +279,7 @@ engine_init (int argc,
   local_roster_bridge_init (kickstart);
 
 #ifdef HAVE_LOUDMOUTH
-  loudmouth_init (*service_core, &argc, &argv);
+  loudmouth_init (kickstart);
 #endif
 
   plugin_init (kickstart);
