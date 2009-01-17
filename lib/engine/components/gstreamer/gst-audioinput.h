@@ -81,6 +81,7 @@ namespace GST
     void detect_devices ();
     void detect_audiotestsrc_devices ();
     void detect_alsasrc_devices ();
+    void detect_pulsesrc_devices ();
 
     /* we take a user-readable name, and get the string describing
      * the actual device */

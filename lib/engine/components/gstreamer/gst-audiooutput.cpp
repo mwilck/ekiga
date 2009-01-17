@@ -268,6 +268,7 @@ GST::AudioOutputManager::detect_devices ()
   devices_by_name.clear ();
   detect_fakesink_devices ();
   detect_alsasink_devices ();
+  detect_pulsesink_devices ();
 }
 
 void
@@ -324,6 +325,50 @@ GST::AudioOutputManager::detect_alsasink_devices ()
     }
 
     devices_by_name[std::pair<std::string,std::string>("ALSA","---")] = "volume name=ekiga_volume ! alsasink";
+
+    gst_element_set_state (elt, GST_STATE_NULL);
+    gst_object_unref (GST_OBJECT (elt));
+  }
+}
+
+void
+GST::AudioOutputManager::detect_pulsesink_devices ()
+{
+  GstElement* elt = NULL;
+
+  elt = gst_element_factory_make ("pulsesink", "pulsesinkpresencetest");
+
+  if (elt != NULL) {
+
+    GstPropertyProbe* probe = NULL;
+    const GParamSpec* pspec = NULL;
+    GValueArray* array = NULL;
+
+    gst_element_set_state (elt, GST_STATE_PAUSED);
+    probe = GST_PROPERTY_PROBE (elt);
+    pspec = gst_property_probe_get_property (probe, "device");
+
+    array = gst_property_probe_probe_and_get_values (probe, pspec);
+    if (array != NULL) {
+
+      for (guint index = 0; index < array->n_values; index++) {
+
+	GValue* device = NULL;
+	gchar* name = NULL;
+	gchar* descr = NULL;
+
+	device = g_value_array_get_nth (array, index);
+	g_object_set_property (G_OBJECT (elt), "device", device);
+	g_object_get (G_OBJECT (elt), "device-name", &name, NULL);
+	descr = g_strdup_printf (" volume name=ekiga_volume ! pulsesink device=%s",
+				 g_value_get_string (device));
+
+	devices_by_name[std::pair<std::string,std::string>("PULSEAUDIO", name)] = descr;
+	g_free (name);
+	g_free (descr);
+      }
+      g_value_array_free (array);
+    }
 
     gst_element_set_state (elt, GST_STATE_NULL);
     gst_object_unref (GST_OBJECT (elt));
