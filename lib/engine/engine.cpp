@@ -42,6 +42,7 @@
 #include "services.h"
 #include "kickstart.h"
 
+#include "plugin-core.h"
 #include "presence-core.h"
 #include "account-core.h"
 #include "contact-core.h"
@@ -273,6 +274,8 @@ engine_init (int argc,
     delete service_core;
     return;
   }
+
+  plugin_init (kickstart);
 
   kickstart.kick (*service_core, &argc, &argv);
 

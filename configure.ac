@@ -761,6 +761,7 @@ lib/engine/components/ldap/Makefile
 lib/engine/components/kab/Makefile
 lib/engine/chat/Makefile
 lib/engine/framework/Makefile
+lib/engine/plugin/Makefile
 lib/engine/presence/Makefile
 lib/engine/components/avahi/Makefile
 lib/engine/components/local-roster/Makefile

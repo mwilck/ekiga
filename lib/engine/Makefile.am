@@ -1,4 +1,4 @@
-SUBDIRS = framework account addressbook presence chat gui protocol videooutput videoinput audioinput audiooutput hal components
+SUBDIRS = framework plugin account addressbook presence chat gui protocol videooutput videoinput audioinput audiooutput hal components
 
 noinst_LTLIBRARIES = libekiga_engine.la
 
@@ -8,14 +8,15 @@ INCLUDES = 								\
 	-I$(top_srcdir)/lib/engine/gui/gtk-core				\
 	-I$(top_srcdir)/lib/engine/gui/gtk-frontend			\
 	-I$(top_srcdir)/lib/engine/framework/		 		\
-	-I$(top_srcdir)/lib/engine/chat				\
-	-I$(top_srcdir)/lib/engine/videooutput			\
+	-I$(top_srcdir)/lib/engine/chat					\
+	-I$(top_srcdir)/lib/engine/videooutput				\
 	-I$(top_srcdir)/lib/engine/videoinput/  			\
-	-I$(top_srcdir)/lib/engine/hal				\
+	-I$(top_srcdir)/lib/engine/hal					\
 	-I$(top_srcdir)/lib/engine/account				\
 	-I$(top_srcdir)/lib/engine/audioinput                           \
 	-I$(top_srcdir)/lib/engine/audiooutput                          \
 	-I$(top_srcdir)/lib/engine/addressbook				\
+	-I$(top_srcdir)/lib/engine/plugin				\
 	-I$(top_srcdir)/lib/engine/presence				\
 	-I$(top_srcdir)/lib/engine/protocol				\
 	-I$(top_srcdir)/lib/engine/components/gmconf-personal-details	\
@@ -74,13 +75,14 @@ libekiga_engine_la_LDFLAGS = -export-dynamic
 libekiga_engine_la_LIBADD = \
 	$(top_builddir)/lib/engine/gui/gtk-core/libgmgtk-core.la 					\
 	$(top_builddir)/lib/engine/gui/gtk-frontend/libgmgtk-frontend.la 				\
-	$(top_builddir)/lib/engine/chat/libgmchat.la 						\
+	$(top_builddir)/lib/engine/chat/libgmchat.la 							\
 	$(top_builddir)/lib/engine/protocol/libgmprotocol.la	 				        \
 	$(top_builddir)/lib/engine/framework/libgmframework.la 						\
 	$(top_builddir)/lib/engine/addressbook/libgmaddressbook.la 				        \
 	$(top_builddir)/lib/engine/components/call-history/libcall-history.la 				\
 	$(top_builddir)/lib/engine/account/libaccount.la 						\
 	$(top_builddir)/lib/engine/presence/libgmpresence.la 					        \
+	$(top_builddir)/lib/engine/plugin/libplugin.la							\
 	$(top_builddir)/lib/engine/components/local-roster/liblocal-roster.la 				\
 	$(top_builddir)/lib/engine/videooutput/libgmvideooutput.la					\
 	$(top_builddir)/lib/engine/videoinput/libgmvideoinput.la					\
