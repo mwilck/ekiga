@@ -101,7 +101,7 @@ GST::AudioOutputManager::open (Ekiga::AudioOutputPS ps,
   GError* error = NULL;
   GstState current;
 
-  command = g_strdup_printf ("appsrc max_buffers=2 drop=true"
+  command = g_strdup_printf ("appsrc"
 			     " caps=audio/x-raw-int"
 			     ",rate=%d"
 			     ",channels=%d"
