@@ -54,6 +54,8 @@ EXTRA_DIST = \
 	gnome-doc-utils.make					\
 	FAQ							\
 	README							\
+        LICENSE                                                 \
+        MAINTAINERS                                             \
 	$(SCHEMAS_FILE) 					\
 	gnome-doc-utils.make					\
 	lib/gmmarshallers.list					\
