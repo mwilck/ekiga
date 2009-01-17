@@ -86,6 +86,7 @@ namespace GST
     void detect_fakesink_devices ();
     void detect_alsasink_devices ();
     void detect_pulsesink_devices ();
+    void detect_sdlsink_devices ();
 
     /* we take a user-readable name, and get the string describing
      * the actual device */

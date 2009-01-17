@@ -100,15 +100,7 @@ GST::AudioOutputManager::open (Ekiga::AudioOutputPS ps,
   gchar* command = NULL;
   GError* error = NULL;
   GstState current;
-
-  command = g_strdup_printf ("appsrc"
-			     " caps=audio/x-raw-int"
-			     ",rate=%d"
-			     ",channels=%d"
-			     ",width=%d"
-			     " name=ekiga_src"
-			     " ! %s",
-			     samplerate, channels, bits_per_sample,
+  command = g_strdup_printf ("appsrc is-live=true name=ekiga_src ! %s",
 			     devices_by_name[std::pair<std::string,std::string>(current_state[ii].device.source, current_state[ii].device.name)].c_str ());
   g_print ("Pipeline: %s\n", command);
   pipeline[ii] = gst_parse_launch (command, &error);
@@ -123,7 +115,8 @@ GST::AudioOutputManager::open (Ekiga::AudioOutputPS ps,
 				 NULL,
 				 GST_SECOND);
 
-    if (current != GST_STATE_PLAYING) {
+    if ( !(current == GST_STATE_PLAYING
+	   || current == GST_STATE_PAUSED)) {
 
       gst_element_set_state (pipeline[ii], GST_STATE_NULL);
       gst_object_unref (GST_OBJECT (pipeline[ii]));
@@ -164,6 +157,15 @@ GST::AudioOutputManager::open (Ekiga::AudioOutputPS ps,
   g_free (command);
 
   current_state[ii].opened = result;
+
+  std::cout << __PRETTY_FUNCTION__
+	    << " result=";
+  if (result)
+    std::cout << "TRUE";
+  else
+    std::cout << "FALSE";
+  std::cout << std::endl;
+
   return result;
 }
 
@@ -227,7 +229,6 @@ GST::AudioOutputManager::set_frame_data (Ekiga::AudioOutputPS ps,
     gst_app_src_push_buffer (GST_APP_SRC (src), buffer);
     written = size;
     result = true;
-    gst_buffer_unref (buffer);
     g_object_unref (src);
   }
 
@@ -269,6 +270,8 @@ GST::AudioOutputManager::detect_devices ()
   detect_fakesink_devices ();
   detect_alsasink_devices ();
   detect_pulsesink_devices ();
+  detect_sdlsink_devices ();
+devices_by_name[std::pair<std::string,std::string>("FILE","/tmp/sound.wav")] = "volume name=ekiga_volume ! filesink location=/tmp/sound.wav";
 }
 
 void
@@ -314,7 +317,7 @@ GST::AudioOutputManager::detect_alsasink_devices ()
 	device = g_value_array_get_nth (array, index);
 	g_object_set_property (G_OBJECT (elt), "device", device);
 	g_object_get (G_OBJECT (elt), "device-name", &name, NULL);
-	descr = g_strdup_printf (" volume name=ekiga_volume ! alsasink device=%s",
+	descr = g_strdup_printf ("volume name=ekiga_volume ! alsasink device=%s",
 				 g_value_get_string (device));
 
 	devices_by_name[std::pair<std::string,std::string>("ALSA", name)] = descr;
@@ -360,7 +363,7 @@ GST::AudioOutputManager::detect_pulsesink_devices ()
 	device = g_value_array_get_nth (array, index);
 	g_object_set_property (G_OBJECT (elt), "device", device);
 	g_object_get (G_OBJECT (elt), "device-name", &name, NULL);
-	descr = g_strdup_printf (" volume name=ekiga_volume ! pulsesink device=%s",
+	descr = g_strdup_printf ("volume name=ekiga_volume ! pulsesink device=%s",
 				 g_value_get_string (device));
 
 	devices_by_name[std::pair<std::string,std::string>("PULSEAUDIO", name)] = descr;
@@ -373,4 +376,13 @@ GST::AudioOutputManager::detect_pulsesink_devices ()
     gst_element_set_state (elt, GST_STATE_NULL);
     gst_object_unref (GST_OBJECT (elt));
   }
+}
+
+void
+GST::AudioOutputManager::detect_sdlsink_devices ()
+{
+  gchar* descr = NULL;
+  descr = g_strdup_printf ("volume name=ekiga_volume ! sdlaudiosink");
+  devices_by_name[std::pair<std::string,std::string>("SDL", "Default")] = descr;
+  g_free (descr);
 }
