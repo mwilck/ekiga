@@ -6,6 +6,7 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/engine/			\
 	-I$(top_srcdir)/lib/engine/framework		\
 	-I$(top_srcdir)/lib/engine/gui/gtk-frontend	\
+	-I$(top_srcdir)/lib/engine/components/call-history \
 	-I$(top_srcdir)/lib/engine/account		\
 	-I$(top_srcdir)/lib/engine/addressbook	\
 	-I$(top_srcdir)/lib/engine/chat		\

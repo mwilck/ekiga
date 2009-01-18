@@ -59,10 +59,6 @@ public:
 
   const std::string get_description () const;
 
-  const GtkWidget *get_roster_view () const;
-
-  const GtkWidget *get_call_history_view () const;
-
   const GtkWidget *get_addressbook_window () const;
 
   const GtkWidget *get_chat_window () const;
@@ -70,8 +66,6 @@ public:
 private :
 
   GtkWidget *addressbook_window;
-  GtkWidget *roster_view;
-  GtkWidget *call_history_view;
   GtkWidget *chat_window;
 };
 

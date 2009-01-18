@@ -98,6 +98,9 @@
 #include "call-core.h"
 #include "account.h"
 #include "gtk-frontend.h"
+#include "roster-view-gtk.h"
+#include "call-history-view-gtk.h"
+#include "history-source.h"
 #include "services.h"
 #include "form-dialog-gtk.h"
 
@@ -3382,12 +3385,12 @@ ekiga_main_window_init_contact_list (EkigaMainWindow *mw)
   services = GnomeMeeting::Process ()->GetServiceCore ();
   g_return_if_fail (services != NULL);
 
-  gmref_ptr<GtkFrontend> gtk_frontend = services->get ("gtk-frontend");
+  gmref_ptr<Ekiga::PresenceCore> presence_core = services->get ("presence-core");
 
   label = gtk_label_new (_("Contacts"));
-  roster_view = GTK_WIDGET (gtk_frontend->get_roster_view ());
+  roster_view = roster_view_gtk_new (*presence_core);
   gtk_notebook_append_page (GTK_NOTEBOOK (mw->priv->main_notebook),
-			    roster_view, label);
+			      roster_view, label);
   g_signal_connect (G_OBJECT (roster_view), "presentity-selected",
 		    G_CALLBACK (on_presentity_selected), mw);
 }
@@ -3422,11 +3425,13 @@ ekiga_main_window_init_history (EkigaMainWindow *mw)
   services = GnomeMeeting::Process ()->GetServiceCore ();
   g_return_if_fail (services != NULL);
 
-  gmref_ptr<GtkFrontend> gtk_frontend = services->get ("gtk-frontend");
+  gmref_ptr<History::Source> history_source = services->get ("call-history-store");
+  gmref_ptr<History::Book> history_book = history_source->get_book ();
+  GtkWidget* call_history_view = call_history_view_gtk_new (history_book);
 
   label = gtk_label_new (_("Call history"));
   gtk_notebook_append_page (GTK_NOTEBOOK (mw->priv->main_notebook),
-			    GTK_WIDGET (gtk_frontend->get_call_history_view ()),
+			    call_history_view,
 			    label);
 }
 
