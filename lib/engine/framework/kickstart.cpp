@@ -37,6 +37,8 @@
 
 #define KICKSTART_DEBUG 1
 
+#include <algorithm>
+
 #if KICKSTART_DEBUG
 #include <iostream>
 #endif
@@ -83,7 +85,14 @@ Ekiga::KickStart::kick (Ekiga::ServiceCore& core,
 			int* argc,
 			char** argv[])
 {
+  std::list<std::string> disabled;
   bool went_on;
+
+//   disabled.push_back ("AVAHI");
+//   disabled.push_back ("AVAHIPUB");
+//   disabled.push_back ("EVOLUTION");
+//   disabled.push_back ("LDAP");
+//   disabled.push_back ("HISTORY");
 
   // this makes sure we loop only if something needs to be done
   went_on = !(blanks.empty () && partials.empty ());
@@ -106,7 +115,17 @@ Ekiga::KickStart::kick (Ekiga::ServiceCore& core,
 	   iter != temp.end ();
 	   ++iter) {
 
-	bool result = (*iter)->try_initialize_more (core, argc, argv);
+	bool result = false;
+	if (std::find (disabled.begin (),
+		       disabled.end (), (*iter)->get_name ())
+	    == disabled.end ()) {
+
+	  result = (*iter)->try_initialize_more (core, argc, argv);
+	} else {
+
+	  std::cout << "KickStart(kick): " << (*iter)->get_name ()
+		    << " is disabled" << std::endl;
+	}
 
 	if (result) {
 
