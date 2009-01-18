@@ -92,16 +92,14 @@ Ekiga::KickStart::kick (Ekiga::ServiceCore& core,
   while (went_on) {
 
     went_on = false;
-#if KICKSTART_DEBUG
-    std::cout << "KickStart(kick): starting a loop" << std::endl;
-#endif
 
     { // first try the blanks
       std::list<gmref_ptr<Spark> > temp;
       temp.swap (blanks);
 
 #if KICKSTART_DEBUG
-    std::cout << "KickStart(kick): looping on BLANK sparks" << std::endl;
+      if (!temp.empty ())
+	std::cout << "KickStart(kick): looping on BLANK sparks" << std::endl;
 #endif
 
       for (std::list<gmref_ptr<Spark> >::iterator iter = temp.begin ();
@@ -166,7 +164,8 @@ Ekiga::KickStart::kick (Ekiga::ServiceCore& core,
       temp.swap (partials);
 
 #if KICKSTART_DEBUG
-    std::cout << "KickStart(kick): looping on PARTIAL sparks" << std::endl;
+      if (!temp.empty ())
+	std::cout << "KickStart(kick): looping on PARTIAL sparks" << std::endl;
 #endif
 
       for (std::list<gmref_ptr<Spark> >::iterator iter = temp.begin ();
@@ -224,9 +223,5 @@ Ekiga::KickStart::kick (Ekiga::ServiceCore& core,
 	}
       }
     }
-
-#if KICKSTART_DEBUG
-    std::cout << "KickStart(kick): ending a loop" << std::endl;
-#endif
   }
 }
