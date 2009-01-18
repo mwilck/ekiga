@@ -88,11 +88,22 @@ Ekiga::KickStart::kick (Ekiga::ServiceCore& core,
   std::list<std::string> disabled;
   bool went_on;
 
-//   disabled.push_back ("AVAHI");
-//   disabled.push_back ("AVAHIPUB");
-//   disabled.push_back ("EVOLUTION");
-//   disabled.push_back ("LDAP");
-//   disabled.push_back ("HISTORY");
+  for (int arg = 2; arg <= *argc; arg++) {
+
+    std::string argument = (*argv)[arg - 1];
+    if (argument.find ("--kickstart-disabled=") == 0) {
+
+      std::string::size_type last_pos = argument.find_first_of ('=') + 1;
+      std::string::size_type pos = argument.find_first_of (',', last_pos);
+
+      while (pos != std::string::npos || last_pos != std::string::npos) {
+
+	disabled.push_back (argument.substr (last_pos, pos - last_pos));
+	last_pos = argument.find_first_not_of (',', pos);
+	pos = argument.find_first_of (',', last_pos);
+      }
+    }
+  }
 
   // this makes sure we loop only if something needs to be done
   went_on = !(blanks.empty () && partials.empty ());
