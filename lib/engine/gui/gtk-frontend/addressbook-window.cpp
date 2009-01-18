@@ -750,6 +750,9 @@ addressbook_window_new (Ekiga::ContactCore &core)
                     G_CALLBACK (on_notebook_realize), self);
   gtk_paned_add2 (GTK_PANED (hpaned), self->priv->notebook);
 
+  conn = core.source_added.connect (sigc::bind (sigc::ptr_fun (on_source_added), (gpointer) self));
+  self->priv->connections.push_back (conn);
+
   conn = core.book_updated.connect (sigc::bind (sigc::ptr_fun (on_book_updated),
                                                 (gpointer) self));
   self->priv->connections.push_back (conn);
