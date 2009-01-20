@@ -228,7 +228,7 @@ GST::AudioOutputManager::set_frame_data (Ekiga::AudioOutputPS ps,
 
   if (src != NULL) {
 
-    tmp = (gchar*)g_malloc (size);
+    tmp = (gchar*)g_malloc0 (size);
     memcpy (tmp, data, size);
     buffer = gst_app_buffer_new (tmp, size,
 				 (GstAppBufferFinalizeFunc)g_free, tmp);
