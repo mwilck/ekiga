@@ -274,7 +274,7 @@ GST::VideoInputManager::detect_v4l2src_devices ()
 	descr = g_strdup_printf ("v4l2src device=%s"
 				 " ! videoscale ! ffmpegcolorspace",
 				 g_value_get_string (device));
-	devices_by_name[std::pair<std::string,std::string>("V4L",name)] = descr;
+	devices_by_name[std::pair<std::string,std::string>("V4L2",name)] = descr;
 	g_free (descr);
       }
 
