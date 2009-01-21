@@ -51,6 +51,7 @@
 #include "gmdialog.h"
 
 #include "services.h"
+#include "menu-builder-tools.h"
 #include "menu-builder-gtk.h"
 #include "form-dialog-gtk.h"
 
@@ -349,9 +350,7 @@ account_clicked_cb (G_GNUC_UNUSED GtkWidget *w,
   tree_view = GTK_TREE_VIEW (aw->accounts_list);
   model = gtk_tree_view_get_model (tree_view);
 
-  if (event->type == GDK_BUTTON_PRESS || event->type == GDK_KEY_PRESS) {
-
-    populate_menu (GTK_WIDGET (data));
+  if (event->type == GDK_BUTTON_PRESS || event->type == GDK_KEY_PRESS || event->type == GDK_2BUTTON_PRESS) {
 
     if (gtk_tree_view_get_path_at_pos (GTK_TREE_VIEW (tree_view),
                                        (gint) event->x, (gint) event->y,
@@ -363,25 +362,38 @@ account_clicked_cb (G_GNUC_UNUSED GtkWidget *w,
                             COLUMN_ACCOUNT, &account,
                             -1);
 
-        if (event->button == 3) {
-
-          MenuBuilderGtk builder;
-          account->populate_menu (builder);
-          if (!builder.empty ()) {
-
-            gtk_widget_show_all (builder.menu);
-            gtk_menu_popup (GTK_MENU (builder.menu), NULL, NULL,
-                            NULL, NULL, event->button, event->time);
-            g_signal_connect (G_OBJECT (builder.menu), "hide",
-                              G_CALLBACK (g_object_unref),
-                              (gpointer) builder.menu);
-          }
-          g_object_ref_sink (G_OBJECT (builder.menu));
-        }
+        gtk_tree_path_free (path);
       }
-
-      gtk_tree_path_free (path);
     }
+  }
+
+  if (account == NULL)
+    return FALSE;
+
+  if (event->type == GDK_BUTTON_PRESS || event->type == GDK_KEY_PRESS) {
+
+    populate_menu (GTK_WIDGET (data));
+
+    if (event->button == 3) {
+
+      MenuBuilderGtk builder;
+      account->populate_menu (builder);
+      if (!builder.empty ()) {
+
+        gtk_widget_show_all (builder.menu);
+        gtk_menu_popup (GTK_MENU (builder.menu), NULL, NULL,
+                        NULL, NULL, event->button, event->time);
+        g_signal_connect (G_OBJECT (builder.menu), "hide",
+                          G_CALLBACK (g_object_unref),
+                          (gpointer) builder.menu);
+      }
+      g_object_ref_sink (G_OBJECT (builder.menu));
+    }
+  }
+  else if (event->type == GDK_2BUTTON_PRESS) {
+
+    Ekiga::TriggerMenuBuilder builder;
+    account->populate_menu (builder);
   }
 
   return TRUE;
