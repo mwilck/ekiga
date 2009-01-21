@@ -478,7 +478,7 @@ bool Opal::Sip::EndPoint::set_listen_port (unsigned port)
 
   manager.get_udp_ports (udp_min, udp_max);
 
-  if (port > 0 && port >= udp_min && port <= udp_max) {
+  if (port > 0) {
 
     std::stringstream str;
     RemoveListener (NULL);
