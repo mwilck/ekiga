@@ -687,6 +687,7 @@ static void on_cleared_call_cb (gmref_ptr<Ekiga::CallManager>  /*manager*/,
     ekiga_main_window_set_stay_on_top (mw, FALSE);
   ekiga_main_window_update_calling_state (mw, Standby);
   ekiga_main_window_set_status (mw, _("Standby"));
+  ekiga_main_window_set_call_url (mw, "sip:");
   ekiga_main_window_set_call_duration (mw, NULL);
   ekiga_main_window_set_call_info (mw, NULL, NULL, NULL, NULL);
   if (!gm_conf_get_bool (USER_INTERFACE_KEY "main_window/show_call_panel"))
