@@ -1464,7 +1464,7 @@ place_call_cb (GtkWidget * /*widget*/,
     gmref_ptr<Ekiga::CallCore> call_core = mw->priv->core->get ("call-core");
     uri = ekiga_main_window_get_call_url (mw);
     pos = uri.find ("@");
-    if (pos == std::string::npos) {
+    if (pos == std::string::npos && uri.find ("h323:") == std::string::npos) {
       std::list<std::string>::iterator it = mw->priv->accounts.begin ();
       uri = uri + "@" + (*it);
       ekiga_main_window_set_call_url (mw, uri.c_str ());
