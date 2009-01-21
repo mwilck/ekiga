@@ -727,12 +727,13 @@ CallManager::HandleSTUNResult ()
 			 " still use it, but you need to configure your network settings manually.\n\n"
 			 "Please see http://wiki.ekiga.org/index.php/Enable_port_forwarding_manually for"
 			 " instructions"));
-    } else {
+    } 
+    else {
 
-    for (Ekiga::CallManager::iterator iter = begin ();
-	 iter != end ();
-	 ++iter) 
-      (*iter)->set_listen_port ((*iter)->get_listen_interface ().port);
+      for (Ekiga::CallManager::iterator iter = begin ();
+           iter != end ();
+           ++iter) 
+        (*iter)->set_listen_port ((*iter)->get_listen_interface ().port);
     }
 
     ready.emit ();
@@ -740,7 +741,8 @@ CallManager::HandleSTUNResult ()
     if (result != NULL)
       g_free (result);
 
-  } else {
+  } 
+  else {
 
       patience--;
       runtime->run_in_main (sigc::mem_fun (this,

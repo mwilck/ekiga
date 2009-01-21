@@ -304,8 +304,8 @@ void Opal::Sip::EndPoint::fetch (const std::string _uri)
   // It is not in the list of uris for which a subscribe is active
   if (std::find (subscribed_uris.begin (), subscribed_uris.end (), _uri) == subscribed_uris.end ()) {
 
-    // We are registered yet
-    if (std::find (domains.begin (), domains.end (), domain) != domains.end ()) {
+    // The account is active 
+    if (std::find (active_domains.begin (), active_domains.end (), domain) != active_domains.end ()) {
 
       Subscribe (SIPSubscribe::Presence, 300, PString (_uri.c_str ()));
       Subscribe (SIPSubscribe::Dialog, 300, PString (_uri.c_str ()));
@@ -463,7 +463,7 @@ bool Opal::Sip::EndPoint::set_listen_port (unsigned port)
 
   manager.get_udp_ports (udp_min, udp_max);
 
-  if (port > 0 && port >= udp_min && port <= udp_max) {
+  if (port > 0) {
 
     std::stringstream str;
     RemoveListener (NULL);
@@ -484,8 +484,10 @@ bool Opal::Sip::EndPoint::set_listen_port (unsigned port)
         port++;
       }
     }
-    else
+    else {
       listen_iface.port = port;
+      return true;
+    }
   }
 
   return false;
@@ -537,6 +539,18 @@ unsigned Opal::Sip::EndPoint::get_nat_binding_delay ()
 }
 
 
+std::string Opal::Sip::EndPoint::get_aor_domain (const std::string & aor)
+{
+  std::string domain;
+  std::string::size_type loc = aor.find ("@", 0);
+
+  if (loc != string::npos) 
+    domain = aor.substr (loc+1);
+
+  return domain;
+}
+
+
 bool Opal::Sip::EndPoint::subscribe (const Opal::Account & account)
 {
   if (account.get_protocol_name () != "SIP" || account.is_active ())
@@ -579,7 +593,16 @@ void Opal::Sip::EndPoint::Register (const Opal::Account & account)
   params.m_expire = (account.is_enabled () ? account.get_timeout () : 0);
   params.m_minRetryTime = 0;
   params.m_maxRetryTime = 0;
+  
+  // Update the list of active domains
+  std::string domain = Opal::Sip::EndPoint::get_aor_domain (aor.str ());
+  bool found = (std::find (active_domains.begin (), active_domains.end (), domain) != active_domains.end ());
+  if (account.is_enabled () && !found)
+    active_domains.push_back (domain);
+  else if (!account.is_enabled () && found)
+    active_domains.remove (domain);
 
+  // Register the given aor to the give registrar
   if (!SIPEndPoint::Register (params, _aor))
     OnRegistrationFailed (aor.str (), SIP_PDU::MaxStatusCode, account.is_enabled ());
 }
@@ -614,16 +637,9 @@ void Opal::Sip::EndPoint::OnRegistered (const PString & _aor,
 
   if (loc != string::npos) {
 
-    server = aor.substr (loc+1);
-
+    server = get_aor_domain (aor);
     if (server.empty ())
       return;
-
-    if (was_registering && std::find (domains.begin (), domains.end (), server) == domains.end ()) 
-      domains.push_back (server);
-
-    if (!was_registering && std::find (domains.begin (), domains.end (), server) != domains.end ()) 
-      domains.remove (server);
 
     if (was_registering) {
       for (std::list<std::string>::const_iterator iter = to_subscribe_uris.begin (); 
@@ -1078,8 +1094,8 @@ Opal::Sip::EndPoint::OnPresenceInfoReceived (const PString & user,
   SIPURL sip_uri = SIPURL (user);
   sip_uri.Sanitise (SIPURL::ExternalURI);
   std::string _uri = sip_uri.AsString ();
-  std::string old_presence = uri_presences[_uri].first;
-  std::string old_status = uri_presences[_uri].second;
+  std::string old_presence = presence_infos[_uri].presence;
+  std::string old_status = presence_infos[_uri].status;
 
   // If first notification, and no information, then we are offline
   if (presence == "unknown" && old_presence.empty ())
@@ -1090,8 +1106,9 @@ Opal::Sip::EndPoint::OnPresenceInfoReceived (const PString & user,
   // first notification, and we can conclude it is a ping back from the server 
   // to indicate the presence status did not change, hence we do nothing.
   if (presence != "unknown" && (old_presence != presence || old_status != status)) {
-    uri_presences[_uri] = std::pair<std::string, std::string> (presence, status);
-    runtime->run_in_main (sigc::bind (sigc::ptr_fun (presence_status_in_main), this, _uri, presence, status));
+    presence_infos[_uri].presence = presence;
+    presence_infos[_uri].status = status;
+    runtime->run_in_main (sigc::bind (sigc::ptr_fun (presence_status_in_main), this, _uri, presence_infos[_uri].presence, presence_infos[_uri].status));
   }
 }
 
@@ -1099,9 +1116,10 @@ Opal::Sip::EndPoint::OnPresenceInfoReceived (const PString & user,
 void 
 Opal::Sip::EndPoint::OnDialogInfoReceived (const SIPDialogNotification & info)
 {
-  gchar* status = NULL;
+  gchar* _status = NULL;
+  std::string status;
   std::string presence;
-  PString uri = info.m_entity;
+  std::string uri = (const char *) info.m_entity;
   PString remote_uri = info.m_remote.m_identity;
   PString remote_display_name = info.m_remote.m_display.IsEmpty () ? remote_uri : info.m_remote.m_display;
 
@@ -1109,17 +1127,19 @@ Opal::Sip::EndPoint::OnDialogInfoReceived (const SIPDialogNotification & info)
     case SIPDialogNotification::Proceeding:
     case SIPDialogNotification::Early:
       if (!remote_display_name.IsEmpty ())
-        status = g_strdup_printf (_("Incoming call from %s"), (const char *) remote_display_name);
+        _status = g_strdup_printf (_("Incoming call from %s"), (const char *) remote_display_name);
       else
-        status = g_strdup_printf (_("Incoming call"));
+        _status = g_strdup_printf (_("Incoming call"));
+      status = _status;
       presence = "ringing";
       break;
     case SIPDialogNotification::Confirmed:
       if (!remote_display_name.IsEmpty ())
-        status = g_strdup_printf (_("In a call with %s"), (const char *) remote_display_name);
+        _status = g_strdup_printf (_("In a call with %s"), (const char *) remote_display_name);
       else
-        status = g_strdup_printf (_("In a call"));
+        _status = g_strdup_printf (_("In a call"));
       presence = "inacall";
+      status = _status;
       break;
     default:
     case SIPDialogNotification::Trying:
@@ -1127,10 +1147,13 @@ Opal::Sip::EndPoint::OnDialogInfoReceived (const SIPDialogNotification & info)
       break;
   }
 
-  if (status)
-    runtime->run_in_main (sigc::bind (sigc::ptr_fun (presence_status_in_main), this, uri, presence, status));
+  dialog_infos[uri].presence = presence;
+  dialog_infos[uri].status = status;
+
+  if (_status)
+    runtime->run_in_main (sigc::bind (sigc::ptr_fun (presence_status_in_main), this, uri, dialog_infos[uri].presence, dialog_infos[uri].status));
   else
-    runtime->run_in_main (sigc::bind (sigc::ptr_fun (presence_status_in_main), this, uri, uri_presences[uri].first, uri_presences[uri].second));
+    runtime->run_in_main (sigc::bind (sigc::ptr_fun (presence_status_in_main), this, uri, presence_infos[uri].presence, presence_infos[uri].status));
 }
 
 

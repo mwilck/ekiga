@@ -73,6 +73,15 @@ namespace Opal {
 
   public:
 
+      typedef std::list<std::string> domain_list;
+      typedef std::list<std::string>::iterator domain_list_iterator;
+      typedef struct {
+        std::string presence;
+        std::string status;
+        bool requested;
+      } uri_info;
+      typedef std::map<std::string, uri_info> uri_info_map; 
+
       EndPoint (CallManager &ep, Ekiga::ServiceCore & core, unsigned listen_port);
 
       ~EndPoint ();
@@ -132,6 +141,10 @@ namespace Opal {
       bool subscribe (const Opal::Account & account);
       bool unsubscribe (const Opal::Account & account);
 
+      
+      /* Helper */
+      static std::string get_aor_domain (const std::string & aor);
+
 
       /* OPAL Methods */
       void Register (const Opal::Account & account);
@@ -180,7 +193,6 @@ namespace Opal {
 
       std::list<std::string> to_subscribe_uris;  // List of uris to subscribe
       std::list<std::string> subscribed_uris;    // List of subscribed uris
-      std::list<std::string> domains;            // List of registered domains
       std::list<std::string> aors;               // List of registered aor
       Ekiga::ServiceCore & core;
       Ekiga::Runtime* runtime;
@@ -197,7 +209,9 @@ namespace Opal {
 
       SIP::Dialect* dialect;
 
-      std::map<std::string, std::pair <std::string, std::string> > uri_presences;
+      domain_list active_domains;   // List of active domains
+      uri_info_map presence_infos;  // List of uri presences
+      uri_info_map dialog_infos;    // List of uri dialog informations
     };
   };
 };

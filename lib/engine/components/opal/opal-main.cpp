@@ -88,14 +88,48 @@ is_supported_address (const std::string uri)
 using namespace Opal;
 
 void 
-on_call_manager_ready_cb (Ekiga::ServiceCore *core)
+on_call_manager_ready_cb (Ekiga::ServiceCore *core,
+                          gmref_ptr<CallManager> call_manager)
 {
   gmref_ptr<Ekiga::AccountCore> account_core = core->get ("account-core");
+  gmref_ptr<Ekiga::ContactCore> contact_core = core->get ("contact-core");
+  gmref_ptr<Ekiga::PresenceCore> presence_core = core->get ("presence-core");
   gmref_ptr<Opal::Bank> bank (new Bank (*core));
+
+#ifdef HAVE_SIP
+  gmref_ptr<Sip::EndPoint> sip_manager = call_manager->get_protocol_manager ("sip");  
+#endif
+#ifdef HAVE_H323
+  gmref_ptr<H323::EndPoint> h323_manager = call_manager->get_protocol_manager ("h323");  
+#endif
 
   account_core->add_bank (*bank);
   core->add (bank);
+
+  if (contact_core) { 
+
+#ifdef HAVE_SIP
+    contact_core->add_contact_decorator (sip_manager);
+#endif
+#ifdef HAVE_H323
+    contact_core->add_contact_decorator (h323_manager);
+#endif
+  }
+
+  if (presence_core) {
+
+#ifdef HAVE_SIP
+    presence_core->add_presentity_decorator (sip_manager);
+    presence_core->add_presence_fetcher (sip_manager);
+    presence_core->add_presence_publisher (sip_manager);
+#endif
+#ifdef HAVE_H323
+    presence_core->add_presentity_decorator (h323_manager);
+#endif
+    presence_core->add_supported_uri (sigc::ptr_fun (is_supported_address)); //FIXME
+  }
 }
+
 
 bool
 opal_init (Ekiga::ServiceCore &core,
@@ -107,8 +141,6 @@ opal_init (Ekiga::ServiceCore &core,
   gmref_ptr<Ekiga::CallCore> call_core = core.get ("call-core");
   gmref_ptr<Ekiga::ChatCore> chat_core = core.get ("chat-core");
   gmref_ptr<Ekiga::AccountCore> account_core = core.get ("account-core");
-
-  bool result = true;
 
   gmref_ptr<CallManager> call_manager (new CallManager (core));
 
@@ -131,35 +163,8 @@ opal_init (Ekiga::ServiceCore &core,
   new ConfBridge (*call_manager); // FIXME: isn't that leaked!?
 
   // Add the bank of accounts when the CallManager is ready
-  call_manager->ready.connect (sigc::bind (sigc::ptr_fun (on_call_manager_ready_cb), &core));
+  call_manager->ready.connect (sigc::bind (sigc::ptr_fun (on_call_manager_ready_cb), &core, call_manager));
   call_manager->start ();
-
-  if (contact_core) { 
-
-#ifdef HAVE_SIP
-    contact_core->add_contact_decorator (sip_manager);
-#endif
-#ifdef HAVE_H323
-    contact_core->add_contact_decorator (h323_manager);
-#endif
-  }
-  else
-    return false;
-
-  if (presence_core) {
-
-#ifdef HAVE_SIP
-    presence_core->add_presentity_decorator (sip_manager);
-    presence_core->add_presence_fetcher (sip_manager);
-    presence_core->add_presence_publisher (sip_manager);
-#endif
-#ifdef HAVE_H323
-    presence_core->add_presentity_decorator (h323_manager);
-#endif
-    presence_core->add_supported_uri (sigc::ptr_fun (is_supported_address)); //FIXME
-  }
-  else
-    return false;
 
   OpalLinkerHacks::loadOpalVideoInput = 1;
   OpalLinkerHacks::loadOpalVideoOutput = 1;
@@ -167,5 +172,5 @@ opal_init (Ekiga::ServiceCore &core,
 
   core.add (call_manager);
 
-  return result;
+  return true;
 }
