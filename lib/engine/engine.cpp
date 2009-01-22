@@ -249,10 +249,7 @@ engine_init (int argc,
     return;
   }
 
-  if (!local_roster_bridge_init (*service_core, &argc, &argv)) {
-    delete service_core;
-    return;
-  }
+  local_roster_bridge_init (kickstart);
 
   plugin_init (kickstart);
 

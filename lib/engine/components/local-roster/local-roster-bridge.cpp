@@ -103,22 +103,42 @@ Local::ContactDecorator::populate_menu (gmref_ptr<Ekiga::Contact> contact,
 
 /* public api */
 
-bool
-local_roster_bridge_init (Ekiga::ServiceCore &core,
-			  int * /*argc*/,
-			  char ** /*argv*/[])
+struct LOCALROSTERBRIDGESpark: public Ekiga::Spark
 {
-  bool result = false;
-  gmref_ptr<Ekiga::ContactCore> contact_core = core.get ("contact-core");
-  gmref_ptr<Local::Cluster> cluster = core.get ("local-cluster");
+  LOCALROSTERBRIDGESpark (): result(false)
+  {}
 
-  if (cluster && contact_core) {
+  bool try_initialize_more (Ekiga::ServiceCore& core,
+			    int* /*argc*/,
+			    char** /*argv*/[])
+  {
+    gmref_ptr<Ekiga::Service> service = core.get ("local-roster-bridge");
+    gmref_ptr<Ekiga::ContactCore> contact_core = core.get ("contact-core");
+    gmref_ptr<Local::Cluster> cluster = core.get ("local-cluster");
 
-    gmref_ptr<Local::ContactDecorator> decorator (new Local::ContactDecorator (cluster));
-    core.add (decorator);
-    contact_core->add_contact_decorator (decorator);
-    result = true;
+    if (cluster && contact_core && !service) {
+
+      gmref_ptr<Local::ContactDecorator> decorator (new Local::ContactDecorator (cluster));
+      core.add (decorator);
+      contact_core->add_contact_decorator (decorator);
+      result = true;
+    }
+
+    return result;
   }
 
-  return result;
+  Ekiga::Spark::state get_state () const
+  { return result?FULL:BLANK; }
+
+  const std::string get_name () const
+  { return "LOCALROSTERBRIDGE"; }
+
+  bool result;
+};
+
+void
+local_roster_bridge_init (Ekiga::KickStart& kickstart)
+{
+  gmref_ptr<Ekiga::Spark> spark(new LOCALROSTERBRIDGESpark);
+  kickstart.add_spark (spark);
 }
