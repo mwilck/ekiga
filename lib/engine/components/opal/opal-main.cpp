@@ -87,24 +87,24 @@ is_supported_address (const std::string uri)
 
 using namespace Opal;
 
-static void 
-on_call_manager_ready_cb (Ekiga::ServiceCore *core,
-                          gmref_ptr<CallManager> call_manager)
+static void
+on_call_manager_ready_cb (Ekiga::ServiceCore& core)
 {
-  gmref_ptr<Ekiga::AccountCore> account_core = core->get ("account-core");
-  gmref_ptr<Ekiga::ContactCore> contact_core = core->get ("contact-core");
-  gmref_ptr<Ekiga::PresenceCore> presence_core = core->get ("presence-core");
-  gmref_ptr<Opal::Bank> bank (new Bank (*core));
+  gmref_ptr<Ekiga::AccountCore> account_core = core.get ("account-core");
+  gmref_ptr<Ekiga::ContactCore> contact_core = core.get ("contact-core");
+  gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
+  gmref_ptr<CallManager> call_manager = core.get ("opal-component");
+  gmref_ptr<Opal::Bank> bank (new Bank (core));
 
 #ifdef HAVE_SIP
-  gmref_ptr<Sip::EndPoint> sip_manager = call_manager->get_protocol_manager ("sip");  
+  gmref_ptr<Sip::EndPoint> sip_manager = call_manager->get_protocol_manager ("sip");
 #endif
 #ifdef HAVE_H323
-  gmref_ptr<H323::EndPoint> h323_manager = call_manager->get_protocol_manager ("h323");  
+  gmref_ptr<H323::EndPoint> h323_manager = call_manager->get_protocol_manager ("h323");
 #endif
 
   account_core->add_bank (*bank);
-  core->add (bank);
+  core.add (bank);
 
 #ifdef HAVE_SIP
   contact_core->add_contact_decorator (sip_manager);
@@ -143,16 +143,35 @@ struct OPALSpark: public Ekiga::Spark
 
       gmref_ptr<CallManager> call_manager (new CallManager (core));
 
+
+#ifdef HAVE_SIP
+      unsigned sip_port = gm_conf_get_int (SIP_KEY "listen_port");
+      gmref_ptr<Sip::EndPoint> sip_manager (new Sip::EndPoint (*call_manager, core, sip_port));
+      call_manager->add_protocol_manager (sip_manager);
+      account_core->add_account_subscriber (*sip_manager);
+#endif
+
+#ifdef HAVE_H323
+      unsigned h323_port = gm_conf_get_int (H323_KEY "listen_port");
+      gmref_ptr<H323::EndPoint> h323_manager (new H323::EndPoint (*call_manager, core, h323_port));
+      call_manager->add_protocol_manager (h323_manager);
+      account_core->add_account_subscriber (*h323_manager);
+#endif
+
+      call_core->add_manager (call_manager);
+
+      core.add (call_manager);
+
       new ConfBridge (*call_manager); // FIXME: isn't that leaked!?
+
       // Add the bank of accounts when the CallManager is ready
-      call_manager->ready.connect (sigc::bind (sigc::ptr_fun (on_call_manager_ready_cb), &core, call_manager));
+      call_manager->ready.connect (sigc::bind (sigc::ptr_fun (on_call_manager_ready_cb), core));
+
       call_manager->start ();
 
       OpalLinkerHacks::loadOpalVideoInput = 1;
       OpalLinkerHacks::loadOpalVideoOutput = 1;
       OpalLinkerHacks::loadOpalAudio = 1;
-
-      core.add (call_manager);
 
       result = true;
     }
