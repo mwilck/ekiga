@@ -39,10 +39,8 @@
 #ifndef __HAL_MAIN_DBUS_H__
 #define __HAL_MAIN_DBUS_H__
 
-#include "services.h"
+#include "kickstart.h"
 
-bool hal_dbus_init (Ekiga::ServiceCore &core,
-  		     int *argc,
-		     char **argv[]);
+void hal_dbus_init (Ekiga::KickStart& kickstart);
 
 #endif

@@ -31,7 +31,7 @@
  *                         ------------------------------------------
  *   begin                : written in 2008 by Matthias Schneider
  *   copyright            : (c) 2008 by Matthias Schneider
- *   description          : code to hook the Moving Logo vidinput manager 
+ *   description          : code to hook the Moving Logo vidinput manager
  *                          into the main program
  *
  */
@@ -40,21 +40,40 @@
 #include "hal-core.h"
 #include "hal-manager-dbus.h"
 
-bool
-hal_dbus_init (Ekiga::ServiceCore &core,
-	    int */*argc*/,
-	    char **/*argv*/[])
+struct HALDBUSSpark: public Ekiga::Spark
 {
-  bool result = false;
-  gmref_ptr<Ekiga::HalCore> hal_core = core.get ("hal-core");
+  HALDBUSSpark (): result(false)
+  {}
 
-  if (hal_core) {
+  bool try_initialize_more (Ekiga::ServiceCore& core,
+			    int* /*argc*/,
+			    char** /*argv*/[])
+  {
+    gmref_ptr<Ekiga::HalCore> hal_core = core.get ("hal-core");
 
-    HalManager_dbus *hal_manager = new HalManager_dbus(core);
+    if (hal_core) {
 
-    hal_core->add_manager (*hal_manager);
-    result = true;
+      HalManager_dbus *hal_manager = new HalManager_dbus(core);
+
+      hal_core->add_manager (*hal_manager);
+      result = true;
+    }
+
+    return result;
   }
 
-  return result;
+  Ekiga::Spark::state get_state () const
+  { return result?FULL:BLANK; }
+
+  const std::string get_name () const
+  { return "HALDBUSSPARK"; }
+
+  bool result;
+};
+
+void
+hal_dbus_init (Ekiga::KickStart& kickstart)
+{
+  gmref_ptr<Ekiga::Spark> spark(new HALDBUSSpark);
+  kickstart.add_spark (spark);
 }

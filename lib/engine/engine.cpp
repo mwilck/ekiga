@@ -212,10 +212,7 @@ engine_init (int argc,
   }
 
 #ifdef HAVE_DBUS
-  if (!hal_dbus_init (*service_core, &argc, &argv)) {
-    delete service_core;
-    return;
-  }
+  hal_dbus_init (kickstart);
 #endif
 
   opal_init (kickstart);
