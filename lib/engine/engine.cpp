@@ -201,10 +201,7 @@ engine_init (int argc,
     return;
   }
 
-  if (!audioinput_ptlib_init (*service_core, &argc, &argv)) {
-    delete service_core;
-    return;
-  }
+  audioinput_ptlib_init (kickstart);
 
   audiooutput_ptlib_init (kickstart);
 

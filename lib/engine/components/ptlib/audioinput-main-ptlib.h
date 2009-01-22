@@ -39,10 +39,8 @@
 #ifndef __AUDIOINPUT_MAIN_PTLIB_H__
 #define __AUDIOINPUT_MAIN_PTLIB_H__
 
-#include "services.h"
+#include "kickstart.h"
 
-bool audioinput_ptlib_init (Ekiga::ServiceCore &core,
-  	   	            int *argc,
-		            char **argv[]);
+void audioinput_ptlib_init (Ekiga::KickStart& kickstart);
 
 #endif
