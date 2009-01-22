@@ -39,10 +39,8 @@
 #ifndef __VIDEOINPUT_MAIN_PTLIB_H__
 #define __VIDEOINPUT_MAIN_PTLIB_H__
 
-#include "services.h"
+#include "kickstart.h"
 
-bool videoinput_ptlib_init (Ekiga::ServiceCore &core,
-  		     int *argc,
-		     char **argv[]);
+void videoinput_ptlib_init (Ekiga::KickStart& kickstart);
 
 #endif

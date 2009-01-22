@@ -31,7 +31,7 @@
  *                         ------------------------------------------
  *   begin                : written in 2008 by Matthias Schneider
  *   copyright            : (c) 2008 by Matthias Schneider
- *   description          : code to hook the PTLIB videoinput manager 
+ *   description          : code to hook the PTLIB videoinput manager
  *                          into the main program
  *
  */
@@ -40,22 +40,40 @@
 #include "videoinput-core.h"
 #include "videoinput-manager-ptlib.h"
 
-bool
-videoinput_ptlib_init (Ekiga::ServiceCore &core,
-	    int */*argc*/,
-	    char **/*argv*/[])
+struct PTLIBVIDEOINPUTSpark: public Ekiga::Spark
 {
-  bool result = false;
-  gmref_ptr<Ekiga::VideoInputCore> videoinput_core
-    = core.get ("videoinput-core");
+  PTLIBVIDEOINPUTSpark (): result(false)
+  {}
 
-  if (videoinput_core) {
+  bool try_initialize_more (Ekiga::ServiceCore& core,
+			    int* /*argc*/,
+			    char** /*argv*/[])
+  {
+    gmref_ptr<Ekiga::VideoInputCore> videoinput_core = core.get ("videoinput-core");
 
-    GMVideoInputManager_ptlib *videoinput_manager = new GMVideoInputManager_ptlib(core);
+    if (videoinput_core) {
 
-    videoinput_core->add_manager (*videoinput_manager);
-    result = true;
+      GMVideoInputManager_ptlib *videoinput_manager = new GMVideoInputManager_ptlib(core);
+
+      videoinput_core->add_manager (*videoinput_manager);
+      result = true;
+    }
+
+    return result;
   }
 
-  return result;
+  Ekiga::Spark::state get_state () const
+  { return result?FULL:BLANK; }
+
+  const std::string get_name () const
+  { return "PTLIBVIDEOINPUT"; }
+
+  bool result;
+};
+
+void
+videoinput_ptlib_init (Ekiga::KickStart& kickstart)
+{
+  gmref_ptr<Ekiga::Spark> spark(new PTLIBVIDEOINPUTSpark);
+  kickstart.add_spark (spark);
 }
