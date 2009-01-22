@@ -38,16 +38,14 @@
 #ifndef __LOCAL_ROSTER_MAIN_H__
 #define __LOCAL_ROSTER_MAIN_H__
 
-#include "services.h"
+#include "kickstart.h"
 
 /**
  * @addtogroup presence
  * @{
  */
 
-bool local_roster_init (Ekiga::ServiceCore &core,
-			int *argc,
-			char **argv[]);
+void local_roster_init (Ekiga::KickStart& kickstart);
 
 /**
  * @}

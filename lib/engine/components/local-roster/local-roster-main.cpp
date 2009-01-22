@@ -39,21 +39,41 @@
 #include "presence-core.h"
 #include "local-cluster.h"
 
-bool
-local_roster_init (Ekiga::ServiceCore &core,
-		   int */*argc*/,
-		   char **/*argv*/[])
+struct LOCALROSTERSpark: public Ekiga::Spark
 {
-  bool result = false;
-  gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
+  LOCALROSTERSpark (): result(false)
+  {}
 
-  if (presence_core) {
+  bool try_initialize_more (Ekiga::ServiceCore& core,
+			    int* /*argc*/,
+			    char** /*argv*/[])
+  {
+    gmref_ptr<Ekiga::Service> service = core.get ("local-cluster");
+    gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
 
-    gmref_ptr<Local::Cluster> cluster (new Local::Cluster (core));
-    core.add (cluster);
-    presence_core->add_cluster (cluster);
-    result = true;
+    if (presence_core && !service) {
+
+      gmref_ptr<Local::Cluster> cluster (new Local::Cluster (core));
+      core.add (cluster);
+      presence_core->add_cluster (cluster);
+      result = true;
+    }
+
+    return result;
   }
 
-  return result;
+  Ekiga::Spark::state get_state () const
+  { return result?FULL:BLANK; }
+
+  const std::string get_name () const
+  { return "LOCALROSTER"; }
+
+  bool result;
+};
+
+void
+local_roster_init (Ekiga::KickStart& kickstart)
+{
+  gmref_ptr<Ekiga::Spark> spark(new LOCALROSTERSpark);
+  kickstart.add_spark (spark);
 }
