@@ -27,11 +27,11 @@
 
 
 /*
- *                         audionput-main-null.cpp  -  description
+ *                         audioinput-main-null.cpp  -  description
  *                         ------------------------------------------
  *   begin                : written in 2008 by Matthias Schneider
  *   copyright            : (c) 2008 by Matthias Schneider
- *   description          : code to hook the NULL audioinput manager 
+ *   description          : code to hook the NULL audioinput manager
  *                          into the main program
  *
  */
@@ -40,22 +40,40 @@
 #include "audioinput-core.h"
 #include "audioinput-manager-null.h"
 
-bool
-audioinput_null_init (Ekiga::ServiceCore &core,
-	    int */*argc*/,
-	    char **/*argv*/[])
+struct NULLAUDIOINPUTSpark: public Ekiga::Spark
 {
-  bool result = false;
-  gmref_ptr<Ekiga::AudioInputCore> audioinput_core
-    = core.get ("audioinput-core");
+  NULLAUDIOINPUTSpark (): result(false)
+  {}
 
-  if (audioinput_core) {
+  bool try_initialize_more (Ekiga::ServiceCore& core,
+			    int* /*argc*/,
+			    char** /*argv*/[])
+  {
+    gmref_ptr<Ekiga::AudioInputCore> audioinput_core = core.get ("audioinput-core");
 
-    GMAudioInputManager_null *audioinput_manager = new GMAudioInputManager_null(core);
+    if (audioinput_core) {
 
-    audioinput_core->add_manager (*audioinput_manager);
-    result = true;
+      GMAudioInputManager_null *audioinput_manager = new GMAudioInputManager_null(core);
+
+      audioinput_core->add_manager (*audioinput_manager);
+      result = true;
+    }
+
+    return result;
   }
 
-  return result;
+  Ekiga::Spark::state get_state () const
+  { return result?FULL:BLANK; }
+
+  const std::string get_name () const
+  { return "NULLAUDIOINPUT"; }
+
+  bool result;
+};
+
+void
+audioinput_null_init (Ekiga::KickStart& kickstart)
+{
+  gmref_ptr<Ekiga::Spark> spark(new NULLAUDIOINPUTSpark);
+  kickstart.add_spark (spark);
 }

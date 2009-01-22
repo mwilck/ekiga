@@ -186,10 +186,7 @@ engine_init (int argc,
   (void)gstreamer_init (*service_core, &argc, &argv);
 #endif
 
-  if (!audioinput_null_init (*service_core, &argc, &argv)) {
-    delete service_core;
-    return;
-  }
+  audioinput_null_init (kickstart);
 
   audiooutput_null_init (kickstart);
 
