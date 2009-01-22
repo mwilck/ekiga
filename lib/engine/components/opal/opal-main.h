@@ -38,10 +38,8 @@
 #ifndef __OPAL_MAIN_H__
 #define __OPAL_MAIN_H__
 
-#include "services.h"
+#include "kickstart.h"
 
-bool opal_init (Ekiga::ServiceCore &core,
-                int *argc,
-                char **argv[]);
+void opal_init (Ekiga::KickStart& kickstart);
 
 #endif

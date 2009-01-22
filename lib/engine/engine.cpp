@@ -218,10 +218,7 @@ engine_init (int argc,
   }
 #endif
 
-  if (!opal_init (*service_core, &argc, &argv)) {
-    delete service_core;
-    return;
-  }
+  opal_init (kickstart);
 
 #ifdef HAVE_AVAHI
   avahi_init (kickstart);

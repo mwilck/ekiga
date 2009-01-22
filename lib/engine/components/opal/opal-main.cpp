@@ -29,7 +29,7 @@
 /*
  *                         opal-main.cpp  -  description
  *                         ------------------------------------------
- *   begin                : written in 2007 by Damien Sandras 
+ *   begin                : written in 2007 by Damien Sandras
  *   copyright            : (c) 2007 by Damien Sandras
  *   description          : code to hook Opal into the main program
  *
@@ -87,7 +87,7 @@ is_supported_address (const std::string uri)
 
 using namespace Opal;
 
-void 
+static void 
 on_call_manager_ready_cb (Ekiga::ServiceCore *core,
                           gmref_ptr<CallManager> call_manager)
 {
@@ -106,71 +106,72 @@ on_call_manager_ready_cb (Ekiga::ServiceCore *core,
   account_core->add_bank (*bank);
   core->add (bank);
 
-  if (contact_core) { 
-
 #ifdef HAVE_SIP
-    contact_core->add_contact_decorator (sip_manager);
+  contact_core->add_contact_decorator (sip_manager);
 #endif
 #ifdef HAVE_H323
-    contact_core->add_contact_decorator (h323_manager);
+  contact_core->add_contact_decorator (h323_manager);
 #endif
-  }
-
-  if (presence_core) {
 
 #ifdef HAVE_SIP
-    presence_core->add_presentity_decorator (sip_manager);
-    presence_core->add_presence_fetcher (sip_manager);
-    presence_core->add_presence_publisher (sip_manager);
+  presence_core->add_presentity_decorator (sip_manager);
+  presence_core->add_presence_fetcher (sip_manager);
+  presence_core->add_presence_publisher (sip_manager);
 #endif
 #ifdef HAVE_H323
-    presence_core->add_presentity_decorator (h323_manager);
+  presence_core->add_presentity_decorator (h323_manager);
 #endif
-    presence_core->add_supported_uri (sigc::ptr_fun (is_supported_address)); //FIXME
-  }
+  presence_core->add_supported_uri (sigc::ptr_fun (is_supported_address)); //FIXME
 }
 
-
-bool
-opal_init (Ekiga::ServiceCore &core,
-           int * /*argc*/,
-           char ** /*argv*/[])
+struct OPALSpark: public Ekiga::Spark
 {
-  gmref_ptr<Ekiga::ContactCore> contact_core = core.get ("contact-core");
-  gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
-  gmref_ptr<Ekiga::CallCore> call_core = core.get ("call-core");
-  gmref_ptr<Ekiga::ChatCore> chat_core = core.get ("chat-core");
-  gmref_ptr<Ekiga::AccountCore> account_core = core.get ("account-core");
+  OPALSpark (): result(false)
+  {}
 
-  gmref_ptr<CallManager> call_manager (new CallManager (core));
+  bool try_initialize_more (Ekiga::ServiceCore& core,
+			    int* /*argc*/,
+			    char** /*argv*/[])
+  {
+    gmref_ptr<Ekiga::ContactCore> contact_core = core.get ("contact-core");
+    gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
+    gmref_ptr<Ekiga::CallCore> call_core = core.get ("call-core");
+    gmref_ptr<Ekiga::ChatCore> chat_core = core.get ("chat-core");
+    gmref_ptr<Ekiga::AccountCore> account_core = core.get ("account-core");
 
-#ifdef HAVE_SIP
-  unsigned sip_port = gm_conf_get_int (SIP_KEY "listen_port");
-  gmref_ptr<Sip::EndPoint> sip_manager (new Sip::EndPoint (*call_manager, core, sip_port));
-  call_manager->add_protocol_manager (sip_manager);
-  account_core->add_account_subscriber (*sip_manager);
-#endif
+    if (contact_core && presence_core && call_core && chat_core && account_core) {
 
-#ifdef HAVE_H323
-  unsigned h323_port = gm_conf_get_int (H323_KEY "listen_port");
-  gmref_ptr<H323::EndPoint> h323_manager (new H323::EndPoint (*call_manager, core, h323_port));
-  call_manager->add_protocol_manager (h323_manager);
-  account_core->add_account_subscriber (*h323_manager);
-#endif
+      gmref_ptr<CallManager> call_manager (new CallManager (core));
 
-  call_core->add_manager (call_manager);
+      new ConfBridge (*call_manager); // FIXME: isn't that leaked!?
+      // Add the bank of accounts when the CallManager is ready
+      call_manager->ready.connect (sigc::bind (sigc::ptr_fun (on_call_manager_ready_cb), &core, call_manager));
+      call_manager->start ();
 
-  new ConfBridge (*call_manager); // FIXME: isn't that leaked!?
+      OpalLinkerHacks::loadOpalVideoInput = 1;
+      OpalLinkerHacks::loadOpalVideoOutput = 1;
+      OpalLinkerHacks::loadOpalAudio = 1;
 
-  // Add the bank of accounts when the CallManager is ready
-  call_manager->ready.connect (sigc::bind (sigc::ptr_fun (on_call_manager_ready_cb), &core, call_manager));
-  call_manager->start ();
+      core.add (call_manager);
 
-  OpalLinkerHacks::loadOpalVideoInput = 1;
-  OpalLinkerHacks::loadOpalVideoOutput = 1;
-  OpalLinkerHacks::loadOpalAudio = 1;
+      result = true;
+    }
 
-  core.add (call_manager);
+    return result;
+  }
 
-  return true;
+  Ekiga::Spark::state get_state () const
+  { return result?FULL:BLANK; }
+
+  const std::string get_name () const
+  { return "OPAL"; }
+
+  bool result;
+};
+
+void
+opal_init (Ekiga::KickStart& kickstart)
+{
+  gmref_ptr<Ekiga::Spark> spark(new OPALSpark);
+  kickstart.add_spark (spark);
 }
