@@ -31,7 +31,7 @@
  *                         ------------------------------------------
  *   begin                : written in 2008 by Matthias Schneider
  *   copyright            : (c) 2008 by Matthias Schneider
- *   description          : code to hook the PTLIB audiooutput manager 
+ *   description          : code to hook the PTLIB audiooutput manager
  *                          into the main program
  *
  */
@@ -40,22 +40,40 @@
 #include "audiooutput-core.h"
 #include "audiooutput-manager-ptlib.h"
 
-bool
-audiooutput_ptlib_init (Ekiga::ServiceCore &core,
-	    int */*argc*/,
-	    char **/*argv*/[])
+struct PTLIBAUDIOOUTPUTSpark: public Ekiga::Spark
 {
-  bool result = false;
-  gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core
-    = core.get ("audiooutput-core");
+  PTLIBAUDIOOUTPUTSpark (): result(false)
+  {}
 
-  if (audiooutput_core) {
+  bool try_initialize_more (Ekiga::ServiceCore& core,
+			    int* /*argc*/,
+			    char** /*argv*/[])
+  {
+    gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core = core.get ("audiooutput-core");
 
-    GMAudioOutputManager_ptlib *audiooutput_manager = new GMAudioOutputManager_ptlib(core);
+    if (audiooutput_core) {
 
-    audiooutput_core->add_manager (*audiooutput_manager);
-    result = true;
+      GMAudioOutputManager_ptlib *audiooutput_manager = new GMAudioOutputManager_ptlib(core);
+
+      audiooutput_core->add_manager (*audiooutput_manager);
+      result = true;
+    }
+
+    return result;
   }
 
-  return result;
+  Ekiga::Spark::state get_state () const
+  { return result?FULL:BLANK; }
+
+  const std::string get_name () const
+  { return "PTLIBAUDIOOUTPUT"; }
+
+  bool result;
+};
+
+void
+audiooutput_ptlib_init (Ekiga::KickStart& kickstart)
+{
+  gmref_ptr<Ekiga::Spark> spark(new PTLIBAUDIOOUTPUTSpark);
+  kickstart.add_spark (spark);
 }

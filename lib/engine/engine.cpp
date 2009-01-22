@@ -206,10 +206,7 @@ engine_init (int argc,
     return;
   }
 
-  if (!audiooutput_ptlib_init (*service_core, &argc, &argv)) {
-    delete service_core;
-    return;
-  }
+  audiooutput_ptlib_init (kickstart);
 
 #ifdef HAVE_DBUS
   hal_dbus_init (kickstart);
