@@ -40,22 +40,40 @@
 #include "audiooutput-core.h"
 #include "audiooutput-manager-null.h"
 
-bool
-audiooutput_null_init (Ekiga::ServiceCore &core,
-	    int */*argc*/,
-	    char **/*argv*/[])
+struct NULLAUDIOOUTPUTSpark: public Ekiga::Spark
 {
-  bool result = false;
-  gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core
-    = core.get ("audiooutput-core");
+  NULLAUDIOOUTPUTSpark (): result(false)
+  {}
 
-  if (audiooutput_core) {
+  bool try_initialize_more (Ekiga::ServiceCore& core,
+			    int* /*argc*/,
+			    char** /*argv*/[])
+  {
+    gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core = core.get ("audiooutput-core");
 
-    GMAudioOutputManager_null *audiooutput_manager = new GMAudioOutputManager_null(core);
+    if (audiooutput_core) {
 
-    audiooutput_core->add_manager (*audiooutput_manager);
-    result = true;
+      GMAudioOutputManager_null *audiooutput_manager = new GMAudioOutputManager_null(core);
+
+      audiooutput_core->add_manager (*audiooutput_manager);
+      result = true;
+    }
+
+    return result;
   }
 
-  return result;
+  Ekiga::Spark::state get_state () const
+  { return result?FULL:BLANK; }
+
+  const std::string get_name () const
+  { return "NULLAUDIOOUTPUT"; }
+
+  bool result;
+};
+
+void
+audiooutput_null_init (Ekiga::KickStart& kickstart)
+{
+  gmref_ptr<Ekiga::Spark> spark(new NULLAUDIOOUTPUTSpark);
+  kickstart.add_spark (spark);
 }

@@ -39,10 +39,8 @@
 #ifndef __AUDIOOUTPUT_MAIN_NULL_H__
 #define __AUDIOOUTPUT_MAIN_NULL_H__
 
-#include "services.h"
+#include "kickstart.h"
 
-bool audiooutput_null_init (Ekiga::ServiceCore &core,
-  	   	            int *argc,
-		            char **argv[]);
+void audiooutput_null_init (Ekiga::KickStart& kickstart);
 
 #endif
