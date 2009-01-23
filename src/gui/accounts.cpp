@@ -39,6 +39,7 @@
 
 #include "account.h"
 #include "bank.h"
+#include "opal-bank.h"
 #include "account-core.h"
 #include "audiooutput-core.h"
 
@@ -256,18 +257,17 @@ on_registration_event (const Ekiga::Account & account,
 
 
 static void 
-on_mwi_event (const Ekiga::Account & account,
+on_mwi_event (const Ekiga::Account* account,
               std::string mwi,
               gpointer self)
 {
-  if (gm_accounts_window_update_account_state (GTK_WIDGET (self), false, account, NULL, mwi.c_str ())) {
+  if (gm_accounts_window_update_account_state (GTK_WIDGET (self), false, *account, NULL, mwi.c_str ())) {
 
     std::string::size_type loc = mwi.find ("/", 0);
     if (loc != std::string::npos) {
 
       GmAccountsWindow *aw = gm_aw_get_aw (GTK_WIDGET (self));
-      gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core
-	= aw->core.get ("audiooutput-core");
+      gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core = aw->core.get ("audiooutput-core");
       std::stringstream new_messages;
       int i;
       new_messages << mwi.substr (0, loc);
@@ -769,15 +769,15 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
   /* Engine Signals callbacks */
   // FIXME sigc::connection conn;
 
-  gmref_ptr<Ekiga::AccountCore> account_core
-    = core.get ("account-core");
+  gmref_ptr<Ekiga::AccountCore> account_core = core.get ("account-core");
+  gmref_ptr<Opal::Bank> bank = core.get ("opal-account-store");
   account_core->bank_added.connect (sigc::bind (sigc::ptr_fun (on_bank_added), window));
   account_core->account_added.connect (sigc::bind (sigc::ptr_fun (on_account_added), window));
   account_core->account_updated.connect (sigc::bind (sigc::ptr_fun (on_account_updated), window));
   account_core->account_removed.connect (sigc::bind (sigc::ptr_fun (on_account_removed), window));
   account_core->questions.add_handler (sigc::bind (sigc::ptr_fun (on_handle_questions), (gpointer) window));
   account_core->registration_event.connect (sigc::bind (sigc::ptr_fun (on_registration_event), (gpointer) window));
-  account_core->mwi_event.connect (sigc::bind (sigc::ptr_fun (on_mwi_event), (gpointer) window));
+  bank->mwi_event.connect (sigc::bind (sigc::ptr_fun (on_mwi_event), (gpointer) window));
   
   return window;
 }
