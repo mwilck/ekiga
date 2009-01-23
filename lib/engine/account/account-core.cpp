@@ -90,7 +90,6 @@ void Ekiga::AccountCore::add_bank (Bank &bank)
 
   bank.questions.add_handler (questions.make_slot ());
   bank.registration_event.connect (sigc::mem_fun (this, &Ekiga::AccountCore::on_registration_event));
-  bank.mwi_event.connect (sigc::mem_fun (this, &Ekiga::AccountCore::on_mwi_event));
 }
 
 

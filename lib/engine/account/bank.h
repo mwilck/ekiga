@@ -100,12 +100,6 @@ namespace Ekiga
      */
     sigc::signal3<void, const Ekiga::Account *, Ekiga::AccountCore::RegistrationState, std::string> registration_event;
 
-    /** This signal is emitted when there is a new message waiting event
-     * @param: account is the account 
-     *         info contains information about the indication 
-     */
-    sigc::signal2<void, const Ekiga::Account *, std::string> mwi_event;
-
     /** This chain allows the BankImpl to present forms to the user
      */
     ChainOfResponsibility<FormRequest*> questions;

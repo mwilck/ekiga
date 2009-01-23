@@ -72,6 +72,12 @@ public:
 
     void stun_ready ();
 
+    /** This signal is emitted when there is a new message waiting event
+     * @param: account is the account 
+     *         info contains information about the indication 
+     */
+    sigc::signal2<void, const Ekiga::Account *, std::string> mwi_event;
+
 private:
     void on_new_account_form_submitted (bool submitted,
 					Ekiga::Form& form,

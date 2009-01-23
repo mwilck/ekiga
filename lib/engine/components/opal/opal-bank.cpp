@@ -194,6 +194,7 @@ void Opal::Bank::add (Account::Type t,
 {
   Opal::Account *account = new Opal::Account (core, t, name, host, user, auth_user, password, enabled, timeout);
   add_account (*account);
+  account->mwi_event.connect (sigc::bind<0> (mwi_event.make_slot (), account));
 }
 
 void

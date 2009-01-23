@@ -156,7 +156,6 @@ namespace Ekiga
 
   private:
     void on_registration_event (Ekiga::AccountCore::RegistrationState, std::string info, Ekiga::Account *account);
-    void on_mwi_event (std::string info, Ekiga::Account *account);
   };
 
 /**
@@ -292,7 +291,6 @@ Ekiga::BankImpl<T>::add_account (T &account)
   account.questions.add_handler (questions.make_slot ());
   account.trigger_saving.connect (sigc::mem_fun (this, &Ekiga::BankImpl<T>::save));
   account.registration_event.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::BankImpl<T>::on_registration_event), &account));
-  account.mwi_event.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::BankImpl<T>::on_mwi_event), &account));
 }
 
 
@@ -311,11 +309,4 @@ Ekiga::BankImpl<T>::on_registration_event (Ekiga::AccountCore::RegistrationState
   registration_event.emit (account, state, info);
 }
 
-
-template<typename T>
-void
-Ekiga::BankImpl<T>::on_mwi_event (std::string info, Ekiga::Account *account)
-{
-  mwi_event.emit (account, info);
-}
 #endif
