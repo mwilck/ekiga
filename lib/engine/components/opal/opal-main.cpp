@@ -87,43 +87,6 @@ is_supported_address (const std::string uri)
 
 using namespace Opal;
 
-static void
-on_call_manager_ready_cb (Ekiga::ServiceCore& core)
-{
-  gmref_ptr<Ekiga::AccountCore> account_core = core.get ("account-core");
-  gmref_ptr<Ekiga::ContactCore> contact_core = core.get ("contact-core");
-  gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
-  gmref_ptr<CallManager> call_manager = core.get ("opal-component");
-  gmref_ptr<Opal::Bank> bank (new Bank (core));
-
-#ifdef HAVE_SIP
-  gmref_ptr<Sip::EndPoint> sip_manager = call_manager->get_protocol_manager ("sip");
-#endif
-#ifdef HAVE_H323
-  gmref_ptr<H323::EndPoint> h323_manager = call_manager->get_protocol_manager ("h323");
-#endif
-
-  account_core->add_bank (*bank);
-  core.add (bank);
-
-#ifdef HAVE_SIP
-  contact_core->add_contact_decorator (sip_manager);
-#endif
-#ifdef HAVE_H323
-  contact_core->add_contact_decorator (h323_manager);
-#endif
-
-#ifdef HAVE_SIP
-  presence_core->add_presentity_decorator (sip_manager);
-  presence_core->add_presence_fetcher (sip_manager);
-  presence_core->add_presence_publisher (sip_manager);
-#endif
-#ifdef HAVE_H323
-  presence_core->add_presentity_decorator (h323_manager);
-#endif
-  presence_core->add_supported_uri (sigc::ptr_fun (is_supported_address)); //FIXME
-}
-
 struct OPALSpark: public Ekiga::Spark
 {
   OPALSpark (): result(false)
@@ -149,6 +112,10 @@ struct OPALSpark: public Ekiga::Spark
       gmref_ptr<Sip::EndPoint> sip_manager (new Sip::EndPoint (*call_manager, core, sip_port));
       call_manager->add_protocol_manager (sip_manager);
       account_core->add_account_subscriber (*sip_manager);
+      contact_core->add_contact_decorator (sip_manager);
+      presence_core->add_presentity_decorator (sip_manager);
+      presence_core->add_presence_fetcher (sip_manager);
+      presence_core->add_presence_publisher (sip_manager);
 #endif
 
 #ifdef HAVE_H323
@@ -156,6 +123,8 @@ struct OPALSpark: public Ekiga::Spark
       gmref_ptr<H323::EndPoint> h323_manager (new H323::EndPoint (*call_manager, core, h323_port));
       call_manager->add_protocol_manager (h323_manager);
       account_core->add_account_subscriber (*h323_manager);
+      contact_core->add_contact_decorator (h323_manager);
+      presence_core->add_presentity_decorator (h323_manager);
 #endif
 
       call_core->add_manager (call_manager);
@@ -164,10 +133,14 @@ struct OPALSpark: public Ekiga::Spark
 
       new ConfBridge (*call_manager); // FIXME: isn't that leaked!?
 
-      // Add the bank of accounts when the CallManager is ready
-      call_manager->ready.connect (sigc::bind (sigc::ptr_fun (on_call_manager_ready_cb), core));
-
       call_manager->start ();
+      presence_core->add_supported_uri (sigc::ptr_fun (is_supported_address)); //FIXME
+
+      gmref_ptr<Opal::Bank> bank (new Bank (core));
+
+      account_core->add_bank (*bank);
+      core.add (bank);
+      call_manager->ready.connect (sigc::mem_fun (*bank, &Opal::Bank::stun_ready));
 
       OpalLinkerHacks::loadOpalVideoInput = 1;
       OpalLinkerHacks::loadOpalVideoOutput = 1;

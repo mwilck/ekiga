@@ -70,6 +70,8 @@ public:
                       std::string username = "",
                       std::string password = "");
 
+    void stun_ready ();
+
 private:
     void on_new_account_form_submitted (bool submitted,
 					Ekiga::Form& form,

@@ -195,3 +195,15 @@ void Opal::Bank::add (Account::Type t,
   Opal::Account *account = new Opal::Account (core, t, name, host, user, auth_user, password, enabled, timeout);
   add_account (*account);
 }
+
+void
+Opal::Bank::stun_ready ()
+{
+  for (iterator iter = begin ();
+       iter != end ();
+       ++iter) {
+
+    if (iter->is_enabled ())
+      iter->enable ();
+  }
+}

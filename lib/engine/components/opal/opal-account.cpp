@@ -113,9 +113,6 @@ Opal::Account::Account (Ekiga::ServiceCore & _core,
     i++;
   }
 
-  if (enabled)
-    enable ();
-
   if (host == "ekiga.net")
     type = Account::Ekiga;
   else if (host == "sip.diamondcard.us")
