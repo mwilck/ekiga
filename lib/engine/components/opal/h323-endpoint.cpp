@@ -43,6 +43,13 @@
 #include "opal-call.h"
 #include "account-core.h"
 
+static void
+registration_event_in_main (sigc::slot2<void, Ekiga::AccountCore::RegistrationState, std::string> slot,
+			    Ekiga::AccountCore::RegistrationState state,
+			    const std::string msg)
+{
+  slot (state, msg);
+}
 
 namespace Opal {
 
@@ -325,13 +332,15 @@ void Opal::H323::EndPoint::Register (const Opal::Account & account)
         info = _("Failed");
 
       /* Signal */
-      runtime->run_in_main (sigc::bind (account.registration_event.make_slot (),
+      runtime->run_in_main (sigc::bind (sigc::ptr_fun(registration_event_in_main),
+					account.registration_event.make_slot (),
 					Ekiga::AccountCore::RegistrationFailed,
 					info));
     }
     else {
 
-      runtime->run_in_main (sigc::bind (account.registration_event.make_slot (),
+      runtime->run_in_main (sigc::bind (sigc::ptr_fun(registration_event_in_main),
+					account.registration_event.make_slot (),
 					Ekiga::AccountCore::Registered,
 					std::string ()));
     }
@@ -342,7 +351,8 @@ void Opal::H323::EndPoint::Register (const Opal::Account & account)
     RemoveAliasName (account.get_username ());
 
     /* Signal */
-    runtime->run_in_main (sigc::bind (account.registration_event.make_slot (),
+    runtime->run_in_main (sigc::bind (sigc::ptr_fun(registration_event_in_main),
+				      account.registration_event.make_slot (),
 				      Ekiga::AccountCore::Unregistered,
 				      std::string ()));
   }

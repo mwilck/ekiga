@@ -633,9 +633,8 @@ create_ekiga_net_page (EkigaAssistant *assistant)
 static void
 prepare_ekiga_net_page (EkigaAssistant *assistant)
 {
-  gmref_ptr<Ekiga::AccountCore> account_core
-    = assistant->priv->core->get ("account-core");
-  Ekiga::Account *account = account_core->find_account ("ekiga.net");
+  gmref_ptr<Opal::Bank> bank = assistant->priv->core->get ("opal-account-store");
+  Opal::Account* account = bank->find_account ("ekiga.net");
 
   if (account && !account->get_username ().empty ())
     gtk_entry_set_text (GTK_ENTRY (assistant->priv->username), account->get_username ().c_str ());
@@ -651,21 +650,15 @@ prepare_ekiga_net_page (EkigaAssistant *assistant)
 static void
 apply_ekiga_net_page (EkigaAssistant *assistant)
 {
-  gmref_ptr<Ekiga::AccountCore> account_core
-    = assistant->priv->core->get ("account-core");
-
-  /* Some specific Opal stuff for the Ekiga.net account */
-  gmref_ptr<Opal::Bank> opal_bank =
-    assistant->priv->core->get ("opal-account-store");
-  Opal::Account* account = dynamic_cast<Opal::Account*>(account_core->find_account ("ekiga.net"));
-
+  gmref_ptr<Opal::Bank> bank = assistant->priv->core->get ("opal-account-store");
+  Opal::Account* account = bank->find_account ("ekiga.net");
   bool new_account = (account == NULL);
 
   if (!gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (assistant->priv->skip_ekiga_net))) {
 	if (new_account)
-	  opal_bank->new_account (Opal::Account::Ekiga,
-							  gtk_entry_get_text (GTK_ENTRY (assistant->priv->username)),
-							  gtk_entry_get_text (GTK_ENTRY (assistant->priv->password)));
+	  bank->new_account (Opal::Account::Ekiga,
+			     gtk_entry_get_text (GTK_ENTRY (assistant->priv->username)),
+			     gtk_entry_get_text (GTK_ENTRY (assistant->priv->password)));
 	else
 	  account->set_authentication_settings (gtk_entry_get_text (GTK_ENTRY (assistant->priv->username)),
 											gtk_entry_get_text (GTK_ENTRY (assistant->priv->password)));
@@ -784,9 +777,8 @@ create_ekiga_out_page (EkigaAssistant *assistant)
 static void
 prepare_ekiga_out_page (EkigaAssistant *assistant)
 {
-  gmref_ptr<Ekiga::AccountCore> account_core
-    = assistant->priv->core->get ("account-core");
-  Ekiga::Account *account = account_core->find_account ("sip.diamondcard.us");
+  gmref_ptr<Opal::Bank> account_core = assistant->priv->core->get ("opal-account-store");
+  Opal::Account* account = account_core->find_account ("sip.diamondcard.us");
 
   if (account && !account->get_username ().empty ())
     gtk_entry_set_text (GTK_ENTRY (assistant->priv->dusername), account->get_username ().c_str ());
@@ -802,24 +794,19 @@ prepare_ekiga_out_page (EkigaAssistant *assistant)
 static void
 apply_ekiga_out_page (EkigaAssistant *assistant)
 {
-  gmref_ptr<Ekiga::AccountCore> account_core
-    = assistant->priv->core->get ("account-core");
-
   /* Some specific Opal stuff for the Ekiga.net account */
-  gmref_ptr<Opal::Bank> opal_bank
-    = assistant->priv->core->get ("opal-account-store");
-  Opal::Account* account = dynamic_cast<Opal::Account*> (account_core->find_account ("sip.diamondcard.us"));
-
+  gmref_ptr<Opal::Bank> bank = assistant->priv->core->get ("opal-account-store");
+  Opal::Account* account = bank->find_account ("sip.diamondcard.us");
   bool new_account = (account == NULL);
 
   if (!gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (assistant->priv->skip_ekiga_out))) {
 	if (new_account)
-	  opal_bank->new_account (Opal::Account::DiamondCard,
-							  gtk_entry_get_text (GTK_ENTRY (assistant->priv->dusername)),
-							  gtk_entry_get_text (GTK_ENTRY (assistant->priv->dpassword)));
+	  bank->new_account (Opal::Account::DiamondCard,
+			     gtk_entry_get_text (GTK_ENTRY (assistant->priv->dusername)),
+			     gtk_entry_get_text (GTK_ENTRY (assistant->priv->dpassword)));
 	else
 	  account->set_authentication_settings (gtk_entry_get_text (GTK_ENTRY (assistant->priv->dusername)),
-											gtk_entry_get_text (GTK_ENTRY (assistant->priv->dpassword)));
+						gtk_entry_get_text (GTK_ENTRY (assistant->priv->dpassword)));
   }
 }
 

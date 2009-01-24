@@ -208,3 +208,21 @@ Opal::Bank::stun_ready ()
       iter->enable ();
   }
 }
+
+Opal::Account*
+Opal::Bank::find_account (const std::string& aor)
+{
+  Opal::Account* result = NULL;
+  bool found = false;
+
+  for (iterator iter = begin ();
+       !found && iter != end ();
+       ++iter) {
+
+    if (iter->get_aor () == aor) {
+
+      found = true;
+      result = &*iter;
+    }
+  }
+}

@@ -175,8 +175,7 @@ void CallManager::start ()
     new StunDetector (stun_server, *this, queue);
     patience = 20;
     runtime->run_in_main (sigc::mem_fun (this, &CallManager::HandleSTUNResult), 1);
-  }
-  else
+  } else
     ready.emit ();
 }
 

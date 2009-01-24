@@ -70,6 +70,15 @@ public:
                       std::string username = "",
                       std::string password = "");
 
+    /** Find the account with the given address of record in the Bank
+     * @param aor is the address of record of the Account or the host to look 
+     *        for
+     * @return The Opal::Account if an Account was found, false otherwise.
+     *         The returned account should not be freed.
+     */
+    Opal::Account* find_account (const std::string& aor);
+
+
     void stun_ready ();
 
     /** This signal is emitted when there is a new message waiting event

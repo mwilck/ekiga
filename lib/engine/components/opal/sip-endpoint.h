@@ -44,8 +44,7 @@
 #include "presence-core.h"
 #include "call-manager.h"
 #include "call-protocol-manager.h"
-#include "account-core.h"
-#include "opal-account.h"
+#include "opal-bank.h"
 #include "sip-dialect.h"
 #include "call-core.h"
 #include "contact-core.h"
@@ -196,7 +195,7 @@ namespace Opal {
       std::list<std::string> aors;               // List of registered aor
       Ekiga::ServiceCore & core;
       Ekiga::Runtime* runtime;
-      Ekiga::AccountCore* account_core;
+      Opal::Bank* bank;
 
       Ekiga::CallProtocolManager::Interface listen_iface;
 
