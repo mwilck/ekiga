@@ -148,10 +148,10 @@ engine_init (int argc,
   service_core->add (account_core);
   service_core->add (contact_core);
   service_core->add (chat_core);
-  service_core->add (videooutput_core);
   service_core->add (videoinput_core);
-  service_core->add (audiooutput_core);
+  service_core->add (videooutput_core);
   service_core->add (audioinput_core);
+  service_core->add (audiooutput_core);
   service_core->add (hal_core);
   service_core->add (call_core);
 
