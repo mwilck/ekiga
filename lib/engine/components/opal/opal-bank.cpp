@@ -198,7 +198,7 @@ void Opal::Bank::add (Account::Type t,
 }
 
 void
-Opal::Bank::stun_ready ()
+Opal::Bank::call_manager_ready ()
 {
   for (iterator iter = begin ();
        iter != end ();

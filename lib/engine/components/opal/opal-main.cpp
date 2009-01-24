@@ -110,7 +110,7 @@ struct OPALSpark: public Ekiga::Spark
 
       account_core->add_bank (*bank);
       core.add (bank);
-      call_manager->ready.connect (sigc::mem_fun (*bank, &Opal::Bank::stun_ready));
+      call_manager->ready.connect (sigc::mem_fun (*bank, &Opal::Bank::call_manager_ready));
 
 #ifdef HAVE_SIP
       unsigned sip_port = gm_conf_get_int (SIP_KEY "listen_port");

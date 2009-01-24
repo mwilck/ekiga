@@ -79,7 +79,7 @@ public:
     Opal::Account* find_account (const std::string& aor);
 
 
-    void stun_ready ();
+    void call_manager_ready ();
 
     /** This signal is emitted when there is a new message waiting event
      * @param: account is the account 
