@@ -574,6 +574,16 @@ book_saslinter(LDAP *ld, unsigned flags __attribute__((unused)),
 
       /* accumulate any challenge strings */
       if (challenge && in->challenge) {
+
+	/* Translators, Howard explained : "Challenge" is a generic term
+	 * in authentication. It's a prompt from the authentication mechanism
+	 * for some type of credential. Exactly what kind of challenge and
+	 * what kind of credential depends on the specific authentication
+	 * mechanism. Since SASL is a generic interface, and can dynamically
+	 * load arbitrary mechanisms, there's not much more specific you can
+	 * say about it. You might google for "challenge response
+	 * authentication" if you'd like more background context.
+	 */
         ctxt += std::string (_("Challenge: ")) +
 	  std::string (in->challenge) +"\n";
       }
