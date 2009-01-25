@@ -225,4 +225,6 @@ Opal::Bank::find_account (const std::string& aor)
       result = &*iter;
     }
   }
+
+  return result;
 }
