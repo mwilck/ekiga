@@ -683,11 +683,11 @@ void Opal::Sip::EndPoint::OnRegistered (const PString & _aor,
 
   /* Signal */
   Opal::Account *account = bank->find_account (strm.str ());
-  //if (account)
-  //  runtime->run_in_main (sigc::bind (sigc::ptr_fun(registration_event_in_main),
-  //			      account->registration_event.make_slot (),
-  //			      was_registering ? Ekiga::AccountCore::Registered : Ekiga::AccountCore::Unregistered,
-  //			      std::string ()));
+  if (account)
+    runtime->run_in_main (sigc::bind (sigc::ptr_fun(registration_event_in_main),
+				      account->registration_event.make_slot (),
+				      was_registering ? Ekiga::AccountCore::Registered : Ekiga::AccountCore::Unregistered,
+				      std::string ()));
 }
 
 
