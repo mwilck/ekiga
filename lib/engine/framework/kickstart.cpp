@@ -35,7 +35,7 @@
 
 #include "kickstart.h"
 
-#define KICKSTART_DEBUG 1
+#define KICKSTART_DEBUG 0
 
 #include <algorithm>
 
@@ -134,8 +134,10 @@ Ekiga::KickStart::kick (Ekiga::ServiceCore& core,
 	  result = (*iter)->try_initialize_more (core, argc, argv);
 	} else {
 
+#if KICKSTART_DEBUG
 	  std::cout << "KickStart(kick): " << (*iter)->get_name ()
 		    << " is disabled" << std::endl;
+#endif
 	}
 
 	if (result) {
