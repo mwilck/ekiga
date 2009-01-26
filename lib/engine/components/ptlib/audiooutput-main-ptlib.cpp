@@ -56,6 +56,8 @@ struct PTLIBAUDIOOUTPUTSpark: public Ekiga::Spark
       GMAudioOutputManager_ptlib *audiooutput_manager = new GMAudioOutputManager_ptlib(core);
 
       audiooutput_core->add_manager (*audiooutput_manager);
+      core.add (gmref_ptr<Ekiga::Service> (new Ekiga::BasicService ("ptlib-audio-output",
+								    "\tComponent bringing PTLIB's audio output")));
       result = true;
     }
 

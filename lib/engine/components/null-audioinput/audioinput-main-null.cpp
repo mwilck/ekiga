@@ -56,6 +56,8 @@ struct NULLAUDIOINPUTSpark: public Ekiga::Spark
       GMAudioInputManager_null *audioinput_manager = new GMAudioInputManager_null(core);
 
       audioinput_core->add_manager (*audioinput_manager);
+      core.add (gmref_ptr<Ekiga::Service> (new Ekiga::BasicService ("null-audio-input",
+								    "\tComponent bringing silent audio input")));
       result = true;
     }
 
