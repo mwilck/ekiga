@@ -99,7 +99,7 @@ namespace Ekiga
        * @return The service description.
        */
       const std::string get_description () const
-        { return "VideoOutput Core managing VideoOutput Manager objects"; }
+        { return "\tVideoOutput Core managing VideoOutput Manager objects"; }
 
 
       /** Adds a VideoOutputManager to the VideoOutputCore service.
