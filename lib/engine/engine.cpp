@@ -112,6 +112,11 @@
 #include "resource-list-main.h"
 #endif
 
+#define DEBUG_STARTUP 1
+
+#ifdef DEBUG_STARTUP
+#include <iostream>
+#endif
 
 static Ekiga::ServiceCore *service_core = NULL;
 
@@ -266,6 +271,11 @@ engine_init (int argc,
   conn = hal_core->audioinput_device_removed.connect (sigc::mem_fun (*audioinput_core, &Ekiga::AudioInputCore::remove_device));
   // std::vector<sigc::connection> connections;
   //connections.push_back (conn);
+
+#ifdef DEBUG_STARTUP
+  std::cout << "Here is what ekiga is made of for this run :" << std::endl;
+  service_core->dump (std::cout);
+#endif
 }
 
 
