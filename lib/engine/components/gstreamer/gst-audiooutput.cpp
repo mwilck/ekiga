@@ -45,6 +45,25 @@
 
 #include <string.h>
 
+static gboolean
+pipeline_cleaner (GstBus* /*bus*/,
+		  GstMessage* message,
+		  gpointer pipeline)
+{
+  bool result = TRUE;
+
+  if (GST_MESSAGE_TYPE (message) == GST_MESSAGE_EOS
+      && GST_MESSAGE_SRC (message) == GST_OBJECT_CAST (pipeline)) {
+
+    result = FALSE;
+    gst_element_set_state (GST_ELEMENT (pipeline), GST_STATE_NULL);
+    g_object_unref (pipeline);
+  }
+
+  return result;
+}
+
+
 GST::AudioOutputManager::AudioOutputManager ()
 {
   detect_devices ();
@@ -183,10 +202,17 @@ GST::AudioOutputManager::close (Ekiga::AudioOutputPS ps)
   unsigned ii = (ps == Ekiga::primary)?0:1;
   if (pipeline[ii] != NULL) {
 
-    gst_element_set_state (pipeline[ii], GST_STATE_NULL);
-    g_object_unref (pipeline[ii]);
-    pipeline[ii] = NULL;
-    device_closed.emit (ps, current_state[ii].device);
+    GstElement* src = gst_bin_get_by_name (GST_BIN (pipeline[ii]), "ekiga_src");
+
+    if (src != NULL) {
+
+      gst_app_src_end_of_stream (GST_APP_SRC (src));
+      GstBus* bus = gst_pipeline_get_bus (GST_PIPELINE (pipeline[ii]));
+      gst_bus_add_watch (bus, pipeline_cleaner, pipeline[ii]);
+      gst_object_unref (bus);
+      pipeline[ii] = NULL;
+      device_closed.emit (ps, current_state[ii].device);
+    }
   }
   current_state[ii].opened = false;
 }
