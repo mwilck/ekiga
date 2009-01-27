@@ -101,12 +101,14 @@ GST::AudioOutputManager::open (Ekiga::AudioOutputPS ps,
   GError* error = NULL;
   GstState current;
   command = g_strdup_printf ("appsrc is-live=true name=ekiga_src"
-			     " caps=audio/x-raw-int"
+			     " ! audio/x-raw-int"
 			     ",rate=%d"
 			     ",channels=%d"
 			     ",width=%d"
+			     ",depth=%d"
+			     ",signed=true,endianness=1234"
 			     " ! %s",
-			     samplerate, channels, bits_per_sample,
+			     samplerate, channels, bits_per_sample, bits_per_sample,
 			     devices_by_name[std::pair<std::string,std::string>(current_state[ii].device.source, current_state[ii].device.name)].c_str ());
   g_print ("Pipeline: %s\n", command);
   pipeline[ii] = gst_parse_launch (command, &error);
