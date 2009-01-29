@@ -35,10 +35,34 @@
  *
  */
 
+#include <iostream>
+#include <map>
+
 #include "services.h"
 #include "call-core.h"
 
 #include "gnome-session-main.h"
+
+struct GNOMESESSIONService: public Ekiga::Service
+{
+  GNOMESESSIONService (gmref_ptr<Ekiga::CallCore> call_core);
+
+  const std::string get_name () const
+  { return "gnome-session"; }
+
+  const std::string get_description () const
+  { return "\tComponent connecting ekiga to the gnome session"; }
+
+private:
+
+  void on_established_call (gmref_ptr<Ekiga::CallManager> manager,
+			    gmref_ptr<Ekiga::Call> call);
+
+  void on_cleared_call (gmref_ptr<Ekiga::CallManager> manager,
+			gmref_ptr<Ekiga::Call> call);
+
+  std::map<gmref_ptr<Ekiga::Call>, std::string> cookies;
+};
 
 struct GNOMESESSIONSpark: public Ekiga::Spark
 {
@@ -49,14 +73,13 @@ struct GNOMESESSIONSpark: public Ekiga::Spark
 			    int* /*argc*/,
 			    char** /*argv*/[])
   {
-    gmref_ptr<Ekiga::CallCore> call = core.get ("call-core");
+    gmref_ptr<Ekiga::CallCore> call_core = core.get ("call-core");
     gmref_ptr<Ekiga::Service> service = core.get ("gnome-session");
 
-    if (call && !service) {
+    if (call_core && !service) {
 
       result = true;
-      core.add (gmref_ptr<Ekiga::Service> (new Ekiga::BasicService ("gnome-session",
-								    "\tComponent connecting ekiga to the gnome session")));
+      core.add (gmref_ptr<Ekiga::Service> (new GNOMESESSIONService (call_core)));
     }
 
     return result;
@@ -76,4 +99,30 @@ gnomesession_init (Ekiga::KickStart& kickstart)
 {
   gmref_ptr<Ekiga::Spark> spark(new GNOMESESSIONSpark);
   kickstart.add_spark (spark);
+}
+
+GNOMESESSIONService::GNOMESESSIONService (gmref_ptr<Ekiga::CallCore> call_core)
+{
+  call_core->established_call.connect (sigc::mem_fun (this, &GNOMESESSIONService::on_established_call));
+  call_core->setup_call.connect (sigc::mem_fun (this, &GNOMESESSIONService::on_cleared_call));
+}
+
+void
+GNOMESESSIONService::on_established_call (gmref_ptr<Ekiga::CallManager> /*manager*/,
+					  gmref_ptr<Ekiga::Call> /*call*/)
+{
+  std::cout << "Should Inhibit and store a cookie" << std::endl;
+}
+
+void
+GNOMESESSIONService::on_cleared_call (gmref_ptr<Ekiga::CallManager> /*manager*/,
+				      gmref_ptr<Ekiga::Call> call)
+{
+  std::map<gmref_ptr<Ekiga::Call>, std::string>::iterator iter = cookies.find (call);
+
+  if (iter != cookies.end ()) {
+
+    std::cout << "Should Uninhibit cookie " << iter->second << std::endl;
+    cookies.erase (iter);
+  }
 }
