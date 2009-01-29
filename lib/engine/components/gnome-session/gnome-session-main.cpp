@@ -36,6 +36,7 @@
  */
 
 #include "services.h"
+#include "call-core.h"
 
 #include "gnome-session-main.h"
 
@@ -44,10 +45,20 @@ struct GNOMESESSIONSpark: public Ekiga::Spark
   GNOMESESSIONSpark (): result(false)
   {}
 
-  bool try_initialize_more (Ekiga::ServiceCore& /*core*/,
+  bool try_initialize_more (Ekiga::ServiceCore& core,
 			    int* /*argc*/,
 			    char** /*argv*/[])
   {
+    gmref_ptr<Ekiga::CallCore> call = core.get ("call-core");
+    gmref_ptr<Ekiga::Service> service = core.get ("gnome-session");
+
+    if (call && !service) {
+
+      result = true;
+      core.add (gmref_ptr<Ekiga::Service> (new Ekiga::BasicService ("gnome-session",
+								    "\tComponent connecting ekiga to the gnome session")));
+    }
+
     return result;
   }
 
