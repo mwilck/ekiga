@@ -42,6 +42,10 @@ if HAVE_AVAHI
 AVAHI_DIR += avahi
 endif
 
+if HAVE_GNOME
+GNOME_SESSION_DIR = gnome-session
+endif
+
 SUBDIRS =                       \
 	call-history	        \
         echo                    \
@@ -52,7 +56,7 @@ SUBDIRS =                       \
         null-audiooutput        \
         opal                    \
         ptlib                   \
-	gnome-session		\
+	$(GNOME_SESSION_DIR)	\
 	$(AVAHI_DIR)            \
 	$(DBUS_DIR)             \
 	$(GSTREAMER_DIR)        \
