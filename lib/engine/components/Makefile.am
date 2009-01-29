@@ -52,6 +52,7 @@ SUBDIRS =                       \
         null-audiooutput        \
         opal                    \
         ptlib                   \
+	gnome-session		\
 	$(AVAHI_DIR)            \
 	$(DBUS_DIR)             \
 	$(GSTREAMER_DIR)        \

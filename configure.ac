@@ -769,6 +769,7 @@ lib/engine/components/avahi-publisher/Makefile
 lib/engine/components/gstreamer/Makefile
 lib/engine/components/kde/Makefile
 lib/engine/components/resource-list/Makefile
+lib/engine/components/gnome-session/Makefile
 lib/engine/components/xcap/Makefile
 lib/engine/components/opal/Makefile
 lib/engine/components/evolution/Makefile
