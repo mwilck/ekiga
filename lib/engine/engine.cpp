@@ -95,6 +95,10 @@
 #include "ldap-main.h"
 #endif
 
+#ifdef HAVE_GNOME
+#include "gnome-session-main.h"
+#endif
+
 #ifdef HAVE_GSTREAMER
 #include "gst-main.h"
 #endif
@@ -218,6 +222,10 @@ engine_init (int argc,
 
 #ifdef HAVE_LDAP
   ldap_init (kickstart);
+#endif
+
+#ifdef HAVE_GNOME
+  gnomesession_init (kickstart);
 #endif
 
 #ifdef HAVE_KDE

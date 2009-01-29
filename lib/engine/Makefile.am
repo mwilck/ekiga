@@ -137,6 +137,11 @@ if HAVE_LDAP
 libekiga_engine_la_LIBADD += components/ldap/libgmldap.la
 endif
 
+if HAVE_GNOME
+INCLUDES += -I$(top_srcdir)/lib/engine/components/gnome-session/
+libekiga_engine_la_LIBADD += components/gnome-session/libgmgnomesession.la
+endif
+
 if HAVE_GSTREAMER
 libekiga_engine_la_LIBADD += components/gstreamer/libgmgstreamer.la
 endif
