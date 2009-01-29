@@ -1,5 +1,10 @@
 if HAVE_DBUS
 DBUS_DIR = hal-dbus
+
+if HAVE_GNOME
+GNOME_SESSION_DIR = gnome-session
+endif
+
 endif
 
 if HAVE_LDAP
@@ -40,10 +45,6 @@ endif
 
 if HAVE_AVAHI
 AVAHI_DIR += avahi
-endif
-
-if HAVE_GNOME
-GNOME_SESSION_DIR = gnome-session
 endif
 
 SUBDIRS =                       \

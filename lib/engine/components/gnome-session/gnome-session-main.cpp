@@ -35,8 +35,13 @@
  *
  */
 
+#include "config.h"
+
 #include <iostream>
 #include <map>
+#include <glib.h>
+#include <dbus/dbus.h>
+#include <dbus/dbus-glib.h>
 
 #include "services.h"
 #include "call-core.h"
@@ -46,6 +51,8 @@
 struct GNOMESESSIONService: public Ekiga::Service
 {
   GNOMESESSIONService (gmref_ptr<Ekiga::CallCore> call_core);
+
+  ~GNOMESESSIONService ();
 
   const std::string get_name () const
   { return "gnome-session"; }
@@ -61,7 +68,8 @@ private:
   void on_cleared_call (gmref_ptr<Ekiga::CallManager> manager,
 			gmref_ptr<Ekiga::Call> call);
 
-  std::map<gmref_ptr<Ekiga::Call>, std::string> cookies;
+  DBusGProxy* proxy;
+  std::map<gmref_ptr<Ekiga::Call>, guint> cookies;
 };
 
 struct GNOMESESSIONSpark: public Ekiga::Spark
@@ -103,26 +111,71 @@ gnomesession_init (Ekiga::KickStart& kickstart)
 
 GNOMESESSIONService::GNOMESESSIONService (gmref_ptr<Ekiga::CallCore> call_core)
 {
-  call_core->established_call.connect (sigc::mem_fun (this, &GNOMESESSIONService::on_established_call));
-  call_core->setup_call.connect (sigc::mem_fun (this, &GNOMESESSIONService::on_cleared_call));
+  GError* error = NULL;
+
+  DBusGConnection* connection = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
+
+  if (error == NULL) {
+
+    proxy = dbus_g_proxy_new_for_name_owner (connection,
+					     "org.gnome.SessionManager",
+					     "/org/gnome/SessionManager",
+					     "org.gnome.SessionManager",
+					     &error);
+
+    if (error == NULL) {
+
+      call_core->established_call.connect (sigc::mem_fun (this, &GNOMESESSIONService::on_established_call));
+      call_core->setup_call.connect (sigc::mem_fun (this, &GNOMESESSIONService::on_cleared_call));
+    } else {
+
+      proxy = NULL;
+      g_error_free (error);
+    }
+  } else {
+
+    proxy = NULL;
+    g_error_free (error);
+  }
+}
+
+GNOMESESSIONService::~GNOMESESSIONService ()
+{
+  if (proxy != NULL)
+    g_object_unref (proxy);
 }
 
 void
 GNOMESESSIONService::on_established_call (gmref_ptr<Ekiga::CallManager> /*manager*/,
-					  gmref_ptr<Ekiga::Call> /*call*/)
+					  gmref_ptr<Ekiga::Call> call)
 {
-  std::cout << "Should Inhibit and store a cookie" << std::endl;
+  guint cookie;
+
+  gboolean ret = dbus_g_proxy_call (proxy, "Inhibit", NULL,
+				    G_TYPE_STRING, PACKAGE_NAME,
+				    G_TYPE_UINT, 0,
+				    G_TYPE_STRING, "Call in progress",
+				    G_TYPE_UINT, 8,
+				    G_TYPE_INVALID,
+				    G_TYPE_UINT, &cookie,
+				    G_TYPE_INVALID);
+  if (ret) {
+
+    cookies[call] = cookie;
+  }
 }
 
 void
 GNOMESESSIONService::on_cleared_call (gmref_ptr<Ekiga::CallManager> /*manager*/,
 				      gmref_ptr<Ekiga::Call> call)
 {
-  std::map<gmref_ptr<Ekiga::Call>, std::string>::iterator iter = cookies.find (call);
+  std::map<gmref_ptr<Ekiga::Call>, guint>::iterator iter = cookies.find (call);
 
   if (iter != cookies.end ()) {
 
-    std::cout << "Should Uninhibit cookie " << iter->second << std::endl;
+    dbus_g_proxy_call (proxy, "Uninhibit", NULL,
+		       G_TYPE_UINT, iter->second,
+		       G_TYPE_INVALID, G_TYPE_INVALID);
     cookies.erase (iter);
   }
 }

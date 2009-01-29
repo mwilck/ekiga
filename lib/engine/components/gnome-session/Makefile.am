@@ -2,7 +2,7 @@ noinst_LTLIBRARIES = libgmgnomesession.la
 
 gnomesession_dir = $(top_srcdir)/lib/engine/components/gnome-session
 
-AM_CPPFLAGS = $(SIGC_CFLAGS) $(GLIB_CFLAGS) $(XML_CFLAGS)
+AM_CPPFLAGS = $(SIGC_CFLAGS) $(GLIB_CFLAGS) $(DBUS_CFLAGS)
 
 INCLUDES = \
 	-I$(top_srcdir)/lib/engine/framework \
@@ -15,4 +15,4 @@ libgmgnomesession_la_SOURCES = \
 libgmgnomesession_la_LIBADD = \
 	$(top_builddir)/lib/engine/protocol/libgmprotocol.la
 
-libgmgnomesession_la_LDFLAGS = -export-dynamic -no-undefined $(LDAP_LIBS) $(SIGC_LIBS) $(GLIB_LIBS) $(XML_LIBS)
+libgmgnomesession_la_LDFLAGS = -export-dynamic -no-undefined $(LDAP_LIBS) $(SIGC_LIBS) $(GLIB_LIBS) $(DBUS_LIBS)
