@@ -76,19 +76,44 @@ public:
 
     const std::string get_aor () const;
 
+    /** Returns the protocol name of the Opal::Account.
+     * This function is purely virtual and should be implemented by the
+     * Ekiga::Account descendant.
+     * @return The protocol name of the Ekiga::Contact.
+     */
     const std::string get_protocol_name () const;
 
     const std::string get_host () const;
 
+    /** Returns the user name for the Opal::Account.
+     * This function is purely virtual and should be implemented by the
+     * Ekiga::Account descendant.
+     * @return The user name of the Ekiga::Account.
+     */
     const std::string get_username () const;
 
+    /** Returns the authentication user name for the Opal::Account.
+     * This function is purely virtual and should be implemented by the
+     * Ekiga::Account descendant.
+     * @return The authentication user name of the Ekiga::Account.
+     */
     const std::string get_authentication_username () const;
 
+    /** Returns the password for the Opal::Account.
+     * This function is purely virtual and should be implemented by the
+     * Ekiga::Account descendant.
+     * @return The password of the Ekiga::Account.
+     */
     const std::string get_password () const;
 
     void set_authentication_settings (const std::string & username,
                                       const std::string & password);
 
+    /** Returns the registration timeout for the Opal::Account.
+     * This function is purely virtual and should be implemented by the
+     * Ekiga::Account descendant.
+     * @return The timeout of the Ekiga::Account.
+     */
     unsigned get_timeout () const;
 
     void enable ();

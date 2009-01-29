@@ -73,14 +73,6 @@ namespace Ekiga
     virtual const std::string get_name () const = 0;
 
 
-    /** Returns the protocol name of the Ekiga::Account.
-     * This function is purely virtual and should be implemented by the
-     * Ekiga::Account descendant.
-     * @return The protocol name of the Ekiga::Contact.
-     */
-    virtual const std::string get_protocol_name () const = 0;
-
-
     /** Returns the address of record for that Ekiga::Account.
      * @return The address of record.
      */
@@ -93,38 +85,6 @@ namespace Ekiga
      * @return The host name of the Ekiga::Account.
      */
     virtual const std::string get_host () const = 0;
-
-
-    /** Returns the user name for the Ekiga::Account.
-     * This function is purely virtual and should be implemented by the
-     * Ekiga::Account descendant.
-     * @return The user name of the Ekiga::Account.
-     */
-    virtual const std::string get_username () const = 0;
-
-
-    /** Returns the authentication user name for the Ekiga::Account.
-     * This function is purely virtual and should be implemented by the
-     * Ekiga::Account descendant.
-     * @return The authentication user name of the Ekiga::Account.
-     */
-    virtual const std::string get_authentication_username () const = 0;
-
-
-    /** Returns the password for the Ekiga::Account.
-     * This function is purely virtual and should be implemented by the
-     * Ekiga::Account descendant.
-     * @return The password of the Ekiga::Account.
-     */
-    virtual const std::string get_password () const = 0;
-
-
-    /** Returns the registration timeout for the Ekiga::Account.
-     * This function is purely virtual and should be implemented by the
-     * Ekiga::Account descendant.
-     * @return The timeout of the Ekiga::Account.
-     */
-    virtual unsigned get_timeout () const = 0;
 
 
     /** Subscribe the given account.
