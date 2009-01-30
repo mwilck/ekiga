@@ -61,11 +61,12 @@ gstreamer_init (Ekiga::ServiceCore& core,
 
   if (audioinput_core && audiooutput_core && videoinput_core) {
 
+    gst_init (argc, argv);
+
     GST::VideoInputManager* video = new GST::VideoInputManager ();
     GST::AudioInputManager* audioin = new GST::AudioInputManager ();
     GST::AudioOutputManager* audioout = new GST::AudioOutputManager ();
 
-    gst_init (argc, argv);
     audioinput_core->add_manager (*audioin);
     audiooutput_core->add_manager (*audioout);
     videoinput_core->add_manager (*video);
