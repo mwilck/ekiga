@@ -24,7 +24,7 @@ INCLUDES = \
 	-I$(top_srcdir)/src				\
 	-I$(top_srcdir)/src/dbus-helper/		\
 	-I$(top_srcdir)/src/gui/			\
-	-I$(top_builddir)				\
+	-I$(top_builddir)/src/dbus-helper/		\
 	$(GNOME_INCLUDEDIR)
 
 BUILT_SOURCES = src/revision.h
@@ -54,6 +54,8 @@ EXTRA_PROGRAMS =
 # Common stuff
 ekiga_SOURCES =			\
 	common.h		
+
+nodist_ekiga_SOURCES =
 
 # Graphical User Interface 
 ekiga_SOURCES +=			\
@@ -85,27 +87,34 @@ ekiga_SOURCES +=				\
 
 if HAVE_DBUS 
 ekiga_SOURCES +=		\
-	dbus-helper/dbus-stub.h	\
 	dbus-helper/dbus.h	\
 	dbus-helper/dbus.cpp
 
+nodist_ekiga_SOURCES +=		\
+	dbus-helper/dbus-stub.h
 
 bin_PROGRAMS += ekiga-helper
 
 ekiga_helper_SOURCES = 		\
-	dbus-helper/dbus-helper-stub.h 	\
 	dbus-helper/dbus-helper.cpp
+
+nodist_ekiga_helper_SOURCES = 	\
+	dbus-helper/dbus-helper-stub.h
 
 ekiga_helper_LDADD = $(DBUS_LIBS)
 
 BUILT_SOURCES += dbus-helper/dbus-helper-stub.h dbus-helper/dbus-stub.h
 
-dbus-helper/dbus-helper-stub.h: dbus-helper/dbus-helper-stub.xml
-	$(LIBTOOL) --mode=execute dbus-binding-tool --prefix=helper --mode=glib-server --output=$@ $^
+dbus-helper/dbus-helper-stub.h: dbus-helper/dbus-helper-stub.xml build-subdir-stamp
+	$(LIBTOOL) --mode=execute dbus-binding-tool --prefix=helper --mode=glib-server --output=$@ $<
 
-dbus-helper/dbus-stub.h: dbus-helper/dbus-stub.xml
-	$(LIBTOOL) --mode=execute dbus-binding-tool --prefix=ekiga_dbus_component --mode=glib-server --output=$@ $^
+dbus-helper/dbus-stub.h: dbus-helper/dbus-stub.xml build-subdir-stamp
+	$(LIBTOOL) --mode=execute dbus-binding-tool --prefix=ekiga_dbus_component --mode=glib-server --output=$@ $<
 endif
+
+build-subdir-stamp:
+	test -d dbus-helper || mkdir dbus-helper
+	touch build-subdir-stamp
 
 if INSTALL_DBUS_SERVICE
 
@@ -145,6 +154,8 @@ EXTRA_DIST = \
 	dbus-helper/dbus-helper-stub.xml
 
 CLEANFILES = \
-	$(service_DATA)
+	$(service_DATA)		\
+	build-subdir-stamp	\
+	$(BUILT_SOURCES)
 
 DISTCLEANFILES = revision.h
