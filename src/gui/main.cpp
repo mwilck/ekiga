@@ -987,9 +987,9 @@ on_videooutput_device_error_cb (Ekiga::VideoOutputManager & /* manager */,
     case Ekiga::VO_ERROR:
     default:
 #ifdef WIN32  
-      dialog_msg = g_strconcat (_("There was an error opening initializing the video output. Please verify that no other applicating is using the accelerated video output."), "\n\n", tmp_msg, NULL);
+      dialog_msg = g_strconcat (_("There was an error opening or initializing the video output. Please verify that no other application is using the accelerated video output."), "\n\n", tmp_msg, NULL);
 #else
-      dialog_msg = g_strconcat (_("There was an error opening initializing the video output. Please verify that you are using a color depth of 24 or 32 bits per pixel."), "\n\n", tmp_msg, NULL);
+      dialog_msg = g_strconcat (_("There was an error opening or initializing the video output. Please verify that you are using a color depth of 24 or 32 bits per pixel."), "\n\n", tmp_msg, NULL);
 #endif      
       break;
   }
