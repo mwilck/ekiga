@@ -387,9 +387,11 @@ void Opal::Account::on_edit_form_submitted (bool submitted,
     std::string new_name = result.text ("name");
     std::string new_host = result.text ("host");
     std::string new_user = result.text ("user");
-      std::string new_authentication_user = new_user;
+    std::string new_authentication_user;
     if (get_protocol_name () == "SIP")
       new_authentication_user = result.text ("authentication_user");
+    if (new_authentication_user.empty ())
+      new_authentication_user = new_user;
     std::string new_password = result.private_text ("password");
     bool new_enabled = result.boolean ("enabled");
     unsigned new_timeout = atoi (result.text ("timeout").c_str ());
