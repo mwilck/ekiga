@@ -106,8 +106,6 @@ entry_changed_nt (G_GNUC_UNUSED gpointer cid,
   
   if (gm_conf_entry_get_type(entry) == GM_CONF_STRING) {
 
-    gdk_threads_enter ();
-  
     e = GTK_WIDGET (data);
     current_value = (gchar *) gm_conf_entry_get_string (entry);
 
@@ -136,8 +134,6 @@ entry_changed_nt (G_GNUC_UNUSED gpointer cid,
 					 (gpointer) entry_focus_changed,
 					 NULL);
     }
-
-    gdk_threads_leave (); 
   }
 }
 
@@ -180,8 +176,6 @@ toggle_changed_nt (G_GNUC_UNUSED gpointer cid,
   
   if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
    
-    gdk_threads_enter ();
-  
     e = GTK_WIDGET (data);
 
     /* We set the new value for the widget */
@@ -199,7 +193,6 @@ toggle_changed_nt (G_GNUC_UNUSED gpointer cid,
 				       0, 0, NULL,
 				       (gpointer) toggle_changed,
 				       NULL);
-    gdk_threads_leave (); 
   }
 }
 
@@ -232,8 +225,6 @@ adjustment_changed_nt (G_GNUC_UNUSED gpointer cid,
 
   if (gm_conf_entry_get_type (entry) == GM_CONF_INT) {
 
-    gdk_threads_enter ();
-
     s = GTK_ADJUSTMENT (data);
 
     current_value = gm_conf_entry_get_int (entry);
@@ -251,8 +242,6 @@ adjustment_changed_nt (G_GNUC_UNUSED gpointer cid,
 				       0, 0, NULL,
 				       (gpointer) adjustment_changed,
 				       NULL);
-
-    gdk_threads_leave ();
   }
 }
 
@@ -298,8 +287,6 @@ int_option_menu_changed_nt (G_GNUC_UNUSED gpointer cid,
   
   if (gm_conf_entry_get_type (entry) == GM_CONF_INT) {
    
-    gdk_threads_enter ();
-
     e = GTK_WIDGET (data);
     current_value = gm_conf_entry_get_int (entry);
 
@@ -315,7 +302,6 @@ int_option_menu_changed_nt (G_GNUC_UNUSED gpointer cid,
                                        0, 0, NULL,
                                        (gpointer) int_option_menu_changed,
                                        NULL);
-    gdk_threads_leave ();
   }
 }
 
@@ -378,8 +364,6 @@ string_option_menu_changed_nt (G_GNUC_UNUSED gpointer cid,
   
   if (gm_conf_entry_get_type (entry) == GM_CONF_STRING) {
    
-    gdk_threads_enter ();
-
     e = GTK_WIDGET (data);
     
     model = gtk_combo_box_get_model (GTK_COMBO_BOX (e));
@@ -411,7 +395,5 @@ string_option_menu_changed_nt (G_GNUC_UNUSED gpointer cid,
 				       0, 0, NULL,
 				       (gpointer) string_option_menu_changed,
 				       NULL);
-	 
-    gdk_threads_leave ();
   }
 }

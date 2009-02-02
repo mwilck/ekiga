@@ -153,10 +153,8 @@ thread_safe_window_show (gpointer data)
 {
   g_return_val_if_fail (data != NULL, FALSE);
 
-  gdk_threads_enter ();
   gtk_window_present (GTK_WINDOW (data));
   gtk_widget_show (GTK_WIDGET (data));
-  gdk_threads_leave ();
 
   return FALSE;
 }
@@ -167,10 +165,8 @@ thread_safe_window_show_all (gpointer data)
 {
   g_return_val_if_fail (data != NULL, FALSE);
 
-  gdk_threads_enter ();
   gtk_window_present (GTK_WINDOW (data));
   gtk_widget_show_all (GTK_WIDGET (data));
-  gdk_threads_leave ();
 
   return FALSE;
 }
@@ -181,9 +177,7 @@ thread_safe_window_hide (gpointer data)
 {
   g_return_val_if_fail (data != NULL, FALSE);
 
-  gdk_threads_enter ();
   gtk_widget_hide (GTK_WIDGET (data));
-  gdk_threads_leave ();
 
   return FALSE;
 }
@@ -194,9 +188,7 @@ thread_safe_widget_destroy (gpointer data)
 {
   g_return_val_if_fail (data != NULL, FALSE);
 
-  gdk_threads_enter ();
   gtk_widget_destroy (GTK_WIDGET (data));
-  gdk_threads_leave ();
 
   return FALSE;
 }
@@ -227,9 +219,7 @@ progress_dialog_pulse_cb (gpointer data)
 {
   g_return_val_if_fail (data != NULL, FALSE);
 
-  gdk_threads_enter ();
   gtk_progress_bar_pulse (GTK_PROGRESS_BAR (data));
-  gdk_threads_leave ();
   
   return TRUE;
 }

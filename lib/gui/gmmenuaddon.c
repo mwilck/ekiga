@@ -74,12 +74,8 @@ menus_have_icons_changed_nt (G_GNUC_UNUSED gpointer cid,
 
   g_return_if_fail (gm_conf_entry_get_type (entry) == GM_CONF_BOOL && data);
   
-  gdk_threads_enter ();
-  
   show_icons = gm_conf_entry_get_bool (entry);
   gtk_menu_show_icons (GTK_WIDGET (data), show_icons);
-  
-  gdk_threads_leave ();
 }
 
 
@@ -223,16 +219,12 @@ menu_toggle_changed_nt (G_GNUC_UNUSED gpointer id,
 
   if (gm_conf_entry_get_type (entry) == GM_CONF_BOOL) {
    
-    gdk_threads_enter ();
-  
     e = GTK_WIDGET (data);
 
     /* We set the new value for the widget */
     GTK_CHECK_MENU_ITEM (e)->active = gm_conf_entry_get_bool (entry);
 
     gtk_widget_queue_draw (GTK_WIDGET (e));
-
-    gdk_threads_leave (); 
   }
 }
 
@@ -247,12 +239,8 @@ radio_menu_changed_nt (G_GNUC_UNUSED gpointer id,
 
   if (gm_conf_entry_get_type (entry) == GM_CONF_INT) {
 
-    gdk_threads_enter ();
-
     gtk_radio_menu_select_with_widget (GTK_WIDGET (data),
 				       gm_conf_entry_get_int (entry));
-
-    gdk_threads_leave ();
   }
 }
 
