@@ -1820,13 +1820,9 @@ gnomemeeting_tray_hack_cb (G_GNUC_UNUSED gpointer data)
   statusicon = GTK_STATUS_ICON (GnomeMeeting::Process ()->GetStatusicon ());
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   
-  //gdk_threads_enter ();
-
   if (!gtk_status_icon_is_embedded (GTK_STATUS_ICON (statusicon))) 
     gtk_widget_show (main_window);
   
-  //gdk_threads_leave ();
-
   return FALSE;
 }
 
@@ -4379,7 +4375,6 @@ main (int argc,
   /* GTK+ initialization */
   g_type_init ();
   g_thread_init (NULL);
-//  gdk_threads_init ();
 #ifndef WIN32
   signal (SIGPIPE, SIG_IGN);
 #endif
@@ -4559,9 +4554,7 @@ main (int argc,
 #endif
 
   /* The GTK loop */
-  //gdk_threads_enter ();
   gtk_main ();
-  //gdk_threads_leave ();
 
 #ifdef HAVE_DBUS
   g_object_unref (dbus_component);
