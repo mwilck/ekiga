@@ -12,13 +12,14 @@
 # Francisco Javier F. Serrador <serrador@cvs.gnome.org>, 2004, 2005, 2006.
 # Jorge González <jorgegonz@svn.gnome.org>, 2007, 2008.
 # Juanje Ojeda Croissier <jojeda@emergya.es>, 2008, 2009.
+#: ../lib/engine/components/resource-list/rl-entry.cpp:163
 msgid ""
 msgstr ""
 "Project-Id-Version: ekiga.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=ekiga&component=general\n"
-"POT-Creation-Date: 2009-02-01 15:12+0000\n"
-"PO-Revision-Date: 2009-02-01 17:45+0100\n"
+"POT-Creation-Date: 2009-02-01 17:50+0000\n"
+"PO-Revision-Date: 2009-02-02 18:31+0100\n"
 "Last-Translator: Juanje Ojeda Croissier <jojeda@emergya.es>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -933,6 +934,8 @@ msgid "Screencast"
 msgstr "Grabación de vídeo"
 
 #: ../lib/engine/components/ldap/ldap-book.cpp:409
+#: ../lib/engine/components/resource-list/rl-entry.cpp:143
+#: ../lib/engine/components/resource-list/rl-entry-ref.cpp:130
 msgid "_Refresh"
 msgstr "_Refrescar"
 
@@ -1697,6 +1700,7 @@ msgstr "Usuario:"
 #: ../lib/engine/components/resource-list/rl-heap.cpp:144
 #: ../lib/engine/components/resource-list/rl-heap.cpp:178
 #: ../lib/engine/components/resource-list/rl-presentity.cpp:133
+#: ../lib/engine/components/resource-list/rl-entry.cpp:130
 msgid "Unnamed"
 msgstr "Sin nombre"
 
@@ -1765,6 +1769,30 @@ msgid ""
 msgstr ""
 "Rellene este formulario para cambiar un contacto existente en un servidor "
 "remoto"
+
+#: ../lib/engine/components/resource-list/rl-entry.cpp:186
+#| msgid "Invalid Server URI\n"
+msgid "Invalid server data"
+msgstr "Servidor de datos no válido"
+
+#: ../lib/engine/components/resource-list/rl-entry-ref.cpp:51
+msgid "Click to fetch"
+msgstr "Pulsar para obtener"
+
+#: ../lib/engine/components/resource-list/rl-entry-ref.cpp:118
+#| msgid "Edit contact"
+msgid "Distant contact"
+msgstr "Contacto distante"
+
+#: ../lib/engine/components/resource-list/rl-list.cpp:181
+#, c-format
+msgid "%s / List #%d"
+msgstr "%s / Lista nº %d"
+
+#: ../lib/engine/components/resource-list/rl-list.cpp:185
+#, c-format
+msgid "List #%d"
+msgstr "Lista nº %d"
 
 #: ../lib/engine/gui/gtk-core/form-dialog-gtk.cpp:660
 msgid "Advanced"
@@ -2324,9 +2352,6 @@ msgid "No video will be displayed during this call->"
 msgstr "No se mostrará el vídeo durante esta llamada->"
 
 #: ../src/gui/main.cpp:990
-#| msgid ""
-#| "There was an error opening initializing the video output. Please verify "
-#| "that no other applicating is using the accelerated video output."
 msgid ""
 "There was an error opening or initializing the video output. Please verify "
 "that no other application is using the accelerated video output."
@@ -2335,9 +2360,6 @@ msgstr ""
 "ninguna otra aplicación está usando la salida acelerada de vídeo."
 
 #: ../src/gui/main.cpp:992
-#| msgid ""
-#| "There was an error opening initializing the video output. Please verify "
-#| "that you are using a color depth of 24 or 32 bits per pixel."
 msgid ""
 "There was an error opening or initializing the video output. Please verify "
 "that you are using a color depth of 24 or 32 bits per pixel."
