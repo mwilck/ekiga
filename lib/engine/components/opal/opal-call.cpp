@@ -48,6 +48,31 @@
 
 using namespace Opal;
 
+class CallSetup : public PThread
+{
+  PCLASSINFO(CallSetup, PThread);
+
+public:
+  CallSetup (Opal::Call & _call,
+             OpalConnection & _connection)
+    : PThread (1000, AutoDeleteThread),
+      call (_call),
+      connection (_connection)
+  {
+    this->Resume ();
+  }
+
+  void Main ()
+  {
+    call.DoSetUp (connection);
+  }
+
+private:
+  Opal::Call & call;
+  OpalConnection & connection;
+};
+
+
 Opal::Call::Call (OpalManager & _manager, Ekiga::ServiceCore & _core)
   : OpalCall (_manager), Ekiga::Call (), core (_core),
     call_setup(false),outgoing(true),jitter(0)
@@ -521,7 +546,9 @@ Opal::Call::OnSetUp (OpalConnection & connection)
   cleared.connect (sigc::mem_fun (this, &Opal::Call::on_cleared_call));
   missed.connect (sigc::mem_fun (this, &Opal::Call::on_missed_call));
 
-  return OpalCall::OnSetUp (connection);
+  new CallSetup (*this, connection);
+
+  return true; 
 }
 
 
@@ -633,6 +660,13 @@ Opal::Call::OnRTPStatistics (const OpalConnection & /* connection */,
   lost_packets = (lost_a + lost_v) / max ((unsigned long)(total_a + total_v), (unsigned long) 1);
   late_packets = (too_late_a + too_late_v) / max ((unsigned long)(total_a + total_v), (unsigned long) 1);
   out_of_order_packets = (out_of_order_a + out_of_order_v) / max ((unsigned long)(total_a + total_v), (unsigned long) 1);
+}
+
+
+void
+Opal::Call::DoSetUp (OpalConnection & connection)
+{
+  OpalCall::OnSetUp (connection);
 }
 
 

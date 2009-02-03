@@ -174,6 +174,8 @@ public:
 
     void OnRTPStatistics (const OpalConnection & connection, const RTP_Session & session);
 
+    void DoSetUp (OpalConnection & connection);
+
 private:
 
     PBoolean OnEstablished (OpalConnection & connection);
