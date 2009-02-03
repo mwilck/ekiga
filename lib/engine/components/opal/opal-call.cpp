@@ -325,14 +325,12 @@ Opal::Call::parse_info (OpalConnection & connection)
   std::string r_party_name;
   std::string app;
 
+  remote_uri = (const char *) connection.GetRemotePartyCallbackURL ();
   if (!PIsDescendant(&connection, OpalPCSSConnection)) {
 
     outgoing = connection.IsOriginating ();
 
-    if (outgoing)
-      remote_uri = (const char *) connection.GetCall().GetPartyB ();
-    else
-      remote_uri = (const char *) connection.GetRemotePartyCallbackURL ();
+    remote_uri = (const char *) connection.GetRemotePartyCallbackURL ();
 
     l_party_name = (const char *) connection.GetCalledPartyURL ();
     r_party_name = (const char *) connection.GetRemotePartyName ();
