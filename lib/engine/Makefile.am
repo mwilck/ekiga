@@ -138,8 +138,10 @@ libekiga_engine_la_LIBADD += components/ldap/libgmldap.la
 endif
 
 if HAVE_GNOME
+if HAVE_DBUS
 INCLUDES += -I$(top_srcdir)/lib/engine/components/gnome-session/
 libekiga_engine_la_LIBADD += components/gnome-session/libgmgnomesession.la
+endif
 endif
 
 if HAVE_GSTREAMER
