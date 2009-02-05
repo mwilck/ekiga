@@ -1047,7 +1047,7 @@ DXWindow::ErrorMessage()
 const char*
 DXWindow::DDErrorMessage(int code)
 {
-  const static char *error;
+  static const char *error;
   static char errormsg [1024];	
 
   switch (code) {
