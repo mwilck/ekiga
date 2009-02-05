@@ -78,6 +78,9 @@
 
 #ifdef HAVE_DBUS
 #include "hal-main-dbus.h"
+#ifdef HAVE_GNOME
+#include "gnome-session-main.h"
+#endif
 #endif
 
 #include "opal-main.h"
@@ -93,10 +96,6 @@
 
 #ifdef HAVE_LDAP
 #include "ldap-main.h"
-#endif
-
-#ifdef HAVE_GNOME
-#include "gnome-session-main.h"
 #endif
 
 #ifdef HAVE_GSTREAMER
