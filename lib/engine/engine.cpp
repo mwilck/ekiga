@@ -224,7 +224,9 @@ engine_init (int argc,
 #endif
 
 #ifdef HAVE_GNOME
+#ifdef HAVE_DBUS
   gnomesession_init (kickstart);
+#endif
 #endif
 
 #ifdef HAVE_KDE
