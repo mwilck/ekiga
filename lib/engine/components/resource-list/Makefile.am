@@ -16,6 +16,12 @@ libgmresource_list_la_SOURCES = \
 	$(resource_list_dir)/resource-list-main.cpp \
 	$(resource_list_dir)/rl-presentity.h \
 	$(resource_list_dir)/rl-presentity.cpp \
+ 	$(resource_list_dir)/rl-entry.h \
+ 	$(resource_list_dir)/rl-entry.cpp \
+ 	$(resource_list_dir)/rl-entry-ref.h \
+ 	$(resource_list_dir)/rl-entry-ref.cpp \
+ 	$(resource_list_dir)/rl-list.h \
+ 	$(resource_list_dir)/rl-list.cpp \
 	$(resource_list_dir)/rl-heap.h \
 	$(resource_list_dir)/rl-heap.cpp \
 	$(resource_list_dir)/rl-cluster.h \
