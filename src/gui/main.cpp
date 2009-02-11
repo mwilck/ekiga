@@ -1472,7 +1472,9 @@ place_call_cb (GtkWidget * /*widget*/,
       uri = uri + "@" + (*it);
       ekiga_main_window_set_call_url (mw, uri.c_str ());
     }
-    uri.erase (std::remove (uri.begin(), uri.end(), ' '));
+    pos = uri.find_first_of (' ');
+    if (pos != std::string::npos)
+      uri = uri.substr (0, pos);
     if (call_core->dial (uri)) {
 
       pos = uri.find ("@");

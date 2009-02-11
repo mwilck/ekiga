@@ -253,7 +253,9 @@ Local::Presentity::edit_presentity_form_submitted (bool submitted,
     const std::set<std::string> new_groups = result.editable_set ("groups");
     std::string new_uri = result.text ("uri");
     std::map<std::string, xmlNodePtr> future_group_nodes;
-    new_uri.erase (std::remove (new_uri.begin(), new_uri.end(), ' '));
+    size_t pos = new_uri.find_first_of (' ');
+    if (pos != std::string::npos)
+      new_uri = new_uri.substr (0, pos);
 
     name = new_name;
     if (uri != new_uri) {
