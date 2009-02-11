@@ -250,9 +250,10 @@ Local::Presentity::edit_presentity_form_submitted (bool submitted,
     /* we first fetch all data before making any change, so if there's
      * a problem, we don't do anything */
     const std::string new_name = result.text ("name");
-    const std::string new_uri = result.text ("uri");
     const std::set<std::string> new_groups = result.editable_set ("groups");
+    std::string new_uri = result.text ("uri");
     std::map<std::string, xmlNodePtr> future_group_nodes;
+    new_uri.erase (std::remove (new_uri.begin(), new_uri.end(), ' '));
 
     name = new_name;
     if (uri != new_uri) {

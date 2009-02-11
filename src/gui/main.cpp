@@ -104,6 +104,8 @@
 #include "services.h"
 #include "form-dialog-gtk.h"
 
+#include <algorithm>
+
 enum CallingState {Standby, Calling, Connected, Called};
 
 enum DeviceType { AudioInput, AudioOutput, VideoInput} ;
@@ -1470,6 +1472,7 @@ place_call_cb (GtkWidget * /*widget*/,
       uri = uri + "@" + (*it);
       ekiga_main_window_set_call_url (mw, uri.c_str ());
     }
+    uri.erase (std::remove (uri.begin(), uri.end(), ' '));
     if (call_core->dial (uri)) {
 
       pos = uri.find ("@");
