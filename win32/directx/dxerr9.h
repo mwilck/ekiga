@@ -9,6 +9,8 @@
 #ifndef _DXERR9_H_
 #define _DXERR9_H_
 
+#include <windows.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif //__cplusplus

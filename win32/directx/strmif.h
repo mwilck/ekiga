@@ -20549,6 +20549,7 @@ void __RPC_STUB IAMGraphBuilderCallback_CreatedFilter_Stub(
 /* interface __MIDL_itf_strmif_0361 */
 /* [local] */ 
 
+#if 0
 #ifdef __cplusplus
 #ifndef _IAMFilterGraphCallback_
 #define _IAMFilterGraphCallback_
@@ -20562,6 +20563,7 @@ interface IAMFilterGraphCallback : public IUnknown
  
 };
 #endif // _IAMFilterGraphCallback_
+#endif
 #endif
 struct CodecAPIEventData
     {

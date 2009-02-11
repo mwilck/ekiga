@@ -7,6 +7,7 @@
 // Copyright (c) 1992 - 2002, Microsoft Corporation.  All rights reserved.
 //------------------------------------------------------------------------------
 
+#include <uuids.h>
 
 //
 // --- MPEG 2 definitions ---
