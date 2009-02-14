@@ -50,7 +50,7 @@ void
 gm_platform_init ()
 {
 #if GLIB_CHECK_VERSION (2, 18, 0)
-  basedir = g_strdup (g_win32_get_package_installation_directory_of_module (NULL, NULL));
+  basedir = g_strdup (g_win32_get_package_installation_directory_of_module (NULL));
 #else  
   basedir = g_strdup (g_win32_get_package_installation_directory (NULL, NULL));
 #endif
