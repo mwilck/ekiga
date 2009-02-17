@@ -66,7 +66,7 @@ struct KDESpark: public Ekiga::Spark
       KCmdLineArgs::init (&about);
       new KApplication (false);
       core.add (gmref_ptr<Ekiga::Service> (new Ekiga::BasicService ("kde-core",
-								    "KDE support")));
+								    "\tKDE support")));
       result = true;
     }
 

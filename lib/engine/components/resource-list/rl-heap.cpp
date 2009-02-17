@@ -470,6 +470,7 @@ RL::Heap::edit ()
 			  " means global)"));
 
   request.text ("name", _("Contact list's name"), get_name ());
+  /* "Document" used as a name -- uri point to the root of a document tree */
   request.text ("root", _("Document root"), root_str);
   request.text ("user", _("Identifier"), user_str);
   request.boolean ("writable", _("Writable"), writable);
