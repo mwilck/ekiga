@@ -452,7 +452,7 @@ statusicon_stop_blinking (StatusIcon *self)
 }
 
 
-void
+static void
 statusicon_set_status (StatusIcon *statusicon,
                        const std::string & presence)
 {
@@ -484,7 +484,7 @@ statusicon_set_status (StatusIcon *statusicon,
 }
 
 
-void
+static void
 statusicon_set_inacall (StatusIcon *statusicon,
                         bool inacall)
 {
