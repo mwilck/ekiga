@@ -4,12 +4,13 @@
 #
 # 새로 번역하시는 분은 아래 translator-credits에 추가하세요.
 #
+#: ../lib/engine/components/resource-list/rl-entry.cpp:163
 msgid ""
 msgstr ""
 "Project-Id-Version: ekiga\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-23 20:53+0900\n"
-"PO-Revision-Date: 2009-01-24 00:19+0900\n"
+"POT-Creation-Date: 2009-02-18 07:56+0900\n"
+"PO-Revision-Date: 2009-02-18 07:57+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: GNOME Korea <gnome-kr-hackers@lists.kldp.net>\n"
 "MIME-Version: 1.0\n"
@@ -367,7 +368,7 @@ msgstr ""
 msgid "Show offline contacts"
 msgstr "오프라인 연락쳐 보기"
 
-#: ../ekiga.schemas.in.in.h:74 ../src/gui/main.cpp:3213
+#: ../ekiga.schemas.in.in.h:74 ../src/gui/main.cpp:3214
 msgid "Show the call panel"
 msgstr "호출 패널을 봅니다"
 
@@ -727,7 +728,7 @@ msgstr "비디오 채널"
 msgid "Video format"
 msgstr "비디오 형식"
 
-#: ../ekiga.schemas.in.in.h:141 ../src/gui/assistant.cpp:1166
+#: ../ekiga.schemas.in.in.h:141 ../src/gui/assistant.cpp:1153
 msgid "Video input device"
 msgstr "비디오 입력 장치"
 
@@ -776,7 +777,7 @@ msgid "Missed"
 msgstr "놓침"
 
 #: ../lib/engine/components/evolution/evolution-book.cpp:76
-#: ../lib/engine/components/ldap/ldap-book.cpp:899
+#: ../lib/engine/components/ldap/ldap-book.cpp:909
 #, c-format
 msgid "%d user found"
 msgid_plural "%d users found"
@@ -788,13 +789,13 @@ msgstr "새 연락처(_C)"
 
 #: ../lib/engine/components/evolution/evolution-book.cpp:288
 #: ../lib/engine/components/local-roster/local-cluster.cpp:82
-#: ../lib/engine/components/local-roster/local-heap.cpp:116
+#: ../lib/engine/components/local-roster/local-heap.cpp:117
 msgid "New contact"
 msgstr "새 연락처"
 
 #: ../lib/engine/components/evolution/evolution-book.cpp:290
 #: ../lib/engine/components/evolution/evolution-contact.cpp:328
-#: ../lib/engine/components/opal/opal-account.cpp:354
+#: ../lib/engine/components/opal/opal-account.cpp:351
 msgid "Please update the following fields:"
 msgstr "다음 항목을 입력하십시오:"
 
@@ -829,15 +830,15 @@ msgstr "호출기(_P):"
 
 #: ../lib/engine/components/evolution/evolution-contact.cpp:234
 #: ../lib/engine/components/local-roster/local-presentity.cpp:197
-#: ../lib/engine/components/opal/opal-account.cpp:311
+#: ../lib/engine/components/opal/opal-account.cpp:308
 #: ../lib/engine/components/resource-list/rl-presentity.cpp:203
-#: ../src/gui/main.cpp:3171
+#: ../src/gui/main.cpp:3172
 msgid "_Edit"
 msgstr "편집(_E)"
 
 #: ../lib/engine/components/evolution/evolution-contact.cpp:236
 #: ../lib/engine/components/local-roster/local-presentity.cpp:199
-#: ../lib/engine/components/opal/opal-account.cpp:313
+#: ../lib/engine/components/opal/opal-account.cpp:310
 #: ../lib/engine/components/resource-list/rl-presentity.cpp:205
 msgid "_Remove"
 msgstr "제거(_R)"
@@ -848,13 +849,13 @@ msgstr "연락처 편집"
 
 #: ../lib/engine/components/evolution/evolution-contact.cpp:330
 #: ../lib/engine/components/local-roster/local-presentity.cpp:224
-#: ../lib/engine/components/local-roster/local-heap.cpp:183
-#: ../lib/engine/components/local-roster/local-heap.cpp:360
-#: ../lib/engine/components/opal/opal-account.cpp:356
+#: ../lib/engine/components/local-roster/local-heap.cpp:184
+#: ../lib/engine/components/local-roster/local-heap.cpp:364
+#: ../lib/engine/components/opal/opal-account.cpp:353
 #: ../lib/engine/components/opal/opal-bank.cpp:99
 #: ../lib/engine/components/opal/opal-bank.cpp:109
 #: ../lib/engine/components/resource-list/rl-cluster.cpp:169
-#: ../lib/engine/components/resource-list/rl-heap.cpp:543
+#: ../lib/engine/components/resource-list/rl-heap.cpp:544
 #: ../lib/engine/components/resource-list/rl-presentity.cpp:224
 msgid "Name:"
 msgstr "이름:"
@@ -872,7 +873,7 @@ msgstr "정말로 주소록에서 %s을(를) 지우시겠습니까?"
 msgid "Audio test"
 msgstr "오디오 테스트"
 
-#: ../lib/engine/components/gstreamer/gst-audiooutput.cpp:292
+#: ../lib/engine/components/gstreamer/gst-audiooutput.cpp:320
 msgid "Silent"
 msgstr "조용히"
 
@@ -891,6 +892,8 @@ msgid "Screencast"
 msgstr "스크린 캐스트"
 
 #: ../lib/engine/components/ldap/ldap-book.cpp:409
+#: ../lib/engine/components/resource-list/rl-entry.cpp:143
+#: ../lib/engine/components/resource-list/rl-entry-ref.cpp:130
 msgid "_Refresh"
 msgstr "새로 고침(_R)"
 
@@ -907,128 +910,137 @@ msgid "LDAP SASL Interaction"
 msgstr "LDAP SASL 상호 통신"
 
 # 공개키 인증에 사용하는 challenge string을 말함
-#: ../lib/engine/components/ldap/ldap-book.cpp:577
+#. Translators, Howard explained : "Challenge" is a generic term
+#. * in authentication. It's a prompt from the authentication mechanism
+#. * for some type of credential. Exactly what kind of challenge and
+#. * what kind of credential depends on the specific authentication
+#. * mechanism. Since SASL is a generic interface, and can dynamically
+#. * load arbitrary mechanisms, there's not much more specific you can
+#. * say about it. You might google for "challenge response
+#. * authentication" if you'd like more background context.
+#.
+#: ../lib/engine/components/ldap/ldap-book.cpp:587
 msgid "Challenge: "
 msgstr "첼린지: "
 
-#: ../lib/engine/components/ldap/ldap-book.cpp:585
+#: ../lib/engine/components/ldap/ldap-book.cpp:595
 msgid "Interact"
 msgstr "상호 통신"
 
-#: ../lib/engine/components/ldap/ldap-book.cpp:654
+#: ../lib/engine/components/ldap/ldap-book.cpp:664
 msgid "Refreshing"
 msgstr "새로 고치는 중입니다"
 
-#: ../lib/engine/components/ldap/ldap-book.cpp:660
+#: ../lib/engine/components/ldap/ldap-book.cpp:670
 msgid "Could not initialize server"
 msgstr "서버를 초기화할 수 없습니다"
 
-#: ../lib/engine/components/ldap/ldap-book.cpp:674
-#: ../lib/engine/components/ldap/ldap-book.cpp:719
+#: ../lib/engine/components/ldap/ldap-book.cpp:684
+#: ../lib/engine/components/ldap/ldap-book.cpp:729
 msgid "LDAP Error: "
 msgstr "LDAP 에러: "
 
-#: ../lib/engine/components/ldap/ldap-book.cpp:728
+#: ../lib/engine/components/ldap/ldap-book.cpp:738
 msgid "Contacted server"
 msgstr "연결한 서버"
 
 #. patience == 0
-#: ../lib/engine/components/ldap/ldap-book.cpp:771
+#: ../lib/engine/components/ldap/ldap-book.cpp:781
 msgid "Could not connect to server"
 msgstr "서버에 연결할 수 없습니다"
 
 #. patience == 0
-#: ../lib/engine/components/ldap/ldap-book.cpp:819
-#: ../lib/engine/components/ldap/ldap-book.cpp:872
+#: ../lib/engine/components/ldap/ldap-book.cpp:829
+#: ../lib/engine/components/ldap/ldap-book.cpp:882
 msgid "Could not search"
 msgstr "찾을 수 없습니다"
 
-#: ../lib/engine/components/ldap/ldap-book.cpp:827
+#: ../lib/engine/components/ldap/ldap-book.cpp:837
 msgid "Waiting for search results"
 msgstr "찾기 결과를 기다리는 중입니다"
 
-#: ../lib/engine/components/ldap/ldap-book.cpp:921
+#: ../lib/engine/components/ldap/ldap-book.cpp:931
 msgid "Please edit the following fields"
 msgstr "다음 항목을 편집하십시오:"
 
-#: ../lib/engine/components/ldap/ldap-book.cpp:923
+#: ../lib/engine/components/ldap/ldap-book.cpp:933
 msgid "Book _Name"
 msgstr "주소록 이름(_N)"
 
-#: ../lib/engine/components/ldap/ldap-book.cpp:924
+#: ../lib/engine/components/ldap/ldap-book.cpp:934
 msgid "Server _URI"
 msgstr "서버 URI(_U)"
 
-#: ../lib/engine/components/ldap/ldap-book.cpp:925
+#: ../lib/engine/components/ldap/ldap-book.cpp:935
 msgid "_Base DN"
 msgstr "기본 DN(_B)"
 
-#: ../lib/engine/components/ldap/ldap-book.cpp:931
+#: ../lib/engine/components/ldap/ldap-book.cpp:941
 msgid "Subtree"
 msgstr "아래 트리"
 
-#: ../lib/engine/components/ldap/ldap-book.cpp:932
+#: ../lib/engine/components/ldap/ldap-book.cpp:942
 msgid "Single Level"
 msgstr "한 단계"
 
-#: ../lib/engine/components/ldap/ldap-book.cpp:933
+#: ../lib/engine/components/ldap/ldap-book.cpp:943
 msgid "_Search Scope"
 msgstr "찾기 범위(_S)"
 
-#: ../lib/engine/components/ldap/ldap-book.cpp:942
+#: ../lib/engine/components/ldap/ldap-book.cpp:952
 msgid "_DisplayName Attribute"
 msgstr "DisplayName 속성(_D)"
 
-#: ../lib/engine/components/ldap/ldap-book.cpp:943
+#: ../lib/engine/components/ldap/ldap-book.cpp:953
 msgid "Call _Attributes"
 msgstr "Call 속성(_A)"
 
-#: ../lib/engine/components/ldap/ldap-book.cpp:945
-#: ../lib/engine/components/ldap/ldap-book.cpp:947
+#: ../lib/engine/components/ldap/ldap-book.cpp:955
+#: ../lib/engine/components/ldap/ldap-book.cpp:957
 msgid "_Filter Template"
 msgstr "필터 템플리트(_F)"
 
-#: ../lib/engine/components/ldap/ldap-book.cpp:949
+#: ../lib/engine/components/ldap/ldap-book.cpp:959
 msgid "Bind _ID"
 msgstr "바인딩 ID(_I)"
 
-#: ../lib/engine/components/ldap/ldap-book.cpp:950
+#: ../lib/engine/components/ldap/ldap-book.cpp:960
 msgid "_Password"
 msgstr "암호(_P)"
 
-#: ../lib/engine/components/ldap/ldap-book.cpp:951
+#: ../lib/engine/components/ldap/ldap-book.cpp:961
 msgid "Use TLS"
 msgstr "TLS 사용"
 
-#: ../lib/engine/components/ldap/ldap-book.cpp:952
+#: ../lib/engine/components/ldap/ldap-book.cpp:962
 msgid "Use SASL"
 msgstr "SASL 사용"
 
-#: ../lib/engine/components/ldap/ldap-book.cpp:966
+#: ../lib/engine/components/ldap/ldap-book.cpp:976
 msgid "SASL _Mechanism"
 msgstr "SASL 메커니즘(_M)"
 
-#: ../lib/engine/components/ldap/ldap-book.cpp:977
+#: ../lib/engine/components/ldap/ldap-book.cpp:987
 msgid "Edit LDAP directory"
 msgstr "LDAP 디렉터리 편집"
 
-#: ../lib/engine/components/ldap/ldap-book.cpp:1006
+#: ../lib/engine/components/ldap/ldap-book.cpp:1016
 msgid "Please provide a Book Name for this directory\n"
 msgstr "이 디렉터리에 대한 주소록 이름을 입력하십시오\n"
 
-#: ../lib/engine/components/ldap/ldap-book.cpp:1009
+#: ../lib/engine/components/ldap/ldap-book.cpp:1019
 msgid "Please provide a Server URI\n"
 msgstr "서버 URI를 입력하십시오\n"
 
-#: ../lib/engine/components/ldap/ldap-book.cpp:1012
+#: ../lib/engine/components/ldap/ldap-book.cpp:1022
 msgid "Please provide a DisplayName Attribute\n"
 msgstr "DisplayName 속성을 입력하십시오\n"
 
-#: ../lib/engine/components/ldap/ldap-book.cpp:1015
+#: ../lib/engine/components/ldap/ldap-book.cpp:1025
 msgid "Please provide a Call Attribute\n"
 msgstr "Call 속성을 입력하십시오\n"
 
-#: ../lib/engine/components/ldap/ldap-book.cpp:1018
+#: ../lib/engine/components/ldap/ldap-book.cpp:1028
 msgid "Invalid Server URI\n"
 msgstr "서버 URI가 잘못되었습니다\n"
 
@@ -1059,164 +1071,164 @@ msgid ""
 msgstr "에키가의 내부 목록의 항목을 바꾸려면 다음 사항을 입력하십시오"
 
 #: ../lib/engine/components/local-roster/local-presentity.cpp:225
-#: ../lib/engine/components/local-roster/local-heap.cpp:192
-#: ../lib/engine/components/local-roster/local-heap.cpp:194
+#: ../lib/engine/components/local-roster/local-heap.cpp:193
+#: ../lib/engine/components/local-roster/local-heap.cpp:195
 #: ../lib/engine/components/resource-list/rl-cluster.cpp:170
-#: ../lib/engine/components/resource-list/rl-heap.cpp:544
+#: ../lib/engine/components/resource-list/rl-heap.cpp:545
 #: ../lib/engine/components/resource-list/rl-presentity.cpp:225
 msgid "Address:"
 msgstr "주소:"
 
 #: ../lib/engine/components/local-roster/local-presentity.cpp:227
-#: ../lib/engine/components/resource-list/rl-heap.cpp:545
+#: ../lib/engine/components/resource-list/rl-heap.cpp:546
 #: ../lib/engine/components/resource-list/rl-presentity.cpp:227
 msgid "Choose groups:"
 msgstr "그룹을 선택하십시오:"
 
 #: ../lib/engine/components/local-roster/local-roster-bridge.cpp:93
-#: ../lib/engine/components/local-roster/local-heap.cpp:180
+#: ../lib/engine/components/local-roster/local-heap.cpp:181
 msgid "Add to local roster"
 msgstr "로컬 목록에 추가"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:91
+#: ../lib/engine/components/local-roster/local-heap.cpp:92
 msgid "Services"
 msgstr "서비스"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:92
+#: ../lib/engine/components/local-roster/local-heap.cpp:93
 msgid "Echo test"
 msgstr "반향음 테스트"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:93
+#: ../lib/engine/components/local-roster/local-heap.cpp:94
 msgid "Conference room"
 msgstr "대화실"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:109
+#: ../lib/engine/components/local-roster/local-heap.cpp:110
 msgid "Local roster"
 msgstr "로컬 목록"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:126
+#: ../lib/engine/components/local-roster/local-heap.cpp:127
 msgid "Rename"
 msgstr "이름 바꾸기"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:159
+#: ../lib/engine/components/local-roster/local-heap.cpp:160
 msgid "Family"
 msgstr "가족"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:160
+#: ../lib/engine/components/local-roster/local-heap.cpp:161
 msgid "Friend"
 msgstr "친구"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:161
+#: ../lib/engine/components/local-roster/local-heap.cpp:162
 msgid "Associate"
 msgstr "동료"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:162
+#: ../lib/engine/components/local-roster/local-heap.cpp:163
 msgid "Assistant"
 msgstr "조수"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:163
+#: ../lib/engine/components/local-roster/local-heap.cpp:164
 msgid "Supervisor"
 msgstr "상사"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:164
+#: ../lib/engine/components/local-roster/local-heap.cpp:165
 msgid "Self"
 msgstr "나 자신"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:181
+#: ../lib/engine/components/local-roster/local-heap.cpp:182
 msgid ""
 "Please fill in this form to add a new contact to ekiga's internal roster"
 msgstr "새 연락처를 에키가의 내부 목록에 추가하려면 다음 정보를 입력하십시오"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:198
+#: ../lib/engine/components/local-roster/local-heap.cpp:199
 msgid "Put contact in groups:"
 msgstr "연락처를 그룹에 넣습니다:"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:331
+#: ../lib/engine/components/local-roster/local-heap.cpp:335
 msgid "You supplied an unsupported address"
 msgstr "지원하지 않는 주소를 입력했습니다"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:333
+#: ../lib/engine/components/local-roster/local-heap.cpp:337
 msgid "You already have a contact with this address!"
 msgstr "이 주소의 연락처가 이미 있습니다!"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:358
+#: ../lib/engine/components/local-roster/local-heap.cpp:362
 msgid "Rename group"
 msgstr "그룹 이름 바꾸기"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:359
+#: ../lib/engine/components/local-roster/local-heap.cpp:363
 msgid "Please edit this group name"
 msgstr "이 그룹 이름을 편집하십시오"
 
-#: ../lib/engine/components/opal/h323-endpoint.cpp:136
-#: ../lib/engine/components/opal/sip-endpoint.cpp:255
-#: ../lib/engine/components/opal/sip-endpoint.cpp:259
+#: ../lib/engine/components/opal/h323-endpoint.cpp:143
+#: ../lib/engine/components/opal/sip-endpoint.cpp:257
+#: ../lib/engine/components/opal/sip-endpoint.cpp:261
 msgid "Call"
 msgstr "호출"
 
-#: ../lib/engine/components/opal/h323-endpoint.cpp:139
-#: ../lib/engine/components/opal/sip-endpoint.cpp:256
-#: ../lib/engine/components/opal/sip-endpoint.cpp:260 ../src/gui/main.cpp:2945
+#: ../lib/engine/components/opal/h323-endpoint.cpp:146
+#: ../lib/engine/components/opal/sip-endpoint.cpp:258
+#: ../lib/engine/components/opal/sip-endpoint.cpp:262 ../src/gui/main.cpp:2946
 msgid "Transfer"
 msgstr "전달"
 
 #. Translators : The alias we are registering already exists : failure
-#: ../lib/engine/components/opal/h323-endpoint.cpp:303
+#: ../lib/engine/components/opal/h323-endpoint.cpp:310
 msgid "Duplicate alias"
 msgstr "부르는 이름이 중복되었습니다"
 
-#: ../lib/engine/components/opal/h323-endpoint.cpp:306
+#: ../lib/engine/components/opal/h323-endpoint.cpp:313
 msgid "Bad username/password"
 msgstr "사용자 이름과 암호가 올바르지 않습니다"
 
-#: ../lib/engine/components/opal/h323-endpoint.cpp:309
-#: ../lib/engine/components/opal/sip-endpoint.cpp:893
+#: ../lib/engine/components/opal/h323-endpoint.cpp:316
+#: ../lib/engine/components/opal/sip-endpoint.cpp:896
 msgid "Transport error"
 msgstr "송수신 오류"
 
-#: ../lib/engine/components/opal/h323-endpoint.cpp:320
-#: ../lib/engine/components/opal/h323-endpoint.cpp:325
-#: ../lib/engine/components/opal/sip-endpoint.cpp:900
+#: ../lib/engine/components/opal/h323-endpoint.cpp:327
+#: ../lib/engine/components/opal/h323-endpoint.cpp:332
+#: ../lib/engine/components/opal/sip-endpoint.cpp:903
 msgid "Failed"
 msgstr "실패"
 
-#: ../lib/engine/components/opal/opal-account.cpp:303
+#: ../lib/engine/components/opal/opal-account.cpp:300
 msgid "_Disable"
 msgstr "사용하지 않기(_D)"
 
-#: ../lib/engine/components/opal/opal-account.cpp:306
+#: ../lib/engine/components/opal/opal-account.cpp:303
 msgid "_Enable"
 msgstr "사용(_E)"
 
-#: ../lib/engine/components/opal/opal-account.cpp:327
-#: ../src/gui/assistant.cpp:732
+#: ../lib/engine/components/opal/opal-account.cpp:324
+#: ../src/gui/assistant.cpp:725
 msgid "Recharge the account"
 msgstr "계정 충전"
 
-#: ../lib/engine/components/opal/opal-account.cpp:332
-#: ../src/gui/assistant.cpp:744
+#: ../lib/engine/components/opal/opal-account.cpp:329
+#: ../src/gui/assistant.cpp:737
 msgid "Consult the balance history"
 msgstr "잔액 기록을 봅니다"
 
-#: ../lib/engine/components/opal/opal-account.cpp:337
+#: ../lib/engine/components/opal/opal-account.cpp:334
 msgid "Consult the call history"
 msgstr "호출 기록을 봅니다"
 
-#: ../lib/engine/components/opal/opal-account.cpp:352
+#: ../lib/engine/components/opal/opal-account.cpp:349
 #: ../lib/engine/components/opal/opal-bank.cpp:72
 msgid "Edit account"
 msgstr "계정 편집"
 
-#: ../lib/engine/components/opal/opal-account.cpp:358
+#: ../lib/engine/components/opal/opal-account.cpp:355
 #: ../lib/engine/components/opal/opal-bank.cpp:110
 msgid "Registrar:"
 msgstr "등록 기관:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:360
+#: ../lib/engine/components/opal/opal-account.cpp:357
 #: ../lib/engine/components/opal/opal-bank.cpp:100
 msgid "Gatekeeper:"
 msgstr "게이트키퍼:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:361
+#: ../lib/engine/components/opal/opal-account.cpp:358
 #: ../lib/engine/components/opal/opal-bank.cpp:81
 #: ../lib/engine/components/opal/opal-bank.cpp:101
 #: ../lib/engine/components/opal/opal-bank.cpp:111
@@ -1227,12 +1239,12 @@ msgstr "사용자:"
 #. Translators:
 #. * SIP knows two usernames: The name for the client ("User") and the name
 #. * for the authentication procedure ("Authentication User")
-#: ../lib/engine/components/opal/opal-account.cpp:366
+#: ../lib/engine/components/opal/opal-account.cpp:363
 #: ../lib/engine/components/opal/opal-bank.cpp:112
 msgid "Authentication User:"
 msgstr "인증 사용자:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:367
+#: ../lib/engine/components/opal/opal-account.cpp:364
 #: ../lib/engine/components/opal/opal-bank.cpp:83
 #: ../lib/engine/components/opal/opal-bank.cpp:103
 #: ../lib/engine/components/opal/opal-bank.cpp:113
@@ -1240,33 +1252,33 @@ msgstr "인증 사용자:"
 msgid "Password:"
 msgstr "암호:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:368
+#: ../lib/engine/components/opal/opal-account.cpp:365
 #: ../lib/engine/components/opal/opal-bank.cpp:104
 #: ../lib/engine/components/opal/opal-bank.cpp:114
 msgid "Timeout:"
 msgstr "제한 시간:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:369
+#: ../lib/engine/components/opal/opal-account.cpp:366
 #: ../lib/engine/components/opal/opal-bank.cpp:117
 msgid "Enable Account"
 msgstr "계정 사용"
 
-#: ../lib/engine/components/opal/opal-account.cpp:402
+#: ../lib/engine/components/opal/opal-account.cpp:401
 #: ../lib/engine/components/opal/opal-bank.cpp:155
 msgid "You did not supply a name for that account."
 msgstr "계정의 이름을 입력하지 않았습니다."
 
-#: ../lib/engine/components/opal/opal-account.cpp:404
+#: ../lib/engine/components/opal/opal-account.cpp:403
 #: ../lib/engine/components/opal/opal-bank.cpp:157
 msgid "You did not supply a host to register to."
 msgstr "등록할 호스트를 입력하지 않았습니다."
 
-#: ../lib/engine/components/opal/opal-account.cpp:406
+#: ../lib/engine/components/opal/opal-account.cpp:405
 #: ../lib/engine/components/opal/opal-bank.cpp:159
 msgid "You did not supply a user name for that account."
 msgstr "계정의 사용자 이름을 입력하지 않았습니다."
 
-#: ../lib/engine/components/opal/opal-account.cpp:408
+#: ../lib/engine/components/opal/opal-account.cpp:407
 #: ../lib/engine/components/opal/opal-bank.cpp:161
 msgid "The timeout should have a bigger value."
 msgstr "시간 제한 값이 더 커야 합니다."
@@ -1295,12 +1307,12 @@ msgstr "다음 항목을 입력하십시오."
 msgid "Get an Ekiga.net SIP account"
 msgstr "Ekiga.net SIP 계정 만들기"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:88 ../src/gui/assistant.cpp:720
+#: ../lib/engine/components/opal/opal-bank.cpp:88 ../src/gui/assistant.cpp:713
 msgid "Get an Ekiga Call Out account"
 msgstr "에키가 외부 전화 계정을 만듭니다"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:92 ../src/gui/main.cpp:2699
-#: ../src/gui/main.cpp:2794
+#: ../lib/engine/components/opal/opal-bank.cpp:92 ../src/gui/main.cpp:2700
+#: ../src/gui/main.cpp:2795
 msgid "Account ID:"
 msgstr "계정 ID:"
 
@@ -1308,85 +1320,85 @@ msgstr "계정 ID:"
 msgid "PIN Code:"
 msgstr "비밀번호:"
 
-#: ../lib/engine/components/opal/opal-call.cpp:421
+#: ../lib/engine/components/opal/opal-call.cpp:444
 msgid "Local user cleared the call"
 msgstr "로컬 사용자가 호출을 끝냈습니다"
 
-#: ../lib/engine/components/opal/opal-call.cpp:424
-#: ../lib/engine/components/opal/opal-call.cpp:427
+#: ../lib/engine/components/opal/opal-call.cpp:447
+#: ../lib/engine/components/opal/opal-call.cpp:450
 msgid "Local user rejected the call"
 msgstr "로컬 사용자가 호출을 거절했습니다"
 
-#: ../lib/engine/components/opal/opal-call.cpp:430
+#: ../lib/engine/components/opal/opal-call.cpp:453
 msgid "Remote user cleared the call"
 msgstr "원격 사용자가 호출을 지웠습니다"
 
-#: ../lib/engine/components/opal/opal-call.cpp:433
+#: ../lib/engine/components/opal/opal-call.cpp:456
 msgid "Remote user rejected the call"
 msgstr "원격 사용자가 호출을 거절했습니다"
 
-#: ../lib/engine/components/opal/opal-call.cpp:436
+#: ../lib/engine/components/opal/opal-call.cpp:459
 msgid "Remote user has stopped calling"
 msgstr "원격 사용자가 호출을 멈췄습니다"
 
-#: ../lib/engine/components/opal/opal-call.cpp:439
+#: ../lib/engine/components/opal/opal-call.cpp:462
 msgid "Abnormal call termination"
 msgstr "비정상적인 호출 종료"
 
-#: ../lib/engine/components/opal/opal-call.cpp:442 ../src/gui/main.cpp:1485
+#: ../lib/engine/components/opal/opal-call.cpp:465 ../src/gui/main.cpp:1490
 msgid "Could not connect to remote host"
 msgstr "원격 호스트에 연결할 수 없습니다"
 
-#: ../lib/engine/components/opal/opal-call.cpp:445
+#: ../lib/engine/components/opal/opal-call.cpp:468
 msgid "The Gatekeeper cleared the call"
 msgstr "게이트키퍼가 호출을 끝냈습니다"
 
-#: ../lib/engine/components/opal/opal-call.cpp:448
+#: ../lib/engine/components/opal/opal-call.cpp:471
 msgid "User not found"
 msgstr "사용자를 찾을 수 없습니다"
 
-#: ../lib/engine/components/opal/opal-call.cpp:451
+#: ../lib/engine/components/opal/opal-call.cpp:474
 msgid "Insufficient bandwidth"
 msgstr "대역폭이 부족합니다"
 
-#: ../lib/engine/components/opal/opal-call.cpp:454
+#: ../lib/engine/components/opal/opal-call.cpp:477
 msgid "No common codec"
 msgstr "공통의 코덱이 없습니다"
 
-#: ../lib/engine/components/opal/opal-call.cpp:457
+#: ../lib/engine/components/opal/opal-call.cpp:480
 msgid "Call forwarded"
 msgstr "호출을 전달했습니다"
 
-#: ../lib/engine/components/opal/opal-call.cpp:460
+#: ../lib/engine/components/opal/opal-call.cpp:483
 msgid "Security check failed"
 msgstr "보안 검사가 실패했습니다"
 
-#: ../lib/engine/components/opal/opal-call.cpp:463
+#: ../lib/engine/components/opal/opal-call.cpp:486
 msgid "Local user is busy"
 msgstr "로컬 사용자가 다른 용무 중입니다"
 
-#: ../lib/engine/components/opal/opal-call.cpp:466
-#: ../lib/engine/components/opal/opal-call.cpp:472
+#: ../lib/engine/components/opal/opal-call.cpp:489
+#: ../lib/engine/components/opal/opal-call.cpp:495
 msgid "Congested link to remote party"
 msgstr "원격 상대의 연결이 정체상태입니다"
 
-#: ../lib/engine/components/opal/opal-call.cpp:469
+#: ../lib/engine/components/opal/opal-call.cpp:492
 msgid "Remote user is busy"
 msgstr "원격 사용자가 다른 용무 중입니다"
 
-#: ../lib/engine/components/opal/opal-call.cpp:475
+#: ../lib/engine/components/opal/opal-call.cpp:498
 msgid "Remote host is offline"
 msgstr "원격 호스트가 연결되어 있지 않습니다"
 
-#: ../lib/engine/components/opal/opal-call.cpp:481
+#: ../lib/engine/components/opal/opal-call.cpp:504
 msgid "User is not available"
 msgstr "사용자가 없습니다"
 
-#: ../lib/engine/components/opal/opal-call.cpp:493
+#: ../lib/engine/components/opal/opal-call.cpp:516
 msgid "Call completed"
 msgstr "호출을 마쳤습니다"
 
-#: ../lib/engine/components/opal/opal-call-manager.cpp:726
+#: ../lib/engine/components/opal/opal-call-manager.cpp:725
 msgid ""
 "Ekiga did not manage to configure your network settings automatically. You "
 "can still use it, but you need to configure your network settings manually.\n"
@@ -1400,216 +1412,216 @@ msgstr ""
 "설정 방법은 http://wiki.ekiga.org/index.php/Enable_port_forwarding_manually "
 "페이지를 참고하십시오"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:280
 #: ../lib/engine/components/opal/sip-endpoint.cpp:282
+#: ../lib/engine/components/opal/sip-endpoint.cpp:284
 msgid "Message"
 msgstr "메시지"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:707
+#: ../lib/engine/components/opal/sip-endpoint.cpp:710
 msgid "Bad request"
 msgstr "잘못된 요청"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:711
+#: ../lib/engine/components/opal/sip-endpoint.cpp:714
 msgid "Payment required"
 msgstr "요금을 지불해야 합니다"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:715
+#: ../lib/engine/components/opal/sip-endpoint.cpp:718
 msgid "Unauthorized"
 msgstr "인증하지 않았습니다"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:719
+#: ../lib/engine/components/opal/sip-endpoint.cpp:722
 msgid "Forbidden"
 msgstr "금지"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:723
+#: ../lib/engine/components/opal/sip-endpoint.cpp:726
 msgid "Timeout"
 msgstr "제한 시간"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:727
+#: ../lib/engine/components/opal/sip-endpoint.cpp:730
 msgid "Conflict"
 msgstr "충돌"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:731
+#: ../lib/engine/components/opal/sip-endpoint.cpp:734
 msgid "Temporarily unavailable"
 msgstr "일시적으로 사용할 수 없습니다"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:735
+#: ../lib/engine/components/opal/sip-endpoint.cpp:738
 msgid "Not acceptable"
 msgstr "받아들이지 않습니다"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:739
+#: ../lib/engine/components/opal/sip-endpoint.cpp:742
 msgid "Illegal status code"
 msgstr "상태 코드가 잘못되었습니다"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:743
+#: ../lib/engine/components/opal/sip-endpoint.cpp:746
 msgid "Multiple choices"
 msgstr "여러가지 선택이 있습니다"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:747
+#: ../lib/engine/components/opal/sip-endpoint.cpp:750
 msgid "Moved permanently"
 msgstr "영구히 이동했습니다"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:751
+#: ../lib/engine/components/opal/sip-endpoint.cpp:754
 msgid "Moved temporarily"
 msgstr "임시로 이동했습니다"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:755
+#: ../lib/engine/components/opal/sip-endpoint.cpp:758
 msgid "Use proxy"
 msgstr "프록시 사용"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:759
+#: ../lib/engine/components/opal/sip-endpoint.cpp:762
 msgid "Alternative service"
 msgstr "예비 서비스"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:763
+#: ../lib/engine/components/opal/sip-endpoint.cpp:766
 msgid "Not found"
 msgstr "없음"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:767
+#: ../lib/engine/components/opal/sip-endpoint.cpp:770
 msgid "Method not allowed"
 msgstr "이 방법을 허용하지 않습니다"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:771
+#: ../lib/engine/components/opal/sip-endpoint.cpp:774
 msgid "Proxy authentication required"
 msgstr "프록시 인증이 필요합니다"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:775
+#: ../lib/engine/components/opal/sip-endpoint.cpp:778
 msgid "Length required"
 msgstr "길이가 필요합니다"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:779
+#: ../lib/engine/components/opal/sip-endpoint.cpp:782
 msgid "Request entity too big"
 msgstr "요청 엔티티가 너무 큽니다"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:783
+#: ../lib/engine/components/opal/sip-endpoint.cpp:786
 msgid "Request URI too long"
 msgstr "요청 URI가 너무 깁니다"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:787
+#: ../lib/engine/components/opal/sip-endpoint.cpp:790
 msgid "Unsupported media type"
 msgstr "지원하지 않는 미디어 종류"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:791
+#: ../lib/engine/components/opal/sip-endpoint.cpp:794
 msgid "Unsupported URI scheme"
 msgstr "지원하지 않는 URI 방식"
 
 #. Translators : The extension we are trying to register does not exist
-#: ../lib/engine/components/opal/sip-endpoint.cpp:796
+#: ../lib/engine/components/opal/sip-endpoint.cpp:799
 msgid "Bad extension"
 msgstr "확장 기능이 올바르지 않습니다"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:800
+#: ../lib/engine/components/opal/sip-endpoint.cpp:803
 msgid "Extension required"
 msgstr "확장 기능이 필요합니다"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:804
+#: ../lib/engine/components/opal/sip-endpoint.cpp:807
 msgid "Interval too brief"
 msgstr "간격이 너무 작습니다"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:808
+#: ../lib/engine/components/opal/sip-endpoint.cpp:811
 msgid "Loop detected"
 msgstr "루프가 발견되었습니다"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:812
+#: ../lib/engine/components/opal/sip-endpoint.cpp:815
 msgid "Too many hops"
 msgstr "단계가 너무 많습니다"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:816
+#: ../lib/engine/components/opal/sip-endpoint.cpp:819
 msgid "Address incomplete"
 msgstr "주소가 불완전합니다"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:820
+#: ../lib/engine/components/opal/sip-endpoint.cpp:823
 msgid "Ambiguous"
 msgstr "애매합니다"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:824
+#: ../lib/engine/components/opal/sip-endpoint.cpp:827
 msgid "Busy Here"
 msgstr "여기를 사용 중입니다"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:828
+#: ../lib/engine/components/opal/sip-endpoint.cpp:831
 msgid "Request terminated"
 msgstr "요청을 없앴습니다"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:832
+#: ../lib/engine/components/opal/sip-endpoint.cpp:835
 msgid "Not acceptable here"
 msgstr "여기서 받아들일 수 없습니다"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:836
+#: ../lib/engine/components/opal/sip-endpoint.cpp:839
 msgid "Bad event"
 msgstr "잘못된 이벤트"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:840
+#: ../lib/engine/components/opal/sip-endpoint.cpp:843
 msgid "Request pending"
 msgstr "요청이 미해결 상태입니다"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:844
+#: ../lib/engine/components/opal/sip-endpoint.cpp:847
 msgid "Undecipherable"
 msgstr "해독할 수 없습니다"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:848
+#: ../lib/engine/components/opal/sip-endpoint.cpp:851
 msgid "Internal server error"
 msgstr "내부 서버 오류"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:852
+#: ../lib/engine/components/opal/sip-endpoint.cpp:855
 msgid "Not implemented"
 msgstr "구현하지 않음"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:856
+#: ../lib/engine/components/opal/sip-endpoint.cpp:859
 msgid "Bad gateway"
 msgstr "게이트웨이가 올바르지 않습니다"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:860
+#: ../lib/engine/components/opal/sip-endpoint.cpp:863
 msgid "Service unavailable"
 msgstr "서비스를 사용할 수 없습니다"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:864
+#: ../lib/engine/components/opal/sip-endpoint.cpp:867
 msgid "Server timeout"
 msgstr "서버에서 제한 시간 초과"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:868
+#: ../lib/engine/components/opal/sip-endpoint.cpp:871
 msgid "SIP version not supported"
 msgstr "SIP 버전을 지원하지 않습니다"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:872
+#: ../lib/engine/components/opal/sip-endpoint.cpp:875
 msgid "Message too large"
 msgstr "메시지가 너무 깁니다"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:876
+#: ../lib/engine/components/opal/sip-endpoint.cpp:879
 msgid "Busy everywhere"
 msgstr "모두 사용 중입니다"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:880
+#: ../lib/engine/components/opal/sip-endpoint.cpp:883
 msgid "Decline"
 msgstr "거부"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:884
+#: ../lib/engine/components/opal/sip-endpoint.cpp:887
 msgid "Does not exist anymore"
 msgstr "더 이상 없습니다"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:888
+#: ../lib/engine/components/opal/sip-endpoint.cpp:891
 msgid "Globally not acceptable"
 msgstr "전체적으로 받아들일 수 없습니다"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:1016
+#: ../lib/engine/components/opal/sip-endpoint.cpp:1020
 msgid "Could not send message"
 msgstr "메시지를 보낼 수 없습니다"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:1130
+#: ../lib/engine/components/opal/sip-endpoint.cpp:1134
 #, c-format
 msgid "Incoming call from %s"
 msgstr "호출 받음: %s"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:1132
+#: ../lib/engine/components/opal/sip-endpoint.cpp:1136
 #, c-format
 msgid "Incoming call"
 msgstr "호출 받음"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:1138
+#: ../lib/engine/components/opal/sip-endpoint.cpp:1142
 #, c-format
 msgid "In a call with %s"
 msgstr "통화 중: %s"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:1140
+#: ../lib/engine/components/opal/sip-endpoint.cpp:1144
 #, c-format
 msgid "In a call"
 msgstr "통화 중"
@@ -1625,7 +1637,8 @@ msgstr "새 리소스 목록 추가"
 #: ../lib/engine/components/resource-list/rl-cluster.cpp:167
 msgid ""
 "Please fill in this form to add a new contact list to ekiga's remote roster"
-msgstr "에키가의 원격 목록에 새 연락처 목록을 추가하려면 다음 정보를 입력하십시오"
+msgstr ""
+"에키가의 원격 목록에 새 연락처 목록을 추가하려면 다음 정보를 입력하십시오"
 
 #: ../lib/engine/components/resource-list/rl-cluster.cpp:171
 msgid "Writable:"
@@ -1639,6 +1652,7 @@ msgstr "사용자 이름:"
 #: ../lib/engine/components/resource-list/rl-heap.cpp:144
 #: ../lib/engine/components/resource-list/rl-heap.cpp:178
 #: ../lib/engine/components/resource-list/rl-presentity.cpp:133
+#: ../lib/engine/components/resource-list/rl-entry.cpp:130
 msgid "Unnamed"
 msgstr "이름 없음"
 
@@ -1666,31 +1680,32 @@ msgstr "다음 항목을 편집하십시오 (ID가 없으면 전체를 의미합
 msgid "Contact list's name"
 msgstr "연락처 목록의 이름"
 
-#: ../lib/engine/components/resource-list/rl-heap.cpp:473
+#. "Document" used as a name -- uri point to the root of a document tree
+#: ../lib/engine/components/resource-list/rl-heap.cpp:474
 msgid "Document root"
 msgstr "문서 최상위"
 
-#: ../lib/engine/components/resource-list/rl-heap.cpp:474
+#: ../lib/engine/components/resource-list/rl-heap.cpp:475
 msgid "Identifier"
 msgstr "ID"
 
-#: ../lib/engine/components/resource-list/rl-heap.cpp:475
+#: ../lib/engine/components/resource-list/rl-heap.cpp:476
 msgid "Writable"
 msgstr "쓰기 가능"
 
-#: ../lib/engine/components/resource-list/rl-heap.cpp:476
+#: ../lib/engine/components/resource-list/rl-heap.cpp:477
 msgid "Server username"
 msgstr "서버 사용자 이름"
 
-#: ../lib/engine/components/resource-list/rl-heap.cpp:477
+#: ../lib/engine/components/resource-list/rl-heap.cpp:478
 msgid "Server password"
 msgstr "서버 암호"
 
-#: ../lib/engine/components/resource-list/rl-heap.cpp:529
+#: ../lib/engine/components/resource-list/rl-heap.cpp:530
 msgid "Add a remote contact"
 msgstr "원격 연락처 추가"
 
-#: ../lib/engine/components/resource-list/rl-heap.cpp:530
+#: ../lib/engine/components/resource-list/rl-heap.cpp:531
 msgid "Please fill in this form to create a new contact on a remote server"
 msgstr "새 연락처를 원격 서버에 추가하려면 다음 정보를 입력하십시오"
 
@@ -1703,6 +1718,28 @@ msgid ""
 "Please fill in this form to change an existing contact on a remote server"
 msgstr "원격 서버의 기존 연락처를 바꾸려면 다음 정보를 입력하십시오"
 
+#: ../lib/engine/components/resource-list/rl-entry.cpp:186
+msgid "Invalid server data"
+msgstr "서버 데이터가 잘못되었습니다"
+
+#: ../lib/engine/components/resource-list/rl-entry-ref.cpp:51
+msgid "Click to fetch"
+msgstr "가져오려면 누르십시오"
+
+#: ../lib/engine/components/resource-list/rl-entry-ref.cpp:118
+msgid "Distant contact"
+msgstr "장거리 연락처"
+
+#: ../lib/engine/components/resource-list/rl-list.cpp:181
+#, c-format
+msgid "%s / List #%d"
+msgstr "%s / 목록 #%d"
+
+#: ../lib/engine/components/resource-list/rl-list.cpp:185
+#, c-format
+msgid "List #%d"
+msgstr "목록 #%d"
+
 #: ../lib/engine/gui/gtk-core/form-dialog-gtk.cpp:660
 msgid "Advanced"
 msgstr "고급"
@@ -1712,7 +1749,7 @@ msgid "Address Book"
 msgstr "주소록"
 
 #: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:675
-#: ../src/gui/main.cpp:3120
+#: ../src/gui/main.cpp:3121
 msgid "Address _Book"
 msgstr "주소록(_B)"
 
@@ -1726,7 +1763,7 @@ msgid "Category"
 msgstr "분류"
 
 #: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:590
-#: ../src/gui/assistant.cpp:1390
+#: ../src/gui/assistant.cpp:1377
 msgid "Full Name"
 msgstr "전체 이름"
 
@@ -1770,27 +1807,27 @@ msgstr "선택한 코덱의 우선순위를 낮춥니다"
 msgid "Move selected codec priority downwards"
 msgstr "선택한 코덱의 우선순위를 높입니다"
 
-#: ../lib/gui/gmdialog.c:472
+#: ../lib/gui/gmdialog.c:462
 msgid "Do not show this dialog again"
 msgstr "이 대화 상자를 다시 표시하지 안 함"
 
-#: ../src/gui/accounts.cpp:228
+#: ../src/gui/accounts.cpp:229
 msgid "Registered"
 msgstr "등록했습니다"
 
-#: ../src/gui/accounts.cpp:232
+#: ../src/gui/accounts.cpp:233
 msgid "Unregistered"
 msgstr "등록 해제했습니다"
 
-#: ../src/gui/accounts.cpp:236
+#: ../src/gui/accounts.cpp:237
 msgid "Could not unregister"
 msgstr "등록을 해제할 수 없습니다"
 
-#: ../src/gui/accounts.cpp:242
+#: ../src/gui/accounts.cpp:243
 msgid "Could not register"
 msgstr "등록할 수 없습니다"
 
-#: ../src/gui/accounts.cpp:248
+#: ../src/gui/accounts.cpp:249
 msgid "Processing..."
 msgstr "처리하는 중입니다..."
 
@@ -1810,11 +1847,11 @@ msgstr "상태"
 msgid "Accounts"
 msgstr "계정"
 
-#: ../src/gui/accounts.cpp:659 ../src/gui/main.cpp:3181
+#: ../src/gui/accounts.cpp:659 ../src/gui/main.cpp:3182
 msgid "_Accounts"
 msgstr "계정(_A)"
 
-#: ../src/gui/accounts.cpp:663 ../src/gui/main.cpp:3264
+#: ../src/gui/accounts.cpp:663 ../src/gui/main.cpp:3265
 msgid "_Help"
 msgstr "도움말(_H)"
 
@@ -1894,19 +1931,19 @@ msgstr ""
 msgid "I do not want to sign up for the ekiga.net free service"
 msgstr "ekiga.net 무료 서비스에 가입하지 않습니다"
 
-#: ../src/gui/assistant.cpp:685
+#: ../src/gui/assistant.cpp:678
 msgid "Ekiga Call Out Account"
 msgstr "에키가 외부 전화 계정"
 
-#: ../src/gui/assistant.cpp:687
+#: ../src/gui/assistant.cpp:680
 msgid "Please enter your account ID:"
 msgstr "계정 ID를 입력하십시오:"
 
-#: ../src/gui/assistant.cpp:695
+#: ../src/gui/assistant.cpp:688
 msgid "Please enter your PIN code:"
 msgstr "비밀번호를 입력하십시오:"
 
-#: ../src/gui/assistant.cpp:706
+#: ../src/gui/assistant.cpp:699
 msgid ""
 "You can make calls to regular phones and cell numbers worldwide using "
 "Ekiga.\n"
@@ -1924,49 +1961,49 @@ msgstr ""
 "- 그리고 계정 아이디와 비밀번호를 입력합니다.\n"
 "이 대화 상자의 이 URL을 사용해 계정을 만든 경우에만 이 서비스가 동작합니다.\n"
 
-#: ../src/gui/assistant.cpp:756
+#: ../src/gui/assistant.cpp:749
 msgid "Consult the calls history"
 msgstr "호출 기록을 살펴봅니다"
 
-#: ../src/gui/assistant.cpp:766
+#: ../src/gui/assistant.cpp:759
 msgid "I do not want to sign up for the Ekiga Call Out service"
 msgstr "에키가 외부 전화 서비스에 가입하지 않습니다"
 
-#: ../src/gui/assistant.cpp:838 ../src/gui/assistant.cpp:1401
+#: ../src/gui/assistant.cpp:825 ../src/gui/assistant.cpp:1388
 msgid "Connection Type"
 msgstr "연결 종류"
 
 #. The connection type
-#: ../src/gui/assistant.cpp:841
+#: ../src/gui/assistant.cpp:828
 msgid "Please choose your connection type:"
 msgstr "연결 종류를 선택하십시오:"
 
-#: ../src/gui/assistant.cpp:858
+#: ../src/gui/assistant.cpp:845
 msgid "56k Modem"
 msgstr "56k 모뎀"
 
-#: ../src/gui/assistant.cpp:863
+#: ../src/gui/assistant.cpp:850
 msgid "ISDN"
 msgstr "ISDN"
 
-#: ../src/gui/assistant.cpp:868
+#: ../src/gui/assistant.cpp:855
 msgid "DSL/Cable (128 kbit/s uplink)"
 msgstr "DSL/케이블 (128 kbit/s 업링크)"
 
-#: ../src/gui/assistant.cpp:873
+#: ../src/gui/assistant.cpp:860
 msgid "DSL/Cable (512 kbit/s uplink)"
 msgstr "DSL/케이블 (512 kbit/s 업링크)"
 
-#: ../src/gui/assistant.cpp:878
+#: ../src/gui/assistant.cpp:865
 msgid "LAN"
 msgstr "LAN"
 
-#: ../src/gui/assistant.cpp:883
+#: ../src/gui/assistant.cpp:870
 msgid "Keep current settings"
 msgstr "현재 설정을 유지"
 
 # FIXME - 좀 더 부드러운 한국말로..
-#: ../src/gui/assistant.cpp:888
+#: ../src/gui/assistant.cpp:875
 msgid ""
 "The connection type will permit determining the best quality settings that "
 "Ekiga will use during calls. You can later change the settings individually "
@@ -1975,64 +2012,64 @@ msgstr ""
 "연결 종류는 에키가 호출에 사용할 최고의 품질 설정을 합니다. 나중에 기본 설정 "
 "창에서 이 설정을 따로 바꿀 수 있습니다."
 
-#: ../src/gui/assistant.cpp:982 ../src/gui/main.cpp:3010
-#: ../src/gui/main.cpp:3014 ../src/gui/preferences.cpp:760
+#: ../src/gui/assistant.cpp:969 ../src/gui/main.cpp:3011
+#: ../src/gui/main.cpp:3015 ../src/gui/preferences.cpp:760
 msgid "Audio Devices"
 msgstr "오디오 장치"
 
-#: ../src/gui/assistant.cpp:984
+#: ../src/gui/assistant.cpp:971
 msgid "Please choose the audio ringing device:"
 msgstr "오디오 벨소리 장치를 선택하십시오:"
 
-#: ../src/gui/assistant.cpp:1004
+#: ../src/gui/assistant.cpp:991
 msgid ""
 "The audio ringing device is the device that will be used to play the ringing "
 "sound on incoming calls."
 msgstr "오디오 벨소리 장치는 전화가 걸려왔을 때 벨 소리를 내는 장치입니다."
 
 #. ---
-#: ../src/gui/assistant.cpp:1015
+#: ../src/gui/assistant.cpp:1002
 msgid "Please choose the audio output device:"
 msgstr "오디오 출력 장치를 선택하십시오:"
 
-#: ../src/gui/assistant.cpp:1035
+#: ../src/gui/assistant.cpp:1022
 msgid ""
 "The audio output device is the device that will be used to play audio during "
 "calls."
 msgstr "오디오 출력 장치는 통화 중에 오디오를 재생하는 데 사용하는 장치입니다."
 
 #. ---
-#: ../src/gui/assistant.cpp:1046
+#: ../src/gui/assistant.cpp:1033
 msgid "Please choose the audio input device:"
 msgstr "오디오 입력 장치를 선택하십시오:"
 
-#: ../src/gui/assistant.cpp:1066
+#: ../src/gui/assistant.cpp:1053
 msgid ""
 "The audio input device is the device that will be used to record your voice "
 "during calls."
 msgstr "오디오 입력 장치는 통화 중에 오디오를 녹음하는 데 사용하는 장치입니다."
 
-#: ../src/gui/assistant.cpp:1168
+#: ../src/gui/assistant.cpp:1155
 msgid "Please choose your video input device:"
 msgstr "비디오 입력 장치를 선택하십시오:"
 
-#: ../src/gui/assistant.cpp:1188
+#: ../src/gui/assistant.cpp:1175
 msgid ""
 "The video input device is the device that will be used to capture video "
 "during calls."
 msgstr "비디오 입력 장치는 비디오를 캡처하는 데 사용하는 장치입니다."
 
-#: ../src/gui/assistant.cpp:1253 ../src/gui/assistant.cpp:1277
-#: ../src/gui/assistant.cpp:1301 ../src/gui/preferences.cpp:805
+#: ../src/gui/assistant.cpp:1240 ../src/gui/assistant.cpp:1264
+#: ../src/gui/assistant.cpp:1288 ../src/gui/preferences.cpp:805
 #: ../src/gui/preferences.cpp:830 ../src/gui/preferences.cpp:854
 msgid "No device found"
 msgstr "장치를 찾을 수 없습니다"
 
-#: ../src/gui/assistant.cpp:1332
+#: ../src/gui/assistant.cpp:1319
 msgid "Configuration Complete"
 msgstr "설정을 마쳤습니다"
 
-#: ../src/gui/assistant.cpp:1334
+#: ../src/gui/assistant.cpp:1321
 msgid ""
 "You have now finished the Ekiga configuration. All the settings can be "
 "changed in the Ekiga preferences. Enjoy!"
@@ -2040,35 +2077,35 @@ msgstr ""
 "에키가 설정을 모두 마쳤습니다. 여기서 설정한 사항은 에키가 기본 설정에서도 바"
 "꿀 수 있습니다. 즐겁게 이용하십시오!"
 
-#: ../src/gui/assistant.cpp:1341
+#: ../src/gui/assistant.cpp:1328
 msgid "Configuration summary:"
 msgstr "설정 내용 요약:"
 
-#: ../src/gui/assistant.cpp:1411
+#: ../src/gui/assistant.cpp:1398
 msgid "Audio Ringing Device"
 msgstr "오디오 벨소리 장치"
 
-#: ../src/gui/assistant.cpp:1420
+#: ../src/gui/assistant.cpp:1407
 msgid "Audio Output Device"
 msgstr "오디오 출력 장치"
 
-#: ../src/gui/assistant.cpp:1429
+#: ../src/gui/assistant.cpp:1416
 msgid "Audio Input Device"
 msgstr "오디오 입력 장치"
 
-#: ../src/gui/assistant.cpp:1438
+#: ../src/gui/assistant.cpp:1425
 msgid "Video Input Device"
 msgstr "비디오 입력 장치"
 
-#: ../src/gui/assistant.cpp:1451
+#: ../src/gui/assistant.cpp:1438
 msgid "SIP URI"
 msgstr "SIP URI"
 
-#: ../src/gui/assistant.cpp:1463
+#: ../src/gui/assistant.cpp:1450
 msgid "Ekiga Call Out"
 msgstr "에키가 외부 전화"
 
-#: ../src/gui/assistant.cpp:1505
+#: ../src/gui/assistant.cpp:1492
 #, c-format
 msgid "Ekiga Configuration Assistant (%d of %d)"
 msgstr "에키가 설정 도우미 (%d/%d)"
@@ -2186,96 +2223,96 @@ msgid "wxyz"
 msgstr "wxyz"
 
 #. Translators: Is displayed once an account "%s" is registered.
-#: ../src/gui/main.cpp:517
+#: ../src/gui/main.cpp:519
 #, c-format
 msgid "Registered %s"
 msgstr "등록: %s"
 
 #. Translators: Is displayed once an account "%s" is unregistered.
-#: ../src/gui/main.cpp:523
+#: ../src/gui/main.cpp:525
 #, c-format
 msgid "Unregistered %s"
 msgstr "등록 해제: %s"
 
-#: ../src/gui/main.cpp:528
+#: ../src/gui/main.cpp:530
 #, c-format
 msgid "Could not unregister %s"
 msgstr "%s 등록을 해제할 수 없습니다"
 
-#: ../src/gui/main.cpp:532
+#: ../src/gui/main.cpp:534
 #, c-format
 msgid "Could not register %s"
 msgstr "%s 등록할 수 없습니다"
 
-#: ../src/gui/main.cpp:602
+#: ../src/gui/main.cpp:604
 #, c-format
 msgid "A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d"
 msgstr "오디오:%.1f/%.1f   비디오:%.1f/%.1f   프레임:%d/%d"
 
-#: ../src/gui/main.cpp:648
+#: ../src/gui/main.cpp:650
 #, c-format
 msgid "Connected with %s"
 msgstr "%s(으)로 연결"
 
-#: ../src/gui/main.cpp:689 ../src/gui/main.cpp:3510
+#: ../src/gui/main.cpp:691 ../src/gui/main.cpp:3511
 msgid "Standby"
 msgstr "대기 상태"
 
-#: ../src/gui/main.cpp:750
+#: ../src/gui/main.cpp:752
 msgid "Call on hold"
 msgstr "호출 대기"
 
-#: ../src/gui/main.cpp:761
+#: ../src/gui/main.cpp:763
 msgid "Call retrieved"
 msgstr "호출 받음"
 
-#: ../src/gui/main.cpp:777
+#: ../src/gui/main.cpp:779
 #, c-format
 msgid "Missed call from %s"
 msgstr "호출 놓침 (건 사람: %s)"
 
-#: ../src/gui/main.cpp:914
+#: ../src/gui/main.cpp:916
 msgid "Error"
 msgstr "오류"
 
-#: ../src/gui/main.cpp:979
+#: ../src/gui/main.cpp:981
 msgid "Error while initializing video output"
 msgstr "비디오 출력을 초기화하는 데 오류 발생"
 
-#: ../src/gui/main.cpp:980
+#: ../src/gui/main.cpp:982
 msgid "No video will be displayed during this call->"
 msgstr "이 호출 중에는 비디오를 표시하지 않습니다->"
 
-#: ../src/gui/main.cpp:990
-msgid ""
-"There was an error opening initializing the video output. Please verify that "
-"no other applicating is using the accelerated video output."
-msgstr "비디오 출력을 초기화하는 데 오류가 발생했습니다. 다른 프로그램이 비디오 출력 가속을 사용하지 않도록 하십시오."
-
 #: ../src/gui/main.cpp:992
 msgid ""
-"There was an error opening initializing the video output. Please verify that "
-"you are using a color depth of 24 or 32 bits per pixel."
-msgstr "비디오 출력을 초기화하는 데 오류가 발생했습니다. 픽셀당 24비트나 32비트 색을 사용해야 합니다."
+"There was an error opening or initializing the video output. Please verify "
+"that no other application is using the accelerated video output."
+msgstr "비디오 출력을 열거나 초기화하는 데 오류가 발생했습니다. 다른 프로그램이 비디오 출력 가속을 사용하지 않도록 하십시오."
+
+#: ../src/gui/main.cpp:994
+msgid ""
+"There was an error opening or initializing the video output. Please verify "
+"that you are using a color depth of 24 or 32 bits per pixel."
+msgstr "비디오 출력을 열거나 초기화하는 데 오류가 발생했습니다. 픽셀당 24비트나 32비트 색을 사용해야 합니다."
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main.cpp:1105
+#: ../src/gui/main.cpp:1107
 #, c-format
 msgid "Added video input device %s"
 msgstr "비디오 입력 장치를 (%s) 더했습니다"
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main.cpp:1117
+#: ../src/gui/main.cpp:1119
 #, c-format
 msgid "Removed video input device %s"
 msgstr "비디오 입력 장치를 (%s) 지웠습니다"
 
-#: ../src/gui/main.cpp:1134
+#: ../src/gui/main.cpp:1136
 #, c-format
 msgid "Error while accessing video device %s"
 msgstr "비디오 장치에 (%s) 접근하는 데 오류 발생"
 
-#: ../src/gui/main.cpp:1137
+#: ../src/gui/main.cpp:1139
 msgid ""
 "A moving logo will be transmitted during calls. Notice that you can always "
 "transmit a given image or the moving logo by choosing \"Picture\" as video "
@@ -2285,7 +2322,7 @@ msgstr ""
 "택하거나 \"Moving logo\" \"Static picture\"를 장치로 선택하면 주어진 그림이"
 "나 움직이는 로고를 선택할 수 있습니다."
 
-#: ../src/gui/main.cpp:1141
+#: ../src/gui/main.cpp:1143
 msgid ""
 "There was an error while opening the device. In case it is a pluggable "
 "device it may be sufficient to reconnect it. If not, or if it still is not "
@@ -2296,15 +2333,15 @@ msgstr ""
 "만 하면 됩니다. 연결하는 장치가 아니거나 계속 열 수 없는 경우에는 권한이 올바"
 "른지 확인하고 해당 드라이버를 읽어들였는 지 확인하십시오."
 
-#: ../src/gui/main.cpp:1145
+#: ../src/gui/main.cpp:1147
 msgid "Your video driver doesn't support the requested video format."
 msgstr "비디오 드라이버가 요청한 비디오 형식을 지원하지 않습니다."
 
-#: ../src/gui/main.cpp:1149
+#: ../src/gui/main.cpp:1151
 msgid "Could not open the chosen channel."
 msgstr "선택한 채널을 열 수 없습니다."
 
-#: ../src/gui/main.cpp:1153
+#: ../src/gui/main.cpp:1155
 msgid ""
 "Your driver doesn't seem to support any of the color formats supported by "
 "Ekiga.\n"
@@ -2314,42 +2351,42 @@ msgstr ""
 "드라이버가 에키가가 지원하는 색 형식중에 아무 것도 지원하지 않습니다.\n"
 "어떤 팔레트를 지원하는 지에 대해서는 커널 드라이버의 문서를 확인하십시오."
 
-#: ../src/gui/main.cpp:1157
+#: ../src/gui/main.cpp:1159
 msgid "Error while setting the frame rate."
 msgstr "프레임 전송률을 설정하는 데 오류."
 
-#: ../src/gui/main.cpp:1161
+#: ../src/gui/main.cpp:1163
 msgid "Error while setting the frame size."
 msgstr "프레임 크기를 설정하는 데 오류."
 
-#: ../src/gui/main.cpp:1166 ../src/gui/main.cpp:1268 ../src/gui/main.cpp:1383
+#: ../src/gui/main.cpp:1168 ../src/gui/main.cpp:1270 ../src/gui/main.cpp:1385
 msgid "Unknown error."
 msgstr "알 수 없는 오류."
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main.cpp:1216
+#: ../src/gui/main.cpp:1218
 #, c-format
 msgid "Added audio input device %s"
 msgstr "오디오 입력 장치를 (%s) 더했습니다"
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main.cpp:1233
+#: ../src/gui/main.cpp:1235
 #, c-format
 msgid "Removed audio input device %s"
 msgstr "오디오 입력 장치를 (%s) 지웠습니다"
 
-#: ../src/gui/main.cpp:1250
+#: ../src/gui/main.cpp:1252
 #, c-format
 msgid "Error while opening audio input device %s"
 msgstr "오디오 입력 장치를 (%s) 여는 데 오류 발생"
 
 #. Translators: This happens when there is an error with audio input:
 #. * Nothing ("silence") will be transmitted
-#: ../src/gui/main.cpp:1255
+#: ../src/gui/main.cpp:1257
 msgid "Only silence will be transmitted."
 msgstr "묵음만 전달합니다."
 
-#: ../src/gui/main.cpp:1259
+#: ../src/gui/main.cpp:1261
 msgid ""
 "Unable to open the selected audio device for recording. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
@@ -2360,34 +2397,37 @@ msgstr ""
 "연결하기만 하면 됩니다. 연결하는 장치가 아니거나 계속 열 수 없는 경우에는 오"
 "디오 설정, 권한이 올바른지 확인하고 장치가 사용 중이 아닌지 확인하십시오."
 
-#: ../src/gui/main.cpp:1263
+#: ../src/gui/main.cpp:1265
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "read data from this device. In case it is a pluggable device it may be "
 "sufficient to reconnect it. If not, or if it still is not accessible, please "
 "check your audio setup."
-msgstr "선택한 오디오 장치를 성공적으로 열었지만 이 장치에서 데이터를 읽을 수 없습니다. 연결하는 방식의 장치인 경우 다시 연결하기만 하면 됩니다. 연결하는 장치가 아니거나 계속 읽을 수 없는 경우에는 오디오 설정이 올바른지 확인하십시오."
+msgstr ""
+"선택한 오디오 장치를 성공적으로 열었지만 이 장치에서 데이터를 읽을 수 없습니"
+"다. 연결하는 방식의 장치인 경우 다시 연결하기만 하면 됩니다. 연결하는 장치가 "
+"아니거나 계속 읽을 수 없는 경우에는 오디오 설정이 올바른지 확인하십시오."
 
-#: ../src/gui/main.cpp:1330
+#: ../src/gui/main.cpp:1332
 #, c-format
 msgid "Added audio output device %s"
 msgstr "오디오 출력 장치를 (%s) 더했습니다"
 
-#: ../src/gui/main.cpp:1346
+#: ../src/gui/main.cpp:1348
 #, c-format
 msgid "Removed audio output device %s"
 msgstr "오디오 출력 장치를 (%s) 지웠습니다"
 
-#: ../src/gui/main.cpp:1367
+#: ../src/gui/main.cpp:1369
 #, c-format
 msgid "Error while opening audio output device %s"
 msgstr "오디오 출력 장치를 (%s) 여는 데 오류 발생"
 
-#: ../src/gui/main.cpp:1370
+#: ../src/gui/main.cpp:1372
 msgid "No incoming sound will be played."
 msgstr "받은 소리를 재생하지 않습니다."
 
-#: ../src/gui/main.cpp:1374
+#: ../src/gui/main.cpp:1376
 msgid ""
 "Unable to open the selected audio device for playing. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
@@ -2398,366 +2438,369 @@ msgstr ""
 "시 연결하기만 하면 됩니다. 연결하는 장치가 아니거나 계속 열 수 없는 경우에는 "
 "오디오 설정, 권한이 올바른지 확인하고 장치가 사용 중이 아닌지 확인하십시오."
 
-#: ../src/gui/main.cpp:1378
+#: ../src/gui/main.cpp:1380
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "write data to this device. In case it is a pluggable device it may be "
 "sufficient to reconnect it. If not, or if it still is not accessible, please "
 "check your audio setup."
-msgstr "선택한 오디오 장치를 성공적으로 열었지만 이 장치에 데이터를 쓸 수 없습니다. 연결하는 방식의 장치인 경우 다시 연결하기만 하면 됩니다. 연결하는 장치가 아니거나 계속 쓸 수 없는 경우에는 오디오 설정을 확인하십시오."
+msgstr ""
+"선택한 오디오 장치를 성공적으로 열었지만 이 장치에 데이터를 쓸 수 없습니다. "
+"연결하는 방식의 장치인 경우 다시 연결하기만 하면 됩니다. 연결하는 장치가 아니"
+"거나 계속 쓸 수 없는 경우에는 오디오 설정을 확인하십시오."
 
-#: ../src/gui/main.cpp:1563
+#: ../src/gui/main.cpp:1568
 msgid "Video Settings"
 msgstr "비디오 설정"
 
-#: ../src/gui/main.cpp:1590
+#: ../src/gui/main.cpp:1595
 msgid "Adjust brightness"
 msgstr "밝기 조정"
 
-#: ../src/gui/main.cpp:1611
+#: ../src/gui/main.cpp:1616
 msgid "Adjust whiteness"
 msgstr "백색 조정"
 
-#: ../src/gui/main.cpp:1632
+#: ../src/gui/main.cpp:1637
 msgid "Adjust color"
 msgstr "색 조정"
 
-#: ../src/gui/main.cpp:1653
+#: ../src/gui/main.cpp:1658
 msgid "Adjust contrast"
 msgstr "대비 조정"
 
-#: ../src/gui/main.cpp:1699
+#: ../src/gui/main.cpp:1704
 msgid "Audio Settings"
 msgstr "오디오 설정"
 
-#: ../src/gui/main.cpp:2314
+#: ../src/gui/main.cpp:2315
 msgid "_Retrieve Call"
 msgstr "호출 중지(_R)"
 
-#: ../src/gui/main.cpp:2327
+#: ../src/gui/main.cpp:2328
 msgid "_Hold Call"
 msgstr "호출 보류(_H)"
 
-#: ../src/gui/main.cpp:2359 ../src/gui/main.cpp:3147
+#: ../src/gui/main.cpp:2360 ../src/gui/main.cpp:3148
 msgid "Suspend _Audio"
 msgstr "오디오 일시 정지(_A)"
 
-#: ../src/gui/main.cpp:2361 ../src/gui/main.cpp:3152
+#: ../src/gui/main.cpp:2362 ../src/gui/main.cpp:3153
 msgid "Suspend _Video"
 msgstr "비디오 일시 정지(_V)"
 
-#: ../src/gui/main.cpp:2363
+#: ../src/gui/main.cpp:2364
 msgid "Resume _Audio"
 msgstr "오디오 다시 시작(_A)"
 
-#: ../src/gui/main.cpp:2365
+#: ../src/gui/main.cpp:2366
 msgid "Resume _Video"
 msgstr "비디오 다시 시작(_V)"
 
-#: ../src/gui/main.cpp:2648 ../src/gui/main.cpp:2800
+#: ../src/gui/main.cpp:2649 ../src/gui/main.cpp:2801
 msgid "Reject"
 msgstr "거부"
 
-#: ../src/gui/main.cpp:2650 ../src/gui/main.cpp:2799
+#: ../src/gui/main.cpp:2651 ../src/gui/main.cpp:2800
 msgid "Accept"
 msgstr "허용"
 
-#: ../src/gui/main.cpp:2656 ../src/gui/main.cpp:2787
+#: ../src/gui/main.cpp:2657 ../src/gui/main.cpp:2788
 msgid "Incoming call from"
 msgstr "다음에서 호출 들어옴:"
 
-#: ../src/gui/main.cpp:2674 ../src/gui/main.cpp:2790
+#: ../src/gui/main.cpp:2675 ../src/gui/main.cpp:2791
 msgid "Remote URI:"
 msgstr "원격 URI:"
 
-#: ../src/gui/main.cpp:2686 ../src/gui/main.cpp:2792
+#: ../src/gui/main.cpp:2687 ../src/gui/main.cpp:2793
 msgid "Remote Application:"
 msgstr "원격 프로그램:"
 
-#: ../src/gui/main.cpp:2707
+#: ../src/gui/main.cpp:2708
 #, c-format
 msgid "Call from %s"
 msgstr "%s에서 호출"
 
-#: ../src/gui/main.cpp:2913
+#: ../src/gui/main.cpp:2914
 #, c-format
 msgid "Call Duration: %s\n"
 msgstr "호출 시간: %s\n"
 
-#: ../src/gui/main.cpp:2944
+#: ../src/gui/main.cpp:2945
 msgid "Transfer call to:"
 msgstr "호출 전달:"
 
-#: ../src/gui/main.cpp:2996
+#: ../src/gui/main.cpp:2997
 msgid "No"
 msgstr "아니오"
 
-#: ../src/gui/main.cpp:2998
+#: ../src/gui/main.cpp:2999
 msgid "Yes"
 msgstr "예"
 
-#: ../src/gui/main.cpp:3009
+#: ../src/gui/main.cpp:3010
 msgid "Detected new audio input device:"
 msgstr "새 오디오 입력 장치를 검색했습니다:"
 
-#: ../src/gui/main.cpp:3013
+#: ../src/gui/main.cpp:3014
 msgid "Detected new audio output device:"
 msgstr "새 오디오 출력 장치를 검색했습니다:"
 
-#: ../src/gui/main.cpp:3017
+#: ../src/gui/main.cpp:3018
 msgid "Detected new video input device:"
 msgstr "새 비디오 입력 장치를 검색했습니다:"
 
-#: ../src/gui/main.cpp:3018 ../src/gui/preferences.cpp:921
+#: ../src/gui/main.cpp:3019 ../src/gui/preferences.cpp:921
 msgid "Video Devices"
 msgstr "비디오 장치"
 
-#: ../src/gui/main.cpp:3036
+#: ../src/gui/main.cpp:3037
 msgid "Do you want to use it as default device?"
 msgstr "기본 장치로 사용하시겠습니까?"
 
-#: ../src/gui/main.cpp:3104
+#: ../src/gui/main.cpp:3105
 msgid "_Chat"
 msgstr "대화(_C)"
 
-#: ../src/gui/main.cpp:3106
+#: ../src/gui/main.cpp:3107
 msgid "Ca_ll"
 msgstr "호출(_L)"
 
-#: ../src/gui/main.cpp:3106
+#: ../src/gui/main.cpp:3107
 msgid "Place a new call"
 msgstr "새로 호출합니다"
 
-#: ../src/gui/main.cpp:3109
+#: ../src/gui/main.cpp:3110
 msgid "_Hang up"
 msgstr "끊기(_H)"
 
-#: ../src/gui/main.cpp:3110
+#: ../src/gui/main.cpp:3111
 msgid "Terminate the current call"
 msgstr "현재 호출을 멈춥니다"
 
-#: ../src/gui/main.cpp:3116
+#: ../src/gui/main.cpp:3117
 msgid "A_dd Contact"
 msgstr "연락처 추가(_D)"
 
 # 도구 설명
-#: ../src/gui/main.cpp:3116
+#: ../src/gui/main.cpp:3117
 msgid "Add a contact to the roster"
 msgstr "연락처를 목록에 추가합니다"
 
-#: ../src/gui/main.cpp:3121
+#: ../src/gui/main.cpp:3122
 msgid "Find contacts"
 msgstr "연락처 찾기"
 
-#: ../src/gui/main.cpp:3128
+#: ../src/gui/main.cpp:3129
 msgid "_Contact"
 msgstr "연락처(_C)"
 
 # 도구 설명
-#: ../src/gui/main.cpp:3129
+#: ../src/gui/main.cpp:3130
 msgid "Act on selected contact"
 msgstr "선택한 연락처에 대한 동작"
 
-#: ../src/gui/main.cpp:3135
+#: ../src/gui/main.cpp:3136
 msgid "H_old Call"
 msgstr "호출 보류(_O)"
 
 # 도구 설명
-#: ../src/gui/main.cpp:3135 ../src/gui/main.cpp:3604
+#: ../src/gui/main.cpp:3136 ../src/gui/main.cpp:3605
 msgid "Hold the current call"
 msgstr "현재 호출을 중지합니다"
 
-#: ../src/gui/main.cpp:3139
+#: ../src/gui/main.cpp:3140
 msgid "_Transfer Call"
 msgstr "호출 넘기기(_T)"
 
 # 도구 설명
-#: ../src/gui/main.cpp:3140
+#: ../src/gui/main.cpp:3141
 msgid "Transfer the current call"
 msgstr "현재 호출을 넘깁니다"
 
 # 도구 설명
-#: ../src/gui/main.cpp:3148
+#: ../src/gui/main.cpp:3149
 msgid "Suspend or resume the audio transmission"
 msgstr "오디오 송신을 일시 정지하거나 다시 시작합니다"
 
 # 도구 설명
-#: ../src/gui/main.cpp:3153
+#: ../src/gui/main.cpp:3154
 msgid "Suspend or resume the video transmission"
 msgstr "비디오 송신을 일시 정지하거나 다시 시작합니다"
 
 # 도구 설명
-#: ../src/gui/main.cpp:3160
+#: ../src/gui/main.cpp:3161
 msgid "Close the Ekiga window"
 msgstr "에키가 창을 닫습니다"
 
-#: ../src/gui/main.cpp:3167 ../src/gui/statusicon.cpp:406
+#: ../src/gui/main.cpp:3168 ../src/gui/statusicon.cpp:406
 msgid "Quit"
 msgstr "끝내기"
 
-#: ../src/gui/main.cpp:3173
+#: ../src/gui/main.cpp:3174
 msgid "_Configuration Assistant"
 msgstr "설정 도우미(_C)"
 
 # 도구 설명
-#: ../src/gui/main.cpp:3174
+#: ../src/gui/main.cpp:3175
 msgid "Run the configuration assistant"
 msgstr "설정 도우미를 실행합니다"
 
 # 도구 설명
-#: ../src/gui/main.cpp:3182
+#: ../src/gui/main.cpp:3183
 msgid "Edit your accounts"
 msgstr "계정을 편집합니다"
 
 # 도구 설명
-#: ../src/gui/main.cpp:3188
+#: ../src/gui/main.cpp:3189
 msgid "Change your preferences"
 msgstr "기본 설정을 바꿉니다"
 
-#: ../src/gui/main.cpp:3193
+#: ../src/gui/main.cpp:3194
 msgid "_View"
 msgstr "보기(_V)"
 
-#: ../src/gui/main.cpp:3195
+#: ../src/gui/main.cpp:3196
 msgid "Con_tacts"
 msgstr "연락처(_T)"
 
 # 도구 설명
-#: ../src/gui/main.cpp:3195
+#: ../src/gui/main.cpp:3196
 msgid "View the contacts list"
 msgstr "연락처 목록을 봅니다"
 
-#: ../src/gui/main.cpp:3200
+#: ../src/gui/main.cpp:3201
 msgid "_Dialpad"
 msgstr "숫자판(_D)"
 
 # 도구 설명
-#: ../src/gui/main.cpp:3200
+#: ../src/gui/main.cpp:3201
 msgid "View the dialpad"
 msgstr "숫자판을 봅니다"
 
-#: ../src/gui/main.cpp:3205
+#: ../src/gui/main.cpp:3206
 msgid "_Call History"
 msgstr "호출 기록(_C)"
 
 # 도구 설명
-#: ../src/gui/main.cpp:3205
+#: ../src/gui/main.cpp:3206
 msgid "View the call history"
 msgstr "호출 기록을 봅니다"
 
-#: ../src/gui/main.cpp:3213
+#: ../src/gui/main.cpp:3214
 msgid "_Show Call Panel"
 msgstr "호출 패널 보기(_S)"
 
-#: ../src/gui/main.cpp:3221
+#: ../src/gui/main.cpp:3222
 msgid "_Local Video"
 msgstr "로컬 비디오(_L)"
 
 # 도구 설명
-#: ../src/gui/main.cpp:3222
+#: ../src/gui/main.cpp:3223
 msgid "Local video image"
 msgstr "로컬 비디오 이미지"
 
-#: ../src/gui/main.cpp:3227
+#: ../src/gui/main.cpp:3228
 msgid "_Remote Video"
 msgstr "원격 비디오(_R)"
 
 # 도구 설명
-#: ../src/gui/main.cpp:3228
+#: ../src/gui/main.cpp:3229
 msgid "Remote video image"
 msgstr "원격 비디오 이미지"
 
-#: ../src/gui/main.cpp:3233
+#: ../src/gui/main.cpp:3234
 msgid "_Picture-in-Picture"
 msgstr "화면 안에 화면(_P)"
 
 # 도구 설명
-#: ../src/gui/main.cpp:3234 ../src/gui/main.cpp:3240
+#: ../src/gui/main.cpp:3235 ../src/gui/main.cpp:3241
 msgid "Both video images"
 msgstr "모든 비디오 이미지"
 
-#: ../src/gui/main.cpp:3239
+#: ../src/gui/main.cpp:3240
 msgid "Picture-in-Picture in Separate _Window"
 msgstr "화면 안에 화면 별도 창에(_W)"
 
-#: ../src/gui/main.cpp:3247
+#: ../src/gui/main.cpp:3248
 msgid "Zoom in"
 msgstr "확대"
 
-#: ../src/gui/main.cpp:3251
+#: ../src/gui/main.cpp:3252
 msgid "Zoom out"
 msgstr "축소"
 
-#: ../src/gui/main.cpp:3255
+#: ../src/gui/main.cpp:3256
 msgid "Normal size"
 msgstr "보통 크기"
 
-#: ../src/gui/main.cpp:3259
+#: ../src/gui/main.cpp:3260
 msgid "_Fullscreen"
 msgstr "전체 화면(_F)"
 
-#: ../src/gui/main.cpp:3259
+#: ../src/gui/main.cpp:3260
 msgid "Switch to fullscreen"
 msgstr "전체 화면으로 전환"
 
 # 도구 설명
-#: ../src/gui/main.cpp:3267 ../src/gui/statusicon.cpp:394
+#: ../src/gui/main.cpp:3268 ../src/gui/statusicon.cpp:394
 msgid "Get help by reading the Ekiga manual"
 msgstr "에키가 사용 설명서를 읽습니다"
 
 # 도구 설명
-#: ../src/gui/main.cpp:3272 ../src/gui/statusicon.cpp:399
+#: ../src/gui/main.cpp:3273 ../src/gui/statusicon.cpp:399
 msgid "View information about Ekiga"
 msgstr "에키가에 대한 정보를 봅니다"
 
-#: ../src/gui/main.cpp:3346
+#: ../src/gui/main.cpp:3347
 msgid ""
 "Enter a URI on the left, and click this button to place a call or to hangup"
 msgstr "호출하거나 끊으려면 왼쪽에 URI를 입력하고 이 단추를 누르십시오"
 
-#: ../src/gui/main.cpp:3397
+#: ../src/gui/main.cpp:3398
 msgid "Contacts"
 msgstr "연락처"
 
-#: ../src/gui/main.cpp:3420
+#: ../src/gui/main.cpp:3421
 msgid "Dialpad"
 msgstr "숫자판"
 
-#: ../src/gui/main.cpp:3439
+#: ../src/gui/main.cpp:3440
 msgid "Call history"
 msgstr "호출 기록"
 
-#: ../src/gui/main.cpp:3542
+#: ../src/gui/main.cpp:3543
 msgid "Change the volume of your soundcard"
 msgstr "사운드카드의 볼륨을 조정합니다"
 
-#: ../src/gui/main.cpp:3562
+#: ../src/gui/main.cpp:3563
 msgid "Change the color settings of your video device"
 msgstr "비디오 장치의 컬러 설정을 조정합니다"
 
-#: ../src/gui/main.cpp:3584
+#: ../src/gui/main.cpp:3585
 msgid "Display images from your camera device"
 msgstr "카메라 장치에서 입력되는 이미지를 보여줍니다"
 
-#: ../src/gui/main.cpp:3673
+#: ../src/gui/main.cpp:3674
 msgid "Ekiga"
 msgstr "에키가"
 
 #. Translators:
 #. * TX is a common abbreviation for "transmit"
-#: ../src/gui/main.cpp:4280
+#: ../src/gui/main.cpp:4281
 #, c-format
 msgid "TX: %dx%d "
 msgstr "송신: %dx%d "
 
 #. Translators:
 #. * RX is a common abbreviation for "receive"
-#: ../src/gui/main.cpp:4285
+#: ../src/gui/main.cpp:4286
 #, c-format
 msgid "RX: %dx%d "
 msgstr "수신: %dx%d "
 
-#: ../src/gui/main.cpp:4287
+#: ../src/gui/main.cpp:4288
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
