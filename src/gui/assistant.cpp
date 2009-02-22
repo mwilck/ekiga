@@ -328,7 +328,7 @@ create_welcome_page (EkigaAssistant *assistant)
   gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
   gtk_widget_show (label);
   gtk_assistant_append_page (GTK_ASSISTANT (assistant), label);
-  gtk_assistant_set_page_title (GTK_ASSISTANT (assistant), label, _("Welcome in Ekiga"));
+  gtk_assistant_set_page_title (GTK_ASSISTANT (assistant), label, _("Welcome to Ekiga"));
   gtk_assistant_set_page_type (GTK_ASSISTANT (assistant), label, GTK_ASSISTANT_PAGE_INTRO);
   gtk_assistant_set_page_header_image (GTK_ASSISTANT (assistant), label, assistant->priv->icon);
   gtk_assistant_set_page_complete (GTK_ASSISTANT (assistant), label, TRUE);
