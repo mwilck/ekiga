@@ -165,6 +165,7 @@ engine_init (int argc,
 
   if (!gmconf_personal_details_init (*service_core, &argc, &argv)) {
     delete service_core;
+    service_core = NULL;
     return;
   }
 
@@ -174,6 +175,7 @@ engine_init (int argc,
 #ifndef WIN32
   if (!videooutput_x_init (*service_core, &argc, &argv)) {
     delete service_core;
+    service_core = NULL;
     return;
   }
 #endif
@@ -181,12 +183,14 @@ engine_init (int argc,
 #ifdef HAVE_DX
   if (!videooutput_dx_init (*service_core, &argc, &argv)) {
     delete service_core;
+    service_core = NULL;
     return;
   }
 #endif
 
   if (!videoinput_mlogo_init (*service_core, &argc, &argv)) {
     delete service_core;
+    service_core = NULL;
     return;
   }
 
@@ -250,11 +254,13 @@ engine_init (int argc,
 
   if (!gtk_core_init (*service_core, &argc, &argv)) {
     delete service_core;
+    service_core = NULL;
     return;
   }
 
   if (!gtk_frontend_init (*service_core, &argc, &argv)) {
     delete service_core;
+    service_core = NULL;
     return;
   }
 
