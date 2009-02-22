@@ -39,6 +39,10 @@ if HAVE_KDE
 KDE_DIR = kde
 endif
 
+if HAVE_LIBNOTIFY
+LIBNOTIFY_DIR = libnotify
+endif
+
 if HAVE_XCAP
 XCAP_DIRS = xcap resource-list
 endif
@@ -62,6 +66,7 @@ SUBDIRS =                       \
 	$(DBUS_DIR)             \
 	$(GSTREAMER_DIR)        \
 	$(KDE_DIR)              \
+	$(LIBNOTIFY_DIR)	\
 	$(EDS_DIR) 	        \
 	$(LDAP_DIR)	        \
 	$(KAB_DIR)              \

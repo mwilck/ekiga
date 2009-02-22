@@ -99,6 +99,10 @@
 #include "ldap-main.h"
 #endif
 
+#ifdef HAVE_LIBNOTIFY
+#include "libnotify-main.h"
+#endif
+
 #ifdef HAVE_GSTREAMER
 #include "gst-main.h"
 #endif
@@ -197,6 +201,10 @@ engine_init (int argc,
     service_core = NULL;
     return;
   }
+
+#ifdef HAVE_LIBNOTIFY
+  libnotify_init (kickstart);
+#endif
 
 #ifdef HAVE_GSTREAMER
   (void)gstreamer_init (*service_core, &argc, &argv);
