@@ -42,6 +42,7 @@
 #include "services.h"
 #include "kickstart.h"
 
+#include "notification-core.h"
 #include "plugin-core.h"
 #include "presence-core.h"
 #include "account-core.h"
@@ -130,6 +131,9 @@ engine_init (int argc,
 {
   service_core = new Ekiga::ServiceCore;
   Ekiga::KickStart kickstart;
+
+
+  service_core->add (gmref_ptr<Ekiga::Service>(new Ekiga::NotificationCore));
 
   /* VideoInputCore depends on VideoOutputCore and must this              *
    * be constructed thereafter                                      */

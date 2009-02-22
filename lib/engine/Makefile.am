@@ -1,4 +1,4 @@
-SUBDIRS = framework plugin account addressbook presence chat gui protocol videooutput videoinput audioinput audiooutput hal components
+SUBDIRS = framework  plugin notification account addressbook presence chat gui protocol videooutput videoinput audioinput audiooutput hal components
 
 noinst_LTLIBRARIES = libekiga_engine.la
 
@@ -9,6 +9,7 @@ INCLUDES = 								\
 	-I$(top_srcdir)/lib/engine/gui/gtk-frontend			\
 	-I$(top_srcdir)/lib/engine/framework/		 		\
 	-I$(top_srcdir)/lib/engine/chat					\
+	-I$(top_srcdir)/lib/engine/notification				\
 	-I$(top_srcdir)/lib/engine/videooutput				\
 	-I$(top_srcdir)/lib/engine/videoinput/  			\
 	-I$(top_srcdir)/lib/engine/hal					\
@@ -73,6 +74,7 @@ AM_LIBS = $(SIGC_LIBS) $(GTK_LIBS)
 
 libekiga_engine_la_LDFLAGS = -export-dynamic
 libekiga_engine_la_LIBADD = \
+	$(top_builddir)/lib/engine/notification/libnotification.la					\
 	$(top_builddir)/lib/engine/gui/gtk-core/libgmgtk-core.la 					\
 	$(top_builddir)/lib/engine/gui/gtk-frontend/libgmgtk-frontend.la 				\
 	$(top_builddir)/lib/engine/chat/libgmchat.la 							\
