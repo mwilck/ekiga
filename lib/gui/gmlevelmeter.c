@@ -329,7 +329,7 @@ gm_level_meter_rebuild_pixmap (GmLevelMeter *lm)
 			width_x, width_y);
   }
 
-  gdk_gc_unref (gc);
+  g_object_unref (gc);
   g_free (borders);
 }
 
