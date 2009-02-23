@@ -166,7 +166,7 @@ Opal::Sip::EndPoint::EndPoint (Opal::CallManager & _manager,
   SetUserAgent ("Ekiga/" PACKAGE_VERSION);
 
   /* Ready to take calls */
-  manager.AddRouteEntry("sip:.* = pc:<db>");
+  manager.AddRouteEntry("sip:.* = pc:*");
   manager.AddRouteEntry("pc:.* = sip:<da>");
 
   /* NAT Binding */
