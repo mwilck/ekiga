@@ -43,7 +43,7 @@ Ekiga::ServiceCore::~ServiceCore ()
    * and frees the last first -- so there's no problem
    */
   while (services.begin () != services.end ())
-    services.pop_first ();
+    services.pop_front ();
 }
 
 bool
