@@ -159,9 +159,9 @@ void GMAudioOutputManager_ptlib::set_buffer_size (Ekiga::AudioOutputPS ps, unsig
 
 
 bool GMAudioOutputManager_ptlib::set_frame_data (Ekiga::AudioOutputPS ps, 
-                                   const char *data, 
-                                   unsigned size,
-				   unsigned & bytes_written)
+                                                 const char *data, 
+                                                 unsigned size,
+                                                 unsigned & bytes_written)
 {
   bool ret = false;
   bytes_written = 0;
@@ -176,13 +176,13 @@ bool GMAudioOutputManager_ptlib::set_frame_data (Ekiga::AudioOutputPS ps,
     if (ret) {
       bytes_written = output_device[ps]->GetLastWriteCount();
     }
-    else {
+    if (bytes_written != size) {
       PTRACE(1, "GMAudioOutputManager_ptlib\tEncountered error while trying to write data");
       runtime->run_in_main (sigc::bind (device_error.make_slot (), ps, current_state[ps].device, Ekiga::AO_ERROR_WRITE));
-
     }
   }
-  return ret;
+
+  return (ret || bytes_written == size);
 }
 
 void GMAudioOutputManager_ptlib::set_volume (Ekiga::AudioOutputPS ps, unsigned volume )
