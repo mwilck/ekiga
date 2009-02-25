@@ -1515,7 +1515,7 @@ toggle_call_cb (GtkWidget *widget,
 
   if (gm_connect_button_get_connected (GM_CONNECT_BUTTON (mw->priv->connect_button)))
     hangup_call_cb (widget, data);
-  else if (!gm_connect_button_get_connected (GM_CONNECT_BUTTON (mw->priv->connect_button))) {
+  else {
     if (!mw->priv->current_call)
       place_call_cb (widget, data);
     else
