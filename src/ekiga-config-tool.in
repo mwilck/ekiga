@@ -71,8 +71,8 @@ cleanschemas () {
 
 	$GETTEXT "Removing schemas"; echo
 	SOURCE=`echo $SOURCE | sed "s/xml:://"`
-	SCHEMAS=$SOURCE/schemas/apps/ekiga
-	SOURCE=$SOURCE/apps/ekiga
+	SCHEMAS=$SOURCE/schemas/apps/@PACKAGE_NAME@
+	SOURCE=$SOURCE/apps/@PACKAGE_NAME@
 	echo $SCHEMAS
 	echo $SOURCE
 	rm -rf $SOURCE
@@ -96,7 +96,7 @@ installschemas () {
 
 	$GETTEXT "Installing schemas"; echo
 	GCONF_CONFIG_SOURCE=$SOURCE  $GCONFTOOL \
-	--makefile-install-rule $SYSCONFDIR/gconf/schemas/ekiga.schemas
+	--makefile-install-rule $SYSCONFDIR/gconf/schemas/@PACKAGE_NAME@.schemas
     fi
 }
 
@@ -120,7 +120,7 @@ case "$1" in
         fixgconfperm;
         ;;
   *)
-        $GETTEXT "Usage:  ekiga-config-tool OPTION"; echo
+        $GETTEXT "Usage:  @PACKAGE_NAME@-config-tool OPTION"; echo
 	$GETTEXT "Fixes problems with the Ekiga settings"; echo; echo
 	$GETTEXT "  --clean                remove all user settings"; echo
 	$GETTEXT "  --install-schemas      install schemas with default settings (run as root)"; echo
