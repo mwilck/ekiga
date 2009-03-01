@@ -49,6 +49,7 @@ VideoInputCore::VideoPreviewManager::VideoPreviewManager (VideoInputCore& _video
     videoinput_core (_videoinput_core),
   videooutput_core (_videooutput_core)
 {
+  videooutput_core.reference ();
   width = 176;
   height = 144;;
   pause_thread = true;
@@ -67,6 +68,7 @@ VideoInputCore::VideoPreviewManager::~VideoPreviewManager ()
   end_thread = true;
   run_thread.Signal();
   thread_ended.Wait();
+  videooutput_core.unreference ();
 }
 
 void VideoInputCore::VideoPreviewManager::start (unsigned _width, unsigned _height)
