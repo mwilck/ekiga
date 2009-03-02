@@ -1400,22 +1400,22 @@ on_audiooutput_device_error_cb (Ekiga::AudioOutputManager & /*manager */,
 static void
 incoming_call_response_cb (GtkDialog *incoming_call_popup,
                            gint response,
-                           gpointer data)
+                           gpointer main_window)
 {
-  Ekiga::Call *call = (Ekiga::Call *) data;
+  EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (main_window);
 
   gtk_widget_hide (GTK_WIDGET (incoming_call_popup));
 
-  if (call) {
+  if (mw->priv->current_call) {
 
     switch (response) {
     case 2:
-      call->answer ();
+      mw->priv->current_call->answer ();
       break;
 
     default:
     case 0:
-      call->hangup ();
+      mw->priv->current_call->hangup ();
       break;
     }
   }
@@ -2719,7 +2719,7 @@ ekiga_main_window_incoming_call_dialog_show (EkigaMainWindow *mw,
   g_signal_connect (G_OBJECT (incoming_call_popup), "delete_event",
                     G_CALLBACK (gtk_widget_hide_on_delete), NULL);
   g_signal_connect (G_OBJECT (incoming_call_popup), "response",
-                    G_CALLBACK (incoming_call_response_cb), &call);
+                    G_CALLBACK (incoming_call_response_cb), mw);
 
   call->cleared.connect (sigc::bind (sigc::ptr_fun (on_cleared_incoming_call_cb),
                                     (gpointer) incoming_call_popup));
