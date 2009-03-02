@@ -1,4 +1,4 @@
-AC_INIT(ekiga, 3.1.1, http://bugzilla.gnome.org/enter_bug.cgi?product=ekiga)
+AC_INIT(ekiga, 3.1.2, http://bugzilla.gnome.org/enter_bug.cgi?product=ekiga)
 AC_CANONICAL_TARGET
 AC_PREREQ(2.53)
 AC_CONFIG_SRCDIR(src/gui/main.cpp)
@@ -16,10 +16,10 @@ dnl ###########################################################################
 MAJOR_VERSION=3
 MINOR_VERSION=1
 BUILD_TYPE=ReleaseCode
-BUILD_NUMBER=1
+BUILD_NUMBER=2
 
-PTLIB_REC_VERSION="2.5.2"
-OPAL_REC_VERSION="3.5.2"
+PTLIB_REC_VERSION="2.6.0"
+OPAL_REC_VERSION="3.6.0"
 
 AC_DEFINE_UNQUOTED(MAJOR_VERSION, $MAJOR_VERSION,[fix])
 AC_DEFINE_UNQUOTED(MINOR_VERSION, $MINOR_VERSION,[fix])
