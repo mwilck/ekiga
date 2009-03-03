@@ -608,23 +608,6 @@ fi
 
 AM_CONDITIONAL(HAVE_XCAP, test "x$found_xcap" = "xyes")
 
-dnl ###############################
-dnl     libnotify support
-dnl ###############################
-LIBNOTIFY="disabled"
-
-AC_ARG_ENABLE(libnotify, [ --enable-libnotify           Enable libnotify support],enable_libnotify=yes,)
-
-if test "x$enable_libnotify" = "xyes"; then
-   PKG_CHECK_MODULES([LIBNOTIFY], [libnotify])
-   found_libnotify=yes
-   LIBNOTIFY="enabled"
-   AC_SUBST(LIBNOTIFY_CFLAGS)
-   AC_SUBST(LIBNOTIFY_LIBS)
-   AC_DEFINE(HAVE_LIBNOTIFY,1,[libnotify support])
-fi
-
-AM_CONDITIONAL(HAVE_LIBNOTIFY, test "x$found_libnotify" = "xyes")
 
 dnl ###############################
 dnl   Gnome-Doc-Utils
@@ -836,7 +819,6 @@ echo "               GStreamer support  :  $GSTREAMER"
 echo "            KAddressBook support  :  $KAB"
 echo "                     KDE support  :  $KDE"
 echo "                    XCAP support  :  $XCAP"
-echo "               libnotify support  :  $LIBNOTIFY"
 echo ""
 echo "                         OS Type  :  $target_os"
 echo "                    Machine Type  :  $target_cpu"

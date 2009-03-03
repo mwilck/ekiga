@@ -154,7 +154,7 @@ Opal::Sip::EndPoint::EndPoint (Opal::CallManager & _manager,
   /* Timeouts */
   SetAckTimeout (PTimeInterval (0, 32));
   SetPduCleanUpTimeout (PTimeInterval (0, 1));
-  SetInviteTimeout (PTimeInterval (0, 6));
+  SetInviteTimeout (PTimeInterval (0, 60));
   SetNonInviteTimeout (PTimeInterval (0, 6));
   SetRetryTimeouts (500, 4000);
   SetMaxRetries (8);

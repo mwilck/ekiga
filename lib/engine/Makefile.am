@@ -164,7 +164,7 @@ libekiga_engine_la_LIBADD += \
 	components/resource-list/libgmresource_list.la
 endif
 
-if HAVE_LIBNOTIFY
+if HAVE_NOTIFY
 INCLUDES += -I$(top_srcdir)/lib/engine/components/libnotify/
 libekiga_engine_la_LIBADD += components/libnotify/libgmlibnotify.la
 endif

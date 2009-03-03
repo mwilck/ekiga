@@ -99,7 +99,7 @@
 #include "ldap-main.h"
 #endif
 
-#ifdef HAVE_LIBNOTIFY
+#ifdef HAVE_NOTIFY
 #include "libnotify-main.h"
 #endif
 
@@ -202,7 +202,7 @@ engine_init (int argc,
     return;
   }
 
-#ifdef HAVE_LIBNOTIFY
+#ifdef HAVE_NOTIFY
   libnotify_init (kickstart);
 #endif
 

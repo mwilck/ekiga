@@ -39,7 +39,7 @@ if HAVE_KDE
 KDE_DIR = kde
 endif
 
-if HAVE_LIBNOTIFY
+if HAVE_NOTIFY
 LIBNOTIFY_DIR = libnotify
 endif
 
