@@ -517,7 +517,8 @@ static void on_registration_event (const Ekiga::Account & account,
   case Ekiga::AccountCore::Registered:
     /* Translators: Is displayed once an account "%s" is registered. */
     msg = g_strdup_printf (_("Registered %s"), aor.c_str ()); 
-    mw->priv->accounts.push_back (account.get_host ());
+    if (std::find (mw->priv->accounts.begin (), mw->priv->accounts.end (), account.get_host ()) == mw->priv->accounts.end ())
+      mw->priv->accounts.push_back (account.get_host ());
     break;
 
   case Ekiga::AccountCore::Unregistered:
