@@ -57,9 +57,13 @@
 void
 plugin_init (Ekiga::KickStart& kickstart)
 {
-  std::cout << "Trying to load the hello plugin... ";
+  std::cout << "Trying to load the ekiga test plugin... ";
+  gchar* filename = g_build_filename (g_get_tmp_dir (),
+				      "ekiga_test",
+				      NULL);
+  GModule* plugin = g_module_open (filename, G_MODULE_BIND_LOCAL);
 
-  GModule* plugin = g_module_open ("/tmp/hello.so", G_MODULE_BIND_LOCAL);
+  g_free (filename);
 
   if (plugin != 0) {
 
