@@ -42,8 +42,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ekiga\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-15 16:34+0100\n"
-"PO-Revision-Date: 2009-02-14 17:31+0100\n"
+"POT-Creation-Date: 2009-03-04 23:13+0100\n"
+"PO-Revision-Date: 2009-03-04 23:14+0100\n"
 "Last-Translator: Peter Bach <bach.peter@gmail.com>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "MIME-Version: 1.0\n"
@@ -151,27 +151,31 @@ msgstr ""
 msgid "Disable video hardware acceleration"
 msgstr "Deaktivér video-hardwareacceleration"
 
-#: ../ekiga.schemas.in.in.h:18
+#: ../ekiga.schemas.in.in.h:18 ../src/gui/main.cpp:3586
+msgid "Display images from your camera device"
+msgstr "Vis billeder fra din kamera-enhed"
+
+#: ../ekiga.schemas.in.in.h:19
 msgid "Enable 'Fast Start'"
 msgstr "Brug hurtigstart"
 
-#: ../ekiga.schemas.in.in.h:19
+#: ../ekiga.schemas.in.in.h:20
 msgid "Enable H.245 tunneling"
 msgstr "Aktivér H.245-tunnel"
 
-#: ../ekiga.schemas.in.in.h:20
+#: ../ekiga.schemas.in.in.h:21
 msgid "Enable early H.245"
 msgstr "Aktivér tidlig H.245"
 
-#: ../ekiga.schemas.in.in.h:21
+#: ../ekiga.schemas.in.in.h:22
 msgid "Enable echo cancelation"
 msgstr "Aktivér ekkoundertrykkelse"
 
-#: ../ekiga.schemas.in.in.h:22
+#: ../ekiga.schemas.in.in.h:23
 msgid "Enable silence detection"
 msgstr "Aktivér stilhedsdetektering"
 
-#: ../ekiga.schemas.in.in.h:23
+#: ../ekiga.schemas.in.in.h:24
 msgid ""
 "Enter the number of seconds after which Ekiga should try refreshing the NAT "
 "binding when STUN is being used"
@@ -179,31 +183,31 @@ msgstr ""
 "Angiv antallet af sekunder hvorefter Ekiga skal forsøge at genopfriskeo NAT-"
 "bindingen når STUN benyttes"
 
-#: ../ekiga.schemas.in.in.h:24 ../src/gui/preferences.cpp:459
+#: ../ekiga.schemas.in.in.h:25 ../src/gui/preferences.cpp:459
 msgid "Enter your full name"
 msgstr "Indtast dit fulde navn"
 
-#: ../ekiga.schemas.in.in.h:25
+#: ../ekiga.schemas.in.in.h:26
 msgid "Forward calls to host"
 msgstr "Viderestil opkald til vært"
 
-#: ../ekiga.schemas.in.in.h:26
+#: ../ekiga.schemas.in.in.h:27
 msgid "Forward calls to the given host if busy"
 msgstr "Viderestil opkald til den givne vært hvis optaget"
 
-#: ../ekiga.schemas.in.in.h:27
+#: ../ekiga.schemas.in.in.h:28
 msgid "Forward calls to the given host if no answer"
 msgstr "Viderestil opkald til den givne vært hvis der ikke er et svar"
 
-#: ../ekiga.schemas.in.in.h:28 ../src/gui/preferences.cpp:1018
+#: ../ekiga.schemas.in.in.h:29 ../src/gui/preferences.cpp:1018
 msgid "Frame Rate"
 msgstr "Billedrate"
 
-#: ../ekiga.schemas.in.in.h:29
+#: ../ekiga.schemas.in.in.h:30
 msgid "Full name"
 msgstr "Fulde navn"
 
-#: ../ekiga.schemas.in.in.h:30 ../src/gui/preferences.cpp:477
+#: ../ekiga.schemas.in.in.h:31 ../src/gui/preferences.cpp:477
 msgid ""
 "If enabled, Ekiga will start hidden provided that the notification area is "
 "present in the GNOME panel"
@@ -211,7 +215,7 @@ msgstr ""
 "Ved tilvalg og hvis statusområdet er til stede i GNOME-panelet, vil Ekiga "
 "starte i skjult tilstand"
 
-#: ../ekiga.schemas.in.in.h:31
+#: ../ekiga.schemas.in.in.h:32
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below"
@@ -219,7 +223,7 @@ msgstr ""
 "Ved tilvalg vil indgående opkald viderestilles til den vært som er angivet i "
 "feltet nedenfor"
 
-#: ../ekiga.schemas.in.in.h:32
+#: ../ekiga.schemas.in.in.h:33
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below if you already are in a call or if you are in "
@@ -229,7 +233,7 @@ msgstr ""
 "angivet nedenfor, hvis du allerede befinder dig i en samtale eller hvis du "
 "er i \"forstyr ikke\"-tilstand"
 
-#: ../ekiga.schemas.in.in.h:33
+#: ../ekiga.schemas.in.in.h:34
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below if you do not answer the call"
@@ -237,138 +241,134 @@ msgstr ""
 "Ved tilvalg vil alle indgående opkald blive viderestillet til den vært som "
 "er angivet nedenfor, hvis du ikke svarer på opkaldet"
 
-#: ../ekiga.schemas.in.in.h:34 ../src/gui/preferences.cpp:479
+#: ../ekiga.schemas.in.in.h:35 ../src/gui/preferences.cpp:479
 msgid "If enabled, offline contacts will be shown in the roster"
 msgstr "Hvis slået til vil afkoblede kontakter blive vist i personlisten"
 
-#: ../ekiga.schemas.in.in.h:35
+#: ../ekiga.schemas.in.in.h:36
 msgid "If enabled, use echo cancelation"
 msgstr "Ved tilvalg brug ekko-undertrykkelse"
 
-#: ../ekiga.schemas.in.in.h:36
+#: ../ekiga.schemas.in.in.h:37
 msgid "If enabled, use silence detection with the codecs supporting it"
 msgstr ""
 "Ved tilvalg bruges stilhedsdetektering ved kodninger der understøtter det"
 
-#: ../ekiga.schemas.in.in.h:37
+#: ../ekiga.schemas.in.in.h:38
 msgid "Kind of network selected in the druid"
 msgstr "Type netværk valgt i hjælperen"
 
-#: ../ekiga.schemas.in.in.h:38
+#: ../ekiga.schemas.in.in.h:39
 msgid "LDAP servers"
 msgstr "LDAP-servere"
 
-#: ../ekiga.schemas.in.in.h:39
+#: ../ekiga.schemas.in.in.h:40
 msgid "List of configured LDAP servers"
 msgstr "Liste af konfigurerede LDAP-servere"
 
-#: ../ekiga.schemas.in.in.h:40
+#: ../ekiga.schemas.in.in.h:41
 msgid "List of folded groups in the roster"
 msgstr "Liste over foldede grupper i personlisten"
 
-#: ../ekiga.schemas.in.in.h:41
+#: ../ekiga.schemas.in.in.h:42
 msgid "Listen port"
 msgstr "Lytteport"
 
-#: ../ekiga.schemas.in.in.h:42
+#: ../ekiga.schemas.in.in.h:43
 msgid "Local video window size"
 msgstr "Lokalt videobillede-størrelse"
 
-#: ../ekiga.schemas.in.in.h:43
+#: ../ekiga.schemas.in.in.h:44
 msgid "Maximum RX video bitrate"
 msgstr "Maksimal modtage-videobitrate"
 
-#: ../ekiga.schemas.in.in.h:44
+#: ../ekiga.schemas.in.in.h:45
 msgid "Maximum TX video bitrate"
 msgstr "Maksimal sende-videobitrate"
 
-#: ../ekiga.schemas.in.in.h:45
+#: ../ekiga.schemas.in.in.h:46
 msgid "Maximum jitter buffer"
 msgstr "Største jitterbuffer"
 
-#: ../ekiga.schemas.in.in.h:46
+#: ../ekiga.schemas.in.in.h:47
 msgid "NAT Binding Timeout"
 msgstr "NAT-bindingstidsudløb"
 
-#: ../ekiga.schemas.in.in.h:47
+#: ../ekiga.schemas.in.in.h:48
 msgid "No answer timeout"
 msgstr "Tidsudløb for intet svar"
 
-#: ../ekiga.schemas.in.in.h:48
+#: ../ekiga.schemas.in.in.h:49
 msgid "Outbound Proxy"
 msgstr "Udgående mellemvært"
 
-#: ../ekiga.schemas.in.in.h:49 ../src/gui/preferences.cpp:486
+#: ../ekiga.schemas.in.in.h:50 ../src/gui/preferences.cpp:486
 msgid "Place windows displaying video above other windows during calls"
 msgstr "Placér vinduer der viser video over andre vinduer under opkald"
 
-#: ../ekiga.schemas.in.in.h:50 ../src/gui/preferences.cpp:371
+#: ../ekiga.schemas.in.in.h:51 ../src/gui/preferences.cpp:371
 msgid "Play busy tone"
 msgstr "Afspil optaget tone"
 
-#: ../ekiga.schemas.in.in.h:51 ../src/gui/preferences.cpp:361
+#: ../ekiga.schemas.in.in.h:52 ../src/gui/preferences.cpp:361
 msgid "Play ring tone"
 msgstr "Afspil ringetone"
 
-#: ../ekiga.schemas.in.in.h:52 ../src/gui/preferences.cpp:351
+#: ../ekiga.schemas.in.in.h:53 ../src/gui/preferences.cpp:351
 msgid "Play sound on incoming calls"
 msgstr "Afspil lyd ved indgående opkald"
 
-#: ../ekiga.schemas.in.in.h:53
+#: ../ekiga.schemas.in.in.h:54
 msgid "Play sound on new message"
 msgstr "Afspil lyd ved ny besked"
 
-#: ../ekiga.schemas.in.in.h:54
+#: ../ekiga.schemas.in.in.h:55
 msgid "Play sound on new voice mail"
 msgstr "Afspil lyd ved ny talebesked"
 
-#: ../ekiga.schemas.in.in.h:55
+#: ../ekiga.schemas.in.in.h:56
 msgid "Position of the local video window"
 msgstr "Placering af det lokale videobillede"
 
-#: ../ekiga.schemas.in.in.h:56
+#: ../ekiga.schemas.in.in.h:57
 msgid "Position on the screen of the address book window"
 msgstr "Placering på skærmen af adressebogsvinduet"
 
-#: ../ekiga.schemas.in.in.h:57
+#: ../ekiga.schemas.in.in.h:58
 msgid "Position on the screen of the audio settings window"
 msgstr "Placering på skærmen af lydindstillings-vinduet"
 
-#: ../ekiga.schemas.in.in.h:58
+#: ../ekiga.schemas.in.in.h:59
 msgid "Position on the screen of the chat window"
 msgstr "Placering på skærmen af samtalevinduet"
 
-#: ../ekiga.schemas.in.in.h:59
+#: ../ekiga.schemas.in.in.h:60
 msgid "Position on the screen of the druid window"
 msgstr "Placering på skærmen af hjælpervinduet"
 
-#: ../ekiga.schemas.in.in.h:60
+#: ../ekiga.schemas.in.in.h:61
 msgid "Position on the screen of the log window"
 msgstr "Placering på skærmen af logvinduet"
 
-#: ../ekiga.schemas.in.in.h:61
+#: ../ekiga.schemas.in.in.h:62
 msgid "Position on the screen of the main window"
 msgstr "Placering på skærmen af hovedvinduet"
 
-#: ../ekiga.schemas.in.in.h:62
+#: ../ekiga.schemas.in.in.h:63
 msgid "Position on the screen of the preferences window"
 msgstr "Placering på skærmen af vinduet med indstillinger"
 
-#: ../ekiga.schemas.in.in.h:63
+#: ../ekiga.schemas.in.in.h:64
 msgid "Position on the screen of the video settings window"
 msgstr "Placering på skærmen af videoindstillings-vinduet"
 
-#: ../ekiga.schemas.in.in.h:64
+#: ../ekiga.schemas.in.in.h:65
 msgid "Remote video window position"
 msgstr "Placering af fjernvideobillede"
 
-#: ../ekiga.schemas.in.in.h:65
+#: ../ekiga.schemas.in.in.h:66
 msgid "Remote video window size"
 msgstr "Størrelse af fjernvideobillede"
-
-#: ../ekiga.schemas.in.in.h:66
-msgid "Roster view saving group status"
-msgstr "Personlistevisning gemmer gruppestatus"
 
 #: ../ekiga.schemas.in.in.h:67
 msgid "Select an alternative audio output device to use for sound events."
@@ -408,7 +408,7 @@ msgstr ""
 msgid "Show offline contacts"
 msgstr "Vis afkoblede kontakter"
 
-#: ../ekiga.schemas.in.in.h:74 ../src/gui/main.cpp:3214
+#: ../ekiga.schemas.in.in.h:74 ../src/gui/main.cpp:3215
 msgid "Show the call panel"
 msgstr "Vis opkaldspanelet"
 
@@ -884,7 +884,7 @@ msgstr "_Personsøger:"
 #: ../lib/engine/components/local-roster/local-presentity.cpp:197
 #: ../lib/engine/components/opal/opal-account.cpp:308
 #: ../lib/engine/components/resource-list/rl-presentity.cpp:203
-#: ../src/gui/main.cpp:3172
+#: ../src/gui/main.cpp:3173
 msgid "_Edit"
 msgstr "_Redigér"
 
@@ -907,7 +907,7 @@ msgstr "Redigér kontakt"
 #: ../lib/engine/components/opal/opal-bank.cpp:99
 #: ../lib/engine/components/opal/opal-bank.cpp:109
 #: ../lib/engine/components/resource-list/rl-cluster.cpp:169
-#: ../lib/engine/components/resource-list/rl-heap.cpp:543
+#: ../lib/engine/components/resource-list/rl-heap.cpp:544
 #: ../lib/engine/components/resource-list/rl-presentity.cpp:224
 msgid "Name:"
 msgstr "Navn:"
@@ -1127,13 +1127,13 @@ msgstr ""
 #: ../lib/engine/components/local-roster/local-heap.cpp:193
 #: ../lib/engine/components/local-roster/local-heap.cpp:195
 #: ../lib/engine/components/resource-list/rl-cluster.cpp:170
-#: ../lib/engine/components/resource-list/rl-heap.cpp:544
+#: ../lib/engine/components/resource-list/rl-heap.cpp:545
 #: ../lib/engine/components/resource-list/rl-presentity.cpp:225
 msgid "Address:"
 msgstr "Adresse:"
 
 #: ../lib/engine/components/local-roster/local-presentity.cpp:227
-#: ../lib/engine/components/resource-list/rl-heap.cpp:545
+#: ../lib/engine/components/resource-list/rl-heap.cpp:546
 #: ../lib/engine/components/resource-list/rl-presentity.cpp:227
 msgid "Choose groups:"
 msgstr "Vælg grupper:"
@@ -1222,7 +1222,7 @@ msgstr "Ring op"
 
 #: ../lib/engine/components/opal/h323-endpoint.cpp:146
 #: ../lib/engine/components/opal/sip-endpoint.cpp:258
-#: ../lib/engine/components/opal/sip-endpoint.cpp:262 ../src/gui/main.cpp:2946
+#: ../lib/engine/components/opal/sip-endpoint.cpp:262 ../src/gui/main.cpp:2947
 msgid "Transfer"
 msgstr "Overfør"
 
@@ -1367,8 +1367,8 @@ msgstr "Få en SIP-konto til Ekiga.net"
 msgid "Get an Ekiga Call Out account"
 msgstr "Få en Ekiga-opkaldskonto"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:92 ../src/gui/main.cpp:2700
-#: ../src/gui/main.cpp:2795
+#: ../lib/engine/components/opal/opal-bank.cpp:92 ../src/gui/main.cpp:2701
+#: ../src/gui/main.cpp:2796
 msgid "Account ID:"
 msgstr "Konto-id:"
 
@@ -1401,7 +1401,7 @@ msgstr "Modparten har afsluttet opkaldet"
 msgid "Abnormal call termination"
 msgstr "Abnormal opkaldsterminering"
 
-#: ../lib/engine/components/opal/opal-call.cpp:465 ../src/gui/main.cpp:1490
+#: ../lib/engine/components/opal/opal-call.cpp:465 ../src/gui/main.cpp:1491
 msgid "Could not connect to remote host"
 msgstr "Kunne ikke tilslutte til fjern vært"
 
@@ -1740,31 +1740,32 @@ msgid "Contact list's name"
 msgstr "Navn for kontaktliste"
 
 # Jeg kunne ikke komme på nogen formulering som komme uden om tvetydigheden i "rod" forslag er velkomne
-#: ../lib/engine/components/resource-list/rl-heap.cpp:473
+#. "Document" used as a name -- uri point to the root of a document tree
+#: ../lib/engine/components/resource-list/rl-heap.cpp:474
 msgid "Document root"
 msgstr "Dokumentrod"
 
-#: ../lib/engine/components/resource-list/rl-heap.cpp:474
+#: ../lib/engine/components/resource-list/rl-heap.cpp:475
 msgid "Identifier"
 msgstr "Identifikator"
 
-#: ../lib/engine/components/resource-list/rl-heap.cpp:475
+#: ../lib/engine/components/resource-list/rl-heap.cpp:476
 msgid "Writable"
 msgstr "Skrivbar"
 
-#: ../lib/engine/components/resource-list/rl-heap.cpp:476
+#: ../lib/engine/components/resource-list/rl-heap.cpp:477
 msgid "Server username"
 msgstr "Serverbrugernavn"
 
-#: ../lib/engine/components/resource-list/rl-heap.cpp:477
+#: ../lib/engine/components/resource-list/rl-heap.cpp:478
 msgid "Server password"
 msgstr "Serverkodeord"
 
-#: ../lib/engine/components/resource-list/rl-heap.cpp:529
+#: ../lib/engine/components/resource-list/rl-heap.cpp:530
 msgid "Add a remote contact"
 msgstr "Tilføj en fjern kontakt"
 
-#: ../lib/engine/components/resource-list/rl-heap.cpp:530
+#: ../lib/engine/components/resource-list/rl-heap.cpp:531
 msgid "Please fill in this form to create a new contact on a remote server"
 msgstr ""
 "Udfyld venligst denne formular for at tilføje en ny kontakt på en fjern "
@@ -1812,7 +1813,7 @@ msgid "Address Book"
 msgstr "Adressebog"
 
 #: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:675
-#: ../src/gui/main.cpp:3121
+#: ../src/gui/main.cpp:3122
 msgid "Address _Book"
 msgstr "Adresse_bog"
 
@@ -1908,11 +1909,11 @@ msgstr "Status"
 msgid "Accounts"
 msgstr "Konti"
 
-#: ../src/gui/accounts.cpp:659 ../src/gui/main.cpp:3182
+#: ../src/gui/accounts.cpp:659 ../src/gui/main.cpp:3183
 msgid "_Accounts"
 msgstr "_Konti"
 
-#: ../src/gui/accounts.cpp:663 ../src/gui/main.cpp:3265
+#: ../src/gui/accounts.cpp:663 ../src/gui/main.cpp:3266
 msgid "_Help"
 msgstr "_Hjælp"
 
@@ -1940,7 +1941,7 @@ msgstr ""
 "ved at vælge \"Indstillinger\" i redigeringsmenuen."
 
 #: ../src/gui/assistant.cpp:331
-msgid "Welcome in Ekiga"
+msgid "Welcome to Ekiga"
 msgstr "Velkommen til Ekiga"
 
 #: ../src/gui/assistant.cpp:365 ../src/gui/preferences.cpp:454
@@ -2077,8 +2078,8 @@ msgstr ""
 "kvalitetsindstillinger som Ekiga vi bruge ved opkald. Du kan senere ændre "
 "indstillingerne enkeltvis i indstillingsvinduet."
 
-#: ../src/gui/assistant.cpp:969 ../src/gui/main.cpp:3011
-#: ../src/gui/main.cpp:3015 ../src/gui/preferences.cpp:760
+#: ../src/gui/assistant.cpp:969 ../src/gui/main.cpp:3012
+#: ../src/gui/main.cpp:3016 ../src/gui/preferences.cpp:760
 msgid "Audio Devices"
 msgstr "Lyd-enheder"
 
@@ -2314,61 +2315,61 @@ msgid "Registered %s"
 msgstr "Registrerede %s"
 
 #. Translators: Is displayed once an account "%s" is unregistered.
-#: ../src/gui/main.cpp:525
+#: ../src/gui/main.cpp:526
 #, c-format
 msgid "Unregistered %s"
 msgstr "Afregistrerede %s"
 
-#: ../src/gui/main.cpp:530
+#: ../src/gui/main.cpp:531
 #, c-format
 msgid "Could not unregister %s"
 msgstr "Kunne ikke afregistrere %s"
 
-#: ../src/gui/main.cpp:534
+#: ../src/gui/main.cpp:535
 #, c-format
 msgid "Could not register %s"
 msgstr "Kunne ikke registrere %s"
 
-#: ../src/gui/main.cpp:604
+#: ../src/gui/main.cpp:605
 #, c-format
 msgid "A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d"
 msgstr "A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d"
 
-#: ../src/gui/main.cpp:650
+#: ../src/gui/main.cpp:651
 #, c-format
 msgid "Connected with %s"
 msgstr "Tilsluttet til %s"
 
-#: ../src/gui/main.cpp:691 ../src/gui/main.cpp:3511
+#: ../src/gui/main.cpp:692 ../src/gui/main.cpp:3512
 msgid "Standby"
 msgstr "Dvale"
 
-#: ../src/gui/main.cpp:752
+#: ../src/gui/main.cpp:753
 msgid "Call on hold"
 msgstr "Opkald venter"
 
-#: ../src/gui/main.cpp:763
+#: ../src/gui/main.cpp:764
 msgid "Call retrieved"
 msgstr "Opkald indhentet"
 
-#: ../src/gui/main.cpp:779
+#: ../src/gui/main.cpp:780
 #, c-format
 msgid "Missed call from %s"
 msgstr "Mistede opkald fra %s"
 
-#: ../src/gui/main.cpp:916
+#: ../src/gui/main.cpp:917
 msgid "Error"
 msgstr "Fejl"
 
-#: ../src/gui/main.cpp:981
+#: ../src/gui/main.cpp:982
 msgid "Error while initializing video output"
 msgstr "Fejl ved initialisering af videouddata"
 
-#: ../src/gui/main.cpp:982
+#: ../src/gui/main.cpp:983
 msgid "No video will be displayed during this call->"
 msgstr "Ingen video vil blive vist under denne samtale->"
 
-#: ../src/gui/main.cpp:992
+#: ../src/gui/main.cpp:993
 msgid ""
 "There was an error opening or initializing the video output. Please verify "
 "that no other application is using the accelerated video output."
@@ -2377,7 +2378,7 @@ msgstr ""
 "Kontrollér at der ikke er andre programmer, der anvender accelereret "
 "videouddata."
 
-#: ../src/gui/main.cpp:994
+#: ../src/gui/main.cpp:995
 msgid ""
 "There was an error opening or initializing the video output. Please verify "
 "that you are using a color depth of 24 or 32 bits per pixel."
@@ -2386,23 +2387,23 @@ msgstr ""
 "Kontrollér at du anvender en farvedybde på 24 eller 32 bit pr. pixel."
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main.cpp:1107
+#: ../src/gui/main.cpp:1108
 #, c-format
 msgid "Added video input device %s"
 msgstr "Tilføjede videoind-enhed %s"
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main.cpp:1119
+#: ../src/gui/main.cpp:1120
 #, c-format
 msgid "Removed video input device %s"
 msgstr "Fjernede videoind-enhed %s"
 
-#: ../src/gui/main.cpp:1136
+#: ../src/gui/main.cpp:1137
 #, c-format
 msgid "Error while accessing video device %s"
 msgstr "Fejl ved tilgang af video-enheden %s"
 
-#: ../src/gui/main.cpp:1139
+#: ../src/gui/main.cpp:1140
 msgid ""
 "A moving logo will be transmitted during calls. Notice that you can always "
 "transmit a given image or the moving logo by choosing \"Picture\" as video "
@@ -2413,7 +2414,7 @@ msgstr ""
 "\"Picture\" som videomodul og \"Moving logo\" eller \"Static picture\" som "
 "enhed."
 
-#: ../src/gui/main.cpp:1143
+#: ../src/gui/main.cpp:1144
 msgid ""
 "There was an error while opening the device. In case it is a pluggable "
 "device it may be sufficient to reconnect it. If not, or if it still is not "
@@ -2425,15 +2426,15 @@ msgstr ""
 "er tilgængelig, så kontrollér venligst dine rettigheder og at den rigtige "
 "driver er indlæst."
 
-#: ../src/gui/main.cpp:1147
+#: ../src/gui/main.cpp:1148
 msgid "Your video driver doesn't support the requested video format."
 msgstr "Din video-enhed understøtter ikke det ønskede videoformat."
 
-#: ../src/gui/main.cpp:1151
+#: ../src/gui/main.cpp:1152
 msgid "Could not open the chosen channel."
 msgstr "Kunne ikke åbne den valgte kanal."
 
-#: ../src/gui/main.cpp:1155
+#: ../src/gui/main.cpp:1156
 msgid ""
 "Your driver doesn't seem to support any of the color formats supported by "
 "Ekiga.\n"
@@ -2444,42 +2445,42 @@ msgstr ""
 "Undersøg venligst dokumentationen for dit kernedrivprogram for at bestemme "
 "hvilken palette som understøttes."
 
-#: ../src/gui/main.cpp:1159
+#: ../src/gui/main.cpp:1160
 msgid "Error while setting the frame rate."
 msgstr "Fejl ved opsætning af billedhastigheden."
 
-#: ../src/gui/main.cpp:1163
+#: ../src/gui/main.cpp:1164
 msgid "Error while setting the frame size."
 msgstr "Fejl ved opsætning af billedstørrelsen."
 
-#: ../src/gui/main.cpp:1168 ../src/gui/main.cpp:1270 ../src/gui/main.cpp:1385
+#: ../src/gui/main.cpp:1169 ../src/gui/main.cpp:1271 ../src/gui/main.cpp:1386
 msgid "Unknown error."
 msgstr "Ukendt fejl."
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main.cpp:1218
+#: ../src/gui/main.cpp:1219
 #, c-format
 msgid "Added audio input device %s"
 msgstr "Tilføjede lydinddata-enhed %s"
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main.cpp:1235
+#: ../src/gui/main.cpp:1236
 #, c-format
 msgid "Removed audio input device %s"
 msgstr "Fjernede lydinddata-enhed %s"
 
-#: ../src/gui/main.cpp:1252
+#: ../src/gui/main.cpp:1253
 #, c-format
 msgid "Error while opening audio input device %s"
 msgstr "Fejl ved åbning af lydinddata-enheden %s"
 
 #. Translators: This happens when there is an error with audio input:
 #. * Nothing ("silence") will be transmitted
-#: ../src/gui/main.cpp:1257
+#: ../src/gui/main.cpp:1258
 msgid "Only silence will be transmitted."
 msgstr "Der vil kun blive sendt stilhed."
 
-#: ../src/gui/main.cpp:1261
+#: ../src/gui/main.cpp:1262
 msgid ""
 "Unable to open the selected audio device for recording. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
@@ -2491,7 +2492,7 @@ msgstr ""
 "hvis den stadig ikke er tilgængelig, kontrollér da venligst din "
 "lydkonfiguration, rettighederne og at enheden ikke er optaget."
 
-#: ../src/gui/main.cpp:1265
+#: ../src/gui/main.cpp:1266
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "read data from this device. In case it is a pluggable device it may be "
@@ -2503,26 +2504,26 @@ msgstr ""
 "den. Hvis ikke, eller hvis den stadig ikke virker, så kontrollér venligst "
 "din lydkonfiguration."
 
-#: ../src/gui/main.cpp:1332
+#: ../src/gui/main.cpp:1333
 #, c-format
 msgid "Added audio output device %s"
 msgstr "Tilføjede lyduddata-enhed %s"
 
-#: ../src/gui/main.cpp:1348
+#: ../src/gui/main.cpp:1349
 #, c-format
 msgid "Removed audio output device %s"
 msgstr "Fjernede lyduddata-enhed %s"
 
-#: ../src/gui/main.cpp:1369
+#: ../src/gui/main.cpp:1370
 #, c-format
 msgid "Error while opening audio output device %s"
 msgstr "Fejl ved åbning af lydinddata-enhed %s"
 
-#: ../src/gui/main.cpp:1372
+#: ../src/gui/main.cpp:1373
 msgid "No incoming sound will be played."
 msgstr "Ingen indkommende lyd vil blive afspillet."
 
-#: ../src/gui/main.cpp:1376
+#: ../src/gui/main.cpp:1377
 msgid ""
 "Unable to open the selected audio device for playing. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
@@ -2534,7 +2535,7 @@ msgstr ""
 "hvis den stadig ikke er tilgængelig, så kontrollér venligst din "
 "lydkonfiguration, rettighederne og at enheden ikke er optaget."
 
-#: ../src/gui/main.cpp:1380
+#: ../src/gui/main.cpp:1381
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "write data to this device. In case it is a pluggable device it may be "
@@ -2546,331 +2547,327 @@ msgstr ""
 "gentilkoble den. Hvis ikke, eller hvis den stadig ikke virker, så kontrollér "
 "venligst din lydkonfiguration."
 
-#: ../src/gui/main.cpp:1568
+#: ../src/gui/main.cpp:1569
 msgid "Video Settings"
 msgstr "Videoopsætning"
 
-#: ../src/gui/main.cpp:1595
+#: ../src/gui/main.cpp:1596
 msgid "Adjust brightness"
 msgstr "Justér lysstyrke"
 
-#: ../src/gui/main.cpp:1616
+#: ../src/gui/main.cpp:1617
 msgid "Adjust whiteness"
 msgstr "Justér hvidhed"
 
-#: ../src/gui/main.cpp:1637
+#: ../src/gui/main.cpp:1638
 msgid "Adjust color"
 msgstr "Justér farve"
 
-#: ../src/gui/main.cpp:1658
+#: ../src/gui/main.cpp:1659
 msgid "Adjust contrast"
 msgstr "Justér kontrast"
 
-#: ../src/gui/main.cpp:1704
+#: ../src/gui/main.cpp:1705
 msgid "Audio Settings"
 msgstr "Lydindstillinger"
 
-#: ../src/gui/main.cpp:2315
+#: ../src/gui/main.cpp:2316
 msgid "_Retrieve Call"
 msgstr "_Hent opkald"
 
-#: ../src/gui/main.cpp:2328
+#: ../src/gui/main.cpp:2329
 msgid "_Hold Call"
 msgstr "_Hold opkald"
 
-#: ../src/gui/main.cpp:2360 ../src/gui/main.cpp:3148
+#: ../src/gui/main.cpp:2361 ../src/gui/main.cpp:3149
 msgid "Suspend _Audio"
 msgstr "Stop _lyd"
 
-#: ../src/gui/main.cpp:2362 ../src/gui/main.cpp:3153
+#: ../src/gui/main.cpp:2363 ../src/gui/main.cpp:3154
 msgid "Suspend _Video"
 msgstr "Stop _video"
 
-#: ../src/gui/main.cpp:2364
+#: ../src/gui/main.cpp:2365
 msgid "Resume _Audio"
 msgstr "Genoptag _lyd"
 
-#: ../src/gui/main.cpp:2366
+#: ../src/gui/main.cpp:2367
 msgid "Resume _Video"
 msgstr "Genoptag _video"
 
-#: ../src/gui/main.cpp:2649 ../src/gui/main.cpp:2801
+#: ../src/gui/main.cpp:2650 ../src/gui/main.cpp:2802
 msgid "Reject"
 msgstr "Afvis"
 
-#: ../src/gui/main.cpp:2651 ../src/gui/main.cpp:2800
+#: ../src/gui/main.cpp:2652 ../src/gui/main.cpp:2801
 msgid "Accept"
 msgstr "Acceptér"
 
-#: ../src/gui/main.cpp:2657 ../src/gui/main.cpp:2788
+#: ../src/gui/main.cpp:2658 ../src/gui/main.cpp:2789
 msgid "Incoming call from"
 msgstr "Indgående opkald fra"
 
-#: ../src/gui/main.cpp:2675 ../src/gui/main.cpp:2791
+#: ../src/gui/main.cpp:2676 ../src/gui/main.cpp:2792
 msgid "Remote URI:"
 msgstr "Fjern URI:"
 
-#: ../src/gui/main.cpp:2687 ../src/gui/main.cpp:2793
+#: ../src/gui/main.cpp:2688 ../src/gui/main.cpp:2794
 msgid "Remote Application:"
 msgstr "Fjernprogram:"
 
-#: ../src/gui/main.cpp:2708
+#: ../src/gui/main.cpp:2709
 #, c-format
 msgid "Call from %s"
 msgstr "Opkald fra %s"
 
-#: ../src/gui/main.cpp:2914
+#: ../src/gui/main.cpp:2915
 #, c-format
 msgid "Call Duration: %s\n"
 msgstr "Samtalelængde: %s\n"
 
-#: ../src/gui/main.cpp:2945
+#: ../src/gui/main.cpp:2946
 msgid "Transfer call to:"
 msgstr "Overfør opkald til:"
 
-#: ../src/gui/main.cpp:2997
+#: ../src/gui/main.cpp:2998
 msgid "No"
 msgstr "Nej"
 
-#: ../src/gui/main.cpp:2999
+#: ../src/gui/main.cpp:3000
 msgid "Yes"
 msgstr "Ja"
 
-#: ../src/gui/main.cpp:3010
+#: ../src/gui/main.cpp:3011
 msgid "Detected new audio input device:"
 msgstr "Detekterede ny lydinddata-enhed:"
 
-#: ../src/gui/main.cpp:3014
+#: ../src/gui/main.cpp:3015
 msgid "Detected new audio output device:"
 msgstr "Detekterede ny lyduddata-enhed:"
 
-#: ../src/gui/main.cpp:3018
+#: ../src/gui/main.cpp:3019
 msgid "Detected new video input device:"
 msgstr "Detekterede ny videoind-enhed:"
 
-#: ../src/gui/main.cpp:3019 ../src/gui/preferences.cpp:921
+#: ../src/gui/main.cpp:3020 ../src/gui/preferences.cpp:921
 msgid "Video Devices"
 msgstr "Video-enheder"
 
-#: ../src/gui/main.cpp:3037
+#: ../src/gui/main.cpp:3038
 msgid "Do you want to use it as default device?"
 msgstr "Vil du bruge den som standardenhed?"
 
-#: ../src/gui/main.cpp:3105
+#: ../src/gui/main.cpp:3106
 msgid "_Chat"
 msgstr "_Chat"
 
-#: ../src/gui/main.cpp:3107
+#: ../src/gui/main.cpp:3108
 msgid "Ca_ll"
 msgstr "_Opkald"
 
-#: ../src/gui/main.cpp:3107
+#: ../src/gui/main.cpp:3108
 msgid "Place a new call"
 msgstr "Lav et nyt opkald"
 
-#: ../src/gui/main.cpp:3110
+#: ../src/gui/main.cpp:3111
 msgid "_Hang up"
 msgstr "_Læg på"
 
-#: ../src/gui/main.cpp:3111
+#: ../src/gui/main.cpp:3112
 msgid "Terminate the current call"
 msgstr "Afbryd det igangværende opkald"
 
-#: ../src/gui/main.cpp:3117
+#: ../src/gui/main.cpp:3118
 msgid "A_dd Contact"
 msgstr "_Tilføj kontakt"
 
-#: ../src/gui/main.cpp:3117
+#: ../src/gui/main.cpp:3118
 msgid "Add a contact to the roster"
 msgstr "Tilføj kontakt til personlisten"
 
-#: ../src/gui/main.cpp:3122
+#: ../src/gui/main.cpp:3123
 msgid "Find contacts"
 msgstr "Find kontakter"
 
-#: ../src/gui/main.cpp:3129
+#: ../src/gui/main.cpp:3130
 msgid "_Contact"
 msgstr "_Kontakt"
 
-#: ../src/gui/main.cpp:3130
+#: ../src/gui/main.cpp:3131
 msgid "Act on selected contact"
 msgstr "Udfør på den valgte kontakt"
 
-#: ../src/gui/main.cpp:3136
+#: ../src/gui/main.cpp:3137
 msgid "H_old Call"
 msgstr "Sæt opkald i _venteposition"
 
-#: ../src/gui/main.cpp:3136 ../src/gui/main.cpp:3605
+#: ../src/gui/main.cpp:3137 ../src/gui/main.cpp:3606
 msgid "Hold the current call"
 msgstr "Sæt det aktuelle opkald i venteposition"
 
-#: ../src/gui/main.cpp:3140
+#: ../src/gui/main.cpp:3141
 msgid "_Transfer Call"
 msgstr "_Overfør samtale"
 
-#: ../src/gui/main.cpp:3141
+#: ../src/gui/main.cpp:3142
 msgid "Transfer the current call"
 msgstr "Overfør det aktuelle opkald"
 
-#: ../src/gui/main.cpp:3149
+#: ../src/gui/main.cpp:3150
 msgid "Suspend or resume the audio transmission"
 msgstr "Suspendér eller genoptag lydoverførslen"
 
-#: ../src/gui/main.cpp:3154
+#: ../src/gui/main.cpp:3155
 msgid "Suspend or resume the video transmission"
 msgstr "Suspendér eller genoptag videooverførslen"
 
-#: ../src/gui/main.cpp:3161
+#: ../src/gui/main.cpp:3162
 msgid "Close the Ekiga window"
 msgstr "Luk Ekiga-vinduet"
 
-#: ../src/gui/main.cpp:3168 ../src/gui/statusicon.cpp:406
+#: ../src/gui/main.cpp:3169 ../src/gui/statusicon.cpp:406
 msgid "Quit"
 msgstr "Afslut"
 
-#: ../src/gui/main.cpp:3174
+#: ../src/gui/main.cpp:3175
 msgid "_Configuration Assistant"
 msgstr "_Konfigurationshjælper"
 
-#: ../src/gui/main.cpp:3175
+#: ../src/gui/main.cpp:3176
 msgid "Run the configuration assistant"
 msgstr "Kør konfigurationshjælperen"
 
-#: ../src/gui/main.cpp:3183
+#: ../src/gui/main.cpp:3184
 msgid "Edit your accounts"
 msgstr "Redigér dine konti"
 
-#: ../src/gui/main.cpp:3189
+#: ../src/gui/main.cpp:3190
 msgid "Change your preferences"
 msgstr "Ændr dine indstillinger"
 
-#: ../src/gui/main.cpp:3194
+#: ../src/gui/main.cpp:3195
 msgid "_View"
 msgstr "_Vis"
 
-#: ../src/gui/main.cpp:3196
+#: ../src/gui/main.cpp:3197
 msgid "Con_tacts"
 msgstr "Kon_takter"
 
-#: ../src/gui/main.cpp:3196
+#: ../src/gui/main.cpp:3197
 msgid "View the contacts list"
 msgstr "Vis kontaktlisten"
 
-#: ../src/gui/main.cpp:3201
+#: ../src/gui/main.cpp:3202
 msgid "_Dialpad"
 msgstr "_Nummertastatur"
 
-#: ../src/gui/main.cpp:3201
+#: ../src/gui/main.cpp:3202
 msgid "View the dialpad"
 msgstr "Vis Nummertastaturet"
 
-#: ../src/gui/main.cpp:3206
+#: ../src/gui/main.cpp:3207
 msgid "_Call History"
 msgstr "_Opkaldshistorik"
 
-#: ../src/gui/main.cpp:3206
+#: ../src/gui/main.cpp:3207
 msgid "View the call history"
 msgstr "Vis opkaldshistorikken"
 
-#: ../src/gui/main.cpp:3214
+#: ../src/gui/main.cpp:3215
 msgid "_Show Call Panel"
 msgstr "_Vis opkaldspanelet"
 
-#: ../src/gui/main.cpp:3222
+#: ../src/gui/main.cpp:3223
 msgid "_Local Video"
 msgstr "_Lokalvideo"
 
-#: ../src/gui/main.cpp:3223
+#: ../src/gui/main.cpp:3224
 msgid "Local video image"
 msgstr "Lokalvideobillede"
 
-#: ../src/gui/main.cpp:3228
+#: ../src/gui/main.cpp:3229
 msgid "_Remote Video"
 msgstr "_Fjernvideo"
 
-#: ../src/gui/main.cpp:3229
+#: ../src/gui/main.cpp:3230
 msgid "Remote video image"
 msgstr "Fjernvideobillede"
 
-#: ../src/gui/main.cpp:3234
+#: ../src/gui/main.cpp:3235
 msgid "_Picture-in-Picture"
 msgstr "_Billede i billede"
 
-#: ../src/gui/main.cpp:3235 ../src/gui/main.cpp:3241
+#: ../src/gui/main.cpp:3236 ../src/gui/main.cpp:3242
 msgid "Both video images"
 msgstr "Begge videobilleder"
 
-#: ../src/gui/main.cpp:3240
+#: ../src/gui/main.cpp:3241
 msgid "Picture-in-Picture in Separate _Window"
 msgstr "Billede i billede i separate _vindue"
 
-#: ../src/gui/main.cpp:3248
+#: ../src/gui/main.cpp:3249
 msgid "Zoom in"
 msgstr "Zoom ind"
 
-#: ../src/gui/main.cpp:3252
+#: ../src/gui/main.cpp:3253
 msgid "Zoom out"
 msgstr "Zoom ud"
 
-#: ../src/gui/main.cpp:3256
+#: ../src/gui/main.cpp:3257
 msgid "Normal size"
 msgstr "Normal størrelse"
 
-#: ../src/gui/main.cpp:3260
+#: ../src/gui/main.cpp:3261
 msgid "_Fullscreen"
 msgstr "_Fuldskærm"
 
-#: ../src/gui/main.cpp:3260
+#: ../src/gui/main.cpp:3261
 msgid "Switch to fullscreen"
 msgstr "Skift til fuldskærm"
 
-#: ../src/gui/main.cpp:3268 ../src/gui/statusicon.cpp:394
+#: ../src/gui/main.cpp:3269 ../src/gui/statusicon.cpp:394
 msgid "Get help by reading the Ekiga manual"
 msgstr "Få hjælp ved at læse Ekiga-manualen"
 
-#: ../src/gui/main.cpp:3273 ../src/gui/statusicon.cpp:399
+#: ../src/gui/main.cpp:3274 ../src/gui/statusicon.cpp:399
 msgid "View information about Ekiga"
 msgstr "Vis information om Ekiga"
 
-#: ../src/gui/main.cpp:3347
+#: ../src/gui/main.cpp:3348
 msgid ""
 "Enter a URI on the left, and click this button to place a call or to hangup"
 msgstr ""
 "Indtast en URI til venstre og klik på denne knap for at foretage et opkald "
 "eller for at lægge på"
 
-#: ../src/gui/main.cpp:3398
+#: ../src/gui/main.cpp:3399
 msgid "Contacts"
 msgstr "Kontakter"
 
-#: ../src/gui/main.cpp:3421
+#: ../src/gui/main.cpp:3422
 msgid "Dialpad"
 msgstr "Taltastatur"
 
-#: ../src/gui/main.cpp:3440
+#: ../src/gui/main.cpp:3441
 msgid "Call history"
 msgstr "Opkaldshistorik"
 
-#: ../src/gui/main.cpp:3543
+#: ../src/gui/main.cpp:3544
 msgid "Change the volume of your soundcard"
 msgstr "Ændr lydstyrken for dit lydkort"
 
-#: ../src/gui/main.cpp:3563
+#: ../src/gui/main.cpp:3564
 msgid "Change the color settings of your video device"
 msgstr "Ændr farveopsætningen for din videoenhed"
 
-#: ../src/gui/main.cpp:3585
-msgid "Display images from your camera device"
-msgstr "Vis billeder fra din kamera-enhed"
-
-#: ../src/gui/main.cpp:3674
+#: ../src/gui/main.cpp:3675
 msgid "Ekiga"
 msgstr "Ekiga"
 
 # Jeg tror TX og RX betyder transmittet og received, i det tilfælde at nogen har lyst til at finde på en dansk forkortelse
 #. Translators:
 #. * TX is a common abbreviation for "transmit"
-#: ../src/gui/main.cpp:4281
+#: ../src/gui/main.cpp:4282
 #, c-format
 msgid "TX: %dx%d "
 msgstr "TX: %dx%d "
@@ -2878,12 +2875,12 @@ msgstr "TX: %dx%d "
 # Jeg tror TX og RX betyder transmittet og received, i det tilfælde at nogen har lyst til at finde på en dansk forkortelse
 #. Translators:
 #. * RX is a common abbreviation for "receive"
-#: ../src/gui/main.cpp:4286
+#: ../src/gui/main.cpp:4287
 #, c-format
 msgid "RX: %dx%d "
 msgstr "RX: %dx%d "
 
-#: ../src/gui/main.cpp:4288
+#: ../src/gui/main.cpp:4289
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -2896,25 +2893,25 @@ msgstr ""
 "Pakker ude af orden: %.1f %%\n"
 "Jitterbuffer: %d ms%s%s%s"
 
-#: ../src/gui/main.cpp:4405
+#: ../src/gui/main.cpp:4406
 msgid "Prints debug messages in the console (level between 1 and 5)"
 msgstr "Udskriver fejlsøgningsbeskeder i konsollen (niveau mellem 1 og 5)"
 
-#: ../src/gui/main.cpp:4410
+#: ../src/gui/main.cpp:4411
 msgid "Prints user plane debug messages in the console (level between 1 and 4)"
 msgstr ""
 "Udskriver brugeregnede fejlsøgningsbeskeder i konsollen (niveau mellem 1 og "
 "4)"
 
-#: ../src/gui/main.cpp:4415
+#: ../src/gui/main.cpp:4416
 msgid "Makes Ekiga call the given URI"
 msgstr "Får Ekiga til at ringe til den angivne URI"
 
-#: ../src/gui/main.cpp:4524
+#: ../src/gui/main.cpp:4525
 msgid "No usable audio plugin detected"
 msgstr "Intet brugbart lydudvidelsesmodul fundet"
 
-#: ../src/gui/main.cpp:4525
+#: ../src/gui/main.cpp:4526
 msgid ""
 "Ekiga didn't find any usable audio plugin. Make sure that your installation "
 "is correct."
@@ -2922,11 +2919,11 @@ msgstr ""
 "Ekiga fandt intet brugbart lydudvidelsesmodul. Kontrollér at installationen "
 "er udført korrekt."
 
-#: ../src/gui/main.cpp:4528
+#: ../src/gui/main.cpp:4529
 msgid "No usable audio codecs detected"
 msgstr "Ingen brugbar lydkodning fundet"
 
-#: ../src/gui/main.cpp:4529
+#: ../src/gui/main.cpp:4530
 msgid ""
 "Ekiga didn't find any usable audio codec. Make sure that your installation "
 "is correct."
@@ -3323,6 +3320,9 @@ msgstr "Slet tilpassede beskeder:"
 #: ../src/gui/statusmenu.cpp:692
 msgid "Define a custom message:"
 msgstr "Definér en tilpasset besked:"
+
+#~ msgid "Roster view saving group status"
+#~ msgstr "Personlistevisning gemmer gruppestatus"
 
 #~ msgid "Automatic echo cancellation"
 #~ msgstr "Fjern automatisk ekko"
