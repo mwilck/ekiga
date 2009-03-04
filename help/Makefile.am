@@ -25,4 +25,4 @@ DOC_FIGURES = figures/lumi.png        \
               figures/accounts_h323.png  \
               figures/audio_codecs.png
               
-DOC_LINGUAS = bg ca de el es eu fi fr oc pt_BR ru sv uk
+DOC_LINGUAS = bg ca de el en_GB es eu fi fr oc pt_BR ru sv uk
