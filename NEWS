@@ -1,8 +1,29 @@
                           -*- mode: outline -*-
-* Changes since ekiga 3.1.0 (2009-01-05)
-- Allow compilation with CELT 0.4 and 0.5.
-- Fixed crash when clearing call history.
-- Allow several ALSA devices to have the same name.
+* Changes in ekiga 3.1.2 (2009-03-03)
+- New SBC audio codec
+- Removal of the old H.263 ffmpeg plug in and enhancement of the
+  H.263-1998 plug in to take its place.
+- Allow compilation with CELT 0.4 and 0.5
+- Allow several ALSA devices to have the same name
+- STUN enabling/disabling has been readded to the GUI
+- Remove white spaces from the URI (useful when copy/paste)
+- Clear the URI edit box after a call
+- Fixed crash when clearing call history
+- Fix Windows compilation
+- Fixes for tarball generation
+- Fixed account data corruption when the authentication user name is
+  left blank
+- Fixed possible crash when answering incoming calls
+- Fixed G.722 usage
+- Other various fixes, cleanups, removal of deprecated symbols etc.
+- Updated translations: ca, cs, da, el, en_GB, es, eu, fi, fr, he, hu,
+  it, ja, ko, kn, nb, nl, pl, pt_BR, sl, sv, th, vi, zh_HK, zh_TW
+- New help/eu localisation
+Experimental features:
+- Significant improvements in IPv6 support
+- Gstreamer audio and video capture support near to be finished...
+
+* ekiga 3.1.1 unreleased
 
 * Changes in ekiga 3.1.0 (2009-01-05)
 - Added support for G.722 and CELT audio wideband codecs
