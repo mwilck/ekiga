@@ -38,7 +38,12 @@
 #include "plugin-core.h"
 
 #include <gmodule.h>
+
+#define DEBUG 0
+
+#if DEBUG
 #include <iostream>
+#endif
 
 // Here is what a trivial plugin looks like :
 //
@@ -57,7 +62,9 @@
 void
 plugin_init (Ekiga::KickStart& kickstart)
 {
+#if DEBUG
   std::cout << "Trying to load the ekiga test plugin... ";
+#endif
   gchar* filename = g_build_filename (g_get_tmp_dir (),
 				      "ekiga_test",
 				      NULL);
@@ -67,21 +74,29 @@ plugin_init (Ekiga::KickStart& kickstart)
 
   if (plugin != 0) {
 
+#if DEBUG
     std::cout << "loaded... ";
+#endif
     gpointer init_func = NULL;
 
     if (g_module_symbol (plugin, "ekiga_plugin_init", &init_func)) {
 
+#if DEBUG
       std::cout << "valid, running:" << std::endl;
+#endif
       g_module_make_resident (plugin);
       ((void (*)(Ekiga::KickStart&))init_func) (kickstart);
     } else {
 
+#if DEBUG
       std::cout << "invalid: " << g_module_error () << std::endl;
+#endif
       g_module_close (plugin);
     }
   } else {
 
+#if DEBUG
     std::cout << "failed to load the module" << std::endl;
+#endif
   }
 }
