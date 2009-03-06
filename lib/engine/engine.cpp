@@ -120,9 +120,9 @@
 #include "resource-list-main.h"
 #endif
 
-#define DEBUG_STARTUP 1
+#define DEBUG_STARTUP 0
 
-#ifdef DEBUG_STARTUP
+#if DEBUG_STARTUP
 #include <iostream>
 #endif
 
@@ -299,7 +299,7 @@ engine_init (int argc,
   // std::vector<sigc::connection> connections;
   //connections.push_back (conn);
 
-#ifdef DEBUG_STARTUP
+#if DEBUG_STARTUP
   std::cout << "Here is what ekiga is made of for this run :" << std::endl;
   service_core->dump (std::cout);
 #endif
