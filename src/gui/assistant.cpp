@@ -88,6 +88,8 @@ struct _EkigaAssistantPrivate
 
   GtkWidget *video_device;
 
+  gint last_active_page;
+
   GtkListStore *summary_model;
   std::vector<sigc::connection> connections;
 };
@@ -1464,6 +1466,7 @@ ekiga_assistant_init (EkigaAssistant *assistant)
   gtk_window_set_position (GTK_WINDOW (assistant), GTK_WIN_POS_CENTER);
   gtk_container_set_border_width (GTK_CONTAINER (assistant), 12);
 
+  assistant->priv->last_active_page = 0;
   assistant->priv->icon = gtk_icon_theme_load_icon (gtk_icon_theme_get_default (),
                                                     "ekiga", 48,
                                                     (GtkIconLookupFlags) 0, NULL);
@@ -1487,7 +1490,8 @@ ekiga_assistant_prepare (GtkAssistant *gtkassistant,
                          GtkWidget    *page)
 {
   EkigaAssistant *assistant = EKIGA_ASSISTANT (gtkassistant);
-  gchar *title;
+  gchar *title = NULL;
+  bool forward = false;
 
   title = g_strdup_printf (_("Ekiga Configuration Assistant (%d of %d)"),
                            gtk_assistant_get_current_page (gtkassistant) + 1,
@@ -1495,6 +1499,13 @@ ekiga_assistant_prepare (GtkAssistant *gtkassistant,
 
   gtk_window_set_title (GTK_WINDOW (assistant), title);
   g_free (title);
+
+  if (assistant->priv->last_active_page < gtk_assistant_get_current_page (gtkassistant))
+    forward = true;
+  assistant->priv->last_active_page = gtk_assistant_get_current_page (gtkassistant);
+
+  if (!forward)
+    return;
 
   if (page == assistant->priv->personal_data_page) {
     prepare_personal_data_page (assistant);
