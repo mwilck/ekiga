@@ -84,10 +84,10 @@ GtkFrontend::GtkFrontend (Ekiga::ServiceCore &core)
   gmref_ptr<Ekiga::ChatCore> chat_core = core.get ("chat-core");
 
   addressbook_window =
-    addressbook_window_new_with_key (*contact_core, "/apps/ekiga/general/user_interface/addressbook_window");
+    addressbook_window_new_with_key (*contact_core, "/apps/" PACKAGE_NAME "/general/user_interface/addressbook_window");
   chat_window =
     chat_window_new (*chat_core,
-		     "/apps/ekiga/general/user_interface/chat_window");
+		     "/apps/" PACKAGE_NAME "/general/user_interface/chat_window");
 }
 
 

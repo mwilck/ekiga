@@ -37,6 +37,7 @@
 #include <glib.h>
 #include <iostream>
 
+#include "config.h"
 #include "gmconf.h"
 #include "gmconf-personal-details.h"
 
@@ -81,16 +82,16 @@ Gmconf::PersonalDetails::PersonalDetails ()
   gchar* str = NULL;
 
   display_name_notifier
-    = gm_conf_notifier_add ("/apps/ekiga/general/personal_data/full_name",
+    = gm_conf_notifier_add ("/apps/" PACKAGE_NAME "/general/personal_data/full_name",
                             display_name_changed_nt, this);
   presence_notifier
-    = gm_conf_notifier_add ("/apps/ekiga/general/personal_data/short_status",
+    = gm_conf_notifier_add ("/apps/" PACKAGE_NAME "/general/personal_data/short_status",
                             presence_changed_nt, this);
   status_notifier
-    = gm_conf_notifier_add ("/apps/ekiga/general/personal_data/long_status",
+    = gm_conf_notifier_add ("/apps/" PACKAGE_NAME "/general/personal_data/long_status",
                             status_changed_nt, this);
 
-  str = gm_conf_get_string ("/apps/ekiga/general/personal_data/full_name");
+  str = gm_conf_get_string ("/apps/" PACKAGE_NAME "/general/personal_data/full_name");
   if (str != NULL) {
 
     display_name = str;
@@ -98,7 +99,7 @@ Gmconf::PersonalDetails::PersonalDetails ()
   } else
     display_name = "";
 
-  str = gm_conf_get_string ("/apps/ekiga/general/personal_data/short_status");
+  str = gm_conf_get_string ("/apps/" PACKAGE_NAME "/general/personal_data/short_status");
   if (str != NULL) {
 
     presence = str;
@@ -106,7 +107,7 @@ Gmconf::PersonalDetails::PersonalDetails ()
   } else
     presence = "";
 
-  str = gm_conf_get_string ("/apps/ekiga/general/personal_data/long_status");
+  str = gm_conf_get_string ("/apps/" PACKAGE_NAME "/general/personal_data/long_status");
   if (str != NULL) {
 
     status = str;
@@ -143,21 +144,21 @@ Gmconf::PersonalDetails::get_status () const
 void
 Gmconf::PersonalDetails::set_display_name (const std::string display_name_)
 {
-  gm_conf_set_string ("/apps/ekiga/general/personal_data/full_name",
+  gm_conf_set_string ("/apps/" PACKAGE_NAME "/general/personal_data/full_name",
                       display_name_.c_str ());
 }
 
 void
 Gmconf::PersonalDetails::set_presence (const std::string presence_)
 {
-  gm_conf_set_string ("/apps/ekiga/general/personal_data/short_status",
+  gm_conf_set_string ("/apps/" PACKAGE_NAME "/general/personal_data/short_status",
                       presence_.c_str ());
 }
 
 void
 Gmconf::PersonalDetails::set_status (const std::string status_)
 {
-  gm_conf_set_string ("/apps/ekiga/general/personal_data/long_status",
+  gm_conf_set_string ("/apps/" PACKAGE_NAME "/general/personal_data/long_status",
                       status_.c_str ());
 }
 

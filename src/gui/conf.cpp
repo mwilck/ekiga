@@ -138,7 +138,7 @@ gnomemeeting_conf_upgrade ()
   g_free (conf_url);
 
   /* diamondcard is now set at sip.diamondcard.us */
-  GSList *accounts = gm_conf_get_string_list ("/apps/ekiga/protocols/accounts_list");
+  GSList *accounts = gm_conf_get_string_list ("/apps/" PACKAGE_NAME "/protocols/accounts_list");
   GSList *accounts_iter = accounts;
   while (accounts_iter) {
 
@@ -148,7 +148,7 @@ gnomemeeting_conf_upgrade ()
     accounts_iter->data = g_strdup ((const char *) acct);
     accounts_iter = g_slist_next (accounts_iter);
   }
-  gm_conf_set_string_list ("/apps/ekiga/protocols/accounts_list", accounts);
+  gm_conf_set_string_list ("/apps/" PACKAGE_NAME "/protocols/accounts_list", accounts);
   g_slist_foreach (accounts, (GFunc) g_free, NULL);
   g_slist_free (accounts);
 

@@ -1,5 +1,15 @@
 2009-03-07  Damien Sandras  <dsandras@gnome.org>
 
+        * src/gui/conf.cpp:
+        * lib/gui/codecsbox.cpp:
+        * lib/engine/gui/gtk-frontend/gtk-frontend.cpp:
+        * lib/engine/components/gmconf-personal-details/gmconf-personal-details.cpp:
+        * lib/engine/account/bank-impl.h:
+        Applied patch from Eugen to fix hardcoded GmConf keys leading to problems
+        when Ekiga is compiled with another package name than Ekiga (#574336).
+
+2009-03-07  Damien Sandras  <dsandras@gnome.org>
+
         * src/gui/assistant.cpp:
         Fixed bug #574140 (Assistant loosing values when going backward).
 

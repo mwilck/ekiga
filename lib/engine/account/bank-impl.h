@@ -37,6 +37,7 @@
 #ifndef __BANK_IMPL_H__
 #define __BANK_IMPL_H__
 
+#include "config.h"
 #include "lister.h"
 #include "account-core.h"
 #include "account.h"
@@ -167,7 +168,7 @@ Ekiga::BankImpl<T>::BankImpl (Ekiga::ServiceCore & _core) : core (_core)
   Lister<T>::object_removed.connect (account_removed.make_slot ());
   Lister<T>::object_updated.connect (account_updated.make_slot ());
 
-  GSList *accounts = gm_conf_get_string_list ("/apps/ekiga/protocols/accounts_list");
+  GSList *accounts = gm_conf_get_string_list ("/apps/" PACKAGE_NAME "/protocols/accounts_list");
   GSList *accounts_iter = accounts;
 
   while (accounts_iter) {
@@ -204,7 +205,7 @@ Ekiga::BankImpl<T>::save () const
       accounts = g_slist_append (accounts, g_strdup (acct_str.c_str ()));
   }
 
-  gm_conf_set_string_list ("/apps/ekiga/protocols/accounts_list", accounts);
+  gm_conf_set_string_list ("/apps/" PACKAGE_NAME "/protocols/accounts_list", accounts);
 
   g_slist_foreach (accounts, (GFunc) g_free, NULL);
   g_slist_free (accounts);
