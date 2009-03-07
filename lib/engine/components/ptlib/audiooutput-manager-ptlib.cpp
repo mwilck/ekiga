@@ -172,7 +172,8 @@ bool GMAudioOutputManager_ptlib::set_frame_data (Ekiga::AudioOutputPS ps,
   }
 
   if (output_device[ps]) {
-    ret = output_device[ps]->Write ((void*)data, size);
+    if (size != 0)
+      ret = output_device[ps]->Write ((void*)data, size);
     if (ret) {
       bytes_written = output_device[ps]->GetLastWriteCount();
     }

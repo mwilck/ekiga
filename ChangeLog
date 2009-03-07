@@ -1,5 +1,10 @@
 2009-03-07  Damien Sandras  <dsandras@gnome.org>
 
+        * lib/engine/components/ptlib/audiooutput-manager-ptlib.cpp:
+        Do not try writing 0 bytes to the soundcard.
+
+2009-03-07  Damien Sandras  <dsandras@gnome.org>
+
         * lib/engine/components/opal/sip-endpoint.cpp:
         Fixed unregistration of accounts. It was impossible to stop an account 
         from trying to register if that specific account was not already 
