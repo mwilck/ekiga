@@ -555,7 +555,7 @@ std::string Opal::Sip::EndPoint::get_aor_domain (const std::string & aor)
 
 bool Opal::Sip::EndPoint::subscribe (const Opal::Account & account)
 {
-  if (account.get_protocol_name () != "SIP" || account.is_active ())
+  if (account.get_protocol_name () != "SIP")
     return false;
 
   new subscriber (account, *this);
@@ -565,7 +565,7 @@ bool Opal::Sip::EndPoint::subscribe (const Opal::Account & account)
 
 bool Opal::Sip::EndPoint::unsubscribe (const Opal::Account & account)
 {
-  if (account.get_protocol_name () != "SIP" || !account.is_active ())
+  if (account.get_protocol_name () != "SIP")
     return false;
 
   new subscriber (account, *this);
