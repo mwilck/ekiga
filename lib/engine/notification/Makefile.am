@@ -9,6 +9,7 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/engine/framework
 
 libnotification_la_SOURCES = \
-	$(notification_dir)/notification-core.h
+	$(notification_dir)/notification-core.h \
+	$(notification_dir)/notification-dummy.cpp
 
 libnotification_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(GLIB_LIBS)
