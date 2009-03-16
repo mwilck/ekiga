@@ -1,6 +1,22 @@
                           -*- mode: outline -*-
+* Changes in ekiga 3.2.0 (2009-03-16)
+- Fix some NAT related issues (use internal port instead of external
+  port in Cone NAT)
+- Uniformise detection of libnotify; fix compilation with mingw
+- Fix "URL completion combobox shows identical completions"
+- Fix "Assistant loosing values when going backward"
+- Fix GmConf settings when compiled with another package name
+- Fix unregistration of accounts
+- Fix build with -enable-kde
+- Fix OS X build
+- Fix a crash in chat
+- New translations: crh, or
+- Updated translations: as, bg, bn_IN, da, de, el, eu, gl, gu, hi, hu,
+  ja, kn, ko, ku, lt, ml, mr, or, pt, ro, ru, ta, te, tr
+- New help translation: en_GB
+- Updated help translation: fr
+
 * Changes in ekiga 3.1.2 (2009-03-03)
-- New SBC audio codec
 - Removal of the old H.263 ffmpeg plug in and enhancement of the
   H.263-1998 plug in to take its place.
 - Allow compilation with CELT 0.4 and 0.5
@@ -27,33 +43,42 @@ Experimental features:
 
 * Changes in ekiga 3.1.0 (2009-01-05)
 - Added support for G.722 and CELT audio wideband codecs
-- Added support for H.263 
-- Added support for SIP dialog-info notifications, it allows being notified of 
-incoming calls for the phones of your colleagues with software like Asterisk
-- Added support to disable STUN detection 
-- Improved LDAP support in the address book, authentication is now possible
-- Killed the gconf_test_age test, Ekiga can now finally work with badly 
-installed GConf schemas
+- Added support for H.263
+- Added support for SIP dialog-info notifications, it allows being
+  notified of incoming calls for the phones of your colleagues with
+  software like Asterisk
+- Added support to disable STUN detection
+- Improved LDAP support in the address book, authentication is now
+  possible
+- Killed the gconf_test_age test, Ekiga can now finally work with
+  badly installed GConf schemas
 - More efficient memory handling using gmref_ptr, increases stability
-- Better handling of multiple network interfaces with dynamic addition and removal
+- Better handling of multiple network interfaces with dynamic addition
+  and removal
 - libgnome is not required anymore when using GTK+ 2.14
 - Many code cleanups, new GObjects, ...
-- Work in progress : XCAP support, Resource List support, 
-GStreamer audio and video capture support, ...
+- Work in progress : XCAP support, Resource List support, GStreamer
+  audio and video capture support, ...
 
 * Changes in ekiga 3.0.2 (2009-01-12)
 - Make sure sound events are played through the correct devices. (#564370)
 - Fixed crash on missed call.
-- Do not show the assistant after an upgrade for which Ekiga was already successfully setup.  
+- Do not show the assistant after an upgrade for which Ekiga was
+  already successfully setup.
 - Added settings migration from Ekiga 2.0.x.
-- Allow answering/rejecting calls from the main window even if we use notifications.
-- Do not try refreshing SUBSCRIBE requests for which the 200 OK contains an expire time of 0. 
-- Fixed sending ACK request to incorrect address when particular types of proxies are being used.
+- Allow answering/rejecting calls from the main window even if we use
+  notifications.
+- Do not try refreshing SUBSCRIBE requests for which the 200 OK
+  contains an expire time of 0.
+- Fixed sending ACK request to incorrect address when particular types
+  of proxies are being used.
 - Fixed test for CANCEL receipt on INVITE clearing call.
 - Ignore multiple forked CANCEL messages.
 - Fixed issue with registration to a non-standard port.
-- Fixed restarting timers if get pathological response to a transaction with incorrect Cseq header field.
-- Fixed missing route set on SIP commands in a dialog when using outbound proxy.
+- Fixed restarting timers if get pathological response to a
+  transaction with incorrect Cseq header field.
+- Fixed missing route set on SIP commands in a dialog when using
+  outbound proxy.
 
 * Changes in ekiga 3.0.1 (2008-10-20)
 ** Windows build
