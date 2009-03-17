@@ -82,7 +82,7 @@ namespace Ekiga
 
     /** The destructor.
      */
-    ~Lister ();
+    virtual ~Lister ();
 
 
     /** Allows listing all objects
