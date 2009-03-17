@@ -81,6 +81,9 @@ namespace Ekiga
        */
       CodecDescription (std::string codec);
 
+      virtual ~CodecDescription ()
+      {}
+
       /** Return the codec description under the form of a string.
        * @return the std::string representing the string description.
        */
@@ -120,9 +123,13 @@ namespace Ekiga
     };
 
 
-  class CodecList : public std::list<CodecDescription>
+  class CodecList
     {
   public :
+
+      typedef std::list<CodecDescription> container_type;
+      typedef container_type::iterator iterator;
+      typedef container_type::const_iterator const_iterator;
 
       /** Constructor that creates an empty CodecList
        */
@@ -133,12 +140,31 @@ namespace Ekiga
        */
       CodecList (GSList *);
 
+      virtual ~CodecList ()
+      {}
+
+      /** Iterators to loop on the list
+       *
+       */
+      iterator begin ();
+      const_iterator begin () const;
+      iterator end ();
+      const_iterator end () const;
 
       /** Append the given CodecList at the end of the current CodecList.
-       * @param list is the CodecList to append to the current one
+       * @param other is the CodecList to append to the current one
        */
-      void append (CodecList & list);
+      void append (CodecList& other);
 
+      /** Append the given codec description to the current CodecList.
+       * @param descr is the CodecDescription to append to the current list
+       */
+      void append (CodecDescription& descr);
+
+      /** Remove the codec description pointed to by the iterator
+       * @param iter is the iterator
+       */
+      void remove (iterator it);
 
       /** Return the list of audio codecs descriptions in the current CodecList 
        * @return the list of audio CodecDescription
@@ -168,6 +194,9 @@ namespace Ekiga
        * @return true if both CodecList are different, false otherwise
        */
       bool operator!= (const CodecList & c) const;
+
+    private:
+      container_type codecs;
     };
 
 /**

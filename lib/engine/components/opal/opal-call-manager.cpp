@@ -367,7 +367,7 @@ void CallManager::set_codecs (Ekiga::CodecList & _codecs)
     Ekiga::CodecList::iterator i  = 
       search_n (_codecs.begin (), _codecs.end (), 1, *it, same_codec_desc);
     if (i == _codecs.end ()) {
-      _codecs.push_back (*it);
+      _codecs.append (*it);
     }
   }
 
@@ -379,7 +379,7 @@ void CallManager::set_codecs (Ekiga::CodecList & _codecs)
     Ekiga::CodecList::iterator i  = 
       search_n (all_codecs.begin (), all_codecs.end (), 1, *it, same_codec_desc);
     if (i == all_codecs.end ()) {
-      _codecs.erase (it);
+      _codecs.remove (it);
       it = _codecs.begin ();
     }
   }
