@@ -1,4 +1,4 @@
-AC_INIT(ekiga, 3.2.0, http://bugzilla.gnome.org/enter_bug.cgi?product=ekiga)
+AC_INIT(ekiga, 3.3.0, http://bugzilla.gnome.org/enter_bug.cgi?product=ekiga)
 AC_CANONICAL_TARGET
 AC_PREREQ(2.53)
 AC_CONFIG_SRCDIR(src/gui/main.cpp)
@@ -14,7 +14,7 @@ dnl   Definitions
 dnl ###########################################################################
 
 MAJOR_VERSION=3
-MINOR_VERSION=2
+MINOR_VERSION=3
 BUILD_TYPE=ReleaseCode
 BUILD_NUMBER=0
 
