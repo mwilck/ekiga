@@ -25,7 +25,7 @@
 
 
 /*
- *                         notification.h  -  description
+ *                         notification-core.h  -  description
  *                         ------------------------------------------
  *   begin                : written in 2009 by Julien Puydt
  *   copyright            : (c) 2009 by Julien Puydt
@@ -33,8 +33,8 @@
  *
  */
 
-#ifndef __NOTIFICATION_H__
-#define __NOTIFICATION_H__
+#ifndef __NOTIFICATION_CORE_H__
+#define __NOTIFICATION_CORE_H__
 
 #include "gmref.h"
 
