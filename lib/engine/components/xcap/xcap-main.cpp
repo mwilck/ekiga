@@ -47,9 +47,9 @@ struct XCAPSpark: public Ekiga::Spark
 			    int* /*argc*/,
 			    char** /*argv*/[])
   {
-    gmref_ptr<Ekiga::Service> xcap = core.get ("xcap-core");
+    gmref_ptr<Ekiga::Service> service = core.get ("xcap-core");
 
-    if ( !xcap) {
+    if ( !service) {
 
       gmref_ptr<XCAP::Core> xcap(new XCAP::Core ());
 
