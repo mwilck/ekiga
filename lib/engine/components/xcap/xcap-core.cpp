@@ -99,22 +99,28 @@ public:
 
 /* soup callbacks */
 
-struct cb_data
+struct cb_read_data
 {
   XCAP::CoreImpl* core;
   gmref_ptr<XCAP::Path> path;
-  sigc::slot2<void,bool, std::string> callback;
-  bool is_read;
+  sigc::slot2<void, bool, std::string> callback;
+};
+
+struct cb_other_data
+{
+  XCAP::CoreImpl* core;
+  gmref_ptr<XCAP::Path> path;
+  sigc::slot1<void, std::string> callback;
 };
 
 static void
-authenticate_callback (G_GNUC_UNUSED SoupSession* session,
-		       G_GNUC_UNUSED SoupMessage* message,
-		       SoupAuth* auth,
-		       gboolean retrying,
-		       gpointer data)
+authenticate_read_callback (G_GNUC_UNUSED SoupSession* session,
+			    G_GNUC_UNUSED SoupMessage* message,
+			    SoupAuth* auth,
+			    gboolean retrying,
+			    gpointer data)
 {
-  cb_data* cb = (cb_data*)data;
+  cb_read_data* cb = (cb_read_data*)data;
 
   if ( !retrying) {
 
@@ -125,26 +131,56 @@ authenticate_callback (G_GNUC_UNUSED SoupSession* session,
 }
 
 static void
-result_callback (SoupSession* session,
-		 SoupMessage* message,
-		 gpointer data)
+authenticate_other_callback (G_GNUC_UNUSED SoupSession* session,
+			     G_GNUC_UNUSED SoupMessage* message,
+			     SoupAuth* auth,
+			     gboolean retrying,
+			     gpointer data)
 {
-  cb_data* cb = (cb_data*)data;
+  cb_other_data* cb = (cb_other_data*)data;
 
-  switch (message->status_code) {
+  if ( !retrying) {
 
-  case SOUP_STATUS_OK:
+    soup_auth_authenticate (auth,
+			    cb->path->get_username ().c_str (),
+			    cb->path->get_password ().c_str ());
+  }
+}
 
-    if (cb->is_read)
-      cb->callback (false, message->response_body->data);
-    else
-      cb->callback (false, "");
-    break;
+static void
+result_read_callback (SoupSession* session,
+		      SoupMessage* message,
+		      gpointer data)
+{
+  cb_read_data* cb = (cb_read_data*)data;
 
-  default:
+  if (message->status_code == SOUP_STATUS_OK) {
+
+    cb->callback (false, message->response_body->data);
+  } else {
 
     cb->callback (true, message->reason_phrase);
-    break;
+  }
+
+  cb->core->pending_sessions.remove (session);
+  cb->core->old_sessions.push_back (session);
+
+  delete cb;
+}
+
+static void
+result_other_callback (SoupSession* session,
+		       SoupMessage* message,
+		       gpointer data)
+{
+  cb_other_data* cb = (cb_other_data*)data;
+
+  if (message->status_code == SOUP_STATUS_OK) {
+
+    cb->callback ("");
+  } else {
+
+    cb->callback (message->reason_phrase);
   }
 
   cb->core->pending_sessions.remove (session);
@@ -191,24 +227,23 @@ XCAP::CoreImpl::read (gmref_ptr<Path> path,
 {
   SoupSession* session = NULL;
   SoupMessage* message = NULL;
-  cb_data* data = NULL;
+  cb_read_data* data = NULL;
 
   clear_old_sessions ();
 
   /* all of this is freed in the result callback */
   session = soup_session_async_new_with_options ("user-agent", "ekiga", NULL);
   message = soup_message_new (SOUP_METHOD_GET, path->to_uri ().c_str ());
-  data = new cb_data;
+  data = new cb_read_data;
   data->core = this;
   data->path = path;
   data->callback = callback;
-  data->is_read = true;
 
   g_signal_connect (session, "authenticate",
-		    G_CALLBACK (authenticate_callback), data);
+		    G_CALLBACK (authenticate_read_callback), data);
 
   soup_session_queue_message (session, message,
-			      result_callback, data);
+			      result_read_callback, data);
 
   pending_sessions.push_back (session);
 }
@@ -221,7 +256,7 @@ XCAP::CoreImpl::write (gmref_ptr<Path> path,
 {
   SoupSession* session = NULL;
   SoupMessage* message = NULL;
-  cb_data* data = NULL;
+  cb_other_data* data = NULL;
 
   clear_old_sessions ();
 
@@ -232,17 +267,16 @@ XCAP::CoreImpl::write (gmref_ptr<Path> path,
 			    SOUP_MEMORY_COPY,
 			    content.c_str (), content.length ());
 
-  data = new cb_data;
+  data = new cb_other_data;
   data->core = this;
   data->path = path;
-  data->callback = sigc::hide<0>(callback);
-  data->is_read = false;
+  data->callback = callback;
 
   g_signal_connect (session, "authenticate",
-		    G_CALLBACK (authenticate_callback), data);
+		    G_CALLBACK (authenticate_other_callback), data);
 
   soup_session_queue_message (session, message,
-			      result_callback, data);
+			      result_other_callback, data);
 
   pending_sessions.push_back (session);
 }
@@ -253,24 +287,23 @@ XCAP::CoreImpl::erase (gmref_ptr<Path> path,
 {
   SoupSession* session = NULL;
   SoupMessage* message = NULL;
-  cb_data* data = NULL;
+  cb_other_data* data = NULL;
 
   clear_old_sessions ();
 
   /* all of this is freed in the result callback */
   session = soup_session_async_new_with_options ("user-agent", "ekiga", NULL);
   message = soup_message_new (SOUP_METHOD_DELETE, path->to_uri ().c_str ());
-  data = new cb_data;
+  data = new cb_other_data;
   data->core = this;
   data->path = path;
-  data->callback = sigc::hide<0>(callback);
-  data->is_read = false;
+  data->callback = callback;
 
   g_signal_connect (session, "authenticate",
-		    G_CALLBACK (authenticate_callback), data);
+		    G_CALLBACK (authenticate_other_callback), data);
 
   soup_session_queue_message (session, message,
-			      result_callback, data);
+			      result_other_callback, data);
 
   pending_sessions.push_back (session);
 }
