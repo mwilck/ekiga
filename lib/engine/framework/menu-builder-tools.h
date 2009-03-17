@@ -158,6 +158,8 @@ namespace Ekiga
   {
   public:
 
+    virtual ~TemporaryMenuBuilderHelper () {}
+
     virtual bool populate_menu (Ekiga::MenuBuilder& builder) = 0;
   };
 
@@ -177,6 +179,8 @@ namespace Ekiga
 
     void add_ghost (const std::string icon,
 		    const std::string label);
+
+    bool empty () const;
 
     int size () const;
 
