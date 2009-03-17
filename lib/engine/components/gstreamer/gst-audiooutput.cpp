@@ -354,8 +354,11 @@ GST::AudioOutputManager::detect_alsasink_devices ()
 	descr = g_strdup_printf ("volume name=ekiga_volume ! alsasink device=%s",
 				 g_value_get_string (device));
 
-	devices_by_name[std::pair<std::string,std::string>("ALSA", name)] = descr;
-	g_free (name);
+	if (name != 0) {
+
+	  devices_by_name[std::pair<std::string,std::string>("ALSA", name)] = descr;
+	  g_free (name);
+	}
 	g_free (descr);
       }
       g_value_array_free (array);
@@ -400,8 +403,12 @@ GST::AudioOutputManager::detect_pulsesink_devices ()
 	descr = g_strdup_printf ("volume name=ekiga_volume ! pulsesink device=%s",
 				 g_value_get_string (device));
 
-	devices_by_name[std::pair<std::string,std::string>("PULSEAUDIO", name)] = descr;
-	g_free (name);
+	if (name != 0) {
+
+	  devices_by_name[std::pair<std::string,std::string>("PULSEAUDIO", name)] = descr;
+
+	  g_free (name);
+	}
 	g_free (descr);
       }
       g_value_array_free (array);

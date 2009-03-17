@@ -274,7 +274,11 @@ GST::VideoInputManager::detect_v4l2src_devices ()
 	descr = g_strdup_printf ("v4l2src device=%s"
 				 " ! videoscale ! ffmpegcolorspace",
 				 g_value_get_string (device));
-	devices_by_name[std::pair<std::string,std::string>("V4L2",name)] = descr;
+	if (name != 0) {
+
+	  devices_by_name[std::pair<std::string,std::string>("V4L2",name)] = descr;
+	  g_free (name);
+	}
 	g_free (descr);
       }
 
@@ -339,7 +343,11 @@ GST::VideoInputManager::detect_dv1394src_devices ()
 				 " ! videoscale"
 				 " ! ffmpegcolorspace",
 				 g_value_get_uint64 (guid));
-	devices_by_name[std::pair<std::string,std::string>("DV",name)] = descr;
+	if (name != 0) {
+
+	  devices_by_name[std::pair<std::string,std::string>("DV",name)] = descr;
+	  g_free (name);
+	}
 	g_free (descr);
       }
 
