@@ -746,8 +746,7 @@ CallManager::HandleSTUNResult ()
   else {
 
       patience--;
-      runtime->run_in_main (sigc::mem_fun (this,
-					  &CallManager::HandleSTUNResult),
+      runtime->run_in_main (sigc::mem_fun (this, &CallManager::HandleSTUNResult),
 			    1);
   }
 }
@@ -758,8 +757,7 @@ CallManager::ReportSTUNError (const std::string error)
   // notice we're in for an infinite loop if nobody ever reports to the user!
   if ( !call_core->errors.handle_request (error)) {
 
-    runtime->run_in_main (sigc::bind (sigc::mem_fun (this,
-						     &CallManager::ReportSTUNError),
+    runtime->run_in_main (sigc::bind (sigc::mem_fun (this, &CallManager::ReportSTUNError),
 				      error),
 			  10);
   }

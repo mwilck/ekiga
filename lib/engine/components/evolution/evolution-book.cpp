@@ -242,8 +242,7 @@ bool
 Evolution::Book::populate_menu (Ekiga::MenuBuilder &builder)
 {
   builder.add_action ("new", _("New _Contact"),
-		      sigc::mem_fun (this,
-				     &Evolution::Book::new_contact_action));
+		      sigc::mem_fun (this, &Evolution::Book::new_contact_action));
   return true;
 }
 
@@ -282,8 +281,7 @@ Evolution::Book::refresh ()
 void
 Evolution::Book::new_contact_action ()
 {
-  Ekiga::FormRequestSimple request(sigc::mem_fun (this,
-						  &Evolution::Book::on_new_contact_form_submitted));
+  Ekiga::FormRequestSimple request(sigc::mem_fun (this, &Evolution::Book::on_new_contact_form_submitted));
 
   request.title (_("New contact"));
 

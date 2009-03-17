@@ -245,7 +245,7 @@ template<typename SimpleChatType, typename MultipleChatType>
 void
 Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::add_simple_chat (gmref_ptr<SimpleChatType> chat)
 {
-  simple_chats[chat].push_back (chat->removed.connect (sigc::bind (sigc::mem_fun(this, &Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::on_simple_chat_removed), chat)));
+  simple_chats[chat].push_back (chat->removed.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::on_simple_chat_removed), chat)));
   simple_chat_added.emit (chat);
 }
 
@@ -260,7 +260,7 @@ template<typename SimpleChatType, typename MultipleChatType>
 void
 Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::add_multiple_chat (gmref_ptr<MultipleChatType> chat)
 {
-  multiple_chats[chat].push_back (chat->removed.connect (sigc::bind (sigc::mem_fun(this, &Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::on_multiple_chat_removed), chat)));
+  multiple_chats[chat].push_back (chat->removed.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::on_multiple_chat_removed), chat)));
   multiple_chat_added.emit (chat);
 }
 
