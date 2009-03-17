@@ -412,8 +412,7 @@ RL::Heap::push_status (const std::string uri_,
 void
 RL::Heap::edit ()
 {
-  Ekiga::FormRequestSimple request(sigc::mem_fun (this,
-						  &RL::Heap::on_edit_form_submitted));
+  Ekiga::FormRequestSimple request(sigc::mem_fun (this, &RL::Heap::on_edit_form_submitted));
 
   std::string name_str;
   std::string root_str;
@@ -629,8 +628,7 @@ RL::Heap::on_new_entry_form_submitted (bool submitted,
       gmref_ptr<XCAP::Core> xcap(services.get ("xcap-core"));
       xcap->write (path, "application/xcap-el+xml",
 		   (const char*)xmlBufferContent (buffer),
-		   sigc::mem_fun (this,
-				  &RL::Heap::new_entry_result));
+		   sigc::mem_fun (this, &RL::Heap::new_entry_result));
     }
     xmlBufferFree (buffer);
   } catch (Ekiga::Form::not_found exc) {

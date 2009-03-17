@@ -313,8 +313,7 @@ RL::Presentity::save (bool reload)
     gmref_ptr<XCAP::Core> xcap(services.get ("xcap-core"));
     xcap->write (path, "application/xcap-el+xml",
 		 (const char*)xmlBufferContent (buffer),
-		 sigc::bind (sigc::mem_fun (this,
-					    &RL::Presentity::save_result),
+		 sigc::bind (sigc::mem_fun (this, &RL::Presentity::save_result),
 			     reload));
   }
 
@@ -333,8 +332,7 @@ RL::Presentity::remove ()
 
   gmref_ptr<XCAP::Core> xcap(services.get ("xcap-core"));
   xcap->erase (path,
-	       sigc::mem_fun (this,
-			      &RL::Presentity::erase_result));
+	       sigc::mem_fun (this, &RL::Presentity::erase_result));
 }
 
 void
