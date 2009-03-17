@@ -129,7 +129,7 @@ GST::AudioOutputManager::open (Ekiga::AudioOutputPS ps,
 			     " ! %s",
 			     samplerate, channels, bits_per_sample, bits_per_sample,
 			     devices_by_name[std::pair<std::string,std::string>(current_state[ii].device.source, current_state[ii].device.name)].c_str ());
-  g_print ("Pipeline: %s\n", command);
+  //g_print ("Pipeline: %s\n", command);
   pipeline[ii] = gst_parse_launch (command, &error);
 
   if (error == NULL) {
@@ -185,13 +185,13 @@ GST::AudioOutputManager::open (Ekiga::AudioOutputPS ps,
 
   current_state[ii].opened = result;
 
-  std::cout << __PRETTY_FUNCTION__
-	    << " result=";
-  if (result)
-    std::cout << "TRUE";
-  else
-    std::cout << "FALSE";
-  std::cout << std::endl;
+//   std::cout << __PRETTY_FUNCTION__
+// 	    << " result=";
+//   if (result)
+//     std::cout << "TRUE";
+//   else
+//     std::cout << "FALSE";
+//   std::cout << std::endl;
 
   return result;
 }
