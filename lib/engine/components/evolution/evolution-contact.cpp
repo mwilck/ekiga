@@ -320,8 +320,7 @@ Evolution::Contact::set_attribute_value (unsigned int attr_type,
 void
 Evolution::Contact::edit_action ()
 {
-  Ekiga::FormRequestSimple request(sigc::mem_fun (this,
-						  &Evolution::Contact::on_edit_form_submitted));;
+  Ekiga::FormRequestSimple request(sigc::mem_fun (this, &Evolution::Contact::on_edit_form_submitted));;
 
   request.title (_("Edit contact"));
 
@@ -388,8 +387,7 @@ Evolution::Contact::on_edit_form_submitted (bool submitted,
 void
 Evolution::Contact::remove_action ()
 {
-  Ekiga::FormRequestSimple request(sigc::mem_fun (this,
-						  &Evolution::Contact::on_remove_form_submitted));;
+  Ekiga::FormRequestSimple request(sigc::mem_fun (this, &Evolution::Contact::on_remove_form_submitted));;
   gchar* instructions = NULL;
 
   request.title (_("Remove contact"));

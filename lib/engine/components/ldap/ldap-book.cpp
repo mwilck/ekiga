@@ -535,8 +535,7 @@ book_saslinter(LDAP *ld, unsigned flags __attribute__((unused)),
 
   /* If there are missing items, try to get them all in one dialog */
   if (nprompts) {
-    Ekiga::FormRequestSimple request(sigc::mem_fun (ctx->book,
-						    &OPENLDAP::Book::on_sasl_form_submitted));
+    Ekiga::FormRequestSimple request(sigc::mem_fun (ctx->book, &OPENLDAP::Book::on_sasl_form_submitted));
     Ekiga::FormBuilder result;
     std::string prompt;
     std::string ctxt = "";
@@ -764,18 +763,15 @@ OPENLDAP::Book::refresh_bound ()
     gmref_ptr<Ekiga::Runtime> runtime = core.get ("runtime");
     if (patience == 3) {
       patience--;
-      runtime->run_in_main (sigc::mem_fun (this,
-					   &OPENLDAP::Book::refresh_bound), 12);
+      runtime->run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_bound), 12);
     } else if (patience == 2) {
 
       patience--;
-      runtime->run_in_main (sigc::mem_fun (this,
-					   &OPENLDAP::Book::refresh_bound), 21);
+      runtime->run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_bound), 21);
     } else if (patience == 1) {
 
       patience--;
-      runtime->run_in_main (sigc::mem_fun (this,
-					   &OPENLDAP::Book::refresh_bound), 30);
+      runtime->run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_bound), 30);
     } else { // patience == 0
 
       status = std::string (_("Could not connect to server"));
@@ -862,20 +858,17 @@ OPENLDAP::Book::refresh_result ()
     if (patience == 3) {
 
       patience--;
-      runtime->run_in_main (sigc::mem_fun (this,
-					   &OPENLDAP::Book::refresh_result),
+      runtime->run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_result),
 			    12);
     } else if (patience == 2) {
 
       patience--;
-      runtime->run_in_main (sigc::mem_fun (this,
-					   &OPENLDAP::Book::refresh_result),
+      runtime->run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_result),
 			    21);
     } else if (patience == 1) {
 
       patience--;
-      runtime->run_in_main (sigc::mem_fun (this,
-					   &OPENLDAP::Book::refresh_result),
+      runtime->run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_result),
 			    30);
     } else { // patience == 0
 
@@ -981,8 +974,7 @@ OPENLDAP::BookForm (Ekiga::FormRequestSimple &request,
 void
 OPENLDAP::Book::edit ()
 {
-  Ekiga::FormRequestSimple request(sigc::mem_fun (this,
-						  &OPENLDAP::Book::on_edit_form_submitted));
+  Ekiga::FormRequestSimple request(sigc::mem_fun (this, &OPENLDAP::Book::on_edit_form_submitted));
 
   OPENLDAP::BookForm (request, bookinfo, std::string(_("Edit LDAP directory")));
 
@@ -1100,8 +1092,7 @@ OPENLDAP::Book::on_edit_form_submitted (bool submitted,
   try {
     std::string errmsg;
     if (OPENLDAP::BookFormInfo (result, bookinfo, errmsg)) {
-      Ekiga::FormRequestSimple request(sigc::mem_fun (this,
-						      &OPENLDAP::Book::on_edit_form_submitted));
+      Ekiga::FormRequestSimple request(sigc::mem_fun (this, &OPENLDAP::Book::on_edit_form_submitted));
 
       result.visit (request);
       request.error (errmsg);

@@ -116,8 +116,7 @@ OPENLDAP::Source::add ()
 void
 OPENLDAP::Source::common_add (gmref_ptr<Book> book)
 {
-  book->trigger_saving.connect (sigc::mem_fun (this,
-					       &OPENLDAP::Source::save));
+  book->trigger_saving.connect (sigc::mem_fun (this, &OPENLDAP::Source::save));
   add_book (book);
 }
 
@@ -125,19 +124,16 @@ bool
 OPENLDAP::Source::populate_menu (Ekiga::MenuBuilder &builder)
 {
   builder.add_action ("add", _("Add an LDAP Address Book"),
-		      sigc::mem_fun (this,
-				     &OPENLDAP::Source::new_book));
+		      sigc::mem_fun (this, &OPENLDAP::Source::new_book));
   builder.add_action ("add", _("Add the Ekiga.net Directory"),
-		      sigc::mem_fun (this,
-				     &OPENLDAP::Source::new_ekiga_net_book));
+		      sigc::mem_fun (this, &OPENLDAP::Source::new_ekiga_net_book));
   return true;
 }
 
 void
 OPENLDAP::Source::new_book ()
 {
-  Ekiga::FormRequestSimple request(sigc::mem_fun (this,
-						  &OPENLDAP::Source::on_new_book_form_submitted));
+  Ekiga::FormRequestSimple request(sigc::mem_fun (this, &OPENLDAP::Source::on_new_book_form_submitted));
 
   bookinfo.name = "";
   bookinfo.uri = "ldap://localhost/dc=net?cn,telephoneNumber?sub?(cn=$)",
@@ -189,8 +185,7 @@ OPENLDAP::Source::on_new_book_form_submitted (bool submitted,
     std::string errmsg;
 
     if (OPENLDAP::BookFormInfo (result, bookinfo, errmsg)) {
-      Ekiga::FormRequestSimple request(sigc::mem_fun (this,
-						      &OPENLDAP::Source::on_new_book_form_submitted));
+      Ekiga::FormRequestSimple request(sigc::mem_fun (this, &OPENLDAP::Source::on_new_book_form_submitted));
 
       result.visit (request);
       request.error (errmsg);

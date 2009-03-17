@@ -137,8 +137,7 @@ bool
 History::Book::populate_menu (Ekiga::MenuBuilder &builder)
 {
   builder.add_action ("clear",
-		      _("Clear List"), sigc::mem_fun (this,
-                                                      &History::Book::clear));
+		      _("Clear List"), sigc::mem_fun (this, &History::Book::clear));
   return true;
 }
 
