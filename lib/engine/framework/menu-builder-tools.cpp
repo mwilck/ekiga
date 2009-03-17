@@ -110,8 +110,10 @@ public:
 				    const std::string label_,
 				    sigc::slot0<void> callback_):
     icon(icon_), label(label_), callback(callback_)
-  {
-  }
+  {}
+
+  ~TemporaryMenuBuilderHelperAction ()
+  {}
 
   bool populate_menu (Ekiga::MenuBuilder& builder)
   {
@@ -134,6 +136,9 @@ public:
   TemporaryMenuBuilderHelperSeparator ()
   {}
 
+  ~TemporaryMenuBuilderHelperSeparator ()
+  {}
+
   bool populate_menu (Ekiga::MenuBuilder& builder)
   {
     builder.add_separator ();
@@ -149,8 +154,10 @@ public:
   TemporaryMenuBuilderHelperGhost (const std::string icon_,
 				   const std::string label_):
     icon(icon_), label(label_)
-  {
-  }
+  {}
+
+  ~TemporaryMenuBuilderHelperGhost ()
+  {}
 
   bool populate_menu (Ekiga::MenuBuilder& builder)
   {
@@ -207,6 +214,12 @@ Ekiga::TemporaryMenuBuilder::add_ghost (const std::string icon,
   helper = new TemporaryMenuBuilderHelperGhost (icon, label);
 
   helpers.push_back (helper);
+}
+
+bool
+Ekiga::TemporaryMenuBuilder::empty () const
+{
+  return (count == 0);
 }
 
 int
