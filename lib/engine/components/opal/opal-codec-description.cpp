@@ -27,7 +27,7 @@
 /*
  *                         opal-codec-description.cpp  -  description
  *                         ------------------------------------------
- *   begin                : written in January 2008 by Damien Sandras 
+ *   begin                : written in January 2008 by Damien Sandras
  *   copyright            : (c) 2008 by Damien Sandras
  *   description          : Opal codec description.
  *
@@ -43,14 +43,15 @@
 using namespace Opal;
 
 
-static  bool same_codec_desc (Ekiga::CodecDescription a, Ekiga::CodecDescription b)
-{ 
-  return (a.name == b.name && a.rate == b.rate); 
+static bool
+same_codec_desc (Ekiga::CodecDescription a, Ekiga::CodecDescription b)
+{
+  return (a.name == b.name && a.rate == b.rate);
 }
 
 
 CodecDescription::CodecDescription (OpalMediaFormat & format)
-: Ekiga::CodecDescription ()
+  : Ekiga::CodecDescription ()
 {
   name = (const char *) format.GetEncodingName ();
   if (name == "G722")
@@ -77,10 +78,10 @@ CodecList::CodecList (OpalMediaFormatList & list)
       if (desc.name.empty ())
         continue;
 
-      Ekiga::CodecList::iterator it = 
-        search_n ((*this).begin (), (*this).end (), 1, desc, same_codec_desc);
-      if (it == (*this).end ()) 
-        (*this).push_back (desc);
+      Ekiga::CodecList::iterator it =
+        search_n (begin (), end (), 1, desc, same_codec_desc);
+      if (it == end ())
+        append (desc);
       else {
         it->protocols.sort ();
         it->protocols.merge (desc.protocols);

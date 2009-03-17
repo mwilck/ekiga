@@ -27,7 +27,7 @@
 /*
  *                         codec-description.cpp  -  description
  *                         ------------------------------------------
- *   begin                : written in January 2008 by Damien Sandras 
+ *   begin                : written in January 2008 by Damien Sandras
  *   copyright            : (c) 2008 by Damien Sandras
  *   description          : declaration of the interface of a codec description.
  *
@@ -44,7 +44,7 @@
 using namespace Ekiga;
 
 CodecDescription::CodecDescription ()
-: rate (0), active (true), audio (false)
+  : rate (0), active (true), audio (false)
 {
 }
 
@@ -54,7 +54,7 @@ CodecDescription::CodecDescription (std::string _name,
                                     bool _audio,
                                     std::string _protocols,
                                     bool _active)
-: name (_name), rate (_rate), active (_active), audio (_audio)
+  : name (_name), rate (_rate), active (_active), audio (_audio)
 {
   char *pch = NULL;
 
@@ -105,7 +105,8 @@ CodecDescription::CodecDescription (std::string codec)
 }
 
 
-std::string CodecDescription::str ()
+std::string
+CodecDescription::str ()
 {
   std::stringstream val;
   std::stringstream proto;
@@ -127,7 +128,8 @@ std::string CodecDescription::str ()
 }
 
 
-bool CodecDescription::operator== (const CodecDescription & c) const
+bool
+CodecDescription::operator== (const CodecDescription & c) const
 {
   CodecDescription d = c;
   CodecDescription e = (*this);
@@ -136,7 +138,8 @@ bool CodecDescription::operator== (const CodecDescription & c) const
 }
 
 
-bool CodecDescription::operator!= (const CodecDescription & c) const
+bool
+CodecDescription::operator!= (const CodecDescription & c) const
 {
   return (!((*this) == c));
 }
@@ -145,87 +148,126 @@ bool CodecDescription::operator!= (const CodecDescription & c) const
 CodecList::CodecList (GSList *codecs_config)
 {
   GSList *codecs_config_it = NULL;
-  
+
   codecs_config_it = (GSList *) codecs_config;
   while (codecs_config_it) {
 
 
     Ekiga::CodecDescription d = Ekiga::CodecDescription ((char *) codecs_config_it->data);
     if (!d.name.empty ())
-      (*this).push_back (d);
+      codecs.push_back (d);
 
     codecs_config_it = g_slist_next (codecs_config_it);
   }
 }
 
 
-void CodecList::append (CodecList & list)
+CodecList::iterator
+CodecList::begin ()
 {
-  (*this).insert ((*this).begin (), list.begin (), list.end ());
+  return codecs.begin ();
 }
 
-
-CodecList CodecList::get_audio_list ()
+CodecList::const_iterator CodecList::begin () const
 {
-  CodecList list;
+  return codecs.begin ();
+}
 
-  for (CodecList::iterator it = (*this).begin ();
-       it != (*this).end ();
+CodecList::iterator
+CodecList::end ()
+{
+  return codecs.end ();
+}
+
+CodecList::const_iterator
+CodecList::end () const
+{
+  return codecs.end ();
+}
+
+void
+CodecList::append (CodecList& other)
+{
+  codecs.insert (end (), other.begin (), other.end ());
+}
+
+void
+CodecList::append (CodecDescription& descr)
+{
+  codecs.push_back (descr);
+}
+
+void
+CodecList::remove (iterator it)
+{
+  codecs.erase (it);
+}
+
+CodecList
+CodecList::get_audio_list ()
+{
+  CodecList result;
+
+  for (iterator it = begin ();
+       it != end ();
        it++) {
 
     if ((*it).audio)
-      list.push_back (*it);
+      result.codecs.push_back (*it);
   }
 
-  return list;
+  return result;
 }
 
 
-CodecList CodecList::get_video_list ()
+CodecList
+CodecList::get_video_list ()
 {
-  CodecList list;
+  CodecList result;
 
-  for (CodecList::iterator it = (*this).begin ();
-       it != (*this).end ();
+  for (iterator it = begin ();
+       it != end ();
        it++) {
 
     if (!(*it).audio)
-      list.push_back (*it);
+      result.codecs.push_back (*it);
   }
 
-  return list;
+  return result;
 }
 
 
-GSList *CodecList::gslist ()
+GSList*
+CodecList::gslist ()
 {
-  GSList *list = NULL;
+  GSList* result = NULL;
 
-  for (CodecList::iterator it = (*this).begin ();
-       it != (*this).end ();
+  for (iterator it = begin ();
+       it != end ();
        it++) {
 
-    list = g_slist_append (list, g_strdup ((*it).str ().c_str ()));
+    result = g_slist_append (result, g_strdup ((*it).str ().c_str ()));
   }
 
-  return list;
+  return result;
 }
 
 
-bool CodecList::operator== (const CodecList & c) const
+bool
+CodecList::operator== (const CodecList & c) const
 {
   CodecList::const_iterator it2 = c.begin ();
 
-  if ((*this).size () != c.size ())
+  if (codecs.size () != c.codecs.size ())
     return false;
 
-  for (CodecList::const_iterator it = (*this).begin ();
-       it != (*this).end ();
+  for (const_iterator it = begin ();
+       it != end ();
        it++) {
 
-    if ((*it) != (*it2)) 
+    if ((*it) != (*it2))
       return false;
-    
+
     it2++;
   }
 
@@ -233,13 +275,15 @@ bool CodecList::operator== (const CodecList & c) const
 }
 
 
-bool CodecList::operator!= (const CodecList & c) const
+bool
+CodecList::operator!= (const CodecList & c) const
 {
   return (!(*this == c));
 }
 
 
-std::ostream& operator<< (std::ostream & os, const CodecList & c)
+std::ostream&
+operator<< (std::ostream & os, const CodecList & c)
 {
   std::stringstream str;
   for (CodecList::const_iterator it = c.begin ();
