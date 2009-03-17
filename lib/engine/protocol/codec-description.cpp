@@ -56,16 +56,21 @@ CodecDescription::CodecDescription (std::string _name,
                                     bool _active)
   : name (_name), rate (_rate), active (_active), audio (_audio)
 {
-  char *pch = NULL;
+  gchar** prots = NULL;
 
-  pch = strtok ((char *) _protocols.c_str (), ",");
-  while (pch != NULL) {
+  prots = g_strsplit (_protocols.c_str (), ", ", -1);
 
-    std::string protocol = pch;
-    protocol = protocol.substr (protocol.find_first_not_of (" "));
-    protocols.push_back (protocol);
-    pch = strtok (NULL, ",");
+  for (gchar** ptr = prots;
+       *ptr != NULL;
+       ptr++) {
+
+    if ((*ptr)[0] != '\0') { // not the empty string
+
+      protocols.push_back (*ptr);
+    }
   }
+
+  g_strfreev (prots);
 
   protocols.unique ();
   protocols.sort ();
@@ -75,28 +80,29 @@ CodecDescription::CodecDescription (std::string _name,
 CodecDescription::CodecDescription (std::string codec)
 {
   int i = 0;
-  char *pch = NULL;
-
+  gchar** vect = NULL;
   std::string tmp [5];
 
-  pch = strtok ((char *) codec.c_str (), "*");
-  while (pch != NULL) {
+  vect = g_strsplit (codec.c_str (), "*", -1);
 
-    tmp [i] = pch;
-    pch = strtok (NULL, "*");
+  for (gchar** ptr = vect; *ptr != NULL; ptr++) {
 
+    tmp[i] = *ptr;
     i++;
   }
+
+  g_strfreev (vect);
 
   if (i < 4)
     return;
 
-  pch = strtok ((char *) tmp [3].c_str (), " ");
-  while (pch != NULL) {
+  vect = g_strsplit (tmp[3].c_str (), " ", -1);
+  for (gchar** ptr = vect; *ptr != NULL; ptr++) {
 
-    protocols.push_back (pch);
-    pch = strtok (NULL, " ");
+    protocols.push_back (*ptr);
   }
+
+  g_strfreev (vect);
 
   name = tmp [0];
   rate = atoi (tmp [1].c_str ());
