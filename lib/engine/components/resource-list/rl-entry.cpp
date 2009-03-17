@@ -37,6 +37,8 @@
 
 #include "config.h"
 
+#include <glib/gi18n-lib.h>
+
 #include "rl-entry.h"
 
 #include "presence-core.h"
@@ -144,8 +146,7 @@ RL::Entry::populate_menu (Ekiga::MenuBuilder& builder)
 		      sigc::mem_fun (this, &RL::Entry::refresh));
 
   if ( !uri.empty ())
-    populated =
-      presence_core->populate_presentity_menu (*this, uri, builder)
+    populated = presence_core->populate_presentity_menu (gmref_ptr<Ekiga::Presentity> (this), uri, builder)
       || populated;
 
   return populated;

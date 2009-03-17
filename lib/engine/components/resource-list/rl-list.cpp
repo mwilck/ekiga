@@ -38,6 +38,7 @@
 #include "config.h"
 
 #include <glib.h>
+#include <glib/gi18n-lib.h>
 
 #include "rl-list.h"
 
@@ -320,8 +321,9 @@ RL::ListImpl::parse ()
 	&& child->name != NULL
 	&& xmlStrEqual (BAD_CAST "list", child->name)) {
 
-      gmref_ptr<List> list = new List (core, path,
-				       list_pos, display_name, child);
+      gmref_ptr<List> list = gmref_ptr<List> (new List (core, path,
+							list_pos, display_name,
+							child));
       list->entry_added.connect (entry_added.make_slot ());
       list->entry_updated.connect (entry_updated.make_slot ());
       list->entry_removed.connect (entry_removed.make_slot ());
@@ -336,8 +338,10 @@ RL::ListImpl::parse ()
 	&& child->name != NULL
 	&& xmlStrEqual (BAD_CAST "entry", child->name)) {
 
-      gmref_ptr<Entry> entry = new Entry (core, path,
-					  entry_pos, display_name, child);
+      gmref_ptr<Entry> entry = gmref_ptr<Entry> (new Entry (core, path,
+							    entry_pos,
+							    display_name,
+							    child));
       std::list<sigc::connection> conns;
       conns.push_back (entry->updated.connect (sigc::bind (entry_updated.make_slot (), entry)));
       conns.push_back (entry->removed.connect (sigc::bind (entry_removed.make_slot (), entry)));
