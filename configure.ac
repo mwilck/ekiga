@@ -147,7 +147,7 @@ dnl Check the byte order
 AC_MSG_CHECKING(Byte order)
 byte_order="unknown"
 AC_ARG_WITH([endianess], 
-            [  --with-endianess=big|little Endianess of target system],
+            [AS_HELP_STRING([--with-endianess=big|little],[endianess of target system])],
 	    [byte_order="$withval endian"], 
             [AC_C_BIGENDIAN([byte_order="big endian"], [byte_order="little endian"], [])])
 
@@ -175,7 +175,7 @@ dnl ###############################
 PKG_CHECK_MODULES([GTK], [gtk+-2.0 >= 2.12.0])
 PKG_CHECK_MODULES([GLIB], [glib-2.0 >= 2.8.0 gmodule-2.0 gobject-2.0 gthread-2.0])
 AC_ARG_ENABLE([gtk-debug],
-              [AC_HELP_STRING([--enable-gtk-debug],[Enable GTK+ debug flags)])],
+              [AC_HELP_STRING([--enable-gtk-debug],[enable GTK+ debug flags (default is disabled)])],
               [if test "x$enableval" = "xyes"; then 
                 GTK_CFLAGS="$GTK_CFLAGS -DGDK_PIXBUF_DISABLE_DEPRECATED -DGDK_DISABLE_DEPRECATED -DGTK_DISABLE_DEPRECATED -DGDK_PIXBUF_DISABLE_SINGLE_INCLUDES -DGTK_DISABLE_SINGLE_INCLUDES"
                 GLIB_CFLAGS="$GLIB_CFLAGS -DG_DISABLE_SINGLE_INCLUDES"
@@ -208,7 +208,7 @@ dnl ###############################
 GNOME="disabled"
 
 if test "x${gm_platform}" != "xmingw" ; then
-  AC_ARG_ENABLE(gnome, [  --disable-gnome		Disable GNOME support],,enable_gnome=yes)
+  AC_ARG_ENABLE(gnome, AS_HELP_STRING([--enable-gnome],[enable GNOME support (default is enabled)]),,enable_gnome=yes)
   
   if $PKG_CONFIG --max-version 2.13.1 gtk+-2.0; then
     if test "x$enable_gnome" = "xyes"; then
@@ -229,7 +229,7 @@ dnl ###############################
 GCONF="disabled"
 
 if test "x${gm_platform}" != "xmingw" ; then
-  AC_ARG_ENABLE(gconf, [  --disable-gconf		Disable GConf support],,enable_gconf=yes)
+  AC_ARG_ENABLE(gconf, AS_HELP_STRING([--enable-gconf],[enable GConf support (default is disabled)]),,enable_gconf=yes)
   
   if test "x$enable_gconf" = "xyes"; then
     PKG_CHECK_MODULES([GCONF], [gconf-2.0 >= 2.6.0], [found_gconf=yes])
@@ -254,7 +254,7 @@ dnl ###############################
 EDS="disabled"
 
 if test "x${gm_platform}" != "xmingw" ; then
-  AC_ARG_ENABLE(eds, [  --disable-eds			Disable evolution-data-server addressbook support],,enable_eds=yes)
+  AC_ARG_ENABLE(eds, AS_HELP_STRING([--enable-eds],[enable evolution-data-server addressbook support (default is enabled)]),,enable_eds=yes)
   
   if test "x$enable_eds" = "xyes"; then
     PKG_CHECK_MODULES([EDS], [libebook-1.2], [found_eds=yes])
@@ -274,7 +274,7 @@ dnl ###############################
 NOTIFY="disabled"
 
 if test "x${gm_platform}" != "xmingw" ; then
-  AC_ARG_ENABLE(notify, [  --disable-notify			Disable libnotify support],,enable_notify=yes)
+  AC_ARG_ENABLE(notify, AS_HELP_STRING([--enable-notify],[enable libnotify support (default is enabled)]),,enable_notify=yes)
   
   if test "x$enable_notify" = "xyes"; then
     PKG_CHECK_MODULES([NOTIFY], [libnotify], [found_notify=yes], foo=bar)
@@ -295,11 +295,11 @@ dnl   LDAP support
 dnl ###############################
 LDAP="disabled"
 
-AC_ARG_ENABLE(ldap, [  --disable-ldap			Disable LDAP addressbook support],,enable_ldap=yes)
+AC_ARG_ENABLE(ldap, AS_HELP_STRING([--enable-ldap],[enable LDAP addressbook support (default is enabled)]),,enable_ldap=yes)
 
 if test "x$enable_ldap" = "xyes"; then
 
-  AC_ARG_WITH(ldap-dir, [  --with-ldap-dir=PFX   Location of LDAP], with_ldap_dir="$withval", with_ldap_dir="/usr")
+  AC_ARG_WITH(ldap-dir, AS_HELP_STRING([--with-ldap-dir=PFX],[location of LDAP]), with_ldap_dir="$withval", with_ldap_dir="/usr")
 
   dnl Check for the includes presence
   AC_MSG_CHECKING(for LDAP includes in ${with_ldap_dir}/include/)
@@ -404,7 +404,7 @@ dnl ###############################
 dnl Checks for Xv extension
 dnl ###############################
 XV="disabled"
-AC_ARG_ENABLE(xv, [  --disable-xv			Disable XVideo hardware acceleration],,enable_xv=yes)  
+AC_ARG_ENABLE(xv, AS_HELP_STRING([--disable-xv],[enable XVideo hardware acceleration (default is enabled)]),,enable_xv=yes)  
 if test "x${gm_platform}" != "mingw" -a "x$enable_xv" = "xyes"; then
   PKG_CHECK_MODULES([XV], [xv], 
                     [AC_DEFINE(HAVE_XV,1,[XVideo support])
@@ -423,7 +423,7 @@ dnl ###########################################################################
 DX="disabled"
 
 if test "x${gm_platform}" = "xmingw" ; then
-  AC_ARG_WITH(directx-dir, [  --with-directx-dir=PFX		Location of DirectDraw], with_directx_dir="$withval", with_directx_dir=".")
+  AC_ARG_WITH(directx-dir, AS_HELP_STRING([--with-directx-dir=PFX],[location of DirectDraw]), with_directx_dir="$withval", with_directx_dir=".")
 
   dnl Check for the includes presence
   AC_MSG_CHECKING(for DirectX includes in ${with_directx_dir})
@@ -450,8 +450,8 @@ DBUS="disabled"
 DBUS_SERVICE="disabled"
 
 if test "x${gm_platform}" != "xmingw" ; then
-  AC_ARG_ENABLE(dbus, [  --disable-dbus		Disable DBUS support],,enable_dbus=yes)
-  AC_ARG_ENABLE(dbus-service, [  --disable-dbus-service 	Disable DBUS service installation],,enable_dbus_service=yes)
+  AC_ARG_ENABLE(dbus, AS_HELP_STRING([--enable-dbus],[enable DBUS support (default is enabled)]),,enable_dbus=yes)
+  AC_ARG_ENABLE(dbus-service, AS_HELP_STRING([--enable-dbus-service],[enable DBUS service installation (default is enabled)]),,enable_dbus_service=yes)
 
   if test "x$enable_dbus" = "xyes"; then
     PKG_CHECK_MODULES([DBUS], [dbus-1 >= 0.36 dbus-glib-1 >= 0.36], [found_dbus=yes])
@@ -491,7 +491,7 @@ dnl ###############################
 AVAHI="disabled"
 
 if test "x${gm_platform}" != "xmingw" ; then
-  AC_ARG_ENABLE(avahi, [  --disable-avahi		Disable mDNS support],,enable_avahi=yes)
+  AC_ARG_ENABLE(avahi, AS_HELP_STRING([--enable-avahi],[enable mDNS support (default is yes)]),,enable_avahi=yes)
 
   if test "x$enable_avahi" = "xyes"; then
     PKG_CHECK_MODULES([AVAHI], [avahi-client >= 0.6 avahi-glib >= 0.6], [found_avahi=yes])
@@ -510,7 +510,7 @@ dnl    GStreamer Support
 dnl ###############################
 GSTREAMER="disabled"
 
-AC_ARG_ENABLE(gstreamer, [  --enable-gstreamer            Enable GStreamer support],enable_gstreamer=yes,)
+AC_ARG_ENABLE(gstreamer, AS_HELP_STRING([--enable-gstreamer],[enable GStreamer support (default is disabled)]),enable_gstreamer=yes,)
 
 if test "x$enable_gstreamer" = "xyes"; then
   found_gstreamer=yes
@@ -533,7 +533,7 @@ dnl  KDE support
 dnl ###############################
 KDE="disabled"
 
-AC_ARG_ENABLE(kde, [  --enable-kde                  Enable KDE support],
+AC_ARG_ENABLE(kde, AS_HELP_STRING([--enable-kde],[enable KDE support (default is disabled)]),
 [if test "x$enableval" = "xyes"; then
   enable_kde=yes
 fi],)
@@ -565,7 +565,7 @@ dnl  KAddressBook support
 dnl ###############################
 KAB="disabled"
 
-AC_ARG_ENABLE(kab, [  --enable-kab                  Enable KAddressBook support],enable_kab=yes,)
+AC_ARG_ENABLE(kab, AS_HELP_STRING([--enable-kab],[enable KAddressBook support (default is disabled)]),enable_kab=yes,)
 
 if test "x$enable_kab" = "xyes"; then
 
@@ -598,7 +598,7 @@ dnl   XCAP support
 dnl ###############################
 XCAP="disabled"
 
-AC_ARG_ENABLE(xcap, [  --enable-xcap                Enable XCAP support],enable_xcap=yes,)
+AC_ARG_ENABLE(xcap, AS_HELP_STRING([--enable-xcap],[enable XCAP support (default is disabled)]),enable_xcap=yes,)
 
 if test "x$enable_xcap" = "xyes"; then
    PKG_CHECK_MODULES([SOUP], [libsoup-2.4])
@@ -622,7 +622,7 @@ fi
 
 GNOME_DOC_INIT(,,[$GNOME_DOC_INIT_ARG])
 if test "x${gm_platform}" != "xmingw" ; then
-  AC_ARG_ENABLE(gdu, [  --disable-gdu			Disable GNOME-Doc-Utils support],,enable_gdu=yes)
+  AC_ARG_ENABLE(gdu, AS_HELP_STRING([--enable-gdu],[enable GNOME-Doc-Utils support (default is enabled)]),,enable_gdu=yes)
   if test "x$enable_gdu" = "xyes"; then
     AC_PATH_PROG(SK_CONFIG,scrollkeeper-config,no)
     if test "x$SK_CONFIG" = "xno"; then
@@ -643,13 +643,13 @@ PKG_CHECK_MODULES([OPAL], [opal >= ${OPAL_REC_VERSION}])
 
 SUFFIX=
 AC_ARG_ENABLE([opal-debug],
-              [AC_HELP_STRING([--enable-opal-debug],[Link to debug versions of opal and ptlib (opal_d and ptlib_d)])],
+              [AC_HELP_STRING([--enable-opal-debug],[link to debug versions of opal and ptlib (opal_d and ptlib_d) (default is disabled)])],
               [if test "x$enableval" = "xyes"; then 
                 SUFFIX="_d"
               fi])
 
 AC_ARG_ENABLE([static-libs],
-              [AC_HELP_STRING([--enable-static-libs],[Link to opal and ptlib static libraries])],
+              [AC_HELP_STRING([--enable-static-libs],[link to opal and ptlib static libraries (default is disabled)])],
               [if test "x$enableval" = "xyes"; then 
                 SUFFIX="${SUFFIX}_s"
                fi
