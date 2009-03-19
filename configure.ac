@@ -210,7 +210,10 @@ GNOME="unneeded"
 if test "x${gm_platform}" != "xmingw" ; then
   if $PKG_CONFIG --max-version 2.13.1 gtk+-2.0; then
     GNOME="disabled"
-    AC_ARG_ENABLE(gnome, AS_HELP_STRING([--enable-gnome],[enable GNOME support (default is to enable if needed)]),,enable_gnome=yes)
+    AC_ARG_ENABLE(gnome, AS_HELP_STRING([--enable-gnome],[enable GNOME support (default is to enable if needed)]),
+[if test "x$enableval" = "xyes"; then
+  enable_gnome=yes
+fi],enable_gnome=yes)
   
     if test "x$enable_gnome" = "xyes"; then
       PKG_CHECK_MODULES([GNOME], [libgnome-2.0 >= 2.14.0 libgnomeui-2.0 >= 2.14.0], [found_gnome=yes])
@@ -230,7 +233,10 @@ dnl ###############################
 GCONF="disabled"
 
 if test "x${gm_platform}" != "xmingw" ; then
-  AC_ARG_ENABLE(gconf, AS_HELP_STRING([--enable-gconf],[enable GConf support (default is disabled)]),,enable_gconf=yes)
+  AC_ARG_ENABLE(gconf, AS_HELP_STRING([--enable-gconf],[enable GConf support (default is disabled)]),
+[if test "x$enableval" = "xyes"; then
+  enable_gconf = yes
+fi],enable_gconf=yes)
   
   if test "x$enable_gconf" = "xyes"; then
     PKG_CHECK_MODULES([GCONF], [gconf-2.0 >= 2.6.0], [found_gconf=yes])
@@ -255,7 +261,10 @@ dnl ###############################
 EDS="disabled"
 
 if test "x${gm_platform}" != "xmingw" ; then
-  AC_ARG_ENABLE(eds, AS_HELP_STRING([--enable-eds],[enable evolution-data-server addressbook support (default is enabled)]),,enable_eds=yes)
+  AC_ARG_ENABLE(eds, AS_HELP_STRING([--enable-eds],[enable evolution-data-server addressbook support (default is enabled)]),
+[if test "x$enableval" = "xyes"; then
+  enable_eds=yes
+fi],enable_eds=yes)
   
   if test "x$enable_eds" = "xyes"; then
     PKG_CHECK_MODULES([EDS], [libebook-1.2], [found_eds=yes])
@@ -275,7 +284,10 @@ dnl ###############################
 NOTIFY="disabled"
 
 if test "x${gm_platform}" != "xmingw" ; then
-  AC_ARG_ENABLE(notify, AS_HELP_STRING([--enable-notify],[enable libnotify support (default is enabled)]),,enable_notify=yes)
+  AC_ARG_ENABLE(notify, AS_HELP_STRING([--enable-notify],[enable libnotify support (default is enabled)]),
+[if test "x$enableval" = "xyes"; then
+  enable_notify=yes
+fi],enable_notify=yes)
   
   if test "x$enable_notify" = "xyes"; then
     PKG_CHECK_MODULES([NOTIFY], [libnotify], [found_notify=yes], foo=bar)
@@ -296,7 +308,10 @@ dnl   LDAP support
 dnl ###############################
 LDAP="disabled"
 
-AC_ARG_ENABLE(ldap, AS_HELP_STRING([--enable-ldap],[enable LDAP addressbook support (default is enabled)]),,enable_ldap=yes)
+AC_ARG_ENABLE(ldap, AS_HELP_STRING([--enable-ldap],[enable LDAP addressbook support (default is enabled)]),
+[if test "x$enableval" = "xyes"; then
+  enable_ldap=yes
+fi],enable_ldap=yes)
 
 if test "x$enable_ldap" = "xyes"; then
 
@@ -405,7 +420,10 @@ dnl ###############################
 dnl Checks for Xv extension
 dnl ###############################
 XV="disabled"
-AC_ARG_ENABLE(xv, AS_HELP_STRING([--disable-xv],[enable XVideo hardware acceleration (default is enabled)]),,enable_xv=yes)  
+AC_ARG_ENABLE(xv, AS_HELP_STRING([--disable-xv],[enable XVideo hardware acceleration (default is enabled)]),
+[if test "x$enableval" = "xyes"; then
+  enable_xv=yes
+fi],enable_xv=yes)  
 if test "x${gm_platform}" != "mingw" -a "x$enable_xv" = "xyes"; then
   PKG_CHECK_MODULES([XV], [xv], 
                     [AC_DEFINE(HAVE_XV,1,[XVideo support])
@@ -451,8 +469,14 @@ DBUS="disabled"
 DBUS_SERVICE="disabled"
 
 if test "x${gm_platform}" != "xmingw" ; then
-  AC_ARG_ENABLE(dbus, AS_HELP_STRING([--enable-dbus],[enable DBUS support (default is enabled)]),,enable_dbus=yes)
-  AC_ARG_ENABLE(dbus-service, AS_HELP_STRING([--enable-dbus-service],[enable DBUS service installation (default is enabled)]),,enable_dbus_service=yes)
+  AC_ARG_ENABLE(dbus, AS_HELP_STRING([--enable-dbus],[enable DBUS support (default is enabled)]),
+[if test "x$enableval" = "xyes"; then
+  enable_dbus=yes
+fi],enable_dbus=yes)
+  AC_ARG_ENABLE(dbus-service, AS_HELP_STRING([--enable-dbus-service],[enable DBUS service installation (default is enabled)]),
+[if test "x$enableval" = "xyes"; then
+  enable_dbus_service=yes
+fi],enable_dbus_service=yes)
 
   if test "x$enable_dbus" = "xyes"; then
     PKG_CHECK_MODULES([DBUS], [dbus-1 >= 0.36 dbus-glib-1 >= 0.36], [found_dbus=yes])
@@ -492,7 +516,10 @@ dnl ###############################
 AVAHI="disabled"
 
 if test "x${gm_platform}" != "xmingw" ; then
-  AC_ARG_ENABLE(avahi, AS_HELP_STRING([--enable-avahi],[enable mDNS support (default is yes)]),,enable_avahi=yes)
+  AC_ARG_ENABLE(avahi, AS_HELP_STRING([--enable-avahi],[enable mDNS support (default is yes)]),
+[if test "x$enableval" = "xyes"; then
+  enable_avahi=yes
+fi],enable_avahi=yes)
 
   if test "x$enable_avahi" = "xyes"; then
     PKG_CHECK_MODULES([AVAHI], [avahi-client >= 0.6 avahi-glib >= 0.6], [found_avahi=yes])
@@ -511,7 +538,10 @@ dnl    GStreamer Support
 dnl ###############################
 GSTREAMER="disabled"
 
-AC_ARG_ENABLE(gstreamer, AS_HELP_STRING([--enable-gstreamer],[enable GStreamer support (default is disabled)]),enable_gstreamer=yes,)
+AC_ARG_ENABLE(gstreamer, AS_HELP_STRING([--enable-gstreamer],[enable GStreamer support (default is disabled)]),
+[if test "x$enableval" = "xyes"; then
+  enable_gstreamer=yes
+fi],)
 
 if test "x$enable_gstreamer" = "xyes"; then
   found_gstreamer=yes
@@ -566,7 +596,10 @@ dnl  KAddressBook support
 dnl ###############################
 KAB="disabled"
 
-AC_ARG_ENABLE(kab, AS_HELP_STRING([--enable-kab],[enable KAddressBook support (default is disabled)]),enable_kab=yes,)
+AC_ARG_ENABLE(kab, AS_HELP_STRING([--enable-kab],[enable KAddressBook support (default is disabled)]),
+[if test "x$enableval" = "xyes"; then
+  enable_kab=yes
+fi],)
 
 if test "x$enable_kab" = "xyes"; then
 
@@ -599,7 +632,10 @@ dnl   XCAP support
 dnl ###############################
 XCAP="disabled"
 
-AC_ARG_ENABLE(xcap, AS_HELP_STRING([--enable-xcap],[enable XCAP support (default is disabled)]),enable_xcap=yes,)
+AC_ARG_ENABLE(xcap, AS_HELP_STRING([--enable-xcap],[enable XCAP support (default is disabled)]),
+[if test "x$enableval" = "xyes"; then
+  enable_xcap=yes
+fi],)
 
 if test "x$enable_xcap" = "xyes"; then
    PKG_CHECK_MODULES([SOUP], [libsoup-2.4])
@@ -623,7 +659,10 @@ fi
 
 GNOME_DOC_INIT(,,[$GNOME_DOC_INIT_ARG])
 if test "x${gm_platform}" != "xmingw" ; then
-  AC_ARG_ENABLE(gdu, AS_HELP_STRING([--enable-gdu],[enable GNOME-Doc-Utils support (default is enabled)]),,enable_gdu=yes)
+  AC_ARG_ENABLE(gdu, AS_HELP_STRING([--enable-gdu],[enable GNOME-Doc-Utils support (default is enabled)]),
+[if test "x$enableval" = "xyes"; then
+  enable_gdu=yes
+fi],enable_gdu=yes)
   if test "x$enable_gdu" = "xyes"; then
     AC_PATH_PROG(SK_CONFIG,scrollkeeper-config,no)
     if test "x$SK_CONFIG" = "xno"; then
