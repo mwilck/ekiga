@@ -533,7 +533,10 @@ dnl  KDE support
 dnl ###############################
 KDE="disabled"
 
-AC_ARG_ENABLE(kde, [  --enable-kde                  Enable KDE support],enable_kde=yes,)
+AC_ARG_ENABLE(kde, [  --enable-kde                  Enable KDE support],
+[if test "x$enableval" = "xyes"; then
+  enable_kde=yes
+fi],)
 
 if test "x$enable_kde" = "xyes"; then
   found_kde=yes
