@@ -413,10 +413,16 @@ dnl ###############################
 SHM="disabled"
 
 if test "x${gm_platform}" = "xlinux" ; then
-  AC_CHECK_LIB(Xext, XShmAttach, with_shm="yes", with_shm="no")
-  if test "x${with_shm}" != "xno"; then
-  SHM="enabled"
-  AC_DEFINE(HAVE_SHM,1,[SHM Support])
+  AC_ARG_ENABLE(shm, AS_HELP_STRING([--enable-shm],[enable SHM support (default is enabled)]),
+[if test "x$enableval" = "xyes"; then
+  enable_shm=yes
+fi],enable_shm=yes)
+  if test "x$enable_shm" = "xyes"; then
+    AC_CHECK_LIB(Xext, XShmAttach, with_shm="yes", with_shm="no")
+    if test "x${with_shm}" != "xno"; then
+      SHM="enabled"
+      AC_DEFINE(HAVE_SHM,1,[SHM Support])
+    fi
   fi
 fi
 AM_CONDITIONAL(HAVE_SHM, test "x$SHM" = "xenabled")
