@@ -345,6 +345,7 @@ if test "x$enable_ldap" = "xyes"; then
 
   dnl Checking for libsasl2
   AC_CHECK_HEADER(sasl/sasl.h,,AC_MSG_ERROR([*** libsasl2 headers not found]))
+  LDAP_LIBS="$LDAP_LIBS -lsasl2"
 
   dnl Checking for libresolv
   if test ${gm_platform} = "linux" ; then
