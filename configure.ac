@@ -370,7 +370,11 @@ dnl ###############################
 AC_MSG_CHECKING(for x86 platform)
 case $host_cpu in
   i386|i486|i586|i686|i786|k6|k7)
-	use_x86_asm=yes
+        AC_ARG_ENABLE(mmx, AS_HELP_STRING([--enable-mmx],[enable MMX acceleration (default is enabled)]), [if test "x$enableval" = "xyes"; then
+                             use_x86_asm=yes
+			   else
+			     use_x86_asm=no
+                           fi], use_x86_asm=yes)
         ;;
    *)
   	use_x86_asm=no
@@ -378,7 +382,7 @@ esac
 AC_MSG_RESULT($use_x86_asm)
 
 use_mmx_asm=no
-if test $use_x86_asm = yes; then
+if test "x$use_x86_asm" = "xyes"; then
     save_ac_ext=$ac_ext
     ac_ext=S
     
@@ -391,7 +395,7 @@ if test $use_x86_asm = yes; then
     rm -rf conftest*
 
     ac_ext=$save_ac_ext
-    if test $use_mmx_asm = yes; then
+    if test "x$use_mmx_asm" = "xyes"; then
       AC_DEFINE([USE_MMX], 1, [MMX Support])
       AC_MSG_RESULT(yes)
     else
@@ -399,7 +403,7 @@ if test $use_x86_asm = yes; then
     fi
 fi
 
-AM_CONDITIONAL(USE_MMX, test x$use_mmx_asm = xyes)
+AM_CONDITIONAL(USE_MMX, test "x$use_mmx_asm" = "xyes")
 
 
 
