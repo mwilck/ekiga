@@ -562,10 +562,12 @@ void CallManager::set_video_options (const CallManager::VideoOptions & options)
 
         media_format.SetOptionBoolean (OpalVideoFormat::RateControlEnableOption(),
                                        true);
+        /* the following two options have been removed, what can they be replaced with?
         media_format.SetOptionInteger (OpalVideoFormat::RateControlWindowSizeOption(),
                                        500);
         media_format.SetOptionInteger (OpalVideoFormat::RateControlMaxFramesSkipOption(),
                                        1);
+        */
       }
 
       OpalMediaFormat::SetRegisteredMediaFormat(media_format);
