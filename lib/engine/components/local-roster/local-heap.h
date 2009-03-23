@@ -37,8 +37,6 @@
 #ifndef __LOCAL_HEAP_H__
 #define __LOCAL_HEAP_H__
 
-#include <libxml/tree.h>
-
 #include "heap-impl.h"
 #include "local-presentity.h"
 
@@ -201,7 +199,7 @@ namespace Local
 				      Ekiga::Form& result);
 
     Ekiga::ServiceCore &core;
-    xmlDocPtr doc;
+    std::tr1::shared_ptr<xmlDoc> doc;
   };
 
 /**

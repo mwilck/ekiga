@@ -82,7 +82,7 @@ public: // no need to make anything private
 
   std::string group;
 
-  xmlDocPtr doc;
+  std::tr1::shared_ptr<xmlDoc> doc;
   xmlNodePtr node;
 
   xmlNodePtr name_node;
@@ -172,7 +172,7 @@ RL::ListImpl::ListImpl (Ekiga::ServiceCore& core_,
 			int pos,
 			const std::string group_,
 			xmlNodePtr node_):
-  core(core_), position(pos), group(group_), doc(NULL), node(node_)
+  core(core_), position(pos), group(group_), doc(), node(node_)
 {
   {
     gchar* raw = NULL;
@@ -214,8 +214,6 @@ RL::ListImpl::ListImpl (Ekiga::ServiceCore& core_,
 
 RL::ListImpl::~ListImpl ()
 {
-  if (doc != NULL)
-    xmlFreeDoc (doc);
 }
 
 bool
@@ -248,9 +246,7 @@ RL::ListImpl::flush ()
   }
   entries.clear ();
 
-  if (doc != NULL)
-    xmlFreeDoc (doc);
-  doc = NULL;
+  doc.reset ();
   node = NULL;
   name_node = NULL;
 }
@@ -274,8 +270,10 @@ RL::ListImpl::on_xcap_answer (bool error,
 
   } else {
 
-    doc = xmlRecoverMemory (value.c_str (), value.length ());
-    node = xmlDocGetRootElement (doc);
+    doc = std::tr1::shared_ptr<xmlDoc> (xmlRecoverMemory (value.c_str (), value.length ()), xmlFreeDoc);
+    if ( !doc)
+      doc = std::tr1::shared_ptr<xmlDoc> (xmlNewDoc (BAD_CAST "1.0"), xmlFreeDoc);
+    node = xmlDocGetRootElement (doc.get ());
     if (node == NULL
 	|| node->name == NULL
 	|| !xmlStrEqual (BAD_CAST "list", node->name)) {
@@ -341,7 +339,7 @@ RL::ListImpl::parse ()
       gmref_ptr<Entry> entry = gmref_ptr<Entry> (new Entry (core, path,
 							    entry_pos,
 							    display_name,
-							    child));
+							    doc, child));
       std::list<sigc::connection> conns;
       conns.push_back (entry->updated.connect (sigc::bind (entry_updated.make_slot (), entry)));
       conns.push_back (entry->removed.connect (sigc::bind (entry_removed.make_slot (), entry)));

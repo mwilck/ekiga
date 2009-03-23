@@ -51,7 +51,7 @@
 /*
  * Public API
  */
-Local::Heap::Heap (Ekiga::ServiceCore &_core): core (_core), doc (NULL)
+Local::Heap::Heap (Ekiga::ServiceCore &_core): core (_core), doc ()
 {
   xmlNodePtr root;
   gchar *c_raw = gm_conf_get_string (KEY);
@@ -60,13 +60,15 @@ Local::Heap::Heap (Ekiga::ServiceCore &_core): core (_core), doc (NULL)
   if (c_raw != NULL) {
 
     const std::string raw = c_raw;
-    doc = xmlRecoverMemory (raw.c_str (), raw.length ());
-
-    root = xmlDocGetRootElement (doc);
+    doc = std::tr1::shared_ptr<xmlDoc> (xmlRecoverMemory (raw.c_str (), raw.length ()), xmlFreeDoc);
+    if ( !doc)
+      doc = std::tr1::shared_ptr<xmlDoc> (xmlNewDoc (BAD_CAST "1.0"), xmlFreeDoc);
+    
+    root = xmlDocGetRootElement (doc.get ());
     if (root == NULL) {
 
-      root = xmlNewDocNode (doc, NULL, BAD_CAST "list", NULL);
-      xmlDocSetRootElement (doc, root);
+      root = xmlNewDocNode (doc.get (), NULL, BAD_CAST "list", NULL);
+      xmlDocSetRootElement (doc.get (), root);
     }
 
     for (xmlNodePtr child = root->children; child != NULL; child = child->next)
@@ -81,9 +83,9 @@ Local::Heap::Heap (Ekiga::ServiceCore &_core): core (_core), doc (NULL)
   }
   else {
 
-    doc = xmlNewDoc (BAD_CAST "1.0");
-    root = xmlNewDocNode (doc, NULL, BAD_CAST "list", NULL);
-    xmlDocSetRootElement (doc, root);
+    doc = std::tr1::shared_ptr<xmlDoc> (xmlNewDoc (BAD_CAST "1.0"), xmlFreeDoc);
+    root = xmlNewDocNode (doc.get (), NULL, BAD_CAST "list", NULL);
+    xmlDocSetRootElement (doc.get (), root);
 
     {
       // add 500 and 501 at ekiga.net in this case!
@@ -99,8 +101,6 @@ Local::Heap::Heap (Ekiga::ServiceCore &_core): core (_core), doc (NULL)
 
 Local::Heap::~Heap ()
 {
-  if (doc != NULL)
-    xmlFreeDoc (doc);
 }
 
 
@@ -245,7 +245,7 @@ Local::Heap::push_status (const std::string uri,
 void
 Local::Heap::add (xmlNodePtr node)
 {
-  gmref_ptr<Presentity> presentity (new Presentity (core, node));
+  gmref_ptr<Presentity> presentity (new Presentity (core, doc, node));
 
   common_add (presentity);
 }
@@ -258,8 +258,8 @@ Local::Heap::add (const std::string name,
 {
   xmlNodePtr root = NULL;
 
-  root = xmlDocGetRootElement (doc);
-  gmref_ptr<Presentity> presentity (new Presentity (core, name, uri, groups));
+  root = xmlDocGetRootElement (doc.get ());
+  gmref_ptr<Presentity> presentity (new Presentity (core, doc, name, uri, groups));
 
   xmlAddChild (root, presentity->get_node ());
 
@@ -290,7 +290,7 @@ Local::Heap::save () const
   xmlChar *buffer = NULL;
   int size = 0;
 
-  xmlDocDumpMemory (doc, &buffer, &size);
+  xmlDocDumpMemory (doc.get (), &buffer, &size);
 
   gm_conf_set_string (KEY, (const char *)buffer);
 

@@ -166,8 +166,9 @@ struct RefreshData
 /* actual implementation */
 
 OPENLDAP::Book::Book (Ekiga::ServiceCore &_core,
+		      std::tr1::shared_ptr<xmlDoc> _doc,
 		      xmlNodePtr _node):
-  saslform(NULL), core(_core), node(_node),
+  saslform(NULL), core(_core), doc(_doc), node(_node),
   name_node(NULL), uri_node(NULL), authcID_node(NULL), password_node(NULL),
   ldap_context(NULL), patience(0)
 {
@@ -334,8 +335,9 @@ OPENLDAP::Book::Book (Ekiga::ServiceCore &_core,
 }
 
 OPENLDAP::Book::Book (Ekiga::ServiceCore &_core,
+		      std::tr1::shared_ptr<xmlDoc> _doc,
 		      OPENLDAP::BookInfo _bookinfo):
-  saslform(NULL), core(_core), name_node(NULL),
+  saslform(NULL), core(_core), doc(_doc), name_node(NULL),
   uri_node(NULL), authcID_node(NULL), password_node(NULL),
   ldap_context(NULL), patience(0)
 {

@@ -40,6 +40,7 @@
 #define __LDAP_BOOK_H__
 
 #include <vector>
+#include <tr1/memory>
 #include <libxml/tree.h>
 #include <glib/gi18n.h>
 
@@ -87,9 +88,11 @@ namespace OPENLDAP
   public:
 
     Book (Ekiga::ServiceCore &_core,
+	  std::tr1::shared_ptr<xmlDoc> _doc,
 	  xmlNodePtr node);
 
     Book (Ekiga::ServiceCore &_core,
+	  std::tr1::shared_ptr<xmlDoc> _doc,
     	  OPENLDAP::BookInfo _bookinfo);
 
     ~Book ();
@@ -132,6 +135,7 @@ namespace OPENLDAP
 				 Ekiga::Form &form);
 
     Ekiga::ServiceCore &core;
+    std::tr1::shared_ptr<xmlDoc> doc;
     xmlNodePtr node;
 
     xmlNodePtr name_node;

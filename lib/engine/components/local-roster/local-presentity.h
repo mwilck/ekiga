@@ -38,10 +38,14 @@
 #ifndef __LOCAL_PRESENTITY_H__
 #define __LOCAL_PRESENTITY_H__
 
+#include <libxml/tree.h>
+
+#include <tr1/memory>
+
+
 #include "form.h"
 #include "presence-core.h"
 #include "presentity.h"
-
 
 namespace Local
 {
@@ -69,9 +73,11 @@ namespace Local
      * Constructors (and destructor)
      */
     Presentity (Ekiga::ServiceCore &_core,
+		std::tr1::shared_ptr<xmlDoc> _doc,
 		xmlNodePtr _node);
 
     Presentity (Ekiga::ServiceCore &_core,
+		std::tr1::shared_ptr<xmlDoc> _doc,
 		const std::string _name,
 		const std::string _uri,
 		const std::set<std::string> _groups);
@@ -173,6 +179,7 @@ namespace Local
 
     Ekiga::ServiceCore &core;
 
+    std::tr1::shared_ptr<xmlDoc> doc;
     xmlNodePtr node;
     xmlNodePtr name_node;
 

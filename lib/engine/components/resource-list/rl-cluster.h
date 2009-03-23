@@ -65,7 +65,7 @@ namespace RL {
   private:
 
     Ekiga::ServiceCore& core;
-    xmlDocPtr doc;
+    std::tr1::shared_ptr<xmlDoc> doc;
 
     void add (xmlNodePtr node);
     void add (const std::string uri,

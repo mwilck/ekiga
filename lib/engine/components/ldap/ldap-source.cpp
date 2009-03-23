@@ -48,7 +48,7 @@
 
 #define KEY "/apps/" PACKAGE_NAME "/contacts/ldap_servers"
 
-OPENLDAP::Source::Source (Ekiga::ServiceCore &_core): core(_core), doc(NULL)
+OPENLDAP::Source::Source (Ekiga::ServiceCore &_core): core(_core), doc()
 {
   xmlNodePtr root;
   gchar *c_raw = gm_conf_get_string (KEY);
@@ -57,16 +57,16 @@ OPENLDAP::Source::Source (Ekiga::ServiceCore &_core): core(_core), doc(NULL)
 
     const std::string raw = c_raw;
 
-    doc = xmlRecoverMemory (raw.c_str (), raw.length ());
-    if (doc == NULL)
-      doc = xmlNewDoc (BAD_CAST "1.0");
+    doc = std::tr1::shared_ptr<xmlDoc> (xmlRecoverMemory (raw.c_str (), raw.length ()), xmlFreeDoc);
+    if ( !doc)
+      doc = std::tr1::shared_ptr<xmlDoc> (xmlNewDoc (BAD_CAST "1.0"), xmlFreeDoc);
 
-    root = xmlDocGetRootElement (doc);
+    root = xmlDocGetRootElement (doc.get ());
 
     if (root == NULL) {
 
-      root = xmlNewNode (NULL, BAD_CAST "list");
-      xmlDocSetRootElement (doc, root);
+      root = xmlNewDocNode (doc.get (), NULL, BAD_CAST "list", NULL);
+      xmlDocSetRootElement (doc.get (), root);
     }
 
     for (xmlNodePtr child = root->children ;
@@ -80,9 +80,9 @@ OPENLDAP::Source::Source (Ekiga::ServiceCore &_core): core(_core), doc(NULL)
     g_free (c_raw);
   } else {
 
-    doc = xmlNewDoc (BAD_CAST "1.0");
-    root = xmlNewNode (NULL, BAD_CAST "list");
-    xmlDocSetRootElement (doc, root);
+    doc = std::tr1::shared_ptr<xmlDoc> (xmlNewDoc (BAD_CAST "1.0"), xmlFreeDoc);
+    root = xmlNewDocNode (doc.get (), NULL, BAD_CAST "list", NULL);
+    xmlDocSetRootElement (doc.get (), root);
 
     new_ekiga_net_book ();
   }
@@ -90,14 +90,12 @@ OPENLDAP::Source::Source (Ekiga::ServiceCore &_core): core(_core), doc(NULL)
 
 OPENLDAP::Source::~Source ()
 {
-  if (doc)
-    xmlFreeDoc (doc);
 }
 
 void
 OPENLDAP::Source::add (xmlNodePtr node)
 {
-  common_add (gmref_ptr<Book>(new Book (core, node)));
+  common_add (gmref_ptr<Book>(new Book (core, doc, node)));
 }
 
 void
@@ -105,8 +103,8 @@ OPENLDAP::Source::add ()
 {
   xmlNodePtr root;
 
-  root = xmlDocGetRootElement (doc);
-  gmref_ptr<Book> book (new Book (core, bookinfo));
+  root = xmlDocGetRootElement (doc.get ());
+  gmref_ptr<Book> book (new Book (core, doc, bookinfo));
 
   xmlAddChild (root, book->get_node ());
 
@@ -216,7 +214,7 @@ OPENLDAP::Source::save ()
   xmlChar *buffer = NULL;
   int size = 0;
 
-  xmlDocDumpMemory (doc, &buffer, &size);
+  xmlDocDumpMemory (doc.get (), &buffer, &size);
 
   gm_conf_set_string (KEY, (const char *)buffer);
 

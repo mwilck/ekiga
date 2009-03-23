@@ -48,7 +48,7 @@
 
 #define KEY "/apps/" PACKAGE_NAME "/contacts/resource-lists"
 
-RL::Cluster::Cluster (Ekiga::ServiceCore& core_): core(core_), doc(NULL)
+RL::Cluster::Cluster (Ekiga::ServiceCore& core_): core(core_), doc()
 {
   gchar* c_raw = NULL;
 
@@ -62,13 +62,15 @@ RL::Cluster::Cluster (Ekiga::ServiceCore& core_): core(core_), doc(NULL)
   if (c_raw != NULL) {
 
     const std::string raw = c_raw;
-    doc = xmlRecoverMemory (raw.c_str (), raw.length ());
+    doc = std::tr1::shared_ptr<xmlDoc> (xmlRecoverMemory (raw.c_str (), raw.length ()), xmlFreeDoc);
+    if ( !doc)
+      doc = std::tr1::shared_ptr<xmlDoc> (xmlNewDoc (BAD_CAST "1.0"), xmlFreeDoc);
 
-    xmlNodePtr root = xmlDocGetRootElement (doc);
+    xmlNodePtr root = xmlDocGetRootElement (doc.get ());
     if (root == NULL) {
 
-      root = xmlNewDocNode (doc, NULL, BAD_CAST "list", NULL);
-      xmlDocSetRootElement (doc, root);
+      root = xmlNewDocNode (doc.get (), NULL, BAD_CAST "list", NULL);
+      xmlDocSetRootElement (doc.get (), root);
     } else {
 
       for (xmlNodePtr child = root->children;
@@ -83,17 +85,15 @@ RL::Cluster::Cluster (Ekiga::ServiceCore& core_): core(core_), doc(NULL)
 
   } else {
 
-    doc = xmlNewDoc (BAD_CAST "1.0");
-    xmlNodePtr root = xmlNewDocNode (doc, NULL, BAD_CAST "list", NULL);
-    xmlDocSetRootElement (doc, root);
+    doc = std::tr1::shared_ptr<xmlDoc> (xmlNewDoc (BAD_CAST "1.0"), xmlFreeDoc);
+    xmlNodePtr root = xmlNewDocNode (doc.get (), NULL, BAD_CAST "list", NULL);
+    xmlDocSetRootElement (doc.get (), root);
     add ("https://xcap.sipthor.net/xcap-root", "alice", "123", "alice@example.com", "XCAP Test", false); // FIXME: remove
   }
 }
 
 RL::Cluster::~Cluster ()
 {
-  if (doc != NULL)
-    xmlFreeDoc (doc);
 }
 
 bool
@@ -108,7 +108,7 @@ RL::Cluster::populate_menu (Ekiga::MenuBuilder& builder)
 void
 RL::Cluster::add (xmlNodePtr node)
 {
-  gmref_ptr<Heap> heap (new Heap (core, node));
+  gmref_ptr<Heap> heap (new Heap (core, doc, node));
 
   common_add (heap);
 }
@@ -121,8 +121,8 @@ RL::Cluster::add (const std::string uri,
 		  const std::string name,
 		  bool writable)
 {
-  gmref_ptr<Heap> heap (new Heap (core, name, uri, user, username, password, writable));
-  xmlNodePtr root = xmlDocGetRootElement (doc);
+  gmref_ptr<Heap> heap (new Heap (core, doc, name, uri, user, username, password, writable));
+  xmlNodePtr root = xmlDocGetRootElement (doc.get ());
 
   xmlAddChild (root, heap->get_node ());
 
@@ -146,7 +146,7 @@ RL::Cluster::save () const
   xmlChar* buffer = NULL;
   int size = 0;
 
-  xmlDocDumpMemory (doc, &buffer, &size);
+  xmlDocDumpMemory (doc.get (), &buffer, &size);
 
   gm_conf_set_string (KEY, (const char*)buffer);
 

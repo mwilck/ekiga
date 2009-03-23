@@ -48,7 +48,7 @@
 #define KEY "/apps/" PACKAGE_NAME "/contacts/call_history"
 
 History::Book::Book (Ekiga::ServiceCore &_core) :
-  core(_core), doc(NULL)
+  core(_core), doc()
 {
   xmlNodePtr root = NULL;
 
@@ -58,16 +58,15 @@ History::Book::Book (Ekiga::ServiceCore &_core) :
 
     const std::string raw = c_raw;
 
-    doc = xmlRecoverMemory (raw.c_str (), raw.length ());
-    if (doc == NULL)
-      doc = xmlNewDoc (BAD_CAST "1.0");
+    doc = std::tr1::shared_ptr<xmlDoc> (xmlRecoverMemory (raw.c_str (), raw.length ()), xmlFreeDoc);
+    if ( !doc)
+      doc = std::tr1::shared_ptr<xmlDoc> (xmlNewDoc (BAD_CAST "1.0"), xmlFreeDoc);
 
-    root = xmlDocGetRootElement (doc);
-
+    root = xmlDocGetRootElement (doc.get ());
     if (root == NULL) {
 
-      root = xmlNewNode (NULL, BAD_CAST "list");
-      xmlDocSetRootElement (doc, root);
+      root = xmlNewDocNode (doc.get (), NULL, BAD_CAST "list", NULL);
+      xmlDocSetRootElement (doc.get (), root);
     }
 
     for (xmlNodePtr child = root->children;
@@ -81,9 +80,9 @@ History::Book::Book (Ekiga::ServiceCore &_core) :
     g_free (c_raw);
   } else {
 
-    doc = xmlNewDoc (BAD_CAST "1.0");
-    root = xmlNewDocNode (doc, NULL, BAD_CAST "list", NULL);
-    xmlDocSetRootElement (doc, root);
+    doc = std::tr1::shared_ptr<xmlDoc> (xmlNewDoc (BAD_CAST "1.0"), xmlFreeDoc);
+    root = xmlNewDocNode (doc.get (), NULL, BAD_CAST "list", NULL);
+    xmlDocSetRootElement (doc.get (), root);
   }
 
   gmref_ptr<Ekiga::CallCore> call_core = core.get ("call-core");
@@ -94,8 +93,6 @@ History::Book::Book (Ekiga::ServiceCore &_core) :
 
 History::Book::~Book ()
 {
-  if (doc != NULL)
-    xmlFreeDoc (doc);
 }
 
 const std::string
@@ -107,7 +104,7 @@ History::Book::get_name () const
 void
 History::Book::add (xmlNodePtr node)
 {
-  add_contact (gmref_ptr<Contact>(new Contact (core, node)));
+  add_contact (gmref_ptr<Contact>(new Contact (core, doc, node)));
 }
 
 void
@@ -120,9 +117,9 @@ History::Book::add (const std::string & name,
 
   if ( !uri.empty ()) {
 
-    xmlNodePtr root = xmlDocGetRootElement (doc);
+    xmlNodePtr root = xmlDocGetRootElement (doc.get ());
 
-    gmref_ptr<Contact> contact(new Contact (core, name, uri,
+    gmref_ptr<Contact> contact(new Contact (core, doc, name, uri,
 					    call_start, call_duration, c_t));
 
     xmlAddChild (root, contact->get_node ());
@@ -165,7 +162,7 @@ History::Book::save () const
   xmlChar *buffer = NULL;
   int size = 0;
 
-  xmlDocDumpMemory (doc, &buffer, &size);
+  xmlDocDumpMemory (doc.get (), &buffer, &size);
 
   gm_conf_set_string (KEY, (const char *)buffer);
 
@@ -179,11 +176,9 @@ History::Book::clear ()
 
   remove_all_objects ();
 
-  if (doc != NULL)
-    xmlFreeDoc (doc);
-  doc = xmlNewDoc (BAD_CAST "1.0");
-  root = xmlNewDocNode (doc, NULL, BAD_CAST "list", NULL);
-  xmlDocSetRootElement (doc, root);
+  doc = std::tr1::shared_ptr<xmlDoc> (xmlNewDoc (BAD_CAST "1.0"), xmlFreeDoc);
+  root = xmlNewDocNode (doc.get (), NULL, BAD_CAST "list", NULL);
+  xmlDocSetRootElement (doc.get (), root);
 
   save ();
   cleared.emit ();
