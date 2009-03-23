@@ -79,7 +79,6 @@
 
     protected:
       Ekiga::ServiceCore & core;
-      Ekiga::Runtime* runtime;
 
       PSoundChannel *output_device[2];
   };

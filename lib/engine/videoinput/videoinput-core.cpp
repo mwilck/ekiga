@@ -121,9 +121,8 @@ void VideoInputCore::VideoPreviewManager::Main ()
   }
 }
 
-VideoInputCore::VideoInputCore (Ekiga::Runtime & _runtime, VideoOutputCore& _videooutput_core)
-:  runtime (_runtime),
-   preview_manager(*this, _videooutput_core)
+VideoInputCore::VideoInputCore (VideoOutputCore& _videooutput_core)
+:  preview_manager(*this, _videooutput_core)
 {
   PWaitAndSignal m_var(core_mutex);
   PWaitAndSignal m_set(settings_mutex);

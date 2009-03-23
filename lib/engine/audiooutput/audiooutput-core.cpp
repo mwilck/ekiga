@@ -40,9 +40,8 @@
 
 using namespace Ekiga;
 
-AudioOutputCore::AudioOutputCore (Ekiga::Runtime & _runtime)
-:  runtime (_runtime),
-   audio_event_scheduler(*this)
+AudioOutputCore::AudioOutputCore ()
+:  audio_event_scheduler(*this)
 {
   PWaitAndSignal m_pri(core_mutex[primary]);
   PWaitAndSignal m_sec(core_mutex[secondary]);

@@ -194,7 +194,6 @@ namespace Opal {
       std::list<std::string> subscribed_uris;    // List of subscribed uris
       std::list<std::string> aors;               // List of registered aor
       Ekiga::ServiceCore & core;
-      Ekiga::Runtime* runtime;
       Opal::Bank* bank;
 
       Ekiga::CallProtocolManager::Interface listen_iface;

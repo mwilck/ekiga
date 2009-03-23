@@ -760,18 +760,17 @@ OPENLDAP::Book::refresh_bound ()
 
   if (result <= 0) {
 
-    gmref_ptr<Ekiga::Runtime> runtime = core.get ("runtime");
     if (patience == 3) {
       patience--;
-      runtime->run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_bound), 12);
+      Ekiga::Runtime::run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_bound), 12);
     } else if (patience == 2) {
 
       patience--;
-      runtime->run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_bound), 21);
+      Ekiga::Runtime::run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_bound), 21);
     } else if (patience == 1) {
 
       patience--;
-      runtime->run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_bound), 30);
+      Ekiga::Runtime::run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_bound), 30);
     } else { // patience == 0
 
       status = std::string (_("Could not connect to server"));
@@ -854,21 +853,20 @@ OPENLDAP::Book::refresh_result ()
 
   if (result <= 0) {
 
-    gmref_ptr<Ekiga::Runtime> runtime = core.get ("runtime");
     if (patience == 3) {
 
       patience--;
-      runtime->run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_result),
+      Ekiga::Runtime::run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_result),
 			    12);
     } else if (patience == 2) {
 
       patience--;
-      runtime->run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_result),
+      Ekiga::Runtime::run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_result),
 			    21);
     } else if (patience == 1) {
 
       patience--;
-      runtime->run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_result),
+      Ekiga::Runtime::run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_result),
 			    30);
     } else { // patience == 0
 

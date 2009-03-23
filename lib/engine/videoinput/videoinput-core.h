@@ -104,7 +104,7 @@ namespace Ekiga
        * @param _runtime reference to Ekiga runtime.
        * @param _videooutput_core reference ot the video output core.
        */
-      VideoInputCore (Ekiga::Runtime & _runtime, VideoOutputCore& _videooutput_core);
+      VideoInputCore (VideoOutputCore& _videooutput_core);
 
       /** The destructor
        */
@@ -418,8 +418,6 @@ private:
 
 private:
       std::set<VideoInputManager *> managers;
-
-      Ekiga::Runtime & runtime;
 
       VideoDeviceConfig       preview_config;
       VideoDeviceConfig       stream_config;

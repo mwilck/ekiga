@@ -53,9 +53,8 @@ struct LDAPSpark: public Ekiga::Spark
 			    char** /*argv*/[])
   {
     gmref_ptr<Ekiga::ContactCore> contact_core = core.get ("contact-core");
-    gmref_ptr<Ekiga::Runtime> runtime = core.get ("runtime");
 
-    if (contact_core && runtime) {
+    if (contact_core) {
 
       gmref_ptr<OPENLDAP::Source> service (new OPENLDAP::Source (core));
       core.add (service);

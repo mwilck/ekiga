@@ -36,7 +36,6 @@ libgmframework_la_SOURCES = \
 	$(framework_dir)/form-builder.cpp \
 	$(framework_dir)/form-dumper.cpp \
 	$(framework_dir)/form-request-simple.cpp \
-	$(framework_dir)/runtime-glib.h \
 	$(framework_dir)/runtime-glib.cpp \
 	$(framework_dir)/services.cpp \
 	$(framework_dir)/trigger.h \

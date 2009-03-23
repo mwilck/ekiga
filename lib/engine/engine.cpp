@@ -130,8 +130,7 @@ static Ekiga::ServiceCore *service_core = NULL;
 
 void
 engine_init (int argc,
-             char *argv [],
-             Ekiga::Runtime* runtime)
+             char *argv [])
 {
   service_core = new Ekiga::ServiceCore;
   Ekiga::KickStart kickstart;
@@ -147,20 +146,16 @@ engine_init (int argc,
   gmref_ptr<Ekiga::CallCore> call_core (new Ekiga::CallCore);
   gmref_ptr<Ekiga::ChatCore> chat_core (new Ekiga::ChatCore);
   gmref_ptr<Ekiga::VideoOutputCore> videooutput_core (new Ekiga::VideoOutputCore);
-  gmref_ptr<Ekiga::VideoInputCore> videoinput_core (new Ekiga::VideoInputCore(*runtime, *videooutput_core));
-  gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core (new Ekiga::AudioOutputCore(*runtime));
-  gmref_ptr<Ekiga::AudioInputCore> audioinput_core (new Ekiga::AudioInputCore(*runtime, *audiooutput_core));
+  gmref_ptr<Ekiga::VideoInputCore> videoinput_core (new Ekiga::VideoInputCore(*videooutput_core));
+  gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core (new Ekiga::AudioOutputCore);
+  gmref_ptr<Ekiga::AudioInputCore> audioinput_core (new Ekiga::AudioInputCore(*audiooutput_core));
   gmref_ptr<Ekiga::HalCore> hal_core (new Ekiga::HalCore);
 
 
   /* The last item in the following list will be destroyed first.   *
    * - VideoInputCore must be destroyed before VideoOutputCore since its  *
-   *   PreviewManager may call functions of VideoOutputCore.            *
-   * - The runtime should be destroyed last since other core        *
-   *   components may still call runtime functions until destroyed  *
-   *   (e.g. VideoOutputCore).                                          */
+   *   PreviewManager may call functions of VideoOutputCore.            */
 
-  service_core->add (gmref_ptr<Ekiga::Runtime>(runtime));
   service_core->add (account_core);
   service_core->add (contact_core);
   service_core->add (chat_core);

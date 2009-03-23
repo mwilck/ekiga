@@ -77,11 +77,6 @@ Opal::Call::Call (OpalManager & _manager, Ekiga::ServiceCore & _core)
   : OpalCall (_manager), Ekiga::Call (), core (_core),
     call_setup(false),outgoing(true),jitter(0)
 {
-  {
-    gmref_ptr<Ekiga::Runtime> smart = core.get ("runtime");
-    smart->reference (); // take a reference in the main thread
-    runtime = smart.get ();
-  }
   re_a_bytes = tr_a_bytes = re_v_bytes = tr_v_bytes = 0.0;
   last_v_tick = last_a_tick = PTime ();
   total_a =
@@ -101,7 +96,6 @@ Opal::Call::Call (OpalManager & _manager, Ekiga::ServiceCore & _core)
 
 Opal::Call::~Call ()
 {
-  runtime->unreference (); // leave a reference in the main thead
 }
 
 
@@ -208,9 +202,9 @@ Opal::Call::toggle_stream_pause (StreamType type)
       stream->SetPaused (!paused);
 
       if (paused)
-        runtime->run_in_main (sigc::bind (stream_resumed, stream_name, type));
+	Ekiga::Runtime::run_in_main (sigc::bind (stream_resumed, stream_name, type));
       else
-        runtime->run_in_main (sigc::bind (stream_paused, stream_name, type));
+	Ekiga::Runtime::run_in_main (sigc::bind (stream_paused, stream_name, type));
     }
   }
 }
@@ -376,7 +370,7 @@ Opal::Call::OnEstablished (OpalConnection & connection)
   if (!PIsDescendant(&connection, OpalPCSSConnection)) {
 
     parse_info (connection);
-    runtime->emit_signal_in_main (established);
+    Ekiga::Runtime::emit_signal_in_main (established);
   }
 
   if (PIsDescendant(&connection, OpalRTPConnection)) {
@@ -434,7 +428,7 @@ Opal::Call::OnCleared ()
       && !is_outgoing ()
       && GetCallEndReason () != OpalConnection::EndedByAnswerDenied) {
 
-    runtime->emit_signal_in_main (missed);
+    Ekiga::Runtime::emit_signal_in_main (missed);
   }
   else {
 
@@ -516,7 +510,7 @@ Opal::Call::OnCleared ()
       reason = _("Call completed");
     }
 
-    runtime->emit_signal_in_main (cleared, reason);
+    Ekiga::Runtime::emit_signal_in_main (cleared, reason);
   }
 }
 
@@ -538,7 +532,7 @@ Opal::Call::OnSetUp (OpalConnection & connection)
 {
   parse_info (connection);
 
-  runtime->emit_signal_in_main (setup);
+  Ekiga::Runtime::emit_signal_in_main (setup);
   call_setup = true;
 
   cleared.connect (sigc::mem_fun (this, &Opal::Call::on_cleared_call));
@@ -554,7 +548,7 @@ PBoolean
 Opal::Call::OnAlerting (OpalConnection & connection)
 {
   if (!PIsDescendant(&connection, OpalPCSSConnection))
-    runtime->emit_signal_in_main (ringing);
+    Ekiga::Runtime::emit_signal_in_main (ringing);
 
   return OpalCall::OnAlerting (connection);
 }
@@ -566,9 +560,9 @@ Opal::Call::OnHold (OpalConnection & /*connection*/,
                     bool on_hold)
 {
   if (on_hold)
-    runtime->emit_signal_in_main (held);
+    Ekiga::Runtime::emit_signal_in_main (held);
   else
-    runtime->emit_signal_in_main (retrieved);
+    Ekiga::Runtime::emit_signal_in_main (retrieved);
 }
 
 
@@ -583,7 +577,7 @@ Opal::Call::OnOpenMediaStream (OpalMediaStream & stream)
   std::transform (stream_name.begin (), stream_name.end (), stream_name.begin (), (int (*) (int)) toupper);
   is_transmitting = !stream.IsSource ();
 
-  runtime->run_in_main (sigc::bind (stream_opened, stream_name, type, is_transmitting));
+  Ekiga::Runtime::run_in_main (sigc::bind (stream_opened, stream_name, type, is_transmitting));
 }
 
 
@@ -598,7 +592,7 @@ Opal::Call::OnClosedMediaStream (OpalMediaStream & stream)
   std::transform (stream_name.begin (), stream_name.end (), stream_name.begin (), (int (*) (int)) toupper);
   is_transmitting = !stream.IsSource ();
 
-  runtime->run_in_main (sigc::bind (stream_closed, stream_name, type, is_transmitting));
+  Ekiga::Runtime::run_in_main (sigc::bind (stream_closed, stream_name, type, is_transmitting));
 }
 
 

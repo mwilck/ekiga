@@ -95,10 +95,9 @@ namespace Ekiga
   public:
 
       /** The constructor
-       * @param _runtime reference to Ekiga runtime.
        * @param _videooutput_core reference ot the audio output core.
        */
-      AudioInputCore (Ekiga::Runtime & _runtime, AudioOutputCore& _audio_output_core);
+      AudioInputCore (AudioOutputCore& _audio_output_core);
 
       /** The destructor
       */
@@ -325,7 +324,6 @@ namespace Ekiga
 
   private:
 
-      Ekiga::Runtime & runtime;
       std::set<AudioInputManager *> managers;
 
       DeviceConfig preview_config;

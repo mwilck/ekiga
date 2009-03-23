@@ -45,9 +45,6 @@
 GMAudioInputManager_ptlib::GMAudioInputManager_ptlib (Ekiga::ServiceCore & _core)
 : core (_core)
 {
-  gmref_ptr<Ekiga::Runtime> smart = core.get ("runtime");
-  smart->reference (); // take a reference in the main thread
-  runtime = smart.get ();
   current_state.opened = false;
   input_device = NULL;
   expectedFrameSize = 0;
@@ -55,7 +52,6 @@ GMAudioInputManager_ptlib::GMAudioInputManager_ptlib (Ekiga::ServiceCore & _core
 
 GMAudioInputManager_ptlib::~GMAudioInputManager_ptlib ()
 {
-  runtime->unreference (); // leave a reference in the main thread
 }
 
 void GMAudioInputManager_ptlib::get_devices(std::vector <Ekiga::AudioInputDevice> & devices)
@@ -133,7 +129,7 @@ bool GMAudioInputManager_ptlib::open (unsigned channels, unsigned samplerate, un
 
   if (error_code != Ekiga::AI_ERROR_NONE) {
     PTRACE(1, "GMAudioInputManager_ptlib\tEncountered error " << error_code << " while opening device ");
-    runtime->run_in_main (sigc::bind (device_error.make_slot (), current_state.device, error_code));
+    Ekiga::Runtime::run_in_main (sigc::bind (device_error.make_slot (), current_state.device, error_code));
     return false;
   }
 
@@ -144,7 +140,7 @@ bool GMAudioInputManager_ptlib::open (unsigned channels, unsigned samplerate, un
   Ekiga::AudioInputSettings settings;
   settings.volume = volume;
   settings.modifyable = true;
-  runtime->run_in_main (sigc::bind (device_opened.make_slot (), current_state.device, settings));
+  Ekiga::Runtime::run_in_main (sigc::bind (device_opened.make_slot (), current_state.device, settings));
 
   return true;
 }
@@ -157,7 +153,7 @@ void GMAudioInputManager_ptlib::close()
      input_device = NULL;
   }
   current_state.opened = false;
-  runtime->run_in_main (sigc::bind (device_closed.make_slot (), current_state.device));
+  Ekiga::Runtime::run_in_main (sigc::bind (device_closed.make_slot (), current_state.device));
 }
 
 void GMAudioInputManager_ptlib::set_buffer_size (unsigned buffer_size, unsigned num_buffers)
@@ -188,7 +184,7 @@ bool GMAudioInputManager_ptlib::get_frame_data (char *data,
     }
     if (bytes_read != size) {
       PTRACE(1, "GMAudioInputManager_ptlib\tEncountered error while trying to read data");
-      runtime->run_in_main (sigc::bind (device_error.make_slot (), current_state.device, Ekiga::AI_ERROR_READ));
+      Ekiga::Runtime::run_in_main (sigc::bind (device_error.make_slot (), current_state.device, Ekiga::AI_ERROR_READ));
     }
   }
 

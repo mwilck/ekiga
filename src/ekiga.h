@@ -44,7 +44,7 @@
 #include "common.h"
 
 #include "services.h"
-#include "runtime-glib.h"
+#include "runtime.h"
 
 #include "statusicon.h"
 

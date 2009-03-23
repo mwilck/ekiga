@@ -93,12 +93,6 @@ Opal::H323::EndPoint::EndPoint (Opal::CallManager & _manager, Ekiga::ServiceCore
   uri_prefix = "h323:";
   listen_port = (_listen_port > 0 ? _listen_port : 1720);
 
-  {
-    gmref_ptr<Ekiga::Runtime> smart = core.get ("runtime");
-    smart->reference (); // take a reference in the main thread
-    runtime = smart.get ();
-  }
-
   /* Initial requested bandwidth */
   SetInitialBandwidth (40000);
 
@@ -112,7 +106,6 @@ Opal::H323::EndPoint::EndPoint (Opal::CallManager & _manager, Ekiga::ServiceCore
 
 Opal::H323::EndPoint::~EndPoint ()
 {
-  runtime->unreference ();
 }
 
 bool Opal::H323::EndPoint::populate_menu (gmref_ptr<Ekiga::Contact> contact,
@@ -332,14 +325,14 @@ void Opal::H323::EndPoint::Register (const Opal::Account & account)
         info = _("Failed");
 
       /* Signal */
-      runtime->run_in_main (sigc::bind (sigc::ptr_fun(registration_event_in_main),
+      Ekiga::Runtime::run_in_main (sigc::bind (sigc::ptr_fun(registration_event_in_main),
 					account.registration_event.make_slot (),
 					Ekiga::AccountCore::RegistrationFailed,
 					info));
     }
     else {
 
-      runtime->run_in_main (sigc::bind (sigc::ptr_fun(registration_event_in_main),
+      Ekiga::Runtime::run_in_main (sigc::bind (sigc::ptr_fun(registration_event_in_main),
 					account.registration_event.make_slot (),
 					Ekiga::AccountCore::Registered,
 					std::string ()));
@@ -351,7 +344,7 @@ void Opal::H323::EndPoint::Register (const Opal::Account & account)
     RemoveAliasName (account.get_username ());
 
     /* Signal */
-    runtime->run_in_main (sigc::bind (sigc::ptr_fun(registration_event_in_main),
+    Ekiga::Runtime::run_in_main (sigc::bind (sigc::ptr_fun(registration_event_in_main),
 				      account.registration_event.make_slot (),
 				      Ekiga::AccountCore::Unregistered,
 				      std::string ()));
