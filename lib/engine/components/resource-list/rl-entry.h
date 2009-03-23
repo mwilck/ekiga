@@ -44,6 +44,8 @@
 
 #include <libxml/tree.h>
 
+#include <tr1/memory>
+
 namespace RL {
 
   class Entry:
@@ -56,6 +58,7 @@ namespace RL {
 	   gmref_ptr<XCAP::Path> path_,
 	   int pos,
 	   const std::string group,
+	   std::tr1::shared_ptr<xmlDoc> doc_,
 	   xmlNodePtr node_);
 
     ~Entry ();
@@ -93,7 +96,7 @@ namespace RL {
 
     std::set<std::string> groups;
 
-    xmlDocPtr doc;
+    std::tr1::shared_ptr<xmlDoc> doc;
     xmlNodePtr node;
     xmlNodePtr name_node;
 

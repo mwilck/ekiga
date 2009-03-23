@@ -47,8 +47,9 @@ RL::Entry::Entry (Ekiga::ServiceCore& core_,
 		  gmref_ptr<XCAP::Path> path_,
 		  int pos,
 		  const std::string group,
+		  std::tr1::shared_ptr<xmlDoc> doc_,
 		  xmlNodePtr node_):
-  core(core_), position(pos), doc(NULL), node(node_), name_node(NULL),
+  core(core_), position(pos), doc(doc_), node(node_), name_node(NULL),
   presence("unknown"), status("")
 {
   groups.insert (group);
@@ -76,8 +77,6 @@ RL::Entry::Entry (Ekiga::ServiceCore& core_,
 
 RL::Entry::~Entry ()
 {
-  if (doc != NULL)
-    xmlFreeDoc (doc);
 }
 
 const std::string
@@ -155,9 +154,7 @@ RL::Entry::populate_menu (Ekiga::MenuBuilder& builder)
 void
 RL::Entry::refresh ()
 {
-  if (doc != NULL)
-    xmlFreeDoc (doc);
-  doc = NULL;
+  doc.reset ();
   node = NULL;
   name_node = NULL;
   presence = "unknown";
@@ -178,8 +175,11 @@ RL::Entry::on_xcap_answer (bool error,
 
   } else {
 
-    doc = xmlRecoverMemory (value.c_str (), value.length ());
-    node = xmlDocGetRootElement (doc);
+    doc = std::tr1::shared_ptr<xmlDoc> (xmlRecoverMemory (value.c_str (), value.length ()), xmlFreeDoc);
+    if ( !doc)
+      doc = std::tr1::shared_ptr<xmlDoc> (xmlNewDoc (BAD_CAST "1.0"), xmlFreeDoc);
+
+    node = xmlDocGetRootElement (doc.get ());
     if (node == NULL
 	|| node->name == NULL
 	|| !xmlStrEqual (BAD_CAST "entry", node->name)) {

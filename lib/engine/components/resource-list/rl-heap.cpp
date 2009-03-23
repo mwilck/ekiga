@@ -46,12 +46,13 @@
 #include "rl-heap.h"
 
 RL::Heap::Heap (Ekiga::ServiceCore& services_,
+		std::tr1::shared_ptr<xmlDoc> doc_,
 		xmlNodePtr node_):
   services(services_),
   node(node_), name(NULL),
   root(NULL), user(NULL),
   username(NULL), password(NULL),
-  doc(NULL), list_node(NULL)
+  doc(doc_), list_node(NULL)
 {
   {
     xmlChar* xml_str = NULL;
@@ -99,7 +100,7 @@ RL::Heap::Heap (Ekiga::ServiceCore& services_,
 
   if (name == NULL)
     name = xmlNewChild (node, NULL, BAD_CAST "name",
-			BAD_CAST robust_xmlEscape(node->doc,
+			BAD_CAST robust_xmlEscape(doc.get (),
 						  _("Unnamed")).c_str ());
   if (root == NULL)
     root = xmlNewChild (node, NULL, BAD_CAST "root", BAD_CAST "");
@@ -114,6 +115,7 @@ RL::Heap::Heap (Ekiga::ServiceCore& services_,
 }
 
 RL::Heap::Heap (Ekiga::ServiceCore& services_,
+		std::tr1::shared_ptr<xmlDoc> doc_,
 		const std::string name_,
 		const std::string root_,
 		const std::string user_,
@@ -124,7 +126,7 @@ RL::Heap::Heap (Ekiga::ServiceCore& services_,
   node(NULL), name(NULL),
   root(NULL), user(NULL),
   username(NULL), password(NULL),
-  doc(NULL), list_node(NULL)
+  doc(doc_), list_node(NULL)
 {
   node = xmlNewNode (NULL, BAD_CAST "entry");
   if (writable_)
@@ -163,8 +165,6 @@ RL::Heap::Heap (Ekiga::ServiceCore& services_,
 
 RL::Heap::~Heap ()
 {
-  if (doc != NULL)
-    xmlFreeDoc (doc);
 }
 
 const std::string
@@ -264,9 +264,7 @@ RL::Heap::refresh ()
     presentities.erase (presentities.begin()->first);
   }
 
-  if (doc)
-    xmlFreeDoc (doc);
-  doc = NULL;
+  doc.reset ();
 
   xcap->read (path, sigc::mem_fun (this, &RL::Heap::on_document_received));
 }
@@ -288,9 +286,10 @@ RL::Heap::on_document_received (bool error,
 void
 RL::Heap::parse_doc (std::string raw)
 {
-  doc = xmlRecoverMemory (raw.c_str (), raw.length ());
-
-  xmlNodePtr doc_root = xmlDocGetRootElement (doc);
+  doc = std::tr1::shared_ptr<xmlDoc> (xmlRecoverMemory (raw.c_str (), raw.length ()), xmlFreeDoc);
+  if ( !doc)
+    doc = std::tr1::shared_ptr<xmlDoc> (xmlNewDoc (BAD_CAST "1.0"), xmlFreeDoc);
+  xmlNodePtr doc_root = xmlDocGetRootElement (doc.get ());
 
   if (doc_root == NULL
       || doc_root->name == NULL
@@ -298,8 +297,7 @@ RL::Heap::parse_doc (std::string raw)
 
     std::cout << "Invalid document in " << __PRETTY_FUNCTION__ << std::endl;
     // FIXME: warn the user somehow?
-    xmlFreeDoc (doc);
-    doc = NULL;
+    doc.reset ();
   } else {
 
 
@@ -369,7 +367,7 @@ RL::Heap::parse_list (xmlNodePtr list)
 	&& child->name != NULL
 	&& xmlStrEqual (BAD_CAST ("entry"), child->name)) {
 
-      gmref_ptr<Presentity> presentity(new Presentity (services, path, child, writable));
+      gmref_ptr<Presentity> presentity(new Presentity (services, path, doc, child, writable));
       std::list<sigc::connection> conns;
       conns.push_back (presentity->updated.connect (sigc::bind (presentity_updated.make_slot (),presentity)));
       conns.push_back (presentity->removed.connect (sigc::bind(presentity_removed.make_slot (),presentity)));
@@ -571,10 +569,10 @@ RL::Heap::on_new_entry_form_submitted (bool submitted,
     xmlNodePtr entry_node = xmlNewChild (list_node, NULL,
 					 BAD_CAST "entry", NULL);
     xmlSetProp (entry_node, BAD_CAST "uri",
-		BAD_CAST robust_xmlEscape (doc, entry_uri).c_str ());
+		BAD_CAST robust_xmlEscape (doc.get (), entry_uri).c_str ());
     xmlNewChild (entry_node, NULL, BAD_CAST "display-name",
-		 BAD_CAST robust_xmlEscape (doc, entry_name).c_str ());
-    xmlNsPtr ns = xmlSearchNsByHref (doc, entry_node,
+		 BAD_CAST robust_xmlEscape (doc.get (), entry_name).c_str ());
+    xmlNsPtr ns = xmlSearchNsByHref (doc.get (), entry_node,
 				     BAD_CAST "http://www.ekiga.org");
     if (ns == NULL) {
 
@@ -586,11 +584,11 @@ RL::Heap::on_new_entry_form_submitted (bool submitted,
 	 ++iter) {
 
       xmlNewChild (entry_node, ns, BAD_CAST "group",
-		   BAD_CAST robust_xmlEscape (doc, *iter).c_str ());
+		   BAD_CAST robust_xmlEscape (doc.get (), *iter).c_str ());
     }
 
     xmlBufferPtr buffer = xmlBufferCreate ();
-    int res = xmlNodeDump (buffer, doc, entry_node, 0, 0);
+    int res = xmlNodeDump (buffer, doc.get (), entry_node, 0, 0);
 
     if (res >= 0) {
 

@@ -48,8 +48,9 @@
  * Public API
  */
 Local::Presentity::Presentity (Ekiga::ServiceCore &_core,
+			       std::tr1::shared_ptr<xmlDoc> _doc,
 			       xmlNodePtr _node) :
-  core(_core), node(_node), name_node(NULL), presence("unknown")
+  core(_core), doc(_doc), node(_node), name_node(NULL), presence("unknown")
 {
   xmlChar *xml_str = NULL;
 
@@ -97,10 +98,11 @@ Local::Presentity::Presentity (Ekiga::ServiceCore &_core,
 
 
 Local::Presentity::Presentity (Ekiga::ServiceCore &_core,
+			       std::tr1::shared_ptr<xmlDoc> _doc,
 			       const std::string _name,
 			       const std::string _uri,
 			       const std::set<std::string> _groups) :
-  core(_core), name_node(NULL), name(_name), uri(_uri),
+  core(_core), doc(_doc), name_node(NULL), name(_name), uri(_uri),
   presence("unknown"), groups(_groups)
 {
   node = xmlNewNode (NULL, BAD_CAST "entry");

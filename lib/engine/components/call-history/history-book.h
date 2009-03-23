@@ -36,8 +36,6 @@
 #ifndef __HISTORY_BOOK_H__
 #define __HISTORY_BOOK_H__
 
-#include <libxml/tree.h>
-
 #include "call-core.h"
 #include "call-manager.h"
 
@@ -107,7 +105,7 @@ namespace History
 			  std::string message);
 
     Ekiga::ServiceCore &core;
-    xmlDocPtr doc;
+    std::tr1::shared_ptr<xmlDoc> doc;
   };
 
 /**

@@ -45,8 +45,9 @@
 
 
 History::Contact::Contact (Ekiga::ServiceCore &_core,
+			   std::tr1::shared_ptr<xmlDoc> _doc,
 			   xmlNodePtr _node):
-  core(_core), node(_node)
+  core(_core), doc(_doc), node(_node)
 {
   xmlChar* xml_str = NULL;
   gmref_ptr<Ekiga::ContactCore> contact_core = core.get ("contact-core");
@@ -101,12 +102,13 @@ History::Contact::Contact (Ekiga::ServiceCore &_core,
 
 
 History::Contact::Contact (Ekiga::ServiceCore &_core,
+			   std::tr1::shared_ptr<xmlDoc> _doc,
 			   const std::string _name,
 			   const std::string _uri,
                            time_t _call_start,
                            const std::string _call_duration,
 			   call_type c_t):
-  core(_core), name(_name), uri(_uri), call_start(_call_start), call_duration(_call_duration), m_type(c_t)
+  core(_core), doc(_doc), name(_name), uri(_uri), call_start(_call_start), call_duration(_call_duration), m_type(c_t)
 {
   gchar* tmp = NULL;
   std::string callp;

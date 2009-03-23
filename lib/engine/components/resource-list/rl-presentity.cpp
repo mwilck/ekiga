@@ -48,14 +48,15 @@
 
 RL::Presentity::Presentity (Ekiga::ServiceCore &services_,
 			    gmref_ptr<XCAP::Path> path_,
+			    std::tr1::shared_ptr<xmlDoc> doc_,
 			    xmlNodePtr node_,
 			    bool writable_) :
-  services(services_), node(node_), writable(writable_), name_node(NULL),
-  presence("unknown"), status(""), avatar("")
+  services(services_), doc(doc_), node(node_), writable(writable_),
+  name_node(NULL), presence("unknown"), status(""), avatar("")
 {
   gmref_ptr<Ekiga::PresenceCore> presence_core(services.get ("presence-core"));
   xmlChar *xml_str = NULL;
-  xmlNsPtr ns = xmlSearchNsByHref (node->doc, node,
+  xmlNsPtr ns = xmlSearchNsByHref (doc.get (), node,
 				   BAD_CAST "http://www.ekiga.org");
 
   if (ns == NULL) {
