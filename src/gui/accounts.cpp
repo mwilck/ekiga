@@ -236,13 +236,13 @@ on_registration_event (const Ekiga::Account & account,
   case Ekiga::AccountCore::UnregistrationFailed:
     status = _("Could not unregister");
     if (!info.empty ())
-      status = status + "(" + info + ")";
+      status = status + " (" + info + ")";
     break;
 
   case Ekiga::AccountCore::RegistrationFailed:
     status = _("Could not register");
     if (!info.empty ())
-      status = status + "(" + info + ")";
+      status = status + " (" + info + ")";
     break;
 
   case Ekiga::AccountCore::Processing:
