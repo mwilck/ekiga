@@ -78,7 +78,6 @@
 
   protected:
       Ekiga::ServiceCore & core;
-      Ekiga::Runtime* runtime;
       unsigned expectedFrameSize;
 
       PSoundChannel *input_device;

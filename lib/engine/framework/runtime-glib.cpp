@@ -33,7 +33,11 @@
  *
  */
 
-#include "runtime-glib.h"
+#include "runtime.h"
+
+#include <glib.h>
+
+static GAsyncQueue* queue;
 
 /* implementation of the helper functions
  *
@@ -126,39 +130,33 @@ static GSourceFuncs source_funcs = {
   NULL
 };
 
-Ekiga::GlibRuntime::GlibRuntime ()
+void
+Ekiga::Runtime::init ()
 {
-  struct source *source  = NULL;
+  queue = g_async_queue_new (); // here we get a ref to the queue
 
-  queue = g_async_queue_new (); // this object owns a ref on it
-
-  source = (struct source *)g_source_new (&source_funcs,
+  struct source* source = (struct source *)g_source_new (&source_funcs,
 					  sizeof (struct source));
   source->queue = queue;
-  g_async_queue_ref (source->queue); // the source owns another ref on it
-
+  g_async_queue_ref (queue); // give a ref to the source
   g_source_attach ((GSource *)source, g_main_context_default ());
 }
 
-Ekiga::GlibRuntime::~GlibRuntime ()
+void
+Ekiga::Runtime::run ()
 {
-  quit ();
+}
+
+void
+Ekiga::Runtime::quit ()
+{
   g_async_queue_unref (queue);
+  queue = NULL;
 }
 
 void
-Ekiga::GlibRuntime::run ()
-{
-}
-
-void
-Ekiga::GlibRuntime::quit ()
-{
-}
-
-void
-Ekiga::GlibRuntime::run_in_main (sigc::slot0<void> action,
-				 unsigned int seconds)
+Ekiga::Runtime::run_in_main (sigc::slot0<void> action,
+			     unsigned int seconds)
 {
   g_async_queue_push (queue, (gpointer)(new struct message (action, seconds)));
 }

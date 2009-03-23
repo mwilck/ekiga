@@ -126,7 +126,6 @@ namespace Opal {
 
       CallManager & manager;
       Ekiga::ServiceCore & core;
-      Ekiga::Runtime* runtime;
 
       PMutex gk_name_mutex;
       PString gk_name;

@@ -74,7 +74,6 @@
 
     protected:
       Ekiga::ServiceCore & core;
-      Ekiga::Runtime* runtime;
 
       PAdaptiveDelay adaptive_delay[2];
   };

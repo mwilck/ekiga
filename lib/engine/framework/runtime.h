@@ -57,52 +57,38 @@ static void emit_signal_in_main_helper (sigc::signal0<void> sign)
 namespace Ekiga
 {
 
-/**
- * @addtogroup services
- * @{
- */
+  /**
+   * @addtogroup services
+   * @{
+   */
 
-  class Runtime
-    : public Service
+  namespace Runtime
   {
-  public:
+    void init (); // depends on the implementation
 
-    Runtime ()
-      {}
+    void run (); // depends on the implementation
 
-    virtual ~Runtime ()
-      {}
+    void quit (); // depends on the implementation
 
-    const std::string get_name () const
-      { return "runtime"; }
+    void run_in_main (sigc::slot0<void> action,
+		      unsigned int seconds = 0); // depends on the implementation
 
-    const std::string get_description () const
-      { return "\tObject bringing in the runtime"; }
-
-    virtual void run () = 0;
-
-    virtual void quit () = 0;
-
-    virtual void run_in_main (sigc::slot0<void> action,
-			      unsigned int seconds = 0) = 0;
-    
-
-    void emit_signal_in_main (sigc::signal0<void> sign)
-      {
-        run_in_main (sigc::bind (sigc::ptr_fun (emit_signal_in_main_helper), sign));
-      }
+    inline void emit_signal_in_main (sigc::signal0<void> sign)
+    {
+      run_in_main (sigc::bind (sigc::ptr_fun (emit_signal_in_main_helper), sign));
+    }
 
     template<typename data_type>
     void emit_signal_in_main (sigc::signal1<void, data_type> sign,
                               data_type data)
-      {
-        run_in_main (sigc::bind (sigc::ptr_fun (emit_signal_in_main_helper1<data_type>), sign, data));
-      }
+    {
+      run_in_main (sigc::bind (sigc::ptr_fun (emit_signal_in_main_helper1<data_type>), sign, data));
+    }
   };
 
-/**
- * @}
- */
+  /**
+   * @}
+   */
 
 };
 

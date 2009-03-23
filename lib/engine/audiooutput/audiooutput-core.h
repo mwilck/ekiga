@@ -88,9 +88,8 @@ namespace Ekiga
   public:
 
       /** The constructor
-       * @param _runtime reference to Ekiga runtime.
        */
-      AudioOutputCore (Ekiga::Runtime & _runtime);
+      AudioOutputCore ();
 
       /** The destructor
       */
@@ -337,7 +336,6 @@ namespace Ekiga
       void calculate_average_level (const short *buffer, unsigned size);
 
       std::set<AudioOutputManager *> managers;
-      Ekiga::Runtime & runtime;
 
       typedef struct DeviceConfig {
         bool active;

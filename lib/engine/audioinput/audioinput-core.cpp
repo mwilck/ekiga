@@ -108,9 +108,8 @@ void AudioInputCore::AudioPreviewManager::Main ()
   }*/
 }
 
-AudioInputCore::AudioInputCore (Ekiga::Runtime & _runtime, AudioOutputCore& _audio_output_core)
-:  runtime (_runtime),
-   preview_manager(*this, _audio_output_core)
+AudioInputCore::AudioInputCore (AudioOutputCore& _audio_output_core)
+:  preview_manager(*this, _audio_output_core)
 
 {
   PWaitAndSignal m_var(core_mutex);

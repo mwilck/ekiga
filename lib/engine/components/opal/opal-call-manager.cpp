@@ -141,11 +141,6 @@ CallManager::CallManager (Ekiga::ServiceCore & _core)
   SetMediaFormatMask (PStringArray ());
 
   call_core = core.get ("call-core");
-  {
-    gmref_ptr<Ekiga::Runtime> smart = core.get ("runtime");
-    smart->reference (); // take a reference in the main thread
-    runtime = smart.get ();
-  }
 
   // used to communicate with the StunDetector
 #if GLIB_CHECK_VERSION(2,16,0)
@@ -163,7 +158,6 @@ CallManager::~CallManager ()
   ClearAllCalls (OpalConnection::EndedByLocalUser, true);
 
   g_async_queue_unref (queue);
-  runtime->unreference ();
 }
 
 
@@ -174,7 +168,7 @@ void CallManager::start ()
     // Ready
     new StunDetector (stun_server, *this, queue);
     patience = 20;
-    runtime->run_in_main (sigc::mem_fun (this, &CallManager::HandleSTUNResult), 1);
+    Ekiga::Runtime::run_in_main (sigc::mem_fun (this, &CallManager::HandleSTUNResult), 1);
   } else
     ready.emit ();
 }
@@ -651,7 +645,7 @@ CallManager::DestroyCall (OpalCall *_call)
 {
   Ekiga::Call *call = dynamic_cast<Ekiga::Call *> (_call);
 
-  runtime->emit_signal_in_main(call->removed);
+  Ekiga::Runtime::emit_signal_in_main(call->removed);
 }
 
 
@@ -746,8 +740,8 @@ CallManager::HandleSTUNResult ()
   else {
 
       patience--;
-      runtime->run_in_main (sigc::mem_fun (this, &CallManager::HandleSTUNResult),
-			    1);
+      Ekiga::Runtime::run_in_main (sigc::mem_fun (this, &CallManager::HandleSTUNResult),
+				   1);
   }
 }
 
@@ -757,8 +751,8 @@ CallManager::ReportSTUNError (const std::string error)
   // notice we're in for an infinite loop if nobody ever reports to the user!
   if ( !call_core->errors.handle_request (error)) {
 
-    runtime->run_in_main (sigc::bind (sigc::mem_fun (this, &CallManager::ReportSTUNError),
-				      error),
-			  10);
+    Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &CallManager::ReportSTUNError),
+					     error),
+				 10);
   }
 }

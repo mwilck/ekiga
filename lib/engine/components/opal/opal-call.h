@@ -205,7 +205,6 @@ private:
      * Variables
      */
     Ekiga::ServiceCore & core;
-    Ekiga::Runtime* runtime;
 
 
     bool call_setup;
