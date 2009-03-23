@@ -166,7 +166,7 @@ LibNotify::on_notification_added (gmref_ptr<Ekiga::Notification> notification)
 				   urgency, NULL);
 
   g_signal_connect (notif, "closed",
-		    G_CALLBACK (on_notif_closed), &*notification);
+		    G_CALLBACK (on_notif_closed), notification.get ());
   sigc::connection conn = notification->removed.connect (sigc::bind (sigc::mem_fun (this, &LibNotify::on_notification_removed), notification));
 
   live[notification] = std::pair<sigc::connection, NotifyNotification*> (conn, notif);

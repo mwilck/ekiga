@@ -1009,7 +1009,7 @@ GtkWidget*
 chat_area_new (gmref_ptr<Ekiga::Chat> chat)
 {
   return (GtkWidget*)g_object_new (TYPE_CHAT_AREA,
-				   "chat", &*chat,
+				   "chat", chat.get (),
 				   NULL);
 }
 

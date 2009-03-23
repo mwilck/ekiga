@@ -144,7 +144,7 @@ CallManager::CallManager (Ekiga::ServiceCore & _core)
   {
     gmref_ptr<Ekiga::Runtime> smart = core.get ("runtime");
     smart->reference (); // take a reference in the main thread
-    runtime = &*smart;
+    runtime = smart.get ();
   }
 
   // used to communicate with the StunDetector
@@ -642,7 +642,7 @@ OpalCall *CallManager::CreateCall ()
   gmref_ptr<Opal::Call> call (new Opal::Call (*this, core));
   call_core->add_call (call, gmref_ptr<CallManager>(this));
 
-  return &*call;
+  return call.get ();
 }
 
 

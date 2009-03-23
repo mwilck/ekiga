@@ -352,7 +352,7 @@ book_view_gtk_add_contact (BookViewGtk *self,
   store = GTK_LIST_STORE (model);
 
   gtk_list_store_append (store, &iter);
-  gtk_list_store_set (store, &iter, COLUMN_CONTACT_POINTER, &*contact, -1);
+  gtk_list_store_set (store, &iter, COLUMN_CONTACT_POINTER, contact.get (), -1);
   book_view_gtk_update_contact (self, contact, &iter);
 }
 
@@ -417,7 +417,7 @@ book_view_gtk_find_iter_for_contact (BookViewGtk *view,
       gtk_tree_model_get (model, iter,
                           COLUMN_CONTACT_POINTER, &iter_contact,
                           -1);
-      if (iter_contact == &*contact)
+      if (iter_contact == contact.get ())
         found = TRUE;
 
     } while (!found && gtk_tree_model_iter_next (model, iter));
