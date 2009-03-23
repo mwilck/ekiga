@@ -46,7 +46,7 @@ GMAudioInputManager_ptlib::GMAudioInputManager_ptlib (Ekiga::ServiceCore & _core
 {
   gmref_ptr<Ekiga::Runtime> smart = core.get ("runtime");
   smart->reference (); // take a reference in the main thread
-  runtime = &*smart;
+  runtime = smart.get ();
   current_state.opened = false;
   input_device = NULL;
   expectedFrameSize = 0;

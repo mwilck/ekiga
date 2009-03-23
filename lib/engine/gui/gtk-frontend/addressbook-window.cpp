@@ -449,7 +449,7 @@ addressbook_window_add_book (AddressBookWindow *self,
   gtk_tree_store_set (GTK_TREE_STORE (store), &iter,
                       COLUMN_PIXBUF, icon, 
                       COLUMN_NAME, book->get_name ().c_str (),
-                      COLUMN_BOOK_POINTER, &*book, 
+                      COLUMN_BOOK_POINTER, book.get (), 
                       COLUMN_VIEW, view,
                       -1);
 
@@ -533,7 +533,7 @@ find_iter_for_book (AddressBookWindow *self,
                           COLUMN_BOOK_POINTER, &book_iter,
                           -1);
 
-      if (&*book == book_iter) {
+      if (book.get () == book_iter) {
 
         break;
       }

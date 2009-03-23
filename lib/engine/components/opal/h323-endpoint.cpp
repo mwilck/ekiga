@@ -96,7 +96,7 @@ Opal::H323::EndPoint::EndPoint (Opal::CallManager & _manager, Ekiga::ServiceCore
   {
     gmref_ptr<Ekiga::Runtime> smart = core.get ("runtime");
     smart->reference (); // take a reference in the main thread
-    runtime = &*smart;
+    runtime = smart.get ();
   }
 
   /* Initial requested bandwidth */

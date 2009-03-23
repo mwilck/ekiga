@@ -118,7 +118,7 @@ on_contact_added (gmref_ptr<Ekiga::Contact> contact,
 
   gtk_list_store_prepend (store, &iter);
   gtk_list_store_set (store, &iter,
-		      COLUMN_CONTACT, &*contact,
+		      COLUMN_CONTACT, contact.get (),
 		      COLUMN_PIXBUF, id,
 		      COLUMN_NAME, contact->get_name ().c_str (),
 		      COLUMN_INFO, info.str ().c_str (),

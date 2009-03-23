@@ -91,7 +91,7 @@ Local::ContactDecorator::populate_menu (gmref_ptr<Ekiga::Contact> contact,
     if (!heap->has_presentity_with_uri (uri)) {
 
       builder.add_action ("add", _("Add to local roster"),
-			  sigc::bind (sigc::mem_fun (&*heap, &Local::Heap::new_presentity),
+			  sigc::bind (sigc::mem_fun (heap.get (), &Local::Heap::new_presentity),
 				      contact->get_name (), uri));
       populated = true;
     }

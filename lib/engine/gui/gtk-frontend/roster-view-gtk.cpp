@@ -912,7 +912,7 @@ on_heap_updated (gmref_ptr<Ekiga::Cluster> /*cluster*/,
 
   gtk_tree_store_set (self->priv->store, &iter,
 		      COLUMN_TYPE, TYPE_HEAP,
-		      COLUMN_HEAP, &*heap,
+		      COLUMN_HEAP, heap.get (),
 		      COLUMN_NAME, heap->get_name ().c_str (),
 		      -1);
   gtk_tree_view_expand_all (self->priv->tree_view);
@@ -974,8 +974,8 @@ on_presentity_added (gmref_ptr<Ekiga::Cluster> /*cluster*/,
     gtk_tree_store_set (self->priv->store, &iter,
 			COLUMN_TYPE, TYPE_PRESENTITY,
 			COLUMN_OFFLINE, active,
-			COLUMN_HEAP, &*heap,
-			COLUMN_PRESENTITY, &*presentity,
+			COLUMN_HEAP, heap.get (),
+			COLUMN_PRESENTITY, presentity.get (),
 			COLUMN_NAME, presentity->get_name ().c_str (),
 			COLUMN_STATUS, presentity->get_status ().c_str (),
 			COLUMN_PRESENCE, presentity->get_presence ().c_str (),
@@ -991,8 +991,8 @@ on_presentity_added (gmref_ptr<Ekiga::Cluster> /*cluster*/,
     gtk_tree_store_set (self->priv->store, &iter,
 			COLUMN_TYPE, TYPE_PRESENTITY,
 			COLUMN_OFFLINE, active,
-			COLUMN_HEAP, &*heap,
-			COLUMN_PRESENTITY, &*presentity,
+			COLUMN_HEAP, heap.get (),
+			COLUMN_PRESENTITY, presentity.get (),
 			COLUMN_NAME, presentity->get_name ().c_str (),
 			COLUMN_STATUS, presentity->get_status ().c_str (),
 			COLUMN_PRESENCE, presentity->get_presence ().c_str (),
@@ -1111,7 +1111,7 @@ roster_view_gtk_find_iter_for_heap (RosterViewGtk *view,
     do {
 
       gtk_tree_model_get (model, iter, COLUMN_HEAP, &iter_heap, -1);
-      if (iter_heap == &*heap)
+      if (iter_heap == heap.get ())
 	found = TRUE;
     } while (!found && gtk_tree_model_iter_next (model, iter));
   }
@@ -1151,7 +1151,7 @@ roster_view_gtk_find_iter_for_group (RosterViewGtk *view,
     gtk_tree_store_append (view->priv->store, iter, heap_iter);
     gtk_tree_store_set (view->priv->store, iter,
                         COLUMN_TYPE, TYPE_GROUP,
-			COLUMN_HEAP, &*heap,
+			COLUMN_HEAP, heap.get (),
                         COLUMN_NAME, name.c_str (),
                         -1);
   }
@@ -1175,7 +1175,7 @@ roster_view_gtk_find_iter_for_presentity (RosterViewGtk *view,
     do {
 
       gtk_tree_model_get (model, iter, COLUMN_PRESENTITY, &iter_presentity, -1);
-      if (iter_presentity == &*presentity)
+      if (iter_presentity == presentity.get ())
 	found = TRUE;
     } while (!found && gtk_tree_model_iter_next (model, iter));
   }

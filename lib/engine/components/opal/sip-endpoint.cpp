@@ -134,12 +134,12 @@ Opal::Sip::EndPoint::EndPoint (Opal::CallManager & _manager,
   {
     gmref_ptr<Ekiga::Runtime> smart = core.get ("runtime");
     smart->reference (); // take a reference in the main thread
-    runtime = &*smart;
+    runtime = smart.get ();
   }
   {
     gmref_ptr<Opal::Bank> smart = core.get ("opal-account-store");
     smart->reference (); // take a reference in the main thread
-    bank = &*smart;
+    bank = smart.get ();
   }
 
 

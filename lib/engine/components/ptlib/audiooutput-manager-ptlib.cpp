@@ -45,7 +45,7 @@ GMAudioOutputManager_ptlib::GMAudioOutputManager_ptlib (Ekiga::ServiceCore & _co
 {
   gmref_ptr<Ekiga::Runtime> smart = core.get ("runtime");
   smart->reference (); // take a reference in the main thread
-  runtime = &*smart;
+  runtime = smart.get ();
   current_state[Ekiga::primary].opened = false;
   current_state[Ekiga::secondary].opened = false;
   output_device[Ekiga::primary] = NULL;

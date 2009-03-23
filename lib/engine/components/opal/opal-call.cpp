@@ -80,7 +80,7 @@ Opal::Call::Call (OpalManager & _manager, Ekiga::ServiceCore & _core)
   {
     gmref_ptr<Ekiga::Runtime> smart = core.get ("runtime");
     smart->reference (); // take a reference in the main thread
-    runtime = &*smart;
+    runtime = smart.get ();
   }
   re_a_bytes = tr_a_bytes = re_v_bytes = tr_v_bytes = 0.0;
   last_v_tick = last_a_tick = PTime ();

@@ -252,6 +252,6 @@ GtkWidget*
 presentity_view_new (gmref_ptr<Ekiga::Presentity> presentity)
 {
   return (GtkWidget*)g_object_new (TYPE_PRESENTITY_VIEW,
-				   "presentity", &*presentity,
+				   "presentity", presentity.get (),
 				   NULL);
 }

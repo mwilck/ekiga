@@ -90,7 +90,7 @@ PVideoOutputDevice_EKIGA::PVideoOutputDevice_EKIGA (Ekiga::ServiceCore & _core)
  {
    gmref_ptr<Ekiga::VideoOutputCore> smart = core.get ("videooutput-core");
    smart->reference (); // take a reference in the main thread
-   videooutput_core = &*smart;
+   videooutput_core = smart.get ();
  }
 
   is_active = FALSE;

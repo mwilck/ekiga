@@ -46,7 +46,7 @@ GMVideoInputManager_mlogo::GMVideoInputManager_mlogo (Ekiga::ServiceCore & _core
 {
   gmref_ptr<Ekiga::Runtime> smart = core.get ("runtime");
   smart->reference (); // keep a reference in the main thread
-  runtime = &*smart;
+  runtime = smart.get ();
   current_state.opened  = false;
 }
 
