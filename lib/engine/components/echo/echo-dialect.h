@@ -64,6 +64,9 @@ namespace Echo
 
     void new_chat ();
   };
+
+  typedef gmref_ptr<Dialect> DialectPtr;
+
 };
 
 #endif

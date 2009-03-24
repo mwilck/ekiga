@@ -79,6 +79,9 @@ namespace SIP
     Ekiga::PresentityPtr presentity;
     std::string uri;
   };
+
+  typedef gmref_ptr<SimpleChat> SimpleChatPtr;
+
 };
 
 #endif

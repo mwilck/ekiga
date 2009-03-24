@@ -66,6 +66,9 @@ namespace Echo
     std::list<gmref_ptr<Ekiga::ChatObserver> > observers;
     PresentityPtr presentity;
   };
+
+  typedef gmref_ptr<SimpleChat> SimpleChatPtr;
+
 };
 
 #endif

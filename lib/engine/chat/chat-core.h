@@ -88,23 +88,23 @@ namespace Ekiga
     /** Adds a dialect to the ContactCore service.
      * @param The dialect to be added.
      */
-    void add_dialect (gmref_ptr<Dialect> dialect);
+    void add_dialect (DialectPtr dialect);
 
     /** Triggers a callback for all Ekiga::Dialect dialects of the
      * ChatCore service.
      * @param The callback (the return value means "go on" and allows stopping
      * the visit)
      */
-    void visit_dialects (sigc::slot1<bool, gmref_ptr<Dialect> > visitor);
+    void visit_dialects (sigc::slot1<bool, DialectPtr > visitor);
 
     /** This signal is emitted when an Ekiga::Dialect has been added to
      * the ChatCore service.
      */
-    sigc::signal1<void, gmref_ptr<Dialect> > dialect_added;
+    sigc::signal1<void, DialectPtr > dialect_added;
 
   private:
 
-    std::list<gmref_ptr<Dialect> > dialects;
+    std::list<DialectPtr > dialects;
 
     /*** Misc ***/
   public:
