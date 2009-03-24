@@ -108,7 +108,7 @@ Opal::H323::EndPoint::~EndPoint ()
 {
 }
 
-bool Opal::H323::EndPoint::populate_menu (gmref_ptr<Ekiga::Contact> contact,
+bool Opal::H323::EndPoint::populate_menu (Ekiga::ContactPtr contact,
                                           std::string uri,
                                           Ekiga::MenuBuilder &builder)
 {

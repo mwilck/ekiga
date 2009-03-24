@@ -69,7 +69,7 @@ destroy_connections (gpointer data,
 
 /* react to a new call being inserted in history */
 static void
-on_contact_added (gmref_ptr<Ekiga::Contact> contact,
+on_contact_added (Ekiga::ContactPtr contact,
 		  GtkListStore *store)
 {
   time_t t;
