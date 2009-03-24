@@ -84,7 +84,7 @@ static GObjectClass *parent_class = NULL;
  * BEHAVIOR     : Update the BookView.
  * PRE          : The gpointer must point to the BookViewGtk GObject.
  */
-static void on_contact_added (gmref_ptr<Ekiga::Contact> contact,
+static void on_contact_added (Ekiga::ContactPtr contact,
 			      gpointer data);
 
 
@@ -92,7 +92,7 @@ static void on_contact_added (gmref_ptr<Ekiga::Contact> contact,
  * BEHAVIOR     : Update the BookView.
  * PRE          : The gpointer must point to the BookViewGtk GObject.
  */
-static void on_contact_updated (gmref_ptr<Ekiga::Contact> contact,
+static void on_contact_updated (Ekiga::ContactPtr contact,
 				gpointer data);
 
 
@@ -107,7 +107,7 @@ static void on_updated (gpointer data);
  * BEHAVIOR     : Update the BookView.
  * PRE          : The gpointer must point to the BookViewGtk GObject.
  */
-static void on_contact_removed (gmref_ptr<Ekiga::Contact> contact,
+static void on_contact_removed (Ekiga::ContactPtr contact,
 				gpointer data);
 
 
@@ -155,7 +155,7 @@ static gint on_contact_clicked (GtkWidget *tree_view,
  */
 static void
 book_view_gtk_add_contact (BookViewGtk *self,
-                           gmref_ptr<Ekiga::Contact> contact);
+                           Ekiga::ContactPtr contact);
 
 
 /* DESCRIPTION  : /
@@ -164,7 +164,7 @@ book_view_gtk_add_contact (BookViewGtk *self,
  */
 static void
 book_view_gtk_update_contact (BookViewGtk *self,
-                              gmref_ptr<Ekiga::Contact> contact,
+                              Ekiga::ContactPtr contact,
                               GtkTreeIter *iter);
 
 
@@ -174,7 +174,7 @@ book_view_gtk_update_contact (BookViewGtk *self,
  */
 static void
 book_view_gtk_remove_contact (BookViewGtk *self,
-                              gmref_ptr<Ekiga::Contact> contact);
+                              Ekiga::ContactPtr contact);
 
 
 /* DESCRIPTION  : /
@@ -184,14 +184,14 @@ book_view_gtk_remove_contact (BookViewGtk *self,
  */
 static gboolean
 book_view_gtk_find_iter_for_contact (BookViewGtk *view,
-                                     gmref_ptr<Ekiga::Contact> contact,
+                                     Ekiga::ContactPtr contact,
                                      GtkTreeIter *iter);
 
 
 
 /* Implementation of the callbacks */
 static void
-on_contact_added (gmref_ptr<Ekiga::Contact> contact,
+on_contact_added (Ekiga::ContactPtr contact,
 		  gpointer data)
 {
   book_view_gtk_add_contact (BOOK_VIEW_GTK (data), contact);
@@ -199,7 +199,7 @@ on_contact_added (gmref_ptr<Ekiga::Contact> contact,
 
 
 static void
-on_contact_updated (gmref_ptr<Ekiga::Contact> contact,
+on_contact_updated (Ekiga::ContactPtr contact,
 		    gpointer data)
 {
   BookViewGtk *view = NULL;
@@ -232,7 +232,7 @@ on_updated (gpointer data)
 
 
 static void
-on_contact_removed (gmref_ptr<Ekiga::Contact> contact,
+on_contact_removed (Ekiga::ContactPtr contact,
 		    gpointer data)
 {
   BookViewGtk *view = NULL;
@@ -342,7 +342,7 @@ on_contact_clicked (GtkWidget *tree_view,
 /* Implementation of the static functions */
 static void
 book_view_gtk_add_contact (BookViewGtk *self,
-                           gmref_ptr<Ekiga::Contact> contact)
+                           Ekiga::ContactPtr contact)
 {
   GtkTreeModel *model = NULL;
   GtkListStore *store = NULL;
@@ -359,7 +359,7 @@ book_view_gtk_add_contact (BookViewGtk *self,
 
 static void
 book_view_gtk_update_contact (BookViewGtk *self,
-			      gmref_ptr<Ekiga::Contact> contact,
+			      Ekiga::ContactPtr contact,
 			      GtkTreeIter *iter)
 {
   GdkPixbuf *icon = NULL;
@@ -382,7 +382,7 @@ book_view_gtk_update_contact (BookViewGtk *self,
 
 static void
 book_view_gtk_remove_contact (BookViewGtk *self,
-                              gmref_ptr<Ekiga::Contact> contact)
+                              Ekiga::ContactPtr contact)
 {
   GtkTreeModel *model = NULL;
   GtkListStore *store = NULL;
@@ -401,7 +401,7 @@ book_view_gtk_remove_contact (BookViewGtk *self,
 
 static gboolean
 book_view_gtk_find_iter_for_contact (BookViewGtk *view,
-                                     gmref_ptr<Ekiga::Contact> contact,
+                                     Ekiga::ContactPtr contact,
                                      GtkTreeIter *iter)
 {
   GtkTreeModel *model = NULL;

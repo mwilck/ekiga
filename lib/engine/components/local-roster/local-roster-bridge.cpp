@@ -66,7 +66,7 @@ namespace Local
     const std::string get_description () const
     { return "\tComponent to push contacts into the local roster"; }
 
-    bool populate_menu (gmref_ptr<Ekiga::Contact> contact,
+    bool populate_menu (Ekiga::ContactPtr contact,
 			const std::string uri,
 			Ekiga::MenuBuilder &builder);
 
@@ -78,7 +78,7 @@ namespace Local
 
 
 bool
-Local::ContactDecorator::populate_menu (gmref_ptr<Ekiga::Contact> contact,
+Local::ContactDecorator::populate_menu (Ekiga::ContactPtr contact,
 					const std::string uri,
 					Ekiga::MenuBuilder &builder)
 {

@@ -111,6 +111,8 @@ namespace Ekiga
     ChainOfResponsibility<FormRequest*> questions;
   };
 
+
+  typedef gmref_ptr<Contact> ContactPtr;
 /**
  * @}
  */

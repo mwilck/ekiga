@@ -84,7 +84,7 @@ KAB::Contact::populate_menu (Ekiga::MenuBuilder &builder)
 
     std::string precision = (*iter).typeLabel ().toUtf8 ().constData ();
     result = result
-      || core.populate_contact_menu (gmref_ptr<Ekiga::Contact>(this),
+      || core.populate_contact_menu (Ekiga::ContactPtr(this),
 				     (*iter).number ().toUtf8 ().constData (),
 				     builder);
   }
