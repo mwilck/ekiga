@@ -51,7 +51,7 @@
  */
 struct _BookViewGtkPrivate
 {
-  _BookViewGtkPrivate (gmref_ptr<Ekiga::Book> book_) : book (book_) { }
+  _BookViewGtkPrivate (Ekiga::BookPtr book_) : book (book_) { }
 
   GtkTreeView *tree_view;
   GtkWidget *vbox;
@@ -59,7 +59,7 @@ struct _BookViewGtkPrivate
   GtkWidget *statusbar;
   GtkWidget *scrolled_window;
 
-  gmref_ptr<Ekiga::Book> book;
+  Ekiga::BookPtr book;
   std::list<sigc::connection> connections;
 };
 
@@ -523,7 +523,7 @@ book_view_gtk_get_type ()
 
 /* public methods implementation */
 GtkWidget *
-book_view_gtk_new (gmref_ptr<Ekiga::Book> book)
+book_view_gtk_new (Ekiga::BookPtr book)
 {
   BookViewGtk *result = NULL;
 

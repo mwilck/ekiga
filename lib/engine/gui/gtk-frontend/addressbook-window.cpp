@@ -104,7 +104,7 @@ static void on_source_added (gmref_ptr<Ekiga::Source> source,
  * BEHAVIOR     : 
  * PRE          : The given GtkWidget pointer must be an SearchBook GObject.
  */
-static bool visit_books (gmref_ptr<Ekiga::Book> book,
+static bool visit_books (Ekiga::BookPtr book,
 			 gmref_ptr<Ekiga::Source> source,
 			 gpointer data);
 
@@ -115,7 +115,7 @@ static bool visit_books (gmref_ptr<Ekiga::Book> book,
  * PRE          : The given GtkWidget pointer must be an SearchBook GObject.
  */
 static void on_book_added (gmref_ptr<Ekiga::Source> source,
-			   gmref_ptr<Ekiga::Book> book,
+			   Ekiga::BookPtr book,
                            gpointer data);
 
 
@@ -125,7 +125,7 @@ static void on_book_added (gmref_ptr<Ekiga::Source> source,
  * PRE          : The given GtkWidget pointer must be an SearchBook GObject.
  */
 static void on_book_removed (gmref_ptr<Ekiga::Source> source,
-			     gmref_ptr<Ekiga::Book> book,
+			     Ekiga::BookPtr book,
                              gpointer data);
 
 
@@ -135,7 +135,7 @@ static void on_book_removed (gmref_ptr<Ekiga::Source> source,
  * PRE          : The given GtkWidget pointer must be an SearchBook GObject.
  */
 static void on_book_updated (gmref_ptr<Ekiga::Source> source,
-			     gmref_ptr<Ekiga::Book> book,
+			     Ekiga::BookPtr book,
                              gpointer data);
 
 /* DESCRIPTION  : Called when the ContactCore has a form request
@@ -187,7 +187,7 @@ static gint on_book_clicked (GtkWidget *tree_view,
  * PRE          : /
  */
 static void addressbook_window_add_book (AddressBookWindow * self,
-                                         gmref_ptr<Ekiga::Book> book);
+                                         Ekiga::BookPtr book);
 
 
 /* DESCRIPTION  : /
@@ -196,7 +196,7 @@ static void addressbook_window_add_book (AddressBookWindow * self,
  * PRE          : /
  */
 static void addressbook_window_update_book (AddressBookWindow *self,
-                                            gmref_ptr<Ekiga::Book> book);
+                                            Ekiga::BookPtr book);
 
 
 /* DESCRIPTION  : /
@@ -204,7 +204,7 @@ static void addressbook_window_update_book (AddressBookWindow *self,
  * PRE          : /
  */
 static void addressbook_window_remove_book (AddressBookWindow *self,
-                                            gmref_ptr<Ekiga::Book> book);
+                                            Ekiga::BookPtr book);
 
 
 /* DESCRIPTION  : /
@@ -215,7 +215,7 @@ static void addressbook_window_remove_book (AddressBookWindow *self,
  * PRE          : /
  */
 static gboolean find_iter_for_book (AddressBookWindow *addressbook_window,
-                                    gmref_ptr<Ekiga::Book> book,
+                                    Ekiga::BookPtr book,
                                     GtkTreeIter *iter);
 
 
@@ -259,7 +259,7 @@ on_source_added (gmref_ptr<Ekiga::Source> source,
 }
 
 
-static bool visit_books (gmref_ptr<Ekiga::Book> book,
+static bool visit_books (Ekiga::BookPtr book,
 			 gmref_ptr<Ekiga::Source> source,
 			 gpointer data)
 {
@@ -271,7 +271,7 @@ static bool visit_books (gmref_ptr<Ekiga::Book> book,
 
 static void
 on_book_added (gmref_ptr<Ekiga::Source> /*source*/,
-	       gmref_ptr<Ekiga::Book> book,
+	       Ekiga::BookPtr book,
                gpointer data)
 {
   addressbook_window_add_book (ADDRESSBOOK_WINDOW (data), book);
@@ -280,7 +280,7 @@ on_book_added (gmref_ptr<Ekiga::Source> /*source*/,
 
 static void
 on_book_removed (gmref_ptr<Ekiga::Source> /*source*/,
-		 gmref_ptr<Ekiga::Book> book,
+		 Ekiga::BookPtr book,
                  gpointer data)
 {
   addressbook_window_remove_book (ADDRESSBOOK_WINDOW (data), book);
@@ -289,7 +289,7 @@ on_book_removed (gmref_ptr<Ekiga::Source> /*source*/,
 
 static void
 on_book_updated (gmref_ptr<Ekiga::Source> /*source*/,
-		 gmref_ptr<Ekiga::Book> book,
+		 Ekiga::BookPtr book,
                  gpointer data)
 {
   addressbook_window_update_book (ADDRESSBOOK_WINDOW (data), book);
@@ -422,7 +422,7 @@ on_book_clicked (GtkWidget *tree_view,
 /* Implementation of the private functions */
 static void
 addressbook_window_add_book (AddressBookWindow *self,
-                             gmref_ptr<Ekiga::Book> book)
+                             Ekiga::BookPtr book)
 {
   GtkTreeIter iter;
   GtkTreeModel *store = NULL;
@@ -465,7 +465,7 @@ addressbook_window_add_book (AddressBookWindow *self,
 
 static void
 addressbook_window_update_book (AddressBookWindow *self,
-                                gmref_ptr<Ekiga::Book> book)
+                                Ekiga::BookPtr book)
 {
   GtkTreeIter iter;
   GtkTreeModel *store = NULL;
@@ -480,7 +480,7 @@ addressbook_window_update_book (AddressBookWindow *self,
 
 static void
 addressbook_window_remove_book (AddressBookWindow *self,
-                                gmref_ptr<Ekiga::Book> book)
+                                Ekiga::BookPtr book)
 {
   GtkTreeIter iter;
   gint page = -1;
@@ -517,7 +517,7 @@ addressbook_window_remove_book (AddressBookWindow *self,
 
 static gboolean
 find_iter_for_book (AddressBookWindow *self,
-                    gmref_ptr<Ekiga::Book> book,
+                    Ekiga::BookPtr book,
                     GtkTreeIter *iter)
 {
   Ekiga::Book *book_iter = NULL;

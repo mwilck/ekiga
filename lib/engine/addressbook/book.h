@@ -135,6 +135,8 @@ namespace Ekiga {
      */
     ChainOfResponsibility<FormRequest*> questions;
   };
+
+  typedef gmref_ptr<Book> BookPtr;
 };
 
 #endif
