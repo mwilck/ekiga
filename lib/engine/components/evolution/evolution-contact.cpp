@@ -217,7 +217,7 @@ Evolution::Contact::populate_menu (Ekiga::MenuBuilder &builder)
       std::string attr_value = get_attribute_value (attr_type);
       if ( !attr_value.empty ()) {
 
-	if (core->populate_contact_menu (gmref_ptr<Contact>(this),
+	if (core->populate_contact_menu (ContactPtr(this),
 					 attr_value, tmp_builder)) {
 
 	  builder.add_ghost ("", get_attribute_name_from_type (attr_type));

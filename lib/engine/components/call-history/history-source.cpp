@@ -63,7 +63,7 @@ History::Source::populate_menu (Ekiga::MenuBuilder &)
   return false;
 }
 
-gmref_ptr<History::Book>
+History::BookPtr
 History::Source::get_book () const
 {
   return book;

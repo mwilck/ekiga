@@ -110,6 +110,8 @@ namespace History
     call_type m_type;
   };
 
+  typedef gmref_ptr<Contact> ContactPtr;
+
 /**
  * @}
  */

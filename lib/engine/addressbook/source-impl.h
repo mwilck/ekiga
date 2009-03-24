@@ -100,7 +100,7 @@ namespace Ekiga
      * @param The callback (the return value means "go on" and allows
      *  stopping the visit)
      */
-    void visit_books (sigc::slot1<bool, gmref_ptr<Book> > visitor);
+    void visit_books (sigc::slot1<bool, BookPtr > visitor);
 
   protected:
 
@@ -196,7 +196,7 @@ Ekiga::SourceImpl<BookType>::~SourceImpl ()
 
 template<typename BookType>
 void
-Ekiga::SourceImpl<BookType>::visit_books (sigc::slot1<bool, gmref_ptr<Book> > visitor)
+Ekiga::SourceImpl<BookType>::visit_books (sigc::slot1<bool, BookPtr > visitor)
 {
   RefLister<BookType>::visit_objects (visitor);
 }

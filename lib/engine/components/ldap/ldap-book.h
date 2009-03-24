@@ -126,7 +126,7 @@ namespace OPENLDAP
     void refresh_bound ();
     void refresh_result ();
 
-    gmref_ptr<Contact> parse_result(struct ldapmsg *);
+    ContactPtr parse_result(struct ldapmsg *);
 
     void parse_uri();
 
@@ -151,6 +151,8 @@ namespace OPENLDAP
     std::string status;
     std::string search_filter;
   };
+
+  typedef gmref_ptr<Book> BookPtr;
 
 /**
  * @}

@@ -74,10 +74,10 @@ fix_to_utf8 (const std::string str)
 }
 
 /* parses a message to construct a nice contact */
-gmref_ptr<OPENLDAP::Contact>
+OPENLDAP::ContactPtr
 OPENLDAP::Book::parse_result (LDAPMessage* message)
 {
-  gmref_ptr<Contact> result;
+  ContactPtr result;
   BerElement *ber = NULL;
   struct berval bv, *bvals;
   std::string username;
@@ -110,7 +110,7 @@ OPENLDAP::Book::parse_result (LDAPMessage* message)
 
   if (!username.empty () && !call_addresses.empty()) {
 
-    result = gmref_ptr<Contact>(new Contact (core, fix_to_utf8 (username), call_addresses));
+    result = ContactPtr(new Contact (core, fix_to_utf8 (username), call_addresses));
   }
 
   return result;
@@ -890,7 +890,7 @@ OPENLDAP::Book::refresh_result ()
 
     if (ldap_msgtype (msg_result) == LDAP_RES_SEARCH_ENTRY) {
 
-      gmref_ptr<Contact> contact = parse_result (msg_result);
+      ContactPtr contact = parse_result (msg_result);
       if (contact) {
 	add_contact (contact);
         nbr++;

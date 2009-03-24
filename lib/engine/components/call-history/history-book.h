@@ -108,6 +108,8 @@ namespace History
     std::tr1::shared_ptr<xmlDoc> doc;
   };
 
+  typedef gmref_ptr<Book> BookPtr;
+
 /**
  * @}
  */
