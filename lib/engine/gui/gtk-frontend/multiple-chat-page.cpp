@@ -133,7 +133,7 @@ multiple_chat_page_get_type ()
 /* implementation of the public api */
 
 GtkWidget*
-multiple_chat_page_new (gmref_ptr<Ekiga::MultipleChat> chat)
+multiple_chat_page_new (Ekiga::MultipleChatPtr chat)
 {
   MultipleChatPage* result = NULL;
   GtkWidget* area = NULL;

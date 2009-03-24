@@ -70,10 +70,13 @@ namespace SIP
     /* the strings are : uri then msg */
     sigc::slot2<bool, std::string, std::string> sender;
 
-    gmref_ptr<SimpleChat> open_chat_with (std::string uri,
+    SimpleChatPtr open_chat_with (std::string uri,
 					  std::string name,
 					  bool user_request);
   };
+
+  typedef gmref_ptr<Dialect> DialectPtr;
+
 };
 
 #endif

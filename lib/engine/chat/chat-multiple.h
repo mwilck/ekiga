@@ -60,6 +60,8 @@ namespace Ekiga
     virtual HeapPtr get_heap () const = 0;
   };
 
+  typedef gmref_ptr<MultipleChat> MultipleChatPtr;
+
 };
 
 #endif

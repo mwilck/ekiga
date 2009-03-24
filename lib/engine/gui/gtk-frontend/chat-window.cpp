@@ -88,11 +88,11 @@ static void on_message_notice_event (GtkWidget* page,
 				     gpointer data);
 
 static bool on_dialect_added (ChatWindow* self,
-			      gmref_ptr<Ekiga::Dialect> dialect);
+			      Ekiga::DialectPtr dialect);
 static bool on_simple_chat_added (ChatWindow* self,
-				  gmref_ptr<Ekiga::SimpleChat> chat);
+				  Ekiga::SimpleChatPtr chat);
 static bool on_multiple_chat_added (ChatWindow* self,
-				    gmref_ptr<Ekiga::MultipleChat> chat);
+				    Ekiga::MultipleChatPtr chat);
 static void on_some_chat_user_requested (ChatWindow* self,
 					 GtkWidget* page);
 
@@ -265,7 +265,7 @@ on_message_notice_event (GtkWidget* page,
 
 static bool
 on_dialect_added (ChatWindow* self,
-		  gmref_ptr<Ekiga::Dialect> dialect)
+		  Ekiga::DialectPtr dialect)
 {
   self->priv->connections.push_front (dialect->simple_chat_added.connect (sigc::hide_return (sigc::bind<0> (sigc::ptr_fun (on_simple_chat_added), self))));
   self->priv->connections.push_front (dialect->multiple_chat_added.connect (sigc::hide_return (sigc::bind<0> (sigc::ptr_fun (on_multiple_chat_added), self))));
@@ -278,7 +278,7 @@ on_dialect_added (ChatWindow* self,
 
 static bool
 on_simple_chat_added (ChatWindow* self,
-		      gmref_ptr<Ekiga::SimpleChat> chat)
+		      Ekiga::SimpleChatPtr chat)
 {
   GtkWidget* page = NULL;
   GtkWidget* hbox = NULL;
@@ -326,7 +326,7 @@ on_simple_chat_added (ChatWindow* self,
 
 static bool
 on_multiple_chat_added (ChatWindow* self,
-			gmref_ptr<Ekiga::MultipleChat> chat)
+			Ekiga::MultipleChatPtr chat)
 {
   GtkWidget* page = NULL;
   GtkWidget* label = NULL;

@@ -54,7 +54,7 @@ SIP::Dialect::push_message (const std::string uri,
 			    const std::string name,
 			    const std::string msg)
 {
-  gmref_ptr<SimpleChat> chat;
+  SimpleChatPtr chat;
 
   chat = open_chat_with (uri, name, false);
 
@@ -66,7 +66,7 @@ SIP::Dialect::push_notice (const std::string uri,
 			   const std::string name,
 			   const std::string msg)
 {
-  gmref_ptr<SimpleChat> chat;
+  SimpleChatPtr chat;
 
   chat = open_chat_with (uri, name, false);
 
@@ -91,7 +91,7 @@ SIP::Dialect::open_chat_with (std::string uri,
 			      std::string name,
 			      bool user_request)
 {
-  gmref_ptr<SimpleChat> result;
+  SimpleChatPtr result;
 
   for (simple_iterator iter = simple_begin ();
        iter != simple_end ();
@@ -101,7 +101,7 @@ SIP::Dialect::open_chat_with (std::string uri,
 
   if ( !result) {
 
-    result = gmref_ptr<SimpleChat> (new SimpleChat (core, name, uri, sigc::bind<0>(sender, uri)));
+    result = SimpleChatPtr (new SimpleChat (core, name, uri, sigc::bind<0>(sender, uri)));
     add_simple_chat (result);
   }
 

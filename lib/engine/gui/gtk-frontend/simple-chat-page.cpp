@@ -162,7 +162,7 @@ simple_chat_page_get_type ()
 /* implementation of the public api */
 
 GtkWidget*
-simple_chat_page_new (gmref_ptr<Ekiga::SimpleChat> chat)
+simple_chat_page_new (Ekiga::SimpleChatPtr chat)
 {
   SimpleChatPage* result = NULL;
   GtkWidget* presentity_view = NULL;

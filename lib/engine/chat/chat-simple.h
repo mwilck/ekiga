@@ -60,6 +60,7 @@ namespace Ekiga
     virtual PresentityPtr get_presentity () const = 0;
   };
 
+  typedef gmref_ptr<SimpleChat> SimpleChatPtr;
 };
 
 #endif
