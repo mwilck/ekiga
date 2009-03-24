@@ -72,13 +72,13 @@ namespace Local
 
     const std::set<std::string> existing_groups () const;
 
-    gmref_ptr<Heap> get_heap ()
+    HeapPtr get_heap ()
     { return heap; }
 
   private:
 
     Ekiga::ServiceCore &core;
-    gmref_ptr<Heap> heap;
+    HeapPtr heap;
 
     void on_new_presentity ();
 
@@ -89,6 +89,7 @@ namespace Local
 			     std::string status);
   };
 
+  typedef gmref_ptr<Cluster> ClusterPtr;
 /**
  * @}
  */

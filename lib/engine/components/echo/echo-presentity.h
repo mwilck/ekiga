@@ -64,6 +64,8 @@ namespace Echo
     bool populate_menu (Ekiga::MenuBuilder &);
   };
 
+  typedef gmref_ptr<Presentity> PresentityPtr;
+
 };
 
 #endif

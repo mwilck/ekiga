@@ -53,7 +53,7 @@ namespace Local
   {
   public:
 
-    ContactDecorator (gmref_ptr<Cluster> _cluster): cluster(_cluster)
+    ContactDecorator (ClusterPtr _cluster): cluster(_cluster)
     {}
 
     ~ContactDecorator ()
@@ -72,7 +72,7 @@ namespace Local
 
   private:
 
-    gmref_ptr<Cluster> cluster;
+    ClusterPtr cluster;
   };
 };
 
@@ -86,7 +86,7 @@ Local::ContactDecorator::populate_menu (Ekiga::ContactPtr contact,
 
   if (cluster->is_supported_uri (uri)) {
 
-    gmref_ptr<Heap> heap(cluster->get_heap ());
+    HeapPtr heap(cluster->get_heap ());
 
     if (!heap->has_presentity_with_uri (uri)) {
 

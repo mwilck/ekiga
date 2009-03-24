@@ -193,6 +193,8 @@ namespace Local
     std::set<std::string> groups;
   };
 
+  typedef gmref_ptr<Presentity> PresentityPtr;
+
 /**
  * @}
  */

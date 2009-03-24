@@ -41,7 +41,7 @@ class PresentityViewHelper;
 
 struct _PresentityViewPrivate
 {
-  gmref_ptr<Ekiga::Presentity> presentity;
+  Ekiga::PresentityPtr presentity;
   sigc::connection updated_conn;
   sigc::connection removed_conn;
 
@@ -66,7 +66,7 @@ static void on_presentity_removed (PresentityView* self);
 /* declaration of internal api */
 
 static void presentity_view_set_presentity (PresentityView* self,
-					    gmref_ptr<Ekiga::Presentity> presentity);
+					    Ekiga::PresentityPtr presentity);
 
 static void presentity_view_unset_presentity (PresentityView* self);
 
@@ -105,7 +105,7 @@ on_presentity_removed (PresentityView* self)
 
 static void
 presentity_view_set_presentity (PresentityView* self,
-				gmref_ptr<Ekiga::Presentity> presentity)
+				Ekiga::PresentityPtr presentity)
 {
   g_return_if_fail ( !self->priv->presentity);
 
@@ -121,7 +121,7 @@ presentity_view_unset_presentity (PresentityView* self)
 {
   if (self->priv->presentity) {
 
-    self->priv->presentity = gmref_ptr<Ekiga::Presentity>(0);
+    self->priv->presentity = Ekiga::PresentityPtr(0);
     self->priv->updated_conn.disconnect ();
     self->priv->removed_conn.disconnect ();
   }
@@ -159,7 +159,7 @@ presentity_view_set_property (GObject* obj,
 
   case PRESENTITY_VIEW_PROP_PRESENTITY:
     presentity = (Ekiga::Presentity*)g_value_get_pointer (value);
-    presentity_view_set_presentity (self, gmref_ptr<Ekiga::Presentity>(presentity));
+    presentity_view_set_presentity (self, Ekiga::PresentityPtr(presentity));
 
     break;
 
@@ -249,7 +249,7 @@ presentity_view_get_type ()
 /* public api */
 
 GtkWidget*
-presentity_view_new (gmref_ptr<Ekiga::Presentity> presentity)
+presentity_view_new (Ekiga::PresentityPtr presentity)
 {
   return (GtkWidget*)g_object_new (TYPE_PRESENTITY_VIEW,
 				   "presentity", presentity.get (),

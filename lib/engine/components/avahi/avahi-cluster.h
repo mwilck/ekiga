@@ -73,8 +73,10 @@ namespace Avahi
   private:
 
     Ekiga::ServiceCore &core;
-    gmref_ptr<Heap> heap;
+    HeapPtr heap;
   };
+
+  typedef gmref_ptr<Cluster> ClusterPtr;
 
 /**
  * @}

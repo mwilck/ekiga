@@ -108,7 +108,7 @@ RL::Cluster::populate_menu (Ekiga::MenuBuilder& builder)
 void
 RL::Cluster::add (xmlNodePtr node)
 {
-  gmref_ptr<Heap> heap (new Heap (core, doc, node));
+  HeapPtr heap (new Heap (core, doc, node));
 
   common_add (heap);
 }
@@ -121,7 +121,7 @@ RL::Cluster::add (const std::string uri,
 		  const std::string name,
 		  bool writable)
 {
-  gmref_ptr<Heap> heap (new Heap (core, doc, name, uri, user, username, password, writable));
+  HeapPtr heap (new Heap (core, doc, name, uri, user, username, password, writable));
   xmlNodePtr root = xmlDocGetRootElement (doc.get ());
 
   xmlAddChild (root, heap->get_node ());
@@ -131,7 +131,7 @@ RL::Cluster::add (const std::string uri,
 }
 
 void
-RL::Cluster::common_add (gmref_ptr<Heap> heap)
+RL::Cluster::common_add (HeapPtr heap)
 {
   add_heap (heap);
 

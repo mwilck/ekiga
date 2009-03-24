@@ -75,7 +75,7 @@ namespace RL {
 
     const std::string get_name () const;
 
-    void visit_presentities (sigc::slot1<bool, gmref_ptr<Ekiga::Presentity> > visitor);
+    void visit_presentities (sigc::slot1<bool, Ekiga::PresentityPtr > visitor);
 
     bool populate_menu (Ekiga::MenuBuilder& builder);
 
@@ -106,7 +106,7 @@ namespace RL {
     std::tr1::shared_ptr<xmlDoc> doc;
     xmlNodePtr list_node;
 
-    std::map<gmref_ptr<Presentity>, std::list<sigc::connection> > presentities;
+    std::map<PresentityPtr, std::list<sigc::connection> > presentities;
 
     void refresh ();
 

@@ -57,7 +57,7 @@ namespace Ekiga
     /** Returns the Presentity associated with the SimpleChat.
      * @return The SimpleChat's Presentity.
      */
-    virtual gmref_ptr<Presentity> get_presentity () const = 0;
+    virtual PresentityPtr get_presentity () const = 0;
   };
 
 };

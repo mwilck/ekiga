@@ -57,14 +57,14 @@ namespace Echo
 
     bool send_message (const std::string msg);
 
-    gmref_ptr<Ekiga::Presentity> get_presentity () const;
+    Ekiga::PresentityPtr get_presentity () const;
 
     bool populate_menu (Ekiga::MenuBuilder &builder);
 
   private:
 
     std::list<gmref_ptr<Ekiga::ChatObserver> > observers;
-    gmref_ptr<Presentity> presentity;
+    PresentityPtr presentity;
   };
 };
 

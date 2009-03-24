@@ -80,7 +80,7 @@ namespace Ekiga
 
     virtual ~ClusterImpl ();
 
-    void visit_heaps (sigc::slot1<bool, gmref_ptr<Heap> > visitor);
+    void visit_heaps (sigc::slot1<bool, HeapPtr > visitor);
 
   protected:
 
@@ -99,11 +99,11 @@ namespace Ekiga
 
     void common_removal_steps (gmref_ptr<HeapType> heap);
 
-    void on_presentity_added (gmref_ptr<Presentity> presentity, gmref_ptr<HeapType> heap);
+    void on_presentity_added (PresentityPtr presentity, gmref_ptr<HeapType> heap);
 
-    void on_presentity_updated (gmref_ptr<Presentity> presentity, gmref_ptr<HeapType> heap);
+    void on_presentity_updated (PresentityPtr presentity, gmref_ptr<HeapType> heap);
 
-    void on_presentity_removed (gmref_ptr<Presentity> presentity, gmref_ptr<HeapType> heap);
+    void on_presentity_removed (PresentityPtr presentity, gmref_ptr<HeapType> heap);
   };
 
 /**
@@ -130,7 +130,7 @@ Ekiga::ClusterImpl<HeapType>::~ClusterImpl ()
 
 template<typename HeapType>
 void
-Ekiga::ClusterImpl<HeapType>::visit_heaps (sigc::slot1<bool, gmref_ptr<Heap> > visitor)
+Ekiga::ClusterImpl<HeapType>::visit_heaps (sigc::slot1<bool, HeapPtr > visitor)
 {
   RefLister<HeapType>::visit_objects (visitor);
 }
@@ -159,21 +159,21 @@ Ekiga::ClusterImpl<HeapType>::remove_heap (gmref_ptr<HeapType> heap)
 
 template<typename HeapType>
 void
-Ekiga::ClusterImpl<HeapType>::on_presentity_added (gmref_ptr<Presentity> presentity, gmref_ptr<HeapType> heap)
+Ekiga::ClusterImpl<HeapType>::on_presentity_added (PresentityPtr presentity, gmref_ptr<HeapType> heap)
 {
   presentity_added.emit (heap, presentity);
 }
 
 template<typename HeapType>
 void
-Ekiga::ClusterImpl<HeapType>::on_presentity_updated (gmref_ptr<Presentity> presentity, gmref_ptr<HeapType> heap)
+Ekiga::ClusterImpl<HeapType>::on_presentity_updated (PresentityPtr presentity, gmref_ptr<HeapType> heap)
 {
   presentity_updated.emit (heap, presentity);
 }
 
 template<typename HeapType>
 void
-Ekiga::ClusterImpl<HeapType>::on_presentity_removed (gmref_ptr<Presentity> presentity, gmref_ptr<HeapType> heap)
+Ekiga::ClusterImpl<HeapType>::on_presentity_removed (PresentityPtr presentity, gmref_ptr<HeapType> heap)
 {
   presentity_removed.emit (heap, presentity);
 }

@@ -170,7 +170,7 @@ namespace Local
      * signal it would like to trigger saving or
      * removing of the Presentity from the Heap.
      */
-    void common_add (gmref_ptr<Presentity> presentity);
+    void common_add (PresentityPtr presentity);
 
 
     /** Save the XML Document in the GmConf key.
@@ -201,6 +201,8 @@ namespace Local
     Ekiga::ServiceCore &core;
     std::tr1::shared_ptr<xmlDoc> doc;
   };
+
+  typedef gmref_ptr<Heap> HeapPtr;
 
 /**
  * @}

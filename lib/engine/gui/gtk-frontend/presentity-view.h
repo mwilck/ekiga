@@ -62,7 +62,7 @@ struct _PresentityViewClass
 
 /* public api */
 
-GtkWidget *presentity_view_new (gmref_ptr<Ekiga::Presentity> presentity);
+GtkWidget *presentity_view_new (Ekiga::PresentityPtr presentity);
 
 /* GObject thingies */
 

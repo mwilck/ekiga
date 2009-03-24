@@ -112,7 +112,7 @@ SIP::SimpleChat::receive_notice (const std::string msg)
     (*iter)->notice (msg);
 }
 
-gmref_ptr<Ekiga::Presentity>
+Ekiga::PresentityPtr
 SIP::SimpleChat::get_presentity () const
 {
   return presentity;
