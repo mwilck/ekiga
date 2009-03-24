@@ -101,6 +101,8 @@ namespace Ekiga {
      */
     ChainOfResponsibility<FormRequest*> questions;
   };
+
+  typedef gmref_ptr<Source> SourcePtr;
 };
 
 #endif

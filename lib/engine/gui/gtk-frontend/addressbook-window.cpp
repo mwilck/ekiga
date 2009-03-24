@@ -96,7 +96,7 @@ static void on_core_updated (gpointer data);
  * BEHAVIOR     : 
  * PRE          : The given GtkWidget pointer must be an SearchBook GObject.
  */
-static void on_source_added (gmref_ptr<Ekiga::Source> source,
+static void on_source_added (Ekiga::SourcePtr source,
 			     gpointer data);
 
 
@@ -105,7 +105,7 @@ static void on_source_added (gmref_ptr<Ekiga::Source> source,
  * PRE          : The given GtkWidget pointer must be an SearchBook GObject.
  */
 static bool visit_books (Ekiga::BookPtr book,
-			 gmref_ptr<Ekiga::Source> source,
+			 Ekiga::SourcePtr source,
 			 gpointer data);
 
 
@@ -114,7 +114,7 @@ static bool visit_books (Ekiga::BookPtr book,
  * BEHAVIOR     : Add a view of the Book in the AddressBookWindow.
  * PRE          : The given GtkWidget pointer must be an SearchBook GObject.
  */
-static void on_book_added (gmref_ptr<Ekiga::Source> source,
+static void on_book_added (Ekiga::SourcePtr source,
 			   Ekiga::BookPtr book,
                            gpointer data);
 
@@ -124,7 +124,7 @@ static void on_book_added (gmref_ptr<Ekiga::Source> source,
  * BEHAVIOR     : Remove the view of the Book from the AddressBookWindow.
  * PRE          : The given GtkWidget pointer must be an SearchBook GObject.
  */
-static void on_book_removed (gmref_ptr<Ekiga::Source> source,
+static void on_book_removed (Ekiga::SourcePtr source,
 			     Ekiga::BookPtr book,
                              gpointer data);
 
@@ -134,7 +134,7 @@ static void on_book_removed (gmref_ptr<Ekiga::Source> source,
  * BEHAVIOR     : Update the Book in the AddressBookWindow.
  * PRE          : The given GtkWidget pointer must be an SearchBook GObject.
  */
-static void on_book_updated (gmref_ptr<Ekiga::Source> source,
+static void on_book_updated (Ekiga::SourcePtr source,
 			     Ekiga::BookPtr book,
                              gpointer data);
 
@@ -251,7 +251,7 @@ on_core_updated (gpointer data)
 
 
 static void
-on_source_added (gmref_ptr<Ekiga::Source> source,
+on_source_added (Ekiga::SourcePtr source,
 		 gpointer data)
 {
   source->visit_books (sigc::bind (sigc::ptr_fun (visit_books),
@@ -260,7 +260,7 @@ on_source_added (gmref_ptr<Ekiga::Source> source,
 
 
 static bool visit_books (Ekiga::BookPtr book,
-			 gmref_ptr<Ekiga::Source> source,
+			 Ekiga::SourcePtr source,
 			 gpointer data)
 {
   on_book_added (source, book, data);
@@ -270,7 +270,7 @@ static bool visit_books (Ekiga::BookPtr book,
 
 
 static void
-on_book_added (gmref_ptr<Ekiga::Source> /*source*/,
+on_book_added (Ekiga::SourcePtr /*source*/,
 	       Ekiga::BookPtr book,
                gpointer data)
 {
@@ -279,7 +279,7 @@ on_book_added (gmref_ptr<Ekiga::Source> /*source*/,
 
 
 static void
-on_book_removed (gmref_ptr<Ekiga::Source> /*source*/,
+on_book_removed (Ekiga::SourcePtr /*source*/,
 		 Ekiga::BookPtr book,
                  gpointer data)
 {
@@ -288,7 +288,7 @@ on_book_removed (gmref_ptr<Ekiga::Source> /*source*/,
 
 
 static void
-on_book_updated (gmref_ptr<Ekiga::Source> /*source*/,
+on_book_updated (Ekiga::SourcePtr /*source*/,
 		 Ekiga::BookPtr book,
                  gpointer data)
 {
