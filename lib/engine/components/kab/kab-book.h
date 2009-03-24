@@ -78,6 +78,8 @@ namespace KAB
     Ekiga::ContactCore &core;
   };
 
+  typedef gmref_ptr<Book> BookPtr;
+
 /**
  * @}
  */

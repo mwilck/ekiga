@@ -115,6 +115,9 @@ namespace RL
     std::map<std::string, xmlNodePtr> group_nodes;
     std::set<std::string> groups;
   };
+
+  typedef gmref_ptr<Presentity> PresentityPtr;
+
 };
 
 #endif

@@ -78,6 +78,8 @@ namespace KAB
     std::set<std::string> groups;
   };
 
+  typedef gmref_ptr<Contact> ContactPtr;
+
 /**
  * @}
  */
