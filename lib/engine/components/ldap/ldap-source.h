@@ -84,7 +84,7 @@ namespace OPENLDAP
 
     void add ();
 
-    void common_add (gmref_ptr<Book> book);
+    void common_add (BookPtr book);
 
     void save ();
 

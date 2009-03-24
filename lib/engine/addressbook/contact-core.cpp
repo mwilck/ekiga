@@ -58,7 +58,7 @@ Ekiga::ContactCore::populate_menu (MenuBuilder &builder)
   builder.add_action ("search", _("_Find"), sigc::ptr_fun (on_search));
   populated = true;
 
-  for (std::list<gmref_ptr<Source> >::const_iterator iter = sources.begin ();
+  for (std::list<SourcePtr >::const_iterator iter = sources.begin ();
        iter != sources.end ();
        ++iter) {
 
@@ -71,7 +71,7 @@ Ekiga::ContactCore::populate_menu (MenuBuilder &builder)
 }
 
 void
-Ekiga::ContactCore::add_source (gmref_ptr<Source> source)
+Ekiga::ContactCore::add_source (SourcePtr source)
 {
   sources.push_back (source);
   source_added.emit (source);
@@ -85,11 +85,11 @@ Ekiga::ContactCore::add_source (gmref_ptr<Source> source)
 }
 
 void
-Ekiga::ContactCore::visit_sources (sigc::slot1<bool, gmref_ptr<Source> > visitor)
+Ekiga::ContactCore::visit_sources (sigc::slot1<bool, SourcePtr > visitor)
 {
   bool go_on = true;
 
-  for (std::list<gmref_ptr<Source> >::iterator iter = sources.begin ();
+  for (std::list<SourcePtr >::iterator iter = sources.begin ();
        iter != sources.end () && go_on;
        ++iter)
     go_on = visitor (*iter);
@@ -103,7 +103,7 @@ Ekiga::ContactCore::add_contact_decorator (gmref_ptr<ContactDecorator> decorator
 
 
 bool
-Ekiga::ContactCore::populate_contact_menu (gmref_ptr<Contact> contact,
+Ekiga::ContactCore::populate_contact_menu (ContactPtr contact,
 					   const std::string uri,
 					   MenuBuilder &builder)
 {

@@ -104,6 +104,8 @@ namespace Evolution
     std::string search_filter;
   };
 
+  typedef gmref_ptr<Book> BookPtr;
+
 /**
  * @}
  */

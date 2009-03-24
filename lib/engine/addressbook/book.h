@@ -63,7 +63,7 @@ namespace Ekiga {
      * @param The callback (the return value means "go on" and allows
      *  stopping the visit)
      */
-    virtual void visit_contacts (sigc::slot1<bool, gmref_ptr<Contact> >) = 0;
+    virtual void visit_contacts (sigc::slot1<bool, ContactPtr>) = 0;
 
 
     /** Create the menu for that book and its actions.
@@ -118,17 +118,17 @@ namespace Ekiga {
 
     /** This signal is emitted when a Contact has been added to the Book.
      */
-    sigc::signal1<void, gmref_ptr<Contact> > contact_added;
+    sigc::signal1<void, ContactPtr > contact_added;
 
 
     /** This signal is emitted when a Contact has been removed from the Book.
      */
-    sigc::signal1<void, gmref_ptr<Contact> > contact_removed;
+    sigc::signal1<void, ContactPtr > contact_removed;
 
 
     /** This signal is emitted when a Contact has been updated in the Book.
      */
-    sigc::signal1<void, gmref_ptr<Contact> > contact_updated;
+    sigc::signal1<void, ContactPtr > contact_updated;
 
 
     /** This chain allows the Book to present forms to the user

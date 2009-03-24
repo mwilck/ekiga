@@ -113,6 +113,8 @@ namespace Evolution
 				   Ekiga::Form &result);
   };
 
+  typedef gmref_ptr<Contact> ContactPtr;
+
 /**
  * @}
  */

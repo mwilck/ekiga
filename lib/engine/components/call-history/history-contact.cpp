@@ -172,7 +172,7 @@ bool
 History::Contact::populate_menu (Ekiga::MenuBuilder &builder)
 {
   gmref_ptr<Ekiga::ContactCore> contact_core = core.get ("contact-core");
-  return contact_core->populate_contact_menu (gmref_ptr<Contact>(this),
+  return contact_core->populate_contact_menu (ContactPtr (this),
 					      uri, builder);
 }
 

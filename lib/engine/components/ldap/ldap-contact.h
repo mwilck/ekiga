@@ -76,6 +76,8 @@ namespace OPENLDAP
     std::map<std::string, std::string> uris;
   };
 
+  typedef gmref_ptr<Contact> ContactPtr;
+
 /**
  * @}
  */
