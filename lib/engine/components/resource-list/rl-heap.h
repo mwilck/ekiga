@@ -125,6 +125,9 @@ namespace RL {
 				      Ekiga::Form& result);
     void new_entry_result (std::string error);
   };
+
+  typedef gmref_ptr<Heap> HeapPtr;
+
 };
 
 #endif

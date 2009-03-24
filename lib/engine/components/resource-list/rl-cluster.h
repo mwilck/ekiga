@@ -92,6 +92,9 @@ namespace RL {
     void on_status_received (std::string uri,
 			     std::string presence);
   };
+
+  typedef gmref_ptr<Cluster> ClusterPtr;
+
 };
 
 #endif
