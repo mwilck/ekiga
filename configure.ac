@@ -549,7 +549,7 @@ dnl    GStreamer Support
 dnl ###############################
 GSTREAMER="disabled"
 
-AC_ARG_ENABLE(gstreamer, AS_HELP_STRING([--enable-gstreamer],[enable GStreamer support (default is disabled)]),
+AC_ARG_ENABLE(gstreamer, AS_HELP_STRING([--enable-gstreamer],[enable experimental GStreamer support (default is disabled)]),
 [if test "x$enableval" = "xyes"; then
   enable_gstreamer=yes
 fi],)
@@ -575,7 +575,7 @@ dnl  KDE support
 dnl ###############################
 KDE="disabled"
 
-AC_ARG_ENABLE(kde, AS_HELP_STRING([--enable-kde],[enable KDE support (default is disabled)]),
+AC_ARG_ENABLE(kde, AS_HELP_STRING([--enable-kde],[enable experimental KDE support (default is disabled)]),
 [if test "x$enableval" = "xyes"; then
   enable_kde=yes
 fi],)
@@ -607,7 +607,7 @@ dnl  KAddressBook support
 dnl ###############################
 KAB="disabled"
 
-AC_ARG_ENABLE(kab, AS_HELP_STRING([--enable-kab],[enable KAddressBook support (default is disabled)]),
+AC_ARG_ENABLE(kab, AS_HELP_STRING([--enable-kab],[enable experimental KAddressBook support (default is disabled)]),
 [if test "x$enableval" = "xyes"; then
   enable_kab=yes
 fi],)
@@ -643,7 +643,7 @@ dnl   XCAP support
 dnl ###############################
 XCAP="disabled"
 
-AC_ARG_ENABLE(xcap, AS_HELP_STRING([--enable-xcap],[enable XCAP support (default is disabled)]),
+AC_ARG_ENABLE(xcap, AS_HELP_STRING([--enable-xcap],[enable experimental XCAP support (default is disabled)]),
 [if test "x$enableval" = "xyes"; then
   enable_xcap=yes
 fi],)
@@ -869,6 +869,8 @@ echo "                    DBUS support  :  $DBUS"
 echo "            DBUS service support  :  $DBUS_SERVICE"
 echo "             mDNS/DNS-SD support  :  $AVAHI"
 fi
+echo ""
+echo "The following features are experimental -- you've been warned:"
 echo "               GStreamer support  :  $GSTREAMER"
 echo "            KAddressBook support  :  $KAB"
 echo "                     KDE support  :  $KDE"
