@@ -92,13 +92,19 @@ template<typename T> bool operator!=(const gmref_ptr<T>& a,
 template<typename T> bool operator<(const gmref_ptr<T>& a,
 				    const gmref_ptr<T>& b);
 
-/* base class for a reference counted object : serves mostly
+/* base class for a reference counted object
  */
 class GmRefCounted
 {
 public:
   GmRefCounted (): refcount(0)
   {}
+
+  GmRefCounted (const GmRefCounted& /*other*/): refcount(0)
+  {}
+
+  GmRefCounted& operator= (const GmRefCounted& /*other*/)
+  { return *this; }
 
   virtual ~GmRefCounted ()
   {}
