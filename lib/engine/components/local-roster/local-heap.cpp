@@ -245,7 +245,7 @@ Local::Heap::push_status (const std::string uri,
 void
 Local::Heap::add (xmlNodePtr node)
 {
-  gmref_ptr<Presentity> presentity (new Presentity (core, doc, node));
+  PresentityPtr presentity (new Presentity (core, doc, node));
 
   common_add (presentity);
 }
@@ -259,7 +259,7 @@ Local::Heap::add (const std::string name,
   xmlNodePtr root = NULL;
 
   root = xmlDocGetRootElement (doc.get ());
-  gmref_ptr<Presentity> presentity (new Presentity (core, doc, name, uri, groups));
+  PresentityPtr presentity (new Presentity (core, doc, name, uri, groups));
 
   xmlAddChild (root, presentity->get_node ());
 
@@ -269,7 +269,7 @@ Local::Heap::add (const std::string name,
 
 
 void
-Local::Heap::common_add (gmref_ptr<Presentity> presentity)
+Local::Heap::common_add (PresentityPtr presentity)
 {
   gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
 

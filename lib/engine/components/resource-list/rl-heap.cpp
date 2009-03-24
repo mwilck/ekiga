@@ -183,11 +183,11 @@ RL::Heap::get_name () const
 }
 
 void
-RL::Heap::visit_presentities (sigc::slot1<bool, gmref_ptr<Ekiga::Presentity> > visitor)
+RL::Heap::visit_presentities (sigc::slot1<bool, Ekiga::PresentityPtr > visitor)
 {
   bool go_on = true;
 
-  for (std::map<gmref_ptr<Presentity>,std::list<sigc::connection> >::iterator
+  for (std::map<PresentityPtr,std::list<sigc::connection> >::iterator
 	 iter = presentities.begin ();
        go_on && iter != presentities.end ();
        ++iter)
@@ -367,7 +367,7 @@ RL::Heap::parse_list (xmlNodePtr list)
 	&& child->name != NULL
 	&& xmlStrEqual (BAD_CAST ("entry"), child->name)) {
 
-      gmref_ptr<Presentity> presentity(new Presentity (services, path, doc, child, writable));
+      PresentityPtr presentity(new Presentity (services, path, doc, child, writable));
       std::list<sigc::connection> conns;
       conns.push_back (presentity->updated.connect (sigc::bind (presentity_updated.make_slot (),presentity)));
       conns.push_back (presentity->removed.connect (sigc::bind(presentity_removed.make_slot (),presentity)));
@@ -383,7 +383,7 @@ void
 RL::Heap::push_presence (const std::string uri_,
 			 const std::string presence)
 {
-  for (std::map<gmref_ptr<Presentity>,std::list<sigc::connection> >::iterator
+  for (std::map<PresentityPtr,std::list<sigc::connection> >::iterator
 	 iter = presentities.begin ();
        iter != presentities.end ();
        ++iter) {
@@ -397,7 +397,7 @@ void
 RL::Heap::push_status (const std::string uri_,
 		       const std::string status)
 {
-  for (std::map<gmref_ptr<Presentity>,std::list<sigc::connection> >::iterator
+  for (std::map<PresentityPtr,std::list<sigc::connection> >::iterator
 	 iter = presentities.begin ();
        iter != presentities.end ();
        ++iter) {
@@ -529,7 +529,7 @@ RL::Heap::new_entry ()
 			  "contact on a remote server"));
 
   std::set<std::string> all_groups;
-  for (std::map<gmref_ptr<Presentity>,std::list<sigc::connection> >::iterator
+  for (std::map<PresentityPtr,std::list<sigc::connection> >::iterator
 	 iter = presentities.begin ();
        iter != presentities.end ();
        ++iter) {

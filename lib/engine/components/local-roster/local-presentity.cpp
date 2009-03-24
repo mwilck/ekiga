@@ -190,7 +190,7 @@ Local::Presentity::populate_menu (Ekiga::MenuBuilder &builder)
   gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
 
   populated
-    = presence_core->populate_presentity_menu (gmref_ptr<Presentity>(this),
+    = presence_core->populate_presentity_menu (PresentityPtr(this),
 					       uri, builder);
 
   if (populated)
@@ -215,7 +215,7 @@ Local::Presentity::get_node () const
 void
 Local::Presentity::edit_presentity ()
 {
-  gmref_ptr<Cluster> cluster = core.get ("local-cluster");
+  ClusterPtr cluster = core.get ("local-cluster");
   Ekiga::FormRequestSimple request(sigc::mem_fun (this, &Local::Presentity::edit_presentity_form_submitted));
 
   std::set<std::string> all_groups = cluster->existing_groups ();

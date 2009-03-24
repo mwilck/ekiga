@@ -48,7 +48,7 @@ Echo::SimpleChat::~SimpleChat ()
 #endif
 }
 
-gmref_ptr<Ekiga::Presentity>
+Ekiga::PresentityPtr
 Echo::SimpleChat::get_presentity () const
 {
   return presentity;

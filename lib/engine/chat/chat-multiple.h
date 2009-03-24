@@ -57,7 +57,7 @@ namespace Ekiga
     /** Returns the Heap associated with the MultipleChat.
      * @return The MultipleChat's Heap
      */
-    virtual gmref_ptr<Heap> get_heap () const = 0;
+    virtual HeapPtr get_heap () const = 0;
   };
 
 };

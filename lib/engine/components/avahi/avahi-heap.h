@@ -112,6 +112,8 @@ namespace Avahi
     AvahiClient *client;
   };
 
+  typedef gmref_ptr<Heap> HeapPtr;
+
 /**
  * @}
  */

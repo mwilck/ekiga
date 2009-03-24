@@ -184,7 +184,7 @@ bool Opal::Sip::EndPoint::populate_menu (Ekiga::ContactPtr contact,
 }
 
 
-bool Opal::Sip::EndPoint::populate_menu (gmref_ptr<Ekiga::Presentity> presentity,
+bool Opal::Sip::EndPoint::populate_menu (Ekiga::PresentityPtr presentity,
                                          const std::string uri,
                                          Ekiga::MenuBuilder& builder)
 {

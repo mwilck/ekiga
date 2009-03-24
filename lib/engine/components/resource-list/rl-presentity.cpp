@@ -194,7 +194,7 @@ RL::Presentity::populate_menu (Ekiga::MenuBuilder &builder)
   bool populated = false;
   gmref_ptr<Ekiga::PresenceCore> presence_core(services.get ("presence-core"));
 
-  populated = presence_core->populate_presentity_menu (gmref_ptr<Presentity> (this), uri, builder);
+  populated = presence_core->populate_presentity_menu (PresentityPtr (this), uri, builder);
 
   if (writable) {
 
