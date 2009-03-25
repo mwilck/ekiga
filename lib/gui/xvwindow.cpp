@@ -409,24 +409,25 @@ XVWindow::FindXVPort ()
           continue;
         }
 
-        if (PTrace::CanTrace (4)) 
-          DumpCapabilities (candidateXVPort);
+#if PTRACING
+        DumpCapabilities (candidateXVPort);
+#endif
 
         // Check if the Port supports YV12/YUV colorspace
         supportsYV12 = false;
-        xviformats = XvListImageFormats (_display, candidateXVPort, &numXviformats); 
+        xviformats = XvListImageFormats (_display, candidateXVPort, &numXviformats);
 
         for (j = 0 ; j < numXviformats ; j++)
-          if (xviformats [j].id == GUID_YV12_PLANAR) 
+          if (xviformats [j].id == GUID_YV12_PLANAR)
             supportsYV12 = true;
 
-        if (xviformats) 
+        if (xviformats)
           XFree (xviformats);
 
         if (!supportsYV12) {
 
           PTRACE(4, "XVideo\tPort " << candidateXVPort << " does not support YV12 colorspace");
-        } 
+        }
         else {
 
           result = XvGrabPort (_display, candidateXVPort, CurrentTime);
@@ -435,7 +436,7 @@ XVWindow::FindXVPort ()
             PTRACE(4, "XVideo\tGrabbed Port: " << candidateXVPort);
             XvFreeAdaptorInfo (xvainfo);
             grabbedPorts.insert(candidateXVPort);
-            
+
             return candidateXVPort;
           } 
           else {
@@ -683,16 +684,18 @@ void XVWindow::ShmAttach(int imageWidth, int imageHeight)
         _useShm = false;
       }
     }
-  
-    if ( (_useShm) && (PTrace::CanTrace (4)) ) {
+
+#if PTRACING
+    if (_useShm) {
       int j = 0;
-      PTRACE(4, "XVideo\tCreated XvImage (" << _XVImage[i]->width << "x" << _XVImage[i]->height 
-            << ", data size: " << _XVImage[i]->data_size << ", num_planes: " << _XVImage[i]->num_planes);
-  
-      for (j = 0 ; j < _XVImage[i]->num_planes ; j++) 
+      PTRACE(4, "XVideo\tCreated XvImage (" << _XVImage[i]->width << "x" << _XVImage[i]->height
+             << ", data size: " << _XVImage[i]->data_size << ", num_planes: " << _XVImage[i]->num_planes);
+
+      for (j = 0 ; j < _XVImage[i]->num_planes ; j++)
         PTRACE(4, "XVideo\t  Plane " << j << ": pitch=" << _XVImage[i]->pitches [j] << ", offset=" << _XVImage[i]->offsets [j]);
     }
-  
+#endif
+
     if (_useShm) {
       _XShmInfo[i].shmid = shmget (IPC_PRIVATE, _XVImage[i]->data_size, IPC_CREAT | 0777);
       if (_XShmInfo[i].shmid < 0) {

@@ -144,19 +144,19 @@ void AudioOutputCore::get_devices (std::vector <AudioOutputDevice> & devices)
   PWaitAndSignal m_sec(core_mutex[secondary]);
 
   devices.clear();
-  
+
   for (std::set<AudioOutputManager *>::iterator iter = managers.begin ();
        iter != managers.end ();
        iter++)
     (*iter)->get_devices (devices);
 
-  if (PTrace::CanTrace(4)) {
-     for (std::vector<AudioOutputDevice>::iterator iter = devices.begin ();
-         iter != devices.end ();
-         iter++) {
-      PTRACE(4, "AudioOutputCore\tDetected Device: " << *iter);
-    }
+#if PTRACING
+  for (std::vector<AudioOutputDevice>::iterator iter = devices.begin ();
+       iter != devices.end ();
+       iter++) {
+    PTRACE(4, "AudioOutputCore\tDetected Device: " << *iter);
   }
+#endif
 
 }
 

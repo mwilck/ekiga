@@ -188,7 +188,7 @@ void VideoInputCore::visit_managers (sigc::slot1<bool, VideoInputManager &> visi
 {
   PWaitAndSignal m(core_mutex);
   bool go_on = true;
-  
+
   for (std::set<VideoInputManager *>::iterator iter = managers.begin ();
        iter != managers.end () && go_on;
        iter++)
@@ -200,19 +200,19 @@ void VideoInputCore::get_devices (std::vector <VideoInputDevice> & devices)
   PWaitAndSignal m(core_mutex);
 
   devices.clear();
-  
+
   for (std::set<VideoInputManager *>::iterator iter = managers.begin ();
        iter != managers.end ();
        iter++)
     (*iter)->get_devices (devices);
 
-  if (PTrace::CanTrace(4)) {
-     for (std::vector<VideoInputDevice>::iterator iter = devices.begin ();
-         iter != devices.end ();
-         iter++) {
-      PTRACE(4, "VidInputCore\tDetected Device: " << *iter);
-    }
+#if PTRACING
+  for (std::vector<VideoInputDevice>::iterator iter = devices.begin ();
+       iter != devices.end ();
+       iter++) {
+    PTRACE(4, "VidInputCore\tDetected Device: " << *iter);
   }
+#endif
 }
 
 void VideoInputCore::set_device(const VideoInputDevice & device, int channel, VideoInputFormat format)

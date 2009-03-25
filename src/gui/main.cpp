@@ -4453,10 +4453,13 @@ main (int argc,
   /* Ekiga initialisation */
   static GnomeMeeting instance;
 
+#if PTRACING
   if (debug_level != 0)
     PTrace::Initialise (PMAX (PMIN (5, debug_level), 0), NULL,
 			PTrace::Timestamp | PTrace::Thread
 			| PTrace::Blocks | PTrace::DateAndTime);
+#endif
+
 #ifdef EKIGA_REVISION
   PTRACE(1, "Ekiga SVN revision: " << EKIGA_REVISION);
 #endif
