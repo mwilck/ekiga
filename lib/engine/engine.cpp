@@ -128,6 +128,7 @@
 
 #if DEBUG_STARTUP
 #include <iostream>
+#endif
 
 static Ekiga::ServiceCore *service_core = NULL;
 
