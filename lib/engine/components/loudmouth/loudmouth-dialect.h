@@ -54,11 +54,13 @@ namespace LM
 
     /* specific */
 
-    void push_message (gmref_ptr<Presentity>,
+    void push_message (PresentityPtr,
 		       const std::string msg);
 
-    void open_chat (gmref_ptr<Presentity> presentity);
+    void open_chat (PresentityPtr presentity);
   };
+
+  typedef gmref_ptr<Dialect> DialectPtr;
 };
 
 #endif

@@ -37,7 +37,7 @@
 
 #include "loudmouth-chat-simple.h"
 
-LM::SimpleChat::SimpleChat (gmref_ptr<Presentity> presentity_):
+LM::SimpleChat::SimpleChat (PresentityPtr presentity_):
   presentity(presentity_)
 {
   presentity->has_chat = true;
@@ -111,7 +111,7 @@ LM::SimpleChat::populate_menu (Ekiga::MenuBuilder& /*builder*/)
   return false; // FIXME;
 }
 
-gmref_ptr<Ekiga::Presentity>
+Ekiga::PresentityPtr
 LM::SimpleChat::get_presentity () const
 {
   return presentity;

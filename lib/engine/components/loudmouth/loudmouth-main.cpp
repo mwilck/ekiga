@@ -60,8 +60,8 @@ struct LOUDMOUTHSpark: public Ekiga::Spark
 
     if ( !service && presence && chat && details) {
 
-      gmref_ptr<LM::Dialect> dialect(new LM::Dialect);
-      gmref_ptr<LM::Cluster> cluster(new LM::Cluster);
+      LM::DialectPtr dialect(new LM::Dialect);
+      LM::ClusterPtr cluster(new LM::Cluster);
       gmref_ptr<LM::Bank> bank (new LM::Bank (details, dialect, cluster));
       core.add (bank);
       chat->add_dialect (dialect);

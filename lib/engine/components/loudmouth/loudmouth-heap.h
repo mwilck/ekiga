@@ -49,7 +49,7 @@ namespace LM
   public:
 
     Heap (gmref_ptr<Ekiga::PersonalDetails> details_,
-	  gmref_ptr<Dialect> dialect_,
+	  DialectPtr dialect_,
 	  LmConnection* connection_);
 
     ~Heap ();
@@ -75,7 +75,7 @@ namespace LM
 
     gmref_ptr<Ekiga::PersonalDetails> details;
 
-    gmref_ptr<Dialect> dialect;
+    DialectPtr dialect;
 
     LmConnection* connection;
 
@@ -95,12 +95,15 @@ namespace LM
     void subscribe_from_form_submitted (bool submitted,
 					Ekiga::Form& result);
 
-    gmref_ptr<Presentity> find_item (const std::string jid);
+    PresentityPtr find_item (const std::string jid);
 
     void on_personal_details_updated ();
 
-    void on_chat_requested (gmref_ptr<Presentity> presentity);
+    void on_chat_requested (PresentityPtr presentity);
   };
+
+  typedef gmref_ptr<Heap> HeapPtr;
+
 };
 
 #endif

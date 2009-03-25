@@ -69,7 +69,7 @@ message_handler_c (LmMessageHandler* /*handler*/,
 }
 
 LM::Heap::Heap (gmref_ptr<Ekiga::PersonalDetails> details_,
-		gmref_ptr<Dialect> dialect_,
+		DialectPtr dialect_,
 		LmConnection* connection_):
   details(details_), dialect(dialect_), connection(connection_)
 {
@@ -186,7 +186,7 @@ LM::Heap::presence_handler (LmMessage* message)
     resource = std::string (from, index + 1, std::string::npos);
   }
 
-  gmref_ptr<Presentity> item = find_item (base_jid);
+  PresentityPtr item = find_item (base_jid);
 
   if (type_attr != NULL && strcmp (type_attr, "subscribe") == 0) {
 
@@ -257,7 +257,7 @@ LM::Heap::message_handler (LmMessage* message)
     base_jid = std::string (from, 0, index);
   }
 
-  gmref_ptr<Presentity> item = find_item (base_jid);
+  PresentityPtr item = find_item (base_jid);
 
   if (type_attr == NULL
       || (type_attr != NULL && strcmp (type_attr, "normal") == 0)
@@ -302,7 +302,7 @@ LM::Heap::parse_roster (LmMessageNode* query)
     }
     if ( !found) {
 
-      gmref_ptr<Presentity> presentity(new Presentity (connection, node));
+      PresentityPtr presentity(new Presentity (connection, node));
       presentity->chat_requested.connect (sigc::bind (sigc::mem_fun (this, &LM::Heap::on_chat_requested), presentity));
       add_presentity (presentity);
     }
@@ -404,10 +404,10 @@ LM::Heap::subscribe_from_form_submitted (bool submitted,
   }
 }
 
-gmref_ptr<LM::Presentity>
+LM::PresentityPtr
 LM::Heap::find_item (const std::string jid)
 {
-  gmref_ptr<Presentity> result;
+  PresentityPtr result;
 
   for (iterator iter = begin (); iter != end (); ++iter) {
 
@@ -434,7 +434,7 @@ LM::Heap::on_personal_details_updated ()
 }
 
 void
-LM::Heap::on_chat_requested (gmref_ptr<Presentity> presentity)
+LM::Heap::on_chat_requested (PresentityPtr presentity)
 {
   dialect->open_chat (presentity);
 }

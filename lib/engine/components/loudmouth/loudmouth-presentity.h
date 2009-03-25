@@ -106,6 +106,9 @@ namespace LM
 
     void remove_presentity ();
   };
+
+  typedef gmref_ptr<Presentity> PresentityPtr;
+
 };
 
 #endif

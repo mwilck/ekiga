@@ -47,7 +47,7 @@ namespace LM
   {
   public:
 
-    SimpleChat (gmref_ptr<Presentity> presentity_);
+    SimpleChat (PresentityPtr presentity_);
 
     ~SimpleChat ();
 
@@ -61,7 +61,7 @@ namespace LM
 
     bool populate_menu (Ekiga::MenuBuilder& builder);
 
-    gmref_ptr<Ekiga::Presentity> get_presentity () const;
+    Ekiga::PresentityPtr get_presentity () const;
 
     /* specific api */
 
@@ -69,9 +69,12 @@ namespace LM
 
   private:
 
-    gmref_ptr<Presentity> presentity;
+    PresentityPtr presentity;
     std::list<gmref_ptr<Ekiga::ChatObserver> > observers;
   };
+
+  typedef gmref_ptr<SimpleChat> SimpleChatPtr;
+
 };
 
 #endif

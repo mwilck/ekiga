@@ -47,7 +47,7 @@ LM::Dialect::~Dialect ()
 }
 
 void
-LM::Dialect::push_message (gmref_ptr<Presentity> presentity,
+LM::Dialect::push_message (PresentityPtr presentity,
 			   const std::string msg)
 {
   bool found = false;
@@ -66,7 +66,7 @@ LM::Dialect::push_message (gmref_ptr<Presentity> presentity,
 
   if ( !found) {
 
-    gmref_ptr<SimpleChat> chat(new SimpleChat (presentity));
+    SimpleChatPtr chat(new SimpleChat (presentity));
 
     add_simple_chat (chat);
     chat->got_message (msg);
@@ -74,9 +74,9 @@ LM::Dialect::push_message (gmref_ptr<Presentity> presentity,
 }
 
 void
-LM::Dialect::open_chat (gmref_ptr<Presentity> presentity)
+LM::Dialect::open_chat (PresentityPtr presentity)
 {
-  gmref_ptr<SimpleChat> chat(new SimpleChat (presentity));
+  SimpleChatPtr chat(new SimpleChat (presentity));
   add_simple_chat (chat);
   chat->user_requested.emit ();
 }
