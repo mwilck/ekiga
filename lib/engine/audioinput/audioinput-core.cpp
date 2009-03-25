@@ -178,12 +178,12 @@ void AudioInputCore::visit_managers (sigc::slot1<bool, AudioInputManager &> visi
   yield = true;
   PWaitAndSignal m(core_mutex);
   bool go_on = true;
-  
+
   for (std::set<AudioInputManager *>::iterator iter = managers.begin ();
        iter != managers.end () && go_on;
        iter++)
       go_on = visitor (*(*iter));
-}		      
+}
 
 void AudioInputCore::get_devices (std::vector <AudioInputDevice> & devices)
 {
@@ -191,19 +191,19 @@ void AudioInputCore::get_devices (std::vector <AudioInputDevice> & devices)
   PWaitAndSignal m(core_mutex);
 
   devices.clear();
-  
+
   for (std::set<AudioInputManager *>::iterator iter = managers.begin ();
        iter != managers.end ();
        iter++)
     (*iter)->get_devices (devices);
 
-  if (PTrace::CanTrace(4)) {
-     for (std::vector<AudioInputDevice>::iterator iter = devices.begin ();
-         iter != devices.end ();
-         iter++) {
-      PTRACE(4, "AudioInputCore\tDetected Device: " << *iter);
-    }
+#if PTRACING
+  for (std::vector<AudioInputDevice>::iterator iter = devices.begin ();
+       iter != devices.end ();
+       iter++) {
+    PTRACE(4, "AudioInputCore\tDetected Device: " << *iter);
   }
+#endif
 
 }
 

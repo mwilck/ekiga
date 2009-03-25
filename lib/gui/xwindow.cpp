@@ -200,8 +200,9 @@ XWindow::Init (Display* dp,
   PTRACE(4, "X11\tInitiasing new X11 window with " << windowWidth << "x" << windowHeight << " at " << x << "," << y);
   XLockDisplay (_display);
 
-  if (PTrace::CanTrace (4)) 
-    DumpVisuals();
+#if PTRACING
+  DumpVisuals();
+#endif
 
   if (!CreateAtomsAndWindow(gc, x, y, windowWidth, windowHeight)) {
     XUnlockDisplay(_display);
@@ -1162,10 +1163,10 @@ XWindow::DumpVisuals()
     if (visuals != NULL) {
         for (i = 0; i < nbVisuals; i++) {
             PTRACE(4, "X11\tVisual #"  << i << " ID: " << visuals[i].visualid
-                       << " Class: "   << visuals[i].c_class  
+                       << " Class: "   << visuals[i].c_class
                        << " BPRGB: "     << visuals[i].bits_per_rgb
                        << " Depth: "   << visuals[i].depth << std::hex
-                       << " Red: 0x"   << visuals[i].red_mask 
+                       << " Red: 0x"   << visuals[i].red_mask
                        << " Green: 0x" << visuals[i].green_mask
                        << " Blue 0x"   << visuals[i].blue_mask << std::dec);
         }
