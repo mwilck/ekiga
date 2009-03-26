@@ -504,7 +504,6 @@ Opal::Call::OnCleared ()
     case OpalConnection::EndedByNoRingBackTone:
     case OpalConnection::EndedByOutOfService:
     case OpalConnection::EndedByAcceptingCallWaiting:
-    case OpalConnection::EndedWithQ931Code:
     case OpalConnection::NumCallEndReasons:
     default :
       reason = _("Call completed");
