@@ -713,7 +713,7 @@ void Opal::Sip::EndPoint::OnRegistrationFailed (const PString & _aor,
     break;
 
   case SIP_PDU::Failure_Forbidden:
-    info = _("Forbidden");
+    info = _("Forbidden, please check that username and password are correct");
     break;
 
   case SIP_PDU::Failure_RequestTimeout:
@@ -909,13 +909,18 @@ void Opal::Sip::EndPoint::OnRegistrationFailed (const PString & _aor,
   /* Signal the SIP Endpoint */
   SIPEndPoint::OnRegistrationFailed (strm.str ().c_str (), r, wasRegistering);
 
-  /* Signal */
-  Opal::Account *account = bank->find_account (strm.str ());
-  if (account)
-    Ekiga::Runtime::run_in_main (sigc::bind (sigc::ptr_fun(registration_event_in_main),
+  /* opal adds a RequestTerminated, and this should not be shown to user,
+   * as a sip code has already been scheduled to be shown
+   */
+  if (r != SIP_PDU::Failure_RequestTerminated) {
+    /* Signal */
+    Opal::Account *account = bank->find_account (strm.str ());
+    if (account)
+      Ekiga::Runtime::run_in_main (sigc::bind (sigc::ptr_fun(registration_event_in_main),
 				      account->registration_event.make_slot (),
 				      wasRegistering ? Ekiga::AccountCore::RegistrationFailed : Ekiga::AccountCore::UnregistrationFailed,
 				      info));
+  }
 }
 
 
