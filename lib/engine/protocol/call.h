@@ -38,13 +38,10 @@
 #ifndef __CALL_H__
 #define __CALL_H__
 
-#include "gmref.h"
-
 #include <sigc++/sigc++.h>
-#include <time.h>
 #include <string>
-#include <sstream>
-#include <iostream>
+
+#include "gmref.h"
 
 namespace Ekiga
 {

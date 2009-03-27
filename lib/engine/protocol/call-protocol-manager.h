@@ -39,7 +39,9 @@
 #ifndef __CALL_PROTOCOL_MANAGER_H__
 #define __CALL_PROTOCOL_MANAGER_H__
 
-#include "call-core.h"
+#include <string>
+
+#include "gmref.h"
 
 namespace Ekiga
 {

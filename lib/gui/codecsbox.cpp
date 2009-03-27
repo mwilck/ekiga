@@ -40,8 +40,9 @@
 
 #include "gmconf.h"
 #include "codec-description.h"
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <string>
+#include <sstream>
 
 /* Columns for the codecs page */
 enum {

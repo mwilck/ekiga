@@ -39,9 +39,11 @@
 #ifndef __CALL_MANAGER_H__
 #define __CALL_MANAGER_H__
 
+#include <set>
+#include <sigc++/sigc++.h>
+
 #include "gmref.h"
 
-#include "call-core.h"
 #include "call-protocol-manager.h"
 #include "codec-description.h"
 
