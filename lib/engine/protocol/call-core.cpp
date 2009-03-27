@@ -48,7 +48,6 @@ using namespace Ekiga;
 
 CallCore::~CallCore ()
 {
-  std::cout << "Deleting callcore" << std::endl << std::flush;
   manager_connections.clear ();
 }
 
