@@ -42,7 +42,7 @@
 #include "services.h"
 #include "personal-details.h"
 #include "presence-core.h"
-#include "call-manager.h"
+#include "call-core.h"
 
 #include <avahi-common/alternative.h>
 #include <avahi-common/error.h>
