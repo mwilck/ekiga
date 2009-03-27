@@ -54,7 +54,6 @@
 #include "runtime.h"
 #include "contact-core.h"
 #include "presence-core.h"
-#include "call-core.h"
 #include "call-manager.h"
 #include "call.h"
 
@@ -179,7 +178,6 @@ private:
 
     Ekiga::ServiceCore & core;
     Ekiga::CodecList codecs; 
-    gmref_ptr<Ekiga::CallCore> call_core; // FIXME: is it threaded in there?
 
     /* used to get the STUNDetector results */
     GAsyncQueue* queue;
