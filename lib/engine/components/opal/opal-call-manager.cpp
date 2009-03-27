@@ -27,7 +27,7 @@
 
 
 /*
- *                         manager.cpp  -  description
+ *                         opal-call-manager.cpp  -  description
  *                         ---------------------------
  *   begin                : Sat Dec 23 2000
  *   copyright            : (C) 2000-2006 by Damien Sandras
@@ -139,8 +139,6 @@ CallManager::CallManager (Ekiga::ServiceCore & _core)
   // Media formats
   SetMediaFormatOrder (PStringArray ());
   SetMediaFormatMask (PStringArray ());
-
-  call_core = core.get ("call-core");
 
   // used to communicate with the StunDetector
 #if GLIB_CHECK_VERSION(2,16,0)
@@ -633,6 +631,8 @@ void CallManager::get_video_options (CallManager::VideoOptions & options) const
 
 OpalCall *CallManager::CreateCall ()
 {
+  gmref_ptr<Ekiga::CallCore> call_core = core.get ("call-core"); // FIXME: threaded?
+
   gmref_ptr<Opal::Call> call (new Opal::Call (*this, core));
   call_core->add_call (call, gmref_ptr<CallManager>(this));
 
@@ -748,6 +748,8 @@ CallManager::HandleSTUNResult ()
 void
 CallManager::ReportSTUNError (const std::string error)
 {
+  gmref_ptr<Ekiga::CallCore> call_core = core.get ("call-core");
+
   // notice we're in for an infinite loop if nobody ever reports to the user!
   if ( !call_core->errors.handle_request (error)) {
 
