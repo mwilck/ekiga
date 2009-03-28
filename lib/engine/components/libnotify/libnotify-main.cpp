@@ -36,6 +36,7 @@
  */
 
 #include <map>
+#include <tr1/memory>
 
 #include <libnotify/notify.h>
 
@@ -44,7 +45,10 @@
 
 #include "libnotify-main.h"
 
-class LibNotify: public Ekiga::Service
+
+class LibNotify:
+  public Ekiga::Service,
+  public sigc::trackable
 {
 public:
 
@@ -63,7 +67,7 @@ private:
   void on_notification_added (gmref_ptr<Ekiga::Notification> notif);
   void on_notification_removed (gmref_ptr<Ekiga::Notification> notif);
 
-  typedef std::map<gmref_ptr<Ekiga::Notification>, std::pair<sigc::connection, NotifyNotification*> > container_type;
+  typedef std::map<gmref_ptr<Ekiga::Notification>, std::pair<sigc::connection, std::tr1::shared_ptr<NotifyNotification> > > container_type;
   container_type live;
 };
 
@@ -114,15 +118,6 @@ LibNotify::LibNotify (gmref_ptr<Ekiga::NotificationCore> core)
 
 LibNotify::~LibNotify ()
 {
-  for (container_type::iterator iter = live.begin ();
-       iter != live.end ();
-       ++iter) {
-
-    iter->second.first.disconnect ();
-    g_object_unref (iter->second.second);
-  }
-  live.clear ();
-
   notify_uninit ();
 }
 
@@ -169,7 +164,7 @@ LibNotify::on_notification_added (gmref_ptr<Ekiga::Notification> notification)
 		    G_CALLBACK (on_notif_closed), notification.get ());
   sigc::connection conn = notification->removed.connect (sigc::bind (sigc::mem_fun (this, &LibNotify::on_notification_removed), notification));
 
-  live[notification] = std::pair<sigc::connection, NotifyNotification*> (conn, notif);
+  live[notification] = std::pair<sigc::connection, std::tr1::shared_ptr<NotifyNotification> > (conn, std::tr1::shared_ptr<NotifyNotification> (notif, g_object_unref));
 
   (void)notify_notification_show (notif, NULL);
 }
@@ -182,7 +177,6 @@ LibNotify::on_notification_removed (gmref_ptr<Ekiga::Notification> notification)
   if (iter != live.end ()) {
 
     iter->second.first.disconnect ();
-    g_object_unref (iter->second.second);
     live.erase (iter);
   }
 }
