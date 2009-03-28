@@ -789,7 +789,10 @@ void Opal::Sip::EndPoint::OnRegistrationFailed (const PString & _aor,
     break;
 
   case SIP_PDU::Failure_BadExtension:
-    // Translators : The extension we are trying to register does not exist
+    /* Translators:  The extension we are trying to register does not exist.
+     * Here extension is a specific "phone number", see
+     * http://en.wikipedia.org/wiki/Extension_(telephone)
+     * for more information */
     info = _("Bad extension");
     break;
 
