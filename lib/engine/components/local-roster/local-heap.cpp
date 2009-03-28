@@ -159,9 +159,24 @@ Local::Heap::existing_groups ()
 
   result.insert (_("Family"));
   result.insert (_("Friend"));
+  /* Translator: http://www.ietf.org/rfc/rfc4480.txt proposes several
+     relationships between you and your contact; associate means
+     someone who is at the same "level" than you.
+   */
   result.insert (_("Associate"));
+  /* Translator: http://www.ietf.org/rfc/rfc4480.txt proposes several
+     relationships between you and your contact; assistant means
+     someone who is at a lower "level" than you.
+   */
   result.insert (_("Assistant"));
+  /* Translator: http://www.ietf.org/rfc/rfc4480.txt proposes several
+     relationships between you and your contact; supervisor means
+     someone who is at a higher "level" than you.
+   */
   result.insert (_("Supervisor"));
+  /* Translator: http://www.ietf.org/rfc/rfc4480.txt proposes several
+     relationships between you and your contact; self means yourself.
+   */
   result.insert (_("Self"));
 
   return result;

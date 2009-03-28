@@ -942,6 +942,12 @@ OPENLDAP::BookForm (Ekiga::FormRequestSimple &request,
     if (i>1) callAttr += ",";
     callAttr += std::string(info.urld->lud_attrs[i]);
   }
+  /* Translators: DisplayName Attribute is the name of the LDAP
+   * attribute whose value will be used to name an addressbook entry.
+   * On Microsoft systems the actual attribute is literally named
+   * "DisplayName" (i.e., "the name that will be displayed") but on
+   * most LDAP servers it's "CommonName".
+   */
   request.text ("nameAttr", _("_DisplayName Attribute"), info.urld->lud_attrs[0]);
   request.text ("callAttr", _("Call _Attributes"), callAttr);
   if (info.urld->lud_filter != NULL)
@@ -949,6 +955,15 @@ OPENLDAP::BookForm (Ekiga::FormRequestSimple &request,
   else
     request.text ("filter", _("_Filter Template"), "");
 
+  /* Translators: Bind ID - In LDAP, the operation that begins an LDAP
+   * session and authenticates the user to the directory is called a
+   * Bind operation.  There are two types of Binds supported in the
+   * standard protocol - Simple Bind and SASL Bind.  Since both of
+   * them are used for authentication, both of them require some type
+   * of user ID as a parameter, and that is supplied here.  (Of
+   * course, the Bind ID can be left blank, in which case the session
+   * is anonymous / unauthenticated.)
+   */
   request.text ("authcID", _("Bind _ID"), info.authcID);
   request.private_text ("password", _("_Password"), info.password);
   request.boolean ("startTLS", _("Use TLS"), info.starttls);
