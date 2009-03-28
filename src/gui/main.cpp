@@ -3127,7 +3127,7 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
 
       GTK_MENU_SEPARATOR,
 
-      GTK_MENU_ENTRY("contact", _("_Contact"),
+      GTK_MENU_ENTRY("contact", _("Co_ntact"),
 		     _("Act on selected contact"),
 		     GTK_STOCK_EXECUTE, 0,
 		     NULL, NULL, FALSE),
