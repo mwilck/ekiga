@@ -190,7 +190,6 @@ Avahi::Heap::BrowserCallback (AvahiServiceBrowser *browser,
 			      AvahiLookupResultFlags /*flags*/)
 {
   AvahiServiceResolver *resolver = NULL;
-  bool found = false;
 
   switch (event) {
 
@@ -207,14 +206,7 @@ Avahi::Heap::BrowserCallback (AvahiServiceBrowser *browser,
     break;
 
   case AVAHI_BROWSER_REMOVE:
-    for (iterator iter = begin () ;
-	 !found && iter != end ();
-	 iter++)
-      if ((*iter)->get_name () == name) {
-
-	found = true;
-	(*iter)->removed.emit ();
-      }
+    visit_presentities (sigc::bind (sigc::mem_fun (this, &Avahi::Heap::remover), name));
     break;
   case AVAHI_BROWSER_CACHE_EXHAUSTED:
     // FIXME: do I care?
@@ -323,4 +315,19 @@ Avahi::Heap::ResolverCallback (AvahiServiceResolver *resolver,
     /* shouldn't happen */
     break;
   }
+}
+
+bool
+Avahi::Heap::remover (Ekiga::PresentityPtr presentity,
+		      const std::string name)
+{
+  bool result = true;
+
+  if (presentity->get_name () == name) {
+
+    result = false;
+    presentity->removed.emit ();
+  }
+
+  return result;
 }

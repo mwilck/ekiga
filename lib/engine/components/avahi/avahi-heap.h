@@ -111,6 +111,9 @@ namespace Avahi
     Ekiga::ServiceCore &core;
     AvahiGLibPoll *poll;
     AvahiClient *client;
+
+    bool remover (Ekiga::PresentityPtr presentity,
+		  const std::string name);
   };
 
   typedef gmref_ptr<Heap> HeapPtr;
