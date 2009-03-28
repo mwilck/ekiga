@@ -52,7 +52,8 @@ namespace Avahi
 
   class Cluster:
     public Ekiga::Service,
-    public Ekiga::ClusterImpl<Heap>
+    public Ekiga::ClusterImpl<Heap>,
+    public sigc::trackable
   {
   public:
 
