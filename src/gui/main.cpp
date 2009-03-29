@@ -980,7 +980,7 @@ on_videooutput_device_error_cb (Ekiga::VideoOutputManager & /* manager */,
                                 gpointer self)
 {
   const gchar *dialog_title =  _("Error while initializing video output");
-  const gchar *tmp_msg = _("No video will be displayed during this call->");
+  const gchar *tmp_msg = _("No video will be displayed on your machine during this call");
   gchar *dialog_msg = NULL;
 
   switch (error_code) {
