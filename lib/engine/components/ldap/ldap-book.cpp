@@ -437,12 +437,7 @@ void
 OPENLDAP::Book::refresh ()
 {
   /* we flush */
-  iterator iter = begin ();
-  while (iter != end ()) {
-
-    remove_contact (*iter);
-    iter = begin ();
-  }
+  remove_all_objects ();
 
   if (ldap_context == NULL)
     refresh_start ();
