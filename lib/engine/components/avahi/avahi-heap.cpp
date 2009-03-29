@@ -225,6 +225,33 @@ Avahi::Heap::BrowserCallback (AvahiServiceBrowser *browser,
   }
 }
 
+class resolver_callback_helper
+{
+public:
+
+  resolver_callback_helper (const std::string name_): name(name_)
+  {}
+
+  bool test (gmref_ptr<Ekiga::URIPresentity> presentity_)
+  {
+    bool result;
+
+    if (presentity_->get_name () == name) {
+
+      presentity = presentity_;
+      result = false;
+    }
+    return result;
+  }
+
+  gmref_ptr<Ekiga::URIPresentity> found_presentity () const
+  { return presentity; }
+
+private:
+  gmref_ptr<Ekiga::URIPresentity> presentity;
+  const std::string name;
+};
+
 void
 Avahi::Heap::ResolverCallback (AvahiServiceResolver *resolver,
 			       AvahiIfIndex /*interface*/,
@@ -243,13 +270,12 @@ Avahi::Heap::ResolverCallback (AvahiServiceResolver *resolver,
   std::string software;
   std::string presence;
   std::string status;
-  bool already_known = false;
   gchar *url = NULL;
   AvahiStringList *txt_tmp = NULL;
 
   switch (event) {
 
-  case AVAHI_RESOLVER_FOUND:
+  case AVAHI_RESOLVER_FOUND: {
     name = name_;
     for (txt_tmp = txt;  txt_tmp != NULL; txt_tmp = txt_tmp->next) {
 
@@ -274,19 +300,14 @@ Avahi::Heap::ResolverCallback (AvahiServiceResolver *resolver,
       }
     }
 
-    for (iterator iter = begin ();
-	 iter != end ();
-	 iter++) {
+    resolver_callback_helper helper(name);
+    visit_presentities (sigc::mem_fun (helper, &resolver_callback_helper::test));
+    if (helper.found_presentity ()) {
 
-      if ((*iter)->get_name () == name) {
-
-	/* known contact has been updated */
-	presence_received.emit ((*iter)->get_uri (), presence);
-	status_received.emit ((*iter)->get_uri (), status);
-	already_known = true;
-      }
-    }
-    if (already_known == false) {
+      /* known contact has been updated */
+      presence_received.emit (helper.found_presentity ()->get_uri (), presence);
+      status_received.emit (helper.found_presentity ()->get_uri (), status);
+    } else {
 
       /* ok, this is a new contact */
       gchar** broken = NULL;
@@ -305,7 +326,7 @@ Avahi::Heap::ResolverCallback (AvahiServiceResolver *resolver,
       }
       g_strfreev (broken);
     }
-    break;
+    break;}
   case AVAHI_RESOLVER_FAILURE:
 
     avahi_service_resolver_free (resolver);

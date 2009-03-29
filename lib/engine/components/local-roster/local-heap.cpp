@@ -63,7 +63,7 @@ Local::Heap::Heap (Ekiga::ServiceCore &_core): core (_core), doc ()
     doc = std::tr1::shared_ptr<xmlDoc> (xmlRecoverMemory (raw.c_str (), raw.length ()), xmlFreeDoc);
     if ( !doc)
       doc = std::tr1::shared_ptr<xmlDoc> (xmlNewDoc (BAD_CAST "1.0"), xmlFreeDoc);
-    
+
     root = xmlDocGetRootElement (doc.get ());
     if (root == NULL) {
 
@@ -129,32 +129,60 @@ Local::Heap::populate_menu_for_group (const std::string name,
   return true;
 }
 
+struct has_presentity_with_uri_helper
+{
+  has_presentity_with_uri_helper (const std::string uri_): uri(uri_),
+							   found(false)
+  {}
+
+  const std::string uri;
+
+  bool found;
+
+  bool test (Local::PresentityPtr presentity)
+  {
+    if (presentity->get_uri () == uri) {
+
+      found = true;
+    }
+
+    return !found;
+  }
+};
 
 bool
 Local::Heap::has_presentity_with_uri (const std::string uri)
 {
-  bool result = false;
+  has_presentity_with_uri_helper helper(uri);
 
-  for (iterator iter = begin ();
-       iter != end () && result != true;
-       iter++)
-    result = ((*iter)->get_uri () == uri);
+  visit_presentities (sigc::mem_fun (helper, &has_presentity_with_uri_helper::test));
 
-  return result;
+  return helper.found;
 }
 
+struct existing_groups_helper
+{
+  std::set<std::string> groups;
+
+  bool test (Local::PresentityPtr presentity)
+  {
+    groups.insert (presentity->get_groups ().begin (),
+		   presentity->get_groups ().end ());
+
+    return true;
+  }
+};
 
 const std::set<std::string>
 Local::Heap::existing_groups ()
 {
   std::set<std::string> result;
 
-  for (iterator iter = begin ();
-       iter != end ();
-       iter++) {
+  {
+    existing_groups_helper helper;
 
-    std::set<std::string> groups = (*iter)->get_groups ();
-    result.insert (groups.begin (), groups.end ());
+    visit_presentities (sigc::mem_fun (helper, &existing_groups_helper::test));
+    result = helper.groups;
   }
 
   result.insert (_("Family"));
@@ -225,31 +253,64 @@ Local::Heap::new_presentity (const std::string name,
   }
 }
 
+struct push_presence_helper
+{
+  push_presence_helper (const std::string uri_,
+			const std::string presence_): uri(uri_),
+						      presence(presence_)
+  {}
+
+  bool test (Local::PresentityPtr presentity)
+  {
+    if (presentity->get_uri () == uri) {
+
+      presentity->set_presence (presence);
+    }
+
+    return true;
+  }
+
+  const std::string uri;
+  const std::string presence;
+};
 
 void
 Local::Heap::push_presence (const std::string uri,
 			    const std::string presence)
 {
-  for (iterator iter = begin ();
-       iter != end ();
-       ++iter) {
+  push_presence_helper helper(uri, presence);
 
-    if ((*iter)->get_uri () == uri)
-      (*iter)->set_presence (presence);
-  }
+  visit_presentities (sigc::mem_fun (helper, &push_presence_helper::test));
 }
+
+struct push_status_helper
+{
+  push_status_helper (const std::string uri_,
+			const std::string status_): uri(uri_),
+						    status(status_)
+  {}
+
+  bool test (Local::PresentityPtr presentity)
+  {
+    if (presentity->get_uri () == uri) {
+
+      presentity->set_status (status);
+    }
+
+    return true;
+  }
+
+  const std::string uri;
+  const std::string status;
+};
 
 void
 Local::Heap::push_status (const std::string uri,
 			  const std::string status)
 {
-  for (iterator iter = begin ();
-       iter != end ();
-       ++iter) {
+  push_status_helper helper(uri, status);
 
-    if ((*iter)->get_uri () == uri)
-      (*iter)->set_status (status);
-  }
+  visit_presentities (sigc::mem_fun (helper, &push_status_helper::test));
 }
 
 
@@ -388,6 +449,24 @@ Local::Heap::on_rename_group (std::string name)
   }
 }
 
+struct rename_group_form_submitted_helper
+{
+  rename_group_form_submitted_helper (const std::string old_name_,
+				      const std::string new_name_):
+    old_name(old_name_),
+    new_name(new_name_)
+  {}
+
+  const std::string old_name;
+  const std::string new_name;
+
+  bool rename_group (Local::PresentityPtr presentity)
+  {
+    presentity->rename_group (old_name, new_name);
+    return true;
+  }
+};
+
 void
 Local::Heap::rename_group_form_submitted (std::string old_name,
 					  bool submitted,
@@ -401,12 +480,8 @@ Local::Heap::rename_group_form_submitted (std::string old_name,
 
     if ( !new_name.empty () && new_name != old_name) {
 
-      for (iterator iter = begin ();
-	   iter != end ();
-	   ++iter) {
-
-	(*iter)->rename_group (old_name, new_name);
-      }
+      rename_group_form_submitted_helper helper (old_name, new_name);
+      visit_presentities (sigc::mem_fun (helper, &rename_group_form_submitted_helper::rename_group));
     }
   } catch (Ekiga::Form::not_found) {
 

@@ -89,18 +89,38 @@ on_view_contacts_removed_c (EBook */*ebook*/,
   ((Evolution::Book *)data)->on_view_contacts_removed (ids);
 }
 
+class contacts_removed_helper
+{
+public:
+
+  contacts_removed_helper (const std::string id_): id(id_)
+  {}
+
+  bool test (Evolution::ContactPtr contact)
+  {
+    bool result;
+
+    if (contact->get_id () == id) {
+
+      contact->removed.emit ();
+      result = false;
+    }
+
+    return result;
+  }
+
+private:
+  const std::string id;
+};
+
 void
 Evolution::Book::on_view_contacts_removed (GList *ids)
 {
-  for (; ids != NULL; ids = g_list_next (ids))
-    for (iterator iter = begin ();
-	 iter != end ();
-	 iter++)
-      if ((*iter)->get_id () == (gchar *)ids->data) {
+  for (; ids != NULL; ids = g_list_next (ids)) {
 
-	remove_contact (*iter);
-	break; // will do the loop on ids, but stop using iter which is invalid
-      }
+    contacts_removed_helper helper((gchar*)ids->data);
+    visit_contacts (sigc::mem_fun (helper, &contacts_removed_helper::test));
+  }
 }
 
 static void
@@ -111,22 +131,41 @@ on_view_contacts_changed_c (EBook */*ebook*/,
   ((Evolution::Book*)data)->on_view_contacts_changed (econtacts);
 }
 
+class contact_updated_helper
+{
+public:
+
+  contact_updated_helper (EContact* econtact_): econtact(econtact_)
+  {
+    id = (const gchar*)e_contact_get_const (econtact, E_CONTACT_UID);
+  }
+
+  bool test (Evolution::ContactPtr contact)
+  {
+    bool result = true;
+
+    if (contact->get_id () == id) {
+
+      contact->update_econtact (econtact);
+      result = false;
+    }
+
+    return result;
+  }
+
+private:
+  EContact* econtact;
+  std::string id;
+};
+
 void
 Evolution::Book::on_view_contacts_changed (GList *econtacts)
 {
-  EContact *econtact = NULL;
-
   for (; econtacts != NULL; econtacts = g_list_next (econtacts)) {
 
-    econtact = E_CONTACT (econtacts->data);
+    contact_updated_helper helper (E_CONTACT (econtacts->data));
 
-    for (iterator iter = begin ();
-	 iter != end ();
-	 iter++)
-
-      if ((*iter)->get_id()
-	  == (const gchar *)e_contact_get_const (econtact, E_CONTACT_UID))
-	(*iter)->update_econtact (econtact);
+    visit_contacts (sigc::mem_fun (helper, &contact_updated_helper::test));
   }
 }
 
@@ -262,13 +301,7 @@ Evolution::Book::get_status () const
 void
 Evolution::Book::refresh ()
 {
-  /* we flush */
-  iterator iter = begin ();
-  while (iter != end ()) {
-
-    remove_contact (*iter);
-    iter = begin ();
-  }
+  remove_all_objects ();
 
   /* we go */
   if (e_book_is_opened (book)) 

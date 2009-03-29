@@ -100,36 +100,49 @@ on_source_list_group_removed_c (ESourceList */*source_list*/,
   self->remove_group (group);
 }
 
+class remove_helper
+{
+public :
+
+  remove_helper (ESourceGroup* group_): group(group_)
+  { ready (); }
+
+  inline void ready ()
+  { found = false; }
+
+  bool test (Evolution::BookPtr book)
+  {
+    EBook *book_ebook = book->get_ebook ();
+    ESource *book_source = e_book_get_source (book_ebook);
+    ESourceGroup *book_group = e_source_peek_group (book_source);
+
+    if (book_group == group) {
+
+      book->removed.emit ();
+      found = true;
+    }
+    return !found;
+  }
+
+  bool has_found () const
+  { return found; }
+
+private:
+  ESourceGroup* group;
+  bool found;
+};
+
 void
 Evolution::Source::remove_group (ESourceGroup *group)
 {
-  gboolean found = FALSE;
-  ESource *book_source = NULL;
-  ESourceGroup *book_group = NULL;
-  EBook *book_ebook = NULL;
+  remove_helper helper (group);
 
   do {
 
-    found = FALSE;
+    helper.ready ();
+    visit_books (sigc::mem_fun (helper, &remove_helper::test));
 
-    for (iterator iter = begin ();
-	 iter != end ();
-	 iter++) {
-
-      book_ebook = (*iter)->get_ebook ();
-
-      book_source = e_book_get_source (book_ebook);
-
-      book_group = e_source_peek_group (book_source);
-
-      if (book_group == group) {
-
-	found = TRUE;
-	(*iter)->removed.emit ();
-      }
-    }
-
-  } while (found);
+  } while (helper.has_found ());
 }
 
 Evolution::Source::Source (Ekiga::ServiceCore &_services)
