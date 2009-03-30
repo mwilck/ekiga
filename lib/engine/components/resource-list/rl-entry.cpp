@@ -158,7 +158,7 @@ RL::Entry::refresh ()
   node = NULL;
   name_node = NULL;
   presence = "unknown";
-  status = _("");
+  status = ("");
   updated.emit ();
 
   gmref_ptr<XCAP::Core> xcap = core.get ("xcap-core");
