@@ -92,7 +92,7 @@ libekiga_engine_la_LIBADD = \
 	$(top_builddir)/lib/engine/audiooutput/libgmaudiooutput.la					\
 	$(top_builddir)/lib/engine/hal/libgmhal.la							\
 	$(top_builddir)/lib/engine/components/gmconf-personal-details/libgmconfpersonaldetails.la	\
-	$(top_builddir)/lib/engine/components/opal/libopal.la                                           \
+	$(top_builddir)/lib/engine/components/opal/libgmopal.la                                           \
 	$(AM_LIBS)
 
 # Default Input Devices
