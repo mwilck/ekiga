@@ -344,7 +344,17 @@ if test "x$enable_ldap" = "xyes"; then
   fi
 
   dnl Checking for libsasl2
-  AC_CHECK_HEADER(sasl/sasl.h,,AC_MSG_ERROR([*** libsasl2 headers not found]))
+  AC_ARG_WITH(libsasl2-dir, AS_HELP_STRING([--with-libsasl2-dir=PFX],[location of LIBSASL2]), with_libsasl2_dir="$withval", with_libsasl2_dir="/usr")
+
+  dnl Check for the libsasl2 includes presence
+  AC_MSG_CHECKING(for LIBSASL2 includes in ${with_libsasl2_dir}/include/)
+  AC_MSG_RESULT()
+
+  if test -f ${with_libsasl2_dir}/include/sasl/sasl.h; then
+  	LDAP_CFLAGS="-I${with_libsasl2_dir}/include"
+  else
+  	AC_MSG_ERROR(*** libsasl2 headers not found)
+  fi
   LDAP_LIBS="$LDAP_LIBS -lsasl2"
 
   dnl Checking for libresolv
