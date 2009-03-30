@@ -1,4 +1,4 @@
-noinst_LTLIBRARIES = libopal.la
+noinst_LTLIBRARIES = libgmopal.la
 
 opal_dir = $(top_srcdir)/lib/engine/components/opal
 
@@ -22,7 +22,7 @@ INCLUDES = 					        \
 	-I$(top_srcdir)/lib/engine/framework
 
 # Endpoints 
-libopal_la_SOURCES =                            \
+libgmopal_la_SOURCES =                          \
 	$(opal_dir)/opal-call-manager.h         \
 	$(opal_dir)/opal-call-manager.cpp       \
 	$(opal_dir)/pcss-endpoint.h             \
@@ -47,13 +47,13 @@ libopal_la_SOURCES =                            \
 	$(opal_dir)/opal-videooutput.cpp
 
 if HAVE_H323
-libopal_la_SOURCES += \
+libgmopal_la_SOURCES += \
 	$(opal_dir)/h323-endpoint.h \
 	$(opal_dir)/h323-endpoint.cpp
 endif
 
 if HAVE_SIP
-libopal_la_SOURCES += \
+libgmopal_la_SOURCES += \
 	$(opal_dir)/sip-chat-simple.h \
 	$(opal_dir)/sip-chat-simple.cpp \
 	$(opal_dir)/sip-dialect.h \
@@ -62,4 +62,4 @@ libopal_la_SOURCES += \
 	$(opal_dir)/sip-endpoint.cpp
 endif
 
-libopal_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(GLIB_LIBS) $(OPAL_LIBS) $(PTLIB_LIBS)
+libgmopal_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(GLIB_LIBS) $(OPAL_LIBS) $(PTLIB_LIBS)
