@@ -60,17 +60,17 @@ namespace Opal {
 
   namespace Sip {
 
-    class EndPoint : public SIPEndPoint, 
-                                public Ekiga::CallProtocolManager,
-                                public Ekiga::PresenceFetcher,
-                                public Ekiga::PresencePublisher,
-                                public Ekiga::PresentityDecorator,
-                                public Ekiga::AccountSubscriberImpl<Opal::Account>,
-                                public Ekiga::ContactDecorator
+    class EndPoint : public SIPEndPoint,
+		     public Ekiga::CallProtocolManager,
+		     public Ekiga::PresenceFetcher,
+		     public Ekiga::PresencePublisher,
+		     public Ekiga::PresentityDecorator,
+		     public Ekiga::AccountSubscriberImpl<Opal::Account>,
+		     public Ekiga::ContactDecorator
     {
       PCLASSINFO(EndPoint, SIPEndPoint);
 
-  public:
+    public:
 
       typedef std::list<std::string> domain_list;
       typedef std::list<std::string>::iterator domain_list_iterator;
@@ -79,9 +79,11 @@ namespace Opal {
         std::string status;
         bool requested;
       } uri_info;
-      typedef std::map<std::string, uri_info> uri_info_map; 
+      typedef std::map<std::string, uri_info> uri_info_map;
 
-      EndPoint (CallManager &ep, Ekiga::ServiceCore & core, unsigned listen_port);
+      EndPoint (CallManager& ep,
+		Ekiga::ServiceCore& core,
+		unsigned listen_port);
 
       ~EndPoint ();
 
@@ -109,12 +111,12 @@ namespace Opal {
 
 
       /* Chat subsystem */
-      bool send_message (const std::string & uri, 
+      bool send_message (const std::string & uri,
                          const std::string & message);
 
 
       /* CallProtocolManager */
-      bool dial (const std::string & uri); 
+      bool dial (const std::string & uri);
 
       const std::string & get_protocol_name () const;
 
@@ -122,7 +124,7 @@ namespace Opal {
       unsigned get_dtmf_mode () const;
 
       bool set_listen_port (unsigned port);
-      const Ekiga::CallProtocolManager::Interface & get_listen_interface () const;
+      const Ekiga::CallProtocolManager::Interface& get_listen_interface () const;
 
 
       /* SIP EndPoint */
@@ -135,18 +137,23 @@ namespace Opal {
       void set_forward_uri (const std::string & uri);
       const std::string & get_forward_uri () const;
 
-      
+
       /* AccountSubscriber */
       bool subscribe (const Opal::Account & account);
       bool unsubscribe (const Opal::Account & account);
 
-      
+
       /* Helper */
       static std::string get_aor_domain (const std::string & aor);
 
 
       /* OPAL Methods */
-      void Register (const Opal::Account & account);
+      void Register (const std::string username,
+		     const std::string host,
+		     const std::string auth_username,
+		     const std::string password,
+		     bool is_enabled,
+		     unsigned timeout);
 
       void OnRegistered (const PString & aor,
                          bool wasRegistering);
@@ -155,8 +162,8 @@ namespace Opal {
                                  SIP_PDU::StatusCodes reason,
                                  bool wasRegistering);
 
-      void OnMWIReceived (const PString & party, 
-                          OpalManager::MessageWaitingType type, 
+      void OnMWIReceived (const PString & party,
+                          OpalManager::MessageWaitingType type,
                           const PString & info);
 
       bool OnIncomingConnection (OpalConnection &connection,
@@ -175,15 +182,35 @@ namespace Opal {
       void OnMessageFailed (const SIPURL & messageUrl,
                             SIP_PDU::StatusCodes reason);
 
-      SIPURL GetRegisteredPartyName (const SIPURL & host, const OpalTransport & transport);
+      SIPURL GetRegisteredPartyName (const SIPURL & host,
+				     const OpalTransport & transport);
 
 
       /* Callbacks */
-  private:
+    private:
       void on_dial (std::string uri);
       void on_message (std::string uri,
 		       std::string name);
       void on_transfer (std::string uri);
+
+      void registration_event_in_main (const std::string aor,
+				       Ekiga::AccountCore::RegistrationState state,
+				       const std::string msg);
+
+      void presence_status_in_main (std::string uri,
+				    std::string presence,
+				    std::string status);
+
+      void push_message_in_main (const std::string uri,
+				 const std::string name,
+				 const std::string msg);
+
+      void push_notice_in_main (const std::string uri,
+				const std::string name,
+				const std::string msg);
+
+      void mwi_received_in_main (const std::string aor,
+				 const std::string info);
 
       PMutex msgDataMutex;
       msgDict msgData;
@@ -205,7 +232,7 @@ namespace Opal {
 
       unsigned listen_port;
 
-      SIP::Dialect* dialect;
+      gmref_ptr<SIP::Dialect> dialect;
 
       domain_list active_domains;   // List of active domains
       uri_info_map presence_infos;  // List of uri presences

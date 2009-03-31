@@ -43,14 +43,6 @@
 #include "opal-call.h"
 #include "account-core.h"
 
-static void
-registration_event_in_main (sigc::slot2<void, Ekiga::AccountCore::RegistrationState, std::string> slot,
-			    Ekiga::AccountCore::RegistrationState state,
-			    const std::string msg)
-{
-  slot (state, msg);
-}
-
 namespace Opal {
 
   namespace H323 {
@@ -59,23 +51,23 @@ namespace Opal {
     {
       PCLASSINFO(subscriber, PThread);
 
-  public:
+    public:
 
       subscriber (const Opal::Account & _account,
-                  Opal::H323::EndPoint& _manager) 
+                  Opal::H323::EndPoint& _manager)
         : PThread (1000, AutoDeleteThread),
-        account (_account),
-        manager (_manager) 
+	  account (_account),
+	  manager (_manager)
       {
         this->Resume ();
       };
 
-      void Main () 
-        {
-          manager.Register (account);
-        };
+      void Main ()
+      {
+	manager.Register (account);
+      };
 
-  private:
+    private:
       const Opal::Account & account;
       Opal::H323::EndPoint& manager;
     };
@@ -85,9 +77,9 @@ namespace Opal {
 
 /* The class */
 Opal::H323::EndPoint::EndPoint (Opal::CallManager & _manager, Ekiga::ServiceCore & _core, unsigned _listen_port)
-        : H323EndPoint (_manager), 
-          manager (_manager),
-          core (_core)
+  : H323EndPoint (_manager),
+    manager (_manager),
+    core (_core)
 {
   protocol_name = "h323";
   uri_prefix = "h323:";
@@ -108,34 +100,37 @@ Opal::H323::EndPoint::~EndPoint ()
 {
 }
 
-bool Opal::H323::EndPoint::populate_menu (Ekiga::ContactPtr contact,
-                                          std::string uri,
-                                          Ekiga::MenuBuilder &builder)
+bool
+Opal::H323::EndPoint::populate_menu (Ekiga::ContactPtr contact,
+				     std::string uri,
+				     Ekiga::MenuBuilder &builder)
 {
   return menu_builder_add_actions (contact->get_name (), uri, builder);
 }
 
 
-bool Opal::H323::EndPoint::populate_menu (Ekiga::PresentityPtr presentity,
-                                          const std::string uri,
-                                          Ekiga::MenuBuilder& builder)
+bool
+Opal::H323::EndPoint::populate_menu (Ekiga::PresentityPtr presentity,
+				     const std::string uri,
+				     Ekiga::MenuBuilder& builder)
 {
   return menu_builder_add_actions (presentity->get_name (), uri, builder);
 }
 
 
-bool Opal::H323::EndPoint::menu_builder_add_actions (const std::string & /*fullname*/,
-                                                     const std::string& uri,
-                                                     Ekiga::MenuBuilder & builder)
+bool
+Opal::H323::EndPoint::menu_builder_add_actions (const std::string & /*fullname*/,
+						const std::string& uri,
+						Ekiga::MenuBuilder & builder)
 {
   bool populated = false;
 
   if (uri.find ("h323:") == 0) {
-    
+
     if (0 == GetConnectionCount ())
       builder.add_action ("call", _("Call"),
                           sigc::bind (sigc::mem_fun (this, &Opal::H323::EndPoint::on_dial), uri));
-    else 
+    else
       builder.add_action ("transfer", _("Transfer"),
                           sigc::bind (sigc::mem_fun (this, &Opal::H323::EndPoint::on_transfer), uri));
     populated = true;
@@ -145,7 +140,8 @@ bool Opal::H323::EndPoint::menu_builder_add_actions (const std::string & /*fulln
 }
 
 
-bool Opal::H323::EndPoint::dial (const std::string & uri)
+bool
+Opal::H323::EndPoint::dial (const std::string&  uri)
 {
   if (uri.find ("h323:") == 0) {
 
@@ -159,15 +155,17 @@ bool Opal::H323::EndPoint::dial (const std::string & uri)
 }
 
 
-const std::string & Opal::H323::EndPoint::get_protocol_name () const
+const std::string&
+Opal::H323::EndPoint::get_protocol_name () const
 {
   return protocol_name;
 }
 
 
-void Opal::H323::EndPoint::set_dtmf_mode (unsigned mode)
+void
+Opal::H323::EndPoint::set_dtmf_mode (unsigned mode)
 {
-  switch (mode) 
+  switch (mode)
     {
     case 0:
       SetSendUserInputMode (OpalConnection::SendUserInputAsString);
@@ -187,7 +185,8 @@ void Opal::H323::EndPoint::set_dtmf_mode (unsigned mode)
 }
 
 
-unsigned Opal::H323::EndPoint::get_dtmf_mode () const
+unsigned
+Opal::H323::EndPoint::get_dtmf_mode () const
 {
   if (GetSendUserInputMode () == OpalConnection::SendUserInputAsString)
     return 0;
@@ -205,7 +204,8 @@ unsigned Opal::H323::EndPoint::get_dtmf_mode () const
 }
 
 
-bool Opal::H323::EndPoint::set_listen_port (unsigned port)
+bool
+Opal::H323::EndPoint::set_listen_port (unsigned port)
 {
   listen_iface.protocol = "tcp";
   listen_iface.voip_protocol = "h323";
@@ -228,25 +228,29 @@ bool Opal::H323::EndPoint::set_listen_port (unsigned port)
 }
 
 
-const Ekiga::CallProtocolManager::Interface & Opal::H323::EndPoint::get_listen_interface () const
+const Ekiga::CallProtocolManager::Interface&
+Opal::H323::EndPoint::get_listen_interface () const
 {
   return listen_iface;
 }
 
 
-void Opal::H323::EndPoint::set_forward_uri (const std::string & uri)
+void
+Opal::H323::EndPoint::set_forward_uri (const std::string& uri)
 {
   forward_uri = uri;
 }
 
 
-const std::string & Opal::H323::EndPoint::get_forward_uri () const
+const std::string&
+Opal::H323::EndPoint::get_forward_uri () const
 {
   return forward_uri;
 }
 
 
-bool Opal::H323::EndPoint::subscribe (const Opal::Account & account)
+bool
+Opal::H323::EndPoint::subscribe (const Opal::Account & account)
 {
   if (account.get_protocol_name () != "H323" || account.is_active ())
     return false;
@@ -257,7 +261,8 @@ bool Opal::H323::EndPoint::subscribe (const Opal::Account & account)
 }
 
 
-bool Opal::H323::EndPoint::unsubscribe (const Opal::Account & account)
+bool
+Opal::H323::EndPoint::unsubscribe (const Opal::Account & account)
 {
   if (account.get_protocol_name () != "H323" || !account.is_active ())
     return false;
@@ -268,7 +273,8 @@ bool Opal::H323::EndPoint::unsubscribe (const Opal::Account & account)
 }
 
 
-void Opal::H323::EndPoint::Register (const Opal::Account & account)
+void
+Opal::H323::EndPoint::Register (const Opal::Account& account)
 {
   PString gatekeeperID;
   std::string info;
@@ -325,17 +331,17 @@ void Opal::H323::EndPoint::Register (const Opal::Account & account)
         info = _("Failed");
 
       /* Signal */
-      Ekiga::Runtime::run_in_main (sigc::bind (sigc::ptr_fun(registration_event_in_main),
-					account.registration_event.make_slot (),
-					Ekiga::AccountCore::RegistrationFailed,
-					info));
+      Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &Opal::H323::EndPoint::registration_event_in_main),
+					       account,
+					       Ekiga::AccountCore::RegistrationFailed,
+					       info));
     }
     else {
 
-      Ekiga::Runtime::run_in_main (sigc::bind (sigc::ptr_fun(registration_event_in_main),
-					account.registration_event.make_slot (),
-					Ekiga::AccountCore::Registered,
-					std::string ()));
+      Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &Opal::H323::EndPoint::registration_event_in_main),
+					       account,
+					       Ekiga::AccountCore::Registered,
+					       std::string ()));
     }
   }
   else if (unregister && IsRegisteredWithGatekeeper (account.get_host ())) {
@@ -344,19 +350,20 @@ void Opal::H323::EndPoint::Register (const Opal::Account & account)
     RemoveAliasName (account.get_username ());
 
     /* Signal */
-    Ekiga::Runtime::run_in_main (sigc::bind (sigc::ptr_fun(registration_event_in_main),
-				      account.registration_event.make_slot (),
-				      Ekiga::AccountCore::Unregistered,
-				      std::string ()));
+    Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &Opal::H323::EndPoint::registration_event_in_main),
+					     account,
+					     Ekiga::AccountCore::Unregistered,
+					     std::string ()));
   }
 }
 
 
-bool Opal::H323::EndPoint::UseGatekeeper (const PString & address,
-                                          const PString & domain,
-                                          const PString & iface)
+bool
+Opal::H323::EndPoint::UseGatekeeper (const PString & address,
+				     const PString & domain,
+				     const PString & iface)
 {
-  bool result = 
+  bool result =
     H323EndPoint::UseGatekeeper (address, domain, iface);
 
   PWaitAndSignal m(gk_name_mutex);
@@ -367,7 +374,8 @@ bool Opal::H323::EndPoint::UseGatekeeper (const PString & address,
 }
 
 
-bool Opal::H323::EndPoint::RemoveGatekeeper (const PString & address)
+bool
+Opal::H323::EndPoint::RemoveGatekeeper (const PString & address)
 {
   if (IsRegisteredWithGatekeeper (address))
     return H323EndPoint::RemoveGatekeeper (0);
@@ -376,7 +384,8 @@ bool Opal::H323::EndPoint::RemoveGatekeeper (const PString & address)
 }
 
 
-bool Opal::H323::EndPoint::IsRegisteredWithGatekeeper (const PString & address)
+bool
+Opal::H323::EndPoint::IsRegisteredWithGatekeeper (const PString & address)
 {
   PWaitAndSignal m(gk_name_mutex);
 
@@ -384,15 +393,16 @@ bool Opal::H323::EndPoint::IsRegisteredWithGatekeeper (const PString & address)
 }
 
 
-bool Opal::H323::EndPoint::OnIncomingConnection (OpalConnection & connection,
-                                                 G_GNUC_UNUSED unsigned options,
-                                                 G_GNUC_UNUSED OpalConnection::StringOptions *stroptions)
+bool
+Opal::H323::EndPoint::OnIncomingConnection (OpalConnection & connection,
+					    G_GNUC_UNUSED unsigned options,
+					    G_GNUC_UNUSED OpalConnection::StringOptions *stroptions)
 {
   PTRACE (3, "EndPoint\tIncoming connection");
 
   if (!forward_uri.empty () && manager.get_unconditional_forward ())
     connection.ForwardCall (forward_uri);
-  else if (manager.GetCallCount () > 1) { 
+  else if (manager.GetCallCount () > 1) {
 
     if (!forward_uri.empty () && manager.get_forward_on_busy ())
       connection.ForwardCall (forward_uri);
@@ -405,7 +415,7 @@ bool Opal::H323::EndPoint::OnIncomingConnection (OpalConnection & connection,
     Opal::Call *call = dynamic_cast<Opal::Call *> (&connection.GetCall ());
     if (call) {
 
-      if (!forward_uri.empty () && manager.get_forward_on_no_answer ()) 
+      if (!forward_uri.empty () && manager.get_forward_on_no_answer ())
         call->set_no_answer_forward (manager.get_reject_delay (), forward_uri);
       else
         call->set_reject_delay (manager.get_reject_delay ());
@@ -418,16 +428,26 @@ bool Opal::H323::EndPoint::OnIncomingConnection (OpalConnection & connection,
 }
 
 
-void Opal::H323::EndPoint::on_dial (std::string uri)
+void
+Opal::H323::EndPoint::on_dial (std::string uri)
 {
   manager.dial (uri);
 }
 
 
-void Opal::H323::EndPoint::on_transfer (std::string uri)
+void
+Opal::H323::EndPoint::on_transfer (std::string uri)
 {
   /* FIXME : we don't handle several calls here */
   for (PSafePtr<OpalConnection> connection(connectionsActive, PSafeReference); connection != NULL; ++connection)
     if (!PIsDescendant(&(*connection), OpalPCSSConnection))
       connection->TransferConnection (uri);
+}
+
+void
+Opal::H323::EndPoint::registration_event_in_main (Opal::Account& account,
+						  Ekiga::AccountCore::RegistrationState state,
+						  const std::string msg)
+{
+  account.registration_event.emit (state, msg);
 }

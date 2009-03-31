@@ -53,42 +53,6 @@
 #include "personal-details.h"
 #include "opal-account.h"
 
-static void
-registration_event_in_main (sigc::slot2<void, Ekiga::AccountCore::RegistrationState, std::string> slot,
-			    Ekiga::AccountCore::RegistrationState state,
-			    const std::string msg)
-{
-  slot (state, msg);
-}
-
-static void
-presence_status_in_main (Ekiga::PresenceFetcher* fetcher,
-                         std::string uri,
-                         std::string presence,
-                         std::string status)
-{
-  fetcher->presence_received.emit (uri, presence);
-  fetcher->status_received.emit (uri, status);
-}
-
-static void
-push_message_in_main (SIP::Dialect* dialect,
-		      const std::string uri,
-		      const std::string name,
-		      const std::string msg)
-{
-  dialect->push_message (uri, name, msg);
-}
-
-static void
-push_notice_in_main (SIP::Dialect* dialect,
-		     const std::string uri,
-		     const std::string name,
-		     const std::string msg)
-{
-  dialect->push_notice (uri, name, msg);
-}
-
 namespace Opal {
 
   namespace Sip {
@@ -97,22 +61,27 @@ namespace Opal {
     {
       PCLASSINFO(subscriber, PThread);
 
-  public:
+    public:
       subscriber (const Opal::Account & _account,
                   Opal::Sip::EndPoint & _manager)
         : PThread (1000, AutoDeleteThread),
-        account (_account),
-        manager (_manager)
+	  account (_account),
+	  manager (_manager)
       {
         this->Resume ();
       };
 
       void Main ()
-        {
-          manager.Register (account);
-        };
+      {
+	manager.Register (account.get_username (),
+			  account.get_host (),
+			  account.get_authentication_username (),
+			  account.get_password (),
+			  account.is_enabled (),
+			  account.get_timeout ());
+      };
 
-  private:
+    private:
       const Opal::Account & account;
       Opal::Sip::EndPoint & manager;
     };
@@ -125,9 +94,9 @@ namespace Opal {
 Opal::Sip::EndPoint::EndPoint (Opal::CallManager & _manager,
                                Ekiga::ServiceCore & _core,
                                unsigned _listen_port)
-:   SIPEndPoint (_manager),
-    manager (_manager),
-    core (_core)
+    :   SIPEndPoint (_manager),
+	manager (_manager),
+	core (_core)
 {
   gmref_ptr<Ekiga::ChatCore> chat_core = core.get ("chat-core");
 
@@ -142,9 +111,8 @@ Opal::Sip::EndPoint::EndPoint (Opal::CallManager & _manager,
   uri_prefix = "sip:";
   listen_port = (_listen_port > 0 ? _listen_port : 5060);
 
-  dialect = new SIP::Dialect (core, sigc::mem_fun (this, &Opal::Sip::EndPoint::send_message));
-  dialect->reference (); // take a reference in the main thread
-  chat_core->add_dialect (gmref_ptr<SIP::Dialect>(dialect));
+  dialect = gmref_ptr<SIP::Dialect>(new SIP::Dialect (core, sigc::mem_fun (this, &Opal::Sip::EndPoint::send_message)));
+  chat_core->add_dialect (dialect);
 
   /* Timeouts */
   SetAckTimeout (PTimeInterval (0, 32));
@@ -172,29 +140,31 @@ Opal::Sip::EndPoint::EndPoint (Opal::CallManager & _manager,
 Opal::Sip::EndPoint::~EndPoint ()
 {
   bank->unreference (); // leave a reference in the main thread
-  dialect->unreference (); // leave a reference in the main thread
 }
 
 
-bool Opal::Sip::EndPoint::populate_menu (Ekiga::ContactPtr contact,
-                                         const std::string uri,
-                                         Ekiga::MenuBuilder &builder)
+bool
+Opal::Sip::EndPoint::populate_menu (Ekiga::ContactPtr contact,
+				    const std::string uri,
+				    Ekiga::MenuBuilder &builder)
 {
   return menu_builder_add_actions (contact->get_name (), uri, builder);
 }
 
 
-bool Opal::Sip::EndPoint::populate_menu (Ekiga::PresentityPtr presentity,
-                                         const std::string uri,
-                                         Ekiga::MenuBuilder& builder)
+bool
+Opal::Sip::EndPoint::populate_menu (Ekiga::PresentityPtr presentity,
+				    const std::string uri,
+				    Ekiga::MenuBuilder& builder)
 {
   return menu_builder_add_actions (presentity->get_name (), uri, builder);
 }
 
 
-bool Opal::Sip::EndPoint::menu_builder_add_actions (const std::string& fullname,
-                                                    const std::string& uri,
-                                                    Ekiga::MenuBuilder & builder)
+bool
+Opal::Sip::EndPoint::menu_builder_add_actions (const std::string& fullname,
+					       const std::string& uri,
+					       Ekiga::MenuBuilder & builder)
 {
   bool populated = false;
 
@@ -289,7 +259,8 @@ bool Opal::Sip::EndPoint::menu_builder_add_actions (const std::string& fullname,
 }
 
 
-void Opal::Sip::EndPoint::fetch (const std::string _uri)
+void
+Opal::Sip::EndPoint::fetch (const std::string _uri)
 {
   std::string::size_type loc = _uri.find ("@", 0);
   std::string domain;
@@ -315,7 +286,8 @@ void Opal::Sip::EndPoint::fetch (const std::string _uri)
 }
 
 
-void Opal::Sip::EndPoint::unfetch (const std::string uri)
+void
+Opal::Sip::EndPoint::unfetch (const std::string uri)
 {
   if (std::find (subscribed_uris.begin (), subscribed_uris.end (), uri) != subscribed_uris.end ()) {
 
@@ -326,7 +298,8 @@ void Opal::Sip::EndPoint::unfetch (const std::string uri)
 }
 
 
-void Opal::Sip::EndPoint::publish (const Ekiga::PersonalDetails & details)
+void
+Opal::Sip::EndPoint::publish (const Ekiga::PersonalDetails & details)
 {
   std::string hostname = (const char *) PIPSocket::GetHostName ();
   std::string presence = ((Ekiga::PersonalDetails &) (details)).get_presence ();
@@ -375,8 +348,9 @@ void Opal::Sip::EndPoint::publish (const Ekiga::PersonalDetails & details)
 }
 
 
-bool Opal::Sip::EndPoint::send_message (const std::string & _uri,
-                                        const std::string & _message)
+bool
+Opal::Sip::EndPoint::send_message (const std::string & _uri,
+				   const std::string & _message)
 {
   if (!_uri.empty () && (_uri.find ("sip:") == 0 || _uri.find (':') == string::npos) && !_message.empty ()) {
 
@@ -389,7 +363,8 @@ bool Opal::Sip::EndPoint::send_message (const std::string & _uri,
 }
 
 
-bool Opal::Sip::EndPoint::dial (const std::string & uri)
+bool
+Opal::Sip::EndPoint::dial (const std::string & uri)
 {
   std::stringstream ustr;
 
@@ -410,13 +385,15 @@ bool Opal::Sip::EndPoint::dial (const std::string & uri)
 }
 
 
-const std::string & Opal::Sip::EndPoint::get_protocol_name () const
+const std::string&
+Opal::Sip::EndPoint::get_protocol_name () const
 {
   return protocol_name;
 }
 
 
-void Opal::Sip::EndPoint::set_dtmf_mode (unsigned mode)
+void
+Opal::Sip::EndPoint::set_dtmf_mode (unsigned mode)
 {
   switch (mode) {
 
@@ -435,7 +412,8 @@ void Opal::Sip::EndPoint::set_dtmf_mode (unsigned mode)
 }
 
 
-unsigned Opal::Sip::EndPoint::get_dtmf_mode () const
+unsigned
+Opal::Sip::EndPoint::get_dtmf_mode () const
 {
   // SIP Info
   if (GetSendUserInputMode () == OpalConnection::SendUserInputAsTone)
@@ -449,7 +427,8 @@ unsigned Opal::Sip::EndPoint::get_dtmf_mode () const
 }
 
 
-bool Opal::Sip::EndPoint::set_listen_port (unsigned port)
+bool
+Opal::Sip::EndPoint::set_listen_port (unsigned port)
 {
   unsigned udp_min, udp_max;
 
@@ -490,52 +469,60 @@ bool Opal::Sip::EndPoint::set_listen_port (unsigned port)
 }
 
 
-const Ekiga::CallProtocolManager::Interface & Opal::Sip::EndPoint::get_listen_interface () const
+const Ekiga::CallProtocolManager::Interface&
+Opal::Sip::EndPoint::get_listen_interface () const
 {
   return listen_iface;
 }
 
 
 
-void Opal::Sip::EndPoint::set_forward_uri (const std::string & uri)
+void
+Opal::Sip::EndPoint::set_forward_uri (const std::string & uri)
 {
   forward_uri = uri;
 }
 
 
-const std::string & Opal::Sip::EndPoint::get_forward_uri () const
+const std::string&
+Opal::Sip::EndPoint::get_forward_uri () const
 {
   return forward_uri;
 }
 
 
-void Opal::Sip::EndPoint::set_outbound_proxy (const std::string & uri)
+void
+Opal::Sip::EndPoint::set_outbound_proxy (const std::string & uri)
 {
   outbound_proxy = uri;
   SetProxy (SIPURL (outbound_proxy));
 }
 
 
-const std::string & Opal::Sip::EndPoint::get_outbound_proxy () const
+const std::string&
+Opal::Sip::EndPoint::get_outbound_proxy () const
 {
   return outbound_proxy;
 }
 
 
-void Opal::Sip::EndPoint::set_nat_binding_delay (unsigned delay)
+void
+Opal::Sip::EndPoint::set_nat_binding_delay (unsigned delay)
 {
   if (delay > 0)
     SetNATBindingTimeout (PTimeInterval (0, delay));
 }
 
 
-unsigned Opal::Sip::EndPoint::get_nat_binding_delay ()
+unsigned
+Opal::Sip::EndPoint::get_nat_binding_delay ()
 {
   return GetNATBindingTimeout ().GetSeconds ();
 }
 
 
-std::string Opal::Sip::EndPoint::get_aor_domain (const std::string & aor)
+std::string
+Opal::Sip::EndPoint::get_aor_domain (const std::string & aor)
 {
   std::string domain;
   std::string::size_type loc = aor.find ("@", 0);
@@ -547,7 +534,8 @@ std::string Opal::Sip::EndPoint::get_aor_domain (const std::string & aor)
 }
 
 
-bool Opal::Sip::EndPoint::subscribe (const Opal::Account & account)
+bool
+Opal::Sip::EndPoint::subscribe (const Opal::Account & account)
 {
   if (account.get_protocol_name () != "SIP")
     return false;
@@ -557,7 +545,8 @@ bool Opal::Sip::EndPoint::subscribe (const Opal::Account & account)
 }
 
 
-bool Opal::Sip::EndPoint::unsubscribe (const Opal::Account & account)
+bool
+Opal::Sip::EndPoint::unsubscribe (const Opal::Account & account)
 {
   if (account.get_protocol_name () != "SIP")
     return false;
@@ -567,45 +556,52 @@ bool Opal::Sip::EndPoint::unsubscribe (const Opal::Account & account)
 }
 
 
-void Opal::Sip::EndPoint::Register (const Opal::Account & account)
+void
+Opal::Sip::EndPoint::Register (const std::string username,
+			       const std::string host_,
+			       const std::string auth_username,
+			       const std::string password,
+			       bool is_enabled,
+			       unsigned timeout)
 {
   PString _aor;
   std::stringstream aor;
-  std::string host = account.get_host ();
+  std::string host(host_);
   std::string::size_type loc = host.find (":", 0);
   if (loc != std::string::npos)
     host = host.substr (0, loc);
 
-  if (account.get_username ().find ("@") == std::string::npos)
-    aor << account.get_username () << "@" << host;
+  if (username.find ("@") == std::string::npos)
+    aor << username << "@" << host;
   else
-    aor << account.get_username ();
+    aor << username;
 
   SIPRegister::Params params;
   params.m_addressOfRecord = aor.str ();
-  params.m_registrarAddress = account.get_host ();
-  params.m_authID = account.get_authentication_username ();
-  params.m_password = account.get_password ();
-  params.m_expire = (account.is_enabled () ? account.get_timeout () : 0);
+  params.m_registrarAddress = host;
+  params.m_authID = auth_username;
+  params.m_password = password;
+  params.m_expire = is_enabled ? timeout : 0;
   params.m_minRetryTime = 0;
   params.m_maxRetryTime = 0;
 
   // Update the list of active domains
   std::string domain = Opal::Sip::EndPoint::get_aor_domain (aor.str ());
   bool found = (std::find (active_domains.begin (), active_domains.end (), domain) != active_domains.end ());
-  if (account.is_enabled () && !found)
+  if (is_enabled && !found)
     active_domains.push_back (domain);
-  else if (!account.is_enabled () && found)
+  else if (!is_enabled && found)
     active_domains.remove (domain);
 
   // Register the given aor to the give registrar
   if (!SIPEndPoint::Register (params, _aor))
-    OnRegistrationFailed (aor.str (), SIP_PDU::MaxStatusCode, account.is_enabled ());
+    OnRegistrationFailed (aor.str (), SIP_PDU::MaxStatusCode, is_enabled);
 }
 
 
-void Opal::Sip::EndPoint::OnRegistered (const PString & _aor,
-                                        bool was_registering)
+void
+Opal::Sip::EndPoint::OnRegistered (const PString & _aor,
+				   bool was_registering)
 {
   std::string aor = (const char *) _aor;
   std::string::size_type found;
@@ -676,18 +672,18 @@ void Opal::Sip::EndPoint::OnRegistered (const PString & _aor,
     Subscribe (SIPSubscribe::MessageSummary, 3600, aor);
 
   /* Signal */
-  Opal::Account *account = bank->find_account (strm.str ());
-  if (account)
-    Ekiga::Runtime::run_in_main (sigc::bind (sigc::ptr_fun(registration_event_in_main),
-				      account->registration_event.make_slot (),
-				      was_registering ? Ekiga::AccountCore::Registered : Ekiga::AccountCore::Unregistered,
-				      std::string ()));
+  Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this,
+							  &Opal::Sip::EndPoint::registration_event_in_main),
+					   strm.str (),
+					   was_registering ? Ekiga::AccountCore::Registered : Ekiga::AccountCore::Unregistered,
+					   std::string ()));
 }
 
 
-void Opal::Sip::EndPoint::OnRegistrationFailed (const PString & _aor,
-                                                SIP_PDU::StatusCodes r,
-                                                bool wasRegistering)
+void
+Opal::Sip::EndPoint::OnRegistrationFailed (const PString & _aor,
+					   SIP_PDU::StatusCodes r,
+					   bool wasRegistering)
 {
   std::stringstream strm;
   std::string info;
@@ -917,17 +913,19 @@ void Opal::Sip::EndPoint::OnRegistrationFailed (const PString & _aor,
    */
   if (r != SIP_PDU::Failure_RequestTerminated) {
     /* Signal */
-    Opal::Account *account = bank->find_account (strm.str ());
-    if (account)
-      Ekiga::Runtime::run_in_main (sigc::bind (sigc::ptr_fun(registration_event_in_main),
-				      account->registration_event.make_slot (),
-				      wasRegistering ? Ekiga::AccountCore::RegistrationFailed : Ekiga::AccountCore::UnregistrationFailed,
-				      info));
+    Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this,
+							    &Opal::Sip::EndPoint::registration_event_in_main),
+					     strm.str (),
+					     wasRegistering ? Ekiga::AccountCore::RegistrationFailed : Ekiga::AccountCore::UnregistrationFailed,
+					     info));
   }
 }
 
 
-void Opal::Sip::EndPoint::OnMWIReceived (const PString & party, OpalManager::MessageWaitingType /*type*/, const PString & info)
+void
+Opal::Sip::EndPoint::OnMWIReceived (const PString & party,
+				    OpalManager::MessageWaitingType /*type*/,
+				    const PString & info)
 {
   std::string mwi = info;
   std::transform (mwi.begin(), mwi.end(), mwi.begin(), ::tolower);
@@ -935,15 +933,14 @@ void Opal::Sip::EndPoint::OnMWIReceived (const PString & party, OpalManager::Mes
     mwi = "0/0";
 
   /* Signal */
-  Opal::Account *account = bank->find_account (party);
-  if (account)
-    Ekiga::Runtime::run_in_main (sigc::bind (account->mwi_event.make_slot (), info));
+  Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &Opal::Sip::EndPoint::mwi_received_in_main), party, info));
 }
 
 
-bool Opal::Sip::EndPoint::OnIncomingConnection (OpalConnection &connection,
-                                                unsigned options,
-                                                OpalConnection::StringOptions * stroptions)
+bool
+Opal::Sip::EndPoint::OnIncomingConnection (OpalConnection &connection,
+					   unsigned options,
+					   OpalConnection::StringOptions * stroptions)
 {
   PTRACE (3, "Opal::Sip::EndPoint\tIncoming connection");
 
@@ -975,8 +972,9 @@ bool Opal::Sip::EndPoint::OnIncomingConnection (OpalConnection &connection,
 }
 
 
-bool Opal::Sip::EndPoint::OnReceivedMESSAGE (OpalTransport & transport,
-                                             SIP_PDU & pdu)
+bool
+Opal::Sip::EndPoint::OnReceivedMESSAGE (OpalTransport & transport,
+					SIP_PDU & pdu)
 {
   PString *last = NULL;
   PString *val = NULL;
@@ -1002,28 +1000,31 @@ bool Opal::Sip::EndPoint::OnReceivedMESSAGE (OpalTransport & transport,
     std::string message_uri = (const char *) uri.AsString ();
     std::string _message = (const char *) pdu.GetEntityBody ();
 
-    Ekiga::Runtime::run_in_main (sigc::bind (sigc::ptr_fun (push_message_in_main), dialect, message_uri, display_name, _message));
+    Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &Opal::Sip::EndPoint::push_message_in_main), message_uri, display_name, _message));
   }
 
   return SIPEndPoint::OnReceivedMESSAGE (transport, pdu);
 }
 
 
-void Opal::Sip::EndPoint::OnMessageFailed (const SIPURL & messageUrl,
-                                           SIP_PDU::StatusCodes /*reason*/)
+void
+Opal::Sip::EndPoint::OnMessageFailed (const SIPURL & messageUrl,
+				      SIP_PDU::StatusCodes /*reason*/)
 {
   SIPURL to = messageUrl;
   to.Sanitise (SIPURL::ToURI);
   std::string uri = (const char *) to.AsString ();
   std::string display_name = (const char *) to.GetDisplayName ();
 
-  Ekiga::Runtime::run_in_main (sigc::bind (sigc::ptr_fun (push_notice_in_main),
-				    dialect, uri, display_name,
-				    _("Could not send message")));
+  Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &Opal::Sip::EndPoint::push_notice_in_main),
+					   uri, display_name,
+					   _("Could not send message")));
 }
 
 
-SIPURL Opal::Sip::EndPoint::GetRegisteredPartyName (const SIPURL & host, const OpalTransport & transport)
+SIPURL
+Opal::Sip::EndPoint::GetRegisteredPartyName (const SIPURL & host,
+					     const OpalTransport & transport)
 {
   PString local_address;
   PIPSocket::Address address;
@@ -1032,7 +1033,7 @@ SIPURL Opal::Sip::EndPoint::GetRegisteredPartyName (const SIPURL & host, const O
   SIPURL registration_address;
 
   /* If we are registered to an account corresponding to host, use it.
-  */
+   */
   PSafePtr<SIPHandler> info = activeSIPHandlers.FindSIPHandlerByDomain(host.GetHostName (), SIP_PDU::Method_REGISTER, PSafeReadOnly);
   if (info != NULL) {
 
@@ -1047,6 +1048,9 @@ SIPURL Opal::Sip::EndPoint::GetRegisteredPartyName (const SIPURL & host, const O
      */
     if (host.GetHostAddress ().GetIpAndPort (address, port) && !manager.IsLocalAddress (address)) {
 
+      /* FIXME: this is the only place where we use the bank in a thread
+       * can't we just return GetDefaultDisplayName () ?
+       */
       Opal::Account *account = bank->find_account ("Ekiga.net");
 
       if (account)
@@ -1114,7 +1118,7 @@ Opal::Sip::EndPoint::OnPresenceInfoReceived (const PString & user,
   if (presence != "unknown" && (old_presence != presence || old_status != status)) {
     presence_infos[_uri].presence = presence;
     presence_infos[_uri].status = status;
-    Ekiga::Runtime::run_in_main (sigc::bind (sigc::ptr_fun (presence_status_in_main), this, _uri, presence_infos[_uri].presence, presence_infos[_uri].status));
+    Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &Opal::Sip::EndPoint::presence_status_in_main), _uri, presence_infos[_uri].presence, presence_infos[_uri].status));
   }
 }
 
@@ -1130,36 +1134,36 @@ Opal::Sip::EndPoint::OnDialogInfoReceived (const SIPDialogNotification & info)
   PString remote_display_name = info.m_remote.m_display.IsEmpty () ? remote_uri : info.m_remote.m_display;
 
   switch (info.m_state) {
-    case SIPDialogNotification::Proceeding:
-    case SIPDialogNotification::Early:
-      if (!remote_display_name.IsEmpty ())
-        _status = g_strdup_printf (_("Incoming call from %s"), (const char *) remote_display_name);
-      else
-        _status = g_strdup_printf (_("Incoming call"));
-      status = _status;
-      presence = "ringing";
-      break;
-    case SIPDialogNotification::Confirmed:
-      if (!remote_display_name.IsEmpty ())
-        _status = g_strdup_printf (_("In a call with %s"), (const char *) remote_display_name);
-      else
-        _status = g_strdup_printf (_("In a call"));
-      presence = "inacall";
-      status = _status;
-      break;
-    default:
-    case SIPDialogNotification::Trying:
-    case SIPDialogNotification::Terminated:
-      break;
+  case SIPDialogNotification::Proceeding:
+  case SIPDialogNotification::Early:
+    if (!remote_display_name.IsEmpty ())
+      _status = g_strdup_printf (_("Incoming call from %s"), (const char *) remote_display_name);
+    else
+      _status = g_strdup_printf (_("Incoming call"));
+    status = _status;
+    presence = "ringing";
+    break;
+  case SIPDialogNotification::Confirmed:
+    if (!remote_display_name.IsEmpty ())
+      _status = g_strdup_printf (_("In a call with %s"), (const char *) remote_display_name);
+    else
+      _status = g_strdup_printf (_("In a call"));
+    presence = "inacall";
+    status = _status;
+    break;
+  default:
+  case SIPDialogNotification::Trying:
+  case SIPDialogNotification::Terminated:
+    break;
   }
 
   dialog_infos[uri].presence = presence;
   dialog_infos[uri].status = status;
 
   if (_status)
-    Ekiga::Runtime::run_in_main (sigc::bind (sigc::ptr_fun (presence_status_in_main), this, uri, dialog_infos[uri].presence, dialog_infos[uri].status));
+    Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &Opal::Sip::EndPoint::presence_status_in_main), uri, dialog_infos[uri].presence, dialog_infos[uri].status));
   else
-    Ekiga::Runtime::run_in_main (sigc::bind (sigc::ptr_fun (presence_status_in_main), this, uri, presence_infos[uri].presence, presence_infos[uri].status));
+    Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &Opal::Sip::EndPoint::presence_status_in_main), uri, presence_infos[uri].presence, presence_infos[uri].status));
 }
 
 
@@ -1182,4 +1186,55 @@ void Opal::Sip::EndPoint::on_transfer (std::string uri)
   for (PSafePtr<OpalConnection> connection(connectionsActive, PSafeReference); connection != NULL; ++connection)
     if (!PIsDescendant(&(*connection), OpalPCSSConnection))
       connection->TransferConnection (uri);
+}
+
+void
+Opal::Sip::EndPoint::registration_event_in_main (const std::string aor,
+						 Ekiga::AccountCore::RegistrationState state,
+						 const std::string msg)
+{
+  Opal::Account* account = bank->find_account (aor);
+
+  if (account != 0) {
+
+    account->registration_event.emit (state, msg);
+  }
+}
+
+
+void
+Opal::Sip::EndPoint::presence_status_in_main (std::string uri,
+					      std::string presence,
+					      std::string status)
+{
+  presence_received.emit (uri, presence);
+  status_received.emit (uri, status);
+}
+
+void
+Opal::Sip::EndPoint::push_message_in_main (const std::string uri,
+					   const std::string name,
+					   const std::string msg)
+{
+  dialect->push_message (uri, name, msg);
+}
+
+void
+Opal::Sip::EndPoint::push_notice_in_main (const std::string uri,
+					  const std::string name,
+					  const std::string msg)
+{
+  dialect->push_notice (uri, name, msg);
+}
+
+void
+Opal::Sip::EndPoint::mwi_received_in_main (const std::string aor,
+					   const std::string info)
+{
+  Opal::Account* account = bank->find_account (aor);
+
+  if (account) {
+
+    account->mwi_event.emit (info);
+  }
 }
