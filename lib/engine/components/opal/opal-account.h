@@ -140,7 +140,7 @@ private:
     void on_consult (const std::string url);
     
     // Triggered for our own event
-    void on_registration_event (Ekiga::AccountCore::RegistrationState state, std::string info);
+    void on_registration_event (Ekiga::Account::RegistrationState state, std::string info);
 
     bool dead;
     bool active;
@@ -157,6 +157,8 @@ private:
 
     Ekiga::ServiceCore & core;
   };
+
+  typedef gmref_ptr<Account> AccountPtr;
 
   /**
    * @}

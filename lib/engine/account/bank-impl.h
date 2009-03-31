@@ -37,17 +37,12 @@
 #ifndef __BANK_IMPL_H__
 #define __BANK_IMPL_H__
 
-#include "config.h"
-#include "lister.h"
-#include "account-core.h"
-#include "account.h"
+#include "reflister.h"
 #include "bank.h"
-#include "gmconf.h"
+
 
 namespace Ekiga
 {
-  class AccountCore;
-
 /**
  * @addtogroup accounts
  * @{
@@ -59,7 +54,7 @@ namespace Ekiga
    * bank: it will take care of implementing the external api, you
    * just have to decide when to add and remove accounts.
    *
-   * Any deleted BankImpl is automatically removed from the AccountCore. 
+   * Any deleted BankImpl is automatically removed from the AccountCore.
    * The implementor should not have to take care about that.
    *
    * You can remove a Account from an Ekiga::BankImpl in two ways:
@@ -76,36 +71,36 @@ namespace Ekiga
    *    calling the appropriate api function to delete the account in your
    *    backend.
    */
-  template<class T = Account>
+  template<class AccountType = Account>
   class BankImpl:
     public Bank,
     public sigc::trackable,
-    protected Lister<T>
+    protected RefLister<AccountType>
   {
 
   public:
 
-    typedef typename Lister<T>::iterator iterator;
-    typedef typename Lister<T>::const_iterator const_iterator;
+    typedef typename RefLister<AccountType>::iterator iterator;
+    typedef typename RefLister<AccountType>::const_iterator const_iterator;
 
     /** The constructor
      */
-    BankImpl (ServiceCore &core);
+    BankImpl ();
 
     /** The destructor.
      */
-    virtual ~BankImpl ();
+    ~BankImpl ();
 
     /** Visit all accounts of the bank and trigger the given callback.
      * @param The callback (the return value means "go on" and allows
      *  stopping the visit)
      */
-    void visit_accounts (sigc::slot1<bool, Account &> visitor);
+    void visit_accounts (sigc::slot1<bool, AccountPtr> visitor);
 
-    /** This function be called when a new account has to be added to the Bank.
+    /** This function is called when a new account has to be added to the Bank.
      */
     void new_account ();
-  
+
     /** Returns an iterator to the first Account of the collection
      */
     iterator begin ();
@@ -131,24 +126,21 @@ namespace Ekiga
      * when the account has been updated and the Ekiga::BankImpl 'account_removed' signal
      * will be emitted when the account has been removed from the Ekiga::BankImpl.
      */
-    void add_account (T &account);
+    void add_account (gmref_ptr<AccountType> account);
 
     /** Removes a account from the Ekiga::BankImpl.
      * @param: The account to be removed.
      * @return: The Ekiga::BankImpl 'account_removed' signal is emitted when the account
      * has been removed.
      */
-    void remove_account (T &account);
+    void remove_account (gmref_ptr<AccountType> account);
 
-    /** Save the bank to the GmConf key.
-     */
-    void save () const;
-
-  protected:
-    ServiceCore & core;
+    using RefLister<AccountType>::add_connection;
 
   private:
-    void on_registration_event (Ekiga::AccountCore::RegistrationState, std::string info, Ekiga::Account *account);
+    void on_registration_event (Ekiga::Account::RegistrationState,
+				std::string info,
+				gmref_ptr<AccountType> account);
   };
 
 /**
@@ -160,121 +152,86 @@ namespace Ekiga
 
 /* here begins the code from the template functions */
 
-template<typename T>
-Ekiga::BankImpl<T>::BankImpl (Ekiga::ServiceCore & _core) : core (_core)
+template<typename AccountType>
+Ekiga::BankImpl<AccountType>::BankImpl ()
 {
   /* this is signal forwarding */
-  Lister<T>::object_added.connect (account_added.make_slot ());
-  Lister<T>::object_removed.connect (account_removed.make_slot ());
-  Lister<T>::object_updated.connect (account_updated.make_slot ());
-
-  GSList *accounts = gm_conf_get_string_list ("/apps/" PACKAGE_NAME "/protocols/accounts_list");
-  GSList *accounts_iter = accounts;
-
-  while (accounts_iter) {
-
-    T *account = new T (core, (char *) accounts_iter->data);
-    add_account (*account);
-
-    accounts_iter = g_slist_next (accounts_iter);
-  }
-
-  g_slist_foreach (accounts, (GFunc) g_free, NULL);
-  g_slist_free (accounts);
+  RefLister<AccountType>::object_added.connect (account_added.make_slot ());
+  RefLister<AccountType>::object_removed.connect (account_removed.make_slot ());
+  RefLister<AccountType>::object_updated.connect (account_updated.make_slot ());
 }
 
 
-template<typename T>
-Ekiga::BankImpl<T>::~BankImpl ()
+template<typename AccountType>
+Ekiga::BankImpl<AccountType>::~BankImpl ()
 {
 }
 
 
-template<typename T>
+template<typename AccountType>
 void
-Ekiga::BankImpl<T>::save () const
+Ekiga::BankImpl<AccountType>::visit_accounts (sigc::slot1<bool, AccountPtr> visitor)
 {
-  GSList *accounts = NULL;
-
-  for (const_iterator it = begin ();
-       it != end ();
-       it++) {
-
-    std::string acct_str = (*it).as_string ();
-    if (!acct_str.empty ())
-      accounts = g_slist_append (accounts, g_strdup (acct_str.c_str ()));
-  }
-
-  gm_conf_set_string_list ("/apps/" PACKAGE_NAME "/protocols/accounts_list", accounts);
-
-  g_slist_foreach (accounts, (GFunc) g_free, NULL);
-  g_slist_free (accounts);
+  RefLister<AccountType>::visit_objects (visitor);
 }
 
 
-template<typename T>
+template<typename AccountType>
+typename Ekiga::BankImpl<AccountType>::iterator
+Ekiga::BankImpl<AccountType>::begin ()
+{
+  return RefLister<AccountType>::begin ();
+}
+
+
+template<typename AccountType>
+typename Ekiga::BankImpl<AccountType>::iterator
+Ekiga::BankImpl<AccountType>::end ()
+{
+  return RefLister<AccountType>::end ();
+}
+
+
+template<typename AccountType>
+typename Ekiga::BankImpl<AccountType>::const_iterator
+Ekiga::BankImpl<AccountType>::begin () const
+{
+  return RefLister<AccountType>::begin ();
+}
+
+
+template<typename AccountType>
+typename Ekiga::BankImpl<AccountType>::const_iterator
+Ekiga::BankImpl<AccountType>::end () const
+{
+  return RefLister<AccountType>::end ();
+}
+
+
+template<typename AccountType>
 void
-Ekiga::BankImpl<T>::visit_accounts (sigc::slot1<bool, Account &> visitor)
-{
-  Lister<T>::visit_objects (visitor);
-}
-
-
-template<typename T>
-typename Ekiga::BankImpl<T>::iterator
-Ekiga::BankImpl<T>::begin ()
-{
-  return Lister<T>::begin ();
-}
-
-
-template<typename T>
-typename Ekiga::BankImpl<T>::iterator
-Ekiga::BankImpl<T>::end ()
-{
-  return Lister<T>::end ();
-}
-
-
-template<typename T>
-typename Ekiga::BankImpl<T>::const_iterator
-Ekiga::BankImpl<T>::begin () const
-{
-  return Lister<T>::begin ();
-}
-
-
-template<typename T>
-typename Ekiga::BankImpl<T>::const_iterator
-Ekiga::BankImpl<T>::end () const
-{
-  return Lister<T>::end ();
-}
-
-
-template<typename T>
-void
-Ekiga::BankImpl<T>::add_account (T &account)
+Ekiga::BankImpl<AccountType>::add_account (gmref_ptr<AccountType> account)
 {
   add_object (account);
 
-  account.questions.add_handler (questions.make_slot ());
-  account.trigger_saving.connect (sigc::mem_fun (this, &Ekiga::BankImpl<T>::save));
-  account.registration_event.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::BankImpl<T>::on_registration_event), &account));
+  account->questions.add_handler (questions.make_slot ());
+  account->registration_event.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::BankImpl<AccountType>::on_registration_event), account));
 }
 
 
-template<typename T>
+template<typename AccountType>
 void
-Ekiga::BankImpl<T>::remove_account (T &account)
+Ekiga::BankImpl<AccountType>::remove_account (gmref_ptr<AccountType> account)
 {
   remove_object (account);
 }
 
 
-template<typename T>
+template<typename AccountType>
 void
-Ekiga::BankImpl<T>::on_registration_event (Ekiga::AccountCore::RegistrationState state, std::string info, Ekiga::Account *account)
+Ekiga::BankImpl<AccountType>::on_registration_event (Ekiga::Account::RegistrationState state,
+						     std::string info,
+						     gmref_ptr<AccountType> account)
 {
   registration_event.emit (account, state, info);
 }

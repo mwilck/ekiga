@@ -50,7 +50,8 @@ Ekiga::AccountCore::~AccountCore ()
 }
 
 
-bool Ekiga::AccountCore::populate_menu (MenuBuilder & builder)
+bool
+Ekiga::AccountCore::populate_menu (MenuBuilder & builder)
 {
   bool populated = false;
 
@@ -65,58 +66,54 @@ bool Ekiga::AccountCore::populate_menu (MenuBuilder & builder)
 }
 
 
-void Ekiga::AccountCore::add_bank (Bank &bank)
+void
+Ekiga::AccountCore::add_bank (BankPtr bank)
 {
-  banks.insert (&bank);
+  banks.push_back (bank);
 
-  bank.account_added.connect (account_added.make_slot ());
-  bank.account_removed.connect (account_removed.make_slot ());
-  bank.account_updated.connect (account_updated.make_slot ());
+  bank->account_added.connect (sigc::bind<0>(account_added.make_slot (), bank));
+  bank->account_removed.connect (sigc::bind<0>(account_removed.make_slot (), bank));
+  bank->account_updated.connect (sigc::bind<0>(account_updated.make_slot (), bank));
 
   bank_added.emit (bank);
 
-  bank.questions.add_handler (questions.make_slot ());
-  bank.registration_event.connect (sigc::mem_fun (this, &Ekiga::AccountCore::on_registration_event));
+  bank->questions.add_handler (questions.make_slot ());
+  bank->registration_event.connect (sigc::bind<0> (sigc::mem_fun (this, &Ekiga::AccountCore::on_registration_event), bank));
 }
 
 
-void Ekiga::AccountCore::remove_bank (Bank &bank)
-{
-  banks.erase (&bank);
-
-  bank_removed.emit (bank);
-
-  bank.questions.add_handler (questions.make_slot ());
-}
-
-
-void Ekiga::AccountCore::visit_banks (sigc::slot1<bool, Bank &> visitor)
+void
+Ekiga::AccountCore::visit_banks (sigc::slot1<bool, BankPtr> visitor)
 {
   bool go_on = true;
 
   for (bank_iterator iter = banks.begin ();
        iter != banks.end () && go_on;
        iter++)
-    go_on = visitor (*(*iter));
+    go_on = visitor (*iter);
 }
 
 
-void Ekiga::AccountCore::add_account_subscriber (AccountSubscriber &subscriber)
+void
+Ekiga::AccountCore::add_account_subscriber (AccountSubscriber &subscriber)
 {
   account_subscribers.insert (&subscriber);
 }
 
 
-void Ekiga::AccountCore::on_registration_event (const Ekiga::Account *account,
-                                                Ekiga::AccountCore::RegistrationState state,
-                                                const std::string info)
+void
+Ekiga::AccountCore::on_registration_event (BankPtr bank,
+					   AccountPtr account,
+					   Ekiga::Account::RegistrationState state,
+					   const std::string info)
 {
-  registration_event.emit (*account, state, info);
+  registration_event.emit (bank, account, state, info);
 }
 
 
-void Ekiga::AccountCore::on_mwi_event (const Ekiga::Account *account,
+void Ekiga::AccountCore::on_mwi_event (BankPtr bank,
+				       AccountPtr account,
                                        const std::string & info)
 {
-  mwi_event.emit (*account, info);
+  mwi_event.emit (bank, account, info);
 }

@@ -38,20 +38,18 @@
 #define __BANK_H__
 
 #include "lister.h"
-#include "account-core.h"
 #include "account.h"
-#include "gmconf.h"
 
 namespace Ekiga
 {
   class AccountCore;
 
-/**
- * @addtogroup accounts
- * @{
- */
+  /**
+   * @addtogroup accounts
+   * @{
+   */
 
-  class Bank 
+  class Bank: public virtual GmRefCounted
   {
   public:
 
@@ -63,7 +61,7 @@ namespace Ekiga
      * @param The callback (the return value means "go on" and allows
      *  stopping the visit)
      */
-    virtual void visit_accounts (sigc::slot1<bool, Account &> visitor) = 0;
+    virtual void visit_accounts (sigc::slot1<bool, AccountPtr> visitor) = 0;
 
 
     /** Create the menu for that Bank and its actions.
@@ -72,35 +70,37 @@ namespace Ekiga
      * @param A MenuBuilder object to populate.
      */
     virtual bool populate_menu (MenuBuilder &) = 0;
-      
+
 
     /** This signal is emitted when a account has been added.
      */
-    sigc::signal1<void, Account &> account_added;
+    sigc::signal1<void, AccountPtr> account_added;
 
     /** This signal is emitted when a account has been removed.
      */
-    sigc::signal1<void, Account &> account_removed;
+    sigc::signal1<void, AccountPtr> account_removed;
 
     /** This signal is emitted when a account has been updated.
      */
-    sigc::signal1<void, Account &> account_updated;
+    sigc::signal1<void, AccountPtr> account_updated;
 
     /** This signal is emitted when there is a new registration event
-     * @param: account is the account 
+     * @param: account is the account
      *         state is the state
      *         info contains information about the registration status
      */
-    sigc::signal3<void, const Ekiga::Account *, Ekiga::AccountCore::RegistrationState, std::string> registration_event;
+    sigc::signal3<void, Ekiga::AccountPtr, Account::RegistrationState, std::string> registration_event;
 
     /** This chain allows the BankImpl to present forms to the user
      */
     ChainOfResponsibility<FormRequest*> questions;
   };
 
-/**
- * @}
- */
+  typedef gmref_ptr<Bank> BankPtr;
+
+  /**
+   * @}
+   */
 
 };
 #endif

@@ -181,7 +181,7 @@ Opal::Sip::EndPoint::menu_builder_add_actions (const std::string& fullname,
 	 it != bank->end ();
 	 it++) {
 
-      if (it->get_protocol_name () == "SIP" && it->is_active ()) {
+      if ((*it)->get_protocol_name () == "SIP" && (*it)->is_active ()) {
 
 	std::stringstream uristr;
 	std::string str = uri;
@@ -199,10 +199,10 @@ Opal::Sip::EndPoint::menu_builder_add_actions (const std::string& fullname,
 	else
 	  uristr << str;
 
-	uristr << "@" << it->get_host ();
+	uristr << "@" << (*it)->get_host ();
 
 	uris.push_back (uristr.str ());
-	accounts.push_back (it->get_name ());
+	accounts.push_back ((*it)->get_name ());
       }
     }
   } else {
@@ -675,7 +675,7 @@ Opal::Sip::EndPoint::OnRegistered (const PString & _aor,
   Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this,
 							  &Opal::Sip::EndPoint::registration_event_in_main),
 					   strm.str (),
-					   was_registering ? Ekiga::AccountCore::Registered : Ekiga::AccountCore::Unregistered,
+					   was_registering ? Ekiga::Account::Registered : Ekiga::Account::Unregistered,
 					   std::string ()));
 }
 
@@ -916,7 +916,7 @@ Opal::Sip::EndPoint::OnRegistrationFailed (const PString & _aor,
     Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this,
 							    &Opal::Sip::EndPoint::registration_event_in_main),
 					     strm.str (),
-					     wasRegistering ? Ekiga::AccountCore::RegistrationFailed : Ekiga::AccountCore::UnregistrationFailed,
+					     wasRegistering ? Ekiga::Account::RegistrationFailed : Ekiga::Account::UnregistrationFailed,
 					     info));
   }
 }
@@ -1051,7 +1051,7 @@ Opal::Sip::EndPoint::GetRegisteredPartyName (const SIPURL & host,
       /* FIXME: this is the only place where we use the bank in a thread
        * can't we just return GetDefaultDisplayName () ?
        */
-      Opal::Account *account = bank->find_account ("Ekiga.net");
+      AccountPtr account = bank->find_account ("Ekiga.net");
 
       if (account)
         return SIPURL ("\"" + GetDefaultDisplayName () + "\" <" + PString(account->get_aor ()) + ">");
@@ -1190,12 +1190,12 @@ void Opal::Sip::EndPoint::on_transfer (std::string uri)
 
 void
 Opal::Sip::EndPoint::registration_event_in_main (const std::string aor,
-						 Ekiga::AccountCore::RegistrationState state,
+						 Ekiga::Account::RegistrationState state,
 						 const std::string msg)
 {
-  Opal::Account* account = bank->find_account (aor);
+  AccountPtr account = bank->find_account (aor);
 
-  if (account != 0) {
+  if (account) {
 
     account->registration_event.emit (state, msg);
   }
@@ -1231,7 +1231,7 @@ void
 Opal::Sip::EndPoint::mwi_received_in_main (const std::string aor,
 					   const std::string info)
 {
-  Opal::Account* account = bank->find_account (aor);
+  AccountPtr account = bank->find_account (aor);
 
   if (account) {
 

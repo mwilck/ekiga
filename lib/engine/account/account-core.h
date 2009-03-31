@@ -36,7 +36,7 @@
 #ifndef __ACCOUNT_CORE_H__
 #define __ACCOUNT_CORE_H__
 
-#include <set>
+#include <list>
 #include <iostream>
 
 #include "menu-builder.h"
@@ -44,18 +44,21 @@
 #include "chain-of-responsibility.h"
 #include "services.h"
 
+#include "bank.h"
 
 /* declaration of a few helper classes */
 namespace Ekiga
 {
-  class AccountSubscriber;
-  class Bank;
-  class Account;
+  class AccountSubscriber
+  {
+  public:
+    virtual ~AccountSubscriber () {}
+  };
 
-/**
- * @defgroup accounts 
- * @{
- */
+  /**
+   * @defgroup accounts
+   * @{
+   */
 
   /** Core object for address account support.
    *
@@ -96,12 +99,7 @@ namespace Ekiga
     /** Adds a bank to the AccountCore service.
      * @param The bank to be added.
      */
-    void add_bank (Bank &bank);
-
-    /** Remove a bank to the AccountCore service.
-     * @param The bank to be removed.
-     */
-    void remove_bank (Bank &bank);
+    void add_bank (BankPtr bank);
 
 
     /** Triggers a callback for all Ekiga::Bank banks of the
@@ -109,44 +107,42 @@ namespace Ekiga
      * @param The callback (the return value means "go on" and allows
      *  stopping the visit)
      */
-    void visit_banks (sigc::slot1<bool, Bank &> visitor);
+    void visit_banks (sigc::slot1<bool, BankPtr> visitor);
 
 
     /** This signal is emitted when a bank has been added to the core
      */
-    sigc::signal1<void, Bank &> bank_added;
+    sigc::signal1<void, BankPtr> bank_added;
 
     /** This signal is emitted when a bank has been removed from the core
      */
-    sigc::signal1<void, Bank &> bank_removed;
+    sigc::signal1<void, BankPtr> bank_removed;
 
     /** This signal is emitted when a account has been added to one of
      * the banks
      */
-    sigc::signal1<void, Account &> account_added;
+    sigc::signal2<void, BankPtr, AccountPtr> account_added;
 
     /** This signal is emitted when a account has been removed from one of
      * the banks
      */
-    sigc::signal1<void, Account &> account_removed;
+    sigc::signal2<void, BankPtr, AccountPtr> account_removed;
 
     /** This signal is emitted when a account has been updated in one of
      * the banks
      */
-    sigc::signal1<void, Account &> account_updated;
+    sigc::signal2<void, BankPtr, AccountPtr> account_updated;
 
   private:
 
-    std::set<Bank *> banks;
-    typedef std::set<Bank *>::iterator bank_iterator;
-    typedef std::set<Bank *>::const_iterator bank_const_iterator;
+    std::list<BankPtr> banks;
+    typedef std::list<BankPtr>::iterator bank_iterator;
+    typedef std::list<BankPtr>::const_iterator bank_const_iterator;
 
 
     /*** Misc ***/
 
   public:
-    typedef enum { Processing, Registered, Unregistered, RegistrationFailed, UnregistrationFailed } RegistrationState;
-
 
     /** Create the menu for the AccountCore and its actions.
      * @param A MenuBuilder object to populate.
@@ -166,18 +162,18 @@ namespace Ekiga
 
 
     /** This signal is emitted when there is a new registration event
-     * @param: account is the account 
+     * @param: account is the account
      *         state is the state
      *         info contains information about the registration status
      */
-    sigc::signal3<void, const Ekiga::Account &, Ekiga::AccountCore::RegistrationState, std::string> registration_event;
+    sigc::signal4<void, BankPtr, AccountPtr, Account::RegistrationState, std::string> registration_event;
 
 
     /** This signal is emitted when there is a new message waiting event
-     * @param: account is the account 
-     *         info contains information about the indication 
+     * @param: account is the account
+     *         info contains information about the indication
      */
-    sigc::signal2<void, const Ekiga::Account &, std::string> mwi_event;
+    sigc::signal3<void, BankPtr, AccountPtr, std::string> mwi_event;
 
 
     /*** Account Subscriber API ***/
@@ -195,40 +191,36 @@ namespace Ekiga
     std::set<AccountSubscriber *> account_subscribers;
     typedef std::set<AccountSubscriber *>::iterator subscriber_iterator;
     typedef std::set<AccountSubscriber *>::const_iterator subscriber_const_iterator;
-    void on_registration_event (const Ekiga::Account *account,
-                                Ekiga::AccountCore::RegistrationState state,
+    void on_registration_event (BankPtr bank,
+				AccountPtr account,
+                                Account::RegistrationState state,
                                 const std::string info);
-    void on_mwi_event (const Ekiga::Account *account,
+    void on_mwi_event (BankPtr bank,
+		       AccountPtr account,
                        const std::string & info);
-  };
-
-
-  class AccountSubscriber 
-  {
-public:
-    virtual ~AccountSubscriber () {}
   };
 
 
   template<class T = Account>
   class AccountSubscriberImpl : public AccountSubscriber
   {
-public:
+  public:
     virtual ~AccountSubscriberImpl () {}
 
     virtual bool subscribe (const T & /*account*/);
     virtual bool unsubscribe (const T & /*account*/);
   };
 
-/**
- * @}
- */
+  /**
+   * @}
+   */
 };
 
 
 
 template<class T>
-bool Ekiga::AccountCore::subscribe_account (const T &account)
+bool
+Ekiga::AccountCore::subscribe_account (const T &account)
 {
   for (subscriber_iterator iter = account_subscribers.begin ();
        iter != account_subscribers.end ();
@@ -245,7 +237,8 @@ bool Ekiga::AccountCore::subscribe_account (const T &account)
 
 
 template<class T>
-bool Ekiga::AccountCore::unsubscribe_account (const T &account)
+bool
+Ekiga::AccountCore::unsubscribe_account (const T &account)
 {
   for (subscriber_iterator iter = account_subscribers.begin ();
        iter != account_subscribers.end ();
@@ -262,14 +255,16 @@ bool Ekiga::AccountCore::unsubscribe_account (const T &account)
 
 
 template<class T>
-bool Ekiga::AccountSubscriberImpl<T>::subscribe (const T & /*account*/)
+bool
+Ekiga::AccountSubscriberImpl<T>::subscribe (const T & /*account*/)
 {
   return false;
 }
 
 
 template<class T>
-bool Ekiga::AccountSubscriberImpl<T>::unsubscribe (const T & /*account*/)
+bool
+Ekiga::AccountSubscriberImpl<T>::unsubscribe (const T & /*account*/)
 {
   return false;
 }

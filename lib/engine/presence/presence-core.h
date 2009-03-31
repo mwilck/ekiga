@@ -288,8 +288,9 @@ namespace Ekiga
     std::list<gmref_ptr<PresencePublisher> > presence_publishers;
     void publish (gmref_ptr<PersonalDetails> details);
     void on_personal_details_updated (PersonalDetails &details);
-    void on_registration_event (const Ekiga::Account & account,
-				Ekiga::AccountCore::RegistrationState state,
+    void on_registration_event (Ekiga::BankPtr bank,
+				Ekiga::AccountPtr account,
+				Ekiga::Account::RegistrationState state,
                                 std::string info,
                                 gmref_ptr<Ekiga::PersonalDetails> details);
 

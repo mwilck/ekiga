@@ -259,11 +259,12 @@ Ekiga::PresenceCore::add_supported_uri (sigc::slot1<bool,std::string> tester)
 }
 
 void
-Ekiga::PresenceCore::on_registration_event (const Ekiga::Account& /*account*/,
-					    Ekiga::AccountCore::RegistrationState state,
+Ekiga::PresenceCore::on_registration_event (Ekiga::BankPtr /*bank*/,
+					    Ekiga::AccountPtr /*account*/,
+					    Ekiga::Account::RegistrationState state,
 					    std::string /*info*/,
 					    gmref_ptr<Ekiga::PersonalDetails> details)
 {
-  if (state == Ekiga::AccountCore::Registered)
+  if (state == Ekiga::Account::Registered)
     publish (details);
 }
