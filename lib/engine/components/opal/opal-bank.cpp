@@ -35,6 +35,8 @@
  *
  */
 
+#include "config.h"
+
 #include <string.h>
 #include <stdlib.h>
 #include <iostream>
@@ -42,13 +44,33 @@
 
 #include <glib/gi18n.h>
 
+#include "gmconf.h"
 #include "menu-builder.h"
 
 #include "opal-bank.h"
 #include "form-request-simple.h"
 
+Opal::Bank::Bank (Ekiga::ServiceCore &_core): core(_core)
+{
+  GSList *accounts = gm_conf_get_string_list ("/apps/" PACKAGE_NAME "/protocols/accounts_list");
+  GSList *accounts_iter = accounts;
 
-bool Opal::Bank::populate_menu (Ekiga::MenuBuilder & builder)
+  while (accounts_iter) {
+
+    gmref_ptr<Account> account = gmref_ptr<Account> (new Account (core, (char *)accounts_iter->data));
+
+    add_account (account);
+    Ekiga::BankImpl<Account>::add_connection (account, account->trigger_saving.connect (sigc::mem_fun (this, &Opal::Bank::save)));
+    accounts_iter = g_slist_next (accounts_iter);
+  }
+
+  g_slist_foreach (accounts, (GFunc) g_free, NULL);
+  g_slist_free (accounts);
+}
+
+
+bool
+Opal::Bank::populate_menu (Ekiga::MenuBuilder & builder)
 {
   builder.add_action ("add", _("_Add an Ekiga.net Account"),
 		      sigc::bind (sigc::mem_fun (this, &Opal::Bank::new_account), Opal::Account::Ekiga, "", ""));
@@ -63,16 +85,17 @@ bool Opal::Bank::populate_menu (Ekiga::MenuBuilder & builder)
 }
 
 
-void Opal::Bank::new_account (Account::Type t,
-                              std::string username,
-                              std::string password)
+void
+Opal::Bank::new_account (Account::Type acc_type,
+			 std::string username,
+			 std::string password)
 {
-  Ekiga::FormRequestSimple request(sigc::bind (sigc::mem_fun (this, &Opal::Bank::on_new_account_form_submitted), t));
+  Ekiga::FormRequestSimple request(sigc::bind (sigc::mem_fun (this, &Opal::Bank::on_new_account_form_submitted), acc_type));
 
   request.title (_("Edit account"));
   request.instructions (_("Please update the following fields."));
 
-  switch (t) {
+  switch (acc_type) {
 
   case Opal::Account::Ekiga:
     request.link (_("Get an Ekiga.net SIP account"), "http://www.ekiga.net");
@@ -122,7 +145,7 @@ void Opal::Bank::new_account (Account::Type t,
     if (!questions.handle_request (&request)) {
 #ifdef __GNUC__
       std::cout << "Unhandled form request in "
-        << __PRETTY_FUNCTION__ << std::endl;
+		<< __PRETTY_FUNCTION__ << std::endl;
 #endif
     }
 }
@@ -130,30 +153,33 @@ void Opal::Bank::new_account (Account::Type t,
 
 void Opal::Bank::on_new_account_form_submitted (bool submitted,
 						Ekiga::Form &result,
-                                                Account::Type t)
+                                                Account::Type acc_type)
 {
   if (!submitted)
     return;
 
   try {
 
-    Ekiga::FormRequestSimple request(sigc::bind (sigc::mem_fun (this, &Opal::Bank::on_new_account_form_submitted) ,t));
+    Ekiga::FormRequestSimple request(sigc::bind (sigc::mem_fun (this, &Opal::Bank::on_new_account_form_submitted) ,acc_type));
 
     std::string error;
-    std::string new_name = (t == Opal::Account::SIP || t == Opal::Account::H323) ? result.text ("name") : result.hidden ("name");
-    std::string new_host = (t == Opal::Account::SIP || t == Opal::Account::H323) ? result.text ("host") : result.hidden ("host");
+    std::string new_name = (acc_type == Opal::Account::SIP
+			    || acc_type == Opal::Account::H323) ? result.text ("name") : result.hidden ("name");
+    std::string new_host = (acc_type == Opal::Account::SIP
+			    || acc_type == Opal::Account::H323) ? result.text ("host") : result.hidden ("host");
     std::string new_user = result.text ("user");
-    std::string new_authentication_user = (t == Opal::Account::SIP) ? result.text ("authentication_user") : new_user;
+    std::string new_authentication_user = (acc_type == Opal::Account::SIP) ? result.text ("authentication_user") : new_user;
     std::string new_password = result.private_text ("password");
     bool new_enabled = result.boolean ("enabled");
-    unsigned new_timeout = atoi ((t == Opal::Account::SIP || t == Opal::Account::H323) ? 
+    unsigned new_timeout = atoi ((acc_type == Opal::Account::SIP
+				  || acc_type == Opal::Account::H323) ?
                                  result.text ("timeout").c_str () : result.hidden ("timeout").c_str ());
 
     result.visit (request);
 
-    if (new_name.empty ()) 
+    if (new_name.empty ())
       error = _("You did not supply a name for that account.");
-    else if (new_host.empty ()) 
+    else if (new_host.empty ())
       error = _("You did not supply a host to register to.");
     else if (new_user.empty ())
       error = _("You did not supply a user name for that account.");
@@ -166,13 +192,14 @@ void Opal::Bank::on_new_account_form_submitted (bool submitted,
       if (!questions.handle_request (&request)) {
 #ifdef __GNUC__
         std::cout << "Unhandled form request in "
-          << __PRETTY_FUNCTION__ << std::endl;
+		  << __PRETTY_FUNCTION__ << std::endl;
 #endif
       }
     }
     else {
 
-      add (t, new_name, new_host, new_user, new_authentication_user, new_password, new_enabled, new_timeout);
+      add (acc_type, new_name, new_host, new_user, new_authentication_user,
+	   new_password, new_enabled, new_timeout);
       save ();
     }
 
@@ -183,8 +210,8 @@ void Opal::Bank::on_new_account_form_submitted (bool submitted,
 }
 
 
-void Opal::Bank::add (Account::Type t,
-                      std::string name, 
+void Opal::Bank::add (Account::Type acc_type,
+                      std::string name,
                       std::string host,
                       std::string user,
                       std::string auth_user,
@@ -192,8 +219,13 @@ void Opal::Bank::add (Account::Type t,
                       bool enabled,
                       unsigned timeout)
 {
-  Opal::Account *account = new Opal::Account (core, t, name, host, user, auth_user, password, enabled, timeout);
-  add_account (*account);
+  AccountPtr account = AccountPtr(new Opal::Account (core, acc_type, name,
+						     host, user, auth_user,
+						     password, enabled,
+						     timeout));
+  add_account (account);
+  Ekiga::BankImpl<Account>::add_connection (account, account->trigger_saving.connect (sigc::mem_fun (this, &Opal::Bank::save)));
+
   account->mwi_event.connect (sigc::bind<0> (mwi_event.make_slot (), account));
 }
 
@@ -204,27 +236,47 @@ Opal::Bank::call_manager_ready ()
        iter != end ();
        ++iter) {
 
-    if (iter->is_enabled ())
-      iter->enable ();
+    if ((*iter)->is_enabled ())
+      (*iter)->enable ();
   }
 }
 
-Opal::Account*
+Opal::AccountPtr
 Opal::Bank::find_account (const std::string& aor)
 {
-  Opal::Account* result = NULL;
+  AccountPtr result;
   bool found = false;
 
   for (iterator iter = begin ();
        !found && iter != end ();
        ++iter) {
 
-    if (iter->get_aor () == aor) {
+    if ((*iter)->get_aor () == aor) {
 
       found = true;
-      result = &*iter;
+      result = *iter;
     }
   }
 
   return result;
+}
+
+void
+Opal::Bank::save () const
+{
+  GSList *accounts = NULL;
+
+  for (const_iterator it = begin ();
+       it != end ();
+       it++) {
+
+    std::string acct_str = (*it)->as_string ();
+    if ( !acct_str.empty ())
+      accounts = g_slist_append (accounts, g_strdup (acct_str.c_str ()));
+  }
+
+  gm_conf_set_string_list ("/apps/" PACKAGE_NAME "/protocols/accounts_list", accounts);
+
+  g_slist_foreach (accounts, (GFunc) g_free, NULL);
+  g_slist_free (accounts);
 }

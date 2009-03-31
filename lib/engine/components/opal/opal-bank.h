@@ -54,7 +54,8 @@ namespace Opal
       public Ekiga::Service
   {
 public:
-    Bank (Ekiga::ServiceCore &_core) : Ekiga::BankImpl<Opal::Account> (_core) {}
+
+    Bank (Ekiga::ServiceCore &_core);
 
     virtual ~Bank () { }
 
@@ -66,7 +67,7 @@ public:
     const std::string get_description () const
     { return "\tStores the opal accounts"; }
 
-    void new_account (Account::Type t,
+    void new_account (Account::Type acc_type,
                       std::string username = "",
                       std::string password = "");
 
@@ -76,7 +77,7 @@ public:
      * @return The Opal::Account if an Account was found, false otherwise.
      *         The returned account should not be freed.
      */
-    Opal::Account* find_account (const std::string& aor);
+    AccountPtr find_account (const std::string& aor);
 
 
     void call_manager_ready ();
@@ -85,14 +86,16 @@ public:
      * @param: account is the account 
      *         info contains information about the indication 
      */
-    sigc::signal2<void, const Ekiga::Account *, std::string> mwi_event;
+    sigc::signal2<void, AccountPtr, std::string> mwi_event;
 
 private:
+    Ekiga::ServiceCore &core;
+
     void on_new_account_form_submitted (bool submitted,
 					Ekiga::Form& form,
-					Account::Type t);
+					Account::Type acc_type);
 
-    void add (Account::Type t,
+    void add (Account::Type acc_type,
               std::string name, 
               std::string host,
               std::string user,
@@ -100,6 +103,8 @@ private:
               std::string password,
               bool enabled,
               unsigned timeout);
+
+    void save () const;
   };
 
   /**

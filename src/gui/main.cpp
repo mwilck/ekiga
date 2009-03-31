@@ -500,42 +500,44 @@ static void ekiga_main_window_add_device_dialog_show (EkigaMainWindow *main_wind
 /* 
  * Engine Callbacks 
  */
-static void on_registration_event (const Ekiga::Account & account,
-                                   Ekiga::AccountCore::RegistrationState state,
-                                   std::string /*info*/,
-                                   gpointer self)
+static void
+on_registration_event (Ekiga::BankPtr /*bank*/,
+		       Ekiga::AccountPtr account,
+		       Ekiga::Account::RegistrationState state,
+		       std::string /*info*/,
+		       gpointer self)
 {
   EkigaMainWindow *mw = NULL;
 
   gchar *msg = NULL;
-  std::string aor = account.get_aor ();
+  std::string aor = account->get_aor ();
 
   g_return_if_fail (EKIGA_IS_MAIN_WINDOW (self));
   mw = EKIGA_MAIN_WINDOW (self);
 
   switch (state) {
-  case Ekiga::AccountCore::Registered:
+  case Ekiga::Account::Registered:
     /* Translators: Is displayed once an account "%s" is registered. */
     msg = g_strdup_printf (_("Registered %s"), aor.c_str ()); 
-    if (std::find (mw->priv->accounts.begin (), mw->priv->accounts.end (), account.get_host ()) == mw->priv->accounts.end ())
-      mw->priv->accounts.push_back (account.get_host ());
+    if (std::find (mw->priv->accounts.begin (), mw->priv->accounts.end (), account->get_host ()) == mw->priv->accounts.end ())
+      mw->priv->accounts.push_back (account->get_host ());
     break;
 
-  case Ekiga::AccountCore::Unregistered:
+  case Ekiga::Account::Unregistered:
     /* Translators: Is displayed once an account "%s" is unregistered. */
     msg = g_strdup_printf (_("Unregistered %s"), aor.c_str ());
-    mw->priv->accounts.remove (account.get_host ());
+    mw->priv->accounts.remove (account->get_host ());
     break;
 
-  case Ekiga::AccountCore::UnregistrationFailed:
+  case Ekiga::Account::UnregistrationFailed:
     msg = g_strdup_printf (_("Could not unregister %s"), aor.c_str ());
     break;
 
-  case Ekiga::AccountCore::RegistrationFailed:
+  case Ekiga::Account::RegistrationFailed:
     msg = g_strdup_printf (_("Could not register %s"), aor.c_str ());
     break;
 
-  case Ekiga::AccountCore::Processing:
+  case Ekiga::Account::Processing:
   default:
     break;
   }

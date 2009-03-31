@@ -83,7 +83,7 @@ static void gm_aw_destroy (gpointer aw);
 /* DESCRIPTION  : /
  * BEHAVIOR     : Returns a pointer to the private GmAccountsWindow structure
  *                used by the preferences window GMObject.
- * PRE          : The given GtkWidget pointer must be a preferences window 
+ * PRE          : The given GtkWidget pointer must be a preferences window
  * 		  GMObject.
  */
 static GmAccountsWindow *gm_aw_get_aw (GtkWidget *account_window);
@@ -150,7 +150,7 @@ gm_aw_get_aw (GtkWidget *accounts_window)
 bool
 gm_accounts_window_update_account_state (GtkWidget *accounts_window,
 					 gboolean refreshing,
-                                         const Ekiga::Account & _account,
+					 Ekiga::AccountPtr _account,
 					 const gchar *status,
 					 const gchar *voicemails)
 {
@@ -181,7 +181,7 @@ gm_accounts_window_update_account_state (GtkWidget *accounts_window,
 			  COLUMN_ACCOUNT, &account,
 			  -1);
 
-      if (account == &_account) {
+      if (account == _account.get ()) {
 
         gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
                             COLUMN_ACCOUNT_ERROR_MESSAGE, &error,
@@ -202,7 +202,7 @@ gm_accounts_window_update_account_state (GtkWidget *accounts_window,
 			      COLUMN_ACCOUNT_VOICEMAILS, voicemails, -1);
           mwi_modified = (mwi == NULL) || strcmp (voicemails, mwi);
         }
-      
+
         g_free (error);
         g_free (mwi);
       }
@@ -215,9 +215,10 @@ gm_accounts_window_update_account_state (GtkWidget *accounts_window,
 
 
 /* Engine callbacks */
-static void 
-on_registration_event (const Ekiga::Account & account,
-                       Ekiga::AccountCore::RegistrationState state,
+static void
+on_registration_event (Ekiga::BankPtr /*bank*/,
+		       Ekiga::AccountPtr account,
+                       Ekiga::Account::RegistrationState state,
                        std::string info,
                        gpointer window)
 {
@@ -225,43 +226,43 @@ on_registration_event (const Ekiga::Account & account,
   std::string status;
 
   switch (state) {
-  case Ekiga::AccountCore::Registered:
+  case Ekiga::Account::Registered:
     status = _("Registered");
     break;
 
-  case Ekiga::AccountCore::Unregistered:
+  case Ekiga::Account::Unregistered:
     status = _("Unregistered");
     break;
 
-  case Ekiga::AccountCore::UnregistrationFailed:
+  case Ekiga::Account::UnregistrationFailed:
     status = _("Could not unregister");
     if (!info.empty ())
       status = status + " (" + info + ")";
     break;
 
-  case Ekiga::AccountCore::RegistrationFailed:
+  case Ekiga::Account::RegistrationFailed:
     status = _("Could not register");
     if (!info.empty ())
       status = status + " (" + info + ")";
     break;
 
-  case Ekiga::AccountCore::Processing:
+  case Ekiga::Account::Processing:
     status = _("Processing...");
     is_processing = true;
   default:
     break;
   }
 
-  gm_accounts_window_update_account_state (GTK_WIDGET (window), is_processing, account, status.c_str (), NULL); 
+  gm_accounts_window_update_account_state (GTK_WIDGET (window), is_processing, account, status.c_str (), NULL);
 }
 
 
-static void 
-on_mwi_event (const Ekiga::Account* account,
+static void
+on_mwi_event (Ekiga::AccountPtr account,
               std::string mwi,
               gpointer self)
 {
-  if (gm_accounts_window_update_account_state (GTK_WIDGET (self), false, *account, NULL, mwi.c_str ())) {
+  if (gm_accounts_window_update_account_state (GTK_WIDGET (self), false, account, NULL, mwi.c_str ())) {
 
     std::string::size_type loc = mwi.find ("/", 0);
     if (loc != std::string::npos) {
@@ -433,7 +434,7 @@ account_toggled_cb (G_GNUC_UNUSED GtkCellRendererToggle *cell,
 
     if (fixed)
       account->disable ();
-    else 
+    else
       account->enable ();
 
     gtk_list_store_set (GTK_LIST_STORE (model), &iter,
@@ -446,9 +447,9 @@ account_toggled_cb (G_GNUC_UNUSED GtkCellRendererToggle *cell,
 }
 
 
-static void 
+static void
 gm_accounts_window_add_account (GtkWidget *window,
-                                Ekiga::Account & account)
+                                Ekiga::AccountPtr account)
 {
   GmAccountsWindow *aw = NULL;
   GtkTreeModel *model = NULL;
@@ -462,18 +463,18 @@ gm_accounts_window_add_account (GtkWidget *window,
   model = gtk_tree_view_get_model (GTK_TREE_VIEW (aw->accounts_list));
 
   gtk_list_store_append (GTK_LIST_STORE (model), &iter);
-  gtk_list_store_set (GTK_LIST_STORE (model), &iter, 
-                      COLUMN_ACCOUNT, &account,
+  gtk_list_store_set (GTK_LIST_STORE (model), &iter,
+                      COLUMN_ACCOUNT, account.get (),
                       COLUMN_ACCOUNT_WEIGHT, PANGO_WEIGHT_NORMAL,
-                      COLUMN_ACCOUNT_ENABLED, account.is_enabled (),
-                      COLUMN_ACCOUNT_ACCOUNT_NAME, account.get_name ().c_str (),
-                      -1); 
+                      COLUMN_ACCOUNT_ENABLED, account->is_enabled (),
+                      COLUMN_ACCOUNT_ACCOUNT_NAME, account->get_name ().c_str (),
+                      -1);
 }
 
 
 void
 gm_accounts_window_update_account (GtkWidget *accounts_window,
-                                   Ekiga::Account & account)
+                                   Ekiga::AccountPtr account)
 {
   Ekiga::Account *caccount = NULL;
 
@@ -495,15 +496,15 @@ gm_accounts_window_update_account (GtkWidget *accounts_window,
 
       gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
 			  COLUMN_ACCOUNT, &caccount, -1);
-      
-      if (caccount == &account) {
 
-        gtk_list_store_set (GTK_LIST_STORE (model), &iter, 
-                            COLUMN_ACCOUNT, &account,
+      if (caccount == account.get ()) {
+
+        gtk_list_store_set (GTK_LIST_STORE (model), &iter,
+                            COLUMN_ACCOUNT, account.get (),
                             COLUMN_ACCOUNT_WEIGHT, PANGO_WEIGHT_NORMAL,
-                            COLUMN_ACCOUNT_ENABLED, account.is_enabled (),
-                            COLUMN_ACCOUNT_ACCOUNT_NAME, account.get_name ().c_str (),
-                            -1); 
+                            COLUMN_ACCOUNT_ENABLED, account->is_enabled (),
+                            COLUMN_ACCOUNT_ACCOUNT_NAME, account->get_name ().c_str (),
+                            -1);
         break;
       }
     } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (model), &iter));
@@ -513,7 +514,7 @@ gm_accounts_window_update_account (GtkWidget *accounts_window,
 
 void
 gm_accounts_window_remove_account (GtkWidget *accounts_window,
-                                   Ekiga::Account & account)
+                                   Ekiga::AccountPtr account)
 {
   Ekiga::Account *caccount = NULL;
 
@@ -535,8 +536,8 @@ gm_accounts_window_remove_account (GtkWidget *accounts_window,
 
       gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
 			  COLUMN_ACCOUNT, &caccount, -1);
-      
-      if (caccount == &account) {
+
+      if (caccount == account.get ()) {
 
         gtk_list_store_remove (GTK_LIST_STORE (model), &iter);
         break;
@@ -546,8 +547,8 @@ gm_accounts_window_remove_account (GtkWidget *accounts_window,
 }
 
 
-static bool 
-visit_accounts (Ekiga::Account & account,
+static bool
+visit_accounts (Ekiga::AccountPtr account,
                 gpointer data)
 {
   gm_accounts_window_add_account (GTK_WIDGET (data), account);
@@ -557,34 +558,37 @@ visit_accounts (Ekiga::Account & account,
 
 
 static void
-on_account_added (Ekiga::Account & account,
+on_account_added (Ekiga::BankPtr /*bank*/,
+		  Ekiga::AccountPtr account,
                   gpointer data)
 {
   gm_accounts_window_add_account (GTK_WIDGET (data), account);
 }
 
 
-static void 
-on_account_updated (Ekiga::Account & account,
+static void
+on_account_updated (Ekiga::BankPtr /*bank*/,
+		    Ekiga::AccountPtr account,
                     gpointer data)
 {
   gm_accounts_window_update_account (GTK_WIDGET (data), account);
 }
 
 
-static void 
-on_account_removed (Ekiga::Account & account,
+static void
+on_account_removed (Ekiga::BankPtr /*bank*/,
+		    Ekiga::AccountPtr account,
                     gpointer data)
 {
   gm_accounts_window_remove_account (GTK_WIDGET (data), account);
 }
 
 
-static void 
-on_bank_added (Ekiga::Bank & bank,
+static void
+on_bank_added (Ekiga::BankPtr bank,
                gpointer data)
 {
-  bank.visit_accounts (sigc::bind (sigc::ptr_fun (visit_accounts), data));
+  bank->visit_accounts (sigc::bind (sigc::ptr_fun (visit_accounts), data));
   populate_menu (GTK_WIDGET (data));
 }
 
@@ -646,7 +650,7 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
   gtk_window_set_position (GTK_WINDOW (window), GTK_WIN_POS_CENTER);
 
   aw = new GmAccountsWindow (core);
-  g_object_set_data_full (G_OBJECT (window), "GMObject", 
+  g_object_set_data_full (G_OBJECT (window), "GMObject",
 			  aw, gm_aw_destroy);
 
   /* The menu */
@@ -675,8 +679,8 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
 				   G_TYPE_INT,
 				   G_TYPE_BOOLEAN, /* Enabled? */
 				   G_TYPE_STRING,  /* Account Name */
-				   G_TYPE_STRING,  /* VoiceMails */  
-				   G_TYPE_STRING,  /* Error Message */  
+				   G_TYPE_STRING,  /* VoiceMails */
+				   G_TYPE_STRING,  /* Error Message */
 				   G_TYPE_INT);    /* State */
 
   aw->accounts_list = gtk_tree_view_new_with_model (GTK_TREE_MODEL (list_store));
@@ -695,7 +699,7 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
    */
   column = gtk_tree_view_column_new_with_attributes (_("A"),
 						     renderer,
-						     "active", 
+						     "active",
 						     COLUMN_ACCOUNT_ENABLED,
 						     NULL);
   gtk_tree_view_column_set_fixed_width (GTK_TREE_VIEW_COLUMN (column), 25);
@@ -706,14 +710,14 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
   		    (gpointer) window);
 
 
-  /* Add all text renderers, ie all except the 
+  /* Add all text renderers, ie all except the
    * "ACCOUNT_ENABLED/DEFAULT" columns */
   for (int i = COLUMN_ACCOUNT_ACCOUNT_NAME ; i < COLUMN_ACCOUNT_NUMBER - 1 ; i++) {
 
     renderer = gtk_cell_renderer_text_new ();
     column = gtk_tree_view_column_new_with_attributes (column_names [i],
 						       renderer,
-						       "text", 
+						       "text",
 						       i,
 						       "weight",
 						       COLUMN_ACCOUNT_WEIGHT,
@@ -727,11 +731,11 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
 
   g_signal_connect (G_OBJECT (aw->accounts_list), "event_after",
 		    G_CALLBACK (account_clicked_cb), window);
-  
+
   /* The scrolled window with the accounts list store */
   scroll_window = gtk_scrolled_window_new (FALSE, FALSE);
-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scroll_window), 
-				  GTK_POLICY_AUTOMATIC, 
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scroll_window),
+				  GTK_POLICY_AUTOMATIC,
 				  GTK_POLICY_AUTOMATIC);
 
   event_box = gtk_event_box_new ();
@@ -741,7 +745,7 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
 
   frame = gtk_frame_new (NULL);
   gtk_widget_set_size_request (GTK_WIDGET (frame), 250, 150);
-  gtk_container_set_border_width (GTK_CONTAINER (frame), 
+  gtk_container_set_border_width (GTK_CONTAINER (frame),
 				  2 * GNOMEMEETING_PAD_SMALL);
   gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
   gtk_container_add (GTK_CONTAINER (frame), scroll_window);
@@ -755,17 +759,17 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
 
 
   /* Generic signals */
-  g_signal_connect_swapped (GTK_OBJECT (window), 
-			    "response", 
+  g_signal_connect_swapped (GTK_OBJECT (window),
+			    "response",
 			    G_CALLBACK (gnomemeeting_window_hide),
 			    (gpointer) window);
 
-  g_signal_connect (GTK_OBJECT (window), "delete-event", 
+  g_signal_connect (GTK_OBJECT (window), "delete-event",
 		    G_CALLBACK (delete_window_cb), NULL);
 
   gtk_widget_show_all (GTK_WIDGET (GTK_DIALOG (window)->vbox));
 
-  
+
   /* Engine Signals callbacks */
   // FIXME sigc::connection conn;
 
@@ -780,6 +784,6 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
   bank->mwi_event.connect (sigc::bind (sigc::ptr_fun (on_mwi_event), (gpointer) window));
 
   account_core->visit_banks (sigc::bind_return (sigc::bind (sigc::ptr_fun (on_bank_added), window), true));
-  
+
   return window;
 }

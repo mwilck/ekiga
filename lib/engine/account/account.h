@@ -29,7 +29,7 @@
  *                         ------------------------------------------
  *   begin                : written in 2008 by Damien Sandras
  *   copyright            : (c) 2008 by Damien Sandras
- *   description          : declaration of the interface of an AccountManager 
+ *   description          : declaration of the interface of an AccountManager
  *                          Account
  *
  */
@@ -41,8 +41,7 @@
 #include <map>
 #include <string>
 
-#include "account-core.h"
-
+#include "gmref.h"
 #include "chain-of-responsibility.h"
 #include "form-request.h"
 #include "menu-builder.h"
@@ -50,14 +49,16 @@
 namespace Ekiga
 {
 
-/**
- * @addtogroup accounts 
- * @{
- */
+  /**
+   * @addtogroup accounts
+   * @{
+   */
 
-  class Account
+  class Account: public virtual GmRefCounted
   {
   public:
+
+    typedef enum { Processing, Registered, Unregistered, RegistrationFailed, UnregistrationFailed } RegistrationState;
 
 
     /** The destructor.
@@ -115,8 +116,8 @@ namespace Ekiga
      * Ekiga::Account descendant.
      */
     virtual bool is_active () const = 0;
-    
-    
+
+
     /** Create the menu for that account and its actions.
      * This function is purely virtual and should be implemented by
      * the descendant of the Ekiga::Contact.
@@ -139,12 +140,12 @@ namespace Ekiga
     sigc::signal0<void> removed;
 
 
-    /** This signal is emitted when there is a new registration event for 
+    /** This signal is emitted when there is a new registration event for
      *  the Account.
      * @param: state is the state
      *         info contains information about the registration status
      */
-    sigc::signal2<void, Ekiga::AccountCore::RegistrationState, std::string> registration_event;
+    sigc::signal2<void, RegistrationState, std::string> registration_event;
 
 
     /** This signal is emitted when there is a new message waiting indication
@@ -158,9 +159,11 @@ namespace Ekiga
     ChainOfResponsibility<FormRequest*> questions;
   };
 
-/**
- * @}
- */
+  typedef gmref_ptr<Account> AccountPtr;
+
+  /**
+   * @}
+   */
 
 };
 #endif

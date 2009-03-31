@@ -333,14 +333,14 @@ Opal::H323::EndPoint::Register (const Opal::Account& account)
       /* Signal */
       Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &Opal::H323::EndPoint::registration_event_in_main),
 					       account,
-					       Ekiga::AccountCore::RegistrationFailed,
+					       Ekiga::Account::RegistrationFailed,
 					       info));
     }
     else {
 
       Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &Opal::H323::EndPoint::registration_event_in_main),
 					       account,
-					       Ekiga::AccountCore::Registered,
+					       Ekiga::Account::Registered,
 					       std::string ()));
     }
   }
@@ -352,7 +352,7 @@ Opal::H323::EndPoint::Register (const Opal::Account& account)
     /* Signal */
     Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &Opal::H323::EndPoint::registration_event_in_main),
 					     account,
-					     Ekiga::AccountCore::Unregistered,
+					     Ekiga::Account::Unregistered,
 					     std::string ()));
   }
 }
@@ -446,7 +446,7 @@ Opal::H323::EndPoint::on_transfer (std::string uri)
 
 void
 Opal::H323::EndPoint::registration_event_in_main (Opal::Account& account,
-						  Ekiga::AccountCore::RegistrationState state,
+						  Ekiga::Account::RegistrationState state,
 						  const std::string msg)
 {
   account.registration_event.emit (state, msg);

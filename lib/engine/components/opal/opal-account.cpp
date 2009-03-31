@@ -442,15 +442,18 @@ void Opal::Account::on_edit_form_submitted (bool submitted,
 }
 
 
-void Opal::Account::on_consult (const std::string url)
+void
+Opal::Account::on_consult (const std::string url)
 {
   gm_open_uri (url.c_str ());
 }
 
-void Opal::Account::on_registration_event (Ekiga::AccountCore::RegistrationState state, std::string /*info*/)
+void
+Opal::Account::on_registration_event (Ekiga::Account::RegistrationState state,
+				      std::string /*info*/)
 {
   active = false;
 
-  if (state == Ekiga::AccountCore::Registered)
+  if (state == Ekiga::Account::Registered)
     active = true;
 }
