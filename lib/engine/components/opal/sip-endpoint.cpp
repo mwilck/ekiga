@@ -262,6 +262,7 @@ Opal::Sip::EndPoint::menu_builder_add_actions (const std::string& fullname,
 void
 Opal::Sip::EndPoint::fetch (const std::string _uri)
 {
+  PWaitAndSignal mut(listsMutex);
   std::string::size_type loc = _uri.find ("@", 0);
   std::string domain;
 
@@ -289,6 +290,7 @@ Opal::Sip::EndPoint::fetch (const std::string _uri)
 void
 Opal::Sip::EndPoint::unfetch (const std::string uri)
 {
+  PWaitAndSignal mut(listsMutex);
   if (std::find (subscribed_uris.begin (), subscribed_uris.end (), uri) != subscribed_uris.end ()) {
 
     Subscribe (SIPSubscribe::Presence, 0, PString (uri.c_str ()));
@@ -301,6 +303,7 @@ Opal::Sip::EndPoint::unfetch (const std::string uri)
 void
 Opal::Sip::EndPoint::publish (const Ekiga::PersonalDetails & details)
 {
+  PWaitAndSignal mut(listsMutex);
   std::string hostname = (const char *) PIPSocket::GetHostName ();
   std::string presence = ((Ekiga::PersonalDetails &) (details)).get_presence ();
   std::string status = ((Ekiga::PersonalDetails &) (details)).get_status ();
@@ -564,6 +567,7 @@ Opal::Sip::EndPoint::Register (const std::string username,
 			       bool is_enabled,
 			       unsigned timeout)
 {
+  PWaitAndSignal mut(listsMutex);
   PString _aor;
   std::stringstream aor;
   std::string host(host_);
@@ -603,6 +607,7 @@ void
 Opal::Sip::EndPoint::OnRegistered (const PString & _aor,
 				   bool was_registering)
 {
+  PWaitAndSignal mut(listsMutex);
   std::string aor = (const char *) _aor;
   std::string::size_type found;
   std::string::size_type loc = aor.find ("@", 0);

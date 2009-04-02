@@ -217,6 +217,7 @@ namespace Opal {
 
       CallManager & manager;
 
+      PMutex listsMutex;
       std::list<std::string> to_subscribe_uris;  // List of uris to subscribe
       std::list<std::string> subscribed_uris;    // List of subscribed uris
       std::list<std::string> aors;               // List of registered aor
