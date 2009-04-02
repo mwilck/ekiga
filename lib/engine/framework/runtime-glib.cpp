@@ -54,13 +54,19 @@ struct message
   unsigned int seconds;
 };
 
+static void
+free_message (struct message* msg)
+{
+  delete msg;
+}
+
 static gboolean
 run_later_or_back_in_main_helper (gpointer data)
 {
   struct message *msg = (struct message *)data;
 
   msg->action ();
-  delete msg;
+  free_message (msg);
 
   return FALSE;
 }
@@ -133,7 +139,8 @@ static GSourceFuncs source_funcs = {
 void
 Ekiga::Runtime::init ()
 {
-  queue = g_async_queue_new (); // here we get a ref to the queue
+  // here we get a ref to the queue, which we'll release in quit
+  queue = g_async_queue_new_full ((GDestroyNotify)free_message);
 
   struct source* source = (struct source *)g_source_new (&source_funcs,
 					  sizeof (struct source));
