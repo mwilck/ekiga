@@ -51,8 +51,9 @@ namespace History
  * @{
  */
 
-  class Book
-    : public Ekiga::BookImpl<Contact>
+  class Book:
+    public Ekiga::BookImpl<Contact>,
+    public sigc::trackable
   {
   public:
 
