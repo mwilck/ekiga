@@ -101,9 +101,9 @@ Opal::Bank::new_account (Account::Type acc_type,
     request.link (_("Get an Ekiga.net SIP account"), "http://www.ekiga.net");
     request.hidden ("name", "Ekiga.net");
     request.hidden ("host", "ekiga.net");
-    request.text ("user", _("User:"), username);
+    request.text ("user", _("_User:"), username);
     request.hidden ("authentication_user", username);
-    request.private_text ("password", _("Password:"), password);
+    request.private_text ("password", _("_Password:"), password);
     request.hidden ("timeout", "3600");
     break;
 
@@ -112,29 +112,29 @@ Opal::Bank::new_account (Account::Type acc_type,
                   "https://www.diamondcard.us/exec/voip-login?act=sgn&spo=ekiga");
     request.hidden ("name", "Ekiga Call Out");
     request.hidden ("host", "sip.diamondcard.us");
-    request.text ("user", _("Account ID:"), username);
+    request.text ("user", _("_Account ID:"), username);
     request.hidden ("authentication_user", username);
-    request.private_text ("password", _("PIN Code:"), password);
+    request.private_text ("password", _("_PIN Code:"), password);
     request.hidden ("timeout", "3600");
     break;
 
   case Opal::Account::H323:
-    request.text ("name", _("Name:"), std::string ());
-    request.text ("host", _("Gatekeeper:"), std::string ());
-    request.text ("user", _("User:"), username);
+    request.text ("name", _("_Name:"), std::string ());
+    request.text ("host", _("_Gatekeeper:"), std::string ());
+    request.text ("user", _("_User:"), username);
     request.hidden ("authentication_user", username);
-    request.private_text ("password", _("Password:"), password);
-    request.text ("timeout", _("Timeout:"), "3600");
+    request.private_text ("password", _("_Password:"), password);
+    request.text ("timeout", _("_Timeout:"), "3600");
     break;
 
   case Opal::Account::SIP:
   default:
-    request.text ("name", _("Name:"), std::string ());
-    request.text ("host", _("Registrar:"), std::string ());
-    request.text ("user", _("User:"), username);
-    request.text ("authentication_user", _("Authentication User:"), std::string ());
-    request.private_text ("password", _("Password:"), password);
-    request.text ("timeout", _("Timeout:"), "3600");
+    request.text ("name", _("_Name:"), std::string ());
+    request.text ("host", _("_Registrar:"), std::string ());
+    request.text ("user", _("_User:"), username);
+    request.text ("authentication_user", _("_Authentication User:"), std::string ());
+    request.private_text ("password", _("_Password:"), password);
+    request.text ("timeout", _("_Timeout:"), "3600");
     break;
   }
   request.boolean ("enabled", _("Enable Account"), true);
