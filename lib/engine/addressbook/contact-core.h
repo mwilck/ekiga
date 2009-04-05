@@ -65,7 +65,8 @@ namespace Ekiga
    * Notice that you give sources to this object as references, so they won't
    * be freed here : it's up to you to free them somehow.
    */
-  class ContactCore: public Service
+  class ContactCore: public Service,
+		     public sigc::trackable
   {
   public:
 
