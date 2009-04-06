@@ -862,7 +862,7 @@ gm_prefs_window_convert_string_list (const std::vector<std::string> & list)
   gchar **array = NULL;
   unsigned i;
 
-  array = (gchar**) malloc (sizeof(gchar*) * (list.size() + 1));
+  array = (gchar**) g_malloc (sizeof(gchar*) * (list.size() + 1));
   for (i = 0; i < list.size(); i++)
     array[i] = (gchar*) list[i].c_str();
   array[i] = NULL;
