@@ -51,8 +51,8 @@
 #include "form-request-simple.h"
 
 static  bool same_codec_desc (Ekiga::CodecDescription a, Ekiga::CodecDescription b)
-{ 
-  return (a.name == b.name && a.rate == b.rate); 
+{
+  return (a.name == b.name && a.rate == b.rate);
 }
 
 
@@ -64,8 +64,8 @@ public:
 
   StunDetector (const std::string & _server,
 		Opal::CallManager& _manager,
-                GAsyncQueue* _queue) 
-    : PThread (1000, AutoDeleteThread), 
+                GAsyncQueue* _queue)
+    : PThread (1000, AutoDeleteThread),
       server (_server),
       manager (_manager),
       queue (_queue)
@@ -78,15 +78,12 @@ public:
   {
     g_async_queue_unref (queue);
   }
-  
-  void Main () 
+
+  void Main ()
   {
-    PSTUNClient::NatTypes* result = NULL;
+    PSTUNClient::NatTypes result = manager.SetSTUNServer (server);
 
-    result = (PSTUNClient::NatTypes*)g_malloc0 (sizeof (PSTUNClient::NatTypes));
-    *result = manager.SetSTUNServer (server);
-
-    g_async_queue_push (queue, result);
+    g_async_queue_push (queue, GUINT_TO_POINTER (result));
   };
 
 private:
@@ -101,7 +98,7 @@ using namespace Opal;
 
 /* The class */
 CallManager::CallManager (Ekiga::ServiceCore & _core)
-: core (_core)
+  : core (_core)
 {
   /* Initialise the endpoint paramaters */
   PIPSocket::SetDefaultIpAddressFamilyV4();
@@ -110,7 +107,7 @@ CallManager::CallManager (Ekiga::ServiceCore & _core)
   SetUDPPorts (5000, 5100);
   SetTCPPorts (30000, 30100);
   SetRtpIpPorts (5000, 5100);
-  
+
   pcssEP = NULL;
 
   forward_on_no_answer = false;
@@ -122,11 +119,11 @@ CallManager::CallManager (Ekiga::ServiceCore & _core)
   PVideoDevice::OpenArgs video = GetVideoOutputDevice();
   video.deviceName = "EKIGAOUT";
   SetVideoOutputDevice (video);
-  
+
   video = GetVideoOutputDevice();
   video.deviceName = "EKIGAIN";
   SetVideoPreviewDevice (video);
-  
+
   video = GetVideoInputDevice();
   video.deviceName = "EKIGA";
   SetVideoInputDevice (video);
@@ -141,11 +138,7 @@ CallManager::CallManager (Ekiga::ServiceCore & _core)
   SetMediaFormatMask (PStringArray ());
 
   // used to communicate with the StunDetector
-#if GLIB_CHECK_VERSION(2,16,0)
-  queue = g_async_queue_new_full (g_free);
-#else
   queue = g_async_queue_new ();
-#endif
 
   PInterfaceMonitor::GetInstance().SetRefreshInterval (15000);
 }
@@ -162,7 +155,7 @@ CallManager::~CallManager ()
 void CallManager::start ()
 {
   if (stun_enabled) {
-    
+
     // Ready
     new StunDetector (stun_server, *this, queue);
     patience = 20;
@@ -182,7 +175,7 @@ void CallManager::set_display_name (const std::string & name)
 
 const std::string & CallManager::get_display_name () const
 {
-  return display_name; 
+  return display_name;
 }
 
 
@@ -203,7 +196,7 @@ void CallManager::set_echo_cancellation (bool enabled)
        call != NULL;
        ++call) {
 
-    for (int i = 0; 
+    for (int i = 0;
          i < 2;
          i++) {
 
@@ -224,7 +217,7 @@ bool CallManager::get_echo_cancellation () const
 {
   OpalEchoCanceler::Params ec = GetEchoCancelParams ();
 
-  return (ec.m_mode == OpalEchoCanceler::Cancelation); 
+  return (ec.m_mode == OpalEchoCanceler::Cancelation);
 }
 
 
@@ -238,7 +231,7 @@ void CallManager::set_maximum_jitter (unsigned max_val)
        call != NULL;
        ++call) {
 
-    for (int i = 0; 
+    for (int i = 0;
          i < 2;
          i++) {
 
@@ -263,7 +256,7 @@ void CallManager::set_maximum_jitter (unsigned max_val)
 
 unsigned CallManager::get_maximum_jitter () const
 {
-  return GetMaxAudioJitterDelay (); 
+  return GetMaxAudioJitterDelay ();
 }
 
 
@@ -284,7 +277,7 @@ void CallManager::set_silence_detection (bool enabled)
        call != NULL;
        ++call) {
 
-    for (int i = 0; 
+    for (int i = 0;
          i < 2;
          i++) {
 
@@ -344,8 +337,8 @@ void CallManager::set_codecs (Ekiga::CodecList & _codecs)
   GetAllowedFormats (all_media_formats);
   Ekiga::CodecList all_codecs = Opal::CodecList (all_media_formats);
 
-  // 
-  // Clean the CodecList given as paramenter : remove unsupported codecs and 
+  //
+  // Clean the CodecList given as paramenter : remove unsupported codecs and
   // add missing codecs at the end of the list
   //
 
@@ -356,7 +349,7 @@ void CallManager::set_codecs (Ekiga::CodecList & _codecs)
        it != all_codecs.end ();
        it++) {
 
-    Ekiga::CodecList::iterator i  = 
+    Ekiga::CodecList::iterator i  =
       search_n (_codecs.begin (), _codecs.end (), 1, *it, same_codec_desc);
     if (i == _codecs.end ()) {
       _codecs.append (*it);
@@ -368,7 +361,7 @@ void CallManager::set_codecs (Ekiga::CodecList & _codecs)
        it != _codecs.end ();
        it++) {
 
-    Ekiga::CodecList::iterator i  = 
+    Ekiga::CodecList::iterator i  =
       search_n (all_codecs.begin (), all_codecs.end (), 1, *it, same_codec_desc);
     if (i == all_codecs.end ()) {
       _codecs.remove (it);
@@ -378,7 +371,7 @@ void CallManager::set_codecs (Ekiga::CodecList & _codecs)
   codecs = _codecs;
 
 
-  // 
+  //
   // Update OPAL
   //
   Ekiga::CodecList::iterator codecs_it;
@@ -393,7 +386,7 @@ void CallManager::set_codecs (Ekiga::CodecList & _codecs)
 
     // Find the OpalMediaFormat corresponding to the Ekiga::CodecDescription
     if (active) {
-      for (j = 0 ; 
+      for (j = 0 ;
            j < all_media_formats.GetSize () ;
            j++) {
 
@@ -411,8 +404,8 @@ void CallManager::set_codecs (Ekiga::CodecList & _codecs)
   all_media_formats = OpalTranscoder::GetPossibleFormats (pcssEP->GetMediaFormats ());
   all_media_formats.Remove (order);
 
-  for (int i = 0 ; 
-       i < all_media_formats.GetSize () ; 
+  for (int i = 0 ;
+       i < all_media_formats.GetSize () ;
        i++)
     mask += all_media_formats [i];
 
@@ -451,7 +444,7 @@ bool CallManager::get_unconditional_forward ()
   return unconditional_forward;
 }
 
-void CallManager::set_udp_ports (unsigned min_port, 
+void CallManager::set_udp_ports (unsigned min_port,
                                  unsigned max_port)
 {
   if (min_port < max_port) {
@@ -462,22 +455,22 @@ void CallManager::set_udp_ports (unsigned min_port,
 }
 
 
-void CallManager::get_udp_ports (unsigned & min_port, 
+void CallManager::get_udp_ports (unsigned & min_port,
                                  unsigned & max_port) const
 {
   min_port = GetUDPPortBase ();
   max_port = GetUDPPortMax ();
 }
 
-void CallManager::set_tcp_ports (unsigned min_port, 
+void CallManager::set_tcp_ports (unsigned min_port,
                                  unsigned max_port)
 {
-  if (min_port < max_port) 
+  if (min_port < max_port)
     SetTCPPorts (min_port, max_port);
 }
 
 
-void CallManager::get_tcp_ports (unsigned & min_port, 
+void CallManager::get_tcp_ports (unsigned & min_port,
                                  unsigned & max_port) const
 {
   min_port = GetTCPPortBase ();
@@ -520,33 +513,33 @@ void CallManager::set_video_options (const CallManager::VideoOptions & options)
     OpalMediaFormat media_format = media_formats_list [i];
     if (media_format.GetMediaType() == OpalMediaType::Video ()) {
 
-      media_format.SetOptionInteger (OpalVideoFormat::FrameWidthOption (), 
-                                     Ekiga::VideoSizes [options.size].width);  
-      media_format.SetOptionInteger (OpalVideoFormat::FrameHeightOption (), 
-                                     Ekiga::VideoSizes [options.size].height);  
+      media_format.SetOptionInteger (OpalVideoFormat::FrameWidthOption (),
+                                     Ekiga::VideoSizes [options.size].width);
+      media_format.SetOptionInteger (OpalVideoFormat::FrameHeightOption (),
+                                     Ekiga::VideoSizes [options.size].height);
       media_format.SetOptionInteger (OpalVideoFormat::FrameTimeOption (),
                                      (int) (90000 / (options.maximum_frame_rate > 0 ? options.maximum_frame_rate : 30)));
-      media_format.SetOptionInteger (OpalVideoFormat::MaxBitRateOption (), 
+      media_format.SetOptionInteger (OpalVideoFormat::MaxBitRateOption (),
                                      (options.maximum_received_bitrate > 0 ? options.maximum_received_bitrate : 4096) * 1000);
-      media_format.SetOptionInteger (OpalVideoFormat::TargetBitRateOption (), 
+      media_format.SetOptionInteger (OpalVideoFormat::TargetBitRateOption (),
                                      (options.maximum_transmitted_bitrate > 0 ? options.maximum_transmitted_bitrate : 48) * 1000);
-      media_format.SetOptionInteger (OpalVideoFormat::MinRxFrameWidthOption(), 
+      media_format.SetOptionInteger (OpalVideoFormat::MinRxFrameWidthOption(),
                                      160);
-      media_format.SetOptionInteger (OpalVideoFormat::MinRxFrameHeightOption(), 
+      media_format.SetOptionInteger (OpalVideoFormat::MinRxFrameHeightOption(),
                                      120);
-      media_format.SetOptionInteger (OpalVideoFormat::MaxRxFrameWidthOption(), 
+      media_format.SetOptionInteger (OpalVideoFormat::MaxRxFrameWidthOption(),
                                      1920);
-      media_format.SetOptionInteger (OpalVideoFormat::MaxRxFrameHeightOption(), 
+      media_format.SetOptionInteger (OpalVideoFormat::MaxRxFrameHeightOption(),
                                      1088);
-      media_format.AddOption(new OpalMediaOptionUnsigned (OpalVideoFormat::TemporalSpatialTradeOffOption (), 
-                                                          true, OpalMediaOption::NoMerge, 
-                                                          options.temporal_spatial_tradeoff));  
-      media_format.SetOptionInteger (OpalVideoFormat::TemporalSpatialTradeOffOption(), 
-                                     (options.temporal_spatial_tradeoff > 0 ? options.temporal_spatial_tradeoff : 31));  
-      media_format.AddOption(new OpalMediaOptionUnsigned (OpalVideoFormat::MaxFrameSizeOption (), 
+      media_format.AddOption(new OpalMediaOptionUnsigned (OpalVideoFormat::TemporalSpatialTradeOffOption (),
+                                                          true, OpalMediaOption::NoMerge,
+                                                          options.temporal_spatial_tradeoff));
+      media_format.SetOptionInteger (OpalVideoFormat::TemporalSpatialTradeOffOption(),
+                                     (options.temporal_spatial_tradeoff > 0 ? options.temporal_spatial_tradeoff : 31));
+      media_format.AddOption(new OpalMediaOptionUnsigned (OpalVideoFormat::MaxFrameSizeOption (),
                                                           true, OpalMediaOption::NoMerge, 1400));
-      media_format.SetOptionInteger (OpalVideoFormat::MaxFrameSizeOption (), 
-                                     1400);  
+      media_format.SetOptionInteger (OpalVideoFormat::MaxFrameSizeOption (),
+                                     1400);
 
       if ( media_format.GetName() != "YUV420P" &&
            media_format.GetName() != "RGB32" &&
@@ -555,10 +548,10 @@ void CallManager::set_video_options (const CallManager::VideoOptions & options)
         media_format.SetOptionBoolean (OpalVideoFormat::RateControlEnableOption(),
                                        true);
         /* the following two options have been removed, what can they be replaced with?
-        media_format.SetOptionInteger (OpalVideoFormat::RateControlWindowSizeOption(),
-                                       500);
-        media_format.SetOptionInteger (OpalVideoFormat::RateControlMaxFramesSkipOption(),
-                                       1);
+	   media_format.SetOptionInteger (OpalVideoFormat::RateControlWindowSizeOption(),
+	   500);
+	   media_format.SetOptionInteger (OpalVideoFormat::RateControlMaxFramesSkipOption(),
+	   1);
         */
       }
 
@@ -571,7 +564,7 @@ void CallManager::set_video_options (const CallManager::VideoOptions & options)
        call != NULL;
        ++call) {
 
-    for (int i = 0; 
+    for (int i = 0;
          i < 2;
          i++) {
 
@@ -583,7 +576,7 @@ void CallManager::set_video_options (const CallManager::VideoOptions & options)
 
           OpalMediaFormat mediaFormat = stream->GetMediaFormat ();
           mediaFormat.SetOptionInteger (OpalVideoFormat::TemporalSpatialTradeOffOption(),
-                                        (options.temporal_spatial_tradeoff > 0 ? options.temporal_spatial_tradeoff : 31));  
+                                        (options.temporal_spatial_tradeoff > 0 ? options.temporal_spatial_tradeoff : 31));
           mediaFormat.SetOptionInteger (OpalVideoFormat::TargetBitRateOption (),
                                         (options.maximum_transmitted_bitrate > 0 ? options.maximum_transmitted_bitrate : 48) * 1000);
           mediaFormat.ToNormalisedOptions();
@@ -614,13 +607,13 @@ void CallManager::get_video_options (CallManager::VideoOptions & options) const
       }
       options.size = j;
 
-      options.maximum_frame_rate = 
+      options.maximum_frame_rate =
         (int) (90000 / media_format.GetOptionInteger (OpalVideoFormat::FrameTimeOption ()));
-      options.maximum_received_bitrate = 
+      options.maximum_received_bitrate =
         (int) (media_format.GetOptionInteger (OpalVideoFormat::MaxBitRateOption ()) / 1000);
-      options.maximum_transmitted_bitrate = 
+      options.maximum_transmitted_bitrate =
         (int) (media_format.GetOptionInteger (OpalVideoFormat::TargetBitRateOption ()) / 1000);
-      options.temporal_spatial_tradeoff = 
+      options.temporal_spatial_tradeoff =
         media_format.GetOptionInteger (OpalVideoFormat::TemporalSpatialTradeOffOption ());
 
       break;
@@ -660,15 +653,15 @@ CallManager::OnClosedMediaStream (const OpalMediaStream & stream)
 }
 
 
-bool 
+bool
 CallManager::OnOpenMediaStream (OpalConnection & connection,
-                              OpalMediaStream & stream)
+				OpalMediaStream & stream)
 {
   OpalMediaFormatList list = pcssEP->GetMediaFormats ();
   if (!OpalManager::OnOpenMediaStream (connection, stream))
     return FALSE;
 
-  if (list.FindFormat(stream.GetMediaFormat()) == list.end ()) 
+  if (list.FindFormat(stream.GetMediaFormat()) == list.end ())
     dynamic_cast <Opal::Call &> (connection.GetCall ()).OnOpenMediaStream (stream);
 
   return TRUE;
@@ -679,7 +672,7 @@ void CallManager::GetAllowedFormats (OpalMediaFormatList & full_list)
 {
   OpalMediaFormatList list = OpalTranscoder::GetPossibleFormats (pcssEP->GetMediaFormats ());
   std::list<std::string> black_list;
-   
+
   black_list.push_back ("GSM-AMR");
   black_list.push_back ("Linear-16-Stereo-48kHz");
   black_list.push_back ("LPC-10");
@@ -707,41 +700,46 @@ void CallManager::GetAllowedFormats (OpalMediaFormatList & full_list)
 void
 CallManager::HandleSTUNResult ()
 {
-  PSTUNClient::NatTypes* result = NULL;
+  gboolean error = false;
+  gboolean got_answer = false;
 
-  result = (PSTUNClient::NatTypes*)g_async_queue_try_pop (queue);
+  if (g_async_queue_length (queue) > 0) {
 
-  if (result != NULL || patience == 0) {
+    PSTUNClient::NatTypes result
+      = (PSTUNClient::NatTypes)GPOINTER_TO_UINT (g_async_queue_pop (queue));
+    got_answer = true;
 
-    if (patience == 0
-	|| *result == PSTUNClient::SymmetricNat
-	|| *result == PSTUNClient::BlockedNat
-	|| *result == PSTUNClient::PartialBlockedNat) {
+    if (result == PSTUNClient::SymmetricNat
+	|| result == PSTUNClient::BlockedNat
+	|| result == PSTUNClient::PartialBlockedNat) {
 
-      ReportSTUNError (_("Ekiga did not manage to configure your network settings automatically. You can"
-			 " still use it, but you need to configure your network settings manually.\n\n"
-			 "Please see http://wiki.ekiga.org/index.php/Enable_port_forwarding_manually for"
-			 " instructions"));
-    } 
-    else {
+      error = true;
+    } else {
 
       for (Ekiga::CallManager::iterator iter = begin ();
-           iter != end ();
-           ++iter) 
-        (*iter)->set_listen_port ((*iter)->get_listen_interface ().port);
+	   iter != end ();
+	   ++iter)
+	(*iter)->set_listen_port ((*iter)->get_listen_interface ().port);
+      ready.emit ();
     }
+  } else if (patience == 0) {
 
+    error = true;
+  }
+
+  if (error) {
+
+    ReportSTUNError (_("Ekiga did not manage to configure your network settings automatically. You can"
+		       " still use it, but you need to configure your network settings manually.\n\n"
+		       "Please see http://wiki.ekiga.org/index.php/Enable_port_forwarding_manually for"
+		       " instructions"));
     ready.emit ();
+  } else if (!got_answer) {
 
-    if (result != NULL)
-      g_free (result);
+    patience--;
+    Ekiga::Runtime::run_in_main (sigc::mem_fun (this, &CallManager::HandleSTUNResult),
+				 1);
 
-  } 
-  else {
-
-      patience--;
-      Ekiga::Runtime::run_in_main (sigc::mem_fun (this, &CallManager::HandleSTUNResult),
-				   1);
   }
 }
 
