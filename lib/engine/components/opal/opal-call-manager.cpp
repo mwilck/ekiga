@@ -83,7 +83,7 @@ public:
   {
     PSTUNClient::NatTypes result = manager.SetSTUNServer (server);
 
-    g_async_queue_push (queue, GUINT_TO_POINTER (result));
+    g_async_queue_push (queue, GUINT_TO_POINTER ((guint)result + 1));
   };
 
 private:
@@ -706,7 +706,7 @@ CallManager::HandleSTUNResult ()
   if (g_async_queue_length (queue) > 0) {
 
     PSTUNClient::NatTypes result
-      = (PSTUNClient::NatTypes)GPOINTER_TO_UINT (g_async_queue_pop (queue));
+      = (PSTUNClient::NatTypes)(GPOINTER_TO_UINT (g_async_queue_pop (queue))-1);
     got_answer = true;
 
     if (result == PSTUNClient::SymmetricNat
