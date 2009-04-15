@@ -343,17 +343,7 @@ static void
 name_changed_cb (GtkEntry     *entry,
                  GtkAssistant *assistant)
 {
-  gchar **couple;
-  gboolean complete;
-
-  couple = g_strsplit (gtk_entry_get_text (entry), " ", 2);
-
-  complete = couple && couple[0] && couple[1]
-          && !PString (couple[0]).Trim ().IsEmpty ()
-          && !PString (couple[1]).Trim ().IsEmpty ();
-  set_current_page_complete (assistant, complete);
-
-  g_strfreev (couple);
+  set_current_page_complete (assistant, gtk_entry_get_text_length (entry) > 0);
 }
 
 
