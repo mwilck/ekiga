@@ -53,6 +53,8 @@
 #include "audioinput-core.h"
 #include "audiooutput-core.h"
 #include <gdk/gdkkeysyms.h>
+#include <sys/types.h>  // for get user full name
+#include <pwd.h>  // for get user full name
 
 G_DEFINE_TYPE (EkigaAssistant, ekiga_assistant, GTK_TYPE_ASSISTANT);
 
@@ -390,8 +392,19 @@ prepare_personal_data_page (EkigaAssistant *assistant)
 
   full_name = gm_conf_get_string (PERSONAL_DATA_KEY "full_name");
 
-  if (full_name)
-    gtk_entry_set_text (GTK_ENTRY (assistant->priv->name), full_name);
+  if (!full_name || strlen (full_name) == 0) {
+    // set full_name if possible
+    struct passwd *pw = getpwuid (getuid ());
+    if (pw) {
+      // sometimes, the full name contains also office, room number etc.
+      // and we need to remove them (take until the first "," char)
+      gchar **entry = g_strsplit (pw->pw_gecos, ",", 2);
+      full_name = g_strdup (entry[0]);
+      g_strfreev (entry);
+    }
+  }
+
+  gtk_entry_set_text (GTK_ENTRY (assistant->priv->name), full_name);
 
   g_free (full_name);
 }
