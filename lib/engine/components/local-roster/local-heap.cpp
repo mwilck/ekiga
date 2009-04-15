@@ -166,8 +166,10 @@ struct existing_groups_helper
 
   bool test (Local::PresentityPtr presentity)
   {
-    groups.insert (presentity->get_groups ().begin (),
-		   presentity->get_groups ().end ());
+    const std::set<std::string> presentity_groups = presentity->get_groups ();
+
+    groups.insert (presentity_groups.begin (),
+		   presentity_groups.end ());
 
     return true;
   }
