@@ -117,8 +117,10 @@ int gm_conf_get_int (const gchar *);
 void gm_conf_set_float (const gchar *, const float);
 gfloat gm_conf_get_float (const gchar *);
 void gm_conf_set_string (const gchar *, const gchar *);
+/* Should be freed! */
 gchar *gm_conf_get_string (const gchar *);
 void gm_conf_set_string_list (const gchar *, GSList *);
+/* Should be freed! */
 GSList *gm_conf_get_string_list (const gchar *);
 
 /* to destroy a part of the config */
