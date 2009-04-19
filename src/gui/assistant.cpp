@@ -386,14 +386,17 @@ create_personal_data_page (EkigaAssistant *assistant)
 static void
 prepare_personal_data_page (EkigaAssistant *assistant)
 {
-  const gchar *full_name;
+  gchar* full_name = gm_conf_get_string (PERSONAL_DATA_KEY "full_name");
 
-  full_name = gm_conf_get_string (PERSONAL_DATA_KEY "full_name");
+  if (full_name == NULL || strlen (full_name) == 0) {
 
-  if (!full_name || strlen (full_name) == 0)
-    full_name = g_get_real_name ();
+    g_free (full_name);
+    full_name = g_strdup (g_get_real_name ());
+  }
 
   gtk_entry_set_text (GTK_ENTRY (assistant->priv->name), full_name);
+
+  g_free (full_name);
 }
 
 
