@@ -143,7 +143,7 @@ bool GMVideoInputManager_ptlib::open (unsigned width, unsigned height, unsigned 
 
   if (error_code != Ekiga::VI_ERROR_NONE) {
     PTRACE(1, "GMVideoInputManager_ptlib\tEncountered error " << error_code << " while opening device ");
-    Ekiga::Runtime::run_in_main (sigc::bind (device_error.make_slot (), current_state.device, error_code));
+    Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &GMVideoInputManager_ptlib::device_error_in_main), current_state.device, error_code));
     return false;
   }
 
@@ -158,7 +158,7 @@ bool GMVideoInputManager_ptlib::open (unsigned width, unsigned height, unsigned 
   settings.contrast = contrast >> 8;
   settings.modifyable = true;
 
-  Ekiga::Runtime::run_in_main (sigc::bind (device_opened.make_slot (), current_state.device, settings));
+  Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &GMVideoInputManager_ptlib::device_opened_in_main), current_state.device, settings));
 
   return true;
 }
@@ -171,7 +171,7 @@ void GMVideoInputManager_ptlib::close()
     input_device = NULL;
   }
   current_state.opened = false;
-  Ekiga::Runtime::run_in_main (sigc::bind (device_closed.make_slot (), current_state.device));
+  Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &GMVideoInputManager_ptlib::device_closed_in_main), current_state.device));
 }
 
 bool GMVideoInputManager_ptlib::get_frame_data (char *data)
@@ -233,4 +233,24 @@ bool GMVideoInputManager_ptlib::has_device(const std::string & source, const std
     return false;
   }
   return false;
+}
+
+void
+GMVideoInputManager_ptlib::device_opened_in_main (Ekiga::VideoInputDevice device,
+						  Ekiga::VideoInputSettings settings)
+{
+  device_opened.emit (device, settings);
+}
+
+void
+GMVideoInputManager_ptlib::device_closed_in_main (Ekiga::VideoInputDevice device)
+{
+  device_closed.emit (device);
+}
+
+void
+GMVideoInputManager_ptlib::device_error_in_main (Ekiga::VideoInputDevice device,
+						 Ekiga::VideoInputErrorCodes code)
+{
+  device_error.emit (device, code);
 }
