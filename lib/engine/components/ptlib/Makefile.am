@@ -15,6 +15,8 @@ INCLUDES = \
 	-I$(top_srcdir)/lib/engine/hal
 
 libgmptlib_la_SOURCES = \
+	$(ptlib_dir)/utils.h				\
+	$(ptlib_dir)/utils.cpp				\
 	$(ptlib_dir)/audioinput-manager-ptlib.h         \
 	$(ptlib_dir)/audioinput-manager-ptlib.cpp       \
 	$(ptlib_dir)/audioinput-main-ptlib.h            \
