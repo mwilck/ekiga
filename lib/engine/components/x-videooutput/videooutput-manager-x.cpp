@@ -114,17 +114,17 @@ GMVideoOutputManager_x::setup_frame_display ()
 
   switch (current_frame.mode) {
   case Ekiga::VO_MODE_LOCAL:
-    Ekiga::Runtime::run_in_main (sigc::bind (size_changed.make_slot (), (unsigned) (current_frame.local_width * current_frame.zoom / 100), (unsigned) (current_frame.local_height * current_frame.zoom / 100)));
+    Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &GMVideoOutputManager_x::size_changed_in_main), (unsigned) (current_frame.local_width * current_frame.zoom / 100), (unsigned) (current_frame.local_height * current_frame.zoom / 100)));
     break;
   case Ekiga::VO_MODE_REMOTE:
   case Ekiga::VO_MODE_PIP:
-    Ekiga::Runtime::run_in_main (sigc::bind (size_changed.make_slot (), (unsigned) (current_frame.remote_width * current_frame.zoom / 100), (unsigned) (current_frame.remote_height * current_frame.zoom / 100)));
+    Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &GMVideoOutputManager_x::size_changed_in_main), (unsigned) (current_frame.remote_width * current_frame.zoom / 100), (unsigned) (current_frame.remote_height * current_frame.zoom / 100)));
     break;
   case Ekiga::VO_MODE_FULLSCREEN:
-    Ekiga::Runtime::run_in_main (sigc::bind (size_changed.make_slot (), 176, 144));
+    Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &GMVideoOutputManager_x::size_changed_in_main), 176, 144));
     break;
   case Ekiga::VO_MODE_PIP_WINDOW:
-    Ekiga::Runtime::run_in_main (sigc::bind (size_changed.make_slot (), 176, 144));
+    Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &GMVideoOutputManager_x::size_changed_in_main), 176, 144));
     break;
   case Ekiga::VO_MODE_UNSET:
   default:
@@ -421,17 +421,17 @@ GMVideoOutputManager_x::setup_frame_display ()
   last_frame.both_streams_active = current_frame.both_streams_active;
 
   if (video_disabled) {
-    Ekiga::Runtime::run_in_main (sigc::bind (device_error.make_slot (), Ekiga::VO_ERROR));
+    Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &GMVideoOutputManager_x::device_error_in_main), Ekiga::VO_ERROR));
   }
   else {
-    Ekiga::Runtime::run_in_main (sigc::bind (device_opened.make_slot (), current_frame.accel, current_frame.mode, current_frame.zoom, current_frame.both_streams_active));
+    Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &GMVideoOutputManager_x::device_opened_in_main), current_frame.accel, current_frame.mode, current_frame.zoom, current_frame.both_streams_active));
   }
 }
 
 void
 GMVideoOutputManager_x::close_frame_display ()
 {
-  Ekiga::Runtime::run_in_main (device_closed.make_slot ());
+  Ekiga::Runtime::run_in_main (sigc::mem_fun (this, &GMVideoOutputManager_x::device_closed_in_main));
 
   if (rxWindow) 
     rxWindow->RegisterSlave (NULL);
@@ -482,7 +482,7 @@ GMVideoOutputManager_x::display_pip_frames (const char *local_frame,
     lxWindow->ProcessEvents();
 
   if (current_frame.mode == Ekiga::VO_MODE_FULLSCREEN && rxWindow && !rxWindow->IsFullScreen ())
-    Ekiga::Runtime::run_in_main (sigc::bind (fullscreen_mode_changed.make_slot (), Ekiga::VO_FS_OFF));
+    Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &GMVideoOutputManager_x::fullscreen_mode_changed_in_main), Ekiga::VO_FS_OFF));
 
   if (rxWindow && (update_required.remote || (!update_required.remote && !update_required.local)))
     rxWindow->PutFrame ((uint8_t *) remote_frame, rf_width, rf_height);
@@ -503,3 +503,36 @@ GMVideoOutputManager_x::sync (UpdateRequired sync_required)
   }
 }
 
+void
+GMVideoOutputManager_x::size_changed_in_main (unsigned width,
+					      unsigned height)
+{
+  size_changed.emit (width, height);
+}
+
+void
+GMVideoOutputManager_x::device_opened_in_main (Ekiga::VideoOutputAccel accel,
+					       Ekiga::VideoOutputMode mode,
+					       unsigned zoom,
+					       bool both)
+{
+  device_opened.emit (accel, mode, zoom, both);
+}
+
+void
+GMVideoOutputManager_x::device_closed_in_main ()
+{
+  device_closed.emit ();
+}
+
+void
+GMVideoOutputManager_x::device_error_in_main (Ekiga::VideoOutputErrorCodes code)
+{
+  device_error.emit (code);
+}
+
+void
+GMVideoOutputManager_x::fullscreen_mode_changed_in_main (Ekiga::VideoOutputFSToggle val)
+{
+  fullscreen_mode_changed.emit (val);
+}
