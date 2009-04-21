@@ -37,6 +37,7 @@
 #include "videoinput-manager-ptlib.h"
 #include "ptbuildopts.h"
 #include "ptlib.h"
+#include "utils.h"
 
 #define DEVICE_TYPE "PTLIB"
 
@@ -79,15 +80,20 @@ void GMVideoInputManager_ptlib::get_devices(std::vector <Ekiga::VideoInputDevice
          (device.source != "FFMPEG") ) {
       video_devices = PVideoInputDevice::GetDriversDeviceNames (device.source);
       devices_array = video_devices.ToCharArray ();
-  
+
       for (PINDEX j = 0; devices_array[j] != NULL; j++) {
-  
+
+#ifdef WIN32
         device.name = devices_array[j];
-        devices.push_back(device);  
+#else
+        // linux USB subsystem uses latin-1 encoding, while ekiga uses utf-8
+        device.name = latin2utf (devices_array[j]);
+#endif
+        devices.push_back(device);
       }
       free (devices_array);
     }
-  }  
+  }
   free (sources_array);
 }
 
@@ -96,7 +102,7 @@ bool GMVideoInputManager_ptlib::set_device (const Ekiga::VideoInputDevice & devi
   if ( device.type == DEVICE_TYPE ) {
 
     PTRACE(4, "GMVideoInputManager_ptlib\tSetting Device " << device);
-    current_state.device = device;  
+    current_state.device = device;
     current_state.channel = channel;
     current_state.format = format;
     return true;
@@ -118,7 +124,11 @@ bool GMVideoInputManager_ptlib::open (unsigned width, unsigned height, unsigned 
   expectedFrameSize = (width * height * 3) >> 1;
 
   pvideo_format = (PVideoDevice::VideoFormat)current_state.format;
+#ifdef WIN32
   input_device = PVideoInputDevice::CreateOpenedDevice (current_state.device.source, current_state.device.name, FALSE);
+#else
+  input_device = PVideoInputDevice::CreateOpenedDevice (current_state.device.source, utf2latin (current_state.device.name), FALSE);  // reencode back to latin-1
+#endif
 
   Ekiga::VideoInputErrorCodes error_code = Ekiga::VI_ERROR_NONE;
   if (!input_device)

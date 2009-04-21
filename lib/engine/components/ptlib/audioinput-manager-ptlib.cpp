@@ -37,6 +37,7 @@
 #include "audioinput-manager-ptlib.h"
 #include "ptbuildopts.h"
 #include "ptlib.h"
+#include "utils.h"
 
 #define DEVICE_TYPE "PTLIB"
 
@@ -80,7 +81,12 @@ void GMAudioInputManager_ptlib::get_devices(std::vector <Ekiga::AudioInputDevice
 
       for (PINDEX j = 0; devices_array[j] != NULL; j++) {
 
+#ifdef WIN32
         device.name = devices_array[j];
+#else
+        // linux USB subsystem uses latin-1 encoding, while ekiga uses utf-8
+        device.name = latin2utf (devices_array[j]);
+#endif
         devices.push_back(device);
       }
       free (devices_array);
@@ -110,13 +116,17 @@ bool GMAudioInputManager_ptlib::open (unsigned channels, unsigned samplerate, un
   current_state.samplerate      = samplerate;
   current_state.bits_per_sample = bits_per_sample;
 
-  input_device = PSoundChannel::CreateOpenedChannel (current_state.device.source, 
+  input_device = PSoundChannel::CreateOpenedChannel (current_state.device.source,
+#ifdef WIN32
                                                      current_state.device.name,
+#else
+                                                     utf2latin (current_state.device.name),  // reencode back to latin-1
+#endif
                                                      PSoundChannel::Recorder,
                                                      channels,
                                                      samplerate,
                                                      bits_per_sample);
- 
+
   Ekiga::AudioInputErrorCodes error_code = Ekiga::AI_ERROR_NONE;
   if (!input_device)
     error_code = Ekiga::AI_ERROR_DEVICE;
