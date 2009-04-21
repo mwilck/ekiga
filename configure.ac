@@ -49,7 +49,7 @@ fi
 
 dnl Check the library path
 case $host in
-  
+
   *-*-linux*)
     # Test if the compiler is 64bit
     echo 'int i;' > conftest.$ac_ext
@@ -58,26 +58,26 @@ case $host in
     if AC_TRY_EVAL(ac_compile); then
       case `/usr/bin/file conftest.$ac_objext` in
         *"ELF 64"*)
-          ekiga_cv_cc_64bit_output=yes      
+          ekiga_cv_cc_64bit_output=yes
           ;;
       esac
     fi
-    rm -rf conftest*  
+    rm -rf conftest*
   ;;
 esac
 
 case $host_cpu:$ekiga_cv_cc_64bit_output in
 
   powerpc64:yes | s390x:yes | sparc64:yes | x86_64:yes)
-    libname="lib64"  
+    libname="lib64"
     ;;
 
-  *:*)  
-    libname="lib"  
+  *:*)
+    libname="lib"
     ;;
 esac
 
-dnl Check the OS type (more types can be added) 
+dnl Check the OS type (more types can be added)
 AC_MSG_CHECKING(whether OS type is supported)
 win32=0
 
@@ -143,17 +143,17 @@ case $target_os in
     ;;
 esac
 
-dnl Check the byte order 
+dnl Check the byte order
 AC_MSG_CHECKING(Byte order)
 byte_order="unknown"
-AC_ARG_WITH([endianess], 
+AC_ARG_WITH([endianess],
             [AS_HELP_STRING([--with-endianess=big|little],[endianess of target system])],
-	    [byte_order="$withval endian"], 
+	    [byte_order="$withval endian"],
             [AC_C_BIGENDIAN([byte_order="big endian"], [byte_order="little endian"], [])])
 
 if test "x$byte_order" = "xbig endian"; then
     AC_DEFINE(WORDS_BIGENDIAN,1,[Big Endian Architecture])
-else 
+else
     if test "x$byte_order" = "xlittle endian"; then
 	AC_DEFINE(WORDS_LITTLEENDIAN,1,[Little Endian Architecture])
     else
@@ -176,7 +176,7 @@ PKG_CHECK_MODULES([GTK], [gtk+-2.0 >= 2.12.0])
 PKG_CHECK_MODULES([GLIB], [glib-2.0 >= 2.8.0 gmodule-2.0 gobject-2.0 gthread-2.0])
 AC_ARG_ENABLE([gtk-debug],
               [AC_HELP_STRING([--enable-gtk-debug],[enable GTK+ debug flags (default is disabled)])],
-              [if test "x$enableval" = "xyes"; then 
+              [if test "x$enableval" = "xyes"; then
                 GTK_CFLAGS="$GTK_CFLAGS -DGDK_PIXBUF_DISABLE_DEPRECATED -DGDK_DISABLE_DEPRECATED -DGTK_DISABLE_DEPRECATED -DGDK_PIXBUF_DISABLE_SINGLE_INCLUDES -DGTK_DISABLE_SINGLE_INCLUDES"
                 GLIB_CFLAGS="$GLIB_CFLAGS -DG_DISABLE_SINGLE_INCLUDES"
               fi])
@@ -214,7 +214,7 @@ if test "x${gm_platform}" != "xmingw" ; then
 [if test "x$enableval" = "xyes"; then
   enable_gnome=yes
 fi],enable_gnome=yes)
-  
+
     if test "x$enable_gnome" = "xyes"; then
       PKG_CHECK_MODULES([GNOME], [libgnome-2.0 >= 2.14.0 libgnomeui-2.0 >= 2.14.0], [found_gnome=yes])
       AC_SUBST(GNOME_CFLAGS)
@@ -237,7 +237,7 @@ if test "x${gm_platform}" != "xmingw" ; then
 [if test "x$enableval" = "xyes"; then
   enable_gconf = yes
 fi],enable_gconf=yes)
-  
+
   if test "x$enable_gconf" = "xyes"; then
     PKG_CHECK_MODULES([GCONF], [gconf-2.0 >= 2.6.0], [found_gconf=yes])
     AM_GCONF_SOURCE_2
@@ -265,7 +265,7 @@ if test "x${gm_platform}" != "xmingw" ; then
 [if test "x$enableval" = "xyes"; then
   enable_eds=yes
 fi],enable_eds=yes)
-  
+
   if test "x$enable_eds" = "xyes"; then
     PKG_CHECK_MODULES([EDS], [libebook-1.2], [found_eds=yes])
     AC_SUBST(EDS_CFLAGS)
@@ -288,7 +288,7 @@ if test "x${gm_platform}" != "xmingw" ; then
 [if test "x$enableval" = "xyes"; then
   enable_notify=yes
 fi],enable_notify=yes)
-  
+
   if test "x$enable_notify" = "xyes"; then
     PKG_CHECK_MODULES([NOTIFY], [libnotify], [found_notify=yes], foo=bar)
     if test "x$found_notify" = "xyes"; then
@@ -385,7 +385,7 @@ use_mmx_asm=no
 if test "x$use_x86_asm" = "xyes"; then
     save_ac_ext=$ac_ext
     ac_ext=S
-    
+
     AC_MSG_CHECKING(compiler support for MMX)
     cp lib/pixops/scale_line_22_33_mmx.S conftest.S
     if AC_TRY_EVAL(ac_compile); then
@@ -434,9 +434,9 @@ XV="disabled"
 AC_ARG_ENABLE(xv, AS_HELP_STRING([--disable-xv],[enable XVideo hardware acceleration (default is enabled)]),
 [if test "x$enableval" = "xyes"; then
   enable_xv=yes
-fi],enable_xv=yes)  
+fi],enable_xv=yes)
 if test "x${gm_platform}" != "mingw" -a "x$enable_xv" = "xyes"; then
-  PKG_CHECK_MODULES([XV], [xv], 
+  PKG_CHECK_MODULES([XV], [xv],
                     [AC_DEFINE(HAVE_XV,1,[XVideo support])
                      XV="enabled"
                     ])
@@ -514,7 +514,7 @@ dnl ###############################
 V4L="disabled"
 if test "x${win32}" != "x1"; then
   AC_CHECK_HEADER(linux/videodev.h, V4L="enabled")
-  
+
   if test "x${V4L}" != "xdisabled"; then
     AC_DEFINE(HAVE_V4L,1,[V4L support])
   fi
@@ -581,9 +581,9 @@ AC_ARG_ENABLE(kde, AS_HELP_STRING([--enable-kde],[enable experimental KDE suppor
 fi],)
 
 if test "x$enable_kde" = "xyes"; then
-  found_kde=yes
-  KDE_CFLAGS="-I/usr/include/qt4"
-  KDE_LIBS="-lQtCore"
+
+  PKG_CHECK_MODULES(KDE, [QtCore], [found_kde=yes], [found_kde=no])
+
   CPPFLAGS_save="$CPPFLAGS"
   LIBS_save="$LIBS"
   CPPFLAGS="$CPPFLAGS $KDE_CFLAGS"
@@ -594,6 +594,19 @@ if test "x$enable_kde" = "xyes"; then
   if test "x$found_kde" = "xno"; then
     AC_MSG_ERROR(We need this header!)
   fi
+
+  LIBS_save="$LIBS"
+  CPPFLAGS="$CPPFLAGS $KDE_CFLAGS"
+  LIBS="$LIBS $KDE_LIBS"
+  AC_CHECK_LIB(kdeui,ki18n,found_kde=no)
+  CPPFLAGS="$CPPFLAGS_save"
+  LIBS="$LIBS_save"
+  if test "x$found_kde" = "xno"; then
+    AC_MSG_ERROR(We need this lib!)
+  fi
+
+  KDE_LIBS="$KDE_LIBS -lkdeui"
+
   AC_SUBST(KDE_CFLAGS)
   AC_SUBST(KDE_LIBS)
   KDE="enabled"
@@ -685,7 +698,7 @@ fi
 
 AM_CONDITIONAL(HAVE_GNOME_DOC_UTILS, test "x${enable_gdu}" = "xyes")
 
-                                                                                  
+
 dnl ###########################################################################
 dnl PTLib + OPAL Headers and Libraries
 dnl ###########################################################################
@@ -695,18 +708,18 @@ PKG_CHECK_MODULES([OPAL], [opal >= ${OPAL_REC_VERSION}])
 SUFFIX=
 AC_ARG_ENABLE([opal-debug],
               [AC_HELP_STRING([--enable-opal-debug],[link to debug versions of opal and ptlib (opal_d and ptlib_d) (default is disabled)])],
-              [if test "x$enableval" = "xyes"; then 
+              [if test "x$enableval" = "xyes"; then
                 SUFFIX="_d"
               fi])
 
 AC_ARG_ENABLE([static-libs],
               [AC_HELP_STRING([--enable-static-libs],[link to opal and ptlib static libraries (default is disabled)])],
-              [if test "x$enableval" = "xyes"; then 
+              [if test "x$enableval" = "xyes"; then
                 SUFFIX="${SUFFIX}_s"
                fi
               ])
 
-if test "x$SUFFIX" != x; then 
+if test "x$SUFFIX" != x; then
     OPAL_LIBS=`$PKG_CONFIG opal --define-variable=suffix=$SUFFIX --libs`
     PTLIB_LIBS=`$PKG_CONFIG ptlib --define-variable=suffix=$SUFFIX --libs`
 fi
@@ -717,11 +730,11 @@ AC_SUBST(OPAL_CFLAGS)
 AC_SUBST(OPAL_LIBS)
 
 dnl The =1 checks are here only for backward compatibility
-H323=`$PKG_CONFIG --variable=h323 opal`  
+H323=`$PKG_CONFIG --variable=h323 opal`
 if test "x$H323" = "x1"; then
   H323="yes"
 else
-  H323=`$PKG_CONFIG --variable=OPAL_H323 opal`  
+  H323=`$PKG_CONFIG --variable=OPAL_H323 opal`
 fi
 
 if test "x$H323" = "xyes"; then
@@ -729,7 +742,7 @@ if test "x$H323" = "xyes"; then
 fi
 AM_CONDITIONAL(HAVE_H323, test "x${H323}" = "xyes")
 
-SIP=`$PKG_CONFIG --variable=sip opal`  
+SIP=`$PKG_CONFIG --variable=sip opal`
 if test "x$SIP" = "x1"; then
   SIP="yes"
 else
