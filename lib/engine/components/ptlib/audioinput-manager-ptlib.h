@@ -81,6 +81,13 @@
       unsigned expectedFrameSize;
 
       PSoundChannel *input_device;
+
+    private:
+      void device_error_in_main (Ekiga::AudioInputDevice device,
+				 Ekiga::AudioInputErrorCodes code);
+      void device_opened_in_main (Ekiga::AudioInputDevice device,
+				  Ekiga::AudioInputSettings settings);
+      void device_closed_in_main (Ekiga::AudioInputDevice device);
   };
 /**
  * @}

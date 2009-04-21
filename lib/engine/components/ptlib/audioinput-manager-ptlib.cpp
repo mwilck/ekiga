@@ -129,7 +129,7 @@ bool GMAudioInputManager_ptlib::open (unsigned channels, unsigned samplerate, un
 
   if (error_code != Ekiga::AI_ERROR_NONE) {
     PTRACE(1, "GMAudioInputManager_ptlib\tEncountered error " << error_code << " while opening device ");
-    Ekiga::Runtime::run_in_main (sigc::bind (device_error.make_slot (), current_state.device, error_code));
+    Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &GMAudioInputManager_ptlib::device_error_in_main), current_state.device, error_code));
     return false;
   }
 
@@ -140,7 +140,7 @@ bool GMAudioInputManager_ptlib::open (unsigned channels, unsigned samplerate, un
   Ekiga::AudioInputSettings settings;
   settings.volume = volume;
   settings.modifyable = true;
-  Ekiga::Runtime::run_in_main (sigc::bind (device_opened.make_slot (), current_state.device, settings));
+  Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &GMAudioInputManager_ptlib::device_opened_in_main), current_state.device, settings));
 
   return true;
 }
@@ -153,7 +153,7 @@ void GMAudioInputManager_ptlib::close()
      input_device = NULL;
   }
   current_state.opened = false;
-  Ekiga::Runtime::run_in_main (sigc::bind (device_closed.make_slot (), current_state.device));
+  Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &GMAudioInputManager_ptlib::device_closed_in_main), current_state.device));
 }
 
 void GMAudioInputManager_ptlib::set_buffer_size (unsigned buffer_size, unsigned num_buffers)
@@ -184,7 +184,7 @@ bool GMAudioInputManager_ptlib::get_frame_data (char *data,
     }
     if (bytes_read != size) {
       PTRACE(1, "GMAudioInputManager_ptlib\tEncountered error while trying to read data");
-      Ekiga::Runtime::run_in_main (sigc::bind (device_error.make_slot (), current_state.device, Ekiga::AI_ERROR_READ));
+      Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &GMAudioInputManager_ptlib::device_error_in_main), current_state.device, Ekiga::AI_ERROR_READ));
     }
   }
 
@@ -213,4 +213,24 @@ bool GMAudioInputManager_ptlib::has_device(const std::string & source, const std
     return true;
   }*/
   return false;
+}
+
+void
+GMAudioInputManager_ptlib::device_error_in_main (Ekiga::AudioInputDevice device,
+						 Ekiga::AudioInputErrorCodes code)
+{
+  device_error.emit (device, code);
+}
+
+void
+GMAudioInputManager_ptlib::device_opened_in_main (Ekiga::AudioInputDevice device,
+						  Ekiga::AudioInputSettings settings)
+{
+  device_opened.emit (device, settings);
+}
+
+void
+GMAudioInputManager_ptlib::device_closed_in_main (Ekiga::AudioInputDevice device)
+{
+  device_closed.emit (device);
 }
