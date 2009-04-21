@@ -87,7 +87,7 @@ bool GMAudioOutputManager_null::open (Ekiga::AudioOutputPS ps, unsigned channels
   Ekiga::AudioOutputSettings settings;
   settings.volume = 0;
   settings.modifyable = false;
-  Ekiga::Runtime::run_in_main (sigc::bind (device_opened.make_slot (), ps, current_state[ps].device, settings));
+  Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &GMAudioOutputManager_null::device_opened_in_main), ps, current_state[ps].device, settings));
 
   return true;
 }
@@ -95,7 +95,7 @@ bool GMAudioOutputManager_null::open (Ekiga::AudioOutputPS ps, unsigned channels
 void GMAudioOutputManager_null::close(Ekiga::AudioOutputPS ps)
 {
   current_state[ps].opened = false;
-  Ekiga::Runtime::run_in_main (sigc::bind (device_closed.make_slot (), ps, current_state[ps].device));
+  Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &GMAudioOutputManager_null::device_closed_in_main), ps, current_state[ps].device));
 }
 
 
@@ -118,4 +118,19 @@ bool GMAudioOutputManager_null::set_frame_data (Ekiga::AudioOutputPS ps,
 bool GMAudioOutputManager_null::has_device(const std::string & /*sink*/, const std::string & /*device_name*/, Ekiga::AudioOutputDevice & /*device*/)
 {
   return false;
+}
+
+void
+GMAudioOutputManager_null::device_opened_in_main (Ekiga::AudioOutputPS ps,
+						  Ekiga::AudioOutputDevice device,
+						  Ekiga::AudioOutputSettings settings)
+{
+  device_opened.emit (ps, device, settings);
+}
+
+void
+GMAudioOutputManager_null::device_closed_in_main (Ekiga::AudioOutputPS ps,
+						  Ekiga::AudioOutputDevice device)
+{
+  device_closed.emit (ps, device);
 }
