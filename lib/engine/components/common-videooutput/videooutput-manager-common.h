@@ -257,6 +257,16 @@
                               from various threads */
   
     Ekiga::ServiceCore & core;
+
+  private:
+
+    void device_opened_in_main (Ekiga::VideoOutputAccel accel,
+				Ekiga::VideoOutputMode mode,
+				unsigned zoom,
+				bool both);
+
+    void device_closed_in_main ();
+
   };
 
 /**

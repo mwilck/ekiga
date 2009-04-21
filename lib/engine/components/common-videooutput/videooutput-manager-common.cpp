@@ -250,8 +250,8 @@ void GMVideoOutputManager::uninit ()
 void GMVideoOutputManager::update_gui_device ()
 {
   last_frame.both_streams_active = current_frame.both_streams_active;
-  Ekiga::Runtime::run_in_main (device_closed.make_slot ());
-  Ekiga::Runtime::run_in_main (sigc::bind (device_opened.make_slot (), current_frame.accel, current_frame.mode, current_frame.zoom, current_frame.both_streams_active));
+  Ekiga::Runtime::run_in_main (sigc::mem_fun (this, &GMVideoOutputManager::device_closed_in_main));
+  Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &GMVideoOutputManager::device_opened_in_main), current_frame.accel, current_frame.mode, current_frame.zoom, current_frame.both_streams_active));
 
 }
 
@@ -340,4 +340,20 @@ GMVideoOutputManager::redraw ()
   update_required.remote = false;
 
   return sync_required;
+}
+
+
+void
+GMVideoOutputManager::device_opened_in_main (Ekiga::VideoOutputAccel accel,
+					     Ekiga::VideoOutputMode mode,
+					     unsigned zoom,
+					     bool both)
+{
+  device_opened.emit (accel, mode, zoom, both);
+}
+
+void
+GMVideoOutputManager::device_closed_in_main ()
+{
+  device_closed.emit ();
 }
