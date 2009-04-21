@@ -77,6 +77,11 @@
       Ekiga::ServiceCore & core;
 
       PAdaptiveDelay adaptive_delay;
+
+    private:
+      void device_opened_in_main (Ekiga::AudioInputDevice device,
+				  Ekiga::AudioInputSettings settings);
+      void device_closed_in_main (Ekiga::AudioInputDevice device);
   };
 /**
  * @}
