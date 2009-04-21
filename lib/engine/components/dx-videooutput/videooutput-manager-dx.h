@@ -79,6 +79,22 @@
     virtual void sync(UpdateRequired sync_required);
 
     DXWindow *dxWindow;
+
+  private:
+
+  void size_changed_in_main (unsigned width,
+			     unsigned height);
+
+  void device_opened_in_main (Ekiga::VideoOutputAccel accel,
+			      Ekiga::VideoOutputMode mode,
+			      unsigned zoom,
+			      bool both);
+
+  void device_closed_in_main ();
+
+  void device_error_in_main (Ekiga::VideoOutputErrorCodes code);
+
+  void fullscreen_mode_changed_in_main (Ekiga::VideoOutputFSToggle val);
   };
 
 /**
