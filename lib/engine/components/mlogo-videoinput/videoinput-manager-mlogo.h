@@ -89,6 +89,12 @@
       Ekiga::ServiceCore & core;
 
       PAdaptiveDelay adaptive_delay;
+
+    private:
+      void device_opened_in_main (Ekiga::VideoInputDevice device,
+				  Ekiga::VideoInputSettings settings);
+      void device_closed_in_main (Ekiga::VideoInputDevice device);
+
   };
 /**
  * @}
