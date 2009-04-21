@@ -129,7 +129,7 @@ bool GMAudioOutputManager_ptlib::open (Ekiga::AudioOutputPS ps, unsigned channel
 
   if (error_code != Ekiga::AO_ERROR_NONE) {
     PTRACE(1, "GMAudioOutputManager_ptlib\tEncountered error " << error_code << " while opening device[" << ps << "]");
-    Ekiga::Runtime::run_in_main (sigc::bind (device_error.make_slot (), ps, current_state[ps].device, error_code));
+    Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &GMAudioOutputManager_ptlib::device_error_in_main), ps, current_state[ps].device, error_code));
     return false;
   }
 
@@ -140,7 +140,7 @@ bool GMAudioOutputManager_ptlib::open (Ekiga::AudioOutputPS ps, unsigned channel
   Ekiga::AudioOutputSettings settings;
   settings.volume = volume;
   settings.modifyable = true;
-  Ekiga::Runtime::run_in_main (sigc::bind (device_opened.make_slot (), ps, current_state[ps].device, settings));
+  Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &GMAudioOutputManager_ptlib::device_opened_in_main), ps, current_state[ps].device, settings));
 
   return true;
 }
@@ -153,7 +153,7 @@ void GMAudioOutputManager_ptlib::close(Ekiga::AudioOutputPS ps)
      output_device[ps] = NULL;
   }
   current_state[ps].opened = false;
-  Ekiga::Runtime::run_in_main (sigc::bind (device_closed.make_slot (), ps, current_state[ps].device));
+  Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &GMAudioOutputManager_ptlib::device_closed_in_main), ps, current_state[ps].device));
 }
 
 void GMAudioOutputManager_ptlib::set_buffer_size (Ekiga::AudioOutputPS ps, unsigned buffer_size, unsigned num_buffers)
@@ -186,7 +186,7 @@ bool GMAudioOutputManager_ptlib::set_frame_data (Ekiga::AudioOutputPS ps,
     }
     if (bytes_written != size) {
       PTRACE(1, "GMAudioOutputManager_ptlib\tEncountered error while trying to write data");
-      Ekiga::Runtime::run_in_main (sigc::bind (device_error.make_slot (), ps, current_state[ps].device, Ekiga::AO_ERROR_WRITE));
+      Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &GMAudioOutputManager_ptlib::device_error_in_main), ps, current_state[ps].device, Ekiga::AO_ERROR_WRITE));
     }
   }
 
@@ -215,4 +215,27 @@ bool GMAudioOutputManager_ptlib::has_device(const std::string & sink, const std:
     return true;
   }*/
   return false;
+}
+
+void
+GMAudioOutputManager_ptlib::device_opened_in_main (Ekiga::AudioOutputPS ps,
+						   Ekiga::AudioOutputDevice device,
+						   Ekiga::AudioOutputSettings settings)
+{
+  device_opened.emit (ps, device, settings);
+}
+
+void
+GMAudioOutputManager_ptlib::device_closed_in_main (Ekiga::AudioOutputPS ps,
+						   Ekiga::AudioOutputDevice device)
+{
+  device_closed.emit (ps, device);
+}
+
+void
+GMAudioOutputManager_ptlib::device_error_in_main (Ekiga::AudioOutputPS ps,
+						  Ekiga::AudioOutputDevice device,
+						  Ekiga::AudioOutputErrorCodes code)
+{
+  device_error.emit (ps, device, code);
 }

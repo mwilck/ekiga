@@ -81,6 +81,16 @@
       Ekiga::ServiceCore & core;
 
       PSoundChannel *output_device[2];
+
+    private:
+      void device_opened_in_main (Ekiga::AudioOutputPS ps,
+				  Ekiga::AudioOutputDevice device,
+				  Ekiga::AudioOutputSettings settings);
+      void device_closed_in_main (Ekiga::AudioOutputPS ps,
+				  Ekiga::AudioOutputDevice device);
+      void device_error_in_main (Ekiga::AudioOutputPS ps,
+				 Ekiga::AudioOutputDevice device,
+				 Ekiga::AudioOutputErrorCodes code);
   };
 
 /**
