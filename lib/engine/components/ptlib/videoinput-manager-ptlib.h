@@ -80,6 +80,13 @@
       unsigned expectedFrameSize;
 
       PVideoInputDevice *input_device;
+
+    private:
+      void device_opened_in_main (Ekiga::VideoInputDevice device,
+				  Ekiga::VideoInputSettings settings);
+      void device_closed_in_main (Ekiga::VideoInputDevice device);
+      void device_error_in_main (Ekiga::VideoInputDevice device,
+				 Ekiga::VideoInputErrorCodes code);
   };
 /**
  * @}
