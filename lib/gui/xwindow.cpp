@@ -125,7 +125,6 @@ XWindow::XWindow()
    snprintf (_colorFormat, sizeof(_colorFormat), "NONE");
   _planes = 0;
   _colorConverter = NULL;
-  _frameBuffer = NULL;
 
 #ifdef HAVE_SHM
   _XShmInfo.shmaddr = NULL;
@@ -175,9 +174,6 @@ XWindow::~XWindow()
 
   if (_colorConverter)
     delete (_colorConverter);
-
-  if (_frameBuffer)
-    free (_frameBuffer);
 }
 
 
@@ -274,7 +270,7 @@ XWindow::Init (Display* dp,
   if (!_colorConverter)
     return 0;
 
-  _frameBuffer = (uint8_t*) malloc (_imageWidth * _imageHeight * _planes);
+  _frameBuffer = std::tr1::shared_ptr<void> (malloc (_imageWidth * _imageHeight * _planes), free);
 
   // detect the window manager type
   _wmType = GetWMType ();
@@ -303,7 +299,7 @@ XWindow::PutFrame (uint8_t* frame,
   if ((_state.curWidth != _XImage->width) || (_state.curHeight!=_XImage->height))
     CreateXImage(_state.curWidth, _state.curHeight);
 
-  _colorConverter->Convert((BYTE*)frame, (BYTE*)_frameBuffer);
+  _colorConverter->Convert((BYTE*)frame, (BYTE*)_frameBuffer.get ());
 
   pixops_scale ((guchar*) _XImage->data,
                  0,0,
@@ -312,7 +308,7 @@ XWindow::PutFrame (uint8_t* frame,
                  _planes,                   //dest_channels,
                  FALSE,                     //dest_has_alpha,
 
-                 (const guchar*) _frameBuffer,
+		(const guchar*) _frameBuffer.get (),
                  width,
                  height,
                  width * _planes,           //src_rowstride
