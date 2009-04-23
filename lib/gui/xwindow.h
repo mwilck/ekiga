@@ -39,6 +39,8 @@
 #include <stdint.h>
 #include "config.h"
 
+#include <tr1/memory>
+
 #include <ptlib.h>
 #include <ptlib/vconvert.h>
 
@@ -243,7 +245,7 @@ private:
   int _planes;
 
   PColourConverter* _colorConverter;
-  uint8_t* _frameBuffer;
+  std::tr1::shared_ptr<void> _frameBuffer;
   
 #ifdef HAVE_SHM
   XShmSegmentInfo _XShmInfo;
