@@ -92,14 +92,14 @@ GMVideoOutputManager_dx::setup_frame_display ()
     break;
   case Ekiga::VO_MODE_UNSET:
   default:
-    PTRACE (1, "GMVideoOutputManager_DX\tDisplay variable not set");
+    PTRACE (1, "GMVideoOutputManager_dx\tDisplay variable not set");
     return;
     break; 
   }
 
   if (   (!local_display_info.widget_info_set) || (!local_display_info.config_info_set) 
       || (local_display_info.mode == Ekiga::VO_MODE_UNSET) || (local_display_info.zoom == 0) || (current_frame.zoom == 0)) {
-    PTRACE(4, "GMVideoOutputManager_DX\tWidget not yet realized or gconf info not yet set, not opening display");
+    PTRACE(4, "GMVideoOutputManager_dx\tWidget not yet realized or gconf info not yet set, not opening display");
     return;
   }
 
@@ -109,7 +109,7 @@ GMVideoOutputManager_dx::setup_frame_display ()
 
   switch (current_frame.mode) {
   case Ekiga::VO_MODE_LOCAL:
-    PTRACE(4, "GMVideoOutputManager_DX\tOpening :VO_MODE_LOCAL display with image of " << current_frame.local_width << "x" << current_frame.local_height);
+    PTRACE(4, "GMVideoOutputManager_dx\tOpening :VO_MODE_LOCAL display with image of " << current_frame.local_width << "x" << current_frame.local_height);
     dxWindow = new DXWindow();
     video_disabled = !dxWindow->Init (local_display_info.hwnd,
                                       local_display_info.x,
@@ -129,7 +129,7 @@ GMVideoOutputManager_dx::setup_frame_display ()
     break;
 
   case Ekiga::VO_MODE_REMOTE:
-    PTRACE(4, "GMVideoOutputManager_DX\tOpening VO_MODE_REMOTE display with image of " << current_frame.remote_width << "x" << current_frame.remote_height);
+    PTRACE(4, "GMVideoOutputManager_dx\tOpening VO_MODE_REMOTE display with image of " << current_frame.remote_width << "x" << current_frame.remote_height);
     dxWindow = new DXWindow();
     video_disabled = !dxWindow->Init (local_display_info.hwnd,
                                       local_display_info.x,
@@ -151,7 +151,7 @@ GMVideoOutputManager_dx::setup_frame_display ()
   case Ekiga::VO_MODE_FULLSCREEN:
   case Ekiga::VO_MODE_PIP:
   case Ekiga::VO_MODE_PIP_WINDOW:
-    PTRACE(4, "GMVideoOutputManager_DX\tOpening display " << current_frame.mode << " with images of " 
+    PTRACE(4, "GMVideoOutputManager_dx\tOpening display " << current_frame.mode << " with images of " 
             << current_frame.local_width << "x" << current_frame.local_height << "(local) and " 
 	    << current_frame.remote_width << "x" << current_frame.remote_height << "(remote)");
     dxWindow = new DXWindow();
@@ -184,7 +184,7 @@ GMVideoOutputManager_dx::setup_frame_display ()
     return;
     break;
   }
-  PTRACE (4, "GMVideoDisplay_DX\tSetup display " << current_frame.mode << " with zoom value of " << current_frame.zoom );
+  PTRACE (4, "GMVideoOutputManager_dx\tSetup display " << current_frame.mode << " with zoom value of " << current_frame.zoom );
 
   if (local_display_info.on_top && dxWindow)
       dxWindow->ToggleOntop ();
@@ -197,11 +197,11 @@ GMVideoOutputManager_dx::setup_frame_display ()
   if (video_disabled) {
     delete dxWindow;
     dxWindow = NULL;
-    Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &GMVideoDisplay_DX::device_error_in_main), Ekiga::VO_ERROR));
+    Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &GMVideoOutputManager_dx::device_error_in_main), Ekiga::VO_ERROR));
   }
   else {
     current_frame.accel = Ekiga::VO_ACCEL_ALL; 
-    Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &GMVideoDisplay_DX::device_opened_in_main), current_frame.accel, current_frame.mode, current_frame.zoom, current_frame.both_streams_active));
+    Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &GMVideoOutputManager_dx::device_opened_in_main), current_frame.accel, current_frame.mode, current_frame.zoom, current_frame.both_streams_active));
   }
 }
 
@@ -261,14 +261,14 @@ GMVideoOutputManager_dx::sync (UpdateRequired sync_required)
 }
 
 void
-size_changed_in_main (unsigned width,
+GMVideoOutputManager_dx::size_changed_in_main (unsigned width,
 		      unsigned height)
 {
   size_changed.emit (width, height);
 }
 
 void
-device_opened_in_main (Ekiga::VideoOutputAccel accel,
+GMVideoOutputManager_dx::device_opened_in_main (Ekiga::VideoOutputAccel accel,
 		       Ekiga::VideoOutputMode mode,
 		       unsigned zoom,
 		       bool both)
@@ -277,19 +277,19 @@ device_opened_in_main (Ekiga::VideoOutputAccel accel,
 }
 
 void
-device_closed_in_main ()
+GMVideoOutputManager_dx::device_closed_in_main ()
 {
   device_closed.emit ();
 }
 
 void
-device_error_in_main (Ekiga::VideoOutputErrorCodes code)
+GMVideoOutputManager_dx::device_error_in_main (Ekiga::VideoOutputErrorCodes code)
 {
   device_error.emit (code);
 }
 
 void
-fullscreen_mode_changed_in_main (Ekiga::VideoOutputFSToggle val)
+GMVideoOutputManager_dx::fullscreen_mode_changed_in_main (Ekiga::VideoOutputFSToggle val)
 {
   fullscreen_mode_changed.emit (val);
 }
