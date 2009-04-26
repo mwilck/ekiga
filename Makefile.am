@@ -21,13 +21,6 @@ SCHEMAS_FILE = @PACKAGE_NAME@.schemas
 WIN32_DIST = \
 	win32/ico/ekiga.ico					\
 	win32/ico/ekiga-uninstall.ico				\
-	win32/diff/opal_opal.pc.in				\
-	win32/diff/ptlib_Makefile.am				\
-        win32/diff/ptlib_ptlib.pc.in                            \
-	win32/diff/opal_configure.ac				\
-	win32/diff/opal_Makefile.am				\
-	win32/diff/ptlib_configure.ac				\
-	win32/diff/ptlib_pwlib.pc.in				\
         win32/directx/Amvideo.h                                 \
         win32/directx/control.h                                 \
         win32/directx/ddraw.h                                   \
