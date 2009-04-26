@@ -18,6 +18,9 @@
 //  including this file.  See wxdebug.cpp in sdk\classes\base.
 //
 
+#ifndef __UUIDS_INCLUDED__
+#define __UUIDS_INCLUDED__
+
 #ifndef OUR_GUID_ENTRY
     #define OUR_GUID_ENTRY(name, l, w1, w2, b1, b2, b3, b4, b5, b6, b7, b8) \
     DEFINE_GUID(name, l, w1, w2, b1, b2, b3, b4, b5, b6, b7, b8);
@@ -1517,3 +1520,5 @@ OUR_GUID_ENTRY(CODECAPI_CURRENTCHANGELIST,
 #endif // __ENCODER_API_GUIDS__
 
 #undef OUR_GUID_ENTRY
+
+#endif // __UUIDS_INCLUDED__
