@@ -50,7 +50,7 @@ export RANLIB:=$(HOST_TOOL_PREFIX)-ranlib
 export DLLTOOL:=$(HOST_TOOL_PREFIX)-dlltool
 export DLLWRAP:=$(HOST_TOOL_PREFIX)-dllwrap
 export OBJDUMP:=$(HOST_TOOL_PREFIX)-objdump
-export WINDRES:=$(HOST_TOOL_PREFIX)-windres
+export RC:=$(HOST_TOOL_PREFIX)-windres
 export STRIP:=$(HOST_TOOL_PREFIX)-strip
 export AS:=$(HOST_TOOL_PREFIX)-as
 export CFLAGS:=-I$(INCLUDEDIR) $(MACH_FLAGS) -DPTRACING
@@ -605,7 +605,6 @@ else
 	(cd $(EKIGA_DIR)/; ACLOCAL_FLAGS="-I $(BUILDROOT)/share/aclocal"; ./autogen.sh $(confekiga) )
 endif
 $(EKIGA_DIR)/src/ekiga.exe: binaries $(EKIGA_DIR)/config.status
-	$(WINDRES) $(EKIGA_DIR)/ekiga.rc $(EKIGA_DIR)/ekiga_rc.o -I $(INCLUDEDIR)
 	$(MAKE) $(MAKEOPTS) -C $(EKIGA_DIR)
 	$(MAKE) $(MAKEOPTS) -C $(EKIGA_DIR)/help
 

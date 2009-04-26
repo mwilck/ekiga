@@ -1,4 +1,5 @@
 #include "config.h"
+#include "src/revision.h"
 
 1 VERSIONINFO
 FILEVERSION MAJOR_VERSION, MINOR_VERSION, BUILD_NUMBER, 0
@@ -19,9 +20,7 @@ FILETYPE 1
    VALUE "ProductName", "Ekiga"
    VALUE "OriginalFilename", "ekiga.exe"
    VALUE "ProductVersion", PACKAGE_VERSION
-#ifdef CVS_VERSION
-   VALUE "SpecialBuild", CVS_VERSION
-#endif
+   VALUE "SpecialBuild", EKIGA_REVISION
   }
  }
 }
