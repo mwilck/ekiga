@@ -38,7 +38,7 @@ WIN32_DIST = \
         win32/directx/mingw_dshow_port.h                        \
         win32/directx/strmif.h                                  \
         win32/directx/uuids.h                                   \
-	ekiga.rc						\
+	win32/ekiga-rc.rc					\
 	win32/Makefile						\
 	win32/nsisinstaller/ekiga.nsi				\
 	win32/nsisinstaller/language_files/hungarian.nsh	\

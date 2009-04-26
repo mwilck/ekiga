@@ -4466,7 +4466,7 @@ main (int argc,
 #endif
 
 #ifdef EKIGA_REVISION
-  PTRACE(1, "Ekiga SVN revision: " << EKIGA_REVISION);
+  PTRACE(1, "Ekiga git revision: " << EKIGA_REVISION);
 #endif
 
 #ifdef HAVE_DBUS

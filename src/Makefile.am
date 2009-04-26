@@ -85,6 +85,12 @@ ekiga_SOURCES +=				\
 	ekiga.h			                \
 	ekiga.cpp
 
+# resources
+if WIN32
+ekiga_SOURCES +=                   	\
+	$(top_srcdir)/win32/ekiga-rc.rc
+endif
+
 if HAVE_DBUS 
 ekiga_SOURCES +=		\
 	dbus-helper/dbus.h	\
@@ -128,13 +134,16 @@ service_in_files = $(service_DATA:.service=.service.in)
 
 endif
 
-SVN_REVISION=$(shell head ../.svn/entries -n11 2>/dev/null | tail -n1)
+.rc.o:
+	$(LIBTOOL) --tag=RC --mode=compile $(RC) $< -o $@ -I $(top_srcdir)
+
+GIT_REVISION=\"$(shell (cd ../.git; git describe ))\"
 CACHED_REVISION=$(shell cat revision.h 2>/dev/null | cut -c24-)
 
 src/revision.h:
-$(shell if test -e "../.svn/entries"; then \
-          if test "x$(SVN_REVISION)" != "x$(CACHED_REVISION)"; then \
-            echo "#define EKIGA_REVISION $(SVN_REVISION)" > revision.h; \
+$(shell if test -d "../.git" -a -n "$$(which git)"; then \
+          if test "x$(GIT_REVISION)" != "x$(CACHED_REVISION)"; then \
+            echo "#define EKIGA_REVISION $(GIT_REVISION)" > revision.h; \
           fi \
         else \
           if !(test -e "./revision.h"); then\
