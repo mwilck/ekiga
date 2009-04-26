@@ -353,7 +353,7 @@ if test "x$enable_ldap" = "xyes"; then
   AC_MSG_RESULT()
 
   if test -f ${with_libsasl2_dir}/include/sasl/sasl.h; then
-  	LDAP_CFLAGS="-I${with_libsasl2_dir}/include"
+  	LDAP_CFLAGS="${LDAP_CFLAGS} -I${with_libsasl2_dir}/include"
   else
   	AC_MSG_ERROR(*** libsasl2 headers not found)
   fi
