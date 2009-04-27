@@ -152,19 +152,6 @@ CallManager::~CallManager ()
 }
 
 
-void CallManager::start ()
-{
-  if (stun_enabled) {
-
-    // Ready
-    new StunDetector (stun_server, *this, queue);
-    patience = 20;
-    Ekiga::Runtime::run_in_main (sigc::mem_fun (this, &CallManager::HandleSTUNResult), 1);
-  } else
-    ready.emit ();
-}
-
-
 void CallManager::set_display_name (const std::string & name)
 {
   display_name = name;
@@ -487,6 +474,14 @@ void CallManager::set_stun_server (const std::string & server)
 void CallManager::set_stun_enabled (bool enabled)
 {
   stun_enabled = enabled;
+  if (stun_enabled) {
+
+    // Ready
+    new StunDetector (stun_server, *this, queue);
+    patience = 20;
+    Ekiga::Runtime::run_in_main (sigc::mem_fun (this, &CallManager::HandleSTUNResult), 1);
+  } else
+    ready.emit ();
 }
 
 

@@ -138,7 +138,6 @@ struct OPALSpark: public Ekiga::Spark
 
       new ConfBridge (*call_manager); // FIXME: isn't that leaked!?
 
-      call_manager->start ();
       presence_core->add_supported_uri (sigc::ptr_fun (is_supported_address)); //FIXME
 
       OpalLinkerHacks::loadOpalVideoInput = 1;
