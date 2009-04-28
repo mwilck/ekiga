@@ -94,6 +94,9 @@ namespace OPENLDAP
 
     void on_new_book_form_submitted (bool submitted,
 				     Ekiga::Form &result);
+
+    gboolean should_add_ekiga_net_book;
+    void migrate_from_3_0_0 ();
   };
 
 /**
