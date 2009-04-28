@@ -48,7 +48,8 @@
 
 #define KEY "/apps/" PACKAGE_NAME "/contacts/ldap_servers"
 
-OPENLDAP::Source::Source (Ekiga::ServiceCore &_core): core(_core), doc()
+OPENLDAP::Source::Source (Ekiga::ServiceCore &_core):
+  core(_core), doc(), should_add_ekiga_net_book(false)
 {
   xmlNodePtr root;
   gchar *c_raw = gm_conf_get_string (KEY);
@@ -69,6 +70,8 @@ OPENLDAP::Source::Source (Ekiga::ServiceCore &_core): core(_core), doc()
       xmlDocSetRootElement (doc.get (), root);
     }
 
+    migrate_from_3_0_0 ();
+
     for (xmlNodePtr child = root->children ;
 	 child != NULL ;
 	 child = child->next)
@@ -84,8 +87,11 @@ OPENLDAP::Source::Source (Ekiga::ServiceCore &_core): core(_core), doc()
     root = xmlNewDocNode (doc.get (), NULL, BAD_CAST "list", NULL);
     xmlDocSetRootElement (doc.get (), root);
 
-    new_ekiga_net_book ();
+    should_add_ekiga_net_book = true;
   }
+
+  if (should_add_ekiga_net_book)
+    new_ekiga_net_book ();
 }
 
 OPENLDAP::Source::~Source ()
@@ -219,4 +225,49 @@ OPENLDAP::Source::save ()
   gm_conf_set_string (KEY, (const char *)buffer);
 
   xmlFree (buffer);
+}
+
+void
+OPENLDAP::Source::migrate_from_3_0_0 ()
+{
+  gboolean found = false;
+  xmlNodePtr root = xmlDocGetRootElement (doc.get ()); // can't be NULL
+
+  for (xmlNodePtr server = root->children ;
+       server != NULL && !found;
+       server = server->next) {
+
+    if (server->type == XML_ELEMENT_NODE
+	&& server->name != NULL
+	&& xmlStrEqual (BAD_CAST "server", server->name)) {
+
+      for (xmlNodePtr child = server->children;
+	   child != NULL && !found;
+	   child = child->next) {
+
+	if (child->type == XML_ELEMENT_NODE
+	    && child->name != NULL
+	    && xmlStrEqual (BAD_CAST "hostname", child->name)) {
+
+	  // if it has a hostname, it's already an old config item
+	  xmlChar* xml_str = xmlNodeGetContent (child);
+	  if (xml_str != NULL) {
+
+	    if (xmlStrEqual (BAD_CAST "ekiga.net", xml_str)) {
+
+	      // ok, that's the one : let's get rid of it!
+	      found = true;
+	      xmlUnlinkNode (server);
+	      xmlFreeNode (server);
+	    }
+	    xmlFree (xml_str);
+	  }
+	}
+      }
+    }
+  }
+
+  // eh, we removed it, but we should add it back!
+  if (found)
+    should_add_ekiga_net_book = true;
 }
