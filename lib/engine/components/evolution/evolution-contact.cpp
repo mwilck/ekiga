@@ -312,7 +312,8 @@ Evolution::Contact::set_attribute_value (unsigned int attr_type,
     e_vcard_attribute_add_value (attribute, value.c_str ());
   } else { // empty valued : remove the attribute
 
-    e_vcard_remove_attribute (E_VCARD (econtact), attribute);
+    if (attribute != NULL)
+      e_vcard_remove_attribute (E_VCARD (econtact), attribute);
     attributes[attr_type] = NULL;
   }
 }
