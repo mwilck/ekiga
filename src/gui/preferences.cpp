@@ -449,7 +449,7 @@ gm_pw_init_general_page (GtkWidget *prefs_window,
   pw = gm_pw_get_pw (prefs_window);
 
   /* Personal Information */
-  subsection = 
+  subsection =
     gnome_prefs_subsection_new (prefs_window, container,
                                 _("Personal Information"), 2, 2);
 
@@ -480,16 +480,16 @@ gm_pw_init_interface_page (GtkWidget *prefs_window,
 
   /* Video Display */
   subsection =
-    gnome_prefs_subsection_new (prefs_window, container, 
+    gnome_prefs_subsection_new (prefs_window, container,
                                 _("Video Display"), 1, 2);
 
   gnome_prefs_toggle_new (subsection, _("Place windows displaying video _above other windows"), VIDEO_DISPLAY_KEY "stay_on_top", _("Place windows displaying video above other windows during calls"), 0);
 
   /* Network Settings */
-  subsection = gnome_prefs_subsection_new (prefs_window, container, 
+  subsection = gnome_prefs_subsection_new (prefs_window, container,
                                            _("Network Settings"), 1, 2);
 
-  gnome_prefs_toggle_new (subsection, _("Disable network _detection"), NAT_KEY "disable_stun", _("Disable the automatic network setup resulting from the STUN test"), 0);
+  gnome_prefs_toggle_new (subsection, _("Enable network _detection"), NAT_KEY "enable_stun", _("Enable the automatic network setup resulting from the STUN test"), 0);
 
 }
 

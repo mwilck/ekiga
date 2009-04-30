@@ -107,10 +107,10 @@ ConfBridge::ConfBridge (Ekiga::Service & _service)
   keys.push_back (H323_KEY "enable_early_h245");
   keys.push_back (H323_KEY "enable_fast_start");
   keys.push_back (H323_KEY "dtmf_mode");
-  keys.push_back (H323_KEY "forward_host"); 
+  keys.push_back (H323_KEY "forward_host");
 
   keys.push_back (NAT_KEY "stun_server");
-  keys.push_back (NAT_KEY "disable_stun");
+  keys.push_back (NAT_KEY "enable_stun");
 
   load (keys);
 }
@@ -171,13 +171,13 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
     const char *stun_server = gm_conf_entry_get_string (entry);
     manager.set_stun_server (stun_server ? stun_server : "stun.ekiga.net");
   }
-  else if (key == NAT_KEY "disable_stun") {
+  else if (key == NAT_KEY "enable_stun") {
 
-    manager.set_stun_enabled (!gm_conf_entry_get_bool (entry));
+    manager.set_stun_enabled (gm_conf_entry_get_bool (entry));
   }
 
 
-  // 
+  //
   // Jitter buffer configuration
   //
   else if (key == AUDIO_CODECS_KEY "maximum_jitter_buffer") {
@@ -186,7 +186,7 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
   }
 
 
-  // 
+  //
   // Silence detection
   //
   else if (key == AUDIO_CODECS_KEY "enable_silence_detection") {
