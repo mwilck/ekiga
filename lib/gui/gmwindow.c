@@ -404,14 +404,13 @@ gm_window_hide (GtkWidget *w,
 
 
 static gboolean 
-gm_window_configure_event (GtkWidget *widget,
+gm_window_configure_event (GtkWidget *self,
                            GdkEventConfigure *event)
 {
-  GM_WINDOW (widget)->priv->x = event->x;
-  GM_WINDOW (widget)->priv->y = event->y;
+  gtk_window_get_position (GTK_WINDOW (self), &GM_WINDOW (self)->priv->x, &GM_WINDOW (self)->priv->y);
 
-  GM_WINDOW (widget)->priv->width = event->width;
-  GM_WINDOW (widget)->priv->height = event->height;
+  GM_WINDOW (self)->priv->width = event->width;
+  GM_WINDOW (self)->priv->height = event->height;
 
   return FALSE;
 }
