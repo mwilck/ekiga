@@ -137,11 +137,11 @@ endif
 .rc.o:
 	$(LIBTOOL) --tag=RC --mode=compile $(RC) $< -o $@ -I $(top_srcdir)
 
-GIT_REVISION=\"$(shell (cd ../.git; git describe ))\"
-CACHED_REVISION=$(shell cat revision.h 2>/dev/null | cut -c24-)
+GIT_REVISION=\"$$(cd ../.git; git describe )\"
+CACHED_REVISION=$$(cat revision.h 2>/dev/null | cut -c24-)
 
 src/revision.h:
-$(shell if test -d "../.git" -a -n "$$(which git)"; then \
+	if test -d "../.git" -a -n "$$(which git)"; then \
           if test "x$(GIT_REVISION)" != "x$(CACHED_REVISION)"; then \
             echo "#define EKIGA_REVISION $(GIT_REVISION)" > revision.h; \
           fi \
@@ -149,7 +149,7 @@ $(shell if test -d "../.git" -a -n "$$(which git)"; then \
           if !(test -e "./revision.h"); then\
             echo "#define EKIGA_REVISION \"unknown\"" > revision.h; \
           fi \
-        fi)
+        fi
 
 AM_CXXFLAGS = $(GTK_CFLAGS) $(GLIB_CFLAGS) $(GNOME_CFLAGS) $(DBUS_CFLAGS) $(BONOBO_CFLAGS) $(OPAL_CFLAGS) $(PTLIB_CFLAGS) $(SIGC_CFLAGS) $(XML_CFLAGS) $(NOTIFY_CFLAGS)
 AM_LIBS = $(GTK_LIBS) $(GLIB_LIBS) $(GNOME_LIBS) $(DBUS_LIBS) $(BONOBO_LIBS) $(OPAL_LIBS) $(PTLIB_LIBS) $(SIGC_LIBS) $(XML_LIBS) $(NOTIFY_LIBS)
