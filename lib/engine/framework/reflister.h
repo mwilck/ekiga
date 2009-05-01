@@ -147,7 +147,7 @@ void
 Ekiga::RefLister<ObjectType>::remove_all_objects ()
 {
   /* iterators get invalidated as we go, hence the strange loop */
-  while (objects.begin () != objects.end ())
+  while ( !objects.empty ())
     remove_object (objects.begin ()->first);
 }
 

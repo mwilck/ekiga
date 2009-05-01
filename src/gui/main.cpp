@@ -1472,7 +1472,7 @@ place_call_cb (GtkWidget * /*widget*/,
     pos = uri.find ("@");
     if (pos == std::string::npos
 	&& uri.find ("h323:") == std::string::npos
-	&& mw->priv->accounts.begin () != mw->priv->accounts.end ()) {
+	&& !mw->priv->accounts.empty ()) {
 
       std::list<std::string>::iterator it = mw->priv->accounts.begin ();
       uri = uri + "@" + (*it);

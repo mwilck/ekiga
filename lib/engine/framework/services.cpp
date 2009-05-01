@@ -42,7 +42,7 @@ Ekiga::ServiceCore::~ServiceCore ()
   /* this frees the memory, if we're the only to hold references,
    * and frees the last first -- so there's no problem
    */
-  while (services.begin () != services.end ())
+  while ( !services.empty ())
     services.pop_front ();
 }
 

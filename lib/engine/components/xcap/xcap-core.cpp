@@ -201,7 +201,7 @@ XCAP::CoreImpl::~CoreImpl ()
    * makes the current iterator invalid : it gets pushed to the old sessions
    * list!
    */
-  while (pending_sessions.begin () != pending_sessions.end ())
+  while ( !pending_sessions.empty ())
     soup_session_abort (*pending_sessions.begin ());
 
   /* now all pending sessions have been made old, so we can do that: */

@@ -253,7 +253,7 @@ RL::Heap::refresh ()
   path->set_credentials (username_str, password_str);
   path = path->build_child ("resource-lists");
 
-  while (presentities.begin () != presentities.end ()) {
+  while ( !presentities.empty ()) {
 
     presentities.begin()->first->removed.emit ();
     for (std::list<sigc::connection>::iterator iter2
