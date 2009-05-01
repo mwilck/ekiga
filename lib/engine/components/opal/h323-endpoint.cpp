@@ -295,11 +295,11 @@ Opal::H323::EndPoint::Register (const Opal::Account& account)
     SetGatekeeperTimeToLive (account.get_timeout () * 1000);
     bool result = UseGatekeeper (account.get_host (), gatekeeperID);
 
-    /* There was an error (missing parameter or registration failed)
-       or the user chose to not register */
+    // There was an error (missing parameter or registration failed)
+    // or the user chose to not register
     if (!result) {
 
-      /* Registering failed */
+      // Registering failed
       if (gatekeeper) {
 
         switch (gatekeeper->GetRegistrationFailReason ()) {
@@ -330,7 +330,7 @@ Opal::H323::EndPoint::Register (const Opal::Account& account)
       else
         info = _("Failed");
 
-      /* Signal */
+      // Signal
       Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &Opal::H323::EndPoint::registration_event_in_main),
 					       account,
 					       Ekiga::Account::RegistrationFailed,
@@ -345,15 +345,17 @@ Opal::H323::EndPoint::Register (const Opal::Account& account)
     }
   }
   else if (unregister && IsRegisteredWithGatekeeper (account.get_host ())) {
+    /*
 
     H323EndPoint::RemoveGatekeeper (0);
     RemoveAliasName (account.get_username ());
 
-    /* Signal */
+    // Signal 
     Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &Opal::H323::EndPoint::registration_event_in_main),
 					     account,
 					     Ekiga::Account::Unregistered,
 					     std::string ()));
+                                             */
   }
 }
 
