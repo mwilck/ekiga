@@ -106,7 +106,7 @@ Opal::Sip::EndPoint::EndPoint (Opal::CallManager & _manager,
     bank = smart.get ();
   }
 
-
+  auto_answer_call =  false;
   protocol_name = "sip";
   uri_prefix = "sip:";
   listen_port = (_listen_port > 0 ? _listen_port : 5060);
@@ -966,7 +966,12 @@ Opal::Sip::EndPoint::OnIncomingConnection (OpalConnection &connection,
 
       if (!forward_uri.empty () && manager.get_forward_on_no_answer ())
         call->set_no_answer_forward (manager.get_reject_delay (), forward_uri);
-      else
+      else if (auto_answer_call) {
+        call->answer ();
+        auto_answer_call = false;
+        std::cout << "Should auto answer" << std::endl << std::flush;
+      }
+      else // Pending
         call->set_reject_delay (manager.get_reject_delay ());
     }
 
@@ -974,6 +979,33 @@ Opal::Sip::EndPoint::OnIncomingConnection (OpalConnection &connection,
   }
 
   return false;
+}
+
+
+PBoolean 
+Opal::Sip::EndPoint::OnReceivedINVITE (OpalTransport & /*transport*/, 
+                                       SIP_PDU * pdu)
+{
+  if (pdu == NULL) 
+    return true;
+
+  PString str;
+  int appearance;
+
+  pdu->GetMIME ().GetAlertInfo (str, appearance);
+  static const char ringanswer[] = ";ring-answer=";
+  int autoanswer = -1;
+  PINDEX end = str.Find ('>');
+  PINDEX pos = str.Find (ringanswer, end);
+
+  if (pos != P_MAX_INDEX) {
+    autoanswer = str.Mid (pos+sizeof (ringanswer)).AsUnsigned();
+  }
+
+  if (autoanswer > 0)
+    std::cout << "Auto-Answer" << std::endl << std::flush;
+
+  return true;
 }
 
 
