@@ -102,6 +102,7 @@ ConfBridge::ConfBridge (Ekiga::Service & _service)
   keys.push_back (CALL_FORWARDING_KEY "forward_on_busy");
   keys.push_back (CALL_FORWARDING_KEY "always_forward");
   keys.push_back (CALL_OPTIONS_KEY "no_answer_timeout");
+  keys.push_back (CALL_OPTIONS_KEY "auto_answer");
 
   keys.push_back (H323_KEY "enable_h245_tunneling");
   keys.push_back (H323_KEY "enable_early_h245");
@@ -357,6 +358,10 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
   else if (key == CALL_OPTIONS_KEY "no_answer_timeout") {
 
     manager.set_reject_delay (gm_conf_entry_get_int (entry));
+  }
+  else if (key == CALL_OPTIONS_KEY "auto_answer") {
+
+    manager.set_auto_answer (gm_conf_entry_get_bool (entry));
   }
 
 

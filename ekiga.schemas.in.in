@@ -991,5 +991,16 @@
 	<long>Automatically reject or forward incoming calls if no answer is given after the specified amount of time (in seconds)</long>
       </locale>
     </schema>
+    <schema>
+      <key>/schemas/apps/@PACKAGE_NAME@/general/call_options/auto_answer</key>
+      <applyto>/apps/@PACKAGE_NAME@/general/call_options/auto_answer</applyto>
+      <owner>Ekiga</owner>
+      <type>bool</type>
+      <default>false</default>
+      <locale name="C">
+	<short>Automatic answer</short>
+	<long>If enabled, automatically answer incoming calls</long>
+      </locale>
+    </schema>
   </schemalist>
 </gconfschemafile>

@@ -114,6 +114,7 @@ CallManager::CallManager (Ekiga::ServiceCore & _core)
   forward_on_busy = false;
   unconditional_forward = false;
   stun_enabled = false;
+  auto_answer = false;
 
   // Create video devices
   PVideoDevice::OpenArgs video = GetVideoOutputDevice();
@@ -300,6 +301,18 @@ void CallManager::set_reject_delay (unsigned delay)
 unsigned CallManager::get_reject_delay () const
 {
   return reject_delay;
+}
+
+
+void CallManager::set_auto_answer (bool enabled)
+{
+  auto_answer = enabled;
+}
+
+
+bool CallManager::get_auto_answer (void) const
+{
+  return auto_answer;
 }
 
 

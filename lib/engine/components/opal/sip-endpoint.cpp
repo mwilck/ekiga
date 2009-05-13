@@ -106,7 +106,7 @@ Opal::Sip::EndPoint::EndPoint (Opal::CallManager & _manager,
     bank = smart.get ();
   }
 
-  auto_answer_call =  false;
+  auto_answer_call = false;
   protocol_name = "sip";
   uri_prefix = "sip:";
   listen_port = (_listen_port > 0 ? _listen_port : 5060);
@@ -948,6 +948,7 @@ Opal::Sip::EndPoint::OnIncomingConnection (OpalConnection &connection,
 					   OpalConnection::StringOptions * stroptions)
 {
   PTRACE (3, "Opal::Sip::EndPoint\tIncoming connection");
+  std::cout << "ici 2 " << auto_answer_call << std::endl <<std::flush;
 
   if (!forward_uri.empty () && manager.get_unconditional_forward ())
     connection.ForwardCall (forward_uri);
@@ -966,10 +967,11 @@ Opal::Sip::EndPoint::OnIncomingConnection (OpalConnection &connection,
 
       if (!forward_uri.empty () && manager.get_forward_on_no_answer ())
         call->set_no_answer_forward (manager.get_reject_delay (), forward_uri);
-      else if (auto_answer_call) {
-        call->answer ();
+      else if (auto_answer_call || manager.get_auto_answer ()) {
         auto_answer_call = false;
-        std::cout << "Should auto answer" << std::endl << std::flush;
+        PTRACE (3, "Opal::Sip::EndPoint\tAuto-Answering incoming connection");
+        call->answer ();
+        return true;
       }
       else // Pending
         call->set_reject_delay (manager.get_reject_delay ());
@@ -983,29 +985,26 @@ Opal::Sip::EndPoint::OnIncomingConnection (OpalConnection &connection,
 
 
 PBoolean 
-Opal::Sip::EndPoint::OnReceivedINVITE (OpalTransport & /*transport*/, 
-                                       SIP_PDU * pdu)
+Opal::Sip::EndPoint::OnReceivedINVITE (OpalTransport& transport, 
+                                       SIP_PDU* pdu)
 {
   if (pdu == NULL) 
-    return true;
+    return SIPEndPoint::OnReceivedINVITE (transport, pdu);
 
   PString str;
   int appearance;
 
   pdu->GetMIME ().GetAlertInfo (str, appearance);
-  static const char ringanswer[] = ";ring-answer=";
-  int autoanswer = -1;
-  PINDEX end = str.Find ('>');
-  PINDEX pos = str.Find (ringanswer, end);
+  static const char ringanswer[] = "Ring Answer";
+  PINDEX pos = str.Find (ringanswer);
 
   if (pos != P_MAX_INDEX) {
-    autoanswer = str.Mid (pos+sizeof (ringanswer)).AsUnsigned();
+    PTRACE (3, "Opal::Sip::EndPoint\tRing Answer in AlertInfo header, will Auto-Answer incoming connection");
+    auto_answer_call = true;
   }
+  std::cout << "ici" << std::endl <<std::flush;
 
-  if (autoanswer > 0)
-    std::cout << "Auto-Answer" << std::endl << std::flush;
-
-  return true;
+  return SIPEndPoint::OnReceivedINVITE (transport, pdu);
 }
 
 

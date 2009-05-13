@@ -103,6 +103,9 @@ public:
     void set_reject_delay (unsigned delay);
     unsigned get_reject_delay () const;
 
+    void set_auto_answer (bool enabled);
+    bool get_auto_answer () const;
+
     void set_codecs (Ekiga::CodecList & codecs); 
     const Ekiga::CodecList & get_codecs () const;
 
@@ -187,6 +190,7 @@ private:
     bool unconditional_forward;
     bool forward_on_no_answer;
     bool stun_enabled;
+    bool auto_answer;
   };
 };
 #endif

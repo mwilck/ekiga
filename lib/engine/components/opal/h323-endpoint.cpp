@@ -419,6 +419,11 @@ Opal::H323::EndPoint::OnIncomingConnection (OpalConnection & connection,
 
       if (!forward_uri.empty () && manager.get_forward_on_no_answer ())
         call->set_no_answer_forward (manager.get_reject_delay (), forward_uri);
+      else if (manager.get_auto_answer ()) {
+        PTRACE (3, "Opal::Sip::EndPoint\tAuto-Answering incoming connection");
+        call->answer ();
+        return true;
+      }
       else
         call->set_reject_delay (manager.get_reject_delay ());
     }
