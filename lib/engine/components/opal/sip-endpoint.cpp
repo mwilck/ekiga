@@ -829,6 +829,10 @@ Opal::Sip::EndPoint::OnRegistrationFailed (const PString & _aor,
     info = _("Request terminated");
     break;
 
+  case SIP_PDU::Local_Timeout:
+    info = _("Remote party host is offline");
+    break;
+
   case SIP_PDU::Failure_NotAcceptableHere:
     info = _("Not acceptable here");
     break;
