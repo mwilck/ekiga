@@ -1465,10 +1465,18 @@ place_call_cb (GtkWidget * /*widget*/,
   if (mw->priv->calling_state == Standby && !mw->priv->current_call) {
 
     size_t pos;
+    
+    // Check for empty uri
+    uri = ekiga_main_window_get_call_url (mw);
+    pos = uri.find (":");
+    if (pos != std::string::npos)
+      if (uri.substr (++pos).empty ())
+        return;
 
     ekiga_main_window_update_calling_state (mw, Calling);
     gmref_ptr<Ekiga::CallCore> call_core = mw->priv->core->get ("call-core");
-    uri = ekiga_main_window_get_call_url (mw);
+
+    // Append the missing part for SIP uris
     pos = uri.find ("@");
     if (pos == std::string::npos
 	&& uri.find ("h323:") == std::string::npos
@@ -1478,9 +1486,13 @@ place_call_cb (GtkWidget * /*widget*/,
       uri = uri + "@" + (*it);
       ekiga_main_window_set_call_url (mw, uri.c_str ());
     }
+
+    // Remove appended spaces
     pos = uri.find_first_of (' ');
     if (pos != std::string::npos)
       uri = uri.substr (0, pos);
+
+    // Dial
     if (call_core->dial (uri)) {
 
       pos = uri.find ("@");

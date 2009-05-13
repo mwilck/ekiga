@@ -513,7 +513,7 @@ gm_pw_init_call_options_page (GtkWidget *prefs_window,
                                            _("Call Options"), 2, 3);
 
   /* Add all the fields */
-  gnome_prefs_spin_new (subsection, _("Timeout to reject or forward unanswered incoming calls (in seconds):"), CALL_OPTIONS_KEY "no_answer_timeout", _("Automatically reject or forward incoming calls if no answer is given after the specified amount of time (in seconds)"), 10.0, 299.0, 1.0, 1, NULL, true);
+  gnome_prefs_spin_new (subsection, _("Timeout to reject or forward unanswered incoming calls (in seconds):"), CALL_OPTIONS_KEY "no_answer_timeout", _("Automatically reject or forward incoming calls if no answer is given after the specified amount of time (in seconds)"), 10.0, 299.0, 1.0, 0, NULL, true);
   gnome_prefs_toggle_new (subsection, _("_Automatically answer incoming calls"), CALL_OPTIONS_KEY "auto_answer", _("If enabled, automatically answer incoming calls"), 1);
 }
 
