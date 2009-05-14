@@ -135,8 +135,7 @@ namespace Ekiga
    *         special registering magic?
    */
   class PresenceCore:
-    public Service,
-    public sigc::trackable
+    public Service
   {
   public:
 
@@ -323,6 +322,8 @@ namespace Ekiga
     /** This chain allows the PresenceCore to present forms to the user
      */
     ChainOfResponsibility<FormRequest*> questions;
+
+    std::list<sigc::connection> conns;
   };
 
 /**
