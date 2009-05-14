@@ -46,13 +46,15 @@ Ekiga::PresenceCore::PresenceCore (Ekiga::ServiceCore& core)
   gmref_ptr<Ekiga::PersonalDetails> details = core.get ("personal-details");
 
   if (details)
-    details->updated.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresenceCore::publish), details));
+    conns.push_back (details->updated.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresenceCore::publish), details)));
   if (account_core)
-    account_core->registration_event.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresenceCore::on_registration_event), details));
+    conns.push_back (account_core->registration_event.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresenceCore::on_registration_event), details)));
 }
 
 Ekiga::PresenceCore::~PresenceCore ()
 {
+  for (std::list<sigc::connection>::iterator iter = conns.begin (); iter != conns.end (); ++iter)
+    iter->disconnect ();
 }
 
 void
@@ -60,12 +62,12 @@ Ekiga::PresenceCore::add_cluster (ClusterPtr cluster)
 {
   clusters.insert (cluster);
   cluster_added.emit (cluster);
-  cluster->heap_added.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresenceCore::on_heap_added), cluster));
-  cluster->heap_updated.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresenceCore::on_heap_updated), cluster));
-  cluster->heap_removed.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresenceCore::on_heap_removed), cluster));
-  cluster->presentity_added.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresenceCore::on_presentity_added), cluster));
-  cluster->presentity_updated.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresenceCore::on_presentity_updated), cluster));
-  cluster->presentity_removed.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresenceCore::on_presentity_removed), cluster));
+  conns.push_back (cluster->heap_added.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresenceCore::on_heap_added), cluster)));
+  conns.push_back (cluster->heap_updated.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresenceCore::on_heap_updated), cluster)));
+  conns.push_back (cluster->heap_removed.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresenceCore::on_heap_removed), cluster)));
+  conns.push_back (cluster->presentity_added.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresenceCore::on_presentity_added), cluster)));
+  conns.push_back (cluster->presentity_updated.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresenceCore::on_presentity_updated), cluster)));
+  conns.push_back (cluster->presentity_removed.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresenceCore::on_presentity_removed), cluster)));
   cluster->questions.add_handler (questions.make_slot ());
 }
 
@@ -164,8 +166,8 @@ void
 Ekiga::PresenceCore::add_presence_fetcher (gmref_ptr<PresenceFetcher> fetcher)
 {
   presence_fetchers.push_back (fetcher);
-  fetcher->presence_received.connect (sigc::mem_fun (this, &Ekiga::PresenceCore::on_presence_received));
-  fetcher->status_received.connect (sigc::mem_fun (this, &Ekiga::PresenceCore::on_status_received));
+  conns.push_back (fetcher->presence_received.connect (sigc::mem_fun (this, &Ekiga::PresenceCore::on_presence_received)));
+  conns.push_back (fetcher->status_received.connect (sigc::mem_fun (this, &Ekiga::PresenceCore::on_status_received)));
   for (std::map<std::string, uri_info>::const_iterator iter
 	 = uri_infos.begin ();
        iter != uri_infos.end ();

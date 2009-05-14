@@ -65,8 +65,8 @@ namespace Ekiga
    * Notice that you give sources to this object as references, so they won't
    * be freed here : it's up to you to free them somehow.
    */
-  class ContactCore: public Service,
-		     public sigc::trackable
+  class ContactCore:
+    public Service
   {
   public:
 
@@ -189,6 +189,8 @@ namespace Ekiga
     /** This chain allows the ContactCore to present forms to the user
      */
     ChainOfResponsibility<FormRequest*> questions;
+
+    std::list<sigc::connection> conns;
   };
 
 /**

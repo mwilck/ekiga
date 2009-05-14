@@ -48,6 +48,8 @@ on_search ()
 
 Ekiga::ContactCore::~ContactCore ()
 {
+  for (std::list<sigc::connection>::iterator iter = conns.begin (); iter != conns.end (); ++iter)
+    iter->disconnect ();
 }
 
 bool
@@ -75,12 +77,12 @@ Ekiga::ContactCore::add_source (SourcePtr source)
 {
   sources.push_back (source);
   source_added.emit (source);
-  source->book_added.connect (sigc::bind<0> (book_added.make_slot (), source));
-  source->book_removed.connect (sigc::bind<0> (book_removed.make_slot (), source));
-  source->book_updated.connect (sigc::bind<0> (book_updated.make_slot (), source));
-  source->contact_added.connect (sigc::bind<0> (contact_added.make_slot (), source));
-  source->contact_removed.connect (sigc::bind<0> (contact_removed.make_slot (), source));
-  source->contact_updated.connect (sigc::bind<0> (contact_updated.make_slot (), source));
+  conns.push_back (source->book_added.connect (sigc::bind<0> (book_added.make_slot (), source)));
+  conns.push_back (source->book_removed.connect (sigc::bind<0> (book_removed.make_slot (), source)));
+  conns.push_back (source->book_updated.connect (sigc::bind<0> (book_updated.make_slot (), source)));
+  conns.push_back (source->contact_added.connect (sigc::bind<0> (contact_added.make_slot (), source)));
+  conns.push_back (source->contact_removed.connect (sigc::bind<0> (contact_removed.make_slot (), source)));
+  conns.push_back (source->contact_updated.connect (sigc::bind<0> (contact_updated.make_slot (), source)));
   source->questions.add_handler (questions.make_slot ());
 }
 
