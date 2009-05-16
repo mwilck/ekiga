@@ -125,7 +125,9 @@ gm_connect_button_destroy (GtkObject *object)
     (*GTK_OBJECT_CLASS (parent_class)->destroy) (object);
 
   g_free (cb->pickup);
+  cb->pickup = NULL;
   g_free (cb->hangup);
+  cb->hangup = NULL;
 }
 
 
