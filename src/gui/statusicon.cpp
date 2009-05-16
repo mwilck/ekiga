@@ -235,7 +235,7 @@ statusicon_get_type ()
  * Callbacks
  */
 static void
-show_popup_menu_cb (G_GNUC_UNUSED GtkStatusIcon *icon,
+show_popup_menu_cb (GtkStatusIcon *icon,
                     guint button,
                     guint activate_time,
                     gpointer data)
@@ -245,7 +245,8 @@ show_popup_menu_cb (G_GNUC_UNUSED GtkStatusIcon *icon,
   popup = GTK_WIDGET (data);
 
   gtk_menu_popup (GTK_MENU (popup),
-                  NULL, NULL, NULL, NULL,
+                  NULL, NULL, 
+                  (GtkMenuPositionFunc)gtk_status_icon_position_menu, icon,
                   button, activate_time);
 }
 
