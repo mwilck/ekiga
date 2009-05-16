@@ -60,9 +60,13 @@ typedef struct GmConnectButtonPrivate GmConnectButtonPrivate;
 typedef struct
 {
   GtkHBox parent;
-  GtkWidget *pickup_button;
-  GtkWidget *hangup_button;
+  GtkWidget *image;
+
+  gchar *pickup;
+  gchar *hangup;
+  
   GtkIconSize stock_size;
+  gboolean connected;
   
 } GmConnectButton;
 
