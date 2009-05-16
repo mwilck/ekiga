@@ -952,7 +952,9 @@ Opal::Sip::EndPoint::OnIncomingConnection (OpalConnection &connection,
 					   OpalConnection::StringOptions * stroptions)
 {
   PTRACE (3, "Opal::Sip::EndPoint\tIncoming connection");
-  std::cout << "ici 2 " << auto_answer_call << std::endl <<std::flush;
+
+  if (!SIPEndPoint::OnIncomingConnection (connection, options, stroptions))
+    return false;
 
   if (!forward_uri.empty () && manager.get_unconditional_forward ())
     connection.ForwardCall (forward_uri);
@@ -975,16 +977,13 @@ Opal::Sip::EndPoint::OnIncomingConnection (OpalConnection &connection,
         auto_answer_call = false;
         PTRACE (3, "Opal::Sip::EndPoint\tAuto-Answering incoming connection");
         call->answer ();
-        return true;
       }
       else // Pending
         call->set_reject_delay (manager.get_reject_delay ());
     }
-
-    return SIPEndPoint::OnIncomingConnection (connection, options, stroptions);
   }
 
-  return false;
+  return true;
 }
 
 
@@ -1006,7 +1005,6 @@ Opal::Sip::EndPoint::OnReceivedINVITE (OpalTransport& transport,
     PTRACE (3, "Opal::Sip::EndPoint\tRing Answer in AlertInfo header, will Auto-Answer incoming connection");
     auto_answer_call = true;
   }
-  std::cout << "ici" << std::endl <<std::flush;
 
   return SIPEndPoint::OnReceivedINVITE (transport, pdu);
 }
