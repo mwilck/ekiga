@@ -407,7 +407,7 @@ Opal::Sip::EndPoint::set_dtmf_mode (unsigned mode)
 
     // RFC2833
   case 1:
-    SetSendUserInputMode (OpalConnection::SendUserInputAsInlineRFC2833);
+    SetSendUserInputMode (OpalConnection::SendUserInputAsProtocolDefault);
     break;
   default:
     break;
