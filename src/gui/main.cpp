@@ -389,6 +389,15 @@ static void panel_section_changed_cb (GtkNotebook *,
 
 
 /* DESCRIPTION  :  This callback is called when the user 
+ *                 presses a key. 
+ * BEHAVIOR     :  Sends a DTMF if we are in a call.
+ * PRE          :  A valid pointer to the main window GMObject.
+ */
+static gboolean key_press_event_cb (EkigaMainWindow *mw,
+                                    GdkEventKey *key);
+
+
+/* DESCRIPTION  :  This callback is called when the user 
  *                 clicks on the dialpad button.
  * BEHAVIOR     :  Generates a dialpad event.
  * PRE          :  A valid pointer to the main window GMObject.
@@ -2090,6 +2099,28 @@ dialpad_button_clicked_cb (EkigaDialpad  * /* dialpad */,
 }
 
 
+static gboolean
+key_press_event_cb (EkigaMainWindow *mw,
+                    GdkEventKey *key)
+{
+  const char valid_dtmfs[] = "1234567890#*";
+  unsigned i = 0;
+
+  if (mw->priv->current_call) {
+    while (i < strlen (valid_dtmfs)) {
+      if (key->string[0] && key->string[0] == valid_dtmfs[i]) {
+        mw->priv->current_call->send_dtmf (key->string[0]);
+        return true;
+      }
+      i++;
+    }
+  }
+
+  return false;
+}
+
+
+
 static gint 
 window_closed_cb (G_GNUC_UNUSED GtkWidget *widget,
 		  G_GNUC_UNUSED GdkEvent *event,
@@ -3439,6 +3470,9 @@ ekiga_main_window_init_dialpad (EkigaMainWindow *mw)
   label = gtk_label_new (_("Dialpad"));
   gtk_notebook_append_page (GTK_NOTEBOOK (mw->priv->main_notebook),
 			    alignment, label);
+
+  g_signal_connect (G_OBJECT (mw), "key-press-event",
+                    G_CALLBACK (key_press_event_cb), mw);
 }
 
 
