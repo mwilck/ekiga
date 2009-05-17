@@ -3335,7 +3335,7 @@ ekiga_main_window_init_uri_toolbar (EkigaMainWindow *mw)
   gtk_container_set_border_width (GTK_CONTAINER (item), 0);
   gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), true);
   
-  gtk_entry_set_text (GTK_ENTRY (mw->priv->entry), "sip:");
+  ekiga_main_window_set_call_url (mw, "sip:");
 
   // activate Ctrl-L to get the entry focus
   gtk_widget_add_accelerator (mw->priv->entry, "grab-focus",
