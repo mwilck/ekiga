@@ -91,7 +91,7 @@ private:
 };
 
 
-Opal::Call::Call (OpalManager & _manager, Ekiga::ServiceCore & _core, const std::string& uri)
+Opal::Call::Call (OpalManager& _manager, const Ekiga::ServiceCore& _core, const std::string& uri)
   : OpalCall (_manager), Ekiga::Call (), core (_core), remote_uri (uri),
     call_setup(false),outgoing(true),jitter(0)
 {
