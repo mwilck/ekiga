@@ -91,8 +91,8 @@ private:
 };
 
 
-Opal::Call::Call (OpalManager & _manager, Ekiga::ServiceCore & _core)
-  : OpalCall (_manager), Ekiga::Call (), core (_core),
+Opal::Call::Call (OpalManager & _manager, Ekiga::ServiceCore & _core, const std::string& uri)
+  : OpalCall (_manager), Ekiga::Call (), core (_core), remote_uri (uri),
     call_setup(false),outgoing(true),jitter(0)
 {
   re_a_bytes = tr_a_bytes = re_v_bytes = tr_v_bytes = 0.0;

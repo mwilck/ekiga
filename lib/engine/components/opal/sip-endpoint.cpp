@@ -379,7 +379,7 @@ Opal::Sip::EndPoint::dial (const std::string & uri)
       ustr << uri;
 
     PString token;
-    manager.SetUpCall("pc:*", ustr.str(), token);
+    manager.SetUpCall("pc:*", ustr.str(), token, (void*) ustr.str().c_str());
 
     return true;
   }

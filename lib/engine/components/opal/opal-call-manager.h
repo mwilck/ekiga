@@ -155,7 +155,7 @@ public:
     void get_video_options (VideoOptions & options) const;
 
 private:
-    OpalCall *CreateCall ();
+    OpalCall *CreateCall (void *uri);
     void DestroyCall (OpalCall *);
 
     bool OnOpenMediaStream (OpalConnection &,
