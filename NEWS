@@ -1,4 +1,58 @@
                           -*- mode: outline -*-
+* Changes in ekiga 3.2.1 (2009-05-19)
+- Fix various crashes on shutdown
+- Fix crash when opening preferences or assistant
+- Fix crash when no account
+- Fix SIP registration
+- Fix DTMF mode for SIP endpoint
+- Migrate ekiga.net configuration from 3.0 to 3.2
+- Maintain window position on hiding/showing the main window
+- On some failed registration, do not show the unuseful
+  RequestTerminated code, but the actual error
+- In assistant, fill user name field, if empty, with user name
+- In preferences, audio/video devices, remove unused FFMPEG and
+  WAVFile modules
+- Fix recognition of cameras with non-ascii characters
+- Fix compilation with --disable-tracing
+- Various fixes during configuration
+- Windows version:
+  - DirectX fixes
+  - Better LDAP support
+- Other minor fixes
+- Updates translations: ar, as, crh, es, kn, nb, or, zh_CN
+- Updated help translation: el, es
+
+* Summary of changes between 3.2.0 and 3.0.0, details are below
+- Better NAT support in case of Cone NAT
+- There is now only one H.263 plugin implementing both H.263 and H.263+
+- Allow several ALSA devices to have the same name
+- Added support for the G.722 audio codec: G.722 is a 16 kHz wideband
+  audio codec advertised as HD Voice by the famous Polycom. It is a
+  great boost in quality and interoperability
+- Added support for the CELT ultral-low delay audio codec: CELT delivers
+  high quality audio at 32 kHz or 48 kHz, allowing to transmit music in
+  high quality, with low delay and low bitrate
+- Added support for SIP dialog-info notifications: they allow displaying
+  notifications of incoming calls in the roster. With software like
+  kamailio or Asterisk, it allows being informed of incoming calls
+  reaching your colleagues
+- Largely improved LDAP support: the OpenLDAP guys contributed several
+  patches to provide state-of-the-art LDAP support in the Ekiga address
+  book. The new code even supports authentication
+- Killed the gconf_test_age test, Ekiga can now finally work with
+  badly installed GConf schemas
+- Better handling of multiple network interfaces with dynamic addition
+  and removal
+- Added settings migration from Ekiga 2.0.x.
+- Improved Windows build
+- Other various fixes, cleanups, removal of deprecated symbols etc.
+- New translations: crh, or
+- New help translation: en_GB, eu
+- Updated many translations and help
+- Experimental features:
+ - Significant improvements in IPv6 support
+ - Gstreamer audio and video capture support
+
 * Changes in ekiga 3.2.0 (2009-03-16)
 - Fix some NAT related issues (use internal port instead of external
   port in Cone NAT)
