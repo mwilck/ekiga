@@ -87,7 +87,8 @@ ekiga_SOURCES +=				\
 
 # resources
 if WIN32
-ekiga_SOURCES +=                   	\
+ekiga_SOURCES +=                   		\
+	$(top_srcdir)/win32/plugin-gconst.cpp	\
 	$(top_srcdir)/win32/ekiga-rc.rc
 endif
 
