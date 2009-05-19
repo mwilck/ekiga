@@ -634,7 +634,12 @@ OpalCall *CallManager::CreateCall (void *uri)
 {
   gmref_ptr<Ekiga::CallCore> call_core = core.get ("call-core"); // FIXME: threaded?
 
-  gmref_ptr<Opal::Call> call (new Opal::Call (*this, core, (const char *) uri));
+  gmref_ptr<Opal::Call> call;
+
+  if (uri != 0)
+    call = gmref_ptr<Opal::Call> (new Opal::Call (*this, core, (const char *) uri));
+  else
+    call = gmref_ptr<Opal::Call> (new Opal::Call (*this, core, ""));
   call_core->add_call (call, gmref_ptr<CallManager>(this));
 
   return call.get ();
