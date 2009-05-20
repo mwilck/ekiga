@@ -1,4 +1,148 @@
                           -*- mode: outline -*-
+* Changes in ekiga 3.2.4 (2009-05-20)
+- Fixed OPAL and PTLIB recommended versions
+
+* Changes in ekiga 3.2.3 (2009-05-20)
+- Fixed remote uri not being shown in the uri bar when dialing out
+
+* Changes in ekiga 3.2.2 (2009-05-20)
+- Fixed a crash on some calls
+
+* Changes in ekiga 3.2.1 (2009-05-19)
+- Fixed various crashes on shutdown
+- Fixed crash when opening preferences or assistant
+- Fixed crash when no account
+- Fixed SIP registration
+- Fixed DTMF mode for SIP endpoint
+- Migrate ekiga.net configuration from 3.0 to 3.2
+- Maintain window position on hiding/showing the main window
+- On some failed registration, do not show the unuseful
+  RequestTerminated code, but the actual error
+- In assistant, fill user name field, if empty, with user name
+- In preferences, audio/video devices, remove unused FFMPEG and
+  WAVFile modules
+- Fixed recognition of cameras with non-ascii characters
+- Fixed compilation with --disable-tracing
+- Various fixes during configuration
+- Fixed issue with having multiple registrations with the same SIP registrar
+- Fixed problem with not waiting till ACK arrives, some
+  implementations get offended if the ACK gets a transaction does not
+  exist error. Thanks hongsion for the report
+- Fixed bug where if a non-INVITE transaction gets a 1xx response, but
+  then the 2xx (or above) response is lost, the command is not
+  retransmitted
+- Added fix for video plug in shared library loading, current code
+  would not look anywhere but default path
+- Fixed compiling G722 plug in on SUN
+- Fixed correct value for remote party address
+- Fixed compilation on NetBSD
+- Fixed INVITE sent in response to a REFER command using a different
+  local user name to the original call
+- Fixed bug where opal tries to install plugins even if they have been disabled
+- Fixed crash in PStandardColourConverter::YUY2toYUV420PWithResize
+- Fixed include path overrides package include path
+- Fixed search for connection matching replaces header dialog info,
+  broken during changes to make calls back into the same stack
+- Fixed from/to fields reversed in call dialog identifier information,
+  needed for a INVITE with replaces header
+- Fixed thread leaks
+- Fixed video I-frame detection
+- Fixed media format matching option additions
+- Fixed advanced rate controller support
+- Fixed popping frames problem when rate controller skips input frames
+- Fixed missing re-lock of mutex on jitter buffer shut down
+- Fixed gatekeeper discovery
+- Added YUV2 support to DirectX code
+- Fixed crash in PInterfaceMonitor::Stop
+- If SIP answer to our offer contains only media formats we never
+  offered then abort the call as this is SO not to specification!
+- Fixed possible assertion if the soundcard blocks and prevents the
+  device to be closed
+- Fixed possible path through unsubscribe/unregister code that could
+  lead to a NULL pointer being used
+- Fixed issue in SIP registering, if both a full AOR and a registrar
+  host name is provided then we would normally disable all registrar
+  searches (e.g. SRV record lookup) and just use the host name
+  specified
+- Change default TSTO in H.263 to give better quality
+- Fixed issue with SIP call hairpinning back into the same stack
+- Fixed possibility of closing a channel twice
+- Fixed intermittent problem with losing an audio channel when using
+  INVITE with a replace header
+- Fixed being able to switch off jitter buffer while still a thread
+  reading from it
+- Fixed bug with "hairpin" SIP calls, subsequent commands to INVITE
+  are not routed to the correct connection instance
+- H.224 should not be enabled when H.323 is disabled
+- Various Solaris build fixes
+- Fixed RFC3890 support
+- Don't stop a call from clearing due to lack of media just because a
+  session has not received any packets
+- Fixed memory leaks in the plugins code
+- Improved the RTP stack performances
+- Fixed various video payload problems
+- Fixed issue with outgoing re-INVITE that gets a 401/407
+  authentication required error, the re-transmitted INVITE was not a
+  re-INVITE but another normal INVITE, so "hold" doesn't work
+- Fixed issue with incoming re-INVITE that has no SDp in the INVITE,
+  if the eventual ACK has the same streams but only changed the IP
+  address/port for RTP, then we did not change our RTP send
+  addresss/port
+- Add numerous boundary checks to H.263 codec
+- Discard out of order packets, mode A frames that don't begin with a
+  start code, and frames that don't begin with a start code in H.263
+  codec
+- Fixed initial H.323 call set up honouring the auto-start
+  configuration for "don't offer"
+- Fixes for gcc 4.4.0
+- Fixed compilation with video, h.323 or sip disabled
+- Windows port:
+  - DirectX fixes
+  - Better LDAP support
+  - Add back devices
+  - Fixed issue with empty strings for Windows sound devices being
+    returned when being used over a Remote Desktop connection
+  - Fixed G.722 compilation
+  - Fixed linker problems
+- Other minor fixes
+- Updates translations: ar, as, crh, es, kn, nb, or, zh_CN
+- Updated help translation: el, es
+
+Special thanks to Julien Puydt, Michael Rickmann, Mounir Lamouri,
+Eugen Dedu, Jan Schampera and Yannick Defais for their continuous work
+on Ekiga.
+
+* Summary of changes between 3.2.0 and 3.0.0, details are below
+- Better NAT support in case of Cone NAT
+- There is now only one H.263 plugin implementing both H.263 and H.263+
+- Allow several ALSA devices to have the same name
+- Added support for the G.722 audio codec: G.722 is a 16 kHz wideband
+  audio codec advertised as HD Voice by the famous Polycom. It is a
+  great boost in quality and interoperability
+- Added support for the CELT ultral-low delay audio codec: CELT delivers
+  high quality audio at 32 kHz or 48 kHz, allowing to transmit music in
+  high quality, with low delay and low bitrate
+- Added support for SIP dialog-info notifications: they allow displaying
+  notifications of incoming calls in the roster. With software like
+  kamailio or Asterisk, it allows being informed of incoming calls
+  reaching your colleagues
+- Largely improved LDAP support: the OpenLDAP guys contributed several
+  patches to provide state-of-the-art LDAP support in the Ekiga address
+  book. The new code even supports authentication
+- Killed the gconf_test_age test, Ekiga can now finally work with
+  badly installed GConf schemas
+- Better handling of multiple network interfaces with dynamic addition
+  and removal
+- Added settings migration from Ekiga 2.0.x.
+- Improved Windows build
+- Other various fixes, cleanups, removal of deprecated symbols etc.
+- New translations: crh, or
+- New help translation: en_GB, eu
+- Updated many translations and help
+- Experimental features:
+ - Significant improvements in IPv6 support
+ - Gstreamer audio and video capture support
+
 * Changes in ekiga 3.2.0 (2009-03-16)
 - Fix some NAT related issues (use internal port instead of external
   port in Cone NAT)
