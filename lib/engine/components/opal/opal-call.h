@@ -57,7 +57,7 @@ namespace Opal {
 
 public:
 
-    Call (OpalManager & _manager, Ekiga::ServiceCore & _core);
+    Call (OpalManager & _manager, Ekiga::ServiceCore & _core, const std::string & uri);
 
     ~Call ();
 
@@ -206,13 +206,13 @@ private:
      */
     Ekiga::ServiceCore & core;
 
-
-    bool call_setup;
-    bool outgoing;
     std::string local_party_name;
     std::string remote_party_name;
     std::string remote_uri;
     std::string remote_application;
+
+    bool call_setup;
+    bool outgoing;
 
     std::string forward_uri;
 

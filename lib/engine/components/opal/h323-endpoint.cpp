@@ -51,23 +51,23 @@ namespace Opal {
     {
       PCLASSINFO(subscriber, PThread);
 
-    public:
+  public:
 
       subscriber (const Opal::Account & _account,
                   Opal::H323::EndPoint& _manager)
         : PThread (1000, AutoDeleteThread),
-	  account (_account),
-	  manager (_manager)
+        account (_account),
+        manager (_manager)
       {
         this->Resume ();
       };
 
       void Main ()
-      {
-	manager.Register (account);
-      };
+        {
+          manager.Register (account);
+        };
 
-    private:
+  private:
       const Opal::Account & account;
       Opal::H323::EndPoint& manager;
     };
@@ -77,7 +77,7 @@ namespace Opal {
 
 /* The class */
 Opal::H323::EndPoint::EndPoint (Opal::CallManager & _manager, Ekiga::ServiceCore & _core, unsigned _listen_port)
-  : H323EndPoint (_manager),
+: H323EndPoint (_manager),
     manager (_manager),
     core (_core)
 {
@@ -102,8 +102,8 @@ Opal::H323::EndPoint::~EndPoint ()
 
 bool
 Opal::H323::EndPoint::populate_menu (Ekiga::ContactPtr contact,
-				     std::string uri,
-				     Ekiga::MenuBuilder &builder)
+                                     std::string uri,
+                                     Ekiga::MenuBuilder &builder)
 {
   return menu_builder_add_actions (contact->get_name (), uri, builder);
 }
@@ -111,8 +111,8 @@ Opal::H323::EndPoint::populate_menu (Ekiga::ContactPtr contact,
 
 bool
 Opal::H323::EndPoint::populate_menu (Ekiga::PresentityPtr presentity,
-				     const std::string uri,
-				     Ekiga::MenuBuilder& builder)
+                                     const std::string uri,
+                                     Ekiga::MenuBuilder& builder)
 {
   return menu_builder_add_actions (presentity->get_name (), uri, builder);
 }
@@ -120,8 +120,8 @@ Opal::H323::EndPoint::populate_menu (Ekiga::PresentityPtr presentity,
 
 bool
 Opal::H323::EndPoint::menu_builder_add_actions (const std::string & /*fullname*/,
-						const std::string& uri,
-						Ekiga::MenuBuilder & builder)
+                                                const std::string& uri,
+                                                Ekiga::MenuBuilder & builder)
 {
   bool populated = false;
 
@@ -146,7 +146,7 @@ Opal::H323::EndPoint::dial (const std::string&  uri)
   if (uri.find ("h323:") == 0) {
 
     PString token;
-    manager.SetUpCall("pc:*", uri, token);
+    manager.SetUpCall("pc:*", uri, token, (void*) uri.c_str());
 
     return true;
   }
@@ -332,22 +332,22 @@ Opal::H323::EndPoint::Register (const Opal::Account& account)
 
       /* Signal */
       Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &Opal::H323::EndPoint::registration_event_in_main),
-					       account,
-					       Ekiga::Account::RegistrationFailed,
-					       info));
+                                               account,
+                                               Ekiga::Account::RegistrationFailed,
+                                               info));
     }
     else {
 
       Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &Opal::H323::EndPoint::registration_event_in_main),
-					       account,
-					       Ekiga::Account::Registered,
-					       std::string ()));
+                                               account,
+                                               Ekiga::Account::Registered,
+                                               std::string ()));
     }
   }
   else if (unregister && IsRegisteredWithGatekeeper (account.get_host ())) {
 
-    H323EndPoint::RemoveGatekeeper (0);
-    RemoveAliasName (account.get_username ());
+       H323EndPoint::RemoveGatekeeper (0);
+       RemoveAliasName (account.get_username ());
 
     /* Signal */
     Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &Opal::H323::EndPoint::registration_event_in_main),
@@ -360,8 +360,8 @@ Opal::H323::EndPoint::Register (const Opal::Account& account)
 
 bool
 Opal::H323::EndPoint::UseGatekeeper (const PString & address,
-				     const PString & domain,
-				     const PString & iface)
+                                     const PString & domain,
+                                     const PString & iface)
 {
   bool result =
     H323EndPoint::UseGatekeeper (address, domain, iface);

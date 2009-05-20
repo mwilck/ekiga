@@ -617,7 +617,7 @@ void CallManager::get_video_options (CallManager::VideoOptions & options) const
 }
 
 
-OpalCall *CallManager::CreateCall ()
+OpalCall *CallManager::CreateCall (void *uri)
 {
   gmref_ptr<Ekiga::CallCore> call_core = core.get ("call-core"); // FIXME: threaded?
   gmref_ptr<Opal::Call> call;
