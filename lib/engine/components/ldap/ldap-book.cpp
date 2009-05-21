@@ -91,7 +91,7 @@ OPENLDAP::Book::parse_result (LDAPMessage* message)
   while (rc == LDAP_SUCCESS) {
     rc = ldap_get_attribute_ber (ldap_context, message, ber, &bv, &bvals);
     if (bv.bv_val == NULL) break;
-    if (!strcasecmp(bv.bv_val, attributes[0])) {
+    if (attributes[0] == NULL || !strcasecmp(bv.bv_val, attributes[0])) {
       username = std::string (bvals[0].bv_val, bvals[0].bv_len);
     } else {
       for (i=1; attributes[i]; i++) {
