@@ -1148,7 +1148,7 @@ on_videoinput_device_error_cb (Ekiga::VideoInputManager & /* manager */,
   g_strdup_printf (_("Error while accessing video device %s"),
                    (const char *) device.name.c_str());
 
-  tmp_msg = g_strdup (_("A moving logo will be transmitted during calls. Notice that you can always transmit a given image or the moving logo by choosing \"Picture\" as video plugin and \"Moving logo\" or \"Static picture\" as device."));
+  tmp_msg = g_strdup (_("A moving logo will be transmitted during calls."));
   switch (error_code) {
 
     case Ekiga::VI_ERROR_DEVICE:
