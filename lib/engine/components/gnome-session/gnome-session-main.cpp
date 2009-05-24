@@ -154,7 +154,7 @@ GNOMESESSIONService::on_established_call (gmref_ptr<Ekiga::CallManager> /*manage
   gboolean ret = dbus_g_proxy_call (proxy, "Inhibit", NULL,
 				    G_TYPE_STRING, PACKAGE_NAME,
 				    G_TYPE_UINT, 0,
-				    G_TYPE_STRING, "Call in progress",
+				    G_TYPE_STRING, _("Call in progress"),
 				    G_TYPE_UINT, 8,
 				    G_TYPE_INVALID,
 				    G_TYPE_UINT, &cookie,
