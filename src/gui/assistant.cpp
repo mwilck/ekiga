@@ -343,7 +343,7 @@ static void
 name_changed_cb (GtkEntry     *entry,
                  GtkAssistant *assistant)
 {
-  set_current_page_complete (assistant, gtk_entry_get_text_length (entry) > 0);
+  set_current_page_complete (assistant, (gtk_entry_get_text (entry))[0] != '\0');
 }
 
 
