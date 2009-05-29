@@ -287,40 +287,31 @@ LM::Presentity::edit_presentity_form_submitted (bool submitted,
   if (!submitted)
     return;
 
-  try {
+  const std::string name = result.text ("name");
+  const std::set<std::string> groups = result.editable_set ("groups");
+  LmMessage* message = lm_message_new_with_sub_type (NULL, LM_MESSAGE_TYPE_IQ, LM_MESSAGE_SUB_TYPE_SET);
+  LmMessageNode* query = lm_message_node_add_child (lm_message_get_node (message), "query", NULL);
+  lm_message_node_set_attribute (query, "xmlns", "jabber:iq:roster");
+  LmMessageNode* node = lm_message_node_add_child (query, "item", NULL);
 
-    const std::string name = result.text ("name");
-    const std::set<std::string> groups = result.editable_set ("groups");
-    LmMessage* message = lm_message_new_with_sub_type (NULL, LM_MESSAGE_TYPE_IQ, LM_MESSAGE_SUB_TYPE_SET);
-    LmMessageNode* query = lm_message_node_add_child (lm_message_get_node (message), "query", NULL);
-    lm_message_node_set_attribute (query, "xmlns", "jabber:iq:roster");
-    LmMessageNode* node = lm_message_node_add_child (query, "item", NULL);
-
-    {
-      gchar* escaped = g_markup_escape_text (name.c_str (), -1);
-      lm_message_node_set_attributes (node,
-				      "jid", get_jid ().c_str (),
-				      "name", escaped,
-				      NULL);
-      g_free (escaped);
-    }
-
-    for (std::set<std::string>::const_iterator iter = groups.begin (); iter != groups.end (); ++iter) {
-
-      gchar* escaped = g_markup_escape_text (iter->c_str (), -1);
-      lm_message_node_add_child (node, "group", escaped);
-      g_free (escaped);
-    }
-
-    lm_connection_send (connection, message, NULL);
-    lm_message_unref (message);
-
-  } catch (Ekiga::Form::not_found) {
-#ifdef __GNUC__
-    std::cerr << "Invalid form submitted to "
-	      << __PRETTY_FUNCTION__ << std::endl;
-#endif
+  {
+    gchar* escaped = g_markup_escape_text (name.c_str (), -1);
+    lm_message_node_set_attributes (node,
+				    "jid", get_jid ().c_str (),
+				    "name", escaped,
+				    NULL);
+    g_free (escaped);
   }
+
+  for (std::set<std::string>::const_iterator iter = groups.begin (); iter != groups.end (); ++iter) {
+
+    gchar* escaped = g_markup_escape_text (iter->c_str (), -1);
+    lm_message_node_add_child (node, "group", escaped);
+    g_free (escaped);
+  }
+
+  lm_connection_send (connection, message, NULL);
+  lm_message_unref (message);
 }
 
 void

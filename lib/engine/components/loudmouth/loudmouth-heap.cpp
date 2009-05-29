@@ -336,24 +336,16 @@ LM::Heap::add_item_form_submitted (bool submitted,
   if ( !submitted)
     return;
 
-  try {
+  const std::string jid = result.text ("jid");
+  if ( !jid.empty ()) {
 
-    const std::string jid = result.text ("jid");
-    if ( !jid.empty ()) {
-
-      LmMessage* subscribe = lm_message_new (NULL, LM_MESSAGE_TYPE_PRESENCE);
-      lm_message_node_set_attributes (lm_message_get_node (subscribe),
-				      "to", jid.c_str (),
-				      "type", "subscribe",
-				      NULL);
-      lm_connection_send (connection, subscribe, NULL);
-      lm_message_unref (subscribe);
-    }
-  } catch (Ekiga::Form::not_found) {
-#ifdef __GNUC__
-    std::cerr << "Invalid form submitted to "
-	      << __PRETTY_FUNCTION__ << std::endl;
-#endif
+    LmMessage* subscribe = lm_message_new (NULL, LM_MESSAGE_TYPE_PRESENCE);
+    lm_message_node_set_attributes (lm_message_get_node (subscribe),
+				    "to", jid.c_str (),
+				    "type", "subscribe",
+				    NULL);
+    lm_connection_send (connection, subscribe, NULL);
+    lm_message_unref (subscribe);
   }
 }
 
@@ -364,43 +356,34 @@ LM::Heap::subscribe_from_form_submitted (bool submitted,
   if ( !submitted)
     return;
 
-  try {
+  const std::string jid = result.hidden ("jid");
+  const std::string answer = result.single_choice ("answer");
 
-    const std::string jid = result.hidden ("jid");
-    const std::string answer = result.single_choice ("answer");
+  if (answer == "grant") {
 
-    if (answer == "grant") {
+    LmMessage* message = lm_message_new (NULL, LM_MESSAGE_TYPE_PRESENCE);
+    lm_message_node_set_attributes (lm_message_get_node (message),
+				    "to", jid.c_str (),
+				    "type", "subscribed",
+				    NULL);
+    lm_connection_send (connection, message, NULL);
+    lm_message_unref (message);
+    LmMessage* subscribe = lm_message_new (NULL, LM_MESSAGE_TYPE_PRESENCE);
+    lm_message_node_set_attributes (lm_message_get_node (subscribe),
+				    "to", jid.c_str (),
+				    "type", "subscribe",
+				    NULL);
+    lm_connection_send (connection, subscribe, NULL);
+    lm_message_unref (subscribe);
+  } else if (answer == "refuse") {
 
-      LmMessage* message = lm_message_new (NULL, LM_MESSAGE_TYPE_PRESENCE);
-      lm_message_node_set_attributes (lm_message_get_node (message),
-				      "to", jid.c_str (),
-				      "type", "subscribed",
-				      NULL);
-      lm_connection_send (connection, message, NULL);
-      lm_message_unref (message);
-      LmMessage* subscribe = lm_message_new (NULL, LM_MESSAGE_TYPE_PRESENCE);
-      lm_message_node_set_attributes (lm_message_get_node (subscribe),
-				      "to", jid.c_str (),
-				      "type", "subscribe",
-				      NULL);
-      lm_connection_send (connection, subscribe, NULL);
-      lm_message_unref (subscribe);
-    } else if (answer == "refuse") {
-
-      LmMessage* message = lm_message_new (NULL, LM_MESSAGE_TYPE_PRESENCE);
-      lm_message_node_set_attributes (lm_message_get_node (message),
-				      "to", jid.c_str (),
-				      "type", "unsubscribed",
-				      NULL);
-      lm_connection_send (connection, message, NULL);
-      lm_message_unref (message);
-    }
-
-  } catch (Ekiga::Form::not_found) {
-#ifdef __GNUC__
-    std::cerr << "Invalid form submitted to "
-	      << __PRETTY_FUNCTION__ << std::endl;
-#endif
+    LmMessage* message = lm_message_new (NULL, LM_MESSAGE_TYPE_PRESENCE);
+    lm_message_node_set_attributes (lm_message_get_node (message),
+				    "to", jid.c_str (),
+				    "type", "unsubscribed",
+				    NULL);
+    lm_connection_send (connection, message, NULL);
+    lm_message_unref (message);
   }
 }
 
