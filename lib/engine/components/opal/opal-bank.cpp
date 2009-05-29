@@ -158,54 +158,47 @@ void Opal::Bank::on_new_account_form_submitted (bool submitted,
   if (!submitted)
     return;
 
-  try {
+  Ekiga::FormRequestSimple request(sigc::bind (sigc::mem_fun (this, &Opal::Bank::on_new_account_form_submitted) ,acc_type));
 
-    Ekiga::FormRequestSimple request(sigc::bind (sigc::mem_fun (this, &Opal::Bank::on_new_account_form_submitted) ,acc_type));
+  std::string error;
+  std::string new_name = (acc_type == Opal::Account::SIP
+			  || acc_type == Opal::Account::H323) ? result.text ("name") : result.hidden ("name");
+  std::string new_host = (acc_type == Opal::Account::SIP
+			  || acc_type == Opal::Account::H323) ? result.text ("host") : result.hidden ("host");
+  std::string new_user = result.text ("user");
+  std::string new_authentication_user = (acc_type == Opal::Account::SIP) ? result.text ("authentication_user") : new_user;
+  std::string new_password = result.private_text ("password");
+  bool new_enabled = result.boolean ("enabled");
+  unsigned new_timeout = atoi ((acc_type == Opal::Account::SIP
+				|| acc_type == Opal::Account::H323) ?
+			       result.text ("timeout").c_str () : result.hidden ("timeout").c_str ());
 
-    std::string error;
-    std::string new_name = (acc_type == Opal::Account::SIP
-			    || acc_type == Opal::Account::H323) ? result.text ("name") : result.hidden ("name");
-    std::string new_host = (acc_type == Opal::Account::SIP
-			    || acc_type == Opal::Account::H323) ? result.text ("host") : result.hidden ("host");
-    std::string new_user = result.text ("user");
-    std::string new_authentication_user = (acc_type == Opal::Account::SIP) ? result.text ("authentication_user") : new_user;
-    std::string new_password = result.private_text ("password");
-    bool new_enabled = result.boolean ("enabled");
-    unsigned new_timeout = atoi ((acc_type == Opal::Account::SIP
-				  || acc_type == Opal::Account::H323) ?
-                                 result.text ("timeout").c_str () : result.hidden ("timeout").c_str ());
+  result.visit (request);
 
-    result.visit (request);
+  if (new_name.empty ())
+    error = _("You did not supply a name for that account.");
+  else if (new_host.empty ())
+    error = _("You did not supply a host to register to.");
+  else if (new_user.empty ())
+    error = _("You did not supply a user name for that account.");
+  else if (new_timeout < 10)
+    error = _("The timeout should have a bigger value.");
 
-    if (new_name.empty ())
-      error = _("You did not supply a name for that account.");
-    else if (new_host.empty ())
-      error = _("You did not supply a host to register to.");
-    else if (new_user.empty ())
-      error = _("You did not supply a user name for that account.");
-    else if (new_timeout < 10)
-      error = _("The timeout should have a bigger value.");
+  if (!error.empty ()) {
+    request.error (error);
 
-    if (!error.empty ()) {
-      request.error (error);
-
-      if (!questions.handle_request (&request)) {
+    if (!questions.handle_request (&request)) {
 #ifdef __GNUC__
-        std::cout << "Unhandled form request in "
-		  << __PRETTY_FUNCTION__ << std::endl;
+      std::cout << "Unhandled form request in "
+		<< __PRETTY_FUNCTION__ << std::endl;
 #endif
-      }
     }
-    else {
+  }
+  else {
 
-      add (acc_type, new_name, new_host, new_user, new_authentication_user,
-	   new_password, new_enabled, new_timeout);
-      save ();
-    }
-
-  } catch (Ekiga::Form::not_found) {
-
-    std::cerr << "Invalid result form" << std::endl;
+    add (acc_type, new_name, new_host, new_user, new_authentication_user,
+	 new_password, new_enabled, new_timeout);
+    save ();
   }
 }
 

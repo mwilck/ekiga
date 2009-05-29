@@ -141,7 +141,7 @@ OPENLDAP::Source::new_book ()
 
   bookinfo.name = "";
   bookinfo.uri = "ldap://localhost/dc=net?cn,telephoneNumber?sub?(cn=$)",
-  bookinfo.authcID = "";
+    bookinfo.authcID = "";
   bookinfo.password = "";
   bookinfo.saslMech = "";
   bookinfo.urld = NULL;
@@ -185,33 +185,27 @@ OPENLDAP::Source::on_new_book_form_submitted (bool submitted,
   if (!submitted)
     return;
 
-  try {
-    std::string errmsg;
+  std::string errmsg;
 
-    if (OPENLDAP::BookFormInfo (result, bookinfo, errmsg)) {
-      Ekiga::FormRequestSimple request(sigc::mem_fun (this, &OPENLDAP::Source::on_new_book_form_submitted));
+  if (OPENLDAP::BookFormInfo (result, bookinfo, errmsg)) {
+    Ekiga::FormRequestSimple request(sigc::mem_fun (this, &OPENLDAP::Source::on_new_book_form_submitted));
 
-      result.visit (request);
-      request.error (errmsg);
+    result.visit (request);
+    request.error (errmsg);
 
-      if (!questions.handle_request (&request)) {
+    if (!questions.handle_request (&request)) {
 
-        // FIXME: better error reporting
+      // FIXME: better error reporting
 #ifdef __GNUC__
-        std::cout << "Unhandled form request in "
-	          << __PRETTY_FUNCTION__ << std::endl;
+      std::cout << "Unhandled form request in "
+		<< __PRETTY_FUNCTION__ << std::endl;
 #endif
-      }
-      return;
     }
-
-    add ();
-    save ();
-
-  } catch (Ekiga::Form::not_found) {
-
-    std::cerr << "Invalid result form" << std::endl; // FIXME: do better
+    return;
   }
+
+  add ();
+  save ();
 }
 
 void

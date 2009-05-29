@@ -190,23 +190,14 @@ RL::Cluster::on_new_heap_form_submitted (bool submitted,
   if (!submitted)
     return;
 
-  try {
+  const std::string name = result.text ("name");
+  const std::string uri = result.text ("uri");
+  const std::string username = result.text ("username");
+  const std::string password = result.private_text ("password");
+  const std::string user = result.text ("user");
+  bool writable = result.boolean ("writable");
 
-    const std::string name = result.text ("name");
-    const std::string uri = result.text ("uri");
-    const std::string username = result.text ("username");
-    const std::string password = result.private_text ("password");
-    const std::string user = result.text ("user");
-    bool writable = result.boolean ("writable");
-
-    add (name, uri, username, password, user, writable);
-  } catch (Ekiga::Form::not_found) {
-
-#ifdef __GNUC__
-    std::cerr << "Invalid form submitted to "
-	      << __PRETTY_FUNCTION__ << std::endl;
-#endif
-  }
+  add (name, uri, username, password, user, writable);
 }
 
 

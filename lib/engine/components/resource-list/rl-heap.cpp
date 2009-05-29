@@ -491,32 +491,26 @@ RL::Heap::on_edit_form_submitted (bool submitted,
   if (!submitted)
     return;
 
-  try {
+  std::string name_str = result.text ("name");
+  std::string root_str = result.text ("root");
+  std::string user_str = result.text ("user");
+  std::string username_str = result.text ("username");
+  std::string password_str = result.private_text ("password");
+  bool writable = result.boolean ("writable");
 
-    std::string name_str = result.text ("name");
-    std::string root_str = result.text ("root");
-    std::string user_str = result.text ("user");
-    std::string username_str = result.text ("username");
-    std::string password_str = result.private_text ("password");
-    bool writable = result.boolean ("writable");
+  if (writable)
+    xmlSetProp (node, BAD_CAST "writable", BAD_CAST "1");
+  else
+    xmlSetProp (node, BAD_CAST "writable", BAD_CAST "0");
+  robust_xmlNodeSetContent (node, &name, "name", name_str);
+  robust_xmlNodeSetContent (node, &root, "root", root_str);
+  robust_xmlNodeSetContent (node, &user, "user", user_str);
+  robust_xmlNodeSetContent (node, &username, "username", username_str);
+  robust_xmlNodeSetContent (node, &password, "password", password_str);
 
-    if (writable)
-      xmlSetProp (node, BAD_CAST "writable", BAD_CAST "1");
-    else
-      xmlSetProp (node, BAD_CAST "writable", BAD_CAST "0");
-    robust_xmlNodeSetContent (node, &name, "name", name_str);
-    robust_xmlNodeSetContent (node, &root, "root", root_str);
-    robust_xmlNodeSetContent (node, &user, "user", user_str);
-    robust_xmlNodeSetContent (node, &username, "username", username_str);
-    robust_xmlNodeSetContent (node, &password, "password", password_str);
-
-    trigger_saving.emit ();
-    updated.emit ();
-    refresh ();
-  } catch (Ekiga::Form::not_found) {
-
-    std::cerr << "Invalid result form" << std::endl; // FIXME: do better
-  }
+  trigger_saving.emit ();
+  updated.emit ();
+  refresh ();
 }
 
 void
@@ -560,79 +554,73 @@ RL::Heap::on_new_entry_form_submitted (bool submitted,
   if (!submitted)
     return;
 
-  try {
+  std::string entry_name = result.text ("name");
+  std::string entry_uri = result.text ("uri");
+  std::set<std::string> entry_groups = result.editable_set ("groups");
 
-    std::string entry_name = result.text ("name");
-    std::string entry_uri = result.text ("uri");
-    std::set<std::string> entry_groups = result.editable_set ("groups");
+  xmlNodePtr entry_node = xmlNewChild (list_node, NULL,
+				       BAD_CAST "entry", NULL);
+  xmlSetProp (entry_node, BAD_CAST "uri",
+	      BAD_CAST robust_xmlEscape (doc.get (), entry_uri).c_str ());
+  xmlNewChild (entry_node, NULL, BAD_CAST "display-name",
+	       BAD_CAST robust_xmlEscape (doc.get (), entry_name).c_str ());
+  xmlNsPtr ns = xmlSearchNsByHref (doc.get (), entry_node,
+				   BAD_CAST "http://www.ekiga.org");
+  if (ns == NULL) {
 
-    xmlNodePtr entry_node = xmlNewChild (list_node, NULL,
-					 BAD_CAST "entry", NULL);
-    xmlSetProp (entry_node, BAD_CAST "uri",
-		BAD_CAST robust_xmlEscape (doc.get (), entry_uri).c_str ());
-    xmlNewChild (entry_node, NULL, BAD_CAST "display-name",
-		 BAD_CAST robust_xmlEscape (doc.get (), entry_name).c_str ());
-    xmlNsPtr ns = xmlSearchNsByHref (doc.get (), entry_node,
-				     BAD_CAST "http://www.ekiga.org");
-    if (ns == NULL) {
-
-      // FIXME: we should handle the case, even if it shouldn't happen
-    }
-
-    for (std::set<std::string>::const_iterator iter = entry_groups.begin ();
-	 iter != entry_groups.end ();
-	 ++iter) {
-
-      xmlNewChild (entry_node, ns, BAD_CAST "group",
-		   BAD_CAST robust_xmlEscape (doc.get (), *iter).c_str ());
-    }
-
-    xmlBufferPtr buffer = xmlBufferCreate ();
-    int res = xmlNodeDump (buffer, doc.get (), entry_node, 0, 0);
-
-    if (res >= 0) {
-
-      std::string root_str;
-      std::string username_str;
-      std::string password_str;
-      std::string user_str;
-
-      {
-	xmlChar* str = xmlNodeGetContent (root);
-	if (str != NULL)
-	  root_str = (const char*)str;
-      }
-      {
-	xmlChar* str = xmlNodeGetContent (user);
-	if (str != NULL)
-	  user_str = (const char*)str;
-      }
-      {
-	xmlChar* str = xmlNodeGetContent (username);
-	if (str != NULL)
-	  username_str = (const char*)str;
-      }
-      {
-	xmlChar* str = xmlNodeGetContent (password);
-	if (str != NULL)
-	  password_str = (const char*)str;
-      }
-      gmref_ptr<XCAP::Path> path(new XCAP::Path (root_str, "resource-lists",
-						 user_str));
-      path->set_credentials (username_str, password_str);
-      path = path->build_child ("resource-lists");
-      path = path->build_child ("list");
-      path = path->build_child_with_attribute ("entry", "uri", entry_uri);
-      gmref_ptr<XCAP::Core> xcap(services.get ("xcap-core"));
-      xcap->write (path, "application/xcap-el+xml",
-		   (const char*)xmlBufferContent (buffer),
-		   sigc::mem_fun (this, &RL::Heap::new_entry_result));
-    }
-    xmlBufferFree (buffer);
-  } catch (Ekiga::Form::not_found exc) {
-
-    std::cerr << "Invalid result form" << std::endl; // FIXME: do better
+    // FIXME: we should handle the case, even if it shouldn't happen
   }
+
+  for (std::set<std::string>::const_iterator iter = entry_groups.begin ();
+       iter != entry_groups.end ();
+       ++iter) {
+
+    xmlNewChild (entry_node, ns, BAD_CAST "group",
+		 BAD_CAST robust_xmlEscape (doc.get (), *iter).c_str ());
+  }
+
+  xmlBufferPtr buffer = xmlBufferCreate ();
+  int res = xmlNodeDump (buffer, doc.get (), entry_node, 0, 0);
+
+  if (res >= 0) {
+
+    std::string root_str;
+    std::string username_str;
+    std::string password_str;
+    std::string user_str;
+
+    {
+      xmlChar* str = xmlNodeGetContent (root);
+      if (str != NULL)
+	root_str = (const char*)str;
+    }
+    {
+      xmlChar* str = xmlNodeGetContent (user);
+      if (str != NULL)
+	user_str = (const char*)str;
+    }
+    {
+      xmlChar* str = xmlNodeGetContent (username);
+      if (str != NULL)
+	username_str = (const char*)str;
+    }
+    {
+      xmlChar* str = xmlNodeGetContent (password);
+      if (str != NULL)
+	password_str = (const char*)str;
+    }
+    gmref_ptr<XCAP::Path> path(new XCAP::Path (root_str, "resource-lists",
+					       user_str));
+    path->set_credentials (username_str, password_str);
+    path = path->build_child ("resource-lists");
+    path = path->build_child ("list");
+    path = path->build_child_with_attribute ("entry", "uri", entry_uri);
+    gmref_ptr<XCAP::Core> xcap(services.get ("xcap-core"));
+    xcap->write (path, "application/xcap-el+xml",
+		 (const char*)xmlBufferContent (buffer),
+		 sigc::mem_fun (this, &RL::Heap::new_entry_result));
+  }
+  xmlBufferFree (buffer);
 }
 
 void

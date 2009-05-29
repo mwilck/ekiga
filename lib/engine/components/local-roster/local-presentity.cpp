@@ -247,70 +247,60 @@ Local::Presentity::edit_presentity_form_submitted (bool submitted,
   if (!submitted)
     return;
 
-  try {
+  const std::string new_name = result.text ("name");
+  const std::set<std::string> new_groups = result.editable_set ("groups");
+  std::string new_uri = result.text ("uri");
+  std::map<std::string, xmlNodePtr> future_group_nodes;
+  size_t pos = new_uri.find_first_of (' ');
+  if (pos != std::string::npos)
+    new_uri = new_uri.substr (0, pos);
 
-    /* we first fetch all data before making any change, so if there's
-     * a problem, we don't do anything */
-    const std::string new_name = result.text ("name");
-    const std::set<std::string> new_groups = result.editable_set ("groups");
-    std::string new_uri = result.text ("uri");
-    std::map<std::string, xmlNodePtr> future_group_nodes;
-    size_t pos = new_uri.find_first_of (' ');
-    if (pos != std::string::npos)
-      new_uri = new_uri.substr (0, pos);
+  name = new_name;
+  if (uri != new_uri) {
 
-    name = new_name;
-    if (uri != new_uri) {
-
-      gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
-      presence_core->unfetch_presence (uri);
-      uri = new_uri;
-      presence = "unknown";
-      presence_core->fetch_presence (uri);
-      xmlSetProp (node, (const xmlChar*)"uri", (const xmlChar*)uri.c_str ());
-    }
-
-    robust_xmlNodeSetContent (node, &name_node, "name", name);
-
-    // the first loop looks at groups we were in : are we still in ?
-    for (std::map<std::string, xmlNodePtr>::const_iterator iter
-	   = group_nodes.begin ();
-	 iter != group_nodes.end () ;
-	 iter++) {
-
-      if (new_groups.find (iter->first) == new_groups.end ()) {
-
-	xmlUnlinkNode (iter->second);
-	xmlFreeNode (iter->second);
-      } 
-      else {
-	future_group_nodes[iter->first] = iter->second;
-      }
-    }
-
-    // the second loop looking for groups we weren't in but are now
-    for (std::set<std::string>::const_iterator iter = new_groups.begin ();
-	 iter != new_groups.end ();
-	 iter++) {
-
-      if (std::find (groups.begin (), groups.end (), *iter) == groups.end ())
-	future_group_nodes[*iter] = xmlNewChild (node, NULL,
-						 BAD_CAST "group",
-						 BAD_CAST robust_xmlEscape (node->doc, *iter).c_str ());
-    }
-
-    // ok, now we know our groups
-    group_nodes = future_group_nodes;
-    groups = new_groups;
-
-    updated.emit ();
-    trigger_saving.emit ();
-  } catch (Ekiga::Form::not_found) {
-#ifdef __GNUC__
-    std::cerr << "Invalid form submitted to "
-	      << __PRETTY_FUNCTION__ << std::endl;
-#endif
+    gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
+    presence_core->unfetch_presence (uri);
+    uri = new_uri;
+    presence = "unknown";
+    presence_core->fetch_presence (uri);
+    xmlSetProp (node, (const xmlChar*)"uri", (const xmlChar*)uri.c_str ());
   }
+
+  robust_xmlNodeSetContent (node, &name_node, "name", name);
+
+  // the first loop looks at groups we were in : are we still in ?
+  for (std::map<std::string, xmlNodePtr>::const_iterator iter
+	 = group_nodes.begin ();
+       iter != group_nodes.end () ;
+       iter++) {
+
+    if (new_groups.find (iter->first) == new_groups.end ()) {
+
+      xmlUnlinkNode (iter->second);
+      xmlFreeNode (iter->second);
+    }
+    else {
+      future_group_nodes[iter->first] = iter->second;
+    }
+  }
+
+  // the second loop looking for groups we weren't in but are now
+  for (std::set<std::string>::const_iterator iter = new_groups.begin ();
+       iter != new_groups.end ();
+       iter++) {
+
+    if (std::find (groups.begin (), groups.end (), *iter) == groups.end ())
+      future_group_nodes[*iter] = xmlNewChild (node, NULL,
+					       BAD_CAST "group",
+					       BAD_CAST robust_xmlEscape (node->doc, *iter).c_str ());
+  }
+
+  // ok, now we know our groups
+  group_nodes = future_group_nodes;
+  groups = new_groups;
+
+  updated.emit ();
+  trigger_saving.emit ();
 }
 
 

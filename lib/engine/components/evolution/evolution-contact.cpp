@@ -359,29 +359,22 @@ Evolution::Contact::on_edit_form_submitted (bool submitted,
   if (!submitted)
     return;
 
-  try {
+  std::string name = result.text ("name");
+  std::string home = result.text ("home");
+  std::string cell = result.text ("cell");
+  std::string work = result.text ("work");
+  std::string pager = result.text ("pager");
+  std::string video = result.text ("video");
 
-    std::string name = result.text ("name");
-    std::string home = result.text ("home");
-    std::string cell = result.text ("cell");
-    std::string work = result.text ("work");
-    std::string pager = result.text ("pager");
-    std::string video = result.text ("video");
+  set_attribute_value (ATTR_HOME, home);
+  set_attribute_value (ATTR_CELL, cell);
+  set_attribute_value (ATTR_WORK, work);
+  set_attribute_value (ATTR_PAGER, pager);
+  set_attribute_value (ATTR_VIDEO, video);
 
-    set_attribute_value (ATTR_HOME, home);
-    set_attribute_value (ATTR_CELL, cell);
-    set_attribute_value (ATTR_WORK, work);
-    set_attribute_value (ATTR_PAGER, pager);
-    set_attribute_value (ATTR_VIDEO, video);
+  e_contact_set (econtact, E_CONTACT_FULL_NAME, (gpointer)name.c_str ());
 
-    e_contact_set (econtact, E_CONTACT_FULL_NAME, (gpointer)name.c_str ());
-
-    e_book_commit_contact (book, econtact, NULL);
-
-  } catch (Ekiga::Form::not_found) {
-
-    std::cerr << "Invalid result form" << std::endl; // FIXME: do better
-  }
+  e_book_commit_contact (book, econtact, NULL);
 }
 
 void

@@ -224,8 +224,8 @@ Evolution::Book::on_book_opened (EBookStatus _status)
     if (search_filter.empty ())
       query = e_book_query_field_exists (E_CONTACT_FULL_NAME);
     else
-      query = e_book_query_field_test (E_CONTACT_FULL_NAME, 
-                                       E_BOOK_QUERY_CONTAINS, 
+      query = e_book_query_field_test (E_CONTACT_FULL_NAME,
+                                       E_BOOK_QUERY_CONTAINS,
                                        search_filter.c_str ());
 
     (void)e_book_async_get_book_view (book, query, NULL, 100,
@@ -233,7 +233,7 @@ Evolution::Book::on_book_opened (EBookStatus _status)
 
     e_book_query_unref (query);
 
-  } 
+  }
   else {
 
     book = NULL;
@@ -304,9 +304,9 @@ Evolution::Book::refresh ()
   remove_all_objects ();
 
   /* we go */
-  if (e_book_is_opened (book)) 
+  if (e_book_is_opened (book))
     on_book_opened_c (book, E_BOOK_ERROR_OK, this);
-  else 
+  else
     e_book_async_open (book, TRUE,
                        on_book_opened_c, this);
 }
@@ -360,39 +360,30 @@ Evolution::Book::on_new_contact_form_submitted (bool submitted,
   if ( !submitted)
     return;
 
-  try {
-    EContact *econtact = NULL;
+  EContact *econtact = NULL;
 
 
-    /* first check we have everything before using */
-    std::string name = result.text ("name");
-    std::string home = result.text ("home");
-    std::string cell = result.text ("cell");
-    std::string work = result.text ("work");
-    std::string pager = result.text ("pager");
-    std::string video = result.text ("video");
+  /* first check we have everything before using */
+  std::string name = result.text ("name");
+  std::string home = result.text ("home");
+  std::string cell = result.text ("cell");
+  std::string work = result.text ("work");
+  std::string pager = result.text ("pager");
+  std::string video = result.text ("video");
 
-    econtact = e_contact_new ();
-    e_contact_set (econtact, E_CONTACT_FULL_NAME, (gpointer)name.c_str ());
-    if ( !home.empty ())
-      set_econtact_attribute_value (econtact, "HOME", home);
-    if ( !cell.empty ())
-      set_econtact_attribute_value (econtact, "CELL", cell);
-    if ( !work.empty ())
-      set_econtact_attribute_value (econtact, "WORK", work);
-    if ( !pager.empty ())
-      set_econtact_attribute_value (econtact, "PAGER", pager);
-    if ( !video.empty ())
-      set_econtact_attribute_value (econtact, "VIDEO", video);
+  econtact = e_contact_new ();
+  e_contact_set (econtact, E_CONTACT_FULL_NAME, (gpointer)name.c_str ());
+  if ( !home.empty ())
+    set_econtact_attribute_value (econtact, "HOME", home);
+  if ( !cell.empty ())
+    set_econtact_attribute_value (econtact, "CELL", cell);
+  if ( !work.empty ())
+    set_econtact_attribute_value (econtact, "WORK", work);
+  if ( !pager.empty ())
+    set_econtact_attribute_value (econtact, "PAGER", pager);
+  if ( !video.empty ())
+    set_econtact_attribute_value (econtact, "VIDEO", video);
 
-    e_book_add_contact (book, econtact, NULL);
-    g_object_unref (econtact);
-
-  } catch (Ekiga::Form::not_found) {
-#ifdef __GNUC__
-    std::cerr << "Invalid result form submitted to "
-	      << __PRETTY_FUNCTION__
-	      << std::endl;
-#endif
-  }
+  e_book_add_contact (book, econtact, NULL);
+  g_object_unref (econtact);
 }

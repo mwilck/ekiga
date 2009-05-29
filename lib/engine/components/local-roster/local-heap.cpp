@@ -189,9 +189,24 @@ Local::Heap::existing_groups ()
 
   result.insert (_("Family"));
   result.insert (_("Friend"));
+  /* Translator: http://www.ietf.org/rfc/rfc4480.txt proposes several
+     relationships between you and your contact; associate means
+     someone who is at the same "level" than you.
+  */
   result.insert (_("Associate"));
+  /* Translator: http://www.ietf.org/rfc/rfc4480.txt proposes several
+     relationships between you and your contact; assistant means
+     someone who is at a lower "level" than you.
+  */
   result.insert (_("Assistant"));
+  /* Translator: http://www.ietf.org/rfc/rfc4480.txt proposes several
+     relationships between you and your contact; supervisor means
+     someone who is at a higher "level" than you.
+  */
   result.insert (_("Supervisor"));
+  /* Translator: http://www.ietf.org/rfc/rfc4480.txt proposes several
+     relationships between you and your contact; self means yourself.
+  */
   result.insert (_("Self"));
 
   return result;
@@ -231,7 +246,7 @@ Local::Heap::new_presentity (const std::string name,
 
     if (!questions.handle_request (&request)) {
 
-    // FIXME: better error reporting
+      // FIXME: better error reporting
 #ifdef __GNUC__
       std::cout << "Unhandled form request in "
 		<< __PRETTY_FUNCTION__ << std::endl;
@@ -273,8 +288,8 @@ Local::Heap::push_presence (const std::string uri,
 struct push_status_helper
 {
   push_status_helper (const std::string uri_,
-			const std::string status_): uri(uri_),
-						    status(status_)
+		      const std::string status_): uri(uri_),
+						  status(status_)
   {}
 
   bool test (Local::PresentityPtr presentity)
@@ -368,52 +383,43 @@ Local::Heap::new_presentity_form_submitted (bool submitted,
   if (!submitted)
     return;
 
-  try {
+  gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
+  const std::string name = result.text ("name");
+  const std::string good_uri = result.hidden ("good-uri");
+  std::string uri;
+  const std::set<std::string> groups = result.editable_set ("groups");
 
-    gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
-    const std::string name = result.text ("name");
-    const std::string good_uri = result.hidden ("good-uri");
-    std::string uri;
-    const std::set<std::string> groups = result.editable_set ("groups");
+  if (good_uri == "yes")
+    uri = result.hidden ("uri");
+  else
+    uri = result.text ("uri");
 
-    if (good_uri == "yes")
-      uri = result.hidden ("uri");
+  size_t pos = uri.find_first_of (' ');
+  if (pos != std::string::npos)
+    uri = uri.substr (0, pos);
+  if (presence_core->is_supported_uri (uri)
+      && !has_presentity_with_uri (uri)) {
+
+    add (name, uri, groups);
+    save ();
+  } else {
+
+    Ekiga::FormRequestSimple request(sigc::mem_fun (this, &Local::Heap::new_presentity_form_submitted));
+
+    result.visit (request);
+    if (!presence_core->is_supported_uri (uri))
+      request.error (_("You supplied an unsupported address"));
     else
-      uri = result.text ("uri");
+      request.error (_("You already have a contact with this address!"));
 
-    size_t pos = uri.find_first_of (' ');
-    if (pos != std::string::npos)
-      uri = uri.substr (0, pos);
-    if (presence_core->is_supported_uri (uri)
-	&& !has_presentity_with_uri (uri)) {
+    if (!questions.handle_request (&request)) {
 
-      add (name, uri, groups);
-      save ();
-    } else {
-
-      Ekiga::FormRequestSimple request(sigc::mem_fun (this, &Local::Heap::new_presentity_form_submitted));
-
-      result.visit (request);
-      if (!presence_core->is_supported_uri (uri))
-	request.error (_("You supplied an unsupported address"));
-      else
-	request.error (_("You already have a contact with this address!"));
-
-      if (!questions.handle_request (&request)) {
-
-	// FIXME: better error handling
+      // FIXME: better error handling
 #ifdef __GNUC__
-	std::cout << "Unhandled form request in "
-		  << __PRETTY_FUNCTION__ << std::endl;
+      std::cout << "Unhandled form request in "
+		<< __PRETTY_FUNCTION__ << std::endl;
 #endif
-      }
     }
-  } catch (Ekiga::Form::not_found) {
-
-#ifdef __GNUC__
-    std::cerr << "Invalid form submitted to "
-	      << __PRETTY_FUNCTION__ << std::endl;
-#endif
   }
 }
 
@@ -462,19 +468,11 @@ Local::Heap::rename_group_form_submitted (std::string old_name,
   if (!submitted)
     return;
 
-  try {
-    const std::string new_name = result.text ("name");
+  const std::string new_name = result.text ("name");
 
-    if ( !new_name.empty () && new_name != old_name) {
+  if ( !new_name.empty () && new_name != old_name) {
 
-      rename_group_form_submitted_helper helper (old_name, new_name);
-      visit_presentities (sigc::mem_fun (helper, &rename_group_form_submitted_helper::rename_group));
-    }
-  } catch (Ekiga::Form::not_found) {
-
-#ifdef __GNUC__
-    std::cerr << "Invalid form submitted to "
-	      << __PRETTY_FUNCTION__ << std::endl;
-#endif
+    rename_group_form_submitted_helper helper (old_name, new_name);
+    visit_presentities (sigc::mem_fun (helper, &rename_group_form_submitted_helper::rename_group));
   }
 }
