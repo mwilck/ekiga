@@ -98,13 +98,13 @@ OPENLDAP::Book::parse_result (LDAPMessage* message)
         if (!strcasecmp(bv.bv_val,attributes[i]) && bvals && bvals[0].bv_val ) {
 	  call_addresses[attributes[i]] =
 	    /* FIXME: next line is annoying */
-	  	std::string ("sip:") +
-		  std::string (bvals[0].bv_val, bvals[0].bv_len);
+	    std::string ("sip:") +
+	    std::string (bvals[0].bv_val, bvals[0].bv_len);
         }
       }
     }
     if (bvals) ber_memfree(bvals);
-    }
+  }
 
   ber_free (ber, 0);
 
@@ -306,28 +306,28 @@ OPENLDAP::Book::Book (Ekiga::ServiceCore &_core,
     }
     if (hostname_node) {
 
-	xmlUnlinkNode (hostname_node);
-        xmlFreeNode (hostname_node);
+      xmlUnlinkNode (hostname_node);
+      xmlFreeNode (hostname_node);
     }
     if (port_node) {
 
-	xmlUnlinkNode (port_node);
-        xmlFreeNode (port_node);
+      xmlUnlinkNode (port_node);
+      xmlFreeNode (port_node);
     }
     if (base_node) {
 
-	xmlUnlinkNode (base_node);
-        xmlFreeNode (base_node);
+      xmlUnlinkNode (base_node);
+      xmlFreeNode (base_node);
     }
     if (scope_node) {
 
-	xmlUnlinkNode (scope_node);
-        xmlFreeNode (scope_node);
+      xmlUnlinkNode (scope_node);
+      xmlFreeNode (scope_node);
     }
     if (call_attribute_node) {
 
-	xmlUnlinkNode (call_attribute_node);
-        xmlFreeNode (call_attribute_node);
+      xmlUnlinkNode (call_attribute_node);
+      xmlFreeNode (call_attribute_node);
     }
     trigger_saving.emit ();
   }
@@ -351,14 +351,14 @@ OPENLDAP::Book::Book (Ekiga::ServiceCore &_core,
 						      bookinfo.name).c_str ());
 
   uri_node = xmlNewChild (node, NULL,
-			       BAD_CAST "uri",
-			       BAD_CAST robust_xmlEscape (node->doc,
-							  bookinfo.uri).c_str ());
+			  BAD_CAST "uri",
+			  BAD_CAST robust_xmlEscape (node->doc,
+						     bookinfo.uri).c_str ());
 
   authcID_node = xmlNewChild (node, NULL,
-			       BAD_CAST "authcID",
-			       BAD_CAST robust_xmlEscape (node->doc,
-			       		bookinfo.authcID).c_str ());
+			      BAD_CAST "authcID",
+			      BAD_CAST robust_xmlEscape (node->doc,
+							 bookinfo.authcID).c_str ());
 
   password_node = xmlNewChild (node, NULL,
 			       BAD_CAST "password",
@@ -471,182 +471,182 @@ OPENLDAP::Book::on_sasl_form_submitted (bool submitted,
 
 extern "C" {
 
-typedef struct interctx {
-  OPENLDAP::Book *book;
-  std::string authcID;
-  std::string password;
-  std::list<std::string> results;
-} interctx;
+  typedef struct interctx {
+    OPENLDAP::Book *book;
+    std::string authcID;
+    std::string password;
+    std::list<std::string> results;
+  } interctx;
 
-static int
-book_saslinter(LDAP *ld, unsigned flags __attribute__((unused)),
-  void *def, void *inter)
-{
-  sasl_interact_t *in = (sasl_interact_t *)inter;
-  interctx *ctx = (interctx *)def;
-  struct berval p;
-  int i, nprompts = 0;
-
-  /* Fill in the prompts we have info for; count
-   * how many we're missing.
-   */
-  for (;in->id != SASL_CB_LIST_END;in++)
+  static int
+  book_saslinter(LDAP *ld, unsigned flags __attribute__((unused)),
+		 void *def, void *inter)
   {
-    p.bv_val = NULL;
-    switch(in->id)
-    {
-      case SASL_CB_GETREALM:
-        ldap_get_option(ld, LDAP_OPT_X_SASL_REALM, &p.bv_val);
-        if (p.bv_val) p.bv_len = strlen(p.bv_val);
-        break;
-      case SASL_CB_AUTHNAME:
-	p.bv_len = ctx->authcID.length();
-	if (p.bv_len)
-          p.bv_val = (char *)ctx->authcID.c_str();
-        break;
-      case SASL_CB_USER:
-        /* If there was a default authcID, just ignore the authzID */
-        if (ctx->authcID.length()) {
-	  p.bv_val = (char *)"";
-	  p.bv_len = 0;
+    sasl_interact_t *in = (sasl_interact_t *)inter;
+    interctx *ctx = (interctx *)def;
+    struct berval p;
+    int i, nprompts = 0;
+
+    /* Fill in the prompts we have info for; count
+     * how many we're missing.
+     */
+    for (;in->id != SASL_CB_LIST_END;in++)
+      {
+	p.bv_val = NULL;
+	switch(in->id)
+	  {
+	  case SASL_CB_GETREALM:
+	    ldap_get_option(ld, LDAP_OPT_X_SASL_REALM, &p.bv_val);
+	    if (p.bv_val) p.bv_len = strlen(p.bv_val);
+	    break;
+	  case SASL_CB_AUTHNAME:
+	    p.bv_len = ctx->authcID.length();
+	    if (p.bv_len)
+	      p.bv_val = (char *)ctx->authcID.c_str();
+	    break;
+	  case SASL_CB_USER:
+	    /* If there was a default authcID, just ignore the authzID */
+	    if (ctx->authcID.length()) {
+	      p.bv_val = (char *)"";
+	      p.bv_len = 0;
+	    }
+	    break;
+	  case SASL_CB_PASS:
+	    p.bv_len = ctx->password.length();
+	    if (p.bv_len)
+	      p.bv_val = (char *)ctx->password.c_str();
+	    break;
+	  default:
+	    break;
+	  }
+	if (p.bv_val)
+	  {
+	    in->result = p.bv_val;
+	    in->len = p.bv_len;
+	  } else
+	  {
+	    nprompts++;
+	    in->result = NULL;
+	  }
+      }
+
+    /* If there are missing items, try to get them all in one dialog */
+    if (nprompts) {
+      Ekiga::FormRequestSimple request(sigc::mem_fun (ctx->book, &OPENLDAP::Book::on_sasl_form_submitted));
+      Ekiga::FormBuilder result;
+      std::string prompt;
+      std::string ctxt = "";
+      char resbuf[32];
+
+      request.title (_("LDAP SASL Interaction"));
+
+      for (i=0, in = (sasl_interact_t *)inter;
+	   in->id != SASL_CB_LIST_END;in++)
+	{
+	  bool noecho = false, challenge = false;
+
+	  if (in->result) continue;
+
+	  /* Give each dialog item a unique name */
+	  sprintf(resbuf, "res%02x", i);
+	  i++;
+
+	  /* Check for prompts that need special handling */
+	  switch(in->id)
+	    {
+	    case SASL_CB_PASS:
+	      noecho = true;
+	      break;
+	    case SASL_CB_NOECHOPROMPT:
+	      noecho = true;
+	      challenge = true;
+	      break;
+	    case SASL_CB_ECHOPROMPT:
+	      challenge = true;
+	      break;
+	    default:
+	      break;
+	    }
+
+	  /* accumulate any challenge strings */
+	  if (challenge && in->challenge) {
+
+	    /* Translators, Howard explained : "Challenge" is a generic term
+	     * in authentication. It's a prompt from the authentication mechanism
+	     * for some type of credential. Exactly what kind of challenge and
+	     * what kind of credential depends on the specific authentication
+	     * mechanism. Since SASL is a generic interface, and can dynamically
+	     * load arbitrary mechanisms, there's not much more specific you can
+	     * say about it. You might google for "challenge response
+	     * authentication" if you'd like more background context.
+	     */
+	    ctxt += std::string (_("Challenge: ")) +
+	      std::string (in->challenge) +"\n";
+	  }
+
+	  /* use the provided prompt text, or our default? */
+	  if (in->prompt)
+	    prompt = std::string (in->prompt);
+	  else
+	    prompt = std::string (_("Interact"));
+
+	  /* private text or not? */
+	  if (noecho) {
+	    request.private_text (std::string (resbuf), prompt, "");
+	  } else {
+	    std::string dflt;
+	    if (in->defresult)
+	      dflt = std::string (in->defresult);
+	    else
+	      dflt = "";
+	    request.text (std::string(resbuf), prompt, dflt);
+	  }
 	}
-	break;
-      case SASL_CB_PASS:
-	p.bv_len = ctx->password.length();
-	if (p.bv_len)
-          p.bv_val = (char *)ctx->password.c_str();
-        break;
-      default:
-        break;
+
+      /* If we had any challenge text, set it now */
+      if (!ctxt.empty())
+	request.instructions (ctxt);
+
+      /* Save a pointer for storing the form result */
+      ctx->book->saslform = &result;
+      if (!ctx->book->questions.handle_request (&request)) {
+	return LDAP_LOCAL_ERROR;
+      }
+
+      /* Extract answers from the result form */
+      for (i=0, in = (sasl_interact_t *)inter;
+	   in->id != SASL_CB_LIST_END;in++)
+	{
+	  bool noecho = false;
+
+	  if (in->result) continue;
+
+	  sprintf(resbuf, "res%02x", i);
+	  i++;
+	  switch(in->id)
+	    {
+	    case SASL_CB_PASS:
+	    case SASL_CB_NOECHOPROMPT:
+	      noecho = true;
+	      break;
+	    default:
+	      break;
+	    }
+	  if (noecho)
+	    prompt = result.private_text (std::string (resbuf));
+	  else
+	    prompt = result.text (std::string (resbuf));
+
+	  /* Save the answers so they don't disappear before our
+	   * caller can see them; return the saved copies.
+	   */
+	  ctx->results.push_back (prompt);
+	  in->result = ctx->results.back().c_str();
+	  in->len = ctx->results.back().length();
+	}
     }
-    if (p.bv_val)
-    {
-      in->result = p.bv_val;
-      in->len = p.bv_len;
-    } else
-    {
-      nprompts++;
-      in->result = NULL;
-    }
+    return LDAP_SUCCESS;
   }
-
-  /* If there are missing items, try to get them all in one dialog */
-  if (nprompts) {
-    Ekiga::FormRequestSimple request(sigc::mem_fun (ctx->book, &OPENLDAP::Book::on_sasl_form_submitted));
-    Ekiga::FormBuilder result;
-    std::string prompt;
-    std::string ctxt = "";
-    char resbuf[32];
-
-    request.title (_("LDAP SASL Interaction"));
-
-    for (i=0, in = (sasl_interact_t *)inter;
-      in->id != SASL_CB_LIST_END;in++)
-    {
-      bool noecho = false, challenge = false;
-
-      if (in->result) continue;
-
-      /* Give each dialog item a unique name */
-      sprintf(resbuf, "res%02x", i);
-      i++;
-
-      /* Check for prompts that need special handling */
-      switch(in->id)
-      {
-      case SASL_CB_PASS:
-        noecho = true;
-	break;
-      case SASL_CB_NOECHOPROMPT:
-        noecho = true;
-        challenge = true;
-	break;
-      case SASL_CB_ECHOPROMPT:
-        challenge = true;
-	break;
-      default:
-        break;
-      }
-
-      /* accumulate any challenge strings */
-      if (challenge && in->challenge) {
-
-	/* Translators, Howard explained : "Challenge" is a generic term
-	 * in authentication. It's a prompt from the authentication mechanism
-	 * for some type of credential. Exactly what kind of challenge and
-	 * what kind of credential depends on the specific authentication
-	 * mechanism. Since SASL is a generic interface, and can dynamically
-	 * load arbitrary mechanisms, there's not much more specific you can
-	 * say about it. You might google for "challenge response
-	 * authentication" if you'd like more background context.
-	 */
-        ctxt += std::string (_("Challenge: ")) +
-	  std::string (in->challenge) +"\n";
-      }
-
-      /* use the provided prompt text, or our default? */
-      if (in->prompt)
-        prompt = std::string (in->prompt);
-      else
-        prompt = std::string (_("Interact"));
-
-      /* private text or not? */
-      if (noecho) {
-        request.private_text (std::string (resbuf), prompt, "");
-      } else {
-        std::string dflt;
-	if (in->defresult)
-	  dflt = std::string (in->defresult);
-	else
-	  dflt = "";
-	request.text (std::string(resbuf), prompt, dflt);
-      }
-    }
-
-    /* If we had any challenge text, set it now */
-    if (!ctxt.empty())
-      request.instructions (ctxt);
-
-    /* Save a pointer for storing the form result */
-    ctx->book->saslform = &result;
-    if (!ctx->book->questions.handle_request (&request)) {
-      return LDAP_LOCAL_ERROR;
-    }
-
-    /* Extract answers from the result form */
-    for (i=0, in = (sasl_interact_t *)inter;
-      in->id != SASL_CB_LIST_END;in++)
-    {
-      bool noecho = false;
-
-      if (in->result) continue;
-
-      sprintf(resbuf, "res%02x", i);
-      i++;
-      switch(in->id)
-      {
-      case SASL_CB_PASS:
-      case SASL_CB_NOECHOPROMPT:
-        noecho = true;
-	break;
-      default:
-        break;
-      }
-      if (noecho)
-        prompt = result.private_text (std::string (resbuf));
-      else
-        prompt = result.text (std::string (resbuf));
-
-      /* Save the answers so they don't disappear before our
-       * caller can see them; return the saved copies.
-       */
-      ctx->results.push_back (prompt);
-      in->result = ctx->results.back().c_str();
-      in->len = ctx->results.back().length();
-    }
-  }
-  return LDAP_SUCCESS;
-}
 
 } /* extern "C" */
 
@@ -693,8 +693,8 @@ OPENLDAP::Book::refresh_start ()
     ctx.authcID = bookinfo.authcID;
     ctx.password = bookinfo.password;
     result = ldap_sasl_interactive_bind_s (ldap_context, NULL,
-      bookinfo.saslMech.c_str(), NULL, NULL, LDAP_SASL_QUIET,
-      book_saslinter, &ctx);
+					   bookinfo.saslMech.c_str(), NULL, NULL, LDAP_SASL_QUIET,
+					   book_saslinter, &ctx);
 
   } else {
     /* Simple Bind */
@@ -784,7 +784,7 @@ OPENLDAP::Book::refresh_bound ()
   }
   (void) ldap_msgfree (msg_entry);
 
-sasl_bound:
+ sasl_bound:
   if (!search_filter.empty ()) {
     if (search_filter[0] == '(' &&
         search_filter[search_filter.length()-1] == ')') {
@@ -806,7 +806,7 @@ sasl_bound:
   }
   fstr = filter.c_str();
 
-do_search:
+ do_search:
   msgid = ldap_search_ext (ldap_context,
 			   bookinfo.urld->lud_dn,
 			   bookinfo.urld->lud_scope,
@@ -854,17 +854,17 @@ OPENLDAP::Book::refresh_result ()
 
       patience--;
       Ekiga::Runtime::run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_result),
-			    12);
+				   12);
     } else if (patience == 2) {
 
       patience--;
       Ekiga::Runtime::run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_result),
-			    21);
+				   21);
     } else if (patience == 1) {
 
       patience--;
       Ekiga::Runtime::run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_result),
-			    30);
+				   30);
     } else { // patience == 0
 
       status = std::string (_("Could not search"));
@@ -929,7 +929,7 @@ OPENLDAP::BookForm (Ekiga::FormRequestSimple &request,
     choices["sub"] = _("Subtree");
     choices["onelevel"] = _("Single Level");
     request.single_choice ("scope", _("_Search Scope"),
-      scopes[info.urld->lud_scope], choices);
+			   scopes[info.urld->lud_scope], choices);
   }
 
   /* attrs[0] is the name attribute */
@@ -977,7 +977,7 @@ OPENLDAP::BookForm (Ekiga::FormRequestSimple &request,
       }
     }
     request.single_choice ("saslMech", _("SASL _Mechanism"),
-      info.saslMech, mechs);
+			   info.saslMech, mechs);
   }
 }
 
@@ -1099,37 +1099,31 @@ OPENLDAP::Book::on_edit_form_submitted (bool submitted,
   if (!submitted)
     return;
 
-  try {
-    std::string errmsg;
-    if (OPENLDAP::BookFormInfo (result, bookinfo, errmsg)) {
-      Ekiga::FormRequestSimple request(sigc::mem_fun (this, &OPENLDAP::Book::on_edit_form_submitted));
+  std::string errmsg;
+  if (OPENLDAP::BookFormInfo (result, bookinfo, errmsg)) {
+    Ekiga::FormRequestSimple request(sigc::mem_fun (this, &OPENLDAP::Book::on_edit_form_submitted));
 
-      result.visit (request);
-      request.error (errmsg);
+    result.visit (request);
+    request.error (errmsg);
 
-      if (!questions.handle_request (&request)) {
+    if (!questions.handle_request (&request)) {
 
-        // FIXME: better error reporting
+      // FIXME: better error reporting
 #ifdef __GNUC__
-        std::cout << "Unhandled form request in "
-	          << __PRETTY_FUNCTION__ << std::endl;
+      std::cout << "Unhandled form request in "
+		<< __PRETTY_FUNCTION__ << std::endl;
 #endif
-      }
-      return;
     }
-
-    robust_xmlNodeSetContent (node, &name_node, "name", bookinfo.name);
-
-    robust_xmlNodeSetContent (node, &uri_node, "uri", bookinfo.uri);
-
-    robust_xmlNodeSetContent (node, &authcID_node, "authcID", bookinfo.authcID);
-
-    robust_xmlNodeSetContent (node, &password_node, "password", bookinfo.password);
-    updated.emit ();
-    trigger_saving.emit ();
-
-  } catch (Ekiga::Form::not_found) {
-
-    std::cerr << "Invalid result form" << std::endl; // FIXME: do better
+    return;
   }
+
+  robust_xmlNodeSetContent (node, &name_node, "name", bookinfo.name);
+
+  robust_xmlNodeSetContent (node, &uri_node, "uri", bookinfo.uri);
+
+  robust_xmlNodeSetContent (node, &authcID_node, "authcID", bookinfo.authcID);
+
+  robust_xmlNodeSetContent (node, &password_node, "password", bookinfo.password);
+  updated.emit ();
+  trigger_saving.emit ();
 }

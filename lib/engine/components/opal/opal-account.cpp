@@ -53,7 +53,7 @@
 
 Opal::Account::Account (Ekiga::ServiceCore & _core,
                         const std::string & account)
-: core (_core)
+  : core (_core)
 {
   dead = false;
   active = false;
@@ -119,7 +119,7 @@ Opal::Account::Account (Ekiga::ServiceCore & _core,
     type = Account::DiamondCard;
   else if (protocol_name == "SIP")
     type = Account::SIP;
-  else 
+  else
     type = Account::H323;
 
   registration_event.connect (sigc::mem_fun (this, &Opal::Account::on_registration_event));
@@ -128,14 +128,14 @@ Opal::Account::Account (Ekiga::ServiceCore & _core,
 
 Opal::Account::Account (Ekiga::ServiceCore & _core,
                         Type t,
-                        std::string _name, 
+                        std::string _name,
                         std::string _host,
                         std::string _username,
                         std::string _auth_username,
                         std::string _password,
                         bool _enabled,
                         unsigned _timeout)
-: core (_core)
+  : core (_core)
 {
   dead = false;
   active = false;
@@ -169,16 +169,16 @@ const std::string Opal::Account::as_string () const
 
   std::stringstream str;
 
-  str << enabled << "|1|" 
-      << aid << "|" 
-      << name << "|" 
-      << protocol_name << "|" 
-      << host << "|" 
-      << host << "|" 
-      << username << "|" 
-      << auth_username << "|" 
-      << (password.empty () ? " " : password) << "|" 
-      << timeout; 
+  str << enabled << "|1|"
+      << aid << "|"
+      << name << "|"
+      << protocol_name << "|"
+      << host << "|"
+      << host << "|"
+      << username << "|"
+      << auth_username << "|"
+      << (password.empty () ? " " : password) << "|"
+      << timeout;
 
   return str.str ();
 }
@@ -314,23 +314,23 @@ bool Opal::Account::populate_menu (Ekiga::MenuBuilder &builder)
 
     std::stringstream str;
     std::stringstream url;
-    str << "https://www.diamondcard.us/exec/voip-login?accId=" << get_username () << "&pinCode=" << get_password () << "&spo=ekiga"; 
+    str << "https://www.diamondcard.us/exec/voip-login?accId=" << get_username () << "&pinCode=" << get_password () << "&spo=ekiga";
 
     builder.add_separator ();
 
     url.str ("");
     url << str.str () << "&act=rch";
     builder.add_action ("recharge",
-			 _("Recharge the account"),
+			_("Recharge the account"),
                         sigc::bind (sigc::mem_fun (this, &Opal::Account::on_consult), url.str ()));
     url.str ("");
     url << str.str () << "&act=bh";
-    builder.add_action ("balance", 
+    builder.add_action ("balance",
                         _("Consult the balance history"),
                         sigc::bind (sigc::mem_fun (this, &Opal::Account::on_consult), url.str ()));
     url.str ("");
     url << str.str () << "&act=ch";
-    builder.add_action ("history", 
+    builder.add_action ("history",
                         _("Consult the call history"),
                         sigc::bind (sigc::mem_fun (this, &Opal::Account::on_consult), url.str ()));
   }
@@ -345,7 +345,7 @@ void Opal::Account::edit ()
   std::stringstream str;
 
   str << get_timeout ();
-  
+
   request.title (_("Edit account"));
 
   request.instructions (_("Please update the following fields:"));
@@ -382,62 +382,55 @@ void Opal::Account::on_edit_form_submitted (bool submitted,
   if (!submitted)
     return;
 
-  try {
+  std::string new_name = result.text ("name");
+  std::string new_host = result.text ("host");
+  std::string new_user = result.text ("user");
+  std::string new_authentication_user;
+  if (get_protocol_name () == "SIP")
+    new_authentication_user = result.text ("authentication_user");
+  if (new_authentication_user.empty ())
+    new_authentication_user = new_user;
+  std::string new_password = result.private_text ("password");
+  bool new_enabled = result.boolean ("enabled");
+  unsigned new_timeout = atoi (result.text ("timeout").c_str ());
+  std::string error;
 
-    std::string new_name = result.text ("name");
-    std::string new_host = result.text ("host");
-    std::string new_user = result.text ("user");
-    std::string new_authentication_user;
-    if (get_protocol_name () == "SIP")
-      new_authentication_user = result.text ("authentication_user");
-    if (new_authentication_user.empty ())
-      new_authentication_user = new_user;
-    std::string new_password = result.private_text ("password");
-    bool new_enabled = result.boolean ("enabled");
-    unsigned new_timeout = atoi (result.text ("timeout").c_str ());
-    std::string error;
+  if (new_name.empty ())
+    error = _("You did not supply a name for that account.");
+  else if (new_host.empty ())
+    error = _("You did not supply a host to register to.");
+  else if (new_user.empty ())
+    error = _("You did not supply a user name for that account.");
+  else if (new_timeout < 10)
+    error = _("The timeout should have a bigger value.");
 
-    if (new_name.empty ()) 
-      error = _("You did not supply a name for that account.");
-    else if (new_host.empty ()) 
-      error = _("You did not supply a host to register to.");
-    else if (new_user.empty ())
-      error = _("You did not supply a user name for that account.");
-    else if (new_timeout < 10)
-      error = _("The timeout should have a bigger value.");
+  if (!error.empty ()) {
 
-    if (!error.empty ()) {
+    Ekiga::FormRequestSimple request(sigc::mem_fun (this, &Opal::Account::on_edit_form_submitted));
+    result.visit (request);
+    request.error (error);
 
-      Ekiga::FormRequestSimple request(sigc::mem_fun (this, &Opal::Account::on_edit_form_submitted));
-      result.visit (request);
-      request.error (error);
-
-      if (!questions.handle_request (&request)) {
+    if (!questions.handle_request (&request)) {
 #ifdef __GNUC__
-        std::cout << "Unhandled form request in "
-          << __PRETTY_FUNCTION__ << std::endl;
+      std::cout << "Unhandled form request in "
+		<< __PRETTY_FUNCTION__ << std::endl;
 #endif
-      }
     }
-    else {
+  }
+  else {
 
-      disable ();
-      name = new_name;
-      host = new_host;
-      username = new_user;
-      auth_username = new_authentication_user;
-      password = new_password;
-      timeout = new_timeout;
-      enabled = new_enabled;
-      enable ();
+    disable ();
+    name = new_name;
+    host = new_host;
+    username = new_user;
+    auth_username = new_authentication_user;
+    password = new_password;
+    timeout = new_timeout;
+    enabled = new_enabled;
+    enable ();
 
-      updated.emit ();
-      trigger_saving.emit ();
-    }
-
-  } catch (Ekiga::Form::not_found) {
-
-    std::cerr << "Invalid result form" << std::endl; // FIXME: do better
+    updated.emit ();
+    trigger_saving.emit ();
   }
 }
 

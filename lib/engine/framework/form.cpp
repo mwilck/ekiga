@@ -51,57 +51,48 @@ Ekiga::EmptyForm::visit (FormVisitor &/*visitor*/) const
 }
 
 const std::string
-Ekiga::EmptyForm::hidden (const std::string name) const
+Ekiga::EmptyForm::hidden (const std::string /*name*/) const
 {
-  throw Form::not_found (name);
   return "";
 }
 
-bool Ekiga::EmptyForm::boolean (const std::string name) const
+bool Ekiga::EmptyForm::boolean (const std::string /*name*/) const
 {
-  throw Form::not_found (name);
   return false;
 }
 
 const std::string
-Ekiga::EmptyForm::text (const std::string name) const
+Ekiga::EmptyForm::text (const std::string /*name*/) const
 {
-  throw Form::not_found (name);
   return "";
 }
 
 const std::string
-Ekiga::EmptyForm::private_text (const std::string name) const
+Ekiga::EmptyForm::private_text (const std::string /*name*/) const
 {
-  throw Form::not_found (name);
-  return "";
-}
-
-
-const std::string
-Ekiga::EmptyForm::multi_text (const std::string name) const
-{
-  throw Form::not_found (name);
   return "";
 }
 
 const std::string
-Ekiga::EmptyForm::single_choice (const std::string name) const
+Ekiga::EmptyForm::multi_text (const std::string /*name*/) const
 {
-  throw Form::not_found (name);
+  return "";
+}
+
+const std::string
+Ekiga::EmptyForm::single_choice (const std::string /*name*/) const
+{
   return "";
 }
 
 const std::set<std::string>
-Ekiga::EmptyForm::multiple_choice (const std::string name) const
+Ekiga::EmptyForm::multiple_choice (const std::string /*name*/) const
 {
-  throw Form::not_found (name);
   return std::set<std::string>();
 }
 
 const std::set<std::string>
-Ekiga::EmptyForm::editable_set (const std::string name) const
+Ekiga::EmptyForm::editable_set (const std::string /*name*/) const
 {
-  throw Form::not_found (name);
   return std::set<std::string>();
 }

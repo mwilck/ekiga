@@ -73,7 +73,7 @@ RL::Presentity::Presentity (Ekiga::ServiceCore &services_,
   } else {
 
     // FIXME: we should handle the case, even if it shouldn't happen
-  
+
   }
 
   for (xmlNodePtr child = node->children ;
@@ -216,7 +216,7 @@ RL::Presentity::edit_presentity ()
 {
   Ekiga::FormRequestSimple request(sigc::mem_fun (this, &RL::Presentity::edit_presentity_form_submitted));
 
-   // FIXME: we should be able to know all groups in the heap
+  // FIXME: we should be able to know all groups in the heap
   std::set<std::string> all_groups = groups;
 
   request.title (_("Edit remote contact"));
@@ -246,61 +246,53 @@ RL::Presentity::edit_presentity_form_submitted (bool submitted,
   if (!submitted)
     return;
 
-  try {
+  const std::string new_name = result.text ("name");
+  const std::string new_uri = result.text ("uri");
+  const std::set<std::string> new_groups = result.editable_set ("groups");
+  std::map<std::string, xmlNodePtr> future_group_nodes;
+  xmlNsPtr ns = xmlSearchNsByHref (node->doc, node,
+				   BAD_CAST "http://www.ekiga.org");
+  bool reload = false;
 
-    const std::string new_name = result.text ("name");
-    const std::string new_uri = result.text ("uri");
-    const std::set<std::string> new_groups = result.editable_set ("groups");
-    std::map<std::string, xmlNodePtr> future_group_nodes;
-    xmlNsPtr ns = xmlSearchNsByHref (node->doc, node,
-				     BAD_CAST "http://www.ekiga.org");
-    bool reload = false;
+  robust_xmlNodeSetContent (node, &name_node, "name", new_name);
 
-    robust_xmlNodeSetContent (node, &name_node, "name", new_name);
+  if (uri != new_uri) {
 
-    if (uri != new_uri) {
-
-      xmlSetProp (node, (const xmlChar*)"uri", (const xmlChar*)uri.c_str ());
-      gmref_ptr<Ekiga::PresenceCore> presence_core(services.get ("presence-core"));
-      presence_core->unfetch_presence (uri);
-      reload = true;
-    }
-
-    for (std::map<std::string, xmlNodePtr>::const_iterator iter
-	   = group_nodes.begin ();
-	 iter != group_nodes.end () ;
-	 iter++) {
-
-      if (new_groups.find (iter->first) == new_groups.end ()) {
-
-	xmlUnlinkNode (iter->second);
-	xmlFreeNode (iter->second);
-      }
-      else {
-	future_group_nodes[iter->first] = iter->second;
-      }
-    }
-
-    for (std::set<std::string>::const_iterator iter = new_groups.begin ();
-	 iter != new_groups.end ();
-	 iter++) {
-
-      if (std::find (groups.begin (), groups.end (), *iter) == groups.end ())
-	future_group_nodes[*iter] = xmlNewChild (node, ns,
-						 BAD_CAST "group",
-						 BAD_CAST robust_xmlEscape (node->doc, *iter).c_str ());
-    }
-
-    group_nodes = future_group_nodes;
-    groups = new_groups;
-
-    save (reload);
-  } catch (Ekiga::Form::not_found) {
-#ifdef __GNUC__
-    std::cerr << "Invalid form submitted to "
-	      << __PRETTY_FUNCTION__ << std::endl;
-#endif
+    xmlSetProp (node, (const xmlChar*)"uri", (const xmlChar*)uri.c_str ());
+    gmref_ptr<Ekiga::PresenceCore> presence_core(services.get ("presence-core"));
+    presence_core->unfetch_presence (uri);
+    reload = true;
   }
+
+  for (std::map<std::string, xmlNodePtr>::const_iterator iter
+	 = group_nodes.begin ();
+       iter != group_nodes.end () ;
+       iter++) {
+
+    if (new_groups.find (iter->first) == new_groups.end ()) {
+
+      xmlUnlinkNode (iter->second);
+      xmlFreeNode (iter->second);
+    }
+    else {
+      future_group_nodes[iter->first] = iter->second;
+    }
+  }
+
+  for (std::set<std::string>::const_iterator iter = new_groups.begin ();
+       iter != new_groups.end ();
+       iter++) {
+
+    if (std::find (groups.begin (), groups.end (), *iter) == groups.end ())
+      future_group_nodes[*iter] = xmlNewChild (node, ns,
+					       BAD_CAST "group",
+					       BAD_CAST robust_xmlEscape (node->doc, *iter).c_str ());
+  }
+
+  group_nodes = future_group_nodes;
+  groups = new_groups;
+
+  save (reload);
 }
 
 void
