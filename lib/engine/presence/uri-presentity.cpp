@@ -50,7 +50,8 @@ Ekiga::URIPresentity::URIPresentity (Ekiga::ServiceCore &_core,
 Ekiga::URIPresentity::~URIPresentity ()
 {
   gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
-  presence_core->unfetch_presence (uri);
+  if (presence_core)
+    presence_core->unfetch_presence (uri);
 }
 
 const std::string
