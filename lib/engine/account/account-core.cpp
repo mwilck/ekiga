@@ -78,7 +78,6 @@ Ekiga::AccountCore::add_bank (BankPtr bank)
   bank_added.emit (bank);
 
   bank->questions.add_handler (questions.make_slot ());
-  bank->registration_event.connect (sigc::bind<0> (sigc::mem_fun (this, &Ekiga::AccountCore::on_registration_event), bank));
 }
 
 
@@ -98,16 +97,6 @@ void
 Ekiga::AccountCore::add_account_subscriber (AccountSubscriber &subscriber)
 {
   account_subscribers.insert (&subscriber);
-}
-
-
-void
-Ekiga::AccountCore::on_registration_event (BankPtr bank,
-					   AccountPtr account,
-					   Ekiga::Account::RegistrationState state,
-					   const std::string info)
-{
-  registration_event.emit (bank, account, state, info);
 }
 
 

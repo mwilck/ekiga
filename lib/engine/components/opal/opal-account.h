@@ -57,6 +57,8 @@ public:
 
     typedef enum { SIP, Ekiga, DiamondCard, H323 } Type;
 
+    typedef enum { Processing, Registered, Unregistered, RegistrationFailed, UnregistrationFailed } RegistrationState;
+
     Account (Ekiga::ServiceCore & core, 
              const std::string & account);
 
@@ -73,6 +75,8 @@ public:
     virtual ~Account ();
 
     const std::string get_name () const;
+
+    const std::string get_status () const;
 
     const std::string get_aor () const;
 
@@ -133,14 +137,17 @@ public:
     const std::string as_string () const;
 
     sigc::signal0<void> trigger_saving;
+
+    /* This method is public to be called by an opal endpoint, which will push
+     * this Opal::Account's new registration state
+     */
+    void handle_registration_event (RegistrationState state,
+				    std::string info);
  
 private:
     void on_edit_form_submitted (bool submitted,
 				 Ekiga::Form &result);
     void on_consult (const std::string url);
-    
-    // Triggered for our own event
-    void on_registration_event (Ekiga::Account::RegistrationState state, std::string info);
 
     bool dead;
     bool active;
@@ -148,6 +155,7 @@ private:
     unsigned timeout;
     std::string aid;
     std::string name;
+    std::string status;
     std::string protocol_name;
     std::string host;
     std::string username;

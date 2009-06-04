@@ -58,9 +58,6 @@ namespace Ekiga
   {
   public:
 
-    typedef enum { Processing, Registered, Unregistered, RegistrationFailed, UnregistrationFailed } RegistrationState;
-
-
     /** The destructor.
      */
     virtual ~Account () { }
@@ -73,6 +70,13 @@ namespace Ekiga
      */
     virtual const std::string get_name () const = 0;
 
+
+    /** Returns the status of the Ekiga::Account.
+     * This function is purely virtual and should be implemented by the
+     * Ekiga::Account descendant.
+     * @return The status of the Ekiga::Contact
+     */
+    virtual const std::string get_status () const = 0;
 
     /** Returns the address of record for that Ekiga::Account.
      * @return The address of record.
@@ -138,14 +142,6 @@ namespace Ekiga
     /** This signal is emitted when the Account has been removed.
      */
     sigc::signal0<void> removed;
-
-
-    /** This signal is emitted when there is a new registration event for
-     *  the Account.
-     * @param: state is the state
-     *         info contains information about the registration status
-     */
-    sigc::signal2<void, RegistrationState, std::string> registration_event;
 
 
     /** This signal is emitted when there is a new message waiting indication

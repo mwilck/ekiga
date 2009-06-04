@@ -35,20 +35,16 @@
  *
  */
 
-#include "account-core.h"
 #include "presence-core.h"
 #include "personal-details.h"
 
 
 Ekiga::PresenceCore::PresenceCore (Ekiga::ServiceCore& core)
 {
-  gmref_ptr<Ekiga::AccountCore> account_core = core.get ("account-core");
   gmref_ptr<Ekiga::PersonalDetails> details = core.get ("personal-details");
 
   if (details)
     conns.push_back (details->updated.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresenceCore::publish), details)));
-  if (account_core)
-    conns.push_back (account_core->registration_event.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresenceCore::on_registration_event), details)));
 }
 
 Ekiga::PresenceCore::~PresenceCore ()
@@ -258,15 +254,4 @@ void
 Ekiga::PresenceCore::add_supported_uri (sigc::slot1<bool,std::string> tester)
 {
   uri_testers.insert (tester);
-}
-
-void
-Ekiga::PresenceCore::on_registration_event (Ekiga::BankPtr /*bank*/,
-					    Ekiga::AccountPtr /*account*/,
-					    Ekiga::Account::RegistrationState state,
-					    std::string /*info*/,
-					    gmref_ptr<Ekiga::PersonalDetails> details)
-{
-  if (state == Ekiga::Account::Registered)
-    publish (details);
 }

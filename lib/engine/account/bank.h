@@ -84,13 +84,6 @@ namespace Ekiga
      */
     sigc::signal1<void, AccountPtr> account_updated;
 
-    /** This signal is emitted when there is a new registration event
-     * @param: account is the account
-     *         state is the state
-     *         info contains information about the registration status
-     */
-    sigc::signal3<void, Ekiga::AccountPtr, Account::RegistrationState, std::string> registration_event;
-
     /** This chain allows the BankImpl to present forms to the user
      */
     ChainOfResponsibility<FormRequest*> questions;

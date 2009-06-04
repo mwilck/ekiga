@@ -122,7 +122,7 @@ enum {
   COLUMN_ACCOUNT_ENABLED,
   COLUMN_ACCOUNT_ACCOUNT_NAME,
   COLUMN_ACCOUNT_VOICEMAILS,
-  COLUMN_ACCOUNT_ERROR_MESSAGE,
+  COLUMN_ACCOUNT_STATUS,
   COLUMN_ACCOUNT_STATE,
   COLUMN_ACCOUNT_NUMBER
 };
@@ -184,7 +184,7 @@ gm_accounts_window_update_account_state (GtkWidget *accounts_window,
       if (account == _account.get ()) {
 
         gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
-                            COLUMN_ACCOUNT_ERROR_MESSAGE, &error,
+                            COLUMN_ACCOUNT_STATUS, &error,
                             COLUMN_ACCOUNT_VOICEMAILS, &mwi,
                             -1);
 
@@ -193,7 +193,7 @@ gm_accounts_window_update_account_state (GtkWidget *accounts_window,
 	if (status) {
 
 	  gtk_list_store_set (GTK_LIST_STORE (model), &iter,
-			      COLUMN_ACCOUNT_ERROR_MESSAGE, status, -1);
+			      COLUMN_ACCOUNT_STATUS, status, -1);
           status_modified = (error == NULL) || strcmp (status, error);
         }
 	if (voicemails) {
@@ -215,47 +215,6 @@ gm_accounts_window_update_account_state (GtkWidget *accounts_window,
 
 
 /* Engine callbacks */
-static void
-on_registration_event (Ekiga::BankPtr /*bank*/,
-		       Ekiga::AccountPtr account,
-                       Ekiga::Account::RegistrationState state,
-                       std::string info,
-                       gpointer window)
-{
-  bool is_processing = false;
-  std::string status;
-
-  switch (state) {
-  case Ekiga::Account::Registered:
-    status = _("Registered");
-    break;
-
-  case Ekiga::Account::Unregistered:
-    status = _("Unregistered");
-    break;
-
-  case Ekiga::Account::UnregistrationFailed:
-    status = _("Could not unregister");
-    if (!info.empty ())
-      status = status + " (" + info + ")";
-    break;
-
-  case Ekiga::Account::RegistrationFailed:
-    status = _("Could not register");
-    if (!info.empty ())
-      status = status + " (" + info + ")";
-    break;
-
-  case Ekiga::Account::Processing:
-    status = _("Processing...");
-    is_processing = true;
-  default:
-    break;
-  }
-
-  gm_accounts_window_update_account_state (GTK_WIDGET (window), is_processing, account, status.c_str (), NULL);
-}
-
 
 static void
 on_mwi_event (Ekiga::AccountPtr account,
@@ -439,7 +398,7 @@ account_toggled_cb (G_GNUC_UNUSED GtkCellRendererToggle *cell,
 
     gtk_list_store_set (GTK_LIST_STORE (model), &iter,
                         COLUMN_ACCOUNT_ENABLED, fixed^1,
-                        COLUMN_ACCOUNT_ERROR_MESSAGE, "",
+                        COLUMN_ACCOUNT_STATUS, "",
                         -1);
   }
 
@@ -504,6 +463,7 @@ gm_accounts_window_update_account (GtkWidget *accounts_window,
                             COLUMN_ACCOUNT_WEIGHT, PANGO_WEIGHT_NORMAL,
                             COLUMN_ACCOUNT_ENABLED, account->is_enabled (),
                             COLUMN_ACCOUNT_ACCOUNT_NAME, account->get_name ().c_str (),
+			    COLUMN_ACCOUNT_STATUS, account->get_status ().c_str (),
                             -1);
         break;
       }
@@ -780,7 +740,6 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
   account_core->account_updated.connect (sigc::bind (sigc::ptr_fun (on_account_updated), window));
   account_core->account_removed.connect (sigc::bind (sigc::ptr_fun (on_account_removed), window));
   account_core->questions.add_handler (sigc::bind (sigc::ptr_fun (on_handle_questions), (gpointer) window));
-  account_core->registration_event.connect (sigc::bind (sigc::ptr_fun (on_registration_event), (gpointer) window));
   bank->mwi_event.connect (sigc::bind (sigc::ptr_fun (on_mwi_event), (gpointer) window));
 
   account_core->visit_banks (sigc::bind_return (sigc::bind (sigc::ptr_fun (on_bank_added), window), true));

@@ -680,7 +680,7 @@ Opal::Sip::EndPoint::OnRegistered (const PString & _aor,
   Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this,
 							  &Opal::Sip::EndPoint::registration_event_in_main),
 					   strm.str (),
-					   was_registering ? Ekiga::Account::Registered : Ekiga::Account::Unregistered,
+					   was_registering ? Account::Registered : Account::Unregistered,
 					   std::string ()));
 }
 
@@ -925,7 +925,7 @@ Opal::Sip::EndPoint::OnRegistrationFailed (const PString & _aor,
     Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this,
 							    &Opal::Sip::EndPoint::registration_event_in_main),
 					     strm.str (),
-					     wasRegistering ? Ekiga::Account::RegistrationFailed : Ekiga::Account::UnregistrationFailed,
+					     wasRegistering ?Account::RegistrationFailed : Account::UnregistrationFailed,
 					     info));
   }
 }
@@ -1228,14 +1228,14 @@ void Opal::Sip::EndPoint::on_transfer (std::string uri)
 
 void
 Opal::Sip::EndPoint::registration_event_in_main (const std::string aor,
-						 Ekiga::Account::RegistrationState state,
+						 Opal::Account::RegistrationState state,
 						 const std::string msg)
 {
   AccountPtr account = bank->find_account (aor);
 
   if (account) {
 
-    account->registration_event.emit (state, msg);
+    account->handle_registration_event (state, msg);
   }
 }
 

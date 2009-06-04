@@ -510,51 +510,26 @@ static void ekiga_main_window_add_device_dialog_show (EkigaMainWindow *main_wind
  * Engine Callbacks 
  */
 static void
-on_registration_event (Ekiga::BankPtr /*bank*/,
-		       Ekiga::AccountPtr account,
-		       Ekiga::Account::RegistrationState state,
-		       std::string /*info*/,
-		       gpointer self)
+on_account_updated (Ekiga::BankPtr /*bank*/,
+		    Ekiga::AccountPtr account,
+		    gpointer self)
 {
-  EkigaMainWindow *mw = NULL;
-
-  gchar *msg = NULL;
-  std::string aor = account->get_aor ();
-
   g_return_if_fail (EKIGA_IS_MAIN_WINDOW (self));
-  mw = EKIGA_MAIN_WINDOW (self);
 
-  switch (state) {
-  case Ekiga::Account::Registered:
-    /* Translators: Is displayed once an account "%s" is registered. */
-    msg = g_strdup_printf (_("Registered %s"), aor.c_str ()); 
-    if (std::find (mw->priv->accounts.begin (), mw->priv->accounts.end (), account->get_host ()) == mw->priv->accounts.end ())
-      mw->priv->accounts.push_back (account->get_host ());
-    break;
+  if (account->get_status () != "") {
 
-  case Ekiga::Account::Unregistered:
-    /* Translators: Is displayed once an account "%s" is unregistered. */
-    msg = g_strdup_printf (_("Unregistered %s"), aor.c_str ());
-    mw->priv->accounts.remove (account->get_host ());
-    break;
+    EkigaMainWindow *mw = NULL;
+    gchar *msg = NULL;
 
-  case Ekiga::Account::UnregistrationFailed:
-    msg = g_strdup_printf (_("Could not unregister %s"), aor.c_str ());
-    break;
+    mw = EKIGA_MAIN_WINDOW (self);
+    msg = g_strdup_printf ("%s: %s",
+			   account->get_name ().c_str (),
+			   account->get_status ().c_str ());
 
-  case Ekiga::Account::RegistrationFailed:
-    msg = g_strdup_printf (_("Could not register %s"), aor.c_str ());
-    break;
-
-  case Ekiga::Account::Processing:
-  default:
-    break;
-  }
-
-  if (msg)
     ekiga_main_window_flash_message (mw, "%s", msg);
 
-  g_free (msg);
+    g_free (msg);
+  }
 }
 
 
@@ -4059,7 +4034,7 @@ ekiga_main_window_connect_engine_signals (EkigaMainWindow *mw)
   gmref_ptr<Ekiga::AccountCore> account_core = mw->priv->core->get ("account-core");
 
   /* Engine Signals callbacks */
-  conn = account_core->registration_event.connect (sigc::bind (sigc::ptr_fun (on_registration_event), (gpointer) mw));
+  conn = account_core->account_updated.connect (sigc::bind (sigc::ptr_fun (on_account_updated), (gpointer) mw));
   mw->priv->connections.push_back (conn);
 
   conn = call_core->setup_call.connect (sigc::bind (sigc::ptr_fun (on_setup_call_cb), (gpointer) mw));

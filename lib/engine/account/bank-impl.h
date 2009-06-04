@@ -136,11 +136,6 @@ namespace Ekiga
     void remove_account (gmref_ptr<AccountType> account);
 
     using RefLister<AccountType>::add_connection;
-
-  private:
-    void on_registration_event (Ekiga::Account::RegistrationState,
-				std::string info,
-				gmref_ptr<AccountType> account);
   };
 
 /**
@@ -215,7 +210,6 @@ Ekiga::BankImpl<AccountType>::add_account (gmref_ptr<AccountType> account)
   add_object (account);
 
   account->questions.add_handler (questions.make_slot ());
-  account->registration_event.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::BankImpl<AccountType>::on_registration_event), account));
 }
 
 
@@ -224,16 +218,6 @@ void
 Ekiga::BankImpl<AccountType>::remove_account (gmref_ptr<AccountType> account)
 {
   remove_object (account);
-}
-
-
-template<typename AccountType>
-void
-Ekiga::BankImpl<AccountType>::on_registration_event (Ekiga::Account::RegistrationState state,
-						     std::string info,
-						     gmref_ptr<AccountType> account)
-{
-  registration_event.emit (account, state, info);
 }
 
 #endif

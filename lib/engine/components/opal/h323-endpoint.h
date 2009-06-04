@@ -125,7 +125,7 @@ namespace Opal {
       void on_transfer (std::string uri);
 
       void registration_event_in_main (Opal::Account& account,
-				       Ekiga::Account::RegistrationState state,
+				       Account::RegistrationState state,
 				       const std::string msg);
 
       CallManager & manager;

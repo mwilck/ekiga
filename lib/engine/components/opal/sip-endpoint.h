@@ -196,7 +196,7 @@ namespace Opal {
       void on_transfer (std::string uri);
 
       void registration_event_in_main (const std::string aor,
-				       Ekiga::Account::RegistrationState state,
+				       Account::RegistrationState state,
 				       const std::string msg);
 
       void presence_status_in_main (std::string uri,

@@ -161,14 +161,6 @@ namespace Ekiga
     ChainOfResponsibility<FormRequest*> questions;
 
 
-    /** This signal is emitted when there is a new registration event
-     * @param: account is the account
-     *         state is the state
-     *         info contains information about the registration status
-     */
-    sigc::signal4<void, BankPtr, AccountPtr, Account::RegistrationState, std::string> registration_event;
-
-
     /** This signal is emitted when there is a new message waiting event
      * @param: account is the account
      *         info contains information about the indication
@@ -191,10 +183,6 @@ namespace Ekiga
     std::set<AccountSubscriber *> account_subscribers;
     typedef std::set<AccountSubscriber *>::iterator subscriber_iterator;
     typedef std::set<AccountSubscriber *>::const_iterator subscriber_const_iterator;
-    void on_registration_event (BankPtr bank,
-				AccountPtr account,
-                                Account::RegistrationState state,
-                                const std::string info);
     void on_mwi_event (BankPtr bank,
 		       AccountPtr account,
                        const std::string & info);

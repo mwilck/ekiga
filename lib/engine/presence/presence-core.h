@@ -282,16 +282,12 @@ namespace Ekiga
 
     void add_presence_publisher (gmref_ptr<PresencePublisher> publisher);
 
+    void publish (gmref_ptr<PersonalDetails> details);
+
   private:
 
     std::list<gmref_ptr<PresencePublisher> > presence_publishers;
-    void publish (gmref_ptr<PersonalDetails> details);
     void on_personal_details_updated (PersonalDetails &details);
-    void on_registration_event (Ekiga::BankPtr bank,
-				Ekiga::AccountPtr account,
-				Ekiga::Account::RegistrationState state,
-                                std::string info,
-                                gmref_ptr<Ekiga::PersonalDetails> details);
 
     /*** API to control which uri are supported by runtime ***/
   public:

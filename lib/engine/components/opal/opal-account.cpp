@@ -50,6 +50,8 @@
 #include "form-request-simple.h"
 #include "toolbox.h"
 
+#include "presence-core.h"
+#include "personal-details.h"
 
 Opal::Account::Account (Ekiga::ServiceCore & _core,
                         const std::string & account)
@@ -121,8 +123,6 @@ Opal::Account::Account (Ekiga::ServiceCore & _core,
     type = Account::SIP;
   else
     type = Account::H323;
-
-  registration_event.connect (sigc::mem_fun (this, &Opal::Account::on_registration_event));
 }
 
 
@@ -152,8 +152,6 @@ Opal::Account::Account (Ekiga::ServiceCore & _core,
 
   if (enabled)
     enable ();
-
-  registration_event.connect (sigc::mem_fun (this, &Opal::Account::on_registration_event));
 }
 
 
@@ -186,6 +184,12 @@ const std::string Opal::Account::as_string () const
 const std::string Opal::Account::get_name () const
 {
   return name;
+}
+
+const std::string
+Opal::Account::get_status () const
+{
+  return status;
 }
 
 const std::string Opal::Account::get_aor () const
@@ -442,11 +446,46 @@ Opal::Account::on_consult (const std::string url)
 }
 
 void
-Opal::Account::on_registration_event (Ekiga::Account::RegistrationState state,
-				      std::string /*info*/)
+Opal::Account::handle_registration_event (RegistrationState state,
+					  std::string info)
 {
   active = false;
 
-  if (state == Ekiga::Account::Registered)
+  switch (state) {
+  case Registered:
+    status = _("Registered");
     active = true;
+    {
+      gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
+      gmref_ptr<Ekiga::PersonalDetails> personal_details = core.get ("personal-details");
+      if (presence_core && personal_details) {
+
+	presence_core->publish (personal_details);
+      }
+    } 
+    break;
+
+  case Unregistered:
+    status = _("Unregistered");
+    break;
+
+  case UnregistrationFailed:
+    status = _("Could not unregister");
+    if (!info.empty ())
+      status = status + " (" + info + ")";
+    break;
+
+  case RegistrationFailed:
+    status = _("Could not register");
+    if (!info.empty ())
+      status = status + " (" + info + ")";
+    break;
+
+  case Processing:
+    status = _("Processing...");
+  default:
+    break;
+  }
+
+  updated.emit ();
 }
