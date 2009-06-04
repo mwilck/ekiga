@@ -61,16 +61,20 @@ gstreamer_init (Ekiga::ServiceCore& core,
 
   if (audioinput_core && audiooutput_core && videoinput_core) {
 
-    gst_init (argc, argv);
+    if (gst_init_check (argc, argv, NULL)) {
 
-    GST::VideoInputManager* video = new GST::VideoInputManager ();
-    GST::AudioInputManager* audioin = new GST::AudioInputManager ();
-    GST::AudioOutputManager* audioout = new GST::AudioOutputManager ();
+      GST::VideoInputManager* video = new GST::VideoInputManager ();
+      GST::AudioInputManager* audioin = new GST::AudioInputManager ();
+      GST::AudioOutputManager* audioout = new GST::AudioOutputManager ();
 
-    audioinput_core->add_manager (*audioin);
-    audiooutput_core->add_manager (*audioout);
-    videoinput_core->add_manager (*video);
-    result = true;
+      audioinput_core->add_manager (*audioin);
+      audiooutput_core->add_manager (*audioout);
+      videoinput_core->add_manager (*video);
+      result = true;
+    } else {
+
+      std::cout << "gst_init_check failed" << std::endl; // FIXME: remove
+    }
   }
 
   return result;
