@@ -53,11 +53,11 @@ EXTRA_PROGRAMS =
 
 # Common stuff
 ekiga_SOURCES =			\
-	common.h		
+	common.h
 
 nodist_ekiga_SOURCES =
 
-# Graphical User Interface 
+# Graphical User Interface
 ekiga_SOURCES +=			\
 	gui/accounts.h    		\
 	gui/accounts.cpp		\
@@ -80,7 +80,7 @@ ekiga_SOURCES +=			\
 	gui/statusmenu.h		\
 	gui/statusmenu.cpp
 
-# Endpoints 
+# Endpoints
 ekiga_SOURCES +=				\
 	ekiga.h			                \
 	ekiga.cpp
@@ -92,7 +92,7 @@ ekiga_SOURCES +=                   		\
 	$(top_srcdir)/win32/ekiga-rc.rc
 endif
 
-if HAVE_DBUS 
+if HAVE_DBUS
 ekiga_SOURCES +=		\
 	dbus-helper/dbus.h	\
 	dbus-helper/dbus.cpp
@@ -156,12 +156,13 @@ AM_CXXFLAGS = $(GTK_CFLAGS) $(GLIB_CFLAGS) $(GNOME_CFLAGS) $(DBUS_CFLAGS) $(BONO
 AM_LIBS = $(GTK_LIBS) $(GLIB_LIBS) $(GNOME_LIBS) $(DBUS_LIBS) $(BONOBO_LIBS) $(OPAL_LIBS) $(PTLIB_LIBS) $(SIGC_LIBS) $(XML_LIBS) $(NOTIFY_LIBS)
 
 ekiga_LDADD = \
-	$(top_builddir)/lib/libekiga.la $(top_builddir)/lib/engine/libekiga_engine.la $(AM_LIBS) 
+	$(top_builddir)/lib/libekiga.la $(top_builddir)/lib/engine/libekiga_engine.la $(AM_LIBS)
 
 EXTRA_DIST = \
 	$(service_in_files)		\
 	dbus-helper/dbus-stub.xml	\
-	dbus-helper/dbus-helper-stub.xml
+	dbus-helper/dbus-helper-stub.xml \
+	ekiga-debug-analyser
 
 CLEANFILES = \
 	$(service_DATA)		\
