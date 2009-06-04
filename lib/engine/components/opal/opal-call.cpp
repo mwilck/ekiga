@@ -130,20 +130,10 @@ Opal::Call::hangup ()
 void
 Opal::Call::answer ()
 {
-  PSafePtr<OpalConnection> connection = NULL;
-  int i = 0;
-
   if (!is_outgoing () && !IsEstablished ()) {
-
-    do {
-
-      connection = GetConnection (i);
-      i++;
-    }  while (!PIsDescendant(&(*connection), OpalPCSSConnection));
-
-    if (PIsDescendant(&(*connection), OpalPCSSConnection)) {
-      PDownCast (OpalPCSSConnection, &(*connection))->AcceptIncoming ();
-    }
+    PSafePtr<OpalPCSSConnection> connection = GetConnectionAs<OpalPCSSConnection>();
+    if (connection != NULL)
+      connection->AcceptIncoming();
   }
 }
 
