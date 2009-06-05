@@ -449,43 +449,49 @@ void
 Opal::Account::handle_registration_event (RegistrationState state,
 					  std::string info)
 {
+  bool old_active = active;
+
   active = false;
 
   switch (state) {
   case Registered:
-    status = _("Registered");
-    active = true;
-    {
+    if (!old_active) {
+
+      status = _("Registered");
+      active = true;
       gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
       gmref_ptr<Ekiga::PersonalDetails> personal_details = core.get ("personal-details");
       if (presence_core && personal_details) {
 
 	presence_core->publish (personal_details);
       }
+      updated.emit ();
     } 
     break;
 
   case Unregistered:
     status = _("Unregistered");
+    updated.emit ();
     break;
 
   case UnregistrationFailed:
     status = _("Could not unregister");
     if (!info.empty ())
       status = status + " (" + info + ")";
+    updated.emit ();
     break;
 
   case RegistrationFailed:
     status = _("Could not register");
     if (!info.empty ())
       status = status + " (" + info + ")";
+    updated.emit ();
     break;
 
   case Processing:
     status = _("Processing...");
+    updated.emit ();
   default:
     break;
   }
-
-  updated.emit ();
 }
