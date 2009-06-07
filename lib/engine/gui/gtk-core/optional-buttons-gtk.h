@@ -85,8 +85,7 @@ class OptionalButtonsGtk: public Ekiga::MenuBuilder
 {
 public:
 
-  OptionalButtonsGtk ()
-  {}
+  OptionalButtonsGtk ();
 
   ~OptionalButtonsGtk ();
 

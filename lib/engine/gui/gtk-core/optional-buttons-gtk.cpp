@@ -64,6 +64,10 @@ on_optional_buttons_gtk_clicked (gpointer object,
 
 // here comes the implementation of the public interface :
 
+OptionalButtonsGtk::OptionalButtonsGtk (): nbr_elements(0)
+{
+}
+
 OptionalButtonsGtk::~OptionalButtonsGtk ()
 {
   for (buttons_type::iterator iter = buttons.begin ();
@@ -104,22 +108,23 @@ OptionalButtonsGtk::reset ()
 							   "ekiga-optional-buttons-gtk-helper");
     helper->callback = sigc::slot0<void> ();
   }
+  nbr_elements = 0;
 }
 
 void
-OptionalButtonsGtk::add_action (G_GNUC_UNUSED const std::string icon,
-				const std::string label,
+OptionalButtonsGtk::add_action (const std::string icon,
+				G_GNUC_UNUSED const std::string label,
 				const sigc::slot0<void> callback)
 {
-  GtkButton* button = buttons[label];
+  buttons_type::iterator iter = buttons.find (icon);
 
-  if (button) {
+  if (iter != buttons.end ()) {
 
     struct OptionalButtonsGtkHelper* helper = 
-      (struct OptionalButtonsGtkHelper*)g_object_get_data (G_OBJECT (button),
+      (struct OptionalButtonsGtkHelper*)g_object_get_data (G_OBJECT (iter->second),
 							   "ekiga-optional-buttons-gtk-helper");
     helper->callback = callback;
-    gtk_widget_set_sensitive (GTK_WIDGET (button), TRUE);
+    gtk_widget_set_sensitive (GTK_WIDGET (iter->second), TRUE);
     nbr_elements++;
   }
 }
