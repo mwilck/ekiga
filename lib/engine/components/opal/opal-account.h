@@ -157,7 +157,6 @@ private:
 
     RegistrationState state;
     bool dead;
-    bool active;
     bool enabled;
     unsigned timeout;
     std::string aid;

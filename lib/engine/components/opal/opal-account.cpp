@@ -60,7 +60,6 @@ Opal::Account::Account (Ekiga::ServiceCore & _core,
   : core (_core)
 {
   dead = false;
-  active = false;
 
   int i = 0;
   char *pch = strtok ((char *) account.c_str (), "|");
@@ -140,7 +139,6 @@ Opal::Account::Account (Ekiga::ServiceCore & _core,
   : core (_core)
 {
   dead = false;
-  active = false;
   enabled = _enabled;
   aid = (const char *) PGloballyUniqueID ().AsString ();
   name = _name;
@@ -300,7 +298,7 @@ bool Opal::Account::is_enabled () const
 
 bool Opal::Account::is_active () const
 {
-  return active;
+  return (state == Registered);
 }
 
 
@@ -469,19 +467,14 @@ void
 Opal::Account::handle_registration_event (RegistrationState state_,
 					  const std::string info)
 {
-  bool old_active = active;
-
-  state = state_;
-  active = false;
 
   switch (state) {
 
   case Registered:
 
-    if (!old_active) {
+    if (state != Registered) {
 
       status = _("Registered");
-      active = true;
       gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
       gmref_ptr<Ekiga::PersonalDetails> personal_details = core.get ("personal-details");
       if (presence_core && personal_details) {
@@ -521,6 +514,8 @@ Opal::Account::handle_registration_event (RegistrationState state_,
   default:
     break;
   }
+
+  state = state_;
 }
 
 void
