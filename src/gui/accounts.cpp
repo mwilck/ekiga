@@ -120,7 +120,6 @@ enum {
   COLUMN_ACCOUNT_WEIGHT,
   COLUMN_ACCOUNT_ENABLED,
   COLUMN_ACCOUNT_ACCOUNT_NAME,
-  COLUMN_ACCOUNT_VOICEMAILS,
   COLUMN_ACCOUNT_STATUS,
   COLUMN_ACCOUNT_STATE,
   COLUMN_ACCOUNT_NUMBER
@@ -143,73 +142,6 @@ gm_aw_get_aw (GtkWidget *accounts_window)
   g_return_val_if_fail (accounts_window != NULL, NULL);
 
   return GM_ACCOUNTS_WINDOW (g_object_get_data (G_OBJECT (accounts_window), "GMObject"));
-}
-
-
-bool
-gm_accounts_window_update_account_state (GtkWidget *accounts_window,
-					 gboolean refreshing,
-					 Ekiga::AccountPtr _account,
-					 const gchar *status,
-					 const gchar *voicemails)
-{
-  GtkTreeModel *model = NULL;
-
-  GtkTreeIter iter;
-
-  Ekiga::Account *account = NULL;
-  GmAccountsWindow *aw = NULL;
-
-  gchar *error = NULL;
-  gchar *mwi = NULL;
-
-  bool status_modified = false;
-  bool mwi_modified = false;
-
-  g_return_val_if_fail (accounts_window != NULL, false);
-
-  aw = gm_aw_get_aw (accounts_window);
-
-  model = gtk_tree_view_get_model (GTK_TREE_VIEW (aw->accounts_list));
-
-  if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (model), &iter)){
-
-    do {
-
-      gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
-			  COLUMN_ACCOUNT, &account,
-			  -1);
-
-      if (account == _account.get ()) {
-
-        gtk_tree_model_get (GTK_TREE_MODEL (model), &iter,
-                            COLUMN_ACCOUNT_STATUS, &error,
-                            COLUMN_ACCOUNT_VOICEMAILS, &mwi,
-                            -1);
-
-	gtk_list_store_set (GTK_LIST_STORE (model), &iter,
-			    COLUMN_ACCOUNT_STATE, refreshing, -1);
-	if (status) {
-
-	  gtk_list_store_set (GTK_LIST_STORE (model), &iter,
-			      COLUMN_ACCOUNT_STATUS, status, -1);
-          status_modified = (error == NULL) || strcmp (status, error);
-        }
-	if (voicemails) {
-
-	  gtk_list_store_set (GTK_LIST_STORE (model), &iter,
-			      COLUMN_ACCOUNT_VOICEMAILS, voicemails, -1);
-          mwi_modified = (mwi == NULL) || strcmp (voicemails, mwi);
-        }
-
-        g_free (error);
-        g_free (mwi);
-      }
-
-    } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (model), &iter));
-  }
-
-  return (status_modified || mwi_modified);
 }
 
 
@@ -570,7 +502,6 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
     "",
     "",
     _("Account Name"),
-    _("Voice Mails"),
     _("Status"),
     ""
   };
@@ -615,7 +546,6 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
 				   G_TYPE_INT,
 				   G_TYPE_BOOLEAN, /* Enabled? */
 				   G_TYPE_STRING,  /* Account Name */
-				   G_TYPE_STRING,  /* VoiceMails */
 				   G_TYPE_STRING,  /* Error Message */
 				   G_TYPE_INT);    /* State */
 
