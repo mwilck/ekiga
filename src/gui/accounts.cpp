@@ -54,16 +54,19 @@
 #include "menu-builder-tools.h"
 #include "menu-builder-gtk.h"
 #include "form-dialog-gtk.h"
+#include "optional-buttons-gtk.h"
 
 typedef struct GmAccountsWindow_ {
 
-  GmAccountsWindow_ (Ekiga::ServiceCore & _core) : core (_core) {};
+  GmAccountsWindow_ (Ekiga::ServiceCore & _core) : core (_core)
+  {}
 
   GtkWidget *accounts_list;
   GtkWidget *menu_item_core;
   GtkAccelGroup *accel;
 
   Ekiga::ServiceCore &core;
+  OptionalButtonsGtk toolbar;
 
 } GmAccountsWindow;
 
@@ -112,6 +115,15 @@ static void account_toggled_cb (GtkCellRendererToggle *cell,
 				gchar *path_str,
 				gpointer data);
 
+/* DESCRIPTION  :  This callback is called when the user clicks
+ *                 on an account in the accounts window.
+ * BEHAVIOR     :  It updates the toolbar actions to point to the right account,
+ *                 and to be active/inactive depending if the action is
+ *                 really available or not.
+ * PRE          :  the 'data' is a pointer to the account window.
+ */
+static void on_selection_changed (GtkTreeSelection* /*selection*/,
+				  gpointer data);
 
 /* Columns for the VoIP accounts */
 enum {
@@ -313,6 +325,39 @@ account_toggled_cb (G_GNUC_UNUSED GtkCellRendererToggle *cell,
   gtk_tree_path_free (path);
 }
 
+static void
+on_selection_changed (GtkTreeSelection* /*selection*/,
+		      gpointer data)
+{
+  GmAccountsWindow* aw = (GmAccountsWindow*) data;
+  GtkTreeSelection* selection = NULL;
+  GtkTreeModel *model = NULL;
+  GtkTreeIter iter;
+  Ekiga::Account* account = NULL;
+
+  g_return_if_fail (aw != NULL);
+
+  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (aw->accounts_list));
+
+  if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
+
+    gtk_tree_model_get (model, &iter,
+			COLUMN_ACCOUNT, &account,
+			-1);
+    if (account) {
+
+      aw->toolbar.reset ();
+      account->populate_menu (aw->toolbar);
+    } else {
+
+      aw->toolbar.reset ();
+    }
+
+  } else {
+
+    aw->toolbar.reset ();
+  }
+}
 
 static void
 gm_accounts_window_add_account (GtkWidget *window,
@@ -486,6 +531,8 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
   GtkWidget *item = NULL;
   GtkWidget *event_box = NULL;
   GtkWidget *scroll_window = NULL;
+  GtkWidget* button_box = NULL;
+  GtkWidget* button = NULL;
 
   GtkWidget *frame = NULL;
   GtkWidget *hbox = NULL;
@@ -493,6 +540,8 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
   GtkCellRenderer *renderer = NULL;
   GtkListStore *list_store = NULL;
   GtkTreeViewColumn *column = NULL;
+
+  GtkTreeSelection* selection = NULL;
 
   AtkObject *aobj;
 
@@ -598,6 +647,11 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
   g_signal_connect (G_OBJECT (aw->accounts_list), "event_after",
 		    G_CALLBACK (account_clicked_cb), window);
 
+  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (aw->accounts_list));
+  gtk_tree_selection_set_mode (selection, GTK_SELECTION_SINGLE);
+  g_signal_connect (selection, "changed",
+		    G_CALLBACK (on_selection_changed), aw);
+
   /* The scrolled window with the accounts list store */
   scroll_window = gtk_scrolled_window_new (FALSE, FALSE);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scroll_window),
@@ -619,10 +673,27 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
   gtk_container_set_border_width (GTK_CONTAINER (aw->accounts_list), 0);
   gtk_box_pack_start (GTK_BOX (hbox), frame, TRUE, TRUE, 0);
 
+  /* setting up a horizontal button box
+   * (each button with be dynamically disabled/enabled as needed)
+   */
+  button_box = gtk_hbutton_box_new ();
+  button = gtk_button_new_with_label (_("Enable"));
+  gtk_box_pack_start (GTK_BOX (button_box), button, FALSE, FALSE, 0);
+  aw->toolbar.add_button ("enable", GTK_BUTTON (button));
+  button = gtk_button_new_with_label (_("Disable"));
+  gtk_box_pack_start (GTK_BOX (button_box), button, FALSE, FALSE, 0);
+  aw->toolbar.add_button ("disable", GTK_BUTTON (button));
+  button = gtk_button_new_with_label (_("Edit"));
+  gtk_box_pack_start (GTK_BOX (button_box), button, FALSE, FALSE, 0);
+  aw->toolbar.add_button ("edit", GTK_BUTTON (button));
+  button = gtk_button_new_with_label (_("Remove"));
+  gtk_box_pack_start (GTK_BOX (button_box), button, FALSE, FALSE, 0);
+  aw->toolbar.add_button ("remove", GTK_BUTTON (button));
+
   populate_menu (window); // This will add static and dynamic actions
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG (window)->vbox), menu_bar, FALSE, FALSE, 0);
   gtk_box_pack_start (GTK_BOX (GTK_DIALOG (window)->vbox), event_box, TRUE, TRUE, 0);
-
+  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (window)->vbox), button_box, TRUE, TRUE, 0);
 
   /* Generic signals */
   g_signal_connect_swapped (GTK_OBJECT (window),
