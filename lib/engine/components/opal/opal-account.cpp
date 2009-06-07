@@ -60,6 +60,8 @@ Opal::Account::Account (Ekiga::ServiceCore & _core,
   : core (_core)
 {
   dead = false;
+  state = Unregistered;
+  message_waiting_number = 0;
 
   int i = 0;
   char *pch = strtok ((char *) account.c_str (), "|");
@@ -139,6 +141,8 @@ Opal::Account::Account (Ekiga::ServiceCore & _core,
   : core (_core)
 {
   dead = false;
+  state = Unregistered;
+  message_waiting_number = 0;
   enabled = _enabled;
   aid = (const char *) PGloballyUniqueID ().AsString ();
   name = _name;
@@ -467,8 +471,7 @@ void
 Opal::Account::handle_registration_event (RegistrationState state_,
 					  const std::string info)
 {
-
-  switch (state) {
+  switch (state_) {
 
   case Registered:
 
