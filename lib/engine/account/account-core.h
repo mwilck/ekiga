@@ -161,13 +161,6 @@ namespace Ekiga
     ChainOfResponsibility<FormRequest*> questions;
 
 
-    /** This signal is emitted when there is a new message waiting event
-     * @param: account is the account
-     *         info contains information about the indication
-     */
-    sigc::signal3<void, BankPtr, AccountPtr, std::string> mwi_event;
-
-
     /*** Account Subscriber API ***/
   public:
     void add_account_subscriber (AccountSubscriber &subscriber);
@@ -183,9 +176,6 @@ namespace Ekiga
     std::set<AccountSubscriber *> account_subscribers;
     typedef std::set<AccountSubscriber *>::iterator subscriber_iterator;
     typedef std::set<AccountSubscriber *>::const_iterator subscriber_const_iterator;
-    void on_mwi_event (BankPtr bank,
-		       AccountPtr account,
-                       const std::string & info);
   };
 
 

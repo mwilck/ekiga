@@ -41,7 +41,6 @@
 #include "bank.h"
 #include "opal-bank.h"
 #include "account-core.h"
-#include "audiooutput-core.h"
 
 #include "callbacks.h"
 #include "misc.h"
@@ -215,29 +214,6 @@ gm_accounts_window_update_account_state (GtkWidget *accounts_window,
 
 
 /* Engine callbacks */
-
-static void
-on_mwi_event (Ekiga::AccountPtr account,
-              std::string mwi,
-              gpointer self)
-{
-  if (gm_accounts_window_update_account_state (GTK_WIDGET (self), false, account, NULL, mwi.c_str ())) {
-
-    std::string::size_type loc = mwi.find ("/", 0);
-    if (loc != std::string::npos) {
-
-      GmAccountsWindow *aw = gm_aw_get_aw (GTK_WIDGET (self));
-      gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core = aw->core.get ("audiooutput-core");
-      std::stringstream new_messages;
-      int i;
-      new_messages << mwi.substr (0, loc);
-      new_messages >> i;
-      if (i > 0)
-        audiooutput_core->play_event ("new_voicemail_sound");
-    }
-  }
-}
-
 
 static void
 populate_menu (GtkWidget *window)
@@ -734,13 +710,11 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
   // FIXME sigc::connection conn;
 
   gmref_ptr<Ekiga::AccountCore> account_core = core.get ("account-core");
-  gmref_ptr<Opal::Bank> bank = core.get ("opal-account-store");
   account_core->bank_added.connect (sigc::bind (sigc::ptr_fun (on_bank_added), window));
   account_core->account_added.connect (sigc::bind (sigc::ptr_fun (on_account_added), window));
   account_core->account_updated.connect (sigc::bind (sigc::ptr_fun (on_account_updated), window));
   account_core->account_removed.connect (sigc::bind (sigc::ptr_fun (on_account_removed), window));
   account_core->questions.add_handler (sigc::bind (sigc::ptr_fun (on_handle_questions), (gpointer) window));
-  bank->mwi_event.connect (sigc::bind (sigc::ptr_fun (on_mwi_event), (gpointer) window));
 
   account_core->visit_banks (sigc::bind_return (sigc::bind (sigc::ptr_fun (on_bank_added), window), true));
 

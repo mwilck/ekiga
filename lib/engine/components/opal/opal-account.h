@@ -141,14 +141,21 @@ public:
     /* This method is public to be called by an opal endpoint, which will push
      * this Opal::Account's new registration state
      */
-    void handle_registration_event (RegistrationState state,
-				    std::string info);
+    void handle_registration_event (RegistrationState state_,
+				    const std::string info);
+
+    /* This method is public to be called by an opal endpoint, which will push
+     * this Opal::Account's message waiting information
+     */
+    void handle_message_waiting_information (const std::string info);
+
  
 private:
     void on_edit_form_submitted (bool submitted,
 				 Ekiga::Form &result);
     void on_consult (const std::string url);
 
+    RegistrationState state;
     bool dead;
     bool active;
     bool enabled;
@@ -156,6 +163,7 @@ private:
     std::string aid;
     std::string name;
     std::string status;
+    int message_waiting_number;
     std::string protocol_name;
     std::string host;
     std::string username;

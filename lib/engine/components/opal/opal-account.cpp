@@ -41,6 +41,7 @@
 #include <algorithm>
 #include <sstream>
 
+#include <glib.h>
 #include <glib/gi18n.h>
 #include <ptlib.h>
 #include <opal/opal.h>
@@ -52,6 +53,7 @@
 
 #include "presence-core.h"
 #include "personal-details.h"
+#include "audiooutput-core.h"
 
 Opal::Account::Account (Ekiga::ServiceCore & _core,
                         const std::string & account)
@@ -189,7 +191,25 @@ const std::string Opal::Account::get_name () const
 const std::string
 Opal::Account::get_status () const
 {
-  return status;
+  std::string result;
+  if (message_waiting_number > 0) {
+
+    gchar* str = NULL;
+    /* translators : the result will look like :
+     * "registered (with 2 voicemail messages)"
+     */
+    str = g_strdup_printf (ngettext ("%s (with %d voicemail message)",
+				     "%s (with %d voicemail messages)",
+				     message_waiting_number),
+			   status.c_str (), message_waiting_number);
+    result = str;
+    g_free (str);
+  } else {
+
+    result = status;
+  }
+
+  return result;
 }
 
 const std::string Opal::Account::get_aor () const
@@ -446,15 +466,18 @@ Opal::Account::on_consult (const std::string url)
 }
 
 void
-Opal::Account::handle_registration_event (RegistrationState state,
-					  std::string info)
+Opal::Account::handle_registration_event (RegistrationState state_,
+					  const std::string info)
 {
   bool old_active = active;
 
+  state = state_;
   active = false;
 
   switch (state) {
+
   case Registered:
+
     if (!old_active) {
 
       status = _("Registered");
@@ -470,11 +493,13 @@ Opal::Account::handle_registration_event (RegistrationState state,
     break;
 
   case Unregistered:
+
     status = _("Unregistered");
     updated.emit ();
     break;
 
   case UnregistrationFailed:
+
     status = _("Could not unregister");
     if (!info.empty ())
       status = status + " (" + info + ")";
@@ -482,6 +507,7 @@ Opal::Account::handle_registration_event (RegistrationState state,
     break;
 
   case RegistrationFailed:
+
     status = _("Could not register");
     if (!info.empty ())
       status = status + " (" + info + ")";
@@ -489,9 +515,27 @@ Opal::Account::handle_registration_event (RegistrationState state,
     break;
 
   case Processing:
+
     status = _("Processing...");
     updated.emit ();
   default:
     break;
+  }
+}
+
+void
+Opal::Account::handle_message_waiting_information (const std::string info)
+{
+  std::string::size_type loc = info.find ("/", 0);
+
+  if (loc != std::string::npos) {
+
+    gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core = core.get ("audiooutput-core");
+    std::stringstream new_messages;
+    new_messages << info.substr (0, loc);
+    new_messages >> message_waiting_number;
+    if (message_waiting_number > 0)
+      audiooutput_core->play_event ("new_voicemail_sound");
+    updated.emit ();
   }
 }

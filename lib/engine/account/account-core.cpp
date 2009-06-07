@@ -98,11 +98,3 @@ Ekiga::AccountCore::add_account_subscriber (AccountSubscriber &subscriber)
 {
   account_subscribers.insert (&subscriber);
 }
-
-
-void Ekiga::AccountCore::on_mwi_event (BankPtr bank,
-				       AccountPtr account,
-                                       const std::string & info)
-{
-  mwi_event.emit (bank, account, info);
-}

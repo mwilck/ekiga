@@ -1273,6 +1273,6 @@ Opal::Sip::EndPoint::mwi_received_in_main (const std::string aor,
 
   if (account) {
 
-    account->mwi_event.emit (info);
+    account->handle_message_waiting_information (info);
   }
 }

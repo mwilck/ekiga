@@ -218,8 +218,6 @@ void Opal::Bank::add (Account::Type acc_type,
 						     timeout));
   add_account (account);
   Ekiga::BankImpl<Account>::add_connection (account, account->trigger_saving.connect (sigc::mem_fun (this, &Opal::Bank::save)));
-
-  account->mwi_event.connect (sigc::bind<0> (mwi_event.make_slot (), account));
 }
 
 void

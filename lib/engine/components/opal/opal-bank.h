@@ -82,12 +82,6 @@ public:
 
     void call_manager_ready ();
 
-    /** This signal is emitted when there is a new message waiting event
-     * @param: account is the account 
-     *         info contains information about the indication 
-     */
-    sigc::signal2<void, AccountPtr, std::string> mwi_event;
-
 private:
     Ekiga::ServiceCore &core;
 
