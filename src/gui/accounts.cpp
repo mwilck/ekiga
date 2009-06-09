@@ -165,8 +165,7 @@ populate_menu (GtkWidget *window)
   selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (aw->accounts_list));
   model = gtk_tree_view_get_model (GTK_TREE_VIEW (aw->accounts_list));
 
-  gmref_ptr<Ekiga::AccountCore> account_core
-    = aw->core.get ("account-core");
+  gmref_ptr<Ekiga::AccountCore> account_core = aw->core.get ("account-core");
 
   if (account_core->populate_menu (builder)) {
     item = gtk_separator_menu_item_new ();
@@ -328,18 +327,19 @@ void
 gm_accounts_window_update_account (GtkWidget *accounts_window,
                                    Ekiga::AccountPtr account)
 {
-  Ekiga::Account *caccount = NULL;
+  GmAccountsWindow *aw = NULL;
 
   GtkTreeModel *model = NULL;
+  GtkTreeSelection *selection = NULL;
 
   GtkTreeIter iter;
-
-  GmAccountsWindow *aw = NULL;
+  Ekiga::Account *caccount = NULL;
 
   g_return_if_fail (accounts_window != NULL);
 
   aw = gm_aw_get_aw (accounts_window);
 
+  /* on the one end we update the view */
   model = gtk_tree_view_get_model (GTK_TREE_VIEW (aw->accounts_list));
 
   if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (model), &iter)){
@@ -360,6 +360,23 @@ gm_accounts_window_update_account (GtkWidget *accounts_window,
         break;
       }
     } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (model), &iter));
+  }
+
+  /* on the other end, if the updated account is the one which is selected,
+   * we update the actions on it
+   */
+  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (aw->accounts_list));
+  if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
+
+    gtk_tree_model_get (model, &iter,
+                        COLUMN_ACCOUNT, &caccount,
+                        -1);
+
+    if (caccount == account.get ()) {
+
+      aw->toolbar.reset ();
+      account->populate_menu (aw->toolbar);
+    }
   }
 }
 
