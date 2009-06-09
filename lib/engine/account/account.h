@@ -78,19 +78,6 @@ namespace Ekiga
      */
     virtual const std::string get_status () const = 0;
 
-    /** Returns the address of record for that Ekiga::Account.
-     * @return The address of record.
-     */
-    virtual const std::string get_aor () const = 0;
-
-
-    /** Returns the hostname for the Ekiga::Account.
-     * This function is purely virtual and should be implemented by the
-     * Ekiga::Account descendant.
-     * @return The host name of the Ekiga::Account.
-     */
-    virtual const std::string get_host () const = 0;
-
 
     /** Subscribe the given account.
      * This function is purely virtual and should be implemented by the
