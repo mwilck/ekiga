@@ -79,15 +79,6 @@ namespace Ekiga
     virtual const std::string get_status () const = 0;
 
 
-    /** Return true if the account is enabled.
-     * It does not mean that the account is successfully registered, it
-     * just means it is enabled.
-     * This function is purely virtual and should be implemented by the
-     * Ekiga::Account descendant.
-     */
-    virtual bool is_enabled () const = 0;
-
-
     /** Create the menu for that account and its actions.
      * This function is purely virtual and should be implemented by
      * the descendant of the Ekiga::Contact.

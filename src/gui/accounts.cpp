@@ -118,7 +118,6 @@ enum {
 
   COLUMN_ACCOUNT,
   COLUMN_ACCOUNT_WEIGHT,
-  COLUMN_ACCOUNT_ENABLED,
   COLUMN_ACCOUNT_ACCOUNT_NAME,
   COLUMN_ACCOUNT_STATUS,
   COLUMN_ACCOUNT_STATE,
@@ -320,7 +319,6 @@ gm_accounts_window_add_account (GtkWidget *window,
   gtk_list_store_set (GTK_LIST_STORE (model), &iter,
                       COLUMN_ACCOUNT, account.get (),
                       COLUMN_ACCOUNT_WEIGHT, PANGO_WEIGHT_NORMAL,
-                      COLUMN_ACCOUNT_ENABLED, account->is_enabled (),
                       COLUMN_ACCOUNT_ACCOUNT_NAME, account->get_name ().c_str (),
                       -1);
 }
@@ -356,7 +354,6 @@ gm_accounts_window_update_account (GtkWidget *accounts_window,
         gtk_list_store_set (GTK_LIST_STORE (model), &iter,
                             COLUMN_ACCOUNT, account.get (),
                             COLUMN_ACCOUNT_WEIGHT, PANGO_WEIGHT_NORMAL,
-                            COLUMN_ACCOUNT_ENABLED, account->is_enabled (),
                             COLUMN_ACCOUNT_ACCOUNT_NAME, account->get_name ().c_str (),
 			    COLUMN_ACCOUNT_STATUS, account->get_status ().c_str (),
                             -1);
@@ -491,7 +488,6 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
 
     "",
     "",
-    "",
     _("Account Name"),
     _("Status"),
     ""
@@ -535,7 +531,6 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
   list_store = gtk_list_store_new (COLUMN_ACCOUNT_NUMBER,
                                    G_TYPE_POINTER,
 				   G_TYPE_INT,
-				   G_TYPE_BOOLEAN, /* Enabled? */
 				   G_TYPE_STRING,  /* Account Name */
 				   G_TYPE_STRING,  /* Error Message */
 				   G_TYPE_INT);    /* State */
@@ -548,23 +543,7 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
   aobj = gtk_widget_get_accessible (GTK_WIDGET (aw->accounts_list));
   atk_object_set_name (aobj, _("Accounts"));
 
-  renderer = gtk_cell_renderer_toggle_new ();
-  /* Translators:
-   * The following string "A" means "activated" or "active". It's a column
-   * description in the list of configured accounts, it shows if an account
-   * is activated or not (a status the user can choose).
-   */
-  column = gtk_tree_view_column_new_with_attributes (_("A"),
-						     renderer,
-						     "active",
-						     COLUMN_ACCOUNT_ENABLED,
-						     NULL);
-  gtk_tree_view_column_set_fixed_width (GTK_TREE_VIEW_COLUMN (column), 25);
-  gtk_tree_view_append_column (GTK_TREE_VIEW (aw->accounts_list), column);
-  gtk_tree_view_column_set_sort_column_id (column, COLUMN_ACCOUNT_ENABLED);
-
-  /* Add all text renderers, ie all except the
-   * "ACCOUNT_ENABLED/DEFAULT" columns */
+  /* Add all text renderers */
   for (int i = COLUMN_ACCOUNT_ACCOUNT_NAME ; i < COLUMN_ACCOUNT_NUMBER - 1 ; i++) {
 
     renderer = gtk_cell_renderer_text_new ();
