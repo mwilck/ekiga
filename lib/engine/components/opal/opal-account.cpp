@@ -55,6 +55,8 @@
 #include "personal-details.h"
 #include "audiooutput-core.h"
 
+#include "sip-endpoint.h"
+
 Opal::Account::Account (Ekiga::ServiceCore & _core,
                         const std::string & account)
   : core (_core)
@@ -274,8 +276,8 @@ void Opal::Account::enable ()
 {
   enabled = true;
 
-  gmref_ptr<Ekiga::AccountCore> account_core = core.get ("account-core");
-  account_core->subscribe_account (*this);
+  gmref_ptr<Sip::EndPoint> endpoint = core.get ("opal-sip-endpoint");
+  endpoint->subscribe (*this);
 
   updated.emit ();
   trigger_saving.emit ();
@@ -286,8 +288,8 @@ void Opal::Account::disable ()
 {
   enabled = false;
 
-  gmref_ptr<Ekiga::AccountCore> account_core = core.get ("account-core");
-  account_core->unsubscribe_account (*this);
+  gmref_ptr<Sip::EndPoint> endpoint = core.get ("opal-sip-endpoint");
+  endpoint->unsubscribe (*this);
 
   updated.emit ();
   trigger_saving.emit ();
@@ -311,8 +313,8 @@ void Opal::Account::remove ()
   enabled = false;
   dead = true;
 
-  gmref_ptr<Ekiga::AccountCore> account_core = core.get ("account-core");
-  account_core->unsubscribe_account (*this);
+  gmref_ptr<Sip::EndPoint> endpoint = core.get ("opal-sip-endpoint");
+  endpoint->unsubscribe (*this);
 
   trigger_saving.emit ();
 

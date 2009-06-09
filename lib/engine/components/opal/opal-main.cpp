@@ -116,20 +116,20 @@ struct OPALSpark: public Ekiga::Spark
       unsigned sip_port = gm_conf_get_int (SIP_KEY "listen_port");
       gmref_ptr<Sip::EndPoint> sip_manager (new Sip::EndPoint (*call_manager, core, sip_port));
       call_manager->add_protocol_manager (sip_manager);
-      account_core->add_account_subscriber (*sip_manager);
       contact_core->add_contact_decorator (sip_manager);
       presence_core->add_presentity_decorator (sip_manager);
       presence_core->add_presence_fetcher (sip_manager);
       presence_core->add_presence_publisher (sip_manager);
+      core.add (sip_manager);
 #endif
 
 #ifdef HAVE_H323
       unsigned h323_port = gm_conf_get_int (H323_KEY "listen_port");
       gmref_ptr<H323::EndPoint> h323_manager (new H323::EndPoint (*call_manager, core, h323_port));
       call_manager->add_protocol_manager (h323_manager);
-      account_core->add_account_subscriber (*h323_manager);
       contact_core->add_contact_decorator (h323_manager);
       presence_core->add_presentity_decorator (h323_manager);
+      core.add (h323_manager);
 #endif
 
       call_core->add_manager (call_manager);

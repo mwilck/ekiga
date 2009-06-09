@@ -49,12 +49,6 @@
 /* declaration of a few helper classes */
 namespace Ekiga
 {
-  class AccountSubscriber
-  {
-  public:
-    virtual ~AccountSubscriber () {}
-  };
-
   /**
    * @defgroup accounts
    * @{
@@ -160,90 +154,10 @@ namespace Ekiga
      */
     ChainOfResponsibility<FormRequest*> questions;
 
-
-    /*** Account Subscriber API ***/
-  public:
-    void add_account_subscriber (AccountSubscriber &subscriber);
-
-    template<class T>
-    bool subscribe_account (const T &account);
-
-    template<class T>
-    bool unsubscribe_account (const T &account);
-
-    /*** Misc ***/
-  private:
-    std::set<AccountSubscriber *> account_subscribers;
-    typedef std::set<AccountSubscriber *>::iterator subscriber_iterator;
-    typedef std::set<AccountSubscriber *>::const_iterator subscriber_const_iterator;
   };
-
-
-  template<class T = Account>
-  class AccountSubscriberImpl : public AccountSubscriber
-  {
-  public:
-    virtual ~AccountSubscriberImpl () {}
-
-    virtual bool subscribe (const T & /*account*/);
-    virtual bool unsubscribe (const T & /*account*/);
-  };
-
   /**
    * @}
    */
 };
 
-
-
-template<class T>
-bool
-Ekiga::AccountCore::subscribe_account (const T &account)
-{
-  for (subscriber_iterator iter = account_subscribers.begin ();
-       iter != account_subscribers.end ();
-       iter++) {
-
-    Ekiga::AccountSubscriberImpl<T> *subscriber = dynamic_cast<Ekiga::AccountSubscriberImpl<T> *> (*iter);
-    if (subscriber)
-      if (subscriber->subscribe (account))
-        return true;
-  }
-
-  return false;
-}
-
-
-template<class T>
-bool
-Ekiga::AccountCore::unsubscribe_account (const T &account)
-{
-  for (subscriber_iterator iter = account_subscribers.begin ();
-       iter != account_subscribers.end ();
-       iter++) {
-
-    Ekiga::AccountSubscriberImpl<T> *subscriber = dynamic_cast<Ekiga::AccountSubscriberImpl<T> *> (*iter);
-    if (subscriber)
-      if (subscriber->unsubscribe (account))
-        return true;
-  }
-
-  return false;
-}
-
-
-template<class T>
-bool
-Ekiga::AccountSubscriberImpl<T>::subscribe (const T & /*account*/)
-{
-  return false;
-}
-
-
-template<class T>
-bool
-Ekiga::AccountSubscriberImpl<T>::unsubscribe (const T & /*account*/)
-{
-  return false;
-}
 #endif

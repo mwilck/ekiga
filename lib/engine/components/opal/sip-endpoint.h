@@ -61,11 +61,11 @@ namespace Opal {
   namespace Sip {
 
     class EndPoint : public SIPEndPoint,
+		     public Ekiga::Service,
 		     public Ekiga::CallProtocolManager,
 		     public Ekiga::PresenceFetcher,
 		     public Ekiga::PresencePublisher,
 		     public Ekiga::PresentityDecorator,
-		     public Ekiga::AccountSubscriberImpl<Opal::Account>,
 		     public Ekiga::ContactDecorator
     {
       PCLASSINFO(EndPoint, SIPEndPoint);
@@ -86,6 +86,13 @@ namespace Opal {
 		unsigned listen_port);
 
       ~EndPoint ();
+
+      /* Service */
+      const std::string get_name () const
+      { return "opal-sip-endpoint"; }
+
+      const std::string get_description () const
+      { return "\tObject managing SIP objects with the Opal library"; }
 
       /* ContactDecorator and PresentityDecorator */
       bool populate_menu (Ekiga::ContactPtr contact,

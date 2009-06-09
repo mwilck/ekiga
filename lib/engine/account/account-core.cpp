@@ -91,10 +91,3 @@ Ekiga::AccountCore::visit_banks (sigc::slot1<bool, BankPtr> visitor)
        iter++)
     go_on = visitor (*iter);
 }
-
-
-void
-Ekiga::AccountCore::add_account_subscriber (AccountSubscriber &subscriber)
-{
-  account_subscribers.insert (&subscriber);
-}
