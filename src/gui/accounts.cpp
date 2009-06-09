@@ -103,18 +103,6 @@ static gint account_clicked_cb (GtkWidget *w,
 				GdkEventButton *e,
 				gpointer data);
 
-
-/* DESCRIPTION  :  This callback is called when the user clicks
- *                 on an account to enable it in the accounts window.
- * BEHAVIOR     :  It updates the accounts list configuration to enable/disable
- *                 the account. It also calls the Register operation from
- *                 the GMManager to refresh the status of that account.
- * PRE          :  /
- */
-static void account_toggled_cb (GtkCellRendererToggle *cell,
-				gchar *path_str,
-				gpointer data);
-
 /* DESCRIPTION  :  This callback is called when the user clicks
  *                 on an account in the accounts window.
  * BEHAVIOR     :  It updates the toolbar actions to point to the right account,
@@ -277,52 +265,6 @@ account_clicked_cb (G_GNUC_UNUSED GtkWidget *w,
   }
 
   return TRUE;
-}
-
-
-static void
-account_toggled_cb (G_GNUC_UNUSED GtkCellRendererToggle *cell,
-		    gchar *path_str,
-		    gpointer data)
-{
-  GmAccountsWindow *aw = NULL;
-
-  GtkTreeModel *model = NULL;
-  GtkTreePath *path = NULL;
-  GtkTreeSelection *selection = NULL;
-  GtkTreeIter iter;
-
-  gboolean fixed = false;
-
-  Ekiga::Account *account = NULL;
-
-  aw = gm_aw_get_aw (GTK_WIDGET (data));
-
-  /* Make sure the toggled row is selected */
-  selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (aw->accounts_list));
-  path = gtk_tree_path_new_from_string (path_str);
-  gtk_tree_selection_select_path (selection, path);
-
-  model = gtk_tree_view_get_model (GTK_TREE_VIEW (aw->accounts_list));
-  if (gtk_tree_model_get_iter (model, &iter, path)) {
-
-    gtk_tree_model_get (model, &iter,
-                        COLUMN_ACCOUNT_ENABLED, &fixed,
-                        COLUMN_ACCOUNT, &account,
-                        -1);
-
-    if (fixed)
-      account->disable ();
-    else
-      account->enable ();
-
-    gtk_list_store_set (GTK_LIST_STORE (model), &iter,
-                        COLUMN_ACCOUNT_ENABLED, fixed^1,
-                        COLUMN_ACCOUNT_STATUS, "",
-                        -1);
-  }
-
-  gtk_tree_path_free (path);
 }
 
 static void
@@ -620,10 +562,6 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
   gtk_tree_view_column_set_fixed_width (GTK_TREE_VIEW_COLUMN (column), 25);
   gtk_tree_view_append_column (GTK_TREE_VIEW (aw->accounts_list), column);
   gtk_tree_view_column_set_sort_column_id (column, COLUMN_ACCOUNT_ENABLED);
-  g_signal_connect (G_OBJECT (renderer), "toggled",
-  		    G_CALLBACK (account_toggled_cb),
-  		    (gpointer) window);
-
 
   /* Add all text renderers, ie all except the
    * "ACCOUNT_ENABLED/DEFAULT" columns */
