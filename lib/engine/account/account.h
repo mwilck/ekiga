@@ -88,13 +88,6 @@ namespace Ekiga
     virtual bool is_enabled () const = 0;
 
 
-    /** Return true if the account is active.
-     * This function is purely virtual and should be implemented by the
-     * Ekiga::Account descendant.
-     */
-    virtual bool is_active () const = 0;
-
-
     /** Create the menu for that account and its actions.
      * This function is purely virtual and should be implemented by
      * the descendant of the Ekiga::Contact.
