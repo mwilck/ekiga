@@ -97,10 +97,6 @@ namespace Ekiga
      */
     void visit_accounts (sigc::slot1<bool, AccountPtr> visitor);
 
-    /** This function is called when a new account has to be added to the Bank.
-     */
-    void new_account ();
-
     /** Returns an iterator to the first Account of the collection
      */
     iterator begin ();
