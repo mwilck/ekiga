@@ -92,9 +92,8 @@ LM::Bank::add (xmlNodePtr node)
     save ();
   }
 
-  // FIXME : we should disconnect those when we die (RefLister-like or sigc::trackable)
   account->trigger_saving.connect (sigc::mem_fun (this, &LM::Bank::save));
-  accounts.push_back (account);
+  add_account (account);
 }
 
 void
@@ -113,4 +112,10 @@ LM::Bank::save () const
 LM::Bank::~Bank ()
 {
   std::cout << __PRETTY_FUNCTION__ << std::endl;
+}
+
+bool
+LM::Bank::populate_menu (Ekiga::MenuBuilder& builder)
+{
+  return false; // FIXME
 }

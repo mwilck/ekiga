@@ -35,6 +35,8 @@
 
 #include <iostream>
 
+#include <glib/gi18n.h>
+
 #include "loudmouth-account.h"
 
 /* here come the C callbacks, which just push to C++ code */
@@ -72,6 +74,8 @@ LM::Account::Account (gmref_ptr<Ekiga::PersonalDetails> details_,
 {
   xmlChar* xml_str = NULL;
 
+  status = _("inactive");
+
   if (node == NULL) {
 
     // FIXME: change to saner defaults
@@ -83,6 +87,7 @@ LM::Account::Account (gmref_ptr<Ekiga::PersonalDetails> details_,
     xmlSetProp (node, BAD_CAST "server", BAD_CAST "localhost");
     xmlSetProp (node, BAD_CAST "port", BAD_CAST "5222");
     xmlSetProp (node, BAD_CAST "startup", BAD_CAST "true");
+    status = _("needs configuration");
   }
 
   xml_str = xmlGetProp (node, BAD_CAST "name");
@@ -148,12 +153,12 @@ LM::Account::Account (gmref_ptr<Ekiga::PersonalDetails> details_,
 					 this, NULL);
   if (enable_on_startup) {
 
-    connect ();
+    enable ();
   }
 }
 
 void
-LM::Account::connect ()
+LM::Account::enable ()
 {
   GError *error = NULL;
   {
@@ -167,10 +172,31 @@ LM::Account::connect ()
 			    (LmResultFunction)on_connection_opened_c,
 			    this, NULL, &error)) {
 
-    // FIXME: do better
-    std::cout << error->message << std::endl;
+    gchar* message = NULL;
+
+    message = g_strdup_printf (_("error connecting (%s)"), error->message);
+    status = message;
+    g_free (message);
     g_error_free (error);
+  } else {
+
+    status = _("connecting");
   }
+
+  enable_on_startup = true;
+  trigger_saving.emit ();
+
+  updated.emit ();
+}
+
+void
+LM::Account::disable ()
+{
+
+  enable_on_startup = false;
+  trigger_saving.emit ();
+
+  lm_connection_close (connection, NULL);
 }
 
 LM::Account::~Account ()
@@ -196,11 +222,15 @@ LM::Account::on_connection_opened (bool result)
 {
   if (result) {
 
+    status = _("authenticating");
     lm_connection_authenticate (connection, user.c_str (), password.c_str (), resource.c_str (),
 				(LmResultFunction)on_authenticate_c, this, NULL, NULL);
+    updated.emit ();
   } else {
 
-    std::cout << "Error opening loudmouth connection" << std::endl; // FIXME: do better
+    /* FIXME: can't we report better? */
+    status = _("error connecting");
+    updated.emit ();
   }
 }
 
@@ -211,6 +241,8 @@ LM::Account::on_disconnected (LmDisconnectReason /*reason*/)
 
     heap->disconnected ();
     heap.reset ();
+    status = _("disconnected");
+    updated.emit ();
   }
 }
 
@@ -221,10 +253,14 @@ LM::Account::on_authenticate (bool result)
 
     heap = gmref_ptr<Heap> (new Heap (details, dialect, connection));
     cluster->add_heap (heap);
+    status = _("connected");
+    updated.emit ();
   } else {
 
     lm_connection_close (connection, NULL);
-    std::cout << "Error authenticating loudmouth account" << std::endl;
+    // FIXME: can't we report something better?
+    status = _("error authenticating loudmouth account");
+    updated.emit ();
   }
 }
 
@@ -232,4 +268,20 @@ xmlNodePtr
 LM::Account::get_node () const
 {
   return node;
+}
+
+bool
+LM::Account::populate_menu (Ekiga::MenuBuilder& builder)
+{
+  if (lm_connection_is_open (connection)) {
+
+    builder.add_action ("disable", _("_Disable"),
+			sigc::mem_fun (this, &LM::Account::disable));
+  } else {
+
+    builder.add_action ("enable", _("_Enable"),
+			sigc::mem_fun (this, &LM::Account::enable));
+  }
+
+  return true;
 }

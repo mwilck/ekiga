@@ -38,15 +38,14 @@
 
 #include <libxml/tree.h>
 
-#include "gmref.h"
+#include "account.h"
 
 #include "loudmouth-cluster.h"
 
 namespace LM
 {
 
-  class Account:
-    public virtual GmRefCounted
+  class Account: public Ekiga::Account
   {
   public:
     Account (gmref_ptr<Ekiga::PersonalDetails> details_,
@@ -56,11 +55,21 @@ namespace LM
 
     ~Account ();
 
-    void connect ();
+    void enable ();
+
+    void disable ();
 
     xmlNodePtr get_node () const;
 
     sigc::signal0<void> trigger_saving;
+
+    const std::string get_name () const
+    { return name; }
+
+    const std::string get_status () const
+    { return status; }
+
+    bool populate_menu (Ekiga::MenuBuilder& builder);
 
     /* public only to be called by C callbacks */
     void on_connection_opened (bool result);
@@ -83,6 +92,7 @@ namespace LM
     std::string server;
     unsigned port;
     bool enable_on_startup;
+    std::string status;
 
     LmConnection* connection;
 

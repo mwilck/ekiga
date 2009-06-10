@@ -38,6 +38,7 @@
 #include "loudmouth-main.h"
 
 #include "presence-core.h"
+#include "account-core.h"
 #include "chat-core.h"
 #include "personal-details.h"
 
@@ -55,16 +56,18 @@ struct LOUDMOUTHSpark: public Ekiga::Spark
   {
     gmref_ptr<Ekiga::Service> service(core.get ("loudmouth-bank"));
     gmref_ptr<Ekiga::PresenceCore> presence (core.get ("presence-core"));
+    gmref_ptr<Ekiga::AccountCore> account (core.get ("account-core"));
     gmref_ptr<Ekiga::ChatCore> chat (core.get ("chat-core"));
     gmref_ptr<Ekiga::PersonalDetails> details (core.get ("personal-details"));
 
-    if ( !service && presence && chat && details) {
+    if ( !service && presence && account && chat && details) {
 
       LM::DialectPtr dialect(new LM::Dialect);
       LM::ClusterPtr cluster(new LM::Cluster);
-      gmref_ptr<LM::Bank> bank (new LM::Bank (details, dialect, cluster));
+      LM::BankPtr bank (new LM::Bank (details, dialect, cluster));
       core.add (bank);
       chat->add_dialect (dialect);
+      account->add_bank (bank);
       presence->add_cluster (cluster);
       result = true;
     }

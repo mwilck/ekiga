@@ -38,6 +38,8 @@
 
 #include "services.h"
 
+#include "bank-impl.h"
+
 #include "loudmouth-account.h"
 #include "loudmouth-dialect.h"
 
@@ -45,7 +47,8 @@ namespace LM
 {
 
   class Bank:
-    public Ekiga::Service
+    public Ekiga::Service,
+    public Ekiga::BankImpl<Account>
   {
   public:
     Bank (gmref_ptr<Ekiga::PersonalDetails> details_,
@@ -54,18 +57,23 @@ namespace LM
 
     ~Bank ();
 
+    /* Service */
+
     const std::string get_name () const
     { return "loudmouth-bank"; }
 
     const std::string get_description () const
     { return "\tManager of the XMPP/Jabber accounts"; }
 
+    /* BankImpl */
+
+    bool populate_menu (Ekiga::MenuBuilder& builder);
+
   private:
 
     gmref_ptr<Ekiga::PersonalDetails> details;
     gmref_ptr<Cluster> cluster;
     gmref_ptr<Dialect> dialect;
-    std::list<gmref_ptr<Account> > accounts;
 
     xmlDocPtr doc;
 
@@ -73,6 +81,8 @@ namespace LM
 
     void save () const;
   };
+
+  typedef gmref_ptr<Bank> BankPtr;
 };
 
 #endif
