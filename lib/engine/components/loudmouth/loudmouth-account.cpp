@@ -316,6 +316,18 @@ LM::Account::on_edit_form_submitted (bool submitted,
     enable ();
 }
 
+void
+LM::Account::remove ()
+{
+  disable ();
+
+  xmlUnlinkNode (node);
+  xmlFreeNode (node);
+
+  trigger_saving.emit ();
+  removed.emit ();
+}
+
 bool
 LM::Account::populate_menu (Ekiga::MenuBuilder& builder)
 {
@@ -333,6 +345,8 @@ LM::Account::populate_menu (Ekiga::MenuBuilder& builder)
 
   builder.add_action ("edit", _("Edit"),
 		      sigc::mem_fun (this, &LM::Account::edit));
+  builder.add_action ("remove", _("_Remove"),
+		      sigc::mem_fun (this, &LM::Account::remove));
 
   return true;
 }

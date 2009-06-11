@@ -84,6 +84,8 @@ namespace LM
     void on_edit_form_submitted (bool submitted,
 				 Ekiga::Form &result);
 
+    void remove ();
+
     gmref_ptr<Ekiga::PersonalDetails> details;
     gmref_ptr<Dialect> dialect;
     gmref_ptr<Cluster> cluster;
