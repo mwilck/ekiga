@@ -33,7 +33,10 @@
  *
  */
 
+#include <iostream>
 #include <glib/gi18n.h>
+
+#include "form-request-simple.h"
 
 #include "loudmouth-account.h"
 
@@ -267,6 +270,53 @@ LM::Account::get_node () const
   return node;
 }
 
+void
+LM::Account::edit ()
+{
+  Ekiga::FormRequestSimple request(sigc::mem_fun (this,
+						  &LM::Account::on_edit_form_submitted));
+
+  request.title (_("Edit account"));
+
+  request.instructions (_("Please update the following fields:"));
+
+  request.text ("name", _("Name:"), name);
+  request.text ("user", _("User:"), user);
+  request.text ("server", _("Server:"), server);
+  request.text ("resource", _("Resource:"), resource);
+  request.private_text ("password", _("Password:"), password);
+  request.boolean ("enabled", _("Enable account"), enable_on_startup);
+
+  if (!questions.handle_request (&request)) {
+
+    // FIXME: better error reporting
+#ifdef __GNUC__
+    std::cout << "Unhandled form request in "
+	      << __PRETTY_FUNCTION__ << std::endl;
+#endif
+  }
+}
+
+void
+LM::Account::on_edit_form_submitted (bool submitted,
+				     Ekiga::Form &result)
+{
+  if (!submitted)
+    return;
+
+  disable (); // don't stay connected!
+
+  name = result.text ("name");
+  user = result.text ("user");
+  server = result.text ("server");
+  resource = result.text ("resource");
+  password = result.private_text ("password");
+  enable_on_startup = result.boolean ("enabled");
+
+  if (enable_on_startup)
+    enable ();
+}
+
 bool
 LM::Account::populate_menu (Ekiga::MenuBuilder& builder)
 {
@@ -279,6 +329,11 @@ LM::Account::populate_menu (Ekiga::MenuBuilder& builder)
     builder.add_action ("enable", _("_Enable"),
 			sigc::mem_fun (this, &LM::Account::enable));
   }
+
+  builder.add_separator ();
+
+  builder.add_action ("edit", _("Edit"),
+		      sigc::mem_fun (this, &LM::Account::edit));
 
   return true;
 }

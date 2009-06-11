@@ -80,6 +80,10 @@ namespace LM
 
   private:
 
+    void edit ();
+    void on_edit_form_submitted (bool submitted,
+				 Ekiga::Form &result);
+
     gmref_ptr<Ekiga::PersonalDetails> details;
     gmref_ptr<Dialect> dialect;
     gmref_ptr<Cluster> cluster;
