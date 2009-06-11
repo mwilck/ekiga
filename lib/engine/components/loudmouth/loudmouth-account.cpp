@@ -79,16 +79,15 @@ LM::Account::Account (gmref_ptr<Ekiga::PersonalDetails> details_,
 
   if (node == NULL) {
 
-    // FIXME: change to saner defaults
     node = xmlNewNode (NULL, BAD_CAST "entry");
-    xmlSetProp (node, BAD_CAST "name", BAD_CAST "Premier");
-    xmlSetProp (node, BAD_CAST "user", BAD_CAST "premier");
-    xmlSetProp (node, BAD_CAST "password", BAD_CAST "premier");
+    /* FIXME: make translatable */
+    xmlSetProp (node, BAD_CAST "name", BAD_CAST "Jabber/XMPP account to configure");
+    xmlSetProp (node, BAD_CAST "user", BAD_CAST "username");
+    xmlSetProp (node, BAD_CAST "password", BAD_CAST "");
     xmlSetProp (node, BAD_CAST "resource", BAD_CAST "ekiga");
     xmlSetProp (node, BAD_CAST "server", BAD_CAST "localhost");
     xmlSetProp (node, BAD_CAST "port", BAD_CAST "5222");
-    xmlSetProp (node, BAD_CAST "startup", BAD_CAST "true");
-    status = _("needs configuration");
+    xmlSetProp (node, BAD_CAST "startup", BAD_CAST "false");
   }
 
   xml_str = xmlGetProp (node, BAD_CAST "name");

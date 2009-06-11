@@ -33,6 +33,8 @@
  *
  */
 
+#include <glib/gi18n.h>
+
 #include "gmconf.h"
 
 #include "config.h"
@@ -73,7 +75,6 @@ LM::Bank::Bank (gmref_ptr<Ekiga::PersonalDetails> details_,
     doc = xmlNewDoc (BAD_CAST "1.0");
     xmlNodePtr root = xmlNewDocNode (doc, NULL, BAD_CAST "list", NULL);
     xmlDocSetRootElement (doc, root);
-    add (NULL);
   }
 }
 
@@ -114,5 +115,7 @@ LM::Bank::~Bank ()
 bool
 LM::Bank::populate_menu (Ekiga::MenuBuilder& builder)
 {
-  return false; // FIXME
+  builder.add_action ("add", _("_Add a jabber/XMPP account"),
+		      sigc::bind (sigc::mem_fun (this, &LM::Bank::add), (xmlNodePtr)NULL));
+  return true;
 }
