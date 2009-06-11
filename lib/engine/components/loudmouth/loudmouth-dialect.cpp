@@ -33,8 +33,6 @@
  *
  */
 
-#include <iostream>
-
 #include "loudmouth-dialect.h"
 
 LM::Dialect::Dialect ()
@@ -43,7 +41,6 @@ LM::Dialect::Dialect ()
 
 LM::Dialect::~Dialect ()
 {
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
 }
 
 void

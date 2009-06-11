@@ -118,8 +118,6 @@ LM::Heap::~Heap ()
 
   lm_connection_unref (connection);
   connection = 0;
-
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
 }
 
 const std::string

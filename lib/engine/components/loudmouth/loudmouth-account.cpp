@@ -33,8 +33,6 @@
  *
  */
 
-#include <iostream>
-
 #include <glib/gi18n.h>
 
 #include "loudmouth-account.h"
@@ -201,8 +199,6 @@ LM::Account::disable ()
 
 LM::Account::~Account ()
 {
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
-
   if (heap) {
 
     heap->disconnected ();

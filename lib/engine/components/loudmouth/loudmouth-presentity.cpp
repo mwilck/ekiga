@@ -52,8 +52,6 @@ LM::Presentity::Presentity (LmConnection* connection_,
 
 LM::Presentity::~Presentity ()
 {
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
-
   lm_message_node_unref (item);
   item = 0;
 

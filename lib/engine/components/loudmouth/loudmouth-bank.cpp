@@ -33,8 +33,6 @@
  *
  */
 
-#include <iostream>
-
 #include "gmconf.h"
 
 #include "config.h"
@@ -111,7 +109,6 @@ LM::Bank::save () const
 
 LM::Bank::~Bank ()
 {
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
 }
 
 bool
