@@ -248,6 +248,7 @@ LM::Account::on_authenticate (bool result)
   if (result) {
 
     heap = gmref_ptr<Heap> (new Heap (details, dialect, connection));
+    heap->set_name (name);
     cluster->add_heap (heap);
     status = _("connected");
     updated.emit ();

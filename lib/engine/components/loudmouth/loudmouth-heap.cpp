@@ -123,7 +123,14 @@ LM::Heap::~Heap ()
 const std::string
 LM::Heap::get_name () const
 {
-  return lm_connection_get_jid (connection);
+  return name;
+}
+
+void
+LM::Heap::set_name (const std::string name_)
+{
+  name = name_;
+  updated.emit ();
 }
 
 bool
@@ -191,14 +198,14 @@ LM::Heap::presence_handler (LmMessage* message)
     Ekiga::FormRequestSimple request (sigc::mem_fun (this, &LM::Heap::subscribe_from_form_submitted));
     LmMessageNode* status = lm_message_node_find_child (lm_message_get_node (message), "status");
     gchar* instructions = NULL;
-    std::string name;
+    std::string item_name;
 
     if (item) {
 
-      name = item->get_name ();
+      item_name = item->get_name ();
     } else {
 
-      name = base_jid;
+      item_name = base_jid;
     }
 
     request.title (_("Authorization to see your presence"));
@@ -206,10 +213,11 @@ LM::Heap::presence_handler (LmMessage* message)
     if (status != NULL && lm_message_node_get_value (status) != NULL) {
 
       instructions = g_strdup_printf (_("%s asks the permission to see your presence, saying: \"%s\"."),
-				      name.c_str (), lm_message_node_get_value (status));
+				      item_name.c_str (), lm_message_node_get_value (status));
     } else {
 
-      instructions = g_strdup_printf (_("%s asks the permission to see your presence."), name.c_str ());
+      instructions = g_strdup_printf (_("%s asks the permission to see your presence."),
+				      item_name.c_str ());
     }
     request.instructions (instructions);
     g_free (instructions);

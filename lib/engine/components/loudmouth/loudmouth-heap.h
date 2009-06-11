@@ -63,6 +63,10 @@ namespace LM
 
     void disconnected ();
 
+    /* public to be accessed by the account */
+
+    void set_name (const std::string name_);
+
     /* public to be accessed by C callbacks */
 
     LmHandlerResult iq_handler (LmMessage* message);
@@ -76,6 +80,8 @@ namespace LM
     gmref_ptr<Ekiga::PersonalDetails> details;
 
     DialectPtr dialect;
+
+    std::string name;
 
     LmConnection* connection;
 
