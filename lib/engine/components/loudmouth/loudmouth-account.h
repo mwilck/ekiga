@@ -63,11 +63,9 @@ namespace LM
 
     sigc::signal0<void> trigger_saving;
 
-    const std::string get_name () const
-    { return name; }
+    const std::string get_name () const;
 
-    const std::string get_status () const
-    { return status; }
+    const std::string get_status () const;
 
     bool populate_menu (Ekiga::MenuBuilder& builder);
 
@@ -91,13 +89,6 @@ namespace LM
     gmref_ptr<Cluster> cluster;
     xmlNodePtr node;
 
-    std::string name;
-    std::string user;
-    std::string password;
-    std::string resource;
-    std::string server;
-    unsigned port;
-    bool enable_on_startup;
     std::string status;
 
     LmConnection* connection;

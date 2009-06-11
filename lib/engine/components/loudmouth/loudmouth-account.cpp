@@ -74,6 +74,7 @@ LM::Account::Account (gmref_ptr<Ekiga::PersonalDetails> details_,
   details(details_), dialect(dialect_), cluster(cluster_), node(node_)
 {
   xmlChar* xml_str = NULL;
+  bool enable_on_startup = false;
 
   status = _("inactive");
 
@@ -90,51 +91,6 @@ LM::Account::Account (gmref_ptr<Ekiga::PersonalDetails> details_,
     xmlSetProp (node, BAD_CAST "startup", BAD_CAST "false");
   }
 
-  xml_str = xmlGetProp (node, BAD_CAST "name");
-  if (xml_str != NULL) {
-
-    name = (const char*)xml_str;
-    xmlFree (xml_str);
-  }
-
-  xml_str = xmlGetProp (node, BAD_CAST "user");
-  if (xml_str != NULL) {
-
-    user = (const char*)xml_str;
-    xmlFree (xml_str);
-  }
-
-  xml_str = xmlGetProp (node, BAD_CAST "password");
-  if (xml_str != NULL) {
-
-    password = (const char*)xml_str;
-    xmlFree (xml_str);
-  }
-
-  xml_str = xmlGetProp (node, BAD_CAST "resource");
-  if (xml_str != NULL) {
-
-    resource = (const char*)xml_str;
-    xmlFree (xml_str);
-  }
-
-  xml_str = xmlGetProp (node, BAD_CAST "server");
-  if (xml_str != NULL) {
-
-    server = (const char*)xml_str;
-    xmlFree (xml_str);
-  }
-
-  xml_str = xmlGetProp (node, BAD_CAST "port");
-  if (xml_str != NULL) {
-
-    port = atoi ((const char*)xml_str);
-    xmlFree (xml_str);
-  } else {
-
-    port = 5222;
-  }
-
   xml_str = xmlGetProp (node, BAD_CAST "startup");
   if (xml_str != NULL) {
 
@@ -145,8 +101,8 @@ LM::Account::Account (gmref_ptr<Ekiga::PersonalDetails> details_,
 
       enable_on_startup = false;
     }
-    xmlFree (xml_str);
   }
+  xmlFree (xml_str);
 
   connection = lm_connection_new (NULL);
   lm_connection_set_disconnect_function (connection, (LmDisconnectFunction)on_disconnected_c,
@@ -161,13 +117,31 @@ void
 LM::Account::enable ()
 {
   GError *error = NULL;
+  xmlChar* server =  NULL;
+  unsigned port = 5222;
+
+  server = xmlGetProp (node, BAD_CAST "server");
+  {
+    xmlChar* port_str = xmlGetProp (node, BAD_CAST "port");
+
+    port = atoi ((const char*)port_str);
+    xmlFree (port_str);
+  }
+
   {
     gchar* jid = NULL;
-    jid = g_strdup_printf ("%s@%s/%s", user.c_str (), server.c_str (), resource.c_str ());
+    xmlChar* user = NULL;
+    xmlChar* resource = NULL;
+    user = xmlGetProp (node, BAD_CAST "user");
+    resource = xmlGetProp (node, BAD_CAST "resource");
+    jid = g_strdup_printf ("%s@%s/%s", user, server, resource);
     lm_connection_set_jid (connection, jid);
     g_free (jid);
+    xmlFree (user);
+    xmlFree (resource);
   }
-  lm_connection_set_server (connection, server.c_str ());
+  lm_connection_set_server (connection, (const char*)server);
+  lm_connection_set_port (connection, port);
   if ( !lm_connection_open (connection,
 			    (LmResultFunction)on_connection_opened_c,
 			    this, NULL, &error)) {
@@ -183,7 +157,9 @@ LM::Account::enable ()
     status = _("connecting");
   }
 
-  enable_on_startup = true;
+  xmlFree (server);
+
+  xmlSetProp (node, BAD_CAST "startup", BAD_CAST "true");
   trigger_saving.emit ();
 
   updated.emit ();
@@ -192,8 +168,7 @@ LM::Account::enable ()
 void
 LM::Account::disable ()
 {
-
-  enable_on_startup = false;
+  xmlSetProp (node, BAD_CAST "startup", BAD_CAST "false");
   trigger_saving.emit ();
 
   lm_connection_close (connection, NULL);
@@ -220,9 +195,15 @@ LM::Account::on_connection_opened (bool result)
 {
   if (result) {
 
+    xmlChar* user = xmlGetProp (node, BAD_CAST "user");
+    xmlChar* password = xmlGetProp (node, BAD_CAST "password");
+    xmlChar* resource = xmlGetProp (node, BAD_CAST "resource");
     status = _("authenticating");
-    lm_connection_authenticate (connection, user.c_str (), password.c_str (), resource.c_str (),
+    lm_connection_authenticate (connection, (const char*)user,
+				(const char*)password, (const char*)resource,
 				(LmResultFunction)on_authenticate_c, this, NULL, NULL);
+    xmlFree (password);
+    xmlFree (resource);
     updated.emit ();
   } else {
 
@@ -250,7 +231,11 @@ LM::Account::on_authenticate (bool result)
   if (result) {
 
     heap = gmref_ptr<Heap> (new Heap (details, dialect, connection));
-    heap->set_name (name);
+    {
+      xmlChar *xml_str = xmlGetProp (node, BAD_CAST "name");
+      heap->set_name ((const char*)xml_str);
+      xmlFree (xml_str);
+    }
     cluster->add_heap (heap);
     status = _("connected");
     updated.emit ();
@@ -274,16 +259,43 @@ LM::Account::edit ()
 {
   Ekiga::FormRequestSimple request(sigc::mem_fun (this,
 						  &LM::Account::on_edit_form_submitted));
+  xmlChar* xml_str = NULL;
 
   request.title (_("Edit account"));
 
   request.instructions (_("Please update the following fields:"));
 
-  request.text ("name", _("Name:"), name);
-  request.text ("user", _("User:"), user);
-  request.text ("server", _("Server:"), server);
-  request.text ("resource", _("Resource:"), resource);
-  request.private_text ("password", _("Password:"), password);
+  xml_str = xmlGetProp (node, BAD_CAST "name");
+  request.text ("name", _("Name:"), (const char*)xml_str);
+  xmlFree (xml_str);
+
+  xml_str = xmlGetProp (node, BAD_CAST "user");
+  request.text ("user", _("User:"), (const char*)xml_str);
+  xmlFree (xml_str);
+
+  xml_str = xmlGetProp (node, BAD_CAST "server");
+  request.text ("server", _("Server:"), (const char*)xml_str);
+  xmlFree (xml_str);
+
+  xml_str = xmlGetProp (node, BAD_CAST "resource");
+  request.text ("resource", _("Resource:"), (const char*)xml_str);
+  xmlFree (xml_str);
+
+  xml_str = xmlGetProp (node, BAD_CAST "password");
+  request.private_text ("password", _("Password:"), (const char*)xml_str);
+  xmlFree (xml_str);
+
+  xml_str = xmlGetProp (node, BAD_CAST "startup");
+  bool enable_on_startup = false;
+  if (xmlStrEqual (xml_str, BAD_CAST "true")) {
+
+    enable_on_startup = true;
+  } else {
+
+    enable_on_startup = false;
+
+  }
+  xmlFree (xml_str);
   request.boolean ("enabled", _("Enable account"), enable_on_startup);
 
   if (!questions.handle_request (&request)) {
@@ -305,15 +317,28 @@ LM::Account::on_edit_form_submitted (bool submitted,
 
   disable (); // don't stay connected!
 
-  name = result.text ("name");
-  user = result.text ("user");
-  server = result.text ("server");
-  resource = result.text ("resource");
-  password = result.private_text ("password");
-  enable_on_startup = result.boolean ("enabled");
+  std::string name = result.text ("name");
+  std::string user = result.text ("user");
+  std::string server = result.text ("server");
+  std::string resource = result.text ("resource");
+  std::string password = result.private_text ("password");
+  bool enable_on_startup = result.boolean ("enabled");
 
-  if (enable_on_startup)
+  xmlSetProp (node, BAD_CAST "name", BAD_CAST name.c_str ());
+  xmlSetProp (node, BAD_CAST "user", BAD_CAST user.c_str ());
+  xmlSetProp (node, BAD_CAST "server", BAD_CAST server.c_str ());
+  xmlSetProp (node, BAD_CAST "resource", BAD_CAST resource.c_str ());
+  xmlSetProp (node, BAD_CAST "password", BAD_CAST password.c_str ());
+
+  if (enable_on_startup) {
+
+    xmlSetProp (node, BAD_CAST "startup", BAD_CAST "true");
     enable ();
+  } else {
+
+    xmlSetProp (node, BAD_CAST "startup", BAD_CAST "false");
+    updated.emit ();
+  }
 }
 
 void
@@ -349,4 +374,23 @@ LM::Account::populate_menu (Ekiga::MenuBuilder& builder)
 		      sigc::mem_fun (this, &LM::Account::remove));
 
   return true;
+}
+
+const std::string
+LM::Account::get_status () const
+{
+  return status;
+}
+
+const std::string
+LM::Account::get_name () const
+{
+  std::string name;
+  xmlChar* xml_str = xmlGetProp (node, BAD_CAST "name");
+
+  name = (const char*)xml_str;
+
+  xmlFree (xml_str);
+
+  return name;
 }
