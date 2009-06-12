@@ -38,11 +38,18 @@
 #include "config.h"
 
 #include "opal-main.h"
+
 #include "bank.h"
 #include "contact-core.h"
 #include "presence-core.h"
 #include "call-core.h"
 #include "chat-core.h"
+#include "audioinput-core.h"
+#include "audiooutput-core.h"
+#include "videoinput-core.h"
+#include "videooutput-core.h"
+#include "personal-details.h"
+
 #include "opal-gmconf-bridge.h"
 #include "opal-account.h"
 #include "opal-bank.h"
@@ -101,8 +108,18 @@ struct OPALSpark: public Ekiga::Spark
     gmref_ptr<Ekiga::CallCore> call_core = core.get ("call-core");
     gmref_ptr<Ekiga::ChatCore> chat_core = core.get ("chat-core");
     gmref_ptr<Ekiga::AccountCore> account_core = core.get ("account-core");
+    gmref_ptr<Ekiga::AudioInputCore> audioinput_core = core.get ("audioinput-core");
+    gmref_ptr<Ekiga::VideoInputCore> videoinput_core = core.get ("videoinput-core");
+    gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core = core.get ("audiooutput-core");
+    gmref_ptr<Ekiga::VideoOutputCore> videooutput_core = core.get ("videooutput-core");
+    gmref_ptr<Ekiga::PersonalDetails> personal_details = core.get ("personal-details");
+    gmref_ptr<Ekiga::Service> account_store = core.get ("opal-account-store");
+    gmref_ptr<Ekiga::Service> sip_endpoint = core.get ("opal-sip-endpoint");
 
-    if (contact_core && presence_core && call_core && chat_core && account_core) {
+    if (contact_core && presence_core && call_core && chat_core
+	&& account_core && audioinput_core && videoinput_core
+	&& audiooutput_core && videooutput_core && personal_details
+	&& !account_store && !sip_endpoint) {
 
       gmref_ptr<CallManager> call_manager (new CallManager (core));
 
