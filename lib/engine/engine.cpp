@@ -140,7 +140,7 @@ engine_init (int argc,
   Ekiga::KickStart kickstart;
 
 
-  service_core->add (gmref_ptr<Ekiga::Service>(new Ekiga::NotificationCore));
+  service_core->add (Ekiga::ServicePtr(new Ekiga::NotificationCore));
 
   /* VideoInputCore depends on VideoOutputCore and must this              *
    * be constructed thereafter                                      */

@@ -56,8 +56,8 @@ struct HALDBUSSpark: public Ekiga::Spark
       HalManager_dbus *hal_manager = new HalManager_dbus(core);
 
       hal_core->add_manager (*hal_manager);
-      core.add (gmref_ptr<Ekiga::Service> (new Ekiga::BasicService ("hal-dbus",
-								    "\tComponent bringing HAL through DBUS")));
+      core.add (Ekiga::ServicePtr (new Ekiga::BasicService ("hal-dbus",
+							    "\tComponent bringing HAL through DBUS")));
       result = true;
     }
 

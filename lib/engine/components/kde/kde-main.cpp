@@ -54,7 +54,7 @@ struct KDESpark: public Ekiga::Spark
 			    int* /*argc*/,
 			    char** /*argv*/[])
   {
-    gmref_ptr<Ekiga::Service> kde = core.get ("kde-core");
+    Ekiga::ServicePtr kde = core.get ("kde-core");
 
     if ( !kde) {
 
@@ -65,8 +65,8 @@ struct KDESpark: public Ekiga::Spark
 
       KCmdLineArgs::init (&about);
       new KApplication (false);
-      core.add (gmref_ptr<Ekiga::Service> (new Ekiga::BasicService ("kde-core",
-								    "\tKDE support")));
+      core.add (Ekiga::ServicePtr (new Ekiga::BasicService ("kde-core",
+							    "\tKDE support")));
       result = true;
     }
 

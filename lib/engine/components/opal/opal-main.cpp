@@ -113,8 +113,8 @@ struct OPALSpark: public Ekiga::Spark
     gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core = core.get ("audiooutput-core");
     gmref_ptr<Ekiga::VideoOutputCore> videooutput_core = core.get ("videooutput-core");
     gmref_ptr<Ekiga::PersonalDetails> personal_details = core.get ("personal-details");
-    gmref_ptr<Ekiga::Service> account_store = core.get ("opal-account-store");
-    gmref_ptr<Ekiga::Service> sip_endpoint = core.get ("opal-sip-endpoint");
+    Ekiga::ServicePtr account_store = core.get ("opal-account-store");
+    Ekiga::ServicePtr sip_endpoint = core.get ("opal-sip-endpoint");
 
     if (contact_core && presence_core && call_core && chat_core
 	&& account_core && audioinput_core && videoinput_core

@@ -62,6 +62,7 @@ namespace Ekiga
 
     virtual const std::string get_description () const = 0;
   };
+  typedef gmref_ptr<Service> ServicePtr;
 
 
   class ServiceCore
@@ -72,17 +73,18 @@ namespace Ekiga
 
     ~ServiceCore ();
 
-    bool add (gmref_ptr<Service> service);
+    bool add (ServicePtr service);
 
-    gmref_ptr<Service> get (const std::string name);
+    ServicePtr get (const std::string name);
 
     void dump (std::ostream &stream) const;
 
-    sigc::signal1<void, gmref_ptr<Service> > service_added;
+    sigc::signal1<void, ServicePtr> service_added;
 
   private:
 
-    std::list<gmref_ptr<Service> > services;
+    typedef std::list<ServicePtr> services_type;
+    services_type services;
 
   };
 

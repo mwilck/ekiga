@@ -48,7 +48,7 @@ struct AVAHISpark: public Ekiga::Spark
 			    int* /*argc*/,
 			    char** /*argv*/[])
   {
-    gmref_ptr<Ekiga::Service> service = core.get ("avahi-core");
+    Ekiga::ServicePtr service = core.get ("avahi-core");
     gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
 
     if ( !service && presence_core) {

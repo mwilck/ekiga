@@ -82,11 +82,11 @@ struct LIBNOTIFYSpark: public Ekiga::Spark
 			    char** /*argv*/[])
   {
     gmref_ptr<Ekiga::NotificationCore> notification = core.get ("notification-core");
-    gmref_ptr<Ekiga::Service> service = core.get ("libnotify");
+    Ekiga::ServicePtr service = core.get ("libnotify");
 
     if (notification && !service) {
 
-      core.add (gmref_ptr<Ekiga::Service> (new LibNotify (notification)));
+      core.add (Ekiga::ServicePtr (new LibNotify (notification)));
       result = true;
     }
 

@@ -54,7 +54,7 @@ struct LOUDMOUTHSpark: public Ekiga::Spark
 			    int* /*argc*/,
 			    char** /*argv*/[])
   {
-    gmref_ptr<Ekiga::Service> service(core.get ("loudmouth-bank"));
+    Ekiga::ServicePtr service(core.get ("loudmouth-bank"));
     gmref_ptr<Ekiga::PresenceCore> presence (core.get ("presence-core"));
     gmref_ptr<Ekiga::AccountCore> account (core.get ("account-core"));
     gmref_ptr<Ekiga::ChatCore> chat (core.get ("chat-core"));

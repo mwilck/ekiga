@@ -112,7 +112,7 @@ struct LOCALROSTERBRIDGESpark: public Ekiga::Spark
 			    int* /*argc*/,
 			    char** /*argv*/[])
   {
-    gmref_ptr<Ekiga::Service> service = core.get ("local-roster-bridge");
+    Ekiga::ServicePtr service = core.get ("local-roster-bridge");
     gmref_ptr<Ekiga::ContactCore> contact_core = core.get ("contact-core");
     gmref_ptr<Local::Cluster> cluster = core.get ("local-cluster");
 

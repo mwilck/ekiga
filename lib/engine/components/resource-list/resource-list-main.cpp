@@ -50,7 +50,7 @@ struct RLSpark: public Ekiga::Spark
 			    int* /*argc*/,
 			    char** /*argv*/[])
   {
-    gmref_ptr<Ekiga::Service> service = core.get ("resource-list");
+    Ekiga::ServicePtr service = core.get ("resource-list");
     gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
     gmref_ptr<XCAP::Core> xcap = core.get ("xcap-core");
 

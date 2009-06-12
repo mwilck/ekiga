@@ -56,8 +56,8 @@ struct PTLIBAUDIOINPUTSpark: public Ekiga::Spark
       GMAudioInputManager_ptlib *audioinput_manager = new GMAudioInputManager_ptlib(core);
 
       audioinput_core->add_manager (*audioinput_manager);
-      core.add (gmref_ptr<Ekiga::Service> (new Ekiga::BasicService ("ptlib-audio-input",
-								    "\tComponent bringing PTLIB's audio input")));
+      core.add (Ekiga::ServicePtr (new Ekiga::BasicService ("ptlib-audio-input",
+							    "\tComponent bringing PTLIB's audio input")));
       result = true;
     }
 

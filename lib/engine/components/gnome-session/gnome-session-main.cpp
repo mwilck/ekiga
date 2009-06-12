@@ -82,12 +82,12 @@ struct GNOMESESSIONSpark: public Ekiga::Spark
 			    char** /*argv*/[])
   {
     gmref_ptr<Ekiga::CallCore> call_core = core.get ("call-core");
-    gmref_ptr<Ekiga::Service> service = core.get ("gnome-session");
+    Ekiga::ServicePtr service = core.get ("gnome-session");
 
     if (call_core && !service) {
 
       result = true;
-      core.add (gmref_ptr<Ekiga::Service> (new GNOMESESSIONService (call_core)));
+      core.add (Ekiga::ServicePtr (new GNOMESESSIONService (call_core)));
     }
 
     return result;

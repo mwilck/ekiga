@@ -48,7 +48,7 @@ struct KABSpark: public Ekiga::Spark
 			    int* /*argc*/,
 			    char** /*argv*/[])
   {
-    gmref_ptr<Ekiga::Service> kde_core = core.get ("kde-core");
+    Ekiga::ServicePtr kde_core = core.get ("kde-core");
     gmref_ptr<Ekiga::ContactCore> contact_core = core.get ("contact-core");
 
     if (contact_core && kde_core) {

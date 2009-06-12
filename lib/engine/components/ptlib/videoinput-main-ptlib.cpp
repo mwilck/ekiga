@@ -56,8 +56,8 @@ struct PTLIBVIDEOINPUTSpark: public Ekiga::Spark
       GMVideoInputManager_ptlib *videoinput_manager = new GMVideoInputManager_ptlib(core);
 
       videoinput_core->add_manager (*videoinput_manager);
-      core.add (gmref_ptr<Ekiga::Service> (new Ekiga::BasicService ("ptlib-video-input",
-								    "\tComponent bringing PTLIB's video input")));
+      core.add (Ekiga::ServicePtr (new Ekiga::BasicService ("ptlib-video-input",
+							    "\tComponent bringing PTLIB's video input")));
       result = true;
     }
 

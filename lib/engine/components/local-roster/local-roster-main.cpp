@@ -48,7 +48,7 @@ struct LOCALROSTERSpark: public Ekiga::Spark
 			    int* /*argc*/,
 			    char** /*argv*/[])
   {
-    gmref_ptr<Ekiga::Service> service = core.get ("local-cluster");
+    Ekiga::ServicePtr service = core.get ("local-cluster");
     gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
 
     if (presence_core && !service) {

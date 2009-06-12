@@ -47,7 +47,7 @@ Ekiga::ServiceCore::~ServiceCore ()
 }
 
 bool
-Ekiga::ServiceCore::add (gmref_ptr<Service> service)
+Ekiga::ServiceCore::add (ServicePtr service)
 {
   bool result = false;
 
@@ -64,12 +64,12 @@ Ekiga::ServiceCore::add (gmref_ptr<Service> service)
   return result;
 }
 
-gmref_ptr<Ekiga::Service>
+Ekiga::ServicePtr
 Ekiga::ServiceCore::get (const std::string name)
 {
-  gmref_ptr<Service> result;
+  ServicePtr result;
 
-  for (std::list<gmref_ptr<Service> >::iterator iter = services.begin ();
+  for (services_type::iterator iter = services.begin ();
        iter != services.end () && !result;
        iter++)
     if (name == (*iter)->get_name ()) {
@@ -82,8 +82,7 @@ Ekiga::ServiceCore::get (const std::string name)
 void
 Ekiga::ServiceCore::dump (std::ostream &stream) const
 {
-  for (std::list<gmref_ptr<Service> >::const_reverse_iterator iter
-	 = services.rbegin ();
+  for (services_type::const_reverse_iterator iter = services.rbegin ();
        iter != services.rend ();
        iter++)
     stream << (*iter)->get_name ()

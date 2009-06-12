@@ -49,7 +49,7 @@ struct HISTORYSpark: public Ekiga::Spark
 			    int* /*argc*/,
 			    char** /*argv*/[])
   {
-    gmref_ptr<Ekiga::Service> service = core.get ("call-history-store");
+    Ekiga::ServicePtr service = core.get ("call-history-store");
     gmref_ptr<Ekiga::ContactCore> contact_core = core.get ("contact-core");
     gmref_ptr<Ekiga::CallCore> call_core = core.get ("call-core");
 
