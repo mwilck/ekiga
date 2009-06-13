@@ -49,13 +49,17 @@ struct NULLAUDIOOUTPUTSpark: public Ekiga::Spark
 			    int* /*argc*/,
 			    char** /*argv*/[])
   {
+    Ekiga::ServicePtr service = core.get ("null-audio-output");
     gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core = core.get ("audiooutput-core");
 
-    if (audiooutput_core) {
+    if (audiooutput_core && !service) {
 
-      GMAudioOutputManager_null *audiooutput_manager = new GMAudioOutputManager_null(core);
+      GMAudioOutputManager_null* audiooutput_manager = new GMAudioOutputManager_null(core);
+      service = Ekiga::ServicePtr (new Ekiga::BasicService ("audio-output-null",
+							    "\tObject bringing in the null audio output"));
 
       audiooutput_core->add_manager (*audiooutput_manager);
+      core.add (service);
       result = true;
     }
 
