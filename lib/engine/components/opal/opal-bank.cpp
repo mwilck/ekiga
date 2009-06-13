@@ -39,7 +39,6 @@
 
 #include <string.h>
 #include <stdlib.h>
-#include <iostream>
 #include <sstream>
 
 #include <glib/gi18n.h>
@@ -90,64 +89,59 @@ Opal::Bank::new_account (Account::Type acc_type,
 			 std::string username,
 			 std::string password)
 {
-  Ekiga::FormRequestSimple request(sigc::bind (sigc::mem_fun (this, &Opal::Bank::on_new_account_form_submitted), acc_type));
+  gmref_ptr<Ekiga::FormRequestSimple> request = gmref_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::bind (sigc::mem_fun (this, &Opal::Bank::on_new_account_form_submitted), acc_type)));
 
-  request.title (_("Edit account"));
-  request.instructions (_("Please update the following fields."));
+  request->title (_("Edit account"));
+  request->instructions (_("Please update the following fields."));
 
   switch (acc_type) {
 
   case Opal::Account::Ekiga:
-    request.link (_("Get an Ekiga.net SIP account"), "http://www.ekiga.net");
-    request.hidden ("name", "Ekiga.net");
-    request.hidden ("host", "ekiga.net");
-    request.text ("user", _("_User:"), username);
-    request.hidden ("authentication_user", username);
-    request.private_text ("password", _("_Password:"), password);
-    request.hidden ("timeout", "3600");
+    request->link (_("Get an Ekiga.net SIP account"), "http://www.ekiga.net");
+    request->hidden ("name", "Ekiga.net");
+    request->hidden ("host", "ekiga.net");
+    request->text ("user", _("_User:"), username);
+    request->hidden ("authentication_user", username);
+    request->private_text ("password", _("_Password:"), password);
+    request->hidden ("timeout", "3600");
     break;
 
   case Opal::Account::DiamondCard:
-    request.link (_("Get an Ekiga Call Out account"),
-                  "https://www.diamondcard.us/exec/voip-login?act=sgn&spo=ekiga");
-    request.hidden ("name", "Ekiga Call Out");
-    request.hidden ("host", "sip.diamondcard.us");
-    request.text ("user", _("_Account ID:"), username);
-    request.hidden ("authentication_user", username);
-    request.private_text ("password", _("_PIN Code:"), password);
-    request.hidden ("timeout", "3600");
+    request->link (_("Get an Ekiga Call Out account"),
+		   "https://www.diamondcard.us/exec/voip-login?act=sgn&spo=ekiga");
+    request->hidden ("name", "Ekiga Call Out");
+    request->hidden ("host", "sip.diamondcard.us");
+    request->text ("user", _("_Account ID:"), username);
+    request->hidden ("authentication_user", username);
+    request->private_text ("password", _("_PIN Code:"), password);
+    request->hidden ("timeout", "3600");
     break;
 
   case Opal::Account::H323:
-    request.text ("name", _("_Name:"), std::string ());
-    request.text ("host", _("_Gatekeeper:"), std::string ());
-    request.text ("user", _("_User:"), username);
-    request.hidden ("authentication_user", username);
-    request.private_text ("password", _("_Password:"), password);
-    request.text ("timeout", _("_Timeout:"), "3600");
+    request->text ("name", _("_Name:"), std::string ());
+    request->text ("host", _("_Gatekeeper:"), std::string ());
+    request->text ("user", _("_User:"), username);
+    request->hidden ("authentication_user", username);
+    request->private_text ("password", _("_Password:"), password);
+    request->text ("timeout", _("_Timeout:"), "3600");
     break;
 
   case Opal::Account::SIP:
   default:
-    request.text ("name", _("_Name:"), std::string ());
-    request.text ("host", _("_Registrar:"), std::string ());
-    request.text ("user", _("_User:"), username);
-    request.text ("authentication_user", _("_Authentication User:"), std::string ());
-    request.private_text ("password", _("_Password:"), password);
-    request.text ("timeout", _("_Timeout:"), "3600");
+    request->text ("name", _("_Name:"), std::string ());
+    request->text ("host", _("_Registrar:"), std::string ());
+    request->text ("user", _("_User:"), username);
+    request->text ("authentication_user", _("_Authentication User:"), std::string ());
+    request->private_text ("password", _("_Password:"), password);
+    request->text ("timeout", _("_Timeout:"), "3600");
     break;
   }
-  request.boolean ("enabled", _("Enable Account"), true);
+  request->boolean ("enabled", _("Enable Account"), true);
 
   if (!username.empty () && !password.empty ())
-    request.submit (request);
+    request->submit (*request);
   else
-    if (!questions.handle_request (&request)) {
-#ifdef __GNUC__
-      std::cout << "Unhandled form request in "
-		<< __PRETTY_FUNCTION__ << std::endl;
-#endif
-    }
+    questions.handle_request (request);
 }
 
 
@@ -158,7 +152,7 @@ void Opal::Bank::on_new_account_form_submitted (bool submitted,
   if (!submitted)
     return;
 
-  Ekiga::FormRequestSimple request(sigc::bind (sigc::mem_fun (this, &Opal::Bank::on_new_account_form_submitted) ,acc_type));
+  gmref_ptr<Ekiga::FormRequestSimple> request = gmref_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::bind (sigc::mem_fun (this, &Opal::Bank::on_new_account_form_submitted) ,acc_type)));
 
   std::string error;
   std::string new_name = (acc_type == Opal::Account::SIP
@@ -173,7 +167,7 @@ void Opal::Bank::on_new_account_form_submitted (bool submitted,
 				|| acc_type == Opal::Account::H323) ?
 			       result.text ("timeout").c_str () : result.hidden ("timeout").c_str ());
 
-  result.visit (request);
+  result.visit (*request);
 
   if (new_name.empty ())
     error = _("You did not supply a name for that account.");
@@ -185,14 +179,9 @@ void Opal::Bank::on_new_account_form_submitted (bool submitted,
     error = _("The timeout should have a bigger value.");
 
   if (!error.empty ()) {
-    request.error (error);
+    request->error (error);
 
-    if (!questions.handle_request (&request)) {
-#ifdef __GNUC__
-      std::cout << "Unhandled form request in "
-		<< __PRETTY_FUNCTION__ << std::endl;
-#endif
-    }
+    questions.handle_request (request);
   }
   else {
 

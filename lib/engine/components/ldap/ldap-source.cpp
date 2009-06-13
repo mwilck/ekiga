@@ -37,7 +37,6 @@
  */
 
 #include <cstdlib>
-#include <iostream>
 #include <string.h>
 
 #include "config.h"
@@ -137,7 +136,7 @@ OPENLDAP::Source::populate_menu (Ekiga::MenuBuilder &builder)
 void
 OPENLDAP::Source::new_book ()
 {
-  Ekiga::FormRequestSimple request(sigc::mem_fun (this, &OPENLDAP::Source::on_new_book_form_submitted));
+  gmref_ptr<Ekiga::FormRequestSimple> request = gmref_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &OPENLDAP::Source::on_new_book_form_submitted)));
 
   bookinfo.name = "";
   bookinfo.uri = "ldap://localhost/dc=net?cn,telephoneNumber?sub?(cn=$)",
@@ -151,14 +150,7 @@ OPENLDAP::Source::new_book ()
   OPENLDAP::BookInfoParse (bookinfo);
   OPENLDAP::BookForm (request, bookinfo, _("Create LDAP directory"));
 
-  if (!questions.handle_request (&request)) {
-
-    // FIXME: better error reporting
-#ifdef __GNUC__
-    std::cout << "Unhandled form request in "
-	      << __PRETTY_FUNCTION__ << std::endl;
-#endif
-  }
+  questions.handle_request (request);
 }
 
 void
@@ -188,19 +180,12 @@ OPENLDAP::Source::on_new_book_form_submitted (bool submitted,
   std::string errmsg;
 
   if (OPENLDAP::BookFormInfo (result, bookinfo, errmsg)) {
-    Ekiga::FormRequestSimple request(sigc::mem_fun (this, &OPENLDAP::Source::on_new_book_form_submitted));
+    gmref_ptr<Ekiga::FormRequestSimple> request = gmref_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &OPENLDAP::Source::on_new_book_form_submitted)));
 
-    result.visit (request);
-    request.error (errmsg);
+    result.visit (*request);
+    request->error (errmsg);
 
-    if (!questions.handle_request (&request)) {
-
-      // FIXME: better error reporting
-#ifdef __GNUC__
-      std::cout << "Unhandled form request in "
-		<< __PRETTY_FUNCTION__ << std::endl;
-#endif
-    }
+    questions.handle_request (request);
     return;
   }
 

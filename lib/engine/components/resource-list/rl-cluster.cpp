@@ -161,26 +161,19 @@ RL::Cluster::new_heap (const std::string name,
 		       const std::string user,
 		       bool writable)
 {
-  Ekiga::FormRequestSimple request(sigc::mem_fun (this, &RL::Cluster::on_new_heap_form_submitted));
+  gmref_ptr<Ekiga::FormRequestSimple> request = gmref_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &RL::Cluster::on_new_heap_form_submitted)));
 
-  request.title (_("Add new resource-list"));
-  request.instructions (_("Please fill in this form to add a new "
-			  "contact list to ekiga's remote roster"));
-  request.text ("name", _("Name:"), name);
-  request.text ("uri", _("Address:"), uri);
-  request.boolean ("writable", _("Writable:"), writable);
-  request.text ("username", _("Username:"), username);
-  request.private_text ("password", _("Password:"), password);
-  request.text ("user", _("User:"), user);
+  request->title (_("Add new resource-list"));
+  request->instructions (_("Please fill in this form to add a new "
+			   "contact list to ekiga's remote roster"));
+  request->text ("name", _("Name:"), name);
+  request->text ("uri", _("Address:"), uri);
+  request->boolean ("writable", _("Writable:"), writable);
+  request->text ("username", _("Username:"), username);
+  request->private_text ("password", _("Password:"), password);
+  request->text ("user", _("User:"), user);
 
-  if (!questions.handle_request (&request)) {
-
-    // FIXME: better error reporting
-#ifdef __GNUC__
-    std::cout << "Unhandled form request in "
-	      << __PRETTY_FUNCTION__ << std::endl;
-#endif
-  }
+  questions.handle_request (request);
 }
 
 void

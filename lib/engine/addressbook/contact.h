@@ -108,7 +108,7 @@ namespace Ekiga
 
     /** This chain allows the Contact to present forms to the user
      */
-    ChainOfResponsibility<FormRequest*> questions;
+    ChainOfResponsibility<FormRequestPtr> questions;
   };
 
 

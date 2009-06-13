@@ -68,8 +68,9 @@ namespace OPENLDAP
     bool starttls;
   };
 
-  void BookForm (Ekiga::FormRequestSimple &req, struct BookInfo &info,
-  	std::string title );
+  void BookForm (gmref_ptr<Ekiga::FormRequestSimple> req,
+		 struct BookInfo &info,
+		 std::string title );
 
   int BookFormInfo (Ekiga::Form &result, struct BookInfo &info,
   	std::string &errmsg);

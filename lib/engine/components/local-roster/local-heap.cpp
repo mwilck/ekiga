@@ -34,7 +34,6 @@
  */
 
 #include <algorithm>
-#include <iostream>
 #include <set>
 #include <glib/gi18n.h>
 
@@ -220,38 +219,31 @@ Local::Heap::new_presentity (const std::string name,
   if (!has_presentity_with_uri (uri)) {
 
     gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
-    Ekiga::FormRequestSimple request(sigc::mem_fun (this, &Local::Heap::new_presentity_form_submitted));
+    gmref_ptr<Ekiga::FormRequestSimple> request = gmref_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &Local::Heap::new_presentity_form_submitted)));
     std::set<std::string> groups = existing_groups ();
 
-    request.title (_("Add to local roster"));
-    request.instructions (_("Please fill in this form to add a new contact "
+    request->title (_("Add to local roster"));
+    request->instructions (_("Please fill in this form to add a new contact "
 			    "to ekiga's internal roster"));
-    request.text ("name", _("Name:"), name);
+    request->text ("name", _("Name:"), name);
     if (presence_core->is_supported_uri (uri)) {
 
-      request.hidden ("good-uri", "yes");
-      request.hidden ("uri", uri);
+      request->hidden ("good-uri", "yes");
+      request->hidden ("uri", uri);
     } else {
 
-      request.hidden ("good-uri", "no");
+      request->hidden ("good-uri", "no");
       if ( !uri.empty ())
-	request.text ("uri", _("Address:"), uri);
+	request->text ("uri", _("Address:"), uri);
       else
-	request.text ("uri", _("Address:"), "sip:"); // let's put a default
+	request->text ("uri", _("Address:"), "sip:"); // let's put a default
     }
 
-    request.editable_set ("groups",
-			  _("Put contact in groups:"),
-			  std::set<std::string>(), groups);
+    request->editable_set ("groups",
+			   _("Put contact in groups:"),
+			   std::set<std::string>(), groups);
 
-    if (!questions.handle_request (&request)) {
-
-      // FIXME: better error reporting
-#ifdef __GNUC__
-      std::cout << "Unhandled form request in "
-		<< __PRETTY_FUNCTION__ << std::endl;
-#endif
-    }
+    questions.handle_request (request);
   }
 }
 
@@ -404,42 +396,28 @@ Local::Heap::new_presentity_form_submitted (bool submitted,
     save ();
   } else {
 
-    Ekiga::FormRequestSimple request(sigc::mem_fun (this, &Local::Heap::new_presentity_form_submitted));
+    gmref_ptr<Ekiga::FormRequestSimple> request = gmref_ptr<Ekiga::FormRequestSimple>(new Ekiga::FormRequestSimple (sigc::mem_fun (this, &Local::Heap::new_presentity_form_submitted)));
 
-    result.visit (request);
+    result.visit (*request);
     if (!presence_core->is_supported_uri (uri))
-      request.error (_("You supplied an unsupported address"));
+      request->error (_("You supplied an unsupported address"));
     else
-      request.error (_("You already have a contact with this address!"));
+      request->error (_("You already have a contact with this address!"));
 
-    if (!questions.handle_request (&request)) {
-
-      // FIXME: better error handling
-#ifdef __GNUC__
-      std::cout << "Unhandled form request in "
-		<< __PRETTY_FUNCTION__ << std::endl;
-#endif
-    }
+    questions.handle_request (request);
   }
 }
 
 void
 Local::Heap::on_rename_group (std::string name)
 {
-  Ekiga::FormRequestSimple request(sigc::bind<0>(sigc::mem_fun (this, &Local::Heap::rename_group_form_submitted), name));
+  gmref_ptr<Ekiga::FormRequestSimple> request = gmref_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::bind<0>(sigc::mem_fun (this, &Local::Heap::rename_group_form_submitted), name)));
 
-  request.title (_("Rename group"));
-  request.instructions (_("Please edit this group name"));
-  request.text ("name", _("Name:"), name);
+  request->title (_("Rename group"));
+  request->instructions (_("Please edit this group name"));
+  request->text ("name", _("Name:"), name);
 
-  if (!questions.handle_request (&request)) {
-
-    // FIXME: better error reporting
-#ifdef __GNUC__
-    std::cout << "Unhandled form request in "
-	      << __PRETTY_FUNCTION__ << std::endl;
-#endif
-  }
+  questions.handle_request (request);
 }
 
 struct rename_group_form_submitted_helper

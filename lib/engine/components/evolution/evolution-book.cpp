@@ -35,7 +35,6 @@
  *
  */
 
-#include <iostream>
 #include <string>
 #include <glib/gi18n.h>
 
@@ -314,27 +313,20 @@ Evolution::Book::refresh ()
 void
 Evolution::Book::new_contact_action ()
 {
-  Ekiga::FormRequestSimple request(sigc::mem_fun (this, &Evolution::Book::on_new_contact_form_submitted));
+  gmref_ptr<Ekiga::FormRequestSimple> request = gmref_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &Evolution::Book::on_new_contact_form_submitted)));
 
-  request.title (_("New contact"));
+  request->title (_("New contact"));
 
-  request.instructions (_("Please update the following fields:"));
+  request->instructions (_("Please update the following fields:"));
 
-  request.text ("name", _("_Name:"), "");
-  request.text ("video", _("VoIP _URI:"), "");
-  request.text ("home", _("_Home phone:"), "");
-  request.text ("work", _("_Office phone:"), "");
-  request.text ("cell", _("_Cell phone:"), "");
-  request.text ("pager", _("_Pager:"), "");
+  request->text ("name", _("_Name:"), "");
+  request->text ("video", _("VoIP _URI:"), "");
+  request->text ("home", _("_Home phone:"), "");
+  request->text ("work", _("_Office phone:"), "");
+  request->text ("cell", _("_Cell phone:"), "");
+  request->text ("pager", _("_Pager:"), "");
 
-  if (!questions.handle_request (&request)) {
-
-    // FIXME: better error reporting
-#ifdef __GNUC__
-    std::cout << "Unhandled form request in "
-	      << __PRETTY_FUNCTION__ << std::endl;
-#endif
-  }
+  questions.handle_request (request);
 }
 
 void

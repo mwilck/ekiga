@@ -38,6 +38,8 @@
 
 #include "form.h"
 
+#include "gmref.h"
+
 namespace Ekiga
 {
 
@@ -46,7 +48,9 @@ namespace Ekiga
  * @{
  */
 
-  class FormRequest: public virtual Form
+  class FormRequest:
+    public virtual GmRefCounted,
+    public virtual Form
   {
   public:
 
@@ -55,6 +59,8 @@ namespace Ekiga
     virtual void submit (Form &) = 0;
 
   };
+
+  typedef gmref_ptr<FormRequest> FormRequestPtr;
 
 /**
  * @}

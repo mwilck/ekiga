@@ -37,7 +37,6 @@
 
 #include <string.h>
 #include <stdlib.h>
-#include <iostream>
 #include <algorithm>
 #include <sstream>
 
@@ -369,38 +368,31 @@ bool Opal::Account::populate_menu (Ekiga::MenuBuilder &builder)
 
 void Opal::Account::edit ()
 {
-  Ekiga::FormRequestSimple request(sigc::mem_fun (this, &Opal::Account::on_edit_form_submitted));
+  gmref_ptr<Ekiga::FormRequestSimple> request = gmref_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &Opal::Account::on_edit_form_submitted)));
   std::stringstream str;
 
   str << get_timeout ();
 
-  request.title (_("Edit account"));
+  request->title (_("Edit account"));
 
-  request.instructions (_("Please update the following fields:"));
+  request->instructions (_("Please update the following fields:"));
 
-  request.text ("name", _("Name:"), get_name ());
+  request->text ("name", _("Name:"), get_name ());
   if (get_protocol_name () == "SIP")
-    request.text ("host", _("Registrar:"), get_host ());
+    request->text ("host", _("Registrar:"), get_host ());
   else
-    request.text ("host", _("Gatekeeper:"), get_host ());
-  request.text ("user", _("User:"), get_username ());
+    request->text ("host", _("Gatekeeper:"), get_host ());
+  request->text ("user", _("User:"), get_username ());
   if (get_protocol_name () == "SIP")
     /* Translators:
      * SIP knows two usernames: The name for the client ("User") and the name
      * for the authentication procedure ("Authentication User") */
-    request.text ("authentication_user", _("Authentication User:"), get_authentication_username ());
-  request.private_text ("password", _("Password:"), get_password ());
-  request.text ("timeout", _("Timeout:"), str.str ());
-  request.boolean ("enabled", _("Enable Account"), enabled);
+    request->text ("authentication_user", _("Authentication User:"), get_authentication_username ());
+  request->private_text ("password", _("Password:"), get_password ());
+  request->text ("timeout", _("Timeout:"), str.str ());
+  request->boolean ("enabled", _("Enable Account"), enabled);
 
-  if (!questions.handle_request (&request)) {
-
-    // FIXME: better error reporting
-#ifdef __GNUC__
-    std::cout << "Unhandled form request in "
-	      << __PRETTY_FUNCTION__ << std::endl;
-#endif
-  }
+  questions.handle_request (request);
 }
 
 
@@ -434,16 +426,11 @@ void Opal::Account::on_edit_form_submitted (bool submitted,
 
   if (!error.empty ()) {
 
-    Ekiga::FormRequestSimple request(sigc::mem_fun (this, &Opal::Account::on_edit_form_submitted));
-    result.visit (request);
-    request.error (error);
+    gmref_ptr<Ekiga::FormRequestSimple> request = gmref_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &Opal::Account::on_edit_form_submitted)));
+    result.visit (*request);
+    request->error (error);
 
-    if (!questions.handle_request (&request)) {
-#ifdef __GNUC__
-      std::cout << "Unhandled form request in "
-		<< __PRETTY_FUNCTION__ << std::endl;
-#endif
-    }
+    questions.handle_request (request);
   }
   else {
 

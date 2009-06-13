@@ -99,7 +99,7 @@ namespace Ekiga {
 
     /** This chain allows the Source to present forms to the user
      */
-    ChainOfResponsibility<FormRequest*> questions;
+    ChainOfResponsibility<FormRequestPtr> questions;
   };
 
   typedef gmref_ptr<Source> SourcePtr;

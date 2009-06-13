@@ -33,7 +33,6 @@
  *
  */
 
-#include <iostream>
 #include <string.h>
 #include <stdlib.h>
 #include <glib/gi18n.h>
@@ -258,24 +257,17 @@ LM::Presentity::push_presence (const std::string resource,
 void
 LM::Presentity::edit_presentity ()
 {
-  Ekiga::FormRequestSimple request(sigc::mem_fun (this, &LM::Presentity::edit_presentity_form_submitted));
+  gmref_ptr<Ekiga::FormRequestSimple> request = gmref_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &LM::Presentity::edit_presentity_form_submitted)));
 
-  request.title (_("Edit roster element"));
-  request.instructions (_("Please fill in this form to change an existing "
-			  "element of the remote roster"));
-  request.text ("name", _("Name:"), get_name ());
+  request->title (_("Edit roster element"));
+  request->instructions (_("Please fill in this form to change an existing "
+			   "element of the remote roster"));
+  request->text ("name", _("Name:"), get_name ());
 
-  request.editable_set ("groups", _("Choose groups:"),
-			get_groups (), get_groups ());
+  request->editable_set ("groups", _("Choose groups:"),
+			 get_groups (), get_groups ());
 
-  if (!questions.handle_request (&request)) {
-
-    // FIXME: better error reporting
-#ifdef __GNUC__
-    std::cout << "Unhandled form request in "
-	      << __PRETTY_FUNCTION__ << std::endl;
-#endif
-  }
+  questions.handle_request (request);
 }
 
 void

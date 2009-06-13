@@ -33,7 +33,6 @@
  *
  */
 
-#include <iostream>
 #include <glib/gi18n.h>
 
 #include "form-request-simple.h"
@@ -257,32 +256,31 @@ LM::Account::get_node () const
 void
 LM::Account::edit ()
 {
-  Ekiga::FormRequestSimple request(sigc::mem_fun (this,
-						  &LM::Account::on_edit_form_submitted));
+  gmref_ptr<Ekiga::FormRequestSimple> request = gmref_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &LM::Account::on_edit_form_submitted)));
   xmlChar* xml_str = NULL;
 
-  request.title (_("Edit account"));
+  request->title (_("Edit account"));
 
-  request.instructions (_("Please update the following fields:"));
+  request->instructions (_("Please update the following fields:"));
 
   xml_str = xmlGetProp (node, BAD_CAST "name");
-  request.text ("name", _("Name:"), (const char*)xml_str);
+  request->text ("name", _("Name:"), (const char*)xml_str);
   xmlFree (xml_str);
 
   xml_str = xmlGetProp (node, BAD_CAST "user");
-  request.text ("user", _("User:"), (const char*)xml_str);
+  request->text ("user", _("User:"), (const char*)xml_str);
   xmlFree (xml_str);
 
   xml_str = xmlGetProp (node, BAD_CAST "server");
-  request.text ("server", _("Server:"), (const char*)xml_str);
+  request->text ("server", _("Server:"), (const char*)xml_str);
   xmlFree (xml_str);
 
   xml_str = xmlGetProp (node, BAD_CAST "resource");
-  request.text ("resource", _("Resource:"), (const char*)xml_str);
+  request->text ("resource", _("Resource:"), (const char*)xml_str);
   xmlFree (xml_str);
 
   xml_str = xmlGetProp (node, BAD_CAST "password");
-  request.private_text ("password", _("Password:"), (const char*)xml_str);
+  request->private_text ("password", _("Password:"), (const char*)xml_str);
   xmlFree (xml_str);
 
   xml_str = xmlGetProp (node, BAD_CAST "startup");
@@ -296,16 +294,9 @@ LM::Account::edit ()
 
   }
   xmlFree (xml_str);
-  request.boolean ("enabled", _("Enable account"), enable_on_startup);
+  request->boolean ("enabled", _("Enable account"), enable_on_startup);
 
-  if (!questions.handle_request (&request)) {
-
-    // FIXME: better error reporting
-#ifdef __GNUC__
-    std::cout << "Unhandled form request in "
-	      << __PRETTY_FUNCTION__ << std::endl;
-#endif
-  }
+  questions.handle_request (request);
 }
 
 void

@@ -55,7 +55,7 @@ class FormDialog: public Ekiga::FormVisitor
 {
 public:
 
-  FormDialog (Ekiga::FormRequest &request,
+  FormDialog (Ekiga::FormRequestPtr request,
 	      GtkWidget *parent);
 
   ~FormDialog ();
@@ -124,7 +124,7 @@ private:
 
   void grow_fields (bool advanced);
 
-  Ekiga::FormRequest &request;
+  Ekiga::FormRequestPtr request;
   GtkWidget *window;
   GtkWidget *preamble;
   GtkWidget *fields;

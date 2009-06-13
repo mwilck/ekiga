@@ -109,7 +109,7 @@ namespace Ekiga
 
     /** This chain allows the Heap to present forms to the user
      */
-    ChainOfResponsibility<FormRequest*> questions;
+    ChainOfResponsibility<FormRequestPtr> questions;
   };
 
   typedef gmref_ptr<Heap> HeapPtr;

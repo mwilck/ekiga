@@ -36,7 +36,6 @@
  *
  */
 
-#include <iostream>
 #include <cstdlib>
 #include <string>
 #include <sstream>
@@ -532,13 +531,13 @@ extern "C" {
 
     /* If there are missing items, try to get them all in one dialog */
     if (nprompts) {
-      Ekiga::FormRequestSimple request(sigc::mem_fun (ctx->book, &OPENLDAP::Book::on_sasl_form_submitted));
+      gmref_ptr<Ekiga::FormRequestSimple> request = gmref_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (ctx->book, &OPENLDAP::Book::on_sasl_form_submitted)));
       Ekiga::FormBuilder result;
       std::string prompt;
       std::string ctxt = "";
       char resbuf[32];
 
-      request.title (_("LDAP SASL Interaction"));
+      request->title (_("LDAP SASL Interaction"));
 
       for (i=0, in = (sasl_interact_t *)inter;
 	   in->id != SASL_CB_LIST_END;in++)
@@ -592,26 +591,24 @@ extern "C" {
 
 	  /* private text or not? */
 	  if (noecho) {
-	    request.private_text (std::string (resbuf), prompt, "");
+	    request->private_text (std::string (resbuf), prompt, "");
 	  } else {
 	    std::string dflt;
 	    if (in->defresult)
 	      dflt = std::string (in->defresult);
 	    else
 	      dflt = "";
-	    request.text (std::string(resbuf), prompt, dflt);
+	    request->text (std::string(resbuf), prompt, dflt);
 	  }
 	}
 
       /* If we had any challenge text, set it now */
       if (!ctxt.empty())
-	request.instructions (ctxt);
+	request->instructions (ctxt);
 
       /* Save a pointer for storing the form result */
       ctx->book->saslform = &result;
-      if (!ctx->book->questions.handle_request (&request)) {
-	return LDAP_LOCAL_ERROR;
-      }
+      ctx->book->questions.handle_request (request);
 
       /* Extract answers from the result form */
       for (i=0, in = (sasl_interact_t *)inter;
@@ -908,19 +905,19 @@ OPENLDAP::Book::refresh_result ()
 }
 
 void
-OPENLDAP::BookForm (Ekiga::FormRequestSimple &request,
+OPENLDAP::BookForm (gmref_ptr<Ekiga::FormRequestSimple> request,
 		    struct BookInfo &info,
 		    std::string title)
 {
   std::string callAttr = "";
 
-  request.title (title);
+  request->title (title);
 
-  request.instructions (_("Please edit the following fields"));
+  request->instructions (_("Please edit the following fields"));
 
-  request.text ("name", _("Book _Name"), info.name);
-  request.text ("uri", _("Server _URI"), info.uri_host);
-  request.text ("base", _("_Base DN"), info.urld->lud_dn);
+  request->text ("name", _("Book _Name"), info.name);
+  request->text ("uri", _("Server _URI"), info.uri_host);
+  request->text ("base", _("_Base DN"), info.urld->lud_dn);
 
   {
     std::map<std::string, std::string> choices;
@@ -928,8 +925,8 @@ OPENLDAP::BookForm (Ekiga::FormRequestSimple &request,
 
     choices["sub"] = _("Subtree");
     choices["onelevel"] = _("Single Level");
-    request.single_choice ("scope", _("_Search Scope"),
-			   scopes[info.urld->lud_scope], choices);
+    request->single_choice ("scope", _("_Search Scope"),
+			    scopes[info.urld->lud_scope], choices);
   }
 
   /* attrs[0] is the name attribute */
@@ -943,12 +940,12 @@ OPENLDAP::BookForm (Ekiga::FormRequestSimple &request,
    * "DisplayName" (i.e., "the name that will be displayed") but on
    * most LDAP servers it's "CommonName".
    */
-  request.text ("nameAttr", _("_DisplayName Attribute"), info.urld->lud_attrs[0]);
-  request.text ("callAttr", _("Call _Attributes"), callAttr);
+  request->text ("nameAttr", _("_DisplayName Attribute"), info.urld->lud_attrs[0]);
+  request->text ("callAttr", _("Call _Attributes"), callAttr);
   if (info.urld->lud_filter != NULL)
-    request.text ("filter", _("_Filter Template"), info.urld->lud_filter);
+    request->text ("filter", _("_Filter Template"), info.urld->lud_filter);
   else
-    request.text ("filter", _("_Filter Template"), "");
+    request->text ("filter", _("_Filter Template"), "");
 
   /* Translators: Bind ID - In LDAP, the operation that begins an LDAP
    * session and authenticates the user to the directory is called a
@@ -959,10 +956,10 @@ OPENLDAP::BookForm (Ekiga::FormRequestSimple &request,
    * course, the Bind ID can be left blank, in which case the session
    * is anonymous / unauthenticated.)
    */
-  request.text ("authcID", _("Bind _ID"), info.authcID);
-  request.private_text ("password", _("_Password"), info.password);
-  request.boolean ("startTLS", _("Use TLS"), info.starttls);
-  request.boolean ("sasl", _("Use SASL"), info.sasl);
+  request->text ("authcID", _("Bind _ID"), info.authcID);
+  request->private_text ("password", _("_Password"), info.password);
+  request->boolean ("startTLS", _("Use TLS"), info.starttls);
+  request->boolean ("sasl", _("Use SASL"), info.sasl);
   {
     std::map<std::string, std::string> mechs;
     const char **mechlist;
@@ -976,26 +973,19 @@ OPENLDAP::BookForm (Ekiga::FormRequestSimple &request,
         mechs[mech] = mech;
       }
     }
-    request.single_choice ("saslMech", _("SASL _Mechanism"),
-			   info.saslMech, mechs);
+    request->single_choice ("saslMech", _("SASL _Mechanism"),
+			    info.saslMech, mechs);
   }
 }
 
 void
 OPENLDAP::Book::edit ()
 {
-  Ekiga::FormRequestSimple request(sigc::mem_fun (this, &OPENLDAP::Book::on_edit_form_submitted));
+  gmref_ptr<Ekiga::FormRequestSimple> request = gmref_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &OPENLDAP::Book::on_edit_form_submitted)));
 
   OPENLDAP::BookForm (request, bookinfo, std::string(_("Edit LDAP directory")));
 
-  if (!questions.handle_request (&request)) {
-
-    // FIXME: better error reporting
-#ifdef __GNUC__
-    std::cout << "Unhandled form request in "
-	      << __PRETTY_FUNCTION__ << std::endl;
-#endif
-  }
+  questions.handle_request (request);
 }
 
 int
@@ -1101,19 +1091,12 @@ OPENLDAP::Book::on_edit_form_submitted (bool submitted,
 
   std::string errmsg;
   if (OPENLDAP::BookFormInfo (result, bookinfo, errmsg)) {
-    Ekiga::FormRequestSimple request(sigc::mem_fun (this, &OPENLDAP::Book::on_edit_form_submitted));
+    gmref_ptr<Ekiga::FormRequestSimple> request = gmref_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &OPENLDAP::Book::on_edit_form_submitted)));
 
-    result.visit (request);
-    request.error (errmsg);
+    result.visit (*request);
+    request->error (errmsg);
 
-    if (!questions.handle_request (&request)) {
-
-      // FIXME: better error reporting
-#ifdef __GNUC__
-      std::cout << "Unhandled form request in "
-		<< __PRETTY_FUNCTION__ << std::endl;
-#endif
-    }
+    questions.handle_request (request);
     return;
   }
 

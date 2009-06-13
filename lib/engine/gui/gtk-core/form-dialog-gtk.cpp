@@ -621,7 +621,7 @@ link_clicked_cb (GtkWidget * /*widget*/,
 }
 
 
-FormDialog::FormDialog (Ekiga::FormRequest &_request,
+FormDialog::FormDialog (Ekiga::FormRequestPtr _request,
 			GtkWidget *parent): request(_request)
 {
   GtkWidget *vbox = NULL;
@@ -664,7 +664,7 @@ FormDialog::FormDialog (Ekiga::FormRequest &_request,
   labels_group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
   options_group = gtk_size_group_new (GTK_SIZE_GROUP_HORIZONTAL);
 
-  request.visit (*this);
+  request->visit (*this);
 }
 
 
@@ -1340,14 +1340,14 @@ FormDialog::submit ()
        iter++)
     (*iter)->submit (builder);
 
-  request.submit (builder);
+  request->submit (builder);
 }
 
 void
 FormDialog::cancel ()
 {
   gtk_widget_hide_all (GTK_WIDGET (window));
-  request.cancel ();
+  request->cancel ();
 }
 
 void

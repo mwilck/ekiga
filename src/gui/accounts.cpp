@@ -463,10 +463,10 @@ on_bank_added (Ekiga::BankPtr bank,
 
 
 static bool
-on_handle_questions (Ekiga::FormRequest *request,
+on_handle_questions (Ekiga::FormRequestPtr request,
                      gpointer data)
 {
-  FormDialog dialog (*request, GTK_WIDGET (data));
+  FormDialog dialog (request, GTK_WIDGET (data));
 
   dialog.run ();
 

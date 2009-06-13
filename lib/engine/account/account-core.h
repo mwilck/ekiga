@@ -152,7 +152,7 @@ namespace Ekiga
 
     /** This chain allows the AccountCore to present forms to the user
      */
-    ChainOfResponsibility<FormRequest*> questions;
+    ChainOfResponsibility<FormRequestPtr> questions;
 
   };
   /**

@@ -133,7 +133,7 @@ namespace Ekiga {
 
     /** This chain allows the Book to present forms to the user
      */
-    ChainOfResponsibility<FormRequest*> questions;
+    ChainOfResponsibility<FormRequestPtr> questions;
   };
 
   typedef gmref_ptr<Book> BookPtr;

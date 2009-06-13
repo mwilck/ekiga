@@ -35,7 +35,6 @@
  *
  */
 
-#include <iostream>
 #include <glib/gi18n.h>
 
 #include "evolution-contact.h"
@@ -321,13 +320,13 @@ Evolution::Contact::set_attribute_value (unsigned int attr_type,
 void
 Evolution::Contact::edit_action ()
 {
-  Ekiga::FormRequestSimple request(sigc::mem_fun (this, &Evolution::Contact::on_edit_form_submitted));;
+  gmref_ptr<Ekiga::FormRequestSimple> request = gmref_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &Evolution::Contact::on_edit_form_submitted)));;
 
-  request.title (_("Edit contact"));
+  request->title (_("Edit contact"));
 
-  request.instructions (_("Please update the following fields:"));
+  request->instructions (_("Please update the following fields:"));
 
-  request.text ("name", _("Name:"), get_name ());
+  request->text ("name", _("Name:"), get_name ());
 
   {
     std::string home_uri = get_attribute_value (ATTR_HOME);
@@ -336,21 +335,14 @@ Evolution::Contact::edit_action ()
     std::string pager_uri = get_attribute_value (ATTR_PAGER);
     std::string video_uri = get_attribute_value (ATTR_VIDEO);
 
-    request.text ("video", _("VoIP _URI:"), video_uri);
-    request.text ("home", _("_Home phone:"), home_uri);
-    request.text ("work", _("_Office phone:"), work_uri);
-    request.text ("cell", _("_Cell phone:"), cell_phone_uri);
-    request.text ("pager", _("_Pager:"), pager_uri);
+    request->text ("video", _("VoIP _URI:"), video_uri);
+    request->text ("home", _("_Home phone:"), home_uri);
+    request->text ("work", _("_Office phone:"), work_uri);
+    request->text ("cell", _("_Cell phone:"), cell_phone_uri);
+    request->text ("pager", _("_Pager:"), pager_uri);
   }
 
-  if (!questions.handle_request (&request)) {
-
-    // FIXME: better error reporting
-#ifdef __GNUC__
-    std::cout << "Unhandled form request in "
-	      << __PRETTY_FUNCTION__ << std::endl;
-#endif
-  }
+  questions.handle_request (request);
 }
 
 void
@@ -381,23 +373,16 @@ Evolution::Contact::on_edit_form_submitted (bool submitted,
 void
 Evolution::Contact::remove_action ()
 {
-  Ekiga::FormRequestSimple request(sigc::mem_fun (this, &Evolution::Contact::on_remove_form_submitted));;
+  gmref_ptr<Ekiga::FormRequestSimple> request = gmref_ptr<Ekiga::FormRequestSimple>(new Ekiga::FormRequestSimple (sigc::mem_fun (this, &Evolution::Contact::on_remove_form_submitted)));
   gchar* instructions = NULL;
 
-  request.title (_("Remove contact"));
+  request->title (_("Remove contact"));
 
   instructions = g_strdup_printf (_("Are you sure you want to remove %s from the addressbook?"), get_name ().c_str ());
-  request.instructions (instructions);
+  request->instructions (instructions);
   g_free (instructions);
 
-  if (!questions.handle_request (&request)) {
-
-    // FIXME: better error reporting
-#ifdef __GNUC__
-    std::cout << "Unhandled form request in "
-	      << __PRETTY_FUNCTION__ << std::endl;
-#endif
-  }
+  questions.handle_request (request);
 }
 
 void

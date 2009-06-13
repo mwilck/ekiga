@@ -188,7 +188,7 @@ namespace Ekiga
 
     /** This chain allows the ContactCore to present forms to the user
      */
-    ChainOfResponsibility<FormRequest*> questions;
+    ChainOfResponsibility<FormRequestPtr> questions;
 
     std::list<sigc::connection> conns;
   };

@@ -33,7 +33,6 @@
  *
  */
 
-#include <iostream>
 #include <string.h>
 #include <glib/gi18n.h>
 
@@ -195,7 +194,7 @@ LM::Heap::presence_handler (LmMessage* message)
 
   if (type_attr != NULL && strcmp (type_attr, "subscribe") == 0) {
 
-    Ekiga::FormRequestSimple request (sigc::mem_fun (this, &LM::Heap::subscribe_from_form_submitted));
+    gmref_ptr<Ekiga::FormRequestSimple> request = gmref_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &LM::Heap::subscribe_from_form_submitted)));
     LmMessageNode* status = lm_message_node_find_child (lm_message_get_node (message), "status");
     gchar* instructions = NULL;
     std::string item_name;
@@ -208,7 +207,7 @@ LM::Heap::presence_handler (LmMessage* message)
       item_name = base_jid;
     }
 
-    request.title (_("Authorization to see your presence"));
+    request->title (_("Authorization to see your presence"));
 
     if (status != NULL && lm_message_node_get_value (status) != NULL) {
 
@@ -219,25 +218,18 @@ LM::Heap::presence_handler (LmMessage* message)
       instructions = g_strdup_printf (_("%s asks the permission to see your presence."),
 				      item_name.c_str ());
     }
-    request.instructions (instructions);
+    request->instructions (instructions);
     g_free (instructions);
 
     std::map<std::string, std::string> choices;
     choices["grant"] = _("grant him/her the permission to see your presence");
     choices["refuse"] = _("refuse him/her the permission to see your presence");
     choices["later"] = _("decide later (also close or cancel this dialog)");
-    request.single_choice ("answer", _("Your answer is: "), "grant", choices);
+    request->single_choice ("answer", _("Your answer is: "), "grant", choices);
 
-    request.hidden ("jid", base_jid);
+    request->hidden ("jid", base_jid);
 
-    if (!questions.handle_request (&request)) {
-
-      // FIXME: better error reporting
-#ifdef __GNUC__
-      std::cout << "Unhandled form request in "
-		<< __PRETTY_FUNCTION__ << std::endl;
-#endif
-    }
+    questions.handle_request (request);
   } else {
 
     if (item) {
@@ -318,21 +310,14 @@ LM::Heap::parse_roster (LmMessageNode* query)
 void
 LM::Heap::add_item ()
 {
-  Ekiga::FormRequestSimple request(sigc::mem_fun (this, &LM::Heap::add_item_form_submitted));
+  gmref_ptr<Ekiga::FormRequestSimple> request = gmref_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &LM::Heap::add_item_form_submitted)));
 
-  request.title (_("Add a roster element"));
-  request.instructions (_("Please fill in this form to add a new"
-			  "element to the remote roster"));
-  request.text ("jid", _("Identifier:"), _("identifier@server"));
+  request->title (_("Add a roster element"));
+  request->instructions (_("Please fill in this form to add a new"
+			   "element to the remote roster"));
+  request->text ("jid", _("Identifier:"), _("identifier@server"));
 
-  if (!questions.handle_request (&request)) {
-
-    // FIXME: better error reporting
-#ifdef __GNUC__
-    std::cout << "Unhandled form request in "
-	      << __PRETTY_FUNCTION__ << std::endl;
-#endif
-  }
+  questions.handle_request (request);
 }
 
 void

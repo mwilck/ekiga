@@ -103,7 +103,7 @@ namespace Ekiga
 
     /** This chain allows the Account to present forms to the user
      */
-    ChainOfResponsibility<FormRequest*> questions;
+    ChainOfResponsibility<FormRequestPtr> questions;
   };
 
   typedef gmref_ptr<Account> AccountPtr;

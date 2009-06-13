@@ -328,7 +328,7 @@ static void on_presentity_removed (Ekiga::ClusterPtr cluster,
  * BEHAVIOR     : Runs the form request in gtk+
  * PRE          : The given pointer is the roster view widget
  */
-static bool on_handle_questions (Ekiga::FormRequest *request,
+static bool on_handle_questions (Ekiga::FormRequestPtr request,
 				 gpointer data);
 
 
@@ -1080,11 +1080,11 @@ on_presentity_removed (Ekiga::ClusterPtr /*cluster*/,
 }
 
 static bool
-on_handle_questions (Ekiga::FormRequest *request,
+on_handle_questions (Ekiga::FormRequestPtr request,
 		     gpointer data)
 {
   GtkWidget *parent = gtk_widget_get_toplevel (GTK_WIDGET (data));
-  FormDialog dialog (*request, parent);
+  FormDialog dialog (request, parent);
 
   dialog.run ();
 

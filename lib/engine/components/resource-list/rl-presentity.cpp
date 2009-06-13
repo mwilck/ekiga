@@ -34,7 +34,6 @@
  */
 
 #include <algorithm>
-#include <iostream>
 #include <set>
 
 #include <glib/gi18n.h>
@@ -214,28 +213,21 @@ RL::Presentity::populate_menu (Ekiga::MenuBuilder &builder)
 void
 RL::Presentity::edit_presentity ()
 {
-  Ekiga::FormRequestSimple request(sigc::mem_fun (this, &RL::Presentity::edit_presentity_form_submitted));
+  gmref_ptr<Ekiga::FormRequestSimple> request = gmref_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &RL::Presentity::edit_presentity_form_submitted)));
 
   // FIXME: we should be able to know all groups in the heap
   std::set<std::string> all_groups = groups;
 
-  request.title (_("Edit remote contact"));
-  request.instructions (_("Please fill in this form to change an existing "
+  request->title (_("Edit remote contact"));
+  request->instructions (_("Please fill in this form to change an existing "
 			  "contact on a remote server"));
-  request.text ("name", _("Name:"), get_name ());
-  request.text ("uri", _("Address:"), uri);
+  request->text ("name", _("Name:"), get_name ());
+  request->text ("uri", _("Address:"), uri);
 
-  request.editable_set ("groups", _("Choose groups:"),
+  request->editable_set ("groups", _("Choose groups:"),
 			groups, all_groups);
 
-  if (!questions.handle_request (&request)) {
-
-    // FIXME: better error reporting
-#ifdef __GNUC__
-    std::cout << "Unhandled form request in "
-	      << __PRETTY_FUNCTION__ << std::endl;
-#endif
-  }
+  questions.handle_request (request);
 }
 
 

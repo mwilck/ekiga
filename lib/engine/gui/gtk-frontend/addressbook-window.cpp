@@ -142,7 +142,7 @@ static void on_book_updated (Ekiga::SourcePtr source,
  * BEHAVIOR     : Runs the form request in gtk+
  * PRE          : The given pointer is the parent window for the form.
  */
-static bool on_handle_questions (Ekiga::FormRequest *request,
+static bool on_handle_questions (Ekiga::FormRequestPtr request,
 				 gpointer data);
 
 /* DESCRIPTION  : Called when a view of a Book has been updated,
@@ -296,10 +296,10 @@ on_book_updated (Ekiga::SourcePtr /*source*/,
 }
 
 static bool
-on_handle_questions (Ekiga::FormRequest *request,
+on_handle_questions (Ekiga::FormRequestPtr request,
 		     gpointer data)
 {
-  FormDialog dialog (*request, GTK_WIDGET (data));
+  FormDialog dialog (request, GTK_WIDGET (data));
 
   dialog.run ();
 

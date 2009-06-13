@@ -34,7 +34,6 @@
  */
 
 #include <algorithm>
-#include <iostream>
 #include <set>
 #include <glib/gi18n.h>
 
@@ -216,27 +215,20 @@ void
 Local::Presentity::edit_presentity ()
 {
   ClusterPtr cluster = core.get ("local-cluster");
-  Ekiga::FormRequestSimple request(sigc::mem_fun (this, &Local::Presentity::edit_presentity_form_submitted));
+  gmref_ptr<Ekiga::FormRequestSimple> request = gmref_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &Local::Presentity::edit_presentity_form_submitted)));
 
   std::set<std::string> all_groups = cluster->existing_groups ();
 
-  request.title (_("Edit roster element"));
-  request.instructions (_("Please fill in this form to change an existing "
-			  "element of ekiga's internal roster"));
-  request.text ("name", _("Name:"), name);
-  request.text ("uri", _("Address:"), uri);
+  request->title (_("Edit roster element"));
+  request->instructions (_("Please fill in this form to change an existing "
+			   "element of ekiga's internal roster"));
+  request->text ("name", _("Name:"), name);
+  request->text ("uri", _("Address:"), uri);
 
-  request.editable_set ("groups", _("Choose groups:"),
-			groups, all_groups);
+  request->editable_set ("groups", _("Choose groups:"),
+			 groups, all_groups);
 
-  if (!questions.handle_request (&request)) {
-
-    // FIXME: better error reporting
-#ifdef __GNUC__
-    std::cout << "Unhandled form request in "
-	      << __PRETTY_FUNCTION__ << std::endl;
-#endif
-  }
+  questions.handle_request (request);
 }
 
 

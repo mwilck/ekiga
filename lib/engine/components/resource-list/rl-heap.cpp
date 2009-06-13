@@ -37,8 +37,6 @@
 
 #include <glib/gi18n.h>
 
-#include <iostream>
-
 #include "robust-xml.h"
 #include "form-request-simple.h"
 #include "xcap-core.h"
@@ -410,7 +408,7 @@ RL::Heap::push_status (const std::string uri_,
 void
 RL::Heap::edit ()
 {
-  Ekiga::FormRequestSimple request(sigc::mem_fun (this, &RL::Heap::on_edit_form_submitted));
+  gmref_ptr<Ekiga::FormRequestSimple> request = gmref_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &RL::Heap::on_edit_form_submitted)));
 
   std::string name_str;
   std::string root_str;
@@ -461,27 +459,20 @@ RL::Heap::edit ()
     }
   }
 
-  request.title (_("Edit contact list properties"));
+  request->title (_("Edit contact list properties"));
 
-  request.instructions (_("Please edit the following fields (no identifier"
-			  " means global)"));
+  request->instructions (_("Please edit the following fields (no identifier"
+			   " means global)"));
 
-  request.text ("name", _("Contact list's name"), get_name ());
+  request->text ("name", _("Contact list's name"), get_name ());
   /* "Document" used as a name -- uri point to the root of a document tree */
-  request.text ("root", _("Document root"), root_str);
-  request.text ("user", _("Identifier"), user_str);
-  request.boolean ("writable", _("Writable"), writable);
-  request.text ("username", _("Server username"), username_str);
-  request.private_text ("password", _("Server password"), password_str);
+  request->text ("root", _("Document root"), root_str);
+  request->text ("user", _("Identifier"), user_str);
+  request->boolean ("writable", _("Writable"), writable);
+  request->text ("username", _("Server username"), username_str);
+  request->private_text ("password", _("Server password"), password_str);
 
-  if (!questions.handle_request (&request)) {
-
-    // FIXME: better error reporting
-#ifdef __GNUC__
-    std::cout << "Unhandled form request in "
-	      << __PRETTY_FUNCTION__ << std::endl;
-#endif
-  }
+  questions.handle_request (request);
 }
 
 void
@@ -516,11 +507,11 @@ RL::Heap::on_edit_form_submitted (bool submitted,
 void
 RL::Heap::new_entry ()
 {
-  Ekiga::FormRequestSimple request(sigc::mem_fun (this, &RL::Heap::on_new_entry_form_submitted));
+  gmref_ptr<Ekiga::FormRequestSimple> request = gmref_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &RL::Heap::on_new_entry_form_submitted)));
 
-  request.title (_("Add a remote contact"));
-  request.instructions (_("Please fill in this form to create a new "
-			  "contact on a remote server"));
+  request->title (_("Add a remote contact"));
+  request->instructions (_("Please fill in this form to create a new "
+			   "contact on a remote server"));
 
   std::set<std::string> all_groups;
   for (std::map<PresentityPtr,std::list<sigc::connection> >::iterator
@@ -532,19 +523,12 @@ RL::Heap::new_entry ()
     all_groups.insert (groups.begin (), groups.end ());
   }
 
-  request.text ("name", _("Name:"), "");
-  request.text ("uri", _("Address:"), "");
-  request.editable_set ("groups", _("Choose groups:"),
-			std::set<std::string>(), all_groups);
+  request->text ("name", _("Name:"), "");
+  request->text ("uri", _("Address:"), "");
+  request->editable_set ("groups", _("Choose groups:"),
+			 std::set<std::string>(), all_groups);
 
-  if (!questions.handle_request (&request)) {
-
-    // FIXME: better error reporting
-#ifdef __GNUC__
-    std::cout << "Unhandled form request in "
-	      << __PRETTY_FUNCTION__ << std::endl;
-#endif
-  }
+  questions.handle_request (request);
 }
 
 void
