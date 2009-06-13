@@ -46,6 +46,21 @@
 #include "gst-audiooutput.h"
 #include "gst-videoinput.h"
 
+class GStreamerService: public Ekiga::Service
+{
+public:
+
+  ~GStreamerService ()
+  { gst_deinit (); }
+
+  const std::string get_name () const
+  { return "gstreamer"; }
+
+  const std::string get_description () const
+  { return "\tGStreamer support"; }
+};
+
+
 bool
 gstreamer_init (Ekiga::ServiceCore& core,
 		int* argc,
@@ -58,15 +73,18 @@ gstreamer_init (Ekiga::ServiceCore& core,
     = core.get ("audiooutput-core");
   gmref_ptr<Ekiga::VideoInputCore> videoinput_core
     = core.get ("videoinput-core");
+  Ekiga::ServicePtr service = core.get ("gstreamer");
 
-  if (audioinput_core && audiooutput_core && videoinput_core) {
+  if (audioinput_core && audiooutput_core && videoinput_core && !service) {
 
     if (gst_init_check (argc, argv, NULL)) {
 
       GST::VideoInputManager* video = new GST::VideoInputManager ();
       GST::AudioInputManager* audioin = new GST::AudioInputManager ();
       GST::AudioOutputManager* audioout = new GST::AudioOutputManager ();
+      service = Ekiga::ServicePtr (new GStreamerService);
 
+      core.add (service);
       audioinput_core->add_manager (*audioin);
       audiooutput_core->add_manager (*audioout);
       videoinput_core->add_manager (*video);
