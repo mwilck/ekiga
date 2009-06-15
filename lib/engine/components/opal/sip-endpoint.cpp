@@ -63,27 +63,36 @@ namespace Opal {
 
     public:
       subscriber (const Opal::Account & _account,
-                  Opal::Sip::EndPoint & _manager)
+                  Opal::Sip::EndPoint & _manager,
+		  bool _registering)
         : PThread (1000, AutoDeleteThread),
 	  account (_account),
-	  manager (_manager)
+	  manager (_manager),
+	  registering (_registering)
       {
         this->Resume ();
       };
 
       void Main ()
       {
-	manager.Register (account.get_username (),
-			  account.get_host (),
-			  account.get_authentication_username (),
-			  account.get_password (),
-			  account.is_enabled (),
-			  account.get_timeout ());
+	if (registering) {
+
+	  manager.Register (account.get_username (),
+			    account.get_host (),
+			    account.get_authentication_username (),
+			    account.get_password (),
+			    account.is_enabled (),
+			    account.get_timeout ());
+	} else {
+
+	  manager.Unregister (account.get_aor ());
+	}
       };
 
     private:
       const Opal::Account & account;
       Opal::Sip::EndPoint & manager;
+      bool registering;
     };
   };
 };
@@ -543,7 +552,7 @@ Opal::Sip::EndPoint::subscribe (const Opal::Account & account)
   if (account.get_protocol_name () != "SIP")
     return false;
 
-  new subscriber (account, *this);
+  new subscriber (account, *this, true);
   return true;
 }
 
@@ -554,7 +563,7 @@ Opal::Sip::EndPoint::unsubscribe (const Opal::Account & account)
   if (account.get_protocol_name () != "SIP")
     return false;
 
-  new subscriber (account, *this);
+  new subscriber (account, *this, false);
   return true;
 }
 
