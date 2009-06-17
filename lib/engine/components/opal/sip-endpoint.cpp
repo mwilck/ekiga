@@ -366,8 +366,9 @@ Opal::Sip::EndPoint::send_message (const std::string & _uri,
 {
   if (!_uri.empty () && (_uri.find ("sip:") == 0 || _uri.find (':') == string::npos) && !_message.empty ()) {
 
-    SIPEndPoint::Message (_uri, _message);
-
+    PURL fromAddress;
+    PString conversationId;
+    Message (PURL(_uri), "text/plain;charset=UTF-8", _message, fromAddress, conversationId);
     return true;
   }
 
