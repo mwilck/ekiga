@@ -137,10 +137,6 @@ libekiga_engine_la_LIBADD += \
 	$(top_builddir)/lib/engine/components/avahi-publisher/libavahipublisher.la
 endif
 
-if HAVE_EDS
-libekiga_engine_la_LIBADD += components/evolution/libgmevolution.la
-endif
-
 if HAVE_LDAP
 libekiga_engine_la_LIBADD += components/ldap/libgmldap.la
 endif

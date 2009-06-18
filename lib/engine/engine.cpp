@@ -91,10 +91,6 @@
 #include "avahi-publisher-main.h"
 #endif
 
-#ifdef HAVE_EDS
-#include "evolution-main.h"
-#endif
-
 #ifdef HAVE_LDAP
 #include "ldap-main.h"
 #endif
@@ -228,10 +224,6 @@ engine_init (int argc,
 #ifdef HAVE_AVAHI
   avahi_init (kickstart);
   avahi_publisher_init (kickstart);
-#endif
-
-#ifdef HAVE_EDS
-  evolution_init (kickstart);
 #endif
 
 #ifdef HAVE_LDAP
