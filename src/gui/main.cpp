@@ -104,6 +104,8 @@
 #include "services.h"
 #include "form-dialog-gtk.h"
 
+#include "opal-bank.h"
+
 #include <algorithm>
 
 enum CallingState {Standby, Calling, Connected, Called};
@@ -191,7 +193,6 @@ struct _EkigaMainWindowPrivate
   std::string received_video_codec;
   std::string received_audio_codec;
 
-  std::list<std::string> accounts;
   Ekiga::Presentity* presentity;
 
   std::vector<sigc::connection> connections;
@@ -1460,17 +1461,6 @@ place_call_cb (GtkWidget * /*widget*/,
     ekiga_main_window_update_calling_state (mw, Calling);
     gmref_ptr<Ekiga::CallCore> call_core = mw->priv->core->get ("call-core");
 
-    // Append the missing part for SIP uris
-    pos = uri.find ("@");
-    if (pos == std::string::npos
-	&& uri.find ("h323:") == std::string::npos
-	&& !mw->priv->accounts.empty ()) {
-
-      std::list<std::string>::iterator it = mw->priv->accounts.begin ();
-      uri = uri + "@" + (*it);
-      ekiga_main_window_set_call_url (mw, uri.c_str ());
-    }
-
     // Remove appended spaces
     pos = uri.find_first_of (' ');
     if (pos != std::string::npos)
@@ -2223,29 +2213,46 @@ fullscreen_changed_cb (G_GNUC_UNUSED GtkWidget *widget,
 }
 
 
+static bool
+account_completion_helper (Opal::AccountPtr account,
+			   const gchar* text,
+			   EkigaMainWindow* mw)
+{
+  if (account->is_active ()) {
+
+    if (g_ascii_strncasecmp (text, "sip:", 4) == 0 && account->get_protocol_name () == "SIP") {
+
+      GtkTreeIter iter;
+      gchar* entry = NULL;
+
+      entry = g_strdup_printf ("%s@%s", text, account->get_host ().c_str ());
+      gtk_list_store_append (mw->priv->completion, &iter);
+      gtk_list_store_set (mw->priv->completion, &iter, 0, entry, -1);
+      g_free (entry);
+    }
+  }
+
+  return true;
+}
+
 static void
 url_changed_cb (GtkEditable *e,
 		gpointer data)
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (data);
-  GtkTreeIter iter;
   const char *tip_text = NULL;
-  gchar *entry = NULL;
 
   tip_text = gtk_entry_get_text (GTK_ENTRY (e));
 
   if (g_strrstr (tip_text, "@") == NULL) {
 
-    gtk_list_store_clear (mw->priv->completion);
+    gmref_ptr<Opal::Bank> bank = mw->priv->core->get ("opal-account-store");
 
-    for (std::list<std::string>::iterator it = mw->priv->accounts.begin ();
-         it != mw->priv->accounts.end ();
-         it++) {
+    if (bank) {
 
-      entry = g_strdup_printf ("%s@%s", tip_text, it->c_str ());
-      gtk_list_store_append (mw->priv->completion, &iter);
-      gtk_list_store_set (mw->priv->completion, &iter, 0, entry, -1);
-      g_free (entry);
+      gtk_list_store_clear (mw->priv->completion);
+
+      bank->visit_accounts (sigc::bind (sigc::ptr_fun (account_completion_helper), tip_text, mw));
     }
   }
 
