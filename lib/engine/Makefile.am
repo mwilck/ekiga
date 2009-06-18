@@ -152,14 +152,6 @@ if HAVE_GSTREAMER
 libekiga_engine_la_LIBADD += components/gstreamer/libgmgstreamer.la
 endif
 
-if HAVE_KDE
-libekiga_engine_la_LIBADD += components/kde/libgmkde.la
-endif
-
-if HAVE_KAB
-libekiga_engine_la_LIBADD += components/kab/libgmkab.la
-endif
-
 if HAVE_XCAP
 libekiga_engine_la_LIBADD += \
 	components/xcap/libgmxcap.la \

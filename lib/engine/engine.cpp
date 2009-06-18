@@ -103,14 +103,6 @@
 #include "gst-main.h"
 #endif
 
-#ifdef HAVE_KDE
-#include "kde-main.h"
-#endif
-
-#ifdef HAVE_KAB
-#include "kab-main.h"
-#endif
-
 #ifdef HAVE_XCAP
 #include "xcap-main.h"
 #include "resource-list-main.h"
@@ -234,14 +226,6 @@ engine_init (int argc,
 #ifdef HAVE_DBUS
   gnomesession_init (kickstart);
 #endif
-#endif
-
-#ifdef HAVE_KDE
-  kde_init (kickstart);
-#endif
-
-#ifdef HAVE_KAB
-  kab_init (kickstart);
 #endif
 
 #ifdef HAVE_XCAP
