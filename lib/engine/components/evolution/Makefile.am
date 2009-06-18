@@ -1,4 +1,5 @@
-noinst_LTLIBRARIES = libgmevolution.la
+plugindir = $(PLUGINDIR)
+plugin_LTLIBRARIES = libgmevolution.la
 
 evolution_dir = $(top_srcdir)/lib/engine/components/evolution
 
@@ -21,4 +22,5 @@ libgmevolution_la_SOURCES = \
 libgmevolution_la_LIBADD = \
 	$(top_builddir)/lib/engine/addressbook/libgmaddressbook.la
 
-libgmevolution_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(EDS_LIBS) $(GLIB_LIBS)
+libgmevolution_la_LDFLAGS = $(PLUGINS_LIBTOOL_FLAGS)
+libgmevolution_la_LIBADD =  $(SIGC_LIBS) $(EDS_LIBS) $(GLIB_LIBS)
