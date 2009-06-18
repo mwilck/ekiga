@@ -1479,16 +1479,10 @@ place_call_cb (GtkWidget * /*widget*/,
     // Dial
     if (call_core->dial (uri)) {
 
-      pos = uri.find ("@");
-      if (pos != std::string::npos) {
+      // nothing special
 
-        std::string host = uri.substr (pos + 1);
-        mw->priv->accounts.remove (host);
-        mw->priv->accounts.push_front (host);
-      }
+    } else {
 
-    }
-    else {
       ekiga_main_window_flash_message (mw, _("Could not connect to remote host"));
       ekiga_main_window_update_calling_state (mw, Standby);
     }
