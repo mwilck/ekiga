@@ -72,8 +72,8 @@ struct KABSpark: public Ekiga::Spark
 
 };
 
-void
-kab_init (Ekiga::KickStart& kickstart)
+extern "C" void
+ekiga_plugin_init (Ekiga::KickStart& kickstart)
 {
   gmref_ptr<Ekiga::Spark> spark(new KABSpark);
   kickstart.add_spark (spark);

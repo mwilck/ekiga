@@ -83,8 +83,8 @@ struct KDESpark: public Ekiga::Spark
 
 };
 
-void
-kde_init (Ekiga::KickStart& kickstart)
+extern "C" void
+ekiga_plugin_init (Ekiga::KickStart& kickstart)
 {
   gmref_ptr<Ekiga::Spark> spark(new KDESpark);
   kickstart.add_spark (spark);

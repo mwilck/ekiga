@@ -1,8 +1,5 @@
-if WIN32
-lib_LTLIBRARIES = libgmkab.la
-else
-noinst_LTLIBRARIES = libgmkab.la
-endif
+plugindir = $(PLUGINDIR)/kde
+plugin_LTLIBRARIES = libgmkab.la
 
 kab_dir = $(top_srcdir)/lib/engine/components/kab
 
@@ -22,7 +19,7 @@ libgmkab_la_SOURCES = \
 	$(kab_dir)/kab-main.h \
 	$(kab_dir)/kab-main.cpp
 
+libgmkab_la_LDFLAGS = $(PLUGINS_LIBTOOL_FLAGS)
 libgmkab_la_LIBADD = \
-	$(top_builddir)/lib/engine/addressbook/libgmaddressbook.la
-
-libgmkab_la_LDFLAGS = -export-dynamic -no-undefined $(KAB_LIBS)
+	$(top_builddir)/lib/engine/addressbook/libgmaddressbook.la \
+	$(KAB_LIBS)
