@@ -59,18 +59,14 @@
 // which can be compiled with :
 // gcc -o hello.so hello.cpp -shared -export-dynamic -I$(PATH_TO_EKIGA_SOURCES)/lib/engine/framework `pkg-config --cflags sigc++-2.0`
 
-void
-plugin_init (Ekiga::KickStart& kickstart)
+static void
+plugin_parse_file (Ekiga::KickStart& kickstart,
+		   const gchar* filename)
 {
 #if DEBUG
-  std::cout << "Trying to load the ekiga test plugin... ";
+  std::cout << "Trying to load " << filename << "... ";
 #endif
-  gchar* filename = g_build_filename (g_get_tmp_dir (),
-				      "ekiga_test",
-				      NULL);
   GModule* plugin = g_module_open (filename, G_MODULE_BIND_LOCAL);
-
-  g_free (filename);
 
   if (plugin != 0) {
 
@@ -82,7 +78,7 @@ plugin_init (Ekiga::KickStart& kickstart)
     if (g_module_symbol (plugin, "ekiga_plugin_init", &init_func)) {
 
 #if DEBUG
-      std::cout << "valid, running:" << std::endl;
+      std::cout << "valid" << std::endl;
 #endif
       g_module_make_resident (plugin);
       ((void (*)(Ekiga::KickStart&))init_func) (kickstart);
@@ -99,4 +95,62 @@ plugin_init (Ekiga::KickStart& kickstart)
     std::cout << "failed to load the module" << std::endl;
 #endif
   }
+}
+
+static void
+plugin_parse_directory (Ekiga::KickStart& kickstart,
+			const gchar* path)
+{
+  g_return_if_fail (path != NULL);
+
+  GError* error = NULL;
+  GDir* directory = g_dir_open (path, 0, &error);
+
+#if DEBUG
+  std::cout << "Trying to load plugins in " << path << "... ";
+#endif
+
+  if (directory != NULL) {
+
+#if DEBUG
+    std::cout << "open succeeded" << std::endl;
+#endif
+    const gchar* name = g_dir_read_name (directory);
+
+    while (name) {
+
+      gchar* filename = g_build_filename (path, name, NULL);
+      /* There is something to say here : it is unsafe to test then decide
+       * what to do, because things could have changed between the time we
+       * test and the time we act. But I think it's good enough for the
+       * purpose of this code. If I'm wrong, report as a bug.
+       * (Snark, 20090618)
+       */
+      if (g_file_test (name, G_FILE_TEST_IS_DIR)) {
+
+	plugin_parse_directory (kickstart, filename);
+      } else {
+
+	if (g_str_has_suffix (filename, G_MODULE_SUFFIX))
+	  plugin_parse_file (kickstart, filename);
+      }
+      g_free (filename);
+      name = g_dir_read_name (directory);
+    }
+
+    g_dir_close (directory);
+  } else {
+
+#if DEBUG
+    std::cout << "failure: " << error->message << std::endl;
+#endif
+    g_error_free (error);
+  }
+}
+
+void
+plugin_init (Ekiga::KickStart& kickstart)
+{
+  plugin_parse_directory (kickstart,
+			  EKIGA_PLUGIN_DIR);
 }

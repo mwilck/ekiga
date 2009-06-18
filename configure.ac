@@ -818,6 +818,16 @@ else
 fi
 
 dnl ###########################################################################
+dnl  Plugin support
+dnl ###########################################################################
+
+PLUGINS_LIBTOOL_FLAGS="-module -avoid-version"
+AC_SUBST(PLUGINS_LIBTOOL_FLAGS)
+
+PLUGINDIR='${libdir}/ekiga/plugins'
+AC_SUBST(PLUGINDIR)
+
+dnl ###########################################################################
 dnl  Output the different Makefiles
 dnl ###########################################################################
 AC_OUTPUT(
