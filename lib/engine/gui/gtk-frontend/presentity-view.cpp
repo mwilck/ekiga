@@ -37,8 +37,6 @@
 
 #include "presentity-view.h"
 
-class PresentityViewHelper;
-
 struct _PresentityViewPrivate
 {
   Ekiga::PresentityPtr presentity;
