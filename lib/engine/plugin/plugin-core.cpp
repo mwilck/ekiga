@@ -126,14 +126,13 @@ plugin_parse_directory (Ekiga::KickStart& kickstart,
        * purpose of this code. If I'm wrong, report as a bug.
        * (Snark, 20090618)
        */
-      if (g_file_test (name, G_FILE_TEST_IS_DIR)) {
+      std::cout << "considering " << filename << std::endl;
 
+      if (g_str_has_suffix (filename, G_MODULE_SUFFIX))
+	plugin_parse_file (kickstart, filename);
+      else
 	plugin_parse_directory (kickstart, filename);
-      } else {
 
-	if (g_str_has_suffix (filename, G_MODULE_SUFFIX))
-	  plugin_parse_file (kickstart, filename);
-      }
       g_free (filename);
       name = g_dir_read_name (directory);
     }
