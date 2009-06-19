@@ -84,8 +84,8 @@ struct LOUDMOUTHSpark: public Ekiga::Spark
   bool result;
 };
 
-void
-loudmouth_init (Ekiga::KickStart& kickstart)
+extern "C" void
+ekiga_plugin_init (Ekiga::KickStart& kickstart)
 {
   gmref_ptr<Ekiga::Spark> spark(new LOUDMOUTHSpark);
   kickstart.add_spark (spark);

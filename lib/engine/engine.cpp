@@ -99,10 +99,6 @@
 #include "libnotify-main.h"
 #endif
 
-#ifdef HAVE_LOUDMOUTH
-#include "loudmouth-main.h"
-#endif
-
 #define DEBUG_STARTUP 0
 
 #if DEBUG_STARTUP
@@ -236,10 +232,6 @@ engine_init (int argc,
   local_roster_init (kickstart);
 
   local_roster_bridge_init (kickstart);
-
-#ifdef HAVE_LOUDMOUTH
-  loudmouth_init (kickstart);
-#endif
 
   plugin_init (kickstart);
 
