@@ -37,6 +37,8 @@
 
 #include "gst-main.h"
 
+#include "kickstart.h"
+
 #include "videoinput-core.h"
 #include "audioinput-core.h"
 #include "audiooutput-core.h"
@@ -60,40 +62,58 @@ public:
   { return "\tGStreamer support"; }
 };
 
-
-bool
-gstreamer_init (Ekiga::ServiceCore& core,
-		int* argc,
-		char** argv[])
+struct GSTSpark: public Ekiga::Spark
 {
-  bool result = false;
-  gmref_ptr<Ekiga::AudioInputCore> audioinput_core
-    = core.get ("audioinput-core");
-  gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core
-    = core.get ("audiooutput-core");
-  gmref_ptr<Ekiga::VideoInputCore> videoinput_core
-    = core.get ("videoinput-core");
-  Ekiga::ServicePtr service = core.get ("gstreamer");
+  GSTSpark (): result(false)
+  {}
 
-  if (audioinput_core && audiooutput_core && videoinput_core && !service) {
+  bool try_initialize_more (Ekiga::ServiceCore& core,
+			    int* argc,
+			    char** argv[])
+  {
+    gmref_ptr<Ekiga::AudioInputCore> audioinput_core
+      = core.get ("audioinput-core");
+    gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core
+      = core.get ("audiooutput-core");
+    gmref_ptr<Ekiga::VideoInputCore> videoinput_core
+      = core.get ("videoinput-core");
+    Ekiga::ServicePtr service = core.get ("gstreamer");
 
-    if (gst_init_check (argc, argv, NULL)) {
+    if (audioinput_core && audiooutput_core && videoinput_core && !service) {
 
-      GST::VideoInputManager* video = new GST::VideoInputManager ();
-      GST::AudioInputManager* audioin = new GST::AudioInputManager ();
-      GST::AudioOutputManager* audioout = new GST::AudioOutputManager ();
-      service = Ekiga::ServicePtr (new GStreamerService);
+      if (gst_init_check (argc, argv, NULL)) {
 
-      core.add (service);
-      audioinput_core->add_manager (*audioin);
-      audiooutput_core->add_manager (*audioout);
-      videoinput_core->add_manager (*video);
-      result = true;
-    } else {
+	GST::VideoInputManager* video = new GST::VideoInputManager ();
+	GST::AudioInputManager* audioin = new GST::AudioInputManager ();
+	GST::AudioOutputManager* audioout = new GST::AudioOutputManager ();
+	service = Ekiga::ServicePtr (new GStreamerService);
 
-      std::cout << "gst_init_check failed" << std::endl; // FIXME: remove
+	core.add (service);
+	audioinput_core->add_manager (*audioin);
+	audiooutput_core->add_manager (*audioout);
+	videoinput_core->add_manager (*video);
+	result = true;
+      } else {
+
+	std::cout << "gst_init_check failed" << std::endl; // FIXME: remove
+      }
     }
+
+    return result;
   }
 
-  return result;
+  Ekiga::Spark::state get_state () const
+  { return result?FULL:BLANK; }
+
+  const std::string get_name () const
+  { return "GSTREAMER"; }
+
+  bool result;
+};
+
+extern "C" void
+ekiga_plugin_init (Ekiga::KickStart& kickstart)
+{
+  gmref_ptr<Ekiga::Spark> spark(new GSTSpark);
+  kickstart.add_spark (spark);
 }

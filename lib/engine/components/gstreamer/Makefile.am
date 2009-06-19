@@ -1,4 +1,5 @@
-noinst_LTLIBRARIES = libgmgstreamer.la
+plugindir = $(PLUGINDIR)
+plugin_LTLIBRARIES = libgmgstreamer.la
 
 gstreamer_dir = $(top_srcdir)/lib/engine/components/gstreamer/
 
@@ -23,4 +24,6 @@ libgmgstreamer_la_SOURCES = \
 	$(gstreamer_dir)/gst-audiooutput.h \
 	$(gstreamer_dir)/gst-audiooutput.cpp
 
-libgmgstreamer_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(GSTREAMER_LIBS) $(PTLIB_LIBS)
+libgmgstreamer_la_LDFLAGS = $(PLUGINS_LIBTOOL_FLAGS)
+libgmgstreamer_la_LIBADD = \
+	$(SIGC_LIBS) $(GSTREAMER_LIBS) $(PTLIB_LIBS)
