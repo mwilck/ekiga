@@ -99,11 +99,6 @@
 #include "libnotify-main.h"
 #endif
 
-#ifdef HAVE_XCAP
-#include "xcap-main.h"
-#include "resource-list-main.h"
-#endif
-
 #ifdef HAVE_LOUDMOUTH
 #include "loudmouth-main.h"
 #endif
@@ -218,11 +213,6 @@ engine_init (int argc,
 #ifdef HAVE_DBUS
   gnomesession_init (kickstart);
 #endif
-#endif
-
-#ifdef HAVE_XCAP
-  xcap_init (kickstart);
-  resource_list_init (kickstart);
 #endif
 
   history_init (kickstart);

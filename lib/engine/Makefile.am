@@ -148,12 +148,6 @@ libekiga_engine_la_LIBADD += components/gnome-session/libgmgnomesession.la
 endif
 endif
 
-if HAVE_XCAP
-libekiga_engine_la_LIBADD += \
-	components/xcap/libgmxcap.la \
-	components/resource-list/libgmresource_list.la
-endif
-
 if HAVE_NOTIFY
 INCLUDES += -I$(top_srcdir)/lib/engine/components/libnotify/
 libekiga_engine_la_LIBADD += components/libnotify/libgmlibnotify.la
