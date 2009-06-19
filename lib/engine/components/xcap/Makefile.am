@@ -1,4 +1,5 @@
-noinst_LTLIBRARIES = libgmxcap.la
+plugindir = $(PLUGINDIR)
+plugin_LTLIBRARIES = libgmxcap.la
 
 xcap_dir = $(top_srcdir)/lib/engine/components/xcap/
 
@@ -15,4 +16,5 @@ libgmxcap_la_SOURCES = \
 	$(xcap_dir)/xcap-main.h \
 	$(xcap_dir)/xcap-main.cpp
 
-libgmxcap_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(SOUP_LIBS)
+libgmxcap_la_LDFLAGS = $(PLUGINS_LIBTOOL_FLAGS)
+libgmxcap_la_LIBADD = $(SIGC_LIBS) $(SOUP_LIBS)

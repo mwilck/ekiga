@@ -70,8 +70,8 @@ struct XCAPSpark: public Ekiga::Spark
 };
 
 
-void
-xcap_init (Ekiga::KickStart& kickstart)
+extern "C" void
+ekiga_plugin_init (Ekiga::KickStart& kickstart)
 {
   gmref_ptr<Ekiga::Spark> spark(new XCAPSpark);
   kickstart.add_spark (spark);
