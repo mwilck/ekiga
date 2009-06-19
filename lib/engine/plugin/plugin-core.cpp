@@ -92,7 +92,7 @@ plugin_parse_file (Ekiga::KickStart& kickstart,
   } else {
 
 #if DEBUG
-    std::cout << "failed to load the module" << std::endl;
+    std::cout << "failed to load the module: " << g_module_error () << std::endl;
 #endif
   }
 }
