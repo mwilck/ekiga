@@ -99,10 +99,6 @@
 #include "libnotify-main.h"
 #endif
 
-#ifdef HAVE_GSTREAMER
-#include "gst-main.h"
-#endif
-
 #ifdef HAVE_XCAP
 #include "xcap-main.h"
 #include "resource-list-main.h"
@@ -191,10 +187,6 @@ engine_init (int argc,
 
 #ifdef HAVE_NOTIFY
   libnotify_init (kickstart);
-#endif
-
-#ifdef HAVE_GSTREAMER
-  (void)gstreamer_init (*service_core, &argc, &argv);
 #endif
 
   audioinput_null_init (kickstart);

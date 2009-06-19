@@ -148,10 +148,6 @@ libekiga_engine_la_LIBADD += components/gnome-session/libgmgnomesession.la
 endif
 endif
 
-if HAVE_GSTREAMER
-libekiga_engine_la_LIBADD += components/gstreamer/libgmgstreamer.la
-endif
-
 if HAVE_XCAP
 libekiga_engine_la_LIBADD += \
 	components/xcap/libgmxcap.la \
