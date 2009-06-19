@@ -1,4 +1,5 @@
-noinst_LTLIBRARIES = libgmresource_list.la
+plugindir = $(PLUGINDIR)
+plugin_LTLIBRARIES = libgmresource_list.la
 
 resource_list_dir = $(top_srcdir)/lib/engine/components/resource-list/
 
@@ -16,15 +17,20 @@ libgmresource_list_la_SOURCES = \
 	$(resource_list_dir)/resource-list-main.cpp \
 	$(resource_list_dir)/rl-presentity.h \
 	$(resource_list_dir)/rl-presentity.cpp \
- 	$(resource_list_dir)/rl-entry.h \
- 	$(resource_list_dir)/rl-entry.cpp \
- 	$(resource_list_dir)/rl-entry-ref.h \
- 	$(resource_list_dir)/rl-entry-ref.cpp \
- 	$(resource_list_dir)/rl-list.h \
- 	$(resource_list_dir)/rl-list.cpp \
+	$(resource_list_dir)/rl-entry.h \
+	$(resource_list_dir)/rl-entry.cpp \
+	$(resource_list_dir)/rl-entry-ref.h \
+	$(resource_list_dir)/rl-entry-ref.cpp \
+	$(resource_list_dir)/rl-list.h \
+	$(resource_list_dir)/rl-list.cpp \
 	$(resource_list_dir)/rl-heap.h \
 	$(resource_list_dir)/rl-heap.cpp \
 	$(resource_list_dir)/rl-cluster.h \
 	$(resource_list_dir)/rl-cluster.cpp
 
-libgmresource_list_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(GLIB_LIBS) $(XML_LIBS)
+libgmresource_list_la_LDFLAGS = \
+	-L$(top_builddir)/lib/engine/components/xcap \
+	$(PLUGINS_LIBTOOL_FLAGS)
+libgmresource_list_la_LIBADD = \
+	$(top_builddir)/lib/engine/components/xcap/libgmxcap.la \
+	$(SIGC_LIBS) $(GLIB_LIBS) $(XML_LIBS)

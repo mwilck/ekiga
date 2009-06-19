@@ -74,8 +74,8 @@ struct RLSpark: public Ekiga::Spark
   bool result;
 };
 
-void
-resource_list_init (Ekiga::KickStart& kickstart)
+extern "C" void
+ekiga_plugin_init (Ekiga::KickStart& kickstart)
 {
   gmref_ptr<Ekiga::Spark> spark(new RLSpark);
   kickstart.add_spark (spark);
