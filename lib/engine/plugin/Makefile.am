@@ -14,4 +14,4 @@ libplugin_la_SOURCES = \
 	$(plugin_dir)/plugin-core.cpp
 
 libplugin_la_LDFLAGS = -export-dynamic -no-undefined
-libplugin_la_LDFLAGS = $(SIGC_LIBS) $(GLIB_LIBS)
+libplugin_la_LIBADD = $(SIGC_LIBS) $(GLIB_LIBS)

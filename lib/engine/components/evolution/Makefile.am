@@ -19,8 +19,5 @@ libgmevolution_la_SOURCES = \
 	$(evolution_dir)/evolution-main.h \
 	$(evolution_dir)/evolution-main.cpp
 
-libgmevolution_la_LIBADD = \
-	$(top_builddir)/lib/engine/addressbook/libgmaddressbook.la
-
 libgmevolution_la_LDFLAGS = $(PLUGINS_LIBTOOL_FLAGS)
 libgmevolution_la_LIBADD =  $(SIGC_LIBS) $(EDS_LIBS) $(GLIB_LIBS)
