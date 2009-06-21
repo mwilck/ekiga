@@ -295,7 +295,7 @@ RL::Presentity::save (bool reload)
 
   if (result >= 0) {
 
-    gmref_ptr<XCAP::Core> xcap(services.get ("xcap-core"));
+    gmref_ptr<XCAP::Core> xcap = services.get ("xcap-core");
     xcap->write (path, "application/xcap-el+xml",
 		 (const char*)xmlBufferContent (buffer),
 		 sigc::bind (sigc::mem_fun (this, &RL::Presentity::save_result),
@@ -311,11 +311,11 @@ RL::Presentity::remove ()
 {
   xmlUnlinkNode (node);
   xmlFreeNode (node);
-  gmref_ptr<Ekiga::PresenceCore> presence_core(services.get ("presence-core"));
+  gmref_ptr<Ekiga::PresenceCore> presence_core = services.get ("presence-core");
 
   presence_core->unfetch_presence (uri);
 
-  gmref_ptr<XCAP::Core> xcap(services.get ("xcap-core"));
+  gmref_ptr<XCAP::Core> xcap = services.get ("xcap-core");
   xcap->erase (path,
 	       sigc::mem_fun (this, &RL::Presentity::erase_result));
 }

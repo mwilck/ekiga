@@ -119,7 +119,7 @@ presentity_view_unset_presentity (PresentityView* self)
 {
   if (self->priv->presentity) {
 
-    self->priv->presentity = Ekiga::PresentityPtr(0);
+    self->priv->presentity.reset ();
     self->priv->updated_conn.disconnect ();
     self->priv->removed_conn.disconnect ();
   }

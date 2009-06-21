@@ -45,8 +45,7 @@ gmconf_personal_details_init (Ekiga::ServiceCore &core,
                               char ** /*argv*/[])
 {
   bool result = false;
-  gmref_ptr<Ekiga::PersonalDetails> personal_details
-    = core.get ("personal-details");
+  gmref_ptr<Ekiga::PersonalDetails> personal_details = core.get ("personal-details");
 
   if ( !personal_details) {
 

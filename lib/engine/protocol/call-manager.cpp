@@ -58,7 +58,7 @@ gmref_ptr<CallProtocolManager> CallManager::get_protocol_manager (const std::str
     if ((*iter)->get_protocol_name () == protocol)
       return (*iter);
 
-  return gmref_ptr<CallProtocolManager>(0);
+  return gmref_ptr<CallProtocolManager>();
 }
 
 

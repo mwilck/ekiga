@@ -45,8 +45,7 @@ videooutput_x_init (Ekiga::ServiceCore &core,
 	    char **/*argv*/[])
 {
   bool result = false;
-  gmref_ptr<Ekiga::VideoOutputCore> videooutput_core
-    = core.get ("videooutput-core");
+  gmref_ptr<Ekiga::VideoOutputCore> videooutput_core = core.get ("videooutput-core");
 
   if (videooutput_core) {
 

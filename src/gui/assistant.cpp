@@ -1217,8 +1217,7 @@ void
 get_audiooutput_devices_list (Ekiga::ServiceCore *core,
                               std::vector<std::string> & device_list)
 {
-  gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core
-    = core->get ("audiooutput-core");
+  gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core = core->get ("audiooutput-core");
   std::vector <Ekiga::AudioOutputDevice> devices;
 
   device_list.clear();
@@ -1241,8 +1240,7 @@ void
 get_audioinput_devices_list (Ekiga::ServiceCore *core,
                              std::vector<std::string> & device_list)
 {
-  gmref_ptr<Ekiga::AudioInputCore> audioinput_core
-    = core->get ("audioinput-core");
+  gmref_ptr<Ekiga::AudioInputCore> audioinput_core = core->get ("audioinput-core");
   std::vector <Ekiga::AudioInputDevice> devices;
 
   device_list.clear();
@@ -1265,8 +1263,7 @@ void
 get_videoinput_devices_list (Ekiga::ServiceCore *core,
                                         std::vector<std::string> & device_list)
 {
-  gmref_ptr<Ekiga::VideoInputCore> videoinput_core
-    = core->get ("videoinput-core");
+  gmref_ptr<Ekiga::VideoInputCore> videoinput_core = core->get ("videoinput-core");
   std::vector<Ekiga::VideoInputDevice> devices;
 
   device_list.clear();
@@ -1630,12 +1627,9 @@ ekiga_assistant_new (Ekiga::ServiceCore *core)
                     G_CALLBACK (ekiga_assistant_key_press_cb), NULL);
 
   sigc::connection conn;
-  gmref_ptr<Ekiga::VideoInputCore> videoinput_core
-    = core->get ("videoinput-core");
-  gmref_ptr<Ekiga::AudioInputCore> audioinput_core
-    = core->get ("audioinput-core");
-  gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core
-    = core->get ("audiooutput-core");
+  gmref_ptr<Ekiga::VideoInputCore> videoinput_core = core->get ("videoinput-core");
+  gmref_ptr<Ekiga::AudioInputCore> audioinput_core = core->get ("audioinput-core");
+  gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core = core->get ("audiooutput-core");
 
   conn = videoinput_core->device_added.connect (sigc::bind (sigc::ptr_fun (on_videoinput_device_added_cb), assistant));
   assistant->priv->connections.push_back (conn);

@@ -220,7 +220,7 @@ RL::Heap::get_node () const
 void
 RL::Heap::refresh ()
 {
-  gmref_ptr<XCAP::Core> xcap(services.get ("xcap-core"));
+  gmref_ptr<XCAP::Core> xcap = services.get ("xcap-core");
   std::string root_str;
   std::string username_str;
   std::string password_str;
@@ -599,7 +599,7 @@ RL::Heap::on_new_entry_form_submitted (bool submitted,
     path = path->build_child ("resource-lists");
     path = path->build_child ("list");
     path = path->build_child_with_attribute ("entry", "uri", entry_uri);
-    gmref_ptr<XCAP::Core> xcap(services.get ("xcap-core"));
+    gmref_ptr<XCAP::Core> xcap = services.get ("xcap-core");
     xcap->write (path, "application/xcap-el+xml",
 		 (const char*)xmlBufferContent (buffer),
 		 sigc::mem_fun (this, &RL::Heap::new_entry_result));

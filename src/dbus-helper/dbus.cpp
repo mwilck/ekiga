@@ -136,8 +136,7 @@ ekiga_dbus_component_call (EkigaDBusComponent *self,
                            const gchar *uri,
                            G_GNUC_UNUSED GError **error)
 {
-  gmref_ptr<Ekiga::CallCore> call_core
-    = self->priv->core->get ("call-core");
+  gmref_ptr<Ekiga::CallCore> call_core = self->priv->core->get ("call-core");
   call_core->dial (uri);
 
   return TRUE;
