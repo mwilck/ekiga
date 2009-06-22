@@ -80,6 +80,8 @@ public:
 
     const std::string get_aor () const;
 
+    Type get_type () const;
+
     /** Returns the protocol name of the Opal::Account.
      * This function is purely virtual and should be implemented by the
      * Ekiga::Account descendant.

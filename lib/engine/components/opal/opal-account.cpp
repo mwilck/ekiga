@@ -526,3 +526,9 @@ Opal::Account::handle_message_waiting_information (const std::string info)
     updated.emit ();
   }
 }
+
+Opal::Account::Type
+Opal::Account::get_type () const
+{
+  return type;
+}
