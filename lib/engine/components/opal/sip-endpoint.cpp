@@ -108,12 +108,7 @@ Opal::Sip::EndPoint::EndPoint (Opal::CallManager & _manager,
 	core (_core)
 {
   gmref_ptr<Ekiga::ChatCore> chat_core = core.get ("chat-core");
-
-  {
-    gmref_ptr<Opal::Bank> smart = core.get ("opal-account-store");
-    smart->reference (); // take a reference in the main thread
-    bank = smart.get ();
-  }
+  gmref_ptr<Opal::Bank> bank = core.get ("opal-account-store");
 
   auto_answer_call = false;
   protocol_name = "sip";
@@ -122,6 +117,10 @@ Opal::Sip::EndPoint::EndPoint (Opal::CallManager & _manager,
 
   dialect = gmref_ptr<SIP::Dialect>(new SIP::Dialect (core, sigc::mem_fun (this, &Opal::Sip::EndPoint::send_message)));
   chat_core->add_dialect (dialect);
+
+  bank->account_added.connect (sigc::mem_fun (this, &Opal::Sip::EndPoint::on_bank_updated));
+  bank->account_removed.connect (sigc::mem_fun (this, &Opal::Sip::EndPoint::on_bank_updated));
+  bank->account_updated.connect (sigc::mem_fun (this, &Opal::Sip::EndPoint::on_bank_updated));
 
   /* Timeouts */
   SetAckTimeout (PTimeInterval (0, 32));
@@ -148,7 +147,6 @@ Opal::Sip::EndPoint::EndPoint (Opal::CallManager & _manager,
 
 Opal::Sip::EndPoint::~EndPoint ()
 {
-  bank->unreference (); // leave a reference in the main thread
 }
 
 
@@ -177,6 +175,7 @@ Opal::Sip::EndPoint::menu_builder_add_actions (const std::string& fullname,
 {
   bool populated = false;
 
+  gmref_ptr<Opal::Bank> bank = core.get ("opal-account-store");
 
   std::list<std::string> uris;
   std::list<std::string> accounts;
@@ -1079,6 +1078,7 @@ Opal::Sip::EndPoint::GetRegisteredPartyName (const SIPURL & host,
   WORD port;
   PString url;
   SIPURL registration_address;
+  PWaitAndSignal mut(defaultAORMutex);
 
   /* If we are registered to an account corresponding to host, use it.
    */
@@ -1096,13 +1096,8 @@ Opal::Sip::EndPoint::GetRegisteredPartyName (const SIPURL & host,
      */
     if (host.GetHostAddress ().GetIpAndPort (address, port) && !manager.IsLocalAddress (address)) {
 
-      /* FIXME: this is the only place where we use the bank in a thread
-       * can't we just return GetDefaultDisplayName () ?
-       */
-      AccountPtr account = bank->find_account ("Ekiga.net");
-
-      if (account)
-        return SIPURL ("\"" + GetDefaultDisplayName () + "\" <" + PString(account->get_aor ()) + ">");
+      if ( !default_aor.empty ())
+        return SIPURL ("\"" + GetDefaultDisplayName () + "\" <" + PString(default_aor) + ">");
     }
   }
 
@@ -1241,6 +1236,7 @@ Opal::Sip::EndPoint::registration_event_in_main (const std::string aor,
 						 Opal::Account::RegistrationState state,
 						 const std::string msg)
 {
+  gmref_ptr<Opal::Bank> bank = core.get ("opal-account-store");
   AccountPtr account = bank->find_account (aor);
 
   if (account) {
@@ -1279,10 +1275,49 @@ void
 Opal::Sip::EndPoint::mwi_received_in_main (const std::string aor,
 					   const std::string info)
 {
+  gmref_ptr<Opal::Bank> bank = core.get ("opal-account-store");
   AccountPtr account = bank->find_account (aor);
 
   if (account) {
 
     account->handle_message_waiting_information (info);
   }
+}
+
+void
+Opal::Sip::EndPoint::on_bank_updated (Ekiga::ContactPtr /*contact*/)
+{
+  { // first we flush the existing value
+    PWaitAndSignal mut(defaultAORMutex);
+    default_aor = "";
+  }
+
+  { // and now we compute it again
+    gmref_ptr<Opal::Bank> bank = core.get ("opal-account-store");
+    bank->visit_accounts (sigc::mem_fun (this, &Opal::Sip::EndPoint::search_for_default_account));
+  }
+}
+
+bool
+Opal::Sip::EndPoint::search_for_default_account (Opal::AccountPtr account)
+{
+  PWaitAndSignal mut(defaultAORMutex);
+  bool result = true;
+
+  /* here is how result is computed here : first, remember it means to go on
+   * the search ; then we want the ekiga.net accounts to have some priority over
+   * others, so by default we want to go on. But if we find an account which is both
+   * suitable (active) and ekiga.net, then we want to stop.
+   */
+
+  if (account->is_active ()) {
+
+    default_aor = account->get_aor ();
+    if (account->get_type () == Opal::Account::Ekiga) {
+
+      result = false;
+    }
+  }
+
+  return result;
 }

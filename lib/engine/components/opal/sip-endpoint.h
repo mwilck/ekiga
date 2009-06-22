@@ -230,8 +230,13 @@ namespace Opal {
       std::list<std::string> to_subscribe_uris;  // List of uris to subscribe
       std::list<std::string> subscribed_uris;    // List of subscribed uris
       std::list<std::string> aors;               // List of registered aor
+
+      PMutex defaultAORMutex;
+      std::string default_aor;
+      void on_bank_updated (Ekiga::ContactPtr contact);
+      bool search_for_default_account(Opal::AccountPtr account);
+
       Ekiga::ServiceCore & core;
-      Opal::Bank* bank;
 
       Ekiga::CallProtocolManager::Interface listen_iface;
 
