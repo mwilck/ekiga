@@ -821,7 +821,7 @@ dnl ###########################################################################
 dnl  Plugin support
 dnl ###########################################################################
 
-PLUGINS_LIBTOOL_FLAGS="-module -avoid-version"
+PLUGINS_LIBTOOL_FLAGS="-module -avoid-version -shared --no-undefined"
 AC_SUBST(PLUGINS_LIBTOOL_FLAGS)
 
 PLUGINDIR='${libdir}/ekiga/plugins'
