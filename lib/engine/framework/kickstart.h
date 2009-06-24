@@ -37,8 +37,8 @@
 #define __KICKSTART_H__
 
 /* We want the engine startup to be as automatic as possible -- in particular,
- * it should handle dependancies as transparently as possible (external plugins
- * may come at one point).
+ * it should handle dependancies as transparently as possible so external
+ * plugins work correctly.
  *
  * This kickstart object works like this : some objects are registered to it,
  * and are responsible of initializing a portion of code. Those objects are
