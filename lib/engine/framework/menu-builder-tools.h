@@ -195,6 +195,55 @@ namespace Ekiga
 
     void clear ();
   };
+
+  /* Activator menu builder
+   *
+   * Yet another menu builder which doesn't build a menu (!) : you build it
+   * with an action label, and it will trigger that action when used. It also
+   * provides a method to check if the action could be carried on.
+   *
+   * For example, you can do :
+   * <pre>
+   *  Activator do ("accept");
+   *  Ekiga::Call call;
+   *
+   *  call.populate_menu (do); // we accept the call if the action is available
+   *
+   *  if (do.could_act ()) {
+   *    ...
+   *  } else {
+   *    ...
+   *  }
+   * </pre>
+   */
+  class Activator: public MenuBuilder
+  {
+  public:
+
+    Activator (const std::string label_);
+
+    ~Activator ();
+
+    void add_action (const std::string icon,
+		     const std::string label,
+		     sigc::slot0<void> callback);
+
+    void add_separator ();
+
+    void add_ghost (const std::string icon,
+		    const std::string label);
+
+    bool empty () const;
+
+    int size () const;
+
+    bool could_act () const;
+
+  private:
+
+    const std::string label;
+    bool did_it;
+  };
 };
 
 #endif

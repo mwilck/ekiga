@@ -254,3 +254,51 @@ Ekiga::TemporaryMenuBuilder::clear ()
     delete *iter;
   helpers.clear ();
 }
+
+Ekiga::Activator::Activator (const std::string label_):
+  label(label_), did_it(false)
+{}
+
+Ekiga::Activator::~Activator ()
+{}
+
+void
+Ekiga::Activator::add_action (const std::string /*icon*/,
+			      const std::string label_,
+			      sigc::slot0<void> callback)
+{
+  if (label == label_) {
+
+    did_it = true;
+    callback ();
+  }
+}
+
+void
+Ekiga::Activator::add_separator ()
+{
+}
+
+void
+Ekiga::Activator::add_ghost (const std::string /*icon*/,
+			     const std::string /*label*/)
+{
+}
+
+bool
+Ekiga::Activator::empty () const
+{
+  return true;
+}
+
+int
+Ekiga::Activator::size () const
+{
+  return 0;
+}
+
+bool
+Ekiga::Activator::could_act () const
+{
+  return did_it;
+}
