@@ -1,4 +1,4 @@
-SUBDIRS = gmconf gui toolbox platform
+SUBDIRS = platform gmconf gui toolbox
 
 if !WIN32
 SUBDIRS += pixops
