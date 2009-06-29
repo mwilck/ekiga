@@ -393,7 +393,7 @@ SubSection /e $(EKIGA_SHORTCUTS_SECTION_TITLE) SecShortcuts
   
   Section $(EKIGA_RUN_AT_STARTUP) SecStartup
      SetOutPath $INSTDIR
-     CreateShortCut "$SMSTARTUP\Ekiga.lnk" "$INSTDIR\ekiga.exe" "" "" 0 SW_SHOWMINIMIZED
+     CreateShortCut "$SMSTARTUP\Ekiga.lnk" "$INSTDIR\ekiga.exe" "" "" 0 SW_SHOWNORMAL
   SectionEnd
 SubSectionEnd
 
