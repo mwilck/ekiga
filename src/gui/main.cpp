@@ -4457,6 +4457,13 @@ main (int argc,
   text_label =  g_strdup_printf ("PTLIB_TRACE_CODECS_USER_PLANE=%d", debug_level_up);
   _putenv (text_label);
   g_free (text_label);
+  if (debug_level != 0) {
+    std::string desk_path = g_get_user_special_dir (G_USER_DIRECTORY_DESKTOP);
+    if (!desk_path.empty ()) {
+      std::freopen((desk_path + "\\ekiga-stdout.txt").c_str (), "w", stdout);
+      std::freopen((desk_path + "\\ekiga-stderr.txt").c_str (), "w", stderr);
+    }
+  }
 #endif
 
   /* Ekiga initialisation */
@@ -4625,9 +4632,6 @@ APIENTRY WinMain (HINSTANCE hInstance,
 
     /* use msvcrt.dll to parse command line */
     __getmainargs (&argc, &argv, &env, 0, &info);
-
-    std::freopen("stdout.txt", "w", stdout);
-    std::freopen("stderr.txt", "w", stderr);
 
     iresult = main (argc, argv, env);
   }
