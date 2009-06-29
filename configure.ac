@@ -877,6 +877,7 @@ lib/engine/components/call-history/Makefile
 lib/engine/components/ldap/Makefile
 lib/engine/components/kab/Makefile
 lib/engine/chat/Makefile
+lib/engine/friend-or-foe/Makefile
 lib/engine/framework/Makefile
 lib/engine/notification/Makefile
 lib/engine/plugin/Makefile

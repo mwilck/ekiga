@@ -17,6 +17,7 @@ INCLUDES = 								\
 	-I$(top_srcdir)/lib/engine/audioinput                           \
 	-I$(top_srcdir)/lib/engine/audiooutput                          \
 	-I$(top_srcdir)/lib/engine/addressbook				\
+	-I$(top_srcdir)/lib/engine/friend-or-foe			\
 	-I$(top_srcdir)/lib/engine/plugin				\
 	-I$(top_srcdir)/lib/engine/presence				\
 	-I$(top_srcdir)/lib/engine/protocol				\
@@ -87,6 +88,7 @@ libekiga_engine_la_LIBADD = \
 	$(top_builddir)/lib/engine/protocol/libgmprotocol.la	 				        \
 	$(top_builddir)/lib/engine/framework/libgmframework.la 						\
 	$(top_builddir)/lib/engine/addressbook/libgmaddressbook.la 				        \
+	$(top_builddir)/lib/engine/friend-or-foe/libgmfriendorfoe.la					\
 	$(top_builddir)/lib/engine/components/call-history/libcall-history.la 				\
 	$(top_builddir)/lib/engine/account/libaccount.la 						\
 	$(top_builddir)/lib/engine/presence/libgmpresence.la 					        \

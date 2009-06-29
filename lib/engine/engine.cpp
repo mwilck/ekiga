@@ -49,6 +49,7 @@
 #include "contact-core.h"
 #include "call-core.h"
 #include "chat-core.h"
+#include "friend-or-foe.h"
 #include "videooutput-core.h"
 #include "videoinput-core.h"
 #include "audioinput-core.h"
@@ -125,6 +126,7 @@ engine_init (int argc,
   gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core (new Ekiga::AudioOutputCore);
   gmref_ptr<Ekiga::AudioInputCore> audioinput_core (new Ekiga::AudioInputCore(*audiooutput_core));
   gmref_ptr<Ekiga::HalCore> hal_core (new Ekiga::HalCore);
+  gmref_ptr<Ekiga::FriendOrFoe> friend_or_foe (new Ekiga::FriendOrFoe);
 
 
   /* The last item in the following list will be destroyed first.   *
@@ -134,6 +136,7 @@ engine_init (int argc,
   service_core->add (account_core);
   service_core->add (contact_core);
   service_core->add (chat_core);
+  service_core->add (friend_or_foe);
   service_core->add (videoinput_core);
   service_core->add (videooutput_core);
   service_core->add (audioinput_core);
