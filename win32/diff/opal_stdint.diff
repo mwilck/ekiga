@@ -1,0 +1,12 @@
+diff -ur src/opal/plugins/video/common/ffmpeg.h opal/plugins/video/common/ffmpeg.h
+--- src/opal/plugins/video/common/ffmpeg.h	2009-06-09 17:47:35.337032739 +0200
++++ opal/plugins/video/common/ffmpeg.h	2009-06-09 22:07:03.941034240 +0200
+@@ -63,7 +63,7 @@
+ 
+ 
+ extern "C" {
+-#ifdef _WIN32
++#if defined (_WIN32) && defined (_MSC_VER)
+ #include "vs-stdint.h"
+ #define LIBAVCODEC_HEADER   "libavcodec\avcodec.h"
+ #pragma warning(push)

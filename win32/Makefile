@@ -36,11 +36,11 @@ IX86_TYPE:=5
 
 
 ifeq ($(DEBUG),1)
-        export CC=$(REALCC) -mms-bitfields -g 
-        export CXX=$(REALCXX) -mms-bitfields -g
+        export CC=$(REALCC) -mms-bitfields -gstabs
+        export CXX=$(REALCXX) -gstabs
 else
-        export CC=$(REALCC) -mms-bitfields 
-        export CXX=$(REALCXX) -mms-bitfields 
+        export CC=$(REALCC) -mms-bitfields
+        export CXX=$(REALCXX) -mms-bitfields
 endif
 
 export LD:=$(HOST_TOOL_PREFIX)-ld
@@ -61,75 +61,97 @@ export PATH:=$(BINDIR):$(PATH)
 export LDD:=$(BUILDROOT)/$(HOST_TOOL_PREFIX)-ldd.sh
 
 
-EKIGA_VER = 2.9
-EKIGA_REV = HEAD
-EKIGA_URL = http://svn.gnome.org/svn/ekiga/trunk
+GIT_EKIGA_REV = reset --hard HEAD
+#GIT_EKIGA_REV = checkout -b gnome-2-26 origin/gnome-2-26
+EKIGA_URL = git://git.gnome.org/ekiga
 EKIGA_ARCHIVE := ekiga
 EKIGA_DIR = $(BUILDROOT)/ekiga
 EKIGA_PREFIX:= $(TARGETDIR)/Ekiga
-EKIGA_WIN32_DIR := $(CURDIR)
-EKIGA_WIN32_DIFF_DIR := $(EKIGA_WIN32_DIR)/diff
+WIN32_DIFF_DIR := $(CURDIR)/diff
 EKIGA_INSTALLER_DIR := $(BUILDROOT)/nsisinstaller
-EKIGA_INSTALLER := ekiga-setup-${EKIGA_VER}.exe
+EKIGA_VER := $(strip $(shell grep AC_INIT $(SRCDIR)/$(EKIGA_ARCHIVE)/configure.ac | awk 'BEGIN { FS = "," } ; { print $$2 }'))
+EKIGA_REV := $(strip $(shell (cd $(SRCDIR)/$(EKIGA_ARCHIVE); git describe | awk 'BEGIN { FS = "-" } ; { print $$2 "_" $$3 }' )))
+ifneq ($(EKIGA_REV),)
+  EKIGA_VER := $(EKIGA_VER)-git-$(EKIGA_REV)
+endif
+EKIGA_INSTALLER := ekiga-setup-$(EKIGA_VER).exe
 
-OPAL_VER:= 3.4.1
+OPAL_VER:= 3.7.x
 OPAL_REV:= HEAD
-OPAL_URL:= https://opalvoip.svn.sourceforge.net/svnroot/opalvoip/opal/tags/v3_4_1
+#OPAL_URL:= https://opalvoip.svn.sourceforge.net/svnroot/opalvoip/opal/branches/v3_6
+OPAL_URL:= https://opalvoip.svn.sourceforge.net/svnroot/opalvoip/opal/trunk
 OPAL_ARCHIVE := opal
 OPAL_DIR:= $(BUILDROOT)/opal
+ifeq ($(DEBUG),1)
+OPAL_LIB := libopal_d_s.a
+else
+OPAL_LIB := libopal_s.a
+endif
 
-PTLIB_VER:= 2.4.1
+PTLIB_VER:= 2.7.1
 PTLIB_REV:= HEAD
-PTLIB_URL:= https://opalvoip.svn.sourceforge.net/svnroot/opalvoip/ptlib/tags/v2_4_1
+#PTLIB_URL:= https://opalvoip.svn.sourceforge.net/svnroot/opalvoip/ptlib/branches/v2_6
+PTLIB_URL:= https://opalvoip.svn.sourceforge.net/svnroot/opalvoip/ptlib/trunk
 PTLIB_DIR:= $(BUILDROOT)/ptlib
 PTLIB_ARCHIVE := ptlib
+ifeq ($(DEBUG),1)
+PTLIB_LIB := libpt_d_s.a
+else
+PTLIB_LIB := libpt_s.a
+endif
 
 OPENLDAP_VER := 2.3.28
 OPENLDAP_DIR := $(BUILDROOT)/openldap-$(OPENLDAP_VER)
 OPENLDAP_ARCHIVE := openldap-$(OPENLDAP_VER).tgz
-OPENLDAP_URL := http://www.openldap.org/software/download/OpenLDAP/openldap-release
+#OPENLDAP_URL := http://www.openldap.org/software/download/OpenLDAP/openldap-release
+OPENLDAP_URL := http://mirror.switch.ch/ftp/pool/3/mirror/OpenLDAP/openldap-release/
+
+LIBSASL2_VER := 2.1.22
+LIBSASL2_DIR := $(BUILDROOT)/cyrus-sasl-$(LIBSASL2_VER)
+LIBSASL2_ARCHIVE := cyrus-sasl-$(LIBSASL2_VER).zip
+LIBSASL2_URL := http://developer.pidgin.im/static/win32
 
 OGG_VER := 1.1.3
 OGG_DIR := $(BUILDROOT)/libogg-$(OGG_VER)
 OGG_ARCHIVE := libogg-$(OGG_VER).tar.gz
 OGG_URL := http://downloads.xiph.org/releases/ogg
 
-SPEEX_VER := 1.1.12
+SPEEX_VER := 1.2rc1
 SPEEX_DIR := $(BUILDROOT)/speex-$(SPEEX_VER)
 SPEEX_ARCHIVE := speex-$(SPEEX_VER).tar.gz
 SPEEX_URL := http://downloads.us.xiph.org/releases/speex
 
-GTK_VER := 2.12.11
-GTK_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/gtk+/2.12
-GTK_ARCHIVE := gtk+-dev-$(GTK_VER).zip
+GTK_VER := 2.16.0-2
+GTK_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/gtk+/2.16
+GTK_ARCHIVE := gtk+-dev_$(GTK_VER)_win32.zip
 
-GTK_BIN_VER := 2.12.11
-GTK_INSTALLER_URL := http://mesh.dl.sourceforge.net/gtk-win
-GTK_BIN_EXE := gtk2-runtime-2.12.11-2008-07-25-ash.exe
+GTK_BIN_VER := 2.16.0
+GTK_INSTALLER_URL := http://downloads.sourceforge.net/gtk-win
+GTK_BIN_EXE := gtk2-runtime-2.16.0-2009-03-22-ash.exe
 
 GLIB_VER := 2.18.0-2
 GLIB_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/glib/2.18
 GLIB_ARCHIVE := glib-dev_$(GLIB_VER)_win32.zip
 
-ATK_VER := 1.22.0
-ATK_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/atk/1.22
-ATK_ARCHIVE := atk-dev-$(ATK_VER).zip
+ATK_VER := 1.24.0-1
+ATK_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/atk/1.24
+ATK_ARCHIVE := atk-dev_$(ATK_VER)_win32.zip
 
-CAIRO_VER := 1.6.4-2
+CAIRO_VER := 1.8.6-1
 CAIRO_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies
-CAIRO_ARCHIVE := cairo-dev-$(CAIRO_VER).zip
+CAIRO_ARCHIVE := cairo-dev_$(CAIRO_VER)_win32.zip
 
-PANGO_VER := 1.20.5
-PANGO_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/pango/1.20
-PANGO_ARCHIVE := pango-dev-$(PANGO_VER).zip
+PANGO_VER := 1.24.0-1
+PANGO_URL := http://ftp.gnome.org/pub/gnome/binaries/win32/pango/1.24
+PANGO_ARCHIVE := pango-dev_$(PANGO_VER)_win32.zip
 
-XML2_VER := 2.6.26
+XML2_VER := 2.7.3
 XML2_DIR := libxml2-$(XML2_VER)
 XML2_URL := ftp://xmlsoft.org/libxml2
 XML2_ARCHIVE := libxml2-$(XML2_VER).tar.gz
 
-LIBPNG_VER := 1.2.8
-GNUWIN32_URL := http://mesh.dl.sourceforge.net/gnuwin32
+LIBPNG_VER := 1.2.35
+GNUWIN32_URL := http://downloads.sourceforge.net/gnuwin32
 
 EXPAT_VER = 2.0.0
 EXPAT_DIR = $(BUILDROOT)/expat-$(EXPAT_VER)
@@ -141,7 +163,7 @@ LIBINTL_VER := 0.14.4
 REGEX_DIR := $(BUILDROOT)/regex
 REGEX_ARCHIVE := regex
 
-SIGC_VER := 2.0.17
+SIGC_VER := 2.0.18
 SIGC_URL := http://ftp.gnome.org/pub/GNOME/sources/libsigc++/2.0
 SIGC_ARCHIVE := libsigc++-$(SIGC_VER).tar.gz
 SIGC_DIR := libsigc++-$(SIGC_VER)
@@ -155,23 +177,32 @@ GETTEXT_ARCHIVE := gettext-runtime-dev-$(GETTEXT_VER).zip
 ICONV_VER := 1.9.1
 ICONV_ARCHIVE := libiconv-$(ICONV_VER).bin.woe32.zip
 
-FFMPEG_VER := 14200
-FFMPEG_URL := svn://svn.mplayerhq.hu/ffmpeg/trunk
-FFMPEG_DIR := $(BUILDROOT)/ffmpeg
+GIT_FFMPEG_REV := reset --hard d962d69f2ef1bcd3b4
+GIT_FFMPEG_REV2 := reset --hard 8c5952c02bfad4bfa6
+FFMPEG_URL := git://git.ffmpeg.org/ffmpeg/
+FFMPEG_URL2 := git://git.ffmpeg.org/libswscale/
 FFMPEG_ARCHIVE := ffmpeg
+FFMPEG_ARCHIVE2 := ffmpeg/libswscale
+FFMPEG_DIR := $(BUILDROOT)/ffmpeg
+FFMPEG_DIR2 := $(BUILDROOT)/ffmpeg/libswscale
 
-X264_VER := 676
+GIT_X264_REV := reset --hard d2e1e1c35c43ea9c90c9211be
 X264_URL := git://git.videolan.org/x264.git
 X264_DIR := $(BUILDROOT)/x264
 X264_ARCHIVE := x264
 
-THEORA_VER := 13809
+GIT_CELT_REV := reset --hard HEAD
+CELT_URL := git://git.xiph.org/celt.git
+CELT_DIR := $(BUILDROOT)/celt
+CELT_ARCHIVE := celt
+
+THEORA_VER := 16013
 THEORA_URL := http://svn.xiph.org/trunk/theora
 THEORA_DIR := $(BUILDROOT)/theora
 THEORA_ARCHIVE := theora
 
-NSIS_VER := 2.29
-NSIS_URL := http://mesh.dl.sourceforge.net/nsis
+NSIS_VER := 2.43
+NSIS_URL := http://downloads.sourceforge.net/nsis
 NSISPROCESSES_URL := http://nsis.sourceforge.net/mediawiki/images/f/f3/
 NSISSYTEM_DIR := /usr/share/nsis/Contrib/Modern\ UI
 NSISPLUGIN_DIR := $(BUILDROOT)/nsisplugins
@@ -192,30 +223,32 @@ endif
 
 confflags:=--prefix=$(BUILDROOT) --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE)
 confptlib:=--prefix=$(BUILDROOT) --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE) \
-	   --with-directx-includedir=$(BUILDROOT)/directx \
+	   --enable-vfw --enable-vidfile --with-directx-includedir=$(EKIGA_DIR)/win32/directx \
 	   --disable-qos --disable-vidfile --disable-alsa --disable-esd --disable-oss --disable-sunaudio \
 	   --disable-v4l --disable-v4l2 --disable-bsdvideo --disable-avc --disable-dc
 confopal :=--prefix=$(BUILDROOT) --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE) \
 	   --with-ffmpeg-dir=$(FFMPEG_DIR) --disable-ffmpeg-h263
 confekiga:= $(confflags) \
-	    --with-directx-dir=$(BUILDROOT)/directx --prefix=$(EKIGA_PREFIX) \
+	    --with-directx-dir=$(EKIGA_DIR)/win32/directx --prefix=$(EKIGA_PREFIX) \
 	    --bindir=$(EKIGA_PREFIX) --datadir=$(EKIGA_PREFIX) \
 	    --sysconfdir=$(EKIGA_PREFIX) --libdir=$(EKIGA_PREFIX) --disable-gnome \
 	    --disable-dbus --disable-avahi --disable-xv --with-ldap-dir=$(OPENLDAP_DIR) \
-	    --enable-static-libs
+	    --with-libsasl2-dir=$(LIBSASL2_DIR) --enable-static-libs \
+	    CFLAGS="$(CFLAGS) -mwindows" CXXFLAGS="$(CXXFLAGS) -mwindows"
 
 confffmpeg:=--cross-prefix=i586-mingw32msvc- --enable-shared --enable-memalign-hack \
-	    --enable-cross-compile --disable-ffserver --target-os=mingw32 \
-	    --enable-w32threads --arch=i686  \
+	    --enable-cross-compile --enable-w32threads --arch=i686  --target-os=mingw32 \
+            --disable-ffserver --disable-ffmpeg --disable-ffplay \
 	    --disable-parsers --enable-parser=h264 --enable-parser=mpeg4video --enable-parser=h263 \
 	    --disable-decoders --enable-decoder=h264 --enable-decoder=mpeg4  --enable-decoder=h263 \
 	    --disable-muxers --enable-muxer=h264 --enable-muxer=mpeg4 --enable-muxer=h263 \
 	    --disable-encoders --enable-encoder=mpeg4 --enable-encoder=h263 \
 	    --disable-protocols --disable-bsfs --disable-ffplay --prefix=$(BUILDROOT) \
             --libdir=$(LIBDIR) --extra-ldflags=-Wl,-static
-#	    --disable-network
 
 confx264:=  --disable-avis-input --prefix=$(BUILDROOT) --host=$(DEB_HOST_GNU_TYPE)
+
+confcelt:=   $(confflags) --disable-oggtest
 
 conftheora:=--host=$(DEB_HOST_GNU_TYPE) --prefix=$(BUILDROOT) --disable-vorbistest --disable-sdltest --disable-examples
 
@@ -229,7 +262,7 @@ update: update-sources
 
 binaries:
 	echo Checking prerequisites...
-	hash $(REALCC) $(REALCXX) $(LD) $(NM) $(AR) $(RANLIB) $(DLLTOOL) $(DLLWRAP) $(OBJDUMP) $(WINDRES) $(AS)||(echo You need to install mingw32;exit 1)
+	hash $(REALCC) $(REALCXX) $(LD) $(NM) $(AR) $(RANLIB) $(DLLTOOL) $(DLLWRAP) $(OBJDUMP) $(RC) $(AS)||(echo You need to install mingw32;exit 1)
 	hash tar unzip zip wget $(ACLOCAL) autoheader libtoolize automake-1.9 autoconf pkg-config gnome-autogen.sh bison gdk-pixbuf-csource||(echo we need more binaries ;exit 1)
 	[ -f /usr/share/gnome-doc-utils/gnome-doc-utils.make ]||(echo gnome-doc-tools not installed;exit 1)
 	[ -f /usr/lib/pkgconfig/gconf-2.0.pc ]||(echo libgconf2-dev not installed;exit 1)
@@ -237,6 +270,7 @@ binaries:
 	[ -f /usr/lib/pkgconfig/avahi-client.pc ]||(echo libavahi-client-dev not installed;exit 1)
 	hash makensis||(echo nsis not installed;exit1) 	 
 	hash xmlto||(echo xmlto not installed;exit1)
+	hash git||(echo git not installed;exit1)
 #       [ $(BUILDROOT) = $(CURDIR) ]||(echo You are supposed to run this as Makefile in $(BUILDROOT);exit 1)
 	mkdir -p $(INCLUDEDIR) $(LIBDIR)/pkgconfig $(SRCDIR) $(BINDIR)
 	$(RM) -f $(BINDIR)/cygpath
@@ -314,7 +348,7 @@ update-sources::
 $(OPENLDAP_DIR)/configure: $(LIBDIR)/libregex.a $(SRCDIR)/$(OPENLDAP_ARCHIVE)
 	rm -f $(LIBDIR)/libldap.dll
 	tar xfz $(SRCDIR)/$(OPENLDAP_ARCHIVE) -C $(BUILDROOT)
-	sed -i -e 's#windres#$(WINDRES)#g' $(OPENLDAP_DIR)/libraries/liblutil/Makefile.in
+	sed -i -e 's#windres#$(RC)#g' $(OPENLDAP_DIR)/libraries/liblutil/Makefile.in
 	touch $@
 
 $(OPENLDAP_DIR)/config.status: binaries $(OPENLDAP_DIR)/configure
@@ -333,21 +367,34 @@ $(LIBDIR)/libldap.dll: binaries $(OPENLDAP_DIR)/config.status
 	$(MAKE) $(MAKE_LIB_OPTS) -C $(OPENLDAP_DIR)/libraries/libldap MOD_LIBS="-llutil" all install
 	touch $@
 
+### libsasl2
+update-sources::
+	echo --- Getting libsasl2 ...
+	$(WGET) -P $(SRCDIR) $(LIBSASL2_URL)/$(LIBSASL2_ARCHIVE)
+
+$(LIBDIR)/libsasl2.a: $(SRCDIR)/$(LIBSASL2_ARCHIVE)
+	rm -f $(LIBDIR)/libsasl.a
+	rm -rf $(LIBSASL2_DIR)
+	unzip -u $(SRCDIR)/$(LIBSASL2_ARCHIVE) -d $(BUILDROOT)
+	cp $(LIBSASL2_DIR)/lib/libsasl.lib $(LIBDIR)/libsasl2.a
+
 ### PTLib
-update-sources:: 
+
+update-ptlib:
 	echo --- Getting PTLib $(PTLIB_REV) ...
 	$(SVN) co $(PTLIB_URL) $(SRCDIR)/$(PTLIB_ARCHIVE) -r $(PTLIB_REV)
 
-$(PTLIB_DIR)/configure: binaries $(LIBDIR)/libldap.dll $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(SRCDIR)/$(PTLIB_ARCHIVE) $(EKIGA_WIN32_DIFF_DIR)/ptlib_Makefile.am $(LIBDIR)/libexpat.a $(EKIGA_WIN32_DIFF_DIR)/ptlib_configure.ac $(EKIGA_WIN32_DIFF_DIR)/ptlib_ptlib.pc.in
-	rm -f $(LIBDIR)/libpt_s.a
-	rm -rf $(PTLIB_DIR)
-	$(CP) -r $(SRCDIR)/$(PTLIB_ARCHIVE) $(PTLIB_DIR)	
+$(PTLIB_DIR)/configure: binaries $(LIBDIR)/libldap.dll $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(SRCDIR)/$(PTLIB_ARCHIVE) $(LIBDIR)/libexpat.a
+#$(PTLIB_DIR)/configure: binaries $(LIBDIR)/libldap.dll $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(SRCDIR)/$(PTLIB_ARCHIVE) $(LIBDIR)/libexpat.a $(EKIGA_DIR)/win32/directx
+	rm -rf $(PTLIB_DIR) $(LIBDIR)/$(PTLIB_LIB) $(INCLUDEDIR)/ptclib $(INCLUDEDIR)/ptlib
+	$(CP) -r $(SRCDIR)/$(PTLIB_ARCHIVE) $(PTLIB_DIR)
+	(cd $(PTLIB_DIR)/; patch -p1 < $(WIN32_DIFF_DIR)/ptlib_ws2ip6.diff )
 
 $(PTLIB_DIR)/config.status: binaries $(PTLIB_DIR)/configure
-	rm -f $(LIBDIR)/libpt_s.a
-	(cd $(PTLIB_DIR)/;./configure $(confptlib) )
+	rm -f $(LIBDIR)/$(PTLIB_LIB)
+	(cd $(PTLIB_DIR)/; ./configure $(confptlib) )
 
-$(LIBDIR)/libpt_s.a: binaries $(PTLIB_DIR)/config.status
+$(LIBDIR)/$(PTLIB_LIB): binaries $(PTLIB_DIR)/config.status
 ifeq ($(DEBUG),1)
 	$(MAKE) $(MAKEOPTS) DEBUG=1 debug -C $(PTLIB_DIR)
 	$(MAKE) DEBUG=1 -C $(PTLIB_DIR) install
@@ -378,7 +425,7 @@ update-sources::
 	$(WGET) -P $(SRCDIR) $(SPEEX_URL)/$(SPEEX_ARCHIVE)
 
 $(SPEEX_DIR)/config.status: binaries $(SRCDIR)/$(SPEEX_ARCHIVE)
-	rm -f $(LIBDIR)/_ibspeex.a
+	rm -f $(LIBDIR)/libspeex.a
 	tar xfz $(SRCDIR)/$(SPEEX_ARCHIVE) -C $(BUILDROOT)
 	(cd $(SPEEX_DIR)/;LDFLAGS="$$LDFLAGS -no-undefined" ./configure $(confflags) \
 	)
@@ -389,13 +436,30 @@ $(LIBDIR)/libspeex.a: binaries $(SPEEX_DIR)/config.status
 	$(MAKE) -C $(SPEEX_DIR) install
 
 ### ffmpeg
+ifeq ($(wildcard $(SRCDIR)/$(FFMPEG_ARCHIVE)),)
 update-sources::
-	echo --- Getting FFMPEG ---
-	$(SVN) co $(FFMPEG_URL) $(SRCDIR)/$(FFMPEG_ARCHIVE) -r $(FFMPEG_VER)
+	echo --- Getting $(FFMPEG_ARCHIVE) master...
+	$(GIT) clone $(FFMPEG_URL) $(SRCDIR)/$(FFMPEG_ARCHIVE)
+else
+update-sources::
+	echo --- Updating $(FFMPEG_ARCHIVE) master...
+	(cd $(SRCDIR)/$(FFMPEG_ARCHIVE); $(GIT) pull )
+endif
+ifeq ($(wildcard $(SRCDIR)/$(FFMPEG_ARCHIVE2)),)
+update-sources::
+	echo --- Getting $(FFMPEG_ARCHIVE2) master...
+	(cd $(SRCDIR)/$(FFMPEG_ARCHIVE); $(GIT) clone $(FFMPEG_URL2) )
+else
+update-sources::
+	echo --- Updating $(FFMPEG_ARCHIVE2) master...
+	(cd $(SRCDIR)/$(FFMPEG_ARCHIVE2); $(GIT) pull )
+endif
 
 $(FFMPEG_DIR)/config.status: $(SRCDIR)/$(FFMPEG_ARCHIVE)
 	rm -rf $(FFMPEG_DIR)
 	$(CP) -r $(SRCDIR)/$(FFMPEG_ARCHIVE) $(FFMPEG_DIR)
+	(cd $(FFMPEG_DIR)/; git $(GIT_FFMPEG_REV) )
+	(cd $(FFMPEG_DIR2)/; git $(GIT_FFMPEG_REV2) )
 	(cd $(FFMPEG_DIR)/; \
 	./configure $(confffmpeg) \
 	)
@@ -411,16 +475,22 @@ $(BINDIR)/avcodec.dll: $(FFMPEG_DIR)/config.status
 	touch $@
 
 ### x264
-update-sources:: 
+ifeq ($(wildcard $(SRCDIR)/$(X264_ARCHIVE)),)
+update-sources::
 	echo --- Getting x264 ---
-	rm -rf $(SRCDIR)/$(X264_ARCHIVE)
 	$(GIT) clone $(X264_URL) $(SRCDIR)/$(X264_ARCHIVE)
-	echo "Updated to revision $(X264_VER)"
 	touch $(SRCDIR)/$(X264_ARCHIVE)
+else
+update-sources::
+	echo --- Updating x264 ---
+	(cd $(SRCDIR)/$(X264_ARCHIVE); $(GIT) pull )
+	touch $(SRCDIR)/$(X264_ARCHIVE)
+endif
 
 $(X264_DIR)/config.status: $(SRCDIR)/$(X264_ARCHIVE)
 	rm -rf $(X264_DIR)
 	$(CP) -r $(SRCDIR)/$(X264_ARCHIVE) $(X264_DIR)
+	(cd $(X264_DIR)/; git $(GIT_X264_REV) )
 	(cd $(X264_DIR)/; \
 	CC=$(REALCC) ./configure $(confx264); \
 	sed -i -e 's#ranlib#$(RANLIB)#g' $(X264_DIR)/Makefile; \
@@ -433,6 +503,30 @@ $(LIBDIR)/libx264.a: $(X264_DIR)/config.status
 	$(MAKE) -C $(X264_DIR) install
 	touch $@
 
+### celt
+ifeq ($(wildcard $(SRCDIR)/$(CELT_ARCHIVE)),)
+update-sources::
+	echo --- Getting CELT ---
+	$(GIT) clone $(CELT_URL) $(SRCDIR)/$(CELT_ARCHIVE)
+	touch $(SRCDIR)/$(CELT_ARCHIVE)
+else
+update-sources::
+	echo --- Updating CELT ---
+	(cd $(SRCDIR)/$(CELT_ARCHIVE); $(GIT) pull )
+	touch $(SRCDIR)/$(CELT_ARCHIVE)
+endif
+
+$(CELT_DIR)/config.status: $(SRCDIR)/$(CELT_ARCHIVE) $(LIBDIR)/libogg.a
+	rm -rf $(CELT_DIR) $(INCLUDEDIR)/celt
+	$(CP) -r $(SRCDIR)/$(CELT_ARCHIVE) $(CELT_DIR)
+	(cd $(CELT_DIR)/; git $(GIT_CELT_REV) )
+	(cd $(CELT_DIR)/; ACLOCAL_FLAGS="-I $(BUILDROOT)/share/aclocal"; ./autogen.sh ; \
+	./configure  $(confcelt) )
+
+$(LIBDIR)/libcelt.a: $(CELT_DIR)/config.status
+	$(MAKE) $(MAKE_LIB_OPTS) -C $(CELT_DIR)
+	$(MAKE) -C $(CELT_DIR) install
+
 ### theora
 update-sources::
 	echo --- Getting theora ---
@@ -442,7 +536,7 @@ $(THEORA_DIR)/config.status: $(SRCDIR)/$(THEORA_ARCHIVE) $(LIBDIR)/libogg.a
 	rm -rf $(THEORA_DIR)
 	$(CP) -r $(SRCDIR)/$(THEORA_ARCHIVE) $(THEORA_DIR)
 	(cd $(THEORA_DIR)/; \
-	CC=$(REALCC) LD=$(LD) AR=$(AR) RANLIB=$(RANLIB) ./autogen.sh $(conftheora); )
+	CC=$(REALCC) LD=$(LD) AR=$(AR) RANLIB=$(RANLIB) ./autogen.sh $(conftheora) )
 	touch $@
 
 $(LIBDIR)/libtheora.a: $(THEORA_DIR)/config.status
@@ -452,27 +546,29 @@ $(LIBDIR)/libtheora.a: $(THEORA_DIR)/config.status
 	touch $@
 
 ### OPAL
-update-sources::
+update-opal:
 	echo --- Getting OPAL $(OPAL_REV)...
 	$(SVN) co $(OPAL_URL) $(SRCDIR)/$(OPAL_ARCHIVE) -r $(OPAL_REV)
 
-$(OPAL_DIR)/configure: binaries $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(LIBDIR)/libpt_s.a $(SRCDIR)/$(OPAL_ARCHIVE) $(EKIGA_WIN32_DIFF_DIR)/opal_configure.ac $(EKIGA_WIN32_DIFF_DIR)/opal_Makefile.am $(EKIGA_WIN32_DIFF_DIR)/opal_opal.pc.in $(BINDIR)/avcodec.dll $(LIBDIR)/libx264.a $(LIBDIR)/libtheora.a
-	rm -rf $(OPAL_DIR) $(LIBDIR)/libopal_s.a
+$(OPAL_DIR)/configure: binaries $(LIBDIR)/libogg.a $(LIBDIR)/libspeex.a $(LIBDIR)/$(PTLIB_LIB) $(SRCDIR)/$(OPAL_ARCHIVE) $(BINDIR)/avcodec.dll $(LIBDIR)/libx264.a $(LIBDIR)/libtheora.a $(LIBDIR)/libcelt.a
+	rm -rf $(OPAL_DIR) $(LIBDIR)/$(OPAL_LIB) $(INCLUDEDIR)/opal
 	$(CP) -r $(SRCDIR)/$(OPAL_ARCHIVE) $(OPAL_DIR)
+	(cd $(OPAL_DIR)/; patch -p1 < $(WIN32_DIFF_DIR)/opal_stdint.diff )
+	(cd $(OPAL_DIR)/; patch -p1 < $(WIN32_DIFF_DIR)/opal_h263dll.diff )
+	(cd $(OPAL_DIR)/; patch -p1 < $(WIN32_DIFF_DIR)/opal_avutil.diff )
 
 $(OPAL_DIR)/config.status: binaries $(OPAL_DIR)/configure
-	rm -f $(LIBDIR)/libopal_s.a
+	rm -f $(LIBDIR)/$(OPAL_LIB)
 ifeq ($(DEBUG),1)
 	(cd $(OPAL_DIR)/; ./configure $(confopal) --enable-debug )
 else
 	(cd $(OPAL_DIR)/; ./configure $(confopal)  )
 endif
 
-$(LIBDIR)/libopal_s.a: binaries $(OPAL_DIR)/config.status
-	rm -f $(LIBDIR)/libopal_s.a
+$(LIBDIR)/$(OPAL_LIB): binaries $(OPAL_DIR)/config.status
+	rm -f $(LIBDIR)/$(OPAL_LIB)
 	$(MAKE) $(MAKEOPTS) -C $(OPAL_DIR) 
 	$(MAKE) -C $(OPAL_DIR) install 
-#	sed -i -e 's#^prefix=.*$$#prefix=$(BUILDROOT)#g' $(LIBDIR)/pkgconfig/opal*.pc
 	
 ### libgtk
 update-sources::
@@ -585,27 +681,40 @@ $(LIBDIR)/libxml2.a: binaries $(XML2_DIR)/config.status
 	$(MAKE) $(MAKEOPTS) -C $(XML2_DIR) install
 
 ### GnomeMeeting / Ekiga
-update-sources::
-	echo --- Getting Ekiga $(EKIGA_REV)...
-	$(SVN) co $(EKIGA_URL) $(SRCDIR)/$(EKIGA_ARCHIVE) -r $(EKIGA_REV)
+ifeq ($(wildcard $(SRCDIR)/$(EKIGA_ARCHIVE)),)
+ifneq ($(wildcard $(BUILDROOT)/../$(EKIGA_ARCHIVE)/.git),)
+update-ekiga:
+	echo --- Moving Ekiga master...
+	$(MV) $(BUILDROOT)/../$(EKIGA_ARCHIVE) $(SRCDIR)
+else
+update-ekiga:
+	echo --- Getting Ekiga master...
+	$(GIT) clone $(EKIGA_URL) $(SRCDIR)/$(EKIGA_ARCHIVE)
+endif
+else
+update-ekiga:
+	echo --- Updating Ekiga master...
+	(cd $(SRCDIR)/$(EKIGA_ARCHIVE); $(GIT) pull )
+endif
 
-$(EKIGA_DIR)/autogen.sh: binaries $(SRCDIR)/$(EKIGA_ARCHIVE)
+$(EKIGA_DIR)/autogen.sh $(EKIGA_DIR)/win32/directx: binaries $(SRCDIR)/$(EKIGA_ARCHIVE)
 	rm -rf $(EKIGA_DIR)
 	$(CP) -r $(SRCDIR)/$(EKIGA_ARCHIVE) $(EKIGA_DIR)
+	(cd $(EKIGA_DIR)/; git $(GIT_EKIGA_REV) )
 	touch $@
 
-$(EKIGA_DIR)/config.status: binaries $(EKIGA_DIR)/autogen.sh $(LIBDIR)/libpt_s.a $(LIBDIR)/libopal_s.a \
+$(EKIGA_DIR)/config.status: binaries $(EKIGA_DIR)/autogen.sh $(LIBDIR)/$(PTLIB_LIB) $(LIBDIR)/$(OPAL_LIB) \
 	$(LIBDIR)/pkgconfig/gtk+-2.0.pc $(LIBDIR)/pkgconfig/atk-2.0.pc $(LIBDIR)/pkgconfig/glib-2.0.pc \
 	$(LIBDIR)/libpng.a $(LIBDIR)/pkgconfig/pango32.pc $(LIBDIR)/pkgconfig/cairo.pc $(LIBDIR)/libxml2.a \
-	$(LIBDIR)/libintl.a $(LIBDIR)/libiconv.a $(LIBDIR)/libsigc++.a
+	$(LIBDIR)/libintl.a $(LIBDIR)/libiconv.a $(LIBDIR)/libsigc++.a $(LIBDIR)/libsasl2.a
 	rm -f $(EKIGA_DIR)/src/ekiga.exe
 ifeq ($(DEBUG),1)
-	(cd $(EKIGA_DIR)/; ACLOCAL_FLAGS="-I $(BUILDROOT)/share/aclocal"; ./autogen.sh $(confekiga) --enable-debug )
+	(cd $(EKIGA_DIR)/; ACLOCAL_FLAGS="-I $(BUILDROOT)/share/aclocal"; ./autogen.sh $(confekiga) --enable-opal-debug )
 else
 	(cd $(EKIGA_DIR)/; ACLOCAL_FLAGS="-I $(BUILDROOT)/share/aclocal"; ./autogen.sh $(confekiga) )
 endif
 $(EKIGA_DIR)/src/ekiga.exe: binaries $(EKIGA_DIR)/config.status
-	$(MAKE) $(MAKEOPTS) -C $(EKIGA_DIR)
+	$(MAKE) $(MAKEOPTS) -C $(EKIGA_DIR) 2>&1 | tee make.log
 	$(MAKE) $(MAKEOPTS) -C $(EKIGA_DIR)/help
 
 $(TARGETDIR)/zips: binaries $(EKIGA_DIR)/src/ekiga.exe
@@ -620,16 +729,16 @@ $(TARGETDIR)/zips: binaries $(EKIGA_DIR)/src/ekiga.exe
 	for plugin in $(LIBDIR)/opal*/codecs/video/*; do \
 	        install -m 755 $$plugin $(EKIGA_PREFIX)/plugins ;\
 	done
-	for lib in libexpat-1.dll liblber.dll libldap.dll libxml2-2.dll libspeex-1.dll; do \
+	for lib in libexpat-1.dll liblber.dll libldap.dll libxml2-2.dll libspeex-1.dll libspeexdsp-1.dll \
+	   libtheora-0.dll avcodec-52.dll avutil-50.dll libogg-0.dll libsigc-2.0-0.dll; do \
 	        install -m 755 $(BINDIR)/$$lib $(EKIGA_PREFIX) ;\
 	done
-	install -m 755 $(BINDIR)/avcodec.dll $(EKIGA_PREFIX)
-	install -m 755 $(BINDIR)/libogg-0.dll $(EKIGA_PREFIX)
-	install -m 755  $(SIGC_DIR)/sigc++/.libs/libsigc-2.0-0.dll $(EKIGA_PREFIX)
 ifeq ($(DEBUG),0) 	 
 	$(STRIP) $(EKIGA_PREFIX)/*.dll
 	$(STRIP) $(EKIGA_PREFIX)/*.exe; 
 endif
+	# We can not strip MS compiled dlls
+	install -m 755  $(LIBSASL2_DIR)/bin/libsasl.dll $(EKIGA_PREFIX)
 	for lc in C $(DOC_LINGUAS); do \
 		mkdir -p $(EKIGA_PREFIX)/help/$$lc; \
 		if test -f $(EKIGA_DIR)/help/$$lc/ekiga.xml; then \
@@ -641,10 +750,12 @@ endif
 			install -m 644 $(EKIGA_DIR)/help/$$lc/figures/*.png $(EKIGA_PREFIX)/help/$$lc/figures; \
 		fi \
 	done
-	(cd $(TARGETDIR)/;zip -9r ekiga.zip Ekiga )
-	zip -9r $(TARGETDIR)/ekiga_build.zip Makefile $(EKIGA_WIN32_DIFF_DIR)/* ico/*
-	tar cfvz $(TARGETDIR)/ekiga_build.tgz Makefile $(EKIGA_WIN32_DIFF_DIR)/* ico/*
+	(cd $(TARGETDIR)/;zip -9r ekiga-$(EKIGA_VER).zip Ekiga )
+	zip -9r $(TARGETDIR)/ekiga_build-$(EKIGA_VER).zip Makefile $(WIN32_DIFF_DIR)/* ico/*
+	tar cfvz $(TARGETDIR)/ekiga_build-$(EKIGA_VER).tgz Makefile $(WIN32_DIFF_DIR)/* ico/*
 	touch $@
+
+update-sources:: update-ptlib update-opal update-ekiga
 
 #### README about NSIS installer ####
 #
@@ -689,6 +800,8 @@ clean:
 
 distclean:
 	-$(RM) -rf $(OPENLDAP_DIR)
+	-$(RM) -rf $(LIBSASL2_DIR)
+	-$(RM) -rf $(CELT_DIR)
 	-$(RM) -rf $(BUILDROOT)/share/
 	-$(RM) -rf $(BINDIR)
 	-$(RM) -rf $(BUILDROOT)/contrib
@@ -711,6 +824,6 @@ distclean:
 	-$(RM) -rf $(THEORA_DIR)
 	-$(RM) -rf make
 	-$(RM) -f binaries
-	-$(RM) -rf $(SRCDIR)/*
+#	-$(RM) -rf $(SRCDIR)/*
 
-.PHONY: clean distclean update update-sources
+.PHONY: clean distclean update update-sources update-ekiga update-opal update-ptlib

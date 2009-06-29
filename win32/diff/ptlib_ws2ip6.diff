@@ -1,0 +1,51 @@
+diff -ur src/ptlib/configure ptlib/configure
+--- src/ptlib/configure	2009-06-09 17:47:00.637030459 +0200
++++ ptlib/configure	2009-06-09 20:01:25.481030439 +0200
+@@ -4520,7 +4520,7 @@
+ 		   TARGETDIR=msos ;
+ 		   SHAREDLIBEXT="dll" ;
+ 		   STDCCFLAGS="$STDCCFLAGS -mms-bitfields" ;
+-		   ENDLDLIBS="-lwinmm -lwsock32 -lsnmpapi -lmpr -lcomdlg32 -lgdi32 -lavicap32 -liphlpapi -lole32" ;
++		   ENDLDLIBS="-lwinmm -lwsock32 -lws2_32 -lsnmpapi -lmpr -lcomdlg32 -lgdi32 -lavicap32 -liphlpapi -lole32" ;
+ 		   NEEDS_PTHREADS=no ;
+ 		   { echo "$as_me:$LINENO: checking for swab" >&5
+ echo $ECHO_N "checking for swab... $ECHO_C" >&6; }
+diff -ur src/ptlib/configure.ac ptlib/configure.ac
+--- src/ptlib/configure.ac	2009-06-09 17:47:00.653032217 +0200
++++ ptlib/configure.ac	2009-06-09 19:59:54.409031582 +0200
+@@ -302,7 +302,7 @@
+ 		   TARGETDIR=msos ;
+ 		   SHAREDLIBEXT="dll" ;
+ 		   STDCCFLAGS="$STDCCFLAGS -mms-bitfields" ;
+-		   ENDLDLIBS="-lwinmm -lwsock32 -lsnmpapi -lmpr -lcomdlg32 -lgdi32 -lavicap32 -liphlpapi -lole32" ;
++		   ENDLDLIBS="-lwinmm -lwsock32 -lws2_32 -lsnmpapi -lmpr -lcomdlg32 -lgdi32 -lavicap32 -liphlpapi -lole32" ;
+ 		   NEEDS_PTHREADS=no ;
+ 		   AC_CHECK_FUNC([swab], [AC_DEFINE([USE_SYSTEM_SWAB], [], [Use system swab()] )] )
+ 		   HAS_SHM_VIDEO=
+diff -ur src/ptlib/src/ptlib/common/sockets.cxx ptlib/src/ptlib/common/sockets.cxx
+--- src/ptlib/src/ptlib/common/sockets.cxx	2009-05-27 17:13:56.320289152 +0200
++++ ptlib/src/ptlib/common/sockets.cxx	2009-06-09 19:59:54.413033488 +0200
+@@ -31,6 +31,11 @@
+  * $Date: 2009-05-25 05:26:23 +0200 (Mo, 25. Mai 2009) $
+  */
+ 
++#if defined(__MINGW32__) && (!defined(WINVER) || (WINVER == 0x500)) 
++#undef WINVER
++#define WINVER 0x501
++#endif  // __MINGW32__
++
+ #include <ptlib.h>
+ 
+ #include <ptlib/sockets.h>
+@@ -60,8 +65,10 @@
+                                 DWORD cbTransferred,
+                                 LPWSAOVERLAPPED lpOverlapped,
+                                 DWORD dwFlags);
+-                                
+ 
++#if defined(__MINGW32__) && (WINVER < 0x500)
++#undef AI_NUMERICHOST
++#endif  // __MINGW32__
+ #endif  // _WIN32_WCE
+ #endif  // _WIN32
+ #endif // P_QOS
