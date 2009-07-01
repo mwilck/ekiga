@@ -1,4 +1,4 @@
-AC_INIT(ekiga, 3.3.0, http://bugzilla.gnome.org/enter_bug.cgi?product=ekiga)
+AC_INIT(ekiga, 3.3.1, http://bugzilla.gnome.org/enter_bug.cgi?product=ekiga)
 AC_CANONICAL_TARGET
 AC_PREREQ(2.53)
 AC_CONFIG_SRCDIR(src/gui/main.cpp)
