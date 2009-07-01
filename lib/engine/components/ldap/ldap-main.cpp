@@ -75,8 +75,8 @@ struct LDAPSpark: public Ekiga::Spark
   bool result;
 };
 
-void
-ldap_init (Ekiga::KickStart& kickstart)
+extern "C" void
+ekiga_plugin_init (Ekiga::KickStart& kickstart)
 {
   gmref_ptr<Ekiga::Spark> spark(new LDAPSpark);
   kickstart.add_spark (spark);

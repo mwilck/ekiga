@@ -1,4 +1,4 @@
-noinst_LTLIBRARIES = libgmldap.la
+plugin_LTLIBRARIES = libgmldap.la
 
 ldap_dir = $(top_srcdir)/lib/engine/components/ldap
 
@@ -19,7 +19,5 @@ libgmldap_la_SOURCES = \
 	$(ldap_dir)/ldap-main.h 	\
 	$(ldap_dir)/ldap-main.cpp
 
-libgmldap_la_LIBADD = \
-	$(top_builddir)/lib/engine/addressbook/libgmaddressbook.la
-
-libgmldap_la_LDFLAGS = -export-dynamic -no-undefined $(LDAP_LIBS) $(SIGC_LIBS) $(GLIB_LIBS) $(XML_LIBS)
+libgmldap_la_LDFLAGS = $(PLUGINS_LIBTOOL_FLAGS)
+libgmldap_la_LIBADD =  $(LDAP_LIBS) $(SIGC_LIBS) $(GLIB_LIBS) $(XML_LIBS)

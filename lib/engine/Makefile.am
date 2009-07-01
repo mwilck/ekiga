@@ -137,10 +137,6 @@ libekiga_engine_la_LIBADD += \
 	$(top_builddir)/lib/engine/components/avahi-publisher/libavahipublisher.la
 endif
 
-if HAVE_LDAP
-libekiga_engine_la_LIBADD += components/ldap/libgmldap.la
-endif
-
 if HAVE_GNOME
 if HAVE_DBUS
 INCLUDES += -I$(top_srcdir)/lib/engine/components/gnome-session/
