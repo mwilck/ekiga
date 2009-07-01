@@ -1,4 +1,4 @@
-noinst_LTLIBRARIES = libgmaddressbook.la
+stacklib_LTLIBRARIES = libgmaddressbook.la
 
 addressbook_dir = $(top_srcdir)/lib/engine/addressbook
 
@@ -16,4 +16,4 @@ libgmaddressbook_la_SOURCES = \
 	$(addressbook_dir)/contact-core.h		\
 	$(addressbook_dir)/contact-core.cpp
 
-libgmaddressbook_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(GLIB_LIBS)
+libgmaddressbook_la_LDFLAGS = -shared -module -no-undefined $(SIGC_LIBS) $(GLIB_LIBS)

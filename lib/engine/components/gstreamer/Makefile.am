@@ -1,4 +1,3 @@
-plugindir = $(PLUGINDIR)
 plugin_LTLIBRARIES = libgmgstreamer.la
 
 gstreamer_dir = $(top_srcdir)/lib/engine/components/gstreamer/

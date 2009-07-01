@@ -1,4 +1,4 @@
-noinst_LTLIBRARIES = libgmpresence.la
+stacklib_LTLIBRARIES = libgmpresence.la
 
 presence_dir = $(top_srcdir)/lib/engine/presence
 
@@ -22,4 +22,4 @@ libgmpresence_la_SOURCES = \
 	$(presence_dir)/presence-core.h		\
 	$(presence_dir)/presence-core.cpp
 
-libgmpresence_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS)
+libgmpresence_la_LDFLAGS = -shared -module -no-undefined $(SIGC_LIBS)

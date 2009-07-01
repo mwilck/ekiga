@@ -1,4 +1,3 @@
-plugindir = $(PLUGINDIR)
 plugin_LTLIBRARIES = libgmevolution.la
 
 evolution_dir = $(top_srcdir)/lib/engine/components/evolution

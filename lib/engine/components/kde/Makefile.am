@@ -1,4 +1,3 @@
-plugindir = $(PLUGINDIR)/kde
 plugin_LTLIBRARIES = libgmkde.la
 
 kde_dir = $(top_srcdir)/lib/engine/components/kde

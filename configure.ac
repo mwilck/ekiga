@@ -32,7 +32,8 @@ dnl ###########################################################################
 
 PKG_PROG_PKG_CONFIG
 
-AM_PROG_LIBTOOL
+AC_DISABLE_STATIC
+AC_PROG_LIBTOOL
 
 AC_PROG_CC_C99
 AC_PROG_CXX
@@ -821,11 +822,30 @@ dnl ###########################################################################
 dnl  Plugin support
 dnl ###########################################################################
 
-PLUGINS_LIBTOOL_FLAGS="-module -avoid-version -shared --no-undefined"
-AC_SUBST(PLUGINS_LIBTOOL_FLAGS)
+case "$host" in
+*-mingw*)
+        # libtool really installs in ../bin, so we have to add the dummy!
+        # and we have to set PLUGIN_DIR to that directory
+        bindir='${exec_prefix}'
+        stacklibdir='${exec_prefix}'
+        plugindir='${exec_prefix}/plugins'
+        PLUGIN_LIBTOOL_FLAGS="-no-undefined -avoid-version -module"
+        PLUGIN_DIR='plugins'
+        ;;
+*)
+        versioned_libdir='${libdir}/AC_PACKAGE_NAME/AC_PACKAGE_VERSION'
+        stacklibdir=${versioned_libdir}
+        plugindir=${versioned_libdir}/plugins
+        PLUGIN_LIBTOOL_FLAGS="-module"
+        PLUGIN_DIR='${plugindir}'
+        ;;
+esac
 
-PLUGINDIR='${libdir}/ekiga/plugins'
-AC_SUBST(PLUGINDIR)
+AC_SUBST(bindir)
+AC_SUBST(stacklibdir)
+AC_SUBST(plugindir)
+AC_SUBST(PLUGIN_LIBTOOL_FLAGS)
+AC_SUBST(PLUGIN_DIR)
 
 dnl ###########################################################################
 dnl  Output the different Makefiles

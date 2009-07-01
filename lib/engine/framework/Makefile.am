@@ -1,4 +1,4 @@
-noinst_LTLIBRARIES = libgmframework.la
+stacklib_LTLIBRARIES = libgmframework.la
 
 framework_dir = $(top_srcdir)/lib/engine/framework
 
@@ -49,4 +49,4 @@ libgmframework_la_SOURCES = \
 	$(framework_dir)/ptr_array_const_iterator.h
 
 
-libgmframework_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(GLIB_LIBS) $(XML_LIBS)
+libgmframework_la_LDFLAGS = -shared -module -no-undefined $(SIGC_LIBS) $(GLIB_LIBS) $(XML_LIBS)

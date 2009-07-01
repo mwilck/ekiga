@@ -1,4 +1,4 @@
-noinst_LTLIBRARIES = libgmvideooutput.la
+stacklib_LTLIBRARIES = libgmvideooutput.la
 
 videooutput_dir = $(top_srcdir)/lib/engine/videooutput
 
@@ -17,4 +17,4 @@ libgmvideooutput_la_SOURCES = \
 	$(videooutput_dir)/videooutput-gmconf-bridge.h  \
 	$(videooutput_dir)/videooutput-gmconf-bridge.cpp
 
-libgmvideooutput_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(GLIB_LIBS) $(PTLIB_LIBS)
+libgmvideooutput_la_LDFLAGS = -shared -module -no-undefined $(SIGC_LIBS) $(GLIB_LIBS) $(PTLIB_LIBS)

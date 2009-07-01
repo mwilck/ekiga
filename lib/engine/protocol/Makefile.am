@@ -1,4 +1,4 @@
-noinst_LTLIBRARIES = libgmprotocol.la
+stacklib_LTLIBRARIES = libgmprotocol.la
 
 protocol_dir = $(top_srcdir)/lib/engine/protocol/
 
@@ -17,4 +17,4 @@ libgmprotocol_la_SOURCES = \
 	$(protocol_dir)/codec-description.h		\
 	$(protocol_dir)/codec-description.cpp
 
-libgmprotocol_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(GLIB_LIBS)
+libgmprotocol_la_LDFLAGS = -shared -module -no-undefined $(SIGC_LIBS) $(GLIB_LIBS)

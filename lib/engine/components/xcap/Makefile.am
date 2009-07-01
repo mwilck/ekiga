@@ -1,4 +1,3 @@
-plugindir = $(PLUGINDIR)
 plugin_LTLIBRARIES = libgmxcap.la
 
 xcap_dir = $(top_srcdir)/lib/engine/components/xcap/

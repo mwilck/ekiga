@@ -1,4 +1,3 @@
-plugindir = $(PLUGINDIR)
 plugin_LTLIBRARIES = libgmresource_list.la
 
 resource_list_dir = $(top_srcdir)/lib/engine/components/resource-list/

@@ -1,4 +1,3 @@
-plugindir = $(PLUGINDIR)
 plugin_LTLIBRARIES = libgmloudmouth.la
 
 loudmouth_dir = $(top_srcdir)/lib/engine/components/loudmouth

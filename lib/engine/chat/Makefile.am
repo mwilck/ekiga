@@ -1,4 +1,4 @@
-noinst_LTLIBRARIES = libgmchat.la
+stacklib_LTLIBRARIES = libgmchat.la
 
 chat_dir = $(top_srcdir)/lib/engine/chat
 
@@ -17,4 +17,4 @@ libgmchat_la_SOURCES = \
 	$(chat_dir)/chat-simple.h		\
 	$(chat_dir)/chat-multiple.h
 
-libgmchat_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS)
+libgmchat_la_LDFLAGS = -shared -module -no-undefined $(SIGC_LIBS)

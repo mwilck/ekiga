@@ -1,4 +1,4 @@
-noinst_LTLIBRARIES = libaccount.la
+stacklib_LTLIBRARIES = libaccount.la
 
 account_dir = $(top_srcdir)/lib/engine/account
 
@@ -15,4 +15,4 @@ libaccount_la_SOURCES = \
 	$(account_dir)/account-core.h			\
 	$(account_dir)/account-core.cpp
 
-libaccount_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(GLIB_LIBS)
+libaccount_la_LDFLAGS = -shared -module -no-undefined $(SIGC_LIBS) $(GLIB_LIBS)

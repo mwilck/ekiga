@@ -1,4 +1,3 @@
-plugindir = $(PLUGINDIR)/kde
 plugin_LTLIBRARIES = libgmkab.la
 
 kab_dir = $(top_srcdir)/lib/engine/components/kab

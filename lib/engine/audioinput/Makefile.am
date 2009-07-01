@@ -1,4 +1,4 @@
-noinst_LTLIBRARIES = libgmaudioinput.la
+stacklib_LTLIBRARIES = libgmaudioinput.la
 
 audioinput_dir = $(top_srcdir)/lib/engine/audioinput
 
@@ -19,4 +19,4 @@ libgmaudioinput_la_SOURCES = \
 	$(audioinput_dir)/audioinput-gmconf-bridge.h \
 	$(audioinput_dir)/audioinput-gmconf-bridge.cpp
 
-libgmaudioinput_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(GLIB_LIBS) $(PTLIB_LIBS)
+libgmaudioinput_la_LDFLAGS = -shared -module -no-undefined $(SIGC_LIBS) $(GLIB_LIBS) $(PTLIB_LIBS)
