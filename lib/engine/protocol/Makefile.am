@@ -17,4 +17,4 @@ libgmprotocol_la_SOURCES = \
 	$(protocol_dir)/codec-description.h		\
 	$(protocol_dir)/codec-description.cpp
 
-libgmprotocol_la_LDFLAGS = -shared -module -no-undefined $(SIGC_LIBS) $(GLIB_LIBS)
+libgmprotocol_la_LDFLAGS = $(STACKLIB_LDFLAGS) $(SIGC_LIBS) $(GLIB_LIBS)

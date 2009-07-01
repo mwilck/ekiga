@@ -14,5 +14,5 @@ libplugin_la_SOURCES = \
 	$(plugin_dir)/plugin-core.h			\
 	$(plugin_dir)/plugin-core.cpp
 
-libplugin_la_LDFLAGS = -shared -module -no-undefined
+libplugin_la_LDFLAGS = $(STACKLIB_LDFLAGS)
 libplugin_la_LIBADD = $(SIGC_LIBS) $(GLIB_LIBS)

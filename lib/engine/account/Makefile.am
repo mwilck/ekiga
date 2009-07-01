@@ -15,4 +15,4 @@ libaccount_la_SOURCES = \
 	$(account_dir)/account-core.h			\
 	$(account_dir)/account-core.cpp
 
-libaccount_la_LDFLAGS = -shared -module -no-undefined $(SIGC_LIBS) $(GLIB_LIBS)
+libaccount_la_LDFLAGS = $(STACKLIB_LDFLAGS) $(SIGC_LIBS) $(GLIB_LIBS)

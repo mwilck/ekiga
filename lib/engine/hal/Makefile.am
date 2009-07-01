@@ -13,4 +13,4 @@ libgmhal_la_SOURCES = \
 	$(hal_dir)/hal-core.h		\
 	$(hal_dir)/hal-core.cpp
 
-libgmhal_la_LDFLAGS = -shared -module -no-undefined $(SIGC_LIBS)
+libgmhal_la_LDFLAGS = $(STACKLIB_LDFLAGS) $(SIGC_LIBS)

@@ -19,4 +19,4 @@ libgmaudioinput_la_SOURCES = \
 	$(audioinput_dir)/audioinput-gmconf-bridge.h \
 	$(audioinput_dir)/audioinput-gmconf-bridge.cpp
 
-libgmaudioinput_la_LDFLAGS = -shared -module -no-undefined $(SIGC_LIBS) $(GLIB_LIBS) $(PTLIB_LIBS)
+libgmaudioinput_la_LDFLAGS = $(STACKLIB_LDFLAGS) $(SIGC_LIBS) $(GLIB_LIBS) $(PTLIB_LIBS)

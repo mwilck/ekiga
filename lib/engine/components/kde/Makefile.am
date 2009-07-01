@@ -13,5 +13,4 @@ libgmkde_la_SOURCES = \
 
 libgmkde_la_LDFLAGS = $(PLUGINS_LIBTOOL_FLAGS)
 libgmkde_la_LIBADD = \
-	$(top_builddir)/lib/engine/framework/libgmframework.la \
 	$(SIGC_LIBS) $(KDE_LIBS)

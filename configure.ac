@@ -829,23 +829,25 @@ case "$host" in
         bindir='${exec_prefix}'
         stacklibdir='${exec_prefix}'
         plugindir='${exec_prefix}/plugins'
-        PLUGIN_LIBTOOL_FLAGS="-no-undefined -avoid-version -module"
         PLUGIN_DIR='plugins'
         ;;
 *)
         versioned_libdir='${libdir}/AC_PACKAGE_NAME/AC_PACKAGE_VERSION'
         stacklibdir=${versioned_libdir}
         plugindir=${versioned_libdir}/plugins
-        PLUGIN_LIBTOOL_FLAGS="-module"
         PLUGIN_DIR='${plugindir}'
         ;;
 esac
+
+PLUGIN_LIBTOOL_FLAGS="-no-undefined -avoid-version -module"
+STACKLIB_LDFLAGS='-shared -module -no-undefined -avoid-version'
 
 AC_SUBST(bindir)
 AC_SUBST(stacklibdir)
 AC_SUBST(plugindir)
 AC_SUBST(PLUGIN_LIBTOOL_FLAGS)
 AC_SUBST(PLUGIN_DIR)
+AC_SUBST(STACKLIB_LDFLAGS)
 
 dnl ###########################################################################
 dnl  Output the different Makefiles

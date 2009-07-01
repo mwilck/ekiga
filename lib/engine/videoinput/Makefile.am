@@ -19,4 +19,4 @@ libgmvideoinput_la_SOURCES = \
 	$(videoinput_dir)/videoinput-gmconf-bridge.h \
 	$(videoinput_dir)/videoinput-gmconf-bridge.cpp
 
-libgmvideoinput_la_LDFLAGS = -shared -module -no-undefined $(SIGC_LIBS) $(GLIB_LIBS) $(PTLIB_CFLAGS)
+libgmvideoinput_la_LDFLAGS = $(STACKLIB_LDFLAGS) $(SIGC_LIBS) $(GLIB_LIBS) $(PTLIB_CFLAGS)
