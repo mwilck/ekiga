@@ -155,7 +155,7 @@ plugin_parse_directory (Ekiga::KickStart& kickstart,
 void
 plugin_init (Ekiga::KickStart& kickstart)
 {
-#ifdef DEBUG
+#if DEBUG
   // should make it easier to test ekiga without installing
   gchar* path = g_build_path (G_DIR_SEPARATOR_S,
 			      g_get_tmp_dir (), "ekiga_debug_plugins", NULL);
