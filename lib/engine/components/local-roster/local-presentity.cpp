@@ -60,6 +60,20 @@ Local::Presentity::Presentity (Ekiga::ServiceCore &_core,
     xmlFree (xml_str);
   }
 
+  xml_str = xmlGetProp (node, (const xmlChar*)"preferred");
+  preferred = false;
+  if (xml_str != NULL) {
+
+    if (xmlStrEqual (xml_str, BAD_CAST "true")) {
+
+      preferred = true;
+    } else {
+
+      preferred = false;
+    }
+    xmlFree (xml_str);
+  }
+
   for (xmlNodePtr child = node->children ;
        child != NULL ;
        child = child->next) {
@@ -106,6 +120,7 @@ Local::Presentity::Presentity (Ekiga::ServiceCore &_core,
 {
   node = xmlNewNode (NULL, BAD_CAST "entry");
   xmlSetProp (node, BAD_CAST "uri", BAD_CAST uri.c_str ());
+  xmlSetProp (node, BAD_CAST "preferred", BAD_CAST "false");
   name_node = xmlNewChild (node, NULL,
 			   BAD_CAST "name",
 			   BAD_CAST robust_xmlEscape (node->doc,
@@ -224,6 +239,7 @@ Local::Presentity::edit_presentity ()
 			   "element of ekiga's internal roster"));
   request->text ("name", _("Name:"), name);
   request->text ("uri", _("Address:"), uri);
+  request->boolean ("preferred", _("Is a preferred contact"), preferred);
 
   request->editable_set ("groups", _("Choose groups:"),
 			 groups, all_groups);
@@ -242,6 +258,7 @@ Local::Presentity::edit_presentity_form_submitted (bool submitted,
   const std::string new_name = result.text ("name");
   const std::set<std::string> new_groups = result.editable_set ("groups");
   std::string new_uri = result.text ("uri");
+  bool new_preferred = result.boolean ("preferred");
   std::map<std::string, xmlNodePtr> future_group_nodes;
   size_t pos = new_uri.find_first_of (' ');
   if (pos != std::string::npos)
@@ -273,6 +290,18 @@ Local::Presentity::edit_presentity_form_submitted (bool submitted,
     }
     else {
       future_group_nodes[iter->first] = iter->second;
+    }
+  }
+
+  if (new_preferred != preferred) {
+
+    preferred = new_preferred;
+    if (preferred) {
+
+      xmlSetProp (node, BAD_CAST "preferred", BAD_CAST "true");
+    } else {
+
+      xmlSetProp (node, BAD_CAST "preferred", BAD_CAST "false");
     }
   }
 
@@ -347,4 +376,10 @@ Local::Presentity::remove ()
 
   trigger_saving.emit ();
   removed.emit ();
+}
+
+bool
+Local::Presentity::is_preferred () const
+{
+  return preferred;
 }

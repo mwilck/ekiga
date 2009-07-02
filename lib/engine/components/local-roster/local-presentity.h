@@ -134,6 +134,12 @@ namespace Local
     xmlNodePtr get_node () const;
 
 
+    /** Tells if the contact is in the preferred list
+     *
+     * @return: Whether the contact is preferred
+     */
+    bool is_preferred () const;
+
     /** Rename the given group, if this Presentity belongs to it
      *
      */
@@ -188,6 +194,7 @@ namespace Local
     std::string presence;
     std::string status;
     std::string avatar;
+    bool preferred;
 
     std::map<std::string, xmlNodePtr> group_nodes;
     std::set<std::string> groups;
