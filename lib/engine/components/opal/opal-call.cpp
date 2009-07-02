@@ -302,14 +302,13 @@ Opal::Call::is_outgoing () const
 void
 Opal::Call::parse_info (OpalConnection & connection)
 {
-  char special_chars [] = "([;=";
+  char special_chars [] = "([;=$";
   int i = 0;
   std::string::size_type idx;
   std::string l_party_name;
   std::string r_party_name;
   std::string app;
 
-  remote_uri = (const char *) connection.GetRemotePartyCallbackURL ();
   if (!PIsDescendant(&connection, OpalPCSSConnection)) {
 
     outgoing = connection.IsOriginating ();
