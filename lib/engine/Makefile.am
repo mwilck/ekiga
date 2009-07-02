@@ -1,4 +1,7 @@
-SUBDIRS = framework  plugin notification account addressbook presence chat gui protocol videooutput videoinput audioinput audiooutput hal components
+SUBDIRS = \
+	framework friend-or-foe plugin notification account \
+	addressbook presence chat gui protocol videooutput \
+	videoinput audioinput audiooutput hal components
 
 noinst_LTLIBRARIES = libekiga_engine.la
 
