@@ -1,4 +1,4 @@
-noinst_LTLIBRARIES = libgmfriendorfoe.la
+stacklib_LTLIBRARIES = libgmfriendorfoe.la
 
 friend_or_foe_dir = $(top_srcdir)/lib/engine/friend-or-foe
 
@@ -10,4 +10,4 @@ libgmfriendorfoe_la_SOURCES = \
 	$(friend_or_foe_dir)/friend-or-foe.h \
 	$(friend_or_foe_dir)/friend-or-foe.cpp
 
-libgmaddressbook_la_LDFLAGS = -export-dynamic -no-undefined
+libgmaddressbook_la_LDFLAGS = $(STACKLIB_LDFLAGS)
