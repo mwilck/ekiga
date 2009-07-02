@@ -459,5 +459,24 @@ Ekiga::FriendOrFoe::Identification
 Local::Heap::decide (const std::string /*domain*/,
 		     const std::string token) const
 {
-  return Ekiga::FriendOrFoe::Unknown;
+  Ekiga::FriendOrFoe::Identification result = Ekiga::FriendOrFoe::Unknown;
+
+  for (const_iterator iter = begin ();
+       iter != end ();
+       ++iter) {
+
+    if ((*iter)->get_uri () == token) {
+
+      if ((*iter)->is_preferred ()) {
+
+	result = Ekiga::FriendOrFoe::Friend;
+      } else {
+
+	result = Ekiga::FriendOrFoe::Neutral;
+      }
+      break;
+    }
+  }
+
+  return result;
 }
