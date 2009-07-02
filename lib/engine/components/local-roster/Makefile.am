@@ -7,8 +7,9 @@ AM_CPPFLAGS = $(XML_CFLAGS) $(SIGC_CFLAGS) $(GLIB_CFLAGS)
 INCLUDES = \
 	-I$(top_srcdir)/lib/gmconf	 		\
 	-I$(top_srcdir)/lib/engine/framework 		\
-	-I$(top_srcdir)/lib/engine/addressbook	\
+	-I$(top_srcdir)/lib/engine/addressbook		\
 	-I$(top_srcdir)/lib/engine/account		\
+	-I$(top_srcdir)/lib/engine/friend-or-foe	\
 	-I$(top_srcdir)/lib/engine/presence
 
 liblocal_roster_la_SOURCES = \

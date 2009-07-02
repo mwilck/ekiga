@@ -38,6 +38,7 @@
 #define __LOCAL_HEAP_H__
 
 #include "heap-impl.h"
+#include "friend-or-foe.h"
 #include "local-presentity.h"
 
 
@@ -62,7 +63,9 @@ namespace Local
    * When required, the Heap content is being saved in a GmConf entry.
    * Alternatively, it could be saved elsewhere.
    */
-  class Heap : public Ekiga::HeapImpl<Presentity>
+  class Heap:
+    public Ekiga::HeapImpl<Presentity>,
+    public Ekiga::FriendOrFoe::Helper
   {
   public:
 
@@ -114,6 +117,10 @@ namespace Local
      */
     const std::set<std::string> existing_groups ();
 
+    /** Implementation of the IFF api
+     */
+    Ekiga::FriendOrFoe::Identification decide (const std::string domain,
+					       const std::string token) const;
 
     /** This function should be called when a new presentity has
      * to be added to the Heap. It uses a form with the known

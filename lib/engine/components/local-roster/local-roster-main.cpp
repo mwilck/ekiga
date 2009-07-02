@@ -37,6 +37,7 @@
 
 #include "local-roster-main.h"
 #include "presence-core.h"
+#include "friend-or-foe.h"
 #include "local-cluster.h"
 
 struct LOCALROSTERSpark: public Ekiga::Spark
@@ -50,11 +51,13 @@ struct LOCALROSTERSpark: public Ekiga::Spark
   {
     Ekiga::ServicePtr service = core.get ("local-cluster");
     gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
+    gmref_ptr<Ekiga::FriendOrFoe> iff = core.get ("friend-or-foe");
 
-    if (presence_core && !service) {
+    if (presence_core && iff && !service) {
 
       gmref_ptr<Local::Cluster> cluster (new Local::Cluster (core));
       core.add (cluster);
+      iff->add_helper (cluster->get_heap ());
       presence_core->add_cluster (cluster);
       result = true;
     }

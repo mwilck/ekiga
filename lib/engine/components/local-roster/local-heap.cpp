@@ -454,3 +454,10 @@ Local::Heap::rename_group_form_submitted (std::string old_name,
     visit_presentities (sigc::mem_fun (helper, &rename_group_form_submitted_helper::rename_group));
   }
 }
+
+Ekiga::FriendOrFoe::Identification
+Local::Heap::decide (const std::string /*domain*/,
+		     const std::string token) const
+{
+  return Ekiga::FriendOrFoe::Unknown;
+}
