@@ -302,9 +302,9 @@ Opal::Call::is_outgoing () const
 void
 Opal::Call::parse_info (OpalConnection & connection)
 {
-  char special_chars [] = "([;=$";
-  int i = 0;
-  std::string::size_type idx;
+  char start_special_chars [] = "$";
+  char end_special_chars [] = "([;=";
+
   std::string l_party_name;
   std::string r_party_name;
   std::string app;
@@ -315,8 +315,11 @@ Opal::Call::parse_info (OpalConnection & connection)
 
     remote_uri = (const char *) connection.GetRemotePartyCallbackURL ();
 
-    l_party_name = (const char *) connection.GetCalledPartyURL ();
-    r_party_name = (const char *) connection.GetRemotePartyName ();
+    l_party_name = (const char *) connection.GetLocalPartyName ();
+    if (connection.GetRemotePartyName () == connection.GetRemotePartyAddress ())
+      r_party_name = remote_uri;
+    else
+      r_party_name = (const char *) connection.GetRemotePartyName ();
     app = (const char *) connection.GetRemoteProductInfo ().AsString ();
     start_time = connection.GetConnectionStartTime ();
     if (!start_time.IsValid ())
@@ -329,21 +332,12 @@ Opal::Call::parse_info (OpalConnection & connection)
     if (!app.empty ())
       remote_application = app;
 
-    while (i < 3) {
+    strip_special_chars (remote_party_name, end_special_chars, false);
+    strip_special_chars (remote_application, end_special_chars, false);
+    strip_special_chars (remote_uri, end_special_chars, false);
 
-      idx = remote_party_name.find_first_of (special_chars [i]);
-      if (idx != std::string::npos)
-        remote_party_name = remote_party_name.substr (0, idx);
-
-      idx = remote_application.find_first_of (special_chars [i]);
-      if (idx != std::string::npos)
-        remote_application = remote_application.substr (0, idx);
-
-      idx = remote_uri.find_first_of (special_chars [i]);
-      if (idx != std::string::npos)
-        remote_uri = remote_uri.substr (0, idx);
-      i++;
-    }
+    strip_special_chars (remote_party_name, start_special_chars, true);
+    strip_special_chars (remote_uri, start_special_chars, true);
   }
 }
 
