@@ -10,4 +10,4 @@ libgmfriendorfoe_la_SOURCES = \
 	$(friend_or_foe_dir)/friend-or-foe.h \
 	$(friend_or_foe_dir)/friend-or-foe.cpp
 
-libgmaddressbook_la_LDFLAGS = $(STACKLIB_LDFLAGS)
+libgmfriendorfoe_la_LDFLAGS = $(STACKLIB_LDFLAGS)
