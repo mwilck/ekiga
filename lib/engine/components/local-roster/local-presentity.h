@@ -187,17 +187,10 @@ namespace Local
 
     std::tr1::shared_ptr<xmlDoc> doc;
     xmlNodePtr node;
-    xmlNodePtr name_node;
 
-    std::string name;
-    std::string uri;
     std::string presence;
     std::string status;
     std::string avatar;
-    bool preferred;
-
-    std::map<std::string, xmlNodePtr> group_nodes;
-    std::set<std::string> groups;
   };
 
   typedef gmref_ptr<Presentity> PresentityPtr;

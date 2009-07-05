@@ -49,89 +49,32 @@
 Local::Presentity::Presentity (Ekiga::ServiceCore &_core,
 			       std::tr1::shared_ptr<xmlDoc> _doc,
 			       xmlNodePtr _node) :
-  core(_core), doc(_doc), node(_node), name_node(NULL), presence("unknown")
+  core(_core), doc(_doc), node(_node), presence("unknown")
 {
-  xmlChar *xml_str = NULL;
-
-  xml_str = xmlGetProp (node, (const xmlChar *)"uri");
-  if (xml_str != NULL) {
-
-    uri = (const char *)xml_str;
-    xmlFree (xml_str);
-  }
-
-  xml_str = xmlGetProp (node, (const xmlChar*)"preferred");
-  preferred = false;
-  if (xml_str != NULL) {
-
-    if (xmlStrEqual (xml_str, BAD_CAST "true")) {
-
-      preferred = true;
-    } else {
-
-      preferred = false;
-    }
-    xmlFree (xml_str);
-  }
-
-  for (xmlNodePtr child = node->children ;
-       child != NULL ;
-       child = child->next) {
-
-    if (child->type == XML_ELEMENT_NODE
-        && child->name != NULL) {
-
-      if (xmlStrEqual (BAD_CAST ("name"), child->name)) {
-
-        xml_str = xmlNodeGetContent (child);
-	if (xml_str != NULL)
-	  name = (const char *)xml_str;
-	name_node = child;
-        xmlFree (xml_str);
-      }
-
-      if (xmlStrEqual (BAD_CAST ("group"), child->name)) {
-
-        xml_str = xmlNodeGetContent (child);
-	if (xml_str != NULL)
-	  group_nodes[(const char *)xml_str] = child;
-	else
-	  group_nodes[""] = child;
-        xmlFree (xml_str);
-      }
-    }
-  }
-
-  for (std::map<std::string, xmlNodePtr>::const_iterator iter
-	 = group_nodes.begin ();
-       iter != group_nodes.end ();
-       iter++)
-    groups.insert (iter->first);
 }
 
 
 Local::Presentity::Presentity (Ekiga::ServiceCore &_core,
 			       std::tr1::shared_ptr<xmlDoc> _doc,
-			       const std::string _name,
-			       const std::string _uri,
-			       const std::set<std::string> _groups) :
-  core(_core), doc(_doc), name_node(NULL), name(_name), uri(_uri),
-  presence("unknown"), groups(_groups)
+			       const std::string name,
+			       const std::string uri,
+			       const std::set<std::string> groups) :
+  core(_core), doc(_doc), presence("unknown")
 {
   node = xmlNewNode (NULL, BAD_CAST "entry");
   xmlSetProp (node, BAD_CAST "uri", BAD_CAST uri.c_str ());
   xmlSetProp (node, BAD_CAST "preferred", BAD_CAST "false");
-  name_node = xmlNewChild (node, NULL,
-			   BAD_CAST "name",
-			   BAD_CAST robust_xmlEscape (node->doc,
-						      name).c_str ());
+  xmlNewChild (node, NULL,
+	       BAD_CAST "name",
+	       BAD_CAST robust_xmlEscape (node->doc,
+					  name).c_str ());
   for (std::set<std::string>::const_iterator iter = groups.begin ();
        iter != groups.end ();
        iter++)
-    group_nodes[*iter] = xmlNewChild (node, NULL,
-				      BAD_CAST "group",
-				      BAD_CAST robust_xmlEscape (node->doc,
-								 *iter).c_str ());
+    xmlNewChild (node, NULL,
+		 BAD_CAST "group",
+		 BAD_CAST robust_xmlEscape (node->doc,
+					    *iter).c_str ());
 }
 
 
@@ -143,6 +86,31 @@ Local::Presentity::~Presentity ()
 const std::string
 Local::Presentity::get_name () const
 {
+  std::string name;
+  xmlChar* xml_str = NULL;
+
+  for (xmlNodePtr child = node->children ;
+       child != NULL ;
+       child = child->next) {
+
+    if (child->type == XML_ELEMENT_NODE
+        && child->name != NULL) {
+
+      if (xmlStrEqual (BAD_CAST ("name"), child->name)) {
+
+	xml_str = xmlNodeGetContent (child);
+	if (xml_str != NULL) {
+
+	  name = (const char*)xml_str;
+	  xmlFree (xml_str);
+	} else {
+
+	  name = _("Unnamed");
+	}
+      }
+    }
+  }
+
   return name;
 }
 
@@ -171,6 +139,27 @@ Local::Presentity::get_avatar () const
 const std::set<std::string>
 Local::Presentity::get_groups () const
 {
+  std::set<std::string> groups;
+
+  for (xmlNodePtr child = node->children ;
+       child != NULL ;
+       child = child->next) {
+
+    if (child->type == XML_ELEMENT_NODE
+        && child->name != NULL) {
+
+      if (xmlStrEqual (BAD_CAST ("group"), child->name)) {
+
+	xmlChar* xml_str = xmlNodeGetContent (child);
+	if (xml_str != NULL) {
+
+	  groups.insert ((const char*) xml_str);
+	  xmlFree (xml_str);
+	}
+      }
+    }
+  }
+
   return groups;
 }
 
@@ -178,6 +167,16 @@ Local::Presentity::get_groups () const
 const std::string
 Local::Presentity::get_uri () const
 {
+  std::string uri;
+  xmlChar* xml_str = NULL;
+
+  xml_str = xmlGetProp (node, BAD_CAST "uri");
+  if (xml_str != NULL) {
+
+    uri = (const char*)xml_str;
+    xmlFree (xml_str);
+  }
+
   return uri;
 }
 
@@ -205,7 +204,7 @@ Local::Presentity::populate_menu (Ekiga::MenuBuilder &builder)
 
   populated
     = presence_core->populate_presentity_menu (PresentityPtr(this),
-					       uri, builder);
+					       get_uri (), builder);
 
   if (populated)
     builder.add_separator ();
@@ -232,6 +231,9 @@ Local::Presentity::edit_presentity ()
   ClusterPtr cluster = core.get ("local-cluster");
   gmref_ptr<Ekiga::FormRequestSimple> request = gmref_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &Local::Presentity::edit_presentity_form_submitted)));
 
+  std::string name = get_name ();
+  std::string uri = get_uri ();
+  std::set<std::string> groups = get_groups ();
   std::set<std::string> all_groups = cluster->existing_groups ();
 
   request->title (_("Edit roster element"));
@@ -239,7 +241,7 @@ Local::Presentity::edit_presentity ()
 			   "element of ekiga's internal roster"));
   request->text ("name", _("Name:"), name);
   request->text ("uri", _("Address:"), uri);
-  request->boolean ("preferred", _("Is a preferred contact"), preferred);
+  request->boolean ("preferred", _("Is a preferred contact"), is_preferred ());
 
   request->editable_set ("groups", _("Choose groups:"),
 			 groups, all_groups);
@@ -256,53 +258,70 @@ Local::Presentity::edit_presentity_form_submitted (bool submitted,
     return;
 
   const std::string new_name = result.text ("name");
+  const std::set<std::string> groups = get_groups ();
   const std::set<std::string> new_groups = result.editable_set ("groups");
   std::string new_uri = result.text ("uri");
-  bool new_preferred = result.boolean ("preferred");
-  std::map<std::string, xmlNodePtr> future_group_nodes;
+  const std::string uri = get_uri ();
+  bool preferred = result.boolean ("preferred");
+  std::set<xmlNodePtr> nodes_to_remove;
   size_t pos = new_uri.find_first_of (' ');
   if (pos != std::string::npos)
     new_uri = new_uri.substr (0, pos);
 
-  name = new_name;
+  for (xmlNodePtr child = node->children ;
+       child != NULL ;
+       child = child->next) {
+
+    if (child->type == XML_ELEMENT_NODE
+        && child->name != NULL) {
+
+      if (xmlStrEqual (BAD_CAST ("name"), child->name)) {
+
+	robust_xmlNodeSetContent (node, &child, "name", new_name);
+      }
+    }
+  }
+
   if (uri != new_uri) {
 
     gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
     presence_core->unfetch_presence (uri);
-    uri = new_uri;
     presence = "unknown";
-    presence_core->fetch_presence (uri);
-    xmlSetProp (node, (const xmlChar*)"uri", (const xmlChar*)uri.c_str ());
+    presence_core->fetch_presence (new_uri);
+    xmlSetProp (node, (const xmlChar*)"uri", (const xmlChar*)new_uri.c_str ());
   }
-
-  robust_xmlNodeSetContent (node, &name_node, "name", name);
 
   // the first loop looks at groups we were in : are we still in ?
-  for (std::map<std::string, xmlNodePtr>::const_iterator iter
-	 = group_nodes.begin ();
-       iter != group_nodes.end () ;
-       iter++) {
+  for (xmlNodePtr child = node->children ;
+       child != NULL ;
+       child = child->next) {
 
-    if (new_groups.find (iter->first) == new_groups.end ()) {
+    if (child->type == XML_ELEMENT_NODE
+        && child->name != NULL) {
 
-      xmlUnlinkNode (iter->second);
-      xmlFreeNode (iter->second);
-    }
-    else {
-      future_group_nodes[iter->first] = iter->second;
+      if (xmlStrEqual (BAD_CAST ("group"), child->name)) {
+
+	xmlChar* xml_str = xmlNodeGetContent (child);
+
+	if (xml_str != NULL) {
+
+	  if (new_groups.find ((const char*) xml_str) == new_groups.end ()) {
+
+	    nodes_to_remove.insert (child); // don't free what we loop on!
+	  }
+	  xmlFree (xml_str);
+	}
+      }
     }
   }
 
-  if (new_preferred != preferred) {
+  // ok, now we can clean up!
+  for (std::set<xmlNodePtr>::iterator iter = nodes_to_remove.begin ();
+       iter != nodes_to_remove.end ();
+       ++iter) {
 
-    preferred = new_preferred;
-    if (preferred) {
-
-      xmlSetProp (node, BAD_CAST "preferred", BAD_CAST "true");
-    } else {
-
-      xmlSetProp (node, BAD_CAST "preferred", BAD_CAST "false");
-    }
+    xmlUnlinkNode (*iter);
+    xmlFreeNode (*iter);
   }
 
   // the second loop looking for groups we weren't in but are now
@@ -310,15 +329,20 @@ Local::Presentity::edit_presentity_form_submitted (bool submitted,
        iter != new_groups.end ();
        iter++) {
 
-    if (std::find (groups.begin (), groups.end (), *iter) == groups.end ())
-      future_group_nodes[*iter] = xmlNewChild (node, NULL,
-					       BAD_CAST "group",
-					       BAD_CAST robust_xmlEscape (node->doc, *iter).c_str ());
+    if (std::find (groups.begin (), groups.end (), *iter) == groups.end ()) {
+      xmlNewChild (node, NULL,
+		   BAD_CAST "group",
+		   BAD_CAST robust_xmlEscape (node->doc, *iter).c_str ());
+    }
   }
 
-  // ok, now we know our groups
-  group_nodes = future_group_nodes;
-  groups = new_groups;
+  if (preferred) {
+
+    xmlSetProp (node, BAD_CAST "preferred", BAD_CAST "true");
+  } else {
+
+    xmlSetProp (node, BAD_CAST "preferred", BAD_CAST "false");
+  }
 
   updated.emit ();
   trigger_saving.emit ();
@@ -329,39 +353,61 @@ void
 Local::Presentity::rename_group (const std::string old_name,
 				 const std::string new_name)
 {
-  std::map<std::string, xmlNodePtr>::iterator iter
-    = group_nodes.find (old_name);
+  bool already_in_new_name = false;
+  std::set<xmlNodePtr> nodes_to_remove;
 
-  if (iter != group_nodes.end ()) {
+  /* remove the old name's node
+   * and check if we aren't already in the new name's group
+   */
+  for (xmlNodePtr child = node->children ;
+       child != NULL ;
+       child = child->next) {
 
-    if (group_nodes.find (new_name) != group_nodes.end ()) {
+    if (child->type == XML_ELEMENT_NODE
+        && child->name != NULL) {
 
-      /* we're already in the new group */
-      xmlUnlinkNode (iter->second);
-      xmlFreeNode (iter->second);
-      group_nodes.erase (iter);
-    } else {
+      if (xmlStrEqual (BAD_CAST ("group"), child->name)) {
 
-      /* it is a real renaming */
-      xmlNodePtr group_node = iter->second;
-      robust_xmlNodeSetContent (node, &group_node,
-				"group", new_name.c_str ());
-      group_nodes.erase (iter);
-      group_nodes[new_name] = group_node;
+	xmlChar* xml_str = xmlNodeGetContent (child);
+
+	if (xml_str != NULL) {
+
+	  if (old_name == (const char*)xml_str) {
+
+	    nodes_to_remove.insert (child); // don't free what we loop on!
+	  }
+
+	  if (new_name == (const char*)xml_str) {
+
+	    already_in_new_name = true;
+	  }
+
+	  xmlFree (xml_str);
+	}
+      }
     }
-
-    groups.clear ();
-
-    for (std::map<std::string, xmlNodePtr>::iterator it = group_nodes.begin ();
-	 it != group_nodes.end ();
-	 ++it) {
-
-      groups.insert (iter->first);
-    }
-
-    updated.emit ();
-    trigger_saving.emit ();
   }
+
+  // ok, now we can clean up!
+  for (std::set<xmlNodePtr>::iterator iter = nodes_to_remove.begin ();
+       iter != nodes_to_remove.end ();
+       ++iter) {
+
+    xmlUnlinkNode (*iter);
+    xmlFreeNode (*iter);
+  }
+
+  if ( !already_in_new_name) {
+
+    xmlNewChild (node, NULL,
+		 BAD_CAST "group",
+		 BAD_CAST robust_xmlEscape (node->doc,
+					    new_name).c_str ());
+
+  }
+
+  updated.emit ();
+  trigger_saving.emit ();
 }
 
 
@@ -369,7 +415,7 @@ void
 Local::Presentity::remove ()
 {
   gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
-  presence_core->unfetch_presence (uri);
+  presence_core->unfetch_presence (get_uri ());
 
   xmlUnlinkNode (node);
   xmlFreeNode (node);
@@ -381,5 +427,20 @@ Local::Presentity::remove ()
 bool
 Local::Presentity::is_preferred () const
 {
+  bool preferred = false;
+  xmlChar* xml_str = xmlGetProp (node, (const xmlChar*)"preferred");
+
+  if (xml_str != NULL) {
+
+    if (xmlStrEqual (xml_str, BAD_CAST "true")) {
+
+      preferred = true;
+    } else {
+
+      preferred = false;
+    }
+    xmlFree (xml_str);
+  }
+
   return preferred;
 }
