@@ -17,4 +17,7 @@ libgmvideooutput_la_SOURCES = \
 	$(videooutput_dir)/videooutput-gmconf-bridge.h  \
 	$(videooutput_dir)/videooutput-gmconf-bridge.cpp
 
-libgmvideooutput_la_LDFLAGS = $(STACKLIB_LDFLAGS) $(SIGC_LIBS) $(GLIB_LIBS) $(PTLIB_LIBS)
+libgmvideooutput_la_LDFLAGS = $(STACKLIB_LDFLAGS)
+libgmvideooutput_la_LIBADD = \
+	$(top_builddir)/lib/engine/framework/libgmframework.la \
+	$(SIGC_LIBS) $(GLIB_LIBS) $(PTLIB_LIBS)

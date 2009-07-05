@@ -16,4 +16,7 @@ libgmaddressbook_la_SOURCES = \
 	$(addressbook_dir)/contact-core.h		\
 	$(addressbook_dir)/contact-core.cpp
 
-libgmaddressbook_la_LDFLAGS = $(STACKLIB_LDFLAGS) $(SIGC_LIBS) $(GLIB_LIBS)
+libgmaddressbook_la_LDFLAGS = $(STACKLIB_LDFLAGS)
+libgmaddressbook_la_LIBADD = \
+	$(top_builddir)/lib/engine/framework/libgmframework.la \
+	$(SIGC_LIBS) $(GLIB_LIBS)

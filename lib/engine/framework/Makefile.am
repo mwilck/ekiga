@@ -49,4 +49,7 @@ libgmframework_la_SOURCES = \
 	$(framework_dir)/ptr_array_const_iterator.h
 
 
-libgmframework_la_LDFLAGS = $(STACKLIB_LDFLAGS) $(SIGC_LIBS) $(GLIB_LIBS) $(XML_LIBS)
+libgmframework_la_LDFLAGS = $(STACKLIB_LDFLAGS)
+libgmframework_la_LIBADD = \
+	$(top_builddir)/lib/gmconf/libgmconf.la \
+	$(SIGC_LIBS) $(GLIB_LIBS) $(XML_LIBS)

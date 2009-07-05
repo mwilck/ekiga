@@ -22,4 +22,7 @@ libgmpresence_la_SOURCES = \
 	$(presence_dir)/presence-core.h		\
 	$(presence_dir)/presence-core.cpp
 
-libgmpresence_la_LDFLAGS = $(STACKLIB_LDFLAGS) $(SIGC_LIBS)
+libgmpresence_la_LDFLAGS = $(STACKLIB_LDFLAGS)
+libgmpresence_la_LIBADD = \
+	$(top_builddir)/lib/engine/framework/libgmframework.la \
+	$(SIGC_LIBS)
