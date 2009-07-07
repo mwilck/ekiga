@@ -1,4 +1,28 @@
                           -*- mode: outline -*-
+* Changes in ekiga 3.2.5 (2009-07-06)
+- Fixed very low rate of sent images during video conversations
+- Fixed crash in LDAP
+- Fixed crash in presence
+- Fixed simultaneous reads from different threads in jitter code
+- Fixed crash during idle times
+- Fixed crash when accepting a call
+- Fixed deadlock in SIP handler
+- Fixed freeze upon calling and showing of pc:udp$... in the URI bar
+- Fixed crash in G726-16 audio codec
+- Allows multiple registrations with the same registrar using
+  different user names
+- Allows user to choose system iLBC
+- Fixed window resizing in chat when entering very long words
+- Fixed linking of sbc plugin with libsamplerate
+- Fixed compilation with gtk 2.12
+- Fixed compilation with gcc 4.4
+- Windows and Solaris specific fixes
+- Added a small script, ekiga-debug-analyser, not installed, which
+  retrieves only the packets exchanged from a Ekiga debug output
+- Other minor fixes
+- Updated translations: bn_IN, el, or
+- Updated help translations: el
+
 * Changes in ekiga 3.2.4 (2009-05-20)
 - Fixed OPAL and PTLIB recommended versions
 
