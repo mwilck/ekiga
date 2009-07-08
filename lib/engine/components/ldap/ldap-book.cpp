@@ -95,10 +95,14 @@ OPENLDAP::Book::parse_result (LDAPMessage* message)
     } else {
       for (i=1; attributes[i]; i++) {
         if (!strcasecmp(bv.bv_val,attributes[i]) && bvals && bvals[0].bv_val ) {
-	  call_addresses[attributes[i]] =
-	    /* FIXME: next line is annoying */
-	    std::string ("sip:") +
-	    std::string (bvals[0].bv_val, bvals[0].bv_len);
+          /* FIXME: this is annoying. Assume if a colon is present that
+           * the value is already in URI form, otherwise add a sip: prefix.
+           */
+          if (strchr(bvals[0].bv_val, ':'))
+            call_addresses[attributes[i]] = std::string (bvals[0].bv_val, bvals[0].bv_len);
+          else
+            call_addresses[attributes[i]] = std::string ("sip:") +
+              std::string (bvals[0].bv_val, bvals[0].bv_len);
         }
       }
     }
