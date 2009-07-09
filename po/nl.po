@@ -14,13 +14,13 @@
 # local user    - gesprekspartner
 # roster        - adresboek/adresklapper
 #
-#: ../lib/engine/components/resource-list/rl-entry.cpp:163
 msgid ""
 msgstr ""
 "Project-Id-Version: Ekiga\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-26 20:16+0100\n"
-"PO-Revision-Date: 2009-02-27 03:16+0900\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=ekiga&component=general\n"
+"POT-Creation-Date: 2009-07-08 08:51+0000\n"
+"PO-Revision-Date: 2009-04-18 03:51+0800\n"
 "Last-Translator: Tino Meinen <tino.meinen@gmail.com> \n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
 "MIME-Version: 1.0\n"
@@ -41,7 +41,9 @@ msgstr "IP-telefonie, VoIP en videoconferentie"
 # er staat wel: talk ipv call, maar het is het meest
 # begrijpelijk als er 'opbellen' staat.
 #: ../ekiga.desktop.in.in.h:3
-msgid "Talk to people over the Internet"
+#, fuzzy
+#| msgid "Talk to people over the Internet"
+msgid "Talk to and see people over the Internet"
 msgstr "Mensen opbellen via het internet"
 
 #: ../ekiga.schemas.in.in.h:1
@@ -82,7 +84,13 @@ msgstr "Audio-opnameapparaat"
 msgid "Audio output device"
 msgstr "Audioweergaveapparaat"
 
-#: ../ekiga.schemas.in.in.h:8 ../src/gui/preferences.cpp:516
+#: ../ekiga.schemas.in.in.h:8
+#, fuzzy
+#| msgid "_Automatically answer calls"
+msgid "Automatic answer"
+msgstr "_Auomatisch oproepen beantwoorden"
+
+#: ../ekiga.schemas.in.in.h:9 ../src/gui/preferences.cpp:516
 msgid ""
 "Automatically reject or forward incoming calls if no answer is given after "
 "the specified amount of time (in seconds)"
@@ -90,15 +98,15 @@ msgstr ""
 "Automatisch binnenkomende oproepen weigeren of doorsturen als deze niet "
 "binnen de ingestelde tijd (in seconden) worden beantwoord"
 
-#: ../ekiga.schemas.in.in.h:9
+#: ../ekiga.schemas.in.in.h:10
 msgid "Calls history"
 msgstr "Oproepgeschiedenis"
 
-#: ../ekiga.schemas.in.in.h:10
+#: ../ekiga.schemas.in.in.h:11
 msgid "Change the main window panel section"
 msgstr "Het paneel van het hoofdvenster wijzigen"
 
-#: ../ekiga.schemas.in.in.h:11
+#: ../ekiga.schemas.in.in.h:12
 msgid ""
 "Connection will be established in Fast Start mode. Fast Start is a new way "
 "to start calls faster that was introduced in H.323v2. It is not supported by "
@@ -111,34 +119,28 @@ msgstr ""
 "snelstart en H.245-tunnel modus kunnen sommige versies van Netmeeting "
 "crashen."
 
-#: ../ekiga.schemas.in.in.h:12
+#: ../ekiga.schemas.in.in.h:13
 msgid "Contact long status"
 msgstr "Uitgebreide status van contact"
 
 # beknopte/korte
-#: ../ekiga.schemas.in.in.h:13
+#: ../ekiga.schemas.in.in.h:14
 msgid "Contact short status"
 msgstr "Beknopte status van contact"
 
 # verzending
-#: ../ekiga.schemas.in.in.h:14
+#: ../ekiga.schemas.in.in.h:15
 msgid "DTMF sending"
 msgstr "DTMF verzenden"
 
-#: ../ekiga.schemas.in.in.h:15
-msgid "Disable STUN network detection"
-msgstr "STUN netwerkdetectie uitschakelen"
-
-# uitzetten/uitschakelen/niet gebruiken
-#: ../ekiga.schemas.in.in.h:16 ../src/gui/preferences.cpp:492
-msgid "Disable the automatic network setup resulting from the STUN test"
-msgstr ""
-"De automatische netwerkinstellingen voortkomend uit de STUN-test uitschakelen"
-
 # uitzetten ipv uitschakelen misschien beter
-#: ../ekiga.schemas.in.in.h:17
+#: ../ekiga.schemas.in.in.h:16
 msgid "Disable video hardware acceleration"
 msgstr "Video hardwareversnelling uitschakelen"
+
+#: ../ekiga.schemas.in.in.h:17 ../src/gui/main.cpp:3594
+msgid "Display images from your camera device"
+msgstr "Beelden van uw camera weergeven"
 
 #: ../ekiga.schemas.in.in.h:18
 msgid "Enable 'Fast Start'"
@@ -149,20 +151,34 @@ msgid "Enable H.245 tunneling"
 msgstr "H.245-tunnel inschakelen"
 
 #: ../ekiga.schemas.in.in.h:20
+#, fuzzy
+#| msgid "Disable STUN network detection"
+msgid "Enable STUN network detection"
+msgstr "STUN netwerkdetectie uitschakelen"
+
+#: ../ekiga.schemas.in.in.h:21
 msgid "Enable early H.245"
 msgstr "Vroegtijdige H.245 inschakelen"
 
-#: ../ekiga.schemas.in.in.h:21
+#: ../ekiga.schemas.in.in.h:22
 msgid "Enable echo cancelation"
 msgstr "Echo-onderdrukking inschakelen"
 
-#: ../ekiga.schemas.in.in.h:22
+#: ../ekiga.schemas.in.in.h:23
 msgid "Enable silence detection"
 msgstr "Stiltedetectie inschakelen"
 
+# uitzetten/uitschakelen/niet gebruiken
+#: ../ekiga.schemas.in.in.h:24 ../src/gui/preferences.cpp:492
+#, fuzzy
+#| msgid "Disable the automatic network setup resulting from the STUN test"
+msgid "Enable the automatic network setup resulting from the STUN test"
+msgstr ""
+"De automatische netwerkinstellingen voortkomend uit de STUN-test uitschakelen"
+
 # STUN:
 # Simple Traversal of UDP Through Network Address Translation devices
-#: ../ekiga.schemas.in.in.h:23
+#: ../ekiga.schemas.in.in.h:25
 msgid ""
 "Enter the number of seconds after which Ekiga should try refreshing the NAT "
 "binding when STUN is being used"
@@ -170,32 +186,32 @@ msgstr ""
 "Geef het aantal seconden wachttijd voordat Ekiga moet proberen de NAT-"
 "binding te vernieuwen bij het gebruik van STUN"
 
-#: ../ekiga.schemas.in.in.h:24 ../src/gui/preferences.cpp:459
+#: ../ekiga.schemas.in.in.h:26 ../src/gui/preferences.cpp:459
 msgid "Enter your full name"
 msgstr "Vul uw volledige naam in"
 
-#: ../ekiga.schemas.in.in.h:25
+#: ../ekiga.schemas.in.in.h:27
 msgid "Forward calls to host"
 msgstr "Oproepen doorsturen naar computer"
 
-#: ../ekiga.schemas.in.in.h:26
+#: ../ekiga.schemas.in.in.h:28
 msgid "Forward calls to the given host if busy"
 msgstr "Oproepen doorsturen naar de gegeven server indien bezet"
 
-#: ../ekiga.schemas.in.in.h:27
+#: ../ekiga.schemas.in.in.h:29
 msgid "Forward calls to the given host if no answer"
 msgstr "Stuur oproepen door naar de gegeven server bij geen antwoord"
 
 # vloeiende beelden/beeldsnelhied/beeldfrequentie
-#: ../ekiga.schemas.in.in.h:28 ../src/gui/preferences.cpp:1018
+#: ../ekiga.schemas.in.in.h:30 ../src/gui/preferences.cpp:1016
 msgid "Frame Rate"
 msgstr "Beeldsnelheid"
 
-#: ../ekiga.schemas.in.in.h:29
+#: ../ekiga.schemas.in.in.h:31
 msgid "Full name"
 msgstr "Volledige naam"
 
-#: ../ekiga.schemas.in.in.h:30 ../src/gui/preferences.cpp:477
+#: ../ekiga.schemas.in.in.h:32 ../src/gui/preferences.cpp:477
 msgid ""
 "If enabled, Ekiga will start hidden provided that the notification area is "
 "present in the GNOME panel"
@@ -203,7 +219,7 @@ msgstr ""
 "Als dit aangevinkt is, start Ekiga verborgen op, op voorwaarde dat een "
 "mededelingengebied aanwezig is in het GNOME-paneel."
 
-#: ../ekiga.schemas.in.in.h:31
+#: ../ekiga.schemas.in.in.h:33
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below"
@@ -211,7 +227,7 @@ msgstr ""
 "Als dit aangevinkt is, worden alle binnenkomende oproepen doorgestuurd naar "
 "de onderstaande server"
 
-#: ../ekiga.schemas.in.in.h:32
+#: ../ekiga.schemas.in.in.h:34
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below if you already are in a call or if you are in "
@@ -220,7 +236,7 @@ msgstr ""
 "Als dit aangevinkt is, worden alle binnenkomende oproepen doorgestuurd naar "
 "de onderstaande server als u al in gesprek bent of in niet-storen-modus"
 
-#: ../ekiga.schemas.in.in.h:33
+#: ../ekiga.schemas.in.in.h:35
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below if you do not answer the call"
@@ -228,173 +244,174 @@ msgstr ""
 "Als dit aangevinkt is, worden alle binnenkomende oproepen doorgestuurd naar "
 "de onderstaand server als u de oproep niet beantwoord"
 
-#: ../ekiga.schemas.in.in.h:34 ../src/gui/preferences.cpp:479
+#: ../ekiga.schemas.in.in.h:36 ../src/gui/preferences.cpp:517
+#, fuzzy
+#| msgid "_Automatically answer calls"
+msgid "If enabled, automatically answer incoming calls"
+msgstr "_Auomatisch oproepen beantwoorden"
+
+#: ../ekiga.schemas.in.in.h:37 ../src/gui/preferences.cpp:479
 msgid "If enabled, offline contacts will be shown in the roster"
 msgstr ""
 "Als dit aangevinkt is, worden ook offline contacten getoond in het adresboek"
 
 # wordt echo onderdrukt/wordt echo-onderdrukking gebruikt
-#: ../ekiga.schemas.in.in.h:35
+#: ../ekiga.schemas.in.in.h:38
 msgid "If enabled, use echo cancelation"
 msgstr "Als dit aangevinkt is, wordt echo onderdrukt"
 
-#: ../ekiga.schemas.in.in.h:36
+#: ../ekiga.schemas.in.in.h:39
 msgid "If enabled, use silence detection with the codecs supporting it"
 msgstr ""
 "Als dit aangevinkt is, wordt stiltedetectie gebruikt bij die codecs waarbij "
 "dat mogelijk is"
 
-#: ../ekiga.schemas.in.in.h:37
+#: ../ekiga.schemas.in.in.h:40
 msgid "Kind of network selected in the druid"
 msgstr "Soort netwerk gekozen in de configuratiehulp"
 
-#: ../ekiga.schemas.in.in.h:38
+#: ../ekiga.schemas.in.in.h:41
 msgid "LDAP servers"
 msgstr "LDAP-servers"
 
-#: ../ekiga.schemas.in.in.h:39
+#: ../ekiga.schemas.in.in.h:42
 msgid "List of configured LDAP servers"
 msgstr "Lijst van geconfigureerde LDAP-servers"
 
 # bleh, samengevouwen/opgevouwen
-#: ../ekiga.schemas.in.in.h:40
+#: ../ekiga.schemas.in.in.h:43
 msgid "List of folded groups in the roster"
 msgstr "Lijst van samengevouwen groepen in het adresboek"
 
-#: ../ekiga.schemas.in.in.h:41
+#: ../ekiga.schemas.in.in.h:44
 msgid "Listen port"
 msgstr "Luisterpoort"
 
-#: ../ekiga.schemas.in.in.h:42
+#: ../ekiga.schemas.in.in.h:45
 msgid "Local video window size"
 msgstr "Grootte van lokale videovenster"
 
-#: ../ekiga.schemas.in.in.h:43
+#: ../ekiga.schemas.in.in.h:46
 msgid "Maximum RX video bitrate"
 msgstr "Maximale videobandbreedte bij ontvangst"
 
-#: ../ekiga.schemas.in.in.h:44
+#: ../ekiga.schemas.in.in.h:47
 msgid "Maximum TX video bitrate"
 msgstr "Maximale videobandbreedte bij verzenden"
 
-#: ../ekiga.schemas.in.in.h:45
+#: ../ekiga.schemas.in.in.h:48
 msgid "Maximum jitter buffer"
 msgstr "Maximum jitter-buffer"
 
 # tijdslimiet
-#: ../ekiga.schemas.in.in.h:46
+#: ../ekiga.schemas.in.in.h:49
 msgid "NAT Binding Timeout"
 msgstr "NAT binding tijdslimiet"
 
-#: ../ekiga.schemas.in.in.h:47
+#: ../ekiga.schemas.in.in.h:50
 msgid "No answer timeout"
 msgstr "Geen antwoord tijdslimiet"
 
-#: ../ekiga.schemas.in.in.h:48
+#: ../ekiga.schemas.in.in.h:51
 msgid "Outbound Proxy"
 msgstr "Uitgaande proxy"
 
-#: ../ekiga.schemas.in.in.h:49 ../src/gui/preferences.cpp:486
+#: ../ekiga.schemas.in.in.h:52 ../src/gui/preferences.cpp:486
 msgid "Place windows displaying video above other windows during calls"
 msgstr ""
 "Plaats vensters die videobeelden weergeven tijdens gesprekken boven andere "
 "vensters"
 
 # Geluid voor bezette lijn/Bezettoon afspelen/
-#: ../ekiga.schemas.in.in.h:50 ../src/gui/preferences.cpp:371
+#: ../ekiga.schemas.in.in.h:53 ../src/gui/preferences.cpp:371
 msgid "Play busy tone"
 msgstr "Geluid bij bezette lijn"
 
 # dit is de toon die je hoort als je iemand aan het bellen bent
 # Beltoon afspelen/Geluid bij beltoon
-#: ../ekiga.schemas.in.in.h:51 ../src/gui/preferences.cpp:361
+#: ../ekiga.schemas.in.in.h:54 ../src/gui/preferences.cpp:361
 msgid "Play ring tone"
 msgstr "Geluid bij opbellen"
 
 # play sound is hier: het afspeelgeluid, niet geluid afspelen
-#: ../ekiga.schemas.in.in.h:52 ../src/gui/preferences.cpp:351
+#: ../ekiga.schemas.in.in.h:55 ../src/gui/preferences.cpp:351
 msgid "Play sound on incoming calls"
 msgstr "Geluid bij binnenkomende oproepen"
 
 # play sound is hier: het afspeelgeluid, niet geluid afspelen
-#: ../ekiga.schemas.in.in.h:53
+#: ../ekiga.schemas.in.in.h:56
 msgid "Play sound on new message"
 msgstr "Geluid bij binnenkomend bericht"
 
 # play sound is hier: het afspeelgeluid, niet geluid afspelen
-#: ../ekiga.schemas.in.in.h:54
+#: ../ekiga.schemas.in.in.h:57
 msgid "Play sound on new voice mail"
 msgstr "Geluid bij binnenkomende voice-mail"
 
-#: ../ekiga.schemas.in.in.h:55
+#: ../ekiga.schemas.in.in.h:58
 msgid "Position of the local video window"
 msgstr "De positie van het venster voor lokale video"
 
-#: ../ekiga.schemas.in.in.h:56
+#: ../ekiga.schemas.in.in.h:59
 msgid "Position on the screen of the address book window"
 msgstr "Positie op het scherm van het adresboekvenster"
 
-#: ../ekiga.schemas.in.in.h:57
+#: ../ekiga.schemas.in.in.h:60
 msgid "Position on the screen of the audio settings window"
 msgstr "De positie van het audio-instellingenvenster op het scherm"
 
-#: ../ekiga.schemas.in.in.h:58
+#: ../ekiga.schemas.in.in.h:61
 msgid "Position on the screen of the chat window"
 msgstr "De positie van het chatvenster op het scherm"
 
-#: ../ekiga.schemas.in.in.h:59
+#: ../ekiga.schemas.in.in.h:62
 msgid "Position on the screen of the druid window"
 msgstr "De positie van het configuratiehulp-venster op het scherm"
 
-#: ../ekiga.schemas.in.in.h:60
+#: ../ekiga.schemas.in.in.h:63
 msgid "Position on the screen of the log window"
 msgstr "De positie van het log-venster op het scherm"
 
-#: ../ekiga.schemas.in.in.h:61
+#: ../ekiga.schemas.in.in.h:64
 msgid "Position on the screen of the main window"
 msgstr "De positie van het hoofdvenster op het scherm"
 
-#: ../ekiga.schemas.in.in.h:62
+#: ../ekiga.schemas.in.in.h:65
 msgid "Position on the screen of the preferences window"
 msgstr "De positie van het voorkeurenvenster op het scherm"
 
-#: ../ekiga.schemas.in.in.h:63
+#: ../ekiga.schemas.in.in.h:66
 msgid "Position on the screen of the video settings window"
 msgstr "De positie van het video-instellingenvenster op het scherm"
 
-#: ../ekiga.schemas.in.in.h:64
+#: ../ekiga.schemas.in.in.h:67
 msgid "Remote video window position"
 msgstr "Positie van het venster voor video op afstand"
 
-#: ../ekiga.schemas.in.in.h:65
+#: ../ekiga.schemas.in.in.h:68
 msgid "Remote video window size"
 msgstr "De grootte van het venster voor video-op-afstand"
 
-# ??
-#: ../ekiga.schemas.in.in.h:66
-msgid "Roster view saving group status"
-msgstr "Status van adresboekweergave opslaggroep"
-
-#: ../ekiga.schemas.in.in.h:67
+#: ../ekiga.schemas.in.in.h:69
 msgid "Select an alternative audio output device to use for sound events."
 msgstr "Kies een alternatief apparaat voor de weergave van geluidsacties."
 
-#: ../ekiga.schemas.in.in.h:68 ../src/gui/preferences.cpp:777
+#: ../ekiga.schemas.in.in.h:70 ../src/gui/preferences.cpp:778
 msgid "Select the audio input device to use"
 msgstr "Kies het te gebruiken apparaat voor audio-opname"
 
-#: ../ekiga.schemas.in.in.h:69 ../src/gui/preferences.cpp:770
+#: ../ekiga.schemas.in.in.h:71 ../src/gui/preferences.cpp:771
 msgid "Select the audio output device to use"
 msgstr "Kies het te gebruiken apparaat voor audioweergave"
 
-#: ../ekiga.schemas.in.in.h:70 ../src/gui/preferences.cpp:936
+#: ../ekiga.schemas.in.in.h:72 ../src/gui/preferences.cpp:934
 msgid ""
 "Select the format for video cameras (does not apply to most USB cameras)"
 msgstr ""
 "Voor videocamera's, kies het formaat. (Niet van toepassing voor de meeste "
 "USB-camera's)"
 
-#: ../ekiga.schemas.in.in.h:71
+#: ../ekiga.schemas.in.in.h:73
 msgid ""
 "Select the transmitted video size: Small (QCIF 176x144) or Large (CIF "
 "352x288)"
@@ -402,7 +419,7 @@ msgstr ""
 "Kies de te verzenden videogrootte: Klein (QCIF 176x144) of Groot (CIF "
 "352x288)"
 
-#: ../ekiga.schemas.in.in.h:72 ../src/gui/preferences.cpp:928
+#: ../ekiga.schemas.in.in.h:74 ../src/gui/preferences.cpp:926
 msgid ""
 "Select the video input device to use. If an error occurs when using this "
 "device a test picture will be transmitted."
@@ -410,43 +427,43 @@ msgstr ""
 "Kies het te gebruiken video-opnameapparaat. Indien het verkeerde apparaat of "
 "een onjuiste afbeelding is gekozen zal er een testbeeld verzonden worden."
 
-#: ../ekiga.schemas.in.in.h:73
+#: ../ekiga.schemas.in.in.h:75
 msgid "Show offline contacts"
 msgstr "Offline contacten tonen"
 
-#: ../ekiga.schemas.in.in.h:74 ../src/gui/main.cpp:3214
+#: ../ekiga.schemas.in.in.h:76 ../src/gui/main.cpp:3220
 msgid "Show the call panel"
 msgstr "Het oproeppaneel tonen"
 
-#: ../ekiga.schemas.in.in.h:75
+#: ../ekiga.schemas.in.in.h:77
 msgid "Size of the address book window"
 msgstr "Grootte van het adresboekvenster"
 
-#: ../ekiga.schemas.in.in.h:76
+#: ../ekiga.schemas.in.in.h:78
 msgid "Size of the audio settings window"
 msgstr "Grootte van het audio-instellingenvenster"
 
-#: ../ekiga.schemas.in.in.h:77
+#: ../ekiga.schemas.in.in.h:79
 msgid "Size of the chat window"
 msgstr "Grootte van het chat-venster"
 
-#: ../ekiga.schemas.in.in.h:78
+#: ../ekiga.schemas.in.in.h:80
 msgid "Size of the druid window"
 msgstr "Grootte van het configuratiehulpvenster"
 
-#: ../ekiga.schemas.in.in.h:79
+#: ../ekiga.schemas.in.in.h:81
 msgid "Size of the preferences window"
 msgstr "Grootte van het voorkeurenvenster"
 
-#: ../ekiga.schemas.in.in.h:80
+#: ../ekiga.schemas.in.in.h:82
 msgid "Size of the video settings window"
 msgstr "Grootte van het video-instellingenvenster"
 
-#: ../ekiga.schemas.in.in.h:81
+#: ../ekiga.schemas.in.in.h:83
 msgid "Specify the software scaling algorithm"
 msgstr "Specificeer het schalingsalgoritme"
 
-#: ../ekiga.schemas.in.in.h:82
+#: ../ekiga.schemas.in.in.h:84
 msgid ""
 "Specify the software scaling algorithm: 0: nearest neighbor, 1: nearest "
 "neighbor with box filter, 2: bilinear filtering, 3: hyperbolic filtering. "
@@ -456,31 +473,31 @@ msgstr ""
 "dichtstbijzijnde buur met boxfilter, 2: bilineaire filter, 3: hyperbolische "
 "filter. Is niet van toepassing op windows-systemen."
 
-#: ../ekiga.schemas.in.in.h:83
+#: ../ekiga.schemas.in.in.h:85
 msgid "Start hidden"
 msgstr "Verborgen starten"
 
-#: ../ekiga.schemas.in.in.h:84
+#: ../ekiga.schemas.in.in.h:86
 msgid "TCP port range"
 msgstr "TCP-poortenbereik"
 
-#: ../ekiga.schemas.in.in.h:85
+#: ../ekiga.schemas.in.in.h:87
 msgid "Temporal Spatial Trade Off"
 msgstr "Tijd-ruimte afweging"
 
-#: ../ekiga.schemas.in.in.h:86
+#: ../ekiga.schemas.in.in.h:88
 msgid "The Audio Codecs List"
 msgstr "De lijst met audio-codecs"
 
-#: ../ekiga.schemas.in.in.h:87 ../src/gui/preferences.cpp:727
+#: ../ekiga.schemas.in.in.h:89 ../src/gui/preferences.cpp:728
 msgid "The SIP Outbound Proxy to use for outgoing calls"
 msgstr "De SIP uitgaande proxy die gebruikt wordt voor uitgaande oproepen"
 
-#: ../ekiga.schemas.in.in.h:88
+#: ../ekiga.schemas.in.in.h:90
 msgid "The STUN Server"
 msgstr "De STUN-server"
 
-#: ../ekiga.schemas.in.in.h:89
+#: ../ekiga.schemas.in.in.h:91
 msgid ""
 "The STUN server to use for STUN Support. STUN is a technology that permits "
 "passage through some types of NAT gateway"
@@ -488,24 +505,24 @@ msgstr ""
 "De STUN-server die gebruikt wordt voor STUN-ondersteuning. STUN is een "
 "techniek die het mogelijk maakt bepaalde typen NAT-gateways te passeren."
 
-#: ../ekiga.schemas.in.in.h:90
+#: ../ekiga.schemas.in.in.h:92
 msgid "The Video Codecs List"
 msgstr "De lijst met video-codecs"
 
 # abonnementen
-#: ../ekiga.schemas.in.in.h:91
+#: ../ekiga.schemas.in.in.h:93
 msgid "The accounts list"
 msgstr "De lijst met abonnementen"
 
-#: ../ekiga.schemas.in.in.h:92
+#: ../ekiga.schemas.in.in.h:94
 msgid "The audio codecs list"
 msgstr "De lijst met audio-codecs"
 
-#: ../ekiga.schemas.in.in.h:93
+#: ../ekiga.schemas.in.in.h:95
 msgid "The busy tone sound"
 msgstr "Het geluid van de bezet-toon"
 
-#: ../ekiga.schemas.in.in.h:94
+#: ../ekiga.schemas.in.in.h:96
 msgid ""
 "The chosen sound will be played at the end of calls or calling somebody who "
 "is busy, if enabled"
@@ -513,13 +530,13 @@ msgstr ""
 "Het gekozen geluid dat wordt afgespeeld aan het einde van gesprekken of als "
 "iemand bezet is, indien ingeschakeld."
 
-#: ../ekiga.schemas.in.in.h:95
+#: ../ekiga.schemas.in.in.h:97
 msgid "The chosen sound will be played on incoming calls, if enabled"
 msgstr ""
 "Als dit aangevinkt is, zal het gekozen geluid worden afgespeeld bij "
 "binnenkomende gesprekken"
 
-#: ../ekiga.schemas.in.in.h:96
+#: ../ekiga.schemas.in.in.h:98
 msgid ""
 "The chosen sound will be played when a new instant message is received, if "
 "enabled"
@@ -527,7 +544,7 @@ msgstr ""
 "Als dit aangevinkt is, zal het gekozen geluid worden afgespeeld bij het "
 "ontvangen van een nieuw expresbericht"
 
-#: ../ekiga.schemas.in.in.h:97
+#: ../ekiga.schemas.in.in.h:99
 msgid ""
 "The chosen sound will be played when a new voice mail is received, if enabled"
 msgstr ""
@@ -535,17 +552,17 @@ msgstr ""
 "ontvangen van een nieuwe voic-mail"
 
 # oproepen/bellen/opbellen
-#: ../ekiga.schemas.in.in.h:98
+#: ../ekiga.schemas.in.in.h:100
 msgid "The chosen sound will be played when calling somebody, if enabled"
 msgstr ""
 "Als dit aangevinkt is, zal het gekozen geluid worden afgespeeld bij het "
 "bellen van iemand"
 
-#: ../ekiga.schemas.in.in.h:99
+#: ../ekiga.schemas.in.in.h:101
 msgid "The default video view"
 msgstr "Het standaard videobeeld"
 
-#: ../ekiga.schemas.in.in.h:100
+#: ../ekiga.schemas.in.in.h:102
 msgid ""
 "The default video view (0: Local, 1: Remote, 2: Both layered, 3: Both with "
 "local video in a separate window, 4: Both)"
@@ -554,37 +571,37 @@ msgstr ""
 "3: Beide met lokaal in apart venster, 4: Beide)"
 
 # we kunnen bijna zeggen: de ringtone
-#: ../ekiga.schemas.in.in.h:101
+#: ../ekiga.schemas.in.in.h:103
 msgid "The dial tone sound"
 msgstr "Het beltoongeluid"
 
 # geschiedenis/historie
 # 100 meest recente oproepen
-#: ../ekiga.schemas.in.in.h:102
+#: ../ekiga.schemas.in.in.h:104
 msgid "The history of the 100 last calls"
 msgstr "De historie van de 100 laatst geplaatste oproepen"
 
-#: ../ekiga.schemas.in.in.h:103 ../src/gui/preferences.cpp:676
-#: ../src/gui/preferences.cpp:730
+#: ../ekiga.schemas.in.in.h:105 ../src/gui/preferences.cpp:677
+#: ../src/gui/preferences.cpp:731
 msgid "The host where calls should be forwarded if call forwarding is enabled"
 msgstr ""
 "De server waar oproepen naar doorgestuurd moeten worden indien het "
 "doorsturen van oproepen is aangezet"
 
-#: ../ekiga.schemas.in.in.h:104
+#: ../ekiga.schemas.in.in.h:106
 msgid "The incoming call sound"
 msgstr "De beltoon voor binnenkomende gesprekken"
 
 # zal ipv moet
-#: ../ekiga.schemas.in.in.h:105
+#: ../ekiga.schemas.in.in.h:107
 msgid "The list of accounts to which Ekiga should register"
 msgstr "De lijst met abonnementen waar Ekiga zich zal aanmelden"
 
-#: ../ekiga.schemas.in.in.h:106
+#: ../ekiga.schemas.in.in.h:108
 msgid "The long status information"
 msgstr "De uitgebreide statusinformatie"
 
-#: ../ekiga.schemas.in.in.h:107
+#: ../ekiga.schemas.in.in.h:109
 msgid ""
 "The maximum RX video bitrate in kbit/s. This value will be signaled to the "
 "peer endpoint that can adjust (if it supports it) its TX bitrate if it is "
@@ -595,7 +612,7 @@ msgstr ""
 "zijn TX (verzend) bandbreedte kan aanpassen wanneer het boven deze waarde "
 "ligt."
 
-#: ../ekiga.schemas.in.in.h:108
+#: ../ekiga.schemas.in.in.h:110
 msgid ""
 "The maximum TX video bitrate in kbit/s. The video quality and the number of "
 "transmitted frames per second (depends on selected codec) will be "
@@ -607,11 +624,11 @@ msgstr ""
 "worden tijdens gesprekken automatisch aangepast boven het minimum om de "
 "bandbreedte te beperken tot de gegeven waarde."
 
-#: ../ekiga.schemas.in.in.h:109
+#: ../ekiga.schemas.in.in.h:111
 msgid "The maximum jitter buffer size for audio reception (in ms)"
 msgstr "De maximumgrootte van de jitter-buffer voor audio-ontvangst (in ms)"
 
-#: ../ekiga.schemas.in.in.h:110
+#: ../ekiga.schemas.in.in.h:112
 msgid ""
 "The maximum transmitted frame rate in frames/s. This rate may not be reached "
 "in case a minimum quality was configure via a TSTO value smaller than 31 and "
@@ -623,15 +640,15 @@ msgstr ""
 "bandbreedte niet voldoende is om deze minumum kwaliteit te onderhouden."
 
 # instant message/expresbericht
-#: ../ekiga.schemas.in.in.h:111
+#: ../ekiga.schemas.in.in.h:113
 msgid "The new instant message sound"
 msgstr "Het geluid bij een binnenkomend expresbericht"
 
-#: ../ekiga.schemas.in.in.h:112
+#: ../ekiga.schemas.in.in.h:114
 msgid "The new voice mail sound"
 msgstr "Het geluid bij een binnenkomende voice-mail"
 
-#: ../ekiga.schemas.in.in.h:113
+#: ../ekiga.schemas.in.in.h:115
 msgid ""
 "The port to listen to for incoming connections. Ekiga needs to be restarted "
 "for the new value to take effect"
@@ -639,7 +656,7 @@ msgstr ""
 "De poort om te luisteren voor binenkomende verbindingen. Ekiga moet herstart "
 "worden om de nieuwe waarde te kunnen gebruiken."
 
-#: ../ekiga.schemas.in.in.h:114
+#: ../ekiga.schemas.in.in.h:116
 msgid ""
 "The port to listen to for incoming connections. Ekiga needs to be restarted "
 "for the new value to take effect."
@@ -647,16 +664,16 @@ msgstr ""
 "De poort om te luisteren voor binenkomende verbindingen. Ekiga moet herstart "
 "worden om de nieuwe waarde te kunnen gebruiken."
 
-#: ../ekiga.schemas.in.in.h:115
+#: ../ekiga.schemas.in.in.h:117
 msgid "The position of the local video window"
 msgstr "De positie van het venster voor lokale video"
 
-#: ../ekiga.schemas.in.in.h:116
+#: ../ekiga.schemas.in.in.h:118
 msgid "The position of the remote video window"
 msgstr "De positie van het venster voor video op afstand"
 
 # 'The range' hoeft niet vertaald te worden, het wordt in de tweede zin gebruik.
-#: ../ekiga.schemas.in.in.h:117
+#: ../ekiga.schemas.in.in.h:119
 msgid ""
 "The range of TCP ports that Ekiga will use for the H.323 H.245 channel. This "
 "port range has no effect if both participants to the conference are using "
@@ -666,24 +683,24 @@ msgstr ""
 "poortenbereik geeft geen invloed wanneer beide deelnemers aan de conferentie "
 "gebruik maken van H.245-tunnels."
 
-#: ../ekiga.schemas.in.in.h:118
+#: ../ekiga.schemas.in.in.h:120
 msgid "The range of UDP ports that Ekiga will use."
 msgstr "Het bereik aan UDP-poorten dat Ekiga gebruiken zal."
 
-#: ../ekiga.schemas.in.in.h:119
+#: ../ekiga.schemas.in.in.h:121
 msgid "The short status information"
 msgstr "De korte statusinformatie"
 
-#: ../ekiga.schemas.in.in.h:120
+#: ../ekiga.schemas.in.in.h:122
 msgid "The size of the local video window"
 msgstr "De grootte van het venster voor lokale video"
 
-#: ../ekiga.schemas.in.in.h:121
+#: ../ekiga.schemas.in.in.h:123
 msgid "The size of the remote video window"
 msgstr "De grootte van het venster voor video op afstand"
 
 # indien aangevinkt
-#: ../ekiga.schemas.in.in.h:122
+#: ../ekiga.schemas.in.in.h:124
 msgid ""
 "The sound that will be played at the end of calls or when calling somebody "
 "who is busy, if enabled"
@@ -692,48 +709,48 @@ msgstr ""
 "bezet is, indien ingeschakeld."
 
 # indien aangevinkt
-#: ../ekiga.schemas.in.in.h:123
+#: ../ekiga.schemas.in.in.h:125
 msgid "The sound that will be played on incoming calls, if enabled"
 msgstr ""
 "Het geluid dat afgespeeld wordt bij binnenkomende oproepen, indien "
 "ingeschakeld."
 
 # indien aangevinkt
-#: ../ekiga.schemas.in.in.h:124
+#: ../ekiga.schemas.in.in.h:126
 msgid "The sound that will be played when calling somebody, if enabled"
 msgstr ""
 "Het geluid dat afgespeeld wordt tijdens het bellen van iemand, indien "
 "ingeschakeld"
 
-#: ../ekiga.schemas.in.in.h:125
+#: ../ekiga.schemas.in.in.h:127
 msgid ""
 "The sound that will be played when there is a new instant message, if enabled"
 msgstr ""
 "Het geluid dat afgespeeld wordt wanneer er een nieuw expresbericht is "
 "ontvangen, indien ingeschakeld"
 
-#: ../ekiga.schemas.in.in.h:126
+#: ../ekiga.schemas.in.in.h:128
 msgid ""
 "The sound that will be played when there is a new voice mail, if enabled"
 msgstr ""
 "Het geluid dat afgespeeld wordt wanneer er een nieuwe voice-mail is "
 "ontvangen, indien ingeschakeld."
 
-#: ../ekiga.schemas.in.in.h:127 ../src/gui/preferences.cpp:932
+#: ../ekiga.schemas.in.in.h:129 ../src/gui/preferences.cpp:930
 msgid "The video channel number to use (to select camera, tv or other sources)"
 msgstr ""
 "Het nummer van het te gebruiken videokanaal (om camera, tv of andere bronnen "
 "te kiezen)"
 
-#: ../ekiga.schemas.in.in.h:128
+#: ../ekiga.schemas.in.in.h:130
 msgid "The video codecs list"
 msgstr "De lijst met video-codecs"
 
-#: ../ekiga.schemas.in.in.h:129
+#: ../ekiga.schemas.in.in.h:131
 msgid "The video view before having switched to fullscreen"
 msgstr "Het videobeeld voordat het volledig scherm gevuld werd"
 
-#: ../ekiga.schemas.in.in.h:130
+#: ../ekiga.schemas.in.in.h:132
 msgid ""
 "The video view before having switched to fullscreen (same values as "
 "video_view)"
@@ -741,11 +758,11 @@ msgstr ""
 "Het videobeeld voordat geschakeld werd naar volledig scherm (dezelfde waarde "
 "als video_view)"
 
-#: ../ekiga.schemas.in.in.h:131
+#: ../ekiga.schemas.in.in.h:133
 msgid "The zoom value"
 msgstr "De zoomwaarde"
 
-#: ../ekiga.schemas.in.in.h:132
+#: ../ekiga.schemas.in.in.h:134
 msgid ""
 "The zoom value in percent to apply to images displayed in the main GUI (can "
 "be 50, 100, or 200)"
@@ -753,7 +770,7 @@ msgstr ""
 "De zoomwaarde (als percentage) die gebruikt wordt voor de videobeelden in "
 "het hoofdscherm (kan 50, 100 of 200 zijn)"
 
-#: ../ekiga.schemas.in.in.h:133
+#: ../ekiga.schemas.in.in.h:135
 msgid ""
 "This allows you to set the mode for sending DTMFs. The values can be "
 "\"RFC2833\" (0), \"INFO\" (1)"
@@ -761,7 +778,7 @@ msgstr ""
 "Hiermee kan de modus ingesteld worden voor het verzenden van DTMFs. "
 "Mogelijke waarden zijn ‘RFC2833’ (0), of ‘INFO’ (1)"
 
-#: ../ekiga.schemas.in.in.h:134
+#: ../ekiga.schemas.in.in.h:136
 msgid ""
 "This allows you to set the mode for sending DTMFs. The values can be \"String"
 "\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (default is \"String"
@@ -772,7 +789,7 @@ msgstr ""
 "‘Q.931’ (3), (standaard is ‘tekenreeks’). Bij een andere waarde dan "
 "‘tekenreeks’, wordt tekstchat uitgeschakeld"
 
-#: ../ekiga.schemas.in.in.h:135 ../src/gui/preferences.cpp:688
+#: ../ekiga.schemas.in.in.h:137 ../src/gui/preferences.cpp:689
 msgid ""
 "This enables H.245 Tunneling mode. In H.245 Tunneling mode H.245 messages "
 "are encapsulated into the H.225 channel (port 1720). This saves one TCP "
@@ -786,11 +803,11 @@ msgstr ""
 "maar Netmeeting ondersteunt dit niet. Bij gebruik van snelstart en H.245-"
 "tunnelmodus kunnen sommige versies van Netmeeting crashen."
 
-#: ../ekiga.schemas.in.in.h:136 ../src/gui/preferences.cpp:690
+#: ../ekiga.schemas.in.in.h:138 ../src/gui/preferences.cpp:691
 msgid "This enables H.245 early in the setup"
 msgstr "De schakelt H.245 vroegtijdig in tijdens de initialisatie"
 
-#: ../ekiga.schemas.in.in.h:137
+#: ../ekiga.schemas.in.in.h:139
 msgid ""
 "This key disables DirectX (on win32) and XVideo (on Linux) video hardware "
 "acceleration"
@@ -798,31 +815,31 @@ msgstr ""
 "Deze sleutel schakelt DirectX (op win32) en XVideo (op Linux) "
 "videohardewareversnelling uit"
 
-#: ../ekiga.schemas.in.in.h:138
+#: ../ekiga.schemas.in.in.h:140
 msgid "UDP port range"
 msgstr "Bereik UDP-poorten"
 
-#: ../ekiga.schemas.in.in.h:139
+#: ../ekiga.schemas.in.in.h:141
 msgid "Video channel"
 msgstr "Videokanaal"
 
-#: ../ekiga.schemas.in.in.h:140
+#: ../ekiga.schemas.in.in.h:142
 msgid "Video format"
 msgstr "Videoformaat"
 
-#: ../ekiga.schemas.in.in.h:141 ../src/gui/assistant.cpp:1153
+#: ../ekiga.schemas.in.in.h:143 ../src/gui/assistant.cpp:1148
 msgid "Video input device"
 msgstr "Video-opnameapparaat"
 
-#: ../ekiga.schemas.in.in.h:142
+#: ../ekiga.schemas.in.in.h:144
 msgid "Video preview"
 msgstr "Videovoorbeeld"
 
-#: ../ekiga.schemas.in.in.h:143
+#: ../ekiga.schemas.in.in.h:145
 msgid "Video size"
 msgstr "Videogrootte"
 
-#: ../ekiga.schemas.in.in.h:144
+#: ../ekiga.schemas.in.in.h:146
 msgid ""
 "Whether to prefer to sustain the max. frame rate or lower it possibly in "
 "order to keep a minimum level of (spatial) quality for all frames. 0: "
@@ -834,132 +851,147 @@ msgstr ""
 "minimale kwaliteit"
 
 # Zoeken/zoekopdracht
-#: ../lib/engine/addressbook/contact-core.cpp:58
+#: ../lib/engine/addressbook/contact-core.cpp:60
 msgid "_Find"
 msgstr "_Zoeken"
 
 #: ../lib/engine/components/avahi/avahi-heap.cpp:125
-#: ../lib/engine/components/avahi/avahi-heap.cpp:306
+#: ../lib/engine/components/avahi/avahi-heap.cpp:319
 msgid "Neighbours"
 msgstr "Buren"
 
-#: ../lib/engine/components/call-history/history-book.cpp:140
+#: ../lib/engine/components/call-history/history-book.cpp:137
 #: ../lib/engine/gui/gtk-frontend/call-history-view-gtk.cpp:162
 msgid "Clear List"
 msgstr "Lijst wissen"
 
 # ontvangen oproepen
-#: ../lib/engine/components/call-history/history-contact.cpp:153
+#: ../lib/engine/components/call-history/history-contact.cpp:155
 msgid "Received"
 msgstr "Ontvangen"
 
-#: ../lib/engine/components/call-history/history-contact.cpp:156
+#: ../lib/engine/components/call-history/history-contact.cpp:158
 msgid "Placed"
 msgstr "Geplaatst"
 
 # gemiste/gemist (oproepen gemist/gemiste oproepen)
-#: ../lib/engine/components/call-history/history-contact.cpp:159
+#: ../lib/engine/components/call-history/history-contact.cpp:161
 msgid "Missed"
 msgstr "Gemist"
 
 # gesprekspartner
-#: ../lib/engine/components/evolution/evolution-book.cpp:76
-#: ../lib/engine/components/ldap/ldap-book.cpp:909
+#: ../lib/engine/components/evolution/evolution-book.cpp:75
+#: ../lib/engine/components/ldap/ldap-book.cpp:898
 #, c-format
 msgid "%d user found"
 msgid_plural "%d users found"
 msgstr[0] "%d gesprekspartner gevonden"
 msgstr[1] "%d gesprekspartners gevonden"
 
-#: ../lib/engine/components/evolution/evolution-book.cpp:244
+#: ../lib/engine/components/evolution/evolution-book.cpp:282
+#: ../lib/engine/components/loudmouth/loudmouth-heap.cpp:138
 msgid "New _Contact"
 msgstr "Nieuw _contact"
 
-#: ../lib/engine/components/evolution/evolution-book.cpp:288
+#: ../lib/engine/components/evolution/evolution-book.cpp:318
 #: ../lib/engine/components/local-roster/local-cluster.cpp:82
-#: ../lib/engine/components/local-roster/local-heap.cpp:117
+#: ../lib/engine/components/local-roster/local-heap.cpp:116
 msgid "New contact"
 msgstr "Nieuw contact"
 
 # invoervelden
-#: ../lib/engine/components/evolution/evolution-book.cpp:290
-#: ../lib/engine/components/evolution/evolution-contact.cpp:328
-#: ../lib/engine/components/opal/opal-account.cpp:351
+#: ../lib/engine/components/evolution/evolution-book.cpp:320
+#: ../lib/engine/components/evolution/evolution-contact.cpp:327
+#: ../lib/engine/components/loudmouth/loudmouth-account.cpp:264
+#: ../lib/engine/components/opal/opal-account.cpp:378
 msgid "Please update the following fields:"
 msgstr "Werk de volgende invoervelden bij:"
 
-#: ../lib/engine/components/evolution/evolution-book.cpp:292
+#: ../lib/engine/components/evolution/evolution-book.cpp:322
+#: ../lib/engine/components/opal/opal-bank.cpp:121
+#: ../lib/engine/components/opal/opal-bank.cpp:131
 msgid "_Name:"
 msgstr "_Naam:"
 
-#: ../lib/engine/components/evolution/evolution-book.cpp:293
-#: ../lib/engine/components/evolution/evolution-contact.cpp:339
+#: ../lib/engine/components/evolution/evolution-book.cpp:323
+#: ../lib/engine/components/evolution/evolution-contact.cpp:338
 msgid "VoIP _URI:"
 msgstr "VoIP _URL:"
 
 # vaste lijn/vast nummer
-#: ../lib/engine/components/evolution/evolution-book.cpp:294
-#: ../lib/engine/components/evolution/evolution-contact.cpp:340
+#: ../lib/engine/components/evolution/evolution-book.cpp:324
+#: ../lib/engine/components/evolution/evolution-contact.cpp:339
 msgid "_Home phone:"
 msgstr "_Vaste lijn"
 
-#: ../lib/engine/components/evolution/evolution-book.cpp:295
-#: ../lib/engine/components/evolution/evolution-contact.cpp:341
+#: ../lib/engine/components/evolution/evolution-book.cpp:325
+#: ../lib/engine/components/evolution/evolution-contact.cpp:340
 msgid "_Office phone:"
 msgstr "_Werktelefoon"
 
 # Mobiel nummer
-#: ../lib/engine/components/evolution/evolution-book.cpp:296
-#: ../lib/engine/components/evolution/evolution-contact.cpp:342
+#: ../lib/engine/components/evolution/evolution-book.cpp:326
+#: ../lib/engine/components/evolution/evolution-contact.cpp:341
 msgid "_Cell phone:"
 msgstr "_Mobiele telefoon:"
 
 # Pieper/pager
-#: ../lib/engine/components/evolution/evolution-book.cpp:297
-#: ../lib/engine/components/evolution/evolution-contact.cpp:343
+#: ../lib/engine/components/evolution/evolution-book.cpp:327
+#: ../lib/engine/components/evolution/evolution-contact.cpp:342
 msgid "_Pager:"
 msgstr "_Pager:"
 
-#: ../lib/engine/components/evolution/evolution-contact.cpp:234
-#: ../lib/engine/components/local-roster/local-presentity.cpp:197
-#: ../lib/engine/components/opal/opal-account.cpp:308
+#: ../lib/engine/components/evolution/evolution-contact.cpp:233
+#: ../lib/engine/components/local-roster/local-presentity.cpp:212
+#: ../lib/engine/components/loudmouth/loudmouth-presentity.cpp:157
+#: ../lib/engine/components/opal/opal-account.cpp:335
 #: ../lib/engine/components/resource-list/rl-presentity.cpp:203
-#: ../src/gui/main.cpp:3172
+#: ../src/gui/main.cpp:3178
 msgid "_Edit"
 msgstr "Be_werken"
 
-#: ../lib/engine/components/evolution/evolution-contact.cpp:236
-#: ../lib/engine/components/local-roster/local-presentity.cpp:199
-#: ../lib/engine/components/opal/opal-account.cpp:310
+#: ../lib/engine/components/evolution/evolution-contact.cpp:235
+#: ../lib/engine/components/local-roster/local-presentity.cpp:214
+#: ../lib/engine/components/loudmouth/loudmouth-account.cpp:364
+#: ../lib/engine/components/loudmouth/loudmouth-presentity.cpp:187
+#: ../lib/engine/components/opal/opal-account.cpp:337
 #: ../lib/engine/components/resource-list/rl-presentity.cpp:205
 msgid "_Remove"
 msgstr "_Verwijderen"
 
-#: ../lib/engine/components/evolution/evolution-contact.cpp:326
+#: ../lib/engine/components/evolution/evolution-contact.cpp:325
 msgid "Edit contact"
 msgstr "Contact bewerken"
 
-#: ../lib/engine/components/evolution/evolution-contact.cpp:330
-#: ../lib/engine/components/local-roster/local-presentity.cpp:224
-#: ../lib/engine/components/local-roster/local-heap.cpp:184
-#: ../lib/engine/components/local-roster/local-heap.cpp:364
-#: ../lib/engine/components/opal/opal-account.cpp:353
-#: ../lib/engine/components/opal/opal-bank.cpp:99
-#: ../lib/engine/components/opal/opal-bank.cpp:109
+#: ../lib/engine/components/evolution/evolution-contact.cpp:329
+#: ../lib/engine/components/local-roster/local-presentity.cpp:242
+#: ../lib/engine/components/loudmouth/loudmouth-account.cpp:267
+#: ../lib/engine/components/loudmouth/loudmouth-presentity.cpp:265
+#: ../lib/engine/components/local-roster/local-heap.cpp:228
+#: ../lib/engine/components/local-roster/local-heap.cpp:418
+#: ../lib/engine/components/opal/opal-account.cpp:380
 #: ../lib/engine/components/resource-list/rl-cluster.cpp:169
-#: ../lib/engine/components/resource-list/rl-heap.cpp:544
+#: ../lib/engine/components/resource-list/rl-heap.cpp:526
 #: ../lib/engine/components/resource-list/rl-presentity.cpp:224
 msgid "Name:"
 msgstr "Naam:"
 
-#: ../lib/engine/components/evolution/evolution-contact.cpp:395
+#: ../lib/engine/components/evolution/evolution-contact.cpp:379
 msgid "Remove contact"
 msgstr "Contact verwijderen"
 
-#: ../lib/engine/components/evolution/evolution-contact.cpp:397
+#: ../lib/engine/components/evolution/evolution-contact.cpp:381
 #, c-format
 msgid "Are you sure you want to remove %s from the addressbook?"
 msgstr "Weet u zeker dat u %s uit het adresboek wilt verwijderen?"
+
+# Detecteren...|Detectie...|Aan het onderzoeken|Bezig met onderzoek|
+# Detectie is in voortgang
+#: ../lib/engine/components/gnome-session/gnome-session-main.cpp:157
+#, fuzzy
+#| msgid "Detection in progress"
+msgid "Call in progress"
+msgstr "Bezig met onderzoek"
 
 #: ../lib/engine/components/gstreamer/gst-audioinput.cpp:270
 msgid "Audio test"
@@ -976,32 +1008,32 @@ msgstr "Videotest"
 
 # Gek/vreemd
 #. Translators: "Screencast" means the video input device will be your screen -- the other end will see your desktop
-#: ../lib/engine/components/gstreamer/gst-videoinput.cpp:370
-#: ../lib/engine/components/gstreamer/gst-videoinput.cpp:375
+#: ../lib/engine/components/gstreamer/gst-videoinput.cpp:378
+#: ../lib/engine/components/gstreamer/gst-videoinput.cpp:383
 msgid "Crazy"
 msgstr "Vreemd"
 
 # werkbladfilm/desktopfilm/schermfilmpje/schermaninatie/screencast
-#: ../lib/engine/components/gstreamer/gst-videoinput.cpp:375
+#: ../lib/engine/components/gstreamer/gst-videoinput.cpp:383
 msgid "Screencast"
 msgstr "Werkbladfilm"
 
 # vernieuwen/verversen/hernieuwen
-#: ../lib/engine/components/ldap/ldap-book.cpp:409
-#: ../lib/engine/components/resource-list/rl-entry.cpp:143
-#: ../lib/engine/components/resource-list/rl-entry-ref.cpp:130
+#: ../lib/engine/components/ldap/ldap-book.cpp:414
+#: ../lib/engine/components/resource-list/rl-entry.cpp:144
+#: ../lib/engine/components/resource-list/rl-entry-ref.cpp:132
 msgid "_Refresh"
 msgstr "_Verversen"
 
-#: ../lib/engine/components/ldap/ldap-book.cpp:412
+#: ../lib/engine/components/ldap/ldap-book.cpp:417
 msgid "_Remove addressbook"
 msgstr "Adresboek _verwijderen"
 
-#: ../lib/engine/components/ldap/ldap-book.cpp:414
+#: ../lib/engine/components/ldap/ldap-book.cpp:419
 msgid "Addressbook _properties"
 msgstr "Adresboek _eigenschappen"
 
-#: ../lib/engine/components/ldap/ldap-book.cpp:545
+#: ../lib/engine/components/ldap/ldap-book.cpp:544
 msgid "LDAP SASL Interaction"
 msgstr "LDAP SASL-interactie"
 
@@ -1016,164 +1048,190 @@ msgstr "LDAP SASL-interactie"
 #. * say about it. You might google for "challenge response
 #. * authentication" if you'd like more background context.
 #.
-#: ../lib/engine/components/ldap/ldap-book.cpp:587
+#: ../lib/engine/components/ldap/ldap-book.cpp:586
 msgid "Challenge: "
 msgstr "Challenge: "
 
 # interactie (statusmelding?)
-#: ../lib/engine/components/ldap/ldap-book.cpp:595
+#: ../lib/engine/components/ldap/ldap-book.cpp:594
 msgid "Interact"
 msgstr "Interactie"
 
 # vernieuwen/verversen (statusmelding)
-#: ../lib/engine/components/ldap/ldap-book.cpp:664
+#: ../lib/engine/components/ldap/ldap-book.cpp:661
 msgid "Refreshing"
 msgstr "Verversen"
 
-#: ../lib/engine/components/ldap/ldap-book.cpp:670
+#: ../lib/engine/components/ldap/ldap-book.cpp:667
 msgid "Could not initialize server"
 msgstr "Kon de server niet initialiseren"
 
-#: ../lib/engine/components/ldap/ldap-book.cpp:684
-#: ../lib/engine/components/ldap/ldap-book.cpp:729
+#: ../lib/engine/components/ldap/ldap-book.cpp:681
+#: ../lib/engine/components/ldap/ldap-book.cpp:726
 msgid "LDAP Error: "
 msgstr "LDAP-fout: "
 
 # verbinding/contact
-#: ../lib/engine/components/ldap/ldap-book.cpp:738
+#: ../lib/engine/components/ldap/ldap-book.cpp:735
 msgid "Contacted server"
 msgstr "Verbinding gemaakt met de server"
 
 # verbinding/contact
 #. patience == 0
-#: ../lib/engine/components/ldap/ldap-book.cpp:781
+#: ../lib/engine/components/ldap/ldap-book.cpp:774
 msgid "Could not connect to server"
 msgstr "Er kon geen verbinding gemaakt worden met de server"
 
 # doorzoeken/zoeken
 #. patience == 0
-#: ../lib/engine/components/ldap/ldap-book.cpp:829
-#: ../lib/engine/components/ldap/ldap-book.cpp:882
+#: ../lib/engine/components/ldap/ldap-book.cpp:822
+#: ../lib/engine/components/ldap/ldap-book.cpp:871
 msgid "Could not search"
 msgstr "Kon niet zoeken"
 
-#: ../lib/engine/components/ldap/ldap-book.cpp:837
+#: ../lib/engine/components/ldap/ldap-book.cpp:830
 msgid "Waiting for search results"
 msgstr "Wachten op zoekresultaten"
 
 # vul in/bewerk
-#: ../lib/engine/components/ldap/ldap-book.cpp:931
+#: ../lib/engine/components/ldap/ldap-book.cpp:920
 msgid "Please edit the following fields"
 msgstr "Bewerk de volgende velden"
 
-#: ../lib/engine/components/ldap/ldap-book.cpp:933
+#: ../lib/engine/components/ldap/ldap-book.cpp:922
 msgid "Book _Name"
 msgstr "_Naam van adresboek"
 
-#: ../lib/engine/components/ldap/ldap-book.cpp:934
+#: ../lib/engine/components/ldap/ldap-book.cpp:923
 msgid "Server _URI"
 msgstr "Server-_URI"
 
-#: ../lib/engine/components/ldap/ldap-book.cpp:935
+#: ../lib/engine/components/ldap/ldap-book.cpp:924
 msgid "_Base DN"
 msgstr "_Basis-DN"
 
 # subboom/secundaire boom
-#: ../lib/engine/components/ldap/ldap-book.cpp:941
+#: ../lib/engine/components/ldap/ldap-book.cpp:930
 msgid "Subtree"
 msgstr "Subtree"
 
 # een niveau
-#: ../lib/engine/components/ldap/ldap-book.cpp:942
+#: ../lib/engine/components/ldap/ldap-book.cpp:931
 msgid "Single Level"
 msgstr "Single level"
 
-#: ../lib/engine/components/ldap/ldap-book.cpp:943
+#: ../lib/engine/components/ldap/ldap-book.cpp:932
 msgid "_Search Scope"
 msgstr "_Zoekgebied"
 
-#: ../lib/engine/components/ldap/ldap-book.cpp:952
+#. Translators: DisplayName Attribute is the name of the LDAP
+#. * attribute whose value will be used to name an addressbook entry.
+#. * On Microsoft systems the actual attribute is literally named
+#. * "DisplayName" (i.e., "the name that will be displayed") but on
+#. * most LDAP servers it's "CommonName".
+#.
+#: ../lib/engine/components/ldap/ldap-book.cpp:947
 msgid "_DisplayName Attribute"
 msgstr "_DisplayName-attribuut"
 
-#: ../lib/engine/components/ldap/ldap-book.cpp:953
+#: ../lib/engine/components/ldap/ldap-book.cpp:948
 msgid "Call _Attributes"
 msgstr "Oproep-_attributen"
 
-#: ../lib/engine/components/ldap/ldap-book.cpp:955
-#: ../lib/engine/components/ldap/ldap-book.cpp:957
+#: ../lib/engine/components/ldap/ldap-book.cpp:950
+#: ../lib/engine/components/ldap/ldap-book.cpp:952
 msgid "_Filter Template"
 msgstr "_Filtersjabloon"
 
-#: ../lib/engine/components/ldap/ldap-book.cpp:959
+#. Translators: Bind ID - In LDAP, the operation that begins an LDAP
+#. * session and authenticates the user to the directory is called a
+#. * Bind operation.  There are two types of Binds supported in the
+#. * standard protocol - Simple Bind and SASL Bind.  Since both of
+#. * them are used for authentication, both of them require some type
+#. * of user ID as a parameter, and that is supplied here.  (Of
+#. * course, the Bind ID can be left blank, in which case the session
+#. * is anonymous / unauthenticated.)
+#.
+#: ../lib/engine/components/ldap/ldap-book.cpp:963
 msgid "Bind _ID"
 msgstr "Bind-_ID"
 
-#: ../lib/engine/components/ldap/ldap-book.cpp:960
+#: ../lib/engine/components/ldap/ldap-book.cpp:964
 msgid "_Password"
 msgstr "_Wachtwoord"
 
-#: ../lib/engine/components/ldap/ldap-book.cpp:961
+#: ../lib/engine/components/ldap/ldap-book.cpp:965
 msgid "Use TLS"
 msgstr "TLS gebruiken"
 
-#: ../lib/engine/components/ldap/ldap-book.cpp:962
+#: ../lib/engine/components/ldap/ldap-book.cpp:966
 msgid "Use SASL"
 msgstr "SASL gebruiken"
 
-#: ../lib/engine/components/ldap/ldap-book.cpp:976
+#: ../lib/engine/components/ldap/ldap-book.cpp:980
 msgid "SASL _Mechanism"
 msgstr "SASL-_mechanisme"
 
 # is dit directory in de zin van ‘map’? Nee dus: adresboek
-#: ../lib/engine/components/ldap/ldap-book.cpp:987
+#: ../lib/engine/components/ldap/ldap-book.cpp:990
 msgid "Edit LDAP directory"
 msgstr "LDAP-adresboek bewerken"
 
 # is dit directory in de zin van ‘map’? Nee dus: adresboek
-#: ../lib/engine/components/ldap/ldap-book.cpp:1016
+#: ../lib/engine/components/ldap/ldap-book.cpp:1012
 msgid "Please provide a Book Name for this directory\n"
 msgstr "Geef een naam aan dit adresboek\n"
 
-#: ../lib/engine/components/ldap/ldap-book.cpp:1019
+#: ../lib/engine/components/ldap/ldap-book.cpp:1015
 msgid "Please provide a Server URI\n"
 msgstr "Geef een server-URI\n"
 
-#: ../lib/engine/components/ldap/ldap-book.cpp:1022
+#: ../lib/engine/components/ldap/ldap-book.cpp:1018
 msgid "Please provide a DisplayName Attribute\n"
 msgstr "Geef een DisplayName-attribuut\n"
 
-#: ../lib/engine/components/ldap/ldap-book.cpp:1025
+#: ../lib/engine/components/ldap/ldap-book.cpp:1021
 msgid "Please provide a Call Attribute\n"
 msgstr "Geef een Call-attribuut\n"
 
-#: ../lib/engine/components/ldap/ldap-book.cpp:1028
+#: ../lib/engine/components/ldap/ldap-book.cpp:1024
 msgid "Invalid Server URI\n"
 msgstr "Ongeldige server URI\n"
 
-#: ../lib/engine/components/ldap/ldap-source.cpp:127
+#: ../lib/engine/components/ldap/ldap-source.cpp:129
 msgid "Add an LDAP Address Book"
 msgstr "Een LDAP-adresboek toevoegen"
 
-#: ../lib/engine/components/ldap/ldap-source.cpp:130
+#: ../lib/engine/components/ldap/ldap-source.cpp:131
 msgid "Add the Ekiga.net Directory"
 msgstr "Het Ekiga.net adresboek toevoegen"
 
 # gebruikerslijst
-#: ../lib/engine/components/ldap/ldap-source.cpp:152
+#: ../lib/engine/components/ldap/ldap-source.cpp:151
 msgid "Create LDAP directory"
 msgstr "LDAP-adresboek aanmaken"
 
 # is dit directory in de zin van ‘map’? Nee.
-#: ../lib/engine/components/ldap/ldap-source.cpp:167
+#: ../lib/engine/components/ldap/ldap-source.cpp:159
 msgid "Ekiga.net Directory"
 msgstr "Ekiga.net adresboek"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:221
+# naamloos/zonder naam
+#: ../lib/engine/components/local-roster/local-presentity.cpp:108
+#: ../lib/engine/components/resource-list/rl-heap.cpp:102
+#: ../lib/engine/components/resource-list/rl-heap.cpp:144
+#: ../lib/engine/components/resource-list/rl-heap.cpp:176
+#: ../lib/engine/components/resource-list/rl-presentity.cpp:133
+#: ../lib/engine/components/resource-list/rl-entry.cpp:131
+msgid "Unnamed"
+msgstr "Zonder naam"
+
+#: ../lib/engine/components/local-roster/local-presentity.cpp:239
+#: ../lib/engine/components/loudmouth/loudmouth-presentity.cpp:262
 msgid "Edit roster element"
 msgstr "Adresboekelement bewerken"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:222
+#: ../lib/engine/components/local-roster/local-presentity.cpp:240
 msgid ""
 "Please fill in this form to change an existing element of ekiga's internal "
 "roster"
@@ -1181,353 +1239,607 @@ msgstr ""
 "Vul dit formulier in om een bestaand element van ekiga's interne adresboek "
 "te wijzigen"
 
-#: ../lib/engine/components/local-roster/local-presentity.cpp:225
-#: ../lib/engine/components/local-roster/local-heap.cpp:193
-#: ../lib/engine/components/local-roster/local-heap.cpp:195
+#: ../lib/engine/components/local-roster/local-presentity.cpp:243
+#: ../lib/engine/components/local-roster/local-heap.cpp:237
+#: ../lib/engine/components/local-roster/local-heap.cpp:239
 #: ../lib/engine/components/resource-list/rl-cluster.cpp:170
-#: ../lib/engine/components/resource-list/rl-heap.cpp:545
+#: ../lib/engine/components/resource-list/rl-heap.cpp:527
 #: ../lib/engine/components/resource-list/rl-presentity.cpp:225
 msgid "Address:"
 msgstr "Adres:"
 
+#: ../lib/engine/components/local-roster/local-presentity.cpp:244
+#, fuzzy
+#| msgid "Add a remote contact"
+msgid "Is a preferred contact"
+msgstr "Een extern contact toevoegen"
+
 # Selecteer/kies
-#: ../lib/engine/components/local-roster/local-presentity.cpp:227
-#: ../lib/engine/components/resource-list/rl-heap.cpp:546
+#: ../lib/engine/components/local-roster/local-presentity.cpp:246
+#: ../lib/engine/components/loudmouth/loudmouth-presentity.cpp:267
+#: ../lib/engine/components/resource-list/rl-heap.cpp:528
 #: ../lib/engine/components/resource-list/rl-presentity.cpp:227
 msgid "Choose groups:"
 msgstr "Kies groepen:"
 
 #: ../lib/engine/components/local-roster/local-roster-bridge.cpp:93
-#: ../lib/engine/components/local-roster/local-heap.cpp:181
+#: ../lib/engine/components/local-roster/local-heap.cpp:225
 msgid "Add to local roster"
 msgstr "Aan lokale adresboek toevoegen"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:92
+#: ../lib/engine/components/loudmouth/loudmouth-account.cpp:78
+msgid "inactive"
+msgstr ""
+
+#: ../lib/engine/components/loudmouth/loudmouth-account.cpp:150
+#, c-format
+msgid "error connecting (%s)"
+msgstr ""
+
+#: ../lib/engine/components/loudmouth/loudmouth-account.cpp:156
+#, fuzzy
+#| msgid "Disconnecting..."
+msgid "connecting"
+msgstr "Verbinding verbreken..."
+
+#: ../lib/engine/components/loudmouth/loudmouth-account.cpp:200
+#, fuzzy
+#| msgid "Authentication User:"
+msgid "authenticating"
+msgstr "Aanmeldingscontrole gebruiker:"
+
+#. FIXME: can't we report better?
+#: ../lib/engine/components/loudmouth/loudmouth-account.cpp:210
+#, fuzzy
+#| msgid "Disconnecting..."
+msgid "error connecting"
+msgstr "Verbinding verbreken..."
+
+#: ../lib/engine/components/loudmouth/loudmouth-account.cpp:222
+#, fuzzy
+#| msgid "Connected"
+msgid "disconnected"
+msgstr "Verbonden"
+
+#: ../lib/engine/components/loudmouth/loudmouth-account.cpp:239
+#, fuzzy
+#| msgid "Connected"
+msgid "connected"
+msgstr "Verbonden"
+
+#. FIXME: can't we report something better?
+#: ../lib/engine/components/loudmouth/loudmouth-account.cpp:245
+msgid "error authenticating loudmouth account"
+msgstr ""
+
+# wijzigen/bewerken
+#: ../lib/engine/components/loudmouth/loudmouth-account.cpp:262
+#: ../lib/engine/components/opal/opal-account.cpp:376
+#: ../lib/engine/components/opal/opal-bank.cpp:94
+msgid "Edit account"
+msgstr "Abonnement bewerken"
+
+#: ../lib/engine/components/loudmouth/loudmouth-account.cpp:271
+#: ../lib/engine/components/opal/opal-account.cpp:385
+#: ../lib/engine/components/resource-list/rl-cluster.cpp:174
+msgid "User:"
+msgstr "Gebruikersnaam:"
+
+#: ../lib/engine/components/loudmouth/loudmouth-account.cpp:275
+#, fuzzy
+#| msgid "STUN Se_rver:"
+msgid "Server:"
+msgstr "STUN-se_rver"
+
+#: ../lib/engine/components/loudmouth/loudmouth-account.cpp:279
+msgid "Resource:"
+msgstr ""
+
+#: ../lib/engine/components/loudmouth/loudmouth-account.cpp:283
+#: ../lib/engine/components/opal/opal-account.cpp:391
+#: ../lib/engine/components/resource-list/rl-cluster.cpp:173
+msgid "Password:"
+msgstr "Wachtwoord:"
+
+#: ../lib/engine/components/loudmouth/loudmouth-account.cpp:297
+#, fuzzy
+#| msgid "Enable Account"
+msgid "Enable account"
+msgstr "Abonnement aanzetten"
+
+#: ../lib/engine/components/loudmouth/loudmouth-account.cpp:352
+#: ../lib/engine/components/opal/opal-account.cpp:327
+msgid "_Disable"
+msgstr "_Uitzetten"
+
+#: ../lib/engine/components/loudmouth/loudmouth-account.cpp:356
+#: ../lib/engine/components/opal/opal-account.cpp:330
+msgid "_Enable"
+msgstr "_Aanzetten"
+
+#: ../lib/engine/components/loudmouth/loudmouth-account.cpp:362
+#: ../src/gui/accounts.cpp:620
+#, fuzzy
+#| msgid "_Edit"
+msgid "Edit"
+msgstr "Be_werken"
+
+#: ../lib/engine/components/loudmouth/loudmouth-bank.cpp:118
+#, fuzzy
+#| msgid "_Add a SIP Account"
+msgid "_Add a jabber/XMPP account"
+msgstr "Een SIP-account _toevoegen"
+
+#: ../lib/engine/components/loudmouth/loudmouth-heap.cpp:210
+msgid "Authorization to see your presence"
+msgstr ""
+
+#: ../lib/engine/components/loudmouth/loudmouth-heap.cpp:214
+#, c-format
+msgid "%s asks the permission to see your presence, saying: \"%s\"."
+msgstr ""
+
+#: ../lib/engine/components/loudmouth/loudmouth-heap.cpp:218
+#, c-format
+msgid "%s asks the permission to see your presence."
+msgstr ""
+
+#: ../lib/engine/components/loudmouth/loudmouth-heap.cpp:225
+msgid "grant him/her the permission to see your presence"
+msgstr ""
+
+#: ../lib/engine/components/loudmouth/loudmouth-heap.cpp:226
+msgid "refuse him/her the permission to see your presence"
+msgstr ""
+
+#: ../lib/engine/components/loudmouth/loudmouth-heap.cpp:227
+msgid "decide later (also close or cancel this dialog)"
+msgstr ""
+
+#: ../lib/engine/components/loudmouth/loudmouth-heap.cpp:228
+#, fuzzy
+#| msgid "No answer timeout"
+msgid "Your answer is: "
+msgstr "Geen antwoord tijdslimiet"
+
+#: ../lib/engine/components/loudmouth/loudmouth-heap.cpp:315
+#, fuzzy
+#| msgid "Edit roster element"
+msgid "Add a roster element"
+msgstr "Adresboekelement bewerken"
+
+#: ../lib/engine/components/loudmouth/loudmouth-heap.cpp:316
+#, fuzzy
+#| msgid ""
+#| "Please fill in this form to add a new contact list to ekiga's remote "
+#| "roster"
+msgid "Please fill in this form to add a newelement to the remote roster"
+msgstr ""
+"Vul dit formulier in om een nieuw contact aan Ekiga's externe adresboek toe "
+"te voegen"
+
+# uniekmaker/aanwijzer/aanwijzing/identificatienaam
+#: ../lib/engine/components/loudmouth/loudmouth-heap.cpp:318
+#, fuzzy
+#| msgid "Identifier"
+msgid "Identifier:"
+msgstr "Aanwijzing"
+
+# uniekmaker/aanwijzer/aanwijzing/identificatienaam
+#: ../lib/engine/components/loudmouth/loudmouth-heap.cpp:318
+#, fuzzy
+#| msgid "Identifier"
+msgid "identifier@server"
+msgstr "Aanwijzing"
+
+#: ../lib/engine/components/loudmouth/loudmouth-presentity.cpp:162
+#: ../lib/engine/components/loudmouth/loudmouth-presentity.cpp:168
+msgid "Ask him/her to see his/her status"
+msgstr ""
+
+#: ../lib/engine/components/loudmouth/loudmouth-presentity.cpp:166
+#: ../lib/engine/components/loudmouth/loudmouth-presentity.cpp:178
+msgid "Forbid him/her to see my status"
+msgstr ""
+
+#: ../lib/engine/components/loudmouth/loudmouth-presentity.cpp:170
+msgid "Ask him/her to see his/her status (pending)"
+msgstr ""
+
+#: ../lib/engine/components/loudmouth/loudmouth-presentity.cpp:174
+#: ../lib/engine/components/loudmouth/loudmouth-presentity.cpp:179
+msgid "Stop getting his/her status"
+msgstr ""
+
+#: ../lib/engine/components/loudmouth/loudmouth-presentity.cpp:184
+#, fuzzy
+#| msgid "Start hidden"
+msgid "Start chat"
+msgstr "Verborgen starten"
+
+#: ../lib/engine/components/loudmouth/loudmouth-presentity.cpp:263
+#, fuzzy
+#| msgid ""
+#| "Please fill in this form to change an existing element of ekiga's "
+#| "internal roster"
+msgid ""
+"Please fill in this form to change an existing element of the remote roster"
+msgstr ""
+"Vul dit formulier in om een bestaand element van ekiga's interne adresboek "
+"te wijzigen"
+
+#: ../lib/engine/components/local-roster/local-heap.cpp:93
 msgid "Services"
 msgstr "Services"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:93
+#: ../lib/engine/components/local-roster/local-heap.cpp:94
 msgid "Echo test"
 msgstr "Echotest"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:94
+#: ../lib/engine/components/local-roster/local-heap.cpp:95
 msgid "Conference room"
 msgstr "Conferentieruimte"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:110
+#: ../lib/engine/components/local-roster/local-heap.cpp:109
 msgid "Local roster"
 msgstr "Lokale adresboek"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:127
+#: ../lib/engine/components/local-roster/local-heap.cpp:126
 msgid "Rename"
 msgstr "Hernoemen"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:160
+#: ../lib/engine/components/local-roster/local-heap.cpp:189
 msgid "Family"
 msgstr "Familie"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:161
+#: ../lib/engine/components/local-roster/local-heap.cpp:190
 msgid "Friend"
 msgstr "Vriend"
 
 # compagnon
-#: ../lib/engine/components/local-roster/local-heap.cpp:162
+#. Translator: http://www.ietf.org/rfc/rfc4480.txt proposes several
+#. relationships between you and your contact; associate means
+#. someone who is at the same "level" than you.
+#.
+#: ../lib/engine/components/local-roster/local-heap.cpp:195
 msgid "Associate"
 msgstr "Compagnon"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:163
+#. Translator: http://www.ietf.org/rfc/rfc4480.txt proposes several
+#. relationships between you and your contact; assistant means
+#. someone who is at a lower "level" than you.
+#.
+#: ../lib/engine/components/local-roster/local-heap.cpp:200
 msgid "Assistant"
 msgstr "Assistent"
 
 # leidinggevende/beheerder
-#: ../lib/engine/components/local-roster/local-heap.cpp:164
+#. Translator: http://www.ietf.org/rfc/rfc4480.txt proposes several
+#. relationships between you and your contact; supervisor means
+#. someone who is at a higher "level" than you.
+#.
+#: ../lib/engine/components/local-roster/local-heap.cpp:205
 msgid "Supervisor"
 msgstr "Leidinggevende"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:165
+#. Translator: http://www.ietf.org/rfc/rfc4480.txt proposes several
+#. relationships between you and your contact; self means yourself.
+#.
+#: ../lib/engine/components/local-roster/local-heap.cpp:209
 msgid "Self"
 msgstr "Zelf"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:182
+#: ../lib/engine/components/local-roster/local-heap.cpp:226
 msgid ""
 "Please fill in this form to add a new contact to ekiga's internal roster"
 msgstr ""
 "Vul dit formulier in om een nieuw contact aan Ekiga's adresboek toe te voegen"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:199
+#: ../lib/engine/components/local-roster/local-heap.cpp:243
 msgid "Put contact in groups:"
 msgstr "Contact in groepen plaatsen:"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:335
+#: ../lib/engine/components/local-roster/local-heap.cpp:403
 msgid "You supplied an unsupported address"
 msgstr "U gaf een niet-ondersteund adres"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:337
+#: ../lib/engine/components/local-roster/local-heap.cpp:405
 msgid "You already have a contact with this address!"
 msgstr "U heeft al een contact met dit adres!"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:362
+#: ../lib/engine/components/local-roster/local-heap.cpp:416
 msgid "Rename group"
 msgstr "Groep hernoemen"
 
-#: ../lib/engine/components/local-roster/local-heap.cpp:363
+#: ../lib/engine/components/local-roster/local-heap.cpp:417
 msgid "Please edit this group name"
 msgstr "Bewerk deze groepsnaam"
 
 # Oproep/opbellen
-#: ../lib/engine/components/opal/h323-endpoint.cpp:143
-#: ../lib/engine/components/opal/sip-endpoint.cpp:257
-#: ../lib/engine/components/opal/sip-endpoint.cpp:261
+#: ../lib/engine/components/opal/h323-endpoint.cpp:131
+#: ../lib/engine/components/opal/sip-endpoint.cpp:229
+#: ../lib/engine/components/opal/sip-endpoint.cpp:233
 msgid "Call"
 msgstr "Opbellen"
 
 # Overdragen/doorverbinden
-#: ../lib/engine/components/opal/h323-endpoint.cpp:146
-#: ../lib/engine/components/opal/sip-endpoint.cpp:258
-#: ../lib/engine/components/opal/sip-endpoint.cpp:262 ../src/gui/main.cpp:2946
+#: ../lib/engine/components/opal/h323-endpoint.cpp:134
+#: ../lib/engine/components/opal/sip-endpoint.cpp:230
+#: ../lib/engine/components/opal/sip-endpoint.cpp:234 ../src/gui/main.cpp:2953
 msgid "Transfer"
 msgstr "Doorverbinden"
 
 #. Translators : The alias we are registering already exists : failure
-#: ../lib/engine/components/opal/h323-endpoint.cpp:310
+#: ../lib/engine/components/opal/h323-endpoint.cpp:309
 msgid "Duplicate alias"
 msgstr "Dubbele alias"
 
 # meestal is toch het wachtwoord fout, en onjuist is korter dan onjuiste
-#: ../lib/engine/components/opal/h323-endpoint.cpp:313
+#: ../lib/engine/components/opal/h323-endpoint.cpp:312
 msgid "Bad username/password"
 msgstr "Onjuist wachtwoord/gebruikersnaam"
 
 # Er is een overdrachtsfout opgetreden
-#: ../lib/engine/components/opal/h323-endpoint.cpp:316
-#: ../lib/engine/components/opal/sip-endpoint.cpp:896
+#: ../lib/engine/components/opal/h323-endpoint.cpp:315
+#: ../lib/engine/components/opal/sip-endpoint.cpp:907
 msgid "Transport error"
 msgstr "Overdrachtsfout"
 
-#: ../lib/engine/components/opal/h323-endpoint.cpp:327
-#: ../lib/engine/components/opal/h323-endpoint.cpp:332
-#: ../lib/engine/components/opal/sip-endpoint.cpp:903
+#: ../lib/engine/components/opal/h323-endpoint.cpp:326
+#: ../lib/engine/components/opal/h323-endpoint.cpp:331
+#: ../lib/engine/components/opal/sip-endpoint.cpp:914
 msgid "Failed"
 msgstr "Mislukt"
 
-#: ../lib/engine/components/opal/opal-account.cpp:300
-msgid "_Disable"
-msgstr "_Uitzetten"
+#. translators : the result will look like :
+#. * "registered (with 2 voicemail messages)"
+#.
+#: ../lib/engine/components/opal/opal-account.cpp:204
+#, c-format
+msgid "%s (with %d voicemail message)"
+msgid_plural "%s (with %d voicemail messages)"
+msgstr[0] ""
+msgstr[1] ""
 
-#: ../lib/engine/components/opal/opal-account.cpp:303
-msgid "_Enable"
-msgstr "_Aanzetten"
-
-#: ../lib/engine/components/opal/opal-account.cpp:324
-#: ../src/gui/assistant.cpp:725
+#: ../lib/engine/components/opal/opal-account.cpp:351
+#: ../src/gui/assistant.cpp:720
 msgid "Recharge the account"
 msgstr "Abonnement opladen"
 
-#: ../lib/engine/components/opal/opal-account.cpp:329
-#: ../src/gui/assistant.cpp:737
+#: ../lib/engine/components/opal/opal-account.cpp:356
+#: ../src/gui/assistant.cpp:732
 msgid "Consult the balance history"
 msgstr "Geschiedenis van saldo inzien"
 
-#: ../lib/engine/components/opal/opal-account.cpp:334
+#: ../lib/engine/components/opal/opal-account.cpp:361
 msgid "Consult the call history"
 msgstr "Oproepgeschiedenis inzien"
 
-# wijzigen/bewerken
-#: ../lib/engine/components/opal/opal-account.cpp:349
-#: ../lib/engine/components/opal/opal-bank.cpp:72
-msgid "Edit account"
-msgstr "Abonnement bewerken"
-
 # Registrar: One who registers; a recorder;
 # registratiehouder/registratieadministratie
-#: ../lib/engine/components/opal/opal-account.cpp:355
-#: ../lib/engine/components/opal/opal-bank.cpp:110
+#: ../lib/engine/components/opal/opal-account.cpp:382
 msgid "Registrar:"
 msgstr "Registratiehouder:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:357
-#: ../lib/engine/components/opal/opal-bank.cpp:100
+#: ../lib/engine/components/opal/opal-account.cpp:384
 msgid "Gatekeeper:"
 msgstr "Gatekeeper:"
-
-#: ../lib/engine/components/opal/opal-account.cpp:358
-#: ../lib/engine/components/opal/opal-bank.cpp:81
-#: ../lib/engine/components/opal/opal-bank.cpp:101
-#: ../lib/engine/components/opal/opal-bank.cpp:111
-#: ../lib/engine/components/resource-list/rl-cluster.cpp:174
-msgid "User:"
-msgstr "Gebruikersnaam:"
 
 #. Translators:
 #. * SIP knows two usernames: The name for the client ("User") and the name
 #. * for the authentication procedure ("Authentication User")
-#: ../lib/engine/components/opal/opal-account.cpp:363
-#: ../lib/engine/components/opal/opal-bank.cpp:112
+#: ../lib/engine/components/opal/opal-account.cpp:390
 msgid "Authentication User:"
 msgstr "Aanmeldingscontrole gebruiker:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:364
-#: ../lib/engine/components/opal/opal-bank.cpp:83
-#: ../lib/engine/components/opal/opal-bank.cpp:103
-#: ../lib/engine/components/opal/opal-bank.cpp:113
-#: ../lib/engine/components/resource-list/rl-cluster.cpp:173
-msgid "Password:"
-msgstr "Wachtwoord:"
-
-#: ../lib/engine/components/opal/opal-account.cpp:365
-#: ../lib/engine/components/opal/opal-bank.cpp:104
-#: ../lib/engine/components/opal/opal-bank.cpp:114
+#: ../lib/engine/components/opal/opal-account.cpp:392
 msgid "Timeout:"
 msgstr "Tijdslimiet:"
 
-#: ../lib/engine/components/opal/opal-account.cpp:366
-#: ../lib/engine/components/opal/opal-bank.cpp:117
+#: ../lib/engine/components/opal/opal-account.cpp:393
+#: ../lib/engine/components/opal/opal-bank.cpp:139
 msgid "Enable Account"
 msgstr "Abonnement aanzetten"
 
-#: ../lib/engine/components/opal/opal-account.cpp:401
-#: ../lib/engine/components/opal/opal-bank.cpp:155
+#: ../lib/engine/components/opal/opal-account.cpp:419
+#: ../lib/engine/components/opal/opal-bank.cpp:173
 msgid "You did not supply a name for that account."
 msgstr "U heeft geen naam voor dat abonnement opgegeven."
 
-#: ../lib/engine/components/opal/opal-account.cpp:403
-#: ../lib/engine/components/opal/opal-bank.cpp:157
+#: ../lib/engine/components/opal/opal-account.cpp:421
+#: ../lib/engine/components/opal/opal-bank.cpp:175
 msgid "You did not supply a host to register to."
 msgstr "U heeft geen host opgegeven waarbij u zich gaat aanmelden."
 
-#: ../lib/engine/components/opal/opal-account.cpp:405
-#: ../lib/engine/components/opal/opal-bank.cpp:159
+#: ../lib/engine/components/opal/opal-account.cpp:423
+#: ../lib/engine/components/opal/opal-bank.cpp:177
 msgid "You did not supply a user name for that account."
 msgstr "U gaf geen gebruikersnaam voor dit abonnement."
 
-#: ../lib/engine/components/opal/opal-account.cpp:407
-#: ../lib/engine/components/opal/opal-bank.cpp:161
+#: ../lib/engine/components/opal/opal-account.cpp:425
+#: ../lib/engine/components/opal/opal-bank.cpp:179
 msgid "The timeout should have a bigger value."
 msgstr "De tijdslimiet moet een grotere waarde hebben."
 
-#: ../lib/engine/components/opal/opal-bank.cpp:53
+#: ../lib/engine/components/opal/opal-account.cpp:469
+msgid "Registered"
+msgstr "Aangemeld"
+
+#: ../lib/engine/components/opal/opal-account.cpp:482
+msgid "Unregistered"
+msgstr "Afgemeld"
+
+# uitregistreren/afregistreren/afmelden/
+#: ../lib/engine/components/opal/opal-account.cpp:488
+msgid "Could not unregister"
+msgstr "Kon niet afmelden"
+
+# niet aanmelden
+#: ../lib/engine/components/opal/opal-account.cpp:496
+msgid "Could not register"
+msgstr "Kon niet aanmelden"
+
+#: ../lib/engine/components/opal/opal-account.cpp:504
+msgid "Processing..."
+msgstr "Verwerken…"
+
+#: ../lib/engine/components/opal/opal-bank.cpp:74
 msgid "_Add an Ekiga.net Account"
 msgstr "Een Ekiga.net account _toevoegen"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:55
+#: ../lib/engine/components/opal/opal-bank.cpp:76
 msgid "_Add an Ekiga Call Out Account"
 msgstr "Een Ekiga PC-naar-telefoon account _toevoegen"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:57
+#: ../lib/engine/components/opal/opal-bank.cpp:78
 msgid "_Add a SIP Account"
 msgstr "Een SIP-account _toevoegen"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:59
+#: ../lib/engine/components/opal/opal-bank.cpp:80
 msgid "_Add an H.323 Account"
 msgstr "Een H.323-account _toevoegen"
 
 # invoervelden
-#: ../lib/engine/components/opal/opal-bank.cpp:73
+#: ../lib/engine/components/opal/opal-bank.cpp:95
 msgid "Please update the following fields."
 msgstr "Werk de volgende velden bij."
 
-#: ../lib/engine/components/opal/opal-bank.cpp:78 ../src/gui/assistant.cpp:605
+#: ../lib/engine/components/opal/opal-bank.cpp:100
+#: ../src/gui/assistant.cpp:600
 msgid "Get an Ekiga.net SIP account"
 msgstr "Een Ekiga.net SIP-abonnement aanvragen"
 
+#: ../lib/engine/components/opal/opal-bank.cpp:103
+#: ../lib/engine/components/opal/opal-bank.cpp:123
+#: ../lib/engine/components/opal/opal-bank.cpp:133
+msgid "_User:"
+msgstr "_Gebruikersnaam:"
+
+#: ../lib/engine/components/opal/opal-bank.cpp:105
+#: ../lib/engine/components/opal/opal-bank.cpp:125
+#: ../lib/engine/components/opal/opal-bank.cpp:135
+msgid "_Password:"
+msgstr "_Wachtwoord:"
+
 # Een Ekiga PC-naar-telefoon abonnement aanvragen
-#: ../lib/engine/components/opal/opal-bank.cpp:88 ../src/gui/assistant.cpp:713
+#: ../lib/engine/components/opal/opal-bank.cpp:110
+#: ../src/gui/assistant.cpp:708
 msgid "Get an Ekiga Call Out account"
 msgstr "Een Ekiga PC-naar-telefoon abonnement aanvragen"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:92 ../src/gui/main.cpp:2700
-#: ../src/gui/main.cpp:2795
-msgid "Account ID:"
-msgstr "Abonnement-ID:"
+#: ../lib/engine/components/opal/opal-bank.cpp:114
+msgid "_Account ID:"
+msgstr "_Abonnement-ID:"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:94
-msgid "PIN Code:"
-msgstr "PIN-code:"
+#: ../lib/engine/components/opal/opal-bank.cpp:116
+msgid "_PIN Code:"
+msgstr "_PIN-code:"
 
-#: ../lib/engine/components/opal/opal-call.cpp:444
+# Beheerder/Gatekeeper/Poortwachter
+#: ../lib/engine/components/opal/opal-bank.cpp:122
+msgid "_Gatekeeper:"
+msgstr "_Gatekeeper:"
+
+#: ../lib/engine/components/opal/opal-bank.cpp:126
+#: ../lib/engine/components/opal/opal-bank.cpp:136
+msgid "_Timeout:"
+msgstr "_Tijdslimiet:"
+
+# Registrar: One who registers; a recorder;
+# registratiehouder/registratieadministratie
+#: ../lib/engine/components/opal/opal-bank.cpp:132
+msgid "_Registrar:"
+msgstr "_Registratiehouder:"
+
+#: ../lib/engine/components/opal/opal-bank.cpp:134
+msgid "_Authentication User:"
+msgstr "_Aanmeldingscontrole gebruiker:"
+
+# Local user: Uzelf? / Remote user: andere partij?
+#: ../lib/engine/components/opal/opal-call.cpp:439
 msgid "Local user cleared the call"
 msgstr "Gesprekspartner heeft het gesprek gestopt"
 
-#: ../lib/engine/components/opal/opal-call.cpp:447
-#: ../lib/engine/components/opal/opal-call.cpp:450
+#: ../lib/engine/components/opal/opal-call.cpp:442
+#: ../lib/engine/components/opal/opal-call.cpp:445
 msgid "Local user rejected the call"
 msgstr "Gesprekspartner heeft de oproep geweigerd"
 
-#: ../lib/engine/components/opal/opal-call.cpp:453
+#: ../lib/engine/components/opal/opal-call.cpp:448
 msgid "Remote user cleared the call"
 msgstr "Gesprekspartner heeft het gesprek gestopt"
 
-#: ../lib/engine/components/opal/opal-call.cpp:456
+#: ../lib/engine/components/opal/opal-call.cpp:451
 msgid "Remote user rejected the call"
 msgstr "Gesprekspartner heeft de oproep geweigerd"
 
-#: ../lib/engine/components/opal/opal-call.cpp:459
+#: ../lib/engine/components/opal/opal-call.cpp:454
 msgid "Remote user has stopped calling"
 msgstr "Gespreksparter heeft de oproep afgebroken"
 
-#: ../lib/engine/components/opal/opal-call.cpp:462
+#: ../lib/engine/components/opal/opal-call.cpp:457
 msgid "Abnormal call termination"
 msgstr "Abnormale beëindiging van het gesprek"
 
-#: ../lib/engine/components/opal/opal-call.cpp:465 ../src/gui/main.cpp:1490
+#: ../lib/engine/components/opal/opal-call.cpp:460 ../src/gui/main.cpp:1467
 msgid "Could not connect to remote host"
 msgstr "Er kon geen verbinding gemaakt worden met de andere partij"
 
-#: ../lib/engine/components/opal/opal-call.cpp:468
+#: ../lib/engine/components/opal/opal-call.cpp:463
 msgid "The Gatekeeper cleared the call"
 msgstr "De Gatekeeper heeft het gesprek gestopt"
 
 # gesprekspartner
-#: ../lib/engine/components/opal/opal-call.cpp:471
+#: ../lib/engine/components/opal/opal-call.cpp:466
 msgid "User not found"
 msgstr "Gebruiker niet gevonden"
 
 # Te weinig/Ontoereikende/Te kort/
-#: ../lib/engine/components/opal/opal-call.cpp:474
+#: ../lib/engine/components/opal/opal-call.cpp:469
 msgid "Insufficient bandwidth"
 msgstr "Ontoereikende bandbreedte"
 
-#: ../lib/engine/components/opal/opal-call.cpp:477
+#: ../lib/engine/components/opal/opal-call.cpp:472
 msgid "No common codec"
 msgstr "Geen gemeenschappelijk codec"
 
 # gesprek/oproep
-#: ../lib/engine/components/opal/opal-call.cpp:480
+#: ../lib/engine/components/opal/opal-call.cpp:475
 msgid "Call forwarded"
 msgstr "Oproep doorgestuurd"
 
 # is mislukt/heeft gefaald
-#: ../lib/engine/components/opal/opal-call.cpp:483
+#: ../lib/engine/components/opal/opal-call.cpp:478
 msgid "Security check failed"
 msgstr "Beveiligingscontrole is mislukt"
 
-#: ../lib/engine/components/opal/opal-call.cpp:486
+#: ../lib/engine/components/opal/opal-call.cpp:481
 msgid "Local user is busy"
 msgstr "Gesprekspartner is bezet"
 
-#: ../lib/engine/components/opal/opal-call.cpp:489
-#: ../lib/engine/components/opal/opal-call.cpp:495
+#: ../lib/engine/components/opal/opal-call.cpp:484
+#: ../lib/engine/components/opal/opal-call.cpp:490
 msgid "Congested link to remote party"
 msgstr "Te drukke verbinding naar gesprekspartner"
 
-#: ../lib/engine/components/opal/opal-call.cpp:492
+#: ../lib/engine/components/opal/opal-call.cpp:487
 msgid "Remote user is busy"
 msgstr "Gesprekspartnet is bezet"
 
-#: ../lib/engine/components/opal/opal-call.cpp:498
+#: ../lib/engine/components/opal/opal-call.cpp:493
 msgid "Remote host is offline"
 msgstr "Gesprekspartner is offline"
 
 # bezet/niet beschikbaar
-#: ../lib/engine/components/opal/opal-call.cpp:504
+#: ../lib/engine/components/opal/opal-call.cpp:499
 msgid "User is not available"
 msgstr "Gesprekspartner is niet beschikbaar"
 
-#: ../lib/engine/components/opal/opal-call.cpp:516
+#: ../lib/engine/components/opal/opal-call.cpp:510
 msgid "Call completed"
 msgstr "Gesprek afgerond"
 
-#: ../lib/engine/components/opal/opal-call-manager.cpp:725
+#: ../lib/engine/components/opal/opal-call-manager.cpp:745
 msgid ""
 "Ekiga did not manage to configure your network settings automatically. You "
 "can still use it, but you need to configure your network settings manually.\n"
@@ -1542,235 +1854,245 @@ msgstr ""
 "Zie http://wiki.ekiga.org/index.php/Enable_port_forwarding_manually voor "
 "instructies."
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:282
-#: ../lib/engine/components/opal/sip-endpoint.cpp:284
+#: ../lib/engine/components/opal/sip-endpoint.cpp:254
+#: ../lib/engine/components/opal/sip-endpoint.cpp:256
 msgid "Message"
 msgstr "Bericht"
 
 # foutief/onjuist
-#: ../lib/engine/components/opal/sip-endpoint.cpp:710
+#: ../lib/engine/components/opal/sip-endpoint.cpp:714
 msgid "Bad request"
 msgstr "Onjuist verzoek"
 
 # gevraagd/vereist
-#: ../lib/engine/components/opal/sip-endpoint.cpp:714
+#: ../lib/engine/components/opal/sip-endpoint.cpp:718
 msgid "Payment required"
 msgstr "Betaling vereist"
 
 # niet erkend/gevolmachtigd/goedgekeurd/officieel
-#: ../lib/engine/components/opal/sip-endpoint.cpp:718
+#: ../lib/engine/components/opal/sip-endpoint.cpp:722
 msgid "Unauthorized"
 msgstr "Niet geautoriseerd"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:722
-msgid "Forbidden"
-msgstr "Verboden"
-
+# verboden klinkt te sterk
 #: ../lib/engine/components/opal/sip-endpoint.cpp:726
+msgid "Forbidden, please check that username and password are correct"
+msgstr "Geen toegang, controleer of gebruikersnaam en wachtwoord juist zijn"
+
+#: ../lib/engine/components/opal/sip-endpoint.cpp:730
 msgid "Timeout"
 msgstr "Tijdslimiet"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:730
+#: ../lib/engine/components/opal/sip-endpoint.cpp:734
 msgid "Conflict"
 msgstr "Conflict"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:734
+#: ../lib/engine/components/opal/sip-endpoint.cpp:738
 msgid "Temporarily unavailable"
 msgstr "Tijdelijke niet beschikbaar"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:738
+#: ../lib/engine/components/opal/sip-endpoint.cpp:742
 msgid "Not acceptable"
 msgstr "Niet acceptabel"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:742
+#: ../lib/engine/components/opal/sip-endpoint.cpp:746
 msgid "Illegal status code"
 msgstr "Ongeldige statuscode"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:746
+#: ../lib/engine/components/opal/sip-endpoint.cpp:750
 msgid "Multiple choices"
 msgstr "Meerdere keuzes"
 
 # verhuisd/verplaatst
-#: ../lib/engine/components/opal/sip-endpoint.cpp:750
+#: ../lib/engine/components/opal/sip-endpoint.cpp:754
 msgid "Moved permanently"
 msgstr "Definitief verplaatst"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:754
+#: ../lib/engine/components/opal/sip-endpoint.cpp:758
 msgid "Moved temporarily"
 msgstr "Tijdelijk verplaatst"
 
 # Gateway of proxy gebruiken
-#: ../lib/engine/components/opal/sip-endpoint.cpp:758
+#: ../lib/engine/components/opal/sip-endpoint.cpp:762
 msgid "Use proxy"
 msgstr "Proxy gebruiken"
 
 # uitgang/service
-#: ../lib/engine/components/opal/sip-endpoint.cpp:762
+#: ../lib/engine/components/opal/sip-endpoint.cpp:766
 msgid "Alternative service"
 msgstr "Alternatieve service"
 
 # gesprekspartner niet gevonden
-#: ../lib/engine/components/opal/sip-endpoint.cpp:766
+#: ../lib/engine/components/opal/sip-endpoint.cpp:770
 msgid "Not found"
 msgstr "Niet gevonden"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:770
+#: ../lib/engine/components/opal/sip-endpoint.cpp:774
 msgid "Method not allowed"
 msgstr "Methode niet toegestaan"
 
 # gevraagd/vereist
-#: ../lib/engine/components/opal/sip-endpoint.cpp:774
+#: ../lib/engine/components/opal/sip-endpoint.cpp:778
 msgid "Proxy authentication required"
 msgstr "Proxy aamelding vereist"
 
 # gevraagd/vereist
 # verlaten/weggegaan
-#: ../lib/engine/components/opal/sip-endpoint.cpp:778
+#: ../lib/engine/components/opal/sip-endpoint.cpp:782
 msgid "Length required"
 msgstr "Lengte vereist"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:782
+#: ../lib/engine/components/opal/sip-endpoint.cpp:786
 msgid "Request entity too big"
 msgstr "Verzoek-entiteit te groot"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:786
+#: ../lib/engine/components/opal/sip-endpoint.cpp:790
 msgid "Request URI too long"
 msgstr "Verzoek-URI te lang"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:790
+#: ../lib/engine/components/opal/sip-endpoint.cpp:794
 msgid "Unsupported media type"
 msgstr "Niet ondersteund mediatype"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:794
+#: ../lib/engine/components/opal/sip-endpoint.cpp:798
 msgid "Unsupported URI scheme"
 msgstr "Niet ondersteund URI-schema"
 
-#. Translators : The extension we are trying to register does not exist
-#: ../lib/engine/components/opal/sip-endpoint.cpp:799
+#. Translators:  The extension we are trying to register does not exist.
+#. * Here extension is a specific "phone number", see
+#. * http://en.wikipedia.org/wiki/Extension_(telephone)
+#. * for more information
+#: ../lib/engine/components/opal/sip-endpoint.cpp:806
 msgid "Bad extension"
 msgstr "Onjuiste extensie"
 
 # gevraagd/vereist
-#: ../lib/engine/components/opal/sip-endpoint.cpp:803
+#: ../lib/engine/components/opal/sip-endpoint.cpp:810
 msgid "Extension required"
 msgstr "Extensie vereist"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:807
+#: ../lib/engine/components/opal/sip-endpoint.cpp:814
 msgid "Interval too brief"
 msgstr "Interval te kort"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:811
+#: ../lib/engine/components/opal/sip-endpoint.cpp:818
 msgid "Loop detected"
 msgstr "Lus gedetecteerd"
 
 # het teveel aan hops, er zijn te veel hops
-#: ../lib/engine/components/opal/sip-endpoint.cpp:815
+#: ../lib/engine/components/opal/sip-endpoint.cpp:822
 msgid "Too many hops"
 msgstr "Te veel hops"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:819
+#: ../lib/engine/components/opal/sip-endpoint.cpp:826
 msgid "Address incomplete"
 msgstr "Adres incompleet"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:823
+#: ../lib/engine/components/opal/sip-endpoint.cpp:830
 msgid "Ambiguous"
 msgstr "Dubbelzinnig"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:827
+#: ../lib/engine/components/opal/sip-endpoint.cpp:834
 msgid "Busy Here"
 msgstr "Hier bezet"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:831
+#: ../lib/engine/components/opal/sip-endpoint.cpp:838
 msgid "Request terminated"
 msgstr "Verzoek afgebroken"
 
+#: ../lib/engine/components/opal/sip-endpoint.cpp:842
+#, fuzzy
+#| msgid "Remote host is offline"
+msgid "Remote party host is offline"
+msgstr "Gesprekspartner is offline"
+
 # niet bij dit account?
-#: ../lib/engine/components/opal/sip-endpoint.cpp:835
+#: ../lib/engine/components/opal/sip-endpoint.cpp:846
 msgid "Not acceptable here"
 msgstr "Niet acceptabel hier"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:839
+#: ../lib/engine/components/opal/sip-endpoint.cpp:850
 msgid "Bad event"
 msgstr "Foutieve actie"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:843
+#: ../lib/engine/components/opal/sip-endpoint.cpp:854
 msgid "Request pending"
 msgstr "Verzoek in de wacht"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:847
+#: ../lib/engine/components/opal/sip-endpoint.cpp:858
 msgid "Undecipherable"
 msgstr "Niet te ontcijferen"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:851
+#: ../lib/engine/components/opal/sip-endpoint.cpp:862
 msgid "Internal server error"
 msgstr "Interne serverfout"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:855
+#: ../lib/engine/components/opal/sip-endpoint.cpp:866
 msgid "Not implemented"
 msgstr "Niet geïmplementeerd"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:859
+#: ../lib/engine/components/opal/sip-endpoint.cpp:870
 msgid "Bad gateway"
 msgstr "Onjuiste gateway"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:863
+#: ../lib/engine/components/opal/sip-endpoint.cpp:874
 msgid "Service unavailable"
 msgstr "Service niet beschikbaar"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:867
+#: ../lib/engine/components/opal/sip-endpoint.cpp:878
 msgid "Server timeout"
 msgstr "Server timeout"
 
 # waarom afkorten?
-#: ../lib/engine/components/opal/sip-endpoint.cpp:871
+#: ../lib/engine/components/opal/sip-endpoint.cpp:882
 msgid "SIP version not supported"
 msgstr "SIP-versie niet ondersteund"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:875
+#: ../lib/engine/components/opal/sip-endpoint.cpp:886
 msgid "Message too large"
 msgstr "Bericht is te lang"
 
 # vergelijk: Busy Here
-#: ../lib/engine/components/opal/sip-endpoint.cpp:879
+#: ../lib/engine/components/opal/sip-endpoint.cpp:890
 msgid "Busy everywhere"
 msgstr "Overal bezet"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:883
+#: ../lib/engine/components/opal/sip-endpoint.cpp:894
 msgid "Decline"
 msgstr "Afwijzen"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:887
+#: ../lib/engine/components/opal/sip-endpoint.cpp:898
 msgid "Does not exist anymore"
 msgstr "Bestaat niet meer"
 
 # vergelijk: not acceptable here
 # niet accepteren
-#: ../lib/engine/components/opal/sip-endpoint.cpp:891
+#: ../lib/engine/components/opal/sip-endpoint.cpp:902
 msgid "Globally not acceptable"
 msgstr "Nergens acceptabel"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:1020
+#: ../lib/engine/components/opal/sip-endpoint.cpp:1068
 msgid "Could not send message"
 msgstr "Kon bericht niet versturen"
 
 # afkomstig van
-#: ../lib/engine/components/opal/sip-endpoint.cpp:1134
+#: ../lib/engine/components/opal/sip-endpoint.cpp:1183
 #, c-format
 msgid "Incoming call from %s"
 msgstr "Binnenkomende oproep van %s"
 
 # afkomstig van
-#: ../lib/engine/components/opal/sip-endpoint.cpp:1136
+#: ../lib/engine/components/opal/sip-endpoint.cpp:1185
 #, c-format
 msgid "Incoming call"
 msgstr "Binnenkomende oproep"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:1142
+#: ../lib/engine/components/opal/sip-endpoint.cpp:1191
 #, c-format
 msgid "In a call with %s"
 msgstr "In gesprek met %s"
 
-#: ../lib/engine/components/opal/sip-endpoint.cpp:1144
+#: ../lib/engine/components/opal/sip-endpoint.cpp:1193
 #, c-format
 msgid "In a call"
 msgstr "In gesprek"
@@ -1798,68 +2120,59 @@ msgstr "Schrijfbaar:"
 msgid "Username:"
 msgstr "Gebruikersnaam:"
 
-# naamloos/zonder naam
-#: ../lib/engine/components/resource-list/rl-heap.cpp:103
-#: ../lib/engine/components/resource-list/rl-heap.cpp:144
-#: ../lib/engine/components/resource-list/rl-heap.cpp:178
-#: ../lib/engine/components/resource-list/rl-presentity.cpp:133
-#: ../lib/engine/components/resource-list/rl-entry.cpp:130
-msgid "Unnamed"
-msgstr "Zonder naam"
-
-#: ../lib/engine/components/resource-list/rl-heap.cpp:200
+#: ../lib/engine/components/resource-list/rl-heap.cpp:198
 msgid "_Add a new contact"
 msgstr "Een nieuw contact _toevoegen"
 
-#: ../lib/engine/components/resource-list/rl-heap.cpp:202
+#: ../lib/engine/components/resource-list/rl-heap.cpp:200
 msgid "_Refresh contact list"
 msgstr "De contactenlijst _verversen"
 
-#: ../lib/engine/components/resource-list/rl-heap.cpp:204
+#: ../lib/engine/components/resource-list/rl-heap.cpp:202
 msgid "Contact list _properties"
 msgstr "Contactenlijst-_eigenschappen"
 
-#: ../lib/engine/components/resource-list/rl-heap.cpp:467
+#: ../lib/engine/components/resource-list/rl-heap.cpp:462
 msgid "Edit contact list properties"
 msgstr "Contactenlijst-eigenschappen bewerken"
 
 # vul in/bewerk
-#: ../lib/engine/components/resource-list/rl-heap.cpp:469
+#: ../lib/engine/components/resource-list/rl-heap.cpp:464
 msgid "Please edit the following fields (no identifier means global)"
 msgstr ""
 "Bewerk de volgende velden (geen aanwijzing betekent: algemeen (global))"
 
-#: ../lib/engine/components/resource-list/rl-heap.cpp:472
+#: ../lib/engine/components/resource-list/rl-heap.cpp:467
 msgid "Contact list's name"
 msgstr "Naam van contactenlijst"
 
 #. "Document" used as a name -- uri point to the root of a document tree
-#: ../lib/engine/components/resource-list/rl-heap.cpp:474
+#: ../lib/engine/components/resource-list/rl-heap.cpp:469
 msgid "Document root"
 msgstr "Documentbasis"
 
 # uniekmaker/aanwijzer/aanwijzing/identificatienaam
-#: ../lib/engine/components/resource-list/rl-heap.cpp:475
+#: ../lib/engine/components/resource-list/rl-heap.cpp:470
 msgid "Identifier"
 msgstr "Aanwijzing"
 
-#: ../lib/engine/components/resource-list/rl-heap.cpp:476
+#: ../lib/engine/components/resource-list/rl-heap.cpp:471
 msgid "Writable"
 msgstr "Schrijfbaar"
 
-#: ../lib/engine/components/resource-list/rl-heap.cpp:477
+#: ../lib/engine/components/resource-list/rl-heap.cpp:472
 msgid "Server username"
 msgstr "Server gebruikersnaam"
 
-#: ../lib/engine/components/resource-list/rl-heap.cpp:478
+#: ../lib/engine/components/resource-list/rl-heap.cpp:473
 msgid "Server password"
 msgstr "Server wachtwoord"
 
-#: ../lib/engine/components/resource-list/rl-heap.cpp:530
+#: ../lib/engine/components/resource-list/rl-heap.cpp:512
 msgid "Add a remote contact"
 msgstr "Een extern contact toevoegen"
 
-#: ../lib/engine/components/resource-list/rl-heap.cpp:531
+#: ../lib/engine/components/resource-list/rl-heap.cpp:513
 msgid "Please fill in this form to create a new contact on a remote server"
 msgstr ""
 "Vul dit formulier in om een nieuw contact op een externe server aan te maken"
@@ -1875,26 +2188,26 @@ msgstr ""
 "Vul dit formulier in om een bestaand contact op een externe server te "
 "wijzigen"
 
-#: ../lib/engine/components/resource-list/rl-entry.cpp:186
+#: ../lib/engine/components/resource-list/rl-entry.cpp:187
 msgid "Invalid server data"
 msgstr "Ongeldige servergegevens"
 
 # klikken/klik
-#: ../lib/engine/components/resource-list/rl-entry-ref.cpp:51
+#: ../lib/engine/components/resource-list/rl-entry-ref.cpp:53
 msgid "Click to fetch"
 msgstr "Klik om op te halen"
 
 # 'distant' wat is het verschil met remote?
-#: ../lib/engine/components/resource-list/rl-entry-ref.cpp:118
+#: ../lib/engine/components/resource-list/rl-entry-ref.cpp:120
 msgid "Distant contact"
 msgstr "Extern contact"
 
-#: ../lib/engine/components/resource-list/rl-list.cpp:181
+#: ../lib/engine/components/resource-list/rl-list.cpp:182
 #, c-format
 msgid "%s / List #%d"
 msgstr "%s / lijst #%d"
 
-#: ../lib/engine/components/resource-list/rl-list.cpp:185
+#: ../lib/engine/components/resource-list/rl-list.cpp:186
 #, c-format
 msgid "List #%d"
 msgstr "Lijst #%d"
@@ -1908,7 +2221,7 @@ msgid "Address Book"
 msgstr "Adresboek"
 
 #: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:675
-#: ../src/gui/main.cpp:3121
+#: ../src/gui/main.cpp:3127
 msgid "Address _Book"
 msgstr "_Adresboek"
 
@@ -1922,7 +2235,7 @@ msgid "Category"
 msgstr "Categorie"
 
 #: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:590
-#: ../src/gui/assistant.cpp:1377
+#: ../src/gui/assistant.cpp:1369
 msgid "Full Name"
 msgstr "Volledige naam"
 
@@ -1942,7 +2255,7 @@ msgstr "Verwijzing openen in browser"
 msgid "Copy link"
 msgstr "Verwijzing kopiëren"
 
-#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:904
+#: ../lib/engine/gui/gtk-frontend/chat-area.cpp:907
 msgid "_Smile..."
 msgstr "_Smiley…"
 
@@ -1957,11 +2270,11 @@ msgstr "Chat-venster"
 msgid "Unsorted"
 msgstr "Ongesorteerd"
 
-#: ../lib/gui/codecsbox.cpp:477
+#: ../lib/gui/codecsbox.cpp:478
 msgid "Move selected codec priority upwards"
 msgstr "Prioriteit van de codec naar boven verplaatsen"
 
-#: ../lib/gui/codecsbox.cpp:487
+#: ../lib/gui/codecsbox.cpp:488
 msgid "Move selected codec priority downwards"
 msgstr "Prioriteit van de codec naar beneden verplaatsen"
 
@@ -1969,65 +2282,46 @@ msgstr "Prioriteit van de codec naar beneden verplaatsen"
 msgid "Do not show this dialog again"
 msgstr "Onderdruk deze melding in de toekomst"
 
-#: ../src/gui/accounts.cpp:229
-msgid "Registered"
-msgstr "Aangemeld"
-
-#: ../src/gui/accounts.cpp:233
-msgid "Unregistered"
-msgstr "Afgemeld"
-
-# uitregistreren/afregistreren/afmelden/
-#: ../src/gui/accounts.cpp:237
-msgid "Could not unregister"
-msgstr "Kon niet afmelden"
-
-# niet aanmelden
-#: ../src/gui/accounts.cpp:243
-msgid "Could not register"
-msgstr "Kon niet aanmelden"
-
-#: ../src/gui/accounts.cpp:249
-msgid "Processing..."
-msgstr "Verwerken…"
-
 # abonnementsnaam/accountnaam/naam van abonnement
-#: ../src/gui/accounts.cpp:632
+#: ../src/gui/accounts.cpp:508
 msgid "Account Name"
 msgstr "Abonnementnaam"
 
-#: ../src/gui/accounts.cpp:633
-msgid "Voice Mails"
-msgstr "Voice-mails"
-
-#: ../src/gui/accounts.cpp:634
+#: ../src/gui/accounts.cpp:509
 msgid "Status"
 msgstr "Status"
 
-#: ../src/gui/accounts.cpp:645 ../src/gui/accounts.cpp:688
+#: ../src/gui/accounts.cpp:520 ../src/gui/accounts.cpp:561
 msgid "Accounts"
 msgstr "Abonnementen"
 
-#: ../src/gui/accounts.cpp:659 ../src/gui/main.cpp:3182
+#: ../src/gui/accounts.cpp:534 ../src/gui/main.cpp:3188
 msgid "_Accounts"
 msgstr "_Abonnementen"
 
-#: ../src/gui/accounts.cpp:663 ../src/gui/main.cpp:3265
+#: ../src/gui/accounts.cpp:538 ../src/gui/main.cpp:3271
 msgid "_Help"
 msgstr "_Hulp"
 
-# a staat voor 'actief' (staat als kolomkop bij de vinkjes)
-# beter om hier niets te hebben staan.
-#. Translators:
-#. * The following string "A" means "activated" or "active". It's a column
-#. * description in the list of configured accounts, it shows if an account
-#. * is activated or not (a status the user can choose).
-#.
-#: ../src/gui/accounts.cpp:696 ../src/gui/preferences.cpp:586
-msgid "A"
-msgstr " "
+#: ../src/gui/accounts.cpp:614
+#, fuzzy
+#| msgid "_Enable"
+msgid "Enable"
+msgstr "_Aanzetten"
 
-#: ../src/gui/assistant.cpp:323
+#: ../src/gui/accounts.cpp:617
+#, fuzzy
+#| msgid "_Disable"
+msgid "Disable"
+msgstr "_Uitzetten"
+
+#: ../src/gui/accounts.cpp:623
+#, fuzzy
+#| msgid "_Remove"
+msgid "Remove"
+msgstr "_Verwijderen"
+
+#: ../src/gui/assistant.cpp:325
 msgid ""
 "This is the Ekiga general configuration assistant. The following steps will "
 "set up Ekiga by asking a few simple questions.\n"
@@ -2041,20 +2335,20 @@ msgstr ""
 "Na het doorlopen van deze stappen kunt u de instellingen altijd later nog "
 "wijzigen via ‘Voorkeuren’ in het menu ‘Bewerken’. "
 
-#: ../src/gui/assistant.cpp:331
+#: ../src/gui/assistant.cpp:333
 msgid "Welcome to Ekiga"
 msgstr "Welkom bij Ekiga"
 
-#: ../src/gui/assistant.cpp:365 ../src/gui/preferences.cpp:454
+#: ../src/gui/assistant.cpp:357 ../src/gui/preferences.cpp:454
 msgid "Personal Information"
 msgstr "Persoonlijke gegevens"
 
 #. The user fields
-#: ../src/gui/assistant.cpp:368
+#: ../src/gui/assistant.cpp:360
 msgid "Please enter your first name and your surname:"
 msgstr "Vul uw voornaam en achternaam in:"
 
-#: ../src/gui/assistant.cpp:377
+#: ../src/gui/assistant.cpp:369
 msgid ""
 "Your first name and surname will be used when connecting to other VoIP and "
 "videoconferencing software."
@@ -2062,19 +2356,19 @@ msgstr ""
 "Uw voor- en achternaam zullen gebruikt worden voor het verbinden met andere "
 "VoIP- en videoconferentiesoftware."
 
-#: ../src/gui/assistant.cpp:568
+#: ../src/gui/assistant.cpp:563
 msgid "Ekiga.net Account"
 msgstr "Ekiga.net abonnement"
 
-#: ../src/gui/assistant.cpp:570
+#: ../src/gui/assistant.cpp:565
 msgid "Please enter your username:"
 msgstr "Vul uw gebruikersnaam in:"
 
-#: ../src/gui/assistant.cpp:578
+#: ../src/gui/assistant.cpp:573
 msgid "Please enter your password:"
 msgstr "Vul uw wachtwoord in:"
 
-#: ../src/gui/assistant.cpp:588
+#: ../src/gui/assistant.cpp:583
 msgid ""
 "The username and password are used to login to your existing account at the "
 "ekiga.net free SIP service. If you do not have an ekiga.net SIP address yet, "
@@ -2092,23 +2386,23 @@ msgstr ""
 "U kunt deze stap overslaan indien u van een alternatieve SIP-service gebruik "
 "maakt, of als u liever later de aanmeldingsdetails wilt opgeven."
 
-#: ../src/gui/assistant.cpp:615
+#: ../src/gui/assistant.cpp:610
 msgid "I do not want to sign up for the ekiga.net free service"
 msgstr "Ik wil mij niet inschrijven voor de gratis service ekiga.net"
 
-#: ../src/gui/assistant.cpp:678
+#: ../src/gui/assistant.cpp:673
 msgid "Ekiga Call Out Account"
 msgstr "Ekiga.net PC-naar-telefoon abonnement"
 
-#: ../src/gui/assistant.cpp:680
+#: ../src/gui/assistant.cpp:675
 msgid "Please enter your account ID:"
 msgstr "Vul uw abonnements-ID in:"
 
-#: ../src/gui/assistant.cpp:688
+#: ../src/gui/assistant.cpp:683
 msgid "Please enter your PIN code:"
 msgstr "Vul uw PIN-code in:"
 
-#: ../src/gui/assistant.cpp:699
+#: ../src/gui/assistant.cpp:694
 msgid ""
 "You can make calls to regular phones and cell numbers worldwide using "
 "Ekiga.\n"
@@ -2129,48 +2423,48 @@ msgstr ""
 "De service werkt alleen wanneer uw abonnement afgesloten is via de URL in "
 "dit dialoogvenster.\n"
 
-#: ../src/gui/assistant.cpp:749
+#: ../src/gui/assistant.cpp:744
 msgid "Consult the calls history"
 msgstr "Oproepgeschiedenis inzien"
 
-#: ../src/gui/assistant.cpp:759
+#: ../src/gui/assistant.cpp:754
 msgid "I do not want to sign up for the Ekiga Call Out service"
 msgstr "Ik wil mij niet inschrijven voor de Ekiga PC-naar-telefoon service"
 
-#: ../src/gui/assistant.cpp:825 ../src/gui/assistant.cpp:1388
+#: ../src/gui/assistant.cpp:820 ../src/gui/assistant.cpp:1380
 msgid "Connection Type"
 msgstr "Verbindingstype"
 
 #. The connection type
-#: ../src/gui/assistant.cpp:828
+#: ../src/gui/assistant.cpp:823
 msgid "Please choose your connection type:"
 msgstr "Kies uw verbindingstype:"
 
-#: ../src/gui/assistant.cpp:845
+#: ../src/gui/assistant.cpp:840
 msgid "56k Modem"
 msgstr "56K modem"
 
-#: ../src/gui/assistant.cpp:850
+#: ../src/gui/assistant.cpp:845
 msgid "ISDN"
 msgstr "ISDN"
 
-#: ../src/gui/assistant.cpp:855
+#: ../src/gui/assistant.cpp:850
 msgid "DSL/Cable (128 kbit/s uplink)"
 msgstr "DSL/Kabel (128 kbit/s uplink)"
 
-#: ../src/gui/assistant.cpp:860
+#: ../src/gui/assistant.cpp:855
 msgid "DSL/Cable (512 kbit/s uplink)"
 msgstr "DSL/Kabel (512 kbit/s uplink)"
 
-#: ../src/gui/assistant.cpp:865
+#: ../src/gui/assistant.cpp:860
 msgid "LAN"
 msgstr "LAN"
 
-#: ../src/gui/assistant.cpp:870
+#: ../src/gui/assistant.cpp:865
 msgid "Keep current settings"
 msgstr "Huidige instellingen behouden"
 
-#: ../src/gui/assistant.cpp:875
+#: ../src/gui/assistant.cpp:870
 msgid ""
 "The connection type will permit determining the best quality settings that "
 "Ekiga will use during calls. You can later change the settings individually "
@@ -2180,16 +2474,16 @@ msgstr ""
 "kwaliteitsinstellingen tijdens gesprekken te gebruiken. U kunt deze "
 "instellingen later nog afzonderlijk bijstellen in het voorkeurenvenster."
 
-#: ../src/gui/assistant.cpp:969 ../src/gui/main.cpp:3011
-#: ../src/gui/main.cpp:3015 ../src/gui/preferences.cpp:760
+#: ../src/gui/assistant.cpp:964 ../src/gui/main.cpp:3018
+#: ../src/gui/main.cpp:3022 ../src/gui/preferences.cpp:761
 msgid "Audio Devices"
 msgstr "Audioapparaten"
 
-#: ../src/gui/assistant.cpp:971
+#: ../src/gui/assistant.cpp:966
 msgid "Please choose the audio ringing device:"
 msgstr "Kies het audioapparaat voor beltonen:"
 
-#: ../src/gui/assistant.cpp:991
+#: ../src/gui/assistant.cpp:986
 msgid ""
 "The audio ringing device is the device that will be used to play the ringing "
 "sound on incoming calls."
@@ -2198,11 +2492,11 @@ msgstr ""
 "beltoon zal afspelen."
 
 #. ---
-#: ../src/gui/assistant.cpp:1002
+#: ../src/gui/assistant.cpp:997
 msgid "Please choose the audio output device:"
 msgstr "Kies het audioweergaveapparaat:"
 
-#: ../src/gui/assistant.cpp:1022
+#: ../src/gui/assistant.cpp:1017
 msgid ""
 "The audio output device is the device that will be used to play audio during "
 "calls."
@@ -2211,11 +2505,11 @@ msgstr ""
 "zal weergeven."
 
 #. ---
-#: ../src/gui/assistant.cpp:1033
+#: ../src/gui/assistant.cpp:1028
 msgid "Please choose the audio input device:"
 msgstr "Kies het audio-opnameapparaat:"
 
-#: ../src/gui/assistant.cpp:1053
+#: ../src/gui/assistant.cpp:1048
 msgid ""
 "The audio input device is the device that will be used to record your voice "
 "during calls."
@@ -2223,11 +2517,11 @@ msgstr ""
 "Het audio-opnameapparaat is het apparaat dat tijdens gesprekken het geluid "
 "van uw stem zal opnemen."
 
-#: ../src/gui/assistant.cpp:1155
+#: ../src/gui/assistant.cpp:1150
 msgid "Please choose your video input device:"
 msgstr "Kies het video-opnameapparaat:"
 
-#: ../src/gui/assistant.cpp:1175
+#: ../src/gui/assistant.cpp:1170
 msgid ""
 "The video input device is the device that will be used to capture video "
 "during calls."
@@ -2235,17 +2529,17 @@ msgstr ""
 "Het video-opnameapparaat is het apparaat dat tijdens gesprekken de "
 "videobeelden zal opnemen."
 
-#: ../src/gui/assistant.cpp:1240 ../src/gui/assistant.cpp:1264
-#: ../src/gui/assistant.cpp:1288 ../src/gui/preferences.cpp:805
-#: ../src/gui/preferences.cpp:830 ../src/gui/preferences.cpp:854
+#: ../src/gui/assistant.cpp:1234 ../src/gui/assistant.cpp:1257
+#: ../src/gui/assistant.cpp:1280 ../src/gui/preferences.cpp:805
+#: ../src/gui/preferences.cpp:829 ../src/gui/preferences.cpp:852
 msgid "No device found"
 msgstr "Geen apparaat gevonden"
 
-#: ../src/gui/assistant.cpp:1319
+#: ../src/gui/assistant.cpp:1311
 msgid "Configuration Complete"
 msgstr "Configuratie voltooid"
 
-#: ../src/gui/assistant.cpp:1321
+#: ../src/gui/assistant.cpp:1313
 msgid ""
 "You have now finished the Ekiga configuration. All the settings can be "
 "changed in the Ekiga preferences. Enjoy!"
@@ -2253,36 +2547,36 @@ msgstr ""
 "U bent nu klaar met het configureren van Ekiga. Alle instellingen kunnen "
 "gewijzigd worden in de voorkeursinstellingen van Ekiga. Veel plezier!"
 
-#: ../src/gui/assistant.cpp:1328
+#: ../src/gui/assistant.cpp:1320
 msgid "Configuration summary:"
 msgstr "Configuratieoverzicht:"
 
 # Audioapparaat voor beltonen/beltoonapparaat
-#: ../src/gui/assistant.cpp:1398
+#: ../src/gui/assistant.cpp:1390
 msgid "Audio Ringing Device"
 msgstr "Beltoonapparaat"
 
-#: ../src/gui/assistant.cpp:1407
+#: ../src/gui/assistant.cpp:1399
 msgid "Audio Output Device"
 msgstr "Audioweergaveapparaat"
 
-#: ../src/gui/assistant.cpp:1416
+#: ../src/gui/assistant.cpp:1408
 msgid "Audio Input Device"
 msgstr "Audio-opnameapparaat"
 
-#: ../src/gui/assistant.cpp:1425
+#: ../src/gui/assistant.cpp:1417
 msgid "Video Input Device"
 msgstr "Video-opnameapparaat"
 
-#: ../src/gui/assistant.cpp:1438
+#: ../src/gui/assistant.cpp:1430
 msgid "SIP URI"
 msgstr "SIP URI"
 
-#: ../src/gui/assistant.cpp:1450
+#: ../src/gui/assistant.cpp:1442
 msgid "Ekiga Call Out"
 msgstr "Ekiga PC-naar-telefoon"
 
-#: ../src/gui/assistant.cpp:1492
+#: ../src/gui/assistant.cpp:1486
 #, c-format
 msgid "Ekiga Configuration Assistant (%d of %d)"
 msgstr "Ekiga configuratiehulp (%d van %d)"
@@ -2408,73 +2702,53 @@ msgstr "tuv"
 msgid "wxyz"
 msgstr "wxyz"
 
-#. Translators: Is displayed once an account "%s" is registered.
-#: ../src/gui/main.cpp:519
-#, c-format
-msgid "Registered %s"
-msgstr "%s is aangemeld"
-
-#. Translators: Is displayed once an account "%s" is unregistered.
-#: ../src/gui/main.cpp:525
-#, c-format
-msgid "Unregistered %s"
-msgstr "%s is afgemeld"
-
-#: ../src/gui/main.cpp:530
-#, c-format
-msgid "Could not unregister %s"
-msgstr "Kon %s niet afmelden"
-
-#: ../src/gui/main.cpp:534
-#, c-format
-msgid "Could not register %s"
-msgstr "Kon %s niet aanmelden"
-
 # Audio~Video~Frames per Seconde
-#: ../src/gui/main.cpp:604
+#: ../src/gui/main.cpp:589
 #, c-format
 msgid "A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d"
 msgstr "A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d"
 
-#: ../src/gui/main.cpp:650
+#: ../src/gui/main.cpp:633
 #, c-format
 msgid "Connected with %s"
 msgstr "Verbonden met %s"
 
-#: ../src/gui/main.cpp:691 ../src/gui/main.cpp:3511
+#: ../src/gui/main.cpp:673 ../src/gui/main.cpp:3520
 msgid "Standby"
 msgstr "Standby"
 
 # op wacht/in de wacht
-#: ../src/gui/main.cpp:752
+#: ../src/gui/main.cpp:732
 msgid "Call on hold"
 msgstr "Gesprek in de wacht"
 
 # gesprek opgehaald/oproep opgehaald
-#: ../src/gui/main.cpp:763
+#: ../src/gui/main.cpp:743
 msgid "Call retrieved"
 msgstr "Oproep opgehaald"
 
-#: ../src/gui/main.cpp:779
+#: ../src/gui/main.cpp:758
 #, c-format
 msgid "Missed call from %s"
 msgstr "Oproep gemist van %s"
 
-#: ../src/gui/main.cpp:916
+#: ../src/gui/main.cpp:895
 msgid "Error"
 msgstr "Fout"
 
-#: ../src/gui/main.cpp:981
+#: ../src/gui/main.cpp:960
 msgid "Error while initializing video output"
 msgstr "Er is een fout opgetreden bij het initialiseren van de videouitvoer"
 
-#: ../src/gui/main.cpp:982
-msgid "No video will be displayed during this call->"
-msgstr "Er zal tijdens het gesprek geen video worden weergegeven->"
+# scherm ipv machine/computer
+#: ../src/gui/main.cpp:961
+msgid "No video will be displayed on your machine during this call"
+msgstr ""
+"Er zal tijdens het gesprek geen video op uw scherm worden weergegeven->"
 
 # accelerated weggelaten, versnelde/snelle/?
 # Controleer of er, is beter dan: Verifieer dat er 
-#: ../src/gui/main.cpp:992
+#: ../src/gui/main.cpp:971
 msgid ""
 "There was an error opening or initializing the video output. Please verify "
 "that no other application is using the accelerated video output."
@@ -2487,7 +2761,7 @@ msgstr ""
 # Controleer of er, is beter dan: Verifieer dat er
 # (het geeft de gebruiker een aanwijzing waar hij zou kunnen kijken om het
 # probleem op te lossen)
-#: ../src/gui/main.cpp:994
+#: ../src/gui/main.cpp:973
 msgid ""
 "There was an error opening or initializing the video output. Please verify "
 "that you are using a color depth of 24 or 32 bits per pixel."
@@ -2497,35 +2771,31 @@ msgstr ""
 "gebruikt."
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main.cpp:1107
+#: ../src/gui/main.cpp:1086
 #, c-format
 msgid "Added video input device %s"
 msgstr "Video-opnameapparaat %s toegevoegd"
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main.cpp:1119
+#: ../src/gui/main.cpp:1098
 #, c-format
 msgid "Removed video input device %s"
 msgstr "Video-opnameapparaat %s verwijderd"
 
-#: ../src/gui/main.cpp:1136
+#: ../src/gui/main.cpp:1115
 #, c-format
 msgid "Error while accessing video device %s"
 msgstr "Er is een fout opgetreden bij het benaderen van videoapparaat %s"
 
-#: ../src/gui/main.cpp:1139
-msgid ""
-"A moving logo will be transmitted during calls. Notice that you can always "
-"transmit a given image or the moving logo by choosing \"Picture\" as video "
-"plugin and \"Moving logo\" or \"Static picture\" as device."
-msgstr ""
-"Tijdens gesprekken zal een bewegend logo worden verzonden. Indien gewenst "
-"kunt u een eigen afbeelding of het bewegende logo verzenden door te kiezen "
-"voor ‘Afbeelding’ als videoplugin, en ‘Bewegend Logo’ of ‘Vaste afbeelding’ "
-"als apparaat."
+# de ontvangst zal geluidsloos zijn
+#: ../src/gui/main.cpp:1118
+#, fuzzy
+#| msgid "Only silence will be transmitted."
+msgid "A moving logo will be transmitted during calls."
+msgstr "Er zal geen geluid worden verzonden."
 
 # geladen is/gebruikt wordt
-#: ../src/gui/main.cpp:1143
+#: ../src/gui/main.cpp:1122
 msgid ""
 "There was an error while opening the device. In case it is a pluggable "
 "device it may be sufficient to reconnect it. If not, or if it still is not "
@@ -2539,17 +2809,17 @@ msgstr ""
 "is, controleer dan de toegangsrechten en zorg dat het juiste stuurprogramma "
 "geladen is."
 
-#: ../src/gui/main.cpp:1147
+#: ../src/gui/main.cpp:1126
 msgid "Your video driver doesn't support the requested video format."
 msgstr ""
 "Het gewenste videoformaat wordt niet ondersteund door het video-"
 "aansturingsprogramma"
 
-#: ../src/gui/main.cpp:1151
+#: ../src/gui/main.cpp:1130
 msgid "Could not open the chosen channel."
 msgstr "Het gekozen kanaal kan niet geopend worden."
 
-#: ../src/gui/main.cpp:1155
+#: ../src/gui/main.cpp:1134
 msgid ""
 "Your driver doesn't seem to support any of the color formats supported by "
 "Ekiga.\n"
@@ -2561,31 +2831,31 @@ msgstr ""
 " Raadpleeg de documentatie van het gebruikte kernel-stuurprogramma om te "
 "bepalen welk pallet ondersteund wordt."
 
-#: ../src/gui/main.cpp:1159
+#: ../src/gui/main.cpp:1138
 msgid "Error while setting the frame rate."
 msgstr "Fout tijdens het instellen van de beeldsnelheid."
 
-#: ../src/gui/main.cpp:1163
+#: ../src/gui/main.cpp:1142
 msgid "Error while setting the frame size."
 msgstr "Fout tijdens het instellen van de beeldgrootte."
 
-#: ../src/gui/main.cpp:1168 ../src/gui/main.cpp:1270 ../src/gui/main.cpp:1385
+#: ../src/gui/main.cpp:1147 ../src/gui/main.cpp:1249 ../src/gui/main.cpp:1364
 msgid "Unknown error."
 msgstr "Onbekende fout."
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main.cpp:1218
+#: ../src/gui/main.cpp:1197
 #, c-format
 msgid "Added audio input device %s"
 msgstr "Audio-opname apparaat %s toegevoegd"
 
 #. Translators: This is a hotplug status
-#: ../src/gui/main.cpp:1235
+#: ../src/gui/main.cpp:1214
 #, c-format
 msgid "Removed audio input device %s"
 msgstr "Audio-opname apparaat %s verwijderd"
 
-#: ../src/gui/main.cpp:1252
+#: ../src/gui/main.cpp:1231
 #, c-format
 msgid "Error while opening audio input device %s"
 msgstr "Er is een fout opgetreden bij het openen van audio-invoerapparaat %s"
@@ -2593,11 +2863,11 @@ msgstr "Er is een fout opgetreden bij het openen van audio-invoerapparaat %s"
 # de ontvangst zal geluidsloos zijn
 #. Translators: This happens when there is an error with audio input:
 #. * Nothing ("silence") will be transmitted
-#: ../src/gui/main.cpp:1257
+#: ../src/gui/main.cpp:1236
 msgid "Only silence will be transmitted."
 msgstr "Er zal geen geluid worden verzonden."
 
-#: ../src/gui/main.cpp:1261
+#: ../src/gui/main.cpp:1240
 msgid ""
 "Unable to open the selected audio device for recording. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
@@ -2611,7 +2881,7 @@ msgstr ""
 "het een intern apparaat is, controleer dan uw audioinstellingen, de "
 "toegangsrechten, en of het apparaat niet bezet is."
 
-#: ../src/gui/main.cpp:1265
+#: ../src/gui/main.cpp:1244
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "read data from this device. In case it is a pluggable device it may be "
@@ -2625,28 +2895,28 @@ msgstr ""
 "probleem niet verhelpt, of als het een intern apparaat is, controleer dan uw "
 "audioinstellingen."
 
-#: ../src/gui/main.cpp:1332
+#: ../src/gui/main.cpp:1311
 #, c-format
 msgid "Added audio output device %s"
 msgstr "Audioweergaveapparaat %s toegevoegd"
 
 # audio-uitgang/ audio weergave-apparaat
-#: ../src/gui/main.cpp:1348
+#: ../src/gui/main.cpp:1327
 #, c-format
 msgid "Removed audio output device %s"
 msgstr "Audioweergaveapparaat %s toegevoegd"
 
-#: ../src/gui/main.cpp:1369
+#: ../src/gui/main.cpp:1348
 #, c-format
 msgid "Error while opening audio output device %s"
 msgstr "Er is een fout opgetreden bij het openen van audioweergaveapparaat %s"
 
-#: ../src/gui/main.cpp:1372
+#: ../src/gui/main.cpp:1351
 msgid "No incoming sound will be played."
 msgstr "Binnekomend geluid wordt niet afgespeeld."
 
 # aan te sluiten/in te pluggen
-#: ../src/gui/main.cpp:1376
+#: ../src/gui/main.cpp:1355
 msgid ""
 "Unable to open the selected audio device for playing. In case it is a "
 "pluggable device it may be sufficient to reconnect it. If not, or if it "
@@ -2661,7 +2931,7 @@ msgstr ""
 "toegangsrechten, en of het apparaat niet bezet is."
 
 # BUG: write data from this device->to this device
-#: ../src/gui/main.cpp:1380
+#: ../src/gui/main.cpp:1359
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "write data to this device. In case it is a pluggable device it may be "
@@ -2675,348 +2945,348 @@ msgstr ""
 "probleem niet verhelpt, of als het een intern apparaat is, controleer dan uw "
 "audioinstellingen."
 
-#: ../src/gui/main.cpp:1568
+#: ../src/gui/main.cpp:1545
 msgid "Video Settings"
 msgstr "Video-instellingen"
 
-#: ../src/gui/main.cpp:1595
+#: ../src/gui/main.cpp:1572
 msgid "Adjust brightness"
 msgstr "Helderheid aanpassen"
 
-#: ../src/gui/main.cpp:1616
+#: ../src/gui/main.cpp:1593
 msgid "Adjust whiteness"
 msgstr "Witheid aanpassen"
 
-#: ../src/gui/main.cpp:1637
+#: ../src/gui/main.cpp:1614
 msgid "Adjust color"
 msgstr "Kleur aanpassen"
 
-#: ../src/gui/main.cpp:1658
+#: ../src/gui/main.cpp:1635
 msgid "Adjust contrast"
 msgstr "Contrast aanpassen"
 
-#: ../src/gui/main.cpp:1704
+#: ../src/gui/main.cpp:1681
 msgid "Audio Settings"
 msgstr "Audio-instellingen"
 
-#: ../src/gui/main.cpp:2315
+#: ../src/gui/main.cpp:2323
 msgid "_Retrieve Call"
 msgstr "_Oproep afluisteren"
 
-#: ../src/gui/main.cpp:2328
+#: ../src/gui/main.cpp:2336
 msgid "_Hold Call"
 msgstr "Gesprek in _wachtstand"
 
 # schorsen/pauzeren
-#: ../src/gui/main.cpp:2360 ../src/gui/main.cpp:3148
+#: ../src/gui/main.cpp:2368 ../src/gui/main.cpp:3154
 msgid "Suspend _Audio"
 msgstr "_Audio pauzeren"
 
-#: ../src/gui/main.cpp:2362 ../src/gui/main.cpp:3153
+#: ../src/gui/main.cpp:2370 ../src/gui/main.cpp:3159
 msgid "Suspend _Video"
 msgstr "_Video pauzeren"
 
-#: ../src/gui/main.cpp:2364
+#: ../src/gui/main.cpp:2372
 msgid "Resume _Audio"
 msgstr "_Audio hervatten"
 
-#: ../src/gui/main.cpp:2366
+#: ../src/gui/main.cpp:2374
 msgid "Resume _Video"
 msgstr "_Video hervatten"
 
-#: ../src/gui/main.cpp:2649 ../src/gui/main.cpp:2801
+#: ../src/gui/main.cpp:2657 ../src/gui/main.cpp:2808
 msgid "Reject"
 msgstr "Weigeren"
 
-#: ../src/gui/main.cpp:2651 ../src/gui/main.cpp:2800
+#: ../src/gui/main.cpp:2659 ../src/gui/main.cpp:2807
 msgid "Accept"
 msgstr "Accepteren"
 
 # afkomstig van
-#: ../src/gui/main.cpp:2657 ../src/gui/main.cpp:2788
+#: ../src/gui/main.cpp:2665 ../src/gui/main.cpp:2795
 msgid "Incoming call from"
 msgstr "Binnenkomende oproep van"
 
-#: ../src/gui/main.cpp:2675 ../src/gui/main.cpp:2791
+#: ../src/gui/main.cpp:2683 ../src/gui/main.cpp:2798
 msgid "Remote URI:"
 msgstr "URI op afstand:"
 
-#: ../src/gui/main.cpp:2687 ../src/gui/main.cpp:2793
+#: ../src/gui/main.cpp:2695 ../src/gui/main.cpp:2800
 msgid "Remote Application:"
 msgstr "Toepassing op afstand:"
 
-#: ../src/gui/main.cpp:2708
+#: ../src/gui/main.cpp:2708 ../src/gui/main.cpp:2802
+msgid "Account ID:"
+msgstr "Abonnement-ID:"
+
+#: ../src/gui/main.cpp:2716
 #, c-format
 msgid "Call from %s"
 msgstr "Oproep van %s"
 
-#: ../src/gui/main.cpp:2914
+#: ../src/gui/main.cpp:2921
 #, c-format
 msgid "Call Duration: %s\n"
 msgstr "Gespreksduur: %s\n"
 
 # overzetten/doorverbinden
-#: ../src/gui/main.cpp:2945
+#: ../src/gui/main.cpp:2952
 msgid "Transfer call to:"
 msgstr "Gesprek doorverbinden naar:"
 
-#: ../src/gui/main.cpp:2997
+#: ../src/gui/main.cpp:3004
 msgid "No"
 msgstr "Nee"
 
-#: ../src/gui/main.cpp:2999
+#: ../src/gui/main.cpp:3006
 msgid "Yes"
 msgstr "Ja"
 
-#: ../src/gui/main.cpp:3010
+#: ../src/gui/main.cpp:3017
 msgid "Detected new audio input device:"
 msgstr "Nieuw audio-opnameapparaat gedetecteerd:"
 
-#: ../src/gui/main.cpp:3014
+#: ../src/gui/main.cpp:3021
 msgid "Detected new audio output device:"
 msgstr "Nieuw audioweergaveapparaat gedetecteerd:"
 
-#: ../src/gui/main.cpp:3018
+#: ../src/gui/main.cpp:3025
 msgid "Detected new video input device:"
 msgstr "Nieuw video-opnameapparaat gedetecteerd:"
 
-#: ../src/gui/main.cpp:3019 ../src/gui/preferences.cpp:921
+#: ../src/gui/main.cpp:3026 ../src/gui/preferences.cpp:919
 msgid "Video Devices"
 msgstr "Videoapparaten"
 
-#: ../src/gui/main.cpp:3037
+#: ../src/gui/main.cpp:3044
 msgid "Do you want to use it as default device?"
 msgstr "Wilt u het als standaardapparaat gebruiken?"
 
-#: ../src/gui/main.cpp:3105
+#: ../src/gui/main.cpp:3111
 msgid "_Chat"
 msgstr "_Chatten"
 
-#: ../src/gui/main.cpp:3107
+#: ../src/gui/main.cpp:3113
 msgid "Ca_ll"
 msgstr "O_pbellen"
 
-#: ../src/gui/main.cpp:3107
+#: ../src/gui/main.cpp:3113
 msgid "Place a new call"
 msgstr "Iemand opbellen"
 
-#: ../src/gui/main.cpp:3110
+#: ../src/gui/main.cpp:3116
 msgid "_Hang up"
 msgstr "Op_hangen"
 
 # afbreken/beeindigen
-#: ../src/gui/main.cpp:3111
+#: ../src/gui/main.cpp:3117
 msgid "Terminate the current call"
 msgstr "Het huidige gesprek beëindigen"
 
-#: ../src/gui/main.cpp:3117
+#: ../src/gui/main.cpp:3123
 msgid "A_dd Contact"
 msgstr "Contact _toevoegen"
 
-#: ../src/gui/main.cpp:3117
+#: ../src/gui/main.cpp:3123
 msgid "Add a contact to the roster"
 msgstr "Een contact toevoegen aan het adresboek"
 
-#: ../src/gui/main.cpp:3122
+#: ../src/gui/main.cpp:3128
 msgid "Find contacts"
 msgstr "Contacten zoeken"
 
-#: ../src/gui/main.cpp:3129
-msgid "_Contact"
+#: ../src/gui/main.cpp:3135
+msgid "Co_ntact"
 msgstr "_Contact"
 
-#: ../src/gui/main.cpp:3130
+#: ../src/gui/main.cpp:3136
 msgid "Act on selected contact"
 msgstr "Actie ondernemen bij geselecteerde contact"
 
-#: ../src/gui/main.cpp:3136
+#: ../src/gui/main.cpp:3142
 msgid "H_old Call"
 msgstr "Gesprek in de _wacht"
 
-#: ../src/gui/main.cpp:3136 ../src/gui/main.cpp:3605
+#: ../src/gui/main.cpp:3142 ../src/gui/main.cpp:3614
 msgid "Hold the current call"
 msgstr "De huidige oproep in wachtstand zetten"
 
 # overdragen/doorverbinden
-#: ../src/gui/main.cpp:3140
+#: ../src/gui/main.cpp:3146
 msgid "_Transfer Call"
 msgstr "Gesprek _doorverbinden"
 
-#: ../src/gui/main.cpp:3141
+#: ../src/gui/main.cpp:3147
 msgid "Transfer the current call"
 msgstr "Het huidige gesprek doorverbinden"
 
-#: ../src/gui/main.cpp:3149
+#: ../src/gui/main.cpp:3155
 msgid "Suspend or resume the audio transmission"
 msgstr "Geluidsoverdracht onderdrukken of hervatten"
 
-#: ../src/gui/main.cpp:3154
+#: ../src/gui/main.cpp:3160
 msgid "Suspend or resume the video transmission"
 msgstr "Video-overdracht onderdrukken of hervatten"
 
-#: ../src/gui/main.cpp:3161
+#: ../src/gui/main.cpp:3167
 msgid "Close the Ekiga window"
 msgstr "Het Ekiga-venster sluiten"
 
-#: ../src/gui/main.cpp:3168 ../src/gui/statusicon.cpp:406
+#: ../src/gui/main.cpp:3174 ../src/gui/statusicon.cpp:414
 msgid "Quit"
 msgstr "Afsluiten"
 
 # assistent/hulp
-#: ../src/gui/main.cpp:3174
+#: ../src/gui/main.cpp:3180
 msgid "_Configuration Assistant"
 msgstr "_Configuratiehulp"
 
-#: ../src/gui/main.cpp:3175
+#: ../src/gui/main.cpp:3181
 msgid "Run the configuration assistant"
 msgstr "De configuratiehulp doorlopen"
 
 # wijzigen/bewerken
-#: ../src/gui/main.cpp:3183
+#: ../src/gui/main.cpp:3189
 msgid "Edit your accounts"
 msgstr "Uw abonnementen bewerken"
 
-#: ../src/gui/main.cpp:3189
+#: ../src/gui/main.cpp:3195
 msgid "Change your preferences"
 msgstr "Uw voorkeuren wijzigen"
 
-#: ../src/gui/main.cpp:3194
+#: ../src/gui/main.cpp:3200
 msgid "_View"
 msgstr "Beel_d"
 
-#: ../src/gui/main.cpp:3196
+#: ../src/gui/main.cpp:3202
 msgid "Con_tacts"
 msgstr "C_ontacten"
 
-#: ../src/gui/main.cpp:3196
+#: ../src/gui/main.cpp:3202
 msgid "View the contacts list"
 msgstr "De contactenlijst weergeven"
 
-#: ../src/gui/main.cpp:3201
+#: ../src/gui/main.cpp:3207
 msgid "_Dialpad"
 msgstr "_Kiestoetsen"
 
-#: ../src/gui/main.cpp:3201
+#: ../src/gui/main.cpp:3207
 msgid "View the dialpad"
 msgstr "De kiestoetsen weergeven"
 
-#: ../src/gui/main.cpp:3206
+#: ../src/gui/main.cpp:3212
 msgid "_Call History"
 msgstr "_Oproepgeschiedenis"
 
-#: ../src/gui/main.cpp:3206
+#: ../src/gui/main.cpp:3212
 msgid "View the call history"
 msgstr "Oproepgeschiedenis tonen"
 
-#: ../src/gui/main.cpp:3214
+#: ../src/gui/main.cpp:3220
 msgid "_Show Call Panel"
 msgstr "_Oproeppaneel tonen"
 
-#: ../src/gui/main.cpp:3222
+#: ../src/gui/main.cpp:3228
 msgid "_Local Video"
 msgstr "_Lokale video"
 
 # lokaal videobeeld
-#: ../src/gui/main.cpp:3223
+#: ../src/gui/main.cpp:3229
 msgid "Local video image"
 msgstr "Lokale videobeeld"
 
-#: ../src/gui/main.cpp:3228
+#: ../src/gui/main.cpp:3234
 msgid "_Remote Video"
 msgstr "_Video van gesprekspartner"
 
-#: ../src/gui/main.cpp:3229
+#: ../src/gui/main.cpp:3235
 msgid "Remote video image"
 msgstr "Videobeeld van gesprekspartner"
 
-#: ../src/gui/main.cpp:3234
+#: ../src/gui/main.cpp:3240
 msgid "_Picture-in-Picture"
 msgstr "_Beeld-in-beeld"
 
-#: ../src/gui/main.cpp:3235 ../src/gui/main.cpp:3241
+#: ../src/gui/main.cpp:3241 ../src/gui/main.cpp:3247
 msgid "Both video images"
 msgstr "Beide videobeelden"
 
 # afgescheiden/afzonderlijk
-#: ../src/gui/main.cpp:3240
+#: ../src/gui/main.cpp:3246
 msgid "Picture-in-Picture in Separate _Window"
 msgstr "Beeld-in-beeld in afzonderlijk _venster"
 
-#: ../src/gui/main.cpp:3248
+#: ../src/gui/main.cpp:3254
 msgid "Zoom in"
 msgstr "Inzoomen"
 
-#: ../src/gui/main.cpp:3252
+#: ../src/gui/main.cpp:3258
 msgid "Zoom out"
 msgstr "Uitzoomen"
 
-#: ../src/gui/main.cpp:3256
+#: ../src/gui/main.cpp:3262
 msgid "Normal size"
 msgstr "Normale grootte"
 
-#: ../src/gui/main.cpp:3260
+#: ../src/gui/main.cpp:3266
 msgid "_Fullscreen"
 msgstr "_Volledig scherm"
 
-#: ../src/gui/main.cpp:3260
+#: ../src/gui/main.cpp:3266
 msgid "Switch to fullscreen"
 msgstr "Op volledig scherm overschakelen"
 
 # help uzelf door het lezen
-#: ../src/gui/main.cpp:3268 ../src/gui/statusicon.cpp:394
+#: ../src/gui/main.cpp:3274 ../src/gui/statusicon.cpp:402
 msgid "Get help by reading the Ekiga manual"
 msgstr "Help uzelf door de Ekiga-handleiding te lezen"
 
-#: ../src/gui/main.cpp:3273 ../src/gui/statusicon.cpp:399
+#: ../src/gui/main.cpp:3279 ../src/gui/statusicon.cpp:407
 msgid "View information about Ekiga"
 msgstr "Informatie over Ekiga bekijken"
 
-#: ../src/gui/main.cpp:3347
+#: ../src/gui/main.cpp:3353
 msgid ""
 "Enter a URI on the left, and click this button to place a call or to hangup"
 msgstr ""
 "Vul links een URI in en klik op deze knop om te bellen of om op te hangen"
 
-#: ../src/gui/main.cpp:3398
+#: ../src/gui/main.cpp:3404
 msgid "Contacts"
 msgstr "Contacten"
 
-#: ../src/gui/main.cpp:3421
+#: ../src/gui/main.cpp:3427
 msgid "Dialpad"
 msgstr "Kiestoetsen"
 
-#: ../src/gui/main.cpp:3440
+#: ../src/gui/main.cpp:3449
 msgid "Call history"
 msgstr "Oproepgeschiedenis"
 
-#: ../src/gui/main.cpp:3543
+#: ../src/gui/main.cpp:3552
 msgid "Change the volume of your soundcard"
 msgstr "Het geluidsvolume van uw geluidskaart wijzigen"
 
-#: ../src/gui/main.cpp:3563
+#: ../src/gui/main.cpp:3572
 msgid "Change the color settings of your video device"
 msgstr "De kleurinstellingen van uw videoapparaat wijzigen"
 
-#: ../src/gui/main.cpp:3585
-msgid "Display images from your camera device"
-msgstr "Beelden van uw camera weergeven"
-
-#: ../src/gui/main.cpp:3674
+#: ../src/gui/main.cpp:3640
 msgid "Ekiga"
 msgstr "Ekiga"
 
 # verzonden
-#. Translators:
-#. * TX is a common abbreviation for "transmit"
-#: ../src/gui/main.cpp:4281
+#. Translators: TX is a common abbreviation for "transmit".  As it
+#. * is shown in a tooltip, there is no space constraint
+#: ../src/gui/main.cpp:4240
 #, c-format
 msgid "TX: %dx%d "
 msgstr "TX: %dx%d "
 
 # ontvangen
-#. Translators:
-#. * RX is a common abbreviation for "receive"
-#: ../src/gui/main.cpp:4286
+#. Translators: RX is a common abbreviation for "receive".  As it
+#. * is shown in a tooltip, there is no space constraint
+#: ../src/gui/main.cpp:4245
 #, c-format
 msgid "RX: %dx%d "
 msgstr "RX: %dx%d "
@@ -3025,7 +3295,7 @@ msgstr "RX: %dx%d "
 # (bij pakketten die in de verkeerde volgorde aankomen, zijn er dus pakketten
 # die te vroeg aankomen (er worden dan pakketten heen en weer gezonden
 # voor correctie)
-#: ../src/gui/main.cpp:4288
+#: ../src/gui/main.cpp:4247
 #, c-format
 msgid ""
 "Lost packets: %.1f %%\n"
@@ -3038,26 +3308,26 @@ msgstr ""
 "Vervroegde paketten: %.1f %%\n"
 "Jitter-buffer: %d ms%s%s%s"
 
-#: ../src/gui/main.cpp:4405
+#: ../src/gui/main.cpp:4368
 msgid "Prints debug messages in the console (level between 1 and 5)"
 msgstr "Drukt debug-berichten op de console af (niveau tussen 1 en 5)"
 
 # Engelse bug: plane ipv plain?
 # leesbare berichten?
-#: ../src/gui/main.cpp:4410
+#: ../src/gui/main.cpp:4373
 msgid "Prints user plane debug messages in the console (level between 1 and 4)"
 msgstr ""
 "Drukt eenvoudige debug-berichten op de console af (niveau tussen 1 en 4)"
 
-#: ../src/gui/main.cpp:4415
+#: ../src/gui/main.cpp:4378
 msgid "Makes Ekiga call the given URI"
 msgstr "Laat Ekiga de gegeven URI oproepen"
 
-#: ../src/gui/main.cpp:4524
+#: ../src/gui/main.cpp:4497
 msgid "No usable audio plugin detected"
 msgstr "Geen bruikbare audioplugin gevonden"
 
-#: ../src/gui/main.cpp:4525
+#: ../src/gui/main.cpp:4498
 msgid ""
 "Ekiga didn't find any usable audio plugin. Make sure that your installation "
 "is correct."
@@ -3065,11 +3335,11 @@ msgstr ""
 "Ekiga heeft geen bruikbare audioplugin kunnen vinden. Controleer of uw "
 "installatie juist is."
 
-#: ../src/gui/main.cpp:4528
+#: ../src/gui/main.cpp:4501
 msgid "No usable audio codecs detected"
 msgstr "Geen bruikbare audiocodecs gevonden"
 
-#: ../src/gui/main.cpp:4529
+#: ../src/gui/main.cpp:4502
 msgid ""
 "Ekiga didn't find any usable audio codec. Make sure that your installation "
 "is correct."
@@ -3117,7 +3387,9 @@ msgid "Network Settings"
 msgstr "Newerk-instellingen"
 
 #: ../src/gui/preferences.cpp:492
-msgid "Disable network _detection"
+#, fuzzy
+#| msgid "Disable network _detection"
+msgid "Enable network _detection"
 msgstr "Netwerk_detectie uitschakelen"
 
 #: ../src/gui/preferences.cpp:503
@@ -3163,7 +3435,7 @@ msgstr ""
 "de host die aangegeven is bij de protocolinstellingen, als u al in gesprek "
 "bent of in 'Niet-storen' modus."
 
-#: ../src/gui/preferences.cpp:513 ../src/gui/preferences.cpp:1361
+#: ../src/gui/preferences.cpp:513 ../src/gui/preferences.cpp:1358
 msgid "Call Options"
 msgstr "Gespreksopties"
 
@@ -3175,68 +3447,80 @@ msgstr ""
 "Tijdslimiet voor het weigeren of doorsturen van binnenkomende oproepen (in "
 "seconden):"
 
-#: ../src/gui/preferences.cpp:548
+#: ../src/gui/preferences.cpp:517
+#, fuzzy
+#| msgid "_Automatically answer calls"
+msgid "_Automatically answer incoming calls"
+msgstr "_Auomatisch oproepen beantwoorden"
+
+#: ../src/gui/preferences.cpp:549
 msgid "Ekiga Sound Events"
 msgstr "Ekiga actiegeluidjes"
 
-#: ../src/gui/preferences.cpp:598
+# a staat voor 'actief' (staat als kolomkop bij de vinkjes)
+# beter om hier niets te hebben staan.
+#: ../src/gui/preferences.cpp:587
+msgid "A"
+msgstr " "
+
+#: ../src/gui/preferences.cpp:599
 msgid "Event"
 msgstr "Gebeurtenis"
 
-#: ../src/gui/preferences.cpp:610
+#: ../src/gui/preferences.cpp:611
 msgid "Choose a sound"
 msgstr "Kies een geluid"
 
-#: ../src/gui/preferences.cpp:615
+#: ../src/gui/preferences.cpp:616
 msgid "Wavefiles"
 msgstr "Wave-bestanden"
 
-#: ../src/gui/preferences.cpp:624 ../src/gui/preferences.cpp:643
+#: ../src/gui/preferences.cpp:625 ../src/gui/preferences.cpp:644
 msgid "Play"
 msgstr "Afspelen"
 
-#: ../src/gui/preferences.cpp:664
+#: ../src/gui/preferences.cpp:665
 msgid "String"
 msgstr "Tekenreeks"
 
-#: ../src/gui/preferences.cpp:665
+#: ../src/gui/preferences.cpp:666
 msgid "Tone"
 msgstr "Toon"
 
-#: ../src/gui/preferences.cpp:666 ../src/gui/preferences.cpp:715
+#: ../src/gui/preferences.cpp:667 ../src/gui/preferences.cpp:716
 msgid "RFC2833"
 msgstr "RFC2833"
 
-#: ../src/gui/preferences.cpp:667
+#: ../src/gui/preferences.cpp:668
 msgid "Q.931"
 msgstr "Q.931"
 
-#: ../src/gui/preferences.cpp:673 ../src/gui/preferences.cpp:725
+#: ../src/gui/preferences.cpp:674 ../src/gui/preferences.cpp:726
 msgid "Misc Settings"
 msgstr "Overige instellingen"
 
-#: ../src/gui/preferences.cpp:676 ../src/gui/preferences.cpp:730
+#: ../src/gui/preferences.cpp:677 ../src/gui/preferences.cpp:731
 msgid "Forward _URI:"
 msgstr "Doorschakel-_URI:"
 
-#: ../src/gui/preferences.cpp:685
+#: ../src/gui/preferences.cpp:686
 msgid "Advanced Settings"
 msgstr "Geavanceerde instellingen"
 
 #. The toggles
-#: ../src/gui/preferences.cpp:688
+#: ../src/gui/preferences.cpp:689
 msgid "Enable H.245 _tunneling"
 msgstr "H.245-_tunnel inschakelen"
 
-#: ../src/gui/preferences.cpp:690
+#: ../src/gui/preferences.cpp:691
 msgid "Enable _early H.245"
 msgstr "_Vroegtijdig H.245 inschakelen"
 
-#: ../src/gui/preferences.cpp:692
+#: ../src/gui/preferences.cpp:693
 msgid "Enable fast _start procedure"
 msgstr "_Snelstart-procedure inschakelen"
 
-#: ../src/gui/preferences.cpp:692
+#: ../src/gui/preferences.cpp:693
 msgid ""
 "Connection will be established in Fast Start mode. Fast Start is a new way "
 "to start calls faster that was introduced in H.323v2. It is not supported by "
@@ -3249,133 +3533,133 @@ msgstr ""
 "snelstart en H.245-tunnel modus kunnen sommige versies van Netmeeting "
 "crashen."
 
-#: ../src/gui/preferences.cpp:698 ../src/gui/preferences.cpp:738
+#: ../src/gui/preferences.cpp:699 ../src/gui/preferences.cpp:739
 msgid "DTMF Mode"
 msgstr "DTMF-modus"
 
-#: ../src/gui/preferences.cpp:700 ../src/gui/preferences.cpp:740
+#: ../src/gui/preferences.cpp:701 ../src/gui/preferences.cpp:741
 msgid "_Send DTMF as:"
 msgstr "_DTMF verzenden als:"
 
-#: ../src/gui/preferences.cpp:700 ../src/gui/preferences.cpp:740
+#: ../src/gui/preferences.cpp:701 ../src/gui/preferences.cpp:741
 msgid "This allows you to set the mode for DTMFs sending."
 msgstr "Hiermee kan de modus ingesteld worden voor het verzenden van DTMFs."
 
-#: ../src/gui/preferences.cpp:716
+#: ../src/gui/preferences.cpp:717
 msgid "INFO"
 msgstr "INFO"
 
-#: ../src/gui/preferences.cpp:727
+#: ../src/gui/preferences.cpp:728
 msgid "_Outbound Proxy:"
 msgstr "_Uitgaande proxy:"
 
 # Beltoonapparaat/Afspeelapparaat belgeluid
-#: ../src/gui/preferences.cpp:768
+#: ../src/gui/preferences.cpp:769
 msgid "Ringing Device"
 msgstr "Beltoonapparaat"
 
-#: ../src/gui/preferences.cpp:768
+#: ../src/gui/preferences.cpp:769
 msgid "Select the ringing audio device to use"
 msgstr "Kies het audioapparaat dat de beltonen laat horen"
 
-#: ../src/gui/preferences.cpp:770
+#: ../src/gui/preferences.cpp:771
 msgid "Output device:"
 msgstr "Afspeelapparaat:"
 
-#: ../src/gui/preferences.cpp:777 ../src/gui/preferences.cpp:928
+#: ../src/gui/preferences.cpp:778 ../src/gui/preferences.cpp:926
 msgid "Input device:"
 msgstr "Opnameapparaat:"
 
 #. That button will refresh the device list
-#: ../src/gui/preferences.cpp:782 ../src/gui/preferences.cpp:939
+#: ../src/gui/preferences.cpp:783 ../src/gui/preferences.cpp:937
 msgid "_Detect devices"
 msgstr "Apparaten _opsporen"
 
-#: ../src/gui/preferences.cpp:782 ../src/gui/preferences.cpp:939
+#: ../src/gui/preferences.cpp:783 ../src/gui/preferences.cpp:937
 msgid "Click here to refresh the device list."
 msgstr "Klik hier om de apparatenlijst te vernieuwen."
 
-#: ../src/gui/preferences.cpp:906
+#: ../src/gui/preferences.cpp:904
 msgid "PAL (Europe)"
 msgstr "PAL (Europa)"
 
-#: ../src/gui/preferences.cpp:907
+#: ../src/gui/preferences.cpp:905
 msgid "NTSC (America)"
 msgstr "NTSC (Amerika)"
 
-#: ../src/gui/preferences.cpp:908
+#: ../src/gui/preferences.cpp:906
 msgid "SECAM (France)"
 msgstr "SECAM (Frankrijk)"
 
-#: ../src/gui/preferences.cpp:909
+#: ../src/gui/preferences.cpp:907
 msgid "Auto"
 msgstr "Automatisch"
 
 #. Video Channel
-#: ../src/gui/preferences.cpp:932
+#: ../src/gui/preferences.cpp:930
 msgid "Channel:"
 msgstr "Kanaal:"
 
 # Beeldgrootte/afmetingen/grootte
-#: ../src/gui/preferences.cpp:934
+#: ../src/gui/preferences.cpp:932
 msgid "Size:"
 msgstr "Beeldgroote:"
 
-#: ../src/gui/preferences.cpp:934
+#: ../src/gui/preferences.cpp:932
 msgid "Select the transmitted video size"
 msgstr "Kies de grootte van het videobeeld dat verzonden wordt"
 
 # dit staat bij de keuze voor PAL SECAM of NTSC, en wordt het kleursysteem
 # genoemd: zie http://nl.wikipedia.org/wiki/Televisiesysteem
-#: ../src/gui/preferences.cpp:936
+#: ../src/gui/preferences.cpp:934
 msgid "Format:"
 msgstr "Kleursysteem:"
 
-#: ../src/gui/preferences.cpp:963 ../src/gui/preferences.cpp:1002
-#: ../src/gui/preferences.cpp:1386 ../src/gui/preferences.cpp:1396
+#: ../src/gui/preferences.cpp:961 ../src/gui/preferences.cpp:1000
+#: ../src/gui/preferences.cpp:1383 ../src/gui/preferences.cpp:1393
 msgid "Codecs"
 msgstr "Codecs"
 
-#: ../src/gui/preferences.cpp:976 ../src/gui/preferences.cpp:1015
+#: ../src/gui/preferences.cpp:974 ../src/gui/preferences.cpp:1013
 msgid "Settings"
 msgstr "Instellingen"
 
 #. Translators: the full sentence is Automatically adjust jitter buffer
 #. between X and Y ms
-#: ../src/gui/preferences.cpp:980
+#: ../src/gui/preferences.cpp:978
 msgid "Enable silence _detection"
 msgstr "Stilte_detectie inschakelen"
 
 # die dit ondersteunen/waarbij dat mogelijk is
-#: ../src/gui/preferences.cpp:980
+#: ../src/gui/preferences.cpp:978
 msgid "If enabled, use silence detection with the codecs supporting it."
 msgstr ""
 "Als dit aangevinkt is, wordt er stiltedetectie gebruikt bij die codecs "
 "waarbij dat mogelijk is."
 
 # echo onderdrukken/echo-onderdrukking inschakelen
-#: ../src/gui/preferences.cpp:982
+#: ../src/gui/preferences.cpp:980
 msgid "Enable echo can_celation"
 msgstr "_Echo-onderdrukking inschakelen:"
 
-#: ../src/gui/preferences.cpp:982
+#: ../src/gui/preferences.cpp:980
 msgid "If enabled, use echo cancelation."
 msgstr "Indien dit ingeschakeld is, wordt echo onderdrukt."
 
-#: ../src/gui/preferences.cpp:984
+#: ../src/gui/preferences.cpp:982
 msgid "Maximum _jitter buffer (in ms):"
 msgstr "Maximum _jitter-buffer (in ms):"
 
-#: ../src/gui/preferences.cpp:984
+#: ../src/gui/preferences.cpp:982
 msgid "The maximum jitter buffer size for audio reception (in ms)."
 msgstr "De maximumgrootte van de jitter-buffer voor audio-ontvangst (in ms)."
 
 #. Translators: the full sentence is Keep a minimum video quality of X %
-#: ../src/gui/preferences.cpp:1018
+#: ../src/gui/preferences.cpp:1016
 msgid "Picture Quality"
 msgstr "Beeldkwaliteit"
 
-#: ../src/gui/preferences.cpp:1018
+#: ../src/gui/preferences.cpp:1016
 msgid ""
 "Choose if you want to guarantee a minimum image quality (possibly leading to "
 "dropped frames in order not to surpass the bitrate limit) or if you prefer "
@@ -3385,11 +3669,11 @@ msgstr ""
 "leidend tot uitgevallen frames om de bandbreedte niet te overschrijden) of "
 "dat u de huidige huidige framesnelheid wilt behouden."
 
-#: ../src/gui/preferences.cpp:1020
+#: ../src/gui/preferences.cpp:1018
 msgid "Maximum video _bitrate (in kbits/s):"
 msgstr "Maximale video_bandbreedte (in kbits/s):"
 
-#: ../src/gui/preferences.cpp:1020
+#: ../src/gui/preferences.cpp:1018
 msgid ""
 "The maximum video bitrate in kbits/s. The video quality and the effective "
 "frame rate will be dynamically adjusted to keep the bitrate at the given "
@@ -3399,54 +3683,54 @@ msgstr ""
 "aantal frames per seconde zullen dynamisch worden aangepast om de "
 "bandbreedte op de gegeven waarde te houden."
 
-#: ../src/gui/preferences.cpp:1333
+#: ../src/gui/preferences.cpp:1330
 msgid "Ekiga Preferences"
 msgstr "Ekiga voorkeuren"
 
 #  All the notebook pages
-#: ../src/gui/preferences.cpp:1351
+#: ../src/gui/preferences.cpp:1348
 msgid "General"
 msgstr "Algemeen"
 
-#: ../src/gui/preferences.cpp:1352
+#: ../src/gui/preferences.cpp:1349
 msgid "Personal Data"
 msgstr "Persoonlijke gegevens"
 
-#: ../src/gui/preferences.cpp:1357
+#: ../src/gui/preferences.cpp:1354
 msgid "General Settings"
 msgstr "Algemene instellingen"
 
 # geluiden/geluidjes/geluidsgebeurtenissen
 # Geluiden is het beste, als titel voor deze instelling
-#: ../src/gui/preferences.cpp:1366
+#: ../src/gui/preferences.cpp:1363
 msgid "Sound Events"
 msgstr "Geluiden"
 
-#: ../src/gui/preferences.cpp:1370
+#: ../src/gui/preferences.cpp:1367
 msgid "Protocols"
 msgstr "Protocollen"
 
-#: ../src/gui/preferences.cpp:1372
+#: ../src/gui/preferences.cpp:1369
 msgid "SIP Settings"
 msgstr "SIP-instellingen"
 
-#: ../src/gui/preferences.cpp:1377
+#: ../src/gui/preferences.cpp:1374
 msgid "H.323 Settings"
 msgstr "H.323-instellingen"
 
-#: ../src/gui/preferences.cpp:1381
+#: ../src/gui/preferences.cpp:1378
 msgid "Audio"
 msgstr "Audio"
 
-#: ../src/gui/preferences.cpp:1382 ../src/gui/preferences.cpp:1392
+#: ../src/gui/preferences.cpp:1379 ../src/gui/preferences.cpp:1389
 msgid "Devices"
 msgstr "Apparaten"
 
-#: ../src/gui/preferences.cpp:1391
+#: ../src/gui/preferences.cpp:1388
 msgid "Video"
 msgstr "Video"
 
-#: ../src/gui/statusicon.cpp:305
+#: ../src/gui/statusicon.cpp:306
 #, c-format
 msgid "You have %d message"
 msgid_plural "You have %d messages"
@@ -3488,6 +3772,38 @@ msgstr "Zelfgemaakte berichten verwijderen:"
 #: ../src/gui/statusmenu.cpp:692
 msgid "Define a custom message:"
 msgstr "Zelfgemaakt bericht opstellen:"
+
+#~ msgid "Voice Mails"
+#~ msgstr "Voice-mails"
+
+#~ msgid "Registered %s"
+#~ msgstr "%s is aangemeld"
+
+#~ msgid "Unregistered %s"
+#~ msgstr "%s is afgemeld"
+
+#~ msgid "Could not unregister %s"
+#~ msgstr "Kon %s niet afmelden"
+
+#~ msgid "Could not register %s"
+#~ msgstr "Kon %s niet aanmelden"
+
+#~ msgid ""
+#~ "A moving logo will be transmitted during calls. Notice that you can "
+#~ "always transmit a given image or the moving logo by choosing \"Picture\" "
+#~ "as video plugin and \"Moving logo\" or \"Static picture\" as device."
+#~ msgstr ""
+#~ "Tijdens gesprekken zal een bewegend logo worden verzonden. Indien gewenst "
+#~ "kunt u een eigen afbeelding of het bewegende logo verzenden door te "
+#~ "kiezen voor ‘Afbeelding’ als videoplugin, en ‘Bewegend Logo’ of ‘Vaste "
+#~ "afbeelding’ als apparaat."
+
+# ??
+#~ msgid "Roster view saving group status"
+#~ msgstr "Status van adresboekweergave opslaggroep"
+
+#~ msgid "Forbidden"
+#~ msgstr "Verboden"
 
 #~ msgid "Automatic echo cancellation"
 #~ msgstr "Automatische echo-onderdrukking"
@@ -3882,11 +4198,6 @@ msgstr "Zelfgemaakt bericht opstellen:"
 #~ msgid "The detection of your NAT type is finished"
 #~ msgstr "De detectie van uw NAT-type is voltooid"
 
-# Detecteren...|Detectie...|Aan het onderzoeken|Bezig met onderzoek|
-# Detectie is in voortgang
-#~ msgid "Detection in progress"
-#~ msgstr "Bezig met onderzoek"
-
 #~ msgid "Please wait while your type of NAT is being detected."
 #~ msgstr "Een ogenblik geduld terwijl uw NAT-type wordt gedetecteerd."
 
@@ -3987,9 +4298,6 @@ msgstr "Zelfgemaakt bericht opstellen:"
 #~ "Select the desired method for NAT traversal (STUN is strongly suggested)"
 #~ msgstr ""
 #~ "Kies de gewenste methode voor NAT traversal (STUN wordt sterk aangeraden)"
-
-#~ msgid "STUN Se_rver:"
-#~ msgstr "STUN-se_rver"
 
 #~ msgid "The STUN server to use for STUN Support."
 #~ msgstr "De STUN-server om gebruik te kunnen maken van STUN-ondersteuning."
@@ -4658,9 +4966,6 @@ msgstr "Zelfgemaakt bericht opstellen:"
 #~ msgid "Are you sure you want to delete %s and all its contacts?"
 #~ msgstr ""
 #~ "Weet u zeker dat u %s en alle bijbehorende contacten wilt verwijderen?"
-
-#~ msgid "Disconnecting..."
-#~ msgstr "Verbinding verbreken..."
 
 #~ msgid "Date"
 #~ msgstr "Datum"
@@ -5563,9 +5868,6 @@ msgstr "Zelfgemaakt bericht opstellen:"
 #~ msgstr ""
 #~ "Er is een fout opgetreden tijdens het doorsturen van de oproep naar de "
 #~ "opgegeven computer."
-
-#~ msgid "Connected"
-#~ msgstr "Verbonden"
 
 #~ msgid "Remote user did not accept the call"
 #~ msgstr "Gesprekspartner heeft de oproep niet geaccepteerd"
@@ -6633,9 +6935,6 @@ msgstr "Zelfgemaakt bericht opstellen:"
 #  Behavior
 #~ msgid "Behavior"
 #~ msgstr "Gedrag"
-
-#~ msgid "_Automatically answer calls"
-#~ msgstr "_Auomatisch oproepen beantwoorden"
 
 #~ msgid "Do _not disturb"
 #~ msgstr "_Niet storen"
