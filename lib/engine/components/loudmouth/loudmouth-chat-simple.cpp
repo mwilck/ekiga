@@ -35,17 +35,19 @@
 
 #include <iostream>
 
+#include "personal-details.h"
+
 #include "loudmouth-chat-simple.h"
 
-LM::SimpleChat::SimpleChat (PresentityPtr presentity_):
-  presentity(presentity_)
+LM::SimpleChat::SimpleChat (Ekiga::ServiceCore& core_,
+			    PresentityPtr presentity_):
+  core(core_), presentity(presentity_)
 {
   presentity->has_chat = true;
 }
 
 LM::SimpleChat::~SimpleChat ()
 {
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
   presentity->has_chat = false;
 }
 
@@ -75,6 +77,8 @@ LM::SimpleChat::send_message (const std::string msg)
   if (lm_connection_is_authenticated (presentity->get_connection ())) {
 
     result = true;
+    gmref_ptr<Ekiga::PersonalDetails> details = core.get ("personal-details");
+    const std::string my_name = details->get_display_name ();
     LmMessage* message = lm_message_new (NULL, LM_MESSAGE_TYPE_MESSAGE);
     lm_message_node_set_attributes (lm_message_get_node (message),
 				    "to", presentity->get_jid ().c_str (),
@@ -87,7 +91,7 @@ LM::SimpleChat::send_message (const std::string msg)
 	 iter != observers.end ();
 	 ++iter) {
 
-      (*iter)->message (presentity->get_name (), msg);
+      (*iter)->message (my_name, msg);
     }
   }
 

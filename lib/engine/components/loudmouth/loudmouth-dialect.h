@@ -46,7 +46,7 @@ namespace LM
   {
   public:
 
-    Dialect ();
+    Dialect (Ekiga::ServiceCore& core_);
 
     ~Dialect ();
 
@@ -58,6 +58,10 @@ namespace LM
 		       const std::string msg);
 
     void open_chat (PresentityPtr presentity);
+
+  private:
+
+    Ekiga::ServiceCore& core;
   };
 
   typedef gmref_ptr<Dialect> DialectPtr;

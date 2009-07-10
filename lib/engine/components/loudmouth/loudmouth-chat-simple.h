@@ -36,6 +36,7 @@
 #ifndef __LOUDMOUTH_CHAT_SIMPLE_H__
 #define __LOUDMOUTH_CHAT_SIMPLE_H__
 
+#include "services.h"
 #include "chat-simple.h"
 
 #include "loudmouth-presentity.h"
@@ -47,7 +48,8 @@ namespace LM
   {
   public:
 
-    SimpleChat (PresentityPtr presentity_);
+    SimpleChat (Ekiga::ServiceCore& core_,
+		PresentityPtr presentity_);
 
     ~SimpleChat ();
 
@@ -69,6 +71,7 @@ namespace LM
 
   private:
 
+    Ekiga::ServiceCore& core;
     PresentityPtr presentity;
     std::list<gmref_ptr<Ekiga::ChatObserver> > observers;
   };

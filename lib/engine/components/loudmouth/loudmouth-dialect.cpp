@@ -35,7 +35,8 @@
 
 #include "loudmouth-dialect.h"
 
-LM::Dialect::Dialect ()
+LM::Dialect::Dialect (Ekiga::ServiceCore& core_):
+  core(core_)
 {
 }
 
@@ -63,7 +64,7 @@ LM::Dialect::push_message (PresentityPtr presentity,
 
   if ( !found) {
 
-    SimpleChatPtr chat(new SimpleChat (presentity));
+    SimpleChatPtr chat(new SimpleChat (core, presentity));
 
     add_simple_chat (chat);
     chat->got_message (msg);
@@ -73,7 +74,7 @@ LM::Dialect::push_message (PresentityPtr presentity,
 void
 LM::Dialect::open_chat (PresentityPtr presentity)
 {
-  SimpleChatPtr chat(new SimpleChat (presentity));
+  SimpleChatPtr chat(new SimpleChat (core, presentity));
   add_simple_chat (chat);
   chat->user_requested.emit ();
 }
