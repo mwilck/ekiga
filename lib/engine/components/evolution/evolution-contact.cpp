@@ -83,25 +83,6 @@ Evolution::Contact::get_name () const
   return name;
 }
 
-const std::set<std::string>
-Evolution::Contact::get_groups () const
-{
-  std::set<std::string> groups;
-  gchar *categories = NULL;
-
-  categories = (gchar *)e_contact_get_const (econtact, E_CONTACT_CATEGORIES);
-
-  if (categories != NULL) {
-
-    gchar **split = g_strsplit (categories, ",", 0);
-    for (gchar **ptr = split; *ptr != NULL; ptr++)
-      groups.insert (*ptr);
-    g_strfreev (split);
-  }
-
-  return groups;
-}
-
 bool
 Evolution::Contact::is_found (const std::string /*test*/) const
 {

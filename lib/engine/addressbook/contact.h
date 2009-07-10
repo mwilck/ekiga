@@ -71,14 +71,6 @@ namespace Ekiga
     virtual const std::string get_name () const = 0;
 
 
-    /** Returns the groups of the Ekiga::Contact.
-     * This function is purely virtual and should be implemented by the
-     * Ekiga::Contact descendant.
-     * @return The set of group names of the Ekiga::Contact.
-     */
-    virtual const std::set<std::string> get_groups () const = 0;
-
-
     /** Returns if a contact is found or not.
      * @return True if the contact has been found.
      */

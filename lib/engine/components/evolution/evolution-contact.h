@@ -67,8 +67,6 @@ namespace Evolution
 
     const std::string get_name () const;
 
-    const std::set<std::string> get_groups () const;
-
     bool populate_menu (Ekiga::MenuBuilder &builder);
 
     bool is_found (const std::string) const;

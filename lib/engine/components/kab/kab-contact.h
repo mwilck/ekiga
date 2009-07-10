@@ -63,8 +63,6 @@ namespace KAB
 
     const std::string get_name () const;
 
-    const std::set<std::string> get_groups () const;
-
     const std::map<std::string, std::string> get_uris () const;
 
     bool populate_menu (Ekiga::MenuBuilder &builder);
@@ -75,7 +73,6 @@ namespace KAB
 
     Ekiga::ContactCore& core;
     KABC::Addressee& addressee;
-    std::set<std::string> groups;
   };
 
   typedef gmref_ptr<Contact> ContactPtr;

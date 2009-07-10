@@ -43,13 +43,6 @@ KAB::Contact::Contact (Ekiga::ContactCore& _core,
 		       KABC::Addressee* addressee_)
   : core(_core), addressee(*addressee_)
 {
-  QStringList categories = addressee.categories ();
-  for (QStringList::const_iterator iter = categories.begin ();
-       iter != categories.end ();
-       iter++) {
-
-    groups.insert ((*iter).toUtf8 ().data ());
-  }
 }
 
 KAB::Contact::~Contact ()
@@ -60,12 +53,6 @@ const std::string
 KAB::Contact::get_name () const
 {
   return addressee.formattedName ().toUtf8 ().constData ();
-}
-
-const std::set<std::string>
-KAB::Contact::get_groups () const
-{
-  return groups;
 }
 
 bool

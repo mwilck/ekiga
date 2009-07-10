@@ -59,12 +59,6 @@ OPENLDAP::Contact::get_name () const
   return name;
 }
 
-const std::set<std::string>
-OPENLDAP::Contact::get_groups () const
-{
-  return std::set<std::string>();
-}
-
 bool
 OPENLDAP::Contact::populate_menu (Ekiga::MenuBuilder &builder)
 {
