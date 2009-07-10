@@ -136,7 +136,7 @@ service_in_files = $(service_DATA:.service=.service.in)
 endif
 
 .rc.o:
-	$(LIBTOOL) --tag=RC --mode=compile $(RC) $< -o $@ -I $(top_srcdir)
+	$(RC) $< -o $@ -I $(top_srcdir)
 
 GIT_REVISION=\"$$(cd ../.git; git describe )\"
 CACHED_REVISION=$$(cat revision.h 2>/dev/null | cut -c24-)

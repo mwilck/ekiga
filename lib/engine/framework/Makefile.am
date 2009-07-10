@@ -52,4 +52,5 @@ libgmframework_la_SOURCES = \
 libgmframework_la_LDFLAGS = $(STACKLIB_LDFLAGS)
 libgmframework_la_LIBADD = \
 	$(top_builddir)/lib/gmconf/libgmconf.la \
+	$(top_builddir)/lib/platform/libgmplatform.la \
 	$(SIGC_LIBS) $(GLIB_LIBS) $(XML_LIBS)

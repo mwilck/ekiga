@@ -101,11 +101,9 @@ case $target_os in
     ;;
 
   mingw* )
-    LT_PROG_RC
-
     gm_platform="mingw"
-    CFLAGS="$CFLAGS -DSTATIC_LIBS_USED"
-    CXXFLAGS="$CXXFLAGS -DSTATIC_LIBS_USED"
+    CFLAGS="$CFLAGS -Wl,--enable-auto-import"
+    CXXFLAGS="$CXXFLAGS -Wl,--enable-auto-import"
     win32=1
     ;;
 

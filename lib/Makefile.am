@@ -22,10 +22,8 @@ INCLUDES =						\
 
 libekiga_la_LDFLAGS = -export-dynamic
 libekiga_la_LIBADD = \
-	gmconf/libgmconf.la \
 	gui/libgmwidgets.la \
-	toolbox/libtoolbox.la \
-	platform/libgmplatform.la
+	toolbox/libtoolbox.la
 
 if !WIN32
 libekiga_la_LIBADD += pixops/libpixops.la
