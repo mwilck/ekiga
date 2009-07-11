@@ -47,7 +47,6 @@
 #include "menu-builder-tools.h"
 #include "roster-view-gtk.h"
 #include "menu-builder-gtk.h"
-#include "toolbar-builder-gtk.h"
 #include "form-dialog-gtk.h"
 
 
@@ -614,10 +613,6 @@ on_selection_changed (GtkTreeSelection* selection,
 
     case TYPE_PRESENTITY: {
 
-      //ToolbarBuilderGtk builder(self->priv->toolbar);
-      //Ekiga::ShortMenuBuilder shorter(builder);
-      //presentity->populate_menu (shorter);
-      //gtk_widget_show_all (self->priv->toolbar);
       g_signal_emit (self, signals[PRESENTITY_SELECTED_SIGNAL], 0, presentity);
       g_signal_emit (self, signals[HEAP_SELECTED_SIGNAL], 0, NULL);
       g_signal_emit (self, signals[HEAP_GROUP_SELECTED_SIGNAL], 0, NULL, NULL);
@@ -625,10 +620,6 @@ on_selection_changed (GtkTreeSelection* selection,
     }
     case TYPE_HEAP: {
 
-      //ToolbarBuilderGtk builder(self->priv->toolbar);
-      //Ekiga::ShortMenuBuilder shorter(builder);
-      //heap->populate_menu (shorter);
-      //gtk_widget_show_all (self->priv->toolbar);
       g_signal_emit (self, signals[PRESENTITY_SELECTED_SIGNAL], 0, NULL);
       g_signal_emit (self, signals[HEAP_SELECTED_SIGNAL], 0, heap);
       g_signal_emit (self, signals[HEAP_GROUP_SELECTED_SIGNAL], 0, NULL, NULL);
@@ -637,10 +628,6 @@ on_selection_changed (GtkTreeSelection* selection,
 
     case TYPE_GROUP: {
 
-      //ToolbarBuilderGtk builder(self->priv->toolbar);
-      //Ekiga::ShortMenuBuilder shorter(builder);
-      //heap->populate_menu_for_group (name, shorter);
-      //gtk_widget_show_all (self->priv->toolbar);
       g_signal_emit (self, signals[PRESENTITY_SELECTED_SIGNAL], 0, NULL);
       g_signal_emit (self, signals[HEAP_SELECTED_SIGNAL], 0, NULL);
       g_signal_emit (self, signals[HEAP_GROUP_SELECTED_SIGNAL], 0, heap, name);
