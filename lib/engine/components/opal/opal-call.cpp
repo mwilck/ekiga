@@ -93,7 +93,7 @@ private:
 
 Opal::Call::Call (OpalManager& _manager, const Ekiga::ServiceCore& _core, const std::string& uri)
   : OpalCall (_manager), Ekiga::Call (), core (_core), remote_uri (uri),
-    call_setup(false),outgoing(true),jitter(0)
+    call_setup(false),outgoing(false),jitter(0)
 {
   re_a_bytes = tr_a_bytes = re_v_bytes = tr_v_bytes = 0.0;
   last_v_tick = last_a_tick = PTime ();
@@ -132,8 +132,9 @@ Opal::Call::answer ()
 {
   if (!is_outgoing () && !IsEstablished ()) {
     PSafePtr<OpalPCSSConnection> connection = GetConnectionAs<OpalPCSSConnection>();
-    if (connection != NULL)
+    if (connection != NULL) {
       connection->AcceptIncoming();
+    }
   }
 }
 
