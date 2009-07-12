@@ -712,7 +712,7 @@ static void on_cleared_incoming_call_cb (std::string /*reason*/,
 }
 
 
-static void on_missed_incoming_call_cb (gpointer self)
+static void on_incoming_call_gone_cb (gpointer self)
 {
 #ifdef HAVE_NOTIFY
   notify_notification_close (NOTIFY_NOTIFICATION (self), NULL);
@@ -2729,9 +2729,11 @@ ekiga_main_window_incoming_call_dialog_show (EkigaMainWindow *mw,
   g_signal_connect (G_OBJECT (incoming_call_popup), "response",
                     G_CALLBACK (incoming_call_response_cb), mw);
 
+  call->established.connect (sigc::bind (sigc::ptr_fun (on_incoming_call_gone_cb),
+                                         (gpointer) incoming_call_popup));
   call->cleared.connect (sigc::bind (sigc::ptr_fun (on_cleared_incoming_call_cb),
                                     (gpointer) incoming_call_popup));
-  call->missed.connect (sigc::bind (sigc::ptr_fun (on_missed_incoming_call_cb), 
+  call->missed.connect (sigc::bind (sigc::ptr_fun (on_incoming_call_gone_cb), 
                                    (gpointer) incoming_call_popup));
 }
 
@@ -2813,9 +2815,11 @@ ekiga_main_window_incoming_call_notify (EkigaMainWindow *mw,
     ekiga_main_window_incoming_call_dialog_show (mw, call);
   }
   else {
+    call->established.connect (sigc::bind (sigc::ptr_fun (on_incoming_call_gone_cb),
+                                           (gpointer) notify));
     call->cleared.connect (sigc::bind (sigc::ptr_fun (on_cleared_incoming_call_cb),
                                       (gpointer) notify));
-    call->missed.connect (sigc::bind (sigc::ptr_fun (on_missed_incoming_call_cb), 
+    call->missed.connect (sigc::bind (sigc::ptr_fun (on_incoming_call_gone_cb), 
                                      (gpointer) notify));
   }
 
