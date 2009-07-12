@@ -473,6 +473,7 @@ Opal::Account::handle_registration_event (RegistrationState state_,
 
 	presence_core->publish (personal_details);
       }
+      state = state_;
       updated.emit ();
     } 
     break;
