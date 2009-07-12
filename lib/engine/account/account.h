@@ -74,10 +74,18 @@ namespace Ekiga
     /** Returns the status of the Ekiga::Account.
      * This function is purely virtual and should be implemented by the
      * Ekiga::Account descendant.
-     * @return The status of the Ekiga::Contact
+     * @return The status of the Ekiga::Account
      */
     virtual const std::string get_status () const = 0;
 
+
+    /** Returns a boolean indicating whether the account is active.
+     * (some people seem to have a hard time reading the status which says
+     * so much more than a boolean)
+     *
+     * @return Whether the account is active
+     */
+    virtual bool is_active () const = 0;
 
     /** Create the menu for that account and its actions.
      * This function is purely virtual and should be implemented by

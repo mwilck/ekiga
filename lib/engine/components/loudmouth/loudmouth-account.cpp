@@ -373,6 +373,12 @@ LM::Account::get_status () const
   return status;
 }
 
+bool
+LM::Account::is_active () const
+{
+  return lm_connection_is_open (connection);
+}
+
 const std::string
 LM::Account::get_name () const
 {
