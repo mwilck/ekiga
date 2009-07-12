@@ -104,6 +104,15 @@ static gint account_clicked_cb (GtkWidget *w,
 				gpointer data);
 
 /* DESCRIPTION  :  This callback is called when the user clicks
+ *                 on a "active" toggle in the accounts window.
+ * BEHAVIOR     :  It tries to enable/disable the account
+ * PRE          :  data is a valid pointer to the GmAccountsWindow.
+ */
+static void account_toggled_cb (G_GNUC_UNUSED GtkCellRendererToggle* renderer,
+				gchar* path_string,
+				gpointer data);
+
+/* DESCRIPTION  :  This callback is called when the user clicks
  *                 on an account in the accounts window.
  * BEHAVIOR     :  It updates the toolbar actions to point to the right account,
  *                 and to be active/inactive depending if the action is
@@ -264,6 +273,46 @@ account_clicked_cb (G_GNUC_UNUSED GtkWidget *w,
   }
 
   return TRUE;
+}
+
+static
+void account_toggled_cb (G_GNUC_UNUSED GtkCellRendererToggle* renderer,
+			 gchar* path_string,
+			 gpointer data)
+{
+  GmAccountsWindow* aw = NULL;
+
+  GtkTreeModel* model = NULL;
+  GtkTreePath* path = NULL;
+  GtkTreeIter iter;
+  Ekiga::Account* account = NULL;
+  gboolean is_active;
+
+  aw = gm_aw_get_aw (GTK_WIDGET (data));
+
+  model = gtk_tree_view_get_model (GTK_TREE_VIEW (aw->accounts_list));
+  path = gtk_tree_path_new_from_string (path_string);
+
+  if (gtk_tree_model_get_iter (model, &iter, path)) {
+
+    gtk_tree_model_get (model, &iter,
+			COLUMN_ACCOUNT, &account,
+			COLUMN_ACCOUNT_IS_ACTIVE, &is_active,
+			-1);
+
+    if (is_active) {
+
+      Ekiga::Activator builder ("disable");
+      account->populate_menu (builder);
+    } else {
+
+
+      Ekiga::Activator builder ("enable");
+      account->populate_menu (builder);
+    }
+  }
+
+  gtk_tree_path_free (path);
 }
 
 static void
@@ -571,6 +620,9 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
 						     COLUMN_ACCOUNT_IS_ACTIVE,
 						     NULL);
   gtk_tree_view_append_column (GTK_TREE_VIEW (aw->accounts_list), column);
+  g_signal_connect (G_OBJECT (renderer), "toggled",
+		    G_CALLBACK (account_toggled_cb),
+		    (gpointer)window);
 
   /* Add all text renderers */
   for (int i = COLUMN_ACCOUNT_ACCOUNT_NAME ; i < COLUMN_ACCOUNT_NUMBER - 1 ; i++) {
