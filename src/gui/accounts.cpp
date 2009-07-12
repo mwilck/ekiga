@@ -117,6 +117,7 @@ static void on_selection_changed (GtkTreeSelection* /*selection*/,
 enum {
 
   COLUMN_ACCOUNT,
+  COLUMN_ACCOUNT_IS_ACTIVE,
   COLUMN_ACCOUNT_WEIGHT,
   COLUMN_ACCOUNT_ACCOUNT_NAME,
   COLUMN_ACCOUNT_STATUS,
@@ -317,6 +318,7 @@ gm_accounts_window_add_account (GtkWidget *window,
   gtk_list_store_append (GTK_LIST_STORE (model), &iter);
   gtk_list_store_set (GTK_LIST_STORE (model), &iter,
                       COLUMN_ACCOUNT, account.get (),
+		      COLUMN_ACCOUNT_IS_ACTIVE, account->is_active (),
                       COLUMN_ACCOUNT_WEIGHT, PANGO_WEIGHT_NORMAL,
                       COLUMN_ACCOUNT_ACCOUNT_NAME, account->get_name ().c_str (),
                       -1);
@@ -353,6 +355,7 @@ gm_accounts_window_update_account (GtkWidget *accounts_window,
 
         gtk_list_store_set (GTK_LIST_STORE (model), &iter,
                             COLUMN_ACCOUNT, account.get (),
+			    COLUMN_ACCOUNT_IS_ACTIVE, account->is_active (),
                             COLUMN_ACCOUNT_WEIGHT, PANGO_WEIGHT_NORMAL,
                             COLUMN_ACCOUNT_ACCOUNT_NAME, account->get_name ().c_str (),
 			    COLUMN_ACCOUNT_STATUS, account->get_status ().c_str (),
@@ -547,6 +550,7 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
   /* The accounts list store */
   list_store = gtk_list_store_new (COLUMN_ACCOUNT_NUMBER,
                                    G_TYPE_POINTER,
+				   G_TYPE_BOOLEAN, /* Is account active? */
 				   G_TYPE_INT,
 				   G_TYPE_STRING,  /* Account Name */
 				   G_TYPE_STRING,  /* Error Message */
@@ -559,6 +563,14 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
 
   aobj = gtk_widget_get_accessible (GTK_WIDGET (aw->accounts_list));
   atk_object_set_name (aobj, _("Accounts"));
+
+  renderer = gtk_cell_renderer_toggle_new ();
+  column = gtk_tree_view_column_new_with_attributes (_("Active"),
+						     renderer,
+						     "active",
+						     COLUMN_ACCOUNT_IS_ACTIVE,
+						     NULL);
+  gtk_tree_view_append_column (GTK_TREE_VIEW (aw->accounts_list), column);
 
   /* Add all text renderers */
   for (int i = COLUMN_ACCOUNT_ACCOUNT_NAME ; i < COLUMN_ACCOUNT_NUMBER - 1 ; i++) {
