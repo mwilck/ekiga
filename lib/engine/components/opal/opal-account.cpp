@@ -303,7 +303,7 @@ bool Opal::Account::is_enabled () const
 
 bool Opal::Account::is_active () const
 {
-  return (state == Registered);
+  return enabled;
 }
 
 

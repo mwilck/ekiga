@@ -376,7 +376,23 @@ LM::Account::get_status () const
 bool
 LM::Account::is_active () const
 {
-  return lm_connection_is_open (connection);
+  bool result = false;
+  xmlChar* xml_str = xmlGetProp (node, BAD_CAST "startup");
+
+  if (xml_str != NULL) {
+
+    if (xmlStrEqual (xml_str, BAD_CAST "true")) {
+
+      result = true;
+    } else {
+
+      result = false;
+    }
+
+    xmlFree (xml_str);
+  }
+
+  return result;
 }
 
 const std::string
