@@ -50,7 +50,6 @@ EXTRA_DIST = \
         LICENSE                                                 \
         MAINTAINERS                                             \
 	$(SCHEMAS_FILE) 					\
-	gnome-doc-utils.make					\
 	lib/gmmarshallers.list					\
 	$(WIN32_DIST)
 
