@@ -212,7 +212,6 @@ private:
     std::string remote_application;
 
     bool call_setup;
-    bool outgoing;
 
     std::string forward_uri;
 
