@@ -198,6 +198,17 @@ namespace Ekiga
      */
     virtual unsigned get_reject_delay () const = 0;
 
+    /** Set auto answer
+     * @param true if incoming calls should be auto answered.
+     */
+    virtual void set_auto_answer (bool enabled) = 0;
+
+    /** Get auto answer
+     * @return true if incoming calls should be auto answered.
+     */
+    virtual bool get_auto_answer () const = 0;
+
+
     /*
      * MISC
      */
