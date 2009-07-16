@@ -534,14 +534,14 @@ on_account_updated (Ekiga::BankPtr /*bank*/,
 }
 
 
-static void on_setup_call_cb (gmref_ptr<Ekiga::CallManager>  /*manager*/,
+static void on_setup_call_cb (gmref_ptr<Ekiga::CallManager> manager,
                               gmref_ptr<Ekiga::Call>  call,
                               gpointer self)
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
   gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core = mw->priv->core->get ("audiooutput-core");
 
-  if (!call->is_outgoing ()) {
+  if (!call->is_outgoing () && !manager->get_auto_answer ()) {
     ekiga_main_window_update_calling_state (mw, Called);
     audiooutput_core->start_play_event ("incoming_call_sound", 4000, 256);
 #ifdef HAVE_NOTIFY
