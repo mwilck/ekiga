@@ -142,16 +142,7 @@ Opal::Call::answer ()
 void
 Opal::Call::transfer (std::string uri)
 {
-  PSafePtr<OpalConnection> connection = NULL;
-
-  int i = 0;
-
-  do {
-
-    connection = GetConnection (i);
-    i++;
-  }  while (PIsDescendant(&(*connection), OpalPCSSConnection));
-
+  PSafePtr<OpalPCSSConnection> connection = GetConnectionAs<OpalPCSSConnection>();
   if (connection)
     connection->TransferConnection (uri);
 }
@@ -160,17 +151,8 @@ Opal::Call::transfer (std::string uri)
 void
 Opal::Call::toggle_hold ()
 {
-  PSafePtr<OpalConnection> connection = NULL;
-
   bool on_hold = false;
-  int i = 0;
-
-  do {
-
-    connection = GetConnection (i);
-    i++;
-  }  while (PIsDescendant(&(*connection), OpalPCSSConnection));
-
+  PSafePtr<OpalPCSSConnection> connection = GetConnectionAs<OpalPCSSConnection>();
   if (connection) {
 
     on_hold = connection->IsConnectionOnHold ();
@@ -186,20 +168,12 @@ void
 Opal::Call::toggle_stream_pause (StreamType type)
 {
   OpalMediaStreamPtr stream = NULL;
-  PSafePtr<OpalConnection> connection = NULL;
   PString codec_name;
   std::string stream_name;
 
   bool paused = false;
 
-  int i = 0;
-
-  do {
-
-    connection = GetConnection (i);
-    i++;
-  }  while (PIsDescendant(&(*connection), OpalPCSSConnection));
-
+  PSafePtr<OpalPCSSConnection> connection = GetConnectionAs<OpalPCSSConnection>();
   if (connection != NULL) {
 
     stream = connection->GetMediaStream ((type == Audio) ? OpalMediaType::Audio () : OpalMediaType::Video (), false);
@@ -222,16 +196,7 @@ Opal::Call::toggle_stream_pause (StreamType type)
 void
 Opal::Call::send_dtmf (const char dtmf)
 {
-  PSafePtr<OpalConnection> connection = NULL;
-
-  int i = 0;
-
-  do {
-
-    connection = GetConnection (i);
-    i++;
-  }  while (PIsDescendant(&(*connection), OpalPCSSConnection));
-
+  PSafePtr<OpalPCSSConnection> connection = GetConnectionAs<OpalPCSSConnection>();
   if (connection != NULL)
     connection->SendUserInputTone (dtmf, 180);
 }
@@ -665,19 +630,12 @@ void
 Opal::Call::OnNoAnswerTimeout (PTimer &,
                                INT) 
 {
-  PSafePtr<OpalConnection> connection = NULL;
-  int i = 0;
-
   if (!is_outgoing ()) {
 
     if (!forward_uri.empty ()) {
 
-      do {
-        connection = GetConnection (i);
-        i++;
-      }  while (PIsDescendant(&(*connection), OpalPCSSConnection));
-
-      if (!PIsDescendant(&(*connection), OpalPCSSConnection)) 
+      PSafePtr<OpalPCSSConnection> connection = GetConnectionAs<OpalPCSSConnection>();
+      if (connection != NULL)
         connection->ForwardCall (forward_uri);
     }
     else
