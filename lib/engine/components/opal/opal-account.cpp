@@ -127,6 +127,8 @@ Opal::Account::Account (Ekiga::ServiceCore & _core,
     type = Account::SIP;
   else
     type = Account::H323;
+
+  limited = (name.find ("%limit") != std::string::npos);
 }
 
 
@@ -298,6 +300,12 @@ void Opal::Account::disable ()
 bool Opal::Account::is_enabled () const
 {
   return enabled;
+}
+
+
+bool Opal::Account::is_limited () const
+{
+  return limited;
 }
 
 
@@ -494,10 +502,16 @@ Opal::Account::handle_registration_event (RegistrationState state_,
 
   case RegistrationFailed:
 
-    status = _("Could not register");
-    if (!info.empty ())
-      status = status + " (" + info + ")";
-    updated.emit ();
+    if (!limited) {
+      limited = true;
+      gmref_ptr<Sip::EndPoint> endpoint = core.get ("opal-sip-endpoint");
+      endpoint->subscribe (*this);
+    } else {
+      status = _("Could not register");
+      if (!info.empty ())
+        status = status + " (" + info + ")";
+      updated.emit ();
+    }
     break;
 
   case Processing:

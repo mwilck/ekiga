@@ -82,6 +82,7 @@ namespace Opal {
 			    account.get_authentication_username (),
 			    account.get_password (),
 			    account.is_enabled (),
+			    account.is_limited (),
 			    account.get_timeout ());
 	} else {
 
@@ -574,6 +575,7 @@ Opal::Sip::EndPoint::Register (const std::string username,
 			       const std::string auth_username,
 			       const std::string password,
 			       bool is_enabled,
+			       bool is_limited,
 			       unsigned timeout)
 {
   PWaitAndSignal mut(listsMutex);
@@ -592,6 +594,8 @@ Opal::Sip::EndPoint::Register (const std::string username,
   SIPRegister::Params params;
   params.m_addressOfRecord = aor.str ();
   params.m_registrarAddress = host;
+  if (is_limited)
+    params.m_contactAddress = "%LIMITED";
   params.m_authID = auth_username;
   params.m_password = password;
   params.m_expire = is_enabled ? timeout : 0;

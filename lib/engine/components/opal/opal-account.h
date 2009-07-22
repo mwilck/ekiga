@@ -128,6 +128,8 @@ public:
 
     bool is_enabled () const;
 
+    bool is_limited () const;
+
     bool is_active () const;
 
     void remove ();
@@ -160,6 +162,7 @@ private:
     RegistrationState state;
     bool dead;
     bool enabled;
+    bool limited;
     unsigned timeout;
     std::string aid;
     std::string name;
