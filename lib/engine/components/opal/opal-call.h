@@ -251,6 +251,8 @@ private:
     unsigned out_of_order_v;
     unsigned total_v;
 
+    bool outgoing;
+
 private:
     void on_cleared_call (std::string);
     void on_missed_call ();

@@ -93,7 +93,7 @@ private:
 
 Opal::Call::Call (OpalManager& _manager, const Ekiga::ServiceCore& _core, const std::string& uri)
   : OpalCall (_manager), Ekiga::Call (), core (_core), remote_uri (uri),
-    call_setup(false), jitter(0)
+    call_setup(false), outgoing(false), jitter(0)
 {
   re_a_bytes = tr_a_bytes = re_v_bytes = tr_v_bytes = 0.0;
   last_v_tick = last_a_tick = PTime ();
@@ -279,7 +279,7 @@ Opal::Call::get_start_time () const
 bool 
 Opal::Call::is_outgoing () const
 {
-  return !IsNetworkOriginated ();
+  return outgoing;
 }
 
 
@@ -494,6 +494,7 @@ Opal::Call::OnAnswerCall (OpalConnection & connection,
 PBoolean
 Opal::Call::OnSetUp (OpalConnection & connection)
 {
+  outgoing = !IsNetworkOriginated ();
   parse_info (connection);
 
   Ekiga::Runtime::emit_signal_in_main (setup);
