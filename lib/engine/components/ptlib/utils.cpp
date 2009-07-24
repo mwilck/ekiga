@@ -54,7 +54,8 @@ latin2utf (const std::string str)
                         "UTF-8", "ISO-8859-1",
                         NULL, NULL, NULL);
 #endif
-  if (utf8_str == NULL) /* conversion error */
+  g_warn_if_fail (utf8_str != NULL);
+  if (utf8_str == NULL)  /* conversion error */
     return NULL;
   result = std::string (utf8_str);
   g_free (utf8_str);
@@ -79,7 +80,8 @@ utf2latin (const std::string str)
                          "ISO-8859-1", "UTF-8",
                          NULL, NULL, NULL);
 #endif
-  if (latin_str == NULL) /* conversion error */
+  g_warn_if_fail (latin_str != NULL);
+  if (latin_str == NULL)  /* conversion error */
     return NULL;
   result = std::string (latin_str);
   g_free (latin_str);
