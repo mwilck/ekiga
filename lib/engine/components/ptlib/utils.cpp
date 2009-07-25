@@ -44,8 +44,6 @@ latin2utf (const std::string str)
   gchar *utf8_str;
   std::string result;
 
-  if (str == NULL)
-    return NULL;
 #ifdef WIN32
   utf8_str = g_locale_to_utf8 (str.c_str (), -1,
                                NULL, NULL, NULL);
@@ -69,8 +67,6 @@ utf2latin (const std::string str)
   gchar *latin_str;
   std::string result;
 
-  if (str == NULL)
-    return NULL;
   g_warn_if_fail (g_utf8_validate (str.c_str (), -1, NULL));
 #ifdef WIN32
   latin_str = g_locale_from_utf8 (str.c_str (), -1,
