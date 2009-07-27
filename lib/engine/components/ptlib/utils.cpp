@@ -54,7 +54,7 @@ latin2utf (const std::string str)
 #endif
   g_warn_if_fail (utf8_str != NULL);
   if (utf8_str == NULL)  /* conversion error */
-    return NULL;
+    return "";
   result = std::string (utf8_str);
   g_free (utf8_str);
   return result;
@@ -78,7 +78,7 @@ utf2latin (const std::string str)
 #endif
   g_warn_if_fail (latin_str != NULL);
   if (latin_str == NULL)  /* conversion error */
-    return NULL;
+    return "";
   result = std::string (latin_str);
   g_free (latin_str);
   return result;
