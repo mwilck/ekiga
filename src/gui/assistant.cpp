@@ -192,14 +192,12 @@ add_combo_box (GtkComboBox         *combo_box,
   GtkTreeModel *model = NULL;
   GtkTreeIter iter;
 
-  gchar *option_string = NULL;
   gboolean found = FALSE;
-  
+
   if (!option)
     return;
 
   model = gtk_combo_box_get_model (combo_box);
-  option_string = g_locale_to_utf8 (option, -1, NULL, NULL, NULL);
 
   if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (model), &iter)) {
 
@@ -209,7 +207,7 @@ add_combo_box (GtkComboBox         *combo_box,
       gtk_tree_model_get_value (GTK_TREE_MODEL (model), &iter, 0, &value);
       value_string = (gchar *) g_value_get_string (&value);
       if (g_ascii_strcasecmp  (value_string, option) == 0) {
-        gtk_list_store_set (GTK_LIST_STORE (model), &iter, 
+        gtk_list_store_set (GTK_LIST_STORE (model), &iter,
                             1, TRUE,
                             -1);
         g_value_unset(&value);
@@ -223,13 +221,11 @@ add_combo_box (GtkComboBox         *combo_box,
 
   if (!found) {
     gtk_list_store_append (GTK_LIST_STORE (model), &iter);
-    gtk_list_store_set (GTK_LIST_STORE (model), &iter, 
+    gtk_list_store_set (GTK_LIST_STORE (model), &iter,
                         0, option,
                         1, TRUE,
                         -1);
   }
-
-  g_free (option_string);
 }
 
 static void
