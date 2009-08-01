@@ -152,7 +152,10 @@ Opal::Account::Account (Ekiga::ServiceCore & _core,
   protocol_name = (t == H323) ? "H323" : "SIP";
   host = _host;
   username = _username;
-  auth_username = _auth_username;
+  if (!_auth_username.empty())
+    auth_username = _auth_username;
+  else
+    auth_username = _username;
   password = _password;
   timeout = _timeout;
   type = t;
