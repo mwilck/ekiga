@@ -23,3 +23,7 @@ Developers:
   after a normal C/C++ comment begin.  This is followed by specific
   keywords.  See the code for examples, such as
   lib/engine/videoinput/videinput-manager.h.
+- Encoding: Ekiga is completely UTF-8.  The only exception is that the
+  (audio/video) device names are in latin-1 for Linux <= 2.6.29, and
+  system codepage for Windows.  The latin2utf and utf2latin functions
+  take care of that.
