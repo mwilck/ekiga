@@ -729,7 +729,6 @@ gnome_prefs_string_option_menu_update (GtkWidget *option_menu,
   GtkTreeIter iter;
 
   gchar *conf_string = NULL;
-  gchar *options_string = NULL;
   
   int history = -1;
   int cpt = 0;
@@ -748,17 +747,15 @@ gnome_prefs_string_option_menu_update (GtkWidget *option_menu,
   cpt = 0;
   while (options [cpt]) {
 
-    options_string = g_locale_to_utf8 (options [cpt], -1, NULL, NULL, NULL);
     if (conf_string && !strcmp (options [cpt], conf_string)) 
       history = cpt;
 
     gtk_list_store_append (GTK_LIST_STORE (model), &iter);
     gtk_list_store_set (GTK_LIST_STORE (model), &iter, 
                         COLUMN_STRING_RAW, options [cpt],
-                        COLUMN_STRING_TRANSLATED, options_string,
+                        COLUMN_STRING_TRANSLATED, options [cpt],
                         COLUMN_SENSITIVE, TRUE, 
                         -1);
-    g_free (options_string);
     cpt++;
   }
 
@@ -791,14 +788,12 @@ gnome_prefs_string_option_menu_add (GtkWidget *option_menu,
 {
   GtkTreeModel *model = NULL;
   GtkTreeIter iter;
-  gchar *option_string = NULL;
   gboolean found = FALSE;
 
   if (!option)
     return;
 
   model = gtk_combo_box_get_model (GTK_COMBO_BOX (option_menu));
-  option_string = g_locale_to_utf8 (option, -1, NULL, NULL, NULL);
 
   if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (model), &iter)) {
 
@@ -824,13 +819,12 @@ gnome_prefs_string_option_menu_add (GtkWidget *option_menu,
     gtk_list_store_append (GTK_LIST_STORE (model), &iter);
     gtk_list_store_set (GTK_LIST_STORE (model), &iter, 
                         COLUMN_STRING_RAW, option,
-                        COLUMN_STRING_TRANSLATED, option_string, 
+                        COLUMN_STRING_TRANSLATED, option, 
                         COLUMN_SENSITIVE, TRUE,
                         -1);
   }
   if (active == TRUE)
     gtk_combo_box_set_active_iter (GTK_COMBO_BOX (option_menu), &iter);
-  g_free (option_string);
 }
 
 
