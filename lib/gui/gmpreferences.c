@@ -973,7 +973,6 @@ gnome_prefs_window_new (const gchar *logo_name)
   gpw->notebook = gtk_notebook_new ();
   gtk_notebook_set_show_tabs (GTK_NOTEBOOK (gpw->notebook), FALSE);
   gtk_notebook_set_show_border (GTK_NOTEBOOK (gpw->notebook), FALSE);
-  gtk_notebook_popup_enable (GTK_NOTEBOOK (gpw->notebook));
 
   pixmap =  gtk_image_new_from_file (logo_name);
 
