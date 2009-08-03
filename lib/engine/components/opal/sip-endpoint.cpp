@@ -648,7 +648,7 @@ Opal::Sip::EndPoint::OnRegistered (const PString & _aor,
       return;
 
     if (was_registering) {
-      for (std::list<std::string>::const_iterator iter = to_subscribe_uris.begin ();
+      for (std::list<std::string>::iterator iter = to_subscribe_uris.begin ();
            iter != to_subscribe_uris.end () ; ) {
 
         found = (*iter).find (server, 0);
@@ -657,14 +657,14 @@ Opal::Sip::EndPoint::OnRegistered (const PString & _aor,
           Subscribe (SIPSubscribe::Presence, 300, PString ((*iter).c_str ()));
           Subscribe (SIPSubscribe::Dialog, 300, PString ((*iter).c_str ()));
           subscribed_uris.push_back (*iter);
-          to_subscribe_uris.remove (*iter++);
+          iter = to_subscribe_uris.erase (iter);
         }
         else
           ++iter;
       }
     }
     else {
-      for (std::list<std::string>::const_iterator iter = subscribed_uris.begin ();
+      for (std::list<std::string>::iterator iter = subscribed_uris.begin ();
            iter != subscribed_uris.end () ; ) {
 
         found = (*iter).find (server, 0);
@@ -673,7 +673,7 @@ Opal::Sip::EndPoint::OnRegistered (const PString & _aor,
           Unsubscribe (SIPSubscribe::Presence, PString ((*iter).c_str ()));
           Unsubscribe (SIPSubscribe::Dialog, PString ((*iter).c_str ()));
           to_subscribe_uris.push_back (*iter);
-          subscribed_uris.remove (*iter++);
+          iter = subscribed_uris.erase (iter);
         }
         else
           iter++;
