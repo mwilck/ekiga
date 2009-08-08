@@ -38,7 +38,7 @@
 #include "toolbox-internal.h"
 
 #undef GTK_DISABLE_DEPRECATED
-#include <gnome.h>
+#include <libgnome/gnome-url.h>
 
 void
 gm_open_uri (const gchar *uri)

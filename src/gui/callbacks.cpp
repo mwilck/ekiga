@@ -63,7 +63,7 @@
 
 #undef GTK_DISABLE_DEPRECATED
 #ifdef HAVE_GNOME
-#include <gnome.h>
+#include <libgnome/gnome-help.h>
 #endif
 
 
