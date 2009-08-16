@@ -43,7 +43,6 @@
 #include "pcss-endpoint.h"
 
 #include "call-core.h"
-#include "opal-call.h"
 #include "opal-codec-description.h"
 #include "videoinput-info.h"
 
@@ -629,20 +628,28 @@ void CallManager::get_video_options (CallManager::VideoOptions & options) const
   }
 }
 
+void
+CallManager::create_call_in_main (Opal::Call* call)
+{
+  gmref_ptr<Ekiga::CallCore> call_core = core.get ("call-core");
+
+  call_core->add_call (gmref_ptr<Opal::Call>(call),
+		       gmref_ptr<CallManager>(this));
+}
 
 OpalCall *CallManager::CreateCall (void *uri)
 {
-  gmref_ptr<Ekiga::CallCore> call_core = core.get ("call-core"); // FIXME: threaded?
-
-  gmref_ptr<Opal::Call> call;
+  Opal::Call* call = 0;
 
   if (uri != 0)
-    call = gmref_ptr<Opal::Call> (new Opal::Call (*this, core, (const char *) uri));
+    call = new Opal::Call (*this, core, (const char *) uri);
   else
-    call = gmref_ptr<Opal::Call> (new Opal::Call (*this, core, ""));
-  call_core->add_call (call, gmref_ptr<CallManager>(this));
+    call = new Opal::Call (*this, core, "");
 
-  return call.get ();
+  Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun(this, &CallManager::create_call_in_main),
+					   call));
+
+  return call;
 }
 
 

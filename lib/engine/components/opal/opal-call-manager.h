@@ -56,6 +56,7 @@
 #include "presence-core.h"
 #include "call-manager.h"
 #include "call.h"
+#include "opal-call.h"
 
 #include <sigc++/sigc++.h>
 #include <string>
@@ -155,6 +156,7 @@ public:
     void get_video_options (VideoOptions & options) const;
 
 private:
+    void create_call_in_main (Opal::Call* call);
     OpalCall *CreateCall (void *uri);
     void DestroyCall (OpalCall *);
 
