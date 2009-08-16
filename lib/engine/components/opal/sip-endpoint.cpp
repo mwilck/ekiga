@@ -312,50 +312,61 @@ Opal::Sip::EndPoint::unfetch (const std::string uri)
 void
 Opal::Sip::EndPoint::publish (const Ekiga::PersonalDetails & details)
 {
-  PWaitAndSignal mut(listsMutex);
+  std::map<std::string, PString> publishing;
   std::string hostname = (const char *) PIPSocket::GetHostName ();
   std::string presence = ((Ekiga::PersonalDetails &) (details)).get_presence ();
   std::string status = ((Ekiga::PersonalDetails &) (details)).get_status ();
 
-  for (std::list<std::string>::iterator it = aors.begin ();
-       it != aors.end ();
-       it++) {
-    std::string to = it->substr (4);
-    PString data;
-    data += "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n";
+  {
+    PWaitAndSignal mut(listsMutex);
+    for (std::list<std::string>::iterator it = aors.begin ();
+	 it != aors.end ();
+	 it++) {
 
-    data += "<presence xmlns=\"urn:ietf:params:xml:ns:pidf\" entity=\"pres:";
-    data += to;
-    data += "\">\r\n";
+      std::string to = it->substr (4);
+      PString data;
+      data += "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n";
 
-    data += "<tuple id=\"";
-    data += to;
-    data += "_on_";
-    data += hostname;
-    data += "\">\r\n";
+      data += "<presence xmlns=\"urn:ietf:params:xml:ns:pidf\" entity=\"pres:";
+      data += to;
+      data += "\">\r\n";
 
-    data += "<note>";
-    data += presence.c_str ();
-    if (!status.empty ()) {
-      data += " - ";
-      data += status.c_str ();
+      data += "<tuple id=\"";
+      data += to;
+      data += "_on_";
+      data += hostname;
+      data += "\">\r\n";
+
+      data += "<note>";
+      data += presence.c_str ();
+      if (!status.empty ()) {
+	data += " - ";
+	data += status.c_str ();
+      }
+      data += "</note>\r\n";
+
+      data += "<status>\r\n";
+      data += "<basic>";
+      data += "open";
+      data += "</basic>\r\n";
+      data += "</status>\r\n";
+
+      data += "<contact priority=\"1\">sip:";
+      data += to;
+      data += "</contact>\r\n";
+
+      data += "</tuple>\r\n";
+      data += "</presence>\r\n";
+
+      publishing[to]=data;
     }
-    data += "</note>\r\n";
+  }
 
-    data += "<status>\r\n";
-    data += "<basic>";
-    data += "open";
-    data += "</basic>\r\n";
-    data += "</status>\r\n";
+  for (std::map<std::string, PString>::const_iterator iter = publishing.begin ();
+       iter != publishing.end ();
+       ++iter) {
 
-    data += "<contact priority=\"1\">sip:";
-    data += to;
-    data += "</contact>\r\n";
-
-    data += "</tuple>\r\n";
-    data += "</presence>\r\n";
-
-    Publish (to, data, 500); // TODO: allow to change the 500
+    Publish (iter->first, iter->second, 500); // TODO: allow to change the 500
   }
 }
 
