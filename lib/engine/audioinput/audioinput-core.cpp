@@ -327,6 +327,8 @@ void AudioInputCore::start_stream (unsigned channels, unsigned samplerate, unsig
 
   PTRACE(4, "AudioInputCore\tStarting stream " << channels << "x" << samplerate << "/" << bits_per_sample);
 
+  internal_set_manager(desired_device);  /* make sure it is set */
+
   if (preview_config.active || stream_config.active) {
     PTRACE(1, "AudioInputCore\tTrying to start stream in wrong state");
   }
