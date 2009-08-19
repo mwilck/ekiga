@@ -176,12 +176,11 @@ bool GMAudioInputManager_ptlib::get_frame_data (char *data,
       bytes_read = input_device->GetLastReadCount();
     }
     if (bytes_read != size) {
-      PTRACE(1, "GMAudioInputManager_ptlib\tEncountered error while trying to read data");
-      Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &GMAudioInputManager_ptlib::device_error_in_main), current_state.device, Ekiga::AI_ERROR_READ));
+      PTRACE(1, "GMAudioInputManager_ptlib\tRead " << bytes_read << " instead of " << size);
     }
   }
 
-  return (ret || bytes_read == size);
+  return (ret);
 }
 
 void GMAudioInputManager_ptlib::set_volume (unsigned volume)
