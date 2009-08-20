@@ -602,7 +602,7 @@ Opal::Sip::EndPoint::Register (const std::string username,
 
   SIPRegister::Params params;
   params.m_addressOfRecord = aor.str ();
-  params.m_registrarAddress = host;
+  params.m_registrarAddress = host_;
   params.m_authID = auth_username;
   params.m_password = password;
   params.m_expire = is_enabled ? timeout : 0;
