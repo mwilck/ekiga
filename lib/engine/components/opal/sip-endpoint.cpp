@@ -604,7 +604,7 @@ Opal::Sip::EndPoint::Register (const std::string username,
 
   SIPRegister::Params params;
   params.m_addressOfRecord = aor.str ();
-  params.m_registrarAddress = host;
+  params.m_registrarAddress = host_;
   if (is_limited)
     params.m_contactAddress = "%LIMITED";
   params.m_authID = auth_username;
