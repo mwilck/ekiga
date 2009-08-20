@@ -45,38 +45,6 @@ INCLUDES = 								\
 	-I$(top_srcdir)/lib/engine/components/resource-list		\
 	-I$(top_srcdir)/lib/engine/components/xcap
 
-# XVideo/X
-if !WIN32
-INCLUDES +=                                                             \
-	-I$(top_srcdir)/lib/engine/components/common-videooutput        \
-	-I$(top_srcdir)/lib/engine/components/x-videooutput
-endif
-
-# DirectX
-if HAVE_DX
-INCLUDES +=                                                             \
-	-I$(top_srcdir)/lib/engine/components/common-videooutput        \
-	-I$(top_srcdir)/lib/engine/components/dx-videooutput
-endif
-
-# Default Input Devices
-INCLUDES +=                                                             \
-	-I$(top_srcdir)/lib/engine/components/null-audioinput           \
-	-I$(top_srcdir)/lib/engine/components/null-audiooutput          \
-	-I$(top_srcdir)/lib/engine/components/mlogo-videoinput
-
-# Default PTLIB Input Devices
-INCLUDES +=                                             \
-	-I$(top_srcdir)/lib/engine/videoinput/ptlib     \
-	-I$(top_srcdir)/lib/engine/audioinput/ptlib     \
-	-I$(top_srcdir)/lib/engine/audiooutput/ptlib
-
-# DBus / HALd
-if HAVE_DBUS
-INCLUDES +=                                             \
-	-I$(top_srcdir)/lib/engine/components/hal-dbus
-endif
-
 libekiga_engine_la_SOURCES = engine.h engine.cpp
 
 AM_CXXFLAGS = $(SIGC_CFLAGS) $(GTK_CFLAGS)
@@ -107,23 +75,36 @@ libekiga_engine_la_LIBADD = \
 	$(AM_LIBS)
 
 # Default Input Devices
+INCLUDES +=                                                             \
+	-I$(top_srcdir)/lib/engine/components/null-audioinput           \
+	-I$(top_srcdir)/lib/engine/components/null-audiooutput          \
+	-I$(top_srcdir)/lib/engine/components/mlogo-videoinput
 libekiga_engine_la_LIBADD += \
 	$(top_builddir)/lib/engine/components/mlogo-videoinput/libgmvideoinput-mlogo.la                 \
 	$(top_builddir)/lib/engine/components/null-audioinput/libgmaudioinput-null.la                   \
 	$(top_builddir)/lib/engine/components/null-audiooutput/libgmaudiooutput-null.la 
 
-# PTLIB Input Devices
+# Default PTLIB Input Devices
+INCLUDES +=                                             \
+	-I$(top_srcdir)/lib/engine/videoinput/ptlib     \
+	-I$(top_srcdir)/lib/engine/audioinput/ptlib     \
+	-I$(top_srcdir)/lib/engine/audiooutput/ptlib
 libekiga_engine_la_LIBADD += \
 	$(top_builddir)/lib/engine/components/ptlib/libgmptlib.la
 
-# DBus/HALd
+# DBus / HALd
 if HAVE_DBUS
+INCLUDES +=                                             \
+	-I$(top_srcdir)/lib/engine/components/hal-dbus
 libekiga_engine_la_LIBADD += \
 	$(top_builddir)/lib/engine/components/hal-dbus/libgmhal-dbus.la
 endif
 
 # XVideo/X
 if !WIN32
+INCLUDES +=                                                             \
+	-I$(top_srcdir)/lib/engine/components/common-videooutput        \
+	-I$(top_srcdir)/lib/engine/components/x-videooutput
 libekiga_engine_la_LIBADD += \
 	$(top_builddir)/lib/engine/components/x-videooutput/libgmvideooutput-x.la \
 	$(top_builddir)/lib/pixops/libpixops.la
@@ -131,6 +112,9 @@ endif
 
 # DirectX
 if HAVE_DX
+INCLUDES +=                                                             \
+	-I$(top_srcdir)/lib/engine/components/common-videooutput        \
+	-I$(top_srcdir)/lib/engine/components/dx-videooutput
 libekiga_engine_la_LIBADD += \
 	$(top_builddir)/lib/engine/components/dx-videooutput/libgmvideooutput-dx.la
 endif
