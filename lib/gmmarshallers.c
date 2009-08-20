@@ -47,7 +47,44 @@
 #endif /* !G_ENABLE_DEBUG */
 
 
-/* VOID:STRING,UINT (gmmarshallers.list:1) */
+/* VOID:POINTER,STRING (gmmarshallers.list:1) */
+void
+gm_marshal_VOID__POINTER_STRING (GClosure     *closure,
+                                 GValue       *return_value G_GNUC_UNUSED,
+                                 guint         n_param_values,
+                                 const GValue *param_values,
+                                 gpointer      invocation_hint G_GNUC_UNUSED,
+                                 gpointer      marshal_data)
+{
+  typedef void (*GMarshalFunc_VOID__POINTER_STRING) (gpointer     data1,
+                                                     gpointer     arg_1,
+                                                     gpointer     arg_2,
+                                                     gpointer     data2);
+  register GMarshalFunc_VOID__POINTER_STRING callback;
+  register GCClosure *cc = (GCClosure*) closure;
+  register gpointer data1, data2;
+
+  g_return_if_fail (n_param_values == 3);
+
+  if (G_CCLOSURE_SWAP_DATA (closure))
+    {
+      data1 = closure->data;
+      data2 = g_value_peek_pointer (param_values + 0);
+    }
+  else
+    {
+      data1 = g_value_peek_pointer (param_values + 0);
+      data2 = closure->data;
+    }
+  callback = (GMarshalFunc_VOID__POINTER_STRING) (marshal_data ? marshal_data : cc->callback);
+
+  callback (data1,
+            g_marshal_value_peek_pointer (param_values + 1),
+            g_marshal_value_peek_string (param_values + 2),
+            data2);
+}
+
+/* VOID:STRING,UINT (gmmarshallers.list:2) */
 void
 gm_marshal_VOID__STRING_UINT (GClosure     *closure,
                               GValue       *return_value G_GNUC_UNUSED,
@@ -84,7 +121,7 @@ gm_marshal_VOID__STRING_UINT (GClosure     *closure,
             data2);
 }
 
-/* VOID:STRING,STRING (gmmarshallers.list:2) */
+/* VOID:STRING,STRING (gmmarshallers.list:3) */
 void
 gm_marshal_VOID__STRING_STRING (GClosure     *closure,
                                 GValue       *return_value G_GNUC_UNUSED,
@@ -121,7 +158,7 @@ gm_marshal_VOID__STRING_STRING (GClosure     *closure,
             data2);
 }
 
-/* VOID:STRING,BOOLEAN (gmmarshallers.list:3) */
+/* VOID:STRING,BOOLEAN (gmmarshallers.list:4) */
 void
 gm_marshal_VOID__STRING_BOOLEAN (GClosure     *closure,
                                  GValue       *return_value G_GNUC_UNUSED,
@@ -158,7 +195,7 @@ gm_marshal_VOID__STRING_BOOLEAN (GClosure     *closure,
             data2);
 }
 
-/* BOOLEAN:STRING (gmmarshallers.list:4) */
+/* BOOLEAN:STRING (gmmarshallers.list:5) */
 void
 gm_marshal_BOOLEAN__STRING (GClosure     *closure,
                             GValue       *return_value G_GNUC_UNUSED,
@@ -197,7 +234,7 @@ gm_marshal_BOOLEAN__STRING (GClosure     *closure,
   g_value_set_boolean (return_value, v_return);
 }
 
-/* BOOLEAN:STRING,STRING (gmmarshallers.list:5) */
+/* BOOLEAN:STRING,STRING (gmmarshallers.list:6) */
 void
 gm_marshal_BOOLEAN__STRING_STRING (GClosure     *closure,
                                    GValue       *return_value G_GNUC_UNUSED,

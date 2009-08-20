@@ -40,6 +40,7 @@
 #include <vector>
 #include <glib/gi18n.h>
 
+#include "gmmarshallers.h"
 #include "gm-cell-renderer-bitext.h"
 #include "gmcellrendererexpander.h"
 #include "gmstockicons.h"
@@ -48,17 +49,6 @@
 #include "roster-view-gtk.h"
 #include "menu-builder-gtk.h"
 #include "form-dialog-gtk.h"
-
-
-/* FIXME: this is stupid : I can't seem to be able to use the marshallers
- * defined in lib/ from here!
- */
-static void gm_marshal_VOID__POINTER_STRING (GClosure     *closure,
-                                             GValue       *return_value,
-                                             guint         n_param_values,
-                                             const GValue *param_values,
-                                             gpointer      invocation_hint,
-                                             gpointer      marshal_data);
 
 
 /*
@@ -1543,43 +1533,4 @@ roster_view_gtk_new (Ekiga::PresenceCore &core)
 			show_offline_contacts_changed_nt, self);
 
   return (GtkWidget *) self;
-}
-
-
-
-/* FIXME: stupid, stupid! */
-static void
-gm_marshal_VOID__POINTER_STRING (GClosure     *closure,
-                                 GValue       *return_value G_GNUC_UNUSED,
-                                 guint         n_param_values,
-                                 const GValue *param_values,
-                                 gpointer      invocation_hint G_GNUC_UNUSED,
-                                 gpointer      marshal_data)
-{
-  typedef void (*GMarshalFunc_VOID__POINTER_STRING) (gpointer     data1,
-                                                     gpointer     arg_1,
-                                                     gpointer     arg_2,
-                                                     gpointer     data2);
-  GMarshalFunc_VOID__POINTER_STRING callback;
-  GCClosure *cc = (GCClosure*) closure;
-  gpointer data1, data2;
-
-  g_return_if_fail (n_param_values == 3);
-
-  if (G_CCLOSURE_SWAP_DATA (closure))
-    {
-      data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
-    }
-  else
-    {
-      data1 = g_value_peek_pointer (param_values + 0);
-      data2 = closure->data;
-    }
-  callback = (GMarshalFunc_VOID__POINTER_STRING) (marshal_data ? marshal_data : cc->callback);
-
-  callback (data1,
-            (param_values + 1)->data[0].v_pointer,
-            (gchar*)(param_values + 2)->data[0].v_pointer,
-            data2);
 }

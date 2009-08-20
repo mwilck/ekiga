@@ -6,7 +6,15 @@
 
 G_BEGIN_DECLS
 
-/* VOID:STRING,UINT (gmmarshallers.list:1) */
+/* VOID:POINTER,STRING (gmmarshallers.list:1) */
+extern void gm_marshal_VOID__POINTER_STRING (GClosure     *closure,
+                                             GValue       *return_value,
+                                             guint         n_param_values,
+                                             const GValue *param_values,
+                                             gpointer      invocation_hint,
+                                             gpointer      marshal_data);
+
+/* VOID:STRING,UINT (gmmarshallers.list:2) */
 extern void gm_marshal_VOID__STRING_UINT (GClosure     *closure,
                                           GValue       *return_value,
                                           guint         n_param_values,
@@ -14,7 +22,7 @@ extern void gm_marshal_VOID__STRING_UINT (GClosure     *closure,
                                           gpointer      invocation_hint,
                                           gpointer      marshal_data);
 
-/* VOID:STRING,STRING (gmmarshallers.list:2) */
+/* VOID:STRING,STRING (gmmarshallers.list:3) */
 extern void gm_marshal_VOID__STRING_STRING (GClosure     *closure,
                                             GValue       *return_value,
                                             guint         n_param_values,
@@ -22,7 +30,7 @@ extern void gm_marshal_VOID__STRING_STRING (GClosure     *closure,
                                             gpointer      invocation_hint,
                                             gpointer      marshal_data);
 
-/* VOID:STRING,BOOLEAN (gmmarshallers.list:3) */
+/* VOID:STRING,BOOLEAN (gmmarshallers.list:4) */
 extern void gm_marshal_VOID__STRING_BOOLEAN (GClosure     *closure,
                                              GValue       *return_value,
                                              guint         n_param_values,
@@ -30,7 +38,7 @@ extern void gm_marshal_VOID__STRING_BOOLEAN (GClosure     *closure,
                                              gpointer      invocation_hint,
                                              gpointer      marshal_data);
 
-/* BOOLEAN:STRING (gmmarshallers.list:4) */
+/* BOOLEAN:STRING (gmmarshallers.list:5) */
 extern void gm_marshal_BOOLEAN__STRING (GClosure     *closure,
                                         GValue       *return_value,
                                         guint         n_param_values,
@@ -38,7 +46,7 @@ extern void gm_marshal_BOOLEAN__STRING (GClosure     *closure,
                                         gpointer      invocation_hint,
                                         gpointer      marshal_data);
 
-/* BOOLEAN:STRING,STRING (gmmarshallers.list:5) */
+/* BOOLEAN:STRING,STRING (gmmarshallers.list:6) */
 extern void gm_marshal_BOOLEAN__STRING_STRING (GClosure     *closure,
                                                GValue       *return_value,
                                                guint         n_param_values,

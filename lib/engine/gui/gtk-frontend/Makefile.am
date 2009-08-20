@@ -40,6 +40,7 @@ libgmgtk_frontend_la_SOURCES = \
 	$(gtk_frontend_dir)/gtk-frontend.cpp
 
 libgmgtk_frontend_la_LIBADD = \
+	$(top_builddir)/lib/libekiga.la \
 	$(top_builddir)/lib/gui/libgmwidgets.la 			\
 	$(top_builddir)/lib/engine/chat/libgmchat.la 		\
 	$(top_builddir)/lib/engine/presence/libgmpresence.la 	\
