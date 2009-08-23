@@ -769,7 +769,7 @@ CallManager::ReportSTUNError (const std::string error)
   gmref_ptr<Ekiga::CallCore> call_core = core.get ("call-core");
 
   // notice we're in for an infinite loop if nobody ever reports to the user!
-  if ( !call_core->errors.handle_request (error)) {
+  if ( !call_core->errors.emit (error)) {
 
     Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &CallManager::ReportSTUNError),
 					     error),

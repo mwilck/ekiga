@@ -83,7 +83,7 @@ Ekiga::ContactCore::add_source (SourcePtr source)
   conns.push_back (source->contact_added.connect (sigc::bind<0> (contact_added.make_slot (), source)));
   conns.push_back (source->contact_removed.connect (sigc::bind<0> (contact_removed.make_slot (), source)));
   conns.push_back (source->contact_updated.connect (sigc::bind<0> (contact_updated.make_slot (), source)));
-  source->questions.add_handler (questions.make_slot ());
+  source->questions.connect (questions.make_slot ());
 }
 
 void

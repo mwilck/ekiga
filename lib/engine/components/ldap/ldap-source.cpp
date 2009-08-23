@@ -150,7 +150,7 @@ OPENLDAP::Source::new_book ()
   OPENLDAP::BookInfoParse (bookinfo);
   OPENLDAP::BookForm (request, bookinfo, _("Create LDAP directory"));
 
-  questions.handle_request (request);
+  questions.emit (request);
 }
 
 void
@@ -185,7 +185,7 @@ OPENLDAP::Source::on_new_book_form_submitted (bool submitted,
     result.visit (*request);
     request->error (errmsg);
 
-    questions.handle_request (request);
+    questions.emit (request);
     return;
   }
 

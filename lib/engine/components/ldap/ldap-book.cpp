@@ -612,7 +612,7 @@ extern "C" {
 
       /* Save a pointer for storing the form result */
       ctx->book->saslform = &result;
-      ctx->book->questions.handle_request (request);
+      ctx->book->questions.emit (request);
 
       /* Extract answers from the result form */
       for (i=0, in = (sasl_interact_t *)inter;
@@ -989,7 +989,7 @@ OPENLDAP::Book::edit ()
 
   OPENLDAP::BookForm (request, bookinfo, std::string(_("Edit LDAP directory")));
 
-  questions.handle_request (request);
+  questions.emit (request);
 }
 
 int
@@ -1100,7 +1100,7 @@ OPENLDAP::Book::on_edit_form_submitted (bool submitted,
     result.visit (*request);
     request->error (errmsg);
 
-    questions.handle_request (request);
+    questions.emit (request);
     return;
   }
 

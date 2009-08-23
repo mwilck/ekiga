@@ -4052,7 +4052,7 @@ ekiga_main_window_connect_engine_signals (EkigaMainWindow *mw)
   conn = call_core->stream_resumed.connect (sigc::bind (sigc::ptr_fun (on_stream_resumed_cb), (gpointer) mw));
   mw->priv->connections.push_back (conn);
 
-  conn = call_core->errors.add_handler (sigc::bind (sigc::ptr_fun (on_handle_errors), (gpointer) mw));
+  conn = call_core->errors.connect (sigc::bind (sigc::ptr_fun (on_handle_errors), (gpointer) mw));
   mw->priv->connections.push_back (conn);
 }
 

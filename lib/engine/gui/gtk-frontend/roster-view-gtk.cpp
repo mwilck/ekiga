@@ -1523,7 +1523,7 @@ roster_view_gtk_new (Ekiga::PresenceCore &core)
   conn = core.presentity_removed.connect (sigc::bind (sigc::ptr_fun (on_presentity_removed),
  						      (gpointer) self));
   self->priv->connections.push_back (conn);
-  conn = core.questions.add_handler (sigc::bind (sigc::ptr_fun (on_handle_questions), (gpointer) self));
+  conn = core.questions.connect (sigc::bind (sigc::ptr_fun (on_handle_questions), (gpointer) self));
   self->priv->connections.push_back (conn);
 
   core.visit_clusters (sigc::bind_return (sigc::bind (sigc::ptr_fun (on_cluster_added), (gpointer) self), true));

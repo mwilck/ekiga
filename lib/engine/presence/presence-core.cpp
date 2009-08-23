@@ -64,7 +64,7 @@ Ekiga::PresenceCore::add_cluster (ClusterPtr cluster)
   conns.push_back (cluster->presentity_added.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresenceCore::on_presentity_added), cluster)));
   conns.push_back (cluster->presentity_updated.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresenceCore::on_presentity_updated), cluster)));
   conns.push_back (cluster->presentity_removed.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresenceCore::on_presentity_removed), cluster)));
-  cluster->questions.add_handler (questions.make_slot ());
+  cluster->questions.connect (questions.make_slot ());
 }
 
 void

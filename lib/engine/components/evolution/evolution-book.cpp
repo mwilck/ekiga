@@ -326,7 +326,7 @@ Evolution::Book::new_contact_action ()
   request->text ("cell", _("_Cell phone:"), "");
   request->text ("pager", _("_Pager:"), "");
 
-  questions.handle_request (request);
+  questions.emit (request);
 }
 
 void

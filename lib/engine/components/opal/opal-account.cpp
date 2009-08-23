@@ -403,7 +403,7 @@ void Opal::Account::edit ()
   request->text ("timeout", _("Timeout:"), str.str ());
   request->boolean ("enabled", _("Enable Account"), enabled);
 
-  questions.handle_request (request);
+  questions.emit (request);
 }
 
 
@@ -441,7 +441,7 @@ void Opal::Account::on_edit_form_submitted (bool submitted,
     result.visit (*request);
     request->error (error);
 
-    questions.handle_request (request);
+    questions.emit (request);
   }
   else {
 

@@ -67,7 +67,7 @@
  * Ekiga::ChainOfResponsibility<T_request> chain;
  *
  * The handlers will register like this :
- * chain.add_handler (sigc::mem_fun (this, &Foo::request_handler));
+ * chain.connect (sigc::mem_fun (this, &Foo::request_handler));
  *
  * A request handler looks like :
  * bool
@@ -82,10 +82,10 @@
  * }
  *
  * Trying to get a request handled looks like :
- * chain.handle_request (request);
+ * chain.emit (request);
  *
  * or for better error reporting :
- * if (!chain.handle_request (request)) {
+ * if (!chain.emit (request)) {
  *
  *   <report that you couldn't deal with a request>
  * }
@@ -113,25 +113,13 @@ namespace Ekiga
     }
   };
 
+
   template<typename T_request>
   struct ChainOfResponsibility:
     public sigc::signal1<bool,
 			 T_request,
 			 responsibility_accumulator>
   {
-    typedef typename sigc::signal1<bool,
-				   T_request,
-				   responsibility_accumulator>::iterator iterator;
-    typedef typename sigc::signal1<bool,
-				   T_request,
-				   responsibility_accumulator>::slot_type slot_type;
-
-    iterator add_handler (const slot_type& slot_)
-    { return this->connect (slot_); }
-
-    bool handle_request (typename sigc::type_trait<T_request>::take request)
-    { return this->emit (request); }
-
   };
 };
 

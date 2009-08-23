@@ -158,7 +158,7 @@ template<typename PresentityType>
 void
 Ekiga::HeapImpl<PresentityType>::add_presentity (gmref_ptr<PresentityType> presentity)
 {
-  presentity->questions.add_handler (questions.make_slot ());
+  presentity->questions.connect (questions.make_slot ());
 
   add_object (presentity);
 }

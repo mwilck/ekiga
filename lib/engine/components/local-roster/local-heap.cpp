@@ -243,7 +243,7 @@ Local::Heap::new_presentity (const std::string name,
 			   _("Put contact in groups:"),
 			   std::set<std::string>(), groups);
 
-    questions.handle_request (request);
+    questions.emit (request);
   }
 }
 
@@ -404,7 +404,7 @@ Local::Heap::new_presentity_form_submitted (bool submitted,
     else
       request->error (_("You already have a contact with this address!"));
 
-    questions.handle_request (request);
+    questions.emit (request);
   }
 }
 
@@ -417,7 +417,7 @@ Local::Heap::on_rename_group (std::string name)
   request->instructions (_("Please edit this group name"));
   request->text ("name", _("Name:"), name);
 
-  questions.handle_request (request);
+  questions.emit (request);
 }
 
 struct rename_group_form_submitted_helper

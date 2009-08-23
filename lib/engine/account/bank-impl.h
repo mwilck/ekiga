@@ -205,7 +205,7 @@ Ekiga::BankImpl<AccountType>::add_account (gmref_ptr<AccountType> account)
 {
   add_object (account);
 
-  account->questions.add_handler (questions.make_slot ());
+  account->questions.connect (questions.make_slot ());
 }
 
 

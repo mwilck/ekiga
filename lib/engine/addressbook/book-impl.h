@@ -203,7 +203,7 @@ template<typename ContactType>
 void
 Ekiga::BookImpl<ContactType>::add_contact (gmref_ptr<ContactType> contact)
 {
-  contact->questions.add_handler (questions.make_slot ());
+  contact->questions.connect (questions.make_slot ());
   add_object (contact);
 }
 

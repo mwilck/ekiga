@@ -141,7 +141,7 @@ Opal::Bank::new_account (Account::Type acc_type,
   if (!username.empty () && !password.empty ())
     request->submit (*request);
   else
-    questions.handle_request (request);
+    questions.emit (request);
 }
 
 
@@ -181,7 +181,7 @@ void Opal::Bank::on_new_account_form_submitted (bool submitted,
   if (!error.empty ()) {
     request->error (error);
 
-    questions.handle_request (request);
+    questions.emit (request);
   }
   else {
 

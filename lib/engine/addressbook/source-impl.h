@@ -214,7 +214,7 @@ Ekiga::SourceImpl<BookType>::add_book (gmref_ptr<BookType> book)
 
   add_connection (book, book->contact_updated.connect (sigc::bind<0> (contact_updated.make_slot (), book)));
 
-  add_connection (book, book->questions.add_handler (questions.make_slot ()));
+  add_connection (book, book->questions.connect (questions.make_slot ()));
 }
 
 

@@ -323,7 +323,7 @@ Evolution::Contact::edit_action ()
     request->text ("pager", _("_Pager:"), pager_uri);
   }
 
-  questions.handle_request (request);
+  questions.emit (request);
 }
 
 void
@@ -363,7 +363,7 @@ Evolution::Contact::remove_action ()
   request->instructions (instructions);
   g_free (instructions);
 
-  questions.handle_request (request);
+  questions.emit (request);
 }
 
 void

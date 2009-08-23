@@ -45,7 +45,7 @@ void
 Ekiga::ChatCore::add_dialect (DialectPtr dialect)
 {
   dialects.push_back (dialect);
-  dialect->questions.add_handler (questions.make_slot ());
+  dialect->questions.connect (questions.make_slot ());
   dialect_added.emit (dialect);
 }
 

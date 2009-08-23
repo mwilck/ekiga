@@ -713,7 +713,7 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
   account_core->account_added.connect (sigc::bind (sigc::ptr_fun (on_account_added), window));
   account_core->account_updated.connect (sigc::bind (sigc::ptr_fun (on_account_updated), window));
   account_core->account_removed.connect (sigc::bind (sigc::ptr_fun (on_account_removed), window));
-  account_core->questions.add_handler (sigc::bind (sigc::ptr_fun (on_handle_questions), (gpointer) window));
+  account_core->questions.connect (sigc::bind (sigc::ptr_fun (on_handle_questions), (gpointer) window));
 
   account_core->visit_banks (sigc::bind_return (sigc::bind (sigc::ptr_fun (on_bank_added), window), true));
 

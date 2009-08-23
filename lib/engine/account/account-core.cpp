@@ -77,7 +77,7 @@ Ekiga::AccountCore::add_bank (BankPtr bank)
 
   bank_added.emit (bank);
 
-  bank->questions.add_handler (questions.make_slot ());
+  bank->questions.connect (questions.make_slot ());
 }
 
 
