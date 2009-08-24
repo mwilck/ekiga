@@ -472,7 +472,7 @@ RL::Heap::edit ()
   request->text ("username", _("Server username"), username_str);
   request->private_text ("password", _("Server password"), password_str);
 
-  questions.handle_request (request);
+  questions.emit (request);
 }
 
 void
@@ -528,7 +528,7 @@ RL::Heap::new_entry ()
   request->editable_set ("groups", _("Choose groups:"),
 			 std::set<std::string>(), all_groups);
 
-  questions.handle_request (request);
+  questions.emit (request);
 }
 
 void

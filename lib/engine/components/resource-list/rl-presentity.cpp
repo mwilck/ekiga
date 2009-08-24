@@ -227,7 +227,7 @@ RL::Presentity::edit_presentity ()
   request->editable_set ("groups", _("Choose groups:"),
 			groups, all_groups);
 
-  questions.handle_request (request);
+  questions.emit (request);
 }
 
 

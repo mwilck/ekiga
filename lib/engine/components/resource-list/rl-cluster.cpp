@@ -173,7 +173,7 @@ RL::Cluster::new_heap (const std::string name,
   request->private_text ("password", _("Password:"), password);
   request->text ("user", _("User:"), user);
 
-  questions.handle_request (request);
+  questions.emit (request);
 }
 
 void

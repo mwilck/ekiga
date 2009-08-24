@@ -229,7 +229,7 @@ LM::Heap::presence_handler (LmMessage* message)
 
     request->hidden ("jid", base_jid);
 
-    questions.handle_request (request);
+    questions.emit (request);
   } else {
 
     if (item) {
@@ -317,7 +317,7 @@ LM::Heap::add_item ()
 			   "element to the remote roster"));
   request->text ("jid", _("Identifier:"), _("identifier@server"));
 
-  questions.handle_request (request);
+  questions.emit (request);
 }
 
 void

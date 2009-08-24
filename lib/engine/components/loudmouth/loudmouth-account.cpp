@@ -296,7 +296,7 @@ LM::Account::edit ()
   xmlFree (xml_str);
   request->boolean ("enabled", _("Enable account"), enable_on_startup);
 
-  questions.handle_request (request);
+  questions.emit (request);
 }
 
 void
