@@ -233,7 +233,7 @@ XCAP::CoreImpl::read (gmref_ptr<Path> path,
 
   /* all of this is freed in the result callback */
   session = soup_session_async_new_with_options ("user-agent", "ekiga", NULL);
-  message = soup_message_new (SOUP_METHOD_GET, path->to_uri ().c_str ());
+  message = soup_message_new ("GET", path->to_uri ().c_str ());
   data = new cb_read_data;
   data->core = this;
   data->path = path;
@@ -262,7 +262,7 @@ XCAP::CoreImpl::write (gmref_ptr<Path> path,
 
   /* all of this is freed in the result callback */
   session = soup_session_async_new_with_options ("user-agent", "ekiga", NULL);
-  message = soup_message_new (SOUP_METHOD_PUT, path->to_uri ().c_str ());
+  message = soup_message_new ("PUT", path->to_uri ().c_str ());
   soup_message_set_request (message, content_type.c_str (),
 			    SOUP_MEMORY_COPY,
 			    content.c_str (), content.length ());
@@ -293,7 +293,7 @@ XCAP::CoreImpl::erase (gmref_ptr<Path> path,
 
   /* all of this is freed in the result callback */
   session = soup_session_async_new_with_options ("user-agent", "ekiga", NULL);
-  message = soup_message_new (SOUP_METHOD_DELETE, path->to_uri ().c_str ());
+  message = soup_message_new ("DELETE", path->to_uri ().c_str ());
   data = new cb_other_data;
   data->core = this;
   data->path = path;
