@@ -1,10 +1,10 @@
-SUBDIRS = . platform gmconf gui toolbox
+SUBDIRS = platform gmconf gui toolbox
 
 if !WIN32
 SUBDIRS += pixops
 endif
 
-SUBDIRS += engine
+SUBDIRS += . engine
 
 
 noinst_LTLIBRARIES = libekiga.la
