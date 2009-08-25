@@ -148,6 +148,8 @@ Ekiga::FormBuilder::hidden (const std::string name) const
        iter++)
     if (iter->name == name)
       return iter->value;
+
+  return ""; // shouldn't happen
 }
 
 bool
