@@ -92,9 +92,9 @@ namespace Ekiga
 
     using RefLister<PresentityType>::add_connection;
 
-    void add_presentity (gmref_ptr<PresentityType> presentity);
+    void add_presentity (boost::shared_ptr<PresentityType> presentity);
 
-    void remove_presentity (gmref_ptr<PresentityType> presentity);
+    void remove_presentity (boost::shared_ptr<PresentityType> presentity);
   };
 
 /**
@@ -156,7 +156,7 @@ Ekiga::HeapImpl<PresentityType>::end () const
 
 template<typename PresentityType>
 void
-Ekiga::HeapImpl<PresentityType>::add_presentity (gmref_ptr<PresentityType> presentity)
+Ekiga::HeapImpl<PresentityType>::add_presentity (boost::shared_ptr<PresentityType> presentity)
 {
   presentity->questions.connect (questions.make_slot ());
 
@@ -165,7 +165,7 @@ Ekiga::HeapImpl<PresentityType>::add_presentity (gmref_ptr<PresentityType> prese
 
 template<typename PresentityType>
 void
-Ekiga::HeapImpl<PresentityType>::remove_presentity (gmref_ptr<PresentityType> presentity)
+Ekiga::HeapImpl<PresentityType>::remove_presentity (boost::shared_ptr<PresentityType> presentity)
 {
   remove_object (presentity);
 }

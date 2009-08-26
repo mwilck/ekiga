@@ -108,15 +108,15 @@ Opal::Sip::EndPoint::EndPoint (Opal::CallManager & _manager,
 	manager (_manager),
 	core (_core)
 {
-  gmref_ptr<Ekiga::ChatCore> chat_core = core.get ("chat-core");
-  gmref_ptr<Opal::Bank> bank = core.get ("opal-account-store");
+  boost::shared_ptr<Ekiga::ChatCore> chat_core = core.get<Ekiga::ChatCore> ("chat-core");
+  boost::shared_ptr<Opal::Bank> bank = core.get<Opal::Bank> ("opal-account-store");
 
   auto_answer_call = false;
   protocol_name = "sip";
   uri_prefix = "sip:";
   listen_port = (_listen_port > 0 ? _listen_port : 5060);
 
-  dialect = gmref_ptr<SIP::Dialect>(new SIP::Dialect (core, sigc::mem_fun (this, &Opal::Sip::EndPoint::send_message)));
+  dialect = boost::shared_ptr<SIP::Dialect>(new SIP::Dialect (core, sigc::mem_fun (this, &Opal::Sip::EndPoint::send_message)));
   chat_core->add_dialect (dialect);
 
   bank->account_added.connect (sigc::mem_fun (this, &Opal::Sip::EndPoint::on_bank_updated));
@@ -176,7 +176,7 @@ Opal::Sip::EndPoint::menu_builder_add_actions (const std::string& fullname,
 {
   bool populated = false;
 
-  gmref_ptr<Opal::Bank> bank = core.get ("opal-account-store");
+  boost::shared_ptr<Opal::Bank> bank = core.get<Opal::Bank> ("opal-account-store");
 
   std::list<std::string> uris;
   std::list<std::string> accounts;
@@ -1254,7 +1254,7 @@ Opal::Sip::EndPoint::registration_event_in_main (const std::string aor,
 						 Opal::Account::RegistrationState state,
 						 const std::string msg)
 {
-  gmref_ptr<Opal::Bank> bank = core.get ("opal-account-store");
+  boost::shared_ptr<Opal::Bank> bank = core.get<Opal::Bank> ("opal-account-store");
   AccountPtr account = bank->find_account (aor);
 
   if (account) {
@@ -1293,7 +1293,7 @@ void
 Opal::Sip::EndPoint::mwi_received_in_main (const std::string aor,
 					   const std::string info)
 {
-  gmref_ptr<Opal::Bank> bank = core.get ("opal-account-store");
+  boost::shared_ptr<Opal::Bank> bank = core.get<Opal::Bank> ("opal-account-store");
   AccountPtr account = bank->find_account (aor);
 
   if (account) {
@@ -1303,7 +1303,7 @@ Opal::Sip::EndPoint::mwi_received_in_main (const std::string aor,
 }
 
 void
-Opal::Sip::EndPoint::on_bank_updated (Ekiga::ContactPtr /*contact*/)
+Opal::Sip::EndPoint::on_bank_updated (Ekiga::AccountPtr /*account*/)
 {
   { // first we flush the existing value
     PWaitAndSignal mut(defaultAORMutex);
@@ -1311,14 +1311,15 @@ Opal::Sip::EndPoint::on_bank_updated (Ekiga::ContactPtr /*contact*/)
   }
 
   { // and now we compute it again
-    gmref_ptr<Opal::Bank> bank = core.get ("opal-account-store");
+    boost::shared_ptr<Opal::Bank> bank = core.get<Opal::Bank> ("opal-account-store");
     bank->visit_accounts (sigc::mem_fun (this, &Opal::Sip::EndPoint::search_for_default_account));
   }
 }
 
 bool
-Opal::Sip::EndPoint::search_for_default_account (Opal::AccountPtr account)
+Opal::Sip::EndPoint::search_for_default_account (Ekiga::AccountPtr account_)
 {
+  Opal::AccountPtr account = boost::dynamic_pointer_cast<Opal::Account> (account_);
   PWaitAndSignal mut(defaultAORMutex);
   bool result = true;
 

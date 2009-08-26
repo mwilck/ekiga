@@ -52,7 +52,7 @@ RL::Cluster::Cluster (Ekiga::ServiceCore& core_): core(core_), doc()
 {
   gchar* c_raw = NULL;
 
-  gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
+  boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
 
   presence_core->presence_received.connect (sigc::mem_fun (this, &RL::Cluster::on_presence_received));
   presence_core->status_received.connect (sigc::mem_fun (this, &RL::Cluster::on_status_received));
@@ -62,9 +62,9 @@ RL::Cluster::Cluster (Ekiga::ServiceCore& core_): core(core_), doc()
   if (c_raw != NULL) {
 
     const std::string raw = c_raw;
-    doc = std::tr1::shared_ptr<xmlDoc> (xmlRecoverMemory (raw.c_str (), raw.length ()), xmlFreeDoc);
+    doc = boost::shared_ptr<xmlDoc> (xmlRecoverMemory (raw.c_str (), raw.length ()), xmlFreeDoc);
     if ( !doc)
-      doc = std::tr1::shared_ptr<xmlDoc> (xmlNewDoc (BAD_CAST "1.0"), xmlFreeDoc);
+      doc = boost::shared_ptr<xmlDoc> (xmlNewDoc (BAD_CAST "1.0"), xmlFreeDoc);
 
     xmlNodePtr root = xmlDocGetRootElement (doc.get ());
     if (root == NULL) {
@@ -85,7 +85,7 @@ RL::Cluster::Cluster (Ekiga::ServiceCore& core_): core(core_), doc()
 
   } else {
 
-    doc = std::tr1::shared_ptr<xmlDoc> (xmlNewDoc (BAD_CAST "1.0"), xmlFreeDoc);
+    doc = boost::shared_ptr<xmlDoc> (xmlNewDoc (BAD_CAST "1.0"), xmlFreeDoc);
     xmlNodePtr root = xmlNewDocNode (doc.get (), NULL, BAD_CAST "list", NULL);
     xmlDocSetRootElement (doc.get (), root);
     add ("https://xcap.sipthor.net/xcap-root", "alice", "123", "alice@example.com", "XCAP Test", false); // FIXME: remove
@@ -161,7 +161,7 @@ RL::Cluster::new_heap (const std::string name,
 		       const std::string user,
 		       bool writable)
 {
-  gmref_ptr<Ekiga::FormRequestSimple> request = gmref_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &RL::Cluster::on_new_heap_form_submitted)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &RL::Cluster::on_new_heap_form_submitted)));
 
   request->title (_("Add new resource-list"));
   request->instructions (_("Please fill in this form to add a new "

@@ -117,16 +117,16 @@ engine_init (int argc,
   /* VideoInputCore depends on VideoOutputCore and must this              *
    * be constructed thereafter                                      */
 
-  gmref_ptr<Ekiga::AccountCore> account_core (new Ekiga::AccountCore);
-  gmref_ptr<Ekiga::ContactCore> contact_core (new Ekiga::ContactCore);
-  gmref_ptr<Ekiga::CallCore> call_core (new Ekiga::CallCore);
-  gmref_ptr<Ekiga::ChatCore> chat_core (new Ekiga::ChatCore);
-  gmref_ptr<Ekiga::VideoOutputCore> videooutput_core (new Ekiga::VideoOutputCore);
-  gmref_ptr<Ekiga::VideoInputCore> videoinput_core (new Ekiga::VideoInputCore(*videooutput_core));
-  gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core (new Ekiga::AudioOutputCore);
-  gmref_ptr<Ekiga::AudioInputCore> audioinput_core (new Ekiga::AudioInputCore(*audiooutput_core));
-  gmref_ptr<Ekiga::HalCore> hal_core (new Ekiga::HalCore);
-  gmref_ptr<Ekiga::FriendOrFoe> friend_or_foe (new Ekiga::FriendOrFoe);
+  boost::shared_ptr<Ekiga::AccountCore> account_core (new Ekiga::AccountCore);
+  boost::shared_ptr<Ekiga::ContactCore> contact_core (new Ekiga::ContactCore);
+  boost::shared_ptr<Ekiga::CallCore> call_core (new Ekiga::CallCore);
+  boost::shared_ptr<Ekiga::ChatCore> chat_core (new Ekiga::ChatCore);
+  boost::shared_ptr<Ekiga::VideoOutputCore> videooutput_core (new Ekiga::VideoOutputCore);
+  boost::shared_ptr<Ekiga::VideoInputCore> videoinput_core (new Ekiga::VideoInputCore(*videooutput_core));
+  boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core (new Ekiga::AudioOutputCore);
+  boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core (new Ekiga::AudioInputCore(*audiooutput_core));
+  boost::shared_ptr<Ekiga::HalCore> hal_core (new Ekiga::HalCore);
+  boost::shared_ptr<Ekiga::FriendOrFoe> friend_or_foe (new Ekiga::FriendOrFoe);
 
 
   /* The last item in the following list will be destroyed first.   *
@@ -150,7 +150,7 @@ engine_init (int argc,
     return;
   }
 
-  gmref_ptr<Ekiga::PresenceCore> presence_core (new Ekiga::PresenceCore (*service_core));
+  boost::shared_ptr<Ekiga::PresenceCore> presence_core (new Ekiga::PresenceCore (*service_core));
   service_core->add (presence_core);
 
 #ifndef WIN32

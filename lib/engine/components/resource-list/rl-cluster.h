@@ -65,7 +65,7 @@ namespace RL {
   private:
 
     Ekiga::ServiceCore& core;
-    std::tr1::shared_ptr<xmlDoc> doc;
+    boost::shared_ptr<xmlDoc> doc;
 
     void add (xmlNodePtr node);
     void add (const std::string uri,
@@ -93,7 +93,7 @@ namespace RL {
 			     std::string presence);
   };
 
-  typedef gmref_ptr<Cluster> ClusterPtr;
+  typedef boost::shared_ptr<Cluster> ClusterPtr;
 
 };
 

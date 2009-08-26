@@ -40,7 +40,7 @@
 
 #include <libxml/tree.h>
 
-#include <tr1/memory>
+#include <boost/smart_ptr.hpp>
 
 
 #include "form.h"
@@ -73,11 +73,11 @@ namespace Local
      * Constructors (and destructor)
      */
     Presentity (Ekiga::ServiceCore &_core,
-		std::tr1::shared_ptr<xmlDoc> _doc,
+		boost::shared_ptr<xmlDoc> _doc,
 		xmlNodePtr _node);
 
     Presentity (Ekiga::ServiceCore &_core,
-		std::tr1::shared_ptr<xmlDoc> _doc,
+		boost::shared_ptr<xmlDoc> _doc,
 		const std::string _name,
 		const std::string _uri,
 		const std::set<std::string> _groups);
@@ -185,7 +185,7 @@ namespace Local
 
     Ekiga::ServiceCore &core;
 
-    std::tr1::shared_ptr<xmlDoc> doc;
+    boost::shared_ptr<xmlDoc> doc;
     xmlNodePtr node;
 
     std::string presence;
@@ -193,7 +193,7 @@ namespace Local
     std::string avatar;
   };
 
-  typedef gmref_ptr<Presentity> PresentityPtr;
+  typedef boost::shared_ptr<Presentity> PresentityPtr;
 
 /**
  * @}

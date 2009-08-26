@@ -57,9 +57,9 @@ OPENLDAP::Source::Source (Ekiga::ServiceCore &_core):
 
     const std::string raw = c_raw;
 
-    doc = std::tr1::shared_ptr<xmlDoc> (xmlRecoverMemory (raw.c_str (), raw.length ()), xmlFreeDoc);
+    doc = boost::shared_ptr<xmlDoc> (xmlRecoverMemory (raw.c_str (), raw.length ()), xmlFreeDoc);
     if ( !doc)
-      doc = std::tr1::shared_ptr<xmlDoc> (xmlNewDoc (BAD_CAST "1.0"), xmlFreeDoc);
+      doc = boost::shared_ptr<xmlDoc> (xmlNewDoc (BAD_CAST "1.0"), xmlFreeDoc);
 
     root = xmlDocGetRootElement (doc.get ());
 
@@ -82,7 +82,7 @@ OPENLDAP::Source::Source (Ekiga::ServiceCore &_core):
     g_free (c_raw);
   } else {
 
-    doc = std::tr1::shared_ptr<xmlDoc> (xmlNewDoc (BAD_CAST "1.0"), xmlFreeDoc);
+    doc = boost::shared_ptr<xmlDoc> (xmlNewDoc (BAD_CAST "1.0"), xmlFreeDoc);
     root = xmlNewDocNode (doc.get (), NULL, BAD_CAST "list", NULL);
     xmlDocSetRootElement (doc.get (), root);
 
@@ -136,7 +136,7 @@ OPENLDAP::Source::populate_menu (Ekiga::MenuBuilder &builder)
 void
 OPENLDAP::Source::new_book ()
 {
-  gmref_ptr<Ekiga::FormRequestSimple> request = gmref_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &OPENLDAP::Source::on_new_book_form_submitted)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &OPENLDAP::Source::on_new_book_form_submitted)));
 
   bookinfo.name = "";
   bookinfo.uri = "ldap://localhost/dc=net?cn,telephoneNumber?sub?(cn=$)",
@@ -180,7 +180,7 @@ OPENLDAP::Source::on_new_book_form_submitted (bool submitted,
   std::string errmsg;
 
   if (OPENLDAP::BookFormInfo (result, bookinfo, errmsg)) {
-    gmref_ptr<Ekiga::FormRequestSimple> request = gmref_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &OPENLDAP::Source::on_new_book_form_submitted)));
+    boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &OPENLDAP::Source::on_new_book_form_submitted)));
 
     result.visit (*request);
     request->error (errmsg);

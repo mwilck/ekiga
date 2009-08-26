@@ -624,7 +624,7 @@ create_ekiga_net_page (EkigaAssistant *assistant)
 static void
 prepare_ekiga_net_page (EkigaAssistant *assistant)
 {
-  gmref_ptr<Opal::Bank> bank = assistant->priv->core->get ("opal-account-store");
+  boost::shared_ptr<Opal::Bank> bank = assistant->priv->core->get<Opal::Bank> ("opal-account-store");
   Opal::AccountPtr account = bank->find_account ("ekiga.net");
 
   if (account && !account->get_username ().empty ())
@@ -641,7 +641,7 @@ prepare_ekiga_net_page (EkigaAssistant *assistant)
 static void
 apply_ekiga_net_page (EkigaAssistant *assistant)
 {
-  gmref_ptr<Opal::Bank> bank = assistant->priv->core->get ("opal-account-store");
+  boost::shared_ptr<Opal::Bank> bank = assistant->priv->core->get<Opal::Bank> ("opal-account-store");
   Opal::AccountPtr account = bank->find_account ("ekiga.net");
   bool new_account = !account;
 
@@ -768,7 +768,7 @@ create_ekiga_out_page (EkigaAssistant *assistant)
 static void
 prepare_ekiga_out_page (EkigaAssistant *assistant)
 {
-  gmref_ptr<Opal::Bank> account_core = assistant->priv->core->get ("opal-account-store");
+  boost::shared_ptr<Opal::Bank> account_core = assistant->priv->core->get<Opal::Bank> ("opal-account-store");
   Opal::AccountPtr account = account_core->find_account ("sip.diamondcard.us");
 
   if (account && !account->get_username ().empty ())
@@ -786,7 +786,7 @@ static void
 apply_ekiga_out_page (EkigaAssistant *assistant)
 {
   /* Some specific Opal stuff for the Ekiga.net account */
-  gmref_ptr<Opal::Bank> bank = assistant->priv->core->get ("opal-account-store");
+  boost::shared_ptr<Opal::Bank> bank = assistant->priv->core->get<Opal::Bank> ("opal-account-store");
   Opal::AccountPtr account = bank->find_account ("sip.diamondcard.us");
   bool new_account = !account;
 
@@ -1213,7 +1213,7 @@ void
 get_audiooutput_devices_list (Ekiga::ServiceCore *core,
                               std::vector<std::string> & device_list)
 {
-  gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core = core->get ("audiooutput-core");
+  boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
   std::vector <Ekiga::AudioOutputDevice> devices;
 
   device_list.clear();
@@ -1236,7 +1236,7 @@ void
 get_audioinput_devices_list (Ekiga::ServiceCore *core,
                              std::vector<std::string> & device_list)
 {
-  gmref_ptr<Ekiga::AudioInputCore> audioinput_core = core->get ("audioinput-core");
+  boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core = core->get<Ekiga::AudioInputCore> ("audioinput-core");
   std::vector <Ekiga::AudioInputDevice> devices;
 
   device_list.clear();
@@ -1259,7 +1259,7 @@ void
 get_videoinput_devices_list (Ekiga::ServiceCore *core,
                                         std::vector<std::string> & device_list)
 {
-  gmref_ptr<Ekiga::VideoInputCore> videoinput_core = core->get ("videoinput-core");
+  boost::shared_ptr<Ekiga::VideoInputCore> videoinput_core = core->get<Ekiga::VideoInputCore> ("videoinput-core");
   std::vector<Ekiga::VideoInputDevice> devices;
 
   device_list.clear();
@@ -1623,9 +1623,9 @@ ekiga_assistant_new (Ekiga::ServiceCore *core)
                     G_CALLBACK (ekiga_assistant_key_press_cb), NULL);
 
   sigc::connection conn;
-  gmref_ptr<Ekiga::VideoInputCore> videoinput_core = core->get ("videoinput-core");
-  gmref_ptr<Ekiga::AudioInputCore> audioinput_core = core->get ("audioinput-core");
-  gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core = core->get ("audiooutput-core");
+  boost::shared_ptr<Ekiga::VideoInputCore> videoinput_core = core->get<Ekiga::VideoInputCore> ("videoinput-core");
+  boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core = core->get<Ekiga::AudioInputCore> ("audioinput-core");
+  boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
 
   conn = videoinput_core->device_added.connect (sigc::bind (sigc::ptr_fun (on_videoinput_device_added_cb), assistant));
   assistant->priv->connections.push_back (conn);

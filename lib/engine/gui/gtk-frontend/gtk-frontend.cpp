@@ -63,14 +63,14 @@ gtk_frontend_init (Ekiga::ServiceCore &core,
 {
   bool result = false;
 
-  gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
-  gmref_ptr<Ekiga::ContactCore> contact_core = core.get ("contact-core");
-  gmref_ptr<Ekiga::ChatCore> chat_core = core.get ("chat-core");
-  gmref_ptr<History::Source> history_source = core.get ("call-history-store");
+  boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
+  boost::shared_ptr<Ekiga::ContactCore> contact_core = core.get<Ekiga::ContactCore> ("contact-core");
+  boost::shared_ptr<Ekiga::ChatCore> chat_core = core.get<Ekiga::ChatCore> ("chat-core");
+  boost::shared_ptr<History::Source> history_source = core.get<History::Source> ("call-history-store");
 
   if (presence_core && contact_core && chat_core && history_source) {
 
-    gmref_ptr<GtkFrontend> gtk_frontend (new GtkFrontend (core));
+    boost::shared_ptr<GtkFrontend> gtk_frontend (new GtkFrontend (core));
     core.add (gtk_frontend);
     result = true;
   }
@@ -80,8 +80,8 @@ gtk_frontend_init (Ekiga::ServiceCore &core,
 
 GtkFrontend::GtkFrontend (Ekiga::ServiceCore &core)
 {
-  gmref_ptr<Ekiga::ContactCore> contact_core = core.get ("contact-core");
-  gmref_ptr<Ekiga::ChatCore> chat_core = core.get ("chat-core");
+  boost::shared_ptr<Ekiga::ContactCore> contact_core = core.get<Ekiga::ContactCore> ("contact-core");
+  boost::shared_ptr<Ekiga::ChatCore> chat_core = core.get<Ekiga::ChatCore> ("chat-core");
 
   addressbook_window =
     addressbook_window_new_with_key (*contact_core, "/apps/" PACKAGE_NAME "/general/user_interface/addressbook_window");

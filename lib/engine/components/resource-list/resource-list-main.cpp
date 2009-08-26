@@ -51,12 +51,12 @@ struct RLSpark: public Ekiga::Spark
 			    char** /*argv*/[])
   {
     Ekiga::ServicePtr service = core.get ("resource-list");
-    gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
-    gmref_ptr<XCAP::Core> xcap = core.get ("xcap-core");
+    boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
+    boost::shared_ptr<XCAP::Core> xcap = core.get<XCAP::Core> ("xcap-core");
 
     if ( !service && presence_core && xcap) {
 
-      gmref_ptr<RL::Cluster> cluster (new RL::Cluster (core));
+      boost::shared_ptr<RL::Cluster> cluster (new RL::Cluster (core));
       core.add (cluster);
       presence_core->add_cluster (cluster);
       result = true;
@@ -77,6 +77,6 @@ struct RLSpark: public Ekiga::Spark
 extern "C" void
 ekiga_plugin_init (Ekiga::KickStart& kickstart)
 {
-  gmref_ptr<Ekiga::Spark> spark(new RLSpark);
+  boost::shared_ptr<Ekiga::Spark> spark(new RLSpark);
   kickstart.add_spark (spark);
 }

@@ -65,7 +65,7 @@ namespace Echo
     void new_chat ();
   };
 
-  typedef gmref_ptr<Dialect> DialectPtr;
+  typedef boost::shared_ptr<Dialect> DialectPtr;
 
 };
 

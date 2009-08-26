@@ -50,12 +50,12 @@ struct LOCALROSTERSpark: public Ekiga::Spark
 			    char** /*argv*/[])
   {
     Ekiga::ServicePtr service = core.get ("local-cluster");
-    gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
-    gmref_ptr<Ekiga::FriendOrFoe> iff = core.get ("friend-or-foe");
+    boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
+    boost::shared_ptr<Ekiga::FriendOrFoe> iff = core.get<Ekiga::FriendOrFoe> ("friend-or-foe");
 
     if (presence_core && iff && !service) {
 
-      gmref_ptr<Local::Cluster> cluster (new Local::Cluster (core));
+      boost::shared_ptr<Local::Cluster> cluster (new Local::Cluster (core));
       core.add (cluster);
       iff->add_helper (cluster->get_heap ());
       presence_core->add_cluster (cluster);
@@ -77,6 +77,6 @@ struct LOCALROSTERSpark: public Ekiga::Spark
 void
 local_roster_init (Ekiga::KickStart& kickstart)
 {
-  gmref_ptr<Ekiga::Spark> spark(new LOCALROSTERSpark);
+  boost::shared_ptr<Ekiga::Spark> spark(new LOCALROSTERSpark);
   kickstart.add_spark (spark);
 }

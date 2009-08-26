@@ -169,7 +169,7 @@ struct RefreshData
 /* actual implementation */
 
 OPENLDAP::Book::Book (Ekiga::ServiceCore &_core,
-		      std::tr1::shared_ptr<xmlDoc> _doc,
+		      boost::shared_ptr<xmlDoc> _doc,
 		      xmlNodePtr _node):
   saslform(NULL), core(_core), doc(_doc), node(_node),
   name_node(NULL), uri_node(NULL), authcID_node(NULL), password_node(NULL),
@@ -338,7 +338,7 @@ OPENLDAP::Book::Book (Ekiga::ServiceCore &_core,
 }
 
 OPENLDAP::Book::Book (Ekiga::ServiceCore &_core,
-		      std::tr1::shared_ptr<xmlDoc> _doc,
+		      boost::shared_ptr<xmlDoc> _doc,
 		      OPENLDAP::BookInfo _bookinfo):
   saslform(NULL), core(_core), doc(_doc), name_node(NULL),
   uri_node(NULL), authcID_node(NULL), password_node(NULL),
@@ -535,7 +535,7 @@ extern "C" {
 
     /* If there are missing items, try to get them all in one dialog */
     if (nprompts) {
-      gmref_ptr<Ekiga::FormRequestSimple> request = gmref_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (ctx->book, &OPENLDAP::Book::on_sasl_form_submitted)));
+      boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (ctx->book, &OPENLDAP::Book::on_sasl_form_submitted)));
       Ekiga::FormBuilder result;
       std::string prompt;
       std::string ctxt = "";
@@ -909,7 +909,7 @@ OPENLDAP::Book::refresh_result ()
 }
 
 void
-OPENLDAP::BookForm (gmref_ptr<Ekiga::FormRequestSimple> request,
+OPENLDAP::BookForm (boost::shared_ptr<Ekiga::FormRequestSimple> request,
 		    struct BookInfo &info,
 		    std::string title)
 {
@@ -985,7 +985,7 @@ OPENLDAP::BookForm (gmref_ptr<Ekiga::FormRequestSimple> request,
 void
 OPENLDAP::Book::edit ()
 {
-  gmref_ptr<Ekiga::FormRequestSimple> request = gmref_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &OPENLDAP::Book::on_edit_form_submitted)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &OPENLDAP::Book::on_edit_form_submitted)));
 
   OPENLDAP::BookForm (request, bookinfo, std::string(_("Edit LDAP directory")));
 
@@ -1095,7 +1095,7 @@ OPENLDAP::Book::on_edit_form_submitted (bool submitted,
 
   std::string errmsg;
   if (OPENLDAP::BookFormInfo (result, bookinfo, errmsg)) {
-    gmref_ptr<Ekiga::FormRequestSimple> request = gmref_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &OPENLDAP::Book::on_edit_form_submitted)));
+    boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &OPENLDAP::Book::on_edit_form_submitted)));
 
     result.visit (*request);
     request->error (errmsg);

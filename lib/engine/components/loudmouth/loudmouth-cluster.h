@@ -56,7 +56,7 @@ namespace LM
     bool populate_menu (Ekiga::MenuBuilder& builder);
   };
 
-  typedef gmref_ptr<Cluster> ClusterPtr;
+  typedef boost::shared_ptr<Cluster> ClusterPtr;
 
 };
 

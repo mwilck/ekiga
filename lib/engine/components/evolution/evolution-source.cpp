@@ -110,17 +110,22 @@ public :
   inline void ready ()
   { found = false; }
 
-  bool test (Evolution::BookPtr book)
+  bool test (Ekiga::BookPtr book_)
   {
-    EBook *book_ebook = book->get_ebook ();
-    ESource *book_source = e_book_get_source (book_ebook);
-    ESourceGroup *book_group = e_source_peek_group (book_source);
+    Evolution::BookPtr book = boost::dynamic_pointer_cast<Evolution::Book> (book_);
+    if (book) {
 
-    if (book_group == group) {
+      EBook *book_ebook = book->get_ebook ();
+      ESource *book_source = e_book_get_source (book_ebook);
+      ESourceGroup *book_group = e_source_peek_group (book_source);
 
-      book->removed.emit ();
-      found = true;
+      if (book_group == group) {
+
+	book->removed.emit ();
+	found = true;
+      }
     }
+
     return !found;
   }
 

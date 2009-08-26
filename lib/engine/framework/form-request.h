@@ -38,7 +38,7 @@
 
 #include "form.h"
 
-#include "gmref.h"
+#include <boost/smart_ptr.hpp>
 
 namespace Ekiga
 {
@@ -49,7 +49,6 @@ namespace Ekiga
  */
 
   class FormRequest:
-    public virtual GmRefCounted,
     public virtual Form
   {
   public:
@@ -60,7 +59,7 @@ namespace Ekiga
 
   };
 
-  typedef gmref_ptr<FormRequest> FormRequestPtr;
+  typedef boost::shared_ptr<FormRequest> FormRequestPtr;
 
 /**
  * @}

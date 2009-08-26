@@ -75,7 +75,7 @@ namespace KAB
     KABC::Addressee& addressee;
   };
 
-  typedef gmref_ptr<Contact> ContactPtr;
+  typedef boost::shared_ptr<Contact> ContactPtr;
 
 /**
  * @}

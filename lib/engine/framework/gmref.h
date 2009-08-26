@@ -60,7 +60,7 @@ public:
 
   gmref_ptr (const gmref_ptr& ptr);
 
-  template<typename Tprim> gmref_ptr (const gmref_ptr<Tprim>& ptr);
+  template<typename Tprim> gmref_ptr (const boost::shared_ptr<Tprim>& ptr);
 
   gmref_ptr& operator= (const gmref_ptr& other);
 
@@ -83,14 +83,14 @@ private:
   T* obj;
 };
 
-template<typename T> bool operator==(const gmref_ptr<T>& a,
-				     const gmref_ptr<T>& b);
+template<typename T> bool operator==(const boost::shared_ptr<T>& a,
+				     const boost::shared_ptr<T>& b);
 
-template<typename T> bool operator!=(const gmref_ptr<T>& a,
-				     const gmref_ptr<T>& b);
+template<typename T> bool operator!=(const boost::shared_ptr<T>& a,
+				     const boost::shared_ptr<T>& b);
 
-template<typename T> bool operator<(const gmref_ptr<T>& a,
-				    const gmref_ptr<T>& b);
+template<typename T> bool operator<(const boost::shared_ptr<T>& a,
+				    const boost::shared_ptr<T>& b);
 
 /* base class for a reference counted object
  */
@@ -120,25 +120,25 @@ private:
 /* implementation of the templates */
 
 template<typename T>
-gmref_ptr<T>::gmref_ptr (): obj(0)
+boost::shared_ptr<T>::gmref_ptr (): obj(0)
 {
 }
 
 template<typename T>
-gmref_ptr<T>::~gmref_ptr ()
+boost::shared_ptr<T>::~gmref_ptr ()
 {
   reset ();
 }
 
 template<typename T>
-gmref_ptr<T>::gmref_ptr (T* obj_): obj(obj_)
+boost::shared_ptr<T>::gmref_ptr (T* obj_): obj(obj_)
 {
   if (obj != 0)
     obj->reference ();
 }
 
 template<typename T>
-gmref_ptr<T>::gmref_ptr (const gmref_ptr<T>& ptr): obj(ptr.obj)
+boost::shared_ptr<T>::gmref_ptr (const boost::shared_ptr<T>& ptr): obj(ptr.obj)
 {
   if (obj != 0)
     obj->reference ();
@@ -146,17 +146,17 @@ gmref_ptr<T>::gmref_ptr (const gmref_ptr<T>& ptr): obj(ptr.obj)
 
 template<typename T>
 template<typename Tprim>
-gmref_ptr<T>::gmref_ptr (const gmref_ptr<Tprim>& ptr): obj(dynamic_cast<T*>(ptr.obj))
+boost::shared_ptr<T>::gmref_ptr (const boost::shared_ptr<Tprim>& ptr): obj(dynamic_cast<T*>(ptr.obj))
 {
   if (obj != 0)
     obj->reference ();
 }
 
 template<typename T>
-gmref_ptr<T>&
-gmref_ptr<T>::operator= (const gmref_ptr<T>& other)
+boost::shared_ptr<T>&
+boost::shared_ptr<T>::operator= (const boost::shared_ptr<T>& other)
 {
-  gmref_ptr<T> temp(other);
+  boost::shared_ptr<T> temp(other);
   this->swap (temp);
 
   return *this;
@@ -164,28 +164,28 @@ gmref_ptr<T>::operator= (const gmref_ptr<T>& other)
 
 template<typename T>
 T*
-gmref_ptr<T>::operator-> () const
+boost::shared_ptr<T>::operator-> () const
 {
   return obj;
 }
 
 template<typename T>
 T&
-gmref_ptr<T>::operator* () const
+boost::shared_ptr<T>::operator* () const
 {
   return *obj;
 }
 
 template<typename T>
 T*
-gmref_ptr<T>::get () const
+boost::shared_ptr<T>::get () const
 {
   return obj;
 }
 
 template<typename T>
 void
-gmref_ptr<T>::swap (gmref_ptr<T>& other)
+boost::shared_ptr<T>::swap (boost::shared_ptr<T>& other)
 {
   T* temp = obj;
   obj = other.obj;
@@ -193,14 +193,14 @@ gmref_ptr<T>::swap (gmref_ptr<T>& other)
 }
 
 template<typename T>
-gmref_ptr<T>::operator bool () const
+boost::shared_ptr<T>::operator bool () const
 {
   return obj != 0;
 }
 
 template<typename T>
 void
-gmref_ptr<T>::reset ()
+boost::shared_ptr<T>::reset ()
 {
   if (obj != 0)
     obj->unreference ();
@@ -209,23 +209,23 @@ gmref_ptr<T>::reset ()
 
 template<typename T>
 bool
-operator==(const gmref_ptr<T>& a,
-	   const gmref_ptr<T>& b)
+operator==(const boost::shared_ptr<T>& a,
+	   const boost::shared_ptr<T>& b)
 {
   return a.get () == b.get ();
 }
 
 template<typename T>
-bool operator!=(const gmref_ptr<T>& a,
-		const gmref_ptr<T>& b)
+bool operator!=(const boost::shared_ptr<T>& a,
+		const boost::shared_ptr<T>& b)
 {
   return !operator==(a, b);
 }
 
 template<typename T>
 bool
-operator<(const gmref_ptr<T>& a,
-	  const gmref_ptr<T>& b)
+operator<(const boost::shared_ptr<T>& a,
+	  const boost::shared_ptr<T>& b)
 {
   return a.get () < b.get ();
 }

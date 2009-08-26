@@ -206,10 +206,10 @@ namespace Local
 				      Ekiga::Form& result);
 
     Ekiga::ServiceCore &core;
-    std::tr1::shared_ptr<xmlDoc> doc;
+    boost::shared_ptr<xmlDoc> doc;
   };
 
-  typedef gmref_ptr<Heap> HeapPtr;
+  typedef boost::shared_ptr<Heap> HeapPtr;
 
 /**
  * @}

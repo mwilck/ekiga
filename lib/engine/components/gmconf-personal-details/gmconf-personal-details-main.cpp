@@ -45,11 +45,11 @@ gmconf_personal_details_init (Ekiga::ServiceCore &core,
                               char ** /*argv*/[])
 {
   bool result = false;
-  gmref_ptr<Ekiga::PersonalDetails> personal_details = core.get ("personal-details");
+  boost::shared_ptr<Ekiga::PersonalDetails> personal_details = core.get<Ekiga::PersonalDetails> ("personal-details");
 
   if ( !personal_details) {
 
-    gmref_ptr<Gmconf::PersonalDetails> gmconf_details (new Gmconf::PersonalDetails ());
+    boost::shared_ptr<Gmconf::PersonalDetails> gmconf_details (new Gmconf::PersonalDetails ());
     core.add (gmconf_details);
     result = true;
   }

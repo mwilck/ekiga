@@ -40,7 +40,7 @@
  * it!
  */
 
-#include "gmref.h"
+#include <boost/smart_ptr.hpp>
 
 #include <list>
 #include <string>
@@ -54,7 +54,7 @@ namespace Ekiga
  * @{
  */
 
-  struct Service: public virtual GmRefCounted
+  struct Service
   {
     virtual ~Service () {}
 
@@ -62,7 +62,7 @@ namespace Ekiga
 
     virtual const std::string get_description () const = 0;
   };
-  typedef gmref_ptr<Service> ServicePtr;
+  typedef boost::shared_ptr<Service> ServicePtr;
 
 
   class ServiceCore
@@ -76,6 +76,10 @@ namespace Ekiga
     bool add (ServicePtr service);
 
     ServicePtr get (const std::string name);
+
+    template<typename T>
+    boost::shared_ptr<T> get (const std::string name)
+    { return boost::dynamic_pointer_cast<T> (get (name)); }
 
     void dump (std::ostream &stream) const;
 

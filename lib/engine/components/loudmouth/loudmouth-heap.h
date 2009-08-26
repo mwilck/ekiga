@@ -48,7 +48,7 @@ namespace LM
   {
   public:
 
-    Heap (gmref_ptr<Ekiga::PersonalDetails> details_,
+    Heap (boost::shared_ptr<Ekiga::PersonalDetails> details_,
 	  DialectPtr dialect_,
 	  LmConnection* connection_);
 
@@ -77,7 +77,7 @@ namespace LM
 
   private:
 
-    gmref_ptr<Ekiga::PersonalDetails> details;
+    boost::shared_ptr<Ekiga::PersonalDetails> details;
 
     DialectPtr dialect;
 
@@ -108,7 +108,7 @@ namespace LM
     void on_chat_requested (PresentityPtr presentity);
   };
 
-  typedef gmref_ptr<Heap> HeapPtr;
+  typedef boost::shared_ptr<Heap> HeapPtr;
 
 };
 

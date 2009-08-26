@@ -43,7 +43,7 @@
 #include "call.h"
 #include "call-manager.h"
 #include "call-protocol-manager.h"
-#include "gmref.h"
+#include <boost/smart_ptr.hpp>
 
 #include <sigc++/sigc++.h>
 #include <set>
@@ -66,8 +66,8 @@ namespace Ekiga
     {
 
   public:
-      typedef std::set<gmref_ptr<CallManager> >::iterator iterator;
-      typedef std::set<gmref_ptr<CallManager> >::const_iterator const_iterator;
+      typedef std::set<boost::shared_ptr<CallManager> >::iterator iterator;
+      typedef std::set<boost::shared_ptr<CallManager> >::const_iterator const_iterator;
 
       /** The constructor
        */
@@ -98,17 +98,17 @@ namespace Ekiga
        * @param call is the call to be added.
        * @param manager is the CallManager handling it.
        */
-      void add_call (gmref_ptr<Call> call, gmref_ptr<CallManager> manager);
+      void add_call (boost::shared_ptr<Call> call, boost::shared_ptr<CallManager> manager);
 
       /** Remove a call handled by the CallCore serice.
        * @param call is the call to be removed.
        */
-      void remove_call (gmref_ptr<Call> call);
+      void remove_call (boost::shared_ptr<Call> call);
 
       /** Adds a CallManager to the CallCore service.
        * @param The manager to be added.
        */
-      void add_manager (gmref_ptr<CallManager> manager);
+      void add_manager (boost::shared_ptr<CallManager> manager);
 
       /** Return iterator to beginning
        * @return iterator to beginning
@@ -125,7 +125,7 @@ namespace Ekiga
       /** This signal is emitted when a Ekiga::CallManager has been
        * added to the CallCore Service.
        */
-      sigc::signal1<void, gmref_ptr<CallManager> > manager_added;
+      sigc::signal1<void, boost::shared_ptr<CallManager> > manager_added;
 
 
       /*** Call Management ***/                 
@@ -140,20 +140,20 @@ namespace Ekiga
       
       /** See call.h for the API
        */
-      sigc::signal2<void, gmref_ptr<CallManager> , gmref_ptr<Call> > ringing_call;
-      sigc::signal2<void, gmref_ptr<CallManager> , gmref_ptr<Call> > setup_call;
-      sigc::signal2<void, gmref_ptr<CallManager> , gmref_ptr<Call> > missed_call;
-      sigc::signal3<void, gmref_ptr<CallManager> , gmref_ptr<Call>, std::string> cleared_call;
-      sigc::signal2<void, gmref_ptr<CallManager> , gmref_ptr<Call> > established_call;
-      sigc::signal2<void, gmref_ptr<CallManager> , gmref_ptr<Call> > held_call;
-      sigc::signal2<void, gmref_ptr<CallManager> , gmref_ptr<Call> > retrieved_call;
-      sigc::signal5<void, gmref_ptr<CallManager> , gmref_ptr<Call>, std::string, Call::StreamType, bool> stream_opened;
-      sigc::signal5<void, gmref_ptr<CallManager> , gmref_ptr<Call>, std::string, Call::StreamType, bool> stream_closed;
-      sigc::signal4<void, gmref_ptr<CallManager> , gmref_ptr<Call>, std::string, Call::StreamType> stream_paused;
-      sigc::signal4<void, gmref_ptr<CallManager> , gmref_ptr<Call>, std::string, Call::StreamType> stream_resumed;
+      sigc::signal2<void, boost::shared_ptr<CallManager> , boost::shared_ptr<Call> > ringing_call;
+      sigc::signal2<void, boost::shared_ptr<CallManager> , boost::shared_ptr<Call> > setup_call;
+      sigc::signal2<void, boost::shared_ptr<CallManager> , boost::shared_ptr<Call> > missed_call;
+      sigc::signal3<void, boost::shared_ptr<CallManager> , boost::shared_ptr<Call>, std::string> cleared_call;
+      sigc::signal2<void, boost::shared_ptr<CallManager> , boost::shared_ptr<Call> > established_call;
+      sigc::signal2<void, boost::shared_ptr<CallManager> , boost::shared_ptr<Call> > held_call;
+      sigc::signal2<void, boost::shared_ptr<CallManager> , boost::shared_ptr<Call> > retrieved_call;
+      sigc::signal5<void, boost::shared_ptr<CallManager> , boost::shared_ptr<Call>, std::string, Call::StreamType, bool> stream_opened;
+      sigc::signal5<void, boost::shared_ptr<CallManager> , boost::shared_ptr<Call>, std::string, Call::StreamType, bool> stream_closed;
+      sigc::signal4<void, boost::shared_ptr<CallManager> , boost::shared_ptr<Call>, std::string, Call::StreamType> stream_paused;
+      sigc::signal4<void, boost::shared_ptr<CallManager> , boost::shared_ptr<Call>, std::string, Call::StreamType> stream_resumed;
 
       /*** Misc ***/
-      sigc::signal1<void, gmref_ptr<CallManager> > manager_ready;
+      sigc::signal1<void, boost::shared_ptr<CallManager> > manager_ready;
       sigc::signal0<void> ready;
 
       /** This chain allows the CallCore to report errors to the user
@@ -161,30 +161,30 @@ namespace Ekiga
       ChainOfResponsibility<std::string> errors;
 
   private:
-      void on_new_call (gmref_ptr<Call> call, gmref_ptr<CallManager> manager);
-      void on_ringing_call (gmref_ptr<Call> call, gmref_ptr<CallManager> manager);
-      void on_setup_call (gmref_ptr<Call> call, gmref_ptr<CallManager> manager);
-      void on_missed_call (gmref_ptr<Call> call, gmref_ptr<CallManager> manager);
-      void on_cleared_call (std::string, gmref_ptr<Call> call, gmref_ptr<CallManager> manager);
-      void on_established_call (gmref_ptr<Call> call, gmref_ptr<CallManager> manager);
-      void on_held_call (gmref_ptr<Call> call, gmref_ptr<CallManager> manager);
-      void on_retrieved_call (gmref_ptr<Call> call, gmref_ptr<CallManager> manager);
-      void on_stream_opened (std::string name, Call::StreamType type, bool is_transmitting, gmref_ptr<Call> call, gmref_ptr<CallManager> manager);
-      void on_stream_closed (std::string name, Call::StreamType type, bool is_transmitting, gmref_ptr<Call> call, gmref_ptr<CallManager> manager);
-      void on_stream_paused (std::string name, Call::StreamType type, gmref_ptr<Call> call, gmref_ptr<CallManager> manager);
-      void on_stream_resumed (std::string name, Call::StreamType type, gmref_ptr<Call> call, gmref_ptr<CallManager> manager);
+      void on_new_call (boost::shared_ptr<Call> call, boost::shared_ptr<CallManager> manager);
+      void on_ringing_call (boost::shared_ptr<Call> call, boost::shared_ptr<CallManager> manager);
+      void on_setup_call (boost::shared_ptr<Call> call, boost::shared_ptr<CallManager> manager);
+      void on_missed_call (boost::shared_ptr<Call> call, boost::shared_ptr<CallManager> manager);
+      void on_cleared_call (std::string, boost::shared_ptr<Call> call, boost::shared_ptr<CallManager> manager);
+      void on_established_call (boost::shared_ptr<Call> call, boost::shared_ptr<CallManager> manager);
+      void on_held_call (boost::shared_ptr<Call> call, boost::shared_ptr<CallManager> manager);
+      void on_retrieved_call (boost::shared_ptr<Call> call, boost::shared_ptr<CallManager> manager);
+      void on_stream_opened (std::string name, Call::StreamType type, bool is_transmitting, boost::shared_ptr<Call> call, boost::shared_ptr<CallManager> manager);
+      void on_stream_closed (std::string name, Call::StreamType type, bool is_transmitting, boost::shared_ptr<Call> call, boost::shared_ptr<CallManager> manager);
+      void on_stream_paused (std::string name, Call::StreamType type, boost::shared_ptr<Call> call, boost::shared_ptr<CallManager> manager);
+      void on_stream_resumed (std::string name, Call::StreamType type, boost::shared_ptr<Call> call, boost::shared_ptr<CallManager> manager);
 
-      void on_im_failed (std::string, std::string, gmref_ptr<CallManager> manager);
-      void on_im_sent (std::string, std::string, gmref_ptr<CallManager> manager);
-      void on_im_received (std::string, std::string, std::string, gmref_ptr<CallManager> manager);
-      void on_new_chat (std::string, std::string, gmref_ptr<CallManager> manager);
+      void on_im_failed (std::string, std::string, boost::shared_ptr<CallManager> manager);
+      void on_im_sent (std::string, std::string, boost::shared_ptr<CallManager> manager);
+      void on_im_received (std::string, std::string, std::string, boost::shared_ptr<CallManager> manager);
+      void on_new_chat (std::string, std::string, boost::shared_ptr<CallManager> manager);
 
-      void on_manager_ready (gmref_ptr<CallManager> manager);
+      void on_manager_ready (boost::shared_ptr<CallManager> manager);
 
-      void on_call_removed (gmref_ptr<Call> call);
+      void on_call_removed (boost::shared_ptr<Call> call);
 
       
-      std::set<gmref_ptr<CallManager> > managers;
+      std::set<boost::shared_ptr<CallManager> > managers;
       std::list<sigc::connection> manager_connections;
       std::map<std::string, std::list<sigc::connection> > call_connections;
       unsigned nr_ready;

@@ -64,7 +64,7 @@ namespace LM
     Ekiga::ServiceCore& core;
   };
 
-  typedef gmref_ptr<Dialect> DialectPtr;
+  typedef boost::shared_ptr<Dialect> DialectPtr;
 };
 
 #endif

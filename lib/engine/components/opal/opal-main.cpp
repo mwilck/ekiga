@@ -103,16 +103,16 @@ struct OPALSpark: public Ekiga::Spark
 			    int* /*argc*/,
 			    char** /*argv*/[])
   {
-    gmref_ptr<Ekiga::ContactCore> contact_core = core.get ("contact-core");
-    gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
-    gmref_ptr<Ekiga::CallCore> call_core = core.get ("call-core");
-    gmref_ptr<Ekiga::ChatCore> chat_core = core.get ("chat-core");
-    gmref_ptr<Ekiga::AccountCore> account_core = core.get ("account-core");
-    gmref_ptr<Ekiga::AudioInputCore> audioinput_core = core.get ("audioinput-core");
-    gmref_ptr<Ekiga::VideoInputCore> videoinput_core = core.get ("videoinput-core");
-    gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core = core.get ("audiooutput-core");
-    gmref_ptr<Ekiga::VideoOutputCore> videooutput_core = core.get ("videooutput-core");
-    gmref_ptr<Ekiga::PersonalDetails> personal_details = core.get ("personal-details");
+    boost::shared_ptr<Ekiga::ContactCore> contact_core = core.get<Ekiga::ContactCore> ("contact-core");
+    boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
+    boost::shared_ptr<Ekiga::CallCore> call_core = core.get<Ekiga::CallCore> ("call-core");
+    boost::shared_ptr<Ekiga::ChatCore> chat_core = core.get<Ekiga::ChatCore> ("chat-core");
+    boost::shared_ptr<Ekiga::AccountCore> account_core = core.get<Ekiga::AccountCore> ("account-core");
+    boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core = core.get<Ekiga::AudioInputCore> ("audioinput-core");
+    boost::shared_ptr<Ekiga::VideoInputCore> videoinput_core = core.get<Ekiga::VideoInputCore> ("videoinput-core");
+    boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = core.get<Ekiga::AudioOutputCore> ("audiooutput-core");
+    boost::shared_ptr<Ekiga::VideoOutputCore> videooutput_core = core.get<Ekiga::VideoOutputCore> ("videooutput-core");
+    boost::shared_ptr<Ekiga::PersonalDetails> personal_details = core.get<Ekiga::PersonalDetails> ("personal-details");
     Ekiga::ServicePtr account_store = core.get ("opal-account-store");
     Ekiga::ServicePtr sip_endpoint = core.get ("opal-sip-endpoint");
 
@@ -121,9 +121,9 @@ struct OPALSpark: public Ekiga::Spark
 	&& audiooutput_core && videooutput_core && personal_details
 	&& !account_store && !sip_endpoint) {
 
-      gmref_ptr<CallManager> call_manager (new CallManager (core));
+      boost::shared_ptr<CallManager> call_manager (new CallManager (core));
 
-      gmref_ptr<Opal::Bank> bank (new Bank (core));
+      boost::shared_ptr<Opal::Bank> bank (new Bank (core));
 
       account_core->add_bank (bank);
       core.add (bank);
@@ -131,7 +131,7 @@ struct OPALSpark: public Ekiga::Spark
 
 #ifdef HAVE_SIP
       unsigned sip_port = gm_conf_get_int (SIP_KEY "listen_port");
-      gmref_ptr<Sip::EndPoint> sip_manager (new Sip::EndPoint (*call_manager, core, sip_port));
+      boost::shared_ptr<Sip::EndPoint> sip_manager (new Sip::EndPoint (*call_manager, core, sip_port));
       call_manager->add_protocol_manager (sip_manager);
       contact_core->add_contact_decorator (sip_manager);
       presence_core->add_presentity_decorator (sip_manager);
@@ -142,7 +142,7 @@ struct OPALSpark: public Ekiga::Spark
 
 #ifdef HAVE_H323
       unsigned h323_port = gm_conf_get_int (H323_KEY "listen_port");
-      gmref_ptr<H323::EndPoint> h323_manager (new H323::EndPoint (*call_manager, core, h323_port));
+      boost::shared_ptr<H323::EndPoint> h323_manager (new H323::EndPoint (*call_manager, core, h323_port));
       call_manager->add_protocol_manager (h323_manager);
       contact_core->add_contact_decorator (h323_manager);
       presence_core->add_presentity_decorator (h323_manager);
@@ -179,6 +179,6 @@ struct OPALSpark: public Ekiga::Spark
 void
 opal_init (Ekiga::KickStart& kickstart)
 {
-  gmref_ptr<Ekiga::Spark> spark(new OPALSpark);
+  boost::shared_ptr<Ekiga::Spark> spark(new OPALSpark);
   kickstart.add_spark (spark);
 }

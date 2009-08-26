@@ -98,18 +98,18 @@ namespace History
 
     void common_add (Contact &contact);
 
-    void on_missed_call (gmref_ptr<Ekiga::CallManager> manager,
-			 gmref_ptr<Ekiga::Call> call);
+    void on_missed_call (boost::shared_ptr<Ekiga::CallManager> manager,
+			 boost::shared_ptr<Ekiga::Call> call);
 
-    void on_cleared_call (gmref_ptr<Ekiga::CallManager> manager,
-			  gmref_ptr<Ekiga::Call> call,
+    void on_cleared_call (boost::shared_ptr<Ekiga::CallManager> manager,
+			  boost::shared_ptr<Ekiga::Call> call,
 			  std::string message);
 
     Ekiga::ServiceCore &core;
-    std::tr1::shared_ptr<xmlDoc> doc;
+    boost::shared_ptr<xmlDoc> doc;
   };
 
-  typedef gmref_ptr<Book> BookPtr;
+  typedef boost::shared_ptr<Book> BookPtr;
 
 /**
  * @}

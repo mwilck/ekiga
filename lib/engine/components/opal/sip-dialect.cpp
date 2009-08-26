@@ -86,7 +86,7 @@ SIP::Dialect::start_chat_with (std::string uri,
   (void)open_chat_with (uri, name, true);
 }
 
-gmref_ptr<SIP::SimpleChat>
+boost::shared_ptr<SIP::SimpleChat>
 SIP::Dialect::open_chat_with (std::string uri,
 			      std::string name,
 			      bool user_request)

@@ -39,7 +39,7 @@
 #ifndef __RL_ENTRY_REF_H__
 #define __RL_ENTRY_REF_H__
 
-#include "gmref.h"
+#include <boost/smart_ptr.hpp>
 
 #include "services.h"
 #include "presentity.h"
@@ -49,7 +49,6 @@
 namespace RL {
 
   class EntryRef:
-    public virtual GmRefCounted,
     public Ekiga::Presentity
   {
   public:

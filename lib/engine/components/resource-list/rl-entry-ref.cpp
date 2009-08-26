@@ -126,7 +126,7 @@ bool
 RL::EntryRef::populate_menu (Ekiga::MenuBuilder& builder)
 {
   bool populated = false;
-  gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
+  boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
   std::string uri(get_uri ());
 
   builder.add_action ("refresh", _("_Refresh"),

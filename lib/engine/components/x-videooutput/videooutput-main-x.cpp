@@ -45,7 +45,7 @@ videooutput_x_init (Ekiga::ServiceCore &core,
 	    char **/*argv*/[])
 {
   bool result = false;
-  gmref_ptr<Ekiga::VideoOutputCore> videooutput_core = core.get ("videooutput-core");
+  boost::shared_ptr<Ekiga::VideoOutputCore> videooutput_core = core.get<Ekiga::VideoOutputCore> ("videooutput-core");
 
   if (videooutput_core) {
 

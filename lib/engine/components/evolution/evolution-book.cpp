@@ -95,11 +95,12 @@ public:
   contacts_removed_helper (const std::string id_): id(id_)
   {}
 
-  bool test (Evolution::ContactPtr contact)
+  bool test (Ekiga::ContactPtr contact_)
   {
+    Evolution::ContactPtr contact = boost::dynamic_pointer_cast<Evolution::Contact> (contact_);
     bool result;
 
-    if (contact->get_id () == id) {
+    if (contact && contact->get_id () == id) {
 
       contact->removed.emit ();
       result = false;
@@ -139,11 +140,12 @@ public:
     id = (const gchar*)e_contact_get_const (econtact, E_CONTACT_UID);
   }
 
-  bool test (Evolution::ContactPtr contact)
+  bool test (Ekiga::ContactPtr contact_)
   {
+    Evolution::ContactPtr contact = boost::dynamic_pointer_cast<Evolution::Contact> (contact_);
     bool result = true;
 
-    if (contact->get_id () == id) {
+    if (contact && contact->get_id () == id) {
 
       contact->update_econtact (econtact);
       result = false;
@@ -313,7 +315,7 @@ Evolution::Book::refresh ()
 void
 Evolution::Book::new_contact_action ()
 {
-  gmref_ptr<Ekiga::FormRequestSimple> request = gmref_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &Evolution::Book::on_new_contact_form_submitted)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &Evolution::Book::on_new_contact_form_submitted)));
 
   request->title (_("New contact"));
 

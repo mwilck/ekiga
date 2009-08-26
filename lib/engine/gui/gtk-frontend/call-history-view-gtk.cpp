@@ -78,7 +78,7 @@ on_contact_added (Ekiga::ContactPtr contact,
   std::stringstream info;
   const gchar *id = NULL;
 
-  gmref_ptr<History::Contact> hcontact = contact;
+  boost::shared_ptr<History::Contact> hcontact = boost::dynamic_pointer_cast<History::Contact> (contact);
   GtkTreeIter iter;
 
   if (hcontact) {
@@ -189,7 +189,7 @@ on_clicked (GtkWidget *tree,
 /* public api */
 
 GtkWidget *
-call_history_view_gtk_new (gmref_ptr<History::Book> book)
+call_history_view_gtk_new (boost::shared_ptr<History::Book> book)
 {
   GtkWidget *result = NULL;
   std::list<sigc::connection> *conns = NULL;

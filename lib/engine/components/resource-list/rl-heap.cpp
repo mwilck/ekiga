@@ -44,7 +44,7 @@
 #include "rl-heap.h"
 
 RL::Heap::Heap (Ekiga::ServiceCore& services_,
-		std::tr1::shared_ptr<xmlDoc> doc_,
+		boost::shared_ptr<xmlDoc> doc_,
 		xmlNodePtr node_):
   services(services_),
   node(node_), name(NULL),
@@ -113,7 +113,7 @@ RL::Heap::Heap (Ekiga::ServiceCore& services_,
 }
 
 RL::Heap::Heap (Ekiga::ServiceCore& services_,
-		std::tr1::shared_ptr<xmlDoc> doc_,
+		boost::shared_ptr<xmlDoc> doc_,
 		const std::string name_,
 		const std::string root_,
 		const std::string user_,
@@ -220,7 +220,7 @@ RL::Heap::get_node () const
 void
 RL::Heap::refresh ()
 {
-  gmref_ptr<XCAP::Core> xcap = services.get ("xcap-core");
+  boost::shared_ptr<XCAP::Core> xcap = services.get<XCAP::Core> ("xcap-core");
   std::string root_str;
   std::string username_str;
   std::string password_str;
@@ -246,7 +246,7 @@ RL::Heap::refresh ()
     if (str != NULL)
       password_str = (const char*)str;
   }
-  gmref_ptr<XCAP::Path> path(new XCAP::Path (root_str, "resource-lists",
+  boost::shared_ptr<XCAP::Path> path(new XCAP::Path (root_str, "resource-lists",
 					     user_str));
   path->set_credentials (username_str, password_str);
   path = path->build_child ("resource-lists");
@@ -284,9 +284,9 @@ RL::Heap::on_document_received (bool error,
 void
 RL::Heap::parse_doc (std::string raw)
 {
-  doc = std::tr1::shared_ptr<xmlDoc> (xmlRecoverMemory (raw.c_str (), raw.length ()), xmlFreeDoc);
+  doc = boost::shared_ptr<xmlDoc> (xmlRecoverMemory (raw.c_str (), raw.length ()), xmlFreeDoc);
   if ( !doc)
-    doc = std::tr1::shared_ptr<xmlDoc> (xmlNewDoc (BAD_CAST "1.0"), xmlFreeDoc);
+    doc = boost::shared_ptr<xmlDoc> (xmlNewDoc (BAD_CAST "1.0"), xmlFreeDoc);
   xmlNodePtr doc_root = xmlDocGetRootElement (doc.get ());
 
   if (doc_root == NULL
@@ -352,7 +352,7 @@ RL::Heap::parse_list (xmlNodePtr list)
     }
   }
 
-  gmref_ptr<XCAP::Path> path(new XCAP::Path (root_str, "resource-lists",
+  boost::shared_ptr<XCAP::Path> path(new XCAP::Path (root_str, "resource-lists",
 					     user_str));
   path->set_credentials (username_str, password_str);
   path = path->build_child ("resource-lists");
@@ -408,7 +408,7 @@ RL::Heap::push_status (const std::string uri_,
 void
 RL::Heap::edit ()
 {
-  gmref_ptr<Ekiga::FormRequestSimple> request = gmref_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &RL::Heap::on_edit_form_submitted)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &RL::Heap::on_edit_form_submitted)));
 
   std::string name_str;
   std::string root_str;
@@ -507,7 +507,7 @@ RL::Heap::on_edit_form_submitted (bool submitted,
 void
 RL::Heap::new_entry ()
 {
-  gmref_ptr<Ekiga::FormRequestSimple> request = gmref_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &RL::Heap::on_new_entry_form_submitted)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &RL::Heap::on_new_entry_form_submitted)));
 
   request->title (_("Add a remote contact"));
   request->instructions (_("Please fill in this form to create a new "
@@ -593,13 +593,13 @@ RL::Heap::on_new_entry_form_submitted (bool submitted,
       if (str != NULL)
 	password_str = (const char*)str;
     }
-    gmref_ptr<XCAP::Path> path(new XCAP::Path (root_str, "resource-lists",
+    boost::shared_ptr<XCAP::Path> path(new XCAP::Path (root_str, "resource-lists",
 					       user_str));
     path->set_credentials (username_str, password_str);
     path = path->build_child ("resource-lists");
     path = path->build_child ("list");
     path = path->build_child_with_attribute ("entry", "uri", entry_uri);
-    gmref_ptr<XCAP::Core> xcap = services.get ("xcap-core");
+    boost::shared_ptr<XCAP::Core> xcap = services.get<XCAP::Core> ("xcap-core");
     xcap->write (path, "application/xcap-el+xml",
 		 (const char*)xmlBufferContent (buffer),
 		 sigc::mem_fun (this, &RL::Heap::new_entry_result));

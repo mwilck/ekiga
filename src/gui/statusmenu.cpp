@@ -50,7 +50,7 @@
 
 struct _StatusMenuPrivate
 {
-  gmref_ptr<Ekiga::PersonalDetails> personal_details;
+  boost::shared_ptr<Ekiga::PersonalDetails> personal_details;
   std::vector<sigc::connection> connections;
 
   GtkListStore *list_store; // List store storing the menu
@@ -810,7 +810,7 @@ status_menu_new (Ekiga::ServiceCore & core)
   self = (StatusMenu *) g_object_new (STATUS_MENU_TYPE, NULL);
   self->priv = new StatusMenuPrivate ();
 
-  self->priv->personal_details = core.get ("personal-details");
+  self->priv->personal_details = core.get<Ekiga::PersonalDetails> ("personal-details");
   self->priv->parent = NULL;
   self->priv->list_store = gtk_list_store_new (NUM_COLUMNS,
                                                GDK_TYPE_PIXBUF,

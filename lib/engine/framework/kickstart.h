@@ -66,7 +66,7 @@
 namespace Ekiga
 {
 
-  struct Spark: public virtual GmRefCounted
+  struct Spark
   {
     typedef enum { BLANK, PARTIAL, FULL } state;
 
@@ -90,7 +90,7 @@ namespace Ekiga
 
     ~KickStart ();
 
-    void add_spark (gmref_ptr<Spark>& spark);
+    void add_spark (boost::shared_ptr<Spark>& spark);
 
     /* try to do more with the known blank/partial sparks */
     void kick (Ekiga::ServiceCore& core,
@@ -98,8 +98,8 @@ namespace Ekiga
 	       char** argv[]);
 
   private:
-    std::list<gmref_ptr<Spark> > blanks;
-    std::list<gmref_ptr<Spark> > partials;
+    std::list<boost::shared_ptr<Spark> > blanks;
+    std::list<boost::shared_ptr<Spark> > partials;
   };
 };
 

@@ -121,7 +121,7 @@ namespace Ekiga
      * when the contact has been updated and the Ekiga::Book 'contact_removed' signal
      * will be emitted when the contact has been removed from the Ekiga::Book.
      */
-    void add_contact (gmref_ptr<ContactType> contact);
+    void add_contact (boost::shared_ptr<ContactType> contact);
 
 
     /** Removes a contact from the Ekiga::Book.
@@ -129,7 +129,7 @@ namespace Ekiga
      * @return: The Ekiga::Book 'contact_removed' signal is emitted when the contact
      * has been removed.
      */
-    void remove_contact (gmref_ptr<ContactType> contact);
+    void remove_contact (boost::shared_ptr<ContactType> contact);
 
     using RefLister<ContactType>::add_connection;
   };
@@ -201,7 +201,7 @@ Ekiga::BookImpl<ContactType>::end () const
 
 template<typename ContactType>
 void
-Ekiga::BookImpl<ContactType>::add_contact (gmref_ptr<ContactType> contact)
+Ekiga::BookImpl<ContactType>::add_contact (boost::shared_ptr<ContactType> contact)
 {
   contact->questions.connect (questions.make_slot ());
   add_object (contact);
@@ -210,7 +210,7 @@ Ekiga::BookImpl<ContactType>::add_contact (gmref_ptr<ContactType> contact)
 
 template<typename ContactType>
 void
-Ekiga::BookImpl<ContactType>::remove_contact (gmref_ptr<ContactType> contact)
+Ekiga::BookImpl<ContactType>::remove_contact (boost::shared_ptr<ContactType> contact)
 {
   remove_object (contact);
 }

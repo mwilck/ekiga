@@ -52,7 +52,7 @@ static void run_command (const std::string command)
   g_spawn_command_line_async (command.c_str (), NULL);
 }
 
-static void pull_trigger (gmref_ptr<Ekiga::Trigger> trigger)
+static void pull_trigger (boost::shared_ptr<Ekiga::Trigger> trigger)
 {
   trigger->pull ();
 }
@@ -175,7 +175,7 @@ populate_item (Ekiga::ServiceCore &core,
 					  command));
 	} else {
 
-	  gmref_ptr<Ekiga::Trigger> trigger = core.get (command);
+	  boost::shared_ptr<Ekiga::Trigger> trigger = core.get<Ekiga::Trigger> (command);
 	  if (trigger)
 	    builder.add_action (icon, label,
 				sigc::bind (sigc::ptr_fun (pull_trigger),

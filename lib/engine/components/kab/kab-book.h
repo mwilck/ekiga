@@ -78,7 +78,7 @@ namespace KAB
     Ekiga::ContactCore &core;
   };
 
-  typedef gmref_ptr<Book> BookPtr;
+  typedef boost::shared_ptr<Book> BookPtr;
 
 /**
  * @}

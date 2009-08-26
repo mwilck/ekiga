@@ -184,7 +184,7 @@ Evolution::Contact::remove ()
 bool
 Evolution::Contact::populate_menu (Ekiga::MenuBuilder &builder)
 {
-  gmref_ptr<Ekiga::ContactCore> core = services.get ("contact-core");
+  boost::shared_ptr<Ekiga::ContactCore> core = services.get<Ekiga::ContactCore> ("contact-core");
   bool populated = false;
   std::map<std::string, std::string> uris;
 
@@ -301,7 +301,7 @@ Evolution::Contact::set_attribute_value (unsigned int attr_type,
 void
 Evolution::Contact::edit_action ()
 {
-  gmref_ptr<Ekiga::FormRequestSimple> request = gmref_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &Evolution::Contact::on_edit_form_submitted)));;
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &Evolution::Contact::on_edit_form_submitted)));;
 
   request->title (_("Edit contact"));
 
@@ -354,7 +354,7 @@ Evolution::Contact::on_edit_form_submitted (bool submitted,
 void
 Evolution::Contact::remove_action ()
 {
-  gmref_ptr<Ekiga::FormRequestSimple> request = gmref_ptr<Ekiga::FormRequestSimple>(new Ekiga::FormRequestSimple (sigc::mem_fun (this, &Evolution::Contact::on_remove_form_submitted)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple>(new Ekiga::FormRequestSimple (sigc::mem_fun (this, &Evolution::Contact::on_remove_form_submitted)));
   gchar* instructions = NULL;
 
   request->title (_("Remove contact"));

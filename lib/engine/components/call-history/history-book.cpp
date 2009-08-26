@@ -58,9 +58,9 @@ History::Book::Book (Ekiga::ServiceCore &_core) :
 
     const std::string raw = c_raw;
 
-    doc = std::tr1::shared_ptr<xmlDoc> (xmlRecoverMemory (raw.c_str (), raw.length ()), xmlFreeDoc);
+    doc = boost::shared_ptr<xmlDoc> (xmlRecoverMemory (raw.c_str (), raw.length ()), xmlFreeDoc);
     if ( !doc)
-      doc = std::tr1::shared_ptr<xmlDoc> (xmlNewDoc (BAD_CAST "1.0"), xmlFreeDoc);
+      doc = boost::shared_ptr<xmlDoc> (xmlNewDoc (BAD_CAST "1.0"), xmlFreeDoc);
 
     root = xmlDocGetRootElement (doc.get ());
     if (root == NULL) {
@@ -80,12 +80,12 @@ History::Book::Book (Ekiga::ServiceCore &_core) :
     g_free (c_raw);
   } else {
 
-    doc = std::tr1::shared_ptr<xmlDoc> (xmlNewDoc (BAD_CAST "1.0"), xmlFreeDoc);
+    doc = boost::shared_ptr<xmlDoc> (xmlNewDoc (BAD_CAST "1.0"), xmlFreeDoc);
     root = xmlNewDocNode (doc.get (), NULL, BAD_CAST "list", NULL);
     xmlDocSetRootElement (doc.get (), root);
   }
 
-  gmref_ptr<Ekiga::CallCore> call_core = core.get ("call-core");
+  boost::shared_ptr<Ekiga::CallCore> call_core = core.get<Ekiga::CallCore> ("call-core");
 
   call_core->missed_call.connect (sigc::mem_fun (this, &History::Book::on_missed_call));
   call_core->cleared_call.connect (sigc::mem_fun (this, &History::Book::on_cleared_call));
@@ -176,7 +176,7 @@ History::Book::clear ()
 
   remove_all_objects ();
 
-  doc = std::tr1::shared_ptr<xmlDoc> (xmlNewDoc (BAD_CAST "1.0"), xmlFreeDoc);
+  doc = boost::shared_ptr<xmlDoc> (xmlNewDoc (BAD_CAST "1.0"), xmlFreeDoc);
   root = xmlNewDocNode (doc.get (), NULL, BAD_CAST "list", NULL);
   xmlDocSetRootElement (doc.get (), root);
 
@@ -185,8 +185,8 @@ History::Book::clear ()
 }
 
 void
-History::Book::on_missed_call (gmref_ptr<Ekiga::CallManager> /*manager*/,
-			       gmref_ptr<Ekiga::Call> call)
+History::Book::on_missed_call (boost::shared_ptr<Ekiga::CallManager> /*manager*/,
+			       boost::shared_ptr<Ekiga::Call> call)
 {
   add (call->get_remote_party_name (),
        call->get_remote_uri (),
@@ -196,8 +196,8 @@ History::Book::on_missed_call (gmref_ptr<Ekiga::CallManager> /*manager*/,
 }
 
 void
-History::Book::on_cleared_call (gmref_ptr<Ekiga::CallManager> /*manager*/,
-				gmref_ptr<Ekiga::Call> call,
+History::Book::on_cleared_call (boost::shared_ptr<Ekiga::CallManager> /*manager*/,
+				boost::shared_ptr<Ekiga::Call> call,
 				std::string /*message*/)
 {
   add (call->get_remote_party_name (),

@@ -44,10 +44,10 @@
 #include "presence-core.h"
 
 RL::Entry::Entry (Ekiga::ServiceCore& core_,
-		  gmref_ptr<XCAP::Path> path_,
+		  boost::shared_ptr<XCAP::Path> path_,
 		  int pos,
 		  const std::string group,
-		  std::tr1::shared_ptr<xmlDoc> doc_,
+		  boost::shared_ptr<xmlDoc> doc_,
 		  xmlNodePtr node_):
   core(core_), position(pos), doc(doc_), node(node_), name_node(NULL),
   presence("unknown"), status("")
@@ -138,7 +138,7 @@ bool
 RL::Entry::populate_menu (Ekiga::MenuBuilder& builder)
 {
   bool populated = false;
-  gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
+  boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
   std::string uri(get_uri ());
 
   builder.add_action ("refresh", _("_Refresh"),
@@ -161,7 +161,7 @@ RL::Entry::refresh ()
   status = ("");
   updated.emit ();
 
-  gmref_ptr<XCAP::Core> xcap = core.get ("xcap-core");
+  boost::shared_ptr<XCAP::Core> xcap = core.get<XCAP::Core> ("xcap-core");
   xcap->read (path, sigc::mem_fun (this, &RL::Entry::on_xcap_answer));
 }
 
@@ -175,9 +175,9 @@ RL::Entry::on_xcap_answer (bool error,
 
   } else {
 
-    doc = std::tr1::shared_ptr<xmlDoc> (xmlRecoverMemory (value.c_str (), value.length ()), xmlFreeDoc);
+    doc = boost::shared_ptr<xmlDoc> (xmlRecoverMemory (value.c_str (), value.length ()), xmlFreeDoc);
     if ( !doc)
-      doc = std::tr1::shared_ptr<xmlDoc> (xmlNewDoc (BAD_CAST "1.0"), xmlFreeDoc);
+      doc = boost::shared_ptr<xmlDoc> (xmlNewDoc (BAD_CAST "1.0"), xmlFreeDoc);
 
     node = xmlDocGetRootElement (doc.get ());
     if (node == NULL

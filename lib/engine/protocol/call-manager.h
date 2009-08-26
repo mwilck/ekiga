@@ -42,7 +42,7 @@
 #include <set>
 #include <sigc++/sigc++.h>
 
-#include "gmref.h"
+#include <boost/smart_ptr.hpp>
 
 #include "call-protocol-manager.h"
 #include "codec-description.h"
@@ -55,14 +55,14 @@ namespace Ekiga
  * @{
  */
 
-  class CallManager : public virtual GmRefCounted
+  class CallManager 
   {
 
     public:
 
     typedef std::list<CallProtocolManager::Interface> InterfaceList;
-    typedef std::set<gmref_ptr<CallProtocolManager> >::iterator iterator;
-    typedef std::set<gmref_ptr<CallProtocolManager> >::const_iterator const_iterator;
+    typedef std::set<boost::shared_ptr<CallProtocolManager> >::iterator iterator;
+    typedef std::set<boost::shared_ptr<CallProtocolManager> >::const_iterator const_iterator;
 
     /* The constructor
      */
@@ -75,13 +75,13 @@ namespace Ekiga
     /** Add a CallProtocolManager to the CallManager.
      * @param The manager to be added.
      */
-    void add_protocol_manager (gmref_ptr<CallProtocolManager> manager);
+    void add_protocol_manager (boost::shared_ptr<CallProtocolManager> manager);
 
     /** Return a pointer to a CallProtocolManager of the CallManager.
      * @param protocol is the protcol name.
      * @return a pointer to the CallProtocolManager or NULL if none.
      */
-    gmref_ptr<CallProtocolManager> get_protocol_manager (const std::string &protocol) const;
+    boost::shared_ptr<CallProtocolManager> get_protocol_manager (const std::string &protocol) const;
 
     /** Return iterator to beginning
      * @return iterator to beginning
@@ -98,7 +98,7 @@ namespace Ekiga
     /** This signal is emitted when a Ekiga::CallProtocolManager has been
      * added to the CallManager.
      */
-    sigc::signal1<void, gmref_ptr<CallProtocolManager> > manager_added;
+    sigc::signal1<void, boost::shared_ptr<CallProtocolManager> > manager_added;
 
 
     /*                 
@@ -215,7 +215,7 @@ namespace Ekiga
     sigc::signal0<void> ready;
 
     private:
-    std::set<gmref_ptr<CallProtocolManager> > managers;
+    std::set<boost::shared_ptr<CallProtocolManager> > managers;
   };
 
   /**

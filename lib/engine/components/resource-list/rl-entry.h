@@ -44,21 +44,20 @@
 
 #include <libxml/tree.h>
 
-#include <tr1/memory>
+#include <boost/smart_ptr.hpp>
 
 namespace RL {
 
   class Entry:
-    public virtual GmRefCounted,
     public Ekiga::Presentity
   {
   public:
 
     Entry (Ekiga::ServiceCore& core_,
-	   gmref_ptr<XCAP::Path> path_,
+	   boost::shared_ptr<XCAP::Path> path_,
 	   int pos,
 	   const std::string group,
-	   std::tr1::shared_ptr<xmlDoc> doc_,
+	   boost::shared_ptr<xmlDoc> doc_,
 	   xmlNodePtr node_);
 
     ~Entry ();
@@ -91,12 +90,12 @@ namespace RL {
   private:
     Ekiga::ServiceCore& core;
 
-    gmref_ptr<XCAP::Path> path;
+    boost::shared_ptr<XCAP::Path> path;
     int position;
 
     std::set<std::string> groups;
 
-    std::tr1::shared_ptr<xmlDoc> doc;
+    boost::shared_ptr<xmlDoc> doc;
     xmlNodePtr node;
     xmlNodePtr name_node;
 

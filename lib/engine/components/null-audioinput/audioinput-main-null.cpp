@@ -49,7 +49,7 @@ struct NULLAUDIOINPUTSpark: public Ekiga::Spark
 			    int* /*argc*/,
 			    char** /*argv*/[])
   {
-    gmref_ptr<Ekiga::AudioInputCore> audioinput_core = core.get ("audioinput-core");
+    boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core = core.get<Ekiga::AudioInputCore> ("audioinput-core");
 
     if (audioinput_core) {
 
@@ -76,6 +76,6 @@ struct NULLAUDIOINPUTSpark: public Ekiga::Spark
 void
 audioinput_null_init (Ekiga::KickStart& kickstart)
 {
-  gmref_ptr<Ekiga::Spark> spark(new NULLAUDIOINPUTSpark);
+  boost::shared_ptr<Ekiga::Spark> spark(new NULLAUDIOINPUTSpark);
   kickstart.add_spark (spark);
 }

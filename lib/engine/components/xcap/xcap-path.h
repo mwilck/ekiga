@@ -38,14 +38,14 @@
 #ifndef __XCAP_PATH_H__
 #define __XCAP_PATH_H__
 
-#include "gmref.h"
+#include <boost/smart_ptr.hpp>
 
 #include <string>
 #include <list>
 
 namespace XCAP
 {
-  class Path: public virtual GmRefCounted
+  class Path
   {
   public:
 
@@ -66,13 +66,13 @@ namespace XCAP
     void set_credentials (std::string username,
 			  std::string password);
 
-    gmref_ptr<Path> build_child (const std::string name);
+    boost::shared_ptr<Path> build_child (const std::string name);
 
-    gmref_ptr<Path> build_child_with_attribute (const std::string name,
+    boost::shared_ptr<Path> build_child_with_attribute (const std::string name,
 						const std::string attr,
 						const std::string value);
 
-    gmref_ptr<Path> build_child_with_position (const std::string name,
+    boost::shared_ptr<Path> build_child_with_position (const std::string name,
 					       int position);
 
   private:

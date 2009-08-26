@@ -37,7 +37,7 @@
 #ifndef __CHAT_MULTIPLE_H__
 #define __CHAT_MULTIPLE_H__
 
-#include "gmref.h"
+#include <boost/smart_ptr.hpp>
 
 #include "chat.h"
 #include "heap.h"
@@ -60,7 +60,7 @@ namespace Ekiga
     virtual HeapPtr get_heap () const = 0;
   };
 
-  typedef gmref_ptr<MultipleChat> MultipleChatPtr;
+  typedef boost::shared_ptr<MultipleChat> MultipleChatPtr;
 
 };
 

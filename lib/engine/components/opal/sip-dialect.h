@@ -75,7 +75,7 @@ namespace SIP
 					  bool user_request);
   };
 
-  typedef gmref_ptr<Dialect> DialectPtr;
+  typedef boost::shared_ptr<Dialect> DialectPtr;
 
 };
 

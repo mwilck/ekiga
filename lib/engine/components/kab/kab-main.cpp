@@ -49,11 +49,11 @@ struct KABSpark: public Ekiga::Spark
 			    char** /*argv*/[])
   {
     Ekiga::ServicePtr kde_core = core.get ("kde-core");
-    gmref_ptr<Ekiga::ContactCore> contact_core = core.get ("contact-core");
+    boost::shared_ptr<Ekiga::ContactCore> contact_core = core.get<Ekiga::ContactCore> ("contact-core");
 
     if (contact_core && kde_core) {
 
-      gmref_ptr<KAB::Source> source (new KAB::Source (*contact_core));
+      boost::shared_ptr<KAB::Source> source (new KAB::Source (*contact_core));
       core.add (source);
       contact_core->add_source (source);
       result = true;
@@ -75,6 +75,6 @@ struct KABSpark: public Ekiga::Spark
 extern "C" void
 ekiga_plugin_init (Ekiga::KickStart& kickstart)
 {
-  gmref_ptr<Ekiga::Spark> spark(new KABSpark);
+  boost::shared_ptr<Ekiga::Spark> spark(new KABSpark);
   kickstart.add_spark (spark);
 }

@@ -52,11 +52,11 @@ struct LDAPSpark: public Ekiga::Spark
 			    int* /*argc*/,
 			    char** /*argv*/[])
   {
-    gmref_ptr<Ekiga::ContactCore> contact_core = core.get ("contact-core");
+    boost::shared_ptr<Ekiga::ContactCore> contact_core = core.get<Ekiga::ContactCore> ("contact-core");
 
     if (contact_core) {
 
-      gmref_ptr<OPENLDAP::Source> service (new OPENLDAP::Source (core));
+      boost::shared_ptr<OPENLDAP::Source> service (new OPENLDAP::Source (core));
       core.add (service);
       contact_core->add_source (service);
       sasl_client_init (NULL); // FIXME: shouldn't it be done by the source!?
@@ -78,6 +78,6 @@ struct LDAPSpark: public Ekiga::Spark
 extern "C" void
 ekiga_plugin_init (Ekiga::KickStart& kickstart)
 {
-  gmref_ptr<Ekiga::Spark> spark(new LDAPSpark);
+  boost::shared_ptr<Ekiga::Spark> spark(new LDAPSpark);
   kickstart.add_spark (spark);
 }

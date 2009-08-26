@@ -38,7 +38,7 @@
 #ifndef __HEAP_H__
 #define __HEAP_H__
 
-#include "gmref.h"
+#include <boost/smart_ptr.hpp>
 
 #include "presentity.h"
 
@@ -50,7 +50,7 @@ namespace Ekiga
  * @{
  */
 
-  class Heap: public virtual GmRefCounted
+  class Heap
   {
 
   public:
@@ -112,7 +112,7 @@ namespace Ekiga
     ChainOfResponsibility<FormRequestPtr> questions;
   };
 
-  typedef gmref_ptr<Heap> HeapPtr;
+  typedef boost::shared_ptr<Heap> HeapPtr;
 
 /**
  * @}

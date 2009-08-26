@@ -46,14 +46,14 @@
 
 
 RL::Presentity::Presentity (Ekiga::ServiceCore &services_,
-			    gmref_ptr<XCAP::Path> path_,
-			    std::tr1::shared_ptr<xmlDoc> doc_,
+			    boost::shared_ptr<XCAP::Path> path_,
+			    boost::shared_ptr<xmlDoc> doc_,
 			    xmlNodePtr node_,
 			    bool writable_) :
   services(services_), doc(doc_), node(node_), writable(writable_),
   name_node(NULL), presence("unknown"), status(""), avatar("")
 {
-  gmref_ptr<Ekiga::PresenceCore> presence_core(services.get ("presence-core"));
+  boost::shared_ptr<Ekiga::PresenceCore> presence_core(services.get<Ekiga::PresenceCore> ("presence-core"));
   xmlChar *xml_str = NULL;
   xmlNsPtr ns = xmlSearchNsByHref (doc.get (), node,
 				   BAD_CAST "http://www.ekiga.org");
@@ -191,7 +191,7 @@ bool
 RL::Presentity::populate_menu (Ekiga::MenuBuilder &builder)
 {
   bool populated = false;
-  gmref_ptr<Ekiga::PresenceCore> presence_core(services.get ("presence-core"));
+  boost::shared_ptr<Ekiga::PresenceCore> presence_core(services.get<Ekiga::PresenceCore> ("presence-core"));
 
   populated = presence_core->populate_presentity_menu (PresentityPtr (this), uri, builder);
 
@@ -213,7 +213,7 @@ RL::Presentity::populate_menu (Ekiga::MenuBuilder &builder)
 void
 RL::Presentity::edit_presentity ()
 {
-  gmref_ptr<Ekiga::FormRequestSimple> request = gmref_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &RL::Presentity::edit_presentity_form_submitted)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &RL::Presentity::edit_presentity_form_submitted)));
 
   // FIXME: we should be able to know all groups in the heap
   std::set<std::string> all_groups = groups;
@@ -251,7 +251,7 @@ RL::Presentity::edit_presentity_form_submitted (bool submitted,
   if (uri != new_uri) {
 
     xmlSetProp (node, (const xmlChar*)"uri", (const xmlChar*)uri.c_str ());
-    gmref_ptr<Ekiga::PresenceCore> presence_core(services.get ("presence-core"));
+    boost::shared_ptr<Ekiga::PresenceCore> presence_core(services.get<Ekiga::PresenceCore> ("presence-core"));
     presence_core->unfetch_presence (uri);
     reload = true;
   }
@@ -295,7 +295,7 @@ RL::Presentity::save (bool reload)
 
   if (result >= 0) {
 
-    gmref_ptr<XCAP::Core> xcap = services.get ("xcap-core");
+    boost::shared_ptr<XCAP::Core> xcap = services.get<XCAP::Core> ("xcap-core");
     xcap->write (path, "application/xcap-el+xml",
 		 (const char*)xmlBufferContent (buffer),
 		 sigc::bind (sigc::mem_fun (this, &RL::Presentity::save_result),
@@ -311,11 +311,11 @@ RL::Presentity::remove ()
 {
   xmlUnlinkNode (node);
   xmlFreeNode (node);
-  gmref_ptr<Ekiga::PresenceCore> presence_core = services.get ("presence-core");
+  boost::shared_ptr<Ekiga::PresenceCore> presence_core = services.get<Ekiga::PresenceCore> ("presence-core");
 
   presence_core->unfetch_presence (uri);
 
-  gmref_ptr<XCAP::Core> xcap = services.get ("xcap-core");
+  boost::shared_ptr<XCAP::Core> xcap = services.get<XCAP::Core> ("xcap-core");
   xcap->erase (path,
 	       sigc::mem_fun (this, &RL::Presentity::erase_result));
 }

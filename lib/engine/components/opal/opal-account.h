@@ -178,7 +178,7 @@ private:
     Ekiga::ServiceCore & core;
   };
 
-  typedef gmref_ptr<Account> AccountPtr;
+  typedef boost::shared_ptr<Account> AccountPtr;
 
   /**
    * @}

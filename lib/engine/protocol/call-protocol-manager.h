@@ -41,7 +41,7 @@
 
 #include <string>
 
-#include "gmref.h"
+#include <boost/smart_ptr.hpp>
 
 namespace Ekiga
 {
@@ -51,7 +51,7 @@ namespace Ekiga
  * @{:
  */
 
-  class CallProtocolManager: public virtual GmRefCounted
+  class CallProtocolManager
   {
 
     public:

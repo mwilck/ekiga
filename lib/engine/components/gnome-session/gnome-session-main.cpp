@@ -50,7 +50,7 @@
 
 struct GNOMESESSIONService: public Ekiga::Service
 {
-  GNOMESESSIONService (gmref_ptr<Ekiga::CallCore> call_core);
+  GNOMESESSIONService (boost::shared_ptr<Ekiga::CallCore> call_core);
 
   ~GNOMESESSIONService ();
 
@@ -62,14 +62,14 @@ struct GNOMESESSIONService: public Ekiga::Service
 
 private:
 
-  void on_established_call (gmref_ptr<Ekiga::CallManager> manager,
-			    gmref_ptr<Ekiga::Call> call);
+  void on_established_call (boost::shared_ptr<Ekiga::CallManager> manager,
+			    boost::shared_ptr<Ekiga::Call> call);
 
-  void on_cleared_call (gmref_ptr<Ekiga::CallManager> manager,
-			gmref_ptr<Ekiga::Call> call);
+  void on_cleared_call (boost::shared_ptr<Ekiga::CallManager> manager,
+			boost::shared_ptr<Ekiga::Call> call);
 
   DBusGProxy* proxy;
-  std::map<gmref_ptr<Ekiga::Call>, guint> cookies;
+  std::map<boost::shared_ptr<Ekiga::Call>, guint> cookies;
 };
 
 struct GNOMESESSIONSpark: public Ekiga::Spark
@@ -81,7 +81,7 @@ struct GNOMESESSIONSpark: public Ekiga::Spark
 			    int* /*argc*/,
 			    char** /*argv*/[])
   {
-    gmref_ptr<Ekiga::CallCore> call_core = core.get ("call-core");
+    boost::shared_ptr<Ekiga::CallCore> call_core = core.get<Ekiga::CallCore> ("call-core");
     Ekiga::ServicePtr service = core.get ("gnome-session");
 
     if (call_core && !service) {
@@ -105,11 +105,11 @@ struct GNOMESESSIONSpark: public Ekiga::Spark
 void
 gnomesession_init (Ekiga::KickStart& kickstart)
 {
-  gmref_ptr<Ekiga::Spark> spark(new GNOMESESSIONSpark);
+  boost::shared_ptr<Ekiga::Spark> spark(new GNOMESESSIONSpark);
   kickstart.add_spark (spark);
 }
 
-GNOMESESSIONService::GNOMESESSIONService (gmref_ptr<Ekiga::CallCore> call_core)
+GNOMESESSIONService::GNOMESESSIONService (boost::shared_ptr<Ekiga::CallCore> call_core)
 {
   GError* error = NULL;
 
@@ -146,8 +146,8 @@ GNOMESESSIONService::~GNOMESESSIONService ()
 }
 
 void
-GNOMESESSIONService::on_established_call (gmref_ptr<Ekiga::CallManager> /*manager*/,
-					  gmref_ptr<Ekiga::Call> call)
+GNOMESESSIONService::on_established_call (boost::shared_ptr<Ekiga::CallManager> /*manager*/,
+					  boost::shared_ptr<Ekiga::Call> call)
 {
   guint cookie;
 
@@ -166,10 +166,10 @@ GNOMESESSIONService::on_established_call (gmref_ptr<Ekiga::CallManager> /*manage
 }
 
 void
-GNOMESESSIONService::on_cleared_call (gmref_ptr<Ekiga::CallManager> /*manager*/,
-				      gmref_ptr<Ekiga::Call> call)
+GNOMESESSIONService::on_cleared_call (boost::shared_ptr<Ekiga::CallManager> /*manager*/,
+				      boost::shared_ptr<Ekiga::Call> call)
 {
-  std::map<gmref_ptr<Ekiga::Call>, guint>::iterator iter = cookies.find (call);
+  std::map<boost::shared_ptr<Ekiga::Call>, guint>::iterator iter = cookies.find (call);
 
   if (iter != cookies.end ()) {
 

@@ -257,7 +257,7 @@ LM::Presentity::push_presence (const std::string resource,
 void
 LM::Presentity::edit_presentity ()
 {
-  gmref_ptr<Ekiga::FormRequestSimple> request = gmref_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &LM::Presentity::edit_presentity_form_submitted)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &LM::Presentity::edit_presentity_form_submitted)));
 
   request->title (_("Edit roster element"));
   request->instructions (_("Please fill in this form to change an existing "

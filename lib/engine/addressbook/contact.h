@@ -41,7 +41,7 @@
 #include <map>
 #include <string>
 
-#include "gmref.h"
+#include <boost/smart_ptr.hpp>
 #include "chain-of-responsibility.h"
 #include "form-request.h"
 #include "menu-builder.h"
@@ -54,7 +54,7 @@ namespace Ekiga
  * @{
  */
 
-  class Contact: public virtual GmRefCounted
+  class Contact
   {
   public:
 
@@ -104,7 +104,7 @@ namespace Ekiga
   };
 
 
-  typedef gmref_ptr<Contact> ContactPtr;
+  typedef boost::shared_ptr<Contact> ContactPtr;
 /**
  * @}
  */

@@ -45,7 +45,7 @@ SIP::SimpleChat::SimpleChat (Ekiga::ServiceCore& core_,
 			     sigc::slot1<bool, std::string> sender_)
   : core(core_), sender(sender_), uri(uri_)
 {
-  presentity = gmref_ptr<Ekiga::URIPresentity> (new Ekiga::URIPresentity (core, name, uri,
+  presentity = boost::shared_ptr<Ekiga::URIPresentity> (new Ekiga::URIPresentity (core, name, uri,
 									  std::set<std::string>()));
 }
 
@@ -67,13 +67,13 @@ SIP::SimpleChat::get_title () const
 }
 
 void
-SIP::SimpleChat::connect (gmref_ptr<Ekiga::ChatObserver> observer)
+SIP::SimpleChat::connect (boost::shared_ptr<Ekiga::ChatObserver> observer)
 {
   observers.push_front (observer);
 }
 
 void
-SIP::SimpleChat::disconnect (gmref_ptr<Ekiga::ChatObserver> observer)
+SIP::SimpleChat::disconnect (boost::shared_ptr<Ekiga::ChatObserver> observer)
 {
   observers.remove (observer);
 
@@ -85,9 +85,9 @@ bool
 SIP::SimpleChat::send_message (const std::string msg)
 {
   bool result;
-  gmref_ptr<Ekiga::PersonalDetails> personal = core.get ("personal-details");
+  boost::shared_ptr<Ekiga::PersonalDetails> personal = core.get<Ekiga::PersonalDetails> ("personal-details");
   result = sender (msg);
-  for (std::list<gmref_ptr<Ekiga::ChatObserver> >::iterator iter = observers.begin ();
+  for (std::list<boost::shared_ptr<Ekiga::ChatObserver> >::iterator iter = observers.begin ();
        iter != observers.end ();
        ++iter)
     (*iter)->message (personal->get_display_name (), msg);
@@ -97,7 +97,7 @@ SIP::SimpleChat::send_message (const std::string msg)
 void
 SIP::SimpleChat::receive_message (const std::string msg)
 {
-  for (std::list<gmref_ptr<Ekiga::ChatObserver> >::iterator iter = observers.begin ();
+  for (std::list<boost::shared_ptr<Ekiga::ChatObserver> >::iterator iter = observers.begin ();
        iter != observers.end ();
        ++iter)
     (*iter)->message (presentity->get_name (), msg);
@@ -106,7 +106,7 @@ SIP::SimpleChat::receive_message (const std::string msg)
 void
 SIP::SimpleChat::receive_notice (const std::string msg)
 {
-  for (std::list<gmref_ptr<Ekiga::ChatObserver> >::iterator iter = observers.begin ();
+  for (std::list<boost::shared_ptr<Ekiga::ChatObserver> >::iterator iter = observers.begin ();
        iter != observers.end ();
        ++iter)
     (*iter)->notice (msg);

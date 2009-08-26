@@ -58,13 +58,13 @@ LM::SimpleChat::get_title () const
 }
 
 void
-LM::SimpleChat::connect (gmref_ptr<Ekiga::ChatObserver> observer)
+LM::SimpleChat::connect (boost::shared_ptr<Ekiga::ChatObserver> observer)
 {
   observers.push_back (observer);
 }
 
 void
-LM::SimpleChat::disconnect (gmref_ptr<Ekiga::ChatObserver> observer)
+LM::SimpleChat::disconnect (boost::shared_ptr<Ekiga::ChatObserver> observer)
 {
   observers.remove (observer);
 }
@@ -77,7 +77,7 @@ LM::SimpleChat::send_message (const std::string msg)
   if (lm_connection_is_authenticated (presentity->get_connection ())) {
 
     result = true;
-    gmref_ptr<Ekiga::PersonalDetails> details = core.get ("personal-details");
+    boost::shared_ptr<Ekiga::PersonalDetails> details = core.get<Ekiga::PersonalDetails> ("personal-details");
     const std::string my_name = details->get_display_name ();
     LmMessage* message = lm_message_new (NULL, LM_MESSAGE_TYPE_MESSAGE);
     lm_message_node_set_attributes (lm_message_get_node (message),
@@ -87,7 +87,7 @@ LM::SimpleChat::send_message (const std::string msg)
     lm_message_node_add_child (lm_message_get_node (message), "body", msg.c_str ());
     lm_connection_send (presentity->get_connection (), message, NULL);
     lm_message_unref (message);
-    for (std::list<gmref_ptr<Ekiga::ChatObserver> >::iterator iter = observers.begin ();
+    for (std::list<boost::shared_ptr<Ekiga::ChatObserver> >::iterator iter = observers.begin ();
 	 iter != observers.end ();
 	 ++iter) {
 
@@ -101,7 +101,7 @@ LM::SimpleChat::send_message (const std::string msg)
 void
 LM::SimpleChat::got_message (const std::string msg)
 {
-  for (std::list<gmref_ptr<Ekiga::ChatObserver> >::iterator iter = observers.begin ();
+  for (std::list<boost::shared_ptr<Ekiga::ChatObserver> >::iterator iter = observers.begin ();
        iter != observers.end ();
        ++iter) {
 

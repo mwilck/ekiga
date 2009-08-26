@@ -50,7 +50,7 @@ struct NULLAUDIOOUTPUTSpark: public Ekiga::Spark
 			    char** /*argv*/[])
   {
     Ekiga::ServicePtr service = core.get ("null-audio-output");
-    gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core = core.get ("audiooutput-core");
+    boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = core.get<Ekiga::AudioOutputCore> ("audiooutput-core");
 
     if (audiooutput_core && !service) {
 
@@ -78,6 +78,6 @@ struct NULLAUDIOOUTPUTSpark: public Ekiga::Spark
 void
 audiooutput_null_init (Ekiga::KickStart& kickstart)
 {
-  gmref_ptr<Ekiga::Spark> spark(new NULLAUDIOOUTPUTSpark);
+  boost::shared_ptr<Ekiga::Spark> spark(new NULLAUDIOOUTPUTSpark);
   kickstart.add_spark (spark);
 }

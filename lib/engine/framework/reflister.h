@@ -40,7 +40,7 @@
 #include <sigc++/sigc++.h>
 #include <list>
 
-#include "gmref.h"
+#include <boost/smart_ptr.hpp>
 #include "map-key-iterator.h"
 #include "map-key-const-iterator.h"
 
@@ -51,20 +51,20 @@ namespace Ekiga
   {
   protected:
 
-    typedef std::map<gmref_ptr<ObjectType>,std::list<sigc::connection> > container_type;
+    typedef std::map<boost::shared_ptr<ObjectType>,std::list<sigc::connection> > container_type;
     typedef Ekiga::map_key_iterator<container_type> iterator;
     typedef Ekiga::map_key_const_iterator<container_type> const_iterator;
 
     virtual ~RefLister ();
 
-    void visit_objects (sigc::slot1<bool, gmref_ptr<ObjectType> > visitor);
+    void visit_objects (sigc::slot1<bool, boost::shared_ptr<ObjectType> > visitor);
 
-    void add_object (gmref_ptr<ObjectType> obj);
+    void add_object (boost::shared_ptr<ObjectType> obj);
 
-    void add_connection (gmref_ptr<ObjectType> obj,
+    void add_connection (boost::shared_ptr<ObjectType> obj,
 			 sigc::connection connection);
 
-    void remove_object (gmref_ptr<ObjectType> obj);
+    void remove_object (boost::shared_ptr<ObjectType> obj);
 
     void remove_all_objects ();
 
@@ -74,9 +74,9 @@ namespace Ekiga
     const_iterator begin () const;
     const_iterator end () const;
 
-    sigc::signal1<void, gmref_ptr<ObjectType> > object_added;
-    sigc::signal1<void, gmref_ptr<ObjectType> > object_removed;
-    sigc::signal1<void, gmref_ptr<ObjectType> > object_updated;
+    sigc::signal1<void, boost::shared_ptr<ObjectType> > object_added;
+    sigc::signal1<void, boost::shared_ptr<ObjectType> > object_removed;
+    sigc::signal1<void, boost::shared_ptr<ObjectType> > object_updated;
 
   private:
     container_type objects;
@@ -102,7 +102,7 @@ Ekiga::RefLister<ObjectType>::~RefLister ()
 
 template<typename ObjectType>
 void
-Ekiga::RefLister<ObjectType>::visit_objects (sigc::slot1<bool, gmref_ptr<ObjectType> > visitor)
+Ekiga::RefLister<ObjectType>::visit_objects (sigc::slot1<bool, boost::shared_ptr<ObjectType> > visitor)
 {
   bool go_on = true;
   for (typename container_type::iterator iter = objects.begin ();
@@ -113,7 +113,7 @@ Ekiga::RefLister<ObjectType>::visit_objects (sigc::slot1<bool, gmref_ptr<ObjectT
 
 template<typename ObjectType>
 void
-Ekiga::RefLister<ObjectType>::add_object (gmref_ptr<ObjectType> obj)
+Ekiga::RefLister<ObjectType>::add_object (boost::shared_ptr<ObjectType> obj)
 {
   objects[obj].push_back (obj->updated.connect (sigc::bind (object_updated.make_slot (), obj)));
   objects[obj].push_back (obj->removed.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::RefLister<ObjectType>::remove_object), obj)));
@@ -123,7 +123,7 @@ Ekiga::RefLister<ObjectType>::add_object (gmref_ptr<ObjectType> obj)
 
 template<typename ObjectType>
 void
-Ekiga::RefLister<ObjectType>::add_connection (gmref_ptr<ObjectType> obj,
+Ekiga::RefLister<ObjectType>::add_connection (boost::shared_ptr<ObjectType> obj,
 					      sigc::connection connection)
 {
   objects[obj].push_back (connection);
@@ -131,7 +131,7 @@ Ekiga::RefLister<ObjectType>::add_connection (gmref_ptr<ObjectType> obj,
 
 template<typename ObjectType>
 void
-Ekiga::RefLister<ObjectType>::remove_object (gmref_ptr<ObjectType> obj)
+Ekiga::RefLister<ObjectType>::remove_object (boost::shared_ptr<ObjectType> obj)
 {
   std::list<sigc::connection> connections = objects[obj];
   for (std::list<sigc::connection>::iterator iter = connections.begin ();

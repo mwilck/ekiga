@@ -41,7 +41,7 @@
 #include <sigc++/sigc++.h>
 #include <string>
 
-#include "gmref.h"
+#include <boost/smart_ptr.hpp>
 
 namespace Ekiga
 {
@@ -55,7 +55,7 @@ namespace Ekiga
    * Everything is handled asynchronously and signaled through the
    * Ekiga::CallManager
    */
-  class Call : public virtual GmRefCounted
+  class Call 
     {
 
   public:

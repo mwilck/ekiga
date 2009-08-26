@@ -39,7 +39,7 @@
 #include <set>
 #include <string>
 
-#include "gmref.h"
+#include <boost/smart_ptr.hpp>
 #include "chain-of-responsibility.h"
 #include "form-request.h"
 #include "menu-builder.h"
@@ -54,7 +54,7 @@ namespace Ekiga
 
   /** A presentity is a piece of presence information for a single URI.
    */
-  class Presentity: public virtual GmRefCounted
+  class Presentity
   {
   public:
 
@@ -105,7 +105,7 @@ namespace Ekiga
     ChainOfResponsibility<FormRequestPtr> questions;
   };
 
-  typedef gmref_ptr<Presentity> PresentityPtr;
+  typedef boost::shared_ptr<Presentity> PresentityPtr;
 /**
  * @}
  */

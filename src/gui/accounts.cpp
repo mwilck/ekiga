@@ -175,7 +175,7 @@ populate_menu (GtkWidget *window)
   selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (aw->accounts_list));
   model = gtk_tree_view_get_model (GTK_TREE_VIEW (aw->accounts_list));
 
-  gmref_ptr<Ekiga::AccountCore> account_core = aw->core.get ("account-core");
+  boost::shared_ptr<Ekiga::AccountCore> account_core = aw->core.get<Ekiga::AccountCore> ("account-core");
 
   if (account_core->populate_menu (builder)) {
     item = gtk_separator_menu_item_new ();
@@ -708,7 +708,7 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
   /* Engine Signals callbacks */
   // FIXME sigc::connection conn;
 
-  gmref_ptr<Ekiga::AccountCore> account_core = core.get ("account-core");
+  boost::shared_ptr<Ekiga::AccountCore> account_core = core.get<Ekiga::AccountCore> ("account-core");
   account_core->bank_added.connect (sigc::bind (sigc::ptr_fun (on_bank_added), window));
   account_core->account_added.connect (sigc::bind (sigc::ptr_fun (on_account_added), window));
   account_core->account_updated.connect (sigc::bind (sigc::ptr_fun (on_account_updated), window));

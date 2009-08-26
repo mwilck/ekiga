@@ -44,7 +44,7 @@ Avahi::Cluster::Cluster (Ekiga::ServiceCore &_core): core(_core)
   add_heap (heap);
 
   /* don't check the cast: it has been checked already by avahi-main! */
-  gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
+  boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
   presence_core->add_presence_fetcher (heap);
 }
 

@@ -87,11 +87,7 @@ PVideoOutputDevice_EKIGA::PVideoOutputDevice_EKIGA (Ekiga::ServiceCore & _core)
 					 * or not mutex.
 					 */
 
- {
-   gmref_ptr<Ekiga::VideoOutputCore> smart = core.get ("videooutput-core");
-   smart->reference (); // take a reference in the main thread
-   videooutput_core = smart.get ();
- }
+  videooutput_core = core.get<Ekiga::VideoOutputCore> ("videooutput-core");
 
   is_active = FALSE;
   
@@ -106,8 +102,6 @@ PVideoOutputDevice_EKIGA::~PVideoOutputDevice_EKIGA()
 					 * then we may crash : it's wrong to
 					 * have played with 'core' from a thread
 					 */
-
-  videooutput_core-> unreference (); // leave a reference in the main thread
 
   if (is_active) {
     devices_nbr--;

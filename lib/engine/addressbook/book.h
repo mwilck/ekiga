@@ -40,7 +40,7 @@
 
 namespace Ekiga {
 
-  class Book: public virtual GmRefCounted
+  class Book
   {
 
   public:
@@ -136,7 +136,7 @@ namespace Ekiga {
     ChainOfResponsibility<FormRequestPtr> questions;
   };
 
-  typedef gmref_ptr<Book> BookPtr;
+  typedef boost::shared_ptr<Book> BookPtr;
 };
 
 #endif

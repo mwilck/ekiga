@@ -55,10 +55,10 @@ struct LOUDMOUTHSpark: public Ekiga::Spark
 			    char** /*argv*/[])
   {
     Ekiga::ServicePtr service = core.get ("loudmouth-bank");
-    gmref_ptr<Ekiga::PresenceCore> presence = core.get ("presence-core");
-    gmref_ptr<Ekiga::AccountCore> account = core.get ("account-core");
-    gmref_ptr<Ekiga::ChatCore> chat = core.get ("chat-core");
-    gmref_ptr<Ekiga::PersonalDetails> details = core.get ("personal-details");
+    boost::shared_ptr<Ekiga::PresenceCore> presence = core.get<Ekiga::PresenceCore> ("presence-core");
+    boost::shared_ptr<Ekiga::AccountCore> account = core.get<Ekiga::AccountCore> ("account-core");
+    boost::shared_ptr<Ekiga::ChatCore> chat = core.get<Ekiga::ChatCore> ("chat-core");
+    boost::shared_ptr<Ekiga::PersonalDetails> details = core.get<Ekiga::PersonalDetails> ("personal-details");
 
     if ( !service && presence && account && chat && details) {
 
@@ -87,6 +87,6 @@ struct LOUDMOUTHSpark: public Ekiga::Spark
 extern "C" void
 ekiga_plugin_init (Ekiga::KickStart& kickstart)
 {
-  gmref_ptr<Ekiga::Spark> spark(new LOUDMOUTHSpark);
+  boost::shared_ptr<Ekiga::Spark> spark(new LOUDMOUTHSpark);
   kickstart.add_spark (spark);
 }

@@ -52,7 +52,7 @@ CallCore::~CallCore ()
 }
 
 
-void CallCore::add_manager (gmref_ptr<CallManager> manager)
+void CallCore::add_manager (boost::shared_ptr<CallManager> manager)
 {
   managers.insert (manager);
   manager_added.emit (manager);
@@ -87,7 +87,7 @@ CallCore::const_iterator CallCore::end () const
 
 bool CallCore::dial (const std::string uri)
 {
-  for (std::set<gmref_ptr<CallManager> >::iterator iter = managers.begin ();
+  for (std::set<boost::shared_ptr<CallManager> >::iterator iter = managers.begin ();
        iter != managers.end ();
        iter++) {
     if ((*iter)->dial (uri))
@@ -98,7 +98,7 @@ bool CallCore::dial (const std::string uri)
 }
 
 
-void CallCore::add_call (gmref_ptr<Call> call, gmref_ptr<CallManager> manager)
+void CallCore::add_call (boost::shared_ptr<Call> call, boost::shared_ptr<CallManager> manager)
 {
   std::list<sigc::connection> conns;
 
@@ -119,7 +119,7 @@ void CallCore::add_call (gmref_ptr<Call> call, gmref_ptr<CallManager> manager)
 }
 
 
-void CallCore::remove_call (gmref_ptr<Call> call)
+void CallCore::remove_call (boost::shared_ptr<Call> call)
 {
   for (std::list<sigc::connection>::iterator iter2 = call_connections [call->get_id ()].begin ();
        iter2 != call_connections [call->get_id ()].end ();
@@ -130,73 +130,73 @@ void CallCore::remove_call (gmref_ptr<Call> call)
 }
 
 
-void CallCore::on_ringing_call (gmref_ptr<Call> call, gmref_ptr<CallManager> manager)
+void CallCore::on_ringing_call (boost::shared_ptr<Call> call, boost::shared_ptr<CallManager> manager)
 {
   ringing_call.emit (manager, call);
 }
 
 
-void CallCore::on_setup_call (gmref_ptr<Call> call, gmref_ptr<CallManager> manager)
+void CallCore::on_setup_call (boost::shared_ptr<Call> call, boost::shared_ptr<CallManager> manager)
 {
   setup_call.emit (manager, call);
 }
 
 
-void CallCore::on_missed_call (gmref_ptr<Call> call, gmref_ptr<CallManager> manager)
+void CallCore::on_missed_call (boost::shared_ptr<Call> call, boost::shared_ptr<CallManager> manager)
 {
   missed_call.emit (manager, call);
 }
 
 
-void CallCore::on_cleared_call (std::string reason, gmref_ptr<Call> call, gmref_ptr<CallManager> manager)
+void CallCore::on_cleared_call (std::string reason, boost::shared_ptr<Call> call, boost::shared_ptr<CallManager> manager)
 {
   cleared_call.emit (manager, call, reason); 
 }
 
 
-void CallCore::on_established_call (gmref_ptr<Call> call, gmref_ptr<CallManager> manager)
+void CallCore::on_established_call (boost::shared_ptr<Call> call, boost::shared_ptr<CallManager> manager)
 {
   established_call.emit (manager, call);
 }
 
 
-void CallCore::on_held_call (gmref_ptr<Call> call, gmref_ptr<CallManager> manager)
+void CallCore::on_held_call (boost::shared_ptr<Call> call, boost::shared_ptr<CallManager> manager)
 {
   held_call.emit (manager, call);
 }
 
 
-void CallCore::on_retrieved_call (gmref_ptr<Call> call, gmref_ptr<CallManager> manager)
+void CallCore::on_retrieved_call (boost::shared_ptr<Call> call, boost::shared_ptr<CallManager> manager)
 {
   retrieved_call.emit (manager, call);
 }
 
 
-void CallCore::on_stream_opened (std::string name, Call::StreamType type, bool is_transmitting, gmref_ptr<Call> call, gmref_ptr<CallManager> manager)
+void CallCore::on_stream_opened (std::string name, Call::StreamType type, bool is_transmitting, boost::shared_ptr<Call> call, boost::shared_ptr<CallManager> manager)
 {
   stream_opened.emit (manager, call, name, type, is_transmitting);
 }
 
 
-void CallCore::on_stream_closed (std::string name, Call::StreamType type, bool is_transmitting, gmref_ptr<Call> call, gmref_ptr<CallManager> manager)
+void CallCore::on_stream_closed (std::string name, Call::StreamType type, bool is_transmitting, boost::shared_ptr<Call> call, boost::shared_ptr<CallManager> manager)
 {
   stream_closed.emit (manager, call, name, type, is_transmitting);
 }
 
 
-void CallCore::on_stream_paused (std::string name, Call::StreamType type, gmref_ptr<Call> call, gmref_ptr<CallManager> manager)
+void CallCore::on_stream_paused (std::string name, Call::StreamType type, boost::shared_ptr<Call> call, boost::shared_ptr<CallManager> manager)
 {
   stream_paused.emit (manager, call, name, type);
 }
 
 
-void CallCore::on_stream_resumed (std::string name, Call::StreamType type, gmref_ptr<Call> call, gmref_ptr<CallManager> manager)
+void CallCore::on_stream_resumed (std::string name, Call::StreamType type, boost::shared_ptr<Call> call, boost::shared_ptr<CallManager> manager)
 {
   stream_resumed.emit (manager, call, name, type);
 }
 
 
-void CallCore::on_manager_ready (gmref_ptr<CallManager> manager)
+void CallCore::on_manager_ready (boost::shared_ptr<CallManager> manager)
 {
   manager_ready.emit (manager);
   nr_ready++;
@@ -206,7 +206,7 @@ void CallCore::on_manager_ready (gmref_ptr<CallManager> manager)
 }
 
 
-void CallCore::on_call_removed (gmref_ptr<Call> call)
+void CallCore::on_call_removed (boost::shared_ptr<Call> call)
 {
   remove_call (call);
 }

@@ -49,7 +49,7 @@ namespace Ekiga
    * @{
    */
 
-  class Bank: public virtual GmRefCounted
+  class Bank
   {
   public:
 
@@ -89,7 +89,7 @@ namespace Ekiga
     ChainOfResponsibility<FormRequestPtr> questions;
   };
 
-  typedef gmref_ptr<Bank> BankPtr;
+  typedef boost::shared_ptr<Bank> BankPtr;
 
   /**
    * @}

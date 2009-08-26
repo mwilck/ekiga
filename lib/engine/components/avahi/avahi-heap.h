@@ -116,7 +116,7 @@ namespace Avahi
 		  const std::string name);
   };
 
-  typedef gmref_ptr<Heap> HeapPtr;
+  typedef boost::shared_ptr<Heap> HeapPtr;
 
 /**
  * @}

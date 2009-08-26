@@ -49,7 +49,7 @@ struct PTLIBVIDEOINPUTSpark: public Ekiga::Spark
 			    int* /*argc*/,
 			    char** /*argv*/[])
   {
-    gmref_ptr<Ekiga::VideoInputCore> videoinput_core = core.get ("videoinput-core");
+    boost::shared_ptr<Ekiga::VideoInputCore> videoinput_core = core.get<Ekiga::VideoInputCore> ("videoinput-core");
 
     if (videoinput_core) {
 
@@ -76,6 +76,6 @@ struct PTLIBVIDEOINPUTSpark: public Ekiga::Spark
 void
 videoinput_ptlib_init (Ekiga::KickStart& kickstart)
 {
-  gmref_ptr<Ekiga::Spark> spark(new PTLIBVIDEOINPUTSpark);
+  boost::shared_ptr<Ekiga::Spark> spark(new PTLIBVIDEOINPUTSpark);
   kickstart.add_spark (spark);
 }

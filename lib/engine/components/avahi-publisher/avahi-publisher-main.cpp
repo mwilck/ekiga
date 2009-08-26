@@ -48,13 +48,13 @@ struct AVAHIPUBSpark: public Ekiga::Spark
 			    char** /*argv*/[])
   {
     Ekiga::ServicePtr service = core.get ("avahi-presence-publisher");
-    gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
-    gmref_ptr<Ekiga::CallCore> call_core = core.get ("call-core");
-    gmref_ptr<Ekiga::PersonalDetails> details = core.get ("personal-details");
+    boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
+    boost::shared_ptr<Ekiga::CallCore> call_core = core.get<Ekiga::CallCore> ("call-core");
+    boost::shared_ptr<Ekiga::PersonalDetails> details = core.get<Ekiga::PersonalDetails> ("personal-details");
 
     if (presence_core && call_core && details && !service) {
 
-      gmref_ptr<Avahi::PresencePublisher> publisher (new Avahi::PresencePublisher (core, *details, *call_core));
+      boost::shared_ptr<Avahi::PresencePublisher> publisher (new Avahi::PresencePublisher (core, *details, *call_core));
       presence_core->add_presence_publisher (publisher);
       core.add (publisher);
       result = true;
@@ -75,6 +75,6 @@ struct AVAHIPUBSpark: public Ekiga::Spark
 void
 avahi_publisher_init (Ekiga::KickStart& kickstart)
 {
-  gmref_ptr<Ekiga::Spark> spark(new AVAHIPUBSpark);
+  boost::shared_ptr<Ekiga::Spark> spark(new AVAHIPUBSpark);
   kickstart.add_spark (spark);
 }

@@ -39,7 +39,7 @@
 #define __RL_PRESENTITY_H__
 
 #include <libxml/tree.h>
-#include <tr1/memory>
+#include <boost/smart_ptr.hpp>
 
 #include "form.h"
 #include "presence-core.h"
@@ -49,14 +49,13 @@
 namespace RL
 {
   class Presentity:
-    public virtual GmRefCounted,
     public Ekiga::Presentity
   {
   public:
 
     Presentity (Ekiga::ServiceCore &_core,
-		gmref_ptr<XCAP::Path> path_,
-		std::tr1::shared_ptr<xmlDoc> doc_,
+		boost::shared_ptr<XCAP::Path> path_,
+		boost::shared_ptr<xmlDoc> doc_,
 		xmlNodePtr _node,
 		bool writable_);
 
@@ -100,8 +99,8 @@ namespace RL
 
     Ekiga::ServiceCore &services;
 
-    gmref_ptr<XCAP::Path> path;
-    std::tr1::shared_ptr<xmlDoc> doc;
+    boost::shared_ptr<XCAP::Path> path;
+    boost::shared_ptr<xmlDoc> doc;
     xmlNodePtr node;
     bool writable;
 
@@ -116,7 +115,7 @@ namespace RL
     std::set<std::string> groups;
   };
 
-  typedef gmref_ptr<Presentity> PresentityPtr;
+  typedef boost::shared_ptr<Presentity> PresentityPtr;
 
 };
 

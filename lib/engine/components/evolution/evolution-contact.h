@@ -111,7 +111,7 @@ namespace Evolution
 				   Ekiga::Form &result);
   };
 
-  typedef gmref_ptr<Contact> ContactPtr;
+  typedef boost::shared_ptr<Contact> ContactPtr;
 
 /**
  * @}

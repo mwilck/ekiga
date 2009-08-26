@@ -41,7 +41,7 @@
 
 namespace Ekiga {
 
-  class Source: public virtual GmRefCounted
+  class Source
   {
   public:
 
@@ -102,7 +102,7 @@ namespace Ekiga {
     ChainOfResponsibility<FormRequestPtr> questions;
   };
 
-  typedef gmref_ptr<Source> SourcePtr;
+  typedef boost::shared_ptr<Source> SourcePtr;
 };
 
 #endif

@@ -42,7 +42,7 @@
 
 Local::Cluster::Cluster (Ekiga::ServiceCore &_core): core(_core)
 {
-  gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
+  boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
 
   heap = HeapPtr (new Heap (core));
 
@@ -59,7 +59,7 @@ Local::Cluster::~Cluster ()
 bool
 Local::Cluster::is_supported_uri (const std::string uri) const
 {
-  gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
+  boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
 
   return presence_core->is_supported_uri (uri);
 }

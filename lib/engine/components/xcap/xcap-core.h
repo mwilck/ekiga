@@ -61,14 +61,14 @@ namespace XCAP
      * - if the boolean is true, there was an error and the string is the
      * error message.
      */
-    void read (gmref_ptr<Path>,
+    void read (boost::shared_ptr<Path>,
 	       sigc::slot2<void,bool,std::string> callback);
 
     /* the callback gets only a string :
      * - if the string is empty, all went well ;
      * - if it's not, then it's the error message.
      */
-    void write (gmref_ptr<Path>,
+    void write (boost::shared_ptr<Path>,
 		const std::string content_type,
 		const std::string content,
 		sigc::slot1<void,std::string> callback);
@@ -77,7 +77,7 @@ namespace XCAP
      * - if the string is empty, all went well ;
      * - if it's not, then it's the error message.
      */
-    void erase (gmref_ptr<Path>,
+    void erase (boost::shared_ptr<Path>,
 		sigc::slot1<void,std::string> callback);
 
     /* implementation of the Ekiga::Service api */

@@ -270,7 +270,7 @@ XWindow::Init (Display* dp,
   if (!_colorConverter)
     return 0;
 
-  _frameBuffer = std::tr1::shared_ptr<void> (malloc (_imageWidth * _imageHeight * _planes), free);
+  _frameBuffer = boost::shared_ptr<void> (malloc (_imageWidth * _imageHeight * _planes), free);
 
   // detect the window manager type
   _wmType = GetWMType ();

@@ -98,7 +98,7 @@ Ekiga::ContactCore::visit_sources (sigc::slot1<bool, SourcePtr > visitor)
 }
 
 void
-Ekiga::ContactCore::add_contact_decorator (gmref_ptr<ContactDecorator> decorator)
+Ekiga::ContactCore::add_contact_decorator (boost::shared_ptr<ContactDecorator> decorator)
 {
   contact_decorators.push_back (decorator);
 }
@@ -111,7 +111,7 @@ Ekiga::ContactCore::populate_contact_menu (ContactPtr contact,
 {
   bool populated = false;
 
-  for (std::list<gmref_ptr<ContactDecorator> >::const_iterator iter
+  for (std::list<boost::shared_ptr<ContactDecorator> >::const_iterator iter
 	 = contact_decorators.begin ();
        iter != contact_decorators.end ();
        ++iter) {

@@ -37,7 +37,7 @@
 #ifndef __CHAT_SIMPLE_H__
 #define __CHAT_SIMPLE_H__
 
-#include "gmref.h"
+#include <boost/smart_ptr.hpp>
 
 #include "chat.h"
 #include "presentity.h"
@@ -60,7 +60,7 @@ namespace Ekiga
     virtual PresentityPtr get_presentity () const = 0;
   };
 
-  typedef gmref_ptr<SimpleChat> SimpleChatPtr;
+  typedef boost::shared_ptr<SimpleChat> SimpleChatPtr;
 };
 
 #endif

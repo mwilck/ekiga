@@ -49,7 +49,7 @@ struct PTLIBAUDIOOUTPUTSpark: public Ekiga::Spark
 			    int* /*argc*/,
 			    char** /*argv*/[])
   {
-    gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core = core.get ("audiooutput-core");
+    boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = core.get<Ekiga::AudioOutputCore> ("audiooutput-core");
 
     if (audiooutput_core) {
 
@@ -76,6 +76,6 @@ struct PTLIBAUDIOOUTPUTSpark: public Ekiga::Spark
 void
 audiooutput_ptlib_init (Ekiga::KickStart& kickstart)
 {
-  gmref_ptr<Ekiga::Spark> spark(new PTLIBAUDIOOUTPUTSpark);
+  boost::shared_ptr<Ekiga::Spark> spark(new PTLIBAUDIOOUTPUTSpark);
   kickstart.add_spark (spark);
 }

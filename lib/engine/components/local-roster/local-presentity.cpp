@@ -47,7 +47,7 @@
  * Public API
  */
 Local::Presentity::Presentity (Ekiga::ServiceCore &_core,
-			       std::tr1::shared_ptr<xmlDoc> _doc,
+			       boost::shared_ptr<xmlDoc> _doc,
 			       xmlNodePtr _node) :
   core(_core), doc(_doc), node(_node), presence("unknown")
 {
@@ -55,7 +55,7 @@ Local::Presentity::Presentity (Ekiga::ServiceCore &_core,
 
 
 Local::Presentity::Presentity (Ekiga::ServiceCore &_core,
-			       std::tr1::shared_ptr<xmlDoc> _doc,
+			       boost::shared_ptr<xmlDoc> _doc,
 			       const std::string name,
 			       const std::string uri,
 			       const std::set<std::string> groups) :
@@ -200,7 +200,7 @@ bool
 Local::Presentity::populate_menu (Ekiga::MenuBuilder &builder)
 {
   bool populated = false;
-  gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
+  boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
 
   populated
     = presence_core->populate_presentity_menu (PresentityPtr(this),
@@ -228,8 +228,8 @@ Local::Presentity::get_node () const
 void
 Local::Presentity::edit_presentity ()
 {
-  ClusterPtr cluster = core.get ("local-cluster");
-  gmref_ptr<Ekiga::FormRequestSimple> request = gmref_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &Local::Presentity::edit_presentity_form_submitted)));
+  ClusterPtr cluster = core.get<Local::Cluster> ("local-cluster");
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &Local::Presentity::edit_presentity_form_submitted)));
 
   std::string name = get_name ();
   std::string uri = get_uri ();
@@ -284,7 +284,7 @@ Local::Presentity::edit_presentity_form_submitted (bool submitted,
 
   if (uri != new_uri) {
 
-    gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
+    boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
     presence_core->unfetch_presence (uri);
     presence = "unknown";
     presence_core->fetch_presence (new_uri);
@@ -414,7 +414,7 @@ Local::Presentity::rename_group (const std::string old_name,
 void
 Local::Presentity::remove ()
 {
-  gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
+  boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
   presence_core->unfetch_presence (get_uri ());
 
   xmlUnlinkNode (node);

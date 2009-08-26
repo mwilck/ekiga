@@ -36,7 +36,7 @@
 #ifndef __ECHO_PRESENTITY__
 #define __ECHO_PRESENTITY__
 
-#include "gmref.h"
+#include <boost/smart_ptr.hpp>
 #include "presentity.h"
 
 namespace Echo
@@ -64,7 +64,7 @@ namespace Echo
     bool populate_menu (Ekiga::MenuBuilder &);
   };
 
-  typedef gmref_ptr<Presentity> PresentityPtr;
+  typedef boost::shared_ptr<Presentity> PresentityPtr;
 
 };
 

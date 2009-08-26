@@ -122,14 +122,14 @@ namespace Ekiga
      * when the account has been updated and the Ekiga::BankImpl 'account_removed' signal
      * will be emitted when the account has been removed from the Ekiga::BankImpl.
      */
-    void add_account (gmref_ptr<AccountType> account);
+    void add_account (boost::shared_ptr<AccountType> account);
 
     /** Removes a account from the Ekiga::BankImpl.
      * @param: The account to be removed.
      * @return: The Ekiga::BankImpl 'account_removed' signal is emitted when the account
      * has been removed.
      */
-    void remove_account (gmref_ptr<AccountType> account);
+    void remove_account (boost::shared_ptr<AccountType> account);
 
     using RefLister<AccountType>::add_connection;
   };
@@ -201,7 +201,7 @@ Ekiga::BankImpl<AccountType>::end () const
 
 template<typename AccountType>
 void
-Ekiga::BankImpl<AccountType>::add_account (gmref_ptr<AccountType> account)
+Ekiga::BankImpl<AccountType>::add_account (boost::shared_ptr<AccountType> account)
 {
   add_object (account);
 
@@ -211,7 +211,7 @@ Ekiga::BankImpl<AccountType>::add_account (gmref_ptr<AccountType> account)
 
 template<typename AccountType>
 void
-Ekiga::BankImpl<AccountType>::remove_account (gmref_ptr<AccountType> account)
+Ekiga::BankImpl<AccountType>::remove_account (boost::shared_ptr<AccountType> account)
 {
   remove_object (account);
 }

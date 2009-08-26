@@ -40,7 +40,7 @@
 #define __LDAP_BOOK_H__
 
 #include <vector>
-#include <tr1/memory>
+#include <boost/smart_ptr.hpp>
 #include <libxml/tree.h>
 #include <glib/gi18n.h>
 
@@ -68,7 +68,7 @@ namespace OPENLDAP
     bool starttls;
   };
 
-  void BookForm (gmref_ptr<Ekiga::FormRequestSimple> req,
+  void BookForm (boost::shared_ptr<Ekiga::FormRequestSimple> req,
 		 struct BookInfo &info,
 		 std::string title );
 
@@ -89,11 +89,11 @@ namespace OPENLDAP
   public:
 
     Book (Ekiga::ServiceCore &_core,
-	  std::tr1::shared_ptr<xmlDoc> _doc,
+	  boost::shared_ptr<xmlDoc> _doc,
 	  xmlNodePtr node);
 
     Book (Ekiga::ServiceCore &_core,
-	  std::tr1::shared_ptr<xmlDoc> _doc,
+	  boost::shared_ptr<xmlDoc> _doc,
     	  OPENLDAP::BookInfo _bookinfo);
 
     ~Book ();
@@ -136,7 +136,7 @@ namespace OPENLDAP
 				 Ekiga::Form &form);
 
     Ekiga::ServiceCore &core;
-    std::tr1::shared_ptr<xmlDoc> doc;
+    boost::shared_ptr<xmlDoc> doc;
     xmlNodePtr node;
 
     xmlNodePtr name_node;
@@ -153,7 +153,7 @@ namespace OPENLDAP
     std::string search_filter;
   };
 
-  typedef gmref_ptr<Book> BookPtr;
+  typedef boost::shared_ptr<Book> BookPtr;
 
 /**
  * @}

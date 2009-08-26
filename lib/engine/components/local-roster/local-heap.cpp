@@ -59,9 +59,9 @@ Local::Heap::Heap (Ekiga::ServiceCore &_core): core (_core), doc ()
   if (c_raw != NULL) {
 
     const std::string raw = c_raw;
-    doc = std::tr1::shared_ptr<xmlDoc> (xmlRecoverMemory (raw.c_str (), raw.length ()), xmlFreeDoc);
+    doc = boost::shared_ptr<xmlDoc> (xmlRecoverMemory (raw.c_str (), raw.length ()), xmlFreeDoc);
     if ( !doc)
-      doc = std::tr1::shared_ptr<xmlDoc> (xmlNewDoc (BAD_CAST "1.0"), xmlFreeDoc);
+      doc = boost::shared_ptr<xmlDoc> (xmlNewDoc (BAD_CAST "1.0"), xmlFreeDoc);
 
     root = xmlDocGetRootElement (doc.get ());
     if (root == NULL) {
@@ -82,7 +82,7 @@ Local::Heap::Heap (Ekiga::ServiceCore &_core): core (_core), doc ()
   }
   else {
 
-    doc = std::tr1::shared_ptr<xmlDoc> (xmlNewDoc (BAD_CAST "1.0"), xmlFreeDoc);
+    doc = boost::shared_ptr<xmlDoc> (xmlNewDoc (BAD_CAST "1.0"), xmlFreeDoc);
     root = xmlNewDocNode (doc.get (), NULL, BAD_CAST "list", NULL);
     xmlDocSetRootElement (doc.get (), root);
 
@@ -138,9 +138,10 @@ struct has_presentity_with_uri_helper
 
   bool found;
 
-  bool test (Local::PresentityPtr presentity)
+  bool test (Ekiga::PresentityPtr pres)
   {
-    if (presentity->get_uri () == uri) {
+    Local::PresentityPtr presentity = boost::dynamic_pointer_cast<Local::Presentity> (pres);
+    if (presentity && presentity->get_uri () == uri) {
 
       found = true;
     }
@@ -163,12 +164,17 @@ struct existing_groups_helper
 {
   std::set<std::string> groups;
 
-  bool test (Local::PresentityPtr presentity)
+  bool test (Ekiga::PresentityPtr pres)
   {
-    const std::set<std::string> presentity_groups = presentity->get_groups ();
+    Local::PresentityPtr presentity = boost::dynamic_pointer_cast<Local::Presentity> (pres);
 
-    groups.insert (presentity_groups.begin (),
-		   presentity_groups.end ());
+    if (pres) {
+
+      const std::set<std::string> presentity_groups = presentity->get_groups ();
+
+      groups.insert (presentity_groups.begin (),
+		     presentity_groups.end ());
+    }
 
     return true;
   }
@@ -218,8 +224,8 @@ Local::Heap::new_presentity (const std::string name,
 {
   if (!has_presentity_with_uri (uri)) {
 
-    gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
-    gmref_ptr<Ekiga::FormRequestSimple> request = gmref_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &Local::Heap::new_presentity_form_submitted)));
+    boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
+    boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &Local::Heap::new_presentity_form_submitted)));
     std::set<std::string> groups = existing_groups ();
 
     request->title (_("Add to local roster"));
@@ -254,9 +260,10 @@ struct push_presence_helper
 						      presence(presence_)
   {}
 
-  bool test (Local::PresentityPtr presentity)
+  bool test (Ekiga::PresentityPtr pres_)
   {
-    if (presentity->get_uri () == uri) {
+    Local::PresentityPtr presentity = boost::dynamic_pointer_cast<Local::Presentity> (pres_);
+    if (presentity && presentity->get_uri () == uri) {
 
       presentity->set_presence (presence);
     }
@@ -284,9 +291,10 @@ struct push_status_helper
 						  status(status_)
   {}
 
-  bool test (Local::PresentityPtr presentity)
+  bool test (Ekiga::PresentityPtr pres_)
   {
-    if (presentity->get_uri () == uri) {
+    Local::PresentityPtr presentity = boost::dynamic_pointer_cast<Local::Presentity> (pres_);
+    if (presentity && presentity->get_uri () == uri) {
 
       presentity->set_status (status);
     }
@@ -341,7 +349,7 @@ Local::Heap::add (const std::string name,
 void
 Local::Heap::common_add (PresentityPtr presentity)
 {
-  gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
+  boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
 
   // Add the presentity to this Heap
   add_presentity (presentity);
@@ -375,7 +383,7 @@ Local::Heap::new_presentity_form_submitted (bool submitted,
   if (!submitted)
     return;
 
-  gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
+  boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
   const std::string name = result.text ("name");
   const std::string good_uri = result.hidden ("good-uri");
   std::string uri;
@@ -396,7 +404,7 @@ Local::Heap::new_presentity_form_submitted (bool submitted,
     save ();
   } else {
 
-    gmref_ptr<Ekiga::FormRequestSimple> request = gmref_ptr<Ekiga::FormRequestSimple>(new Ekiga::FormRequestSimple (sigc::mem_fun (this, &Local::Heap::new_presentity_form_submitted)));
+    boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple>(new Ekiga::FormRequestSimple (sigc::mem_fun (this, &Local::Heap::new_presentity_form_submitted)));
 
     result.visit (*request);
     if (!presence_core->is_supported_uri (uri))
@@ -411,7 +419,7 @@ Local::Heap::new_presentity_form_submitted (bool submitted,
 void
 Local::Heap::on_rename_group (std::string name)
 {
-  gmref_ptr<Ekiga::FormRequestSimple> request = gmref_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::bind<0>(sigc::mem_fun (this, &Local::Heap::rename_group_form_submitted), name)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::bind<0>(sigc::mem_fun (this, &Local::Heap::rename_group_form_submitted), name)));
 
   request->title (_("Rename group"));
   request->instructions (_("Please edit this group name"));
@@ -431,9 +439,11 @@ struct rename_group_form_submitted_helper
   const std::string old_name;
   const std::string new_name;
 
-  bool rename_group (Local::PresentityPtr presentity)
+  bool rename_group (Ekiga::PresentityPtr pres)
   {
-    presentity->rename_group (old_name, new_name);
+    Local::PresentityPtr presentity = boost::dynamic_pointer_cast<Local::Presentity> (pres);
+    if (presentity)
+      presentity->rename_group (old_name, new_name);
     return true;
   }
 };

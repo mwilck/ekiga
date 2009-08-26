@@ -43,14 +43,14 @@
 using namespace Ekiga;
 
 
-void CallManager::add_protocol_manager (gmref_ptr<CallProtocolManager> manager)
+void CallManager::add_protocol_manager (boost::shared_ptr<CallProtocolManager> manager)
 {
   managers.insert (manager);
   manager_added.emit (manager);
 }
 
 
-gmref_ptr<CallProtocolManager> CallManager::get_protocol_manager (const std::string &protocol) const
+boost::shared_ptr<CallProtocolManager> CallManager::get_protocol_manager (const std::string &protocol) const
 {
   for (CallManager::iterator iter = begin ();
        iter != end ();
@@ -58,7 +58,7 @@ gmref_ptr<CallProtocolManager> CallManager::get_protocol_manager (const std::str
     if ((*iter)->get_protocol_name () == protocol)
       return (*iter);
 
-  return gmref_ptr<CallProtocolManager>();
+  return boost::shared_ptr<CallProtocolManager>();
 }
 
 

@@ -45,12 +45,12 @@ namespace RL
 {
   class ListImpl; // pimpling : both it and external need to know each other
 
-  class List: public virtual GmRefCounted
+  class List
   {
   public:
 
     List (Ekiga::ServiceCore& core_,
-	  gmref_ptr<XCAP::Path> path_,
+	  boost::shared_ptr<XCAP::Path> path_,
 	  int pos,
 	  const std::string group_,
 	  xmlNodePtr node_);
@@ -74,9 +74,9 @@ namespace RL
 
     void publish () const;
 
-    sigc::signal1<void, gmref_ptr<Entry> > entry_added;
-    sigc::signal1<void, gmref_ptr<Entry> > entry_updated;
-    sigc::signal1<void, gmref_ptr<Entry> > entry_removed;
+    sigc::signal1<void, boost::shared_ptr<Entry> > entry_added;
+    sigc::signal1<void, boost::shared_ptr<Entry> > entry_updated;
+    sigc::signal1<void, boost::shared_ptr<Entry> > entry_removed;
 
     /* this method orders the list to get rid of all its children */
     void flush ();

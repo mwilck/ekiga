@@ -84,9 +84,9 @@ namespace Ekiga
 
   protected:
 
-    void add_heap (gmref_ptr<HeapType> heap);
+    void add_heap (boost::shared_ptr<HeapType> heap);
 
-    void remove_heap (gmref_ptr<HeapType> heap);
+    void remove_heap (boost::shared_ptr<HeapType> heap);
 
     using RefLister<HeapType>::add_connection;
 
@@ -97,13 +97,13 @@ namespace Ekiga
 
   private:
 
-    void common_removal_steps (gmref_ptr<HeapType> heap);
+    void common_removal_steps (boost::shared_ptr<HeapType> heap);
 
-    void on_presentity_added (PresentityPtr presentity, gmref_ptr<HeapType> heap);
+    void on_presentity_added (PresentityPtr presentity, boost::shared_ptr<HeapType> heap);
 
-    void on_presentity_updated (PresentityPtr presentity, gmref_ptr<HeapType> heap);
+    void on_presentity_updated (PresentityPtr presentity, boost::shared_ptr<HeapType> heap);
 
-    void on_presentity_removed (PresentityPtr presentity, gmref_ptr<HeapType> heap);
+    void on_presentity_removed (PresentityPtr presentity, boost::shared_ptr<HeapType> heap);
   };
 
 /**
@@ -137,7 +137,7 @@ Ekiga::ClusterImpl<HeapType>::visit_heaps (sigc::slot1<bool, HeapPtr > visitor)
 
 template<typename HeapType>
 void
-Ekiga::ClusterImpl<HeapType>::add_heap (gmref_ptr<HeapType> heap)
+Ekiga::ClusterImpl<HeapType>::add_heap (boost::shared_ptr<HeapType> heap)
 {
   add_connection (heap, heap->presentity_added.connect (sigc::bind (sigc::mem_fun (this, &ClusterImpl::on_presentity_added), heap)));
 
@@ -152,28 +152,28 @@ Ekiga::ClusterImpl<HeapType>::add_heap (gmref_ptr<HeapType> heap)
 
 template<typename HeapType>
 void
-Ekiga::ClusterImpl<HeapType>::remove_heap (gmref_ptr<HeapType> heap)
+Ekiga::ClusterImpl<HeapType>::remove_heap (boost::shared_ptr<HeapType> heap)
 {
   remove_object (heap);
 }
 
 template<typename HeapType>
 void
-Ekiga::ClusterImpl<HeapType>::on_presentity_added (PresentityPtr presentity, gmref_ptr<HeapType> heap)
+Ekiga::ClusterImpl<HeapType>::on_presentity_added (PresentityPtr presentity, boost::shared_ptr<HeapType> heap)
 {
   presentity_added.emit (heap, presentity);
 }
 
 template<typename HeapType>
 void
-Ekiga::ClusterImpl<HeapType>::on_presentity_updated (PresentityPtr presentity, gmref_ptr<HeapType> heap)
+Ekiga::ClusterImpl<HeapType>::on_presentity_updated (PresentityPtr presentity, boost::shared_ptr<HeapType> heap)
 {
   presentity_updated.emit (heap, presentity);
 }
 
 template<typename HeapType>
 void
-Ekiga::ClusterImpl<HeapType>::on_presentity_removed (PresentityPtr presentity, gmref_ptr<HeapType> heap)
+Ekiga::ClusterImpl<HeapType>::on_presentity_removed (PresentityPtr presentity, boost::shared_ptr<HeapType> heap)
 {
   presentity_removed.emit (heap, presentity);
 }

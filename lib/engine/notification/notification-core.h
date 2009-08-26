@@ -36,7 +36,7 @@
 #ifndef __NOTIFICATION_CORE_H__
 #define __NOTIFICATION_CORE_H__
 
-#include "gmref.h"
+#include <boost/smart_ptr.hpp>
 
 namespace Ekiga
 {
@@ -44,7 +44,7 @@ namespace Ekiga
    * with a decent memory management and a signal to know if it's still
    * there
    */
-  class Notification: public virtual GmRefCounted
+  class Notification
   {
   public:
 
@@ -94,10 +94,10 @@ namespace Ekiga
 
     /*** Public API ***/
 
-    void push_notification (gmref_ptr<Notification> notification)
+    void push_notification (boost::shared_ptr<Notification> notification)
     { notification_added.emit (notification); }
 
-    sigc::signal1<void, gmref_ptr<Notification> > notification_added;
+    sigc::signal1<void, boost::shared_ptr<Notification> > notification_added;
   };
 };
 

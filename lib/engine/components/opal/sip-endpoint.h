@@ -235,8 +235,8 @@ namespace Opal {
 
       PMutex defaultAORMutex;
       std::string default_aor;
-      void on_bank_updated (Ekiga::ContactPtr contact);
-      bool search_for_default_account(Opal::AccountPtr account);
+      void on_bank_updated (Ekiga::AccountPtr account);
+      bool search_for_default_account(Ekiga::AccountPtr account);
 
       Ekiga::ServiceCore & core;
 
@@ -250,7 +250,7 @@ namespace Opal {
       unsigned listen_port;
       bool auto_answer_call;
 
-      gmref_ptr<SIP::Dialect> dialect;
+      boost::shared_ptr<SIP::Dialect> dialect;
 
       domain_list active_domains;   // List of active domains
       uri_info_map presence_infos;  // List of uri presences

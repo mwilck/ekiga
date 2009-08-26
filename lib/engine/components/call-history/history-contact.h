@@ -38,7 +38,7 @@
 
 #include <libxml/tree.h>
 
-#include <tr1/memory>
+#include <boost/smart_ptr.hpp>
 
 #include "services.h"
 #include "contact-core.h"
@@ -64,11 +64,11 @@ namespace History
   public:
 
     Contact (Ekiga::ServiceCore &_core,
-	     std::tr1::shared_ptr<xmlDoc> _doc,
+	     boost::shared_ptr<xmlDoc> _doc,
 	     xmlNodePtr _node);
 
     Contact (Ekiga::ServiceCore &_core,
-	     std::tr1::shared_ptr<xmlDoc> _doc,
+	     boost::shared_ptr<xmlDoc> _doc,
 	     const std::string _name,
 	     const std::string _uri,
              time_t call_start,
@@ -101,7 +101,7 @@ namespace History
 
     Ekiga::ServiceCore &core;
 
-    std::tr1::shared_ptr<xmlDoc> doc;
+    boost::shared_ptr<xmlDoc> doc;
     xmlNodePtr node;
     std::string name;
     std::string uri;
@@ -110,7 +110,7 @@ namespace History
     call_type m_type;
   };
 
-  typedef gmref_ptr<Contact> ContactPtr;
+  typedef boost::shared_ptr<Contact> ContactPtr;
 
 /**
  * @}

@@ -46,7 +46,7 @@ videoinput_mlogo_init (Ekiga::ServiceCore &core,
 	    char **/*argv*/[])
 {
   bool result = false;
-  gmref_ptr<Ekiga::VideoInputCore> videoinput_core = core.get ("videoinput-core");
+  boost::shared_ptr<Ekiga::VideoInputCore> videoinput_core = core.get<Ekiga::VideoInputCore> ("videoinput-core");
 
   if (videoinput_core) {
 

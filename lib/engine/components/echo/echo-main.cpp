@@ -45,11 +45,11 @@ echo_init (Ekiga::ServiceCore &core,
 	   char **/*argv*/[])
 {
   bool result = false;
-  gmref_ptr<Ekiga::ChatCore> chat_core = core.get ("chat-core");
+  boost::shared_ptr<Ekiga::ChatCore> chat_core = core.get<Ekiga::ChatCore> ("chat-core");
 
   if (chat_core) {
 
-    gmref_ptr<Echo::Dialect> dialect (new Echo::Dialect);
+    boost::shared_ptr<Echo::Dialect> dialect (new Echo::Dialect);
     core.add (dialect);
     chat_core->add_dialect (dialect);
     result = true;

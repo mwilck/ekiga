@@ -631,10 +631,10 @@ void CallManager::get_video_options (CallManager::VideoOptions & options) const
 void
 CallManager::create_call_in_main (Opal::Call* call)
 {
-  gmref_ptr<Ekiga::CallCore> call_core = core.get ("call-core");
+  boost::shared_ptr<Ekiga::CallCore> call_core = core.get<Ekiga::CallCore> ("call-core");
 
-  call_core->add_call (gmref_ptr<Opal::Call>(call),
-		       gmref_ptr<CallManager>(this));
+  call_core->add_call (boost::shared_ptr<Opal::Call>(call),
+		       boost::shared_ptr<CallManager>(this));
 }
 
 OpalCall *CallManager::CreateCall (void *uri)
@@ -766,7 +766,7 @@ CallManager::HandleSTUNResult ()
 void
 CallManager::ReportSTUNError (const std::string error)
 {
-  gmref_ptr<Ekiga::CallCore> call_core = core.get ("call-core");
+  boost::shared_ptr<Ekiga::CallCore> call_core = core.get<Ekiga::CallCore> ("call-core");
 
   // notice we're in for an infinite loop if nobody ever reports to the user!
   if ( !call_core->errors.emit (error)) {

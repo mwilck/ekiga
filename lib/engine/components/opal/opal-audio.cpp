@@ -78,8 +78,8 @@ PCREATE_PLUGIN(EKIGA, PSoundChannel, &PSoundChannel_EKIGA_descriptor);
 
 PSoundChannel_EKIGA::PSoundChannel_EKIGA (Ekiga::ServiceCore & _core):
   core (_core),
-  audioinput_core (core.get ("audioinput-core")),
-  audiooutput_core (core.get ("audiooutput-core"))
+  audioinput_core (core.get<Ekiga::AudioInputCore> ("audioinput-core")),
+  audiooutput_core (core.get<Ekiga::AudioOutputCore> ("audiooutput-core"))
 {
   opened = false;
 }
@@ -92,8 +92,8 @@ PSoundChannel_EKIGA::PSoundChannel_EKIGA (const PString & /*_device*/,
 					  unsigned bitsPerSample,
 					  Ekiga::ServiceCore & _core):
   core (_core),
-  audioinput_core (core.get ("audioinput-core")),
-  audiooutput_core (core.get ("audiooutput-core"))
+  audioinput_core (core.get<Ekiga::AudioInputCore> ("audioinput-core")),
+  audiooutput_core (core.get<Ekiga::AudioOutputCore> ("audiooutput-core"))
 {
   opened = false;
   Open (device, dir, numChannels, sampleRate, bitsPerSample);

@@ -47,7 +47,7 @@ namespace Ekiga
  * @{
  */
 
-  class Cluster: public virtual GmRefCounted
+  class Cluster
   {
 
   public:
@@ -86,7 +86,7 @@ namespace Ekiga
     ChainOfResponsibility<FormRequestPtr> questions;
   };
 
-  typedef gmref_ptr<Cluster> ClusterPtr;
+  typedef boost::shared_ptr<Cluster> ClusterPtr;
 
 /**
  * @}

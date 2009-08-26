@@ -45,12 +45,12 @@
 
 
 History::Contact::Contact (Ekiga::ServiceCore &_core,
-			   std::tr1::shared_ptr<xmlDoc> _doc,
+			   boost::shared_ptr<xmlDoc> _doc,
 			   xmlNodePtr _node):
   core(_core), doc(_doc), node(_node)
 {
   xmlChar* xml_str = NULL;
-  gmref_ptr<Ekiga::ContactCore> contact_core = core.get ("contact-core");
+  boost::shared_ptr<Ekiga::ContactCore> contact_core = core.get<Ekiga::ContactCore> ("contact-core");
 
   xml_str = xmlGetProp (node, (const xmlChar *)"type");
   if (xml_str != NULL) {
@@ -102,7 +102,7 @@ History::Contact::Contact (Ekiga::ServiceCore &_core,
 
 
 History::Contact::Contact (Ekiga::ServiceCore &_core,
-			   std::tr1::shared_ptr<xmlDoc> _doc,
+			   boost::shared_ptr<xmlDoc> _doc,
 			   const std::string _name,
 			   const std::string _uri,
                            time_t _call_start,
@@ -112,7 +112,7 @@ History::Contact::Contact (Ekiga::ServiceCore &_core,
 {
   gchar* tmp = NULL;
   std::string callp;
-  gmref_ptr<Ekiga::ContactCore> contact_core = core.get ("contact-core");
+  boost::shared_ptr<Ekiga::ContactCore> contact_core = core.get<Ekiga::ContactCore> ("contact-core");
 
   node = xmlNewNode (NULL, BAD_CAST "entry");
 
@@ -171,7 +171,7 @@ History::Contact::get_groups () const
 bool
 History::Contact::populate_menu (Ekiga::MenuBuilder &builder)
 {
-  gmref_ptr<Ekiga::ContactCore> contact_core = core.get ("contact-core");
+  boost::shared_ptr<Ekiga::ContactCore> contact_core = core.get<Ekiga::ContactCore> ("contact-core");
   return contact_core->populate_contact_menu (ContactPtr (this),
 					      uri, builder);
 }

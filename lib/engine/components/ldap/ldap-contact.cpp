@@ -62,7 +62,7 @@ OPENLDAP::Contact::get_name () const
 bool
 OPENLDAP::Contact::populate_menu (Ekiga::MenuBuilder &builder)
 {
-  gmref_ptr<Ekiga::ContactCore> contact_core = core.get ("contact-core");
+  boost::shared_ptr<Ekiga::ContactCore> contact_core = core.get<Ekiga::ContactCore> ("contact-core");
   /* FIXME: add here the specific actions we want to allow
    * (before or after the uri-specific actions)
    */

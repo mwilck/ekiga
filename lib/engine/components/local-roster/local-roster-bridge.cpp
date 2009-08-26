@@ -113,12 +113,12 @@ struct LOCALROSTERBRIDGESpark: public Ekiga::Spark
 			    char** /*argv*/[])
   {
     Ekiga::ServicePtr service = core.get ("local-roster-bridge");
-    gmref_ptr<Ekiga::ContactCore> contact_core = core.get ("contact-core");
-    gmref_ptr<Local::Cluster> cluster = core.get ("local-cluster");
+    boost::shared_ptr<Ekiga::ContactCore> contact_core = core.get<Ekiga::ContactCore> ("contact-core");
+    boost::shared_ptr<Local::Cluster> cluster = core.get<Local::Cluster> ("local-cluster");
 
     if (cluster && contact_core && !service) {
 
-      gmref_ptr<Local::ContactDecorator> decorator (new Local::ContactDecorator (cluster));
+      boost::shared_ptr<Local::ContactDecorator> decorator (new Local::ContactDecorator (cluster));
       core.add (decorator);
       contact_core->add_contact_decorator (decorator);
       result = true;
@@ -139,6 +139,6 @@ struct LOCALROSTERBRIDGESpark: public Ekiga::Spark
 void
 local_roster_bridge_init (Ekiga::KickStart& kickstart)
 {
-  gmref_ptr<Ekiga::Spark> spark(new LOCALROSTERBRIDGESpark);
+  boost::shared_ptr<Ekiga::Spark> spark(new LOCALROSTERBRIDGESpark);
   kickstart.add_spark (spark);
 }

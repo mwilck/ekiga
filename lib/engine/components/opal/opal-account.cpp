@@ -280,7 +280,7 @@ void Opal::Account::enable ()
 {
   enabled = true;
 
-  gmref_ptr<Sip::EndPoint> endpoint = core.get ("opal-sip-endpoint");
+  boost::shared_ptr<Sip::EndPoint> endpoint = core.get<Sip::EndPoint> ("opal-sip-endpoint");
   endpoint->subscribe (*this);
 
   updated.emit ();
@@ -292,7 +292,7 @@ void Opal::Account::disable ()
 {
   enabled = false;
 
-  gmref_ptr<Sip::EndPoint> endpoint = core.get ("opal-sip-endpoint");
+  boost::shared_ptr<Sip::EndPoint> endpoint = core.get<Sip::EndPoint> ("opal-sip-endpoint");
   endpoint->unsubscribe (*this);
 
   updated.emit ();
@@ -323,7 +323,7 @@ void Opal::Account::remove ()
   enabled = false;
   dead = true;
 
-  gmref_ptr<Sip::EndPoint> endpoint = core.get ("opal-sip-endpoint");
+  boost::shared_ptr<Sip::EndPoint> endpoint = core.get<Sip::EndPoint> ("opal-sip-endpoint");
   endpoint->unsubscribe (*this);
 
   trigger_saving.emit ();
@@ -379,7 +379,7 @@ bool Opal::Account::populate_menu (Ekiga::MenuBuilder &builder)
 
 void Opal::Account::edit ()
 {
-  gmref_ptr<Ekiga::FormRequestSimple> request = gmref_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &Opal::Account::on_edit_form_submitted)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &Opal::Account::on_edit_form_submitted)));
   std::stringstream str;
 
   str << get_timeout ();
@@ -437,7 +437,7 @@ void Opal::Account::on_edit_form_submitted (bool submitted,
 
   if (!error.empty ()) {
 
-    gmref_ptr<Ekiga::FormRequestSimple> request = gmref_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &Opal::Account::on_edit_form_submitted)));
+    boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &Opal::Account::on_edit_form_submitted)));
     result.visit (*request);
     request->error (error);
 
@@ -478,8 +478,8 @@ Opal::Account::handle_registration_event (RegistrationState state_,
     if (state != Registered) {
 
       status = _("Registered");
-      gmref_ptr<Ekiga::PresenceCore> presence_core = core.get ("presence-core");
-      gmref_ptr<Ekiga::PersonalDetails> personal_details = core.get ("personal-details");
+      boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
+      boost::shared_ptr<Ekiga::PersonalDetails> personal_details = core.get<Ekiga::PersonalDetails> ("personal-details");
       if (presence_core && personal_details) {
 
 	presence_core->publish (personal_details);
@@ -507,7 +507,7 @@ Opal::Account::handle_registration_event (RegistrationState state_,
 
     if (!limited) {
       limited = true;
-      gmref_ptr<Sip::EndPoint> endpoint = core.get ("opal-sip-endpoint");
+      boost::shared_ptr<Sip::EndPoint> endpoint = core.get<Sip::EndPoint> ("opal-sip-endpoint");
       endpoint->subscribe (*this);
     } else {
       status = _("Could not register");
@@ -535,7 +535,7 @@ Opal::Account::handle_message_waiting_information (const std::string info)
 
   if (loc != std::string::npos) {
 
-    gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core = core.get ("audiooutput-core");
+    boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = core.get<Ekiga::AudioOutputCore> ("audiooutput-core");
     std::stringstream new_messages;
     new_messages << info.substr (0, loc);
     new_messages >> message_waiting_number;

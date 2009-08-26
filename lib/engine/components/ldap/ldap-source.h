@@ -76,7 +76,7 @@ namespace OPENLDAP
   private:
 
     Ekiga::ServiceCore &core;
-    std::tr1::shared_ptr<xmlDoc> doc;
+    boost::shared_ptr<xmlDoc> doc;
 
     struct BookInfo bookinfo;
 

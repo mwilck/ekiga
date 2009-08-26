@@ -71,9 +71,9 @@ struct GSTSpark: public Ekiga::Spark
 			    int* argc,
 			    char** argv[])
   {
-    gmref_ptr<Ekiga::AudioInputCore> audioinput_core = core.get ("audioinput-core");
-    gmref_ptr<Ekiga::AudioOutputCore> audiooutput_core = core.get ("audiooutput-core");
-    gmref_ptr<Ekiga::VideoInputCore> videoinput_core = core.get ("videoinput-core");
+    boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core = core.get<Ekiga::AudioInputCore> ("audioinput-core");
+    boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = core.get<Ekiga::AudioOutputCore> ("audiooutput-core");
+    boost::shared_ptr<Ekiga::VideoInputCore> videoinput_core = core.get<Ekiga::VideoInputCore> ("videoinput-core");
     Ekiga::ServicePtr service = core.get ("gstreamer");
 
     if (audioinput_core && audiooutput_core && videoinput_core && !service) {
@@ -111,6 +111,6 @@ struct GSTSpark: public Ekiga::Spark
 extern "C" void
 ekiga_plugin_init (Ekiga::KickStart& kickstart)
 {
-  gmref_ptr<Ekiga::Spark> spark(new GSTSpark);
+  boost::shared_ptr<Ekiga::Spark> spark(new GSTSpark);
   kickstart.add_spark (spark);
 }

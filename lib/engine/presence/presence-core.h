@@ -52,7 +52,7 @@ namespace Ekiga
  */
 
 
-  class PresentityDecorator: public virtual GmRefCounted
+  class PresentityDecorator
   {
   public:
 
@@ -70,7 +70,7 @@ namespace Ekiga
 				MenuBuilder &/*builder*/) = 0;
   };
 
-  class PresenceFetcher: public virtual GmRefCounted
+  class PresenceFetcher
   {
   public:
 
@@ -101,7 +101,7 @@ namespace Ekiga
     sigc::signal2<void, std::string, std::string> status_received;
   };
 
-  class PresencePublisher: public virtual GmRefCounted
+  class PresencePublisher
   {
   public:
 
@@ -218,7 +218,7 @@ namespace Ekiga
     /** Adds a decorator to the pool of presentity decorators.
      * @param The presentity decorator.
      */
-    void add_presentity_decorator (gmref_ptr<PresentityDecorator> decorator);
+    void add_presentity_decorator (boost::shared_ptr<PresentityDecorator> decorator);
 
     /** Populates a menu with the actions available on a given uri.
      * @param The uri for which the decoration is needed.
@@ -230,7 +230,7 @@ namespace Ekiga
 
   private:
 
-    std::list<gmref_ptr<PresentityDecorator> > presentity_decorators;
+    std::list<boost::shared_ptr<PresentityDecorator> > presentity_decorators;
 
     /*** API to help presentities get presence ***/
   public:
@@ -238,7 +238,7 @@ namespace Ekiga
     /** Adds a fetcher to the pool of presentce fetchers.
      * @param The presence fetcher.
      */
-    void add_presence_fetcher (gmref_ptr<PresenceFetcher> fetcher);
+    void add_presence_fetcher (boost::shared_ptr<PresenceFetcher> fetcher);
 
     /** Tells the PresenceCore that someone is interested in presence
      * information for the given uri.
@@ -260,7 +260,7 @@ namespace Ekiga
 
   private:
 
-    std::list<gmref_ptr<PresenceFetcher> > presence_fetchers;
+    std::list<boost::shared_ptr<PresenceFetcher> > presence_fetchers;
     void on_presence_received (const std::string uri,
 			       const std::string presence);
     void on_status_received (const std::string uri,
@@ -280,13 +280,13 @@ namespace Ekiga
     /* help publishing presence */
   public:
 
-    void add_presence_publisher (gmref_ptr<PresencePublisher> publisher);
+    void add_presence_publisher (boost::shared_ptr<PresencePublisher> publisher);
 
-    void publish (gmref_ptr<PersonalDetails> details);
+    void publish (boost::shared_ptr<PersonalDetails> details);
 
   private:
 
-    std::list<gmref_ptr<PresencePublisher> > presence_publishers;
+    std::list<boost::shared_ptr<PresencePublisher> > presence_publishers;
     void on_personal_details_updated (PersonalDetails &details);
 
     /*** API to control which uri are supported by runtime ***/

@@ -54,7 +54,7 @@ Ekiga::KickStart::~KickStart ()
 	    << std::endl;
 
   std::cout << "\tBLANK: ";
-  for (std::list<gmref_ptr<Spark> >::iterator iter = blanks.begin ();
+  for (std::list<boost::shared_ptr<Spark> >::iterator iter = blanks.begin ();
        iter != blanks.end ();
        ++iter) {
     std::cout << (*iter)->get_name () << ", ";
@@ -62,7 +62,7 @@ Ekiga::KickStart::~KickStart ()
   std::cout << std::endl;
 
   std::cout << "\tPARTIAL: ";
-  for (std::list<gmref_ptr<Spark> >::iterator iter = partials.begin ();
+  for (std::list<boost::shared_ptr<Spark> >::iterator iter = partials.begin ();
        iter != partials.end ();
        ++iter) {
     std::cout << (*iter)->get_name () << ", ";
@@ -72,7 +72,7 @@ Ekiga::KickStart::~KickStart ()
 }
 
 void
-Ekiga::KickStart::add_spark (gmref_ptr<Ekiga::Spark>& spark)
+Ekiga::KickStart::add_spark (boost::shared_ptr<Ekiga::Spark>& spark)
 {
   blanks.push_back (spark);
 #if KICKSTART_DEBUG
@@ -114,7 +114,7 @@ Ekiga::KickStart::kick (Ekiga::ServiceCore& core,
     went_on = false;
 
     { // first try the blanks
-      std::list<gmref_ptr<Spark> > temp;
+      std::list<boost::shared_ptr<Spark> > temp;
       temp.swap (blanks);
 
 #if KICKSTART_DEBUG
@@ -122,7 +122,7 @@ Ekiga::KickStart::kick (Ekiga::ServiceCore& core,
 	std::cout << "KickStart(kick): looping on BLANK sparks" << std::endl;
 #endif
 
-      for (std::list<gmref_ptr<Spark> >::iterator iter = temp.begin ();
+      for (std::list<boost::shared_ptr<Spark> >::iterator iter = temp.begin ();
 	   iter != temp.end ();
 	   ++iter) {
 
@@ -192,7 +192,7 @@ Ekiga::KickStart::kick (Ekiga::ServiceCore& core,
     }
 
     { // then try the partials
-      std::list<gmref_ptr<Spark> > temp;
+      std::list<boost::shared_ptr<Spark> > temp;
       temp.swap (partials);
 
 #if KICKSTART_DEBUG
@@ -200,7 +200,7 @@ Ekiga::KickStart::kick (Ekiga::ServiceCore& core,
 	std::cout << "KickStart(kick): looping on PARTIAL sparks" << std::endl;
 #endif
 
-      for (std::list<gmref_ptr<Spark> >::iterator iter = temp.begin ();
+      for (std::list<boost::shared_ptr<Spark> >::iterator iter = temp.begin ();
 	   iter != temp.end ();
 	   ++iter) {
 

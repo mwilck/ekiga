@@ -76,7 +76,7 @@ namespace KAB
     Ekiga::ContactCore &core;
   };
 
-  typedef gmref_ptr<Source> SourcePtr;
+  typedef boost::shared_ptr<Source> SourcePtr;
 
 /**
  * @}

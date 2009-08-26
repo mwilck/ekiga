@@ -51,7 +51,7 @@ struct XCAPSpark: public Ekiga::Spark
 
     if ( !service) {
 
-      gmref_ptr<XCAP::Core> xcap(new XCAP::Core ());
+      boost::shared_ptr<XCAP::Core> xcap(new XCAP::Core ());
 
       core.add (xcap);
       result = true;
@@ -73,6 +73,6 @@ struct XCAPSpark: public Ekiga::Spark
 extern "C" void
 ekiga_plugin_init (Ekiga::KickStart& kickstart)
 {
-  gmref_ptr<Ekiga::Spark> spark(new XCAPSpark);
+  boost::shared_ptr<Ekiga::Spark> spark(new XCAPSpark);
   kickstart.add_spark (spark);
 }

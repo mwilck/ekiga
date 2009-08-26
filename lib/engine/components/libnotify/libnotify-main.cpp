@@ -36,7 +36,7 @@
  */
 
 #include <map>
-#include <tr1/memory>
+#include <boost/smart_ptr.hpp>
 
 #include <libnotify/notify.h>
 
@@ -52,7 +52,7 @@ class LibNotify:
 {
 public:
 
-  LibNotify (gmref_ptr<Ekiga::NotificationCore> core);
+  LibNotify (boost::shared_ptr<Ekiga::NotificationCore> core);
 
   ~LibNotify ();
 
@@ -64,10 +64,10 @@ public:
 
 private:
 
-  void on_notification_added (gmref_ptr<Ekiga::Notification> notif);
-  void on_notification_removed (gmref_ptr<Ekiga::Notification> notif);
+  void on_notification_added (boost::shared_ptr<Ekiga::Notification> notif);
+  void on_notification_removed (boost::shared_ptr<Ekiga::Notification> notif);
 
-  typedef std::map<gmref_ptr<Ekiga::Notification>, std::pair<sigc::connection, std::tr1::shared_ptr<NotifyNotification> > > container_type;
+  typedef std::map<boost::shared_ptr<Ekiga::Notification>, std::pair<sigc::connection, boost::shared_ptr<NotifyNotification> > > container_type;
   container_type live;
 };
 
@@ -81,7 +81,7 @@ struct LIBNOTIFYSpark: public Ekiga::Spark
 			    int* /*argc*/,
 			    char** /*argv*/[])
   {
-    gmref_ptr<Ekiga::NotificationCore> notification = core.get ("notification-core");
+    boost::shared_ptr<Ekiga::NotificationCore> notification = core.get<Ekiga::NotificationCore> ("notification-core");
     Ekiga::ServicePtr service = core.get ("libnotify");
 
     if (notification && !service) {
@@ -106,11 +106,11 @@ struct LIBNOTIFYSpark: public Ekiga::Spark
 void
 libnotify_init (Ekiga::KickStart& kickstart)
 {
-  gmref_ptr<Ekiga::Spark> spark(new LIBNOTIFYSpark);
+  boost::shared_ptr<Ekiga::Spark> spark(new LIBNOTIFYSpark);
   kickstart.add_spark (spark);
 }
 
-LibNotify::LibNotify (gmref_ptr<Ekiga::NotificationCore> core)
+LibNotify::LibNotify (boost::shared_ptr<Ekiga::NotificationCore> core)
 {
   notify_init ("Ekiga");
   core->notification_added.connect (sigc::mem_fun (this, &LibNotify::on_notification_added));
@@ -131,7 +131,7 @@ on_notif_closed (NotifyNotification* /*notif*/,
 }
 
 void
-LibNotify::on_notification_added (gmref_ptr<Ekiga::Notification> notification)
+LibNotify::on_notification_added (boost::shared_ptr<Ekiga::Notification> notification)
 {
   NotifyNotification* notif = NULL;
   const gchar* urgency = NULL;
@@ -164,13 +164,13 @@ LibNotify::on_notification_added (gmref_ptr<Ekiga::Notification> notification)
 		    G_CALLBACK (on_notif_closed), notification.get ());
   sigc::connection conn = notification->removed.connect (sigc::bind (sigc::mem_fun (this, &LibNotify::on_notification_removed), notification));
 
-  live[notification] = std::pair<sigc::connection, std::tr1::shared_ptr<NotifyNotification> > (conn, std::tr1::shared_ptr<NotifyNotification> (notif, g_object_unref));
+  live[notification] = std::pair<sigc::connection, boost::shared_ptr<NotifyNotification> > (conn, boost::shared_ptr<NotifyNotification> (notif, g_object_unref));
 
   (void)notify_notification_show (notif, NULL);
 }
 
 void
-LibNotify::on_notification_removed (gmref_ptr<Ekiga::Notification> notification)
+LibNotify::on_notification_removed (boost::shared_ptr<Ekiga::Notification> notification)
 {
   container_type::iterator iter = live.find (notification);
 

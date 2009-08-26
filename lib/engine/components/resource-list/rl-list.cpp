@@ -47,7 +47,7 @@ class RL::ListImpl
 public: // no need to make anything private
 
   ListImpl (Ekiga::ServiceCore& core_,
-	    gmref_ptr<XCAP::Path> path_,
+	    boost::shared_ptr<XCAP::Path> path_,
 	    int pos,
 	    const std::string group_,
 	    xmlNodePtr node_);
@@ -77,12 +77,12 @@ public: // no need to make anything private
 
   Ekiga::ServiceCore& core;
 
-  gmref_ptr<XCAP::Path> path;
+  boost::shared_ptr<XCAP::Path> path;
   int position;
 
   std::string group;
 
-  std::tr1::shared_ptr<xmlDoc> doc;
+  boost::shared_ptr<xmlDoc> doc;
   xmlNodePtr node;
 
   xmlNodePtr name_node;
@@ -94,24 +94,24 @@ public: // no need to make anything private
 
   void publish () const;
 
-  sigc::signal1<void, gmref_ptr<Entry> > entry_added;
-  sigc::signal1<void, gmref_ptr<Entry> > entry_updated;
-  sigc::signal1<void, gmref_ptr<Entry> > entry_removed;
+  sigc::signal1<void, boost::shared_ptr<Entry> > entry_added;
+  sigc::signal1<void, boost::shared_ptr<Entry> > entry_updated;
+  sigc::signal1<void, boost::shared_ptr<Entry> > entry_removed;
 
 
   /* data for its children */
   typedef enum { LIST, ENTRY } ChildType;
 
   std::list<ChildType> ordering;
-  std::list<gmref_ptr<List> > lists;
-  std::list<std::pair<gmref_ptr<Entry>, std::list<sigc::connection> > > entries;
+  std::list<boost::shared_ptr<List> > lists;
+  std::list<std::pair<boost::shared_ptr<Entry>, std::list<sigc::connection> > > entries;
 };
 
 
 /* implementation of the List class */
 
 RL::List::List (Ekiga::ServiceCore& core_,
-		gmref_ptr<XCAP::Path> path_,
+		boost::shared_ptr<XCAP::Path> path_,
 		int pos,
 		const std::string group_,
 		xmlNodePtr node_)
@@ -168,7 +168,7 @@ RL::List::publish () const
 /* implementation of the ListImpl class */
 
 RL::ListImpl::ListImpl (Ekiga::ServiceCore& core_,
-			gmref_ptr<XCAP::Path> path_,
+			boost::shared_ptr<XCAP::Path> path_,
 			int pos,
 			const std::string group_,
 			xmlNodePtr node_):
@@ -227,13 +227,13 @@ RL::ListImpl::flush ()
 {
   ordering.clear ();
 
-  for (std::list<gmref_ptr<List> >::iterator iter = lists.begin ();
+  for (std::list<boost::shared_ptr<List> >::iterator iter = lists.begin ();
        iter != lists.end ();
        ++iter)
     (*iter)->flush ();
   lists.clear ();
 
-  for (std::list<std::pair<gmref_ptr<Entry>, std::list<sigc::connection> > >::iterator iter = entries.begin ();
+  for (std::list<std::pair<boost::shared_ptr<Entry>, std::list<sigc::connection> > >::iterator iter = entries.begin ();
        iter != entries.end ();
        ++iter) {
 
@@ -256,7 +256,7 @@ RL::ListImpl::refresh ()
 {
   flush ();
 
-  gmref_ptr<XCAP::Core> xcap = core.get ("xcap-core");
+  boost::shared_ptr<XCAP::Core> xcap = core.get<XCAP::Core> ("xcap-core");
   xcap->read (path, sigc::mem_fun (this, &RL::ListImpl::on_xcap_answer));
 }
 
@@ -270,9 +270,9 @@ RL::ListImpl::on_xcap_answer (bool error,
 
   } else {
 
-    doc = std::tr1::shared_ptr<xmlDoc> (xmlRecoverMemory (value.c_str (), value.length ()), xmlFreeDoc);
+    doc = boost::shared_ptr<xmlDoc> (xmlRecoverMemory (value.c_str (), value.length ()), xmlFreeDoc);
     if ( !doc)
-      doc = std::tr1::shared_ptr<xmlDoc> (xmlNewDoc (BAD_CAST "1.0"), xmlFreeDoc);
+      doc = boost::shared_ptr<xmlDoc> (xmlNewDoc (BAD_CAST "1.0"), xmlFreeDoc);
     node = xmlDocGetRootElement (doc.get ());
     if (node == NULL
 	|| node->name == NULL
@@ -319,7 +319,7 @@ RL::ListImpl::parse ()
 	&& child->name != NULL
 	&& xmlStrEqual (BAD_CAST "list", child->name)) {
 
-      gmref_ptr<List> list = gmref_ptr<List> (new List (core, path,
+      boost::shared_ptr<List> list = boost::shared_ptr<List> (new List (core, path,
 							list_pos, display_name,
 							child));
       list->entry_added.connect (entry_added.make_slot ());
@@ -336,14 +336,14 @@ RL::ListImpl::parse ()
 	&& child->name != NULL
 	&& xmlStrEqual (BAD_CAST "entry", child->name)) {
 
-      gmref_ptr<Entry> entry = gmref_ptr<Entry> (new Entry (core, path,
+      boost::shared_ptr<Entry> entry = boost::shared_ptr<Entry> (new Entry (core, path,
 							    entry_pos,
 							    display_name,
 							    doc, child));
       std::list<sigc::connection> conns;
       conns.push_back (entry->updated.connect (sigc::bind (entry_updated.make_slot (), entry)));
       conns.push_back (entry->removed.connect (sigc::bind (entry_removed.make_slot (), entry)));
-      entries.push_back (std::pair<gmref_ptr<Entry>, std::list<sigc::connection> > (entry, conns));
+      entries.push_back (std::pair<boost::shared_ptr<Entry>, std::list<sigc::connection> > (entry, conns));
       ordering.push_back (ENTRY);
       entry_pos++;
       entry_added.emit (entry);
@@ -356,12 +356,12 @@ void
 RL::ListImpl::push_presence (const std::string uri_,
 			     const std::string presence)
 {
-  for (std::list<gmref_ptr<List> >::const_iterator iter = lists.begin ();
+  for (std::list<boost::shared_ptr<List> >::const_iterator iter = lists.begin ();
        iter != lists.end ();
        ++iter)
     (*iter)->push_presence (uri_, presence);
 
-  for (std::list<std::pair<gmref_ptr<Entry>, std::list<sigc::connection> > >::const_iterator iter = entries.begin ();
+  for (std::list<std::pair<boost::shared_ptr<Entry>, std::list<sigc::connection> > >::const_iterator iter = entries.begin ();
        iter != entries.end ();
        ++iter) {
 
@@ -374,12 +374,12 @@ void
 RL::ListImpl::push_status (const std::string uri_,
 			   const std::string status)
 {
-  for (std::list<gmref_ptr<List> >::const_iterator iter = lists.begin ();
+  for (std::list<boost::shared_ptr<List> >::const_iterator iter = lists.begin ();
        iter != lists.end ();
        ++iter)
     (*iter)->push_status (uri_, status);
 
-  for (std::list<std::pair<gmref_ptr<Entry>, std::list<sigc::connection> > >::const_iterator iter = entries.begin ();
+  for (std::list<std::pair<boost::shared_ptr<Entry>, std::list<sigc::connection> > >::const_iterator iter = entries.begin ();
        iter != entries.end ();
        ++iter) {
 
@@ -393,12 +393,12 @@ RL::ListImpl::visit_presentities (sigc::slot1<bool, Ekiga::Presentity&> visitor)
 {
   bool go_on = true;
 
-  for (std::list<gmref_ptr<List> >::const_iterator iter = lists.begin ();
+  for (std::list<boost::shared_ptr<List> >::const_iterator iter = lists.begin ();
        go_on && iter != lists.end ();
        ++iter)
     go_on = (*iter)->visit_presentities (visitor);
 
-  for (std::list<std::pair<gmref_ptr<Entry>, std::list<sigc::connection> > >::const_iterator iter = entries.begin ();
+  for (std::list<std::pair<boost::shared_ptr<Entry>, std::list<sigc::connection> > >::const_iterator iter = entries.begin ();
        go_on && iter != entries.end ();
        ++iter) {
 
@@ -411,12 +411,12 @@ RL::ListImpl::visit_presentities (sigc::slot1<bool, Ekiga::Presentity&> visitor)
 void
 RL::ListImpl::publish () const
 {
-  for (std::list<gmref_ptr<List> >::const_iterator iter = lists.begin ();
+  for (std::list<boost::shared_ptr<List> >::const_iterator iter = lists.begin ();
        iter != lists.end ();
        ++iter)
     (*iter)->publish ();
 
-  for (std::list<std::pair<gmref_ptr<Entry>, std::list<sigc::connection> > >::const_iterator iter = entries.begin ();
+  for (std::list<std::pair<boost::shared_ptr<Entry>, std::list<sigc::connection> > >::const_iterator iter = entries.begin ();
        iter != entries.end ();
        ++iter) {
 

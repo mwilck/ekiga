@@ -112,7 +112,7 @@ namespace Ekiga
      * 'book_removed' signal will be emitted when the Ekiga::Book has been
      * removed from the Ekiga::Source.
      */
-    void add_book (gmref_ptr<BookType> book);
+    void add_book (boost::shared_ptr<BookType> book);
 
 
     /** Removes a book from the Ekiga::Source.
@@ -120,7 +120,7 @@ namespace Ekiga
      * @return: The Ekiga::Source 'book_removed' signal is emitted when the
      * Ekiga::Book has been removed.
      */
-    void remove_book (gmref_ptr<BookType> book);
+    void remove_book (boost::shared_ptr<BookType> book);
 
     using RefLister<BookType>::add_connection;
 
@@ -150,7 +150,7 @@ namespace Ekiga
      * Ekiga::Book.
      * @param: The Book to remove.
      */
-    void common_removal_steps (gmref_ptr<BookType> book);
+    void common_removal_steps (boost::shared_ptr<BookType> book);
 
 
     /** This callback is triggered when the 'updated' signal is emitted on an
@@ -158,7 +158,7 @@ namespace Ekiga
      * Ekiga::Book.
      * @param: The updated book.
      */
-    void on_book_updated (gmref_ptr<BookType> book);
+    void on_book_updated (boost::shared_ptr<BookType> book);
 
 
     /** This callback is triggered when the 'removed' signal is emitted on an
@@ -166,7 +166,7 @@ namespace Ekiga
      * and takes care of the deletion of the book.
      * @param: The removed book.
      */
-    void on_book_removed (gmref_ptr<BookType> book);
+    void on_book_removed (boost::shared_ptr<BookType> book);
   };
 
   /**
@@ -204,7 +204,7 @@ Ekiga::SourceImpl<BookType>::visit_books (sigc::slot1<bool, BookPtr > visitor)
 
 template<typename BookType>
 void
-Ekiga::SourceImpl<BookType>::add_book (gmref_ptr<BookType> book)
+Ekiga::SourceImpl<BookType>::add_book (boost::shared_ptr<BookType> book)
 {
   add_object (book);
 
@@ -220,7 +220,7 @@ Ekiga::SourceImpl<BookType>::add_book (gmref_ptr<BookType> book)
 
 template<typename BookType>
 void
-Ekiga::SourceImpl<BookType>::remove_book (gmref_ptr<BookType> book)
+Ekiga::SourceImpl<BookType>::remove_book (boost::shared_ptr<BookType> book)
 {
   remove_object (book);
 }

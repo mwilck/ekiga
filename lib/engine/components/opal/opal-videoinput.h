@@ -181,7 +181,7 @@ class PVideoInputDevice_EKIGA : public PVideoInputDevice
   
 protected:
   Ekiga::ServiceCore & core;
-  Ekiga::VideoInputCore* videoinput_core;
+  boost::shared_ptr<Ekiga::VideoInputCore> videoinput_core;
 
   bool opened;
 };

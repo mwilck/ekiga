@@ -127,13 +127,13 @@ statusicon_set_inacall (StatusIcon *widget,
                         bool inacall);
 
 static void 
-established_call_cb (gmref_ptr<Ekiga::CallManager>  manager,
-                     gmref_ptr<Ekiga::Call>  call,
+established_call_cb (boost::shared_ptr<Ekiga::CallManager>  manager,
+                     boost::shared_ptr<Ekiga::Call>  call,
                      gpointer self);
 
 static void 
-cleared_call_cb (gmref_ptr<Ekiga::CallManager>  manager,
-                 gmref_ptr<Ekiga::Call>  call,
+cleared_call_cb (boost::shared_ptr<Ekiga::CallManager>  manager,
+                 boost::shared_ptr<Ekiga::Call>  call,
                  std::string reason,
                  gpointer self);
 
@@ -278,7 +278,7 @@ statusicon_activated_cb (G_GNUC_UNUSED GtkStatusIcon *icon,
   }
   else {
 
-    gmref_ptr<GtkFrontend> frontend = self->priv->core.get ("gtk-frontend");
+    boost::shared_ptr<GtkFrontend> frontend = self->priv->core.get<GtkFrontend> ("gtk-frontend");
     GtkWidget *w = GTK_WIDGET (frontend->get_chat_window ());
 
     gtk_widget_show (w);
@@ -337,7 +337,7 @@ statusicon_blink_cb (gpointer data)
 
   g_return_val_if_fail (data != NULL, false);
 
-  gmref_ptr<GtkFrontend> frontend = statusicon->priv->core.get ("gtk-frontend");
+  boost::shared_ptr<GtkFrontend> frontend = statusicon->priv->core.get<GtkFrontend> ("gtk-frontend");
   // FIXME use main_window here
   chat_window = GTK_WIDGET (frontend->get_chat_window ());
 
@@ -357,15 +357,15 @@ statusicon_blink_cb (gpointer data)
 
 static void
 personal_details_updated_cb (StatusIcon* self,
-			     gmref_ptr<Ekiga::PersonalDetails> details)
+			     boost::shared_ptr<Ekiga::PersonalDetails> details)
 {
   statusicon_set_status (self, details->get_presence ());
 }
 
 
 static void 
-established_call_cb (gmref_ptr<Ekiga::CallManager>  /*manager*/,
-                     gmref_ptr<Ekiga::Call>  /*call*/,
+established_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
+                     boost::shared_ptr<Ekiga::Call>  /*call*/,
                      gpointer self)
 {
   statusicon_set_inacall (STATUSICON (self), true);
@@ -373,8 +373,8 @@ established_call_cb (gmref_ptr<Ekiga::CallManager>  /*manager*/,
 
 
 static void 
-cleared_call_cb (gmref_ptr<Ekiga::CallManager>  /*manager*/,
-                 gmref_ptr<Ekiga::Call>  /*call*/,
+cleared_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
+                 boost::shared_ptr<Ekiga::Call>  /*call*/,
                  std::string /*reason*/,
                  gpointer self)
 {
@@ -393,7 +393,7 @@ statusicon_build_menu ()
   Ekiga::ServiceCore *services = NULL;
 
   services = GnomeMeeting::Process ()->GetServiceCore ();
-  gmref_ptr<GtkFrontend> gtk_frontend = services->get ("gtk-frontend");
+  boost::shared_ptr<GtkFrontend> gtk_frontend = services->get<GtkFrontend> ("gtk-frontend");
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
 
   static MenuEntry menu [] =
@@ -469,7 +469,7 @@ statusicon_set_status (StatusIcon *statusicon,
 
   g_return_if_fail (statusicon != NULL);
 
-  gmref_ptr<GtkFrontend> frontend = statusicon->priv->core.get ("gtk-frontend");
+  boost::shared_ptr<GtkFrontend> frontend = statusicon->priv->core.get<GtkFrontend> ("gtk-frontend");
   // FIXME use main_window here
   chat_window = GTK_WIDGET (frontend->get_chat_window ());
 
@@ -501,7 +501,7 @@ statusicon_set_inacall (StatusIcon *statusicon,
 
   g_return_if_fail (statusicon != NULL);
 
-  gmref_ptr<GtkFrontend> frontend = statusicon->priv->core.get ("gtk-frontend");
+  boost::shared_ptr<GtkFrontend> frontend = statusicon->priv->core.get<GtkFrontend> ("gtk-frontend");
   // FIXME use main_window here
   chat_window = GTK_WIDGET (frontend->get_chat_window ());
 
@@ -543,9 +543,9 @@ statusicon_new (Ekiga::ServiceCore & core)
   self->priv->blink_image = NULL;
   self->priv->unread_messages = false;
 
-  gmref_ptr<GtkFrontend> frontend = core.get ("gtk-frontend");
-  gmref_ptr<Ekiga::PersonalDetails> details = core.get ("personal-details");
-  gmref_ptr<Ekiga::CallCore> call_core = core.get ("call-core");
+  boost::shared_ptr<GtkFrontend> frontend = core.get<GtkFrontend> ("gtk-frontend");
+  boost::shared_ptr<Ekiga::PersonalDetails> details = core.get<Ekiga::PersonalDetails> ("personal-details");
+  boost::shared_ptr<Ekiga::CallCore> call_core = core.get<Ekiga::CallCore> ("call-core");
   GtkWidget *chat_window = GTK_WIDGET (frontend->get_chat_window ());
 
   statusicon_set_status (self, details->get_presence ());

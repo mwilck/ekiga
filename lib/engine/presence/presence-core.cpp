@@ -41,7 +41,7 @@
 
 Ekiga::PresenceCore::PresenceCore (Ekiga::ServiceCore& core)
 {
-  gmref_ptr<Ekiga::PersonalDetails> details = core.get ("personal-details");
+  boost::shared_ptr<Ekiga::PersonalDetails> details = core.get<Ekiga::PersonalDetails> ("personal-details");
 
   if (details)
     conns.push_back (details->updated.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresenceCore::publish), details)));
@@ -135,7 +135,7 @@ Ekiga::PresenceCore::on_presentity_removed (HeapPtr heap,
 }
 
 void
-Ekiga::PresenceCore::add_presentity_decorator (gmref_ptr<PresentityDecorator> decorator)
+Ekiga::PresenceCore::add_presentity_decorator (boost::shared_ptr<PresentityDecorator> decorator)
 {
   presentity_decorators.push_back (decorator);
 }
@@ -147,7 +147,7 @@ Ekiga::PresenceCore::populate_presentity_menu (PresentityPtr presentity,
 {
   bool populated = false;
 
-  for (std::list<gmref_ptr<PresentityDecorator> >::const_iterator iter
+  for (std::list<boost::shared_ptr<PresentityDecorator> >::const_iterator iter
 	 = presentity_decorators.begin ();
        iter != presentity_decorators.end ();
        ++iter) {
@@ -159,7 +159,7 @@ Ekiga::PresenceCore::populate_presentity_menu (PresentityPtr presentity,
 }
 
 void
-Ekiga::PresenceCore::add_presence_fetcher (gmref_ptr<PresenceFetcher> fetcher)
+Ekiga::PresenceCore::add_presence_fetcher (boost::shared_ptr<PresenceFetcher> fetcher)
 {
   presence_fetchers.push_back (fetcher);
   conns.push_back (fetcher->presence_received.connect (sigc::mem_fun (this, &Ekiga::PresenceCore::on_presence_received)));
@@ -178,7 +178,7 @@ Ekiga::PresenceCore::fetch_presence (const std::string uri)
 
   if (uri_infos[uri].count == 1) {
 
-    for (std::list<gmref_ptr<PresenceFetcher> >::iterator iter
+    for (std::list<boost::shared_ptr<PresenceFetcher> >::iterator iter
 	   = presence_fetchers.begin ();
 	 iter != presence_fetchers.end ();
 	 ++iter)
@@ -197,7 +197,7 @@ void Ekiga::PresenceCore::unfetch_presence (const std::string uri)
 
     uri_infos.erase (uri_infos.find (uri));
 
-    for (std::list<gmref_ptr<PresenceFetcher> >::iterator iter
+    for (std::list<boost::shared_ptr<PresenceFetcher> >::iterator iter
 	   = presence_fetchers.begin ();
 	 iter != presence_fetchers.end ();
 	 ++iter)
@@ -222,14 +222,14 @@ Ekiga::PresenceCore::on_status_received (const std::string uri,
 }
 
 void
-Ekiga::PresenceCore::add_presence_publisher (gmref_ptr<PresencePublisher> publisher)
+Ekiga::PresenceCore::add_presence_publisher (boost::shared_ptr<PresencePublisher> publisher)
 {
   presence_publishers.push_back (publisher);
 }
 
-void Ekiga::PresenceCore::publish (gmref_ptr<PersonalDetails> details) 
+void Ekiga::PresenceCore::publish (boost::shared_ptr<PersonalDetails> details) 
 {
-  for (std::list<gmref_ptr<PresencePublisher> >::iterator iter
+  for (std::list<boost::shared_ptr<PresencePublisher> >::iterator iter
 	 = presence_publishers.begin ();
        iter != presence_publishers.end ();
        ++iter)

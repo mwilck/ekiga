@@ -232,11 +232,12 @@ public:
   resolver_callback_helper (const std::string name_): name(name_)
   {}
 
-  bool test (gmref_ptr<Ekiga::URIPresentity> presentity_)
+  bool test (Ekiga::PresentityPtr pres_)
   {
+    boost::shared_ptr<Ekiga::URIPresentity> presentity_ = boost::dynamic_pointer_cast<Ekiga::URIPresentity> (pres_);
     bool result;
 
-    if (presentity_->get_name () == name) {
+    if (presentity_ && presentity_->get_name () == name) {
 
       presentity = presentity_;
       result = false;
@@ -244,11 +245,11 @@ public:
     return result;
   }
 
-  gmref_ptr<Ekiga::URIPresentity> found_presentity () const
+  boost::shared_ptr<Ekiga::URIPresentity> found_presentity () const
   { return presentity; }
 
 private:
-  gmref_ptr<Ekiga::URIPresentity> presentity;
+  boost::shared_ptr<Ekiga::URIPresentity> presentity;
   const std::string name;
 };
 
@@ -318,7 +319,7 @@ Avahi::Heap::ResolverCallback (AvahiServiceResolver *resolver,
 
 	groups.insert (_("Neighbours"));
 	url = g_strdup_printf ("%s:neighbour@%s:%d", broken[1], host_name, port);
-	gmref_ptr<Ekiga::URIPresentity> presentity (new Ekiga::URIPresentity (core, name, url, groups));
+	boost::shared_ptr<Ekiga::URIPresentity> presentity (new Ekiga::URIPresentity (core, name, url, groups));
 	status_received.emit (url, status);
 	presence_received.emit (url, presence);
 	add_presentity (presentity);

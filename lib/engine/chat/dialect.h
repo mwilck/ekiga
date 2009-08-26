@@ -43,7 +43,7 @@
 namespace Ekiga
 {
 
-  class Dialect: public virtual GmRefCounted
+  class Dialect
   {
   public:
 
@@ -84,7 +84,7 @@ namespace Ekiga
     ChainOfResponsibility<FormRequest*> questions;
   };
 
-  typedef gmref_ptr<Dialect> DialectPtr;
+  typedef boost::shared_ptr<Dialect> DialectPtr;
 
 };
 

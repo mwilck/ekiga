@@ -48,9 +48,9 @@ namespace LM
   class Account: public Ekiga::Account
   {
   public:
-    Account (gmref_ptr<Ekiga::PersonalDetails> details_,
-	     gmref_ptr<Dialect> dialect_,
-	     gmref_ptr<Cluster> cluster_,
+    Account (boost::shared_ptr<Ekiga::PersonalDetails> details_,
+	     boost::shared_ptr<Dialect> dialect_,
+	     boost::shared_ptr<Cluster> cluster_,
 	     xmlNodePtr node_);
 
     ~Account ();
@@ -86,16 +86,16 @@ namespace LM
 
     void remove ();
 
-    gmref_ptr<Ekiga::PersonalDetails> details;
-    gmref_ptr<Dialect> dialect;
-    gmref_ptr<Cluster> cluster;
+    boost::shared_ptr<Ekiga::PersonalDetails> details;
+    boost::shared_ptr<Dialect> dialect;
+    boost::shared_ptr<Cluster> cluster;
     xmlNodePtr node;
 
     std::string status;
 
     LmConnection* connection;
 
-    gmref_ptr<Heap> heap;
+    boost::shared_ptr<Heap> heap;
   };
 };
 

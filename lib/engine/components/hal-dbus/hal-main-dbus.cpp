@@ -49,7 +49,7 @@ struct HALDBUSSpark: public Ekiga::Spark
 			    int* /*argc*/,
 			    char** /*argv*/[])
   {
-    gmref_ptr<Ekiga::HalCore> hal_core = core.get ("hal-core");
+    boost::shared_ptr<Ekiga::HalCore> hal_core = core.get<Ekiga::HalCore> ("hal-core");
 
     if (hal_core) {
 
@@ -76,6 +76,6 @@ struct HALDBUSSpark: public Ekiga::Spark
 void
 hal_dbus_init (Ekiga::KickStart& kickstart)
 {
-  gmref_ptr<Ekiga::Spark> spark(new HALDBUSSpark);
+  boost::shared_ptr<Ekiga::Spark> spark(new HALDBUSSpark);
   kickstart.add_spark (spark);
 }

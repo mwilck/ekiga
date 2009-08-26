@@ -63,7 +63,7 @@ namespace Ekiga
     /* beware of the order : we prefer erring on the side of safety */
     typedef enum { Unknown, Foe, Neutral, Friend } Identification;
 
-    class Helper: public virtual GmRefCounted
+    class Helper
     {
     public:
       virtual ~Helper ()
@@ -76,7 +76,7 @@ namespace Ekiga
     Identification decide (const std::string domain,
 			   const std::string token) const;
 
-    void add_helper (gmref_ptr<Helper> helper);
+    void add_helper (boost::shared_ptr<Helper> helper);
 
     /* this turns us into a service */
     const std::string get_name () const
@@ -86,7 +86,7 @@ namespace Ekiga
     { return "\tObject helping determine if an incoming call is acceptable"; }
 
   private:
-    typedef std::list<gmref_ptr<Helper> > helpers_type;
+    typedef std::list<boost::shared_ptr<Helper> > helpers_type;
     helpers_type helpers;
   };
 };

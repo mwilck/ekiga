@@ -50,12 +50,12 @@ struct HISTORYSpark: public Ekiga::Spark
 			    char** /*argv*/[])
   {
     Ekiga::ServicePtr service = core.get ("call-history-store");
-    gmref_ptr<Ekiga::ContactCore> contact_core = core.get ("contact-core");
-    gmref_ptr<Ekiga::CallCore> call_core = core.get ("call-core");
+    boost::shared_ptr<Ekiga::ContactCore> contact_core = core.get<Ekiga::ContactCore> ("contact-core");
+    boost::shared_ptr<Ekiga::CallCore> call_core = core.get<Ekiga::CallCore> ("call-core");
 
     if (contact_core && call_core && !service) {
 
-      gmref_ptr<History::Source> source (new History::Source (core));
+      boost::shared_ptr<History::Source> source (new History::Source (core));
       core.add (source);
       contact_core->add_source (source);
       result = true;
@@ -76,6 +76,6 @@ struct HISTORYSpark: public Ekiga::Spark
 void
 history_init (Ekiga::KickStart& kickstart)
 {
-  gmref_ptr<Ekiga::Spark> spark(new HISTORYSpark);
+  boost::shared_ptr<Ekiga::Spark> spark(new HISTORYSpark);
   kickstart.add_spark (spark);
 }

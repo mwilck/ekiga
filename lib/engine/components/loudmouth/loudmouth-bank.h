@@ -51,9 +51,9 @@ namespace LM
     public Ekiga::BankImpl<Account>
   {
   public:
-    Bank (gmref_ptr<Ekiga::PersonalDetails> details_,
-	  gmref_ptr<Dialect> dialect_,
-	  gmref_ptr<Cluster> cluster_);
+    Bank (boost::shared_ptr<Ekiga::PersonalDetails> details_,
+	  boost::shared_ptr<Dialect> dialect_,
+	  boost::shared_ptr<Cluster> cluster_);
 
     ~Bank ();
 
@@ -71,9 +71,9 @@ namespace LM
 
   private:
 
-    gmref_ptr<Ekiga::PersonalDetails> details;
-    gmref_ptr<Cluster> cluster;
-    gmref_ptr<Dialect> dialect;
+    boost::shared_ptr<Ekiga::PersonalDetails> details;
+    boost::shared_ptr<Cluster> cluster;
+    boost::shared_ptr<Dialect> dialect;
 
     xmlDocPtr doc;
 
@@ -82,7 +82,7 @@ namespace LM
     void save () const;
   };
 
-  typedef gmref_ptr<Bank> BankPtr;
+  typedef boost::shared_ptr<Bank> BankPtr;
 };
 
 #endif

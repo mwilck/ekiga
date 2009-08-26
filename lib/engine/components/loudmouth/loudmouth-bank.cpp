@@ -43,9 +43,9 @@
 
 #define KEY "/apps/" PACKAGE_NAME "/contacts/jabber"
 
-LM::Bank::Bank (gmref_ptr<Ekiga::PersonalDetails> details_,
-		gmref_ptr<Dialect> dialect_,
-		gmref_ptr<Cluster> cluster_):
+LM::Bank::Bank (boost::shared_ptr<Ekiga::PersonalDetails> details_,
+		boost::shared_ptr<Dialect> dialect_,
+		boost::shared_ptr<Cluster> cluster_):
   details(details_), cluster(cluster_), dialect(dialect_), doc (NULL)
 {
   gchar* c_raw = gm_conf_get_string (KEY);
@@ -81,7 +81,7 @@ LM::Bank::Bank (gmref_ptr<Ekiga::PersonalDetails> details_,
 void
 LM::Bank::add (xmlNodePtr node)
 {
-  gmref_ptr<Account> account (new Account (details, dialect, cluster, node));
+  boost::shared_ptr<Account> account (new Account (details, dialect, cluster, node));
 
   if (node == NULL) { // that was a new one
 

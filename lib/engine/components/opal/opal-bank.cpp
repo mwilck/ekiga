@@ -56,7 +56,7 @@ Opal::Bank::Bank (Ekiga::ServiceCore &_core): core(_core)
 
   while (accounts_iter) {
 
-    gmref_ptr<Account> account = gmref_ptr<Account> (new Account (core, (char *)accounts_iter->data));
+    boost::shared_ptr<Account> account = boost::shared_ptr<Account> (new Account (core, (char *)accounts_iter->data));
 
     add_account (account);
     Ekiga::BankImpl<Account>::add_connection (account, account->trigger_saving.connect (sigc::mem_fun (this, &Opal::Bank::save)));
@@ -89,7 +89,7 @@ Opal::Bank::new_account (Account::Type acc_type,
 			 std::string username,
 			 std::string password)
 {
-  gmref_ptr<Ekiga::FormRequestSimple> request = gmref_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::bind (sigc::mem_fun (this, &Opal::Bank::on_new_account_form_submitted), acc_type)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::bind (sigc::mem_fun (this, &Opal::Bank::on_new_account_form_submitted), acc_type)));
 
   request->title (_("Edit account"));
   request->instructions (_("Please update the following fields."));
@@ -152,7 +152,7 @@ void Opal::Bank::on_new_account_form_submitted (bool submitted,
   if (!submitted)
     return;
 
-  gmref_ptr<Ekiga::FormRequestSimple> request = gmref_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::bind (sigc::mem_fun (this, &Opal::Bank::on_new_account_form_submitted) ,acc_type)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::bind (sigc::mem_fun (this, &Opal::Bank::on_new_account_form_submitted) ,acc_type)));
 
   std::string error;
   std::string new_name = (acc_type == Opal::Account::SIP

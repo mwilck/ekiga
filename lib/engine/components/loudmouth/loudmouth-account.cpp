@@ -66,9 +66,9 @@ on_authenticate_c (LmConnection* /*unused*/,
 
 /* and here is the C++ code : */
 
-LM::Account::Account (gmref_ptr<Ekiga::PersonalDetails> details_,
-		      gmref_ptr<Dialect> dialect_,
-		      gmref_ptr<Cluster> cluster_,
+LM::Account::Account (boost::shared_ptr<Ekiga::PersonalDetails> details_,
+		      boost::shared_ptr<Dialect> dialect_,
+		      boost::shared_ptr<Cluster> cluster_,
 		      xmlNodePtr node_):
   details(details_), dialect(dialect_), cluster(cluster_), node(node_)
 {
@@ -229,7 +229,7 @@ LM::Account::on_authenticate (bool result)
 {
   if (result) {
 
-    heap = gmref_ptr<Heap> (new Heap (details, dialect, connection));
+    heap = boost::shared_ptr<Heap> (new Heap (details, dialect, connection));
     {
       xmlChar *xml_str = xmlGetProp (node, BAD_CAST "name");
       heap->set_name ((const char*)xml_str);
@@ -256,7 +256,7 @@ LM::Account::get_node () const
 void
 LM::Account::edit ()
 {
-  gmref_ptr<Ekiga::FormRequestSimple> request = gmref_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &LM::Account::on_edit_form_submitted)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &LM::Account::on_edit_form_submitted)));
   xmlChar* xml_str = NULL;
 
   request->title (_("Edit account"));

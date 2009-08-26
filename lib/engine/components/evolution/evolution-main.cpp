@@ -50,12 +50,12 @@ struct EVOSpark: public Ekiga::Spark
 			    int */*argc*/,
 			    char **/*argv*/[])
   {
-    gmref_ptr<Ekiga::ContactCore> core = services.get ("contact-core");
+    boost::shared_ptr<Ekiga::ContactCore> core = services.get<Ekiga::ContactCore> ("contact-core");
     Ekiga::ServicePtr service = services.get ("evolution-source");
 
     if (core && !service) {
 
-      gmref_ptr<Evolution::Source> source (new Evolution::Source (services));
+      boost::shared_ptr<Evolution::Source> source (new Evolution::Source (services));
       services.add (source);
       core->add_source (source);
       result = true;
@@ -76,6 +76,6 @@ struct EVOSpark: public Ekiga::Spark
 extern "C" void
 ekiga_plugin_init (Ekiga::KickStart& kickstart)
 {
-  gmref_ptr<Ekiga::Spark> spark(new EVOSpark);
+  boost::shared_ptr<Ekiga::Spark> spark(new EVOSpark);
   kickstart.add_spark (spark);
 }

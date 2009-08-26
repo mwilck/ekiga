@@ -107,7 +107,7 @@ namespace LM
     void remove_presentity ();
   };
 
-  typedef gmref_ptr<Presentity> PresentityPtr;
+  typedef boost::shared_ptr<Presentity> PresentityPtr;
 
 };
 

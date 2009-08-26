@@ -39,7 +39,7 @@
 
 History::Source::Source (Ekiga::ServiceCore &_core): core(_core)
 {
-  book = gmref_ptr<Book>(new Book (core));
+  book = boost::shared_ptr<Book>(new Book (core));
 
   add_book (book);
 }

@@ -49,7 +49,7 @@ namespace RL {
   public:
 
     Heap (Ekiga::ServiceCore& services_,
-	  std::tr1::shared_ptr<xmlDoc> doc_,
+	  boost::shared_ptr<xmlDoc> doc_,
 	  xmlNodePtr node);
 
     /* name: the name of the Heap in the GUI
@@ -63,7 +63,7 @@ namespace RL {
      *
      */
     Heap (Ekiga::ServiceCore& core_,
-	  std::tr1::shared_ptr<xmlDoc> doc_,
+	  boost::shared_ptr<xmlDoc> doc_,
 	  const std::string name_,
 	  const std::string root_,
 	  const std::string user_,
@@ -103,7 +103,7 @@ namespace RL {
     xmlNodePtr username;
     xmlNodePtr password;
 
-    std::tr1::shared_ptr<xmlDoc> doc;
+    boost::shared_ptr<xmlDoc> doc;
     xmlNodePtr list_node;
 
     std::map<PresentityPtr, std::list<sigc::connection> > presentities;
@@ -126,7 +126,7 @@ namespace RL {
     void new_entry_result (std::string error);
   };
 
-  typedef gmref_ptr<Heap> HeapPtr;
+  typedef boost::shared_ptr<Heap> HeapPtr;
 
 };
 

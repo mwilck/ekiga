@@ -20,7 +20,7 @@ Ekiga::FriendOrFoe::decide (const std::string domain,
 }
 
 void
-Ekiga::FriendOrFoe::add_helper (gmref_ptr<Ekiga::FriendOrFoe::Helper> helper)
+Ekiga::FriendOrFoe::add_helper (boost::shared_ptr<Ekiga::FriendOrFoe::Helper> helper)
 {
   helpers.push_front (helper);
 }

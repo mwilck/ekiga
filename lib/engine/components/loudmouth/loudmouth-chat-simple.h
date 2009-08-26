@@ -55,9 +55,9 @@ namespace LM
 
     const std::string get_title () const;
 
-    void connect (gmref_ptr<Ekiga::ChatObserver> observer);
+    void connect (boost::shared_ptr<Ekiga::ChatObserver> observer);
 
-    void disconnect (gmref_ptr<Ekiga::ChatObserver> observer);
+    void disconnect (boost::shared_ptr<Ekiga::ChatObserver> observer);
 
     bool send_message (const std::string msg);
 
@@ -73,10 +73,10 @@ namespace LM
 
     Ekiga::ServiceCore& core;
     PresentityPtr presentity;
-    std::list<gmref_ptr<Ekiga::ChatObserver> > observers;
+    std::list<boost::shared_ptr<Ekiga::ChatObserver> > observers;
   };
 
-  typedef gmref_ptr<SimpleChat> SimpleChatPtr;
+  typedef boost::shared_ptr<SimpleChat> SimpleChatPtr;
 
 };
 
