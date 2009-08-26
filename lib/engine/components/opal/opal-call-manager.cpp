@@ -652,13 +652,18 @@ OpalCall *CallManager::CreateCall (void *uri)
   return call;
 }
 
+void
+CallManager::emit_removed_in_main (Ekiga::Call* call)
+{
+  call->removed.emit ();
+}
 
 void
 CallManager::DestroyCall (OpalCall *_call)
 {
   Ekiga::Call *call = dynamic_cast<Ekiga::Call *> (_call);
 
-  Ekiga::Runtime::emit_signal_in_main(call->removed);
+  Ekiga::Runtime::run_in_main(sigc::bind (sigc::mem_fun (this, &CallManager::emit_removed_in_main), call));
 }
 
 

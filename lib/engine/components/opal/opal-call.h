@@ -256,6 +256,14 @@ private:
 private:
     void on_cleared_call (std::string);
     void on_missed_call ();
+
+    void emit_established_in_main ();
+    void emit_missed_in_main ();
+    void emit_cleared_in_main (const std::string reason);
+    void emit_setup_in_main ();
+    void emit_ringing_in_main ();
+    void emit_held_in_main ();
+    void emit_retrieved_in_main ();
   };
 };
 

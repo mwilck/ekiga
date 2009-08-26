@@ -41,19 +41,6 @@
 
 #include "services.h"
 
-template<typename data_type>
-static void emit_signal_in_main_helper1 (sigc::signal1<void, data_type> sign,
-                                         data_type data)
-{
-  sign.emit (data);
-}
-
-static void emit_signal_in_main_helper (sigc::signal0<void> sign)
-
-{
-  sign.emit ();
-}
-
 namespace Ekiga
 {
 
@@ -72,18 +59,6 @@ namespace Ekiga
 
     void run_in_main (sigc::slot0<void> action,
 		      unsigned int seconds = 0); // depends on the implementation
-
-    inline void emit_signal_in_main (sigc::signal0<void> sign)
-    {
-      run_in_main (sigc::bind (sigc::ptr_fun (emit_signal_in_main_helper), sign));
-    }
-
-    template<typename data_type>
-    void emit_signal_in_main (sigc::signal1<void, data_type> sign,
-                              data_type data)
-    {
-      run_in_main (sigc::bind (sigc::ptr_fun (emit_signal_in_main_helper1<data_type>), sign, data));
-    }
   };
 
   /**

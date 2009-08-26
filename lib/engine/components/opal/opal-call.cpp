@@ -337,7 +337,7 @@ Opal::Call::OnEstablished (OpalConnection & connection)
   if (!PIsDescendant(&connection, OpalPCSSConnection)) {
 
     parse_info (connection);
-    Ekiga::Runtime::emit_signal_in_main (established);
+    Ekiga::Runtime::run_in_main (sigc::mem_fun (this, &Opal::Call::emit_established_in_main));
   }
 
   if (PIsDescendant(&connection, OpalRTPConnection)) {
@@ -395,7 +395,7 @@ Opal::Call::OnCleared ()
       && !is_outgoing ()
       && GetCallEndReason () != OpalConnection::EndedByAnswerDenied) {
 
-    Ekiga::Runtime::emit_signal_in_main (missed);
+    Ekiga::Runtime::run_in_main (sigc::mem_fun (this, &Opal::Call::emit_missed_in_main));
   }
   else {
 
@@ -476,7 +476,7 @@ Opal::Call::OnCleared ()
       reason = _("Call completed");
     }
 
-    Ekiga::Runtime::emit_signal_in_main (cleared, reason);
+    Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &Opal::Call::emit_cleared_in_main), reason));
   }
 }
 
@@ -499,7 +499,7 @@ Opal::Call::OnSetUp (OpalConnection & connection)
   outgoing = !IsNetworkOriginated ();
   parse_info (connection);
 
-  Ekiga::Runtime::emit_signal_in_main (setup);
+  Ekiga::Runtime::run_in_main (sigc::mem_fun (this, &Opal::Call::emit_setup_in_main));
   call_setup = true;
 
   cleared.connect (sigc::mem_fun (this, &Opal::Call::on_cleared_call));
@@ -515,7 +515,7 @@ PBoolean
 Opal::Call::OnAlerting (OpalConnection & connection)
 {
   if (!PIsDescendant(&connection, OpalPCSSConnection))
-    Ekiga::Runtime::emit_signal_in_main (ringing);
+    Ekiga::Runtime::run_in_main (sigc::mem_fun (this, &Opal::Call::emit_ringing_in_main));
 
   return OpalCall::OnAlerting (connection);
 }
@@ -527,9 +527,9 @@ Opal::Call::OnHold (OpalConnection & /*connection*/,
                     bool on_hold)
 {
   if (on_hold)
-    Ekiga::Runtime::emit_signal_in_main (held);
+    Ekiga::Runtime::run_in_main (sigc::mem_fun (this, &Opal::Call::emit_held_in_main));
   else
-    Ekiga::Runtime::emit_signal_in_main (retrieved);
+    Ekiga::Runtime::run_in_main (sigc::mem_fun (this, &Opal::Call::emit_retrieved_in_main));
 }
 
 
@@ -658,4 +658,46 @@ void
 Opal::Call::on_missed_call ()
 {
   OpalCall::OnCleared ();
+}
+
+void
+Opal::Call::emit_established_in_main ()
+{
+  established.emit ();
+}
+
+void
+Opal::Call::emit_missed_in_main ()
+{
+  missed.emit ();
+}
+
+void
+Opal::Call::emit_cleared_in_main (const std::string reason)
+{
+  cleared.emit (reason);
+}
+
+void
+Opal::Call::emit_setup_in_main ()
+{
+  setup.emit ();
+}
+
+void
+Opal::Call::emit_ringing_in_main ()
+{
+  ringing.emit ();
+}
+
+void
+Opal::Call::emit_held_in_main ()
+{
+  held.emit ();
+}
+
+void
+Opal::Call::emit_retrieved_in_main ()
+{
+  retrieved.emit ();
 }
