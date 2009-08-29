@@ -22,4 +22,4 @@ libgmevolution_la_LDFLAGS = $(PLUGINS_LIBTOOL_FLAGS)
 libgmevolution_la_LIBADD =  \
 	$(top_builddir)/lib/engine/framework/libgmframework.la \
 	$(top_builddir)/lib/engine/addressbook/libgmaddressbook.la \
-	$(BOOST_LDFLAGS) $(SIGC_LIBS) $(EDS_LIBS) $(GLIB_LIBS)
+	$(BOOST_LDFLAGS) $(BOOST_LIBS) $(EDS_LIBS) $(GLIB_LIBS)

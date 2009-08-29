@@ -91,7 +91,7 @@ struct _EkigaAssistantPrivate
   gint last_active_page;
 
   GtkListStore *summary_model;
-  std::vector<sigc::connection> connections;
+  std::vector<boost::signals::connection> connections;
 };
 
 /* presenting the network connectoin type to the user */
@@ -1622,24 +1622,24 @@ ekiga_assistant_new (Ekiga::ServiceCore *core)
   g_signal_connect (assistant, "key-press-event",
                     G_CALLBACK (ekiga_assistant_key_press_cb), NULL);
 
-  sigc::connection conn;
+  boost::signals::connection conn;
   boost::shared_ptr<Ekiga::VideoInputCore> videoinput_core = core->get<Ekiga::VideoInputCore> ("videoinput-core");
   boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core = core->get<Ekiga::AudioInputCore> ("audioinput-core");
   boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
 
-  conn = videoinput_core->device_added.connect (sigc::bind (sigc::ptr_fun (on_videoinput_device_added_cb), assistant));
+  conn = videoinput_core->device_added.connect (boost::bind (&on_videoinput_device_added_cb, _1, _2, assistant));
   assistant->priv->connections.push_back (conn);
-  conn = videoinput_core->device_removed.connect (sigc::bind (sigc::ptr_fun (on_videoinput_device_removed_cb), assistant));
-  assistant->priv->connections.push_back (conn);
-
-  conn = audioinput_core->device_added.connect (sigc::bind (sigc::ptr_fun (on_audioinput_device_added_cb), assistant));
-  assistant->priv->connections.push_back (conn);
-  conn = audioinput_core->device_removed.connect (sigc::bind (sigc::ptr_fun (on_audioinput_device_removed_cb), assistant));
+  conn = videoinput_core->device_removed.connect (boost::bind (&on_videoinput_device_removed_cb, _1, _2, assistant));
   assistant->priv->connections.push_back (conn);
 
-  conn = audiooutput_core->device_added.connect (sigc::bind (sigc::ptr_fun (on_audiooutput_device_added_cb), assistant));
+  conn = audioinput_core->device_added.connect (boost::bind (&on_audioinput_device_added_cb, _1, _2, assistant));
   assistant->priv->connections.push_back (conn);
-  conn = audiooutput_core->device_removed.connect (sigc::bind (sigc::ptr_fun (on_audiooutput_device_removed_cb), assistant));
+  conn = audioinput_core->device_removed.connect (boost::bind (&on_audioinput_device_removed_cb, _1, _2, assistant));
+  assistant->priv->connections.push_back (conn);
+
+  conn = audiooutput_core->device_added.connect (boost::bind (&on_audiooutput_device_added_cb, _1, _2, assistant));
+  assistant->priv->connections.push_back (conn);
+  conn = audiooutput_core->device_removed.connect (boost::bind (&on_audiooutput_device_removed_cb, _1, _2, assistant));
   assistant->priv->connections.push_back (conn);
 
   /* Notifiers for the VIDEO_CODECS_KEY keys */

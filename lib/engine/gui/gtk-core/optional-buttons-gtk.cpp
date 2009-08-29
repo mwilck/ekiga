@@ -43,7 +43,7 @@
 
 struct OptionalButtonsGtkHelper
 {
-  sigc::slot0<void> callback;
+  boost::function0<void> callback;
 };
 
 static void
@@ -106,7 +106,7 @@ OptionalButtonsGtk::reset ()
     struct OptionalButtonsGtkHelper* helper =
       (struct OptionalButtonsGtkHelper*)g_object_get_data (G_OBJECT (iter->second),
 							   "ekiga-optional-buttons-gtk-helper");
-    helper->callback = sigc::slot0<void> ();
+    helper->callback = boost::function0<void> ();
   }
   nbr_elements = 0;
 }
@@ -114,7 +114,7 @@ OptionalButtonsGtk::reset ()
 void
 OptionalButtonsGtk::add_action (const std::string icon,
 				G_GNUC_UNUSED const std::string label,
-				const sigc::slot0<void> callback)
+				const boost::function0<void> callback)
 {
   buttons_type::iterator iter = buttons.find (icon);
 

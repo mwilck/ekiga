@@ -86,7 +86,7 @@ bool GMAudioInputManager_null::open (unsigned channels, unsigned samplerate, uns
   Ekiga::AudioInputSettings settings;
   settings.volume = 0;
   settings.modifyable = false;
-  Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &GMAudioInputManager_null::device_opened_in_main), current_state.device, settings));
+  Ekiga::Runtime::run_in_main (boost::bind (&GMAudioInputManager_null::device_opened_in_main, this, current_state.device, settings));
 
   return true;
 }
@@ -94,7 +94,7 @@ bool GMAudioInputManager_null::open (unsigned channels, unsigned samplerate, uns
 void GMAudioInputManager_null::close()
 {
   current_state.opened = false;
-  Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &GMAudioInputManager_null::device_closed_in_main), current_state.device));
+  Ekiga::Runtime::run_in_main (boost::bind (&GMAudioInputManager_null::device_closed_in_main, this, current_state.device));
 }
 
 
@@ -124,11 +124,11 @@ void
 GMAudioInputManager_null::device_opened_in_main (Ekiga::AudioInputDevice device,
 						 Ekiga::AudioInputSettings settings)
 {
-  device_opened.emit (device, settings);
+  device_opened (device, settings);
 }
 
 void
 GMAudioInputManager_null::device_closed_in_main (Ekiga::AudioInputDevice device)
 {
-  device_closed.emit (device);
+  device_closed (device);
 }

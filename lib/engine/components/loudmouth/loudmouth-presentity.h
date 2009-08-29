@@ -78,7 +78,7 @@ namespace LM
 
     bool has_chat;
 
-    sigc::signal<void> chat_requested;
+    boost::signal<void> chat_requested;
 
   private:
     LmConnection* connection;

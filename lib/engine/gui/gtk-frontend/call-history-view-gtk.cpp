@@ -61,8 +61,8 @@ static void
 destroy_connections (gpointer data,
 		     GObject */*unused*/)
 {
-  std::list<sigc::connection> *conns
-    = (std::list<sigc::connection> *)data;
+  std::list<boost::signals::connection> *conns
+    = (std::list<boost::signals::connection> *)data;
 
   delete conns;
 }
@@ -125,6 +125,14 @@ on_contact_added (Ekiga::ContactPtr contact,
 		      -1);
 }
 
+static bool
+on_visit_contacts (Ekiga::ContactPtr contact,
+		   GtkListStore *store)
+{
+  on_contact_added (contact, store);
+  return true;
+}
+
 /* react to user clicks */
 static gint
 on_clicked (GtkWidget *tree,
@@ -160,7 +168,7 @@ on_clicked (GtkWidget *tree,
 	if (!builder.empty())
 	  builder.add_separator ();
 	builder.add_action ("clear", _("Clear List"),
-			    sigc::mem_fun (book, &History::Book::clear));
+			    boost::bind (&History::Book::clear, book));
 	gtk_widget_show_all (builder.menu);
 	gtk_menu_popup (GTK_MENU (builder.menu), NULL, NULL,
 			NULL, NULL, event->button, event->time);
@@ -192,13 +200,13 @@ GtkWidget *
 call_history_view_gtk_new (boost::shared_ptr<History::Book> book)
 {
   GtkWidget *result = NULL;
-  std::list<sigc::connection> *conns = NULL;
+  std::list<boost::signals::connection> *conns = NULL;
   GtkListStore *store = NULL;
   GtkWidget *tree = NULL;
   GtkTreeViewColumn *column = NULL;
   GtkCellRenderer *renderer = NULL;
   GtkTreeSelection *selection = NULL;
-  sigc::connection connection;
+  boost::signals::connection connection;
 
   result = gtk_scrolled_window_new (NULL, NULL);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (result),
@@ -207,7 +215,7 @@ call_history_view_gtk_new (boost::shared_ptr<History::Book> book)
   /* we don't leak conns : it will be freed when we die... and it will
    * prevent the signals to come to a now-dead GObject
    */
-  conns = new std::list<sigc::connection>;
+  conns = new std::list<boost::signals::connection>;
   g_object_weak_ref (G_OBJECT (result), destroy_connections, (gpointer)conns);
 
   /* build the store then the tree */
@@ -247,13 +255,13 @@ call_history_view_gtk_new (boost::shared_ptr<History::Book> book)
 		    G_CALLBACK (on_clicked), &(*book));
 
   /* connect to the signals */
-  connection = book->cleared.connect (sigc::bind (sigc::ptr_fun (gtk_list_store_clear), store));
+  connection = book->cleared.connect (boost::bind (&gtk_list_store_clear, store));
   conns->push_front (connection);
-  connection = book->contact_added.connect (sigc::bind (sigc::ptr_fun (on_contact_added), store));
+  connection = book->contact_added.connect (boost::bind (&on_contact_added, _1, store));
   conns->push_front (connection);
 
   /* populate */
-  book->visit_contacts (sigc::bind_return(sigc::bind (sigc::ptr_fun (on_contact_added), store), true));
+  book->visit_contacts (boost::bind (&on_visit_contacts, _1, store));
 
   return result;
 }

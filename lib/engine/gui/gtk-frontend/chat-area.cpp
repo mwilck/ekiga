@@ -58,7 +58,7 @@ class ChatAreaHelper;
 struct _ChatAreaPrivate
 {
   Ekiga::Chat* chat;
-  sigc::connection connection;
+  boost::signals::connection connection;
   boost::shared_ptr<ChatAreaHelper> helper;
   GmTextBufferEnhancer* enhancer;
   GtkWidget* smiley_menu;
@@ -688,7 +688,7 @@ chat_area_set_property (GObject* obj,
   case CHAT_AREA_PROP_CHAT:
     ptr = g_value_get_pointer (value);
     self->priv->chat = (Ekiga::Chat *)ptr;
-    self->priv->connection = self->priv->chat->removed.connect (sigc::bind (sigc::ptr_fun (on_chat_removed), self));
+    self->priv->connection = self->priv->chat->removed.connect (boost::bind (&on_chat_removed, self));
     self->priv->helper = boost::shared_ptr<ChatAreaHelper>(new ChatAreaHelper (self));
     self->priv->chat->connect (self->priv->helper);
     break;

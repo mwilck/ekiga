@@ -58,7 +58,8 @@
 #include "call.h"
 #include "opal-call.h"
 
-#include <sigc++/sigc++.h>
+#include <boost/signals.hpp>
+#include <boost/bind.hpp>
 #include <string>
 
 

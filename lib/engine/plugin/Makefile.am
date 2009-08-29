@@ -15,4 +15,4 @@ libplugin_la_SOURCES = \
 	$(plugin_dir)/plugin-core.cpp
 
 libplugin_la_LDFLAGS = $(STACKLIB_LDFLAGS)
-libplugin_la_LIBADD = $(BOOST_LDFLAGS) $(SIGC_LIBS) $(GLIB_LIBS)
+libplugin_la_LIBADD = $(BOOST_LDFLAGS) $(BOOST_LIBS) $(GLIB_LIBS)

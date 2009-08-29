@@ -116,12 +116,12 @@ Opal::Sip::EndPoint::EndPoint (Opal::CallManager & _manager,
   uri_prefix = "sip:";
   listen_port = (_listen_port > 0 ? _listen_port : 5060);
 
-  dialect = boost::shared_ptr<SIP::Dialect>(new SIP::Dialect (core, sigc::mem_fun (this, &Opal::Sip::EndPoint::send_message)));
+  dialect = boost::shared_ptr<SIP::Dialect>(new SIP::Dialect (core, boost::bind (&Opal::Sip::EndPoint::send_message, this, _1, _2)));
   chat_core->add_dialect (dialect);
 
-  bank->account_added.connect (sigc::mem_fun (this, &Opal::Sip::EndPoint::on_bank_updated));
-  bank->account_removed.connect (sigc::mem_fun (this, &Opal::Sip::EndPoint::on_bank_updated));
-  bank->account_updated.connect (sigc::mem_fun (this, &Opal::Sip::EndPoint::on_bank_updated));
+  bank->account_added.connect (boost::bind (&Opal::Sip::EndPoint::on_bank_updated, this, _1));
+  bank->account_removed.connect (boost::bind (&Opal::Sip::EndPoint::on_bank_updated, this, _1));
+  bank->account_updated.connect (boost::bind (&Opal::Sip::EndPoint::on_bank_updated, this, _1));
 
   /* Timeouts */
   SetAckTimeout (PTimeInterval (0, 32));
@@ -237,10 +237,10 @@ Opal::Sip::EndPoint::menu_builder_add_actions (const std::string& fullname,
 
     if (0 == GetConnectionCount ())
       builder.add_action ("call", call_action.str (),
-                          sigc::bind (sigc::mem_fun (this, &Opal::Sip::EndPoint::on_dial), (*it)));
+                          boost::bind (&Opal::Sip::EndPoint::on_dial, this, (*it)));
     else
       builder.add_action ("transfer", transfer_action.str (),
-                          sigc::bind (sigc::mem_fun (this, &Opal::Sip::EndPoint::on_transfer), (*it)));
+                          boost::bind (&Opal::Sip::EndPoint::on_transfer, this, (*it)));
 
     ita++;
   }
@@ -257,7 +257,7 @@ Opal::Sip::EndPoint::menu_builder_add_actions (const std::string& fullname,
       msg_action << _("Message");
 
     builder.add_action ("message", msg_action.str (),
-                        sigc::bind (sigc::mem_fun (this, &Opal::Sip::EndPoint::on_message), (*it), fullname));
+                        boost::bind (&Opal::Sip::EndPoint::on_message, this, (*it), fullname));
 
     ita++;
   }
@@ -701,11 +701,7 @@ Opal::Sip::EndPoint::OnRegistered (const PString & _aor,
     Subscribe (SIPSubscribe::MessageSummary, 3600, aor);
 
   /* Signal */
-  Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this,
-							  &Opal::Sip::EndPoint::registration_event_in_main),
-					   strm.str (),
-					   was_registering ? Account::Registered : Account::Unregistered,
-					   std::string ()));
+  Ekiga::Runtime::run_in_main (boost::bind (&Opal::Sip::EndPoint::registration_event_in_main, this, strm.str (), was_registering ? Account::Registered : Account::Unregistered, std::string ()));
 }
 
 
@@ -946,11 +942,7 @@ Opal::Sip::EndPoint::OnRegistrationFailed (const PString & _aor,
    */
   if (r != SIP_PDU::Failure_RequestTerminated) {
     /* Signal */
-    Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this,
-							    &Opal::Sip::EndPoint::registration_event_in_main),
-					     strm.str (),
-					     wasRegistering ?Account::RegistrationFailed : Account::UnregistrationFailed,
-					     info));
+    Ekiga::Runtime::run_in_main (boost::bind (&Opal::Sip::EndPoint::registration_event_in_main, this, strm.str (), wasRegistering ?Account::RegistrationFailed : Account::UnregistrationFailed, info));
   }
 }
 
@@ -966,7 +958,7 @@ Opal::Sip::EndPoint::OnMWIReceived (const PString & party,
     mwi = "0/0";
 
   /* Signal */
-  Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &Opal::Sip::EndPoint::mwi_received_in_main), party, info));
+  Ekiga::Runtime::run_in_main (boost::bind (&Opal::Sip::EndPoint::mwi_received_in_main, this, party, info));
 }
 
 
@@ -1062,7 +1054,7 @@ Opal::Sip::EndPoint::OnReceivedMESSAGE (OpalTransport & transport,
     std::string message_uri = (const char *) uri.AsString ();
     std::string _message = (const char *) pdu.GetEntityBody ();
 
-    Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &Opal::Sip::EndPoint::push_message_in_main), message_uri, display_name, _message));
+    Ekiga::Runtime::run_in_main (boost::bind (&Opal::Sip::EndPoint::push_message_in_main, this, message_uri, display_name, _message));
   }
 
   return SIPEndPoint::OnReceivedMESSAGE (transport, pdu);
@@ -1078,9 +1070,7 @@ Opal::Sip::EndPoint::OnMessageFailed (const SIPURL & messageUrl,
   std::string uri = (const char *) to.AsString ();
   std::string display_name = (const char *) to.GetDisplayName ();
 
-  Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &Opal::Sip::EndPoint::push_notice_in_main),
-					   uri, display_name,
-					   _("Could not send message")));
+  Ekiga::Runtime::run_in_main (boost::bind (&Opal::Sip::EndPoint::push_notice_in_main, this, uri, display_name, _("Could not send message")));
 }
 
 
@@ -1179,7 +1169,7 @@ Opal::Sip::EndPoint::OnPresenceInfoReceived (const PString & user,
   if (presence != "unknown" && (old_presence != presence || old_status != status)) {
     presence_infos[_uri].presence = presence;
     presence_infos[_uri].status = status;
-    Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &Opal::Sip::EndPoint::presence_status_in_main), _uri, presence_infos[_uri].presence, presence_infos[_uri].status));
+    Ekiga::Runtime::run_in_main (boost::bind (&Opal::Sip::EndPoint::presence_status_in_main, this, _uri, presence_infos[_uri].presence, presence_infos[_uri].status));
   }
 }
 
@@ -1222,9 +1212,9 @@ Opal::Sip::EndPoint::OnDialogInfoReceived (const SIPDialogNotification & info)
   dialog_infos[uri].status = status;
 
   if (_status)
-    Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &Opal::Sip::EndPoint::presence_status_in_main), uri, dialog_infos[uri].presence, dialog_infos[uri].status));
+    Ekiga::Runtime::run_in_main (boost::bind (&Opal::Sip::EndPoint::presence_status_in_main, this, uri, dialog_infos[uri].presence, dialog_infos[uri].status));
   else
-    Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &Opal::Sip::EndPoint::presence_status_in_main), uri, presence_infos[uri].presence, presence_infos[uri].status));
+    Ekiga::Runtime::run_in_main (boost::bind (&Opal::Sip::EndPoint::presence_status_in_main, this, uri, presence_infos[uri].presence, presence_infos[uri].status));
 }
 
 
@@ -1269,8 +1259,8 @@ Opal::Sip::EndPoint::presence_status_in_main (std::string uri,
 					      std::string presence,
 					      std::string status)
 {
-  presence_received.emit (uri, presence);
-  status_received.emit (uri, status);
+  presence_received (uri, presence);
+  status_received (uri, status);
 }
 
 void
@@ -1312,7 +1302,7 @@ Opal::Sip::EndPoint::on_bank_updated (Ekiga::AccountPtr /*account*/)
 
   { // and now we compute it again
     boost::shared_ptr<Opal::Bank> bank = core.get<Opal::Bank> ("opal-account-store");
-    bank->visit_accounts (sigc::mem_fun (this, &Opal::Sip::EndPoint::search_for_default_account));
+    bank->visit_accounts (boost::bind (&Opal::Sip::EndPoint::search_for_default_account, this, _1));
   }
 }
 

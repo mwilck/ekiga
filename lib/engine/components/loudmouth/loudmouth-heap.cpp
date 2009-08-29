@@ -72,7 +72,7 @@ LM::Heap::Heap (boost::shared_ptr<Ekiga::PersonalDetails> details_,
 		LmConnection* connection_):
   details(details_), dialect(dialect_), connection(connection_)
 {
-  details->updated.connect (sigc::mem_fun (this, &LM::Heap::on_personal_details_updated));
+  details->updated.connect (boost::bind (&LM::Heap::on_personal_details_updated, this));
 
   lm_connection_ref (connection);
 
@@ -129,13 +129,13 @@ void
 LM::Heap::set_name (const std::string name_)
 {
   name = name_;
-  updated.emit ();
+  updated ();
 }
 
 bool
 LM::Heap::populate_menu (Ekiga::MenuBuilder& builder)
 {
-  builder.add_action ("new", _("New _Contact"), sigc::mem_fun (this, &LM::Heap::add_item));
+  builder.add_action ("new", _("New _Contact"), boost::bind (&LM::Heap::add_item, this));
   return true;
 }
 
@@ -150,7 +150,7 @@ LM::Heap::populate_menu_for_group (const std::string /*group*/,
 void
 LM::Heap::disconnected ()
 {
-  removed.emit ();
+  removed ();
 }
 
 LmHandlerResult
@@ -194,7 +194,7 @@ LM::Heap::presence_handler (LmMessage* message)
 
   if (type_attr != NULL && strcmp (type_attr, "subscribe") == 0) {
 
-    boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &LM::Heap::subscribe_from_form_submitted)));
+    boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&LM::Heap::subscribe_from_form_submitted, this)));
     LmMessageNode* status = lm_message_node_find_child (lm_message_get_node (message), "status");
     gchar* instructions = NULL;
     std::string item_name;
@@ -229,7 +229,7 @@ LM::Heap::presence_handler (LmMessage* message)
 
     request->hidden ("jid", base_jid);
 
-    questions.emit (request);
+    questions (request);
   } else {
 
     if (item) {
@@ -291,7 +291,7 @@ LM::Heap::parse_roster (LmMessageNode* query)
 	const gchar* subscription = lm_message_node_get_attribute (node, "subscription");
 	if (subscription != NULL && strcmp (subscription, "remove") == 0) {
 
-	  (*iter)->removed.emit ();
+	  (*iter)->removed ();
 	} else {
 
 	  (*iter)->update (node);
@@ -301,7 +301,7 @@ LM::Heap::parse_roster (LmMessageNode* query)
     if ( !found) {
 
       PresentityPtr presentity(new Presentity (connection, node));
-      presentity->chat_requested.connect (sigc::bind (sigc::mem_fun (this, &LM::Heap::on_chat_requested), presentity));
+      presentity->chat_requested.connect (boost::bind (boost::bind (&LM::Heap::on_chat_requested, this), presentity));
       add_presentity (presentity);
     }
   }
@@ -310,14 +310,14 @@ LM::Heap::parse_roster (LmMessageNode* query)
 void
 LM::Heap::add_item ()
 {
-  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &LM::Heap::add_item_form_submitted)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&LM::Heap::add_item_form_submitted, this)));
 
   request->title (_("Add a roster element"));
   request->instructions (_("Please fill in this form to add a new"
 			   "element to the remote roster"));
   request->text ("jid", _("Identifier:"), _("identifier@server"));
 
-  questions.emit (request);
+  questions (request);
 }
 
 void

@@ -121,7 +121,7 @@ public :
 
       if (book_group == group) {
 
-	book->removed.emit ();
+	book->removed ();
 	found = true;
       }
     }
@@ -145,7 +145,7 @@ Evolution::Source::remove_group (ESourceGroup *group)
   do {
 
     helper.ready ();
-    visit_books (sigc::mem_fun (helper, &remove_helper::test));
+    visit_books (boost::bind (&remove_helper::test, helper, _1));
 
   } while (helper.has_found ());
 }

@@ -37,7 +37,8 @@
 #define __MENU_BUILDER_H__
 
 #include <string>
-#include <sigc++/sigc++.h>
+#include <boost/signals.hpp>
+#include <boost/bind.hpp>
 
 
 namespace Ekiga
@@ -79,7 +80,7 @@ namespace Ekiga
 
     virtual void add_action (const std::string icon,
 			     const std::string label,
-			     sigc::slot0<void> callback);
+			     boost::function0<void> callback);
 
     virtual void add_separator ();
 

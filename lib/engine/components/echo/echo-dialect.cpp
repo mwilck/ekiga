@@ -52,7 +52,7 @@ bool
 Echo::Dialect::populate_menu (Ekiga::MenuBuilder &builder)
 
 {
-  builder.add_action ("FIXME", "New echo", sigc::mem_fun (this, &Echo::Dialect::new_chat));
+  builder.add_action ("FIXME", "New echo", boost::bind (&Echo::Dialect::new_chat, this));
 
   return true;
 }
@@ -62,5 +62,5 @@ Echo::Dialect::new_chat ()
 {
   SimpleChatPtr chat (new SimpleChat);
   add_simple_chat (chat);
-  chat->user_requested.emit ();
+  chat->user_requested ();
 }

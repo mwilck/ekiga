@@ -60,7 +60,7 @@ struct _BookViewGtkPrivate
   GtkWidget *scrolled_window;
 
   Ekiga::BookPtr book;
-  std::list<sigc::connection> connections;
+  std::list<boost::signals::connection> connections;
 };
 
 
@@ -79,6 +79,12 @@ static GObjectClass *parent_class = NULL;
  * Callbacks
  */
 
+/* DESCRIPTION  : Called when the a contact has been added in a Book.
+ * BEHAVIOR     : Update the BookView.
+ * PRE          : The gpointer must point to the BookViewGtk GObject.
+ */
+static bool on_visit_contacts (Ekiga::ContactPtr contact,
+			       gpointer data);
 
 /* DESCRIPTION  : Called when the a contact has been added in a Book.
  * BEHAVIOR     : Update the BookView.
@@ -190,6 +196,15 @@ book_view_gtk_find_iter_for_contact (BookViewGtk *view,
 
 
 /* Implementation of the callbacks */
+static bool
+on_visit_contacts (Ekiga::ContactPtr contact,
+		   gpointer data)
+{
+  on_contact_added (contact, data);
+  return true;
+}
+
+
 static void
 on_contact_added (Ekiga::ContactPtr contact,
 		  gpointer data)
@@ -435,7 +450,7 @@ book_view_gtk_dispose (GObject *obj)
 
   view = BOOK_VIEW_GTK (obj);
 
-  for (std::list<sigc::connection>::iterator iter
+  for (std::list<boost::signals::connection>::iterator iter
 	 = view->priv->connections.begin ();
        iter != view->priv->connections.end ();
        ++iter)
@@ -614,14 +629,14 @@ book_view_gtk_new (Ekiga::BookPtr book)
   gtk_box_pack_start (GTK_BOX (result->priv->vbox), result->priv->statusbar, FALSE, TRUE, 0);
 
   /* connect to the signals */
-  result->priv->connections.push_back (book->contact_added.connect (sigc::bind (sigc::ptr_fun (on_contact_added), (gpointer)result)));
-  result->priv->connections.push_back (book->contact_updated.connect (sigc::bind (sigc::ptr_fun (on_contact_updated), (gpointer)result)));
-  result->priv->connections.push_back (book->contact_removed.connect (sigc::bind (sigc::ptr_fun (on_contact_removed), (gpointer)result)));
-  result->priv->connections.push_back (book->updated.connect (sigc::bind (sigc::ptr_fun (on_updated), (gpointer)result)));
+  result->priv->connections.push_back (book->contact_added.connect (boost::bind (&on_contact_added, _1, (gpointer)result)));
+  result->priv->connections.push_back (book->contact_updated.connect (boost::bind (&on_contact_updated, _1, (gpointer)result)));
+  result->priv->connections.push_back (book->contact_removed.connect (boost::bind (&on_contact_removed, _1, (gpointer)result)));
+  result->priv->connections.push_back (book->updated.connect (boost::bind (&on_updated, (gpointer)result)));
 
 
   /* populate */
-  book->visit_contacts (sigc::bind_return (sigc::bind (sigc::ptr_fun (on_contact_added), (gpointer)result),true));
+  book->visit_contacts (boost::bind (&on_visit_contacts, _1, (gpointer)result));
 
   return (GtkWidget *) result;
 }

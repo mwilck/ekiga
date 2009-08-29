@@ -91,7 +91,7 @@ LM::Bank::add (xmlNodePtr node)
     save ();
   }
 
-  account->trigger_saving.connect (sigc::mem_fun (this, &LM::Bank::save));
+  account->trigger_saving.connect (boost::bind (&LM::Bank::save, this));
   add_account (account);
 }
 
@@ -116,6 +116,6 @@ bool
 LM::Bank::populate_menu (Ekiga::MenuBuilder& builder)
 {
   builder.add_action ("add", _("_Add a jabber/XMPP account"),
-		      sigc::bind (sigc::mem_fun (this, &LM::Bank::add), (xmlNodePtr)NULL));
+		      boost::bind (boost::bind (&LM::Bank::add, this), (xmlNodePtr)NULL));
   return true;
 }

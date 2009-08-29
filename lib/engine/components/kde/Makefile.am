@@ -13,4 +13,4 @@ libgmkde_la_SOURCES = \
 
 libgmkde_la_LDFLAGS = $(PLUGINS_LIBTOOL_FLAGS)
 libgmkde_la_LIBADD = \
-	$(BOOST_LDFLAGS) $(SIGC_LIBS) $(KDE_LIBS)
+	$(BOOST_LDFLAGS) $(BOOST_LIBS) $(KDE_LIBS)

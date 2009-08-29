@@ -44,12 +44,12 @@ Ekiga::PresenceCore::PresenceCore (Ekiga::ServiceCore& core)
   boost::shared_ptr<Ekiga::PersonalDetails> details = core.get<Ekiga::PersonalDetails> ("personal-details");
 
   if (details)
-    conns.push_back (details->updated.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresenceCore::publish), details)));
+    conns.push_back (details->updated.connect (boost::bind (boost::bind (&Ekiga::PresenceCore::publish, this, _1), details)));
 }
 
 Ekiga::PresenceCore::~PresenceCore ()
 {
-  for (std::list<sigc::connection>::iterator iter = conns.begin (); iter != conns.end (); ++iter)
+  for (std::list<boost::signals::connection>::iterator iter = conns.begin (); iter != conns.end (); ++iter)
     iter->disconnect ();
 }
 
@@ -57,18 +57,18 @@ void
 Ekiga::PresenceCore::add_cluster (ClusterPtr cluster)
 {
   clusters.insert (cluster);
-  cluster_added.emit (cluster);
-  conns.push_back (cluster->heap_added.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresenceCore::on_heap_added), cluster)));
-  conns.push_back (cluster->heap_updated.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresenceCore::on_heap_updated), cluster)));
-  conns.push_back (cluster->heap_removed.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresenceCore::on_heap_removed), cluster)));
-  conns.push_back (cluster->presentity_added.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresenceCore::on_presentity_added), cluster)));
-  conns.push_back (cluster->presentity_updated.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresenceCore::on_presentity_updated), cluster)));
-  conns.push_back (cluster->presentity_removed.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::PresenceCore::on_presentity_removed), cluster)));
-  cluster->questions.connect (questions.make_slot ());
+  cluster_added (cluster);
+  conns.push_back (cluster->heap_added.connect (boost::bind (&Ekiga::PresenceCore::on_heap_added, this, _1, cluster)));
+  conns.push_back (cluster->heap_updated.connect (boost::bind (&Ekiga::PresenceCore::on_heap_updated, this, _1, cluster)));
+  conns.push_back (cluster->heap_removed.connect (boost::bind (&Ekiga::PresenceCore::on_heap_removed, this, _1, cluster)));
+  conns.push_back (cluster->presentity_added.connect (boost::bind (&Ekiga::PresenceCore::on_presentity_added, this, _1, _2, cluster)));
+  conns.push_back (cluster->presentity_updated.connect (boost::bind (&Ekiga::PresenceCore::on_presentity_updated, this, _1, _2, cluster)));
+  conns.push_back (cluster->presentity_removed.connect (boost::bind (&Ekiga::PresenceCore::on_presentity_removed, this, _1, _2, cluster)));
+  cluster->questions.connect (boost::ref (questions));
 }
 
 void
-Ekiga::PresenceCore::visit_clusters (sigc::slot1<bool, ClusterPtr > visitor)
+Ekiga::PresenceCore::visit_clusters (boost::function1<bool, ClusterPtr > visitor)
 {
   bool go_on = true;
   for (std::set<ClusterPtr >::iterator iter = clusters.begin ();
@@ -94,20 +94,20 @@ Ekiga::PresenceCore::populate_menu (MenuBuilder &builder)
 void Ekiga::PresenceCore::on_heap_added (HeapPtr heap,
 					 ClusterPtr cluster)
 {
-  heap_added.emit (cluster, heap);
+  heap_added (cluster, heap);
 }
 
 void
 Ekiga::PresenceCore::on_heap_updated (HeapPtr heap,
 				      ClusterPtr cluster)
 {
-  heap_updated.emit (cluster, heap);
+  heap_updated (cluster, heap);
 }
 
 void
 Ekiga::PresenceCore::on_heap_removed (HeapPtr heap, ClusterPtr cluster)
 {
-  heap_removed.emit (cluster, heap);
+  heap_removed (cluster, heap);
 }
 
 void
@@ -115,7 +115,7 @@ Ekiga::PresenceCore::on_presentity_added (HeapPtr heap,
 					  PresentityPtr presentity,
 					  ClusterPtr cluster)
 {
-  presentity_added.emit (cluster, heap, presentity);
+  presentity_added (cluster, heap, presentity);
 }
 
 void
@@ -131,7 +131,7 @@ Ekiga::PresenceCore::on_presentity_removed (HeapPtr heap,
 					    PresentityPtr presentity,
 					    ClusterPtr cluster)
 {
-  presentity_removed.emit (cluster, heap, presentity);
+  presentity_removed (cluster, heap, presentity);
 }
 
 void
@@ -162,8 +162,8 @@ void
 Ekiga::PresenceCore::add_presence_fetcher (boost::shared_ptr<PresenceFetcher> fetcher)
 {
   presence_fetchers.push_back (fetcher);
-  conns.push_back (fetcher->presence_received.connect (sigc::mem_fun (this, &Ekiga::PresenceCore::on_presence_received)));
-  conns.push_back (fetcher->status_received.connect (sigc::mem_fun (this, &Ekiga::PresenceCore::on_status_received)));
+  conns.push_back (fetcher->presence_received.connect (boost::bind (&Ekiga::PresenceCore::on_presence_received, this, _1, _2)));
+  conns.push_back (fetcher->status_received.connect (boost::bind (&Ekiga::PresenceCore::on_status_received, this, _1, _2)));
   for (std::map<std::string, uri_info>::const_iterator iter
 	 = uri_infos.begin ();
        iter != uri_infos.end ();
@@ -185,8 +185,8 @@ Ekiga::PresenceCore::fetch_presence (const std::string uri)
       (*iter)->fetch (uri);
   }
 
-  presence_received.emit (uri, uri_infos[uri].presence);
-  status_received.emit (uri, uri_infos[uri].status);
+  presence_received (uri, uri_infos[uri].presence);
+  status_received (uri, uri_infos[uri].status);
 }
 
 void Ekiga::PresenceCore::unfetch_presence (const std::string uri)
@@ -210,7 +210,7 @@ Ekiga::PresenceCore::on_presence_received (const std::string uri,
 					   const std::string presence)
 {
   uri_infos[uri].presence = presence;
-  presence_received.emit (uri, presence);
+  presence_received (uri, presence);
 }
 
 void
@@ -218,7 +218,7 @@ Ekiga::PresenceCore::on_status_received (const std::string uri,
 					 const std::string status)
 {
   uri_infos[uri].status = status;
-  status_received.emit (uri, status);
+  status_received (uri, status);
 }
 
 void
@@ -241,7 +241,7 @@ Ekiga::PresenceCore::is_supported_uri (const std::string uri) const
 {
   bool result = false;
 
-  for (std::set<sigc::slot1<bool, std::string> >::const_iterator iter
+  for (std::list<boost::function1<bool, std::string> >::const_iterator iter
 	 = uri_testers.begin ();
        iter != uri_testers.end () && result == false;
        iter++)
@@ -251,7 +251,7 @@ Ekiga::PresenceCore::is_supported_uri (const std::string uri) const
 }
 
 void
-Ekiga::PresenceCore::add_supported_uri (sigc::slot1<bool,std::string> tester)
+Ekiga::PresenceCore::add_supported_uri (boost::function1<bool,std::string> tester)
 {
-  uri_testers.insert (tester);
+  uri_testers.push_back (tester);
 }

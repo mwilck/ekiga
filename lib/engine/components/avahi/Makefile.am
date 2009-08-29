@@ -20,4 +20,4 @@ libgmavahi_la_SOURCES = \
 libgmavahi_la_LIBADD = \
 	$(top_builddir)/lib/engine/presence/libgmpresence.la
 
-libgmavahi_la_LDFLAGS = -export-dynamic -no-undefined $(BOOST_LDFLAGS) $(SIGC_LIBS) $(AVAHI_LIBS)
+libgmavahi_la_LDFLAGS = -export-dynamic -no-undefined $(BOOST_LDFLAGS) $(BOOST_LIBS) $(AVAHI_LIBS)

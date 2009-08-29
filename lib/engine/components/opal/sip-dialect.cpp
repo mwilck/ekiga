@@ -40,7 +40,7 @@
 #include "sip-dialect.h"
 
 SIP::Dialect::Dialect (Ekiga::ServiceCore& core_,
-		       sigc::slot2<bool, std::string, std::string> sender_)
+		       boost::function2<bool, std::string, std::string> sender_)
   : core(core_), sender(sender_)
 {
 }
@@ -101,12 +101,12 @@ SIP::Dialect::open_chat_with (std::string uri,
 
   if ( !result) {
 
-    result = SimpleChatPtr (new SimpleChat (core, name, uri, sigc::bind<0>(sender, uri)));
+    result = SimpleChatPtr (new SimpleChat (core, name, uri, boost::bind(sender, uri, _1)));
     add_simple_chat (result);
   }
 
   if (user_request)
-    result->user_requested.emit ();
+    result->user_requested ();
 
   return result;
 }

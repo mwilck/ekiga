@@ -129,10 +129,10 @@ Opal::H323::EndPoint::menu_builder_add_actions (const std::string & /*fullname*/
 
     if (0 == GetConnectionCount ())
       builder.add_action ("call", _("Call"),
-                          sigc::bind (sigc::mem_fun (this, &Opal::H323::EndPoint::on_dial), uri));
+                          boost::bind (&Opal::H323::EndPoint::on_dial, this, uri));
     else
       builder.add_action ("transfer", _("Transfer"),
-                          sigc::bind (sigc::mem_fun (this, &Opal::H323::EndPoint::on_transfer), uri));
+                          boost::bind (&Opal::H323::EndPoint::on_transfer, this, uri));
     populated = true;
   }
 
@@ -331,17 +331,11 @@ Opal::H323::EndPoint::Register (const Opal::Account& account)
         info = _("Failed");
 
       // Signal
-      Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &Opal::H323::EndPoint::registration_event_in_main),
-                                               account,
-                                               Account::RegistrationFailed,
-                                               info));
+      Ekiga::Runtime::run_in_main (boost::bind (&Opal::H323::EndPoint::registration_event_in_main, this, boost::cref (account), Account::RegistrationFailed, info));
     }
     else {
 
-      Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &Opal::H323::EndPoint::registration_event_in_main),
-                                               account,
-                                               Account::Registered,
-                                               std::string ()));
+      Ekiga::Runtime::run_in_main (boost::bind (&Opal::H323::EndPoint::registration_event_in_main, this, boost::cref (account), Account::Registered, std::string ()));
     }
   }
   else if (unregister && IsRegisteredWithGatekeeper (account.get_host ())) {
@@ -351,10 +345,7 @@ Opal::H323::EndPoint::Register (const Opal::Account& account)
        RemoveAliasName (account.get_username ());
 
     // Signal 
-    Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &Opal::H323::EndPoint::registration_event_in_main),
-    account,
-    Ekiga::Account::Unregistered,
-    std::string ()));
+    Ekiga::Runtime::run_in_main (boost::bind (&Opal::H323::EndPoint::registration_event_in_main, this, boost::cref (account), Ekiga::Account::Unregistered, std::string ()));
      */
   }
 }
@@ -452,7 +443,7 @@ Opal::H323::EndPoint::on_transfer (std::string uri)
 }
 
 void
-Opal::H323::EndPoint::registration_event_in_main (Opal::Account& account,
+Opal::H323::EndPoint::registration_event_in_main (const Opal::Account& account,
 						  Opal::Account::RegistrationState state,
 						  const std::string msg)
 {

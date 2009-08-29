@@ -206,7 +206,7 @@ Avahi::Heap::BrowserCallback (AvahiServiceBrowser *browser,
     break;
 
   case AVAHI_BROWSER_REMOVE:
-    visit_presentities (sigc::bind (sigc::mem_fun (this, &Avahi::Heap::remover), name));
+    visit_presentities (boost::bind (&Avahi::Heap::remover, this, _1, name));
     break;
   case AVAHI_BROWSER_CACHE_EXHAUSTED:
     // FIXME: do I care?
@@ -302,12 +302,12 @@ Avahi::Heap::ResolverCallback (AvahiServiceResolver *resolver,
     }
 
     resolver_callback_helper helper(name);
-    visit_presentities (sigc::mem_fun (helper, &resolver_callback_helper::test));
+    visit_presentities (boost::bind (&resolver_callback_helper::test, helper, _1));
     if (helper.found_presentity ()) {
 
       /* known contact has been updated */
-      presence_received.emit (helper.found_presentity ()->get_uri (), presence);
-      status_received.emit (helper.found_presentity ()->get_uri (), status);
+      presence_received (helper.found_presentity ()->get_uri (), presence);
+      status_received (helper.found_presentity ()->get_uri (), status);
     } else {
 
       /* ok, this is a new contact */
@@ -320,8 +320,8 @@ Avahi::Heap::ResolverCallback (AvahiServiceResolver *resolver,
 	groups.insert (_("Neighbours"));
 	url = g_strdup_printf ("%s:neighbour@%s:%d", broken[1], host_name, port);
 	boost::shared_ptr<Ekiga::URIPresentity> presentity (new Ekiga::URIPresentity (core, name, url, groups));
-	status_received.emit (url, status);
-	presence_received.emit (url, presence);
+	status_received (url, status);
+	presence_received (url, presence);
 	add_presentity (presentity);
 	g_free (url);
       }
@@ -348,7 +348,7 @@ Avahi::Heap::remover (Ekiga::PresentityPtr presentity,
   if (presentity->get_name () == name) {
 
     result = false;
-    presentity->removed.emit ();
+    presentity->removed ();
   }
 
   return result;

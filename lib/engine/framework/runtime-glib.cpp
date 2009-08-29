@@ -45,12 +45,12 @@ static GAsyncQueue* queue;
 
 struct message
 {
-  message (sigc::slot0<void> _action,
+  message (boost::function0<void> _action,
 	   unsigned int _seconds): action(_action),
 				   seconds(_seconds)
   {}
 
-  sigc::slot0<void> action;
+  boost::function0<void> action;
   unsigned int seconds;
 };
 
@@ -162,7 +162,7 @@ Ekiga::Runtime::quit ()
 }
 
 void
-Ekiga::Runtime::run_in_main (sigc::slot0<void> action,
+Ekiga::Runtime::run_in_main (boost::function0<void> action,
 			     unsigned int seconds)
 {
   g_async_queue_push (queue, (gpointer)(new struct message (action, seconds)));

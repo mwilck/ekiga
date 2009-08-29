@@ -85,17 +85,17 @@ void VideoOutputCore::add_manager (VideoOutputManager &manager)
   PWaitAndSignal m(core_mutex);
 
   managers.insert (&manager);
-  manager_added.emit (manager);
+  manager_added (manager);
 
-  manager.device_opened.connect (sigc::bind (sigc::mem_fun (this, &VideoOutputCore::on_device_opened), &manager));
-  manager.device_closed.connect (sigc::bind (sigc::mem_fun (this, &VideoOutputCore::on_device_closed), &manager));
-  manager.device_error.connect (sigc::bind (sigc::mem_fun (this, &VideoOutputCore::on_device_error), &manager));
-  manager.fullscreen_mode_changed.connect (sigc::bind (sigc::mem_fun (this, &VideoOutputCore::on_fullscreen_mode_changed), &manager));
-  manager.size_changed.connect (sigc::bind (sigc::mem_fun (this, &VideoOutputCore::on_size_changed), &manager));
+  manager.device_opened.connect (boost::bind (&VideoOutputCore::on_device_opened, this, _1, _2, _3, _4, &manager));
+  manager.device_closed.connect (boost::bind (&VideoOutputCore::on_device_closed, this, &manager));
+  manager.device_error.connect (boost::bind (&VideoOutputCore::on_device_error, this, _1, &manager));
+  manager.fullscreen_mode_changed.connect (boost::bind (&VideoOutputCore::on_fullscreen_mode_changed, this, _1, &manager));
+  manager.size_changed.connect (boost::bind (&VideoOutputCore::on_size_changed, this, _1, _2, &manager));
 }
 
 
-void VideoOutputCore::visit_managers (sigc::slot1<bool, VideoOutputManager &> visitor)
+void VideoOutputCore::visit_managers (boost::function1<bool, VideoOutputManager &> visitor)
 {
   bool go_on = true;
 
@@ -204,26 +204,26 @@ void VideoOutputCore::set_display_info (const DisplayInfo & _display_info)
 
 void VideoOutputCore::on_device_opened (VideoOutputAccel videooutput_accel, VideoOutputMode mode, unsigned zoom, bool both_streams, VideoOutputManager *manager)
 {
-  device_opened.emit (*manager, videooutput_accel, mode, zoom, both_streams);
+  device_opened (*manager, videooutput_accel, mode, zoom, both_streams);
 }
 
 void VideoOutputCore::on_device_closed ( VideoOutputManager *manager)
 {
-  device_closed.emit (*manager);
+  device_closed (*manager);
 }
 
 void VideoOutputCore::on_device_error (VideoOutputErrorCodes error_code, VideoOutputManager *manager)
 {
-  device_error.emit (*manager, error_code);
+  device_error (*manager, error_code);
 }
 
 void VideoOutputCore::on_fullscreen_mode_changed ( VideoOutputFSToggle toggle, VideoOutputManager *manager)
 {
-  fullscreen_mode_changed.emit (*manager, toggle);
+  fullscreen_mode_changed (*manager, toggle);
 }
 
 void VideoOutputCore::on_size_changed ( unsigned width, unsigned height, VideoOutputManager *manager)
 {
-  size_changed.emit (*manager, width, height);
+  size_changed (*manager, width, height);
 }
 

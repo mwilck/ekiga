@@ -159,16 +159,16 @@ LM::Account::enable ()
   xmlFree (server);
 
   xmlSetProp (node, BAD_CAST "startup", BAD_CAST "true");
-  trigger_saving.emit ();
+  trigger_saving ();
 
-  updated.emit ();
+  updated ();
 }
 
 void
 LM::Account::disable ()
 {
   xmlSetProp (node, BAD_CAST "startup", BAD_CAST "false");
-  trigger_saving.emit ();
+  trigger_saving ();
 
   lm_connection_close (connection, NULL);
 }
@@ -203,12 +203,12 @@ LM::Account::on_connection_opened (bool result)
 				(LmResultFunction)on_authenticate_c, this, NULL, NULL);
     xmlFree (password);
     xmlFree (resource);
-    updated.emit ();
+    updated ();
   } else {
 
     /* FIXME: can't we report better? */
     status = _("error connecting");
-    updated.emit ();
+    updated ();
   }
 }
 
@@ -220,7 +220,7 @@ LM::Account::on_disconnected (LmDisconnectReason /*reason*/)
     heap->disconnected ();
     heap.reset ();
     status = _("disconnected");
-    updated.emit ();
+    updated ();
   }
 }
 
@@ -237,13 +237,13 @@ LM::Account::on_authenticate (bool result)
     }
     cluster->add_heap (heap);
     status = _("connected");
-    updated.emit ();
+    updated ();
   } else {
 
     lm_connection_close (connection, NULL);
     // FIXME: can't we report something better?
     status = _("error authenticating loudmouth account");
-    updated.emit ();
+    updated ();
   }
 }
 
@@ -256,7 +256,7 @@ LM::Account::get_node () const
 void
 LM::Account::edit ()
 {
-  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &LM::Account::on_edit_form_submitted)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&LM::Account::on_edit_form_submitted, this)));
   xmlChar* xml_str = NULL;
 
   request->title (_("Edit account"));
@@ -296,7 +296,7 @@ LM::Account::edit ()
   xmlFree (xml_str);
   request->boolean ("enabled", _("Enable account"), enable_on_startup);
 
-  questions.emit (request);
+  questions (request);
 }
 
 void
@@ -328,7 +328,7 @@ LM::Account::on_edit_form_submitted (bool submitted,
   } else {
 
     xmlSetProp (node, BAD_CAST "startup", BAD_CAST "false");
-    updated.emit ();
+    updated ();
   }
 }
 
@@ -340,8 +340,8 @@ LM::Account::remove ()
   xmlUnlinkNode (node);
   xmlFreeNode (node);
 
-  trigger_saving.emit ();
-  removed.emit ();
+  trigger_saving ();
+  removed ();
 }
 
 bool
@@ -350,19 +350,19 @@ LM::Account::populate_menu (Ekiga::MenuBuilder& builder)
   if (lm_connection_is_open (connection)) {
 
     builder.add_action ("disable", _("_Disable"),
-			sigc::mem_fun (this, &LM::Account::disable));
+			boost::bind (&LM::Account::disable, this));
   } else {
 
     builder.add_action ("enable", _("_Enable"),
-			sigc::mem_fun (this, &LM::Account::enable));
+			boost::bind (&LM::Account::enable, this));
   }
 
   builder.add_separator ();
 
   builder.add_action ("edit", _("Edit"),
-		      sigc::mem_fun (this, &LM::Account::edit));
+		      boost::bind (&LM::Account::edit, this));
   builder.add_action ("remove", _("_Remove"),
-		      sigc::mem_fun (this, &LM::Account::remove));
+		      boost::bind (&LM::Account::remove, this));
 
   return true;
 }

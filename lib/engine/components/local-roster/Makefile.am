@@ -28,4 +28,4 @@ liblocal_roster_la_LIBADD = \
 	$(top_builddir)/lib/engine/addressbook/libgmaddressbook.la \
 	$(top_builddir)/lib/engine/presence/libgmpresence.la
 
-liblocal_roster_la_LDFLAGS = -export-dynamic -no-undefined $(XML_LIBS) $(BOOST_LDFLAGS) $(SIGC_LIBS) $(GLIB_LIBS)
+liblocal_roster_la_LDFLAGS = -export-dynamic -no-undefined $(XML_LIBS) $(BOOST_LDFLAGS) $(BOOST_LIBS) $(GLIB_LIBS)

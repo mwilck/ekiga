@@ -18,4 +18,4 @@ libgmaudioinput_null_la_SOURCES = \
 	$(audioinput_dir)/audioinput-main-null.h \
 	$(audioinput_dir)/audioinput-main-null.cpp 
 
-libgmaudioinput_null_la_LDFLAGS = -export-dynamic -no-undefined $(BOOST_LDFLAGS) $(SIGC_LIBS) $(GLIB_LIBS) $(PTLIB_LIBS)
+libgmaudioinput_null_la_LDFLAGS = -export-dynamic -no-undefined $(BOOST_LDFLAGS) $(BOOST_LIBS) $(GLIB_LIBS) $(PTLIB_LIBS)

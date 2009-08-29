@@ -509,10 +509,17 @@ static void
 on_bank_added (Ekiga::BankPtr bank,
                gpointer data)
 {
-  bank->visit_accounts (sigc::bind (sigc::ptr_fun (visit_accounts), data));
+  bank->visit_accounts (boost::bind (&visit_accounts, _1, data));
   populate_menu (GTK_WIDGET (data));
 }
 
+static bool
+on_visit_banks (Ekiga::BankPtr bank,
+		gpointer data)
+{
+  on_bank_added (bank, data);
+  return true;
+}
 
 static bool
 on_handle_questions (Ekiga::FormRequestPtr request,
@@ -706,16 +713,16 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
 
 
   /* Engine Signals callbacks */
-  // FIXME sigc::connection conn;
+  // FIXME boost::signals::connection conn;
 
   boost::shared_ptr<Ekiga::AccountCore> account_core = core.get<Ekiga::AccountCore> ("account-core");
-  account_core->bank_added.connect (sigc::bind (sigc::ptr_fun (on_bank_added), window));
-  account_core->account_added.connect (sigc::bind (sigc::ptr_fun (on_account_added), window));
-  account_core->account_updated.connect (sigc::bind (sigc::ptr_fun (on_account_updated), window));
-  account_core->account_removed.connect (sigc::bind (sigc::ptr_fun (on_account_removed), window));
-  account_core->questions.connect (sigc::bind (sigc::ptr_fun (on_handle_questions), (gpointer) window));
+  account_core->bank_added.connect (boost::bind (&on_bank_added, _1, window));
+  account_core->account_added.connect (boost::bind (&on_account_added, _1, _2, window));
+  account_core->account_updated.connect (boost::bind (&on_account_updated, _1, _2, window));
+  account_core->account_removed.connect (boost::bind (&on_account_removed, _1, _2, window));
+  account_core->questions.connect (boost::bind (&on_handle_questions, _1, (gpointer) window));
 
-  account_core->visit_banks (sigc::bind_return (sigc::bind (sigc::ptr_fun (on_bank_added), window), true));
+  account_core->visit_banks (boost::bind (&on_visit_banks, _1, window));
 
   return window;
 }

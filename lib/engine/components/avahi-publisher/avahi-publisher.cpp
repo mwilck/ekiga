@@ -72,7 +72,7 @@ Avahi::PresencePublisher::PresencePublisher (Ekiga::ServiceCore& core_,
   client(NULL), group(NULL)
 {
   display_name = details.get_display_name ();
-  details.updated.connect (sigc::mem_fun (this, &Avahi::PresencePublisher::on_details_updated));
+  details.updated.connect (boost::bind (&Avahi::PresencePublisher::on_details_updated, this));
   name = avahi_strdup (display_name.c_str ());
   glib_poll = avahi_glib_poll_new (NULL, G_PRIORITY_DEFAULT);
   create_client ();

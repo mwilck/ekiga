@@ -30,4 +30,4 @@ libgmloudmouth_la_SOURCES = \
 	$(loudmouth_dir)/loudmouth-dialect.cpp
 
 libgmloudmouth_la_LDFLAGS = $(PLUGINS_LIBTOOL_FLAGS)
-libgmloudmouth_la_LIBADD = $(BOOST_LDFLAGS) $(SIGC_LIBS) $(XML_LIBS) $(LOUDMOUTH_LIBS)
+libgmloudmouth_la_LIBADD = $(BOOST_LDFLAGS) $(BOOST_LIBS) $(XML_LIBS) $(LOUDMOUTH_LIBS)

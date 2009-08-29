@@ -48,7 +48,7 @@ AudioInputCoreConfBridge::AudioInputCoreConfBridge (Ekiga::Service & _service)
  : Ekiga::ConfBridge (_service)
 {
   Ekiga::ConfKeys keys;
-  property_changed.connect (sigc::mem_fun (this, &AudioInputCoreConfBridge::on_property_changed));
+  property_changed.connect (boost::bind (&AudioInputCoreConfBridge::on_property_changed, this, _1, _2));
 
   keys.push_back (AUDIO_DEVICES_KEY "input_device"); 
   load (keys);

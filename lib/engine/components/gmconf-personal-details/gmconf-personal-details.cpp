@@ -172,14 +172,14 @@ Gmconf::PersonalDetails::set_presence_info (const std::string _presence,
   set_presence (_presence);
   set_status (_status);
 
-  updated.emit ();
+  updated ();
 }
 
 void
 Gmconf::PersonalDetails::display_name_changed (std::string val)
 {
   display_name = val;
-  updated.emit ();
+  updated ();
 }
 
 void
@@ -187,7 +187,7 @@ Gmconf::PersonalDetails::presence_changed (std::string val)
 {
   if (presence != val) {
     presence = val;
-    updated.emit ();
+    updated ();
   }
 }
 
@@ -196,6 +196,6 @@ Gmconf::PersonalDetails::status_changed (std::string val)
 {
   if (status != val) {
     status = val;
-    updated.emit ();
+    updated ();
   }
 }

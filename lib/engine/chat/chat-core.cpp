@@ -45,12 +45,12 @@ void
 Ekiga::ChatCore::add_dialect (DialectPtr dialect)
 {
   dialects.push_back (dialect);
-  dialect->questions.connect (questions.make_slot ());
-  dialect_added.emit (dialect);
+  dialect->questions.connect (boost::ref (questions));
+  dialect_added (dialect);
 }
 
 void
-Ekiga::ChatCore::visit_dialects (sigc::slot1<bool, DialectPtr > visitor)
+Ekiga::ChatCore::visit_dialects (boost::function1<bool, DialectPtr > visitor)
 {
   bool go_on = true;
 

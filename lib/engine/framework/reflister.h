@@ -37,7 +37,8 @@
 #ifndef __REFLISTER_H__
 #define __REFLISTER_H__
 
-#include <sigc++/sigc++.h>
+#include <boost/signals.hpp>
+#include <boost/bind.hpp>
 #include <list>
 
 #include <boost/smart_ptr.hpp>
@@ -51,18 +52,18 @@ namespace Ekiga
   {
   protected:
 
-    typedef std::map<boost::shared_ptr<ObjectType>,std::list<sigc::connection> > container_type;
+    typedef std::map<boost::shared_ptr<ObjectType>,std::list<boost::signals::connection> > container_type;
     typedef Ekiga::map_key_iterator<container_type> iterator;
     typedef Ekiga::map_key_const_iterator<container_type> const_iterator;
 
     virtual ~RefLister ();
 
-    void visit_objects (sigc::slot1<bool, boost::shared_ptr<ObjectType> > visitor);
+    void visit_objects (boost::function1<bool, boost::shared_ptr<ObjectType> > visitor);
 
     void add_object (boost::shared_ptr<ObjectType> obj);
 
     void add_connection (boost::shared_ptr<ObjectType> obj,
-			 sigc::connection connection);
+			 boost::signals::connection connection);
 
     void remove_object (boost::shared_ptr<ObjectType> obj);
 
@@ -74,9 +75,9 @@ namespace Ekiga
     const_iterator begin () const;
     const_iterator end () const;
 
-    sigc::signal1<void, boost::shared_ptr<ObjectType> > object_added;
-    sigc::signal1<void, boost::shared_ptr<ObjectType> > object_removed;
-    sigc::signal1<void, boost::shared_ptr<ObjectType> > object_updated;
+    boost::signal1<void, boost::shared_ptr<ObjectType> > object_added;
+    boost::signal1<void, boost::shared_ptr<ObjectType> > object_removed;
+    boost::signal1<void, boost::shared_ptr<ObjectType> > object_updated;
 
   private:
     container_type objects;
@@ -91,7 +92,7 @@ Ekiga::RefLister<ObjectType>::~RefLister ()
        iter != objects.end ();
        ++iter) {
 
-    for (std::list<sigc::connection>::iterator conn_iter = iter->second.begin ();
+    for (std::list<boost::signals::connection>::iterator conn_iter = iter->second.begin ();
 	 conn_iter != iter->second.end ();
 	 ++conn_iter) {
 
@@ -102,7 +103,7 @@ Ekiga::RefLister<ObjectType>::~RefLister ()
 
 template<typename ObjectType>
 void
-Ekiga::RefLister<ObjectType>::visit_objects (sigc::slot1<bool, boost::shared_ptr<ObjectType> > visitor)
+Ekiga::RefLister<ObjectType>::visit_objects (boost::function1<bool, boost::shared_ptr<ObjectType> > visitor)
 {
   bool go_on = true;
   for (typename container_type::iterator iter = objects.begin ();
@@ -115,16 +116,16 @@ template<typename ObjectType>
 void
 Ekiga::RefLister<ObjectType>::add_object (boost::shared_ptr<ObjectType> obj)
 {
-  objects[obj].push_back (obj->updated.connect (sigc::bind (object_updated.make_slot (), obj)));
-  objects[obj].push_back (obj->removed.connect (sigc::bind (sigc::mem_fun (this, &Ekiga::RefLister<ObjectType>::remove_object), obj)));
+  objects[obj].push_back (obj->updated.connect (boost::bind (boost::ref (object_updated), obj)));
+  objects[obj].push_back (obj->removed.connect (boost::bind (&Ekiga::RefLister<ObjectType>::remove_object, this, obj)));
 
-  object_added.emit (obj);
+  object_added (obj);
 }
 
 template<typename ObjectType>
 void
 Ekiga::RefLister<ObjectType>::add_connection (boost::shared_ptr<ObjectType> obj,
-					      sigc::connection connection)
+					      boost::signals::connection connection)
 {
   objects[obj].push_back (connection);
 }
@@ -133,13 +134,13 @@ template<typename ObjectType>
 void
 Ekiga::RefLister<ObjectType>::remove_object (boost::shared_ptr<ObjectType> obj)
 {
-  std::list<sigc::connection> connections = objects[obj];
-  for (std::list<sigc::connection>::iterator iter = connections.begin ();
+  std::list<boost::signals::connection> connections = objects[obj];
+  for (std::list<boost::signals::connection>::iterator iter = connections.begin ();
        iter != connections.end ();
        ++iter)
     iter->disconnect ();
   objects.erase (objects.find (obj));
-  object_removed.emit (obj);
+  object_removed (obj);
 }
 
 template<typename ObjectType>

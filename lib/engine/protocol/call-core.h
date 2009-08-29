@@ -45,7 +45,8 @@
 #include "call-protocol-manager.h"
 #include <boost/smart_ptr.hpp>
 
-#include <sigc++/sigc++.h>
+#include <boost/signals.hpp>
+#include <boost/bind.hpp>
 #include <set>
 #include <map>
 #include <iostream>
@@ -125,7 +126,7 @@ namespace Ekiga
       /** This signal is emitted when a Ekiga::CallManager has been
        * added to the CallCore Service.
        */
-      sigc::signal1<void, boost::shared_ptr<CallManager> > manager_added;
+      boost::signal1<void, boost::shared_ptr<CallManager> > manager_added;
 
 
       /*** Call Management ***/                 
@@ -140,21 +141,21 @@ namespace Ekiga
       
       /** See call.h for the API
        */
-      sigc::signal2<void, boost::shared_ptr<CallManager> , boost::shared_ptr<Call> > ringing_call;
-      sigc::signal2<void, boost::shared_ptr<CallManager> , boost::shared_ptr<Call> > setup_call;
-      sigc::signal2<void, boost::shared_ptr<CallManager> , boost::shared_ptr<Call> > missed_call;
-      sigc::signal3<void, boost::shared_ptr<CallManager> , boost::shared_ptr<Call>, std::string> cleared_call;
-      sigc::signal2<void, boost::shared_ptr<CallManager> , boost::shared_ptr<Call> > established_call;
-      sigc::signal2<void, boost::shared_ptr<CallManager> , boost::shared_ptr<Call> > held_call;
-      sigc::signal2<void, boost::shared_ptr<CallManager> , boost::shared_ptr<Call> > retrieved_call;
-      sigc::signal5<void, boost::shared_ptr<CallManager> , boost::shared_ptr<Call>, std::string, Call::StreamType, bool> stream_opened;
-      sigc::signal5<void, boost::shared_ptr<CallManager> , boost::shared_ptr<Call>, std::string, Call::StreamType, bool> stream_closed;
-      sigc::signal4<void, boost::shared_ptr<CallManager> , boost::shared_ptr<Call>, std::string, Call::StreamType> stream_paused;
-      sigc::signal4<void, boost::shared_ptr<CallManager> , boost::shared_ptr<Call>, std::string, Call::StreamType> stream_resumed;
+      boost::signal2<void, boost::shared_ptr<CallManager> , boost::shared_ptr<Call> > ringing_call;
+      boost::signal2<void, boost::shared_ptr<CallManager> , boost::shared_ptr<Call> > setup_call;
+      boost::signal2<void, boost::shared_ptr<CallManager> , boost::shared_ptr<Call> > missed_call;
+      boost::signal3<void, boost::shared_ptr<CallManager> , boost::shared_ptr<Call>, std::string> cleared_call;
+      boost::signal2<void, boost::shared_ptr<CallManager> , boost::shared_ptr<Call> > established_call;
+      boost::signal2<void, boost::shared_ptr<CallManager> , boost::shared_ptr<Call> > held_call;
+      boost::signal2<void, boost::shared_ptr<CallManager> , boost::shared_ptr<Call> > retrieved_call;
+      boost::signal5<void, boost::shared_ptr<CallManager> , boost::shared_ptr<Call>, std::string, Call::StreamType, bool> stream_opened;
+      boost::signal5<void, boost::shared_ptr<CallManager> , boost::shared_ptr<Call>, std::string, Call::StreamType, bool> stream_closed;
+      boost::signal4<void, boost::shared_ptr<CallManager> , boost::shared_ptr<Call>, std::string, Call::StreamType> stream_paused;
+      boost::signal4<void, boost::shared_ptr<CallManager> , boost::shared_ptr<Call>, std::string, Call::StreamType> stream_resumed;
 
       /*** Misc ***/
-      sigc::signal1<void, boost::shared_ptr<CallManager> > manager_ready;
-      sigc::signal0<void> ready;
+      boost::signal1<void, boost::shared_ptr<CallManager> > manager_ready;
+      boost::signal0<void> ready;
 
       /** This chain allows the CallCore to report errors to the user
        */
@@ -185,8 +186,8 @@ namespace Ekiga
 
       
       std::set<boost::shared_ptr<CallManager> > managers;
-      std::list<sigc::connection> manager_connections;
-      std::map<std::string, std::list<sigc::connection> > call_connections;
+      std::list<boost::signals::connection> manager_connections;
+      std::map<std::string, std::list<boost::signals::connection> > call_connections;
       unsigned nr_ready;
     };
 

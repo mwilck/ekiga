@@ -125,8 +125,8 @@ GNOMESESSIONService::GNOMESESSIONService (boost::shared_ptr<Ekiga::CallCore> cal
 
     if (error == NULL) {
 
-      call_core->established_call.connect (sigc::mem_fun (this, &GNOMESESSIONService::on_established_call));
-      call_core->setup_call.connect (sigc::mem_fun (this, &GNOMESESSIONService::on_cleared_call));
+      call_core->established_call.connect (boost::bind (&GNOMESESSIONService::on_established_call, this));
+      call_core->setup_call.connect (boost::bind (&GNOMESESSIONService::on_cleared_call, this));
     } else {
 
       proxy = NULL;

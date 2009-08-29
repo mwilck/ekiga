@@ -100,7 +100,7 @@ namespace Ekiga
      * @param The callback (the return value means "go on" and allows
      *  stopping the visit)
      */
-    void visit_books (sigc::slot1<bool, BookPtr > visitor);
+    void visit_books (boost::function1<bool, BookPtr > visitor);
 
   protected:
 
@@ -183,9 +183,9 @@ template<typename BookType>
 Ekiga::SourceImpl<BookType>::SourceImpl ()
 {
   /* signal forwarding */
-  RefLister<BookType>::object_added.connect (book_added.make_slot ());
-  RefLister<BookType>::object_removed.connect (book_removed.make_slot ());
-  RefLister<BookType>::object_updated.connect (book_updated.make_slot ());
+  RefLister<BookType>::object_added.connect (boost::ref (book_added));
+  RefLister<BookType>::object_removed.connect (boost::ref (book_removed));
+  RefLister<BookType>::object_updated.connect (boost::ref (book_updated));
 }
 
 template<typename BookType>
@@ -196,7 +196,7 @@ Ekiga::SourceImpl<BookType>::~SourceImpl ()
 
 template<typename BookType>
 void
-Ekiga::SourceImpl<BookType>::visit_books (sigc::slot1<bool, BookPtr > visitor)
+Ekiga::SourceImpl<BookType>::visit_books (boost::function1<bool, BookPtr > visitor)
 {
   RefLister<BookType>::visit_objects (visitor);
 }
@@ -208,13 +208,13 @@ Ekiga::SourceImpl<BookType>::add_book (boost::shared_ptr<BookType> book)
 {
   add_object (book);
 
-  add_connection (book, book->contact_added.connect (sigc::bind<0> (contact_added.make_slot (), book)));
+  add_connection (book, book->contact_added.connect (boost::bind (boost::ref (contact_added), book, _1)));
 
-  add_connection (book, book->contact_removed.connect (sigc::bind<0> (contact_removed.make_slot (), book)));
+  add_connection (book, book->contact_removed.connect (boost::bind (boost::ref (contact_removed), book, _1)));
 
-  add_connection (book, book->contact_updated.connect (sigc::bind<0> (contact_updated.make_slot (), book)));
+  add_connection (book, book->contact_updated.connect (boost::bind (boost::ref (contact_updated), book, _1)));
 
-  add_connection (book, book->questions.connect (questions.make_slot ()));
+  add_connection (book, book->questions.connect (boost::ref (questions)));
 }
 
 

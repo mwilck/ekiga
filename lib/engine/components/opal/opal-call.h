@@ -52,7 +52,7 @@ namespace Opal {
   class Call
     : public OpalCall,
       public Ekiga::Call,
-      public sigc::trackable
+      public boost::signals::trackable
   {
 
 public:

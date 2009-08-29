@@ -40,7 +40,8 @@
 
 #include "services.h"
 
-#include <sigc++/sigc++.h>
+#include <boost/signals.hpp>
+#include <boost/bind.hpp>
 
 #include <set>
 #include <map>
@@ -108,29 +109,29 @@ namespace Ekiga
        * @param The callback (the return value means "go on" and allows
        *  stopping the visit)
        */
-       void visit_managers (sigc::slot1<bool, HalManager &> visitor);
+       void visit_managers (boost::function1<bool, HalManager &> visitor);
 
       /** This signal is emitted when an Ekiga::HalManager has been
        * added to the HalCore Service.
        */
-       sigc::signal1<void, HalManager &> manager_added;
+       boost::signal1<void, HalManager &> manager_added;
 
 
       /*** API to act on HAL events ***/
 
       /** See hal-manager.h for the API
        */
-      sigc::signal4<void, const std::string &, const std::string &, unsigned, HalManager*> videoinput_device_added;
-      sigc::signal4<void, const std::string &, const std::string &, unsigned, HalManager*> videoinput_device_removed;
+      boost::signal4<void, const std::string &, const std::string &, unsigned, HalManager*> videoinput_device_added;
+      boost::signal4<void, const std::string &, const std::string &, unsigned, HalManager*> videoinput_device_removed;
 
-      sigc::signal3<void, const std::string &, const std::string &, HalManager*> audioinput_device_added;
-      sigc::signal3<void, const std::string &, const std::string &, HalManager*> audioinput_device_removed;
+      boost::signal3<void, const std::string &, const std::string &, HalManager*> audioinput_device_added;
+      boost::signal3<void, const std::string &, const std::string &, HalManager*> audioinput_device_removed;
 
-      sigc::signal3<void, const std::string &, const std::string &, HalManager*> audiooutput_device_added;
-      sigc::signal3<void, const std::string &, const std::string &, HalManager*> audiooutput_device_removed;
+      boost::signal3<void, const std::string &, const std::string &, HalManager*> audiooutput_device_added;
+      boost::signal3<void, const std::string &, const std::string &, HalManager*> audiooutput_device_removed;
 
-      sigc::signal3<void, const std::string &, const std::string &, HalManager*> network_interface_up;
-      sigc::signal3<void, const std::string &, const std::string &, HalManager*> network_interface_down;
+      boost::signal3<void, const std::string &, const std::string &, HalManager*> network_interface_up;
+      boost::signal3<void, const std::string &, const std::string &, HalManager*> network_interface_down;
 
   private:
 

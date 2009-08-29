@@ -42,8 +42,8 @@ Ekiga::URIPresentity::URIPresentity (Ekiga::ServiceCore &_core,
   : core(_core), name(name_), uri(uri_), presence("unknown"), groups(groups_)
 {
   boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
-  presence_core->presence_received.connect (sigc::mem_fun (this, &Ekiga::URIPresentity::on_presence_received));
-  presence_core->status_received.connect (sigc::mem_fun (this, &Ekiga::URIPresentity::on_status_received));
+  presence_core->presence_received.connect (boost::bind (&Ekiga::URIPresentity::on_presence_received, this, _1, _2));
+  presence_core->status_received.connect (boost::bind (&Ekiga::URIPresentity::on_status_received, this, _1, _2));
   presence_core->fetch_presence (uri);
 }
 
@@ -105,7 +105,7 @@ Ekiga::URIPresentity::on_presence_received (std::string uri_,
   if (uri == uri_) {
 
     presence = presence_;
-    updated.emit ();
+    updated ();
   }
 }
 
@@ -116,6 +116,6 @@ Ekiga::URIPresentity::on_status_received (std::string uri_,
   if (uri == uri_) {
 
     status = status_;
-    updated.emit ();
+    updated ();
   }
 }

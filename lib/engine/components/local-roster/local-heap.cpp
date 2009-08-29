@@ -114,7 +114,7 @@ bool
 Local::Heap::populate_menu (Ekiga::MenuBuilder &builder)
 {
   builder.add_action ("new", _("New contact"),
-		      sigc::bind (sigc::mem_fun (this, &Local::Heap::new_presentity), "", ""));
+		      boost::bind (&Local::Heap::new_presentity, this, "", ""));
   return true;
 }
 
@@ -124,7 +124,7 @@ Local::Heap::populate_menu_for_group (const std::string name,
 				      Ekiga::MenuBuilder& builder)
 {
   builder.add_action ("rename_group", _("Rename"),
-		      sigc::bind (sigc::mem_fun (this, &Local::Heap::on_rename_group), name));
+		      boost::bind (&Local::Heap::on_rename_group, this, name));
   return true;
 }
 
@@ -155,7 +155,7 @@ Local::Heap::has_presentity_with_uri (const std::string uri)
 {
   has_presentity_with_uri_helper helper(uri);
 
-  visit_presentities (sigc::mem_fun (helper, &has_presentity_with_uri_helper::test));
+  visit_presentities (boost::bind (&has_presentity_with_uri_helper::test, helper, _1));
 
   return helper.found;
 }
@@ -188,7 +188,7 @@ Local::Heap::existing_groups ()
   {
     existing_groups_helper helper;
 
-    visit_presentities (sigc::mem_fun (helper, &existing_groups_helper::test));
+    visit_presentities (boost::bind (&existing_groups_helper::test, helper, _1));
     result = helper.groups;
   }
 
@@ -225,7 +225,7 @@ Local::Heap::new_presentity (const std::string name,
   if (!has_presentity_with_uri (uri)) {
 
     boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
-    boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &Local::Heap::new_presentity_form_submitted)));
+    boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Local::Heap::new_presentity_form_submitted, this, _1, _2)));
     std::set<std::string> groups = existing_groups ();
 
     request->title (_("Add to local roster"));
@@ -249,7 +249,7 @@ Local::Heap::new_presentity (const std::string name,
 			   _("Put contact in groups:"),
 			   std::set<std::string>(), groups);
 
-    questions.emit (request);
+    questions (request);
   }
 }
 
@@ -281,7 +281,7 @@ Local::Heap::push_presence (const std::string uri,
 {
   push_presence_helper helper(uri, presence);
 
-  visit_presentities (sigc::mem_fun (helper, &push_presence_helper::test));
+  visit_presentities (boost::bind (&push_presence_helper::test, helper, _1));
 }
 
 struct push_status_helper
@@ -312,7 +312,7 @@ Local::Heap::push_status (const std::string uri,
 {
   push_status_helper helper(uri, status);
 
-  visit_presentities (sigc::mem_fun (helper, &push_status_helper::test));
+  visit_presentities (boost::bind (&push_status_helper::test, helper, _1));
 }
 
 
@@ -358,7 +358,7 @@ Local::Heap::common_add (PresentityPtr presentity)
   presence_core->fetch_presence (presentity->get_uri ());
 
   // Connect the Local::Presentity signals.
-  add_connection (presentity, presentity->trigger_saving.connect (sigc::mem_fun (this, &Local::Heap::save)));
+  add_connection (presentity, presentity->trigger_saving.connect (boost::bind (&Local::Heap::save, this)));
 }
 
 
@@ -404,7 +404,7 @@ Local::Heap::new_presentity_form_submitted (bool submitted,
     save ();
   } else {
 
-    boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple>(new Ekiga::FormRequestSimple (sigc::mem_fun (this, &Local::Heap::new_presentity_form_submitted)));
+    boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple>(new Ekiga::FormRequestSimple (boost::bind (&Local::Heap::new_presentity_form_submitted, this, _1, _2)));
 
     result.visit (*request);
     if (!presence_core->is_supported_uri (uri))
@@ -412,20 +412,20 @@ Local::Heap::new_presentity_form_submitted (bool submitted,
     else
       request->error (_("You already have a contact with this address!"));
 
-    questions.emit (request);
+    questions (request);
   }
 }
 
 void
 Local::Heap::on_rename_group (std::string name)
 {
-  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::bind<0>(sigc::mem_fun (this, &Local::Heap::rename_group_form_submitted), name)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Local::Heap::rename_group_form_submitted, this, name, _1, _2)));
 
   request->title (_("Rename group"));
   request->instructions (_("Please edit this group name"));
   request->text ("name", _("Name:"), name);
 
-  questions.emit (request);
+  questions (request);
 }
 
 struct rename_group_form_submitted_helper
@@ -461,7 +461,7 @@ Local::Heap::rename_group_form_submitted (std::string old_name,
   if ( !new_name.empty () && new_name != old_name) {
 
     rename_group_form_submitted_helper helper (old_name, new_name);
-    visit_presentities (sigc::mem_fun (helper, &rename_group_form_submitted_helper::rename_group));
+    visit_presentities (boost::bind (&rename_group_form_submitted_helper::rename_group, helper, _1));
   }
 }
 

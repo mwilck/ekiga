@@ -42,7 +42,7 @@
 SIP::SimpleChat::SimpleChat (Ekiga::ServiceCore& core_,
 			     std::string name,
 			     std::string uri_,
-			     sigc::slot1<bool, std::string> sender_)
+			     boost::function1<bool, std::string> sender_)
   : core(core_), sender(sender_), uri(uri_)
 {
   presentity = boost::shared_ptr<Ekiga::URIPresentity> (new Ekiga::URIPresentity (core, name, uri,
@@ -51,7 +51,7 @@ SIP::SimpleChat::SimpleChat (Ekiga::ServiceCore& core_,
 
 SIP::SimpleChat::~SimpleChat ()
 {
-  presentity->removed.emit ();
+  presentity->removed ();
 }
 
 const std::string
@@ -78,7 +78,7 @@ SIP::SimpleChat::disconnect (boost::shared_ptr<Ekiga::ChatObserver> observer)
   observers.remove (observer);
 
   if (observers.empty ())
-    removed.emit ();
+    removed ();
 }
 
 bool

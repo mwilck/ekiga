@@ -71,18 +71,18 @@ Ekiga::AccountCore::add_bank (BankPtr bank)
 {
   banks.push_back (bank);
 
-  bank->account_added.connect (sigc::bind<0>(account_added.make_slot (), bank));
-  bank->account_removed.connect (sigc::bind<0>(account_removed.make_slot (), bank));
-  bank->account_updated.connect (sigc::bind<0>(account_updated.make_slot (), bank));
+  bank->account_added.connect (boost::bind (boost::ref (account_added), bank, _1));
+  bank->account_removed.connect (boost::bind (boost::ref (account_removed), bank, _1));
+  bank->account_updated.connect (boost::bind (boost::ref (account_updated), bank, _1));
 
-  bank_added.emit (bank);
+  bank_added (bank);
 
-  bank->questions.connect (questions.make_slot ());
+  bank->questions.connect (boost::ref (questions));
 }
 
 
 void
-Ekiga::AccountCore::visit_banks (sigc::slot1<bool, BankPtr> visitor)
+Ekiga::AccountCore::visit_banks (boost::function1<bool, BankPtr> visitor)
 {
   bool go_on = true;
 

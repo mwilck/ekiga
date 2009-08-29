@@ -48,7 +48,7 @@
 
 class LibNotify:
   public Ekiga::Service,
-  public sigc::trackable
+  public boost::signals::trackable
 {
 public:
 
@@ -67,7 +67,7 @@ private:
   void on_notification_added (boost::shared_ptr<Ekiga::Notification> notif);
   void on_notification_removed (boost::shared_ptr<Ekiga::Notification> notif);
 
-  typedef std::map<boost::shared_ptr<Ekiga::Notification>, std::pair<sigc::connection, boost::shared_ptr<NotifyNotification> > > container_type;
+  typedef std::map<boost::shared_ptr<Ekiga::Notification>, std::pair<boost::signals::connection, boost::shared_ptr<NotifyNotification> > > container_type;
   container_type live;
 };
 
@@ -113,7 +113,7 @@ libnotify_init (Ekiga::KickStart& kickstart)
 LibNotify::LibNotify (boost::shared_ptr<Ekiga::NotificationCore> core)
 {
   notify_init ("Ekiga");
-  core->notification_added.connect (sigc::mem_fun (this, &LibNotify::on_notification_added));
+  core->notification_added.connect (boost::bind (&LibNotify::on_notification_added, this, _1));
 }
 
 LibNotify::~LibNotify ()
@@ -127,7 +127,7 @@ on_notif_closed (NotifyNotification* /*notif*/,
 {
   Ekiga::Notification* notification = (Ekiga::Notification*)data;
 
-  notification->removed.emit ();
+  notification->removed ();
 }
 
 void
@@ -162,9 +162,9 @@ LibNotify::on_notification_added (boost::shared_ptr<Ekiga::Notification> notific
 
   g_signal_connect (notif, "closed",
 		    G_CALLBACK (on_notif_closed), notification.get ());
-  sigc::connection conn = notification->removed.connect (sigc::bind (sigc::mem_fun (this, &LibNotify::on_notification_removed), notification));
+  boost::signals::connection conn = notification->removed.connect (boost::bind (&LibNotify::on_notification_removed, this, notification));
 
-  live[notification] = std::pair<sigc::connection, boost::shared_ptr<NotifyNotification> > (conn, boost::shared_ptr<NotifyNotification> (notif, g_object_unref));
+  live[notification] = std::pair<boost::signals::connection, boost::shared_ptr<NotifyNotification> > (conn, boost::shared_ptr<NotifyNotification> (notif, g_object_unref));
 
   (void)notify_notification_show (notif, NULL);
 }

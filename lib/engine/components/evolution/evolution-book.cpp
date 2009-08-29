@@ -77,7 +77,7 @@ Evolution::Book::on_view_contacts_added (GList *econtacts)
   status = c_status;
   g_free (c_status);
 
-  updated.emit ();
+  updated ();
 }
 
 static void
@@ -102,7 +102,7 @@ public:
 
     if (contact && contact->get_id () == id) {
 
-      contact->removed.emit ();
+      contact->removed ();
       result = false;
     }
 
@@ -119,7 +119,7 @@ Evolution::Book::on_view_contacts_removed (GList *ids)
   for (; ids != NULL; ids = g_list_next (ids)) {
 
     contacts_removed_helper helper((gchar*)ids->data);
-    visit_contacts (sigc::mem_fun (helper, &contacts_removed_helper::test));
+    visit_contacts (boost::bind (&contacts_removed_helper::test, helper, _1));
   }
 }
 
@@ -166,7 +166,7 @@ Evolution::Book::on_view_contacts_changed (GList *econtacts)
 
     contact_updated_helper helper (E_CONTACT (econtacts->data));
 
-    visit_contacts (sigc::mem_fun (helper, &contact_updated_helper::test));
+    visit_contacts (boost::bind (&contact_updated_helper::test, helper, _1));
   }
 }
 
@@ -204,7 +204,7 @@ Evolution::Book::on_book_view_obtained (EBookStatus _status,
 
     e_book_view_start (view);
   } else
-    removed.emit ();
+    removed ();
 }
 
 static void
@@ -238,7 +238,7 @@ Evolution::Book::on_book_opened (EBookStatus _status)
   else {
 
     book = NULL;
-    removed.emit ();
+    removed ();
   }
 }
 
@@ -282,7 +282,7 @@ bool
 Evolution::Book::populate_menu (Ekiga::MenuBuilder &builder)
 {
   builder.add_action ("new", _("New _Contact"),
-		      sigc::mem_fun (this, &Evolution::Book::new_contact_action));
+		      boost::bind (&Evolution::Book::new_contact_action, this));
   return true;
 }
 
@@ -315,7 +315,7 @@ Evolution::Book::refresh ()
 void
 Evolution::Book::new_contact_action ()
 {
-  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &Evolution::Book::on_new_contact_form_submitted)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Evolution::Book::on_new_contact_form_submitted, this, _1, _2)));
 
   request->title (_("New contact"));
 
@@ -328,7 +328,7 @@ Evolution::Book::new_contact_action ()
   request->text ("cell", _("_Cell phone:"), "");
   request->text ("pager", _("_Pager:"), "");
 
-  questions.emit (request);
+  questions (request);
 }
 
 void

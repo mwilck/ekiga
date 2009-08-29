@@ -94,11 +94,11 @@ namespace Ekiga
 
     /** This signal is emitted when the Presentity has been updated.
      */
-    sigc::signal0<void> updated;
+    boost::signal0<void> updated;
 
     /** This signal is emitted when the Presentity has been removed.
      */
-    sigc::signal0<void> removed;
+    boost::signal0<void> removed;
 
     /** This chain allows the Presentity to present forms to the user
      */

@@ -25,4 +25,4 @@ libgmpresence_la_SOURCES = \
 libgmpresence_la_LDFLAGS = $(STACKLIB_LDFLAGS)
 libgmpresence_la_LIBADD = \
 	$(top_builddir)/lib/engine/framework/libgmframework.la \
-	$(BOOST_LDFLAGS) $(SIGC_LIBS)
+	$(BOOST_LDFLAGS) $(BOOST_LIBS)

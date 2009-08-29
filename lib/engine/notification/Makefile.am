@@ -12,4 +12,4 @@ libnotification_la_SOURCES = \
 	$(notification_dir)/notification-core.h \
 	$(notification_dir)/notification-dummy.cpp
 
-libnotification_la_LDFLAGS = $(STACKLIB_LDFLAGS) $(BOOST_LDFLAGS) $(SIGC_LIBS) $(GLIB_LIBS)
+libnotification_la_LDFLAGS = $(STACKLIB_LDFLAGS) $(BOOST_LDFLAGS) $(BOOST_LIBS) $(GLIB_LIBS)

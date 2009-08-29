@@ -137,7 +137,7 @@ struct RefreshData
 	       const std::string _authcID,
 	       const std::string _password,
 	       const std::string _search_string,
-	       sigc::slot1<void, std::vector<OPENLDAP::Contact *> > _publish_results):
+	       boost::function1<void, std::vector<OPENLDAP::Contact *> > _publish_results):
     core(_core), name(_name), uri(_uri),
     base(_base), scope(_scope), call_attribute(_call_attribute),
     authcID(_authcID), password(_password), search_string(_search_string),
@@ -162,7 +162,7 @@ struct RefreshData
   std::string error_message;
 
   /* callback */
-  sigc::slot1<void, std::vector<OPENLDAP::Contact *> > publish_results;
+  boost::function1<void, std::vector<OPENLDAP::Contact *> > publish_results;
 };
 #endif
 
@@ -332,7 +332,7 @@ OPENLDAP::Book::Book (Ekiga::ServiceCore &_core,
       xmlUnlinkNode (call_attribute_node);
       xmlFreeNode (call_attribute_node);
     }
-    trigger_saving.emit ();
+    trigger_saving ();
   }
   OPENLDAP::BookInfoParse (bookinfo);
 }
@@ -412,12 +412,12 @@ bool
 OPENLDAP::Book::populate_menu (Ekiga::MenuBuilder &builder)
 {
   builder.add_action ("refresh", _("_Refresh"),
-		      sigc::mem_fun (this, &OPENLDAP::Book::refresh));
+		      boost::bind (&OPENLDAP::Book::refresh, this));
   builder.add_separator ();
   builder.add_action ("remove", _("_Remove addressbook"),
-		      sigc::mem_fun (this, &OPENLDAP::Book::remove));
+		      boost::bind (&OPENLDAP::Book::remove, this));
   builder.add_action ("properties", _("Addressbook _properties"),
-		      sigc::mem_fun (this, &OPENLDAP::Book::edit));
+		      boost::bind (&OPENLDAP::Book::edit, this));
 
   return true;
 }
@@ -452,8 +452,8 @@ OPENLDAP::Book::remove ()
   xmlUnlinkNode (node);
   xmlFreeNode (node);
 
-  trigger_saving.emit ();
-  removed.emit ();
+  trigger_saving ();
+  removed ();
 }
 
 xmlNodePtr
@@ -535,7 +535,7 @@ extern "C" {
 
     /* If there are missing items, try to get them all in one dialog */
     if (nprompts) {
-      boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (ctx->book, &OPENLDAP::Book::on_sasl_form_submitted)));
+      boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&OPENLDAP::Book::on_sasl_form_submitted, ctx->book, _1, _2)));
       Ekiga::FormBuilder result;
       std::string prompt;
       std::string ctxt = "";
@@ -612,7 +612,7 @@ extern "C" {
 
       /* Save a pointer for storing the form result */
       ctx->book->saslform = &result;
-      ctx->book->questions.emit (request);
+      ctx->book->questions (request);
 
       /* Extract answers from the result form */
       for (i=0, in = (sasl_interact_t *)inter;
@@ -659,13 +659,13 @@ OPENLDAP::Book::refresh_start ()
   int ldap_version = LDAP_VERSION3;
 
   status = std::string (_("Refreshing"));
-  updated.emit ();
+  updated ();
 
   result = ldap_initialize (&ldap_context, bookinfo.uri_host.c_str());
   if (result != LDAP_SUCCESS) {
 
     status = std::string (_("Could not initialize server"));
-    updated.emit ();
+    updated ();
     return;
   }
 
@@ -680,7 +680,7 @@ OPENLDAP::Book::refresh_start ()
     if (result != LDAP_SUCCESS) {
       status = std::string (_("LDAP Error: ")) +
         std::string (ldap_err2string (result));
-      updated.emit ();
+      updated ();
       ldap_unbind_ext (ldap_context, NULL, NULL);
       ldap_context = NULL;
       return;
@@ -725,7 +725,7 @@ OPENLDAP::Book::refresh_start ()
 
     status = std::string (_("LDAP Error: ")) +
       std::string (ldap_err2string (result));
-    updated.emit ();
+    updated ();
 
     ldap_unbind_ext (ldap_context, NULL, NULL);
     ldap_context = NULL;
@@ -733,7 +733,7 @@ OPENLDAP::Book::refresh_start ()
   }
 
   status = std::string (_("Contacted server"));
-  updated.emit ();
+  updated ();
 
   patience = 3;
   refresh_bound ();
@@ -760,19 +760,19 @@ OPENLDAP::Book::refresh_bound ()
 
     if (patience == 3) {
       patience--;
-      Ekiga::Runtime::run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_bound), 12);
+      Ekiga::Runtime::run_in_main (boost::bind (&OPENLDAP::Book::refresh_bound, this), 12);
     } else if (patience == 2) {
 
       patience--;
-      Ekiga::Runtime::run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_bound), 21);
+      Ekiga::Runtime::run_in_main (boost::bind (&OPENLDAP::Book::refresh_bound, this), 21);
     } else if (patience == 1) {
 
       patience--;
-      Ekiga::Runtime::run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_bound), 30);
+      Ekiga::Runtime::run_in_main (boost::bind (&OPENLDAP::Book::refresh_bound, this), 30);
     } else { // patience == 0
 
       status = std::string (_("Could not connect to server"));
-      updated.emit ();
+      updated ();
 
       ldap_unbind_ext (ldap_context, NULL, NULL);
       ldap_context = NULL;
@@ -820,7 +820,7 @@ OPENLDAP::Book::refresh_bound ()
   if (msgid == -1) {
 
     status = std::string (_("Could not search"));
-    updated.emit ();
+    updated ();
 
     ldap_unbind_ext (ldap_context, NULL, NULL);
     ldap_context = NULL;
@@ -828,7 +828,7 @@ OPENLDAP::Book::refresh_bound ()
   } else {
 
     status = std::string (_("Waiting for search results"));
-    updated.emit ();
+    updated ();
   }
 
   patience = 3;
@@ -854,22 +854,22 @@ OPENLDAP::Book::refresh_result ()
     if (patience == 3) {
 
       patience--;
-      Ekiga::Runtime::run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_result),
+      Ekiga::Runtime::run_in_main (boost::bind (&OPENLDAP::Book::refresh_result, this),
 				   12);
     } else if (patience == 2) {
 
       patience--;
-      Ekiga::Runtime::run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_result),
+      Ekiga::Runtime::run_in_main (boost::bind (&OPENLDAP::Book::refresh_result, this),
 				   21);
     } else if (patience == 1) {
 
       patience--;
-      Ekiga::Runtime::run_in_main (sigc::mem_fun (this, &OPENLDAP::Book::refresh_result),
+      Ekiga::Runtime::run_in_main (boost::bind (&OPENLDAP::Book::refresh_result, this),
 				   30);
     } else { // patience == 0
 
       status = std::string (_("Could not search"));
-      updated.emit ();
+      updated ();
 
       ldap_unbind_ext (ldap_context, NULL, NULL);
       ldap_context = NULL;
@@ -900,7 +900,7 @@ OPENLDAP::Book::refresh_result ()
   status = c_status;
   g_free (c_status);
 
-  updated.emit ();
+  updated ();
 
   (void)ldap_msgfree (msg_entry);
 
@@ -985,11 +985,11 @@ OPENLDAP::BookForm (boost::shared_ptr<Ekiga::FormRequestSimple> request,
 void
 OPENLDAP::Book::edit ()
 {
-  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &OPENLDAP::Book::on_edit_form_submitted)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&OPENLDAP::Book::on_edit_form_submitted, this, _1, _2)));
 
   OPENLDAP::BookForm (request, bookinfo, std::string(_("Edit LDAP directory")));
 
-  questions.emit (request);
+  questions (request);
 }
 
 int
@@ -1095,12 +1095,12 @@ OPENLDAP::Book::on_edit_form_submitted (bool submitted,
 
   std::string errmsg;
   if (OPENLDAP::BookFormInfo (result, bookinfo, errmsg)) {
-    boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &OPENLDAP::Book::on_edit_form_submitted)));
+    boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&OPENLDAP::Book::on_edit_form_submitted, this, _1, _2)));
 
     result.visit (*request);
     request->error (errmsg);
 
-    questions.emit (request);
+    questions (request);
     return;
   }
 
@@ -1111,6 +1111,6 @@ OPENLDAP::Book::on_edit_form_submitted (bool submitted,
   robust_xmlNodeSetContent (node, &authcID_node, "authcID", bookinfo.authcID);
 
   robust_xmlNodeSetContent (node, &password_node, "password", bookinfo.password);
-  updated.emit ();
-  trigger_saving.emit ();
+  updated ();
+  trigger_saving ();
 }

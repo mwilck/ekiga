@@ -61,7 +61,7 @@ namespace LM
 
     xmlNodePtr get_node () const;
 
-    sigc::signal0<void> trigger_saving;
+    boost::signal0<void> trigger_saving;
 
     const std::string get_name () const;
 

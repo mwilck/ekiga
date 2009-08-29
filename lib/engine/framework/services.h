@@ -44,7 +44,8 @@
 
 #include <list>
 #include <string>
-#include <sigc++/sigc++.h>
+#include <boost/signals.hpp>
+#include <boost/bind.hpp>
 
 namespace Ekiga
 {
@@ -83,7 +84,7 @@ namespace Ekiga
 
     void dump (std::ostream &stream) const;
 
-    sigc::signal1<void, ServicePtr> service_added;
+    boost::signal1<void, ServicePtr> service_added;
 
   private:
 

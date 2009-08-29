@@ -74,7 +74,7 @@ Echo::SimpleChat::disconnect (boost::shared_ptr<Ekiga::ChatObserver> observer)
   observers.remove (observer);
 
   if (observers.empty ())
-    removed.emit ();
+    removed ();
 }
 
 bool

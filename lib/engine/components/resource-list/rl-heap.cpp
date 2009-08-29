@@ -181,11 +181,11 @@ RL::Heap::get_name () const
 }
 
 void
-RL::Heap::visit_presentities (sigc::slot1<bool, Ekiga::PresentityPtr > visitor)
+RL::Heap::visit_presentities (boost::function1<bool, Ekiga::PresentityPtr > visitor)
 {
   bool go_on = true;
 
-  for (std::map<PresentityPtr,std::list<sigc::connection> >::iterator
+  for (std::map<PresentityPtr,std::list<boost::signals::connection> >::iterator
 	 iter = presentities.begin ();
        go_on && iter != presentities.end ();
        ++iter)
@@ -196,11 +196,11 @@ bool
 RL::Heap::populate_menu (Ekiga::MenuBuilder& builder)
 {
   builder.add_action ("add", _("_Add a new contact"),
-		      sigc::mem_fun (this, &RL::Heap::new_entry));
+		      boost::bind (&RL::Heap::new_entry, this));
   builder.add_action ("refresh", _("_Refresh contact list"),
-		      sigc::mem_fun (this, &RL::Heap::refresh));
+		      boost::bind (&RL::Heap::refresh, this));
   builder.add_action ("properties", _("Contact list _properties"),
-		      sigc::mem_fun (this, &RL::Heap::edit));
+		      boost::bind (&RL::Heap::edit, this));
   return true;
 }
 
@@ -253,8 +253,8 @@ RL::Heap::refresh ()
 
   while ( !presentities.empty ()) {
 
-    presentities.begin()->first->removed.emit ();
-    for (std::list<sigc::connection>::iterator iter2
+    presentities.begin()->first->removed ();
+    for (std::list<boost::signals::connection>::iterator iter2
 	   = presentities.begin()->second.begin ();
 	 iter2 != presentities.begin()->second.end ();
 	 ++iter2)
@@ -264,7 +264,7 @@ RL::Heap::refresh ()
 
   doc.reset ();
 
-  xcap->read (path, sigc::mem_fun (this, &RL::Heap::on_document_received));
+  xcap->read (path, boost::bind (&RL::Heap::on_document_received, this));
 }
 
 void
@@ -366,13 +366,13 @@ RL::Heap::parse_list (xmlNodePtr list)
 	&& xmlStrEqual (BAD_CAST ("entry"), child->name)) {
 
       PresentityPtr presentity(new Presentity (services, path, doc, child, writable));
-      std::list<sigc::connection> conns;
-      conns.push_back (presentity->updated.connect (sigc::bind (presentity_updated.make_slot (),presentity)));
-      conns.push_back (presentity->removed.connect (sigc::bind(presentity_removed.make_slot (),presentity)));
-      conns.push_back (presentity->trigger_reload.connect (sigc::mem_fun (this, &RL::Heap::refresh)));
+      std::list<boost::signals::connection> conns;
+      conns.push_back (presentity->updated.connect (boost::bind (presentity_updated,presentity)));
+      conns.push_back (presentity->removed.connect (boost::bind(presentity_removed,presentity)));
+      conns.push_back (presentity->trigger_reload.connect (boost::bind (&RL::Heap::refresh, this)));
       conns.push_back (presentity->questions.connect (questions.make_slot()));
       presentities[presentity]=conns;
-      presentity_added.emit (presentity);
+      presentity_added (presentity);
       continue;
     }
 }
@@ -381,7 +381,7 @@ void
 RL::Heap::push_presence (const std::string uri_,
 			 const std::string presence)
 {
-  for (std::map<PresentityPtr,std::list<sigc::connection> >::iterator
+  for (std::map<PresentityPtr,std::list<boost::signals::connection> >::iterator
 	 iter = presentities.begin ();
        iter != presentities.end ();
        ++iter) {
@@ -395,7 +395,7 @@ void
 RL::Heap::push_status (const std::string uri_,
 		       const std::string status)
 {
-  for (std::map<PresentityPtr,std::list<sigc::connection> >::iterator
+  for (std::map<PresentityPtr,std::list<boost::signals::connection> >::iterator
 	 iter = presentities.begin ();
        iter != presentities.end ();
        ++iter) {
@@ -408,7 +408,7 @@ RL::Heap::push_status (const std::string uri_,
 void
 RL::Heap::edit ()
 {
-  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &RL::Heap::on_edit_form_submitted)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&RL::Heap::on_edit_form_submitted, this)));
 
   std::string name_str;
   std::string root_str;
@@ -472,7 +472,7 @@ RL::Heap::edit ()
   request->text ("username", _("Server username"), username_str);
   request->private_text ("password", _("Server password"), password_str);
 
-  questions.emit (request);
+  questions (request);
 }
 
 void
@@ -499,22 +499,22 @@ RL::Heap::on_edit_form_submitted (bool submitted,
   robust_xmlNodeSetContent (node, &username, "username", username_str);
   robust_xmlNodeSetContent (node, &password, "password", password_str);
 
-  trigger_saving.emit ();
-  updated.emit ();
+  trigger_saving ();
+  updated ();
   refresh ();
 }
 
 void
 RL::Heap::new_entry ()
 {
-  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &RL::Heap::on_new_entry_form_submitted)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&RL::Heap::on_new_entry_form_submitted, this)));
 
   request->title (_("Add a remote contact"));
   request->instructions (_("Please fill in this form to create a new "
 			   "contact on a remote server"));
 
   std::set<std::string> all_groups;
-  for (std::map<PresentityPtr,std::list<sigc::connection> >::iterator
+  for (std::map<PresentityPtr,std::list<boost::signals::connection> >::iterator
 	 iter = presentities.begin ();
        iter != presentities.end ();
        ++iter) {
@@ -528,7 +528,7 @@ RL::Heap::new_entry ()
   request->editable_set ("groups", _("Choose groups:"),
 			 std::set<std::string>(), all_groups);
 
-  questions.emit (request);
+  questions (request);
 }
 
 void
@@ -602,7 +602,7 @@ RL::Heap::on_new_entry_form_submitted (bool submitted,
     boost::shared_ptr<XCAP::Core> xcap = services.get<XCAP::Core> ("xcap-core");
     xcap->write (path, "application/xcap-el+xml",
 		 (const char*)xmlBufferContent (buffer),
-		 sigc::mem_fun (this, &RL::Heap::new_entry_result));
+		 boost::bind (&RL::Heap::new_entry_result, this));
   }
   xmlBufferFree (buffer);
 }

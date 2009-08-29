@@ -38,7 +38,8 @@
 #define __GMCONF_BRIDGE_H__
 
 #include <vector>
-#include <sigc++/sigc++.h>
+#include <boost/signals.hpp>
+#include <boost/bind.hpp>
 
 #include "gmconf.h"
 #include "services.h"
@@ -93,7 +94,7 @@ namespace Ekiga
        * @param key is the GmConf key whose value changed
        * @param entry is the new GmConf entry
        */
-      sigc::signal2<void, std::string /*key*/, GmConfEntry * /*entry*/> property_changed;
+      boost::signal2<void, std::string /*key*/, GmConfEntry * /*entry*/> property_changed;
 
   protected :
       Ekiga::Service & service;

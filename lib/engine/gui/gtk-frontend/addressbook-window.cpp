@@ -52,7 +52,7 @@ struct _AddressBookWindowPrivate
   _AddressBookWindowPrivate (Ekiga::ContactCore & _core):core (_core) { }
 
   Ekiga::ContactCore & core;
-  std::vector<sigc::connection> connections;
+  std::vector<boost::signals::connection> connections;
   GtkWidget *tree_view;
   GtkWidget *notebook;
   GtkTreeSelection *selection;
@@ -91,6 +91,13 @@ static GObjectClass *parent_class = NULL;
  */
 static void on_core_updated (gpointer data);
 
+
+/* DESCRIPTION  : Called at startup to populate the window
+ * BEHAVIOR     :
+ * PRE          : The given GtkWidget pointer must be an addressbook window.
+ */
+static bool on_visit_sources (Ekiga::SourcePtr source,
+			      gpointer data);
 
 /* DESCRIPTION  : Called at startup to populate the window
  * BEHAVIOR     : 
@@ -249,13 +256,19 @@ on_core_updated (gpointer data)
   gtk_widget_show_all (menu_builder.menu);
 }
 
+static bool
+on_visit_sources (Ekiga::SourcePtr source,
+		  gpointer data)
+{
+  on_source_added (source, data);
+  return true;
+}
 
 static void
 on_source_added (Ekiga::SourcePtr source,
 		 gpointer data)
 {
-  source->visit_books (sigc::bind (sigc::ptr_fun (visit_books),
-				   source, data));
+  source->visit_books (boost::bind (&visit_books, _1, source, data));
 }
 
 
@@ -580,7 +593,7 @@ addressbook_window_finalize (GObject *obj)
 
   self = ADDRESSBOOK_WINDOW (obj);
 
-  for (std::vector<sigc::connection>::iterator iter
+  for (std::vector<boost::signals::connection>::iterator iter
 	 = self->priv->connections.begin ();
        iter != self->priv->connections.end ();
        iter++)
@@ -642,7 +655,7 @@ addressbook_window_new (Ekiga::ContactCore &core)
 {
   AddressBookWindow *self = NULL;
 
-  sigc::connection conn;
+  boost::signals::connection conn;
 
   GtkWidget *menu_bar = NULL;
   GtkWidget *frame = NULL;
@@ -676,7 +689,7 @@ addressbook_window_new (Ekiga::ContactCore &core)
   gtk_menu_shell_append (GTK_MENU_SHELL (menu_bar),
                          self->priv->menu_item_core);
   g_object_ref (self->priv->menu_item_core);
-  conn = core.updated.connect (sigc::bind (sigc::ptr_fun (on_core_updated),
+  conn = core.updated.connect (boost::bind (&on_core_updated,
                                            (gpointer) self));
   self->priv->connections.push_back (conn);
   on_core_updated (self); // This will add static and dynamic actions
@@ -750,25 +763,24 @@ addressbook_window_new (Ekiga::ContactCore &core)
                     G_CALLBACK (on_notebook_realize), self);
   gtk_paned_add2 (GTK_PANED (hpaned), self->priv->notebook);
 
-  conn = core.source_added.connect (sigc::bind (sigc::ptr_fun (on_source_added), (gpointer) self));
+  conn = core.source_added.connect (boost::bind (&on_source_added, _1, (gpointer) self));
   self->priv->connections.push_back (conn);
 
-  conn = core.book_updated.connect (sigc::bind (sigc::ptr_fun (on_book_updated),
+  conn = core.book_updated.connect (boost::bind (&on_book_updated, _1, _2,
                                                 (gpointer) self));
   self->priv->connections.push_back (conn);
-  conn = core.book_added.connect (sigc::bind (sigc::ptr_fun (on_book_added), 
+  conn = core.book_added.connect (boost::bind (&on_book_added, _1, _2,
                                               (gpointer) self));
   self->priv->connections.push_back (conn);
   conn =
-    core.book_removed.connect (sigc::bind (sigc::ptr_fun (on_book_removed), 
+    core.book_removed.connect (boost::bind (&on_book_removed, _1, _2,
                                            (gpointer) self));
   self->priv->connections.push_back (conn);
 
-  conn = core.questions.connect (sigc::bind (sigc::ptr_fun (on_handle_questions), (gpointer) self));
+  conn = core.questions.connect (boost::bind (&on_handle_questions, _1, (gpointer) self));
   self->priv->connections.push_back (conn);
 
-  core.visit_sources (sigc::bind_return (sigc::bind (sigc::ptr_fun (on_source_added),
-						     (gpointer) self), true));
+  core.visit_sources (boost::bind (on_visit_sources, _1, (gpointer) self));
 
   return GTK_WIDGET (self);
 }

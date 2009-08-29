@@ -92,14 +92,14 @@ void
 RL::EntryRef::set_presence (const std::string presence_)
 {
   presence = presence_;
-  updated.emit ();
+  updated ();
 }
 
 void
 RL::EntryRef::set_status (const std::string status_)
 {
   status = status_;
-  updated.emit ();
+  updated ();
 }
 
 const std::string
@@ -130,7 +130,7 @@ RL::EntryRef::populate_menu (Ekiga::MenuBuilder& builder)
   std::string uri(get_uri ());
 
   builder.add_action ("refresh", _("_Refresh"),
-		      sigc::mem_fun (this, &RL::EntryRef::refresh));
+		      boost::bind (&RL::EntryRef::refresh, this));
 
   if ( !uri.empty ())
     populated = presence_core->populate_presentity_menu (Ekiga::PresentityPtr (this), uri, builder)

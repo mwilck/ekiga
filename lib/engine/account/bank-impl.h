@@ -74,7 +74,7 @@ namespace Ekiga
   template<class AccountType = Account>
   class BankImpl:
     public Bank,
-    public sigc::trackable,
+    public boost::signals::trackable,
     protected RefLister<AccountType>
   {
 
@@ -95,7 +95,7 @@ namespace Ekiga
      * @param The callback (the return value means "go on" and allows
      *  stopping the visit)
      */
-    void visit_accounts (sigc::slot1<bool, AccountPtr> visitor);
+    void visit_accounts (boost::function1<bool, AccountPtr> visitor);
 
     /** Returns an iterator to the first Account of the collection
      */
@@ -147,9 +147,9 @@ template<typename AccountType>
 Ekiga::BankImpl<AccountType>::BankImpl ()
 {
   /* this is signal forwarding */
-  RefLister<AccountType>::object_added.connect (account_added.make_slot ());
-  RefLister<AccountType>::object_removed.connect (account_removed.make_slot ());
-  RefLister<AccountType>::object_updated.connect (account_updated.make_slot ());
+  RefLister<AccountType>::object_added.connect (boost::ref (account_added));
+  RefLister<AccountType>::object_removed.connect (boost::ref (account_removed));
+  RefLister<AccountType>::object_updated.connect (boost::ref (account_updated));
 }
 
 
@@ -161,7 +161,7 @@ Ekiga::BankImpl<AccountType>::~BankImpl ()
 
 template<typename AccountType>
 void
-Ekiga::BankImpl<AccountType>::visit_accounts (sigc::slot1<bool, AccountPtr> visitor)
+Ekiga::BankImpl<AccountType>::visit_accounts (boost::function1<bool, AccountPtr> visitor)
 {
   RefLister<AccountType>::visit_objects (visitor);
 }
@@ -205,7 +205,7 @@ Ekiga::BankImpl<AccountType>::add_account (boost::shared_ptr<AccountType> accoun
 {
   add_object (account);
 
-  account->questions.connect (questions.make_slot ());
+  account->questions.connect (boost::ref (questions));
 }
 
 

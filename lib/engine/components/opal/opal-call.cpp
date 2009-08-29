@@ -187,9 +187,9 @@ Opal::Call::toggle_stream_pause (StreamType type)
       stream->SetPaused (!paused);
 
       if (paused)
-	Ekiga::Runtime::run_in_main (sigc::bind (stream_resumed, stream_name, type));
+	Ekiga::Runtime::run_in_main (boost::bind (boost::ref (stream_resumed), stream_name, type));
       else
-	Ekiga::Runtime::run_in_main (sigc::bind (stream_paused, stream_name, type));
+	Ekiga::Runtime::run_in_main (boost::bind (boost::ref (stream_paused), stream_name, type));
     }
   }
 }
@@ -337,7 +337,7 @@ Opal::Call::OnEstablished (OpalConnection & connection)
   if (!PIsDescendant(&connection, OpalPCSSConnection)) {
 
     parse_info (connection);
-    Ekiga::Runtime::run_in_main (sigc::mem_fun (this, &Opal::Call::emit_established_in_main));
+    Ekiga::Runtime::run_in_main (boost::bind (&Opal::Call::emit_established_in_main, this));
   }
 
   if (PIsDescendant(&connection, OpalRTPConnection)) {
@@ -395,7 +395,7 @@ Opal::Call::OnCleared ()
       && !is_outgoing ()
       && GetCallEndReason () != OpalConnection::EndedByAnswerDenied) {
 
-    Ekiga::Runtime::run_in_main (sigc::mem_fun (this, &Opal::Call::emit_missed_in_main));
+    Ekiga::Runtime::run_in_main (boost::bind (&Opal::Call::emit_missed_in_main, this));
   }
   else {
 
@@ -476,7 +476,7 @@ Opal::Call::OnCleared ()
       reason = _("Call completed");
     }
 
-    Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &Opal::Call::emit_cleared_in_main), reason));
+    Ekiga::Runtime::run_in_main (boost::bind (&Opal::Call::emit_cleared_in_main, this, reason));
   }
 }
 
@@ -499,11 +499,11 @@ Opal::Call::OnSetUp (OpalConnection & connection)
   outgoing = !IsNetworkOriginated ();
   parse_info (connection);
 
-  Ekiga::Runtime::run_in_main (sigc::mem_fun (this, &Opal::Call::emit_setup_in_main));
+  Ekiga::Runtime::run_in_main (boost::bind (&Opal::Call::emit_setup_in_main, this));
   call_setup = true;
 
-  cleared.connect (sigc::mem_fun (this, &Opal::Call::on_cleared_call));
-  missed.connect (sigc::mem_fun (this, &Opal::Call::on_missed_call));
+  cleared.connect (boost::bind (&Opal::Call::on_cleared_call, this, _1));
+  missed.connect (boost::bind (&Opal::Call::on_missed_call, this));
 
   new CallSetup (*this, connection);
 
@@ -515,7 +515,7 @@ PBoolean
 Opal::Call::OnAlerting (OpalConnection & connection)
 {
   if (!PIsDescendant(&connection, OpalPCSSConnection))
-    Ekiga::Runtime::run_in_main (sigc::mem_fun (this, &Opal::Call::emit_ringing_in_main));
+    Ekiga::Runtime::run_in_main (boost::bind (&Opal::Call::emit_ringing_in_main, this));
 
   return OpalCall::OnAlerting (connection);
 }
@@ -527,9 +527,9 @@ Opal::Call::OnHold (OpalConnection & /*connection*/,
                     bool on_hold)
 {
   if (on_hold)
-    Ekiga::Runtime::run_in_main (sigc::mem_fun (this, &Opal::Call::emit_held_in_main));
+    Ekiga::Runtime::run_in_main (boost::bind (&Opal::Call::emit_held_in_main, this));
   else
-    Ekiga::Runtime::run_in_main (sigc::mem_fun (this, &Opal::Call::emit_retrieved_in_main));
+    Ekiga::Runtime::run_in_main (boost::bind (&Opal::Call::emit_retrieved_in_main, this));
 }
 
 
@@ -544,7 +544,7 @@ Opal::Call::OnOpenMediaStream (OpalMediaStream & stream)
   std::transform (stream_name.begin (), stream_name.end (), stream_name.begin (), (int (*) (int)) toupper);
   is_transmitting = !stream.IsSource ();
 
-  Ekiga::Runtime::run_in_main (sigc::bind (stream_opened, stream_name, type, is_transmitting));
+  Ekiga::Runtime::run_in_main (boost::bind (boost::ref (stream_opened), stream_name, type, is_transmitting));
 }
 
 
@@ -559,7 +559,7 @@ Opal::Call::OnClosedMediaStream (OpalMediaStream & stream)
   std::transform (stream_name.begin (), stream_name.end (), stream_name.begin (), (int (*) (int)) toupper);
   is_transmitting = !stream.IsSource ();
 
-  Ekiga::Runtime::run_in_main (sigc::bind (stream_closed, stream_name, type, is_transmitting));
+  Ekiga::Runtime::run_in_main (boost::bind (boost::ref (stream_closed), stream_name, type, is_transmitting));
 }
 
 
@@ -663,41 +663,41 @@ Opal::Call::on_missed_call ()
 void
 Opal::Call::emit_established_in_main ()
 {
-  established.emit ();
+  established ();
 }
 
 void
 Opal::Call::emit_missed_in_main ()
 {
-  missed.emit ();
+  missed ();
 }
 
 void
 Opal::Call::emit_cleared_in_main (const std::string reason)
 {
-  cleared.emit (reason);
+  cleared (reason);
 }
 
 void
 Opal::Call::emit_setup_in_main ()
 {
-  setup.emit ();
+  setup ();
 }
 
 void
 Opal::Call::emit_ringing_in_main ()
 {
-  ringing.emit ();
+  ringing ();
 }
 
 void
 Opal::Call::emit_held_in_main ()
 {
-  held.emit ();
+  held ();
 }
 
 void
 Opal::Call::emit_retrieved_in_main ()
 {
-  retrieved.emit ();
+  retrieved ();
 }

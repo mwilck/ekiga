@@ -103,14 +103,14 @@ void
 RL::Entry::set_presence (const std::string presence_)
 {
   presence = presence_;
-  updated.emit ();
+  updated ();
 }
 
 void
 RL::Entry::set_status (const std::string status_)
 {
   status = status_;
-  updated.emit ();
+  updated ();
 }
 
 const std::string
@@ -142,7 +142,7 @@ RL::Entry::populate_menu (Ekiga::MenuBuilder& builder)
   std::string uri(get_uri ());
 
   builder.add_action ("refresh", _("_Refresh"),
-		      sigc::mem_fun (this, &RL::Entry::refresh));
+		      boost::bind (&RL::Entry::refresh, this));
 
   if ( !uri.empty ())
     populated = presence_core->populate_presentity_menu (Ekiga::PresentityPtr (this), uri, builder)
@@ -159,10 +159,10 @@ RL::Entry::refresh ()
   name_node = NULL;
   presence = "unknown";
   status = ("");
-  updated.emit ();
+  updated ();
 
   boost::shared_ptr<XCAP::Core> xcap = core.get<XCAP::Core> ("xcap-core");
-  xcap->read (path, sigc::mem_fun (this, &RL::Entry::on_xcap_answer));
+  xcap->read (path, boost::bind (&RL::Entry::on_xcap_answer, this));
 }
 
 void
@@ -189,7 +189,7 @@ RL::Entry::on_xcap_answer (bool error,
 
       set_status ("");
       parse ();
-      updated.emit ();
+      updated ();
     }
   }
 }

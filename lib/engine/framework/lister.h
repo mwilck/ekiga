@@ -36,7 +36,8 @@
 #ifndef __LISTER_H__
 #define __LISTER_H__
 
-#include <sigc++/sigc++.h>
+#include <boost/signals.hpp>
+#include <boost/bind.hpp>
 
 #include "ptr_array.h"
 #include "ptr_array_iterator.h"
@@ -89,7 +90,7 @@ namespace Ekiga
      * @param The callback (the return value means "go on" and allows
      *  stopping the visit)
      */
-    void visit_objects (sigc::slot1<bool, ObjectType &> visitor);
+    void visit_objects (boost::function1<bool, ObjectType &> visitor);
 
     /** Returns a const iterator to the first object of the collection.
      */
@@ -133,9 +134,9 @@ namespace Ekiga
     /** Signals emitted by this object
      *
      */
-    sigc::signal1<void, ObjectType &> object_added;
-    sigc::signal1<void, ObjectType &> object_removed;
-    sigc::signal1<void, ObjectType &> object_updated;
+    boost::signal1<void, ObjectType &> object_added;
+    boost::signal1<void, ObjectType &> object_removed;
+    boost::signal1<void, ObjectType &> object_updated;
 
   private:
 
@@ -192,14 +193,14 @@ Ekiga::Lister<ObjectType>::~Lister ()
        ii++) {
 
     ObjectType *obj = objects[ii];
-    obj->removed.emit ();
+    obj->removed ();
   }
 }
 
 
 template<typename ObjectType>
 void
-Ekiga::Lister<ObjectType>::visit_objects (sigc::slot1<bool, ObjectType &> visitor)
+Ekiga::Lister<ObjectType>::visit_objects (boost::function1<bool, ObjectType &> visitor)
 {
   bool go_on = true;
   for (unsigned int ii = 0;
@@ -244,10 +245,10 @@ template<typename ObjectType>
 void
 Ekiga::Lister<ObjectType>::add_object (ObjectType &object)
 {
-  object.removed.connect (sigc::bind (sigc::mem_fun (this, &Lister::on_object_removed), &object));
-  object.updated.connect (sigc::bind (sigc::mem_fun (this, &Lister::on_object_updated), &object));
+  object.removed.connect (boost::bind (boost::bind (&Lister::on_object_removed, this), &object));
+  object.updated.connect (boost::bind (boost::bind (&Lister::on_object_updated, this), &object));
   objects.add (&object);
-  object_added.emit (object);
+  object_added (object);
 }
 
 
@@ -262,7 +263,7 @@ template<typename ObjectType>
 void
 Ekiga::Lister<ObjectType>::common_removal_steps (ObjectType &object)
 {
-  object_removed.emit (object);
+  object_removed (object);
   objects.remove (&object);
 }
 
@@ -271,7 +272,7 @@ template<typename ObjectType>
 void
 Ekiga::Lister<ObjectType>::on_object_updated (ObjectType *object)
 {
-  object_updated.emit (*object);
+  object_updated (*object);
 }
 
 

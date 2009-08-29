@@ -37,7 +37,8 @@
 #define __PERSONAL_DETAILS_H__
 
 #include <string>
-#include <sigc++/sigc++.h>
+#include <boost/signals.hpp>
+#include <boost/bind.hpp>
 
 #include "services.h"
 
@@ -65,7 +66,7 @@ namespace Ekiga
     virtual void set_presence_info (const std::string presence,
                                     const std::string status) = 0;
 
-    sigc::signal0<void> updated;
+    boost::signal0<void> updated;
   };
 };
 

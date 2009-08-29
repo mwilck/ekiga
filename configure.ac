@@ -191,14 +191,9 @@ dnl ###############################
 dnl   Mandatory BOOST support
 dnl ###############################
 AX_BOOST_BASE([1.34])
-
-dnl ###############################
-dnl   Mandatory SIGC++ support
-dnl ###############################
-PKG_CHECK_MODULES([SIGC], [sigc++-2.0])
-AC_SUBST(SIGC_CFLAGS)
-AC_SUBST(SIGC_LIBS)
-
+AX_BOOST_SIGNALS
+BOOST_LIBS="${BOOST_SIGNALS_LIB}"
+AC_SUBST(BOOST_LIBS)
 
 dnl ###############################
 dnl   Mandatory libXML support

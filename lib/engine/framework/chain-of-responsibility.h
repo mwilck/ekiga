@@ -36,9 +36,10 @@
 #ifndef __CHAIN_OF_RESPONSIBILITY_H__
 #define __CHAIN_OF_RESPONSIBILITY_H__
 
-#include <sigc++/sigc++.h>
+#include <boost/signals.hpp>
+#include <boost/bind.hpp>
 
-/* This code uses sigc++ signals to implement the "chain of responsibility"
+/* This code uses boost signals to implement the "chain of responsibility"
  * design pattern -- big words, but simple concept!
  *
  * BASIC IDEA
@@ -67,7 +68,7 @@
  * Ekiga::ChainOfResponsibility<T_request> chain;
  *
  * The handlers will register like this :
- * chain.connect (sigc::mem_fun (this, &Foo::request_handler));
+ * chain.connect (boost::bind (&Foo::request_handler, this));
  *
  * A request handler looks like :
  * bool
@@ -82,10 +83,10 @@
  * }
  *
  * Trying to get a request handled looks like :
- * chain.emit (request);
+ * chain (request);
  *
  * or for better error reporting :
- * if (!chain.emit (request)) {
+ * if (!chain (request)) {
  *
  *   <report that you couldn't deal with a request>
  * }
@@ -116,7 +117,7 @@ namespace Ekiga
 
   template<typename T_request>
   struct ChainOfResponsibility:
-    public sigc::signal1<bool,
+    public boost::signal1<bool,
 			 T_request,
 			 responsibility_accumulator>
   {

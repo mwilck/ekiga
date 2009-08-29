@@ -15,4 +15,4 @@ libgmgnomesession_la_SOURCES = \
 libgmgnomesession_la_LIBADD = \
 	$(top_builddir)/lib/engine/protocol/libgmprotocol.la
 
-libgmgnomesession_la_LDFLAGS = -export-dynamic -no-undefined $(LDAP_LIBS) $(BOOST_LDFLAGS) $(SIGC_LIBS) $(GLIB_LIBS) $(DBUS_LIBS)
+libgmgnomesession_la_LDFLAGS = -export-dynamic -no-undefined $(LDAP_LIBS) $(BOOST_LDFLAGS) $(BOOST_LIBS) $(GLIB_LIBS) $(DBUS_LIBS)

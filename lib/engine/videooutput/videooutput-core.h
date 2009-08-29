@@ -42,7 +42,8 @@
 #include "videooutput-gmconf-bridge.h"
 #include "videooutput-manager.h"
 
-#include <sigc++/sigc++.h>
+#include <boost/signals.hpp>
+#include <boost/bind.hpp>
 #include <set>
 #include <map>
 
@@ -110,12 +111,12 @@ namespace Ekiga
       /** Triggers a callback for all Ekiga::VideoOutputManager sources of the
        * VideoOutputCore service.
        */
-      void visit_managers (sigc::slot1<bool, VideoOutputManager &> visitor);
+      void visit_managers (boost::function1<bool, VideoOutputManager &> visitor);
 
       /** This signal is emitted when a Ekiga::VideoOutputManager has been
        * added to the VideoOutputCore Service.
        */
-      sigc::signal1<void, VideoOutputManager &> manager_added;
+      boost::signal1<void, VideoOutputManager &> manager_added;
 
 
       /*** Videooutput Management ***/
@@ -164,11 +165,11 @@ namespace Ekiga
 
       /** See videooutput-manager.h for the API
        */
-      sigc::signal5<void, VideoOutputManager &, VideoOutputAccel, VideoOutputMode, unsigned, bool> device_opened;
-      sigc::signal1<void, VideoOutputManager &> device_closed;
-      sigc::signal2<void, VideoOutputManager &, VideoOutputErrorCodes> device_error;
-      sigc::signal2<void, VideoOutputManager &, VideoOutputFSToggle> fullscreen_mode_changed;
-      sigc::signal3<void, VideoOutputManager &, unsigned, unsigned> size_changed;
+      boost::signal5<void, VideoOutputManager &, VideoOutputAccel, VideoOutputMode, unsigned, bool> device_opened;
+      boost::signal1<void, VideoOutputManager &> device_closed;
+      boost::signal2<void, VideoOutputManager &, VideoOutputErrorCodes> device_error;
+      boost::signal2<void, VideoOutputManager &, VideoOutputFSToggle> fullscreen_mode_changed;
+      boost::signal3<void, VideoOutputManager &, unsigned, unsigned> size_changed;
 
 
   private:

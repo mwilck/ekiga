@@ -16,4 +16,4 @@ libgmxcap_la_SOURCES = \
 	$(xcap_dir)/xcap-main.cpp
 
 libgmxcap_la_LDFLAGS = $(PLUGINS_LIBTOOL_FLAGS)
-libgmxcap_la_LIBADD = $(BOOST_LDFLAGS) $(SIGC_LIBS) $(SOUP_LIBS)
+libgmxcap_la_LIBADD = $(BOOST_LDFLAGS) $(BOOST_LIBS) $(SOUP_LIBS)

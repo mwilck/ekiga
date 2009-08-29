@@ -61,7 +61,7 @@ namespace Ekiga
      * @param The callback (the return value means "go on" and allows
      *  stopping the visit)
      */
-    virtual void visit_accounts (sigc::slot1<bool, AccountPtr> visitor) = 0;
+    virtual void visit_accounts (boost::function1<bool, AccountPtr> visitor) = 0;
 
 
     /** Create the menu for that Bank and its actions.
@@ -74,15 +74,15 @@ namespace Ekiga
 
     /** This signal is emitted when a account has been added.
      */
-    sigc::signal1<void, AccountPtr> account_added;
+    boost::signal1<void, AccountPtr> account_added;
 
     /** This signal is emitted when a account has been removed.
      */
-    sigc::signal1<void, AccountPtr> account_removed;
+    boost::signal1<void, AccountPtr> account_removed;
 
     /** This signal is emitted when a account has been updated.
      */
-    sigc::signal1<void, AccountPtr> account_updated;
+    boost::signal1<void, AccountPtr> account_updated;
 
     /** This chain allows the BankImpl to present forms to the user
      */

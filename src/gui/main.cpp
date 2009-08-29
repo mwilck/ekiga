@@ -195,7 +195,7 @@ struct _EkigaMainWindowPrivate
 
   Ekiga::Presentity* presentity;
 
-  std::vector<sigc::connection> connections;
+  std::vector<boost::signals::connection> connections;
 };
 
 /* properties */
@@ -2236,7 +2236,7 @@ url_changed_cb (GtkEditable *e,
 
       gtk_list_store_clear (mw->priv->completion);
 
-      bank->visit_accounts (sigc::bind (sigc::ptr_fun (account_completion_helper), tip_text, mw));
+      bank->visit_accounts (boost::bind (&account_completion_helper, _1, tip_text, mw));
     }
   }
 
@@ -2730,11 +2730,11 @@ ekiga_main_window_incoming_call_dialog_show (EkigaMainWindow *mw,
   g_signal_connect (G_OBJECT (incoming_call_popup), "response",
                     G_CALLBACK (incoming_call_response_cb), mw);
 
-  call->established.connect (sigc::bind (sigc::ptr_fun (on_incoming_call_gone_cb),
+  call->established.connect (boost::bind (&on_incoming_call_gone_cb,
                                          (gpointer) incoming_call_popup));
-  call->cleared.connect (sigc::bind (sigc::ptr_fun (on_cleared_incoming_call_cb),
+  call->cleared.connect (boost::bind (&on_cleared_incoming_call_cb, _1,
                                     (gpointer) incoming_call_popup));
-  call->missed.connect (sigc::bind (sigc::ptr_fun (on_incoming_call_gone_cb), 
+  call->missed.connect (boost::bind (&on_incoming_call_gone_cb, 
                                    (gpointer) incoming_call_popup));
 }
 
@@ -2816,11 +2816,11 @@ ekiga_main_window_incoming_call_notify (EkigaMainWindow *mw,
     ekiga_main_window_incoming_call_dialog_show (mw, call);
   }
   else {
-    call->established.connect (sigc::bind (sigc::ptr_fun (on_incoming_call_gone_cb),
+    call->established.connect (boost::bind (&on_incoming_call_gone_cb,
                                            (gpointer) notify));
-    call->cleared.connect (sigc::bind (sigc::ptr_fun (on_cleared_incoming_call_cb),
+    call->cleared.connect (boost::bind (&on_cleared_incoming_call_cb, _1,
                                       (gpointer) notify));
-    call->missed.connect (sigc::bind (sigc::ptr_fun (on_incoming_call_gone_cb), 
+    call->missed.connect (boost::bind (&on_incoming_call_gone_cb, 
                                      (gpointer) notify));
   }
 
@@ -3936,80 +3936,80 @@ ekiga_main_window_class_init (EkigaMainWindowClass *klass)
 static void
 ekiga_main_window_connect_engine_signals (EkigaMainWindow *mw)
 {
-  sigc::connection conn;
+  boost::signals::connection conn;
 
   g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
 
   /* New Display Engine signals */
   boost::shared_ptr<Ekiga::VideoOutputCore> videooutput_core = mw->priv->core->get<Ekiga::VideoOutputCore> ("videooutput-core");
 
-  conn = videooutput_core->device_opened.connect (sigc::bind (sigc::ptr_fun (on_videooutput_device_opened_cb), (gpointer) mw));
+  conn = videooutput_core->device_opened.connect (boost::bind (&on_videooutput_device_opened_cb, _1, _2, _3, _4, _5, (gpointer) mw));
   mw->priv->connections.push_back (conn);
 
-  conn = videooutput_core->device_closed.connect (sigc::bind (sigc::ptr_fun (on_videooutput_device_closed_cb), (gpointer) mw));
+  conn = videooutput_core->device_closed.connect (boost::bind (&on_videooutput_device_closed_cb, _1, (gpointer) mw));
   mw->priv->connections.push_back (conn);
 
-  conn = videooutput_core->device_error.connect (sigc::bind (sigc::ptr_fun (on_videooutput_device_error_cb), (gpointer) mw));
+  conn = videooutput_core->device_error.connect (boost::bind (&on_videooutput_device_error_cb, _1, _2, (gpointer) mw));
   mw->priv->connections.push_back (conn);
 
-  conn = videooutput_core->size_changed.connect (sigc::bind (sigc::ptr_fun (on_size_changed_cb), (gpointer) mw));
+  conn = videooutput_core->size_changed.connect (boost::bind (&on_size_changed_cb, _1, _2, _3, (gpointer) mw));
   mw->priv->connections.push_back (conn);
 
-  conn = videooutput_core->fullscreen_mode_changed.connect (sigc::bind (sigc::ptr_fun (on_fullscreen_mode_changed_cb), (gpointer) mw));
+  conn = videooutput_core->fullscreen_mode_changed.connect (boost::bind (&on_fullscreen_mode_changed_cb, _1, _2, (gpointer) mw));
   mw->priv->connections.push_back (conn);
 
   /* New VideoInput Engine signals */
   boost::shared_ptr<Ekiga::VideoInputCore> videoinput_core = mw->priv->core->get<Ekiga::VideoInputCore> ("videoinput-core");
 
-  conn = videoinput_core->device_opened.connect (sigc::bind (sigc::ptr_fun (on_videoinput_device_opened_cb), (gpointer) mw));
+  conn = videoinput_core->device_opened.connect (boost::bind (&on_videoinput_device_opened_cb, _1, _2, _3, (gpointer) mw));
   mw->priv->connections.push_back (conn);
 
-  conn = videoinput_core->device_closed.connect (sigc::bind (sigc::ptr_fun (on_videoinput_device_closed_cb), (gpointer) mw));
+  conn = videoinput_core->device_closed.connect (boost::bind (&on_videoinput_device_closed_cb, _1, _2, (gpointer) mw));
   mw->priv->connections.push_back (conn);
 
-  conn = videoinput_core->device_added.connect (sigc::bind (sigc::ptr_fun (on_videoinput_device_added_cb), (gpointer) mw));
+  conn = videoinput_core->device_added.connect (boost::bind (&on_videoinput_device_added_cb, _1, _2, (gpointer) mw));
   mw->priv->connections.push_back (conn);
 
-  conn = videoinput_core->device_removed.connect (sigc::bind (sigc::ptr_fun (on_videoinput_device_removed_cb), (gpointer) mw));
+  conn = videoinput_core->device_removed.connect (boost::bind (&on_videoinput_device_removed_cb, _1, _2, (gpointer) mw));
   mw->priv->connections.push_back (conn);
 
-  conn = videoinput_core->device_error.connect (sigc::bind (sigc::ptr_fun (on_videoinput_device_error_cb), (gpointer) mw));
+  conn = videoinput_core->device_error.connect (boost::bind (&on_videoinput_device_error_cb, _1, _2, _3, (gpointer) mw));
   mw->priv->connections.push_back (conn);
 
   /* New AudioInput Engine signals */
   boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core = mw->priv->core->get<Ekiga::AudioInputCore> ("audioinput-core");
 
-  conn = audioinput_core->device_opened.connect (sigc::bind (sigc::ptr_fun (on_audioinput_device_opened_cb), (gpointer) mw));
+  conn = audioinput_core->device_opened.connect (boost::bind (&on_audioinput_device_opened_cb, _1, _2, _3, (gpointer) mw));
   mw->priv->connections.push_back (conn);
 
-  conn = audioinput_core->device_closed.connect (sigc::bind (sigc::ptr_fun (on_audioinput_device_closed_cb), (gpointer) mw));
+  conn = audioinput_core->device_closed.connect (boost::bind (&on_audioinput_device_closed_cb, _1, _2, (gpointer) mw));
   mw->priv->connections.push_back (conn);
 
-  conn = audioinput_core->device_added.connect (sigc::bind (sigc::ptr_fun (on_audioinput_device_added_cb), (gpointer) mw));
+  conn = audioinput_core->device_added.connect (boost::bind (&on_audioinput_device_added_cb, _1, _2, (gpointer) mw));
   mw->priv->connections.push_back (conn);
 
-  conn = audioinput_core->device_removed.connect (sigc::bind (sigc::ptr_fun (on_audioinput_device_removed_cb), (gpointer) mw));
+  conn = audioinput_core->device_removed.connect (boost::bind (&on_audioinput_device_removed_cb, _1, _2, (gpointer) mw));
   mw->priv->connections.push_back (conn);
 
-  conn = audioinput_core->device_error.connect (sigc::bind (sigc::ptr_fun (on_audioinput_device_error_cb), (gpointer) mw));
+  conn = audioinput_core->device_error.connect (boost::bind (&on_audioinput_device_error_cb, _1, _2, _3, (gpointer) mw));
   mw->priv->connections.push_back (conn);
 
   /* New AudioOutput Engine signals */
   boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = mw->priv->core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
 
-  conn = audiooutput_core->device_opened.connect (sigc::bind (sigc::ptr_fun (on_audiooutput_device_opened_cb), (gpointer) mw));
+  conn = audiooutput_core->device_opened.connect (boost::bind (&on_audiooutput_device_opened_cb, _1, _2, _3, _4, (gpointer) mw));
   mw->priv->connections.push_back (conn);
 
-  conn = audiooutput_core->device_closed.connect (sigc::bind (sigc::ptr_fun (on_audiooutput_device_closed_cb), (gpointer) mw));
+  conn = audiooutput_core->device_closed.connect (boost::bind (&on_audiooutput_device_closed_cb, _1, _2, _3, (gpointer) mw));
   mw->priv->connections.push_back (conn);
 
-  conn = audiooutput_core->device_added.connect (sigc::bind (sigc::ptr_fun (on_audiooutput_device_added_cb), (gpointer) mw));
+  conn = audiooutput_core->device_added.connect (boost::bind (&on_audiooutput_device_added_cb, _1, _2, (gpointer) mw));
   mw->priv->connections.push_back (conn);
 
-  conn = audiooutput_core->device_removed.connect (sigc::bind (sigc::ptr_fun (on_audiooutput_device_removed_cb), (gpointer) mw));
+  conn = audiooutput_core->device_removed.connect (boost::bind (&on_audiooutput_device_removed_cb, _1, _2, (gpointer) mw));
   mw->priv->connections.push_back (conn);
 
-  conn = audiooutput_core->device_error.connect (sigc::bind (sigc::ptr_fun (on_audiooutput_device_error_cb), (gpointer) mw));
+  conn = audiooutput_core->device_error.connect (boost::bind (&on_audiooutput_device_error_cb, _1, _2, _3, _4, (gpointer) mw));
   mw->priv->connections.push_back (conn);
     
   /* New Call Engine signals */
@@ -4017,43 +4017,43 @@ ekiga_main_window_connect_engine_signals (EkigaMainWindow *mw)
   boost::shared_ptr<Ekiga::AccountCore> account_core = mw->priv->core->get<Ekiga::AccountCore> ("account-core");
 
   /* Engine Signals callbacks */
-  conn = account_core->account_updated.connect (sigc::bind (sigc::ptr_fun (on_account_updated), (gpointer) mw));
+  conn = account_core->account_updated.connect (boost::bind (&on_account_updated, _1, _2, (gpointer) mw));
   mw->priv->connections.push_back (conn);
 
-  conn = call_core->setup_call.connect (sigc::bind (sigc::ptr_fun (on_setup_call_cb), (gpointer) mw));
+  conn = call_core->setup_call.connect (boost::bind (&on_setup_call_cb, _1, _2, (gpointer) mw));
   mw->priv->connections.push_back (conn);
 
-  conn = call_core->ringing_call.connect (sigc::bind (sigc::ptr_fun (on_ringing_call_cb), (gpointer) mw));
+  conn = call_core->ringing_call.connect (boost::bind (&on_ringing_call_cb, _1, _2, (gpointer) mw));
   mw->priv->connections.push_back (conn);
   
-  conn = call_core->established_call.connect (sigc::bind (sigc::ptr_fun (on_established_call_cb), (gpointer) mw));
+  conn = call_core->established_call.connect (boost::bind (&on_established_call_cb, _1, _2, (gpointer) mw));
   mw->priv->connections.push_back (conn);
   
-  conn = call_core->cleared_call.connect (sigc::bind (sigc::ptr_fun (on_cleared_call_cb), (gpointer) mw));
+  conn = call_core->cleared_call.connect (boost::bind (&on_cleared_call_cb, _1, _2, _3, (gpointer) mw));
   mw->priv->connections.push_back (conn);
   
-  conn = call_core->held_call.connect (sigc::bind (sigc::ptr_fun (on_held_call_cb), (gpointer) mw));
+  conn = call_core->held_call.connect (boost::bind (&on_held_call_cb, _1, _2, (gpointer) mw));
   mw->priv->connections.push_back (conn);
   
-  conn = call_core->retrieved_call.connect (sigc::bind (sigc::ptr_fun (on_retrieved_call_cb), (gpointer) mw));
+  conn = call_core->retrieved_call.connect (boost::bind (&on_retrieved_call_cb, _1, _2, (gpointer) mw));
   mw->priv->connections.push_back (conn);
   
-  conn = call_core->missed_call.connect (sigc::bind (sigc::ptr_fun (on_missed_call_cb), (gpointer) mw));
+  conn = call_core->missed_call.connect (boost::bind (&on_missed_call_cb, _1, _2, (gpointer) mw));
   mw->priv->connections.push_back (conn);
 
-  conn = call_core->stream_opened.connect (sigc::bind (sigc::ptr_fun (on_stream_opened_cb), (gpointer) mw));
+  conn = call_core->stream_opened.connect (boost::bind (&on_stream_opened_cb, _1, _2, _3, _4, _5, (gpointer) mw));
   mw->priv->connections.push_back (conn);
   
-  conn = call_core->stream_closed.connect (sigc::bind (sigc::ptr_fun (on_stream_closed_cb), (gpointer) mw));
+  conn = call_core->stream_closed.connect (boost::bind (&on_stream_closed_cb, _1, _2, _3, _4, _5, (gpointer) mw));
   mw->priv->connections.push_back (conn);
 
-  conn = call_core->stream_paused.connect (sigc::bind (sigc::ptr_fun (on_stream_paused_cb), (gpointer) mw));
+  conn = call_core->stream_paused.connect (boost::bind (&on_stream_paused_cb, _1, _2, _3, _4, (gpointer) mw));
   mw->priv->connections.push_back (conn);
 
-  conn = call_core->stream_resumed.connect (sigc::bind (sigc::ptr_fun (on_stream_resumed_cb), (gpointer) mw));
+  conn = call_core->stream_resumed.connect (boost::bind (&on_stream_resumed_cb, _1, _2, _3, _4, (gpointer) mw));
   mw->priv->connections.push_back (conn);
 
-  conn = call_core->errors.connect (sigc::bind (sigc::ptr_fun (on_handle_errors), (gpointer) mw));
+  conn = call_core->errors.connect (boost::bind (&on_handle_errors, _1, (gpointer) mw));
   mw->priv->connections.push_back (conn);
 }
 

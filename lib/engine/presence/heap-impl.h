@@ -78,7 +78,7 @@ namespace Ekiga
 
     ~HeapImpl ();
 
-    void visit_presentities (sigc::slot1<bool, PresentityPtr > visitor);
+    void visit_presentities (boost::function1<bool, PresentityPtr > visitor);
 
     const_iterator begin () const;
 
@@ -108,9 +108,9 @@ template<typename PresentityType>
 Ekiga::HeapImpl<PresentityType>::HeapImpl ()
 {
   /* this is signal forwarding */
-  RefLister<PresentityType>::object_added.connect (presentity_added.make_slot ());
-  RefLister<PresentityType>::object_removed.connect (presentity_removed.make_slot ());
-  RefLister<PresentityType>::object_updated.connect (presentity_updated.make_slot ());
+  RefLister<PresentityType>::object_added.connect (boost::ref (presentity_added));
+  RefLister<PresentityType>::object_removed.connect (boost::ref (presentity_removed));
+  RefLister<PresentityType>::object_updated.connect (boost::ref (presentity_updated));
 }
 
 
@@ -121,7 +121,7 @@ Ekiga::HeapImpl<PresentityType>::~HeapImpl ()
 
 template<typename PresentityType>
 void
-Ekiga::HeapImpl<PresentityType>::visit_presentities (sigc::slot1<bool, PresentityPtr > visitor)
+Ekiga::HeapImpl<PresentityType>::visit_presentities (boost::function1<bool, PresentityPtr > visitor)
 {
   RefLister<PresentityType>::visit_objects (visitor);
 }
@@ -158,7 +158,7 @@ template<typename PresentityType>
 void
 Ekiga::HeapImpl<PresentityType>::add_presentity (boost::shared_ptr<PresentityType> presentity)
 {
-  presentity->questions.connect (questions.make_slot ());
+  presentity->questions.connect (boost::ref (questions));
 
   add_object (presentity);
 }

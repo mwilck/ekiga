@@ -155,37 +155,37 @@ LM::Presentity::populate_menu (Ekiga::MenuBuilder& builder)
   const gchar* ask = lm_message_node_get_attribute (item, "ask");
 
   builder.add_action ("edit", _("_Edit"),
-		      sigc::mem_fun (this, &LM::Presentity::edit_presentity));
+		      boost::bind (&LM::Presentity::edit_presentity, this));
 
   if (strcmp (subscription, "none") == 0) {
 
-    builder.add_action ("ask", _("Ask him/her to see his/her status"), sigc::mem_fun (this, &LM::Presentity::ask_to));
+    builder.add_action ("ask", _("Ask him/her to see his/her status"), boost::bind (&LM::Presentity::ask_to, this));
   }
   if (strcmp (subscription, "from") == 0) {
 
-    builder.add_action ("revoke", _("Forbid him/her to see my status"), sigc::mem_fun (this, &LM::Presentity::revoke_from));
+    builder.add_action ("revoke", _("Forbid him/her to see my status"), boost::bind (&LM::Presentity::revoke_from, this));
     if (ask == NULL)
-      builder.add_action ("ask", _("Ask him/her to see his/her status"), sigc::mem_fun (this, &LM::Presentity::ask_to));
+      builder.add_action ("ask", _("Ask him/her to see his/her status"), boost::bind (&LM::Presentity::ask_to, this));
     else
       builder.add_ghost ("ask", _("Ask him/her to see his/her status (pending)"));
   }
   if (strcmp (subscription, "to") == 0) {
 
-    builder.add_action ("stop", _("Stop getting his/her status"), sigc::mem_fun (this, &LM::Presentity::stop_to));
+    builder.add_action ("stop", _("Stop getting his/her status"), boost::bind (&LM::Presentity::stop_to, this));
   }
   if (strcmp (subscription, "both") == 0) {
 
-    builder.add_action ("revoke", _("Forbid him/her to see my status"), sigc::mem_fun (this, &LM::Presentity::revoke_from));
-    builder.add_action ("stop", _("Stop getting his/her status"), sigc::mem_fun (this, &LM::Presentity::stop_to));
+    builder.add_action ("revoke", _("Forbid him/her to see my status"), boost::bind (&LM::Presentity::revoke_from, this));
+    builder.add_action ("stop", _("Stop getting his/her status"), boost::bind (&LM::Presentity::stop_to, this));
   }
 
   if ( !has_chat) {
 
-    builder.add_action ("chat", _("Start chat"), chat_requested.make_slot ());
+    builder.add_action ("chat", _("Start chat"), chat_requested);
   }
 
   builder.add_action ("remove", _("_Remove"),
-		      sigc::mem_fun (this, &LM::Presentity::remove_presentity));
+		      boost::bind (&LM::Presentity::remove_presentity, this));
   return true;
 }
 
@@ -207,7 +207,7 @@ LM::Presentity::update (LmMessageNode* item_)
   lm_message_node_unref (item);
   item = item_;
   lm_message_node_ref (item);
-  updated.emit ();
+  updated ();
 }
 
 void
@@ -251,13 +251,13 @@ LM::Presentity::push_presence (const std::string resource,
     infos.erase (resource);
   }
 
-  updated.emit ();
+  updated ();
 }
 
 void
 LM::Presentity::edit_presentity ()
 {
-  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &LM::Presentity::edit_presentity_form_submitted)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&LM::Presentity::edit_presentity_form_submitted, this)));
 
   request->title (_("Edit roster element"));
   request->instructions (_("Please fill in this form to change an existing "
@@ -267,7 +267,7 @@ LM::Presentity::edit_presentity ()
   request->editable_set ("groups", _("Choose groups:"),
 			 get_groups (), get_groups ());
 
-  questions.emit (request);
+  questions (request);
 }
 
 void

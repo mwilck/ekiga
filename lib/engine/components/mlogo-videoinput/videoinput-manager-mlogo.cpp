@@ -106,7 +106,7 @@ bool GMVideoInputManager_mlogo::open (unsigned width, unsigned height, unsigned 
   settings.colour = 127;
   settings.contrast = 127;
   settings.modifyable = false;
-  Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &GMVideoInputManager_mlogo::device_opened_in_main), current_state.device, settings));
+  Ekiga::Runtime::run_in_main (boost::bind (&GMVideoInputManager_mlogo::device_opened_in_main, this, current_state.device, settings));
   
   return true;
 }
@@ -116,7 +116,7 @@ void GMVideoInputManager_mlogo::close()
   PTRACE(4, "GMVideoInputManager_mlogo\tClosing Moving Logo");
   free (background_frame);
   current_state.opened  = false;
-  Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &GMVideoInputManager_mlogo::device_closed_in_main), current_state.device));
+  Ekiga::Runtime::run_in_main (boost::bind (&GMVideoInputManager_mlogo::device_closed_in_main, this, current_state.device));
 }
 
 bool GMVideoInputManager_mlogo::get_frame_data (char *data)
@@ -202,11 +202,11 @@ void
 GMVideoInputManager_mlogo::device_opened_in_main (Ekiga::VideoInputDevice device,
 						  Ekiga::VideoInputSettings settings)
 {
-  device_opened.emit (device, settings);
+  device_opened (device, settings);
 }
 
 void
 GMVideoInputManager_mlogo::device_closed_in_main (Ekiga::VideoInputDevice device)
 {
-  device_closed.emit (device);
+  device_closed (device);
 }

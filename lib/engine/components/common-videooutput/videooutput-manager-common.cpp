@@ -250,8 +250,8 @@ void GMVideoOutputManager::uninit ()
 void GMVideoOutputManager::update_gui_device ()
 {
   last_frame.both_streams_active = current_frame.both_streams_active;
-  Ekiga::Runtime::run_in_main (sigc::mem_fun (this, &GMVideoOutputManager::device_closed_in_main));
-  Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &GMVideoOutputManager::device_opened_in_main), current_frame.accel, current_frame.mode, current_frame.zoom, current_frame.both_streams_active));
+  Ekiga::Runtime::run_in_main (boost::bind (&GMVideoOutputManager::device_closed_in_main, this));
+  Ekiga::Runtime::run_in_main (boost::bind (&GMVideoOutputManager::device_opened_in_main, this, current_frame.accel, current_frame.mode, current_frame.zoom, current_frame.both_streams_active));
 
 }
 
@@ -349,11 +349,11 @@ GMVideoOutputManager::device_opened_in_main (Ekiga::VideoOutputAccel accel,
 					     unsigned zoom,
 					     bool both)
 {
-  device_opened.emit (accel, mode, zoom, both);
+  device_opened (accel, mode, zoom, both);
 }
 
 void
 GMVideoOutputManager::device_closed_in_main ()
 {
-  device_closed.emit ();
+  device_closed ();
 }

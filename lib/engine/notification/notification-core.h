@@ -67,7 +67,7 @@ namespace Ekiga
     const std::string get_body () const
     { return body; }
 
-    sigc::signal0<void> removed;
+    boost::signal0<void> removed;
 
   private:
 
@@ -95,9 +95,9 @@ namespace Ekiga
     /*** Public API ***/
 
     void push_notification (boost::shared_ptr<Notification> notification)
-    { notification_added.emit (notification); }
+    { notification_added (notification); }
 
-    sigc::signal1<void, boost::shared_ptr<Notification> > notification_added;
+    boost::signal1<void, boost::shared_ptr<Notification> > notification_added;
   };
 };
 

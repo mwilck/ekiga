@@ -109,43 +109,43 @@ namespace Ekiga
      * @param The callback (the return value means "go on" and allows
      *  stopping the visit)
      */
-    void visit_sources (sigc::slot1<bool, SourcePtr > visitor);
+    void visit_sources (boost::function1<bool, SourcePtr > visitor);
 
 
     /** This signal is emitted when a Ekiga::Source has been
      * added to the ContactCore Service.
      */
-    sigc::signal1<void, SourcePtr > source_added;
+    boost::signal1<void, SourcePtr > source_added;
 
     /** This signal is emitted when a book has been added to one of
      * the sources
      */
-    sigc::signal2<void, SourcePtr, BookPtr > book_added;
+    boost::signal2<void, SourcePtr, BookPtr > book_added;
 
     /** This signal is emitted when a book has been removed from one of
      * the sources
      */
-    sigc::signal2<void, SourcePtr, BookPtr > book_removed;
+    boost::signal2<void, SourcePtr, BookPtr > book_removed;
 
     /** This signal is emitted when a book has been updated in one of
      * the sources
      */
-    sigc::signal2<void, SourcePtr, BookPtr > book_updated;
+    boost::signal2<void, SourcePtr, BookPtr > book_updated;
 
     /** This signal is emitted when a contact has been added to one of
      * the book of one of the sources
      */
-    sigc::signal3<void, SourcePtr, BookPtr, ContactPtr > contact_added;
+    boost::signal3<void, SourcePtr, BookPtr, ContactPtr > contact_added;
 
     /** This signal is emitted when a contact has been removed from one of
      * the book of one of the sources
      */
-    sigc::signal3<void, SourcePtr, BookPtr, ContactPtr > contact_removed;
+    boost::signal3<void, SourcePtr, BookPtr, ContactPtr > contact_removed;
 
     /** This signal is emitted when a contact has been updated in one of
      * the book of one of the sources
      */
-    sigc::signal3<void, SourcePtr, BookPtr, ContactPtr > contact_updated;
+    boost::signal3<void, SourcePtr, BookPtr, ContactPtr > contact_updated;
 
   private:
 
@@ -183,14 +183,14 @@ namespace Ekiga
     /** This signal is emitted when the ContactCore Service has been
      * updated.
      */
-    sigc::signal0<void> updated;
+    boost::signal0<void> updated;
 
 
     /** This chain allows the ContactCore to present forms to the user
      */
     ChainOfResponsibility<FormRequestPtr> questions;
 
-    std::list<sigc::connection> conns;
+    std::list<boost::signals::connection> conns;
   };
 
 /**

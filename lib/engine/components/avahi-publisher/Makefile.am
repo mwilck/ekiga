@@ -22,4 +22,4 @@ libavahipublisher_la_LIBADD = 						\
 	$(top_builddir)/lib/engine/framework/libgmframework.la		\
 	$(top_builddir)/lib/engine/presence/libgmpresence.la
 
-libavahipublisher_la_LDFLAGS = -export-dynamic -no-undefined $(BOOST_LDFLAGS) $(SIGC_LIBS) $(GLIB_LIBS) $(AVAHI_LIBS)
+libavahipublisher_la_LDFLAGS = -export-dynamic -no-undefined $(BOOST_LDFLAGS) $(BOOST_LIBS) $(GLIB_LIBS) $(AVAHI_LIBS)

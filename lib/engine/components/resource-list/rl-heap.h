@@ -75,7 +75,7 @@ namespace RL {
 
     const std::string get_name () const;
 
-    void visit_presentities (sigc::slot1<bool, Ekiga::PresentityPtr > visitor);
+    void visit_presentities (boost::function1<bool, Ekiga::PresentityPtr > visitor);
 
     bool populate_menu (Ekiga::MenuBuilder& builder);
 
@@ -90,7 +90,7 @@ namespace RL {
     void push_status (const std::string uri,
 		      const std::string status);
 
-    sigc::signal0<void> trigger_saving;
+    boost::signal0<void> trigger_saving;
 
   private:
 
@@ -106,7 +106,7 @@ namespace RL {
     boost::shared_ptr<xmlDoc> doc;
     xmlNodePtr list_node;
 
-    std::map<PresentityPtr, std::list<sigc::connection> > presentities;
+    std::map<PresentityPtr, std::list<boost::signals::connection> > presentities;
 
     void refresh ();
 

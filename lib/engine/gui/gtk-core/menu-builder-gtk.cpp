@@ -41,10 +41,10 @@
 
 struct Action
 {
-  Action (sigc::slot0<void> _callback): callback (_callback)
+  Action (boost::function0<void> _callback): callback (_callback)
   {}
 
-  sigc::slot0<void> callback;
+  boost::function0<void> callback;
 };
 
 static void
@@ -73,7 +73,7 @@ on_item_activate (GtkMenuItem *item,
 void
 MenuBuilderGtk::add_action (const std::string icon,
 			    const std::string label,
-			    const sigc::slot0<void> callback)
+			    const boost::function0<void> callback)
 {
   GtkWidget *item = NULL;
   GtkWidget *image = NULL;

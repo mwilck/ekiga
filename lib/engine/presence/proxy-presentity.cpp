@@ -38,8 +38,8 @@
 Ekiga::ProxyPresentity::ProxyPresentity (Ekiga::Presentity& presentity_)
   : presentity(presentity_)
 {
-  presentity.updated.connect (updated.make_slot ());
-  presentity.removed.connect (removed.make_slot ());
+  presentity.updated.connect (updated);
+  presentity.removed.connect (removed);
 }
 
 Ekiga::ProxyPresentity::~ProxyPresentity ()

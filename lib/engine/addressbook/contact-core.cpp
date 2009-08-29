@@ -48,7 +48,7 @@ on_search ()
 
 Ekiga::ContactCore::~ContactCore ()
 {
-  for (std::list<sigc::connection>::iterator iter = conns.begin (); iter != conns.end (); ++iter)
+  for (std::list<boost::signals::connection>::iterator iter = conns.begin (); iter != conns.end (); ++iter)
     iter->disconnect ();
 }
 
@@ -57,7 +57,7 @@ Ekiga::ContactCore::populate_menu (MenuBuilder &builder)
 {
   bool populated = false;
 
-  builder.add_action ("search", _("_Find"), sigc::ptr_fun (on_search));
+  builder.add_action ("search", _("_Find"), &on_search);
   populated = true;
 
   for (std::list<SourcePtr >::const_iterator iter = sources.begin ();
@@ -76,18 +76,18 @@ void
 Ekiga::ContactCore::add_source (SourcePtr source)
 {
   sources.push_back (source);
-  source_added.emit (source);
-  conns.push_back (source->book_added.connect (sigc::bind<0> (book_added.make_slot (), source)));
-  conns.push_back (source->book_removed.connect (sigc::bind<0> (book_removed.make_slot (), source)));
-  conns.push_back (source->book_updated.connect (sigc::bind<0> (book_updated.make_slot (), source)));
-  conns.push_back (source->contact_added.connect (sigc::bind<0> (contact_added.make_slot (), source)));
-  conns.push_back (source->contact_removed.connect (sigc::bind<0> (contact_removed.make_slot (), source)));
-  conns.push_back (source->contact_updated.connect (sigc::bind<0> (contact_updated.make_slot (), source)));
-  source->questions.connect (questions.make_slot ());
+  source_added (source);
+  conns.push_back (source->book_added.connect (boost::bind (boost::ref (book_added), source, _1)));
+  conns.push_back (source->book_removed.connect (boost::bind (boost::ref (book_removed), source, _1)));
+  conns.push_back (source->book_updated.connect (boost::bind (boost::ref (book_updated), source, _1)));
+  conns.push_back (source->contact_added.connect (boost::bind (boost::ref (contact_added), source, _1, _2)));
+  conns.push_back (source->contact_removed.connect (boost::bind (boost::ref (contact_removed), source, _1, _2)));
+  conns.push_back (source->contact_updated.connect (boost::bind (boost::ref (contact_updated), source, _1, _2)));
+  source->questions.connect (boost::ref (questions));
 }
 
 void
-Ekiga::ContactCore::visit_sources (sigc::slot1<bool, SourcePtr > visitor)
+Ekiga::ContactCore::visit_sources (boost::function1<bool, SourcePtr > visitor)
 {
   bool go_on = true;
 

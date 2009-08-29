@@ -171,7 +171,7 @@ GST::AudioOutputManager::open (Ekiga::AudioOutputPS ps,
       current_state[ii].channels = channels;
       current_state[ii].samplerate = samplerate;
       current_state[ii].bits_per_sample = bits_per_sample;
-      device_opened.emit (ps, current_state[ii].device, settings);
+      device_opened (ps, current_state[ii].device, settings);
       result = true;
     }
 
@@ -211,7 +211,7 @@ GST::AudioOutputManager::close (Ekiga::AudioOutputPS ps)
       gst_bus_add_watch (bus, pipeline_cleaner, pipeline[ii]);
       gst_object_unref (bus);
       pipeline[ii] = NULL;
-      device_closed.emit (ps, current_state[ii].device);
+      device_closed (ps, current_state[ii].device);
     }
   }
   current_state[ii].opened = false;

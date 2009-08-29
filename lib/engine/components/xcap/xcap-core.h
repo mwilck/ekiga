@@ -62,7 +62,7 @@ namespace XCAP
      * error message.
      */
     void read (boost::shared_ptr<Path>,
-	       sigc::slot2<void,bool,std::string> callback);
+	       boost::function2<void,bool,std::string> callback);
 
     /* the callback gets only a string :
      * - if the string is empty, all went well ;
@@ -71,14 +71,14 @@ namespace XCAP
     void write (boost::shared_ptr<Path>,
 		const std::string content_type,
 		const std::string content,
-		sigc::slot1<void,std::string> callback);
+		boost::function1<void,std::string> callback);
 
     /* the callback gets only a string :
      * - if the string is empty, all went well ;
      * - if it's not, then it's the error message.
      */
     void erase (boost::shared_ptr<Path>,
-		sigc::slot1<void,std::string> callback);
+		boost::function1<void,std::string> callback);
 
     /* implementation of the Ekiga::Service api */
 

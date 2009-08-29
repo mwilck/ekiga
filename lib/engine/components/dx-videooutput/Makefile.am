@@ -20,4 +20,4 @@ libgmvideooutput_dx_la_SOURCES = \
 	$(videooutput_dir)/videooutput-main-dx.cpp    \
 	$(videooutput_dir)/videooutput-main-dx.h
 
-libgmvideooutput_dx_la_LDFLAGS = -export-dynamic -no-undefined $(BOOST_LDFLAGS) $(SIGC_LIBS) $(PTLIB_LIBS) $(DX_LIBS) $(GLIB_LIBS)
+libgmvideooutput_dx_la_LDFLAGS = -export-dynamic -no-undefined $(BOOST_LDFLAGS) $(BOOST_LIBS) $(PTLIB_LIBS) $(DX_LIBS) $(GLIB_LIBS)

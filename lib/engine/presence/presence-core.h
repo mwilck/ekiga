@@ -97,8 +97,8 @@ namespace Ekiga
      * presence information about an uri it was required to handle.
      * The information is given as a pair of strings (uri, data).
      */
-    sigc::signal2<void, std::string, std::string> presence_received;
-    sigc::signal2<void, std::string, std::string> status_received;
+    boost::signal2<void, std::string, std::string> presence_received;
+    boost::signal2<void, std::string, std::string> status_received;
   };
 
   class PresencePublisher
@@ -174,27 +174,27 @@ namespace Ekiga
      * @param The callback (the return value means "go on" and allows
      *  stopping the visit)
      */
-    void visit_clusters (sigc::slot1<bool, ClusterPtr > visitor);
+    void visit_clusters (boost::function1<bool, ClusterPtr > visitor);
 
     /** This signal is emitted when an Ekiga::Cluster has been added
      * to the PresenceCore Service.
      */
-    sigc::signal1<void, ClusterPtr > cluster_added;
+    boost::signal1<void, ClusterPtr > cluster_added;
 
     /** Those signals are forwarding the heap_added, heap_updated
      * and heap_removed from the given Cluster.
      *
      */
-    sigc::signal2<void, ClusterPtr , HeapPtr > heap_added;
-    sigc::signal2<void, ClusterPtr , HeapPtr > heap_updated;
-    sigc::signal2<void, ClusterPtr , HeapPtr > heap_removed;
+    boost::signal2<void, ClusterPtr , HeapPtr > heap_added;
+    boost::signal2<void, ClusterPtr , HeapPtr > heap_updated;
+    boost::signal2<void, ClusterPtr , HeapPtr > heap_removed;
 
     /** Those signals are forwarding the presentity_added, presentity_updated
      * and presentity_removed from the given Heap of the given Cluster.
      */
-    sigc::signal3<void, ClusterPtr , HeapPtr , PresentityPtr > presentity_added;
-    sigc::signal3<void, ClusterPtr , HeapPtr , PresentityPtr > presentity_updated;
-    sigc::signal3<void, ClusterPtr , HeapPtr , PresentityPtr > presentity_removed;
+    boost::signal3<void, ClusterPtr , HeapPtr , PresentityPtr > presentity_added;
+    boost::signal3<void, ClusterPtr , HeapPtr , PresentityPtr > presentity_updated;
+    boost::signal3<void, ClusterPtr , HeapPtr , PresentityPtr > presentity_removed;
 
   private:
 
@@ -255,8 +255,8 @@ namespace Ekiga
     /** Those signals are emitted whenever information has been received
      * about an uri ; the information is a pair of strings (uri, information).
      */
-    sigc::signal2<void, std::string, std::string> presence_received;
-    sigc::signal2<void, std::string, std::string> status_received;
+    boost::signal2<void, std::string, std::string> presence_received;
+    boost::signal2<void, std::string, std::string> status_received;
 
   private:
 
@@ -301,11 +301,11 @@ namespace Ekiga
     /** Adds an uri tester to the PresenceCore
      * @param The tester
      */
-    void add_supported_uri (sigc::slot1<bool,std::string> tester);
+    void add_supported_uri (boost::function1<bool,std::string> tester);
 
   private:
 
-    std::set<sigc::slot1<bool, std::string> > uri_testers;
+    std::list<boost::function1<bool, std::string> > uri_testers;
 
     /*** Misc ***/
   public:
@@ -319,7 +319,7 @@ namespace Ekiga
      */
     ChainOfResponsibility<FormRequestPtr> questions;
 
-    std::list<sigc::connection> conns;
+    std::list<boost::signals::connection> conns;
   };
 
 /**

@@ -145,7 +145,7 @@ GST::AudioInputManager::open (unsigned channels,
       current_state.channels = channels;
       current_state.samplerate = samplerate;
       current_state.bits_per_sample = bits_per_sample;
-      device_opened.emit (current_state.device, settings);
+      device_opened (current_state.device, settings);
       result = true;
     }
 
@@ -169,7 +169,7 @@ GST::AudioInputManager::close ()
     gst_element_set_state (pipeline, GST_STATE_NULL);
     g_object_unref (pipeline);
     pipeline = NULL;
-    device_closed.emit (current_state.device);
+    device_closed (current_state.device);
   }
   current_state.opened = false;
 }

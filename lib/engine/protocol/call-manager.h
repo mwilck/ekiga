@@ -40,7 +40,8 @@
 #define __CALL_MANAGER_H__
 
 #include <set>
-#include <sigc++/sigc++.h>
+#include <boost/signals.hpp>
+#include <boost/bind.hpp>
 
 #include <boost/smart_ptr.hpp>
 
@@ -98,7 +99,7 @@ namespace Ekiga
     /** This signal is emitted when a Ekiga::CallProtocolManager has been
      * added to the CallManager.
      */
-    sigc::signal1<void, boost::shared_ptr<CallProtocolManager> > manager_added;
+    boost::signal1<void, boost::shared_ptr<CallProtocolManager> > manager_added;
 
 
     /*                 
@@ -212,7 +213,7 @@ namespace Ekiga
     /*
      * MISC
      */
-    sigc::signal0<void> ready;
+    boost::signal0<void> ready;
 
     private:
     std::set<boost::shared_ptr<CallProtocolManager> > managers;

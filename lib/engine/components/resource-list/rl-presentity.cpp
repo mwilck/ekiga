@@ -176,14 +176,14 @@ void
 RL::Presentity::set_presence (const std::string _presence)
 {
   presence = _presence;
-  updated.emit ();
+  updated ();
 }
 
 void
 RL::Presentity::set_status (const std::string _status)
 {
   status = _status;
-  updated.emit ();
+  updated ();
 }
 
 
@@ -201,9 +201,9 @@ RL::Presentity::populate_menu (Ekiga::MenuBuilder &builder)
       builder.add_separator ();
 
     builder.add_action ("edit", _("_Edit"),
-			sigc::mem_fun (this, &RL::Presentity::edit_presentity));
+			boost::bind (&RL::Presentity::edit_presentity, this));
     builder.add_action ("remove", _("_Remove"),
-			sigc::mem_fun (this, &RL::Presentity::remove));
+			boost::bind (&RL::Presentity::remove, this));
   }
 
   return true;
@@ -213,7 +213,7 @@ RL::Presentity::populate_menu (Ekiga::MenuBuilder &builder)
 void
 RL::Presentity::edit_presentity ()
 {
-  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &RL::Presentity::edit_presentity_form_submitted)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&RL::Presentity::edit_presentity_form_submitted, this)));
 
   // FIXME: we should be able to know all groups in the heap
   std::set<std::string> all_groups = groups;
@@ -227,7 +227,7 @@ RL::Presentity::edit_presentity ()
   request->editable_set ("groups", _("Choose groups:"),
 			groups, all_groups);
 
-  questions.emit (request);
+  questions (request);
 }
 
 
@@ -298,7 +298,7 @@ RL::Presentity::save (bool reload)
     boost::shared_ptr<XCAP::Core> xcap = services.get<XCAP::Core> ("xcap-core");
     xcap->write (path, "application/xcap-el+xml",
 		 (const char*)xmlBufferContent (buffer),
-		 sigc::bind (sigc::mem_fun (this, &RL::Presentity::save_result),
+		 boost::bind (boost::bind (&RL::Presentity::save_result, this),
 			     reload));
   }
 
@@ -317,7 +317,7 @@ RL::Presentity::remove ()
 
   boost::shared_ptr<XCAP::Core> xcap = services.get<XCAP::Core> ("xcap-core");
   xcap->erase (path,
-	       sigc::mem_fun (this, &RL::Presentity::erase_result));
+	       boost::bind (&RL::Presentity::erase_result, this));
 }
 
 void
@@ -328,13 +328,13 @@ RL::Presentity::save_result (std::string error,
 
     // FIXME: do better
     std::cout << "XCAP error: " << error << std::endl;
-    trigger_reload.emit ();
+    trigger_reload ();
   } else {
 
     if (reload)
-      trigger_reload.emit ();
+      trigger_reload ();
     else
-      updated.emit ();
+      updated ();
   }
 }
 
@@ -347,5 +347,5 @@ RL::Presentity::erase_result (std::string error)
     std::cout << "XCAP error: " << error << std::endl;
   }
 
-  trigger_reload.emit ();
+  trigger_reload ();
 }

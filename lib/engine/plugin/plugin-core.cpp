@@ -57,7 +57,7 @@
 // }
 //
 // which can be compiled with :
-// gcc -o hello.so hello.cpp -shared -export-dynamic -I$(PATH_TO_EKIGA_SOURCES)/lib/engine/framework `pkg-config --cflags sigc++-2.0`
+// gcc -o hello.so hello.cpp -shared -export-dynamic -I$(PATH_TO_EKIGA_SOURCES)/lib/engine/framework -lboost_signals-mt
 //
 // additionally, if you want to debug a plugin you're writing, then you should
 // set DEBUG to 1 at the start of that file, and put your plugin (and its

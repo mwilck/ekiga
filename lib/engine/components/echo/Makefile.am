@@ -19,4 +19,4 @@ libgmechochat_la_SOURCES = \
 	$(echochat_dir)/echo-main.h		\
 	$(echochat_dir)/echo-main.cpp
 
-libgmechochat_la_LDFLAGS = -export-dynamic -no-undefined $(BOOST_LDFLAGS) $(SIGC_LIBS)
+libgmechochat_la_LDFLAGS = -export-dynamic -no-undefined $(BOOST_LDFLAGS) $(BOOST_LIBS)

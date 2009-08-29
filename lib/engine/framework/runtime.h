@@ -34,7 +34,8 @@
  *
  */
 
-#include <sigc++/sigc++.h>
+#include <boost/signals.hpp>
+#include <boost/bind.hpp>
 
 #ifndef __RUNTIME_H__
 #define __RUNTIME_H__
@@ -57,7 +58,7 @@ namespace Ekiga
 
     void quit (); // depends on the implementation
 
-    void run_in_main (sigc::slot0<void> action,
+    void run_in_main (boost::function0<void> action,
 		      unsigned int seconds = 0); // depends on the implementation
   };
 

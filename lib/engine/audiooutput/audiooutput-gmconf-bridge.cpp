@@ -49,7 +49,7 @@ AudioOutputCoreConfBridge::AudioOutputCoreConfBridge (Ekiga::Service & _service)
  : Ekiga::ConfBridge (_service)
 {
   Ekiga::ConfKeys keys;
-  property_changed.connect (sigc::mem_fun (this, &AudioOutputCoreConfBridge::on_property_changed));
+  property_changed.connect (boost::bind (&AudioOutputCoreConfBridge::on_property_changed, this, _1, _2));
 
   keys.push_back (AUDIO_DEVICES_KEY "output_device"); 
   keys.push_back (SOUND_EVENTS_KEY "output_device"); 

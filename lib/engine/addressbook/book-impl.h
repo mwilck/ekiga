@@ -94,7 +94,7 @@ namespace Ekiga
      * @param The callback (the return value means "go on" and allows
      *  stopping the visit)
      */
-    void visit_contacts (sigc::slot1<bool, ContactPtr > visitor);
+    void visit_contacts (boost::function1<bool, ContactPtr > visitor);
 
   protected:
 
@@ -147,9 +147,9 @@ template<typename ContactType>
 Ekiga::BookImpl<ContactType>::BookImpl ()
 {
   /* this is signal forwarding */
-  RefLister<ContactType>::object_added.connect (contact_added.make_slot ());
-  RefLister<ContactType>::object_removed.connect (contact_removed.make_slot ());
-  RefLister<ContactType>::object_updated.connect (contact_updated.make_slot ());
+  RefLister<ContactType>::object_added.connect (contact_added);
+  RefLister<ContactType>::object_removed.connect (contact_removed);
+  RefLister<ContactType>::object_updated.connect (contact_updated);
 }
 
 
@@ -161,7 +161,7 @@ Ekiga::BookImpl<ContactType>::~BookImpl ()
 
 template<typename ContactType>
 void
-Ekiga::BookImpl<ContactType>::visit_contacts (sigc::slot1<bool, ContactPtr > visitor)
+Ekiga::BookImpl<ContactType>::visit_contacts (boost::function1<bool, ContactPtr > visitor)
 {
   RefLister<ContactType>::visit_objects (visitor);
 }
@@ -203,7 +203,7 @@ template<typename ContactType>
 void
 Ekiga::BookImpl<ContactType>::add_contact (boost::shared_ptr<ContactType> contact)
 {
-  contact->questions.connect (questions.make_slot ());
+  contact->questions.connect (boost::ref (questions));
   add_object (contact);
 }
 

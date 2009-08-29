@@ -50,7 +50,8 @@
 #include "gtk-frontend.h"
 #include "call-core.h"
 
-#include <sigc++/sigc++.h>
+#include <boost/signals.hpp>
+#include <boost/bind.hpp>
 #include <vector>
 
 #include "services.h"
@@ -68,7 +69,7 @@ struct _StatusIconPrivate
   GtkWidget *popup_menu;
   gboolean has_message;
 
-  std::vector<sigc::connection> connections;
+  std::vector<boost::signals::connection> connections;
 
   int blink_id;
   std::string status;
@@ -173,7 +174,7 @@ statusicon_finalize (GObject *obj)
   if (self->priv->blink_image)
     g_free (self->priv->blink_image);
 
-  for (std::vector<sigc::connection>::iterator iter = self->priv->connections.begin () ;
+  for (std::vector<boost::signals::connection>::iterator iter = self->priv->connections.begin () ;
        iter != self->priv->connections.end ();
        iter++)
     iter->disconnect ();
@@ -530,7 +531,7 @@ statusicon_new (Ekiga::ServiceCore & core)
 {
   StatusIcon *self = NULL;
 
-  sigc::connection conn;
+  boost::signals::connection conn;
 
   self = STATUSICON (g_object_new (STATUSICON_TYPE, NULL));
   self->priv = new StatusIconPrivate (core);
@@ -549,14 +550,14 @@ statusicon_new (Ekiga::ServiceCore & core)
   GtkWidget *chat_window = GTK_WIDGET (frontend->get_chat_window ());
 
   statusicon_set_status (self, details->get_presence ());
-  conn = details->updated.connect (sigc::bind (sigc::ptr_fun (personal_details_updated_cb), self, details));
+  conn = details->updated.connect (boost::bind (&personal_details_updated_cb, self, details));
   self->priv->connections.push_back (conn);
 
-  conn = call_core->established_call.connect (sigc::bind (sigc::ptr_fun (established_call_cb), 
+  conn = call_core->established_call.connect (boost::bind (&established_call_cb, _1, _2, 
                                                           (gpointer) self));
   self->priv->connections.push_back (conn);
 
-  conn = call_core->cleared_call.connect (sigc::bind (sigc::ptr_fun (cleared_call_cb), 
+  conn = call_core->cleared_call.connect (boost::bind (&cleared_call_cb, _1, _2, _3,
                                                       (gpointer) self));
   self->priv->connections.push_back (conn);
 

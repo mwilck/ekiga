@@ -171,14 +171,14 @@ populate_item (Ekiga::ServiceCore &core,
 	if (is_external) {
 
 	  builder.add_action (icon, label,
-			      sigc::bind (sigc::ptr_fun (run_command),
+			      boost::bind (&run_command,
 					  command));
 	} else {
 
 	  boost::shared_ptr<Ekiga::Trigger> trigger = core.get<Ekiga::Trigger> (command);
 	  if (trigger)
 	    builder.add_action (icon, label,
-				sigc::bind (sigc::ptr_fun (pull_trigger),
+				boost::bind (&pull_trigger,
 					    trigger));
 	}
 	break;

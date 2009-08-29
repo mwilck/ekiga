@@ -54,8 +54,8 @@ RL::Cluster::Cluster (Ekiga::ServiceCore& core_): core(core_), doc()
 
   boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
 
-  presence_core->presence_received.connect (sigc::mem_fun (this, &RL::Cluster::on_presence_received));
-  presence_core->status_received.connect (sigc::mem_fun (this, &RL::Cluster::on_status_received));
+  presence_core->presence_received.connect (boost::bind (&RL::Cluster::on_presence_received, this));
+  presence_core->status_received.connect (boost::bind (&RL::Cluster::on_status_received, this));
 
   c_raw = gm_conf_get_string (KEY);
 
@@ -100,7 +100,7 @@ bool
 RL::Cluster::populate_menu (Ekiga::MenuBuilder& builder)
 {
   builder.add_action ("new", _("New resource list"),
-		      sigc::bind (sigc::mem_fun (this, &RL::Cluster::new_heap),
+		      boost::bind (boost::bind (&RL::Cluster::new_heap, this),
 				  "", "", "", "", "", false));
   return true;
 }
@@ -137,7 +137,7 @@ RL::Cluster::common_add (HeapPtr heap)
 
   // FIXME: here we should ask for presence for the heap...
 
-  heap->trigger_saving.connect (sigc::mem_fun (this, &RL::Cluster::save));
+  heap->trigger_saving.connect (boost::bind (&RL::Cluster::save, this));
 }
 
 void
@@ -161,7 +161,7 @@ RL::Cluster::new_heap (const std::string name,
 		       const std::string user,
 		       bool writable)
 {
-  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &RL::Cluster::on_new_heap_form_submitted)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&RL::Cluster::on_new_heap_form_submitted, this)));
 
   request->title (_("Add new resource-list"));
   request->instructions (_("Please fill in this form to add a new "
@@ -173,7 +173,7 @@ RL::Cluster::new_heap (const std::string name,
   request->private_text ("password", _("Password:"), password);
   request->text ("user", _("User:"), user);
 
-  questions.emit (request);
+  questions (request);
 }
 
 void

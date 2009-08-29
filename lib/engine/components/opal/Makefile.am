@@ -62,4 +62,4 @@ libgmopal_la_SOURCES += \
 	$(opal_dir)/sip-endpoint.cpp
 endif
 
-libgmopal_la_LDFLAGS = -export-dynamic -no-undefined $(BOOST_LDFLAGS) $(SIGC_LIBS) $(GLIB_LIBS) $(OPAL_LIBS) $(PTLIB_LIBS)
+libgmopal_la_LDFLAGS = -export-dynamic -no-undefined $(BOOST_LDFLAGS) $(BOOST_LIBS) $(GLIB_LIBS) $(OPAL_LIBS) $(PTLIB_LIBS)

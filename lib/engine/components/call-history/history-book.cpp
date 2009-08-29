@@ -87,8 +87,8 @@ History::Book::Book (Ekiga::ServiceCore &_core) :
 
   boost::shared_ptr<Ekiga::CallCore> call_core = core.get<Ekiga::CallCore> ("call-core");
 
-  call_core->missed_call.connect (sigc::mem_fun (this, &History::Book::on_missed_call));
-  call_core->cleared_call.connect (sigc::mem_fun (this, &History::Book::on_cleared_call));
+  call_core->missed_call.connect (boost::bind (&History::Book::on_missed_call, this, _1, _2));
+  call_core->cleared_call.connect (boost::bind (&History::Book::on_cleared_call, this, _1, _2, _3));
 }
 
 History::Book::~Book ()
@@ -134,7 +134,7 @@ bool
 History::Book::populate_menu (Ekiga::MenuBuilder &builder)
 {
   builder.add_action ("clear",
-		      _("Clear List"), sigc::mem_fun (this, &History::Book::clear));
+		      _("Clear List"), boost::bind (&History::Book::clear, this));
   return true;
 }
 
@@ -181,7 +181,7 @@ History::Book::clear ()
   xmlDocSetRootElement (doc.get (), root);
 
   save ();
-  cleared.emit ();
+  cleared ();
 }
 
 void

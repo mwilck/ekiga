@@ -17,4 +17,4 @@ libgmaudiooutput_null_la_SOURCES = \
 	$(audiooutput_dir)/audiooutput-main-null.h \
 	$(audiooutput_dir)/audiooutput-main-null.cpp 
 
-libgmaudiooutput_null_la_LDFLAGS = -export-dynamic -no-undefined $(BOOST_LDFLAGS) $(SIGC_LIBS) $(GLIB_LIBS) $(PTLIB_LIBS)
+libgmaudiooutput_null_la_LDFLAGS = -export-dynamic -no-undefined $(BOOST_LDFLAGS) $(BOOST_LIBS) $(GLIB_LIBS) $(PTLIB_LIBS)

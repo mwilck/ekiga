@@ -127,7 +127,7 @@ struct OPALSpark: public Ekiga::Spark
 
       account_core->add_bank (bank);
       core.add (bank);
-      call_manager->ready.connect (sigc::mem_fun (&*bank, &Opal::Bank::call_manager_ready));
+      call_manager->ready.connect (boost::bind (&Opal::Bank::call_manager_ready, &*bank));
 
 #ifdef HAVE_SIP
       unsigned sip_port = gm_conf_get_int (SIP_KEY "listen_port");
@@ -155,7 +155,7 @@ struct OPALSpark: public Ekiga::Spark
 
       new ConfBridge (*call_manager); // FIXME: isn't that leaked!?
 
-      presence_core->add_supported_uri (sigc::ptr_fun (is_supported_address)); //FIXME
+      presence_core->add_supported_uri (&is_supported_address); //FIXME
 
       OpalLinkerHacks::loadOpalVideoInput = 1;
       OpalLinkerHacks::loadOpalVideoOutput = 1;
@@ -182,3 +182,13 @@ opal_init (Ekiga::KickStart& kickstart)
   boost::shared_ptr<Ekiga::Spark> spark(new OPALSpark);
   kickstart.add_spark (spark);
 }
+
+
+// FIXME: I have no clue why this is needed only for the opal code!
+#ifdef BOOST_NO_EXCEPTIONS
+
+void
+boost::throw_exception (const std::exception&)
+{
+}
+#endif

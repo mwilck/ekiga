@@ -40,7 +40,7 @@
 
 #include "contact-core.h"
 
-// include this *after* the rest, or qt will suicide sigc++
+// include this *after* the rest, or qt will suicide boost
 #include <kabc/addressee.h>
 
 namespace KAB

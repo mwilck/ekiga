@@ -37,7 +37,8 @@
 #define __CHAT_H__
 
 #include <string>
-#include <sigc++/sigc++.h>
+#include <boost/signals.hpp>
+#include <boost/bind.hpp>
 
 #include <boost/smart_ptr.hpp>
 
@@ -112,15 +113,15 @@ namespace Ekiga
 
     /** This signal is emitted when the Chat has been updated.
      */
-    sigc::signal0<void> updated;
+    boost::signal0<void> updated;
 
     /** This signal is emitted when the user requested to see this Chat
      */
-    sigc::signal0<void> user_requested;
+    boost::signal0<void> user_requested;
 
     /** This signal is emitted when the Chat has been removed.
      */
-    sigc::signal0<void> removed;
+    boost::signal0<void> removed;
 
     /** Feed possible actions on this Chat to the given MenuBuilder
      * @param A MenuBuilder object to populate.

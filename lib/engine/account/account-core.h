@@ -101,31 +101,31 @@ namespace Ekiga
      * @param The callback (the return value means "go on" and allows
      *  stopping the visit)
      */
-    void visit_banks (sigc::slot1<bool, BankPtr> visitor);
+    void visit_banks (boost::function1<bool, BankPtr> visitor);
 
 
     /** This signal is emitted when a bank has been added to the core
      */
-    sigc::signal1<void, BankPtr> bank_added;
+    boost::signal1<void, BankPtr> bank_added;
 
     /** This signal is emitted when a bank has been removed from the core
      */
-    sigc::signal1<void, BankPtr> bank_removed;
+    boost::signal1<void, BankPtr> bank_removed;
 
     /** This signal is emitted when a account has been added to one of
      * the banks
      */
-    sigc::signal2<void, BankPtr, AccountPtr> account_added;
+    boost::signal2<void, BankPtr, AccountPtr> account_added;
 
     /** This signal is emitted when a account has been removed from one of
      * the banks
      */
-    sigc::signal2<void, BankPtr, AccountPtr> account_removed;
+    boost::signal2<void, BankPtr, AccountPtr> account_removed;
 
     /** This signal is emitted when a account has been updated in one of
      * the banks
      */
-    sigc::signal2<void, BankPtr, AccountPtr> account_updated;
+    boost::signal2<void, BankPtr, AccountPtr> account_updated;
 
   private:
 
@@ -147,7 +147,7 @@ namespace Ekiga
     /** This signal is emitted when the AccountCore Service has been
      * updated.
      */
-    sigc::signal0<void> updated;
+    boost::signal0<void> updated;
 
 
     /** This chain allows the AccountCore to present forms to the user

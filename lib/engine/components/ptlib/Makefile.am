@@ -30,4 +30,4 @@ libgmptlib_la_SOURCES = \
 	$(ptlib_dir)/audiooutput-main-ptlib.h           \
 	$(ptlib_dir)/audiooutput-main-ptlib.cpp 
 
-libgmptlib_la_LDFLAGS = -export-dynamic -no-undefined $(BOOST_LDFLAGS) $(SIGC_LIBS) $(GLIB_LIBS) $(PTLIB_LIBS)
+libgmptlib_la_LDFLAGS = -export-dynamic -no-undefined $(BOOST_LDFLAGS) $(BOOST_LIBS) $(GLIB_LIBS) $(PTLIB_LIBS)

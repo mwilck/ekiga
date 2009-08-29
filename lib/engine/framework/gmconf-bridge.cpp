@@ -56,7 +56,7 @@ entry_changed_nt (gpointer /*id*/,
   Ekiga::ConfBridge *bridge = (Ekiga::ConfBridge *) data;
   std::string key = gm_conf_entry_get_key (entry);
 
-  bridge->property_changed.emit (key, entry);
+  bridge->property_changed (key, entry);
 }
 
 

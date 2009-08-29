@@ -36,7 +36,8 @@
 #ifndef __FORM_REQUEST_SIMPLE_H__
 #define __FORM_REQUEST_SIMPLE_H__
 
-#include <sigc++/sigc++.h>
+#include <boost/signals.hpp>
+#include <boost/bind.hpp>
 
 #include "form-builder.h"
 #include "form-request.h"
@@ -59,7 +60,7 @@ namespace Ekiga
      * the request was cancelled ;
      * - a form, which contains the submitted answer (or is empty otherwise)
      */
-    FormRequestSimple (sigc::slot2<void, bool, Form&> callback_);
+    FormRequestSimple (boost::function2<void, bool, Form&> callback_);
 
     ~FormRequestSimple ();
 
@@ -70,7 +71,7 @@ namespace Ekiga
   private:
 
     bool answered;
-    sigc::slot2<void,bool,Form&> callback;
+    boost::function2<void,bool,Form&> callback;
 
   };
 

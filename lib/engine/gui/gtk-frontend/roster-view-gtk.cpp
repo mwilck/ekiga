@@ -58,7 +58,7 @@ struct _RosterViewGtkPrivate
 {
   _RosterViewGtkPrivate (Ekiga::PresenceCore &_core) : core (_core) { }
 
-  std::vector<sigc::connection> connections;
+  std::vector<boost::signals::connection> connections;
   GtkTreeStore *store;
   GtkTreeView *tree_view;
   GtkWidget *vbox;
@@ -222,6 +222,14 @@ static void expand_cell_data_func (GtkTreeViewColumn *column,
                                    GtkTreeModel *model,
                                    GtkTreeIter *iter,
                                    gpointer data);
+
+
+/* DESCRIPTION  : Called when a new cluster has been added
+ * BEHAVIOR     : Visits the cluster's heaps, and add them to the view
+ * PRE          : /
+ */
+static bool on_visit_clusters (Ekiga::ClusterPtr cluster,
+			       gpointer data);
 
 
 /* DESCRIPTION  : Called when a new cluster has been added
@@ -849,12 +857,19 @@ expand_cell_data_func (GtkTreeViewColumn *column,
                 NULL);
 }
 
+static bool
+on_visit_clusters (Ekiga::ClusterPtr cluster,
+		   gpointer data)
+{
+  on_cluster_added (cluster, data);
+  return true;
+}
+
 static void
 on_cluster_added (Ekiga::ClusterPtr cluster,
 		  gpointer data)
 {
-  cluster->visit_heaps (sigc::bind (sigc::ptr_fun (visit_heaps),
-				    cluster, data));
+  cluster->visit_heaps (boost::bind (&visit_heaps, _1, cluster, data));
 }
 
 static bool
@@ -863,7 +878,7 @@ visit_heaps (Ekiga::HeapPtr heap,
 	     gpointer data)
 {
   on_heap_updated (cluster, heap, data);
-  heap->visit_presentities (sigc::bind (sigc::ptr_fun (visit_presentities), cluster, heap, data));
+  heap->visit_presentities (boost::bind (&visit_presentities, _1, cluster, heap, data));
 
   return true;
 }
@@ -874,7 +889,7 @@ on_heap_added (Ekiga::ClusterPtr cluster,
 	       gpointer data)
 {
   on_heap_updated (cluster, heap, data);
-  heap->visit_presentities (sigc::bind (sigc::ptr_fun (visit_presentities), cluster, heap, data));
+  heap->visit_presentities (boost::bind (&visit_presentities, _1, cluster, heap, data));
 }
 
 static void
@@ -1237,7 +1252,7 @@ roster_view_gtk_dispose (GObject *obj)
 
   view = ROSTER_VIEW_GTK (obj);
 
-  for (std::vector<sigc::connection>::iterator iter
+  for (std::vector<boost::signals::connection>::iterator iter
 	 = view->priv->connections.begin ();
        iter != view->priv->connections.end ();
        iter++)
@@ -1368,7 +1383,7 @@ roster_view_gtk_new (Ekiga::PresenceCore &core)
 {
   RosterViewGtk *self = NULL;
 
-  sigc::connection conn;
+  boost::signals::connection conn;
 
   GtkTreeModel *filtered = NULL;
   GtkTreeSelection *selection = NULL;
@@ -1501,32 +1516,25 @@ roster_view_gtk_new (Ekiga::PresenceCore &core)
 
 
   /* Relay signals */
-  conn = core.cluster_added.connect (sigc::bind (sigc::ptr_fun (on_cluster_added),
- 						 (gpointer) self));
+  conn = core.cluster_added.connect (boost::bind (&on_cluster_added, _1, (gpointer) self));
   self->priv->connections.push_back (conn);
-  conn = core.heap_added.connect (sigc::bind (sigc::ptr_fun (on_heap_added),
- 					      (gpointer) self));
+  conn = core.heap_added.connect (boost::bind (&on_heap_added, _1, _2, (gpointer) self));
   self->priv->connections.push_back (conn);
-  conn = core.heap_updated.connect (sigc::bind (sigc::ptr_fun (on_heap_updated),
- 						(gpointer) self));
+  conn = core.heap_updated.connect (boost::bind (&on_heap_updated, _1, _2, (gpointer) self));
   self->priv->connections.push_back (conn);
-  conn = core.heap_removed.connect (sigc::bind (sigc::ptr_fun (on_heap_removed),
- 						(gpointer) self));
+  conn = core.heap_removed.connect (boost::bind (&on_heap_removed, _1, _2, (gpointer) self));
 
   self->priv->connections.push_back (conn);
-  conn = core.presentity_added.connect (sigc::bind (sigc::ptr_fun (on_presentity_added),
- 						    (gpointer) self));
+  conn = core.presentity_added.connect (boost::bind (&on_presentity_added, _1, _2, _3, (gpointer) self));
   self->priv->connections.push_back (conn);
-  conn = core.presentity_updated.connect (sigc::bind (sigc::ptr_fun (on_presentity_updated),
- 						      self));
+  conn = core.presentity_updated.connect (boost::bind (&on_presentity_updated, _1, _2, _3, self));
   self->priv->connections.push_back (conn);
-  conn = core.presentity_removed.connect (sigc::bind (sigc::ptr_fun (on_presentity_removed),
- 						      (gpointer) self));
+  conn = core.presentity_removed.connect (boost::bind (&on_presentity_removed, _1, _2, _3, (gpointer) self));
   self->priv->connections.push_back (conn);
-  conn = core.questions.connect (sigc::bind (sigc::ptr_fun (on_handle_questions), (gpointer) self));
+  conn = core.questions.connect (boost::bind (&on_handle_questions, _1, (gpointer) self));
   self->priv->connections.push_back (conn);
 
-  core.visit_clusters (sigc::bind_return (sigc::bind (sigc::ptr_fun (on_cluster_added), (gpointer) self), true));
+  core.visit_clusters (boost::bind (&on_visit_clusters, _1, (gpointer) self));
 
   /* Notifiers */
   gm_conf_notifier_add ("/apps/" PACKAGE_NAME "/contacts/show_offline_contacts",

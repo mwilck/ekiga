@@ -79,7 +79,7 @@ namespace RL
 
     bool populate_menu (Ekiga::MenuBuilder &);
 
-    sigc::signal0<void> trigger_reload;
+    boost::signal0<void> trigger_reload;
 
   private:
 

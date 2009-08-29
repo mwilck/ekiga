@@ -172,7 +172,7 @@ Evolution::Contact::update_econtact (EContact *_econtact)
       }
     }
   }
-  updated.emit ();
+  updated ();
 }
 
 void
@@ -212,9 +212,9 @@ Evolution::Contact::populate_menu (Ekiga::MenuBuilder &builder)
     builder.add_separator ();
 
   builder.add_action ("edit", _("_Edit"),
-		      sigc::mem_fun (this, &Evolution::Contact::edit_action));
+		      boost::bind (&Evolution::Contact::edit_action, this));
   builder.add_action ("remove", _("_Remove"),
-		      sigc::mem_fun (this, &Evolution::Contact::remove_action));
+		      boost::bind (&Evolution::Contact::remove_action, this));
   populated = true;
 
   return populated;
@@ -301,7 +301,7 @@ Evolution::Contact::set_attribute_value (unsigned int attr_type,
 void
 Evolution::Contact::edit_action ()
 {
-  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &Evolution::Contact::on_edit_form_submitted)));;
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Evolution::Contact::on_edit_form_submitted, this, _1, _2)));;
 
   request->title (_("Edit contact"));
 
@@ -323,7 +323,7 @@ Evolution::Contact::edit_action ()
     request->text ("pager", _("_Pager:"), pager_uri);
   }
 
-  questions.emit (request);
+  questions (request);
 }
 
 void
@@ -354,7 +354,7 @@ Evolution::Contact::on_edit_form_submitted (bool submitted,
 void
 Evolution::Contact::remove_action ()
 {
-  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple>(new Ekiga::FormRequestSimple (sigc::mem_fun (this, &Evolution::Contact::on_remove_form_submitted)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple>(new Ekiga::FormRequestSimple (boost::bind (&Evolution::Contact::on_remove_form_submitted, this, _1, _2)));
   gchar* instructions = NULL;
 
   request->title (_("Remove contact"));
@@ -363,7 +363,7 @@ Evolution::Contact::remove_action ()
   request->instructions (instructions);
   g_free (instructions);
 
-  questions.emit (request);
+  questions (request);
 }
 
 void

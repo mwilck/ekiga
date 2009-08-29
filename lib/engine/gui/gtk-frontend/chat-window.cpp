@@ -48,7 +48,7 @@ struct _ChatWindowPrivate
   {}
 
   Ekiga::ChatCore& core;
-  std::list<sigc::connection> connections;
+  std::list<boost::signals::connection> connections;
 
   GtkWidget* notebook;
 };
@@ -267,11 +267,11 @@ static bool
 on_dialect_added (ChatWindow* self,
 		  Ekiga::DialectPtr dialect)
 {
-  self->priv->connections.push_front (dialect->simple_chat_added.connect (sigc::hide_return (sigc::bind<0> (sigc::ptr_fun (on_simple_chat_added), self))));
-  self->priv->connections.push_front (dialect->multiple_chat_added.connect (sigc::hide_return (sigc::bind<0> (sigc::ptr_fun (on_multiple_chat_added), self))));
+  self->priv->connections.push_front (dialect->simple_chat_added.connect (boost::bind (&on_simple_chat_added, self, _1)));
+  self->priv->connections.push_front (dialect->multiple_chat_added.connect (boost::bind (&on_multiple_chat_added, self, _1)));
 
-  dialect->visit_simple_chats (sigc::bind<0> (sigc::ptr_fun (on_simple_chat_added), self));
-  dialect->visit_multiple_chats (sigc::bind<0> (sigc::ptr_fun (on_multiple_chat_added), self));
+  dialect->visit_simple_chats (boost::bind (&on_simple_chat_added, self, _1));
+  dialect->visit_multiple_chats (boost::bind (&on_multiple_chat_added, self, _1));
 
   return true;
 }
@@ -319,7 +319,7 @@ on_simple_chat_added (ChatWindow* self,
   g_signal_connect (page, "message-notice-event",
 		    G_CALLBACK (on_message_notice_event), self);
 
-  self->priv->connections.push_front (chat->user_requested.connect (sigc::bind (sigc::ptr_fun (on_some_chat_user_requested), self, page)));
+  self->priv->connections.push_front (chat->user_requested.connect (boost::bind (&on_some_chat_user_requested, self, page)));
 
   return true;
 }
@@ -339,7 +339,7 @@ on_multiple_chat_added (ChatWindow* self,
 				  page, label);
   gtk_widget_show_all (page);
 
-  self->priv->connections.push_front (chat->user_requested.connect (sigc::bind (sigc::ptr_fun (on_some_chat_user_requested), self, page)));
+  self->priv->connections.push_front (chat->user_requested.connect (boost::bind (&on_some_chat_user_requested, self, page)));
 
   return true;
 }
@@ -375,7 +375,7 @@ chat_window_finalize (GObject* obj)
 
   self = CHAT_WINDOW (obj);
 
-  for (std::list<sigc::connection>::iterator iter
+  for (std::list<boost::signals::connection>::iterator iter
 	 = self->priv->connections.begin ();
        iter != self->priv->connections.end ();
        ++iter)
@@ -491,8 +491,8 @@ chat_window_new (Ekiga::ChatCore& core,
   g_signal_connect (result->priv->notebook, "switch-page",
 		    G_CALLBACK (on_switch_page), result);
 
-  result->priv->connections.push_front (core.dialect_added.connect (sigc::hide_return(sigc::bind<0>(sigc::ptr_fun (on_dialect_added), result))));
-  core.visit_dialects (sigc::bind<0>(sigc::ptr_fun (on_dialect_added), result));
+  result->priv->connections.push_front (core.dialect_added.connect (boost::bind (&on_dialect_added, result, _1)));
+  core.visit_dialects (boost::bind (&on_dialect_added, result, _1));
 
   return (GtkWidget*)result;
 }

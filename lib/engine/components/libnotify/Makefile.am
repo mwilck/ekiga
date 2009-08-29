@@ -16,4 +16,4 @@ libgmlibnotify_la_LIBADD = \
 	$(top_builddir)/lib/engine/framework/libgmframework.la \
 	$(top_builddir)/lib/engine/notification/libnotification.la
 
-libgmlibnotify_la_LDFLAGS = -export-dynamic -no-undefined $(BOOST_LDFLAGS) $(SIGC_LIBS) $(NOTIFY_LIBS)
+libgmlibnotify_la_LDFLAGS = -export-dynamic -no-undefined $(BOOST_LDFLAGS) $(BOOST_LIBS) $(NOTIFY_LIBS)

@@ -17,4 +17,4 @@ libgmchat_la_SOURCES = \
 	$(chat_dir)/chat-simple.h		\
 	$(chat_dir)/chat-multiple.h
 
-libgmchat_la_LDFLAGS = $(STACKLIB_LDFLAGS) $(BOOST_LDFLAGS) $(SIGC_LIBS)
+libgmchat_la_LDFLAGS = $(STACKLIB_LDFLAGS) $(BOOST_LDFLAGS) $(BOOST_LIBS)

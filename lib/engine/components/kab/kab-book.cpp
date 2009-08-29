@@ -39,7 +39,7 @@
 
 #include "kab-book.h"
 
-// include this *after* the rest, or qt will suicide sigc++
+// include this *after* the rest, or qt will suicide boost
 #include <kabc/stdaddressbook.h>
 
 KAB::Book::Book (Ekiga::ContactCore &_core): core(_core)

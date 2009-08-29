@@ -491,9 +491,9 @@ void CallManager::set_stun_enabled (bool enabled)
     // Ready
     new StunDetector (stun_server, *this, queue);
     patience = 20;
-    Ekiga::Runtime::run_in_main (sigc::mem_fun (this, &CallManager::HandleSTUNResult), 1);
+    Ekiga::Runtime::run_in_main (boost::bind (&CallManager::HandleSTUNResult, this), 1);
   } else
-    ready.emit ();
+    ready ();
 }
 
 
@@ -646,8 +646,7 @@ OpalCall *CallManager::CreateCall (void *uri)
   else
     call = new Opal::Call (*this, core, "");
 
-  Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun(this, &CallManager::create_call_in_main),
-					   call));
+  Ekiga::Runtime::run_in_main (boost::bind (&CallManager::create_call_in_main, this, call));
 
   return call;
 }
@@ -655,7 +654,7 @@ OpalCall *CallManager::CreateCall (void *uri)
 void
 CallManager::emit_removed_in_main (Ekiga::Call* call)
 {
-  call->removed.emit ();
+  call->removed ();
 }
 
 void
@@ -663,7 +662,7 @@ CallManager::DestroyCall (OpalCall *_call)
 {
   Ekiga::Call *call = dynamic_cast<Ekiga::Call *> (_call);
 
-  Ekiga::Runtime::run_in_main(sigc::bind (sigc::mem_fun (this, &CallManager::emit_removed_in_main), call));
+  Ekiga::Runtime::run_in_main(boost::bind (&CallManager::emit_removed_in_main, this, call));
 }
 
 
@@ -745,7 +744,7 @@ CallManager::HandleSTUNResult ()
 	   iter != end ();
 	   ++iter)
 	(*iter)->set_listen_port ((*iter)->get_listen_interface ().port);
-      ready.emit ();
+      ready ();
     }
   } else if (patience == 0) {
 
@@ -758,12 +757,11 @@ CallManager::HandleSTUNResult ()
 		       " still use it, but you need to configure your network settings manually.\n\n"
 		       "Please see http://wiki.ekiga.org/index.php/Enable_port_forwarding_manually for"
 		       " instructions"));
-    ready.emit ();
+    ready ();
   } else if (!got_answer) {
 
     patience--;
-    Ekiga::Runtime::run_in_main (sigc::mem_fun (this, &CallManager::HandleSTUNResult),
-				 1);
+    Ekiga::Runtime::run_in_main (boost::bind (&CallManager::HandleSTUNResult, this), 1);
 
   }
 }
@@ -774,10 +772,9 @@ CallManager::ReportSTUNError (const std::string error)
   boost::shared_ptr<Ekiga::CallCore> call_core = core.get<Ekiga::CallCore> ("call-core");
 
   // notice we're in for an infinite loop if nobody ever reports to the user!
-  if ( !call_core->errors.emit (error)) {
+  if ( !call_core->errors (error)) {
 
-    Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &CallManager::ReportSTUNError),
-					     error),
+    Ekiga::Runtime::run_in_main (boost::bind (&CallManager::ReportSTUNError, this, error),
 				 10);
   }
 }

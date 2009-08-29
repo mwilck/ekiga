@@ -76,7 +76,7 @@ LM::Dialect::open_chat (PresentityPtr presentity)
 {
   SimpleChatPtr chat(new SimpleChat (core, presentity));
   add_simple_chat (chat);
-  chat->user_requested.emit ();
+  chat->user_requested ();
 }
 
 bool

@@ -59,7 +59,7 @@ Opal::Bank::Bank (Ekiga::ServiceCore &_core): core(_core)
     boost::shared_ptr<Account> account = boost::shared_ptr<Account> (new Account (core, (char *)accounts_iter->data));
 
     add_account (account);
-    Ekiga::BankImpl<Account>::add_connection (account, account->trigger_saving.connect (sigc::mem_fun (this, &Opal::Bank::save)));
+    Ekiga::BankImpl<Account>::add_connection (account, account->trigger_saving.connect (boost::bind (&Opal::Bank::save, this)));
     accounts_iter = g_slist_next (accounts_iter);
   }
 
@@ -72,13 +72,13 @@ bool
 Opal::Bank::populate_menu (Ekiga::MenuBuilder & builder)
 {
   builder.add_action ("add", _("_Add an Ekiga.net Account"),
-		      sigc::bind (sigc::mem_fun (this, &Opal::Bank::new_account), Opal::Account::Ekiga, "", ""));
+		      boost::bind (&Opal::Bank::new_account, this, Opal::Account::Ekiga, "", ""));
   builder.add_action ("add", _("_Add an Ekiga Call Out Account"),
-		      sigc::bind (sigc::mem_fun (this, &Opal::Bank::new_account), Opal::Account::DiamondCard, "", ""));
+		      boost::bind (&Opal::Bank::new_account, this, Opal::Account::DiamondCard, "", ""));
   builder.add_action ("add", _("_Add a SIP Account"),
-		      sigc::bind (sigc::mem_fun (this, &Opal::Bank::new_account), Opal::Account::SIP, "", ""));
+		      boost::bind (&Opal::Bank::new_account, this, Opal::Account::SIP, "", ""));
   builder.add_action ("add", _("_Add an H.323 Account"),
-		      sigc::bind (sigc::mem_fun (this, &Opal::Bank::new_account), Opal::Account::H323, "", ""));
+		      boost::bind (&Opal::Bank::new_account, this, Opal::Account::H323, "", ""));
 
   return true;
 }
@@ -89,7 +89,7 @@ Opal::Bank::new_account (Account::Type acc_type,
 			 std::string username,
 			 std::string password)
 {
-  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::bind (sigc::mem_fun (this, &Opal::Bank::on_new_account_form_submitted), acc_type)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Opal::Bank::on_new_account_form_submitted, this, _1, _2, acc_type)));
 
   request->title (_("Edit account"));
   request->instructions (_("Please update the following fields."));
@@ -141,7 +141,7 @@ Opal::Bank::new_account (Account::Type acc_type,
   if (!username.empty () && !password.empty ())
     request->submit (*request);
   else
-    questions.emit (request);
+    questions (request);
 }
 
 
@@ -152,7 +152,7 @@ void Opal::Bank::on_new_account_form_submitted (bool submitted,
   if (!submitted)
     return;
 
-  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::bind (sigc::mem_fun (this, &Opal::Bank::on_new_account_form_submitted) ,acc_type)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Opal::Bank::on_new_account_form_submitted, this, _1, _2, acc_type)));
 
   std::string error;
   std::string new_name = (acc_type == Opal::Account::SIP
@@ -181,7 +181,7 @@ void Opal::Bank::on_new_account_form_submitted (bool submitted,
   if (!error.empty ()) {
     request->error (error);
 
-    questions.emit (request);
+    questions (request);
   }
   else {
 
@@ -206,7 +206,7 @@ void Opal::Bank::add (Account::Type acc_type,
 						     password, enabled,
 						     timeout));
   add_account (account);
-  Ekiga::BankImpl<Account>::add_connection (account, account->trigger_saving.connect (sigc::mem_fun (this, &Opal::Bank::save)));
+  Ekiga::BankImpl<Account>::add_connection (account, account->trigger_saving.connect (boost::bind (&Opal::Bank::save, this)));
 }
 
 void

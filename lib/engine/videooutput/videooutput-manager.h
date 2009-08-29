@@ -38,7 +38,8 @@
 #ifndef __VIDEOOUTPUT_MANAGER_H__
 #define __VIDEOOUTPUT_MANAGER_H__
 
-#include <sigc++/sigc++.h>
+#include <boost/signals.hpp>
+#include <boost/bind.hpp>
 
 #include "videooutput-info.h"
 
@@ -105,16 +106,16 @@ namespace Ekiga
        * @param zoom the initial zoom level when de device was opened.
        * @param both_streams if a frame from both local and remote stream has been received.
        */
-      sigc::signal4<void, VideoOutputAccel, VideoOutputMode, unsigned, bool> device_opened;
+      boost::signal4<void, VideoOutputAccel, VideoOutputMode, unsigned, bool> device_opened;
 
       /** This signal is emitted when a video output device is closed.
        */
-      sigc::signal0<void> device_closed;
+      boost::signal0<void> device_closed;
 
       /** This signal is emitted when an error occurs when opening a video output device.
        * @param error_code the video output device error code.
        */
-      sigc::signal1<void, VideoOutputErrorCodes> device_error;
+      boost::signal1<void, VideoOutputErrorCodes> device_error;
 
       /** This signal is emitted when a manager switches autonomously into or out of fullscreen mode.
        * Some managers like DX and XV  allow the user to switch between FS
@@ -124,7 +125,7 @@ namespace Ekiga
        * or when it is being zoomed in or out.
        * @param toggle VO_FS_ON or VO_FS_OFF depending on whether FS was activated or deactivated.
        */
-      sigc::signal1<void, VideoOutputFSToggle> fullscreen_mode_changed;
+      boost::signal1<void, VideoOutputFSToggle> fullscreen_mode_changed;
 
       /** This signal is emitted the video output size has changed.
        * This signal is called whenever the size of the widget carrying the video signal
@@ -133,7 +134,7 @@ namespace Ekiga
        * @param width the new width of the widget.
        * @param height the new height of the widget.
        */
-      sigc::signal2<void, unsigned, unsigned> size_changed;
+      boost::signal2<void, unsigned, unsigned> size_changed;
 
   protected:  
       virtual void get_display_info (DisplayInfo &) { };

@@ -185,14 +185,14 @@ void
 Local::Presentity::set_presence (const std::string _presence)
 {
   presence = _presence;
-  updated.emit ();
+  updated ();
 }
 
 void
 Local::Presentity::set_status (const std::string _status)
 {
   status = _status;
-  updated.emit ();
+  updated ();
 }
 
 
@@ -210,9 +210,9 @@ Local::Presentity::populate_menu (Ekiga::MenuBuilder &builder)
     builder.add_separator ();
 
   builder.add_action ("edit", _("_Edit"),
-		      sigc::mem_fun (this, &Local::Presentity::edit_presentity));
+		      boost::bind (&Local::Presentity::edit_presentity, this));
   builder.add_action ("remove", _("_Remove"),
-		      sigc::mem_fun (this, &Local::Presentity::remove));
+		      boost::bind (&Local::Presentity::remove, this));
 
   return true;
 }
@@ -229,7 +229,7 @@ void
 Local::Presentity::edit_presentity ()
 {
   ClusterPtr cluster = core.get<Local::Cluster> ("local-cluster");
-  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &Local::Presentity::edit_presentity_form_submitted)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Local::Presentity::edit_presentity_form_submitted, this, _1, _2)));
 
   std::string name = get_name ();
   std::string uri = get_uri ();
@@ -246,7 +246,7 @@ Local::Presentity::edit_presentity ()
   request->editable_set ("groups", _("Choose groups:"),
 			 groups, all_groups);
 
-  questions.emit (request);
+  questions (request);
 }
 
 
@@ -344,8 +344,8 @@ Local::Presentity::edit_presentity_form_submitted (bool submitted,
     xmlSetProp (node, BAD_CAST "preferred", BAD_CAST "false");
   }
 
-  updated.emit ();
-  trigger_saving.emit ();
+  updated ();
+  trigger_saving ();
 }
 
 
@@ -406,8 +406,8 @@ Local::Presentity::rename_group (const std::string old_name,
 
   }
 
-  updated.emit ();
-  trigger_saving.emit ();
+  updated ();
+  trigger_saving ();
 }
 
 
@@ -420,8 +420,8 @@ Local::Presentity::remove ()
   xmlUnlinkNode (node);
   xmlFreeNode (node);
 
-  trigger_saving.emit ();
-  removed.emit ();
+  trigger_saving ();
+  removed ();
 }
 
 bool

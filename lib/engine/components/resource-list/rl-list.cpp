@@ -90,13 +90,13 @@ public: // no need to make anything private
   std::string display_name;
 
   /* make the world know what we have */
-  bool visit_presentities (sigc::slot1<bool, Ekiga::Presentity&> visitor);
+  bool visit_presentities (boost::function1<bool, Ekiga::Presentity&> visitor);
 
   void publish () const;
 
-  sigc::signal1<void, boost::shared_ptr<Entry> > entry_added;
-  sigc::signal1<void, boost::shared_ptr<Entry> > entry_updated;
-  sigc::signal1<void, boost::shared_ptr<Entry> > entry_removed;
+  boost::signal1<void, boost::shared_ptr<Entry> > entry_added;
+  boost::signal1<void, boost::shared_ptr<Entry> > entry_updated;
+  boost::signal1<void, boost::shared_ptr<Entry> > entry_removed;
 
 
   /* data for its children */
@@ -104,7 +104,7 @@ public: // no need to make anything private
 
   std::list<ChildType> ordering;
   std::list<boost::shared_ptr<List> > lists;
-  std::list<std::pair<boost::shared_ptr<Entry>, std::list<sigc::connection> > > entries;
+  std::list<std::pair<boost::shared_ptr<Entry>, std::list<boost::signals::connection> > > entries;
 };
 
 
@@ -117,9 +117,9 @@ RL::List::List (Ekiga::ServiceCore& core_,
 		xmlNodePtr node_)
 {
   impl = new ListImpl (core_, path_, pos, group_, node_);
-  impl->entry_added.connect (entry_added.make_slot ());
-  impl->entry_updated.connect (entry_updated.make_slot ());
-  impl->entry_removed.connect (entry_removed.make_slot ());
+  impl->entry_added.connect (entry_added);
+  impl->entry_updated.connect (entry_updated);
+  impl->entry_removed.connect (entry_removed);
 }
 
 RL::List::~List ()
@@ -154,7 +154,7 @@ RL::List::push_status (const std::string uri_,
 }
 
 bool
-RL::List::visit_presentities (sigc::slot1<bool, Ekiga::Presentity&> visitor)
+RL::List::visit_presentities (boost::function1<bool, Ekiga::Presentity&> visitor)
 {
   return impl->visit_presentities (visitor);
 }
@@ -233,12 +233,12 @@ RL::ListImpl::flush ()
     (*iter)->flush ();
   lists.clear ();
 
-  for (std::list<std::pair<boost::shared_ptr<Entry>, std::list<sigc::connection> > >::iterator iter = entries.begin ();
+  for (std::list<std::pair<boost::shared_ptr<Entry>, std::list<boost::signals::connection> > >::iterator iter = entries.begin ();
        iter != entries.end ();
        ++iter) {
 
-    iter->first->removed.emit ();
-    for (std::list<sigc::connection>::iterator conn_iter
+    iter->first->removed ();
+    for (std::list<boost::signals::connection>::iterator conn_iter
 	   = iter->second.begin ();
 	 conn_iter != iter->second.end ();
 	 ++conn_iter)
@@ -257,7 +257,7 @@ RL::ListImpl::refresh ()
   flush ();
 
   boost::shared_ptr<XCAP::Core> xcap = core.get<XCAP::Core> ("xcap-core");
-  xcap->read (path, sigc::mem_fun (this, &RL::ListImpl::on_xcap_answer));
+  xcap->read (path, boost::bind (&RL::ListImpl::on_xcap_answer, this));
 }
 
 void
@@ -322,9 +322,9 @@ RL::ListImpl::parse ()
       boost::shared_ptr<List> list = boost::shared_ptr<List> (new List (core, path,
 							list_pos, display_name,
 							child));
-      list->entry_added.connect (entry_added.make_slot ());
-      list->entry_updated.connect (entry_updated.make_slot ());
-      list->entry_removed.connect (entry_removed.make_slot ());
+      list->entry_added.connect (entry_added);
+      list->entry_updated.connect (entry_updated);
+      list->entry_removed.connect (entry_removed);
       lists.push_back (list);
       ordering.push_back (LIST);
       list_pos++;
@@ -340,13 +340,13 @@ RL::ListImpl::parse ()
 							    entry_pos,
 							    display_name,
 							    doc, child));
-      std::list<sigc::connection> conns;
-      conns.push_back (entry->updated.connect (sigc::bind (entry_updated.make_slot (), entry)));
-      conns.push_back (entry->removed.connect (sigc::bind (entry_removed.make_slot (), entry)));
-      entries.push_back (std::pair<boost::shared_ptr<Entry>, std::list<sigc::connection> > (entry, conns));
+      std::list<boost::signals::connection> conns;
+      conns.push_back (entry->updated.connect (boost::bind (entry_updated, entry)));
+      conns.push_back (entry->removed.connect (boost::bind (entry_removed, entry)));
+      entries.push_back (std::pair<boost::shared_ptr<Entry>, std::list<boost::signals::connection> > (entry, conns));
       ordering.push_back (ENTRY);
       entry_pos++;
-      entry_added.emit (entry);
+      entry_added (entry);
       continue;
     }
   }
@@ -361,7 +361,7 @@ RL::ListImpl::push_presence (const std::string uri_,
        ++iter)
     (*iter)->push_presence (uri_, presence);
 
-  for (std::list<std::pair<boost::shared_ptr<Entry>, std::list<sigc::connection> > >::const_iterator iter = entries.begin ();
+  for (std::list<std::pair<boost::shared_ptr<Entry>, std::list<boost::signals::connection> > >::const_iterator iter = entries.begin ();
        iter != entries.end ();
        ++iter) {
 
@@ -379,7 +379,7 @@ RL::ListImpl::push_status (const std::string uri_,
        ++iter)
     (*iter)->push_status (uri_, status);
 
-  for (std::list<std::pair<boost::shared_ptr<Entry>, std::list<sigc::connection> > >::const_iterator iter = entries.begin ();
+  for (std::list<std::pair<boost::shared_ptr<Entry>, std::list<boost::signals::connection> > >::const_iterator iter = entries.begin ();
        iter != entries.end ();
        ++iter) {
 
@@ -389,7 +389,7 @@ RL::ListImpl::push_status (const std::string uri_,
 }
 
 bool
-RL::ListImpl::visit_presentities (sigc::slot1<bool, Ekiga::Presentity&> visitor)
+RL::ListImpl::visit_presentities (boost::function1<bool, Ekiga::Presentity&> visitor)
 {
   bool go_on = true;
 
@@ -398,7 +398,7 @@ RL::ListImpl::visit_presentities (sigc::slot1<bool, Ekiga::Presentity&> visitor)
        ++iter)
     go_on = (*iter)->visit_presentities (visitor);
 
-  for (std::list<std::pair<boost::shared_ptr<Entry>, std::list<sigc::connection> > >::const_iterator iter = entries.begin ();
+  for (std::list<std::pair<boost::shared_ptr<Entry>, std::list<boost::signals::connection> > >::const_iterator iter = entries.begin ();
        go_on && iter != entries.end ();
        ++iter) {
 
@@ -416,10 +416,10 @@ RL::ListImpl::publish () const
        ++iter)
     (*iter)->publish ();
 
-  for (std::list<std::pair<boost::shared_ptr<Entry>, std::list<sigc::connection> > >::const_iterator iter = entries.begin ();
+  for (std::list<std::pair<boost::shared_ptr<Entry>, std::list<boost::signals::connection> > >::const_iterator iter = entries.begin ();
        iter != entries.end ();
        ++iter) {
 
-    entry_added.emit (iter->first);
+    entry_added (iter->first);
   }
 }

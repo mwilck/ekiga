@@ -80,7 +80,7 @@ namespace Ekiga
 
     virtual ~ClusterImpl ();
 
-    void visit_heaps (sigc::slot1<bool, HeapPtr > visitor);
+    void visit_heaps (boost::function1<bool, HeapPtr > visitor);
 
   protected:
 
@@ -118,9 +118,9 @@ template<typename HeapType>
 Ekiga::ClusterImpl<HeapType>::ClusterImpl ()
 {
   /* signal forwarding */
-  RefLister<HeapType>::object_added.connect (heap_added.make_slot ());
-  RefLister<HeapType>::object_removed.connect (heap_removed.make_slot ());
-  RefLister<HeapType>::object_updated.connect (heap_updated.make_slot ());
+  RefLister<HeapType>::object_added.connect (boost::ref (heap_added));
+  RefLister<HeapType>::object_removed.connect (boost::ref (heap_removed));
+  RefLister<HeapType>::object_updated.connect (boost::ref (heap_updated));
 }
 
 template<typename HeapType>
@@ -130,7 +130,7 @@ Ekiga::ClusterImpl<HeapType>::~ClusterImpl ()
 
 template<typename HeapType>
 void
-Ekiga::ClusterImpl<HeapType>::visit_heaps (sigc::slot1<bool, HeapPtr > visitor)
+Ekiga::ClusterImpl<HeapType>::visit_heaps (boost::function1<bool, HeapPtr > visitor)
 {
   RefLister<HeapType>::visit_objects (visitor);
 }
@@ -139,13 +139,13 @@ template<typename HeapType>
 void
 Ekiga::ClusterImpl<HeapType>::add_heap (boost::shared_ptr<HeapType> heap)
 {
-  add_connection (heap, heap->presentity_added.connect (sigc::bind (sigc::mem_fun (this, &ClusterImpl::on_presentity_added), heap)));
+  add_connection (heap, heap->presentity_added.connect (boost::bind (&ClusterImpl::on_presentity_added, this, _1, heap)));
 
-  add_connection (heap, heap->presentity_updated.connect (sigc::bind (sigc::mem_fun (this, &ClusterImpl::on_presentity_updated), heap)));
+  add_connection (heap, heap->presentity_updated.connect (boost::bind (&ClusterImpl::on_presentity_updated, this, _1, heap)));
 
-  add_connection (heap, heap->presentity_removed.connect (sigc::bind (sigc::mem_fun (this, &ClusterImpl::on_presentity_removed), heap)));
+  add_connection (heap, heap->presentity_removed.connect (boost::bind (&ClusterImpl::on_presentity_removed, this, _1, heap)));
 
-  add_connection (heap, heap->questions.connect (questions.make_slot ()));
+  add_connection (heap, heap->questions.connect (boost::ref (questions)));
 
   add_object (heap);
 }
@@ -161,21 +161,21 @@ template<typename HeapType>
 void
 Ekiga::ClusterImpl<HeapType>::on_presentity_added (PresentityPtr presentity, boost::shared_ptr<HeapType> heap)
 {
-  presentity_added.emit (heap, presentity);
+  presentity_added (heap, presentity);
 }
 
 template<typename HeapType>
 void
 Ekiga::ClusterImpl<HeapType>::on_presentity_updated (PresentityPtr presentity, boost::shared_ptr<HeapType> heap)
 {
-  presentity_updated.emit (heap, presentity);
+  presentity_updated (heap, presentity);
 }
 
 template<typename HeapType>
 void
 Ekiga::ClusterImpl<HeapType>::on_presentity_removed (PresentityPtr presentity, boost::shared_ptr<HeapType> heap)
 {
-  presentity_removed.emit (heap, presentity);
+  presentity_removed (heap, presentity);
 }
 
 template<typename HeapType>

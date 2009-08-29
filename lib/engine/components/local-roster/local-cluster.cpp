@@ -46,8 +46,8 @@ Local::Cluster::Cluster (Ekiga::ServiceCore &_core): core(_core)
 
   heap = HeapPtr (new Heap (core));
 
-  presence_core->presence_received.connect (sigc::mem_fun (this, &Local::Cluster::on_presence_received));
-  presence_core->status_received.connect (sigc::mem_fun (this, &Local::Cluster::on_status_received));
+  presence_core->presence_received.connect (boost::bind (&Local::Cluster::on_presence_received, this, _1, _2));
+  presence_core->status_received.connect (boost::bind (&Local::Cluster::on_status_received, this, _1, _2));
 
   add_heap (heap);
 }
@@ -80,7 +80,7 @@ bool
 Local::Cluster::populate_menu (Ekiga::MenuBuilder& builder)
 {
   builder.add_action ("new", _("New contact"),
-		      sigc::mem_fun (this, &Local::Cluster::on_new_presentity));
+		      boost::bind (&Local::Cluster::on_new_presentity, this));
 
   return true;
 }

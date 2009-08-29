@@ -283,8 +283,8 @@ void Opal::Account::enable ()
   boost::shared_ptr<Sip::EndPoint> endpoint = core.get<Sip::EndPoint> ("opal-sip-endpoint");
   endpoint->subscribe (*this);
 
-  updated.emit ();
-  trigger_saving.emit ();
+  updated ();
+  trigger_saving ();
 }
 
 
@@ -295,8 +295,8 @@ void Opal::Account::disable ()
   boost::shared_ptr<Sip::EndPoint> endpoint = core.get<Sip::EndPoint> ("opal-sip-endpoint");
   endpoint->unsubscribe (*this);
 
-  updated.emit ();
-  trigger_saving.emit ();
+  updated ();
+  trigger_saving ();
 }
 
 
@@ -326,9 +326,9 @@ void Opal::Account::remove ()
   boost::shared_ptr<Sip::EndPoint> endpoint = core.get<Sip::EndPoint> ("opal-sip-endpoint");
   endpoint->unsubscribe (*this);
 
-  trigger_saving.emit ();
+  trigger_saving ();
 
-  removed.emit ();
+  removed ();
 }
 
 
@@ -336,17 +336,17 @@ bool Opal::Account::populate_menu (Ekiga::MenuBuilder &builder)
 {
   if (enabled)
     builder.add_action ("disable", _("_Disable"),
-                        sigc::mem_fun (this, &Opal::Account::disable));
+                        boost::bind (&Opal::Account::disable, this));
   else
     builder.add_action ("enable", _("_Enable"),
-                        sigc::mem_fun (this, &Opal::Account::enable));
+                        boost::bind (&Opal::Account::enable, this));
 
   builder.add_separator ();
 
   builder.add_action ("edit", _("_Edit"),
-		      sigc::mem_fun (this, &Opal::Account::edit));
+		      boost::bind (&Opal::Account::edit, this));
   builder.add_action ("remove", _("_Remove"),
-		      sigc::mem_fun (this, &Opal::Account::remove));
+		      boost::bind (&Opal::Account::remove, this));
 
   if (type == DiamondCard) {
 
@@ -360,17 +360,17 @@ bool Opal::Account::populate_menu (Ekiga::MenuBuilder &builder)
     url << str.str () << "&act=rch";
     builder.add_action ("recharge",
 			_("Recharge the account"),
-                        sigc::bind (sigc::mem_fun (this, &Opal::Account::on_consult), url.str ()));
+                        boost::bind (&Opal::Account::on_consult, this, url.str ()));
     url.str ("");
     url << str.str () << "&act=bh";
     builder.add_action ("balance",
                         _("Consult the balance history"),
-                        sigc::bind (sigc::mem_fun (this, &Opal::Account::on_consult), url.str ()));
+                        boost::bind (&Opal::Account::on_consult, this, url.str ()));
     url.str ("");
     url << str.str () << "&act=ch";
     builder.add_action ("history",
                         _("Consult the call history"),
-                        sigc::bind (sigc::mem_fun (this, &Opal::Account::on_consult), url.str ()));
+                        boost::bind (&Opal::Account::on_consult, this, url.str ()));
   }
 
   return true;
@@ -379,7 +379,7 @@ bool Opal::Account::populate_menu (Ekiga::MenuBuilder &builder)
 
 void Opal::Account::edit ()
 {
-  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &Opal::Account::on_edit_form_submitted)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Opal::Account::on_edit_form_submitted, this, _1, _2)));
   std::stringstream str;
 
   str << get_timeout ();
@@ -403,7 +403,7 @@ void Opal::Account::edit ()
   request->text ("timeout", _("Timeout:"), str.str ());
   request->boolean ("enabled", _("Enable Account"), enabled);
 
-  questions.emit (request);
+  questions (request);
 }
 
 
@@ -437,11 +437,11 @@ void Opal::Account::on_edit_form_submitted (bool submitted,
 
   if (!error.empty ()) {
 
-    boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &Opal::Account::on_edit_form_submitted)));
+    boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Opal::Account::on_edit_form_submitted, this, _1, _2)));
     result.visit (*request);
     request->error (error);
 
-    questions.emit (request);
+    questions (request);
   }
   else {
 
@@ -455,8 +455,8 @@ void Opal::Account::on_edit_form_submitted (bool submitted,
     enabled = new_enabled;
     enable ();
 
-    updated.emit ();
-    trigger_saving.emit ();
+    updated ();
+    trigger_saving ();
   }
 }
 
@@ -469,7 +469,7 @@ Opal::Account::on_consult (const std::string url)
 
 void
 Opal::Account::handle_registration_event (RegistrationState state_,
-					  const std::string info)
+					  const std::string info) const
 {
   switch (state_) {
 
@@ -485,14 +485,14 @@ Opal::Account::handle_registration_event (RegistrationState state_,
 	presence_core->publish (personal_details);
       }
       state = state_;
-      updated.emit ();
+      updated ();
     } 
     break;
 
   case Unregistered:
 
     status = _("Unregistered");
-    updated.emit ();
+    updated ();
     break;
 
   case UnregistrationFailed:
@@ -500,7 +500,7 @@ Opal::Account::handle_registration_event (RegistrationState state_,
     status = _("Could not unregister");
     if (!info.empty ())
       status = status + " (" + info + ")";
-    updated.emit ();
+    updated ();
     break;
 
   case RegistrationFailed:
@@ -513,14 +513,14 @@ Opal::Account::handle_registration_event (RegistrationState state_,
       status = _("Could not register");
       if (!info.empty ())
         status = status + " (" + info + ")";
-      updated.emit ();
+      updated ();
     }
     break;
 
   case Processing:
 
     status = _("Processing...");
-    updated.emit ();
+    updated ();
   default:
     break;
   }
@@ -541,7 +541,7 @@ Opal::Account::handle_message_waiting_information (const std::string info)
     new_messages >> message_waiting_number;
     if (message_waiting_number > 0)
       audiooutput_core->play_event ("new_voicemail_sound");
-    updated.emit ();
+    updated ();
   }
 }
 

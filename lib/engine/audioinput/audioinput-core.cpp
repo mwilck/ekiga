@@ -164,15 +164,15 @@ void AudioInputCore::setup_conf_bridge ()
 void AudioInputCore::add_manager (AudioInputManager &manager)
 {
   managers.insert (&manager);
-  manager_added.emit (manager);
+  manager_added (manager);
 
-  manager.device_error.connect   (sigc::bind (sigc::mem_fun (this, &AudioInputCore::on_device_error), &manager));
-  manager.device_opened.connect  (sigc::bind (sigc::mem_fun (this, &AudioInputCore::on_device_opened), &manager));
-  manager.device_closed.connect  (sigc::bind (sigc::mem_fun (this, &AudioInputCore::on_device_closed), &manager));
+  manager.device_error.connect   (boost::bind (&AudioInputCore::on_device_error, this, _1, _2, &manager));
+  manager.device_opened.connect  (boost::bind (&AudioInputCore::on_device_opened, this, _1, _2, &manager));
+  manager.device_closed.connect  (boost::bind (&AudioInputCore::on_device_closed, this, _1, &manager));
 }
 
 
-void AudioInputCore::visit_managers (sigc::slot1<bool, AudioInputManager &> visitor)
+void AudioInputCore::visit_managers (boost::function1<bool, AudioInputManager &> visitor)
 {
   yield = true;
   PWaitAndSignal m(core_mutex);
@@ -231,7 +231,7 @@ void AudioInputCore::add_device (const std::string & source, const std::string &
        if ( desired_device == device)
          internal_set_device(desired_device);
 
-       device_added.emit (device, desired_device == device);
+       device_added (device, desired_device == device);
      }
   }
 }
@@ -256,7 +256,7 @@ void AudioInputCore::remove_device (const std::string & source, const std::strin
             new_device.name = AUDIO_INPUT_FALLBACK_DEVICE_NAME;
             internal_set_device( new_device);
        }
-       device_removed.emit (device,  current_device == device);
+       device_removed (device,  current_device == device);
      }
   }
 }
@@ -403,17 +403,17 @@ void AudioInputCore::on_device_opened (AudioInputDevice device,
                                        AudioInputSettings settings, 
                                        AudioInputManager *manager)
 {
-  device_opened.emit (*manager, device, settings);
+  device_opened (*manager, device, settings);
 }
 
 void AudioInputCore::on_device_closed (AudioInputDevice device, AudioInputManager *manager)
 {
-  device_closed.emit (*manager, device);
+  device_closed (*manager, device);
 }
 
 void AudioInputCore::on_device_error (AudioInputDevice device, AudioInputErrorCodes error_code, AudioInputManager *manager)
 {
- device_error.emit (*manager, device, error_code);
+ device_error (*manager, device, error_code);
 }
 
 void AudioInputCore::internal_set_device(const AudioInputDevice & device)

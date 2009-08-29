@@ -44,7 +44,7 @@ namespace LM
 {
   class Heap:
     public Ekiga::HeapImpl<Presentity>,
-    public sigc::trackable
+    public boost::signals::trackable
   {
   public:
 

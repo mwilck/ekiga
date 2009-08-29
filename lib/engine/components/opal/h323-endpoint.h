@@ -131,7 +131,7 @@ namespace Opal {
 
       void on_transfer (std::string uri);
 
-      void registration_event_in_main (Opal::Account& account,
+      void registration_event_in_main (const Opal::Account& account,
 				       Account::RegistrationState state,
 				       const std::string msg);
 

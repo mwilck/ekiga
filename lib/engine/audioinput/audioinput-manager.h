@@ -39,7 +39,8 @@
 #define __AUDIOINPUT_MANAGER_H__
 
 #include <vector>
-#include <sigc++/sigc++.h>
+#include <boost/signals.hpp>
+#include <boost/bind.hpp>
 
 #include "audioinput-info.h"
 
@@ -147,18 +148,18 @@ namespace Ekiga
        * @param device the audio input device that was opened.
        * @param config the current audio input device configuration (current volume, etc.).
        */
-      sigc::signal2<void, AudioInputDevice, AudioInputSettings> device_opened;
+      boost::signal2<void, AudioInputDevice, AudioInputSettings> device_opened;
 
       /** This signal is emitted when an audio input device is closed.
        * @param device the audio input device that was closed.
        */
-      sigc::signal1<void, AudioInputDevice> device_closed;
+      boost::signal1<void, AudioInputDevice> device_closed;
 
       /** This signal is emitted when an error occurs when opening a audio input device.
        * @param device the audio input device that caused the error.
        * @param error_code the audio input device error code.
        */
-      sigc::signal2<void, AudioInputDevice, AudioInputErrorCodes> device_error;
+      boost::signal2<void, AudioInputDevice, AudioInputErrorCodes> device_error;
 
 
   protected:  

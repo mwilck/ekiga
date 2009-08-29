@@ -51,7 +51,7 @@
 struct _StatusMenuPrivate
 {
   boost::shared_ptr<Ekiga::PersonalDetails> personal_details;
-  std::vector<sigc::connection> connections;
+  std::vector<boost::signals::connection> connections;
 
   GtkListStore *list_store; // List store storing the menu
   GtkWindow    *parent;     // Parent window
@@ -803,7 +803,7 @@ status_menu_new (Ekiga::ServiceCore & core)
 {
   StatusMenu *self = NULL;
 
-  sigc::connection conn;
+  boost::signals::connection conn;
   GtkCellRenderer *renderer = NULL;
   GSList *custom_status_array [NUM_STATUS_TYPES];
 
@@ -862,7 +862,7 @@ status_menu_new (Ekiga::ServiceCore & core)
   gm_conf_notifier_add (PERSONAL_DATA_KEY "dnd_custom_status", 
                         status_menu_custom_messages_changed, self);
 
-  conn = self->priv->personal_details->updated.connect (sigc::bind (sigc::ptr_fun (on_details_updated), self)); 
+  conn = self->priv->personal_details->updated.connect (boost::bind (&on_details_updated, self)); 
   self->priv->connections.push_back (conn);
 
   return GTK_WIDGET (self);

@@ -19,4 +19,4 @@ libgmvideoinput_mlogo_la_SOURCES = \
 	$(videoinput_dir)/videoinput-main-mlogo.h \
 	$(videoinput_dir)/videoinput-main-mlogo.cpp 
 
-libgmvideoinput_mlogo_la_LDFLAGS = -export-dynamic -no-undefined $(BOOST_LDFLAGS) $(SIGC_LIBS) $(GLIB_LIBS) $(PTLIB_LIBS)
+libgmvideoinput_mlogo_la_LDFLAGS = -export-dynamic -no-undefined $(BOOST_LDFLAGS) $(BOOST_LIBS) $(GLIB_LIBS) $(PTLIB_LIBS)

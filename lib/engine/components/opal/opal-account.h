@@ -140,13 +140,15 @@ public:
 
     const std::string as_string () const;
 
-    sigc::signal0<void> trigger_saving;
+    boost::signal0<void> trigger_saving;
 
     /* This method is public to be called by an opal endpoint, which will push
      * this Opal::Account's new registration state
+     * Notice : it's very wrong to make that a const method, but Opal seems to
+     * want its Register method to take a const account...
      */
     void handle_registration_event (RegistrationState state_,
-				    const std::string info);
+				    const std::string info) const;
 
     /* This method is public to be called by an opal endpoint, which will push
      * this Opal::Account's message waiting information
@@ -159,14 +161,14 @@ private:
 				 Ekiga::Form &result);
     void on_consult (const std::string url);
 
-    RegistrationState state;
+    mutable RegistrationState state;
     bool dead;
     bool enabled;
-    bool limited;
+    mutable bool limited;
     unsigned timeout;
     std::string aid;
     std::string name;
-    std::string status;
+    mutable std::string status;
     int message_waiting_number;
     std::string protocol_name;
     std::string host;

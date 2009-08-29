@@ -25,4 +25,4 @@ libgmgstreamer_la_SOURCES = \
 
 libgmgstreamer_la_LDFLAGS = $(PLUGINS_LIBTOOL_FLAGS)
 libgmgstreamer_la_LIBADD = \
-	$(BOOST_LDFLAGS) $(SIGC_LIBS) $(GSTREAMER_LIBS) $(PTLIB_LIBS)
+	$(BOOST_LDFLAGS) $(BOOST_LIBS) $(GSTREAMER_LIBS) $(PTLIB_LIBS)

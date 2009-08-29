@@ -19,4 +19,4 @@ libgmconfpersonaldetails_la_SOURCES = 						\
 libgmconfpersonaldetails_la_LIBADD = 						\
 	$(top_builddir)/lib/engine/framework/libgmframework.la
 
-libgmconfpersonaldetails_la_LDFLAGS = -export-dynamic -no-undefined $(BOOST_LDFLAGS) $(SIGC_LIBS) $(GLIB_LIBS)
+libgmconfpersonaldetails_la_LDFLAGS = -export-dynamic -no-undefined $(BOOST_LDFLAGS) $(BOOST_LIBS) $(GLIB_LIBS)

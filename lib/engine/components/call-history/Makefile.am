@@ -23,4 +23,4 @@ libcall_history_la_SOURCES = \
 libcall_history_la_LIBADD = \
 	$(top_builddir)/lib/engine/addressbook/libgmaddressbook.la
 
-libcall_history_la_LDFLAGS = -export-dynamic -no-undefined $(XML_LIBS) $(BOOST_LDFLAGS) $(SIGC_LIBS) $(GLIB_LIBS)
+libcall_history_la_LDFLAGS = -export-dynamic -no-undefined $(XML_LIBS) $(BOOST_LDFLAGS) $(BOOST_LIBS) $(GLIB_LIBS)

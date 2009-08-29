@@ -119,7 +119,7 @@ OPENLDAP::Source::add ()
 void
 OPENLDAP::Source::common_add (BookPtr book)
 {
-  book->trigger_saving.connect (sigc::mem_fun (this, &OPENLDAP::Source::save));
+  book->trigger_saving.connect (boost::bind (&OPENLDAP::Source::save, this));
   add_book (book);
 }
 
@@ -127,16 +127,16 @@ bool
 OPENLDAP::Source::populate_menu (Ekiga::MenuBuilder &builder)
 {
   builder.add_action ("add", _("Add an LDAP Address Book"),
-		      sigc::mem_fun (this, &OPENLDAP::Source::new_book));
+		      boost::bind (&OPENLDAP::Source::new_book, this));
   builder.add_action ("add", _("Add the Ekiga.net Directory"),
-		      sigc::mem_fun (this, &OPENLDAP::Source::new_ekiga_net_book));
+		      boost::bind (&OPENLDAP::Source::new_ekiga_net_book, this));
   return true;
 }
 
 void
 OPENLDAP::Source::new_book ()
 {
-  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &OPENLDAP::Source::on_new_book_form_submitted)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&OPENLDAP::Source::on_new_book_form_submitted, this, _1, _2)));
 
   bookinfo.name = "";
   bookinfo.uri = "ldap://localhost/dc=net?cn,telephoneNumber?sub?(cn=$)",
@@ -150,7 +150,7 @@ OPENLDAP::Source::new_book ()
   OPENLDAP::BookInfoParse (bookinfo);
   OPENLDAP::BookForm (request, bookinfo, _("Create LDAP directory"));
 
-  questions.emit (request);
+  questions (request);
 }
 
 void
@@ -180,12 +180,12 @@ OPENLDAP::Source::on_new_book_form_submitted (bool submitted,
   std::string errmsg;
 
   if (OPENLDAP::BookFormInfo (result, bookinfo, errmsg)) {
-    boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (sigc::mem_fun (this, &OPENLDAP::Source::on_new_book_form_submitted)));
+    boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&OPENLDAP::Source::on_new_book_form_submitted, this, _1, _2)));
 
     result.visit (*request);
     request->error (errmsg);
 
-    questions.emit (request);
+    questions (request);
     return;
   }
 

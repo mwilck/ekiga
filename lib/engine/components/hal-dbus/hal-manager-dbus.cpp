@@ -149,21 +149,21 @@ void HalManager_dbus::device_added_cb (const char *device)
   if (hal_device.category == "alsa") {
 
     if (hal_device.type == "capture") {
-      audioinput_device_added.emit(hal_device.category, hal_device.name);
+      audioinput_device_added(hal_device.category, hal_device.name);
     }
     else if (hal_device.type == "playback") {
-      audiooutput_device_added.emit(hal_device.category, hal_device.name);
+      audiooutput_device_added(hal_device.category, hal_device.name);
     }
   }
   else if (hal_device.category == "oss") {
-    audioinput_device_added.emit(hal_device.category, hal_device.name);
-    audiooutput_device_added.emit(hal_device.category, hal_device.name);
+    audioinput_device_added(hal_device.category, hal_device.name);
+    audiooutput_device_added(hal_device.category, hal_device.name);
   }
   else if (hal_device.category == "video4linux") {
       if (hal_device.video_capabilities & 0x01) 
-        videoinput_device_added.emit(hal_device.category, hal_device.name, 0x01);
+        videoinput_device_added(hal_device.category, hal_device.name, 0x01);
       if (hal_device.video_capabilities & 0x02) 
-        videoinput_device_added.emit(hal_device.category, hal_device.name, 0x02);
+        videoinput_device_added(hal_device.category, hal_device.name, 0x02);
   }
 
 }
@@ -187,21 +187,21 @@ void HalManager_dbus::device_removed_cb (const char *device)
     if (iter->category == "alsa") {
   
       if (iter->type == "capture") {
-        audioinput_device_removed.emit(iter->category, iter->name);
+        audioinput_device_removed(iter->category, iter->name);
       }
       else if (iter->type == "playback") {
-        audiooutput_device_removed.emit(iter->category, iter->name);
+        audiooutput_device_removed(iter->category, iter->name);
       }
     }
     else if (iter->category == "oss") {
-      audioinput_device_removed.emit(iter->category, iter->name);
-      audiooutput_device_removed.emit(iter->category, iter->name);
+      audioinput_device_removed(iter->category, iter->name);
+      audiooutput_device_removed(iter->category, iter->name);
     }
     else if (iter->category == "video4linux") {
       if (iter->video_capabilities & 0x01) 
-        videoinput_device_removed.emit(iter->category, iter->name, 0x01);
+        videoinput_device_removed(iter->category, iter->name, 0x01);
       if (iter->video_capabilities & 0x02) 
-        videoinput_device_removed.emit(iter->category, iter->name, 0x02);
+        videoinput_device_removed(iter->category, iter->name, 0x02);
 	
     }
 
@@ -220,7 +220,7 @@ void HalManager_dbus::interface_now_active_cb (const char *interface)
   nm_interfaces.push_back(nm_interface);
 
   PTRACE(4, "HalManager_dbus\tActivated network device " <<  nm_interface.name << "/"<< nm_interface.ip4_address);
-  network_interface_up.emit(nm_interface.name, nm_interface.ip4_address);
+  network_interface_up(nm_interface.name, nm_interface.ip4_address);
 }
 
 void HalManager_dbus::interface_no_longer_active_cb (const char *interface)
@@ -238,7 +238,7 @@ void HalManager_dbus::interface_no_longer_active_cb (const char *interface)
 
   if (found) {
     PTRACE(4, "HalManager_dbus\tDeactivated network interface " << iter->name << "/" << iter->ip4_address);
-    network_interface_down.emit(iter->name, iter->ip4_address);
+    network_interface_down(iter->name, iter->ip4_address);
     nm_interfaces.erase(iter);
   }
 }

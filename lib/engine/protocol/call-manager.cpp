@@ -46,7 +46,7 @@ using namespace Ekiga;
 void CallManager::add_protocol_manager (boost::shared_ptr<CallProtocolManager> manager)
 {
   managers.insert (manager);
-  manager_added.emit (manager);
+  manager_added (manager);
 }
 
 

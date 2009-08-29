@@ -122,12 +122,12 @@ namespace Ekiga
       /** Triggers a callback for all Ekiga::AudioOutputManager sources of the
        * AudioOutputCore service.
        */
-      void visit_managers (sigc::slot1<bool, AudioOutputManager &> visitor);
+      void visit_managers (boost::function1<bool, AudioOutputManager &> visitor);
 
       /** This signal is emitted when a Ekiga::AudioOutputManager has been
        * added to the AudioOutputCore Service.
        */
-      sigc::signal1<void, AudioOutputManager &> manager_added;
+      boost::signal1<void, AudioOutputManager &> manager_added;
 
 
       /** Get a list of all devices supported by all managers registered to the core.
@@ -298,23 +298,23 @@ namespace Ekiga
 
       /** See audiooutput-manager.h for the API
        */
-      sigc::signal4<void, AudioOutputManager &, AudioOutputPS, AudioOutputDevice&, AudioOutputSettings&> device_opened;
-      sigc::signal3<void, AudioOutputManager &, AudioOutputPS, AudioOutputDevice&> device_closed;
-      sigc::signal4<void, AudioOutputManager &, AudioOutputPS, AudioOutputDevice&, AudioOutputErrorCodes> device_error;
+      boost::signal4<void, AudioOutputManager &, AudioOutputPS, AudioOutputDevice&, AudioOutputSettings&> device_opened;
+      boost::signal3<void, AudioOutputManager &, AudioOutputPS, AudioOutputDevice&> device_closed;
+      boost::signal4<void, AudioOutputManager &, AudioOutputPS, AudioOutputDevice&, AudioOutputErrorCodes> device_error;
 
       /** This signal is emitted when an audio output device has been added to the system.
        * This signal will be emitted if add_device was called with a device name and
        * a manager claimed support for this device.
        * @param device the audio output device that was added.
        */
-      sigc::signal2<void, AudioOutputDevice, bool> device_added;
+      boost::signal2<void, AudioOutputDevice, bool> device_added;
 
       /** This signal is emitted when an audio output device has been removed from the system.
        * This signal will be emitted if remove_device was called with a device name and
        * a manager claimed support for this device.
        * @param device the audio output device that was removed.
        */
-      sigc::signal2<void, AudioOutputDevice, bool> device_removed;
+      boost::signal2<void, AudioOutputDevice, bool> device_removed;
 
   private:
       void on_device_opened (AudioOutputPS ps, 

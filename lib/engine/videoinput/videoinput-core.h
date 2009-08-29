@@ -44,7 +44,8 @@
 #include "videoinput-manager.h"
 #include "videoinput-gmconf-bridge.h"
 
-#include <sigc++/sigc++.h>
+#include <boost/signals.hpp>
+#include <boost/bind.hpp>
 #include <glib.h>
 #include <set>
 
@@ -138,12 +139,12 @@ namespace Ekiga
       /** Triggers a callback for all Ekiga::VideoInputManager sources of the
        * VideoInputCore service.
        */
-       void visit_managers (sigc::slot1<bool, VideoInputManager &> visitor);
+       void visit_managers (boost::function1<bool, VideoInputManager &> visitor);
 
       /** This signal is emitted when a Ekiga::VideoInputManager has been
        * added to the VideoInputCore Service.
        */
-       sigc::signal1<void, VideoInputManager &> manager_added;
+       boost::signal1<void, VideoInputManager &> manager_added;
 
 
       /*** VideoInput Device Management ***/
@@ -274,23 +275,23 @@ namespace Ekiga
 
       /** See videoinput-manager.h for the API
        */
-      sigc::signal3<void, VideoInputManager &, VideoInputDevice &, VideoInputSettings&> device_opened;
-      sigc::signal2<void, VideoInputManager &, VideoInputDevice &> device_closed;
-      sigc::signal3<void, VideoInputManager &, VideoInputDevice &, VideoInputErrorCodes> device_error;
+      boost::signal3<void, VideoInputManager &, VideoInputDevice &, VideoInputSettings&> device_opened;
+      boost::signal2<void, VideoInputManager &, VideoInputDevice &> device_closed;
+      boost::signal3<void, VideoInputManager &, VideoInputDevice &, VideoInputErrorCodes> device_error;
 
       /** This signal is emitted when a video input has been added to the system.
        * This signal will be emitted if add_device was called with a device name and
        * a manager claimed support for this device.
        * @param device the video input device that was added.
        */
-      sigc::signal2<void, VideoInputDevice, bool> device_added;
+      boost::signal2<void, VideoInputDevice, bool> device_added;
 
       /** This signal is emitted when a video input has been removed from the system.
        * This signal will be emitted if remove_device was called with a device name and
        * a manager claimed support for this device.
        * @param device the video input device that was removed.
        */
-      sigc::signal2<void, VideoInputDevice, bool> device_removed;
+      boost::signal2<void, VideoInputDevice, bool> device_removed;
 
   private:
       void on_device_opened (VideoInputDevice device,  

@@ -53,13 +53,13 @@ public:
   ~CoreImpl ();
 
   void read (boost::shared_ptr<XCAP::Path> path,
-	     sigc::slot2<void,bool,std::string> callback);
+	     boost::function2<void,bool,std::string> callback);
   void write (boost::shared_ptr<Path>,
 	      const std::string content_type,
 	      const std::string content,
-	      sigc::slot1<void,std::string> callback);
+	      boost::function1<void,std::string> callback);
   void erase (boost::shared_ptr<Path>,
-	      sigc::slot1<void,std::string> callback);
+	      boost::function1<void,std::string> callback);
 
   /* public to be used by C callbacks */
 
@@ -103,14 +103,14 @@ struct cb_read_data
 {
   XCAP::CoreImpl* core;
   boost::shared_ptr<XCAP::Path> path;
-  sigc::slot2<void, bool, std::string> callback;
+  boost::function2<void, bool, std::string> callback;
 };
 
 struct cb_other_data
 {
   XCAP::CoreImpl* core;
   boost::shared_ptr<XCAP::Path> path;
-  sigc::slot1<void, std::string> callback;
+  boost::function1<void, std::string> callback;
 };
 
 static void
@@ -223,7 +223,7 @@ XCAP::CoreImpl::clear_old_sessions ()
 
 void
 XCAP::CoreImpl::read (boost::shared_ptr<Path> path,
-		      sigc::slot2<void, bool, std::string> callback)
+		      boost::function2<void, bool, std::string> callback)
 {
   SoupSession* session = NULL;
   SoupMessage* message = NULL;
@@ -252,7 +252,7 @@ void
 XCAP::CoreImpl::write (boost::shared_ptr<Path> path,
 		       const std::string content_type,
 		       const std::string content,
-		       sigc::slot1<void,std::string> callback)
+		       boost::function1<void,std::string> callback)
 {
   SoupSession* session = NULL;
   SoupMessage* message = NULL;
@@ -283,7 +283,7 @@ XCAP::CoreImpl::write (boost::shared_ptr<Path> path,
 
 void
 XCAP::CoreImpl::erase (boost::shared_ptr<Path> path,
-		       sigc::slot1<void,std::string> callback)
+		       boost::function1<void,std::string> callback)
 {
   SoupSession* session = NULL;
   SoupMessage* message = NULL;
@@ -322,7 +322,7 @@ XCAP::Core::~Core ()
 
 void
 XCAP::Core::read (boost::shared_ptr<XCAP::Path> path,
-		  sigc::slot2<void, bool,std::string> callback)
+		  boost::function2<void, bool,std::string> callback)
 {
   impl->read (path, callback);
 }
@@ -331,14 +331,14 @@ void
 XCAP::Core::write (boost::shared_ptr<Path> path,
 		   const std::string content_type,
 		   const std::string content,
-		   sigc::slot1<void,std::string> callback)
+		   boost::function1<void,std::string> callback)
 {
   impl->write (path, content_type, content, callback);
 }
 
 void
 XCAP::Core::erase (boost::shared_ptr<Path> path,
-		   sigc::slot1<void,std::string> callback)
+		   boost::function1<void,std::string> callback)
 {
   impl->erase (path, callback);
 }

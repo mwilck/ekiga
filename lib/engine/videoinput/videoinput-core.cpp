@@ -174,15 +174,15 @@ void VideoInputCore::setup_conf_bridge ()
 void VideoInputCore::add_manager (VideoInputManager &manager)
 {
   managers.insert (&manager);
-  manager_added.emit (manager);
+  manager_added (manager);
 
-  manager.device_opened.connect (sigc::bind (sigc::mem_fun (this, &VideoInputCore::on_device_opened), &manager));
-  manager.device_closed.connect (sigc::bind (sigc::mem_fun (this, &VideoInputCore::on_device_closed), &manager));
-  manager.device_error.connect (sigc::bind (sigc::mem_fun (this, &VideoInputCore::on_device_error), &manager));
+  manager.device_opened.connect (boost::bind (&VideoInputCore::on_device_opened, this, _1, _2, &manager));
+  manager.device_closed.connect (boost::bind (&VideoInputCore::on_device_closed, this, _1, &manager));
+  manager.device_error.connect (boost::bind (&VideoInputCore::on_device_error, this, _1, _2, &manager));
 }
 
 
-void VideoInputCore::visit_managers (sigc::slot1<bool, VideoInputManager &> visitor)
+void VideoInputCore::visit_managers (boost::function1<bool, VideoInputManager &> visitor)
 {
   PWaitAndSignal m(core_mutex);
   bool go_on = true;
@@ -234,7 +234,7 @@ void VideoInputCore::add_device (const std::string & source, const std::string &
       if ( desired_device == device )
         internal_set_device(device, current_channel, current_format);
 
-      device_added.emit(device, desired_device == device);
+      device_added(device, desired_device == device);
     }
   }
 }
@@ -258,7 +258,7 @@ void VideoInputCore::remove_device (const std::string & source, const std::strin
             internal_set_device(new_device, current_channel, current_format);
        }
 
-       device_removed.emit(device, current_device == device);
+       device_removed(device, current_device == device);
      }
   }
 }
@@ -425,17 +425,17 @@ void VideoInputCore::on_device_opened (VideoInputDevice device,
                                      VideoInputSettings settings, 
                                      VideoInputManager *manager)
 {
-  device_opened.emit (*manager, device, settings);
+  device_opened (*manager, device, settings);
 }
 
 void VideoInputCore::on_device_closed (VideoInputDevice device, VideoInputManager *manager)
 {
-  device_closed.emit (*manager, device);
+  device_closed (*manager, device);
 }
 
 void VideoInputCore::on_device_error (VideoInputDevice device, VideoInputErrorCodes error_code, VideoInputManager *manager)
 {
-  device_error.emit (*manager, device, error_code);
+  device_error (*manager, device, error_code);
 }
 
 void VideoInputCore::internal_set_device(const VideoInputDevice & device, int channel, VideoInputFormat format)

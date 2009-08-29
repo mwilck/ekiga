@@ -32,4 +32,4 @@ libgmresource_list_la_LDFLAGS = \
 	$(PLUGINS_LIBTOOL_FLAGS)
 libgmresource_list_la_LIBADD = \
 	$(top_builddir)/lib/engine/components/xcap/libgmxcap.la \
-	$(BOOST_LDFLAGS) $(SIGC_LIBS) $(GLIB_LIBS) $(XML_LIBS)
+	$(BOOST_LDFLAGS) $(BOOST_LIBS) $(GLIB_LIBS) $(XML_LIBS)
