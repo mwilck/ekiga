@@ -2,7 +2,7 @@ plugin_LTLIBRARIES = libgmldap.la
 
 ldap_dir = $(top_srcdir)/lib/engine/components/ldap
 
-AM_CPPFLAGS = $(LDAP_CFLAGS) $(SIGC_CFLAGS) $(GLIB_CFLAGS) $(XML_CFLAGS)
+AM_CPPFLAGS = $(LDAP_CFLAGS) $(BOOST_CPPFLAGS) $(SIGC_CFLAGS) $(GLIB_CFLAGS) $(XML_CFLAGS)
 
 INCLUDES = \
 	-I$(top_srcdir)/lib/gmconf 			\
@@ -23,4 +23,4 @@ libgmldap_la_LDFLAGS = $(PLUGINS_LIBTOOL_FLAGS)
 libgmldap_la_LIBADD = \
 	$(top_builddir)/lib/engine/framework/libgmframework.la \
 	$(top_builddir)/lib/engine/addressbook/libgmaddressbook.la \
-	$(LDAP_LIBS) $(SIGC_LIBS) $(GLIB_LIBS) $(XML_LIBS)
+	$(LDAP_LIBS) $(BOOST_LDFLAGS) $(SIGC_LIBS) $(GLIB_LIBS) $(XML_LIBS)

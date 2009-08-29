@@ -2,7 +2,7 @@ plugin_LTLIBRARIES = libgmxcap.la
 
 xcap_dir = $(top_srcdir)/lib/engine/components/xcap/
 
-AM_CXXFLAGS = $(SIGC_CFLAGS) $(SOUP_CFLAGS)
+AM_CXXFLAGS = $(BOOST_CPPFLAGS) $(SIGC_CFLAGS) $(SOUP_CFLAGS)
 
 INCLUDES = \
 	-I$(top_srcdir)/lib/engine/framework
@@ -16,4 +16,4 @@ libgmxcap_la_SOURCES = \
 	$(xcap_dir)/xcap-main.cpp
 
 libgmxcap_la_LDFLAGS = $(PLUGINS_LIBTOOL_FLAGS)
-libgmxcap_la_LIBADD = $(SIGC_LIBS) $(SOUP_LIBS)
+libgmxcap_la_LIBADD = $(BOOST_LDFLAGS) $(SIGC_LIBS) $(SOUP_LIBS)

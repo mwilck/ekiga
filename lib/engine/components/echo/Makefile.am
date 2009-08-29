@@ -2,7 +2,7 @@ noinst_LTLIBRARIES = libgmechochat.la
 
 echochat_dir = $(top_srcdir)/lib/engine/components/echo
 
-AM_CXXFLAGS = $(SIGC_CFLAGS)
+AM_CXXFLAGS = $(BOOST_CPPFLAGS) $(SIGC_CFLAGS)
 
 INCLUDES = \
 	-I$(top_srcdir)/lib/engine/framework \
@@ -19,4 +19,4 @@ libgmechochat_la_SOURCES = \
 	$(echochat_dir)/echo-main.h		\
 	$(echochat_dir)/echo-main.cpp
 
-libgmechochat_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS)
+libgmechochat_la_LDFLAGS = -export-dynamic -no-undefined $(BOOST_LDFLAGS) $(SIGC_LIBS)

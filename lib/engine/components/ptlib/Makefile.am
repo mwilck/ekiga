@@ -2,7 +2,7 @@ noinst_LTLIBRARIES = libgmptlib.la
 
 ptlib_dir = $(top_srcdir)/lib/engine/components/ptlib
 
-AM_CXXFLAGS = $(SIGC_CFLAGS) $(GLIB_CFLAGS) $(PTLIB_CFLAGS)
+AM_CXXFLAGS = $(BOOST_CPPFLAGS) $(SIGC_CFLAGS) $(GLIB_CFLAGS) $(PTLIB_CFLAGS)
 
 INCLUDES = \
 	-I$(top_srcdir)/lib/gmconf                      \
@@ -30,4 +30,4 @@ libgmptlib_la_SOURCES = \
 	$(ptlib_dir)/audiooutput-main-ptlib.h           \
 	$(ptlib_dir)/audiooutput-main-ptlib.cpp 
 
-libgmptlib_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(GLIB_LIBS) $(PTLIB_LIBS)
+libgmptlib_la_LDFLAGS = -export-dynamic -no-undefined $(BOOST_LDFLAGS) $(SIGC_LIBS) $(GLIB_LIBS) $(PTLIB_LIBS)

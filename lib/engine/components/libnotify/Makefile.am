@@ -2,7 +2,7 @@ noinst_LTLIBRARIES = libgmlibnotify.la
 
 libnotify_dir = $(top_srcdir)/lib/engine/components/libnotify
 
-AM_CXXFLAGS = $(SIGC_CFLAGS) $(NOTIFY_CFLAGS)
+AM_CXXFLAGS = $(BOOST_CPPFLAGS) $(SIGC_CFLAGS) $(NOTIFY_CFLAGS)
 
 INCLUDES = \
 	-I$(top_srcdir)/lib/engine/framework \
@@ -16,4 +16,4 @@ libgmlibnotify_la_LIBADD = \
 	$(top_builddir)/lib/engine/framework/libgmframework.la \
 	$(top_builddir)/lib/engine/notification/libnotification.la
 
-libgmlibnotify_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(NOTIFY_LIBS)
+libgmlibnotify_la_LDFLAGS = -export-dynamic -no-undefined $(BOOST_LDFLAGS) $(SIGC_LIBS) $(NOTIFY_LIBS)

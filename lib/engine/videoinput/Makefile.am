@@ -2,7 +2,7 @@ stacklib_LTLIBRARIES = libgmvideoinput.la
 
 videoinput_dir = $(top_srcdir)/lib/engine/videoinput
 
-AM_CXXFLAGS = $(SIGC_CFLAGS) $(GLIB_CFLAGS) $(PTLIB_CFLAGS)
+AM_CXXFLAGS = $(BOOST_CPPFLAGS) $(SIGC_CFLAGS) $(GLIB_CFLAGS) $(PTLIB_CFLAGS)
 
 INCLUDES = \
 	-I$(top_srcdir)/lib/gmconf \
@@ -23,4 +23,4 @@ libgmvideoinput_la_LDFLAGS = $(STACKLIB_LDFLAGS)
 libgmvideoinput_la_LIBADD = \
 	$(top_builddir)/lib/engine/framework/libgmframework.la \
 	$(top_builddir)/lib/engine/videooutput/libgmvideooutput.la \
-	$(SIGC_LIBS) $(GLIB_LIBS) $(PTLIB_LIBS)
+	$(BOOST_LDFLAGS) $(SIGC_LIBS) $(GLIB_LIBS) $(PTLIB_LIBS)

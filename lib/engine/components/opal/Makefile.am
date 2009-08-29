@@ -2,7 +2,7 @@ noinst_LTLIBRARIES = libgmopal.la
 
 opal_dir = $(top_srcdir)/lib/engine/components/opal
 
-AM_CXXFLAGS = $(SIGC_CFLAGS) $(GLIB_CFLAGS) $(OPAL_CFLAGS) $(PTLIB_CFLAGS)
+AM_CXXFLAGS = $(BOOST_CPPFLAGS) $(SIGC_CFLAGS) $(GLIB_CFLAGS) $(OPAL_CFLAGS) $(PTLIB_CFLAGS)
 
 INCLUDES = 					        \
 	-I$(top_srcdir)/lib				\
@@ -62,4 +62,4 @@ libgmopal_la_SOURCES += \
 	$(opal_dir)/sip-endpoint.cpp
 endif
 
-libgmopal_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(GLIB_LIBS) $(OPAL_LIBS) $(PTLIB_LIBS)
+libgmopal_la_LDFLAGS = -export-dynamic -no-undefined $(BOOST_LDFLAGS) $(SIGC_LIBS) $(GLIB_LIBS) $(OPAL_LIBS) $(PTLIB_LIBS)

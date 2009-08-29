@@ -2,7 +2,7 @@ noinst_LTLIBRARIES = libgmavahi.la
 
 avahi_dir = $(top_srcdir)/lib/engine/components/avahi
 
-AM_CPPFLAGS = $(SIGC_CFLAGS) $(AVAHI_CFLAGS)
+AM_CPPFLAGS = $(BOOST_CPPFLAGS) $(SIGC_CFLAGS) $(AVAHI_CFLAGS)
 
 INCLUDES = \
 	-I$(top_srcdir)/lib/engine/framework \
@@ -20,4 +20,4 @@ libgmavahi_la_SOURCES = \
 libgmavahi_la_LIBADD = \
 	$(top_builddir)/lib/engine/presence/libgmpresence.la
 
-libgmavahi_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(AVAHI_LIBS)
+libgmavahi_la_LDFLAGS = -export-dynamic -no-undefined $(BOOST_LDFLAGS) $(SIGC_LIBS) $(AVAHI_LIBS)

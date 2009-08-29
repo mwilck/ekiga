@@ -2,7 +2,7 @@ plugin_LTLIBRARIES = libgmevolution.la
 
 evolution_dir = $(top_srcdir)/lib/engine/components/evolution
 
-AM_CXXFLAGS = $(SIGC_CFLAGS) $(EDS_CFLAGS) $(GLIB_CFLAGS)
+AM_CXXFLAGS = $(BOOST_CPPFLAGS) $(SIGC_CFLAGS) $(EDS_CFLAGS) $(GLIB_CFLAGS)
 
 INCLUDES = \
 	-I$(top_srcdir)/lib/engine/framework \
@@ -22,4 +22,4 @@ libgmevolution_la_LDFLAGS = $(PLUGINS_LIBTOOL_FLAGS)
 libgmevolution_la_LIBADD =  \
 	$(top_builddir)/lib/engine/framework/libgmframework.la \
 	$(top_builddir)/lib/engine/addressbook/libgmaddressbook.la \
-	$(SIGC_LIBS) $(EDS_LIBS) $(GLIB_LIBS)
+	$(BOOST_LDFLAGS) $(SIGC_LIBS) $(EDS_LIBS) $(GLIB_LIBS)

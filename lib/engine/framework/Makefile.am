@@ -2,7 +2,7 @@ stacklib_LTLIBRARIES = libgmframework.la
 
 framework_dir = $(top_srcdir)/lib/engine/framework
 
-AM_CXXFLAGS = $(SIGC_CFLAGS) $(GLIB_CFLAGS) $(XML_CFLAGS)
+AM_CXXFLAGS = $(BOOST_CPPFLAGS) $(SIGC_CFLAGS) $(GLIB_CFLAGS) $(XML_CFLAGS)
 
 INCLUDES = \
 	-I$(top_srcdir)/lib/gmconf			\
@@ -52,4 +52,4 @@ libgmframework_la_LDFLAGS = $(STACKLIB_LDFLAGS)
 libgmframework_la_LIBADD = \
 	$(top_builddir)/lib/gmconf/libgmconf.la \
 	$(top_builddir)/lib/platform/libgmplatform.la \
-	$(SIGC_LIBS) $(GLIB_LIBS) $(XML_LIBS)
+	$(BOOST_LDFLAGS) $(SIGC_LIBS) $(GLIB_LIBS) $(XML_LIBS)

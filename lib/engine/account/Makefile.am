@@ -2,7 +2,7 @@ stacklib_LTLIBRARIES = libaccount.la
 
 account_dir = $(top_srcdir)/lib/engine/account
 
-AM_CPPFLAGS = $(SIGC_CFLAGS) $(GLIB_CFLAGS)
+AM_CPPFLAGS = $(BOOST_CPPFLAGS) $(SIGC_CFLAGS) $(GLIB_CFLAGS)
 
 INCLUDES = \
 	-I$(top_srcdir)/lib/gmconf	 		\
@@ -15,4 +15,4 @@ libaccount_la_SOURCES = \
 	$(account_dir)/account-core.h			\
 	$(account_dir)/account-core.cpp
 
-libaccount_la_LDFLAGS = $(STACKLIB_LDFLAGS) $(SIGC_LIBS) $(GLIB_LIBS)
+libaccount_la_LDFLAGS = $(STACKLIB_LDFLAGS) $(BOOST_LDFLAGS) $(SIGC_LIBS) $(GLIB_LIBS)

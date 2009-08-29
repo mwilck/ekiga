@@ -2,7 +2,7 @@ plugin_LTLIBRARIES = libgmloudmouth.la
 
 loudmouth_dir = $(top_srcdir)/lib/engine/components/loudmouth
 
-AM_CXXFLAGS = $(SIGC_CFLAGS) $(XML_CFLAGS) $(LOUDMOUTH_CFLAGS)
+AM_CXXFLAGS = $(BOOST_CPPFLAGS) $(SIGC_CFLAGS) $(XML_CFLAGS) $(LOUDMOUTH_CFLAGS)
 
 INCLUDES = \
 	-I$(top_srcdir)/lib/gmconf \
@@ -30,4 +30,4 @@ libgmloudmouth_la_SOURCES = \
 	$(loudmouth_dir)/loudmouth-dialect.cpp
 
 libgmloudmouth_la_LDFLAGS = $(PLUGINS_LIBTOOL_FLAGS)
-libgmloudmouth_la_LIBADD = $(SIGC_LIBS) $(XML_LIBS) $(LOUDMOUTH_LIBS)
+libgmloudmouth_la_LIBADD = $(BOOST_LDFLAGS) $(SIGC_LIBS) $(XML_LIBS) $(LOUDMOUTH_LIBS)

@@ -2,7 +2,7 @@ stacklib_LTLIBRARIES = libgmchat.la
 
 chat_dir = $(top_srcdir)/lib/engine/chat
 
-AM_CPPFLAGS = $(SIGC_CFLAGS) $(GLIB_CFLAGS)
+AM_CPPFLAGS = $(BOOST_CPPFLAGS) $(SIGC_CFLAGS) $(GLIB_CFLAGS)
 
 INCLUDES = \
 	-I$(top_srcdir)/lib/engine/framework \
@@ -17,4 +17,4 @@ libgmchat_la_SOURCES = \
 	$(chat_dir)/chat-simple.h		\
 	$(chat_dir)/chat-multiple.h
 
-libgmchat_la_LDFLAGS = $(STACKLIB_LDFLAGS) $(SIGC_LIBS)
+libgmchat_la_LDFLAGS = $(STACKLIB_LDFLAGS) $(BOOST_LDFLAGS) $(SIGC_LIBS)

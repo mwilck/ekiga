@@ -2,7 +2,7 @@ noinst_LTLIBRARIES = libgmconfpersonaldetails.la
 
 gmconf_personal_details_dir = $(top_srcdir)/lib/engine/components/gmconf-personal-details
 
-AM_CXXFLAGS = $(SIGC_CFLAGS) $(GLIB_CFLAGS)
+AM_CXXFLAGS = $(BOOST_CPPFLAGS) $(SIGC_CFLAGS) $(GLIB_CFLAGS)
 
 INCLUDES = 					\
 	-I$(top_srcdir)/lib/gmconf	 	\
@@ -19,4 +19,4 @@ libgmconfpersonaldetails_la_SOURCES = 						\
 libgmconfpersonaldetails_la_LIBADD = 						\
 	$(top_builddir)/lib/engine/framework/libgmframework.la
 
-libgmconfpersonaldetails_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(GLIB_LIBS)
+libgmconfpersonaldetails_la_LDFLAGS = -export-dynamic -no-undefined $(BOOST_LDFLAGS) $(SIGC_LIBS) $(GLIB_LIBS)

@@ -2,7 +2,7 @@ stacklib_LTLIBRARIES = libgmaddressbook.la
 
 addressbook_dir = $(top_srcdir)/lib/engine/addressbook
 
-AM_CXXFLAGS = $(SIGC_CFLAGS) $(GLIB_CFLAGS)
+AM_CXXFLAGS = $(BOOST_CPPFLAGS) $(SIGC_CFLAGS) $(GLIB_CFLAGS)
 
 INCLUDES = \
 	-I$(top_srcdir)/lib/engine/framework
@@ -19,4 +19,4 @@ libgmaddressbook_la_SOURCES = \
 libgmaddressbook_la_LDFLAGS = $(STACKLIB_LDFLAGS)
 libgmaddressbook_la_LIBADD = \
 	$(top_builddir)/lib/engine/framework/libgmframework.la \
-	$(SIGC_LIBS) $(GLIB_LIBS)
+	$(BOOST_LDFLAGS) $(SIGC_LIBS) $(GLIB_LIBS)

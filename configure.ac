@@ -1,6 +1,7 @@
 AC_INIT(ekiga, 3.3.1, http://bugzilla.gnome.org/enter_bug.cgi?product=ekiga)
 AC_CANONICAL_TARGET
 AC_PREREQ(2.53)
+AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_SRCDIR(src/gui/main.cpp)
 AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
 
@@ -186,6 +187,10 @@ AC_SUBST(GTK_LIBS)
 AC_SUBST(GLIB_CFLAGS)
 AC_SUBST(GLIB_LIBS)
 
+dnl ###############################
+dnl   Mandatory BOOST support
+dnl ###############################
+AX_BOOST_BASE([1.34])
 
 dnl ###############################
 dnl   Mandatory SIGC++ support

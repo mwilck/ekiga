@@ -4,7 +4,7 @@ plugin_dir = $(top_srcdir)/lib/engine/plugin
 
 AM_CPPFLAGS = \
 	-DEKIGA_PLUGIN_DIR=\"$(PLUGIN_DIR)\" \
-	$(SIGC_CFLAGS) $(GLIB_CFLAGS)
+	$(BOOST_CPPFLAGS) $(SIGC_CFLAGS) $(GLIB_CFLAGS)
 
 INCLUDES = \
 	-I$(top_srcdir)/lib/gmconf	 		\
@@ -15,4 +15,4 @@ libplugin_la_SOURCES = \
 	$(plugin_dir)/plugin-core.cpp
 
 libplugin_la_LDFLAGS = $(STACKLIB_LDFLAGS)
-libplugin_la_LIBADD = $(SIGC_LIBS) $(GLIB_LIBS)
+libplugin_la_LIBADD = $(BOOST_LDFLAGS) $(SIGC_LIBS) $(GLIB_LIBS)

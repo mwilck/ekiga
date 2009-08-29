@@ -2,7 +2,7 @@ noinst_LTLIBRARIES = libgmgtk-frontend.la
 
 gtk_frontend_dir = $(top_srcdir)/lib/engine/gui/gtk-frontend
 
-AM_CPPFLAGS = $(XML_CFLAGS) $(SIGC_CFLAGS) $(GTK_CFLAGS)
+AM_CPPFLAGS = $(XML_CFLAGS) $(BOOST_CPPFLAGS) $(SIGC_CFLAGS) $(GTK_CFLAGS)
 
 INCLUDES = \
 	-I$(top_srcdir)/lib/ 					\

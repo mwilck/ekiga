@@ -2,7 +2,7 @@ stacklib_LTLIBRARIES = libgmvideooutput.la
 
 videooutput_dir = $(top_srcdir)/lib/engine/videooutput
 
-AM_CXXFLAGS = $(SIGC_CFLAGS) $(GLIB_CFLAGS) $(PTLIB_CFLAGS)
+AM_CXXFLAGS = $(BOOST_CPPFLAGS) $(SIGC_CFLAGS) $(GLIB_CFLAGS) $(PTLIB_CFLAGS)
 
 INCLUDES = \
 	-I$(top_srcdir)/lib/gmconf \
@@ -20,4 +20,4 @@ libgmvideooutput_la_SOURCES = \
 libgmvideooutput_la_LDFLAGS = $(STACKLIB_LDFLAGS)
 libgmvideooutput_la_LIBADD = \
 	$(top_builddir)/lib/engine/framework/libgmframework.la \
-	$(SIGC_LIBS) $(GLIB_LIBS) $(PTLIB_LIBS)
+	$(BOOST_LDFLAGS) $(SIGC_LIBS) $(GLIB_LIBS) $(PTLIB_LIBS)

@@ -3,7 +3,7 @@ noinst_LTLIBRARIES = libgmvideooutput-x.la
 videooutput_dir = $(top_srcdir)/lib/engine/components/x-videooutput
 common_dir = $(top_srcdir)/lib/engine/components/common-videooutput
 
-AM_CXXFLAGS = $(SIGC_CFLAGS) $(PTLIB_CFLAGS) $(GLIB_CFLAGS) $(XV_CFLAGS)
+AM_CXXFLAGS = $(BOOST_CPPFLAGS) $(SIGC_CFLAGS) $(PTLIB_CFLAGS) $(GLIB_CFLAGS) $(XV_CFLAGS)
 
 INCLUDES = \
 	-I$(top_srcdir)/lib/gmconf \
@@ -20,4 +20,4 @@ libgmvideooutput_x_la_SOURCES = \
 	$(videooutput_dir)/videooutput-main-x.cpp    \
 	$(videooutput_dir)/videooutput-main-x.h
 
-libgmvideooutput_x_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(PTLIB_LIBS) $(GLIB_LIBS) $(XV_LIBS)
+libgmvideooutput_x_la_LDFLAGS = -export-dynamic -no-undefined $(BOOST_LDFLAGS) $(SIGC_LIBS) $(PTLIB_LIBS) $(GLIB_LIBS) $(XV_LIBS)

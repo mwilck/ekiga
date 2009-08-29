@@ -2,7 +2,7 @@ noinst_LTLIBRARIES = libgmaudiooutput-null.la
 
 audiooutput_dir = $(top_srcdir)/lib/engine/components/null-audiooutput/
 
-AM_CXXFLAGS = $(SIGC_CFLAGS) $(GLIB_CFLAGS) $(PTLIB_CFLAGS)
+AM_CXXFLAGS = $(BOOST_CPPFLAGS) $(SIGC_CFLAGS) $(GLIB_CFLAGS) $(PTLIB_CFLAGS)
 
 INCLUDES = \
 	-I$(top_srcdir)/lib/gmconf \
@@ -17,4 +17,4 @@ libgmaudiooutput_null_la_SOURCES = \
 	$(audiooutput_dir)/audiooutput-main-null.h \
 	$(audiooutput_dir)/audiooutput-main-null.cpp 
 
-libgmaudiooutput_null_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(GLIB_LIBS) $(PTLIB_LIBS)
+libgmaudiooutput_null_la_LDFLAGS = -export-dynamic -no-undefined $(BOOST_LDFLAGS) $(SIGC_LIBS) $(GLIB_LIBS) $(PTLIB_LIBS)

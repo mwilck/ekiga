@@ -2,7 +2,7 @@ noinst_LTLIBRARIES = libcall-history.la
 
 call_history_dir = $(top_srcdir)/lib/engine/components/call-history
 
-AM_CPPFLAGS = $(XML_CFLAGS) $(SIGC_CFLAGS) $(GLIB_CFLAGS)
+AM_CPPFLAGS = $(XML_CFLAGS) $(BOOST_CPPFLAGS) $(SIGC_CFLAGS) $(GLIB_CFLAGS)
 
 INCLUDES = \
 	-I$(top_srcdir)/lib/gmconf \
@@ -23,4 +23,4 @@ libcall_history_la_SOURCES = \
 libcall_history_la_LIBADD = \
 	$(top_builddir)/lib/engine/addressbook/libgmaddressbook.la
 
-libcall_history_la_LDFLAGS = -export-dynamic -no-undefined $(XML_LIBS) $(SIGC_LIBS) $(GLIB_LIBS)
+libcall_history_la_LDFLAGS = -export-dynamic -no-undefined $(XML_LIBS) $(BOOST_LDFLAGS) $(SIGC_LIBS) $(GLIB_LIBS)

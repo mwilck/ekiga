@@ -2,7 +2,7 @@ noinst_LTLIBRARIES = libgmgtk-core.la
 
 gtk_core_dir = $(top_srcdir)/lib/engine/gui/gtk-core
 
-AM_CPPFLAGS = $(SIGC_CFLAGS) $(GTK_CFLAGS)
+AM_CPPFLAGS = $(BOOST_CPPFLAGS) $(SIGC_CFLAGS) $(GTK_CFLAGS)
 
 INCLUDES = \
 	-I$(top_srcdir)/lib/toolbox \

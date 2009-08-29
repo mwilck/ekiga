@@ -2,7 +2,7 @@ plugin_LTLIBRARIES = libgmresource_list.la
 
 resource_list_dir = $(top_srcdir)/lib/engine/components/resource-list/
 
-AM_CXXFLAGS = $(SIGC_CFLAGS) $(GLIB_CFLAGS) $(XML_CFLAGS)
+AM_CXXFLAGS = $(BOOST_CPPFLAGS) $(SIGC_CFLAGS) $(GLIB_CFLAGS) $(XML_CFLAGS)
 
 INCLUDES = 						\
 	-I$(top_srcdir)/lib/gmconf			\
@@ -32,4 +32,4 @@ libgmresource_list_la_LDFLAGS = \
 	$(PLUGINS_LIBTOOL_FLAGS)
 libgmresource_list_la_LIBADD = \
 	$(top_builddir)/lib/engine/components/xcap/libgmxcap.la \
-	$(SIGC_LIBS) $(GLIB_LIBS) $(XML_LIBS)
+	$(BOOST_LDFLAGS) $(SIGC_LIBS) $(GLIB_LIBS) $(XML_LIBS)

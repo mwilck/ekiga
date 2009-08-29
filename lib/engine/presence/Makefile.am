@@ -2,7 +2,7 @@ stacklib_LTLIBRARIES = libgmpresence.la
 
 presence_dir = $(top_srcdir)/lib/engine/presence
 
-AM_CXXFLAGS = $(SIGC_CFLAGS)
+AM_CXXFLAGS = $(BOOST_CPPFLAGS) $(SIGC_CFLAGS)
 
 INCLUDES = \
 	-I$(top_srcdir)/lib/engine/framework \
@@ -25,4 +25,4 @@ libgmpresence_la_SOURCES = \
 libgmpresence_la_LDFLAGS = $(STACKLIB_LDFLAGS)
 libgmpresence_la_LIBADD = \
 	$(top_builddir)/lib/engine/framework/libgmframework.la \
-	$(SIGC_LIBS)
+	$(BOOST_LDFLAGS) $(SIGC_LIBS)

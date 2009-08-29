@@ -2,7 +2,7 @@ stacklib_LTLIBRARIES = libgmaudiooutput.la
 
 audiooutput_dir = $(top_srcdir)/lib/engine/audiooutput
 
-AM_CXXFLAGS = $(SIGC_CFLAGS) $(GLIB_CFLAGS) $(PTLIB_CFLAGS)
+AM_CXXFLAGS = $(BOOST_CPPFLAGS) $(SIGC_CFLAGS) $(GLIB_CFLAGS) $(PTLIB_CFLAGS)
 
 INCLUDES = \
 	-I$(top_srcdir)/lib/gmconf \
@@ -24,4 +24,4 @@ libgmaudiooutput_la_SOURCES = \
 libgmaudiooutput_la_LDFLAGS = $(STACKLIB_LDFLAGS)
 libgmaudiooutput_la_LIBADD = \
 	$(top_builddir)/lib/engine/framework/libgmframework.la \
-	$(SIGC_LIBS) $(GLIB_LIBS) $(PTLIB_LIBS)
+	$(BOOST_LDFLAGS) $(SIGC_LIBS) $(GLIB_LIBS) $(PTLIB_LIBS)

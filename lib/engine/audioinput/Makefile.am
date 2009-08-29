@@ -2,7 +2,7 @@ stacklib_LTLIBRARIES = libgmaudioinput.la
 
 audioinput_dir = $(top_srcdir)/lib/engine/audioinput
 
-AM_CXXFLAGS = $(SIGC_CFLAGS) $(GLIB_CFLAGS) $(PTLIB_CFLAGS)
+AM_CXXFLAGS = $(BOOST_CPPFLAGS) $(SIGC_CFLAGS) $(GLIB_CFLAGS) $(PTLIB_CFLAGS)
 
 INCLUDES = \
 	-I$(top_srcdir)/lib/gmconf \
@@ -22,4 +22,4 @@ libgmaudioinput_la_SOURCES = \
 libgmaudioinput_la_LDFLAGS = $(STACKLIB_LDFLAGS)
 libgmaudioinput_la_LIBADD = \
 	$(top_builddir)/lib/engine/framework/libgmframework.la \
-	$(SIGC_LIBS) $(GLIB_LIBS) $(PTLIB_LIBS)
+	$(BOOST_LDFLAGS) $(SIGC_LIBS) $(GLIB_LIBS) $(PTLIB_LIBS)
