@@ -10,7 +10,6 @@ INCLUDES = \
 
 libgmframework_la_SOURCES = \
 	$(framework_dir)/services.h \
-	$(framework_dir)/gmref.h \
 	$(framework_dir)/map-key-iterator.h \
 	$(framework_dir)/map-key-const-iterator.h \
 	$(framework_dir)/reflister.h \
