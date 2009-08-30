@@ -43,6 +43,16 @@
 
 #include "presence-core.h"
 
+/* at one point we will return a smart pointer on this... and if we don't use
+ * a false smart pointer, we will crash : the reference count isn't embedded!
+ */
+struct null_deleter
+{
+    void operator()(void const *) const
+    {
+    }
+};
+
 RL::Entry::Entry (Ekiga::ServiceCore& core_,
 		  boost::shared_ptr<XCAP::Path> path_,
 		  int pos,
@@ -145,7 +155,7 @@ RL::Entry::populate_menu (Ekiga::MenuBuilder& builder)
 		      boost::bind (&RL::Entry::refresh, this));
 
   if ( !uri.empty ())
-    populated = presence_core->populate_presentity_menu (Ekiga::PresentityPtr (this), uri, builder)
+    populated = presence_core->populate_presentity_menu (Ekiga::PresentityPtr (this, null_deleter), uri, builder)
       || populated;
 
   return populated;

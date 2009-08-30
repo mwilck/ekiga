@@ -44,6 +44,16 @@
 
 #include "rl-presentity.h"
 
+/* at one point we will return a smart pointer on this... and if we don't use
+ * a false smart pointer, we will crash : the reference count isn't embedded!
+ */
+struct null_deleter
+{
+    void operator()(void const *) const
+    {
+    }
+};
+
 
 RL::Presentity::Presentity (Ekiga::ServiceCore &services_,
 			    boost::shared_ptr<XCAP::Path> path_,
@@ -193,7 +203,7 @@ RL::Presentity::populate_menu (Ekiga::MenuBuilder &builder)
   bool populated = false;
   boost::shared_ptr<Ekiga::PresenceCore> presence_core(services.get<Ekiga::PresenceCore> ("presence-core"));
 
-  populated = presence_core->populate_presentity_menu (PresentityPtr (this), uri, builder);
+  populated = presence_core->populate_presentity_menu (PresentityPtr (this, null_deleter ()), uri, builder);
 
   if (writable) {
 

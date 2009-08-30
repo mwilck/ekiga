@@ -50,7 +50,6 @@
 #include "menu-builder-gtk.h"
 #include "form-dialog-gtk.h"
 
-
 /*
  * The Roster
  */
@@ -130,20 +129,20 @@ static void remove_child (GtkWidget* child,
 /* DESCRIPTION : Set of functions called when the user clicks in a view
  * BEHAVIOUR   : Folds/unfolds, shows a menu or triggers default action
  */
-static void on_clicked_show_heap_menu (Ekiga::HeapPtr heap,
+static void on_clicked_show_heap_menu (Ekiga::Heap* heap,
 				       GdkEventButton* event);
-static void on_clicked_show_heap_group_menu (Ekiga::HeapPtr heap,
+static void on_clicked_show_heap_group_menu (Ekiga::Heap* heap,
 					     const std::string name,
 					     GdkEventButton* event);
-static void on_clicked_show_presentity_menu (Ekiga::HeapPtr heap,
-					     Ekiga::PresentityPtr presentity,
+static void on_clicked_show_presentity_menu (Ekiga::Heap* heap,
+					     Ekiga::Presentity* presentity,
 					     GdkEventButton* event);
 
 static void on_clicked_fold (RosterViewGtk* self,
 			     GtkTreePath* path,
 			     const gchar* name);
 
-static void on_clicked_trigger_presentity (Ekiga::PresentityPtr presentity);
+static void on_clicked_trigger_presentity (Ekiga::Presentity* presentity);
 
 /* DESCRIPTION : Called whenever a (online/total) count has to be updated
  * BEHAVIOUR   : Updates things...
@@ -389,7 +388,7 @@ remove_child (GtkWidget* child,
 }
 
 static void
-on_clicked_show_heap_menu (Ekiga::HeapPtr heap,
+on_clicked_show_heap_menu (Ekiga::Heap* heap,
 			   GdkEventButton* event)
 {
   MenuBuilderGtk builder;
@@ -407,7 +406,7 @@ on_clicked_show_heap_menu (Ekiga::HeapPtr heap,
 }
 
 static void
-on_clicked_show_heap_group_menu (Ekiga::HeapPtr heap,
+on_clicked_show_heap_group_menu (Ekiga::Heap* heap,
 				 const std::string name,
 				 GdkEventButton* event)
 {
@@ -426,8 +425,8 @@ on_clicked_show_heap_group_menu (Ekiga::HeapPtr heap,
 }
 
 static void
-on_clicked_show_presentity_menu (Ekiga::HeapPtr heap,
-				 Ekiga::PresentityPtr presentity,
+on_clicked_show_presentity_menu (Ekiga::Heap* heap,
+				 Ekiga::Presentity* presentity,
 				 GdkEventButton* event)
 {
   Ekiga::TemporaryMenuBuilder temp;
@@ -491,7 +490,7 @@ on_clicked_fold (RosterViewGtk* self,
 }
 
 static void
-on_clicked_trigger_presentity (Ekiga::PresentityPtr presentity)
+on_clicked_trigger_presentity (Ekiga::Presentity* presentity)
 {
   Ekiga::TriggerMenuBuilder builder;
 
@@ -684,24 +683,21 @@ on_view_event_after (GtkWidget *tree_view,
 	if (event->type == GDK_BUTTON_PRESS && event->button == 1 && name)
 	  on_clicked_fold (self, path, name);
 	if (event->type == GDK_BUTTON_PRESS && event->button == 3)
-	  on_clicked_show_heap_menu (Ekiga::HeapPtr(heap), event);
+	  on_clicked_show_heap_menu (heap, event);
 	break;
       case TYPE_GROUP:
 
 	if (event->type == GDK_BUTTON_PRESS && event->button == 1 && name)
 	  on_clicked_fold (self, path, name);
 	if (event->type == GDK_BUTTON_PRESS && event->button == 3)
-	  on_clicked_show_heap_group_menu (Ekiga::HeapPtr(heap),
-					   name, event);
+	  on_clicked_show_heap_group_menu (heap, name, event);
 	break;
       case TYPE_PRESENTITY:
 
 	if (event->type == GDK_BUTTON_PRESS && event->button == 3)
-	  on_clicked_show_presentity_menu (Ekiga::HeapPtr(heap),
-					   Ekiga::PresentityPtr(presentity),
-					   event);
+	  on_clicked_show_presentity_menu (heap, presentity, event);
 	if (event->type == GDK_2BUTTON_PRESS)
-	  on_clicked_trigger_presentity (Ekiga::PresentityPtr(presentity));
+	  on_clicked_trigger_presentity (presentity);
 	break;
       default:
 

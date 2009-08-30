@@ -42,6 +42,16 @@
 #include "robust-xml.h"
 #include "local-presentity.h"
 
+/* at one point we will return a smart pointer on this... and if we don't use
+ * a false smart pointer, we will crash : the reference count isn't embedded!
+ */
+struct null_deleter
+{
+    void operator()(void const *) const
+    {
+    }
+};
+
 
 /*
  * Public API
@@ -203,7 +213,7 @@ Local::Presentity::populate_menu (Ekiga::MenuBuilder &builder)
   boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
 
   populated
-    = presence_core->populate_presentity_menu (PresentityPtr(this),
+    = presence_core->populate_presentity_menu (PresentityPtr(this, null_deleter ()),
 					       get_uri (), builder);
 
   if (populated)

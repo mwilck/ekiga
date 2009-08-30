@@ -41,6 +41,17 @@
 #include "ldap-contact.h"
 #include "menu-builder-tools.h"
 
+/* at one point we will return a smart pointer on this... and if we don't use
+ * a false smart pointer, we will crash : the reference count isn't embedded!
+ */
+struct null_deleter
+{
+    void operator()(void const *) const
+    {
+    }
+};
+
+
 OPENLDAP::Contact::Contact (Ekiga::ServiceCore &_core,
 			    const std::string _name,
 			    const std::map<std::string, std::string> _uris)
@@ -74,7 +85,7 @@ OPENLDAP::Contact::populate_menu (Ekiga::MenuBuilder &builder)
 	 = uris.begin ();
        iter != uris.end ();
        iter++) {
-    if (contact_core->populate_contact_menu (ContactPtr(this),
+    if (contact_core->populate_contact_menu (ContactPtr(this, null_deleter ()),
 					     iter->second, tmp_builder)) {
       builder.add_ghost ("", iter->first);
       tmp_builder.populate_menu (builder);

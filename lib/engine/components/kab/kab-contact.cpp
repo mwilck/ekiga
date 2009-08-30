@@ -39,6 +39,16 @@
 
 #include "kab-contact.h"
 
+/* at one point we will return a smart pointer on this... and if we don't use
+ * a false smart pointer, we will crash : the reference count isn't embedded!
+ */
+struct null_deleter
+{
+    void operator()(void const *) const
+    {
+    }
+};
+
 KAB::Contact::Contact (Ekiga::ContactCore& _core,
 		       KABC::Addressee* addressee_)
   : core(_core), addressee(*addressee_)
@@ -71,7 +81,7 @@ KAB::Contact::populate_menu (Ekiga::MenuBuilder &builder)
 
     std::string precision = (*iter).typeLabel ().toUtf8 ().constData ();
     result = result
-      || core.populate_contact_menu (Ekiga::ContactPtr(this),
+      || core.populate_contact_menu (Ekiga::ContactPtr(this, null_deleter ()),
 				     (*iter).number ().toUtf8 ().constData (),
 				     builder);
   }

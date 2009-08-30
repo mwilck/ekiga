@@ -43,6 +43,16 @@
 
 #include "history-contact.h"
 
+/* at one point we will return a smart pointer on this... and if we don't use
+ * a false smart pointer, we will crash : the reference count isn't embedded!
+ */
+struct null_deleter
+{
+    void operator()(void const *) const
+    {
+    }
+};
+
 
 History::Contact::Contact (Ekiga::ServiceCore &_core,
 			   boost::shared_ptr<xmlDoc> _doc,
@@ -172,7 +182,7 @@ bool
 History::Contact::populate_menu (Ekiga::MenuBuilder &builder)
 {
   boost::shared_ptr<Ekiga::ContactCore> contact_core = core.get<Ekiga::ContactCore> ("contact-core");
-  return contact_core->populate_contact_menu (ContactPtr (this),
+  return contact_core->populate_contact_menu (ContactPtr (this, null_deleter ()),
 					      uri, builder);
 }
 
