@@ -39,10 +39,7 @@
 #include <set>
 #include <string>
 
-#include <boost/smart_ptr.hpp>
-#include "chain-of-responsibility.h"
-#include "form-request.h"
-#include "menu-builder.h"
+#include "live-object.h"
 
 namespace Ekiga
 {
@@ -54,7 +51,8 @@ namespace Ekiga
 
   /** A presentity is a piece of presence information for a single URI.
    */
-  class Presentity
+  class Presentity:
+    public virtual LiveObject
   {
   public:
 
@@ -86,23 +84,6 @@ namespace Ekiga
      * @return The Presentity's set of groups.
      */
     virtual const std::set<std::string> get_groups () const = 0;
-
-    /** Populates a menu with the actions possible on the Presentity.
-     * @param The builder to populate.
-     */
-    virtual bool populate_menu (MenuBuilder &) = 0;
-
-    /** This signal is emitted when the Presentity has been updated.
-     */
-    boost::signal0<void> updated;
-
-    /** This signal is emitted when the Presentity has been removed.
-     */
-    boost::signal0<void> removed;
-
-    /** This chain allows the Presentity to present forms to the user
-     */
-    ChainOfResponsibility<FormRequestPtr> questions;
   };
 
   typedef boost::shared_ptr<Presentity> PresentityPtr;

@@ -41,7 +41,8 @@
 
 namespace Ekiga {
 
-  class Source
+  class Source:
+    public virtual LiveObject
   {
   public:
 
@@ -58,14 +59,6 @@ namespace Ekiga {
      *  stopping the visit)
      */
     virtual void visit_books (boost::function1<bool, BookPtr >) = 0;
-
-
-    /** Create the menu for that source and its actions.
-     * This function is purely virtual and should be implemented by
-     * the descendant of the Ekiga::Source.
-     * @param A MenuBuilder object to populate.
-     */
-    virtual bool populate_menu (MenuBuilder &) = 0;
 
 
     /** This signal is emitted when a Book has been added to the Source.
@@ -96,10 +89,6 @@ namespace Ekiga {
      *  this source
      */
     boost::signal2<void, BookPtr, ContactPtr > contact_updated;
-
-    /** This chain allows the Source to present forms to the user
-     */
-    ChainOfResponsibility<FormRequestPtr> questions;
   };
 
   typedef boost::shared_ptr<Source> SourcePtr;

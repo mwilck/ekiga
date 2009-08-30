@@ -40,7 +40,8 @@
 
 namespace Ekiga {
 
-  class Book
+  class Book:
+    public virtual LiveObject
   {
 
   public:
@@ -64,14 +65,6 @@ namespace Ekiga {
      *  stopping the visit)
      */
     virtual void visit_contacts (boost::function1<bool, ContactPtr>) = 0;
-
-
-    /** Create the menu for that book and its actions.
-     * This function is purely virtual and should be implemented by
-     * the descendant of the Ekiga::Book, ie BookImpl.
-     * @param A MenuBuilder object to populate.
-     */
-    virtual bool populate_menu (MenuBuilder &) = 0;
 
 
     /** Set the search filter.
@@ -106,16 +99,6 @@ namespace Ekiga {
      * Signals on that object
      */
 
-    /** This signal is emitted when the Book has been updated.
-     */
-    boost::signal0<void> updated;
-
-
-    /** This signal is emitted when the Book has been removed from the Source.
-     */
-    boost::signal0<void> removed;
-
-
     /** This signal is emitted when a Contact has been added to the Book.
      */
     boost::signal1<void, ContactPtr > contact_added;
@@ -129,11 +112,6 @@ namespace Ekiga {
     /** This signal is emitted when a Contact has been updated in the Book.
      */
     boost::signal1<void, ContactPtr > contact_updated;
-
-
-    /** This chain allows the Book to present forms to the user
-     */
-    ChainOfResponsibility<FormRequestPtr> questions;
   };
 
   typedef boost::shared_ptr<Book> BookPtr;

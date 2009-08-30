@@ -25,65 +25,57 @@
 
 
 /*
- *                         cluster.h  -  description
+ *                         live-object.h  -  description
  *                         ------------------------------------------
- *   begin                : written in 2007 by Julien Puydt
- *   copyright            : (c) 2007 by Julien Puydt
- *   description          : declaration of the interface of a heap
- *                          implementation backend
+ *   begin                : written in 2009 by Julien Puydt
+ *   copyright            : (c) 2009 by Julien Puydt
+ *   description          : common class for objects which are somehow 'live'
  *
  */
 
-#ifndef __CLUSTER_H__
-#define __CLUSTER_H__
+#ifndef __LIVE_OBJECT_H__
+#define __LIVE_OBJECT_H__
 
-#include "heap.h"
+#include <boost/smart_ptr.hpp>
+#include "chain-of-responsibility.h"
+#include "form-request.h"
+#include "menu-builder.h"
 
 namespace Ekiga
 {
 
-/**
- * @addtogroup presence
- * @{
- */
-
-  class Cluster:
-    public virtual LiveObject
+  class LiveObject
   {
-
   public:
 
-    /** The destructor.
-     */
-    virtual ~Cluster () {}
+    virtual ~LiveObject () { }
 
-    /** Get the list of Heaps by visiting them with a callback.
-     * @param The callback used to know about heaps.
+    /** Populate a menu with the action available on that object
+     * @param A MenuBuilder object to populate.
      */
-    virtual void visit_heaps (boost::function1<bool, HeapPtr >) = 0;
+    virtual bool populate_menu (MenuBuilder &) = 0;
 
-    /** Those signals are emitted whenever a new Heap is added or removed
-     * from the Cluster.
-     * @param The Heap in question.
-     */
-    boost::signal1<void, HeapPtr > heap_added;
-    boost::signal1<void, HeapPtr > heap_removed;
 
-    /** Those signals are forwarded from the given Heap
-     * @param The Heap in question.
+    /**
+     * Signals on that object
      */
-    boost::signal1<void, HeapPtr > heap_updated;
-    boost::signal2<void, HeapPtr , PresentityPtr > presentity_added;
-    boost::signal2<void, HeapPtr , PresentityPtr > presentity_updated;
-    boost::signal2<void, HeapPtr , PresentityPtr > presentity_removed;
+
+    /** This signal is emitted when the object has been updated.
+     */
+    boost::signal0<void> updated;
+
+
+    /** This signal is emitted when the object has been removed.
+     */
+    boost::signal0<void> removed;
+
+    /** This chain allows the object to present forms to the user
+     */
+    ChainOfResponsibility<FormRequestPtr> questions;
   };
 
-  typedef boost::shared_ptr<Cluster> ClusterPtr;
 
-/**
- * @}
- */
+  typedef boost::shared_ptr<LiveObject> LiveObjectPtr;
 
 };
-
 #endif

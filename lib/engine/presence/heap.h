@@ -38,8 +38,6 @@
 #ifndef __HEAP_H__
 #define __HEAP_H__
 
-#include <boost/smart_ptr.hpp>
-
 #include "presentity.h"
 
 namespace Ekiga
@@ -50,7 +48,8 @@ namespace Ekiga
  * @{
  */
 
-  class Heap
+  class Heap:
+    public virtual LiveObject
   {
 
   public:
@@ -70,11 +69,6 @@ namespace Ekiga
      */
     virtual void visit_presentities (boost::function1<bool, PresentityPtr >) = 0;
 
-    /** Populates a menu with the actions possible on the Heap.
-     * @param The builder to populate.
-     */
-    virtual bool populate_menu (MenuBuilder &) = 0;
-
     /** Populates a menu with the actions possible on the given group
      * of the Heap.
      * @param The name of the group on which to act.
@@ -87,14 +81,6 @@ namespace Ekiga
      * Signals on that object
      */
 
-    /** This signal is emitted when the Heap has been updated.
-     */
-    boost::signal0<void> updated;
-
-    /** This signal is emitted when the Heap has been removed.
-     */
-    boost::signal0<void> removed;
-
     /** This signal is emitted  when a Presentity has been added to the Heap.
      */
     boost::signal1<void, PresentityPtr > presentity_added;
@@ -106,10 +92,6 @@ namespace Ekiga
     /** This signal is emitted when a Presentity has been removed from the Heap.
      */
     boost::signal1<void, PresentityPtr > presentity_removed;
-
-    /** This chain allows the Heap to present forms to the user
-     */
-    ChainOfResponsibility<FormRequestPtr> questions;
   };
 
   typedef boost::shared_ptr<Heap> HeapPtr;

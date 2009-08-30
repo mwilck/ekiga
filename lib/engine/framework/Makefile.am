@@ -45,7 +45,8 @@ libgmframework_la_SOURCES = \
 	$(framework_dir)/personal-details.h \
 	$(framework_dir)/ptr_array.h \
 	$(framework_dir)/ptr_array_iterator.h \
-	$(framework_dir)/ptr_array_const_iterator.h
+	$(framework_dir)/ptr_array_const_iterator.h \
+	$(framework_dir)/live-object.h
 
 
 libgmframework_la_LDFLAGS = $(STACKLIB_LDFLAGS)
