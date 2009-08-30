@@ -257,7 +257,7 @@ RL::ListImpl::refresh ()
   flush ();
 
   boost::shared_ptr<XCAP::Core> xcap = core.get<XCAP::Core> ("xcap-core");
-  xcap->read (path, boost::bind (&RL::ListImpl::on_xcap_answer, this));
+  xcap->read (path, boost::bind (&RL::ListImpl::on_xcap_answer, this, _1, _2));
 }
 
 void
@@ -341,8 +341,8 @@ RL::ListImpl::parse ()
 							    display_name,
 							    doc, child));
       std::list<boost::signals::connection> conns;
-      conns.push_back (entry->updated.connect (boost::bind (entry_updated, entry)));
-      conns.push_back (entry->removed.connect (boost::bind (entry_removed, entry)));
+      conns.push_back (entry->updated.connect (boost::bind (boost::ref (entry_updated), entry)));
+      conns.push_back (entry->removed.connect (boost::bind (boost::ref (entry_removed), entry)));
       entries.push_back (std::pair<boost::shared_ptr<Entry>, std::list<boost::signals::connection> > (entry, conns));
       ordering.push_back (ENTRY);
       entry_pos++;

@@ -264,7 +264,7 @@ RL::Heap::refresh ()
 
   doc.reset ();
 
-  xcap->read (path, boost::bind (&RL::Heap::on_document_received, this));
+  xcap->read (path, boost::bind (&RL::Heap::on_document_received, this, _1, _2));
 }
 
 void
@@ -367,10 +367,10 @@ RL::Heap::parse_list (xmlNodePtr list)
 
       PresentityPtr presentity(new Presentity (services, path, doc, child, writable));
       std::list<boost::signals::connection> conns;
-      conns.push_back (presentity->updated.connect (boost::bind (presentity_updated,presentity)));
-      conns.push_back (presentity->removed.connect (boost::bind(presentity_removed,presentity)));
+      conns.push_back (presentity->updated.connect (boost::bind (boost::ref (presentity_updated), presentity)));
+      conns.push_back (presentity->removed.connect (boost::bind(boost::ref (presentity_removed),presentity)));
       conns.push_back (presentity->trigger_reload.connect (boost::bind (&RL::Heap::refresh, this)));
-      conns.push_back (presentity->questions.connect (questions.make_slot()));
+      conns.push_back (presentity->questions.connect (boost::ref (questions)));
       presentities[presentity]=conns;
       presentity_added (presentity);
       continue;
@@ -408,7 +408,7 @@ RL::Heap::push_status (const std::string uri_,
 void
 RL::Heap::edit ()
 {
-  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&RL::Heap::on_edit_form_submitted, this)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&RL::Heap::on_edit_form_submitted, this, _1, _2)));
 
   std::string name_str;
   std::string root_str;
@@ -507,7 +507,7 @@ RL::Heap::on_edit_form_submitted (bool submitted,
 void
 RL::Heap::new_entry ()
 {
-  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&RL::Heap::on_new_entry_form_submitted, this)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&RL::Heap::on_new_entry_form_submitted, this, _1, _2)));
 
   request->title (_("Add a remote contact"));
   request->instructions (_("Please fill in this form to create a new "
@@ -602,7 +602,7 @@ RL::Heap::on_new_entry_form_submitted (bool submitted,
     boost::shared_ptr<XCAP::Core> xcap = services.get<XCAP::Core> ("xcap-core");
     xcap->write (path, "application/xcap-el+xml",
 		 (const char*)xmlBufferContent (buffer),
-		 boost::bind (&RL::Heap::new_entry_result, this));
+		 boost::bind (&RL::Heap::new_entry_result, this, _1));
   }
   xmlBufferFree (buffer);
 }

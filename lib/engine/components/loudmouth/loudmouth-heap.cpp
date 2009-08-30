@@ -194,7 +194,7 @@ LM::Heap::presence_handler (LmMessage* message)
 
   if (type_attr != NULL && strcmp (type_attr, "subscribe") == 0) {
 
-    boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&LM::Heap::subscribe_from_form_submitted, this)));
+    boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&LM::Heap::subscribe_from_form_submitted, this, _1, _2)));
     LmMessageNode* status = lm_message_node_find_child (lm_message_get_node (message), "status");
     gchar* instructions = NULL;
     std::string item_name;
@@ -301,7 +301,7 @@ LM::Heap::parse_roster (LmMessageNode* query)
     if ( !found) {
 
       PresentityPtr presentity(new Presentity (connection, node));
-      presentity->chat_requested.connect (boost::bind (boost::bind (&LM::Heap::on_chat_requested, this), presentity));
+      presentity->chat_requested.connect (boost::bind (&LM::Heap::on_chat_requested, this, presentity));
       add_presentity (presentity);
     }
   }
@@ -310,7 +310,7 @@ LM::Heap::parse_roster (LmMessageNode* query)
 void
 LM::Heap::add_item ()
 {
-  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&LM::Heap::add_item_form_submitted, this)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&LM::Heap::add_item_form_submitted, this, _1, _2)));
 
   request->title (_("Add a roster element"));
   request->instructions (_("Please fill in this form to add a new"

@@ -213,7 +213,7 @@ RL::Presentity::populate_menu (Ekiga::MenuBuilder &builder)
 void
 RL::Presentity::edit_presentity ()
 {
-  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&RL::Presentity::edit_presentity_form_submitted, this)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&RL::Presentity::edit_presentity_form_submitted, this, _1, _2)));
 
   // FIXME: we should be able to know all groups in the heap
   std::set<std::string> all_groups = groups;
@@ -298,8 +298,7 @@ RL::Presentity::save (bool reload)
     boost::shared_ptr<XCAP::Core> xcap = services.get<XCAP::Core> ("xcap-core");
     xcap->write (path, "application/xcap-el+xml",
 		 (const char*)xmlBufferContent (buffer),
-		 boost::bind (boost::bind (&RL::Presentity::save_result, this),
-			     reload));
+		 boost::bind (&RL::Presentity::save_result, this, _1, reload));
   }
 
   xmlBufferFree (buffer);
@@ -317,7 +316,7 @@ RL::Presentity::remove ()
 
   boost::shared_ptr<XCAP::Core> xcap = services.get<XCAP::Core> ("xcap-core");
   xcap->erase (path,
-	       boost::bind (&RL::Presentity::erase_result, this));
+	       boost::bind (&RL::Presentity::erase_result, this, _1));
 }
 
 void

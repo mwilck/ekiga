@@ -256,7 +256,7 @@ LM::Account::get_node () const
 void
 LM::Account::edit ()
 {
-  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&LM::Account::on_edit_form_submitted, this)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&LM::Account::on_edit_form_submitted, this, _1, _2)));
   xmlChar* xml_str = NULL;
 
   request->title (_("Edit account"));

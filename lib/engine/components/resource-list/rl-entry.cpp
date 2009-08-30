@@ -162,7 +162,7 @@ RL::Entry::refresh ()
   updated ();
 
   boost::shared_ptr<XCAP::Core> xcap = core.get<XCAP::Core> ("xcap-core");
-  xcap->read (path, boost::bind (&RL::Entry::on_xcap_answer, this));
+  xcap->read (path, boost::bind (&RL::Entry::on_xcap_answer, this, _1, _2));
 }
 
 void

@@ -181,7 +181,7 @@ LM::Presentity::populate_menu (Ekiga::MenuBuilder& builder)
 
   if ( !has_chat) {
 
-    builder.add_action ("chat", _("Start chat"), chat_requested);
+    builder.add_action ("chat", _("Start chat"), boost::ref (chat_requested));
   }
 
   builder.add_action ("remove", _("_Remove"),
@@ -257,7 +257,7 @@ LM::Presentity::push_presence (const std::string resource,
 void
 LM::Presentity::edit_presentity ()
 {
-  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&LM::Presentity::edit_presentity_form_submitted, this)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&LM::Presentity::edit_presentity_form_submitted, this, _1, _2)));
 
   request->title (_("Edit roster element"));
   request->instructions (_("Please fill in this form to change an existing "

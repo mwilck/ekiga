@@ -116,6 +116,6 @@ bool
 LM::Bank::populate_menu (Ekiga::MenuBuilder& builder)
 {
   builder.add_action ("add", _("_Add a jabber/XMPP account"),
-		      boost::bind (boost::bind (&LM::Bank::add, this), (xmlNodePtr)NULL));
+		      boost::bind (&LM::Bank::add, this, (xmlNodePtr)NULL));
   return true;
 }

@@ -54,8 +54,8 @@ RL::Cluster::Cluster (Ekiga::ServiceCore& core_): core(core_), doc()
 
   boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
 
-  presence_core->presence_received.connect (boost::bind (&RL::Cluster::on_presence_received, this));
-  presence_core->status_received.connect (boost::bind (&RL::Cluster::on_status_received, this));
+  presence_core->presence_received.connect (boost::bind (&RL::Cluster::on_presence_received, this, _1, _2));
+  presence_core->status_received.connect (boost::bind (&RL::Cluster::on_status_received, this, _1, _2));
 
   c_raw = gm_conf_get_string (KEY);
 
@@ -100,8 +100,8 @@ bool
 RL::Cluster::populate_menu (Ekiga::MenuBuilder& builder)
 {
   builder.add_action ("new", _("New resource list"),
-		      boost::bind (boost::bind (&RL::Cluster::new_heap, this),
-				  "", "", "", "", "", false));
+		      boost::bind (&RL::Cluster::new_heap, this,
+				   "", "", "", "", "", false));
   return true;
 }
 
@@ -161,7 +161,7 @@ RL::Cluster::new_heap (const std::string name,
 		       const std::string user,
 		       bool writable)
 {
-  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&RL::Cluster::on_new_heap_form_submitted, this)));
+  boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&RL::Cluster::on_new_heap_form_submitted, this, _1, _2)));
 
   request->title (_("Add new resource-list"));
   request->instructions (_("Please fill in this form to add a new "
