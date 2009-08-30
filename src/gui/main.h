@@ -331,13 +331,6 @@ void ekiga_main_window_append_call_url (EkigaMainWindow *mw,
 
 
 /* DESCRIPTION   :  /
- * BEHAVIOR      : Returns the currently called URL in the URL bar.
- * PRE           : The main window GMObject.
- */
-const char *ekiga_main_window_get_call_url (EkigaMainWindow *main_window);
-
-
-/* DESCRIPTION   :  /
  * BEHAVIOR      : Clears the stats area in the control panel. 
  * PRE           : The main window GMObject.
  */

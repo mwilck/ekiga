@@ -496,6 +496,11 @@ static void ekiga_main_window_add_device_dialog_show (EkigaMainWindow *main_wind
                                                       DeviceType device_type);
 
 
+/* DESCRIPTION   :  /
+ * BEHAVIOR      : Returns the currently called URL in the URL bar.
+ * PRE           : The main window GMObject.
+ */
+static const std::string ekiga_main_window_get_call_url (EkigaMainWindow *mw);
 
 /* 
  * Engine Callbacks 
@@ -4241,12 +4246,17 @@ ekiga_main_window_append_call_url (EkigaMainWindow *mw,
 }
 
 
-const char *
+static const std::string
 ekiga_main_window_get_call_url (EkigaMainWindow *mw)
 {
   g_return_val_if_fail (EKIGA_IS_MAIN_WINDOW (mw), NULL);
 
-  return gtk_entry_get_text (GTK_ENTRY (mw->priv->entry));
+  const gchar* entry_text = gtk_entry_get_text (GTK_ENTRY (mw->priv->entry));
+
+  if (entry_text != NULL)
+    return entry_text;
+  else
+    return "";
 }
 
 
