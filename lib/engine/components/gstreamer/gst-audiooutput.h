@@ -82,6 +82,7 @@ namespace GST
 		     Ekiga::AudioOutputDevice& device);
   private:
 
+    bool already_detected_devices;
     void detect_devices ();
     void detect_fakesink_devices ();
     void detect_alsasink_devices ();

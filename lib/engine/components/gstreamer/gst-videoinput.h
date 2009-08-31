@@ -72,6 +72,7 @@ namespace GST
 		     Ekiga::VideoInputDevice& device);
   private:
 
+    bool already_detected_devices;
     void detect_devices ();
     void detect_videotestsrc_devices ();
     void detect_v4l2src_devices ();

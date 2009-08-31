@@ -44,9 +44,9 @@
 
 #include <string.h>
 
-GST::VideoInputManager::VideoInputManager (): pipeline(NULL)
+GST::VideoInputManager::VideoInputManager ():
+  already_detected_devices(false), pipeline(NULL)
 {
-  detect_devices (); // or we won't recognize the devices we'll be asked to use
 }
 
 GST::VideoInputManager::~VideoInputManager ()
@@ -81,6 +81,9 @@ GST::VideoInputManager::set_device (const Ekiga::VideoInputDevice& device,
 {
   bool result = false;
 
+  if ( !already_detected_devices)
+    detect_devices ();
+
   if (device.type == "GStreamer"
       && devices_by_name.find (std::pair<std::string, std::string>(device.source, device.name)) != devices_by_name.end ()) {
 
@@ -107,6 +110,9 @@ GST::VideoInputManager::open (unsigned width,
   gchar* command = NULL;
   GError* error = NULL;
   GstState current;
+
+  if ( !already_detected_devices)
+    detect_devices ();
 
   command = g_strdup_printf ("%s ! appsink max_buffers=2 drop=true"
 			     " caps=video/x-raw-yuv"
@@ -159,6 +165,7 @@ GST::VideoInputManager::close ()
 {
   if (pipeline != NULL) {
 
+    gst_element_set_state (pipeline, GST_STATE_NULL);
     device_closed (current_state.device);
     g_object_unref (pipeline);
     pipeline = NULL;
@@ -207,6 +214,7 @@ GST::VideoInputManager::has_device (const std::string& source,
 void
 GST::VideoInputManager::detect_devices ()
 {
+  already_detected_devices = true;
   devices_by_name.clear ();
   detect_videotestsrc_devices ();
   detect_v4l2src_devices ();

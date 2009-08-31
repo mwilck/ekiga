@@ -44,9 +44,9 @@
 
 #include <string.h>
 
-GST::AudioInputManager::AudioInputManager ()
+GST::AudioInputManager::AudioInputManager ():
+  already_detected_devices(false), pipeline(NULL)
 {
-  detect_devices ();
 }
 
 GST::AudioInputManager::~AudioInputManager ()
@@ -76,6 +76,9 @@ GST::AudioInputManager::set_device (const Ekiga::AudioInputDevice& device)
 {
   bool result = false;
 
+  if ( !already_detected_devices)
+    detect_devices ();
+
   if (device.type == "GStreamer"
       && devices_by_name.find (std::pair<std::string, std::string>(device.source, device.name)) != devices_by_name.end ()) {
 
@@ -95,6 +98,9 @@ GST::AudioInputManager::open (unsigned channels,
   gchar* command = NULL;
   GError* error = NULL;
   GstState current;
+
+  if ( !already_detected_devices)
+    detect_devices ();
 
   command = g_strdup_printf ("%s ! appsink max_buffers=2 drop=true"
 			     " caps=audio/x-raw-int"
@@ -253,6 +259,7 @@ GST::AudioInputManager::has_device (const std::string& source,
 void
 GST::AudioInputManager::detect_devices ()
 {
+  already_detected_devices = true;
   devices_by_name.clear ();
   detect_audiotestsrc_devices ();
   detect_alsasrc_devices ();

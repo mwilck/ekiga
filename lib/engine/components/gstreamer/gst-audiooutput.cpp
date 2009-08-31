@@ -64,9 +64,9 @@ pipeline_cleaner (GstBus* /*bus*/,
 }
 
 
-GST::AudioOutputManager::AudioOutputManager ()
+GST::AudioOutputManager::AudioOutputManager ():
+  already_detected_devices(false)
 {
-  detect_devices ();
 }
 
 GST::AudioOutputManager::~AudioOutputManager ()
@@ -97,6 +97,9 @@ GST::AudioOutputManager::set_device (Ekiga::AudioOutputPS ps,
 {
   bool result = false;
 
+  if ( !already_detected_devices)
+    detect_devices ();
+
   if (device.type == "GStreamer"
       && devices_by_name.find (std::pair<std::string,std::string>(device.source, device.name)) != devices_by_name.end ()) {
 
@@ -119,6 +122,10 @@ GST::AudioOutputManager::open (Ekiga::AudioOutputPS ps,
   gchar* command = NULL;
   GError* error = NULL;
   GstState current;
+
+  if ( !already_detected_devices)
+    detect_devices ();
+
   command = g_strdup_printf ("appsrc is-live=true name=ekiga_src"
 			     " ! audio/x-raw-int"
 			     ",rate=%d"
@@ -210,6 +217,7 @@ GST::AudioOutputManager::close (Ekiga::AudioOutputPS ps)
       GstBus* bus = gst_pipeline_get_bus (GST_PIPELINE (pipeline[ii]));
       gst_bus_add_watch (bus, pipeline_cleaner, pipeline[ii]);
       gst_object_unref (bus);
+      gst_element_set_state (pipeline[ii], GST_STATE_NULL);
       pipeline[ii] = NULL;
       device_closed (ps, current_state[ii].device);
     }
