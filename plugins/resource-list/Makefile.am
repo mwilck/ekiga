@@ -1,6 +1,6 @@
 plugin_LTLIBRARIES = libgmresource_list.la
 
-resource_list_dir = $(top_srcdir)/lib/engine/components/resource-list/
+resource_list_dir = $(top_srcdir)/plugins/resource-list/
 
 AM_CXXFLAGS = $(BOOST_CPPFLAGS) $(SIGC_CFLAGS) $(GLIB_CFLAGS) $(XML_CFLAGS)
 
@@ -9,7 +9,7 @@ INCLUDES = 						\
 	-I$(top_srcdir)/lib/engine/framework		\
 	-I$(top_srcdir)/lib/engine/presence	\
 	-I$(top_srcdir)/lib/engine/account		\
-	-I$(top_srcdir)/lib/engine/components/xcap
+	-I$(top_srcdir)/plugins/xcap
 
 libgmresource_list_la_SOURCES = \
 	$(resource_list_dir)/resource-list-main.h \
@@ -28,8 +28,8 @@ libgmresource_list_la_SOURCES = \
 	$(resource_list_dir)/rl-cluster.cpp
 
 libgmresource_list_la_LDFLAGS = \
-	-L$(top_builddir)/lib/engine/components/xcap \
+	-L$(top_builddir)/plugins/xcap \
 	$(PLUGINS_LIBTOOL_FLAGS)
 libgmresource_list_la_LIBADD = \
-	$(top_builddir)/lib/engine/components/xcap/libgmxcap.la \
+	$(top_builddir)/plugins/xcap/libgmxcap.la \
 	$(BOOST_LDFLAGS) $(BOOST_LIBS) $(GLIB_LIBS) $(XML_LIBS)

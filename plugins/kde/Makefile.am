@@ -1,6 +1,6 @@
 plugin_LTLIBRARIES = libgmkde.la
 
-kde_dir = $(top_srcdir)/lib/engine/components/kde
+kde_dir = $(top_srcdir)/plugins/kde
 
 AM_CXXFLAGS = $(BOOST_CPPFLAGS) $(SIGC_CFLAGS) $(KDE_CFLAGS)
 

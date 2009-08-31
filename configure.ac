@@ -885,8 +885,6 @@ lib/engine/Makefile
 lib/engine/account/Makefile
 lib/engine/addressbook/Makefile
 lib/engine/components/call-history/Makefile
-lib/engine/components/ldap/Makefile
-lib/engine/components/kab/Makefile
 lib/engine/chat/Makefile
 lib/engine/friend-or-foe/Makefile
 lib/engine/framework/Makefile
@@ -907,16 +905,10 @@ lib/engine/gui/gtk-core/Makefile
 lib/engine/gui/gtk-frontend/Makefile
 lib/engine/components/Makefile
 lib/engine/components/avahi-publisher/Makefile
-lib/engine/components/evolution/Makefile
 lib/engine/components/gmconf-personal-details/Makefile
-lib/engine/components/gstreamer/Makefile
-lib/engine/components/kde/Makefile
 lib/engine/components/libnotify/Makefile
-lib/engine/components/loudmouth/Makefile
 lib/engine/components/opal/Makefile
-lib/engine/components/resource-list/Makefile
 lib/engine/components/gnome-session/Makefile
-lib/engine/components/xcap/Makefile
 lib/engine/components/null-audioinput/Makefile
 lib/engine/components/null-audiooutput/Makefile
 lib/engine/components/mlogo-videoinput/Makefile
@@ -924,6 +916,15 @@ lib/engine/components/x-videooutput/Makefile
 lib/engine/components/dx-videooutput/Makefile
 lib/engine/components/hal-dbus/Makefile
 lib/engine/components/echo/Makefile
+plugins/Makefile
+plugins/evolution/Makefile
+plugins/gstreamer/Makefile
+plugins/kab/Makefile
+plugins/kde/Makefile
+plugins/ldap/Makefile
+plugins/loudmouth/Makefile
+plugins/resource-list/Makefile
+plugins/xcap/Makefile
 )
 
 

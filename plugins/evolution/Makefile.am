@@ -1,6 +1,6 @@
 plugin_LTLIBRARIES = libgmevolution.la
 
-evolution_dir = $(top_srcdir)/lib/engine/components/evolution
+evolution_dir = $(top_srcdir)/plugins/evolution
 
 AM_CXXFLAGS = $(BOOST_CPPFLAGS) $(SIGC_CFLAGS) $(EDS_CFLAGS) $(GLIB_CFLAGS)
 

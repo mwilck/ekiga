@@ -1,6 +1,6 @@
 plugin_LTLIBRARIES = libgmxcap.la
 
-xcap_dir = $(top_srcdir)/lib/engine/components/xcap/
+xcap_dir = $(top_srcdir)/plugins/xcap/
 
 AM_CXXFLAGS = $(BOOST_CPPFLAGS) $(SIGC_CFLAGS) $(SOUP_CFLAGS)
 

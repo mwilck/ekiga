@@ -1,6 +1,6 @@
 plugin_LTLIBRARIES = libgmloudmouth.la
 
-loudmouth_dir = $(top_srcdir)/lib/engine/components/loudmouth
+loudmouth_dir = $(top_srcdir)/plugins/loudmouth
 
 AM_CXXFLAGS = $(BOOST_CPPFLAGS) $(SIGC_CFLAGS) $(XML_CFLAGS) $(LOUDMOUTH_CFLAGS)
 
