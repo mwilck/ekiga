@@ -45,9 +45,7 @@
 #include "opal-gmconf-bridge.h"
 #include "opal-call-manager.h"
 
-#ifdef HAVE_SIP
 #include "sip-endpoint.h"
-#endif 
 
 #ifdef HAVE_H323
 #include "h323-endpoint.h"
@@ -264,7 +262,6 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
   //
   // SIP related keys
   // 
-#ifdef HAVE_SIP
   else if (key.find (SIP_KEY) != string::npos) {
 
     boost::shared_ptr<Opal::Sip::EndPoint> sip_manager = boost::dynamic_pointer_cast<Opal::Sip::EndPoint> (manager.get_protocol_manager ("sip"));
@@ -292,7 +289,6 @@ void ConfBridge::on_property_changed (std::string key, GmConfEntry *entry)
       }
     }
   }
-#endif
 
   //
   // H.323 keys
