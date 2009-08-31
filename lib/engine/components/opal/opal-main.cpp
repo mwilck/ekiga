@@ -48,10 +48,8 @@
 #include "opal-bank.h"
 #include "opal-call-manager.h"
 
-#ifdef HAVE_SIP
 #include "sip-endpoint.h"
 #define SIP_KEY "/apps/" PACKAGE_NAME "/protocols/sip/"
-#endif
 
 #ifdef HAVE_H323
 #include "h323-endpoint.h"
@@ -73,10 +71,8 @@ is_supported_address (const std::string uri)
     return true;
 #endif
 
-#ifdef HAVE_SIP
   if (uri.find ("sip:") == 0)
     return true;
-#endif
 
   return false;
 }
@@ -112,7 +108,6 @@ struct OPALSpark: public Ekiga::Spark
       core.add (bank);
       call_manager->ready.connect (sigc::mem_fun (&*bank, &Opal::Bank::call_manager_ready));
 
-#ifdef HAVE_SIP
       unsigned sip_port = gm_conf_get_int (SIP_KEY "listen_port");
       gmref_ptr<Sip::EndPoint> sip_manager (new Sip::EndPoint (*call_manager, core, sip_port));
       call_manager->add_protocol_manager (sip_manager);
@@ -121,7 +116,6 @@ struct OPALSpark: public Ekiga::Spark
       presence_core->add_presentity_decorator (sip_manager);
       presence_core->add_presence_fetcher (sip_manager);
       presence_core->add_presence_publisher (sip_manager);
-#endif
 
 #ifdef HAVE_H323
       unsigned h323_port = gm_conf_get_int (H323_KEY "listen_port");

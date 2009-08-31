@@ -52,7 +52,6 @@ libgmopal_la_SOURCES += \
 	$(opal_dir)/h323-endpoint.cpp
 endif
 
-if HAVE_SIP
 libgmopal_la_SOURCES += \
 	$(opal_dir)/sip-chat-simple.h \
 	$(opal_dir)/sip-chat-simple.cpp \
@@ -60,6 +59,5 @@ libgmopal_la_SOURCES += \
 	$(opal_dir)/sip-dialect.cpp \
 	$(opal_dir)/sip-endpoint.h \
 	$(opal_dir)/sip-endpoint.cpp
-endif
 
 libgmopal_la_LDFLAGS = -export-dynamic -no-undefined $(SIGC_LIBS) $(GLIB_LIBS) $(OPAL_LIBS) $(PTLIB_LIBS)

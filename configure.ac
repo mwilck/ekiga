@@ -741,19 +741,33 @@ AC_SUBST(PTLIB_LIBS)
 AC_SUBST(OPAL_CFLAGS)
 AC_SUBST(OPAL_LIBS)
 
-dnl The =1 checks are here only for backward compatibility
-H323=`$PKG_CONFIG --variable=h323 opal`
-if test "x$H323" = "x1"; then
-  H323="yes"
+# check for H.323 support
+AC_ARG_ENABLE(h323, AC_HELP_STRING([--enable-h323],
+              [enable H.323 support (default same as opal)]),
+              enable_h323=$enableval)
+if test x$enable_h323 != xno; then
+  dnl The =1 checks are here only for backward compatibility
+  H323=`$PKG_CONFIG --variable=h323 opal`
+  if test "x$H323" = "x1"; then
+    H323="yes"
+  else
+    H323=`$PKG_CONFIG --variable=OPAL_H323 opal`
+  fi
+
+  if test "x$H323" = "xyes"; then
+    AC_DEFINE(HAVE_H323,1,[H323 support])
+  else
+    if test x$enable_h323 = xyes; then
+      AC_MSG_ERROR([To enable H.323 support you need to re-install opal with H.323 support])
+    fi
+  fi
 else
-  H323=`$PKG_CONFIG --variable=OPAL_H323 opal`
+  H323="no"
 fi
 
-if test "x$H323" = "xyes"; then
-  AC_DEFINE(HAVE_H323,1,[H323 support])
-fi
 AM_CONDITIONAL(HAVE_H323, test "x${H323}" = "xyes")
 
+# check for mandatory SIP support in opal
 SIP=`$PKG_CONFIG --variable=sip opal`
 if test "x$SIP" = "x1"; then
   SIP="yes"
@@ -761,10 +775,9 @@ else
   SIP=`$PKG_CONFIG --variable=OPAL_SIP opal`
 fi
 
-if test "x$SIP" = "xyes"; then
-  AC_DEFINE(HAVE_SIP,1,[SIP support])
+if test "x$SIP" != "xyes"; then
+  AC_MSG_ERROR([You have to compile opal with SIP support. SIP support is mandatory.])
 fi
-AM_CONDITIONAL(HAVE_SIP, test "x${SIP}" = "xyes")
 
 
 dnl #########################################################################
@@ -887,7 +900,6 @@ echo "                 DirectX support  :  $DX"
 fi
 echo ""
 echo "                   H.323 support  :  $H323"
-echo "                     SIP support  :  $SIP"
 echo ""
 if test "x${gm_platform}" != "xmingw" ; then
 echo "                    DBUS support  :  $DBUS"
