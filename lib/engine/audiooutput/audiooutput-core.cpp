@@ -361,16 +361,9 @@ void AudioOutputCore::play_buffer(AudioOutputPS ps, const char* buffer, unsigned
 
 void AudioOutputCore::on_device_opened (AudioOutputPS ps,
                                         AudioOutputDevice device,
-                                        AudioOutputSettings settings,
+                                        AudioOutputSettings settings, 
                                         AudioOutputManager *manager)
 {
-#ifdef WIN32
-  /* update the current volume to the desired one */
-  if (ps == primary) {
-    current_primary_volume = settings.volume;
-    settings.volume = desired_primary_volume;
-  }
-#endif
   device_opened (*manager, ps, device, settings);
 }
 
