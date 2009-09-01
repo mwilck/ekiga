@@ -37,6 +37,9 @@
 #include "audiooutput-scheduler.h"
 #include "audiooutput-core.h"
 #include "config.h"
+#ifdef WIN32
+#include "platform/winpaths.h"
+#endif
 
 using namespace Ekiga;
 
