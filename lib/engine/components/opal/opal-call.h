@@ -195,6 +195,20 @@ private:
      */
     void parse_info (OpalConnection & connection);
 
+    PSafePtr<OpalConnection> get_remote_connection ()
+    {
+      PSafePtr<OpalConnection> connection;
+      for (PSafePtr<OpalConnection> iterConn (connectionsActive, PSafeReference); iterConn != NULL; ++iterConn) {
+        if (PSafePtrCast<OpalConnection, OpalPCSSConnection> (iterConn) == NULL) {
+          connection = iterConn;
+          if (!connection.SetSafetyMode(PSafeReadWrite))
+            connection.SetNULL();
+          break;
+        }
+      }
+      return connection;
+    }
+
     /*
      *
      */

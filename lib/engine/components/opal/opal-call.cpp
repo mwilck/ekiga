@@ -141,8 +141,8 @@ Opal::Call::answer ()
 void
 Opal::Call::transfer (std::string uri)
 {
-  PSafePtr<OpalPCSSConnection> connection = GetConnectionAs<OpalPCSSConnection>();
-  if (connection)
+  PSafePtr<OpalConnection> connection = get_remote_connection ();
+  if (connection != NULL)
     connection->TransferConnection (uri);
 }
 
@@ -151,8 +151,8 @@ void
 Opal::Call::toggle_hold ()
 {
   bool on_hold = false;
-  PSafePtr<OpalPCSSConnection> connection = GetConnectionAs<OpalPCSSConnection>();
-  if (connection) {
+  PSafePtr<OpalConnection> connection = get_remote_connection ();
+  if (connection != NULL) {
 
     on_hold = connection->IsConnectionOnHold ();
     if (!on_hold)
@@ -172,7 +172,7 @@ Opal::Call::toggle_stream_pause (StreamType type)
 
   bool paused = false;
 
-  PSafePtr<OpalPCSSConnection> connection = GetConnectionAs<OpalPCSSConnection>();
+  PSafePtr<OpalConnection> connection = get_remote_connection ();
   if (connection != NULL) {
 
     stream = connection->GetMediaStream ((type == Audio) ? OpalMediaType::Audio () : OpalMediaType::Video (), false);
@@ -195,9 +195,10 @@ Opal::Call::toggle_stream_pause (StreamType type)
 void
 Opal::Call::send_dtmf (const char dtmf)
 {
-  PSafePtr<OpalPCSSConnection> connection = GetConnectionAs<OpalPCSSConnection>();
-  if (connection != NULL)
+  PSafePtr<OpalConnection> connection = get_remote_connection ();
+  if (connection != NULL) {
     connection->SendUserInputTone (dtmf, 180);
+  }
 }
 
 
@@ -636,7 +637,7 @@ Opal::Call::OnNoAnswerTimeout (PTimer &,
 
     if (!forward_uri.empty ()) {
 
-      PSafePtr<OpalPCSSConnection> connection = GetConnectionAs<OpalPCSSConnection>();
+      PSafePtr<OpalConnection> connection = get_remote_connection ();
       if (connection != NULL)
         connection->ForwardCall (forward_uri);
     }
