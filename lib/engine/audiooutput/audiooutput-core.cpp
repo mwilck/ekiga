@@ -248,6 +248,8 @@ void AudioOutputCore::start (unsigned channels, unsigned samplerate, unsigned bi
     return;
   }
 
+  internal_set_manager(primary, desired_primary_device);    /* may be left undetermined after the last call */
+
   average_level = 0;
   internal_open(primary, channels, samplerate, bits_per_sample);
   current_primary_config.active = true;
