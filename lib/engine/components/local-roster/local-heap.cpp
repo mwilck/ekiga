@@ -87,12 +87,13 @@ Local::Heap::Heap (Ekiga::ServiceCore &_core): core (_core), doc ()
     xmlDocSetRootElement (doc.get (), root);
 
     {
-      // add 500 and 501 at ekiga.net in this case!
+      // add 500, 501 and 520 at ekiga.net in this case!
       std::set<std::string> groups;
 
       groups.insert (_("Services"));
       add (_("Echo test"), "sip:500@ekiga.net", groups);
       add (_("Conference room"), "sip:501@ekiga.net", groups);
+      add (_("Call back test"), "sip:520@ekiga.net", groups);
     }
   }
 }
