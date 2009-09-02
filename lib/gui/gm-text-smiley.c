@@ -92,7 +92,7 @@ enhancer_helper_check (G_GNUC_UNUSED GmTextBufferEnhancerHelperIFace* self,
       found_start = found - full_text;
       if ((best_smiley == -1)
           || (found_start < best_start)
-	  || ((found_start <= best_start)
+	  || ((found_start == best_start)
 	      && (strlen (smileys[smiley]) > strlen (smileys[best_smiley])))) {
 
 	best_smiley = smiley;
