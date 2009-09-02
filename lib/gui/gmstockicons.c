@@ -36,7 +36,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "../../pixmaps/inlines.h"
+#include "pixmaps/inlines.h"
 #include "gmstockicons.h"
 
 /**

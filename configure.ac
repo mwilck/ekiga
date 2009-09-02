@@ -3,7 +3,7 @@ AC_CANONICAL_TARGET
 AC_PREREQ(2.53)
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_SRCDIR(src/gui/main.cpp)
-AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
+AM_INIT_AUTOMAKE
 
 AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
@@ -125,7 +125,7 @@ case $target_os in
     ;;
 
   linux-gnulp | linux-gnu | linux-gnueabi | linux | Linux)
-    ARCH_PTLIB_CFLAGS="-DPTRACING -DNDEBUG -Os -g -fno-exceptions -felide-constructors"
+    ARCH_PTLIB_CFLAGS="-DPTRACING -DNDEBUG -Os -g -felide-constructors"
     ARCH_OPAL_LIBS="-lpt -lopal -ldl -lpthread"
     ;;
 
@@ -870,52 +870,12 @@ src/AC_PACKAGE_NAME-config-tool
 AC_PACKAGE_NAME.schemas.in
 AC_PACKAGE_NAME.desktop.in
 lib/Makefile
-lib/gmconf/Makefile
-lib/gui/Makefile
-lib/pixops/Makefile
-lib/toolbox/Makefile
-lib/platform/Makefile
 po/Makefile.in
 man/Makefile
 src/Makefile
 pixmaps/Makefile
 sounds/Makefile
 help/Makefile
-lib/engine/Makefile
-lib/engine/account/Makefile
-lib/engine/addressbook/Makefile
-lib/engine/components/call-history/Makefile
-lib/engine/chat/Makefile
-lib/engine/friend-or-foe/Makefile
-lib/engine/framework/Makefile
-lib/engine/notification/Makefile
-lib/engine/plugin/Makefile
-lib/engine/presence/Makefile
-lib/engine/components/avahi/Makefile
-lib/engine/components/local-roster/Makefile
-lib/engine/protocol/Makefile
-lib/engine/videooutput/Makefile
-lib/engine/videoinput/Makefile
-lib/engine/components/ptlib/Makefile
-lib/engine/audioinput/Makefile
-lib/engine/audiooutput/Makefile
-lib/engine/hal/Makefile
-lib/engine/gui/Makefile
-lib/engine/gui/gtk-core/Makefile
-lib/engine/gui/gtk-frontend/Makefile
-lib/engine/components/Makefile
-lib/engine/components/avahi-publisher/Makefile
-lib/engine/components/gmconf-personal-details/Makefile
-lib/engine/components/libnotify/Makefile
-lib/engine/components/opal/Makefile
-lib/engine/components/gnome-session/Makefile
-lib/engine/components/null-audioinput/Makefile
-lib/engine/components/null-audiooutput/Makefile
-lib/engine/components/mlogo-videoinput/Makefile
-lib/engine/components/x-videooutput/Makefile
-lib/engine/components/dx-videooutput/Makefile
-lib/engine/components/hal-dbus/Makefile
-lib/engine/components/echo/Makefile
 plugins/Makefile
 plugins/evolution/Makefile
 plugins/gstreamer/Makefile

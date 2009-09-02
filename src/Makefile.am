@@ -156,7 +156,7 @@ AM_CXXFLAGS = $(GTK_CFLAGS) $(GLIB_CFLAGS) $(GNOME_CFLAGS) $(DBUS_CFLAGS) $(BONO
 AM_LIBS = $(GTK_LIBS) $(GLIB_LIBS) $(GNOME_LIBS) $(DBUS_LIBS) $(BONOBO_LIBS) $(OPAL_LIBS) $(PTLIB_LIBS) $(BOOST_LDFLAGS) $(BOOST_LIBS) $(XML_LIBS) $(NOTIFY_LIBS)
 
 ekiga_LDADD = \
-	$(top_builddir)/lib/libekiga.la $(top_builddir)/lib/engine/libekiga_engine.la $(AM_LIBS)
+	$(top_builddir)/lib/libekiga.la $(AM_LIBS)
 
 EXTRA_DIST = \
 	$(service_in_files)		\

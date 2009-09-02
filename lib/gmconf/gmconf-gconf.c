@@ -39,7 +39,7 @@
  */
 
 
-#include "../../config.h"
+#include "config.h"
 
 #include <gconf/gconf-client.h>
 #include <string.h>

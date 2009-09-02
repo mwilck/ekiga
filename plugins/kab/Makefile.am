@@ -20,5 +20,4 @@ libgmkab_la_SOURCES = \
 
 libgmkab_la_LDFLAGS = $(PLUGINS_LIBTOOL_FLAGS)
 libgmkab_la_LIBADD = \
-	$(top_builddir)/lib/engine/addressbook/libgmaddressbook.la \
 	$(KAB_LIBS)
