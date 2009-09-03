@@ -78,17 +78,17 @@ GMVideoOutputManager_dx::setup_frame_display ()
 
   switch (current_frame.mode) {
   case Ekiga::VO_MODE_LOCAL:
-    Ekiga::Runtime::run_in_main (boost::bind (boost::bind (&GMVideoOutputManager_dx::size_changed_in_main, this), (unsigned) (current_frame.local_width * current_frame.zoom / 100), (unsigned) (current_frame.local_height * current_frame.zoom / 100)));
+    Ekiga::Runtime::run_in_main (boost::bind (&GMVideoOutputManager_dx::size_changed_in_main, this, (unsigned) (current_frame.local_width * current_frame.zoom / 100), (unsigned) (current_frame.local_height * current_frame.zoom / 100)));
     break;
   case Ekiga::VO_MODE_REMOTE:
   case Ekiga::VO_MODE_PIP:
-    Ekiga::Runtime::run_in_main (boost::bind (boost::bind (&GMVideoOutputManager_dx::size_changed_in_main, this), (unsigned) (current_frame.remote_width * current_frame.zoom / 100), (unsigned) (current_frame.remote_height * current_frame.zoom / 100)));
+    Ekiga::Runtime::run_in_main (boost::bind (&GMVideoOutputManager_dx::size_changed_in_main, this, (unsigned) (current_frame.remote_width * current_frame.zoom / 100), (unsigned) (current_frame.remote_height * current_frame.zoom / 100)));
     break;
   case Ekiga::VO_MODE_FULLSCREEN:
-    Ekiga::Runtime::run_in_main (boost::bind (boost::bind (&GMVideoOutputManager_dx::size_changed_in_main, this), 176, 144));
+    Ekiga::Runtime::run_in_main (boost::bind (&GMVideoOutputManager_dx::size_changed_in_main, this, 176, 144));
     break;
   case Ekiga::VO_MODE_PIP_WINDOW:
-    Ekiga::Runtime::run_in_main (boost::bind (boost::bind (&GMVideoOutputManager_dx::size_changed_in_main, this), 176, 144));
+    Ekiga::Runtime::run_in_main (boost::bind (&GMVideoOutputManager_dx::size_changed_in_main, this, 176, 144));
     break;
   case Ekiga::VO_MODE_UNSET:
   default:
@@ -197,11 +197,11 @@ GMVideoOutputManager_dx::setup_frame_display ()
   if (video_disabled) {
     delete dxWindow;
     dxWindow = NULL;
-    Ekiga::Runtime::run_in_main (boost::bind (boost::bind (&GMVideoOutputManager_dx::device_error_in_main, this), Ekiga::VO_ERROR));
+    Ekiga::Runtime::run_in_main (boost::bind (&GMVideoOutputManager_dx::device_error_in_main, this, Ekiga::VO_ERROR));
   }
   else {
     current_frame.accel = Ekiga::VO_ACCEL_ALL; 
-    Ekiga::Runtime::run_in_main (boost::bind (boost::bind (&GMVideoOutputManager_dx::device_opened_in_main, this), current_frame.accel, current_frame.mode, current_frame.zoom, current_frame.both_streams_active));
+    Ekiga::Runtime::run_in_main (boost::bind (&GMVideoOutputManager_dx::device_opened_in_main, this, current_frame.accel, current_frame.mode, current_frame.zoom, current_frame.both_streams_active));
   }
 }
 
@@ -240,7 +240,7 @@ GMVideoOutputManager_dx::display_pip_frames (const char *local_frame,
     dxWindow->ProcessEvents(); 
 
   if (current_frame.mode == Ekiga::VO_MODE_FULLSCREEN && dxWindow && !dxWindow->IsFullScreen ())
-    Ekiga::Runtime::run_in_main (boost::bind (boost::bind (&GMVideoOutputManager_dx::fullscreen_mode_changed_in_main, this), Ekiga::VO_FS_OFF));
+    Ekiga::Runtime::run_in_main (boost::bind (&GMVideoOutputManager_dx::fullscreen_mode_changed_in_main, this, Ekiga::VO_FS_OFF));
 
   if (dxWindow) {
     if (update_required.remote || (!update_required.remote && !update_required.local)) {
