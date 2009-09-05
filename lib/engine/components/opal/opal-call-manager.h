@@ -60,6 +60,7 @@
 
 #include <boost/signals.hpp>
 #include <boost/bind.hpp>
+#include <boost/enable_shared_from_this.hpp>
 #include <string>
 
 
@@ -68,9 +69,11 @@ class GMPCSSEndpoint;
 
 namespace Opal {
 
-  class CallManager : public Ekiga::Service,
-                      public Ekiga::CallManager,
-                      public OpalManager
+  class CallManager :
+    public boost::enable_shared_from_this<CallManager>,
+    public Ekiga::Service,
+    public Ekiga::CallManager,
+    public OpalManager
   {
     PCLASSINFO(CallManager, OpalManager);
 
