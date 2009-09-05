@@ -634,7 +634,7 @@ CallManager::create_call_in_main (Opal::Call* call)
   boost::shared_ptr<Ekiga::CallCore> call_core = core.get<Ekiga::CallCore> ("call-core");
 
   call_core->add_call (boost::shared_ptr<Opal::Call>(call),
-		       boost::shared_ptr<CallManager>(this));
+		       boost::dynamic_pointer_cast<CallManager>(shared_from_this ()));
 }
 
 OpalCall *CallManager::CreateCall (void *uri)
