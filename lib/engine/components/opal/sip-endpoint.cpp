@@ -177,7 +177,6 @@ Opal::Sip::EndPoint::menu_builder_add_actions (const std::string& fullname,
 {
   bool populated = false;
 
-
   std::list<std::string> uris;
   std::list<std::string> accounts;
 
@@ -269,43 +268,18 @@ Opal::Sip::EndPoint::menu_builder_add_actions (const std::string& fullname,
 
 
 void
-Opal::Sip::EndPoint::fetch (const std::string _uri)
+Opal::Sip::EndPoint::fetch (const std::string uri)
 {
-  PWaitAndSignal mut(listsMutex);
-  std::string::size_type loc = _uri.find ("@", 0);
-  std::string domain;
-
-  if (loc != string::npos)
-    domain = _uri.substr (loc+1);
-
-  // It is not in the list of uris for which a subscribe is active
-  if (std::find (subscribed_uris.begin (), subscribed_uris.end (), _uri) == subscribed_uris.end ()) {
-
-    // The account is active
-    if (std::find (active_domains.begin (), active_domains.end (), domain) != active_domains.end ()) {
-
-      Subscribe (SIPSubscribe::Presence, 300, PString (_uri.c_str ()));
-      Subscribe (SIPSubscribe::Dialog, 300, PString (_uri.c_str ()));
-      subscribed_uris.push_back (_uri);
-    }
-    else {
-
-      to_subscribe_uris.push_back (_uri);
-    }
-  }
+  Subscribe (SIPSubscribe::Presence, 300, uri);
+  Subscribe (SIPSubscribe::Dialog, 300, uri);
 }
 
 
 void
 Opal::Sip::EndPoint::unfetch (const std::string uri)
 {
-  PWaitAndSignal mut(listsMutex);
-  if (std::find (subscribed_uris.begin (), subscribed_uris.end (), uri) != subscribed_uris.end ()) {
-
-    Subscribe (SIPSubscribe::Presence, 0, PString (uri.c_str ()));
-    Subscribe (SIPSubscribe::Dialog, 0, PString (uri.c_str ()));
-    subscribed_uris.remove (uri);
-  }
+  Subscribe (SIPSubscribe::Presence, 0, uri);
+  Subscribe (SIPSubscribe::Dialog, 0, uri);
 }
 
 
@@ -317,21 +291,19 @@ Opal::Sip::EndPoint::publish (const Ekiga::PersonalDetails & details)
   std::string presence = ((Ekiga::PersonalDetails &) (details)).get_presence ();
   std::string status = ((Ekiga::PersonalDetails &) (details)).get_status ();
 
-  {
-    PWaitAndSignal mut(listsMutex);
-    for (std::list<std::string>::iterator it = aors.begin ();
-	 it != aors.end ();
-	 it++) {
+  for (PSafePtr<SIPHandler> handler = activeSIPHandlers.GetFirstHandler(); handler != NULL; ++handler) {
 
-      std::string to = it->substr (4);
+    if (handler->GetMethod() == SIP_PDU::Method_REGISTER) {
+
       PString data;
+      std::string to = handler->GetAddressOfRecord ().AsString ().Mid (4);
       data += "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n";
 
       data += "<presence xmlns=\"urn:ietf:params:xml:ns:pidf\" entity=\"pres:";
       data += to;
       data += "\">\r\n";
 
-      data += "<tuple id=\"";
+      data += "<tuple id=\"sip:";
       data += to;
       data += "_on_";
       data += hostname;
@@ -340,8 +312,8 @@ Opal::Sip::EndPoint::publish (const Ekiga::PersonalDetails & details)
       data += "<note>";
       data += presence.c_str ();
       if (!status.empty ()) {
-	data += " - ";
-	data += status.c_str ();
+        data += " - ";
+        data += status.c_str ();
       }
       data += "</note>\r\n";
 
@@ -351,8 +323,8 @@ Opal::Sip::EndPoint::publish (const Ekiga::PersonalDetails & details)
       data += "</basic>\r\n";
       data += "</status>\r\n";
 
-      data += "<contact priority=\"1\">sip:";
-      data += to;
+      data += "<contact priority=\"1\">";
+      data += to; 
       data += "</contact>\r\n";
 
       data += "</tuple>\r\n";
@@ -364,10 +336,8 @@ Opal::Sip::EndPoint::publish (const Ekiga::PersonalDetails & details)
 
   for (std::map<std::string, PString>::const_iterator iter = publishing.begin ();
        iter != publishing.end ();
-       ++iter) {
-
+       ++iter)
     Publish (iter->first, iter->second, 500); // TODO: allow to change the 500
-  }
 }
 
 
@@ -587,7 +557,6 @@ Opal::Sip::EndPoint::Register (const std::string username,
 			       bool is_enabled,
 			       unsigned timeout)
 {
-  PWaitAndSignal mut(listsMutex);
   PString _aor;
   std::stringstream aor;
   std::string host(host_);
@@ -609,14 +578,6 @@ Opal::Sip::EndPoint::Register (const std::string username,
   params.m_minRetryTime = 0;
   params.m_maxRetryTime = 0;
 
-  // Update the list of active domains
-  std::string domain = Opal::Sip::EndPoint::get_aor_domain (aor.str ());
-  bool found = (std::find (active_domains.begin (), active_domains.end (), domain) != active_domains.end ());
-  if (is_enabled && !found)
-    active_domains.push_back (domain);
-  else if (!is_enabled && found)
-    active_domains.remove (domain);
-
   // Register the given aor to the give registrar
   if (!SIPEndPoint::Register (params, _aor))
     OnRegistrationFailed (aor.str (), SIP_PDU::MaxStatusCode, is_enabled);
@@ -627,11 +588,7 @@ void
 Opal::Sip::EndPoint::OnRegistered (const PString & _aor,
 				   bool was_registering)
 {
-  PWaitAndSignal mut(listsMutex);
   std::string aor = (const char *) _aor;
-  std::string::size_type found;
-  std::string::size_type loc = aor.find ("@", 0);
-  std::string server;
   std::stringstream strm;
 
   if (aor.find (uri_prefix) == std::string::npos)
@@ -639,66 +596,12 @@ Opal::Sip::EndPoint::OnRegistered (const PString & _aor,
   else
     strm << aor;
 
-  std::list<std::string>::iterator it = find (aors.begin (), aors.end (), aor);
-
-  if (was_registering) {
-
-    if (it == aors.end ())
-      aors.push_back (strm.str ());
-  }
-  else {
-
-    if (it != aors.end ())
-      aors.remove (strm.str ());
-  }
-
-  if (loc != string::npos) {
-
-    server = get_aor_domain (aor);
-    if (server.empty ())
-      return;
-
-    if (was_registering) {
-      for (std::list<std::string>::iterator iter = to_subscribe_uris.begin ();
-           iter != to_subscribe_uris.end () ; ) {
-
-        found = (*iter).find (server, 0);
-        if (found != string::npos) {
-
-          Subscribe (SIPSubscribe::Presence, 300, PString ((*iter).c_str ()));
-          Subscribe (SIPSubscribe::Dialog, 300, PString ((*iter).c_str ()));
-          subscribed_uris.push_back (*iter);
-          iter = to_subscribe_uris.erase (iter);
-        }
-        else
-          ++iter;
-      }
-    }
-    else {
-      for (std::list<std::string>::iterator iter = subscribed_uris.begin ();
-           iter != subscribed_uris.end () ; ) {
-
-        found = (*iter).find (server, 0);
-        if (found != string::npos) {
-
-          Unsubscribe (SIPSubscribe::Presence, PString ((*iter).c_str ()));
-          Unsubscribe (SIPSubscribe::Dialog, PString ((*iter).c_str ()));
-          to_subscribe_uris.push_back (*iter);
-          iter = subscribed_uris.erase (iter);
-        }
-        else
-          iter++;
-      }
-    }
-  }
-
   /* Subscribe for MWI */
   if (!IsSubscribed (SIPSubscribe::MessageSummary, aor))
     Subscribe (SIPSubscribe::MessageSummary, 3600, aor);
 
   /* Signal */
-  Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this,
-							  &Opal::Sip::EndPoint::registration_event_in_main),
+  Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &Opal::Sip::EndPoint::registration_event_in_main),
 					   strm.str (),
 					   was_registering ? Ekiga::Account::Registered : Ekiga::Account::Unregistered,
 					   std::string ()));
@@ -1045,43 +948,19 @@ Opal::Sip::EndPoint::OnMessageFailed (const SIPURL & messageUrl,
 
 
 SIPURL
-Opal::Sip::EndPoint::GetRegisteredPartyName (const SIPURL & host,
+Opal::Sip::EndPoint::GetRegisteredPartyName (const SIPURL & aor,
 					     const OpalTransport & transport)
 {
-  PString local_address;
-  PIPSocket::Address address;
-  WORD port;
-  PString url;
-  SIPURL registration_address;
-
-  /* If we are registered to an account corresponding to host, use it.
+  /*
+   * Do we have an account?
    */
-  PSafePtr<SIPHandler> info = activeSIPHandlers.FindSIPHandlerByDomain(host.GetHostName (), SIP_PDU::Method_REGISTER, PSafeReadOnly);
-  if (info != NULL) {
+  for (Opal::Bank::iterator it = bank->begin ();
+       it != bank->end ();
+       it++) 
+    if ((*it)->get_host () == (const char*) aor.GetHostName ())
+      return (*it)->get_aor ().c_str ();
 
-    return SIPURL ("\"" + GetDefaultDisplayName () + "\" <" + info->GetAddressOfRecord ().AsString () + ">");
-  }
-  else {
-
-    /* If we are not registered to host,
-     * then use the default account as outgoing identity.
-     * If we are exchanging messages with a peer on our network,
-     * then do not use the default account as outgoing identity.
-     */
-    if (host.GetHostAddress ().GetIpAndPort (address, port) && !manager.IsLocalAddress (address)) {
-
-      /* FIXME: this is the only place where we use the bank in a thread
-       * can't we just return GetDefaultDisplayName () ?
-       */
-      AccountPtr account = bank->find_account ("Ekiga.net");
-
-      if (account)
-        return SIPURL ("\"" + GetDefaultDisplayName () + "\" <" + PString(account->get_aor ()) + ">");
-    }
-  }
-
-  /* As a last resort, ie not registered to host, no default account or
-   * dialog with a local peer, then use the local address
+  /* As a last resort, use the local address
    */
   return GetDefaultRegisteredPartyName (transport);
 }
