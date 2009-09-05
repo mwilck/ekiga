@@ -227,17 +227,6 @@ namespace Opal {
       msgDict msgData;
 
       CallManager & manager;
-
-      PMutex listsMutex;
-      std::list<std::string> to_subscribe_uris;  // List of uris to subscribe
-      std::list<std::string> subscribed_uris;    // List of subscribed uris
-      std::list<std::string> aors;               // List of registered aor
-
-      PMutex defaultAORMutex;
-      std::string default_aor;
-      void on_bank_updated (Ekiga::AccountPtr account);
-      bool search_for_default_account(Ekiga::AccountPtr account);
-
       Ekiga::ServiceCore & core;
 
       Ekiga::CallProtocolManager::Interface listen_iface;
@@ -252,7 +241,6 @@ namespace Opal {
 
       boost::shared_ptr<SIP::Dialect> dialect;
 
-      domain_list active_domains;   // List of active domains
       uri_info_map presence_infos;  // List of uri presences
       uri_info_map dialog_infos;    // List of uri dialog informations
     };
