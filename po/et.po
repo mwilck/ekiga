@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=ekiga&component=general\n"
 "POT-Creation-Date: 2009-04-16 20:21+0000\n"
-"PO-Revision-Date: 2009-09-02 06:06+0300\n"
+"PO-Revision-Date: 2009-09-02 18:48+0300\n"
 "Last-Translator: Ivar Smolin <okul@linux.ee>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
 "MIME-Version: 1.0\n"
@@ -83,10 +83,8 @@ msgstr ""
 msgid "DTMF sending"
 msgstr "DTMF-i saatmine"
 
-#, fuzzy
-#| msgid "Disabled silence detection"
 msgid "Disable STUN network detection"
-msgstr "Vaikuse tuvastamine keelatud"
+msgstr "STUN-võrgu tuvastamine keelatud"
 
 msgid "Disable the automatic network setup resulting from the STUN test"
 msgstr ""
@@ -168,7 +166,7 @@ msgid "If enabled, offline contacts will be shown in the roster"
 msgstr ""
 
 msgid "If enabled, use echo cancelation"
-msgstr ""
+msgstr "Kui lubatud, siis kasutatakse kaja eemaldamist"
 
 msgid "If enabled, use silence detection with the codecs supporting it"
 msgstr ""
@@ -678,15 +676,13 @@ msgstr ""
 #. * say about it. You might google for "challenge response
 #. * authentication" if you'd like more background context.
 #.
-#, fuzzy
 #| msgid "Calling %s"
 msgid "Challenge: "
-msgstr "Helistamine: %s"
+msgstr ""
 
-#, fuzzy
 #| msgid "User Interface"
 msgid "Interact"
-msgstr "Kasutajaliides"
+msgstr ""
 
 msgid "Refreshing"
 msgstr "Värskendamine"
@@ -695,7 +691,7 @@ msgid "Could not initialize server"
 msgstr "Serverit pole võimalik lähtestada"
 
 msgid "LDAP Error: "
-msgstr ""
+msgstr "LDAP-viga: "
 
 msgid "Contacted server"
 msgstr ""
@@ -706,7 +702,7 @@ msgstr "Serveriga pole võimalik ühenduda"
 
 #. patience == 0
 msgid "Could not search"
-msgstr ""
+msgstr "Otsimine pole võimalik"
 
 msgid "Waiting for search results"
 msgstr "Otsingutulemuste ootamine"
@@ -714,13 +710,12 @@ msgstr "Otsingutulemuste ootamine"
 msgid "Please edit the following fields"
 msgstr "Palun redigeeri järgnevaid välju"
 
-#, fuzzy
 #| msgid "_Name"
 msgid "Book _Name"
-msgstr "_Nimi"
+msgstr ""
 
 msgid "Server _URI"
-msgstr ""
+msgstr "Serveri _URI"
 
 msgid "_Base DN"
 msgstr "_Baas-DN"
@@ -731,17 +726,15 @@ msgstr "Alampuu"
 msgid "Single Level"
 msgstr "Üks tase"
 
-#, fuzzy
 #| msgid "Search Scope:"
 msgid "_Search Scope"
-msgstr "Otsinguskoop:"
+msgstr "Otsingu_skoop:"
 
 msgid "_DisplayName Attribute"
 msgstr ""
 
-#, fuzzy
 msgid "Call _Attributes"
-msgstr "Otsingurekvisiit:"
+msgstr ""
 
 msgid "_Filter Template"
 msgstr ""
@@ -1170,10 +1163,10 @@ msgstr ""
 msgid "Could not send message"
 msgstr "Sõnumit pole võimalik saata"
 
-#, fuzzy, c-format
+#, c-format
 #| msgid "Incoming call mode"
 msgid "Incoming call from %s"
-msgstr "Siseneva kõne režiim"
+msgstr "Sisenev kõne (%s)"
 
 #, c-format
 #| msgid "Incoming call mode"
@@ -1205,10 +1198,9 @@ msgstr ""
 msgid "Username:"
 msgstr "Kasutajanimi:"
 
-#, fuzzy
 #| msgid "Rename"
 msgid "Unnamed"
-msgstr "Muuda nime"
+msgstr ""
 
 #| msgid "New contact"
 msgid "_Add a new contact"
@@ -1225,19 +1217,19 @@ msgstr "Kontaktide nimekirja _omadused"
 msgid "Edit contact list properties"
 msgstr "Kontaktide nimekirja omaduste redigeerimine"
 
-#, fuzzy
 #| msgid "Please edit the following fields"
 msgid "Please edit the following fields (no identifier means global)"
-msgstr "Palun redigeeri järgnevaid välju"
+msgstr ""
+"Palun redigeeri järgnevaid välju (identifikaatorita väljad tähendavad "
+"globaalseid välju)"
 
 msgid "Contact list's name"
 msgstr ""
 
 #. "Document" used as a name -- uri point to the root of a document tree
-#, fuzzy
 #| msgid "Documented by"
 msgid "Document root"
-msgstr "Dokumenteerijad"
+msgstr ""
 
 msgid "Identifier"
 msgstr "Identifikaator"
@@ -1269,18 +1261,16 @@ msgid ""
 "Please fill in this form to change an existing contact on a remote server"
 msgstr ""
 
-#, fuzzy
 #| msgid "Invalid users directory"
 msgid "Invalid server data"
-msgstr "Vigane kasutajate kataloog"
+msgstr "Vigased serveri andmed"
 
 msgid "Click to fetch"
 msgstr ""
 
-#, fuzzy
 #| msgid "Edit contact"
 msgid "Distant contact"
-msgstr "Kontakti muutmine"
+msgstr ""
 
 #, c-format
 msgid "%s / List #%d"
@@ -1395,8 +1385,6 @@ msgstr ""
 "Hiljem on võimalik tehtud valikuid alati muuta valides Redaktorimenüü alt "
 "menüüpunkti Eelistused."
 
-#, fuzzy
-#| msgid "Welcome in Ekiga"
 msgid "Welcome to Ekiga"
 msgstr "Tere tulemast Ekigat kasutama"
 
@@ -1710,10 +1698,9 @@ msgstr "Vastamata kõned kontolt %s"
 msgid "Error"
 msgstr "Viga"
 
-#, fuzzy
 #| msgid "Error while opening audio output device %s"
 msgid "Error while initializing video output"
-msgstr "Viga audioväljundi seadme %s avamisel"
+msgstr "Viga audioväljundi lähtestamisel"
 
 msgid "No video will be displayed during this call->"
 msgstr ""
@@ -1965,10 +1952,8 @@ msgstr "Kontakti lisamine röstrisse"
 msgid "Find contacts"
 msgstr "Kontaktide otsimine"
 
-#, fuzzy
-#| msgid "Contacts"
 msgid "_Contact"
-msgstr "Kontaktid"
+msgstr "_Kontaktid"
 
 msgid "Act on selected contact"
 msgstr ""
@@ -2075,12 +2060,12 @@ msgstr "Abiteabe saamine Ekiga käsiraamatut lugedes"
 msgid "View information about Ekiga"
 msgstr "Ekiga kohta lähema teabe vaatamine"
 
-#, fuzzy
 #| msgid "Enter a URI on the left, and click this button to place a call"
 msgid ""
 "Enter a URI on the left, and click this button to place a call or to hangup"
 msgstr ""
-"Sisesta vasakul asuvasse lahtrisse URI ja helistamiseks vajuta sellele nupule"
+"Sisesta vasakul asuvasse lahtrisse URI ja helistamiseks või toru "
+"hargileviskamiseks vajuta sellele nupule"
 
 msgid "Contacts"
 msgstr "Kontaktid"
