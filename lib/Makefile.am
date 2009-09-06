@@ -226,6 +226,7 @@ libekiga_la_SOURCES += \
 ##
 
 libekiga_la_SOURCES += \
+	$(engine_dir)/framework/boost-exceptions.cpp \
 	$(engine_dir)/framework/services.h \
 	$(engine_dir)/framework/map-key-iterator.h \
 	$(engine_dir)/framework/map-key-const-iterator.h \
