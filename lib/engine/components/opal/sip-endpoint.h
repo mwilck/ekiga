@@ -204,6 +204,10 @@ namespace Opal {
 		       std::string name);
       void on_transfer (std::string uri);
 
+      void on_bank_updated (Ekiga::AccountPtr account);
+
+      bool visit_accounts (Ekiga::AccountPtr account);
+
       void registration_event_in_main (const std::string aor,
 				       Account::RegistrationState state,
 				       const std::string msg);
@@ -225,6 +229,9 @@ namespace Opal {
 
       PMutex msgDataMutex;
       msgDict msgData;
+
+      PMutex aorMutex;
+      std::map<std::string, std::string> accounts;
 
       CallManager & manager;
       Ekiga::ServiceCore & core;

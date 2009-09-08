@@ -179,7 +179,7 @@ Opal::Sip::EndPoint::menu_builder_add_actions (const std::string& fullname,
   boost::shared_ptr<Opal::Bank> bank = core.get<Opal::Bank> ("opal-account-store");
 
   std::list<std::string> uris;
-  std::list<std::string> accounts;
+  std::list<std::string> accounts_list;
 
   if (!(uri.find ("sip:") == 0 || uri.find (":") == string::npos))
     return false;
@@ -211,15 +211,15 @@ Opal::Sip::EndPoint::menu_builder_add_actions (const std::string& fullname,
 	uristr << "@" << (*it)->get_host ();
 
 	uris.push_back (uristr.str ());
-	accounts.push_back ((*it)->get_name ());
+	accounts_list.push_back ((*it)->get_name ());
       }
     }
   } else {
     uris.push_back (uri);
-    accounts.push_back ("");
+    accounts_list.push_back ("");
   }
 
-  std::list<std::string>::iterator ita = accounts.begin ();
+  std::list<std::string>::iterator ita = accounts_list.begin ();
   for (std::list<std::string>::iterator it = uris.begin ();
        it != uris.end ();
        it++) {
@@ -245,7 +245,7 @@ Opal::Sip::EndPoint::menu_builder_add_actions (const std::string& fullname,
     ita++;
   }
 
-  ita = accounts.begin ();
+  ita = accounts_list.begin ();
   for (std::list<std::string>::iterator it = uris.begin ();
        it != uris.end ();
        it++) {
@@ -983,14 +983,11 @@ SIPURL
 Opal::Sip::EndPoint::GetRegisteredPartyName (const SIPURL & aor,
 					     const OpalTransport & transport)
 {
-  /*
-   * Do we have an account?
-   */
-  for (Opal::Bank::iterator it = bank->begin ();
-       it != bank->end ();
-       it++) 
-    if ((*it)->get_host () == (const char*) aor.GetHostName ())
-      return (*it)->get_aor ().c_str ();
+  PWaitAndSignal m(aorMutex);
+  std::string local_aor = accounts[(const char*) aor.GetHostName ()];
+
+  if (!local_aor.empty ())
+    return local_aor.c_str ();
 
   /* As a last resort, use the local address
    */
@@ -1124,6 +1121,26 @@ void Opal::Sip::EndPoint::on_transfer (std::string uri)
       connection->TransferConnection (uri);
 }
 
+
+void
+Opal::Sip::EndPoint::on_bank_updated (Ekiga::AccountPtr /*account*/)
+{
+  bank->visit_accounts (sigc::mem_fun (this, &Opal::Sip::EndPoint::visit_accounts));
+}
+
+
+bool
+Opal::Sip::EndPoint::visit_accounts (Ekiga::AccountPtr account_)
+{
+  Opal::AccountPtr account = account_;
+
+  PWaitAndSignal m(aorMutex);
+  accounts[account->get_host ()] = account->get_aor ();
+
+  return true;
+}
+
+
 void
 Opal::Sip::EndPoint::registration_event_in_main (const std::string aor,
 						 Opal::Account::RegistrationState state,
@@ -1132,10 +1149,8 @@ Opal::Sip::EndPoint::registration_event_in_main (const std::string aor,
   boost::shared_ptr<Opal::Bank> bank = core.get<Opal::Bank> ("opal-account-store");
   AccountPtr account = bank->find_account (aor);
 
-  if (account) {
-
-    account->handle_registration_event (state, msg);
-  }
+  if (account) 
+    account->registration_event.emit (state, msg);
 }
 
 
