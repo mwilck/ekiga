@@ -1125,14 +1125,15 @@ void Opal::Sip::EndPoint::on_transfer (std::string uri)
 void
 Opal::Sip::EndPoint::on_bank_updated (Ekiga::AccountPtr /*account*/)
 {
-  bank->visit_accounts (sigc::mem_fun (this, &Opal::Sip::EndPoint::visit_accounts));
+  boost::shared_ptr<Opal::Bank> bank = core.get<Opal::Bank> ("opal-account-store");
+  bank->visit_accounts (boost::bind (&Opal::Sip::EndPoint::visit_accounts, this, _1));
 }
 
 
 bool
 Opal::Sip::EndPoint::visit_accounts (Ekiga::AccountPtr account_)
 {
-  Opal::AccountPtr account = account_;
+  Opal::AccountPtr account = boost::dynamic_pointer_cast<Opal::Account> (account_);
 
   PWaitAndSignal m(aorMutex);
   accounts[account->get_host ()] = account->get_aor ();
@@ -1150,7 +1151,7 @@ Opal::Sip::EndPoint::registration_event_in_main (const std::string aor,
   AccountPtr account = bank->find_account (aor);
 
   if (account) 
-    account->registration_event.emit (state, msg);
+    account->handle_registration_event (state, msg);
 }
 
 
