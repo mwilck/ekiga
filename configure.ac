@@ -192,6 +192,11 @@ dnl   Mandatory BOOST support
 dnl ###############################
 AX_BOOST_BASE([1.34])
 AX_BOOST_SIGNALS
+
+if test "x${ax_cv_boost_signals}" == "xno"; then
+   AC_MSG_ERROR(You need the boost signals library to compile ekiga)
+fi
+
 BOOST_LIBS="${BOOST_SIGNALS_LIB}"
 AC_SUBST(BOOST_LIBS)
 
