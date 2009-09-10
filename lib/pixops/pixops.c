@@ -1545,7 +1545,7 @@ void
   g_return_if_fail (!(dest_channels == 3 && dest_has_alpha));
   g_return_if_fail (!(src_channels == 3 && src_has_alpha));
 
-  if (scale_x == 0 || scale_y == 0)
+  if (scale_x <= 0.01 || scale_y <= 0.01)
     return;
 
   if (!src_has_alpha && overall_alpha == 255)
@@ -1642,7 +1642,7 @@ void
   g_return_if_fail (!(dest_channels == 3 && dest_has_alpha));
   g_return_if_fail (!(src_channels == 3 && src_has_alpha));
 
-  if (scale_x == 0 || scale_y == 0)
+  if (scale_x <= 0.01 || scale_y <= 0.01)
     return;
 
   if (!src_has_alpha && overall_alpha == 255)
@@ -1719,7 +1719,7 @@ void
   g_return_if_fail (!(src_channels == 3 && src_has_alpha));
   g_return_if_fail (!(src_has_alpha && !dest_has_alpha));
 
-  if (scale_x == 0.0 || scale_y == 0.0)
+  if (scale_x <= 0.01 || scale_y <= 0.01)
     return;
 
   if (interp_type == PIXOPS_INTERP_NEAREST)
