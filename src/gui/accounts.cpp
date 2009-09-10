@@ -564,9 +564,9 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
 
     "",
     "",
+    "",
     _("Account Name"),
-    _("Status"),
-    ""
+    _("Status")
   };
 
   /* The window */
