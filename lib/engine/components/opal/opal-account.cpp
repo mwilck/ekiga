@@ -433,7 +433,8 @@ void Opal::Account::on_edit_form_submitted (bool submitted,
     password = new_password;
     timeout = new_timeout;
     enabled = new_enabled;
-    enable ();
+    if (enabled)
+      enable ();
 
     updated.emit ();
     trigger_saving.emit ();
