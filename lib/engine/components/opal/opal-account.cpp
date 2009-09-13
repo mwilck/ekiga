@@ -224,7 +224,10 @@ const std::string Opal::Account::get_aor () const
 {
   std::stringstream str;
 
-  str << (protocol_name == "SIP" ? "sip:" : "h323:") << username << "@" << host;
+  str << (protocol_name == "SIP" ? "sip:" : "h323:") << username;
+
+  if (username.find ("@") == string::npos)
+    str << "@" << host;
 
   return str.str ();
 }
