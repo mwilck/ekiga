@@ -1,3 +1,4 @@
+# translation of ekiga.gnome-2-26.ml.po to
 # translation of ekiga.HEAD.ml.po to
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
@@ -7,10 +8,10 @@
 #: ../lib/engine/components/resource-list/rl-entry.cpp:163
 msgid ""
 msgstr ""
-"Project-Id-Version: ekiga.HEAD.ml\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=accerciser&component=general\n"
-"POT-Creation-Date: 2009-01-28 12:31+0000\n"
-"PO-Revision-Date: 2009-03-15 21:23+0530\n"
+"Project-Id-Version: ekiga.gnome-2-26.ml\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=ekiga&component=general\n"
+"POT-Creation-Date: 2009-04-16 20:21+0000\n"
+"PO-Revision-Date: 2009-09-16 00:24+0530\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -42,6 +43,9 @@ msgid ""
 "hardware support is not available. If this is set to false, Ekiga will not "
 "try to open the PIP if hardware support is not available."
 msgstr ""
+"Allow Ekiga to fall back to software scaling the picture-in-picture if "
+"hardware support is not available. false അല്ലെങ്കില്‍, ഹാര്‍ഡ്‌വെയര്‍ പിന്തുണ "
+"ലഭ്യമാകാത്തപ്പോള്‍, എകീഗാ PIP തുറക്കുവാന്‍ ശ്രമിക്കുകയില്ല."
 
 #: ../ekiga.schemas.in.in.h:3
 msgid "Allow picture-in-picture software scaling"
@@ -68,6 +72,8 @@ msgid ""
 "Automatically reject or forward incoming calls if no answer is given after "
 "the specified amount of time (in seconds)"
 msgstr ""
+"പറഞ്ഞിരിക്കുന്ന സമയത്തിനുള്ളില്‍ (സെക്കന്‍ഡുകള്‍) കോള്‍ എടുത്തില്ലെങ്കില്‍, സ്വയമായി "
+"ഇന്‍കമിങ് കോളുകള്‍ നിരസിക്കുന്നതിനോ ഫോര്‍വേഡ് ചെയ്യുക"
 
 #: ../ekiga.schemas.in.in.h:9
 msgid "Calls history"
@@ -84,14 +90,16 @@ msgid ""
 "Netmeeting and using both Fast Start and H.245 Tunneling can crash some "
 "versions of Netmeeting"
 msgstr ""
+"ഫാസ്റ്റ് സ്റ്റാര്‍ട്ട് മോഡില്‍ കണക്ഷന്‍ സ്ഥാപിക്കപ്പെടുന്നു. കോളുകള്‍ പെട്ടെന്നാരംഭിക്കുന്നതിനുള്ള "
+"ഒരു പുതിയാ മാര്‍ഗ്ഗമാണു് ഫാസ്റ്റ് സ്റ്റാര്‍ട്ട് വേ. H.323v2-ലാണു് ഇതു് ലഭ്യമാകുവാന്‍ തുടങ്ങിയതു്. "
+"നെറ്റ്മീറ്റിങ് ഇതു് പിന്തുണയ്ക്കുന്നില്ല. ഫാസ്റ്റ് സ്റ്റാര്‍ട്ടും H.245 ടണലിങും ഉപയോഗിക്കുന്നതു് "
+"നെറ്റ്മീറ്റിങ് പതിപ്പുകളുടെ തകര്‍ച്ചയ്ക്കു് കാരണമാകുന്നു."
 
 #: ../ekiga.schemas.in.in.h:12
-#| msgid "Contact status"
 msgid "Contact long status"
 msgstr "വിലാസത്തിന്റെ അവസ്ഥ"
 
 #: ../ekiga.schemas.in.in.h:13
-#| msgid "Contact status"
 msgid "Contact short status"
 msgstr "വിലാസത്തിന്റെ ചെറിയ അവസ്ഥ"
 
@@ -100,7 +108,6 @@ msgid "DTMF sending"
 msgstr "DTMF അയയ്ക്കുന്നു"
 
 #: ../ekiga.schemas.in.in.h:15
-#| msgid "Enable silence detection"
 msgid "Disable STUN network detection"
 msgstr "STUN നെറ്റ്‌വര്‍ക്ക് തിരിച്ചറിയുന്നത് പ്രവര്‍ത്തന രഹിതമാക്കുക"
 
@@ -141,9 +148,10 @@ msgid ""
 "Enter the number of seconds after which Ekiga should try refreshing the NAT "
 "binding when STUN is being used"
 msgstr ""
+"STUN ഉപയോഗിക്കുമ്പോള്‍ NAT ബൈന്‍ഡിങ് എകീഗാ എപ്പോള്‍ പുതുക്കണമെന്നു് "
+"സെക്കന്‍ഡുകളില്‍ നല്‍കുക"
 
 #: ../ekiga.schemas.in.in.h:25 ../src/gui/preferences.cpp:459
-#| msgid "Enter your last name"
 msgid "Enter your full name"
 msgstr "നിങ്ങളുടെ പൂര്‍ണ്ണ പേര് നല്‍കുക"
 
@@ -164,7 +172,6 @@ msgid "Frame Rate"
 msgstr "ഫ്റെയിം റേറ്റ്"
 
 #: ../ekiga.schemas.in.in.h:30
-#| msgid "Full Name"
 msgid "Full name"
 msgstr "പൂര്‍ണ്ണപേരു്"
 
@@ -173,12 +180,16 @@ msgid ""
 "If enabled, Ekiga will start hidden provided that the notification area is "
 "present in the GNOME panel"
 msgstr ""
+"പ്രവര്‍ത്തന സജ്ജമെങ്കില്‍, ഗ്നോം പാനലില്‍ അറിയിപ്പിനുള്ള സ്ഥലം ലഭ്യമെങ്കില്‍ "
+"എകീഗാ അദൃശ്യമാകുവാന്‍ തുടങ്ങുന്നു."
 
 #: ../ekiga.schemas.in.in.h:32
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below"
 msgstr ""
+"പ്രവര്‍ത്തന സജ്ജമെങ്കില്‍, ഫീള്‍ഡില്‍ പറഞ്ഞിരിക്കുന്ന ഹോസ്റ്റിലേക്ക് എല്ലാ കോളുകളും "
+"ഫോര്‍വേഡ് ചെയ്യുന്നു."
 
 #: ../ekiga.schemas.in.in.h:33
 msgid ""
@@ -186,12 +197,17 @@ msgid ""
 "specified in the field below if you already are in a call or if you are in "
 "Do Not Disturb mode"
 msgstr ""
+"പ്രവര്‍ത്തന സജ്ജമെങ്കില്‍, നിങ്ങള്‍ മറ്റൊരു കോളിലാണു് അല്ലെങ്കില്‍ ശല്യപ്പെടുത്തരുതു് "
+"എന്ന മോഡിലാണെങ്കില്‍, ഫീള്‍ഡില്‍ പറഞ്ഞിരിക്കുന്ന ഹോസ്റ്റിലേക്ക് എല്ലാ കോളുകളും "
+"ഫോര്‍വേഡ് ചെയ്യുന്നു."
 
 #: ../ekiga.schemas.in.in.h:34
 msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the field below if you do not answer the call"
 msgstr ""
+"പ്രവര്‍ത്തന സജ്ജമെങ്കില്‍, നിങ്ങള്‍ കോള്‍ എടുത്തില്ലെങ്കില്‍, ഫീള്‍ഡില്‍ പറഞ്ഞിരിക്കുന്ന "
+"ഹോസ്റ്റിലേക്ക് എല്ലാ കോളുകളും ഫോര്‍വേഡ് ചെയ്യുന്നു."
 
 #: ../ekiga.schemas.in.in.h:35 ../src/gui/preferences.cpp:479
 msgid "If enabled, offline contacts will be shown in the roster"
@@ -203,7 +219,7 @@ msgstr "സജ്ജമെങ്കില്‍, ഇക്കോ റദ്ദാ
 
 #: ../ekiga.schemas.in.in.h:37
 msgid "If enabled, use silence detection with the codecs supporting it"
-msgstr ""
+msgstr "പ്രവര്‍ത്തന സജ്ജമെങ്കില്‍, പിന്തുണയ്ക്കുന്ന കോഡക്കുകള്‍ക്കൊപ്പം സൈലന്‍സ് ഡിറ്റക്ഷന്‍ ഉപയോഗിക്കുക"
 
 #: ../ekiga.schemas.in.in.h:38
 msgid "Kind of network selected in the druid"
@@ -247,7 +263,7 @@ msgstr "NAT ബൈന്‍ഡിങ് സമയപരിധി"
 
 #: ../ekiga.schemas.in.in.h:48
 msgid "No answer timeout"
-msgstr ""
+msgstr "കോളെടുക്കുന്നതിനുള്ള സമയപരിധി ലഭ്യമല്ല"
 
 #: ../ekiga.schemas.in.in.h:49
 msgid "Outbound Proxy"
@@ -255,7 +271,7 @@ msgstr "ഔട്ട്ബൌണ്ട് പ്റോക്സി"
 
 #: ../ekiga.schemas.in.in.h:50 ../src/gui/preferences.cpp:486
 msgid "Place windows displaying video above other windows during calls"
-msgstr ""
+msgstr "കോളുകള്‍ക്കിടയില്‍ മറ്റു് ജാലകങ്ങളില്‍ വീഡിയോ പ്രദര്‍ശിപ്പിക്കുന്ന ജാലകങ്ങള്‍ സ്ഥാപിക്കുക"
 
 #: ../ekiga.schemas.in.in.h:51 ../src/gui/preferences.cpp:371
 msgid "Play busy tone"
@@ -323,7 +339,7 @@ msgstr "റിമോട്ട് വീഡിയോ ജാലകത്തിന�
 
 #: ../ekiga.schemas.in.in.h:67
 msgid "Select an alternative audio output device to use for sound events."
-msgstr ""
+msgstr "ശബ്ദ ഇവന്റുകള്‍ക്കായി മറ്റൊരു ഓഡിയോ ഔട്ട്പുട്ട് ഉപകരണം തെരഞ്ഞെടുക്കുക."
 
 #: ../ekiga.schemas.in.in.h:68 ../src/gui/preferences.cpp:777
 msgid "Select the audio input device to use"
@@ -354,7 +370,6 @@ msgstr ""
 "ഉണ്ടാകുന്നു എങ്കില്‍, പരീക്ഷിക്കുന്നതിനായി ഒരു പടം അയയ്ക്കുന്നതാണ്."
 
 #: ../ekiga.schemas.in.in.h:73
-#| msgid "Find contacts"
 msgid "Show offline contacts"
 msgstr "ഓഫ്‌ലൈന്‍ വിലാസങ്ങള്‍ കാണിക്കുക"
 
@@ -410,7 +425,7 @@ msgstr "TCP പോറ്‍ട്ടിന്റെ പരിധി"
 
 #: ../ekiga.schemas.in.in.h:85
 msgid "Temporal Spatial Trade Off"
-msgstr ""
+msgstr "ടെംബറല്‍ സ്പേഷ്യല്‍ ട്രേഡ് ഓഫ്"
 
 #: ../ekiga.schemas.in.in.h:86
 msgid "The Audio Codecs List"
@@ -429,8 +444,8 @@ msgid ""
 "The STUN server to use for STUN Support. STUN is a technology that permits "
 "passage through some types of NAT gateway"
 msgstr ""
-"STUN പിന്തുണയ്ക്കുള്ള STUN സര്‍വര്‍. NAT ഗേറ്റ്‌വെയുടെ ചില തരങ്ങളിലൂടെ "
-"യാത്ര അനുവദിക്കുന്ന ഒരു സംവിധാനമാണു് STUN."
+"STUN പിന്തുണയ്ക്കുള്ള STUN സര്‍വര്‍. NAT ഗേറ്റ്‌വെയുടെ ചില തരങ്ങളിലൂടെ യാത്ര അനുവദിക്കുന്ന ഒരു "
+"സംവിധാനമാണു് STUN."
 
 #: ../ekiga.schemas.in.in.h:90
 msgid "The Video Codecs List"
@@ -441,7 +456,6 @@ msgid "The accounts list"
 msgstr "അക്കൌണ്ടുകളുടെ പട്ടിക"
 
 #: ../ekiga.schemas.in.in.h:92
-#| msgid "The Audio Codecs List"
 msgid "The audio codecs list"
 msgstr "ഓഡിയോ കോഡകിന്റെ പട്ടിക"
 
@@ -454,6 +468,8 @@ msgid ""
 "The chosen sound will be played at the end of calls or calling somebody who "
 "is busy, if enabled"
 msgstr ""
+"കോളുകളുടെ ഒടുവില്‍ അല്ലെങ്കില്‍ തിരക്കിലുള്ള ആരെയെങ്കിലും വിളിക്കുമ്പോള്‍, പ്രവര്‍ത്തന "
+"സജ്ജമെങ്കില്‍, തെരഞ്ഞെടുത്ത ശബ്ദം കേള്‍ക്കുന്നു."
 
 #: ../ekiga.schemas.in.in.h:95
 msgid "The chosen sound will be played on incoming calls, if enabled"
@@ -496,7 +512,7 @@ msgstr "അവസാന 100 കോളുകളുടെ പട്ടിക"
 #: ../ekiga.schemas.in.in.h:103 ../src/gui/preferences.cpp:676
 #: ../src/gui/preferences.cpp:730
 msgid "The host where calls should be forwarded if call forwarding is enabled"
-msgstr ""
+msgstr "കോള്‍ ഫോര്‍വേഡിങ് പ്രവര്‍ത്തന സജ്ജമെങ്കില്‍, കോളുകള്‍ ഫോര്‍വേഡ് ചെയ്യേണ്ട ഹോസ്റ്റ്"
 
 #: ../ekiga.schemas.in.in.h:104
 msgid "The incoming call sound"
@@ -507,7 +523,6 @@ msgid "The list of accounts to which Ekiga should register"
 msgstr "എകിഗാ രജിസ്ടറ്‍ ചെയ്യേണ്ട അക്കൌണ്ടുകളുടെ പട്ടിക"
 
 #: ../ekiga.schemas.in.in.h:106
-#| msgid "Personal Information"
 msgid "The long status information"
 msgstr "സ്വകാര്യം വിവരങ്ങള്‍"
 
@@ -517,6 +532,9 @@ msgid ""
 "peer endpoint that can adjust (if it supports it) its TX bitrate if it is "
 "above the signaled value"
 msgstr ""
+"ഏറ്റവും കൂടിയ RX വീഡിയോ ബിറ്റ്റേറ്റ് kbits/s-ല്‍. This value will be signaled to the "
+"peer endpoint that can adjust (if it supports it) its TX bitrate if it is "
+"above the signaled value"
 
 #: ../ekiga.schemas.in.in.h:108
 msgid ""
@@ -525,10 +543,14 @@ msgid ""
 "dynamically adjusted above their minimum during calls to try to minimize the "
 "bandwidth to the given value"
 msgstr ""
+"ഏറ്റവും കൂടിയ TX വീഡിയോ ബിറ്റ്റേറ്റ് kbits/s-ല്‍. TThe video quality and the number of "
+"transmitted frames per second (depends on selected codec) will be "
+"dynamically adjusted above their minimum during calls to try to minimize the "
+"bandwidth to the given value"
 
 #: ../ekiga.schemas.in.in.h:109
 msgid "The maximum jitter buffer size for audio reception (in ms)"
-msgstr ""
+msgstr "ഓഡിയോ റിസപ്ഷനുള്ള ഏറ്റവും കൂടിയ ജിറ്റര്‍ ബഫര്‍ വ്യാപ്തി (ms-ല്‍)"
 
 #: ../ekiga.schemas.in.in.h:110
 msgid ""
@@ -581,7 +603,6 @@ msgid "The range of UDP ports that Ekiga will use."
 msgstr "Ekiga ഉപയോഗിക്കുന്ന UDP പോര്‍ട്ടുകളുടെ പരിധി."
 
 #: ../ekiga.schemas.in.in.h:119
-#| msgid "View the call information"
 msgid "The short status information"
 msgstr "ചെറിയ അവസ്ഥ വിവരങ്ങള്‍"
 
@@ -622,7 +643,6 @@ msgid "The video channel number to use (to select camera, tv or other sources)"
 msgstr "ഉപയോഗിക്കണ്ട വീഡിയോ ചാനലിന്റെ നംബറ്‍(ക്യമാറ, ടിവി, മറ്റുള്ളവ തിരഞ്ഞെടുക്കേണ്ടതിന്)"
 
 #: ../ekiga.schemas.in.in.h:128
-#| msgid "The Video Codecs List"
 msgid "The video codecs list"
 msgstr "വീഡിയോ കോഡകിന്റെ പട്ടിക"
 
@@ -660,10 +680,9 @@ msgid ""
 "\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (default is \"String"
 "\"). Choosing other values than \"String\" disables the Text Chat"
 msgstr ""
-"DTMF അയയ്ക്കുന്നതിനുള്ള മോഡ് സജ്ജമാക്കുന്നതിനായി ഇതു് അനുവദിക്കുന്നു. "
-"സാധ്യമായ മൂല്ല്യങ്ങള്‍: \"String\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" "
-"(3) (default is \"String\"). \"String\" അല്ലാതെ ഏതു് തെരഞ്ഞെടുത്താലും ടെക്സ്റ്റ് "
-"ചാറ്റ് പ്രവര്‍ത്തന രഹിതമാകുന്നു."
+"DTMF അയയ്ക്കുന്നതിനുള്ള മോഡ് സജ്ജമാക്കുന്നതിനായി ഇതു് അനുവദിക്കുന്നു. സാധ്യമായ മൂല്ല്യങ്ങള്‍: \"String"
+"\" (0), \"Tone\" (1), \"RFC2833\" (2), \"Q.931\" (3) (default is \"String"
+"\"). \"String\" അല്ലാതെ ഏതു് തെരഞ്ഞെടുത്താലും ടെക്സ്റ്റ് ചാറ്റ് പ്രവര്‍ത്തന രഹിതമാകുന്നു."
 
 #: ../ekiga.schemas.in.in.h:135 ../src/gui/preferences.cpp:688
 msgid ""
@@ -683,8 +702,8 @@ msgid ""
 "This key disables DirectX (on win32) and XVideo (on Linux) video hardware "
 "acceleration"
 msgstr ""
-"DirectX (win32-ല്‍), XVideo (Linux-ല്‍) എന്നീ വീഡിയോ ഹാര്‍ഡ്‍‌വെയര്‍ ആക്സിലറേഷന്‍ "
-"ഈ കീ പ്രവര്‍ത്തന രഹിതമാക്കുന്നു"
+"DirectX (win32-ല്‍), XVideo (Linux-ല്‍) എന്നീ വീഡിയോ ഹാര്‍ഡ്‍‌വെയര്‍ ആക്സിലറേഷന്‍ ഈ കീ "
+"പ്രവര്‍ത്തന രഹിതമാക്കുന്നു"
 
 #: ../ekiga.schemas.in.in.h:138
 msgid "UDP port range"
@@ -698,7 +717,7 @@ msgstr "വീഡിയോ ചാനല്‍"
 msgid "Video format"
 msgstr "വീഡിയോ രീതി"
 
-#: ../ekiga.schemas.in.in.h:141 ../src/gui/assistant.cpp:1153
+#: ../ekiga.schemas.in.in.h:141 ../src/gui/assistant.cpp:1158
 msgid "Video input device"
 msgstr "വീഡിയോ ഇന്‍പുട്ട് ഡിവൈസ്"
 
@@ -736,7 +755,6 @@ msgid "Received"
 msgstr "ലഭ്യമായ"
 
 #: ../lib/engine/components/call-history/history-contact.cpp:156
-#| msgid "Blocked"
 msgid "Placed"
 msgstr "സ്ഥാപിച്ചിരിക്കുന്ന"
 
@@ -747,7 +765,6 @@ msgstr "മിസ്സ്ഡ്"
 #: ../lib/engine/components/evolution/evolution-book.cpp:76
 #: ../lib/engine/components/ldap/ldap-book.cpp:909
 #, c-format
-#| msgid "User not found"
 msgid "%d user found"
 msgid_plural "%d users found"
 msgstr[0] "%d ഉപയോക്താവു് ലഭ്യമായിരിക്കുന്നു"
@@ -831,18 +848,15 @@ msgid "Name:"
 msgstr "നാമം:"
 
 #: ../lib/engine/components/evolution/evolution-contact.cpp:395
-#| msgid "New contact"
 msgid "Remove contact"
 msgstr "വിലാസം നീക്കം ചെയ്യുക"
 
 #: ../lib/engine/components/evolution/evolution-contact.cpp:397
 #, c-format
-#| msgid "Are you sure you want to delete account %s?"
 msgid "Are you sure you want to remove %s from the addressbook?"
 msgstr "നിങ്ങള്‍ക്ക് വിലാസപുസ്തകത്തില്‍ നിന്നും %s എന്ന അക്കൌണ്ട് നീക്കം ചെയ്യണമോ?"
 
 #: ../lib/engine/components/gstreamer/gst-audioinput.cpp:270
-#| msgid "Audio Codecs"
 msgid "Audio test"
 msgstr "ഓഡിയോ പരീക്ഷ"
 
@@ -851,7 +865,6 @@ msgid "Silent"
 msgstr "നിശബ്ദം"
 
 #: ../lib/engine/components/gstreamer/gst-videoinput.cpp:226
-#| msgid "Video Codecs"
 msgid "Video test"
 msgstr "വീഡിയോ പരീക്ഷ"
 
@@ -872,12 +885,10 @@ msgid "_Refresh"
 msgstr "പുതുക്കുക (_R)"
 
 #: ../lib/engine/components/ldap/ldap-book.cpp:412
-#| msgid "Size of the address book window"
 msgid "_Remove addressbook"
 msgstr "വിലാസ പുസ്തകത്തം _നീക്കം ചെയ്യുക"
 
 #: ../lib/engine/components/ldap/ldap-book.cpp:414
-#| msgid "Address Books"
 msgid "Addressbook _properties"
 msgstr "വിലാസ പുസ്തകത്തിന്റെ _വിശേഷതകള്‍"
 
@@ -895,22 +906,18 @@ msgstr "LDAP SASL സംവാദം"
 #. * authentication" if you'd like more background context.
 #.
 #: ../lib/engine/components/ldap/ldap-book.cpp:587
-#| msgid "Calling %s"
 msgid "Challenge: "
 msgstr "വെല്ലുവിളി: "
 
 #: ../lib/engine/components/ldap/ldap-book.cpp:595
-#| msgid "Contacts"
 msgid "Interact"
 msgstr "ബന്ധപ്പെടുക"
 
 #: ../lib/engine/components/ldap/ldap-book.cpp:664
-#| msgid "_Refresh"
 msgid "Refreshing"
 msgstr "പുതുക്കുന്നു"
 
 #: ../lib/engine/components/ldap/ldap-book.cpp:670
-#| msgid "Could not contact server"
 msgid "Could not initialize server"
 msgstr "സര്‍വര്‍ ആരംഭിക്കുവാന്‍ സാധ്യമായില്ല"
 
@@ -920,20 +927,17 @@ msgid "LDAP Error: "
 msgstr "LDAP പിശക്: "
 
 #: ../lib/engine/components/ldap/ldap-book.cpp:738
-#| msgid "Could not contact server"
 msgid "Contacted server"
 msgstr "ബന്ധപ്പെട്ട സര്‍വര്‍"
 
 #. patience == 0
 #: ../lib/engine/components/ldap/ldap-book.cpp:781
-#| msgid "Could not contact server"
 msgid "Could not connect to server"
 msgstr "സര്‍വറുമായി ബന്ധപ്പെടുവാന്‍ സാധ്യമായില്ല"
 
 #. patience == 0
 #: ../lib/engine/components/ldap/ldap-book.cpp:829
 #: ../lib/engine/components/ldap/ldap-book.cpp:882
-#| msgid "Could not search on"
 msgid "Could not search"
 msgstr "തെരയുവാന്‍ സാധ്യമായില്ല"
 
@@ -946,7 +950,6 @@ msgid "Please edit the following fields"
 msgstr "താഴെ പറയുന്നവയില്‍ മാറ്റം വരുത്തുക"
 
 #: ../lib/engine/components/ldap/ldap-book.cpp:933
-#| msgid "_Name:"
 msgid "Book _Name"
 msgstr "പുസ്തകത്തിന്റെ _പേര്"
 
@@ -955,7 +958,6 @@ msgid "Server _URI"
 msgstr "സര്‍വര്‍ _URI"
 
 #: ../lib/engine/components/ldap/ldap-book.cpp:935
-#| msgid "_Base DN:"
 msgid "_Base DN"
 msgstr "_ബേയിസ് DN"
 
@@ -964,12 +966,10 @@ msgid "Subtree"
 msgstr "സബ്ട്റീ"
 
 #: ../lib/engine/components/ldap/ldap-book.cpp:942
-#| msgid "Single _Level"
 msgid "Single Level"
 msgstr "സിംഗിള്‍ ലവല്‍ "
 
 #: ../lib/engine/components/ldap/ldap-book.cpp:943
-#| msgid "_Search Filter:"
 msgid "_Search Scope"
 msgstr "ഫില്‍‌റ്റര്‍ _തെരയുക"
 
@@ -978,7 +978,6 @@ msgid "_DisplayName Attribute"
 msgstr "_DisplayName വിശേഷത"
 
 #: ../lib/engine/components/ldap/ldap-book.cpp:953
-#| msgid "Call _Attribute:"
 msgid "Call _Attributes"
 msgstr "_ആട്രിബ്യൂട്ടുകള്‍ ലഭ്യമാക്കുക "
 
@@ -992,7 +991,6 @@ msgid "Bind _ID"
 msgstr "Bind _ID"
 
 #: ../lib/engine/components/ldap/ldap-book.cpp:960
-#| msgid "_Password:"
 msgid "_Password"
 msgstr "_പാസ്‌വേര്‍ഡ്"
 
@@ -1033,7 +1031,6 @@ msgid "Invalid Server URI\n"
 msgstr "തെറ്റായ സര്‍വര്‍ URI\n"
 
 #: ../lib/engine/components/ldap/ldap-source.cpp:127
-#| msgid "Add an LDAP addressbook"
 msgid "Add an LDAP Address Book"
 msgstr "LDAP- നുള്ള ഒരു വിലാസം പുസ്തകം ചേര്‍ക്കുക"
 
@@ -1046,7 +1043,6 @@ msgid "Create LDAP directory"
 msgstr "LDAP ഡയറക്ടറി ഉണ്ടാക്കുക"
 
 #: ../lib/engine/components/ldap/ldap-source.cpp:167
-#| msgid "Edit LDAP directory"
 msgid "Ekiga.net Directory"
 msgstr "Ekiga.net ഡയറക്ടറി"
 
@@ -1059,8 +1055,8 @@ msgid ""
 "Please fill in this form to change an existing element of ekiga's internal "
 "roster"
 msgstr ""
-"ekiga-യിലുള്ള ആന്തരിക റൂസ്റ്ററില്‍ നിലവിലുള്ള ഒരു എലമെന്റ് മാറ്റുന്നതിനായി ദയവായി ഈ "
-"ഫോറം പൂരിപ്പിക്കുക."
+"ekiga-യിലുള്ള ആന്തരിക റൂസ്റ്ററില്‍ നിലവിലുള്ള ഒരു എലമെന്റ് മാറ്റുന്നതിനായി ദയവായി ഈ ഫോറം "
+"പൂരിപ്പിക്കുക."
 
 #: ../lib/engine/components/local-roster/local-presentity.cpp:225
 #: ../lib/engine/components/local-roster/local-heap.cpp:193
@@ -1083,7 +1079,6 @@ msgid "Add to local roster"
 msgstr "ലോക്കല്‍ റൂസ്റ്റലിക്ക് ചേറ്‍ക്കുക"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:92
-#| msgid "Devices"
 msgid "Services"
 msgstr "ഉപകരണങ്ങള്‍"
 
@@ -1108,7 +1103,6 @@ msgid "Family"
 msgstr "കുടുംബം"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:161
-#| msgid "_Find"
 msgid "Friend"
 msgstr "കൂട്ടുകാരന്‍"
 
@@ -1131,8 +1125,8 @@ msgstr "സ്വയം"
 #: ../lib/engine/components/local-roster/local-heap.cpp:182
 msgid "Please fill in this form to add a new contact to ekiga's internal roster"
 msgstr ""
-"ekiga-യിലുള്ള ആന്തരിക റൂസ്റ്ററില്‍ പുതിയ ഒരു വിലാസം ചേര്‍ക്കുന്നതിനായി ദയവായി ഈ "
-"ഫോറം പൂരിപ്പിക്കുക."
+"ekiga-യിലുള്ള ആന്തരിക റൂസ്റ്ററില്‍ പുതിയ ഒരു വിലാസം ചേര്‍ക്കുന്നതിനായി ദയവായി ഈ ഫോറം "
+"പൂരിപ്പിക്കുക."
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:199
 msgid "Put contact in groups:"
@@ -1151,7 +1145,6 @@ msgid "Rename group"
 msgstr "ഗ്റൂപ്പിന്റെ പേര് മാറ്റുക"
 
 #: ../lib/engine/components/local-roster/local-heap.cpp:363
-#| msgid "Please enter your username:"
 msgid "Please edit this group name"
 msgstr "ഈ ഗ്രൂപ്പിന്റെ പേരു് ദയവായി ചിട്ടപ്പെടുത്തുക"
 
@@ -1178,7 +1171,6 @@ msgstr "തെറ്റായ ഉപയോക്തൃനാമം/പാസ്�
 
 #: ../lib/engine/components/opal/h323-endpoint.cpp:316
 #: ../lib/engine/components/opal/sip-endpoint.cpp:896
-#| msgid "Transfer"
 msgid "Transport error"
 msgstr "മറ്റൊരിടത്തേക്ക് നീക്കുന്നതില്‍ പിശക്"
 
@@ -1189,7 +1181,6 @@ msgid "Failed"
 msgstr "പരാജയപ്പെട്ടു"
 
 #: ../lib/engine/components/opal/opal-account.cpp:300
-#| msgid "_Invisible"
 msgid "_Disable"
 msgstr "_പ്രവര്‍ത്തന രഹിതമാക്കുക"
 
@@ -1198,23 +1189,21 @@ msgid "_Enable"
 msgstr "_സജ്ജമാക്കുക"
 
 #: ../lib/engine/components/opal/opal-account.cpp:324
-#: ../src/gui/assistant.cpp:725
+#: ../src/gui/assistant.cpp:730
 msgid "Recharge the account"
 msgstr "അക്കൌണ്ട് വീണ്ടും പുതുക്കുക"
 
 #: ../lib/engine/components/opal/opal-account.cpp:329
-#: ../src/gui/assistant.cpp:737
+#: ../src/gui/assistant.cpp:742
 msgid "Consult the balance history"
 msgstr "ബാക്കിയുള്ള വിവരണങ്ങള്‍ പരിശോധിക്കുക"
 
 #: ../lib/engine/components/opal/opal-account.cpp:334
-#| msgid "Consult the calls history"
 msgid "Consult the call history"
 msgstr "മുമ്പുള്ള കോളുകളുടെ വിവരണം പരിശോധിക്കുക"
 
 #: ../lib/engine/components/opal/opal-account.cpp:349
 #: ../lib/engine/components/opal/opal-bank.cpp:72
-#| msgid "Edit your accounts"
 msgid "Edit account"
 msgstr "അക്കൌണ്ടു് ചിട്ടപ്പെടുത്തുക"
 
@@ -1241,7 +1230,6 @@ msgstr "ഉപയോക്താവ്:"
 #. * for the authentication procedure ("Authentication User")
 #: ../lib/engine/components/opal/opal-account.cpp:363
 #: ../lib/engine/components/opal/opal-bank.cpp:112
-#| msgid "Authentication Login:"
 msgid "Authentication User:"
 msgstr "ആധികാരികത ഉറപ്പാക്കുന്ന ഉപയോക്താവു്:"
 
@@ -1256,13 +1244,11 @@ msgstr "അടയാളവാക്ക്:"
 #: ../lib/engine/components/opal/opal-account.cpp:365
 #: ../lib/engine/components/opal/opal-bank.cpp:104
 #: ../lib/engine/components/opal/opal-bank.cpp:114
-#| msgid "Timeout"
 msgid "Timeout:"
 msgstr "സമയം കഴിഞ്ഞിരിക്കുന്നു:"
 
 #: ../lib/engine/components/opal/opal-account.cpp:366
 #: ../lib/engine/components/opal/opal-bank.cpp:117
-#| msgid "Accounts"
 msgid "Enable Account"
 msgstr "അക്കൌണ്ട് സജ്ജമാക്കുക"
 
@@ -1287,7 +1273,6 @@ msgid "The timeout should have a bigger value."
 msgstr "സമയപരിധി വലിയ മൂല്ല്യമായിരിക്കണം."
 
 #: ../lib/engine/components/opal/opal-bank.cpp:53
-#| msgid "Get an ekiga.net SIP account"
 msgid "_Add an Ekiga.net Account"
 msgstr "ഒരു Ekiga.net അക്കൌണ്ട് _ചേര്‍ക്കുക"
 
@@ -1304,23 +1289,19 @@ msgid "_Add an H.323 Account"
 msgstr "ഒരു H.323 അക്കൌണ്ട് _ചേര്‍ക്കുക"
 
 #: ../lib/engine/components/opal/opal-bank.cpp:73
-#| msgid "Please update the following fields:"
 msgid "Please update the following fields."
 msgstr "താഴെ പറയുന്നവ പുതിയ വിവരങ്ങള്‍ നല്‍കുക:"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:78 ../src/gui/assistant.cpp:605
-#| msgid "Get an ekiga.net SIP account"
+#: ../lib/engine/components/opal/opal-bank.cpp:78 ../src/gui/assistant.cpp:610
 msgid "Get an Ekiga.net SIP account"
 msgstr "ekiga.net SIP-നുള്ള അക്കൌണ്ട് ലഭ്യമാക്കുക"
 
-#: ../lib/engine/components/opal/opal-bank.cpp:88 ../src/gui/assistant.cpp:713
-#| msgid "Get an Ekiga PC-To-Phone account"
+#: ../lib/engine/components/opal/opal-bank.cpp:88 ../src/gui/assistant.cpp:718
 msgid "Get an Ekiga Call Out account"
 msgstr "Ekiga കോള്‍ ഔട്ട് അക്കൌണ്ട് ലഭ്യമാക്കുക"
 
 #: ../lib/engine/components/opal/opal-bank.cpp:92 ../src/gui/main.cpp:2701
 #: ../src/gui/main.cpp:2796
-#| msgid "Account Name:"
 msgid "Account ID:"
 msgstr "അക്കൌണ്ടിലെ ID:"
 
@@ -1399,7 +1380,6 @@ msgid "Remote host is offline"
 msgstr "റിമോട്ട് ഹോസ്റ്റ് ഓഫ്ലൈന്‍ ആണ്"
 
 #: ../lib/engine/components/opal/opal-call.cpp:504
-#| msgid "Local user is not available at this time"
 msgid "User is not available"
 msgstr "ഉപയോക്താവു് ലഭ്യമല്ല"
 
@@ -1407,7 +1387,7 @@ msgstr "ഉപയോക്താവു് ലഭ്യമല്ല"
 msgid "Call completed"
 msgstr "കോള്‍ പൂറ്‍ത്തിയാക്കിയിരിക്കുന്നു"
 
-#: ../lib/engine/components/opal/opal-call-manager.cpp:725
+#: ../lib/engine/components/opal/opal-call-manager.cpp:727
 msgid ""
 "Ekiga did not manage to configure your network settings automatically. You "
 "can still use it, but you need to configure your network settings manually.\n"
@@ -1418,7 +1398,6 @@ msgstr ""
 
 #: ../lib/engine/components/opal/sip-endpoint.cpp:282
 #: ../lib/engine/components/opal/sip-endpoint.cpp:284
-#| msgid "Send _Message"
 msgid "Message"
 msgstr "സന്ദേശം"
 
@@ -1431,7 +1410,6 @@ msgid "Payment required"
 msgstr "കാശടയ്ക്കേണ്ടതുണ്ട്"
 
 #: ../lib/engine/components/opal/sip-endpoint.cpp:718
-#| msgid "Unsorted"
 msgid "Unauthorized"
 msgstr "അധികാരമില്ലാത്ത"
 
@@ -1452,7 +1430,6 @@ msgid "Temporarily unavailable"
 msgstr "തല്‍ക്കാലത്തേക്ക് ലഭ്യമല്ല"
 
 #: ../lib/engine/components/opal/sip-endpoint.cpp:738
-#| msgid "Not Acceptable"
 msgid "Not acceptable"
 msgstr "സ്വീകരിക്കാന്‍ സാധ്യമല്ല"
 
@@ -1473,17 +1450,14 @@ msgid "Moved temporarily"
 msgstr "താല്‍ക്കാലികമായി നീക്കിയിരിക്കുന്നു"
 
 #: ../lib/engine/components/opal/sip-endpoint.cpp:758
-#| msgid "User directory"
 msgid "Use proxy"
 msgstr "പ്രോക്സി ഉപയോഗിക്കുക"
 
 #: ../lib/engine/components/opal/sip-endpoint.cpp:762
-#| msgid "Alternative Output Device"
 msgid "Alternative service"
 msgstr "മറ്റൊരു സേവനം"
 
 #: ../lib/engine/components/opal/sip-endpoint.cpp:766
-#| msgid "User not found"
 msgid "Not found"
 msgstr "ലഭ്യമായില്ല"
 
@@ -1492,12 +1466,10 @@ msgid "Method not allowed"
 msgstr "മെഥേഡ് അനുവദിച്ചിട്ടില്ല"
 
 #: ../lib/engine/components/opal/sip-endpoint.cpp:774
-#| msgid "Payment required"
 msgid "Proxy authentication required"
 msgstr "പ്രോക്സി ഉറപ്പാക്കല്‍ ആവശ്യമുണ്ടു്"
 
 #: ../lib/engine/components/opal/sip-endpoint.cpp:778
-#| msgid "Payment required"
 msgid "Length required"
 msgstr "നീളം ആവശ്യമുണ്ടു്"
 
@@ -1523,7 +1495,6 @@ msgid "Bad extension"
 msgstr "തെറ്റായ എക്സ്റ്റെന്‍ഷന്‍"
 
 #: ../lib/engine/components/opal/sip-endpoint.cpp:803
-#| msgid "Payment required"
 msgid "Extension required"
 msgstr "എക്സ്റ്റെന്‍ഷന്‍ ആവശ്യമുണ്ടു്"
 
@@ -1532,7 +1503,6 @@ msgid "Interval too brief"
 msgstr "ഇടവേള ക്ഷണികം"
 
 #: ../lib/engine/components/opal/sip-endpoint.cpp:811
-#| msgid "Group deleted."
 msgid "Loop detected"
 msgstr "ലൂപ്പ് ലഭ്യമാക്കിയിരിക്കുന്നു"
 
@@ -1557,17 +1527,14 @@ msgid "Request terminated"
 msgstr "ആവശ്യം അവസാനിപ്പിച്ചിരിക്കുന്നു"
 
 #: ../lib/engine/components/opal/sip-endpoint.cpp:835
-#| msgid "Not Acceptable"
 msgid "Not acceptable here"
 msgstr "ഇവിടെ സ്വീകരിക്കാന്‍ സാധ്യമല്ല"
 
 #: ../lib/engine/components/opal/sip-endpoint.cpp:839
-#| msgid "Bad request"
 msgid "Bad event"
 msgstr "തെറ്റായ ഇവന്റ്"
 
 #: ../lib/engine/components/opal/sip-endpoint.cpp:843
-#| msgid "Registering"
 msgid "Request pending"
 msgstr "ബാക്കിയുള്ള ആവശ്യം"
 
@@ -1584,17 +1551,14 @@ msgid "Not implemented"
 msgstr "ലഭ്യമാക്കിയിട്ടില്ല"
 
 #: ../lib/engine/components/opal/sip-endpoint.cpp:859
-#| msgid "Default _gateway:"
 msgid "Bad gateway"
 msgstr "തെറ്റായ ഗേറ്റ്‌വേ"
 
 #: ../lib/engine/components/opal/sip-endpoint.cpp:863
-#| msgid "Temporarily unavailable"
 msgid "Service unavailable"
 msgstr "സേവനം ലഭ്യമല്ല"
 
 #: ../lib/engine/components/opal/sip-endpoint.cpp:867
-#| msgid "Error: Timeout"
 msgid "Server timeout"
 msgstr "സര്‍വറിനുള്ള സമയം കഴിഞ്ഞിരിക്കുന്നു"
 
@@ -1611,7 +1575,6 @@ msgid "Busy everywhere"
 msgstr "എല്ലാവരും തിരക്കില്‍"
 
 #: ../lib/engine/components/opal/sip-endpoint.cpp:883
-#| msgid "Online"
 msgid "Decline"
 msgstr "അവസാനിപ്പിക്കുക"
 
@@ -1620,24 +1583,20 @@ msgid "Does not exist anymore"
 msgstr "ഇപ്പോള്‍ നിലവിലില്ല"
 
 #: ../lib/engine/components/opal/sip-endpoint.cpp:891
-#| msgid "Not Acceptable"
 msgid "Globally not acceptable"
 msgstr "ഗ്ലോബലായി സ്വീകരിക്കാന്‍ സാധ്യമല്ല"
 
 #: ../lib/engine/components/opal/sip-endpoint.cpp:1020
-#| msgid "Could not rename group!"
 msgid "Could not send message"
 msgstr "സന്ദേശം അയയ്ക്കുവാന്‍ സാധ്യമായില്ല"
 
 #: ../lib/engine/components/opal/sip-endpoint.cpp:1134
 #, c-format
-#| msgid "Incoming call from"
 msgid "Incoming call from %s"
 msgstr "%s-ല്‍ നിന്നും വരുന്ന കോള്‍"
 
 #: ../lib/engine/components/opal/sip-endpoint.cpp:1136
 #, c-format
-#| msgid "Incoming call from"
 msgid "Incoming call"
 msgstr "വരുന്ന കോള്‍"
 
@@ -1661,14 +1620,15 @@ msgstr "പുതിയ റിസോഴ്സ്-ലിസ്റ്റ് ചേ
 
 #: ../lib/engine/components/resource-list/rl-cluster.cpp:167
 msgid "Please fill in this form to add a new contact list to ekiga's remote roster"
-msgstr "ekiga-യിലുള്ള റിമോട്ട് റൂസ്റ്ററില്‍ പുതിയ ഒരു വിലാസം ചേര്‍ക്കുന്നതിനായി ദയവായി ഈ ഫോറം പൂരിപ്പിക്കുക."
+msgstr ""
+"ekiga-യിലുള്ള റിമോട്ട് റൂസ്റ്ററില്‍ പുതിയ ഒരു വിലാസം ചേര്‍ക്കുന്നതിനായി ദയവായി ഈ ഫോറം "
+"പൂരിപ്പിക്കുക."
 
 #: ../lib/engine/components/resource-list/rl-cluster.cpp:171
 msgid "Writable:"
 msgstr "റൈറ്റബിള്‍:"
 
 #: ../lib/engine/components/resource-list/rl-cluster.cpp:172
-#| msgid "User:"
 msgid "Username:"
 msgstr "ഉപയോക്താവ്:"
 
@@ -1677,37 +1637,30 @@ msgstr "ഉപയോക്താവ്:"
 #: ../lib/engine/components/resource-list/rl-heap.cpp:178
 #: ../lib/engine/components/resource-list/rl-presentity.cpp:133
 #: ../lib/engine/components/resource-list/rl-entry.cpp:130
-#| msgid "Rename"
 msgid "Unnamed"
 msgstr "പേരില്ലാത്ത"
 
 #: ../lib/engine/components/resource-list/rl-heap.cpp:200
-#| msgid "New contact"
 msgid "_Add a new contact"
 msgstr "ഒരു പുതിയ വിലാസം _ചേര്‍ക്കുക"
 
 #: ../lib/engine/components/resource-list/rl-heap.cpp:202
-#| msgid "View the contacts list"
 msgid "_Refresh contact list"
 msgstr "വിലാസങ്ങളുടെ പട്ടിക _പുതുക്കുക"
 
 #: ../lib/engine/components/resource-list/rl-heap.cpp:204
-#| msgid "Contact status"
 msgid "Contact list _properties"
 msgstr "വിലാസങ്ങളുടെ പട്ടികയ്ക്കുള്ള _വിശേഷതകള്‍"
 
 #: ../lib/engine/components/resource-list/rl-heap.cpp:467
-#| msgid "Put contact in groups:"
 msgid "Edit contact list properties"
 msgstr "വിലാസങ്ങളുടെ പട്ടികയ്ക്കുള്ള വിശേഷതകള്‍ ചിട്ടപ്പെടുത്തുക"
 
 #: ../lib/engine/components/resource-list/rl-heap.cpp:469
-#| msgid "Please edit the following fields"
 msgid "Please edit the following fields (no identifier means global)"
 msgstr "താഴെ പറയുന്നവയില്‍ മാറ്റം വരുത്തുക (ഐഡന്റിഫയര്‍ ഇല്ലായെങ്കില്‍ ഗ്ലോബല്‍)"
 
 #: ../lib/engine/components/resource-list/rl-heap.cpp:472
-#| msgid "Contact status"
 msgid "Contact list's name"
 msgstr "വിലാസത്തിന്റെ പേരു്"
 
@@ -1725,7 +1678,6 @@ msgid "Writable"
 msgstr "റൈറ്റബിള്‍"
 
 #: ../lib/engine/components/resource-list/rl-heap.cpp:477
-#| msgid "Enter your surname"
 msgid "Server username"
 msgstr "സര്‍വര്‍ ഉപയോക്തൃനാമം"
 
@@ -1734,7 +1686,6 @@ msgid "Server password"
 msgstr "സര്‍വര്‍ പാസ്‌വേര്‍ഡ്"
 
 #: ../lib/engine/components/resource-list/rl-heap.cpp:530
-#| msgid "Edit contact"
 msgid "Add a remote contact"
 msgstr "ഒരു റിമോട്ട് വിലാസം ചേര്‍ക്കുക"
 
@@ -1743,7 +1694,6 @@ msgid "Please fill in this form to create a new contact on a remote server"
 msgstr "ഒരു റിമോട്ട് സര്‍വറില്‍ പുതിയ ഒരു വിലാസം ഉണ്ടാക്കുന്നതിനായി ദയവായി ഈ ഫോറം പൂരിപ്പിക്കുക."
 
 #: ../lib/engine/components/resource-list/rl-presentity.cpp:221
-#| msgid "Edit contact"
 msgid "Edit remote contact"
 msgstr "റിമോട്ട് വിലാസം ചിട്ടപ്പെടുത്തുക"
 
@@ -1760,7 +1710,6 @@ msgid "Click to fetch"
 msgstr "ലഭ്യമാക്കുന്നതിനായി ക്ലിക്ക് ചെയ്യുക"
 
 #: ../lib/engine/components/resource-list/rl-entry-ref.cpp:118
-#| msgid "Edit contact"
 msgid "Distant contact"
 msgstr "ദൂരെയുള്ള വിലാസം"
 
@@ -1775,12 +1724,10 @@ msgid "List #%d"
 msgstr "#%d ലഭ്യമാക്കുക"
 
 #: ../lib/engine/gui/gtk-core/form-dialog-gtk.cpp:660
-#| msgid "Advanced Settings"
 msgid "Advanced"
 msgstr "അധികമായ"
 
 #: ../lib/engine/gui/gtk-frontend/addressbook-window.cpp:659
-#| msgid "Address _Book"
 msgid "Address Book"
 msgstr "വിലാസ പുസ്തകം "
 
@@ -1799,7 +1746,7 @@ msgid "Category"
 msgstr "വിഭാഗം"
 
 #: ../lib/engine/gui/gtk-frontend/book-view-gtk.cpp:590
-#: ../src/gui/assistant.cpp:1377
+#: ../src/gui/assistant.cpp:1382
 msgid "Full Name"
 msgstr "പൂറ്‍ണ്ണ നാമം"
 
@@ -1816,7 +1763,6 @@ msgid "Open link in browser"
 msgstr "ബ്രൌസറില്‍ ലിങ്ക് തുറക്കുക"
 
 #: ../lib/engine/gui/gtk-frontend/chat-area.cpp:376
-#| msgid "_Copy Equation"
 msgid "Copy link"
 msgstr "ലിങ്ക് പകര്‍ത്തുക"
 
@@ -1855,12 +1801,10 @@ msgid "Unregistered"
 msgstr "രജിസ്ടര്‍ ചെയ്തിട്ടില്ലാത്ത"
 
 #: ../src/gui/accounts.cpp:237
-#| msgid "Could not search on"
 msgid "Could not unregister"
 msgstr "അണ്‍രജിസ്ടര്‍ ചെയ്യുവാന്‍ സാധ്യമായില്ല"
 
 #: ../src/gui/accounts.cpp:243
-#| msgid "Could not search on"
 msgid "Could not register"
 msgstr "രജിസ്ടര്‍ ചെയ്യുവാന്‍ സാധ്യമായില്ല"
 
@@ -1901,7 +1845,7 @@ msgstr "സഹായം (_H)"
 msgid "A"
 msgstr "A"
 
-#: ../src/gui/assistant.cpp:323
+#: ../src/gui/assistant.cpp:327
 msgid ""
 "This is the Ekiga general configuration assistant. The following steps will "
 "set up Ekiga by asking a few simple questions.\n"
@@ -1910,20 +1854,20 @@ msgid ""
 "selecting Preferences in the Edit menu."
 msgstr ""
 
-#: ../src/gui/assistant.cpp:331
+#: ../src/gui/assistant.cpp:335
 msgid "Welcome to Ekiga"
 msgstr "Ekiga-ലേക്കു് സ്വാഗതം"
 
-#: ../src/gui/assistant.cpp:365 ../src/gui/preferences.cpp:454
+#: ../src/gui/assistant.cpp:359 ../src/gui/preferences.cpp:454
 msgid "Personal Information"
 msgstr "സ്വകാര്യം വിവരങ്ങള്‍"
 
 #. The user fields
-#: ../src/gui/assistant.cpp:368
+#: ../src/gui/assistant.cpp:362
 msgid "Please enter your first name and your surname:"
 msgstr "നിങ്ങളുടെ ആദ്യ പേരും കുടുംബ പേരും ദയവായി നല്‍കുക:"
 
-#: ../src/gui/assistant.cpp:377
+#: ../src/gui/assistant.cpp:371
 msgid ""
 "Your first name and surname will be used when connecting to other VoIP and "
 "videoconferencing software."
@@ -1931,20 +1875,19 @@ msgstr ""
 "മറ്റ് VoIP, വീഡിയോകോണ്‍ഫറന്‍സിങ് സോഫ്റ്റ്‌വെയറിലേക്ക് ഘടിപ്പിക്കുമ്പോള്‍ നിങ്ങളുടെ ആദ്യ പേരും "
 "കുടുംബപേരും ഉപയോഗിക്കുന്നു."
 
-#: ../src/gui/assistant.cpp:568
-#| msgid "ekiga.net Account - page %d/%d"
+#: ../src/gui/assistant.cpp:573
 msgid "Ekiga.net Account"
 msgstr "ekiga.net അക്കൌണ്ട്"
 
-#: ../src/gui/assistant.cpp:570
+#: ../src/gui/assistant.cpp:575
 msgid "Please enter your username:"
 msgstr "നിങ്ങളുടെ ഉപയോക്താവിന്റെ നാമം നല്‍കുക:"
 
-#: ../src/gui/assistant.cpp:578
+#: ../src/gui/assistant.cpp:583
 msgid "Please enter your password:"
 msgstr "നിങ്ങളുടെ പാസ്‌വേറ്‍ഡ് നല്‍കുക:"
 
-#: ../src/gui/assistant.cpp:588
+#: ../src/gui/assistant.cpp:593
 msgid ""
 "The username and password are used to login to your existing account at the "
 "ekiga.net free SIP service. If you do not have an ekiga.net SIP address yet, "
@@ -1955,25 +1898,23 @@ msgid ""
 "would prefer to specify the login details later."
 msgstr ""
 
-#: ../src/gui/assistant.cpp:615
+#: ../src/gui/assistant.cpp:620
 msgid "I do not want to sign up for the ekiga.net free service"
 msgstr "ekiga.net ഫ്റീ സറ്‍വീസ് എനിക്ക് ആവശ്യമില്ല"
 
-#: ../src/gui/assistant.cpp:678
+#: ../src/gui/assistant.cpp:683
 msgid "Ekiga Call Out Account"
 msgstr "Ekiga കോള്‍ ഔട്ട് അക്കൌണ്ട്"
 
-#: ../src/gui/assistant.cpp:680
-#| msgid "Please enter your username:"
+#: ../src/gui/assistant.cpp:685
 msgid "Please enter your account ID:"
 msgstr "നിങ്ങളുടെ അക്കൌണ്ടിനുള്ള ID നല്‍കുക:"
 
-#: ../src/gui/assistant.cpp:688
-#| msgid "Please enter your password:"
+#: ../src/gui/assistant.cpp:693
 msgid "Please enter your PIN code:"
 msgstr "ദയവായി നിങ്ങളുടെ പിന്‍കോഡ് നല്‍കുക:"
 
-#: ../src/gui/assistant.cpp:699
+#: ../src/gui/assistant.cpp:704
 msgid ""
 "You can make calls to regular phones and cell numbers worldwide using "
 "Ekiga.\n"
@@ -1985,165 +1926,152 @@ msgid ""
 "dialog.\n"
 msgstr ""
 
-#: ../src/gui/assistant.cpp:749
+#: ../src/gui/assistant.cpp:754
 msgid "Consult the calls history"
 msgstr "മുമ്പുള്ള കോളുകളുടെ വിവരണം പരിശോധിക്കുക"
 
-#: ../src/gui/assistant.cpp:759
-#| msgid "I do not want to sign up for the ekiga.net free service"
+#: ../src/gui/assistant.cpp:764
 msgid "I do not want to sign up for the Ekiga Call Out service"
 msgstr "Ekiga കോള്‍ ഔട്ട് സേവനത്തില്‍ എനിക്കു് സൈനപ്പ് ചെയ്യേണ്ട"
 
-#: ../src/gui/assistant.cpp:825 ../src/gui/assistant.cpp:1388
-#| msgid "Connection Type - page %d/%d"
+#: ../src/gui/assistant.cpp:830 ../src/gui/assistant.cpp:1393
 msgid "Connection Type"
 msgstr "ഏത് തരം കണക്ഷന്‍ "
 
 #. The connection type
-#: ../src/gui/assistant.cpp:828
+#: ../src/gui/assistant.cpp:833
 msgid "Please choose your connection type:"
 msgstr "നിങ്ങളുടെ കണക്ഷന്‍ ഏത് തരത്തിലുള്ളതെന്ന് തിരഞ്ഞെടുക്കുക:"
 
-#: ../src/gui/assistant.cpp:845
+#: ../src/gui/assistant.cpp:850
 msgid "56k Modem"
 msgstr "56k മോഡം"
 
-#: ../src/gui/assistant.cpp:850
+#: ../src/gui/assistant.cpp:855
 msgid "ISDN"
 msgstr "ISDN"
 
-#: ../src/gui/assistant.cpp:855
+#: ../src/gui/assistant.cpp:860
 msgid "DSL/Cable (128 kbit/s uplink)"
 msgstr "DSL/Cable (128 kbit/s uplink)"
 
-#: ../src/gui/assistant.cpp:860
+#: ../src/gui/assistant.cpp:865
 msgid "DSL/Cable (512 kbit/s uplink)"
 msgstr "DSL/Cable (512 kbit/s uplink)"
 
-#: ../src/gui/assistant.cpp:865
-#| msgid "T1/LAN"
+#: ../src/gui/assistant.cpp:870
 msgid "LAN"
 msgstr "LAN"
 
-#: ../src/gui/assistant.cpp:870
+#: ../src/gui/assistant.cpp:875
 msgid "Keep current settings"
 msgstr "നിലവിലുള്ള സജ്ജീകരണങ്ങള്‍ സൂക്ഷിക്കുക"
 
-#: ../src/gui/assistant.cpp:875
+#: ../src/gui/assistant.cpp:880
 msgid ""
 "The connection type will permit determining the best quality settings that "
 "Ekiga will use during calls. You can later change the settings individually "
 "in the preferences window."
 msgstr ""
 
-#: ../src/gui/assistant.cpp:969 ../src/gui/main.cpp:3012
+#: ../src/gui/assistant.cpp:974 ../src/gui/main.cpp:3012
 #: ../src/gui/main.cpp:3016 ../src/gui/preferences.cpp:760
 msgid "Audio Devices"
 msgstr "ഓഡിയോ ഡിവൈസുകള്‍"
 
-#: ../src/gui/assistant.cpp:971
-#| msgid "Please choose the audio input device:"
+#: ../src/gui/assistant.cpp:976
 msgid "Please choose the audio ringing device:"
 msgstr "ദയവായി ഓ‍ഡിയോ റിങിങ് ഡിവൈസ് തെരഞ്ഞെടുക്കുക:"
 
-#: ../src/gui/assistant.cpp:991
+#: ../src/gui/assistant.cpp:996
 msgid ""
 "The audio ringing device is the device that will be used to play the ringing "
 "sound on incoming calls."
 msgstr ""
+"കോളുകള്‍ വരുമ്പോള്‍ റിങ് ചെയ്യേണ്ട ശബ്ദത്തിനുള്ള ഉപകരണമാണു് ഓഡിയോ "
+"റിങിങ് ഡിവൈസ്."
 
 #. ---
-#: ../src/gui/assistant.cpp:1002
+#: ../src/gui/assistant.cpp:1007
 msgid "Please choose the audio output device:"
 msgstr "ദയവായി നിങ്ങളുടെ ഓ‍ഡിയോ ഔട്ട്പുട്ട് ഡിവൈസ് തിരഞ്ഞെടുക്കുക:"
 
-#: ../src/gui/assistant.cpp:1022
+#: ../src/gui/assistant.cpp:1027
 msgid ""
 "The audio output device is the device that will be used to play audio during "
 "calls."
 msgstr ""
+"കോളുകളുടെ ഇടയില്‍ ഓഡിയോ പ്രവര്‍ത്തിക്കുന്നതിനുള്ള ഡിവൈസാണു് ഓഡിയോ "
+"ഔട്ട്പുട്ട് ഡിവൈസ്."
 
 #. ---
-#: ../src/gui/assistant.cpp:1033
+#: ../src/gui/assistant.cpp:1038
 msgid "Please choose the audio input device:"
 msgstr "ദയവായി നിങ്ങളുടെ ഓ‍ഡിയോ ഇന്‍പുട്ട് ഡിവൈസ് തിരഞ്ഞെടുക്കുക:"
 
-#: ../src/gui/assistant.cpp:1053
-#| msgid ""
-#| "The audio plugin that will be used to detect the devices and manage them."
+#: ../src/gui/assistant.cpp:1058
 msgid ""
 "The audio input device is the device that will be used to record your voice "
 "during calls."
-msgstr ""
-"കോളുകള്‍ക്കിടയില്‍ നിങ്ങളുടെ ശബ്ദം റിക്കോര്‍ഡ് ചെയ്യുന്നതിനുള്ള ഡിവൈസ് "
-"ആണു് ഓഡിയോ ഇന്‍പുട്ട ഡിവൈസ്"
+msgstr "കോളുകള്‍ക്കിടയില്‍ നിങ്ങളുടെ ശബ്ദം റിക്കോര്‍ഡ് ചെയ്യുന്നതിനുള്ള ഡിവൈസ് ആണു് ഓഡിയോ ഇന്‍പുട്ട ഡിവൈസ്"
 
-#: ../src/gui/assistant.cpp:1155
-#| msgid "Please choose the video input device:"
+#: ../src/gui/assistant.cpp:1160
 msgid "Please choose your video input device:"
 msgstr "ദയവായി നിങ്ങളുടെ വീഡിയോ ഇന്‍പുട്ട് ഡിവൈസ് തെരഞ്ഞെടുക്കുക:"
 
-#: ../src/gui/assistant.cpp:1175
+#: ../src/gui/assistant.cpp:1180
 msgid ""
 "The video input device is the device that will be used to capture video "
 "during calls."
-msgstr ""
-"കോളുകള്‍ക്കിടയില്‍ നിങ്ങളുടെ വീഡിയോ റിക്കോര്‍ഡ് ചെയ്യുന്നതിനുള്ള ഡിവൈസ് "
-"ആണു് വീഡിയോ ഇന്‍പുട്ട ഡിവൈസ്."
+msgstr "കോളുകള്‍ക്കിടയില്‍ നിങ്ങളുടെ വീഡിയോ റിക്കോര്‍ഡ് ചെയ്യുന്നതിനുള്ള ഡിവൈസ് ആണു് വീഡിയോ ഇന്‍പുട്ട ഡിവൈസ്."
 
-#: ../src/gui/assistant.cpp:1240 ../src/gui/assistant.cpp:1264
-#: ../src/gui/assistant.cpp:1288 ../src/gui/preferences.cpp:805
+#: ../src/gui/assistant.cpp:1245 ../src/gui/assistant.cpp:1269
+#: ../src/gui/assistant.cpp:1293 ../src/gui/preferences.cpp:805
 #: ../src/gui/preferences.cpp:830 ../src/gui/preferences.cpp:854
 msgid "No device found"
 msgstr "ഡിവൈസ് ലഭ്യമായില്ല"
 
-#: ../src/gui/assistant.cpp:1319
-#| msgid "Configuration complete - page %d/%d"
+#: ../src/gui/assistant.cpp:1324
 msgid "Configuration Complete"
 msgstr "ക്രമീകരണം പൂര്‍ത്തിയാക്കിയിരിക്കുന്നു"
 
-#: ../src/gui/assistant.cpp:1321
+#: ../src/gui/assistant.cpp:1326
 msgid ""
 "You have now finished the Ekiga configuration. All the settings can be "
 "changed in the Ekiga preferences. Enjoy!"
 msgstr ""
-"നിങ്ങള്‍ ഇപ്പോള്‍ Ekiga ക്രമീകരണം പൂര്‍ത്തിയാക്കിയിരിക്കുന്നു. എല്ലാ ക്രമീകരണങ്ങളും "
-"നിങ്ങള്‍ക്കു് Ekiga മുന്‍ഗണനകളില്‍ മാറ്റുവാന്‍ സാധിക്കുന്നു."
+"നിങ്ങള്‍ ഇപ്പോള്‍ Ekiga ക്രമീകരണം പൂര്‍ത്തിയാക്കിയിരിക്കുന്നു. എല്ലാ ക്രമീകരണങ്ങളും നിങ്ങള്‍ക്കു് "
+"Ekiga മുന്‍ഗണനകളില്‍ മാറ്റുവാന്‍ സാധിക്കുന്നു."
 
-#: ../src/gui/assistant.cpp:1328
+#: ../src/gui/assistant.cpp:1333
 msgid "Configuration summary:"
 msgstr "ക്രമീകരണത്തിന്റെ ചുരുക്കം:"
 
-#: ../src/gui/assistant.cpp:1398
-#| msgid "Audio input device"
+#: ../src/gui/assistant.cpp:1403
 msgid "Audio Ringing Device"
 msgstr "ഓഡിയോ റിങിങ് ഡിവൈസ്"
 
-#: ../src/gui/assistant.cpp:1407
-#| msgid "Audio output device"
+#: ../src/gui/assistant.cpp:1412
 msgid "Audio Output Device"
 msgstr "ഓഡിയോ ഔട്ട്പുട്ട് ഡിവൈസ്"
 
-#: ../src/gui/assistant.cpp:1416
-#| msgid "Audio input device"
+#: ../src/gui/assistant.cpp:1421
 msgid "Audio Input Device"
 msgstr "ഓഡിയോ ഇന്‍പുട്ട് ഡിവൈസ്"
 
-#: ../src/gui/assistant.cpp:1425
-#| msgid "Video input device"
+#: ../src/gui/assistant.cpp:1430
 msgid "Video Input Device"
 msgstr "വീഡിയോ ഇന്‍പുട്ട് ഡിവൈസ്"
 
-#: ../src/gui/assistant.cpp:1438
-#| msgid "VoIP URI"
+#: ../src/gui/assistant.cpp:1443
 msgid "SIP URI"
 msgstr "SIP URI"
 
-#: ../src/gui/assistant.cpp:1450
+#: ../src/gui/assistant.cpp:1455
 msgid "Ekiga Call Out"
 msgstr "Ekiga കോള്‍ ഔട്ട്"
 
-#: ../src/gui/assistant.cpp:1492
+#: ../src/gui/assistant.cpp:1499
 #, c-format
 msgid "Ekiga Configuration Assistant (%d of %d)"
 msgstr "Ekiga ക്രമീകരണ അസ്സിസ്റ്റന്റ് (%d, മൊത്തം %d)"
@@ -2167,10 +2095,9 @@ msgid ""
 "Software Foundation; either version 2 of the License, or (at your option) "
 "any later version. "
 msgstr ""
-"ഈ പ്രോഗ്രാം ഒരു സ്വതന്ത്ര സോഫ്റ്റ്‌വെയറാണു്, നിങ്ങള്‍ക്കതു് പുനര്‍വിതരണം "
-"നടത്തുകയോ സ്വതന്ത്ര സോഫ്റ്റ്‌വെയര്‍ ഫൌണ്ടേഷന്‍ പ്രസിദ്ധീകരിച്ച ഗ്നു ജനറല്‍ "
-"പബ്ലിക് ലൈസന്‍സ് ലക്കം 2 ഓ അതിനേക്കാള്‍ പുതിയ പതിപ്പോ (നിങ്ങളുടെ ഇഷ്ടപ്രകാരം) "
-"പ്രകാരം ഭേദഗതി വരുത്താവുന്നതോ ആണു്."
+"ഈ പ്രോഗ്രാം ഒരു സ്വതന്ത്ര സോഫ്റ്റ്‌വെയറാണു്, നിങ്ങള്‍ക്കതു് പുനര്‍വിതരണം നടത്തുകയോ സ്വതന്ത്ര സോഫ്റ്റ്‌വെയര്‍ "
+"ഫൌണ്ടേഷന്‍ പ്രസിദ്ധീകരിച്ച ഗ്നു ജനറല്‍ പബ്ലിക് ലൈസന്‍സ് ലക്കം 2 ഓ അതിനേക്കാള്‍ പുതിയ പതിപ്പോ "
+"(നിങ്ങളുടെ ഇഷ്ടപ്രകാരം) പ്രകാരം ഭേദഗതി വരുത്താവുന്നതോ ആണു്."
 
 #: ../src/gui/callbacks.cpp:171
 msgid ""
@@ -2181,13 +2108,12 @@ msgid ""
 "License along with this program; if not, write to the Free Software "
 "Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA."
 msgstr ""
-"ഈ പ്രോഗ്രാം നിങ്ങള്‍ക്കു് പ്രയോജനപ്പെടും എന്ന പ്രതീക്ഷയില്‍ വിതരണം ചെയ്യുന്നതാണു്."
-"പക്ഷേ, ഇതിന് ഒരു വാറണ്ടിയും ലഭ്യമല്ല; വ്യാപാരയോഗ്യതയോ ഒരു പ്രത്യേക കാര്യത്തിനു്"
-"ചേരുന്നതാണെന്നോ ഉള്ള പരോക്ഷമായ ഒരു വാറണ്ടി പോലും ഇല്ല. കൂടുതല്‍ വിവരങ്ങള്‍ക്കു് "
-"ഗ്നു ജനറല്‍ പബ്ലിക് ലൈസന്‍സ് കാണുക. നിങ്ങള്‍ക്കു് ഗ്നോം ടെര്‍മിനലിനൊപ്പം ഗ്നു "
-"ജനറല്‍ പബ്ലിക് ലൈസന്‍സിന്റെ ഒരു പകര്‍പ്പു് ലഭിച്ചിട്ടുണ്ടായിരിയ്ക്കണം; ഇല്ലെങ്കില്‍, "
-"ഈ വിലാസത്തിലേയ്ക്കെഴുതുക: Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, "
-"Boston, MA 02110-1301, USA."
+"ഈ പ്രോഗ്രാം നിങ്ങള്‍ക്കു് പ്രയോജനപ്പെടും എന്ന പ്രതീക്ഷയില്‍ വിതരണം ചെയ്യുന്നതാണു്.പക്ഷേ, ഇതിന് ഒരു "
+"വാറണ്ടിയും ലഭ്യമല്ല; വ്യാപാരയോഗ്യതയോ ഒരു പ്രത്യേക കാര്യത്തിനു്ചേരുന്നതാണെന്നോ ഉള്ള പരോക്ഷമായ "
+"ഒരു വാറണ്ടി പോലും ഇല്ല. കൂടുതല്‍ വിവരങ്ങള്‍ക്കു് ഗ്നു ജനറല്‍ പബ്ലിക് ലൈസന്‍സ് കാണുക. നിങ്ങള്‍ക്കു് ഗ്നോം "
+"ടെര്‍മിനലിനൊപ്പം ഗ്നു ജനറല്‍ പബ്ലിക് ലൈസന്‍സിന്റെ ഒരു പകര്‍പ്പു് ലഭിച്ചിട്ടുണ്ടായിരിയ്ക്കണം; "
+"ഇല്ലെങ്കില്‍, ഈ വിലാസത്തിലേയ്ക്കെഴുതുക: Free Software Foundation, Inc., 51 Franklin "
+"Street, Fifth Floor, Boston, MA 02110-1301, USA."
 
 #: ../src/gui/callbacks.cpp:178
 msgid ""
@@ -2217,7 +2143,6 @@ msgid "Help display is not supported by your GTK+ version"
 msgstr "നിങ്ങളുടെ GTK+ പതിപ്പില്‍ സഹായത്തിനുള്ള പ്രദര്‍ശനം പിന്തുണയ്ക്കുന്നില്ല."
 
 #: ../src/gui/callbacks.cpp:277
-#| msgid "Failed to open the device"
 msgid "Unable to open help file."
 msgstr "സഹായത്തിനുള്ള ഫയല്‍ തുറക്കുവാനായില്ല"
 
@@ -2267,19 +2192,16 @@ msgstr "രജിസ്ടര്‍ ചെയ്തിട്ടില്ലാ�
 
 #: ../src/gui/main.cpp:531
 #, c-format
-#| msgid "Could not search on"
 msgid "Could not unregister %s"
 msgstr "%s അണ്‍രജിസ്ടര്‍ ചെയ്യുവാന്‍ സാധ്യമായില്ല"
 
 #: ../src/gui/main.cpp:535
 #, c-format
-#| msgid "Could not search on"
 msgid "Could not register %s"
 msgstr "%s രജിസ്ടര്‍ ചെയ്യുവാന്‍ സാധ്യമായില്ല"
 
 #: ../src/gui/main.cpp:605
 #, c-format
-#| msgid "A:%.1f/%.1f   V:%.1f/%.1f  FPS:%d/%d"
 msgid "A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d"
 msgstr "A:%.1f/%.1f   V:%.1f/%.1f   FPS:%d/%d"
 
@@ -2293,18 +2215,15 @@ msgid "Standby"
 msgstr "തയ്യാറായി നില്‍ക്കുക"
 
 #: ../src/gui/main.cpp:753
-#| msgid "Call completed"
 msgid "Call on hold"
 msgstr "കോള്‍ ഹോള്‍ഡ് ചെയ്തിരിക്കുന്നു"
 
 #: ../src/gui/main.cpp:764
-#| msgid "Call attribute"
 msgid "Call retrieved"
 msgstr "കോള്‍ ലഭ്യമാക്കിയിരിക്കുന്നു"
 
 #: ../src/gui/main.cpp:780
 #, c-format
-#| msgid "Call from %s"
 msgid "Missed call from %s"
 msgstr "%s-ല്‍ നിന്നും മിസ്സ്ഡ് കോള്‍"
 
@@ -2313,7 +2232,6 @@ msgid "Error"
 msgstr "തകരാറ്"
 
 #: ../src/gui/main.cpp:982
-#| msgid "Error while opening video device %s"
 msgid "Error while initializing video output"
 msgstr "വീഡിയോ ഔട്ട്പുട്ട് ആരംഭിക്കുന്നതില്‍ പിശക്"
 
@@ -2336,20 +2254,17 @@ msgstr ""
 #. Translators: This is a hotplug status
 #: ../src/gui/main.cpp:1108
 #, c-format
-#| msgid "Audio input device"
 msgid "Added video input device %s"
 msgstr "ഓഡിയോ ഇന്‍പുട്ട് ഡിവൈസ് %s ചേര്‍ത്തിരിക്കുന്നു"
 
 #. Translators: This is a hotplug status
 #: ../src/gui/main.cpp:1120
 #, c-format
-#| msgid "Video input device"
 msgid "Removed video input device %s"
 msgstr "വീഡിയോ ഇന്‍പുട്ട് ഡിവൈസ് %s നീക്കം ചെയ്തിരിക്കുന്നു"
 
 #: ../src/gui/main.cpp:1137
 #, c-format
-#| msgid "Error while opening video device %s"
 msgid "Error while accessing video device %s"
 msgstr "വീഡിയോ ഡിവൈസ് %s ലഭ്യമാക്കുന്നതില്‍ പിശക്"
 
@@ -2393,27 +2308,23 @@ msgid "Error while setting the frame size."
 msgstr "ഫ്റെയിം വ്യാപ്തി സജ്ജീകരിക്കുന്നതില്‍ പിശക്."
 
 #: ../src/gui/main.cpp:1169 ../src/gui/main.cpp:1271 ../src/gui/main.cpp:1386
-#| msgid "Unknown NAT"
 msgid "Unknown error."
 msgstr "അപരിചിതമായ പിശക്."
 
 #. Translators: This is a hotplug status
 #: ../src/gui/main.cpp:1219
 #, c-format
-#| msgid "Audio input device"
 msgid "Added audio input device %s"
 msgstr "ഓഡിയോ ഇന്‍പുട്ട് ഡിവൈസ് %s ചേര്‍ത്തിരിക്കുന്നു"
 
 #. Translators: This is a hotplug status
 #: ../src/gui/main.cpp:1236
 #, c-format
-#| msgid "Audio input device"
 msgid "Removed audio input device %s"
 msgstr "ഓഡിയോ ഇന്‍പുട്ട് ഡിവൈസ് %s നീക്കം ചെയ്തിരിക്കുന്നു"
 
 #: ../src/gui/main.cpp:1253
 #, c-format
-#| msgid "Error while opening video device %s"
 msgid "Error while opening audio input device %s"
 msgstr "ഓഡിയോ ഇന്‍പുട്ട് ഡിവൈസ് %s ലഭ്യമാക്കുന്നതില്‍ പിശക്"
 
@@ -2432,9 +2343,6 @@ msgid ""
 msgstr ""
 
 #: ../src/gui/main.cpp:1266
-#| msgid ""
-#| "The selected audio device (%s) was successfully opened but it is "
-#| "impossible to read data from this device. Please check your audio setup."
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "read data from this device. In case it is a pluggable device it may be "
@@ -2442,24 +2350,21 @@ msgid ""
 "check your audio setup."
 msgstr ""
 "നിങ്ങള്‍ തിരഞ്ഞെടുത്ത ഓഡിയോ ഡിവൈസ് ലഭ്യമായെങ്കിലും അതിലേക്ക് ഡേറ്റാ സൂക്ഷിക്കുവാന്‍ "
-"സാധ്യമാകുന്നില്ല. ഘടിപ്പിക്കുന്ന ഡിവൈസ് ആണെങ്കില്‍, ഒരിക്കല്‍ കൂടി കണക്ട് ചെയ്യുക. "
-"അല്ലായെങ്കില്‍ ദയവായി നിങ്ങളുടെ ഓഡിയോ ക്രമീകരണം പരിശോധിക്കുക."
+"സാധ്യമാകുന്നില്ല. ഘടിപ്പിക്കുന്ന ഡിവൈസ് ആണെങ്കില്‍, ഒരിക്കല്‍ കൂടി കണക്ട് ചെയ്യുക. അല്ലായെങ്കില്‍ "
+"ദയവായി നിങ്ങളുടെ ഓഡിയോ ക്രമീകരണം പരിശോധിക്കുക."
 
 #: ../src/gui/main.cpp:1333
 #, c-format
-#| msgid "Audio output device"
 msgid "Added audio output device %s"
 msgstr "ഓഡിയോ ഔട്ട്പുട്ട് ഡിവൈസ് %s ചേര്‍ത്തിരിക്കുന്നു"
 
 #: ../src/gui/main.cpp:1349
 #, c-format
-#| msgid "Alternative audio output device"
 msgid "Removed audio output device %s"
 msgstr "ഓഡിയോ ഔട്ട്പുട്ട് ഡിവൈസ് %s നീക്കം ചെയ്തിരിക്കുന്നു"
 
 #: ../src/gui/main.cpp:1370
 #, c-format
-#| msgid "Error while opening video device %s"
 msgid "Error while opening audio output device %s"
 msgstr "ഓഡിയോ ഔട്ട്പുട്ട് ഡിവൈസ് %s ലഭ്യമാക്കുന്നതില്‍ പിശക്"
 
@@ -2476,9 +2381,6 @@ msgid ""
 msgstr ""
 
 #: ../src/gui/main.cpp:1381
-#| msgid ""
-#| "The selected audio device (%s) was successfully opened but it is "
-#| "impossible to write data to this device. Please check your audio setup."
 msgid ""
 "The selected audio device was successfully opened but it is impossible to "
 "write data to this device. In case it is a pluggable device it may be "
@@ -2486,8 +2388,8 @@ msgid ""
 "check your audio setup."
 msgstr ""
 "നിങ്ങള്‍ തിരഞ്ഞെടുത്ത ഓഡിയോ ഡിവൈസ് ലഭ്യമായെങ്കിലും അതിലേക്ക് ഡേറ്റാ സൂക്ഷിക്കുവാന്‍ "
-"സാധ്യമാകുന്നില്ല. ഘടിപ്പിക്കുന്ന ഡിവൈസ് ആണെങ്കില്‍, ഒരിക്കല്‍ കൂടി കണക്ട് ചെയ്യുക. "
-"അല്ലായെങ്കില്‍ ദയവായി നിങ്ങളുടെ ഓഡിയോ ക്രമീകരണം പരിശോധിക്കുക."
+"സാധ്യമാകുന്നില്ല. ഘടിപ്പിക്കുന്ന ഡിവൈസ് ആണെങ്കില്‍, ഒരിക്കല്‍ കൂടി കണക്ട് ചെയ്യുക. അല്ലായെങ്കില്‍ "
+"ദയവായി നിങ്ങളുടെ ഓഡിയോ ക്രമീകരണം പരിശോധിക്കുക."
 
 #: ../src/gui/main.cpp:1569
 msgid "Video Settings"
@@ -2572,7 +2474,6 @@ msgid "Transfer call to:"
 msgstr "കോള്‍ മറ്റൊരിടത്തേക്ക് നീക്കുക:"
 
 #: ../src/gui/main.cpp:2998
-#| msgid "None"
 msgid "No"
 msgstr "ഇല്ല"
 
@@ -2581,17 +2482,14 @@ msgid "Yes"
 msgstr "ഉവ്വു്"
 
 #: ../src/gui/main.cpp:3011
-#| msgid "Please choose the audio input device:"
 msgid "Detected new audio input device:"
 msgstr "പുതിയ ഓഡിയോ ഇന്‍പുട്ട് ഡിവൈസ് ലഭ്യമാക്കിരിക്കുന്നു:"
 
 #: ../src/gui/main.cpp:3015
-#| msgid "Please choose the audio output device:"
 msgid "Detected new audio output device:"
 msgstr "പുതിയ ഓഡിയോ ഔട്ട്പുട്ട് ഡിവൈസ് ലഭ്യമാക്കിരിക്കുന്നു:"
 
 #: ../src/gui/main.cpp:3019
-#| msgid "Please choose the video input device:"
 msgid "Detected new video input device:"
 msgstr "പുതിയ വീഡിയോ ഇന്‍പുട്ട് ഡിവൈസ് ലഭ്യമാക്കിരിക്കുന്നു:"
 
@@ -2604,7 +2502,6 @@ msgid "Do you want to use it as default device?"
 msgstr "നിങ്ങള്‍ക്കു് ഇതു് സ്വതവേയുള്ള ഡിവൈസായി ഉപയോഗിക്കണമോ?"
 
 #: ../src/gui/main.cpp:3106
-#| msgid "_Call"
 msgid "_Chat"
 msgstr "_ചാറ്റ് ചെയ്യുക"
 
@@ -2625,12 +2522,10 @@ msgid "Terminate the current call"
 msgstr "ഈ കോള്‍ അവസാനിപ്പിക്കുക"
 
 #: ../src/gui/main.cpp:3118
-#| msgid "_Find Contacts"
 msgid "A_dd Contact"
 msgstr "വിലാസം _ചേര്‍ക്കുക"
 
 #: ../src/gui/main.cpp:3118
-#| msgid "Could not connect to remote host"
 msgid "Add a contact to the roster"
 msgstr "റൂസ്റ്ററിലേക്കു് ഒരു വിലാസം ചേര്‍ക്കുക"
 
@@ -2639,7 +2534,6 @@ msgid "Find contacts"
 msgstr "വിലാസങ്ങള്‍ കണ്ടുപിടിക്കുക"
 
 #: ../src/gui/main.cpp:3130
-#| msgid "Contacts"
 msgid "_Contact"
 msgstr "_വിലാസങ്ങള്‍"
 
@@ -2648,7 +2542,6 @@ msgid "Act on selected contact"
 msgstr "തെരഞ്ഞെടുത്ത വിലാസത്തില്‍ പ്രവര്‍ത്തിക്കുക"
 
 #: ../src/gui/main.cpp:3137
-#| msgid "_Hold Call"
 msgid "H_old Call"
 msgstr "കോള്‍ _ഹോള്‍ഡ് ചെയ്യുക"
 
@@ -2717,12 +2610,10 @@ msgid "View the dialpad"
 msgstr "ഡയല്‍ പാഡ് കാണുക"
 
 #: ../src/gui/main.cpp:3207
-#| msgid "Calls History"
 msgid "_Call History"
 msgstr "_കോളുകളുടെ വിവരണം"
 
 #: ../src/gui/main.cpp:3207
-#| msgid "View the calls history"
 msgid "View the call history"
 msgstr "കോളുകളുടെ വിവരണം കാണുക"
 
@@ -2731,7 +2622,6 @@ msgid "_Show Call Panel"
 msgstr "കോള്‍ പാനലില്‍ _കാണിക്കുക"
 
 #: ../src/gui/main.cpp:3223
-#| msgid "Local Video"
 msgid "_Local Video"
 msgstr "_ലോക്കല്‍ വീഡിയോ"
 
@@ -2740,7 +2630,6 @@ msgid "Local video image"
 msgstr "ലോക്കല്‍ വീഡിയോ ഇമേജ്"
 
 #: ../src/gui/main.cpp:3229
-#| msgid "Remote Video"
 msgid "_Remote Video"
 msgstr "_റിമോട്ട് വീഡിയോ"
 
@@ -2773,7 +2662,6 @@ msgid "Normal size"
 msgstr "സാധാരണ വ്യാപ്തി"
 
 #: ../src/gui/main.cpp:3261
-#| msgid "Fullscreen"
 msgid "_Fullscreen"
 msgstr "_സ്ക്രീന്‍ പൂര്‍ണ്ണവലിപ്പത്തില്‍"
 
@@ -2790,11 +2678,10 @@ msgid "View information about Ekiga"
 msgstr "എകീഗാ സംബന്ധിച്ചുള്ള വിവരങ്ങള്‍ കാണുക"
 
 #: ../src/gui/main.cpp:3348
-#| msgid "Enter a URI on the left, and click this button to place a call"
 msgid "Enter a URI on the left, and click this button to place a call or to hangup"
 msgstr ""
-"ഇടത് വശത്ത് ഒരു URI നല്‍കി, കോള്‍ ചെയ്യുന്നതിനായി അല്ലെങ്കില്‍ അവസാനിപ്പിക്കുന്നതിനായി "
-"ഈ ബട്ടണ്‍ ക്ലിക്ക് ചെയ്യുക"
+"ഇടത് വശത്ത് ഒരു URI നല്‍കി, കോള്‍ ചെയ്യുന്നതിനായി അല്ലെങ്കില്‍ അവസാനിപ്പിക്കുന്നതിനായി ഈ ബട്ടണ്‍ "
+"ക്ലിക്ക് ചെയ്യുക"
 
 #: ../src/gui/main.cpp:3399
 msgid "Contacts"
@@ -2805,7 +2692,6 @@ msgid "Dialpad"
 msgstr "ഡയല്‍ പാഡ്"
 
 #: ../src/gui/main.cpp:3441
-#| msgid "Calls history"
 msgid "Call history"
 msgstr "കോളുകളുടെ വിവരണം"
 
@@ -2860,29 +2746,29 @@ msgstr ""
 msgid "Makes Ekiga call the given URI"
 msgstr "നല്‍കിയിരിക്കുന്ന URI-യുമായി ബന്ധപ്പെടുന്നതിന് എകിഗാ സജ്ജമാക്കുന്നു"
 
-#: ../src/gui/main.cpp:4525
+#: ../src/gui/main.cpp:4528
 msgid "No usable audio plugin detected"
 msgstr "ഉപയോഗിക്കുവാന്‍ സാധിക്കുന്ന ഓഡിയോ പ്ളഗ്ഗിന്‍ ലഭ്യമല്ല"
 
-#: ../src/gui/main.cpp:4526
+#: ../src/gui/main.cpp:4529
 msgid ""
 "Ekiga didn't find any usable audio plugin. Make sure that your installation "
 "is correct."
 msgstr ""
-"ഉപയോഗിക്കുവാന്‍ സാധ്യമാകുന്ന ഓഡിയോ പ്ലഗിന്‍ Ekiga-യ്ക്കു് ലഭ്യമായില്ല. "
-"ദയവായി നിങ്ങളുടെ ഇന്‍സ്റ്റലേഷന്‍ പരിശോധിക്കുക."
+"ഉപയോഗിക്കുവാന്‍ സാധ്യമാകുന്ന ഓഡിയോ പ്ലഗിന്‍ Ekiga-യ്ക്കു് ലഭ്യമായില്ല. ദയവായി നിങ്ങളുടെ "
+"ഇന്‍സ്റ്റലേഷന്‍ പരിശോധിക്കുക."
 
-#: ../src/gui/main.cpp:4529
+#: ../src/gui/main.cpp:4532
 msgid "No usable audio codecs detected"
 msgstr "ഉപയോഗിക്കുവാന്‍ സാധിക്കുന്ന ഓഡിയോ കോഡക്കുകള്‍ ലഭ്യമല്ല"
 
-#: ../src/gui/main.cpp:4530
+#: ../src/gui/main.cpp:4533
 msgid ""
 "Ekiga didn't find any usable audio codec. Make sure that your installation "
 "is correct."
 msgstr ""
-"ഉപയോഗിക്കുവാന്‍ സാധ്യമാകുന്ന ഓഡിയോ കോഡകുകള്‍ Ekiga-യ്ക്കു് ലഭ്യമായില്ല. "
-"ദയവായി നിങ്ങളുടെ ഇന്‍സ്റ്റലേഷന്‍ പരിശോധിക്കുക."
+"ഉപയോഗിക്കുവാന്‍ സാധ്യമാകുന്ന ഓഡിയോ കോഡകുകള്‍ Ekiga-യ്ക്കു് ലഭ്യമായില്ല. ദയവായി നിങ്ങളുടെ "
+"ഇന്‍സ്റ്റലേഷന്‍ പരിശോധിക്കുക."
 
 #: ../src/gui/preferences.cpp:381
 msgid "Play sound for new voice mails"
@@ -2893,12 +2779,10 @@ msgid "Play sound for new instant messages"
 msgstr "പുതിയ സന്ദേശങ്ങള്‍ക്കായി ശബ്ദം പ്റവറ്‍ത്തിപ്പിക്കുക"
 
 #: ../src/gui/preferences.cpp:457
-#| msgid "Full Name"
 msgid "_Full name:"
 msgstr "_പൂര്‍ണ്ണ പേരു്:"
 
 #: ../src/gui/preferences.cpp:475
-#| msgid "Network Interface"
 msgid "User Interface"
 msgstr "സംയോജക ഘടകം"
 
@@ -2907,7 +2791,6 @@ msgid "Start _hidden"
 msgstr "അദൃശ്യമായവ ആരംഭിക്കുക (_h)"
 
 #: ../src/gui/preferences.cpp:479
-#| msgid "Find contacts"
 msgid "Show offline _contacts"
 msgstr "ഓഫ്‌ലൈന്‍ _വിലാസങ്ങള്‍ കാണിക്കുക"
 
@@ -2924,7 +2807,6 @@ msgid "Network Settings"
 msgstr "നെറ്റ്‌വറ്‍ക്ക് സജ്ജീകരണങ്ങള്‍"
 
 #: ../src/gui/preferences.cpp:492
-#| msgid "Enable silence detection"
 msgid "Disable network _detection"
 msgstr "നെറ്റ്‌വര്‍ക്ക് _തിരിച്ചറിയുന്നത് പ്രവര്‍ത്തന രഹിതമാക്കുക"
 
@@ -2941,8 +2823,8 @@ msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the protocol settings"
 msgstr ""
-"സജ്ജമെങ്കില്‍, സമ്പ്രദായ ക്രമീകരണങ്ങളില്‍ വ്യക്തമാക്കിയിരിക്കുന്ന ഹോസ്റ്റിലേക്കു് "
-"വരുന്ന എല്ലാ കോളുകളും ഫോര്‍വേഡ് ചെയ്യുന്നു"
+"സജ്ജമെങ്കില്‍, സമ്പ്രദായ ക്രമീകരണങ്ങളില്‍ വ്യക്തമാക്കിയിരിക്കുന്ന ഹോസ്റ്റിലേക്കു് വരുന്ന എല്ലാ "
+"കോളുകളും ഫോര്‍വേഡ് ചെയ്യുന്നു"
 
 #: ../src/gui/preferences.cpp:507
 msgid "Forward calls to the given host if _no answer"
@@ -2953,8 +2835,8 @@ msgid ""
 "If enabled, all incoming calls will be forwarded to the host that is "
 "specified in the protocol settings if you do not answer the call"
 msgstr ""
-"സജ്ജമെങ്കില്‍, കോള്‍ എടുക്കാത്തപ്പോള്‍ സമ്പ്രദായ ക്രമീകരണങ്ങളില്‍ "
-"വ്യക്തമാക്കിയിരിക്കുന്ന ഹോസ്റ്റിലേക്കു് വരുന്ന എല്ലാ കോളുകളും ഫോര്‍വേഡ് ചെയ്യുന്നു"
+"സജ്ജമെങ്കില്‍, കോള്‍ എടുക്കാത്തപ്പോള്‍ സമ്പ്രദായ ക്രമീകരണങ്ങളില്‍ വ്യക്തമാക്കിയിരിക്കുന്ന ഹോസ്റ്റിലേക്കു് "
+"വരുന്ന എല്ലാ കോളുകളും ഫോര്‍വേഡ് ചെയ്യുന്നു"
 
 #: ../src/gui/preferences.cpp:509
 msgid "Forward calls to the given host if _busy"
@@ -3070,7 +2952,6 @@ msgid "Ringing Device"
 msgstr "റിങ് ചെയ്യുന്ന ഡിവൈസ്"
 
 #: ../src/gui/preferences.cpp:768
-#| msgid "Select the audio input device to use"
 msgid "Select the ringing audio device to use"
 msgstr "ഉപയോഗിക്കുന്നതിനുള്ള പ്രവര്‍ത്തിക്കുന്ന ഓഡിയോ ഡിവൈസ് തെരഞ്ഞെടുക്കുക"
 
@@ -3130,7 +3011,6 @@ msgid "Codecs"
 msgstr "കോഡകുകള്‍"
 
 #: ../src/gui/preferences.cpp:976 ../src/gui/preferences.cpp:1015
-#| msgid "NAT Settings"
 msgid "Settings"
 msgstr "സജ്ജീകരണങ്ങള്‍"
 
@@ -3153,7 +3033,6 @@ msgid "If enabled, use echo cancelation."
 msgstr "സജ്ജമെങ്കില്‍, ഇക്കോ റദ്ദാക്കല്‍ ഉപയോഗിക്കുക."
 
 #: ../src/gui/preferences.cpp:984
-#| msgid "Maximum jitter buffer"
 msgid "Maximum _jitter buffer (in ms):"
 msgstr "ഏറ്റവും കൂടിയ _ജിറ്റര്‍ ബഫര്‍ (ms-ല്‍):"
 
@@ -3175,7 +3054,7 @@ msgstr ""
 
 #: ../src/gui/preferences.cpp:1020
 msgid "Maximum video _bitrate (in kbits/s):"
-msgstr ""
+msgstr "ഏറ്റവും കൂടിയ _ബിറ്റ്റേറ്റ് (kbits/s-ല്‍):"
 
 #: ../src/gui/preferences.cpp:1020
 msgid ""
@@ -3183,6 +3062,9 @@ msgid ""
 "frame rate will be dynamically adjusted to keep the bitrate at the given "
 "value."
 msgstr ""
+"ഏറ്റവും കൂടിയ വീഡിയോ ബിറ്റ്റേറ്റ് kbits/s-ല്‍. വീഡിയോയുടെ ഗുണവും ഫ്രെയിം റേറ്റും "
+"തന്നിരിക്കുന്ന മൂല്ലയമായി ബിറ്റ്റേറ്റ് സൂക്ഷിക്കുന്നതിനായി ഡൈനമിക്കായി "
+"മാറ്റം വരുത്തുന്നു."
 
 #: ../src/gui/preferences.cpp:1333
 msgid "Ekiga Preferences"
@@ -3217,7 +3099,6 @@ msgid "H.323 Settings"
 msgstr "H.323 സജ്ജീകരണങ്ങള്‍"
 
 #: ../src/gui/preferences.cpp:1381
-#| msgid "Auto"
 msgid "Audio"
 msgstr "ഓഡിയോ"
 
@@ -3226,13 +3107,11 @@ msgid "Devices"
 msgstr "ഉപകരണങ്ങള്‍"
 
 #: ../src/gui/preferences.cpp:1391
-#| msgid "Video size"
 msgid "Video"
 msgstr "വീഡിയോ"
 
 #: ../src/gui/statusicon.cpp:305
 #, c-format
-#| msgid "Send message"
 msgid "You have %d message"
 msgid_plural "You have %d messages"
 msgstr[0] "നിങ്ങള്‍ക്കു് %d സന്ദേശമുണ്ടു്"
