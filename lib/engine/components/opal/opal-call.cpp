@@ -157,7 +157,7 @@ Opal::Call::toggle_hold ()
   PSafePtr<OpalConnection> connection = get_remote_connection ();
   if (connection != NULL) {
 
-    on_hold = connection->IsConnectionOnHold ();
+    on_hold = connection->IsConnectionOnHold (false);
     if (!on_hold)
       connection->HoldConnection ();
     else
@@ -427,6 +427,7 @@ Opal::Call::OnCleared ()
       reason = _("Could not connect to remote host");
       break;
     case OpalConnection::EndedByGatekeeper :
+    case OpalConnection::EndedByGkAdmissionFailed :
       reason = _("The Gatekeeper cleared the call");
       break;
     case OpalConnection::EndedByNoUser :
