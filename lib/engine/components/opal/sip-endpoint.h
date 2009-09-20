@@ -153,6 +153,7 @@ namespace Opal {
 		     const std::string auth_username,
 		     const std::string password,
 		     bool is_enabled,
+		     bool is_limited,
 		     unsigned timeout);
 
       void OnRegistered (const PString & aor,

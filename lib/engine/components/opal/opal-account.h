@@ -122,6 +122,8 @@ public:
 
     bool is_enabled () const;
 
+    bool is_limited () const;
+
     bool is_active () const;
 
     void remove ();
@@ -145,6 +147,7 @@ private:
     bool dead;
     bool active;
     bool enabled;
+    bool limited;
     unsigned timeout;
     std::string aid;
     std::string name;

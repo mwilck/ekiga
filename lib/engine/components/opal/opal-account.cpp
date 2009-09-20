@@ -122,6 +122,8 @@ Opal::Account::Account (Ekiga::ServiceCore & _core,
   else
     type = Account::H323;
 
+  limited = (name.find ("%limit") != std::string::npos);
+
   registration_event.connect (sigc::mem_fun (this, &Opal::Account::on_registration_event));
 }
 
@@ -277,6 +279,12 @@ void Opal::Account::disable ()
 bool Opal::Account::is_enabled () const
 {
   return enabled;
+}
+
+
+bool Opal::Account::is_limited () const
+{
+  return limited;
 }
 
 
