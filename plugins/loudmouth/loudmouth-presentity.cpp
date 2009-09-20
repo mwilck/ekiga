@@ -244,6 +244,16 @@ LM::Presentity::push_presence (const std::string resource,
     info.presence = "online";
   }
 
+  // FIXME: this code works but is ugly -- there has to be a better way
+  const gchar* oftype = lm_message_node_get_attribute (presence, "type");
+  if (oftype != NULL) {
+
+    if (oftype == std::string ("unavailable")) {
+
+      info.presence = "unavailable";
+    }
+  }
+
   infos[resource] = info;
 
   if (info.presence == "unavailable") {
