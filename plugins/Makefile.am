@@ -27,7 +27,7 @@ XCAP_DIRS = xcap resource-list
 endif
 
 SUBDIRS = \
-	$(EVOLUTION_DIR)
+	$(EVOLUTION_DIR) \
 	$(GSTREAMER_DIR) \
 	$(KAB_DIR) \
 	$(KDE_DIR) \

@@ -21,6 +21,4 @@ libgmldap_la_SOURCES = \
 
 libgmldap_la_LDFLAGS = $(PLUGINS_LIBTOOL_FLAGS)
 libgmldap_la_LIBADD = \
-	$(top_builddir)/lib/engine/framework/libgmframework.la \
-	$(top_builddir)/lib/engine/addressbook/libgmaddressbook.la \
 	$(LDAP_LIBS) $(BOOST_LDFLAGS) $(BOOST_LIBS) $(GLIB_LIBS) $(XML_LIBS)
