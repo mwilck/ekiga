@@ -1,4 +1,95 @@
                           -*- mode: outline -*-
+* Changes in ekiga 3.2.6 (2009-09-22)
+** User-visible fixes
+- Fixed crashes shown as assertion failed in /usr/include/ptlib/safecoll.h:813
+- Fixed crash when device list is empty or contains non-latin1 characters
+- Fixed crash when pressing shift-f10 (popup menu) in Preferences window
+- Fixed possible crash when garbage collecting REGISTER requests
+- Fixed possible segfault when receiving a NOTIFY
+- Fixed freeze by preventing SIP handlers retry timer from executing
+  during destruction
+- Fixed freeze during packet write
+- Fixed "Lockup after a day of idle" in publishing code
+- Fixed various deadlocks in the OPAL subscription code
+- Added "%limit" workaround for registrars which refuse several
+  contacts during registration
+- Fixed "Contacts never go offline"
+- Fixed "New SIP account mangles fields if Authentications User is empty"
+- Make sure the output device is set before a call
+- Fixed port handling when registering to a proxy with a non-standard port
+- Fixed "In some circumstances, smileys are not displayed graphically"
+- Improved audio latency when not collecting all of the audio data
+- Fixed the newmessage.wav file
+- Fixed "Accounts were automatically active after editing them"
+- Make possible to register e.g. user@a.b as user name as required by
+  some providers
+- Remove deprecated "Encoding" field from desktop file
+
+** Protocol fixes
+- Fixed problem with REGISTER IntervalTooBrief response handling not
+  using correct interface for new transaction
+- Fixed "480 Temporarily Unavailable" response handling
+- Fixed problem with doing DNS lookup when using explicit proxy or
+  presence agent
+- Fixed problem with PUBLISH using wrong expiry after Interval Too Brief
+  error
+- If we find no authentication information when subscribing, keep trying
+  as it could become available at a later stage
+- Changed so does not put both global and media specific connection
+  addresses in SDP if they are the same (needed for freephonie SIP
+  registrar)
+- Fixed support for unusual SIP "start with hold", that is an initial
+  offer INVITE with a connection address of 0.0.0.0
+- Fixed failure to retry (after a suitable period) REGISTER/SUBSCRIBE
+  if get transport level timeout
+- Added closing of our local media streams if remote sends a re-INVITE
+  and leaves out streams (e.g. video) that were there previously
+- Fixed problems when can not bind to any interface
+- Fixed various problems with some SDP options
+- Fixed regression where the username would be lost from the Contact
+  field
+- Fixed invalid request-uri in BYE request
+- Fixed issue with overlapping INVITEs
+- Fixed H.263-1998 plug in compilation, by asking latest avcodec
+- Fixed "OpalBitRateCalculator limits bitrates"
+- Fixed "SIP wrong response on a failed REFER-request"
+- Fixed "SIP: OK response to CANCEL incomplete"
+- Do not send "100 Trying" message when receiving a NOTIFY message
+- Fixed incorrect register/subscribe refresh timer calculation
+
+** Build fixes
+- Support building on kFreeBSD
+- Fixed problem with moving libsoup api
+- Various fixes for SIP and H323 configuration
+- Fixed "A build error when generating SunAudio ptlib plugin"
+- Fixed "The video convertor of YUY2toYUV420P in ptlib does not work"
+- Fixed "The absence of libv4l2 should not block V4L2 ptlib plugin"
+- and other minor changes
+
+** Windows port fixes
+- Thanks to Michael Rickmann's continuous work, Windows port has
+  reached a quality almost comparable to GNU/Linux version.  We invite
+  people to test it, see ekiga wiki.  Some improvements:
+  - shortened audio delay
+  - DirectX video input and output
+  - device name handling
+  - fixed audio volume
+  - fixed building with mingw
+  - made so the linker doesn't find main on win32
+  - Keep the output sound volume across calls
+
+** Distributor-visible changes
+- Changed default for AVC plug in to be disabled until someone fixes
+  the plug in
+- Note: Pulse audio server does not play nicely with ekiga, very high
+  latencies are noticed
+
+** Translation fixes
+- Updated translations: ar, bn, et, ga, hi, hu, ko, lt, ml, nb, sr,
+  sr@latin, uk, zh_HK, zh_TW
+- New translations: ca@valencia
+- Updated help translations: de
+
 * Changes in ekiga 3.2.5 (2009-07-06)
 - Fixed very low rate of sent images during video conversations
 - Fixed crash in LDAP
