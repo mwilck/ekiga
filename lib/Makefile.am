@@ -231,7 +231,6 @@ libekiga_la_SOURCES += \
 	$(engine_dir)/framework/map-key-iterator.h \
 	$(engine_dir)/framework/map-key-const-iterator.h \
 	$(engine_dir)/framework/reflister.h \
-	$(engine_dir)/framework/lister.h \
 	$(engine_dir)/framework/chain-of-responsibility.h \
 	$(engine_dir)/framework/device-def.h \
 	$(engine_dir)/framework/form-builder.h \

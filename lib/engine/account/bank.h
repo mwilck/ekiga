@@ -37,7 +37,6 @@
 #ifndef __BANK_H__
 #define __BANK_H__
 
-#include "lister.h"
 #include "account.h"
 
 namespace Ekiga
