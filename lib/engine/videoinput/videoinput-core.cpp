@@ -182,12 +182,12 @@ void VideoInputCore::add_manager (VideoInputManager &manager)
 }
 
 
-void VideoInputCore::visit_managers (boost::function1<bool, VideoInputManager &> visitor)
+void VideoInputCore::visit_managers (boost::function1<bool, VideoInputManager &> visitor) const
 {
   PWaitAndSignal m(core_mutex);
   bool go_on = true;
 
-  for (std::set<VideoInputManager *>::iterator iter = managers.begin ();
+  for (std::set<VideoInputManager *>::const_iterator iter = managers.begin ();
        iter != managers.end () && go_on;
        iter++)
       go_on = visitor (*(*iter));

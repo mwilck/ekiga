@@ -63,13 +63,13 @@ namespace Ekiga
      * @param: The callback (the return value means "go on" and allows
      * stopping the visit)
      */
-    void visit_simple_chats (boost::function1<bool, SimpleChatPtr > visitor);
+    void visit_simple_chats (boost::function1<bool, SimpleChatPtr > visitor) const;
 
     /** Triggers a callback for all multiple chats of the Dialect.
      * @param: The callback (the return value means "go on" and allows
      * stopping the visit)
      */
-    void visit_multiple_chats (boost::function1<bool, MultipleChatPtr > visitor);
+    void visit_multiple_chats (boost::function1<bool, MultipleChatPtr > visitor) const;
 
   protected:
 
@@ -159,11 +159,11 @@ Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::~DialectImpl ()
 
 template<typename SimpleChatType, typename MultipleChatType>
 void
-Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::visit_simple_chats (boost::function1<bool, SimpleChatPtr > visitor)
+Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::visit_simple_chats (boost::function1<bool, SimpleChatPtr > visitor) const
 {
   bool go_on = true;
 
-  for (typename std::map<boost::shared_ptr<SimpleChatType>,std::list<boost::signals::connection> >::iterator iter = simple_chats.begin ();
+  for (typename std::map<boost::shared_ptr<SimpleChatType>,std::list<boost::signals::connection> >::const_iterator iter = simple_chats.begin ();
        go_on && iter != simple_chats.end ();
        iter++) {
 
@@ -173,11 +173,11 @@ Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::visit_simple_chats (boost:
 
 template<typename SimpleChatType, typename MultipleChatType>
 void
-Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::visit_multiple_chats (boost::function1<bool, MultipleChatPtr > visitor)
+Ekiga::DialectImpl<SimpleChatType, MultipleChatType>::visit_multiple_chats (boost::function1<bool, MultipleChatPtr > visitor) const
 {
   bool go_on = true;
 
-  for (typename std::map<boost::shared_ptr<MultipleChatType>,std::list<boost::signals::connection> >::iterator iter = multiple_chats.begin ();
+  for (typename std::map<boost::shared_ptr<MultipleChatType>,std::list<boost::signals::connection> >::const_iterator iter = multiple_chats.begin ();
        go_on && iter != multiple_chats.end ();
        iter++) {
 

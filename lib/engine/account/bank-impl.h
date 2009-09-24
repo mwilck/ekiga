@@ -95,7 +95,7 @@ namespace Ekiga
      * @param The callback (the return value means "go on" and allows
      *  stopping the visit)
      */
-    void visit_accounts (boost::function1<bool, AccountPtr> visitor);
+    void visit_accounts (boost::function1<bool, AccountPtr> visitor) const;
 
     /** Returns an iterator to the first Account of the collection
      */
@@ -161,7 +161,7 @@ Ekiga::BankImpl<AccountType>::~BankImpl ()
 
 template<typename AccountType>
 void
-Ekiga::BankImpl<AccountType>::visit_accounts (boost::function1<bool, AccountPtr> visitor)
+Ekiga::BankImpl<AccountType>::visit_accounts (boost::function1<bool, AccountPtr> visitor) const
 {
   RefLister<AccountType>::visit_objects (visitor);
 }

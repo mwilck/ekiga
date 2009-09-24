@@ -50,11 +50,11 @@ Ekiga::ChatCore::add_dialect (DialectPtr dialect)
 }
 
 void
-Ekiga::ChatCore::visit_dialects (boost::function1<bool, DialectPtr > visitor)
+Ekiga::ChatCore::visit_dialects (boost::function1<bool, DialectPtr > visitor) const
 {
   bool go_on = true;
 
-  for (std::list<DialectPtr >::iterator iter = dialects.begin ();
+  for (std::list<DialectPtr >::const_iterator iter = dialects.begin ();
        iter != dialects.end () && go_on;
        iter++)
     go_on = visitor (*iter);

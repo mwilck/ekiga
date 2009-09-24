@@ -174,7 +174,7 @@ namespace Ekiga
      * @param The callback (the return value means "go on" and allows
      *  stopping the visit)
      */
-    void visit_clusters (boost::function1<bool, ClusterPtr > visitor);
+    void visit_clusters (boost::function1<bool, ClusterPtr > visitor) const;
 
     /** This signal is emitted when an Ekiga::Cluster has been added
      * to the PresenceCore Service.

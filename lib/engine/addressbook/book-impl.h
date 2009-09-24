@@ -94,7 +94,7 @@ namespace Ekiga
      * @param The callback (the return value means "go on" and allows
      *  stopping the visit)
      */
-    void visit_contacts (boost::function1<bool, ContactPtr > visitor);
+    void visit_contacts (boost::function1<bool, ContactPtr > visitor) const;
 
   protected:
 
@@ -161,7 +161,7 @@ Ekiga::BookImpl<ContactType>::~BookImpl ()
 
 template<typename ContactType>
 void
-Ekiga::BookImpl<ContactType>::visit_contacts (boost::function1<bool, ContactPtr > visitor)
+Ekiga::BookImpl<ContactType>::visit_contacts (boost::function1<bool, ContactPtr > visitor) const
 {
   RefLister<ContactType>::visit_objects (visitor);
 }

@@ -58,7 +58,7 @@ namespace Ekiga {
      * @param The callback (the return value means "go on" and allows
      *  stopping the visit)
      */
-    virtual void visit_books (boost::function1<bool, BookPtr >) = 0;
+    virtual void visit_books (boost::function1<bool, BookPtr >) const = 0;
 
 
     /** This signal is emitted when a Book has been added to the Source.

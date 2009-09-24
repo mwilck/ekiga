@@ -95,11 +95,11 @@ void VideoOutputCore::add_manager (VideoOutputManager &manager)
 }
 
 
-void VideoOutputCore::visit_managers (boost::function1<bool, VideoOutputManager &> visitor)
+void VideoOutputCore::visit_managers (boost::function1<bool, VideoOutputManager &> visitor) const
 {
   bool go_on = true;
 
-  for (std::set<VideoOutputManager *>::iterator iter = managers.begin ();
+  for (std::set<VideoOutputManager *>::const_iterator iter = managers.begin ();
        iter != managers.end () && go_on;
        iter++)
     go_on = visitor (*(*iter));

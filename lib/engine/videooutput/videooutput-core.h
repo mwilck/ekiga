@@ -111,7 +111,7 @@ namespace Ekiga
       /** Triggers a callback for all Ekiga::VideoOutputManager sources of the
        * VideoOutputCore service.
        */
-      void visit_managers (boost::function1<bool, VideoOutputManager &> visitor);
+      void visit_managers (boost::function1<bool, VideoOutputManager &> visitor) const;
 
       /** This signal is emitted when a Ekiga::VideoOutputManager has been
        * added to the VideoOutputCore Service.

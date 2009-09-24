@@ -55,13 +55,13 @@ namespace Ekiga
      * @param: The callback (the return value means "go on" and allows
      * stopping the visit)
      */
-    virtual void visit_simple_chats (boost::function1<bool, SimpleChatPtr > visitor) = 0;
+    virtual void visit_simple_chats (boost::function1<bool, SimpleChatPtr > visitor) const = 0;
 
     /** Triggers a callback for all multiple chats of the Dialect.
      * @param: The callback (the return value means "go on" and allows
      * stopping the visit)
      */
-    virtual void visit_multiple_chats (boost::function1<bool, MultipleChatPtr > visitor) = 0;
+    virtual void visit_multiple_chats (boost::function1<bool, MultipleChatPtr > visitor) const = 0;
 
 
     /** Feed possible actions on this Dialect to the given MenuBuilder

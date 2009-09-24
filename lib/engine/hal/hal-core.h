@@ -109,7 +109,7 @@ namespace Ekiga
        * @param The callback (the return value means "go on" and allows
        *  stopping the visit)
        */
-       void visit_managers (boost::function1<bool, HalManager &> visitor);
+       void visit_managers (boost::function1<bool, HalManager &> visitor) const;
 
       /** This signal is emitted when an Ekiga::HalManager has been
        * added to the HalCore Service.

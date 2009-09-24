@@ -61,7 +61,7 @@ namespace Ekiga
      * @param The callback (the return value means "go on" and allows
      *  stopping the visit)
      */
-    virtual void visit_accounts (boost::function1<bool, AccountPtr> visitor) = 0;
+    virtual void visit_accounts (boost::function1<bool, AccountPtr> visitor) const = 0;
 
 
     /** Create the menu for that Bank and its actions.

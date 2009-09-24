@@ -67,7 +67,7 @@ namespace Ekiga
      * @param The callback user to know about presentities (the return value
      * means "go on" and allows stopping the visit)
      */
-    virtual void visit_presentities (boost::function1<bool, PresentityPtr >) = 0;
+    virtual void visit_presentities (boost::function1<bool, PresentityPtr >) const = 0;
 
     /** Populates a menu with the actions possible on the given group
      * of the Heap.

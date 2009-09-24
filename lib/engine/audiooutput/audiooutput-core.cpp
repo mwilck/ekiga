@@ -99,14 +99,13 @@ void AudioOutputCore::add_manager (AudioOutputManager &manager)
   manager.device_closed.connect (boost::bind (&AudioOutputCore::on_device_closed, this, _1, _2, &manager));
 }
 
-void AudioOutputCore::visit_managers (boost::function1<bool, AudioOutputManager &> visitor)
+void AudioOutputCore::visit_managers (boost::function1<bool, AudioOutputManager &> visitor) const
 {
-  yield = true;
   PWaitAndSignal m_pri(core_mutex[primary]);
   PWaitAndSignal m_sec(core_mutex[secondary]);
   bool go_on = true;
   
-  for (std::set<AudioOutputManager *>::iterator iter = managers.begin ();
+  for (std::set<AudioOutputManager *>::const_iterator iter = managers.begin ();
        iter != managers.end () && go_on;
        iter++)
       go_on = visitor (*(*iter));

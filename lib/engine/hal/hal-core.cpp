@@ -73,11 +73,11 @@ void HalCore::add_manager (HalManager &manager)
 }
 
 
-void HalCore::visit_managers (boost::function1<bool, HalManager &> visitor)
+void HalCore::visit_managers (boost::function1<bool, HalManager &> visitor) const
 {
   bool go_on = true;
 
-  for (std::set<HalManager *>::iterator iter = managers.begin ();
+  for (std::set<HalManager *>::const_iterator iter = managers.begin ();
        iter != managers.end () && go_on;
        iter++)
       go_on = visitor (*(*iter));

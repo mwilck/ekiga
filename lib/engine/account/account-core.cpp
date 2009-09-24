@@ -82,11 +82,11 @@ Ekiga::AccountCore::add_bank (BankPtr bank)
 
 
 void
-Ekiga::AccountCore::visit_banks (boost::function1<bool, BankPtr> visitor)
+Ekiga::AccountCore::visit_banks (boost::function1<bool, BankPtr> visitor) const
 {
   bool go_on = true;
 
-  for (bank_iterator iter = banks.begin ();
+  for (bank_const_iterator iter = banks.begin ();
        iter != banks.end () && go_on;
        iter++)
     go_on = visitor (*iter);

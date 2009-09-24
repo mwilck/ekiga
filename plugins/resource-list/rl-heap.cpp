@@ -181,7 +181,7 @@ RL::Heap::get_name () const
 }
 
 void
-RL::Heap::visit_presentities (boost::function1<bool, Ekiga::PresentityPtr > visitor)
+RL::Heap::visit_presentities (boost::function1<bool, Ekiga::PresentityPtr > visitor) const
 {
   bool go_on = true;
 

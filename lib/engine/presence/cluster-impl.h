@@ -80,7 +80,7 @@ namespace Ekiga
 
     virtual ~ClusterImpl ();
 
-    void visit_heaps (boost::function1<bool, HeapPtr > visitor);
+    void visit_heaps (boost::function1<bool, HeapPtr > visitor) const;
 
   protected:
 
@@ -130,7 +130,7 @@ Ekiga::ClusterImpl<HeapType>::~ClusterImpl ()
 
 template<typename HeapType>
 void
-Ekiga::ClusterImpl<HeapType>::visit_heaps (boost::function1<bool, HeapPtr > visitor)
+Ekiga::ClusterImpl<HeapType>::visit_heaps (boost::function1<bool, HeapPtr > visitor) const
 {
   RefLister<HeapType>::visit_objects (visitor);
 }

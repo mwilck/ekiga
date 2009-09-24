@@ -64,7 +64,7 @@ namespace Ekiga {
      * @param The callback (the return value means "go on" and allows
      *  stopping the visit)
      */
-    virtual void visit_contacts (boost::function1<bool, ContactPtr>) = 0;
+    virtual void visit_contacts (boost::function1<bool, ContactPtr>) const = 0;
 
 
     /** Set the search filter.

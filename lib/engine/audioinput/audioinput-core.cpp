@@ -172,13 +172,12 @@ void AudioInputCore::add_manager (AudioInputManager &manager)
 }
 
 
-void AudioInputCore::visit_managers (boost::function1<bool, AudioInputManager &> visitor)
+void AudioInputCore::visit_managers (boost::function1<bool, AudioInputManager &> visitor) const
 {
-  yield = true;
   PWaitAndSignal m(core_mutex);
   bool go_on = true;
 
-  for (std::set<AudioInputManager *>::iterator iter = managers.begin ();
+  for (std::set<AudioInputManager *>::const_iterator iter = managers.begin ();
        iter != managers.end () && go_on;
        iter++)
       go_on = visitor (*(*iter));

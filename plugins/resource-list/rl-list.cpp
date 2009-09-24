@@ -90,7 +90,7 @@ public: // no need to make anything private
   std::string display_name;
 
   /* make the world know what we have */
-  bool visit_presentities (boost::function1<bool, Ekiga::Presentity&> visitor);
+  bool visit_presentities (boost::function1<bool, Ekiga::Presentity&> visitor) const;
 
   void publish () const;
 
@@ -154,7 +154,7 @@ RL::List::push_status (const std::string uri_,
 }
 
 bool
-RL::List::visit_presentities (boost::function1<bool, Ekiga::Presentity&> visitor)
+RL::List::visit_presentities (boost::function1<bool, Ekiga::Presentity&> visitor) const
 {
   return impl->visit_presentities (visitor);
 }
@@ -389,7 +389,7 @@ RL::ListImpl::push_status (const std::string uri_,
 }
 
 bool
-RL::ListImpl::visit_presentities (boost::function1<bool, Ekiga::Presentity&> visitor)
+RL::ListImpl::visit_presentities (boost::function1<bool, Ekiga::Presentity&> visitor) const
 {
   bool go_on = true;
 

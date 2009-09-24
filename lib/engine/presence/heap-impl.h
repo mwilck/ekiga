@@ -78,7 +78,7 @@ namespace Ekiga
 
     ~HeapImpl ();
 
-    void visit_presentities (boost::function1<bool, PresentityPtr > visitor);
+    void visit_presentities (boost::function1<bool, PresentityPtr > visitor) const;
 
     const_iterator begin () const;
 
@@ -121,7 +121,7 @@ Ekiga::HeapImpl<PresentityType>::~HeapImpl ()
 
 template<typename PresentityType>
 void
-Ekiga::HeapImpl<PresentityType>::visit_presentities (boost::function1<bool, PresentityPtr > visitor)
+Ekiga::HeapImpl<PresentityType>::visit_presentities (boost::function1<bool, PresentityPtr > visitor) const
 {
   RefLister<PresentityType>::visit_objects (visitor);
 }

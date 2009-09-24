@@ -132,7 +132,7 @@ namespace Ekiga
       /** Triggers a callback for all Ekiga::AudioInputManager sources of the
        * AudioInputCore service.
        */
-      void visit_managers (boost::function1<bool, AudioInputManager &> visitor);
+      void visit_managers (boost::function1<bool, AudioInputManager &> visitor) const;
 
       /** This signal is emitted when a Ekiga::AudioInputManager has been
        * added to the AudioInputCore Service.

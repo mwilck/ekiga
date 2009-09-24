@@ -109,7 +109,7 @@ namespace Ekiga
      * @param The callback (the return value means "go on" and allows
      *  stopping the visit)
      */
-    void visit_sources (boost::function1<bool, SourcePtr > visitor);
+    void visit_sources (boost::function1<bool, SourcePtr > visitor) const;
 
 
     /** This signal is emitted when a Ekiga::Source has been

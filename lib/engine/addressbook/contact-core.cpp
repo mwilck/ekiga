@@ -87,11 +87,11 @@ Ekiga::ContactCore::add_source (SourcePtr source)
 }
 
 void
-Ekiga::ContactCore::visit_sources (boost::function1<bool, SourcePtr > visitor)
+Ekiga::ContactCore::visit_sources (boost::function1<bool, SourcePtr > visitor) const
 {
   bool go_on = true;
 
-  for (std::list<SourcePtr >::iterator iter = sources.begin ();
+  for (std::list<SourcePtr >::const_iterator iter = sources.begin ();
        iter != sources.end () && go_on;
        ++iter)
     go_on = visitor (*iter);

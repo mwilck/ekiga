@@ -101,7 +101,7 @@ namespace Ekiga
      * @param The callback (the return value means "go on" and allows
      *  stopping the visit)
      */
-    void visit_banks (boost::function1<bool, BankPtr> visitor);
+    void visit_banks (boost::function1<bool, BankPtr> visitor) const;
 
 
     /** This signal is emitted when a bank has been added to the core

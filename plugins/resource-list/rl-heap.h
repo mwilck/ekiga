@@ -75,7 +75,7 @@ namespace RL {
 
     const std::string get_name () const;
 
-    void visit_presentities (boost::function1<bool, Ekiga::PresentityPtr > visitor);
+    void visit_presentities (boost::function1<bool, Ekiga::PresentityPtr > visitor) const;
 
     bool populate_menu (Ekiga::MenuBuilder& builder);
 

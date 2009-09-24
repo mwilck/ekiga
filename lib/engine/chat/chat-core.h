@@ -95,7 +95,7 @@ namespace Ekiga
      * @param The callback (the return value means "go on" and allows stopping
      * the visit)
      */
-    void visit_dialects (boost::function1<bool, DialectPtr > visitor);
+    void visit_dialects (boost::function1<bool, DialectPtr > visitor) const;
 
     /** This signal is emitted when an Ekiga::Dialect has been added to
      * the ChatCore service.

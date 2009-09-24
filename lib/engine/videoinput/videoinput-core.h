@@ -139,7 +139,7 @@ namespace Ekiga
       /** Triggers a callback for all Ekiga::VideoInputManager sources of the
        * VideoInputCore service.
        */
-       void visit_managers (boost::function1<bool, VideoInputManager &> visitor);
+       void visit_managers (boost::function1<bool, VideoInputManager &> visitor) const;
 
       /** This signal is emitted when a Ekiga::VideoInputManager has been
        * added to the VideoInputCore Service.

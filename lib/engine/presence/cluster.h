@@ -60,7 +60,7 @@ namespace Ekiga
     /** Get the list of Heaps by visiting them with a callback.
      * @param The callback used to know about heaps.
      */
-    virtual void visit_heaps (boost::function1<bool, HeapPtr >) = 0;
+    virtual void visit_heaps (boost::function1<bool, HeapPtr >) const = 0;
 
     /** Those signals are emitted whenever a new Heap is added or removed
      * from the Cluster.

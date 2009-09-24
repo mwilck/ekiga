@@ -58,7 +58,7 @@ namespace Ekiga
 
     virtual ~RefLister ();
 
-    void visit_objects (boost::function1<bool, boost::shared_ptr<ObjectType> > visitor);
+    void visit_objects (boost::function1<bool, boost::shared_ptr<ObjectType> > visitor) const;
 
     void add_object (boost::shared_ptr<ObjectType> obj);
 
@@ -103,10 +103,10 @@ Ekiga::RefLister<ObjectType>::~RefLister ()
 
 template<typename ObjectType>
 void
-Ekiga::RefLister<ObjectType>::visit_objects (boost::function1<bool, boost::shared_ptr<ObjectType> > visitor)
+Ekiga::RefLister<ObjectType>::visit_objects (boost::function1<bool, boost::shared_ptr<ObjectType> > visitor) const
 {
   bool go_on = true;
-  for (typename container_type::iterator iter = objects.begin ();
+  for (typename container_type::const_iterator iter = objects.begin ();
        go_on && iter != objects.end ();
        ++iter)
     go_on = visitor (iter->first);

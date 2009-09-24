@@ -68,10 +68,10 @@ Ekiga::PresenceCore::add_cluster (ClusterPtr cluster)
 }
 
 void
-Ekiga::PresenceCore::visit_clusters (boost::function1<bool, ClusterPtr > visitor)
+Ekiga::PresenceCore::visit_clusters (boost::function1<bool, ClusterPtr > visitor) const
 {
   bool go_on = true;
-  for (std::set<ClusterPtr >::iterator iter = clusters.begin ();
+  for (std::set<ClusterPtr >::const_iterator iter = clusters.begin ();
        iter != clusters.end () && go_on;
        iter++)
     go_on = visitor (*iter);

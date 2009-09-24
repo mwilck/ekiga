@@ -70,7 +70,7 @@ namespace RL
 		      const std::string status);
 
     /* make the world know what we have */
-    bool visit_presentities (boost::function1<bool, Ekiga::Presentity&> visitor);
+    bool visit_presentities (boost::function1<bool, Ekiga::Presentity&> visitor) const;
 
     void publish () const;
 
