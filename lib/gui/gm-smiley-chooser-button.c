@@ -474,6 +474,9 @@ static gboolean on_popup_button_press_event (G_GNUC_UNUSED GtkWidget* widget,
     case GDK_SETTING:
     case GDK_OWNER_CHANGE:
     case GDK_GRAB_BROKEN:
+#if GTK_CHECK_VERSION (2,18,0)
+    case GDK_EVENT_LAST:
+#endif
     default:
       return FALSE;
     }
