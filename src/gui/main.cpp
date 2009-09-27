@@ -4362,6 +4362,10 @@ main (int argc,
   signal (SIGPIPE, SIG_IGN);
 #endif
 
+  /* Application name */
+  g_set_application_name (_("Ekiga Softphone"));
+  setenv ("PULSE_PROP_application.name", _("Ekiga Softphone"), true);
+
   /* initialize platform-specific code */
   gm_platform_init ();
 
