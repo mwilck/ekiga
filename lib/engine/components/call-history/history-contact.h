@@ -85,8 +85,6 @@ namespace History
 
     bool populate_menu (Ekiga::MenuBuilder &builder);
 
-    bool is_found (std::string test) const;
-
     /*** more specific api ***/
 
     xmlNodePtr get_node ();

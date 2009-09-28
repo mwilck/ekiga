@@ -93,12 +93,6 @@ Evolution::Contact::get_name () const
   return name;
 }
 
-bool
-Evolution::Contact::is_found (const std::string /*test*/) const
-{
-  return false;
-}
-
 void
 Evolution::Contact::update_econtact (EContact *_econtact)
 {

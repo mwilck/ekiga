@@ -94,9 +94,3 @@ OPENLDAP::Contact::populate_menu (Ekiga::MenuBuilder &builder)
   }
   return result;
 }
-
-bool
-OPENLDAP::Contact::is_found (const std::string /*test*/) const
-{
-  return false;
-}

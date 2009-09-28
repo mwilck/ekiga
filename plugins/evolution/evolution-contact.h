@@ -69,8 +69,6 @@ namespace Evolution
 
     bool populate_menu (Ekiga::MenuBuilder &builder);
 
-    bool is_found (const std::string) const;
-
     void update_econtact (EContact *econtact);
 
     void remove ();

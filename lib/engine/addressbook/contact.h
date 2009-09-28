@@ -69,12 +69,6 @@ namespace Ekiga
      * @return The name of the Ekiga::Contact.
      */
     virtual const std::string get_name () const = 0;
-
-
-    /** Returns if a contact is found or not.
-     * @return True if the contact has been found.
-     */
-    virtual bool is_found (const std::string) const = 0;
   };
 
 

@@ -209,10 +209,3 @@ History::Contact::get_call_duration () const
 {
   return call_duration;
 }
-
-bool
-History::Contact::is_found (std::string /*test*/) const
-{
-  /* FIXME */
-  return true;
-}

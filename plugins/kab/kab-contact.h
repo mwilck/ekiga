@@ -67,8 +67,6 @@ namespace KAB
 
     bool populate_menu (Ekiga::MenuBuilder &builder);
 
-    bool is_found (const std::string test) const;
-
   private:
 
     Ekiga::ContactCore& core;

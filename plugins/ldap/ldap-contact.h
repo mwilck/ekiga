@@ -64,8 +64,6 @@ namespace OPENLDAP
 
     bool populate_menu (Ekiga::MenuBuilder &builder);
 
-    bool is_found (const std::string) const;
-
   private:
 
     Ekiga::ServiceCore &core;
