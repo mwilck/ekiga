@@ -46,7 +46,6 @@ struct _PresentityViewPrivate
   /* we contain those, so no need to unref them */
   GtkWidget* presence_image;
   GtkWidget* name_status;
-  GtkWidget* avatar_image;
 };
 
 enum {
@@ -88,9 +87,6 @@ on_presentity_updated (PresentityView* self)
 
   gtk_label_set_markup (GTK_LABEL (self->priv->name_status), txt);
   g_free (txt);
-  gtk_image_set_from_stock (GTK_IMAGE (self->priv->avatar_image),
-			    self->priv->presentity->get_avatar ().c_str (),
-			    GTK_ICON_SIZE_MENU);
 }
 
 static void
@@ -208,11 +204,6 @@ presentity_view_init (GTypeInstance* instance,
   gtk_box_pack_start (GTK_BOX (self), self->priv->name_status,
 		      FALSE, TRUE, 2);
   gtk_widget_show (self->priv->name_status);
-
-  self->priv->avatar_image = gtk_image_new ();
-  gtk_box_pack_start (GTK_BOX (self), self->priv->avatar_image,
-		      FALSE, FALSE, 2);
-  gtk_widget_show (self->priv->avatar_image);
 }
 
 

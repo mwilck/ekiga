@@ -84,8 +84,6 @@ namespace Ekiga
 
     const std::string get_status () const;
 
-    const std::string get_avatar () const;
-
     const std::set<std::string> get_groups () const;
 
     const std::string get_uri () const;
@@ -104,7 +102,6 @@ namespace Ekiga
     std::string presence;
     std::set<std::string> groups;
     std::string status;
-    std::string avatar;
 
     void on_presence_received (std::string uri_,
 			       std::string presence_);

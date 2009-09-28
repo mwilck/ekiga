@@ -66,12 +66,6 @@ Echo::Presentity::get_status () const
   return "ready";
 }
 
-const std::string
-Echo::Presentity::get_avatar () const
-{
-  return ""; // FIXME
-}
-
 const std::set<std::string>
 Echo::Presentity::get_groups () const
 {

@@ -61,7 +61,7 @@ RL::Presentity::Presentity (Ekiga::ServiceCore &services_,
 			    xmlNodePtr node_,
 			    bool writable_) :
   services(services_), doc(doc_), node(node_), writable(writable_),
-  name_node(NULL), presence("unknown"), status(""), avatar("")
+  name_node(NULL), presence("unknown"), status("")
 {
   boost::shared_ptr<Ekiga::PresenceCore> presence_core(services.get<Ekiga::PresenceCore> ("presence-core"));
   xmlChar *xml_str = NULL;
@@ -158,13 +158,6 @@ const std::string
 RL::Presentity::get_status () const
 {
   return status;
-}
-
-
-const std::string
-RL::Presentity::get_avatar () const
-{
-  return avatar;
 }
 
 

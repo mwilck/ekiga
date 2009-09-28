@@ -82,12 +82,6 @@ Ekiga::URIPresentity::get_status () const
   return status;
 }
 
-const std::string
-Ekiga::URIPresentity::get_avatar () const
-{
-  return avatar;
-}
-
 const std::set<std::string>
 Ekiga::URIPresentity::get_groups () const
 {

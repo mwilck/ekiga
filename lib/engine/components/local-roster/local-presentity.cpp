@@ -139,13 +139,6 @@ Local::Presentity::get_status () const
 }
 
 
-const std::string
-Local::Presentity::get_avatar () const
-{
-  return avatar;
-}
-
-
 const std::set<std::string>
 Local::Presentity::get_groups () const
 {

@@ -75,11 +75,6 @@ namespace Ekiga
      */
     virtual const std::string get_status () const = 0;
 
-    /** Returns the avatar of the Presentity.
-     * @return The Presentity's avatar.
-     */
-    virtual const std::string get_avatar () const = 0;
-
     /** Returns the set of groups the Presentity belongs to.
      * @return The Presentity's set of groups.
      */

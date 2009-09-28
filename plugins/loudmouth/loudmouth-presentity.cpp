@@ -123,12 +123,6 @@ LM::Presentity::get_status () const
   return result;
 }
 
-const std::string
-LM::Presentity::get_avatar () const
-{
-  return "FIXME";
-}
-
 const std::set<std::string>
 LM::Presentity::get_groups () const
 {

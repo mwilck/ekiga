@@ -79,9 +79,6 @@ namespace RL {
     const std::string get_status () const
     { return status; }
 
-    const std::string get_avatar () const
-    { return ""; }
-
     const std::set<std::string> get_groups () const
     { return groups; }
 

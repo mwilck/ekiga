@@ -59,8 +59,6 @@ namespace LM
 
     const std::string get_status () const;
 
-    const std::string get_avatar () const;
-
     const std::set<std::string> get_groups () const;
 
     bool populate_menu (Ekiga::MenuBuilder& builder);

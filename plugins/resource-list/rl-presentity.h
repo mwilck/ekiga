@@ -67,8 +67,6 @@ namespace RL
 
     const std::string get_status () const;
 
-    const std::string get_avatar () const;
-
     const std::set<std::string> get_groups () const;
 
     const std::string get_uri () const;
@@ -109,7 +107,6 @@ namespace RL
     std::string uri;
     std::string presence;
     std::string status;
-    std::string avatar;
 
     std::map<std::string, xmlNodePtr> group_nodes;
     std::set<std::string> groups;
