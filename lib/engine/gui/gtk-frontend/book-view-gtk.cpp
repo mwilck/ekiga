@@ -42,6 +42,8 @@
 
 #include "book-view-gtk.h"
 
+#include "filterable.h"
+
 #include "gmstockicons.h"
 #include "menu-builder-tools.h"
 #include "menu-builder-gtk.h"
@@ -242,6 +244,13 @@ on_updated (gpointer data)
 
   if (GDK_IS_WINDOW (GTK_WIDGET (view)->window))
     gdk_window_set_cursor (GTK_WIDGET (view)->window, NULL);
+
+  boost::shared_ptr<Ekiga::Filterable> filtered = boost::dynamic_pointer_cast<Ekiga::Filterable>(view->priv->book);
+  if (filtered) {
+
+    gtk_entry_set_text (GTK_ENTRY (view->priv->entry),
+			filtered->get_search_filter ().c_str ());
+  }
 }
 
 
@@ -276,7 +285,9 @@ on_entry_activated_cb (GtkWidget *entry,
   gdk_window_set_cursor (GTK_WIDGET (data)->window, cursor);
   gdk_cursor_unref (cursor);
 
-  BOOK_VIEW_GTK (data)->priv->book->set_search_filter (entry_text);
+  boost::shared_ptr<Ekiga::Filterable> filtered = boost::dynamic_pointer_cast<Ekiga::Filterable>(BOOK_VIEW_GTK (data)->priv->book);
+
+  filtered->set_search_filter (entry_text);
 }
 
 
@@ -610,18 +621,26 @@ book_view_gtk_new (Ekiga::BookPtr book)
   gtk_tree_view_append_column (GTK_TREE_VIEW (result->priv->tree_view), column);
 
   /* The Search Box */
-  hbox = gtk_hbox_new (FALSE, 0);
-  result->priv->entry = gtk_entry_new ();
-  button = gtk_button_new_from_stock (GTK_STOCK_FIND);
-  label = gtk_label_new_with_mnemonic (_("_Search Filter:"));
-  gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 2);
-  gtk_box_pack_start (GTK_BOX (hbox), result->priv->entry, TRUE, TRUE, 2);
-  gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 2);
-  gtk_box_pack_start (GTK_BOX (result->priv->vbox), hbox, FALSE, FALSE, 0);
-  g_signal_connect (result->priv->entry, "activate",
-                    G_CALLBACK (on_entry_activated_cb), result);
-  g_signal_connect (button, "clicked",
-                    G_CALLBACK (on_button_clicked_cb), result);
+  boost::shared_ptr<Ekiga::Filterable> filtered = boost::dynamic_pointer_cast<Ekiga::Filterable> (book);
+
+  if (filtered) {
+
+    hbox = gtk_hbox_new (FALSE, 0);
+    result->priv->entry = gtk_entry_new ();
+    button = gtk_button_new_from_stock (GTK_STOCK_FIND);
+    label = gtk_label_new_with_mnemonic (_("_Search Filter:"));
+    gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, FALSE, 2);
+    gtk_box_pack_start (GTK_BOX (hbox), result->priv->entry, TRUE, TRUE, 2);
+    gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 2);
+    gtk_box_pack_start (GTK_BOX (result->priv->vbox), hbox, FALSE, FALSE, 0);
+    g_signal_connect (result->priv->entry, "activate",
+		      G_CALLBACK (on_entry_activated_cb), result);
+    g_signal_connect (button, "clicked",
+		      G_CALLBACK (on_button_clicked_cb), result);
+  } else {
+
+    result->priv->entry = NULL;
+  }
 
 
   /* The status bar */

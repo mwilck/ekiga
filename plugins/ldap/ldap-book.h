@@ -44,6 +44,7 @@
 #include <libxml/tree.h>
 #include <glib/gi18n.h>
 
+#include "filterable.h"
 #include "runtime.h"
 #include "book-impl.h"
 #include "form.h"
@@ -84,6 +85,7 @@ namespace OPENLDAP
  */
 
   class Book:
+    public virtual Ekiga::Filterable,
     public Ekiga::BookImpl<Contact>
   {
   public:
@@ -102,7 +104,9 @@ namespace OPENLDAP
 
     bool populate_menu (Ekiga::MenuBuilder &builder);
 
-    void set_search_filter (std::string search_string);
+    void set_search_filter (const std::string search_string);
+
+    const std::string get_search_filter () const;
 
     const std::string get_status () const;
 

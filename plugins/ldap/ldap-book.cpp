@@ -423,10 +423,16 @@ OPENLDAP::Book::populate_menu (Ekiga::MenuBuilder &builder)
 }
 
 void
-OPENLDAP::Book::set_search_filter (std::string _search_filter)
+OPENLDAP::Book::set_search_filter (const std::string _search_filter)
 {
   search_filter = _search_filter;
   refresh ();
+}
+
+const std::string
+OPENLDAP::Book::get_search_filter () const
+{
+  return search_filter;
 }
 
 const std::string

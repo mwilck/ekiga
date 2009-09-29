@@ -40,6 +40,7 @@
 
 #include <libebook/e-book.h>
 
+#include "filterable.h"
 #include "form.h"
 #include "book-impl.h"
 
@@ -55,6 +56,7 @@ namespace Evolution
  */
 
   class Book:
+    public virtual Ekiga::Filterable,
     public Ekiga::BookImpl<Contact>
   {
   public:
@@ -70,7 +72,9 @@ namespace Evolution
 
     bool populate_menu (Ekiga::MenuBuilder &builder);
 
-    void set_search_filter (std::string search_filter);
+    void set_search_filter (const std::string search_filter);
+
+    const std::string get_search_filter () const;
 
     const std::string get_status () const;
 

@@ -74,8 +74,6 @@ namespace History
     const std::string get_icon () const
     { return "local-object"; }
 
-    void set_search_filter (std::string);
-
     /* more specific api */
 
     void add (const std::string & name,

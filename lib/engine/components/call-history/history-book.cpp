@@ -152,11 +152,6 @@ History::Book::get_status () const
 }
 
 void
-History::Book::set_search_filter (std::string /*filter*/)
-{
-}
-
-void
 History::Book::save () const
 {
   xmlChar *buffer = NULL;

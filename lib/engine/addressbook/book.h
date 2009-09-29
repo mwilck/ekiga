@@ -67,15 +67,6 @@ namespace Ekiga {
     virtual void visit_contacts (boost::function1<bool, ContactPtr>) const = 0;
 
 
-    /** Set the search filter.
-     * This function is purely virtual and should be implemented by
-     * the descendant of the Ekiga::Book, ie BookImpl or one
-     * of its descendant.
-     * @param The search filter to respect when refreshing a Book.
-     */
-    virtual void set_search_filter (std::string _filter_string) = 0;
-
-
     /** Get the current status.
      * This function is purely virtual and should be implemented by
      * the descendant of the Ekiga::Book, ie BookImpl or one

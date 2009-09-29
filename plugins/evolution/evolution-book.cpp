@@ -285,10 +285,16 @@ Evolution::Book::populate_menu (Ekiga::MenuBuilder &builder)
 }
 
 void
-Evolution::Book::set_search_filter (std::string _search_filter)
+Evolution::Book::set_search_filter (const std::string _search_filter)
 {
   search_filter = _search_filter;
   refresh ();
+}
+
+const std::string
+Evolution::Book::get_search_filter () const
+{
+  return search_filter;
 }
 
 const std::string
