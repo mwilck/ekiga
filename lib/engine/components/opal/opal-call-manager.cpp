@@ -398,6 +398,15 @@ void CallManager::set_codecs (Ekiga::CodecList & _codecs)
       }
     }
   }
+  
+
+  // Add the PCSS codecs
+  all_media_formats = pcssEP->GetMediaFormats ();
+  for (int j = 0 ;
+       j < all_media_formats.GetSize () ;
+       j++)
+    order += all_media_formats [j];
+
 
   // Build the mask
   all_media_formats = OpalTranscoder::GetPossibleFormats (pcssEP->GetMediaFormats ());
