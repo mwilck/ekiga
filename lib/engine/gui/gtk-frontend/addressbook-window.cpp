@@ -471,8 +471,6 @@ addressbook_window_add_book (AddressBookWindow *self,
     gtk_tree_model_get_iter_first (store, &iter);
     gtk_tree_selection_select_iter (self->priv->selection, &iter);
   }
-
-  g_object_unref (icon);
 }
 
 
