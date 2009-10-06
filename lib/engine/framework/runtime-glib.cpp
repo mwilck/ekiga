@@ -165,5 +165,6 @@ void
 Ekiga::Runtime::run_in_main (boost::function0<void> action,
 			     unsigned int seconds)
 {
-  g_async_queue_push (queue, (gpointer)(new struct message (action, seconds)));
+  if (queue != NULL)
+    g_async_queue_push (queue, (gpointer)(new struct message (action, seconds)));
 }
