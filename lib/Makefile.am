@@ -1,7 +1,9 @@
-noinst_LTLIBRARIES = libekiga.la
+stacklib_LTLIBRARIES = libekiga.la
+stacklib_dir = $(stacklibdir)
 
 libekiga_la_SOURCES =
-libekiga_la_LDFLAGS = -export-dynamic
+libekiga_la_LDFLAGS = $(STACKLIB_LDFLAGS) $(BOOST_LIBS) $(GLIB_LIBS) $(XML_LIBS) $(GTK_LIBS)
+
 
 CLEANFILES =
 

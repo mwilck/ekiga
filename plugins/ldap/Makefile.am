@@ -21,4 +21,5 @@ libgmldap_la_SOURCES = \
 
 libgmldap_la_LDFLAGS = $(PLUGINS_LIBTOOL_FLAGS)
 libgmldap_la_LIBADD = \
+	$(top_builddir)/lib/libekiga.la \
 	$(LDAP_LIBS) $(BOOST_LDFLAGS) $(BOOST_LIBS) $(GLIB_LIBS) $(XML_LIBS)

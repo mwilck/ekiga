@@ -855,13 +855,13 @@ case "$host" in
         ;;
 esac
 
-PLUGIN_LIBTOOL_FLAGS="-no-undefined -avoid-version -module"
+PLUGINS_LIBTOOL_FLAGS="-no-undefined -avoid-version -module"
 STACKLIB_LDFLAGS='-shared -module -no-undefined -avoid-version'
 
 AC_SUBST(bindir)
 AC_SUBST(stacklibdir)
 AC_SUBST(plugindir)
-AC_SUBST(PLUGIN_LIBTOOL_FLAGS)
+AC_SUBST(PLUGINS_LIBTOOL_FLAGS)
 AC_SUBST(PLUGIN_DIR)
 AC_SUBST(STACKLIB_LDFLAGS)
 
