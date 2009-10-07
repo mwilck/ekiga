@@ -4364,7 +4364,9 @@ main (int argc,
 
   /* Application name */
   g_set_application_name (_("Ekiga Softphone"));
+#ifndef WIN32
   setenv ("PULSE_PROP_application.name", _("Ekiga Softphone"), true);
+#endif
 
   /* initialize platform-specific code */
   gm_platform_init ();
