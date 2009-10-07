@@ -177,12 +177,3 @@ opal_init (Ekiga::KickStart& kickstart)
   kickstart.add_spark (spark);
 }
 
-
-// FIXME: I have no clue why this is needed only for the opal code!
-#ifdef BOOST_NO_EXCEPTIONS
-
-void
-boost::throw_exception (const std::exception&)
-{
-}
-#endif

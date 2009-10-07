@@ -52,10 +52,9 @@ AM_CFLAGS = \
 	$(GLIB_CFLAGS) $(GTK_CFLAGS) $(GCONF_CFLAGS) \
 	$(DBUS_CFLAGS) $(GNOME_CFLAGS)
 
-# FIXME: here we add -fexceptions because ptlib&opal put them out and that's a problem for boost...
 AM_CPPFLAGS = \
 	$(BOOST_CPPFLAGS) $(GLIB_CFLAGS) $(XML_CFLAGS) $(GTK_CFLAGS) \
-	$(DBUS_CFLAGS) $(GNOME_CFLAGS) $(PTLIB_CFLAGS) $(OPAL_CFLAGS) -fexceptions
+	$(DBUS_CFLAGS) $(GNOME_CFLAGS) $(PTLIB_CFLAGS) $(OPAL_CFLAGS)
 AM_LIBS = \
 	$(BOOST_LIBS) $(GLIB_LIBS) $(XML_LIBS) $(GTK_LIBS)
 
