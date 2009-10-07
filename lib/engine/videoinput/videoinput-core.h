@@ -105,7 +105,7 @@ namespace Ekiga
        * @param _runtime reference to Ekiga runtime.
        * @param _videooutput_core reference ot the video output core.
        */
-      VideoInputCore (VideoOutputCore& _videooutput_core);
+      VideoInputCore (boost::shared_ptr<VideoOutputCore> _videooutput_core);
 
       /** The destructor
        */
@@ -327,7 +327,7 @@ private:
         * @param _videoinput_core reference to the video input core.
         * @param _videooutput_core reference to the video output core.
         */
-        VideoPreviewManager(VideoInputCore & _videoinput_core, VideoOutputCore & _videooutput_core);
+        VideoPreviewManager(VideoInputCore & _videoinput_core, boost::shared_ptr<VideoOutputCore> _videooutput_core);
 
         /** The destructor
         */
@@ -358,7 +358,7 @@ private:
         PSyncPoint run_thread;
 
         VideoInputCore  & videoinput_core;
-        VideoOutputCore & videooutput_core;
+        boost::shared_ptr<VideoOutputCore> videooutput_core;
         unsigned width;
         unsigned height;
       };

@@ -44,7 +44,7 @@
 
 using namespace Ekiga;
 
-VideoInputCore::VideoPreviewManager::VideoPreviewManager (VideoInputCore& _videoinput_core, VideoOutputCore& _videooutput_core)
+VideoInputCore::VideoPreviewManager::VideoPreviewManager (VideoInputCore& _videoinput_core, boost::shared_ptr<VideoOutputCore> _videooutput_core)
 : PThread (1000, NoAutoDeleteThread, HighestPriority, "VideoPreviewManager"),
     videoinput_core (_videoinput_core),
   videooutput_core (_videooutput_core)
@@ -77,7 +77,7 @@ void VideoInputCore::VideoPreviewManager::start (unsigned _width, unsigned _heig
   end_thread = false;
   frame = (char*) malloc (unsigned (width * height * 3 / 2));
 
-  videooutput_core.start();
+  videooutput_core->start();
   pause_thread = false;
   run_thread.Signal();
 }
@@ -92,7 +92,7 @@ void VideoInputCore::VideoPreviewManager::stop ()
     free (frame);
     frame = NULL;
   }  
-  videooutput_core.stop();
+  videooutput_core->stop();
 }
 
 void VideoInputCore::VideoPreviewManager::Main ()
@@ -108,7 +108,7 @@ void VideoInputCore::VideoPreviewManager::Main ()
     while (!pause_thread) {
       if (frame) {
         videoinput_core.get_frame_data(frame);
-        videooutput_core.set_frame_data(frame, width, height, true, 1);
+        videooutput_core->set_frame_data(frame, width, height, true, 1);
       }
       // We have to sleep some time outside the mutex lock
       // to give other threads time to get the mutex
@@ -119,7 +119,7 @@ void VideoInputCore::VideoPreviewManager::Main ()
   }
 }
 
-VideoInputCore::VideoInputCore (VideoOutputCore& _videooutput_core)
+VideoInputCore::VideoInputCore (boost::shared_ptr<VideoOutputCore> _videooutput_core)
 :  preview_manager(*this, _videooutput_core)
 {
   PWaitAndSignal m_var(core_mutex);
