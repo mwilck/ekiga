@@ -110,7 +110,7 @@ statusicon_blink_cb (gpointer data);
  * Declaration of local functions
  */
 static GtkWidget *
-statusicon_build_menu ();
+statusicon_build_menu (Ekiga::ServiceCore& services);
 
 static void
 statusicon_start_blinking (StatusIcon *icon,
@@ -387,14 +387,11 @@ cleared_call_cb (boost::shared_ptr<Ekiga::CallManager>  /*manager*/,
  * Local functions
  */
 static GtkWidget *
-statusicon_build_menu ()
+statusicon_build_menu (Ekiga::ServiceCore& services)
 {
   GtkWidget *main_window = NULL;
 
-  Ekiga::ServiceCore *services = NULL;
-
-  services = GnomeMeeting::Process ()->GetServiceCore ();
-  boost::shared_ptr<GtkFrontend> gtk_frontend = services->get<GtkFrontend> ("gtk-frontend");
+  boost::shared_ptr<GtkFrontend> gtk_frontend = services.get<GtkFrontend> ("gtk-frontend");
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
 
   static MenuEntry menu [] =
@@ -536,7 +533,7 @@ statusicon_new (Ekiga::ServiceCore & core)
   self = STATUSICON (g_object_new (STATUSICON_TYPE, NULL));
   self->priv = new StatusIconPrivate (core);
 
-  self->priv->popup_menu = statusicon_build_menu ();
+  self->priv->popup_menu = statusicon_build_menu (core);
   g_object_ref_sink (self->priv->popup_menu);
   self->priv->has_message = FALSE;
   self->priv->blink_id = -1;
