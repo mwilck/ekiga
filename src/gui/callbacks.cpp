@@ -96,23 +96,6 @@ show_window_cb (G_GNUC_UNUSED GtkWidget *widget,
 
 
 void
-show_assistant_window_cb (G_GNUC_UNUSED GtkWidget *widget,
-                          G_GNUC_UNUSED gpointer data)
-{
-  GtkWidget *window = GnomeMeeting::Process ()->GetAssistantWindow ();
-  show_window (window);
-}
-
-void
-show_prefs_window_cb (G_GNUC_UNUSED GtkWidget *widget,
-                      G_GNUC_UNUSED gpointer data)
-{
-  GtkWidget *window = GnomeMeeting::Process ()->GetPrefsWindow ();
-  show_window (window);
-}
-
-
-void
 hide_window_cb (G_GNUC_UNUSED GtkWidget *widget,
 		gpointer data)
 {

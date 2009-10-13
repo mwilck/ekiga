@@ -3099,6 +3099,8 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
   
   GtkWidget *addressbook_window = NULL;
   GtkWidget *accounts_window = NULL;
+  GtkWidget *prefs_window = NULL;
+  GtkWidget *assistant_window = NULL;
 
   bool show_call_panel = false;
 
@@ -3111,6 +3113,8 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
   boost::shared_ptr<GtkFrontend> gtk_frontend = services->get<GtkFrontend> ("gtk-frontend");
   addressbook_window = GTK_WIDGET (gtk_frontend->get_addressbook_window ()); 
   accounts_window = GnomeMeeting::Process ()->GetAccountsWindow ();
+  prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
+  assistant_window = GnomeMeeting::Process ()->GetAssistantWindow ();
 
   mw->priv->main_menu = gtk_menu_bar_new ();
 
@@ -3192,8 +3196,8 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
       GTK_MENU_ENTRY("configuration_assistant", _("_Configuration Assistant"),
 		     _("Run the configuration assistant"),
 		     NULL, 0, 
-		     G_CALLBACK (show_assistant_window_cb),
-		     NULL, TRUE),
+		     G_CALLBACK (show_window_cb),
+		     (gpointer) assistant_window, TRUE),
 
       GTK_MENU_SEPARATOR,
       
@@ -3206,8 +3210,8 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
       GTK_MENU_ENTRY("preferences", NULL,
 		     _("Change your preferences"), 
 		     GTK_STOCK_PREFERENCES, 0,
-		     G_CALLBACK (show_prefs_window_cb),
-		     NULL, TRUE),
+		     G_CALLBACK (show_window_cb),
+		     (gpointer) prefs_window, TRUE),
 
       GTK_MENU_NEW(_("_View")),
 

@@ -61,12 +61,6 @@ gboolean delete_window_cb (GtkWidget *widget,
 void show_window_cb (GtkWidget *widget,
 		     gpointer data);
 
-void show_assistant_window_cb (GtkWidget *widget,
-                               gpointer   data);
-
-void show_prefs_window_cb (GtkWidget *widget,
-			   gpointer   data);
-
 /* DESCRIPTION  :  Simple wrapper that will call gnomemeeting_window_hide.
  * BEHAVIOR     :  Calls gnomemeeting_window_hide.
  * PRE          :  The gpointer is a valid pointer to the GtkWindow that needs
