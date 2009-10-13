@@ -230,14 +230,15 @@ void GnomeMeeting::BuildGUI ()
 
 
 void
-GnomeMeeting::InitEngine (int argc,
+GnomeMeeting::InitEngine (Ekiga::ServiceCorePtr service_core,
+			  int argc,
 			  char* argv[])
 {
   PWaitAndSignal m(ep_var_mutex);
 
   Ekiga::Runtime::init ();
 
-  engine_init (argc, argv);
+  engine_init (service_core, argc, argv);
 }
 
 void

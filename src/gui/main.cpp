@@ -4335,6 +4335,8 @@ main (int argc,
 {
   GOptionContext *context = NULL;
 
+  Ekiga::ServiceCorePtr service_core(new Ekiga::ServiceCore);
+
   GtkWidget *main_window = NULL;
   GtkWidget *assistant_window = NULL;
 
@@ -4466,7 +4468,7 @@ main (int argc,
   /* Init gm_conf */
   gm_conf_watch ();
 
-  GnomeMeeting::Process ()->InitEngine (argc, argv);
+  GnomeMeeting::Process ()->InitEngine (service_core, argc, argv);
   GnomeMeeting::Process ()->BuildGUI ();
 
   /* Show the window if there is no error, exit with a popup if there

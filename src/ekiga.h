@@ -80,7 +80,8 @@ class GnomeMeeting : public PProcess
    * BEHAVIOR     : Vroom.
    * PRE          : /
    */
-  void InitEngine (int argc,
+  void InitEngine (Ekiga::ServiceCorePtr service_core,
+		   int argc,
 		   char* argv[]);
 
   

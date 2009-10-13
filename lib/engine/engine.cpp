@@ -102,15 +102,17 @@
 #include <iostream>
 #endif
 
-static Ekiga::ServiceCore *service_core = NULL;
+// FIXME: this *MUST* die soon
+static Ekiga::ServiceCorePtr service_core_ptr;
 
 void
-engine_init (int argc,
+engine_init (Ekiga::ServiceCorePtr service_core,
+	     int argc,
              char *argv [])
 {
-  service_core = new Ekiga::ServiceCore;
   Ekiga::KickStart kickstart;
 
+  service_core_ptr = service_core;
 
   service_core->add (Ekiga::ServicePtr(new Ekiga::NotificationCore));
 
@@ -145,8 +147,7 @@ engine_init (int argc,
   service_core->add (call_core);
 
   if (!gmconf_personal_details_init (*service_core, &argc, &argv)) {
-    delete service_core;
-    service_core = NULL;
+    service_core_ptr.reset ();
     return;
   }
 
@@ -155,8 +156,7 @@ engine_init (int argc,
 
 #ifndef WIN32
   if (!videooutput_x_init (*service_core, &argc, &argv)) {
-    delete service_core;
-    service_core = NULL;
+    service_core_ptr.reset ();
     return;
   }
 #endif
@@ -170,8 +170,7 @@ engine_init (int argc,
 #endif
 
   if (!videoinput_mlogo_init (*service_core, &argc, &argv)) {
-    delete service_core;
-    service_core = NULL;
+    service_core_ptr.reset ();
     return;
   }
 
@@ -213,14 +212,12 @@ engine_init (int argc,
   kickstart.kick (*service_core, &argc, &argv);
 
   if (!gtk_core_init (*service_core, &argc, &argv)) {
-    delete service_core;
-    service_core = NULL;
+    service_core_ptr.reset ();
     return;
   }
 
   if (!gtk_frontend_init (*service_core, &argc, &argv)) {
-    delete service_core;
-    service_core = NULL;
+    service_core_ptr.reset ();
     return;
   }
 
@@ -257,13 +254,14 @@ engine_init (int argc,
 Ekiga::ServiceCore *
 engine_get_service_core ()
 {
-  return service_core;
+  return service_core_ptr.get ();
 }
 
 void
 engine_stop ()
 {
-  if (service_core)
-    delete service_core;
-  service_core = NULL;
+  if (service_core_ptr) {
+
+    service_core_ptr.reset ();
+  }
 }
