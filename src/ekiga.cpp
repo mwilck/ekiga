@@ -182,17 +182,17 @@ void GnomeMeeting::Main ()
 }
 
 
-void GnomeMeeting::BuildGUI ()
+void GnomeMeeting::BuildGUI (Ekiga::ServiceCorePtr services)
 {
   /* Init the stock icons */
   gnomemeeting_stock_icons_init ();
   
   /* Build the GUI */
   gtk_window_set_default_icon_name (GM_ICON_LOGO);
-  accounts_window = gm_accounts_window_new (*GetServiceCore ());
+  accounts_window = gm_accounts_window_new (*services);
 
-  statusicon = statusicon_new (*GetServiceCore ());
-  main_window = gm_main_window_new (*GetServiceCore ());
+  statusicon = statusicon_new (*services);
+  main_window = gm_main_window_new (*services);
   // FIXME should be moved inside the gm_accounts_window_new code
   gtk_window_set_transient_for (GTK_WINDOW (accounts_window), GTK_WINDOW (main_window));
 

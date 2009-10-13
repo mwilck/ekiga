@@ -141,7 +141,7 @@ class GnomeMeeting : public PProcess
    *                 stored in config.
    * PRE          :  /
    */
-  void BuildGUI ();
+  void BuildGUI (Ekiga::ServiceCorePtr services);
 
  private:
   

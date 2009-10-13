@@ -4477,14 +4477,14 @@ main (int argc,
   Ekiga::Runtime::init ();
   engine_init (service_core, argc, argv);
 
-  GnomeMeeting::Process ()->BuildGUI ();
+  GnomeMeeting::Process ()->BuildGUI (service_core);
 
   /* Show the window if there is no error, exit with a popup if there
    * is a fatal error.
    */
   main_window = GnomeMeeting::Process ()->GetMainWindow ();
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (main_window); //TODO no priv here
-  boost::shared_ptr<Ekiga::CallCore> call_core = mw->priv->core->get<Ekiga::CallCore> ("call-core");
+  boost::shared_ptr<Ekiga::CallCore> call_core = service_core->get<Ekiga::CallCore> ("call-core");
   if (error == -1) {
 
     if (gm_conf_get_int (GENERAL_KEY "version") 
