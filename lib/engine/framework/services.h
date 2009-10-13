@@ -93,6 +93,8 @@ namespace Ekiga
 
   };
 
+  typedef boost::shared_ptr<ServiceCore> ServiceCorePtr;
+
   class BasicService: public Service
   {
   public:
