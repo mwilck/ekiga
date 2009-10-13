@@ -69,6 +69,7 @@ typedef struct _GmPreferencesWindow
   GtkWidget *audio_recorder;
   GtkWidget *video_device;
   GtkWidget *iface;
+  GtkWidget *fsbutton;
   Ekiga::ServiceCore *core;
   std::vector<boost::signals::connection> connections;
 } GmPreferencesWindow;
@@ -525,7 +526,6 @@ gm_pw_init_sound_events_page (GtkWidget *prefs_window,
   GmPreferencesWindow *pw= NULL;
 
   GtkWidget *button = NULL;
-  GtkWidget *fsbutton = NULL;
   GtkWidget *hbox = NULL;
   GtkWidget *frame = NULL;
   GtkWidget *vbox = NULL;
@@ -607,10 +607,10 @@ gm_pw_init_sound_events_page (GtkWidget *prefs_window,
   hbox = gtk_hbox_new (0, FALSE);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 2);
 
-  fsbutton =
+  pw->fsbutton =
     gtk_file_chooser_button_new (_("Choose a sound"),
                                  GTK_FILE_CHOOSER_ACTION_OPEN);
-  gtk_box_pack_start (GTK_BOX (hbox), fsbutton, TRUE, TRUE, 2);
+  gtk_box_pack_start (GTK_BOX (hbox), pw->fsbutton, TRUE, TRUE, 2);
 
   filefilter = gtk_file_filter_new ();
   gtk_file_filter_set_name (filefilter, _("Wavefiles"));
@@ -619,27 +619,27 @@ gm_pw_init_sound_events_page (GtkWidget *prefs_window,
 #else
   gtk_file_filter_add_mime_type (filefilter, "audio/x-wav");
 #endif
-  gtk_file_chooser_add_filter (GTK_FILE_CHOOSER (fsbutton), filefilter);
+  gtk_file_chooser_add_filter (GTK_FILE_CHOOSER (pw->fsbutton), filefilter);
 
   selector_hbox = gtk_hbox_new (FALSE, 0);
   selector_playbutton = gtk_button_new_with_label (_("Play"));
   gtk_box_pack_end (GTK_BOX (selector_hbox),
                     selector_playbutton, FALSE, FALSE, 0);
   gtk_widget_show (selector_playbutton);
-  gtk_file_chooser_set_extra_widget (GTK_FILE_CHOOSER (fsbutton),
+  gtk_file_chooser_set_extra_widget (GTK_FILE_CHOOSER (pw->fsbutton),
                                      selector_hbox);
 
   g_signal_connect (G_OBJECT (selector_playbutton), "clicked",
                     G_CALLBACK (audioev_filename_browse_play_cb),
-                    (gpointer) fsbutton);
+                    (gpointer) prefs_window);
 
-  g_signal_connect (G_OBJECT (fsbutton), "selection-changed",
+  g_signal_connect (G_OBJECT (pw->fsbutton), "selection-changed",
                     G_CALLBACK (audioev_filename_browse_cb),
                     (gpointer) prefs_window);
 
   g_signal_connect (G_OBJECT (selection), "changed",
                     G_CALLBACK (sound_event_clicked_cb),
-                    (gpointer) fsbutton);
+                    (gpointer) pw->fsbutton);
 
   button = gtk_button_new_with_label (_("Play"));
   gtk_box_pack_start (GTK_BOX (hbox), button, FALSE, FALSE, 2);
@@ -1157,9 +1157,7 @@ sound_event_play_cb (G_GNUC_UNUSED GtkWidget *widget,
 
     gtk_tree_model_get (GTK_TREE_MODEL (model), &selected_iter, 4, &sound_event, -1);
 
-    //FIXME
-    Ekiga::ServiceCore *core = GnomeMeeting::Process ()->GetServiceCore (); 
-    boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
+    boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = pw->core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
 
     if (sound_event) { 
       audiooutput_core->play_event(sound_event);
@@ -1202,13 +1200,15 @@ static void
 audioev_filename_browse_play_cb (GtkWidget* /* playbutton */,
 				 gpointer data)
 {
+  GmPreferencesWindow* pw = NULL;
+
   g_return_if_fail (data != NULL);
 
-  //FIXME
-  Ekiga::ServiceCore *core = GnomeMeeting::Process ()->GetServiceCore (); 
-  boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
+  pw = gm_pw_get_pw (GTK_WIDGET (data));
 
-  gchar* file_name = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (data));
+  boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = pw->core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
+
+  gchar* file_name = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (pw->fsbutton));
   std::string file_name_string = file_name;
   audiooutput_core->play_file(file_name_string);
 
