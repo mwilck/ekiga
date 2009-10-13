@@ -1831,12 +1831,12 @@ on_presentity_selected (G_GNUC_UNUSED GtkWidget* view,
 
 static void
 on_chat_unread_alert (G_GNUC_UNUSED GtkWidget* widget,
-		      G_GNUC_UNUSED gpointer data)
+		      gpointer data)
 {
   if (!gm_conf_get_bool (SOUND_EVENTS_KEY "enable_new_message_sound"))
     return;
 
-  Ekiga::ServiceCore *core = GnomeMeeting::Process ()->GetServiceCore ();
+  Ekiga::ServiceCore *core = (Ekiga::ServiceCore*)data;
   boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
 
   std::string file_name_string = gm_conf_get_string (SOUND_EVENTS_KEY "new_message_sound");
@@ -3095,8 +3095,6 @@ ekiga_main_window_add_device_dialog_show (EkigaMainWindow *mw,
 static void
 ekiga_main_window_init_menu (EkigaMainWindow *mw)
 {
-  Ekiga::ServiceCore *services = NULL;
-  
   GtkWidget *addressbook_window = NULL;
   GtkWidget *accounts_window = NULL;
   GtkWidget *prefs_window = NULL;
@@ -3108,9 +3106,8 @@ ekiga_main_window_init_menu (EkigaMainWindow *mw)
 
   g_return_if_fail (mw != NULL);
 
-  services = GnomeMeeting::Process ()->GetServiceCore ();
-  boost::shared_ptr<Ekiga::Trigger> local_cluster_trigger = services->get<Ekiga::Trigger> ("local-cluster");
-  boost::shared_ptr<GtkFrontend> gtk_frontend = services->get<GtkFrontend> ("gtk-frontend");
+  boost::shared_ptr<Ekiga::Trigger> local_cluster_trigger = mw->priv->core->get<Ekiga::Trigger> ("local-cluster");
+  boost::shared_ptr<GtkFrontend> gtk_frontend = mw->priv->core->get<GtkFrontend> ("gtk-frontend");
   addressbook_window = GTK_WIDGET (gtk_frontend->get_addressbook_window ()); 
   accounts_window = GnomeMeeting::Process ()->GetAccountsWindow ();
   prefs_window = GnomeMeeting::Process ()->GetPrefsWindow ();
@@ -3408,14 +3405,9 @@ static void
 ekiga_main_window_init_contact_list (EkigaMainWindow *mw)
 {
   GtkWidget *label = NULL;
-
-  Ekiga::ServiceCore *services = NULL;
   GtkWidget* roster_view = NULL;
 
-  services = GnomeMeeting::Process ()->GetServiceCore ();
-  g_return_if_fail (services != NULL);
-
-  boost::shared_ptr<Ekiga::PresenceCore> presence_core = services->get<Ekiga::PresenceCore> ("presence-core");
+  boost::shared_ptr<Ekiga::PresenceCore> presence_core = mw->priv->core->get<Ekiga::PresenceCore> ("presence-core");
 
   label = gtk_label_new (_("Contacts"));
   roster_view = roster_view_gtk_new (*presence_core);
@@ -3452,13 +3444,9 @@ ekiga_main_window_init_dialpad (EkigaMainWindow *mw)
 static void
 ekiga_main_window_init_history (EkigaMainWindow *mw)
 {
-  Ekiga::ServiceCore *services = NULL;
   GtkWidget *label = NULL;
 
-  services = GnomeMeeting::Process ()->GetServiceCore ();
-  g_return_if_fail (services != NULL);
-
-  boost::shared_ptr<History::Source> history_source = services->get<History::Source> ("call-history-store");
+  boost::shared_ptr<History::Source> history_source = mw->priv->core->get<History::Source> ("call-history-store");
   boost::shared_ptr<History::Book> history_book = history_source->get_book ();
   GtkWidget* call_history_view = call_history_view_gtk_new (history_book);
 
@@ -4097,7 +4085,7 @@ gm_main_window_new (Ekiga::ServiceCore & core)
   chat_window = GTK_WIDGET (gtk_frontend->get_chat_window ());
 
   g_signal_connect (chat_window, "unread-alert",
-		    G_CALLBACK (on_chat_unread_alert), NULL);
+		    G_CALLBACK (on_chat_unread_alert), &core);
 
   /* The Top-level window */
   window = ekiga_main_window_new (&core);
