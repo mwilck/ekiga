@@ -91,6 +91,8 @@
 
 #include <libxml/parser.h>
 
+#include "engine.h"
+
 #include "videoinput-core.h"
 #include "audioinput-core.h"
 #include "audiooutput-core.h"
@@ -4468,7 +4470,9 @@ main (int argc,
   /* Init gm_conf */
   gm_conf_watch ();
 
-  GnomeMeeting::Process ()->InitEngine (service_core, argc, argv);
+  Ekiga::Runtime::init ();
+  engine_init (service_core, argc, argv);
+
   GnomeMeeting::Process ()->BuildGUI ();
 
   /* Show the window if there is no error, exit with a popup if there
@@ -4564,7 +4568,8 @@ main (int argc,
   /* Exit Ekiga */
   GnomeMeeting::Process ()->Exit ();
 
-  GnomeMeeting::Process ()->StopEngine ();
+  engine_stop ();
+  Ekiga::Runtime::quit ();
 
   /* Save and shutdown the configuration */
   gm_conf_save ();

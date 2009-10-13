@@ -52,11 +52,11 @@
 #include "dbus.h"
 #endif
 
+#include "engine.h"
+
 #include "gmdialog.h"
 #include "gmstockicons.h"
 #include "gmconf.h"
-
-#include "engine.h"
 
 #define new PNEW
 
@@ -226,27 +226,4 @@ void GnomeMeeting::BuildGUI ()
 #else
   PTRACE (1, "ESound support disabled");
 #endif
-}
-
-
-void
-GnomeMeeting::InitEngine (Ekiga::ServiceCorePtr service_core,
-			  int argc,
-			  char* argv[])
-{
-  PWaitAndSignal m(ep_var_mutex);
-
-  Ekiga::Runtime::init ();
-
-  engine_init (service_core, argc, argv);
-}
-
-void
-GnomeMeeting::StopEngine ()
-{
-  PWaitAndSignal m(ep_var_mutex);
-
-  engine_stop ();
-
-  Ekiga::Runtime::quit ();
 }

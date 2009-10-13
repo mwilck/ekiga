@@ -75,23 +75,6 @@ class GnomeMeeting : public PProcess
    */
   ~GnomeMeeting ();
 
-  
-  /* DESCRIPTION  : / 
-   * BEHAVIOR     : Vroom.
-   * PRE          : /
-   */
-  void InitEngine (Ekiga::ServiceCorePtr service_core,
-		   int argc,
-		   char* argv[]);
-
-  
-  /* DESCRIPTION  : / 
-   * BEHAVIOR     : No more vroom.
-   * PRE          : /
-   */
-  void StopEngine ();
-
-
 
   /* DESCRIPTION  :  /
    * BEHAVIOR     :  Prepare the endpoint to exit by removing all
