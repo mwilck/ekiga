@@ -78,20 +78,11 @@ delete_window_cb (GtkWidget *widget,
   return TRUE;
 }
 
-static void
-show_window (GtkWidget *window)
-{
-  if (!gnomemeeting_window_is_visible (window))
-    gnomemeeting_window_show (window);
-  else
-    gtk_window_present (GTK_WINDOW (window));
-}
-
 void
 show_window_cb (G_GNUC_UNUSED GtkWidget *widget,
 		gpointer data)
 {
-  show_window (GTK_WIDGET (data));
+  gnomemeeting_window_show (GTK_WIDGET (data));
 }
 
 

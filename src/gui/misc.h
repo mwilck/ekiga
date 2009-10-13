@@ -74,7 +74,8 @@ gboolean gnomemeeting_window_is_visible (GtkWidget *w);
  *                 or anything under the
  *                 /apps/gnomemeeting/general/user_interface/ key and is given
  *                 by g_object_get_data (G_OBJECT, "window_name"). The window
- *                 object is pointed by the GtkWidget *.
+ *                 object is pointed by the GtkWidget *. It will either show the
+ *                 window if hidden, or just present it if already visible.
  * PRE          :  /
  */
 void gnomemeeting_window_show (GtkWidget *w);

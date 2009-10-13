@@ -142,7 +142,13 @@ gnomemeeting_window_show (GtkWidget *w)
   gchar *position = NULL;
   gchar **couple = NULL;
   
-  g_return_if_fail (w != NULL);
+  g_return_if_fail (GTK_IS_WINDOW (w));
+
+  if (gnomemeeting_window_is_visible (w)) {
+
+    gtk_window_present (GTK_WINDOW (w));
+    return;
+  } // else we do the show :
   
   window_name = (char *) g_object_get_data (G_OBJECT (w), "window_name");
 
