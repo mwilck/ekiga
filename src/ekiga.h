@@ -122,13 +122,6 @@ class GnomeMeeting : public PProcess
 
   /* Needed for PProcess */
   void Main();
-
-
-  /* DESCRIPTION  :  /
-   * BEHAVIOR     :  Return the ServiceCore.
-   * PRE          :  /
-   */
-  Ekiga::ServiceCore *GetServiceCore ();
   
 
   static GnomeMeeting *Process ();
@@ -144,6 +137,8 @@ class GnomeMeeting : public PProcess
   void BuildGUI (Ekiga::ServiceCorePtr services);
 
  private:
+
+  Ekiga::ServiceCore *GetServiceCore (); // FIXME: should disappear in the future
   
   PMutex ep_var_mutex;
   PMutex dev_access_mutex;
