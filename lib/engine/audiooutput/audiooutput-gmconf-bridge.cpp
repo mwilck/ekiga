@@ -73,7 +73,7 @@ void AudioOutputCoreConfBridge::on_property_changed (std::string key, GmConfEntr
   std::string file_name;
   bool enabled;
 
-  AudioOutputCore & audioinput_core = (AudioOutputCore &) service;
+  AudioOutputCore & audiooutput_core = (AudioOutputCore &) service;
 
   if (key == AUDIO_DEVICES_KEY "output_device") {
 
