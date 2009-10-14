@@ -99,7 +99,7 @@ void AudioOutputCoreConfBridge::on_property_changed (std::string key, GmConfEntr
       device.name   = AUDIO_OUTPUT_FALLBACK_DEVICE_NAME;
     }
 
-    audioinput_core.set_device (primary, device);
+    audiooutput_core.set_device (primary, device);
   }
 
   if (key == SOUND_EVENTS_KEY "output_device") {
