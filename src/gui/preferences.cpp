@@ -289,13 +289,13 @@ static void sound_events_list_changed_nt (gpointer id,
 static void audioev_filename_browse_play_cb (GtkWidget *playbutton,
                                              gpointer data);
 
-void 
+int 
 gm_prefs_window_get_audiooutput_devices_list (Ekiga::ServiceCore *core,
                                         std::vector<std::string> & device_list);
 
-void 
+int 
 gm_prefs_window_get_audioinput_devices_list (Ekiga::ServiceCore *core,
-                                        std::vector<std::string> & device_list);
+                                             std::vector<std::string> & device_list);
 
 gchar**
 gm_prefs_window_convert_string_list (const std::vector<std::string> & list);
@@ -784,9 +784,9 @@ gm_pw_init_audio_devices_page (GtkWidget *prefs_window,
 }
 
 
-void 
+int 
 gm_prefs_window_get_videoinput_devices_list (Ekiga::ServiceCore *core,
-                                        std::vector<std::string> & device_list)
+                                             std::vector<std::string> & device_list)
 {
   boost::shared_ptr<Ekiga::VideoInputCore> videoinput_core = core->get<Ekiga::VideoInputCore> ("videoinput-core");
   std::vector <Ekiga::VideoInputDevice> devices;
@@ -796,19 +796,19 @@ gm_prefs_window_get_videoinput_devices_list (Ekiga::ServiceCore *core,
 
   for (std::vector<Ekiga::VideoInputDevice>::iterator iter = devices.begin ();
        iter != devices.end ();
-       iter++) {
-
+       iter++) 
     device_list.push_back(iter->GetString());
-  }
 
-  if (device_list.size() == 0) {
+  if (device_list.size() == 0) 
     device_list.push_back(_("No device found"));
-  }
+
+  return device_list.size ();
 }
 
-void 
+
+int 
 gm_prefs_window_get_audiooutput_devices_list (Ekiga::ServiceCore *core,
-                                        std::vector<std::string> & device_list)
+                                              std::vector<std::string> & device_list)
 {
   boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
   std::vector <Ekiga::AudioOutputDevice> devices;
@@ -820,20 +820,19 @@ gm_prefs_window_get_audiooutput_devices_list (Ekiga::ServiceCore *core,
 
   for (std::vector<Ekiga::AudioOutputDevice>::iterator iter = devices.begin ();
        iter != devices.end ();
-       iter++) {
-
+       iter++)
     device_list.push_back(iter->GetString());
-  }
 
-  if (device_list.size() == 0) {
+  if (device_list.size() == 0)
     device_list.push_back(_("No device found"));
-  }
+
+  return device_list.size ();
 }
 
 
-void 
+int
 gm_prefs_window_get_audioinput_devices_list (Ekiga::ServiceCore *core,
-                                        std::vector<std::string> & device_list)
+                                             std::vector<std::string> & device_list)
 {
   boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core = core->get<Ekiga::AudioInputCore> ("audioinput-core");
   std::vector <Ekiga::AudioInputDevice> devices;
@@ -843,14 +842,13 @@ gm_prefs_window_get_audioinput_devices_list (Ekiga::ServiceCore *core,
 
   for (std::vector<Ekiga::AudioInputDevice>::iterator iter = devices.begin ();
        iter != devices.end ();
-       iter++) {
-
+       iter++)
     device_list.push_back(iter->GetString());
-  }
 
-  if (device_list.size() == 0) {
+  if (device_list.size() == 0)
     device_list.push_back(_("No device found"));
-  }
+
+  return device_list.size ();
 }
 
 
@@ -919,7 +917,6 @@ gm_pw_init_video_devices_page (GtkWidget *prefs_window,
                                            _("Video Devices"), 5, 3);
 
   /* The video device */
-
   gm_prefs_window_get_videoinput_devices_list (pw->core, device_list);
   array = gm_prefs_window_convert_string_list(device_list);
   pw->video_device =
@@ -1321,6 +1318,7 @@ gm_prefs_window_new (Ekiga::ServiceCore *core)
   GtkWidget *window = NULL;
   GtkWidget *container = NULL;
   gchar     *filename = NULL;
+  std::vector <std::string> device_list;
 
   filename = g_build_filename (DATA_DIR, "pixmaps", PACKAGE_NAME, PACKAGE_NAME "-logo.png", NULL);
   window = gnome_prefs_window_new (filename);
@@ -1375,21 +1373,26 @@ gm_prefs_window_new (Ekiga::ServiceCore *core)
   gm_pw_init_h323_page (window, container);          
   gtk_widget_show_all (GTK_WIDGET (container));
 
-  gnome_prefs_window_section_new (window, _("Audio"));
-  container = gnome_prefs_window_subsection_new (window, _("Devices"));
-  gm_pw_init_audio_devices_page (window, container);
-  gtk_widget_show_all (GTK_WIDGET (container));
 
+  /* The player */
+  gnome_prefs_window_section_new (window, _("Audio"));
+  if (gm_prefs_window_get_audiooutput_devices_list (core, device_list) > 1 
+      || gm_prefs_window_get_audioinput_devices_list (core, device_list) > 1) {
+    container = gnome_prefs_window_subsection_new (window, _("Devices"));
+    gm_pw_init_audio_devices_page (window, container);
+    gtk_widget_show_all (GTK_WIDGET (container));
+  }
   container = gnome_prefs_window_subsection_new (window, _("Codecs"));
   gm_pw_init_audio_codecs_page (window, container);
   gtk_widget_show_all (GTK_WIDGET (container));
 
 
   gnome_prefs_window_section_new (window, _("Video"));
-  container = gnome_prefs_window_subsection_new (window, _("Devices"));
-  gm_pw_init_video_devices_page (window, container);
-  gtk_widget_show_all (GTK_WIDGET (container));
-
+  if (gm_prefs_window_get_videoinput_devices_list (core, device_list) > 1) {
+    container = gnome_prefs_window_subsection_new (window, _("Devices"));
+    gm_pw_init_video_devices_page (window, container);
+    gtk_widget_show_all (GTK_WIDGET (container));
+  }
   container = gnome_prefs_window_subsection_new (window, _("Codecs"));
   gm_pw_init_video_codecs_page (window, container);
   gtk_widget_show_all (GTK_WIDGET (container));
