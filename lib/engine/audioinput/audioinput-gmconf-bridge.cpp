@@ -60,15 +60,27 @@ void AudioInputCoreConfBridge::on_property_changed (std::string key, GmConfEntry
 
   if (key == AUDIO_DEVICES_KEY "input_device") {
 
+    std::vector <AudioInputDevice> devices;
+    bool found = false;
+    const gchar *value = gm_conf_entry_get_string (entry);
+    audioinput_core.get_devices (devices);
+    if (value != NULL) {
+      for (std::vector<AudioInputDevice>::iterator it = devices.begin ();
+           it < devices.end ();
+           it++) {
+        if ((*it).GetString () == value) {
+          found = true;
+          break;
+        }
+      }
+    }
     PTRACE(4, "AudioInputCoreConfBridge\tUpdating device");
 
     AudioInputDevice device;
-    if (gm_conf_entry_get_string (entry) == NULL) {
-      PTRACE(1, "AudioInputCoreConfBridge\t" << AUDIO_DEVICES_KEY "input_device" << " is NULL");
-    }
-    else {
-      device.SetFromString(gm_conf_entry_get_string (entry));
-    }
+    if (found)
+      device.SetFromString (value);
+    else 
+      device.SetFromString (devices.begin ()->GetString ());
 
     if ( (device.type == "" )   ||
          (device.source == "")  ||

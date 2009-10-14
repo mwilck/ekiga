@@ -77,18 +77,27 @@ void AudioOutputCoreConfBridge::on_property_changed (std::string key, GmConfEntr
 
   if (key == AUDIO_DEVICES_KEY "output_device") {
 
+    std::vector <AudioOutputDevice> devices;
+    bool found = false;
+    const gchar *value = gm_conf_entry_get_string (entry);
+    audiooutput_core.get_devices (devices);
+    if (value != NULL) {
+      for (std::vector<AudioOutputDevice>::iterator it = devices.begin ();
+           it < devices.end ();
+           it++) {
+        if ((*it).GetString () == value) {
+          found = true;
+          break;
+        }
+      }
+    }
     PTRACE(4, "AudioOutputCoreConfBridge\tUpdating device");
 
     AudioOutputDevice device;
-    const gchar *audio_device = NULL;
-    audio_device = gm_conf_entry_get_string (entry);
-
-    if (audio_device == NULL) {
-      PTRACE(1, "AudioOutputCoreConfBridge\t" << AUDIO_DEVICES_KEY "output_device" << " is NULL");
-    }
-    else {
-      device.SetFromString(audio_device);
-    }
+    if (found)
+      device.SetFromString (value);
+    else 
+      device.SetFromString (devices.begin ()->GetString ());
   
     if ( (device.type   == "" )   ||
          (device.source == "")  ||
@@ -124,7 +133,7 @@ void AudioOutputCoreConfBridge::on_property_changed (std::string key, GmConfEntr
       device.source = AUDIO_OUTPUT_FALLBACK_DEVICE_SOURCE;
       device.name   = AUDIO_OUTPUT_FALLBACK_DEVICE_NAME;
     }
-    audioinput_core.set_device (secondary, device);
+    audiooutput_core.set_device (secondary, device);
   }
 
   if ( (key == SOUND_EVENTS_KEY "busy_tone_sound") ||
@@ -141,7 +150,7 @@ void AudioOutputCoreConfBridge::on_property_changed (std::string key, GmConfEntr
     file_name = c_file_name;
     g_free (c_file_name);
     enabled = gm_conf_get_bool (SOUND_EVENTS_KEY "enable_busy_tone_sound");
-    audioinput_core.add_event (name, file_name, primary, enabled);
+    audiooutput_core.add_event (name, file_name, primary, enabled);
   }
 
   if ( (key == SOUND_EVENTS_KEY "incoming_call_sound") ||
@@ -158,7 +167,7 @@ void AudioOutputCoreConfBridge::on_property_changed (std::string key, GmConfEntr
     file_name = c_file_name;
     g_free (c_file_name);
     enabled = gm_conf_get_bool (SOUND_EVENTS_KEY "enable_incoming_call_sound");
-    audioinput_core.add_event (name, file_name, secondary, enabled);
+    audiooutput_core.add_event (name, file_name, secondary, enabled);
   }
 
   if ( (key == SOUND_EVENTS_KEY "new_message_sound") ||
@@ -175,7 +184,7 @@ void AudioOutputCoreConfBridge::on_property_changed (std::string key, GmConfEntr
     file_name = c_file_name;
     g_free (c_file_name);
     enabled = gm_conf_get_bool (SOUND_EVENTS_KEY "enable_new_message_sound");
-    audioinput_core.add_event (name, file_name, secondary, enabled);
+    audiooutput_core.add_event (name, file_name, secondary, enabled);
 
   }
 
@@ -193,7 +202,7 @@ void AudioOutputCoreConfBridge::on_property_changed (std::string key, GmConfEntr
     file_name = c_file_name;
     g_free (c_file_name);
     enabled = gm_conf_get_bool (SOUND_EVENTS_KEY "enable_new_voicemail_sound");
-    audioinput_core.add_event (name, file_name, secondary, enabled);
+    audiooutput_core.add_event (name, file_name, secondary, enabled);
   }
 
   if ( (key == SOUND_EVENTS_KEY "ring_tone_sound") ||
@@ -210,7 +219,7 @@ void AudioOutputCoreConfBridge::on_property_changed (std::string key, GmConfEntr
     file_name = c_file_name;
     g_free (c_file_name);
     enabled = gm_conf_get_bool (SOUND_EVENTS_KEY "enable_ring_tone_sound");
-    audioinput_core.add_event (name, file_name, primary, enabled);
+    audiooutput_core.add_event (name, file_name, primary, enabled);
   }
 }
 

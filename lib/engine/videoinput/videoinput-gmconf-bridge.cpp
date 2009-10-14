@@ -88,18 +88,28 @@ void VideoInputCoreConfBridge::on_property_changed (std::string key, GmConfEntry
             (key == VIDEO_DEVICES_KEY "channel") ||
             (key == VIDEO_DEVICES_KEY "format") ) {
 
+    std::vector <VideoInputDevice> devices;
+    bool found = false;
+    gchar *value = gm_conf_get_string (VIDEO_DEVICES_KEY "input_device");
+    videoinput_core.get_devices (devices);
+    if (value != NULL) {
+      for (std::vector<VideoInputDevice>::iterator it = devices.begin ();
+           it < devices.end ();
+           it++) {
+        if ((*it).GetString () == value) {
+          found = true;
+          break;
+        }
+      }
+    }
     PTRACE(4, "VidInputCoreConfBridge\tUpdating device");
 
     VideoInputDevice device;
-    gchar *input_device = NULL;
-    input_device = gm_conf_get_string (VIDEO_DEVICES_KEY "input_device");
-    if (input_device == NULL) {
-      PTRACE(1, "VidInputCoreConfBridge\t" << VIDEO_DEVICES_KEY "input_device" << " is NULL");
-    }
-    else {
-      device.SetFromString(input_device);
-      g_free (input_device);
-    }
+    if (found)
+      device.SetFromString (value);
+    else 
+      device.SetFromString (devices.begin ()->GetString ());
+    g_free (value);
 
     if ( (device.type == "" )   ||
          (device.source == "")  ||
