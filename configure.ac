@@ -165,6 +165,7 @@ fi
 
 AC_MSG_RESULT([$byte_order])
 
+
 dnl ###############################
 dnl   Mandatory intltool support
 dnl ###############################
@@ -187,6 +188,7 @@ AC_SUBST(GTK_LIBS)
 AC_SUBST(GLIB_CFLAGS)
 AC_SUBST(GLIB_LIBS)
 
+
 dnl ###############################
 dnl   Mandatory BOOST support
 dnl ###############################
@@ -199,6 +201,7 @@ fi
 
 BOOST_LIBS="${BOOST_SIGNALS_LIB}"
 AC_SUBST(BOOST_LIBS)
+
 
 dnl ###############################
 dnl   Mandatory libXML support
@@ -586,6 +589,7 @@ fi
 
 AM_CONDITIONAL(HAVE_GSTREAMER, test "x$found_gstreamer" = "xyes")
 
+
 dnl ###############################
 dnl  KDE support
 dnl ###############################
@@ -706,6 +710,7 @@ fi
 
 AM_CONDITIONAL(HAVE_LOUDMOUTH, test "x$found_loudmouth" = "xyes")
 
+
 dnl ###############################
 dnl   Gnome-Doc-Utils
 dnl ###############################
@@ -799,6 +804,19 @@ fi
 if test "x$SIP" != "xyes"; then
   AC_MSG_ERROR([You have to compile opal with SIP support. SIP support is mandatory.])
 fi
+
+
+dnl ###############################
+dnl   Gnome-Doc-Utils
+dnl ###############################
+has_debug=
+AC_ARG_ENABLE([debug],
+              [AC_HELP_STRING([--enable-debug],[Compile with debug support (default is disabled)])],
+              [if test "x$enableval" = "xyes"; then
+                CPPFLAGS="-DDEBUG $CPPFLAGS"
+                has_debug="yes"
+              fi])
+AM_CONDITIONAL(DEBUG, test "x$has_debug" = "xyes")
 
 
 dnl #########################################################################
