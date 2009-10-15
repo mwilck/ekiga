@@ -40,7 +40,6 @@
 #include "config.h"
 
 #include "callbacks.h"
-#include "main_window.h"
 #include "misc.h"
 
 #include "ekiga.h"

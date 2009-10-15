@@ -49,7 +49,6 @@
 #include "preferences.h"
 #include "assistant.h"
 #include "accounts.h"
-#include "main_window.h"
 #include "misc.h"
 
 #include "gmdialog.h"

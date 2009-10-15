@@ -44,7 +44,6 @@
 
 #include "callbacks.h"
 #include "misc.h"
-#include "main_window.h"
 #include "preferences.h"
 
 #include "gmconf.h"
