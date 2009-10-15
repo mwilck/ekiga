@@ -595,6 +595,7 @@ libekiga_la_SOURCES += \
 # Sources of the null audio input component
 ##
 
+if DEBUG
 libekiga_la_SOURCES += \
 	$(components_dir)/null-audioinput/audioinput-manager-null.h \
 	$(components_dir)/null-audioinput/audioinput-manager-null.cpp \
@@ -610,6 +611,7 @@ libekiga_la_SOURCES += \
 	$(components_dir)/null-audiooutput/audiooutput-manager-null.cpp \
 	$(components_dir)/null-audiooutput/audiooutput-main-null.h \
 	$(components_dir)/null-audiooutput/audiooutput-main-null.cpp
+endif
 
 ##
 # Sources of the hal dbus component

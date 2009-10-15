@@ -177,9 +177,10 @@ engine_init (Ekiga::ServiceCorePtr service_core,
   libnotify_init (kickstart);
 #endif
 
+#if DEBUG
   audioinput_null_init (kickstart);
-
   audiooutput_null_init (kickstart);
+#endif
 
   videoinput_ptlib_init (kickstart);
 
