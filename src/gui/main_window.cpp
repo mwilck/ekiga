@@ -39,7 +39,7 @@
 
 #include "config.h"
 
-#include "main.h"
+#include "main_window.h"
 
 #include "ekiga.h"
 #include "conf.h"

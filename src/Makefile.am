@@ -69,8 +69,8 @@ ekiga_SOURCES +=			\
 	gui/dialpad.cpp			\
 	gui/assistant.h			\
 	gui/assistant.cpp		\
-	gui/main.h			\
-	gui/main.cpp			\
+	gui/main_window.h		\
+	gui/main_window.cpp		\
 	gui/misc.h			\
 	gui/misc.cpp			\
 	gui/preferences.h		\

@@ -36,8 +36,8 @@
  */
 
 
-#ifndef _MAIN_INTERFACE_H
-#define _MAIN_INTERFACE_H
+#ifndef __MAIN_WINDOW_H__
+#define __MAIN_WINDOW_H__
 
 #include "services.h"
 #include "call.h"
