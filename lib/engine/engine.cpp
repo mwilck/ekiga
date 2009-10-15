@@ -163,8 +163,7 @@ engine_init (Ekiga::ServiceCorePtr service_core,
 
 #ifdef HAVE_DX
   if (!videooutput_dx_init (*service_core, &argc, &argv)) {
-    delete service_core;
-    service_core = NULL;
+    service_core.reset ();
     return;
   }
 #endif
