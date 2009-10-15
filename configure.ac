@@ -159,7 +159,7 @@ else
     if test "x$byte_order" = "xlittle endian"; then
 	AC_DEFINE(WORDS_LITTLEENDIAN,1,[Little Endian Architecture])
     else
-      AC_MSG_ERROR(Unable to detect endianess of target system - please specify)
+      AC_MSG_ERROR([Unable to detect endianess of target system - please specify])
     fi
 fi
 
@@ -194,7 +194,7 @@ AX_BOOST_BASE([1.34])
 AX_BOOST_SIGNALS
 
 if test "x${ax_cv_boost_signals}" == "xno"; then
-   AC_MSG_ERROR(You need the boost signals library to compile ekiga)
+   AC_MSG_ERROR([You need the boost signals library to compile Ekiga])
 fi
 
 BOOST_LIBS="${BOOST_SIGNALS_LIB}"
@@ -331,7 +331,7 @@ if test "x$enable_ldap" = "xyes"; then
   if test -f ${with_ldap_dir}/include/ldap.h; then
   	LDAP_CFLAGS="-I${with_ldap_dir}/include"
   else
-  	AC_MSG_ERROR(You need the LDAP headers to compile Ekiga with LDAP support)
+  	AC_MSG_ERROR([You need the LDAP headers to compile Ekiga with LDAP support])
   fi
 
   dnl Checking for the library presence
@@ -346,7 +346,7 @@ if test "x$enable_ldap" = "xyes"; then
   		LDAP_LIBS="-L${with_ldap_dir}/${libname} $LDAP_LIBS"
   	fi
   else
-  	AC_MSG_ERROR(You need the LDAP library to compile Ekiga with LDAP support)
+  	AC_MSG_ERROR([You need the LDAP library to compile Ekiga with LDAP support])
   fi
 
   dnl Checking for libsasl2
@@ -359,13 +359,13 @@ if test "x$enable_ldap" = "xyes"; then
   if test -f ${with_libsasl2_dir}/include/sasl/sasl.h; then
   	LDAP_CFLAGS="${LDAP_CFLAGS} -I${with_libsasl2_dir}/include"
   else
-  	AC_MSG_ERROR(*** libsasl2 headers not found)
+  	AC_MSG_ERROR([You need the SASL2 library to compile Ekiga])
   fi
   LDAP_LIBS="$LDAP_LIBS -lsasl2"
 
   dnl Checking for libresolv
   if test ${gm_platform} = "linux" ; then
-  	AC_CHECK_LIB(resolv, res_gethostbyaddr, [LIBS="-lresolv $LIBS"], AC_MSG_ERROR([*** libresolv not found.]), -lresolv)
+  	AC_CHECK_LIB(resolv, res_gethostbyaddr, [LIBS="-lresolv $LIBS"], AC_MSG_ERROR([You need the libresolv library to compile Ekiga]), -lresolv)
   	LDAP_LIBS="${LDAP_LIBS} -lresolv"
   fi
   found_ldap="yes"
@@ -575,7 +575,7 @@ if test "x$enable_gstreamer" = "xyes"; then
   PKG_CHECK_MODULES([GSTREAMER], [gstreamer-plugins-base-0.10 >= 0.10.21.3 gstreamer-interfaces-0.10])
 
   if test "x$found_gstreamer" = "xno"; then
-    AC_MSG_ERROR([You asked for GStreamer, but we didn't find what we need])
+    AC_MSG_ERROR([Could not find GStreamer libraries])
   fi
   GSTREAMER_LIBS="$GSTREAMER_LIBS -lgstapp-0.10"
   AC_SUBST(GSTREAMER_CFLAGS)
@@ -608,7 +608,7 @@ if test "x$enable_kde" = "xyes"; then
   CPPFLAGS="$CPPFLAGS_save"
   LIBS="$LIBS_save"
   if test "x$found_kde" = "xno"; then
-    AC_MSG_ERROR(We need this header!)
+    AC_MSG_ERROR([Could not find KDE headers])
   fi
 
   LIBS_save="$LIBS"
@@ -618,7 +618,7 @@ if test "x$enable_kde" = "xyes"; then
   CPPFLAGS="$CPPFLAGS_save"
   LIBS="$LIBS_save"
   if test "x$found_kde" = "xno"; then
-    AC_MSG_ERROR(We need this lib!)
+    AC_MSG_ERROR([Could not find KDE libraries])
   fi
 
   KDE_LIBS="$KDE_LIBS -lkdeui"
@@ -644,7 +644,7 @@ fi],)
 if test "x$enable_kab" = "xyes"; then
 
   if test "x$found_kde" != "xyes"; then
-    AC_MSG_ERROR(No kab without kde: --enable-kde)
+    AC_MSG_ERROR([No kab without kde: --enable-kde])
   fi
   found_kab=yes
   KAB_CFLAGS="-I/usr/include/qt4"
@@ -657,7 +657,7 @@ if test "x$enable_kab" = "xyes"; then
   CPPFLAGS="$CPPFLAGS_save"
   LIBS="$LIBS_save"
   if test "x$found_kab" = "xno"; then
-    AC_MSG_ERROR(We need this header!)
+    AC_MSG_ERROR([We need this header!])
   fi
   AC_SUBST(KAB_CFLAGS)
   AC_SUBST(KAB_LIBS)
@@ -723,7 +723,7 @@ fi],enable_gdu=yes)
   if test "x$enable_gdu" = "xyes"; then
     AC_PATH_PROG(SK_CONFIG,scrollkeeper-config,no)
     if test "x$SK_CONFIG" = "xno"; then
-      AC_MSG_ERROR(Couldn't find scrollkeeper-config. Please install the scrollkeeper package: http://scrollkeeper.sourceforge.net)
+      AC_MSG_ERROR([Could not find scrollkeeper-config. Please install the scrollkeeper package: http://scrollkeeper.sourceforge.net])
     fi
     GDU="enabled"
   fi
