@@ -692,7 +692,7 @@ gnome_prefs_string_option_menu_new (GtkWidget *table,
       history = cpt;
     }
     else
-      history = --cpt;
+      history = 0;
   }
 
   gtk_combo_box_set_active (GTK_COMBO_BOX (option_menu), history);
