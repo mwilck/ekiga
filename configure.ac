@@ -807,7 +807,7 @@ fi
 
 
 dnl ###############################
-dnl   Gnome-Doc-Utils
+dnl DEBUG support
 dnl ###############################
 has_debug=
 AC_ARG_ENABLE([debug],
