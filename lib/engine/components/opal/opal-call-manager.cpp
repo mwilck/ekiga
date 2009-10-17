@@ -417,6 +417,11 @@ void CallManager::set_codecs (Ekiga::CodecList & _codecs)
        i++)
     mask += all_media_formats [i];
 
+  // Blacklist IM protocols for now
+  mask += "T.140";
+  mask += "MSRP";
+  mask += "SIP-IM";
+
   // Update the OpalManager
   SetMediaFormatMask (mask);
   SetMediaFormatOrder (order);
