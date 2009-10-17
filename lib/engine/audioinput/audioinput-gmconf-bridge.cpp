@@ -74,7 +74,6 @@ void AudioInputCoreConfBridge::on_property_changed (std::string key, GmConfEntry
         }
       }
     }
-    PTRACE(4, "AudioInputCoreConfBridge\tUpdating device");
 
     AudioInputDevice device;
     if (found)
@@ -92,6 +91,7 @@ void AudioInputCoreConfBridge::on_property_changed (std::string key, GmConfEntry
     }
 
     audioinput_core.set_device (device);
+    PTRACE(4, "AudioInputCoreConfBridge\tSet device to " << device.source << "/" << device.name);
   }
 }
 
