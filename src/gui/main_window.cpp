@@ -3539,24 +3539,30 @@ ekiga_main_window_init_call_panel (EkigaMainWindow *mw)
   gtk_toolbar_set_show_arrow (GTK_TOOLBAR (mw->priv->call_panel_toolbar), FALSE);
 
   /* Audio Volume */
-  item = gtk_tool_item_new ();
-  mw->priv->audio_settings_button = gtk_button_new ();
-  gtk_button_set_relief (GTK_BUTTON (mw->priv->audio_settings_button), GTK_RELIEF_NONE);
-  image = gtk_image_new_from_icon_name (GM_ICON_AUDIO_VOLUME_HIGH,
-                                        GTK_ICON_SIZE_MENU);
-  gtk_container_add (GTK_CONTAINER (mw->priv->audio_settings_button), image);
-  gtk_container_add (GTK_CONTAINER (item), mw->priv->audio_settings_button);
-  gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
-  
-  gtk_widget_show (mw->priv->audio_settings_button);
-  gtk_widget_set_sensitive (mw->priv->audio_settings_button, FALSE);
-  gtk_toolbar_insert (GTK_TOOLBAR (mw->priv->call_panel_toolbar),
-		      GTK_TOOL_ITEM (item), -1);
-  gtk_tool_item_set_tooltip_text (GTK_TOOL_ITEM (item),
-				  _("Change the volume of your soundcard"));
-  g_signal_connect (G_OBJECT (mw->priv->audio_settings_button), "clicked",
-		    G_CALLBACK (show_window_cb),
-		    (gpointer) mw->priv->audio_settings_window);
+  boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = mw->priv->core->get<Ekiga::AudioOutputCore> ("audiooutput-core");
+  std::vector <Ekiga::AudioOutputDevice> devices;
+  audiooutput_core->get_devices (devices);
+  if (!(devices.size () == 1 && devices[0].source == "Pulse")) { 
+
+    item = gtk_tool_item_new ();
+    mw->priv->audio_settings_button = gtk_button_new ();
+    gtk_button_set_relief (GTK_BUTTON (mw->priv->audio_settings_button), GTK_RELIEF_NONE);
+    image = gtk_image_new_from_icon_name (GM_ICON_AUDIO_VOLUME_HIGH,
+                                          GTK_ICON_SIZE_MENU);
+    gtk_container_add (GTK_CONTAINER (mw->priv->audio_settings_button), image);
+    gtk_container_add (GTK_CONTAINER (item), mw->priv->audio_settings_button);
+    gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), FALSE);
+
+    gtk_widget_show (mw->priv->audio_settings_button);
+    gtk_widget_set_sensitive (mw->priv->audio_settings_button, FALSE);
+    gtk_toolbar_insert (GTK_TOOLBAR (mw->priv->call_panel_toolbar),
+                        GTK_TOOL_ITEM (item), -1);
+    gtk_tool_item_set_tooltip_text (GTK_TOOL_ITEM (item),
+                                    _("Change the volume of your soundcard"));
+    g_signal_connect (G_OBJECT (mw->priv->audio_settings_button), "clicked",
+                      G_CALLBACK (show_window_cb),
+                      (gpointer) mw->priv->audio_settings_window);
+  }
   
   /* Video Settings */
   item = gtk_tool_item_new ();
