@@ -41,7 +41,6 @@
  *                          to create dialogs for GnomeMeeting.
  */
 
-
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
 
@@ -50,6 +49,8 @@
 #include <stdarg.h>
 
 #include "gmdialog.h"
+
+#include "gmwindow.h"
 
 #ifdef WIN32
 #define vsnprintf _vsnprintf
@@ -74,40 +75,6 @@ static GtkWidget *gnomemeeting_dialog (GtkWindow *,
 
 
 /* Callbacks */
-
-#ifdef WIN32
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Displays the window given as a pointer in the
- *  		   idle loop.
- * PRE          :  data = GtkWindow to show.
- */
-static gboolean thread_safe_window_show (gpointer);
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Displays the window given as a pointer in the
- *  		   idle loop (using gtk_widget_show_all).
- * PRE          :  data = GtkWindow to show.
- */
-static gboolean thread_safe_window_show_all (gpointer);
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Hides the window given as a pointer in the
- *  		   idle loop.
- * PRE          :  data = GtkWindow to hide.
- */
-static gboolean thread_safe_window_hide (gpointer);
-
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Destroys the widget given as a pointer in the
- *  		   idle loop.
- * PRE          :  data = GtkWidget to destroy.
- */
-static gboolean thread_safe_widget_destroy (gpointer);
-#endif
-
 
 /* DESCRIPTION  :  Callback called when the progress dialog receives
  * 	           a delete_event.
@@ -145,55 +112,7 @@ static void warning_dialog_destroyed_cb (GtkWidget *,
 					 gint,
 					 gpointer);
 
-
-/* Workaround for windows and threads problems */
-#ifdef WIN32
-static gboolean
-thread_safe_window_show (gpointer data)
-{
-  g_return_val_if_fail (data != NULL, FALSE);
-
-  gtk_window_present (GTK_WINDOW (data));
-  gtk_widget_show (GTK_WIDGET (data));
-
-  return FALSE;
-}
-
-
-static gboolean
-thread_safe_window_show_all (gpointer data)
-{
-  g_return_val_if_fail (data != NULL, FALSE);
-
-  gtk_window_present (GTK_WINDOW (data));
-  gtk_widget_show_all (GTK_WIDGET (data));
-
-  return FALSE;
-}
-
-
-static gboolean
-thread_safe_window_hide (gpointer data)
-{
-  g_return_val_if_fail (data != NULL, FALSE);
-
-  gtk_widget_hide (GTK_WIDGET (data));
-
-  return FALSE;
-}
-
-
-static gboolean
-thread_safe_widget_destroy (gpointer data)
-{
-  g_return_val_if_fail (data != NULL, FALSE);
-
-  gtk_widget_destroy (GTK_WIDGET (data));
-
-  return FALSE;
-}
-#endif
-
+/* implementation of the internal callbacks */
 
 static void
 progress_dialog_destroyed_cb (G_GNUC_UNUSED GtkWidget *w, 
@@ -249,57 +168,6 @@ warning_dialog_destroyed_cb (GtkWidget *w,
 
 
 /* Implementation of public functions */
-void
-gnomemeeting_threads_dialog_show (GtkWidget *dialog)
-{
-  g_return_if_fail (dialog != NULL);
-
-#ifndef WIN32
-  gtk_window_present (GTK_WINDOW (dialog));
-  gtk_widget_show (dialog);
-#else
-  g_idle_add (thread_safe_window_show, dialog);
-#endif
-}
-
-
-void
-gnomemeeting_threads_dialog_show_all (GtkWidget *dialog)
-{
-  g_return_if_fail (dialog != NULL);
-
-#ifndef WIN32
-  gtk_window_present (GTK_WINDOW (dialog));
-  gtk_widget_show_all (dialog);
-#else
-  g_idle_add (thread_safe_window_show_all, dialog);
-#endif
-}
-
-void
-gnomemeeting_threads_dialog_hide (GtkWidget *dialog)
-{
-  g_return_if_fail (dialog != NULL);
-
-#ifndef WIN32
-  gtk_widget_hide (dialog);
-#else
-  g_idle_add (thread_safe_window_hide, dialog);
-#endif
-}
-
-void
-gnomemeeting_threads_widget_destroy (GtkWidget *widget)
-{
-  g_return_if_fail (widget != NULL);
-
-#ifndef WIN32
-  gtk_widget_destroy (widget);
-#else
-  g_idle_add (thread_safe_widget_destroy, widget);
-#endif
-}
-
 
 GtkWidget *
 gnomemeeting_error_dialog (GtkWindow *parent,
@@ -490,7 +358,7 @@ gnomemeeting_warning_dialog_on_widget (GtkWindow *parent,
                      button);
   
   /* Can be called from threads */
-  gnomemeeting_threads_dialog_show_all (dialog);
+  gm_window_show (dialog);
 
   g_signal_connect_data (GTK_OBJECT (dialog), "response",
 			 G_CALLBACK (warning_dialog_destroyed_cb),
@@ -556,7 +424,7 @@ gnomemeeting_dialog (GtkWindow *parent,
                             GTK_OBJECT (dialog));
   
   /* Can be called from threads */
-  gnomemeeting_threads_dialog_show_all (dialog);
+  gm_window_show (dialog);
 
   g_free (dialog_text);
   g_free (primary_text);

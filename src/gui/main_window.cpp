@@ -2974,7 +2974,7 @@ ekiga_main_window_transfer_dialog_run (EkigaMainWindow *mw,
   else
     gm_entry_dialog_set_text (GM_ENTRY_DIALOG (mw->priv->transfer_call_popup), "sip:");
 
-  gnomemeeting_threads_dialog_show (mw->priv->transfer_call_popup);
+  gm_window_show (mw->priv->transfer_call_popup);
 
   answer = gtk_dialog_run (GTK_DIALOG (mw->priv->transfer_call_popup));
   switch (answer) {

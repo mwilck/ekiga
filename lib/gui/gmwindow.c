@@ -40,8 +40,6 @@
 
 #include "gmwindow.h"
 
-#include "gmdialog.h"
-
 #include "gmconf.h"
 
 #include <gdk/gdkkeysyms.h>
@@ -598,7 +596,8 @@ gm_window_show (GtkWidget* w)
       g_free (size);
     }
 
-    gnomemeeting_threads_dialog_show (w);
+    gtk_window_present (GTK_WINDOW (w));
+    gtk_widget_show_all (w);
   }
 
   g_free (conf_key_position);
@@ -646,7 +645,7 @@ gm_window_hide (GtkWidget* w)
       g_free (size);
     }
 
-    gnomemeeting_threads_dialog_hide (w);
+    gtk_widget_hide (w);
   }
 
   g_free (conf_key_position);
