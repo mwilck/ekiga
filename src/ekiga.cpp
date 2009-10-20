@@ -46,7 +46,6 @@
 #include "statusicon.h"
 #include "accounts.h"
 #include "main_window.h"
-#include "misc.h"
 
 #ifdef HAVE_DBUS
 #include "dbus.h"

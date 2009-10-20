@@ -44,7 +44,6 @@
 #include "gmmenuaddon.h"
 
 #include "callbacks.h" // FIXME SHOULD GET RID OF THIS
-#include "misc.h" // FIXME same here
 #include "ekiga.h"
 
 #include "gtk-frontend.h"

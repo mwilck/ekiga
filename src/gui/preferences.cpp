@@ -43,7 +43,6 @@
 
 #include "accounts.h"
 #include "ekiga.h"
-#include "misc.h"
 #include "callbacks.h"
 
 #include <gmdialog.h>
@@ -409,20 +408,29 @@ static GtkWidget *
 gm_pw_add_update_button (G_GNUC_UNUSED GtkWidget *prefs_window,
                          GtkWidget *box,
                          const char *stock_id,
-                         const char *label,
+                         const char *label_,
                          GCallback func,
                          G_GNUC_UNUSED gchar *tooltip,
                          gfloat valign,
                          gpointer data)
 {
-  GtkWidget *alignment = NULL;
-  GtkWidget *image = NULL;
-  GtkWidget *button = NULL;
+  GtkWidget* alignment = NULL;
+  GtkWidget* image = NULL;
+  GtkWidget* button = NULL;
+  GtkWidget* hbox = NULL;
+  GtkWidget* label = NULL;
 
 
   /* Update Button */
   image = gtk_image_new_from_stock (stock_id, GTK_ICON_SIZE_BUTTON);
-  button = gnomemeeting_button_new (label, image);
+  button = gtk_button_new ();
+  label = gtk_label_new_with_mnemonic (label_);
+  hbox = gtk_hbox_new (FALSE, 0);
+
+  gtk_box_pack_start(GTK_BOX (hbox), image, TRUE, TRUE, 0);  
+  gtk_box_pack_start(GTK_BOX (hbox), label, TRUE, TRUE, 0);
+
+  gtk_container_add (GTK_CONTAINER (button), hbox);
 
   alignment = gtk_alignment_new (1, valign, 0, 0);
   gtk_container_add (GTK_CONTAINER (alignment), button);

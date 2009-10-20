@@ -44,7 +44,6 @@
 
 #include "ekiga.h"
 #include "gmconf.h"
-#include "misc.h"
 #include "toolbox/toolbox.h"
 #include "assistant.h"
 

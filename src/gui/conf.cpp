@@ -49,7 +49,6 @@
 #include "preferences.h"
 #include "assistant.h"
 #include "accounts.h"
-#include "misc.h"
 
 #include "gmdialog.h"
 #include "gmstockicons.h"
