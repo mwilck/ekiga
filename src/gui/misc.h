@@ -81,18 +81,4 @@ void gnomemeeting_window_show (GtkWidget *w);
  */
 void gnomemeeting_window_hide (GtkWidget *w);
 
-
-/* DESCRIPTION  :  /
- * BEHAVIOR     :  Gets the size of the GmWindow stored in the configuration.
- *                 The window is given as gpointer.
- *                 The category can be addressbook, main_window, prefs_window,
- *                 or anything under the
- *                 /apps/gnomemeeting/general/user_interface/ key and is given
- *                 by g_object_get_data (G_OBJECT, "window_name"). The window
- *                 object is pointed by the GtkWidget *.
- * PRE          :  /
- */
-void gnomemeeting_window_get_size (GtkWidget *w, 
-				   int &x, 
-				   int &y);
 #endif
