@@ -86,15 +86,6 @@ show_window_cb (G_GNUC_UNUSED GtkWidget *widget,
 
 
 void
-hide_window_cb (G_GNUC_UNUSED GtkWidget *widget,
-		gpointer data)
-{
-  if (gm_window_is_visible (GTK_WIDGET (data)))
-    gm_window_hide (GTK_WIDGET (data));
-}
-
-
-void
 about_callback (G_GNUC_UNUSED GtkWidget *widget, 
 		gpointer parent_window)
 {
