@@ -43,7 +43,6 @@
 
 #include "ekiga.h"
 #include "conf.h"
-#include "misc.h"
 #include "callbacks.h"
 #include "statusicon.h"
 #include "dialpad.h"
@@ -1654,7 +1653,7 @@ gm_mw_video_settings_window_new (EkigaMainWindow *mw)
   /* That's an usual GtkWindow, connect it to the signals */
   g_signal_connect_swapped (GTK_OBJECT (window), 
 			    "response", 
-			    G_CALLBACK (gnomemeeting_window_hide),
+			    G_CALLBACK (gm_window_hide),
 			    (gpointer) window);
 
   g_signal_connect (GTK_OBJECT (window), 
@@ -1769,7 +1768,7 @@ gm_mw_audio_settings_window_new (EkigaMainWindow *mw)
   /* That's an usual GtkWindow, connect it to the signals */
   g_signal_connect_swapped (GTK_OBJECT (window), 
 			    "response", 
-			    G_CALLBACK (gnomemeeting_window_hide),
+			    G_CALLBACK (gm_window_hide),
 			    (gpointer) window);
 
   g_signal_connect (GTK_OBJECT (window),

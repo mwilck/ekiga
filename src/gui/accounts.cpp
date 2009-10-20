@@ -43,9 +43,9 @@
 #include "account-core.h"
 
 #include "callbacks.h"
-#include "misc.h"
 
 #include "gmconf.h"
+#include "gmwindow.h"
 #include "gmdialog.h"
 
 #include "services.h"
@@ -701,7 +701,7 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
   /* Generic signals */
   g_signal_connect_swapped (GTK_OBJECT (window),
 			    "response",
-			    G_CALLBACK (gnomemeeting_window_hide),
+			    G_CALLBACK (gm_window_hide),
 			    (gpointer) window);
 
   g_signal_connect (GTK_OBJECT (window), "delete-event",

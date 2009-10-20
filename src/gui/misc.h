@@ -52,33 +52,4 @@ GtkWidget *
 gnomemeeting_button_new (const char *label,
 			 GtkWidget *pixmap);        
 
-
-/* DESCRIPTION  :  This callback is called when a window of gnomemeeting
- *                 (addressbook, prefs, ...) has to be shown.
- * BEHAVIOR     :  Restore its size (if applicable) and position from the
- *                 config database. The window is given as gpointer.
- *                 The category can be addressbook, main_window, prefs_window,
- *                 or anything under the
- *                 /apps/gnomemeeting/general/user_interface/ key and is given
- *                 by g_object_get_data (G_OBJECT, "window_name"). The window
- *                 object is pointed by the GtkWidget *. It will either show the
- *                 window if hidden, or just present it if already visible.
- * PRE          :  /
- */
-void gnomemeeting_window_show (GtkWidget *w);
-
-
-/* DESCRIPTION  :  This callback is called when a window of gnomemeeting
- *                 (addressbook, prefs, ...) has to be hidden.
- * BEHAVIOR     :  Saves its size (if applicable) and position in the config
- *                 database. The window is given as gpointer.
- *                 The category can be addressbook, main_window, prefs_window,
- *                 or anything under the
- *                 /apps/gnomemeeting/general/user_interface/ key and is given
- *                 by g_object_get_data (G_OBJECT, "window_name"). The window
- *                 object is pointed by the GtkWidget *.
- * PRE          :  /
- */
-void gnomemeeting_window_hide (GtkWidget *w);
-
 #endif

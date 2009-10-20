@@ -36,7 +36,11 @@
  *
  */
 
+#include "config.h"
+
 #include "gmwindow.h"
+
+#include "gmdialog.h"
 
 #include "gmconf.h"
 
@@ -48,6 +52,8 @@
 #include <gdk/gdkx.h>
 #include <X11/Xlib.h>
 #endif
+
+#define USER_INTERFACE_KEY "/apps/" PACKAGE_NAME "/general/user_interface/"
 
 /*
  * The GmWindow
@@ -77,12 +83,12 @@ gm_window_delete_event (GtkWidget *w,
 			gpointer data);
 
 static void
-gm_window_show (GtkWidget *w,
-                gpointer data);
+window_show_cb (GtkWidget *w,
+		gpointer data);
 
 static void
-gm_window_hide (GtkWidget *w,
-                gpointer data);
+window_hide_cb (GtkWidget *w,
+		gpointer data);
 
 static gboolean 
 gm_window_configure_event (GtkWidget *widget,
@@ -241,10 +247,10 @@ gm_window_init (GTypeInstance *instance,
 		    G_CALLBACK (gm_window_delete_event), NULL);
 
   g_signal_connect (G_OBJECT (self), "show",
-                    G_CALLBACK (gm_window_show), self);
+                    G_CALLBACK (window_show_cb), self);
 
   g_signal_connect (G_OBJECT (self), "hide",
-                    G_CALLBACK (gm_window_hide), self);
+                    G_CALLBACK (window_hide_cb), self);
 
   g_signal_connect (G_OBJECT (self), "configure-event",
                     G_CALLBACK (gm_window_configure_event), self);
@@ -302,7 +308,7 @@ gm_window_delete_event (GtkWidget *w,
 
 
 static void
-gm_window_show (GtkWidget *w,
+window_show_cb (GtkWidget *w,
                 G_GNUC_UNUSED gpointer data)
 {
   int x = 0;
@@ -370,7 +376,7 @@ gm_window_show (GtkWidget *w,
 
 
 static void
-gm_window_hide (GtkWidget *w,
+window_hide_cb (GtkWidget *w,
                 G_GNUC_UNUSED gpointer data)
 {
   GmWindow *self = NULL;
@@ -521,6 +527,130 @@ gboolean
 gm_window_is_visible (GtkWidget* w)
 {
   return (GTK_WIDGET_VISIBLE (w) && !(gdk_window_get_state (GDK_WINDOW (w->window)) & GDK_WINDOW_STATE_ICONIFIED));
+}
+
+
+void
+gm_window_show (GtkWidget* w)
+{
+  int x = 0;
+  int y = 0;
+
+  gchar* window_name = NULL;
+  gchar* conf_key_size = NULL;
+  gchar* conf_key_position = NULL;
+  gchar* size = NULL;
+  gchar* position = NULL;
+  gchar** couple = NULL;
+
+  g_return_if_fail (GTK_IS_WINDOW (w));
+
+  if (gm_window_is_visible (w)) {
+
+    gtk_window_present (GTK_WINDOW (w));
+    return;
+  } // else we do the show :
+
+  window_name = (char *) g_object_get_data (G_OBJECT (w), "window_name");
+
+  g_return_if_fail (window_name != NULL);
+
+  conf_key_position =
+    g_strdup_printf ("%s%s/position", USER_INTERFACE_KEY, window_name);
+  conf_key_size =
+    g_strdup_printf ("%s%s/size", USER_INTERFACE_KEY, window_name);
+
+  if (!gm_window_is_visible (w)) {
+
+    position = gm_conf_get_string (conf_key_position);
+    if (position)
+      couple = g_strsplit (position, ",", 0);
+
+    if (couple && couple [0])
+      x = atoi (couple [0]);
+    if (couple && couple [1])
+      y = atoi (couple [1]);
+
+
+    if (x != 0 && y != 0)
+      gtk_window_move (GTK_WINDOW (w), x, y);
+
+    g_strfreev (couple);
+    couple = NULL;
+    g_free (position);
+
+
+    if (gtk_window_get_resizable (GTK_WINDOW (w))) {
+
+      size = gm_conf_get_string (conf_key_size);
+      if (size)
+	couple = g_strsplit (size, ",", 0);
+
+      if (couple && couple [0])
+	x = atoi (couple [0]);
+      if (couple && couple [1])
+	y = atoi (couple [1]);
+
+      if (x > 0 && y > 0)
+	gtk_window_resize (GTK_WINDOW (w), x, y);
+
+      g_strfreev (couple);
+      g_free (size);
+    }
+
+    gnomemeeting_threads_dialog_show (w);
+  }
+
+  g_free (conf_key_position);
+  g_free (conf_key_size);
+}
+
+
+void
+gm_window_hide (GtkWidget* w)
+{
+  int x = 0;
+  int y = 0;
+
+  gchar* window_name = NULL;
+  gchar* conf_key_size = NULL;
+  gchar* conf_key_position = NULL;
+  gchar* size = NULL;
+  gchar* position = NULL;
+
+  g_return_if_fail (w != NULL);
+
+  window_name = (char *) g_object_get_data (G_OBJECT (w), "window_name");
+
+  g_return_if_fail (window_name != NULL);
+
+  conf_key_position =
+    g_strdup_printf ("%s%s/position", USER_INTERFACE_KEY, window_name);
+  conf_key_size =
+    g_strdup_printf ("%s%s/size", USER_INTERFACE_KEY, window_name);
+
+
+  /* If the window is visible, save its position and hide the window */
+  if (gm_window_is_visible (w)) {
+
+    gtk_window_get_position (GTK_WINDOW (w), &x, &y);
+    position = g_strdup_printf ("%d,%d", x, y);
+    gm_conf_set_string (conf_key_position, position);
+    g_free (position);
+
+    if (gtk_window_get_resizable (GTK_WINDOW (w))) {
+
+      gtk_window_get_size (GTK_WINDOW (w), &x, &y);
+      size = g_strdup_printf ("%d,%d", x, y);
+      gm_conf_set_string (conf_key_size, size);
+      g_free (size);
+    }
+
+    gnomemeeting_threads_dialog_hide (w);
+  }
+
+  g_free (conf_key_position);
+  g_free (conf_key_size);
 }
 
 

@@ -135,8 +135,18 @@ void gm_window_set_always_on_top (GdkWindow* window,
 
 /** Check whether a window is visible or not
  * @param window is a GtkWidget
- **/
+ */
 gboolean gm_window_is_visible (GtkWidget* window);
+
+/** Show the given window if hidden, and present if no
+ * @param window is a GtkWindow
+ */
+void gm_window_show (GtkWidget* window);
+
+/** Hide the given window
+ * @param window is a GtkWindow
+ */
+void gm_window_hide (GtkWidget* window);
 
 G_END_DECLS
 

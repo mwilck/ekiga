@@ -73,7 +73,7 @@ delete_window_cb (GtkWidget *widget,
                   G_GNUC_UNUSED GdkEvent *event,
                   G_GNUC_UNUSED gpointer data)
 {
-  gnomemeeting_window_hide (GTK_WIDGET (widget));
+  gm_window_hide (GTK_WIDGET (widget));
 
   return TRUE;
 }
@@ -82,7 +82,7 @@ void
 show_window_cb (G_GNUC_UNUSED GtkWidget *widget,
 		gpointer data)
 {
-  gnomemeeting_window_show (GTK_WIDGET (data));
+  gm_window_show (GTK_WIDGET (data));
 }
 
 
@@ -91,7 +91,7 @@ hide_window_cb (G_GNUC_UNUSED GtkWidget *widget,
 		gpointer data)
 {
   if (gm_window_is_visible (GTK_WIDGET (data)))
-    gnomemeeting_window_hide (GTK_WIDGET (data));
+    gm_window_hide (GTK_WIDGET (data));
 }
 
 
@@ -275,10 +275,10 @@ quit_callback (G_GNUC_UNUSED GtkWidget *widget,
   
   gtk_widget_hide (main_window);
   if (assistant_window)
-    gnomemeeting_window_hide (assistant_window);
+    gm_window_hide (assistant_window);
   if (prefs_window)
-    gnomemeeting_window_hide (prefs_window);
-  gnomemeeting_window_hide (accounts_window);
+    gm_window_hide (prefs_window);
+  gm_window_hide (accounts_window);
 
   while (gtk_events_pending ())
     gtk_main_iteration ();

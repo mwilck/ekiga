@@ -47,6 +47,7 @@
 #include "callbacks.h"
 
 #include <gmdialog.h>
+#include "gmwindow.h"
 #include <gmpreferences.h>
 #include <gmconf.h>
 #include "codecsbox.h"
@@ -1401,7 +1402,7 @@ gm_prefs_window_new (Ekiga::ServiceCore *core)
   /* That's an usual GtkWindow, connect it to the signals */
   g_signal_connect_swapped (GTK_OBJECT (window), 
 			    "response", 
-			    G_CALLBACK (gnomemeeting_window_hide),
+			    G_CALLBACK (gm_window_hide),
 			    (gpointer) window);
 
   g_signal_connect (GTK_OBJECT (window), 
