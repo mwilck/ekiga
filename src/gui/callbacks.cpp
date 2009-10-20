@@ -78,14 +78,6 @@ delete_window_cb (GtkWidget *widget,
 }
 
 void
-show_window_cb (G_GNUC_UNUSED GtkWidget *widget,
-		gpointer data)
-{
-  gm_window_show (GTK_WIDGET (data));
-}
-
-
-void
 about_callback (G_GNUC_UNUSED GtkWidget *widget, 
 		gpointer parent_window)
 {

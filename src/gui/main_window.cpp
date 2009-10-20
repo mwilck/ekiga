@@ -216,6 +216,12 @@ enum {
 
 /* GUI Functions */
 
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Shows a window
+ * PRE          : The given data pointer should be a window
+ */
+static void show_window_cb (GtkWidget *widget,
+			    gpointer data);
 
 /* DESCRIPTION  : /
  * BEHAVIOR     : Builds the video settings popup of the main window.
@@ -516,6 +522,15 @@ static const std::string ekiga_main_window_get_call_url (EkigaMainWindow *mw);
 /* 
  * Engine Callbacks 
  */
+
+static void
+show_window_cb (G_GNUC_UNUSED GtkWidget *widget,
+		gpointer data)
+{
+  gm_window_show (GTK_WIDGET (data));
+}
+
+
 static void
 on_account_updated (Ekiga::BankPtr /*bank*/,
 		    Ekiga::AccountPtr account,
