@@ -53,11 +53,6 @@ gnomemeeting_button_new (const char *label,
 			 GtkWidget *pixmap);
 
 
-void gdk_window_set_always_on_top (GdkWindow *window, 
-				   gboolean enable);
-
-
-
 /* DESCRIPTION  :  / 
  * BEHAVIOR     :  Returns TRUE if the specified window is present and visible
  *                 on the current workspace, FALSE otherwise.

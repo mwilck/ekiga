@@ -2547,7 +2547,7 @@ ekiga_main_window_set_stay_on_top (EkigaMainWindow *mw,
   g_return_if_fail (EKIGA_IS_MAIN_WINDOW (mw));
 
   /* Update the stay-on-top attribute */
-  gdk_window_set_always_on_top (GTK_WIDGET (mw)->window, stay_on_top);
+  gm_window_set_always_on_top (GTK_WIDGET (mw)->window, stay_on_top);
 }
 
 static void 
@@ -3796,7 +3796,7 @@ ekiga_main_window_show (GtkWidget *widget)
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (widget);
   if (gm_conf_get_bool (VIDEO_DISPLAY_KEY "stay_on_top") && mw->priv->current_call)
-    gdk_window_set_always_on_top (widget->window, TRUE);
+    gm_window_set_always_on_top (widget->window, TRUE);
   GTK_WIDGET_CLASS (ekiga_main_window_parent_class)->show (widget);
 }
 

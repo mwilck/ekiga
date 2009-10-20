@@ -126,6 +126,13 @@ void gm_window_set_hide_on_delete (GmWindow *window,
  */
 gboolean gm_window_get_hide_on_delete (GmWindow *window);		    
 
+/** Makes sure the given window is always on top
+ * @param window is a GdkWindow
+ * @param enable whether to set or unset the always on top state
+ */
+void gm_window_set_always_on_top (GdkWindow* window,
+				  gboolean enable);
+
 G_END_DECLS
 
 #endif
