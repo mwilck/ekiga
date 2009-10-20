@@ -50,16 +50,8 @@
  */
 GtkWidget *
 gnomemeeting_button_new (const char *label,
-			 GtkWidget *pixmap);
+			 GtkWidget *pixmap);        
 
-
-/* DESCRIPTION  :  / 
- * BEHAVIOR     :  Returns TRUE if the specified window is present and visible
- *                 on the current workspace, FALSE otherwise.
- * PRE          :  Argument is a GtkWindow *.
- */
-gboolean gnomemeeting_window_is_visible (GtkWidget *w);
-        
 
 /* DESCRIPTION  :  This callback is called when a window of gnomemeeting
  *                 (addressbook, prefs, ...) has to be shown.

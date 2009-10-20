@@ -516,6 +516,14 @@ gm_window_set_always_on_top (GdkWindow *window,
 #endif
 }
 
+
+gboolean
+gm_window_is_visible (GtkWidget* w)
+{
+  return (GTK_WIDGET_VISIBLE (w) && !(gdk_window_get_state (GDK_WINDOW (w->window)) & GDK_WINDOW_STATE_ICONIFIED));
+}
+
+
 /* Stolen from GDK */
 #ifndef WIN32
 static void

@@ -133,6 +133,11 @@ gboolean gm_window_get_hide_on_delete (GmWindow *window);
 void gm_window_set_always_on_top (GdkWindow* window,
 				  gboolean enable);
 
+/** Check whether a window is visible or not
+ * @param window is a GtkWidget
+ **/
+gboolean gm_window_is_visible (GtkWidget* window);
+
 G_END_DECLS
 
 #endif

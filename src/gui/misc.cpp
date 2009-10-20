@@ -44,6 +44,7 @@
 #include "callbacks.h"
 
 #include "gmdialog.h"
+#include "gmwindow.h"
 #include "gmconf.h"
 
 #include <glib/gi18n.h>
@@ -71,15 +72,6 @@ gnomemeeting_button_new (const char *lbl,
 }
 
 
-
-
-gboolean 
-gnomemeeting_window_is_visible (GtkWidget *w)
-{
-  return (GTK_WIDGET_VISIBLE (w) && !(gdk_window_get_state (GDK_WINDOW (w->window)) & GDK_WINDOW_STATE_ICONIFIED));
-}
-
-
 void
 gnomemeeting_window_show (GtkWidget *w)
 {
@@ -95,7 +87,7 @@ gnomemeeting_window_show (GtkWidget *w)
   
   g_return_if_fail (GTK_IS_WINDOW (w));
 
-  if (gnomemeeting_window_is_visible (w)) {
+  if (gm_window_is_visible (w)) {
 
     gtk_window_present (GTK_WINDOW (w));
     return;
@@ -110,7 +102,7 @@ gnomemeeting_window_show (GtkWidget *w)
   conf_key_size =
     g_strdup_printf ("%s%s/size", USER_INTERFACE_KEY, window_name);  
 
-  if (!gnomemeeting_window_is_visible (w)) {
+  if (!gm_window_is_visible (w)) {
     
     position = gm_conf_get_string (conf_key_position);
     if (position)
@@ -181,7 +173,7 @@ gnomemeeting_window_hide (GtkWidget *w)
 
   
   /* If the window is visible, save its position and hide the window */
-  if (gnomemeeting_window_is_visible (w)) {
+  if (gm_window_is_visible (w)) {
     
     gtk_window_get_position (GTK_WINDOW (w), &x, &y);
     position = g_strdup_printf ("%d,%d", x, y);

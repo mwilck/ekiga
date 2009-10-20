@@ -47,6 +47,7 @@
 #include "gmentrydialog.h"
 #include "gmconf.h"
 #include "gmdialog.h"
+#include "gmwindow.h"
 #include "gmconnectbutton.h"
 #include "gmmenuaddon.h"
 #include "gmstockicons.h"
@@ -89,7 +90,7 @@ void
 hide_window_cb (G_GNUC_UNUSED GtkWidget *widget,
 		gpointer data)
 {
-  if (gnomemeeting_window_is_visible (GTK_WIDGET (data)))
+  if (gm_window_is_visible (GTK_WIDGET (data)))
     gnomemeeting_window_hide (GTK_WIDGET (data));
 }
 
