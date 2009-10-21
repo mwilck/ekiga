@@ -1413,9 +1413,7 @@ gm_prefs_window_new (Ekiga::ServiceCore *core)
 			    G_CALLBACK (gm_window_hide),
 			    (gpointer) window);
 
-  g_signal_connect (GTK_OBJECT (window), 
-		    "delete-event", 
-		    G_CALLBACK (delete_window_cb), NULL);
+  gm_window_hide_on_delete (window);
 
   boost::signals::connection conn;
   boost::shared_ptr<Ekiga::VideoInputCore> videoinput_core = core->get<Ekiga::VideoInputCore> ("videoinput-core");

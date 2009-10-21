@@ -704,8 +704,7 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
 			    G_CALLBACK (gm_window_hide),
 			    (gpointer) window);
 
-  g_signal_connect (GTK_OBJECT (window), "delete-event",
-		    G_CALLBACK (delete_window_cb), NULL);
+  gm_window_hide_on_delete (window);
 
   gtk_widget_show_all (GTK_WIDGET (GTK_DIALOG (window)->vbox));
 

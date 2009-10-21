@@ -289,6 +289,15 @@ gm_window_get_type ()
  */
 
 static gboolean
+delete_event_cb (GtkWidget* window,
+		 G_GNUC_UNUSED gpointer data)
+{
+  gm_window_hide (window);
+
+  return TRUE;
+}
+
+static gboolean
 gm_window_delete_event (GtkWidget *w,
                         G_GNUC_UNUSED gpointer data)
 {
@@ -652,6 +661,14 @@ gm_window_hide (GtkWidget* w)
   g_free (conf_key_size);
 }
 
+void
+gm_window_hide_on_delete (GtkWidget* window)
+{
+  g_return_if_fail (GTK_IS_OBJECT (window));
+
+  g_signal_connect (GTK_OBJECT (window), "delete-event",
+		    G_CALLBACK (delete_event_cb), NULL);
+}
 
 /* Stolen from GDK */
 #ifndef WIN32

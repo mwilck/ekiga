@@ -1671,9 +1671,7 @@ gm_mw_video_settings_window_new (EkigaMainWindow *mw)
 			    G_CALLBACK (gm_window_hide),
 			    (gpointer) window);
 
-  g_signal_connect (GTK_OBJECT (window), 
-		    "delete-event", 
-		    G_CALLBACK (delete_window_cb), NULL);
+  gm_window_hide_on_delete (window);
 
   return window;
 }
@@ -1786,9 +1784,7 @@ gm_mw_audio_settings_window_new (EkigaMainWindow *mw)
 			    G_CALLBACK (gm_window_hide),
 			    (gpointer) window);
 
-  g_signal_connect (GTK_OBJECT (window),
-		    "delete-event", 
-		    G_CALLBACK (delete_window_cb), NULL);
+  gm_window_hide_on_delete (window);
 
   g_signal_connect (G_OBJECT (window), "show", 
                     G_CALLBACK (audio_volume_window_shown_cb), mw);

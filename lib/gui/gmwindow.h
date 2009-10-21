@@ -148,6 +148,11 @@ void gm_window_show (GtkWidget* window);
  */
 void gm_window_hide (GtkWidget* window);
 
+/** Make the window only be hidden on delete
+ * @param window is a GtkWindow
+ */
+void gm_window_hide_on_delete (GtkWidget* window);
+
 G_END_DECLS
 
 #endif

@@ -42,15 +42,6 @@
 
 #include "common.h"
 
-
-/* DESCRIPTION  :  Simple wrapper that will call gnomemeeting_hide_window.
- * BEHAVIOR     :  Calls gnomemeeting_window_hide.
- * PRE          :  /
- */
-gboolean delete_window_cb (GtkWidget *widget,
-                           GdkEvent *event,
-                           gpointer data);
-
 /* DESCRIPTION  :  This callback is called when the user chooses to open
  *                 the about window.
  * BEHAVIOR     :  Open the about window.

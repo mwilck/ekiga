@@ -67,15 +67,6 @@
 
 
 /* The callbacks */
-gboolean
-delete_window_cb (GtkWidget *widget,
-                  G_GNUC_UNUSED GdkEvent *event,
-                  G_GNUC_UNUSED gpointer data)
-{
-  gm_window_hide (GTK_WIDGET (widget));
-
-  return TRUE;
-}
 
 void
 about_callback (G_GNUC_UNUSED GtkWidget *widget, 
