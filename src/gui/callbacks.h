@@ -76,17 +76,4 @@ void help_cb (GtkWidget *widget,
 void quit_callback (GtkWidget *widget,
 		    gpointer data);
 
-
-/* DESCRIPTION  :  This callback is called when the user toggles a
- *                 connect button.
- * BEHAVIOR     :  Connect if there is a connect URL in the URL bar and if the
- * 		   button is toggled, the button is untoggled if there is no 
- * 		   url, disconnect if the button is untoggled. Do nothing
- * 		   if the endpoint calling state is not Standby.
- * PRE          :  data is a valid pointer to the URL GtkEntry.
- */
-void connect_button_clicked_cb (GtkToggleButton *widget,
-				gpointer data);
-
-
 #endif
