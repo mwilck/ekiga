@@ -436,7 +436,7 @@ codecs_box_init (CodecsBox *self)
                                                      COLUMN_CODEC_NAME,
                                                      NULL);
   gtk_tree_view_append_column (GTK_TREE_VIEW (self->priv->codecs_list), column);
-  g_object_set (G_OBJECT (renderer), "weight", "bold", NULL);
+  g_object_set (G_OBJECT (renderer), "weight", PANGO_WEIGHT_BOLD, NULL);
 
   renderer = gtk_cell_renderer_text_new ();
   column = gtk_tree_view_column_new_with_attributes (NULL,
