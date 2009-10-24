@@ -252,7 +252,7 @@ Opal::H323::EndPoint::get_forward_uri () const
 bool
 Opal::H323::EndPoint::subscribe (const Opal::Account & account)
 {
-  if (account.get_protocol_name () != "H323" || account.is_active ())
+  if (account.get_protocol_name () != "H323" || account.is_enabled ())
     return false;
 
   new subscriber (account, *this);
@@ -264,7 +264,7 @@ Opal::H323::EndPoint::subscribe (const Opal::Account & account)
 bool
 Opal::H323::EndPoint::unsubscribe (const Opal::Account & account)
 {
-  if (account.get_protocol_name () != "H323" || !account.is_active ())
+  if (account.get_protocol_name () != "H323" || !account.is_enabled ())
     return false;
 
   new subscriber (account, *this);

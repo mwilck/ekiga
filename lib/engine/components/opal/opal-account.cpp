@@ -315,12 +315,6 @@ bool Opal::Account::is_limited () const
 }
 
 
-bool Opal::Account::is_active () const
-{
-  return enabled;
-}
-
-
 void Opal::Account::remove ()
 {
   enabled = false;

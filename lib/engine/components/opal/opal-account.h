@@ -130,8 +130,6 @@ public:
 
     bool is_limited () const;
 
-    bool is_active () const;
-
     void remove ();
 
     void edit ();
