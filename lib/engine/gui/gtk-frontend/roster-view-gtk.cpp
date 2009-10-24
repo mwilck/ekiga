@@ -1449,7 +1449,7 @@ roster_view_gtk_new (Ekiga::PresenceCore &core)
   renderer = gm_cell_renderer_expander_new ();
   gtk_tree_view_column_pack_start (col, renderer, FALSE);
   g_object_set (renderer,
-                "xalign", 0,
+                "xalign", 0.0,
                 "xpad", 0,
                 "ypad", 0,
                 "visible", TRUE,
