@@ -85,7 +85,7 @@ namespace Ekiga
      *
      * @return Whether the account is active
      */
-    virtual bool is_active () const = 0;
+    virtual bool is_enabled () const = 0;
 
     /** Create the menu for that account and its actions.
      * This function is purely virtual and should be implemented by

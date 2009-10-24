@@ -374,7 +374,7 @@ LM::Account::get_status () const
 }
 
 bool
-LM::Account::is_active () const
+LM::Account::is_enabled () const
 {
   bool result = false;
   xmlChar* xml_str = xmlGetProp (node, BAD_CAST "startup");

@@ -124,7 +124,7 @@ static void on_selection_changed (GtkTreeSelection* /*selection*/,
 enum {
 
   COLUMN_ACCOUNT,
-  COLUMN_ACCOUNT_IS_ACTIVE,
+  COLUMN_ACCOUNT_IS_ENABLED,
   COLUMN_ACCOUNT_WEIGHT,
   COLUMN_ACCOUNT_ACCOUNT_NAME,
   COLUMN_ACCOUNT_STATUS,
@@ -284,7 +284,7 @@ void account_toggled_cb (G_GNUC_UNUSED GtkCellRendererToggle* renderer,
   GtkTreePath* path = NULL;
   GtkTreeIter iter;
   Ekiga::Account* account = NULL;
-  gboolean is_active;
+  gboolean is_enabled;
 
   aw = gm_aw_get_aw (GTK_WIDGET (data));
 
@@ -295,10 +295,10 @@ void account_toggled_cb (G_GNUC_UNUSED GtkCellRendererToggle* renderer,
 
     gtk_tree_model_get (model, &iter,
 			COLUMN_ACCOUNT, &account,
-			COLUMN_ACCOUNT_IS_ACTIVE, &is_active,
+			COLUMN_ACCOUNT_IS_ENABLED, &is_enabled,
 			-1);
 
-    if (is_active) {
+    if (is_enabled) {
 
       Ekiga::Activator builder ("disable");
       account->populate_menu (builder);
@@ -365,7 +365,7 @@ gm_accounts_window_add_account (GtkWidget *window,
   gtk_list_store_append (GTK_LIST_STORE (model), &iter);
   gtk_list_store_set (GTK_LIST_STORE (model), &iter,
                       COLUMN_ACCOUNT, account.get (),
-		      COLUMN_ACCOUNT_IS_ACTIVE, account->is_active (),
+		      COLUMN_ACCOUNT_IS_ENABLED, account->is_enabled (),
                       COLUMN_ACCOUNT_WEIGHT, PANGO_WEIGHT_NORMAL,
                       COLUMN_ACCOUNT_ACCOUNT_NAME, account->get_name ().c_str (),
                       -1);
@@ -402,7 +402,7 @@ gm_accounts_window_update_account (GtkWidget *accounts_window,
 
         gtk_list_store_set (GTK_LIST_STORE (model), &iter,
                             COLUMN_ACCOUNT, account.get (),
-			    COLUMN_ACCOUNT_IS_ACTIVE, account->is_active (),
+			    COLUMN_ACCOUNT_IS_ENABLED, account->is_enabled (),
                             COLUMN_ACCOUNT_WEIGHT, PANGO_WEIGHT_NORMAL,
                             COLUMN_ACCOUNT_ACCOUNT_NAME, account->get_name ().c_str (),
 			    COLUMN_ACCOUNT_STATUS, account->get_status ().c_str (),
@@ -622,7 +622,7 @@ gm_accounts_window_new (Ekiga::ServiceCore &core)
   column = gtk_tree_view_column_new_with_attributes (_("Active"),
 						     renderer,
 						     "active",
-						     COLUMN_ACCOUNT_IS_ACTIVE,
+						     COLUMN_ACCOUNT_IS_ENABLED,
 						     NULL);
   gtk_tree_view_append_column (GTK_TREE_VIEW (aw->accounts_list), column);
   g_signal_connect (G_OBJECT (renderer), "toggled",

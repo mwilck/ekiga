@@ -2219,7 +2219,7 @@ account_completion_helper (Ekiga::AccountPtr acc,
 			   EkigaMainWindow* mw)
 {
   Opal::AccountPtr account = boost::dynamic_pointer_cast<Opal::Account>(acc);
-  if (account && account->is_active ()) {
+  if (account && account->is_enabled ()) {
 
     if (g_ascii_strncasecmp (text, "sip:", 4) == 0 && account->get_protocol_name () == "SIP") {
 

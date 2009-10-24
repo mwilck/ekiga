@@ -67,7 +67,7 @@ namespace LM
 
     const std::string get_status () const;
 
-    bool is_active () const;
+    bool is_enabled () const;
 
     bool populate_menu (Ekiga::MenuBuilder& builder);
 

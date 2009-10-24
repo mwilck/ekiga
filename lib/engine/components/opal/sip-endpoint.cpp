@@ -190,7 +190,7 @@ Opal::Sip::EndPoint::menu_builder_add_actions (const std::string& fullname,
 	 it != bank->end ();
 	 it++) {
 
-      if ((*it)->get_protocol_name () == "SIP" && (*it)->is_active ()) {
+      if ((*it)->get_protocol_name () == "SIP" && (*it)->is_enabled ()) {
 
 	std::stringstream uristr;
 	std::string str = uri;
