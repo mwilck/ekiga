@@ -484,10 +484,8 @@ Opal::Account::handle_registration_event (RegistrationState state_,
       status = _("Registered");
       boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
       boost::shared_ptr<Ekiga::PersonalDetails> personal_details = core.get<Ekiga::PersonalDetails> ("personal-details");
-      if (presence_core && personal_details) {
-
+      if (presence_core && personal_details)
 	presence_core->publish (personal_details);
-      }
       state = state_;
       updated ();
     } 

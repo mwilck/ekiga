@@ -287,14 +287,14 @@ Opal::Sip::EndPoint::unfetch (const std::string uri)
 void
 Opal::Sip::EndPoint::publish (const Ekiga::PersonalDetails & details)
 {
-  std::map<std::string, PString> publishing;
+  std::map<std::string, PString> to_publish;
   std::string hostname = (const char *) PIPSocket::GetHostName ();
   std::string presence = ((Ekiga::PersonalDetails &) (details)).get_presence ();
   std::string status = ((Ekiga::PersonalDetails &) (details)).get_status ();
 
   for (PSafePtr<SIPHandler> handler = activeSIPHandlers.GetFirstHandler(); handler != NULL; ++handler) {
 
-    if (handler->GetMethod() == SIP_PDU::Method_REGISTER) {
+    if (handler->GetMethod() == SIP_PDU::Method_REGISTER && handler->GetState () == SIPHandler::Subscribed) {
 
       PString data;
       std::string to = handler->GetAddressOfRecord ().AsString ().Mid (4);
@@ -331,12 +331,15 @@ Opal::Sip::EndPoint::publish (const Ekiga::PersonalDetails & details)
       data += "</tuple>\r\n";
       data += "</presence>\r\n";
 
-      publishing[to]=data;
+      if (publications[to] != data) {
+        publications[to] = data;
+        to_publish[to] = data;
+      }
     }
   }
 
-  for (std::map<std::string, PString>::const_iterator iter = publishing.begin ();
-       iter != publishing.end ();
+  for (std::map<std::string, PString>::const_iterator iter = to_publish.begin ();
+       iter != to_publish.end ();
        ++iter)
     Publish (iter->first, iter->second, 500); // TODO: allow to change the 500
 }

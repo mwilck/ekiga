@@ -236,6 +236,8 @@ namespace Opal {
       CallManager & manager;
       Ekiga::ServiceCore & core;
 
+      std::map<std::string, PString> publications;
+
       Ekiga::CallProtocolManager::Interface listen_iface;
 
       std::string protocol_name;
