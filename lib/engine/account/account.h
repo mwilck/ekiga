@@ -79,7 +79,7 @@ namespace Ekiga
     virtual const std::string get_status () const = 0;
 
 
-    /** Returns a boolean indicating whether the account is active.
+    /** Returns a boolean indicating whether the account is enabled.
      *
      * @return Whether the account is enabled
      */
