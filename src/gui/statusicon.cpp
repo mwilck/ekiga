@@ -415,25 +415,37 @@ on_account_updated (Ekiga::BankPtr /*bank*/,
 		    Ekiga::AccountPtr /*account*/,
                     gpointer data)
 {
+  std::string message = _("The following accounts are inactive:");
   boost::shared_ptr<Ekiga::AccountCore> account_core = STATUSICON (data)->priv->core.get<Ekiga::AccountCore> ("account-core");
   STATUSICON (data)->priv->failed_accounts.clear ();
 
   account_core->visit_banks (boost::bind (&on_visit_banks, _1, data));
 
-  if (STATUSICON (data)->priv->failed_accounts.size () > 0) {
+  for (std::list<std::string>::iterator it = STATUSICON (data)->priv->failed_accounts.begin ();
+       it != STATUSICON (data)->priv->failed_accounts.end ();
+       it++) {
+    message += "\n";
+    message += (*it);
+  }
 
-    // FIXME use main_window here
+  if (STATUSICON (data)->priv->failed_accounts.size () > 0) { 
     boost::shared_ptr<GtkFrontend> frontend = STATUSICON (data)->priv->core.get<GtkFrontend> ("gtk-frontend");
-    GtkWidget *chat_window = chat_window = GTK_WIDGET (frontend->get_chat_window ());
-    GdkPixbuf *pixbuf = gtk_widget_render_icon (chat_window, 
-                                                GTK_STOCK_DIALOG_WARNING,
-                                                GTK_ICON_SIZE_MENU, 
-                                                NULL); 
+    // FIXME use main_window here
+    GtkWidget* chat_window = GTK_WIDGET (frontend->get_chat_window ());
+    GdkPixbuf* pixbuf = gtk_widget_render_icon (chat_window, GTK_STOCK_DIALOG_WARNING, GTK_ICON_SIZE_MENU, NULL); 
     gtk_status_icon_set_from_pixbuf (GTK_STATUS_ICON (data), pixbuf);
     g_object_unref (pixbuf);
   }
-  else
+  else {
     statusicon_set_status (STATUSICON (data), STATUSICON (data)->priv->status);
+    message = "";
+  }
+
+#if GTK_CHECK_VERSION(2,16,0)
+    gtk_status_icon_set_tooltip_text (GTK_STATUS_ICON (data), message.c_str ());
+#else
+    gtk_status_icon_set_tooltip (GTK_STATUS_ICON (data), message.c_str ());
+#endif
 }
 
 
@@ -532,6 +544,9 @@ statusicon_set_status (StatusIcon *statusicon,
 
   else if (presence == "dnd")
     pixbuf = gtk_widget_render_icon (chat_window, GM_STOCK_STATUS_DND, 
+                                     GTK_ICON_SIZE_MENU, NULL); 
+  else if (presence == "offline")
+    pixbuf = gtk_widget_render_icon (chat_window, GM_STOCK_STATUS_OFFLINE, 
                                      GTK_ICON_SIZE_MENU, NULL); 
   else
     pixbuf = gtk_widget_render_icon (chat_window, GM_STOCK_STATUS_ONLINE, 
