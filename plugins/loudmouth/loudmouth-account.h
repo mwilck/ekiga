@@ -69,6 +69,8 @@ namespace LM
 
     bool is_enabled () const;
 
+    bool is_active () const;
+
     bool populate_menu (Ekiga::MenuBuilder& builder);
 
     /* public only to be called by C callbacks */

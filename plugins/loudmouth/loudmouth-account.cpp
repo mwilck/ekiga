@@ -395,6 +395,15 @@ LM::Account::is_enabled () const
   return result;
 }
 
+bool
+LM::Account::is_active () const
+{
+  if (!is_enabled ())
+    return false;
+
+  return true; // Isn't there a way to know if an account is active?
+}
+
 const std::string
 LM::Account::get_name () const
 {

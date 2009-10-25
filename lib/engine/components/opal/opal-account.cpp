@@ -309,6 +309,15 @@ bool Opal::Account::is_enabled () const
 }
 
 
+bool Opal::Account::is_active () const
+{
+  if (!enabled)
+    return false;
+
+  return (state == Registered);
+}
+
+
 bool Opal::Account::is_limited () const
 {
   return limited;
@@ -464,6 +473,7 @@ Opal::Account::on_consult (const std::string url)
 {
   gm_open_uri (url.c_str ());
 }
+
 
 void
 Opal::Account::handle_registration_event (RegistrationState state_,

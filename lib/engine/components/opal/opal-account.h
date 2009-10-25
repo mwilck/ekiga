@@ -128,6 +128,8 @@ public:
 
     bool is_enabled () const;
 
+    bool is_active () const;
+
     bool is_limited () const;
 
     void remove ();

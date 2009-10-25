@@ -86,6 +86,16 @@ namespace Ekiga
     virtual bool is_enabled () const = 0;
 
 
+    /** Returns a boolean indicating whether the account is active.
+     * An account can be enabled but inactive. It can happen if
+     * the connection to the server failed (for example).
+     * This method returns true if the account is in a sane state.
+     *
+     * @return Whether the account is active
+     */
+    virtual bool is_active () const = 0;
+
+
     /** Create the menu for that account and its actions.
      * This function is purely virtual and should be implemented by
      * the descendant of the Ekiga::Contact.
