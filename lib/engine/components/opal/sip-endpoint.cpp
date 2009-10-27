@@ -866,7 +866,7 @@ Opal::Sip::EndPoint::OnMWIReceived (const PString & party,
     mwi = "0/0";
 
   /* Signal */
-  Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &Opal::Sip::EndPoint::mwi_received_in_main), party, info));
+  Ekiga::Runtime::run_in_main (sigc::bind (sigc::mem_fun (this, &Opal::Sip::EndPoint::mwi_received_in_main), party, mwi));
 }
 
 
