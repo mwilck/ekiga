@@ -333,8 +333,6 @@ void Opal::Account::remove ()
   endpoint->unsubscribe (*this);
 
   trigger_saving ();
-
-  removed ();
 }
 
 
@@ -499,6 +497,10 @@ Opal::Account::handle_registration_event (RegistrationState state_,
 
     status = _("Unregistered");
     updated ();
+    /* delay destruction of this account until the
+       unsubscriber thread has called back */
+    if (dead)
+      removed ();
     break;
 
   case UnregistrationFailed:
