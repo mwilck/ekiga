@@ -1187,7 +1187,8 @@ on_audioinput_device_opened_cb (Ekiga::AudioInputManager & /* manager */,
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
 
   gtk_widget_set_sensitive (mw->priv->audio_input_volume_frame, settings.modifyable);
-  gtk_widget_set_sensitive (mw->priv->audio_settings_button, settings.modifyable);
+  if (mw->priv->audio_settings_button)
+    gtk_widget_set_sensitive (mw->priv->audio_settings_button, settings.modifyable);
   GTK_ADJUSTMENT (mw->priv->adj_input_volume)->value = settings.volume;
   
   gtk_widget_queue_draw (mw->priv->audio_input_volume_frame);
@@ -1202,7 +1203,8 @@ on_audioinput_device_closed_cb (Ekiga::AudioInputManager & /* manager */,
 {
   EkigaMainWindow *mw = EKIGA_MAIN_WINDOW (self);
 
-  gtk_widget_set_sensitive (mw->priv->audio_settings_button, FALSE);
+  if (mw->priv->audio_settings_button)
+    gtk_widget_set_sensitive (mw->priv->audio_settings_button, FALSE);
   gtk_widget_set_sensitive (mw->priv->audio_input_volume_frame, FALSE);
 }
 
@@ -1293,7 +1295,8 @@ on_audiooutput_device_opened_cb (Ekiga::AudioOutputManager & /*manager*/,
   if (ps == Ekiga::secondary)
     return;
 
-  gtk_widget_set_sensitive (mw->priv->audio_settings_button, settings.modifyable);
+  if (mw->priv->audio_settings_button)
+    gtk_widget_set_sensitive (mw->priv->audio_settings_button, settings.modifyable);
   gtk_widget_set_sensitive (mw->priv->audio_output_volume_frame, settings.modifyable);
   GTK_ADJUSTMENT (mw->priv->adj_output_volume)->value = settings.volume;
 
@@ -1313,7 +1316,8 @@ on_audiooutput_device_closed_cb (Ekiga::AudioOutputManager & /*manager*/,
   if (ps == Ekiga::secondary)
     return;
 
-  gtk_widget_set_sensitive (mw->priv->audio_settings_button, FALSE);
+  if (mw->priv->audio_settings_button)
+    gtk_widget_set_sensitive (mw->priv->audio_settings_button, FALSE);
   gtk_widget_set_sensitive (mw->priv->audio_output_volume_frame, FALSE);
 }
 
