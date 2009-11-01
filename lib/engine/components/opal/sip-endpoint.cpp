@@ -1068,6 +1068,8 @@ Opal::Sip::EndPoint::OnDialogInfoReceived (const SIPDialogNotification & info)
   std::string uri = (const char *) info.m_entity;
   PString remote_uri = info.m_remote.m_identity;
   PString remote_display_name = info.m_remote.m_display.IsEmpty () ? remote_uri : info.m_remote.m_display;
+  if (uri.find ("sip:") == string::npos)
+    uri = "sip:" + uri;
 
   switch (info.m_state) {
   case SIPDialogNotification::Proceeding:
@@ -1095,6 +1097,9 @@ Opal::Sip::EndPoint::OnDialogInfoReceived (const SIPDialogNotification & info)
 
   dialog_infos[uri].presence = presence;
   dialog_infos[uri].status = status;
+
+  if (presence_infos[uri].presence.empty ())
+    presence_infos[uri].presence = "online";
 
   if (_status)
     Ekiga::Runtime::run_in_main (boost::bind (&Opal::Sip::EndPoint::presence_status_in_main, this, uri, dialog_infos[uri].presence, dialog_infos[uri].status));
