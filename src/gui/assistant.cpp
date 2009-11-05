@@ -1457,7 +1457,7 @@ ekiga_assistant_init (EkigaAssistant *assistant)
 
   assistant->priv->last_active_page = 0;
   assistant->priv->icon = gtk_icon_theme_load_icon (gtk_icon_theme_get_default (),
-                                                    "ekiga", 48,
+                                                    PACKAGE_NAME, 48,
                                                     (GtkIconLookupFlags) 0, NULL);
 
   create_welcome_page (assistant);
