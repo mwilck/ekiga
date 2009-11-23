@@ -244,7 +244,7 @@ Local::Presentity::edit_presentity ()
 			   "element of ekiga's internal roster"));
   request->text ("name", _("Name:"), name);
   request->text ("uri", _("Address:"), uri);
-  request->boolean ("preferred", _("Is a preferred contact"), is_preferred ());
+  request->boolean ("prefered", _("Is a prefered contact"), is_preferred ());
 
   request->editable_set ("groups", _("Choose groups:"),
 			 groups, all_groups);
