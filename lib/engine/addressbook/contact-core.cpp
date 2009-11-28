@@ -84,6 +84,8 @@ Ekiga::ContactCore::add_source (SourcePtr source)
   conns.push_back (source->contact_removed.connect (boost::bind (boost::ref (contact_removed), source, _1, _2)));
   conns.push_back (source->contact_updated.connect (boost::bind (boost::ref (contact_updated), source, _1, _2)));
   source->questions.connect (boost::ref (questions));
+
+  updated ();
 }
 
 void
