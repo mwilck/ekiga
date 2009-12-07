@@ -73,7 +73,7 @@ Local::Presentity::Presentity (Ekiga::ServiceCore &_core,
 {
   node = xmlNewNode (NULL, BAD_CAST "entry");
   xmlSetProp (node, BAD_CAST "uri", BAD_CAST uri.c_str ());
-  xmlSetProp (node, BAD_CAST "preferred", BAD_CAST "false");
+  xmlSetProp (node, BAD_CAST "prefered", BAD_CAST "false");
   xmlNewChild (node, NULL,
 	       BAD_CAST "name",
 	       BAD_CAST robust_xmlEscape (node->doc,
@@ -244,7 +244,7 @@ Local::Presentity::edit_presentity ()
 			   "element of ekiga's internal roster"));
   request->text ("name", _("Name:"), name);
   request->text ("uri", _("Address:"), uri);
-  request->boolean ("prefered", _("Is a prefered contact"), is_preferred ());
+  request->boolean ("prefered", _("Is a prefered contact"), is_prefered ());
 
   request->editable_set ("groups", _("Choose groups:"),
 			 groups, all_groups);
@@ -265,7 +265,7 @@ Local::Presentity::edit_presentity_form_submitted (bool submitted,
   const std::set<std::string> new_groups = result.editable_set ("groups");
   std::string new_uri = result.text ("uri");
   const std::string uri = get_uri ();
-  bool preferred = result.boolean ("preferred");
+  bool prefered = result.boolean ("prefered");
   std::set<xmlNodePtr> nodes_to_remove;
   size_t pos = new_uri.find_first_of (' ');
   if (pos != std::string::npos)
@@ -339,12 +339,12 @@ Local::Presentity::edit_presentity_form_submitted (bool submitted,
     }
   }
 
-  if (preferred) {
+  if (prefered) {
 
-    xmlSetProp (node, BAD_CAST "preferred", BAD_CAST "true");
+    xmlSetProp (node, BAD_CAST "prefered", BAD_CAST "true");
   } else {
 
-    xmlSetProp (node, BAD_CAST "preferred", BAD_CAST "false");
+    xmlSetProp (node, BAD_CAST "prefered", BAD_CAST "false");
   }
 
   updated ();
@@ -428,22 +428,22 @@ Local::Presentity::remove ()
 }
 
 bool
-Local::Presentity::is_preferred () const
+Local::Presentity::is_prefered () const
 {
-  bool preferred = false;
-  xmlChar* xml_str = xmlGetProp (node, (const xmlChar*)"preferred");
+  bool prefered = false;
+  xmlChar* xml_str = xmlGetProp (node, (const xmlChar*)"prefered");
 
   if (xml_str != NULL) {
 
     if (xmlStrEqual (xml_str, BAD_CAST "true")) {
 
-      preferred = true;
+      prefered = true;
     } else {
 
-      preferred = false;
+      prefered = false;
     }
     xmlFree (xml_str);
   }
 
-  return preferred;
+  return prefered;
 }

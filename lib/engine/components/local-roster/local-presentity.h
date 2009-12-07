@@ -132,11 +132,11 @@ namespace Local
     xmlNodePtr get_node () const;
 
 
-    /** Tells if the contact is in the preferred list
+    /** Tells if the contact is in the prefered list
      *
-     * @return: Whether the contact is preferred
+     * @return: Whether the contact is prefered
      */
-    bool is_preferred () const;
+    bool is_prefered () const;
 
     /** Rename the given group, if this Presentity belongs to it
      *
