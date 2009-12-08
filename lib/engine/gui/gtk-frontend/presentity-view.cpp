@@ -39,7 +39,7 @@
 
 struct _PresentityViewPrivate
 {
-  Ekiga::PresentityPtr presentity;
+  Ekiga::Presentity* presentity;
   boost::signals::connection updated_conn;
   boost::signals::connection removed_conn;
 
@@ -63,7 +63,7 @@ static void on_presentity_removed (PresentityView* self);
 /* declaration of internal api */
 
 static void presentity_view_set_presentity (PresentityView* self,
-					    Ekiga::PresentityPtr presentity);
+					    Ekiga::Presentity* presentity);
 
 static void presentity_view_unset_presentity (PresentityView* self);
 
@@ -99,7 +99,7 @@ on_presentity_removed (PresentityView* self)
 
 static void
 presentity_view_set_presentity (PresentityView* self,
-				Ekiga::PresentityPtr presentity)
+				Ekiga::Presentity* presentity)
 {
   g_return_if_fail ( !self->priv->presentity);
 
@@ -115,7 +115,7 @@ presentity_view_unset_presentity (PresentityView* self)
 {
   if (self->priv->presentity) {
 
-    self->priv->presentity.reset ();
+    self->priv->presentity = NULL;
     self->priv->updated_conn.disconnect ();
     self->priv->removed_conn.disconnect ();
   }
@@ -153,7 +153,7 @@ presentity_view_set_property (GObject* obj,
 
   case PRESENTITY_VIEW_PROP_PRESENTITY:
     presentity = (Ekiga::Presentity*)g_value_get_pointer (value);
-    presentity_view_set_presentity (self, Ekiga::PresentityPtr(presentity));
+    presentity_view_set_presentity (self, presentity);
 
     break;
 
@@ -194,6 +194,8 @@ presentity_view_init (GTypeInstance* instance,
   self = (PresentityView*)instance;
 
   self->priv = new PresentityViewPrivate;
+
+  self->priv->presentity = NULL;
 
   self->priv->presence_image = gtk_image_new ();
   gtk_box_pack_start (GTK_BOX (self), self->priv->presence_image,
